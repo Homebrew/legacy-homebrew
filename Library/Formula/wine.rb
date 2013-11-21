@@ -9,7 +9,14 @@ class Wine < Formula
   stable do
     url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.1.tar.bz2'
     sha256 'd5bc2c088b555caa60a7ba1156e6ed74d791ba3c438129c75ab53805215a384c'
+
     depends_on 'little-cms'
+
+    resource 'gecko' do
+      url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
+      version '2.21'
+      sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
+    end
   end
 
   devel do
@@ -47,8 +54,8 @@ class Wine < Formula
   end
 
   resource 'mono' do
-    url 'http://downloads.sourceforge.net/wine/wine-mono-4.5.0.msi', :using => :nounzip
-    sha256 '389a2b60563a82e7bf93883dbf4eed933ae846dbad43e853c820878e3d1bedc9'
+    url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
+    sha256 '3dfc23bbc29015e4e538dab8b83cb825d3248a0e5cf3b3318503ee7331115402'
   end
 
   fails_with :llvm do
@@ -78,6 +85,12 @@ class Wine < Formula
   # Including /usr/lib because wine, as of 1.3.15, tries to dlopen
   # libncurses.5.4.dylib, and fails to find it without the fallback path.
 
+  def library_path
+    path = %W[#{HOMEBREW_PREFIX}/lib /usr/lib]
+    paths.unshift(MacOS::X11.lib) unless build.without? 'x11'
+    paths.join(':')
+  end
+
   def wine_wrapper; <<-EOS.undent
     #!/bin/sh
     DYLD_FALLBACK_LIBRARY_PATH="#{library_path}" "#{bin}/wine.bin" "$@"
@@ -101,6 +114,7 @@ class Wine < Formula
     end
 
     # Workarounds for XCode not including pkg-config files
+    # FIXME we include pkg-config files for libxml2 and libxslt. Is this really necessary?
     ENV.libxml2
     ENV.append "LDFLAGS", "-lxslt"
 
@@ -164,14 +178,5 @@ class Wine < Formula
       EOS
     end
     return s
-  end
-
-  private
-
-  def library_path
-    paths = ["#{HOMEBREW_PREFIX}/lib", '/usr/lib']
-    paths.unshift(MacOS::X11.lib) unless build.without? 'x11'
-
-    paths.join(':')
   end
 end

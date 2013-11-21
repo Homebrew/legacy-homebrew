@@ -15,8 +15,8 @@ class Wireshark < Formula
   end
 
   devel do
-    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.11.0.tar.bz2'
-    sha1 '117e7d6ac65bcfda04d97dc4958dfe156d58c323'
+    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.11.2.tar.bz2'
+    sha1 'af2b03338819b300f621048398b49403675db49c'
   end
 
   option 'with-x', 'Include X11 support'
