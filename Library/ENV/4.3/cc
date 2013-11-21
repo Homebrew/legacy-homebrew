@@ -24,20 +24,6 @@ end
 
 LOGGER = Logger.new
 
-def cccfg? flags
-  flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
-end
-def nclt?
-  $sdkroot != nil
-end
-def syspath
-  if nclt?
-    %W{#$sdkroot/usr #$sdkroot/usr/local}
-  else
-    %W{/usr /usr/local}
-  end
-end
-
 class Cmd
   def initialize path, args
     @arg0 = File.basename(path).freeze
@@ -192,6 +178,13 @@ class Cmd
     args.concat ENV['HOMEBREW_ARCHFLAGS'].split(' ') if cccfg? 'u'
     args
   end
+  def syspath
+    if nclt?
+      %W{#$sdkroot/usr #$sdkroot/usr/local}
+    else
+      %W{/usr /usr/local}
+    end
+  end
   def syslibpath
     # We reject brew's lib as we explicitly add this as a -L flag, thus it
     # is given higher priority by cc, so it surpasses the system libpath.
@@ -248,6 +241,12 @@ class Cmd
   def configure?
     # configure scripts generated with autoconf 2.61 or later export as_nl
     ENV.key? 'as_nl'
+  end
+  def nclt?
+    $sdkroot != nil
+  end
+  def cccfg? flags
+    flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
   end
 end
 
