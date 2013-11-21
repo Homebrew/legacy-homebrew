@@ -18,12 +18,6 @@ class ExactImage < Formula
     DATA
   end
 
-  fails_with :clang do
-    cause <<-EOS.undent
-      libAGG, which is vital for this build, requires GCC instead of Clang
-    EOS
-  end
-
   def install
     args = ["--prefix=#{prefix}",
             "--without-python",
