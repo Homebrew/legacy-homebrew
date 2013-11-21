@@ -5,6 +5,11 @@ class Mapnik < Formula
   url 'http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2'
   sha1 'e493ad87ca83471374a3b080f760df4b25f7060d'
 
+  # can be removed at Mapnik > 2.2.0
+  # https://github.com/mapnik/mapnik/issues/1973
+  def patches
+    DATA
+  end
   head 'https://github.com/mapnik/mapnik.git'
 
   depends_on 'pkg-config' => :build
@@ -70,3 +75,22 @@ class Mapnik < Formula
     python.standard_caveats if python
   end
 end
+
+__END__
+diff --git a/bindings/python/mapnik_text_placement.cpp b/bindings/python/mapnik_text_placement.cpp
+index 0520132..4897c28 100644
+--- a/bindings/python/mapnik_text_placement.cpp
++++ b/bindings/python/mapnik_text_placement.cpp
+@@ -194,7 +194,11 @@ struct ListNodeWrap: formatting::list_node, wrapper<formatting::list_node>
+     ListNodeWrap(object l) : formatting::list_node(), wrapper<formatting::list_node>()
+     {
+         stl_input_iterator<formatting::node_ptr> begin(l), end;
+-        children_.insert(children_.end(), begin, end);
++        while (begin != end)
++        {
++            children_.push_back(*begin);
++            ++begin;
++        }
+     }
+
+     /* TODO: Add constructor taking variable number of arguments.

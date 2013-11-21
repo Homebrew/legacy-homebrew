@@ -66,12 +66,18 @@ class Qt < Formula
       # Change Iaedaff7c: Enable building with clang / libc++ on OS X 10.9 Mavericks
       # (https://codereview.qt-project.org/#change,70930)
       'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/cc0a38d67cb36b650a275af3825731ce1f2ba35c/Change_Iaedaff7c',
+      # Change I04e1471d: Return the correct system font on OS X Mavericks.
+      # (https://codereview.qt-project.org/#change,62261)
+      'https://gist.github.com/mhemeryck/7487365/raw/adc0ba7a9b33b113ab3d15f545082703a51d3ccd/Change_I04e1471d',
     ]
   end
 
   def install
     # Must be built with --HEAD on Mavericks at the moment
-    raise 'Qt currently requires --HEAD on Mavericks' if MacOS.version == :mavericks and not build.head?
+    raise <<-EOS.undent if MacOS.version == :mavericks and not build.head?
+      On Mavericks, you must install Qt HEAD:
+        brew install qt --HEAD
+      EOS
 
     ENV.universal_binary if build.universal?
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
@@ -83,15 +89,8 @@ class Qt < Formula
             "-cocoa", "-fast", "-release"]
 
     # we have to disable these to avoid triggering optimization code
-    # that will fail in superenv, perhaps because we rename clang to cc and
-    # Qt thinks it can build with special assembler commands.
-    # In --env=std, Qt seems aware of this.
-    # But we want superenv, because it allows to build Qt in non-standard
-    # locations and with Xcode-only.
-    if superenv?
-      args << '-no-3dnow'
-      args << '-no-ssse3'
-    end
+    # that will fail in superenv (in --env=std, Qt seems aware of this)
+    args << '-no-3dnow' << '-no-ssse3' if superenv?
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
