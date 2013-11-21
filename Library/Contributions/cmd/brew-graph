@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 """
 $ brew install graphviz
-$ brew graph | dot -Tsvg -ohomebrew.svg
-$ open homebrew.svg
+$ brew graph | dot -Tsvg -ohomebrew.html
+$ open homebrew.html
 """
 from __future__ import with_statement
 
@@ -274,13 +274,26 @@ class Graph(NodeContainer, EdgeContainer, ClusterContainer):
 
 def main():
     cmd = ["brew", "deps"]
-    cmd.extend(sys.argv[1:] or ["--all"])
+    if sys.argv[1:]:
+        if '--all' in sys.argv[1:]:
+            show = 'all'
+            cmd.extend(['--all'])
+        else:
+            show = 'one'
+            hideOrphaned = False
+            cmd.extend(sys.argv[1:])
+    else:
+        show = 'installed'
+        cmd.extend(['--installed'])
+
     code, output = run(cmd)
     output = output.strip()
     depgraph = list()
 
     for f in output.split("\n"):
         stuff = f.split(":",2)
+        if len(stuff) < 2:
+            continue
         name = stuff[0]
         deps = stuff[1].strip()
         if not deps:
@@ -289,20 +302,39 @@ def main():
             deps = deps.split(" ")
         depgraph.append((name, deps))
 
-    hb = Graph("Homebrew Dependencies", attrib={'labelloc':'b', 'rankdir':'LR', 'ranksep':'5'})
+    hb = Graph("Homebrew Dependencies", attrib={'labelloc':'t', 'rankdir':'LR', 'ranksep':'5'})
+    # Independent formulas (those that are not dependended on by any other formula) get placed in
+    # their own subgraph so we can align them together on the left.
+    if show == 'installed':
+        sub = hb.cluster("independent", "Safe to Remove", attrib={'rank': 'min', 'style': 'filled', 'fillcolor': '#F0F0F0', 'color': 'invis'})
+    else:
+        sub = hb
 
-    used = set()
-    for f in depgraph:
-        for d in f[1]:
-            used.add(f[0])
-            used.add(d)
+    seen = set()
+    def addNode(graph, name):
+        if name not in seen:
+            graph.node(name, name, attrib={'shape': 'box'})
+            seen.add(name)
+            return True
+        return False
 
+    independent = set()
     for f in depgraph:
-        if f[0] not in used:
+        # Filter out orphan formulas when showing all, to cut down on noise
+        if show == 'all' and len(f[1]) == 0:
             continue
-        n = hb.node(f[0], f[0])
+
+        independent.add(f[0])
         for d in f[1]:
-            hb.link(d, f[0])
+            independent.discard(d)
+            hb.link(f[0], d)
+            # Children we can add right away because we don't care where they go
+            addNode(hb, d)
+
+    # For all installed formulas, place them in the 'indep' subgraph iff they
+    # are not depended on by other formulas, i.e. are root nodes.
+    for d in independent:
+        addNode(sub, d)
 
     hb.dot()
 

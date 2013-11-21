@@ -2,17 +2,21 @@ require 'formula'
 
 class Nexus < Formula
   homepage 'http://www.sonatype.org/'
-  url 'http://www.sonatype.org/downloads/nexus-2.3.0-04-bundle.tar.gz'
-  version '2.3.0-04'
-  sha1 '265a3a7bd09f5980d467367c729cf59f24865d11'
+  url 'http://download.sonatype.com/nexus/oss/nexus-2.6.3-01-bundle.tar.gz'
+  version '2.6.3-01'
+  sha1 '92a5b1fa25b333401da940aea19a49baaf34b56e'
 
   def install
     rm_f Dir['bin/*.bat']
-    libexec.install Dir['nexus-2.3.0-04/*']
+    # Put the sonatype-work directory in the var directory, to persist across version updates
+    inreplace "nexus-#{version}/conf/nexus.properties",
+      'nexus-work=${bundleBasedir}/../sonatype-work/nexus',
+      "nexus-work=#{var}/nexus"
+    libexec.install Dir["nexus-#{version}/*"]
     bin.install_symlink libexec/'bin/nexus'
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/nexus/libexec/bin/nexus { console | start | stop | restart | status | dump }"
+  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/nexus/libexec/bin/nexus start"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -23,7 +27,7 @@ class Nexus < Formula
         <string>com.sonatype.nexus</string>
         <key>ProgramArguments</key>
         <array>
-          <string>/usr/local/opt/nexus/bin/nexus</string>
+          <string>#{opt_prefix}/bin/nexus</string>
           <string>start</string>
         </array>
         <key>RunAtLoad</key>

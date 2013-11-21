@@ -19,6 +19,8 @@ class Exim < Formula
       s.gsub! '/usr/exim/configure', etc/'exim.conf'
       s.gsub! '/usr/exim', prefix
       s.gsub! '/var/spool/exim', var/'spool/exim'
+      # http://trac.macports.org/ticket/38654
+      s.gsub! 'TMPDIR="/tmp"', 'TMPDIR=/tmp'
       s << "SUPPORT_MAILDIR=yes\n" if build.include? 'support-maildir'
       s << "AUTH_PLAINTEXT=yes\n"
       s << "SUPPORT_TLS=yes\n"
@@ -39,7 +41,7 @@ class Exim < Formula
     end
 
     # The compile script ignores CPPFLAGS
-    ENV.append "CFLAGS", ENV['CPPFLAGS']
+    ENV.append 'CFLAGS', ENV.cppflags
 
     ENV.j1 # See: https://lists.exim.org/lurker/thread/20111109.083524.87c96d9b.en.html
     system "make"

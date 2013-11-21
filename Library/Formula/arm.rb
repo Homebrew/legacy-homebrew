@@ -16,7 +16,7 @@ class Arm < Formula
 
     To configure Arm, copy the sample configuration from
     #{share}/arm/armrc.sample
-    to ~/.armrc, adjusting as needed.
+    to ~/.arm/.armrc, adjusting as needed.
     EOS
   end
 end

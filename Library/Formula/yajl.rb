@@ -1,7 +1,7 @@
 require 'formula'
 
 class Yajl < Formula
-  homepage 'http://lloyd.github.com/yajl/'
+  homepage 'http://lloyd.github.io/yajl/'
   url 'https://github.com/lloyd/yajl/archive/2.0.4.tar.gz'
   sha256 '0e78f516dc53ecce7dc073f9a9bb0343186b58ef29dcd1dad74e5e853b216dd5'
 

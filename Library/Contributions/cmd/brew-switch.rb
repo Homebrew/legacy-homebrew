@@ -21,14 +21,14 @@ end
 unless (cellar+version).directory?
   onoe "#{name} does not have a version \"#{version}\" in the Cellar."
 
-  versions = cellar.children.select { |pn| pn.directory? }.collect { |pn| pn.basename.to_s }
+  versions = cellar.subdirs.map { |d| Keg.new(d).version }
   puts "Versions available: #{versions.join(', ')}"
 
   exit 3
 end
 
 # Unlink all existing versions
-cellar.children.select { |pn| pn.directory? }.each do |v|
+cellar.subdirs.each do |v|
   keg = Keg.new(v)
   puts "Cleaning #{keg}"
   keg.unlink

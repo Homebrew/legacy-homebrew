@@ -1,12 +1,15 @@
 module LinuxCPUs
-  OPTIMIZATION_FLAGS = {}
-  def optimization_flags; OPTIMIZATION_FLAGS.dup; end
+  OPTIMIZATION_FLAGS = {}.freeze
+  def optimization_flags; OPTIMIZATION_FLAGS; end
+
+  # Linux supports x86 only, and universal archs do not apply
+  def arch_32_bit; :i386; end
+  def arch_64_bit; :x86_64; end
+  def universal_archs; [].extend ArchitectureListExtension; end
 
   def type
     @cpu_type ||= case `uname -m`
-      when /x86_64/
-        :intel
-      when /i386/
+      when /i[3-6]86/, /x86_64/
         :intel
       else
         :dunno

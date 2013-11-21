@@ -26,8 +26,6 @@ class Imlib2 < Formula
   end
 
   test do
-    system "#{bin}/imlib2_conv", \
-      "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Key_Large.png", \
-      "imlib2_test.jpg"
+    system "#{bin}/imlib2_conv", "/usr/share/doc/cups/images/cups.png", "imlib2_test.png"
   end
 end

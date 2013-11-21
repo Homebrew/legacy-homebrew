@@ -16,17 +16,34 @@ module Homebrew extend self
         msg = blacklisted? name
         raise "No available formula for #{name}\n#{msg}" if msg
       end
+      if not File.exist? name and name =~ HOMEBREW_TAP_FORMULA_REGEX then
+        require 'cmd/tap'
+        begin
+          install_tap $1, $2
+        rescue AlreadyTappedError => e
+        end
+      end
     end unless ARGV.force?
 
-    if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      raise "Cowardly refusing to `sudo brew install'\n#{SUDO_BAD_ERRMSG}"
+    perform_preinstall_checks
+    begin
+      ARGV.formulae.each do |f|
+        begin
+          install_formula(f)
+        rescue CannotInstallFormulaError => e
+          ofail e.message
+        end
+      end
+    rescue FormulaUnavailableError => e
+      ofail e.message
+      require 'cmd/search'
+      puts 'Searching taps...'
+      puts_columns(search_taps(query_regexp(e.name)))
     end
-
-    install_formulae ARGV.formulae
   end
 
   def check_ppc
-    case Hardware.cpu_type when :ppc, :dunno
+    case Hardware::CPU.type when :ppc, :dunno
       abort <<-EOS.undent
         Sorry, Homebrew does not support your computer's CPU architecture.
         For PPC support, see: https://github.com/mistydemeo/tigerbrew
@@ -42,7 +59,9 @@ module Homebrew extend self
   def check_xcode
     require 'cmd/doctor'
     checks = Checks.new
-    %w{check_for_latest_xcode check_xcode_license_approved}.each do |check|
+    doctor_methods = ['check_xcode_clt', 'check_xcode_license_approved',
+                      'check_for_osx_gcc_installer']
+    doctor_methods.each do |check|
       out = checks.send(check)
       opoo out unless out.nil?
     end
@@ -73,16 +92,6 @@ module Homebrew extend self
     check_cellar
   end
 
-  def install_formulae formulae
-    formulae = [formulae].flatten.compact
-    unless formulae.empty?
-      perform_preinstall_checks
-      formulae.each do |f|
-        install_formula(f)
-      end
-    end
-  end
-
   def install_formula f
     fi = FormulaInstaller.new(f)
     fi.install
@@ -91,7 +100,8 @@ module Homebrew extend self
   rescue FormulaInstallationAlreadyAttemptedError
     # We already attempted to install f as part of the dependency tree of
     # another formula. In that case, don't generate an error, just move on.
-  rescue CannotInstallFormulaError => e
-    ofail e.message
+  rescue FormulaAlreadyInstalledError => e
+    opoo e.message
+  # Ignore CannotInstallFormulaError and let caller handle it.
   end
 end

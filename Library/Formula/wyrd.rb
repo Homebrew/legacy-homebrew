@@ -2,8 +2,8 @@ require 'formula'
 
 class Wyrd < Formula
   homepage 'http://pessimization.com/software/wyrd/'
-  url 'http://pessimization.com/software/wyrd/wyrd-1.4.5.tar.gz'
-  sha1 '97b6c03ca532e5c209c112f5fb050cafbcecce6d'
+  url 'http://pessimization.com/software/wyrd/wyrd-1.4.6.tar.gz'
+  sha1 'aaeca29b844825f45aadcf5207f4d1c875e4dc82'
 
   depends_on 'remind'
   depends_on 'objective-caml'

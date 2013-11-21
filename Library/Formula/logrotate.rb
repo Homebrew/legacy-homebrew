@@ -30,7 +30,7 @@ class Logrotate < Formula
       s.gsub! "/etc/logrotate.d", "#{etc}/logrotate.d"
     end
 
-    etc.install 'logrotate.conf' unless (etc/'logrotate.conf').exist?
+    etc.install 'logrotate.conf'
     (etc/'logrotate.d').mkpath
   end
 
@@ -48,8 +48,6 @@ class Logrotate < Formula
         </array>
         <key>RunAtLoad</key>
         <false/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
         <key>StartCalendarInterval</key>
         <dict>
           <key>Hour</key>

@@ -57,7 +57,7 @@ class Nss < Formula
 
   test do
     # See: http://www.mozilla.org/projects/security/pki/nss/tools/certutil.html
-    File.open('passwd', 'w') {|f| f.write("It's a secret to everyone.") }
+    (testpath/'passwd').write("It's a secret to everyone.")
     system "#{bin}/certutil", "-N", "-d", pwd, "-f", "passwd"
     system "#{bin}/certutil", "-L", "-d", pwd
   end

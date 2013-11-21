@@ -13,6 +13,9 @@ class Sox < Formula
   depends_on 'flac' => :optional
   depends_on 'libsndfile' => :optional
   depends_on 'libao' => :optional
+  depends_on 'lame' => :optional
+
+  conflicts_with 'play', :because => 'both install `play` binaries'
 
   def install
     system "./configure", "--disable-debug",

@@ -2,8 +2,8 @@ require 'formula'
 
 class Pulledpork < Formula
   homepage 'http://code.google.com/p/pulledpork/'
-  url 'http://pulledpork.googlecode.com/files/pulledpork-0.6.1.tar.gz'
-  sha1 'b95b62f52213c6074a2e8c57c2adc7d038d9c0cd'
+  url 'http://pulledpork.googlecode.com/files/pulledpork-0.7.0.tar.gz'
+  sha1 'fd7f2b195b473ba80826c4f06dd6ef2dd445814e'
 
   depends_on 'Switch' => :perl
   depends_on 'Crypt::SSLeay' => :perl

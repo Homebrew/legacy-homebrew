@@ -22,13 +22,16 @@ end
 
 class Cmake < Formula
   homepage 'http://www.cmake.org/'
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.10.2.tar.gz'
-  sha1 '2d868ccc3f9f2aa7c2844bd0a4609d5313edaaec'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.12.1.tar.gz'
+  sha1 '5661a607acbce7c16bb5f15ff2895fa5ca53a4da'
+
+  head 'http://cmake.org/cmake.git'
 
   bottle do
-    sha1 '0bdd4bfd4a094d3fbacbe33d0968161a0f24d665' => :mountain_lion
-    sha1 '340f321eed8fd6b423980ecf9bed90646fc9331c' => :lion
-    sha1 'c23c8c6124c1d59817301678cabad9517966d899' => :snow_leopard
+    cellar :any
+    sha1 '47c0961bc3cca0e89d4fee9f96638b9848e2d40a' => :mavericks
+    sha1 'b9908be7e2eb79cc2e0f9ab1d9e46faea2748b10' => :mountain_lion
+    sha1 'bc012f5e4a1a4eb09967d0e8f26688781412dc01' => :lion
   end
 
   depends_on NoExpatFramework
@@ -49,7 +52,7 @@ class Cmake < Formula
   end
 
   test do
-    File.open('CMakeLists.txt', 'w') {|f| f.write('find_package(Ruby)') }
+    (testpath/'CMakeLists.txt').write('find_package(Ruby)')
     system "#{bin}/cmake", '.'
   end
 end

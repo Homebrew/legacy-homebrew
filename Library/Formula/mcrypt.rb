@@ -2,7 +2,7 @@ require 'formula'
 
 class Mcrypt < Formula
   homepage 'http://mcrypt.sourceforge.net'
-  url 'http://sourceforge.net/projects/mcrypt/files/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz'
+  url 'http://downloads.sourceforge.net/project/mcrypt/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz'
   sha1 '9a426532e9087dd7737aabccff8b91abf9151a7a'
 
   option :universal

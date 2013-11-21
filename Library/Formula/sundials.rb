@@ -7,7 +7,7 @@ class Sundials < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}", "--enable-shared"
     system "make install"
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Hive < Formula
   homepage 'http://hive.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hive/hive-0.9.0/hive-0.9.0-bin.tar.gz'
-  sha1 '8c8086ff9ec5de5c661d98d926bbedac62c28a61'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hive/hive-0.11.0/hive-0.11.0-bin.tar.gz'
+  sha1 'c584a74c2dcae66d8777347906aaedbeb7793bbf'
 
   depends_on 'hadoop'
   def install

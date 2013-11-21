@@ -1,13 +1,21 @@
 require 'formula'
 
+# Necessary until upstream resolves the incompatibility issue with texinfo 5.
+# When this is fixed upstream, replace with a normal texinfo dependency
+class Texinfo4 < Formula
+  homepage 'http://www.gnu.org/software/texinfo/'
+  url 'http://ftp.gnu.org/gnu/texinfo/texinfo-4.13a.tar.gz'
+  sha1 'a1533cf8e03ea4fa6c443b73f4c85e4da04dead0'
+end
+
 class Lilypond < Formula
   homepage 'http://lilypond.org/'
   url 'http://download.linuxaudio.org/lilypond/sources/v2.16/lilypond-2.16.2.tar.gz'
   sha1 '1eb3b0e5c117a8669dba19ab28f933351e51e39a'
 
   devel do
-    url  'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.13.tar.gz'
-    sha1 '7e82aa8388b754abb4c34aa2ae2b6fa4d32e6658'
+    url 'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.95.tar.gz'
+    sha1 'fb4dedb14a5616b2ac1f9031030c9a615f807548'
   end
 
   env :std
@@ -23,7 +31,6 @@ class Lilypond < Formula
   depends_on 'ghostscript'
   depends_on 'mftrace'
   depends_on 'fontforge' => ["with-x", "with-cairo"]
-  depends_on 'texinfo'
   depends_on 'fondu'
   # Add dependency on keg-only Homebrew 'flex' because Apple bundles an older and incompatible
   # version of the library with 10.7 at least, seems slow keeping up with updates,
@@ -35,7 +42,7 @@ class Lilypond < Formula
     depends_on 'netpbm'
     depends_on 'imagemagick'
     depends_on 'docbook'
-    depends_on LanguageModuleDependency.new(:python, 'dblatex', 'dbtexmf.dblatex')
+    depends_on :python => ['dbtexmf.dblatex' => 'dblatex']
     depends_on 'texi2html'
   end
 
@@ -44,6 +51,17 @@ class Lilypond < Formula
   end
 
   def install
+    # This texinfo4 business will be no longer needed, either,
+    # once the aforementioned issue is resolved.
+    texinfo4_prefix = libexec+'texinfo4'
+    Texinfo4.new.brew do
+      system "./configure", "--disable-dependency-tracking",
+                            "--disable-install-warnings",
+                            "--prefix=#{texinfo4_prefix}"
+      system "make CXX=#{ENV.cxx} install"
+    end
+    ENV.prepend_path 'PATH', "#{texinfo4_prefix}/bin"
+
     gs = Formula.factory('ghostscript')
 
     args = ["--prefix=#{prefix}",
@@ -69,7 +87,6 @@ class Lilypond < Formula
       \\header { title = "Do-Re-Mi" }
       { c' d' e' }
     EOS
-    lilykeg = Formula.factory('lilypond').linked_keg
-    system "#{lilykeg}/bin/lilypond test.ly"
+    system "#{bin}/lilypond", "test.ly"
   end
 end

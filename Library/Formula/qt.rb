@@ -2,75 +2,116 @@ require 'formula'
 
 class Qt < Formula
   homepage 'http://qt-project.org/'
-  url 'http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.4.tar.gz'
-  sha1 'f5880f11c139d7d8d01ecb8d874535f7d9553198'
+  url 'http://download.qt-project.org/official_releases/qt/4.8/4.8.5/qt-everywhere-opensource-src-4.8.5.tar.gz'
+  sha1 '745f9ebf091696c0d5403ce691dc28c039d77b9e'
 
   bottle do
-    revision 1
-    sha1 '7fb679119b8b463055849dea791cc7fca62c62d1' => :mountain_lion
-    sha1 'b456ff5f8d18fc53b4546119d00d8ff0dda92f90' => :lion
-    sha1 '920992e5059a5c816b4eb245597fc028ff6b09ae' => :snow_leopard
+    revision 2
+    sha1 'b361f521d413409c0e4397f2fc597c965ca44e56' => :mountain_lion
+    sha1 'dcf218f912680031de7ce6d7efa021e499caea78' => :lion
+    sha1 '401f2362ad9a22245a206729954dba731a1cdb52' => :snow_leopard
   end
 
-  head 'git://gitorious.org/qt/qt.git', :branch => 'master'
+  head do
+    url 'git://gitorious.org/qt/qt.git', :branch => '4.8'
+
+    resource 'libWebKitSystemInterfaceMavericks' do
+      url 'http://trac.webkit.org/export/157771/trunk/WebKitLibraries/libWebKitSystemInterfaceMavericks.a'
+      sha1 'fc5ebf85f637f9da9a68692df350e441c8ef5d7e'
+      version '157771'
+    end if MacOS.version >= :mavericks
+  end
 
   option :universal
-  option 'with-qtdbus', 'Enable QtDBus module'
-  option 'with-qt3support', 'Enable deprecated Qt3Support module'
-  option 'with-demos-examples', 'Enable Qt demos and examples'
-  option 'with-debug-and-release', 'Compile Qt in debug and release mode'
-  option 'developer', 'Compile and link Qt with developer options'
+  option 'with-qt3support', 'Build with deprecated Qt3Support module support'
+  option 'with-docs', 'Build documentation'
+  option 'developer', 'Build and link with developer options'
 
-  depends_on :libpng
-
-  depends_on "d-bus" if build.with? 'qtdbus'
+  depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
-  depends_on 'sqlite' if MacOS.version == :leopard
+
+  odie 'qt: --with-qtdbus has been renamed to --with-d-bus' if build.include? 'with-qtdbus'
+  odie 'qt: --with-demos-examples is no longer supported' if build.include? 'with-demos-examples'
+  odie 'qt: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
 
   def patches
-    # Fixes compilation failure on Leopard.
-    # https://bugreports.qt-project.org/browse/QTBUG-23258
-    if MacOS.version == :leopard
-      "http://bugreports.qt-project.org/secure/attachment/26712/Patch-Qt-4.8-for-10.5"
-    end
+    # Patches to fix compilation on Mavericks (http://github.com/mxcl/homebrew/pull/23793)
+    return unless MacOS.version >= :mavericks
+
+    [
+      # Change Change I8fd619af: Added a patch to let the CLucene's FieldCachImpl.cpp compile at Mac OS X 10.9 Mavericks
+      # (https://codereview.qt-project.org/#change,70437)
+      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/6d2597c4c61cca04ed56472fd1fd793798526ce6/Change_I8fd619af',
+      # Change Iff4d919d: Added a patch to let the WebKit's QNetworkReplyHandler.cpp compile at Mac OS X 10.9 Mavericks
+      # (https://codereview.qt-project.org/#change,70438)
+      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/ec13ef2a8b4adc7b9695e6d49876d826f89802ae/Change_Iff4d919d',
+      # Change Ied51c868: Added a patch to let the WebKit's qgraphicswebview.cpp compile at Mac OS X 10.9 Mavericks
+      # (https://codereview.qt-project.org/#change,70439)
+      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/8834e194a0f4e0c99ef64064f6a86ddcb617f444/Change_Ied51c868',
+      # Change Ic6330613: Added a patch to let the WebKit's NotificationPresenterClientQt.cpp compile at Mac OS X 10.9 Mavericks
+      # (https://codereview.qt-project.org/#change,70440)
+      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/9ee8460814204faa5cf5b1317fba5d1b14a563eb/Change_Ic6330613',
+      # Change I2ad84441: Added a patch to let the WebKit's .pro file find the lib for Mavericks. This is needed to compile at Mac OS X 10.9 Mavericks
+      # (https://codereview.qt-project.org/#change,70442)
+      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/f73ea1979f4595fc463b2deb77987b389748e289/Change_I2ad84441',
+      # Change I4c697a87: Added a patch to let the WebKit's platform/Timer.h compile at Mac OS X 10.9 Mavericks
+      # (https://codereview.qt-project.org/#change,70443)
+      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/9d5305f6bb01cf445893d09bf399097a53706d6a/Change+I4c697a87',
+      # Change I31ad9a7a: Added a patch to let the WebKit's platform/Timer.cpp compile at Mac OS X 10.9 Mavericks
+      # (https://codereview.qt-project.org/#change,70444)
+      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/2f9a348e575f63d435c3d32a9c70c4c2d687542c/Change_I31ad9a7a',
+      # Change Ieb30c115: Backported fix for WebKit libc++ support on OS X Mavricks
+      # (https://codereview.qt-project.org/#change,70929)
+      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/ebdc1fbf8d1b9a65e797124fb64b709a7d71107d/Change_Ieb30c115',
+      # Change Iaedaff7c: Enable building with clang / libc++ on OS X 10.9 Mavericks
+      # (https://codereview.qt-project.org/#change,70930)
+      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/cc0a38d67cb36b650a275af3825731ce1f2ba35c/Change_Iaedaff7c',
+      # Change I04e1471d: Return the correct system font on OS X Mavericks.
+      # (https://codereview.qt-project.org/#change,62261)
+      'https://gist.github.com/mhemeryck/7487365/raw/adc0ba7a9b33b113ab3d15f545082703a51d3ccd/Change_I04e1471d',
+    ]
   end
 
   def install
+    # Must be built with --HEAD on Mavericks at the moment
+    raise <<-EOS.undent if MacOS.version == :mavericks and not build.head?
+      On Mavericks, you must install Qt HEAD:
+        brew install qt --HEAD
+      EOS
+
+    ENV.universal_binary if build.universal?
     ENV.append "CXXFLAGS", "-fvisibility=hidden"
 
-    # clang complains about extra qualifier since Xcode 4.6 (clang build 425)
-    # https://bugreports.qt-project.org/browse/QTBUG-29373
-    if MacOS.clang_build_version >= 425
-      inreplace "src/gui/kernel/qt_cocoa_helpers_mac_p.h",
-                "::TabletProximityRec",
-                "TabletProximityRec"
-    end
-
     args = ["-prefix", prefix,
-            "-system-libpng", "-system-zlib",
+            "-system-zlib",
             "-confirm-license", "-opensource",
-            "-cocoa", "-fast" ]
+            "-nomake", "demos", "-nomake", "examples",
+            "-cocoa", "-fast", "-release"]
 
-    # we have to disable all tjos to avoid triggering optimization code
-    # that will fail with clang. Only seems to occur in superenv, perhaps
-    # because we rename clang to cc and Qt thinks it can build with special
-    # assembler commands. In --env=std, Qt seems aware of this.)
-    # But we want superenv, because it allows to build Qt in non-standard
-    # locations and with Xcode-only.
-    args << "-no-3dnow" if superenv?
+    # we have to disable these to avoid triggering optimization code
+    # that will fail in superenv (in --env=std, Qt seems aware of this)
+    args << '-no-3dnow' << '-no-ssse3' if superenv?
 
-    args << "-L#{MacOS::X11.prefix}/lib" << "-I#{MacOS::X11.prefix}/include" if MacOS::X11.installed?
+    args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
-    args << "-platform" << "unsupported/macx-clang" if ENV.compiler == :clang
+    if ENV.compiler == :clang
+        args << "-platform"
 
-    # See: https://github.com/mxcl/homebrew/issues/issue/744
-    args << "-system-sqlite" if MacOS.version == :leopard
+        if MacOS.version >= :mavericks
+          args << "unsupported/macx-clang-libc++"
+        else
+          args << "unsupported/macx-clang"
+        end
+    end
 
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 
-    if build.with? 'qtdbus'
-      args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
-      args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
+    if build.with? 'd-bus'
+      dbus_opt = Formula.factory('d-bus').opt_prefix
+      args << "-I#{dbus_opt}/lib/dbus-1.0/include"
+      args << "-I#{dbus_opt}/include/dbus-1.0"
+      args << "-L#{dbus_opt}/lib"
+      args << "-ldbus-1"
     end
 
     if build.with? 'qt3support'
@@ -79,8 +120,8 @@ class Qt < Formula
       args << "-no-qt3support"
     end
 
-    unless build.with? 'demos-examples'
-      args << "-nomake" << "demos" << "-nomake" << "examples"
+    unless build.with? 'docs'
+      args << "-nomake" << "docs"
     end
 
     if MacOS.prefer_64_bit? or build.universal?
@@ -91,37 +132,26 @@ class Qt < Formula
       args << '-arch' << 'x86'
     end
 
-    if build.with? 'debug-and-release'
-      args << "-debug-and-release"
-      # Debug symbols need to find the source so build in the prefix
-      mv "../qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
-      cd "#{prefix}/src"
-    else
-      args << "-release"
-    end
-
     args << '-developer-build' if build.include? 'developer'
+
+    if MacOS.version >= :mavericks
+      (buildpath/'src/3rdparty/webkit/WebKitLibraries').install resource('libWebKitSystemInterfaceMavericks')
+    end
 
     system "./configure", *args
     system "make"
     ENV.j1
     system "make install"
 
-    # stop crazy disk usage
-    (prefix+'doc/html').rmtree
-    (prefix+'doc/src').rmtree
     # what are these anyway?
     (bin+'pixeltool.app').rmtree
     (bin+'qhelpconverter.app').rmtree
     # remove porting file for non-humans
-    (prefix+'q3porting.xml').unlink
+    (prefix+'q3porting.xml').unlink if build.without? 'qt3support'
 
     # Some config scripts will only find Qt in a "Frameworks" folder
-    # VirtualBox is an example of where this is needed
-    # See: https://github.com/mxcl/homebrew/issues/issue/745
-    cd prefix do
-      ln_s lib, prefix + "Frameworks"
-    end
+    frameworks.mkpath
+    ln_s Dir["#{lib}/*.framework"], frameworks
 
     # The pkg-config files installed suggest that headers can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to

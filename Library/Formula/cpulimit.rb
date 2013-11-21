@@ -1,7 +1,7 @@
 require 'formula'
 
 class Cpulimit < Formula
-  homepage 'http://cpulimit.sourceforge.net/'
+  homepage 'https://github.com/opsengine/cpulimit'
   url 'https://github.com/opsengine/cpulimit/archive/v0.1.tar.gz'
   sha1 'b7c16821a3e04698b79b28905b68b8c518417466'
 

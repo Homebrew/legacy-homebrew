@@ -2,14 +2,15 @@ require 'formula'
 
 class Graphviz < Formula
   homepage 'http://graphviz.org/'
-  url 'http://www.graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.30.1.tar.gz'
-  sha1 '96739220c4bbcf1bd3bd52e7111f4e60497185c6'
+  url 'http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz'
+  sha1 '5a0c00bebe7f4c7a04523db21f40966dc9f0d441'
 
   devel do
-    url 'http://www.graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.31.20130217.0545.tar.gz'
-    sha1 '071e4fb02db53029615ec2023ca553fdcdd27a44'
+    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.35.20130914.0446.tar.gz'
+    sha1 '9512a01b31cc0d06fa7cc49068d3c1704f3108c2'
   end
 
+  # To find Ruby and Co.
   env :std
 
   option :universal
@@ -25,7 +26,8 @@ class Graphviz < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pango' if build.include? 'with-pangocairo'
   depends_on 'swig' if build.include? 'with-bindings'
-  depends_on 'gts' if build.include? 'with-gts'
+  depends_on :python if build.include? 'with-bindings'  # this will set up python
+  depends_on 'gts' => :optional
   depends_on :freetype if build.include? 'with-freetype' or MacOS::X11.installed?
   depends_on :x11 if build.include? 'with-x' or MacOS::X11.installed?
   depends_on :xcode if build.include? 'with-app'
@@ -47,7 +49,7 @@ class Graphviz < Formula
             "--prefix=#{prefix}",
             "--without-qt",
             "--with-quartz"]
-    args << "--with-gts" if build.include? 'with-gts'
+    args << "--with-gts" if build.with? 'gts'
     args << "--disable-swig" unless build.include? 'with-bindings'
     args << "--without-pangocairo" unless build.include? 'with-pangocairo'
     args << "--without-freetype2" unless build.include? 'with-freetype' or MacOS::X11.installed?

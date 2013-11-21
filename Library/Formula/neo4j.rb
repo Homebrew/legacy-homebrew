@@ -2,9 +2,15 @@ require 'formula'
 
 class Neo4j < Formula
   homepage 'http://neo4j.org'
-  url 'http://dist.neo4j.org/neo4j-community-1.8.2-unix.tar.gz'
-  version 'community-1.8.2-unix'
-  sha1 '5e0dcc4339e02fa7f5f2fabb578100bf2060cd16'
+  url 'http://dist.neo4j.org/neo4j-community-1.9.5-unix.tar.gz'
+  sha1 '8d3569fdd4f3b396fd8101a7f9f92087cef3ac7f'
+  version '1.9.5'
+
+  devel do
+    url 'http://dist.neo4j.org/neo4j-community-2.0.0-M06-unix.tar.gz'
+    sha1 'a39ebc5476ace229e4ad5c901238a2e24a6ef0d7'
+    version '2.0.0-M06'
+  end
 
   def install
     # Remove windows files
@@ -22,6 +28,9 @@ class Neo4j < Formula
     # Adjust UDC props
     open("#{libexec}/conf/neo4j-wrapper.conf", 'a') { |f|
       f.puts "wrapper.java.additional.4=-Dneo4j.ext.udc.source=homebrew"
+
+      # suppress the empty, focus-stealing java gui
+      f.puts "wrapper.java.additional=-Djava.awt.headless=true"
     }
   end
 
@@ -48,6 +57,9 @@ class Neo4j < Formula
 
     The manual can be found in:
         #{libexec}/doc/
+
+    You may need to add JAVA_HOME to your shell profile:
+        export JAVA_HOME="$(/usr/libexec/java_home)"
 
     EOS
   end

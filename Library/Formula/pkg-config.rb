@@ -7,9 +7,10 @@ class PkgConfig < Formula
   sha256 '6b6eb31c6ec4421174578652c7e141fdaae2dabad1021f420d8713206ac1f845'
 
   bottle do
-    sha1 'fe503c105b952d04863931da96f03b0339d7fbb0' => :mountain_lion
-    sha1 'd483a4ed0eca160fb5c69d3a0a4011c3393ee2a3' => :lion
-    sha1 'e5859bdb284d4810057fd8cace202c60af40885f' => :snow_leopard
+    revision 2
+    sha1 '809937fdb5faaa3170f0abfc810ff244207d8975' => :mavericks
+    sha1 'a0cbbdbe64aa3ffe665f674d68db8fb6fb84f7df' => :mountain_lion
+    sha1 '44ec3ac051189dcd1e782cb7175979812f018e97' => :lion
   end
 
   def install
@@ -18,6 +19,7 @@ class PkgConfig < Formula
         #{HOMEBREW_PREFIX}/share/pkgconfig
         /usr/local/lib/pkgconfig
         /usr/lib/pkgconfig
+        #{HOMEBREW_LIBRARY}/ENV/pkgconfig/#{MacOS.version}
       ].uniq
 
     args = %W[

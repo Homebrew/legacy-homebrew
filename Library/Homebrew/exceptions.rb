@@ -22,6 +22,19 @@ class NoSuchKegError < RuntimeError
   end
 end
 
+class FormulaValidationError < StandardError
+  attr_reader :attr
+
+  def initialize(attr, value)
+    @attr = attr
+    msg = "invalid attribute: #{attr}"
+    msg << " (#{value.inspect})" unless value.empty?
+    super msg
+  end
+end
+
+class FormulaSpecificationError < StandardError; end
+
 class FormulaUnavailableError < RuntimeError
   attr_reader :name
   attr_accessor :dependent
@@ -31,7 +44,7 @@ class FormulaUnavailableError < RuntimeError
   end
 
   def to_s
-    if name =~ %r{(\w+)/(\w+)/([^/]+)} then <<-EOS.undent
+    if name =~ HOMEBREW_TAP_FORMULA_REGEX then <<-EOS.undent
       No available formula for #$3 #{dependent_s}
       Please tap it and then try again: brew tap #$1/#$2
       EOS
@@ -68,8 +81,9 @@ module Homebrew
   end
 end
 
-class CannotInstallFormulaError < RuntimeError
-end
+class CannotInstallFormulaError < RuntimeError; end
+
+class FormulaAlreadyInstalledError < RuntimeError; end
 
 class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
   def message
@@ -98,6 +112,53 @@ class UnsatisfiedRequirements < Homebrew::InstallationError
   end
 end
 
+class IncompatibleCxxStdlibs < Homebrew::InstallationError
+  def initialize(f, dep, wrong, right)
+    super f, <<-EOS.undent
+    #{f} dependency #{dep} was built with the following
+    C++ standard library: #{wrong.type_string} (from #{wrong.compiler})
+
+    This is incompatible with the standard library being used
+    to build #{f}: #{right.type_string} (from #{right.compiler})
+
+    Please reinstall #{dep} using a compatible compiler.
+    hint: Check https://github.com/mxcl/homebrew/wiki/C++-Standard-Libraries
+    EOS
+  end
+end
+
+class FormulaConflictError < Homebrew::InstallationError
+  attr_reader :f, :conflicts
+
+  def initialize(f, conflicts)
+    @f = f
+    @conflicts = conflicts
+    super f, message
+  end
+
+  def conflict_message(conflict)
+    message = []
+    message << "  #{conflict.name}"
+    message << ": because #{conflict.reason}" if conflict.reason
+    message.join
+  end
+
+  def message
+    message = []
+    message << "Cannot install #{f.name} because conflicting formulae are installed.\n"
+    message.concat conflicts.map { |c| conflict_message(c) } << ""
+    message << <<-EOS.undent
+      Please `brew unlink #{conflicts.map(&:name)*' '}` before continuing.
+
+      Unlinking removes a formula's symlinks from #{HOMEBREW_PREFIX}. You can
+      link the formula again after the install finishes. You can --force this
+      install, but the build may fail or cause obscure side-effects in the
+      resulting software.
+      EOS
+    message.join("\n")
+  end
+end
+
 class BuildError < Homebrew::InstallationError
   attr_reader :exit_status, :command, :env
 
@@ -121,39 +182,64 @@ class BuildError < Homebrew::InstallationError
     if not ARGV.verbose?
       puts
       puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
+      if formula.tap?
+        user, repo = formula.tap.split '/'
+        tap_issues_url = "https://github.com/#{user}/homebrew-#{repo}/issues"
+        puts "If reporting this issue please do so at (not mxcl/homebrew):"
+        puts "  #{tap_issues_url}"
+      end
     else
       require 'cmd/--config'
       require 'cmd/--env'
+
+      unless formula.core_formula?
+        ohai "Formula"
+        puts "Tap: #{formula.tap}"
+        puts "Path: #{formula.path.realpath}"
+      end
       ohai "Configuration"
       Homebrew.dump_build_config
       ohai "ENV"
       Homebrew.dump_build_env(env)
       puts
       onoe "#{formula.name} did not build"
-      unless (logs = Dir["#{ENV['HOME']}/Library/Logs/Homebrew/#{formula}/*"]).empty?
-        print "Logs: "
-        puts logs.map{|fn| "      #{fn}"}.join("\n")
+      unless (logs = Dir["#{HOMEBREW_LOGS}/#{formula}/*"]).empty?
+        puts "Logs:"
+        puts logs.map{|fn| "     #{fn}"}.join("\n")
       end
     end
     puts
-    unless issues.empty?
+    unless RUBY_VERSION < "1.8.6" || issues.empty?
       puts "These open issues may also help:"
       puts issues.map{ |s| "    #{s}" }.join("\n")
     end
   end
 end
 
-# raised in CurlDownloadStrategy.fetch
-class CurlDownloadStrategyError < RuntimeError
+# raised by CompilerSelector if the formula fails with all of
+# the compilers available on the user's system
+class CompilerSelectionError < StandardError
+  def message; <<-EOS.undent
+    This formula cannot be built with any available compilers.
+    To install this formula, you may need to:
+      brew install apple-gcc42
+    EOS
+  end
 end
+
+# raised in install_tap
+class AlreadyTappedError < RuntimeError
+  def initialize; super "Already tapped!" end
+end
+
+# raised in CurlDownloadStrategy.fetch
+class CurlDownloadStrategyError < RuntimeError; end
 
 # raised by safe_system in utils.rb
-class ErrorDuringExecution < RuntimeError
-end
+class ErrorDuringExecution < RuntimeError; end
 
 # raised by Pathname#verify_checksum when "expected" is nil or empty
-class ChecksumMissingError < ArgumentError
-end
+class ChecksumMissingError < ArgumentError; end
 
 # raised by Pathname#verify_checksum when verification fails
 class ChecksumMismatchError < RuntimeError
@@ -177,10 +263,23 @@ class ChecksumMismatchError < RuntimeError
   end
 end
 
-module Homebrew extend self
-  SUDO_BAD_ERRMSG = <<-EOS.undent
-    You can use brew with sudo, but only if the brew executable is owned by root.
-    However, this is both not recommended and completely unsupported so do so at
-    your own risk.
-  EOS
+class ResourceMissingError < ArgumentError
+  def initialize formula, resource
+    @formula = formula
+    @resource = resource
+  end
+
+  def to_s
+    "Formula #{@formula} does not define resource \"#{@resource}\"."
+  end
+end
+
+class DuplicateResourceError < ArgumentError
+  def initialize resource
+    @resource = resource
+  end
+
+  def to_s
+    "Resource \"#{@resource}\" defined more than once."
+  end
 end

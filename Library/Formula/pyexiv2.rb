@@ -5,6 +5,7 @@ class Pyexiv2 < Formula
   url 'http://launchpad.net/pyexiv2/0.3.x/0.3.2/+download/pyexiv2-0.3.2.tar.bz2'
   sha1 'ad20ea6925571d58637830569076aba327ff56d9'
 
+  depends_on :python
   depends_on 'scons' => :build
   depends_on 'exiv2'
   depends_on 'boost'
@@ -13,23 +14,19 @@ class Pyexiv2 < Formula
   def patches; DATA; end
 
   def install
-    # this build script ignores CPPFLAGS, but it honors CXXFLAGS
-    ENV.append "CXXFLAGS", ENV.cppflags
-    system "scons BOOSTLIB=boost_python-mt"
+    python do
+      # this build script ignores CPPFLAGS, but it honors CXXFLAGS
+      ENV.append "CXXFLAGS", ENV.cppflags
+      system "scons BOOSTLIB=boost_python-mt"
 
-    # let's install manually
-    mv 'build/libexiv2python.dylib', 'build/libexiv2python.so'
-    (lib + which_python + 'site-packages').install 'build/libexiv2python.so', 'src/pyexiv2'
+      # let's install manually
+      mv 'build/libexiv2python.dylib', 'build/libexiv2python.so'
+      python.site_packages.install 'build/libexiv2python.so', 'src/pyexiv2'
+    end
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-  end
-
-  def caveats; <<-EOS.undent
-    For non-homebrew Python, you need to amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-    EOS
+  def caveats
+    python.standard_caveats if python
   end
 end
 

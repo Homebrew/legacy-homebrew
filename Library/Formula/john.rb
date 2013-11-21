@@ -26,9 +26,16 @@ class John < Formula
   def install
     ENV.deparallelize
     arch = Hardware.is_64_bit? ? '64' : 'sse2'
+    arch += '-opencl' if build.include? 'jumbo'
 
     cd 'src' do
-      system "make", "clean", "macosx-x86-#{arch}", "CC=#{ENV.cc}"
+      inreplace 'Makefile' do |s|
+        s.change_make_var! "CC", ENV.cc
+        if build.include?('jumbo') && MacOS.version != :leopard && ENV.compiler != :clang
+          s.change_make_var! "OMPFLAGS", "-fopenmp -msse2 -D_FORTIFY_SOURCE=0"
+        end
+      end
+      system "make", "clean", "macosx-x86-#{arch}"
     end
 
     # Remove the README symlink and install the real file

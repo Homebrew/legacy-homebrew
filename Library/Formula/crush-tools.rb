@@ -2,11 +2,13 @@ require 'formula'
 
 class CrushTools < Formula
   homepage 'http://crush-tools.googlecode.com/'
-  url 'http://crush-tools.googlecode.com/files/crush-tools-2012-02.tar.gz'
-  version '2012-02'
-  sha1 'c628e3f79fa78a1437cfbe41a7ef49ecaa4d7f53'
+  url 'https://crush-tools.googlecode.com/files/crush-tools-2013-04.tar.gz'
+  version '2013-04'
+  sha1 'a03a9d4719e8e049d836413598b636fd00f6a4cc'
 
   depends_on 'pcre'
+
+  conflicts_with 'aggregate', :because => 'both install an `aggregate` binary'
 
   def install
     # find Homebrew's libpcre

@@ -2,6 +2,8 @@ require 'formula'
 require 'tab'
 require 'keg'
 require 'caveats'
+require 'blacklist'
+require 'utils/json'
 
 module Homebrew extend self
   def info
@@ -23,25 +25,34 @@ module Homebrew extend self
           info_formula f
           puts '---'
         end
-      else
+      elsif HOMEBREW_CELLAR.exist?
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
       end
     elsif valid_url ARGV[0]
       info_formula Formula.factory(ARGV.shift)
     else
-      ARGV.formulae.each{ |f| info_formula f }
+      ARGV.named.each do |f|
+        begin
+          info_formula Formula.factory(f)
+        rescue FormulaUnavailableError
+          # No formula with this name, try a blacklist lookup
+          if (blacklist = blacklisted?(f))
+            puts blacklist
+          else
+            raise
+          end
+        end
+      end
     end
   end
 
   def print_json
-    require 'vendor/multi_json'
-
     formulae = ARGV.include?("--all") ? Formula : ARGV.formulae
     json = formulae.map {|f| f.to_hash}
     if json.size == 1
-      puts MultiJson.encode json.pop
+      puts Utils::JSON.dump(json.pop)
     else
-      puts MultiJson.encode json
+      puts Utils::JSON.dump(json)
     end
   end
 
@@ -56,7 +67,7 @@ module Homebrew extend self
   def github_info f
     path = f.path.realpath
 
-    if path.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)/(.*)}
+    if path.to_s =~ HOMEBREW_TAP_PATH_REGEX
       user = $1
       repo = "homebrew-#$2"
       path = $3
@@ -79,7 +90,7 @@ module Homebrew extend self
     specs << "devel #{f.devel.version}" if f.devel
     specs << "HEAD" if f.head
 
-    puts "#{f.name}: #{specs*', '}"
+    puts "#{f.name}: #{specs*', '}#{' (pinned)' if f.pinned?}"
 
     puts f.homepage
 
@@ -90,14 +101,11 @@ module Homebrew extend self
       puts
     end
 
-    puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
-    conflicts = f.conflicts.map { |c| c.formula }.sort
+    conflicts = f.conflicts.map(&:name).sort!
     puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
     if f.rack.directory?
-      kegs = f.rack.children
-      kegs.reject! {|keg| keg.basename.to_s == '.DS_Store' }
-      kegs = kegs.map {|keg| Keg.new(keg) }.sort_by {|keg| keg.version }
+      kegs = f.rack.subdirs.map { |keg| Keg.new(keg) }.sort_by(&:version)
       kegs.each do |keg|
         puts "#{keg} (#{keg.abv})#{' *' if keg.linked?}"
         tab = Tab.for_keg(keg).to_s
@@ -108,7 +116,15 @@ module Homebrew extend self
     end
 
     history = github_info(f)
-    puts history if history
+    puts "From: #{history}" if history
+
+    unless f.deps.empty?
+      ohai "Dependencies"
+      %w{build required recommended optional}.map do |type|
+        deps = f.deps.send(type)
+        puts "#{type.capitalize}: #{decorate_dependencies deps}" unless deps.empty?
+      end
+    end
 
     unless f.build.empty?
       require 'cmd/options'
@@ -118,16 +134,29 @@ module Homebrew extend self
 
     c = Caveats.new(f)
     ohai 'Caveats', c.caveats unless c.empty?
+  end
 
-  rescue FormulaUnavailableError
-    # check for DIY installation
-    d = HOMEBREW_PREFIX+name
-    if d.directory?
-      ohai "DIY Installation"
-      d.children.each{ |keg| puts "#{keg} (#{keg.abv})" }
-    else
-      raise "No such formula or keg"
+  def decorate_dependencies dependencies
+    # necessary for 1.8.7 unicode handling since many installs are on 1.8.7
+    tick = ["2714".hex].pack("U*")
+    cross = ["2718".hex].pack("U*")
+
+    deps_status = dependencies.collect do |dep|
+      if dep.installed?
+        color = Tty.green
+        symbol = tick
+      else
+        color = Tty.red
+        symbol = cross
+      end
+      if ENV['HOMEBREW_NO_EMOJI']
+        colored_dep = "#{color}#{dep}"
+      else
+        colored_dep = "#{dep} #{color}#{symbol}"
+      end
+      "#{colored_dep}#{Tty.reset}"
     end
+    deps_status * ", "
   end
 
   private

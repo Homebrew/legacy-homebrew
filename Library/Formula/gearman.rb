@@ -2,18 +2,31 @@ require 'formula'
 
 class Gearman < Formula
   homepage 'http://gearman.org/'
-  url 'https://launchpad.net/gearmand/1.2/1.1.5/+download/gearmand-1.1.5.tar.gz'
-  sha1 '516c7690551ea214198a7502a85e976c136b8d65'
+  url 'https://launchpad.net/gearmand/1.2/1.1.9/+download/gearmand-1.1.9.tar.gz'
+  sha1 '59ec305a4535451c3b51a21d2525e1c07770419d'
+
+  option 'with-mysql', 'Compile with MySQL persistent queue enabled'
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'
   depends_on 'libevent'
   depends_on 'ossp-uuid'
+  depends_on :mysql => :optional
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--without-mysql"
+    args = ["--prefix=#{prefix}"]
+    args << "--with-mysql" if build.with? 'mysql'
+
+    system "./configure", *args
     system "make install"
   end
+
+  def patches
+    # build fix for tr1 -> std
+    # Fixes have also been applied upstream
+    DATA if MacOS.version >= :mavericks
+  end
+
 
   plist_options :manual => "gearmand -d"
 
@@ -29,10 +42,26 @@ class Gearman < Formula
         <string>#{opt_prefix}/sbin/gearmand</string>
         <key>RunAtLoad</key>
         <true/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
       </dict>
     </plist>
     EOS
   end
 end
+
+__END__
+diff --git a/libgearman-1.0/gearman.h b/libgearman-1.0/gearman.h
+index 850a26d..8f7a8f0 100644
+--- a/libgearman-1.0/gearman.h
++++ b/libgearman-1.0/gearman.h
+@@ -50,7 +50,11 @@
+ #endif
+
+ #ifdef __cplusplus
++#ifdef _LIBCPP_VERSION
++#  include <cinttypes>
++#else
+ #  include <tr1/cinttypes>
++#endif
+ #  include <cstddef>
+ #  include <cstdlib>
+ #  include <ctime>

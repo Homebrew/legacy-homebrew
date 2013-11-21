@@ -60,13 +60,14 @@ __brewcomp ()
 __brew_complete_formulae ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
-    local ff=$(\ls $(brew --repository)/Library/Formula 2>/dev/null | sed 's/\.rb//g')
-    local af=$(\ls $(brew --repository)/Library/Aliases 2>/dev/null | sed 's/\.rb//g')
+    local lib=$(brew --repository)/Library
+    local ff=$(\ls ${lib}/Formula 2>/dev/null | sed 's/\.rb//g')
+    local af=$(\ls ${lib}/Aliases 2>/dev/null | sed 's/\.rb//g')
     local tf tap
 
-    for dir in $(\ls $(brew --repository)/Library/Taps 2>/dev/null); do
+    for dir in $(\ls ${lib}/Taps 2>/dev/null); do
         tap="$(echo "$dir" | sed 's|-|/|g')"
-        tf="$tf $(\ls -1R "$(brew --repository)/Library/Taps/$dir" 2>/dev/null |
+        tf="$tf $(\ls -1R "${lib}/Taps/${dir}" 2>/dev/null |
                   grep '.\+.rb' | sed -E 's|(.+)\.rb|'"${tap}"'/\1|g')"
     done
 
@@ -90,6 +91,18 @@ __brew_complete_outdated ()
 __brew_complete_tapped ()
 {
     __brewcomp "$(\ls $(brew --repository)/Library/Taps 2>/dev/null | sed 's/-/\//g')"
+}
+
+_brew_complete_tap ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--repair"
+        return
+        ;;
+    esac
+    __brew_complete_taps
 }
 
 __brew_complete_taps ()
@@ -155,9 +168,14 @@ _brew_diy ()
 _brew_fetch ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
+    local prv=$(__brewcomp_prev)
     case "$cur" in
     --*)
-        __brewcomp "--deps --force --HEAD"
+        __brewcomp "
+          --deps --force
+          --devel --HEAD
+          $(brew options --compact "$prv" 2>/dev/null)
+          "
         return
         ;;
     esac
@@ -189,9 +207,6 @@ _brew_install ()
                 --force
                 --git
                 --HEAD
-                --use-clang
-                --use-gcc
-                --use-llvm
                 "
         else
             __brewcomp "
@@ -203,11 +218,8 @@ _brew_install ()
                 --HEAD
                 --ignore-dependencies
                 --interactive
-                --use-clang
-                --use-gcc
-                --use-llvm
                 --verbose
-                $(brew options --compact "$prv")
+                $(brew options --compact "$prv" 2>/dev/null)
                 "
         fi
         return
@@ -221,7 +233,7 @@ _brew_link ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--dry-run --overwrite"
+        __brewcomp "--dry-run --overwrite --force"
         return
         ;;
     esac
@@ -300,7 +312,7 @@ _brew_search ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--fink --macports"
+        __brewcomp "--debian --fedora --fink --macports --opensuse --ubuntu"
         return
         ;;
     esac
@@ -385,6 +397,7 @@ _brew ()
             audit
             cat
             cleanup
+            commands
             create
             deps
             diy configure
@@ -395,6 +408,7 @@ _brew ()
             home
             info abv
             install
+            linkapps
             link ln
             list ls
             log
@@ -404,10 +418,12 @@ _brew ()
             prune
             pin
             search
+            reinstall
             tap
             test
             uninstall remove rm
             unlink
+            unlinkapps
             unpin
             untap
             update
@@ -433,6 +449,7 @@ _brew ()
     fetch)                      _brew_fetch ;;
     info|abv)                   _brew_info ;;
     install|instal)             _brew_install ;;
+    reinstall|reinstal)         _brew_install ;;
     link|ln)                    _brew_link ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
@@ -441,7 +458,7 @@ _brew ()
     outdated)                   _brew_outdated ;;
     pin)                        __brew_complete_formulae ;;
     search|-S)                  _brew_search ;;
-    tap)                        __brew_complete_taps ;;
+    tap)                        _brew_complete_tap ;;
     uninstall|remove|rm)        _brew_uninstall ;;
     unpin)                      __brew_complete_formulae ;;
     untap)                      __brew_complete_tapped ;;

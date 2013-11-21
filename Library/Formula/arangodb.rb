@@ -2,30 +2,41 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://github.com/triAGENS/ArangoDB/archive/v1.2.2.tar.gz'
-  sha1 '1b4390e4ad100c93900651a522a21395d077b0e6'
+  url 'https://www.arangodb.org/repositories/Source/ArangoDB-1.4.2.tar.gz'
+  sha1 'cd5ce9e4188da2233ee939bfdc85dde70138f78c'
 
-  head "https://github.com/triAGENS/ArangoDB.git"
+  head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
   depends_on 'icu4c'
   depends_on 'libev'
-  depends_on 'v8'
+
+  def suffix
+    if build.stable?
+      return ""
+    else
+      return "-" + (build.devel? ? version : "unstable")
+    end
+  end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-relative",
-                          "--disable-all-in-one-icu",
-                          "--disable-all-in-one-libev",
-                          "--disable-all-in-one-v8",
-                          "--enable-mruby",
-                          "--datadir=#{share}",
-                          "--localstatedir=#{var}"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-relative
+      --disable-all-in-one-icu
+      --disable-all-in-one-libev
+      --enable-all-in-one-v8
+      --enable-mruby
+      --datadir=#{share}
+      --localstatedir=#{var}
+      --program-suffix=#{suffix}
+    ]
 
+    system "./configure", *args
     system "make install"
 
-    (var+'arangodb').mkpath
-    (var+'log/arangodb').mkpath
+    (var/'arangodb').mkpath
+    (var/'log/arangodb').mkpath
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod"
@@ -39,16 +50,16 @@ class Arangodb < Formula
       http:/www.arangodb.org/quickstart
 
     Upgrading ArangoDB:
-      http://www.arangodb.org/manuals/1.1/Upgrading.html
+      http://www.arangodb.org/manuals/current/Upgrading.html
 
     Configuration file:
       /usr/local/etc/arangodb/arangod.conf
 
     Start ArangoDB server:
-      unix> /usr/local/sbin/arangod
+      unix> /usr/local/sbin/arangod#{suffix}
 
     Start ArangoDB shell client (use empty password):
-      unix> /usr/local/bin/arangosh
+      unix> /usr/local/bin/arangosh#{suffix}
 
     EOS
   end
@@ -70,8 +81,6 @@ class Arangodb < Formula
         </array>
         <key>RunAtLoad</key>
         <true/>
-        <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
       </dict>
     </plist>
     EOS

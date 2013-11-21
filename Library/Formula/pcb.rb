@@ -8,6 +8,7 @@ class Pcb < Formula
 
   head 'git://git.geda-project.org/pcb.git'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
@@ -21,6 +22,8 @@ class Pcb < Formula
 
   # See comments in intltool formula
   depends_on 'XML::Parser' => :perl
+
+  conflicts_with 'gts', :because => 'both install `include/gts.h`'
 
   def patches
     DATA

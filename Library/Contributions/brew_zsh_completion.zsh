@@ -14,14 +14,20 @@ _brew_installed_formulae() {
   installed_formulae=(`brew list`)
 }
 
+_brew_installed_taps() {
+  installed_taps=(`brew tap`)
+}
+
 _brew_outdated_formulae() {
   outdated_formulae=(`brew outdated`)
 }
 
 local -a _1st_arguments
 _1st_arguments=(
+  'audit:check formulae for Homebrew coding style'
   'cat:display formula file for a formula'
   'cleanup:uninstall unused and old versions of packages'
+  'commands:show a list of commands'
   'create:create a new formula'
   'deps:list dependencies and dependants of a formula'
   'doctor:audits your installation for common issues'
@@ -29,6 +35,7 @@ _1st_arguments=(
   'home:visit the homepage of a formula or the brew project'
   'info:information about a formula'
   'install:install a formula'
+  'reinstall:install a formula anew; re-using its current options'
   'link:link a formula'
   'list:list files in a formula or not-installed formulae'
   'log:git commit log for a formula'
@@ -39,15 +46,17 @@ _1st_arguments=(
   'remove:remove a formula'
   'search:search for a formula (/regex/ or string)'
   'server:start a local web app that lets you browse formulae (requires Sinatra)'
+  'tap:tap a new formula repository from GitHub, or list existing taps'
   'unlink:unlink a formula'
   'unpin:unpin specified formulae'
+  'untap:remove a tapped repository'
   'update:freshen up links'
   'upgrade:upgrade outdated formulae'
   'uses:show formulae which depend on a formula'
 )
 
 local expl
-local -a formulae installed_formulae outdated_formulae
+local -a formulae installed_formulae installed_taps outdated_formulae
 
 _arguments \
   '(-v)-v[verbose]' \
@@ -81,7 +90,7 @@ case "$words[1]" in
         _brew_installed_formulae
         _wanted installed_formulae expl 'installed formulae' compadd -a installed_formulae
       fi ;;
-  install|home|homepage|log|info|abv|uses|cat|deps|edit|options)
+  install|reinstall|audit|home|homepage|log|info|abv|uses|cat|deps|edit|options)
     _brew_all_formulae
     _wanted formulae expl 'all formulae' compadd -a formulae ;;
   remove|rm|uninstall|unlink|cleanup|link|ln|pin|unpin)
@@ -90,4 +99,7 @@ case "$words[1]" in
   upgrade)
     _brew_outdated_formulae
     _wanted outdated_formulae expl 'outdated formulae' compadd -a outdated_formulae ;;
+  untap)
+    _brew_installed_taps
+    _wanted installed_taps expl 'installed taps' compadd -a installed_taps ;;
 esac

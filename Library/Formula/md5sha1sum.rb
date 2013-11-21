@@ -5,6 +5,8 @@ class Md5sha1sum < Formula
   url 'http://www.microbrew.org/tools/md5sha1sum/md5sha1sum-0.9.5.tar.gz'
   sha1 '84a46bfd2b49daa0a601a9c55b7d87c27e19ef87'
 
+  conflicts_with 'polarssl', :because => 'both install conflicting binaries'
+
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make"

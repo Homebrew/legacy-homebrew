@@ -2,8 +2,8 @@ require 'formula'
 
 class Mplayer < Formula
   homepage 'http://www.mplayerhq.hu/'
-  url 'http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.1.tar.xz'
-  sha1 '913a4bbeab7cbb515c2f43ad39bc83071b2efd75'
+  url 'http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.1.1.tar.xz'
+  sha1 'ba2f3bd1442d04b17b0143680850273d928689c1'
 
   head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
 
@@ -12,6 +12,7 @@ class Mplayer < Formula
 
   depends_on 'yasm' => :build
   depends_on 'xz' => :build
+  depends_on 'libcaca' => :optional
   depends_on :x11 if build.include? 'with-x'
 
   unless build.include? 'without-osd' or build.include? 'with-x'
@@ -27,19 +28,20 @@ class Mplayer < Formula
   end unless MacOS.prefer_64_bit?
 
   def patches
-    # When building SVN, configure prompts the user to pull FFmpeg from git.
-    # Don't do that.
-    DATA if build.head?
+    p = []
+    if build.head?
+      # When building SVN, configure prompts the user to pull FFmpeg from git.
+      # Don't do that.
+      p << DATA
+    else
+      # Fix compilation on 10.9, adapted from upstream revision r36500
+      p << "https://gist.github.com/jacknagel/7441175/raw/37657c264a6a3bb4d30dee14538c367f7ffccba9/vo_corevideo.h.patch"
+    end
+    p
   end
 
   def install
-    # (A) Do not use pipes, per bug report and MacPorts
-    # * https://github.com/mxcl/homebrew/issues/622
-    # * http://trac.macports.org/browser/trunk/dports/multimedia/mplayer-devel/Portfile
-    # (B) Any kind of optimisation breaks the build
-    # (C) It turns out that ENV.O1 fixes link errors with llvm.
-    ENV['CFLAGS'] = ''
-    ENV['CXXFLAGS'] = ''
+    # It turns out that ENV.O1 fixes link errors with llvm.
     ENV.O1 if ENV.compiler == :llvm
 
     # we disable cdparanoia because homebrew's version is hacked to work on OS X
@@ -58,6 +60,7 @@ class Mplayer < Formula
 
     args << "--enable-menu" unless build.include? 'without-osd'
     args << "--disable-x11" unless build.include? 'with-x'
+    args << "--enable-caca" if build.with? 'libcaca'
 
     system "./configure", *args
     system "make"

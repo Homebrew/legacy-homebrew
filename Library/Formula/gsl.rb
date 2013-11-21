@@ -2,9 +2,9 @@ require 'formula'
 
 class Gsl < Formula
   homepage 'http://www.gnu.org/software/gsl/'
-  url 'http://ftpmirror.gnu.org/gsl/gsl-1.15.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/gsl/gsl-1.15.tar.gz'
-  sha1 'd914f84b39a5274b0a589d9b83a66f44cd17ca8e'
+  url 'http://ftpmirror.gnu.org/gsl/gsl-1.16.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/gsl/gsl-1.16.tar.gz'
+  sha1 '210af9366485f149140973700d90dc93a4b6213e'
 
   option :universal
 

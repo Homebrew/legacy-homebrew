@@ -2,8 +2,14 @@ require 'formula'
 
 class Casperjs < Formula
   homepage 'http://www.casperjs.org/'
-  url 'https://github.com/n1k0/casperjs/archive/1.0.2.tar.gz'
-  sha1 '977d68d96ca05a656f31e2f2c15f02b11e6aa724'
+  url 'https://github.com/n1k0/casperjs/archive/1.0.4.tar.gz'
+  sha1 '4e1bdbf2ce93506b6c0d193c90a6f9bcd58c6254'
+
+  devel do
+    url 'https://github.com/n1k0/casperjs/archive/1.1-beta2.tar.gz'
+    sha1 'bb45f98c0196b1e6d47bd9969436abd2e888cd96'
+    version '1.1-beta2'
+  end
 
   head 'https://github.com/n1k0/casperjs.git'
 

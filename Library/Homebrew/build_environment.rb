@@ -22,8 +22,8 @@ class BuildEnvironment
     @settings.include? :userpaths
   end
 
-  def modify_build_environment(context=nil)
-    @procs.each { |p| ENV.instance_exec(context, &p) }
+  def modify_build_environment(receiver)
+    @procs.each { |p| receiver.instance_eval(&p) }
   end
 
   def _dump(*)

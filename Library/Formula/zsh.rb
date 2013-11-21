@@ -3,7 +3,7 @@ require 'formula'
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
   url 'http://www.zsh.org/pub/zsh-5.0.2.tar.bz2'
-  mirror 'http://sourceforge.net/projects/zsh/files/zsh/5.0.2/zsh-5.0.2.tar.bz2'
+  mirror 'http://downloads.sourceforge.net/project/zsh/zsh/5.0.2/zsh-5.0.2.tar.bz2'
   sha1 '9f55ecaaae7cdc1495f91237ba2ec087777a4ad9'
 
   depends_on 'gdbm'
@@ -35,6 +35,12 @@ class Zsh < Formula
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
+
+    # See http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Accessing-On_002dLine-Help
+    mkdir "helpfiles" do
+      system "man zshall | colcrt - | perl ../Util/helpfiles"
+      (share+"zsh/helpfiles").install Dir["*"]
+    end
   end
 
   def test
@@ -50,8 +56,12 @@ class Zsh < Formula
     non-interactively by scripts.
 
     Alternatively, install Zsh with /etc disabled:
-
       brew install --disable-etcdir zsh
+
+    Add the following to your zshrc to access the online help:
+      unalias run-help
+      autoload run-help
+      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/helpfiles
     EOS
   end
 end

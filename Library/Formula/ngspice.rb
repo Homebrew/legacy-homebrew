@@ -2,7 +2,7 @@ require 'formula'
 
 class Ngspice < Formula
   homepage 'http://ngspice.sourceforge.net/'
-  url 'http://sourceforge.net/projects/ngspice/files/ng-spice-rework/25/ngspice-25.tar.gz'
+  url 'http://downloads.sourceforge.net/project/ngspice/ng-spice-rework/25/ngspice-25.tar.gz'
   sha1 '745c3c32385b7d5c808836e393fe7699f8568860'
 
   option "with-x", "Build with X support"

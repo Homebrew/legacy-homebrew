@@ -7,7 +7,6 @@ class GitGerrit < Formula
 
   def install
     prefix.install 'bin'
-
-    (prefix+'etc/bash_completion.d').install 'completion/git-gerrit-completion.bash'
+    bash_completion.install 'completion/git-gerrit-completion.bash'
   end
 end

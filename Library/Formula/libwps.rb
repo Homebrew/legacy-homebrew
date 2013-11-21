@@ -2,8 +2,8 @@ require 'formula'
 
 class Libwps < Formula
   homepage 'http://libwps.sourceforge.net'
-  url 'http://sourceforge.net/projects/libwps/files/libwps/libwps-0.2.7/libwps-0.2.7.tar.bz2'
-  sha1 'ccd0b0083a367f293be85f7cea5ba9a8a4355d5c'
+  url 'http://downloads.sourceforge.net/project/libwps/libwps/libwps-0.2.9/libwps-0.2.9.tar.bz2'
+  sha1 '04acc2c13485f8b9e714a5d2b4eb3e77f643d23e'
 
   depends_on 'pkg-config' => :build
   depends_on 'libwpd'

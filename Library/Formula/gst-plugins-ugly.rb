@@ -2,11 +2,19 @@ require 'formula'
 
 class GstPluginsUgly < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.0.6.tar.xz'
-  sha256 '8655ceec7533b5d30080a5051025e26ff8d06bea8d03a6b2af56c2f839d60586'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.2.1.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.2.1.tar.xz'
+  sha256 '35ae5d45de54827604e24f57f54ab30a5ab2245b4c4120977273eb11d19c2395'
+
+  head do
+    url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
+
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
 
@@ -36,14 +44,19 @@ class GstPluginsUgly < Formula
   # Does not work with libcdio 0.9
 
   def install
-    ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"
+    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing"
 
     args = %W[
-      --disable-debug
-      --disable-dependency-tracking
       --prefix=#{prefix}
       --mandir=#{man}
+      --disable-debug
+      --disable-dependency-tracking
     ]
+
+    if build.head?
+      ENV.append "NOCONFIGURE", "yes"
+      system "./autogen.sh"
+    end
 
     if build.with? "opencore-amr"
       # Fixes build error, missing includes.
@@ -58,6 +71,6 @@ class GstPluginsUgly < Formula
 
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -3,26 +3,22 @@ require 'requirement'
 
 class RequirementTests < Test::Unit::TestCase
   def test_accepts_single_tag
-    dep = Requirement.new("bar")
+    dep = Requirement.new(%w{bar})
     assert_equal %w{bar}, dep.tags
   end
 
   def test_accepts_multiple_tags
     dep = Requirement.new(%w{bar baz})
     assert_equal %w{bar baz}.sort, dep.tags.sort
-    dep = Requirement.new(*%w{bar baz})
-    assert_equal %w{bar baz}.sort, dep.tags.sort
   end
 
   def test_preserves_symbol_tags
-    dep = Requirement.new(:build)
+    dep = Requirement.new([:build])
     assert_equal [:build], dep.tags
   end
 
   def test_accepts_symbol_and_string_tags
     dep = Requirement.new([:build, "bar"])
-    assert_equal [:build, "bar"], dep.tags
-    dep = Requirement.new(:build, "bar")
     assert_equal [:build, "bar"], dep.tags
   end
 
@@ -54,12 +50,10 @@ class RequirementTests < Test::Unit::TestCase
 
   def test_satisfy_sets_up_build_env_by_default
     req = Class.new(Requirement) do
-      env :userpaths
       satisfy { true }
     end.new
 
     ENV.expects(:with_build_environment).yields.returns(true)
-    ENV.expects(:userpaths!)
 
     assert req.satisfied?
   end
@@ -70,7 +64,6 @@ class RequirementTests < Test::Unit::TestCase
     end.new
 
     ENV.expects(:with_build_environment).never
-    ENV.expects(:userpaths!).never
 
     assert req.satisfied?
   end
@@ -82,9 +75,9 @@ class RequirementTests < Test::Unit::TestCase
     end.new
 
     ENV.expects(:with_build_environment).yields.returns(which_path)
-    ENV.expects(:userpaths!)
-    ENV.expects(:append).with("PATH", which_path.parent, ":")
+    ENV.expects(:append_path).with("PATH", which_path.parent)
 
+    req.satisfied?
     req.modify_build_environment
   end
 
@@ -99,5 +92,43 @@ class RequirementTests < Test::Unit::TestCase
     assert_equal "foo", klass.const_get(const).new.name
   ensure
     klass.send(:remove_const, const) if klass.const_defined?(const)
+  end
+
+  def test_dsl_default_formula
+    req = Class.new(Requirement) { default_formula 'foo' }.new
+    assert req.default_formula?
+  end
+
+  def test_to_dependency
+    req = Class.new(Requirement) { default_formula 'foo' }.new
+    assert_equal Dependency.new('foo'), req.to_dependency
+  end
+
+  def test_to_dependency_calls_requirement_modify_build_environment
+    error = Class.new(StandardError)
+
+    req = Class.new(Requirement) do
+      default_formula 'foo'
+      satisfy { true }
+      env { raise error }
+    end.new
+
+    assert_raises(error) do
+      req.to_dependency.modify_build_environment
+    end
+  end
+
+  def test_eql
+    a, b = Requirement.new, Requirement.new
+    assert a.eql?(b)
+    assert b.eql?(a)
+    assert_equal a.hash, b.hash
+  end
+
+  def test_not_eql
+    a, b = Requirement.new([:optional]), Requirement.new
+    assert_not_equal a.hash, b.hash
+    assert !a.eql?(b)
+    assert !b.eql?(a)
   end
 end

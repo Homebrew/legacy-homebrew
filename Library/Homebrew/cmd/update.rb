@@ -1,10 +1,8 @@
 require 'cmd/tap'
 require 'cmd/untap'
+require 'tap_migrations'
 
 module Homebrew extend self
-
-  DEPRECATED_TAPS = ['adamv-alt']
-
   def update
     unless ARGV.named.empty?
       abort <<-EOS.undent
@@ -20,19 +18,25 @@ module Homebrew extend self
     cd HOMEBREW_REPOSITORY
     git_init_if_necessary
 
+    tapped_formulae = Dir['Library/Formula/*'].map do |formula|
+      path = Pathname.new formula
+      next unless path.symlink?
+      Pathname.new(path.realpath.to_s.gsub(/.*Taps\//, '')) rescue nil
+    end
+    tapped_formulae.compact!
+    unlink_tap_formula(tapped_formulae)
+
     report = Report.new
     master_updater = Updater.new
-    master_updater.pull!
+    begin
+      master_updater.pull!
+    ensure
+      link_tap_formula(tapped_formulae)
+    end
     report.merge!(master_updater.report)
 
     Dir["Library/Taps/*"].each do |tapd|
       next unless File.directory?(tapd)
-
-      basename = Pathname.new(tapd).basename.to_s
-      if DEPRECATED_TAPS.include?(basename)
-        opoo "#{basename} is deprecated; please untap it"
-        next
-      end
 
       cd tapd do
         begin
@@ -51,6 +55,18 @@ module Homebrew extend self
     # we unlink first in case the formula has moved to another tap
     Homebrew.unlink_tap_formula(report.removed_tapped_formula)
     Homebrew.link_tap_formula(report.new_tapped_formula)
+
+    # automatically tap any migrated formulae's new tap
+    report.select_formula(:D).each do |f|
+      next unless (HOMEBREW_CELLAR/f).exist?
+      migration = TAP_MIGRATIONS[f]
+      next unless migration
+      tap_user, tap_repo = migration.split '/'
+      begin
+        install_tap tap_user, tap_repo
+      rescue AlreadyTappedError => e
+      end
+    end
 
     if report.empty?
       puts "Already up-to-date."
@@ -95,13 +111,21 @@ class Updater
     # the refspec ensures that 'origin/master' gets updated
     args << "refs/heads/master:refs/remotes/origin/master"
 
-    safe_system "git", *args
+    reset_on_interrupt { safe_system "git", *args }
 
     @current_revision = read_current_revision
   end
 
+  def reset_on_interrupt
+    ignore_interrupts { yield }
+  ensure
+    if $?.signaled? && $?.termsig == 2 # SIGINT
+      safe_system "git", "reset", "--hard", @initial_revision
+    end
+  end
+
   # Matches raw git diff format (see `man git-diff-tree`)
-  DIFFTREE_RX = /^:[0-7]{6} [0-7]{6} [0-9a-fA-F]{40} [0-9a-fA-F]{40} ([ACDMR])\d{0,3}\t(.+?)(?:\t(.+))?$/
+  DIFFTREE_RX = /^:[0-7]{6} [0-7]{6} [0-9a-fA-F]{40} [0-9a-fA-F]{40} ([ACDMRTUX])\d{0,3}\t(.+?)(?:\t(.+))?$/
 
   def report
     map = Hash.new{ |h,k| h[k] = [] }
@@ -155,9 +179,22 @@ class Report < Hash
   def tapped_formula_for key
     fetch(key, []).map do |path|
       case path when %r{^Library/Taps/(\w+-\w+/.*)}
-        Pathname.new($1)
+        relative_path = $1
+        if valid_formula_location?(relative_path)
+          Pathname.new(relative_path)
+        end
       end
     end.compact
+  end
+
+  def valid_formula_location?(relative_path)
+    ruby_file = /\A.*\.rb\Z/
+    parts = relative_path.split('/')[1..-1]
+    [
+      parts.length == 1 && parts.first =~ ruby_file,
+      parts.length == 2 && parts.first == 'Formula' && parts.last =~ ruby_file,
+      parts.length == 2 && parts.first == 'HomebrewFormula' && parts.last =~ ruby_file,
+    ].any?
   end
 
   def new_tapped_formula

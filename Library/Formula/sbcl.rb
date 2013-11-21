@@ -1,22 +1,16 @@
 require 'formula'
 
-class SbclBootstrapBinaries < Formula
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.0/sbcl-1.1.0-x86-64-darwin-binary.tar.bz2'
-  sha1 'ed2069e124027c43926728c48d604efbb4e33950'
-  version "1.1.0"
-end
-
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.4/sbcl-1.1.4-source.tar.bz2'
-  sha1 '57c1055821e4ad1c9c1b2b75fa972c5ae7ca86d0'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.13/sbcl-1.1.13-source.tar.bz2'
+  sha1 '4aeedf092afd15e3db042e09223f5cf3d613d138'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
-    sha1 'f3a56af6651fad229616ce0ad182fa4829b1c0f2' => :mountain_lion
-    sha1 'cec671e27e8a23ff8b9c6f8d15549a7cfc688bcb' => :lion
-    sha1 'f148420a1d44f0a8e5fe56ac57639fe6421a22c3' => :snow_leopard
+    sha1 'd6364b5a6632b2a63fc669132079770377852050' => :mavericks
+    sha1 '2b148110002167034d7bbe876f05d11c4d148b67' => :mountain_lion
+    sha1 '7a73be0f6a50077887ffbb5be9145334e16290c3' => :lion
   end
 
   fails_with :llvm do
@@ -28,6 +22,11 @@ class Sbcl < Formula
   option "without-threads", "Build SBCL without support for native threads"
   option "with-ldb", "Include low-level debugger in the build"
   option "with-internal-xref", "Include XREF information for SBCL internals (increases core size by 5-6MB)"
+
+  resource 'bootstrap' do
+    url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.0/sbcl-1.1.0-x86-64-darwin-binary.tar.bz2'
+    sha1 'ed2069e124027c43926728c48d604efbb4e33950'
+  end
 
   def patches
     { :p0 => [
@@ -62,7 +61,7 @@ class Sbcl < Formula
       value =~ /[\x80-\xff]/n
     end
 
-    SbclBootstrapBinaries.new.brew do
+    resource('bootstrap').stage do
       # We only need the binaries for bootstrapping, so don't install anything:
       command = Dir.pwd + "/src/runtime/sbcl"
       core = Dir.pwd + "/output/sbcl.core"
@@ -78,11 +77,7 @@ class Sbcl < Formula
     system "sh install.sh"
   end
 
-  def caveats; <<-EOS.undent
-    If you are upgrading sbcl and you have installed maxima,
-    you have to reinstall maxima:
-
-      brew rm maxima && brew install maxima
-    EOS
+  test do
+    system "#{bin}/sbcl", "--version"
   end
 end

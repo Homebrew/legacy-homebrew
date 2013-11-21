@@ -23,13 +23,13 @@ module Homebrew extend self
 
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
-    raise "Already tapped!" if tapd.directory?
+    raise AlreadyTappedError if tapd.directory?
     abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
 
     files = []
     tapd.find_formula{ |file| files << tapd.basename.join(file) }
     link_tap_formula(files)
-    puts "Tapped #{files.count} formula"
+    puts "Tapped #{files.length} formula"
 
     # Figure out if this repo is private
     # curl will throw an exception if the repo is private (Github returns a 404)
@@ -67,7 +67,10 @@ module Homebrew extend self
           tapped += 1
         else
           to = to.realpath if to.exist?
-          opoo "Could not tap #{Tty.white}#{from.tap_ref}#{Tty.reset} over #{Tty.white}#{to.tap_ref}#{Tty.reset}"
+          # Whitelist gcc42 temporarily until Mavericks/Xcode 5.0 issues are resolved.
+          unless to.tap_ref == 'mxcl/master/apple-gcc42'
+            opoo "Could not tap #{Tty.white}#{from.tap_ref}#{Tty.reset} over #{Tty.white}#{to.tap_ref}#{Tty.reset}"
+          end
         end
       end
     end
@@ -80,13 +83,15 @@ module Homebrew extend self
   def repair_taps
     count = 0
     # prune dead symlinks in Formula
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].each do |fn|
+    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].each do |fn|
       if not File.exist? fn
         File.delete fn
         count += 1
       end
     end
     puts "Pruned #{count} dead formula"
+
+    return unless HOMEBREW_REPOSITORY.join("Library/Taps").exist?
 
     count = 0
     # check symlinks are all set in each tap

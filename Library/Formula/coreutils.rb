@@ -6,10 +6,15 @@ class Coreutils < Formula
   mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.21.tar.xz'
   sha256 'adaa44bdab3fa5eb352e80d8a31fdbf957b78653d0c2cd30d63e161444288e18'
 
+  conflicts_with 'ganglia', :because => 'both install `gstat` binaries'
+  conflicts_with 'idutils', :because => 'both install `gid` and `gid.1`'
+
   depends_on 'xz' => :build
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--program-prefix=g"
+    system "./configure", "--prefix=#{prefix}",
+                          "--program-prefix=g",
+                          "--without-gmp"
     system "make install"
 
     # Symlink all commands into libexec/gnubin without the 'g' prefix

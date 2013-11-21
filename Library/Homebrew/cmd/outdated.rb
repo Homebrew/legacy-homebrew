@@ -3,9 +3,8 @@ require 'keg'
 
 module Homebrew extend self
   def outdated
-    outdated_brews do |f|
+    outdated_brews do |f, versions|
       if $stdout.tty? and not ARGV.flag? '--quiet'
-        versions = f.rack.subdirs.map { |d| Keg.new(d).version }.sort
         puts "#{f.name} (#{versions*', '} < #{f.version})"
       else
         puts f.name
@@ -15,9 +14,9 @@ module Homebrew extend self
 
   def outdated_brews
     Formula.installed.map do |f|
-      kegs = f.rack.subdirs.map { |d| Keg.new(d) }
-      unless kegs.any? { |keg| keg.version >= f.version }
-        yield f if block_given?
+      versions = f.rack.subdirs.map { |d| Keg.new(d).version }.sort!
+      if versions.all? { |version| f.version > version }
+        yield f, versions if block_given?
         f
       end
     end.compact

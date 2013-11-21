@@ -20,11 +20,17 @@ class Wkhtmltopdf < Formula
     # issue with our Qt4, not upstream, because wkhtmltopdf bundles a patched
     # Qt4 that Homebrew doesn't use.
     if MacOS.prefer_64_bit?
-      inreplace 'src/pdf/pdf.pro', 'x86', 'x86_64'
-      inreplace 'src/image/image.pro', 'x86', 'x86_64'
+      inreplace 'src/pdf/pdf.pro', 'x86', Hardware::CPU.arch_64_bit
+      inreplace 'src/image/image.pro', 'x86', Hardware::CPU.arch_64_bit
     end
 
-    system 'qmake', '-spec', 'macx-g++'
+    if MacOS.version >= :mavericks && ENV.compiler == :clang
+      spec = 'unsupported/macx-clang-libc++'
+    else
+      spec = 'macx-g++'
+    end
+
+    system 'qmake', '-spec', spec
     system 'make'
     ENV['DYLD_LIBRARY_PATH'] = './bin'
     `bin/wkhtmltopdf --manpage > wkhtmltopdf.1`

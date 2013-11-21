@@ -2,8 +2,9 @@ require 'formula'
 
 class Luarocks < Formula
   homepage 'http://luarocks.org'
-  url 'http://luarocks.org/releases/luarocks-2.0.12.tar.gz'
-  sha1 'bfa36d5a9931c240c0253dee09c0cfb69372d276'
+  head 'https://github.com/keplerproject/luarocks.git'
+  url 'http://luarocks.org/releases/luarocks-2.1.1.tar.gz'
+  sha1 '696e4ccb5caa3af478c0fbf562d16ad42bf404d5'
 
   option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
   option 'with-lua52', 'Use Lua 5.2 instead of the stock Lua'
@@ -20,9 +21,13 @@ class Luarocks < Formula
     cause "Lua itself compiles with llvm, but may fail when other software tries to link."
   end
 
-  # See comments at __END__
+  # Remove writability checks in the install script.
+  # Homebrew checks that its install targets are writable, or fails with
+  # appropriate messaging if not. The check that luarocks does has been
+  # seen to have false positives, so remove it.
+  # TODO: better document the false positive cases, or remove this patch.
   def patches
-    DATA if HOMEBREW_PREFIX.to_s == '/usr/local'
+    DATA
   end
 
   def install
@@ -41,6 +46,14 @@ class Luarocks < Formula
     system "make install"
   end
 
+  def caveats; <<-EOS.undent
+    Rocks install to: #{HOMEBREW_PREFIX}/lib/luarocks/rocks
+
+    You may need to run `luarocks install` inside the Homebrew build
+    environment for rocks to successfully build. To do this, first run `brew sh`.
+    EOS
+  end
+
   def test
     opoo "Luarocks test script installs 'lpeg'"
     system "#{bin}/luarocks", "install", "lpeg"
@@ -48,12 +61,6 @@ class Luarocks < Formula
   end
 end
 
-
-# This patch because we set the permissions of /usr/local to root owned
-# not user writable to be "good" citizens of /usr/local. Actually LUA is being
-# pedantic since all the directories it wants under /usr/local are writable
-# so we just return true. Naughty, but I don't know LUA and don't want to
-# write a better patch.
 __END__
 diff --git a/src/luarocks/fs/lua.lua b/src/luarocks/fs/lua.lua
 index 67c3ce0..2d149c7 100644

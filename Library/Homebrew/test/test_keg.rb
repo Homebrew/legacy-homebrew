@@ -1,21 +1,28 @@
 require 'testing_env'
-require 'test/testball'
 require 'keg'
 require 'stringio'
 
 class LinkTests < Test::Unit::TestCase
+  include FileUtils
+
   def setup
-    @formula = TestBall.new
-    shutup do
-      @formula.brew { @formula.install }
+    @keg = HOMEBREW_CELLAR/"foo/1.0"
+    @keg.mkpath
+    (@keg/"bin").mkpath
+
+    %w{hiworld helloworld goodbye_cruel_world}.each do |file|
+      touch @keg/"bin/#{file}"
     end
-    @keg = Keg.for @formula.prefix
-    @keg.unlink
+
+    @keg = Keg.new(@keg)
+
+    @mode = OpenStruct.new
 
     @old_stdout = $stdout
     $stdout = StringIO.new
 
-    FileUtils.mkpath HOMEBREW_PREFIX/"bin"
+    mkpath HOMEBREW_PREFIX/"bin"
+    mkpath HOMEBREW_PREFIX/"lib"
   end
 
   def test_linking_keg
@@ -24,53 +31,80 @@ class LinkTests < Test::Unit::TestCase
 
   def test_unlinking_keg
     @keg.link
-    assert_equal 3, @keg.unlink
+    assert_equal 4, @keg.unlink
   end
 
   def test_link_dry_run
-    mode = OpenStruct.new
-    mode.dry_run = true
+    @mode.dry_run = true
 
-    assert_equal 0, @keg.link(mode)
+    assert_equal 0, @keg.link(@mode)
     assert !@keg.linked?
 
     ['hiworld', 'helloworld', 'goodbye_cruel_world'].each do |file|
-      assert_match "/private/tmp/testbrew/prefix/bin/#{file}", $stdout.string
+      assert_match "#{HOMEBREW_PREFIX}/bin/#{file}", $stdout.string
     end
     assert_equal 3, $stdout.string.lines.count
   end
 
   def test_linking_fails_when_already_linked
     @keg.link
-    assert_raise RuntimeError, "Cannot link testball" do
-      @keg.link
+    assert_raise RuntimeError do
+      shutup { @keg.link }
     end
   end
 
   def test_linking_fails_when_files_exist
-    FileUtils.touch HOMEBREW_PREFIX/"bin/helloworld"
+    touch HOMEBREW_PREFIX/"bin/helloworld"
     assert_raise RuntimeError do
-      @keg.link
+      shutup { @keg.link }
     end
   end
 
   def test_link_overwrite
-    FileUtils.touch HOMEBREW_PREFIX/"bin/helloworld"
-    mode = OpenStruct.new
-    mode.overwrite = true
-    assert_equal 3, @keg.link(mode)
+    touch HOMEBREW_PREFIX/"bin/helloworld"
+    @mode.overwrite = true
+    assert_equal 3, @keg.link(@mode)
+  end
+
+  def test_link_overwrite_broken_symlinks
+    cd HOMEBREW_PREFIX/"bin" do
+      ln_s "nowhere", "helloworld"
+    end
+    @mode.overwrite = true
+    assert_equal 3, @keg.link(@mode)
   end
 
   def test_link_overwrite_dryrun
-    FileUtils.touch HOMEBREW_PREFIX/"bin/helloworld"
-    mode = OpenStruct.new
-    mode.overwrite = true
-    mode.dry_run = true
+    touch HOMEBREW_PREFIX/"bin/helloworld"
+    @mode.overwrite = true
+    @mode.dry_run = true
 
-    assert_equal 0, @keg.link(mode)
+    assert_equal 0, @keg.link(@mode)
     assert !@keg.linked?
 
-    assert_equal "/private/tmp/testbrew/prefix/bin/helloworld\n", $stdout.string
+    assert_equal "#{HOMEBREW_PREFIX}/bin/helloworld\n", $stdout.string
+  end
+
+  def test_unlink_prunes_empty_toplevel_directories
+    mkpath HOMEBREW_PREFIX/"lib/foo/bar"
+    mkpath @keg/"lib/foo/bar"
+    touch @keg/"lib/foo/bar/file1"
+
+    @keg.unlink
+
+    assert !File.directory?(HOMEBREW_PREFIX/"lib/foo")
+  end
+
+  def test_unlink_ignores_DS_Store_when_pruning_empty_dirs
+    mkpath HOMEBREW_PREFIX/"lib/foo/bar"
+    touch HOMEBREW_PREFIX/"lib/foo/.DS_Store"
+    mkpath @keg/"lib/foo/bar"
+    touch @keg/"lib/foo/bar/file1"
+
+    @keg.unlink
+
+    assert !File.directory?(HOMEBREW_PREFIX/"lib/foo")
+    assert !File.exist?(HOMEBREW_PREFIX/"lib/foo/.DS_Store")
   end
 
   def teardown
@@ -79,6 +113,7 @@ class LinkTests < Test::Unit::TestCase
 
     $stdout = @old_stdout
 
-    FileUtils.rmtree HOMEBREW_PREFIX/"bin"
+    rmtree HOMEBREW_PREFIX/"bin"
+    rmtree HOMEBREW_PREFIX/"lib"
   end
 end

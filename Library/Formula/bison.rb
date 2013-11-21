@@ -2,15 +2,15 @@ require 'formula'
 
 class Bison < Formula
   homepage 'http://www.gnu.org/software/bison/'
-  url 'http://ftpmirror.gnu.org/bison/bison-2.7.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/bison/bison-2.7.tar.gz'
-  sha1 'aa4f5aa51ee448bac132041df0ce25a800a3661c'
+  url 'http://ftpmirror.gnu.org/bison/bison-3.0.1.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/bison/bison-3.0.1.tar.gz'
+  sha1 '0191d1679525b1e05bb35265a71e7475e7cb1432'
 
   keg_only :provided_by_osx, 'Some formulae require a newer version of bison.'
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

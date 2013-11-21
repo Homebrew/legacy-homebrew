@@ -2,8 +2,8 @@ require 'formula'
 
 class Mpop < Formula
   homepage 'http://mpop.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/mpop/mpop/1.0.27/mpop-1.0.27.tar.bz2'
-  sha1 'ea9e190d8b7172e8c4c100e3f90d1840f3f8a259'
+  url 'http://downloads.sourceforge.net/project/mpop/mpop/1.0.28/mpop-1.0.28.tar.bz2'
+  sha1 'bfc2447adb25081aacb6999c5badaf86d5a39741'
 
   depends_on 'pkg-config' => :build
 

@@ -23,8 +23,7 @@ class Cdargs < Formula
 
     rm Dir['contrib/Makefile*']
     prefix.install 'contrib'
-
-    (etc+'bash_completion.d').install_symlink prefix+'contrib/cdargs-bash.sh'
+    bash_completion.install_symlink "#{prefix}/contrib/cdargs-bash.sh"
   end
 
   def caveats; <<-EOS.undent

@@ -1,33 +1,31 @@
 require 'formula'
 
-class RabbitmqCodegen < Formula
-  url 'https://github.com/rabbitmq/rabbitmq-codegen/tarball/rabbitmq_v3_0_1'
-  sha1 '463ec8983f9078df4c7eef504a2d8daef59f3503'
-end
-
 class RabbitmqC < Formula
   homepage 'https://github.com/alanxz/rabbitmq-c'
-  url 'https://github.com/alanxz/rabbitmq-c/archive/rabbitmq-c-v0.3.0.zip'
-  sha1 'bbe8942a5d183512a0406fc516bbe2c8aa2811cc'
+  url 'https://github.com/alanxz/rabbitmq-c/archive/v0.4.1.tar.gz'
+  sha1 '97ceb4039ca5a71b73b417bc7257e263ea1e2f4d'
 
   head 'https://github.com/alanxz/rabbitmq-c.git'
 
-  depends_on :autoconf
-  depends_on :automake
+  option :universal
+
+  depends_on 'pkg-config' => :build
+  depends_on 'autoconf' => :build # Use a newer version on Snow Leopard too
+  depends_on 'automake' => :build
   depends_on :libtool
   depends_on 'rabbitmq'
-  depends_on 'simplejson' => :python if MacOS.version == :leopard
+  depends_on 'simplejson' => :python if MacOS.version <= :leopard
 
-  option :universal
+  resource 'codegen' do
+    url 'https://github.com/rabbitmq/rabbitmq-codegen/archive/rabbitmq_v3_1_5.tar.gz'
+    sha1 '08b0415364e517e033e83c0b033820b62713a0bf'
+  end
 
   def install
     ENV.universal_binary if build.universal?
-
-    RabbitmqCodegen.new.brew { (buildpath/"codegen").install Dir["*"] }
-
+    (buildpath/'codegen').install resource('codegen')
     system "autoreconf", "-i"
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
-
 end

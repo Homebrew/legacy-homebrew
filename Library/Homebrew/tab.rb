@@ -1,6 +1,7 @@
+require 'cxxstdlib'
 require 'ostruct'
 require 'options'
-require 'vendor/multi_json'
+require 'utils/json'
 
 # Inherit from OpenStruct to gain a generic initialization method that takes a
 # hash and creates an attribute for each key and value. `Tab.new` probably
@@ -9,7 +10,7 @@ require 'vendor/multi_json'
 class Tab < OpenStruct
   FILENAME = 'INSTALL_RECEIPT.json'
 
-  def self.create f, args
+  def self.create f, compiler, stdlib, args
     f.build.args = args
 
     sha = HOMEBREW_REPOSITORY.cd do
@@ -23,11 +24,13 @@ class Tab < OpenStruct
             :poured_from_bottle => false,
             :tapped_from => f.tap,
             :time => Time.now.to_i, # to_s would be better but Ruby has no from_s function :P
-            :HEAD => sha
+            :HEAD => sha,
+            :compiler => compiler,
+            :stdlib => stdlib
   end
 
   def self.from_file path
-    tab = Tab.new MultiJson.decode(open(path).read)
+    tab = Tab.new Utils::JSON.load(File.read(path))
     tab.tabfile = path
     tab
   end
@@ -42,8 +45,11 @@ class Tab < OpenStruct
     end
   end
 
+  def self.for_name name
+    for_formula(Formula.factory(name))
+  end
+
   def self.for_formula f
-    f = Formula.factory(f)
     path = [f.opt_prefix, f.linked_keg].map{ |pn| pn.join(FILENAME) }.find{ |pn| pn.exist? }
     # Legacy kegs may lack a receipt. If it doesn't exist, fake one
     if path.nil? then self.dummy_tab(f) else self.from_file(path) end
@@ -56,7 +62,8 @@ class Tab < OpenStruct
             :poured_from_bottle => false,
             :tapped_from => "",
             :time => nil,
-            :HEAD => nil
+            :HEAD => nil,
+            :compiler => :clang
   end
 
   def with? name
@@ -89,15 +96,24 @@ class Tab < OpenStruct
     used_options + unused_options
   end
 
+  def cxxstdlib
+    # Older tabs won't have these values, so provide sensible defaults
+    lib = stdlib.to_sym if stdlib
+    cc = compiler || MacOS.default_compiler
+    CxxStdlib.new(lib, cc.to_sym)
+  end
+
   def to_json
-    MultiJson.encode({
-      :used_options => used_options.to_a,
-      :unused_options => unused_options.to_a,
+    Utils::JSON.dump({
+      :used_options => used_options.map(&:to_s),
+      :unused_options => unused_options.map(&:to_s),
       :built_as_bottle => built_as_bottle,
       :poured_from_bottle => poured_from_bottle,
       :tapped_from => tapped_from,
       :time => time,
-      :HEAD => send("HEAD")})
+      :HEAD => send("HEAD"),
+      :stdlib => (stdlib.to_s if stdlib),
+      :compiler => (compiler.to_s if compiler)})
   end
 
   def write

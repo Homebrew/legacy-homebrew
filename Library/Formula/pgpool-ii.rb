@@ -2,8 +2,8 @@ require 'formula'
 
 class PgpoolIi < Formula
   homepage 'http://www.pgpool.net/mediawiki/index.php/Main_Page'
-  url 'http://www.pgpool.net/download.php?f=pgpool-II-3.2.3.tar.gz'
-  sha1 '5a51bead847cc5380513effc5d38973330d2cc14'
+  url 'http://www.pgpool.net/download.php?f=pgpool-II-3.2.4.tar.gz'
+  sha1 '917cc7668c5e12e141aa521f0eff6e879b67d9e2'
 
   depends_on :postgresql
 

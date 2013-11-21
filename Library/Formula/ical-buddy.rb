@@ -1,9 +1,10 @@
 require 'formula'
 
 class IcalBuddy < Formula
+  # NOTE: the official tarball doesn't actually contain any source,
+  # just a prebuilt i386 binary
   homepage 'http://hasseg.org/icalBuddy/'
-  url 'http://hasseg.org/icalBuddy/1.8.7/icalBuddy-v1.8.7.zip'
-  sha1 'd2e18473de34792d3f1cd44233711857b05dc4d3'
+  url 'http://hasseg.org/git-public/icalBuddy.git', :tag => 'v1.8.8'
 
   head 'http://hasseg.org/git-public/icalBuddy.git'
 

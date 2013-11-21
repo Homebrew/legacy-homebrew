@@ -2,8 +2,8 @@ require 'formula'
 
 class Ccextractor < Formula
   homepage 'http://ccextractor.sourceforge.net/'
-  url 'http://sourceforge.net/projects/ccextractor/files/ccextractor/0.64/ccextractor.src.0.64.zip/'
-  sha1 '72216b2342f27bb931cdb7239a05f7894fca7150'
+  url 'http://downloads.sourceforge.net/project/ccextractor/ccextractor/0.67/ccextractor.src.0.67.zip'
+  sha1 '9d3cb3a89f4d65d04415051555d5aee14e29e79b'
 
   def install
     cd "mac"

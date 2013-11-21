@@ -112,7 +112,7 @@ module ServicesCli
     def path; root? ? boot_path : user_path end
 
     # Find all currently running services via launchctl list
-    def running; %x{#{launchctl} list | grep com.github.homebrew}.chomp.split("\n").map { |svc| $1 if svc =~ /(com\.github\.homebrew\..+)\z/ }.compact end
+    def running; %x{#{launchctl} list | grep homebrew.mxcl}.chomp.split("\n").map { |svc| $1 if svc =~ /(homebrew\.mxcl\..+)\z/ }.compact end
 
     # Check if running as homebre and load required libraries et al.
     def homebrew!
@@ -207,7 +207,7 @@ module ServicesCli
       end
 
       # 2. remove unused plist files
-      Dir[path + 'com.github.homebrew.*.plist'].each do |file|
+      Dir[path + 'homebrew.mxcl.*.plist'].each do |file|
         unless running.include?(File.basename(file).sub(/\.plist$/i, ''))
           puts "Removing unused plist #{file}"
           rm file
@@ -301,7 +301,7 @@ class Service
 
   # Create a new `Service` instance from either a path or label.
   def self.from(path_or_label)
-    return nil unless path_or_label =~ /com\.github\.homebrew\.([^\.]+)(\.plist)?\z/
+    return nil unless path_or_label =~ /homebrew\.mxcl\.([^\.]+)(\.plist)?\z/
     new(Formula.factory(Formula.canonical_name($1))) rescue nil
   end
 
@@ -314,7 +314,7 @@ class Service
   # Label delegates to formula.plist_name, e.g `homebrew.mxcl.<formula>`.
   def label; @label ||= formula.plist_name end
 
-  # Path to a static plist file, this is always `com.github.homebrew.<formula>.plist`.
+  # Path to a static plist file, this is always `homebrew.mxcl.<formula>.plist`.
   def plist; @plist ||= formula.prefix + "#{label}.plist" end
 
   # Path to destination plist, if run as root it's in `boot_path`, else `user_path`.
@@ -343,7 +343,7 @@ class Service
       data = open(data).read
     end
 
-    # replace "template" variables and ensure label is always, always com.github.homebrew.<formula>
+    # replace "template" variables and ensure label is always, always homebrew.mxcl.<formula>
     data = data.to_s.gsub(/\{\{([a-z][a-z0-9_]*)\}\}/i) { |m| formula.send($1).to_s if formula.respond_to?($1) }.
               gsub(%r{(<key>Label</key>\s*<string>)[^<]*(</string>)}, '\1' + label + '\2')
 

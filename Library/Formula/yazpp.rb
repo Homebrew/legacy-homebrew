@@ -2,8 +2,8 @@ require 'formula'
 
 class Yazpp < Formula
   homepage 'http://www.indexdata.com/yazpp'
-  url 'http://ftp.indexdata.dk/pub/yazpp/yazpp-1.4.0.tar.gz'
-  sha1 '7781f1aa234211efa470fcd4f9900bb8a4fb3570'
+  url 'http://ftp.indexdata.dk/pub/yazpp/yazpp-1.5.0.tar.gz'
+  sha1 '0e6bb1a0da1770086823a4170b6efdf7b045d689'
 
   depends_on 'yaz'
 

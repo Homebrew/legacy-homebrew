@@ -11,11 +11,6 @@ def blacklisted? name
     Some build scripts fail to detect it correctly, please check existing
     formulae for solutions.
     EOS
-  when 'libxml', 'libxlst' then <<-EOS.undent
-    Apple distributes #{name} with OS X, you can find it in /usr/lib.
-    However not all build scripts look for these hard enough, so you may need
-    to call ENV.libxml2 in your formula's install function.
-    EOS
   when 'wxpython' then <<-EOS.undent
     The Python bindings (import wx) for wxWidgets are installed by:
         brew install wxwidgets
@@ -27,7 +22,12 @@ def blacklisted? name
     We recommend using a MacTeX distribution: http://www.tug.org/mactex/
     EOS
   when 'pip' then <<-EOS.undent
-    pip is installed by `brew install python`
+    Homebrew provides pip via: `brew install python`. However you will then
+    have two Pythons installed on your Mac, so alternatively you can:
+        sudo easy_install pip
+    EOS
+  when 'pil' then <<-EOS.undent
+    Instead of PIL, consider `pip install pillow` or `brew install samueljohn/python/pillow`.
     EOS
   when 'macruby' then <<-EOS.undent
     MacRuby works better when you install their package:
@@ -35,10 +35,16 @@ def blacklisted? name
     EOS
   when /(lib)?lzma/
     "lzma is now part of the xz formula."
-  when 'xcode' then <<-EOS.undent
-    Xcode can be installed via the App Store (on Lion or newer), or from:
-      http://connect.apple.com/
-    EOS
+  when 'xcode'
+    if MacOS.version >= :lion
+      <<-EOS.undent
+      Xcode can be installed from the App Store.
+      EOS
+    else
+      <<-EOS.undent
+      Xcode can be installed from https://developer.apple.com/downloads/
+      EOS
+    end
   when 'gtest', 'googletest', 'google-test' then <<-EOS.undent
     Installing gtest system-wide is not recommended; it should be vendored
     in your projects that use it.
@@ -58,6 +64,24 @@ def blacklisted? name
   when 'sshpass' then <<-EOS.undent
     We won't add sshpass because it makes it too easy for novice SSH users to
     ruin SSH's security.
+    EOS
+  when 'gsutil' then <<-EOS.undent
+    Install gsutil with `pip install gsutil`
+    EOS
+  when 'clojure' then <<-EOS.undent
+    Clojure isn't really a program but a library managed as part of a
+    project and Leiningen is the user interface to that library.
+
+    To install Clojure you should install Leiningen:
+      brew install leiningen
+    and then follow the tutorial:
+      https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md
+    EOS
+  when 'rubinius' then <<-EOS.undent
+    Rubinius requires an existing Ruby 2.0 to bootstrap.
+    Doing this through Homebrew is error-prone. Instead, consider using
+    ruby-build` to build and install specific versions of Ruby:
+        brew install ruby-build
     EOS
   end
 end

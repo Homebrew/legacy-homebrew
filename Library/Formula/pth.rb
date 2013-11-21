@@ -12,6 +12,8 @@ class Pth < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
+    system "make"
+    system "make test"
     system "make install"
   end
 end

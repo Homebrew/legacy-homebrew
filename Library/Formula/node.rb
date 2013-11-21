@@ -1,15 +1,5 @@
 require 'formula'
 
-class PythonVersion < Requirement
-  env :userpaths
-
-  satisfy { `python -c 'import sys;print(sys.version[:3])'`.strip.to_f >= 2.6 }
-
-  def message
-    "Node's build system, gyp, requires Python 2.6 or newer."
-  end
-end
-
 class NpmNotInstalled < Requirement
   fatal true
 
@@ -39,40 +29,34 @@ class NpmNotInstalled < Requirement
   end
 end
 
+# Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.2/node-v0.10.2.tar.gz'
-  sha1 '759a05eff48ff0b54e55748012c5c45502f7cecd'
+  url 'http://nodejs.org/dist/v0.10.22/node-v0.10.22.tar.gz'
+  sha1 'd7c6a39dfa714eae1f8da7a00c9a07efd74a03b3'
+
+  devel do
+    url 'http://nodejs.org/dist/v0.11.9/node-v0.11.9.tar.gz'
+    sha1 'b4fc0e38ccde4edae45db198f331499055d77ca2'
+  end
 
   head 'https://github.com/joyent/node.git'
 
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'
-  option 'with-shared-libs', 'Use Homebrew V8 and system OpenSSL, zlib'
 
   depends_on NpmNotInstalled unless build.without? 'npm'
-  depends_on PythonVersion
-  depends_on 'v8' if build.with? 'shared-libs'
+  depends_on :python => ["2.6", :build]
 
   fails_with :llvm do
     build 2326
   end
 
+  # fixes gyp's detection of system paths on CLT-only systems
+  def patches; DATA; end
+
   def install
-    # Lie to `xcode-select` for now to work around a GYP bug that affects
-    # CLT-only systems:
-    #
-    #   http://code.google.com/p/gyp/issues/detail?id=292
-    #   joyent/node#3681
-    ENV['DEVELOPER_DIR'] = MacOS.dev_tools_path unless MacOS::Xcode.installed?
-
     args = %W{--prefix=#{prefix}}
-
-    if build.with? 'shared-libs'
-      args << '--shared-openssl' unless MacOS.version == :leopard
-      args << '--shared-v8'
-      args << '--shared-zlib'
-    end
 
     args << "--debug" if build.include? 'enable-debug'
     args << "--without-npm" if build.include? 'without-npm'
@@ -81,46 +65,104 @@ class Node < Formula
     system "make install"
 
     unless build.include? 'without-npm'
-      (lib/"node_modules/npm/npmrc").write(npmrc)
+      (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
+
+      # Link npm manpages
+      Pathname.glob("#{lib}/node_modules/npm/man/*").each do |man|
+        dir = send(man.basename)
+        man.children.each do |file|
+          dir.install_symlink(file.relative_path_from(dir))
+        end
+      end
     end
   end
 
   def npm_prefix
-    "#{HOMEBREW_PREFIX}/share/npm"
-  end
-
-  def npm_bin
-    "#{npm_prefix}/bin"
-  end
-
-  def modules_folder
-    "#{HOMEBREW_PREFIX}/lib/node_modules"
-  end
-
-  def npmrc
-    <<-EOS.undent
-      prefix = #{npm_prefix}
-    EOS
+    d = "#{HOMEBREW_PREFIX}/share/npm"
+    if File.directory? d
+      d
+    else
+      HOMEBREW_PREFIX.to_s
+    end
   end
 
   def caveats
-    if build.include? 'without-npm'
-      <<-EOS.undent
-        Homebrew has NOT installed npm. We recommend the following method of
-        installation:
-          curl https://npmjs.org/install.sh | sh
-
-        After installing, add the following path to your NODE_PATH environment
-        variable to have npm libraries picked up:
-          #{modules_folder}
-      EOS
-    elsif not ENV['PATH'].split(':').include? npm_bin
-      <<-EOS.undent
-        Homebrew installed npm.
-        We recommend prepending the following path to your PATH environment
-        variable to have npm-installed binaries picked up:
-          #{npm_bin}
-      EOS
+    if build.include? 'without-npm' then <<-end.undent
+      Homebrew has NOT installed npm. If you later install it, you should supplement
+      your NODE_PATH with the npm module folder:
+          #{npm_prefix}/lib/node_modules
+      end
+    elsif not ENV['PATH'].split(':').include? "#{npm_prefix}/bin"; <<-end.undent
+      Probably you should amend your PATH to include npm-installed binaries:
+          #{npm_prefix}/bin
+      end
     end
   end
 end
+
+__END__
+diff --git a/tools/gyp/pylib/gyp/xcode_emulation.py b/tools/gyp/pylib/gyp/xcode_emulation.py
+index f9cec33..4b3c035 100644
+--- a/tools/gyp/pylib/gyp/xcode_emulation.py
++++ b/tools/gyp/pylib/gyp/xcode_emulation.py
+@@ -285,8 +285,14 @@ class XcodeSettings(object):
+     if sdk_root.startswith('/'):
+       return sdk_root
+     if sdk_root not in XcodeSettings._sdk_path_cache:
+-      XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
+-          sdk_root, 'Path')
++      try:
++        XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
++            sdk_root, 'Path')
++      except:
++        # if this fails it's because xcodebuild failed, which means
++        # the user is probably on a CLT-only system, where there
++        # is no valid SDK root
++        XcodeSettings._sdk_path_cache[sdk_root] = None
+     return XcodeSettings._sdk_path_cache[sdk_root]
+
+   def _AppendPlatformVersionMinFlags(self, lst):
+@@ -397,10 +403,11 @@ class XcodeSettings(object):
+
+     cflags += self._Settings().get('WARNING_CFLAGS', [])
+
+-    config = self.spec['configurations'][self.configname]
+-    framework_dirs = config.get('mac_framework_dirs', [])
+-    for directory in framework_dirs:
+-      cflags.append('-F' + directory.replace('$(SDKROOT)', sdk_root))
++    if 'SDKROOT' in self._Settings():
++      config = self.spec['configurations'][self.configname]
++      framework_dirs = config.get('mac_framework_dirs', [])
++      for directory in framework_dirs:
++        cflags.append('-F' + directory.replace('$(SDKROOT)', sdk_root))
+
+     self.configname = None
+     return cflags
+@@ -647,10 +654,11 @@ class XcodeSettings(object):
+     for rpath in self._Settings().get('LD_RUNPATH_SEARCH_PATHS', []):
+       ldflags.append('-Wl,-rpath,' + rpath)
+
+-    config = self.spec['configurations'][self.configname]
+-    framework_dirs = config.get('mac_framework_dirs', [])
+-    for directory in framework_dirs:
+-      ldflags.append('-F' + directory.replace('$(SDKROOT)', self._SdkPath()))
++    if 'SDKROOT' in self._Settings():
++      config = self.spec['configurations'][self.configname]
++      framework_dirs = config.get('mac_framework_dirs', [])
++      for directory in framework_dirs:
++        ldflags.append('-F' + directory.replace('$(SDKROOT)', self._SdkPath()))
+
+     self.configname = None
+     return ldflags
+@@ -826,7 +834,10 @@ class XcodeSettings(object):
+         l = '-l' + m.group(1)
+       else:
+         l = library
+-    return l.replace('$(SDKROOT)', self._SdkPath(config_name))
++    if self._SdkPath():
++      return l.replace('$(SDKROOT)', self._SdkPath(config_name))
++    else:
++      return l
+
+   def AdjustLibraries(self, libraries, config_name=None):
+     """Transforms entries like 'Cocoa.framework' in libraries into entries like

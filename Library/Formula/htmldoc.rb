@@ -1,8 +1,8 @@
 require 'formula'
 
 class Htmldoc < Formula
-  homepage 'http://www.htmldoc.org'
-  url 'http://ftp.easysw.com/pub/htmldoc/1.8.27/htmldoc-1.8.27-source.tar.bz2'
+  homepage 'http://www.msweet.org/projects.php?Z1'
+  url 'http://www.msweet.org/files/project1/htmldoc-1.8.27-source.tar.bz2'
   sha1 '472908e0aafed1cedfbacd8ed3168734aebdec4b'
 
   # Fixes building with libpng-1.5, from upstream svn r1668 via Fedora

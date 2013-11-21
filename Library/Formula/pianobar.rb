@@ -2,8 +2,8 @@ require 'formula'
 
 class Pianobar < Formula
   homepage 'https://github.com/PromyLOPh/pianobar/'
-  url 'https://github.com/PromyLOPh/pianobar/archive/2012.12.01.tar.gz'
-  sha256 '25f12e230adef68405a89dbe290e437a64258fdea7bf26fe9bf04548699a390b'
+  url 'https://github.com/PromyLOPh/pianobar/archive/2013.09.15.tar.gz'
+  sha256 '4b18582eb794def5bf4e7d5de211d1f6c79295edac344928e09072aa9386796c'
 
   head 'https://github.com/PromyLOPh/pianobar.git'
 
@@ -26,7 +26,7 @@ class Pianobar < Formula
                     # Or it doesn't build at all
                     "-std=c99 " +
                     # build if we aren't /usr/local'
-                    "#{ENV["CPPFLAGS"]} #{ENV["LDFLAGS"]}"
+                    "#{ENV.cppflags} #{ENV.ldflags}"
 
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"

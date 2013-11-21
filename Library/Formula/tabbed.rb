@@ -2,10 +2,10 @@ require 'formula'
 
 class Tabbed < Formula
   homepage 'http://tools.suckless.org/tabbed'
-  url 'http://dl.suckless.org/tools/tabbed-0.4.tar.gz'
-  sha1 '7529360b088df30b66f05aa960712f1feda46e91'
+  url 'http://dl.suckless.org/tools/tabbed-0.5.tar.gz'
+  sha1 'fbe19653b65bec4670eda2e95d934eab2e5d4e45'
 
-  head 'http://hg.suckless.org/tabbed'
+  head 'http://git.suckless.org/tabbed'
 
   depends_on :x11
 

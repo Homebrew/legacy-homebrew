@@ -5,11 +5,8 @@ class BwmNg < Formula
   url 'http://www.gropp.org/bwm-ng/bwm-ng-0.6.tar.gz'
   sha1 '90bab1837f179fa1fe0d4b8bad04072affa39c01'
 
-  fails_with :clang do
-    build 421
-  end
-
   def install
+    ENV.append 'CFLAGS', '-std=gnu89'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

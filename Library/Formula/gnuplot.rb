@@ -1,11 +1,24 @@
 require 'formula'
 
+class LuaRequirement < Requirement
+  fatal true
+  default_formula 'lua'
+
+  satisfy { which 'lua' }
+end
+
 class Gnuplot < Formula
   homepage 'http://www.gnuplot.info'
-  url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.2/gnuplot-4.6.2.tar.gz'
-  sha1 '88748d4bc9bd41ba8a267a35b6e5b7427cd997cd'
+  url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.3/gnuplot-4.6.3.tar.gz'
+  sha256 'df5ffafa25fb32b3ecc0206a520f6bca8680e6dcc961efd30df34c0a1b7ea7f5'
 
-  head 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot', :using => :cvs
+  head do
+    url 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot'
+
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
 
   option 'pdf',    'Build the PDF terminal using pdflib-lite'
   option 'wx',     'Build the wxWidgets terminal using pango'
@@ -18,27 +31,16 @@ class Gnuplot < Formula
   option 'without-emacs', 'Do not build Emacs lisp files'
   option 'latex',  'Build with LaTeX support'
 
-  if build.head?
-    depends_on :automake
-    depends_on :libtool
-  end
-
   depends_on 'pkg-config' => :build
+  depends_on LuaRequirement unless build.include? 'nolua'
   depends_on 'readline'
   depends_on 'pango'       if build.include? 'cairo' or build.include? 'wx'
   depends_on :x11          if build.include? 'with-x' or MacOS::X11.installed?
   depends_on 'pdflib-lite' if build.include? 'pdf'
-  depends_on 'lua'         unless build.include? 'nolua'
   depends_on 'gd'          unless build.include? 'nogd'
   depends_on 'wxmac'       if build.include? 'wx'
   depends_on 'qt'          if build.include? 'qt'
   depends_on :tex          if build.include? 'latex'
-
-  def patches
-    # see discussion on this cairo issue: https://github.com/fontforge/fontforge/issues/222
-    # and the gnuplot bug report: https://sourceforge.net/p/gnuplot/bugs/1223/
-    DATA
-  end
 
   def install
     # Help configure find libraries
@@ -80,17 +82,3 @@ class Gnuplot < Formula
     system "#{bin}/gnuplot", "--version"
   end
 end
-
-__END__
-diff --git a/term/cairo.trm b/term/cairo.trm
-index 48fac72..c5d110f 100644
---- a/term/cairo.trm
-+++ b/term/cairo.trm
-@@ -615,6 +615,7 @@ TERM_PUBLIC void cairotrm_options()
-  * Is the 'main' function of the terminal. */
- void cairotrm_init()
- {
-+	g_type_init();
-	cairo_surface_t *surface = NULL;
-
-	FPRINTF((stderr,"Init\n"));

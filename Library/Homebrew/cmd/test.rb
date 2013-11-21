@@ -1,12 +1,16 @@
 require 'extend/ENV'
 require 'hardware'
 require 'keg'
+require 'timeout'
+require 'test/unit/assertions'
 
 module Homebrew extend self
+  TEST_TIMEOUT_SECONDS = 5*60
+
   def test
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
-    ENV.extend(HomebrewEnvExtension)
+    ENV.extend(Stdenv)
     ENV.setup_build_environment
 
     ARGV.formulae.each do |f|
@@ -25,8 +29,13 @@ module Homebrew extend self
       puts "Testing #{f.name}"
       begin
         # tests can also return false to indicate failure
-        raise if f.test == false
-      rescue
+        Timeout::timeout TEST_TIMEOUT_SECONDS do
+          raise if f.test == false
+        end
+      rescue Test::Unit::AssertionFailedError => e
+        ofail "#{f.name}: failed"
+        puts e.message
+      rescue Exception
         ofail "#{f.name}: failed"
       end
     end
