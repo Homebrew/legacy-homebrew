@@ -10,7 +10,7 @@ class GoAppEngine64 < Formula
     share.install 'go_appengine' => name
     bin.mkpath
     %w[
-      api_server.py appcfg.py bulkloader.py bulkload_client.py dev_appserver.py download_appstats.py
+      api_server.py appcfg.py bulkloader.py bulkload_client.py dev_appserver.py download_appstats.py goapp
     ].each do |fn|
       ln_s share+name+fn, bin
     end
