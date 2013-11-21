@@ -40,7 +40,7 @@ end
 
 class Cmd
   def initialize path, args
-    @arg0 = path.basename.freeze
+    @arg0 = File.basename(path).freeze
     @args = args.freeze
   end
   def mode
