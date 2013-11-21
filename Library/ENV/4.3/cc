@@ -133,6 +133,7 @@ class Cmd
         args << arg if not tool =~ /^clang/
       when /^-W.*/
         args << arg if arg =~ /^-W[alp],/
+        args << arg if arg =~ /^-Wno-/
       when '-macosx_version_min', '-dylib_install_name'
         args << "-Wl,#{arg},#{whittler.next}"
       when /^-isysroot/
