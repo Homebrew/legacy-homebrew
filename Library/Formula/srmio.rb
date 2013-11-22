@@ -5,9 +5,7 @@ class Srmio < Formula
   url 'http://www.zuto.de/project/files/srmio/srmio-0.1.1~git1.tar.gz'
   sha1 '0db685d6046fca38ad64df05840d01b5f3b27499'
 
-  head do
-    url 'https://github.com/rclasen/srmio.git'
-  end
+  head url 'https://github.com/rclasen/srmio.git'
 
   def install
     if build.head?
