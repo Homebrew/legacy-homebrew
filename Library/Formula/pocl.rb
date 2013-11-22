@@ -17,7 +17,6 @@ class Pocl < Formula
 
   def install
     system "./configure", "--disable-debug",
-                          "--disable-dependecy-tracking",
                           "--enable-direct-linkage",
                           "--disable-icd",
                           "--enable-testsuites=",
