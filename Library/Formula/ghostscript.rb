@@ -27,6 +27,7 @@ class Ghostscript < Formula
   depends_on :libpng
   depends_on :x11 => ['2.7.2', :optional]
   depends_on 'djvulibre' if build.with? 'djvu'
+  depends_on 'freetype' if MacOS.version == :snow_leopard
 
   conflicts_with 'gambit-scheme', :because => 'both install `gsc` binaries'
 
