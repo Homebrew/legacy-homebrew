@@ -135,6 +135,7 @@ module HomebrewArgvExtension
 
   def bottle_arch
     arch = value 'bottle-arch'
+    arch ||= ENV['HOMEBREW_BOTTLE_ARCH']
     arch.to_sym if arch
   end
 
