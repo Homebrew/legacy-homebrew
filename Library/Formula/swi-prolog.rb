@@ -41,7 +41,7 @@ class SwiProlog < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--mandir=#{man}"]
+    args = ["--prefix=#{libexec}", "--mandir=#{man}"]
     ENV.append 'DISABLE_PKGS', "jpl" unless build.include? "with-jpl"
     ENV.append 'DISABLE_PKGS', "xpce" unless build.include? 'with-xpce'
 
@@ -61,6 +61,11 @@ class SwiProlog < Formula
     system "./configure", *args
     system "make"
     system "make install"
+
+    (bin/'swipl').write <<-EOS.undent
+      #!/bin/bash
+      exec "#{libexec}/bin/swipl" "$@"
+    EOS
   end
 
   def test
