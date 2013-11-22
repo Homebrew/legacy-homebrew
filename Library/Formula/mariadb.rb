@@ -2,12 +2,12 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.32/kvm-tarbake-jaunty-x86/mariadb-5.5.32.tar.gz'
-  sha1 'cc468beebf3b27439d29635a4e8aec8314f27175'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.34/kvm-tarbake-jaunty-x86/mariadb-5.5.34.tar.gz'
+  sha1 '8a7d8f6094faa35cc22bc084a0e0d8037fd4ba03'
 
   devel do
-    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.3/kvm-tarbake-jaunty-x86/mariadb-10.0.3.tar.gz'
-    sha1 'c36c03ad78bdadf9a10e7b695159857d6432726d'
+    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.6/kvm-tarbake-jaunty-x86/mariadb-10.0.6.tar.gz'
+    sha1 '320722a5bdea2c23743bf08deb642c430f6ce5e3'
   end
 
   depends_on 'cmake' => :build
