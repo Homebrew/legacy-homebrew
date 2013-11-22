@@ -13,7 +13,14 @@ class Qwt < Formula
       s.gsub! /^\s*QWT_INSTALL_PREFIX\s*=(.*)$/, "QWT_INSTALL_PREFIX=#{prefix}"
     end
 
-    system "qmake -spec macx-g++ -config release"
+    args = ['-config', 'release', '-spec']
+    # On Mavericks we want to target libc++, this requires a unsupported/macx-clang-libc++ flag
+    if ENV.compiler == :clang and MacOS.version >= :mavericks
+      args << "unsupported/macx-clang-libc++"
+    else
+      args << "macx-g++"
+    end
+    system 'qmake', *args
     system "make"
     system "make install"
   end
