@@ -24,24 +24,14 @@ end
 
 LOGGER = Logger.new
 
-def cccfg? flags
-  flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
-end
-def nclt?
-  $sdkroot != nil
-end
-def syspath
-  if nclt?
-    %W{#$sdkroot/usr #$sdkroot/usr/local}
-  else
-    %W{/usr /usr/local}
-  end
-end
-
 class Cmd
+  attr_reader :brewfix, :sdkroot
+
   def initialize path, args
-    @arg0 = path.basename.freeze
+    @arg0 = File.basename(path).freeze
     @args = args.freeze
+    @brewfix = ENV['HOMEBREW_PREFIX']
+    @sdkroot = ENV['HOMEBREW_SDKROOT']
   end
   def mode
     if @arg0 == 'cpp' or @arg0 == 'ld'
@@ -88,9 +78,9 @@ class Cmd
       refurbished_args
     end
     if tool != 'ld'
-      args << "--sysroot=#$sdkroot"
+      args << "--sysroot=#{sdkroot}"
     else
-      args << "-syslibroot" << $sdkroot
+      args << "-syslibroot" << sdkroot
     end if nclt?
     allflags = case mode
     when :ccld
@@ -132,7 +122,7 @@ class Cmd
         # clang doesn't support OpenMP
         args << arg if not tool =~ /^clang/
       when /^-W.*/
-        args << arg if arg =~ /^-W[alp],/
+        args << arg if arg =~ /^-W[alp],/ or arg =~ /^-Wno-/
       when '-macosx_version_min', '-dylib_install_name'
         args << "-Wl,#{arg},#{whittler.next}"
       when /^-isysroot/
@@ -147,7 +137,7 @@ class Cmd
       when /^-L(.+)/
         path = $1.chuzzle || whittler.next
         doit = case path.cleanpath
-        when %r{^#$brewfix}
+        when %r{^#{brewfix}}
           # maybe homebrew is installed to /sw or /opt/brew
           true
         when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
@@ -192,11 +182,18 @@ class Cmd
     args.concat ENV['HOMEBREW_ARCHFLAGS'].split(' ') if cccfg? 'u'
     args
   end
+  def syspath
+    if nclt?
+      %W{#{sdkroot}/usr #{sdkroot}/usr/local}
+    else
+      %W{/usr /usr/local}
+    end
+  end
   def syslibpath
     # We reject brew's lib as we explicitly add this as a -L flag, thus it
     # is given higher priority by cc, so it surpasses the system libpath.
     # NOTE this only counts if Homebrew is installed at /usr/local
-    syspath.map{|d| "#{d}/lib" }.reject{|d| d == "#$brewfix/lib" }
+    syspath.map{|d| "#{d}/lib" }.reject{|d| d == "#{brewfix}/lib" }
   end
   def syscpath
     isystem, _ = cpath
@@ -204,7 +201,7 @@ class Cmd
   end
   def cpath
     cpath = ENV['CMAKE_PREFIX_PATH'].split(':').map{|d| "#{d}/include" } + ENV['CMAKE_INCLUDE_PATH'].split(':')
-    opt = cpath.select{|prefix| prefix =~ %r{^#$brewfix/opt} }
+    opt = cpath.grep(%r{^#{brewfix}/opt})
     sys = cpath - opt
     [sys, opt]
   end
@@ -248,6 +245,12 @@ class Cmd
   def configure?
     # configure scripts generated with autoconf 2.61 or later export as_nl
     ENV.key? 'as_nl'
+  end
+  def nclt?
+    sdkroot != nil
+  end
+  def cccfg? flags
+    flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
   end
 end
 
