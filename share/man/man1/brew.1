@@ -500,6 +500,17 @@ HOMEBREW_BUILD_FROM_SOURCE
 If set, instructs Homebrew to compile from source even when a formula provides a bottle\.
 .
 .TP
+HOMEBREW_BUILD_BOTTLE
+If set, instructs Homebrew to compile formula as if using \fB\-\-build\-bottle\fR\.
+.
+.TP
+HOMEBREW_BOTTLE_ARCH
+If set, Homebrew will use this value when compiling formula, which use the \fB\-\-build\-bottle\fR option or when \fBHOMEBREW_BUILD_BOTTLE\fR is set, to define the optimized architecture for the bottle, as if using \fB\-\-bottle\-arch=value\fR\.
+.
+.IP
+\fIExample:\fR \fBexport HOMEBREW_BOTTLE_ARCH=\'core2\'\fR
+.
+.TP
 HOMEBREW_CACHE
 If set, instructs Homebrew to use the given directory as the download cache\.
 .
