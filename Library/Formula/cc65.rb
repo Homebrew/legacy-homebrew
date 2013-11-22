@@ -6,7 +6,7 @@ class Cc65 < Formula
   url 'ftp://ftp.musoftware.de/pub/uz/cc65/cc65-sources-2.13.3.tar.bz2'
   sha1 '925c6edfcef7057e24ecb0704fa07210faec07bc'
 
-  conflicts_with 'cc65', :because => 'both install `grc` binaries'
+  conflicts_with 'grc', :because => 'both install `grc` binaries'
 
   def install
     ENV.deparallelize
