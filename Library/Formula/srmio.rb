@@ -6,8 +6,7 @@ class Srmio < Formula
   sha1 '0db685d6046fca38ad64df05840d01b5f3b27499'
 
   head do
-    url 'git://github.com/rclasen/srmio.git', :using => :git
-
+    url 'https://github.com/rclasen/srmio.git'
   end
 
   def install
@@ -21,6 +20,6 @@ class Srmio < Formula
   end
 
   def test
-    system "srmcmd --help"
+    system "#{bin}/srmcmd", "--help"
   end
 end
