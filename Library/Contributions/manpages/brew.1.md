@@ -465,6 +465,16 @@ can take several different forms:
   * HOMEBREW\_BUILD\_FROM\_SOURCE:
     If set, instructs Homebrew to compile from source even when a formula
     provides a bottle.
+    
+  * HOMEBREW\_BUILD\_BOTTLE:
+    If set, instructs Homebrew to compile formula as if using `--build-bottle`.
+    
+  * HOMEBREW\_BOTTLE\_ARCH:
+    If set, Homebrew will use this value when compiling formula, which use the 
+    `--build-bottle` option or when `HOMEBREW_BUILD_BOTTLE` is set, to define
+    the optimized architecture for the bottle, as if using `--bottle-arch=value`.
+    
+    *Example:* `export HOMEBREW_BOTTLE_ARCH='core2'`
 
   * HOMEBREW\_CACHE:
     If set, instructs Homebrew to use the given directory as the download cache.
