@@ -6,9 +6,12 @@ class Libtorrent < Formula
   sha256 '34317d6783b7f8d0805274c9467475b5432a246c0de8e28fc16e3b0b43f35677'
 
   depends_on 'pkg-config' => :build
-  depends_on 'libsigc++'
 
   def install
+    # Currently can't build against libc++; see:
+    # https://github.com/mxcl/homebrew/issues/23483
+    ENV.libstdcxx if ENV.compiler == :clang
+
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
