@@ -60,10 +60,13 @@ class Ruby < Formula
   end
 
   def caveats; <<-EOS.undent
-    NOTE: By default, gem installed binaries will be placed into:
+    By default, gem installed executables will be placed into:
       #{opt_prefix}/bin
 
-    You may want to add this to your PATH.
+    You may want to add this to your PATH. After upgrades, you can run
+      gem pristine --all --only-executables
+
+    to restore binstubs for installed gems.
     EOS
   end
 end
