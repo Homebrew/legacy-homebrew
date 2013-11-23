@@ -2,12 +2,12 @@ require 'formula'
 
 class SwiProlog < Formula
   homepage 'http://www.swi-prolog.org/'
-  url 'http://www.swi-prolog.org/download/stable/src/pl-6.4.1.tar.gz'
-  sha1 '37308983d438e364407b89e835f77a31e5474913'
+  url 'http://www.swi-prolog.org/download/stable/src/pl-6.6.0.tar.gz'
+  sha1 '5dac33bdf5c0ed78c67c1b4e708e84895cd96dfc'
 
   devel do
-    url 'http://www.swi-prolog.org/download/devel/src/pl-6.5.3.tar.gz'
-    sha1 'aaef1115e8d2414153691bc9df273bca45f59701'
+    url 'http://www.swi-prolog.org/download/devel/src/pl-7.1.0.tar.gz'
+    sha1 '4930591addb4d14b90b12045f73c7c716fb63f07'
   end
 
   head do
@@ -62,10 +62,7 @@ class SwiProlog < Formula
     system "make"
     system "make install"
 
-    (bin/'swipl').write <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/swipl" "$@"
-    EOS
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 
   def test
