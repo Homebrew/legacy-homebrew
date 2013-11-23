@@ -41,7 +41,7 @@ class Ruby < Formula
     # See discussion https://github.com/sstephenson/ruby-build/issues/304
     # and https://github.com/mxcl/homebrew/pull/18054
     if MacOS.version >= :mountain_lion
-      args << "--with-openssl-dir=#{Formula.factory('openssl').opt_prefix}"
+      args << "--with-opt-dir=#{Formula.factory('openssl').opt_prefix}"
     end
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
