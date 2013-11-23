@@ -19,7 +19,9 @@ class Libmaxminddb < Formula
   end
 
   test do
-    system "#{bin}/mmdblookup", "-f", "./maxmind-db/test-data/MaxMind-DB-test-ipv4-24.mmdb",
-                                "-i", "1.1.1.1"
+    system "curl", "-O", "http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz"
+    system "gunzip", "GeoLite2-Country.mmdb.gz"
+    system "#{bin}/mmdblookup", "-f", "GeoLite2-Country.mmdb",
+                                "-i", "8.8.8.8"
   end
 end
