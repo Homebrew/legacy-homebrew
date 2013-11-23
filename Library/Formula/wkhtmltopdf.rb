@@ -24,7 +24,13 @@ class Wkhtmltopdf < Formula
       inreplace 'src/image/image.pro', 'x86', Hardware::CPU.arch_64_bit
     end
 
-    system 'qmake', '-spec', 'macx-g++'
+    if MacOS.version >= :mavericks && ENV.compiler == :clang
+      spec = 'unsupported/macx-clang-libc++'
+    else
+      spec = 'macx-g++'
+    end
+
+    system 'qmake', '-spec', spec
     system 'make'
     ENV['DYLD_LIBRARY_PATH'] = './bin'
     `bin/wkhtmltopdf --manpage > wkhtmltopdf.1`

@@ -2,9 +2,8 @@ require 'formula'
 
 class Ruby < Formula
   homepage 'http://www.ruby-lang.org/en/'
-  url 'http://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p247.tar.bz2'
-  mirror 'http://mirrorservice.org/sites/ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p247.tar.bz2'
-  sha256 '08e3d4b85b8a1118a8e81261f59dd8b4ddcfd70b6ae554e0ec5ceb99c3185e8a'
+  url 'http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.bz2'
+  sha256 '3de4e4d9aff4682fa4f8ed2b70bd0d746fae17452fc3d3a8e8f505ead9105ad9'
 
   head do
     url 'http://svn.ruby-lang.org/repos/ruby/trunk/'
@@ -42,7 +41,7 @@ class Ruby < Formula
     # See discussion https://github.com/sstephenson/ruby-build/issues/304
     # and https://github.com/mxcl/homebrew/pull/18054
     if MacOS.version >= :mountain_lion
-      args << "--with-openssl-dir=#{Formula.factory('openssl').opt_prefix}"
+      args << "--with-opt-dir=#{Formula.factory('openssl').opt_prefix}"
     end
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
@@ -61,10 +60,13 @@ class Ruby < Formula
   end
 
   def caveats; <<-EOS.undent
-    NOTE: By default, gem installed binaries will be placed into:
+    By default, gem installed executables will be placed into:
       #{opt_prefix}/bin
 
-    You may want to add this to your PATH.
+    You may want to add this to your PATH. After upgrades, you can run
+      gem pristine --all --only-executables
+
+    to restore binstubs for installed gems.
     EOS
   end
 end

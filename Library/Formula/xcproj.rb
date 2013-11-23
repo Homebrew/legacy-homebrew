@@ -2,8 +2,8 @@ require 'formula'
 
 class Xcproj < Formula
   homepage 'https://github.com/0xced/xcproj'
-  url 'https://github.com/0xced/xcproj/archive/0.1.1.tar.gz'
-  sha1 '3cf2e286dda4d647e8031026145fb964d826f0a3'
+  url 'https://github.com/0xced/xcproj/archive/0.1.2.tar.gz'
+  sha1 '624ae9349b6c4eaa66d1b57bdd4038548c83c30c'
 
   head 'https://github.com/0xced/xcproj.git'
 
