@@ -14,6 +14,7 @@ class Gdal < Formula
   option 'enable-opencl', 'Build with OpenCL acceleration.'
   option 'enable-armadillo', 'Build with Armadillo accelerated TPS transforms.'
   option 'enable-unsupported', "Allow configure to drag in any library it can find. Invoke this at your own risk."
+  option 'enable-mdb', 'Build with Access MDB driver (requires Java 1.6+ JDK/JRE, from Apple or Oracle).'
 
   depends_on :python => :recommended
   depends_on :libpng
@@ -158,6 +159,13 @@ class Gdal < Formula
     args << (build.with?("postgresql") ? "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" : "--without-pg")
     args << (build.with?("mysql") ? "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" : "--without-mysql")
 
+    if build.include? 'enable-mdb'
+      args << "--with-java=yes"
+      # The rpath is only embedded for Oracle (non-framework) installs
+      args << "--with-jvm-lib-add-rpath=yes"
+      args << "--with-mdb=yes"
+    end
+
     # Python is installed manually to ensure everything is properly sandboxed.
     args << '--without-python'
 
@@ -180,9 +188,21 @@ class Gdal < Formula
   end
 
   def patches
-    # Prevent build failure on 10.6 / 10.7: http://trac.osgeo.org/gdal/ticket/5197
-    # Fix build against MySQL 5.6.x: http://trac.osgeo.org/gdal/ticket/5284
-    DATA
+    p = []
+
+    if build.stable?
+      # Patch of configure that finds Mac Java for MDB driver (uses Oracle or Mac default JDK)
+      # TODO: Remove when future GDAL release includes a fix
+      # http://trac.osgeo.org/gdal/ticket/5267  (patch applied to trunk, 2.0 release milestone)
+      # Must come before DATA
+      p << "https://gist.github.com/dakcarto/6877854/raw" if build.include? 'enable-mdb'
+
+      # Prevent build failure on 10.6 / 10.7: http://trac.osgeo.org/gdal/ticket/5197
+      # Fix build against MySQL 5.6.x: http://trac.osgeo.org/gdal/ticket/5284
+      p << DATA
+    end
+
+    return p
   end
 
   def install
@@ -230,14 +250,27 @@ class Gdal < Formula
   end
 
   def caveats
+    msg = ""
     if python
-      python.standard_caveats +
+      msg += python.standard_caveats +
       <<-EOS.undent
         This version of GDAL was built with Python support. In addition to providing
         modules that makes GDAL functions available to Python scripts, the Python
         binding provides additional command line tools.
       EOS
     end
+
+    if build.include? 'enable-mdb'
+      msg += <<-EOS.undent
+
+      To have a functional MDB driver, install supporting .jar files in:
+        `/Library/Java/Extensions/`
+
+      See: `http://www.gdal.org/ogr/drv_mdb.html`
+      EOS
+    end
+
+    msg
   end
 end
 
