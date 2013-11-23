@@ -23,7 +23,7 @@ class Kjell < Formula
   end
 
   def caveats
-      "Extension kjell-prompt requires a powerline patched font. See https://github.com/Lokaltog/powerline-fonts"
+    "Extension kjell-prompt requires a powerline patched font. See https://github.com/Lokaltog/powerline-fonts"
   end
 
 end
