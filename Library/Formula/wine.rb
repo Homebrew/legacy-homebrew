@@ -68,16 +68,10 @@ class Wine < Formula
     cause 'error: invalid operand for instruction lretw'
   end
 
-  def patches
-    p = []
-    if build.devel?
-      # http://bugs.winehq.org/show_bug.cgi?id=34166
-      p << 'http://bugs.winehq.org/attachment.cgi?id=46394'
-    end
-    p
-  end
+  # There may be flicker in fullscreen mode, but there is no current patch:
+  # # http://bugs.winehq.org/show_bug.cgi?id=34166
 
-  # the following libraries are currently not specified as dependencies, or not built as 32-bit:
+  # These libraries are not specified as dependencies, or not built as 32-bit:
   # configure: libv4l, gstreamer-0.10, libcapi20, libgsm
 
   # Wine loads many libraries lazily using dlopen calls, so it needs these paths
