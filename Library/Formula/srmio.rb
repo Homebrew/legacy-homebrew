@@ -7,7 +7,7 @@ class Srmio < Formula
 
   head do
     url 'https://github.com/rclasen/srmio.git'
-    
+
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
