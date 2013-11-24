@@ -2,8 +2,8 @@ require 'formula'
 
 class Czmq < Formula
   homepage 'http://czmq.zeromq.org/'
-  url 'http://download.zeromq.org/czmq-2.0.2.tar.gz'
-  sha1 '9a78ea2bf2100863eefdd0512c77486ebd1e2587'
+  url 'http://download.zeromq.org/czmq-2.0.3.tar.gz'
+  sha1 'df8e6d547f43545bcd058697a2476474f9e3a0c1'
 
   head do
     url 'https://github.com/zeromq/czmq.git'
