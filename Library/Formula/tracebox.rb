@@ -15,12 +15,6 @@ class Tracebox < Formula
     system "make", "install"
   end
 
-  test do
-    #This test is commented out pending an upstream fix
-    #https://github.com/tracebox/tracebox/issues/7
-    #system "#{bin}/tracebox", "-h"
-  end
-
   def caveats; <<-EOS.undent
     tracebox requires superuser privileges. You can either run the program
     via `sudo`, or change its ownership to root and set the setuid bit:
