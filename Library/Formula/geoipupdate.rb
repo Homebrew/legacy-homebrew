@@ -11,9 +11,7 @@ class Geoipupdate < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    if build.head?
-      system "./bootstrap"
-    end
+    system "./bootstrap" if build.head?
 
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
