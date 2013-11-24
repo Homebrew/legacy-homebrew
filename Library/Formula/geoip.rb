@@ -28,7 +28,7 @@ class Geoip < Formula
     # This works on Snow Leopard also when it tries but fails to run autoreconf.
     # Also fixes the tests by downloading required data file
     system "./bootstrap"
-    
+
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
