@@ -7,4 +7,7 @@ TAP_MIGRATIONS = {
   'blackbox' => 'homebrew/boneyard',
   'libgtextutils' => 'homebrew/science',
   'syslog-ng' => 'homebrew/boneyard',
+  'librets' => 'homebrew/boneyard',
+  'drizzle' => 'homebrew/boneyard',
+  'boost149' => 'homebrew/versions,
 }
