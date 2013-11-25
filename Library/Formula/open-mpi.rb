@@ -29,12 +29,15 @@ class OpenMpi < Formula
       --disable-silent-rules
       --enable-ipv6
     ]
-    if build.include? 'disable-fortran'
-      args << '--disable-mpi-f77' << '--disable-mpi-f90'
-    end
+
+    args << '--disable-mpi-fortran' if build.include? 'disable-fortran'
 
     if build.include? 'enable-mpi-thread-multiple'
-      args << '--enable-mpi-thread-multiple'
+      args += %W[--enable-event-thread-support
+                 --enable-opal-multi-threads
+                 --enable-orte-progress-threads
+                 --enable-mpi-thread-multiple
+                ]
     end
 
     system './configure', *args
