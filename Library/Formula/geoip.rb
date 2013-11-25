@@ -9,6 +9,7 @@ class Geoip < Formula
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
+  depends_on 'geoipupdate' => :optional
 
   option :universal
 
@@ -30,9 +31,28 @@ class Geoip < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--datadir=#{var}"
     system "make", "check"
     system "make", "install"
+  end
+
+  def post_install
+    geoip_data = "#{var}/GeoIP"
+
+    mkdir_p geoip_data
+
+    # Since default data directory moved, copy existing DBs
+    legacy_data = "#{HOMEBREW_PREFIX}/share/GeoIP"
+    cp Dir.glob("#{legacy_data}/*"), geoip_data if File.exists? legacy_data
+
+    [ "City", "Country" ].each do |f|
+      lite = "GeoLite#{f}.dat"
+      full = "#{geoip_data}/GeoIP#{f}.dat"
+      unless File.exists? full or File.symlink? full
+        ln_s lite, full
+      end
+    end
   end
 
   test do
