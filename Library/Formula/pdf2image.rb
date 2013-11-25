@@ -5,7 +5,10 @@ class Pdf2image < Formula
   url 'http://pdf2image.googlecode.com/files/pdf2image-0.53-source.tar.gz'
   sha1 '2acc8d1597eb470fce761d3f35b548318d446c2a'
 
-  depends_on :x11
+  # The dependency on :X11 was removed because it killed building on
+  # Mavericks.
+  depends_on 'ghostscript'
+  depends_on 'freetype'
 
   conflicts_with 'poppler', 'xpdf',
     :because => 'pdf2image, poppler, and xpdf install conflicting executables'
@@ -16,10 +19,6 @@ class Pdf2image < Formula
     # Fix manpage install location. See:
     # http://code.google.com/p/pdf2json/issues/detail?id=2
     inreplace "Makefile", "/man/", "/share/man/"
-
-    # Add X11 libs manually; the Makefiles don't use LDFLAGS properly
-    inreplace ["src/Makefile", "xpdf/Makefile"],
-      "LDFLAGS =", "LDFLAGS=-L#{MacOS::X11.lib}"
 
     system "make"
     system "make install"
