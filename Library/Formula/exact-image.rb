@@ -22,7 +22,8 @@ class ExactImage < Formula
     args = ["--prefix=#{prefix}",
             "--without-python",
             "--without-perl",
-            "--without-php"]
+            "--without-php",
+            "--without-libungif"]
     args << "--without-libpng" unless build.with? 'libpng'
     args << "--without-libjpeg" unless build.with? 'jpeg'
     args << "--without-libtiff" unless build.with? 'libtiff'
