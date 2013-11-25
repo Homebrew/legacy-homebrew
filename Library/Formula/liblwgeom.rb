@@ -5,7 +5,10 @@ class Liblwgeom < Formula
   url 'http://download.osgeo.org/postgis/source/postgis-2.1.1.tar.gz'
   sha1 'eaff009fb22b8824f89e5aa581e8b900c5d8f65b'
 
-  head 'http://svn.osgeo.org/postgis/trunk/'
+  head do
+    url 'http://svn.osgeo.org/postgis/trunk/'
+    depends_on 'postgresql' => :build # don't maintain patches for HEAD
+  end
 
   keg_only "Conflicts with PostGIS, which also installs liblwgeom.dylib"
 
@@ -14,7 +17,6 @@ class Liblwgeom < Formula
   depends_on :libtool => :build
   depends_on 'gpp' => :build
 
-  depends_on 'postgresql' => :build if build.head? # don't maintain patches for HEAD
   depends_on 'proj'
   depends_on 'geos'
   depends_on 'json-c'
