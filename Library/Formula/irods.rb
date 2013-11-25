@@ -23,7 +23,7 @@ class Irods < Formula
 
     bin.install Dir['clients/icommands/bin/*'].select {|f| File.executable? f}
 
-	# patch in order to use fuse4x
+    # patch in order to use fuse4x
     if build.include? 'with-fuse'
         inreplace 'config/config.mk', '# IRODS_FS = 1', 'IRODS_FS = 1'
         inreplace 'config/config.mk', 'fuseHomeDir=/home/mwan/adil/fuse-2.7.0', "fuseHomeDir=#{HOMEBREW_PREFIX}"
