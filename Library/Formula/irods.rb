@@ -2,8 +2,9 @@ require 'formula'
 
 class Irods < Formula
   homepage 'https://www.irods.org'
-  url 'https://www.irods.org/cgi-bin/upload16.cgi/irods3.2.tgz'
-  sha1 'd1dd7787e69cfda96b7719af2e50ffbc68485a23'
+  version '3.3'
+  url "https://github.com/irods/irods/archive/#{version}.tar.gz"
+  sha1 '4279445098ead7c3c1149141588f62fda4e017bc'
 
   conflicts_with 'sleuthkit', :because => 'both install `ils`'
 
@@ -12,15 +13,21 @@ class Irods < Formula
   depends_on 'fuse4x' if build.include? 'with-fuse'
 
   def install
-    system "./scripts/configure"
-    system "make"
+	chdir 'iRODS'
+	system "./scripts/configure"
+	
+	# include PAM authentication by default
+    inreplace 'config/config.mk', '# PAM_AUTH = 1', 'PAM_AUTH = 1'
+    inreplace 'config/config.mk', '# USE_SSL = 1', 'USE_SSL = 1'
+    
+	system "make"
 
     bin.install Dir['clients/icommands/bin/*'].select {|f| File.executable? f}
 
-    # patch in order to use fuse4x
+	# patch in order to use fuse4x
     if build.include? 'with-fuse'
       inreplace 'config/config.mk', '# IRODS_FS = 1', 'IRODS_FS = 1'
-      inreplace 'config/config.mk', 'fuseHomeDir=/home/mwan/adil/fuse-2.7.0', "fuseHomeDir=#{HOMEBREW_PREFIX}"
+      inreplace 'config/config.mk', "fuseHomeDir=#{HOMEBREW_PREFIX}"
       chdir 'clients/fuse' do
         inreplace 'Makefile', 'lfuse', 'lfuse4x'
         system "make"
