@@ -27,7 +27,6 @@ class Ffmpeg < Formula
   option 'with-ffplay', 'Enable FFplay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'
   option 'with-fdk-aac', 'Enable the Fraunhofer FDK AAC library'
-  option 'with-libquvi', 'Enable the quvi library' if build.devel?
 
   depends_on 'pkg-config' => :build
 
