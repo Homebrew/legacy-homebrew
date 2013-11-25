@@ -9,8 +9,14 @@ class Jigdo < Formula
   depends_on 'berkeley-db'
   depends_on 'gtk+'
 
+  # Use MacPorts patch for compilation on 10.9; this software is no longer developed.
+  def patches
+    { :p0 => "http://trac.macports.org/export/113020/trunk/dports/net/jigdo/files/patch-src-compat.hh.diff" }
+  end
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make"

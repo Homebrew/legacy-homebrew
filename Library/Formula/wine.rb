@@ -20,8 +20,8 @@ class Wine < Formula
   end
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.6.tar.bz2'
-    sha256 'ea26fa5b7f24069c4e44b8ef24e1c6d2d2ec3aac99adc1fecdf14dcbe357be86'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.7.tar.bz2'
+    sha256 '110603b6bff33441356ef6e72f94a70abf3b4822be1f0fb6c84b5240e9d5aca7'
     depends_on 'little-cms2'
   end
 
@@ -68,16 +68,10 @@ class Wine < Formula
     cause 'error: invalid operand for instruction lretw'
   end
 
-  def patches
-    p = []
-    if build.devel?
-      # http://bugs.winehq.org/show_bug.cgi?id=34166
-      p << 'http://bugs.winehq.org/attachment.cgi?id=46394'
-    end
-    p
-  end
+  # There may be flicker in fullscreen mode, but there is no current patch:
+  # # http://bugs.winehq.org/show_bug.cgi?id=34166
 
-  # the following libraries are currently not specified as dependencies, or not built as 32-bit:
+  # These libraries are not specified as dependencies, or not built as 32-bit:
   # configure: libv4l, gstreamer-0.10, libcapi20, libgsm
 
   # Wine loads many libraries lazily using dlopen calls, so it needs these paths

@@ -10,6 +10,8 @@ class Mkvtoolnix < Formula
   depends_on 'pkg-config' => :build
   depends_on 'boost' => 'c++11'
   depends_on 'libvorbis'
+  depends_on 'libmatroska' => 'c++11'
+  depends_on 'libebml' => 'c++11'
   depends_on 'flac' => :optional
   depends_on 'lzo' => :optional
 
