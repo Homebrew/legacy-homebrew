@@ -14,11 +14,11 @@ class Irods < Formula
   def install
     chdir 'iRODS'
     system "./scripts/configure"
-	
+
     # include PAM authentication by default
     inreplace 'config/config.mk', '# PAM_AUTH = 1', 'PAM_AUTH = 1'
     inreplace 'config/config.mk', '# USE_SSL = 1', 'USE_SSL = 1'
-    
+
     system "make"
 
     bin.install Dir['clients/icommands/bin/*'].select {|f| File.executable? f}
