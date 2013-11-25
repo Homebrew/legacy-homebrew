@@ -1,0 +1,14 @@
+language:
+  - objective-c
+  
+compiler:
+  - gcc
+
+before_install:
+  - brew update
+  
+script:
+  - brew install https://raw.github.com/gcoco/homebrew/srmio-git/Library/Formula/srmio.rb
+
+after_success:
+  - brew info srmio
