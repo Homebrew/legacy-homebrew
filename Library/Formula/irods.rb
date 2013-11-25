@@ -28,8 +28,8 @@ class Irods < Formula
       inreplace 'config/config.mk', '# IRODS_FS = 1', 'IRODS_FS = 1'
       inreplace 'config/config.mk', 'fuseHomeDir=/home/mwan/adil/fuse-2.7.0', "fuseHomeDir=#{HOMEBREW_PREFIX}"
       chdir 'clients/fuse' do
-          inreplace 'Makefile', 'lfuse', 'lfuse4x'
-          system "make"
+        inreplace 'Makefile', 'lfuse', 'lfuse4x'
+        system "make"
       end
       bin.install Dir['clients/fuse/bin/*'].select {|f| File.executable? f}
     end
