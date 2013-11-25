@@ -6,6 +6,13 @@ class Libmaxminddb < Formula
   sha1 'db7618a97c222cab0a0ba2fb8439abcd1465f10c'
   head 'https://github.com/maxmind/libmaxminddb.git'
 
+  if build.head?
+    depends_on 'autoconf' => :build
+    depends_on 'automake' => :build
+    depends_on 'libtool' => :build
+  end
+  depends_on 'geoipupdate' => :optional
+
   option :universal
 
   def install
