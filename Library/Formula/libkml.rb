@@ -26,9 +26,9 @@ class Libkml < Formula
     # Fix just forces internal libs to be linked statically until the following
     # is addressed upstream: https://code.google.com/p/libkml/issues/detail?id=50
     if build.head?
-      p << "https://gist.github.com/dakcarto/7420023/raw"
+      p << "https://gist.github.com/dakcarto/7420023/raw/65cdb088c91a7da844251e348eeda8df1d903f1d/libkml-svn-static-deps"
     else
-      p << "https://gist.github.com/dakcarto/7419882/raw"
+      p << "https://gist.github.com/dakcarto/7419882/raw/10ae08af224b3fee0617fa6288d806d3ccf37c0f/libkml-1.2-static-deps"
     end
     return p
   end
