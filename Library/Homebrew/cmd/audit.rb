@@ -535,11 +535,6 @@ class FormulaAuditor
         if text =~ /system.["' ]?python([0-9"'])?/
           problem "If the formula uses Python, it should declare so by `depends_on :python#{$1}`"
         end
-        if text =~ /setup\.py/
-          problem <<-EOS.undent
-            If the formula installs Python bindings you should declare `depends_on :python[3]`"
-          EOS
-        end
       end
     end
 
