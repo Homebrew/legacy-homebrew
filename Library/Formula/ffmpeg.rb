@@ -27,6 +27,7 @@ class Ffmpeg < Formula
   option 'with-ffplay', 'Enable FFplay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'
   option 'with-fdk-aac', 'Enable the Fraunhofer FDK AAC library'
+  option 'with-libquvi', 'Enable the quvi library' if build.devel?
 
   depends_on 'pkg-config' => :build
 
@@ -55,6 +56,7 @@ class Ffmpeg < Formula
   depends_on 'opus' => :optional
   depends_on 'frei0r' => :optional
   depends_on 'libcaca' => :optional
+  depends_on 'libquvi' => :optional if build.devel?
 
   def install
     args = ["--prefix=#{prefix}",
@@ -92,6 +94,7 @@ class Ffmpeg < Formula
     args << "--enable-libopus" if build.with? 'opus'
     args << "--enable-frei0r" if build.with? 'frei0r'
     args << "--enable-libcaca" if build.with? 'libcaca'
+    args << "--enable-libquvi" if build.with? 'libquvi'
 
     if build.with? 'openjpeg'
       args << '--enable-libopenjpeg'
