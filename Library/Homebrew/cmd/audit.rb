@@ -282,7 +282,7 @@ class FormulaAuditor
   def audit_patches
     Patches.new(f.patches).select(&:external?).each do |p|
       case p.url
-      when %r[raw\.github\.com], %r[gist\.github\.com/raw]
+      when %r[raw\.github\.com], %r[gist\.github\.com/raw], %r[gist\.github\.com/.+/raw$]
         unless p.url =~ /[a-fA-F0-9]{40}/
           problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
         end
