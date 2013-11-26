@@ -2,8 +2,8 @@ require 'formula'
 
 class PamYubico < Formula
   homepage 'http://opensource.yubico.com/yubico-pam/'
-  url 'http://opensource.yubico.com/yubico-pam/releases/pam_yubico-2.14.tar.gz'
-  sha1 'c86fd78788e6a81cadd57b23411e78bd7fab48bb'
+  url 'https://github.com/Yubico/yubico-pam/archive/2.14.tar.gz'
+  sha1 '3dd6bddce69785c5d61ae0f64ba568e1a81498a1'
 
   depends_on 'pkg-config' => :build
   depends_on :autoconf
