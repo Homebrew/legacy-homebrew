@@ -24,7 +24,7 @@ class Cdrdao < Formula
   # http://sourceforge.net/tracker/?func=detail&aid=3381672&group_id=2171&atid=102171
   def patches
     { :p1 => "http://sourceforge.net/tracker/download.php?group_id=2171&atid=302171&file_id=369387&aid=2981804",
-      :p0 => "http://trac.macports.org/export/90637/trunk/dports/sysutils/cdrdao/files/cdrdao-device-default-bufsize.patch" }
+      :p0 => DATA }
   end
 
   def install
@@ -33,3 +33,25 @@ class Cdrdao < Formula
     system "make install"
   end
 end
+
+__END__
+--- dao/main.cc	2013-11-26 12:00:00.000000000 -0400
++++ dao/main.cc	2013-11-26 12:00:00.000000000 -0400
+@@ -1242,7 +1242,7 @@
+ const char* getDefaultDevice(DaoDeviceType req)
+ {
+     int i, len;
+-    static char buf[128];
++    static char buf[1024];
+ 
+     // This function should not be called if the command issues
+     // doesn't actually require a device.
+@@ -1270,7 +1270,7 @@
+ 	    if (req == NEED_CDRW_W && !rww)
+ 	      continue;
+ 
+-	    strncpy(buf, sdata[i].dev.c_str(), 128);
++	    strncpy(buf, sdata[i].dev.c_str(), 1024);
+ 	    delete[] sdata;
+ 	    return buf;
+ 	}
