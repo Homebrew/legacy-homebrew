@@ -106,7 +106,7 @@ class Git < Formula
     man.install resource('man')
     (share+'doc/git-doc').install resource('html')
 
-    # Make html docs world-readable; check if this is still needed at 1.8.4.2
+    # Make html docs world-readable; check if this is still needed at 1.8.4.4
     chmod 0644, Dir["#{share}/doc/git-doc/**/*.{html,txt}"]
   end
 
