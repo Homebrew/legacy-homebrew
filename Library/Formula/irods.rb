@@ -3,7 +3,7 @@ require 'formula'
 class Irods < Formula
   homepage 'https://www.irods.org'
   url "https://github.com/irods/irods-legacy/archive/3.3.tar.gz"
-  sha1 '4279445098ead7c3c1149141588f62fda4e017bc'
+  sha1 '2e975fcda20b023155dfd53ff098dde0c3995f75'
 
   conflicts_with 'sleuthkit', :because => 'both install `ils`'
 
