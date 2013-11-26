@@ -22,8 +22,13 @@ class Fontconfig < Formula
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
-                          "--with-add-fonts=/Library/Fonts,~/Library/Fonts",
-                          "--prefix=#{prefix}"
+                          "--with-add-fonts=/System/Library/Fonts,/Library/Fonts,~/Library/Fonts",
+                          "--prefix=#{prefix}",
+                          "--localstatedir=#{var}"
     system "make install"
+  end
+
+  def post_install
+    system "#{bin}/fc-cache", "-frv"
   end
 end

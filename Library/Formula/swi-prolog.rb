@@ -2,15 +2,19 @@ require 'formula'
 
 class SwiProlog < Formula
   homepage 'http://www.swi-prolog.org/'
-  url 'http://www.swi-prolog.org/download/stable/src/pl-6.4.1.tar.gz'
-  sha1 '37308983d438e364407b89e835f77a31e5474913'
+  url 'http://www.swi-prolog.org/download/stable/src/pl-6.6.0.tar.gz'
+  sha1 '5dac33bdf5c0ed78c67c1b4e708e84895cd96dfc'
 
   devel do
-    url 'http://www.swi-prolog.org/download/devel/src/pl-6.5.2.tar.gz'
-    sha1 'fa448e1e59f901966de533140ce8bf6649e51b03'
+    url 'http://www.swi-prolog.org/download/devel/src/pl-7.1.0.tar.gz'
+    sha1 '4930591addb4d14b90b12045f73c7c716fb63f07'
   end
 
-  head 'git://www.swi-prolog.org/home/pl/git/pl.git'
+  head do
+    url 'git://www.swi-prolog.org/home/pl/git/pl.git'
+
+    depends_on :autoconf
+  end
 
   option 'lite', "Disable all packages"
   option 'with-jpl', "Enable JPL (Java Prolog Bridge)"
@@ -37,7 +41,7 @@ class SwiProlog < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--mandir=#{man}"]
+    args = ["--prefix=#{libexec}", "--mandir=#{man}"]
     ENV.append 'DISABLE_PKGS', "jpl" unless build.include? "with-jpl"
     ENV.append 'DISABLE_PKGS', "xpce" unless build.include? 'with-xpce'
 
@@ -57,6 +61,8 @@ class SwiProlog < Formula
     system "./configure", *args
     system "make"
     system "make install"
+
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 
   def test

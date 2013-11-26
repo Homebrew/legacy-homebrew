@@ -38,6 +38,7 @@ class Gnupg2 < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --sbindir=#{bin}
       --enable-symcryptrun
       --disable-agent
       --with-agent-pgm=#{Formula.factory('gpg-agent').opt_prefix}/bin/gpg-agent

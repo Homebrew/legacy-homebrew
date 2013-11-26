@@ -39,7 +39,7 @@ class Scantailor < Formula
   depends_on :x11
 
   fails_with :clang do
-    build 425
+    build 500
     cause "calling a private constructor of class 'mcalc::Mat<double>'"
   end
 

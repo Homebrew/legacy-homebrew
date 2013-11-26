@@ -18,9 +18,9 @@ class Go < Formula
   option 'without-cgo', "Build without cgo"
 
   devel do
-    url 'https://go.googlecode.com/files/go1.2rc4.src.tar.gz'
-    version '1.2rc4'
-    sha1 'a1782aef715875119e04ebd3f101708e3b6aa866'
+    url 'https://go.googlecode.com/files/go1.2rc5.src.tar.gz'
+    version '1.2rc5'
+    sha1 'f0cc813715d06a8e2febd580e126b7489b6a945d'
   end
 
   if build.with? 'cgo' and not build.devel?

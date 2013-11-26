@@ -48,7 +48,7 @@ ARGV.named.each do|arg|
   revision = `git rev-parse --short HEAD`.strip
 
   ohai 'Applying patch'
-  patch_args = ['am']
+  patch_args = []
   patch_args << '--signoff' unless ARGV.include? '--clean'
   # Normally we don't want whitespace errors, but squashing them can break
   # patches so an option is provided to skip this step.
@@ -59,7 +59,12 @@ ARGV.named.each do|arg|
   end
   patch_args << patchpath
 
-  safe_system 'git', *patch_args
+  begin
+    safe_system 'git', 'am', *patch_args
+  rescue => e
+    system 'git', 'am', '--abort'
+    odie 'Patch failed to apply: aborted.'
+  end
 
   issue = arg.to_i > 0 ? arg.to_i : url_match[4]
   if issue and not ARGV.include? '--clean'
@@ -82,7 +87,7 @@ ARGV.named.each do|arg|
     `git diff #{revision}.. --name-status`.each_line do |line|
       status, filename = line.split
       # Don't try and do anything to removed files.
-      if (status == 'A' or status == 'M') and filename.match /Formula\/\w+\.rb$/ or tap url
+      if (status == 'A' or status == 'M') and filename.match /Formula\/.+\.rb$/ or tap url
         formula = File.basename(filename, '.rb')
         ohai "Installing #{formula}"
         install = Formula.factory(formula).installed? ? 'upgrade' : 'install'

@@ -9,10 +9,6 @@ class Dpkg < Formula
   depends_on 'xz' => :build
   depends_on 'gnu-tar'
 
-  fails_with :clang do
-    cause 'cstdlib:142:3: error: declaration conflicts with target of using declaration already in scope'
-  end
-
   # Fixes the PERL_LIBDIR.
   # Uses Homebrew-install gnu-tar instead of bsd tar.
   def patches; DATA; end

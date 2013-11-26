@@ -2,15 +2,13 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.13.tar.gz/from/http://cdn.mysql.com/'
-  version '5.6.13'
-  sha1 '06e1d856cfb1f98844ef92af47d4f4f7036ef294'
+  url 'http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.14.tar.gz'
+  sha1 '7cf44fb2a7733b52559f66c00446122bc79321d2'
 
   bottle do
-    revision 2
-    sha1 '58e852b4914b2102144879c51e501c94429be32c' => :mavericks
-    sha1 'adac8eaa66a75b909ed148e54b273ae65c3d725a' => :mountain_lion
-    sha1 'c9f65ec043617775e08f277fedf099ed70fdcef3' => :lion
+    sha1 'cd4ec4e16d83aa5da513c98bb43a37d2bdef0e56' => :mavericks
+    sha1 'd799fce8ad1a950744fb8f6e3709236c99fad032' => :mountain_lion
+    sha1 'e5fab5158f6ab91a460dc6f72e76bc2d316ebb52' => :lion
   end
 
   depends_on 'cmake' => :build
@@ -19,7 +17,6 @@ class Mysql < Formula
   option :universal
   option 'with-tests', 'Build with unit tests'
   option 'with-embedded', 'Build the embedded server'
-  option 'with-libedit', 'Compile with editline wrapper instead of readline'
   option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
   option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
   option 'enable-local-infile', 'Build with local infile loading support'
@@ -51,37 +48,41 @@ class Mysql < Formula
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    args = [".",
-            "-DCMAKE_INSTALL_PREFIX=#{prefix}",
-            "-DMYSQL_DATADIR=#{var}/mysql",
-            "-DINSTALL_MANDIR=#{man}",
-            "-DINSTALL_DOCDIR=#{doc}",
-            "-DINSTALL_INFODIR=#{info}",
-            # CMake prepends prefix, so use share.basename
-            "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/#{name}",
-            "-DWITH_SSL=yes",
-            "-DDEFAULT_CHARSET=utf8",
-            "-DDEFAULT_COLLATION=utf8_general_ci",
-            "-DSYSCONFDIR=#{etc}"]
+    # -DINSTALL_* are relative to prefix
+    args = %W[
+      .
+      -DCMAKE_INSTALL_PREFIX=#{prefix}
+      -DCMAKE_FIND_FRAMEWORK=LAST
+      -DCMAKE_VERBOSE_MAKEFILE=ON
+      -DMYSQL_DATADIR=#{var}/mysql
+      -DINSTALL_INCLUDEDIR=include/mysql
+      -DINSTALL_MANDIR=share/man
+      -DINSTALL_DOCDIR=share/doc/#{name}
+      -DINSTALL_INFODIR=share/info
+      -DINSTALL_MYSQLSHAREDIR=share/mysql
+      -DWITH_SSL=yes
+      -DDEFAULT_CHARSET=utf8
+      -DDEFAULT_COLLATION=utf8_general_ci
+      -DSYSCONFDIR=#{etc}
+      -DCOMPILATION_COMMENT=Homebrew
+      -DWITH_EDITLINE=system
+    ]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if build.include? 'with-tests'
+    if build.with? 'tests'
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
     end
 
     # Build the embedded server
-    args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
-
-    # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless build.include? 'with-libedit'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'
 
     # Compile with ARCHIVE engine enabled if chosen
-    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.include? 'with-archive-storage-engine'
+    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.with? 'archive-storage-engine'
 
     # Compile with BLACKHOLE engine enabled if chosen
-    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.include? 'with-blackhole-storage-engine'
+    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? 'blackhole-storage-engine'
 
     # Make universal for binding to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
@@ -108,12 +109,14 @@ class Mysql < Formula
 
     # Link the setup script into bin
     ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
       # pidof can be replaced with pgrep from proctools on Mountain Lion
       s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
+
     ln_s "#{prefix}/support-files/mysql.server", bin
 
     # Move mysqlaccess to libexec
@@ -2852,6 +2855,19 @@ diff -ur a/vio/viosocket.c b/vio/viosocket.c
  
 -  DBUG_RETURN(test(ret));
 +  DBUG_RETURN(mysql_test(ret));
+ }
+ 
+ 
+diff --git a/sql/transaction.cc b/sql/transaction.cc
+index 00f42c0..c9e8fc4 100644
+--- a/sql/transaction.cc
++++ b/sql/transaction.cc
+@@ -380,7 +380,7 @@ bool trans_rollback_implicit(THD *thd)
+   /* Rollback should clear transaction_rollback_request flag. */
+   DBUG_ASSERT(! thd->transaction_rollback_request);
+ 
+-  DBUG_RETURN(test(res));
++  DBUG_RETURN(mysql_test(res));
  }
  
  
