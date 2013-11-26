@@ -371,6 +371,7 @@ class FormulaInstaller
         read.close
         exec(*args)
       rescue Exception => e
+        write.flush
         Marshal.dump(e, write)
         write.close
         exit! 1
@@ -378,6 +379,7 @@ class FormulaInstaller
     end
 
     ignore_interrupts(:quietly) do # the fork will receive the interrupt and marshall it back
+      write.flush
       write.close
       Process.wait
       data = read.read

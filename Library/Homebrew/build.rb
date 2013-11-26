@@ -46,6 +46,7 @@ def main
 rescue Exception => e
   unless error_pipe.nil?
     e.continuation = nil if ARGV.debug?
+    error_pipe.flush
     Marshal.dump(e, error_pipe)
     error_pipe.close
     exit! 1
