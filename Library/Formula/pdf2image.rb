@@ -18,7 +18,7 @@ class Pdf2image < Formula
     inreplace "Makefile", "/man/", "/share/man/"
 
     # Fix incorrect variable name in Makefile
-    inreplace "Makefile", "$(srcdir)", "$(SRCDIR)"
+    inreplace "src/Makefile", "$(srcdir)", "$(SRCDIR)"
 
     # Add X11 libs manually; the Makefiles don't use LDFLAGS properly
     inreplace ["src/Makefile", "xpdf/Makefile"],
