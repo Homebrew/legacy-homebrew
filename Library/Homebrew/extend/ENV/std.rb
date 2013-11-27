@@ -344,8 +344,12 @@ module Stdenv
     if ARGV.build_bottle?
       arch = ARGV.bottle_arch || Hardware.oldest_cpu
       append flags, Hardware::CPU.optimization_flags.fetch(arch)
+    elsif Hardware::CPU.intel? && !Hardware::CPU.sse4?
+      # If the CPU doesn't support SSE4, we cannot trust -march=native or
+      # -march=<cpu family> to do the right thing because we might be running
+      # in a VM or on a Hackintosh.
+      append flags, Hardware::CPU.optimization_flags.fetch(Hardware.oldest_cpu)
     else
-      # Don't set -msse3 and older flags because -march does that for us
       append flags, map.fetch(Hardware::CPU.family, default)
     end
 
