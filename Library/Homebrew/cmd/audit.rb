@@ -603,8 +603,10 @@ class ResourceAuditor
   end
 
   def audit_version
-    if version.to_s.empty?
-      problem "invalid or missing version"
+    if version.nil?
+      problem "missing version"
+    elsif version.to_s.empty?
+      problem "version is set to an empty string"
     elsif not version.detected_from_url?
       version_text = version
       version_url = Version.detect(url, specs)
