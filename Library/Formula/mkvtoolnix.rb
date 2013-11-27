@@ -10,6 +10,8 @@ class Mkvtoolnix < Formula
   depends_on 'pkg-config' => :build
   depends_on 'boost' => 'c++11'
   depends_on 'libvorbis'
+  depends_on 'libmatroska' => 'c++11'
+  depends_on 'libebml' => 'c++11'
   depends_on 'flac' => :optional
   depends_on 'lzo' => :optional
 
@@ -42,11 +44,14 @@ class Mkvtoolnix < Formula
     ENV['ZLIB_CFLAGS'] = '-I/usr/include'
     ENV['ZLIB_LIBS'] = '-L/usr/lib -lz'
 
+    boost = Formula.factory('boost').opt_prefix
+
     system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
                           "--disable-gui",
                           "--disable-wxwidgets",
                           "--without-curl",
-                          "--prefix=#{prefix}"
+                          "--with-boost=#{boost}"
     system "./drake", "-j#{ENV.make_jobs}"
     system "./drake install"
   end

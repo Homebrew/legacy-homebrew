@@ -12,6 +12,7 @@ class PerconaServer < Formula
   option :universal
   option 'with-tests', 'Build with unit tests'
   option 'with-embedded', 'Build the embedded server'
+  option 'with-memcached', 'Build with InnoDB Memcached plugin'
   option 'enable-local-infile', 'Build with local infile loading support'
 
   conflicts_with 'mysql-connector-c',
@@ -87,6 +88,9 @@ class PerconaServer < Formula
 
     # Build the embedded server
     args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'
+
+    # Build with InnoDB Memcached plugin
+    args << "-DWITH_INNODB_MEMCACHED=ON" if build.with? 'memcached'
 
     # Make universal for binding to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?

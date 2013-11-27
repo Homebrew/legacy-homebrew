@@ -6,6 +6,12 @@ class Sbt < Formula
   version '0.13.0'
   sha1 'b78a29b8db7ae0fc90a7890a84a4617975e1d450'
 
+  devel do
+    url 'http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.1-RC3/sbt-launch.jar'
+    version '0.13.1-RC3'
+    sha1 'ce9763ea30445ec810215e67d5bc7462b9a93070'
+  end
+
   def install
     (bin+'sbt').write <<-EOS.undent
       #!/bin/sh
