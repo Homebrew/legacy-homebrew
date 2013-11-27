@@ -3,7 +3,7 @@ require 'formula'
 class Pypy < Formula
   homepage 'http://pypy.org/'
   url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.2.1-osx64.tar.bz2'
-  version '2.2..1'
+  version '2.2.1'
   sha1 'caf13d377fcdced4bfadd4158ba3d18d520396f3'
 
   depends_on :arch => :x86_64
