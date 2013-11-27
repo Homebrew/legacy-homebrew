@@ -104,36 +104,39 @@ module MacCPUs
   end
 
   def altivec?
-    @altivec ||= sysctl_bool('hw.optional.altivec')
+    sysctl_bool('hw.optional.altivec')
   end
 
   def avx?
-    @avx ||= sysctl_bool('hw.optional.avx1_0')
+    sysctl_bool('hw.optional.avx1_0')
   end
 
   def sse3?
-    @sse3 ||= sysctl_bool('hw.optional.sse3')
+    sysctl_bool('hw.optional.sse3')
   end
 
   def ssse3?
-    @ssse3 ||= sysctl_bool('hw.optional.supplementalsse3')
+    sysctl_bool('hw.optional.supplementalsse3')
   end
 
   def sse4?
-    @sse4 ||= sysctl_bool('hw.optional.sse4_1')
+    sysctl_bool('hw.optional.sse4_1')
   end
 
   def sse4_2?
-    @sse4 ||= sysctl_bool('hw.optional.sse4_2')
+    sysctl_bool('hw.optional.sse4_2')
   end
 
   protected
 
   def sysctl_bool(property)
-    result = nil
-    IO.popen("/usr/sbin/sysctl -n #{property} 2>/dev/null") do |f|
-      result = f.gets.to_i # should be 0 or 1
+    (@properties ||= {}).fetch(property) do
+      result = nil
+      IO.popen("/usr/sbin/sysctl -n '#{property}' 2>/dev/null") do |f|
+        result = f.gets.to_i # should be 0 or 1
+      end
+      # sysctl call succeded and printed 1
+      @properties[property] = $?.success? && result == 1
     end
-    $?.success? && result == 1 # sysctl call succeded and printed 1
   end
 end
