@@ -62,6 +62,7 @@ class Resource
       if block_given?
         yield self
       elsif target
+        target = Pathname.new(target) unless target.is_a? Pathname
         target.install Dir['*']
       end
     end
