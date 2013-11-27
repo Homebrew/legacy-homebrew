@@ -126,7 +126,7 @@ class Boost < Formula
     # The context library is implemented as x86_64 ASM, so it
     # won't build on PPC or 32-bit builds
     # see https://github.com/mxcl/homebrew/issues/17646
-    if Hardware::CPU.type == :ppc || Hardware::CPU.is_32_bit? || build.universal?
+    if Hardware::CPU.ppc? || Hardware::CPU.is_32_bit? || build.universal?
       without_libraries << "context"
       # The coroutine library depends on the context library.
       without_libraries << "coroutine"
@@ -178,7 +178,7 @@ class Boost < Formula
       EOS
     end
 
-    if Hardware::CPU.type == :ppc || Hardware::CPU.is_32_bit? || build.universal?
+    if Hardware::CPU.ppc? || Hardware::CPU.is_32_bit? || build.universal?
       s += <<-EOS.undent
 
       Building of Boost.Context and Boost.Coroutine is disabled as they are

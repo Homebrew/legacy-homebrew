@@ -27,9 +27,8 @@ module MacCPUs
   end
 
   def family
-    if type == :intel
-      @intel_family ||= `/usr/sbin/sysctl -n hw.cpufamily`.to_i
-      case @intel_family
+    if intel?
+      case @intel_family ||= `/usr/sbin/sysctl -n hw.cpufamily`.to_i
       when 0x73d67300 # Yonah: Core Solo/Duo
         :core
       when 0x426f69ef # Merom: Core 2 Duo
@@ -49,9 +48,8 @@ module MacCPUs
       else
         :dunno
       end
-    elsif type == :ppc
-      @ppc_family ||= `/usr/sbin/sysctl -n hw.cpusubtype`.to_i
-      case @ppc_family
+    elsif ppc?
+      case @ppc_family ||= `/usr/sbin/sysctl -n hw.cpusubtype`.to_i
       when 9
         :g3  # PowerPC 750
       when 10
@@ -81,11 +79,11 @@ module MacCPUs
   end
 
   def arch_32_bit
-    type == :intel ? :i386 : :ppc
+    intel? ? :i386 : :ppc
   end
 
   def arch_64_bit
-    type == :intel ? :x86_64 : :ppc64
+    intel? ? :x86_64 : :ppc64
   end
 
   # Returns an array that's been extended with ArchitectureListExtension,
