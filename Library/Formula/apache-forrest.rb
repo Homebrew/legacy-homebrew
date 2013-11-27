@@ -18,9 +18,7 @@ class ApacheForrest < Formula
   def install
     # Standard Forrest install requires that the 'deps' tarball be
     # installed _over,_ not next-to, the main tarball:
-    resource('deps').verify_download_integrity(resource('deps').fetch)
-    chdir("..") { resource('deps').downloader.stage }
-
+    resource('deps').unpack_into("..")
     libexec.install Dir['*']
     bin.install_symlink "#{libexec}/bin/forrest"
   end
