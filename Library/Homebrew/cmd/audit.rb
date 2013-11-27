@@ -282,7 +282,7 @@ class FormulaAuditor
   def audit_patches
     Patches.new(f.patches).select(&:external?).each do |p|
       case p.url
-      when %r[raw\.github\.com], %r[gist\.github\.com/raw]
+      when %r[raw\.github\.com], %r[gist\.github\.com/raw], %r[gist\.github\.com/.+/raw$]
         unless p.url =~ /[a-fA-F0-9]{40}/
           problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
         end
@@ -603,8 +603,10 @@ class ResourceAuditor
   end
 
   def audit_version
-    if version.to_s.empty?
-      problem "invalid or missing version"
+    if version.nil?
+      problem "missing version"
+    elsif version.to_s.empty?
+      problem "version is set to an empty string"
     elsif not version.detected_from_url?
       version_text = version
       version_url = Version.detect(url, specs)

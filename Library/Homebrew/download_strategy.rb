@@ -236,13 +236,16 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   end
 
   def _fetch
-    mirrors = Utils::JSON.load(apache_mirrors)
-    url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
+    return super if @tried_apache_mirror
+    @tried_apache_mirror = true
 
-    ohai "Best Mirror #{url}"
-    curl url, '-C', downloaded_size, '-o', temporary_path
+    mirrors = Utils::JSON.load(apache_mirrors)
+    @url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
+
+    ohai "Best Mirror #{@url}"
+    super
   rescue IndexError, Utils::JSON::Error
-    raise "Couldn't determine mirror. Try again later."
+    raise CurlDownloadStrategyError, "Couldn't determine mirror, try again later."
   end
 end
 
