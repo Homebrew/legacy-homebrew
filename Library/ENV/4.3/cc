@@ -130,11 +130,11 @@ class Cmd
         whittler.next
       when '-dylib'
         args << "-Wl,#{arg}"
-      when /^-I(.+)/
-        # it is okay to add a space after the -I; so let's support it
+      when /^-I(.+)?/
+        # Support both "-Ifoo" (one argument) and "-I foo" (two arguments)
         path = $1.chuzzle || whittler.next
         args << "-I#{path}" if iset.add?(path.cleanpath)
-      when /^-L(.+)/
+      when /^-L(.+)?/
         path = $1.chuzzle || whittler.next
         doit = case path.cleanpath
         when %r{^#{brewfix}}

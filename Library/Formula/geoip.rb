@@ -6,10 +6,9 @@ class Geoip < Formula
   sha1 '41ed21fb2d40e54648cae2a1f73e8a5210676def'
   head 'https://github.com/maxmind/geoip-api-c.git'
 
-  # These are needed for the autoreconf it always tries to run.
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
 
   option :universal
 

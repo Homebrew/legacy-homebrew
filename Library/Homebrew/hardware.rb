@@ -30,6 +30,14 @@ class Hardware
     def is_64_bit?
       bits == 64
     end
+
+    def intel?
+      type == :intel
+    end
+
+    def ppc?
+      type == :ppc
+    end
   end
 
   if OS.mac?
@@ -53,7 +61,7 @@ class Hardware
   end
 
   def self.oldest_cpu
-    if Hardware::CPU.type == :intel
+    if Hardware::CPU.intel?
       if Hardware::CPU.is_64_bit?
         :core2
       else
