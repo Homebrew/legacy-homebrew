@@ -98,12 +98,20 @@ module MacCPUs
     end
   end
 
+  def aes?
+    sysctl_bool('hw.optional.aes')
+  end
+
   def altivec?
     sysctl_bool('hw.optional.altivec')
   end
 
   def avx?
     sysctl_bool('hw.optional.avx1_0')
+  end
+
+  def avx2?
+    sysctl_bool('hw.optional.avx2_0')
   end
 
   def sse3?
