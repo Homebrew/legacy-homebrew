@@ -77,10 +77,7 @@ module MacCPUs
   end
 
   def bits
-    return @bits if defined? @bits
-
-    is_64_bit = sysctl_bool("hw.cpu64bit_capable")
-    @bits ||= is_64_bit ? 64 : 32
+    @bits ||= sysctl_bool("hw.cpu64bit_capable") ? 64 : 32
   end
 
   def arch_32_bit
