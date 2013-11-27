@@ -7,11 +7,11 @@ Installation
 
 * Debian or Ubuntu: `sudo apt-get install build-essential curl git ruby`
 * `git clone https://github.com/Homebrew/linuxbrew.git ~/.linuxbrew`
-* Add to your `.bashrc`:
+* Add to your `.bashrc` or `.zshrc`:
 
  ```sh
- export PATH=~/.linuxbrew/bin:$PATH
- export LD_LIBRARY_PATH=~/.linuxbrew/lib
+ export PATH="$HOME/.linuxbrew/bin:$PATH"
+ export LD_LIBRARY_PATH="$HOME/.linuxbrew/lib:$LD_LIBRARY_PATH"
  ```
 
 * `brew install $WHATEVER_YOU_WANT`
