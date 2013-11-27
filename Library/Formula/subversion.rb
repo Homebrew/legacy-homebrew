@@ -2,22 +2,16 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.4.tar.bz2'
-  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.4.tar.bz2'
-  sha1 '6e7ac5b56ec22995c763a668c658577f96f2c090'
-
-  bottle do
-    revision 1
-    sha1 '03a9e38626bf1f9c243b4052a7955985c4962b9f' => :mavericks
-    sha1 'c13bbc716a1ee788812ecefd52f36778b22978b9' => :mountain_lion
-    sha1 '0d956908378049edfdfcef732af1769b7c52b4c0' => :lion
-  end
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.5.tar.bz2'
+  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.5.tar.bz2'
+  sha1 'd21de7daf37d9dd1cb0f777e999a529b96f83082'
 
   option :universal
   option 'with-brewed-openssl', 'Include OpenSSL support to Serf via Homebrew'
   option 'java', 'Build Java bindings'
   option 'perl', 'Build Perl bindings'
   option 'ruby', 'Build Ruby bindings'
+  option 'unicode-path', 'Include support for OS X UTF-8-MAC filename'
 
   resource 'serf' do
     url 'http://serf.googlecode.com/files/serf-1.3.2.tar.bz2'
@@ -47,7 +41,21 @@ class Subversion < Formula
   # One patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags},
   # and another one to put the svn-tools directory into libexec instead of bin
   def patches
-    { :p0 => DATA }
+    ps = []
+
+    # Patch for Subversion handling of OS X UTF-8-MAC filename.
+    if build.include? 'unicode-path'
+      ps << "http://subversion.tigris.org/nonav/issues/showattachment.cgi/1291/svn_1.8.x_darwin_unicode_precomp.patch"
+    end
+
+    # Patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
+    if build.include? 'perl'
+      ps << DATA
+    end
+
+    unless ps.empty?
+      { :p0 => ps }
+    end
   end
 
   # When building Perl or Ruby bindings, need to use a compiler that
@@ -79,19 +87,6 @@ class Subversion < Formula
       args << "OPENSSL=#{Formula.factory('openssl').opt_prefix}" if build.with? 'brewed-openssl'
       system "scons", *args
       system "scons install"
-    end
-
-    if build.include? 'unicode-path'
-      raise Homebrew::InstallationError.new(self, <<-EOS.undent
-        The --unicode-path patch is not supported on Subversion 1.8.
-
-        Upgrading from a 1.7 version built with this patch is not supported.
-
-        You should stay on 1.7, install 1.7 from homebrew-versions, or
-          brew rm subversion && brew install subversion
-        to build a new version of 1.8 without this patch.
-      EOS
-      )
     end
 
     if build.include? 'java'
@@ -228,6 +223,18 @@ class Subversion < Formula
         You may need to link the Java bindings into the Java Extensions folder:
           sudo mkdir -p /Library/Java/Extensions
           sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions/libsvnjavahl-1.dylib
+      EOS
+    end
+
+    if build.include? 'unicode-path'
+      s += <<-EOS.undent
+        This unicode-path version implements a hack to deal with composed/decomposed
+        unicode handling on Mac OS X which is different from linux and windows.
+        It is an implementation of solution 1 from
+        http://subversion.tigris.org/issues/show_bug.cgi?id=2464
+        which _WILL_ break some setups. Please be sure you understand what you
+        are asking for when you install this version.
+
       EOS
     end
 
