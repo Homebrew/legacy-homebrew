@@ -43,7 +43,7 @@ class Avidemux < Formula
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    if MacOS.version <= :leopard or Hardware.is_32_bit? && Hardware.cpu_type == :intel && ENV.compiler == :clang
+    if MacOS.version <= :leopard or Hardware.is_32_bit? && Hardware::CPU.intel? && ENV.compiler == :clang
       inreplace 'cmake/admFFmpegBuild.cmake',
         '${CMAKE_INSTALL_PREFIX})',
         '${CMAKE_INSTALL_PREFIX} --extra-cflags=-mdynamic-no-pic)'
