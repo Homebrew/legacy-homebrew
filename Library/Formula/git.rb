@@ -35,6 +35,17 @@ class Git < Formula
     sha1 'eb4eb4991464f44deda19d1435d9721146587661'
   end
 
+  def patches
+    if MacOS.version >= :mavericks
+      # Allow using PERLLIB_EXTRA to find Subversion Perl bindings location
+      # in the CLT/Xcode. Should be included in Git 1.8.6.
+      # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=07981d
+      # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=0386dd
+      ['https://git.kernel.org/cgit/git/git.git/patch/?id=07981d',
+       'https://git.kernel.org/cgit/git/git.git/patch/?id=0386dd']
+    end
+  end
+
   def install
     # If these things are installed, tell Git build system to not use them
     ENV['NO_FINK'] = '1'
@@ -43,6 +54,10 @@ class Git < Formula
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
     ENV['PYTHON_PATH'] = python.binary if python
     ENV['PERL_PATH'] = which 'perl'
+
+    if MacOS.version >= :mavericks and MacOS.dev_tools_prefix
+      ENV['PERLLIB_EXTRA'] = "#{MacOS.dev_tools_prefix}/Library/Perl/5.16/darwin-thread-multi-2level"
+    end
 
     unless quiet_system ENV['PERL_PATH'], '-e', 'use ExtUtils::MakeMaker'
       ENV['NO_PERL_MAKEMAKER'] = '1'
