@@ -2,16 +2,9 @@ require 'formula'
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.8.4.3.tar.gz'
-  sha1 '43b1edc95b3ab77f9739d789b906ded0585fe7a2'
+  url 'https://git-core.googlecode.com/files/git-1.8.5.tar.gz'
+  sha1 '56e4e3c59b0bd2996b81bb1de4283c9f427bd1a8'
   head 'https://github.com/git/git.git'
-
-  bottle do
-    revision 1
-    sha1 'b30e3fbe6b8e4e3307c96b5924378ad302deb5ab' => :mavericks
-    sha1 '17d2cde9690251789672218a52113cfa8a702560' => :mountain_lion
-    sha1 'b5a0da40e046f706dc303cc853b8466e81e081ba' => :lion
-  end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
@@ -27,13 +20,13 @@ class Git < Formula
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
-    url 'http://git-core.googlecode.com/files/git-manpages-1.8.4.3.tar.gz'
-    sha1 '3a7e9322a95e0743b902152083366fe97f322ab1'
+    url 'http://git-core.googlecode.com/files/git-manpages-1.8.5.tar.gz'
+    sha1 '880864f95e3548e1f86066653aed3311caea89a4'
   end
 
   resource 'html' do
-    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.4.3.tar.gz'
-    sha1 'eb4eb4991464f44deda19d1435d9721146587661'
+    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.5.tar.gz'
+    sha1 '3901432173bcc3892a7be8ea2637a7d763015013'
   end
 
   def patches
@@ -122,7 +115,7 @@ class Git < Formula
     man.install resource('man')
     (share+'doc/git-doc').install resource('html')
 
-    # Make html docs world-readable; check if this is still needed at 1.8.4.4
+    # Make html docs world-readable; check if this is still needed at 1.8.6
     chmod 0644, Dir["#{share}/doc/git-doc/**/*.{html,txt}"]
   end
 
