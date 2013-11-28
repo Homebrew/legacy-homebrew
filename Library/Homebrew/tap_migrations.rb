@@ -12,4 +12,5 @@ TAP_MIGRATIONS = {
   'drizzle' => 'homebrew/boneyard',
   'boost149' => 'homebrew/versions',
   'aimage' => 'homebrew/boneyard',
+  'cmucl' => 'homebrew/binary',
 }
