@@ -19,20 +19,22 @@ class ApacheForrest < Formula
     libexec.install Dir['*']
     bin.install_symlink "#{libexec}/bin/forrest"
 
-    # To avoid conflicts with directory names already installed from the
-    # main tarball, surgically install contents of dependency tarball
-    deps_to_install = [
-      "lib",
-      "main/webapp/resources/schema/relaxng",
-      "main/webapp/resources/stylesheets",
-      "plugins/org.apache.forrest.plugin.output.pdf/",
-      "tools/ant",
-      "tools/forrestbot/lib",
-      "tools/forrestbot/webapp/lib",
-      "tools/jetty"
-    ]
     resource('deps').stage do
-      deps_to_install.each { |p| (libexec + p).install Dir[p+"/*"] }
+      # To avoid conflicts with directory names already installed from the
+      # main tarball, surgically install contents of dependency tarball
+      deps_to_install = [
+        "lib",
+        "main/webapp/resources/schema/relaxng",
+        "main/webapp/resources/stylesheets",
+        "plugins/org.apache.forrest.plugin.output.pdf/",
+        "tools/ant",
+        "tools/forrestbot/lib",
+        "tools/forrestbot/webapp/lib",
+        "tools/jetty"
+      ]
+      deps_to_install.each do |dep|
+        (libexec+dep).install Dir["#{dep}/*"]
+      end
     end
   end
 
