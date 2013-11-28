@@ -24,6 +24,11 @@ class Saltstack < Formula
   depends_on 'swig' => :build
   depends_on 'zeromq'
   depends_on 'libyaml'
+  
+  resource 'setuptools' do
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.4.1.tar.gz'
+    sha1 '851FE820F85E39E7E18BFE0B14E85CDBCCF24EB1'
+  end
 
   resource 'pycrypto' do
     url 'https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz'
@@ -75,6 +80,7 @@ class Saltstack < Formula
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
     python do
+      resource('setuptools').stage { system python, *install_args }
       resource('pycrypto').stage { system python, *install_args }
       resource('pyyaml').stage { system python, *install_args }
       resource('pyzmq').stage { system python, *install_args }
