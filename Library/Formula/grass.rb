@@ -91,7 +91,7 @@ class Grass < Formula
     args << "--with-cairo"
 
     # Database support
-    args << "--with-postgres" if build.with? "postgres"
+    args << "--with-postgres" if build.with? "postgresql"
 
     if build.with? "mysql"
       mysql = Formula.factory('mysql')
