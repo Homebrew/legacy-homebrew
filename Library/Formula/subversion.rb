@@ -3,16 +3,13 @@ require 'formula'
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
   url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.5.tar.bz2'
-  bottle do
-    sha1 '1022095a741a6fb2c43b28003cecd6d8f220fe1e' => :mavericks
-    sha1 '82f6a8eb37d89badd9ed77ee7620f84304278db7' => :mountain_lion
-    sha1 '00340eabc7849c05ec0611ae8aea79db3848578e' => :lion
-  end
-
   mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.5.tar.bz2'
   sha1 'd21de7daf37d9dd1cb0f777e999a529b96f83082'
 
   bottle do
+    sha1 '1022095a741a6fb2c43b28003cecd6d8f220fe1e' => :mavericks
+    sha1 '82f6a8eb37d89badd9ed77ee7620f84304278db7' => :mountain_lion
+    sha1 '00340eabc7849c05ec0611ae8aea79db3848578e' => :lion
   end
 
   option :universal
