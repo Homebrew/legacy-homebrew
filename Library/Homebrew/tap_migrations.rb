@@ -11,4 +11,5 @@ TAP_MIGRATIONS = {
   'librets' => 'homebrew/boneyard',
   'drizzle' => 'homebrew/boneyard',
   'boost149' => 'homebrew/versions',
+  'aimage' => 'homebrew/boneyard',
 }
