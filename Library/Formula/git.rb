@@ -7,9 +7,10 @@ class Git < Formula
   head 'https://github.com/git/git.git'
 
   bottle do
-    sha1 'ff5dc5105e0a56bf016139ae0c6dda12f4234c32' => :mavericks
-    sha1 'd2c663ea9922ab16b5e789e461aa62d2e0cb1072' => :mountain_lion
-    sha1 'd88e30d0f7fe799c4baf62aef544b3c5d96be9e6' => :lion
+    revision 1
+    sha1 'b30e3fbe6b8e4e3307c96b5924378ad302deb5ab' => :mavericks
+    sha1 '17d2cde9690251789672218a52113cfa8a702560' => :mountain_lion
+    sha1 'b5a0da40e046f706dc303cc853b8466e81e081ba' => :lion
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -35,6 +36,17 @@ class Git < Formula
     sha1 'eb4eb4991464f44deda19d1435d9721146587661'
   end
 
+  def patches
+    if MacOS.version >= :mavericks
+      # Allow using PERLLIB_EXTRA to find Subversion Perl bindings location
+      # in the CLT/Xcode. Should be included in Git 1.8.6.
+      # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=07981d
+      # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=0386dd
+      ['https://git.kernel.org/cgit/git/git.git/patch/?id=07981d',
+       'https://git.kernel.org/cgit/git/git.git/patch/?id=0386dd']
+    end
+  end
+
   def install
     # If these things are installed, tell Git build system to not use them
     ENV['NO_FINK'] = '1'
@@ -43,6 +55,10 @@ class Git < Formula
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
     ENV['PYTHON_PATH'] = python.binary if python
     ENV['PERL_PATH'] = which 'perl'
+
+    if MacOS.version >= :mavericks and MacOS.dev_tools_prefix
+      ENV['PERLLIB_EXTRA'] = "#{MacOS.dev_tools_prefix}/Library/Perl/5.16/darwin-thread-multi-2level"
+    end
 
     unless quiet_system ENV['PERL_PATH'], '-e', 'use ExtUtils::MakeMaker'
       ENV['NO_PERL_MAKEMAKER'] = '1'
@@ -106,7 +122,7 @@ class Git < Formula
     man.install resource('man')
     (share+'doc/git-doc').install resource('html')
 
-    # Make html docs world-readable; check if this is still needed at 1.8.4.2
+    # Make html docs world-readable; check if this is still needed at 1.8.4.4
     chmod 0644, Dir["#{share}/doc/git-doc/**/*.{html,txt}"]
   end
 
