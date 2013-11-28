@@ -10,8 +10,8 @@ class Ffmpeg < Formula
   # This is actually the new stable, not a devel release,
   # but not everything builds with it yet - notably gpac
   devel do
-    url 'http://ffmpeg.org/releases/ffmpeg-2.1.tar.bz2'
-    sha1 'b8336772bfa957ca4943831f26aa99e4f30688d5'
+    url 'http://ffmpeg.org/releases/ffmpeg-2.1.1.tar.bz2'
+    sha1 'e7a5b2d7f702c4e9ca69e23c6d3527f93de0d1bd'
   end
 
   option "without-x264", "Disable H.264 encoder"
