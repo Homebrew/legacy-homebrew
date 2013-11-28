@@ -2,8 +2,8 @@ require 'formula'
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.8.4.3.tar.gz'
-  sha1 '43b1edc95b3ab77f9739d789b906ded0585fe7a2'
+  url 'https://git-core.googlecode.com/files/git-1.8.5.tar.gz'
+  sha1 '56e4e3c59b0bd2996b81bb1de4283c9f427bd1a8'
   head 'https://github.com/git/git.git'
 
   bottle do
@@ -27,13 +27,13 @@ class Git < Formula
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
-    url 'http://git-core.googlecode.com/files/git-manpages-1.8.4.3.tar.gz'
-    sha1 '3a7e9322a95e0743b902152083366fe97f322ab1'
+    url 'http://git-core.googlecode.com/files/git-manpages-1.8.5.tar.gz'
+    sha1 '880864f95e3548e1f86066653aed3311caea89a4'
   end
 
   resource 'html' do
-    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.4.3.tar.gz'
-    sha1 'eb4eb4991464f44deda19d1435d9721146587661'
+    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.5.tar.gz'
+    sha1 '3901432173bcc3892a7be8ea2637a7d763015013'
   end
 
   def patches
