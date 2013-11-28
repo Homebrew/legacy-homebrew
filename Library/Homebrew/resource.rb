@@ -68,13 +68,6 @@ class Resource
     end
   end
 
-  # Fetch, verify, and unpack into a given directory
-  def unpack_into(dir)
-    verify_download_integrity(fetch)
-    chdir(dir) { downloader.stage }
-  end
-
-
   Partial = Struct.new(:resource, :files)
 
   def files(*files)
