@@ -5,6 +5,8 @@ class Libopkele < Formula
   url 'http://kin.klever.net/dist/libopkele-2.0.4.tar.bz2'
   sha1 '0c403d118efe6b4ee4830914448078c0ee967757'
 
+  option 'with-docs', 'Also install library documentation'
+
   head do
     url 'https://github.com/hacker/libopkele.git'
 
@@ -12,6 +14,8 @@ class Libopkele < Formula
     depends_on :automake
     depends_on :libtool
   end
+
+  depends_on 'doxygen' => :build if build.with? 'docs'
 
   depends_on 'pkg-config' => :build
 
@@ -26,5 +30,10 @@ class Libopkele < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+
+    if build.with? 'docs'
+      system "make", "dox"
+      doc.install Dir['doxydox/html']
+    end
   end
 end
