@@ -20,6 +20,8 @@ class PerconaServer < Formula
 
   conflicts_with 'mariadb', 'mysql', 'mysql-cluster',
     :because => "percona, mariadb, and mysql install the same binaries."
+  conflicts_with 'mysql-connector-c',
+    :because => 'both install MySQL client libraries'
 
   env :std if build.universal?
 
