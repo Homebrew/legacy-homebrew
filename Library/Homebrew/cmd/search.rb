@@ -100,7 +100,7 @@ module Homebrew extend self
   end
 
   def search_tap user, repo, rx
-    return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
+    return [] if not (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
 
     results = []
     GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |f|
