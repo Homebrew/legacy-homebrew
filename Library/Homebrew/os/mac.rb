@@ -53,9 +53,9 @@ module OS
     def dev_tools_prefix
       @dev_tools_prefix ||= if tools_in_prefix? CLT::MAVERICKS_PKG_PATH
         Pathname.new CLT::MAVERICKS_PKG_PATH
-      elsif tools_in_prefix? "/"
+      elsif tools_in_prefix? ""
         # probably a safe enough assumption (the unix way)
-        Pathname.new "/"
+        Pathname.new ""
       elsif not Xcode.bad_xcode_select_path? and not `/usr/bin/xcrun -find make 2>/dev/null`.empty?
         # Note that the exit status of system "xcrun foo" isn't always accurate
         # Wherever "make" is there are the dev tools.
