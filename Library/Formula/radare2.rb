@@ -2,10 +2,10 @@ require 'formula'
 
 class Radare2 < Formula
   homepage 'http://radare.org'
-  url 'http://radare.org/get/radare2-0.9.2.tar.gz'
-  sha1 '7cfa170a59453d57361d730f4c4a1495d36930a8'
+  url 'https://github.com/radare/radare2/archive/0.9.6.tar.gz'
+  sha1 'a0f6103adb9e7f17084b9553fd1629673a1d14ef'
 
-  head 'http://radare.org/hg/radare2', :using => :hg
+  head 'https://github.com/radare/radare2.git'
 
   depends_on 'libewf'
   depends_on 'libmagic'
@@ -13,7 +13,9 @@ class Radare2 < Formula
   depends_on 'lua'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--with-ostype=darwin"
+
     system "make"
     system "make install"
   end
