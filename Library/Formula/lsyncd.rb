@@ -20,6 +20,12 @@ class Lsyncd < Formula
     # enough, we need the patch number as well.
     osx_version = `sw_vers -productVersion`.strip
     case osx_version
+      when "10.5.8"
+        url 'http://www.opensource.apple.com/tarballs/xnu/xnu-1228.15.4.tar.gz'
+        sha1 'd33e28f4db6973828e81f0f7ac366097eac80f9c'
+      when "10.6.8"
+        url 'http://www.opensource.apple.com/tarballs/xnu/xnu-1504.15.3.tar.gz'
+        sha1 '7fe7b66f3db13a12137a33274f063e26facde45e'
       when "10.7.5"
         url 'http://www.opensource.apple.com/tarballs/xnu/xnu-1699.32.7.tar.gz'
         sha1 'da3df48952b40ad3b8612c7f639b8bf0f92fb414'
