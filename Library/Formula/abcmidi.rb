@@ -2,9 +2,9 @@ require 'formula'
 
 class Abcmidi < Formula
   homepage 'http://www.ifdo.ca/~seymour/runabc/top.html'
-  url 'http://www.ifdo.ca/~seymour/runabc/abcMIDI-2013-09-15.zip'
-  version '2013-09-15'
-  sha1 '974cfbc10d04e6b6872e361e70a308c1b78e47d9'
+  url 'http://www.ifdo.ca/~seymour/runabc/abcMIDI-2013-11-26.zip'
+  version '2013-11-26'
+  sha1 '3e743b2a89404ad5a7d7f51c48cc2a32ba50654b'
 
   def install
     # configure creates a "Makefile" file. A "makefile" file already exist in
