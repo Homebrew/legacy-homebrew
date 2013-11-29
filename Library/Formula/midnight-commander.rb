@@ -9,6 +9,7 @@ class MidnightCommander < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
+  depends_on 'openssl' if MacOS.version <= :leopard
   depends_on 's-lang'
   depends_on 'libssh2'
 
