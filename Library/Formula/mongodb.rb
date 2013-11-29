@@ -20,6 +20,17 @@ class Mongodb < Formula
   depends_on 'scons' => :build
   depends_on 'openssl' => :optional
 
+  if build.stable?
+    # https://github.com/mxcl/homebrew/issues/24741
+    fails_with :clang do
+      cause <<-EOS.undent
+        Embedded V8 has runtime bugs, Clang unsupported for 2.4. See:
+        https://github.com/mxcl/homebrew/issues/24741
+        https://jira.mongodb.org/browse/SERVER-11570
+      EOS
+    end
+  end
+
   def install
     # mongodb currently can't build with libc++; this should be fixed in
     # 2.6, but can't be backported to the current stable release.
