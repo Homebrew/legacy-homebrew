@@ -141,7 +141,7 @@ class Pathname
   def extname(path=to_s)
     BOTTLE_EXTNAME_RX.match(path)
     return $1 if $1
-    /(\.(tar|cpio|pax)\.(gz|bz2|xz|Z))$/.match(path)
+    /(\.(tar|cpio|pax)\.(gz|bz2|lz|xz|Z))$/.match(path)
     return $1 if $1
     return File.extname(path)
   end
@@ -207,6 +207,7 @@ class Pathname
     when /^\037\235/n           then :compress
     when /^.{257}ustar/n        then :tar
     when /^\xFD7zXZ\x00/n       then :xz
+    when /^LZIP/n               then :lzip
     when /^Rar!/n               then :rar
     when /^7z\xBC\xAF\x27\x1C/n then :p7zip
     else
