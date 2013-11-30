@@ -10,8 +10,8 @@ class Gptfdisk < Formula
 
   def install
     system "make -f Makefile.mac"
-    sbin.install ['gdisk','cgdisk','sgdisk','fixparts']
-    man8.install ['gdisk.8','cgdisk.8','sgdisk.8','fixparts.8']
+    sbin.install 'gdisk', 'cgdisk', 'sgdisk', 'fixparts'
+    man8.install Dir['*.8']
   end
 
   test do
