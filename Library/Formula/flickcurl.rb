@@ -2,8 +2,8 @@ require 'formula'
 
 class Flickcurl < Formula
   homepage 'http://librdf.org/flickcurl/'
-  url 'http://download.dajobe.org/flickcurl/flickcurl-1.22.tar.gz'
-  sha1 '38f427262bc76c23ac4ab31ed4df6c6022c5d3ec'
+  url 'http://download.dajobe.org/flickcurl/flickcurl-1.25.tar.gz'
+  sha1 '35fc64dd698ad90d0f9d5622b7dfd322d8142082'
 
   depends_on 'pkg-config' => :build
 
