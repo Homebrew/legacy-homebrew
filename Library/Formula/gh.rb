@@ -1,26 +1,23 @@
 require "formula"
 
 class Gh < Formula
-  VERSION = "0.25.1"
-  ARCH = if MacOS.prefer_64_bit?
-           "amd64"
-         else
-           "386"
-         end
-
   homepage "https://github.com/jingweno/gh"
   head "https://github.com/jingweno/gh.git"
-  url "https://github.com/jingweno/gh/releases/download/v#{VERSION}/gh_#{VERSION}-snapshot_darwin_#{ARCH}.zip"
-  sha1 'f7f5fe32d9c96ed2b134bdb18671602255458874'
-  version VERSION
+  url "https://github.com/jingweno/gh/archive/v0.25.1.tar.gz"
+  sha1 '02a2010e07c859d361ceb47700ec2a8ee07a42a2'
+  depends_on "go" => :build
+  depends_on :hg => :build
 
   def install
-    bin.install "gh"
-    bash_completion.install "gh.bash_completion.sh"
-    zsh_completion.install "gh.zsh_completion" => "_gh"
+    ENV["GOPATH"] = buildpath
+    system 'go get github.com/jingweno/gh'
+    bin.install "bin/gh"
+    bash_completion.install "etc/gh.bash_completion.sh"
+    zsh_completion.install "etc/gh.zsh_completion" => "_gh"
   end
 
   test do
-    assert_equal VERSION, `#{bin}/gh version`.split.last
+    system "gh", "init"
+    assert_file ".git"
   end
 end
