@@ -604,6 +604,8 @@ class Formula
 
       Process.wait
 
+      $stdout.flush
+
       unless $?.success?
         f.flush
         Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
