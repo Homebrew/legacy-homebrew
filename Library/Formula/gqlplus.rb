@@ -8,7 +8,7 @@ class Gqlplus < Formula
   depends_on 'readline'
 
   def install
-    system "./configure","--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
     bin.install "gqlplus"
