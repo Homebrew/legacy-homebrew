@@ -7,12 +7,11 @@ class Python < Formula
   sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
 
   option :universal
-  option 'quicktest', 'Run `make quicktest` after the build (for devs; may fail)'
+  option 'quicktest', "Run `make quicktest` after the build (for devs; may fail)"
   option 'with-brewed-openssl', "Use Homebrew's openSSL instead of the one from OS X"
   option 'with-brewed-tk', "Use Homebrew's Tk (has optional Cocoa and threads support)"
-  option 'with-poll', 'Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)'
-  # --with-dtrace relies on CLT as dtrace hard-codes paths to /usr
-  option 'with-dtrace', 'Experimental DTrace support (http://bugs.python.org/issue13405)' if MacOS::CLT.installed?
+  option 'with-poll', "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
+  option 'with-dtrace', "Experimental DTrace support (http://bugs.python.org/issue13405)"
 
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
@@ -36,12 +35,9 @@ class Python < Formula
   end
 
   def patches
-    p = []
-    p << 'https://gist.github.com/paxswill/5402840/raw/75646d5860685c8be98858288d1772f64d6d5193/pythondtrace-patch.diff' if build.with? 'dtrace'
     # Patch to disable the search for Tk.framework, since Homebrew's Tk is
     # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
-    p << DATA if build.with? 'brewed-tk'
-    p
+    DATA if build.with? 'brewed-tk'
   end
 
   def site_packages_cellar
