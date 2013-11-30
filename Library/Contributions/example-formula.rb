@@ -226,7 +226,7 @@ class ExampleFormula < Formula
   def install
     # Now the sources (from `url`) are downloaded, hash-checked and
     # Homebrew has changed into a temporary directory where the
-    # archive has been unpacked or the repository has benn cloned.
+    # archive has been unpacked or the repository has been cloned.
 
     # Print a warning (do this rarely)
     opoo 'Dtrace features are experimental!' if build.with? 'dtrace'
