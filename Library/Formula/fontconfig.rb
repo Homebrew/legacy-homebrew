@@ -24,7 +24,8 @@ class Fontconfig < Formula
                           "--disable-silent-rules",
                           "--with-add-fonts=/System/Library/Fonts,/Library/Fonts,~/Library/Fonts",
                           "--prefix=#{prefix}",
-                          "--localstatedir=#{var}"
+                          "--localstatedir=#{var}",
+                          "--sysconfdir=#{etc}"
     system "make install"
   end
 

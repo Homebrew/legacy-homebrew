@@ -7,9 +7,9 @@ class Neo4j < Formula
   version '1.9.5'
 
   devel do
-    url 'http://dist.neo4j.org/neo4j-community-2.0.0-M06-unix.tar.gz'
-    sha1 'a39ebc5476ace229e4ad5c901238a2e24a6ef0d7'
-    version '2.0.0-M06'
+    url 'http://dist.neo4j.org/neo4j-community-2.0.0-RC1-unix.tar.gz'
+    sha1 'c7c59df7c0363439244ad1c4e2e837db5ab07cb3'
+    version '2.0.0-RC1'
   end
 
   def install
