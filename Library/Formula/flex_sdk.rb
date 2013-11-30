@@ -1,7 +1,7 @@
 require 'formula'
 
 class FlexSdk < Formula
-  homepage 'http://opensource.adobe.com/wiki/display/flexsdk/Flex+SDK'
+  homepage 'http://flex.apache.org/'
   url 'http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4.6/flex_sdk_4.6.0.23201_mpl.zip'
   version '4.6.0.23201'
   sha1 '86f2cacd0c1927c845a770c02f33fe4a0a3375f4'
