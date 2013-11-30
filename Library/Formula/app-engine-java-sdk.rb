@@ -8,6 +8,6 @@ class AppEngineJavaSdk < Formula
   def install
     rm Dir['bin/*.cmd']
     libexec.install Dir['*']
-    bin.write_exec_script "#{libexec}/bin/*"
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 end
