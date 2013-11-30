@@ -45,11 +45,14 @@ end
 
 __END__
 diff --git a/parse.y b/parse.y
-index b5c94e7..0cda47c 100644
+index b5c94e7..085e5e4 100644
 --- a/parse.y
 +++ b/parse.y
-@@ -5262,7 +5262,12 @@ decode_prompt_string (string)
+@@ -5260,9 +5260,16 @@ decode_prompt_string (string)
+ #undef ROOT_PATH
+ #undef DOUBLE_SLASH_ROOT
  		else
++		  {
  		  /* polite_directory_format is guaranteed to return a string
  		     no longer than PATH_MAX - 1 characters. */
 -		  strcpy (t_string, polite_directory_format (t_string));
@@ -59,6 +62,7 @@ index b5c94e7..0cda47c 100644
 +                  temp = polite_directory_format (t_string);
 +                  if (temp != t_string)
 +                   strcpy (t_string, temp);
++		  }
  
  		temp = trim_pathname (t_string, PATH_MAX - 1);
  		/* If we're going to be expanding the prompt string later,
