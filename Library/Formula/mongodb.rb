@@ -13,23 +13,18 @@ class Mongodb < Formula
   head 'https://github.com/mongodb/mongo.git'
 
   def patches
-    # Fix Clang v8 build failure from build warnings and -Werror
-    'https://github.com/mongodb/mongo/commit/be4bc7.patch' if build.stable?
+    if build.stable?
+      [
+        # Fix Clang v8 build failure from build warnings and -Werror
+        'https://github.com/mongodb/mongo/commit/be4bc7.patch',
+        # Fixes crash on shell exit for 2.4.x
+        'https://github.com/mongodb/mongo/commit/670c98.patch'
+      ]
+    end
   end
 
   depends_on 'scons' => :build
   depends_on 'openssl' => :optional
-
-  if build.stable?
-    # https://github.com/mxcl/homebrew/issues/24741
-    fails_with :clang do
-      cause <<-EOS.undent
-        Embedded V8 has runtime bugs, Clang unsupported for 2.4. See:
-        https://github.com/mxcl/homebrew/issues/24741
-        https://jira.mongodb.org/browse/SERVER-11570
-      EOS
-    end
-  end
 
   def install
     # mongodb currently can't build with libc++; this should be fixed in
