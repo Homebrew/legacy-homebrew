@@ -2,8 +2,8 @@ require 'formula'
 
 class Geany < Formula
   homepage 'http://geany.org/'
-  url 'http://download.geany.org/geany-1.22.tar.gz'
-  sha1 '5c3fe16806debef457f78678cfe0a6528043a6ee'
+  url 'http://download.geany.org/geany-1.23.1.tar.gz'
+  sha1 'b4813a897320b8158cb73fea0c4e2cead07adbc2'
 
   depends_on :x11
   depends_on 'pkg-config' => :build
@@ -11,19 +11,9 @@ class Geany < Formula
   depends_on 'gettext'
   depends_on 'gtk+'
 
-  # Remove --export-dynamic per MacPorts
-  def patches
-    {:p0 =>
-      "https://trac.macports.org/export/103350/trunk/dports/devel/geany/files/patch-no-export-dynamic.diff"
-    }
-  end
-
   def install
-    # Needed to compile against current version of glib.
-    # Check that this is still needed when updating the formula.
-    ENV.append 'LDFLAGS', '-lgmodule-2.0'
-
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make install"
   end
