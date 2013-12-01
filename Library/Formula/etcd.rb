@@ -8,10 +8,6 @@ class Etcd < Formula
 
   depends_on 'go' => :build
 
-  fails_with :clang do
-    cause "clang: error: no such file or directory: 'libgcc.a'"
-  end
-
   def install
     ENV['GOPATH'] = buildpath
     system "./build"
