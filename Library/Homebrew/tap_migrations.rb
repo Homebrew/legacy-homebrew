@@ -13,4 +13,5 @@ TAP_MIGRATIONS = {
   'boost149' => 'homebrew/versions',
   'aimage' => 'homebrew/boneyard',
   'cmucl' => 'homebrew/binary',
+  'lmutil' => 'homebrew/binary',
 }
