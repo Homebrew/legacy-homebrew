@@ -9,5 +9,5 @@ TAP_MIGRATIONS = {
   'syslog-ng' => 'homebrew/boneyard',
   'librets' => 'homebrew/boneyard',
   'drizzle' => 'homebrew/boneyard',
-  'boost149' => 'homebrew/versions,
+  'boost149' => 'homebrew/versions',
 }
