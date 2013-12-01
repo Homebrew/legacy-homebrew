@@ -29,6 +29,12 @@ class Mariadb < Formula
 
   env :std if build.universal?
 
+  def patches
+    if build.devel?
+      'https://gist.github.com/makigumo/7735363/raw/mariadb-10.0.6.mac.patch'
+    end
+  end
+
   def install
     # Don't hard-code the libtool path. See:
     # https://github.com/mxcl/homebrew/issues/20185
@@ -58,6 +64,10 @@ class Mariadb < Formula
       -DINSTALL_SYSCONFDIR=#{etc}
       -DCOMPILATION_COMMENT=Homebrew
     ]
+
+    # may be removed with 10.0.7. See:
+    # https://mariadb.atlassian.net/browse/MDEV-5182
+    args << "-DINSTALL_SYSCONF2DIR=#{etc}" if build.devel?
 
     args << "-DWITH_UNIT_TESTS=OFF" unless build.with? 'tests'
 
