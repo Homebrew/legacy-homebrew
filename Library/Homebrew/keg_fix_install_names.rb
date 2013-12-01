@@ -41,8 +41,7 @@ class Keg
     end
 
     # Search for pkgconfig .pc files and relocate references to the cellar
-    old_cellar = HOMEBREW_CELLAR if old_cellar == :any
-    old_prefix = HOMEBREW_PREFIX if old_prefix == :any
+    old_cellar = "#{old_prefix}/Cellar" if old_cellar == :any
 
     pkgconfig_files.each do |pcfile|
       pcfile.ensure_writable do
