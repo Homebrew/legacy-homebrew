@@ -64,6 +64,7 @@ class Keg
   #   some_variable="/opt/homebrew/Cellar/foo/1.0/lib"
   # and add quotes to protect against paths containing spaces.
   def replace_pkgconfig_file_path(s, old, new)
+    return if old == new
     s.gsub!(%r[([\S]+)="?#{Regexp.escape(old)}(.*?)"?$], "\\1=\"#{new}\\2\"")
   end
 
