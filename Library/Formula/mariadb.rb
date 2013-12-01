@@ -29,6 +29,20 @@ class Mariadb < Formula
 
   env :std if build.universal?
 
+  def patches
+    if build.devel?
+      [
+        # Prevent name collision leading to compilation failure. See:
+        # issue #24489, upstream: https://mariadb.atlassian.net/browse/MDEV-5314
+        'https://gist.github.com/makigumo/7735363/raw/e7b1bc368dbf0517ccae64947e4ef9d5fa00f51c/mariadb-10.0.6.mac.patch',
+        # Cherry-picked from upstream.
+        # http://bazaar.launchpad.net/~maria-captains/maria/10.0-base/revision/3941#support-files/CMakeLists.txt
+        # Resolved in 10.0.7, see: https://mariadb.atlassian.net/browse/MDEV-5314
+        'https://gist.github.com/makigumo/7735363/raw/d7f475d7937f51d7d18c35dd3dd424d74f0284f3/mariadb-10.0.6.mac.2.patch'
+      ]
+    end
+  end
+
   def install
     # Don't hard-code the libtool path. See:
     # https://github.com/mxcl/homebrew/issues/20185
