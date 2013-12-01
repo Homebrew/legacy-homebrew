@@ -18,6 +18,6 @@ class Gh < Formula
 
   test do
     system "gh", "init"
-    assert_file ".git"
+    assert File.exists? ".git"
   end
 end
