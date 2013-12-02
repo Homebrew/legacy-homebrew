@@ -186,7 +186,7 @@ class FormulaInstaller
         elsif req.satisfied?
           Requirement.prune
         elsif req.default_formula?
-          dependent.deps << req.to_dependency
+          unsatisfied_deps << req.to_dependency
           Requirement.prune
         else
           puts "#{dependent}: #{req.message}"
