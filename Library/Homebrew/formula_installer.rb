@@ -102,11 +102,7 @@ class FormulaInstaller
 
     check_conflicts
 
-    unless ignore_deps
-      perform_readline_hack
-      check_requirements
-      install_dependencies
-    end
+    compute_and_install_dependencies unless ignore_deps
 
     if ARGV.build_bottle? && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
@@ -141,10 +137,7 @@ class FormulaInstaller
     build_bottle_preinstall if ARGV.build_bottle?
 
     unless @poured_bottle
-      if @pour_failed and not ignore_deps
-        check_requirements
-        install_dependencies
-      end
+      compute_and_install_dependencies if @pour_failed and not ignore_deps
       build
       clean
     end
@@ -177,6 +170,12 @@ class FormulaInstaller
     end
 
     raise FormulaConflictError.new(f, conflicts) unless conflicts.empty?
+  end
+
+  def compute_and_install_dependencies
+    perform_readline_hack
+    check_requirements
+    install_dependencies
   end
 
   def check_requirements
