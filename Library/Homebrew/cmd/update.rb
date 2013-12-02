@@ -1,6 +1,5 @@
 require 'cmd/tap'
 require 'cmd/untap'
-require 'tap_migrations'
 
 module Homebrew extend self
   def update
@@ -66,7 +65,7 @@ module Homebrew extend self
         install_tap tap_user, tap_repo
       rescue AlreadyTappedError => e
       end
-    end
+    end if load_tap_migrations
 
     if report.empty?
       puts "Already up-to-date."
@@ -91,6 +90,11 @@ module Homebrew extend self
     raise
   end
 
+  def load_tap_migrations
+    require 'tap_migrations'
+  rescue LoadError
+    false
+  end
 end
 
 class Updater
