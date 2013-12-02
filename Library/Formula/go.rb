@@ -65,25 +65,17 @@ class Go < Formula
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
-  def caveats
-    changelog = <<-EOS.undent
-    The go get command no longer allows $GOROOT as
-    the default destination in Go 1.1 when downloading package source.
-    To use the go get command, a valid $GOPATH is now required.
+  def caveats; <<-EOS.undent
+    As of go 1.2, a valid GOPATH is required to use the `go get` command:
+      http://golang.org/doc/code.html#GOPATH
 
-    As a result of the previous change, the go get command will also fail
-    when $GOPATH and $GOROOT are set to the same value.
+    `go vet` and `go doc` are now part of the go.tools sub repo:
+      http://golang.org/doc/go1.2#go_tools_godoc
 
-    More information here: http://golang.org/doc/code.html#GOPATH
-
-    In go 1.2 go vet and go doc are now part of the go.tools sub repo.
-    see: http://golang.org/doc/go1.2#go_tools_godoc
-
-    To get go vet and go doc run:
-      $ go get code.google.com/p/go.tools/cmd/godoc
-      $ go get code.google.com/p/go.tools/cmd/vet
+    To get `go vet` and `go doc` run:
+      go get code.google.com/p/go.tools/cmd/godoc
+      go get code.google.com/p/go.tools/cmd/vet
     EOS
-    return changelog
   end
 
   test do
