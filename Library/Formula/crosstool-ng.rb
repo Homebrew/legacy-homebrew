@@ -15,6 +15,8 @@ class CrosstoolNg < Formula
   depends_on 'binutils'
   depends_on 'libelf'
 
+  env :std
+
   def patches
     # Fixes clang offsetof compatability. Took better patch from #14547
     DATA
