@@ -11,7 +11,7 @@ class IncludeWhatYouUse < Formula
 
   def install
     mkdir '../build-iwyu' do
-       system "cmake -DLLVM_PATH=/usr/local/Cellar/llvm/3.3/ ../include-what-you-use"
+       system "cmake -DLLVM_PATH=/usr/local/Cellar/llvm/3.3/ ../include-what-you-use -DCMAKE_INSTALL_PREFIX=#{prefix}/"
        system "make install"
     end
     system "cp ../include-what-you-use/fix_includes.py #{prefix}/"
