@@ -61,10 +61,8 @@ class Build
 
   def initialize(f)
     @f = f
-    # Expand requirements before dependencies, as requirements
-    # may add dependencies if a default formula is activated.
-    @reqs = expand_reqs
     @deps = expand_deps
+    @reqs = expand_reqs
   end
 
   def post_superenv_hacks
@@ -88,7 +86,7 @@ class Build
       elsif req.build? && dependent != f
         Requirement.prune
       elsif req.satisfied? && req.default_formula? && (dep = req.to_dependency).installed?
-        dependent.deps << dep
+        deps << dep
         Requirement.prune
       end
     end
