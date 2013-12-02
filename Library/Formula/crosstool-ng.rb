@@ -15,6 +15,9 @@ class CrosstoolNg < Formula
   depends_on 'binutils'
   depends_on 'libelf'
 
+  # Avoid superenv to prevent https://github.com/mxcl/homebrew/pull/10552#issuecomment-9736248
+  env :std
+
   def patches
     # Fixes clang offsetof compatability. Took better patch from #14547
     DATA
