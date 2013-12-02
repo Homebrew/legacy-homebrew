@@ -141,7 +141,10 @@ class FormulaInstaller
     build_bottle_preinstall if ARGV.build_bottle?
 
     unless @poured_bottle
-      install_dependencies if @pour_failed && !ignore_deps
+      if @pour_failed and not ignore_deps
+        check_requirements
+        install_dependencies
+      end
       build
       clean
     end
