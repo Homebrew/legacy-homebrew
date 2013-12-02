@@ -7,7 +7,7 @@ class IncludeWhatYouUse < Formula
   sha1 'f49dd094300b648543e3510ebd8101dbab23056f'
 
   depends_on 'llvm' => [:build, "with-clang"]
-  depends_on 'cmake'
+  depends_on 'cmake' => :build
 
   def install
     mkdir '../build-iwyu' do
