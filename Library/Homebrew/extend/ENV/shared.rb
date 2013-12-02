@@ -105,9 +105,7 @@ module SharedEnvExtension
       :clang
     elsif self['HOMEBREW_CC']
       cc = COMPLER_ALIASES.fetch(self['HOMEBREW_CC'], self['HOMEBREW_CC'])
-      COMPILER_SYMBOL_MAP.fetch(cc) do |invalid|
-        MacOS.default_compiler
-      end
+      COMPILER_SYMBOL_MAP.fetch(cc) { MacOS.default_compiler }
     else
       MacOS.default_compiler
     end
