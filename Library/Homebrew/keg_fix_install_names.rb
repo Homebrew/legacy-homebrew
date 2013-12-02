@@ -41,26 +41,30 @@ class Keg
     end
 
     # Search for pkgconfig .pc files and relocate references to the cellar
-    old_cellar = HOMEBREW_CELLAR if old_cellar == :any
-    old_prefix = HOMEBREW_PREFIX if old_prefix == :any
-
-    old_cellar = Regexp.escape(old_cellar)
-    old_prefix = Regexp.escape(old_prefix)
+    old_cellar = "#{old_prefix}/Cellar" if old_cellar == :any
 
     pkgconfig_files.each do |pcfile|
       pcfile.ensure_writable do
         pcfile.open('rb') do |f|
           s = f.read
-          # These regexes match lines of the form: prefix=/usr/local/Cellar/foo/1.2.3/lib
-          # and (assuming new_cellar is "/tmp") transform them into: prefix="/tmp/foo/1.2.3/lib"
-          # If the original line did not have quotes, we add them in automatically
-          s.gsub!(%r[([\S]+)="?#{old_cellar}(.*?)"?$], "\\1=\"#{new_cellar}\\2\"")
-          s.gsub!(%r[([\S]+)="?#{old_prefix}(.*?)"?$], "\\1=\"#{new_prefix}\\2\"")
+          replace_pkgconfig_file_path(s, old_cellar, new_cellar)
+          replace_pkgconfig_file_path(s, old_prefix, new_prefix)
           f.reopen(pcfile, 'wb')
           f.write(s)
         end
       end
     end
+  end
+
+  # Given old == "/usr/local/Cellar" and new == "/opt/homebrew/Cellar",
+  # then update lines of the form
+  #   some_variable=/usr/local/Cellar/foo/1.0/lib
+  # to
+  #   some_variable="/opt/homebrew/Cellar/foo/1.0/lib"
+  # and add quotes to protect against paths containing spaces.
+  def replace_pkgconfig_file_path(s, old, new)
+    return if old == new
+    s.gsub!(%r[([\S]+)="?#{Regexp.escape(old)}(.*?)"?$], "\\1=\"#{new}\\2\"")
   end
 
   # Detects the C++ dynamic libraries in place, scanning the dynamic links

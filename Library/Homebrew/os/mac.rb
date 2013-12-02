@@ -50,6 +50,10 @@ module OS
       end
     end
 
+    def dev_tools_prefix
+      dev_tools_path.parent.parent
+    end
+
     def dev_tools_path
       @dev_tools_path ||= if tools_in_prefix? CLT::MAVERICKS_PKG_PATH
         Pathname.new "#{CLT::MAVERICKS_PKG_PATH}/usr/bin"

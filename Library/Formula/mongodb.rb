@@ -13,8 +13,14 @@ class Mongodb < Formula
   head 'https://github.com/mongodb/mongo.git'
 
   def patches
-    # Fix Clang v8 build failure from build warnings and -Werror
-    'https://github.com/mongodb/mongo/commit/be4bc7.patch' if build.stable?
+    if build.stable?
+      [
+        # Fix Clang v8 build failure from build warnings and -Werror
+        'https://github.com/mongodb/mongo/commit/be4bc7.patch',
+        # Fixes crash on shell exit for 2.4.x
+        'https://github.com/mongodb/mongo/commit/670c98.patch'
+      ]
+    end
   end
 
   depends_on 'scons' => :build
