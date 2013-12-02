@@ -237,7 +237,6 @@ class FormulaInstaller
   end
 
   def install_dependencies
-    unsatisfied_deps.clear if @pour_failed
     unsatisfied_deps.concat(filter_deps)
 
     if unsatisfied_deps.length > 1
@@ -252,6 +251,8 @@ class FormulaInstaller
       end
     end
     @show_header = true unless unsatisfied_deps.empty?
+  ensure
+    unsatisfied_deps.clear
   end
 
   def install_dependency dep
