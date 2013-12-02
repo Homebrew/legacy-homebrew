@@ -234,25 +234,25 @@ class FormulaInstaller
     f.recursive_dependencies.select { |d| deps.include? d }
   end
 
-  def effective_deps
-    @effective_deps ||= filter_deps
+  def unsatisfied_deps
+    @unsatisfied_deps ||= filter_deps
   end
 
   def install_dependencies
-    @effective_deps = nil if @pour_failed
+    @unsatisfied_deps = nil if @pour_failed
 
-    if effective_deps.length > 1
-      oh1 "Installing dependencies for #{f}: #{Tty.green}#{effective_deps*", "}#{Tty.reset}"
+    if unsatisfied_deps.length > 1
+      oh1 "Installing dependencies for #{f}: #{Tty.green}#{unsatisfied_deps*", "}#{Tty.reset}"
     end
 
-    effective_deps.each do |dep|
+    unsatisfied_deps.each do |dep|
       if dep.requested?
        install_dependency(dep)
       else
         ARGV.filter_for_dependencies { install_dependency(dep) }
       end
     end
-    @show_header = true unless effective_deps.empty?
+    @show_header = true unless unsatisfied_deps.empty?
   end
 
   def install_dependency dep
