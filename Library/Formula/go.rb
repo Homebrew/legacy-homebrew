@@ -48,7 +48,7 @@ class Go < Formula
 
     cd 'src' do
       targets.each do |os, archs|
-        cgo_enabled = ((os == 'darwin') && build.with?('cgo')) ? "1" : "0"
+        cgo_enabled = os == 'darwin' && build.with?('cgo') ? "1" : "0"
         archs.each do |arch|
           ENV['GOROOT_FINAL'] = libexec
           ENV['GOOS']         = os
