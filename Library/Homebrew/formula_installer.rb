@@ -17,6 +17,7 @@ class FormulaInstaller
   attr_reader :f
   attr_accessor :tab, :options, :ignore_deps
   attr_accessor :show_summary_heading, :show_header
+  attr_reader :unsatisfied_deps
 
   def initialize ff
     @f = ff
@@ -24,6 +25,7 @@ class FormulaInstaller
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @options = Options.new
     @tab = Tab.dummy_tab(ff)
+    @unsatisfied_deps = []
 
     @@attempted ||= Set.new
 
@@ -234,12 +236,9 @@ class FormulaInstaller
     f.recursive_dependencies.select { |d| deps.include? d }
   end
 
-  def unsatisfied_deps
-    @unsatisfied_deps ||= filter_deps
-  end
-
   def install_dependencies
-    @unsatisfied_deps = nil if @pour_failed
+    unsatisfied_deps.clear if @pour_failed
+    unsatisfied_deps.concat(filter_deps)
 
     if unsatisfied_deps.length > 1
       oh1 "Installing dependencies for #{f}: #{Tty.green}#{unsatisfied_deps*", "}#{Tty.reset}"
