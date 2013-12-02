@@ -17,10 +17,6 @@ class Influxdb < Formula
   depends_on "flex" => :build
   depends_on "go" => :build
 
-  fails_with :clang do
-    cause "clang: error: argument unused during compilation: '-fno-eliminate-unused-debug-types'"
-  end
-
   def install
     ENV["GOPATH"] = buildpath
 
