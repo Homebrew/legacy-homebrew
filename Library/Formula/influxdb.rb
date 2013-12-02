@@ -3,7 +3,7 @@ require "formula"
 class Influxdb < Formula
   homepage "http://influxdb.org"
   url "http://get.influxdb.org/influxdb-0.3.2.src.tar.gz"
-  sha1 "bb0c2a2fdc0db2e7b13ba5611c22b833e313b986"
+  sha1 "06f8acbfff175b94bfd49a76ce9d1952328e916d"
 
   depends_on "leveldb"
   depends_on "protobuf" => :build
@@ -18,7 +18,8 @@ class Influxdb < Formula
     bison = Formula.factory('bison').bin/"bison"
 
     system "./configure --with-flex=#{flex} --with-bison=#{bison}"
-    system "make build"
+    system "make dependencies protobuf parser"
+    system "go build server"
 
     inreplace "config.json.sample" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
