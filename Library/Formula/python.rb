@@ -3,8 +3,8 @@ require 'formula'
 class Python < Formula
   homepage 'http://www.python.org'
   head 'http://hg.python.org/cpython', :using => :hg, :branch => '2.7'
-  url 'http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz'
-  sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
+  url 'http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz'
+  sha1 '8321636af2acbeaa68fc635d7dda7369ed446a80'
 
   option :universal
   option 'quicktest', "Run `make quicktest` after the build (for devs; may fail)"
