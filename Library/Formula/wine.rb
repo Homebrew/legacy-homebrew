@@ -80,7 +80,7 @@ class Wine < Formula
   # libncurses.5.4.dylib, and fails to find it without the fallback path.
 
   def library_path
-    path = %W[#{HOMEBREW_PREFIX}/lib /usr/lib]
+    paths = %W[#{HOMEBREW_PREFIX}/lib /usr/lib]
     paths.unshift(MacOS::X11.lib) unless build.without? 'x11'
     paths.join(':')
   end
