@@ -9,7 +9,9 @@ class Compface < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
+
     system "make", "install"
   end
 
