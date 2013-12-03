@@ -3,7 +3,7 @@ require "formula"
 class Influxdb < Formula
   homepage "http://influxdb.org"
   url "http://get.influxdb.org/influxdb-0.3.2.src.tar.gz"
-  sha1 "089bbc75e15cf0430cd1a0e7aa4615a0d4a79430"
+  sha1 "6b730a75e6694abd5e913b4ad08936f7661569bd"
 
   depends_on "leveldb"
   depends_on "protobuf" => :build
