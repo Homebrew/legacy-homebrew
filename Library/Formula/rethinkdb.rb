@@ -16,7 +16,7 @@ class Rethinkdb < Formula
 
   def install
     args = ["--prefix=#{prefix}", "--fetch", "v8"]
-    args += ["--fetch", "protobuf"] unless MacOS.version >= :mavericks
+    args += ["--fetch", MacOS.version >= :mavericks ? "protoc" : "protobuf"]
     system "./configure", *args
     system "make"
     system "make install-osx"
