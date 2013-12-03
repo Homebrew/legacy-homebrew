@@ -371,7 +371,7 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
 
     if @clone.exist? and not repo_valid?
       puts "Removing invalid SVN repo from cache"
-      @clone.rmtree
+      clear_cache
     end
 
     case @ref_type
@@ -474,7 +474,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
       end
     elsif @clone.exist?
       puts "Removing invalid .git repo from cache"
-      FileUtils.rm_rf @clone
+      clear_cache
       clone_repo
     else
       clone_repo
@@ -675,7 +675,7 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
       @clone.cd { quiet_safe_system hgpath, 'pull', '--update' }
     elsif @clone.exist?
       puts "Removing invalid hg repo from cache"
-      @clone.rmtree
+      clear_cache
       clone_repo
     else
       clone_repo
@@ -726,7 +726,7 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
       @clone.cd { safe_system bzrpath, 'update' }
     elsif @clone.exist?
       puts "Removing invalid bzr repo from cache"
-      @clone.rmtree
+      clear_cache
       clone_repo
     else
       clone_repo
