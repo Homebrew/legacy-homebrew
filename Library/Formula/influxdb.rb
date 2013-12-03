@@ -17,7 +17,7 @@ class Influxdb < Formula
     flex = Formula.factory('flex').bin/"flex"
     bison = Formula.factory('bison').bin/"bison"
 
-    system "./configure --with-flex=#{flex} --with-bison=#{bison}"
+    system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
     system "make dependencies protobuf parser"
     system "go build server"
 
