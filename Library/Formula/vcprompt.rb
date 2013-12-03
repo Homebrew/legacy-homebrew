@@ -2,12 +2,22 @@ require 'formula'
 
 class Vcprompt < Formula
   homepage 'https://bitbucket.org/gward/vcprompt'
-  url 'https://bitbucket.org/gward/vcprompt/downloads/vcprompt-1.1.tar.gz'
-  sha1 '6982e3ecc0c677546da1e067984c0e25c3f9261c'
+  url 'https://bitbucket.org/gward/vcprompt/downloads/vcprompt-1.2.tar.gz'
+  sha1 '5e46cc8525f823ecd66c624903f15f5c50276290'
 
-  head 'hg://https://bitbucket.org/gward/vcprompt'
+  head do
+    url 'hg://https://bitbucket.org/gward/vcprompt'
+    depends_on :autoconf
+  end
+
+  depends_on 'sqlite'
 
   def install
+    system "autoconf" if build.head?
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+
     system "make", "PREFIX=#{prefix}",
                    "MANDIR=#{man1}",
                    "install"
