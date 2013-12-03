@@ -27,9 +27,8 @@ module MacCPUs
   end
 
   def family
-    if type == :intel
-      @intel_family ||= `/usr/sbin/sysctl -n hw.cpufamily`.to_i
-      case @intel_family
+    if intel?
+      case @intel_family ||= `/usr/sbin/sysctl -n hw.cpufamily`.to_i
       when 0x73d67300 # Yonah: Core Solo/Duo
         :core
       when 0x426f69ef # Merom: Core 2 Duo
@@ -49,9 +48,8 @@ module MacCPUs
       else
         :dunno
       end
-    elsif type == :ppc
-      @ppc_family ||= `/usr/sbin/sysctl -n hw.cpusubtype`.to_i
-      case @ppc_family
+    elsif ppc?
+      case @ppc_family ||= `/usr/sbin/sysctl -n hw.cpusubtype`.to_i
       when 9
         :g3  # PowerPC 750
       when 10
@@ -77,18 +75,15 @@ module MacCPUs
   end
 
   def bits
-    return @bits if defined? @bits
-
-    is_64_bit = sysctl_bool("hw.cpu64bit_capable")
-    @bits ||= is_64_bit ? 64 : 32
+    @bits ||= sysctl_bool("hw.cpu64bit_capable") ? 64 : 32
   end
 
   def arch_32_bit
-    type == :intel ? :i386 : :ppc
+    intel? ? :i386 : :ppc
   end
 
   def arch_64_bit
-    type == :intel ? :x86_64 : :ppc64
+    intel? ? :x86_64 : :ppc64
   end
 
   # Returns an array that's been extended with ArchitectureListExtension,
@@ -103,37 +98,48 @@ module MacCPUs
     end
   end
 
+  def aes?
+    sysctl_bool('hw.optional.aes')
+  end
+
   def altivec?
-    @altivec ||= sysctl_bool('hw.optional.altivec')
+    sysctl_bool('hw.optional.altivec')
   end
 
   def avx?
-    @avx ||= sysctl_bool('hw.optional.avx1_0')
+    sysctl_bool('hw.optional.avx1_0')
+  end
+
+  def avx2?
+    sysctl_bool('hw.optional.avx2_0')
   end
 
   def sse3?
-    @sse3 ||= sysctl_bool('hw.optional.sse3')
+    sysctl_bool('hw.optional.sse3')
   end
 
   def ssse3?
-    @ssse3 ||= sysctl_bool('hw.optional.supplementalsse3')
+    sysctl_bool('hw.optional.supplementalsse3')
   end
 
   def sse4?
-    @sse4 ||= sysctl_bool('hw.optional.sse4_1')
+    sysctl_bool('hw.optional.sse4_1')
   end
 
   def sse4_2?
-    @sse4 ||= sysctl_bool('hw.optional.sse4_2')
+    sysctl_bool('hw.optional.sse4_2')
   end
 
   protected
 
   def sysctl_bool(property)
-    result = nil
-    IO.popen("/usr/sbin/sysctl -n #{property} 2>/dev/null") do |f|
-      result = f.gets.to_i # should be 0 or 1
+    (@properties ||= {}).fetch(property) do
+      result = nil
+      IO.popen("/usr/sbin/sysctl -n '#{property}' 2>/dev/null") do |f|
+        result = f.gets.to_i # should be 0 or 1
+      end
+      # sysctl call succeded and printed 1
+      @properties[property] = $?.success? && result == 1
     end
-    $?.success? && result == 1 # sysctl call succeded and printed 1
   end
 end

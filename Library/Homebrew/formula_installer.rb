@@ -17,6 +17,7 @@ class FormulaInstaller
   attr_reader :f
   attr_accessor :tab, :options, :ignore_deps
   attr_accessor :show_summary_heading, :show_header
+  attr_reader :unsatisfied_deps
 
   def initialize ff
     @f = ff
@@ -24,6 +25,7 @@ class FormulaInstaller
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @options = Options.new
     @tab = Tab.dummy_tab(ff)
+    @unsatisfied_deps = []
 
     @@attempted ||= Set.new
 
@@ -100,11 +102,7 @@ class FormulaInstaller
 
     check_conflicts
 
-    unless ignore_deps
-      perform_readline_hack
-      check_requirements
-      install_dependencies
-    end
+    compute_and_install_dependencies unless ignore_deps
 
     if ARGV.build_bottle? && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
@@ -139,7 +137,7 @@ class FormulaInstaller
     build_bottle_preinstall if ARGV.build_bottle?
 
     unless @poured_bottle
-      install_dependencies if @pour_failed && !ignore_deps
+      compute_and_install_dependencies if @pour_failed and not ignore_deps
       build
       clean
     end
@@ -174,6 +172,12 @@ class FormulaInstaller
     raise FormulaConflictError.new(f, conflicts) unless conflicts.empty?
   end
 
+  def compute_and_install_dependencies
+    perform_readline_hack
+    check_requirements
+    install_dependencies
+  end
+
   def check_requirements
     unsatisfied = ARGV.filter_for_dependencies do
       f.recursive_requirements do |dependent, req|
@@ -184,7 +188,7 @@ class FormulaInstaller
         elsif req.satisfied?
           Requirement.prune
         elsif req.default_formula?
-          dependent.deps << req.to_dependency
+          unsatisfied_deps << req.to_dependency
           Requirement.prune
         else
           puts "#{dependent}: #{req.message}"
@@ -234,25 +238,23 @@ class FormulaInstaller
     f.recursive_dependencies.select { |d| deps.include? d }
   end
 
-  def effective_deps
-    @effective_deps ||= filter_deps
-  end
-
   def install_dependencies
-    @effective_deps = nil if @pour_failed
+    unsatisfied_deps.concat(filter_deps)
 
-    if effective_deps.length > 1
-      oh1 "Installing dependencies for #{f}: #{Tty.green}#{effective_deps*", "}#{Tty.reset}"
+    if unsatisfied_deps.length > 1
+      oh1 "Installing dependencies for #{f}: #{Tty.green}#{unsatisfied_deps*", "}#{Tty.reset}"
     end
 
-    effective_deps.each do |dep|
+    unsatisfied_deps.each do |dep|
       if dep.requested?
        install_dependency(dep)
       else
         ARGV.filter_for_dependencies { install_dependency(dep) }
       end
     end
-    @show_header = true unless effective_deps.empty?
+    @show_header = true unless unsatisfied_deps.empty?
+  ensure
+    unsatisfied_deps.clear
   end
 
   def install_dependency dep

@@ -50,6 +50,10 @@ module OS
       end
     end
 
+    def dev_tools_prefix
+      dev_tools_path.parent.parent
+    end
+
     def dev_tools_path
       @dev_tools_path ||= if tools_in_prefix? CLT::MAVERICKS_PKG_PATH
         Pathname.new "#{CLT::MAVERICKS_PKG_PATH}/usr/bin"
@@ -213,7 +217,7 @@ module OS
     end
 
     def preferred_arch
-      @preferred_arch ||= if prefer_64_bit?
+      if prefer_64_bit?
         Hardware::CPU.arch_64_bit
       else
         Hardware::CPU.arch_32_bit

@@ -6,8 +6,8 @@ class Litmus < Formula
   sha1 '42ad603035d15798facb3be79b1c51376820cb19'
 
   def install
-    # Just basic options for now. We could use --with-ssl or alternative neon using dependency tracking?
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

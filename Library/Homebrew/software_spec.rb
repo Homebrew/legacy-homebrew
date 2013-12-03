@@ -27,7 +27,10 @@ class SoftwareSpec
   def owner= owner
     @name = owner.name
     @resource.owner = self
-    resources.each_value { |r| r.owner = self }
+    resources.each_value do |r|
+      r.owner     = self
+      r.version ||= version
+    end
   end
 
   def url val=nil, specs={}

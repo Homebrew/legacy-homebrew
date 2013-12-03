@@ -1,7 +1,7 @@
 require 'formula'
 
 class Ruby < Formula
-  homepage 'http://www.ruby-lang.org/en/'
+  homepage 'https://www.ruby-lang.org/'
   url 'http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.bz2'
   sha256 '3de4e4d9aff4682fa4f8ed2b70bd0d746fae17452fc3d3a8e8f505ead9105ad9'
 

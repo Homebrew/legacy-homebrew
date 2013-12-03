@@ -13,8 +13,14 @@ class Mongodb < Formula
   head 'https://github.com/mongodb/mongo.git'
 
   def patches
-    # Fix Clang v8 build failure from build warnings and -Werror
-    'https://github.com/mongodb/mongo/commit/be4bc7.patch' if build.stable?
+    if build.stable?
+      [
+        # Fix Clang v8 build failure from build warnings and -Werror
+        'https://github.com/mongodb/mongo/commit/be4bc7.patch',
+        # Fixes crash on shell exit for 2.4.x
+        'https://github.com/mongodb/mongo/commit/670c98.patch'
+      ]
+    end
   end
 
   depends_on 'scons' => :build
@@ -24,6 +30,8 @@ class Mongodb < Formula
     # mongodb currently can't build with libc++; this should be fixed in
     # 2.6, but can't be backported to the current stable release.
     ENV.cxx += ' -stdlib=libstdc++' if ENV.compiler == :clang && MacOS.version >= :mavericks
+
+    scons = Formula.factory('scons').opt_prefix/'bin/scons'
 
     args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
     args << '--64' if MacOS.prefer_64_bit?
@@ -35,7 +43,7 @@ class Mongodb < Formula
       args << "--extrapathdyn=#{Formula.factory('openssl').opt_prefix}"
     end
 
-    system 'scons', 'install', *args
+    system scons, 'install', *args
 
     (prefix+'mongod.conf').write mongodb_conf
 

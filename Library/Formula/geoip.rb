@@ -6,10 +6,10 @@ class Geoip < Formula
   sha1 '41ed21fb2d40e54648cae2a1f73e8a5210676def'
   head 'https://github.com/maxmind/geoip-api-c.git'
 
-  # These are needed for the autoreconf it always tries to run.
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
+  depends_on 'geoipupdate' => :optional
 
   option :universal
 
@@ -31,9 +31,25 @@ class Geoip < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
+                          "--datadir=#{var}",
                           "--prefix=#{prefix}"
     system "make", "check"
     system "make", "install"
+  end
+
+  def post_install
+    geoip_data = Pathname.new "#{var}/GeoIP"
+    geoip_data.mkpath
+
+    # Since default data directory moved, copy existing DBs
+    legacy_data = Pathname.new "#{HOMEBREW_PREFIX}/share/GeoIP"
+    cp Dir.glob("#{legacy_data}/*"), geoip_data if legacy_data.exist?
+
+    ["City", "Country"].each do |type|
+      full = Pathname.new "#{geoip_data}/GeoIP#{type}.dat"
+      next if full.exist? or full.symlink?
+      ln_s "GeoLite#{type}.dat", full
+    end
   end
 
   test do
@@ -50,7 +66,7 @@ index 30fc0f9..f20f095 100755
 +++ b/bootstrap
 @@ -1,5 +1,14 @@
  #!/bin/sh
- 
+
 +# dl the dat file if needed
 +DIR="$( cd "$( dirname "$0"  )" && pwd  )"
 +
