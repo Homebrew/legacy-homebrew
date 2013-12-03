@@ -7,7 +7,6 @@ class HgGit < Formula
   head 'https://bitbucket.org/durin42/hg-git', :using => :hg
 
   depends_on :python
-  depends_on "mercurial" => :optional
 
   def install
     prefix.install 'hggit'
