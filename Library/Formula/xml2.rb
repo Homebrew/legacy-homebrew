@@ -12,6 +12,8 @@ class Xml2 < Formula
   # depends_on 'cmake' => :build
   # depends_on :x11 # if your formula requires any X11/XQuartz components
   depends_on 'libxml++'
+  depends_on 'gcc49' => :build
+  depends_on 'pkg-config'
 
   def install
     # ENV.j1  # if your formula's build system can't parallelize
@@ -28,6 +30,6 @@ class Xml2 < Formula
     # This test will fail and we won't accept that! It's enough to just replace
     # "false" with the main program this formula installs, but it'd be nice if you
     # were more thorough. Run the test with `brew test xml2`.
-    system "brew test xml2"
+    system "echo '<test/>' | xml2"
   end
 end
