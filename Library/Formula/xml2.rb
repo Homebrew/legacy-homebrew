@@ -5,8 +5,6 @@ class Xml2 < Formula
   url 'http://download.ofb.net/gale/xml2-0.5.tar.gz'
   sha1 'e954311383d053747ae0c224b12dfddb8a1c0e74'
 
-  depends_on 'libxml++'
-  depends_on 'gcc49' => :build
   depends_on 'pkg-config'
 
   def install
