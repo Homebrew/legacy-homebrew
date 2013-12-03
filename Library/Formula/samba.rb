@@ -7,6 +7,9 @@ class Samba < Formula
 
   conflicts_with 'talloc', :because => 'both install `include/talloc.h`'
 
+  skip_clean 'private'
+  skip_clean 'var/locks'
+
   # Fixes the Grouplimit of 16 users os OS X.
   # Bug has been raised upstream:
   # https://bugzilla.samba.org/show_bug.cgi?id=8773
@@ -24,6 +27,8 @@ class Samba < Formula
       system "make install"
       (prefix/'etc').mkpath
       touch prefix/'etc/smb.conf'
+      (prefix/'private').mkpath
+      (var/'locks').mkpath
     end
   end
 end
