@@ -13,6 +13,6 @@ class Xml2 < Formula
   end
 
   test do
-    system "echo '<test/>' | xml2"
+    system "echo '<test/>' | \"#{bin}/xml2\""
   end
 end
