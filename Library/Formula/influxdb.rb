@@ -24,7 +24,7 @@ class Influxdb < Formula
     inreplace "config.json.sample" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
       s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
-      s.gsub! "./admin/", "#{share}/admin/"
+      s.gsub! "./admin/", "#{opt_prefix}/share/admin/"
     end
 
     bin.install "server" => "influxdb"
