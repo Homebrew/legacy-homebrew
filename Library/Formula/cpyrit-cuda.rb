@@ -25,7 +25,7 @@ class CudaRequirement < Requirement
       You will also need to download and install the 'CUDA Toolkit' package.
 
       The `nvcc` has to be in your PATH then (which is normally the case).
-
+      If it's not there you can add by adding export PATH=$PATH:/usr/local/cuda/bin
     EOS
   end
 end
@@ -37,6 +37,7 @@ class CpyritCuda < Formula
 
     depends_on :python
     depends_on 'pyrit'
+    depends_on CudaRequirement
 
     def install
       ENV.append 'LDFLAGS', "-L/usr/local/cuda/lib"
