@@ -365,9 +365,15 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     @clone.join(".svn").directory?
   end
 
+  def repo_url
+    `svn info '#{@clone}' 2>/dev/null`.strip[/^URL: (.+)$/, 1]
+  end
+
   def fetch
     @url = @url.sub(/^svn\+/, '') if @url =~ %r[^svn\+http://]
     ohai "Checking out #{@url}"
+
+    clear_cache unless @url.chomp("/") == repo_url or quiet_system 'svn', 'switch', @url, @clone
 
     if @clone.exist? and not repo_valid?
       puts "Removing invalid SVN repo from cache"
