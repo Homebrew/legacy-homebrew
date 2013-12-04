@@ -2,10 +2,16 @@ require 'formula'
 
 class Redis < Formula
   homepage 'http://redis.io/'
-  url 'http://download.redis.io/releases/redis-2.6.16.tar.gz'
-  sha1 'f94c0f623aaa8c310f9be2a88e81716de01ce0ce'
+  url 'http://download.redis.io/releases/redis-2.8.2.tar.gz'
+  sha1 '3be038b9d095ce3dece7918aae810d14fe770400'
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
+
+  bottle do
+    sha1 'cf6ca907e14a42320d78b472430f45c9680cd028' => :mavericks
+    sha1 '43110bf16a73096c442e5ab98488da5fdd891680' => :mountain_lion
+    sha1 'e1423a28165777e4d834ac0228db2870be261bf2' => :lion
+  end
 
   fails_with :llvm do
     build 2334
@@ -30,14 +36,8 @@ class Redis < Formula
       s.gsub! "\# bind 127.0.0.1", "bind 127.0.0.1"
     end
 
-    # Fix redis upgrade from 2.4 to 2.6.
-    if File.exists?(etc/'redis.conf') && !File.readlines(etc/'redis.conf').grep(/^vm-enabled/).empty?
-      mv etc/'redis.conf', etc/'redis.conf.old'
-      ohai "Your redis.conf will not work with 2.6; moved it to redis.conf.old"
-    end
-
-    etc.install 'redis.conf' unless (etc/'redis.conf').exist?
-    etc.install 'sentinel.conf' => 'redis-sentinel.conf' unless (etc/'redis-sentinel.conf').exist?
+    etc.install 'redis.conf'
+    etc.install 'sentinel.conf' => 'redis-sentinel.conf'
   end
 
   plist_options :manual => "redis-server #{HOMEBREW_PREFIX}/etc/redis.conf"

@@ -9,10 +9,6 @@ class Clisp < Formula
   depends_on 'libsigsegv'
   depends_on 'readline'
 
-  # -Os causes the build to fail with C_CODE_ALIGNMENT is wrong
-  # superenv doeesn't yet support changing the optimization level
-  env :std
-
   fails_with :llvm do
     build 2334
     cause "Configure fails on XCode 4/Snow Leopard."
@@ -25,7 +21,7 @@ class Clisp < Formula
 
   def install
     ENV.j1 # This build isn't parallel safe.
-    ENV.remove_from_cflags /-O./
+    ENV.O0 # Any optimization breaks the build
 
     # Clisp requires to select word size explicitly this way,
     # set it in CFLAGS won't work.
@@ -39,7 +35,7 @@ class Clisp < Formula
       # make Homebrew's the last such option so it's effective.
       inreplace "Makefile" do |s|
         s.change_make_var! 'CFLAGS', "#{s.get_make_var('CFLAGS')} #{ENV['CFLAGS']}"
-      end
+      end unless superenv?
 
       # The ulimit must be set, otherwise `make` will fail and tell you to do so
       system "ulimit -s 16384 && make"

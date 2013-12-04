@@ -8,6 +8,10 @@ class Gpsd < Formula
   depends_on 'scons' => :build
   depends_on 'libusb' => :optional
 
+  def patches
+    {:p0 => "https://trac.macports.org/export/113474/trunk/dports/net/gpsd/files/string.patch"}
+  end
+
   def install
     system "scons", "chrpath=False", "python=False", "strip=False", "shared=False",
                     "prefix=#{prefix}/"

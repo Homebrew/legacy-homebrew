@@ -2,8 +2,8 @@ require 'formula'
 
 class Qemu < Formula
   homepage 'http://www.qemu.org/'
-  url 'http://wiki.qemu-project.org/download/qemu-1.6.0.tar.bz2'
-  sha1 '5f754fc128aaafd0c7aee2204d453f4be1ac859e'
+  url 'http://wiki.qemu-project.org/download/qemu-1.6.1.tar.bz2'
+  sha1 'ad3ef3709a8ce3a39bd343aa313cefd033afb561'
 
   head 'git://git.qemu-project.org/qemu.git'
 

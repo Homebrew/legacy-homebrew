@@ -10,15 +10,15 @@
 # --email:        Generate an email subject file.
 # --no-bottle:    Run brew install without --build-bottle
 # --HEAD:         Run brew install with --HEAD
-# --devel:        Run brew install with --devel
 
 require 'formula'
 require 'utils'
 require 'date'
-require 'erb'
+require 'rexml/document'
+require 'rexml/xmldecl'
+require 'rexml/cdata'
 
 EMAIL_SUBJECT_FILE = "brew-test-bot.#{MacOS.cat}.email.txt"
-HOMEBREW_CONTRIBUTED_CMDS = HOMEBREW_REPOSITORY + "Library/Contributions/cmd/"
 
 class Step
   attr_reader :command, :name, :status, :output, :time
@@ -230,7 +230,7 @@ class Test
       status, filename = line.split
       # Don't try and do anything to removed files.
       if (status == 'A' or status == 'M')
-        if filename.match /Formula\/\w+\.rb$/
+        if filename.match /Formula\/.+\.rb$/
           @formulae << File.basename(filename, '.rb')
         end
       end
@@ -262,31 +262,41 @@ class Test
     end
 
     test "brew fetch #{dependencies}" unless dependencies.empty?
-    formula_fetch_options = ""
+    formula_fetch_options = " "
     formula_fetch_options << " --build-bottle" unless ARGV.include? '--no-bottle'
     formula_fetch_options << " --force" if ARGV.include? '--cleanup'
-    test "brew fetch #{formula_fetch_options} #{formula}"
+    test "brew fetch#{formula_fetch_options} #{formula}"
     test "brew uninstall --force #{formula}" if formula_object.installed?
     install_args = '--verbose'
     install_args << ' --build-bottle' unless ARGV.include? '--no-bottle'
     install_args << ' --HEAD' if ARGV.include? '--HEAD'
-    install_args << ' --devel' if ARGV.include? '--devel'
     test "brew install #{install_args} #{formula}"
     install_passed = steps.last.passed?
     test "brew audit #{formula}"
-    return unless install_passed
-    unless ARGV.include? '--no-bottle'
-      test "brew bottle --rb #{formula}", :puts_output_on_success => true
-      bottle_step = steps.last
-      if bottle_step.passed? and bottle_step.has_output?
-        bottle_filename =
-          bottle_step.output.gsub(/.*(\.\/\S+#{bottle_native_regex}).*/m, '\1')
-        test "brew uninstall --force #{formula}"
-        test "brew install #{bottle_filename}"
+    if install_passed
+      unless ARGV.include? '--no-bottle'
+        test "brew bottle --rb #{formula}", :puts_output_on_success => true
+        bottle_step = steps.last
+        if bottle_step.passed? and bottle_step.has_output?
+          bottle_filename =
+            bottle_step.output.gsub(/.*(\.\/\S+#{bottle_native_regex}).*/m, '\1')
+          test "brew uninstall --force #{formula}"
+          test "brew install #{bottle_filename}"
+        end
+      end
+      test "brew test --verbose #{formula}" if formula_object.test_defined?
+      test "brew uninstall --force #{formula}"
+    end
+    if formula_object.devel and not ARGV.include? '--HEAD'
+      test "brew fetch --devel#{formula_fetch_options} #{formula}"
+      test "brew install --devel --verbose #{formula}"
+      devel_install_passed = steps.last.passed?
+      test "brew audit --devel #{formula}"
+      if devel_install_passed
+        test "brew test --devel --verbose #{formula}" if formula_object.test_defined?
+        test "brew uninstall --devel --force #{formula}"
       end
     end
-    test "brew test --verbose #{formula}" if formula_object.test_defined?
-    test "brew uninstall --force #{formula}"
     test "brew uninstall --force #{dependencies}" unless dependencies.empty?
   end
 
@@ -395,11 +405,36 @@ else
 end
 
 if ARGV.include? "--junit"
-  xml_erb = HOMEBREW_CONTRIBUTED_CMDS + "brew-test-bot.xml.erb"
-  erb = ERB.new IO.read xml_erb
-  open("brew-test-bot.xml", "w") do |xml|
-    # Remove empty lines and null characters from ERB result.
-    xml.write erb.result(binding).gsub(/^\s*$\n|\000/, '')
+  xml_document = REXML::Document.new
+  xml_document << REXML::XMLDecl.new
+  testsuites = xml_document.add_element 'testsuites'
+  tests.each do |test|
+    testsuite = testsuites.add_element 'testsuite'
+    testsuite.attributes['name'] = "brew-test-bot.#{MacOS.cat}"
+    testsuite.attributes['tests'] = test.steps.count
+    test.steps.each do |step|
+      testcase = testsuite.add_element 'testcase'
+      testcase.attributes['name'] = step.command_short
+      testcase.attributes['status'] = step.status
+      testcase.attributes['time'] = step.time
+      failure = testcase.add_element 'failure' if step.failed?
+      if step.has_output?
+        # Remove invalid XML CData characters from step output.
+        output = REXML::CData.new step.output.delete("\000\e")
+        if step.passed?
+          system_out = testcase.add_element 'system-out'
+          system_out.text = output
+        else
+          failure.attributes['message'] = "#{step.status}: #{step.command}"
+          failure.text = output
+        end
+      end
+    end
+  end
+
+  open("brew-test-bot.xml", "w") do |xml_file|
+    pretty_print_indent = 2
+    xml_document.write(xml_file, pretty_print_indent)
   end
 end
 

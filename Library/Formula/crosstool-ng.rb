@@ -2,18 +2,18 @@ require 'formula'
 
 class CrosstoolNg < Formula
   homepage 'http://crosstool-ng.org'
-  url 'http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.18.0.tar.bz2'
-  sha1 'ea9aa0521683486efb02596d9dfe00f66e18fdc3'
+  url 'http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.19.0.tar.bz2'
+  sha1 'b7ae3e90756b499ff5362064b7d80f8a45d09bfb'
 
+  depends_on :autoconf
   depends_on :automake
+  depends_on :libtool
   depends_on 'coreutils' => :build
   depends_on 'wget'
   depends_on 'gnu-sed'
   depends_on 'gawk'
   depends_on 'binutils'
   depends_on 'libelf'
-
-  env :std
 
   def patches
     # Fixes clang offsetof compatability. Took better patch from #14547

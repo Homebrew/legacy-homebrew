@@ -5,6 +5,8 @@ class Logentries < Formula
   url 'https://github.com/logentries/le/archive/v1.2.14.tar.gz'
   sha1 'd0b8073c7d5cae990b186bacf1bb2e2d39c544a5'
 
+  conflicts_with 'le', :because => 'both install a le binary'
+
   def install
     bin.install 'le'
   end

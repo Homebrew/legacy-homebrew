@@ -10,7 +10,7 @@ class RabbitmqC < Formula
   option :universal
 
   depends_on 'pkg-config' => :build
-  depends_on 'autoconf' => :build # Use a newer version on Snow Leoaprd too
+  depends_on 'autoconf' => :build # Use a newer version on Snow Leopard too
   depends_on 'automake' => :build
   depends_on :libtool
   depends_on 'rabbitmq'

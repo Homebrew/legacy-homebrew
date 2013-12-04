@@ -55,6 +55,18 @@ module Homebrew extend self
     Homebrew.unlink_tap_formula(report.removed_tapped_formula)
     Homebrew.link_tap_formula(report.new_tapped_formula)
 
+    # automatically tap any migrated formulae's new tap
+    report.select_formula(:D).each do |f|
+      next unless (HOMEBREW_CELLAR/f).exist?
+      migration = TAP_MIGRATIONS[f]
+      next unless migration
+      tap_user, tap_repo = migration.split '/'
+      begin
+        install_tap tap_user, tap_repo
+      rescue AlreadyTappedError => e
+      end
+    end if load_tap_migrations
+
     if report.empty?
       puts "Already up-to-date."
     else
@@ -78,6 +90,11 @@ module Homebrew extend self
     raise
   end
 
+  def load_tap_migrations
+    require 'tap_migrations'
+  rescue LoadError
+    false
+  end
 end
 
 class Updater
@@ -112,7 +129,7 @@ class Updater
   end
 
   # Matches raw git diff format (see `man git-diff-tree`)
-  DIFFTREE_RX = /^:[0-7]{6} [0-7]{6} [0-9a-fA-F]{40} [0-9a-fA-F]{40} ([ACDMR])\d{0,3}\t(.+?)(?:\t(.+))?$/
+  DIFFTREE_RX = /^:[0-7]{6} [0-7]{6} [0-9a-fA-F]{40} [0-9a-fA-F]{40} ([ACDMRTUX])\d{0,3}\t(.+?)(?:\t(.+))?$/
 
   def report
     map = Hash.new{ |h,k| h[k] = [] }

@@ -2,8 +2,8 @@ require 'formula'
 
 class RakudoStar < Formula
   homepage 'http://rakudo.org/'
-  url 'http://rakudo.org/downloads/star/rakudo-star-2013.08.tar.gz'
-  sha256 '633308e5d9f3f0fc661302810cdc30e55dd4709f2196a8f41e9f59ba336ee48c'
+  url 'http://rakudo.org/downloads/star/rakudo-star-2013.11.tar.gz'
+  sha256 '7f867f0e4ce7fee7c0f8ecf207d8cb118c334bc71b1a849c0dfa6aa11fd8b4fe'
 
   conflicts_with 'parrot'
 
@@ -15,10 +15,10 @@ class RakudoStar < Formula
   def install
     libffi = Formula.factory("libffi")
     ENV.remove 'CPPFLAGS', "-I#{libffi.include}"
-    ENV.prepend 'CPPFLAGS', "-I#{libffi.lib}/libffi-3.0.11/include"
+    ENV.prepend 'CPPFLAGS', "-I#{libffi.lib}/libffi-#{libffi.version}/include"
 
     ENV.j1  # An intermittent race condition causes random build failures.
-    system "perl", "Configure.pl", "--prefix=#{prefix}", "--gen-parrot"
+    system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=parrot", "--gen-parrot"
     system "make"
     system "make install"
     # move the man pages out of the top level into share.

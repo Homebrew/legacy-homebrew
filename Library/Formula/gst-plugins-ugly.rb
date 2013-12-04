@@ -2,19 +2,19 @@ require 'formula'
 
 class GstPluginsUgly < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.2.0.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.2.0.tar.xz'
-  sha256 'e4760af4b12bf97ba0a8001cfe733d9d52160a0ad81f6c6f0d0d3a9e798626de'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.2.1.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.2.1.tar.xz'
+  sha256 '35ae5d45de54827604e24f57f54ab30a5ab2245b4c4120977273eb11d19c2395'
 
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
 
@@ -44,7 +44,7 @@ class GstPluginsUgly < Formula
   # Does not work with libcdio 0.9
 
   def install
-    ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"
+    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing"
 
     args = %W[
       --prefix=#{prefix}

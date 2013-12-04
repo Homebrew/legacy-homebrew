@@ -8,6 +8,8 @@ class Spidermonkey < Formula
 
   head 'https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz'
 
+  conflicts_with 'narwhal', :because => 'both install a js binary'
+
   depends_on 'readline'
   depends_on 'nspr'
 
@@ -27,7 +29,8 @@ class Spidermonkey < Formula
       system "../js/src/configure", "--prefix=#{prefix}",
                                     "--enable-readline",
                                     "--enable-threadsafe",
-                                    "--with-system-nspr"
+                                    "--with-system-nspr",
+                                    "--enable-macos-target=#{MacOS.version}"
 
       inreplace "js-config", /JS_CONFIG_LIBS=.*?$/, "JS_CONFIG_LIBS=''"
       # These need to be in separate steps.

@@ -16,6 +16,7 @@ class Nanomsg < Formula
   option 'with-test', 'Verify the build with make check'
   option 'with-doc', 'Install man pages'
   option 'without-nanocat', 'Do not install nanocat tool'
+  option 'with-debug', 'Compile with debug symbols'
 
   depends_on 'pkg-config'=> :build
   depends_on :libtool
@@ -30,11 +31,11 @@ class Nanomsg < Formula
 
     system './autogen.sh' if build.head?
 
-    args = ["--disable-debug",
-            "--disable-dependency-tracking",
+    args = ["--disable-dependency-tracking",
             "--disable-silent-rules",
             "--prefix=#{prefix}"]
     args << "--disable-nanocat" if build.without? 'nanocat'
+    args << "--enable-debug" if build.with? 'debug'
     args << "--enable-doc" if build.with? 'doc'
 
     system './configure', *args

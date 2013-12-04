@@ -7,6 +7,11 @@ module Homebrew extend self
 
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
+    opoo <<-EOS.undent
+      brew-versions is unsupported and may be removed soon.
+      Please use the homebrew-versions tap instead:
+        https://github.com/Homebrew/homebrew-versions
+    EOS
     ARGV.formulae.all? do |f|
       if ARGV.include? '--compact'
         puts f.versions * " "
@@ -39,12 +44,18 @@ class Formula
   def bottle_filenames branch='HEAD'
     filenames = []
     rev_list(branch).each do |sha|
-      filename = formula_for_sha(sha) {|f| bottle_filename f if f.bottle }
+      filename = formula_for_sha(sha) do |f|
+        bottle_block = f.class.send(:bottle)
+        unless bottle_block.checksums.empty?
+          revision = bottle_block.revision
+          bottle_filename f, revision
+        end
+      end
       unless filenames.include? filename or filename.nil?
         filenames << filename
       end
     end
-    return filenames
+    filenames
   end
 
   def pretty_relative_path
@@ -58,7 +69,7 @@ class Formula
   private
     def repository
       @repository ||= begin
-        if path.realpath.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)}
+        if path.realpath.to_s =~ HOMEBREW_TAP_DIR_REGEX
           HOMEBREW_REPOSITORY/"Library/Taps/#$1-#$2"
         else
           HOMEBREW_REPOSITORY

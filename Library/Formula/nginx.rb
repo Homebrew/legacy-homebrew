@@ -2,12 +2,12 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.4.2.tar.gz'
-  sha1 '8f006dc773840b6624a137a584ff8850d5155e3f'
+  url 'http://nginx.org/download/nginx-1.4.4.tar.gz'
+  sha1 '304d5991ccde398af2002c0da980ae240cea9356'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.5.5.tar.gz'
-    sha1 '8526d41cdabcd40d4ffa5ae12c8a2cc325255431'
+    url 'http://nginx.org/download/nginx-1.5.7.tar.gz'
+    sha1 '4dd04c73c3081277fe9c98c4a386c8baf956f5ca'
   end
 
   head 'http://hg.nginx.org/nginx/', :using => :hg
@@ -125,7 +125,7 @@ class Nginx < Formula
   def passenger_caveats; <<-EOS.undent
 
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf:
-      passenger_root #{HOMEBREW_PREFIX}/opt/passenger
+      passenger_root #{HOMEBREW_PREFIX}/opt/passenger/libexec
       passenger_ruby /usr/bin/ruby
     EOS
   end

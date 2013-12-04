@@ -33,35 +33,38 @@ class Erlang < Formula
   option 'time', '`brew test --time` to include a time-consuming test'
   option 'no-docs', 'Do not install documentation'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
   depends_on 'unixodbc' if MacOS.version >= :mavericks
   depends_on 'fop' => :optional # enables building PDF docs
 
-  fails_with :llvm do
-    build 2334
+  fails_with :llvm
+
+  def patches
+    # Fixes problem with ODBC on Mavericks. Reported upstream:
+    # https://github.com/erlang/otp/pull/142
+    DATA if MacOS.version >= :mavericks
   end
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
 
-    if ENV.compiler == :llvm
-      # Don't use optimizations. Fixes build on Lion/Xcode 4.2
-      ENV.remove_from_cflags /-O./
-      ENV.append_to_cflags '-O0'
-    end
     ENV.append "FOP", "#{HOMEBREW_PREFIX}/bin/fop" if build.with? 'fop'
 
     # Do this if building from a checkout to generate configure
     system "./otp_build autoconf" if File.exist? "otp_build"
 
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
-            "--enable-kernel-poll",
-            "--enable-threads",
-            "--enable-dynamic-ssl-lib",
-            "--enable-shared-zlib",
-            "--enable-smp-support"]
+    args = %W[
+      --disable-debug
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --enable-kernel-poll
+      --enable-threads
+      --enable-dynamic-ssl-lib
+      --enable-shared-zlib
+      --enable-smp-support
+    ]
 
     args << "--with-dynamic-trace=dtrace" unless MacOS.version <= :leopard or not MacOS::CLT.installed?
 
@@ -106,3 +109,17 @@ class Erlang < Formula
     end
   end
 end
+__END__
+diff --git a/lib/odbc/configure.in b/lib/odbc/configure.in
+index 83f7a47..fd711fe 100644
+--- a/lib/odbc/configure.in
++++ b/lib/odbc/configure.in
+@@ -130,7 +130,7 @@ AC_SUBST(THR_LIBS)
+ odbc_lib_link_success=no
+ AC_SUBST(TARGET_FLAGS)
+     case $host_os in
+-        darwin*)
++        darwin1[[0-2]].*|darwin[[0-9]].*)
+                 TARGET_FLAGS="-DUNIX"
+                if test ! -d "$with_odbc" || test "$with_odbc" = "yes"; then
+                    ODBC_LIB= -L"/usr/lib"

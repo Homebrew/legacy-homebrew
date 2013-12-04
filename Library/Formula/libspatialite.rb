@@ -1,10 +1,5 @@
 require 'formula'
 
-# Postgis depends on gdal, which in turn depends on libspatialite,
-# so enabling a "with-postgis" option in this formula introduces a
-# circular dependency.
-# See https://github.com/mxcl/homebrew/issues/20373
-
 class Libspatialite < Formula
   homepage 'https://www.gaia-gis.it/fossil/libspatialite/index'
   url 'http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-4.1.1.tar.gz'
@@ -12,6 +7,7 @@ class Libspatialite < Formula
 
   option 'without-freexl', 'Build without support for reading Excel files'
   option 'without-libxml2', 'Disable support for xml parsing (parsing needed by spatialite-gui)'
+  option 'without-liblwgeom', 'Build without additional sanitization/segmentation routines provided by PostGIS 2.0+ library'
 
   depends_on 'pkg-config' => :build
   depends_on 'proj'
@@ -22,12 +18,19 @@ class Libspatialite < Formula
   depends_on 'sqlite'
   depends_on 'libxml2' => :recommended
   depends_on 'freexl' => :recommended
+  depends_on 'liblwgeom' => :recommended
 
   def install
     # Ensure Homebrew's libsqlite is found before the system version.
     sqlite = Formula.factory 'sqlite'
     ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib"
     ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
+
+    unless build.without? 'liblwgeom'
+      lwgeom = Formula.factory 'liblwgeom'
+      ENV.append 'LDFLAGS', "-L#{lwgeom.opt_prefix}/lib"
+      ENV.append 'CFLAGS', "-I#{lwgeom.opt_prefix}/include"
+    end
 
     args = %W[
       --disable-dependency-tracking
@@ -36,6 +39,7 @@ class Libspatialite < Formula
     ]
     args << '--enable-freexl=no' if build.without? 'freexl'
     args << '--enable-libxml2=yes' unless build.without? 'libxml2'
+    args << '--enable-lwgeom=yes' unless build.without? 'liblwgeom'
 
     system './configure', *args
     system "make install"

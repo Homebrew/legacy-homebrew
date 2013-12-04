@@ -9,6 +9,8 @@ class Normalize < Formula
 
   depends_on 'mad' => :recommended
 
+  conflicts_with 'num-utils', :because => 'both install `normalize` binaries'
+
   def install
     args = %W[
       --disable-debug

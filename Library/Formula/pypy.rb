@@ -2,15 +2,15 @@ require 'formula'
 
 class Pypy < Formula
   homepage 'http://pypy.org/'
-  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.1-osx64.tar.bz2'
-  version '2.1.0'
-  sha1 '6cdaa1dc0a47d9eb6d816f7d394ca46f290a1ed5'
+  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.2.1-osx64.tar.bz2'
+  version '2.2.1'
+  sha1 'caf13d377fcdced4bfadd4158ba3d18d520396f3'
 
   depends_on :arch => :x86_64
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.4.tar.gz'
-    sha1 'b8bf9c2b8a114045598f0e16681d6a63a4d6cdf9'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.3.2.tar.gz'
+    sha1 '77180132225c5b4696e6d061655e291f3d1b20f5'
   end
 
   resource 'pip' do
@@ -19,6 +19,11 @@ class Pypy < Formula
   end
 
   def install
+    # Having PYTHONPATH set can cause the build to fail if another
+    # Python is present, e.g. a Homebrew-provided Python 2.x
+    # See https://github.com/mxcl/homebrew/issues/24364
+    ENV['PYTHONPATH'] = ''
+
     rmtree 'site-packages'
 
     # The PyPy binary install instructions suggest installing somewhere
@@ -26,6 +31,8 @@ class Pypy < Formula
     # we want to avoid putting PyPy's Python.h somewhere that configure
     # scripts will find it.
     libexec.install Dir['*']
+    bin.mkpath
+    ln_s libexec/'bin/pypy', bin/'pypy'
 
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such

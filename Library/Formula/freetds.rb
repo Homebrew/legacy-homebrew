@@ -8,6 +8,7 @@ class Freetds < Formula
   head do
     url 'https://git.gitorious.org/freetds/freetds.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
@@ -23,7 +24,7 @@ class Freetds < Formula
     system "autoreconf -i" if build.head?
 
     args = %W[--prefix=#{prefix}
-              --with-openssl=/usr/bin
+              --with-openssl=#{MacOS.sdk_path}/usr
               --with-tdsver=7.1
               --mandir=#{man}
             ]

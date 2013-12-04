@@ -2,8 +2,8 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.19.tar.gz'
-  sha1 'de5890155078cea3de68588b640cd32fb5e05615'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.26.tar.gz'
+  sha1 'd41bbf70bd41d6bf34f2a582b129c3ea0b44c345'
   head 'https://github.com/phusion/passenger.git'
 
   depends_on :macos => :lion
@@ -15,8 +15,8 @@ class Passenger < Formula
 
     necessary_files = Dir["configure", "Rakefile", "README.md", "CONTRIBUTORS",
       "CONTRIBUTING.md", "LICENSE", "INSTALL.md", "NEWS", "passenger.gemspec",
-      "build", "lib", "bin", "doc", "man", "helper-scripts", "ext",
-      "resources", "buildout"]
+      "build", "lib", "node_lib", "bin", "doc", "man", "helper-scripts",
+      "ext", "resources", "buildout"]
     libexec.mkpath
     cp_r necessary_files, libexec, :preserve => true
 
@@ -37,7 +37,7 @@ class Passenger < Formula
   def caveats; <<-EOS.undent
     To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
       LoadModule passenger_module #{opt_prefix}/libexec/buildout/apache2/mod_passenger.so
-      PassengerRoot #{opt_prefix}/libexec/
+      PassengerRoot #{opt_prefix}/libexec
       PassengerDefaultRuby /usr/bin/ruby
 
     To activate Phusion Passenger for Nginx, run:

@@ -6,7 +6,7 @@ class Shark < Formula
   sha1 '0b1b054872fe057747ff7f50e360499bb78bebdf'
 
   fails_with :clang do
-    build 421
+    build 500
     cause "C++ is hard." # see error output below
   end
 

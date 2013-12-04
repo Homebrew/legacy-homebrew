@@ -7,6 +7,7 @@ class Zshdb < Formula
 
   head do
     url 'https://github.com/rocky/zshdb.git'
+    depends_on :autoconf
     depends_on :automake
   end
 

@@ -1,6 +1,19 @@
 require 'testing_env'
 require 'version'
 
+class VersionTests < Test::Unit::TestCase
+  def test_accepts_objects_responding_to_to_str
+    value = stub(:to_str => '0.1')
+    assert_equal '0.1', Version.new(value).to_s
+  end
+
+  def test_raises_for_non_string_objects
+    assert_raises(TypeError) { Version.new(1.1) }
+    assert_raises(TypeError) { Version.new(1) }
+    assert_raises(TypeError) { Version.new(:symbol) }
+  end
+end
+
 class VersionComparisonTests < Test::Unit::TestCase
   include VersionAssertions
 

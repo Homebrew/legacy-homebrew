@@ -10,20 +10,27 @@ module Homebrew extend self
 
     formulae = ARGV.formulae
 
-    uses = Formula.select do |f|
+    uses = []
+    Formula.each do |f|
+      next if ARGV.include? "--installed" and not f.installed?
+
       formulae.all? do |ff|
         if ARGV.flag? '--recursive'
-          f.recursive_dependencies.any? { |dep| dep.name == ff.name }
+          if f.recursive_dependencies.any? { |dep| dep.name == ff.name }
+            uses << f.to_s
+          elsif f.recursive_requirements.any? { |req| req.name == ff.name }
+            uses << ":#{f}"
+          end
         else
-          f.deps.any? { |dep| dep.name == ff.name }
+          if f.deps.any? { |dep| dep.name == ff.name }
+            uses << f.to_s
+          elsif f.requirements.any? { |req| req.name == ff.name }
+            uses << ":#{f}"
+          end
         end
       end
     end
 
-    if ARGV.include? "--installed"
-      uses = uses.select { |f| Formula.installed.include? f }
-    end
-
-    puts_columns uses.map(&:to_s).sort
+    puts_columns uses
   end
 end

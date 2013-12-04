@@ -2,36 +2,48 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.3.tar.bz2'
-  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.3.tar.bz2'
-  sha1 'e328e9f1c57f7c78bea4c3af869ec5d4503580cf'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.5.tar.bz2'
+  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.5.tar.bz2'
+  sha1 'd21de7daf37d9dd1cb0f777e999a529b96f83082'
 
   bottle do
-    sha1 '9171c9971647e04958251d85eee58e4a23ef1584' => :mountain_lion
-    sha1 '9370e1ba8d3204b3d896a85ace719eb3613bb642' => :lion
-    sha1 '1373b9020d7e752e29517ba27670c8cdd5ec4520' => :snow_leopard
+    sha1 '1022095a741a6fb2c43b28003cecd6d8f220fe1e' => :mavericks
+    sha1 '82f6a8eb37d89badd9ed77ee7620f84304278db7' => :mountain_lion
+    sha1 '00340eabc7849c05ec0611ae8aea79db3848578e' => :lion
   end
 
   option :universal
+  option 'with-brewed-openssl', 'Include OpenSSL support to Serf via Homebrew'
   option 'java', 'Build Java bindings'
   option 'perl', 'Build Perl bindings'
   option 'ruby', 'Build Ruby bindings'
 
+  resource 'serf' do
+    url 'http://serf.googlecode.com/files/serf-1.3.2.tar.bz2'
+    sha1 '90478cd60d4349c07326cb9c5b720438cf9a1b5d'
+  end
+
   depends_on 'pkg-config' => :build
 
   # Always build against Homebrew versions instead of system versions for consistency.
-  depends_on 'serf'
   depends_on 'sqlite'
   depends_on :python => :optional
 
-  # Building Ruby bindings requires libtool
-  depends_on :libtool if build.include? 'ruby'
+  depends_on :autoconf
+  depends_on :automake
+  depends_on :libtool
+
+  # Bindings require swig
+  depends_on 'swig' if build.include? 'perl' or build.include? 'python' or build.include? 'ruby'
+
+  # For Serf
+  depends_on 'scons' => :build
+  depends_on 'openssl' if build.with? 'brewed-openssl'
 
   # If building bindings, allow non-system interpreters
   env :userpaths if build.include? 'perl' or build.include? 'ruby'
 
-  # One patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags},
-  # and another one to put the svn-tools directory into libexec instead of bin
+  # Prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
   def patches
     { :p0 => DATA }
   end
@@ -49,6 +61,24 @@ class Subversion < Formula
   end
 
   def install
+    serf_prefix = libexec+'serf'
+
+    resource('serf').stage do
+      # SConstruct merges in gssapi linkflags using scons's MergeFlags,
+      # but that discards duplicate values - including the duplicate
+      # values we want, like multiple -arch values for a universal build.
+      # Passing 0 as the `unique` kwarg turns this behaviour off.
+      inreplace 'SConstruct', 'unique=1', 'unique=0'
+
+      ENV.universal_binary if build.universal?
+      # scons ignores our compiler and flags unless explicitly passed
+      args = %W[PREFIX=#{serf_prefix} GSSAPI=/usr CC=#{ENV.cc}
+                CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}]
+      args << "OPENSSL=#{Formula.factory('openssl').opt_prefix}" if build.with? 'brewed-openssl'
+      system "scons", *args
+      system "scons install"
+    end
+
     if build.include? 'unicode-path'
       raise Homebrew::InstallationError.new(self, <<-EOS.undent
         The --unicode-path patch is not supported on Subversion 1.8.
@@ -88,7 +118,7 @@ class Subversion < Formula
             "--with-apr=#{apr_bin}",
             "--with-zlib=/usr",
             "--with-sqlite=#{Formula.factory('sqlite').opt_prefix}",
-            "--with-serf=#{Formula.factory('serf').opt_prefix}",
+            "--with-serf=#{serf_prefix}",
             "--disable-mod-activation",
             "--disable-nls",
             "--without-apache-libexecdir",
@@ -106,6 +136,11 @@ class Subversion < Formula
     # variable to prevent failures due to incompatible CFLAGS
     ENV['ac_cv_python_compile'] = ENV.cc
 
+    inreplace 'Makefile.in',
+              'toolsdir = @bindir@/svn-tools',
+              'toolsdir = @libexecdir@/svn-tools'
+    # Suggestion by upstream. http://svn.haxx.se/users/archive-2013-09/0188.shtml
+    system "./autogen.sh"
     system "./configure", *args
     system "make"
     system "make install"
@@ -120,6 +155,8 @@ class Subversion < Formula
     end
 
     if build.include? 'perl'
+      # In theory SWIG can be built in parallel, in practice...
+      ENV.deparallelize
       # Remove hard-coded ppc target, add appropriate ones
       if build.universal?
         arches = Hardware::CPU.universal_archs.as_arch_flags
@@ -140,6 +177,9 @@ class Subversion < Formula
       end
       system "make swig-pl"
       system "make", "install-swig-pl", "DESTDIR=#{prefix}"
+      # Some of the libraries get installed into the wrong place, they end up having the
+      # prefix in the directory name twice.
+      mv Dir.glob("#{prefix}/#{lib}/*"), "#{lib}"
     end
 
     if build.include? 'java'
@@ -163,33 +203,32 @@ class Subversion < Formula
     s = <<-EOS.undent
       svntools have been installed to:
         #{opt_prefix}/libexec
-
     EOS
 
     s += python.standard_caveats if python
 
     if build.include? 'perl'
       s += <<-EOS.undent
+
         The perl bindings are located in various subdirectories of:
           #{prefix}/Library/Perl
-
       EOS
     end
 
     if build.include? 'ruby'
       s += <<-EOS.undent
+
         You may need to add the Ruby bindings to your RUBYLIB from:
           #{HOMEBREW_PREFIX}/lib/ruby
-
       EOS
     end
 
     if build.include? 'java'
       s += <<-EOS.undent
+
         You may need to link the Java bindings into the Java Extensions folder:
           sudo mkdir -p /Library/Java/Extensions
           sudo ln -s #{HOMEBREW_PREFIX}/lib/libsvnjavahl-1.dylib /Library/Java/Extensions/libsvnjavahl-1.dylib
-
       EOS
     end
 
@@ -218,14 +257,3 @@ __END__
                   " -I$swig_srcdir/perl/libsvn_swig_perl",
                   " -I$svnlib_srcdir/include",
 
---- Makefile.in~ 2013-07-25 16:55:27.000000000 +0200
-+++ Makefile.in 2013-07-25 17:02:02.000000000 +0200
-@@ -85,7 +85,7 @@
- swig_pydir_extra = @libdir@/svn-python/svn
- swig_pldir = @libdir@/svn-perl
- swig_rbdir = $(SWIG_RB_SITE_ARCH_DIR)/svn/ext
--toolsdir = @bindir@/svn-tools
-+toolsdir = @libexecdir@/svn-tools
-
- javahl_javadir = @libdir@/svn-javahl
- javahl_javahdir = @libdir@/svn-javahl/include

@@ -2,8 +2,8 @@ require 'formula'
 
 class Taglib < Formula
   homepage 'http://taglib.github.io/'
-  url 'https://github.com/downloads/taglib/taglib/taglib-1.8.tar.gz'
-  sha1 'bdbfd746fde42401d3a77cd930c7802d374a692d'
+  url 'https://github.com/taglib/taglib/archive/v1.9.1.tar.gz'
+  sha1 '44165eda04d49214a0c4de121a4d99ae18b9670b'
 
   depends_on 'cmake' => :build
 

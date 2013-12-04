@@ -2,14 +2,14 @@ require 'formula'
 
 class Neo4j < Formula
   homepage 'http://neo4j.org'
-  url 'http://dist.neo4j.org/neo4j-community-1.9.3-unix.tar.gz'
-  sha1 '503dfa4409708922f98247d0a8c888d6356d5d1c'
-  version 'community-1.9.3-unix'
+  url 'http://dist.neo4j.org/neo4j-community-1.9.5-unix.tar.gz'
+  sha1 '8d3569fdd4f3b396fd8101a7f9f92087cef3ac7f'
+  version '1.9.5'
 
   devel do
-    url 'http://dist.neo4j.org/neo4j-community-2.0.0-M05-unix.tar.gz'
-    sha1 '30a1b1a93ad6923cbce3563779faff23f25a100c'
-    version 'community-2.0.0-M05-unix'
+    url 'http://dist.neo4j.org/neo4j-community-2.0.0-RC1-unix.tar.gz'
+    sha1 'c7c59df7c0363439244ad1c4e2e837db5ab07cb3'
+    version '2.0.0-RC1'
   end
 
   def install
@@ -28,6 +28,9 @@ class Neo4j < Formula
     # Adjust UDC props
     open("#{libexec}/conf/neo4j-wrapper.conf", 'a') { |f|
       f.puts "wrapper.java.additional.4=-Dneo4j.ext.udc.source=homebrew"
+
+      # suppress the empty, focus-stealing java gui
+      f.puts "wrapper.java.additional=-Djava.awt.headless=true"
     }
   end
 

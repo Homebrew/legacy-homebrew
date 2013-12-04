@@ -9,6 +9,7 @@ class Yasm < Formula
     url 'https://github.com/yasm/yasm.git'
 
     depends_on 'gettext'
+    depends_on :autoconf
     depends_on :automake
   end
 

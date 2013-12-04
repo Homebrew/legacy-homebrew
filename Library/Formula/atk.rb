@@ -8,6 +8,7 @@ class Atk < Formula
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'glib'
+  depends_on 'gobject-introspection'
 
   option :universal
 
@@ -15,7 +16,7 @@ class Atk < Formula
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--enable-introspection=no"
+                          "--enable-introspection=yes"
     system "make"
     system "make install"
   end

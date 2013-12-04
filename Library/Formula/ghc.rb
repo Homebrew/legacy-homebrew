@@ -6,10 +6,10 @@ class Ghc < Formula
   sha1 '8938e1ef08b37a4caa071fa169e79a3001d065ff'
 
   bottle do
-    revision 1
-    sha1 'd11bdcf275338a22f51cda4a3e9b89980953c132' => :mountain_lion
-    sha1 'e4e3fe44302bcbae7d61031f2fe36cd5389c638f' => :lion
-    sha1 '1d9ee33628e79efe8434a2c80d1415b41ed252fc' => :snow_leopard
+    revision 2
+    sha1 'a6ceeb3f1f9ba2cf0454dc9d45dce69f8a5ae736' => :mavericks
+    sha1 'd91ee56c8066bae5173f705e83e15dbb8842f67f' => :mountain_lion
+    sha1 '1569f19cdad2675cbff328c0e259d6b8573e9d11' => :lion
   end
 
   env :std

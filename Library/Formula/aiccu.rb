@@ -13,7 +13,7 @@ class Aiccu < Formula
     system "make", "prefix=#{prefix}"
     system "make", "install", "prefix=#{prefix}"
 
-    etc.install 'doc/aiccu.conf' unless (etc/'aiccu.conf').exist?
+    etc.install 'doc/aiccu.conf'
   end
 
   plist_options :startup => true

@@ -6,9 +6,11 @@ class Geos < Formula
   sha1 'b8aceab04dd09f4113864f2d12015231bb318e9a'
 
   option :universal
+  option :cxx11
 
   def install
     ENV.universal_binary if build.universal?
+    ENV.cxx11 if build.cxx11?
 
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"

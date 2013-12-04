@@ -6,6 +6,7 @@ class Msmtp < Formula
   sha1 'c0edce1e1951968853f15209c8509699ff9e9ab5'
 
   depends_on 'pkg-config' => :build
+  depends_on 'curl-ca-bundle' => :optional
 
   # msmtp enables OS X Keychain support by default, so no need to ask for it.
 

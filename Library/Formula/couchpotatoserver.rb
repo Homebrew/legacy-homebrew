@@ -2,8 +2,8 @@ require 'formula'
 
 class Couchpotatoserver < Formula
   homepage 'https://couchpota.to'
-  url 'https://github.com/RuudBurger/CouchPotatoServer/archive/build/2.1.0.tar.gz'
-  sha1 '04341a6c7889dee017dfef4bdf3ac0e5bcfe7d00'
+  url 'https://github.com/RuudBurger/CouchPotatoServer/archive/build/2.2.1.tar.gz'
+  sha1 'f0b53952130858a0cdab8b3a52f41320b6d11b2e'
 
   head 'https://github.com/RuudBurger/CouchPotatoServer.git'
 

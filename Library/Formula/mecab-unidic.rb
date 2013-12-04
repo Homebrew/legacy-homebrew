@@ -13,14 +13,9 @@ class MecabUnidic < Formula
     system "make", "install"
   end
 
-
   def caveats; <<-EOS.undent
     If you want to use UniDic, please rewrite "dicdir".
-         #{mecab_dicdir}/etc/mecabrc
+       #{Formula.factory('mecab').opt_prefix}/etc/mecabrc
     EOS
-  end
-
-  def mecab_dicdir
-    `mecab-config --prefix`.chomp!
   end
 end

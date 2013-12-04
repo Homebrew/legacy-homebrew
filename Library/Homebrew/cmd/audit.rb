@@ -151,11 +151,7 @@ class FormulaAuditor
 
       case dep.name
       when *BUILD_TIME_DEPS
-        next if dep.build?
-        next if dep.name == 'autoconf' && f.name =~ /automake/
-        next if dep.name == 'libtool' && %w{imagemagick libgphoto2 libp11}.any? { |n| f.name == n }
-        next if dep.name =~ /autoconf|pkg-config/ && f.name == 'ruby-build'
-
+        next if dep.build? or dep.run?
         problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
       when "git", "ruby", "emacs", "mercurial"
         problem <<-EOS.undent
@@ -263,10 +259,6 @@ class FormulaAuditor
     urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
     end
-
-    if urls.any? { |u| u =~ /\.xz/ } && !f.deps.any? { |d| d.name == "xz" }
-      problem "Missing a build-time dependency on 'xz'"
-    end
   end
 
   def audit_specs
@@ -290,7 +282,7 @@ class FormulaAuditor
   def audit_patches
     Patches.new(f.patches).select(&:external?).each do |p|
       case p.url
-      when %r[raw\.github\.com], %r[gist\.github\.com/raw]
+      when %r[raw\.github\.com], %r[gist\.github\.com/raw], %r[gist\.github\.com/.+/raw$]
         unless p.url =~ /[a-fA-F0-9]{40}/
           problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
         end
@@ -403,8 +395,10 @@ class FormulaAuditor
     end
 
     # Avoid hard-coding compilers
-    if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
-      problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
+    unless f.name == 'go' # Go needs to set CC for cgo support.
+      if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
+        problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
+      end
     end
 
     if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]}
@@ -541,11 +535,6 @@ class FormulaAuditor
         if text =~ /system.["' ]?python([0-9"'])?/
           problem "If the formula uses Python, it should declare so by `depends_on :python#{$1}`"
         end
-        if text =~ /setup\.py/
-          problem <<-EOS.undent
-            If the formula installs Python bindings you should declare `depends_on :python[3]`"
-          EOS
-        end
       end
     end
 
@@ -568,7 +557,9 @@ class FormulaAuditor
     audit_check_output(check_jars)
     audit_check_output(check_non_libraries)
     audit_check_output(check_non_executables(f.bin))
+    audit_check_output(check_generic_executables(f.bin))
     audit_check_output(check_non_executables(f.sbin))
+    audit_check_output(check_generic_executables(f.sbin))
   end
 
   def audit
@@ -612,8 +603,10 @@ class ResourceAuditor
   end
 
   def audit_version
-    if version.to_s.empty?
-      problem "invalid or missing version"
+    if version.nil?
+      problem "missing version"
+    elsif version.to_s.empty?
+      problem "version is set to an empty string"
     elsif not version.detected_from_url?
       version_text = version
       version_url = Version.detect(url, specs)

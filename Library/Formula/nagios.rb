@@ -2,8 +2,8 @@ require 'formula'
 
 class Nagios < Formula
   homepage 'http://www.nagios.org/'
-  url 'http://downloads.sourceforge.net/project/nagios/nagios-3.x/nagios-3.5.0/nagios-3.5.0.tar.gz'
-  sha1 '972e76c638b7d3f15d994eaa8fce0e4907d5d6e1'
+  url 'http://downloads.sourceforge.net/project/nagios/nagios-3.x/nagios-3.5.1/nagios-3.5.1.tar.gz'
+  sha1 '486fd6c75db47000b96d6eebb1654c30d5e9bc72'
 
   depends_on 'gd'
   depends_on 'nagios-plugins'

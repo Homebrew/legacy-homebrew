@@ -1,3 +1,5 @@
+require 'os'
+
 class Hardware
   module CPU extend self
     INTEL_32BIT_ARCHS = [:i386].freeze
@@ -28,13 +30,20 @@ class Hardware
     def is_64_bit?
       bits == 64
     end
+
+    def intel?
+      type == :intel
+    end
+
+    def ppc?
+      type == :ppc
+    end
   end
 
-  case RUBY_PLATFORM.downcase
-  when /darwin/
+  if OS.mac?
     require 'os/mac/hardware'
     CPU.extend MacCPUs
-  when /linux/
+  elsif OS.linux?
     require 'os/linux/hardware'
     CPU.extend LinuxCPUs
   else
@@ -52,7 +61,7 @@ class Hardware
   end
 
   def self.oldest_cpu
-    if Hardware::CPU.type == :intel
+    if Hardware::CPU.intel?
       if Hardware::CPU.is_64_bit?
         :core2
       else

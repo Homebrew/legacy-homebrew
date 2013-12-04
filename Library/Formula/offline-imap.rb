@@ -2,8 +2,8 @@ require 'formula'
 
 class OfflineImap < Formula
   homepage 'http://offlineimap.org/'
-  url 'https://github.com/downloads/spaetz/offlineimap/offlineimap-v6.5.4.tar.gz'
-  sha1 'a9ad5f32f8bc0ec042f8059ea9d34282bb8b682a'
+  url 'https://github.com/OfflineIMAP/offlineimap/archive/v6.5.5.zip'
+  sha1 '90541e4f6d439edf0aa0afbff2b4bfc1c1f10d10'
 
   head 'https://github.com/OfflineIMAP/offlineimap.git'
 

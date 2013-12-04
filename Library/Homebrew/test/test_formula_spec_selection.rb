@@ -45,6 +45,7 @@ class FormulaSpecSelectionTests < Test::Unit::TestCase
           :snow_leopard    => 'faceb00c'*5,
           :lion            => 'baadf00d'*5,
           :mountain_lion   => '8badf00d'*5,
+          :mavericks       => 'deadf00d'*5
         }.each_pair do |cat, val|
           sha1(val => cat)
         end

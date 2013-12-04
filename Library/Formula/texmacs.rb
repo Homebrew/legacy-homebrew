@@ -2,8 +2,8 @@ require 'formula'
 
 class Texmacs < Formula
   homepage 'http://www.texmacs.org'
-  url 'http://www.texmacs.org/Download/ftp/tmftp/source/TeXmacs-1.0.7.19-src.tar.gz'
-  sha1 '855b8252f561b69deb45a3b80f4531a9055ea465'
+  url 'http://www.texmacs.org/Download/ftp/tmftp/source/TeXmacs-1.0.7.20-src.tar.gz'
+  sha1 '2865020f89c58f8eb34504cf9ecc53c03038e695'
 
   depends_on "qt"
   depends_on "guile"

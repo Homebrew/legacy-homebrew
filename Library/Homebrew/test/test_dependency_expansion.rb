@@ -95,4 +95,17 @@ class DependencyExpansionTests < Test::Unit::TestCase
 
     assert_equal [@bar, @baz], deps
   end
+
+  def test_keep_dep_but_prune_recursive_deps
+    f = stub(:deps => [
+      build_dep(:foo, [:build], [@bar]),
+      build_dep(:baz, [:build]),
+    ])
+
+    deps = Dependency.expand(f) do |dependent, dep|
+      Dependency.keep_but_prune_recursive_deps if dep.build?
+    end
+
+    assert_equal [@foo, @baz], deps
+  end
 end

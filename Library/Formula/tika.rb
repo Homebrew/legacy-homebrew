@@ -11,7 +11,7 @@ class Tika < Formula
   end
 
   def install
-    libexec.install "tika-app--#{version}.jar"
+    libexec.install "tika-app-#{version}.jar"
     bin.write_jar_script libexec/"tika-app-#{version}.jar", "tika"
 
     libexec.install resource('server')

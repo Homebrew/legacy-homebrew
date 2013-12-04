@@ -13,8 +13,11 @@ class Sleuthkit < Formula
     depends_on :libtool
   end
 
+  conflicts_with 'irods', :because => 'both install `ils`'
+
   option 'with-jni', "Build Sleuthkit with JNI bindings"
 
+  depends_on :ant
   depends_on 'afflib' => :optional
   depends_on 'libewf' => :optional
 

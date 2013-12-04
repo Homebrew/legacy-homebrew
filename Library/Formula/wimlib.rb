@@ -2,8 +2,8 @@ require 'formula'
 
 class Wimlib < Formula
   homepage 'http://sourceforge.net/projects/wimlib/'
-  url 'http://downloads.sourceforge.net/project/wimlib/wimlib-1.5.0.tar.gz'
-  sha1 '3a86bd84a27d1db0c33dc15d277dd5b94968379a'
+  url 'http://downloads.sourceforge.net/project/wimlib/wimlib-1.5.1.tar.gz'
+  sha1 '797632bda0fe2da3716c1aea3891646fbc5de93b'
 
   depends_on 'pkg-config' => :build
   depends_on 'ntfs-3g'
