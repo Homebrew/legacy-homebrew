@@ -106,15 +106,6 @@ class Fontforge < Formula
       s.gsub! "python setup.py install --prefix=$(prefix) --root=$(DESTDIR)", "#{python} setup.py install --prefix=$(prefix)"
     end
 
-    # Replace FlatCarbon headers with the real paths
-    # Fixes building on 10.8
-    inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
-      s.gsub! "/Developer/Headers/FlatCarbon/Files.h", "CarbonCore/Files.h"
-    end
-    inreplace %w(fontforge/startui.c) do |s|
-      s.gsub! "/Developer/Headers/FlatCarbon/CarbonEvents.h", "HIToolbox/CarbonEvents.h"
-    end
-
     if build.head?
       # Replace FlatCarbon headers with the real paths
       # Fixes building on 10.8 for HEAD
@@ -122,6 +113,15 @@ class Fontforge < Formula
         s.gsub! "/Developer/Headers/FlatCarbon/Files.h", "CarbonCore/Files.h"
       end
       inreplace %w(fontforgeexe/startui.c) do |s|
+        s.gsub! "/Developer/Headers/FlatCarbon/CarbonEvents.h", "HIToolbox/CarbonEvents.h"
+      end
+    else
+      # Replace FlatCarbon headers with the real paths
+      # Fixes building on 10.8
+      inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
+        s.gsub! "/Developer/Headers/FlatCarbon/Files.h", "CarbonCore/Files.h"
+      end
+      inreplace %w(fontforge/startui.c) do |s|
         s.gsub! "/Developer/Headers/FlatCarbon/CarbonEvents.h", "HIToolbox/CarbonEvents.h"
       end
     end
