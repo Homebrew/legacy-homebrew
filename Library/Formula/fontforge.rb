@@ -37,8 +37,8 @@ class Fontforge < Formula
   depends_on :x11 if build.with? 'x'
   depends_on 'giflib' if build.with? 'gif'
   depends_on 'libspiro' => :optional
-  depends_on 'fontconfig'
   depends_on 'czmq'=> :optional
+  depends_on 'fontconfig'
 
   fails_with :llvm do
     build 2336
