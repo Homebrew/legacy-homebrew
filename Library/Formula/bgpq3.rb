@@ -22,9 +22,16 @@ end
 
 __END__
 diff --git a/Makefile.in b/Makefile.in
-index c2d7e96..afec780 100644
+index afec780..569b4c9 100644
 --- a/Makefile.in
 +++ b/Makefile.in
+@@ -1,5 +1,5 @@
+ CC=@CC@
+-CFLAGS=@CFLAGS@ @DEFS@ -g -Wall -I. -O0
++CFLAGS=@CFLAGS@ @DEFS@ -g -Wall -I. -O0 -DHAVE_STRLCPY
+ LDADD=@LDFLAGS@ @LIBS@
+ INSTALL=@INSTALL@
+
 @@ -29,9 +29,10 @@ clean:
  	rm -rf *.o *.core core.* core
  
