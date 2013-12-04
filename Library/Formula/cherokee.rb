@@ -48,27 +48,27 @@ class Cherokee < Formula
   end
 
   def caveats
-      <<-EOS.undent
-        Cherokee is setup to run with your user permissions as part of the
-        www group on port 80. This can be changed in the cherokee-admin
-        but be aware the new user will need permissions to write to:
-          #{var}/cherokee
-        for logging and runtime files.
+    <<-EOS.undent
+      Cherokee is setup to run with your user permissions as part of the
+      www group on port 80. This can be changed in the cherokee-admin
+      but be aware the new user will need permissions to write to:
+        #{var}/cherokee
+      for logging and runtime files.
 
-        By default, documents will be served out of:
-          #{etc}/cherokee/htdocs
+      By default, documents will be served out of:
+        #{etc}/cherokee/htdocs
 
-        And CGI scripts from:
-          #{etc}/cherokee/cgi-bin
+      And CGI scripts from:
+        #{etc}/cherokee/cgi-bin
 
-         If this is your first install, automatically load on startup with:
-            sudo cp #{prefix}/org.cherokee.webserver.plist /Library/LaunchDaemons
-            sudo launchctl load -w /Library/LaunchDaemons/org.cherokee.webserver.plist
+       If this is your first install, automatically load on startup with:
+          sudo cp #{prefix}/org.cherokee.webserver.plist /Library/LaunchDaemons
+          sudo launchctl load -w /Library/LaunchDaemons/org.cherokee.webserver.plist
 
-        If this is an upgrade and you already have the plist loaded:
-            sudo launchctl unload -w /Library/LaunchDaemons/org.cherokee.webserver.plist
-            sudo cp #{prefix}/org.cherokee.webserver.plist /Library/LaunchDaemons
-            sudo launchctl load -w /Library/LaunchDaemons/org.cherokee.webserver.plist
-      EOS
-    end
+      If this is an upgrade and you already have the plist loaded:
+          sudo launchctl unload -w /Library/LaunchDaemons/org.cherokee.webserver.plist
+          sudo cp #{prefix}/org.cherokee.webserver.plist /Library/LaunchDaemons
+          sudo launchctl load -w /Library/LaunchDaemons/org.cherokee.webserver.plist
+    EOS
+  end
 end
