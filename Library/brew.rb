@@ -24,7 +24,7 @@ when '--version'
   puts HOMEBREW_VERSION
   exit 0
 when '-v'
-  puts "Homebrew #{HOMEBREW_VERSION}"
+  puts HOMEBREW_VERSION
   # Shift the -v to the end of the parameter list
   ARGV << ARGV.shift
   # If no other arguments, just quit here.
