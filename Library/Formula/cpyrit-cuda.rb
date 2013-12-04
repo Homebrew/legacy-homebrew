@@ -11,6 +11,8 @@ class CudaRequirement < Requirement
     ENV.append 'CFLAGS', "-F/Library/Frameworks"
     # because nvcc has to be used
     ENV.append_path 'PATH', which('nvcc').dirname
+
+    ENV.append 'LDFLAGS', "-L/usr/local/cuda/lib"
   end
 
   def message
@@ -40,7 +42,6 @@ class CpyritCuda < Formula
   depends_on CudaRequirement
 
   def install
-    ENV.append 'LDFLAGS', "-L/usr/local/cuda/lib"
     python do
       system python, "setup.py", "build"
       system python, "setup.py", "install", "--prefix=#{prefix}"
