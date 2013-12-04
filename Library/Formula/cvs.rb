@@ -10,7 +10,7 @@ class Cvs < Formula
   url 'http://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2'
   sha1 '93a8dacc6ff0e723a130835713235863f1f5ada9'
 
-  keg_only :provided_by_osx if MacOS.version < :mavericks
+  keg_only "Xcode (< 5.0) provides CVS" if MacOS::Xcode.provides_cvs?
 
   def patches
     { :p0 =>
