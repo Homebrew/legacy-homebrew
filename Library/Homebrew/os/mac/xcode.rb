@@ -150,6 +150,10 @@ module OS
         version < "4.3"
       end
 
+      def provides_cvs?
+        version < "5.0"
+      end
+
       def default_prefix?
         if version < "4.3"
           %r{^/Developer} === prefix
