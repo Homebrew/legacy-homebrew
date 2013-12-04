@@ -34,11 +34,11 @@ class Gcc49 < Formula
   option 'enable-profiled-build', 'Make use of profile guided optimization when bootstrapping GCC'
   option 'enable-multilib', 'Build with multilib support'
 
-  depends_on 'gmp'
-  depends_on 'libmpc'
-  depends_on 'mpfr'
-  depends_on 'cloog'
-  depends_on 'isl'
+  depends_on 'gmp4'
+  depends_on 'libmpc08'
+  depends_on 'mpfr2'
+  depends_on 'cloog018'
+  depends_on 'isl011'
   depends_on 'ecj' if build.include? 'enable-java' or build.include? 'enable-all-languages'
 
   def install
