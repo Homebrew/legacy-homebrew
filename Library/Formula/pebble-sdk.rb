@@ -6,25 +6,39 @@ class PebbleSdk < Formula
   version '2.0-BETA2'
   sha1 '6c45a9a91d82444c77cc10523e9059927d155787'
 
-  depends_on 'freetype' => :optional
-  depends_on :python2
+  option 'with-binary', "If true, use a binary version of the ARM toolchain," +
+    " instead of compiling from source"
 
-  resource 'pebble-arm-toolchain' do
+  depends_on 'freetype' => :optional
+  depends_on :python
+  depends_on 'mpfr'
+  depends_on 'gmp'
+  depends_on 'libmpc'
+  depends_on 'libelf'
+  depends_on 'texinfo'
+
+  resource 'binary-pebble-arm-toolchain' do
     url 'http://assets.getpebble.com.s3-website-us-east-1.amazonaws.com/sdk/arm-cs-tools-macos-universal-static.tar.gz'
     sha1 'b1baaf455140d3c6e3a889217bb83986fe6527a0'
   end
 
-  def self.var_dirs
-    %w[Documentation Examples Pebble PebbleKit-Android PebbleKit-iOS bin tools]
-  end
-
-  def self.var_files
-    %w[requirements.txt version.txt]
+  class PebbleArmToolchain < Formula
+    url 'https://github.com/pebble/arm-eabi-toolchain', :using => :git
   end
 
   def install
-    prefix.install PebbleSdk.var_dirs, PebbleSdk.var_files
-    (prefix/'arm-cs-tools').install resource('pebble-arm-toolchain')
+    prefix.install %w[Documentation Examples Pebble PebbleKit-Android
+        PebbleKit-iOS bin tools requirements.txt version.txt]
+
+    if build.with? 'binary'
+      (prefix/'arm-cs-tools').install resource('binary-pebble-arm-toolchain')
+    else
+      PebbleArmToolchain.new.brew {
+        ENV['PREFIX'] = prefix/'arm-cs-tools'
+        system "make install-cross"
+        (prefix/'arm-cs-tools').install
+      }
+    end
   end
 
   def caveats
@@ -39,4 +53,7 @@ class PebbleSdk < Formula
     EOS
   end
 
+  test do
+    system prefix/'arm-cs-tools'/'bin'/'arm-none-eabi-gcc', '--version'
+  end
 end
