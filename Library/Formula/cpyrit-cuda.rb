@@ -31,22 +31,22 @@ class CudaRequirement < Requirement
 end
 
 class CpyritCuda < Formula
-    homepage 'https://code.google.com/p/pyrit/'
-    url 'https://pyrit.googlecode.com/files/cpyrit-cuda-0.4.0.tar.gz'
-    sha1 '6481b1d104fc8a1753d50d517b99638782171a08'
+  homepage 'https://code.google.com/p/pyrit/'
+  url 'https://pyrit.googlecode.com/files/cpyrit-cuda-0.4.0.tar.gz'
+  sha1 '6481b1d104fc8a1753d50d517b99638782171a08'
 
-    depends_on :python
-    depends_on 'pyrit'
-    depends_on CudaRequirement
+  depends_on :python
+  depends_on 'pyrit'
+  depends_on CudaRequirement
 
-    def install
-      ENV.append 'LDFLAGS', "-L/usr/local/cuda/lib"
-      python do
-        system python, "setup.py", "build"
-        system python, "setup.py", "install", "--prefix=#{prefix}"
-      end
+  def install
+    ENV.append 'LDFLAGS', "-L/usr/local/cuda/lib"
+    python do
+      system python, "setup.py", "build"
+      system python, "setup.py", "install", "--prefix=#{prefix}"
     end
-    def caveats
-      python.standard_caveats if python
-    end
+  end
+  def caveats
+    python.standard_caveats if python
+  end
 end
