@@ -6,7 +6,7 @@ class Pyrit < Formula
   sha1 '3041c0d593c21df88f41416be872eca0997cf22b'
 
   depends_on :python
-  depends_on "pylibpcap"
+  depends_on "pypcap"
   depends_on "libdnet"
 
   def install
