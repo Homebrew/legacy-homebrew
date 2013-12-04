@@ -73,7 +73,7 @@ class CompilerSelector
     end while @f.fails_with?(cc)
 
     if cc.nil?
-      raise CompilerSelectionError
+      raise CompilerSelectionError.new(@f)
     else
       cc.name
     end
