@@ -9,7 +9,7 @@ class CudaRequirement < Requirement
   env do
     # Nvidia CUDA installs (externally) into this dir (hard-coded):
     ENV.append 'CFLAGS', "-F/Library/Frameworks"
-    # # because nvcc has to be used
+    # because nvcc has to be used
     ENV.append 'PATH', which('nvcc').dirname, ':'
   end
 
