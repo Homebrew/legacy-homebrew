@@ -13,7 +13,7 @@ class Pyrit < Formula
   def install
     python do
       system python, "setup.py", "build"
-      system python, "setup.py", "install"
+      system python, "setup.py", "install", "--prefix=#{prefix}"
     end
   end
   def caveats
