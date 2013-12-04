@@ -2,8 +2,8 @@ require 'formula'
 
 class Io < Formula
   homepage 'http://iolanguage.com/'
-  url 'https://github.com/stevedekorte/io/archive/2011.09.12.tar.gz'
-  sha1 'edb63aa4ee87052f1512f0770e0c9a9b1ba91082'
+  url 'https://github.com/stevedekorte/io/archive/2013.12.04.tar.gz'
+  sha1 '47d9a3e7a8e14c9fbe3b376e4967bb55f6c68aed'
 
   head 'https://github.com/stevedekorte/io.git'
 
@@ -30,12 +30,6 @@ class Io < Formula
       make never completes. see:
       https://github.com/stevedekorte/io/issues/223
     EOS
-  end
-
-  # Fix recursive inline. See discussion in:
-  # https://github.com/stevedekorte/io/issues/135
-  def patches
-    DATA
   end
 
   def install
@@ -68,16 +62,3 @@ class Io < Formula
     end
   end
 end
-
-__END__
---- a/libs/basekit/source/Common_inline.h	2011-09-12 17:14:12.000000000 -0500
-+++ b/libs/basekit/source/Common_inline.h	2011-12-17 00:46:02.000000000 -0600
-@@ -52,7 +52,7 @@
- 
- #if defined(__APPLE__) 
- 
--	#define NS_INLINE static __inline__ __attribute__((always_inline))
-+	#define NS_INLINE static inline
- 
- 	#ifdef IO_IN_C_FILE
- 		// in .c 
