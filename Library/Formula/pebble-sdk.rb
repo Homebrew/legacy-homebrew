@@ -10,7 +10,6 @@ class PebbleSdk < Formula
     " instead of compiling from source"
 
   depends_on 'freetype' => :optional
-  depends_on :python
   depends_on 'mpfr'
   depends_on 'gmp'
   depends_on 'libmpc'
