@@ -218,9 +218,10 @@ end
 
 # raised by CompilerSelector if the formula fails with all of
 # the compilers available on the user's system
-class CompilerSelectionError < StandardError
-  def message; <<-EOS.undent
-    This formula cannot be built with any available compilers.
+class CompilerSelectionError < Homebrew::InstallationError
+  def initialize f
+    super f, <<-EOS.undent
+    #{f.name} cannot be built with any available compilers.
     To install this formula, you may need to:
       brew install apple-gcc42
     EOS
