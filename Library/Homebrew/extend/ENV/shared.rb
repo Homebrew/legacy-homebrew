@@ -116,11 +116,7 @@ module SharedEnvExtension
   # If no valid compiler is found, raises an exception.
   def validate_cc!(formula)
     if formula.fails_with? ENV.compiler
-      begin
-        send CompilerSelector.new(formula).compiler
-      rescue CompilerSelectionError => e
-        raise e.message
-      end
+      send CompilerSelector.new(formula).compiler
     end
   end
 
