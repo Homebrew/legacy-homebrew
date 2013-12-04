@@ -2,8 +2,8 @@ require 'formula'
 
 class Cherokee < Formula
   homepage 'http://cherokee-project.com/'
-  url 'http://pkgs.fedoraproject.org/repo/pkgs/cherokee/cherokee-1.2.101.tar.gz/ef47003355a2e368e4d9596cd070ef23/cherokee-1.2.101.tar.gz'
-  sha1 'b27f149c7d7111207ac8c3cd8a4856c05490d136'
+  url 'http://pkgs.fedoraproject.org/repo/pkgs/cherokee/cherokee-1.2.103.tar.gz/527b3de97ef9727bfd5f6832043cf916/cherokee-1.2.103.tar.gz'
+  sha1 '8af2b93eb08f3719d21c7ae8fd94b9a99fb674c0'
 
   head do
     url 'https://github.com/cherokee/webserver.git'
@@ -15,6 +15,11 @@ class Cherokee < Formula
   end
 
   depends_on 'gettext'
+
+  def patches
+    # OSX 10.9 patch
+    'https://github.com/cherokee/webserver/commit/d0213768fdc6cf3aee61fe0be398d7825c01198f.patch'
+  end
 
   def install
     if build.head?
@@ -43,27 +48,27 @@ class Cherokee < Formula
   end
 
   def caveats
-    <<-EOS.undent
-      Cherokee is setup to run with your user permissions as part of the
-      www group on port 80. This can be changed in the cherokee-admin
-      but be aware the new user will need permissions to write to:
-        #{var}/cherokee
-      for logging and runtime files.
+      <<-EOS.undent
+        Cherokee is setup to run with your user permissions as part of the
+        www group on port 80. This can be changed in the cherokee-admin
+        but be aware the new user will need permissions to write to:
+          #{var}/cherokee
+        for logging and runtime files.
 
-      By default, documents will be served out of:
-        #{etc}/cherokee/htdocs
+        By default, documents will be served out of:
+          #{etc}/cherokee/htdocs
 
-      And CGI scripts from:
-        #{etc}/cherokee/cgi-bin
+        And CGI scripts from:
+          #{etc}/cherokee/cgi-bin
 
-       If this is your first install, automatically load on startup with:
-          sudo cp #{prefix}/org.cherokee.webserver.plist /Library/LaunchDaemons
-          sudo launchctl load -w /Library/LaunchDaemons/org.cherokee.webserver.plist
+         If this is your first install, automatically load on startup with:
+            sudo cp #{prefix}/org.cherokee.webserver.plist /Library/LaunchDaemons
+            sudo launchctl load -w /Library/LaunchDaemons/org.cherokee.webserver.plist
 
-      If this is an upgrade and you already have the plist loaded:
-          sudo launchctl unload -w /Library/LaunchDaemons/org.cherokee.webserver.plist
-          sudo cp #{prefix}/org.cherokee.webserver.plist /Library/LaunchDaemons
-          sudo launchctl load -w /Library/LaunchDaemons/org.cherokee.webserver.plist
-    EOS
-  end
+        If this is an upgrade and you already have the plist loaded:
+            sudo launchctl unload -w /Library/LaunchDaemons/org.cherokee.webserver.plist
+            sudo cp #{prefix}/org.cherokee.webserver.plist /Library/LaunchDaemons
+            sudo launchctl load -w /Library/LaunchDaemons/org.cherokee.webserver.plist
+      EOS
+    end
 end
