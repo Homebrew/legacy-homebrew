@@ -60,13 +60,15 @@ module Homebrew extend self
     keg_ref_files.each do |file|
       puts "#{Tty.red}#{file}#{Tty.reset}"
 
-      # If we can't use otool on this file, just skip to the next file
-      next if not file.mach_o_executable? and not file.mach_o_bundle? and not file.dylib? and not file.extname == '.a'
+      linked_libraries = []
 
-      # Get all libraries this file links to, then display only links to libraries that contain string in the path
-      linked_libraries = `otool -L "#{file}"`.split("\n").drop(1)
-      linked_libraries.map!{ |lib| lib.strip.split()[0] }
-      linked_libraries = linked_libraries.select{ |lib| lib.include? string }
+      # Check dynamic library linkage. Importantly, do not run otool on static
+      # libraries, which will falsely report "linkage" to themselves.
+      if file.mach_o_executable? or file.dylib? or file.mach_o_bundle?
+        linked_libraries.concat `otool -L "#{file}"`.split("\n").drop(1)
+        linked_libraries.map! { |lib| lib[Keg::OTOOL_RX, 1] }
+        linked_libraries = linked_libraries.select { |lib| lib.include? string }
+      end
 
       linked_libraries.each do |lib|
         puts " #{Tty.gray}-->#{Tty.reset} links to #{lib}"
