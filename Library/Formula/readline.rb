@@ -8,7 +8,7 @@ class Readline < Formula
   version '6.2.4'
 
   bottle do
-    cellar :any
+    # cellar :any
     revision 1
     sha1 '82fb14c0c7671a6bb0490efc8b477df855eec093' => :mavericks
     sha1 '8085cabc0f96bc0c3c36b8a73cf489f90f0d8683' => :mountain_lion

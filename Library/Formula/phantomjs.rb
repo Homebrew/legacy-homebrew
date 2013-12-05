@@ -6,7 +6,7 @@ class Phantomjs < Formula
   sha1 '08559acdbbe04e963632bc35e94c1a9a082b6da1'
 
   bottle do
-    cellar :any
+    # cellar :any
     revision 1
     sha1 '154fa5b1ea8ce416bfd6957385484450dcea070f' => :mavericks
     sha1 'f90ab68692392269973ba20cd76fda9f9ce22378' => :mountain_lion

@@ -6,7 +6,7 @@ class Libpng < Formula
   sha1 '899d660104f3ef5c349c57faad10844b388f8442'
 
   bottle do
-    cellar :any
+    # cellar :any
     sha1 'ebebf384caac558174c5c2865e9ef04d733b7cc9' => :mavericks
     sha1 'b1e7c794cef2c2b36e774c6e1aae73330c0ba4e4' => :mountain_lion
     sha1 '6999a6f3541e945f263a480d454c26384e55db18' => :lion

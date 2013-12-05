@@ -22,7 +22,7 @@ class AppleGcc42 < Formula
   sha1 '8fadde2a159082d6474fe9e325b6301e3c0bc84f'
 
   bottle do
-    cellar :any
+    # cellar :any
     revision 1
     sha1 '6b2f79ffd0a1ce4f66dc1728147cbf92238ad934' => :mavericks
     sha1 'a5ea9db71e33fb371ceb736ffb8006bf69e206f1' => :mountain_lion

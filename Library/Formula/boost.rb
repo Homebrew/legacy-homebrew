@@ -20,7 +20,7 @@ class Boost < Formula
   head 'http://svn.boost.org/svn/boost/trunk'
 
   bottle do
-    cellar :any
+    # cellar :any
     sha1 'f4fc12094f9aa754cc964a42907e4e808de5a98f' => :mavericks
     sha1 '2e4a8f3acb057d641f5eec4fec9c686f09a833db' => :mountain_lion
     sha1 '62aef45efb9d4247b99c2bca04ec29ac898e940f' => :lion

@@ -11,7 +11,7 @@ class Unar < Formula
   depends_on :xcode
 
   bottle do
-    cellar :any
+    # cellar :any
     revision 1
     sha1 '85553d3575d0ce5687b2f0c2df912e5cd46c722c' => :mavericks
     sha1 '8f10a296637ce7a9e12d5d04b731c2d7aee80760' => :mountain_lion

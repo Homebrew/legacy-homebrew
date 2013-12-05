@@ -7,7 +7,7 @@ class Gmp < Formula
   sha1 'b35928e2927b272711fdfbf71b7cfd5f86a6b165'
 
   bottle do
-    cellar :any
+    # cellar :any
     revision 1
     sha1 '7a4392ecba5ef5077440358a6a1c86d9717e22f8' => :mountain_lion
     sha1 '8e7b9953d6c337dc6ee1ca97da5eede6b1c3d9be' => :lion

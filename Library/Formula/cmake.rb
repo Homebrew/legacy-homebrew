@@ -28,7 +28,7 @@ class Cmake < Formula
   head 'http://cmake.org/cmake.git'
 
   bottle do
-    cellar :any
+    # cellar :any
     sha1 '47c0961bc3cca0e89d4fee9f96638b9848e2d40a' => :mavericks
     sha1 'b9908be7e2eb79cc2e0f9ab1d9e46faea2748b10' => :mountain_lion
     sha1 'bc012f5e4a1a4eb09967d0e8f26688781412dc01' => :lion

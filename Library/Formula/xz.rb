@@ -9,7 +9,7 @@ class Xz < Formula
   sha256 '5dcffe6a3726d23d1711a65288de2e215b4960da5092248ce63c99d50093b93a'
 
   bottle do
-    cellar :any
+    # cellar :any
     revision 1
     sha1 '38f4e91b7f0ab45aa542de3a558c3077a928f7c5' => :mavericks
     sha1 'eed9e2dde1cea8dda3915ac0350fdf3fa3753640' => :mountain_lion

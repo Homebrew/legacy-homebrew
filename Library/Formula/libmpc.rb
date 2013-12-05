@@ -6,7 +6,7 @@ class Libmpc < Formula
   sha1 '8c7e19ad0dd9b3b5cc652273403423d6cf0c5edf'
 
   bottle do
-    cellar :any
+    # cellar :any
     sha1 'c8bbad14fa8314418e07aa7a5cd824452fa6ea1e' => :mountain_lion
     sha1 '21363b47cdc6085b1c09aead7f63918c69a57bed' => :lion
     sha1 '2b2fb525a4e87e7a954e70be13dfde1110329859' => :snow_leopard
