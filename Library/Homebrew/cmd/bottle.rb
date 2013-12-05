@@ -75,7 +75,7 @@ module Homebrew extend self
       end
 
       # Use strings to search through the file for each string
-      strings = `strings -t x - "#{file}"`.select{ |str| str.include? string }.map{ |s| s.strip }
+      strings = `strings -t x - "#{file}"`.split("\n").select{ |str| str.include? string }
 
       strings.each do |str|
         offset, match = str.split(" ", 2)
