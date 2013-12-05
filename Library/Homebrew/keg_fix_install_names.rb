@@ -24,7 +24,7 @@ class Keg
       install_names_for(file, options, relocate_reject_proc(old_cellar)) do |id, old_cellar_names|
         file.ensure_writable do
           old_cellar_names.each do |old_cellar_name|
-            new_cellar_name = old_cellar_name.to_s.gsub old_cellar, new_cellar
+            new_cellar_name = old_cellar_name.gsub(old_cellar, new_cellar)
             change_install_name(old_cellar_name, new_cellar_name, file)
           end
         end
@@ -32,11 +32,10 @@ class Keg
 
       install_names_for(file, options, relocate_reject_proc(old_prefix)) do |id, old_prefix_names|
         file.ensure_writable do
-          new_prefix_id = id.to_s.gsub old_prefix, new_prefix
-          change_dylib_id(new_prefix_id, file) if file.dylib?
+          change_dylib_id(id.gsub(old_prefix, new_prefix), file) if file.dylib?
 
           old_prefix_names.each do |old_prefix_name|
-            new_prefix_name = old_prefix_name.to_s.gsub old_prefix, new_prefix
+            new_prefix_name = old_prefix_name.gsub(old_prefix, new_prefix)
             change_install_name(old_prefix_name, new_prefix_name, file)
           end
         end
