@@ -6,11 +6,11 @@ class Phantomjs < Formula
   sha1 '08559acdbbe04e963632bc35e94c1a9a082b6da1'
 
   bottle do
-    # cellar :any
-    revision 1
-    sha1 '154fa5b1ea8ce416bfd6957385484450dcea070f' => :mavericks
-    sha1 'f90ab68692392269973ba20cd76fda9f9ce22378' => :mountain_lion
-    sha1 'a133761fffb7164b97c80f8aee4a419950e2f921' => :lion
+    cellar :any
+    revision 2
+    sha1 'd8eb4bb44e8569af5ffaab1b05c1dc85d208a1ff' => :mavericks
+    sha1 'f74ef5926657f37f370eb03c86f7eda50c70b978' => :mountain_lion
+    sha1 'b36a4516eb360b1ce63eea5aad75c406afdbeb9d' => :lion
   end
 
   def patches
