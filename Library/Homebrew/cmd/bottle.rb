@@ -116,9 +116,7 @@ module Homebrew extend self
     sha1 = nil
 
     prefix = HOMEBREW_PREFIX.to_s
-    tmp_prefix = '/tmp'
     cellar = HOMEBREW_CELLAR.to_s
-    tmp_cellar = '/tmp/Cellar'
 
     output = nil
 
@@ -126,6 +124,7 @@ module Homebrew extend self
       ohai "Bottling #{filename}..."
 
       keg = Keg.new(f.prefix)
+      relocatable = false
 
       keg.lock do
         begin
@@ -135,6 +134,19 @@ module Homebrew extend self
           # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
           # or an uncompressed tarball (and more bandwidth friendly).
           safe_system 'tar', 'czf', bottle_path, "#{f.name}/#{f.version}"
+
+          if File.size?(bottle_path) > 1*1024*1024
+            ohai "Detecting if #{filename} is relocatable..."
+          end
+
+          if prefix == '/usr/local'
+            prefix_check = HOMEBREW_PREFIX/'opt'
+          else
+            prefix_check = HOMEBREW_PREFIX
+          end
+
+          relocatable = !keg_contains(prefix_check, keg)
+          relocatable = !keg_contains(HOMEBREW_CELLAR, keg) if relocatable
         ensure
           keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, prefix,
             Keg::CELLAR_PLACEHOLDER, cellar, :keg_only => f.keg_only?
@@ -142,30 +154,6 @@ module Homebrew extend self
       end
 
       sha1 = bottle_path.sha1
-      relocatable = false
-
-      if File.size?(bottle_path) > 1*1024*1024
-        ohai "Detecting if #{filename} is relocatable..."
-      end
-
-      keg.lock do
-        # Relocate bottle library references before testing for built-in
-        # references to the Cellar e.g. Qt's QMake annoyingly does this.
-        keg.relocate_install_names prefix, tmp_prefix, cellar, tmp_cellar, :keg_only => f.keg_only?
-
-        if prefix == '/usr/local'
-          prefix_check = HOMEBREW_PREFIX/'opt'
-        else
-          prefix_check = HOMEBREW_PREFIX
-        end
-
-        relocatable = !keg_contains(prefix_check, keg)
-        relocatable = !keg_contains(HOMEBREW_CELLAR, keg) if relocatable
-
-        # And do the same thing in reverse to change the library references
-        # back to how they were.
-        keg.relocate_install_names tmp_prefix, prefix, tmp_cellar, cellar
-      end
 
       bottle = Bottle.new
       bottle.prefix HOMEBREW_PREFIX
