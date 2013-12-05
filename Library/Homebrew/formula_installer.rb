@@ -438,7 +438,7 @@ class FormulaInstaller
     keg = Keg.new(f.prefix)
     keg.fix_install_names(:keg_only => f.keg_only?)
 
-    if @poured_bottle and f.bottle
+    if @poured_bottle
       keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
         Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => f.keg_only?
     end
