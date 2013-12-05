@@ -8,7 +8,7 @@ class Keg
           bad_names.each do |bad_name|
             new_name = fixed_name(file, bad_name)
             unless new_name == bad_name
-              install_name_tool("-change", bad_name, new_name, file)
+              change_install_name(bad_name, new_name, file)
             end
           end
         end
@@ -25,7 +25,7 @@ class Keg
 
           old_prefix_names.each do |old_prefix_name|
             new_prefix_name = old_prefix_name.to_s.gsub old_prefix, new_prefix
-            install_name_tool("-change", old_prefix_name, new_prefix_name, file)
+            change_install_name(old_prefix_name, new_prefix_name, file)
           end
         end
       end
@@ -34,7 +34,7 @@ class Keg
         file.ensure_writable do
           old_cellar_names.each do |old_cellar_name|
             new_cellar_name = old_cellar_name.to_s.gsub old_cellar, new_cellar
-            install_name_tool("-change", old_cellar_name, new_cellar_name, file)
+            change_install_name(old_cellar_name, new_cellar_name, file)
           end
         end
       end
@@ -54,6 +54,10 @@ class Keg
         end
       end
     end
+  end
+
+  def change_install_name(old, new, file)
+    install_name_tool("-change", old, new, file)
   end
 
   # Given old == "/usr/local/Cellar" and new == "/opt/homebrew/Cellar",
