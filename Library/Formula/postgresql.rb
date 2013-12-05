@@ -2,13 +2,13 @@ require 'formula'
 
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp.postgresql.org/pub/source/v9.3.1/postgresql-9.3.1.tar.bz2'
-  sha256 '8ea4a7a92a6f5a79359b02e683ace335c5eb45dffe7f8a681a9ce82470a8a0b8'
+  url 'http://ftp.postgresql.org/pub/source/v9.3.2/postgresql-9.3.2.tar.bz2'
+  sha256 '700da51a71857e092f6af1c85fcd86b46d7d5cd2f2ba343cafb1f206c20232d7'
 
   bottle do
-    sha1 '11a69f847f44c2f1e3d8be884350d9f6a723f454' => :mavericks
-    sha1 '936b14d5b2006e16cfb5ec9d58577b24cebc04c4' => :mountain_lion
-    sha1 '1fa00b15402e5928299a766db0aca3c85d70fef7' => :lion
+    sha1 '106eb209038abdaa2cad8d91d2a422404f8fbe56' => :mavericks
+    sha1 '283c27e518a789d2cd57640375be00e18c829ef4' => :mountain_lion
+    sha1 'f6775c74300b4aee0bf449ac7466310d86701a5f' => :lion
   end
 
   option '32-bit'
