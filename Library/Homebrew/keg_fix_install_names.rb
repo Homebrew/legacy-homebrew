@@ -104,15 +104,16 @@ class Keg
   # bad_name relative to the lib directory, so that we can skip the more
   # expensive recursive search if possible.
   def fixed_name(file, bad_name)
-    if (file.dylib? || file.mach_o_bundle?) && (file.parent + bad_name).exist?
+    if bad_name.start_with? PREFIX_PLACEHOLDER
+      bad_name.sub(PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s)
+    elsif bad_name.start_with? CELLAR_PLACEHOLDER
+      bad_name.sub(CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s)
+    elsif (file.dylib? || file.mach_o_bundle?) && (file.parent + bad_name).exist?
       "@loader_path/#{bad_name}"
     elsif file.mach_o_executable? && (lib + bad_name).exist?
       "#{lib}/#{bad_name}"
     elsif (abs_name = find_dylib(Pathname.new(bad_name).basename)) && abs_name.exist?
       abs_name.to_s
-    elsif bad_name.start_with? PREFIX_PLACEHOLDER, CELLAR_PLACEHOLDER
-      # Skip these, relocate_install_names will fix them
-      bad_name
     else
       opoo "Could not fix #{bad_name} in #{file}"
       bad_name
