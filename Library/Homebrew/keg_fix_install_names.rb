@@ -40,13 +40,13 @@ class Keg
       end
     end
 
-    pkgconfig_files.each do |pcfile|
-      pcfile.ensure_writable do
-        pcfile.open('rb') do |f|
+    (pkgconfig_files | libtool_files).each do |file|
+      file.ensure_writable do
+        file.open('rb') do |f|
           s = f.read
-          replace_pkgconfig_file_path(s, old_cellar, new_cellar)
-          replace_pkgconfig_file_path(s, old_prefix, new_prefix)
-          f.reopen(pcfile, 'wb')
+          s.gsub!(old_cellar, new_cellar)
+          s.gsub!(old_prefix, new_prefix)
+          f.reopen(file, 'wb')
           f.write(s)
         end
       end
@@ -59,17 +59,6 @@ class Keg
 
   def change_install_name(old, new, file)
     install_name_tool("-change", old, new, file)
-  end
-
-  # Given old == "/usr/local/Cellar" and new == "/opt/homebrew/Cellar",
-  # then update lines of the form
-  #   some_variable=/usr/local/Cellar/foo/1.0/lib
-  # to
-  #   some_variable="/opt/homebrew/Cellar/foo/1.0/lib"
-  # and add quotes to protect against paths containing spaces.
-  def replace_pkgconfig_file_path(s, old, new)
-    return if old == new
-    s.gsub!(%r[([\S]+)="?#{Regexp.escape(old)}(.*?)"?$], "\\1=\"#{new}\\2\"")
   end
 
   # Detects the C++ dynamic libraries in place, scanning the dynamic links
@@ -197,5 +186,17 @@ class Keg
       pkgconfig_files << pn if pn.text_executable? and pn.basename.to_s.end_with? '-config'
     end
     pkgconfig_files
+  end
+
+  def libtool_files
+    libtool_files = []
+
+    # find .la files, which are stored in lib/
+    la_dir = self/'lib'
+    la_dir.find do |pn|
+      next if pn.symlink? or pn.directory? or pn.extname.to_s != '.la'
+      libtool_files << pn
+    end
+    libtool_files
   end
 end
