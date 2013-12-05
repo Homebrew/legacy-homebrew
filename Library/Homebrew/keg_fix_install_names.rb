@@ -21,17 +21,15 @@ class Keg
 
   def relocate_install_names old_prefix, new_prefix, old_cellar, new_cellar, options={}
     mach_o_files.each do |file|
-      install_names_for(file, options, relocate_reject_proc(old_cellar)) do |id, old_cellar_names|
-        file.ensure_writable do
+      file.ensure_writable do
+        install_names_for(file, options, relocate_reject_proc(old_cellar)) do |id, old_cellar_names|
           old_cellar_names.each do |old_cellar_name|
             new_cellar_name = old_cellar_name.gsub(old_cellar, new_cellar)
             change_install_name(old_cellar_name, new_cellar_name, file)
           end
         end
-      end
 
-      install_names_for(file, options, relocate_reject_proc(old_prefix)) do |id, old_prefix_names|
-        file.ensure_writable do
+        install_names_for(file, options, relocate_reject_proc(old_prefix)) do |id, old_prefix_names|
           change_dylib_id(id.gsub(old_prefix, new_prefix), file) if file.dylib?
 
           old_prefix_names.each do |old_prefix_name|
