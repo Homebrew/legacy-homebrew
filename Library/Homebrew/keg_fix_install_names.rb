@@ -3,7 +3,7 @@ class Keg
     mach_o_files.each do |file|
       install_names_for(file, options) do |id, bad_names|
         file.ensure_writable do
-          install_name_tool("-id", id, file) if file.dylib?
+          change_dylib_id(id, file) if file.dylib?
 
           bad_names.each do |bad_name|
             new_name = fixed_name(file, bad_name)
@@ -21,7 +21,7 @@ class Keg
       install_names_for(file, options, relocate_reject_proc(old_prefix)) do |id, old_prefix_names|
         file.ensure_writable do
           new_prefix_id = id.to_s.gsub old_prefix, new_prefix
-          install_name_tool("-id", new_prefix_id, file) if file.dylib?
+          change_dylib_id(new_prefix_id, file) if file.dylib?
 
           old_prefix_names.each do |old_prefix_name|
             new_prefix_name = old_prefix_name.to_s.gsub old_prefix, new_prefix
@@ -54,6 +54,10 @@ class Keg
         end
       end
     end
+  end
+
+  def change_dylib_id(id, file)
+    install_name_tool("-id", id, file)
   end
 
   def change_install_name(old, new, file)
