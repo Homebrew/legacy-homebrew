@@ -22,9 +22,7 @@ class PebbleSdk < Formula
         PebbleKit-iOS bin tools requirements.txt version.txt]
 
     resource('pebble-arm-toolchain').stage do
-      ENV['PREFIX'] = prefix/'arm-cs-tools'
-      system "make install-cross"
-      (prefix/'arm-cs-tools').install
+      system "make", "PREFIX=#{prefix}/arm-cs-tools", "install-cross"
     end
   end
 
