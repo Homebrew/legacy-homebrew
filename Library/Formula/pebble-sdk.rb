@@ -14,7 +14,8 @@ class PebbleSdk < Formula
   depends_on 'texinfo'
 
   resource 'pebble-arm-toolchain' do
-    url 'https://github.com/pebble/arm-eabi-toolchain', :using => :git, :tag => 'v2.0'
+    url 'https://github.com/pebble/arm-eabi-toolchain/archive/v2.0.tar.gz'
+    sha1 '7085c6ef371213e3e766a1cbd7e6e1951ccf1d87'
   end
 
   def install
