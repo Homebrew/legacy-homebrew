@@ -23,10 +23,10 @@ class AppleGcc42 < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 '6b2f79ffd0a1ce4f66dc1728147cbf92238ad934' => :mavericks
-    sha1 'a5ea9db71e33fb371ceb736ffb8006bf69e206f1' => :mountain_lion
-    sha1 'df7d347f800bd9ac7779cefd8362f8fad29f9acf' => :lion
+    revision 2
+    sha1 'b1a3f8e2dd3d34bf9a978c3d6a0a4e73879caf18' => :mavericks
+    sha1 'eb6940a80de4e0ab1d65f1729ee08f09e96d58e0' => :mountain_lion
+    sha1 '7b6d895482b11885fd993f423d51ce7e91d017ab' => :lion
   end
 
   option 'with-gfortran-symlink', 'Provide gfortran symlinks'

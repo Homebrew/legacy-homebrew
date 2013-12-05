@@ -7,7 +7,7 @@ class Pidof < Formula
   version '0.1.4'
 
   bottle do
-    cellar :any
+    # cellar :any
     revision 1
     sha1 'da148135814b86ac578de9d0b19f1f2deda0a312' => :mountain_lion
     sha1 'e818806883c83e6315d68fc93a37071c90c9f2ea' => :lion
