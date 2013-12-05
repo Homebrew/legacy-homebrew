@@ -13,6 +13,7 @@ class Hercules < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-optimization=no"
+    inreplace "hscutl.c", "SOL_TCP", "IPPROTO_TCP"
     system "make"
     system "make install"
   end
