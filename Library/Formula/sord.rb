@@ -6,6 +6,7 @@ class Sord < Formula
   sha1 '8a1ae8c9f90bd0b3632841898c6500a8293d6ed2'
 
   depends_on 'pkg-config' => :build
+  depends_on 'pcre'
   depends_on 'serd'
 
   def install
