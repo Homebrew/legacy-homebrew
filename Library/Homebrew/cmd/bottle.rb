@@ -49,7 +49,7 @@ module Homebrew extend self
     end
 
     # Find all files that still reference the keg via a string search
-    keg_ref_files = `/usr/bin/fgrep --files-with-matches --recursive "#{string}" "#{keg}" 2>/dev/null`.split
+    keg_ref_files = `/usr/bin/fgrep --files-with-matches --recursive "#{string}" "#{keg}" 2>/dev/null`.split("\n")
     keg_ref_files.map! { |file| Pathname.new(file) }.reject!(&:symlink?)
 
     # If there are no files with that string found, return immediately
