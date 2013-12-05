@@ -6,10 +6,11 @@ class Freetype < Formula
   sha1 '38f561bf3eaa3627015503cb736e137da2fafc6c'
 
   bottle do
-    # cellar :any
-    sha1 '49604baab2e2efca836b898e2b5c2ec18b7a337b' => :mavericks
-    sha1 '911c057fe49ad0b5e9e7c5492a5a64184ff611f9' => :mountain_lion
-    sha1 'a7e8c32b48e22880088a8d10a74f7d1b7fc0b84a' => :lion
+    cellar :any
+    revision 1
+    sha1 '4110fc47a6c0194dafd710e0dcea1ef2dfb85790' => :mavericks
+    sha1 '5ba6cb8fe00857d72b481313623f9d929ad5f779' => :mountain_lion
+    sha1 '4022a53d0c10b98944f4a907c8629faa81caf2cd' => :lion
   end
 
   keg_only :provided_pre_mountain_lion
