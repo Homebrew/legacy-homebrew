@@ -110,6 +110,9 @@ class Keg
       "#{lib}/#{bad_name}"
     elsif (abs_name = find_dylib(Pathname.new(bad_name).basename)) && abs_name.exist?
       abs_name.to_s
+    elsif bad_name.start_with? PREFIX_PLACEHOLDER, CELLAR_PLACEHOLDER
+      # Skip these, relocate_install_names will fix them
+      bad_name
     else
       opoo "Could not fix #{bad_name} in #{file}"
       bad_name

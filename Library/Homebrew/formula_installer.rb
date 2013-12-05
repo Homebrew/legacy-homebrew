@@ -435,17 +435,12 @@ class FormulaInstaller
   end
 
   def fix_install_names
-    Keg.new(f.prefix).fix_install_names(:keg_only => f.keg_only?)
-    if @poured_bottle and f.bottle
-      old_prefix = f.bottle.prefix
-      new_prefix = HOMEBREW_PREFIX.to_s
-      old_cellar = f.bottle.cellar
-      new_cellar = HOMEBREW_CELLAR.to_s
+    keg = Keg.new(f.prefix)
+    keg.fix_install_names(:keg_only => f.keg_only?)
 
-      if old_prefix != new_prefix or old_cellar != new_cellar
-        Keg.new(f.prefix).relocate_install_names \
-          old_prefix, new_prefix, old_cellar, new_cellar, :keg_only => f.keg_only?
-      end
+    if @poured_bottle and f.bottle
+      keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
+        Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => f.keg_only?
     end
   rescue Exception => e
     onoe "Failed to fix install names"
