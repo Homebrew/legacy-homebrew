@@ -8,7 +8,7 @@ class Pyrit < Formula
   depends_on :python
   depends_on 'libdnet' => '--with-python'
   depends_on 'openssl'
-  depends_on 'samueljohn/python/scapy' => :python
+  depends_on 'scapy' => :python
 
   def install
     python do
