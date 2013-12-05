@@ -323,7 +323,8 @@ class FormulaAuditor
     end
 
     # FileUtils is included in Formula
-    if line =~ /FileUtils\.(\w+)/
+    # encfs modifies a file with this name, so check for some leading characters
+    if line =~ /[^'"\/]FileUtils\.(\w+)/
       problem "Don't need 'FileUtils.' before #{$1}."
     end
 
