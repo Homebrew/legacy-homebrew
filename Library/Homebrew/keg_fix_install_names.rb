@@ -1,4 +1,7 @@
 class Keg
+  PREFIX_PLACEHOLDER = "@@HOMEBREW_PREFIX@@".freeze
+  CELLAR_PLACEHOLDER = "@@HOMEBREW_CELLAR@@".freeze
+
   def fix_install_names options={}
     mach_o_files.each do |file|
       install_names_for(file, options) do |id, bad_names|
