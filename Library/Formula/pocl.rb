@@ -16,6 +16,7 @@ class Pocl < Formula
   end
 
   def install
+    ENV.j1
     system "./configure", "--disable-debug",
                           "--enable-direct-linkage",
                           "--disable-icd",
