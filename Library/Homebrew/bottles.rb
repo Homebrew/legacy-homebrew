@@ -6,7 +6,7 @@ require 'bottle_version'
 def bottle_filename f, options={:tag=>bottle_tag, :bottle_revision=>nil}
   name = f.name.downcase
   version = f.stable.version
-  bottle_revision ||= f.bottle.revision.to_i if f.bottle
+  options[:revision] ||= f.bottle.revision.to_i if f.bottle
   "#{name}-#{version}#{bottle_native_suffix(options)}"
 end
 
