@@ -132,7 +132,7 @@ class BuildOptions
   end
 
   def opposite_of option
-    option = Option.new(option) unless Option == option
+    option = Option.new(option) unless Option === option
 
     if option.name =~ /^with-(.+)$/
       Option.new("without-#{$1}")
