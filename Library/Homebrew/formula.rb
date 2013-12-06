@@ -46,7 +46,7 @@ class Formula
       # into a validation method on the bottle instance.
       unless bottle.checksum.nil? || bottle.checksum.empty?
         @bottle = bottle
-        bottle.url ||= bottle_url(self)
+        bottle.url ||= bottle_url(self, bottle.current_tag)
       end
     end
 

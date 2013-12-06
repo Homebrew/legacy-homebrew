@@ -2,8 +2,8 @@ require 'formula'
 
 class Libmongoclient < Formula
   homepage 'http://www.mongodb.org'
-  url 'http://fastdl.mongodb.org/src/mongodb-src-r2.5.3.tar.gz'
-  sha1 '8fbd7f6f2a55092ae0e461ee0f5a4a7f738d40c9'
+  url 'http://fastdl.mongodb.org/src/mongodb-src-r2.5.4.tar.gz'
+  sha1 'ad40b93c9638178cd487c80502084ac3a9472270'
 
   head 'https://github.com/mongodb/mongo.git'
 
@@ -11,6 +11,8 @@ class Libmongoclient < Formula
   depends_on 'boost' => :build
 
   def install
+    scons = Formula.factory('scons').opt_prefix/'bin/scons'
+
     args = [
       "--prefix=#{prefix}",
       "-j#{ENV.make_jobs}",
@@ -26,6 +28,6 @@ class Libmongoclient < Formula
       args << "--libc++"
     end
 
-    system 'scons', 'install-mongoclient', *args
+    system scons, 'install-mongoclient', *args
   end
 end
