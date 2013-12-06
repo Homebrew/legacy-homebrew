@@ -3,7 +3,7 @@ require 'os/mac'
 require 'extend/ARGV'
 require 'bottle_version'
 
-def bottle_filename f, options={:tag=>bottle_tag, :bottle_revision=>nil}
+def bottle_filename f, options={:tag=>bottle_tag}
   name = f.name.downcase
   version = f.stable.version
   options[:revision] ||= f.bottle.revision.to_i if f.bottle
