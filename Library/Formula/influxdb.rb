@@ -28,10 +28,11 @@ class Influxdb < Formula
     flex = Formula.factory('flex').bin/"flex"
     bison = Formula.factory('bison').bin/"bison"
 
+    build_target = build.devel? ? "daemon" : "server"
+
     system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
     system "make dependencies protobuf parser"
-    system "go build server" if !build.devel?
-    system "go build daemon" if  build.devel?
+    system "go build #{build_target}"
 
     inreplace "config.json.sample" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
@@ -39,8 +40,7 @@ class Influxdb < Formula
       s.gsub! "./admin/", "#{opt_prefix}/share/admin/"
     end
 
-    bin.install "server" => "influxdb" if !build.devel?
-    bin.install "daemon" => "influxdb" if  build.devel?
+    bin.install build_target => "influxdb"
     etc.install "config.json.sample" => "influxdb.conf"
     share.install "admin"
 
