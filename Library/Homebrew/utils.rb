@@ -145,6 +145,17 @@ def curl *args
   safe_system curl, *args
 end
 
+def axel *args
+  axel = Pathname.new '/usr/local/bin/axel'
+  raise "#{axel} is not executable" unless axel.exist? and axel.executable?
+
+  args = ['-U ' + HOMEBREW_USER_AGENT, *args]
+  args << "--verbose" if ENV['HOMEBREW_AXEL_VERBOSE']
+  args << "--quiet" unless $stdout.tty?
+
+  safe_system axel, *args
+end
+
 def puts_columns items, star_items=[]
   return if items.empty?
 
