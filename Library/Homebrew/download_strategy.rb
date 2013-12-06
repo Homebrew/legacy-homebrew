@@ -664,7 +664,7 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
   def cache_tag; "hg" end
 
   def hgpath
-    # #{HOMEBREW_PREFIX}/share/python/hg is deprecated, but we levae it in for a while
+    # Note: #{HOMEBREW_PREFIX}/share/python/hg is deprecated
     @path ||= %W[
       #{which("hg")}
       #{HOMEBREW_PREFIX}/bin/hg
