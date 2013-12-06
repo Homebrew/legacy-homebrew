@@ -8,7 +8,7 @@ class Pocl < Formula
   depends_on 'pkg-config' => :build
   depends_on 'hwloc'
   depends_on 'llvm' => 'with-clang'
-  depends_on :libtool
+  depends_on :libltdl
 
   def patches
     # fix llvm-link command in script with version found by
