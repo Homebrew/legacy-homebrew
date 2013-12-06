@@ -5,6 +5,12 @@ class Mysql < Formula
   url 'http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.15.tar.gz'
   sha1 '90b46f973930c27eb8586387de5dfbc2af04d3ed'
 
+  bottle do
+    sha1 '3d2f69c1c9449daf06a7785f1d4d11796bfa393c' => :mavericks
+    sha1 'c234513a06992981d626ed1008e35a4d5481eb72' => :mountain_lion
+    sha1 '404e5dac0c91dad178adb7d66a5d26d46a8e9fd2' => :lion
+  end
+
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
 
