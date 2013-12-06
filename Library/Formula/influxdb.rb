@@ -5,6 +5,11 @@ class Influxdb < Formula
   url "http://get.influxdb.org/influxdb-0.3.2.src.tar.gz"
   sha1 "6b730a75e6694abd5e913b4ad08936f7661569bd"
 
+  devel do
+    url "http://get.influxdb.org/influxdb-0.4.0.rc2.src.tar.gz"
+    sha1 "81d0f8e8f3b7648f010b85232baf002d5612dd72"
+  end
+
   bottle do
     sha1 '9cc355279cf466f4ebc5704287c255c1d0312093' => :mavericks
     sha1 'ffb246bf0923ca28b31db256b259b95a96f81f80' => :mountain_lion
@@ -25,7 +30,8 @@ class Influxdb < Formula
 
     system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
     system "make dependencies protobuf parser"
-    system "go build server"
+    system "go build server" if !build.devel?
+    system "go build daemon" if  build.devel?
 
     inreplace "config.json.sample" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
@@ -33,7 +39,8 @@ class Influxdb < Formula
       s.gsub! "./admin/", "#{opt_prefix}/share/admin/"
     end
 
-    bin.install "server" => "influxdb"
+    bin.install "server" => "influxdb" if !build.devel?
+    bin.install "daemon" => "influxdb" if  build.devel?
     etc.install "config.json.sample" => "influxdb.conf"
     share.install "admin"
 
