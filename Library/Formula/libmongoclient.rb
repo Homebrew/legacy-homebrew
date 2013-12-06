@@ -11,6 +11,8 @@ class Libmongoclient < Formula
   depends_on 'boost' => :build
 
   def install
+    scons = Formula.factory('scons').opt_prefix/'bin/scons'
+
     args = [
       "--prefix=#{prefix}",
       "-j#{ENV.make_jobs}",
@@ -26,6 +28,6 @@ class Libmongoclient < Formula
       args << "--libc++"
     end
 
-    system 'scons', 'install-mongoclient', *args
+    system scons, 'install-mongoclient', *args
   end
 end
