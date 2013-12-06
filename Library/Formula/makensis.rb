@@ -13,7 +13,8 @@ class Makensis < Formula
   end
 
   def install
-    system "scons makensis"
+    scons = Formula.factory('scons').opt_prefix/'bin/scons'
+    system scons, "makensis"
     bin.install "build/release/makensis/makensis"
     (share/'nsis').install resource('nsis')
   end
