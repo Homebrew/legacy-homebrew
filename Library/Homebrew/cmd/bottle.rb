@@ -147,7 +147,7 @@ module Homebrew extend self
           end
 
           relocatable = !keg_contains(prefix_check, keg)
-          relocatable = !keg_contains(HOMEBREW_CELLAR, keg) if relocatable
+          relocatable = !keg_contains(HOMEBREW_CELLAR, keg) && relocatable
         ensure
           keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, prefix,
             Keg::CELLAR_PLACEHOLDER, cellar, :keg_only => f.keg_only?
