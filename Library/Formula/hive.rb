@@ -6,10 +6,10 @@ class Hive < Formula
   sha1 '488f625a859facc89312320ef7e9802f1cc2531e'
 
   depends_on 'hadoop'
+
   def install
     rm_f Dir["bin/*.bat"]
-    libexec.install %w[bin conf examples lib ]
-    libexec.install Dir['*.jar']
+    libexec.install %w[bin conf examples lib]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 
