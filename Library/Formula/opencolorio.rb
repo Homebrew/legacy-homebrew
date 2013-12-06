@@ -2,8 +2,8 @@ require 'formula'
 
 class Opencolorio < Formula
   homepage 'http://opencolorio.org/'
-  url 'https://github.com/imageworks/OpenColorIO/archive/v1.0.8.tar.gz'
-  sha1 '83b28202bdb1f692f74a80affea95d832354ec23'
+  url 'https://github.com/imageworks/OpenColorIO/archive/v1.0.9.tar.gz'
+  sha1 '45efcc24db8f8830b6892830839da085e19eeb6d'
 
   head 'https://github.com/imageworks/OpenColorIO.git'
 
