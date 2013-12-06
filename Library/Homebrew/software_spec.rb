@@ -125,7 +125,7 @@ class Bottle < SoftwareSpec
       checksum_os_versions = send checksum_type
       next unless checksum_os_versions
       os_versions = checksum_os_versions.keys
-      os_versions.map! {|osx| MacOS::Version.from_symbol osx rescue nil }
+      os_versions.map! {|osx| MacOS::Version.from_symbol osx rescue nil }.compact!
       os_versions.sort.reverse.each do |os_version|
         osx = os_version.to_sym
         checksum = checksum_os_versions[osx]
