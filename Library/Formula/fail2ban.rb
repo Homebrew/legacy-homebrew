@@ -2,8 +2,8 @@ require 'formula'
 
 class Fail2ban < Formula
   homepage 'http://www.fail2ban.org/'
-  url 'http://cloud.github.com/downloads/fail2ban/fail2ban/fail2ban_0.8.7.1.orig.tar.gz'
-  sha1 'ec1a7ea1360056d5095bb9de733c1e388bd22373'
+  url 'https://github.com/fail2ban/fail2ban/archive/0.8.11.tar.gz'
+  sha1 'd38ec5e5b983ef45c87f3324a095df85c2003303'
 
   depends_on :python
 
@@ -20,11 +20,12 @@ class Fail2ban < Formula
     inreplace 'fail2ban-regex', '/usr/share/fail2ban', libexec
 
     inreplace 'fail2ban-client', '/etc', etc
-    inreplace 'fail2ban-server', '/etc', etc
     inreplace 'fail2ban-regex', '/etc', etc
 
     inreplace 'fail2ban-server', '/var', var
     inreplace 'config/fail2ban.conf', '/var/run', (var/'run')
+
+    inreplace 'setup.py', '/usr/share/doc/fail2ban', (libexec/'doc')
 
     python do
       system python, "setup.py", "install", "--prefix=#{prefix}", "--install-lib=#{libexec}"
