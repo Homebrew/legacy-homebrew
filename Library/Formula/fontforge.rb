@@ -22,6 +22,7 @@ class Fontforge < Formula
     depends_on 'pango'
     depends_on 'cairo'
     depends_on 'ossp-uuid'
+    depends_on 'czmq'=> :build
   end
 
   option 'with-gif', 'Build with GIF support'
@@ -105,13 +106,24 @@ class Fontforge < Formula
       s.gsub! "python setup.py install --prefix=$(prefix) --root=$(DESTDIR)", "#{python} setup.py install --prefix=$(prefix)"
     end
 
-    # Replace FlatCarbon headers with the real paths
-    # Fixes building on 10.8
-    inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
-      s.gsub! "/Developer/Headers/FlatCarbon/Files.h", "CarbonCore/Files.h"
-    end
-    inreplace %w(fontforge/startui.c) do |s|
-      s.gsub! "/Developer/Headers/FlatCarbon/CarbonEvents.h", "HIToolbox/CarbonEvents.h"
+    if build.head?
+      # Replace FlatCarbon headers with the real paths
+      # Fixes building on 10.8 for HEAD
+      inreplace %w(fontforge/macbinary.c fontforgeexe/startui.c gutils/giomime.c) do |s|
+        s.gsub! "/Developer/Headers/FlatCarbon/Files.h", "CarbonCore/Files.h"
+      end
+      inreplace %w(fontforgeexe/startui.c) do |s|
+        s.gsub! "/Developer/Headers/FlatCarbon/CarbonEvents.h", "HIToolbox/CarbonEvents.h"
+      end
+    else
+      # Replace FlatCarbon headers with the real paths
+      # Fixes building on 10.8
+      inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
+        s.gsub! "/Developer/Headers/FlatCarbon/Files.h", "CarbonCore/Files.h"
+      end
+      inreplace %w(fontforge/startui.c) do |s|
+        s.gsub! "/Developer/Headers/FlatCarbon/CarbonEvents.h", "HIToolbox/CarbonEvents.h"
+      end
     end
 
     system "make"
