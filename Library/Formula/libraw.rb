@@ -8,21 +8,21 @@ end
 
 class Libraw < Formula
   homepage 'http://www.libraw.org/'
-  url 'http://www.libraw.org/data/LibRaw-0.14.7.tar.gz'
-  sha1 'e924527bed3d72ee4756da0c9383dc74c584799f'
+  url 'http://www.libraw.org/data/LibRaw-0.15.4.tar.gz'
+  sha1 '1561e1ac12df6eed999d5be3146d66176c050b76'
 
   depends_on 'pkg-config' => :build
   depends_on 'jasper'
   depends_on 'little-cms2'
 
   resource 'gpl2' do
-    url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.14.7.tar.gz'
-    sha1 '9a95d5be316c6efe91228ab696eb39c565922cad'
+    url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.15.4.tar.gz'
+    sha1 '9eaa33b53e15053937a1ac081227713cae7f25fb'
   end
 
   resource 'gpl3' do
-    url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.14.7.tar.gz'
-    sha1 '63b1e4899c7aa1a9023e6f4516b91c9c9aa3893e'
+    url 'http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.15.4.tar.gz'
+    sha1 'd9ce308bccae75f26fa56ab6c2ad705ef0eaa761'
   end
 
   def install
