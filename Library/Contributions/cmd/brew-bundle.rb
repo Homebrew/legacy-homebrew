@@ -30,10 +30,11 @@ end
 
 raise "Cannot find Brewfile#{error}" unless File.exist? path
 
-File.readlines(path).each do |line|
+File.readlines(path).each_with_index do |line, index|
   command = line.chomp
   next if command.empty?
   next if command.chars.first == '#'
 
-  system "brew #{command}"
+  brew_cmd = "brew #{command}"
+  odie "Command failed: L#{index+1}:#{brew_cmd}" unless system brew_cmd
 end
