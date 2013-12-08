@@ -534,7 +534,6 @@ class Formula
 
   # For FormulaInstaller.
   def verify_download_integrity fn
-    ohai "Verifying #{fn.basename} checksum" if ARGV.verbose?
     active_spec.verify_download_integrity(fn)
   end
 
