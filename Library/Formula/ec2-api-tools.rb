@@ -6,7 +6,6 @@ class Ec2ApiTools < AmazonWebServicesFormula
   sha1 'eb0732df59a2ad2c1ad3fa5839e846b69afad697'
 
   def install
-    inreplace 'bin/ec2-cmd', '/lib', '/libexec/lib'
     standard_install
   end
 
