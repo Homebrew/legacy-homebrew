@@ -117,7 +117,7 @@ module Homebrew extend self
     bottle_revision = -1
     begin
       bottle_revision += 1
-      filename = bottle_filename(f, :tag => bottle_tag, :bottle_revision => bottle_revision)
+      filename = bottle_filename(f, :tag => bottle_tag, :revision => bottle_revision)
     end while not ARGV.include? '--no-revision' \
         and master_bottle_filenames.include? filename
 
