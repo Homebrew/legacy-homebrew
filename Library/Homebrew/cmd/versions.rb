@@ -47,8 +47,7 @@ class Formula
       filename = formula_for_sha(sha) do |f|
         bottle_block = f.class.send(:bottle)
         unless bottle_block.checksums.empty?
-          revision = bottle_block.revision
-          bottle_filename f, revision
+          bottle_filename f, :revision => bottle_block.revision
         end
       end
       unless filenames.include? filename or filename.nil?
