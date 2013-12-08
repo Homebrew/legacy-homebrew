@@ -24,7 +24,7 @@ class Mutt < Formula
 
   option "with-debug", "Build with debug option enabled"
   option "with-trash-patch", "Apply trash folder patch"
-  option "with-slang", "Build against slang instead of ncurses"
+  option "with-s-lang", "Build against slang instead of ncurses"
   option "with-ignore-thread-patch", "Apply ignore-thread patch"
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
