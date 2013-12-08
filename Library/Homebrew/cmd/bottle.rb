@@ -43,6 +43,15 @@ module Homebrew extend self
     include Utils::Inreplace
   end
 
+  def uniq_by_ino(list)
+    h = {}
+    list.each do |e|
+      ino = e.stat.ino
+      h[ino] = e unless h.key? ino
+    end
+    h.values
+  end
+
   def keg_contains string, keg
     if not ARGV.homebrew_developer?
       return quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg
@@ -51,6 +60,9 @@ module Homebrew extend self
     # Find all files that still reference the keg via a string search
     keg_ref_files = `/usr/bin/fgrep --files-with-matches --recursive "#{string}" "#{keg}" 2>/dev/null`.split("\n")
     keg_ref_files.map! { |file| Pathname.new(file) }.reject!(&:symlink?)
+
+    # If files are hardlinked, only check one of them
+    keg_ref_files = uniq_by_ino(keg_ref_files)
 
     # If there are no files with that string found, return immediately
     return false if keg_ref_files.empty?
