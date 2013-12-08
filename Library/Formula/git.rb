@@ -7,9 +7,10 @@ class Git < Formula
   head 'https://github.com/git/git.git'
 
   bottle do
-    sha1 '2c26cb1d99b3262df1f5fb6174bff992250c60b9' => :mavericks
-    sha1 '5b763a65526a23401a019119cd48bada6587d731' => :mountain_lion
-    sha1 'e88534f06d82de3d8ead0645d54046a74f021158' => :lion
+    revision 1
+    sha1 '3dcbbccf00260999f5b653f5f2a4850f9cb76b54' => :mavericks
+    sha1 '3dbd8ce732095ca0f902b5eabcbe808dc40486be' => :mountain_lion
+    sha1 'e0e3f77e77865f6122e7399a1d3e433d4a7c18d0' => :lion
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -78,6 +79,8 @@ class Git < Formula
                    "CFLAGS=#{ENV.cflags}",
                    "LDFLAGS=#{ENV.ldflags}",
                    "install"
+
+    bin.install Dir["contrib/remote-helpers/git-remote-{hg,bzr}"]
 
     # Install the OS X keychain credential helper
     cd 'contrib/credential/osxkeychain' do
