@@ -1,7 +1,7 @@
 require 'formula'
 
 class Bindfs < Formula
-  homepage 'http://code.google.com/p/bindfs/'
+  homepage 'http://bindfs.org/'
   url 'http://bindfs.googlecode.com/files/bindfs-1.12.tar.gz'
   sha1 'e4d5d9ab3056c06e1e8b9fe423222de86cce46cf'
 
