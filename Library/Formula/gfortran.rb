@@ -120,7 +120,7 @@ class Gfortran < Formula
   end
 
   def caveats; <<-EOS.undent
-    Brews that require a Fortran compiler should use:
+    Formulae that require a Fortran compiler should use:
       depends_on :fortran
     EOS
   end
