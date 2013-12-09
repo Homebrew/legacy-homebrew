@@ -2,9 +2,9 @@ require 'formula'
 
 class Nexus < Formula
   homepage 'http://www.sonatype.org/'
-  url 'http://download.sonatype.com/nexus/oss/nexus-2.6.3-01-bundle.tar.gz'
-  version '2.6.3-01'
-  sha1 '92a5b1fa25b333401da940aea19a49baaf34b56e'
+  url 'http://download.sonatype.com/nexus/oss/nexus-2.7.0-04-bundle.tar.gz'
+  version '2.7.0-04'
+  sha1 'aeff0bf2694c27813c1b27415210baa1abe29e2e'
 
   def install
     rm_f Dir['bin/*.bat']
