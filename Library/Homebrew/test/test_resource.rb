@@ -88,10 +88,10 @@ class ResourceTests < Test::Unit::TestCase
 
   def test_checksum_setters
     assert_nil @resource.checksum
-    @resource.sha1('baadidea'*5)
-    assert_equal Checksum.new(:sha1, 'baadidea'*5), @resource.checksum
-    @resource.sha256('baadidea'*8)
-    assert_equal Checksum.new(:sha256, 'baadidea'*8), @resource.checksum
+    @resource.sha1(TEST_SHA1)
+    assert_equal Checksum.new(:sha1, TEST_SHA1), @resource.checksum
+    @resource.sha256(TEST_SHA256)
+    assert_equal Checksum.new(:sha256, TEST_SHA256), @resource.checksum
   end
 
   def test_download_strategy
@@ -104,7 +104,6 @@ class ResourceTests < Test::Unit::TestCase
 
   def test_verify_download_integrity_missing
     fn = Pathname.new('test')
-    checksum = @resource.sha1('baadidea'*5)
 
     fn.stubs(:file? => true)
     fn.expects(:verify_checksum).raises(ChecksumMissingError)
@@ -115,7 +114,7 @@ class ResourceTests < Test::Unit::TestCase
 
   def test_verify_download_integrity_mismatch
     fn = stub(:file? => true)
-    checksum = @resource.sha1('baadidea'*5)
+    checksum = @resource.sha1(TEST_SHA1)
 
     fn.expects(:verify_checksum).with(checksum).
       raises(ChecksumMismatchError.new(checksum, Object.new))
