@@ -3,7 +3,8 @@ require 'os/mac'
 require 'extend/ARGV'
 require 'bottle_version'
 
-def bottle_filename f, options={:tag=>bottle_tag}
+def bottle_filename f, options={}
+  options = { :tag => bottle_tag }.merge(options)
   name = f.name.downcase
   version = f.stable.version
   options[:revision] ||= f.bottle.revision.to_i if f.bottle
@@ -48,7 +49,8 @@ def bottle_file_outdated? f, file
   bottle_ext && bottle_url_ext && bottle_ext != bottle_url_ext
 end
 
-def bottle_native_suffix options={:tag=>bottle_tag}
+def bottle_native_suffix options={}
+  options = { :tag => bottle_tag }.merge(options)
   ".#{options[:tag]}#{bottle_suffix(options[:revision])}"
 end
 
