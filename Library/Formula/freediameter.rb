@@ -38,7 +38,7 @@ class Freediameter < Formula
 
     prefix.install 'doc', 'contrib'
 
-    unless File.exists?(etc/'freeDiameter.conf')
+    unless File.exist?(etc/'freeDiameter.conf')
       cp prefix/'doc/freediameter.conf.sample', etc/'freeDiameter.conf'
     end
 
