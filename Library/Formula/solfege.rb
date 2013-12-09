@@ -2,9 +2,9 @@ require 'formula'
 
 class Solfege < Formula
   homepage 'http://www.solfege.org/'
-  url 'http://ftpmirror.gnu.org/solfege/solfege-3.20.6.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/solfege/solfege-3.20.6.tar.xz'
-  sha1 '0b83f351e90aeb9267f76d8dda0638dc50682226'
+  url 'http://ftpmirror.gnu.org/solfege/solfege-3.22.2.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/solfege/solfege-3.22.2.tar.xz'
+  sha1 'd46e67d2f64c943fbdfa3858f077b49186a60a66'
 
   depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
