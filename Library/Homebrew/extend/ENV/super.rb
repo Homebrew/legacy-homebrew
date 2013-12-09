@@ -28,6 +28,7 @@ module Superenv
     # done on the singleton class, because in MRI all ENV methods are defined
     # on its singleton class, precluding the use of extend.
     class << base
+      alias_method :"old_[]", :[]
       def [] key
         if has_key? key
           fetch(key)
