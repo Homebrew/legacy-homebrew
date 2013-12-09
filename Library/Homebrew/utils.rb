@@ -139,6 +139,7 @@ def curl *args
   args = [HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args]
   # See https://github.com/mxcl/homebrew/issues/6103
   args << "--insecure" if MacOS.version < "10.6"
+  args << "--disable-epsv" if MacOS.version == "10.9"
   args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
   args << "--silent" unless $stdout.tty?
 
