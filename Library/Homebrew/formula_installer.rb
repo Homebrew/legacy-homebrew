@@ -17,7 +17,6 @@ class FormulaInstaller
   attr_reader :f
   attr_accessor :tab, :options, :ignore_deps
   attr_accessor :show_summary_heading, :show_header
-  attr_reader :requirement_deps
 
   def initialize ff
     @f = ff
@@ -25,7 +24,6 @@ class FormulaInstaller
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @options = Options.new
     @tab = Tab.dummy_tab(ff)
-    @requirement_deps = []
 
     @@attempted ||= Set.new
 
@@ -168,35 +166,57 @@ class FormulaInstaller
 
   def compute_and_install_dependencies
     perform_readline_hack
-    check_requirements
 
-    deps = [].concat(f.deps).concat(requirement_deps)
+    req_map, req_deps = expand_requirements
+
+    check_requirements(req_map)
+
+    deps = [].concat(req_deps).concat(f.deps)
 
     install_dependencies expand_dependencies(deps)
-  ensure
-    requirement_deps.clear
   end
 
-  def check_requirements
-    unsatisfied = ARGV.filter_for_dependencies do
-      f.recursive_requirements do |dependent, req|
-        if (req.optional? || req.recommended?) && dependent.build.without?(req)
-          Requirement.prune
-        elsif req.build? && install_bottle?(dependent)
-          Requirement.prune
-        elsif req.satisfied?
-          Requirement.prune
-        elsif req.default_formula?
-          requirement_deps << req.to_dependency
-          Requirement.prune
-        else
-          puts "#{dependent}: #{req.message}"
+  def check_requirements(req_map)
+    fatals = []
+
+    req_map.each_pair do |dependent, reqs|
+      reqs.each do |req|
+        puts "#{dependent}: #{req.message}"
+        fatals << req if req.fatal?
+      end
+    end
+
+    raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
+  end
+
+  def expand_requirements
+    unsatisfied_reqs = Hash.new { |h, k| h[k] = [] }
+    deps = []
+    formulae = [f]
+
+    while f = formulae.pop
+
+      ARGV.filter_for_dependencies do
+        f.recursive_requirements do |dependent, req|
+          if (req.optional? || req.recommended?) && dependent.build.without?(req)
+            Requirement.prune
+          elsif req.build? && install_bottle?(dependent)
+            Requirement.prune
+          elsif req.satisfied?
+            Requirement.prune
+          elsif req.default_formula?
+            dep = req.to_dependency
+            deps.unshift(dep)
+            formulae.unshift(dep.to_formula)
+            Requirement.prune
+          else
+            unsatisfied_reqs[dependent] << req
+          end
         end
       end
     end
 
-    fatals = unsatisfied.select(&:fatal?)
-    raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
+    return unsatisfied_reqs, deps
   end
 
   def expand_dependencies(deps)
