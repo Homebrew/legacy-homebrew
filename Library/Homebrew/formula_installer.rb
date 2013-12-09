@@ -171,7 +171,14 @@ class FormulaInstaller
   def compute_and_install_dependencies
     perform_readline_hack
     check_requirements
-    install_dependencies
+
+    unsatisfied_deps.concat(requirement_deps)
+    unsatisfied_deps.concat(filter_deps)
+
+    install_dependencies(unsatisfied_deps)
+  ensure
+    requirement_deps.clear
+    unsatisfied_deps.clear
   end
 
   def check_requirements
@@ -234,25 +241,19 @@ class FormulaInstaller
     f.recursive_dependencies.select { |d| deps.include? d }
   end
 
-  def install_dependencies
-    unsatisfied_deps.concat(requirement_deps)
-    unsatisfied_deps.concat(filter_deps)
-
-    if unsatisfied_deps.length > 1
-      oh1 "Installing dependencies for #{f}: #{Tty.green}#{unsatisfied_deps*", "}#{Tty.reset}"
+  def install_dependencies(deps)
+    if deps.length > 1
+      oh1 "Installing dependencies for #{f}: #{Tty.green}#{deps*", "}#{Tty.reset}"
     end
 
-    unsatisfied_deps.each do |dep|
+    deps.each do |dep|
       if dep.requested?
        install_dependency(dep)
       else
         ARGV.filter_for_dependencies { install_dependency(dep) }
       end
     end
-    @show_header = true unless unsatisfied_deps.empty?
-  ensure
-    requirement_deps.clear
-    unsatisfied_deps.clear
+    @show_header = true unless deps.empty?
   end
 
   def install_dependency dep
