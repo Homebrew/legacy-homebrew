@@ -18,6 +18,7 @@ class FormulaInstaller
   attr_accessor :tab, :options, :ignore_deps
   attr_accessor :show_summary_heading, :show_header
   attr_reader :unsatisfied_deps
+  attr_reader :requirement_deps
 
   def initialize ff
     @f = ff
@@ -26,6 +27,7 @@ class FormulaInstaller
     @options = Options.new
     @tab = Tab.dummy_tab(ff)
     @unsatisfied_deps = []
+    @requirement_deps = []
 
     @@attempted ||= Set.new
 
@@ -182,7 +184,7 @@ class FormulaInstaller
         elsif req.satisfied?
           Requirement.prune
         elsif req.default_formula?
-          unsatisfied_deps << req.to_dependency
+          requirement_deps << req.to_dependency
           Requirement.prune
         else
           puts "#{dependent}: #{req.message}"
@@ -233,6 +235,7 @@ class FormulaInstaller
   end
 
   def install_dependencies
+    unsatisfied_deps.concat(requirement_deps)
     unsatisfied_deps.concat(filter_deps)
 
     if unsatisfied_deps.length > 1
@@ -248,6 +251,7 @@ class FormulaInstaller
     end
     @show_header = true unless unsatisfied_deps.empty?
   ensure
+    requirement_deps.clear
     unsatisfied_deps.clear
   end
 
