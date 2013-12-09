@@ -9,7 +9,7 @@ class Ocrad < Formula
   def patches
     # Patch to compile with libc++ in Mavericks. Reported to list:
     # http://lists.gnu.org/archive/html/bug-ocrad/2013-11/msg00000.html
-    "https://gist.github.com/mcs07/7751030/raw/dd3ea738fc9e83adc7b1532a0b2e714e3542c54f/ocrad-mavericks.diff"
+    "https://gist.github.com/mcs07/7751030/raw/4f43e7cd123c33fbcc2459fa496b3ee8ecf344a0/ocrad-mavericks.diff"
   end
 
   def install
