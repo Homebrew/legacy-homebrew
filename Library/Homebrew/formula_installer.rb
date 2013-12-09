@@ -144,12 +144,6 @@ class FormulaInstaller
 
     build_bottle_postinstall if ARGV.build_bottle?
 
-    begin
-      f.post_install
-    rescue
-      opoo "#{f.name} post_install failed. Rerun with `brew postinstall #{f.name}`."
-    end
-
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
 
@@ -314,6 +308,8 @@ class FormulaInstaller
 
     fix_install_names if OS.mac?
 
+    post_install
+
     ohai "Summary" if ARGV.verbose? or show_summary_heading
     unless ENV['HOMEBREW_NO_EMOJI']
       print "#{ENV['HOMEBREW_INSTALL_BADGE'] || "\xf0\x9f\x8d\xba"}  " if MacOS.version >= :lion
@@ -464,6 +460,15 @@ class FormulaInstaller
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix"
+    ohai e, e.backtrace if ARGV.debug?
+    @show_summary_heading = true
+  end
+
+  def post_install
+    f.post_install
+  rescue Exception => e
+    opoo "The post-install step did not complete successfully"
+    puts "You can try again using `brew postinstall #{f.name}`"
     ohai e, e.backtrace if ARGV.debug?
     @show_summary_heading = true
   end

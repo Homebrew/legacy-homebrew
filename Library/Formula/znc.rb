@@ -2,8 +2,8 @@ require 'formula'
 
 class Znc < Formula
   homepage 'http://wiki.znc.in/ZNC'
-  url 'http://znc.in/releases/archive/znc-1.0.tar.gz'
-  sha1 '50e6e3aacb67cf0a63d77f5031d4b75264cee294'
+  url 'http://znc.in/releases/archive/znc-1.2.tar.gz'
+  sha1 '69a05702d2db8329ed323e9f74408260ea82c0eb'
 
   head do
     url 'https://github.com/znc/znc.git'

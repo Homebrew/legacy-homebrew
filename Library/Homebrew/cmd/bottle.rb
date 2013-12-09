@@ -43,14 +43,26 @@ module Homebrew extend self
     include Utils::Inreplace
   end
 
+  def uniq_by_ino(list)
+    h = {}
+    list.each do |e|
+      ino = e.stat.ino
+      h[ino] = e unless h.key? ino
+    end
+    h.values
+  end
+
   def keg_contains string, keg
     if not ARGV.homebrew_developer?
       return quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg
     end
 
     # Find all files that still reference the keg via a string search
-    keg_ref_files = `/usr/bin/fgrep --files-with-matches --recursive "#{string}" "#{keg}" 2>/dev/null`
-    keg_ref_files = (keg_ref_files.map{ |file| Pathname.new(file.strip) }).reject(&:symlink?)
+    keg_ref_files = `/usr/bin/fgrep --files-with-matches --recursive "#{string}" "#{keg}" 2>/dev/null`.split("\n")
+    keg_ref_files.map! { |file| Pathname.new(file) }.reject!(&:symlink?)
+
+    # If files are hardlinked, only check one of them
+    keg_ref_files = uniq_by_ino(keg_ref_files)
 
     # If there are no files with that string found, return immediately
     return false if keg_ref_files.empty?
@@ -60,25 +72,26 @@ module Homebrew extend self
     keg_ref_files.each do |file|
       puts "#{Tty.red}#{file}#{Tty.reset}"
 
-      # If we can't use otool on this file, just skip to the next file
-      next if not file.mach_o_executable? and not file.mach_o_bundle? and not file.dylib? and not file.extname == '.a'
+      linked_libraries = []
 
-      # Get all libraries this file links to, then display only links to libraries that contain string in the path
-      linked_libraries = `otool -L "#{file}"`.split("\n").drop(1)
-      linked_libraries.map!{ |lib| lib.strip.split()[0] }
-      linked_libraries = linked_libraries.select{ |lib| lib.include? string }
+      # Check dynamic library linkage. Importantly, do not run otool on static
+      # libraries, which will falsely report "linkage" to themselves.
+      if file.mach_o_executable? or file.dylib? or file.mach_o_bundle?
+        linked_libraries.concat `otool -L "#{file}"`.split("\n").drop(1)
+        linked_libraries.map! { |lib| lib[Keg::OTOOL_RX, 1] }
+        linked_libraries = linked_libraries.select { |lib| lib.include? string }
+      end
 
       linked_libraries.each do |lib|
         puts " #{Tty.gray}-->#{Tty.reset} links to #{lib}"
       end
 
       # Use strings to search through the file for each string
-      strings = `strings -t x - "#{file}"`.select{ |str| str.include? string }.map{ |s| s.strip }
+      strings = `strings -t x - "#{file}"`.split("\n").select{ |str| str.include? string }
 
-      # Don't bother reporting a string if it was found by otool
-      strings.reject!{ |str| linked_libraries.include? str.split[1] }
       strings.each do |str|
-        offset, match = str.split
+        offset, match = str.split(" ", 2)
+        next if linked_libraries.include? match # Don't bother reporting a string if it was found by otool
         puts " #{Tty.gray}-->#{Tty.reset} match '#{match}' at offset #{Tty.em}0x#{offset}#{Tty.reset}"
       end
     end
@@ -104,7 +117,7 @@ module Homebrew extend self
     bottle_revision = -1
     begin
       bottle_revision += 1
-      filename = bottle_filename(f, bottle_revision)
+      filename = bottle_filename(f, :tag => bottle_tag, :revision => bottle_revision)
     end while not ARGV.include? '--no-revision' \
         and master_bottle_filenames.include? filename
 
@@ -146,7 +159,7 @@ module Homebrew extend self
           end
 
           relocatable = !keg_contains(prefix_check, keg)
-          relocatable = !keg_contains(HOMEBREW_CELLAR, keg) if relocatable
+          relocatable = !keg_contains(HOMEBREW_CELLAR, keg) && relocatable
         ensure
           keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, prefix,
             Keg::CELLAR_PLACEHOLDER, cellar, :keg_only => f.keg_only?
