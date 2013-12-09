@@ -108,4 +108,9 @@ class DependencyExpansionTests < Test::Unit::TestCase
 
     assert_equal [@foo, @baz], deps
   end
+
+  def test_deps_with_collection_argument
+    assert_equal [@foo, @bar, @baz, @qux], @f.deps
+    assert_equal [@bar, @baz], Dependency.expand(@f, [@bar, @baz])
+  end
 end
