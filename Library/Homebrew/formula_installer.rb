@@ -173,7 +173,7 @@ class FormulaInstaller
     check_requirements
 
     unsatisfied_deps.concat(requirement_deps)
-    unsatisfied_deps.concat(filter_deps)
+    unsatisfied_deps.concat(expand_dependencies)
 
     install_dependencies(unsatisfied_deps)
   ensure
@@ -236,7 +236,7 @@ class FormulaInstaller
   end
 
   # Combine requested_deps and necessary deps.
-  def filter_deps
+  def expand_dependencies
     deps = Set.new.merge(requested_deps).merge(necessary_deps)
     f.recursive_dependencies.select { |d| deps.include? d }
   end
