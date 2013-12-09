@@ -106,6 +106,9 @@ module Test::Unit::Assertions
 end
 
 class Test::Unit::TestCase
+  TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
+  TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
+
   def formula(*args, &block)
     @_f = Class.new(Formula, &block).new(*args)
   end
