@@ -16,8 +16,7 @@ class Gremlin < Formula
     if build.head?
       system 'mvn', 'clean', 'install'
     else
-      bin.install 'bin/gremlin.sh'
-      mv bin/'gremlin.sh', bin/'gremlin'
+      bin.install 'bin/gremlin.sh' => 'gremlin'
       prefix.install 'data', 'doc'
       libexec.install Dir['lib/*']
     end
