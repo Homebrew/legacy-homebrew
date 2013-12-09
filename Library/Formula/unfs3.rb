@@ -4,9 +4,10 @@ class Unfs3 < Formula
   homepage 'http://unfs3.sourceforge.net'
   url 'http://downloads.sourceforge.net/project/unfs3/unfs3/0.9.22/unfs3-0.9.22.tar.gz'
   sha1 'a6c83e1210ce75836c672cd76e66577bfef7a17a'
-  head 'https://svn.code.sf.net/p/unfs3/code/trunk/'
 
-  if build.head?
+  head do
+    url 'https://svn.code.sf.net/p/unfs3/code/trunk/'
+
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
