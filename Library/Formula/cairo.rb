@@ -21,7 +21,7 @@ class Cairo < Formula
   depends_on :fontconfig
   depends_on :libpng
   depends_on 'pixman'
-  depends_on 'glib' => :recommended
+  depends_on 'glib'
   depends_on :x11 if build.with? 'x'
 
   def install
@@ -30,18 +30,13 @@ class Cairo < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --enable-gobject=yes
     ]
 
     if build.without? 'x'
       args << '--enable-xlib=no' << '--enable-xlib-xrender=no'
     else
       args << '--with-x'
-    end
-
-    if build.with? 'glib'
-      args << '--enable-gobject=yes'
-    else
-      args << '--enable-gobject=no'
     end
 
     args << '--enable-xcb=no' if MacOS.version <= :leopard
