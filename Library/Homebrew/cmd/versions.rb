@@ -94,10 +94,6 @@ class Formula
       end
     end
 
-    def sha_for_version version
-      rev_list.find{ |sha| version == version_for_sha(sha) }
-    end
-
     IGNORED_EXCEPTIONS = [SyntaxError, TypeError, NameError,
                           ArgumentError, FormulaSpecificationError]
 
