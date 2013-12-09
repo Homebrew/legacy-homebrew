@@ -98,7 +98,7 @@ class Step
     @status = success ? :passed : :failed
     puts_result
 
-    return unless File.exists?(log_file_path)
+    return unless File.exist?(log_file_path)
     @output = IO.read(log_file_path)
     if has_output? and (not success or @puts_output_on_success)
       puts @output

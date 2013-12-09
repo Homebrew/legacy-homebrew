@@ -17,7 +17,7 @@ class Auctex < Formula
 
   def which_emacs
     emacs = ARGV.value('with-emacs') || which('emacs').to_s
-    raise "#{emacs} not found" if not File.exists? emacs
+    raise "#{emacs} not found" unless File.exist? emacs
     return emacs
   end
 

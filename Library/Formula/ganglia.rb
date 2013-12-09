@@ -33,7 +33,7 @@ class Ganglia < Formula
     system "make install"
 
     # Generate the default config file
-    system "#{bin}/gmond -t > #{etc}/gmond.conf" unless File.exists? "#{etc}/gmond.conf"
+    system "#{bin}/gmond -t > #{etc}/gmond.conf" unless File.exist? "#{etc}/gmond.conf"
 
     # Install man pages
     man1.install Dir['mans/*']

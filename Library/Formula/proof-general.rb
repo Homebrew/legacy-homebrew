@@ -18,7 +18,7 @@ class ProofGeneral < Formula
         :empty? => true)
     end
 
-    raise "#{emacs_binary} not found" if not File.exists? "#{emacs_binary}"
+    raise "#{emacs_binary} not found" if not File.exist? "#{emacs_binary}"
 
     version_info = `#{emacs_binary} --version`
     version_info =~ /GNU Emacs (\d+)\./

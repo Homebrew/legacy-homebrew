@@ -7,7 +7,7 @@ class JavaRequirement < Requirement
     [
       `/usr/libexec/java_home`.chomp,
       ENV['JAVA_HOME']
-    ].find { |dir| dir && File.exists?("#{dir}/bin/javac") && File.exists?("#{dir}/include") }
+    ].find { |dir| dir && File.exist?("#{dir}/bin/javac") && File.exist?("#{dir}/include") }
   end
 
   satisfy :build_env => false do
