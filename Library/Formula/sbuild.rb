@@ -8,9 +8,7 @@ class Sbuild < Formula
   def install
     libexec.install Dir['*']
     system "chmod +x #{libexec}/bin/sbuild"
-    system "chmod +x #{libexec}/bin/sbuild-debug"
     bin.install_symlink libexec/"bin/sbuild"
-    bin.install_symlink libexec/"bin/sbuild-debug"
   end
 
   test do
