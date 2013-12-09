@@ -13,10 +13,15 @@ class Dockutil < Formula
     sha1 'eac8a0d71a20515f955101429101b3b9f445f809'
   end
 
+
   def install
-    path = File.join(prefix, 'bin')
-    mkdir path
-    cp 'dockutil', path
+    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
+
+    python do
+      resource('plistlib').stage { system python, *install_args }
+    end
+
+    bin.install 'dockutil'
   end
 
   test do
