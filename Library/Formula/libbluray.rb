@@ -2,8 +2,8 @@ require 'formula'
 
 class Libbluray < Formula
   homepage 'http://www.videolan.org/developers/libbluray.html'
-  url 'ftp://ftp.videolan.org/pub/videolan/libbluray/0.2.3/libbluray-0.2.3.tar.bz2'
-  sha1 '604396b6051cbdfc56e6009c893f7a95d9d9e020'
+  url 'ftp://ftp.videolan.org/pub/videolan/libbluray/0.4.0/libbluray-0.4.0.tar.bz2'
+  sha1 '39984aae77efde2e0917ed7e183ebf612813d7f3'
 
   head do
     url 'git://git.videolan.org/libbluray.git'
