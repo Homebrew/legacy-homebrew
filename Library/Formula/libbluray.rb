@@ -14,6 +14,10 @@ class Libbluray < Formula
   end
 
   depends_on 'pkg-config' => :build
+  depends_on 'freetype' => :recommended
+
+  # Upstream patch for freetype 2.5.1+
+  def patches; DATA; end
 
   def install
     ENV.libxml2
@@ -24,3 +28,19 @@ class Libbluray < Formula
     system "make install"
   end
 end
+
+__END__
+diff --git a/src/libbluray/decoders/textst_render.c b/src/libbluray/decoders/textst_render.c
+index 780b640..ffcb1bd 100644
+--- a/src/libbluray/decoders/textst_render.c
++++ b/src/libbluray/decoders/textst_render.c
+@@ -30,7 +30,7 @@
+ #ifdef HAVE_FT2
+ #include <ft2build.h>
+ #include FT_FREETYPE_H
+-#include <freetype/ftsynth.h>
++#include FT_SYNTHESIS_H
+ #endif
+ 
+ #include "textst_render.h"
+
