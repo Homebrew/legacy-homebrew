@@ -24,6 +24,7 @@ class Gawk < Formula
     system "make check"
     system "make install"
 
+    (bin/"awk").unlink
     (libexec/'gnubin').install_symlink bin/"gawk" => "awk"
     (libexec/'gnuman/man1').install_symlink man1/"gawk.1" => "awk.1"
   end
@@ -43,26 +44,4 @@ class Gawk < Formula
 
     EOS
   end
-
-  def patches
-    # Prevent the installer from linking awk to gawk
-    DATA
-  end
 end
-
-__END__
-diff --git a/Makefile.in b/Makefile.in
-index e3fcf2d..44bebae 100644
---- a/Makefile.in
-+++ b/Makefile.in
-@@ -1131,9 +1131,7 @@ uninstall-am: uninstall-binPROGRAMS uninstall-includeHEADERS
- install-exec-hook:
- 	(cd $(DESTDIR)$(bindir); \
- 	$(LN) gawk$(EXEEXT) gawk-$(VERSION)$(EXEEXT) 2>/dev/null ; \
--	if [ ! -f awk ]; \
--	then	$(LN_S) gawk$(EXEEXT) awk; \
--	fi; exit 0)
-+	exit 0)
- 
- # Undo the above when uninstalling
- uninstall-links:
