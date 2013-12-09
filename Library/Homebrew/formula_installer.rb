@@ -17,7 +17,6 @@ class FormulaInstaller
   attr_reader :f
   attr_accessor :tab, :options, :ignore_deps
   attr_accessor :show_summary_heading, :show_header
-  attr_reader :unsatisfied_deps
   attr_reader :requirement_deps
 
   def initialize ff
@@ -26,7 +25,6 @@ class FormulaInstaller
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @options = Options.new
     @tab = Tab.dummy_tab(ff)
-    @unsatisfied_deps = []
     @requirement_deps = []
 
     @@attempted ||= Set.new
@@ -172,13 +170,11 @@ class FormulaInstaller
     perform_readline_hack
     check_requirements
 
-    unsatisfied_deps.concat(requirement_deps)
-    unsatisfied_deps.concat(expand_dependencies)
+    deps = [].concat(f.deps).concat(requirement_deps)
 
-    install_dependencies(unsatisfied_deps)
+    install_dependencies expand_dependencies(deps)
   ensure
     requirement_deps.clear
-    unsatisfied_deps.clear
   end
 
   def check_requirements
@@ -203,21 +199,13 @@ class FormulaInstaller
     raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
   end
 
-  # Dependencies of f that were also explicitly requested on the command line.
-  # These honor options like --HEAD and --devel.
-  def requested_deps
-    f.recursive_dependencies.select { |dep| dep.requested? && !dep.installed? }
-  end
-
-  # All dependencies that we must install before installing f.
-  # These do not honor flags like --HEAD and --devel.
-  def necessary_deps
+  def expand_dependencies(deps)
     # FIXME: can't check this inside the block for the top-level dependent
     # because it depends on the contents of ARGV.
     pour_bottle = pour_bottle?
 
     ARGV.filter_for_dependencies do
-      f.recursive_dependencies do |dependent, dep|
+      Dependency.expand(f, deps) do |dependent, dep|
         dep.universal! if f.build.universal? && !dep.build?
 
         if (dep.optional? || dep.recommended?) && dependent.build.without?(dep.name)
@@ -233,12 +221,6 @@ class FormulaInstaller
         end
       end
     end
-  end
-
-  # Combine requested_deps and necessary deps.
-  def expand_dependencies
-    deps = Set.new.merge(requested_deps).merge(necessary_deps)
-    f.recursive_dependencies.select { |d| deps.include? d }
   end
 
   def install_dependencies(deps)
