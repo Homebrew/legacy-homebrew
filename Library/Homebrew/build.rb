@@ -81,7 +81,7 @@ class Build
 
   def expand_reqs
     f.recursive_requirements do |dependent, req|
-      if (req.optional? || req.recommended?) && dependent.build.without?(req.name)
+      if (req.optional? || req.recommended?) && dependent.build.without?(req)
         Requirement.prune
       elsif req.build? && dependent != f
         Requirement.prune
@@ -94,7 +94,7 @@ class Build
 
   def expand_deps
     f.recursive_dependencies do |dependent, dep|
-      if (dep.optional? || dep.recommended?) && dependent.build.without?(dep.name)
+      if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
         Dependency.prune
       elsif dep.build? && dependent != f
         Dependency.prune

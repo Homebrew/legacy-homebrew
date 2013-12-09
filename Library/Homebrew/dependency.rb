@@ -5,10 +5,10 @@ class Dependency
   include Dependable
 
   attr_reader :name, :tags
-  attr_accessor :env_proc
+  attr_accessor :env_proc, :option_name
 
   def initialize(name, tags=[])
-    @name = name
+    @name = @option_name = name
     @tags = tags
   end
 
@@ -97,7 +97,7 @@ class Dependency
         if block_given?
           yield dependent, dep
         elsif dep.optional? || dep.recommended?
-          prune unless dependent.build.with?(dep.name)
+          prune unless dependent.build.with?(dep)
         end
       end
     end

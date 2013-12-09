@@ -180,7 +180,7 @@ class FormulaInstaller
   def check_requirements
     unsatisfied = ARGV.filter_for_dependencies do
       f.recursive_requirements do |dependent, req|
-        if (req.optional? || req.recommended?) && dependent.build.without?(req.name)
+        if (req.optional? || req.recommended?) && dependent.build.without?(req)
           Requirement.prune
         elsif req.build? && install_bottle?(dependent)
           Requirement.prune
@@ -208,7 +208,7 @@ class FormulaInstaller
       Dependency.expand(f, deps) do |dependent, dep|
         dep.universal! if f.build.universal? && !dep.build?
 
-        if (dep.optional? || dep.recommended?) && dependent.build.without?(dep.name)
+        if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
           Dependency.prune
         elsif dep.build? && dependent == f && pour_bottle
           Dependency.prune

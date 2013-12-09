@@ -61,7 +61,13 @@ class BuildOptions
     args.include? '--' + name
   end
 
-  def with? name
+  def with? val
+    if val.respond_to?(:option_name)
+      name = val.option_name
+    else
+      name = val
+    end
+
     if has_option? "with-#{name}"
       include? "with-#{name}"
     elsif has_option? "without-#{name}"
