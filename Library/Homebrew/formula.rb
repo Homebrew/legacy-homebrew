@@ -666,8 +666,8 @@ class Formula
   # The methods below define the formula DSL.
   class << self
 
-    attr_rw :homepage, :keg_only_reason, :cc_failures
-    attr_rw :plist_startup, :plist_manual
+    attr_reader :keg_only_reason, :cc_failures
+    attr_rw :homepage, :plist_startup, :plist_manual
 
     def specs
       @specs ||= [stable, devel, head, bottle].freeze
