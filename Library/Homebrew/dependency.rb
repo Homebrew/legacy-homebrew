@@ -75,8 +75,8 @@ class Dependency
     # the list.
     # The default filter, which is applied when a block is not given, omits
     # optionals and recommendeds based on what the dependent has asked for.
-    def expand(dependent, &block)
-      deps = dependent.deps.map do |dep|
+    def expand(dependent, deps=dependent.deps, &block)
+      expanded_deps = deps.map do |dep|
         case action(dependent, dep, &block)
         when :prune
           next []
@@ -89,7 +89,7 @@ class Dependency
         end
       end.flatten
 
-      merge_repeats(deps)
+      merge_repeats(expanded_deps)
     end
 
     def action(dependent, dep, &block)
