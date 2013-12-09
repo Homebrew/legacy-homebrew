@@ -160,9 +160,13 @@ module Homebrew extend self
 
           relocatable = !keg_contains(prefix_check, keg)
           relocatable = !keg_contains(HOMEBREW_CELLAR, keg) && relocatable
+        rescue Interrupt
+          ignore_interrupts { bottle_path.unlink if bottle_path.exist? }
         ensure
-          keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, prefix,
-            Keg::CELLAR_PLACEHOLDER, cellar, :keg_only => f.keg_only?
+          ignore_interrupts do
+            keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, prefix,
+              Keg::CELLAR_PLACEHOLDER, cellar, :keg_only => f.keg_only?
+          end
         end
       end
 
