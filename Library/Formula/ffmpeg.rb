@@ -54,6 +54,7 @@ class Ffmpeg < Formula
   depends_on 'fdk-aac' => :optional
   depends_on 'opus' => :optional
   depends_on 'frei0r' => :optional
+  depends_on 'libbluray' => :optional if build.devel?
   depends_on 'libcaca' => :optional
   depends_on 'libquvi' => :optional if build.devel?
 
