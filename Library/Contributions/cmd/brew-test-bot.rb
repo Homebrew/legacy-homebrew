@@ -419,11 +419,17 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
   ARGV << '--verbose'
   copied = system "cp #{jenkins}/jobs/\"#{job}\"/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
   exit unless copied
+
+  pr = ENV['UPSTREAM_PULL_REQUEST']
+  number = ENV['UPSTREAM_BUILD_NUMBER']
+
+  if ARGV.include? '--ci-pr-upload'
+    safe_system "brew pull --clean #{pr}"
+  end
+
   safe_system "brew bottle --merge --write *.bottle*.rb"
 
   remote = "git@github.com:BrewTestBot/homebrew.git"
-  pr = ENV['UPSTREAM_PULL_REQUEST']
-  number = ENV['UPSTREAM_BUILD_NUMBER']
   tag = pr ? "pr-#{pr}" : "testing-#{number}"
   safe_system "git push --force #{remote} :refs/tags/#{tag}"
 
