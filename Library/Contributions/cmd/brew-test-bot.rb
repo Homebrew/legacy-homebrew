@@ -417,7 +417,8 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
   raise "Missing Jenkins variables!" unless jenkins and job and id
 
   ARGV << '--verbose'
-  safe_system "cp #{jenkins}/jobs/\"#{job}\"/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
+  copied = system "cp #{jenkins}/jobs/\"#{job}\"/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
+  exit unless copied
   safe_system "brew bottle --merge --write *.bottle*.rb"
 
   remote = "git@github.com:BrewTestBot/homebrew.git"
@@ -432,7 +433,7 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
   safe_system "rsync #{options} *.bottle.tar.gz #{url}"
   safe_system "git tag --force #{tag}"
   safe_system "git push --force #{remote} refs/tags/#{tag}"
-  exit 0
+  exit
 end
 
 tests = []
