@@ -113,13 +113,14 @@ module Homebrew extend self
       return ofail "Formula not installed with '--build-bottle': #{f.name}"
     end
 
-    master_bottle_filenames = f.bottle_filenames 'origin/master'
-    bottle_revision = -1
-    begin
-      bottle_revision += 1
-      filename = bottle_filename(f, :tag => bottle_tag, :revision => bottle_revision)
-    end while not ARGV.include? '--no-revision' \
-        and master_bottle_filenames.include? filename
+    if ARGV.include? '--no-revision'
+      bottle_revision = 0
+    else
+      max = f.bottle_version_map('origin/master')[f.version].max
+      bottle_revision = max ? max + 1 : 0
+    end
+
+    filename = bottle_filename(f, :tag => bottle_tag, :revision => bottle_revision)
 
     if bottle_filename_formula_name(filename).empty?
       return ofail "Add a new regex to bottle_version.rb to parse the bottle filename."
