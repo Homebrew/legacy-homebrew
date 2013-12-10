@@ -4,9 +4,9 @@ class Webp < Formula
   homepage 'http://code.google.com/speed/webp/'
   url 'https://webp.googlecode.com/files/libwebp-0.3.1.tar.gz'
   sha1 '52e3d2b6c0b80319baa33b8ebed89618769d9dd8'
-  
+
   option :universal
-  
+
   depends_on :libpng
   depends_on 'jpeg' => :recommended
 
