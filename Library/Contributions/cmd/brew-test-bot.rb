@@ -246,7 +246,7 @@ class Test
 
   def setup
     @category = __method__
-
+    return if ARGV.include? "--skip-setup"
     test "brew doctor"
     test "brew --env"
     test "brew --config"
@@ -374,10 +374,10 @@ class Test
   def run
     cleanup_before
     download
-    setup unless ARGV.include? "--skip-setup"
     if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
       bottle_upload
     else
+      setup
       homebrew
       formulae.each do |f|
         formula(f)
@@ -394,16 +394,16 @@ class Test
     id = ENV['UPSTREAM_BUILD_ID']
     raise "Missing Jenkins variables!" unless jenkins and job and id
 
-    test "cp #{jenkins}/jobs/'#{job}'/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
+    test "cp #{jenkins}/jobs/\"#{job}\"/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
     test "brew bottle --merge --write *.bottle*.rb"
 
-    remote = "https://github.com/BrewTestBot/homebrew.git"
+    remote = "git@github.com:BrewTestBot/homebrew.git"
     pr = ENV['UPSTREAM_PULL_REQUEST']
     tag = pr ? "pr-#{pr}" : "testing-#{id}"
     test "git push --force #{remote} :refs/tags/#{tag}"
 
     path = "/home/frs/project/m/ma/machomebrew/Bottles/"
-    url = "mikemcquaid,machomebrew@frs.sourceforge.net:#{path}"
+    url = "BrewTestBot,machomebrew@frs.sourceforge.net:#{path}"
     options = "--partial --progress --human-readable --compress"
     test "rsync #{options} *.bottle.tar.gz #{url}"
     test "git tag --force #{tag}"
