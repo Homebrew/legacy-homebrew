@@ -108,7 +108,7 @@ class Formula
 
         # Unload the class so Formula#version returns the correct value
         begin
-          Formulary.unload_formula name
+          old_const = Formulary.unload_formula name
           nostdout { yield Formula.factory(path.to_s) }
         rescue *IGNORED_EXCEPTIONS => e
           # We rescue these so that we can skip bad versions and
@@ -116,6 +116,8 @@ class Formula
           ohai "#{e} in #{name} at revision #{sha}", e.backtrace if ARGV.debug?
         rescue FormulaUnavailableError
           # Suppress this error
+        ensure
+          Formulary.restore_formula name, old_const
         end
       end
     end

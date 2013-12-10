@@ -13,6 +13,13 @@ class Formulary
     Object.const_get(Formula.class_s(formula_name))
   end
 
+  def self.restore_formula formula_name, value
+    old_verbose, $VERBOSE = $VERBOSE, nil
+    Object.const_set(Formula.class_s(formula_name), value)
+  ensure
+    $VERBOSE = old_verbose
+  end
+
   # A FormulaLoader returns instances of formulae.
   # Subclasses implement loaders for particular sources of formulae.
   class FormulaLoader
