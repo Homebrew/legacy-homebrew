@@ -1,14 +1,17 @@
 class Keg
+  PREFIX_PLACEHOLDER = "@@HOMEBREW_PREFIX@@".freeze
+  CELLAR_PLACEHOLDER = "@@HOMEBREW_CELLAR@@".freeze
+
   def fix_install_names options={}
     mach_o_files.each do |file|
       install_names_for(file, options) do |id, bad_names|
         file.ensure_writable do
-          install_name_tool("-id", id, file) if file.dylib?
+          change_dylib_id(id, file) if file.dylib?
 
           bad_names.each do |bad_name|
             new_name = fixed_name(file, bad_name)
             unless new_name == bad_name
-              install_name_tool("-change", bad_name, new_name, file)
+              change_install_name(bad_name, new_name, file)
             end
           end
         end
@@ -18,53 +21,44 @@ class Keg
 
   def relocate_install_names old_prefix, new_prefix, old_cellar, new_cellar, options={}
     mach_o_files.each do |file|
-      install_names_for(file, options, relocate_reject_proc(old_prefix)) do |id, old_prefix_names|
-        file.ensure_writable do
-          new_prefix_id = id.to_s.gsub old_prefix, new_prefix
-          install_name_tool("-id", new_prefix_id, file) if file.dylib?
-
-          old_prefix_names.each do |old_prefix_name|
-            new_prefix_name = old_prefix_name.to_s.gsub old_prefix, new_prefix
-            install_name_tool("-change", old_prefix_name, new_prefix_name, file)
+      file.ensure_writable do
+        install_names_for(file, options, relocate_reject_proc(old_cellar)) do |id, old_cellar_names|
+          old_cellar_names.each do |old_cellar_name|
+            new_cellar_name = old_cellar_name.sub(old_cellar, new_cellar)
+            change_install_name(old_cellar_name, new_cellar_name, file)
           end
         end
-      end
 
-      install_names_for(file, options, relocate_reject_proc(old_cellar)) do |id, old_cellar_names|
-        file.ensure_writable do
-          old_cellar_names.each do |old_cellar_name|
-            new_cellar_name = old_cellar_name.to_s.gsub old_cellar, new_cellar
-            install_name_tool("-change", old_cellar_name, new_cellar_name, file)
+        install_names_for(file, options, relocate_reject_proc(old_prefix)) do |id, old_prefix_names|
+          change_dylib_id(id.sub(old_prefix, new_prefix), file) if file.dylib?
+
+          old_prefix_names.each do |old_prefix_name|
+            new_prefix_name = old_prefix_name.sub(old_prefix, new_prefix)
+            change_install_name(old_prefix_name, new_prefix_name, file)
           end
         end
       end
     end
 
-    # Search for pkgconfig .pc files and relocate references to the cellar
-    old_cellar = "#{old_prefix}/Cellar" if old_cellar == :any
-
-    pkgconfig_files.each do |pcfile|
-      pcfile.ensure_writable do
-        pcfile.open('rb') do |f|
+    (pkgconfig_files | libtool_files).each do |file|
+      file.ensure_writable do
+        file.open('rb') do |f|
           s = f.read
-          replace_pkgconfig_file_path(s, old_cellar, new_cellar)
-          replace_pkgconfig_file_path(s, old_prefix, new_prefix)
-          f.reopen(pcfile, 'wb')
+          s.gsub!(old_cellar, new_cellar)
+          s.gsub!(old_prefix, new_prefix)
+          f.reopen(file, 'wb')
           f.write(s)
         end
       end
     end
   end
 
-  # Given old == "/usr/local/Cellar" and new == "/opt/homebrew/Cellar",
-  # then update lines of the form
-  #   some_variable=/usr/local/Cellar/foo/1.0/lib
-  # to
-  #   some_variable="/opt/homebrew/Cellar/foo/1.0/lib"
-  # and add quotes to protect against paths containing spaces.
-  def replace_pkgconfig_file_path(s, old, new)
-    return if old == new
-    s.gsub!(%r[([\S]+)="?#{Regexp.escape(old)}(.*?)"?$], "\\1=\"#{new}\\2\"")
+  def change_dylib_id(id, file)
+    install_name_tool("-id", id, file)
+  end
+
+  def change_install_name(old, new, file)
+    install_name_tool("-change", old, new, file)
   end
 
   # Detects the C++ dynamic libraries in place, scanning the dynamic links
@@ -96,7 +90,11 @@ class Keg
   # bad_name relative to the lib directory, so that we can skip the more
   # expensive recursive search if possible.
   def fixed_name(file, bad_name)
-    if (file.dylib? || file.mach_o_bundle?) && (file.parent + bad_name).exist?
+    if bad_name.start_with? PREFIX_PLACEHOLDER
+      bad_name.sub(PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s)
+    elsif bad_name.start_with? CELLAR_PLACEHOLDER
+      bad_name.sub(CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s)
+    elsif (file.dylib? || file.mach_o_bundle?) && (file.parent + bad_name).exist?
       "@loader_path/#{bad_name}"
     elsif file.mach_o_executable? && (lib + bad_name).exist?
       "#{lib}/#{bad_name}"
@@ -188,5 +186,17 @@ class Keg
       pkgconfig_files << pn if pn.text_executable? and pn.basename.to_s.end_with? '-config'
     end
     pkgconfig_files
+  end
+
+  def libtool_files
+    libtool_files = []
+
+    # find .la files, which are stored in lib/
+    la_dir = self/'lib'
+    la_dir.find do |pn|
+      next if pn.symlink? or pn.directory? or pn.extname.to_s != '.la'
+      libtool_files << pn
+    end
+    libtool_files
   end
 end

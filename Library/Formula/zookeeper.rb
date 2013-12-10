@@ -13,8 +13,8 @@ class Zookeeper < Formula
     depends_on :libtool
   end
 
-  option "c",      "Build C bindings."
-  option "perl",   "Build Perl bindings."
+  option "c", "Build C bindings"
+  option "perl", "Build Perl bindings"
 
   depends_on :ant
   depends_on :python => :optional

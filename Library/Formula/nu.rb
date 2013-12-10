@@ -45,7 +45,7 @@ EOS
   end
 
   def caveats
-    if self.installed? and File.exists? frameworks+"Nu.framework"
+    if self.installed? and File.exist? frameworks+"Nu.framework"
       return <<-EOS.undent
         Nu.framework was installed to:
           #{frameworks}/Nu.framework
