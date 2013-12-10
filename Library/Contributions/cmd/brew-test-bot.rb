@@ -436,7 +436,7 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
   path = "/home/frs/project/m/ma/machomebrew/Bottles/"
   url = "BrewTestBot,machomebrew@frs.sourceforge.net:#{path}"
   options = "--partial --progress --human-readable --compress"
-  safe_system "rsync #{options} *.bottle.tar.gz #{url}"
+  safe_system "rsync #{options} *.bottle*.tar.gz #{url}"
   safe_system "git tag --force #{tag}"
   safe_system "git push --force #{remote} refs/tags/#{tag}"
   exit
