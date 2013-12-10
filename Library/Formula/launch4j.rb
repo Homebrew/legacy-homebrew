@@ -8,7 +8,7 @@ class Launch4j < Formula
 
 
   def install
-    libexec.install 'launch4j', 'launch4j.jar', 'LICENSE.txt', Dir['bin'], Dir['demo'], Dir['head'], Dir['lib'], Dir['manifest'], Dir['sign4j'], Dir['w32api']
+    libexec.install Dir['*'] - ['src', 'web']
     bin.write_jar_script libexec/"launch4j.jar", "launch4j"
   end
 
