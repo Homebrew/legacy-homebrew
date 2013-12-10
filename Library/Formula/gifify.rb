@@ -2,9 +2,8 @@ require 'formula'
 
 class Gifify < Formula
   homepage 'https://github.com/jclem/gifify'
-  url 'https://github.com/jclem/gifify/archive/9be704a8b4547731c892fc536423b871e025665f.tar.gz'
-  version '9be704a8b4547731c892fc536423b871e025665f'
-  sha1 '0fb7b61b348a0d73afa87c87f18f56ec15f89d93'
+  url 'https://github.com/jclem/gifify/archive/v1.0.tar.gz'
+  sha1 '7179e5738db1be9030523e6db5144ba7f5f42d84'
 
   head 'https://github.com/jclem/gifify.git'
 
