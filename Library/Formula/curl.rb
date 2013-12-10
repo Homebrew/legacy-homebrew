@@ -7,7 +7,7 @@ class Curl < Formula
   sha256 '7450a9c72bd27dd89dc6996aeadaf354fa49bc3c05998d8507e4ab29d4a95172'
 
   keg_only :provided_by_osx,
-            "The libcurl provided by Leopard is too old for CouchDB to use."
+            "The libcurl provided by Mac OS X is too old for."
 
   option 'with-ssh', 'Build with scp and sftp support'
   option 'with-ares', 'Build with C-Ares async DNS support'
