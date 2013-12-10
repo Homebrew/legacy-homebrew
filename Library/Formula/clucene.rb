@@ -10,6 +10,18 @@ class Clucene < Formula
     depends_on 'cmake' => :build
   end
 
+  def patches
+    p = []
+    if MacOS.version >= :mavericks
+      # fix libpthread dependencies in OS X 10.9
+      {
+        :p0 => ["http://trac.macports.org/export/112875/trunk/dports/devel/clucene/files/patch-src-shared-CLucene-LuceneThreads.h.diff",
+          "http://trac.macports.org/export/112875/trunk/dports/devel/clucene/files/patch-src-shared-CLucene-config-repl_tchar.h.diff"]
+      }
+    end
+    p
+  end
+
   def install
     if build.head?
       system "cmake", ".", *std_cmake_args
