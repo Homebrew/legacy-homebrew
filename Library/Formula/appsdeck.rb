@@ -14,8 +14,7 @@ class Appsdeck < Formula
   version '0.2.2'
 
   def install
-    system "mkdir #{prefix}/bin"
-    system "cp appsdeck #{prefix}/bin/"
+    bin.install 'appsdeck'
   end
 
   test do
