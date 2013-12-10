@@ -422,7 +422,8 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
 
   remote = "git@github.com:BrewTestBot/homebrew.git"
   pr = ENV['UPSTREAM_PULL_REQUEST']
-  tag = pr ? "pr-#{pr}" : "testing-#{id}"
+  number = ENV['UPSTREAM_BUILD_NUMBER']
+  tag = pr ? "pr-#{pr}" : "testing-#{number}"
   safe_system "git push --force #{remote} :refs/tags/#{tag}"
 
   path = "/home/frs/project/m/ma/machomebrew/Bottles/"
