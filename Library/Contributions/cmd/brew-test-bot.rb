@@ -10,7 +10,7 @@
 # --email:        Generate an email subject file.
 # --no-bottle:    Run brew install without --build-bottle
 # --HEAD:         Run brew install with --HEAD
-# --local:        Output logs and cache downloads under ./{logs,cache}
+# --local:        Ask Homebrew to write verbose logs under ./logs/
 #
 # --ci-master:         Shortcut for Homebrew master branch CI options.
 # --ci-pr:             Shortcut for Homebrew pull request CI options.
@@ -435,7 +435,6 @@ end
 
 if ARGV.include? '--local'
   ENV['HOMEBREW_LOGS'] = "#{Dir.pwd}/logs"
-  ENV['HOMEBREW_CACHE'] = "#{Dir.pwd}/cache"
 end
 
 tests = []
