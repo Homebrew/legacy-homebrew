@@ -8,16 +8,14 @@ class Rexster < Formula
     url 'https://github.com/tinkerpop/rexster.git', :branch => 'master'
     depends_on "maven" => :build
   end
-  def patches
-    DATA
-  end
 
   def install
+    inreplace 'bin/rexster.sh', '`dirname $0`/..', prefix
+    inreplace 'bin/rexster.sh', '/lib/', '/libexec/'
     if build.head?
       system 'mvn', 'clean', 'install'
     else
-      bin.install 'bin/rexster.sh'
-      mv bin/'rexster.sh', bin/'rexster'
+      bin.install 'bin/rexster.sh' => bin/'rexster'
       prefix.install 'config', 'data', 'doc', 'ext', 'public'
       libexec.install Dir['lib/*']
     end
@@ -30,23 +28,3 @@ class Rexster < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/bin/rexster.sh b/bin/rexster.sh
---- a/bin/rexster.sh
-+++ b/bin/rexster.sh
-@@ -1,11 +1,11 @@
- #!/bin/bash
- 
--CP=$( echo `dirname $0`/../lib/*.jar . | sed 's/ /:/g')
--CP=$CP:$(find -L `dirname $0`/../ext/ -name "*.jar" | tr '\n' ':')
-+CP=$( echo `dirname $(grealpath $0)`/../libexec/*.jar . | sed 's/ /:/g')
-+CP=$CP:$(find -L `dirname $(grealpath $0)`/../ext/ -name "*.jar" | tr '\n' ':')
-
- REXSTER_EXT=../ext
- 
--PUBLIC=`dirname $0`/../public/
-+PUBLIC=`dirname $(grealpath $0)`/../public/
- EXTRA=
- 
- if [ $1 = "-s" ] ; then
