@@ -374,40 +374,13 @@ class Test
   def run
     cleanup_before
     download
-    if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
-      bottle_upload
-    else
-      setup
-      homebrew
-      formulae.each do |f|
-        formula(f)
-      end
+    setup
+    homebrew
+    formulae.each do |f|
+      formula(f)
     end
     cleanup_after
     check_results
-  end
-
-  def bottle_upload
-    @category = __method__
-    jenkins = ENV['JENKINS_HOME']
-    job = ENV['UPSTREAM_JOB_NAME']
-    id = ENV['UPSTREAM_BUILD_ID']
-    raise "Missing Jenkins variables!" unless jenkins and job and id
-
-    test "cp #{jenkins}/jobs/\"#{job}\"/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
-    test "brew bottle --merge --write *.bottle*.rb"
-
-    remote = "git@github.com:BrewTestBot/homebrew.git"
-    pr = ENV['UPSTREAM_PULL_REQUEST']
-    tag = pr ? "pr-#{pr}" : "testing-#{id}"
-    test "git push --force #{remote} :refs/tags/#{tag}"
-
-    path = "/home/frs/project/m/ma/machomebrew/Bottles/"
-    url = "BrewTestBot,machomebrew@frs.sourceforge.net:#{path}"
-    options = "--partial --progress --human-readable --compress"
-    test "rsync #{options} *.bottle.tar.gz #{url}"
-    test "git tag --force #{tag}"
-    test "git push --force #{remote} refs/tags/#{tag}"
   end
 end
 
@@ -435,6 +408,30 @@ end
 
 if ARGV.include? '--local'
   ENV['HOMEBREW_LOGS'] = "#{Dir.pwd}/logs"
+end
+
+if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
+  jenkins = ENV['JENKINS_HOME']
+  job = ENV['UPSTREAM_JOB_NAME']
+  id = ENV['UPSTREAM_BUILD_ID']
+  raise "Missing Jenkins variables!" unless jenkins and job and id
+
+  ARGV << '--verbose'
+  safe_system "cp #{jenkins}/jobs/\"#{job}\"/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
+  safe_system "brew bottle --merge --write *.bottle*.rb"
+
+  remote = "git@github.com:BrewTestBot/homebrew.git"
+  pr = ENV['UPSTREAM_PULL_REQUEST']
+  tag = pr ? "pr-#{pr}" : "testing-#{id}"
+  safe_system "git push --force #{remote} :refs/tags/#{tag}"
+
+  path = "/home/frs/project/m/ma/machomebrew/Bottles/"
+  url = "BrewTestBot,machomebrew@frs.sourceforge.net:#{path}"
+  options = "--partial --progress --human-readable --compress"
+  safe_system "rsync #{options} *.bottle.tar.gz #{url}"
+  safe_system "git tag --force #{tag}"
+  safe_system "git push --force #{remote} refs/tags/#{tag}"
+  exit 0
 end
 
 tests = []
