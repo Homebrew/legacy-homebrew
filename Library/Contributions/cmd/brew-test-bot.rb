@@ -10,6 +10,13 @@
 # --email:        Generate an email subject file.
 # --no-bottle:    Run brew install without --build-bottle
 # --HEAD:         Run brew install with --HEAD
+# --local:        Output logs and cache downloads under ./{logs,cache}
+#
+# --ci-master:         Shortcut for Homebrew master branch CI options.
+# --ci-pr:             Shortcut for Homebrew pull request CI options.
+# --ci-testing:        Shortcut for Homebrew testing CI options.
+# --ci-pr-upload:      Homebrew CI pull request bottle upload.
+# --ci-testing-upload: Homebrew CI testing bottle upload.
 
 require 'formula'
 require 'utils'
@@ -368,12 +375,39 @@ class Test
     cleanup_before
     download
     setup unless ARGV.include? "--skip-setup"
-    homebrew
-    formulae.each do |f|
-      formula(f)
+    if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
+      bottle_upload
+    else
+      homebrew
+      formulae.each do |f|
+        formula(f)
+      end
     end
     cleanup_after
     check_results
+  end
+
+  def bottle_upload
+    @category = __method__
+    jenkins = ENV['JENKINS_HOME']
+    job = ENV['UPSTREAM_JOB_NAME']
+    id = ENV['UPSTREAM_BUILD_ID']
+    raise "Missing Jenkins variables!" unless jenkins and job and id
+
+    test "cp #{jenkins}/jobs/'#{job}'/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
+    test "brew bottle --merge --write *.bottle*.rb"
+
+    remote = "https://github.com/BrewTestBot/homebrew.git"
+    pr = ENV['UPSTREAM_PULL_REQUEST']
+    tag = pr ? "pr-#{pr}" : "testing-#{id}"
+    test "git push --force #{remote} :refs/tags/#{tag}"
+
+    path = "/home/frs/project/m/ma/machomebrew/Bottles/"
+    url = "mikemcquaid,machomebrew@frs.sourceforge.net:#{path}"
+    options = "--partial --progress --human-readable --compress"
+    test "rsync #{options} *.bottle.tar.gz #{url}"
+    test "git tag --force #{tag}"
+    test "git push --force #{remote} refs/tags/#{tag}"
   end
 end
 
@@ -387,6 +421,21 @@ if ARGV.include? "--email"
     # point ensure that we have something valid.
     file.write "#{MacOS.version}: internal error."
   end
+end
+
+ENV['HOMEBREW_DEVELOPER'] = '1'
+ENV['HOMEBREW_NO_EMOJI'] = '1'
+if ARGV.include? '--ci-master' or ARGV.include? '--ci-pr' \
+   or ARGV.include? '--ci-testing'
+  ARGV << '--cleanup' << '--junit' << '--local'
+end
+if ARGV.include? '--ci-master'
+  ARGV << '--no-bottle' << '--email'
+end
+
+if ARGV.include? '--local'
+  ENV['HOMEBREW_LOGS'] = "#{Dir.pwd}/logs"
+  ENV['HOMEBREW_CACHE'] = "#{Dir.pwd}/cache"
 end
 
 tests = []
