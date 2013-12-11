@@ -6,7 +6,7 @@ class Pdftoipe < Formula
   sha1 '081141129f9a2c55e6732e597fd8e94cc96f69e3'
 
   depends_on 'pkg-config' => :build
-  depends_on 'poppler' => :build
+  depends_on 'poppler'
 
   def install
     system "make"
