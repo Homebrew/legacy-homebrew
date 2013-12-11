@@ -65,6 +65,20 @@ class VersionComparisonTests < Test::Unit::TestCase
                   R14B02 R14B01 R14B R13B04 R13B03 R13B02-1}.reverse
     assert_equal versions, versions.sort_by { |v| version(v) }
   end
+
+  def test_hash_equality
+    v1 = version('0.1.0')
+    v2 = version('0.1.0')
+    v3 = version('0.1.1')
+
+    assert v1.eql?(v2)
+    assert v2.eql?(v1)
+    assert !v1.eql?(v3)
+    assert_equal v1.hash, v2.hash
+
+    h = { v1 => :foo }
+    assert_equal :foo, h[v2]
+  end
 end
 
 class VersionParsingTests < Test::Unit::TestCase

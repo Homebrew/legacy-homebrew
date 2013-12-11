@@ -10,8 +10,7 @@ class Cogl < Formula
   option 'without-x', 'Build without X11 support'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
-  depends_on 'cairo' => 'with-glib'
+  depends_on 'cairo'
   depends_on 'glib'
   depends_on 'pango'
   depends_on :x11 => '2.5.1' unless build.without? 'x'

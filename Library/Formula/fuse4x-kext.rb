@@ -59,7 +59,7 @@ class Fuse4xKext < Formula
     # filesystem layout convention from Apple.
     # Check if the user has fuse4x kext in the old location.
     # Remove this check Q4 2012 when it become clear that everyone migrated to 0.9.0+
-    if File.exists?('/System/Library/Extensions/fuse4x.kext/')
+    if File.exist?('/System/Library/Extensions/fuse4x.kext/')
       message += <<-EOS.undent
         You have older version of fuse4x installed. Please remove it by running:
 
