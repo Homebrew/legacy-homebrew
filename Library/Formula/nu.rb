@@ -22,13 +22,6 @@ class Nu < Formula
     ENV['PREFIX'] = prefix
 
     inreplace "Nukefile" do |s|
-      case Hardware.cpu_type
-      when :intel
-        arch = :i386
-      when :ppc
-        arch = :ppc
-      end
-      arch = :x86_64 if arch == :i386 && Hardware.is_64_bit?
       s.gsub!('(SH "sudo ', '(SH "') # don't use sudo to install
       s.gsub!('#{@destdir}/Library/Frameworks', '#{@prefix}/Frameworks')
       s.sub! /^;; source files$/, <<-EOS
