@@ -14,7 +14,7 @@ class Libbluray < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'freetype' => :recommended
+  depends_on :freetype => :recommended
 
   # Upstream patch for freetype 2.5.1+
   def patches; DATA; end
