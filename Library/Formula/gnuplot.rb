@@ -59,7 +59,7 @@ class Gnuplot < Formula
     # https://github.com/AquaTerm/AquaTerm/blob/v1.1.1/aquaterm/ReleaseNotes#L1-11
     # https://github.com/AquaTerm/AquaTerm/blob/v1.1.1/aquaterm/INSTALL#L7-15
 
-    if (version < Version.new('4.7')) && !build.head?
+    unless build.head?  # Trunk is at version 4.7, doesn't need fix up.
 
       if build.with? 'aquaterm'
 
