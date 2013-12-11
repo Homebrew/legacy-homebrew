@@ -6,8 +6,7 @@ class Curl < Formula
   mirror 'ftp://ftp.sunet.se/pub/www/utilities/curl/curl-7.33.0.tar.gz'
   sha256 '7450a9c72bd27dd89dc6996aeadaf354fa49bc3c05998d8507e4ab29d4a95172'
 
-  keg_only :provided_by_osx,
-            "The libcurl provided by Leopard is too old for CouchDB to use."
+  keg_only :provided_by_osx
 
   option 'with-ssh', 'Build with scp and sftp support'
   option 'with-ares', 'Build with C-Ares async DNS support'
