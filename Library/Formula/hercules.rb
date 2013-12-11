@@ -10,9 +10,12 @@ class Hercules < Formula
   depends_on 'gawk'
 
   def install
+    # For newer compilers, we need to use _FORTIFY_SOURCE=0 to do proper
+    # bound checking.
+    ENV.append 'CPPFLAGS', "-D_FORTIFY_SOURCE=0" if MacOS.version >= :mavericks
+
     # Since Homebrew optimizes for us, tell Hercules not to.
     # (It gets it wrong anyway.)
-    ENV.append 'CPPFLAGS', "-D_FORTIFY_SOURCE=0" if MacOS.version >= :mavericks
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-optimization=no"
