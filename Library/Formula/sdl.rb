@@ -5,13 +5,11 @@ class Sdl < Formula
   url 'http://www.libsdl.org/release/SDL-1.2.15.tar.gz'
   sha1 '0c5f193ced810b0d7ce3ab06d808cbb5eef03a2c'
 
-  head do
-    url 'http://hg.libsdl.org/SDL', :branch => 'SDL-1.2', :using => :hg
+  head 'http://hg.libsdl.org/SDL', :branch => 'SDL-1.2', :using => :hg
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
-  end
+  depends_on :autoconf
+  depends_on :automake
+  depends_on :libtool
 
   option 'with-x11-driver', 'Compile with support for X11 video driver'
   option :universal
@@ -19,9 +17,13 @@ class Sdl < Formula
   depends_on :x11 if build.with? 'x11-driver'
 
   def patches
+    p = []
     # Fix for a bug preventing SDL from building at all on OSX 10.9 Mavericks
     # Related ticket: https://bugzilla.libsdl.org/show_bug.cgi?id=2085
-    "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1320" if MacOS.version >= :mavericks
+    p << "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1320" if MacOS.version >= :mavericks
+    # Fix build against recent libX11; requires regenerating configure script
+    p << "http://hg.libsdl.org/SDL/raw-rev/91ad7b43317a"
+    p
   end
 
   def install
@@ -32,7 +34,7 @@ class Sdl < Formula
 
     ENV.universal_binary if build.universal?
 
-    system "./autogen.sh" if build.head?
+    system "./autogen.sh"
 
     args = %W[--prefix=#{prefix}]
     args << "--disable-nasm" unless MacOS.version >= :mountain_lion # might work with earlier, might only work with new clang
