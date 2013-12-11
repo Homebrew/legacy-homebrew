@@ -2,14 +2,15 @@ require 'formula'
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'http://git-core.googlecode.com/files/git-1.8.4.3.tar.gz'
-  sha1 '43b1edc95b3ab77f9739d789b906ded0585fe7a2'
+  url 'https://git-core.googlecode.com/files/git-1.8.5.1.tar.gz'
+  sha1 'dcd244c7198e8afe42ab223f7b3c9b1ae01749c3'
   head 'https://github.com/git/git.git'
 
   bottle do
-    sha1 'ff5dc5105e0a56bf016139ae0c6dda12f4234c32' => :mavericks
-    sha1 'd2c663ea9922ab16b5e789e461aa62d2e0cb1072' => :mountain_lion
-    sha1 'd88e30d0f7fe799c4baf62aef544b3c5d96be9e6' => :lion
+    revision 1
+    sha1 '3dcbbccf00260999f5b653f5f2a4850f9cb76b54' => :mavericks
+    sha1 '3dbd8ce732095ca0f902b5eabcbe808dc40486be' => :mountain_lion
+    sha1 'e0e3f77e77865f6122e7399a1d3e433d4a7c18d0' => :lion
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -26,13 +27,24 @@ class Git < Formula
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
-    url 'http://git-core.googlecode.com/files/git-manpages-1.8.4.3.tar.gz'
-    sha1 '3a7e9322a95e0743b902152083366fe97f322ab1'
+    url 'http://git-core.googlecode.com/files/git-manpages-1.8.5.1.tar.gz'
+    sha1 '32befa65b564640981d71f8a38eee19939a2eb63'
   end
 
   resource 'html' do
-    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.4.3.tar.gz'
-    sha1 'eb4eb4991464f44deda19d1435d9721146587661'
+    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.5.1.tar.gz'
+    sha1 '16cd5fdf486aa880c4fcb297d769070c67996317'
+  end
+
+  def patches
+    if MacOS.version >= :mavericks
+      # Allow using PERLLIB_EXTRA to find Subversion Perl bindings location
+      # in the CLT/Xcode. Should be included in Git 1.8.6.
+      # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=07981d
+      # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=0386dd
+      ['https://git.kernel.org/cgit/git/git.git/patch/?id=07981d',
+       'https://git.kernel.org/cgit/git/git.git/patch/?id=0386dd']
+    end
   end
 
   def install
@@ -43,6 +55,10 @@ class Git < Formula
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
     ENV['PYTHON_PATH'] = python.binary if python
     ENV['PERL_PATH'] = which 'perl'
+
+    if MacOS.version >= :mavericks and MacOS.dev_tools_prefix
+      ENV['PERLLIB_EXTRA'] = "#{MacOS.dev_tools_prefix}/Library/Perl/5.16/darwin-thread-multi-2level"
+    end
 
     unless quiet_system ENV['PERL_PATH'], '-e', 'use ExtUtils::MakeMaker'
       ENV['NO_PERL_MAKEMAKER'] = '1'
@@ -63,6 +79,8 @@ class Git < Formula
                    "CFLAGS=#{ENV.cflags}",
                    "LDFLAGS=#{ENV.ldflags}",
                    "install"
+
+    bin.install Dir["contrib/remote-helpers/git-remote-{hg,bzr}"]
 
     # Install the OS X keychain credential helper
     cd 'contrib/credential/osxkeychain' do
@@ -106,7 +124,7 @@ class Git < Formula
     man.install resource('man')
     (share+'doc/git-doc').install resource('html')
 
-    # Make html docs world-readable; check if this is still needed at 1.8.4.2
+    # Make html docs world-readable; check if this is still needed at 1.8.6
     chmod 0644, Dir["#{share}/doc/git-doc/**/*.{html,txt}"]
   end
 

@@ -12,10 +12,10 @@ class Erlang < Formula
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
   bottle do
-    revision 2
-    sha1 'f2f17d7e0fcfc8281a5a49316db73382e2ed2b77' => :mountain_lion
-    sha1 '8afbd3e03333ca368e5036f48d0bcddeb4a4c8dd' => :lion
-    sha1 'bf967eecc1475e38aa0d5636ffb68563df627c5f' => :snow_leopard
+    revision 3
+    sha1 'bb535a13fcd11180cc9a68c52264ded677b9d160' => :mavericks
+    sha1 '3107a1bae9912d18e4a54c9eda57a4862e0999c5' => :mountain_lion
+    sha1 '0f857e488fd239625c6181b210394f0bd05fea78' => :lion
   end
 
   resource 'man' do
@@ -40,6 +40,12 @@ class Erlang < Formula
   depends_on 'fop' => :optional # enables building PDF docs
 
   fails_with :llvm
+
+  def patches
+    # Fixes problem with ODBC on Mavericks. Reported upstream:
+    # https://github.com/erlang/otp/pull/142
+    DATA if MacOS.version >= :mavericks
+  end
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
@@ -103,3 +109,17 @@ class Erlang < Formula
     end
   end
 end
+__END__
+diff --git a/lib/odbc/configure.in b/lib/odbc/configure.in
+index 83f7a47..fd711fe 100644
+--- a/lib/odbc/configure.in
++++ b/lib/odbc/configure.in
+@@ -130,7 +130,7 @@ AC_SUBST(THR_LIBS)
+ odbc_lib_link_success=no
+ AC_SUBST(TARGET_FLAGS)
+     case $host_os in
+-        darwin*)
++        darwin1[[0-2]].*|darwin[[0-9]].*)
+                 TARGET_FLAGS="-DUNIX"
+                if test ! -d "$with_odbc" || test "$with_odbc" = "yes"; then
+                    ODBC_LIB= -L"/usr/lib"

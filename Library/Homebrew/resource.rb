@@ -62,6 +62,7 @@ class Resource
       if block_given?
         yield self
       elsif target
+        target = Pathname.new(target) unless target.is_a? Pathname
         target.install Dir['*']
       end
     end
@@ -83,6 +84,7 @@ class Resource
 
   def verify_download_integrity fn
     if fn.respond_to?(:file?) && fn.file?
+      ohai "Verifying #{fn.basename} checksum" if ARGV.verbose?
       fn.verify_checksum(checksum)
     end
   rescue ChecksumMissingError

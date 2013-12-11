@@ -43,14 +43,26 @@ module Homebrew extend self
     include Utils::Inreplace
   end
 
+  def uniq_by_ino(list)
+    h = {}
+    list.each do |e|
+      ino = e.stat.ino
+      h[ino] = e unless h.key? ino
+    end
+    h.values
+  end
+
   def keg_contains string, keg
     if not ARGV.homebrew_developer?
       return quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg
     end
 
     # Find all files that still reference the keg via a string search
-    keg_ref_files = `/usr/bin/fgrep --files-with-matches --recursive "#{string}" "#{keg}" 2>/dev/null`
-    keg_ref_files = (keg_ref_files.map{ |file| Pathname.new(file.strip) }).reject(&:symlink?)
+    keg_ref_files = `/usr/bin/fgrep --files-with-matches --recursive "#{string}" "#{keg}" 2>/dev/null`.split("\n")
+    keg_ref_files.map! { |file| Pathname.new(file) }.reject!(&:symlink?)
+
+    # If files are hardlinked, only check one of them
+    keg_ref_files = uniq_by_ino(keg_ref_files)
 
     # If there are no files with that string found, return immediately
     return false if keg_ref_files.empty?
@@ -60,25 +72,26 @@ module Homebrew extend self
     keg_ref_files.each do |file|
       puts "#{Tty.red}#{file}#{Tty.reset}"
 
-      # If we can't use otool on this file, just skip to the next file
-      next if not file.mach_o_executable? and not file.mach_o_bundle? and not file.dylib? and not file.extname == '.a'
+      linked_libraries = []
 
-      # Get all libraries this file links to, then display only links to libraries that contain string in the path
-      linked_libraries = `otool -L "#{file}"`.split("\n").drop(1)
-      linked_libraries.map!{ |lib| lib.strip.split()[0] }
-      linked_libraries = linked_libraries.select{ |lib| lib.include? string }
+      # Check dynamic library linkage. Importantly, do not run otool on static
+      # libraries, which will falsely report "linkage" to themselves.
+      if file.mach_o_executable? or file.dylib? or file.mach_o_bundle?
+        linked_libraries.concat `otool -L "#{file}"`.split("\n").drop(1)
+        linked_libraries.map! { |lib| lib[Keg::OTOOL_RX, 1] }
+        linked_libraries = linked_libraries.select { |lib| lib.include? string }
+      end
 
       linked_libraries.each do |lib|
         puts " #{Tty.gray}-->#{Tty.reset} links to #{lib}"
       end
 
       # Use strings to search through the file for each string
-      strings = `strings -t x - "#{file}"`.select{ |str| str.include? string }.map{ |s| s.strip }
+      strings = `strings -t x - "#{file}"`.split("\n").select{ |str| str.include? string }
 
-      # Don't bother reporting a string if it was found by otool
-      strings.reject!{ |str| linked_libraries.include? str.split[1] }
       strings.each do |str|
-        offset, match = str.split
+        offset, match = str.split(" ", 2)
+        next if linked_libraries.include? match # Don't bother reporting a string if it was found by otool
         puts " #{Tty.gray}-->#{Tty.reset} match '#{match}' at offset #{Tty.em}0x#{offset}#{Tty.reset}"
       end
     end
@@ -100,13 +113,14 @@ module Homebrew extend self
       return ofail "Formula not installed with '--build-bottle': #{f.name}"
     end
 
-    master_bottle_filenames = f.bottle_filenames 'origin/master'
-    bottle_revision = -1
-    begin
-      bottle_revision += 1
-      filename = bottle_filename(f, bottle_revision)
-    end while not ARGV.include? '--no-revision' \
-        and master_bottle_filenames.include? filename
+    if ARGV.include? '--no-revision'
+      bottle_revision = 0
+    else
+      max = f.bottle_version_map('origin/master')[f.version].max
+      bottle_revision = max ? max + 1 : 0
+    end
+
+    filename = bottle_filename(f, :tag => bottle_tag, :revision => bottle_revision)
 
     if bottle_filename_formula_name(filename).empty?
       return ofail "Add a new regex to bottle_version.rb to parse the bottle filename."
@@ -116,42 +130,49 @@ module Homebrew extend self
     sha1 = nil
 
     prefix = HOMEBREW_PREFIX.to_s
-    tmp_prefix = '/tmp'
     cellar = HOMEBREW_CELLAR.to_s
-    tmp_cellar = '/tmp/Cellar'
 
     output = nil
 
     HOMEBREW_CELLAR.cd do
       ohai "Bottling #{filename}..."
-      # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
-      # or an uncompressed tarball (and more bandwidth friendly).
-      safe_system 'tar', 'czf', bottle_path, "#{f.name}/#{f.version}"
-      sha1 = bottle_path.sha1
+
+      keg = Keg.new(f.prefix)
       relocatable = false
 
-      if File.size?(bottle_path) > 1*1024*1024
-        ohai "Detecting if #{filename} is relocatable..."
-      end
-      keg = Keg.new f.prefix
       keg.lock do
-        # Relocate bottle library references before testing for built-in
-        # references to the Cellar e.g. Qt's QMake annoyingly does this.
-        keg.relocate_install_names prefix, tmp_prefix, cellar, tmp_cellar, :keg_only => f.keg_only?
+        begin
+          keg.relocate_install_names prefix, Keg::PREFIX_PLACEHOLDER,
+            cellar, Keg::CELLAR_PLACEHOLDER, :keg_only => f.keg_only?
 
-        if prefix == '/usr/local'
-          prefix_check = HOMEBREW_PREFIX/'opt'
-        else
-          prefix_check = HOMEBREW_PREFIX
+          # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
+          # or an uncompressed tarball (and more bandwidth friendly).
+          safe_system 'tar', 'czf', bottle_path, "#{f.name}/#{f.version}"
+
+          if File.size?(bottle_path) > 1*1024*1024
+            ohai "Detecting if #{filename} is relocatable..."
+          end
+
+          if prefix == '/usr/local'
+            prefix_check = HOMEBREW_PREFIX/'opt'
+          else
+            prefix_check = HOMEBREW_PREFIX
+          end
+
+          relocatable = !keg_contains(prefix_check, keg)
+          relocatable = !keg_contains(HOMEBREW_CELLAR, keg) && relocatable
+        rescue Interrupt
+          ignore_interrupts { bottle_path.unlink if bottle_path.exist? }
+          raise
+        ensure
+          ignore_interrupts do
+            keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, prefix,
+              Keg::CELLAR_PLACEHOLDER, cellar, :keg_only => f.keg_only?
+          end
         end
-
-        relocatable = !keg_contains(prefix_check, keg)
-        relocatable = !keg_contains(HOMEBREW_CELLAR, keg) if relocatable
-
-        # And do the same thing in reverse to change the library references
-        # back to how they were.
-        keg.relocate_install_names tmp_prefix, prefix, tmp_cellar, cellar
       end
+
+      sha1 = bottle_path.sha1
 
       bottle = Bottle.new
       bottle.prefix HOMEBREW_PREFIX
@@ -207,8 +228,9 @@ module Homebrew extend self
 
         update_or_add = has_bottle_block ? 'update' : 'add'
 
-        safe_system 'git', 'commit', formula_path, '-m',
-          "#{f.name}: #{update_or_add} bottle."
+        safe_system 'git', 'commit', '--no-edit', '--verbose',
+          "--message=#{f.name}: #{update_or_add} #{f.version} bottle.",
+          '--', formula_path
       end
     end
     exit 0

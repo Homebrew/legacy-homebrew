@@ -5,6 +5,12 @@ class Tor < Formula
   url 'https://www.torproject.org/dist/tor-0.2.3.25.tar.gz'
   sha1 'ef02e5b0eb44ab1a5d6108c39bd4e28918de79dc'
 
+  devel do
+    url 'https://www.torproject.org/dist/tor-0.2.4.18-rc.tar.gz'
+    version '0.2.4.18-rc'
+    sha1 'cc12a8fdd62d4c1bd4ce37c8bf3bf830266b9e38'
+  end
+
   option "with-brewed-openssl", "Build with Homebrew's OpenSSL instead of the system version"
 
   depends_on 'libevent'

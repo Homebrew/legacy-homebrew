@@ -14,8 +14,8 @@ class Mapnik < Formula
 
   depends_on 'pkg-config' => :build
   depends_on :python
-  depends_on :freetype
-  depends_on :libpng
+  depends_on 'freetype'
+  depends_on 'libpng'
   depends_on 'libtiff'
   depends_on 'proj'
   depends_on 'icu4c'
@@ -33,7 +33,9 @@ class Mapnik < Formula
     boost = Formula.factory('boost').opt_prefix
     proj = Formula.factory('proj').opt_prefix
     jpeg = Formula.factory('jpeg').opt_prefix
+    libpng = Formula.factory('libpng').opt_prefix
     libtiff = Formula.factory('libtiff').opt_prefix
+    freetype = Formula.factory('freetype').opt_prefix
 
     # mapnik compiles can take ~1.5 GB per job for some .cpp files
     # so lets be cautious by limiting to CPUS/2
@@ -49,12 +51,16 @@ class Mapnik < Formula
              "PYTHON_PREFIX=#{prefix}",  # Install to Homebrew's site-packages
              "JPEG_INCLUDES=#{jpeg}/include",
              "JPEG_LIBS=#{jpeg}/lib",
+             "PNG_INCLUDES=#{libpng}/include",
+             "PNG_LIBS=#{libpng}/lib",
              "TIFF_INCLUDES=#{libtiff}/include",
              "TIFF_LIBS=#{libtiff}/lib",
              "BOOST_INCLUDES=#{boost}/include",
              "BOOST_LIBS=#{boost}/lib",
              "PROJ_INCLUDES=#{proj}/include",
-             "PROJ_LIBS=#{proj}/lib" ]
+             "PROJ_LIBS=#{proj}/lib",
+             "FREETYPE_CONFIG=#{freetype}/bin/freetype-config"
+           ]
 
     if build.with? 'cairo'
       args << "CAIRO=True" # cairo paths will come from pkg-config

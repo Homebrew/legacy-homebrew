@@ -226,7 +226,7 @@ class ExampleFormula < Formula
   def install
     # Now the sources (from `url`) are downloaded, hash-checked and
     # Homebrew has changed into a temporary directory where the
-    # archive has been unpacked or the repository has benn cloned.
+    # archive has been unpacked or the repository has been cloned.
 
     # Print a warning (do this rarely)
     opoo 'Dtrace features are experimental!' if build.with? 'dtrace'
@@ -254,7 +254,7 @@ class ExampleFormula < Formula
     args << "--i-want-spam" if build.include? "enable-spam"
     args << "--qt-gui" if build.with? "qt" # "--with-qt" ==> build.with? "qt"
     args << "--some-new-stuff" if build.head? # if head is used instead of url.
-    args << "--universal-binray" if build.universal?
+    args << "--universal-binary" if build.universal?
 
     # The `build.with?` and `build.without?` are smart enough to do the
     # right thing™ with respect to defaults defined via `:optional` and

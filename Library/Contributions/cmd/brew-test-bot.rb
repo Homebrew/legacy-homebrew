@@ -10,6 +10,13 @@
 # --email:        Generate an email subject file.
 # --no-bottle:    Run brew install without --build-bottle
 # --HEAD:         Run brew install with --HEAD
+# --local:        Ask Homebrew to write verbose logs under ./logs/
+#
+# --ci-master:         Shortcut for Homebrew master branch CI options.
+# --ci-pr:             Shortcut for Homebrew pull request CI options.
+# --ci-testing:        Shortcut for Homebrew testing CI options.
+# --ci-pr-upload:      Homebrew CI pull request bottle upload.
+# --ci-testing-upload: Homebrew CI testing bottle upload.
 
 require 'formula'
 require 'utils'
@@ -98,7 +105,7 @@ class Step
     @status = success ? :passed : :failed
     puts_result
 
-    return unless File.exists?(log_file_path)
+    return unless File.exist?(log_file_path)
     @output = IO.read(log_file_path)
     if has_output? and (not success or @puts_output_on_success)
       puts @output
@@ -239,7 +246,7 @@ class Test
 
   def setup
     @category = __method__
-
+    return if ARGV.include? "--skip-setup"
     test "brew doctor"
     test "brew --env"
     test "brew --config"
@@ -367,7 +374,7 @@ class Test
   def run
     cleanup_before
     download
-    setup unless ARGV.include? "--skip-setup"
+    setup
     homebrew
     formulae.each do |f|
       formula(f)
@@ -387,6 +394,52 @@ if ARGV.include? "--email"
     # point ensure that we have something valid.
     file.write "#{MacOS.version}: internal error."
   end
+end
+
+ENV['HOMEBREW_DEVELOPER'] = '1'
+ENV['HOMEBREW_NO_EMOJI'] = '1'
+if ARGV.include? '--ci-master' or ARGV.include? '--ci-pr' \
+   or ARGV.include? '--ci-testing'
+  ARGV << '--cleanup' << '--junit' << '--local'
+end
+if ARGV.include? '--ci-master'
+  ARGV << '--no-bottle' << '--email'
+end
+
+if ARGV.include? '--local'
+  ENV['HOMEBREW_LOGS'] = "#{Dir.pwd}/logs"
+end
+
+if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
+  jenkins = ENV['JENKINS_HOME']
+  job = ENV['UPSTREAM_JOB_NAME']
+  id = ENV['UPSTREAM_BUILD_ID']
+  raise "Missing Jenkins variables!" unless jenkins and job and id
+
+  ARGV << '--verbose'
+  copied = system "cp #{jenkins}/jobs/\"#{job}\"/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
+  exit unless copied
+
+  pr = ENV['UPSTREAM_PULL_REQUEST']
+  number = ENV['UPSTREAM_BUILD_NUMBER']
+
+  if ARGV.include? '--ci-pr-upload'
+    safe_system "brew pull --clean #{pr}"
+  end
+
+  safe_system "brew bottle --merge --write *.bottle*.rb"
+
+  remote = "git@github.com:BrewTestBot/homebrew.git"
+  tag = pr ? "pr-#{pr}" : "testing-#{number}"
+  safe_system "git push --force #{remote} :refs/tags/#{tag}"
+
+  path = "/home/frs/project/m/ma/machomebrew/Bottles/"
+  url = "BrewTestBot,machomebrew@frs.sourceforge.net:#{path}"
+  options = "--partial --progress --human-readable --compress"
+  safe_system "rsync #{options} *.bottle*.tar.gz #{url}"
+  safe_system "git tag --force #{tag}"
+  safe_system "git push --force #{remote} refs/tags/#{tag}"
+  exit
 end
 
 tests = []

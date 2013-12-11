@@ -8,10 +8,10 @@ class Pidof < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 'da148135814b86ac578de9d0b19f1f2deda0a312' => :mountain_lion
-    sha1 'e818806883c83e6315d68fc93a37071c90c9f2ea' => :lion
-    sha1 '6b950109d55d192d6e95dd23912ecb13ffa2e94f' => :snow_leopard
+    revision 2
+    sha1 '2425268aa94521fbdf20f4ba16b80706a4c737ab' => :mavericks
+    sha1 '80a7d45bd8695dbf1594f7626f754038d73551c6' => :mountain_lion
+    sha1 'd09a05256afed09c300fd8c908f2559c05f91bce' => :lion
   end
 
   def install
