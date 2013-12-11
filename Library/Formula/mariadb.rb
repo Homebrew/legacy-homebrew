@@ -132,6 +132,7 @@ class Mariadb < Formula
   end
 
   def post_install
+    system %Q{mkdir -p `brew --prefix`/etc/my.cnf.d}
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",
