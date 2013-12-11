@@ -12,7 +12,8 @@ class Hercules < Formula
   def install
     # Since Homebrew optimizes for us, tell Hercules not to.
     # (It gets it wrong anyway.)
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+     ENV.append 'CPPFLAGS', "-D_FORTIFY_SOURCE=0"
+     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-optimization=no"
     # Reported upstream:
