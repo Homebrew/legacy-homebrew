@@ -2,9 +2,9 @@ require 'formula'
 
 class Bison < Formula
   homepage 'http://www.gnu.org/software/bison/'
-  url 'http://ftpmirror.gnu.org/bison/bison-3.0.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/bison/bison-3.0.1.tar.gz'
-  sha1 '0191d1679525b1e05bb35265a71e7475e7cb1432'
+  url 'http://ftpmirror.gnu.org/bison/bison-3.0.2.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/bison/bison-3.0.2.tar.gz'
+  sha1 '4bbb9a1bdc7e4328eb4e6ef2479b3fe15cc49e54'
 
   keg_only :provided_by_osx, 'Some formulae require a newer version of bison.'
 
