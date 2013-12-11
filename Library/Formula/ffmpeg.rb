@@ -61,7 +61,7 @@ class Ffmpeg < Formula
 
   # Fix build against freetype 2.5.1
   # http://ffmpeg.org/pipermail/ffmpeg-devel/2013-November/151404.html
-  def patches; DATA; end
+  def patches; DATA; end unless build.head?
 
   def install
     # Remove when fix for freetype 2.5.1+ is incorporated upstream
