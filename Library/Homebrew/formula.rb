@@ -47,6 +47,7 @@ class Formula
       unless bottle.checksum.nil? || bottle.checksum.empty?
         @bottle = bottle
         bottle.url ||= bottle_url(self, bottle.current_tag)
+        bottle.version = stable.version
       end
     end
 
