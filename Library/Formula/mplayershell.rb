@@ -9,7 +9,7 @@ end
 
 class Mplayershell < Formula
   homepage 'https://github.com/donmelton/MPlayerShell'
-  url 'https://github.com/donmelton/MPlayerShell/archive/0.9.1.tar.gz'
+  url 'https://github.com/donmelton/MPlayerShell/archive/0.9.2.tar.gz'
   sha1 'fe009b774eca8e8a8e3030a49cdd463f5b368b27'
 
   head 'https://github.com/donmelton/MPlayerShell.git'
