@@ -36,6 +36,13 @@ ARGV.named.each do|arg|
     Dir.chdir HOMEBREW_REPOSITORY
   end
 
+  issue = arg.to_i > 0 ? arg.to_i : url_match[4]
+
+  if ARGV.include? '--bottle'
+    raise 'No pull request detected!' unless issue
+    url = "https://github.com/BrewTestBot/homebrew/compare/mxcl:master...pr-#{issue}"
+  end
+
   # GitHub provides commits'/pull-requests' raw patches using this URL.
   url += '.patch'
 
@@ -66,7 +73,6 @@ ARGV.named.each do|arg|
     odie 'Patch failed to apply: aborted.'
   end
 
-  issue = arg.to_i > 0 ? arg.to_i : url_match[4]
   if issue and not ARGV.include? '--clean'
     ohai "Patch closes issue ##{issue}"
     message = `git log HEAD^.. --format=%B`
@@ -82,6 +88,9 @@ ARGV.named.each do|arg|
 
   ohai 'Patch changed:'
   safe_system 'git', '--no-pager', 'diff', "#{revision}..", '--stat'
+
+  if ARGV.include? '--bottle'
+  end
 
   if ARGV.include? '--install'
     `git diff #{revision}.. --name-status`.each_line do |line|
