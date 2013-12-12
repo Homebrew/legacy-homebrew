@@ -39,11 +39,12 @@ class CompilerFailure
     end
 
     instance_eval(&block) if block_given?
-    if !compiler.is_a? Hash
-      @version = (@version || 9999).to_i
-    else
+
+    if compiler.is_a? Hash
       # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
-      @version ||= @major_version + '.999' if compiler.is_a? Hash
+      @version ||= @major_version + '.999'
+    else
+      @version = (@version || 9999).to_i
     end
   end
 
