@@ -6,7 +6,7 @@ class FormulaTests < Test::Unit::TestCase
 
   def test_prefix
     f = TestBall.new
-    assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
+    assert_equal HOMEBREW_CELLAR/f.name/'0.1', f.prefix
     assert_kind_of Pathname, f.prefix
   end
 
