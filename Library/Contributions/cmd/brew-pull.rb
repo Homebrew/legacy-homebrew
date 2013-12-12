@@ -89,9 +89,6 @@ ARGV.named.each do|arg|
   ohai 'Patch changed:'
   safe_system 'git', '--no-pager', 'diff', "#{revision}..", '--stat'
 
-  if ARGV.include? '--bottle'
-  end
-
   if ARGV.include? '--install'
     `git diff #{revision}.. --name-status`.each_line do |line|
       status, filename = line.split
