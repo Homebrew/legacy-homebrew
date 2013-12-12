@@ -58,6 +58,8 @@ class Ffmpeg < Formula
   depends_on 'opus' => :optional
   depends_on 'frei0r' => :optional
   depends_on 'libcaca' => :optional
+  depends_on 'libvorbis' => :optional
+  depends_on 'theora' => :optional
 
   # Fix build against freetype 2.5.1
   # http://ffmpeg.org/pipermail/ffmpeg-devel/2013-November/151404.html
@@ -102,6 +104,8 @@ class Ffmpeg < Formula
     args << "--enable-libopus" if build.with? 'opus'
     args << "--enable-frei0r" if build.with? 'frei0r'
     args << "--enable-libcaca" if build.with? 'libcaca'
+    args << "--enable-libvorbis" if build.with? 'libvorbis'
+    args << "--enable-libtheora" if build.with? 'theora'
     args << "--enable-libquvi" if build.with? 'libquvi'
 
     if build.with? 'openjpeg'
