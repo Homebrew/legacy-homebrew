@@ -173,13 +173,6 @@ class Pathname
     FileUtils.chmod_R perms, to_s
   end
 
-  def abv
-    out=''
-    n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
-    out<<"#{n} files, " if n > 1
-    out<<`/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
-  end
-
   def version
     require 'version'
     Version.parse(self)
@@ -427,6 +420,13 @@ class Pathname
     `#{MacOS.locate("otool")} -L "#{expand_path}"`.chomp.split("\n")[1..-1].map do |line|
       line[/\t(.+) \([^(]+\)/, 1]
     end
+  end
+
+  def abv
+    out=''
+    n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
+    out<<"#{n} files, " if n > 1
+    out<<`/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
   end
 
   # We redefine these private methods in order to add the /o modifier to
