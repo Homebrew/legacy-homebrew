@@ -87,8 +87,7 @@ class ExampleFormula < Formula
 
   def pour_bottle?
     # Only needed if this formula has to check if using the pre-built
-    # bottle is fine. (For example boost bottled with system python breaks
-    # if the user has a brewed python)
+    # bottle is fine.
     true
   end
 
@@ -158,24 +157,13 @@ class ExampleFormula < Formula
   depends_on :postgresql if build.without? 'sqlite'
   depends_on :hg # Mercurial (external or brewed) is needed
 
-  # The formula needs python or needs certain Python modules that
-  # should be installed via pip?
   # If any Python >= 2.6 < 3.x is okay (either from OS X or brewed):
   depends_on :python
-  depends_on :python2 # this is a synonym
-  # Specify the minimum version, for example 2.6 is too old:
-  depends_on :python => "2.7"
-  # Any Python 2.x but with the modules 'numpy' and 'docutils' importable.
-  depends_on :python => ['numpy', 'docutils']
   # Python 3.x if the `--with-python3` is given to `brew install example`
   depends_on :python3 => :optional
-  # A python module with a different name on PyPi than on import:
-  depends_on :python2 => ['enchant' => 'pyenchant'] # 'import_name' => 'pip_install_name'
-  # All in one. The version - if specified - has to come first
-  depends_on :python => ['2.7.4', 'numpy', {'yaml' =>'PyYAML'}, 'twisted', :optional ]
 
   # Modules/Packages from other languages, such as :chicken, :jruby, :lua,
-  # :node, :ocaml, :perl, :rbx, :ruby, can be specified by
+  # :node, :ocaml, :perl, :python, :rbx, :ruby, can be specified by
   depends_on 'some_module' => :lua
 
   ## Conflicts
@@ -275,25 +263,6 @@ class ExampleFormula < Formula
                           "--prefix=#{prefix}",
                           *args # our custom arg list (needs `*` to unpack)
 
-    # Calling a setup.py as provided by (many) python based projects:
-    # The `python do ... end` block sets up PYTHONPATH, PYTHON and other
-    # vars so that distutils are happy to install into the Cellar. This
-    # allows brewed python modules to be un/installed and updated properly.
-    # https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
-    python do
-      # If you `depend_on :python` and `depend_on :python3`, this block
-      # will be run twice - for each Python version one pass!
-      # `python` points to the corresponding Python binary (e.g. `python3`)
-      system python, "setup.py", "install", "--prefix=#{prefix}"
-
-      # Sometimes, for old setup.py files, you'll get a warning that
-      # your formula cannot be linked because easy-install.pth would be
-      # overwritten. In this case, please add these two flags:
-      system python, "setup.py", "install", "--prefix=#{prefix}",
-                                            "--single-version-externally-managed",
-                                            "--record=installed.txt"
-    end
-
     # If your formula's build system is not thread safe:
     ENV.deparallelize
 
@@ -384,7 +353,6 @@ class ExampleFormula < Formula
       called or when brewing a formula.
       This is optional. You can use all the vars like #{version} here.
     EOS
-    s += python.standard_caveats if python
     s += "Some issue only on older systems" if MacOS.version < :mountain_lion
     s
   end
