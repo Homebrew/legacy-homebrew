@@ -101,6 +101,8 @@ class Mariadb < Formula
     system "make"
     system "make install"
 
+    (etc/'my.cnf.d').mkpath
+
     # Fix my.cnf to point to #{etc} instead of /etc
     inreplace "#{etc}/my.cnf" do |s|
       s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
@@ -132,7 +134,6 @@ class Mariadb < Formula
   end
 
   def post_install
-    system %Q{mkdir -p `brew --prefix`/etc/my.cnf.d}
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",
