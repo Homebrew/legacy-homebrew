@@ -2,13 +2,13 @@ require 'formula'
 
 class Dnsmasq < Formula
   homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.66.tar.gz'
-  sha256 '36232fa23d1a8efc6f84a29da5ff829c2aa40df857b9116a9320ea37b651a982'
+  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.67.tar.gz'
+  sha1 '550c7ea2bef2a74a089c664d95fc52420a8cb726'
 
-  option 'with-idn', 'Compile with IDN support'
-
-  depends_on "libidn" if build.include? 'with-idn'
   depends_on 'pkg-config' => :build
+  depends_on "libidn" => :optional
+
+  def patches; DATA; end
 
   def install
     ENV.deparallelize
@@ -16,18 +16,11 @@ class Dnsmasq < Formula
     # Fix etc location
     inreplace "src/config.h", "/etc/dnsmasq.conf", "#{etc}/dnsmasq.conf"
 
-    # Optional IDN support
-    if build.include? 'with-idn'
-      inreplace "src/config.h", "/* #define HAVE_IDN */", "#define HAVE_IDN"
-    end
+    make_vars = ["PREFIX=#{prefix}"]
 
-    # Fix compilation on Lion
-    ENV.append_to_cflags "-D__APPLE_USE_RFC_3542" if MacOS.version >= :lion
-    inreplace "Makefile" do |s|
-      s.change_make_var! "CFLAGS", ENV.cflags
-    end
+    make_vars << "CFLAGS=-DHAVE_IDN" if build.with? 'libidn'
 
-    system "make", "install", "PREFIX=#{prefix}"
+    system "make", "install", *make_vars
 
     prefix.install "dnsmasq.conf.example"
   end
@@ -64,3 +57,18 @@ class Dnsmasq < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/src/bpf.c b/src/bpf.c
+index 390d076..17f75f8 100644
+--- a/src/bpf.c
++++ b/src/bpf.c
+@@ -145,7 +145,7 @@ int iface_enumerate(int family, void *parm, int (*callback)())
+ 	      int i, j, prefix = 0;
+ 	      u32 valid = 0xffffffff, preferred = 0xffffffff;
+ 	      int flags = 0;
+-#ifdef HAVE_BSD_NETWORK
++#ifdef defined(HAVE_BSD_NETWORK) && !defined(__APPLE__)
+ 	      struct in6_ifreq ifr6;
+ 
+ 	      memset(&ifr6, 0, sizeof(ifr6));
