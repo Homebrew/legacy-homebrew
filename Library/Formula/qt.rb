@@ -91,7 +91,6 @@ class Qt < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    ENV.append "CXXFLAGS", "-fvisibility=hidden"
 
     args = ["-prefix", prefix,
             "-system-zlib",
