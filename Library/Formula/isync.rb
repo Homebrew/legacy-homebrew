@@ -6,7 +6,7 @@ class Isync < Formula
   sha1 '5cd7403722584b9677fc6a4185c0b9a00f153453'
 
   head do
-    url 'git://isync.git.sourceforge.net/gitroot/isync/isync'
+    url 'git://git.code.sf.net/p/isync/isync'
 
     depends_on :autoconf
     depends_on :automake

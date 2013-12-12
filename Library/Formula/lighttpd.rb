@@ -44,7 +44,7 @@ class Lighttpd < Formula
 
     mv sbin, bin
 
-    unless File.exists? config_path
+    unless File.exist? config_path
       config_path.install Dir["doc/config/lighttpd.conf"]
       config_path.install Dir["doc/config/modules.conf"]
       (config_path/"conf.d/").install Dir["doc/config/conf.d/*.conf"]

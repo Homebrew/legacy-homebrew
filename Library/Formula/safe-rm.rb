@@ -13,6 +13,6 @@ class SafeRm < Formula
     file = "a-file"
     touch file
     system "#{bin}/safe-rm", file
-    !File.exists? file
+    assert !File.exist?(file)
   end
 end
