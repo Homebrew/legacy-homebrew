@@ -23,7 +23,7 @@ class Mpfr < Formula
     build 421
     cause <<-EOS.undent
       clang build 421 segfaults while building in superenv;
-      see https://github.com/mxcl/homebrew/issues/15061
+      see https://github.com/Homebrew/homebrew/issues/15061
       EOS
   end
 

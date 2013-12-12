@@ -168,7 +168,7 @@ class Python3 < Formula
 
     # A fix, because python and python3 both want to install Python.framework
     # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
-    # https://github.com/mxcl/homebrew/issues/15943
+    # https://github.com/Homebrew/homebrew/issues/15943
     ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
     rm prefix/"Frameworks/Python.framework/Versions/Current"
   end
@@ -213,7 +213,7 @@ class Python3 < Formula
     ENV.minimal_optimization
 
     # We need to enable warnings because the configure.in uses -Werror to detect
-    # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
+    # "whether gcc supports ParseTuple" (https://github.com/Homebrew/homebrew/issues/12194)
     ENV.enable_warnings
     if ENV.compiler == :clang
       # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
@@ -238,7 +238,7 @@ class Python3 < Formula
       They will install into the site-package directory
         #{site_packages}
 
-      See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+      See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
     EOS
 
     # Tk warning only for 10.6
