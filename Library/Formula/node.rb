@@ -32,8 +32,8 @@ end
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.22/node-v0.10.22.tar.gz'
-  sha1 'd7c6a39dfa714eae1f8da7a00c9a07efd74a03b3'
+  url 'http://nodejs.org/dist/v0.10.23/node-v0.10.23.tar.gz'
+  sha1 '8717942d1bdfa8902ce65cd33b4293d16b486c64'
 
   devel do
     url 'http://nodejs.org/dist/v0.11.9/node-v0.11.9.tar.gz'
