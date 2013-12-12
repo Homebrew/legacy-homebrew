@@ -12,6 +12,7 @@ class Sshfs < Formula
   depends_on 'pkg-config' => :build
   depends_on 'fuse4x'
   depends_on 'glib'
+  depends_on :xcode
 
   def install
     # Compatibility with Automake 1.13 and newer.
