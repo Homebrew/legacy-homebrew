@@ -19,8 +19,8 @@ end
 
 class Qt5 < Formula
   homepage 'http://qt-project.org/'
-  url 'http://download.qt-project.org/official_releases/qt/5.1/5.1.1/single/qt-everywhere-opensource-src-5.1.1.tar.gz'
-  sha1 '131b023677cd5207b0b0d1864f5d3ac37f10a5ba'
+  url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.0/single/qt-everywhere-opensource-src-5.2.0.tar.gz'
+  sha1 'd0374c769a29886ee61f08a6386b9af39e861232'
   head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
     :using => Qt5HeadDownloadStrategy
 
@@ -58,7 +58,7 @@ class Qt5 < Formula
     end
 
     # https://bugreports.qt-project.org/browse/QTBUG-34382
-    args << "-no-xcb" if build.head?
+    args << "-no-xcb"
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
@@ -86,17 +86,6 @@ class Qt5 < Formula
     system "make"
     ENV.j1
     system "make install"
-
-    # Fix https://github.com/mxcl/homebrew/issues/20020 (upstream: https://bugreports.qt-project.org/browse/QTBUG-32417)
-    system "install_name_tool", "-change", "#{pwd}/qtwebkit/lib/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets", #old
-                                           "#{lib}/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets",  #new
-                                           "#{libexec}/QtWebProcess" # in this lib
-    system "install_name_tool", "-change", "#{pwd}/qtwebkit/lib/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{lib}/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{prefix}/qml/QtWebKit/libqmlwebkitplugin.dylib"
-    system "install_name_tool", "-change", "#{pwd}/qtwebkit/lib/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{lib}/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{lib}/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets"
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     cd prefix do
