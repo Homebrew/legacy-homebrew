@@ -27,6 +27,9 @@ class FormulaInstaller
 
     @@attempted ||= Set.new
 
+    @poured_bottle = false
+    @pour_failed   = false
+
     lock
     check_install_sanity
   end
@@ -109,8 +112,6 @@ class FormulaInstaller
     oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
 
     @@attempted << f
-
-    @poured_bottle = false
 
     begin
       if pour_bottle? :warn => true
