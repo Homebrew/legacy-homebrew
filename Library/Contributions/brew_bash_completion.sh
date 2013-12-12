@@ -88,21 +88,20 @@ __brew_complete_outdated ()
     COMPREPLY=($(compgen -W "$od" -- "$cur"))
 }
 
-__brew_complete_switch_version ()
+__brew_complete_versions ()
 {
-    local prev="${COMP_WORDS[COMP_CWORD-1]}"
+    local formula="$1"
+    local versions=$(brew list --versions "$formula")
     local cur="${COMP_WORDS[COMP_CWORD]}"
-    local od=$(brew list --versions $prev)
-    COMPREPLY=($(compgen -W "$od" -X "$prev" -- "$cur"))
+    COMPREPLY=($(compgen -W "$versions" -X "$formula" -- "$cur"))
 }
 
-__brew_complete_switch ()
+_brew_switch ()
 {
-    local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$COMP_CWORD" in
-        2)  __brew_complete_installed ;;
-        3)  __brew_complete_switch_version ;;
-        *)  ;;
+    2)  __brew_complete_installed ;;
+    3)  __brew_complete_versions "${COMP_WORDS[COMP_CWORD-1]}" ;;
+    *)  ;;
     esac
 }
 
@@ -476,7 +475,7 @@ _brew ()
     outdated)                   _brew_outdated ;;
     pin)                        __brew_complete_formulae ;;
     search|-S)                  _brew_search ;;
-    switch)                     __brew_complete_switch ;;
+    switch)                     _brew_switch ;;
     tap)                        _brew_complete_tap ;;
     uninstall|remove|rm)        _brew_uninstall ;;
     unpin)                      __brew_complete_formulae ;;
