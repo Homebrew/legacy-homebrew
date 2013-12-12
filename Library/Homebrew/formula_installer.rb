@@ -17,7 +17,6 @@ class FormulaInstaller
   attr_reader :f
   attr_accessor :tab, :options, :ignore_deps
   attr_accessor :show_summary_heading, :show_header
-  attr_reader :unsatisfied_deps
 
   def initialize ff
     @f = ff
@@ -25,9 +24,11 @@ class FormulaInstaller
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @options = Options.new
     @tab = Tab.dummy_tab(ff)
-    @unsatisfied_deps = []
 
     @@attempted ||= Set.new
+
+    @poured_bottle = false
+    @pour_failed   = false
 
     lock
     check_install_sanity
@@ -112,8 +113,6 @@ class FormulaInstaller
 
     @@attempted << f
 
-    @poured_bottle = false
-
     begin
       if pour_bottle? :warn => true
         pour
@@ -168,50 +167,69 @@ class FormulaInstaller
 
   def compute_and_install_dependencies
     perform_readline_hack
-    check_requirements
-    install_dependencies
+
+    req_map, req_deps = expand_requirements
+
+    check_requirements(req_map)
+
+    deps = [].concat(req_deps).concat(f.deps)
+
+    install_dependencies expand_dependencies(deps)
   end
 
-  def check_requirements
-    unsatisfied = ARGV.filter_for_dependencies do
-      f.recursive_requirements do |dependent, req|
-        if (req.optional? || req.recommended?) && dependent.build.without?(req.name)
-          Requirement.prune
-        elsif req.build? && install_bottle?(dependent)
-          Requirement.prune
-        elsif req.satisfied?
-          Requirement.prune
-        elsif req.default_formula?
-          unsatisfied_deps << req.to_dependency
-          Requirement.prune
-        else
-          puts "#{dependent}: #{req.message}"
+  def check_requirements(req_map)
+    fatals = []
+
+    req_map.each_pair do |dependent, reqs|
+      reqs.each do |req|
+        puts "#{dependent}: #{req.message}"
+        fatals << req if req.fatal?
+      end
+    end
+
+    raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
+  end
+
+  def expand_requirements
+    unsatisfied_reqs = Hash.new { |h, k| h[k] = [] }
+    deps = []
+    formulae = [f]
+
+    while f = formulae.pop
+
+      ARGV.filter_for_dependencies do
+        f.recursive_requirements do |dependent, req|
+          if (req.optional? || req.recommended?) && dependent.build.without?(req)
+            Requirement.prune
+          elsif req.build? && install_bottle?(dependent)
+            Requirement.prune
+          elsif req.satisfied?
+            Requirement.prune
+          elsif req.default_formula?
+            dep = req.to_dependency
+            deps.unshift(dep)
+            formulae.unshift(dep.to_formula)
+            Requirement.prune
+          else
+            unsatisfied_reqs[dependent] << req
+          end
         end
       end
     end
 
-    fatals = unsatisfied.select(&:fatal?)
-    raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
+    return unsatisfied_reqs, deps
   end
 
-  # Dependencies of f that were also explicitly requested on the command line.
-  # These honor options like --HEAD and --devel.
-  def requested_deps
-    f.recursive_dependencies.select { |dep| dep.requested? && !dep.installed? }
-  end
-
-  # All dependencies that we must install before installing f.
-  # These do not honor flags like --HEAD and --devel.
-  def necessary_deps
+  def expand_dependencies(deps)
     # FIXME: can't check this inside the block for the top-level dependent
     # because it depends on the contents of ARGV.
     pour_bottle = pour_bottle?
 
     ARGV.filter_for_dependencies do
-      f.recursive_dependencies do |dependent, dep|
+      Dependency.expand(f, deps) do |dependent, dep|
         dep.universal! if f.build.universal? && !dep.build?
 
-        if (dep.optional? || dep.recommended?) && dependent.build.without?(dep.name)
+        if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
           Dependency.prune
         elsif dep.build? && dependent == f && pour_bottle
           Dependency.prune
@@ -226,29 +244,19 @@ class FormulaInstaller
     end
   end
 
-  # Combine requested_deps and necessary deps.
-  def filter_deps
-    deps = Set.new.merge(requested_deps).merge(necessary_deps)
-    f.recursive_dependencies.select { |d| deps.include? d }
-  end
-
-  def install_dependencies
-    unsatisfied_deps.concat(filter_deps)
-
-    if unsatisfied_deps.length > 1
-      oh1 "Installing dependencies for #{f}: #{Tty.green}#{unsatisfied_deps*", "}#{Tty.reset}"
+  def install_dependencies(deps)
+    if deps.length > 1
+      oh1 "Installing dependencies for #{f}: #{Tty.green}#{deps*", "}#{Tty.reset}"
     end
 
-    unsatisfied_deps.each do |dep|
+    deps.each do |dep|
       if dep.requested?
        install_dependency(dep)
       else
         ARGV.filter_for_dependencies { install_dependency(dep) }
       end
     end
-    @show_header = true unless unsatisfied_deps.empty?
-  ensure
-    unsatisfied_deps.clear
+    @show_header = true unless deps.empty?
   end
 
   def install_dependency dep
@@ -311,14 +319,21 @@ class FormulaInstaller
     post_install
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
-    unless ENV['HOMEBREW_NO_EMOJI']
-      print "#{ENV['HOMEBREW_INSTALL_BADGE'] || "\xf0\x9f\x8d\xba"}  " if MacOS.version >= :lion
-    end
-    print "#{f.prefix}: #{f.prefix.abv}"
-    print ", built in #{pretty_duration build_time}" if build_time
-    puts
+    puts summary
   ensure
     unlock if hold_locks?
+  end
+
+  def emoji
+    ENV['HOMEBREW_INSTALL_BADGE'] || "\xf0\x9f\x8d\xba"
+  end
+
+  def summary
+    s = ""
+    s << "#{emoji}  " if MacOS.version >= :lion and not ENV['HOMEBREW_NO_EMOJI']
+    s << "#{f.prefix}: #{f.prefix.abv}"
+    s << ", built in #{pretty_duration build_time}" if build_time
+    s
   end
 
   def build_time

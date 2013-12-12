@@ -173,13 +173,6 @@ class Pathname
     FileUtils.chmod_R perms, to_s
   end
 
-  def abv
-    out=''
-    n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
-    out<<"#{n} files, " if n > 1
-    out<<`/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
-  end
-
   def version
     require 'version'
     Version.parse(self)
@@ -377,22 +370,27 @@ class Pathname
     targets.flatten!
     if targets.empty?
       opoo "tried to write exec scripts to #{self} for an empty list of targets"
+      return
     end
     targets.each do |target|
       target = Pathname.new(target) # allow pathnames or strings
       (self+target.basename()).write <<-EOS.undent
-      #!/bin/bash
-      exec "#{target}" "$@"
+        #!/bin/bash
+        exec "#{target}" "$@"
       EOS
+      # +x here so this will work during post-install as well
+      (self+target.basename()).chmod 0644
     end
   end
 
   # Writes an exec script that invokes a java jar
   def write_jar_script target_jar, script_name, java_opts=""
     (self+script_name).write <<-EOS.undent
-    #!/bin/bash
-    exec java #{java_opts} -jar #{target_jar} "$@"
+      #!/bin/bash
+      exec java #{java_opts} -jar #{target_jar} "$@"
     EOS
+    # +x here so this will work during post-install as well
+    (self+script_name).chmod 0644
   end
 
   def install_metafiles from=nil
@@ -422,6 +420,13 @@ class Pathname
     `#{MacOS.locate("otool")} -L "#{expand_path}"`.chomp.split("\n")[1..-1].map do |line|
       line[/\t(.+) \([^(]+\)/, 1]
     end
+  end
+
+  def abv
+    out=''
+    n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
+    out<<"#{n} files, " if n > 1
+    out<<`/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
   end
 
   # We redefine these private methods in order to add the /o modifier to

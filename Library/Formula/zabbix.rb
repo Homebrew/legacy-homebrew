@@ -17,7 +17,7 @@ class Zabbix < Formula
 
   def brewed_or_shipped(db_config)
     brewed_db_config = "#{HOMEBREW_PREFIX}/bin/#{db_config}"
-    (File.exists?(brewed_db_config) && brewed_db_config) || which(db_config)
+    (File.exist?(brewed_db_config) && brewed_db_config) || which(db_config)
   end
 
   def install

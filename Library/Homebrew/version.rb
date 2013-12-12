@@ -189,6 +189,11 @@ class Version
     max = [tokens.length, other.tokens.length].max
     pad_to(max) <=> other.pad_to(max)
   end
+  alias_method :eql?, :==
+
+  def hash
+    @version.hash
+  end
 
   def to_s
     @version.dup

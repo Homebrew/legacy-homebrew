@@ -102,6 +102,7 @@ class Mariadb < Formula
     system "make install"
 
     # Fix my.cnf to point to #{etc} instead of /etc
+    (etc+'my.cnf.d').mkpath
     inreplace "#{etc}/my.cnf" do |s|
       s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
     end

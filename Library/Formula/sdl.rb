@@ -16,12 +16,21 @@ class Sdl < Formula
   option 'with-x11-driver', 'Compile with support for X11 video driver'
   option :universal
 
-  depends_on :x11 if build.with? 'x11-driver'
+  if build.with? 'x11-driver'
+    depends_on :x11
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
 
   def patches
+    p = []
     # Fix for a bug preventing SDL from building at all on OSX 10.9 Mavericks
     # Related ticket: https://bugzilla.libsdl.org/show_bug.cgi?id=2085
-    "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1320" if MacOS.version >= :mavericks
+    p << "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1320" if MacOS.version >= :mavericks
+    # Fix build against recent libX11; requires regenerating configure script
+    p << "http://hg.libsdl.org/SDL/raw-rev/91ad7b43317a" if build.with? 'x11-driver'
+    p
   end
 
   def install
@@ -32,7 +41,7 @@ class Sdl < Formula
 
     ENV.universal_binary if build.universal?
 
-    system "./autogen.sh" if build.head?
+    system "./autogen.sh" if build.head? or build.with? 'x11-driver'
 
     args = %W[--prefix=#{prefix}]
     args << "--disable-nasm" unless MacOS.version >= :mountain_lion # might work with earlier, might only work with new clang
