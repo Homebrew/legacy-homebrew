@@ -63,7 +63,7 @@ module Homebrew extend self
       tap_user, tap_repo = migration.split '/'
       begin
         install_tap tap_user, tap_repo
-      rescue AlreadyTappedError => e
+      rescue AlreadyTappedError
       end
     end if load_tap_migrations
 

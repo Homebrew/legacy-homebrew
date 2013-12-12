@@ -33,7 +33,7 @@ module Homebrew extend self
         require 'cmd/tap'
         begin
           install_tap $1, $2
-        rescue AlreadyTappedError => e
+        rescue AlreadyTappedError
         end
       end
     end unless ARGV.force?
