@@ -6,7 +6,6 @@ class Fontconfig < Formula
   sha1 '969818b0326ac08241b11cbeaa4f203699f9b550'
 
   bottle do
-    cellar :any
     revision 1
     sha1 '75aac7c039827ca3581116466cc7328c44eab4d6' => :mavericks
     sha1 'ee6d064b5381c7d1884695bce1a0e39f2dfc15a5' => :mountain_lion
