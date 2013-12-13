@@ -3,8 +3,6 @@ require 'formula'
 
 class Mal4s < Formula
 
-  version '1.0.0'
-
   homepage 'https://github.com/secure411dotorg/mal4s/'
   url 'https://service.dissectcyber.com/mal4s/mal4s-1.0.0.tar.gz'
   sha1 '4f1d9bcd3162c5b3a056f8a25382a7fa7cca0909'
