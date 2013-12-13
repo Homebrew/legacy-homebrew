@@ -32,8 +32,8 @@ end
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.22/node-v0.10.22.tar.gz'
-  sha1 'd7c6a39dfa714eae1f8da7a00c9a07efd74a03b3'
+  url 'http://nodejs.org/dist/v0.10.23/node-v0.10.23.tar.gz'
+  sha1 '8717942d1bdfa8902ce65cd33b4293d16b486c64'
 
   devel do
     url 'http://nodejs.org/dist/v0.11.9/node-v0.11.9.tar.gz'
@@ -52,8 +52,16 @@ class Node < Formula
     build 2326
   end
 
-  # fixes gyp's detection of system paths on CLT-only systems
-  def patches; DATA; end
+  # fixes gyp's detection of system paths on CLT-only systems, submitted upstream: https://codereview.chromium.org/14887003
+  def patches
+      # Latest versions of NodeJS stable have changed gyp's xcode_emulation, so
+      # it requires a different patch than devel currently. This will probably go away soon
+      if build.stable?
+        DATA
+      else
+        'https://gist.github.com/bbhoss/7439859/raw/9037240e90c62ce462383469874d4c269e3ead0d/xcode_emulation.patch'
+      end
+    end
 
   def install
     args = %W{--prefix=#{prefix}}
@@ -105,23 +113,21 @@ diff --git a/tools/gyp/pylib/gyp/xcode_emulation.py b/tools/gyp/pylib/gyp/xcode_
 index f9cec33..4b3c035 100644
 --- a/tools/gyp/pylib/gyp/xcode_emulation.py
 +++ b/tools/gyp/pylib/gyp/xcode_emulation.py
-@@ -285,8 +285,14 @@ class XcodeSettings(object):
-     if sdk_root.startswith('/'):
-       return sdk_root
+@@ -295,7 +295,13 @@
+ 
+   def _XcodeSdkPath(self, sdk_root):
      if sdk_root not in XcodeSettings._sdk_path_cache:
--      XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
--          sdk_root, 'Path')
+-      sdk_path = self._GetSdkVersionInfoItem(sdk_root, 'Path')
 +      try:
-+        XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
-+            sdk_root, 'Path')
++        sdk_path = self._GetSdkVersionInfoItem(sdk_root, 'Path')
 +      except:
 +        # if this fails it's because xcodebuild failed, which means
 +        # the user is probably on a CLT-only system, where there
 +        # is no valid SDK root
-+        XcodeSettings._sdk_path_cache[sdk_root] = None
-     return XcodeSettings._sdk_path_cache[sdk_root]
-
-   def _AppendPlatformVersionMinFlags(self, lst):
++        sdk_path = None
+       XcodeSettings._sdk_path_cache[sdk_root] = sdk_path
+       if sdk_root:
+         XcodeSettings._sdk_root_cache[sdk_path] = sdk_root
 @@ -397,10 +403,11 @@ class XcodeSettings(object):
 
      cflags += self._Settings().get('WARNING_CFLAGS', [])
