@@ -11,6 +11,7 @@ class Redland < Formula
   depends_on 'pkg-config' => :build
   depends_on 'raptor'
   depends_on 'rasqal'
+  depends_on 'unixodbc'
   depends_on 'sqlite' => :recommended
   depends_on 'berkeley-db' => :optional
   depends_on :python => :optional
