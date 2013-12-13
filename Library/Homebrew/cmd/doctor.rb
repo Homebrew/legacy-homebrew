@@ -437,15 +437,7 @@ def check_xcode_prefix_exists
 end
 
 def check_xcode_select_path
-  # with the advent of CLT-only support, we don't need xcode-select
-
-  if MacOS::Xcode.bad_xcode_select_path?
-    <<-EOS.undent
-      Your xcode-select path is set to /
-      You must unset it or builds will hang:
-        sudo rm /usr/share/xcode-select/xcode_dir_*
-    EOS
-  elsif not MacOS::CLT.installed? and not File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild"
+  if not MacOS::CLT.installed? and not File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild"
     path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::Xcode::V3_BUNDLE_ID)
     path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent

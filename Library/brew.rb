@@ -16,6 +16,22 @@ $:.unshift(HOMEBREW_LIBRARY_PATH + '/vendor')
 $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
+# Check for bad xcode-select before anything else, because `doctor` and
+# many other things will hang
+# Note that this bug was fixed in 10.9
+if `xcode-select -print-path 2>/dev/null`.chomp == '/' && MacOS.version < :mavericks
+  ofail <<-EOS.undent
+  Your xcode-select path is currently set to '/'.
+  This causes the `xcrun` tool to hang, and can render Homebrew unusable.
+  If you are using Xcode, you should:
+    sudo xcode-select -switch /Applications/Xcode.app
+  Otherwise, you should:
+    sudo rm -rf /usr/share/xcode-select
+  EOS
+
+  exit -1
+end
+
 case ARGV.first when '-h', '--help', '--usage', '-?', 'help', nil
   require 'cmd/help'
   puts Homebrew.help_s
