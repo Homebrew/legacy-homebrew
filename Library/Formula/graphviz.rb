@@ -39,7 +39,7 @@ class Graphviz < Formula
   def patches
     p = {:p0 =>
       "https://trac.macports.org/export/103168/trunk/dports/graphics/graphviz/files/patch-project.pbxproj.diff",
-     } 
+     }
 
      # The following patch is already upstream and can be removed in the next release.
      if build.stable?
