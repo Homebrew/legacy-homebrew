@@ -39,6 +39,7 @@ class Qt5 < Formula
 
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
+  depends_on "icu4c" => :optional
 
   odie 'qt5: --with-qtdbus has been renamed to --with-d-bus' if build.include? 'with-qtdbus'
   odie 'qt5: --with-demos-examples is no longer supported' if build.include? 'with-demos-examples'
@@ -70,6 +71,13 @@ class Qt5 < Formula
       args << "-I#{dbus_opt}/include/dbus-1.0"
       args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
+    end
+
+    if build.with? 'icu4c'
+      icu4c_prefix = Formula.factory('icu4c').opt_prefix
+      args << "-icu"
+      args << "-L#{icu4c_prefix}/lib"
+      args << "-I#{icu4c_prefix}/include"
     end
 
     if MacOS.prefer_64_bit? or build.universal?
