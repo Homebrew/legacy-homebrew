@@ -415,7 +415,7 @@ by default:
 
 Documentation for the included external commands as well as instructions for
 creating your own can be found on the wiki:
-<http://wiki.github.com/mxcl/homebrew/External-Commands>
+<http://wiki.github.com/Homebrew/homebrew/External-Commands>
 
 ## SPECIFYING FORMULAE
 
@@ -426,13 +426,13 @@ can take several different forms:
     e.g. `git`, `node`, `wget`.
 
   * The fully-qualified name of a tapped formula:
-    Sometimes a formula from a tapped repository may conflict with one in mxcl/master.
+    Sometimes a formula from a tapped repository may conflict with one in Homebrew/homebrew.
     You can still access these formulae by using a special syntax, e.g.
     `homebrew/dupes/vim` or `homebrew/versions/node4`.
 
   * An arbitrary URL:
     Homebrew can install formulae via URL, e.g.
-    `https://raw.github.com/mxcl/homebrew/master/Library/Formula/git.rb`.
+    `https://raw.github.com/Homebrew/homebrew/master/Library/Formula/git.rb`.
     The formula file will be cached for later use.
 
 ## ENVIRONMENT
@@ -578,7 +578,7 @@ If your proxy requires authentication:
 
 ## SEE ALSO
 
-Homebrew Wiki: <http://wiki.github.com/mxcl/homebrew/>
+Homebrew Wiki: <http://wiki.github.com/Homebrew/homebrew/>
 
 `git`(1), `git-log`(1)
 
@@ -588,5 +588,5 @@ Max Howell, a splendid chap.
 
 ## BUGS
 
-See Issues on GitHub: <http://github.com/mxcl/homebrew/issues>
+See Issues on GitHub: <http://github.com/Homebrew/homebrew/issues>
 

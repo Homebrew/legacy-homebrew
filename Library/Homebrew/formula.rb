@@ -343,7 +343,7 @@ class Formula
   # Install python bindings inside of a block given to this method and/or
   # call python so: `system python, "setup.py", "install", "--prefix=#{prefix}"
   # Note that there are no quotation marks around python!
-  # <https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python>
+  # <https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python>
   def python(options={:allowed_major_versions => [2, 3]}, &block)
     require 'python_helper'
     python_helper(options, &block)
@@ -451,7 +451,7 @@ class Formula
     if path.realpath.to_s =~ HOMEBREW_TAP_DIR_REGEX
       "#$1/#$2"
     elsif core_formula?
-      "mxcl/master"
+      "Homebrew/homebrew"
     else
       "path or URL"
     end
