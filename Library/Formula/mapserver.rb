@@ -67,6 +67,7 @@ class Mapserver < Formula
                                    "--record=installed-files.txt"
       end
     end
+    (include/'mapserver').install Dir['*.h']
   end
 
   def caveats; <<-EOS.undent
