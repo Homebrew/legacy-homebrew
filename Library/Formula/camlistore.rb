@@ -8,6 +8,7 @@ class Camlistore < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'go' => :build
+  depends_on 'sqlite'
 
   def install
     ENV['GIT_DIR'] = cached_download+".git"
