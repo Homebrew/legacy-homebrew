@@ -29,7 +29,7 @@ if `xcode-select -print-path 2>/dev/null`.chomp == '/' && MacOS.version < :maver
     sudo rm -rf /usr/share/xcode-select
   EOS
 
-  exit -1
+  exit 1
 end
 
 case ARGV.first when '-h', '--help', '--usage', '-?', 'help', nil
