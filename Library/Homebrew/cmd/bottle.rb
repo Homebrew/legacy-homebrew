@@ -127,63 +127,59 @@ module Homebrew extend self
     end
 
     bottle_path = Pathname.pwd/filename
-    sha1 = nil
 
     prefix = HOMEBREW_PREFIX.to_s
     cellar = HOMEBREW_CELLAR.to_s
 
-    output = nil
+    ohai "Bottling #{filename}..."
 
-    HOMEBREW_CELLAR.cd do
-      ohai "Bottling #{filename}..."
+    keg = Keg.new(f.prefix)
+    relocatable = false
 
-      keg = Keg.new(f.prefix)
-      relocatable = false
+    keg.lock do
+      begin
+        keg.relocate_install_names prefix, Keg::PREFIX_PLACEHOLDER,
+          cellar, Keg::CELLAR_PLACEHOLDER, :keg_only => f.keg_only?
 
-      keg.lock do
-        begin
-          keg.relocate_install_names prefix, Keg::PREFIX_PLACEHOLDER,
-            cellar, Keg::CELLAR_PLACEHOLDER, :keg_only => f.keg_only?
-
+        HOMEBREW_CELLAR.cd do
           # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
           # or an uncompressed tarball (and more bandwidth friendly).
           safe_system 'tar', 'czf', bottle_path, "#{f.name}/#{f.version}"
+        end
 
-          if File.size?(bottle_path) > 1*1024*1024
-            ohai "Detecting if #{filename} is relocatable..."
-          end
+        if File.size?(bottle_path) > 1*1024*1024
+          ohai "Detecting if #{filename} is relocatable..."
+        end
 
-          if prefix == '/usr/local'
-            prefix_check = HOMEBREW_PREFIX/'opt'
-          else
-            prefix_check = HOMEBREW_PREFIX
-          end
+        if prefix == '/usr/local'
+          prefix_check = HOMEBREW_PREFIX/'opt'
+        else
+          prefix_check = HOMEBREW_PREFIX
+        end
 
-          relocatable = !keg_contains(prefix_check, keg)
-          relocatable = !keg_contains(HOMEBREW_CELLAR, keg) && relocatable
-        rescue Interrupt
-          ignore_interrupts { bottle_path.unlink if bottle_path.exist? }
-          raise
-        ensure
-          ignore_interrupts do
-            keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, prefix,
-              Keg::CELLAR_PLACEHOLDER, cellar, :keg_only => f.keg_only?
-          end
+        relocatable = !keg_contains(prefix_check, keg)
+        relocatable = !keg_contains(HOMEBREW_CELLAR, keg) && relocatable
+      rescue Interrupt
+        ignore_interrupts { bottle_path.unlink if bottle_path.exist? }
+        raise
+      ensure
+        ignore_interrupts do
+          keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, prefix,
+            Keg::CELLAR_PLACEHOLDER, cellar, :keg_only => f.keg_only?
         end
       end
-
-      sha1 = bottle_path.sha1
-
-      bottle = Bottle.new
-      bottle.prefix HOMEBREW_PREFIX
-      bottle.cellar relocatable ? :any : HOMEBREW_CELLAR
-      bottle.revision bottle_revision
-      bottle.sha1 sha1 => bottle_tag
-
-      puts "./#{filename}"
-      output = bottle_output bottle
-      puts output
     end
+
+    bottle = Bottle.new
+    bottle.prefix HOMEBREW_PREFIX
+    bottle.cellar relocatable ? :any : HOMEBREW_CELLAR
+    bottle.revision bottle_revision
+    bottle.sha1 bottle_path.sha1 => bottle_tag
+
+    output = bottle_output bottle
+
+    puts "./#{filename}"
+    puts output
 
     if ARGV.include? '--rb'
       bottle_base = filename.gsub(bottle_suffix(bottle_revision), '')
