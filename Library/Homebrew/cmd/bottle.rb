@@ -5,7 +5,6 @@ require 'keg'
 require 'cmd/versions'
 require 'utils/inreplace'
 require 'erb'
-require 'open3'
 require 'extend/pathname'
 
 class BottleMerger < Formula
