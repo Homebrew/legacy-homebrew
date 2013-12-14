@@ -147,9 +147,7 @@ class Keg
   end
 
   def find_dylib name
-    (join 'lib').find do |pn|
-      break pn if pn.basename == Pathname.new(name)
-    end
+    lib.find { |pn| break pn if pn.basename == Pathname.new(name) }
   end
 
   def mach_o_files
@@ -192,8 +190,7 @@ class Keg
     libtool_files = []
 
     # find .la files, which are stored in lib/
-    la_dir = self/'lib'
-    la_dir.find do |pn|
+    lib.find do |pn|
       next if pn.symlink? or pn.directory? or pn.extname != '.la'
       libtool_files << pn
     end
