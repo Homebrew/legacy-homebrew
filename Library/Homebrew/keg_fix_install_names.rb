@@ -127,23 +127,26 @@ class Keg
     install_names.shift # first line is fluff
     install_names.map!{ |s| OTOOL_RX =~ s && $1 }
 
-    # Bundles and executables do not have an ID
-    id = install_names.shift if file.dylib?
+    # For dylibs, the next line is the ID
+    install_names.shift if file.dylib?
 
     install_names.compact!
     install_names.reject!{ |fn| fn =~ /^@(loader_|executable_|r)path/ }
     install_names.reject!{ |fn| reject_proc.call(fn) }
 
+    yield dylib_id_for(file, options), install_names
+  end
+
+  def dylib_id_for file, options={}
     # the shortpath ensures that library upgrades don’t break installed tools
     relative_path = Pathname.new(file).relative_path_from(self)
     shortpath = HOMEBREW_PREFIX.join(relative_path)
-    id = if shortpath.exist? and not options[:keg_only]
+
+    if shortpath.exist? and not options[:keg_only]
       shortpath
     else
       "#{HOMEBREW_PREFIX}/opt/#{fname}/#{relative_path}"
     end
-
-    yield id, install_names
   end
 
   def find_dylib name
