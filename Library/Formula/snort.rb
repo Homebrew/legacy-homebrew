@@ -2,8 +2,8 @@ require 'formula'
 
 class Snort < Formula
   homepage 'http://www.snort.org'
-  url 'http://www.snort.org/dl/snort-current/snort-2.9.3.1.tar.gz'
-  sha1 '25dfea22a988dd1dc09a1716d8ebfcf2b7d61c19'
+  url 'http://www.snort.org/dl/snort-current/snort-2.9.5.6.tar.gz'
+  sha1 '85ae4a4d021dd40107fa1dbd72fd70cc1fdca3d9'
 
   depends_on 'daq'
   depends_on 'libdnet'
@@ -26,8 +26,7 @@ class Snort < Formula
               --enable-normalizer
               --enable-reload
               --enable-react
-              --enable-flexresp3
-              CPPFLAGS='-D_FORTIFY_SOURCE=0']
+              --enable-flexresp3]
 
     if build.include? 'enable-debug'
       args << "--enable-debug"
@@ -35,7 +34,8 @@ class Snort < Formula
     else
       args << "--disable-debug"
     end
-
+    
+    ENV.append 'CPPFLAGS', "-D_FORTIFY_SOURCE=0"
     system "./configure", *args
     system "make install"
   end
