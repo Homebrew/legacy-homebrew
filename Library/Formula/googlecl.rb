@@ -31,4 +31,8 @@ class Googlecl < Formula
 
     wrap "#{bin}/google", python.site_packages
   end
+
+  test do
+    system "#{bin}/google", '--version'
+  end
 end
