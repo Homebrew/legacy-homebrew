@@ -34,7 +34,7 @@ class Snort < Formula
     else
       args << "--disable-debug"
     end
-    
+
     ENV.append 'CPPFLAGS', "-D_FORTIFY_SOURCE=0"
     system "./configure", *args
     system "make install"
