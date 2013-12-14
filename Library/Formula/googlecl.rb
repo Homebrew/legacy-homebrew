@@ -29,8 +29,6 @@ class Googlecl < Formula
                    "--single-version-externally-managed",
                    "--record=installed.txt"
 
-   Dir["#{bin}/*"].each do |bin_file|
-     wrap bin_file, python.site_packages
-   end
+    wrap "#{bin}/google", python.site_packages
   end
 end
