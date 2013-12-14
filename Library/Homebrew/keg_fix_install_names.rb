@@ -28,16 +28,14 @@ class Keg
           change_dylib_id(id, file)
         end
 
-        each_install_name_for(file) do |old_cellar_name|
-          next unless old_cellar_name.start_with? old_cellar
-          new_cellar_name = old_cellar_name.sub(old_cellar, new_cellar)
-          change_install_name(old_cellar_name, new_cellar_name, file)
-        end
+        each_install_name_for(file) do |old_name|
+          if old_name.start_with? old_cellar
+            new_name = old_name.sub(old_cellar, new_cellar)
+          elsif old_name.start_with? old_prefix
+            new_name = old_name.sub(old_prefix, new_prefix)
+          end
 
-        each_install_name_for(file) do |old_prefix_name|
-          next unless old_prefix_name.start_with? old_prefix
-          new_prefix_name = old_prefix_name.sub(old_prefix, new_prefix)
-          change_install_name(old_prefix_name, new_prefix_name, file)
+          change_install_name(old_name, new_name, file) if new_name
         end
       end
     end
