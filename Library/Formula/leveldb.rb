@@ -2,8 +2,8 @@ require 'formula'
 
 class Leveldb < Formula
   homepage 'https://code.google.com/p/leveldb/'
-  url 'https://leveldb.googlecode.com/files/leveldb-1.14.0.tar.gz'
-  sha1 '641d54df4aaf7ee569ae003cfbdb888ebdee0d7f'
+  url 'https://leveldb.googlecode.com/files/leveldb-1.15.0.tar.gz'
+  sha1 '74b70a1156d91807d8d84bfdd026e0bb5acbbf23'
 
   bottle do
     cellar :any
@@ -22,8 +22,8 @@ class Leveldb < Formula
     include.install 'include/leveldb'
     bin.install 'leveldbutil'
     lib.install 'libleveldb.a'
-    lib.install 'libleveldb.dylib.1.14' => 'libleveldb.1.14.dylib'
-    lib.install_symlink lib/'libleveldb.1.14.dylib' => 'libleveldb.dylib'
-    lib.install_symlink lib/'libleveldb.1.14.dylib' => 'libleveldb.1.dylib'
+    lib.install 'libleveldb.dylib.1.15' => 'libleveldb.1.15.dylib'
+    lib.install_symlink lib/'libleveldb.1.15.dylib' => 'libleveldb.dylib'
+    lib.install_symlink lib/'libleveldb.1.15.dylib' => 'libleveldb.1.dylib'
   end
 end
