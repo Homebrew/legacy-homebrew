@@ -1,10 +1,10 @@
 require 'formula'
 
 class DynamodbLocal < Formula
-  homepage 'https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.html'
-  url 'https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_2013-09-12.tar.gz'
-  version '2013-09-12'
-  sha1 'b8e492b8908710c6ea8fb4b74624ecc7b168ea73'
+  homepage 'https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.DynamoDBLocal.html'
+  url 'https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_2013-12-12.tar.gz'
+  version '2013-12-12'
+  sha1 '66e39e57297a394e7ca7b30d3072c615fd413310'
 
   def data_path
     var/'data/dynamodb-local'
@@ -16,13 +16,13 @@ class DynamodbLocal < Formula
 
   def bin_wrapper; <<-EOS.undent
     #!/bin/sh
-    cd #{data_path} && java -Djava.library.path=#{libexec} -jar #{libexec}/DynamodbLocal.jar
+    cd #{data_path} && java -Djava.library.path=#{libexec}/DynamodbLocal_lib -jar #{libexec}/DynamoDBLocal.jar
     EOS
   end
 
   def install
     prefix.install %w[LICENSE.txt README.txt third_party_licenses]
-    libexec.install %w[DynamodbLocal.jar libsqlite4java-osx.jnilib]
+    libexec.install %w[DynamoDBLocal_lib DynamoDBLocal.jar]
     (bin/'dynamodb-local').write(bin_wrapper)
   end
 
@@ -31,10 +31,12 @@ class DynamodbLocal < Formula
   end
 
   def caveats; <<-EOS.undent
-    You must use version 7.x of the Java Runtime Engine (JRE).
-    DynamoDB Local does not work on older Java versions.
+    DynamoDB Local supports the Java Runtime Engine (JRE) version 6.x or
+    newer; it will not run on older JRE versions.
 
-    DynamoDB Local only supports V2 of the service API.
+    In this release, the local database file format has changed;
+    therefore, DynamoDB Local will not be able to read data files
+    created by older releases.
 
     Data: #{data_path}
     Logs: #{log_path}
