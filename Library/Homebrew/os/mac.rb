@@ -180,9 +180,9 @@ module OS
     end
 
     # See these issues for some history:
-    # http://github.com/mxcl/homebrew/issues/#issue/13
-    # http://github.com/mxcl/homebrew/issues/#issue/41
-    # http://github.com/mxcl/homebrew/issues/#issue/48
+    # http://github.com/Homebrew/homebrew/issues/13
+    # http://github.com/Homebrew/homebrew/issues/41
+    # http://github.com/Homebrew/homebrew/issues/48
     def macports_or_fink
       paths = []
 

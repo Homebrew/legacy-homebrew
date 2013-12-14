@@ -22,7 +22,7 @@ class SigningParty < Formula
   depends_on 'GnuPG::Interface' => :perl
 
   # gpgparticipants data on OS X behaves differently from linux version
-  # https://github.com/mxcl/homebrew/pull/21628
+  # https://github.com/Homebrew/homebrew/pull/21628
   def patches
     DATA
   end

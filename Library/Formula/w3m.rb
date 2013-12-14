@@ -20,7 +20,7 @@ class W3m < Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-image"
     # Race condition in build reported in:
-    # https://github.com/mxcl/homebrew/issues/12854
+    # https://github.com/Homebrew/homebrew/issues/12854
     ENV.j1 #
     system "make install"
   end

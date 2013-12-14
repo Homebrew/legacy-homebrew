@@ -96,7 +96,7 @@ class MysqlCluster < Formula
     plist_path('mysqld').chmod 0644
 
     # Don't create databases inside of the prefix!
-    # See: https://github.com/mxcl/homebrew/issues/4975
+    # See: https://github.com/Homebrew/homebrew/issues/4975
     rm_rf prefix+'data'
 
     # Link the setup script into bin

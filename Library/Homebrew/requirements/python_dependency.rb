@@ -295,7 +295,7 @@ class PythonDependency < Requirement
     <<-EOF.undent
       # This file is created by Homebrew and is executed on each python startup.
       # Don't print from here, or else python command line scripts may fail!
-      # <https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python>
+      # <https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python>
       import os
       import sys
 

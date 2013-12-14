@@ -117,7 +117,7 @@ class FormulaCreator
   def template; <<-EOS.undent
     require 'formula'
 
-    # Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
+    # Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
     #                #{HOMEBREW_CONTRIB}/example-formula.rb
     # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 

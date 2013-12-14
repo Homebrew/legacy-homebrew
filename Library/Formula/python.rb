@@ -162,7 +162,7 @@ class Python < Formula
       EOS
 
       # Fixes setting Python build flags for certain software
-      # See: https://github.com/mxcl/homebrew/pull/20182
+      # See: https://github.com/Homebrew/homebrew/pull/20182
       # http://bugs.python.org/issue3588
       inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile" do |s|
         s.change_make_var! "LINKFORSHARED",
@@ -216,7 +216,7 @@ class Python < Formula
     ENV.minimal_optimization
 
     # We need to enable warnings because the configure.in uses -Werror to detect
-    # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
+    # "whether gcc supports ParseTuple" (https://github.com/Homebrew/homebrew/issues/12194)
     ENV.enable_warnings
     if ENV.compiler == :clang
       # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
@@ -244,7 +244,7 @@ class Python < Formula
       They will install into the site-package directory
         #{site_packages}
 
-      See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+      See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
     EOS
   end
 

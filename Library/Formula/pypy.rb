@@ -21,7 +21,7 @@ class Pypy < Formula
   def install
     # Having PYTHONPATH set can cause the build to fail if another
     # Python is present, e.g. a Homebrew-provided Python 2.x
-    # See https://github.com/mxcl/homebrew/issues/24364
+    # See https://github.com/Homebrew/homebrew/issues/24364
     ENV['PYTHONPATH'] = ''
 
     rmtree 'site-packages'
@@ -85,7 +85,7 @@ class Pypy < Formula
         #{scripts_folder}/easy_install pip
         #{scripts_folder}/pip install --upgrade setuptools
 
-    See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+    See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
     EOS
   end
 

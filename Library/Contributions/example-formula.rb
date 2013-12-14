@@ -3,7 +3,7 @@ require 'formula'
 # This is a non-functional example formula to showcase all features and
 # therefore, its overly complex and dupes stuff just to comment on it.
 # You may want to use `brew create` to start your own new formula!
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
+# Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
 
 
 ## Naming -- Every Homebrew formula is a class of the type `Formula`.
@@ -73,7 +73,7 @@ class ExampleFormula < Formula
   # Bottles are pre-built and added by the Homebrew maintainers for you.
   # If you maintain your own repository, you can add your own bottle links.
   # Read in the wiki about how to provide bottles:
-  # <https://github.com/mxcl/homebrew/wiki/Bottles>
+  # <https://github.com/Homebrew/homebrew/wiki/Bottles>
   bottle do
     root_url 'http://mikemcquaid.com' # Optional root to calculate bottle URLs
     prefix '/opt/homebrew' # Optional HOMEBREW_PREFIX in which the bottles were built.
@@ -396,7 +396,7 @@ end
 
 class AdditionalStuff < Formula
   # Often, a second formula is used to download some resource
-  # NOTE: This is going to change when https://github.com/mxcl/homebrew/pull/21714 happens.
+  # NOTE: This is going to change when https://github.com/Homebrew/homebrew/pull/21714 happens.
   url 'https://example.com/additional-stuff.tar.gz'
   sha1 'deadbeef7890123456789012345678901234567890'
 end
@@ -404,7 +404,7 @@ end
 __END__
 # Room for a patch after the `__END__`
 # Read in the wiki about how to get a patch in here:
-#    https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
+#    https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
 # In short, `brew install --interactive --git <formula>` and make your edits.
 # Then `git diff >> path/to/your/formula.rb`
 # Note, that HOMEBREW_PREFIX will be replaced in the path before it is

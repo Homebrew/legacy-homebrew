@@ -70,7 +70,7 @@ class Ghc < Formula
 
     cd 'Ghcsource' do
       # Fix an assertion when linking ghc with llvm-gcc
-      # https://github.com/mxcl/homebrew/issues/13650
+      # https://github.com/Homebrew/homebrew/issues/13650
       ENV['LD'] = 'ld'
 
       if Hardware.is_64_bit? and not build.build_32_bit?

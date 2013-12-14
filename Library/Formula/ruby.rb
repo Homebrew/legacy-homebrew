@@ -39,7 +39,7 @@ class Ruby < Formula
     # OpenSSL is deprecated on OS X 10.8 and Ruby can't find the outdated
     # version (0.9.8r 8 Feb 2011) that ships with the system.
     # See discussion https://github.com/sstephenson/ruby-build/issues/304
-    # and https://github.com/mxcl/homebrew/pull/18054
+    # and https://github.com/Homebrew/homebrew/pull/18054
     if MacOS.version >= :mountain_lion
       args << "--with-opt-dir=#{Formula.factory('openssl').opt_prefix}"
     end

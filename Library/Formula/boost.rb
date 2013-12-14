@@ -126,7 +126,7 @@ class Boost < Formula
 
     # The context library is implemented as x86_64 ASM, so it
     # won't build on PPC or 32-bit builds
-    # see https://github.com/mxcl/homebrew/issues/17646
+    # see https://github.com/Homebrew/homebrew/issues/17646
     if Hardware::CPU.ppc? || Hardware::CPU.is_32_bit? || build.universal?
       without_libraries << "context"
       # The coroutine library depends on the context library.

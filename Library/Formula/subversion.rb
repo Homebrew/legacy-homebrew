@@ -94,7 +94,7 @@ class Subversion < Formula
 
     if build.include? 'java'
       # Java support doesn't build correctly in parallel:
-      # https://github.com/mxcl/homebrew/issues/20415
+      # https://github.com/Homebrew/homebrew/issues/20415
       ENV.deparallelize
 
       unless build.universal?
