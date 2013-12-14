@@ -107,11 +107,14 @@ class Fontforge < Formula
 
     # Replace FlatCarbon headers with the real paths
     # Fixes building on 10.8
-    inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
-      s.gsub! "/Developer/Headers/FlatCarbon/Files.h", "CarbonCore/Files.h"
-    end
-    inreplace %w(fontforge/startui.c) do |s|
-      s.gsub! "/Developer/Headers/FlatCarbon/CarbonEvents.h", "HIToolbox/CarbonEvents.h"
+    # Only needed for non-head build
+    unless build.head?
+      inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
+        s.gsub! "/Developer/Headers/FlatCarbon/Files.h", "CarbonCore/Files.h"
+      end
+      inreplace %w(fontforge/startui.c) do |s|
+        s.gsub! "/Developer/Headers/FlatCarbon/CarbonEvents.h", "HIToolbox/CarbonEvents.h"
+      end
     end
 
     system "make"
