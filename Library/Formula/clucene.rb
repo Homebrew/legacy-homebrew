@@ -31,7 +31,7 @@ class Clucene < Formula
     end
 
     # Serialize the install step. See:
-    # https://github.com/mxcl/homebrew/issues/8712
+    # https://github.com/Homebrew/homebrew/issues/8712
     ENV.j1
     system "make install"
   end

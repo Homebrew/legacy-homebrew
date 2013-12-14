@@ -1,7 +1,7 @@
 require 'formula'
 
 # https version doesn't download with system curl on Snow Leopard
-# https://github.com/mxcl/homebrew/issues/20339
+# https://github.com/Homebrew/homebrew/issues/20339
 class Cfengine < Formula
   homepage 'http://cfengine.com/'
   url 'http://cfengine.com/source-code/download?file=cfengine-3.5.2.tar.gz'
