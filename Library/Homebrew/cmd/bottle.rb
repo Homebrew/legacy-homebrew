@@ -86,12 +86,17 @@ module Homebrew extend self
       end
 
       # Use strings to search through the file for each string
-      strings = `strings -t x - "#{file}"`.split("\n").select{ |str| str.include? string }
+      IO.popen("strings -t x - '#{file}'") do |io|
+        until io.eof?
+          str = io.readline.chomp
 
-      strings.each do |str|
-        offset, match = str.split(" ", 2)
-        next if linked_libraries.include? match # Don't bother reporting a string if it was found by otool
-        puts " #{Tty.gray}-->#{Tty.reset} match '#{match}' at offset #{Tty.em}0x#{offset}#{Tty.reset}"
+          next unless str.include? string
+
+          offset, match = str.split(" ", 2)
+
+          next if linked_libraries.include? match # Don't bother reporting a string if it was found by otool
+          puts " #{Tty.gray}-->#{Tty.reset} match '#{match}' at offset #{Tty.em}0x#{offset}#{Tty.reset}"
+        end
       end
     end
     puts
