@@ -7,13 +7,9 @@ class Keg
       file.ensure_writable do
         change_dylib_id(dylib_id_for(file, options), file) if file.dylib?
 
-        install_names_for(file) do |bad_names|
-          bad_names.each do |bad_name|
-            new_name = fixed_name(file, bad_name)
-            unless new_name == bad_name
-              change_install_name(bad_name, new_name, file)
-            end
-          end
+        each_install_name_for(file) do |bad_name|
+          new_name = fixed_name(file, bad_name)
+          change_install_name(bad_name, new_name, file) unless new_name == bad_name
         end
       end
     end
@@ -27,18 +23,14 @@ class Keg
           change_dylib_id(id, file)
         end
 
-        install_names_for(file, relocate_reject_proc(old_cellar)) do |old_cellar_names|
-          old_cellar_names.each do |old_cellar_name|
-            new_cellar_name = old_cellar_name.sub(old_cellar, new_cellar)
-            change_install_name(old_cellar_name, new_cellar_name, file)
-          end
+        each_install_name_for(file, relocate_reject_proc(old_cellar)) do |old_cellar_name|
+          new_cellar_name = old_cellar_name.sub(old_cellar, new_cellar)
+          change_install_name(old_cellar_name, new_cellar_name, file)
         end
 
-        install_names_for(file, relocate_reject_proc(old_prefix)) do |old_prefix_names|
-          old_prefix_names.each do |old_prefix_name|
-            new_prefix_name = old_prefix_name.sub(old_prefix, new_prefix)
-            change_install_name(old_prefix_name, new_prefix_name, file)
-          end
+        each_install_name_for(file, relocate_reject_proc(old_prefix)) do |old_prefix_name|
+          new_prefix_name = old_prefix_name.sub(old_prefix, new_prefix)
+          change_install_name(old_prefix_name, new_prefix_name, file)
         end
       end
     end
@@ -123,7 +115,7 @@ class Keg
     Proc.new { |fn| not fn.start_with?(path) }
   end
 
-  def install_names_for file, reject_proc=default_reject_proc
+  def each_install_name_for file, reject_proc=default_reject_proc, &block
     ENV['HOMEBREW_MACH_O_FILE'] = file.to_s # solves all shell escaping problems
     install_names = `#{MacOS.locate("otool")} -L "$HOMEBREW_MACH_O_FILE"`.split "\n"
 
@@ -137,7 +129,7 @@ class Keg
     install_names.reject!{ |fn| fn =~ /^@(loader_|executable_|r)path/ }
     install_names.reject!{ |fn| reject_proc.call(fn) }
 
-    yield install_names
+    install_names.each(&block)
   end
 
   def dylib_id_for file, options={}
