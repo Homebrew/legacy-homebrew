@@ -26,7 +26,8 @@ class Snort < Formula
               --enable-normalizer
               --enable-reload
               --enable-react
-              --enable-flexresp3]
+              --enable-flexresp3
+              CPPFLAGS='-D_FORTIFY_SOURCE=0']
 
     if build.include? 'enable-debug'
       args << "--enable-debug"
