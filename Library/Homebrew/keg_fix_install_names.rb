@@ -175,7 +175,7 @@ class Keg
     pc_dir = self/'lib/pkgconfig'
     if pc_dir.directory?
       pc_dir.find do |pn|
-        next if pn.symlink? or pn.directory? or pn.extname.to_s != '.pc'
+        next if pn.symlink? or pn.directory? or pn.extname != '.pc'
         pkgconfig_files << pn
       end
     end
@@ -194,7 +194,7 @@ class Keg
     # find .la files, which are stored in lib/
     la_dir = self/'lib'
     la_dir.find do |pn|
-      next if pn.symlink? or pn.directory? or pn.extname.to_s != '.la'
+      next if pn.symlink? or pn.directory? or pn.extname != '.la'
       libtool_files << pn
     end
     libtool_files
