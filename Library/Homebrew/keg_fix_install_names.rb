@@ -3,15 +3,13 @@ class Keg
   CELLAR_PLACEHOLDER = "@@HOMEBREW_CELLAR@@".freeze
 
   def fix_install_names options={}
-    tmp = ENV['HOMEBREW_TEMP'] ? Regexp.escape(ENV['HOMEBREW_TEMP']) : '/tmp'
-
     mach_o_files.each do |file|
       file.ensure_writable do
         change_dylib_id(dylib_id_for(file, options), file) if file.dylib?
 
         each_install_name_for(file) do |bad_name|
           # Don't fix absolute paths unless they are rooted in the build directory
-          next if bad_name.start_with? '/' and not %r[^#{tmp}] === bad_name
+          next if bad_name.start_with? '/' and not %r[^#{HOMEBREW_TEMP}] === bad_name
 
           new_name = fixed_name(file, bad_name)
           change_install_name(bad_name, new_name, file) unless new_name == bad_name
