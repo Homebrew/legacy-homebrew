@@ -19,16 +19,15 @@ end
 
 class Qt5 < Formula
   homepage 'http://qt-project.org/'
-  url 'http://download.qt-project.org/official_releases/qt/5.1/5.1.1/single/qt-everywhere-opensource-src-5.1.1.tar.gz'
-  sha1 '131b023677cd5207b0b0d1864f5d3ac37f10a5ba'
+  url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.0/single/qt-everywhere-opensource-src-5.2.0.tar.gz'
+  sha1 'd0374c769a29886ee61f08a6386b9af39e861232'
   head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
     :using => Qt5HeadDownloadStrategy
 
   bottle do
-    revision 1
-    sha1 '7cf5fec167c1b0d8a8a719fad79756b9892d04dd' => :mountain_lion
-    sha1 '5d6a4a10362ba66d6471cd45a40b1bcde8137f62' => :lion
-    sha1 'd1790e3b17b5a0855efa8df68187a62774aad9b9' => :snow_leopard
+    sha1 '38ae6b107af1e34635cf9e6efc69e630518cc0a6' => :mavericks
+    sha1 '7623e90ae623360a1f6ca282ca8003ae8ee04c55' => :mountain_lion
+    sha1 '1f58eab10d42880b444c6c151e2075227574fa8d' => :lion
   end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
@@ -58,7 +57,7 @@ class Qt5 < Formula
     end
 
     # https://bugreports.qt-project.org/browse/QTBUG-34382
-    args << "-no-xcb" if build.head?
+    args << "-no-xcb"
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
@@ -86,17 +85,6 @@ class Qt5 < Formula
     system "make"
     ENV.j1
     system "make install"
-
-    # Fix https://github.com/mxcl/homebrew/issues/20020 (upstream: https://bugreports.qt-project.org/browse/QTBUG-32417)
-    system "install_name_tool", "-change", "#{pwd}/qtwebkit/lib/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets", #old
-                                           "#{lib}/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets",  #new
-                                           "#{libexec}/QtWebProcess" # in this lib
-    system "install_name_tool", "-change", "#{pwd}/qtwebkit/lib/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{lib}/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{prefix}/qml/QtWebKit/libqmlwebkitplugin.dylib"
-    system "install_name_tool", "-change", "#{pwd}/qtwebkit/lib/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{lib}/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{lib}/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets"
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     cd prefix do
