@@ -1,7 +1,7 @@
 require 'formula'
 
 class Iptux < Formula
-  homepage 'hicolor-icon-theme'
+  homepage 'https://github.com/iptux-src/iptux'
   url 'https://github.com/iptux-src/iptux/archive/v0.6.1.tar.gz'
   sha1 '634c7e613bb83a18dfaaf6fc965202a390790921'
 
