@@ -411,17 +411,6 @@ class Pathname
     end
   end
 
-  # Returns an array containing all dynamically-linked libraries, based on the
-  # output of otool. This returns the install names, so these are not guaranteed
-  # to be absolute paths.
-  # Returns an empty array both for software that links against no libraries,
-  # and for non-mach objects.
-  def dynamically_linked_libraries
-    `#{MacOS.locate("otool")} -L "#{expand_path}"`.chomp.split("\n")[1..-1].map do |line|
-      line[/\t(.+) \([^(]+\)/, 1]
-    end
-  end
-
   def abv
     out=''
     n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
