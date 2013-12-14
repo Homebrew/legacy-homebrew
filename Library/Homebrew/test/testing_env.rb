@@ -21,6 +21,7 @@ HOMEBREW_CACHE         = HOMEBREW_PREFIX.parent+'cache'
 HOMEBREW_CACHE_FORMULA = HOMEBREW_PREFIX.parent+'formula_cache'
 HOMEBREW_CELLAR        = HOMEBREW_PREFIX.parent+'cellar'
 HOMEBREW_LOGS          = HOMEBREW_PREFIX.parent+'logs'
+HOMEBREW_TEMP          = Pathname.new(ENV.fetch('HOMEBREW_TEMP', '/tmp'))
 HOMEBREW_USER_AGENT    = 'Homebrew'
 HOMEBREW_WWW           = 'http://example.com'
 HOMEBREW_CURL_ARGS     = '-fsLA'
