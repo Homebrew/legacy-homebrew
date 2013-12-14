@@ -2,7 +2,7 @@
 
 def usage
   puts <<-EOS.undent
-  Usage: brew bundle [path]
+  Usage: brew bundle [--ignore-failures] [path]
 
   Looks for a Brewfile and runs each line as a brew command.
 
@@ -15,19 +15,26 @@ def usage
 
   Running `brew bundle` will run the command `brew install formula`.
 
-  NOTE: Not all brew commands will work consistently in a Brewfile.
-  Some commands will raise errors which will stop execution of the Brewfile.
+  Handling errors:
+  Not all brew commands will work consistently in a Brewfile.
+  Some commands will raise errors which will stop execution of the Brewfile
+  unless `--ignore-failures` is provided either as a command line option or
+  within the Brewfile.
 
-  Example that outputs an error:
-    tap my/tap  # fails when my/tap has already been tapped
+  As a command line option:
+    brew bundle --ignore-failures  # Will continue on errors
 
-  In this case use the full formula path in the Brewfile instead:
-    install my/tap/formula  # succeeds even when my/tap has already been tapped
+  Within the Brewfile:
+    echo "--ignore-failures" > Brewfile
+    echo "tap my/tap"       >> Brewfile
+    echo "install formula"  >> Brewfile
+    brew bundle                    # Will continue on errors
   EOS
   exit
 end
 
 usage if ARGV.include?('--help') || ARGV.include?('-h')
+ignore_failures = ARGV.include?('--ignore-failures')
 
 path = 'Brewfile'
 error = ' in current directory'
@@ -49,6 +56,12 @@ File.readlines(path).each_with_index do |line, index|
   next if command.empty?
   next if command.chars.first == '#'
 
+  if command.chars.first == '-'
+    ignore_failures = true if command.include?('--ignore-failures')
+    next
+  end
+
   brew_cmd = "brew #{command}"
-  odie "Command failed: L#{index+1}:#{brew_cmd}" unless system brew_cmd
+  status = system brew_cmd
+  odie "Command failed: L#{index+1}:#{brew_cmd}" unless status or ignore_failures
 end
