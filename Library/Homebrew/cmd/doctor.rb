@@ -681,8 +681,7 @@ def check_for_multiple_volumes
   # Find the volumes for the TMP folder & HOMEBREW_CELLAR
   real_cellar = HOMEBREW_CELLAR.realpath
 
-  tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
-  tmp = Pathname.new with_system_path { `mktemp -d #{tmp_prefix}/homebrew-brew-doctor-XXXX` }.strip
+  tmp = Pathname.new with_system_path { `mktemp -d #{HOMEBREW_TEMP}/homebrew-brew-doctor-XXXX` }.strip
   real_temp = tmp.realpath.parent
 
   where_cellar = volumes.which real_cellar
@@ -703,8 +702,7 @@ end
 
 def check_filesystem_case_sensitive
   volumes = Volumes.new
-  tmp_prefix = Pathname.new(ENV['HOMEBREW_TEMP'] || '/tmp')
-  case_sensitive_vols = [HOMEBREW_PREFIX, HOMEBREW_REPOSITORY, HOMEBREW_CELLAR, tmp_prefix].select do |dir|
+  case_sensitive_vols = [HOMEBREW_PREFIX, HOMEBREW_REPOSITORY, HOMEBREW_CELLAR, HOMEBREW_TEMP].select do |dir|
     # We select the dir as being case-sensitive if either the UPCASED or the
     # downcased variant is missing.
     # Of course, on a case-insensitive fs, both exist because the os reports so.
