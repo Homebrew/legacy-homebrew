@@ -23,7 +23,6 @@ class Mapnik < Formula
   depends_on 'boost'
   depends_on 'gdal' => :optional
   depends_on 'postgresql' => :optional
-  depends_on 'geos' => :optional
   depends_on 'cairo' => :optional
 
   depends_on 'py2cairo' if build.with? 'cairo'
@@ -67,7 +66,6 @@ class Mapnik < Formula
     else
       args << "CAIRO=False"
     end
-    args << "GEOS_CONFIG=#{Formula.factory('geos').opt_prefix}/bin/geos-config" if build.with? 'geos'
     args << "GDAL_CONFIG=#{Formula.factory('gdal').opt_prefix}/bin/gdal-config" if build.with? 'gdal'
     args << "PG_CONFIG=#{Formula.factory('postgresql').opt_prefix}/bin/pg_config" if build.with? 'postgresql'
 
