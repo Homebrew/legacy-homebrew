@@ -8,7 +8,7 @@ class Libxml2 < Formula
     mirror 'http://xmlsoft.org/sources/libxml2-2.9.1.tar.gz'
     sha256 'fd3c64cb66f2c4ea27e934d275904d92cec494a8e8405613780cbc8a71680fdb'
 
-    # 2.9.1 cannot build with Python 2.6: https://github.com/mxcl/homebrew/issues/20249
+    # 2.9.1 cannot build with Python 2.6: https://github.com/Homebrew/homebrew/issues/20249
     if MacOS.version <= :snow_leopard
       depends_on :python => ["2.7", :optional]
     else

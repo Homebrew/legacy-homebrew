@@ -38,7 +38,7 @@ class Weechat < Formula
     args << '-DENABLE_GUILE=OFF'  unless build.with? 'guile'
 
     # NLS/gettext support disabled for now since it doesn't work in stdenv
-    # see https://github.com/mxcl/homebrew/issues/18722
+    # see https://github.com/Homebrew/homebrew/issues/18722
     args << "-DENABLE_NLS=OFF"
     args << '..'
 
