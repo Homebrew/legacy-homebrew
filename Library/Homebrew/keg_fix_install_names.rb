@@ -80,8 +80,6 @@ class Keg
 
   private
 
-  OTOOL_RX = /\t(.*) \(compatibility version (\d+\.)*\d+, current version (\d+\.)*\d+\)/
-
   def install_name_tool(*args)
     system(MacOS.locate("install_name_tool"), *args)
   end
@@ -109,19 +107,9 @@ class Keg
   def lib; join 'lib' end
 
   def each_install_name_for file, &block
-    ENV['HOMEBREW_MACH_O_FILE'] = file.to_s # solves all shell escaping problems
-    install_names = `#{MacOS.locate("otool")} -L "$HOMEBREW_MACH_O_FILE"`.split "\n"
-
-    install_names.shift # first line is fluff
-    install_names.map!{ |s| OTOOL_RX =~ s && $1 }
-
-    # For dylibs, the next line is the ID
-    install_names.shift if file.dylib?
-
-    install_names.compact!
-    install_names.reject!{ |fn| fn =~ /^@(loader_|executable_|r)path/ }
-
-    install_names.each(&block)
+    dylibs = file.dynamically_linked_libraries
+    dylibs.reject! { |fn| fn =~ /^@(loader_|executable_|r)path/ }
+    dylibs.each(&block)
   end
 
   def dylib_id_for file, options={}
