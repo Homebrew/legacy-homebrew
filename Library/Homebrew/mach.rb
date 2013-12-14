@@ -46,7 +46,7 @@ module ArchitectureListExtension
 end
 
 module MachO
-  OTOOL_RX = /\t(.*) \(compatibility version (\d+\.)*\d+, current version (\d+\.)*\d+\)/
+  OTOOL_RX = /\t(.*) \(compatibility version (?:\d+\.)*\d+, current version (?:\d+\.)*\d+\)/
 
   # Mach-O binary methods, see:
   # /usr/include/mach-o/loader.h
