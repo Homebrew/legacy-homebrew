@@ -181,7 +181,7 @@ class Keg
     # find name-config scripts, which can be all over the keg
     Pathname.new(self).find do |pn|
       next if pn.symlink? or pn.directory?
-      pkgconfig_files << pn if pn.text_executable? and pn.basename.to_s.end_with? '-config'
+      pkgconfig_files << pn if pn.basename.to_s.end_with? '-config' and pn.text_executable?
     end
     pkgconfig_files
   end
