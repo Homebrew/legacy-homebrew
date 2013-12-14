@@ -5,17 +5,26 @@ class Ldns < Formula
   url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.16.tar.gz'
   sha1 '5b4fc6c5c3078cd061905c47178478cb1015c62a'
 
+  option 'with-gost', 'Compile ldns with support for GOST algorithms in DNSSEC'
+
   depends_on :python => :optional
   depends_on 'swig' if build.with? 'python'
 
+  # gost requires OpenSSL >= 1.0.0
+  depends_on 'openssl' if build.with? 'gost'
+
   def install
-    # gost requires OpenSSL >= 1.0.0
     args = %W[
       --prefix=#{prefix}
-      --disable-gost
       --with-drill
-      --with-ssl=#{MacOS.sdk_path}/usr
     ]
+
+    if build.with? 'gost'
+      args << "--with-ssl=#{HOMEBREW_PREFIX}/opt/openssl"
+    else
+      args << "--disable-gost"
+      args << "--with-ssl=#{MacOS.sdk_path}/usr"
+    end
 
     if build.with? 'python'
       args << "--with-pyldns"
