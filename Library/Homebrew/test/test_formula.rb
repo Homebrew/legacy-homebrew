@@ -156,7 +156,7 @@ class FormulaTests < Test::Unit::TestCase
       mirror 'file:///foo.org/testball-0.1.tbz'
       sha1 TEST_SHA1
 
-      head 'https://github.com/mxcl/homebrew.git', :tag => 'foo'
+      head 'https://github.com/Homebrew/homebrew.git', :tag => 'foo'
 
       devel do
         url 'file:///foo.com/testball-0.2.tbz'
