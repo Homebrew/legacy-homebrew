@@ -7,10 +7,9 @@ class Leveldb < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 '8dd490f735718185eed16bd631f2932c82738eed' => :mavericks
-    sha1 '509c59997b6c5b678a4ca18d87d0d28d82b86684' => :mountain_lion
-    sha1 'b122afaf1eb83eeb8b637b80b8792b5f6b92496f' => :lion
+    sha1 'dd654d1abd93861c7d9573cb1171b59c8e23f50e' => :mavericks
+    sha1 'bd6bfb0889d0f563d760aa149536878493da5467' => :mountain_lion
+    sha1 'b30b1116005497f772b8af926e7c423f79174aab' => :lion
   end
 
   depends_on 'snappy'
