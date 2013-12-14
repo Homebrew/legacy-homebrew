@@ -3,11 +3,16 @@ class Keg
   CELLAR_PLACEHOLDER = "@@HOMEBREW_CELLAR@@".freeze
 
   def fix_install_names options={}
+    tmp = ENV['HOMEBREW_TEMP'] ? Regexp.escape(ENV['HOMEBREW_TEMP']) : '/tmp'
+
     mach_o_files.each do |file|
       file.ensure_writable do
         change_dylib_id(dylib_id_for(file, options), file) if file.dylib?
 
         each_install_name_for(file) do |bad_name|
+          # Don't fix absolute paths unless they are rooted in the build directory
+          next if bad_name.start_with? '/' and not %r[^#{tmp}] === bad_name
+
           new_name = fixed_name(file, bad_name)
           change_install_name(bad_name, new_name, file) unless new_name == bad_name
         end
@@ -23,12 +28,14 @@ class Keg
           change_dylib_id(id, file)
         end
 
-        each_install_name_for(file, relocate_reject_proc(old_cellar)) do |old_cellar_name|
+        each_install_name_for(file) do |old_cellar_name|
+          next unless old_cellar_name.start_with? old_cellar
           new_cellar_name = old_cellar_name.sub(old_cellar, new_cellar)
           change_install_name(old_cellar_name, new_cellar_name, file)
         end
 
-        each_install_name_for(file, relocate_reject_proc(old_prefix)) do |old_prefix_name|
+        each_install_name_for(file) do |old_prefix_name|
+          next unless old_prefix_name.start_with? old_prefix
           new_prefix_name = old_prefix_name.sub(old_prefix, new_prefix)
           change_install_name(old_prefix_name, new_prefix_name, file)
         end
@@ -103,19 +110,7 @@ class Keg
 
   def lib; join 'lib' end
 
-  def default_reject_proc
-    Proc.new do |fn|
-      # Don't fix absolute paths unless they are rooted in the build directory
-      tmp = ENV['HOMEBREW_TEMP'] ? Regexp.escape(ENV['HOMEBREW_TEMP']) : '/tmp'
-      fn[0,1] == '/' and not %r[^#{tmp}] === fn
-    end
-  end
-
-  def relocate_reject_proc(path)
-    Proc.new { |fn| not fn.start_with?(path) }
-  end
-
-  def each_install_name_for file, reject_proc=default_reject_proc, &block
+  def each_install_name_for file, &block
     ENV['HOMEBREW_MACH_O_FILE'] = file.to_s # solves all shell escaping problems
     install_names = `#{MacOS.locate("otool")} -L "$HOMEBREW_MACH_O_FILE"`.split "\n"
 
@@ -127,7 +122,6 @@ class Keg
 
     install_names.compact!
     install_names.reject!{ |fn| fn =~ /^@(loader_|executable_|r)path/ }
-    install_names.reject!{ |fn| reject_proc.call(fn) }
 
     install_names.each(&block)
   end
