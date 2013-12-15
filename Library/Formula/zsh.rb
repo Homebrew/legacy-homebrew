@@ -2,9 +2,8 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'http://www.zsh.org/pub/zsh-5.0.2.tar.bz2'
-  mirror 'http://downloads.sourceforge.net/project/zsh/zsh/5.0.2/zsh-5.0.2.tar.bz2'
-  sha1 '9f55ecaaae7cdc1495f91237ba2ec087777a4ad9'
+  url 'http://www.zsh.org/pub/zsh-5.0.3.tar.bz2'
+  sha1 'b7a80d2cdb83a871d869cfdf487bda8a18e01ef7'
 
   depends_on 'gdbm'
   depends_on 'pcre'
@@ -39,12 +38,6 @@ class Zsh < Formula
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
-
-    # See http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Accessing-On_002dLine-Help
-    mkdir "helpfiles" do
-      system "man zshall | colcrt - | perl ../Util/helpfiles"
-      (share+"zsh/helpfiles").install Dir["*"]
-    end
   end
 
   def test
