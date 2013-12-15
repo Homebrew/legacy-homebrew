@@ -218,7 +218,7 @@ module OS
       end
 
       def detect_version
-        [STANDALONE_PKG_ID, FROM_XCODE_PKG_ID, MAVERICKS_PKG_ID].find do |id|
+        [MAVERICKS_PKG_ID, STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
           version = MacOS.pkgutil_info(id)[/version: (.+)$/, 1]
           return version if version
         end
