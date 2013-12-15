@@ -10,22 +10,6 @@ class Setweblocthumb < Formula
     bin.install "setWeblocThumb"
   end
 
-  def caveats; <<-EOS.undent
-    You can use Launch Agents to watch a particular folder and have setWeblocThumb automatically operate periodically on that folder.
-
-    setWeblocThumb -a <path>
-
-      Create and automatically load a user-specific launch agent for <path> that
-      runs this program each time the contents of <path> change
-
-    setWeblocThumb -w
-
-      List paths that are being watched by user-specific launch agents
-
-    setWeblocThumb is installed as written in all prior cases, but can be invoked in any case, e.g. setweblocthumb, SETWEBLOCTHUMB, setWeblocThumb, etc.
-    EOS
-  end
-
   test do
     system "#{bin}/setWeblocThumb"
   end
