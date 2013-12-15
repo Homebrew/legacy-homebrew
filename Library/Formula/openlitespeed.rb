@@ -1,7 +1,7 @@
 require 'formula'
 
 class Openlitespeed < Formula
-  homepage 'http://www.litespeedtech.com/'
+  homepage 'http://open.litespeedtech.com/mediawiki/'
   url 'http://open.litespeedtech.com/packages/openlitespeed-1.2.7.tgz'
   sha1 'f2f0388fd38274383c692ff96067f749c9418fc9'
 
