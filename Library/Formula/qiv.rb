@@ -2,8 +2,8 @@ require 'formula'
 
 class Qiv < Formula
   homepage 'http://spiegl.de/qiv/'
-  url 'http://spiegl.de/qiv/download/qiv-2.2.4.tgz'
-  sha1 '650052cb72820701300b2bfeb09b966625ee3dba'
+  url 'http://spiegl.de/qiv/download/qiv-2.3.tgz'
+  sha1 '48ec74194c87e3100c3b435e61e0174e87e7b51c'
 
   head 'http://bitbucket.org/ciberandy/qiv/', :using => :hg
 
@@ -11,6 +11,8 @@ class Qiv < Formula
   depends_on 'gtk+'
   depends_on 'imlib2'
   depends_on 'libmagic'
+  depends_on 'little-cms2'
+  depends_on 'libexif'
 
   def install
     system "make", 'STATUSBAR_FONT="Monaco"', "CC=#{ENV.cc}"
