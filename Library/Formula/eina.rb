@@ -2,8 +2,8 @@ require 'formula'
 
 class Eina < Formula
   homepage 'http://trac.enlightenment.org/e/wiki/Eina'
-  url 'http://download.enlightenment.org/releases/eina-1.7.8.tar.gz'
-  sha1 'f655b2691d3976fdc2cfe116166e790c1b8bc90d'
+  url 'http://download.enlightenment.org/releases/eina-1.7.9.tar.gz'
+  sha1 '26f385e888b29876c8fb06f35f0433ab7e3251d5'
 
   head do
     url 'http://svn.enlightenment.org/svn/e/trunk/eina/'

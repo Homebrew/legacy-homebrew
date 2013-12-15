@@ -122,7 +122,7 @@ These awesome people supported our Kickstarter by giving us £50 or more:
 * [Robert Schmidl](https://github.com/RobRoy)
 * [Collective Idea](http://collectiveidea.com)
 * [Freckle Time Tracking](http://letsfreckle.com/)
-* Hans-Christian Otto
+* [Hans-Christian Otto](http://hans-christian-otto.de/)
 * Dan Lane
 * Seth Szymanski
 * [osh Runge](http://joshrunge.com)

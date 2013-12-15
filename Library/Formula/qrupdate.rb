@@ -12,10 +12,10 @@ class Qrupdate < Formula
     ENV.j1
     ENV['PREFIX'] = prefix
     inreplace 'Makeconf' do |s|
-      s.gsub! /^(FC=).*/,     "\\1#{HOMEBREW_PREFIX}/bin/gfortran"
-      s.gsub! /^(FFLAGS=).*/, "\\1#{ENV.fcflags}"
-      s.gsub! /^(BLAS=).*/,   "\\1#{ENV.ldflags} -ldotwrp -framework Accelerate"
-      s.gsub! /^(LAPACK=).*/, "\\1#{ENV.ldflags} -ldotwrp -framework Accelerate"
+      s.change_make_var! 'FC', ENV.fc
+      s.change_make_var! 'FFLAGS', ENV.fcflags
+      s.change_make_var! 'BLAS', "#{ENV.ldflags} -ldotwrp -framework Accelerate"
+      s.change_make_var! 'LAPACK', "#{ENV.ldflags} -ldotwrp -framework Accelerate"
     end
     cd "./src"
     inreplace 'Makefile' do |s|

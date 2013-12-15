@@ -2,8 +2,8 @@ require 'formula'
 
 class Asciidoc < Formula
   homepage 'http://www.methods.co.nz/asciidoc'
-  url 'http://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.8/asciidoc-8.6.8.tar.gz'
-  sha1 '2fd88f6ca9d2a5e09045fb300f4a908fe6eeb092'
+  url 'http://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.9/asciidoc-8.6.9.tar.gz'
+  sha1 '82e574dd061640561fa0560644bc74df71fb7305'
 
   head do
     url 'https://code.google.com/p/asciidoc/', :using => :hg

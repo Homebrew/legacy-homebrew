@@ -12,12 +12,8 @@ class Libagg < Formula
   depends_on 'sdl'
   depends_on :freetype => :optional
 
-  fails_with :clang do
-    cause <<-EOS.undent
-      AGG tries to return a const reference as a non-const reference, which is
-      rejected by clang 3.1 but accepted by gcc
-    EOS
-  end
+  # Fix build with clang; last release was in 2006
+  def patches; DATA; end
 
   def install
     # AM_C_PROTOTYPES was removed in automake 1.12, as it's only needed for
@@ -35,3 +31,18 @@ class Libagg < Formula
     system "make install"
   end
 end
+
+__END__
+diff --git a/include/agg_renderer_outline_aa.h b/include/agg_renderer_outline_aa.h
+index ce25a2e..9a12d35 100644
+--- a/include/agg_renderer_outline_aa.h
++++ b/include/agg_renderer_outline_aa.h
+@@ -1375,7 +1375,7 @@ namespace agg
+         //---------------------------------------------------------------------
+         void profile(const line_profile_aa& prof) { m_profile = &prof; }
+         const line_profile_aa& profile() const { return *m_profile; }
+-        line_profile_aa& profile() { return *m_profile; }
++        const line_profile_aa& profile() { return *m_profile; }
+ 
+         //---------------------------------------------------------------------
+         int subpixel_width() const { return m_profile->subpixel_width(); }

@@ -2,12 +2,12 @@ require 'formula'
 
 class SwiProlog < Formula
   homepage 'http://www.swi-prolog.org/'
-  url 'http://www.swi-prolog.org/download/stable/src/pl-6.4.1.tar.gz'
-  sha1 '37308983d438e364407b89e835f77a31e5474913'
+  url 'http://www.swi-prolog.org/download/stable/src/pl-6.6.0.tar.gz'
+  sha1 '5dac33bdf5c0ed78c67c1b4e708e84895cd96dfc'
 
   devel do
-    url 'http://www.swi-prolog.org/download/devel/src/pl-6.5.2.tar.gz'
-    sha1 'fa448e1e59f901966de533140ce8bf6649e51b03'
+    url 'http://www.swi-prolog.org/download/devel/src/pl-7.1.1.tar.gz'
+    sha1 '88b3d70a557e35fea19a70f3b9753aabc63e71b6'
   end
 
   head do
@@ -41,7 +41,7 @@ class SwiProlog < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--mandir=#{man}"]
+    args = ["--prefix=#{libexec}", "--mandir=#{man}"]
     ENV.append 'DISABLE_PKGS', "jpl" unless build.include? "with-jpl"
     ENV.append 'DISABLE_PKGS', "xpce" unless build.include? 'with-xpce'
 
@@ -61,6 +61,8 @@ class SwiProlog < Formula
     system "./configure", *args
     system "make"
     system "make install"
+
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 
   def test

@@ -5,20 +5,28 @@ class Mongodb < Formula
   url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.8.tar.gz'
   sha1 '59fa237e102c9760271df9433ee7357dd0ec831f'
 
+  bottle do
+    sha1 '959debee5883e3b3cc9730fcb09c6b5a6c827a28' => :mavericks
+    sha1 'd3ee1821c3a11b0f5e399f5ba32b724d54fc22d9' => :mountain_lion
+    sha1 '08dc5f0eb32fd70afe3b0ac6f1c260aa353f7432' => :lion
+  end
+
   devel do
-    url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.3.tar.gz'
-    sha1 '8fbd7f6f2a55092ae0e461ee0f5a4a7f738d40c9'
+    url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.4.tar.gz'
+    sha1 'ad40b93c9638178cd487c80502084ac3a9472270'
   end
 
   head 'https://github.com/mongodb/mongo.git'
 
   def patches
-    # Fix osx_min_verson issues with clang
-    # This ensures libstdc++ is picked, since mongodb is not yet compatible
-    p = []
-    p << 'https://github.com/mongodb/mongo/commit/978af9.patch' if build.devel?
-    # Fix Clang v8 build failure from build warnings and -Werror
-    p << 'https://github.com/mongodb/mongo/commit/be4bc7.patch' if build.stable?
+    if build.stable?
+      [
+        # Fix Clang v8 build failure from build warnings and -Werror
+        'https://github.com/mongodb/mongo/commit/be4bc7.patch',
+        # Fixes crash on shell exit for 2.4.x
+        'https://github.com/mongodb/mongo/commit/670c98.patch'
+      ]
+    end
   end
 
   depends_on 'scons' => :build
@@ -28,6 +36,8 @@ class Mongodb < Formula
     # mongodb currently can't build with libc++; this should be fixed in
     # 2.6, but can't be backported to the current stable release.
     ENV.cxx += ' -stdlib=libstdc++' if ENV.compiler == :clang && MacOS.version >= :mavericks
+
+    scons = Formula.factory('scons').opt_prefix/'bin/scons'
 
     args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
     args << '--64' if MacOS.prefer_64_bit?
@@ -39,7 +49,7 @@ class Mongodb < Formula
       args << "--extrapathdyn=#{Formula.factory('openssl').opt_prefix}"
     end
 
-    system 'scons', 'install', *args
+    system scons, 'install', *args
 
     (prefix+'mongod.conf').write mongodb_conf
 

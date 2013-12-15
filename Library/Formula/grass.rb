@@ -91,18 +91,18 @@ class Grass < Formula
     args << "--with-cairo"
 
     # Database support
-    args << "--with-postgres" if build.with? "postgres"
+    args << "--with-postgres" if build.with? "postgresql"
 
     if build.with? "mysql"
       mysql = Formula.factory('mysql')
       args << "--with-mysql-includes=#{mysql.include}/mysql"
-      args << "--with-mysql-libs=#{mysql.lib}/mysql"
+      args << "--with-mysql-libs=#{mysql.lib}"
       args << "--with-mysql"
     end
 
     system "./configure", "--prefix=#{prefix}", *args
-    system "make" # make and make install must be separate steps.
-    system "make install"
+    system "make GDAL_DYNAMIC=" # make and make install must be separate steps.
+    system "make GDAL_DYNAMIC= install" # GDAL_DYNAMIC set to blank for r.external compatability
   end
 
   def caveats

@@ -28,7 +28,6 @@ class GstPluginsBad < Formula
   depends_on 'schroedinger' => :optional
 
   def install
-    ENV.append "CFLAGS", "-no-cpp-precomp" unless ENV.compiler == :clang
     ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing"
 
     args = %W[

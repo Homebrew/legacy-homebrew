@@ -17,8 +17,8 @@ class RabbitmqC < Formula
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
 
   resource 'codegen' do
-    url 'https://github.com/rabbitmq/rabbitmq-codegen/archive/rabbitmq_v3_1_5.tar.gz'
-    sha1 '08b0415364e517e033e83c0b033820b62713a0bf'
+    url 'https://github.com/rabbitmq/rabbitmq-codegen/archive/rabbitmq_v3_2_1.tar.gz'
+    sha1 '9fb2453018f499b2188076f5bd6d4cf9a902e90b'
   end
 
   def install

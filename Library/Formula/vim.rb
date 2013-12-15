@@ -2,11 +2,10 @@ require 'formula'
 
 class Vim < Formula
   homepage 'http://www.vim.org/'
+  head 'https://vim.googlecode.com/hg/'
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
   url 'http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.052.orig.tar.gz'
   sha1 '216ab69faf7e73e4b86da7f00e4ad3b3cca1fdb8'
-
-  head 'https://vim.googlecode.com/hg/'
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
@@ -38,7 +37,7 @@ class Vim < Formula
   #
   # Second patch: includes Mac OS X version macros not included by default on 10.9
   # Reported upstream: https://groups.google.com/forum/#!topic/vim_mac/5kVAMSPb6uU
-  def patches; DATA; end
+  def patches; DATA; end unless build.head?
 
   def install
     ENV['LUA_PREFIX'] = HOMEBREW_PREFIX if build.with?('lua')
@@ -130,7 +129,7 @@ class Vim < Formula
     # statically-linked interpreters like ruby
     # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
     system "make", "install", "prefix=#{prefix}", "STRIP=/usr/bin/true"
-    ln_s bin+'vim', bin+'vi' if build.include? 'override-system-vi'
+    ln_s 'vim', bin/'vi' if build.include? 'override-system-vi'
   end
 
   def caveats

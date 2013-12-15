@@ -9,9 +9,10 @@ class Mpfr < Formula
 
   bottle do
     cellar :any
-    sha1 '1da827b2b2afce70c009900043d63731c46ded97' => :mountain_lion
-    sha1 '76cd548a47615fda27e53140a88e9873d55b6a0e' => :lion
-    sha1 'c5a3566bf11105c66823365f05d1dd6e01d69657' => :snow_leopard
+    revision 1
+    sha1 '99b4ddca907f132e803e8a54a48c9e2ba993b5bb' => :mavericks
+    sha1 '1763687dd580ac9bd02f31a8b259a1ad568dd3b6' => :mountain_lion
+    sha1 '62c126d1d949cb4d545f44d9c45fe4b0bf276fd4' => :lion
   end
 
   depends_on 'gmp'
@@ -22,7 +23,7 @@ class Mpfr < Formula
     build 421
     cause <<-EOS.undent
       clang build 421 segfaults while building in superenv;
-      see https://github.com/mxcl/homebrew/issues/15061
+      see https://github.com/Homebrew/homebrew/issues/15061
       EOS
   end
 

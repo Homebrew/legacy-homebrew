@@ -12,9 +12,10 @@ class Ice < Formula
   depends_on 'mcpp'
   depends_on :python
 
-  def patches
-    DATA
-  end
+  # 1. TODO: document the first patch
+  # 2. Patch to fix build with libc++, reported upstream:
+  # http://www.zeroc.com/forums/bug-reports/6152-mavericks-build-failure-because-unexported-symbols.html
+  def patches; DATA; end
 
   def install
     ENV.O2
@@ -37,6 +38,9 @@ class Ice < Formula
     args << "CXXFLAGS=#{ENV.cflags} -Wall -D_REENTRANT"
     args << "PYTHON_FLAGS=-F#{python.framework} -framework Python"
     args << "PYTHON_LIBS=-F#{python.framework} -framework Python"
+
+    # Unset ICE_HOME as it interferes with the build
+    ENV.delete('ICE_HOME')
 
     cd "cpp" do
       system "make", *args
@@ -108,3 +112,23 @@ diff -urN Ice-3.5.1.original/py/config/Make.rules.Darwin Ice-3.5.1/py/config/Mak
 -endif
 -
 -PYTHON_INCLUDE_DIR	= $(PYTHON_HOME)/include/$(PYTHON_VERSION)
+diff -urN Ice-3.5.1.original/cpp/src/IceGrid/DescriptorHelper.h Ice-3.5.1/cpp/src/IceGrid/DescriptorHelper.h
+--- Ice-3.5.1.original/cpp/src/IceGrid/DescriptorHelper.h	2013-10-04 16:48:14.000000000 +0100
++++ Ice-3.5.1/cpp/src/IceGrid/DescriptorHelper.h	2013-11-15 00:11:22.000000000 +0000
+@@ -247,7 +247,6 @@
+     ServerInstanceHelper(const ServerInstanceDescriptor&, const Resolver&, bool);
+     ServerInstanceHelper(const ServerDescriptorPtr&, const Resolver&, bool);
+     
+-    void operator=(const ServerInstanceHelper&);
+     bool operator==(const ServerInstanceHelper&) const;
+     bool operator!=(const ServerInstanceHelper&) const;
+ 
+@@ -265,7 +264,7 @@
+ 
+     void init(const ServerDescriptorPtr&, const Resolver&, bool);
+ 
+-    const ServerInstanceDescriptor _def;
++    ServerInstanceDescriptor _def;
+     std::string _id;
+     ServerInstanceDescriptor _instance;
+ 

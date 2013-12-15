@@ -25,7 +25,11 @@ class Gammu < Formula
     system 'make install'
     python do
       chdir 'python' do
-        system "#{python.binary} setup.py build_ext --gammu-libs=#{lib} --gammu-incs=#{include}/gammu install"
+        system "#{python.binary}", "setup.py",
+                                   "build_ext",
+                                   "--gammu-libs=#{lib}",
+                                   "--gammu-incs=#{include}/gammu",
+                                   "install"
       end
     end
   end

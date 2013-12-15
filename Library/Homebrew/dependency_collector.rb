@@ -165,6 +165,8 @@ class DependencyCollector
       Dependency.new("fossil", tags)
     when strategy <= BazaarDownloadStrategy
       Dependency.new("bazaar", tags)
+    when strategy <= CVSDownloadStrategy
+      Dependency.new("cvs", tags) unless MacOS::Xcode.provides_cvs?
     when strategy < AbstractDownloadStrategy
       # allow unknown strategies to pass through
     else
@@ -176,6 +178,7 @@ class DependencyCollector
   def parse_url_spec(url, tags)
     case File.extname(url)
     when '.xz'  then Dependency.new('xz', tags)
+    when '.lz'  then Dependency.new('lzip', tags)
     when '.rar' then Dependency.new('unrar', tags)
     when '.7z'  then Dependency.new('p7zip', tags)
     end

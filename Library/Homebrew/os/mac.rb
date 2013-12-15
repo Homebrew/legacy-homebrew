@@ -50,6 +50,10 @@ module OS
       end
     end
 
+    def dev_tools_prefix
+      dev_tools_path.parent.parent
+    end
+
     def dev_tools_path
       @dev_tools_path ||= if tools_in_prefix? CLT::MAVERICKS_PKG_PATH
         Pathname.new "#{CLT::MAVERICKS_PKG_PATH}/usr/bin"
@@ -176,9 +180,9 @@ module OS
     end
 
     # See these issues for some history:
-    # http://github.com/mxcl/homebrew/issues/#issue/13
-    # http://github.com/mxcl/homebrew/issues/#issue/41
-    # http://github.com/mxcl/homebrew/issues/#issue/48
+    # http://github.com/Homebrew/homebrew/issues/13
+    # http://github.com/Homebrew/homebrew/issues/41
+    # http://github.com/Homebrew/homebrew/issues/48
     def macports_or_fink
       paths = []
 
@@ -213,7 +217,7 @@ module OS
     end
 
     def preferred_arch
-      @preferred_arch ||= if prefer_64_bit?
+      if prefer_64_bit?
         Hardware::CPU.arch_64_bit
       else
         Hardware::CPU.arch_32_bit
@@ -255,7 +259,7 @@ module OS
         Homebrew doesn't know what compiler versions ship with your version
         of Xcode (#{Xcode.version}). Please `brew update` and if that doesn't help, file
         an issue with the output of `brew --config`:
-          https://github.com/mxcl/homebrew/issues
+          https://github.com/Homebrew/homebrew/issues
 
         Thanks!
       EOS

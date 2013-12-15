@@ -2,24 +2,29 @@ require 'formula'
 
 class Qt < Formula
   homepage 'http://qt-project.org/'
-  url 'http://download.qt-project.org/official_releases/qt/4.8/4.8.5/qt-everywhere-opensource-src-4.8.5.tar.gz'
-  sha1 '745f9ebf091696c0d5403ce691dc28c039d77b9e'
+  if MacOS.version < :mavericks
+    url 'http://download.qt-project.org/official_releases/qt/4.8/4.8.5/qt-everywhere-opensource-src-4.8.5.tar.gz'
+    sha1 '745f9ebf091696c0d5403ce691dc28c039d77b9e'
+  else
+    # This is a snapshot of the current qt-4.8 branch. It's been used by a
+    # bunch of people to get Qt working on Mavericks and 4.8.5 needs too many
+    # patches to compile any time soon (January-ish):
+    # http://permalink.gmane.org/gmane.comp.lib.qt.devel/13812
+    url 'https://github.com/qtproject/qt/archive/f44310c25b372f494586dbb5b305f7e81ca63000.tar.gz'
+    sha1 '51548326463068912fb4d9de04b0f6b2e267d064'
+    # It would be nice if this was a real version number but unfortunately
+    # that will mess with the bottles.
+    version '4.8.5'
 
-  bottle do
-    revision 2
-    sha1 'b361f521d413409c0e4397f2fc597c965ca44e56' => :mountain_lion
-    sha1 'dcf218f912680031de7ce6d7efa021e499caea78' => :lion
-    sha1 '401f2362ad9a22245a206729954dba731a1cdb52' => :snow_leopard
   end
 
-  head do
-    url 'git://gitorious.org/qt/qt.git', :branch => '4.8'
+  head 'git://gitorious.org/qt/qt.git', :branch => '4.8'
 
-    resource 'libWebKitSystemInterfaceMavericks' do
-      url 'http://trac.webkit.org/export/157771/trunk/WebKitLibraries/libWebKitSystemInterfaceMavericks.a'
-      sha1 'fc5ebf85f637f9da9a68692df350e441c8ef5d7e'
-      version '157771'
-    end if MacOS.version >= :mavericks
+  bottle do
+    revision 4
+    sha1 '446f9ee06721c227b7b86f7c82bb84ffeca00379' => :mavericks
+    sha1 '9014726e304c037401b788499fbc0e9bc1d332f8' => :mountain_lion
+    sha1 'bfd7b572a3889cf2e20491af82186d5d42740315' => :lion
   end
 
   option :universal
@@ -34,47 +39,8 @@ class Qt < Formula
   odie 'qt: --with-demos-examples is no longer supported' if build.include? 'with-demos-examples'
   odie 'qt: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
 
-  def patches
-    # Patches to fix compilation on Mavericks (http://github.com/mxcl/homebrew/pull/23793)
-    return unless MacOS.version >= :mavericks
-
-    [
-      # Change Change I8fd619af: Added a patch to let the CLucene's FieldCachImpl.cpp compile at Mac OS X 10.9 Mavericks
-      # (https://codereview.qt-project.org/#change,70437)
-      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/6d2597c4c61cca04ed56472fd1fd793798526ce6/Change_I8fd619af',
-      # Change Iff4d919d: Added a patch to let the WebKit's QNetworkReplyHandler.cpp compile at Mac OS X 10.9 Mavericks
-      # (https://codereview.qt-project.org/#change,70438)
-      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/ec13ef2a8b4adc7b9695e6d49876d826f89802ae/Change_Iff4d919d',
-      # Change Ied51c868: Added a patch to let the WebKit's qgraphicswebview.cpp compile at Mac OS X 10.9 Mavericks
-      # (https://codereview.qt-project.org/#change,70439)
-      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/8834e194a0f4e0c99ef64064f6a86ddcb617f444/Change_Ied51c868',
-      # Change Ic6330613: Added a patch to let the WebKit's NotificationPresenterClientQt.cpp compile at Mac OS X 10.9 Mavericks
-      # (https://codereview.qt-project.org/#change,70440)
-      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/9ee8460814204faa5cf5b1317fba5d1b14a563eb/Change_Ic6330613',
-      # Change I2ad84441: Added a patch to let the WebKit's .pro file find the lib for Mavericks. This is needed to compile at Mac OS X 10.9 Mavericks
-      # (https://codereview.qt-project.org/#change,70442)
-      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/f73ea1979f4595fc463b2deb77987b389748e289/Change_I2ad84441',
-      # Change I4c697a87: Added a patch to let the WebKit's platform/Timer.h compile at Mac OS X 10.9 Mavericks
-      # (https://codereview.qt-project.org/#change,70443)
-      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/9d5305f6bb01cf445893d09bf399097a53706d6a/Change+I4c697a87',
-      # Change I31ad9a7a: Added a patch to let the WebKit's platform/Timer.cpp compile at Mac OS X 10.9 Mavericks
-      # (https://codereview.qt-project.org/#change,70444)
-      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/2f9a348e575f63d435c3d32a9c70c4c2d687542c/Change_I31ad9a7a',
-      # Change Ieb30c115: Backported fix for WebKit libc++ support on OS X Mavricks
-      # (https://codereview.qt-project.org/#change,70929)
-      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/ebdc1fbf8d1b9a65e797124fb64b709a7d71107d/Change_Ieb30c115',
-      # Change Iaedaff7c: Enable building with clang / libc++ on OS X 10.9 Mavericks
-      # (https://codereview.qt-project.org/#change,70930)
-      'https://gist.github.com/jensenb/aafb2c2d1e0fcce2994f/raw/cc0a38d67cb36b650a275af3825731ce1f2ba35c/Change_Iaedaff7c',
-    ]
-  end
-
   def install
-    # Must be built with --HEAD on Mavericks at the moment
-    raise 'Qt currently requires --HEAD on Mavericks' if MacOS.version == :mavericks and not build.head?
-
     ENV.universal_binary if build.universal?
-    ENV.append "CXXFLAGS", "-fvisibility=hidden"
 
     args = ["-prefix", prefix,
             "-system-zlib",
@@ -83,15 +49,8 @@ class Qt < Formula
             "-cocoa", "-fast", "-release"]
 
     # we have to disable these to avoid triggering optimization code
-    # that will fail in superenv, perhaps because we rename clang to cc and
-    # Qt thinks it can build with special assembler commands.
-    # In --env=std, Qt seems aware of this.
-    # But we want superenv, because it allows to build Qt in non-standard
-    # locations and with Xcode-only.
-    if superenv?
-      args << '-no-3dnow'
-      args << '-no-ssse3'
-    end
+    # that will fail in superenv (in --env=std, Qt seems aware of this)
+    args << '-no-3dnow' << '-no-ssse3' if superenv?
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
@@ -134,10 +93,6 @@ class Qt < Formula
     end
 
     args << '-developer-build' if build.include? 'developer'
-
-    if MacOS.version >= :mavericks
-      (buildpath/'src/3rdparty/webkit/WebKitLibraries').install resource('libWebKitSystemInterfaceMavericks')
-    end
 
     system "./configure", *args
     system "make"

@@ -27,7 +27,6 @@ class Libav < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'yasm' => :build
-  depends_on 'xz' => :build
 
   # manpages won't be built without texi2html
   depends_on 'texi2html' => :build if MacOS.version >= :mountain_lion

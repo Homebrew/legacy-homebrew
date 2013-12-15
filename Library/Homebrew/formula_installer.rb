@@ -27,11 +27,15 @@ class FormulaInstaller
 
     @@attempted ||= Set.new
 
+    @poured_bottle = false
+    @pour_failed   = false
+
     lock
     check_install_sanity
   end
 
   def pour_bottle? install_bottle_options={:warn=>false}
+    return false if @pour_failed
     tab.used_options.empty? && options.empty? && \
       install_bottle?(f, install_bottle_options)
   end
@@ -99,11 +103,7 @@ class FormulaInstaller
 
     check_conflicts
 
-    unless ignore_deps
-      perform_readline_hack
-      check_requirements
-      install_dependencies
-    end
+    compute_and_install_dependencies unless ignore_deps
 
     if ARGV.build_bottle? && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
@@ -112,8 +112,6 @@ class FormulaInstaller
     oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
 
     @@attempted << f
-
-    @poured_bottle = false
 
     begin
       if pour_bottle? :warn => true
@@ -131,23 +129,19 @@ class FormulaInstaller
       end
     rescue
       raise if ARGV.homebrew_developer?
+      @pour_failed = true
       opoo "Bottle installation failed: building from source."
     end
 
     build_bottle_preinstall if ARGV.build_bottle?
 
     unless @poured_bottle
+      compute_and_install_dependencies if @pour_failed and not ignore_deps
       build
       clean
     end
 
     build_bottle_postinstall if ARGV.build_bottle?
-
-    begin
-      f.post_install
-    rescue
-      opoo "#{f.name} post_install failed. Rerun with `brew postinstall #{f.name}`."
-    end
 
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
@@ -171,46 +165,71 @@ class FormulaInstaller
     raise FormulaConflictError.new(f, conflicts) unless conflicts.empty?
   end
 
-  def check_requirements
-    unsatisfied = ARGV.filter_for_dependencies do
-      f.recursive_requirements do |dependent, req|
-        if (req.optional? || req.recommended?) && dependent.build.without?(req.name)
-          Requirement.prune
-        elsif req.build? && install_bottle?(dependent)
-          Requirement.prune
-        elsif req.satisfied?
-          Requirement.prune
-        elsif req.default_formula?
-          dependent.deps << req.to_dependency
-          Requirement.prune
-        else
-          puts "#{dependent}: #{req.message}"
+  def compute_and_install_dependencies
+    perform_readline_hack
+
+    req_map, req_deps = expand_requirements
+
+    check_requirements(req_map)
+
+    deps = [].concat(req_deps).concat(f.deps)
+
+    install_dependencies expand_dependencies(deps)
+  end
+
+  def check_requirements(req_map)
+    fatals = []
+
+    req_map.each_pair do |dependent, reqs|
+      reqs.each do |req|
+        puts "#{dependent}: #{req.message}"
+        fatals << req if req.fatal?
+      end
+    end
+
+    raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
+  end
+
+  def expand_requirements
+    unsatisfied_reqs = Hash.new { |h, k| h[k] = [] }
+    deps = []
+    formulae = [f]
+
+    while f = formulae.pop
+
+      ARGV.filter_for_dependencies do
+        f.recursive_requirements do |dependent, req|
+          if (req.optional? || req.recommended?) && dependent.build.without?(req)
+            Requirement.prune
+          elsif req.build? && install_bottle?(dependent)
+            Requirement.prune
+          elsif req.satisfied?
+            Requirement.prune
+          elsif req.default_formula?
+            dep = req.to_dependency
+            deps.unshift(dep)
+            formulae.unshift(dep.to_formula)
+            Requirement.prune
+          else
+            unsatisfied_reqs[dependent] << req
+          end
         end
       end
     end
 
-    fatals = unsatisfied.select(&:fatal?)
-    raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
+    return unsatisfied_reqs, deps
   end
 
-  # Dependencies of f that were also explicitly requested on the command line.
-  # These honor options like --HEAD and --devel.
-  def requested_deps
-    f.recursive_dependencies.select { |dep| dep.requested? && !dep.installed? }
-  end
-
-  # All dependencies that we must install before installing f.
-  # These do not honor flags like --HEAD and --devel.
-  def necessary_deps
+  def expand_dependencies(deps)
     # FIXME: can't check this inside the block for the top-level dependent
     # because it depends on the contents of ARGV.
     pour_bottle = pour_bottle?
 
     ARGV.filter_for_dependencies do
-      f.recursive_dependencies do |dependent, dep|
+      Dependency.expand(f, deps) do |dependent, dep|
         dep.universal! if f.build.universal? && !dep.build?
 
-        if (dep.optional? || dep.recommended?) && dependent.build.without?(dep.name)
+        if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
           Dependency.prune
         elsif dep.build? && dependent == f && pour_bottle
           Dependency.prune
@@ -225,29 +244,19 @@ class FormulaInstaller
     end
   end
 
-  # Combine requested_deps and necessary deps.
-  def filter_deps
-    deps = Set.new.merge(requested_deps).merge(necessary_deps)
-    f.recursive_dependencies.select { |d| deps.include? d }
-  end
-
-  def effective_deps
-    @effective_deps ||= filter_deps
-  end
-
-  def install_dependencies
-    if effective_deps.length > 1
-      oh1 "Installing dependencies for #{f}: #{Tty.green}#{effective_deps*", "}#{Tty.reset}"
+  def install_dependencies(deps)
+    if deps.length > 1
+      oh1 "Installing dependencies for #{f}: #{Tty.green}#{deps*", "}#{Tty.reset}"
     end
 
-    effective_deps.each do |dep|
+    deps.each do |dep|
       if dep.requested?
        install_dependency(dep)
       else
         ARGV.filter_for_dependencies { install_dependency(dep) }
       end
     end
-    @show_header = true unless effective_deps.empty?
+    @show_header = true unless deps.empty?
   end
 
   def install_dependency dep
@@ -307,15 +316,24 @@ class FormulaInstaller
 
     fix_install_names if OS.mac?
 
+    post_install
+
     ohai "Summary" if ARGV.verbose? or show_summary_heading
-    unless ENV['HOMEBREW_NO_EMOJI']
-      print "\xf0\x9f\x8d\xba  " if MacOS.version >= :lion
-    end
-    print "#{f.prefix}: #{f.prefix.abv}"
-    print ", built in #{pretty_duration build_time}" if build_time
-    puts
+    puts summary
   ensure
     unlock if hold_locks?
+  end
+
+  def emoji
+    ENV['HOMEBREW_INSTALL_BADGE'] || "\xf0\x9f\x8d\xba"
+  end
+
+  def summary
+    s = ""
+    s << "#{emoji}  " if MacOS.version >= :lion and not ENV['HOMEBREW_NO_EMOJI']
+    s << "#{f.prefix}: #{f.prefix.abv}"
+    s << ", built in #{pretty_duration build_time}" if build_time
+    s
   end
 
   def build_time
@@ -428,17 +446,12 @@ class FormulaInstaller
   end
 
   def fix_install_names
-    Keg.new(f.prefix).fix_install_names(:keg_only => f.keg_only?)
-    if @poured_bottle and f.bottle
-      old_prefix = f.bottle.prefix
-      new_prefix = HOMEBREW_PREFIX.to_s
-      old_cellar = f.bottle.cellar
-      new_cellar = HOMEBREW_CELLAR.to_s
+    keg = Keg.new(f.prefix)
+    keg.fix_install_names(:keg_only => f.keg_only?)
 
-      if old_prefix != new_prefix or old_cellar != new_cellar
-        Keg.new(f.prefix).relocate_install_names \
-          old_prefix, new_prefix, old_cellar, new_cellar, :keg_only => f.keg_only?
-      end
+    if @poured_bottle
+      keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
+        Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => f.keg_only?
     end
   rescue Exception => e
     onoe "Failed to fix install names"
@@ -462,6 +475,15 @@ class FormulaInstaller
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix"
+    ohai e, e.backtrace if ARGV.debug?
+    @show_summary_heading = true
+  end
+
+  def post_install
+    f.post_install
+  rescue Exception => e
+    opoo "The post-install step did not complete successfully"
+    puts "You can try again using `brew postinstall #{f.name}`"
     ohai e, e.backtrace if ARGV.debug?
     @show_summary_heading = true
   end

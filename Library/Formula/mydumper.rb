@@ -1,7 +1,7 @@
 require 'formula'
 
 class Mydumper < Formula
-  homepage 'http://www.mydumper.org/'
+  homepage 'https://launchpad.net/mydumper'
   url 'https://launchpad.net/mydumper/0.5/0.5.2/+download/mydumper-0.5.2.tar.gz'
   sha1 '1eb1a341635c252f9f4cf611af544e0c94b1687d'
 

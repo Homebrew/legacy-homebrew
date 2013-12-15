@@ -13,6 +13,8 @@ class Fuse4x < Formula
   depends_on 'gettext'
   depends_on 'fuse4x-kext'
 
+  conflicts_with 'osxfuse', :because => 'both install `fuse.pc`'
+
   def install
     # Build universal if the hardware can handle it---otherwise 32 bit only
     MacOS.prefer_64_bit? ? ENV.universal_binary : ENV.m32

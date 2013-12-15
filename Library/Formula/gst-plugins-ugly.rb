@@ -44,7 +44,7 @@ class GstPluginsUgly < Formula
   # Does not work with libcdio 0.9
 
   def install
-    ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"
+    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing"
 
     args = %W[
       --prefix=#{prefix}
@@ -60,7 +60,7 @@ class GstPluginsUgly < Formula
 
     if build.with? "opencore-amr"
       # Fixes build error, missing includes.
-      # https://github.com/mxcl/homebrew/issues/14078
+      # https://github.com/Homebrew/homebrew/issues/14078
       nbcflags = `pkg-config --cflags opencore-amrnb`.chomp
       wbcflags = `pkg-config --cflags opencore-amrwb`.chomp
       ENV['AMRNB_CFLAGS'] = nbcflags + "-I#{HOMEBREW_PREFIX}/include/opencore-amrnb"

@@ -2,13 +2,18 @@ require "formula"
 
 class Influxdb < Formula
   homepage "http://influxdb.org"
-  url "http://get.influxdb.org/src/influxdb-0.1.0.tar.gz"
-  sha1 "97b7a8f36597403e34b918744c60ce0398a2fffb"
+  url "http://get.influxdb.org/influxdb-0.3.2.src.tar.gz"
+  sha1 "6b730a75e6694abd5e913b4ad08936f7661569bd"
+
+  devel do
+    url "http://get.influxdb.org/influxdb-0.4.0.rc2.src.tar.gz"
+    sha1 "81d0f8e8f3b7648f010b85232baf002d5612dd72"
+  end
 
   bottle do
-    sha1 '2cafb68bd52cf47adf03e1e42551342d0cbfe5cc' => :mavericks
-    sha1 '98ef180c3577da468cba3843ff4608a3c6987746' => :mountain_lion
-    sha1 'f59872ca4c0b77657e5adfe8c0c02a2b170f322b' => :lion
+    sha1 '9cc355279cf466f4ebc5704287c255c1d0312093' => :mavericks
+    sha1 'ffb246bf0923ca28b31db256b259b95a96f81f80' => :mountain_lion
+    sha1 '9f43d93ebfd3b8dd1c9d4d43f600d38504be2d66' => :lion
   end
 
   depends_on "leveldb"
@@ -17,22 +22,25 @@ class Influxdb < Formula
   depends_on "flex" => :build
   depends_on "go" => :build
 
-  fails_with :clang do
-    cause "clang: error: argument unused during compilation: '-fno-eliminate-unused-debug-types'"
-  end
-
   def install
     ENV["GOPATH"] = buildpath
 
-    system "go build src/server/server.go"
+    flex = Formula.factory('flex').bin/"flex"
+    bison = Formula.factory('bison').bin/"bison"
+
+    build_target = build.devel? ? "daemon" : "server"
+
+    system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
+    system "make dependencies protobuf parser"
+    system "go build #{build_target}"
 
     inreplace "config.json.sample" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
       s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
-      s.gsub! "./admin/", "#{share}/admin/"
+      s.gsub! "./admin/", "#{opt_prefix}/share/admin/"
     end
 
-    bin.install "server" => "influxdb"
+    bin.install build_target => "influxdb"
     etc.install "config.json.sample" => "influxdb.conf"
     share.install "admin"
 

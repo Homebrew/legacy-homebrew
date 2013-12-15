@@ -2,8 +2,8 @@ require 'formula'
 
 class Ejdb < Formula
   homepage 'http://ejdb.org/'
-  url 'https://github.com/Softmotions/ejdb/archive/v1.1.24.tar.gz'
-  sha1 'b743aef55a39a64bd4ee0e94fa58e2c90e63db02'
+  url 'https://github.com/Softmotions/ejdb/archive/v1.1.25.tar.gz'
+  sha1 'be8a864286f2b28922a04c9ba3f9eac830d8ebdd'
 
   def install
     cd 'tcejdb' do

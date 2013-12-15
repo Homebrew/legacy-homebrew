@@ -65,10 +65,8 @@ class Glib < Formula
     system "ulimit -n 1024; make check" if build.include? 'test'
     system "make install"
 
-    # This sucks; gettext is Keg only to prevent conflicts with the wider
-    # system, but pkg-config or glib is not smart enough to have determined
-    # that libintl.dylib isn't in the DYLIB_PATH so we have to add it
-    # manually.
+    # `pkg-config --libs glib-2.0` includes -lintl, and gettext itself does not
+    # have a pkgconfig file, so we add gettext lib and include paths here.
     gettext = Formula.factory('gettext').opt_prefix
     inreplace lib+'pkgconfig/glib-2.0.pc' do |s|
       s.gsub! 'Libs: -L${libdir} -lglib-2.0 -lintl',
