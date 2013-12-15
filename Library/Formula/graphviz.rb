@@ -6,8 +6,8 @@ class Graphviz < Formula
   sha1 '5a0c00bebe7f4c7a04523db21f40966dc9f0d441'
 
   devel do
-    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.35.20131207.0545.tar.gz'
-    sha1 '0f2223083c1fb7fc280d307bee3df9c9a401ca98'
+    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.35.20131215.0545.tar.gz'
+    sha1 '6eb9c3b6f842ae094feaa37a3e91c8d572b72e38'
   end
 
   # To find Ruby and Co.
@@ -65,7 +65,6 @@ class Graphviz < Formula
     system "make install"
 
     if build.include? 'with-app'
-      # build Graphviz.app
       cd "macosx" do
         system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
       end
