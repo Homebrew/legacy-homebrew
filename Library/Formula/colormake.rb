@@ -2,8 +2,7 @@ require 'formula'
 
 class Colormake < Formula
   homepage 'http://bre.klaki.net/programs/colormake/'
-  url 'http://bre.klaki.net/programs/colormake/colormake-0.9.tar.gz'
-  sha1 '6c5ab4be23d60ec79ed4c43cbeb142bfd4a4e626'
+  head 'https://github.com/pagekite/Colormake.git'
 
   def install
     libexec.install 'colormake.pl'
