@@ -909,7 +909,7 @@ end
 def check_git_status
   return unless which "git"
   HOMEBREW_REPOSITORY.cd do
-    unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty?
+    unless `git status --untracked-files=all --porcelain -- Library/Homebrew/ 2>/dev/null`.chomp.empty?
       <<-EOS.undent_________________________________________________________72
       You have uncommitted modifications to Homebrew
       If this a surprise to you, then you should stash these modifications.
