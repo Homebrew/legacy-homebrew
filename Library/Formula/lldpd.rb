@@ -2,8 +2,8 @@ require 'formula'
 
 class Lldpd < Formula
   homepage 'http://vincentbernat.github.io/lldpd/'
-  url 'http://media.luffy.cx/files/lldpd/lldpd-0.7.6.tar.gz'
-  sha1 'be3d3937b22d14259553f637694f744ed3b8ba79'
+  url 'http://media.luffy.cx/files/lldpd/lldpd-0.7.7.tar.gz'
+  sha1 '4471e5fcd66d650b6327842a9e2e779e546f2491'
 
   option 'with-snmp', "Build SNMP subagent support"
   option 'with-json', "Build JSON support for lldpcli"
@@ -14,12 +14,6 @@ class Lldpd < Formula
   depends_on 'net-snmp' if build.include? 'with-snmp'
   depends_on 'jansson'  if build.include? 'with-json'
 
-  # Don't try to install provided launchd plist (outside of prefix)
-  # Being addressed upstream for next release.
-  def patches
-    "https://raw.github.com/vincentbernat/lldpd/91a63c540e59871001b04a43a784935533fd167a/osx/dont-install-launchd-plist.patch"
-  end
-
   def install
     readline = Formula.factory 'readline'
     args = [ "--prefix=#{prefix}",
@@ -28,6 +22,7 @@ class Lldpd < Formula
              "--with-privsep-chroot=/var/empty",
              "--with-privsep-user=nobody",
              "--with-privsep-group=nogroup",
+             "--with-launchddaemonsdir=no",
              "CPPFLAGS=-I#{readline.include} -DRONLY=1",
              "LDFLAGS=-L#{readline.lib}" ]
     args << "--with-snmp" if build.include? 'with-snmp'

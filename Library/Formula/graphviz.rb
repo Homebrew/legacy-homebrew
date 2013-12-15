@@ -6,8 +6,8 @@ class Graphviz < Formula
   sha1 '5a0c00bebe7f4c7a04523db21f40966dc9f0d441'
 
   devel do
-    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.35.20131207.0545.tar.gz'
-    sha1 '0f2223083c1fb7fc280d307bee3df9c9a401ca98'
+    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.35.20131215.0545.tar.gz'
+    sha1 '6eb9c3b6f842ae094feaa37a3e91c8d572b72e38'
   end
 
   # To find Ruby and Co.
@@ -37,9 +37,15 @@ class Graphviz < Formula
   end
 
   def patches
-    {:p0 =>
+    p = {:p0 =>
       "https://trac.macports.org/export/103168/trunk/dports/graphics/graphviz/files/patch-project.pbxproj.diff",
      }
+
+     # The following patch is already upstream and can be removed in the next release.
+     if build.stable?
+       p[:p1] = "https://gist.github.com/mvertes/7929246/raw/2093e77bbed7ca0f4092f478cae870e021cbe5af/graphviz-2.34.0-dotty-patch"
+     end
+     return p
   end
 
   def install
@@ -59,7 +65,6 @@ class Graphviz < Formula
     system "make install"
 
     if build.include? 'with-app'
-      # build Graphviz.app
       cd "macosx" do
         system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
       end
