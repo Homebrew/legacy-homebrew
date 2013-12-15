@@ -10,7 +10,19 @@ class CharmTools < Formula
 
   def install
     python do
-      system python, "setup.py", "install", "--prefix=#{prefix}"
+      system python, "setup.py", "install", "--prefix=#{libexec}"
+    end
+
+    # charm-tools installs its own copies of many, many common python
+    # libraries; these shim scripts makes sure the privately-installed
+    # tools can find them
+    Dir[libexec/'bin/*charm*'].each do |tool|
+      toolname = File.basename(tool)
+      (bin/toolname).write <<-EOS.undent
+      #!/bin/sh
+      export PYTHONPATH=#{libexec}/lib/python2.7/site-packages
+      exec #{tool}
+      EOS
     end
   end
 
