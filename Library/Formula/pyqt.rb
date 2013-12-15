@@ -20,6 +20,9 @@ class Pyqt < Formula
     # On Mavericks we want to target libc++, but this requires a user specified
     # qmake makespec. Unfortunately user specified makespecs are broken in the
     # configure.py script, so we have to fix the makespec path handling logic.
+    # Also qmake spec macro parsing does not properly handle inline comments,
+    # which can result in ignored build flags when they are concatenated together.
+    # Changes proposed upstream: http://www.riverbankcomputing.com/pipermail/pyqt/2013-December/033537.html
     DATA
   end
 
@@ -36,8 +39,11 @@ class Pyqt < Formula
                "--destdir=#{lib}/#{python.xy}/site-packages",
                "--sipdir=#{share}/sip#{python.if3then3}" ]
       # We need to run "configure.py" so that pyqtconfig.py is generated, which
-      # is needed by PyQWT for determining the correct build settings. But do
-      # the actual compile, we use the newer configure-ng.py.
+      # is needed by PyQWT (and many other PyQt interoperable implementations such
+      # as the ROS GUI libs). This file is currently needed for generating build
+      # files appropriate for the qmake spec that was used to build Qt. This method
+      # is deprecated and will be removed with SIP v5, so we do the actual compile
+      # using the newer configure-ng.py as recommended.
       system python, "configure.py", *args
       (python.site_packages/'PyQt4').install 'pyqtconfig.py'
 
@@ -100,3 +106,15 @@ index a8e5dcd..a5f1474 100644
              qt_macx_spec = fname
              fname = os.path.join(qt_archdatadir, "mkspecs", fname)
      elif sys.platform == "darwin":
+@@ -1934,6 +1934,11 @@ def get_build_macros(overrides):
+     if macros is None:
+         return None
+
++    # QMake macros may contain comments on the same line so we need to remove them
++    for macro, value in macros.iteritems():
++        if "#" in value:
++            macros[macro] = value.split("#", 1)[0]
++
+     # Qt5 doesn't seem to support the specific macros so add them if they are
+     # missing.
+     if macros.get("INCDIR_QT", "") == "":
