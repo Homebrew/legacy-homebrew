@@ -108,7 +108,7 @@ module OS
       rescue
         # For people who's xcode-select is unset, or who have installed
         # xcode-gcc-installer or whatever other combinations we can try and
-        # supprt. See https://github.com/mxcl/homebrew/wiki/Xcode
+        # supprt. See https://github.com/Homebrew/homebrew/wiki/Xcode
         case MacOS.llvm_build_version.to_i
         when 1..2063 then "3.1.0"
         when 2064..2065 then "3.1.4"
@@ -121,7 +121,7 @@ module OS
         when 2327..2333 then "3.2.5"
         when 2335
           # this build number applies to 3.2.6, 4.0 and 4.1
-          # https://github.com/mxcl/homebrew/wiki/Xcode
+          # https://github.com/Homebrew/homebrew/wiki/Xcode
           "4.0"
         else
           case (MacOS.clang_version.to_f * 10).to_i
@@ -218,7 +218,7 @@ module OS
       end
 
       def detect_version
-        [STANDALONE_PKG_ID, FROM_XCODE_PKG_ID, MAVERICKS_PKG_ID].find do |id|
+        [MAVERICKS_PKG_ID, STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
           version = MacOS.pkgutil_info(id)[/version: (.+)$/, 1]
           return version if version
         end

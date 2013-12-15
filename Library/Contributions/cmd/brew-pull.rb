@@ -19,7 +19,7 @@ end
 
 ARGV.named.each do|arg|
   if arg.to_i > 0
-    url = 'https://github.com/mxcl/homebrew/pull/' + arg
+    url = 'https://github.com/Homebrew/homebrew/pull/' + arg
   else
     url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
     unless url_match

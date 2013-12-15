@@ -78,7 +78,7 @@ class Macvim < Formula
     # to wait until MacVim is really able to link against different Python's
     # on the Mac. Note configure detects brewed python correctly, but that
     # is ignored.
-    # See https://github.com/mxcl/homebrew/issues/17908
+    # See https://github.com/Homebrew/homebrew/issues/17908
     if python2 and python2.framework? and not build.with? "python3"
       ENV.prepend 'LDFLAGS', "-L#{python2.libdir} -F#{python2.framework}"
     end

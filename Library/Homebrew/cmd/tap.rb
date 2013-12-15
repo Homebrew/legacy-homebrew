@@ -68,7 +68,7 @@ module Homebrew extend self
         else
           to = to.realpath if to.exist?
           # Whitelist gcc42 temporarily until Mavericks/Xcode 5.0 issues are resolved.
-          unless to.tap_ref == 'mxcl/master/apple-gcc42'
+          unless to.tap_ref == 'Homebrew/homebrew/apple-gcc42'
             opoo "Could not tap #{Tty.white}#{from.tap_ref}#{Tty.reset} over #{Tty.white}#{to.tap_ref}#{Tty.reset}"
           end
         end
@@ -121,7 +121,7 @@ class Pathname
     when %r{^#{HOMEBREW_LIBRARY}/Taps/([a-z\-_]+)-(\w+)/(.+)}
       "#$1/#$2/#{File.basename($3, '.rb')}"
     when %r{^#{HOMEBREW_LIBRARY}/Formula/(.+)}
-      "mxcl/master/#{File.basename($1, '.rb')}"
+      "Homebrew/homebrew/#{File.basename($1, '.rb')}"
     else
       nil
     end
