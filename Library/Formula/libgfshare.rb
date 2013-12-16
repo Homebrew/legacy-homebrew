@@ -15,6 +15,8 @@ class Libgfshare < Formula
   end
 
   test do
-    system "#{bin}/gfsplit","--version"
+    touch "test.in"
+    system "#{bin}/gfsplit", "test.in"
+    system "#{bin}/gfcombine test.in.*"
   end
 end
