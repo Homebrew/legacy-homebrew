@@ -7,6 +7,8 @@ class Googlecl < Formula
 
   depends_on :python
 
+  conflicts_with 'osxutils', :because => 'both install a google binary'
+
   # TODO: Move this into Library/Homebrew somewhere (see also ansible.rb).
   def wrap bin_file, pythonpath
     bin_file = Pathname.new bin_file

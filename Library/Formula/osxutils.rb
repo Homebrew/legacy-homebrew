@@ -9,6 +9,7 @@ class Osxutils < Formula
   conflicts_with 'trash', :because => 'both install a trash binary'
   conflicts_with 'leptonica',
     :because => "both leptonica and osxutils ship a `fileinfo` executable."
+  conflicts_with 'googlecl', :because => 'both install a google binary'
 
   def install
     system 'make'
