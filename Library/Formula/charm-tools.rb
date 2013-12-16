@@ -2,8 +2,8 @@ require 'formula'
 
 class CharmTools < Formula
   homepage 'https://launchpad.net/charm-tools'
-  url 'https://launchpad.net/charm-tools/1.0/1.0.1/+download/charmtools-1.0.1.tar.gz'
-  sha1 '08c7a7c4f266c037d1405981adc080cd6c5be9e1'
+  url 'https://launchpad.net/charm-tools/1.2/1.2.5/+download/charm-tools-1.2.5.tar.gz'
+  sha1 'eb425dd554e471c6bae740d91cbc1b873c7e586d'
 
   depends_on :python
   depends_on 'libyaml'
