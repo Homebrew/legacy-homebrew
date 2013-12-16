@@ -5,7 +5,6 @@ require 'keg'
 require 'cmd/versions'
 require 'utils/inreplace'
 require 'erb'
-require 'open3'
 require 'extend/pathname'
 
 class BottleMerger < Formula
@@ -72,14 +71,13 @@ module Homebrew extend self
     keg_ref_files.each do |file|
       puts "#{Tty.red}#{file}#{Tty.reset}"
 
-      linked_libraries = []
-
       # Check dynamic library linkage. Importantly, do not run otool on static
       # libraries, which will falsely report "linkage" to themselves.
       if file.mach_o_executable? or file.dylib? or file.mach_o_bundle?
-        linked_libraries.concat `otool -L "#{file}"`.split("\n").drop(1)
-        linked_libraries.map! { |lib| lib[Keg::OTOOL_RX, 1] }
+        linked_libraries = file.dynamically_linked_libraries
         linked_libraries = linked_libraries.select { |lib| lib.include? string }
+      else
+        linked_libraries = []
       end
 
       linked_libraries.each do |lib|
@@ -87,12 +85,17 @@ module Homebrew extend self
       end
 
       # Use strings to search through the file for each string
-      strings = `strings -t x - "#{file}"`.split("\n").select{ |str| str.include? string }
+      IO.popen("strings -t x - '#{file}'") do |io|
+        until io.eof?
+          str = io.readline.chomp
 
-      strings.each do |str|
-        offset, match = str.split(" ", 2)
-        next if linked_libraries.include? match # Don't bother reporting a string if it was found by otool
-        puts " #{Tty.gray}-->#{Tty.reset} match '#{match}' at offset #{Tty.em}0x#{offset}#{Tty.reset}"
+          next unless str.include? string
+
+          offset, match = str.split(" ", 2)
+
+          next if linked_libraries.include? match # Don't bother reporting a string if it was found by otool
+          puts " #{Tty.gray}-->#{Tty.reset} match '#{match}' at offset #{Tty.em}0x#{offset}#{Tty.reset}"
+        end
       end
     end
     puts

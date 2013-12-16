@@ -56,7 +56,7 @@ class Checks
 ############# END HELPERS
 
 # Sorry for the lack of an indent here, the diff would have been unreadable.
-# See https://github.com/mxcl/homebrew/pull/9986
+# See https://github.com/Homebrew/homebrew/pull/9986
 def check_path_for_trailing_slashes
   bad_paths = ENV['PATH'].split(File::PATH_SEPARATOR).select { |p| p[-1..-1] == '/' }
   return if bad_paths.empty?
@@ -681,8 +681,7 @@ def check_for_multiple_volumes
   # Find the volumes for the TMP folder & HOMEBREW_CELLAR
   real_cellar = HOMEBREW_CELLAR.realpath
 
-  tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
-  tmp = Pathname.new with_system_path { `mktemp -d #{tmp_prefix}/homebrew-brew-doctor-XXXX` }.strip
+  tmp = Pathname.new with_system_path { `mktemp -d #{HOMEBREW_TEMP}/homebrew-brew-doctor-XXXX` }.strip
   real_temp = tmp.realpath.parent
 
   where_cellar = volumes.which real_cellar
@@ -703,8 +702,7 @@ end
 
 def check_filesystem_case_sensitive
   volumes = Volumes.new
-  tmp_prefix = Pathname.new(ENV['HOMEBREW_TEMP'] || '/tmp')
-  case_sensitive_vols = [HOMEBREW_PREFIX, HOMEBREW_REPOSITORY, HOMEBREW_CELLAR, tmp_prefix].select do |dir|
+  case_sensitive_vols = [HOMEBREW_PREFIX, HOMEBREW_REPOSITORY, HOMEBREW_CELLAR, HOMEBREW_TEMP].select do |dir|
     # We select the dir as being case-sensitive if either the UPCASED or the
     # downcased variant is missing.
     # Of course, on a case-insensitive fs, both exist because the os reports so.
@@ -777,9 +775,9 @@ def check_git_origin
       Without a correctly configured origin, Homebrew won't update
       properly. You can solve this by adding the Homebrew remote:
         cd #{HOMEBREW_REPOSITORY}
-        git remote add origin https://github.com/mxcl/homebrew.git
+        git remote add origin https://github.com/Homebrew/homebrew.git
       EOS
-    elsif origin !~ /mxcl\/homebrew(\.git)?$/ then <<-EOS.undent
+    elsif origin !~ /Homebrew\/homebrew(\.git)?$/ then <<-EOS.undent
       Suspicious git origin remote found.
 
       With a non-standard origin, Homebrew won't pull updates from
@@ -788,7 +786,7 @@ def check_git_origin
 
       Unless you have compelling reasons, consider setting the
       origin remote to point at the main repository, located at:
-        https://github.com/mxcl/homebrew.git
+        https://github.com/Homebrew/homebrew.git
       EOS
     end
   end
@@ -911,7 +909,7 @@ end
 def check_git_status
   return unless which "git"
   HOMEBREW_REPOSITORY.cd do
-    unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty?
+    unless `git status --untracked-files=all --porcelain -- Library/Homebrew/ 2>/dev/null`.chomp.empty?
       <<-EOS.undent_________________________________________________________72
       You have uncommitted modifications to Homebrew
       If this a surprise to you, then you should stash these modifications.
