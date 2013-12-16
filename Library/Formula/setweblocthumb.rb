@@ -3,7 +3,7 @@ require 'formula'
 class Setweblocthumb < Formula
   homepage 'http://hasseg.org/setWeblocThumb'
   url 'https://github.com/ali-rantakari/setWeblocThumb/archive/v1.0.0.tar.gz'
-  sha1 '2837bc2a4a8c1011c95c05ee45d6232c84552eca'
+  sha1 '60fb2858e6f45216166f31e951432805d7f9dcc0'
 
   def install
     system "make"
