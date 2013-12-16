@@ -22,7 +22,7 @@ class Predictionio < Formula
     Before use, you must generate the database and create a user. Run:
       #{bin}/setup-vendors.sh
       #{bin}/setup.sh
-      #{bin}/user
+      #{bin}/users
 
     After that, PredictionIO is ready.
     Start using:
