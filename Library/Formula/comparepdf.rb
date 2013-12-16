@@ -10,7 +10,12 @@ class Comparepdf < Formula
 
   def install
     # Generate makefile and disable .app creation
-    system 'qmake -spec macx-g++ CONFIG-=app_bundle'
+    if MacOS.version >= :mavericks && ENV.compiler == :clang
+      spec = 'unsupported/macx-clang-libc++'
+    else
+      spec = 'macx-g++'
+    end
+    system 'qmake', '-spec', spec, 'CONFIG-=app_bundle'
     system 'make'
 
     bin.install 'comparepdf'
