@@ -45,9 +45,6 @@ class Imagemagick < Formula
   depends_on 'webp' => :optional
 
   opoo '--with-ghostscript is not recommended' if build.with? 'ghostscript'
-  if build.with? 'openmp' and (MacOS.version == :leopard or ENV.compiler == :clang)
-    opoo '--with-openmp is not supported on Leopard or with Clang'
-  end
 
   def pour_bottle?
     # If libtool is keg-only it currently breaks the bottle.
@@ -64,9 +61,9 @@ class Imagemagick < Formula
              "--enable-shared",
              "--disable-static",
              "--without-pango",
-             "--with-modules"]
+             "--with-modules",
+             "--disable-openmp"]
 
-    args << "--disable-openmp" unless build.include? 'enable-openmp'
     args << "--disable-opencl" if build.include? 'disable-opencl'
     args << "--without-gslib" unless build.with? 'ghostscript'
     args << "--without-perl" unless build.with? 'perl'
