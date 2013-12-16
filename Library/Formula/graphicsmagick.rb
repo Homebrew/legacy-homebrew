@@ -30,9 +30,6 @@ class Graphicsmagick < Formula
   depends_on 'ghostscript' => :optional
 
   opoo '--with-ghostscript is not recommended' if build.with? 'ghostscript'
-  if build.with? 'openmp' and (MacOS.version == :leopard or ENV.compiler == :clang)
-    opoo '--with-openmp is not supported on Leopard or with Clang'
-  end
 
   fails_with :llvm do
     build 2335
@@ -49,9 +46,9 @@ class Graphicsmagick < Formula
              "--disable-dependency-tracking",
              "--enable-shared",
              "--disable-static",
-             "--with-modules"]
+             "--with-modules",
+             "--disable-openmp"]
 
-    args << "--disable-openmp" unless build.include? 'enable-openmp'
     args << "--without-gslib" unless build.with? 'ghostscript'
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" unless build.with? 'ghostscript'
     args << "--without-magick-plus-plus" if build.without? 'magick-plus-plus'
