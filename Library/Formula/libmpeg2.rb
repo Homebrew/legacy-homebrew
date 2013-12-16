@@ -8,6 +8,9 @@ class Libmpeg2 < Formula
   depends_on 'sdl'
 
   def install
+    # Otherwise compilation fails in clang with `duplicate symbol ___sputc`
+    ENV.append_to_cflags '-std=gnu89'
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
