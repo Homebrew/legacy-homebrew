@@ -16,13 +16,12 @@ class Predictionio < Formula
 
     mv "#{bin}/start-all.sh", "#{bin}/predictionio-start-all.sh"
     mv "#{bin}/stop-all.sh", "#{bin}/predictionio-stop-all.sh"
-
-    system "#{libexec}/bin/setup-vendors.sh"
-    system "#{libexec}/bin/setup.sh"
   end
 
   def caveats; <<-EOS.undent
-    Before use, you must create a user. Run:
+    Before use, you must generate the database and create a user. Run:
+      #{bin}/setup-vendors.sh
+      #{bin}/setup.sh
       #{bin}/user
 
     After that, PredictionIO is ready.
