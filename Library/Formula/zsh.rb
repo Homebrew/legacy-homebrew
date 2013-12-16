@@ -3,6 +3,7 @@ require 'formula'
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
   url 'http://www.zsh.org/pub/zsh-5.0.3.tar.bz2'
+  mirror 'http://fossies.org/linux/misc/zsh-5.0.3.tar.bz2'
   sha1 'b7a80d2cdb83a871d869cfdf487bda8a18e01ef7'
 
   depends_on 'gdbm'
