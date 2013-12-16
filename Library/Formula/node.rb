@@ -32,8 +32,8 @@ end
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.22/node-v0.10.22.tar.gz'
-  sha1 'd7c6a39dfa714eae1f8da7a00c9a07efd74a03b3'
+  url 'http://nodejs.org/dist/v0.10.23/node-v0.10.23.tar.gz'
+  sha1 '8717942d1bdfa8902ce65cd33b4293d16b486c64'
 
   devel do
     url 'http://nodejs.org/dist/v0.11.9/node-v0.11.9.tar.gz'
@@ -53,7 +53,16 @@ class Node < Formula
   end
 
   # fixes gyp's detection of system paths on CLT-only systems
-  def patches; DATA; end
+  # merged upstream; can be removed the next time node syncs updates from gyp
+  def patches
+    # Latest versions of NodeJS stable have changed gyp's xcode_emulation, so
+    # it requires a different patch than devel currently. This will probably go away soon
+    if build.devel?
+      'https://gist.github.com/bbhoss/7439859/raw/9037240e90c62ce462383469874d4c269e3ead0d/xcode_emulation.patch'
+    else
+      DATA
+    end
+  end
 
   def install
     args = %W{--prefix=#{prefix}}
@@ -102,27 +111,26 @@ end
 
 __END__
 diff --git a/tools/gyp/pylib/gyp/xcode_emulation.py b/tools/gyp/pylib/gyp/xcode_emulation.py
-index f9cec33..4b3c035 100644
+index 520dcc4d2e1055ff531662604ed71daf2513fd69..74c85cccbe689f817d83e6c7ad86a7028a27b92e 100644
 --- a/tools/gyp/pylib/gyp/xcode_emulation.py
 +++ b/tools/gyp/pylib/gyp/xcode_emulation.py
-@@ -285,8 +285,14 @@ class XcodeSettings(object):
-     if sdk_root.startswith('/'):
-       return sdk_root
-     if sdk_root not in XcodeSettings._sdk_path_cache:
--      XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
--          sdk_root, 'Path')
-+      try:
-+        XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
-+            sdk_root, 'Path')
-+      except:
-+        # if this fails it's because xcodebuild failed, which means
-+        # the user is probably on a CLT-only system, where there
-+        # is no valid SDK root
-+        XcodeSettings._sdk_path_cache[sdk_root] = None
-     return XcodeSettings._sdk_path_cache[sdk_root]
+@@ -280,7 +280,14 @@ class XcodeSettings(object):
+     return out.rstrip('\n')
 
-   def _AppendPlatformVersionMinFlags(self, lst):
-@@ -397,10 +403,11 @@ class XcodeSettings(object):
+   def _GetSdkVersionInfoItem(self, sdk, infoitem):
+-    return self._GetStdout(['xcodebuild', '-version', '-sdk', sdk, infoitem])
++    # xcodebuild requires Xcode and can't run on Command Line Tools-only
++    # systems from 10.7 onward.
++    # Since the CLT has no SDK paths anyway, returning None is the
++    # most sensible route and should still do the right thing.
++    try:
++      return self._GetStdout(['xcodebuild', '-version', '-sdk', sdk, infoitem])
++    except:
++      pass
+
+   def _SdkRoot(self, configname):
+     if configname is None:
+@@ -409,10 +416,11 @@ class XcodeSettings(object):
 
      cflags += self._Settings().get('WARNING_CFLAGS', [])
 
@@ -138,7 +146,7 @@ index f9cec33..4b3c035 100644
 
      self.configname = None
      return cflags
-@@ -647,10 +654,11 @@ class XcodeSettings(object):
+@@ -659,10 +667,11 @@ class XcodeSettings(object):
      for rpath in self._Settings().get('LD_RUNPATH_SEARCH_PATHS', []):
        ldflags.append('-Wl,-rpath,' + rpath)
 
@@ -154,7 +162,7 @@ index f9cec33..4b3c035 100644
 
      self.configname = None
      return ldflags
-@@ -826,7 +834,10 @@ class XcodeSettings(object):
+@@ -843,7 +852,10 @@ class XcodeSettings(object):
          l = '-l' + m.group(1)
        else:
          l = library
