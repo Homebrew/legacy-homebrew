@@ -5,7 +5,6 @@ class Oinkmaster < Formula
   url 'http://switch.dl.sourceforge.net/project/oinkmaster/oinkmaster/2.0/oinkmaster-2.0.tar.gz'
   sha1 '01a0d774195670a11af5ff3e302773d962b34224'
 
-  depends_on 'suricata'
   depends_on 'wget'
 
   def patches
@@ -14,15 +13,9 @@ class Oinkmaster < Formula
   end
 
   def install
-    system "make DESTDIR=#{prefix} install"
+    system "make","DESTDIR=#{prefix}","install"
   end
-
-  def caveats
-    "Update rules for suricata by command 'oinkmaster -o ${path}/suricata/rules'"
-  end
-
 end
-
 __END__
 diff -Nru oinkmaster-2.0.orig/Makefile oinkmaster-2.0/Makefile
 --- oinkmaster-2.0.orig/Makefile	1970-01-01 03:00:00.000000000 +0300
