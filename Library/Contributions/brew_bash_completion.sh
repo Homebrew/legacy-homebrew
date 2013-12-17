@@ -229,6 +229,7 @@ _brew_install ()
             __brewcomp "
                 --build-from-source
                 --debug
+                --dependencies-only
                 --devel
                 --force
                 --fresh

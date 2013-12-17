@@ -15,13 +15,14 @@ class FormulaInstaller
   include FormulaCellarChecks
 
   attr_reader :f
-  attr_accessor :tab, :options, :ignore_deps
+  attr_accessor :tab, :options, :ignore_deps, :deps_only
   attr_accessor :show_summary_heading, :show_header
 
   def initialize ff
     @f = ff
     @show_header = false
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
+    @deps_only = ARGV.deps_only?
     @options = Options.new
     @tab = Tab.dummy_tab(ff)
 
@@ -104,6 +105,8 @@ class FormulaInstaller
     check_conflicts
 
     compute_and_install_dependencies unless ignore_deps
+
+    return if deps_only
 
     if ARGV.build_bottle? && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
@@ -270,6 +273,7 @@ class FormulaInstaller
     fi.tab = dep_tab
     fi.options = dep_options
     fi.ignore_deps = true
+    fi.deps_only = false
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
@@ -300,6 +304,8 @@ class FormulaInstaller
 
   def finish
     ohai 'Finishing up' if ARGV.verbose?
+
+    return if deps_only
 
     install_plist
 
