@@ -11,6 +11,8 @@ class Setweblocthumb < Formula
   end
 
   test do
-    system "#{bin}/setWeblocThumb"
+    webloc = '{URL = "https://google.com";}'
+    File.open('google.webloc', 'w') {|f| f.write(webloc)}
+    system "#{bin}/setWeblocThumb google.webloc"
   end
 end
