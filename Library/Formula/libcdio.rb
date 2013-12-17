@@ -2,9 +2,9 @@ require 'formula'
 
 class Libcdio < Formula
   homepage 'http://www.gnu.org/software/libcdio/'
-  url 'http://ftpmirror.gnu.org/libcdio/libcdio-0.91.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/libcdio/libcdio-0.91.tar.gz'
-  sha1 '898ae74c3cb78ea1afbb0a387fd0eedee999327b'
+  url 'http://ftpmirror.gnu.org/libcdio/libcdio-0.92.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/libcdio/libcdio-0.92.tar.gz'
+  sha1 '530031897955729ddb7c850c183f234f7a6516b7'
 
   depends_on 'pkg-config' => :build
 
