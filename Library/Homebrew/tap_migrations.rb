@@ -16,4 +16,5 @@ TAP_MIGRATIONS = {
   'lmutil' => 'homebrew/binary',
   'jscoverage' => 'homebrew/boneyard',
   'jsl' => 'homebrew/binary',
+  'nlopt' => 'homebrew/science',
 }
