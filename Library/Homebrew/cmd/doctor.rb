@@ -758,7 +758,7 @@ def check_git_newline_settings
 
     If you are not routinely dealing with Windows-based projects,
     consider removing these by running:
-    `git config --global --set core.autocrlf input`
+    `git config --global core.autocrlf input`
     EOS
   end
 end
