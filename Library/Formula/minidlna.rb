@@ -2,11 +2,12 @@ require 'formula'
 
 class Minidlna < Formula
   homepage 'http://sourceforge.net/projects/minidlna/'
-  head     'cvs://:pserver:anonymous:@minidlna.cvs.sourceforge.net:/cvsroot/minidlna:minidlna'
+  url      'http://softlayer-dal.dl.sourceforge.net/project/minidlna/minidlna/1.1.0/minidlna-1.1.0.tar.gz'
+  sha1     '9d5da7052db77fb4f4dc1b51348a852705d962ac'
 
-  depends_on :automake
   depends_on 'libvorbis'
   depends_on 'libogg'
+  depends_on 'flac'
   depends_on 'libid3tag'
   depends_on 'libexif'
   depends_on 'libjpeg'
@@ -15,12 +16,11 @@ class Minidlna < Formula
   depends_on 'gettext'
 
   def patches
-      'https://gist.github.com/raw/4703012/a7e5c9d88e37cddf3adaa7fe65933e4aa5ab51ee/minidlna-inline-function.patch'
+      'https://gist.github.com/econnell/8009695/raw/802e7318fafe3823bd193f1ca041ea161bfd766d/minidlna-macosx.patch'
   end
   
 
   def install
-    system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
