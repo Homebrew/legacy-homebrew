@@ -3,8 +3,8 @@ require 'formula'
 class Snapraid < Formula
   homepage 'http://snapraid.sourceforge.net/'
   head 'git://snapraid.git.sourceforge.net/gitroot/snapraid/snapraid'
-  url 'http://downloads.sourceforge.net/project/snapraid/snapraid-4.4.tar.gz'
-  sha1 '28c73b431c4fca78194bbfa484bbf0f5f20db17c'
+  url 'http://downloads.sourceforge.net/project/snapraid/snapraid-5.1.tar.gz'
+  sha1 'c36b91fbe56db4a45b6881f17ad8d39bea0b7fb6'
 
   def install
     system "./configure", "--prefix=#{prefix}"
