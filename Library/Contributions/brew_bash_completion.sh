@@ -235,6 +235,7 @@ _brew_install ()
                 --HEAD
                 --ignore-dependencies
                 --interactive
+                --only-dependencies
                 --verbose
                 $(brew options --compact "$prv" 2>/dev/null)
                 "

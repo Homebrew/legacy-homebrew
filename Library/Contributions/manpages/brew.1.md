@@ -151,7 +151,7 @@ Note that these flags should only appear after a command.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--fresh] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
+  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--fresh] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
@@ -169,6 +169,9 @@ Note that these flags should only appear after a command.
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail
     to install.
+
+    If `--only-dependencies` is passed, install the dependencies with specified
+    options but do not install the specified formula.
 
     If `--fresh` is passed, the installation process will not re-use any
     options from previous installs.

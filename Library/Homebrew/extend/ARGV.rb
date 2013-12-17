@@ -102,6 +102,10 @@ module HomebrewArgvExtension
     include? '--ignore-dependencies'
   end
 
+  def only_deps?
+    include? '--only-dependencies'
+  end
+
   def json
     value 'json'
   end
