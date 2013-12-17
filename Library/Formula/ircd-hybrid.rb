@@ -2,8 +2,8 @@ require 'formula'
 
 class IrcdHybrid < Formula
   homepage 'http://www.ircd-hybrid.org/'
-  url 'http://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.1.9/ircd-hybrid-8.1.9.tgz'
-  sha1 '47c0203ed1ea356389f35bcdfa5b7a2514ac01c5'
+  url 'http://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.1.11/ircd-hybrid-8.1.11.tgz'
+  sha1 'd53cd765d5fc1cb31797dfa9aa64fd9099883bf9'
 
   # ircd-hybrid needs the .la files
   skip_clean :la
