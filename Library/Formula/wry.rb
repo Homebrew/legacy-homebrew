@@ -2,8 +2,8 @@ require 'formula'
 
 class Wry < Formula
   homepage 'http://grailbox.com/wry/'
-  url 'https://github.com/hoop33/wry/archive/v1.6.tar.gz'
-  sha1 '0032029d9a2716657f0dd7e0146d92ea5060ac42'
+  url 'https://github.com/hoop33/wry/archive/v1.7.tar.gz'
+  sha1 '474803f477d67c4afef634779c0e3bfb5a01d811'
 
   head 'https://github.com/hoop33/wry.git'
 
