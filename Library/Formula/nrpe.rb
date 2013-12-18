@@ -62,4 +62,5 @@ class Nrpe < Formula
   </plist>
   EOS
   end
+  
 end
