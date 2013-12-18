@@ -111,12 +111,12 @@ end
 
 __END__
 diff --git a/tools/gyp/pylib/gyp/xcode_emulation.py b/tools/gyp/pylib/gyp/xcode_emulation.py
-index 520dcc4d2e1055ff531662604ed71daf2513fd69..74c85cccbe689f817d83e6c7ad86a7028a27b92e 100644
+index 520dcc4..bcc6c71 100644
 --- a/tools/gyp/pylib/gyp/xcode_emulation.py
 +++ b/tools/gyp/pylib/gyp/xcode_emulation.py
 @@ -280,7 +280,14 @@ class XcodeSettings(object):
      return out.rstrip('\n')
-
+ 
    def _GetSdkVersionInfoItem(self, sdk, infoitem):
 -    return self._GetStdout(['xcodebuild', '-version', '-sdk', sdk, infoitem])
 +    # xcodebuild requires Xcode and can't run on Command Line Tools-only
@@ -127,13 +127,13 @@ index 520dcc4d2e1055ff531662604ed71daf2513fd69..74c85cccbe689f817d83e6c7ad86a702
 +      return self._GetStdout(['xcodebuild', '-version', '-sdk', sdk, infoitem])
 +    except:
 +      pass
-
+ 
    def _SdkRoot(self, configname):
      if configname is None:
 @@ -409,10 +416,11 @@ class XcodeSettings(object):
-
+ 
      cflags += self._Settings().get('WARNING_CFLAGS', [])
-
+ 
 -    config = self.spec['configurations'][self.configname]
 -    framework_dirs = config.get('mac_framework_dirs', [])
 -    for directory in framework_dirs:
@@ -143,13 +143,13 @@ index 520dcc4d2e1055ff531662604ed71daf2513fd69..74c85cccbe689f817d83e6c7ad86a702
 +      framework_dirs = config.get('mac_framework_dirs', [])
 +      for directory in framework_dirs:
 +        cflags.append('-F' + directory.replace('$(SDKROOT)', sdk_root))
-
+ 
      self.configname = None
      return cflags
 @@ -659,10 +667,11 @@ class XcodeSettings(object):
      for rpath in self._Settings().get('LD_RUNPATH_SEARCH_PATHS', []):
        ldflags.append('-Wl,-rpath,' + rpath)
-
+ 
 -    config = self.spec['configurations'][self.configname]
 -    framework_dirs = config.get('mac_framework_dirs', [])
 -    for directory in framework_dirs:
@@ -159,7 +159,7 @@ index 520dcc4d2e1055ff531662604ed71daf2513fd69..74c85cccbe689f817d83e6c7ad86a702
 +      framework_dirs = config.get('mac_framework_dirs', [])
 +      for directory in framework_dirs:
 +        ldflags.append('-F' + directory.replace('$(SDKROOT)', self._SdkPath()))
-
+ 
      self.configname = None
      return ldflags
 @@ -843,7 +852,10 @@ class XcodeSettings(object):
@@ -171,6 +171,69 @@ index 520dcc4d2e1055ff531662604ed71daf2513fd69..74c85cccbe689f817d83e6c7ad86a702
 +      return l.replace('$(SDKROOT)', self._SdkPath(config_name))
 +    else:
 +      return l
-
+ 
    def AdjustLibraries(self, libraries, config_name=None):
      """Transforms entries like 'Cocoa.framework' in libraries into entries like
+@@ -856,6 +868,26 @@ class XcodeSettings(object):
+   def _BuildMachineOSBuild(self):
+     return self._GetStdout(['sw_vers', '-buildVersion'])
+ 
++  def _CLTVersion(self):
++    # pkgutil output looks like
++    #   package-id: com.apple.pkg.CLTools_Executables
++    #   version: 5.0.1.0.1.1382131676
++    #   volume: /
++    #   location: /
++    #   install-time: 1382544035
++    #   groups: com.apple.FindSystemFiles.pkg-group com.apple.DevToolsBoth.pkg-group com.apple.DevToolsNonRelocatableShared.pkg-group
++    STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
++    FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
++    MAVERICKS_PKG_ID = "com.apple.pkg.CLTools_Executables"
++
++    regex = re.compile('version: (?P<version>.+)')
++    for key in [MAVERICKS_PKG_ID, STANDALONE_PKG_ID, FROM_XCODE_PKG_ID]:
++      try:
++        output = self._GetStdout(['/usr/sbin/pkgutil', '--pkg-info', key])
++        return re.search(regex, output).groupdict()['version']
++      except:
++        continue
++
+   def _XcodeVersion(self):
+     # `xcodebuild -version` output looks like
+     #    Xcode 4.6.3
+@@ -866,13 +898,20 @@ class XcodeSettings(object):
+     #    BuildVersion: 10M2518
+     # Convert that to '0463', '4H1503'.
+     if len(XcodeSettings._xcode_version_cache) == 0:
+-      version_list = self._GetStdout(['xcodebuild', '-version']).splitlines()
++      try:
++        version_list = self._GetStdout(['xcodebuild', '-version']).splitlines()
++      except:
++        version = self._CLTVersion()
++        if version:
++          version = re.match('(\d\.\d\.?\d*)', version).groups()[0]
++        version_list = [version, '']
+       version = version_list[0]
+       build = version_list[-1]
+       # Be careful to convert "4.2" to "0420":
+       version = version.split()[-1].replace('.', '')
+       version = (version + '0' * (3 - len(version))).zfill(4)
+-      build = build.split()[-1]
++      if build:
++        build = build.split()[-1]
+       XcodeSettings._xcode_version_cache = (version, build)
+     return XcodeSettings._xcode_version_cache
+ 
+@@ -930,7 +969,11 @@ class XcodeSettings(object):
+     default_sdk_root = XcodeSettings._sdk_root_cache.get(default_sdk_path)
+     if default_sdk_root:
+       return default_sdk_root
+-    all_sdks = self._GetStdout(['xcodebuild', '-showsdks'])
++    try:
++      all_sdks = self._GetStdout(['xcodebuild', '-showsdks'])
++    except:
++      # If xcodebuild fails, there will be no valid SDKs
++      return ''
+     for line in all_sdks.splitlines():
+       items = line.split()
+       if len(items) >= 3 and items[-2] == '-sdk':
