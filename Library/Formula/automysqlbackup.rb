@@ -44,6 +44,8 @@ class Automysqlbackup < Formula
         <dict>
           <key>Hour</key>
           <integer>04</integer>
+          <key>Minute</key>
+          <integer>00</integer>
         </dict>
         <key>ProgramArguments</key>
         <array>
