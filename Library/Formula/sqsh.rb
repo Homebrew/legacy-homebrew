@@ -2,27 +2,26 @@ require 'formula'
 
 class Sqsh < Formula
   homepage 'http://www.sqsh.org/'
-  url 'http://downloads.sourceforge.net/sourceforge/sqsh/sqsh-2.1.8.tar.gz'
-  sha1 'c16ed1c913169e19340971e3162cca8a8f23ed05'
+  url 'http://downloads.sourceforge.net/project/sqsh/sqsh/sqsh-2.3/sqsh-2.3.tgz'
+  sha1 '225bd6cfa5dcad4fae419becc5217fb3465c66d1'
 
-  depends_on :x11
+  option "enable-x", "Enable X windows support"
+
+  depends_on :x11 if build.include? "enable-x"
   depends_on 'freetds'
   depends_on 'readline'
 
-  def options
-    [["--with-x", "Enable X windows support."]]
-  end
-
   def install
-    args = ["--disable-debug", "--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--mandir=#{man}",
-            "--with-readline"]
+    args = %W[
+      --prefix=#{prefix}
+      --mandir=#{man}
+      --with-readline
+    ]
 
     ENV['LIBDIRS'] = Readline.new('readline').lib
     ENV['INCDIRS'] = Readline.new('readline').include
 
-    if ARGV.include? "--with-x"
+    if build.include? "enable-x"
       args << "--with-x"
       args << "--x-libraries=#{MacOS::X11.lib}"
       args << "--x-includes=#{MacOS::X11.include}"

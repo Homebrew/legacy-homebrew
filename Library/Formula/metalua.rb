@@ -2,9 +2,9 @@ require 'formula'
 
 class Metalua < Formula
   homepage 'http://metalua.luaforge.net/'
-  url 'https://github.com/fab13n/metalua/tarball/0.5-rc2'
+  url 'https://github.com/fab13n/metalua/archive/0.5-rc2.tar.gz'
   version '0.5-rc2'
-  md5 'c841976b3a2fe9b7322aaca16927c9e2'
+  sha1 'ee28c801e9673cc11d1cecd0a9fda87e7d21fd6d'
 
   head 'https://github.com/fab13n/metalua.git'
 

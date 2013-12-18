@@ -2,15 +2,15 @@ require 'formula'
 
 class Solr < Formula
   homepage 'http://lucene.apache.org/solr/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=lucene/solr/3.6.1/apache-solr-3.6.1.tgz'
-  sha1 'd9f8a4086fb66e716e526d1a047578efdbdd0ede'
+  url 'http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.5.1/solr-4.5.1.tgz'
+  sha1 '019153f18c28b2b4d966496438940e21a7f63daa'
 
   def script; <<-EOS.undent
     #!/bin/sh
     if [ -z "$1" ]; then
       echo "Usage: $ solr path/to/config/dir"
     else
-      cd #{libexec}/example && java -Dsolr.solr.home=$1 -jar start.jar
+      cd #{libexec}/example && java -server $JAVA_OPTS -Dsolr.solr.home=$1 -jar start.jar
     fi
     EOS
   end

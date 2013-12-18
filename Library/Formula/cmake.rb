@@ -1,8 +1,16 @@
 require 'formula'
 
 class NoExpatFramework < Requirement
+  def expat_framework
+    '/Library/Frameworks/expat.framework'
+  end
+
+  satisfy :build_env => false do
+    not File.exist? expat_framework
+  end
+
   def message; <<-EOS.undent
-    Detected /Library/Frameworks/expat.framework
+    Detected #{expat_framework}
 
     This will be picked up by CMake's build system and likely cause the
     build to fail, trying to link to a 32-bit version of expat.
@@ -10,41 +18,24 @@ class NoExpatFramework < Requirement
     You may need to move this file out of the way to compile CMake.
     EOS
   end
-  def satisfied?
-    not File.exist? "/Library/Frameworks/expat.framework"
-  end
 end
-
 
 class Cmake < Formula
   homepage 'http://www.cmake.org/'
-  url 'http://www.cmake.org/files/v2.8/cmake-2.8.8.tar.gz'
-  sha1 'a74dfc3e0a0d7f857ac5dda03bb99ebf07676da1'
+  url 'http://www.cmake.org/files/v2.8/cmake-2.8.12.1.tar.gz'
+  sha1 '5661a607acbce7c16bb5f15ff2895fa5ca53a4da'
+
+  head 'http://cmake.org/cmake.git'
 
   bottle do
-    version 3
-    sha1 '64e1a488bc669f7676c99874b8496ac147d1bc70' => :mountainlion
-    sha1 'bdfb5fcd6743d65f6cfe00b314f9d3f1049e902b' => :lion
-    sha1 '3a77fc17a7b1d3cceabddcca5c126c6b911c2f90' => :snowleopard
+    cellar :any
+    revision 1
+    sha1 '6a4c11225de1e0f1184f2391dc6806a54ef07576' => :mavericks
+    sha1 '4e3891ec5fec6fd5e8867c9225ba6997e81cabd3' => :mountain_lion
+    sha1 '978a056dd68407bec5985e83e512dfc19adbabd8' => :lion
   end
 
-  depends_on NoExpatFramework.new
-
-  def options
-    [["--enable-ninja", "Enable Ninja build system support"]]
-  end
-
-  def patches
-    [
-      # Correct FindPkgConfig found variable. Remove for CMake 2.8.9.
-      "https://github.com/Kitware/CMake/commit/3ea850.patch",
-      # Workaround DeployQt4 issue. Remove for CMake 2.8.9.
-      "https://github.com/Kitware/CMake/commit/374b9b.patch",
-      # Protect the default value of CMAKE_FIND_FRAMEWORK so that it can be
-      # overridden from the command line. Remove for CMake 2.8.9.
-      "https://github.com/Kitware/CMake/commit/8b2fb3.patch"
-    ]
-  end
+  depends_on NoExpatFramework
 
   def install
     args = %W[
@@ -56,17 +47,13 @@ class Cmake < Formula
       --mandir=/share/man
     ]
 
-    if ARGV.include? "--enable-ninja"
-      args << "--"
-      args << "-DCMAKE_ENABLE_NINJA=1"
-    end
-
     system "./bootstrap", *args
     system "make"
     system "make install"
   end
 
-  def test
-    system "#{bin}/cmake", "-E", "echo", "testing"
+  test do
+    (testpath/'CMakeLists.txt').write('find_package(Ruby)')
+    system "#{bin}/cmake", '.'
   end
 end

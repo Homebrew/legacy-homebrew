@@ -2,20 +2,25 @@ require 'formula'
 
 class Qemu < Formula
   homepage 'http://www.qemu.org/'
-  url 'http://wiki.qemu.org/download/qemu-1.1.0-1.tar.bz2'
-  sha256 '1e566f8cbc33e5fb7d5f364c0fd1cdde9e921e647223b5d7ae7e5f95544b258d'
+  url 'http://wiki.qemu-project.org/download/qemu-1.7.0.tar.bz2'
+  sha1 '4b5a21a614207e74a61659f7a6edecad6c31be95'
 
+  head 'git://git.qemu-project.org/qemu.git'
+
+  depends_on 'pkg-config' => :build
+  depends_on :libtool
   depends_on 'jpeg'
   depends_on 'gnutls'
   depends_on 'glib'
+  depends_on 'pixman'
+  depends_on 'vde' => :optional
+  depends_on 'sdl' => :optional
 
-  fails_with :clang do
-    build 318
-    cause 'Compile error: global register variables are not supported'
+  def patches
+    {:p0 => ['https://trac.macports.org/export/97499%20/trunk/dports/emulators/qemu/files/patch-configure.diff']}
   end
 
   def install
-    # Disable the sdl backend. Let it use CoreAudio instead.
     args = %W[
       --prefix=#{prefix}
       --cc=#{ENV.cc}
@@ -23,9 +28,11 @@ class Qemu < Formula
       --enable-cocoa
       --disable-bsd-user
       --disable-guest-agent
-      --disable-sdl
     ]
+    args << (build.with?('sdl') ? '--enable-sdl' : '--disable-sdl')
+    args << (build.with?('vde') ? '--enable-vde' : '--disable-vde')
+    ENV['LIBTOOL'] = 'glibtool'
     system "./configure", *args
-    system "make install"
+    system "make", "V=1", "install"
   end
 end

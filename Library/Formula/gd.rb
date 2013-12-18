@@ -1,42 +1,73 @@
 require 'formula'
 
 class Gd < Formula
-  homepage 'http://bitbucket.org/pierrejoye/gd-libgd'
-  url 'http://www.libgd.org/releases/gd-2.0.36RC1.tar.gz'
-  mirror 'http://download.osgeo.org/mapserver/libgd/gd-2.0.36RC1.tar.gz'
-  md5 '39ac48e6d5e0012a3bd2248a0102f209'
+  homepage 'http://libgd.bitbucket.org/'
+  url 'https://bitbucket.org/libgd/gd-libgd/downloads/libgd-2.1.0.tar.gz'
+  sha1 'a0f3053724403aef9e126f4aa5c662573e5836cd'
 
-  head 'http://bitbucket.org/pierrejoye/gd-libgd', :using => :hg
+  head 'https://bitbucket.org/libgd/gd-libgd', :using => :hg
 
-  depends_on :x11
+  option :universal
+
+  depends_on :libpng => :recommended
   depends_on 'jpeg' => :recommended
+  depends_on :freetype => :optional
+  depends_on 'libtiff' => :optional
+  depends_on 'libvpx' => :optional
 
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
   end
 
-  def install
-    system "./configure", "--prefix=#{prefix}", "--with-freetype=#{MacOS::X11.prefix}"
-    system "make install"
-    (lib+'pkgconfig/gdlib.pc').write pkg_file
+  def png_prefix
+    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/libpng" : MacOS::X11.prefix
   end
 
-  def pkg_file; <<-EOF
-prefix=#{prefix}
-exec_prefix=${prefix}
-libdir=/${exec_prefix}/lib
-includedir=/${prefix}/include
-bindir=/${prefix}/bin
-ldflags=  -L/${prefix}/lib
+  def freetype_prefix
+    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/freetype" : MacOS::X11.prefix
+  end
 
-Name: gd
-Description: A graphics library for quick creation of PNG or JPEG images
-Version: 2.0.36RC1
-Requires:
-Libs: -L${libdir} -lgd
-Libs.private: -lXpm -lX11 -ljpeg -lfontconfig -lfreetype -lpng12 -lz -lm
-Cflags: -I${includedir}
-EOF
+  def install
+    ENV.universal_binary if build.universal?
+    args = %W{--disable-dependency-tracking --prefix=#{prefix}}
+
+    if build.with? "libpng"
+      args << "--with-png=#{png_prefix}"
+    else
+      args << "--without-png"
+    end
+
+    if build.with? "freetype"
+      args << "--with-freetype=#{freetype_prefix}"
+    else
+      args << "--without-freetype"
+    end
+
+    if build.with? "jpeg"
+      args << "--with-jpeg=#{Formula.factory("jpeg").opt_prefix}"
+    else
+      args << "--without-jpeg"
+    end
+
+    if build.with? "libtiff"
+      args << "--with-tiff=#{Formula.factory("libtiff").opt_prefix}"
+    else
+      args << "--without-tiff"
+    end
+
+    if build.with? "libvpx"
+      args << "--with-vpx=#{Formula.factory("libvpx").opt_prefix}"
+    else
+      args << "--without-vpx"
+    end
+
+    system "./configure", *args
+    system "make install"
+  end
+
+  test do
+    system "#{bin}/pngtogd", "/usr/share/doc/cups/images/cups.png", "gd_test.gd"
+    system "#{bin}/gdtopng", "gd_test.gd", "gd_test.png"
   end
 end

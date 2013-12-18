@@ -1,5 +1,3 @@
-require 'bottles'
-
 module HomebrewArgvExtension
   def named
     @named ||= reject{|arg| arg[0..0] == '-'}
@@ -69,14 +67,19 @@ module HomebrewArgvExtension
     at @n+1 or raise UsageError
   end
 
+  def value arg
+    arg = find {|o| o =~ /--#{arg}=(.+)/}
+    $1 if arg
+  end
+
   def force?
     flag? '--force'
   end
   def verbose?
-    flag? '--verbose' or ENV['HOMEBREW_VERBOSE']
+    flag? '--verbose' or !ENV['VERBOSE'].nil? or !ENV['HOMEBREW_VERBOSE'].nil?
   end
   def debug?
-    flag? '--debug' or ENV['HOMEBREW_DEBUG']
+    flag? '--debug' or !ENV['HOMEBREW_DEBUG'].nil?
   end
   def quieter?
     flag? '--quieter'
@@ -89,6 +92,18 @@ module HomebrewArgvExtension
   end
   def dry_run?
     include?('--dry-run') || switch?('n')
+  end
+
+  def homebrew_developer?
+    include? '--homebrew-developer' or !ENV['HOMEBREW_DEVELOPER'].nil?
+  end
+
+  def ignore_deps?
+    include? '--ignore-dependencies'
+  end
+
+  def json
+    value 'json'
   end
 
   def build_head?
@@ -115,31 +130,35 @@ module HomebrewArgvExtension
   end
 
   def build_bottle?
-    bottles_supported? and include? '--build-bottle'
+    include? '--build-bottle' or !ENV['HOMEBREW_BUILD_BOTTLE'].nil?
+  end
+
+  def bottle_arch
+    arch = value 'bottle-arch'
+    arch.to_sym if arch
   end
 
   def build_from_source?
-    flag? '--build-from-source' or ENV['HOMEBREW_BUILD_FROM_SOURCE'] \
-      or not bottles_supported? or not options_only.empty?
+    include? '--build-from-source' or !ENV['HOMEBREW_BUILD_FROM_SOURCE'].nil? \
+      or build_head? or build_devel? or build_universal? or build_bottle?
   end
 
   def flag? flag
-    options_only.each do |arg|
-      return true if arg == flag
-      next if arg[1..1] == '-'
-      return true if arg.include? flag[2..2]
+    options_only.any? do |arg|
+      arg == flag || arg[1..1] != '-' && arg.include?(flag[2..2])
     end
-    return false
+  end
+
+  def force_bottle?
+    include? '--force-bottle'
   end
 
   # eg. `foo -ns -i --bar` has three switches, n, s and i
   def switch? switch_character
     return false if switch_character.length > 1
-    options_only.each do |arg|
-      next if arg[1..1] == '-'
-      return true if arg.include? switch_character
+    options_only.any? do |arg|
+      arg[1..1] != '-' && arg.include?(switch_character)
     end
-    return false
   end
 
   def usage
@@ -153,6 +172,7 @@ module HomebrewArgvExtension
     old_args = clone
 
     flags_to_clear = %w[
+      --build-bottle
       --debug -d
       --devel
       --fresh
@@ -163,8 +183,12 @@ module HomebrewArgvExtension
     flags_to_clear.each {|flag| delete flag}
 
     yield
+  ensure
+    replace(old_args)
+  end
 
-    replace old_args
+  def cc
+    value 'cc'
   end
 
   private

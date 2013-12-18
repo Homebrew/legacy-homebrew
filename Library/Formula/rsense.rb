@@ -3,20 +3,13 @@ require 'formula'
 class Rsense < Formula
   homepage 'http://cx4a.org/software/rsense/'
   url 'http://cx4a.org/pub/rsense/rsense-0.3.tar.bz2'
-  md5 '78b6d5aeb195a01ec955f50d97fde27e'
-
-  def startup_script(name)
-    <<-EOS.undent
-      #!/bin/bash
-      exec "#{libexec}/bin/#{name}" "$@"
-    EOS
-  end
+  sha1 '497510e7048120af01bac619e50aa72ebd825c49'
 
   def install
-    prefix.install 'README.txt'
+    prefix.install_metafiles
     libexec.install Dir['*']
-    (libexec+'bin/rsense').chmod 0755
-    (bin+'rsense').write startup_script('rsense')
+    (libexec/'bin/rsense').chmod 0755
+    bin.write_exec_script libexec/'bin/rsense'
   end
 
   def caveats

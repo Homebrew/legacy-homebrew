@@ -2,12 +2,13 @@ require 'formula'
 
 class Eet < Formula
   homepage 'http://trac.enlightenment.org/e/wiki/Eet'
-  url 'http://download.enlightenment.org/releases/eet-1.6.1.tar.gz'
-  sha1 '88dbbfae46ff7295fc7a9e3fcfef639b855d67ac'
+  url 'http://download.enlightenment.org/releases/eet-1.7.9.tar.gz'
+  sha1 '843eb9733f6c01442b9c1379e9a48b69bfd5081f'
 
-  head 'http://svn.enlightenment.org/svn/e/trunk/eet/'
+  head do
+    url 'http://svn.enlightenment.org/svn/e/trunk/eet/'
 
-  if ARGV.build_head?
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
@@ -18,7 +19,7 @@ class Eet < Formula
   depends_on 'lzlib'
 
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

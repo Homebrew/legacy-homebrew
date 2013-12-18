@@ -10,7 +10,7 @@ for command in (ls (brew --repository)/Library/Homebrew/cmd | sed -e "s/\.rb//g"
   set commands $command $commands
 end
 
-for command in (ls -p (brew --repository)/Library/Contributions/cmds | sed -e "s/\.rb//g" -e "s/brew-//g" -e "s/.*\///g")
+for command in (ls -p (brew --repository)/Library/Contributions/cmd | sed -e "s/\.rb//g" -e "s/brew-//g" -e "s/.*\///g")
   set commands $command $commands
 end
 
@@ -32,7 +32,7 @@ function __fish_complete_brew_argument
       return 0
     end
     
-    if contains -- $cmd cleanup link ln missing rm remove test unlink uninstall upgrade
+    if contains -- $cmd cleanup link ln missing rm remove test unlink uninstall upgrade pin unpin
       ls (brew --prefix)/Cellar
       return 0
     end
@@ -86,6 +86,20 @@ function __fish_complete_brew_no_command
   return 0
 end
 
+function __fish_brew_formula_arguments
+  set formulae (ls (brew --repository)/Library/Formula 2>/dev/null | sed 's/\.rb//g')
+  for formula in (ls (brew --repository)/Library/Aliases 2>/dev/null | sed 's/\.rb//g')
+    set formulae $formula $formulae
+  end
+
+  for cmd in (commandline -opc)
+    if contains -- $cmd $formulae
+      brew options $cmd --compact | tr ' ' '\n'
+    end
+  end
+end
+
+complete -c brew --arguments '(__fish_brew_formula_arguments)'
 complete -c brew -x -a "$commands" -n '__fish_complete_brew_no_command'
 complete -c brew -x -a '(__fish_complete_brew_argument)' -n '__fish_complete_brew_has_command'
 
@@ -123,9 +137,6 @@ complete -c brew -s f -l force -n '__fish_complete_brew_command force' -d "Insta
 complete -c brew -s i -l interactive -n '__fish_complete_brew_command install' -d "Open a subshell to install manually"
 complete -c brew -l git -n '__fish_complete_brew_command install' -d 'Create a git repo (useful for making patches)'
 complete -c brew -l fresh -n '__fish_complete_brew_command install' -d "Do not reuse options from previous installs"
-complete -c brew -l use-clang -n '__fish_complete_brew_command install' -d "Attempt to compile using Clang"
-complete -c brew -l use-llvm -n '__fish_complete_brew_command install' -d "Attempt to compile using LLVM"
-complete -c brew -l use-gcc -n '__fish_complete_brew_command install' -d "Attempt to compile using GCC"
 complete -c brew -l build-from-source -n '__fish_complete_brew_command install' -d "Compile from source even if a bottle is provided"
 complete -c brew -l devel -n '__fish_complete_brew_command install' -d "Install the development version"
 complete -c brew -l HEAD -n '__fish_complete_brew_command install' -d "Install the HEAD version"
@@ -134,6 +145,7 @@ complete -c brew -s f -l force -n '__fish_complete_brew_command link ln' -d "Ove
 complete -c brew -s n -l dry-run -n '__fish_complete_brew_command link ln' -d "Show which files would be deleted"
 
 complete -c brew -l unbrewed -n '__fish_complete_brew_command list ls' -d "List files in Homebrew prefix not installed by Homebrew"
+complete -c brew -l pinned -n '__fish_complete_brew_command list ls' -d "Show the version number for (specified) pinned formulae"
 complete -c brew -l versions -n '__fish_complete_brew_command list ls' -d "Show the version number for specified formulae"
 
 complete -c brew -n '__fish_complete_brew_command log' -u

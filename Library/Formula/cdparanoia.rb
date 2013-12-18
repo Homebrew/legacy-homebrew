@@ -3,7 +3,7 @@ require 'formula'
 class Cdparanoia < Formula
   homepage 'http://www.xiph.org/paranoia/'
   url 'http://downloads.xiph.org/releases/cdparanoia/cdparanoia-III-10.2.src.tgz'
-  md5 'b304bbe8ab63373924a744eac9ebc652'
+  sha1 '1901e20d3a370ca6afa4c76a9ef30d3f03044320'
 
   depends_on :autoconf
 
@@ -23,9 +23,7 @@ class Cdparanoia < Formula
     system "autoconf"
     # Libs are installed as keg-only because most software that searches for cdparanoia
     # will fail to link against it cleanly due to our patches
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
+    system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--libdir=#{libexec}"
     system "make all"

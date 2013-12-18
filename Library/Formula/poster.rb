@@ -1,9 +1,9 @@
 require 'formula'
 
 class Poster < Formula
-  homepage 'http://schrfr.github.com/poster/'
-  url 'https://github.com/schrfr/poster/tarball/1.0.0'
-  md5 'c76de471156c65b8182de0e6f5c8f1b5'
+  homepage 'http://schrfr.github.io/poster/'
+  url 'https://github.com/schrfr/poster/archive/1.0.0.tar.gz'
+  sha1 '20846c17fc0c266caecf82b24cbe7906999a410c'
 
   def install
     system "make"

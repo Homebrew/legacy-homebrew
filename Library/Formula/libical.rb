@@ -1,9 +1,13 @@
 require 'formula'
 
 class Libical < Formula
-  url 'http://downloads.sourceforge.net/project/freeassociation/libical/libical-0.46/libical-0.46.tar.gz'
   homepage 'http://www.citadel.org/doku.php/documentation:featured_projects:libical'
-  md5 '9c08f88945bfd5d0791d102e4aa4125c'
+  url 'http://downloads.sourceforge.net/project/freeassociation/libical/libical-1.0/libical-1.0.tar.gz'
+  sha1 '25c75f6f947edb6347404a958b1444cceeb9f117'
+
+  depends_on :autoconf
+  depends_on :automake
+  depends_on :libtool
 
   def install
     system "./bootstrap"

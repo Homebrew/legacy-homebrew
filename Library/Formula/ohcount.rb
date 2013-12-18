@@ -1,9 +1,14 @@
 require 'formula'
 
 class Ohcount < Formula
-  homepage 'http://sourceforge.net/apps/trac/ohcount/'
-  url 'http://downloads.sourceforge.net/project/ohcount/ohcount-3.0.0.tar.gz'
-  md5 '08f97d01adde8b45635abfe93f8a717a'
+  homepage 'https://github.com/blackducksw/ohcount'
+  url 'https://github.com/blackducksw/ohcount/archive/3.0.0.tar.gz'
+  sha1 '7f3fce48bf2a522c5262215699c36625ca6d3d33'
+
+  head do
+    url 'https://github.com/blackducksw/ohcount.git'
+    depends_on 'libmagic'
+  end
 
   depends_on 'ragel'
   depends_on 'pcre'

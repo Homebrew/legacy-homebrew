@@ -1,17 +1,12 @@
 require 'formula'
 
 class Re2 < Formula
+  homepage 'https://code.google.com/p/re2/'
   head 'https://re2.googlecode.com/hg'
-  homepage 'http://code.google.com/p/re2/'
+  url 'https://re2.googlecode.com/files/re2-20131024.tgz'
+  sha1 '90a356fb205c5004cc4f08e45e02994b898b592a'
 
   def install
-    inreplace 'Makefile' do |s|
-      s.change_make_var! "prefix", prefix
-      s.gsub! ".so", ".dylib"
-    end
-
-    lib.mkdir
-    system "make"
-    system "make install"
+    system "make", "install", "prefix=#{prefix}"
   end
 end

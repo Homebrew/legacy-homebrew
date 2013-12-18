@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ttyrec < Formula
-  url 'http://0xcc.net/ttyrec/ttyrec-1.0.8.tar.gz'
   homepage 'http://0xcc.net/ttyrec/'
-  md5 'ee74158c6c55ae16327595c70369ef83'
+  url 'http://0xcc.net/ttyrec/ttyrec-1.0.8.tar.gz'
+  sha1 '645f1e2a1ac4b2a32ad314711fb3da014ce9684d'
 
   def install
     bin.mkpath

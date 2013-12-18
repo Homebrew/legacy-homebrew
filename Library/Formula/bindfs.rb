@@ -1,10 +1,11 @@
 require 'formula'
 
 class Bindfs < Formula
-  url 'http://bindfs.googlecode.com/files/bindfs-1.9.tar.gz'
-  homepage 'http://code.google.com/p/bindfs/'
-  md5 '610778ad89bc5b0ff0be7b44bb2b6f0c'
+  homepage 'http://bindfs.org/'
+  url 'http://bindfs.googlecode.com/files/bindfs-1.12.tar.gz'
+  sha1 'e4d5d9ab3056c06e1e8b9fe423222de86cce46cf'
 
+  depends_on 'pkg-config' => :build
   depends_on 'fuse4x'
 
   def install

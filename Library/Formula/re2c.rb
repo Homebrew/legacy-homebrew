@@ -1,12 +1,13 @@
 require 'formula'
 
 class Re2c < Formula
-  url 'http://downloads.sourceforge.net/project/re2c/re2c/0.13.5/re2c-0.13.5.tar.gz'
   homepage 'http://re2c.org'
-  md5 '4a97d8f77ed6d2c76c8bd840a43f5633'
+  url 'http://downloads.sourceforge.net/project/re2c/re2c/0.13.6/re2c-0.13.6.tar.gz'
+  sha1 'b272048550db56aea2ec1a0a1bce759b90b778fa'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

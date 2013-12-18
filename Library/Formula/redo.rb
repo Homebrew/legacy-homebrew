@@ -1,22 +1,18 @@
 require 'formula'
 
-class RedoDocs < Formula
-  head 'https://github.com/apenwarr/redo.git', :branch => 'man'
-  version 'foo'
-end
-
 class Redo < Formula
   homepage 'https://github.com/apenwarr/redo'
-  url "https://github.com/apenwarr/redo/tarball/redo-0.11"
-  md5 'c7090dbe2e731815e0201339ededc011'
+  url 'https://github.com/apenwarr/redo/archive/redo-0.11.tar.gz'
+  sha1 'f9f939e599047d9dc7fdadacc3308c6722f3a512'
+
+  resource 'docs' do
+    url 'https://github.com/apenwarr/redo.git', :branch => 'man'
+  end
 
   def install
     ENV['PREFIX'] = prefix
     system "./redo install"
-    rm share+'doc/redo/README.md' # lets not have two copies
-
-    RedoDocs.new('redodocs').brew do
-      man1.install Dir['*']
-    end
+    rm share/'doc/redo/README.md' # lets not have two copies
+    man1.install resource('docs')
   end
 end

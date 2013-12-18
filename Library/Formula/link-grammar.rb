@@ -1,9 +1,9 @@
 require 'formula'
 
 class LinkGrammar < Formula
-  url 'http://www.abisource.com/downloads/link-grammar/4.7.4/link-grammar-4.7.4.tar.gz'
   homepage 'http://www.abisource.com/projects/link-grammar/'
-  md5 'e90e702a953641713a1292db20677bd2'
+  url 'http://www.abisource.com/downloads/link-grammar/4.7.14/link-grammar-4.7.14.tar.gz'
+  sha1 'dd8d03021e6c68933093cd61317a4d4d0bae6f57'
 
   depends_on 'pkg-config' => :build
 

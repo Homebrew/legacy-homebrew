@@ -1,17 +1,17 @@
 require 'formula'
 
 class Funcoeszz < Formula
-  homepage 'http://funcoeszz.googlecode.com/'
-  url 'http://funcoeszz.googlecode.com/files/funcoeszz-10.12.sh'
-  md5 '93f69412f97a38ecb80493279440b5f0'
+  homepage 'http://funcoeszz.net/'
+  url 'http://funcoeszz.net/download/funcoeszz-13.2.sh'
+  sha1 '33d6950dc83fd2118bc45a752c4a77be3b112573'
 
   def install
-    prefix.install "funcoeszz-10.12.sh"
+    prefix.install "funcoeszz-#{version}.sh"
   end
 
   def caveats; <<-EOS.undent
     To use this software add to your profile:
-      source #{prefix}/funcoeszz-10.12.sh
+      source #{opt_prefix}/funcoeszz-#{version}.sh
     EOS
   end
 end

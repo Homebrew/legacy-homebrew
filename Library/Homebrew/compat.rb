@@ -1,0 +1,6 @@
+require 'compat/fails_with_llvm'
+require 'compat/formula'
+require 'compat/hardware'
+require 'compat/macos'
+require 'compat/md5'
+require 'compat/version'

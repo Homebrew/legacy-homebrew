@@ -1,9 +1,9 @@
 require 'formula'
 
 class CupsPdf < Formula
-  url 'http://www.cups-pdf.de/src/cups-pdf_2.6.1.tar.gz'
-  md5 '65f3fd525c4a9b1d736b91594b3166d5'
   homepage 'http://www.cups-pdf.de/'
+  url 'http://www.cups-pdf.de/src/cups-pdf_2.6.1.tar.gz'
+  sha1 '6806f0004dfed5216625ab60cfe307ded23c2f6a'
 
   # Patch derived from MacPorts.
   def patches; DATA; end
@@ -17,22 +17,23 @@ class CupsPdf < Formula
   end
 
   def caveats; <<-EOF.undent
-      In order to use cups-pdf with the Mac OS X printing system change the file
-      permissions, symlink the necessary files to their System location and
-      have cupsd re-read its configuration using:
+    In order to use cups-pdf with the Mac OS X printing system change the file
+    permissions, symlink the necessary files to their System location and
+    have cupsd re-read its configuration using:
 
-      chmod 0700 #{lib}/cups/backend/cups-pdf
-      sudo chown root #{lib}/cups/backend/cups-pdf
-      sudo ln -sf #{etc}/cups/cups-pdf.conf /etc/cups/cups-pdf.conf
-      sudo ln -sf #{lib}/cups/backend/cups-pdf /usr/libexec/cups/backend/cups-pdf
-      sudo chmod -h 0700 /usr/libexec/cups/backend/cups-pdf
-      sudo ln -sf #{share}/cups/model/CUPS-PDF.ppd /usr/share/cups/model/CUPS-PDF.ppd
+    chmod 0700 #{lib}/cups/backend/cups-pdf
+    sudo chown root #{lib}/cups/backend/cups-pdf
+    sudo ln -sf #{etc}/cups/cups-pdf.conf /etc/cups/cups-pdf.conf
+    sudo ln -sf #{lib}/cups/backend/cups-pdf /usr/libexec/cups/backend/cups-pdf
+    sudo chmod -h 0700 /usr/libexec/cups/backend/cups-pdf
+    sudo ln -sf #{share}/cups/model/CUPS-PDF.ppd /usr/share/cups/model/CUPS-PDF.ppd
 
-      sudo mkdir -p /var/spool/cups-pdf/${USER}
-      ln -s /var/spool/cups-pdf/${USER} ${HOME}/Documents/cups-pdf
-      sudo killall -HUP cupsd
+    sudo mkdir -p /var/spool/cups-pdf/${USER}
+    sudo chown ${USER}:staff /var/spool/cups-pdf/${USER}
+    ln -s /var/spool/cups-pdf/${USER} ${HOME}/Documents/cups-pdf
+    sudo killall -HUP cupsd
 
-      NOTE: When uninstalling cups-pdf these symlinks need to be removed manually.
+    NOTE: When uninstalling cups-pdf these symlinks need to be removed manually.
     EOF
   end
 end

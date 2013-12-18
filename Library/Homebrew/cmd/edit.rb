@@ -13,9 +13,10 @@ module Homebrew extend self
     # If no brews are listed, open the project root in an editor.
     if ARGV.named.empty?
       editor = File.basename which_editor
-      if editor == "mate"
-        # If the user is using TextMate, give a nice project view instead.
-        exec 'mate', HOMEBREW_REPOSITORY+"bin/brew",
+      if editor == "mate" or editor == "subl"
+        # If the user is using TextMate or Sublime Text,
+        # give a nice project view instead.
+        exec editor, HOMEBREW_REPOSITORY+"bin/brew",
                      HOMEBREW_REPOSITORY+'README.md',
                      HOMEBREW_REPOSITORY+".gitignore",
                     *library_folders
@@ -37,12 +38,12 @@ module Homebrew extend self
           raise FormulaUnavailableError, path.basename('.rb').to_s unless path.file?
         end
       end
-      exec_editor *paths
+      exec_editor(*paths)
     end
   end
 
   def library_folders
-    Dir["#{HOMEBREW_REPOSITORY}/Library/*"].reject do |d|
+    Dir["#{HOMEBREW_LIBRARY}/*"].reject do |d|
       case File.basename(d) when 'LinkedKegs', 'Aliases' then true end
     end
   end

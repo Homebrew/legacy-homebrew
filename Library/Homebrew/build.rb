@@ -1,120 +1,206 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 
 # This script is called by formula_installer as a separate instance.
 # Rationale: Formula can use __END__, Formula can change ENV
 # Thrown exceptions are propogated back to the parent process over a pipe
 
-require 'global'
+STD_TRAP = trap("INT") { exit! 130 } # no backtrace thanks
 
 at_exit do
   # the whole of everything must be run in at_exit because the formula has to
   # be the run script as __END__ must work for *that* formula.
+  main
+end
 
-  error_pipe = nil
+require 'global'
+require 'cxxstdlib'
+require 'debrew' if ARGV.debug?
 
-  begin
-    raise $! if $! # an exception was already thrown when parsing the formula
+def main
+  # The main Homebrew process expects to eventually see EOF on the error
+  # pipe in FormulaInstaller#build. However, if any child process fails to
+  # terminate (i.e, fails to close the descriptor), this won't happen, and
+  # the installer will hang. Set close-on-exec to prevent this.
+  # Whether it is *wise* to launch daemons from formulae is a separate
+  # question altogether.
+  if ENV['HOMEBREW_ERROR_PIPE']
+    require 'fcntl'
+    error_pipe = IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w')
+    error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+  end
 
-    require 'extend/ENV'
-    require 'hardware'
-    require 'keg'
+  raise $! if $! # an exception was already thrown when parsing the formula
 
-    ENV.extend(HomebrewEnvExtension)
-    ENV.setup_build_environment
-    # we must do this or tools like pkg-config won't get found by configure scripts etc.
-    ENV.prepend 'PATH', "#{HOMEBREW_PREFIX}/bin", ':' unless ORIGINAL_PATHS.include? HOMEBREW_PREFIX/'bin'
+  trap("INT", STD_TRAP) # restore default CTRL-C handler
 
-    # Force any future invocations of sudo to require the user's password to be
-    # re-entered. This is in-case any build script call sudo. Certainly this is
-    # can be inconvenient for the user. But we need to be safe.
-    system "/usr/bin/sudo -k"
+  require 'hardware'
+  require 'keg'
+  require 'extend/ENV'
 
-    # The main Homebrew process expects to eventually see EOF on the error
-    # pipe in FormulaInstaller#build. However, if any child process fails to
-    # terminate (i.e, fails to close the descriptor), this won't happen, and
-    # the installer will hang. Set close-on-exec to prevent this.
-    # Whether it is *wise* to launch daemons from formulae is a separate
-    # question altogether.
-    if ENV['HOMEBREW_ERROR_PIPE']
-      require 'fcntl'
-      error_pipe = IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w')
-      error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+  # Force any future invocations of sudo to require the user's password to be
+  # re-entered. This is in-case any build script call sudo. Certainly this is
+  # can be inconvenient for the user. But we need to be safe.
+  system "/usr/bin/sudo", "-k"
+
+  Build.new(Formula.factory($0)).install
+rescue Exception => e
+  unless error_pipe.nil?
+    e.continuation = nil if ARGV.debug?
+    Marshal.dump(e, error_pipe)
+    error_pipe.close
+    exit! 1
+  else
+    onoe e
+    puts e.backtrace
+    exit! 2
+  end
+end
+
+class Build
+  attr_reader :f, :deps, :reqs
+
+  def initialize(f)
+    @f = f
+    @deps = expand_deps
+    @reqs = expand_reqs
+  end
+
+  def post_superenv_hacks
+    # Only allow Homebrew-approved directories into the PATH, unless
+    # a formula opts-in to allowing the user's path.
+    if f.env.userpaths? || reqs.any? { |rq| rq.env.userpaths? }
+      ENV.userpaths!
+    end
+  end
+
+  def pre_superenv_hacks
+    # Allow a formula to opt-in to the std environment.
+    ARGV.unshift '--env=std' if (f.env.std? or deps.any? { |d| d.name == 'scons' }) and
+      not ARGV.include? '--env=super'
+  end
+
+  def expand_reqs
+    f.recursive_requirements do |dependent, req|
+      if (req.optional? || req.recommended?) && dependent.build.without?(req)
+        Requirement.prune
+      elsif req.build? && dependent != f
+        Requirement.prune
+      elsif req.satisfied? && req.default_formula? && (dep = req.to_dependency).installed?
+        deps << dep
+        Requirement.prune
+      end
+    end
+  end
+
+  def expand_deps
+    f.recursive_dependencies do |dependent, dep|
+      if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
+        Dependency.prune
+      elsif dep.build? && dependent != f
+        Dependency.prune
+      elsif dep.build?
+        Dependency.keep_but_prune_recursive_deps
+      end
+    end
+  end
+
+  def install
+    keg_only_deps = deps.map(&:to_formula).select(&:keg_only?)
+
+    pre_superenv_hacks
+
+    ENV.activate_extensions!
+
+    deps.map(&:to_formula).each do |dep|
+      opt = HOMEBREW_PREFIX/:opt/dep
+      fixopt(dep) unless opt.directory? or ARGV.ignore_deps?
     end
 
-    install(Formula.factory($0))
-  rescue Exception => e
-    unless error_pipe.nil?
-      Marshal.dump(e, error_pipe)
-      error_pipe.close
-      exit! 1
+    if superenv?
+      ENV.keg_only_deps = keg_only_deps.map(&:to_s)
+      ENV.deps = deps.map { |d| d.to_formula.to_s }
+      ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
+      ENV.setup_build_environment(f)
+      post_superenv_hacks
+      reqs.each(&:modify_build_environment)
+      deps.each(&:modify_build_environment)
     else
-      onoe e
-      puts e.backtrace
-      exit! 2
+      ENV.setup_build_environment(f)
+      reqs.each(&:modify_build_environment)
+      deps.each(&:modify_build_environment)
+
+      keg_only_deps.each do |dep|
+        opt = dep.opt_prefix
+        ENV.prepend_path 'PATH', "#{opt}/bin"
+        ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
+        ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/share/pkgconfig"
+        ENV.prepend_path 'ACLOCAL_PATH', "#{opt}/share/aclocal"
+        ENV.prepend_path 'CMAKE_PREFIX_PATH', opt
+        ENV.prepend 'LDFLAGS', "-L#{opt}/lib" if (opt/:lib).directory?
+        ENV.prepend 'CPPFLAGS', "-I#{opt}/include" if (opt/:include).directory?
+      end
+    end
+
+    f.brew do
+      if ARGV.flag? '--git'
+        system "git init"
+        system "git add -A"
+      end
+      if ARGV.interactive?
+        ohai "Entering interactive mode"
+        puts "Type `exit' to return and finalize the installation"
+        puts "Install to this prefix: #{f.prefix}"
+
+        if ARGV.flag? '--git'
+          puts "This directory is now a git repo. Make your changes and then use:"
+          puts "  git diff | pbcopy"
+          puts "to copy the diff to the clipboard."
+        end
+
+        interactive_shell f
+      else
+        f.prefix.mkpath
+
+        begin
+          f.install
+
+          stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
+          # It's technically possible for the same lib to link to multiple
+          # C++ stdlibs, but very bad news. Right now we don't track this
+          # woeful scenario.
+          stdlib_in_use = CxxStdlib.new(stdlibs.first, ENV.compiler)
+          # This will raise and fail the build if there's an
+          # incompatibility.
+          stdlib_in_use.check_dependencies(f, deps)
+
+          Tab.create(f, ENV.compiler, stdlibs.first,
+            Options.coerce(ARGV.options_only)).write
+        rescue Exception => e
+          if ARGV.debug?
+            debrew e, f
+          else
+            raise e
+          end
+        end
+
+        # Find and link metafiles
+        f.prefix.install_metafiles Pathname.pwd
+      end
     end
   end
 end
 
-def install f
-  f.requirements.each { |dep| dep.modify_build_environment }
-
-  f.recursive_deps.uniq.each do |dep|
-    dep = Formula.factory dep
-    if dep.keg_only?
-      ENV.prepend 'LDFLAGS', "-L#{dep.lib}"
-      ENV.prepend 'CPPFLAGS', "-I#{dep.include}"
-      ENV.prepend 'PATH', "#{dep.bin}", ':'
-
-      pcdir = dep.lib/'pkgconfig'
-      ENV.prepend 'PKG_CONFIG_PATH', pcdir, ':' if pcdir.directory?
-
-      acdir = dep.share/'aclocal'
-      ENV.prepend 'ACLOCAL_PATH', acdir, ':' if acdir.directory?
-    end
+def fixopt f
+  path = if f.linked_keg.directory? and f.linked_keg.symlink?
+    f.linked_keg.realpath
+  elsif f.prefix.directory?
+    f.prefix
+  elsif (kids = f.rack.children).size == 1 and kids.first.directory?
+    kids.first
+  else
+    raise
   end
-
-  if f.fails_with? ENV.compiler
-    cs = CompilerSelector.new f
-    cs.select_compiler
-    cs.advise
-  end
-
-  f.brew do
-    if ARGV.flag? '--git'
-      system "git init"
-      system "git add -A"
-    end
-    if ARGV.flag? '--interactive'
-      ohai "Entering interactive mode"
-      puts "Type `exit' to return and finalize the installation"
-      puts "Install to this prefix: #{f.prefix}"
-
-      if ARGV.flag? '--git'
-        puts "This directory is now a git repo. Make your changes and then use:"
-        puts "  git diff | pbcopy"
-        puts "to copy the diff to the clipboard."
-      end
-
-      interactive_shell f
-      nil
-    else
-      f.prefix.mkpath
-      f.install
-      FORMULA_META_FILES.each do |filename|
-        next if File.directory? filename
-        target_file = filename
-        target_file = "#{filename}.txt" if File.exists? "#{filename}.txt"
-        # Some software symlinks these files (see help2man.rb)
-        target_file = Pathname.new(target_file).resolved_path
-        f.prefix.install target_file => filename rescue nil
-        (f.prefix+file).chmod 0644 rescue nil
-      end
-    end
-  end
-rescue Exception
-  if f.prefix.directory?
-    f.prefix.rmtree
-    f.rack.rmdir_if_possible
-  end
-  raise
+  Keg.new(path).optlink
+rescue StandardError
+  raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
 end

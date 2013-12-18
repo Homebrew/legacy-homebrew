@@ -1,47 +1,41 @@
 require 'formula'
-require 'cmd/outdated'
+require 'tab'
 
 module Homebrew extend self
-  def installed_brews
-    formulae = []
-    HOMEBREW_CELLAR.subdirs.each do |rack|
-      f = Formula.factory rack.basename.to_s rescue nil
-      formulae << f if f and f.installed?
-    end
-    formulae
-  end
-
-  def find_missing_brews top_level
-    # Names of outdated brews; they count as installed.
-    outdated = Homebrew.outdated_brews.collect{ |b| b.name }
-
-    brews = []
-    top_level.each do |f|
-      missing_deps = f.recursive_deps.map{ |g| g.name }.uniq.reject do |dep_name|
-        Formula.factory(dep_name).installed? or outdated.include?(dep_name)
+  def missing_deps ff
+    missing = {}
+    ff.each do |f|
+      missing_deps = f.recursive_dependencies do |dependent, dep|
+        if dep.optional? || dep.recommended?
+          tab = Tab.for_formula(dependent)
+          Dependency.prune unless tab.with?(dep.name)
+        elsif dep.build?
+          Dependency.prune
+        end
       end
+
+      missing_deps.map!(&:to_formula)
+      missing_deps.reject! { |d| d.rack.exist? && d.rack.subdirs.length > 0 }
 
       unless missing_deps.empty?
-        brews << [f.name, missing_deps]
+        yield f.name, missing_deps if block_given?
+        missing[f.name] = missing_deps
       end
     end
-    brews
+    missing
   end
 
   def missing
     return unless HOMEBREW_CELLAR.exist?
 
-    formulae_to_check = if ARGV.named.empty?
-      installed_brews
+    ff = if ARGV.named.empty?
+      Formula.installed
     else
       ARGV.formulae
     end
 
-    missing_deps = find_missing_brews(formulae_to_check)
-    missing_deps.each do |d|
-      name = d[0]
-      missing = d[1]
-      print "#{name}: " if formulae_to_check.size > 1
+    missing_deps(ff) do |name, missing|
+      print "#{name}: " if ff.size > 1
       puts "#{missing * ' '}"
     end
   end

@@ -1,58 +1,41 @@
 require 'formula'
 
-def pgm_flags
-  return ARGV.include?('--with-pgm') ? "--with-pgm" : ""
-end
-
 class Zeromq < Formula
   homepage 'http://www.zeromq.org/'
-  url 'http://download.zeromq.org/zeromq-2.2.0.tar.gz'
-  sha1 'e4bc024c33d3e62f658640625e061ce4e8bd1ff1'
+  url 'http://download.zeromq.org/zeromq-4.0.3.tar.gz'
+  sha1 'a363ddfff75f73976f656b3ba48f32544b214075'
 
-  head 'https://github.com/zeromq/libzmq.git'
+  head do
+    url 'https://github.com/zeromq/libzmq.git'
 
-  if build.head?
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
-  fails_with :llvm do
-    build 2326
-    cause "Segfault while linking"
-  end
 
   option :universal
   option 'with-pgm', 'Build with PGM extension'
 
-  def build_fat
-    # make 32-bit
-    system "CFLAGS=\"$CFLAGS -arch i386\" CXXFLAGS=\"$CXXFLAGS -arch i386\" ./configure --disable-dependency-tracking --prefix='#{prefix}' #{pgm_flags}"
-    system "make"
-    system "mv src/.libs src/libs-32"
-    system "make clean"
-
-    # make 64-bit
-    system "CFLAGS=\"$CFLAGS -arch x86_64\" CXXFLAGS=\"$CXXFLAGS -arch x86_64\" ./configure --disable-dependency-tracking --prefix='#{prefix}' #{pgm_flags}"
-    system "make"
-    system "mv src/.libs/libzmq.1.dylib src/.libs/libzmq.64.dylib"
-
-    # merge UB
-    system "lipo", "-create", "src/libs-32/libzmq.1.dylib",
-                              "src/.libs/libzmq.64.dylib",
-                   "-output", "src/.libs/libzmq.1.dylib"
-  end
+  depends_on 'pkg-config' => :build
+  depends_on 'libpgm' if build.include? 'with-pgm'
+  depends_on 'libsodium' => :optional
 
   def install
-    system "./autogen.sh" if build.head?
+    ENV.universal_binary if build.universal?
 
-    if ARGV.build_universal?
-      build_fat
-    else
-      args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-      args << "--with-pgm" if build.include? 'with-pgm'
-      system "./configure", *args
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    if build.include? 'with-pgm'
+      # Use HB libpgm-5.2 because their internal 5.1 is b0rked.
+      ENV['OpenPGM_CFLAGS'] = %x[pkg-config --cflags openpgm-5.2].chomp
+      ENV['OpenPGM_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp
+      args << "--with-system-pgm"
     end
 
+    args << "--with-libsodium" if build.with? 'libsodium'
+
+    system "./autogen.sh" if build.head?
+    system "./configure", *args
     system "make"
     system "make install"
   end
@@ -61,10 +44,7 @@ class Zeromq < Formula
     To install the zmq gem on 10.6 with the system Ruby on a 64-bit machine,
     you may need to do:
 
-        ARCHFLAGS="-arch x86_64" gem install zmq -- --with-zmq-dir=#{HOMEBREW_PREFIX}
-
-    If you want to build the Java bindings from https://github.com/zeromq/jzmq
-    you will need the Java Developer Package from http://connect.apple.com/
+        ARCHFLAGS="-arch x86_64" gem install zmq -- --with-zmq-dir=#{opt_prefix}
     EOS
   end
 end

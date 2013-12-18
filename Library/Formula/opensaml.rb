@@ -1,9 +1,9 @@
 require 'formula'
 
 class Opensaml < Formula
-  url 'http://shibboleth.internet2.edu/downloads/opensaml/cpp/2.3/opensaml-2.3.tar.gz'
-  homepage 'https://spaces.internet2.edu/display/OpenSAML/'
-  md5 '9695d40cb28519c2cde8211cd1c3dc69'
+  homepage 'https://wiki.shibboleth.net/confluence/display/OpenSAML/Home'
+  url 'http://shibboleth.net/downloads/c++-opensaml/2.5.3/opensaml-2.5.3.tar.gz'
+  sha1 '412d0807821f7ee5d419e59fd9fd85613d64da7b'
 
   depends_on 'pkg-config' => :build
   depends_on 'log4shib'

@@ -7,14 +7,15 @@ class SdlImage < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
-  depends_on :x11
+  depends_on 'jpeg'    => :recommended
+  depends_on 'libpng'  => :recommended
+  depends_on 'libtiff' => :recommended
+  depends_on 'webp'    => :recommended
 
-  def options
-    [['--universal', 'Build universal binaries.']]
-  end
+  option :universal
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
+    ENV.universal_binary if build.universal?
     inreplace 'SDL_image.pc.in', '@prefix@', HOMEBREW_PREFIX
 
     system "./configure", "--prefix=#{prefix}",

@@ -2,8 +2,8 @@ require 'formula'
 
 class Points2grid < Formula
   homepage 'https://github.com/CRREL/points2grid'
-  url 'https://github.com/CRREL/points2grid/zipball/1.1.0'
-  md5 '39a8426675d6f5cb2414683c737b13bf'
+  url 'https://github.com/CRREL/points2grid/archive/1.1.0.tar.gz'
+  sha1 'aef7e124b47022bee85bb3585f5996af5cb132e3'
 
   depends_on 'cmake' => :build
   depends_on 'boost'

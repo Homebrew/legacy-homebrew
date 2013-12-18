@@ -2,8 +2,8 @@ require 'formula'
 
 class Conserver < Formula
   homepage 'http://conserver.com'
-  url 'http://conserver.com/conserver-8.1.18.tar.gz'
-  md5 '93d1c38df71b4e3fd5d8f7ad6fc186bb'
+  url 'http://conserver.com/conserver-8.1.19.tar.gz'
+  sha1 'e13974427a91f3740057fb1170378021f311e7ac'
 
   def install
     system "./configure", "--prefix=#{prefix}"

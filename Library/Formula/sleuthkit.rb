@@ -2,32 +2,40 @@ require 'formula'
 
 class Sleuthkit < Formula
   homepage 'http://www.sleuthkit.org/'
-  url 'http://downloads.sourceforge.net/project/sleuthkit/sleuthkit/3.2.3/sleuthkit-3.2.3.tar.gz'
-  sha1 '85d100ffde54f051916a4ea9452563ff85fad4ac'
+  url 'http://downloads.sourceforge.net/project/sleuthkit/sleuthkit/4.1.2/sleuthkit-4.1.2.tar.gz'
+  sha1 'e44af40a934abeb6ce577f9ba71c86f11b80a559'
 
-  head 'https://github.com/sleuthkit/sleuthkit.git'
+  head do
+    url 'https://github.com/sleuthkit/sleuthkit.git'
 
-  if ARGV.build_head?
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
+  conflicts_with 'irods', :because => 'both install `ils`'
+
+  option 'with-jni', "Build Sleuthkit with JNI bindings"
+
+  depends_on :ant
   depends_on 'afflib' => :optional
   depends_on 'libewf' => :optional
 
-  def patches
-    # required for new-ish libewf releases (API change)
-    # fixed in the upcoming sleuthkit 4.x
-    if ARGV.build_stable?
-      "http://downloads.sourceforge.net/project/libewf/patches%20for%203rd%20party%20software/sleuthkit/tsk3.2.3-libewf.patch"
-    end
-  end
+  conflicts_with 'ffind',
+    :because => "both install a 'ffind' executable."
 
   def install
-    system "./bootstrap" if ARGV.build_head?
+    system "./bootstrap" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "make"
     system "make install"
+
+    if build.with? 'jni'
+      cd 'bindings/java' do
+        system 'ant'
+      end
+      prefix.install 'bindings'
+    end
   end
 end

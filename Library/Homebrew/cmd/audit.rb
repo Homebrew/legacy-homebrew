@@ -1,10 +1,40 @@
 require 'formula'
 require 'utils'
 require 'extend/ENV'
+require 'formula_cellar_checks'
 
-# Some formulae use ENV in patches, so set up an environment
-ENV.extend(HomebrewEnvExtension)
-ENV.setup_build_environment
+module Homebrew extend self
+  def audit
+    formula_count = 0
+    problem_count = 0
+
+    ENV.activate_extensions!
+    ENV.setup_build_environment
+
+    ff = if ARGV.named.empty?
+      Formula
+    else
+      ARGV.formulae
+    end
+
+    ff.each do |f|
+      fa = FormulaAuditor.new f
+      fa.audit
+
+      unless fa.problems.empty?
+        puts "#{f.name}:"
+        fa.problems.each { |p| puts " * #{p}" }
+        puts
+        formula_count += 1
+        problem_count += fa.problems.size
+      end
+    end
+
+    unless problem_count.zero?
+      ofail "#{problem_count} problems in #{formula_count} formulae"
+    end
+  end
+end
 
 class Module
   def redefine_const(name, value)
@@ -13,365 +43,548 @@ class Module
   end
 end
 
-def ff
-  return Formula.all if ARGV.named.empty?
-  return ARGV.formulae
-end
-
-def audit_formula_text name, text
-  problems = []
-
-  if text =~ /<(Formula|AmazonWebServicesFormula|ScriptFileFormula|GithubGistFormula)/
-    problems << " * Use a space in class inheritance: class Foo < #{$1}"
-  end
-
-  # Commented-out cmake support from default template
-  if (text =~ /# depends_on 'cmake'/) or (text =~ /# system "cmake/)
-    problems << " * Commented cmake support found."
-  end
-
-  # 2 (or more in an if block) spaces before depends_on, please
-  if text =~ /^\ ?depends_on/
-    problems << " * Check indentation of 'depends_on'."
-  end
-
-  # build tools should be flagged properly
-  build_deps = %w{autoconf automake boost-build bsdmake
-                  cmake imake libtool pkg-config scons smake}
-  if text =~ /depends_on ['"](#{build_deps*'|'})['"]$/
-    problems << " * #{$1} dependency should be \"depends_on '#{$1}' => :build\""
-  end
-
-  # FileUtils is included in Formula
-  if text =~ /FileUtils\.(\w+)/
-    problems << " * Don't need 'FileUtils.' before #{$1}."
-  end
-
-  # Check for long inreplace block vars
-  if text =~ /inreplace .* do \|(.{2,})\|/
-    problems << " * \"inreplace <filenames> do |s|\" is preferred over \"|#{$1}|\"."
-  end
-
-  # Check for string interpolation of single values.
-  if text =~ /(system|inreplace|gsub!|change_make_var!) .* ['"]#\{(\w+(\.\w+)?)\}['"]/
-    problems << " * Don't need to interpolate \"#{$2}\" with #{$1}"
-  end
-
-  # Check for string concatenation; prefer interpolation
-  if text =~ /(#\{\w+\s*\+\s*['"][^}]+\})/
-    problems << " * Try not to concatenate paths in string interpolation:\n   #{$1}"
-  end
-
-  # Prefer formula path shortcuts in Pathname+
-  if text =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share)[/'"])}
-    problems << " * \"(#{$1}...#{$2})\" should be \"(#{$3}+...)\""
-  end
-
-  if text =~ %r[((man)\s*\+\s*(['"])(man[1-8])(['"]))]
-    problems << " * \"#{$1}\" should be \"#{$4}\""
-  end
-
-  # Prefer formula path shortcuts in strings
-  if text =~ %r[(\#\{prefix\}/(bin|include|libexec|lib|sbin|share))]
-    problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
-  end
-
-  if text =~ %r[((\#\{prefix\}/share/man/|\#\{man\}/)(man[1-8]))]
-    problems << " * \"#{$1}\" should be \"\#{#{$3}}\""
-  end
-
-  if text =~ %r[((\#\{share\}/(man)))[/'"]]
-    problems << " * \"#{$1}\" should be \"\#{#{$3}}\""
-  end
-
-  if text =~ %r[(\#\{prefix\}/share/(info|man))]
-    problems << " * \"#{$1}\" should be \"\#{#{$2}}\""
-  end
-
-  # Commented-out depends_on
-  if text =~ /#\s*depends_on\s+(.+)\s*$/
-    problems << " * Commented-out dep #{$1}."
-  end
-
-  # No trailing whitespace, please
-  if text =~ /(\t|[ ])+$/
-    problems << " * Trailing whitespace was found."
-  end
-
-  if text =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
-    problems << " * Use \"if ARGV.build_#{$1.downcase}?\" instead"
-  end
-
-  if text =~ /make && make/
-    problems << " * Use separate make calls."
-  end
-
-  if text =~ /^[ ]*\t/
-    problems << " * Use spaces instead of tabs for indentation"
-  end
-
-  # xcodebuild should specify SYMROOT
-  if text =~ /system\s+['"]xcodebuild/ and not text =~ /SYMROOT=/
-    problems << " * xcodebuild should be passed an explicit \"SYMROOT\""
-  end
-
-  # using ARGV.flag? for formula options is generally a bad thing
-  if text =~ /ARGV\.flag\?/
-    problems << " * Use 'ARGV.include?' instead of 'ARGV.flag?'"
-  end
-
-  # Avoid hard-coding compilers
-  if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]]
-    problems << " * Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
-  end
-
-  if text =~ %r[(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]]
-    problems << " * Use \"\#{ENV.cxx}\" instead of hard-coding \"#{$3}\""
-  end
-
-  if text =~ /system\s+['"](env|export)/
-    problems << " * Use ENV instead of invoking '#{$1}' to modify the environment"
-  end
-
-  if text =~ /version == ['"]HEAD['"]/
-    problems << " * Use 'ARGV.build_head?' instead of inspecting 'version'"
-  end
-
-  return problems
-end
-
-INSTALL_OPTIONS = %W[
-  --build-from-source
-  --debug
-  --devel
-  --force
-  --fresh
-  --HEAD
-  --ignore-dependencies
-  --interactive
-  --use-clang
-  --use-gcc
-  --use-llvm
-  --verbose
-].freeze
-
-def audit_formula_patches f
-  problems = []
-  patches = Patches.new(f.patches)
-  patches.each do |p|
-    next unless p.external?
-    case p.url
-    when %r[raw\.github\.com], %r[gist\.github\.com/raw]
-      problems << " * Using raw GitHub URLs is not recommended:"
-      problems << "   #{p.url}"
-    when %r[macports/trunk]
-      problems << " * MacPorts patches should specify a revision instead of trunk:"
-      problems << "   #{p.url}"
-    end
-  end
-  return problems
-end
-
-def audit_formula_urls f
-  problems = []
-
-  unless f.homepage =~ %r[^https?://]
-    problems << " * The homepage should start with http or https."
-  end
-
-  # Google Code homepages should end in a slash
-  if f.homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
-    problems << " * Google Code homepage should end with a slash."
-  end
-
-  urls = [(f.stable.url rescue nil), (f.devel.url rescue nil), (f.head.url rescue nil)].reject {|p| p.nil?}
-
-  # Check GNU urls; doesn't apply to mirrors
-  urls.each do |p|
-    if p =~ %r[^(https?|ftp)://(.+)/gnu/]
-      problems << " * \"ftpmirror.gnu.org\" is preferred for GNU software."
-    end
-  end
-
-  # the rest of the checks apply to mirrors as well
-  mirrors = [(f.stable.mirrors rescue []), (f.devel.mirrors rescue [])].flatten.reject { |m| m.nil? }
-  urls.concat mirrors.map { |m| m[:url] }
-
-  # Check SourceForge urls
-  urls.each do |p|
-    # Is it a filedownload (instead of svnroot)
-    next if p =~ %r[/svnroot/]
-    next if p =~ %r[svn\.sourceforge]
-
-    # Is it a sourceforge http(s) URL?
-    next unless p =~ %r[^https?://.*\bsourceforge\.]
-
-    if p =~ /(\?|&)use_mirror=/
-      problems << " * Update this url (don't use #{$1}use_mirror)."
-    end
-
-    if p =~ /\/download$/
-      problems << " * Update this url (don't use /download)."
-    end
-
-    if p =~ %r[^http://prdownloads\.]
-      problems << " * Update this url (don't use prdownloads)."
-    end
-
-    if p =~ %r[^http://\w+\.dl\.]
-      problems << " * Update this url (don't use specific dl mirrors)."
-    end
-  end
-
-  # Check for git:// urls; https:// is preferred.
-  urls.each do |p|
-    if p =~ %r[^git://github\.com/]
-      problems << " * Use https:// URLs for accessing repositories on GitHub."
-    end
-  end
-
-  return problems
-end
-
-def audit_formula_specs f
-  problems = []
-
-  [:stable, :devel].each do |spec|
-    s = f.send(spec)
-    next if s.nil?
-
-    if s.version.to_s.empty?
-      problems << " * invalid or missing #{spec} version"
-    else
-      version_text = s.version if s.explicit_version?
-      version_url = Pathname.new(s.url).version
-      if version_url == version_text
-        problems << " * #{spec} version #{version_text} is redundant with version scanned from URL"
-      end
-    end
-
-    cksum = s.checksum
-    next if cksum.nil?
-
-    len = case cksum.hash_type
-      when :md5 then 32
-      when :sha1 then 40
-      when :sha256 then 64
-      end
-
-    if cksum.empty?
-      problems << " * #{cksum.hash_type} is empty"
-    else
-      problems << " * #{cksum.hash_type} should be #{len} characters" unless cksum.hexdigest.length == len
-      problems << " * #{cksum.hash_type} contains invalid characters" unless cksum.hexdigest =~ /^[a-fA-F0-9]+$/
-      problems << " * #{cksum.hash_type} should be lowercase" unless cksum.hexdigest == cksum.hexdigest.downcase
-    end
-  end
-
-  return problems
-end
-
-def audit_formula_instance f
-  problems = []
-
-  # Don't depend_on aliases; use full name
-  aliases = Formula.aliases
-  f.deps.select {|d| aliases.include? d}.each do |d|
-    problems << " * Dep #{d} is an alias; switch to the real name."
-  end
-
-  # Check for things we don't like to depend on.
-  # We allow non-Homebrew installs whenever possible.
-  f.deps.each do |d|
-    begin
-      dep_f = Formula.factory d
-    rescue
-      problems << " * Can't find dependency \"#{d}\"."
-    end
-
-    case d.name
-    when "git", "python", "ruby", "emacs", "mysql", "postgresql", "mercurial"
-      problems << <<-EOS
- * Don't use #{d} as a dependency. We allow non-Homebrew
-   #{d} installations.
-EOS
-    when 'gfortran'
-      problems << " * Use ENV.fortran during install instead of depends_on 'gfortran'"
-
-    when 'open-mpi', 'mpich2'
-      problems << <<-EOS.undent
-          * There are multiple conflicting ways to install MPI. Use a MPIDependency:
-              depends_on MPIDependency.new(<lang list>)
-            Where <lang list> is a comma delimited list that can include:
-              :cc, :cxx, :f90, :f77
-        EOS
-    end
-  end
-
-  return problems
-end
-
 # Formula extensions for auditing
 class Formula
   def head_only?
     @head and @stable.nil?
   end
 
-  def formula_text
-    File.open(@path, "r") { |afile| return afile.read }
+  def text
+    @text ||= FormulaText.new(@path)
   end
 end
 
-module Homebrew extend self
-  def audit
-    errors = false
+class FormulaText
+  def initialize path
+    @text = path.open('r') { |f| f.read }
+  end
 
-    brew_count = 0
-    problem_count = 0
+  def without_patch
+    @text.split("__END__")[0].strip()
+  end
 
-    ff.each do |f|
-      # We need to do this in case the formula defines a patch that uses DATA.
-      f.class.redefine_const :DATA, ""
+  def has_DATA?
+    /\bDATA\b/ =~ @text
+  end
 
-      problems = []
-      problems += [' * head-only formula'] if f.head_only?
-      problems += audit_formula_instance f
-      problems += audit_formula_urls f
-      problems += audit_formula_patches f
+  def has_END?
+    /^__END__$/ =~ @text
+  end
 
-      perms = File.stat(f.path).mode
-      if perms.to_s(8) != "100644"
-        problems << " * permissions wrong; chmod 644 #{f.path}"
+  def has_trailing_newline?
+    /\Z\n/ =~ @text
+  end
+end
+
+class FormulaAuditor
+  include FormulaCellarChecks
+
+  attr_reader :f, :text, :problems
+
+  BUILD_TIME_DEPS = %W[
+    autoconf
+    automake
+    boost-build
+    bsdmake
+    cmake
+    imake
+    intltool
+    libtool
+    pkg-config
+    scons
+    smake
+    swig
+  ]
+
+  def initialize f
+    @f = f
+    @problems = []
+    @text = f.text.without_patch
+    @specs = %w{stable devel head}.map { |s| f.send(s) }.compact
+
+    # We need to do this in case the formula defines a patch that uses DATA.
+    f.class.redefine_const :DATA, ""
+  end
+
+  def audit_file
+    unless f.path.stat.mode.to_s(8) == "100644"
+      problem "Incorrect file permissions: chmod 644 #{f.path}"
+    end
+
+    if f.text.has_DATA? and not f.text.has_END?
+      problem "'DATA' was found, but no '__END__'"
+    end
+
+    if f.text.has_END? and not f.text.has_DATA?
+      problem "'__END__' was found, but 'DATA' is not used"
+    end
+
+    unless f.text.has_trailing_newline?
+      problem "File should end with a newline"
+    end
+  end
+
+  def audit_deps
+    # Don't depend_on aliases; use full name
+    @@aliases ||= Formula.aliases
+    f.deps.select { |d| @@aliases.include? d.name }.each do |d|
+      real_name = d.to_formula.name
+      problem "Dependency '#{d}' is an alias; use the canonical name '#{real_name}'."
+    end
+
+    # Check for things we don't like to depend on.
+    # We allow non-Homebrew installs whenever possible.
+    f.deps.each do |dep|
+      begin
+        dep_f = dep.to_formula
+      rescue FormulaUnavailableError
+        problem "Can't find dependency #{dep.name.inspect}."
+        next
       end
 
-      text = f.formula_text
-
-      # DATA with no __END__
-      if (text =~ /\bDATA\b/) and not (text =~ /^\s*__END__\s*$/)
-        problems << " * 'DATA' was found, but no '__END__'"
+      dep.options.reject do |opt|
+        # TODO -- fix for :recommended, should still allow --with-xyz
+        dep_f.build.has_option?(opt.name)
+      end.each do |opt|
+        problem "Dependency #{dep} does not define option #{opt.name.inspect}"
       end
 
-      # files should end with a newline
-      if text =~ /.+\z/
-        problems << " * File should end with a newline"
+      case dep.name
+      when *BUILD_TIME_DEPS
+        next if dep.build? or dep.run?
+        problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
+      when "git", "ruby", "emacs", "mercurial"
+        problem <<-EOS.undent
+          Don't use #{dep} as a dependency. We allow non-Homebrew
+          #{dep} installations.
+          EOS
+      when 'gfortran'
+        problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
+      when 'open-mpi', 'mpich2'
+        problem <<-EOS.undent
+          There are multiple conflicting ways to install MPI. Use an MPIDependency:
+            depends_on :mpi => [<lang list>]
+          Where <lang list> is a comma delimited list that can include:
+            :cc, :cxx, :f77, :f90
+          EOS
+      end
+    end
+  end
+
+  def audit_conflicts
+    f.conflicts.each do |c|
+      begin
+        Formula.factory(c.name)
+      rescue FormulaUnavailableError
+        problem "Can't find conflicting formula #{c.name.inspect}."
+      end
+    end
+  end
+
+  def audit_urls
+    unless f.homepage =~ %r[^https?://]
+      problem "The homepage should start with http or https (url is #{f.homepage})."
+    end
+
+    # Check for http:// GitHub homepage urls, https:// is preferred.
+    # Note: only check homepages that are repo pages, not *.github.com hosts
+    if f.homepage =~ %r[^http://github\.com/]
+      problem "Use https:// URLs for homepages on GitHub (url is #{f.homepage})."
+    end
+
+    # Google Code homepages should end in a slash
+    if f.homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
+      problem "Google Code homepage should end with a slash (url is #{f.homepage})."
+    end
+
+    urls = @specs.map(&:url)
+
+    # Check GNU urls; doesn't apply to mirrors
+    urls.grep(%r[^(?:https?|ftp)://(?!alpha).+/gnu/]) do |u|
+      problem "\"ftpmirror.gnu.org\" is preferred for GNU software (url is #{u})."
+    end
+
+    # the rest of the checks apply to mirrors as well
+    urls.concat(@specs.map(&:mirrors).flatten)
+
+    # Check SourceForge urls
+    urls.each do |p|
+      # Skip if the URL looks like a SVN repo
+      next if p =~ %r[/svnroot/]
+      next if p =~ %r[svn\.sourceforge]
+
+      # Is it a sourceforge http(s) URL?
+      next unless p =~ %r[^https?://.*\bsourceforge\.com]
+
+      if p =~ /(\?|&)use_mirror=/
+        problem "Don't use #{$1}use_mirror in SourceForge urls (url is #{p})."
       end
 
-      # Don't try remaining audits on text in __END__
-      text_without_patch = (text.split("__END__")[0]).strip()
+      if p =~ /\/download$/
+        problem "Don't use /download in SourceForge urls (url is #{p})."
+      end
 
-      problems += audit_formula_text(f.name, text_without_patch)
-      problems += audit_formula_specs(f)
+      if p =~ %r[^https?://sourceforge\.]
+        problem "Use http://downloads.sourceforge.net to get geolocation (url is #{p})."
+      end
 
-      unless problems.empty?
-        errors = true
-        puts "#{f.name}:"
-        puts problems * "\n"
-        puts
-        brew_count += 1
-        problem_count += problems.select{ |p| p.start_with? ' *' }.size
+      if p =~ %r[^https?://prdownloads\.]
+        problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" +
+                "\tSee: http://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
+      end
+
+      if p =~ %r[^http://\w+\.dl\.]
+        problem "Don't use specific dl mirrors in SourceForge urls (url is #{p})."
       end
     end
 
-    ofail "#{problem_count} problems in #{brew_count} brews" if errors
+    # Check for git:// GitHub repo urls, https:// is preferred.
+    urls.grep(%r[^git://[^/]*github\.com/]) do |u|
+      problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
+    end
+
+    # Check for http:// GitHub repo urls, https:// is preferred.
+    urls.grep(%r[^http://github\.com/.*\.git$]) do |u|
+      problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
+    end
+
+    # Use new-style archive downloads
+    urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
+      problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
+    end
+  end
+
+  def audit_specs
+    problem "Head-only (no stable download)" if f.head_only?
+
+    %w[Stable Devel HEAD].each do |name|
+      next unless spec = f.send(name.downcase)
+
+      ra = ResourceAuditor.new(spec).audit
+      problems.concat ra.problems.map { |problem| "#{name}: #{problem}" }
+
+      spec.resources.each_value do |resource|
+        ra = ResourceAuditor.new(resource).audit
+        problems.concat ra.problems.map { |problem|
+          "#{name} resource #{resource.name.inspect}: #{problem}"
+        }
+      end
+    end
+  end
+
+  def audit_patches
+    Patches.new(f.patches).select(&:external?).each do |p|
+      case p.url
+      when %r[raw\.github\.com], %r[gist\.github\.com/raw], %r[gist\.github\.com/.+/raw$]
+        unless p.url =~ /[a-fA-F0-9]{40}/
+          problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
+        end
+      when %r[macports/trunk]
+        problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
+      end
+    end
+  end
+
+  def audit_text
+    if text =~ /system\s+['"]xcodebuild/ && text !~ /SYMROOT=/
+      problem "xcodebuild should be passed an explicit \"SYMROOT\""
+    end
+  end
+
+  def audit_line(line)
+    if line =~ /<(Formula|AmazonWebServicesFormula|ScriptFileFormula|GithubGistFormula)/
+      problem "Use a space in class inheritance: class Foo < #{$1}"
+    end
+
+    # Commented-out cmake support from default template
+    if line =~ /# system "cmake/
+      problem "Commented cmake call found"
+    end
+
+    # Comments from default template
+    if line =~ /# PLEASE REMOVE/
+      problem "Please remove default template comments"
+    end
+    if line =~ /# if this fails, try separate make\/make install steps/
+      problem "Please remove default template comments"
+    end
+    if line =~ /# if your formula requires any X11\/XQuartz components/
+      problem "Please remove default template comments"
+    end
+    if line =~ /# if your formula's build system can't parallelize/
+      problem "Please remove default template comments"
+    end
+
+    # FileUtils is included in Formula
+    # encfs modifies a file with this name, so check for some leading characters
+    if line =~ /[^'"\/]FileUtils\.(\w+)/
+      problem "Don't need 'FileUtils.' before #{$1}."
+    end
+
+    # Check for long inreplace block vars
+    if line =~ /inreplace .* do \|(.{2,})\|/
+      problem "\"inreplace <filenames> do |s|\" is preferred over \"|#{$1}|\"."
+    end
+
+    # Check for string interpolation of single values.
+    if line =~ /(system|inreplace|gsub!|change_make_var!).*[ ,]"#\{([\w.]+)\}"/
+      problem "Don't need to interpolate \"#{$2}\" with #{$1}"
+    end
+
+    # Check for string concatenation; prefer interpolation
+    if line =~ /(#\{\w+\s*\+\s*['"][^}]+\})/
+      problem "Try not to concatenate paths in string interpolation:\n   #{$1}"
+    end
+
+    # Prefer formula path shortcuts in Pathname+
+    if line =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share)[/'"])}
+      problem "\"(#{$1}...#{$2})\" should be \"(#{$3}+...)\""
+    end
+
+    if line =~ %r[((man)\s*\+\s*(['"])(man[1-8])(['"]))]
+      problem "\"#{$1}\" should be \"#{$4}\""
+    end
+
+    # Prefer formula path shortcuts in strings
+    if line =~ %r[(\#\{prefix\}/(bin|include|libexec|lib|sbin|share))]
+      problem "\"#{$1}\" should be \"\#{#{$2}}\""
+    end
+
+    if line =~ %r[((\#\{prefix\}/share/man/|\#\{man\}/)(man[1-8]))]
+      problem "\"#{$1}\" should be \"\#{#{$3}}\""
+    end
+
+    if line =~ %r[((\#\{share\}/(man)))[/'"]]
+      problem "\"#{$1}\" should be \"\#{#{$3}}\""
+    end
+
+    if line =~ %r[(\#\{prefix\}/share/(info|man))]
+      problem "\"#{$1}\" should be \"\#{#{$2}}\""
+    end
+
+    # Commented-out depends_on
+    if line =~ /#\s*depends_on\s+(.+)\s*$/
+      problem "Commented-out dep #{$1}"
+    end
+
+    # No trailing whitespace, please
+    if line =~ /[\t ]+$/
+      problem "Trailing whitespace was found"
+    end
+
+    if line =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
+      problem "Use \"if ARGV.build_#{$1.downcase}?\" instead"
+    end
+
+    if line =~ /make && make/
+      problem "Use separate make calls"
+    end
+
+    if line =~ /^[ ]*\t/
+      problem "Use spaces instead of tabs for indentation"
+    end
+
+    if line =~ /ENV\.x11/
+      problem "Use \"depends_on :x11\" instead of \"ENV.x11\""
+    end
+
+    # Avoid hard-coding compilers
+    unless f.name == 'go' # Go needs to set CC for cgo support.
+      if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
+        problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
+      end
+    end
+
+    if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]}
+      problem "Use \"\#{ENV.cxx}\" instead of hard-coding \"#{$3}\""
+    end
+
+    if line =~ /system\s+['"](env|export)/
+      problem "Use ENV instead of invoking '#{$1}' to modify the environment"
+    end
+
+    if line =~ /version == ['"]HEAD['"]/
+      problem "Use 'build.head?' instead of inspecting 'version'"
+    end
+
+    if line =~ /build\.include\?\s+['"]\-\-(.*)['"]/
+      problem "Reference '#{$1}' without dashes"
+    end
+
+    if line =~ /build\.with\?\s+['"]-?-?with-(.*)['"]/
+      problem "No double 'with': Use `build.with? '#{$1}'` to check for \"--with-#{$1}\""
+    end
+
+    if line =~ /build\.without\?\s+['"]-?-?without-(.*)['"]/
+      problem "No double 'without': Use `build.without? '#{$1}'` to check for \"--without-#{$1}\""
+    end
+
+    unless f.name == 'mongodb' # Mongo writes out a Ruby script that uses ARGV
+      if line =~ /ARGV\.(?!(debug\?|verbose\?|value[\(\s]))/
+        problem "Use build instead of ARGV to check options"
+      end
+    end
+
+    if line =~ /def options/
+      problem "Use new-style option definitions"
+    end
+
+    if line =~ /MACOS_VERSION/
+      problem "Use MacOS.version instead of MACOS_VERSION"
+    end
+
+    cats = %w{leopard snow_leopard lion mountain_lion}.join("|")
+    if line =~ /MacOS\.(?:#{cats})\?/
+      problem "\"#{$&}\" is deprecated, use a comparison to MacOS.version instead"
+    end
+
+    if line =~ /skip_clean\s+:all/
+      problem "`skip_clean :all` is deprecated; brew no longer strips symbols"
+    end
+
+    if line =~ /depends_on [A-Z][\w:]+\.new$/
+      problem "`depends_on` can take requirement classes instead of instances"
+    end
+
+    if line =~ /^def (\w+).*$/
+      problem "Define method #{$1.inspect} in the class body, not at the top-level"
+    end
+
+    if line =~ /ENV.fortran/
+      problem "Use `depends_on :fortran` instead of `ENV.fortran`"
+    end
+
+    if line =~ /depends_on :(.+) (if.+|unless.+)$/
+      audit_conditional_dep($1.to_sym, $2, $&)
+    end
+
+    if line =~ /depends_on ['"](.+)['"] (if.+|unless.+)$/
+      audit_conditional_dep($1, $2, $&)
+    end
+  end
+
+  def audit_conditional_dep(dep, condition, line)
+    quoted_dep = quote_dep(dep)
+    dep = Regexp.escape(dep.to_s)
+
+    case condition
+    when /if build\.include\? ['"]with-#{dep}['"]$/, /if build\.with\? ['"]#{dep}['"]$/
+      problem %{Replace #{line.inspect} with "depends_on #{quoted_dep} => :optional"}
+    when /unless build\.include\? ['"]without-#{dep}['"]$/, /unless build\.without\? ['"]#{dep}['"]$/
+      problem %{Replace #{line.inspect} with "depends_on #{quoted_dep} => :recommended"}
+    end
+  end
+
+  def quote_dep(dep)
+    Symbol === dep ? dep.inspect : "'#{dep}'"
+  end
+
+  def audit_check_output warning_and_description
+    return unless warning_and_description
+    warning, description = *warning_and_description
+    problem "#{warning}\n#{description}"
+  end
+
+  def audit_installed
+    audit_check_output(check_manpages)
+    audit_check_output(check_infopages)
+    audit_check_output(check_jars)
+    audit_check_output(check_non_libraries)
+    audit_check_output(check_non_executables(f.bin))
+    audit_check_output(check_generic_executables(f.bin))
+    audit_check_output(check_non_executables(f.sbin))
+    audit_check_output(check_generic_executables(f.sbin))
+  end
+
+  def audit
+    audit_file
+    audit_specs
+    audit_urls
+    audit_deps
+    audit_conflicts
+    audit_patches
+    audit_text
+    text.each_line { |line| audit_line(line) }
+    audit_installed
+  end
+
+  private
+
+  def problem p
+    @problems << p
+  end
+end
+
+class ResourceAuditor
+  attr_reader :problems
+  attr_reader :version, :checksum, :using, :specs, :url
+
+  def initialize(resource)
+    @version  = resource.version
+    @checksum = resource.checksum
+    @url      = resource.url
+    @using    = resource.using
+    @specs    = resource.specs
+    @problems = []
+  end
+
+  def audit
+    audit_version
+    audit_checksum
+    audit_download_strategy
+    self
+  end
+
+  def audit_version
+    if version.nil?
+      problem "missing version"
+    elsif version.to_s.empty?
+      problem "version is set to an empty string"
+    elsif not version.detected_from_url?
+      version_text = version
+      version_url = Version.detect(url, specs)
+      if version_url.to_s == version_text.to_s && version.instance_of?(Version)
+        problem "version #{version_text} is redundant with version scanned from URL"
+      end
+    end
+
+    if version.to_s =~ /^v/
+      problem "version #{version} should not have a leading 'v'"
+    end
+  end
+
+  def audit_checksum
+    return unless checksum
+
+    case checksum.hash_type
+    when :md5
+      problem "MD5 checksums are deprecated, please use SHA1 or SHA256"
+      return
+    when :sha1   then len = 40
+    when :sha256 then len = 64
+    end
+
+    if checksum.empty?
+      problem "#{checksum.hash_type} is empty"
+    else
+      problem "#{checksum.hash_type} should be #{len} characters" unless checksum.hexdigest.length == len
+      problem "#{checksum.hash_type} contains invalid characters" unless checksum.hexdigest =~ /^[a-fA-F0-9]+$/
+      problem "#{checksum.hash_type} should be lowercase" unless checksum.hexdigest == checksum.hexdigest.downcase
+    end
+  end
+
+  def audit_download_strategy
+    return unless using
+
+    url_strategy   = DownloadStrategyDetector.detect(url)
+    using_strategy = DownloadStrategyDetector.detect('', using)
+
+    if url_strategy == using_strategy
+      problem "redundant :using specification in URL"
+    end
+  end
+
+  def problem text
+    @problems << text
   end
 end

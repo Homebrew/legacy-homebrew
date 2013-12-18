@@ -1,44 +1,92 @@
 require 'formula'
 
-class TexInstalled < Requirement
-  def message; <<-EOS.undent
-    A TeX/LaTeX installation is required to install.
-    You can obtain the TeX distribution for Mac OS X from:
-        http://www.tug.org/mactex/
-    EOS
-  end
-  def satisfied?
-    which 'mpost'
-  end
-  def fatal?
-    true
-  end
+# Necessary until upstream resolves the incompatibility issue with texinfo 5.
+# When this is fixed upstream, replace with a normal texinfo dependency
+class Texinfo4 < Formula
+  homepage 'http://www.gnu.org/software/texinfo/'
+  url 'http://ftp.gnu.org/gnu/texinfo/texinfo-4.13a.tar.gz'
+  sha1 'a1533cf8e03ea4fa6c443b73f4c85e4da04dead0'
 end
 
 class Lilypond < Formula
   homepage 'http://lilypond.org/'
-  url 'http://download.linuxaudio.org/lilypond/sources/v2.14/lilypond-2.14.2.tar.gz'
-  md5 '4053a19e03181021893981280feb9aaa'
+  url 'http://download.linuxaudio.org/lilypond/sources/v2.16/lilypond-2.16.2.tar.gz'
+  sha1 '1eb3b0e5c117a8669dba19ab28f933351e51e39a'
 
-  depends_on TexInstalled.new
+  devel do
+    url 'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.95.tar.gz'
+    sha1 'fb4dedb14a5616b2ac1f9031030c9a615f807548'
+  end
+
+  env :std
+
+  option 'with-doc', "Build documentation in addition to binaries (may require several hours)."
+
+  depends_on :tex
+  depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'pango'
   depends_on 'guile'
   depends_on 'ghostscript'
   depends_on 'mftrace'
-  depends_on 'fontforge'
-  depends_on 'texinfo'
+  depends_on 'fontforge' => ["with-x", "with-cairo"]
+  depends_on 'fondu'
+  # Add dependency on keg-only Homebrew 'flex' because Apple bundles an older and incompatible
+  # version of the library with 10.7 at least, seems slow keeping up with updates,
+  # and the extra brew is tiny anyway.
+  depends_on 'flex' => :build
 
-  skip_clean :all
+  # Assert documentation dependencies if requested.
+  if build.include? 'with-doc'
+    depends_on 'netpbm'
+    depends_on 'imagemagick'
+    depends_on 'docbook'
+    depends_on :python => ['dbtexmf.dblatex' => 'dblatex']
+    depends_on 'texi2html'
+  end
+
+  fails_with :clang do
+    cause 'Strict C99 compliance error in a pointer conversion.'
+  end
 
   def install
+    # This texinfo4 business will be no longer needed, either,
+    # once the aforementioned issue is resolved.
+    texinfo4_prefix = libexec+'texinfo4'
+    Texinfo4.new.brew do
+      system "./configure", "--disable-dependency-tracking",
+                            "--disable-install-warnings",
+                            "--prefix=#{texinfo4_prefix}"
+      system "make CXX=#{ENV.cxx} install"
+    end
+    ENV.prepend_path 'PATH', "#{texinfo4_prefix}/bin"
+
     gs = Formula.factory('ghostscript')
-    system "./configure", "--prefix=#{prefix}",
-                          "--with-ncsb-dir=#{gs.share}/ghostscript/fonts/"
+
+    args = ["--prefix=#{prefix}",
+            "--enable-rpath",
+            "--with-ncsb-dir=#{gs.share}/ghostscript/fonts/"]
+
+    args << "--disable-documentation" unless build.include? 'with-doc'
+    system "./configure", *args
 
     # Separate steps to ensure that lilypond's custom fonts are created.
-    system "make"
+    system 'make all'
     system "make install"
+
+    # Build documentation if requested.
+    if build.include? 'with-doc'
+      system "make doc"
+      system "make install-doc"
+    end
+  end
+
+  test do
+    (testpath/'test.ly').write <<-EOS.undent
+      \\header { title = "Do-Re-Mi" }
+      { c' d' e' }
+    EOS
+    system "#{bin}/lilypond", "test.ly"
   end
 end

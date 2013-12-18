@@ -3,7 +3,7 @@ require 'formula'
 class Gegl < Formula
   homepage 'http://www.gegl.org/'
   url 'ftp://ftp.gimp.org/pub/gegl/0.2/gegl-0.2.0.tar.bz2'
-  md5 '32b00002f1f1e316115c4ed922e1dec8'
+  sha1 '764cc66cb3c7b261b8fc18a6268a0e264a91d573'
 
   option :universal
 

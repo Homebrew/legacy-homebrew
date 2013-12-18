@@ -1,9 +1,9 @@
 require 'formula'
 
 class Axel < Formula
-  url 'http://alioth.debian.org/frs/download.php/3016/axel-2.4.tar.bz2'
-  homepage 'http://freshmeat.net/projects/axel/'
-  md5 '5fd72e67a682d20874b9f6d073201c6a'
+  homepage 'http://packages.debian.org/wheezy/axel'
+  url 'http://ftp.de.debian.org/debian/pool/main/a/axel/axel_2.4.orig.tar.gz'
+  sha1 '6d89a7ce797ddf4c23a210036d640d013fe843ca'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--debug=0", "--i18n=0"

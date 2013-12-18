@@ -3,7 +3,7 @@ require 'formula'
 class Babl < Formula
   homepage 'http://www.gegl.org/babl/'
   url 'ftp://ftp.gtk.org/pub/babl/0.1/babl-0.1.10.tar.bz2'
-  md5 '9e1542ab5c0b12ea3af076a9a2f02d79'
+  sha1 'ee60089e8e9d9390e730d3ae5e41074549928b7a'
 
   head 'git://git.gnome.org/babl'
 

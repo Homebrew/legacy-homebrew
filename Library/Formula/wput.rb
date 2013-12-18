@@ -3,7 +3,7 @@ require 'formula'
 class Wput < Formula
   homepage 'http://wput.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/wput/wput/0.6.2/wput-0.6.2.tgz'
-  md5 'a14c4c13d91d04d6119bdc977e8a8bdf'
+  sha1 'c058f76395672d1fbbb839c958d6537e82fc88b7'
 
   # The patch is to skip inclusion of malloc.h only on OSX. Upstream:
   # https://sourceforge.net/tracker/?func=detail&aid=3481469&group_id=141519&atid=749615

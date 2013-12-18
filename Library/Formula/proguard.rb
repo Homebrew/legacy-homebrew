@@ -2,14 +2,11 @@ require 'formula'
 
 class Proguard < Formula
   homepage 'http://proguard.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/proguard/proguard/4.8/proguard4.8.tar.gz'
-  sha256 '84db4aef4235ad312e221ae95485d7848fc468db66699f1b155d89c5036374f6'
+  url 'http://downloads.sourceforge.net/project/proguard/proguard/4.10/proguard4.10.tar.gz'
+  sha256 'a8ef5a95ae0c41c0a1a2aae5daa70c4c376fa49a9318a6d776aed2fcd76e8f4d'
 
   def install
     libexec.install 'lib/proguard.jar'
-    (bin+"proguard").write <<-EOS.undent
-      #!/bin/sh
-      java -jar "#{libexec}/proguard.jar" "$@"
-    EOS
+    bin.write_jar_script libexec/'proguard.jar', 'proguard'
   end
 end

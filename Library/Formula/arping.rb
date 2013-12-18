@@ -2,8 +2,8 @@ require 'formula'
 
 class Arping < Formula
   homepage 'https://github.com/ThomasHabets/arping'
-  url 'https://github.com/ThomasHabets/arping/tarball/arping-2.11'
-  sha1 '8a02193f3f1d2faaf717c0ea31c42d5c1aeb826e'
+  url 'https://github.com/ThomasHabets/arping/archive/arping-2.12.tar.gz'
+  sha1 '9109330968cc058f735d59d1a81e8cef760969b5'
 
   depends_on 'libnet'
 

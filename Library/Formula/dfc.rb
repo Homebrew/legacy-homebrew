@@ -2,10 +2,14 @@ require 'formula'
 
 class Dfc < Formula
   homepage 'http://projects.gw-computing.net/projects/dfc'
-  url 'http://projects.gw-computing.net/attachments/download/42/dfc-2.5.0.tar.gz'
-  md5 'e9c5e862858ab2cd4a7b2270c26722ef'
+  url 'http://projects.gw-computing.net/attachments/download/79/dfc-3.0.4.tar.gz'
+  sha1 'e3b7fc7474f2ca36c1370a3dcbcd3d1020766f1a'
+
+  depends_on 'cmake' => :build
+  depends_on 'gettext'
 
   def install
-    system "make", "PREFIX=#{prefix}", "MANDIR=#{man}", "install"
+    system "cmake", ".", *std_cmake_args
+    system "make install"
   end
 end

@@ -2,11 +2,15 @@ require 'formula'
 
 class Ninja < Formula
   homepage 'https://github.com/martine/ninja'
-  url 'https://github.com/martine/ninja/tarball/release-120715'
-  sha1 '623e7e86f05c76fe8ea8b5ce72f2a3a2a891ff38'
+  url 'https://github.com/martine/ninja/archive/v1.4.0.tar.gz'
+  sha1 '3ab2fcb71e9f70c19cda2d63983cdfe0f971d04f'
+  head 'https://github.com/martine/ninja.git'
+
+  depends_on :python
 
   def install
-    system "./bootstrap.py"
+    system python, "./bootstrap.py"
     bin.install "ninja"
+    bash_completion.install 'misc/bash-completion' => 'ninja-completion.sh'
   end
 end

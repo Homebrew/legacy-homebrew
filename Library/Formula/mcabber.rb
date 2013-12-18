@@ -2,10 +2,19 @@ require 'formula'
 
 class Mcabber < Formula
   homepage 'http://mcabber.com/'
-  url 'http://mcabber.com/files/mcabber-0.10.1.tar.bz2'
-  md5 'fe96beab30f535d5d6270fd1719659b4'
+  url 'http://mcabber.com/files/mcabber-0.10.2.tar.bz2'
+  sha1 '7bff70dcf09e8a8a4cc7219e03b48bad382a6bda'
 
-  head 'http://mcabber.com/hg/', :using => :hg
+  head do
+    url 'http://mcabber.com/hg/', :using => :hg
+
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
+
+  option 'enable-enchant', 'Enable spell checking support via enchant'
+  option 'enable-aspell', 'Enable spell checking support via aspell'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -14,23 +23,11 @@ class Mcabber < Formula
   depends_on 'libgcrypt'
   depends_on 'libotr'
   depends_on 'libidn'
-  depends_on 'aspell' if ARGV.include? '--enable-aspell'
-  depends_on 'enchant' if ARGV.include? '--enable-enchant'
-
-  if ARGV.build_head?
-    depends_on :automake
-    depends_on :libtool
-  end
-
-  def options
-    [
-      ["--enable-enchant", "Enable spell checking support via enchant"],
-      ["--enable-aspell", "Enable spell checking support via aspell"],
-    ]
-  end
+  depends_on 'aspell' if build.include? 'enable-aspell'
+  depends_on 'enchant' if build.include? 'enable-enchant'
 
   def install
-    if ARGV.build_head? then
+    if build.head?
       ENV['LIBTOOLIZE'] = 'glibtoolize'
       ENV['ACLOCAL'] = "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
       cd 'mcabber' # Not using block form on purpose
@@ -43,8 +40,8 @@ class Mcabber < Formula
             "--prefix=#{prefix}",
             "--enable-otr"]
 
-    args << "--enable-aspell" if ARGV.include? "--enable-aspell"
-    args << "--enable-enchant" if ARGV.include? "--enable-enchant"
+    args << "--enable-aspell" if build.include? 'enable-aspell'
+    args << "--enable-enchant" if build.include? 'enable-enchant'
 
     system "./configure", *args
     system "make install"

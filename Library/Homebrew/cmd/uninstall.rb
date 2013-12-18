@@ -7,9 +7,13 @@ module Homebrew extend self
 
     if not ARGV.force?
       ARGV.kegs.each do |keg|
-        puts "Uninstalling #{keg}..."
-        keg.unlink
-        keg.uninstall
+        keg.lock do
+          puts "Uninstalling #{keg}..."
+          keg.unlink
+          keg.uninstall
+          rm_opt_link keg.fname
+          rm_pin keg.fname
+        end
       end
     else
       ARGV.named.each do |name|
@@ -19,21 +23,28 @@ module Homebrew extend self
         raise "Invalid usage" if name.include? '/'
 
         rack = HOMEBREW_CELLAR/name
+
         if rack.directory?
           puts "Uninstalling #{name}..."
-          rack.children.each do |keg|
-            if keg.directory?
-              keg = Keg.new(keg)
-              keg.unlink
-              keg.rmtree
-            end
-          end
+          rack.subdirs.each { |d| Keg.new(d).unlink }
           rack.rmtree
         end
+
+        rm_opt_link name
+        rm_pin name
       end
     end
   rescue MultipleVersionsInstalledError => e
     ofail e
     puts "Use `brew remove --force #{e.name}` to remove all versions."
+  end
+
+  def rm_opt_link name
+    optlink = HOMEBREW_PREFIX/:opt/name
+    optlink.unlink if optlink.symlink?
+  end
+
+  def rm_pin name
+    Formula.factory(name).unpin rescue nil
   end
 end

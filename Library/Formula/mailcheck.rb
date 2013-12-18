@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mailcheck < Formula
-  url 'http://downloads.sourceforge.net/project/mailcheck/mailcheck/1.91.2/mailcheck_1.91.2.tar.gz'
   homepage 'http://mailcheck.sourceforge.net/'
-  md5 'd2a3a22a65b1006d213d8cb3f4738070'
+  url 'http://downloads.sourceforge.net/project/mailcheck/mailcheck/1.91.2/mailcheck_1.91.2.tar.gz'
+  sha1 '62909555f1afcb411fe097fce6595889dd2c5bcf'
 
   def install
     system "make mailcheck"

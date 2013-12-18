@@ -2,12 +2,13 @@ require 'formula'
 
 class S3cmd < Formula
   homepage 'http://s3tools.org/s3cmd'
-  url 'http://downloads.sourceforge.net/project/s3tools/s3cmd/1.0.1/s3cmd-1.0.1.tar.gz'
-  md5 'dc62becc03a3e6100843611ebe2707c2'
+  url 'https://github.com/s3tools/s3cmd/archive/v1.0.1.zip'
+  sha1 '4a6f7bfb9300b728ca466967b91aa07521ef6f80'
+  head 'https://github.com/s3tools/s3cmd.git'
 
   devel do
-    url 'http://downloads.sourceforge.net/project/s3tools/s3cmd/1.1.0-beta3/s3cmd-1.1.0-beta3.zip'
-    md5 '04f9ed14026972f61407e98b0cbe6445'
+    url 'https://github.com/s3tools/s3cmd/archive/v1.5.0-beta1.zip'
+    sha1 'ce5738c8d389b705b5a1283da6356df92673863b'
   end
 
   def install

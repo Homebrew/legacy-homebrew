@@ -2,8 +2,8 @@ require 'formula'
 
 class Gphoto2 < Formula
   homepage 'http://gphoto.org/'
-  url 'http://downloads.sourceforge.net/project/gphoto/gphoto/2.4.14/gphoto2-2.4.14.tar.bz2'
-  sha1 'e15d9795f10a18c1e8e2ddbd3a99d982b141a625'
+  url 'http://downloads.sourceforge.net/project/gphoto/gphoto/2.5.2/gphoto2-2.5.2.tar.bz2'
+  sha1 '7f620013772318dbe348fdb0ae4638ab9898cc62'
 
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'

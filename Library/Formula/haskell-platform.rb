@@ -2,15 +2,18 @@ require 'formula'
 
 class HaskellPlatform < Formula
   homepage 'http://hackage.haskell.org/platform/'
-  url 'http://lambda.haskell.org/platform/download/2012.2.0.0/haskell-platform-2012.2.0.0.tar.gz'
-  sha1 '91405b8d864d35d90effb9aac3ad9309ea6d86a7'
+  url 'http://lambda.haskell.org/platform/download/2013.2.0.0/haskell-platform-2013.2.0.0.tar.gz'
+  sha1 '8669bb5add1826c0523fb130c095fb8bf23a30ce'
 
   depends_on 'ghc'
 
+  conflicts_with 'cabal-install'
+
   def install
-    # libdir doesn't work if passed to configure, needs to be passed to make install
-    system "./configure", "--prefix=#{prefix}", "--enable-unsupported-ghc-version"
-    system %Q(EXTRA_CONFIGURE_OPTS="--libdir=#{lib}/ghc" make install)
+    # libdir doesn't work if passed to configure, needs to be set in the environment
+    system "./configure", "--prefix=#{prefix}"
+    ENV['EXTRA_CONFIGURE_OPTS'] = "--libdir=#{lib}/ghc"
+    system "make install"
   end
 
   def caveats; <<-EOS.undent

@@ -2,8 +2,8 @@ require 'formula'
 
 class DBus < Formula
   homepage 'http://www.freedesktop.org/wiki/Software/dbus'
-  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.4.18.tar.gz'
-  sha256 'b5e0c3bd37fa0ca5e86e8d17c375d754de6cd5c1d46d5f2158a36ddd51de18cf'
+  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.6.18.tar.gz'
+  sha256 '7085a0895a9eb11a952394cdbea6d8b4358e17cb991fed0e8fb85e2b9e686dcd'
 
   def install
     # Fix the TMPDIR to one D-Bus doesn't reject due to odd symbols
@@ -24,7 +24,9 @@ class DBus < Formula
     system "make install"
 
     (prefix+'org.freedesktop.dbus-session.plist').chmod 0644
+  end
 
+  def post_install
     # Generate D-Bus's UUID for this machine
     system "#{bin}/dbus-uuidgen", "--ensure=#{var}/lib/dbus/machine-id"
   end

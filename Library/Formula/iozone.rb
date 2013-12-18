@@ -2,30 +2,36 @@ require 'formula'
 
 class Iozone < Formula
   homepage 'http://www.iozone.org/'
-  url 'http://www.iozone.org/src/current/iozone3_408.tar'
-  md5 'ff3bc9a075db68b028e6cd5a833353d8'
+  url 'http://www.iozone.org/src/current/iozone3_413.tar'
+  sha1 '397c2aae67f74dc9d189912b2e72ca594b790101'
 
   # Patch by @nijotz, adds O_DIRECT support when using -I flag.
-  # See: https://github.com/mxcl/homebrew/pull/10585
+  # See: https://github.com/Homebrew/homebrew/pull/10585
   def patches
     DATA
   end
 
   def install
-    system "make -C src/current macosx"
-    bin.install 'src/current/iozone'
+    cd 'src/current' do
+      system "make", "macosx", "CC=#{ENV.cc}"
+      bin.install 'iozone'
+      (share/'iozone').install 'Generate_Graphs', 'client_list', 'gengnuplot.sh', 'gnu3d.dem', 'gnuplot.dem', 'gnuplotps.dem', 'iozone_visualizer.pl', 'report.pl'
+    end
     man1.install 'docs/iozone.1'
   end
 
-  def test
-    `#{bin}/iozone -I -s 16M | grep -c O_DIRECT`.chomp == '1'
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/iozone", "-I", "-s", "16M") do |_, stdout, _|
+      assert_match /File size set to 16384 KB/, stdout.read
+    end
   end
 end
 
 __END__
 --- a/src/current/iozone.c      2011-12-16 09:17:05.000000000 -0800
 +++ b/src/current/iozone.c      2012-02-28 16:57:58.000000000 -0800
-@@ -1810,7 +1810,7 @@
+@@ -1820,7 +1810,7 @@
  			break;
  #endif
  #if ! defined(DONT_HAVE_O_DIRECT)

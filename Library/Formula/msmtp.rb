@@ -2,20 +2,26 @@ require 'formula'
 
 class Msmtp < Formula
   homepage 'http://msmtp.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/msmtp/msmtp/1.4.28/msmtp-1.4.28.tar.bz2'
-  md5 '14740478dc9d1f52ec97a415e3373fc7'
+  url 'http://downloads.sourceforge.net/project/msmtp/msmtp/1.4.31/msmtp-1.4.31.tar.bz2'
+  sha1 'c0edce1e1951968853f15209c8509699ff9e9ab5'
 
   depends_on 'pkg-config' => :build
+  depends_on 'curl-ca-bundle' => :optional
 
-  def options
-    [['--with-macosx-keyring', "Support Mac OS X Keyring"]]
-  end
+  # msmtp enables OS X Keychain support by default, so no need to ask for it.
 
   def install
-    args = [ "--disable-dependency-tracking", "--prefix=#{prefix}" ]
-    args << "--with-macosx-keyring" if ARGV.include? '--with-macosx-keyring'
+    # Msmtp will build against gnutls by default if it exists on the
+    # system.  This sets up problems if the user later removes gnutls.
+    # So explicitly ask for openssl, and ye shall receive it whether
+    # or not gnutls is present.
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --with-ssl=openssl
+    ]
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

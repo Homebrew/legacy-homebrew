@@ -23,13 +23,13 @@ module Homebrew extend self
 
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
-    raise "Already tapped!" if tapd.directory?
+    raise AlreadyTappedError if tapd.directory?
     abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
 
     files = []
     tapd.find_formula{ |file| files << tapd.basename.join(file) }
-    tapped = link_tap_formula(files)
-    puts "Tapped #{tapped} formula"
+    link_tap_formula(files)
+    puts "Tapped #{files.length} formula"
 
     # Figure out if this repo is private
     # curl will throw an exception if the repo is private (Github returns a 404)
@@ -67,7 +67,10 @@ module Homebrew extend self
           tapped += 1
         else
           to = to.realpath if to.exist?
-          opoo "Could not tap #{Tty.white}#{from.tap_ref}#{Tty.reset} over #{Tty.white}#{to.tap_ref}#{Tty.reset}"
+          # Whitelist gcc42 temporarily until Mavericks/Xcode 5.0 issues are resolved.
+          unless to.tap_ref == 'Homebrew/homebrew/apple-gcc42'
+            opoo "Could not tap #{Tty.white}#{from.tap_ref}#{Tty.reset} over #{Tty.white}#{to.tap_ref}#{Tty.reset}"
+          end
         end
       end
     end
@@ -80,7 +83,7 @@ module Homebrew extend self
   def repair_taps
     count = 0
     # prune dead symlinks in Formula
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].each do |fn|
+    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].each do |fn|
       if not File.exist? fn
         File.delete fn
         count += 1
@@ -88,11 +91,13 @@ module Homebrew extend self
     end
     puts "Pruned #{count} dead formula"
 
+    return unless HOMEBREW_REPOSITORY.join("Library/Taps").exist?
+
     count = 0
     # check symlinks are all set in each tap
     HOMEBREW_REPOSITORY.join("Library/Taps").children.each do |tap|
       files = []
-      tap.find_formula{ |file| files << tap.basename.join(file) }
+      tap.find_formula{ |file| files << tap.basename.join(file) } if tap.directory?
       count += link_tap_formula(files)
     end
 
@@ -116,7 +121,7 @@ class Pathname
     when %r{^#{HOMEBREW_LIBRARY}/Taps/([a-z\-_]+)-(\w+)/(.+)}
       "#$1/#$2/#{File.basename($3, '.rb')}"
     when %r{^#{HOMEBREW_LIBRARY}/Formula/(.+)}
-      "mxcl/master/#{File.basename($1, '.rb')}"
+      "Homebrew/homebrew/#{File.basename($1, '.rb')}"
     else
       nil
     end

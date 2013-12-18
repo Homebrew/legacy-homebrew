@@ -1,11 +1,16 @@
 require 'formula'
 
 class Justniffer < Formula
-  url 'http://downloads.sourceforge.net/project/justniffer/justniffer/justniffer%200.5.11/justniffer_0.5.11.tar.gz'
   homepage 'http://justniffer.sourceforge.net/'
-  md5 '8545b817c479444b01e74aa7b79fd2c6'
+  url 'http://downloads.sourceforge.net/project/justniffer/justniffer/justniffer%200.5.11/justniffer_0.5.11.tar.gz'
+  sha1 '3f3222361794a6f79f47567753550995c318a037'
 
   depends_on "boost"
+
+  fails_with :clang do
+    build 500
+    cause "Missing ext/stdio_filebuf.h; this is a GCC-specific header"
+  end
 
   # Patch lib/libnids-1.21_patched/configure.gnu so that CFLAGS and/or
   # CXXFLAGS with multiple words doesn't cause an error -- e.g.:
@@ -32,8 +37,11 @@ class Justniffer < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/justniffer --version | grep '^justniffer'"
+  test do
+    require 'open3'
+    Open3.popen3("#{bin}/justniffer", "--version") do |_, stdout, _|
+      assert_match /justniffer #{Regexp.escape(version)}/, stdout.read
+    end
   end
 
   def caveats; <<-EOS.undent

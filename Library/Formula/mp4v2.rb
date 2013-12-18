@@ -15,7 +15,7 @@ class Mp4v2 < Formula
     # Fixes compile error on Lion w/Clang using a patch from svn:
     # http://code.google.com/p/mp4v2/source/detail?r=442
     # It is inline because there's no direct link to the raw patch.
-    DATA unless ARGV.build_devel?
+    DATA unless build.devel?
   end
 
   def install

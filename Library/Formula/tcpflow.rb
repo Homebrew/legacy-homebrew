@@ -2,25 +2,20 @@ require 'formula'
 
 class Tcpflow < Formula
   homepage 'https://github.com/simsong/tcpflow'
-  url 'https://github.com/downloads/simsong/tcpflow/tcpflow-1.2.7.tar.gz'
-  sha1 'e7e71a34afb4d557ebe80e2d589f00d4afd38be4'
+  url 'http://www.digitalcorpora.org/downloads/tcpflow/tcpflow-1.4.2.tar.gz'
+  sha1 '69c291b4248300ff5caae031a7fa56b533e49779'
 
-  depends_on :libtool
-
-  def copy_libtool_files!
-    if not MacOS::Xcode.provides_autotools?
-      s = Formula.factory('libtool').share
-      d = "#{s}/libtool/config"
-      cp ["#{d}/config.guess", "#{d}/config.sub"], "."
-    elsif MacOS.leopard?
-      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config.*"], "."
-    else
-      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config/config.*"], "."
-    end
+  head do
+    url 'https://github.com/simsong/tcpflow.git'
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
   end
 
+  depends_on 'boost' => :build
+
   def install
-    copy_libtool_files!
+    system "bash", "./bootstrap.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"

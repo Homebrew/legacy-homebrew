@@ -1,137 +1,93 @@
 require 'formula'
 
-def build_clang?; ARGV.include? '--with-clang'; end
-def build_all_targets?; ARGV.include? '--all-targets'; end
-def build_analyzer?; ARGV.include? '--analyzer'; end
-def build_universal?; ARGV.build_universal?; end
-def build_shared?; ARGV.include? '--shared'; end
-def build_rtti?; ARGV.include? '--rtti'; end
-def build_jit?; ARGV.include? '--jit'; end
-
 class Clang < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.0/clang-3.0.tar.gz'
-  md5       '43350706ae6cf05d0068885792ea0591'
-
-  head      'http://llvm.org/git/clang.git'
+  url       'http://llvm.org/releases/3.3/cfe-3.3.src.tar.gz'
+  sha1      'ccd6dbf2cdb1189a028b70bcb8a22509c25c74c8'
 end
 
 class Llvm < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.0/llvm-3.0.tar.gz'
-  md5       'a8e5f5f1c1adebae7b4a654c376a6005'
-
-  head      'http://llvm.org/git/llvm.git'
+  url       'http://llvm.org/releases/3.3/llvm-3.3.src.tar.gz'
+  sha1      'c6c22d5593419e3cb47cbcf16d967640e5cce133'
 
   bottle do
-    sha1 'f6feaab7d1e4f45cd5f0b63d465e65f491fcc27c' => :lion
-    sha1 '0b4a9baac5cd07192f992ef3621371e9cde3979a' => :snowleopard
+    sha1 '61854a2cf08a1398577f74fea191a749bec3e72d' => :mountain_lion
+    sha1 'fbe7b85a50f4b283ad55be020c7ddfbf655435ad' => :lion
+    sha1 'f68fdb89d44a72c83db1e55e25444de4dcde5375' => :snow_leopard
   end
 
-  def patches
-    # changes the link options for the shared library build
-    # to use the preferred way to build libraries in Mac OS X
-    # Reported upstream: http://llvm.org/bugs/show_bug.cgi?id=8985
-    DATA if build_shared?
-  end
+  option :universal
+  option 'with-clang', 'Build Clang support library'
+  option 'disable-shared', "Don't build LLVM as a shared library"
+  option 'all-targets', 'Build all target backends'
+  option 'rtti', 'Build with C++ RTTI'
+  option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
 
-  def options
-    [['--with-clang', 'Build clang'],
-     ['--analyzer', 'Build clang analyzer'],
-     ['--shared', 'Build shared library'],
-     ['--all-targets', 'Build all target backends'],
-     ['--rtti', 'Build with RTTI information'],
-     ['--universal', 'Build both i386 and x86_64 architectures'],
-     ['--jit', 'Build with Just In Time (JIT) compiler functionality']]
-  end
+  depends_on :python => :recommended
+
+  env :std if build.universal?
+
+  keg_only :provided_by_osx
 
   def install
-    if build_shared? && build_universal?
-      onoe "Cannot specify both shared and universal (will not build)"
-      exit 1
+    if python and build.include? 'disable-shared'
+      raise 'The Python bindings need the shared library.'
     end
 
-    Clang.new("clang").brew { clang_dir.install Dir['*'] } if build_clang? or build_analyzer?
+    Clang.new("clang").brew do
+      (buildpath/'tools/clang').install Dir['*']
+    end if build.with? 'clang'
 
-    if build_universal?
+    if build.universal?
       ENV['UNIVERSAL'] = '1'
-      ENV['UNIVERSAL_ARCH'] = 'i386 x86_64'
+      ENV['UNIVERSAL_ARCH'] = Hardware::CPU.universal_archs.join(' ')
     end
 
-    ENV['REQUIRES_RTTI'] = '1' if build_rtti?
+    ENV['REQUIRES_RTTI'] = '1' if build.include? 'rtti'
 
-    configure_options = [
+    args = [
       "--prefix=#{prefix}",
       "--enable-optimized",
-      # As of LLVM 3.0, the only bindings offered are for OCaml and attempting
-      # to build these when Homebrew's OCaml is installed results in errors.
-      #
-      # See issue #8947 for details.
-      "--enable-bindings=none"
+      # As of LLVM 3.1, attempting to build ocaml bindings with Homebrew's
+      # OCaml 3.12.1 results in errors.
+      "--disable-bindings",
     ]
 
-    if build_all_targets?
-      configure_options << "--enable-targets=all"
+    if build.include? 'all-targets'
+      args << "--enable-targets=all"
     else
-      configure_options << "--enable-targets=host-only"
+      args << "--enable-targets=host"
     end
+    args << "--enable-shared" unless build.include? 'disable-shared'
 
-    configure_options << "--enable-shared" if build_shared?
-    configure_options << "--enable-jit" if build_jit?
+    args << "--disable-assertions" if build.include? 'disable-assertions'
 
-    system "./configure", *configure_options
+    system "./configure", *args
+    system 'make', 'VERBOSE=1'
+    system 'make', 'VERBOSE=1', 'install'
 
-    system "make" # separate steps required, otherwise the build fails
-    system "make install"
-
-    cd clang_dir do
-      system "make install"
-      bin.install 'tools/scan-build/set-xcode-analyzer'
-    end if build_clang? or build_analyzer?
-
-    cd clang_dir do
-      bin.install 'tools/scan-build/scan-build'
-      bin.install 'tools/scan-build/ccc-analyzer'
-      bin.install 'tools/scan-build/c++-analyzer'
-      bin.install 'tools/scan-build/sorttable.js'
-      bin.install 'tools/scan-build/scanview.css'
-
-      bin.install 'tools/scan-view/scan-view'
-      bin.install 'tools/scan-view/ScanView.py'
-      bin.install 'tools/scan-view/Reporter.py'
-      bin.install 'tools/scan-view/startfile.py'
-      bin.install 'tools/scan-view/Resources'
-    end if build_analyzer?
+    # install llvm python bindings
+    if python
+      python.site_packages.install buildpath/'bindings/python/llvm'
+      python.site_packages.install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
+    end
   end
 
   def test
     system "#{bin}/llvm-config", "--version"
   end
 
-  def caveats; <<-EOS.undent
-    If you already have LLVM installed, then "brew upgrade llvm" might not work.
-    Instead, try:
-        brew rm llvm && brew install llvm
+  def caveats
+    s = ''
+    s += python.standard_caveats if python
+    s += <<-EOS.undent
+      Extra tools are installed in #{share}/llvm and #{share}/clang.
+
+      If you already have LLVM installed, then "brew upgrade llvm" might not work.
+      Instead, try:
+          brew rm llvm && brew install llvm
     EOS
   end
 
-  def clang_dir
-    buildpath/'tools/clang'
-  end
 end
-
-
-__END__
-diff --git i/Makefile.rules w/Makefile.rules
-index 5fc77a5..a6baaf4 100644
---- i/Makefile.rules
-+++ w/Makefile.rules
-@@ -507,7 +507,7 @@ ifeq ($(HOST_OS),Darwin)
-   # Get "4" out of 10.4 for later pieces in the makefile.
-   DARWIN_MAJVERS := $(shell echo $(DARWIN_VERSION)| sed -E 's/10.([0-9]).*/\1/')
-
--  LoadableModuleOptions := -Wl,-flat_namespace -Wl,-undefined,suppress
-+  LoadableModuleOptions := -Wl,-undefined,dynamic_lookup
-   SharedLinkOptions := -dynamiclib
-   ifneq ($(ARCH),ARM)
-     SharedLinkOptions += -mmacosx-version-min=$(DARWIN_VERSION)

@@ -3,7 +3,7 @@ require 'formula'
 class Cdecl < Formula
   homepage 'http://cdecl.org/'
   url 'http://cdecl.org/files/cdecl-blocks-2.5.tar.gz'
-  md5 'c1927e146975b1c7524cbaf07a7c10f8'
+  sha1 '3fb349970859dfd32a7fb502cecbd3c6d8656af1'
 
   def install
     # Fix namespace clash with Lion's getline

@@ -2,16 +2,12 @@ require 'formula'
 
 class Simgrid < Formula
   homepage 'http://simgrid.gforge.inria.fr'
-  url 'https://gforge.inria.fr/frs/download.php/29207/simgrid-3.6.2.tar.gz'
-  md5 '35b10c0fb6d47bdbbf19417ab0ab2e6c'
+  url 'http://gforge.inria.fr/frs/download.php/32047/SimGrid-3.9.tar.gz'
+  sha1 '54e3b718d7b07afdefab6c433e11d1a7bf4cb499'
 
   depends_on 'cmake' => :build
   depends_on 'pcre'
   depends_on 'graphviz'
-
-  fails_with :clang do
-    build 318
-  end
 
   def install
     system "cmake", ".",

@@ -2,68 +2,70 @@ require 'formula'
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
+  url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.8.tar.gz'
+  sha1 '59fa237e102c9760271df9433ee7357dd0ec831f'
 
-  if Hardware.is_64_bit? and not ARGV.build_32_bit?
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.0.7.tgz'
-    md5 '81b0e8be3206cc60e8031dde302fb983'
-    version '2.0.7-x86_64'
+  bottle do
+    sha1 '959debee5883e3b3cc9730fcb09c6b5a6c827a28' => :mavericks
+    sha1 'd3ee1821c3a11b0f5e399f5ba32b724d54fc22d9' => :mountain_lion
+    sha1 '08dc5f0eb32fd70afe3b0ac6f1c260aa353f7432' => :lion
+  end
 
-    devel do
-      url 'http://fastdl.mongodb.org/osx/mongodb-osx-x86_64-2.2.0-rc0.tgz'
-      md5 '49918bd6c5c5e84c4f657df35de6512b'
-      version '2.2.0-rc0-x86_64'
-    end
-  else
-    url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.0.7.tgz'
-    md5 '5fee3796ebc4e8721d9784ad8978b2b6'
-    version '2.0.7-i386'
+  devel do
+    url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.4.tar.gz'
+    sha1 'ad40b93c9638178cd487c80502084ac3a9472270'
+  end
 
-    devel do
-      url 'http://fastdl.mongodb.org/osx/mongodb-osx-i386-2.2.0-rc0.tgz'
-      md5 '236330754716334a6a9b88ff9bbcc3ea'
-      version '2.2.0-rc0-i386'
+  head 'https://github.com/mongodb/mongo.git'
+
+  def patches
+    if build.stable?
+      [
+        # Fix Clang v8 build failure from build warnings and -Werror
+        'https://github.com/mongodb/mongo/commit/be4bc7.patch',
+        # Fixes crash on shell exit for 2.4.x
+        'https://github.com/mongodb/mongo/commit/670c98.patch'
+      ]
     end
   end
 
-  skip_clean :all
-
-  def options
-    [['--32-bit', 'Build 32-bit only.']]
-  end
+  depends_on 'scons' => :build
+  depends_on 'openssl' => :optional
 
   def install
-    # Copy the prebuilt binaries to prefix
-    prefix.install Dir['*']
+    # mongodb currently can't build with libc++; this should be fixed in
+    # 2.6, but can't be backported to the current stable release.
+    ENV.cxx += ' -stdlib=libstdc++' if ENV.compiler == :clang && MacOS.version >= :mavericks
 
-    # Create the data and log directories under /var
+    scons = Formula.factory('scons').opt_prefix/'bin/scons'
+
+    args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
+    args << '--64' if MacOS.prefer_64_bit?
+    args << "--cc=#{ENV.cc}"
+    args << "--cxx=#{ENV.cxx}"
+
+    if build.with? 'openssl'
+      args << '--ssl'
+      args << "--extrapathdyn=#{Formula.factory('openssl').opt_prefix}"
+    end
+
+    system scons, 'install', *args
+
+    (prefix+'mongod.conf').write mongodb_conf
+
+    mv bin/'mongod', prefix
+    (bin/'mongod').write <<-EOS.undent
+      #!/usr/bin/env ruby
+      ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.find { |arg|
+        arg =~ /^\s*\-\-config$/ or arg =~ /^\s*\-f$/
+      }
+      exec "#{prefix}/mongod", *ARGV
+    EOS
+
+    etc.install prefix+'mongod.conf'
+
     (var+'mongodb').mkpath
     (var+'log/mongodb').mkpath
-
-    # Write the configuration files and launchd script
-    (prefix+'mongod.conf').write mongodb_conf
-    plist_path.write startup_plist
-    plist_path.chmod 0644
-
-    # copy the config file to etc if this is the first install.
-    etc.install prefix+'mongod.conf' unless File.exists? etc+"mongod.conf"
-  end
-
-  def caveats; <<-EOS.undent
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    If this is an upgrade and you already have the #{plist_path.basename} loaded:
-        launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename}
-        cp #{plist_path} ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    Or start it manually:
-        mongod run --config #{etc}/mongod.conf
-
-    The launchctl plist above expects the config file to be at #{etc}/mongod.conf.
-    EOS
   end
 
   def mongodb_conf; <<-EOS.undent
@@ -79,35 +81,44 @@ class Mongodb < Formula
     EOS
   end
 
-  def startup_plist
-    return <<-EOS
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>#{plist_name}</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>#{HOMEBREW_PREFIX}/bin/mongod</string>
-    <string>run</string>
-    <string>--config</string>
-    <string>#{etc}/mongod.conf</string>
-  </array>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>KeepAlive</key>
-  <false/>
-  <key>UserName</key>
-  <string>#{`whoami`.chomp}</string>
-  <key>WorkingDirectory</key>
-  <string>#{HOMEBREW_PREFIX}</string>
-  <key>StandardErrorPath</key>
-  <string>#{var}/log/mongodb/output.log</string>
-  <key>StandardOutPath</key>
-  <string>#{var}/log/mongodb/output.log</string>
-</dict>
-</plist>
-EOS
+  plist_options :manual => "mongod"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_prefix}/mongod</string>
+        <string>run</string>
+        <string>--config</string>
+        <string>#{etc}/mongod.conf</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>KeepAlive</key>
+      <false/>
+      <key>WorkingDirectory</key>
+      <string>#{HOMEBREW_PREFIX}</string>
+      <key>StandardErrorPath</key>
+      <string>#{var}/log/mongodb/output.log</string>
+      <key>StandardOutPath</key>
+      <string>#{var}/log/mongodb/output.log</string>
+      <key>HardResourceLimits</key>
+      <dict>
+        <key>NumberOfFiles</key>
+        <integer>1024</integer>
+      </dict>
+      <key>SoftResourceLimits</key>
+      <dict>
+        <key>NumberOfFiles</key>
+        <integer>1024</integer>
+      </dict>
+    </dict>
+    </plist>
+    EOS
   end
 end

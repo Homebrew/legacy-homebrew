@@ -2,19 +2,17 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/stable_updates/libvirt-0.9.11.4.tar.gz'
-  sha256 'f3e16a62dff9720e1541da5561f448853e9821baa4622a0064dc28589eebed45'
+  url 'http://libvirt.org/sources/libvirt-1.2.0.tar.gz'
+  sha256 'a8e578ae7861db2ac5f454073293d2ef3229fd3f6c4f9029101763244db22ddd'
 
-  # Latest (roughly) monthly release.
-  devel do
-    url 'http://libvirt.org/sources/libvirt-0.9.13.tar.gz'
-    sha256 'd124e9915c88c195da9c008a6d855e53e555dca5816052e163dda61388359d5b'
-  end
+  option 'without-libvirtd', 'Build only the virsh client and development libraries'
 
-  depends_on "gnutls"
-  depends_on "yajl"
+  depends_on 'pkg-config' => :build
+  depends_on 'gnutls'
+  depends_on 'libgcrypt'
+  depends_on 'yajl'
 
-  if MacOS.leopard?
+  if MacOS.version <= :leopard
     # Definitely needed on Leopard, but not on Snow Leopard.
     depends_on "readline"
     depends_on "libxml2"
@@ -23,10 +21,6 @@ class Libvirt < Formula
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"
-  end
-
-  def options
-    [['--without-libvirtd', 'Build only the virsh client and development libraries.']]
   end
 
   def install
@@ -43,7 +37,7 @@ class Libvirt < Formula
             "--with-yajl",
             "--without-qemu"]
 
-    args << "--without-libvirtd" if ARGV.include? '--without-libvirtd'
+    args << "--without-libvirtd" if build.without? 'libvirtd'
 
     system "./configure", *args
 
@@ -58,7 +52,7 @@ class Libvirt < Formula
 
     # If the libvirt daemon is built, update its config file to reflect
     # the Homebrew prefix
-    unless ARGV.include? '--without-libvirtd'
+    unless build.include? 'without-libvirtd'
       inreplace "#{etc}/libvirt/libvirtd.conf" do |s|
         s.gsub! "/etc/", "#{HOMEBREW_PREFIX}/etc/"
         s.gsub! "/var/", "#{HOMEBREW_PREFIX}/var/"

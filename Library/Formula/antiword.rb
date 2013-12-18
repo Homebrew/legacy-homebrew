@@ -3,13 +3,10 @@ require 'formula'
 class Antiword < Formula
   homepage 'http://www.winfield.demon.nl/'
   url 'http://www.winfield.demon.nl/linux/antiword-0.37.tar.gz'
-  md5 'f868e2a269edcbc06bf77e89a55898d1'
-
-  skip_clean 'share/antiword'
+  sha1 '4364f7f99cb2d37f7d1d5bc14a335ccc0c67292e'
 
   def install
-    (share+'antiword').mkpath
-    inreplace 'antiword.h', '/usr/share/antiword', share+'antiword'
+    inreplace 'antiword.h', '/usr/share/antiword', "#{share}/antiword"
 
     system "make", "CC=#{ENV.cc}",
                    "LD=#{ENV.cc}",
@@ -17,6 +14,7 @@ class Antiword < Formula
                    "GLOBAL_INSTALL_DIR=#{bin}",
                    "GLOBAL_RESOURCES_DIR=#{share}/antiword"
     bin.install 'antiword'
+    (share+'antiword').install Dir["Resources/*"]
     man1.install 'Docs/antiword.1'
   end
 

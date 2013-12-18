@@ -1,10 +1,10 @@
 require 'formula'
 
 class JbossForge < Formula
-  homepage 'http://jboss.org/forge'
-  url 'https://repository.jboss.org/nexus/service/local/artifact/maven/redirect?r=releases&g=org.jboss.forge&a=forge-distribution&v=1.0.5.Final&e=zip'
-  version '1.0.5.Final'
-  md5 '9349825d95dd48def057cc6103812b78'
+  homepage 'http://forge.jboss.org/'
+  url 'https://repository.jboss.org/nexus/service/local/artifact/maven/redirect?r=releases&g=org.jboss.forge&a=forge-distribution&v=1.4.3.Final&e=zip'
+  version '1.4.3.Final'
+  sha1 '1c6a9491cfd6eee2c4484bf350acd3515231ffad'
 
   def install
     rm_f Dir["bin/*.bat"]

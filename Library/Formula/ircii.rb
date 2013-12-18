@@ -1,15 +1,15 @@
 require 'formula'
 
 class Ircii < Formula
-  url 'http://ftp.netbsd.org/pub/pkgsrc/distfiles/ircii-20111115.tar.bz2'
   homepage 'http://www.eterna.com.au/ircii/'
-  md5 '402b3badc21a7394d9c84d15a1ddb6c5'
+  url 'http://ftp.netbsd.org/pub/pkgsrc/distfiles/ircii-20111115.tar.bz2'
+  sha1 '723f89ca6c0ef0085da858076865e6493fbe9788'
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--disable-debug",
+    system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}",
                           "--with-default-server=irc.freenode.net",
                           "--enable-ipv6"
     system "make"

@@ -3,16 +3,20 @@ require 'formula'
 class Xpdf < Formula
   homepage 'http://www.foolabs.com/xpdf/'
   url 'ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.03.tar.gz'
-  md5 'af75f772bee0e5ae4a811ff9d03eac5a'
+  sha1 '499423e8a795e0efd76ca798239eb4d0d52fe248'
 
   depends_on 'lesstif'
   depends_on :x11
+
+  conflicts_with 'pdf2image', 'poppler',
+    :because => 'xpdf, pdf2image, and poppler install conflicting executables'
 
   # see: http://gnats.netbsd.org/45562
   def patches; DATA; end
 
   def install
-    ENV.append_to_cflags "-I#{MacOS::X11.include} -#{MacOS::X11.include}/freetype2"
+    ENV.append_to_cflags "-I#{MacOS::X11.include} -I#{MacOS::X11.include}/freetype2"
+    ENV.append "LDFLAGS", "-L#{MacOS::X11.lib}"
 
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"

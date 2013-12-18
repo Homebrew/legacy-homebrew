@@ -2,13 +2,8 @@ require 'formula'
 
 class BdwGc < Formula
   homepage 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/'
-  url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2c.tar.gz'
-  sha1 '18c5b1aa9289a12fead3ceeda8fdc81f4ed08964'
-
-  fails_with :clang do
-    build 421
-    cause 'Segfault 11 during make check'
-  end
+  url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2e.tar.gz'
+  sha1 '3ad593c6d0ed9c0951c21a657b86c55dab6365c8'
 
   option :universal
 

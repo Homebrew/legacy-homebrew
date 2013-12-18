@@ -1,20 +1,47 @@
 require 'formula'
 
 class Rsyslog < Formula
-  url 'http://rsyslog.com/files/download/rsyslog/rsyslog-5.8.0.tar.gz'
   homepage 'http://www.rsyslog.com'
-  md5 '37562d0e71a24938a9ed7f242bd32d35'
+  url 'http://www.rsyslog.com/files/download/rsyslog/rsyslog-7.4.5.tar.gz'
+  sha256 'f5e46e9324e366f20368162b4f561cf7a76fecb4aa0570edcaaa49e9f8c2fe70'
 
   depends_on 'pkg-config' => :build
+  depends_on 'libestr'
+  depends_on 'json-c'
 
-  def options
-    [['--universal', 'Make a 32/64-bit Intel build.']]
+  def patches
+    DATA
   end
 
   def install
-    ENV.universal_binary if ARGV.build_universal?
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    args = %W[
+             --prefix=#{prefix}
+             --disable-dependency-tracking
+             --enable-imfile
+             --enable-usertools
+             --enable-diagtools
+             --enable-cached-man-pages
+             --disable-uuid
+             --disable-libgcrypt
+           ]
+
+    system "./configure", *args
     system "make"
     system "make install"
   end
 end
+
+__END__
+diff --git i/grammar/parserif.h w/grammar/parserif.h
+index aa271ec..03c4db9 100644
+--- i/grammar/parserif.h
++++ w/grammar/parserif.h
+@@ -3,7 +3,7 @@
+ #include "rainerscript.h"
+ int cnfSetLexFile(char*);
+ int yyparse();
+-char *cnfcurrfn;
++extern char *cnfcurrfn;
+ void dbgprintf(char *fmt, ...) __attribute__((format(printf, 1, 2)));
+ void parser_errmsg(char *fmt, ...) __attribute__((format(printf, 1, 2)));
+ void tellLexEndParsing(void);

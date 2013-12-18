@@ -1,12 +1,15 @@
 /*
 !/.gitignore
 !/Library/
+!/CONTRIBUTING.md
 !/README.md
+!/SUPPORTERS.md
 !/bin
 /bin/*
 !/bin/brew
 !/share/man/man1/brew.1
 .DS_Store
 /Library/LinkedKegs
+/Library/PinnedKegs
 /Library/Taps
 /Library/Formula/.gitignore

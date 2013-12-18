@@ -1,8 +1,8 @@
 require 'formula'
 
 class Cmockery < Formula
-  url 'http://cmockery.googlecode.com/files/cmockery-0.1.2.tar.gz'
   homepage 'http://code.google.com/p/cmockery/'
+  url 'http://cmockery.googlecode.com/files/cmockery-0.1.2.tar.gz'
   sha1 '964ed1104a0cbbea8a9a34e88c6e79b546eff1bc'
 
   def patches

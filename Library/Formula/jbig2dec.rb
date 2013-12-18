@@ -2,16 +2,15 @@ require 'formula'
 
 class Jbig2dec < Formula
   homepage 'http://jbig2dec.sourceforge.net'
-  url 'http://ghostscript.com/~giles/jbig2/jbig2dec/jbig2dec-0.11.tar.gz'
-  md5 '1f61e144852c86563fee6e5ddced63f1'
+  url 'http://downloads.sourceforge.net/project/jbig2dec/jbig2dec/0.11/jbig2dec-0.11.tar.gz'
+  sha1 '349cd765616db7aac1f4dd1d45957d1da65ea925'
 
   def install
-    system './configure', '--disable-debug', '--disable-dependency-tracking',
-                          "--prefix=#{prefix}"
-    system 'make install'
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "make install"
   end
 
-  def test
-    system "#{bin}/jbig2dec", '--version'
+  test do
+    system "#{bin}/jbig2dec", "--version"
   end
 end

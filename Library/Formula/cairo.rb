@@ -1,57 +1,47 @@
 require 'formula'
 
+# Use a mirror because of:
+# http://lists.cairographics.org/archives/cairo/2012-September/023454.html
+
 class Cairo < Formula
   homepage 'http://cairographics.org/'
-  url 'http://cairographics.org/releases/cairo-1.12.2.tar.xz'
-  sha256 'b786bc4a70542bcb09f2d9d13e5e6a0c86408cbf6d1edde5f0de807eecf93f96'
+  url 'http://cairographics.org/releases/cairo-1.12.16.tar.xz'
+  mirror 'https://downloads.sourceforge.net/project/machomebrew/mirror/cairo-1.12.16.tar.xz'
+  sha256 '2505959eb3f1de3e1841023b61585bfd35684b9733c7b6a3643f4f4cbde6d846'
 
-  keg_only :provided_by_osx,
-    "The Cairo provided by Leopard is too old for newer software to link against." \
-    if MacOS::X11.installed?
+  keg_only :provided_pre_mountain_lion
 
   option :universal
   option 'without-x', 'Build without X11 support'
 
-  depends_on :libpng
-  depends_on 'pixman'
   depends_on 'pkg-config' => :build
   depends_on 'xz'=> :build
-  depends_on :x11 unless build.include? 'without-x'
-
-  # Fixes a build error with clang & universal, where a function was implicit.
-  def patches; DATA; end
+  # harfbuzz requires cairo-ft to build
+  depends_on :freetype
+  depends_on :fontconfig
+  depends_on :libpng
+  depends_on 'pixman'
+  depends_on 'glib'
+  depends_on :x11 if build.with? 'x'
 
   def install
     ENV.universal_binary if build.universal?
 
-    pixman = Formula.factory('pixman')
-    ENV['pixman_CFLAGS'] = "-I#{pixman.include}/pixman-1"
-    ENV['pixman_LIBS'] = "-L#{pixman.lib} -lpixman-1"
-
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --enable-gobject=yes
     ]
 
-    args << '--with-x' unless build.include? 'without-x'
-    args << '--enable-xcb=no' if MacOS.leopard?
+    if build.without? 'x'
+      args << '--enable-xlib=no' << '--enable-xlib-xrender=no'
+    else
+      args << '--with-x'
+    end
+
+    args << '--enable-xcb=no' if MacOS.version <= :leopard
 
     system "./configure", *args
     system "make install"
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index b75757d..1230da2 100755
---- a/configure
-+++ b/configure
-@@ -17939,7 +17939,7 @@ CAIRO_NONPKGCONFIG_LIBS="$LIBS"
- 
- MAYBE_WARN="-Wall -Wextra \
- -Wold-style-definition -Wdeclaration-after-statement \
---Wmissing-declarations -Werror-implicit-function-declaration \
-+-Wmissing-declarations -Wimplicit-function-declaration \
- -Wnested-externs -Wpointer-arith -Wwrite-strings \
- -Wsign-compare -Wstrict-prototypes -Wmissing-prototypes \
- -Wpacked -Wswitch-enum -Wmissing-format-attribute \

@@ -2,8 +2,8 @@ require 'formula'
 
 class Pow < Formula
   homepage 'http://pow.cx/'
-  url 'http://get.pow.cx/versions/0.4.0.tar.gz'
-  sha1 '85a71532934af680c4a96eadc4e8246d54655c14'
+  url 'http://get.pow.cx/versions/0.4.1.tar.gz'
+  sha1 '46976c6eea914ec78ba424b919e8928e4fc9a6bf'
 
   depends_on 'node'
 
@@ -18,13 +18,15 @@ class Pow < Formula
 
   def caveats;
     <<-EOS.undent
-      Sets up firewall rules to forward port 80 to Pow:
-        sudo pow --install-system
+      Create the required host directories:
+        mkdir -p ~/Library/Application\\ Support/Pow/Hosts
+        ln -s ~/Library/Application\\ Support/Pow/Hosts ~/.pow
 
-      Installs launchd agent to start on login:
+      Setup port 80 forwarding and launchd agents:
+        sudo pow --install-system
         pow --install-local
 
-      Enables both launchd agents:
+      Load launchd agents:
         sudo launchctl load -w /Library/LaunchDaemons/cx.pow.firewall.plist
         launchctl load -w ~/Library/LaunchAgents/cx.pow.powd.plist
     EOS

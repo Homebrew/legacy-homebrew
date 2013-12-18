@@ -9,26 +9,27 @@ class Wget < Formula
   mirror 'http://ftp.gnu.org/gnu/wget/wget-1.14.tar.gz'
   sha1 'c487bce740b3a1847a35fb29b5c6700c46f639b8'
 
-  head 'git://git.savannah.gnu.org/wget.git'
+  head do
+    url 'git://git.savannah.gnu.org/wget.git'
 
-  option "enable-iri", "Enable iri support"
-
-  depends_on "openssl" if MacOS.leopard?
-  depends_on "libidn" if build.include? "enable-iri"
-
-  if build.head?
     depends_on "autoconf" => :build
     depends_on "automake" => :build
+    depends_on "xz" => :build
     depends_on "gettext"
   end
 
+  option "enable-iri", "Enable iri support"
+  option "enable-debug", "Build with debug support"
+
+  depends_on "openssl" if MacOS.version <= :leopard
+  depends_on "libidn" if build.include? "enable-iri"
+
   def install
     system "./bootstrap" if build.head?
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
+    args = ["--prefix=#{prefix}",
             "--sysconfdir=#{etc}",
             "--with-ssl=openssl"]
-
+    args << "--disable-debug" unless build.include? "enable-debug"
     args << "--disable-iri" unless build.include? "enable-iri"
 
     system "./configure", *args

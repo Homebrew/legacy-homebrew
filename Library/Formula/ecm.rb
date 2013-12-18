@@ -3,7 +3,7 @@ require 'formula'
 class Ecm < Formula
   homepage 'http://www.neillcorlett.com/ecm/'
   url 'http://critical.ch/distfiles/ecm-1.0.tar.gz'
-  md5 '16302c139137434c8793cc7938cc7afe'
+  sha1 'bfda1031e22b23e3c4d1a713f675de2a9778a421'
 
   def install
     system "#{ENV.cc} -o ecm ecm.c"

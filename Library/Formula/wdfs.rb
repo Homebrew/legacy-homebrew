@@ -3,7 +3,7 @@ require 'formula'
 class Wdfs < Formula
   homepage 'http://noedler.de/projekte/wdfs/'
   url 'http://noedler.de/projekte/wdfs/wdfs-1.4.2.tar.gz'
-  md5 '628bb44194d04c1cf8aacc446ed0a230'
+  sha1 '71ae2e355d00bc1fbe7093b0a3b15ddc76a74516'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

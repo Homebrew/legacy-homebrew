@@ -1,6 +1,6 @@
 def blacklisted? name
   case name.downcase
-  when /^vim?$/, 'screen', /^rubygems?$/ then <<-EOS.undent
+  when 'screen', /^rubygems?$/ then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/bin.
     EOS
   when 'libarchive', 'libpcap' then <<-EOS.undent
@@ -11,45 +11,77 @@ def blacklisted? name
     Some build scripts fail to detect it correctly, please check existing
     formulae for solutions.
     EOS
-  when 'libxml', 'libxlst' then <<-EOS.undent
-    Apple distributes #{name} with OS X, you can find it in /usr/lib.
-    However not all build scripts look for these hard enough, so you may need
-    to call ENV.libxml2 in your formula's install function.
+  when 'wxpython' then <<-EOS.undent
+    The Python bindings (import wx) for wxWidgets are installed by:
+        brew install wxwidgets
     EOS
-  when 'wxwidgets' then <<-EOS.undent
-    An old version of wxWidgets can be found in /usr/X11/lib. However, Homebrew
-    does provide a newer version:
-
-        brew install wxmac
-    EOS
-  when 'tex', 'tex-live', 'texlive' then <<-EOS.undent
+  when 'tex', 'tex-live', 'texlive', 'latex' then <<-EOS.undent
     Installing TeX from source is weird and gross, requires a lot of patches,
     and only builds 32-bit (and thus can't use Homebrew deps on Snow Leopard.)
 
     We recommend using a MacTeX distribution: http://www.tug.org/mactex/
     EOS
   when 'pip' then <<-EOS.undent
-    Install pip with easy_install:
-
-        easy_install pip
+    Homebrew provides pip via: `brew install python`. However you will then
+    have two Pythons installed on your Mac, so alternatively you can:
+        sudo easy_install pip
+    EOS
+  when 'pil' then <<-EOS.undent
+    Instead of PIL, consider `pip install pillow` or `brew install samueljohn/python/pillow`.
     EOS
   when 'macruby' then <<-EOS.undent
     MacRuby works better when you install their package:
       http://www.macruby.org/
-
-    Although if you prefer, there is a formula in homebrew-alt.
-    EOS
-  when 'npm' then <<-EOS.undent
-    Homebrew does not provide npm because it is self-updating. To install it, first
-    `brew install nodejs' and then:
-
-        curl https://npmjs.org/install.sh | sh
     EOS
   when /(lib)?lzma/
     "lzma is now part of the xz formula."
-  when 'xcode' then <<-EOS.undent
-    Xcode can be installed via the App Store (on Lion or newer), or from:
-      http://connect.apple.com/
+  when 'xcode'
+    if MacOS.version >= :lion
+      <<-EOS.undent
+      Xcode can be installed from the App Store.
+      EOS
+    else
+      <<-EOS.undent
+      Xcode can be installed from https://developer.apple.com/downloads/
+      EOS
+    end
+  when 'gtest', 'googletest', 'google-test' then <<-EOS.undent
+    Installing gtest system-wide is not recommended; it should be vendored
+    in your projects that use it.
+    EOS
+  when 'gmock', 'googlemock', 'google-mock' then <<-EOS.undent
+    Installing gmock system-wide is not recommended; it should be vendored
+    in your projects that use it.
+    EOS
+  when 'gcc' then <<-EOS.undent
+    GCC is now maintained in homebrew-versions, with major version
+    number in formula name as suffix. Please tap using:
+
+        brew tap homebrew/versions
+
+    and then install GCC based on its version, e.g., 'brew install gcc47'.
+    EOS
+  when 'sshpass' then <<-EOS.undent
+    We won't add sshpass because it makes it too easy for novice SSH users to
+    ruin SSH's security.
+    EOS
+  when 'gsutil' then <<-EOS.undent
+    Install gsutil with `pip install gsutil`
+    EOS
+  when 'clojure' then <<-EOS.undent
+    Clojure isn't really a program but a library managed as part of a
+    project and Leiningen is the user interface to that library.
+
+    To install Clojure you should install Leiningen:
+      brew install leiningen
+    and then follow the tutorial:
+      https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md
+    EOS
+  when 'rubinius' then <<-EOS.undent
+    Rubinius requires an existing Ruby 2.0 to bootstrap.
+    Doing this through Homebrew is error-prone. Instead, consider using
+    ruby-build` to build and install specific versions of Ruby:
+        brew install ruby-build
     EOS
   end
 end

@@ -2,19 +2,23 @@ require 'formula'
 
 class Libogg < Formula
   homepage 'http://www.xiph.org/ogg/'
-  url 'http://downloads.xiph.org/releases/ogg/libogg-1.3.0.tar.gz'
-  md5 '0a7eb40b86ac050db3a789ab65fe21c2'
+  url 'http://downloads.xiph.org/releases/ogg/libogg-1.3.1.tar.gz'
+  sha1 '270685c2a3d9dc6c98372627af99868aa4b4db53'
 
-  head 'http://svn.xiph.org/trunk/ogg'
+  head do
+    url 'http://svn.xiph.org/trunk/ogg'
 
-  if ARGV.build_head?
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
+  option :universal
+
   def install
-    system "./autogen.sh" if ARGV.build_head?
+    ENV.universal_binary if build.universal?
+
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"

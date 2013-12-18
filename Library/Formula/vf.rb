@@ -1,9 +1,9 @@
 require 'formula'
 
 class Vf < Formula
-  url 'https://github.com/glejeune/vf/tarball/0.0.1'
   homepage 'https://github.com/glejeune/vf'
-  md5 'c1d1c7dd52a960b01c5870165593dc35'
+  url 'https://github.com/glejeune/vf/archive/0.0.1.tar.gz'
+  sha1 '288086b41857c292207f0dc1c69e0f4435e0195b'
 
   head 'https://github.com/glejeune/vf.git'
 

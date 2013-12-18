@@ -1,20 +1,15 @@
 require 'formula'
 
-def kext_prefix
-  prefix + 'Library' + 'Extensions'
-end
-
 class Fuse4xKext < Formula
   homepage 'http://fuse4x.github.com'
-  url 'https://github.com/fuse4x/kext/tarball/fuse4x_0_9_1'
-  md5 'd9139a55157427a3f9985a8e1f79e23b'
-  version "0.9.1"
+  url 'https://github.com/fuse4x/kext/archive/fuse4x_0_9_2.tar.gz'
+  sha1 '4222c14b38325d9e41fb0925d2681dda3e73e861'
 
   bottle do
-    # Bottle provided for Lion since the Command Line Tools cannot compile
-    # things that use `xcodebuild`. Actual compilation takes ~10 seconds so
-    # there is no need to bottle this for earlier systems.
-    sha1 '2bc7b00c52823ea7efd8e09fb340f1701801baca' => :lion
+    # cellar :any
+    revision 3
+    sha1 'f571d853f081883d943a6e8c1b12753c96fa4b28' => :mountain_lion
+    sha1 'd64873c1c3afa179929651ce2c08cd6f893b421f' => :lion
   end
 
   def install
@@ -23,10 +18,10 @@ class Fuse4xKext < Formula
 
     args = [
       "-sdk",
-      "macosx#{MACOS_VERSION}",
+      "macosx#{MacOS.version}",
       "-configuration", "Release",
       "-alltargets",
-      "MACOSX_DEPLOYMENT_TARGET=#{MACOS_VERSION}",
+      "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}",
       "SYMROOT=build",
       # Build a 32-bit kernel extension on Leopard and a fat binary for Snow
       # Leopard/Lion.
@@ -45,7 +40,7 @@ class Fuse4xKext < Formula
       In order for FUSE-based filesystems to work, the fuse4x kernel extension
       must be installed by the root user:
 
-        sudo cp -rfX #{kext_prefix}/fuse4x.kext /Library/Extensions
+        sudo /bin/cp -rfX #{kext_prefix}/fuse4x.kext /Library/Extensions
         sudo chmod +s /Library/Extensions/fuse4x.kext/Support/load_fuse4x
 
       If upgrading from a previous version of Fuse4x, the old kernel extension
@@ -64,7 +59,7 @@ class Fuse4xKext < Formula
     # filesystem layout convention from Apple.
     # Check if the user has fuse4x kext in the old location.
     # Remove this check Q4 2012 when it become clear that everyone migrated to 0.9.0+
-    if File.exists?('/System/Library/Extensions/fuse4x.kext/')
+    if File.exist?('/System/Library/Extensions/fuse4x.kext/')
       message += <<-EOS.undent
         You have older version of fuse4x installed. Please remove it by running:
 

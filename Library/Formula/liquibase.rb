@@ -2,15 +2,15 @@ require 'formula'
 
 class Liquibase < Formula
   homepage 'http://liquibase.org'
-  url 'https://github.com/downloads/liquibase/liquibase/liquibase-2.0.5-bin.tar.gz'
-  sha1 'eb237c4b9b8c85aff5ddac6272f6291ae593c7a4'
+  url 'http://downloads.sourceforge.net/project/liquibase/Liquibase%20Core/liquibase-3.0.7-bin.tar.gz'
+  sha1 'f9c56e4487aab93f21793740c6d7760c7a1fb4ff'
 
   def install
     rm_f Dir['*.bat']
 
     chmod 0755, Dir['liquibase']
 
-    prefix.install "LICENSE.txt"
+    prefix.install_metafiles
     libexec.install Dir['*']
     bin.install_symlink libexec+'liquibase'
   end
@@ -20,5 +20,9 @@ class Liquibase < Formula
       You should set the environment variable LIQUIBASE_HOME to
         #{libexec}
     EOS
+  end
+
+  test do
+    system "#{bin}/liquibase", "--version"
   end
 end

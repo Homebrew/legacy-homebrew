@@ -1,9 +1,12 @@
 require 'formula'
 
 class Ykclient < Formula
-  homepage 'http://code.google.com/p/yubico-c-client/'
-  url 'http://yubico-c-client.googlecode.com/files/ykclient-2.8.tar.gz'
-  sha1 '91aefae12d7e13360d8c03ccd66ef1d26d1b04f9'
+  homepage 'http://yubico.github.io/yubico-c-client/'
+  url 'http://yubico.github.io/yubico-c-client/releases/ykclient-2.12.tar.gz'
+  sha1 '518ce53ba9ef61a619f9150778f19fad23014a9c'
+
+  depends_on 'pkg-config' => :build
+  depends_on 'help2man' => :build
 
   def install
     system "./configure", "--prefix=#{prefix}"

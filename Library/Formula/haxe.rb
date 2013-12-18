@@ -1,19 +1,31 @@
 require 'formula'
 
 class Haxe < Formula
-  homepage 'http://haxe.org/'
-  url 'http://haxe.org/file/haxe-2.09-osx.tar.gz'
-  sha1 '64c538b85578ac9adf44b5727a195ca999301c93'
+  homepage 'http://haxe.org'
+  url 'https://github.com/HaxeFoundation/haxe.git', :tag => 'v3.0.1'
+
+  head 'https://github.com/HaxeFoundation/haxe.git', :branch => 'development'
+
+  depends_on 'neko'
+  depends_on 'objective-caml'
 
   def install
-    bin.install %w(haxe haxedoc haxelib)
-    (share+"haxe").install "std"
+    # Build requires targets to be built in specific order
+    ENV.deparallelize
+    system 'make'
+    bin.install 'haxe'
+    bin.install 'std/tools/haxelib/haxelib.sh' => 'haxelib'
+    (lib/'haxe').install 'std'
+  end
+
+  test do
+    ENV["HAXE_STD_PATH"] = "#{HOMEBREW_PREFIX}/lib/haxe/std"
+    system "#{bin}/haxe", "-v", "Std"
   end
 
   def caveats; <<-EOS.undent
-    HaXe needs to know how to find its standard library so add this to your
-    shell profile:
-      export HAXE_LIBRARY_PATH="$(brew --prefix)/share/haxe/std"
+    Add the following line to your .bashrc or equivalent:
+      export HAXE_STD_PATH="#{HOMEBREW_PREFIX}/lib/haxe/std"
     EOS
   end
 end

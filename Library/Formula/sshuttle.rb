@@ -1,17 +1,17 @@
 require 'formula'
 
 class Sshuttle < Formula
-  url 'https://github.com/apenwarr/sshuttle/zipball/sshuttle-0.60'
   homepage 'https://github.com/apenwarr/sshuttle'
-  md5 '000af679bca06e7ee40985a014858b06'
+  url 'https://github.com/apenwarr/sshuttle/archive/sshuttle-0.61.tar.gz'
+  sha1 '05551cdc78e866d983470ba4084beb206bacebd8'
 
   head 'https://github.com/apenwarr/sshuttle.git'
 
   def install
+    # Building the docs requires installing
+    # markdown & BeautifulSoup Python modules
+    # so we don't.
     libexec.install Dir['*']
-    (bin+'sshuttle').write <<-EOS.undent
-      #!/bin/bash
-      exec #{libexec}/sshuttle "$@"
-    EOS
+    bin.write_exec_script libexec/'sshuttle'
   end
 end

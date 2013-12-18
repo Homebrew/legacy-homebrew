@@ -3,7 +3,7 @@ require 'formula'
 class Tal < Formula
   homepage 'http://thomasjensen.com/software/tal/'
   url 'http://thomasjensen.com/software/tal/tal-1.9.tar.gz'
-  md5 'a22e53f5f0d701a408e98e480311700b'
+  sha1 'c889477eee1ca362c071667563882c6aed38c0cb'
 
   def install
     system "make linux"

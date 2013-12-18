@@ -2,8 +2,10 @@ require 'formula'
 
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
-  url 'http://dl.rust-lang.org/dist/rust-0.3.1.tar.gz'
-  sha256 'eb99ff2e745ecb6eaf01d4caddebce397a2b4cda6836a051cb2d493b9cedd018'
+  url 'http://static.rust-lang.org/dist/rust-0.8.tar.gz'
+  sha256 '42f791ab1537357fe0f63d67ffe6bcb64ecf16b2bd3f1484ab589823f5914182'
+
+  head 'https://github.com/mozilla/rust.git'
 
   fails_with :clang do
     build 318
@@ -11,14 +13,16 @@ class Rust < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    args = ["--prefix=#{prefix}"]
+    args << "--enable-clang" if ENV.compiler == :clang
+    system "./configure", *args
     system "make"
     system "make install"
   end
 
   def test
     system "#{bin}/rustc"
-    system "#{bin}/rustdoc"
-    system "#{bin}/cargo"
+    system "#{bin}/rustdoc -h"
+    system "#{bin}/rustpkg -v"
   end
 end

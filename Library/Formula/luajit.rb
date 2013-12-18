@@ -2,48 +2,39 @@ require 'formula'
 
 class Luajit < Formula
   homepage 'http://luajit.org/luajit.html'
-  url 'http://luajit.org/download/LuaJIT-2.0.0-beta10.tar.gz'
-  sha1 '560d06621ea616bea1d67867faa235d608040396'
-
+  url 'http://luajit.org/download/LuaJIT-2.0.2.tar.gz'
+  sha1 'd21426c4fc6ad8888255139039a014f7e28e7300'
   head 'http://luajit.org/git/luajit-2.0.git'
 
-  # Skip cleaning both empty folders and bin/libs so external symbols still work.
-  skip_clean :all
+  skip_clean 'lib/lua/5.1', 'share/lua/5.1'
 
-  def options
-    [["--enable-debug", "Build with debugging symbols."]]
-  end
+  option "enable-debug", "Build with debugging symbols"
 
   def install
-    # 1 - Remove the '-O2' so we can set Og if needed.  Leave the -fomit part.
-    # 2 - Override the hardcoded gcc.
-    # 3 - Remove the '-march=i686' so we can set the march in cflags.
-    # All three changes should persist and were discussed upstream.
+    # 1 - Override the hardcoded gcc.
+    # 2 - Remove the '-march=i686' so we can set the march in cflags.
+    # Both changes should persist and were discussed upstream.
     inreplace 'src/Makefile' do |f|
-      f.change_make_var! 'CCOPT', '-fomit-frame-pointer'
       f.change_make_var! 'CC', ENV.cc
-      f.change_make_var! 'CCOPT_X86', ''
+      f.change_make_var! 'CCOPT_x86', ''
     end
 
-    ENV.O2                          # Respect the developer's choice.
-    args = [ "PREFIX=#{prefix}" ]
-    if ARGV.include? '--enable-debug' then
-      ENV.Og if ENV.compiler == :clang
-      args << 'CCDEBUG=-g'
-    end
+    ENV.O2 # Respect the developer's choice.
 
-    bldargs = args
-    bldargs << 'amalg'
-    system 'make', *bldargs
-    args << 'install'
-    system 'make', *args            # Build requires args during install
+    args = %W[PREFIX=#{prefix}]
 
-    # Non-versioned symlink
-    if ARGV.build_head?
-      version = "2.0.0-beta10"
-    else
-      version = @version
-    end
-    ln_s bin+"luajit-#{version}", bin+"luajit"
+    # This doesn't yet work under superenv because it removes '-g'
+    args << 'CCDEBUG=-g' if build.include? 'enable-debug'
+
+    system 'make', 'amalg', *args
+    system 'make', 'install', *args
+  end
+
+  test do
+    system "#{bin}/luajit", "-e", <<-EOS.strip
+      local ffi = require("ffi")
+      ffi.cdef("int printf(const char *fmt, ...);")
+      ffi.C.printf("Hello %s!\\n", "#{ENV['USER']}")
+      EOS
   end
 end

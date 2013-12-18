@@ -1,17 +1,16 @@
 require 'formula'
 
 class Qpdf < Formula
-  url 'http://downloads.sourceforge.net/project/qpdf/qpdf/2.3.1/qpdf-2.3.1.tar.gz'
   homepage 'http://qpdf.sourceforge.net/'
-  md5 '3d7fdbf3eccf94a3afa6454cf2732f76'
+  url 'http://downloads.sourceforge.net/project/qpdf/qpdf/5.0.1/qpdf-5.0.1.tar.gz'
+  sha1 '41a4bd91bfbc2d3585ea229b53bfd1183186b1b3'
 
   depends_on 'pcre'
 
+  # Fix building using Clang and libc++
+  # https://github.com/qpdf/qpdf/issues/19
   def patches
-    # Fix call to depreciated PCRE function. Can probably be removed on next
-    # release. Upstream issue:
-    #   http://sourceforge.net/tracker/?func=detail&aid=3489349&group_id=224196&atid=1060899
-    'http://sourceforge.net/tracker/download.php?group_id=224196&atid=1060899&file_id=436172&aid=3489349'
+    'https://github.com/qpdf/qpdf/pull/21.diff'
   end
 
   def install
@@ -21,5 +20,9 @@ class Qpdf < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
+  end
+
+  test do
+    system "#{bin}/qpdf", "--version"
   end
 end

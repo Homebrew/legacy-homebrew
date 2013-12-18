@@ -2,19 +2,22 @@ require 'formula'
 
 class Zookeeper < Formula
   homepage 'http://zookeeper.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.3/zookeeper-3.4.3.tar.gz'
-  sha1 '8ac02ee34b94461fed19320d789f251e6a2a6796'
+  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz'
+  sha1 'fd921575e02478909557034ea922de871926efc7'
 
-  head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
+  head do
+    url 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
-  if ARGV.build_head?
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
-  option "c",      "Build C bindings."
-  option "perl",   "Build Perl bindings."
-  option "python", "Build Python bindings."
+  option "c", "Build C bindings"
+  option "perl", "Build Perl bindings"
+
+  depends_on :ant
+  depends_on :python => :optional
 
   def shim_script target
     <<-EOS.undent
@@ -45,9 +48,9 @@ class Zookeeper < Formula
   def install
     # Don't try to build extensions for PPC
     if Hardware.is_32_bit?
-      ENV['ARCHFLAGS'] = "-arch i386"
+      ENV['ARCHFLAGS'] = "-arch #{Hardware::CPU.arch_32_bit}"
     else
-      ENV['ARCHFLAGS'] = "-arch i386 -arch x86_64"
+      ENV['ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
     end
 
     # Prep work for svn compile.
@@ -59,9 +62,8 @@ class Zookeeper < Formula
       end
     end
 
-    build_python = build.include? "python"
     build_perl = build.include? "perl"
-    build_c = build_python or build_perl or build.include? "c"
+    build_c = build.with?('python') || build_perl || build.include?("c")
 
     # Build & install C libraries.
     cd "src/c" do
@@ -72,10 +74,12 @@ class Zookeeper < Formula
     end if build_c
 
     # Install Python bindings
-    cd "src/contrib/zkpython" do
-      system "python", "src/python/setup.py", "build"
-      system "python", "src/python/setup.py", "install", "--prefix=#{prefix}"
-    end if build_python
+    python do
+      cd "src/contrib/zkpython" do
+        system python, "src/python/setup.py", "build"
+        system python, "src/python/setup.py", "install", "--prefix=#{prefix}"
+      end
+    end
 
     # Install Perl bindings
     cd "src/contrib/zkperl" do

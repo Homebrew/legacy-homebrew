@@ -9,8 +9,6 @@ class Clisp < Formula
   depends_on 'libsigsegv'
   depends_on 'readline'
 
-  skip_clean :all # otherwise abort trap
-
   fails_with :llvm do
     build 2334
     cause "Configure fails on XCode 4/Snow Leopard."
@@ -23,7 +21,7 @@ class Clisp < Formula
 
   def install
     ENV.j1 # This build isn't parallel safe.
-    ENV.remove_from_cflags /-O./
+    ENV.O0 # Any optimization breaks the build
 
     # Clisp requires to select word size explicitly this way,
     # set it in CFLAGS won't work.
@@ -36,16 +34,13 @@ class Clisp < Formula
       # Multiple -O options will be in the generated Makefile,
       # make Homebrew's the last such option so it's effective.
       inreplace "Makefile" do |s|
-        cf = s.get_make_var("CFLAGS")
-        cf.gsub! ENV['CFLAGS'], ''
-        cf += ' '+ENV['CFLAGS']
-        s.change_make_var! 'CFLAGS', cf
-      end
+        s.change_make_var! 'CFLAGS', "#{s.get_make_var('CFLAGS')} #{ENV['CFLAGS']}"
+      end unless superenv?
 
       # The ulimit must be set, otherwise `make` will fail and tell you to do so
       system "ulimit -s 16384 && make"
 
-      if MacOS.lion?
+      if MacOS.version >= :lion
         opoo "`make check` fails on Lion, so we are skipping it."
         puts "But it probably means there will be other issues too."
         puts "Please take them upstream to the clisp project itself."

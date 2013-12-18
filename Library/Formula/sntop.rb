@@ -3,7 +3,7 @@ require 'formula'
 class Sntop < Formula
   homepage 'http://sntop.sourceforge.net/'
   url 'ftp://ftp.freebsd.org/pub/FreeBSD/ports/distfiles/sntop-1.4.3.tar.gz'
-  md5 '0e99c64ea5a1bad6c1a32ac0dc2e9dd9'
+  sha1 '8a96bb453a83262e30215a31be508c16dbd71e27'
 
   depends_on 'fping'
 

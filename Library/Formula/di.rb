@@ -2,8 +2,8 @@ require 'formula'
 
 class Di < Formula
   homepage 'http://www.gentoo.com/di/'
-  url 'http://gentoo.com/di/di-4.31.tar.gz'
-  md5 'f324ec49888c6c642c998ee8c3a8ce21'
+  url 'http://gentoo.com/di/di-4.34.tar.gz'
+  sha1 '5be548368bb795303f11cff340f3bbc659f892cd'
 
   def install
     system "make", "prefix=#{prefix}", "DI_MANDIR=#{man1}"

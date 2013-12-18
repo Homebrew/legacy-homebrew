@@ -3,7 +3,7 @@ require 'formula'
 class Usbmuxd < Formula
   homepage 'http://marcansoft.com/blog/iphonelinux/usbmuxd/'
   url 'http://www.libimobiledevice.org/downloads/usbmuxd-1.0.8.tar.bz2'
-  md5 '4b33cc78e479e0f9a6745f9b9a8b60a8'
+  sha1 '56bd90d5ff94c1d9c528f8b49deffea25b7384e8'
 
   head 'http://cgit.sukimashita.com/usbmuxd.git'
 

@@ -1,38 +1,53 @@
+require 'ostruct'
+
 module Homebrew extend self
 
   def link
     raise KegUnspecifiedError if ARGV.named.empty?
 
-    if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      raise "Cowardly refusing to `sudo brew link'\n#{SUDO_BAD_ERRMSG}"
-    end
+    mode = OpenStruct.new
 
-    if ARGV.force? then mode = :force
-    elsif ARGV.dry_run? then mode = :dryrun
-    else mode = nil
-    end
+    mode.overwrite = true if ARGV.include? '--overwrite'
+    mode.dry_run = true if ARGV.dry_run?
 
     ARGV.kegs.each do |keg|
       if keg.linked?
         opoo "Already linked: #{keg}"
+        puts "To relink: brew unlink #{keg.fname} && brew link #{keg.fname}"
         next
-      end
-
-      if mode == :dryrun
+      elsif keg_only?(keg.fname) && !ARGV.force?
+        opoo "#{keg.fname} is keg-only and must be linked with --force"
+        puts "Note that doing so can interfere with building software."
+        next
+      elsif mode.dry_run && mode.overwrite
         print "Would remove:\n" do
+          keg.link(mode)
+        end
+
+        next
+      elsif mode.dry_run
+        print "Would link:\n" do
           keg.link(mode)
         end
 
         next
       end
 
-      print "Linking #{keg}... " do
-        puts "#{keg.link(mode)} symlinks created"
+      keg.lock do
+        print "Linking #{keg}... " do
+          puts "#{keg.link(mode)} symlinks created"
+        end
       end
     end
   end
 
   private
+
+  def keg_only?(name)
+    Formula.factory(name).keg_only?
+  rescue FormulaUnavailableError
+    false
+  end
 
   # Allows us to ensure a puts happens before the block exits so that if say,
   # an exception is thrown, its output starts on a new line.
@@ -45,7 +60,7 @@ module Homebrew extend self
       end
     end
 
-    puts_capture.instance_eval &block
+    puts_capture.instance_eval(&block)
 
   ensure
     puts unless $did_puts

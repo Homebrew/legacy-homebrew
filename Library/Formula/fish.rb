@@ -2,32 +2,27 @@ require 'formula'
 
 class Fish < Formula
   homepage 'http://fishshell.com'
-  url 'http://downloads.sourceforge.net/project/fish/fish/1.23.1/fish-1.23.1.tar.bz2'
-  md5 'ead6b7c6cdb21f35a3d4aa1d5fa596f1'
+  url 'http://fishshell.com/files/2.1.0/fish-2.1.0.tar.gz'
+  sha1 'b1764cba540055cb8e2a96a7ea4c844b04a32522'
 
-  head 'git://gitorious.org/fish-shell/fish-shell.git'
+  head do
+    url 'https://github.com/fish-shell/fish-shell.git'
 
-  # Indeed, the head build always builds documentation
-  depends_on 'doxygen' => :build if ARGV.build_head?
-  depends_on :autoconf if ARGV.build_head?
-  depends_on 'readline'
-  skip_clean 'share/doc'
-
-  def patches
-    p = []
-
-    unless ARGV.build_head?
-      # Reduces the timeout in select_try() from 5s to 10ms.
-      # The old timeout would cause fish to frequently freeze for a 5
-      # second period.
-      p << "http://gitorious.org/fish-shell/fish-shell/commit/6b8e7b16f6d4e11e168e3ce2effe2d8f0a53b184.patch?format=diff"
-    end
+    depends_on :autoconf
+    # Indeed, the head build always builds documentation
+    depends_on 'doxygen' => :build
   end
 
+  skip_clean 'share/doc'
+
   def install
-    system "autoconf" if ARGV.build_head?
-    system "./configure", "--prefix=#{prefix}", "--without-xsel"
-    system "make install"
+    system "autoconf" if build.head?
+    system "./configure", "--prefix=#{prefix}"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/fish", "-c", "echo"
   end
 
   def caveats; <<-EOS.undent

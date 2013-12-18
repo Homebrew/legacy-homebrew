@@ -2,14 +2,10 @@ require 'formula'
 
 class GitSh < Formula
   homepage 'https://github.com/rtomayko/git-sh'
-  url 'https://github.com/rtomayko/git-sh/tarball/800769328ed381638c13e6eec2c3b21a58d74867'
-  version '20110918'
-  md5 'f736b2c6aea13140af4011672c7d11c3'
+  url 'https://github.com/rtomayko/git-sh/archive/1.3.tar.gz'
+  sha1 'b96801ed2a63ef510583e7f1c1b4bc234d991507'
 
   head 'https://github.com/rtomayko/git-sh.git'
-
-  # Pending request for new tag:
-  # https://github.com/rtomayko/git-sh/issues/16
 
   def install
     system "make"

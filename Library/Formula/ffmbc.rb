@@ -2,19 +2,27 @@ require 'formula'
 
 class Ffmbc < Formula
   homepage 'http://code.google.com/p/ffmbc/'
-  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc7.tar.bz2'
-  md5 '547bb7b7963224dd66dffa8b25e623b3'
+  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc8.tar.bz2'
+  sha1 '85a9673ac82a698bb96057fe027222efe6ebae28'
 
+  option "without-x264", "Disable H.264 encoder"
+  option "without-lame", "Disable MP3 encoder"
+  option "without-xvid", "Disable Xvid MPEG-4 video encoder"
+
+  # manpages won't be built without texi2html
+  depends_on 'texi2html' => :build if MacOS.version >= :mountain_lion
   depends_on 'yasm' => :build
-  depends_on :x11
-  depends_on 'x264' => :optional
-  depends_on 'faac' => :optional
-  depends_on 'lame' => :optional
-  depends_on 'theora' => :optional
+
+  depends_on 'x264' => :recommended
+  depends_on 'faac' => :recommended
+  depends_on 'lame' => :recommended
+  depends_on 'xvid' => :recommended
+
+  depends_on :freetype => :optional
+  depends_on 'theora'  => :optional
   depends_on 'libvorbis' => :optional
   depends_on 'libogg' => :optional
   depends_on 'libvpx' => :optional
-  depends_on 'xvid' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -22,16 +30,18 @@ class Ffmbc < Formula
             "--disable-shared",
             "--enable-gpl",
             "--enable-nonfree",
-            "--enable-libfreetype",
             "--cc=#{ENV.cc}"]
 
-    args << "--enable-libx264" if Formula.factory('x264').installed?
-    args << "--enable-libfaac" if Formula.factory('faac').installed?
-    args << "--enable-libmp3lame" if Formula.factory('lame').installed?
-    args << "--enable-libtheora" if Formula.factory('theora').installed?
-    args << "--enable-libvorbis" if Formula.factory('libvorbis').installed?
-    args << "--enable-libvpx" if Formula.factory('libvpx').installed?
-    args << "--enable-libxvid" if Formula.factory('xvid').installed?
+    args << "--enable-libx264" unless build.without? 'x264'
+    args << "--enable-libfaac" unless build.without? 'faac'
+    args << "--enable-libmp3lame" unless build.without? 'lame'
+    args << "--enable-libxvid" unless build.without? 'xvid'
+
+    args << "--enable-libfreetype" if build.with? 'freetype'
+    args << "--enable-libtheora" if build.with? 'theora'
+    args << "--enable-libvorbis" if build.with? 'libvorbis'
+    args << "--enable-libogg" if build.with? 'libogg'
+    args << "--enable-libvpx" if build.with? 'libvpx'
 
     system "./configure", *args
     system "make"
@@ -41,8 +51,8 @@ class Ffmbc < Formula
     mv "ffprobe", "ffprobe-bc"
     bin.install "ffmbc", "ffprobe-bc"
     cd "doc" do
-      mv "ffprobe.1", "ffprobe-bc.1"
-      man1.install "ffmbc.1", "ffprobe-bc.1"
+      #mv "ffprobe.1", "ffprobe-bc.1"
+      #man1.install "ffmbc.1", "ffprobe-bc.1"
     end
   end
 

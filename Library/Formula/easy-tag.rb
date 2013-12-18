@@ -1,20 +1,25 @@
 require 'formula'
 
 class EasyTag < Formula
-  homepage 'http://easytag.sourceforge.net'
-  url 'http://sourceforge.net/projects/easytag/files/easytag%20%28gtk%202%29/2.1/easytag-2.1.7.tar.bz2'
-  sha1 '7b56ba18be2f1bec0171e5de4447ba763a264f92'
+  homepage 'http://projects.gnome.org/easytag'
+  url 'https://download.gnome.org/sources/easytag/2.1/easytag-2.1.8.tar.xz', :using => :ssl3
+  sha1 '7f9246b0eab97ed9739daf5356c89925634241a2'
 
   depends_on :x11
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
+  depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'gtk+'
+  depends_on 'id3lib'
   depends_on 'libid3tag'
-  depends_on 'id3lib' => :optional
-  depends_on 'libvorbis' => :optional
-  depends_on 'speex' => :optional
-  depends_on 'flac' => :optional
+
+  depends_on 'libvorbis' => :recommended
+  depends_on 'flac' => :recommended
+  depends_on 'libogg' if build.with? 'flac'
+
   depends_on 'mp4v2' => :optional
+  depends_on 'speex' => :optional
   depends_on 'wavpack' => :optional
 
   def install

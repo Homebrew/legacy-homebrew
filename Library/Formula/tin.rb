@@ -3,11 +3,15 @@ require 'formula'
 class Tin < Formula
   homepage 'http://www.tin.org'
   url 'ftp://ftp.tin.org/pub/news/clients/tin/stable/tin-2.0.1.tar.gz'
-  md5 'd05622db1712a78a2b92aa27904befc2'
+  sha1 '27d3003d90b8ee4be3a25377986f0f53955a6b5b'
+
+  conflicts_with 'mutt',
+    :because => 'both install mmdf.5 and mbox.5 man pages'
 
   def install
     ENV.enable_warnings
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}", "--mandir=#{man}"
     system "make build"
     system "make install"
   end

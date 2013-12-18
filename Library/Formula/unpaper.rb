@@ -1,9 +1,9 @@
 require 'formula'
 
 class Unpaper < Formula
-  url 'http://download.berlios.de/unpaper/unpaper-0.3.tar.gz'
   homepage 'http://unpaper.berlios.de/'
-  md5 'be41eaf8556e7df39ab53939c99c4f7b'
+  url 'http://download.berlios.de/unpaper/unpaper-0.3.tar.gz'
+  sha1 '120eee7c635eeb8ea75431c2dfba89bd8c132493'
 
   def install
     # Fix make.sh to take CFLAGS/LDFLAGS from environment

@@ -2,13 +2,14 @@ require 'formula'
 
 class Plowshare < Formula
   homepage 'http://code.google.com/p/plowshare/'
-  url 'http://plowshare.googlecode.com/files/plowshare-snapshot-git20120707.tar.gz'
-  sha1 'ca7b5eccf817b88584f0b4a6769ab770b2af1e1a'
+  url 'http://plowshare.googlecode.com/files/plowshare4-snapshot-git20131130.3c63b19.tar.gz'
+  version '4.GIT-3c63b19'
+  sha1 '806076746394d06f118aef98fbc1c8bbd3585269'
 
   head 'https://code.google.com/p/plowshare/', :using => :git
 
   depends_on 'recode'
-  depends_on 'imagemagick'
+  depends_on 'imagemagick' => 'with-x11'
   depends_on 'tesseract'
   depends_on 'spidermonkey'
   depends_on 'aview'
@@ -24,8 +25,14 @@ class Plowshare < Formula
     ENV["PREFIX"] = prefix
     system "bash setup.sh install"
   end
-end
 
+  def caveats; <<-EOS.undent
+    Plowshare 4 requires Bash 4+. OS X ships with an old Bash 3 version.
+    To install Bash 4:
+      brew install bash
+    EOS
+  end
+end
 
 # This patch makes sure GNUtools are used on OSX.
 # gnu-getopt is keg-only hence the backtick expansion.
@@ -37,7 +44,7 @@ __END__
 --- a/src/core.sh
 +++ b/src/core.sh
 @@ -1,4 +1,8 @@
- #!/bin/bash
+ #!/usr/bin/env bash
 +shopt -s expand_aliases
 +alias sed='gsed'
 +alias getopt='`brew --prefix gnu-getopt`/bin/getopt'

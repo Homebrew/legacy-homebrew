@@ -1,37 +1,34 @@
 require 'formula'
 
 class ObjectiveCaml < Formula
-  homepage 'http://caml.inria.fr/ocaml/index.en.html'
-  url 'http://caml.inria.fr/pub/distrib/ocaml-3.12/ocaml-3.12.1.tar.bz2'
-  sha1 '29b44117b116b1a5bc54a8b4514af483793a769f'
+  homepage 'http://ocaml.org'
+  url 'http://caml.inria.fr/pub/distrib/ocaml-4.01/ocaml-4.01.0.tar.gz'
+  sha1 '31ae98051d42e038f4fbc5fd338c4fa5c36744e0'
 
   head 'http://caml.inria.fr/svn/ocaml/trunk', :using => :svn
 
-  devel do
-    url 'http://caml.inria.fr/pub/distrib/ocaml-4.00/ocaml-4.00.0+beta2.tar.bz2'
-    sha1 '75fedc849cc1cbfe620f0258c0f6c8214467efb7'
-    version '4.00.0+beta2'
-  end
+  depends_on :x11 if MacOS::X11.installed?
 
   bottle do
-    sha1 'e5e28c74b859b8bb15a11f7f2a7a33608671b1b9' => :snowleopard
-    sha1 'f32709be6cba5639a3f7185835963d630d6f8b59' => :lion
+    sha1 'cba09036b0ddc87f04675f3ceaac2c46b99dcb20' => :mountain_lion
+    sha1 '90e110ace80da3e633b3ba0b95530fe5d43045d7' => :lion
+    sha1 '5b320577bcb6e39ada153e2de14a105a2afb5ca2' => :snow_leopard
   end
 
-  # Don't strip symbols, so dynamic linking doesn't break.
-  skip_clean :all
-
   def install
-    system "./configure", "--prefix", HOMEBREW_PREFIX, "--mandir", man
+    system "./configure", "--prefix", HOMEBREW_PREFIX,
+                          "--mandir", man,
+                          "-cc", ENV.cc,
+                          "-with-debug-runtime",
+                          "-aspp", "#{ENV.cc} -c"
     ENV.deparallelize # Builds are not parallel-safe, esp. with many cores
     system "make world"
     system "make opt"
     system "make opt.opt"
     system "make", "PREFIX=#{prefix}", "install"
-    (lib+'ocaml/compiler-libs').install 'typing', 'parsing', 'utils'
 
     # site-lib in the Cellar will be a symlink to the HOMEBREW_PREFIX location,
     # which is mkpath'd by Keg#link when something installs into it
-    ln_s HOMEBREW_PREFIX+"lib/ocaml/site-lib", lib+"ocaml/site-lib"
+    ln_s HOMEBREW_PREFIX/"lib/ocaml/site-lib", lib/"ocaml/site-lib"
   end
 end

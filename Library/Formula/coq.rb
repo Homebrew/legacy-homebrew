@@ -1,46 +1,40 @@
 require 'formula'
 
 class TransitionalMode < Requirement
+  fatal true
+
+  satisfy do
+    Tab.for_name('camlp5').unused_options.include? 'strict'
+  end
+
   def message; <<-EOS.undent
     camlp5 must be compiled in transitional mode (instead of --strict mode):
       brew install camlp5
     EOS
   end
-  def satisfied?
-    # If not installed, it will install in the correct mode.
-    return true if not which('camlp5')
-    # If installed, make sure it is transitional instead of strict.
-    `camlp5 -pmode 2>&1`.chomp == 'transitional'
-  end
-  def fatal?
-    true
-  end
 end
 
 class Coq < Formula
   homepage 'http://coq.inria.fr/'
-  url 'http://coq.inria.fr/distrib/V8.3pl4/files/coq-8.3pl4.tar.gz'
-  version '8.3pl4'
-  md5 '88e2ce021b09eca207e3119d5202a695'
+  url 'http://coq.inria.fr/distrib/V8.4pl2/files/coq-8.4pl2.tar.gz'
+  version '8.4pl2'
+  sha1 'adcef430b8e27663e8ea075e646112f7d4d51fa6'
+
   head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
 
-  skip_clean :all
-
-  depends_on TransitionalMode.new
+  depends_on TransitionalMode
   depends_on 'objective-caml'
   depends_on 'camlp5'
 
   def install
-    arch = Hardware.is_64_bit? ? "x86_64" : "i386"
     camlp5_lib = Formula.factory('camlp5').lib+'ocaml/camlp5'
     system "./configure", "-prefix", prefix,
                           "-mandir", man,
                           "-camlp5dir", camlp5_lib,
                           "-emacslib", "#{lib}/emacs/site-lisp",
                           "-coqdocdir", "#{share}/coq/latex",
-                          "-coqide", "none",
-                          "-with-doc", "no",
-                          "-arch", arch
+                          "-coqide", "no",
+                          "-with-doc", "no"
     ENV.j1 # Otherwise "mkdir bin" can be attempted by more than one job
     system "make world"
     system "make install"

@@ -2,8 +2,8 @@ require 'formula'
 
 class Duply < Formula
   homepage 'http://duply.net'
-  url 'http://sourceforge.net/projects/ftplicity/files/duply%20%28simple%20duplicity%29/1.5.x/duply_1.5.7.tgz'
-  sha1 '61d5e17285d2645e818c8449e4fd8d149edf9b9e'
+  url 'http://downloads.sourceforge.net/project/ftplicity/duply%20(simple%20duplicity)/1.5.x/duply_1.5.11.tgz'
+  sha1 '73381c1d49de37aeb8594994bae4db2b687c8f8a'
 
   depends_on 'duplicity'
 

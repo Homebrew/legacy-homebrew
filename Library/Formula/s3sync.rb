@@ -1,14 +1,13 @@
 require 'formula'
 
 class S3sync < Formula
+  homepage 'http://s3sync.net'
   url 'http://s3sync-s3cmd.googlecode.com/svn/trunk/', :revision => '4'
   version '1.2.6'
-  homepage 'http://s3sync.net'
 
   def install
     bin.install Dir['s3sync/*.rb']
-    prefix.install Dir['s3sync/*.txt']
-    prefix.install Dir['s3sync/*.example']
+    prefix.install Dir['s3sync/*.{example,txt}']
   end
 
   def caveats

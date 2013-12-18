@@ -3,7 +3,9 @@ require 'formula'
 class Vnstat < Formula
   homepage 'http://humdi.net/vnstat/'
   url 'http://humdi.net/vnstat/vnstat-1.11.tar.gz'
-  md5 'a5a113f9176cd61fb954f2ba297f5fdb'
+  sha1 '92494f38a752dcf60053af2a6d8977737da7e616'
+
+  depends_on 'gd'
 
   def install
     inreplace "src/cfg.c", '/etc/vnstat.conf', "#{etc}/vnstat.conf"
@@ -24,10 +26,10 @@ class Vnstat < Formula
     (var+'db/vnstat').mkpath
     (var+'spool/vnstat').mkpath
 
-    system "make", "-C", "src", "CFLAGS=#{ENV.cflags}", "CC=#{ENV.cc}"
+    system "make", "all", "-C", "src", "CFLAGS=#{ENV.cflags}", "CC=#{ENV.cc}"
     (prefix+'etc').install "cfg/vnstat.conf"
-    bin.install "src/vnstat", "src/vnstatd"
-    man1.install "man/vnstat.1", "man/vnstatd.1"
+    bin.install "src/vnstat", "src/vnstatd", "src/vnstati"
+    man1.install "man/vnstat.1", "man/vnstatd.1", "man/vnstati.1"
     man5.install "man/vnstat.conf.5"
   end
 

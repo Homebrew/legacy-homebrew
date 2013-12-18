@@ -2,16 +2,20 @@ require 'formula'
 
 class Play < Formula
   homepage 'http://www.playframework.org/'
-  url 'http://download.playframework.org/releases/play-2.0.3.zip'
-  md5 '299ed2e0b5242fc02b3db74bd95db68e'
+  head 'https://github.com/playframework/playframework.git'
+  url 'http://downloads.typesafe.com/play/2.2.1/play-2.2.1.zip'
+  sha1 'e4567f3cf61536908d66e85bde48d7e953f0a01f'
+
+  conflicts_with 'sox', :because => 'both install `play` binaries'
 
   def install
-    rm Dir['*.bat'] # remove windows' bat files
+    system "./framework/build", "publish-local" if build.head?
+
+    # remove Windows .bat files
+    rm Dir['*.bat']
+    rm Dir["#{buildpath}/**/*.bat"] if build.head?
+
     libexec.install Dir['*']
-    inreplace libexec+"play" do |s|
-      s.gsub! "$dir/", "$dir/../libexec/"
-      s.gsub! "dir=`dirname $PRG`", "dir=`dirname $0` && dir=$dir/`dirname $PRG`"
-    end
-    bin.install_symlink libexec+'play'
+    bin.install_symlink libexec/'play'
   end
 end

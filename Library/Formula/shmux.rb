@@ -1,9 +1,9 @@
 require 'formula'
 
 class Shmux < Formula
-  url 'http://web.taranis.org/shmux/dist/shmux-1.0.2.tgz'
   homepage 'http://web.taranis.org/shmux/'
-  md5 '4ab5c46b4154cbeab54bdc0036bd9140'
+  url 'http://web.taranis.org/shmux/dist/shmux-1.0.2.tgz'
+  sha1 '6fe39602c497331e448c4331b8cddbb2abb71b79'
 
 
   def install

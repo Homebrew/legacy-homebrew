@@ -2,10 +2,12 @@ require 'formula'
 
 class Swfmill < Formula
   homepage 'http://swfmill.org'
-  url 'http://swfmill.org/releases/swfmill-0.3.2.tar.gz'
-  md5 'c607f8aba506ec32cc4423446fe6644e'
+  url 'http://swfmill.org/releases/swfmill-0.3.3.tar.gz'
+  sha1 '7aa2c674e20f5649985b6dde3838393c5efefb6e'
 
   depends_on 'pkg-config' => :build
+  depends_on :freetype
+  depends_on :libpng
 
   def install
     system "./configure", "--prefix=#{prefix}"

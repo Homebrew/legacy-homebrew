@@ -1,125 +1,113 @@
 require 'formula'
 
 class Qt < Formula
-  homepage 'http://qt.nokia.com/'
-  url 'http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-4.8.2.tar.gz'
-  md5 '3c1146ddf56247e16782f96910a8423b'
+  homepage 'http://qt-project.org/'
+  if MacOS.version < :mavericks
+    url 'http://download.qt-project.org/official_releases/qt/4.8/4.8.5/qt-everywhere-opensource-src-4.8.5.tar.gz'
+    sha1 '745f9ebf091696c0d5403ce691dc28c039d77b9e'
+  else
+    # This is a snapshot of the current qt-4.8 branch. It's been used by a
+    # bunch of people to get Qt working on Mavericks and 4.8.5 needs too many
+    # patches to compile any time soon (January-ish):
+    # http://permalink.gmane.org/gmane.comp.lib.qt.devel/13812
+    url 'https://github.com/qtproject/qt/archive/f44310c25b372f494586dbb5b305f7e81ca63000.tar.gz'
+    sha1 '51548326463068912fb4d9de04b0f6b2e267d064'
+    # It would be nice if this was a real version number but unfortunately
+    # that will mess with the bottles.
+    version '4.8.5'
+
+  end
+
+  head 'git://gitorious.org/qt/qt.git', :branch => '4.8'
 
   bottle do
-    version 1
-    sha1 'dfa0daa951e889a2548b1cff66759b449b5a6b98' => :mountainlion
-    sha1 '0905eb8b2c5a9bae0d1f9a8234173daba680c48c' => :lion
-    sha1 'c37ac19d54c4684d8996a0ee96cdf971bd2c1f7b' => :snowleopard
+    revision 4
+    sha1 '446f9ee06721c227b7b86f7c82bb84ffeca00379' => :mavericks
+    sha1 '9014726e304c037401b788499fbc0e9bc1d332f8' => :mountain_lion
+    sha1 'bfd7b572a3889cf2e20491af82186d5d42740315' => :lion
   end
 
-  head 'git://gitorious.org/qt/qt.git', :branch => 'master'
+  option :universal
+  option 'with-qt3support', 'Build with deprecated Qt3Support module support'
+  option 'with-docs', 'Build documentation'
+  option 'developer', 'Build and link with developer options'
 
-  fails_with :clang do
-    build 421
-  end
+  depends_on "d-bus" => :optional
+  depends_on "mysql" => :optional
 
-  def options
-    [
-      ['--with-qtdbus', "Enable QtDBus module."],
-      ['--with-qt3support', "Enable deprecated Qt3Support module."],
-      ['--with-demos-examples', "Enable Qt demos and examples."],
-      ['--with-debug-and-release', "Compile Qt in debug and release mode."],
-      ['--universal', "Build both x86_64 and x86 architectures."],
-      ['--developer', 'Compile and link Qt with Qt developer options']
-    ]
-  end
-
-  depends_on "d-bus" if ARGV.include? '--with-qtdbus'
-  depends_on 'sqlite' if MacOS.leopard?
-
-  def patches
-    # fixes conflict on osx 10.5. See qt bug:
-    # https://bugreports.qt-project.org/browse/QTBUG-23258
-    if MacOS.leopard?
-      "http://bugreports.qt-project.org/secure/attachment/26712/Patch-Qt-4.8-for-10.5"
-    # add support for Mountain Lion
-    # should be unneeded for 4.8.3
-    elsif MacOS.mountain_lion?
-      [ "https://qt.gitorious.org/qt/qt/commit/422f1b?format=patch",
-        "https://qt.gitorious.org/qt/qt/commit/665355?format=patch",
-        "https://raw.github.com/gist/3187034/893252db0ae3bb9bb5fa3ff7c530c7978399b101/0001-Fix-WebKit-on-OS-X-Mountain-Lion.patch" ]
-    end
-
-  end
+  odie 'qt: --with-qtdbus has been renamed to --with-d-bus' if build.include? 'with-qtdbus'
+  odie 'qt: --with-demos-examples is no longer supported' if build.include? 'with-demos-examples'
+  odie 'qt: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
 
   def install
-    # Apply binary git patch; normal patch ignores this.
-    # TODO: Autodetect binary patches and apply them correctly.
-    system "git apply --exclude=*/QtWebKit.pro 002-homebrew.diff" if MacOS.mountain_lion?
+    ENV.universal_binary if build.universal?
 
-    ENV.append "CXXFLAGS", "-fvisibility=hidden"
     args = ["-prefix", prefix,
             "-system-zlib",
             "-confirm-license", "-opensource",
-            "-cocoa", "-fast" ]
+            "-nomake", "demos", "-nomake", "examples",
+            "-cocoa", "-fast", "-release"]
 
-    # See: https://github.com/mxcl/homebrew/issues/issue/744
-    args << "-system-sqlite" if MacOS.leopard?
+    # we have to disable these to avoid triggering optimization code
+    # that will fail in superenv (in --env=std, Qt seems aware of this)
+    args << '-no-3dnow' << '-no-ssse3' if superenv?
 
-    args << "-plugin-sql-mysql" if (HOMEBREW_CELLAR+"mysql").directory?
+    args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
-    if ARGV.include? '--with-qtdbus'
-      args << "-I#{Formula.factory('d-bus').lib}/dbus-1.0/include"
-      args << "-I#{Formula.factory('d-bus').include}/dbus-1.0"
+    if ENV.compiler == :clang
+        args << "-platform"
+
+        if MacOS.version >= :mavericks
+          args << "unsupported/macx-clang-libc++"
+        else
+          args << "unsupported/macx-clang"
+        end
     end
 
-    if ARGV.include? '--with-qt3support'
+    args << "-plugin-sql-mysql" if build.with? 'mysql'
+
+    if build.with? 'd-bus'
+      dbus_opt = Formula.factory('d-bus').opt_prefix
+      args << "-I#{dbus_opt}/lib/dbus-1.0/include"
+      args << "-I#{dbus_opt}/include/dbus-1.0"
+      args << "-L#{dbus_opt}/lib"
+      args << "-ldbus-1"
+    end
+
+    if build.with? 'qt3support'
       args << "-qt3support"
     else
       args << "-no-qt3support"
     end
 
-    unless ARGV.include? '--with-demos-examples'
-      args << "-nomake" << "demos" << "-nomake" << "examples"
+    unless build.with? 'docs'
+      args << "-nomake" << "docs"
     end
 
-    if MacOS.prefer_64_bit? or ARGV.build_universal?
+    if MacOS.prefer_64_bit? or build.universal?
       args << '-arch' << 'x86_64'
     end
 
-    if !MacOS.prefer_64_bit? or ARGV.build_universal?
+    if !MacOS.prefer_64_bit? or build.universal?
       args << '-arch' << 'x86'
     end
 
-    if ARGV.include? '--with-debug-and-release'
-      args << "-debug-and-release"
-      # Debug symbols need to find the source so build in the prefix
-      mv "../qt-everywhere-opensource-src-#{version}", "#{prefix}/src"
-      cd "#{prefix}/src"
-    else
-      args << "-release"
-    end
-
-    args << '-developer-build' if ARGV.include? '--developer'
-
-    # Needed for Qt 4.8.1 due to attempting to link moc with gcc.
-    ENV['LD'] = ENV.cxx
+    args << '-developer-build' if build.include? 'developer'
 
     system "./configure", *args
     system "make"
     ENV.j1
     system "make install"
 
-    # stop crazy disk usage
-    (prefix+'doc/html').rmtree
-    (prefix+'doc/src').rmtree
     # what are these anyway?
     (bin+'pixeltool.app').rmtree
     (bin+'qhelpconverter.app').rmtree
     # remove porting file for non-humans
-    (prefix+'q3porting.xml').unlink
+    (prefix+'q3porting.xml').unlink if build.without? 'qt3support'
 
     # Some config scripts will only find Qt in a "Frameworks" folder
-    # VirtualBox is an example of where this is needed
-    # See: https://github.com/mxcl/homebrew/issues/issue/745
-    cd prefix do
-      ln_s lib, prefix + "Frameworks"
-    end
+    frameworks.mkpath
+    ln_s Dir["#{lib}/*.framework"], frameworks
 
     # The pkg-config files installed suggest that headers can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to
@@ -134,8 +122,8 @@ class Qt < Formula
     end
   end
 
-  def test
-    system "#{bin}/qmake", "--version"
+  test do
+    system "#{bin}/qmake", '-project'
   end
 
   def caveats; <<-EOS.undent

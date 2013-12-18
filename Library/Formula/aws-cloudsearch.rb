@@ -2,9 +2,9 @@ require 'formula'
 
 class AwsCloudsearch < Formula
   homepage 'http://aws.amazon.com/developertools/9054800585729911'
-  url 'http://s3.amazonaws.com/amazon-cloudsearch-data/cloud-search-tools-1.0.0.1-2012.03.05.tar.gz'
-  version '1.0.0.1-2012.03.05'
-  sha1 'd0801bd19ba8f29e40e6bd04af53c8cf03758a0c'
+  url 'https://s3.amazonaws.com/amazon-cloudsearch-data/cloud-search-tools-1.0.1.4-2013.01.11.tar.gz'
+  version '1.0.1.4-2013.01.11'
+  sha1 '8bd06d2b2660fb9bae2503b2540ca61036b1a169'
 
   def install
     inreplace 'bin/cs-cmd', 'LIBDIR="${CS_HOME}/lib"', 'LIBDIR="${CS_HOME}/jars/lib"'

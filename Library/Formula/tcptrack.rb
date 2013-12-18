@@ -2,8 +2,8 @@ require 'formula'
 
 class Tcptrack < Formula
   homepage 'http://www.rhythm.cx/~steve/devel/tcptrack/'
-  url 'http://www.rhythm.cx/~steve/devel/tcptrack/release/1.4.2/source/tcptrack-1.4.2.tar.gz'
-  md5 'dacf71a6b5310caf1203a2171b598610'
+  url 'http://ftp.de.debian.org/debian/pool/main/t/tcptrack/tcptrack_1.4.2.orig.tar.gz'
+  sha1 '921e33279e0032ba3639cdfc674ed74505691d6b'
 
   def install
     # Fix IPv6 on MacOS. The patch was sent by email to the maintainer

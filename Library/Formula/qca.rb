@@ -7,6 +7,12 @@ class Qca < Formula
 
   depends_on 'qt'
 
+  # Fix for clang adhering strictly to standard, see:
+  # http://clang.llvm.org/compatibility.html#dep_lookup_bases
+  def patches
+    'http://quickgit.kde.org/?p=qca.git&a=commitdiff&h=312b69&o=plain'
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-tests"
     system "make install"

@@ -1,17 +1,18 @@
 require 'formula'
-require 'find'
 
 class ClozureCl < Formula
-  url 'ftp://ftp.clozure.com/pub/release/1.8/ccl-1.8-darwinx86.tar.gz'
-  version '1.8'
   homepage 'http://ccl.clozure.com/'
-  md5 'ff235d9cec6f45502e993096c80570b9'
+  url 'ftp://ftp.clozure.com/pub/release/1.9/ccl-1.9-darwinx86.tar.gz'
+  version '1.9'
+  sha1 '589b94093fc356c458ab288aceb5a3d5d9d7b829'
+
+  conflicts_with 'cclive', :because => 'both install a ccl binary'
 
   def install
     # Get rid of all the .svn dirs, that for some reason are
     # included in the tarball
-    Find.find(buildpath) do |path|
-      if File.directory?(path) && File.basename(path) == '.svn'
+    buildpath.find do |path|
+      if path.directory? and path.basename.to_s == '.svn'
         rm_rf path
         Find.prune
       end
@@ -42,14 +43,6 @@ class ClozureCl < Formula
     ccl_scripts.each do |script|
       ln ccl_install_dir+script, bin+File.basename(script)
     end
-  end
-
-  def caveats
-    <<-CAVEATS
-    Run `ccl` to run a 32-bit session, and `ccl64` for a 64-bit one.
-
-    To test if everything works correctly, run `brew test #{name}`.
-    CAVEATS
   end
 
   # Generates a string to test the ccl scripts that can be passed directly to `system'

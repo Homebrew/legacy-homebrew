@@ -6,35 +6,29 @@ class Autoconf < Formula
   mirror 'http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz'
   sha1 '562471cbcb0dd0fa42a76665acf0dbb68479b78a'
 
+  bottle do
+    sha1 '2b69898b2827740e5983e25c7f20c0328201b256' => :mavericks
+    sha1 'ec30045d8fe4be10858b66d59f029fb19fe63b5e' => :mountain_lion
+    sha1 'e7d6d88e762996c2fb96238f7d9e48e6d0feaeba' => :lion
+  end
+
   if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/autoconf"
     keg_only "Xcode (up to and including 4.2) provides (a rather old) Autoconf."
   end
 
-  def patches
-    # force autoreconf to look for and use our glibtoolize
-    DATA
-  end
-
   def install
+    ENV['PERL'] = '/usr/bin/perl'
+
+    # force autoreconf to look for and use our glibtoolize
+    inreplace 'bin/autoreconf.in', 'libtoolize', 'glibtoolize'
+    # also touch the man page so that it isn't rebuilt
+    inreplace 'man/autoreconf.1', 'libtoolize', 'glibtoolize'
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 
-  def test
-    system "#{bin}/autoconf", "--version"
+  test do
+    cp "#{share}/autoconf/autotest/autotest.m4", 'autotest.m4'
+    system "#{bin}/autoconf", 'autotest.m4'
   end
 end
-
-
-__END__
---- a/bin/autoreconf.in	2012-04-24 15:00:28.000000000 -0700
-+++ b/bin/autoreconf.in	2012-04-24 21:51:41.000000000 -0700
-@@ -111,7 +111,7 @@
- my $autom4te   = $ENV{'AUTOM4TE'}   || '@bindir@/@autom4te-name@';
- my $automake   = $ENV{'AUTOMAKE'}   || 'automake';
- my $aclocal    = $ENV{'ACLOCAL'}    || 'aclocal';
--my $libtoolize = $ENV{'LIBTOOLIZE'} || 'libtoolize';
-+my $libtoolize = $ENV{'LIBTOOLIZE'} || 'glibtoolize';
- my $autopoint  = $ENV{'AUTOPOINT'}  || 'autopoint';
- my $make       = $ENV{'MAKE'}       || 'make';
- 

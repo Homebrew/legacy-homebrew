@@ -4,7 +4,7 @@ class Afsctool < Formula
   homepage 'http://brkirch.wordpress.com/afsctool/'
   url 'https://docs.google.com/uc?export=download&id=0BwQlnXqL939ZQjBQNEhRQUo0aUk'
   version '1.6.4'
-  md5 'd0f2b79676c0f3d8c22e95fcf859a05f'
+  sha1 '216d7ff54bad947781d9b49f9754c5d3c07349be'
 
   def install
     ENV.fast

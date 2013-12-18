@@ -1,9 +1,11 @@
 require 'formula'
 
 class Unixodbc < Formula
-  url 'http://www.unixodbc.org/unixODBC-2.3.1.tar.gz'
   homepage 'http://www.unixodbc.org/'
-  md5 '86788d4006620fa1f171c13d07fdcaab'
+  url 'http://www.unixodbc.org/unixODBC-2.3.2.tar.gz'
+  sha1 'f84520fd58143625b614fde551435178a558ee2e'
+
+  conflicts_with 'virtuoso', :because => 'Both install `isql` binaries.'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

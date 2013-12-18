@@ -2,13 +2,13 @@ require 'formula'
 
 class Ceylon < Formula
   homepage 'http://ceylon-lang.org/'
-  url 'http://ceylon-lang.org/download/dist/1_0_Milestone3_1'
-  version '1.0M3.1'
-  sha1 'f9c267b567358bfab6387a329b3e540715850c47'
+  url 'http://ceylon-lang.org/download/dist/1_0_0'
+  sha1 '24737e1816c16497cb4b504d857530e1a171c2bf'
 
   def install
     rm_f Dir["bin/*.bat"]
 
+    man1.install Dir['doc/man/man1/*']
     doc.install Dir['doc/*']
     libexec.install Dir['*']
 
@@ -22,9 +22,9 @@ class Ceylon < Formula
 
   def test
     cd "#{libexec}/samples/helloworld" do
-      system "#{bin}/ceylonc", "com.acme.helloworld"
-      system "#{bin}/ceylond", "-non-shared", "com.acme.helloworld"
-      system "#{bin}/ceylon", "com.acme.helloworld/1.0.0", "John"
+      system "#{bin}/ceylon", "compile", "com.acme.helloworld"
+      system "#{bin}/ceylon", "doc", "--non-shared", "com.acme.helloworld"
+      system "#{bin}/ceylon", "run", "com.acme.helloworld/1.0.0", "John"
     end
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Nrpe < Formula
   homepage 'http://www.nagios.org/'
-  url 'http://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.13/nrpe-2.13.tar.gz'
-  md5 'e5176d9b258123ce9cf5872e33a77c1a'
+  url 'http://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz'
+  sha1 '45f434758c547c0af516e8b3324717f8dcd100a3'
 
   depends_on 'nagios-plugins'
 
@@ -11,7 +11,6 @@ class Nrpe < Formula
     user  = `id -un`.chomp
     group = `id -gn`.chomp
 
-    inreplace 'configure', 'libssl.so', 'libssl.dylib'
     inreplace 'sample-config/nrpe.cfg.in', '/var/run/nrpe.pid', var+'run/nrpe.pid'
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

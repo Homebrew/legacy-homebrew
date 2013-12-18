@@ -3,7 +3,7 @@ require 'formula'
 class Csup < Formula
   homepage 'https://bitbucket.org/mux/csup'
   url 'https://bitbucket.org/mux/csup/get/REL_20120305.tar.gz'
-  md5 '24be262075ce8f268caf86ffe20fe268'
+  sha1 'caef119168723f1c1d6d32c0f2a1ac392df87afe'
   head 'https://bitbucket.org/mux/csup', :using => :hg
 
   def install

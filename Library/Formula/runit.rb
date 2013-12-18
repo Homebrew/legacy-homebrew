@@ -3,11 +3,11 @@ require 'formula'
 class Runit < Formula
   homepage 'http://smarden.org/runit'
   url 'http://smarden.org/runit/runit-2.1.1.tar.gz'
-  md5 '8fa53ea8f71d88da9503f62793336bc3'
+  sha1 '8eee39639dcb79ba251ca4ab2c7cde38059f09c2'
 
   def install
     # Runit untars to 'admin/runit-VERSION'
-    cd "runit-2.1.1" do
+    cd "runit-#{version}" do
       # Per the installation doc on OS X, we need to make a couple changes.
       system "echo 'cc -Xlinker -x' >src/conf-ld"
       inreplace 'src/Makefile', / -static/, ''
@@ -34,7 +34,7 @@ class Runit < Formula
     The service directory is #{var}/service instead of /service.
 
     To have runit ready to run services, start runsvdir:
-         runsvdir -P #{var}
+         runsvdir -P #{var}/service
 
     Depending on the services managed by runit, this may need to start as root.
     EOS

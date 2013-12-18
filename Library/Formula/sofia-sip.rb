@@ -3,7 +3,7 @@ require 'formula'
 class SofiaSip < Formula
   homepage 'http://sofia-sip.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/sofia-sip/sofia-sip/1.12.11/sofia-sip-1.12.11.tar.gz'
-  md5 'f3582c62080eeecd3fa4cd5d4ccb4225'
+  sha1 'fe11c98fae19cbdbd7e55876c5553c1f9a0c561d'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

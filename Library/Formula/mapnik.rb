@@ -1,73 +1,100 @@
 require 'formula'
 
 class Mapnik < Formula
-  url 'https://github.com/downloads/mapnik/mapnik/mapnik-v2.0.1.tar.bz2'
-  md5 'e3dd09991340e2568b99f46bac34b0a8'
   homepage 'http://www.mapnik.org/'
+  url 'http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2'
+  sha1 'e493ad87ca83471374a3b080f760df4b25f7060d'
+
+  # can be removed at Mapnik > 2.2.0
+  # https://github.com/mapnik/mapnik/issues/1973
+  def patches
+    DATA
+  end
   head 'https://github.com/mapnik/mapnik.git'
 
   depends_on 'pkg-config' => :build
+  depends_on :python
+  depends_on 'freetype'
+  depends_on 'libpng'
   depends_on 'libtiff'
-  depends_on 'jpeg'
   depends_on 'proj'
   depends_on 'icu4c'
+  depends_on 'jpeg'
   depends_on 'boost'
-  depends_on 'cairomm' => :optional
-  depends_on :x11
+  depends_on 'gdal' => :optional
+  depends_on 'postgresql' => :optional
+  depends_on 'cairo' => :optional
 
-  # Reported upstream: https://github.com/mapnik/mapnik/issues/1171
-  # Fix is in head.  Remove at 2.0.2.
-  def patches
-    DATA unless ARGV.build_head?
-  end
+  depends_on 'py2cairo' if build.with? 'cairo'
 
   def install
-    icu = Formula.factory("icu4c")
+    icu = Formula.factory("icu4c").opt_prefix
+    boost = Formula.factory('boost').opt_prefix
+    proj = Formula.factory('proj').opt_prefix
+    jpeg = Formula.factory('jpeg').opt_prefix
+    libpng = Formula.factory('libpng').opt_prefix
+    libtiff = Formula.factory('libtiff').opt_prefix
+    freetype = Formula.factory('freetype').opt_prefix
+
     # mapnik compiles can take ~1.5 GB per job for some .cpp files
     # so lets be cautious by limiting to CPUS/2
-    jobs = ENV.make_jobs
-    if jobs > 2
-        jobs = Integer(jobs/2)
+    jobs = ENV.make_jobs.to_i
+    jobs /= 2 if jobs > 2
+
+    args = [ "CC=\"#{ENV.cc}\"",
+             "CXX=\"#{ENV.cxx}\"",
+             "JOBS=#{jobs}",
+             "PREFIX=#{prefix}",
+             "ICU_INCLUDES=#{icu}/include",
+             "ICU_LIBS=#{icu}/lib",
+             "PYTHON_PREFIX=#{prefix}",  # Install to Homebrew's site-packages
+             "JPEG_INCLUDES=#{jpeg}/include",
+             "JPEG_LIBS=#{jpeg}/lib",
+             "PNG_INCLUDES=#{libpng}/include",
+             "PNG_LIBS=#{libpng}/lib",
+             "TIFF_INCLUDES=#{libtiff}/include",
+             "TIFF_LIBS=#{libtiff}/lib",
+             "BOOST_INCLUDES=#{boost}/include",
+             "BOOST_LIBS=#{boost}/lib",
+             "PROJ_INCLUDES=#{proj}/include",
+             "PROJ_LIBS=#{proj}/lib",
+             "FREETYPE_CONFIG=#{freetype}/bin/freetype-config"
+           ]
+
+    if build.with? 'cairo'
+      args << "CAIRO=True" # cairo paths will come from pkg-config
+    else
+      args << "CAIRO=False"
     end
+    args << "GDAL_CONFIG=#{Formula.factory('gdal').opt_prefix}/bin/gdal-config" if build.with? 'gdal'
+    args << "PG_CONFIG=#{Formula.factory('postgresql').opt_prefix}/bin/pg_config" if build.with? 'postgresql'
 
-    system "python",
-           "scons/scons.py",
-           "configure",
-           "CC=\"#{ENV.cc}\"",
-           "CXX=\"#{ENV.cxx}\"",
-           "JOBS=#{jobs}",
-           "PREFIX=#{prefix}",
-           "ICU_INCLUDES=#{icu.include}",
-           "ICU_LIBS=#{icu.lib}",
-           "PYTHON_PREFIX=#{prefix}"  # Install to Homebrew's site-packages
-    system "python",
-           "scons/scons.py",
-           "install"
+    python do
+      system python, "scons/scons.py", "configure", *args
+      system python, "scons/scons.py", "install"
+    end
   end
 
-  def caveats; <<-EOS.undent
-    For non-homebrew Python, you need to amend your PYTHONPATH like so:
-      export PYTHONPATH=#{HOMEBREW_PREFIX}/lib/#{which_python}/site-packages:$PYTHONPATH
-    EOS
-  end
-
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  def caveats
+    python.standard_caveats if python
   end
 end
 
 __END__
---- a/bindings/python/build.py
-+++ b/bindings/python/build.py
-@@ -143,10 +143,7 @@ paths += "__all__ = [mapniklibpath,inputpluginspath,fontscollectionpath]\n"
- if not os.path.exists('mapnik'):
-     os.mkdir('mapnik')
+diff --git a/bindings/python/mapnik_text_placement.cpp b/bindings/python/mapnik_text_placement.cpp
+index 0520132..4897c28 100644
+--- a/bindings/python/mapnik_text_placement.cpp
++++ b/bindings/python/mapnik_text_placement.cpp
+@@ -194,7 +194,11 @@ struct ListNodeWrap: formatting::list_node, wrapper<formatting::list_node>
+     ListNodeWrap(object l) : formatting::list_node(), wrapper<formatting::list_node>()
+     {
+         stl_input_iterator<formatting::node_ptr> begin(l), end;
+-        children_.insert(children_.end(), begin, end);
++        while (begin != end)
++        {
++            children_.push_back(*begin);
++            ++begin;
++        }
+     }
 
--if hasattr(os.path,'relpath'): # python 2.6 and above
--    file('mapnik/paths.py','w').write(paths % (os.path.relpath(env['MAPNIK_LIB_DIR'],target_path)))
--else:
--    file('mapnik/paths.py','w').write(paths % (env['MAPNIK_LIB_DIR']))
-+file('mapnik/paths.py','w').write(paths % (env['MAPNIK_LIB_DIR']))
-
- # force open perms temporarily so that `sudo scons install`
- # does not later break simple non-install non-sudo rebuild
+     /* TODO: Add constructor taking variable number of arguments.
