@@ -2,8 +2,8 @@ require 'formula'
 
 class Thrift < Formula
   homepage 'http://thrift.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=thrift/0.9.0/thrift-0.9.0.tar.gz'
-  sha1 'fefcf4d729bf80da419407dfa028740aa95fa2e3'
+  url 'http://www.apache.org/dyn/closer.cgi?path=thrift/0.9.1/thrift-0.9.1.tar.gz'
+  sha1 'dc54a54f8dc706ffddcd3e8c6cd5301c931af1cc'
 
   head do
     url 'https://git-wip-us.apache.org/repos/asf/thrift.git', :branch => "master"
@@ -22,16 +22,11 @@ class Thrift < Formula
   depends_on 'boost'
   depends_on :python => :optional
 
-  # Includes are fixed in the upstream. Please remove this patch in the next version > 0.9.0
-  def patches
-    DATA
-  end
-
   def install
     system "./bootstrap.sh" if build.head?
 
-    exclusions = ["--without-ruby"]
-
+    exclusions = ["--without-tests"]
+    exclusions << ["--without-ruby"]
     exclusions << "--without-python" unless build.with? "python"
     exclusions << "--without-haskell" unless build.include? "with-haskell"
     exclusions << "--without-java" unless build.include? "with-java"
@@ -56,25 +51,12 @@ class Thrift < Formula
       gem install thrift
 
     To install PHP bindings:
-      export PHP_PREFIX=/path/to/homebrew/thrift/0.9.0/php
-      export PHP_CONFIG_PREFIX=/path/to/homebrew/thrift/0.9.0/php_extensions
+      export PHP_PREFIX=/path/to/homebrew/thrift/0.9.1/php
+      export PHP_CONFIG_PREFIX=/path/to/homebrew/thrift/0.9.1/php_extensions
       brew install thrift --with-php
 
     EOS
     s += python.standard_caveats if python
   end
 end
-__END__
-diff --git a/lib/cpp/src/thrift/transport/TSocket.h b/lib/cpp/src/thrift/transport/TSocket.h
-index ff5e541..65e6aea 100644
---- a/lib/cpp/src/thrift/transport/TSocket.h
-+++ b/lib/cpp/src/thrift/transport/TSocket.h
-@@ -21,6 +21,8 @@
- #define _THRIFT_TRANSPORT_TSOCKET_H_ 1
 
- #include <string>
-+#include <sys/socket.h>
-+#include <arpa/inet.h>
-
- #include "TTransport.h"
- #include "TVirtualTransport.h"
