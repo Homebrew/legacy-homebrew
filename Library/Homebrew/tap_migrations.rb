@@ -17,4 +17,5 @@ TAP_MIGRATIONS = {
   'jscoverage' => 'homebrew/boneyard',
   'jsl' => 'homebrew/binary',
   'nlopt' => 'homebrew/science',
+  'comparepdf' => 'homebrew/boneyard',
 }
