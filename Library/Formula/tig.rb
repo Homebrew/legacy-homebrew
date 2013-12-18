@@ -15,11 +15,7 @@ class Tig < Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
     system "make install"
-
-    if build.with? "docs"
-      system "make install-doc-man"
-    end
-
+    system "make install-doc-man" if build.with? "docs"
     bash_completion.install 'contrib/tig-completion.bash'
   end
 end
