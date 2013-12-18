@@ -229,13 +229,13 @@ _brew_install ()
             __brewcomp "
                 --build-from-source
                 --debug
-                --dependencies-only
                 --devel
                 --force
                 --fresh
                 --HEAD
                 --ignore-dependencies
                 --interactive
+                --only-dependencies
                 --verbose
                 $(brew options --compact "$prv" 2>/dev/null)
                 "
