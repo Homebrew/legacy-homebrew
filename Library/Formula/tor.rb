@@ -2,13 +2,13 @@ require 'formula'
 
 class Tor < Formula
   homepage 'https://www.torproject.org/'
-  url 'https://www.torproject.org/dist/tor-0.2.3.25.tar.gz'
-  sha1 'ef02e5b0eb44ab1a5d6108c39bd4e28918de79dc'
+  url 'https://www.torproject.org/dist/tor-0.2.4.19.tar.gz'
+  sha1 'f0050921016d63c426f0c61dbaa8ced50a36474b'
 
   devel do
-    url 'https://www.torproject.org/dist/tor-0.2.4.18-rc.tar.gz'
-    version '0.2.4.18-rc'
-    sha1 'cc12a8fdd62d4c1bd4ce37c8bf3bf830266b9e38'
+    url 'https://www.torproject.org/dist/tor-0.2.5.1-alpha.tar.gz'
+    version '0.2.5.1-alpha'
+    sha1 'd10cb78e6a41657d970a1ce42105142bcfc315fb'
   end
 
   option "with-brewed-openssl", "Build with Homebrew's OpenSSL instead of the system version"
