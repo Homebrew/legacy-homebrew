@@ -10,6 +10,7 @@ class ArpSk < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--mandir=#{man}",
                           "--with-libnet=#{HOMEBREW_PREFIX}"
     system "make install"
   end
