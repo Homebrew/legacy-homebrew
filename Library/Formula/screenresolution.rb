@@ -7,7 +7,7 @@ class Screenresolution < Formula
   head 'https://github.com/jhford/screenresolution.git', :branch => "master"
 
   def install
-    system "make"
+    system "make", "CC=#{ENV.cc}"
     system "make", "PREFIX=#{prefix}", "install"
   end
 
