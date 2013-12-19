@@ -15,8 +15,8 @@ class Clisp < Formula
   end
 
   def patches
-    { :p0 => "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff",
-      :p1 => DATA }
+    { #:p0 => "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff",
+      :p0 => DATA }
   end
 
   def install
