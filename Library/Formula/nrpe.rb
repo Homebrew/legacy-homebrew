@@ -37,7 +37,7 @@ class Nrpe < Formula
       #{bin}/nrpe -c #{etc}/nrpe.cfg -d
     EOS
   end
-  
+
   def plist; <<-EOS.undent
   <?xml version="1.0" encoding="UTF-8"?>
   <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -62,5 +62,6 @@ class Nrpe < Formula
   </plist>
   EOS
   end
-  
+
 end
+
