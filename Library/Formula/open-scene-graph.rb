@@ -60,9 +60,9 @@ class OpenSceneGraph < Formula
       args << "-DCOLLADA_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/collada-dom"
     end
 
-    if Formula.factory('qt5').installed?
+    if build.with? 'qt5'
       args << "-DCMAKE_PREFIX_PATH=#{Formula.factory('qt5').opt_prefix}"
-    elsif Formula.factory('qt').installed?
+    elsif build.with? 'qt'
       args << "-DCMAKE_PREFIX_PATH=#{Formula.factory('qt').opt_prefix}"
     end
 
