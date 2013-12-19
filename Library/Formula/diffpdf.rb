@@ -1,7 +1,7 @@
 require 'formula'
 
 class Diffpdf < Formula
-  homepage 'http://www.qtrac.eu/diffpdf.html'
+  homepage 'http://www.qtrac.eu/diffpdf-foss.html'
   url 'http://www.qtrac.eu/diffpdf-2.1.3.tar.gz'
   sha1 '663ecb7666a4b7d6fbd1a37327fd1f895fae69b8'
 
