@@ -2,8 +2,8 @@ require 'formula'
 
 class Elasticsearch < Formula
   homepage 'http://www.elasticsearch.org'
-  url 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.7.tar.gz'
-  sha1 '6cdfe366f3496b587bf440e153567d635ab64559'
+  url 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.8.tar.gz'
+  sha1 'a2441a55130d7911212a97f524413ad8d4771ae6'
 
   head do
     url 'https://github.com/elasticsearch/elasticsearch.git'
