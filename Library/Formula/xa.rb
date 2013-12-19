@@ -6,6 +6,8 @@ class Xa < Formula
   sha1 'd8f4564953adfcee69faacfa300b954875fabe21'
 
   def install
+    inreplace "src/xa.c", /\bgetline\b/, "xa_getline"
+
     system "make", "CC=#{ENV.cc}",
                    "CFLAGS=#{ENV.cflags}",
                    "DESTDIR=#{prefix}",
