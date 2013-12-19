@@ -26,7 +26,7 @@ class Automake < Formula
     system "make install"
 
     # Our aclocal must go first. See:
-    # https://github.com/mxcl/homebrew/issues/10618
+    # https://github.com/Homebrew/homebrew/issues/10618
     (share/"aclocal/dirlist").write <<-EOS.undent
       #{HOMEBREW_PREFIX}/share/aclocal
       /usr/share/aclocal

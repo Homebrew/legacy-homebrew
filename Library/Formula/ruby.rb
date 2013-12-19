@@ -5,6 +5,11 @@ class Ruby < Formula
   url 'http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.bz2'
   sha256 '3de4e4d9aff4682fa4f8ed2b70bd0d746fae17452fc3d3a8e8f505ead9105ad9'
 
+  devel do
+    url 'http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.0-preview2.tar.bz2'
+    sha256 '780fddf0e3c8a219057d578e83367ecfac5e945054b9f132b3b93ded4802d1ce'
+  end
+
   head do
     url 'http://svn.ruby-lang.org/repos/ruby/trunk/'
     depends_on :autoconf
@@ -39,7 +44,7 @@ class Ruby < Formula
     # OpenSSL is deprecated on OS X 10.8 and Ruby can't find the outdated
     # version (0.9.8r 8 Feb 2011) that ships with the system.
     # See discussion https://github.com/sstephenson/ruby-build/issues/304
-    # and https://github.com/mxcl/homebrew/pull/18054
+    # and https://github.com/Homebrew/homebrew/pull/18054
     if MacOS.version >= :mountain_lion
       args << "--with-opt-dir=#{Formula.factory('openssl').opt_prefix}"
     end
