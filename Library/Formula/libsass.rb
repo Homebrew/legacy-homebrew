@@ -2,10 +2,12 @@ require 'formula'
 
 class Libsass < Formula
   homepage 'https://github.com/hcatlin/libsass'
-  url 'https://github.com/hcatlin/libsass/archive/RELEASE-1.0.tar.gz'
-  sha1 '55a8775f2ae430f24b03964b3aa8e2a3565d613a'
+  url 'https://github.com/hcatlin/libsass/archive/v1.0.1.tar.gz'
+
+  depends_on :autoconf
 
   def install
+    system "autoreconf -i"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
