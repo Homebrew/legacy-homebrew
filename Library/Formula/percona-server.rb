@@ -2,7 +2,7 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/Percona-Server-5.6.14-rel62.0.tar.gz'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/Percona-Server-5.6.14-rel62.0/source/Percona-Server-5.6.14-rel62.0.tar.gz'
   version '5.6.14-rel62.0'
   sha1 '6d9ddd92338c70ec13bdeb9a23568a990a5766f9'
 
