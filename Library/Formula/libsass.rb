@@ -7,6 +7,7 @@ class Libsass < Formula
 
   depends_on :autoconf
   depends_on :automake
+  depends_on :libtool
 
   def install
     system "autoreconf -i"
