@@ -34,7 +34,7 @@ class Libsass < Formula
         if(sass_ctx->error_status) {
           return 1;
         } else {
-          return strcmp(sass_ctx->output_string, "a {\n  color: blue; }\n  a:hover {\n    color: red; }\n") != 0;
+          return strcmp(sass_ctx->output_string, "a {\\n  color: blue; }\\n  a:hover {\\n    color: red; }\\n") != 0;
         }
       }
     EOS
