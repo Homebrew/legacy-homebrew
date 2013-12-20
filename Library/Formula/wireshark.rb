@@ -2,9 +2,9 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.3.tar.bz2'
-  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.3.tar.bz2'
-  sha1 '58b02d6c2f1ae086a6ec46289d1eea0cc4343309'
+  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.5.tar.bz2'
+  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.5.tar.bz2'
+  sha1 'ebbf4f8382fc8961c1fb7959727b3e6792e597c1'
 
   head do
     url 'http://anonsvn.wireshark.org/wireshark/trunk/', :using => :svn
