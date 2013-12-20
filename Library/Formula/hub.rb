@@ -20,8 +20,6 @@ class Hub < Formula
   end
 
   test do
-    HOMEBREW_REPOSITORY.cd do
-      assert_equal 'bin/brew', `#{bin}/git ls-files -- bin`.strip
-    end
+    system "#{bin}/hub version | grep 'hub version #{version}'"
   end
 end
