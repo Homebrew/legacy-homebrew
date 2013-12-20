@@ -23,13 +23,18 @@ class Libsass < Formula
       int main()
       {
         struct sass_context* sass_ctx = sass_new_context();
+        struct sass_options options;
+        options.output_style = SASS_STYLE_NESTED;
+        options.source_comments = 0;
+        options.image_path = "images";
+        options.include_paths = "";
         sass_ctx->source_string = "a { color:blue; &:hover { color:red; } }";
-        sass_ctx->options.output_style = SASS_STYLE_NESTED;
+        sass_ctx->options = options;
         sass_compile(sass_ctx);
         if(sass_ctx->error_status) {
           return 1;
         } else {
-          return strcmp(sass_ctx->output_string, "a {\\n  color: blue; }\\n  a:hover {\\n    color: red; }\\n") != 0;
+          return strcmp(sass_ctx->output_string, "a {\n  color: blue; }\n  a:hover {\n    color: red; }\n") != 0;
         }
       }
     EOS
