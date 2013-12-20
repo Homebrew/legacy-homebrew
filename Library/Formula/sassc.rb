@@ -6,7 +6,7 @@ class Sassc < Formula
   sha1 '69e7d97264b252593a3307330a96a5ccdc2813b5'
 
   depends_on :autoconf
-  depends_on :libsass
+  depends_on 'libsass'
 
   def install
     system "autoreconf -i"
