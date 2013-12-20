@@ -6,6 +6,7 @@ class Libsass < Formula
   sha1 '9524e028bc8ebe84e36895269d07ecc7db496c7c'
 
   depends_on :autoconf
+  depends_on :automake
 
   def install
     system "autoreconf -i"
