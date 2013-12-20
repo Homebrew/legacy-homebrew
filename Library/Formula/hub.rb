@@ -9,6 +9,8 @@ class Hub < Formula
   option 'without-completions', 'Disable bash/zsh completions'
 
   def install
+    ENV['GIT_DIR'] = downloader.cached_location/'.git' if build.head?
+
     rake "install", "prefix=#{prefix}"
 
     unless build.without? 'completions'
