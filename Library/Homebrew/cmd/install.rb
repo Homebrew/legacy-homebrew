@@ -108,8 +108,9 @@ module Homebrew extend self
   def install_formula f
     fi = FormulaInstaller.new(f)
     fi.install
-    fi.caveats
     fi.finish
+    fi.caveats
+    fi.summary
   rescue FormulaInstallationAlreadyAttemptedError
     # We already attempted to install f as part of the dependency tree of
     # another formula. In that case, don't generate an error, just move on.
