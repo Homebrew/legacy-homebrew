@@ -20,11 +20,8 @@ class Libgcrypt < Formula
     cause "basic test fails"
   end
 
-  def patches
-    if ENV.compiler == :clang and (build.universal? or build.build_32_bit?)
-      { :p0 => "https://trac.macports.org/export/85232/trunk/dports/devel/libgcrypt/files/clang-asm.patch" }
-    end
-  end
+  # NOTE: the patch for building with clang and "universal" doesn't
+  # apply anymore
 
   def install
     ENV.universal_binary if build.universal?
