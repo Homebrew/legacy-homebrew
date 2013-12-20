@@ -6,10 +6,15 @@ class Hub < Formula
   sha1 'fea06d242af3be473b78bb738a04afc11ca4df21'
   head 'https://github.com/github/hub.git'
 
+  option 'without-completions', 'Disable bash/zsh completions'
+
   def install
     rake "install", "prefix=#{prefix}"
-    bash_completion.install 'etc/hub.bash_completion.sh'
-    zsh_completion.install 'etc/hub.zsh_completion' => '_hub'
+
+    unless build.without? 'completions'
+      bash_completion.install 'etc/hub.bash_completion.sh'
+      zsh_completion.install 'etc/hub.zsh_completion' => '_hub'
+    end
   end
 
   test do
