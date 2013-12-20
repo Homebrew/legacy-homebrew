@@ -3,6 +3,8 @@ require 'software_spec'
 require 'bottles'
 
 class SoftwareSpecTests < Test::Unit::TestCase
+  include VersionAssertions
+
   def setup
     @spec = SoftwareSpec.new
   end
@@ -28,6 +30,13 @@ class SoftwareSpecTests < Test::Unit::TestCase
     @spec.owner = stub(:name => 'some_name')
     assert_equal 'some_name', @spec.name
     @spec.resources.each_value { |r| assert_equal @spec, r.owner }
+  end
+
+  def test_resource_without_version_receives_owners_version
+    @spec.url('foo-42')
+    @spec.resource('bar') { url 'bar' }
+    @spec.owner = stub(:name => 'some_name')
+    assert_version_equal '42', @spec.resource('bar').version
   end
 
   def test_option
@@ -101,8 +110,8 @@ class BottleTests < Test::Unit::TestCase
     end
 
     checksums.each_pair do |cat, sha1|
-      assert_equal Checksum.new(:sha1, sha1),
-        @spec.instance_variable_get(:@sha1)[cat]
+      hsh, _ = @spec.instance_variable_get(:@sha1).fetch_bottle_for(cat)
+      assert_equal Checksum.new(:sha1, sha1), hsh
     end
   end
 

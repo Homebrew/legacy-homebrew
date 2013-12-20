@@ -105,7 +105,7 @@ class Emacs < Formula
       if build.include? "with-x"
         # These libs are not specified in xft's .pc. See:
         # https://trac.macports.org/browser/trunk/dports/editors/emacs/Portfile#L74
-        # https://github.com/mxcl/homebrew/issues/8156
+        # https://github.com/Homebrew/homebrew/issues/8156
         ENV.append 'LDFLAGS', '-lfreetype -lfontconfig'
         args << "--with-x"
         args << "--with-gif=no" << "--with-tiff=no" << "--with-jpeg=no"

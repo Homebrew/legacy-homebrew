@@ -22,7 +22,6 @@ class GnuSmalltalk < Formula
   depends_on 'libtool' => :build
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz'         => :build
   depends_on 'gawk'       => :build
   depends_on 'readline'   => :build
   depends_on 'libffi'     => :recommended

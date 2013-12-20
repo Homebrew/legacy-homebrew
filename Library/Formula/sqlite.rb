@@ -2,14 +2,15 @@ require 'formula'
 
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://www.sqlite.org/2013/sqlite-autoconf-3080100.tar.gz'
-  version '3.8.1'
-  sha1 '42464b07df2d6f8aa28f73ce4cc6d48b47be810e'
+  url 'http://www.sqlite.org/2013/sqlite-autoconf-3080200.tar.gz'
+  version '3.8.2'
+  sha1 '6033ef603ce221d367c665477514d972ef1dc90e'
 
   bottle do
-    sha1 '6b76c6c72549ac9e399523e50f2c65f2e36446df' => :mavericks
-    sha1 'e2791c264bae126ed9f5d4e2f0ebd39cff021e06' => :mountain_lion
-    sha1 '3df9bddc26a4f807f6d814beeed228bde6887f84' => :lion
+    cellar :any
+    sha1 '18bd82676513a70b20435a52fcc7c961a3e0ba28' => :mavericks
+    sha1 '5cbafa8610ba6fe19c9bc7b31e419c18b343873b' => :mountain_lion
+    sha1 'acb930e2b8358c219115b97ce3fdbba80d45dff2' => :lion
   end
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
@@ -29,9 +30,9 @@ class Sqlite < Formula
   end
 
   resource 'docs' do
-    url 'http://www.sqlite.org/2013/sqlite-doc-3080100.zip'
-    version '3.8.1'
-    sha1 'd7cb698f32318fbf5dce9f10c9cd7b84c3d70105'
+    url 'http://www.sqlite.org/2013/sqlite-doc-3080200.zip'
+    version '3.8.2'
+    sha1 'b9cbd42d08b8c1ce96656a6b111e918bb515b605'
   end
 
   def install

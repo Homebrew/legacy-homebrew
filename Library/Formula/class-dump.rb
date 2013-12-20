@@ -1,12 +1,12 @@
 require 'formula'
 
 class ClassDump < Formula
-  homepage 'http://www.codethecode.com/projects/class-dump/'
+  homepage 'http://stevenygard.com/projects/class-dump/'
   head 'https://github.com/nygard/class-dump.git'
-  url 'https://github.com/nygard/class-dump/archive/3.4.tar.gz'
-  sha1 'd8c16e94ec82979fb0e68503a217bd0c2cd5008f'
+  url 'https://github.com/nygard/class-dump/archive/3.5.tar.gz'
+  sha1 'c343bec63878161b02c956f49c9c1c8d989b4b5a'
 
-  depends_on :macos => :lion
+  depends_on :macos => :mavericks
 
   def install
     system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"

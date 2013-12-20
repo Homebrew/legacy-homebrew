@@ -8,10 +8,10 @@ class Gmp < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 '7a4392ecba5ef5077440358a6a1c86d9717e22f8' => :mountain_lion
-    sha1 '8e7b9953d6c337dc6ee1ca97da5eede6b1c3d9be' => :lion
-    sha1 '773bac38cc86dec84dc9b9abb246c56900cac7af' => :snow_leopard
+    revision 2
+    sha1 '8390518974834c6a9e959e3a9d6e5eba91152eec' => :mavericks
+    sha1 'b042ffe0c394dafab04f23ce03dc2cb691dc2a87' => :mountain_lion
+    sha1 'a767aafc398054b6eb413b7dd70c7c9721d84734' => :lion
   end
 
   option '32-bit'
@@ -31,7 +31,7 @@ class Gmp < Formula
     if build.build_32_bit?
       ENV.m32
       ENV.append 'ABI', '32'
-      # https://github.com/mxcl/homebrew/issues/20693
+      # https://github.com/Homebrew/homebrew/issues/20693
       args << "--disable-assembly"
     elsif build.bottle?
       args << "--disable-assembly"

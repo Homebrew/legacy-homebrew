@@ -6,8 +6,11 @@ class Screenresolution < Formula
   sha1 '5a4c397711c0cadb3cf58e8eb13dff50b993b388'
   head 'https://github.com/jhford/screenresolution.git', :branch => "master"
 
+  # Uses CGDisplayModeRef type, introduced in 10.6
+  depends_on :macos => :snow_leopard
+
   def install
-    system "make"
+    system "make", "CC=#{ENV.cc}"
     system "make", "PREFIX=#{prefix}", "install"
   end
 

@@ -6,9 +6,11 @@ class Cloog < Formula
   sha1 '2dc70313e8e2c6610b856d627bce9c9c3f848077'
 
   bottle do
-    sha1 '5ef24be06c4c61d4f37208e128d2f930373d1409' => :mountain_lion
-    sha1 '016b2ef75d40ee74be87be43c8642aa47b3abea2' => :lion
-    sha1 '6a85fb754c31b9b577e71b13f736d273fd71a3b0' => :snow_leopard
+    cellar :any
+    revision 1
+    sha1 '38afdce382abcd3c46fb94af7eb72e87d87859d4' => :mavericks
+    sha1 'd6984ce335cf7b8eb482cdd4f0301c6583b00073' => :mountain_lion
+    sha1 'fd707268c3e5beafa9b98a768f7064d5b9699178' => :lion
   end
 
   depends_on 'pkg-config' => :build

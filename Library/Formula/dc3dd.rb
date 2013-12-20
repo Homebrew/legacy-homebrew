@@ -12,7 +12,7 @@ class Dc3dd < Formula
               --infodir=#{info}]
 
     # Check for stpncpy is broken, and the replacement fails to compile
-    # on Lion and newer; see https://github.com/mxcl/homebrew/issues/21510
+    # on Lion and newer; see https://github.com/Homebrew/homebrew/issues/21510
     args << "gl_cv_func_stpncpy=yes" if MacOS.version >= :lion
     system "./configure", *args
     system "make"

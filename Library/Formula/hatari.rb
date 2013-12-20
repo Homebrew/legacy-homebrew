@@ -8,6 +8,7 @@ class Hatari < Formula
   head 'http://hg.tuxfamily.org/mercurialroot/hatari/hatari', :using => :hg, :branch => 'default'
 
   depends_on 'cmake' => :build
+  depends_on 'libpng' if MacOS.version <= :leopard
   depends_on 'sdl'
 
   def install

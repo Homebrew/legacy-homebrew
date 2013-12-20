@@ -6,26 +6,25 @@ require 'formula'
 class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/archive/OTP_R16B02.tar.gz'
-  sha1 '81f72efe58a99ab1839eb6294935572137133717'
+  url 'https://github.com/erlang/otp/archive/OTP_R16B03.tar.gz'
+  sha1 '3230f2ec4bb0cc11d2c89a21c396e7db3045474d'
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
   bottle do
-    revision 2
-    sha1 'f2f17d7e0fcfc8281a5a49316db73382e2ed2b77' => :mountain_lion
-    sha1 '8afbd3e03333ca368e5036f48d0bcddeb4a4c8dd' => :lion
-    sha1 'bf967eecc1475e38aa0d5636ffb68563df627c5f' => :snow_leopard
+    sha1 'ab820bf4be42fb4496fca3ca2dc4fc83bffdd9b5' => :mavericks
+    sha1 '131f82f5ed7c272f80b9ead96b016a4d04be8bab' => :mountain_lion
+    sha1 'dccac71186d57b7be40c1901d1169c7010cbde1d' => :lion
   end
 
   resource 'man' do
-    url 'http://erlang.org/download/otp_doc_man_R16B02.tar.gz'
-    sha1 'c64c19d5ab176c8b7c1e05b02b4f2affbed7b0ef'
+    url 'http://erlang.org/download/otp_doc_man_R16B03.tar.gz'
+    sha1 '66e866de2e8f371251ab230677124c1a4874b9ea'
   end
 
   resource 'html' do
-    url 'http://erlang.org/download/otp_doc_html_R16B02.tar.gz'
-    sha1 '142e0b4becc04d3b5bf46a7fa2d48aae43cc84d0'
+    url 'http://erlang.org/download/otp_doc_html_R16B03.tar.gz'
+    sha1 '69a2680c8dfe82a2200fa7bcdbc89f798c160b84'
   end
 
   option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
@@ -40,6 +39,12 @@ class Erlang < Formula
   depends_on 'fop' => :optional # enables building PDF docs
 
   fails_with :llvm
+
+  def patches
+    # Fixes problem with ODBC on Mavericks. Reported upstream:
+    # https://github.com/erlang/otp/pull/142
+    DATA if MacOS.version >= :mavericks
+  end
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
@@ -103,3 +108,17 @@ class Erlang < Formula
     end
   end
 end
+__END__
+diff --git a/lib/odbc/configure.in b/lib/odbc/configure.in
+index 83f7a47..fd711fe 100644
+--- a/lib/odbc/configure.in
++++ b/lib/odbc/configure.in
+@@ -130,7 +130,7 @@ AC_SUBST(THR_LIBS)
+ odbc_lib_link_success=no
+ AC_SUBST(TARGET_FLAGS)
+     case $host_os in
+-        darwin*)
++        darwin1[[0-2]].*|darwin[[0-9]].*)
+                 TARGET_FLAGS="-DUNIX"
+                if test ! -d "$with_odbc" || test "$with_odbc" = "yes"; then
+                    ODBC_LIB= -L"/usr/lib"

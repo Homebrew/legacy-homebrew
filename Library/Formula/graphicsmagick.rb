@@ -11,6 +11,7 @@ class Graphicsmagick < Formula
   option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
   option 'without-magick-plus-plus', 'disable build/install of Magick++'
   option 'without-svg', 'Compile without svg support'
+  option 'with-perl', 'Build PerlMagick; provides the Graphics::Magick module'
 
   depends_on :libtool => :run
 
@@ -29,9 +30,6 @@ class Graphicsmagick < Formula
   depends_on 'ghostscript' => :optional
 
   opoo '--with-ghostscript is not recommended' if build.with? 'ghostscript'
-  if build.with? 'openmp' and (MacOS.version == :leopard or ENV.compiler == :clang)
-    opoo '--with-openmp is not supported on Leopard or with Clang'
-  end
 
   fails_with :llvm do
     build 2335
@@ -48,12 +46,13 @@ class Graphicsmagick < Formula
              "--disable-dependency-tracking",
              "--enable-shared",
              "--disable-static",
-             "--with-modules"]
+             "--with-modules",
+             "--disable-openmp"]
 
-    args << "--disable-openmp" unless build.include? 'enable-openmp'
     args << "--without-gslib" unless build.with? 'ghostscript'
     args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" unless build.with? 'ghostscript'
     args << "--without-magick-plus-plus" if build.without? 'magick-plus-plus'
+    args << "--with-perl" if build.include? 'with-perl'
 
     if build.with? 'quantum-depth-32'
       quantum_depth = 32
@@ -73,10 +72,29 @@ class Graphicsmagick < Formula
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
     system "./configure", *args
-    system "make install"
+    system "make", "install"
+    if build.include? 'with-perl'
+      cd 'PerlMagick' do
+        # Install the module under the GraphicsMagick prefix
+        system "perl", "Makefile.PL", "PREFIX=#{prefix}"
+        system "make"
+        system "make", "install"
+      end
+    end
   end
 
   test do
     system "#{bin}/gm", "identify", "/usr/share/doc/cups/images/cups.png"
+  end
+
+  def caveats
+    if build.include? 'with-perl'
+      <<-EOS.undent
+        The Graphics::Magick perl module has been installed under:
+
+          #{lib}
+
+      EOS
+    end
   end
 end

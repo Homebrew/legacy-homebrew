@@ -61,10 +61,8 @@ class Build
 
   def initialize(f)
     @f = f
-    # Expand requirements before dependencies, as requirements
-    # may add dependencies if a default formula is activated.
-    @reqs = expand_reqs
     @deps = expand_deps
+    @reqs = expand_reqs
   end
 
   def post_superenv_hacks
@@ -83,12 +81,12 @@ class Build
 
   def expand_reqs
     f.recursive_requirements do |dependent, req|
-      if (req.optional? || req.recommended?) && dependent.build.without?(req.name)
+      if (req.optional? || req.recommended?) && dependent.build.without?(req)
         Requirement.prune
       elsif req.build? && dependent != f
         Requirement.prune
       elsif req.satisfied? && req.default_formula? && (dep = req.to_dependency).installed?
-        dependent.deps << dep
+        deps << dep
         Requirement.prune
       end
     end
@@ -96,7 +94,7 @@ class Build
 
   def expand_deps
     f.recursive_dependencies do |dependent, dep|
-      if (dep.optional? || dep.recommended?) && dependent.build.without?(dep.name)
+      if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
         Dependency.prune
       elsif dep.build? && dependent != f
         Dependency.prune
