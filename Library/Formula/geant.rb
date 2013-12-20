@@ -8,17 +8,30 @@ class Geant < Formula
   depends_on 'cmake' => :build
   depends_on :x11 # if your formula requires any X11/XQuartz components
   depends_on 'clhep'
+  depends_on 'qt' => :optional
 
   def install
     mkdir 'geant-build' do
-      system "cmake", "../",
-                      "-DCMAKE_PREFIX_PATH=#{prefix}",
-                      "-DGEANT4_INSTALL_DATA=ON",
-                      "-DGEANT4_USE_OPENGL_X11=ON",
-                      "-DGEANT4_USE_RAYTRACER_X11=ON",
-                      "-DGEANT4_BUILD_EXAMPLE=ON",
-                      "-DGEANT4_USE_SYSTEM_CLHEP=ON",
-                      *std_cmake_args
+      if build.with? 'qt'
+        system "cmake", "../",
+                        "-DCMAKE_PREFIX_PATH=#{prefix}",
+                        "-DGEANT4_INSTALL_DATA=ON",
+                        "-DGEANT4_USE_OPENGL_X11=ON",
+                        "-DGEANT4_USE_RAYTRACER_X11=ON",
+                        "-DGEANT4_BUILD_EXAMPLE=ON",
+                        "-DGEANT4_USE_QT=ON",
+                        "-DGEANT4_USE_SYSTEM_CLHEP=ON",
+                        *std_cmake_args
+      else
+        system "cmake", "../",
+                        "-DCMAKE_PREFIX_PATH=#{prefix}",
+                        "-DGEANT4_INSTALL_DATA=ON",
+                        "-DGEANT4_USE_OPENGL_X11=ON",
+                        "-DGEANT4_USE_RAYTRACER_X11=ON",
+                        "-DGEANT4_BUILD_EXAMPLE=ON",
+                        "-DGEANT4_USE_SYSTEM_CLHEP=ON",
+                        *std_cmake_args
+      end
       system "make install" # if this fails, try separate make/make install steps
     end
   end
