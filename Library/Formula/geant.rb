@@ -6,6 +6,7 @@ class Geant < Formula
   sha1 'cd91d0b50aab119c85a05c7a44b6fac9168af02d'
 
   option 'with-g3tog4', 'Use G3toG4 Library'
+  option 'with-notimeout', 'Set notimeout in installing data'
 
   depends_on 'cmake' => :build
   depends_on :x11
@@ -23,6 +24,7 @@ class Geant < Formula
                -DGEANT4_USE_SYSTEM_CLHEP=ON
              ]
 
+      args << '-DGEANT4_INSTALL_DATA_TIMEOUT=86400' if build.with? 'notimeout'
       args << '-DGEANT4_USE_QT=ON' if build.with? 'qt'
       args << '-DGEANT4_USE_G3TOG4=ON' if build.with? 'g3tog4'
       args.concat(std_cmake_args)
