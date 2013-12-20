@@ -3,6 +3,7 @@ require 'formula'
 class Libsass < Formula
   homepage 'https://github.com/hcatlin/libsass'
   url 'https://github.com/hcatlin/libsass/archive/v1.0.1.tar.gz'
+  sha1 '9524e028bc8ebe84e36895269d07ecc7db496c7c'
 
   depends_on :autoconf
 
