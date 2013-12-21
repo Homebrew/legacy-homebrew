@@ -11,7 +11,12 @@ class SigningParty < Formula
   url 'http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.4.orig.tar.gz'
   sha1 '092b7d644b7a8a8d2e82fd6ddb453ca58020ed31'
 
-  conflicts_with 'mutt', :because => 'mutt installs private copies of pgpring and pgpewrap'
+  option 'with-rename-pgpring', 'Install pgpring as pgppubring to avoid conflicting with mutt'
+
+  if build.without? 'rename-pgpring'
+    conflicts_with 'mutt',
+      :because => 'mutt installs a private copy of pgpring'
+  end
 
   depends_on GnupgInstalled
   depends_on 'dialog'
@@ -79,8 +84,18 @@ class SigningParty < Formula
 
     cd 'keyanalyze' do
       system "make"
-      bin.install 'keyanalyze', 'process_keys', 'pgpring/pgpring'
-      man1.install 'keyanalyze.1', 'process_keys.1', 'pgpring/pgpring.1'
+      if build.with? 'rename-pgpring'
+        # Install pgpring as pgppubring to avoid conflicting with Mutt.
+        # Reflect the installed name in manpages.
+        inreplace %w(keyanalyze.1 pgpring/pgpring.1 process_keys.1), /pgpring/, "pgppubring"
+        bin.install 'pgpring/pgpring' => 'pgppubring'
+        man1.install 'pgpring/pgpring.1' => 'pgppubring.1'
+      else
+        bin.install 'pgpring/pgpring'
+        man1.install 'pgpring/pgpring.1'
+      end
+      bin.install 'keyanalyze', 'process_keys'
+      man1.install 'keyanalyze.1', 'process_keys.1'
     end
 
     cd 'keylookup' do
