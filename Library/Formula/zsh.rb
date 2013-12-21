@@ -2,9 +2,9 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'http://fossies.org/linux/misc/zsh-5.0.3.tar.bz2'
-  mirror 'http://www.zsh.org/pub/zsh-5.0.3.tar.bz2'
-  sha1 'b7a80d2cdb83a871d869cfdf487bda8a18e01ef7'
+  url 'http://fossies.org/linux/misc/zsh-5.0.4.tar.bz2'
+  mirror 'http://www.zsh.org/pub/zsh-5.0.4.tar.bz2'
+  sha1 '9c52044531a7ffa6d299bffd8610399e4a000266'
 
   depends_on 'gdbm'
   depends_on 'pcre'
