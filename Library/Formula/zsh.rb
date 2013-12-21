@@ -27,7 +27,7 @@ class Zsh < Formula
     ]
 
     if build.include? 'enable-etcdir'
-      args << '--enable-etcdir'
+      args << '--enable-etcdir=/etc'
     else
       args << '--disable-etcdir'
     end
