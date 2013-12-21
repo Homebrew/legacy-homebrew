@@ -283,8 +283,9 @@ class FormulaInstaller
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
-    fi.caveats
     fi.finish
+    fi.caveats
+    fi.summary
   ensure
     # restore previous installation state if build failed
     outdated_keg.link if outdated_keg and not dep.installed? rescue nil
@@ -331,8 +332,6 @@ class FormulaInstaller
 
     post_install
 
-    ohai "Summary" if ARGV.verbose? or show_summary_heading
-    puts summary
   ensure
     unlock if hold_locks?
   end
@@ -342,11 +341,12 @@ class FormulaInstaller
   end
 
   def summary
+    ohai "Summary" if ARGV.verbose? or show_summary_heading
     s = ""
     s << "#{emoji}  " if MacOS.version >= :lion and not ENV['HOMEBREW_NO_EMOJI']
     s << "#{f.prefix}: #{f.prefix.abv}"
     s << ", built in #{pretty_duration build_time}" if build_time
-    s
+    puts s
   end
 
   def build_time
