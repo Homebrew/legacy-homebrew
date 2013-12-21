@@ -15,10 +15,14 @@ end
 
 class Squid < Formula
   homepage 'http://www.squid-cache.org/'
-  url 'http://www.squid-cache.org/Versions/v3/3.3/squid-3.3.10.tar.gz'
-  sha1 '2855dd88a6b0a37253a2f4aea77964c95f44bf7f'
+  url 'http://www.squid-cache.org/Versions/v3/3.3/squid-3.3.11.tar.gz'
+  sha1 'e89812a51d4e88abac15c301d571d83549f2d81e'
 
   depends_on NoBdb5
+
+  # fix building on mavericks
+  # http://bugs.squid-cache.org/show_bug.cgi?id=3954
+  def patches; DATA; end if MacOS.version >= :mavericks
 
   def install
     # For --disable-eui, see:
@@ -62,3 +66,39 @@ class Squid < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/compat/unsafe.h b/compat/unsafe.h
+index d58f546..6c9f7ab 100644
+--- a/compat/unsafe.h
++++ b/compat/unsafe.h
+@@ -5,7 +5,7 @@
+  * Trap unintentional use of functions unsafe for use within squid.
+  */
+
+-#if !SQUID_NO_STRING_BUFFER_PROTECT
++#if !SQUID_NO_STRING_BUFFER_PROTECT && 0
+ #ifndef sprintf
+ #define sprintf ERROR_sprintf_UNSAFE_IN_SQUID
+ #endif
+diff --git a/include/Array.h b/include/Array.h
+index 8cee5fa..8f43522 100644
+--- a/include/Array.h
++++ b/include/Array.h
+@@ -35,6 +35,7 @@
+  \todo CLEANUP: this file should be called Vector.h at least, and probably be replaced by STL Vector<C>
+  */
+
++#include <iterator>
+ #include "fatal.h"
+ #include "util.h"
+
+@@ -44,7 +45,7 @@
+ /* iterator support */
+
+ template <class C>
+-class VectorIteratorBase
++class VectorIteratorBase : public std::iterator <std::forward_iterator_tag, typename C::value_type>
+ {
+
+ public:
