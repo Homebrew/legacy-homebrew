@@ -139,4 +139,63 @@ class CleanerTests < Test::Unit::TestCase
     assert symlink.symlink?
     assert !symlink.exist?
   end
+
+  def test_removes_la_files
+    file = @f.lib/'foo.la'
+
+    @f.lib.mkpath
+    touch file
+
+    Cleaner.new @f
+
+    assert !file.exist?
+  end
+
+  def test_skip_clean_la
+    file = @f.lib/'foo.la'
+
+    @f.class.skip_clean :la
+    @f.lib.mkpath
+    touch file
+
+    Cleaner.new @f
+
+    assert file.exist?
+  end
+
+  def test_remove_charset_alias
+    file = @f.lib/'charset.alias'
+
+    @f.lib.mkpath
+    touch file
+
+    Cleaner.new @f
+
+    assert !file.exist?
+  end
+
+  def test_skip_clean_subdir
+    dir = @f.lib/'subdir'
+    @f.class.skip_clean 'lib/subdir'
+
+    dir.mkpath
+
+    Cleaner.new @f
+
+    assert dir.directory?
+  end
+
+  def test_skip_clean_paths_are_anchored_to_prefix
+    dir1 = @f.bin/'a'
+    dir2 = @f.lib/'bin/a'
+
+    @f.class.skip_clean 'bin/a'
+    dir1.mkpath
+    dir2.mkpath
+
+    Cleaner.new @f
+
+    assert dir1.exist?
+    assert !dir2.exist?
+  end
 end
