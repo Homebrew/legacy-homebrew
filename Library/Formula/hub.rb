@@ -2,8 +2,8 @@ require 'formula'
 
 class Hub < Formula
   homepage 'http://hub.github.com/'
-  url 'https://github.com/github/hub/archive/v1.10.6.tar.gz'
-  sha1 'e29d158c65a10ef3889f4af438bf1fb50fbd0536'
+  url 'https://github.com/github/hub/archive/v1.11.0.tar.gz'
+  sha1 'fea06d242af3be473b78bb738a04afc11ca4df21'
   head 'https://github.com/github/hub.git'
 
   def install
