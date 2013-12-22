@@ -119,7 +119,7 @@ module Stdenv
     self.cxx = "#{MacOS.dev_tools_path}/g++-4.0"
     replace_in_cflags '-O4', '-O3'
     set_cpu_cflags '-march=nocona -mssse3'
-    @compiler = :gcc
+    @compiler = :gcc_4_0
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 
