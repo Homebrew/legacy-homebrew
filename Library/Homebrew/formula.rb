@@ -766,10 +766,7 @@ class Formula
         return
       end
 
-      paths.each do |p|
-        p = p.to_s unless p == :la # Keep :la in paths as a symbol
-        skip_clean_paths << p
-      end
+      skip_clean_paths.merge(paths)
     end
 
     def skip_clean_all?
