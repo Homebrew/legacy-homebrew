@@ -11,7 +11,7 @@ class CleanerTests < Test::Unit::TestCase
   end
 
   def teardown
-    @f.prefix.rmtree
+    @f.prefix.rmtree if @f.prefix.exist?
   end
 
   def test_clean_file
@@ -26,6 +26,11 @@ class CleanerTests < Test::Unit::TestCase
     assert_equal 0100444, (@f.lib/'fat.dylib').stat.mode
     assert_equal 0100444, (@f.lib/'x86_64.dylib').stat.mode
     assert_equal 0100444, (@f.lib/'i386.dylib').stat.mode
+  end
+
+  def test_prunes_prefix_if_empty
+    Cleaner.new @f
+    assert !@f.prefix.directory?
   end
 
   def test_prunes_empty_directories
