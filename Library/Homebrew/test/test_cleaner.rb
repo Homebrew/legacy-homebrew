@@ -28,6 +28,36 @@ class CleanerTests < Test::Unit::TestCase
     assert_equal 0100444, (@f.lib/'i386.dylib').stat.mode
   end
 
+  def test_prunes_empty_directories
+    subdir = @f.bin/'subdir'
+    subdir.mkpath
+
+    Cleaner.new @f
+
+    assert !@f.bin.directory?
+    assert !subdir.directory?
+  end
+
+  def test_skip_clean_empty_directory
+    @f.class.skip_clean 'bin'
+    @f.bin.mkpath
+
+    Cleaner.new @f
+
+    assert @f.bin.directory?
+  end
+
+  def test_skip_clean_directory_with_empty_subdir
+    @f.class.skip_clean 'bin'
+    subdir = @f.bin/'subdir'
+    subdir.mkpath
+
+    Cleaner.new @f
+
+    assert @f.bin.directory?
+    assert subdir.directory?
+  end
+
   def test_fails_to_remove_symlink_when_target_was_pruned_first
     mkpath @f.prefix/'b'
     ln_s 'b', @f.prefix/'a'
