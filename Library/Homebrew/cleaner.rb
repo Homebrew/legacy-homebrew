@@ -22,28 +22,36 @@ class Cleaner
       f.info.rmtree if f.info.directory? and not f.skip_clean? f.info
     end
 
-    # Remove empty folders.
-    # We want post-order traversal, so use a stack.
-    paths = []
-    f.prefix.find do |path|
-      if path.directory?
-        if f.skip_clean? path
-          Find.prune
-        else
-          paths << path
-        end
+    prune
+  end
+
+  private
+
+  def prune
+    dirs = []
+    symlinks = []
+
+    @f.prefix.find do |path|
+      if @f.skip_clean? path
+        Find.prune
+      elsif path.symlink?
+        symlinks << path
+      elsif path.directory?
+        dirs << path
       end
     end
 
-    paths.reverse_each do |d|
-      if d.children.empty? and not f.skip_clean? d
+    dirs.reverse_each do |d|
+      if d.children.empty?
         puts "rmdir: #{d} (empty)" if ARGV.verbose?
         d.rmdir
       end
     end
-  end
 
-  private
+    symlinks.reverse_each do |s|
+      s.unlink unless s.resolved_path_exists?
+    end
+  end
 
   # Set permissions for executables and non-executables
   def clean_file_permissions path
