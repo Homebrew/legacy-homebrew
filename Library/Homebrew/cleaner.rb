@@ -8,6 +8,8 @@ class Cleaner
 
   # Create a cleaner for the given formula and clean its keg
   def initialize f
+    ObserverPathnameExtension.reset_counts!
+
     @f = f
     [f.bin, f.sbin, f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
 
@@ -72,7 +74,7 @@ class Cleaner
   # Clean a single folder (non-recursively)
   def clean_dir d
     d.find do |path|
-      path.extend(NoisyPathname) if ARGV.verbose?
+      path.extend(ObserverPathnameExtension)
 
       Find.prune if @f.skip_clean? path
 
@@ -89,11 +91,4 @@ class Cleaner
     end
   end
 
-end
-
-module NoisyPathname
-  def unlink
-    puts "rm: #{self}"
-    super
-  end
 end
