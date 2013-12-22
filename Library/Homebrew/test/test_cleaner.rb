@@ -63,22 +63,80 @@ class CleanerTests < Test::Unit::TestCase
     assert subdir.directory?
   end
 
-  def test_fails_to_remove_symlink_when_target_was_pruned_first
-    mkpath @f.prefix/'b'
-    ln_s 'b', @f.prefix/'a'
-    assert_raises(Errno::ENOENT) { Cleaner.new @f }
-  end
+  def test_removes_symlink_when_target_was_pruned_first
+    dir = @f.prefix/'b'
+    symlink = @f.prefix/'a'
 
-  def test_fails_to_remove_symlink_pointing_to_empty_directory
-    mkpath @f.prefix/'b'
-    ln_s 'b', @f.prefix/'c'
-    assert_raises(Errno::ENOTDIR) { Cleaner.new @f }
-  end
+    dir.mkpath
+    ln_s dir.basename, symlink
 
-  def test_fails_to_remove_broken_symlink
-    ln_s 'target', @f.prefix/'symlink'
     Cleaner.new @f
-    assert @f.prefix.join('symlink').symlink?, "not a symlink"
-    assert !@f.prefix.join('symlink').exist?, "target exists"
+
+    assert !dir.exist?
+    assert !symlink.symlink?
+    assert !symlink.exist?
+  end
+
+  def test_removes_symlink_pointing_to_empty_directory
+    dir = @f.prefix/'b'
+    symlink = @f.prefix/'c'
+
+    dir.mkpath
+    ln_s dir.basename, symlink
+
+    Cleaner.new @f
+
+    assert !dir.exist?
+    assert !symlink.symlink?
+    assert !symlink.exist?
+  end
+
+  def test_removes_broken_symlinks
+    symlink = @f.prefix/'symlink'
+    ln_s 'target', symlink
+
+    Cleaner.new @f
+
+    assert !symlink.symlink?
+  end
+
+  def test_skip_clean_broken_symlink
+    @f.class.skip_clean 'symlink'
+    symlink = @f.prefix/'symlink'
+    ln_s 'target', symlink
+
+    Cleaner.new @f
+
+    assert symlink.symlink?
+  end
+
+  def test_skip_clean_symlink_pointing_to_empty_directory
+    @f.class.skip_clean 'c'
+    dir = @f.prefix/'b'
+    symlink = @f.prefix/'c'
+
+    dir.mkpath
+    ln_s dir.basename, symlink
+
+    Cleaner.new @f
+
+    assert !dir.exist?
+    assert symlink.symlink?
+    assert !symlink.exist?
+  end
+
+  def test_skip_clean_symlink_when_target_pruned
+    @f.class.skip_clean 'a'
+    dir = @f.prefix/'b'
+    symlink = @f.prefix/'a'
+
+    dir.mkpath
+    ln_s dir.basename, symlink
+
+    Cleaner.new @f
+
+    assert !dir.exist?
+    assert symlink.symlink?
+    assert !symlink.exist?
   end
 end
