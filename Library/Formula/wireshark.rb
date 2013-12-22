@@ -21,6 +21,7 @@ class Wireshark < Formula
 
   option 'with-x', 'Include X11 support'
   option 'with-qt', 'Use QT for GUI instead of GTK+'
+  option 'with-headers', 'Install Wireshark library headers for plug-in developemnt'
 
   depends_on 'pkg-config' => :build
 
@@ -66,6 +67,18 @@ class Wireshark < Formula
     system "make"
     ENV.deparallelize # parallel install fails
     system "make install"
+
+    if build.with? 'headers'
+        (include/"wireshark").install Dir["*.h"]
+        (include/"wireshark/epan").install Dir["epan/*.h"]
+        (include/"wireshark/epan/crypt").install Dir["epan/crypt/*.h"]
+        (include/"wireshark/epan/dfilter").install Dir["epan/dfilter/*.h"]
+        (include/"wireshark/epan/dissectors").install Dir["epan/dissectors/*.h"]
+        (include/"wireshark/epan/ftypes").install Dir["epan/ftypes/*.h"]
+        (include/"wireshark/epan/wmem").install Dir["epan/wmem/*.h"]
+        (include/"wireshark/wiretap").install Dir["wiretap/*.h"]
+        (include/"wireshark/wsutil").install Dir["wsutil/*.h"]
+    end
   end
 
   def caveats; <<-EOS.undent
