@@ -27,4 +27,23 @@ class CleanerTests < Test::Unit::TestCase
     assert_equal 0100444, (@f.lib/'x86_64.dylib').stat.mode
     assert_equal 0100444, (@f.lib/'i386.dylib').stat.mode
   end
+
+  def test_fails_to_remove_symlink_when_target_was_pruned_first
+    mkpath @f.prefix/'b'
+    ln_s 'b', @f.prefix/'a'
+    assert_raises(Errno::ENOENT) { Cleaner.new @f }
+  end
+
+  def test_fails_to_remove_symlink_pointing_to_empty_directory
+    mkpath @f.prefix/'b'
+    ln_s 'b', @f.prefix/'c'
+    assert_raises(Errno::ENOTDIR) { Cleaner.new @f }
+  end
+
+  def test_fails_to_remove_broken_symlink
+    ln_s 'target', @f.prefix/'symlink'
+    Cleaner.new @f
+    assert @f.prefix.join('symlink').symlink?, "not a symlink"
+    assert !@f.prefix.join('symlink').exist?, "target exists"
+  end
 end
