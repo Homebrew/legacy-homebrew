@@ -85,7 +85,7 @@ class Qt5 < Formula
     system "./configure", *args
     system "make"
     if build.with? 'docs'
-      system "make docs"
+      system "make", "docs"
     end
     ENV.j1
     system "make install"
