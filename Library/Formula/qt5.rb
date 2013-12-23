@@ -49,6 +49,7 @@ class Qt5 < Formula
             "-system-zlib",
             "-confirm-license", "-opensource",
             "-nomake", "examples",
+            "-nomake", "tests",
             "-release"]
 
     unless MacOS::CLT.installed?
@@ -83,6 +84,9 @@ class Qt5 < Formula
 
     system "./configure", *args
     system "make"
+    if build.with? 'docs'
+      system "make", "docs"
+    end
     ENV.j1
     system "make install"
 
