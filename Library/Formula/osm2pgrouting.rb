@@ -2,8 +2,8 @@ require 'formula'
 
 class Osm2pgrouting < Formula
   homepage 'http://pgrouting.org/docs/tools/osm2pgrouting.html'
-  url 'https://github.com/pgRouting/osm2pgrouting.git', :tag => 'v2.0.0'
-  sha1 '8c5f5e80ca819f3afb930432498816745947636f'
+  url 'https://github.com/pgRouting/osm2pgrouting/archive/v2.0.0.tar.gz'
+  sha1 '2d100ac9914919993a7c341e2395b8bafdfe3759'
   head 'https://github.com/pgRouting/osm2pgrouting.git', :branch => 'master'
 
   depends_on 'cmake' => :build
