@@ -261,7 +261,7 @@ class Test
     dependencies = dependencies.join(' ')
     formula_object = Formula.factory(formula)
     requirements = formula_object.recursive_requirements
-    unsatisfied_requirements = requirements.reject {|r| r.satisfied?}
+    unsatisfied_requirements = requirements.reject {|r| r.satisfied? or r.default_formula?}
     unless unsatisfied_requirements.empty?
       puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula}#{Tty.reset}"
       unsatisfied_requirements.each {|r| puts r.message}
