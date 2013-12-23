@@ -34,7 +34,6 @@ class Qt5 < Formula
 
   option :universal
   option 'with-docs', 'Build documentation'
-  depends_on "docs"  => :recommended
   option 'developer', 'Build and link with developer options'
 
   depends_on "d-bus" => :optional
