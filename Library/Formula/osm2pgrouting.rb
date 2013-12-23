@@ -23,12 +23,6 @@ class Osm2pgrouting < Formula
     system "make", "install"
   end
 
-  test do
-    require 'open3'
-    Open3.popen3("#{bin}/osm2pgrouting") do |_, stdout, _|
-      assert_equal false, stdout.readlines.empty?, "Nothing written to stdout"
-    end
-  end
 end
 
 __END__
