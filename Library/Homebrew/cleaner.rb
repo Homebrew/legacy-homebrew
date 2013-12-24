@@ -8,6 +8,8 @@ class Cleaner
 
   # Create a cleaner for the given formula and clean its keg
   def initialize f
+    ObserverPathnameExtension.reset_counts!
+
     @f = f
     [f.bin, f.sbin, f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
 
@@ -72,32 +74,21 @@ class Cleaner
   # Clean a single folder (non-recursively)
   def clean_dir d
     d.find do |path|
-      path.extend(NoisyPathname) if ARGV.verbose?
+      path.extend(ObserverPathnameExtension)
 
-      if path.directory?
-        # Stop cleaning this subtree if protected
-        Find.prune if @f.skip_clean? path
-      elsif not path.file?
-        # Sanity?
+      Find.prune if @f.skip_clean? path
+
+      if path.symlink? or path.directory?
         next
       elsif path.extname == '.la'
-        # *.la files are stupid
-        path.unlink unless @f.skip_clean? path
+        path.unlink
       elsif path == @f.lib+'charset.alias'
         # Many formulae symlink this file, but it is not strictly needed
-        path.unlink unless @f.skip_clean? path
-      elsif not path.symlink?
-        # Fix permissions
-        clean_file_permissions(path) unless @f.skip_clean? path
+        path.unlink
+      else
+        clean_file_permissions(path)
       end
     end
   end
 
-end
-
-module NoisyPathname
-  def unlink
-    puts "rm: #{self}"
-    super
-  end
 end
