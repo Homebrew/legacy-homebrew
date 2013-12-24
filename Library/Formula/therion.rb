@@ -26,6 +26,12 @@ class Therion < Formula
     system "make install"
   end
 
+  def caveats
+    s = <<-EOS.undent
+        Before installing therion please install MacTex.
+        You can find the package at http://mirror.ctan.org/systems/mac/mactex/MacTeX.pkg
+    EOS
+  end
   test do
     # `test do` will create, run in and delete a temporary directory.
     #
