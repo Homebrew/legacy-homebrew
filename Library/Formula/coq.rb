@@ -16,11 +16,11 @@ end
 
 class Coq < Formula
   homepage 'http://coq.inria.fr/'
-  url 'http://coq.inria.fr/distrib/V8.4pl2/files/coq-8.4pl2.tar.gz'
-  version '8.4pl2'
-  sha1 'adcef430b8e27663e8ea075e646112f7d4d51fa6'
+  url 'http://coq.inria.fr/distrib/V8.4pl3/files/coq-8.4pl3.tar.gz'
+  version '8.4pl3'
+  sha1 'b7d7f49412b0b9827bc461a78b5340e69cc0d3f4'
 
-  head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
+  head 'git://scm.gforge.inria.fr/coq/coq.git'
 
   depends_on TransitionalMode
   depends_on 'objective-caml'
