@@ -35,7 +35,7 @@ class Coq < Formula
                           "-coqdocdir", "#{share}/coq/latex",
                           "-coqide", "no",
                           "-with-doc", "no"
-    ENV.j1 # Otherwise "mkdir bin" can be attempted by more than one job
+    ENV.deparallelize # Otherwise "mkdir bin" can be attempted by more than one job
     system "make world"
     system "make install"
   end
