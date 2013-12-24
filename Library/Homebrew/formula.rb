@@ -754,7 +754,7 @@ class Formula
 
     def conflicts_with *names
       opts = Hash === names.last ? names.pop : {}
-      names.each { |name| conflicts << FormulaConflict.new(name, opts[:because]) }
+      names.each { |name| conflicts << FormulaConflict.new(name, opts[:because], opts[:suggest]) }
     end
 
     def skip_clean *paths
