@@ -13,6 +13,13 @@ class Therion < Formula
   depends_on 'imagemagick'
 
   def install
+    if File.exist?('/usr/texbin/pdftex')
+        ENV['PATH'] = ENV['PATH'] + ":/usr/texbin/"
+    else
+        onoe "Can not find pdftex. Please make sure you have MacTex installed"
+        exit
+    end
+
     inreplace 'makeinstall.tcl', "/usr/bin" , "#{bin}"
     inreplace 'makeinstall.tcl', "/etc" , "#{etc}"
 
