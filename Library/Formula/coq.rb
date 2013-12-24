@@ -20,7 +20,7 @@ class Coq < Formula
   version '8.4pl3'
   sha1 'e1c2bd2dcb21f8a2e121aedf48041abed70e71d6'
 
-  head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
+  head 'git://scm.gforge.inria.fr/coq/coq.git'
 
   depends_on TransitionalMode
   depends_on 'objective-caml'
