@@ -17,10 +17,11 @@ class Therion < Formula
   depends_on 'imagemagick'
 
   def install
-    # Replace /usr/bin with PREFIX
-    inreplace 'makeinstall.tcl', "/usr/bin" , "#{prefix}/bin"
-    inreplace 'makeinstall.tcl', "/etc" , "#{prefix}/etc"
-    system "mkdir -p #{prefix}/{bin,etc}"
+    inreplace 'makeinstall.tcl', "/usr/bin" , "#{bin}"
+    inreplace 'makeinstall.tcl', "/etc" , "#{etc}"
+
+    (etc).mkpath
+    (bin).mkpath
     system "make config-macosx"
     system "make"
     system "make install"
