@@ -14,6 +14,15 @@ class Aiccu < Formula
     system "make", "install", "prefix=#{prefix}"
 
     etc.install 'doc/aiccu.conf'
+
+    (sbin/'aiccud').write <<-EOS.undent
+      #!/bin/sh
+      set -e
+      while ! host tic.sixxs.net; do sleep 1; done
+      ping -o tic.sixxs.net
+      exec #{sbin}/aiccu start #{etc}/aiccu.conf
+    EOS
+    chmod 0755, sbin/'aiccud'
   end
 
   plist_options :startup => true
@@ -27,9 +36,7 @@ class Aiccu < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/aiccu</string>
-        <string>start</string>
-        <string>#{etc}/aiccu.conf</string>
+        <string>#{opt_prefix}/sbin/aiccud</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
