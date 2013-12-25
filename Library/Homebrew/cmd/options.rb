@@ -30,5 +30,13 @@ module Homebrew extend self
       puts opt.flag
       puts "\t"+opt.description
     end
+    if f.devel
+      puts '--devel'
+      puts "\tinstall development version #{f.devel.version}"
+    end
+    if f.head
+      puts '--HEAD'
+      puts "\tinstall HEAD version"
+    end
   end
 end

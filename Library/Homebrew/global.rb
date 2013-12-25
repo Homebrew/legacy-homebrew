@@ -66,6 +66,8 @@ end
 
 HOMEBREW_LOGS = Pathname.new(ENV['HOMEBREW_LOGS'] || '~/Library/Logs/Homebrew/').expand_path
 
+HOMEBREW_TEMP = Pathname.new(ENV.fetch('HOMEBREW_TEMP', '/tmp'))
+
 RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
 RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
 
@@ -97,7 +99,7 @@ end
 
 require 'metafiles'
 FORMULA_META_FILES = Metafiles.new
-ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/troubleshooting"
+ISSUES_URL = "https://github.com/Homebrew/homebrew/wiki/troubleshooting"
 HOMEBREW_PULL_OR_COMMIT_URL_REGEX = 'https:\/\/github.com\/(\w+)\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
 
 require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']

@@ -22,7 +22,7 @@ class PostgresXc < Formula
     cause 'Miscompilation resulting in segfault on queries'
   end
 
-  # Fix PL/Python build: https://github.com/mxcl/homebrew/issues/11162
+  # Fix PL/Python build: https://github.com/Homebrew/homebrew/issues/11162
   # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
   def patches
     DATA

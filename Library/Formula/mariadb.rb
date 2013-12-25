@@ -45,7 +45,7 @@ class Mariadb < Formula
 
   def install
     # Don't hard-code the libtool path. See:
-    # https://github.com/mxcl/homebrew/issues/20185
+    # https://github.com/Homebrew/homebrew/issues/20185
     inreplace "cmake/libutils.cmake",
       "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
       "COMMAND libtool -static -o ${TARGET_LOCATION}"
@@ -109,7 +109,7 @@ class Mariadb < Formula
 
     unless build.include? 'client-only'
       # Don't create databases inside of the prefix!
-      # See: https://github.com/mxcl/homebrew/issues/4975
+      # See: https://github.com/Homebrew/homebrew/issues/4975
       rm_rf prefix+'data'
 
       (prefix+'mysql-test').rmtree unless build.with? 'tests' # save 121MB!
