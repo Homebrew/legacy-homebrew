@@ -11,15 +11,9 @@ class Therion < Formula
   depends_on 'freetype'
   depends_on 'vtk5'
   depends_on 'imagemagick'
+  depends_on :tex
 
   def install
-    if File.exist?('/usr/texbin/pdftex')
-        ENV['PATH'] = ENV['PATH'] + ":/usr/texbin/"
-    else
-        onoe "Can not find pdftex. Please make sure you have MacTex installed"
-        exit
-    end
-
     inreplace 'makeinstall.tcl', "/usr/bin" , "#{bin}"
     inreplace 'makeinstall.tcl', "/etc" , "#{etc}"
 
@@ -28,13 +22,6 @@ class Therion < Formula
     system "make config-macosx"
     system "make"
     system "make install"
-  end
-
-  def caveats
-    s = <<-EOS.undent
-        Before installing therion please install MacTex.
-        You can find the package at http://mirror.ctan.org/systems/mac/mactex/MacTeX.pkg
-    EOS
   end
 
   test do
