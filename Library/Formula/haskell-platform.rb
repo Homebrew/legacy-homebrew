@@ -17,7 +17,13 @@ class HaskellPlatform < Formula
   end
 
   def caveats; <<-EOS.undent
-    Run `cabal update` to initialize the package list.
+    Initialize the package list by using:
+      cabal update
+    Packages are installed into ~/.cabal by default. To use executables
+    installed via Cabal (including newer versions of cabal-install), prepend
+    $HOME/.cabal/bin to your $PATH by adding to your ~/.bash_profile the
+    following line:
+      export PATH="$HOME/.cabal/bin:$PATH"
 
     If you are replacing a previous version of haskell-platform, you may want
     to unregister packages belonging to the old version. You can find broken
