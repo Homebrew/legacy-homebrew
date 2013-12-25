@@ -36,8 +36,4 @@ class Gkrellm < Formula
     system "make", "darwin9"
     system "make", "install_darwin9"
   end
-
-  test do
-    system "#{bin}/gkrellm", "--version"
-  end
 end
