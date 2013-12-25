@@ -13,7 +13,7 @@ class Geant < Formula
   depends_on :x11
   depends_on 'clhep'
   depends_on 'qt' => :optional
-  depends_on 'xerces-c' => :required if build.with? 'gdml'
+  depends_on 'xerces-c' build.with? 'gdml'
 
   def install
     mkdir 'geant-build' do
