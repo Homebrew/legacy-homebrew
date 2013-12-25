@@ -11,7 +11,7 @@ class Ruby < Formula
   end
 
   option :universal
-  option 'with-suffix', 'Suffix commands with "20"'
+  option 'with-suffix', 'Suffix commands with "21"'
   option 'with-doc', 'Install documentation'
   option 'with-tcltk', 'Install with Tcl/Tk support'
 
@@ -30,7 +30,7 @@ class Ruby < Formula
     system "autoconf" if build.head?
 
     args = %W[--prefix=#{prefix} --enable-shared]
-    args << "--program-suffix=20" if build.with? "suffix"
+    args << "--program-suffix=21" if build.with? "suffix"
     args << "--with-arch=#{Hardware::CPU.universal_archs.join(',')}" if build.universal?
     args << "--with-out-ext=tk" unless build.with? "tcltk"
     args << "--disable-install-doc" unless build.with? "doc"
