@@ -30,6 +30,7 @@ class Mutt < Formula
   option "with-ignore-thread-patch", "Apply ignore-thread patch"
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
+  option "with-sidebar-patch", "Apply sidebar path"
 
   depends_on 'tokyo-cabinet'
   depends_on 's-lang' => :optional
@@ -43,6 +44,7 @@ class Mutt < Formula
       ['with-pgp-verbose-mime-patch',
           'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.4/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
       ['with-confirm-attachment-patch', 'https://gist.github.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch'],
+      ['with-sidebar-patch', 'https://raw.github.com/nedos/mutt-sidebar-patch/master/mutt-sidebar.patch']
     ]
 
     p = []
