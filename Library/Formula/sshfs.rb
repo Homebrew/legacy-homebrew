@@ -10,7 +10,7 @@ class Sshfs < Formula
   depends_on :libtool
 
   depends_on 'pkg-config' => :build
-  depends_on 'fuse4x'
+  depends_on 'osxfuse'
   depends_on 'glib'
   depends_on :xcode
 
