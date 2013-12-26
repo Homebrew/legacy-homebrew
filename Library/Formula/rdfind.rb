@@ -1,9 +1,5 @@
 require 'formula'
 
-# Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
-#                /usr/local/Library/Contributions/example-formula.rb
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Rdfind < Formula
   homepage 'http://rdfind.pauldreik.se'
   url 'http://rdfind.pauldreik.se/rdfind-1.3.4.tar.gz'
@@ -19,6 +15,11 @@ class Rdfind < Formula
   end
 
   test do
-    system "#{bin}/rdfind", "--version"
+    FileUtils.mkdir 'folder'
+    FileUtils.touch 'folder/file1'
+    FileUtils.touch 'folder/file2'
+    system "#{bin}/rdfind -deleteduplicates true -ignoreempty false folder"
+    File.exist?('folder/file1')==true
+    File.exist?('folder/file2')==false
   end
 end
