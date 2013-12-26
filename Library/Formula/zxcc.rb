@@ -24,7 +24,21 @@ class Zxcc < Formula
   end
 
   test do
-    assert_equal "zxcc: No CP/M program name provided.", `#{bin}/zxcc 2>&1`.strip
+    code = [
+      0x11, 0x0b, 0x01,   # 0100 ld de,010bh
+      0x0e, 0x09,         # 0103 ld c,cwritestr
+      0xcd, 0x05, 0x00,   # 0105 call bdos
+      0xc3, 0x00, 0x00,   # 0108 jp warm
+      0x48, 0x65, 0x6c,   # 010b db "Hel"
+      0x6c, 0x6f, 0x24    # 010e db "lo$"
+    ].pack("c*")
+
+    path = testpath/"hello.com"
+    path.open("wb") { |f| f.write code }
+
+    output = `#{bin}/zxcc #{path}`.strip
+    assert_equal "Hello", output
+    assert_equal 0, $?.exitstatus
   end
 end
 
