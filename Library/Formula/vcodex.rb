@@ -13,8 +13,8 @@ class VcodexDownloadStrategy < CurlDownloadStrategy
 end
 
 class Vcodex < Formula
-  homepage 'http://www2.research.att.com/~gsf/download/ref/vcodex/vcodex.html'
-  url 'http://www2.research.att.com/~gsf/download/tgz/vcodex.2013-05-31.tgz',
+  homepage 'http://www2.research.att.com/~astopen/download/ref/vcodex/vcodex.html'
+  url 'http://www2.research.att.com/~astopen/download/tgz/vcodex.2013-05-31.tgz',
       :using => VcodexDownloadStrategy
   sha1 '0423ee95b13069dd617c5f7625484a92d5068ea0'
   version '2013-05-31'
