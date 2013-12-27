@@ -126,7 +126,7 @@ class Keg
 
   def dylib_id_for file, options={}
     # the shortpath ensures that library upgrades don’t break installed tools
-    relative_path = Pathname.new(file).relative_path_from(self)
+    relative_path = file.relative_path_from(self)
     shortpath = HOMEBREW_PREFIX.join(relative_path)
 
     if shortpath.exist? and not options[:keg_only]
