@@ -204,7 +204,7 @@ module Homebrew extend self
         f = Formula.factory formula_name
         formula_relative_path = "Library/Formula/#{f.name}.rb"
         formula_path = HOMEBREW_REPOSITORY+formula_relative_path
-        has_bottle_block = f.class.send(:bottle).checksums.any?
+        has_bottle_block = f.class.bottle.checksums.any?
         inreplace formula_path do |s|
           if has_bottle_block
             s.sub!(/  bottle do.+?end\n/m, output)
