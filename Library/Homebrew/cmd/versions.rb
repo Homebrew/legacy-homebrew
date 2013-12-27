@@ -45,7 +45,7 @@ class Formula
     map = Hash.new { |h, k| h[k] = [] }
     rev_list(branch) do |rev|
       formula_for_sha(rev) do |f|
-        bottle = f.class.send(:bottle)
+        bottle = f.class.bottle
         unless bottle.checksums.empty?
           map[bottle.version] << bottle.revision
         end
