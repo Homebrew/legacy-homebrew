@@ -143,6 +143,16 @@ class FormulaConflictError < Homebrew::InstallationError
     message.join
   end
 
+  def conflict_suggestion(conflict)
+    return unless conflict.suggestion
+    message = []
+    message << <<-EOS.undent
+      Alternatively, the formula suggests the following workaround:
+
+        #{conflict.suggestion}
+      EOS
+  end
+
   def message
     message = []
     message << "Cannot install #{f.name} because conflicting formulae are installed.\n"
@@ -155,6 +165,7 @@ class FormulaConflictError < Homebrew::InstallationError
       install, but the build may fail or cause obscure side-effects in the
       resulting software.
       EOS
+    message.concat conflicts.map { |c| conflict_suggestion(c) } << ""
     message.join("\n")
   end
 end

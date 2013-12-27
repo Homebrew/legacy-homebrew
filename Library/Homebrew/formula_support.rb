@@ -1,4 +1,4 @@
-FormulaConflict = Struct.new(:name, :reason)
+FormulaConflict = Struct.new(:name, :reason, :suggestion)
 
 # Used to annotate formulae that duplicate OS X provided software
 # or cause conflicts when linked in.
