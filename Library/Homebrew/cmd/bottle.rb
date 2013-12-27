@@ -202,10 +202,9 @@ module Homebrew extend self
 
       if ARGV.include? '--write'
         f = Formula.factory formula_name
-        formula_relative_path = "Library/Formula/#{f.name}.rb"
-        formula_path = HOMEBREW_REPOSITORY+formula_relative_path
         has_bottle_block = f.class.bottle.checksums.any?
-        inreplace formula_path do |s|
+
+        inreplace f.path do |s|
           if has_bottle_block
             s.sub!(/  bottle do.+?end\n/m, output)
           else
@@ -217,7 +216,7 @@ module Homebrew extend self
 
         safe_system 'git', 'commit', '--no-edit', '--verbose',
           "--message=#{f.name}: #{update_or_add} #{f.version} bottle.",
-          '--', formula_path
+          '--', f.path
       end
     end
     exit 0
