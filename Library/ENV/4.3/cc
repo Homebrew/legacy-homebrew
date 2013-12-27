@@ -134,25 +134,29 @@ class Cmd
       when /^-I(.+)?/
         # Support both "-Ifoo" (one argument) and "-I foo" (two arguments)
         path = $1.chuzzle || whittler.next
-        args << "-I#{path}" if iset.add?(path.cleanpath)
+        args << "-I#{path}" if keep?(path) and iset.add?(path.cleanpath)
       when /^-L(.+)?/
         path = $1.chuzzle || whittler.next
-        doit = case path.cleanpath
-        when %r{^#{Regexp.escape(brewfix)}}, %r{^#{Regexp.escape(brewtmp)}}
-          # maybe homebrew is installed to /sw or /opt/brew
-          true
-        when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
-          false
-        else
-          true
-        end
-        args << "-L#{path}" if doit and lset.add?(path.cleanpath)
+        args << "-L#{path}" if keep?(path) and lset.add?(path.cleanpath)
       else
         args << arg
       end
     end
     args
   end
+
+  def keep? path
+    case path.cleanpath
+    when %r{^#{Regexp.escape(brewfix)}}, %r{^#{Regexp.escape(brewtmp)}}
+      # maybe homebrew is installed to /sw or /opt/brew
+      true
+    when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
+      false
+    else
+      true
+    end
+  end
+
   def cflags
     args = []
 
