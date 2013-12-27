@@ -208,7 +208,7 @@ module Homebrew extend self
           if has_bottle_block
             s.sub!(/  bottle do.+?end\n/m, output)
           else
-            s.sub!(/(  (url|sha1|head|version) '\S*'\n+)+/m, '\0' + output + "\n")
+            s.sub!(/(  (url|sha1|sha256|head|version) '\S*'\n+)+/m, '\0' + output + "\n")
           end
         end
 
