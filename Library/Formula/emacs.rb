@@ -80,7 +80,7 @@ class Emacs < Formula
     if build.include? "cocoa"
       # Patch for color issues described here:
       # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
-      if build.include? "srgb"
+      if build.include? "srgb" and not build.head?
         inreplace "src/nsterm.m",
           "*col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];",
           "*col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];"
@@ -129,14 +129,17 @@ class Emacs < Formula
         Emacs.app was installed to:
           #{prefix}
 
-         To link the application to a normal Mac OS X location:
-           brew linkapps
-         or:
-           ln -s #{prefix}/Emacs.app /Applications
+        To link the application to a normal Mac OS X location:
+          brew linkapps
+        or:
+          ln -s #{prefix}/Emacs.app /Applications
 
-         A command line wrapper for the cocoa app was installed to:
-          #{bin}/emacs
+        A command line wrapper for the cocoa app was installed to:
+         #{bin}/emacs
       EOS
+      if build.include? "srgb" and build.head?
+        s << "\nTo enable sRGB, use (setq ns-use-srgb-colorspace t)"
+      end
     end
     return s
   end
