@@ -25,12 +25,13 @@ end
 LOGGER = Logger.new
 
 class Cmd
-  attr_reader :brewfix, :sdkroot
+  attr_reader :brewfix, :brewtmp, :sdkroot
 
   def initialize path, args
     @arg0 = File.basename(path).freeze
     @args = args.freeze
     @brewfix = ENV['HOMEBREW_PREFIX']
+    @brewtmp = ENV['HOMEBREW_TEMP']
     @sdkroot = ENV['HOMEBREW_SDKROOT']
   end
   def mode
@@ -137,7 +138,7 @@ class Cmd
       when /^-L(.+)?/
         path = $1.chuzzle || whittler.next
         doit = case path.cleanpath
-        when %r{^#{Regexp.escape(brewfix)}}
+        when %r{^#{Regexp.escape(brewfix)}}, %r{^#{Regexp.escape(brewtmp)}}
           # maybe homebrew is installed to /sw or /opt/brew
           true
         when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
