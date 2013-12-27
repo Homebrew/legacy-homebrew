@@ -137,7 +137,7 @@ class Cmd
       when /^-L(.+)?/
         path = $1.chuzzle || whittler.next
         doit = case path.cleanpath
-        when %r{^#{brewfix}}
+        when %r{^#{Regexp.escape(brewfix)}}
           # maybe homebrew is installed to /sw or /opt/brew
           true
         when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
@@ -201,7 +201,7 @@ class Cmd
   end
   def cpath
     cpath = ENV['CMAKE_PREFIX_PATH'].split(':').map{|d| "#{d}/include" } + ENV['CMAKE_INCLUDE_PATH'].split(':')
-    opt = cpath.grep(%r{^#{brewfix}/opt})
+    opt = cpath.grep(%r{^#{Regexp.escape(brewfix)}/opt})
     sys = cpath - opt
     [sys, opt]
   end
