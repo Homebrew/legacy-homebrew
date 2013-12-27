@@ -74,6 +74,7 @@ module Superenv
     self['HOMEBREW_OPTIMIZATION_LEVEL'] = 'Os'
     self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
     self['HOMEBREW_PREFIX'] = HOMEBREW_PREFIX
+    self['HOMEBREW_TEMP'] = HOMEBREW_TEMP
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
     self['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
     self['HOMEBREW_VERBOSE'] = "1" if ARGV.verbose?
