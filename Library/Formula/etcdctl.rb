@@ -2,8 +2,8 @@ require 'formula'
 
 class Etcdctl < Formula
   homepage 'https://github.com/coreos/etcdctl'
-  url 'https://github.com/coreos/etcdctl/archive/v0.1.2.tar.gz'
-  sha1 '93befc2b5a9951ba6e9a94a969535ee8d695e693'
+  url 'https://github.com/coreos/etcdctl/archive/v0.2.0.tar.gz'
+  sha1 '6370bd86f3ab0264cf142db04c367e10e7f64a3d'
   head 'https://github.com/coreos/etcdctl.git'
 
   depends_on 'go' => :build
