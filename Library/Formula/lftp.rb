@@ -3,7 +3,6 @@ require 'formula'
 class Lftp < Formula
   homepage 'http://lftp.yar.ru/'
   url 'http://lftp.yar.ru/ftp/lftp-4.4.14.tar.bz2'
-  mirror 'ftp://ftp.cs.tu-berlin.de/pub/net/ftp/lftp/lftp-4.4.13.tar.bz2'
   sha1 'f34cfc0351f8e63a066cf8014ac32a52f5159434'
 
   option 'with-gnutls', "Use GnuTLS instead of the default OpenSSL"
