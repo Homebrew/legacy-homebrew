@@ -2,9 +2,9 @@ require 'formula'
 
 class Riak < Formula
   homepage 'http://basho.com/riak/'
-  url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.2/osx/10.8/riak-1.4.2-OSX-x86_64.tar.gz'
-  version '1.4.2'
-  sha256 '2accc58a0ea2f7bd3edc31c934edb0bff6a1535994607fd6cec9c6bbefcf2abf'
+  url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.6/osx/10.8/riak-1.4.6-OSX-x86_64.tar.gz'
+  version '1.4.6'
+  sha1 '33b6d74f3197c7523e1d1bf3fb2e26178e003c6f'
 
   devel do
     url 'http://s3.amazonaws.com/downloads.basho.com/riak/2.0/2.0.0pre5/osx/10.8/riak-2.0.0pre5-OSX-x86_64.tar.gz'
