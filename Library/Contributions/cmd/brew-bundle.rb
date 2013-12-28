@@ -32,6 +32,20 @@ usage if ARGV.include?('--help') || ARGV.include?('-h')
 path = 'Brewfile'
 error = ' in current directory'
 
+# redirect stdout to /dev/null
+quiet = ARGV.include?('--quiet') || ARGV.include?('--silent') ? ' >/dev/null' : ''
+
+# redirect stderr to stdout
+silent = ARGV.include?('--silent') ? ' 2>&1' : ''
+
+# always give a successful exit code
+continue_on_error = ARGV.include?('--continue-on-error') ? ' || true' : ''
+
+# remove the args we have processed from the ARGV array
+ARGV.delete('--quiet')
+ARGV.delete('--silent')
+ARGV.delete('--continue-on-error')
+
 if ARGV.first
   if File.directory? ARGV.first
     path = "#{ARGV.first}/#{path}"
@@ -49,6 +63,6 @@ File.readlines(path).each_with_index do |line, index|
   next if command.empty?
   next if command.chars.first == '#'
 
-  brew_cmd = "brew #{command}"
+  brew_cmd = "brew #{command}#{quiet}#{silent}#{continue_on_error}"
   odie "Command failed: L#{index+1}:#{brew_cmd}" unless system brew_cmd
 end
