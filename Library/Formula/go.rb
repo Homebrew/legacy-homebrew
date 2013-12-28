@@ -76,7 +76,7 @@ class Go < Formula
       go get code.google.com/p/go.tools/cmd/godoc
       go get code.google.com/p/go.tools/cmd/vet
 
-    Add tools installed via `go get` to your path:
+    Add the GOROOT-based install location to your path
       export GOROOT=`go env GOROOT`
       export PATH=$PATH:$GOROOT/bin
     EOS
