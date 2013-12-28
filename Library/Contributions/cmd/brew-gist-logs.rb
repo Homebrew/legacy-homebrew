@@ -80,7 +80,7 @@ end
 
 class HTTP_Error < RuntimeError
   def initialize response
-    super "Error: HTTP #{response.code} #{response.message}"
+    super "HTTP #{response.code} #{response.message}"
   end
 end
 
