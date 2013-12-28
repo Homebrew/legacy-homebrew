@@ -10,6 +10,17 @@ def usage
   brew bundle path/to/dir  # Looks for "path/to/dir/Brewfile"
   brew bundle path/to/file # Looks for "path/to/file"
 
+  Optional flags:
+
+    --quiet             Redirects STDOUT to /dev/null
+
+    --silent            Redirects STDERR to STDOUT and
+                        invokes --quiet
+
+    --continue-on-error Gives all commands an exit code
+                        of 0 allowing continued execution
+                        of the remaining lines in the Brewfile
+
   For example, given a Brewfile with the following content:
     install formula
 
