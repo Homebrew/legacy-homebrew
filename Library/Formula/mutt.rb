@@ -16,7 +16,7 @@ class Mutt < Formula
     depends_on :automake
   end
 
-  if Tab.for_name('signing-party').used_options.include? 'with-rename-pgpring'
+  unless Tab.for_name('signing-party').used_options.include? 'with-rename-pgpring'
     conflicts_with 'signing-party',
       :because => 'mutt installs a private copy of pgpring'
   end

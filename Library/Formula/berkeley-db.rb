@@ -2,8 +2,8 @@ require 'formula'
 
 class BerkeleyDb < Formula
   homepage 'http://www.oracle.com/technology/products/berkeley-db/index.html'
-  url 'http://download.oracle.com/berkeley-db/db-5.3.21.tar.gz'
-  sha1 '32e43c4898c8996750c958a90c174bd116fcba83'
+  url 'http://download.oracle.com/berkeley-db/db-5.3.28.tar.gz'
+  sha1 'fa3f8a41ad5101f43d08bc0efb6241c9b6fc1ae9'
 
   option 'with-java', 'Compile with Java support.'
   option 'enable-sql', 'Compile with SQL support.'

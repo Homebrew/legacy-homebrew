@@ -2,13 +2,8 @@ require 'formula'
 
 class Ruby < Formula
   homepage 'https://www.ruby-lang.org/'
-  url 'http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.bz2'
-  sha256 '3de4e4d9aff4682fa4f8ed2b70bd0d746fae17452fc3d3a8e8f505ead9105ad9'
-
-  devel do
-    url 'http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.0-preview2.tar.bz2'
-    sha256 '780fddf0e3c8a219057d578e83367ecfac5e945054b9f132b3b93ded4802d1ce'
-  end
+  url 'http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.0.tar.bz2'
+  sha256 '1d3f4ad5f619ec15229206b6667586dcec7cc986672c8fbb8558161ecf07e277'
 
   head do
     url 'http://svn.ruby-lang.org/repos/ruby/trunk/'
@@ -16,7 +11,7 @@ class Ruby < Formula
   end
 
   option :universal
-  option 'with-suffix', 'Suffix commands with "20"'
+  option 'with-suffix', 'Suffix commands with "21"'
   option 'with-doc', 'Install documentation'
   option 'with-tcltk', 'Install with Tcl/Tk support'
 
@@ -35,7 +30,7 @@ class Ruby < Formula
     system "autoconf" if build.head?
 
     args = %W[--prefix=#{prefix} --enable-shared]
-    args << "--program-suffix=20" if build.with? "suffix"
+    args << "--program-suffix=21" if build.with? "suffix"
     args << "--with-arch=#{Hardware::CPU.universal_archs.join(',')}" if build.universal?
     args << "--with-out-ext=tk" unless build.with? "tcltk"
     args << "--disable-install-doc" unless build.with? "doc"
