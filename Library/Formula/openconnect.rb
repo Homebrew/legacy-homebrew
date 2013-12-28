@@ -13,6 +13,11 @@ class Openconnect < Formula
     sha1 '9915539c34393c1f8d7de9c3fc2c7396476bd998'
   end
 
+  def patches
+    # Fix Cisco AnyConnect.
+    'http://git.infradead.org/users/dwmw2/openconnect.git/commitdiff_plain/5c4d37a138ed63358315cd23a465f187db7893fc'
+  end
+
   def install
     etc.install resource('vpnc-script')
     chmod 0755, "#{etc}/vpnc-script"
@@ -34,5 +39,9 @@ class Openconnect < Formula
     You can download one at http://tuntaposx.sourceforge.net/
     and install it prior to running OpenConnect.
     EOS
+  end
+
+  test do
+    system "openconnect", "--version"
   end
 end
