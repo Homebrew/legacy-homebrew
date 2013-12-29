@@ -2,8 +2,10 @@ require 'formula'
 
 class Thrift < Formula
   homepage 'http://thrift.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=thrift/0.9.0/thrift-0.9.0.tar.gz'
-  sha1 'fefcf4d729bf80da419407dfa028740aa95fa2e3'
+  # The thrift.apache.org 0.9.1 archive is missing PHP ext, fixed in THRIFT-2129
+  # By grapping the source from git instead, it's fixed, but we need to bootstrap
+  url 'https://git-wip-us.apache.org/repos/asf/thrift.git', :branch => "0.9.1"
+  version "0.9.1"
 
   head do
     url 'https://git-wip-us.apache.org/repos/asf/thrift.git', :branch => "master"
@@ -20,15 +22,23 @@ class Thrift < Formula
   option "with-php", "Install Php binding"
 
   depends_on 'boost'
+  depends_on 'libtool'
   depends_on :python => :optional
 
-  # Includes are fixed in the upstream. Please remove this patch in the next version > 0.9.0
+  # Patches required to compile 0.9.1 with "-std=c++11", maybe remove when thrift 1.0 hits
   def patches
-    DATA
+    [
+      # Fix issue with C++11 and reserved-user-defined-literal
+      "https://gist.github.com/duedal/7156317/raw/a7edf1de9d092ef5b0a4f3fc3c048e1985248d36/thrifty.patch",
+      # Apply THRIFT-2201 fix from master to 0.9.1 branch (required for clang to compile with C++11 support)
+      "https://git-wip-us.apache.org/repos/asf?p=thrift.git;a=patch;h=836d95f9f00be73c6936d407977796181d1a506c",
+      # Tutorial includes both boost and std, so shared_ptr is ambigous with C++11 support enabled
+      "https://gist.github.com/duedal/7156317/raw/9fec9ed82d160f027730ec1790852135dd37ef9f/cpp-tutorial.patch"
+    ]
   end
-
+  
   def install
-    system "./bootstrap.sh" if build.head?
+    system "./bootstrap.sh" # always required if pulling source directly from git instead of using the already-bootstrapped tarball
 
     exclusions = ["--without-ruby"]
 
@@ -40,6 +50,7 @@ class Thrift < Formula
     exclusions << "--without-erlang" unless build.include? "with-erlang"
 
     ENV["PY_PREFIX"] = prefix  # So python bindins don't install to /usr!
+    ENV.cxx11
 
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
@@ -64,17 +75,4 @@ class Thrift < Formula
     s += python.standard_caveats if python
   end
 end
-__END__
-diff --git a/lib/cpp/src/thrift/transport/TSocket.h b/lib/cpp/src/thrift/transport/TSocket.h
-index ff5e541..65e6aea 100644
---- a/lib/cpp/src/thrift/transport/TSocket.h
-+++ b/lib/cpp/src/thrift/transport/TSocket.h
-@@ -21,6 +21,8 @@
- #define _THRIFT_TRANSPORT_TSOCKET_H_ 1
 
- #include <string>
-+#include <sys/socket.h>
-+#include <arpa/inet.h>
-
- #include "TTransport.h"
- #include "TVirtualTransport.h"
