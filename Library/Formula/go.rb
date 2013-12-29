@@ -75,6 +75,9 @@ class Go < Formula
     To get `go vet` and `go doc` run:
       go get code.google.com/p/go.tools/cmd/godoc
       go get code.google.com/p/go.tools/cmd/vet
+
+    You may wish to add the GOROOT-based install location to your PATH:
+      export PATH=$PATH:#{`#{bin}/go env GOROOT`.chomp}/bin
     EOS
   end
 
