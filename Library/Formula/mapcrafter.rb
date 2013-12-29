@@ -13,9 +13,10 @@ class Mapcrafter < Formula
   def install
     system "cmake", ".", *std_cmake_args
     system "make", "install"
+    system "make", "runtests"
   end
 
   test do
-   system "make", "runtests"
+   system "mapcrafter", "--version"
   end
 end
