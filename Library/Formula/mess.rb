@@ -15,6 +15,11 @@ class Mess < Formula
     ENV['INCPATH'] = "-I#{MacOS::X11.include}"
     ENV['PTR64'] = (MacOS.prefer_64_bit? ? '1' : '0')
 
+    # Avoid memory allocation runtime error:
+    #   Error: attempt to free untracked memory in (null)(0)!
+    #   Ignoring MAME exception: Error: attempt to free untracked memory
+    ENV.O2 if ENV.compiler == :clang
+
     system "make", "CC=#{ENV.cc}", "LD=#{ENV.cxx}",
                    "TARGET=mess", "SUBTARGET=mess"
 
