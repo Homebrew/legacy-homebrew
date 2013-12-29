@@ -5,7 +5,7 @@ class Therion < Formula
   url 'http://therion.speleo.sk/downloads/therion-5.3.12.tar.gz'
   sha1 '6c9863225f87ce4b54792060ecb34a9db6f8197e'
 
-  depends_on 'cmake' => :build
+  #depends_on 'cmake' => :build
   depends_on 'lcdf-typetools'
   depends_on 'wxmac'
   depends_on 'freetype'
