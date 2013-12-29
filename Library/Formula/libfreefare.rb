@@ -14,7 +14,4 @@ class Libfreefare < Formula
     system "make", "install"
   end
 
-  test do
-    system "make", "test"
-  end
 end
