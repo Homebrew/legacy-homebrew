@@ -19,6 +19,10 @@ class Aria2 < Formula
       --without-libnettle
       --without-libgcrypt
     ]
+
+    ENV['ZLIB_CFLAGS'] = '-I/usr/include'
+    ENV['ZLIB_LIBS'] = '-L/usr/lib -lz'
+
     system "./configure", *args
     system "make install"
 
