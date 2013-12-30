@@ -5,19 +5,25 @@ class Mitmproxy < Formula
   url 'http://mitmproxy.org/download/mitmproxy-0.9.2.tar.gz'
   sha1 '7fa95ef27a4ac5ec85010f4ddb85cf6b7f17ef27'
 
-  option 'with-pyamf', 'Enable action message format (AMF) support for python'
-
   depends_on :python
   depends_on 'protobuf' => :optional
+  #pillow dependencies
+  depends_on 'little-cms'
+  depends_on 'graphicsmagick'
+  depends_on 'freetype'
+  depends_on 'jpeg'
+  depends_on 'libtiff'
+
+  option 'with-pyamf', 'Enable action message format (AMF) support for python'
 
   resource 'pyopenssl' do
     url 'https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.13.1.tar.gz'
     sha1 '60633ebb821d48d7132a436c897288ec0121b892'
   end
 
-  resource 'pil' do
-    url 'http://effbot.org/media/downloads/PIL-1.1.7.tar.gz'
-    sha1 'a1450d0f4f5bd1ca050b75fb363f73bddd5f1c23'
+  resource 'pillow' do
+    url 'https://github.com/python-imaging/Pillow/archive/2.2.2.tar.gz'
+    sha1 '053337a612dd16ec6f1f6fc544374ca5fe65ae2c'
   end
 
   resource 'flask' do
@@ -69,7 +75,7 @@ class Mitmproxy < Formula
 
     python do
       resource('pyopenssl').stage { system python, *install_args }
-      resource('pil').stage { system python, *install_args }
+      resource('pillow').stage { system python, *install_args }
       resource('flask').stage { system python, *install_args }
       resource('lxml').stage { system python, *install_args }
       resource('netlib').stage { system python, *install_args }
