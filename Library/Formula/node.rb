@@ -46,7 +46,7 @@ class Node < Formula
   option 'without-npm', 'npm will not be installed'
 
   depends_on NpmNotInstalled unless build.without? 'npm'
-  depends_on :python => ["2.6", :build]
+  depends_on Python27Dependency # gyp doesn't run under 2.6 or lower
 
   fails_with :llvm do
     build 2326
