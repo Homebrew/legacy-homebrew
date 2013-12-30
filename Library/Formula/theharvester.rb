@@ -8,10 +8,9 @@ class Theharvester < Formula
   depends_on :python
 
   def install
-    python do
-      python.site_packages.install Dir['*']
-      bin.install_symlink((python.site_packages/'theHarvester.py') => 'theharvester')
-    end
+    libexec.install Dir['*']
+    (libexec/'theHarvester.py').chmod 0755
+    bin.install_symlink((libexec/'theHarvester.py') => 'theharvester')
   end
 
   test do
