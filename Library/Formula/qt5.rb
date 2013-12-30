@@ -86,7 +86,10 @@ class Qt5 < Formula
     system "make"
     ENV.j1
     system "make install"
-    system "make", "docs" if build.with? 'docs'
+    if build.with? 'docs'
+      system "make", "docs"
+      system "make", "install_docs"
+    end
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     cd prefix do
