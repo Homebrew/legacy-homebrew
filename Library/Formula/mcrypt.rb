@@ -20,7 +20,6 @@ class Mcrypt < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    libmcrypt_prefix = libexec/"libmcrypt"
 
     resource('libmcrypt').stage do
       system "./configure", "--prefix=#{prefix}"
@@ -28,7 +27,7 @@ class Mcrypt < Formula
     end
 
     system "./configure", "--prefix=#{prefix}",
-        "--with-libmcrypt-prefix=#{prefix}"
+                          "--with-libmcrypt-prefix=#{prefix}"
     system "make install"
   end
 end
