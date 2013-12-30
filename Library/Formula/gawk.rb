@@ -23,5 +23,25 @@ class Gawk < Formula
     system "make"
     system "make check"
     system "make install"
+
+    (bin/"awk").unlink
+    (libexec/'gnubin').install_symlink bin/"gawk" => "awk"
+    (libexec/'gnuman/man1').install_symlink man1/"gawk.1" => "awk.1"
+  end
+
+  def caveats; <<-EOS.undent
+    The command has been installed with the prefix 'g'.
+
+    If you need to use these commands with their normal names, you
+    can add a "gnubin" directory to your PATH from your bashrc like:
+
+        PATH="#{opt_prefix}/libexec/gnubin:$PATH"
+
+    Additionally, you can access their man pages with normal names if you add
+    the "gnuman" directory to your MANPATH from your bashrc as well:
+
+        MANPATH="#{opt_prefix}/libexec/gnuman:$MANPATH"
+
+    EOS
   end
 end
