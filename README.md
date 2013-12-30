@@ -15,7 +15,9 @@ More Documentation
 
 Who Are You?
 ------------
-I'm [Max Howell][mxcl] and I'm a splendid chap.
+Homebrew is maintained by the [core contributors][team].
+
+Homebrew was originally created by [Max Howell][mxcl].
 
 License
 -------
@@ -27,3 +29,4 @@ Code is under the [BSD 2 Clause (NetBSD) license][license].
 [formula]:http://github.com/Homebrew/homebrew/tree/master/Library/Formula/
 [braumeister]:http://braumeister.org
 [license]:https://github.com/Homebrew/homebrew/tree/master/Library/Homebrew/LICENSE
+[team]:https://github.com/Homebrew?tab=members
