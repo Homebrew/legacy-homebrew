@@ -10,6 +10,13 @@ def usage
   brew bundle path/to/dir  # Looks for "path/to/dir/Brewfile"
   brew bundle path/to/file # Looks for "path/to/file"
 
+  Optional flags:
+
+    --quiet             Redirects STDOUT to /dev/null
+
+    --silent            Redirects STDERR to STDOUT and
+                        invokes --quiet
+
   For example, given a Brewfile with the following content:
     install formula
 
@@ -32,6 +39,16 @@ usage if ARGV.include?('--help') || ARGV.include?('-h')
 path = 'Brewfile'
 error = ' in current directory'
 
+# redirect stdout to /dev/null
+quiet = ARGV.include?('--quiet') || ARGV.include?('--silent') ? ' >/dev/null' : ''
+
+# redirect stderr to stdout
+silent = ARGV.include?('--silent') ? ' 2>&1' : ''
+
+# remove the args we have processed from the ARGV array
+ARGV.delete('--quiet')
+ARGV.delete('--silent')
+
 if ARGV.first
   if File.directory? ARGV.first
     path = "#{ARGV.first}/#{path}"
@@ -49,6 +66,6 @@ File.readlines(path).each_with_index do |line, index|
   next if command.empty?
   next if command.chars.first == '#'
 
-  brew_cmd = "brew #{command}"
+  brew_cmd = "brew #{command}#{quiet}#{silent}"
   odie "Command failed: L#{index+1}:#{brew_cmd}" unless system brew_cmd
 end
