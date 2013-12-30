@@ -22,12 +22,14 @@ class Mcrypt < Formula
     ENV.universal_binary if build.universal?
 
     resource('libmcrypt').stage do
-      system "./configure", "--prefix=#{prefix}"
+      system "./configure", "--prefix=#{prefix}",
+                            "--mandir=#{man}"
       system "make install"
     end
 
     system "./configure", "--prefix=#{prefix}",
-                          "--with-libmcrypt-prefix=#{prefix}"
+                          "--with-libmcrypt-prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end
