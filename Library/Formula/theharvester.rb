@@ -15,7 +15,7 @@ class Theharvester < Formula
   end
 
   test do
-    output = `#{bin}/theHarvester -d brew.sh -l 1 -b google 2>&1`.strip
+    output = `#{bin}/theharvester -d brew.sh -l 1 -b google 2>&1`.strip
     assert_match(/misty@brew\.sh/, output)
   end
 end
