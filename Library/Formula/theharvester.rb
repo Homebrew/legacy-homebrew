@@ -10,7 +10,7 @@ class Theharvester < Formula
   def install
     libexec.install Dir['*']
     (libexec/'theHarvester.py').chmod 0755
-    bin.install_symlink((libexec/'theHarvester.py') => 'theharvester')
+    bin.install_symlink libexec/'theHarvester.py' => 'theharvester'
   end
 
   test do
