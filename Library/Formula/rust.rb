@@ -2,8 +2,13 @@ require 'formula'
 
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
-  url 'http://static.rust-lang.org/dist/rust-0.8.tar.gz'
-  sha256 '42f791ab1537357fe0f63d67ffe6bcb64ecf16b2bd3f1484ab589823f5914182'
+
+  stable do
+    url 'http://static.rust-lang.org/dist/rust-0.8.tar.gz'
+    sha256 '42f791ab1537357fe0f63d67ffe6bcb64ecf16b2bd3f1484ab589823f5914182'
+
+    depends_on :xcode # for gyp; fixed in HEAD
+  end
 
   head 'https://github.com/mozilla/rust.git'
 
