@@ -8,7 +8,6 @@ class Nfql < Formula
   depends_on 'cmake' => :build
   depends_on 'flow-tools'
   depends_on 'libfixbuf'
-  depends_on 'zlib'
   depends_on 'gettext'
   depends_on 'homebrew/versions/json-c010'
 
