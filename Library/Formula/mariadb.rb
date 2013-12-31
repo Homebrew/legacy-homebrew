@@ -173,10 +173,4 @@ class Mariadb < Formula
     </plist>
     EOS
   end
-
-  test do
-    (prefix+'mysql-test').cd do
-      system './mysql-test-run.pl', 'status'
-    end
-  end
 end
