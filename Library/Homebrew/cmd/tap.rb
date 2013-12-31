@@ -107,7 +107,7 @@ module Homebrew extend self
   private
 
   def tap_args
-    ARGV.first =~ %r{^(\S+)/(homebrew-)?(\w+)$}
+    ARGV.first =~ %r{^(\S+)/(homebrew-)?(\S+)$}
     raise "Invalid usage" unless $1 and $3
     [$1, $3]
   end
