@@ -10,15 +10,15 @@ end
 
 class Lilypond < Formula
   homepage 'http://lilypond.org/'
-  url 'http://download.linuxaudio.org/lilypond/sources/v2.16/lilypond-2.16.2.tar.gz'
-  sha1 '1eb3b0e5c117a8669dba19ab28f933351e51e39a'
+  url 'http://download.linuxaudio.org/lilypond/sources/v2.18/lilypond-2.18.0.tar.gz'
+  sha1 '8bf2637b27351b999c535a219fe20407d359910a'
+
+  head 'git://git.sv.gnu.org/lilypond.git'
 
   devel do
     url 'http://download.linuxaudio.org/lilypond/source/v2.17/lilypond-2.17.95.tar.gz'
     sha1 'fb4dedb14a5616b2ac1f9031030c9a615f807548'
   end
-
-  env :std
 
   option 'with-doc', "Build documentation in addition to binaries (may require several hours)."
 
@@ -27,7 +27,7 @@ class Lilypond < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'pango'
-  depends_on 'guile'
+  depends_on 'guile18'
   depends_on 'ghostscript'
   depends_on 'mftrace'
   depends_on 'fontforge' => ["with-x", "with-cairo"]
@@ -44,10 +44,6 @@ class Lilypond < Formula
     depends_on 'docbook'
     depends_on :python => ['dbtexmf.dblatex' => 'dblatex']
     depends_on 'texi2html'
-  end
-
-  fails_with :clang do
-    cause 'Strict C99 compliance error in a pointer conversion.'
   end
 
   def install
