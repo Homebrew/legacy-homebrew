@@ -9,6 +9,7 @@ class Tcpreplay < Formula
   def patches; DATA; end
 
   def install
+    ENV.append_to_cflags '-D_FORTIFY_SOURCE=0' if MacOS.version >= :mavericks
     system "./configure", "--disable-dependency-tracking", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--enable-dynamic-link"
