@@ -45,6 +45,8 @@ class Cmake < Formula
       --datadir=/share/cmake
       --docdir=/share/doc/cmake
       --mandir=/share/man
+      --
+      -DCMAKE_BUILD_TYPE:STRING=RELEASE
     ]
 
     system "./bootstrap", *args
