@@ -27,7 +27,7 @@ class Lilypond < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'pango'
-  depends_on 'guile18'
+  depends_on 'homebrew/versions/guile18'
   depends_on 'ghostscript'
   depends_on 'mftrace'
   depends_on 'fontforge' => ["with-x", "with-cairo"]
