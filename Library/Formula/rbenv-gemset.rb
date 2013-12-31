@@ -2,8 +2,8 @@ require 'formula'
 
 class RbenvGemset < Formula
   homepage 'https://github.com/jf/rbenv-gemset'
-  url 'https://github.com/jf/rbenv-gemset/archive/v0.5.0.tar.gz'
-  sha1 '72f59463d6c7ef95b66309beea59d0289deb6c86'
+  url 'https://github.com/jf/rbenv-gemset/archive/v0.5.3.tar.gz'
+  sha1 '5fc4cee421ae1711a60ed8fb861ee2704211057b'
 
   head 'https://github.com/jf/rbenv-gemset.git'
 
