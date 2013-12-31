@@ -12,6 +12,12 @@ class Rust < Formula
 
   head 'https://github.com/mozilla/rust.git'
 
+  bottle do
+    sha1 '50205c9ff28940ffa04b1337698ae1c57053dae0' => :mavericks
+    sha1 'f7a2b190a6115352997b588d06982a27da87df3a' => :mountain_lion
+    sha1 '5d4590ff8a52bd184ba48ae5932077f04b0db939' => :lion
+  end
+
   fails_with :clang do
     build 318
     cause "cannot initialize a parameter of type 'volatile long long *' with an rvalue of type 'int *'"
