@@ -5,6 +5,9 @@ class Hadoop < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-2.2.0/hadoop-2.2.0.tar.gz'
   sha1 '7339da348d9b4a813b1b1d8b6982f3f8755329e4'
 
+  conflicts_with 'cloudera-hadoop',
+    :because => "hadoop and cloudera-hadoop install the same binaries."
+
   def install
     rm_f Dir["bin/*.cmd", "sbin/*.cmd", "libexec/*.cmd", "etc/hadoop/*.cmd"]
     libexec.install %w[bin sbin libexec share etc]
