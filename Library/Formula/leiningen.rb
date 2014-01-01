@@ -33,7 +33,7 @@ class Leiningen < Formula
   end
 
   def test
-    system "#{bin}/lein", '--version'
+    system "#{bin}/lein", '--help'
   end
 
 end
