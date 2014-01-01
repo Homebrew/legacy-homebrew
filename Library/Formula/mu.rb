@@ -40,11 +40,17 @@ class Mu < Formula
     # shipped by default with Mac OS X is too old.
     ENV['EMACS'] = 'no' unless build.with? 'emacs'
 
+    # I dunno.
+    # https://github.com/djcb/mu/issues/332
+    # https://github.com/Homebrew/homebrew/issues/25524
+    ENV.delete 'MACOSX_DEPLOYMENT_TARGET'
+
     system 'autoreconf', '-ivf' if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-gui=none"
     system "make"
+    system "make test"
     system "make install"
   end
 
