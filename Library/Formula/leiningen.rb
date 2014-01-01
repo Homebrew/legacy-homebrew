@@ -31,4 +31,9 @@ class Leiningen < Formula
     To play around with Clojure run `lein repl` or `lein help`.
     EOS
   end
+
+  def test
+    system "#{bin}/lein", '--version'
+  end
+
 end
