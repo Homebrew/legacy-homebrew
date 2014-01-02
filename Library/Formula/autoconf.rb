@@ -25,6 +25,7 @@ class Autoconf < Formula
     inreplace 'man/autoreconf.1', 'libtoolize', 'glibtoolize'
     system "./configure", "--prefix=#{prefix}"
     system "make install"
+    rm_f info/'standards.info'
   end
 
   test do
