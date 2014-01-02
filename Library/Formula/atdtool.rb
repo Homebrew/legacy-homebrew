@@ -18,6 +18,6 @@ class Atdtool < Formula
   end
 
   test do
-    system "#{bin}/atdtool", "--version"
+    system "#{bin}/atdtool", "#{prefix}/AUTHORS"
   end
 end
