@@ -2,7 +2,7 @@ require 'formula'
 
 class Thrift < Formula
   homepage 'http://thrift.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=thrift/0.9.0/thrift-0.9.0.tar.gz'
+  url 'http://archive.apache.org/dist/thrift/0.9.0/thrift-0.9.0.tar.gz'
   sha1 'fefcf4d729bf80da419407dfa028740aa95fa2e3'
 
   head do
