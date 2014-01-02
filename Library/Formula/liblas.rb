@@ -19,7 +19,7 @@ class Liblas < Formula
       #   http://liblas.org/compilation.html
       ENV['Boost_INCLUDE_DIR'] = "#{HOMEBREW_PREFIX}/include"
       ENV['Boost_LIBRARY_DIRS'] = "#{HOMEBREW_PREFIX}/lib"
-      system "cmake", "..", *std_cmake_args
+      system "cmake", "..", "-DWITH_GEOTIFF=ON", "-DWITH_GDAL=ON", *std_cmake_args
       system "make"
       system "make test" if build.include? 'with-test'
       system "make install"

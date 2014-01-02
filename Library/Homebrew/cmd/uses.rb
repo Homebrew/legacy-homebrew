@@ -1,31 +1,36 @@
 require 'formula'
 
-# `brew uses foo bar` now returns formula that use both foo and bar
-# Rationale: If you want the union just run the command twice and
-# concatenate the results.
+# `brew uses foo bar` returns formulae that use both foo and bar
+# If you want the union, run the command twice and concatenate the results.
 # The intersection is harder to achieve with shell tools.
 
 module Homebrew extend self
   def uses
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
-    uses = Formula.select do |f|
-      ARGV.formulae.all? do |ff|
+    formulae = ARGV.formulae
+
+    uses = []
+    Formula.each do |f|
+      next if ARGV.include? "--installed" and not f.installed?
+
+      formulae.all? do |ff|
         if ARGV.flag? '--recursive'
-          f.recursive_deps.include? ff
+          if f.recursive_dependencies.any? { |dep| dep.name == ff.name }
+            uses << f.to_s
+          elsif f.recursive_requirements.any? { |req| req.name == ff.name }
+            uses << f.to_s
+          end
         else
-          f.deps.include? ff.name
+          if f.deps.any? { |dep| dep.name == ff.name }
+            uses << f.to_s
+          elsif f.requirements.any? { |req| req.name == ff.name }
+            uses << f.to_s
+          end
         end
       end
     end
 
-    if ARGV.include? "--installed"
-      uses = uses.select do |f|
-        keg = HOMEBREW_CELLAR/f
-        keg.directory? and not keg.subdirs.empty?
-      end
-    end
-
-    puts_columns uses.map{|f| f.to_s}.sort
+    puts_columns uses
   end
 end

@@ -5,10 +5,20 @@ require 'formula'
 
 class Lbdb < Formula
   homepage 'https://github.com/tgray/lbdb/'
-  url 'https://github.com/tgray/lbdb/tarball/v0.38.1'
-  sha1 '4678fe00c86850fd4f40891518a8d37ee3f5020b'
+  url 'https://github.com/tgray/lbdb/archive/v0.38.2.tar.gz'
+  sha1 '2a278fe7bffad6e7572c1c76f9568e4737c68e07'
 
   head 'https://github.com/tgray/lbdb.git'
+
+  def patches
+    p = []
+    if MacOS.version >= :mountain_lion
+      p << 'https://github.com/chrisbarrett/lbdb/commit/db0440670194568bbfe2137fc063eb30cf26cb2a.diff'
+      p << 'https://github.com/chrisbarrett/lbdb/commit/b89ac6ee50e2c03c32635269d9818c045b0abb6f.diff'
+      p << 'https://github.com/chrisbarrett/lbdb/commit/6cbef5feb4fd921deb08eb52b4169647909946ae.diff'
+    end
+    p
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",

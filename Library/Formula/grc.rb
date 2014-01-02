@@ -2,13 +2,17 @@ require 'formula'
 
 class Grc < Formula
   homepage 'http://korpus.juls.savba.sk/~garabik/software/grc.html'
-  url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.4.tar.gz'
-  sha1 '79fd504d8291f13486d361611415ae60fa56712a'
+  url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.5.tar.gz'
+  sha1 'bcbe45992d2c4cb1d33e76aac6aa79b448124ce2'
+
+  depends_on :python
+
+  conflicts_with 'cc65', :because => 'both install `grc` binaries'
 
   def install
-    #TODO we should deprefixify since it's python and thus possible
     inreplace ['grc', 'grc.1'], '/etc', etc
     inreplace ['grcat', 'grcat.1'], '/usr/local', prefix
+    inreplace ['grc', 'grcat'], '#! /usr/bin/python', '#!/usr/bin/env python'
 
     etc.install 'grc.conf'
     bin.install %w[grc grcat]
@@ -20,7 +24,7 @@ class Grc < Formula
 
   def rc_script; <<-EOS.undent
     GRC=`which grc`
-    if [ "$TERM" != dumb ] && [ -n GRC ]
+    if [ "$TERM" != dumb ] && [ -n "$GRC" ]
     then
         alias colourify="$GRC -es --colour=auto"
         alias configure='colourify ./configure'

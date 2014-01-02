@@ -1,9 +1,9 @@
 require 'formula'
 
 class Sub2srt < Formula
-  url 'http://www.robelix.com/sub2srt/download/sub2srt-0.5.3.tar.gz'
-  homepage 'http://www.robelix.com/sub2srt/'
-  sha1 'eaecadc4caaaacddcd0e13202be722f13706acd4'
+  homepage 'https://github.com/robelix/sub2srt'
+  url 'https://github.com/robelix/sub2srt/archive/0.5.4.tar.gz'
+  sha1 '2aaaae905223b924a05978b3c52cad73d06828cc'
 
   def install
     bin.install 'sub2srt'

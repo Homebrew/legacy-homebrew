@@ -1,44 +1,44 @@
 require 'pathname'
 require 'mach'
+require 'resource'
 
 # we enhance pathname to make our code more readable
 class Pathname
   include MachO
 
-  BOTTLE_EXTNAME_RX = /(\.[a-z]+\.bottle\.(\d+\.)?tar\.gz)$/
-  OLD_BOTTLE_EXTNAME_RX = /((\.[a-z]+)?[\.-]bottle\.tar\.gz)$/
+  BOTTLE_EXTNAME_RX = /(\.[a-z_]+(32)?\.bottle\.(\d+\.)?tar\.gz)$/
 
   def install *sources
-    results = []
     sources.each do |src|
       case src
+      when Resource
+        src.stage(self)
+      when Resource::Partial
+        src.resource.stage { install(*src.files) }
       when Array
         if src.empty?
           opoo "tried to install empty array to #{self}"
-          return []
+          return
         end
-        src.each {|s| results << install_p(s) }
+        src.each {|s| install_p(s) }
       when Hash
         if src.empty?
           opoo "tried to install empty hash to #{self}"
-          return []
+          return
         end
-        src.each {|s, new_basename| results << install_p(s, new_basename) }
+        src.each {|s, new_basename| install_p(s, new_basename) }
       else
-        results << install_p(src)
+        install_p(src)
       end
     end
-    return results
   end
 
   def install_p src, new_basename = nil
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
       dst = self+new_basename
-      return_value = Pathname.new(dst)
     else
       dst = self
-      return_value = self+File.basename(src)
     end
 
     src = src.to_s
@@ -50,6 +50,8 @@ class Pathname
     # and also broken symlinks are not the end of the world
     raise "#{src} does not exist" unless File.symlink? src or File.exist? src
 
+    dst = yield(src, dst) if block_given?
+
     mkpath
     if File.symlink? src
       # we use the BSD mv command because FileUtils copies the target and
@@ -60,24 +62,21 @@ class Pathname
       # this function when installing from the temporary build directory
       FileUtils.mv src, dst
     end
-
-    return return_value
   end
+  protected :install_p
 
   # Creates symlinks to sources in this folder.
   def install_symlink *sources
-    results = []
     sources.each do |src|
       case src
       when Array
-        src.each {|s| results << install_symlink_p(s) }
+        src.each {|s| install_symlink_p(s) }
       when Hash
-        src.each {|s, new_basename| results << install_symlink_p(s, new_basename) }
+        src.each {|s, new_basename| install_symlink_p(s, new_basename) }
       else
-        results << install_symlink_p(src)
+        install_symlink_p(src)
       end
     end
-    return results
   end
 
   def install_symlink_p src, new_basename = nil
@@ -86,19 +85,14 @@ class Pathname
     else
       dst = self+File.basename(new_basename)
     end
-
-    src = src.to_s
-    dst = dst.to_s
-
     mkpath
-    FileUtils.ln_s src, dst
-
-    return dst
+    FileUtils.ln_s src.to_s, dst.to_s
   end
+  protected :install_symlink_p
 
   # we assume this pathname object is a file obviously
   def write content
-    raise "Will not overwrite #{to_s}" if exist? and not ARGV.force?
+    raise "Will not overwrite #{to_s}" if exist?
     dirname.mkpath
     File.open(self, 'w') {|f| f.write content }
   end
@@ -121,21 +115,40 @@ class Pathname
     return dst
   end
 
+  def cp_path_sub pattern, replacement
+    raise "#{self} does not exist" unless self.exist?
+
+    src = self.to_s
+    dst = src.sub(pattern, replacement)
+    raise "#{src} is the same file as #{dst}" if src == dst
+
+    dst_path = Pathname.new dst
+
+    if self.directory?
+      dst_path.mkpath
+      return
+    end
+
+    dst_path.dirname.mkpath
+
+    dst = yield(src, dst) if block_given?
+
+    FileUtils.cp(src, dst)
+  end
+
   # extended to support common double extensions
   alias extname_old extname
-  def extname
-    BOTTLE_EXTNAME_RX.match to_s
+  def extname(path=to_s)
+    BOTTLE_EXTNAME_RX.match(path)
     return $1 if $1
-    OLD_BOTTLE_EXTNAME_RX.match to_s
+    /(\.(tar|cpio|pax)\.(gz|bz2|lz|xz|Z))$/.match(path)
     return $1 if $1
-    /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match to_s
-    return $1 if $1
-    return File.extname(to_s)
+    return File.extname(path)
   end
 
   # for filetypes we support, basename without extension
   def stem
-    return File.basename(to_s, extname)
+    File.basename((path = to_s), extname(path))
   end
 
   # I don't trust the children.length == 0 check particularly, not to mention
@@ -144,21 +157,20 @@ class Pathname
   def rmdir_if_possible
     rmdir
     true
-  rescue SystemCallError => e
-    raise unless e.errno == Errno::ENOTEMPTY::Errno or e.errno == Errno::EACCES::Errno or e.errno == Errno::ENOENT::Errno
+  rescue Errno::ENOTEMPTY
+    if (ds_store = self+'.DS_Store').exist? && children.length == 1
+      ds_store.unlink
+      retry
+    else
+      false
+    end
+  rescue Errno::EACCES, Errno::ENOENT
     false
   end
 
   def chmod_R perms
     require 'fileutils'
     FileUtils.chmod_R perms, to_s
-  end
-
-  def abv
-    out=''
-    n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
-    out<<"#{n} files, " if n > 1
-    out<<`/usr/bin/du -hd0 #{to_s} | cut -d"\t" -f1`.strip
   end
 
   def version
@@ -174,26 +186,29 @@ class Pathname
     # OS X installer package
     return :pkg if self.extname == '.pkg'
 
+    # If the filename ends with .gz not preceded by .tar
+    # then we want to gunzip but not tar
+    return :gzip_only if self.extname == '.gz'
+
     # Get enough of the file to detect common file types
     # POSIX tar magic has a 257 byte offset
-    magic_bytes = nil
-    File.open(self) { |f| magic_bytes = f.read(262) }
-
     # magic numbers stolen from /usr/share/file/magic/
-    case magic_bytes
-    when /^PK\003\004/   then :zip
-    when /^\037\213/     then :gzip
-    when /^BZh/          then :bzip2
-    when /^\037\235/     then :compress
-    when /^.{257}ustar/  then :tar
-    when /^\xFD7zXZ\x00/ then :xz
-    when /^Rar!/         then :rar
+    case open('rb') { |f| f.read(262) }
+    when /^PK\003\004/n         then :zip
+    when /^\037\213/n           then :gzip
+    when /^BZh/n                then :bzip2
+    when /^\037\235/n           then :compress
+    when /^.{257}ustar/n        then :tar
+    when /^\xFD7zXZ\x00/n       then :xz
+    when /^LZIP/n               then :lzip
+    when /^Rar!/n               then :rar
+    when /^7z\xBC\xAF\x27\x1C/n then :p7zip
     else
       # This code so that bad-tarballs and zips produce good error messages
       # when they don't unarchive properly.
       case extname
-        when ".tar.gz", ".tgz", ".tar.bz2", ".tbz" then :tar
-        when ".zip" then :zip
+      when ".tar.gz", ".tgz", ".tar.bz2", ".tbz" then :tar
+      when ".zip" then :zip
       end
     end
   end
@@ -204,17 +219,9 @@ class Pathname
 
   def incremental_hash(hasher)
     incr_hash = hasher.new
-    self.open('r') do |f|
-      while(buf = f.read(1024))
-        incr_hash << buf
-      end
-    end
+    buf = ""
+    open('rb') { |f| incr_hash << buf while f.read(1024, buf) }
     incr_hash.hexdigest
-  end
-
-  def md5
-    require 'digest/md5'
-    incremental_hash(Digest::MD5)
   end
 
   def sha1
@@ -222,11 +229,10 @@ class Pathname
     incremental_hash(Digest::SHA1)
   end
 
-  def sha2
+  def sha256
     require 'digest/sha2'
     incremental_hash(Digest::SHA2)
   end
-  alias_method :sha256, :sha2
 
   def verify_checksum expected
     raise ChecksumMissingError if expected.nil? or expected.empty?
@@ -251,7 +257,12 @@ class Pathname
   end
 
   def resolved_path_exists?
-    (dirname+readlink).exist?
+    link = readlink
+  rescue ArgumentError
+    # The link target contains NUL bytes
+    false
+  else
+    (dirname+link).exist?
   end
 
   # perhaps confusingly, this Pathname object becomes the symlink pointing to
@@ -268,7 +279,20 @@ class Pathname
           raise <<-EOS.undent
             Could not symlink file: #{src.expand_path}
             Target #{self} already exists. You may need to delete it.
-            To force the link and delete this file, do:
+            To force the link and overwrite all other conflicting files, do:
+              brew link --overwrite formula_name
+
+            To list all files that would be deleted:
+              brew link --overwrite --dry-run formula_name
+            EOS
+        # #exist? will return false for symlinks whose target doesn't exist
+        elsif self.symlink?
+          raise <<-EOS.undent
+            Could not symlink file: #{src.expand_path}
+            Target #{self} already exists as a symlink to #{readlink}.
+            If this file is from another formula, you may need to
+            `brew unlink` it. Otherwise, you may want to delete it.
+            To force the link and overwrite all other conflicting files, do:
               brew link --overwrite formula_name
 
             To list all files that would be deleted:
@@ -331,14 +355,6 @@ class Pathname
   end
 
   def find_formula
-    # remove special casing once tap is established and alt removed
-    if self == HOMEBREW_LIBRARY/"Taps/adamv-alt"
-      all_formula do |file|
-        yield file
-      end
-      return
-    end
-
     [self/:Formula, self/:HomebrewFormula, self].each do |d|
       if d.exist?
         d.children.map{ |child| child.relative_path_from(self) }.each do |pn|
@@ -348,23 +364,121 @@ class Pathname
       end
     end
   end
+
+  # Writes an exec script in this folder for each target pathname
+  def write_exec_script *targets
+    targets.flatten!
+    if targets.empty?
+      opoo "tried to write exec scripts to #{self} for an empty list of targets"
+      return
+    end
+    targets.each do |target|
+      target = Pathname.new(target) # allow pathnames or strings
+      (self+target.basename()).write <<-EOS.undent
+        #!/bin/bash
+        exec "#{target}" "$@"
+      EOS
+      # +x here so this will work during post-install as well
+      (self+target.basename()).chmod 0644
+    end
+  end
+
+  # Writes an exec script that invokes a java jar
+  def write_jar_script target_jar, script_name, java_opts=""
+    (self+script_name).write <<-EOS.undent
+      #!/bin/bash
+      exec java #{java_opts} -jar #{target_jar} "$@"
+    EOS
+    # +x here so this will work during post-install as well
+    (self+script_name).chmod 0644
+  end
+
+  def install_metafiles from=nil
+    # Default to current path, and make sure we have a pathname, not a string
+    from = "." if from.nil?
+    from = Pathname.new(from.to_s)
+
+    from.children.each do |p|
+      next if p.directory?
+      next unless FORMULA_META_FILES.should_copy? p
+      # Some software symlinks these files (see help2man.rb)
+      filename = p.resolved_path
+      # Some software links metafiles together, so by the time we iterate to one of them
+      # we may have already moved it. libxml2's COPYING and Copyright are affected by this.
+      next unless filename.exist?
+      filename.chmod 0644
+      self.install filename
+    end
+  end
+
+  def abv
+    out=''
+    n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
+    out<<"#{n} files, " if n > 1
+    out<<`/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
+  end
+
+  # We redefine these private methods in order to add the /o modifier to
+  # the Regexp literals, which forces string interpolation to happen only
+  # once instead of each time the method is called. This is fixed in 1.9+.
+  if RUBY_VERSION <= "1.8.7"
+    alias_method :old_chop_basename, :chop_basename
+    def chop_basename(path)
+      base = File.basename(path)
+      if /\A#{Pathname::SEPARATOR_PAT}?\z/o =~ base
+        return nil
+      else
+        return path[0, path.rindex(base)], base
+      end
+    end
+    private :chop_basename
+
+    alias_method :old_prepend_prefix, :prepend_prefix
+    def prepend_prefix(prefix, relpath)
+      if relpath.empty?
+        File.dirname(prefix)
+      elsif /#{SEPARATOR_PAT}/o =~ prefix
+        prefix = File.dirname(prefix)
+        prefix = File.join(prefix, "") if File.basename(prefix + 'a') != 'a'
+        prefix + relpath
+      else
+        prefix + relpath
+      end
+    end
+    private :prepend_prefix
+  end
 end
 
-# sets $n and $d so you can observe creation of stuff
 module ObserverPathnameExtension
+  class << self
+    attr_accessor :n, :d
+
+    def reset_counts!
+      @n = @d = 0
+    end
+
+    def total
+      n + d
+    end
+
+    def counts
+      [n, d]
+    end
+  end
+
   def unlink
     super
     puts "rm #{to_s}" if ARGV.verbose?
-    $n+=1
+    ObserverPathnameExtension.n += 1
   end
   def rmdir
     super
     puts "rmdir #{to_s}" if ARGV.verbose?
-    $d+=1
+    ObserverPathnameExtension.d += 1
   end
   def make_relative_symlink src
     super
-    $n+=1
+    ObserverPathnameExtension.n += 1
   end
   def install_info
     super
@@ -375,6 +489,3 @@ module ObserverPathnameExtension
     puts "uninfo #{to_s}" if ARGV.verbose?
   end
 end
-
-$n=0
-$d=0

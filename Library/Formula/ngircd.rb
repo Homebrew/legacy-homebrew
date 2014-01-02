@@ -2,9 +2,9 @@ require 'formula'
 
 class Ngircd < Formula
   homepage 'http://ngircd.barton.de'
-  url 'ftp://ftp.berlios.de/pub/ngircd/ngircd-19.2.tar.gz'
-  mirror 'http://ngircd.barton.de/pub/ngircd/ngircd-19.2.tar.gz'
-  sha1 'c97e0409778ef1a4431bec1917b36918171047bc'
+  url 'ftp://ftp.berlios.de/pub/ngircd/ngircd-21.tar.gz'
+  mirror 'http://ngircd.barton.de/pub/ngircd/ngircd-21.tar.gz'
+  sha256 '0edbd41304186e43f9d907a7017b40520cc90c2ce29b1339bdcd7622fffe19a0'
 
   depends_on 'libident'
 
@@ -13,7 +13,6 @@ class Ngircd < Formula
                           "--prefix=#{prefix}",
                           "--with-ident",
                           "--with-openssl",
-                          "--with-tcp-wrappers",
                           "--enable-ipv6"
     system "make install"
   end

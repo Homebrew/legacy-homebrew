@@ -2,37 +2,65 @@ require 'formula'
 
 class Gmp < Formula
   homepage 'http://gmplib.org/'
-  url 'http://ftpmirror.gnu.org/gmp/gmp-5.0.5.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gmp/gmp-5.0.5.tar.bz2'
-  sha256 '1f588aaccc41bb9aed946f9fe38521c26d8b290d003c5df807f65690f2aadec9'
+  url 'ftp://ftp.gmplib.org/pub/gmp/gmp-5.1.3.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gmp/gmp-5.1.3.tar.bz2'
+  sha1 'b35928e2927b272711fdfbf71b7cfd5f86a6b165'
+
+  bottle do
+    cellar :any
+    revision 2
+    sha1 '8390518974834c6a9e959e3a9d6e5eba91152eec' => :mavericks
+    sha1 'b042ffe0c394dafab04f23ce03dc2cb691dc2a87' => :mountain_lion
+    sha1 'a767aafc398054b6eb413b7dd70c7c9721d84734' => :lion
+  end
 
   option '32-bit'
+  option :cxx11
+
+  # Patches gmp.h to remove the __need_size_t define, which
+  # was preventing libc++ builds from getting the ptrdiff_t type
+  # Applied upstream in http://gmplib.org:8000/gmp/raw-rev/6cd3658f5621
+  def patches
+    DATA
+  end
 
   def install
-    # Reports of problems using gcc 4.0 on Leopard
-    # https://github.com/mxcl/homebrew/issues/issue/2302
-    # Also force use of 4.2 on 10.6 in case a user has changed the default
-    # Do not force if xcode > 4.2 since it does not have /usr/bin/gcc-4.2 as default
-    # FIXME convert this to appropriate fails_with annotations
-    ENV.gcc if MacOS::Xcode.provides_gcc?
+    ENV.cxx11 if build.cxx11?
+    args = ["--prefix=#{prefix}", "--enable-cxx"]
 
-    args = %W[--prefix=#{prefix} --enable-cxx]
-
-    # Build 32-bit where appropriate, and help configure find 64-bit CPUs
-    # see: http://gmplib.org/macos.html
-    if MacOS.prefer_64_bit? and not build.build_32_bit?
-      ENV.m64
-      args << "--build=x86_64-apple-darwin"
-    else
+    if build.build_32_bit?
       ENV.m32
-      args << "--build=none-apple-darwin"
+      ENV.append 'ABI', '32'
+      # https://github.com/Homebrew/homebrew/issues/20693
+      args << "--disable-assembly"
+    elsif build.bottle?
+      args << "--disable-assembly"
     end
 
     system "./configure", *args
     system "make"
-    ENV.j1 # Doesn't install in parallel on 8-core Mac Pro
-    # Upstream implores users to always run the test suite
     system "make check"
+    ENV.deparallelize
     system "make install"
   end
 end
+
+__END__
+diff --git a/gmp-h.in b/gmp-h.in
+index 7deb67a..240d663 100644
+--- a/gmp-h.in
++++ b/gmp-h.in
+@@ -46,13 +46,11 @@ along with the GNU MP Library.  If not, see http://www.gnu.org/licenses/.  */
+ #ifndef __GNU_MP__
+ #define __GNU_MP__ 5
+ 
+-#define __need_size_t  /* tell gcc stddef.h we only want size_t */
+ #if defined (__cplusplus)
+ #include <cstddef>     /* for size_t */
+ #else
+ #include <stddef.h>    /* for size_t */
+ #endif
+-#undef __need_size_t
+ 
+ /* Instantiated by configure. */
+ #if ! defined (__GMP_WITHIN_CONFIGURE)

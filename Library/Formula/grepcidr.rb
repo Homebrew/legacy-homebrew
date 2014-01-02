@@ -1,9 +1,9 @@
 require 'formula'
 
 class Grepcidr < Formula
-  url 'http://www.pc-tools.net/files/unix/grepcidr-1.3.tar.gz'
   homepage 'http://www.pc-tools.net/unix/grepcidr/'
-  sha1 '36245b1efe497ecbe3928d2b2c6db68c0a52d179'
+  url 'http://www.pc-tools.net/files/unix/grepcidr-1.4.tar.gz'
+  sha1 'fb8c8f271d22ddedd66626ec9b77da69f2ee447b'
 
   def install
     system "make"

@@ -1,105 +1,138 @@
-require 'download_strategy'
-require 'dependencies'
 require 'formula_support'
+require 'formula_lock'
+require 'formula_pin'
 require 'hardware'
 require 'bottles'
 require 'patches'
 require 'compilers'
 require 'build_environment'
-require 'extend/set'
-
+require 'build_options'
+require 'formulary'
+require 'software_spec'
+require 'install_renamed'
 
 class Formula
   include FileUtils
+  include Utils::Inreplace
+  extend BuildEnvironmentDSL
 
-  attr_reader :name, :path, :homepage, :downloader
+  attr_reader :name, :path, :homepage, :downloader, :build
   attr_reader :stable, :bottle, :devel, :head, :active_spec
 
-  # The build folder, usually in /tmp.
-  # Will only be non-nil during the stage method.
-  attr_reader :buildpath
+  # The current working directory during builds and tests.
+  # Will only be non-nil inside #stage and #test.
+  attr_reader :buildpath, :testpath
+
+  attr_accessor :local_bottle_path
+
+  # Flag for marking whether this formula needs C++ standard library
+  # compatibility check
+  attr_reader :cxxstdlib
 
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=nil
-    set_instance_variable :homepage
-    set_instance_variable :stable
-    set_instance_variable :bottle
-    set_instance_variable :devel
-    set_instance_variable :head
-
     @name = name
-    validate_variable :name
+    # If we got an explicit path, use that, else determine from the name
+    @path = path.nil? ? self.class.path(name) : Pathname.new(path).expand_path
+    @homepage = self.class.homepage
 
-    # If a checksum or version was set in the DSL, but no stable URL
-    # was defined, make @stable nil and save callers some trouble
-    @stable = nil if @stable and @stable.url.nil?
-
-    # Ensure the bottle URL is set. If it does not have a checksum,
-    # then a bottle is not available for the current platform.
-    if @bottle and not (@bottle.checksum.nil? or @bottle.checksum.empty?)
-      @bottle.url ||= bottle_base_url + bottle_filename(self)
-    else
-      @bottle = nil
+    set_spec :stable
+    set_spec :devel
+    set_spec :head
+    set_spec :bottle do |bottle|
+      # Ensure the bottle URL is set. If it does not have a checksum,
+      # then a bottle is not available for the current platform.
+      # TODO: push this down into Bottle; we can pass the formula instance
+      # into a validation method on the bottle instance.
+      unless bottle.checksum.nil? || bottle.checksum.empty?
+        @bottle = bottle
+        bottle.url ||= bottle_url(self, bottle.current_tag)
+        bottle.version = stable.version
+      end
     end
 
-    @active_spec = if @head and ARGV.build_head? then @head # --HEAD
-      elsif @devel and ARGV.build_devel? then @devel        # --devel
-      elsif @bottle and install_bottle?(self) then @bottle  # bottle available
-      elsif @stable.nil? and @head then @head               # head-only
-      else @stable                                          # default
-      end
+    @active_spec = determine_active_spec
+    validate_attributes :url, :name, :version
+    @downloader = active_spec.downloader
+    @build = determine_build_options
 
-    @version = @active_spec.version
-    validate_variable :version if @version
+    @pin = FormulaPin.new(self)
 
-    raise "No url provided for formula #{name}" if @active_spec.url.nil?
+    @cxxstdlib ||= Set.new
+  end
 
-    # If we got an explicit path, use that, else determine from the name
-    @path = path.nil? ? self.class.path(name) : Pathname.new(path)
-    @downloader = download_strategy.new(name, @active_spec)
-
-    # Combine DSL `option` and `def options`
-    options.each do |opt, desc|
-      # make sure to strip "--" from the start of options
-      self.class.build.add opt[/--(.+)$/, 1], desc
+  def set_spec(name)
+    spec = self.class.send(name)
+    if block_given? && yield(spec) || spec.url
+      spec.owner = self
+      instance_variable_set("@#{name}", spec)
     end
   end
 
-  def url;      @active_spec.url;     end
-  def version;  @active_spec.version; end
-  def specs;    @active_spec.specs;   end
-  def mirrors;  @active_spec.mirrors; end
+  def determine_active_spec
+    case
+    when head && ARGV.build_head?        then head    # --HEAD
+    when devel && ARGV.build_devel?      then devel   # --devel
+    when bottle && install_bottle?(self) then bottle  # bottle available
+    when stable                          then stable
+    when devel && stable.nil?            then devel   # devel-only
+    when head && stable.nil?             then head    # head-only
+    else
+      raise FormulaSpecificationError, "formulae require at least a URL"
+    end
+  end
+
+  def validate_attributes(*attrs)
+    attrs.each do |attr|
+      if (value = send(attr).to_s).empty? || value =~ /\s/
+        raise FormulaValidationError.new(attr, value)
+      end
+    end
+  end
+
+  def default_build?
+    self.class.build.used_options.empty?
+  end
+
+  def determine_build_options
+    build = active_spec.build
+    options.each { |opt, desc| build.add(opt, desc) }
+    build
+  end
+
+  def url;      active_spec.url;     end
+  def version;  active_spec.version; end
+  def mirrors;  active_spec.mirrors; end
+
+  def resource(name)
+    active_spec.resource(name)
+  end
+
+  def resources
+    active_spec.resources.values
+  end
+
+  def deps
+    active_spec.deps
+  end
+
+  def requirements
+    active_spec.requirements
+  end
 
   # if the dir is there, but it's empty we consider it not installed
   def installed?
-    return installed_prefix.children.length > 0
-  rescue
-    return false
-  end
-
-  def explicitly_requested?
-    # `ARGV.formulae` will throw an exception if it comes up with an empty list.
-    # FIXME: `ARGV.formulae` shouldn't be throwing exceptions, see issue #8823
-   return false if ARGV.named.empty?
-   ARGV.formulae.include? self
+    (dir = installed_prefix).directory? && dir.children.length > 0
   end
 
   def linked_keg
-    HOMEBREW_REPOSITORY/'Library/LinkedKegs'/@name
+    Pathname.new("#{HOMEBREW_LIBRARY}/LinkedKegs/#{name}")
   end
 
   def installed_prefix
-    devel_prefix = unless @devel.nil?
-      HOMEBREW_CELLAR/@name/@devel.version
-    end
-
-    head_prefix = unless @head.nil?
-      HOMEBREW_CELLAR/@name/@head.version
-    end
-
-    if @active_spec == @head || @head and head_prefix.directory?
+    if head && (head_prefix = prefix(head.version)).directory?
       head_prefix
-    elsif @active_spec == @devel || @devel and devel_prefix.directory?
+    elsif devel && (devel_prefix = prefix(devel.version)).directory?
       devel_prefix
     else
       prefix
@@ -111,57 +144,72 @@ class Formula
     Keg.new(installed_prefix).version
   end
 
-  def prefix
-    validate_variable :name
-    validate_variable :version
-    HOMEBREW_CELLAR/@name/@version
+  def prefix(v=version)
+    Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{v}")
   end
   def rack; prefix.parent end
 
-  def bin;     prefix+'bin'            end
-  def doc;     prefix+'share/doc'+name end
-  def include; prefix+'include'        end
-  def info;    prefix+'share/info'     end
-  def lib;     prefix+'lib'            end
-  def libexec; prefix+'libexec'        end
-  def man;     prefix+'share/man'      end
-  def man1;    man+'man1'              end
-  def man2;    man+'man2'              end
-  def man3;    man+'man3'              end
-  def man4;    man+'man4'              end
-  def man5;    man+'man5'              end
-  def man6;    man+'man6'              end
-  def man7;    man+'man7'              end
-  def man8;    man+'man8'              end
-  def sbin;    prefix+'sbin'           end
-  def share;   prefix+'share'          end
+  def bin;     prefix+'bin'     end
+  def doc;     share+'doc'+name end
+  def include; prefix+'include' end
+  def info;    share+'info'     end
+  def lib;     prefix+'lib'     end
+  def libexec; prefix+'libexec' end
+  def man;     share+'man'      end
+  def man1;    man+'man1'       end
+  def man2;    man+'man2'       end
+  def man3;    man+'man3'       end
+  def man4;    man+'man4'       end
+  def man5;    man+'man5'       end
+  def man6;    man+'man6'       end
+  def man7;    man+'man7'       end
+  def man8;    man+'man8'       end
+  def sbin;    prefix+'sbin'    end
+  def share;   prefix+'share'   end
+
+  def frameworks; prefix+'Frameworks' end
+  def kext_prefix; prefix+'Library/Extensions' end
 
   # configuration needs to be preserved past upgrades
-  def etc; HOMEBREW_PREFIX+'etc' end
+  def etc; (HOMEBREW_PREFIX+'etc').extend(InstallRenamed) end
+
   # generally we don't want var stuff inside the keg
   def var; HOMEBREW_PREFIX+'var' end
 
+  def bash_completion; prefix+'etc/bash_completion.d' end
+  def zsh_completion;  share+'zsh/site-functions'     end
+
+  # for storing etc, var files for later copying from bottles
+  def bottle_prefix; prefix+'.bottle' end
+
   # override this to provide a plist
-  def startup_plist; nil; end
+  def plist; nil; end
+  alias :startup_plist :plist
   # plist name, i.e. the name of the launchd service
   def plist_name; 'homebrew.mxcl.'+name end
   def plist_path; prefix+(plist_name+'.plist') end
+  def plist_manual; self.class.plist_manual end
+  def plist_startup; self.class.plist_startup end
 
-  def build
-    self.class.build
-  end
-
-  def opt_prefix; HOMEBREW_PREFIX/:opt/name end
-
-  # Use the @active_spec to detect the download strategy.
-  # Can be overriden to force a custom download strategy
-  def download_strategy
-    @active_spec.download_strategy
+  def opt_prefix
+    Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
   end
 
   def cached_download
-    @downloader.cached_location
+    downloader.cached_location
   end
+
+  def clear_cache
+    downloader.clear_cache
+  end
+
+  # Can be overridden to selectively disable bottles from formulae.
+  # Defaults to true so overridden version does not have to check if bottles
+  # are supported.
+  def pour_bottle?; true end
+
+  # Can be overridden to run commands on both source and bottle installation.
+  def post_install; end
 
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
@@ -174,8 +222,7 @@ class Formula
   # return a Hash eg.
   #   {
   #     :p0 => ['http://foo.com/patch1', 'http://foo.com/patch2'],
-  #     :p1 =>  'http://bar.com/patch2',
-  #     :p2 => ['http://moo.com/patch5', 'http://moo.com/patch6']
+  #     :p1 =>  'http://bar.com/patch2'
   #   }
   # The final option is to return DATA, then put a diff after __END__. You
   # can still return a Hash with DATA as the value for a patch level key.
@@ -193,11 +240,12 @@ class Formula
   end
 
   def fails_with? cc
-    return false if self.class.cc_failures.nil?
     cc = Compiler.new(cc) unless cc.is_a? Compiler
-    return self.class.cc_failures.find do |failure|
-      next unless failure.compiler == cc.name
-      failure.build.zero? or failure.build >= cc.build
+    (self.class.cc_failures || []).any? do |failure|
+      # Major version check distinguishes between, e.g.,
+      # GCC 4.7.1 and GCC 4.8.2, where a comparison is meaningless
+      failure.compiler == cc.name && failure.major_version == cc.major_version && \
+        failure.version >= cc.version
     end
   end
 
@@ -214,41 +262,53 @@ class Formula
 
   # yields self with current working directory set to the uncompressed tarball
   def brew
-    validate_variable :name
-    validate_variable :version
+    validate_attributes :name, :version
 
     stage do
       begin
         patch
-        # we allow formulas to do anything they want to the Ruby process
+        # we allow formulae to do anything they want to the Ruby process
         # so load any deps before this point! And exit asap afterwards
         yield self
-      rescue RuntimeError, SystemCallError => e
-        if not ARGV.debug?
-          %w(config.log CMakeCache.txt).each do |fn|
-            (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
-          end
-          raise
+      rescue RuntimeError, SystemCallError
+        %w(config.log CMakeCache.txt).each do |fn|
+          (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
         end
-
-        onoe e.inspect
-        puts e.backtrace unless e.kind_of? BuildError
-        ohai "Rescuing build..."
-        puts "When you exit this shell Homebrew will attempt to finalise the installation."
-        puts "If nothing is installed or the shell exits with a non-zero error code,"
-        puts "Homebrew will abort. The installation prefix is:"
-        puts prefix
-        interactive_shell self
+        raise
       end
     end
   end
 
-  def == b
-    name == b.name
+  def lock
+    @lock = FormulaLock.new(name)
+    @lock.lock
   end
-  def eql? b
-    self == b and self.class.equal? b.class
+
+  def unlock
+    @lock.unlock unless @lock.nil?
   end
+
+  def pinnable?
+    @pin.pinnable?
+  end
+
+  def pinned?
+    @pin.pinned?
+  end
+
+  def pin
+    @pin.pin
+  end
+
+  def unpin
+    @pin.unpin
+  end
+
+  def == other
+    instance_of?(other.class) && name == other.name
+  end
+  alias_method :eql?, :==
+
   def hash
     name.hash
   end
@@ -256,6 +316,9 @@ class Formula
     name <=> b.name
   end
   def to_s
+    name
+  end
+  def inspect
     name
   end
 
@@ -272,28 +335,50 @@ class Formula
       -DCMAKE_INSTALL_PREFIX=#{prefix}
       -DCMAKE_BUILD_TYPE=None
       -DCMAKE_FIND_FRAMEWORK=LAST
+      -DCMAKE_VERBOSE_MAKEFILE=ON
       -Wno-dev
     ]
   end
 
+  # Install python bindings inside of a block given to this method and/or
+  # call python so: `system python, "setup.py", "install", "--prefix=#{prefix}"
+  # Note that there are no quotation marks around python!
+  # <https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python>
+  def python(options={:allowed_major_versions => [2, 3]}, &block)
+    require 'python_helper'
+    python_helper(options, &block)
+  end
+
+  # Explicitly only execute the block for 2.x (if a python 2.x is available)
+  def python2 &block
+    python(:allowed_major_versions => [2], &block)
+  end
+
+  # Explicitly only execute the block for 3.x (if a python 3.x is available)
+  def python3 &block
+    python(:allowed_major_versions => [3], &block)
+  end
+
+  # Generates a formula's ruby class name from a formula's name
   def self.class_s name
-    #remove invalid characters and then camelcase it
+    # remove invalid characters and then camelcase it
     name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
                    .gsub('+', 'x')
   end
 
   # an array of all Formula names
   def self.names
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
+    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
   end
 
   def self.each
     names.each do |name|
-      yield begin
-        Formula.factory(name)
-      rescue => e
+      begin
+        yield Formula.factory(name)
+      rescue StandardError => e
         # Don't let one broken formula break commands. But do complain.
         onoe "Failed to import: #{name}"
+        puts e
         next
       end
     end
@@ -301,164 +386,103 @@ class Formula
   class << self
     include Enumerable
   end
-  def self.all
-    opoo "Formula.all is deprecated, simply use Formula.map"
-    map
-  end
 
   def self.installed
-    HOMEBREW_CELLAR.children.map{ |rack| factory(rack.basename) rescue nil }.compact
-  end
+    return [] unless HOMEBREW_CELLAR.directory?
 
-  def inspect
-    name
+    HOMEBREW_CELLAR.subdirs.map do |rack|
+      begin
+        factory(rack.basename.to_s)
+      rescue FormulaUnavailableError
+      end
+    end.compact
   end
 
   def self.aliases
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Aliases/*"].map{ |f| File.basename f }.sort
+    Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
+  # TODO - document what this returns and why
   def self.canonical_name name
-    name = name.to_s if name.kind_of? Pathname
-
-    formula_with_that_name = HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
-    possible_alias = HOMEBREW_REPOSITORY+"Library/Aliases/#{name}"
-    possible_cached_formula = HOMEBREW_CACHE_FORMULA+"#{name}.rb"
-
+    # if name includes a '/', it may be a tap reference, path, or URL
     if name.include? "/"
       if name =~ %r{(.+)/(.+)/(.+)}
-        tapd = HOMEBREW_REPOSITORY/"Library/Taps"/"#$1-#$2".downcase
+        tap_name = "#$1-#$2".downcase
+        tapd = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{tap_name}")
         tapd.find_formula do |relative_pathname|
           return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
         end if tapd.directory?
       end
       # Otherwise don't resolve paths or URLs
-      name
-    elsif formula_with_that_name.file? and formula_with_that_name.readable?
-      name
-    elsif possible_alias.file?
-      possible_alias.realpath.basename('.rb').to_s
-    elsif possible_cached_formula.file?
-      possible_cached_formula.to_s
-    else
-      name
+      return name
     end
+
+    # test if the name is a core formula
+    formula_with_that_name = Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb")
+    if formula_with_that_name.file? and formula_with_that_name.readable?
+      return name
+    end
+
+    # test if the name is a formula alias
+    possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{name}")
+    if possible_alias.file?
+      return possible_alias.realpath.basename('.rb').to_s
+    end
+
+    # test if the name is a cached downloaded formula
+    possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{name}.rb")
+    if possible_cached_formula.file?
+      return possible_cached_formula.to_s
+    end
+
+    # dunno, pass through the name
+    return name
   end
 
   def self.factory name
-    # If an instance of Formula is passed, just return it
-    return name if name.kind_of? Formula
+    Formulary.factory name
+  end
 
-    # Otherwise, convert to String in case a Pathname comes in
-    name = name.to_s
-
-    # If a URL is passed, download to the cache and install
-    if name =~ %r[(https?|ftp)://]
-      url = name
-      name = Pathname.new(name).basename
-      path = HOMEBREW_CACHE_FORMULA+name
-      name = name.basename(".rb").to_s
-
-      unless Object.const_defined? self.class_s(name)
-        HOMEBREW_CACHE_FORMULA.mkpath
-        FileUtils.rm path, :force => true
-        curl url, '-o', path
-      end
-
-      install_type = :from_url
-    else
-      name = Formula.canonical_name(name)
-
-      if name =~ %r{^(\w+)/(\w+)/([^/])+$}
-        # name appears to be a tapped formula, so we don't munge it
-        # in order to provide a useful error message when require fails.
-        path = Pathname.new(name)
-      elsif name.include? "/"
-        # If name was a path or mapped to a cached formula
-
-        # require allows filenames to drop the .rb extension, but everything else
-        # in our codebase will require an exact and fullpath.
-        name = "#{name}.rb" unless name =~ /\.rb$/
-
-        path = Pathname.new(name)
-        name = path.stem
-        install_type = :from_path
-      else
-        # For names, map to the path and then require
-        path = Formula.path(name)
-        install_type = :from_name
-      end
-    end
-
-    klass_name = self.class_s(name)
-    unless Object.const_defined? klass_name
-      puts "#{$0}: loading #{path}" if ARGV.debug?
-      require path
-    end
-
-    begin
-      klass = Object.const_get klass_name
-    rescue NameError
-      # TODO really this text should be encoded into the exception
-      # and only shown if the UI deems it correct to show it
-      onoe "class \"#{klass_name}\" expected but not found in #{name}.rb"
-      puts "Double-check the name of the class in that formula."
-      raise LoadError
-    end
-
-    return klass.new(name) if install_type == :from_name
-    return klass.new(name, path.to_s)
-  rescue NoMethodError
-    # This is a programming error in an existing formula, and should not
-    # have a "no such formula" message.
-    raise
-  rescue LoadError, NameError
-    # Catch NameError so that things that are invalid symbols still get
-    # a useful error message.
-    raise FormulaUnavailableError.new(name)
+  def tap?
+    !!path.realpath.to_s.match(HOMEBREW_TAP_DIR_REGEX)
   end
 
   def tap
-    if path.realpath.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)}
+    if path.realpath.to_s =~ HOMEBREW_TAP_DIR_REGEX
       "#$1/#$2"
+    elsif core_formula?
+      "Homebrew/homebrew"
     else
-      # remotely installed formula are not mxcl/master but this will do for now
-      "mxcl/master"
+      "path or URL"
     end
+  end
+
+  # True if this formula is provided by Homebrew itself
+  def core_formula?
+    path.realpath.to_s == Formula.path(name).to_s
   end
 
   def self.path name
-    HOMEBREW_REPOSITORY+"Library/Formula/#{name.downcase}.rb"
+    Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
   end
 
-  def deps;         self.class.dependencies.deps;         end
-  def requirements; self.class.dependencies.requirements; end
-
   def env
-    @env ||= BuildEnvironment.new(self.class.environments)
+    @env ||= self.class.env
   end
 
   def conflicts
-    requirements.select { |r| r.is_a? ConflictRequirement }
+    self.class.conflicts
   end
 
-  # deps are in an installable order
-  # which means if a depends on b then b will be ordered before a in this list
-  def recursive_deps
-    Formula.expand_deps(self).flatten.uniq
+  # Returns a list of Dependency objects in an installable order, which
+  # means if a depends on b then b will be ordered before a in this list
+  def recursive_dependencies(&block)
+    Dependency.expand(self, &block)
   end
 
-  def self.expand_deps f
-    f.deps.map do |dep|
-      f_dep = Formula.factory dep.to_s
-      expand_deps(f_dep) << f_dep
-    end
-  end
-
-  def recursive_requirements
-    reqs = ComparableSet.new
-    recursive_deps.each { |dep| reqs.merge dep.requirements }
-    reqs.merge requirements
+  # The full set of Requirements for this formula's dependency tree.
+  def recursive_requirements(&block)
+    Requirement.expand(self, &block)
   end
 
   def to_hash
@@ -467,7 +491,7 @@ class Formula
       "homepage" => homepage,
       "versions" => {
         "stable" => (stable.version.to_s if stable),
-        "bottle" => bottle && MacOS.bottles_supported? || false,
+        "bottle" => bottle ? true : false,
         "devel" => (devel.version.to_s if devel),
         "head" => (head.version.to_s if head)
       },
@@ -475,7 +499,7 @@ class Formula
       "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
       "keg_only" => keg_only?,
       "dependencies" => deps.map {|dep| dep.to_s},
-      "conflicts_with" => conflicts.map {|c| c.formula},
+      "conflicts_with" => conflicts.map(&:name),
       "options" => [],
       "caveats" => caveats
     }
@@ -488,14 +512,14 @@ class Formula
     end
 
     if rack.directory?
-      rack.children.each do |keg|
-        next if keg.basename.to_s == '.DS_Store'
+      rack.subdirs.each do |keg|
         tab = Tab.for_keg keg
 
         hsh["installed"] << {
           "version" => keg.basename.to_s,
-          "used_options" => tab.used_options,
-          "built_as_bottle" => tab.built_bottle
+          "used_options" => tab.used_options.map(&:flag),
+          "built_as_bottle" => tab.built_bottle,
+          "poured_from_bottle" => tab.poured_from_bottle
         }
       end
     end
@@ -504,7 +528,36 @@ class Formula
 
   end
 
-protected
+  # For brew-fetch and others.
+  def fetch
+    active_spec.fetch
+  end
+
+  # For FormulaInstaller.
+  def verify_download_integrity fn
+    active_spec.verify_download_integrity(fn)
+  end
+
+  def test
+    require 'test/unit/assertions'
+    extend(Test::Unit::Assertions)
+    # Adding the used options allows us to use `build.with?` inside of tests
+    tab = Tab.for_name(name)
+    tab.used_options.each { |opt| build.args << opt unless build.has_opposite_of? opt }
+    ret = nil
+    mktemp do
+      @testpath = Pathname.pwd
+      ret = instance_eval(&self.class.test)
+      @testpath = nil
+    end
+    ret
+  end
+
+  def test_defined?
+    not self.class.instance_variable_get(:@test_defined).nil?
+  end
+
+  protected
 
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
@@ -523,74 +576,53 @@ protected
       ENV.remove_cc_etc
     end
 
-    if ARGV.verbose?
-      safe_system cmd, *args
-    else
-      @exec_count ||= 0
-      @exec_count += 1
-      logd = HOMEBREW_LOGS/name
-      logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
-      mkdir_p(logd)
+    @exec_count ||= 0
+    @exec_count += 1
+    logd = HOMEBREW_LOGS/name
+    logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd.to_s).split(' ').first]
+    mkdir_p(logd)
 
-      rd, wr = IO.pipe
-      pid = fork do
-        rd.close
-        $stdout.reopen wr
-        $stderr.reopen wr
-        args.collect!{|arg| arg.to_s}
-        exec(cmd, *args) rescue nil
-        puts "Failed to execute: #{cmd}"
-        exit! 1 # never gets here unless exec threw or failed
+    rd, wr = IO.pipe
+    fork do
+      ENV['HOMEBREW_CC_LOG_PATH'] = logfn
+      rd.close
+      $stdout.reopen wr
+      $stderr.reopen wr
+      args.collect!{|arg| arg.to_s}
+      exec(cmd.to_s, *args) rescue nil
+      puts "Failed to execute: #{cmd}"
+      exit! 1 # never gets here unless exec threw or failed
+    end
+    wr.close
+
+    File.open(logfn, 'w') do |f|
+      while buf = rd.gets
+        f.puts buf
+        puts buf if ARGV.verbose?
       end
-      wr.close
-
-      f = File.open(logfn, 'w')
-      f.write(rd.read) until rd.eof?
 
       Process.wait
 
+      $stdout.flush
+
       unless $?.success?
-        unless ARGV.verbose?
-          f.flush
-          Kernel.system "/usr/bin/tail -n 5 #{logfn}"
-        end
+        f.flush
+        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
         f.puts
         require 'cmd/--config'
         Homebrew.write_build_config(f)
         raise BuildError.new(self, cmd, args, $?)
       end
     end
-
   ensure
-    f.close if f
-    removed_ENV_variables.each do |key, value|
-      ENV[key] = value
-    end if removed_ENV_variables
+    rd.close if rd and not rd.closed?
+    ENV.update(removed_ENV_variables) if removed_ENV_variables
   end
 
-public
-
-  # For brew-fetch and others.
-  def fetch
-    # Ensure the cache exists
-    HOMEBREW_CACHE.mkpath
-
-    return @downloader.fetch, @downloader
-  end
-
-  # For FormulaInstaller.
-  def verify_download_integrity fn
-    @active_spec.verify_download_integrity(fn)
-  end
-
-private
+  private
 
   def stage
-    fetched, downloader = fetch
-    verify_download_integrity fetched if fetched.kind_of? Pathname
-    mktemp do
-      downloader.stage
-      # Set path after the downloader changes the working folder.
+    active_spec.stage do
       @buildpath = Pathname.pwd
       yield
       @buildpath = nil
@@ -609,153 +641,132 @@ private
     ohai "Patching"
     patch_list.each do |p|
       case p.compression
-        when :gzip  then safe_system "/usr/bin/gunzip",  p.compressed_filename
-        when :bzip2 then safe_system "/usr/bin/bunzip2", p.compressed_filename
+        when :gzip  then with_system_path { safe_system "gunzip",  p.compressed_filename }
+        when :bzip2 then with_system_path { safe_system "bunzip2", p.compressed_filename }
       end
       # -f means don't prompt the user if there are errors; just exit with non-zero status
       safe_system '/usr/bin/patch', '-f', *(p.patch_args)
     end
   end
 
-  def validate_variable name
-    v = instance_variable_get("@#{name}")
-    raise "Invalid @#{name}" if v.to_s.empty? or v.to_s =~ /\s/
-  end
-
-  def set_instance_variable(type)
-    return if instance_variable_defined? "@#{type}"
-    class_value = self.class.send(type)
-    instance_variable_set("@#{type}", class_value) if class_value
+  # Explicitly request changing C++ standard library compatibility check
+  # settings. Use with caution!
+  def cxxstdlib_check check_type
+    @cxxstdlib << check_type
   end
 
   def self.method_added method
-    raise 'You cannot override Formula.brew' if method == :brew
+    case method
+    when :brew
+      raise "You cannot override Formula#brew in class #{name}"
+    when :test
+      @test_defined = true
+    end
   end
 
+  # The methods below define the formula DSL.
   class << self
-    # The methods below define the formula DSL.
 
-    def self.attr_rw(*attrs)
-      attrs.each do |attr|
-        class_eval %Q{
-          def #{attr}(val=nil)
-            val.nil? ? @#{attr} : @#{attr} = val
-          end
-        }
-      end
+    attr_reader :keg_only_reason, :cc_failures
+    attr_rw :homepage, :plist_startup, :plist_manual
+
+    def specs
+      @specs ||= [stable, devel, head, bottle].freeze
     end
 
-    attr_rw :homepage, :keg_only_reason, :skip_clean_all, :cc_failures
-
-    Checksum::TYPES.each do |cksum|
-      class_eval %Q{
-        def #{cksum}(val=nil)
-          unless val.nil?
-            @stable ||= SoftwareSpec.new
-            @stable.#{cksum}(val)
-          end
-          return @stable ? @stable.#{cksum} : @#{cksum}
-        end
-      }
-    end
-
-    def build
-      @build ||= BuildOptions.new(ARGV)
-    end
-
-    def url val=nil, specs=nil
-      if val.nil?
-        return @stable.url if @stable
-        return @url if @url
-      end
-      @stable ||= SoftwareSpec.new
-      @stable.url(val, specs)
-    end
-
-    def stable &block
-      return @stable unless block_given?
-      instance_eval(&block)
-    end
-
-    def bottle url=nil, &block
-      return @bottle unless block_given?
-      @bottle ||= Bottle.new
-      @bottle.instance_eval(&block)
-    end
-
-    def devel &block
-      return @devel unless block_given?
-      @devel ||= SoftwareSpec.new
-      @devel.instance_eval(&block)
-    end
-
-    def head val=nil, specs=nil
-      return @head if val.nil?
-      @head ||= HeadSoftwareSpec.new
-      @head.url(val, specs)
+    def url val, specs={}
+      stable.url(val, specs)
     end
 
     def version val=nil
-      return @version if val.nil?
-      @stable ||= SoftwareSpec.new
-      @stable.version(val)
+      stable.version(val)
     end
 
     def mirror val
+      stable.mirror(val)
+    end
+
+    Checksum::TYPES.each do |cksum|
+      class_eval <<-EOS, __FILE__, __LINE__ + 1
+        def #{cksum}(val)
+          stable.#{cksum}(val)
+        end
+      EOS
+    end
+
+    def build
+      stable.build
+    end
+
+    def stable &block
       @stable ||= SoftwareSpec.new
-      @stable.mirror(val)
+      return @stable unless block_given?
+      @stable.instance_eval(&block)
     end
 
-    def environments
-      @environments ||= []
+    def bottle *, &block
+      @bottle ||= Bottle.new
+      return @bottle unless block_given?
+      @bottle.instance_eval(&block)
+      @bottle.version = @stable.version
     end
 
-    def env *settings
-      environments.concat [settings].flatten
+    def devel &block
+      @devel ||= SoftwareSpec.new
+      return @devel unless block_given?
+      @devel.instance_eval(&block)
     end
 
-    def dependencies
-      @dependencies ||= DependencyCollector.new
+    def head val=nil, specs={}, &block
+      @head ||= HeadSoftwareSpec.new
+      if block_given?
+        @head.instance_eval(&block)
+      elsif val
+        @head.url(val, specs)
+      else
+        @head
+      end
+    end
+
+    # Define a named resource using a SoftwareSpec style block
+    def resource name, &block
+      specs.each do |spec|
+        spec.resource(name, &block) unless spec.resource?(name)
+      end
     end
 
     def depends_on dep
-      dependencies.add(dep)
+      specs.each { |spec| spec.depends_on(dep) }
     end
 
     def option name, description=nil
-      # Support symbols
-      name = name.to_s
-      raise "Option name is required." if name.empty?
-      raise "Options should not start with dashes." if name[0, 1] == "-"
-      build.add name, description
+      specs.each { |spec| spec.option(name, description) }
     end
 
-    def conflicts_with formula, opts={}
-      message = <<-EOS.undent
-      #{formula} cannot be installed alongside #{name.downcase}.
-      EOS
-      message << "This is because #{opts[:because]}\n" if opts[:because]
-      unless ARGV.force? then message << <<-EOS.undent
-        Please `brew unlink #{formula}` before continuing. Unlinking removes
-        the formula's symlinks from #{HOMEBREW_PREFIX}. You can link the
-        formula again after the install finishes. You can --force this install
-        but the build may fail or cause obscure side-effects in the end-binary.
-        EOS
-      end
-
-      dependencies.add ConflictRequirement.new(formula, message)
+    def plist_options options
+      @plist_startup = options[:startup]
+      @plist_manual = options[:manual]
     end
 
-    def skip_clean paths
-      if paths == :all
+    def conflicts
+      @conflicts ||= []
+    end
+
+    def conflicts_with *names
+      opts = Hash === names.last ? names.pop : {}
+      names.each { |name| conflicts << FormulaConflict.new(name, opts[:because]) }
+    end
+
+    def skip_clean *paths
+      paths.flatten!
+
+      # :all is deprecated though
+      if paths.include? :all
         @skip_clean_all = true
         return
       end
-      @skip_clean_paths ||= []
-      [paths].flatten.each do |p|
-        p = p.to_s unless p == :la
-        @skip_clean_paths << p unless @skip_clean_paths.include? p
-      end
+
+      skip_clean_paths.merge(paths)
     end
 
     def skip_clean_all?
@@ -763,20 +774,53 @@ private
     end
 
     def skip_clean_paths
-      @skip_clean_paths or []
+      @skip_clean_paths ||= Set.new
     end
 
     def keg_only reason, explanation=nil
       @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
     end
 
+    # For Apple compilers, this should be in the format:
+    # fails_with compiler do
+    #   cause "An explanation for why the build doesn't work."
+    #   build "The Apple build number for the newest incompatible release."
+    # end
+    #
+    # The block may be omitted, and if present the build may be omitted;
+    # if so, then the compiler will be blacklisted for *all* versions.
+    #
+    # For GNU GCC compilers, this should be in the format:
+    # fails_with compiler => major_version do
+    #   cause
+    #   version "The official release number for the latest incompatible
+    #            version, for instance 4.8.1"
+    # end
+    # 
+    # `major_version` should be the major release number only, for instance
+    # '4.8' for the GCC 4.8 series (4.8.0, 4.8.1, etc.).
+    # If `version` or the block is omitted, then the compiler will be
+    # blacklisted for all compilers in that series.
+    #
+    # For example, if a bug is only triggered on GCC 4.8.1 but is not
+    # encountered on 4.8.2:
+    # 
+    # fails_with :gcc => '4.8' do
+    #   version '4.8.1'
+    # end
     def fails_with compiler, &block
-      @cc_failures ||= CompilerFailures.new
-      @cc_failures << if block_given?
-        CompilerFailure.new(compiler, &block)
-      else
-        CompilerFailure.new(compiler)
-      end
+      @cc_failures ||= Set.new
+      @cc_failures << CompilerFailure.new(compiler, &block)
+    end
+
+    def require_universal_deps
+      specs.each { |spec| spec.build.universal = true }
+    end
+
+    def test &block
+      return @test unless block_given?
+      @test_defined = true
+      @test = block
     end
   end
 end

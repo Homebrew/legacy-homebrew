@@ -15,12 +15,23 @@ class String
   #               EOS
   alias_method :undent_________________________________________________________72, :undent
 
-  unless String.method_defined?(:start_with?)
-    def start_with? prefix
-      prefix = prefix.to_s
-      self[0, prefix.length] == prefix
+  def start_with?(*prefixes)
+    prefixes.any? do |prefix|
+      if prefix.respond_to?(:to_str)
+        prefix = prefix.to_str
+        self[0, prefix.length] == prefix
+      end
     end
-  end
+  end unless method_defined?(:start_with?)
+
+  def end_with?(*suffixes)
+    suffixes.any? do |suffix|
+      if suffix.respond_to?(:to_str)
+        suffix = suffix.to_str
+        self[-suffix.length, suffix.length] == suffix
+      end
+    end
+  end unless method_defined?(:end_with?)
 
   # String.chomp, but if result is empty: returns nil instead.
   # Allows `chuzzle || foo` short-circuits.
@@ -55,9 +66,7 @@ module StringInreplaceExtension
 
   # Removes variable assignments completely.
   def remove_make_var! flags
-    # Next line is for Ruby 1.9.x compatibility
-    flags = [flags] unless flags.kind_of? Array
-    flags.each do |flag|
+    Array(flags).each do |flag|
       # Also remove trailing \n, if present.
       sub = gsub! Regexp.new("^#{flag}[ \\t]*=(.*)$\n?"), "", false
       opoo "inreplace: removing '#{flag}' failed" if sub.nil?
@@ -68,6 +77,5 @@ module StringInreplaceExtension
   def get_make_var flag
     m = match Regexp.new("^#{flag}[ \\t]*=[ \\t]*(.*)$")
     return m[1] if m
-    return nil
   end
 end

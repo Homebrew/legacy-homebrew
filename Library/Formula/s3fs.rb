@@ -2,15 +2,14 @@ require 'formula'
 
 class S3fs < Formula
   homepage 'http://code.google.com/p/s3fs/'
-  url 'http://s3fs.googlecode.com/files/s3fs-1.61.tar.gz'
-  sha1 '8f6561ce00b41c667b738595fdb7b42196c5eee6'
+  url 'http://s3fs.googlecode.com/files/s3fs-1.74.tar.gz'
+  sha1 '657925015b5e9c169579ad2f81f85651e0f2beaa'
 
   depends_on 'pkg-config' => :build
   depends_on 'fuse4x'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 

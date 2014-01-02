@@ -2,20 +2,21 @@ require 'formula'
 
 class Io < Formula
   homepage 'http://iolanguage.com/'
-  url 'https://github.com/stevedekorte/io/tarball/2011.09.12'
-  sha1 '56720fe9b2c746ca817c15e48023b256363b3015'
+  url 'https://github.com/stevedekorte/io/archive/2013.12.04.tar.gz'
+  sha1 '47d9a3e7a8e14c9fbe3b376e4967bb55f6c68aed'
 
   head 'https://github.com/stevedekorte/io.git'
 
   option 'without-addons', 'Build without addons'
-  option 'without-python', 'Build without python addon'
 
   depends_on 'cmake' => :build
+  depends_on :python => :recommended
   depends_on 'libevent'
   depends_on 'libffi'
   depends_on 'ossp-uuid'
   depends_on 'pcre'
   depends_on 'yajl'
+  depends_on 'xz'
 
   # Used by Bignum add-on
   depends_on 'gmp' unless build.include? 'without-addons'
@@ -31,26 +32,25 @@ class Io < Formula
     EOS
   end
 
-  # Fix recursive inline. See discussion in:
-  # https://github.com/stevedekorte/io/issues/135
-  def patches
-    DATA
-  end
-
   def install
     ENV.j1
-    if build.include? 'without-addons'
+    if build.without? 'addons'
       inreplace  "CMakeLists.txt",
         'add_subdirectory(addons)',
         '#add_subdirectory(addons)'
     end
-    if build.include? 'without-python'
+    if build.without? 'python'
       inreplace  "addons/CMakeLists.txt",
         'add_subdirectory(Python)',
         '#add_subdirectory(Python)'
     end
     mkdir 'buildroot' do
-      system "cmake", "..", *std_cmake_args
+      args = std_cmake_args
+      # For Xcode-only systems, the headers of system's python are inside of Xcode:
+      args << "-DPYTHON_INCLUDE_DIR='#{python.incdir}'" if python
+      # Cmake picks up the system's python dylib, even if we have a brewed one:
+      args << "-DPYTHON_LIBRARY='#{python.libdir}/lib#{python.xy}.dylib'" if python
+      system "cmake", "..", *args
       system 'make'
       output = %x[./_build/binaries/io ../libs/iovm/tests/correctness/run.io]
       if $?.exitstatus != 0
@@ -62,16 +62,3 @@ class Io < Formula
     end
   end
 end
-
-__END__
---- a/libs/basekit/source/Common_inline.h	2011-09-12 17:14:12.000000000 -0500
-+++ b/libs/basekit/source/Common_inline.h	2011-12-17 00:46:02.000000000 -0600
-@@ -52,7 +52,7 @@
- 
- #if defined(__APPLE__) 
- 
--	#define NS_INLINE static __inline__ __attribute__((always_inline))
-+	#define NS_INLINE static inline
- 
- 	#ifdef IO_IN_C_FILE
- 		// in .c 

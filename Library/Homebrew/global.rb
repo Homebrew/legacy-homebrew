@@ -1,15 +1,20 @@
+require 'extend/module'
 require 'extend/fileutils'
 require 'extend/pathname'
 require 'extend/ARGV'
 require 'extend/string'
+require 'extend/symbol'
+require 'extend/enumerable'
+require 'os'
 require 'utils'
 require 'exceptions'
 require 'set'
+require 'rbconfig'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = '0.9.3'
-HOMEBREW_WWW = 'http://mxcl.github.com/homebrew/'
+HOMEBREW_VERSION = '0.9.5'
+HOMEBREW_WWW = 'http://brew.sh'
 
 def cache
   if ENV['HOMEBREW_CACHE']
@@ -43,7 +48,7 @@ undef cache # we use a function to prevent adding home_cache to the global scope
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
 
 if not defined? HOMEBREW_BREW_FILE
-  HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] || `which brew`.chomp
+  HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE'] || which('brew').to_s
 end
 
 HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
@@ -59,22 +64,31 @@ else
   HOMEBREW_REPOSITORY+"Cellar"
 end
 
-HOMEBREW_LOGS = Pathname.new('~/Library/Logs/Homebrew/').expand_path
+HOMEBREW_LOGS = Pathname.new(ENV['HOMEBREW_LOGS'] || '~/Library/Logs/Homebrew/').expand_path
+
+HOMEBREW_TEMP = Pathname.new(ENV.fetch('HOMEBREW_TEMP', '/tmp'))
+
+RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
+RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
 
 if RUBY_PLATFORM =~ /darwin/
   MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
-  MACOS_VERSION = /(10\.\d+)(\.\d+)?/.match(MACOS_FULL_VERSION).captures.first.to_f
+  MACOS_VERSION = MACOS_FULL_VERSION[/10\.\d+/]
   OS_VERSION = "Mac OS X #{MACOS_FULL_VERSION}"
-  MACOS = true
 else
-  MACOS_FULL_VERSION = MACOS_VERSION = 0
+  MACOS_FULL_VERSION = MACOS_VERSION = "0"
   OS_VERSION = RUBY_PLATFORM
-  MACOS = false
 end
 
+HOMEBREW_GITHUB_API_TOKEN = ENV["HOMEBREW_GITHUB_API_TOKEN"]
 HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; #{OS_VERSION})"
 
-HOMEBREW_CURL_ARGS = '-qf#LA'
+HOMEBREW_CURL_ARGS = '-f#LA'
+
+HOMEBREW_TAP_FORMULA_REGEX = %r{^(\w+)/(\w+)/([^/]+)$}
+HOMEBREW_TAP_DIR_REGEX = %r{#{HOMEBREW_LIBRARY}/Taps/(\w+)-(\w+)}
+HOMEBREW_TAP_PATH_REGEX = Regexp.new(HOMEBREW_TAP_DIR_REGEX.source \
+                                     + %r{/(.*)}.source)
 
 module Homebrew extend self
   include FileUtils
@@ -83,12 +97,17 @@ module Homebrew extend self
   alias_method :failed?, :failed
 end
 
-FORMULA_META_FILES = %w[README README.md ChangeLog CHANGES COPYING LICENSE LICENCE COPYRIGHT AUTHORS]
-ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/troubleshooting"
+require 'metafiles'
+FORMULA_META_FILES = Metafiles.new
+ISSUES_URL = "https://github.com/Homebrew/homebrew/wiki/troubleshooting"
+HOMEBREW_PULL_OR_COMMIT_URL_REGEX = 'https:\/\/github.com\/(\w+)\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
 
-unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
-  $:.unshift(File.expand_path("#{__FILE__}/../compat"))
-  require 'compatibility'
-end
+require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
 
-ORIGINAL_PATHS = ENV['PATH'].split(':').map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
+ORIGINAL_PATHS = ENV['PATH'].split(File::PATH_SEPARATOR).map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
+
+SUDO_BAD_ERRMSG = <<-EOS.undent
+  You can use brew with sudo, but only if the brew executable is owned by root.
+  However, this is both not recommended and completely unsupported so do so at
+  your own risk.
+EOS

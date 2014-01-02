@@ -1,54 +1,45 @@
 require 'formula'
 
-class NeedsSnowLeopard < Requirement
-  def satisfied?
-    MacOS.version >= :snow_leopard
-  end
-
-  def message; <<-EOS.undent
-    GHC requires OS X 10.6 or newer. The binary releases no longer work on
-    Leopard. See the following issue for details:
-        http://hackage.haskell.org/trac/ghc/ticket/6009
-    EOS
-  end
-end
-
-class Ghcbinary < Formula
-  if Hardware.is_64_bit? and not build.build_32_bit?
-    url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
-    sha1 '7c655701672f4b223980c3a1068a59b9fbd08825'
-  else
-    url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2'
-    sha1 '60f749893332d7c22bb4905004a67510992d8ef6'
-  end
-  version '7.4.2'
-end
-
-class Ghctestsuite < Formula
-  url 'https://github.com/ghc/testsuite/tarball/ghc-7.4.2-release'
-  sha1 '6b1f161a78a70638aacc931abfdef7dd50c7f923'
-end
-
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
-  url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-src.tar.bz2'
-  sha1 '73b3b39dc164069bc80b69f7f2963ca1814ddf3d'
+  url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-src.tar.bz2'
+  sha1 '8938e1ef08b37a4caa071fa169e79a3001d065ff'
+
+  bottle do
+    revision 2
+    sha1 'a6ceeb3f1f9ba2cf0454dc9d45dce69f8a5ae736' => :mavericks
+    sha1 'd91ee56c8066bae5173f705e83e15dbb8842f67f' => :mountain_lion
+    sha1 '1569f19cdad2675cbff328c0e259d6b8573e9d11' => :lion
+  end
 
   env :std
 
-  depends_on NeedsSnowLeopard.new
+  # http://hackage.haskell.org/trac/ghc/ticket/6009
+  depends_on :macos => :snow_leopard
+
+  depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
 
   option '32-bit'
   option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'
 
-  bottle do
-    sha1 '72c7e8ad7d25382261ed431f953920004439ad69' => :mountainlion
-    sha1 '16c188ebe10aa06250af12268be39d56284aec91' => :lion
-    sha1 '68c1fcff903826dde6fc8e2a120ae8a69a8bafb2' => :snowleopard
+  # build is not available in the resource's context, so exploit the closure.
+  build_32_bit = build.build_32_bit?
+  resource 'binary' do
+    if Hardware.is_64_bit? and not build_32_bit
+      url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
+      sha1 '7c655701672f4b223980c3a1068a59b9fbd08825'
+    else
+      url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2'
+      sha1 '60f749893332d7c22bb4905004a67510992d8ef6'
+    end
+  end
+
+  resource 'testsuite' do
+    url 'https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz'
+    sha1 '6a1973ae3cccdb2f720606032ae84ffee8680ca1'
   end
 
   fails_with :clang do
-    build 421
     cause <<-EOS.undent
       Building with Clang configures GHC to use Clang as its preprocessor,
       which causes subsequent GHC-based builds to fail.
@@ -56,42 +47,47 @@ class Ghc < Formula
   end
 
   def patches
-    # Explained: http://hackage.haskell.org/trac/ghc/ticket/7040
-    # Discussed: https://github.com/mxcl/homebrew/issues/13519
-    # Remove: version > 7.4.2
-    'http://hackage.haskell.org/trac/ghc/raw-attachment/ticket/7040/ghc7040.patch'
+    # Fixes 7.6.3 compilation on 10.9
+    DATA if MacOS.version >= :mavericks
   end
 
   def install
     # Move the main tarball contents into a subdirectory
     (buildpath+'Ghcsource').install Dir['*']
 
-    # Define where the subformula will temporarily install itself
-    subprefix = buildpath+'subfo'
+    resource('binary').stage do
+      # Define where the subformula will temporarily install itself
+      subprefix = buildpath+'subfo'
 
-    Ghcbinary.new.brew do
-      system "./configure", "--prefix=#{subprefix}"
-      # Temporary j1 to stop an intermittent race condition
-      system 'make', '-j1', 'install'
+      # ensure configure does not use Xcode 5 "gcc" which is actually clang
+      args = ["--prefix=#{subprefix}"]
+      args << "--with-gcc=#{ENV.cc}"
+
+      system "./configure", *args
+      system 'make -j1 install' # -j1 fixes an intermittent race condition
       ENV.prepend 'PATH', subprefix/'bin', ':'
     end
 
     cd 'Ghcsource' do
       # Fix an assertion when linking ghc with llvm-gcc
-      # https://github.com/mxcl/homebrew/issues/13650
+      # https://github.com/Homebrew/homebrew/issues/13650
       ENV['LD'] = 'ld'
 
       if Hardware.is_64_bit? and not build.build_32_bit?
         arch = 'x86_64'
       else
+        ENV.m32 # Need to force this to fix build error on internal libgmp_ar.
         arch = 'i386'
       end
 
-      system "./configure", "--prefix=#{prefix}",
-                            "--build=#{arch}-apple-darwin"
+      # ensure configure does not use Xcode 5 "gcc" which is actually clang
+      args = ["--prefix=#{prefix}", "--build=#{arch}-apple-darwin"]
+      args << "--with-gcc=#{ENV.cc}"
+
+      system "./configure", *args
       system 'make'
       if build.include? 'tests'
-        Ghctestsuite.new.brew do
+        resource('testsuite').stage do
           (buildpath+'Ghcsource/config').install Dir['config/*']
           (buildpath+'Ghcsource/driver').install Dir['driver/*']
           (buildpath+'Ghcsource/mk').install Dir['mk/*']
@@ -102,8 +98,8 @@ class Ghc < Formula
           end
         end
       end
-      ENV.j1 # Fixes an intermittent race condition
-      system 'make', 'install'
+      system 'make'
+      system 'make -j1 install' # -j1 fixes an intermittent race condition
     end
   end
 
@@ -112,3 +108,44 @@ class Ghc < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/includes/HsFFI.h b/includes/HsFFI.h
+index 652fbea..a21811e 100644
+--- a/includes/HsFFI.h
++++ b/includes/HsFFI.h
+@@ -21,7 +21,7 @@ extern "C" {
+ #include "stg/Types.h"
+
+ /* get limits for integral types */
+-#ifdef HAVE_STDINT_H
++#if defined HAVE_STDINT_H && !defined USE_INTTYPES_H_FOR_RTS_PROBES_D
+ /* ISO C 99 says:
+  * "C++ implementations should define these macros only when
+  * __STDC_LIMIT_MACROS is defined before <stdint.h> is included."
+diff --git a/rts/RtsProbes.d b/rts/RtsProbes.d
+index 13f40f8..226f881 100644
+--- a/rts/RtsProbes.d
++++ b/rts/RtsProbes.d
+@@ -6,6 +6,12 @@
+  *
+  * ---------------------------------------------------------------------------*/
+
++#ifdef __APPLE__ && __MACH__
++# if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_9
++#  define USE_INTTYPES_H_FOR_RTS_PROBES_D
++# endif
++#endif
++
+ #include "HsFFI.h"
+ #include "rts/EventLogFormat.h"
+
+diff --git a/utils/mkdirhier/mkdirhier.sh b/utils/mkdirhier/mkdirhier.sh
+index 4c5d5f7..80762f4 100644
+--- a/utils/mkdirhier/mkdirhier.sh
++++ b/utils/mkdirhier/mkdirhier.sh
+@@ -1,4 +1,4 @@
+ #!/bin/sh
+
+-mkdir -p ${1+"$@"}
++mkdir -p ${1+"./$@"}

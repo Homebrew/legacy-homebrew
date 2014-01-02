@@ -6,15 +6,15 @@ class Goffice < Formula
   sha256 'dd8caef5fefffbc53938fa619de9f58e7c4dc71a1803de134065d42138a68c06'
 
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'gettext'
-  depends_on 'intltool'
   depends_on 'libgsf'
   depends_on 'gtk+'
   depends_on 'pcre'
   depends_on :x11
 
   # Fix for goffice trying to use a retired pcre api. Reported/source = Macports
-  # https://github.com/mxcl/homebrew/issues/15171
+  # https://github.com/Homebrew/homebrew/issues/15171
   def patches
     DATA
   end

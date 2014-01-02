@@ -2,54 +2,85 @@ require 'formula'
 
 class Shiboken < Formula
   homepage 'http://www.pyside.org/docs/shiboken'
-  # See https://github.com/mxcl/homebrew/issues/15190
-  url 'https://distfiles.macports.org/py-shiboken/shiboken-1.1.2.tar.bz2'
-  # url 'http://pyside.org/files/shiboken-1.1.2.tar.bz2'
-  sha1 '2ffe9d47a3f536840ed9d7eff766a53040bb2a2e'
+  url 'http://download.qt-project.org/official_releases/pyside/shiboken-1.2.1.tar.bz2'
+  mirror 'https://distfiles.macports.org/py-shiboken/shiboken-1.2.1.tar.bz2'
+  sha1 'f310ac163f3407109051ccebfd192bc9620e9124'
+
+  head 'git://gitorious.org/pyside/shiboken.git'
 
   depends_on 'cmake' => :build
+  depends_on :python => :recommended
+  depends_on :python3 => :optional
   depends_on 'qt'
 
+  def patches
+    # This fixes issues with libc++ and its lack of the tr1 namespace.
+    # Upstream ticket: https://bugreports.qt-project.org/browse/PYSIDE-200
+    # Patch is currently under code review at: https://codereview.qt-project.org/#change,69324
+    DATA
+  end
+
   def install
-    # Building the tests also runs them. Not building and running tests cuts
-    # install time in half.  As of 1.1.1 the install fails unless you do an
-    # out of tree build and put the source dir last in the args.
-    mkdir 'macbuild' do
-      args = std_cmake_args + %W[
-        -DBUILD_TESTS=OFF
-      ]
-
-
-      python_prefix = `python-config --prefix`.strip
-      # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
-      if File.exist? "#{python_prefix}/Python"
-        # Python was compiled with --framework:
-        args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
-        if !MacOS.clt_installed? and python_prefix.start_with? '/System/Library'
-          # For Xcode-only systems, the headers of system's python are inside of Xcode
-          args << "-DPYTHON_INCLUDE_DIR='#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/2.7/Headers'"
-        else
-          args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
-        end
-      else
-        python_version = `python-config --libs`.match('-lpython(\d+\.\d+)').captures.at(0)
-        python_lib = "#{python_prefix}/lib/libpython#{python_version}"
-        if File.exists? "#{python_lib}.a"
-          args << "-DPYTHON_LIBRARY='#{python_lib}.a'"
-        else
-          args << "-DPYTHON_LIBRARY='#{python_lib}.dylib'"
-        end
-        args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/include/#{which_python}'"
+    # This block will be run for each python (2.x and 3.x if requested)!
+    python do
+      # As of 1.1.1 the install fails unless you do an out of tree build and put
+      # the source dir last in the args.
+      mkdir "macbuild#{python.if3then3}" do
+        args = std_cmake_args
+        # Building the tests also runs them.
+        args << "-DBUILD_TESTS=ON"
+        # For Xcode-only systems, the headers of system's python are inside of Xcode:
+        args << "-DPYTHON#{python.if3then3}_INCLUDE_DIR='#{python.incdir}'"
+        # Cmake picks up the system's python dylib, even if we have a brewed one:
+        args << "-DPYTHON#{python.if3then3}_LIBRARY='#{python.libdir}/lib#{python.xy}.dylib'"
+        args << "-DUSE_PYTHON3=ON" if python3
+        args << '..'
+        system 'cmake', *args
+        system "make install"
+        # To support 2.x and 3.x in parallel, we have to rename shiboken.pc at first
+        mv lib/'pkgconfig/shiboken.pc', lib/"pkgconfig/shiboken-py#{python.version.major}.pc"
       end
+    end
+    # Rename shiboken-py2.pc back to the default shiboken.pc
+    mv lib/'pkgconfig/shiboken-py2.pc', lib/'pkgconfig/shiboken.pc' if python2
+  end
 
-
-      args << '..'
-      system 'cmake', *args
-      system "make install"
+  def caveats
+    if python3
+      <<-EOS.undent
+        If you build software that uses the pkgconfig file, and you want
+        shiboken with Python 3.x support: Please, instead of 'shiboken.pc', use:
+          #{HOMEBREW_PREFIX}/lib/pkgconfig/shiboken-py3.pc
+      EOS
     end
   end
 
-  def which_python
-    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  test do
+    python do
+      system python, "-c", "import shiboken"
+    end
   end
 end
+
+__END__
+diff --git a/ext/sparsehash/google/sparsehash/sparseconfig.h b/ext/sparsehash/google/sparsehash/sparseconfig.h
+index 44a4dda..5073639 100644
+--- a/ext/sparsehash/google/sparsehash/sparseconfig.h
++++ b/ext/sparsehash/google/sparsehash/sparseconfig.h
+@@ -13,6 +13,16 @@
+     #define HASH_NAMESPACE stdext
+     /* The system-provided hash function including the namespace. */
+     #define SPARSEHASH_HASH  HASH_NAMESPACE::hash_compare
++/* libc++ does not implement the tr1 namespce, instead the
++ * equivalient functionality is placed in namespace std,
++ * so use when it targeting such systems (OS X 10.7 onwards) */
++#elif defined(_LIBCPP_VERSION)
++    /* the location of the header defining hash functions */
++    #define HASH_FUN_H <functional>
++    /* the namespace of the hash<> function */
++    #define HASH_NAMESPACE std
++    /* The system-provided hash function including the namespace. */
++    #define SPARSEHASH_HASH HASH_NAMESPACE::hash
+ #else
+     /* the location of the header defining hash functions */
+     #define HASH_FUN_H <tr1/functional>

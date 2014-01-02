@@ -1,22 +1,33 @@
 require 'formula'
 
 class Libslax < Formula
-  homepage 'https://code.google.com/p/libslax/'
-  url 'https://libslax.googlecode.com/files/libslax-0.11.29.tar.gz'
-  sha1 'a1895a5cfd7af09d0d4066823157a4cbf5409720'
+  homepage 'http://www.libslax.org/'
+  url 'https://github.com/Juniper/libslax/releases/download/0.17.2/libslax-0.17.2.tar.gz'
+  sha1 '20dba3ea27fc6dd6d9e2aa7ad6e931b1dfe8d6bc'
+
+  head do
+    url 'https://github.com/Juniper/libslax.git'
+
+    depends_on 'autoconf' => :build
+    depends_on 'automake' => :build
+  end
 
   depends_on 'libtool'  => :build
 
-  # Need newer versions of these libraries
-  if MacOS.version <= :lion
+  if MacOS.version <= :mountain_lion
     depends_on 'libxml2'
     depends_on 'libxslt'
-    depends_on 'curl'
   end
 
+  depends_on 'curl' if MacOS.version <= :lion
+
   def install
+    # If build from read run script to run autoconf
+    system "sh ./bin/setup.sh" if build.head?
+
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--enable-libedit"
     system "make install"
   end
 end

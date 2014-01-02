@@ -2,8 +2,8 @@ require 'formula'
 
 class Libmp3splt < Formula
   homepage 'http://mp3splt.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/mp3splt/libmp3splt/0.7.2/libmp3splt-0.7.2.tar.gz'
-  sha1 'b70df9c57aef88d7831a939871b231789f922157'
+  url 'http://downloads.sourceforge.net/project/mp3splt/libmp3splt/0.8.2/libmp3splt-0.8.2.tar.gz'
+  sha1 '5c8539391e26d047c30360b1dde2c08e6a02061f'
 
   # Linking fails on 10.6 (and lower?) without a duplicate libtool; see #10350
   depends_on 'libtool' => :build

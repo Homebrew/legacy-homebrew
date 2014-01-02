@@ -1,12 +1,13 @@
 require 'formula'
 
 class Imapfilter < Formula
-  homepage 'http://github.com/lefcha/imapfilter/'
-  url 'https://github.com/lefcha/imapfilter/tarball/v2.5.2'
-  sha1 '66985fc36b51c1d7b44fb083e5baf97accc61506'
+  homepage 'https://github.com/lefcha/imapfilter/'
+  url 'https://github.com/lefcha/imapfilter/archive/v2.5.6.tar.gz'
+  sha1 '49ac7b7fb937b40eb42a162314de4f8866e33c11'
 
   depends_on 'lua'
   depends_on 'pcre'
+  depends_on 'openssl'
 
   def install
     inreplace 'src/Makefile' do |s|

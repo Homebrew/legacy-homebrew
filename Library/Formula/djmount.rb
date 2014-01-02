@@ -1,10 +1,11 @@
 require 'formula'
 
 class Djmount < Formula
-  url 'http://downloads.sourceforge.net/project/djmount/djmount/0.71/djmount-0.71.tar.gz'
   homepage 'http://djmount.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/djmount/djmount/0.71/djmount-0.71.tar.gz'
   sha1 '527d4603d85b7fb86dc97d326b78c97bdcc4d687'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libupnp'
   depends_on 'fuse4x'
 
@@ -25,10 +26,9 @@ class Djmount < Formula
     system "make install"
   end
 
-  def caveats
-    <<-EOS.undent
-      Make sure to follow the directions given by `brew info fuse4x-kext`
-      before trying to use a FUSE-based filesystem.
+  def caveats; <<-EOS.undent
+    Make sure to follow the directions given by `brew info fuse4x-kext`
+    before trying to use a FUSE-based filesystem.
     EOS
   end
 end

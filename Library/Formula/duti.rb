@@ -1,11 +1,15 @@
 require 'formula'
 
 class Duti < Formula
-  homepage 'http://duti.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/duti/duti/duti-1.5.1/duti-1.5.1.tar.gz'
-  sha1 'ac199f936180a3ac62100ae9a31e107a45330557'
+  homepage 'http://duti.org/'
+  head 'https://github.com/fitterhappier/duti.git'
+  url 'https://github.com/fitterhappier/duti/archive/duti-1.5.2.tar.gz'
+  sha1 '1833c0a56646a132fa09bcb31c557d4393f19a3b'
+
+  depends_on :autoconf
 
   def install
+    system "autoreconf", "-vfi"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end

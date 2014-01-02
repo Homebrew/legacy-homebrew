@@ -17,21 +17,35 @@ class GedaGaf < Formula
   depends_on 'gawk'
   depends_on :x11
 
-  # MacPorts fix for glib 2.32 includes
-  # Needed for 1.6.2 and 1.7.x
   def patches
-    {:p0 => [
+    # MacPorts fix for glib 2.32 includes
+    # Needed for 1.6.2 and 1.7.x
+    ps = {:p0 => [
       "https://trac.macports.org/export/92743/trunk/dports/science/geda-gaf/files/patch-glib-2.32.diff"
     ]}
+
+    # Typo in 1.6.2; fixed (and removed) in 1.7.x
+    if !build.devel?
+      ps[:p1] = DATA
+    end
+
+    ps
   end
 
   def install
     # Help configure find libraries
     gettext = Formula.factory('gettext')
+    pcb = Formula.factory('pcb')
 
+    extra_configure_args = []
+    if !build.devel?
+      extra_configure_args << "--with-pcb-confdir=#{pcb.etc/:pcb}"
+    end
     system "./configure", "--prefix=#{prefix}",
                           "--with-gettext=#{gettext.prefix}",
-                          "--disable-update-xdg-database"
+                          "--disable-update-xdg-database",
+                          "--with-pcb-datadir=#{HOMEBREW_PREFIX/:share/:pcb}",
+                          *extra_configure_args
 
     system "make"
     system "make install"
@@ -41,3 +55,18 @@ class GedaGaf < Formula
     "This software runs under X11."
   end
 end
+
+# There appears to be a typo info geda-gaf's configuration.
+__END__
+diff -ur a/m4/pcb-data-dirs.m4 b/m4/pcb-data-dirs.m4
+--- a/m4/pcb-data-dirs.m4
++++ b/m4/pcb-data-dirs.m4
+@@ -71,7 +71,7 @@
+       [directory where PCB site configuration files are installed [[SYSCONFDIR/pcb]]]),
+    [ if (test "X$with_pcb_confdir" != "Xno" &&
+           test "X$with_pcb_confdir" != "Xyes"); then
+-        PCBCONFDIR="$with_pcb_m4dir"
++        PCBCONFDIR="$with_pcb_confdir"
+      fi ], [])
+   AC_MSG_RESULT([$PCBCONFDIR])
+   AC_SUBST([PCBCONFDIR])

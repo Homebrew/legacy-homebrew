@@ -1,24 +1,33 @@
 require 'formula'
 
-class ScalaDocs < Formula
-  homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-docs-2.9.2.zip'
-  sha1 'b49ef500314d968ddbd683b64628925a747f35e5'
-end
-
-class ScalaCompletion < Formula
-  homepage 'http://www.scala-lang.org/'
-  url 'https://raw.github.com/scala/scala-dist/27bc0c25145a83691e3678c7dda602e765e13413/completion.d/2.9.1/scala'
-  version '2.9.1'
-  sha1 'e2fd99fe31a9fb687a2deaf049265c605692c997'
-end
-
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/downloads/distrib/files/scala-2.9.2.tgz'
-  sha1 '806fc1d91bda82d6a584172d7742531386ae68fb'
+  url 'http://www.scala-lang.org/files/archive/scala-2.10.3.tgz'
+  sha1 '04cd6237f164940e1e993a127e7cb21297f3b7ae'
+
+  devel do
+    url 'http://www.scala-lang.org/files/archive/scala-2.11.0-M7.tgz'
+    sha1 '4b7cb89af66a98d47b22dfe3137220ca8fe5e593'
+    version '2.11.0-M7'
+
+    resource 'docs' do
+      url 'http://www.scala-lang.org/files/archive/scala-docs-2.11.0-M7.zip'
+      sha1 'c1878aa566d71242c43ec46a358f18b671485647'
+      version '2.11.0-M7'
+    end
+  end
 
   option 'with-docs', 'Also install library documentation'
+
+  resource 'docs' do
+    url 'http://www.scala-lang.org/files/archive/scala-docs-2.10.3.zip'
+    sha1 '43bab3ceb8215dad9caefb07eac5c24edc36c605'
+  end
+
+  resource 'completion' do
+    url 'https://raw.github.com/scala/scala-dist/27bc0c25145a83691e3678c7dda602e765e13413/completion.d/2.9.1/scala'
+    sha1 'e2fd99fe31a9fb687a2deaf049265c605692c997'
+  end
 
   def install
     rm_f Dir["bin/*.bat"]
@@ -26,7 +35,23 @@ class Scala < Formula
     man1.install Dir['man/man1/*']
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
-    ScalaCompletion.new.brew { (prefix/'etc/bash_completion.d').install 'scala' }
-    ScalaDocs.new.brew { doc.install Dir['*'] } if build.include? 'with-docs'
+
+    bash_completion.install resource('completion')
+
+    if build.with? 'docs'
+      branch = build.stable? ? 'scala-2.10' : 'scala-2.11'
+      (share/'doc'/branch).install resource('docs')
+    end
+
+    # Set up an IntelliJ compatible symlink farm in 'idea'
+    idea = prefix/'idea'
+    idea.install_symlink libexec/'src', libexec/'lib'
+    (idea/'doc/scala-devel-docs').install_symlink doc => 'api'
+  end
+
+  def caveats; <<-EOS.undent
+    To use with IntelliJ, set the Scala home to:
+      #{opt_prefix}/idea
+    EOS
   end
 end

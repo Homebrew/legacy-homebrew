@@ -1,12 +1,13 @@
 HOMEBREW_HELP = <<-EOS
 Example usage:
+  brew [info | home | options ] [FORMULA...]
   brew install FORMULA...
   brew uninstall FORMULA...
   brew search [foo]
   brew list [FORMULA...]
   brew update
   brew upgrade [FORMULA...]
-  brew [info | home] [FORMULA...]
+  brew pin/unpin [FORMULA...]
 
 Troubleshooting:
   brew doctor
@@ -16,7 +17,7 @@ Troubleshooting:
 Brewing:
   brew create [URL [--no-fetch]]
   brew edit [FORMULA...]
-  open https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
+  open https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
 
 Further help:
   man brew

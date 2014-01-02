@@ -7,9 +7,6 @@ class Trang < Formula
 
   def install
     libexec.install Dir["*"]
-    (bin+'trang').write <<-EOS.undent
-      #!/bin/bash
-      java -jar "#{libexec}/trang.jar" "$@"
-    EOS
+    bin.write_jar_script libexec/'trang.jar', 'trang'
   end
 end

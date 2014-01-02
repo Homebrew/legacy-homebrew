@@ -2,23 +2,13 @@ require 'formula'
 
 class StanfordParser < Formula
   homepage 'http://nlp.stanford.edu/software/lex-parser.shtml'
-  url 'http://nlp.stanford.edu/software/stanford-parser-2012-07-09.tgz'
-  sha1 '1d67ec99f473b59600e5698083ce518ada4dd1b2'
-  version '2.0.3'
-
-  def shim_script target_script
-    <<-EOS.undent
-    #!/bin/bash
-    exec "#{libexec}/#{target_script}" "$@"
-    EOS
-  end
+  url 'http://nlp.stanford.edu/software/stanford-parser-full-2013-06-20.zip'
+  sha1 'd22f3350b608e905e432b9278a5fa85c380cac30'
+  version '3.2.0'
 
   def install
     libexec.install Dir['*']
-    Dir["#{libexec}/*.sh"].each do |f|
-      f = File.basename(f)
-      (bin+f).write shim_script(f)
-    end
+    bin.write_exec_script Dir["#{libexec}/*.sh"]
   end
 
   def test

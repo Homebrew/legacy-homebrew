@@ -5,16 +5,15 @@ class John < Formula
   url 'http://www.openwall.com/john/g/john-1.7.9.tar.bz2'
   sha1 '8f77bdd42b7cf94ec176f55ea69c4da9b2b8fe3b'
 
-  fails_with :llvm do
-    build 2334
-  end
-
-  option 'jumbo', 'Build with jumbo-7 features'
+  conflicts_with 'john-jumbo', :because => 'both install the same binaries'
 
   def patches
-    p = [DATA] # Taken from MacPorts, tells john where to find runtime files
-    p << "http://www.openwall.com/john/g/john-1.7.9-jumbo-7.diff.gz" if build.include? 'jumbo'
-    return p
+    DATA # Taken from MacPorts, tells john where to find runtime files
+  end
+
+  fails_with :llvm do
+    build 2334
+    cause "Don't remember, but adding this to whitelist 2336."
   end
 
   def install
@@ -22,7 +21,10 @@ class John < Formula
     arch = Hardware.is_64_bit? ? '64' : 'sse2'
 
     cd 'src' do
-      system "make", "clean", "macosx-x86-#{arch}", "CC=#{ENV.cc}"
+      inreplace 'Makefile' do |s|
+        s.change_make_var! "CC", ENV.cc
+      end
+      system "make", "clean", "macosx-x86-#{arch}"
     end
 
     # Remove the README symlink and install the real file

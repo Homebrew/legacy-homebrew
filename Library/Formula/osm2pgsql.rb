@@ -1,40 +1,25 @@
 require 'formula'
 
-class PostgresqlInstalled < Requirement
-  def message; <<-EOS.undent
-    PostgreSQL is required to install.
-
-    You can install this with:
-      brew install postgresql
-
-    Or you can use an official installer from:
-      http://www.postgresql.org/
-    EOS
-  end
-  def satisfied?
-    which 'pg_config'
-  end
-  def fatal?
-    true
-  end
-end
-
 class Osm2pgsql < Formula
   homepage 'http://wiki.openstreetmap.org/wiki/Osm2pgsql'
-  head 'http://svn.openstreetmap.org/applications/utils/export/osm2pgsql/'
+  url 'https://github.com/openstreetmap/osm2pgsql/archive/0.84.0.tar.gz'
+  sha1 '42145c39596580680f120a07a4f30f97a86a3698'
 
-  depends_on PostgresqlInstalled.new
-
+  depends_on :postgresql
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
-
   depends_on "geos"
   depends_on "proj"
   depends_on "protobuf-c" => :optional
 
   def install
+    args = ["--with-proj=#{Formula.factory('proj').opt_prefix}"]
+    if build.with? "protobuf-c"
+      args << "--with-protobuf-c=#{Formula.factory('protobuf-c').opt_prefix}"
+    end
     system "./autogen.sh"
-    system "./configure"
+    system "./configure", *args
     system "make"
     bin.install "osm2pgsql"
     (share+'osm2pgsql').install 'default.style'

@@ -8,15 +8,9 @@ class Libyaml < Formula
   option :universal
 
   def install
-    args = ["--prefix=#{prefix}"]
+    ENV.universal_binary if build.universal?
 
-    if build.universal?
-      ENV['CFLAGS'] = "-arch i386 -arch x86_64"
-      ENV['LDFLAGS'] = "-arch i386 -arch x86_64"
-      args << "--disable-dependency-tracking"
-    end
-
-    system './configure', *args
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

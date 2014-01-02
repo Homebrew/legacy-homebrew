@@ -7,6 +7,14 @@ class Readline < Formula
   sha256 '79a696070a058c233c72dd6ac697021cc64abd5ed51e59db867d66d196a89381'
   version '6.2.4'
 
+  bottle do
+    cellar :any
+    revision 2
+    sha1 'cce49ed4db5ae8065e40468bc8747042f41ed266' => :mavericks
+    sha1 'fea45780c788a92108f7ca2d9296dca0c3498579' => :mountain_lion
+    sha1 'b4aada7512f8b19eb120c0550cb793b48e8b7057' => :lion
+  end
+
   keg_only <<-EOS
 OS X provides the BSD libedit library, which shadows libreadline.
 In order to prevent conflicts when programs look for libreadline we are
@@ -19,10 +27,14 @@ EOS
   # reduce bug reports.
   # Upstream patches can be found in:
   # http://ftpmirror.gnu.org/readline/readline-6.2-patches
+  #
+  # We are carrying an additional patch to add Darwin 13 as a build target.
+  # Presumably when 10.9 comes out this patch will move upstream.
+  # https://github.com/Homebrew/homebrew/pull/21625
   def patches; DATA; end
 
   def install
-    # Always build universal, per https://github.com/mxcl/homebrew/issues/issue/899
+    # Always build universal, per https://github.com/Homebrew/homebrew/issues/issue/899
     ENV.universal_binary
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",
@@ -100,7 +112,7 @@ index 5a63e80..c61dc78 100644
  
  # Darwin/MacOS X
 -darwin[89]*|darwin10*)
-+darwin[89]*|darwin1[012]*)
++darwin[89]*|darwin1[0123]*)
  	SHOBJ_STATUS=supported
  	SHLIB_STATUS=supported
  	
@@ -109,7 +121,7 @@ index 5a63e80..c61dc78 100644
  
  	case "${host_os}" in
 -	darwin[789]*|darwin10*)	SHOBJ_LDFLAGS=''
-+	darwin[789]*|darwin1[012]*)	SHOBJ_LDFLAGS=''
++	darwin[789]*|darwin1[0123]*)	SHOBJ_LDFLAGS=''
  			SHLIB_XLDFLAGS='-dynamiclib -arch_only `/usr/bin/arch` -install_name $(libdir)/$@ -current_version $(SHLIB_MAJOR)$(SHLIB_MINOR) -compatibility_version $(SHLIB_MAJOR) -v'
  			;;
  	*)		SHOBJ_LDFLAGS='-dynamic'

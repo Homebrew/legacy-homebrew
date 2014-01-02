@@ -30,7 +30,7 @@ class Wemux < Formula
     EOS
   end
 
-  def test
-    system "#{bin}/wemux help"
+  test do
+    system "#{bin}/wemux", "help"
   end
 end

@@ -2,21 +2,18 @@ require 'formula'
 
 class Geany < Formula
   homepage 'http://geany.org/'
-  url 'http://download.geany.org/geany-0.21.tar.gz'
-  sha256 'a1aa27d2f946ccca8a4e57faf0029cf6aa544d5d52f0170e017c137c33b4b67d'
+  url 'http://download.geany.org/geany-1.23.1.tar.gz'
+  sha1 'b4813a897320b8158cb73fea0c4e2cead07adbc2'
 
   depends_on :x11
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'gettext'
-  depends_on 'intltool'
   depends_on 'gtk+'
 
   def install
-    # Needed to compile against current version of glib.
-    # Check that this is still needed when updating the formula.
-    ENV.append 'LDFLAGS', '-lgmodule-2.0'
-
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make install"
   end

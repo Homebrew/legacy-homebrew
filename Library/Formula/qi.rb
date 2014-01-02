@@ -20,14 +20,14 @@ class Qi < Formula
       end
 
       system "echo \"#!/bin/bash\nsbcl --core #{prefix}/Qi.core $*\" > qi"
-      prefix.install ['Lisp/Qi.core']
+      prefix.install 'Lisp/Qi.core'
     else
       cd 'Lisp' do
         system "clisp", "install.lsp"
       end
 
       system "echo \"#!/bin/bash\nclisp -M #{prefix}/Qi.mem $*\" > qi"
-      prefix.install ['Lisp/Qi.mem']
+      prefix.install 'Lisp/Qi.mem'
     end
     system "chmod 755 qi"
     bin.install ['qi']

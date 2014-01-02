@@ -10,7 +10,7 @@ class Ps2eps < Formula
   skip_clean 'bin' # Don't strip +x on ps2eps
 
   def install
-    system "#{ENV.cc} #{ENV.cflags} src/C/bbox.c -obbox"
+    system "#{ENV.cc} #{ENV.cflags} src/C/bbox.c -o bbox"
     bin.install 'bin/ps2eps'
     bin.install 'bbox'
     share.install Dir['doc/man']

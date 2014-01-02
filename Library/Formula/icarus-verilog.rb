@@ -2,17 +2,22 @@ require 'formula'
 
 class IcarusVerilog < Formula
   homepage 'http://iverilog.icarus.com/'
-  url 'ftp://icarus.com/pub/eda/verilog/v0.9/verilog-0.9.5.tar.gz'
-  sha1 '3a69cb935ab562882a07a52904f3cba74aed2229'
+  url 'ftp://icarus.com/pub/eda/verilog/v0.9/verilog-0.9.7.tar.gz'
+  sha1 '714c2a605779957490cca24e3dc01d096dbc1474'
 
-  devel do
-    url 'ftp://ftp.icarus.com/pub/eda/verilog/snapshots/verilog-20120501.tar.gz'
-    sha1 '313ab0f5dc4d198bd4687daaf2e54749c67558b3'
+  head do
+    url 'https://github.com/steveicarus/iverilog.git'
+    depends_on 'autoconf' => :build
   end
 
   def install
     # Fixes an assertion when XCode-4.4 tries to link with clang or llvm-gcc.
     ENV['LD'] = MacOS.locate("ld")
+    # Generate configure for head build
+    if build.head?
+      system "autoconf"
+    end
+    # Configure
     system "./configure", "--prefix=#{prefix}"
     # Separate steps, as install does not depend on compile properly
     system 'make'

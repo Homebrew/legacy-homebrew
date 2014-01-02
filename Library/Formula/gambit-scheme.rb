@@ -2,32 +2,40 @@ require 'formula'
 
 class GambitScheme < Formula
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
-  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_6.tgz'
-  sha256 '4e8b18bb350124138d1f9bf143dda0ab5e55f3c3d489a6dc233a15a003f161d2'
+  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_0.tgz'
+  sha256 '2b03ecef89da2a53212dc3e6583ee4175d91a0752779e1758bcab5d09e9d1e63'
+
+  conflicts_with 'ghostscript', :because => 'both install `gsc` binaries'
+  conflicts_with 'scheme48', :because => 'both install `scheme-r5rs` binaries'
 
   option 'with-check', 'Execute "make check" before installing'
   option 'enable-shared', 'Build Gambit Scheme runtime as shared library'
 
-  fails_with :llvm do
-    build 2335
-    cause "ld crashes during the build process or segfault at runtime"
-  end
+  fails_with :llvm
 
   def install
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
-            "--infodir=#{info}",
-            # Recommended to improve the execution speed and compactness
-            # of the generated executables. Increases compilation times.
-            "--enable-single-host"]
+    args = %W[
+      --disable-debug
+      --prefix=#{prefix}
+      --libdir=#{lib}/gambit-c
+      --infodir=#{info}
+      --docdir=#{doc}
+    ]
+
+    # Recommended to improve the execution speed and compactness
+    # of the generated executables. Increases compilation times.
+    # Don't enable this when using clang, per configure warning.
+    args << "--enable-single-host" unless ENV.compiler == :clang
+
     args << "--enable-shared" if build.include? 'enable-shared'
 
-    unless ENV.compiler == :gcc
+    if ENV.compiler == :clang
       opoo <<-EOS.undent
-        Compiling Gambit Scheme with Clang or LLVM-GCC takes a very long time.
-        If you have GCC, you can compile it much faster with:
-          brew install gambit-scheme --use-gcc
-        EOS
+        Gambit will build with Clang, however the build may take longer and
+        produce substandard binaries. If you have GCC, you can get a faster
+        build and faster execution with:
+          brew install gambit-scheme --cc=gcc-4.2 # or 4.7, 4.8, etc.
+      EOS
     end
 
     system "./configure", *args

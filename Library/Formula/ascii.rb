@@ -2,8 +2,8 @@ require 'formula'
 
 class Ascii < Formula
   homepage 'http://www.catb.org/~esr/ascii/'
-  url 'http://www.catb.org/~esr/ascii/ascii-3.11.tar.gz'
-  sha1 '8d033809d14fec814fc9a5818420718043a49e7b'
+  url 'http://www.catb.org/~esr/ascii/ascii-3.14.tar.gz'
+  sha1 'fd8281078c1b3d52d4080ced1855f4f540d5a501'
 
   def install
     system "make"

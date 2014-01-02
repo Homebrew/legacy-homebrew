@@ -2,18 +2,30 @@ require 'formula'
 
 class Lftp < Formula
   homepage 'http://lftp.yar.ru/'
-  url 'http://ftp.yar.ru/pub/source/lftp/lftp-4.4.0.tar.bz2'
-  sha1 '4eef63d05760a0e7d6d6a7318e1fcda8de8c154e'
+  url 'http://lftp.yar.ru/ftp/lftp-4.4.14.tar.bz2'
+  sha1 'f34cfc0351f8e63a066cf8014ac32a52f5159434'
+
+  option 'with-gnutls', "Use GnuTLS instead of the default OpenSSL"
+  option 'with-brewed-openssl', 'Build with Homebrew OpenSSL instead of the system version'
 
   depends_on 'pkg-config' => :build
   depends_on 'readline'
-  depends_on 'gnutls'
+  depends_on 'gnutls' => :optional
+  depends_on 'openssl' if build.with? 'brewed-openssl'
 
   def install
     # Bus error
-    ENV.no_optimization if MacOS.version == :leopard
+    # TODO what are the more specific circumstances?
+    ENV.no_optimization if MacOS.version <= :leopard
 
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    args = ["--disable-dependency-tracking",
+            "--prefix=#{prefix}"]
+    if build.with? 'gnutls'
+     args << "--with-gnutls"
+    else
+     args << "--with-openssl"
+    end
+    system "./configure", *args
     system "make install"
   end
 end

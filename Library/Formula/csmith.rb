@@ -15,10 +15,9 @@ class Csmith < Formula
     runtime.install Dir['runtime/*.h']
   end
 
-  def caveats
-    <<-EOS.undent
-      It is recommended that you set the environment variable 'CSMITH_PATH' to
-          #{include}/csmith-#{version}
+  def caveats; <<-EOS.undent
+    It is recommended that you set the environment variable 'CSMITH_PATH' to
+      #{include}/csmith-#{version}
     EOS
   end
 end

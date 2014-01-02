@@ -1,21 +1,17 @@
 require 'formula'
 
 class Cclive < Formula
-  url 'http://cclive.googlecode.com/files/cclive-0.7.9.tar.bz2'
   homepage 'http://cclive.sourceforge.net/'
-  sha1 '9e55508f5a98f8dade4b307392fbf0dcebde0633'
+  url 'http://downloads.sourceforge.net/project/cclive/0.7/cclive-0.7.16.tar.xz'
+  sha1 '2bdee70f5e2026165ca444a306bb76fc5ede97b4'
+
+  conflicts_with 'clozure-cl', :because => 'both install a ccl binary'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'quvi'
   depends_on 'boost'
-
-  # Fix linking against Boost during configure. See:
-  # https://trac.macports.org/ticket/29982
-  def patches
-    {:p0 =>
-      "https://trac.macports.org/export/82481/trunk/dports/net/cclive/files/patch-configure.diff"
-    }
-  end
+  depends_on 'pcre'
 
   def install
     system "./configure", "--disable-dependency-tracking",

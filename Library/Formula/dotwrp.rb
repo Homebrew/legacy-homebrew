@@ -2,16 +2,16 @@ require 'formula'
 
 class Dotwrp < Formula
   homepage 'https://github.com/tenomoto/dotwrp'
-  url 'https://github.com/tenomoto/dotwrp/tarball/v1.0'
-  sha1 '98d0d2ad0c49528e0df5d004962a25c5414b17b8'
+  url 'https://github.com/tenomoto/dotwrp/archive/v1.1.tar.gz'
+  sha1 'd328705ec424898382956bb8a0be16a680372f05'
 
   head 'https://github.com/tenomoto/dotwrp.git'
 
-  def install
-    ENV.fortran
+  depends_on :fortran
 
+  def install
     # note: fno-underscoring is vital to override the symbols in Accelerate
-    system "#{ENV["FC"]} #{ENV["FFLAGS"]} -fno-underscoring -c dotwrp.f90"
+    system "#{ENV.fc} #{ENV.fflags} -fno-underscoring -c dotwrp.f90"
     system "ar -cru libdotwrp.a dotwrp.o"
     system "ranlib libdotwrp.a"
 

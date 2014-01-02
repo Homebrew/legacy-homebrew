@@ -2,19 +2,21 @@ require 'formula'
 
 class Sickbeard < Formula
   homepage 'http://www.sickbeard.com/'
-  url 'https://github.com/midgetspy/Sick-Beard/tarball/build-496'
-  sha1 '79b55d6075b2ddf04b8c196c091b465839396f3b'
+  url 'https://github.com/midgetspy/Sick-Beard/archive/build-502.tar.gz'
+  sha1 '7154af062450f632f7fd0ab28241054088d0ac1e'
 
   head 'https://github.com/midgetspy/Sick-Beard.git'
 
   depends_on 'Cheetah' => :python
 
   def install
-    prefix.install Dir['*']
+    libexec.install Dir['*']
     (bin+"sickbeard").write(startup_script)
   end
 
-  def startup_plist; <<-EOS.undent
+  plist_options :manual => 'sickbeard'
+
+  def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -23,57 +25,29 @@ class Sickbeard < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-           <string>#{HOMEBREW_PREFIX}/bin/sickbeard</string>
-           <string>-q</string>
-           <string>--nolaunch</string>
-           <string>-p</string>
-           <string>8081</string>
+        <string>#{opt_prefix}/bin/sickbeard</string>
+        <string>-q</string>
+        <string>--nolaunch</string>
+        <string>-p</string>
+        <string>8081</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
-      <key>UserName</key>
-      <string>#{`whoami`.chomp}</string>
     </dict>
     </plist>
     EOS
   end
 
   def startup_script; <<-EOS.undent
-    #!/usr/bin/env ruby
-
-    me = begin
-      File.expand_path(
-        File.join(
-          File.dirname(__FILE__),
-          File.readlink(__FILE__)
-        )
-      )
-    rescue
-      __FILE__
-    end
-
-    path = File.join(File.dirname(me), '..', 'SickBeard.py')
-    args = ["--pidfile=#{var}/run/sickbeard.pid", "--datadir=#{etc}/sickbeard"]
-
-    exec("python", path, *(args + ARGV))
+    #!/bin/bash
+    python "#{libexec}/SickBeard.py"\
+           "--pidfile=#{var}/run/sickbeard.pid"\
+           "--datadir=#{etc}/sickbeard"\
+           "$@"
     EOS
   end
 
-  def caveats; <<-EOS.undent
-    SickBeard will start up and launch http://localhost:8081/ when you run:
-
-        sickbeard
-
-    To launch automatically on startup, copy and paste the following into a terminal:
-
-        mkdir -p ~/Library/LaunchAgents
-        (launchctl unload -w ~/Library/LaunchAgents/#{plist_path.basename} 2>/dev/null || true)
-        ln -sf #{plist_path} ~/Library/LaunchAgents/#{plist_path.basename}
-        launchctl load -w ~/Library/LaunchAgents/#{plist_path.basename}
-
-    You may want to edit:
-      #{plist_path}
-    to change the port (default: 8081) or user (default: #{`whoami`.chomp}).
-    EOS
+  def caveats
+    "SickBeard defaults to port 8081."
   end
 end

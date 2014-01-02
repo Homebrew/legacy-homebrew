@@ -1,8 +1,8 @@
 require 'formula'
 
 class Whatmask < Formula
-  url 'http://downloads.laffeycomputer.com/current_builds/whatmask/whatmask-1.2.tar.gz'
   homepage 'http://www.laffeycomputer.com/whatmask.html'
+  url 'http://downloads.laffeycomputer.com/current_builds/whatmask/whatmask-1.2.tar.gz'
   sha1 '313762672acacd40de8021132b1024a5c96e2ad5'
 
   def install
@@ -12,8 +12,8 @@ class Whatmask < Formula
     system "make install"
   end
 
-  def test
-    %x[#{bin}/whatmask /24].eql? <<-EOS
+  test do
+    assert_equal <<-EOS, `#{bin}/whatmask /24`
 
 ---------------------------------------------
        TCP/IP SUBNET MASK EQUIVALENTS

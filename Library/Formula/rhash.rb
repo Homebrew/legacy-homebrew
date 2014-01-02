@@ -2,11 +2,14 @@ require 'formula'
 
 class Rhash < Formula
   homepage 'http://rhash.anz.ru/'
-  url 'http://downloads.sourceforge.net/project/rhash/rhash/1.2.9/rhash-1.2.9-src.tar.gz'
-  sha1 '83c0e74a39a7824f430ef24c107e3474831d0acf'
+  url 'http://downloads.sourceforge.net/project/rhash/rhash/1.3.0/rhash-1.3.0-src.tar.gz'
+  sha1 'f51a7f3eea051ebef5c16db5c4a53ff3c2ef90c2'
 
   def install
-    system 'make', 'install', "PREFIX=#{prefix}",
+    # install target isn't parallel-safe
+    ENV.j1
+
+    system 'make', 'install', "PREFIX=",
                               "DESTDIR=#{prefix}",
                               "CC=#{ENV.cc}"
   end

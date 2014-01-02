@@ -10,11 +10,11 @@ class Wiggle < Formula
   # As all 5 patches are in HEAD, remove them after version 0.9.
   def patches
     [
-      'http://neil.brown.name/git?p=wiggle;a=patch;h=b5281154078e768c43bf75d70df66c61542c580a',
-      'http://neil.brown.name/git?p=wiggle;a=patch;h=9c7b89a7b7bfa33ec24c04dfebceba1a464cbf1b',
-      'http://neil.brown.name/git?p=wiggle;a=patch;h=0da9cb2c412ad27802788bdb5e23854f2478dbe6',
-      'http://neil.brown.name/git?p=wiggle;a=patch;h=5eb651029aed24bbe4e093ffb11b6a70c02b44e2',
-      'http://neil.brown.name/git?p=wiggle;a=patch;h=22612c04075b1bce61922e396cca4641760f226b'
+      'http://neil.brown.name/git?p=wiggle.git;a=patch;h=b5281154078e768c43bf75d70df66c61542c580a',
+      'http://neil.brown.name/git?p=wiggle.git;a=patch;h=9c7b89a7b7bfa33ec24c04dfebceba1a464cbf1b',
+      'http://neil.brown.name/git?p=wiggle.git;a=patch;h=0da9cb2c412ad27802788bdb5e23854f2478dbe6',
+      'http://neil.brown.name/git?p=wiggle.git;a=patch;h=5eb651029aed24bbe4e093ffb11b6a70c02b44e2',
+      'http://neil.brown.name/git?p=wiggle.git;a=patch;h=22612c04075b1bce61922e396cca4641760f226b'
     ]
   end
 

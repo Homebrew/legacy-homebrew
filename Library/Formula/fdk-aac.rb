@@ -2,13 +2,14 @@ require 'formula'
 
 class FdkAac < Formula
   homepage 'http://sourceforge.net/projects/opencore-amr/'
-  url 'http://downloads.sourceforge.net/opencore-amr/fdk-aac-0.1.0.tar.gz'
-  sha1 '4798377069f5f10e8b04e00a3d5a2d15bedfcb47'
+  url 'http://downloads.sourceforge.net/project/opencore-amr/fdk-aac/fdk-aac-0.1.3.tar.gz'
+  sha1 'fda64beee7f3b8e04ca209efcf9354cdae9afc33'
 
   head 'git://opencore-amr.git.sourceforge.net/gitroot/opencore-amr/fdk-aac'
 
-  depends_on :automake => :build
-  depends_on :libtool => :build
+  depends_on :autoconf
+  depends_on :automake
+  depends_on :libtool
 
   def install
     system "autoreconf -fvi"

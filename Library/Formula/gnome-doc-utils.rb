@@ -7,14 +7,11 @@ class GnomeDocUtils < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
-  depends_on 'intltool'
+  depends_on 'intltool' => :build
+  depends_on :python
   depends_on 'docbook'
   depends_on 'gettext'
-
-  # libxml2 must be installed --with-python, and since it is keg-only, the
-  # Python module must also be symlinked into site-packages or put on the
-  # PYTHONPATH.
-  depends_on 'libxml2'
+  depends_on 'libxml2' => 'with-python'
 
   fails_with :llvm do
     build 2326
@@ -22,28 +19,17 @@ class GnomeDocUtils < Formula
   end
 
   def install
-    # TODO this should possibly be moved up into build.rb
-    pydir = 'python' + `python -c 'import sys;print(sys.version[:3])'`.strip
-    libxml2 = Formula.factory('libxml2')
-    ENV.prepend 'PYTHONPATH', libxml2.lib/pydir/'site-packages', ':'
+    python do
+      # Find our docbook catalog
+      ENV['XML_CATALOG_FILES'] = "#{etc}/xml/catalog"
 
-    # Find our docbook catalog
-    ENV['XML_CATALOG_FILES'] = "#{etc}/xml/catalog"
+      system "./configure", "--prefix=#{prefix}",
+                            "--disable-scrollkeeper",
+                            "--enable-build-utils=yes"
 
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-scrollkeeper",
-                          "--enable-build-utils=yes"
-
-    # Compilation doesn't work right if we jump straight to make install
-    system "make"
-    system "make install"
-  end
-
-  def caveats; <<-EOS.undent
-  Gnome-doc-utils requires libxml2 to be compiled
-  with the python modules enabled, to do so:
-    $ brew install libxml2 --with-python
-  EOS
+      # Compilation doesn't work right if we jump straight to make install
+      system "make"
+      system "make install"
+    end
   end
 end
-

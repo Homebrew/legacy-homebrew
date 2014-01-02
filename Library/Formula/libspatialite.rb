@@ -2,40 +2,47 @@ require 'formula'
 
 class Libspatialite < Formula
   homepage 'https://www.gaia-gis.it/fossil/libspatialite/index'
-  url 'http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-3.0.1.tar.gz'
-  sha1 'a88c763302aabc3b74d44a88f969c8475f0c0d10'
-
-  devel do
-    url 'http://www.gaia-gis.it/gaia-sins/libspatialite-4.0.0-RC1.tar.gz'
-    sha1 'a8fdbf76a4dc8a3388b49156dad99a3a788dc9b9'
-  end
+  url 'http://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-4.1.1.tar.gz'
+  sha1 'b8ed50fb66c4a898867cdf9d724d524c5e27e8aa'
 
   option 'without-freexl', 'Build without support for reading Excel files'
-  option 'with-lwgeom', 'Enable additional sanitization/segmentation routines provided by PostGIS 2.0+. (--devel builds only)'
+  option 'without-libxml2', 'Disable support for xml parsing (parsing needed by spatialite-gui)'
+  option 'without-liblwgeom', 'Build without additional sanitization/segmentation routines provided by PostGIS 2.0+ library'
 
+  depends_on 'pkg-config' => :build
   depends_on 'proj'
   depends_on 'geos'
   # Needs SQLite > 3.7.3 which rules out system SQLite on Snow Leopard and
   # below. Also needs dynamic extension support which rules out system SQLite
   # on Lion. Finally, RTree index support is required as well.
   depends_on 'sqlite'
-
-  depends_on 'freexl' unless build.include? 'without-freexl'
-  depends_on 'postgis' if build.include? 'with-lwgeom' and build.devel?
+  depends_on 'libxml2' => :recommended
+  depends_on 'freexl' => :recommended
+  depends_on 'liblwgeom' => :recommended
 
   def install
     # Ensure Homebrew's libsqlite is found before the system version.
-    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+    sqlite = Formula.factory 'sqlite'
+    ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib"
+    ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
+
+    unless build.without? 'liblwgeom'
+      lwgeom = Formula.factory 'liblwgeom'
+      ENV.append 'LDFLAGS', "-L#{lwgeom.opt_prefix}/lib"
+      ENV.append 'CFLAGS', "-I#{lwgeom.opt_prefix}/include"
+    end
 
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
       --with-sysroot=#{HOMEBREW_PREFIX}
     ]
-    args << '--enable-freexl=no' if build.include? 'without-freexl'
-    args << '--enable-lwgeom' if build.include? 'with-lwgeom' and build.devel?
+    args << '--enable-freexl=no' if build.without? 'freexl'
+    args << '--enable-libxml2=yes' unless build.without? 'libxml2'
+    args << '--enable-lwgeom=yes' unless build.without? 'liblwgeom'
 
     system './configure', *args
     system "make install"
   end
+
 end

@@ -1,14 +1,16 @@
 require 'formula'
 
 class Libotr < Formula
-  url 'http://www.cypherpunks.ca/otr/libotr-3.2.0.tar.gz'
   homepage 'http://www.cypherpunks.ca/otr/'
-  sha1 'e5e10b8ddaf59b0ada6046d156d0431cd2790db9'
+  url 'http://www.cypherpunks.ca/otr/libotr-3.2.1.tar.gz'
+  sha1 '898bf00d019f49ca34cd0116dd2e22685c67c394'
 
   depends_on 'libgcrypt'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking", "--mandir=#{man}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     system "make install"
   end
 end

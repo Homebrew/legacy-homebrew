@@ -60,13 +60,14 @@ __brewcomp ()
 __brew_complete_formulae ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
-    local ff=$(\ls $(brew --repository)/Library/Formula 2>/dev/null | sed 's/\.rb//g')
-    local af=$(\ls $(brew --repository)/Library/Aliases 2>/dev/null | sed 's/\.rb//g')
+    local lib=$(brew --repository)/Library
+    local ff=$(\ls ${lib}/Formula 2>/dev/null | sed 's/\.rb//g')
+    local af=$(\ls ${lib}/Aliases 2>/dev/null | sed 's/\.rb//g')
     local tf tap
 
-    for dir in $(\ls $(brew --repository)/Library/Taps 2>/dev/null); do
+    for dir in $(\ls ${lib}/Taps 2>/dev/null); do
         tap="$(echo "$dir" | sed 's|-|/|g')"
-        tf="$tf $(\ls -1R "$(brew --repository)/Library/Taps/$dir" 2>/dev/null |
+        tf="$tf $(\ls -1R "${lib}/Taps/${dir}" 2>/dev/null |
                   grep '.\+.rb' | sed -E 's|(.+)\.rb|'"${tap}"'/\1|g')"
     done
 
@@ -87,9 +88,38 @@ __brew_complete_outdated ()
     COMPREPLY=($(compgen -W "$od" -- "$cur"))
 }
 
+__brew_complete_versions ()
+{
+    local formula="$1"
+    local versions=$(brew list --versions "$formula")
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    COMPREPLY=($(compgen -W "$versions" -X "$formula" -- "$cur"))
+}
+
+_brew_switch ()
+{
+    case "$COMP_CWORD" in
+    2)  __brew_complete_installed ;;
+    3)  __brew_complete_versions "${COMP_WORDS[COMP_CWORD-1]}" ;;
+    *)  ;;
+    esac
+}
+
 __brew_complete_tapped ()
 {
     __brewcomp "$(\ls $(brew --repository)/Library/Taps 2>/dev/null | sed 's/-/\//g')"
+}
+
+_brew_complete_tap ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--repair"
+        return
+        ;;
+    esac
+    __brew_complete_taps
 }
 
 __brew_complete_taps ()
@@ -118,7 +148,7 @@ _brew_create ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--autotools --cmake --no-fetch"
+        __brewcomp "--autotools --cmake --no-fetch --set-name --set-version"
         return
         ;;
     esac
@@ -136,6 +166,11 @@ _brew_deps ()
     __brew_complete_formulae
 }
 
+_brew_doctor () {
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    __brewcomp "$(brew doctor --list-checks)"
+}
+
 _brew_diy ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -150,9 +185,14 @@ _brew_diy ()
 _brew_fetch ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
+    local prv=$(__brewcomp_prev)
     case "$cur" in
     --*)
-        __brewcomp "--deps --force --HEAD"
+        __brewcomp "
+          --deps --force
+          --devel --HEAD
+          $(brew options --compact "$prv" 2>/dev/null)
+          "
         return
         ;;
     esac
@@ -184,9 +224,6 @@ _brew_install ()
                 --force
                 --git
                 --HEAD
-                --use-clang
-                --use-gcc
-                --use-llvm
                 "
         else
             __brewcomp "
@@ -198,11 +235,9 @@ _brew_install ()
                 --HEAD
                 --ignore-dependencies
                 --interactive
-                --use-clang
-                --use-gcc
-                --use-llvm
+                --only-dependencies
                 --verbose
-                $(brew options --compact "$prv")
+                $(brew options --compact "$prv" 2>/dev/null)
                 "
         fi
         return
@@ -216,14 +251,8 @@ _brew_link ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        if __brewcomp_words_include "--dry-run"; then
-            return
-        elif __brewcomp_words_include "--force"; then
-            return
-        else
-            __brewcomp "--dry-run --force"
-            return
-        fi
+        __brewcomp "--dry-run --overwrite --force"
+        return
         ;;
     esac
     __brew_complete_installed
@@ -239,10 +268,12 @@ _brew_list ()
             return
         elif __brewcomp_words_include "--verbose"; then
             return
+        elif __brewcomp_words_include "--pinned"; then
+            return
         elif __brewcomp_words_include "--versions"; then
             return
         else
-            __brewcomp "--unbrewed --verbose --versions"
+            __brewcomp "--unbrewed --verbose --pinned --versions"
             return
         fi
         ;;
@@ -299,7 +330,7 @@ _brew_search ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--fink --macports"
+        __brewcomp "--debian --fedora --fink --macports --opensuse --ubuntu"
         return
         ;;
     esac
@@ -333,7 +364,7 @@ _brew_uses ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--installed"
+        __brewcomp "--installed --recursive"
         return
         ;;
     esac
@@ -375,7 +406,7 @@ _brew ()
     done
 
     if [[ $i -eq $COMP_CWORD ]]; then
-        local ext=$(\ls -p $(brew --repository)/Library/Contributions/cmds \
+        local ext=$(\ls -p $(brew --repository)/Library/Contributions/cmd \
                 2>/dev/null | sed -e "s/\.rb//g" -e "s/brew-//g" \
                 -e "s/.*\///g")
         __brewcomp "
@@ -384,6 +415,7 @@ _brew ()
             audit
             cat
             cleanup
+            commands
             create
             deps
             diy configure
@@ -394,6 +426,7 @@ _brew ()
             home
             info abv
             install
+            linkapps
             link ln
             list ls
             log
@@ -401,11 +434,15 @@ _brew ()
             options
             outdated
             prune
+            pin
             search
+            reinstall
             tap
             test
             uninstall remove rm
             unlink
+            unlinkapps
+            unpin
             untap
             update
             upgrade
@@ -425,19 +462,24 @@ _brew ()
     cleanup)                    _brew_cleanup ;;
     create)                     _brew_create ;;
     deps)                       _brew_deps ;;
+    doctor|dr)                  _brew_doctor ;;
     diy|configure)              _brew_diy ;;
     fetch)                      _brew_fetch ;;
     info|abv)                   _brew_info ;;
-    install)                    _brew_install ;;
+    install|instal)             _brew_install ;;
+    reinstall|reinstal)         _brew_install ;;
     link|ln)                    _brew_link ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
     missing)                    __brew_complete_formulae ;;
     options)                    _brew_options ;;
     outdated)                   _brew_outdated ;;
+    pin)                        __brew_complete_formulae ;;
     search|-S)                  _brew_search ;;
-    tap)                        __brew_complete_taps ;;
+    switch)                     _brew_switch ;;
+    tap)                        _brew_complete_tap ;;
     uninstall|remove|rm)        _brew_uninstall ;;
+    unpin)                      __brew_complete_formulae ;;
     untap)                      __brew_complete_tapped ;;
     update)                     _brew_update ;;
     uses)                       _brew_uses ;;

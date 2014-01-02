@@ -1,8 +1,8 @@
 require 'formula'
 
 class NewickUtils < Formula
-  url 'http://cegg.unige.ch/pub/newick-utils-1.6.tar.gz'
   homepage 'http://cegg.unige.ch/newick_utils'
+  url 'http://cegg.unige.ch/pub/newick-utils-1.6.tar.gz'
   sha1 'a9779054dcbf957618458ebfed07991fabeb3e19'
 
   def patches
@@ -18,8 +18,24 @@ class NewickUtils < Formula
     system "make install"
   end
 
-  def test
-    system "echo '(B:1,C:2)A;' | #{bin}/nw_display -"
+  test do
+    require 'open3'
+
+    expected = <<-EOS
+ +-------------------------------------+ B
+=| A
+ +---------------------------------------------------------------------------+ C
+
+ |------------------|------------------|------------------|------------------|
+ 0                0.5                  1                1.5                  2
+ substitutions/site
+EOS
+
+    Open3.popen3("#{bin}/nw_display", "-") do |stdin, stdout, _|
+      stdin.write("(B:1,C:2)A;\n")
+      stdin.close
+      assert_equal expected, stdout.read.split("\n").map(&:rstrip).join("\n")
+    end
   end
 end
 

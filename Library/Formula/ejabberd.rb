@@ -2,10 +2,10 @@ require 'formula'
 
 class Ejabberd < Formula
   homepage 'http://www.ejabberd.im'
-  url "http://www.process-one.net/downloads/ejabberd/2.1.11/ejabberd-2.1.11.tgz"
-  sha1 'ae2c521d5e93fbd5bc826052c5524b5222dcfae6'
+  url "http://www.process-one.net/downloads/ejabberd/2.1.13/ejabberd-2.1.13.tgz"
+  sha1 '6343186be2e84824d2da32e36110b72d6673730e'
 
-  depends_on "openssl" if MacOS.version == :leopard
+  depends_on "openssl" if MacOS.version <= :leopard
   depends_on "erlang"
 
   option "32-bit"
@@ -18,8 +18,8 @@ class Ejabberd < Formula
 
     if build.build_32_bit?
       %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
-        ENV.remove compiler_flag, "-arch x86_64"
-        ENV.append compiler_flag, "-arch i386"
+        ENV.remove compiler_flag, "-arch #{Hardware::CPU.arch_64_bit}"
+        ENV.append compiler_flag, "-arch #{Hardware::CPU.arch_32_bit}"
       end
     end
 
@@ -28,7 +28,7 @@ class Ejabberd < Formula
               "--sysconfdir=#{etc}",
               "--localstatedir=#{var}"]
 
-      if MacOS.version == :leopard
+      if MacOS.version <= :leopard
         openssl = Formula.factory('openssl')
         args << "--with-openssl=#{openssl.prefix}"
       end

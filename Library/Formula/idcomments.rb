@@ -1,8 +1,8 @@
 require 'formula'
 
 class Idcomments < Formula
-  url 'http://tools.ietf.org/tools/idcomments/idcomments-0.18.tgz'
   homepage 'http://tools.ietf.org/tools/idcomments/'
+  url 'http://tools.ietf.org/tools/idcomments/idcomments-0.18.tgz'
   sha1 'e7e6430926b0c502afcb55a91e90cd84d55c07d4'
 
   def install

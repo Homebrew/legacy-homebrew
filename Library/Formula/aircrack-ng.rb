@@ -6,7 +6,7 @@ class AircrackNg < Formula
   sha1 '16eed1a8cf06eb8274ae382150b56589b23adf77'
 
   # Remove root requirement from OUI update script. See:
-  # https://github.com/mxcl/homebrew/pull/12755
+  # https://github.com/Homebrew/homebrew/pull/12755
   def patches
     DATA
   end
@@ -16,8 +16,8 @@ class AircrackNg < Formula
     #  sha1-sse2.S:190:32-bit absolute addressing is not supported for x86-64
     #  sha1-sse2.S:190:cannot do signed 4 byte relocation
     %w{ CFLAGS CXXFLAGS LDFLAGS OBJCFLAGS OBJCXXFLAGS }.each do |compiler_flag|
-      ENV.remove compiler_flag, "-arch x86_64"
-      ENV.append compiler_flag, "-arch i386"
+      ENV.remove compiler_flag, "-arch #{Hardware::CPU.arch_64_bit}"
+      ENV.append compiler_flag, "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
     # Fix incorrect OUI url

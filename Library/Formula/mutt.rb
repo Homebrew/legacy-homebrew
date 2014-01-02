@@ -2,36 +2,55 @@ require 'formula'
 
 class Mutt < Formula
   homepage 'http://www.mutt.org/'
-  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.21.tar.gz'
-  sha1 'a8475f2618ce5d5d33bff85c0affdf21ab1d76b9'
+  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.22.tar.gz'
+  mirror 'https://bitbucket.org/mutt/mutt/downloads/mutt-1.5.22.tar.gz'
+  sha1 '728a114cb3a44df373dbf1292fc34dd8321057dc'
+
+  head do
+    url 'http://dev.mutt.org/hg/mutt#default', :using => :hg
+
+    resource 'html' do
+      url 'http://dev.mutt.org/doc/manual.html', :using => :nounzip
+    end
+
+    depends_on :autoconf
+    depends_on :automake
+  end
+
+  unless Tab.for_name('signing-party').used_options.include? 'with-rename-pgpring'
+    conflicts_with 'signing-party',
+      :because => 'mutt installs a private copy of pgpring'
+  end
+
+  conflicts_with 'tin',
+    :because => 'both install mmdf.5 and mbox.5 man pages'
+
+  option "with-debug", "Build with debug option enabled"
+  option "with-trash-patch", "Apply trash folder patch"
+  option "with-s-lang", "Build against slang instead of ncurses"
+  option "with-ignore-thread-patch", "Apply ignore-thread patch"
+  option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
+  option "with-confirm-attachment-patch", "Apply confirm attachment patch"
 
   depends_on 'tokyo-cabinet'
-  depends_on 'slang' if ARGV.include? '--with-slang'
-
-  def options
-    [
-      ['--enable-debug', "Build with debug option enabled"],
-      ['--sidebar-patch', "Apply sidebar (folder list) patch"],
-      ['--trash-patch', "Apply trash folder patch"],
-      ['--with-slang', "Build against slang instead of ncurses"],
-      ['--ignore-thread-patch', "Apply ignore-thread patch"],
-      ['--pgp-verbose-mime-patch', "Apply PGP verbose mime patch"]
-    ]
-  end
+  depends_on 's-lang' => :optional
 
   def patches
     urls = [
-      ['--sidebar-patch', 'http://lunar-linux.org/~tchan/mutt/patch-1.5.21.sidebar.20120829.txt'],
-      ['--trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features/trash-folder'],
-      ['--ignore-thread-patch', 'http://ben.at.tanjero.com/patches/ignore-thread-1.5.21.patch'],
-      ['--pgp-verbose-mime-patch',
-          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
+      ['with-trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.4/features/trash-folder'],
+      # original source for this went missing, patch sourced from Arch at
+      # https://aur.archlinux.org/packages/mutt-ignore-thread/
+      ['with-ignore-thread-patch', 'https://gist.github.com/mistydemeo/5522742/raw/1439cc157ab673dc8061784829eea267cd736624/ignore-thread-1.5.21.patch'],
+      ['with-pgp-verbose-mime-patch',
+          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.4/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
+      ['with-confirm-attachment-patch', 'https://gist.github.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch'],
     ]
 
     p = []
     urls.each do |u|
-      p << u[1] if ARGV.include? u[0]
+      p << u[1] if build.include? u[0]
     end
+
     return p
   end
 
@@ -41,7 +60,6 @@ class Mutt < Formula
             "--prefix=#{prefix}",
             "--with-ssl",
             "--with-sasl",
-            "--with-gnutls",
             "--with-gss",
             "--enable-imap",
             "--enable-smtp",
@@ -52,15 +70,22 @@ class Mutt < Formula
             # the mutt_dotlock file (which we can't do if we're running as an
             # unpriviledged user)
             "--with-homespool=.mbox"]
-    args << "--with-slang" if ARGV.include? '--with-slang'
+    args << "--with-slang" if build.with? 's-lang'
 
-    if ARGV.include? '--enable-debug'
+    if build.with? 'debug'
       args << "--enable-debug"
     else
       args << "--disable-debug"
     end
 
-    system "./configure", *args
-    system "make install"
+    if build.head?
+      system "./prepare", *args
+    else
+      system "./configure", *args
+    end
+    system "make"
+    system "make", "install"
+
+    (share/'doc/mutt').install resource('html') if build.head?
   end
 end

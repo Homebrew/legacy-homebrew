@@ -1,9 +1,11 @@
 require 'formula'
 
 class Hercules < Formula
-  url 'http://www.hercules-390.org/hercules-3.07.tar.gz'
-  homepage 'http://www.hercules-390.org/'
-  sha1 'd0b2e543dd66ee43576e5a5faff8f4cc061cffb4'
+  homepage 'http://www.hercules-390.eu/'
+  url 'http://downloads.hercules-390.eu/hercules-3.09.tar.gz'
+  sha1 '5cbe89ec214de00b90e3077c27db636a7d2607f5'
+
+  skip_clean :la
 
   depends_on 'gawk'
 
@@ -13,6 +15,9 @@ class Hercules < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-optimization=no"
+    # Reported upstream:
+    # https://github.com/rbowler/spinhawk/issues/16
+    inreplace "hscutl.c", "SOL_TCP", "IPPROTO_TCP"
     system "make"
     system "make install"
   end

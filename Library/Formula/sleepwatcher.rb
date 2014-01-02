@@ -24,17 +24,18 @@ class Sleepwatcher < Formula
       system "make", "install", "PREFIX=#{prefix}"
     end
 
-    # Write the usage ReadMe
-    prefix.install "ReadMe.rtf"
-
     # Write the sleep/wakeup scripts
     (prefix + 'etc/sleepwatcher').install Dir["config/rc.*"]
 
     # Write the launchd scripts
     inreplace Dir["config/*.plist"] do |s|
-      s.gsub! "/etc", (etc + 'sleepwatcher')
-      s.gsub! "/usr/local/sbin", (HOMEBREW_PREFIX + 'sbin')
+      s.gsub! "/usr/local/sbin", HOMEBREW_PREFIX/'sbin'
     end
+
+    inreplace 'config/de.bernhard-baehr.sleepwatcher-20compatibility.plist' do |s|
+      s.gsub! "/etc", (etc + 'sleepwatcher')
+    end
+
     prefix.install Dir["config/*.plist"]
   end
 

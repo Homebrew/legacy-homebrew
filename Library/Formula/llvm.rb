@@ -2,42 +2,46 @@ require 'formula'
 
 class Clang < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.1/clang-3.1.src.tar.gz'
-  sha1      '19f33b187a50d22fda2a6f9ed989699a9a9efd62'
-
-  head      'http://llvm.org/git/clang.git'
+  url       'http://llvm.org/releases/3.3/cfe-3.3.src.tar.gz'
+  sha1      'ccd6dbf2cdb1189a028b70bcb8a22509c25c74c8'
 end
 
 class Llvm < Formula
   homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.1/llvm-3.1.src.tar.gz'
-  sha1      '234c96e73ef81aec9a54da92fc2a9024d653b059'
-
-  head      'http://llvm.org/git/llvm.git'
+  url       'http://llvm.org/releases/3.3/llvm-3.3.src.tar.gz'
+  sha1      'c6c22d5593419e3cb47cbcf16d967640e5cce133'
 
   bottle do
-    sha1 'fcf6c3eb5b074afa820f905f32182e074a29ffb5' => :mountainlion
-    sha1 '4ee3e9242cff9a03af4e1f20017fe547dcd07a4a' => :lion
-    sha1 '940aca37dafaf69a9b378ffd2a59b3c1cfe54ced' => :snowleopard
+    sha1 '61854a2cf08a1398577f74fea191a749bec3e72d' => :mountain_lion
+    sha1 'fbe7b85a50f4b283ad55be020c7ddfbf655435ad' => :lion
+    sha1 'f68fdb89d44a72c83db1e55e25444de4dcde5375' => :snow_leopard
   end
 
   option :universal
-  option 'with-clang', 'Build Clang C/ObjC/C++ frontend'
-  option 'shared', 'Build LLVM as a shared library'
+  option 'with-clang', 'Build Clang support library'
+  option 'disable-shared', "Don't build LLVM as a shared library"
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
+  option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
+
+  depends_on :python => :recommended
+
+  env :std if build.universal?
+
+  keg_only :provided_by_osx
 
   def install
-    if build.universal? and build.include? 'shared'
-      onoe "Cannot specify both shared and universal (will not build)"
-      exit 1
+    if python and build.include? 'disable-shared'
+      raise 'The Python bindings need the shared library.'
     end
 
-    Clang.new("clang").brew { clang_dir.install Dir['*'] } if build.include? 'with-clang'
+    Clang.new("clang").brew do
+      (buildpath/'tools/clang').install Dir['*']
+    end if build.with? 'clang'
 
     if build.universal?
       ENV['UNIVERSAL'] = '1'
-      ENV['UNIVERSAL_ARCH'] = 'i386 x86_64'
+      ENV['UNIVERSAL_ARCH'] = Hardware::CPU.universal_archs.join(' ')
     end
 
     ENV['REQUIRES_RTTI'] = '1' if build.include? 'rtti'
@@ -55,36 +59,35 @@ class Llvm < Formula
     else
       args << "--enable-targets=host"
     end
-    args << "--enable-shared" if build.include? 'shared'
+    args << "--enable-shared" unless build.include? 'disable-shared'
+
+    args << "--disable-assertions" if build.include? 'disable-assertions'
 
     system "./configure", *args
-    system "make install"
+    system 'make', 'VERBOSE=1'
+    system 'make', 'VERBOSE=1', 'install'
 
     # install llvm python bindings
-    (share/'llvm/bindings').install buildpath/'bindings/python'
-
-    # install clang tools and bindings
-    cd clang_dir do
-      system 'make install'
-      (share/'clang/tools').install 'tools/scan-build', 'tools/scan-view'
-      (share/'clang/bindings').install 'bindings/python'
-    end if build.include? 'with-clang'
+    if python
+      python.site_packages.install buildpath/'bindings/python/llvm'
+      python.site_packages.install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
+    end
   end
 
   def test
     system "#{bin}/llvm-config", "--version"
   end
 
-  def caveats; <<-EOS.undent
-    Extra tools and bindings are installed in #{share}/llvm and #{share}/clang.
+  def caveats
+    s = ''
+    s += python.standard_caveats if python
+    s += <<-EOS.undent
+      Extra tools are installed in #{share}/llvm and #{share}/clang.
 
-    If you already have LLVM installed, then "brew upgrade llvm" might not work.
-    Instead, try:
-        brew rm llvm && brew install llvm
+      If you already have LLVM installed, then "brew upgrade llvm" might not work.
+      Instead, try:
+          brew rm llvm && brew install llvm
     EOS
   end
 
-  def clang_dir
-    buildpath/'tools/clang'
-  end
 end

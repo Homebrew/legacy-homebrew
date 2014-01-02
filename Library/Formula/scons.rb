@@ -2,8 +2,8 @@ require 'formula'
 
 class Scons < Formula
   homepage 'http://www.scons.org'
-  url 'http://downloads.sourceforge.net/scons/scons-2.2.0.tar.gz'
-  sha1 'b48b71926f707aa3a802081bfd9b0ef45c3b0fdf'
+  url 'http://downloads.sourceforge.net/scons/scons-2.3.0.tar.gz'
+  sha1 '728edf20047a9f8a537107dbff8d8f803fd2d5e3'
 
   def install
     man1.install gzip('scons-time.1', 'scons.1', 'sconsign.1')

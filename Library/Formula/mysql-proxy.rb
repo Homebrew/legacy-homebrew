@@ -1,34 +1,11 @@
 require 'formula'
 
-class MySqlInstalled < Requirement
-  def message; <<-EOS.undent
-    MySQL is required to install.
-
-    You can install this with Homebrew using:
-      brew install mysql-connector-c
-        For MySQL client libraries only.
-
-      brew install mysql
-        For MySQL server.
-
-    Or you can use an official installer from:
-      http://dev.mysql.com/downloads/mysql/
-    EOS
-  end
-  def satisfied?
-    which 'mysql_config'
-  end
-  def fatal?
-    true
-  end
-end
-
 class MysqlProxy < Formula
-  homepage 'https://launchpad.net/mysql-proxy'
-  url 'https://launchpad.net/mysql-proxy/0.8/0.8.2/+download/mysql-proxy-0.8.2.tar.gz'
-  sha1 '3ae4f2f68849cfd95eeaf033af8df78d643dbf4d'
+  homepage 'http://dev.mysql.com/doc/refman/5.6/en/mysql-proxy.html'
+  url 'http://cdn.mysql.com/Downloads/MySQL-Proxy/mysql-proxy-0.8.3.tar.gz'
+  sha1 'ce6e03e2bdcafecd06a9c3582096dd4eeacdaaa8'
 
-  depends_on MySqlInstalled.new
+  depends_on :mysql
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libevent'

@@ -1,30 +1,28 @@
 require 'formula'
 
 class TransitionalMode < Requirement
+  fatal true
+
+  satisfy do
+    Tab.for_name('camlp5').unused_options.include? 'strict'
+  end
+
   def message; <<-EOS.undent
     camlp5 must be compiled in transitional mode (instead of --strict mode):
       brew install camlp5
     EOS
   end
-  def satisfied?
-    # If not installed, it will install in the correct mode.
-    return true if not which('camlp5')
-    # If installed, make sure it is transitional instead of strict.
-    `camlp5 -pmode 2>&1`.chomp == 'transitional'
-  end
-  def fatal?
-    true
-  end
 end
 
 class Coq < Formula
   homepage 'http://coq.inria.fr/'
-  url 'http://coq.inria.fr/distrib/V8.4/files/coq-8.4.tar.gz'
-  sha1 '2987aa418dd96a0df7284afe296293cb28814ef5'
+  url 'http://coq.inria.fr/distrib/V8.4pl3/files/coq-8.4pl3.tar.gz'
+  version '8.4pl3'
+  sha1 'b7d7f49412b0b9827bc461a78b5340e69cc0d3f4'
 
-  head 'svn://scm.gforge.inria.fr/svn/coq/trunk'
+  head 'git://scm.gforge.inria.fr/coq/coq.git'
 
-  depends_on TransitionalMode.new
+  depends_on TransitionalMode
   depends_on 'objective-caml'
   depends_on 'camlp5'
 

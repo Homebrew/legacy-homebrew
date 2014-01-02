@@ -2,8 +2,8 @@ require 'formula'
 
 class Pbrt < Formula
   homepage 'http://pbrt.org/'
-  url 'https://github.com/mmp/pbrt-v2/tarball/2.0.334'
-  sha1 'a5d1324f3ab9072bd6a88fee3cbc0c153bbb50eb'
+  url 'https://github.com/mmp/pbrt-v2/archive/2.0.342.tar.gz'
+  sha1 'c18e4cb5acdd3120573c26be702e452e77273a79'
 
   depends_on "openexr"
 

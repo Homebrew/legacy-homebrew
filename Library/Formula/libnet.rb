@@ -2,7 +2,7 @@ require 'formula'
 
 class Libnet < Formula
   homepage 'https://github.com/sam-github/libnet'
-  url 'http://sourceforge.net/projects/libnet-dev/files/libnet-1.1.6.tar.gz'
+  url 'http://downloads.sourceforge.net/project/libnet-dev/libnet-1.1.6.tar.gz'
   sha1 'dffff71c325584fdcf99b80567b60f8ad985e34c'
 
   # MacPorts does an autoreconf to get raw sockets working
@@ -18,6 +18,13 @@ class Libnet < Formula
   end
 
   def install
+    # Compatibility with Automake 1.13 and newer.
+    # Reported upstream:
+    # https://github.com/sam-github/libnet/issues/28
+    mv 'configure.in', 'configure.ac'
+    inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
+    (buildpath/'m4').mkpath
+
     system "autoreconf --force --install"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

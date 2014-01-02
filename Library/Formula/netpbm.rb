@@ -2,37 +2,21 @@ require 'formula'
 
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'http://sourceforge.net/projects/netpbm/files/super_stable/10.35.86/netpbm-10.35.86.tgz'
-  sha1 '45b5dacdd844dfd9f2b02a1ba0e59e6a3bddb885'
+  url 'svn+http://svn.code.sf.net/p/netpbm/code/advanced/', :revision => 1809
+  version '10.60.05'
+  # Maintainers: Look at http://netpbm.svn.sourceforge.net/viewvc/netpbm/
+  # for versions and matching revisions
 
-  head 'http://netpbm.svn.sourceforge.net/svnroot/netpbm/trunk'
-
-  devel do
-    url 'svn+http://netpbm.svn.sourceforge.net/svnroot/netpbm/advanced/',
-      :revision => 1724
-    version '10.59.02'
-  end
+  head 'http://svn.code.sf.net/p/netpbm/code/trunk'
 
   depends_on "libtiff"
   depends_on "jasper"
   depends_on :libpng
 
-  def patches; { :p0 => %W[
-    https://trac.macports.org/export/95870/trunk/dports/graphics/netpbm/files/patch-clang-sse-workaround.diff
-    https://trac.macports.org/export/95870/trunk/dports/graphics/netpbm/files/patch-converter-other-giftopnm.c-strcaseeq.diff
-    ]}
-  end unless build.stable?
-
   def install
-    if build.stable?
-      system "cp", "Makefile.config.in", "Makefile.config"
-      config = "Makefile.config"
-    else
-      system "cp", "config.mk.in", "config.mk"
-      config = "config.mk"
-    end
+    system "cp", "config.mk.in", "config.mk"
 
-    inreplace config do |s|
+    inreplace "config.mk" do |s|
       s.remove_make_var! "CC"
       s.change_make_var! "CFLAGS_SHLIB", "-fno-common"
       s.change_make_var! "NETPBMLIBTYPE", "dylib"
@@ -43,7 +27,7 @@ class Netpbm < Formula
       s.change_make_var! "PNGLIB", "-lpng"
       s.change_make_var! "ZLIB", "-lz"
       s.change_make_var! "JASPERLIB", "-ljasper"
-      s.change_make_var! "JASPERHDR_DIR", "#{HOMEBREW_PREFIX}/include/jasper"
+      s.change_make_var! "JASPERHDR_DIR", "#{Formula.factory('jasper').opt_prefix}/include/jasper"
     end
 
     ENV.deparallelize
@@ -56,5 +40,7 @@ class Netpbm < Formula
       man5.install Dir['man/man5/*.5']
       lib.install Dir['link/*.a']
     end
+
+    (bin/'doc.url').unlink
   end
 end

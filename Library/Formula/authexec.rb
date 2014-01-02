@@ -2,13 +2,13 @@ require 'formula'
 
 class Authexec < Formula
   homepage 'https://github.com/tcurdt/authexec'
-  url 'https://github.com/tcurdt/authexec/tarball/1.0'
-  sha1 'cae4cbd4c2d3ded8e13b4257d951efd1755ed411'
+  url 'https://github.com/tcurdt/authexec/archive/1.0.tar.gz'
+  sha1 '73d8fb4202ae99057691788442bb192972ef304c'
 
   head 'https://github.com/tcurdt/authexec.git'
 
   def install
-    system 'make all'
+    system ENV.cc, 'authexec.c', '-framework', 'Security', '-o', 'authexec'
     bin.install 'authexec'
   end
 end

@@ -8,7 +8,10 @@ module Homebrew extend self
     # Things below use the CELLAR, which doesn't until the first formula is installed.
     return unless HOMEBREW_CELLAR.exist?
 
-    if ARGV.include? '--versions'
+    if ARGV.include? '--pinned'
+      require 'formula'
+      list_pinned
+    elsif ARGV.include? '--versions'
       list_versions
     elsif ARGV.named.empty?
       ENV['CLICOLOR'] = nil
@@ -20,13 +23,37 @@ module Homebrew extend self
     end
   end
 
-private
+  private
+
+  UNBREWED_EXCLUDE_FILES = %w[.DS_Store]
+  UNBREWED_EXCLUDE_PATHS = %w[
+    bin/brew
+    lib/gdk-pixbuf-2.0/*
+    lib/gio/*
+    lib/node_modules/*
+    lib/python[23].[0-9]/*
+    share/info/dir
+    share/man/man1/brew.1
+    share/man/whatis
+  ]
 
   def list_unbrewed
-    dirs = HOMEBREW_PREFIX.children.select{ |pn| pn.directory? }.map{ |pn| pn.basename.to_s }
+    dirs  = HOMEBREW_PREFIX.subdirs.map { |dir| dir.basename.to_s }
     dirs -= %w[Library Cellar .git]
+
+    # Exclude the repository and cache, if they are located under the prefix
+    dirs.delete HOMEBREW_CACHE.relative_path_from(HOMEBREW_PREFIX).to_s
+    dirs.delete HOMEBREW_REPOSITORY.relative_path_from(HOMEBREW_PREFIX).to_s
+    dirs.delete 'etc'
+    dirs.delete 'var'
+
+    args = dirs + %w[-type f (]
+    args.concat UNBREWED_EXCLUDE_FILES.map { |f| %W[! -name #{f}] }.flatten
+    args.concat UNBREWED_EXCLUDE_PATHS.map { |d| %W[! -path #{d}] }.flatten
+    args.concat %w[)]
+
     cd HOMEBREW_PREFIX
-    exec 'find', *dirs + %w[-type f ( ! -iname .ds_store ! -iname brew ! -iname brew-man.1 ! -iname brew.1 )]
+    exec 'find', *args
   end
 
   def list_versions
@@ -37,6 +64,19 @@ private
     end.each do |d|
       versions = d.children.select{ |pn| pn.directory? }.map{ |pn| pn.basename.to_s }
       puts "#{d.basename} #{versions*' '}"
+    end
+  end
+
+  def list_pinned
+    if ARGV.named.empty?
+      HOMEBREW_CELLAR.children.select{ |pn| pn.directory? }
+    else
+      ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
+    end.select do |d|
+      keg_pin = (HOMEBREW_LIBRARY/"PinnedKegs"/d.basename.to_s)
+      keg_pin.exist? or keg_pin.symlink?
+    end.each do |d|
+      puts d.basename
     end
   end
 end
@@ -59,7 +99,7 @@ class PrettyListing
           else
             print_dir pn
           end
-        elsif not (FORMULA_META_FILES + %w[.DS_Store INSTALL_RECEIPT.json]).include? pn.basename.to_s
+        elsif FORMULA_META_FILES.should_list? pn.basename.to_s
           puts pn
         end
       end

@@ -2,8 +2,8 @@ require 'formula'
 
 class RxvtUnicode < Formula
   homepage 'http://software.schmorp.de/pkg/rxvt-unicode.html'
-  url 'http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.15.tar.bz2'
-  sha1 'e6fdf091860ecb458730dc68b0176f67f207a2f7'
+  url 'http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.19.tar.bz2'
+  sha1 '979f990b73cf057d81f25884668f362b5a748154'
 
   option "disable-iso14755", "Disable ISO 14775 Shift+Ctrl hotkey"
 
@@ -25,7 +25,6 @@ class RxvtUnicode < Formula
   def install
     args = ["--prefix=#{prefix}",
             "--mandir=#{man}",
-            "--disable-afterimage",
             "--enable-perl",
             "--enable-256-color",
             "--with-term=rxvt-unicode-256color",

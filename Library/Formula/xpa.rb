@@ -2,8 +2,8 @@ require 'formula'
 
 class Xpa < Formula
   homepage 'http://hea-www.harvard.edu/RD/xpa/'
-  url 'http://hea-www.harvard.edu/saord/download/xpa/xpa-2.1.14.tar.gz'
-  sha1 '927afc7beb90999cf63f75810d34a0ffead5f401'
+  url 'http://hea-www.harvard.edu/saord/download/xpa/xpa-2.1.15.tar.gz'
+  sha1 'fe9df55606b663fbe01023fcd44a9c18bc7c6ad5'
 
   depends_on :x11
 

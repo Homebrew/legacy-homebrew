@@ -16,6 +16,8 @@ class Tinysvm < Formula
     # Needed to select proper getopt, per MacPorts
     ENV.append_to_cflags '-D__GNU_LIBRARY__'
 
+    inreplace 'configure', '-O9', '' # clang barfs on -O9
+
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -24,9 +26,9 @@ class Tinysvm < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/svm_learn --help"
-    system "#{bin}/svm_classify --help"
-    system "#{bin}/svm_model --help"
+  test do
+    system "#{bin}/svm_learn", "--help"
+    system "#{bin}/svm_classify", "--help"
+    system "#{bin}/svm_model", "--help"
   end
 end

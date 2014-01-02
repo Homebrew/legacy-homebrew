@@ -38,12 +38,12 @@ module Homebrew extend self
           raise FormulaUnavailableError, path.basename('.rb').to_s unless path.file?
         end
       end
-      exec_editor *paths
+      exec_editor(*paths)
     end
   end
 
   def library_folders
-    Dir["#{HOMEBREW_REPOSITORY}/Library/*"].reject do |d|
+    Dir["#{HOMEBREW_LIBRARY}/*"].reject do |d|
       case File.basename(d) when 'LinkedKegs', 'Aliases' then true end
     end
   end

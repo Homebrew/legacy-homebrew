@@ -2,14 +2,15 @@ require 'formula'
 
 class Jsawk < Formula
   homepage 'https://github.com/micha/jsawk'
-  url 'https://github.com/micha/jsawk/zipball/1.2'
-  sha1 '45f1cd62e146240d9ec8a595425a6d9368f369d6'
+  url 'https://github.com/micha/jsawk/archive/1.4.tar.gz'
+  sha1 '4f2c962c8a5209764116457682985854400cbf24'
+
   head 'https://github.com/micha/jsawk.git'
 
   depends_on 'spidermonkey'
 
   def install
-    system "mv README.markdown README"
+    mv "README.markdown", "README"
     bin.install "jsawk"
   end
 end

@@ -5,8 +5,6 @@ class Pcal < Formula
   url 'http://downloads.sourceforge.net/project/pcal/pcal/pcal-4.11.0/pcal-4.11.0.tgz'
   sha1 '214bcb4c4b7bc986ae495c96f2ab169233a7f973'
 
-  skip_clean :all
-
   def install
     ENV.deparallelize
     system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"
@@ -15,7 +13,6 @@ class Pcal < Formula
     bin.install 'exec/pcal'
     man1.install gzip('doc/pcal.man') => 'pcal.1.gz'
   end
-
 
   def test
     system "#{bin}/pcal"

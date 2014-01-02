@@ -1,10 +1,11 @@
 require 'formula'
 
 class Sl < Formula
-  homepage 'http://packages.debian.org/source/stable/sl'
-  url 'http://mirrors.kernel.org/debian/pool/main/s/sl/sl_3.03.orig.tar.gz'
-  mirror 'http://ftp.us.debian.org/debian/pool/main/s/sl/sl_3.03.orig.tar.gz'
-  sha1 'd0a8e52ef649cd3bbf02c099e9991dc7cb9b60c3'
+  homepage 'http://www.tkl.iis.u-tokyo.ac.jp/~toyoda/index_e.html'
+  #version 5.00, the author has not tagged the commit
+  url 'https://github.com/mtoyoda/sl/archive/d8f076a7ddb1f6ef9b2033497707867e29569750.tar.gz'
+  sha1 '6314807a299ca9b1666522cba23a3fba6df60fab'
+  version '5.00'
 
   fails_with :clang do
     build 318

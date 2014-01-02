@@ -2,13 +2,13 @@ require 'formula'
 
 class Fox < Formula
   homepage 'http://www.fox-toolkit.org/'
-  url 'ftp://ftp.fox-toolkit.org/pub/fox-1.6.46.tar.gz'
-  sha1 '0d77f6b1d6cb6e57590f2825e336d963c0218061'
+  url 'ftp://ftp.fox-toolkit.org/pub/fox-1.6.49.tar.gz'
+  sha1 '056a55ba7b4404af61d4256eafdf8fd0503c6fea'
 
   # Development and stable branches are incompatible
   devel do
-    url 'ftp://ftp.fox-toolkit.org/pub/fox-1.7.36.tar.gz'
-    sha1 '56095e26bfb01fbeb7975e6ca5082acf1f982873'
+    url 'ftp://ftp.fox-toolkit.org/pub/fox-1.7.45.tar.gz'
+    sha1 'bdd50d1bcadb29ebeb634aba2bd6b887d328953b'
   end
 
   depends_on :x11

@@ -1,94 +1,63 @@
 require 'formula'
 
-class OasaPythonModule < Requirement
-  def message; <<-EOS.undent
-    The oasa Python module is required for some operations.
-    It can be downloaded from:
-      http://bkchem.zirael.org/oasa_en.html
-    EOS
-  end
-  def satisfied?
-    args = %W{/usr/bin/env python -c import\ oasa}
-    quiet_system *args
-  end
-end
-
 class OpenBabel < Formula
-  homepage 'http://openbabel.org/'
-  url 'http://sourceforge.net/projects/openbabel/files/openbabel/2.2.3/openbabel-2.2.3.tar.gz'
-  sha1 'e396b27551a106e001ca6c953181657a0a53f43f'
+  homepage 'http://www.openbabel.org'
+  url 'http://downloads.sourceforge.net/project/openbabel/openbabel/2.3.2/openbabel-2.3.2.tar.gz'
+  sha1 'b8831a308617d1c78a790479523e43524f07d50d'
 
-  head 'https://openbabel.svn.sourceforge.net/svnroot/openbabel/openbabel/trunk'
+  option 'with-cairo',  'Support PNG depiction'
+  option 'with-java',   'Compile Java language bindings'
 
-  depends_on OasaPythonModule.new
+  depends_on 'pkg-config' => :build
+  depends_on 'cmake' => :build
+  depends_on :python => :optional
+  depends_on 'wxmac' => :optional
+  depends_on 'cairo' => :optional
+  depends_on 'eigen' if build.with?('python') || build.with?('java')
 
-  def options
-    [
-      ["--perl", "Perl bindings"],
-      ["--python", "Python bindings"],
-      ["--ruby", "Ruby bindings"]
-    ]
+  # Patch to fix Molecule.draw() in pybel in accordance with upstream commit df59c4a630cf753723d1318c40479d48b7507e1c
+  def patches
+    "https://gist.github.com/fredrikw/5858168/raw/e4b5899e781d5707f5c386e436b5fc7810f2010d/ob-2-3-2-patch.diff"
   end
 
   def install
-    args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}"]
-    args << '--enable-maintainer-mode' if ARGV.build_head?
+    args = %W[ -DCMAKE_INSTALL_PREFIX=#{prefix} ]
+    args << "-DJAVA_BINDINGS=ON" if build.with? 'java'
+    args << "-DBUILD_GUI=ON" if build.with? 'wxmac'
+    # Looking for Cairo in HOMEBREW_PREFIX
+    # setting the arguments separately, joining them in one string fails with the 'system "cmake", *args' command
+    args << "-DCAIRO_INCLUDE_DIRS='#{HOMEBREW_PREFIX}/include/cairo'" if build.with? 'cairo'
+    args << "-DCAIRO_LIBRARIES='#{HOMEBREW_PREFIX}/lib/libcairo.dylib'" if build.with? 'cairo'
 
-    system "./configure", *args
-    system "make"
-    system "make install"
-
-    ENV['OPENBABEL_INSTALL'] = prefix
-
-    # Install the python bindings
-    if ARGV.include? '--python'
-      cd 'scripts/python' do
-        system "python", "setup.py", "build"
-        system "python", "setup.py", "install", "--prefix=#{prefix}"
-      end
+    python do
+      args << "-DPYTHON_BINDINGS=ON"
+      # For Xcode-only systems, the headers of system's python are inside of Xcode:
+      args << "-DPYTHON_INCLUDE_DIR='#{python.incdir}'"
+      # Cmake picks up the system's python dylib, even if we have a brewed one:
+      args << "-DPYTHON_LIBRARY='#{python.libdir}/lib#{python.xy}.dylib'"
+      args << "-DPYTHON_PACKAGES_PATH='#{python.site_packages}'"
     end
 
-    # Install the perl bindings.
-    if ARGV.include? '--perl'
-      cd 'scripts/perl' do
-        # because it's not yet been linked, the perl script won't find the newly
-        # compiled library unless we pass it in as LD_LIBRARY_PATH.
-        ENV['LD_LIBRARY_PATH'] = "lib"
-        system 'perl', 'Makefile.PL'
-        # With the additional argument "PREFIX=#{prefix}" it puts things in #{prefix} (where perl can't find them).
-        # Without, it puts them in /Library/Perl/...
-        inreplace "Makefile" do |s|
-          # Fix the broken Makefile (-bundle not allowed with -dynamiclib).
-          # I think this is a SWIG error, but I'm not sure.
-          s.gsub! '-bundle ', ''
-          # Don't waste time building PPC version.
-          s.gsub! '-arch ppc ', ''
-          # Don't build i386 version when libopenbabel can't link to it.
-          s.gsub! '-arch i386 ', ''
-        end
-        system "make"
-        system "make test"
-        system "make install"
-      end
+    args << '..'
+
+    mkdir 'build' do
+      system "cmake", *args
+      system "make"
+      system "make install"
     end
 
-    # Install the ruby bindings.
-    if ARGV.include? '--ruby'
-      cd 'scripts/ruby' do
-        system "ruby", "extconf.rb",
-               "--with-openbabel-include=#{include}",
-               "--with-openbabel-lib=#{lib}"
-
-        # Don't build i386 version when libopenbabel can't link to it.
-        inreplace "Makefile", '-arch i386 ', ''
-
-        # With the following line it puts things in #{prefix} (where ruby can't find them).
-        # Without, it puts them in /Library/Ruby/...
-        #ENV['DESTDIR']=prefix
-        system "make"
-        system "make install"
-      end
+    python do
+      python.site_packages.install lib/'openbabel.py', lib/'pybel.py', lib/'_openbabel.so'
     end
   end
+
+  def caveats
+    s = ''
+    s += python.standard_caveats if python
+    s += <<-EOS.undent
+      Java libraries are installed to #{HOMEBREW_PREFIX}/lib so this path should be
+      included in the CLASSPATH environment variable.
+    EOS
+  end
+
 end

@@ -4,7 +4,7 @@ require 'irb'
 
 class Symbol
   def f
-    Formula.factory(self)
+    Formula.factory(self.to_s)
   end
 end
 class String
@@ -19,7 +19,7 @@ module Homebrew extend self
       puts "'v8'.f # => instance of the Ack formula"
       puts ":hub.f.installed?"
       puts ":lua.f.methods - 1.methods"
-      puts ":mpd.f.recursive_deps.reject{|f| f.installed? }"
+      puts ":mpd.f.recursive_dependencies.reject(&:installed?)"
     else
       ohai "Interactive Homebrew Shell"
       puts "Example commands available with: brew irb --help"

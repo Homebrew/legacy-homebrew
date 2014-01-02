@@ -1,12 +1,12 @@
 require 'formula'
 
 class Ssldump < Formula
-  url 'http://www.rtfm.com/ssldump/ssldump-0.9b3.tar.gz'
   homepage 'http://www.rtfm.com/ssldump/'
+  url 'http://www.rtfm.com/ssldump/ssldump-0.9b3.tar.gz'
   sha1 'a633a9a811a138eac5ed440d583473b644135ef5'
 
   # reorder include files
-  #  http://sourceforge.net/tracker/index.php?func=detail&aid=1622854&group_id=68993&atid=523055
+  # http://sourceforge.net/tracker/index.php?func=detail&aid=1622854&group_id=68993&atid=523055
   # increase pcap sample size from an arbitrary 5000 the max TLS packet size 18432
   def patches
     DATA

@@ -2,8 +2,8 @@ require 'formula'
 
 class Dar < Formula
   homepage 'http://dar.linux.free.fr/doc/index.html'
-  url 'http://sourceforge.net/projects/dar/files/dar/2.4.8/dar-2.4.8.tar.gz'
-  sha1 '13f9a806da44542446e986169a3390c577c479d9'
+  url 'http://downloads.sourceforge.net/project/dar/dar/2.4.11/dar-2.4.11.tar.gz'
+  sha1 '02c6257dca054fecbee1e7bcd91ce525f986a67d'
 
   depends_on 'gettext'
 

@@ -2,8 +2,9 @@ require 'formula'
 
 class Jasper < Formula
   homepage 'http://www.ece.uvic.ca/~frodo/jasper/'
-  url 'http://www.ece.uvic.ca/~frodo/jasper/software/jasper-1.900.1.zip'
-  sha1 '9c5735f773922e580bf98c7c7dfda9bbed4c5191'
+  url 'http://download.osgeo.org/gdal/jasper-1.900.1.uuid.tar.gz'
+  sha1 'bbf30168ceae74d78e28039972657a90799e68d3'
+  version '1.900.1'
 
   option :universal
 

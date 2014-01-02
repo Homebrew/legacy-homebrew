@@ -2,8 +2,8 @@ require 'formula'
 
 class Gtkx < Formula
   homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.11.tar.xz'
-  sha256 '328b4ea19a61040145e777e2ac49820968a382ac8581a380c9429897881812a9'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.22.tar.xz'
+  sha256 'b114b6e9fb389bf3aa8a6d09576538f58dce740779653084046852fb4140ae7f'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
@@ -13,9 +13,9 @@ class Gtkx < Formula
   depends_on 'gdk-pixbuf'
   depends_on 'pango'
   depends_on 'jasper' => :optional
-  depends_on 'atk' => :optional
+  depends_on 'atk'
   depends_on 'cairo'
-  depends_on :x11
+  depends_on :x11 => '2.3.6'
 
   fails_with :llvm do
     build 2326
@@ -23,8 +23,7 @@ class Gtkx < Formula
   end
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-glibtest",
                           "--disable-introspection",

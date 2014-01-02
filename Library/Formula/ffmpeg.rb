@@ -2,81 +2,116 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-1.0.tar.bz2'
-  sha1 'bf1f917c4fa26cf225616f2063e60c33cac546be'
+  url 'http://ffmpeg.org/releases/ffmpeg-1.2.4.tar.bz2'
+  sha1 'ee73a05bde209fc23441c7e49767c1b7a4b6f124'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
-  option "without-x264", "Disable H264 encoder"
-  option "without-faac", "Disable AAC encoder"
-  option "without-lame", "Disable MP3 encoder"
-  option "without-xvid", "Disable Xvid MPEG-4 video format"
+  # This is actually the new stable, not a devel release,
+  # but not everything builds with it yet - notably gpac
+  devel do
+    url 'http://ffmpeg.org/releases/ffmpeg-2.1.1.tar.bz2'
+    sha1 'e7a5b2d7f702c4e9ca69e23c6d3527f93de0d1bd'
 
-  option "with-freetype", "Enable FreeType"
-  option "with-theora", "Enable Theora video format"
-  option "with-libvorbis", "Enable Vorbis audio format"
-  option "with-libvpx", "Enable VP8 video format"
+    depends_on 'libbluray' => :optional
+    depends_on 'libquvi' => :optional
+  end
+
+  option "without-x264", "Disable H.264 encoder"
+  option "without-lame", "Disable MP3 encoder"
+  option "without-xvid", "Disable Xvid MPEG-4 video encoder"
+
   option "with-rtmpdump", "Enable RTMP protocol"
-  option "with-opencore-amr", "Enable AMR audio format"
   option "with-libvo-aacenc", "Enable VisualOn AAC encoder"
   option "with-libass", "Enable ASS/SSA subtitle format"
-  option "with-openjpeg", 'Enable JPEG 200 image format'
-  option 'with-ffplay', 'Enable FFPlay media player'
+  option "with-openjpeg", 'Enable JPEG 2000 image format'
+  option 'with-openssl', 'Enable SSL support'
+  option 'with-schroedinger', 'Enable Dirac video format'
+  option 'with-ffplay', 'Enable FFplay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'
+  option 'with-fdk-aac', 'Enable the Fraunhofer FDK AAC library'
+
+  depends_on 'pkg-config' => :build
 
   # manpages won't be built without texi2html
   depends_on 'texi2html' => :build if MacOS.version >= :mountain_lion
   depends_on 'yasm' => :build
 
-  depends_on 'x264' unless build.include? 'without-x264'
-  depends_on 'faac' unless build.include? 'without-faac'
-  depends_on 'lame' unless build.include? 'without-lame'
-  depends_on 'xvid' unless build.include? 'without-xvid'
+  depends_on 'x264' => :recommended
+  depends_on 'faac' => :recommended
+  depends_on 'lame' => :recommended
+  depends_on 'xvid' => :recommended
 
-  depends_on :freetype if build.include? 'with-freetype'
-  depends_on 'theora' if build.include? 'with-theora'
-  depends_on 'libvorbis' if build.include? 'with-libvorbis'
-  depends_on 'libvpx' if build.include? 'with-libvpx'
-  depends_on 'rtmpdump' if build.include? 'with-rtmpdump'
-  depends_on 'opencore-amr' if build.include? 'with-opencore-amr'
-  depends_on 'libvo-aacenc' if build.include? 'with-libvo-aacenc'
-  depends_on 'libass' if build.include? 'with-libass'
-  depends_on 'openjpeg' if build.include? 'with-openjpeg'
+  depends_on :freetype => :optional
+  depends_on 'theora' => :optional
+  depends_on 'libvorbis' => :optional
+  depends_on 'libvpx' => :optional
+  depends_on 'rtmpdump' => :optional
+  depends_on 'opencore-amr' => :optional
+  depends_on 'libvo-aacenc' => :optional
+  depends_on 'libass' => :optional
+  depends_on 'openjpeg' => :optional
   depends_on 'sdl' if build.include? 'with-ffplay'
-  depends_on 'speex' if build.include? 'with-speex'
+  depends_on 'speex' => :optional
+  depends_on 'schroedinger' => :optional
+  depends_on 'fdk-aac' => :optional
+  depends_on 'opus' => :optional
+  depends_on 'frei0r' => :optional
+  depends_on 'libcaca' => :optional
+
+  # Fix build against freetype 2.5.1
+  # http://ffmpeg.org/pipermail/ffmpeg-devel/2013-November/151404.html
+  def patches; DATA; end unless build.head?
 
   def install
+    # Remove when fix for freetype 2.5.1+ is incorporated upstream
+    inreplace 'configure', 'ft2build.h freetype/freetype.h', 'ft2build.h freetype.h'
+
     args = ["--prefix=#{prefix}",
             "--enable-shared",
+            "--enable-pthreads",
             "--enable-gpl",
             "--enable-version3",
             "--enable-nonfree",
             "--enable-hardcoded-tables",
+            "--enable-avresample",
+            "--enable-vda",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
             "--host-ldflags=#{ENV.ldflags}"
            ]
 
-    args << "--enable-libx264" unless build.include? 'without-x264'
-    args << "--enable-libfaac" unless build.include? 'without-faac'
-    args << "--enable-libmp3lame" unless build.include? 'without-lame'
-    args << "--enable-libxvid" unless build.include? 'without-xvid'
+    args << "--enable-libx264" if build.with? 'x264'
+    args << "--enable-libfaac" if build.with? 'faac'
+    args << "--enable-libmp3lame" if build.with? 'lame'
+    args << "--enable-libxvid" if build.with? 'xvid'
 
-    args << "--enable-libfreetype" if build.include? 'with-freetype'
-    args << "--enable-libtheora" if build.include? 'with-theora'
-    args << "--enable-libvorbis" if build.include? 'with-libvorbis'
-    args << "--enable-libvpx" if build.include? 'with-libvpx'
-    args << "--enable-librtmp" if build.include? 'with-rtmpdump'
-    args << "--enable-libopencore-amrnb" << "--enable-libopencore-amrwb" if build.include? 'with-opencore-amr'
-    args << "--enable-libvo-aacenc" if build.include? 'with-libvo-aacenc'
-    args << "--enable-libass" if build.include? 'with-libass'
-    args << "--enable-libopenjpeg" if build.include? 'with-openjpeg'
+    args << "--enable-libfreetype" if build.with? 'freetype'
+    args << "--enable-libtheora" if build.with? 'theora'
+    args << "--enable-libvorbis" if build.with? 'libvorbis'
+    args << "--enable-libvpx" if build.with? 'libvpx'
+    args << "--enable-librtmp" if build.with? 'rtmpdump'
+    args << "--enable-libopencore-amrnb" << "--enable-libopencore-amrwb" if build.with? 'opencore-amr'
+    args << "--enable-libvo-aacenc" if build.with? 'libvo-aacenc'
+    args << "--enable-libass" if build.with? 'libass'
     args << "--enable-ffplay" if build.include? 'with-ffplay'
-    args << "--enable-libspeex" if build.include? 'with-speex'
+    args << "--enable-libspeex" if build.with? 'speex'
+    args << '--enable-libschroedinger' if build.with? 'schroedinger'
+    args << "--enable-libfdk-aac" if build.with? 'fdk-aac'
+    args << "--enable-openssl" if build.with? 'openssl'
+    args << "--enable-libopus" if build.with? 'opus'
+    args << "--enable-frei0r" if build.with? 'frei0r'
+    args << "--enable-libcaca" if build.with? 'libcaca'
+    args << "--enable-libquvi" if build.with? 'libquvi'
+
+    if build.with? 'openjpeg'
+      args << '--enable-libopenjpeg'
+      args << '--extra-cflags=' + %x[pkg-config --cflags libopenjpeg].chomp
+    end
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    ENV.append_to_cflags "-mdynamic-no-pic" if MacOS.version == :leopard or Hardware.is_32_bit?
+    ENV.append_to_cflags "-mdynamic-no-pic" if Hardware.is_32_bit? && Hardware::CPU.intel? && ENV.compiler == :clang
 
     system "./configure", *args
 
@@ -98,3 +133,18 @@ class Ffmpeg < Formula
   end
 
 end
+
+__END__
+diff --git a/libavfilter/vf_drawtext.c b/libavfilter/vf_drawtext.c
+index 2358e35..4c08092 100644
+--- a/libavfilter/vf_drawtext.c
++++ b/libavfilter/vf_drawtext.c
+@@ -48,7 +48,6 @@
+ #include "video.h"
+ 
+ #include <ft2build.h>
+-#include <freetype/config/ftheader.h>
+ #include FT_FREETYPE_H
+ #include FT_GLYPH_H
+ #if CONFIG_FONTCONFIG
+

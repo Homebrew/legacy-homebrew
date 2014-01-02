@@ -2,8 +2,8 @@ require 'formula'
 
 class Ttfautohint < Formula
   homepage 'http://www.freetype.org/ttfautohint'
-  url 'http://download.savannah.gnu.org/releases/freetype/ttfautohint-0.92.tar.gz'
-  sha1 'c1d169cae2cf71ca39fe108815844574846113c5'
+  url 'http://downloads.sourceforge.net/project/freetype/ttfautohint/0.97/ttfautohint-0.97.tar.gz'
+  sha1 '8e11226a9d6d2f8210c752dc97c614d5b753651a'
 
   depends_on :freetype
 
@@ -14,7 +14,7 @@ class Ttfautohint < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/ttfautohint -V"
+  test do
+    system "#{bin}/ttfautohint", "-V"
   end
 end

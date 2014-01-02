@@ -2,7 +2,7 @@ require 'formula'
 
 class Ezlupdate < Formula
   homepage 'http://ezpedia.org/ez/ezlupdate'
-  url 'https://github.com/downloads/ezsystems/ezpublish/ezpublish_community_project-2011.10-with_ezc.tar.bz2'
+  url 'https://github.com/downloads/ezsystems/ezpublish-legacy/ezpublish_community_project-2011.10-with_ezc.tar.bz2'
   sha1 'd20912fda2438143d3981ca8e07bb52329e2cf25'
 
   depends_on 'qt'

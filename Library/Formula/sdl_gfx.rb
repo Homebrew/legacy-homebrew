@@ -2,8 +2,8 @@ require 'formula'
 
 class SdlGfx < Formula
   homepage 'http://www.ferzkopp.net/joomla/content/view/19/14/'
-  url 'http://www.ferzkopp.net/Software/SDL_gfx-2.0/SDL_gfx-2.0.23.tar.gz'
-  sha1 'aae60e7fed539f3f8a0a0bd6da3bbcf625642596'
+  url 'http://www.ferzkopp.net/Software/SDL_gfx-2.0/SDL_gfx-2.0.24.tar.gz'
+  sha1 '34e8963188e4845557468a496066a8fa60d5f563'
 
   depends_on 'sdl'
 

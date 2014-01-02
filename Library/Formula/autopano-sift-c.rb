@@ -6,14 +6,15 @@ class AutopanoSiftC < Formula
   sha1 'f8c5f4004ae51cb58acc5cedb065ae0ef3e19a8c'
 
   depends_on 'libpano'
-  depends_on 'cmake' => :install
+  depends_on 'cmake' => :build
 
   def install
     system "cmake", ".", *std_cmake_args
     system "make install"
   end
 
-  def test
-    system "#{bin}/autopano-sift-c | grep 'Version #{version} for hugin 0.7'"
+  test do
+    pipe = IO.popen("#{bin}/autopano-sift-c")
+    assert_match /Version #{Regexp.escape(version)}/, pipe.read
   end
 end

@@ -7,6 +7,7 @@ class Curlftpfs < Formula
 
   head 'https://github.com/rfw/curlftpfs.git'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 
@@ -16,6 +17,9 @@ class Curlftpfs < Formula
   depends_on 'glib'
 
   def install
+    # Compatibility with Automake 1.13 and newer.
+    inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
+
     system "autoreconf", "--force", "--install"
     ENV.append 'CPPFLAGS', '-D__off_t=off_t'
     system "./configure", "--disable-dependency-tracking",

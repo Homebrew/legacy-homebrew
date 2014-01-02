@@ -1,28 +1,37 @@
 require 'formula'
 
 class Autojump < Formula
-  homepage 'https://github.com/joelthelion/autojump/wiki'
-  url 'https://github.com/downloads/joelthelion/autojump/autojump_v20.tar.gz'
-  sha1 '7de157feb90dc22d5959914fa531844c68d5ba7b'
+  homepage 'https://github.com/joelthelion/autojump#name'
+  url 'https://github.com/joelthelion/autojump/archive/release-v21.6.9.tar.gz'
+  sha1 '9d13e56ec1abf76e0e955d754e8a62616bb102a7'
 
   head 'https://github.com/joelthelion/autojump.git'
 
   def install
-    inreplace 'autojump.sh', '/etc/profile.d/', "#{prefix}/etc/"
+    inreplace 'bin/autojump.sh', ' /etc/profile.d/', " #{prefix}/etc/"
 
-    bin.install 'autojump'
-    man1.install 'autojump.1'
-    (prefix+'etc').install 'autojump.sh' => 'autojump'
-    (prefix+'etc').install 'autojump.bash', 'autojump.zsh'
-    (share+'zsh/site-functions').install '_j'
+    bin.install 'bin/autojump'
+    man1.install 'docs/autojump.1'
+    (prefix/'etc').install 'bin/autojump.sh', 'bin/autojump.bash', 'bin/autojump.zsh'
+    zsh_completion.install 'bin/_j'
+    (prefix/'etc').install 'bin/autojump.fish' if build.head?
   end
 
-  def caveats; <<-EOS.undent
-    Add the following lines to your ~/.bash_profile or ~/.zshrc file (and
-    remember to source the file to update your current session):
-    if [ -f `brew --prefix`/etc/autojump ]; then
-      . `brew --prefix`/etc/autojump
-    fi
+  def caveats;
+    msg = <<-EOS.undent
+    Add the following line to your ~/.bash_profile or ~/.zshrc file (and remember
+    to source the file to update your current session):
+      [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
     EOS
+
+    if build.head?
+      msg += <<-EOS.undent
+
+      Add the following line to your ~/.config/fish/config.fish:
+        . /usr/local/Cellar/autojump/HEAD/etc/autojump.fish
+      EOS
+    end
+
+    msg
   end
 end

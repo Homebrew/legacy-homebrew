@@ -2,8 +2,8 @@ require 'formula'
 
 class Sqsh < Formula
   homepage 'http://www.sqsh.org/'
-  url 'http://downloads.sourceforge.net/sourceforge/sqsh/sqsh-2.1.8.tar.gz'
-  sha1 'c16ed1c913169e19340971e3162cca8a8f23ed05'
+  url 'http://downloads.sourceforge.net/project/sqsh/sqsh/sqsh-2.3/sqsh-2.3.tgz'
+  sha1 '225bd6cfa5dcad4fae419becc5217fb3465c66d1'
 
   option "enable-x", "Enable X windows support"
 

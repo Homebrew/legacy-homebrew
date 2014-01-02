@@ -6,9 +6,11 @@
 # * sets permissions on executables
 class Cleaner
 
-  # Create a cleaner for the given formula name, and clean the keg
+  # Create a cleaner for the given formula and clean its keg
   def initialize f
-    @f = Formula.factory f
+    ObserverPathnameExtension.reset_counts!
+
+    @f = f
     [f.bin, f.sbin, f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
 
     if ENV['HOMEBREW_KEEP_INFO']
@@ -22,22 +24,36 @@ class Cleaner
       f.info.rmtree if f.info.directory? and not f.skip_clean? f.info
     end
 
-    # Remove empty folders.
-    # We want post-order traversal, so use a stack.
-    paths = []
-    f.prefix.find do |path|
-      paths << path if path.directory?
+    prune
+  end
+
+  private
+
+  def prune
+    dirs = []
+    symlinks = []
+
+    @f.prefix.find do |path|
+      if @f.skip_clean? path
+        Find.prune
+      elsif path.symlink?
+        symlinks << path
+      elsif path.directory?
+        dirs << path
+      end
     end
 
-    paths.each do |d|
-      if d.children.empty? and not f.skip_clean? d
+    dirs.reverse_each do |d|
+      if d.children.empty?
         puts "rmdir: #{d} (empty)" if ARGV.verbose?
         d.rmdir
       end
     end
-  end
 
-  private
+    symlinks.reverse_each do |s|
+      s.unlink unless s.resolved_path_exists?
+    end
+  end
 
   # Set permissions for executables and non-executables
   def clean_file_permissions path
@@ -46,43 +62,33 @@ class Cleaner
     else
       0444
     end
+    if ARGV.debug?
+      old_perms = path.stat.mode & 0777
+      if perms != old_perms
+        puts "Fixing #{path} permissions from #{old_perms.to_s(8)} to #{perms.to_s(8)}"
+      end
+    end
     path.chmod perms
   end
 
   # Clean a single folder (non-recursively)
   def clean_dir d
     d.find do |path|
-      path.extend(NoiseyPathname) if ARGV.verbose?
+      path.extend(ObserverPathnameExtension)
 
-      if path.directory?
-        # Stop cleaning this subtree if protected
-        Find.prune if @f.skip_clean? path
-      elsif not path.file?
-        # Sanity?
+      Find.prune if @f.skip_clean? path
+
+      if path.symlink? or path.directory?
         next
       elsif path.extname == '.la'
-        # *.la files are stupid
-        path.unlink unless @f.skip_clean? path
+        path.unlink
       elsif path == @f.lib+'charset.alias'
         # Many formulae symlink this file, but it is not strictly needed
-        path.unlink unless @f.skip_clean? path
-      elsif not path.symlink?
-        # Fix permissions
-        clean_file_permissions path
+        path.unlink
+      else
+        clean_file_permissions(path)
       end
     end
   end
 
-end
-
-
-class Pathname
-  alias_method :orig_unlink, :unlink
-end
-
-module NoiseyPathname
-  def unlink
-    puts "rm: #{self}"
-    orig_unlink
-  end
 end

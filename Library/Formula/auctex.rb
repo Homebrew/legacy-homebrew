@@ -1,48 +1,32 @@
 require 'formula'
 
-class TexInstalled < Requirement
-  def message; <<-EOS.undent
-    A TeX/LaTeX installation is required to install.
-    You can obtain the TeX distribution for Mac OS X from:
-        http://www.tug.org/mactex/
-    EOS
-  end
-  def satisfied?
-    which 'latex'
-  end
-  def fatal?
-    true
-  end
-end
-
 class Auctex < Formula
-  homepage 'http://ftp.gnu.org/pub/gnu/auctex'
-  url 'http://ftpmirror.gnu.org/auctex/auctex-11.86.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/auctex/auctex-11.86.tar.gz'
-  sha1 'af3dd156f8b2db7764c86d9f7de8abd5811d888a'
+  homepage 'http://www.gnu.org/software/auctex/'
+  url 'http://ftpmirror.gnu.org/auctex/auctex-11.87.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/auctex/auctex-11.87.tar.gz'
+  sha1 '0be92c7d8f89d57346fe07f05a1a045ffd11cd71'
 
-  env :userpaths
-
-  depends_on TexInstalled.new
-
-  def options
-    [['--with-emacs=</full/path/to/emacs>', "Force a different emacs"]]
+  head do
+    url 'git://git.savannah.gnu.org/auctex.git'
+    depends_on :autoconf
   end
+
+  depends_on :tex
+
+  option "with-emacs=", "Path to an emacs binary"
 
   def which_emacs
-    # check arguments for a different emacs
-    ARGV.each do |a|
-      if a.index('--with-emacs')
-        return a.sub('--with-emacs=', '')
-      end
-    end
-    return `which emacs`.chomp
+    emacs = ARGV.value('with-emacs') || which('emacs').to_s
+    raise "#{emacs} not found" unless File.exist? emacs
+    return emacs
   end
 
   def install
     # configure fails if the texmf dir is not there yet
     brew_texmf = share + 'texmf'
     brew_texmf.mkpath
+
+    system "./autogen.sh" if build.head?
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-texmf-dir=#{brew_texmf}",
@@ -83,5 +67,4 @@ class Auctex < Formula
 #{dot_emacs}
     EOS
   end
-
 end

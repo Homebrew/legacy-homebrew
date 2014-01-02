@@ -1,8 +1,8 @@
 require 'formula'
 
 class Nacl < Formula
-  url 'http://hyperelliptic.org/nacl/nacl-20110221.tar.bz2'
   homepage 'http://nacl.cace-project.eu'
+  url 'http://hyperelliptic.org/nacl/nacl-20110221.tar.bz2'
   sha1 '6007a6aee249f5a534ec53fddfc364601fba9629'
 
   def install

@@ -1,18 +1,18 @@
 require 'formula'
 
 class ObjectiveCaml < Formula
-  homepage 'http://www.ocaml-lang.org'
-  url 'http://caml.inria.fr/pub/distrib/ocaml-4.00/ocaml-4.00.1.tar.bz2'
-  sha1 '10b8a4d0b88d20b003e3dd719f2ac9434e6a1042'
+  homepage 'http://ocaml.org'
+  url 'http://caml.inria.fr/pub/distrib/ocaml-4.01/ocaml-4.01.0.tar.gz'
+  sha1 '31ae98051d42e038f4fbc5fd338c4fa5c36744e0'
 
   head 'http://caml.inria.fr/svn/ocaml/trunk', :using => :svn
 
   depends_on :x11 if MacOS::X11.installed?
 
   bottle do
-    sha1 'b5c2e3a881fa0080725d83a994d30f1ebc2bb99f' => :mountainlion
-    sha1 '0d7ca01705c22e203e9ddff748b944da6cba921b' => :lion
-    sha1 'b485f013972629a06f883e080ee1c71055579288' => :snowleopard
+    sha1 'cba09036b0ddc87f04675f3ceaac2c46b99dcb20' => :mountain_lion
+    sha1 '90e110ace80da3e633b3ba0b95530fe5d43045d7' => :lion
+    sha1 '5b320577bcb6e39ada153e2de14a105a2afb5ca2' => :snow_leopard
   end
 
   def install

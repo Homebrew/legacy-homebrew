@@ -1,11 +1,21 @@
 require 'formula'
 
 class Smake < Formula
-  url 'ftp://ftp.berlios.de/pub/smake/alpha/smake-1.2a49.tar.bz2'
   homepage 'http://cdrecord.berlios.de/private/smake.html'
-  sha1 '7b50e1f81758fd6a732ddc7a78838bd2c96d1090'
+  url 'ftp://ftp.berlios.de/pub/smake/smake-1.2.3.tar.bz2'
+  sha1 'e5bacf4d092835feeb11eeb1c788c5fafeb22dcf'
+
+  # A sed operation silently fails on Lion or older, due
+  # to some locale settings in smake's build files. The sed
+  # wrapper on 10.8+ overrides them.
+  env :std if MacOS.version <= :lion
 
   def install
-    system "make", "GMAKE_NOWARN=true", "INS_BASE=#{prefix}", "INS_RBASE=#{prefix}", "MANDIR=share/man", "install"
+    ENV.delete 'MAKEFLAGS' # the bootstrap smake does not like -j
+
+    system "make", "GMAKE_NOWARN=true", "INS_BASE=#{libexec}", "INS_RBASE=#{libexec}", "install"
+    bin.install_symlink libexec/"bin/smake"
+    man1.install_symlink Dir["#{libexec}/share/man/man1/*.1"]
+    man5.install_symlink Dir["#{libexec}/share/man/man5/*.5"]
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class E2fsprogs < Formula
   homepage 'http://e2fsprogs.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/e2fsprogs/e2fsprogs-1.42.6.tar.gz'
-  sha1 'cd05cd4205a00d01a6da821660cff386788e9be3'
+  url 'http://downloads.sourceforge.net/e2fsprogs/e2fsprogs-1.42.8.tar.gz'
+  sha1 '79cdb2374a9c0e68f01739598679db06d546b897'
 
   head 'https://git.kernel.org/pub/scm/fs/ext2/e2fsprogs.git'
 
@@ -12,8 +12,9 @@ class E2fsprogs < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
 
+  # MacPorts patch to compile libs correctly.
+  # Fix a bare return for clang.
   def patches
-    # MacPorts patch to compile libs correctly.
     {:p0 => [
       "https://trac.macports.org/export/92117/trunk/dports/sysutils/e2fsprogs/files/patch-lib__Makefile.darwin-lib"
     ]}
