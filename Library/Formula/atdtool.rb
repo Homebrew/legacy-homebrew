@@ -2,8 +2,8 @@ require 'formula'
 
 class Atdtool < Formula
   homepage 'https://github.com/lpenz/atdtool'
-  url 'https://github.com/lpenz/atdtool/archive/2103e80ca8ec5a2e059d68e310f4a95af65d6b78.zip'
-  sha1 '3ceb71219599d6633e8dc48e6ac66369f2e4932d'
+  url 'https://github.com/lpenz/atdtool/archive/upstream/1.3.zip'
+  sha1 '753abbfccd29d88abe774c032e58ea9428d8f6db'
   version '1.3'
 
   depends_on :python
