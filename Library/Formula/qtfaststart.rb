@@ -1,9 +1,9 @@
 require 'formula'
 
 class Qtfaststart < Formula
-  homepage 'http://libav.org/'
-  url 'http://libav.org/releases/libav-0.8.3.tar.gz'
-  sha1 'd81a156e6482b970a21c5e08239eaf1d841b9b35'
+  homepage 'http://ffmpeg.org/'
+  url 'http://ffmpeg.org/releases/ffmpeg-2.1.1.tar.bz2'
+  sha1 'e7a5b2d7f702c4e9ca69e23c6d3527f93de0d1bd'
 
   def install
     system ENV.cc, '-o', 'tools/qt-faststart', 'tools/qt-faststart.c'
