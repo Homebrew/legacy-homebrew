@@ -15,7 +15,7 @@ class Gtkx < Formula
   depends_on 'jasper' => :optional
   depends_on 'atk'
   depends_on 'cairo'
-  depends_on :x11 => '2.3.6'
+  depends_on :x11 => ['2.3.6', :recommended]
 
   fails_with :llvm do
     build 2326
@@ -23,11 +23,17 @@ class Gtkx < Formula
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-glibtest",
-                          "--disable-introspection",
-                          "--disable-visibility"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-glibtest
+      --disable-introspection
+      --disable-visibility
+    ]
+
+    args << '--with-gdktarget=quartz' if build.without? 'x'
+
+    system "./configure", *args
     system "make install"
   end
 
