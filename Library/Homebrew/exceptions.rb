@@ -228,11 +228,6 @@ class CompilerSelectionError < Homebrew::InstallationError
   end
 end
 
-# raised in install_tap
-class AlreadyTappedError < RuntimeError
-  def initialize; super "Already tapped!" end
-end
-
 # raised in CurlDownloadStrategy.fetch
 class CurlDownloadStrategyError < RuntimeError; end
 
