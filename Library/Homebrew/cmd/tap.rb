@@ -10,7 +10,11 @@ module Homebrew extend self
     elsif ARGV.first == "--repair"
       repair_taps
     else
-      install_tap(*tap_args)
+      begin
+        install_tap(*tap_args)
+      rescue AlreadyTappedError => e
+        opoo e.message
+      end
     end
   end
 
