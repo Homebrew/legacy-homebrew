@@ -20,6 +20,11 @@ class Saltstack < Formula
   head 'https://github.com/saltstack/salt.git', :branch => :develop,
     :using => SaltHeadDownloadStrategy
 
+  devel do
+    url 'https://github.com/saltstack/salt/archive/v2014.1.0rc1.tar.gz'
+    sha1 'b7348a8aada847d1423a73d2a1a277d7cf9930eb'
+  end
+
   depends_on :python
   depends_on 'swig' => :build
   depends_on 'zeromq'
