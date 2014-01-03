@@ -7,7 +7,6 @@ class Passenger < Formula
   head 'https://github.com/phusion/passenger.git'
 
   depends_on :macos => :lion
-  depends_on 'curl'
 
   def install
     rake "apache2"
