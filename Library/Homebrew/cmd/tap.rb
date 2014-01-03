@@ -10,7 +10,7 @@ module Homebrew extend self
     elsif ARGV.first == "--repair"
       repair_taps
     else
-      install_tap(*tap_args)
+      opoo "Already tapped!" unless install_tap(*tap_args)
     end
   end
 
@@ -23,7 +23,7 @@ module Homebrew extend self
 
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
-    raise AlreadyTappedError if tapd.directory?
+    return false if tapd.directory?
     abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
 
     files = []
@@ -46,6 +46,8 @@ module Homebrew extend self
       puts "   git remote set-url origin git@github.com:#{repouser}/homebrew-#{repo}.git"
       puts
     end
+
+    true
   end
 
   def link_tap_formula formulae
