@@ -2,7 +2,7 @@ require 'formula'
 
 class Fossil < Formula
   homepage 'http://www.fossil-scm.org/'
-  head 'fossil://http://www.fossil-scm.org/'
+  # defining 'fossil://' head url causes recursive error in dependency tracking
   url 'http://www.fossil-scm.org/download/fossil-src-20130911114349.tar.gz'
   sha1 '2e2149fff30d63a1869ecb5a7d6b17996477612a'
   version '1.27'
