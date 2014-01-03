@@ -22,6 +22,6 @@ class Byobu < Formula
   end
 
   test do
-    system "#{bin}/byobu-config"
+    system "#{bin}/byobu -v"
   end
 end
