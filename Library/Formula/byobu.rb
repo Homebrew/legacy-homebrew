@@ -22,6 +22,7 @@ class Byobu < Formula
   end
 
   test do
-    system "#{bin}/byobu-config"
+    ENV["BYOBU_PREFIX"] = `brew --prefix`
+    system "#{bin}/byobu -v"
   end
 end
