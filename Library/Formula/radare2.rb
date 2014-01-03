@@ -4,7 +4,7 @@ class Radare2 < Formula
   homepage 'http://radare.org'
   url 'https://github.com/radare/radare2/archive/4a5165f232.tar.gz'
   sha1 'd9eece2accc7598906383cadb7334d99c2713134'
-  version '0.9.7'
+  version '0.9.7git'
   head 'https://github.com/radare/radare2.git'
 
   option 'with-brewed-openssl', 'Build with Homebrew OpenSSL instead of the system version'
