@@ -16,10 +16,7 @@ class Radare2 < Formula
   depends_on "openssl" if MacOS.version <= :leopard or build.with?('brewed-openssl')
 
   def install
-    args = [
-      "--prefix=#{prefix}",
-      "--with-ostype=darwin",
-    ]
+    args = [ "--prefix=#{prefix}", "--with-ostype=darwin" ]
     if build.with? 'brewed-openssl'
       args << "--with-openssl=#{Formula.factory('openssl').opt_prefix}"
     elsif MacOS.version > :leopard
