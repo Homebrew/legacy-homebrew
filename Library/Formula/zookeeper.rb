@@ -73,14 +73,6 @@ class Zookeeper < Formula
       system "make install"
     end if build_c
 
-    # Install Python bindings
-    python do
-      cd "src/contrib/zkpython" do
-        system python, "src/python/setup.py", "build"
-        system python, "src/python/setup.py", "install", "--prefix=#{prefix}"
-      end
-    end
-
     # Install Perl bindings
     cd "src/contrib/zkperl" do
       system "perl", "Makefile.PL", "PREFIX=#{prefix}",
