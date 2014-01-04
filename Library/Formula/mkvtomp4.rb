@@ -12,7 +12,7 @@ class Mkvtomp4 < Formula
 
   def install
     system "make"
-    system python, "setup.py", "build"
+    system "python", "setup.py", "build"
     # Install manully; we don't install an egg-info
     bin.install 'mkvtomp4'
     man1.install 'doc/mkvtomp4.1'
