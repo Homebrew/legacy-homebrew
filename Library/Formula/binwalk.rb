@@ -8,15 +8,12 @@ class Binwalk < Formula
   depends_on 'libmagic' => 'with-python'
 
   option 'with-matplotlib', 'Check for presence of matplotlib, which is required for entropy graphing support'
-  if build.with? 'matplotlib'
-    depends_on :python => 'matplotlib'
-  else
-    depends_on :python
-  end
+  depends_on 'matplotlib' => :python if build.with? 'matplotlib'
+  depends_on :python
 
   def install
     cd "src" do
-      system python, "setup.py", "install", "--no-prereq-checks", "--prefix=#{prefix}"
+      system "python", "setup.py", "install", "--no-prereq-checks", "--prefix=#{prefix}"
     end
   end
 end
