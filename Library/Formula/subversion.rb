@@ -34,7 +34,7 @@ class Subversion < Formula
   depends_on :libtool
 
   # Bindings require swig
-  depends_on 'swig' if build.include? 'perl' or build.include? 'python' or build.include? 'ruby'
+  depends_on 'swig' if build.include? 'perl' or build.with? 'python' or build.include? 'ruby'
 
   # For Serf
   depends_on 'scons' => :build
@@ -149,7 +149,7 @@ class Subversion < Formula
     system "make tools"
     system "make install-tools"
 
-    python do
+    if build.with? 'python'
       system "make swig-py"
       system "make install-swig-py"
     end
@@ -204,8 +204,6 @@ class Subversion < Formula
       svntools have been installed to:
         #{opt_prefix}/libexec
     EOS
-
-    s += python.standard_caveats if python
 
     if build.include? 'perl'
       s += <<-EOS.undent
