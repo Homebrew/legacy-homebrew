@@ -9,8 +9,6 @@ class Treeline < Formula
   depends_on 'pyqt'
 
   def install
-    python do
-      system "./install.py", "-p#{prefix}"
-    end
+    system "./install.py", "-p#{prefix}"
   end
 end
