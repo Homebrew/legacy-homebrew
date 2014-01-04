@@ -2,8 +2,8 @@ require 'formula'
 
 class Libbson < Formula
   homepage 'https://github.com/mongodb/libbson'
-  url 'https://github.com/mongodb/libbson/releases/download/0.2.4/libbson-0.2.4.tar.gz'
-  sha1 '53972c042f7d453e172132fe499b21a216746b9d'
+  url 'https://github.com/mongodb/libbson/releases/download/0.4.0/libbson-0.4.0.tar.gz'
+  sha1 '3652df214a14728b2d3075ef97f727b55ff3f17c'
 
   depends_on :automake
 
