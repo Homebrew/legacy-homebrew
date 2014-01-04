@@ -39,17 +39,15 @@ class Wxmac < Formula
     cd "wxPython" do
       ENV.append_to_cflags "-arch #{MacOS.preferred_arch}"
 
-      python do
-        system python, "setup.py",
-                       "build_ext",
-                       "WXPORT=osx_cocoa",
-                       *args
-        system python, "setup.py",
-                       "install",
-                       "--prefix=#{prefix}",
-                       "WXPORT=osx_cocoa",
-                       *args
-      end
+      system "python", "setup.py",
+                     "build_ext",
+                     "WXPORT=osx_cocoa",
+                     *args
+      system "python", "setup.py",
+                     "install",
+                     "--prefix=#{prefix}",
+                     "WXPORT=osx_cocoa",
+                     *args
     end
   end
 
