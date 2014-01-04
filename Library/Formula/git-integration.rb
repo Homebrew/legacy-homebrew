@@ -18,6 +18,16 @@ class GitIntegration < Formula
   end
 
   test do
-    system "#{bin}/git-integration", "--version"
+    system "git", "init"
+    system "git", "commit", "--allow-empty", "-m", "'An initial commit'"
+    system "git", "checkout", "-b", "branch-a", "master"
+    system "git", "commit", "--allow-empty", "-m", "'A commit on branch-a'"
+    system "git", "checkout", "-b", "branch-b", "master"
+    system "git", "commit", "--allow-empty", "-m", "'A commit on branch-b'"
+    system "git", "checkout", "master"
+    system "git", "integration", "--create", "integration"
+    system "git", "integration", "--add", "branch-a"
+    system "git", "integration", "--add", "branch-b"
+    system "git", "integration", "--rebuild"
   end
 end
