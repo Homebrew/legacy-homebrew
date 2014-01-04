@@ -119,7 +119,7 @@ module Stdenv
     self.cxx = "#{MacOS.dev_tools_path}/g++-4.0"
     replace_in_cflags '-O4', '-O3'
     set_cpu_cflags '-march=nocona -mssse3'
-    @compiler = :gcc
+    @compiler = :gcc_4_0
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 
@@ -131,7 +131,7 @@ module Stdenv
     self.cc  = MacOS.locate("gcc-4.2")
     self.cxx = MacOS.locate("g++-4.2")
 
-    unless cc
+    if cc.empty?
       self.cc  = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
       self.cxx = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
       raise "GCC could not be found" unless File.exist? cc
