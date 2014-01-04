@@ -4,7 +4,6 @@ class Screenbrightness < Formula
   homepage 'https://github.com/jmstacey/screenbrightness'
   url 'https://github.com/jmstacey/screenbrightness/archive/1.1.tar.gz'
   sha1 'f9750733ac298837f519fcfedcbfec74f781bc68'
-  head 'https://github.com/jmstacey/screenbrightness.git'
 
   def install
     system "make"
