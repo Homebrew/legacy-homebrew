@@ -52,42 +52,23 @@ class Mitmproxy < Formula
     end
   end
 
-  # TODO: Move this into Library/Homebrew somewhere (see also ansible.rb).
-  def wrap bin_file, pythonpath
-    bin_file = Pathname.new bin_file
-    libexec_bin = Pathname.new libexec/'bin'
-    libexec_bin.mkpath
-    mv bin_file, libexec_bin
-    bin_file.write <<-EOS.undent
-      #!/bin/sh
-      PYTHONPATH="#{pythonpath}:$PYTHONPATH" "#{libexec_bin}/#{bin_file.basename}" "$@"
-    EOS
-  end
-
   def install
+    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    python do
-      resource('pyopenssl').stage { system python, *install_args }
-      resource('pillow').stage { system python, *install_args }
-      resource('flask').stage { system python, *install_args }
-      resource('lxml').stage { system python, *install_args }
-      resource('netlib').stage { system python, *install_args }
-      resource('pyasn1').stage { system python, *install_args }
-      resource('urwid').stage { system python, *install_args }
-      if build.with? 'pyamf'
-        resource('pyamf').stage { system python, *install_args }
-      end
-
-      inreplace 'libmproxy/__init__.py',
-                /^$/,
-                "import site; site.addsitedir('#{python.private_site_packages}')"
-
-      system python, "setup.py", "install", "--prefix=#{prefix}"
+    resource('pyopenssl').stage { system "python", *install_args }
+    resource('pillow').stage { system "python", *install_args }
+    resource('flask').stage { system "python", *install_args }
+    resource('lxml').stage { system "python", *install_args }
+    resource('netlib').stage { system "python", *install_args }
+    resource('pyasn1').stage { system "python", *install_args }
+    resource('urwid').stage { system "python", *install_args }
+    if build.with? 'pyamf'
+      resource('pyamf').stage { system "python", *install_args }
     end
 
-    Dir["#{bin}/*"].each do |bin_file|
-      wrap bin_file, python.site_packages
-    end
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 end
