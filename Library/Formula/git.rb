@@ -18,7 +18,6 @@ class Git < Formula
   option 'with-brewed-curl', "Use Homebrew's version of cURL library"
   option 'with-persistent-https', 'Build git-remote-persistent-https from "contrib" directory'
 
-  depends_on :python
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
   depends_on 'openssl' if build.with? 'brewed-openssl'
@@ -52,7 +51,7 @@ class Git < Formula
     ENV['NO_DARWIN_PORTS'] = '1'
     ENV['V'] = '1' # build verbosely
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
-    ENV['PYTHON_PATH'] = python.binary if python
+    ENV['PYTHON_PATH'] = which 'python'
     ENV['PERL_PATH'] = which 'perl'
 
     if MacOS.version >= :mavericks and MacOS.dev_tools_prefix
