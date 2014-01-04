@@ -796,7 +796,7 @@ class Formula
     #   version "The official release number for the latest incompatible
     #            version, for instance 4.8.1"
     # end
-    # 
+    #
     # `major_version` should be the major release number only, for instance
     # '4.8' for the GCC 4.8 series (4.8.0, 4.8.1, etc.).
     # If `version` or the block is omitted, then the compiler will be
@@ -804,7 +804,7 @@ class Formula
     #
     # For example, if a bug is only triggered on GCC 4.8.1 but is not
     # encountered on 4.8.2:
-    # 
+    #
     # fails_with :gcc => '4.8' do
     #   version '4.8.1'
     # end
