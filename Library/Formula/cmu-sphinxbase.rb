@@ -6,7 +6,6 @@ class CmuSphinxbase < Formula
   sha1 'c0c4d52e143d07cd593bd6bcaeb92b9a8a5a8c8e'
 
   depends_on 'pkg-config' => :build
-  depends_on :python
   depends_on 'libsndfile' => :optional
   depends_on 'libsamplerate' => :optional
 
@@ -15,9 +14,5 @@ class CmuSphinxbase < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
-  end
-
-  def caveats
-    python.standard_caveats if python
   end
 end
