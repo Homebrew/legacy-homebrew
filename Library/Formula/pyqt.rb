@@ -6,15 +6,10 @@ class Pyqt < Formula
   sha1 'ba5465f92fb43c9f0a5b948fa25df5045f160bf0'
 
   depends_on :python => :recommended
-  depends_on :python3 => :optional
 
   depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
 
-  if build.with? 'python3'
-    depends_on 'sip' => 'with-python3'
-  else
-    depends_on 'sip'
-  end
+  depends_on 'sip'
 
   def patches
     # On Mavericks we want to target libc++, but this requires a user specified
@@ -27,48 +22,35 @@ class Pyqt < Formula
   end
 
   def install
-    python do
-
-      # On Mavericks we want to target libc++, this requires a non default qt makespec
-      if ENV.compiler == :clang and MacOS.version >= :mavericks
-        ENV.append "QMAKESPEC", "unsupported/macx-clang-libc++"
-      end
-
-      args = [ "--confirm-license",
-               "--bindir=#{bin}",
-               "--destdir=#{lib}/#{python.xy}/site-packages",
-               "--sipdir=#{share}/sip#{python.if3then3}" ]
-      # We need to run "configure.py" so that pyqtconfig.py is generated, which
-      # is needed by PyQWT (and many other PyQt interoperable implementations such
-      # as the ROS GUI libs). This file is currently needed for generating build
-      # files appropriate for the qmake spec that was used to build Qt. This method
-      # is deprecated and will be removed with SIP v5, so we do the actual compile
-      # using the newer configure-ng.py as recommended.
-      system python, "configure.py", *args
-      (python.site_packages/'PyQt4').install 'pyqtconfig.py'
-
-      # On Mavericks we want to target libc++, this requires a non default qt makespec
-      if ENV.compiler == :clang and MacOS.version >= :mavericks
-        args << "--spec" << "unsupported/macx-clang-libc++"
-      end
-
-      system python, "./configure-ng.py", *args
-      system "make"
-      system "make", "install"
-      system "make", "clean"  # because this python block may be run twice
+    # On Mavericks we want to target libc++, this requires a non default qt makespec
+    if ENV.compiler == :clang and MacOS.version >= :mavericks
+      ENV.append "QMAKESPEC", "unsupported/macx-clang-libc++"
     end
 
-    if build.with? 'python3' and build.with? 'python'
-      ['pyuic4', 'pyrcc4', 'pylupdate4'].each { |f| mv(bin/f, bin/"#{f}-py3")}
-    end
-  end
+    args = [ "--confirm-license",
+             "--bindir=#{bin}",
+             "--destdir=#{lib}/python2.7/site-packages",
+             "--sipdir=#{share}/sip" ]
+    # We need to run "configure.py" so that pyqtconfig.py is generated, which
+    # is needed by PyQWT (and many other PyQt interoperable implementations such
+    # as the ROS GUI libs). This file is currently needed for generating build
+    # files appropriate for the qmake spec that was used to build Qt. This method
+    # is deprecated and will be removed with SIP v5, so we do the actual compile
+    # using the newer configure-ng.py as recommended.
+    system "python", "configure.py", *args
+    (lib/'python2.7/site-packages').install 'pyqtconfig.py'
 
-  def caveats
-    python.standard_caveats if python
+    # On Mavericks we want to target libc++, this requires a non default qt makespec
+    if ENV.compiler == :clang and MacOS.version >= :mavericks
+      args << "--spec" << "unsupported/macx-clang-libc++"
+    end
+
+    system "python", "./configure-ng.py", *args
+    system "make"
+    system "make", "install"
   end
 
   test do
-    # To test Python 3.x, you have to `brew test pyqt --with-python3`
     Pathname('test.py').write <<-EOS.undent
       import sys
       from PyQt4 import QtGui, QtCore
@@ -87,9 +69,7 @@ class Pyqt < Formula
       window.show()
       sys.exit(app.exec_())
     EOS
-    python do
-      system python, "test.py"
-    end
+    system "python", "test.py"
   end
 end
 __END__
