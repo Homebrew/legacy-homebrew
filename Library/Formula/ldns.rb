@@ -26,10 +26,7 @@ class Ldns < Formula
       args << "--with-ssl=#{MacOS.sdk_path}/usr"
     end
 
-    if build.with? 'python'
-      args << "--with-pyldns"
-      ENV['PYTHON_SITE_PKG'] = python.site_packages
-    end
+    args << "--with-pyldns" if build.with? 'python'
 
     system "./configure", *args
     system "make"
