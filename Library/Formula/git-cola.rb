@@ -9,7 +9,6 @@ class GitCola < Formula
 
   option 'with-docs', "Build man pages using asciidoc and xmlto"
 
-  depends_on :python
   depends_on 'pyqt'
 
   if build.include? 'with-docs'
@@ -19,16 +18,13 @@ class GitCola < Formula
   end
 
   def install
-    python do
-      # The python do block creates the PYTHONPATH and temp. site-packages
-      system "make", "prefix=#{prefix}", "install"
+    system "make", "prefix=#{prefix}", "install"
 
-      if build.include? 'with-docs'
-        system "make", "-C", "share/doc/git-cola",
-                       "-f", "Makefile.asciidoc",
-                       "prefix=#{prefix}",
-                       "install", "install-html"
-      end
+    if build.include? 'with-docs'
+      system "make", "-C", "share/doc/git-cola",
+                     "-f", "Makefile.asciidoc",
+                     "prefix=#{prefix}",
+                     "install", "install-html"
     end
   end
 
