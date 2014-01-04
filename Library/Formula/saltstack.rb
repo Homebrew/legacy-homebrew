@@ -60,40 +60,24 @@ class Saltstack < Formula
     sha1 '5915f60033168a7b6f1e76ddb8a514f84ebcdf81'
   end
 
-  def wrap bin_file, pythonpath
-    bin_file = Pathname.new bin_file
-    libexec_bin = Pathname.new libexec/'bin'
-    libexec_bin.mkpath
-    mv bin_file, libexec_bin
-    bin_file.write <<-EOS.undent
-      #!/bin/sh
-      PYTHONPATH="#{pythonpath}:$PYTHONPATH" "#{libexec_bin}/#{bin_file.basename}" "$@"
-    EOS
-  end
-
   def install
+    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    python do
-      resource('pycrypto').stage { system python, *install_args }
-      resource('pyyaml').stage { system python, *install_args }
-      resource('pyzmq').stage { system python, *install_args }
-      resource('msgpack-python').stage { system python, *install_args }
-      resource('markupsafe').stage { system python, *install_args }
-      resource('m2crypto').stage { system python, *install_args }
-      resource('jinja2').stage { system python, *install_args }
-    end
+    resource('pycrypto').stage { system "python", *install_args }
+    resource('pyyaml').stage { system "python", *install_args }
+    resource('pyzmq').stage { system "python", *install_args }
+    resource('msgpack-python').stage { system "python", *install_args }
+    resource('markupsafe').stage { system "python", *install_args }
+    resource('m2crypto').stage { system "python", *install_args }
+    resource('jinja2').stage { system "python", *install_args }
 
-  inreplace 'salt/__init__.py',
-    "import warnings",
-    "import warnings; import site; site.addsitedir('#{python.private_site_packages}')"
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
 
-   system python, "setup.py", "install", "--prefix=#{prefix}"
-    Dir["#{bin}/*"].each do |bin_file|
-      wrap bin_file, python.site_packages
-    end
-   man1.install Dir['doc/man/*.1']
-   man7.install Dir['doc/man/*.7']
+    man1.install Dir['doc/man/*.1']
+    man7.install Dir['doc/man/*.7']
+
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
   test do
