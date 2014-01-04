@@ -14,18 +14,15 @@ class Distcc < Formula
   url 'http://distcc.googlecode.com/files/distcc-3.2rc1.tar.gz'
   sha1 '7cd46fe0926a3a859a516274e6ae59fa8ba0262d'
 
-  depends_on :python
   depends_on PythonWithoutPPC
 
   def install
-    python do
-      # Make sure python stuff is put into the Cellar.
-      # --root triggers a bug and installs into HOMEBREW_PREFIX/lib/python2.7/site-packages instead of the Cellar.
-      inreplace 'Makefile.in', '--root="$$DESTDIR"', ""
+    # Make sure python stuff is put into the Cellar.
+    # --root triggers a bug and installs into HOMEBREW_PREFIX/lib/python2.7/site-packages instead of the Cellar.
+    inreplace 'Makefile.in', '--root="$$DESTDIR"', ""
 
-      system "./configure", "--prefix=#{prefix}"
-      system "make install"
-    end
+    system "./configure", "--prefix=#{prefix}"
+    system "make install"
     plist_path.write startup_plist
     plist_path.chmod 0644
   end
@@ -62,6 +59,6 @@ class Distcc < Formula
   end
 
   def test
-    system "#{bin}/distcc"
+    system "#{bin}/distcc", "--version"
   end
 end
