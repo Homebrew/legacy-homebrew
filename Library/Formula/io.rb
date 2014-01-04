@@ -45,12 +45,7 @@ class Io < Formula
         '#add_subdirectory(Python)'
     end
     mkdir 'buildroot' do
-      args = std_cmake_args
-      # For Xcode-only systems, the headers of system's python are inside of Xcode:
-      args << "-DPYTHON_INCLUDE_DIR='#{python.incdir}'" if python
-      # Cmake picks up the system's python dylib, even if we have a brewed one:
-      args << "-DPYTHON_LIBRARY='#{python.libdir}/lib#{python.xy}.dylib'" if python
-      system "cmake", "..", *args
+      system "cmake", "..", *std_cmake_args
       system 'make'
       output = %x[./_build/binaries/io ../libs/iovm/tests/correctness/run.io]
       if $?.exitstatus != 0
