@@ -31,7 +31,7 @@ class Mercurial < Formula
   end
 
   def caveats
-    if build.head? <<-EOS.undent
+    if build.head?; <<-EOS.undent
       To install the --HEAD version of mercurial, you have to:
         1. `brew install mercurial`  # so brew can use this to fetch sources!
         2. `brew unlink mercurial`
