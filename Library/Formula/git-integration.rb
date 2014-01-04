@@ -23,7 +23,7 @@ class GitIntegration < Formula
 
   def install
     ENV["XML_CATALOG_FILES"] = "#{HOMEBREW_PREFIX}/etc/xml/catalog"
-    (buildpath/"config.mak").write("prefix = #{prefix}")
+    (buildpath/"config.mak").write "prefix = #{prefix}"
     system "make", "install"
     if build.include? "with-asciidoc"
       system "make", "install-doc"
