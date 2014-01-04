@@ -73,7 +73,7 @@ class Redland < Formula
         end
 
         if build.with? 'python'
-          ENV['PYTHON_LIB'] = python.site_packages
+          ENV['PYTHON_LIB'] = lib/'python2.7/site-packages'
           args << "--with-python"
         end
 
@@ -111,8 +111,6 @@ class Redland < Formula
           #{HOMEBREW_PREFIX}/lib/ruby/site_ruby
       EOS
     end
-
-    s += python.standard_caveats if python
 
     return s.empty? ? nil : s
   end
