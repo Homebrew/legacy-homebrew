@@ -51,7 +51,7 @@ class Thrift < Formula
   end
 
   def caveats
-    s = <<-EOS.undent
+    <<-EOS.undent
     To install Ruby bindings:
       gem install thrift
 
@@ -61,7 +61,6 @@ class Thrift < Formula
       brew install thrift --with-php
 
     EOS
-    s += python.standard_caveats if python
   end
 end
 __END__
