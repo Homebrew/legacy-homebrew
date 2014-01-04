@@ -25,9 +25,10 @@ class Qt5 < Formula
     :using => Qt5HeadDownloadStrategy
 
   bottle do
-    sha1 '38ae6b107af1e34635cf9e6efc69e630518cc0a6' => :mavericks
-    sha1 '7623e90ae623360a1f6ca282ca8003ae8ee04c55' => :mountain_lion
-    sha1 '1f58eab10d42880b444c6c151e2075227574fa8d' => :lion
+    revision 2
+    sha1 '1a5b899ee0fefe314dd888165a09b97911bcfe64' => :mavericks
+    sha1 '7f2474db9e9ef425b437a55836b5cf8b6c468ce9' => :mountain_lion
+    sha1 'd3da157c54337a020b25cf1358b5362345416ccc' => :lion
   end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
@@ -47,6 +48,7 @@ class Qt5 < Formula
     ENV.universal_binary if build.universal?
     args = ["-prefix", prefix,
             "-system-zlib",
+            "-qt-libpng", "-qt-libjpeg",
             "-confirm-license", "-opensource",
             "-nomake", "examples",
             "-nomake", "tests",

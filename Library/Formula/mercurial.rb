@@ -11,28 +11,19 @@ class Mercurial < Formula
   option 'enable-docs', "Build the docs (and require docutils)"
 
   depends_on :python
-  depends_on :python => 'docutils' if build.include? 'enable-docs'
+  depends_on 'docutils' => :python if build.include? 'enable-docs'
 
   def install
     ENV.minimal_optimization if MacOS.version <= :snow_leopard
-    python do
-      # Inside this python do block, the PYTHONPATH (and more) is alreay set up
-      if python.from_osx? && !MacOS::CLT.installed?
-        # Help castrated system python on Xcode find the Python.h:
-        # Setting CFLAGS does not work :-(
-        inreplace 'setup.py', 'get_python_inc()', "'#{python.incdir}'"
-      end
-
-      if build.include? 'enable-doc'
-        system "make", "doc", "PREFIX=#{prefix}"
-        system "make", "install-doc", "PREFIX=#{prefix}"
-      end
-
-      system "make", "PREFIX=#{prefix}", "install-bin"
-      # Install man pages, which come pre-built in source releases
-      man1.install 'doc/hg.1'
-      man5.install 'doc/hgignore.5', 'doc/hgrc.5'
+    if build.include? 'enable-doc'
+      system "make", "doc", "PREFIX=#{prefix}"
+      system "make", "install-doc", "PREFIX=#{prefix}"
     end
+
+    system "make", "PREFIX=#{prefix}", "install-bin"
+    # Install man pages, which come pre-built in source releases
+    man1.install 'doc/hg.1'
+    man5.install 'doc/hgignore.5', 'doc/hgrc.5'
 
     # install the completion scripts
     bash_completion.install 'contrib/bash_completion' => 'hg-completion.bash'
@@ -40,8 +31,7 @@ class Mercurial < Formula
   end
 
   def caveats
-    s = ''
-    if build.head? then s += <<-EOS.undent
+    if build.head?; <<-EOS.undent
       To install the --HEAD version of mercurial, you have to:
         1. `brew install mercurial`  # so brew can use this to fetch sources!
         2. `brew unlink mercurial`
@@ -49,8 +39,6 @@ class Mercurial < Formula
         4. `brew cleanup mercurial`  # to remove the older non-HEAD version
       EOS
     end
-    s += python.standard_caveats if python
-    s
   end
 
   test do

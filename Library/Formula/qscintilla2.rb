@@ -7,7 +7,6 @@ class Qscintilla2 < Formula
 
   depends_on 'pyqt'
   depends_on 'sip'
-  depends_on :python
 
   def install
 
@@ -24,22 +23,15 @@ class Qscintilla2 < Formula
       system "make", "install"
     end
 
-    python do
-      cd 'Python' do
-        (share/"sip#{python.if3then3}").mkpath
-        system python, 'configure.py', "-o", lib, "-n", include,
-                         "--apidir=#{prefix}/qsci",
-                         "--destdir=#{python.site_packages}/PyQt4",
-                         "--qsci-sipdir=#{share}/sip#{python.if3then3}",
-                         "--pyqt-sipdir=#{HOMEBREW_PREFIX}/share/sip#{python.if3then3}"
-        system 'make'
-        system 'make', 'install'
-      end
+    cd 'Python' do
+      (share/"sip").mkpath
+      system 'python', 'configure.py', "-o", lib, "-n", include,
+                       "--apidir=#{prefix}/qsci",
+                       "--destdir=#{lib}/python2.7/site-packages/PyQt4",
+                       "--qsci-sipdir=#{share}/sip",
+                       "--pyqt-sipdir=#{HOMEBREW_PREFIX}/share/sip"
+      system 'make'
+      system 'make', 'install'
     end
   end
-
-  def caveats
-    python.standard_caveats if python
-  end
-
 end

@@ -11,10 +11,10 @@ class Tor < Formula
     sha1 'd10cb78e6a41657d970a1ce42105142bcfc315fb'
   end
 
-  option "with-brewed-openssl", "Build with Homebrew's OpenSSL instead of the system version"
+  option "with-brewed-openssl", "Build with Homebrew's OpenSSL instead of the system version" if MacOS.version > :leopard
 
   depends_on 'libevent'
-  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'openssl' if build.with?('brewed-openssl') || MacOS.version < :snow_leopard
 
   def install
     args = %W[
@@ -22,7 +22,7 @@ class Tor < Formula
       --prefix=#{prefix}
     ]
 
-    args << "-with-ssl=#{Formulary.factory('openssl').opt_prefix}" if build.with? 'brewed-openssl'
+    args << "-with-ssl=#{Formulary.factory('openssl').opt_prefix}" if build.with?('brewed-openssl') || MacOS.version < :snow_leopard
 
     system "./configure", *args
     system "make install"

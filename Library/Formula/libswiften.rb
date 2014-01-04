@@ -10,7 +10,6 @@ class Libswiften < Formula
     depends_on 'lua' => :recommended
   end
 
-  depends_on :python => :build
   depends_on 'scons' => :build
   depends_on 'libidn'
   depends_on 'boost'

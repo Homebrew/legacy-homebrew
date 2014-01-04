@@ -7,7 +7,6 @@ class Pygobject < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
-  depends_on :python
 
   option :universal
 
@@ -18,11 +17,9 @@ class Pygobject < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    python do
-      system "./configure", "--disable-dependency-tracking",
-                            "--prefix=#{prefix}",
-                            "--disable-introspection"
-      system "make install"
-    end
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-introspection"
+    system "make install"
   end
 end
