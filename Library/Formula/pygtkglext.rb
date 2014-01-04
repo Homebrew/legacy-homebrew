@@ -6,7 +6,6 @@ class Pygtkglext < Formula
   sha1 '2ae3e87e8cdfc3318d8ff0e33b344377cb3df7cb'
 
   depends_on 'pkg-config' => :build
-  depends_on :python
   depends_on 'pygtk'
   depends_on 'gtkglext'
   depends_on 'pygobject'
@@ -18,13 +17,7 @@ class Pygtkglext < Formula
     system "make install"
   end
 
-  def caveats
-    python.standard_caveats if python
-  end
-
   test do
-    python do
-      system python, "-c", "import pygtk", "pygtk.require('2.0')", "import gtk.gtkgl"
-    end
+    system "python", "-c", "import pygtk", "pygtk.require('2.0')", "import gtk.gtkgl"
   end
 end
