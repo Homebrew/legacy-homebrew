@@ -131,16 +131,6 @@ module Stdenv
     self.cc  = MacOS.locate("gcc-4.2")
     self.cxx = MacOS.locate("g++-4.2")
 
-    if cc.empty?
-      self.cc  = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
-      self.cxx = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
-      raise "GCC could not be found" unless File.exist? cc
-    end
-
-    unless cc =~ %r{^/usr/bin/xcrun }
-      raise "GCC could not be found" if Pathname.new(cc).realpath.to_s =~ /llvm/
-    end
-
     replace_in_cflags '-O4', '-O3'
     set_cpu_cflags
     @compiler = :gcc
