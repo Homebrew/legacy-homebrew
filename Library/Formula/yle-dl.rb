@@ -8,7 +8,8 @@ class YleDl < Formula
   head 'https://github.com/aajanki/yle-dl.git'
 
   depends_on 'rtmpdump'
-  depends_on :python => ['Crypto' => 'pycrypto']
+  depends_on :python
+  depends_on 'Crypto' => :python
 
   def install
     system "make", "install", "SYS=darwin", "prefix=#{prefix}", "mandir=#{man}"
