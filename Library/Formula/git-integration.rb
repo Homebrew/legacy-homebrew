@@ -5,6 +5,7 @@ class SufficientlyRecentGit < Requirement
   default_formula 'git'
 
   satisfy do
+    # `git stripspace` condition copy/pasted from git-integration 0.2
     system 'git stripspace --comment-lines </dev/null 2>/dev/null'
   end
 
