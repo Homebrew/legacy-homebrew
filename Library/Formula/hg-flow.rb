@@ -11,13 +11,11 @@ class HgFlow < Formula
 
   def install
     if build.head?
-      python do
-        cd 'src/hgflow'
-        system python, 'setup.py', 'install', "--prefix=#{prefix}"
-      end
+      cd 'src/hgflow'
+      system 'python', 'setup.py', 'install', "--prefix=#{prefix}"
     else
       # That strange name seems like a bug. https://bitbucket.org/yinwm/hgflow/issue/24
-      python.site_packages.install 'hgflow-v0.4.pyhgflow-v0.4.py' => 'hgflow.py'
+      (lib/'python2.7/site-packages').install 'hgflow-v0.4.pyhgflow-v0.4.py' => 'hgflow.py'
     end
   end
 
