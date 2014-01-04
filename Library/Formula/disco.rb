@@ -24,28 +24,24 @@ class Disco < Formula
       s.change_make_var! "localstatedir", var
     end
 
-    python do
-      # Disco's "rebar" build tool refuses to build unless it's in a git repo, so
-      # make a dummy one
-      system "git init && git add master/rebar && git commit -a -m 'dummy commit'"
+    # Disco's "rebar" build tool refuses to build unless it's in a git repo, so
+    # make a dummy one
+    system "git init && git add master/rebar && git commit -a -m 'dummy commit'"
 
-      system "make"
-      system "make install"
-      prefix.install %w[contrib doc examples]
+    system "make"
+    system "make install"
+    prefix.install %w[contrib doc examples]
 
-      # Fix the config file to point at the linked files, not in to cellar
-      # This isn't ideal - if there's a settings.py file left over from a previous disco
-      # installation, it'll issue a Warning
-      inreplace "#{etc}/disco/settings.py" do |s|
-        s.gsub!("Cellar/disco/"+version+"/", "")
-      end
+    # Fix the config file to point at the linked files, not in to cellar
+    # This isn't ideal - if there's a settings.py file left over from a previous disco
+    # installation, it'll issue a Warning
+    inreplace "#{etc}/disco/settings.py" do |s|
+      s.gsub!("Cellar/disco/"+version+"/", "")
     end
   end
 
   def caveats
-    s = ''
-    s += python.standard_caveats if python
-    s += <<-EOS.undent
+    <<-EOS.undent
       Please copy #{etc}/disco/settings.py to ~/.disco and edit it if necessary.
       The DDFS_*_REPLICA settings have been set to 1 assuming a single-machine install.
       Please see http://discoproject.org/doc/disco/start/install.html for further instructions.
