@@ -134,26 +134,20 @@ class Python3 < Formula
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
     ln_s "#{bin}/python#{VER}", "#{bin}/python3" unless (bin/"python3").exist?
 
-    # We ship setuptools and pip and reuse the PythonDependency
-    # Requirement here to write the sitecustomize.py
-    py = PythonDependency.new(VER)
-    py.binary = bin/"python#{VER}"
-    py.modify_build_environment
-
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.8-py3.3.egg
-    rm_rf Dir["#{py.global_site_packages}/setuptools*"]
-    rm_rf Dir["#{py.global_site_packages}/distribute*"]
+    rm_rf Dir[HOMEBREW_PREFIX/"lib/python3/site-packages/setuptools*"]
+    rm_rf Dir[HOMEBREW_PREFIX/"lib/python3/site-packages/distribute*"]
 
     setup_args = [ "-s", "setup.py", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
 
-    resource('setuptools').stage { system py.binary, *setup_args }
+    resource('setuptools').stage { system "#{bin}/python3", *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
 
-    resource('pip').stage { system py.binary, *setup_args }
+    resource('pip').stage { system "#{bin}/python3", *setup_args }
     mv bin/'pip', bin/'pip3'
 
     # And now we write the distutils.cfg
