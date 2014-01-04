@@ -7,48 +7,30 @@ class Pyqt5 < Formula
 
   option 'enable-debug', "Build with debug symbols"
 
-  depends_on :python3 => :recommended
-  depends_on :python2 => :optional
+  depends_on :python
 
   depends_on 'qt5'
 
-  if build.with? 'python3'
-    depends_on 'sip' => 'with-python3'
-  else
-    depends_on 'sip'
-  end
+  depends_on 'sip'
 
   def install
-    python do
-      args = [ "--confirm-license",
-               "--bindir=#{bin}",
-               "--destdir=#{lib}/#{python.xy}/site-packages",
-               # To avoid conflicst with PyQt (for Qt4):
-               "--sipdir=#{share}/sip#{python.if3then3}/Qt5/",
-               # sip.h could not be found automatically
-               "--sip-incdir=#{Formula.factory('sip').opt_prefix}/include",
-               # Force deployment target to avoid libc++ issues
-               "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}" ]
-      args << '--debug' if build.include? 'enable-debug'
+    args = [ "--confirm-license",
+             "--bindir=#{bin}",
+             "--destdir=#{lib}/python2.7/site-packages",
+             # To avoid conflicst with PyQt (for Qt4):
+             "--sipdir=#{share}/sip/Qt5/",
+             # sip.h could not be found automatically
+             "--sip-incdir=#{Formula.factory('sip').opt_prefix}/include",
+             # Force deployment target to avoid libc++ issues
+             "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}" ]
+    args << '--debug' if build.include? 'enable-debug'
 
-      system python, "./configure.py", *args
-      system "make"
-      system "make", "install"
-      system "make", "clean"  # because this python block may be run twice
-
-      # For PyQt5 we default to put 3.x bindings in bin, unless --without-python3
-      if python.version.major == 2 and build.with? 'python3'
-        ['pyuic5', 'pyrcc5', 'pylupdate5'].each { |f| mv bin/f, bin/"#{f}-py2" }
-      end
-    end
-  end
-
-  def caveats
-    python.standard_caveats if python
+    system "python", "./configure.py", *args
+    system "make"
+    system "make", "install"
   end
 
   test do
-    # To test Python 2.x, you have to `brew test pyqt --with-python`
     (testpath/'test.py').write <<-EOS.undent
       import sys
       from PyQt5 import QtGui, QtCore, QtWidgets
@@ -67,8 +49,6 @@ class Pyqt5 < Formula
       window.show()
       sys.exit(app.exec_())
     EOS
-    python do
-      system python, "test.py"
-    end
+    system "python", "test.py"
   end
 end
