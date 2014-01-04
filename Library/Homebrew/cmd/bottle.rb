@@ -96,7 +96,7 @@ module Homebrew extend self
 
   def bottle_formula f
     unless f.installed?
-      return ofail "Formula not installed: #{f.name}"
+      return ofail "Formula not installed or up-to-date: #{f.name}"
     end
 
     unless built_as_bottle? f
