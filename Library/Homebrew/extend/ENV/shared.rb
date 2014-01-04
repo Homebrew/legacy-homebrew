@@ -57,6 +57,12 @@ module SharedEnvExtension
     prepend key, path, File::PATH_SEPARATOR if File.directory? path
   end
 
+  def prepend_create_path key, path
+    path = Pathname.new(path) unless path.is_a? Pathname
+    path.mkpath
+    prepend_path key, path
+  end
+
   def remove keys, value
     Array(keys).each do |key|
       next unless self[key]
