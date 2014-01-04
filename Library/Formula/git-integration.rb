@@ -1,14 +1,25 @@
 require 'formula'
 
+class SufficientlyRecentGit < Requirement
+  fatal true
+  default_formula 'git'
+
+  satisfy do
+    system "git", "stripspace", "--comment-lines", "</dev/null", "2>/dev/null"
+  end
+
+  def message
+    "Your Git is too old.  Please upgrade to Git 1.8.2 or newer."
+  end
+end
+
 class GitIntegration < Formula
   homepage 'http://johnkeeping.github.io/git-integration/'
   url 'https://github.com/johnkeeping/git-integration/archive/v0.2.zip'
   sha1 'ce86564077a683c8ce270c85530f9100f3f8c950'
 
   depends_on 'asciidoc' => [:build, :optional]
-  if MacOS.version <= :lion
-    depends_on 'git'
-  end
+  depends_on SufficientlyRecentGit
 
   def install
     ENV["XML_CATALOG_FILES"] = "#{HOMEBREW_PREFIX}/etc/xml/catalog"
