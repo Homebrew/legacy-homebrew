@@ -99,7 +99,7 @@ module OS
 
     def default_cc
       cc = locate 'cc'
-      cc.realpath.basename.to_s rescue nil
+      Pathname.new(cc).realpath.basename.to_s rescue nil
     end
 
     def default_compiler
