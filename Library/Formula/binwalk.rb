@@ -16,4 +16,9 @@ class Binwalk < Formula
       system "python", "setup.py", "install", "--no-prereq-checks", "--prefix=#{prefix}"
     end
   end
+
+  test do
+    touch "binwalk.test"
+    system "#{bin}/binwalk", "binwalk.test"
+  end
 end
