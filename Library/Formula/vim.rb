@@ -27,7 +27,7 @@ class Vim < Formula
   end
 
   depends_on :python => :recommended
-  depends_on :python3 => :optional
+  depends_on 'python3' => :optional
   depends_on 'lua' => :optional
   depends_on 'gtk+' if build.with? 'client-server'
 
@@ -58,18 +58,6 @@ class Vim < Formula
 
     opts << "--disable-nls" if build.include? "disable-nls"
 
-    if python2 and not build.with? "python3"
-      if !python.from_osx? && python.framework?
-        # Avoid vim always linking to System's Python, even when configure tells us
-        # it has found a brewed Python. (Verify with `otool -L`.)
-        ENV.prepend 'LDFLAGS', "-F#{python.framework}"
-      elsif python.from_osx? && !MacOS::CLT.installed?
-        # Avoid `Python.h not found` on 10.8 with Xcode-only
-        ENV.append 'CFLAGS', "-I#{python.incdir}", ' '
-        # opts << "--with-python-config-dir=#{python.libdir}"
-      end
-    end
-
     if build.with? 'client-server'
       opts << '--enable-gui=gtk2'
     else
@@ -94,35 +82,6 @@ class Vim < Formula
                           "--with-features=huge",
                           "--with-compiledby=Homebrew",
                           *opts
-
-    if build.with? "python" and build.with? "python3"
-      # On 64-bit systems, we need to avoid a 32-bit Framework Python.
-      # vim doesn't check Python while compiling.
-      python do
-        if MacOS.prefer_64_bit? and python.framework? and not archs_for_command("#{python.prefix}/Python").include? :x86_64
-          opoo "Detected a framework Python that does not have 64-bit support built in:"
-          puts <<-EOS.undent
-            #{python.prefix}
-
-            Dynamic loading Python library requires the same architecture.
-
-            Note that a framework Python in /Library/Frameworks/Python.framework is
-            the "MacPython" version, and not the system-provided version which is in:
-              /System/Library/Frameworks/Python.framework
-          EOS
-        end
-      end
-      # Help vim find Python's library as absolute path.
-      python do
-        inreplace 'src/auto/config.mk', /-DDYNAMIC_PYTHON#{python.if3then3}_DLL=\\".*\\"/, %Q[-DDYNAMIC_PYTHON#{python.if3then3}_DLL=\'\"#{python.prefix}/Python\"\'] if python.framework?
-      end
-      # Force vim loading different Python on same time, may cause vim crash.
-      unless python.brewed?
-        opoo "You seem to have a version of Python not installed by Homebrew. Attempting to modify config.h. You may see warning message during brewing."
-        inreplace 'src/auto/config.h', "/* #undef PY_NO_RTLD_GLOBAL */", "#define PY_NO_RTLD_GLOBAL 1"
-        inreplace 'src/auto/config.h', "/* #undef PY3_NO_RTLD_GLOBAL */", "#define PY3_NO_RTLD_GLOBAL 1"
-      end
-    end
 
     system "make"
     # If stripping the binaries is not enabled, vim will segfault with
