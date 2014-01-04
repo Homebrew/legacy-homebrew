@@ -21,20 +21,17 @@ class Cvs2svn < Formula
   url 'http://trac.macports.org/export/70472/distfiles/cvs2svn/cvs2svn-2.3.0.tar.gz'
   sha1 '545237805ddb241054ba40b105b9c29b705539b8'
 
-  depends_on :python
   depends_on PythonWithGdbm
 
   def install
-    python do
-      system python, "setup.py", "install", "--prefix=#{prefix}"
-      system "make man"
-      man1.install gzip('cvs2svn.1', 'cvs2git.1', 'cvs2bzr.1')
-      prefix.install %w[ BUGS COMMITTERS HACKING
-                         cvs2bzr-example.options
-                         cvs2git-example.options
-                         cvs2hg-example.options
-                         cvs2svn-example.options contrib ]
-    end
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    system "make man"
+    man1.install gzip('cvs2svn.1', 'cvs2git.1', 'cvs2bzr.1')
+    prefix.install %w[ BUGS COMMITTERS HACKING
+                       cvs2bzr-example.options
+                       cvs2git-example.options
+                       cvs2hg-example.options
+                       cvs2svn-example.options contrib ]
     doc.install Dir['{doc,www}/*']
   end
 
