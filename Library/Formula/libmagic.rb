@@ -25,21 +25,13 @@ class Libmagic < Formula
                           "--enable-fsect-man5"
     system "make install"
 
-    python do
-      cd "python" do
-        system python, "setup.py", "install", "--prefix=#{prefix}"
-      end
+    cd "python" do
+      system "python", "setup.py", "install", "--prefix=#{prefix}"
     end
 
     # Don't dupe this system utility
     rm bin/"file"
     rm man1/"file.1"
-  end
-
-  test do
-    if build.with? 'python'
-      system 'python', '-c', "import magic; magic._init()"
-    end
   end
 end
 
