@@ -104,7 +104,6 @@ module OS
 
     def default_compiler
       case default_cc
-        when /^gcc-4.0/ then :gcc_4_0
         when /^gcc/ then :gcc
         when /^llvm/ then :llvm
         when "clang" then :clang
