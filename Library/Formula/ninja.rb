@@ -6,10 +6,9 @@ class Ninja < Formula
   sha1 '3ab2fcb71e9f70c19cda2d63983cdfe0f971d04f'
   head 'https://github.com/martine/ninja.git'
 
-  depends_on :python
 
   def install
-    system python, "./bootstrap.py"
+    system "python", "./bootstrap.py"
     bin.install "ninja"
     bash_completion.install 'misc/bash-completion' => 'ninja-completion.sh'
   end
