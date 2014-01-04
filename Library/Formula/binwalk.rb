@@ -14,6 +14,7 @@ class Binwalk < Formula
   def install
     cd "src" do
       system "python", "setup.py", "install", "--no-prereq-checks", "--prefix=#{prefix}"
+      bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
     end
   end
 
