@@ -52,7 +52,8 @@ class Xapian < Formula
       end
 
       if build.with? 'python'
-        ENV['PYTHON_LIB'] = python.site_packages
+        (lib+'python2.7/site-packages').mkpath
+        ENV['PYTHON_LIB'] = lib+'python2.7/site-packages'
         args << "--with-python"
       else
         args << "--without-python"
@@ -71,16 +72,12 @@ class Xapian < Formula
   end
 
   def caveats
-    s = ''
-    s += python.standard_caveats if python
     if build.include? 'ruby'
-      s += <<-EOS.undent
+      <<-EOS.undent
         You may need to add the Ruby bindings to your RUBYLIB from:
           #{HOMEBREW_PREFIX}/lib/ruby/site_ruby
 
       EOS
     end
-    return s.empty? ? nil : s
   end
-
 end
