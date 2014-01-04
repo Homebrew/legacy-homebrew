@@ -15,9 +15,9 @@ class Mitmproxy < Formula
     sha1 '60633ebb821d48d7132a436c897288ec0121b892'
   end
 
-  resource 'pil' do
-    url 'http://effbot.org/media/downloads/PIL-1.1.7.tar.gz'
-    sha1 'a1450d0f4f5bd1ca050b75fb363f73bddd5f1c23'
+  resource 'pillow' do
+    url 'https://github.com/python-imaging/Pillow/archive/2.3.0.tar.gz'
+    sha1 'f269109be21d27df3210e43fe11a17657bbfc261'
   end
 
   resource 'flask' do
@@ -69,7 +69,7 @@ class Mitmproxy < Formula
 
     python do
       resource('pyopenssl').stage { system python, *install_args }
-      resource('pil').stage { system python, *install_args }
+      resource('pillow').stage { system python, *install_args }
       resource('flask').stage { system python, *install_args }
       resource('lxml').stage { system python, *install_args }
       resource('netlib').stage { system python, *install_args }
