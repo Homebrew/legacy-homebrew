@@ -33,9 +33,4 @@ class Yasm < Formula
     system './configure', *args
     system 'make install'
   end
-
-  def caveats
-    python.standard_caveats if python
-  end
-
 end
