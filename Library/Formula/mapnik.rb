@@ -13,7 +13,6 @@ class Mapnik < Formula
   head 'https://github.com/mapnik/mapnik.git'
 
   depends_on 'pkg-config' => :build
-  depends_on :python
   depends_on 'freetype'
   depends_on 'libpng'
   depends_on 'libtiff'
@@ -69,14 +68,8 @@ class Mapnik < Formula
     args << "GDAL_CONFIG=#{Formula.factory('gdal').opt_prefix}/bin/gdal-config" if build.with? 'gdal'
     args << "PG_CONFIG=#{Formula.factory('postgresql').opt_prefix}/bin/pg_config" if build.with? 'postgresql'
 
-    python do
-      system python, "scons/scons.py", "configure", *args
-      system python, "scons/scons.py", "install"
-    end
-  end
-
-  def caveats
-    python.standard_caveats if python
+    system "python", "scons/scons.py", "configure", *args
+    system "python", "scons/scons.py", "install"
   end
 end
 
