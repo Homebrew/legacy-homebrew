@@ -15,6 +15,6 @@ class Gaupol < Formula
   end
 
   test do
-    system "gaupol -v"
+    system "gaupol --version"
   end
 end
