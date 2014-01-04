@@ -5,7 +5,7 @@ class SufficientlyRecentGit < Requirement
   default_formula 'git'
 
   satisfy do
-    system "git", "stripspace", "--comment-lines", "</dev/null", "2>/dev/null"
+    system 'git stripspace --comment-lines </dev/null 2>/dev/null'
   end
 
   def message
