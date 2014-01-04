@@ -1,6 +1,5 @@
 require 'formula'
 require 'blacklist'
-require 'utils/htmlconvert'
 require 'net/http'
 require 'uri'
 
@@ -37,7 +36,6 @@ module Homebrew extend self
         desc = desc.captures[1]
       end
       if desc.kind_of? String
-        convert_html_tags!(desc, f.homepage)
         ohai "Description: #{f.name}", desc
       else
         onoe "No description for #{f.name}"
