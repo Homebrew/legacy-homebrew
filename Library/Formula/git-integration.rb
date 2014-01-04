@@ -6,6 +6,9 @@ class GitIntegration < Formula
   sha1 'ce86564077a683c8ce270c85530f9100f3f8c950'
 
   depends_on 'asciidoc' => [:build, :optional]
+  if MacOS.version <= :lion
+    depends_on 'git'
+  end
 
   def install
     ENV["XML_CATALOG_FILES"] = "#{HOMEBREW_PREFIX}/etc/xml/catalog"
