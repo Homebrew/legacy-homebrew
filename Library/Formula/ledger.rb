@@ -34,12 +34,7 @@ class Ledger < Formula
 
     if build.head?
       args = [((build.include? 'debug') ? 'debug' : 'opt'), "make", "-N", "-j#{ENV.make_jobs}", "--output=build"]
-      if build.with? 'python'
-        args << '--python'
-        # acprep picks up system python because CMake is used
-        inreplace 'acprep', "self.configure_args  = []",
-                            "self.configure_args  = ['-DPYTHON_INCLUDE_DIR=#{python.incdir}', '-DPYTHON_LIBRARY=#{python.libdir}/lib#{python.xy}.dylib']"
-      end
+      args << '--python' if build.with? 'python'
       # Support homebrew not at /usr/local. Also support Xcode-only setups:
       inreplace 'acprep', 'search_prefixes = [', "search_prefixes = ['#{HOMEBREW_PREFIX}','#{MacOS.sdk_path}/usr',"
       system "./acprep", "--prefix=#{prefix}", *args
