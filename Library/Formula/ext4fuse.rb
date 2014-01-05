@@ -8,10 +8,16 @@ class Ext4fuse < Formula
   head 'https://github.com/gerard/ext4fuse.git'
 
   depends_on 'pkg-config' => :build
-  depends_on 'fuse4x'
+  depends_on 'osxfuse'
 
   def install
     system 'make'
     bin.install 'ext4fuse'
+  end
+
+  def caveats; <<-EOS.undent
+    Make sure to follow the directions given by `brew info osxfuse`
+    before trying to use a FUSE-based filesystem.
+    EOS
   end
 end
