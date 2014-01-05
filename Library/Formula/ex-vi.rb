@@ -5,6 +5,9 @@ class ExVi < Formula
   url 'http://sourceforge.net/projects/ex-vi/files/ex-vi/050325/ex-050325.tar.bz2'
   sha1 '573501d15fa4be59f136641957c7f893e86bac82'
 
+  conflicts_with 'vim',
+    :because => 'ex-vi and vim both install bin/ex and bin/view'
+
   def install
     system "make", "install", "INSTALL=/usr/bin/install",
                               "PREFIX=#{prefix}",
