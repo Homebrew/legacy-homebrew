@@ -12,15 +12,9 @@ class Hdhomerun < Formula
 
   def install
     system "make"
-    bin.install ['hdhomerun_config']
-    lib.install ['libhdhomerun.dylib']
+    bin.install 'hdhomerun_config'
+    lib.install 'libhdhomerun.dylib'
     include.install Dir['*.h']
-  end
-
-  test do
-    # The installed folder is not in the path, so use the entire path to any
-    # executables being tested: `system "#{bin}/program", "--version"`.
-    system "#{bin}/hdhomerun_config"
   end
 end
 
