@@ -49,9 +49,11 @@ class Libxml2 < Formula
     system "make install"
 
     if build.with? 'python'
-      # We need to insert our include dir first
-      inreplace 'setup.py', 'includes_dir = [', "includes_dir = ['#{include}', '#{MacOS.sdk_path}/usr/include',"
-      system "python", 'setup.py', "install", "--prefix=#{prefix}"
+      cd 'python' do
+        # We need to insert our include dir first
+        inreplace 'setup.py', 'includes_dir = [', "includes_dir = ['#{include}', '#{MacOS.sdk_path}/usr/include',"
+        system "python", 'setup.py', "install", "--prefix=#{prefix}"
+      end
     end
   end
 end
