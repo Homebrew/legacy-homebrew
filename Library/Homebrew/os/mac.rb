@@ -99,11 +99,12 @@ module OS
 
     def default_cc
       cc = locate 'cc'
-      Pathname.new(cc).realpath.basename.to_s rescue nil
+      cc.realpath.basename.to_s rescue nil
     end
 
     def default_compiler
       case default_cc
+        when /^gcc-4.0/ then :gcc_4_0
         when /^gcc/ then :gcc
         when /^llvm/ then :llvm
         when "clang" then :clang
