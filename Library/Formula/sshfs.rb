@@ -1,7 +1,7 @@
 require 'formula'
 
 class Sshfs < Formula
-  homepage 'http://fuse.sourceforge.net/sshfs.html'
+  homepage 'http://osxfuse.github.io/'
   url 'https://github.com/osxfuse/sshfs/archive/osxfuse-sshfs-2.4.1.tar.gz'
   sha1 'cf614508db850a719529dec845ae59309f8a79c2'
 
