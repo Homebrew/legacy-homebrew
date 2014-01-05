@@ -5,7 +5,7 @@ class Sshfs < Formula
   url 'https://github.com/osxfuse/sshfs/archive/osxfuse-sshfs-2.4.1.tar.gz'
   sha1 'cf614508db850a719529dec845ae59309f8a79c2'
 
-  option 'without-sshnodelay', 'Don\'t compile NODELAY workaround for ssh'
+  option 'without-sshnodelay', "Don't compile NODELAY workaround for ssh"
 
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
