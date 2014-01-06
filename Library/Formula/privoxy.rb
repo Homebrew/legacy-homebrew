@@ -37,6 +37,8 @@ class Privoxy < Formula
       <true/>
       <key>Label</key>
       <string>#{plist_name}</string>
+      <key>WorkingDirectory</key>
+      <string>#{etc}/privoxy</string>
       <key>ProgramArguments</key>
       <array>
         <string>#{sbin}/privoxy</string>
@@ -44,8 +46,6 @@ class Privoxy < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
-      <key>WorkingDirectory</key>
-      <string>#{etc}/privoxy</string>
     </dict>
     </plist>
     EOS
