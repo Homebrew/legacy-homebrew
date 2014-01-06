@@ -113,6 +113,8 @@ module Homebrew extend self
       end
     end
     results
+  rescue OpenURI::HTTPError
+    raise "Could not search tap #{user}/#{repo}"
   rescue GitHub::Error, Utils::JSON::Error
     []
   end
