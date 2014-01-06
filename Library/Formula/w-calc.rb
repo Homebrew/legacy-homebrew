@@ -14,4 +14,8 @@ class WCalc < Formula
     system "make", "install"
   end
 
+  test do
+    system "#{bin}/wcalc 2+2"
+  end
+
 end
