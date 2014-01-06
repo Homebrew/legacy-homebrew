@@ -76,7 +76,7 @@ class Graphicsmagick < Formula
     if build.include? 'with-perl'
       cd 'PerlMagick' do
         # Install the module under the GraphicsMagick prefix
-        system "perl", "Makefile.PL", "PREFIX=#{prefix}"
+        system "perl", "Makefile.PL", "INSTALL_BASE=#{prefix}"
         system "make"
         system "make", "install"
       end
