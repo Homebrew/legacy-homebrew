@@ -20,15 +20,14 @@ end
 
 __END__
 diff --git a/Makefile b/Makefile
-index dfda53f..c24ca32 100644
+index dfda53f..2ec8ee5 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -32,7 +32,7 @@ else
+@@ -32,7 +32,6 @@ else
      LDFLAGS += -lsocket
    endif
    ifeq ($(OS),Darwin)
 -    CFLAGS += -arch i386 -arch ppc
-+	CC     := $(CROSS_COMPILE)clang
      LIBEXT := .dylib
      SHARED := -dynamiclib -install_name libhdhomerun$(LIBEXT)
    endif
