@@ -120,7 +120,15 @@ class Git < Formula
     # We could build the manpages ourselves, but the build process depends
     # on many other packages, and is somewhat crazy, this way is easier.
     man.install resource('man')
-    (share+'doc/git-doc').install resource('html')
+    resource("html").stage do
+      # Removing symlink allows install across file system boundaries
+      # see: https://github.com/Homebrew/homebrew/pull/14710
+      rm "index.html"
+      (share/"doc/git-doc").install Dir["*"]
+      cd share/"doc/git-doc" do
+        ln_s "git.html", "index.html"
+      end
+    end
 
     # Make html docs world-readable; check if this is still needed at 1.8.6
     chmod 0644, Dir["#{share}/doc/git-doc/**/*.{html,txt}"]
