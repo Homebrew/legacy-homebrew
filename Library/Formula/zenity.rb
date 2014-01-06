@@ -7,7 +7,7 @@ class Zenity < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
-  depends_on 'libxml2' => 'with-python'
+  depends_on 'libxml2'
   depends_on 'gtk+'
   depends_on 'gnome-doc-utils'
   depends_on 'scrollkeeper'
