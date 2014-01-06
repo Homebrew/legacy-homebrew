@@ -6,8 +6,8 @@ class Influxdb < Formula
   sha1 "6b730a75e6694abd5e913b4ad08936f7661569bd"
 
   devel do
-    url "http://get.influxdb.org/influxdb-0.4.0.rc2.src.tar.gz"
-    sha1 "81d0f8e8f3b7648f010b85232baf002d5612dd72"
+    url "http://get.influxdb.org/influxdb-0.4.0.rc5.src.tar.gz"
+    sha1 "b9f1bd55333060ce10691a2f68fdb35eda944bf7"
   end
 
   bottle do
@@ -29,19 +29,20 @@ class Influxdb < Formula
     bison = Formula.factory('bison').bin/"bison"
 
     build_target = build.devel? ? "daemon" : "server"
+    config_type = build.devel? ? "toml" : "json"
 
     system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
     system "make dependencies protobuf parser"
     system "go build #{build_target}"
 
-    inreplace "config.json.sample" do |s|
+    inreplace "config.#{config_type}.sample" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
       s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
-      s.gsub! "./admin/", "#{opt_prefix}/share/admin/"
+      s.gsub! "./admin", "#{opt_prefix}/share/admin"
     end
 
     bin.install build_target => "influxdb"
-    etc.install "config.json.sample" => "influxdb.conf"
+    etc.install "config.#{config_type}.sample" => "influxdb.conf"
     share.install "admin"
 
     (var/'influxdb/data').mkpath
