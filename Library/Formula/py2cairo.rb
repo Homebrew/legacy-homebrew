@@ -25,7 +25,7 @@ class Py2cairo < Formula
     # https://github.com/Homebrew/homebrew/issues/12893
     # https://github.com/Homebrew/homebrew/issues/14781
     # https://bugs.freedesktop.org/show_bug.cgi?id=51544
-    ENV['LINKFLAGS'] = "-L#{%x(python-config --prefix).chomp}/lib"
+    ENV['LINKFLAGS'] = "-L#{%x(python-config --prefix).chomp}/lib/python2.7/config"
     system "./waf", "configure", "--prefix=#{prefix}", "--nopyc", "--nopyo"
     system "./waf", "install"
   end
