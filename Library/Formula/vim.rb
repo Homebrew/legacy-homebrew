@@ -31,6 +31,9 @@ class Vim < Formula
   depends_on 'lua' => :optional
   depends_on 'gtk+' if build.with? 'client-server'
 
+  conflicts_with 'ex-vi',
+    :because => 'vim and ex-vi both install bin/ex and bin/view'
+
   # First patch: vim uses the obsolete Apple-only -no-cpp-precomp flag, which
   # FSF GCC can't understand; reported upstream:
   # https://groups.google.com/forum/#!topic/vim_dev/X5yG3-IiUp8
