@@ -15,8 +15,9 @@ class Diffpdf < Formula
     inreplace 'diffpdf.pro', '$(HOME)/opt/poppler024',
               "#{Formula.factory('poppler').opt_prefix}"
 
-    # The 2.0 sources shipped without translation files. Generate them
-    # so that compilation does not fail.
+    # The 2.0 sources shipped without translation files. Generate them so that
+    # compilation does not fail.
+
     system 'lrelease', 'diffpdf.pro'
 
     # Generate makefile and disable .app creation
