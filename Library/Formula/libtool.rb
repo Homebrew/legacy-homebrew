@@ -49,18 +49,98 @@ end
 
 __END__
 diff --git a/libltdl/config/ltmain.sh b/libltdl/config/ltmain.sh
-index 63ae69d..9ae038c 100644
+index 63ae69d..45bee2c 100644
 --- a/libltdl/config/ltmain.sh
 +++ b/libltdl/config/ltmain.sh
-@@ -5851,9 +5851,10 @@ func_mode_link ()
+@@ -5546,13 +5546,17 @@ func_mode_link ()
+ 	continue
+ 	;;
+ 
+-      -L*)
+-	func_stripname "-L" '' "$arg"
++      -L*|-F*)
++      case $arg in
++      -F*) LF_prefix="-F" ;;
++      *) LF_prefix="-L" ;;
++      esac
++ func_stripname "$LF_prefix" '' "$arg"
+ 	if test -z "$func_stripname_result"; then
+ 	  if test "$#" -gt 0; then
+-	    func_fatal_error "require no space between \`-L' and \`$1'"
++     func_fatal_error "require no space between \`$LF_prefix' and \`$1'"
+ 	  else
+-	    func_fatal_error "need path for \`-L' option"
++     func_fatal_error "need path for \`$LF_prefix' option"
+ 	  fi
+ 	fi
+ 	func_resolve_sysroot "$func_stripname_result"
+@@ -5568,14 +5572,14 @@ func_mode_link ()
+ 	  ;;
+ 	esac
+ 	case "$deplibs " in
+-	*" -L$dir "* | *" $arg "*)
++ *" $LF_prefix$dir "* | *" $arg "*)
+ 	  # Will only happen for absolute or sysroot arguments
+ 	  ;;
+ 	*)
+ 	  # Preserve sysroot, but never include relative directories
+ 	  case $dir in
+ 	    [\\/]* | [A-Za-z]:[\\/]* | =*) func_append deplibs " $arg" ;;
+-	    *) func_append deplibs " -L$dir" ;;
++     *) func_append deplibs " $LF_prefix$dir" ;;
+ 	  esac
+ 	  func_append lib_search_path " $dir"
+ 	  ;;
+@@ -5851,9 +5855,10 @@ func_mode_link ()
        # -tp=*                Portland pgcc target processor selection
        # --sysroot=*          for sysroot support
        # -O*, -flto*, -fwhopr*, -fuse-linker-plugin GCC link-time optimization
-+      # -stdlib=*            select c++ std lib with clang
++      # -stdlib=*            select c++ std lib with clang      
        -64|-mips[0-9]|-r[0-9][0-9]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*| \
-       -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*|--sysroot=*| \
+-      -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*|--sysroot=*| \
 -      -O*|-flto*|-fwhopr*|-fuse-linker-plugin)
++      -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|@*|-tp=*|--sysroot=*| \
 +      -O*|-flto*|-fwhopr*|-fuse-linker-plugin|-stdlib=*)
          func_quote_for_eval "$arg"
  	arg="$func_quote_for_eval_result"
          func_append compile_command " $arg"
+@@ -6261,13 +6266,17 @@ func_mode_link ()
+ 	  fi
+ 	  continue
+ 	  ;;
+-	-L*)
++ -L*|-F*)
++    case $deplib in
++    -F*) LF_prefix="-F" ;;
++    *) LF_prefix="-L" ;;
++    esac
+ 	  case $linkmode in
+ 	  lib)
+ 	    deplibs="$deplib $deplibs"
+ 	    test "$pass" = conv && continue
+ 	    newdependency_libs="$deplib $newdependency_libs"
+-	    func_stripname '-L' '' "$deplib"
++     func_stripname "$LF_prefix" '' "$deplib"
+ 	    func_resolve_sysroot "$func_stripname_result"
+ 	    func_append newlib_search_path " $func_resolve_sysroot_result"
+ 	    ;;
+@@ -6282,16 +6291,16 @@ func_mode_link ()
+ 	      compile_deplibs="$deplib $compile_deplibs"
+ 	      finalize_deplibs="$deplib $finalize_deplibs"
+ 	    fi
+-	    func_stripname '-L' '' "$deplib"
++     func_stripname "$LF_prefix" '' "$deplib"
+ 	    func_resolve_sysroot "$func_stripname_result"
+ 	    func_append newlib_search_path " $func_resolve_sysroot_result"
+ 	    ;;
+ 	  *)
+-	    func_warning "\`-L' is ignored for archives/objects"
++     func_warning "\`$LF_prefix' is ignored for archives/objects"
+ 	    ;;
+ 	  esac # linkmode
+ 	  continue
+-	  ;; # -L
++   ;; # -L/-F
+ 	-R*)
+ 	  if test "$pass" = link; then
+ 	    func_stripname '-R' '' "$deplib"
