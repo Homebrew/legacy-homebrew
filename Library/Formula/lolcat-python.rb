@@ -7,7 +7,8 @@ class LolcatPython < Formula
   version '0.1'
   head 'https://github.com/tehmaze/lolcat.git'
 
-  conflicts_with 'lolcat-ryby'
+  conflicts_with 'lolcat-ruby',
+    :because => 'install conflicting executables `brew uninstall lolcat-ruby`'
 
   depends_on :python
 

@@ -6,11 +6,12 @@ class LolcatRuby < Formula
   sha1 'acdadd6f41751a908c8c4cf3f0615d64a5b2117b'
   head 'https://github.com/busyloop/lolcat.git'
 
-  conflicts_with 'lolcat-python'
+  conflicts_with 'lolcat-python',
+    :because => 'install conflicting executables `brew uninstall lolcat-ruby`'
 
   # Fixed in 091d4b92f0
-  if !build.head?
-    def patches; DATA end
+  def patches
+    DATA unless build.head?
   end
 
   def install
