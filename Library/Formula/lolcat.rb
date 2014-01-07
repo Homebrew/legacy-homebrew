@@ -7,7 +7,7 @@ class Lolcat < Formula
   version '0.1'
   head 'https://github.com/tehmaze/lolcat.git'
 
-  depends_on :python unless build.with? 'ruby'
+  depends_on :python
 
   def install
     system "python", "setup.py", "install", "--prefix=#{prefix}"
