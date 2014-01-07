@@ -7,7 +7,7 @@ class LolcatRuby < Formula
   head 'https://github.com/busyloop/lolcat.git'
 
   conflicts_with 'lolcat-python',
-    :because => 'install conflicting executables `brew uninstall lolcat-ruby`'
+    :because => 'install conflicting executables `brew uninstall lolcat-python`'
 
   # Fixed in 091d4b92f0
   def patches
