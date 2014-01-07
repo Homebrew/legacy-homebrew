@@ -330,7 +330,7 @@ class Test
     force_flag = ''
     if ARGV.include? '--cleanup'
       test 'brew cleanup -s'
-      test "rm -rf #{HOMEBREW_CACHE}/*"
+      test "rm -vrf #{HOMEBREW_CACHE}/*"
       test 'git clean --force -dx'
       force_flag = '-f'
     end
