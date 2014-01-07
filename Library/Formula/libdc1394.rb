@@ -8,6 +8,7 @@ class Libdc1394 < Formula
   depends_on :libtool
   depends_on :automake
   depends_on :autoconf
+  depends_on 'sdl'
 
   def patches
     p = []

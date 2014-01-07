@@ -71,6 +71,19 @@ class Macvim < Formula
       args << "--enable-python3interp" if build.with? "python3"
     end
 
+    # MacVim seems to link Python by `-framework Python` (instead of
+    # `python-config --ldflags`) and so we have to pass the -F to point to
+    # where the Python.framework is located, we want it to use!
+    # Also the -L is needed for the correct linking. This is a mess but we have
+    # to wait until MacVim is really able to link against different Python's
+    # on the Mac. Note configure detects brewed python correctly, but that
+    # is ignored.
+    # See https://github.com/Homebrew/homebrew/issues/17908
+    if build.with? "python" and build.without? "python3"
+      py_prefix = Pathname.new `python-config --prefix`.chomp
+      ENV.prepend 'LDFLAGS', "-L#{py_prefix}/lib/python2.7/config -F#{py_prefix.parent.parent}"
+    end
+
     unless MacOS::CLT.installed?
       # On Xcode-only systems:
       # Macvim cannot deal with "/Applications/Xcode.app/Contents/Developer" as
