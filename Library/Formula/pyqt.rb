@@ -38,7 +38,7 @@ class Pyqt < Formula
     # is deprecated and will be removed with SIP v5, so we do the actual compile
     # using the newer configure-ng.py as recommended.
     system "python", "configure.py", *args
-    (lib/'python2.7/site-packages').install 'pyqtconfig.py'
+    (lib/'python2.7/site-packages/PyQt4').install 'pyqtconfig.py'
 
     # On Mavericks we want to target libc++, this requires a non default qt makespec
     if ENV.compiler == :clang and MacOS.version >= :mavericks
