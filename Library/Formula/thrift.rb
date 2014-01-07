@@ -48,7 +48,7 @@ class Thrift < Formula
     exclusions << "--without-php" unless build.include? "with-php"
     exclusions << "--without-erlang" unless build.include? "with-erlang"
 
-    ENV.cxx11
+    ENV.cxx11 if MacOS.version >= :mavericks && ENV.compiler == :clang
 
     ENV["PY_PREFIX"] = prefix  # So python bindins don't install to /usr!
 
