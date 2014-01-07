@@ -12,6 +12,7 @@ class EasyTag < Formula
   depends_on 'itstool' => :build
   depends_on 'glib'
   depends_on 'gtk+'
+  depends_on 'hicolor-icon-theme'
   depends_on 'id3lib'
   depends_on 'libid3tag'
 
