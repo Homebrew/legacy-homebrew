@@ -1,6 +1,6 @@
 require 'formula'
 
-class LolcatPython < Formula
+class Lolcat < Formula
   homepage 'https://github.com/tehmaze/lolcat'
   url 'https://github.com/tehmaze/lolcat/archive/8f5fc62550.tar.gz'
   sha1 '0f608e1deaebb214df557ced299e664e68e03874'
