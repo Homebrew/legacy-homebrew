@@ -3,8 +3,8 @@ require 'formula'
 class Libcello < Formula
   homepage 'http://libcello.org/'
   head 'https://github.com/orangeduck/libCello.git'
-  url 'http://libcello.org/static/libCello-1.1.2.tar.gz'
-  sha1 '48140f4e42c097367e7dd4fee9b911b25b6c9e6c'
+  url 'http://libcello.org/static/libCello-1.1.7.tar.gz'
+  sha1 'e00e92ccdaf16c3443e0c75421b6cc73b1f727b1'
 
   def install
     system "make", "check"
