@@ -18,9 +18,9 @@ class Cppcheck < Formula
 
     # Pass to make variables.
     if build.include? 'no-rules'
-      system "make", "SRCDIR=build CFGDIR=cfg HAVE_RULES=no"
+      system "make", "SRCDIR=build", "CFGDIR=cfg", "HAVE_RULES=no"
     else
-      system "make", "SRCDIR=build CFGDIR=cfg HAVE_RULES=yes"
+      system "make", "SRCDIR=build", "CFGDIR=cfg", "HAVE_RULES=yes"
     end
 
     system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "install"
@@ -30,7 +30,7 @@ class Cppcheck < Formula
         if build.include? 'no-rules'
           system "qmake", "HAVE_RULES=no"
         else
-          system "qmake", "SRCDIR=build CFGDIR=cfg"
+          system "qmake", "SRCDIR=build", "CFGDIR=cfg"
         end
 
         system "make"
