@@ -44,6 +44,12 @@ class Qt5 < Formula
   odie 'qt5: --with-demos-examples is no longer supported' if build.include? 'with-demos-examples'
   odie 'qt5: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
 
+  def patches
+    # Fix QtScript linking against libstdc++
+    # https://codereview.qt-project.org/#change,74777
+    DATA if MacOS.version >= :mavericks
+  end
+
   def install
     ENV.universal_binary if build.universal?
     args = ["-prefix", prefix,
@@ -121,3 +127,18 @@ class Qt5 < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/qtscript/src/script/script.pro b/qtscript/src/script/script.pro
+index 8cb2f62..e48abac 100644
+--- a/qtscript/src/script/script.pro
++++ b/qtscript/src/script/script.pro
+@@ -75,8 +75,4 @@ integrity {
+     CFLAGS += --diag_remark=236,82
+ }
+
+-# WebKit doesn't compile in C++0x mode
+-*-g++*:QMAKE_CXXFLAGS -= -std=c++0x -std=gnu++0x
+-CONFIG -= c++11
+-
+ TR_EXCLUDE = $$WEBKITDIR/*
