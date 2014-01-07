@@ -39,7 +39,7 @@ class Thrift < Formula
     system "./bootstrap.sh" if build.head?
 
     exclusions = ["--without-ruby"]
-    exclusions << ["--without-tests"]
+    exclusions << "--without-tests"
 
     exclusions << "--without-python" unless build.with? "python"
     exclusions << "--without-haskell" unless build.include? "with-haskell"
