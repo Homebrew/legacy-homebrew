@@ -10,7 +10,7 @@ module Homebrew extend self
     mode.overwrite = true if ARGV.include? '--overwrite'
     mode.dry_run = true if ARGV.dry_run?
 
-    ARGV.kegs.each do |keg|
+    ARGV.latest_installed_kegs.each do |keg|
       if keg.linked?
         opoo "Already linked: #{keg}"
         puts "To relink: brew unlink #{keg.fname} && brew link #{keg.fname}"
