@@ -104,7 +104,16 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     curl @url, '-C', downloaded_size, '-o', temporary_path
   end
 
+  def try_urls
+    @try_urls ||= [mirrors, @url].flatten.compact
+  end
+
+  def try_next_url!
+    @url = try_urls.delete_at(rand(try_urls.size)) unless try_urls.empty?
+  end
+
   def fetch
+    try_next_url!
     ohai "Downloading #{@url}"
     unless tarball_path.exist?
       had_incomplete_download = temporary_path.exist?
@@ -127,9 +136,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
       puts "Already downloaded: #{tarball_path}"
     end
   rescue CurlDownloadStrategyError
-    raise if mirrors.empty?
-    puts "Trying a mirror..."
-    @url = mirrors.shift
+    raise if try_urls.empty?
+    puts "Trying another mirror..."
     retry
   else
     tarball_path
