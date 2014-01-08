@@ -70,7 +70,6 @@ class Keg
     results = Set.new
 
     mach_o_files.each do |file|
-      next if file.mach_o_executable?
       dylibs = file.dynamically_linked_libraries
       results << :libcxx unless dylibs.grep(/libc\+\+.+\.dylib/).empty?
       results << :libstdcxx unless dylibs.grep(/libstdc\+\+.+\.dylib/).empty?
