@@ -96,7 +96,7 @@ class FormulaInstaller
     # relink the active keg if possible (because it is slow).
     if f.linked_keg.directory?
       # some other version is already installed *and* linked
-      raise CannotInstallFormulaError, <<-EOS.undent
+      raise FormulaAlreadyInstalledError, <<-EOS.undent
         #{f}-#{f.linked_keg.realpath.basename} already installed
         To install this version, first `brew unlink #{f}'
       EOS
