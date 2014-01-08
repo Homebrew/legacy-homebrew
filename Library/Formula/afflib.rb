@@ -12,7 +12,6 @@ class Afflib < Formula
   depends_on 'osxfuse' => :optional
 
   def patches
-    # fixes something small
     DATA
   end
 
