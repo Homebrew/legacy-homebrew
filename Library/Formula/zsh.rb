@@ -2,9 +2,9 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'http://fossies.org/linux/misc/zsh-5.0.3.tar.bz2'
-  mirror 'http://www.zsh.org/pub/zsh-5.0.3.tar.bz2'
-  sha1 'b7a80d2cdb83a871d869cfdf487bda8a18e01ef7'
+  url 'http://fossies.org/linux/misc/zsh-5.0.5.tar.bz2'
+  mirror 'http://www.zsh.org/pub/zsh-5.0.5.tar.bz2'
+  sha1 '75426146bce45ee176d9d50b32f1ced78418ae16'
 
   depends_on 'gdbm'
   depends_on 'pcre'
@@ -27,7 +27,7 @@ class Zsh < Formula
     ]
 
     if build.include? 'enable-etcdir'
-      args << '--enable-etcdir'
+      args << '--enable-etcdir=/etc'
     else
       args << '--disable-etcdir'
     end

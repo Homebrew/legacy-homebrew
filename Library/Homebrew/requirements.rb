@@ -118,3 +118,12 @@ class GitDependency < Requirement
   default_formula 'git'
   satisfy { which('git') }
 end
+
+class Python27Dependency < Requirement
+  fatal true
+  default_formula 'python'
+  satisfy do
+    # Note that python -V outputs to stderr
+    `python -V 2>&1` =~ /^Python 2.7/
+  end
+end

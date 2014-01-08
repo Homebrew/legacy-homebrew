@@ -11,26 +11,14 @@ class Duplicity < Formula
 
   option :universal
 
-  # TODO: Move this into Library/Homebrew somewhere (see also ansible.rb).
-  def wrap bin_file, pythonpath
-    bin_file = Pathname.new bin_file
-    libexec_bin = Pathname.new libexec/'bin'
-    libexec_bin.mkpath
-    mv bin_file, libexec_bin
-    bin_file.write <<-EOS.undent
-      #!/bin/sh
-      PYTHONPATH="#{pythonpath}:$PYTHONPATH" "#{libexec_bin}/#{bin_file.basename}" "$@"
-    EOS
+  def install
+    ENV.universal_binary if build.universal?
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
-  def install
-    python do
-      ENV.universal_binary if build.universal?
-      # Install mostly into libexec
-      system python, "setup.py", "install", "--prefix=#{prefix}"
-      Dir["#{bin}/*"].each do |bin_file|
-        wrap bin_file, python.site_packages
-      end
-    end
+  test do
+    system "duplicity", "--version"
   end
 end

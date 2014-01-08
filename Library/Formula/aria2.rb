@@ -2,8 +2,8 @@ require 'formula'
 
 class Aria2 < Formula
   homepage 'http://aria2.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.1/aria2-1.18.1.tar.bz2'
-  sha1 '050f521848353fe90568059768d73a5a6f7ff869'
+  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.2/aria2-1.18.2.tar.bz2'
+  sha1 '2f04a17567e6b793420a517b3fb0511f12c76289'
 
   depends_on 'pkg-config' => :build
   depends_on :macos => :lion # Needs a c++11 compiler
@@ -19,6 +19,10 @@ class Aria2 < Formula
       --without-libnettle
       --without-libgcrypt
     ]
+
+    ENV['ZLIB_CFLAGS'] = '-I/usr/include'
+    ENV['ZLIB_LIBS'] = '-L/usr/lib -lz'
+
     system "./configure", *args
     system "make install"
 

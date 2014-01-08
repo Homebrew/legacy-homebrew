@@ -2,15 +2,14 @@ require 'formula'
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'https://git-core.googlecode.com/files/git-1.8.5.1.tar.gz'
-  sha1 'dcd244c7198e8afe42ab223f7b3c9b1ae01749c3'
+  url 'https://git-core.googlecode.com/files/git-1.8.5.2.tar.gz'
+  sha1 '3a09d6d5d4e31c702f17e664a527b4c2f6e84faf'
   head 'https://github.com/git/git.git'
 
   bottle do
-    revision 1
-    sha1 '3dcbbccf00260999f5b653f5f2a4850f9cb76b54' => :mavericks
-    sha1 '3dbd8ce732095ca0f902b5eabcbe808dc40486be' => :mountain_lion
-    sha1 'e0e3f77e77865f6122e7399a1d3e433d4a7c18d0' => :lion
+    sha1 '96d04727c003453524c76db9e62d06efa9c96cb5' => :mavericks
+    sha1 '041f911d683da52f2544299035836337e67417cd' => :mountain_lion
+    sha1 '27e3ca8f3005f8405daab4f66dfe6df0d6affcd3' => :lion
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -19,7 +18,6 @@ class Git < Formula
   option 'with-brewed-curl', "Use Homebrew's version of cURL library"
   option 'with-persistent-https', 'Build git-remote-persistent-https from "contrib" directory'
 
-  depends_on :python
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
   depends_on 'openssl' if build.with? 'brewed-openssl'
@@ -27,13 +25,13 @@ class Git < Formula
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
-    url 'http://git-core.googlecode.com/files/git-manpages-1.8.5.1.tar.gz'
-    sha1 '32befa65b564640981d71f8a38eee19939a2eb63'
+    url 'http://git-core.googlecode.com/files/git-manpages-1.8.5.2.tar.gz'
+    sha1 '54450c09138b8d65c5f9d2b19ca86fd63c645bb5'
   end
 
   resource 'html' do
-    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.5.1.tar.gz'
-    sha1 '16cd5fdf486aa880c4fcb297d769070c67996317'
+    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.5.2.tar.gz'
+    sha1 'eaf2e3cfd07c1b88eff688fc3ba79dd4f3f2bc43'
   end
 
   def patches
@@ -53,7 +51,7 @@ class Git < Formula
     ENV['NO_DARWIN_PORTS'] = '1'
     ENV['V'] = '1' # build verbosely
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
-    ENV['PYTHON_PATH'] = python.binary if python
+    ENV['PYTHON_PATH'] = which 'python'
     ENV['PERL_PATH'] = which 'perl'
 
     if MacOS.version >= :mavericks and MacOS.dev_tools_prefix

@@ -8,7 +8,6 @@ class Gammu < Formula
   depends_on 'cmake' => :build
   depends_on 'glib' => :recommended
   depends_on 'gettext' => :optional
-  depends_on :python => :recommended
 
   def patches
     # Fixes issue https://github.com/gammu/gammu/issues/13
@@ -23,15 +22,6 @@ class Gammu < Formula
     system 'cmake', *args
     system 'make'
     system 'make install'
-    python do
-      chdir 'python' do
-        system "#{python.binary}", "setup.py",
-                                   "build_ext",
-                                   "--gammu-libs=#{lib}",
-                                   "--gammu-incs=#{include}/gammu",
-                                   "install"
-      end
-    end
   end
 
 end

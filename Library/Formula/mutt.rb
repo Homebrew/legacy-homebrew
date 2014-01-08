@@ -3,6 +3,7 @@ require 'formula'
 class Mutt < Formula
   homepage 'http://www.mutt.org/'
   url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.22.tar.gz'
+  mirror 'https://bitbucket.org/mutt/mutt/downloads/mutt-1.5.22.tar.gz'
   sha1 '728a114cb3a44df373dbf1292fc34dd8321057dc'
 
   head do
@@ -16,8 +17,10 @@ class Mutt < Formula
     depends_on :automake
   end
 
-  conflicts_with 'signing-party',
-    :because => 'mutt installs private copies of pgpring and pgpewrap'
+  unless Tab.for_name('signing-party').used_options.include? 'with-rename-pgpring'
+    conflicts_with 'signing-party',
+      :because => 'mutt installs a private copy of pgpring'
+  end
 
   conflicts_with 'tin',
     :because => 'both install mmdf.5 and mbox.5 man pages'

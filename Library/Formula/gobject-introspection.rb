@@ -21,6 +21,7 @@ class GobjectIntrospection < Formula
   end if build.with? 'tests'
 
   def install
+    ENV['GI_SCANNER_DISABLE_CACHE'] = 'true'
     ENV.universal_binary if build.universal?
     inreplace 'giscanner/transformer.py', '/usr/share', HOMEBREW_PREFIX/'share'
     inreplace 'configure' do |s|
