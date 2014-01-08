@@ -11,6 +11,9 @@ class Autojump < Formula
     inreplace 'bin/autojump.sh', ' /etc/profile.d/', " #{prefix}/etc/"
 
     bin.install 'bin/autojump'
+    if build.head?
+      bin.install 'bin/autojump_argparse.py', 'bin/autojump_data.py', 'bin/autojump_utils.py'
+    end
     man1.install 'docs/autojump.1'
     (prefix/'etc').install 'bin/autojump.sh', 'bin/autojump.bash', 'bin/autojump.zsh'
     zsh_completion.install 'bin/_j'
