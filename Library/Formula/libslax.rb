@@ -2,18 +2,23 @@ require 'formula'
 
 class Libslax < Formula
   homepage 'http://www.libslax.org/'
-  url 'https://github.com/Juniper/libslax/releases/download/0.17.1/libslax-0.17.1.tar.gz'
-  sha1 '3d2df8e5c922442f253ed70db93259efc6a07750'
+  url 'https://github.com/Juniper/libslax/releases/download/0.17.2/libslax-0.17.2.tar.gz'
+  sha1 '20dba3ea27fc6dd6d9e2aa7ad6e931b1dfe8d6bc'
 
   head do
     url 'https://github.com/Juniper/libslax.git'
 
+    depends_on 'autoconf' => :build
     depends_on 'automake' => :build
   end
 
   depends_on 'libtool'  => :build
-  depends_on 'libxml2'
-  depends_on 'libxslt'
+
+  if MacOS.version <= :mountain_lion
+    depends_on 'libxml2'
+    depends_on 'libxslt'
+  end
+
   depends_on 'curl' if MacOS.version <= :lion
 
   def install

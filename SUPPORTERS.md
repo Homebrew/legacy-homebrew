@@ -121,8 +121,8 @@ These awesome people supported our Kickstarter by giving us £50 or more:
 * [Lane Lillquist](http://www.lillq.com)
 * [Robert Schmidl](https://github.com/RobRoy)
 * [Collective Idea](http://collectiveidea.com)
-* Thomas Fuchs
-* Hans-Christian Otto
+* [Freckle Time Tracking](http://letsfreckle.com/)
+* [Hans-Christian Otto](http://hans-christian-otto.de/)
 * Dan Lane
 * Seth Szymanski
 * [osh Runge](http://joshrunge.com)
@@ -325,7 +325,7 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [Daniel Hertz](http://www.dhertz.com)
 * [Chuck Fouts](https://github.com/gnarl)
 * [Chip Warden](https://twitter.com/lgw4)
-* Ethan Schoonover
+* [Ethan Schoonover](http://ethanschoonover.com)
 * [Chi Trung Nguyen](http://www.napcaesmind.de)
 * [Danny Amey](http://www.dannyamey.com/)
 * Oscar

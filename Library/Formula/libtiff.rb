@@ -7,11 +7,13 @@ class Libtiff < Formula
   sha256 'ea1aebe282319537fb2d4d7805f478dd4e0e05c33d0928baba76a7c963684872'
 
   option :universal
+  option :cxx11
 
   depends_on 'jpeg'
 
   def install
     ENV.universal_binary if build.universal?
+    ENV.cxx11 if build.cxx11?
     jpeg = Formula.factory('jpeg').opt_prefix
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

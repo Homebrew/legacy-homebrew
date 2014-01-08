@@ -2,10 +2,11 @@ require 'formula'
 
 class Osm2pgsql < Formula
   homepage 'http://wiki.openstreetmap.org/wiki/Osm2pgsql'
-  url 'https://github.com/openstreetmap/osm2pgsql/archive/v0.82.0.zip'
-  sha1 '9c0141faad6b93ccd0aa5fd554c6d1fd1af28532'
+  url 'https://github.com/openstreetmap/osm2pgsql/archive/0.84.0.tar.gz'
+  sha1 '42145c39596580680f120a07a4f30f97a86a3698'
 
   depends_on :postgresql
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
   depends_on "geos"

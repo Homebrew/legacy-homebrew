@@ -9,7 +9,6 @@ class Libcaca < Formula
   option 'with-imlib2', 'Build with Imlib2 support'
 
   depends_on :x11 if MacOS::X11.installed? or build.include? "with-imlib2"
-  depends_on :python => :recommended
 
   if build.include? "with-imlib2"
     depends_on 'pkg-config' => :build
@@ -25,7 +24,7 @@ class Libcaca < Formula
 
   def install
     # Some people can't compile when Java is enabled. See:
-    # https://github.com/mxcl/homebrew/issues/issue/2049
+    # https://github.com/Homebrew/homebrew/issues/issue/2049
 
     # Don't build csharp bindings
     # Don't build ruby bindings; fails for adamv w/ Homebrew Ruby 1.9.2

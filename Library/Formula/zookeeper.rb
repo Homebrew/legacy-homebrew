@@ -8,12 +8,13 @@ class Zookeeper < Formula
   head do
     url 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
-  option "c",      "Build C bindings."
-  option "perl",   "Build Perl bindings."
+  option "c", "Build C bindings"
+  option "perl", "Build Perl bindings"
 
   depends_on :ant
   depends_on :python => :optional
@@ -71,14 +72,6 @@ class Zookeeper < Formula
                             "--without-cppunit"
       system "make install"
     end if build_c
-
-    # Install Python bindings
-    python do
-      cd "src/contrib/zkpython" do
-        system python, "src/python/setup.py", "build"
-        system python, "src/python/setup.py", "install", "--prefix=#{prefix}"
-      end
-    end
 
     # Install Perl bindings
     cd "src/contrib/zkperl" do

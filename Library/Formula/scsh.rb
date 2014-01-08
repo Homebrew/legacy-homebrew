@@ -8,9 +8,12 @@ class Scsh < Formula
   head do
     url 'https://github.com/scheme/scsh.git'
 
+    depends_on 'autoconf' => :build
     depends_on 'automake' => :build
     depends_on 'scheme48'
   end
+
+  conflicts_with 'scheme48', :because => 'both install include/scheme48.h'
 
   # stable segfaults when built 64-bit; see #21351
   env :std unless build.head?

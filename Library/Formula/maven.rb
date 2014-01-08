@@ -10,10 +10,13 @@ class Maven < Formula
     rm_f Dir["bin/*.bat"]
 
     # Fix the permissions on the global settings file.
-    chmod 0644, Dir["conf/settings.xml"]
+    chmod 0644, 'conf/settings.xml'
 
     prefix.install_metafiles
     libexec.install Dir['*']
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+
+    # Leave conf file in libexec. The mvn symlink will be resolved and the conf
+    # file will be found relative to it
+    bin.install_symlink Dir["#{libexec}/bin/*"] - ["#{libexec}/bin/m2.conf"]
   end
 end

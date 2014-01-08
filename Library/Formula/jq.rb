@@ -10,11 +10,12 @@ class Jq < Formula
 
     depends_on 'autoconf' => :build
     depends_on 'automake' => :build
+    depends_on 'libtool' => :build
     depends_on 'bison' => :build
   end
 
   def install
-    system "autoreconf -i" if build.head?
+    system "autoreconf", "-iv" if build.head?
     system "./configure"
     system "make"
     bin.install 'jq'

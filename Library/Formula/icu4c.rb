@@ -8,12 +8,13 @@ class Icu4c < Formula
   head 'http://source.icu-project.org/repos/icu/icu/trunk/', :using => :svn
 
   bottle do
-    sha1 '3205496d69fcf985a92954a170dc29abbbc6ae85' => :mountain_lion
-    sha1 '7188afe2066586d3c79480f591f0c373a32422a0' => :lion
-    sha1 'cd9b8955fc41b46fa57c6f3697e4689eff02c7c3' => :snow_leopard
+    revision 1
+    sha1 'c38fd0be5f63a0dd187ee76a9321d543d02d3638' => :mavericks
+    sha1 '636b03a9cfd3e686b7c89891eddb74ba34cbf456' => :mountain_lion
+    sha1 'f09512efdb8b12edfe080492a5a1c0bafc5a2941' => :lion
   end
 
-  keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
+  keg_only "Conflicts; see: https://github.com/Homebrew/homebrew/issues/issue/167"
 
   option :universal
   option :cxx11

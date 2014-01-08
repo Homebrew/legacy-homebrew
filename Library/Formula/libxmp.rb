@@ -2,8 +2,8 @@ require 'formula'
 
 class Libxmp < Formula
   homepage 'http://xmp.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/xmp/libxmp/4.1.5/libxmp-4.1.5.tar.gz'
-  sha1 'f50ff6d98e9c21c8fb5e29a8c9e5677983285d90'
+  url 'http://downloads.sourceforge.net/project/xmp/libxmp/4.2.1/libxmp-4.2.1.tar.gz'
+  sha1 '0c511b366910bfbc92bcccfd20546001fbc05623'
 
   head do
     url 'git://git.code.sf.net/p/xmp/libxmp'

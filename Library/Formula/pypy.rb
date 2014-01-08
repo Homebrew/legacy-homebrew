@@ -2,15 +2,15 @@ require 'formula'
 
 class Pypy < Formula
   homepage 'http://pypy.org/'
-  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.1-osx64.tar.bz2'
-  version '2.1.0'
-  sha1 '6cdaa1dc0a47d9eb6d816f7d394ca46f290a1ed5'
+  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.2.1-osx64.tar.bz2'
+  version '2.2.1'
+  sha1 'caf13d377fcdced4bfadd4158ba3d18d520396f3'
 
   depends_on :arch => :x86_64
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.7.tar.gz'
-    sha1 'd1cd31a77b7c9b662c487b7c8cb37677f7733878'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.0.1.tar.gz'
+    sha1 '5283b4dca46d45efd1156713ab51836509646c03'
   end
 
   resource 'pip' do
@@ -19,6 +19,11 @@ class Pypy < Formula
   end
 
   def install
+    # Having PYTHONPATH set can cause the build to fail if another
+    # Python is present, e.g. a Homebrew-provided Python 2.x
+    # See https://github.com/Homebrew/homebrew/issues/24364
+    ENV['PYTHONPATH'] = ''
+
     rmtree 'site-packages'
 
     # The PyPy binary install instructions suggest installing somewhere
@@ -80,7 +85,7 @@ class Pypy < Formula
         #{scripts_folder}/easy_install pip
         #{scripts_folder}/pip install --upgrade setuptools
 
-    See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+    See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
     EOS
   end
 

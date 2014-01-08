@@ -14,6 +14,7 @@ class Elinks < Formula
   head do
     url 'http://elinks.cz/elinks.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

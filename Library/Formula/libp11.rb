@@ -7,6 +7,7 @@ class Libp11 < Formula
 
   head do
     url 'https://github.com/OpenSC/libp11.git'
+    depends_on :autoconf
     depends_on :automake
   end
 

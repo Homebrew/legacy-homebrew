@@ -73,7 +73,7 @@ Note that these flags should only appear after a command.
     and version, but if it fails, you'll have to make your own template. The wget
     formula serves as a simple example. For a complete cheat-sheet, have a look at
 
-    `$(brew --prefix)/Library/Contributions/example-formula.rb`
+    `$(brew --repository)/Library/Contributions/example-formula.rb`
 
     If `--autotools` is passed, create a basic template for an Autotools-style build.
     If `--cmake` is passed, create a basic template for a CMake-style build.
@@ -151,7 +151,7 @@ Note that these flags should only appear after a command.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--fresh] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
+  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--fresh] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
@@ -169,6 +169,9 @@ Note that these flags should only appear after a command.
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail
     to install.
+
+    If `--only-dependencies` is passed, install the dependencies with specified
+    options but do not install the specified formula.
 
     If `--fresh` is passed, the installation process will not re-use any
     options from previous installs.
@@ -196,6 +199,9 @@ Note that these flags should only appear after a command.
 
     If `--git` is passed, Homebrew will create a Git repository, useful for
     creating patches to the software.
+
+  * `leaves`:
+    Show installed formulae that are not dependencies of another installed formula.
 
   * `ln`, `link [--overwrite] [--dry-run] [--force]` <formula>:
     Symlink all of <formula>'s installed files into the Homebrew prefix. This
@@ -346,12 +352,16 @@ Note that these flags should only appear after a command.
     If <formulae> are given, upgrade only the specified brews (but do so even
     if they are pinned; see `pin`, `unpin`).
 
-  * `uses [--installed] [--recursive]` <formula>:
+  * `uses [--installed] [--recursive] [--devel|--HEAD]` <formula>:
     Show the formulae that specify <formula> as a dependency.
 
     Use `--recursive` to resolve more than one level of dependencies.
 
     If `--installed` is passed, only list installed formulae.
+
+    By default, `uses` shows usages of `formula` by stable builds. To find
+    cases where `formula` is used by development or HEAD build, pass
+    `--devel` or `--HEAD`.
 
   * `versions [--compact]` <formulae>:
     List previous versions of <formulae>, along with a command to checkout
@@ -404,11 +414,11 @@ to create your own commands without modifying Homebrew's internals.
 A number of (useful, but unsupported) external commands are included and enabled
 by default:
 
-    $ ls `brew --repository`/Library/Contributions/cmd
+    $ ls $(brew --repository)/Library/Contributions/cmd
 
 Documentation for the included external commands as well as instructions for
 creating your own can be found on the wiki:
-<http://wiki.github.com/mxcl/homebrew/External-Commands>
+<http://wiki.github.com/Homebrew/homebrew/External-Commands>
 
 ## SPECIFYING FORMULAE
 
@@ -419,13 +429,13 @@ can take several different forms:
     e.g. `git`, `node`, `wget`.
 
   * The fully-qualified name of a tapped formula:
-    Sometimes a formula from a tapped repository may conflict with one in mxcl/master.
+    Sometimes a formula from a tapped repository may conflict with one in Homebrew/homebrew.
     You can still access these formulae by using a special syntax, e.g.
     `homebrew/dupes/vim` or `homebrew/versions/node4`.
 
   * An arbitrary URL:
     Homebrew can install formulae via URL, e.g.
-    `https://raw.github.com/mxcl/homebrew/master/Library/Formula/git.rb`.
+    `https://raw.github.com/Homebrew/homebrew/master/Library/Formula/git.rb`.
     The formula file will be cached for later use.
 
 ## ENVIRONMENT
@@ -514,13 +524,18 @@ can take several different forms:
     *Default:* the number of available CPU cores.
 
   * HOMEBREW\_NO\_EMOJI:
-    If set, Homebrew will not print the beer emoji on a successful build.
+    If set, Homebrew will not print the `HOMEBREW_INSTALL_BADGE` on a
+    successful build.
 
     *Note:* Homebrew will only try to print emoji on Lion or newer.
 
   * HOMEBREW\_NO\_GITHUB\_API:
     If set, Homebrew will not use the GitHub API for e.g searches or
     fetching relevant issues on a failed install.
+
+  * HOMEBREW\_INSTALL\_BADGE:
+    Text printed before the installation summary of each successful build.
+    Defaults to the beer emoji.
 
   * HOMEBREW\_SOURCEFORGE\_MIRROR:
     If set, Homebrew will use the value of `HOMEBREW_SOURCEFORGE_MIRROR` to
@@ -566,7 +581,7 @@ If your proxy requires authentication:
 
 ## SEE ALSO
 
-Homebrew Wiki: <http://wiki.github.com/mxcl/homebrew/>
+Homebrew Wiki: <http://wiki.github.com/Homebrew/homebrew/>
 
 `git`(1), `git-log`(1)
 
@@ -576,5 +591,5 @@ Max Howell, a splendid chap.
 
 ## BUGS
 
-See Issues on GitHub: <http://github.com/mxcl/homebrew/issues>
+See Issues on GitHub: <http://github.com/Homebrew/homebrew/issues>
 

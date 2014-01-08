@@ -2,13 +2,15 @@ require 'formula'
 
 class Memcached < Formula
   homepage 'http://memcached.org/'
-  url "http://memcached.googlecode.com/files/memcached-1.4.15.tar.gz"
-  sha1 '12ec84011f408846250a462ab9e8e967a2e8cbbc'
+  url 'http://www.memcached.org/files/memcached-1.4.16.tar.gz'
+  sha1 'fdf071b5fd9972bf74f91d43f0b4cba980b83acb'
 
   depends_on 'libevent'
 
   option "enable-sasl", "Enable SASL support -- disables ASCII protocol!"
   option "enable-sasl-pwdb", "Enable SASL with memcached's own plain text password db support -- disables ASCII protocol!"
+
+  conflicts_with 'mysql-cluster', :because => 'both install `bin/memcached`'
 
   def install
     args = ["--prefix=#{prefix}", "--disable-coverage"]

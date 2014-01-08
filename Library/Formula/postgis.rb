@@ -2,13 +2,14 @@ require 'formula'
 
 class Postgis < Formula
   homepage 'http://postgis.net'
-  url 'http://download.osgeo.org/postgis/source/postgis-2.1.0.tar.gz'
-  sha1 'e8a428348e93f204fdf4838ebedcad9306b29a5e'
+  url 'http://download.osgeo.org/postgis/source/postgis-2.1.1.tar.gz'
+  sha1 'eaff009fb22b8824f89e5aa581e8b900c5d8f65b'
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
   option 'with-gui', 'Build shp2pgsql-gui in addition to command line tools'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 

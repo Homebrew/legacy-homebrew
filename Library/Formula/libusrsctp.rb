@@ -8,9 +8,9 @@ class Libusrsctp < Formula
   head do
     url 'http://sctp-refimpl.googlecode.com/svn/trunk/KERN/usrsctp'
 
-    depends_on :libtool
     depends_on :autoconf
     depends_on :automake
+    depends_on :libtool
   end
 
   def install

@@ -2,16 +2,12 @@ require 'formula'
 
 class Dpkg < Formula
   homepage 'https://wiki.debian.org/Teams/Dpkg'
-  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.1.tar.xz'
-  sha1 'c94b33573806cf9662c5a6f2bbae64900113a538'
+  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.5.tar.xz'
+  sha1 '30656d70795c463d67e3507dfad9351e92fe3354'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'gnu-tar'
-
-  fails_with :clang do
-    cause 'cstdlib:142:3: error: declaration conflicts with target of using declaration already in scope'
-  end
 
   # Fixes the PERL_LIBDIR.
   # Uses Homebrew-install gnu-tar instead of bsd tar.

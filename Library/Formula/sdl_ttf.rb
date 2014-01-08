@@ -7,6 +7,7 @@ class SdlTtf < Formula
 
   option :universal
 
+  depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on :freetype
 

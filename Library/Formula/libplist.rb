@@ -14,6 +14,11 @@ class Libplist < Formula
   depends_on :python => :optional
   depends_on 'Cython' => :python if build.with? 'python'
 
+  def patches
+    # Upstream patch for compilation on 10.9
+    "https://github.com/libimobiledevice/libplist/commit/c56c8103f51c20c6fcf99e8bc9d83c380f503a1b.patch"
+  end
+
   def install
     ENV.deparallelize # make fails on an 8-core Mac Pro
 
@@ -22,21 +27,10 @@ class Libplist < Formula
     # Disable Swig Python bindings
     args << "-DENABLE_SWIG='OFF'"
 
-    if python do
-      # For Xcode-only systems, the headers of system's python are inside of Xcode:
-      args << "-DPYTHON_INCLUDE_DIR='#{python.incdir}'"
-      # Cmake picks up the system's python dylib, even if we have a brewed one:
-      args << "-DPYTHON_LIBRARY='#{python.libdir}/lib#{python.xy}.dylib'"
-    end; else
-      # Also disable Cython Python bindings if we're not building --with-python
-      args << "-DENABLE_CYTHON='OFF'"
-    end
+    # Also disable Cython Python bindings if we're not building --with-python
+    args << "-DENABLE_CYTHON='OFF'" if build.without? 'python'
 
     system "cmake", ".", "-DCMAKE_INSTALL_NAME_DIR=#{lib}", *args
     system "make install"
-  end
-
-  def caveats
-    python.standard_caveats if python
   end
 end

@@ -9,10 +9,10 @@ class Readline < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 '82fb14c0c7671a6bb0490efc8b477df855eec093' => :mavericks
-    sha1 '8085cabc0f96bc0c3c36b8a73cf489f90f0d8683' => :mountain_lion
-    sha1 '9ac769748142d0d71a140939dd4a3d21d4c5b5de' => :lion
+    revision 2
+    sha1 'cce49ed4db5ae8065e40468bc8747042f41ed266' => :mavericks
+    sha1 'fea45780c788a92108f7ca2d9296dca0c3498579' => :mountain_lion
+    sha1 'b4aada7512f8b19eb120c0550cb793b48e8b7057' => :lion
   end
 
   keg_only <<-EOS
@@ -30,11 +30,11 @@ EOS
   #
   # We are carrying an additional patch to add Darwin 13 as a build target.
   # Presumably when 10.9 comes out this patch will move upstream.
-  # https://github.com/mxcl/homebrew/pull/21625
+  # https://github.com/Homebrew/homebrew/pull/21625
   def patches; DATA; end
 
   def install
-    # Always build universal, per https://github.com/mxcl/homebrew/issues/issue/899
+    # Always build universal, per https://github.com/Homebrew/homebrew/issues/issue/899
     ENV.universal_binary
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",

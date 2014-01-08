@@ -2,15 +2,14 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.4.tar.bz2'
-  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.4.tar.bz2'
-  sha1 '6e7ac5b56ec22995c763a668c658577f96f2c090'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.5.tar.bz2'
+  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.5.tar.bz2'
+  sha1 'd21de7daf37d9dd1cb0f777e999a529b96f83082'
 
   bottle do
-    revision 1
-    sha1 '03a9e38626bf1f9c243b4052a7955985c4962b9f' => :mavericks
-    sha1 'c13bbc716a1ee788812ecefd52f36778b22978b9' => :mountain_lion
-    sha1 '0d956908378049edfdfcef732af1769b7c52b4c0' => :lion
+    sha1 '1022095a741a6fb2c43b28003cecd6d8f220fe1e' => :mavericks
+    sha1 '82f6a8eb37d89badd9ed77ee7620f84304278db7' => :mountain_lion
+    sha1 '00340eabc7849c05ec0611ae8aea79db3848578e' => :lion
   end
 
   option :universal
@@ -20,8 +19,8 @@ class Subversion < Formula
   option 'ruby', 'Build Ruby bindings'
 
   resource 'serf' do
-    url 'http://serf.googlecode.com/files/serf-1.3.2.tar.bz2'
-    sha1 '90478cd60d4349c07326cb9c5b720438cf9a1b5d'
+    url 'http://serf.googlecode.com/files/serf-1.3.3.tar.bz2'
+    sha1 'b25c44a8651805f20f66dcaa76db08442ec4fa0e'
   end
 
   depends_on 'pkg-config' => :build
@@ -35,7 +34,7 @@ class Subversion < Formula
   depends_on :libtool
 
   # Bindings require swig
-  depends_on 'swig' if build.include? 'perl' or build.include? 'python' or build.include? 'ruby'
+  depends_on 'swig' if build.include? 'perl' or build.with? 'python' or build.include? 'ruby'
 
   # For Serf
   depends_on 'scons' => :build
@@ -44,8 +43,7 @@ class Subversion < Formula
   # If building bindings, allow non-system interpreters
   env :userpaths if build.include? 'perl' or build.include? 'ruby'
 
-  # One patch to prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags},
-  # and another one to put the svn-tools directory into libexec instead of bin
+  # Prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
   def patches
     { :p0 => DATA }
   end
@@ -96,7 +94,7 @@ class Subversion < Formula
 
     if build.include? 'java'
       # Java support doesn't build correctly in parallel:
-      # https://github.com/mxcl/homebrew/issues/20415
+      # https://github.com/Homebrew/homebrew/issues/20415
       ENV.deparallelize
 
       unless build.universal?
@@ -138,6 +136,9 @@ class Subversion < Formula
     # variable to prevent failures due to incompatible CFLAGS
     ENV['ac_cv_python_compile'] = ENV.cc
 
+    inreplace 'Makefile.in',
+              'toolsdir = @bindir@/svn-tools',
+              'toolsdir = @libexecdir@/svn-tools'
     # Suggestion by upstream. http://svn.haxx.se/users/archive-2013-09/0188.shtml
     system "./autogen.sh"
     system "./configure", *args
@@ -148,7 +149,7 @@ class Subversion < Formula
     system "make tools"
     system "make install-tools"
 
-    python do
+    if build.with? 'python'
       system "make swig-py"
       system "make install-swig-py"
     end
@@ -204,8 +205,6 @@ class Subversion < Formula
         #{opt_prefix}/libexec
     EOS
 
-    s += python.standard_caveats if python
-
     if build.include? 'perl'
       s += <<-EOS.undent
 
@@ -256,14 +255,3 @@ __END__
                   " -I$swig_srcdir/perl/libsvn_swig_perl",
                   " -I$svnlib_srcdir/include",
 
---- Makefile.in~ 2013-07-25 16:55:27.000000000 +0200
-+++ Makefile.in 2013-07-25 17:02:02.000000000 +0200
-@@ -85,7 +85,7 @@
- swig_pydir_extra = @libdir@/svn-python/svn
- swig_pldir = @libdir@/svn-perl
- swig_rbdir = $(SWIG_RB_SITE_ARCH_DIR)/svn/ext
--toolsdir = @bindir@/svn-tools
-+toolsdir = @libexecdir@/svn-tools
-
- javahl_javadir = @libdir@/svn-javahl
- javahl_javahdir = @libdir@/svn-javahl/include

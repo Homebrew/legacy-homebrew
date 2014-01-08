@@ -2,8 +2,8 @@ require 'formula'
 
 class Olsrd < Formula
   homepage 'http://www.olsr.org'
-  url 'http://www.olsr.org/releases/0.6/olsrd-0.6.6.tar.bz2'
-  sha1 '9923e97d786438f24ff19ec94017acd1c7e0c91e'
+  url 'http://www.olsr.org/releases/0.6/olsrd-0.6.6.1.tar.bz2'
+  sha1 '0d74708dd94ad978af061a44758f8ea31845261f'
 
   #Release is broken and assumes git repository
   def patches; DATA end

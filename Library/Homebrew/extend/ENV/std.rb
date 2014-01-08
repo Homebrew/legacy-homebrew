@@ -103,40 +103,14 @@ module Stdenv
   end
   alias_method :j1, :deparallelize
 
-  # recommended by Apple, but, eg. wget won't compile with this flag, so…
-  def fast
-    remove_from_cflags(/-O./)
-    append_to_cflags '-fast'
-  end
-  def O4
-    # LLVM link-time optimization
-    remove_from_cflags(/-O./)
-    append_to_cflags '-O4'
-  end
-  def O3
-    # Sometimes O4 just takes fucking forever
-    remove_from_cflags(/-O./)
-    append_to_cflags '-O3'
-  end
-  def O2
-    # Sometimes O3 doesn't work or produces bad binaries
-    remove_from_cflags(/-O./)
-    append_to_cflags '-O2'
-  end
-  def Os
-    # Sometimes you just want a small one
-    remove_from_cflags(/-O./)
-    append_to_cflags '-Os'
-  end
-  def Og
-    # Sometimes you want a debug build
-    remove_from_cflags(/-O./)
-    append_to_cflags '-g -O0'
-  end
-  def O1
-    # Sometimes even O2 doesn't work :(
-    remove_from_cflags(/-O./)
-    append_to_cflags '-O1'
+  # These methods are no-ops for compatibility.
+  %w{fast Og}.each { |opt| define_method(opt) {} }
+
+  %w{O4 O3 O2 O1 O0 Os}.each do |opt|
+    define_method opt do
+      remove_from_cflags(/-O./)
+      append_to_cflags "-#{opt}"
+    end
   end
 
   def gcc_4_0_1
@@ -145,7 +119,7 @@ module Stdenv
     self.cxx = "#{MacOS.dev_tools_path}/g++-4.0"
     replace_in_cflags '-O4', '-O3'
     set_cpu_cflags '-march=nocona -mssse3'
-    @compiler = :gcc
+    @compiler = :gcc_4_0
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 
@@ -156,16 +130,6 @@ module Stdenv
 
     self.cc  = MacOS.locate("gcc-4.2")
     self.cxx = MacOS.locate("g++-4.2")
-
-    unless cc
-      self.cc  = "#{HOMEBREW_PREFIX}/bin/gcc-4.2"
-      self.cxx = "#{HOMEBREW_PREFIX}/bin/g++-4.2"
-      raise "GCC could not be found" unless File.exist? cc
-    end
-
-    unless cc =~ %r{^/usr/bin/xcrun }
-      raise "GCC could not be found" if Pathname.new(cc).realpath.to_s =~ /llvm/
-    end
 
     replace_in_cflags '-O4', '-O3'
     set_cpu_cflags
@@ -369,9 +333,13 @@ module Stdenv
 
     if ARGV.build_bottle?
       arch = ARGV.bottle_arch || Hardware.oldest_cpu
-      append flags, Hardware::CPU.optimization_flags[arch]
+      append flags, Hardware::CPU.optimization_flags.fetch(arch)
+    elsif Hardware::CPU.intel? && !Hardware::CPU.sse4?
+      # If the CPU doesn't support SSE4, we cannot trust -march=native or
+      # -march=<cpu family> to do the right thing because we might be running
+      # in a VM or on a Hackintosh.
+      append flags, Hardware::CPU.optimization_flags.fetch(Hardware.oldest_cpu)
     else
-      # Don't set -msse3 and older flags because -march does that for us
       append flags, map.fetch(Hardware::CPU.family, default)
     end
 
