@@ -1,30 +1,57 @@
 require 'formula'
 
 class Zsh < Formula
-  url 'http://downloads.sourceforge.net/project/zsh/zsh-dev/4.3.12/zsh-4.3.12.tar.gz'
   homepage 'http://www.zsh.org/'
-  md5 '46ae7be975779b9b0ea24e8b30479a8b'
+  url 'http://fossies.org/linux/misc/zsh-5.0.5.tar.bz2'
+  mirror 'http://www.zsh.org/pub/zsh-5.0.5.tar.bz2'
+  sha1 '75426146bce45ee176d9d50b32f1ced78418ae16'
 
-  depends_on 'gdbm' => :optional
+  depends_on 'gdbm'
+  depends_on 'pcre'
 
-  skip_clean :all
+  option 'enable-etcdir', 'Enable the reading of Zsh rc files in /etc'
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          # don't version stuff in Homebrew, we already do that!
-                          "--enable-fndir=#{share}/zsh/functions",
-                          "--enable-scriptdir=#{share}/zsh/scripts"
+    args = %W[
+      --prefix=#{prefix}
+      --enable-fndir=#{share}/zsh/functions
+      --enable-scriptdir=#{share}/zsh/scripts
+      --enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions
+      --enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts
+      --enable-cap
+      --enable-maildir-support
+      --enable-multibyte
+      --enable-pcre
+      --enable-zsh-secure-free
+      --with-tcsetpgrp
+    ]
 
-    # Again, don't version installation directories
+    if build.include? 'enable-etcdir'
+      args << '--enable-etcdir=/etc'
+    else
+      args << '--disable-etcdir'
+    end
+
+    system "./configure", *args
+
+    # Do not version installation directories.
     inreplace ["Makefile", "Src/Makefile"],
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
   end
 
+  def test
+    system "#{bin}/zsh", "--version"
+  end
+
   def caveats; <<-EOS.undent
-    In order to use this build of zsh as your login shell,
-    it must be added to /etc/shells.
+    To use this build of Zsh as your login shell, add it to /etc/shells.
+
+    Add the following to your zshrc to access the online help:
+      unalias run-help
+      autoload run-help
+      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/helpfiles
     EOS
   end
 end

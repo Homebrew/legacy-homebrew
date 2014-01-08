@@ -1,37 +1,45 @@
 require 'formula'
 
 class GambitScheme < Formula
-  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.6/source/gambc-v4_6_1.tgz'
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
-  md5 'fb716406266746ad25ff57b651caf3c8'
+  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_0.tgz'
+  sha256 '2b03ecef89da2a53212dc3e6583ee4175d91a0752779e1758bcab5d09e9d1e63'
 
-  def options
-    [
-      ['--with-check', 'Execute "make check" before installing. Runs some basic scheme programs to ensure that gsi and gsc are working'],
-      ['--enable-shared', 'Build Gambit Scheme runtime as shared library']
-    ]
-  end
+  conflicts_with 'ghostscript', :because => 'both install `gsc` binaries'
+  conflicts_with 'scheme48', :because => 'both install `scheme-r5rs` binaries'
 
-  skip_clean :all
+  option 'with-check', 'Execute "make check" before installing'
+  option 'enable-shared', 'Build Gambit Scheme runtime as shared library'
 
-  fails_with_llvm "ld crashes during the build process or segfault at runtime"
+  fails_with :llvm
 
   def install
-    ENV.O2 # Gambit Scheme doesn't like full optimizations
-
-    configure_args = [
-      "--prefix=#{prefix}",
-      "--infodir=#{info}",
-      "--disable-debug",
-      # Recommended to improve the execution speed and compactness
-      # of the generated executables. Increases compilation times.
-      "--enable-single-host"
+    args = %W[
+      --disable-debug
+      --prefix=#{prefix}
+      --libdir=#{lib}/gambit-c
+      --infodir=#{info}
+      --docdir=#{doc}
     ]
 
-    configure_args << "--enable-shared" if ARGV.include? '--enable-shared'
+    # Recommended to improve the execution speed and compactness
+    # of the generated executables. Increases compilation times.
+    # Don't enable this when using clang, per configure warning.
+    args << "--enable-single-host" unless ENV.compiler == :clang
 
-    system "./configure", *configure_args
-    system "make check" if ARGV.include? '--with-check'
+    args << "--enable-shared" if build.include? 'enable-shared'
+
+    if ENV.compiler == :clang
+      opoo <<-EOS.undent
+        Gambit will build with Clang, however the build may take longer and
+        produce substandard binaries. If you have GCC, you can get a faster
+        build and faster execution with:
+          brew install gambit-scheme --cc=gcc-4.2 # or 4.7, 4.8, etc.
+      EOS
+    end
+
+    system "./configure", *args
+    system "make check" if build.include? 'with-check'
 
     ENV.j1
     system "make"

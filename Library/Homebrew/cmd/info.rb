@@ -1,86 +1,162 @@
 require 'formula'
+require 'tab'
+require 'keg'
+require 'caveats'
+require 'blacklist'
+require 'utils/json'
 
 module Homebrew extend self
   def info
+    # eventually we'll solidify an API, but we'll keep old versions
+    # awhile around for compatibility
+    if ARGV.json == "v1"
+      print_json
+    elsif ARGV.flag? '--github'
+      exec_browser(*ARGV.formulae.map { |f| github_info(f) })
+    else
+      print_info
+    end
+  end
+
+  def print_info
     if ARGV.named.empty?
       if ARGV.include? "--all"
         Formula.each do |f|
           info_formula f
           puts '---'
         end
-      else
+      elsif HOMEBREW_CELLAR.exist?
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
       end
     elsif valid_url ARGV[0]
       info_formula Formula.factory(ARGV.shift)
     else
-      ARGV.formulae.each{ |f| info_formula f }
+      ARGV.named.each do |f|
+        begin
+          info_formula Formula.factory(f)
+        rescue FormulaUnavailableError
+          # No formula with this name, try a blacklist lookup
+          if (blacklist = blacklisted?(f))
+            puts blacklist
+          else
+            raise
+          end
+        end
+      end
     end
   end
 
-  def github_info name
-    formula_name = Formula.path(name).basename
-    user = 'mxcl'
-    branch = 'master'
+  def print_json
+    formulae = ARGV.include?("--all") ? Formula : ARGV.formulae
+    json = formulae.map {|f| f.to_hash}
+    if json.size == 1
+      puts Utils::JSON.dump(json.pop)
+    else
+      puts Utils::JSON.dump(json)
+    end
+  end
 
-    if system "/usr/bin/which -s git"
-      gh_user=`git config --global github.user 2>/dev/null`.chomp
-      /^\*\s*(.*)/.match(`git --git-dir=#{HOMEBREW_REPOSITORY}/.git branch 2>/dev/null`)
-      unless $1.nil? || $1.empty? || $1.chomp == 'master' || gh_user.empty?
-        branch = $1.chomp
-        user = gh_user
+  def github_fork
+    if which 'git' and (HOMEBREW_REPOSITORY/".git").directory?
+      if `git remote -v` =~ %r{origin\s+(https?://|git(?:@|://))github.com[:/](.+)/homebrew}
+        $2
       end
     end
+  end
 
-    "http://github.com/#{user}/homebrew/commits/#{branch}/Library/Formula/#{formula_name}"
+  def github_info f
+    path = f.path.realpath
+
+    if path.to_s =~ HOMEBREW_TAP_PATH_REGEX
+      user = $1
+      repo = "homebrew-#$2"
+      path = $3
+    else
+      path.parent.cd do
+        user = github_fork
+      end
+      repo = "homebrew"
+      path = "Library/Formula/#{path.basename}"
+    end
+
+    "https://github.com/#{user}/#{repo}/commits/master/#{path}"
   end
 
   def info_formula f
-    exec 'open', github_info(f.name) if ARGV.flag? '--github'
+    specs = []
+    stable = "stable #{f.stable.version}" if f.stable
+    stable += " (bottled)" if f.bottle
+    specs << stable if stable
+    specs << "devel #{f.devel.version}" if f.devel
+    specs << "HEAD" if f.head
 
-    puts "#{f.name} #{f.version}"
+    puts "#{f.name}: #{specs*', '}#{' (pinned)' if f.pinned?}"
+
     puts f.homepage
 
     if f.keg_only?
       puts
       puts "This formula is keg-only."
-      puts f.keg_only?
+      puts f.keg_only_reason
       puts
     end
 
-    puts "Depends on: #{f.deps*', '}" unless f.deps.empty?
+    conflicts = f.conflicts.map(&:name).sort!
+    puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
 
-    rack = f.prefix.parent
-    if rack.directory?
-      kegs = rack.children
+    if f.rack.directory?
+      kegs = f.rack.subdirs.map { |keg| Keg.new(keg) }.sort_by(&:version)
       kegs.each do |keg|
-        next if keg.basename.to_s == '.DS_Store'
-        print "#{keg} (#{keg.abv})"
-        print " *" if f.installed_prefix == keg and kegs.length > 1
-        puts
+        puts "#{keg} (#{keg.abv})#{' *' if keg.linked?}"
+        tab = Tab.for_keg(keg).to_s
+        puts "  #{tab}" unless tab.empty?
       end
     else
       puts "Not installed"
     end
 
-    if f.caveats
-      puts
-      puts f.caveats
-      puts
+    history = github_info(f)
+    puts "From: #{history}" if history
+
+    unless f.deps.empty?
+      ohai "Dependencies"
+      %w{build required recommended optional}.map do |type|
+        deps = f.deps.send(type)
+        puts "#{type.capitalize}: #{decorate_dependencies deps}" unless deps.empty?
+      end
     end
 
-    history = github_info f.name
-    puts history if history
-
-  rescue FormulaUnavailableError
-    # check for DIY installation
-    d = HOMEBREW_PREFIX+name
-    if d.directory?
-      ohai "DIY Installation"
-      d.children.each{ |keg| puts "#{keg} (#{keg.abv})" }
-    else
-      raise "No such formula or keg"
+    unless f.build.empty?
+      require 'cmd/options'
+      ohai "Options"
+      Homebrew.dump_options_for_formula f
     end
+
+    c = Caveats.new(f)
+    ohai 'Caveats', c.caveats unless c.empty?
+  end
+
+  def decorate_dependencies dependencies
+    # necessary for 1.8.7 unicode handling since many installs are on 1.8.7
+    tick = ["2714".hex].pack("U*")
+    cross = ["2718".hex].pack("U*")
+
+    deps_status = dependencies.collect do |dep|
+      if dep.installed?
+        color = Tty.green
+        symbol = tick
+      else
+        color = Tty.red
+        symbol = cross
+      end
+      if ENV['HOMEBREW_NO_EMOJI']
+        colored_dep = "#{color}#{dep}"
+      else
+        colored_dep = "#{dep} #{color}#{symbol}"
+      end
+      "#{colored_dep}#{Tty.reset}"
+    end
+    deps_status * ", "
   end
 
   private

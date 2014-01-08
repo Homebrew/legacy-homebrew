@@ -1,9 +1,10 @@
 require 'formula'
 
 class Shtool < Formula
-  url 'ftp://ftp.gnu.org/gnu/shtool/shtool-2.0.8.tar.gz'
   homepage 'http://www.gnu.org/software/shtool/'
-  md5 'c5f7c6836882d48bc79049846a5f9c5b'
+  url 'http://ftpmirror.gnu.org/shtool/shtool-2.0.8.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/shtool/shtool-2.0.8.tar.gz'
+  sha1 '4b974f92d3932ea121e311e3b22c328d3b3572d4'
 
   def install
     system "./configure", "--prefix=#{prefix}"

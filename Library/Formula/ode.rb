@@ -1,17 +1,33 @@
 require 'formula'
 
 class Ode < Formula
-  # Build from svn to get Snow Leopard fixes.
-  url 'http://opende.svn.sourceforge.net/svnroot/opende/trunk', :revision => 1760
-  version 'r1760'
   homepage 'http://www.ode.org/'
-  head 'http://opende.svn.sourceforge.net/svnroot/opende/trunk'
+  url 'http://downloads.sourceforge.net/project/opende/ODE/0.12/ode-0.12.tar.bz2'
+  sha1 '10e7aae6cc6b1afe523ed52e76afd5e06461ea93'
+
+  head do
+    url 'http://opende.svn.sourceforge.net/svnroot/opende/trunk'
+
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
+
+  option 'enable-double-precision', 'Compile ODE with double precision'
+
+  depends_on 'pkg-config' => :build
 
   def install
-    ENV.j1
-    # only necessary when downloading from svn
-    system "sh autogen.sh" unless File.exist? "configure"
-    system "./configure", "--prefix=#{prefix}", "--disable-demos"
+    args = ["--prefix=#{prefix}",
+            "--disable-demos"]
+    args << "--enable-double-precision" if build.include? 'enable-double-precision'
+
+    if build.head?
+      ENV['LIBTOOLIZE'] = 'glibtoolize'
+      inreplace 'autogen.sh', 'libtoolize', '$LIBTOOLIZE'
+      system "./autogen.sh"
+    end
+    system "./configure", *args
     system "make"
     system "make install"
   end

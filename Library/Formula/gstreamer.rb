@@ -2,25 +2,47 @@ require 'formula'
 
 class Gstreamer < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-0.10.34.tar.bz2'
-  sha256 '85348f70dc4b70ad1beb05c9a59a64175c5058f4ee5273f89230a3c1d11b26a3'
+  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.2.1.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.2.1.tar.xz'
+  sha256 'a4523d2471bca6cd0059a32e3b042f50faa4dadc6439852af8b43ca3f17d1fc9'
+
+  head do
+    url 'git://anongit.freedesktop.org/gstreamer/gstreamer'
+
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on 'pkg-config' => :build
+  depends_on 'gobject-introspection' => :optional
   depends_on 'gettext'
   depends_on 'glib'
 
   def install
-    # Look for plugins in HOMEBREW_PREFIX/lib/gstreamer-0.10 instead of
-    # HOMEBREW_PREFIX/Cellar/gstreamer/0.10/lib/gstreamer-0.10, so we'll find
+    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing -fno-common"
+
+    args = %W[
+      --prefix=#{prefix}
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-gtk-doc
+    ]
+
+    if build.head?
+      ENV.append "NOCONFIGURE", "yes"
+      system "./autogen.sh"
+    end
+
+    # Look for plugins in HOMEBREW_PREFIX/lib/gstreamer-1.0 instead of
+    # HOMEBREW_PREFIX/Cellar/gstreamer/1.0/lib/gstreamer-1.0, so we'll find
     # plugins installed by other packages without setting GST_PLUGIN_PATH in
     # the environment.
     inreplace "configure", 'PLUGINDIR="$full_var"',
-      "PLUGINDIR=\"#{HOMEBREW_PREFIX}/lib/gstreamer-0.10\""
+      "PLUGINDIR=\"#{HOMEBREW_PREFIX}/lib/gstreamer-1.0\""
 
-    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing -fno-common"
-    system "./configure", "--prefix=#{prefix}", "--disable-debug",
-      "--disable-dependency-tracking"
+    system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

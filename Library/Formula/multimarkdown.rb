@@ -2,18 +2,22 @@ require 'formula'
 
 class Multimarkdown < Formula
   homepage 'http://fletcherpenney.net/multimarkdown/'
-  url 'https://github.com/fletcher/peg-multimarkdown/tarball/3.1b1'
-  md5 'fc09047d271828f068473114becd39d6'
-  head 'https://github.com/fletcher/peg-multimarkdown.git', :branch => 'development'
+  head 'https://github.com/fletcher/MultiMarkdown-4.git', :branch => 'master'
+  # Use git tag instead of the tarball to get submodules
+  url 'https://github.com/fletcher/MultiMarkdown-4.git', :tag => '4.3.2'
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'glib'
+  conflicts_with 'mtools', :because => 'both install `mmd` binaries'
 
   def install
+    ENV.append 'CFLAGS', '-g -O3 -include GLibFacade.h'
     system "make"
-    bin.install 'multimarkdown'
-    bin.install Dir['Support/bin/*']
-    bin.install Dir['scripts/*']
+    bin.install 'multimarkdown', Dir['scripts/*']
+    prefix.install 'Support'
+  end
+
+  def caveats; <<-EOS.undent
+    Support files have been installed to:
+      #{opt_prefix}/Support
+    EOS
   end
 end

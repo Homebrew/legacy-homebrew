@@ -1,9 +1,9 @@
 require 'formula'
 
 class Cppdom < Formula
-  url 'http://downloads.sourceforge.net/project/xml-cppdom/CppDOM/1.0.1/cppdom-1.0.1.tar.gz'
   homepage 'http://sourceforge.net/projects/xml-cppdom/'
-  md5 'ab30e45eb8129e14040020edc5b0b130'
+  url 'http://downloads.sourceforge.net/project/xml-cppdom/CppDOM/1.2.0/cppdom-1.2.0.tar.bz2'
+  sha1 'cf3a20689e82b8907825ac9d0602f469f879d934'
 
   depends_on 'scons' => :build
   depends_on 'boost'

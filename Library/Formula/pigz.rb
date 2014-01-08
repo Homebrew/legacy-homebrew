@@ -1,14 +1,14 @@
 require 'formula'
 
 class Pigz < Formula
-  url 'http://www.zlib.net/pigz/pigz-2.1.6.tar.gz'
   homepage 'http://www.zlib.net/pigz/'
-  md5 'cbe9030c4be3d0ef2438ee5f8b169ca4'
+  url 'http://www.zlib.net/pigz/pigz-2.3.1.tar.gz'
+  sha1 '2d5c9a70a6afcf1d8986890026d70c96b9346c07'
 
   def install
-    system "make"
-    bin.install ["pigz", "unpigz"]
-    man1.install ["pigz.1"]
+    system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"
+    bin.install "pigz", "unpigz"
+    man1.install "pigz.1"
     ln_s 'pigz.1', man1+'unpigz.1'
   end
 end

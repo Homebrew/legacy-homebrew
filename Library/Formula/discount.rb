@@ -1,16 +1,21 @@
 require 'formula'
 
 class Discount < Formula
-  url 'https://github.com/Orc/discount/tarball/v2.1.1.3'
   homepage 'http://www.pell.portland.or.us/~orc/Code/discount/'
-  md5 'd0bbf99e863e993a0c6861a4ac310a2e'
+  url 'http://www.pell.portland.or.us/~orc/Code/discount/discount-2.1.7.tar.bz2'
+  sha1 '517bcf7409d8c02b3e57f51264b2e110f8a03120'
+
+  conflicts_with 'markdown',
+    :because => 'both discount and markdown ship a `markdown` executable.'
 
   def install
-    system "./configure.sh", "--prefix=#{prefix}", "--mandir=#{man}",
-                             "--with-dl=Both", "--enable-all-features"
-    bin.mkdir
-    lib.mkdir
-    include.mkdir
+    system "./configure.sh", "--prefix=#{prefix}",
+                             "--mandir=#{man}",
+                             "--with-dl=Both",
+                             "--enable-all-features"
+    bin.mkpath
+    lib.mkpath
+    include.mkpath
     system "make install.everything"
   end
 end

@@ -1,14 +1,15 @@
 require 'formula'
 
 class Innotop < Formula
-  url 'http://innotop.googlecode.com/files/innotop-1.8.0.tar.gz'
   homepage 'http://code.google.com/p/innotop/'
-  md5 '703ba1036bc1067650b558eecc3c15cd'
+  url 'http://innotop.googlecode.com/files/innotop-1.9.1.tar.gz'
+  sha1 '6b0b5f492e7188152727f6c157043be180ba516a'
 
   depends_on 'DBD::mysql' => :perl
+  depends_on 'Term::ReadKey' => :perl
 
   def install
-    system "perl Makefile.PL PREFIX=#{prefix}"
+    system "perl", "Makefile.PL", "PREFIX=#{prefix}"
     system "make install"
   end
 end

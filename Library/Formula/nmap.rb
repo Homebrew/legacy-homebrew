@@ -1,28 +1,35 @@
 require 'formula'
 
 class Nmap < Formula
-  url 'http://nmap.org/dist/nmap-5.51.tar.bz2'
-  homepage 'http://nmap.org/5/'
-  md5 '0b80d2cb92ace5ebba8095a4c2850275'
-  head 'svn://guest:@svn.insecure.org/nmap/', :using => :svn
+  homepage 'http://nmap.org/'
+  head 'https://guest:@svn.nmap.org/nmap/', :using => :svn
+  url 'http://nmap.org/dist/nmap-6.40.tar.bz2'
+  sha1 'ee1bec1bb62045c7c1fc69ff183b2ae9b97bd0eb'
 
-  # Leopard's version of OpenSSL isn't new enough
-  depends_on "openssl" if MacOS.leopard?
+  depends_on "openssl" if MacOS.version <= :leopard
 
-  fails_with_llvm
+  conflicts_with 'ndiff', :because => 'both install `ndiff` binaries'
+
+  fails_with :llvm do
+    build 2334
+  end
 
   def install
     ENV.deparallelize
 
-    args = ["--prefix=#{prefix}", "--without-zenmap"]
+    args = %W[--prefix=#{prefix}
+              --with-libpcre=included
+              --with-liblua=included
+              --without-zenmap
+              --disable-universal]
 
-    if MacOS.leopard?
+    if MacOS.version <= :leopard
       openssl = Formula.factory('openssl')
       args << "--with-openssl=#{openssl.prefix}"
     end
 
     system "./configure", *args
-    system "make" # seperate steps required otherwise the build fails
+    system "make" # separate steps required otherwise the build fails
     system "make install"
   end
 end

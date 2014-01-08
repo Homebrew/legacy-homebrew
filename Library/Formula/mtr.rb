@@ -1,28 +1,47 @@
 require 'formula'
 
 class Mtr < Formula
-  url 'ftp://ftp.bitwizard.nl/mtr/mtr-0.80.tar.gz'
   homepage 'http://www.bitwizard.nl/mtr/'
-  md5 'fa68528eaec1757f52bacf9fea8c68a9'
+  url  'ftp://ftp.bitwizard.nl/mtr/mtr-0.85.tar.gz'
+  sha1 '6e79584265f733bea7f1b2cb13eeb48f10e96bba'
 
-  depends_on 'gtk+' unless ARGV.include? "--no-gtk"
+  head do
+    url 'https://github.com/traviscross/mtr.git'
+    depends_on :autoconf
+    depends_on :automake
+  end
 
-  def options
-    [
-      ['--no-gtk', "Don't build with Gtk+ support"]
-    ]
+  depends_on 'pkg-config' => :build
+  depends_on 'gtk+' => :optional
+  depends_on 'glib' => :optional
+
+  def patches
+    'https://github.com/traviscross/mtr/commit/edd425.patch'
   end
 
   def install
     # We need to add this because nameserver8_compat.h has been removed in Snow Leopard
     ENV['LIBS'] = "-lresolv"
-    args = ["--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"]
-    args << "--without-gtk" if ARGV.include? "--no-gtk"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+    args << "--without-gtk" if build.without? 'gtk+'
+    args << "--without-glib" if build.without? 'glib'
+    system "./bootstrap.sh" if build.head?
     system "./configure", *args
     system "make install"
   end
 
-  def caveats
-    "Run mtr sudo'd in order to avoid the error: `unable to get raw sockets'"
+  def caveats; <<-EOS.undent
+    mtr requires superuser privileges. You can either run the program
+    via `sudo`, or change its ownership to root and set the setuid bit:
+
+      sudo chown root:wheel #{sbin}/mtr
+      sudo chmod u+s #{sbin}/mtr
+
+    In any case, you should be certain that you trust the software you
+    are executing with elevated privileges.
+    EOS
   end
 end

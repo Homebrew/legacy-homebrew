@@ -1,24 +1,34 @@
 require 'formula'
 
 class EasyTag < Formula
-  url 'http://archive.ubuntu.com/ubuntu/pool/universe/e/easytag/easytag_2.1.6.orig.tar.gz'
-  homepage 'http://easytag.sf.net'
-  md5 '91b57699ac30c1764af33cc389a64c71'
+  homepage 'http://projects.gnome.org/easytag'
+  url 'https://download.gnome.org/sources/easytag/2.1/easytag-2.1.9.tar.xz', :using => :ssl3
+  sha256 'f5a6e742a458ef6f48f2d5e98a24182a9c87a213e847fcce75c757ac90273501'
 
+  depends_on :x11
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
+  depends_on 'xz' => :build
+  depends_on 'itstool' => :build
   depends_on 'glib'
   depends_on 'gtk+'
+  depends_on 'hicolor-icon-theme'
   depends_on 'id3lib'
   depends_on 'libid3tag'
-  depends_on 'mp4v2'
+
+  depends_on 'libvorbis' => :recommended
+  depends_on 'flac' => :recommended
+  depends_on 'libogg' if build.with? 'flac'
+
+  depends_on 'mp4v2' => :optional
+  depends_on 'speex' => :optional
+  depends_on 'wavpack' => :optional
 
   def install
-    # Use mp4v2 instead of mp4
-    inreplace ['configure', 'src/mp4_header.c', 'src/mp4_tag.c'],
-      "#include <mp4.h>", "#include <mp4v2/mp4v2.h>"
-
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "make"
+    ENV.deparallelize # make install fails in parallel
     system "make install"
   end
 end

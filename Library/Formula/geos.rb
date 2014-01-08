@@ -1,19 +1,18 @@
 require 'formula'
 
 class Geos < Formula
-  url 'http://download.osgeo.org/geos/geos-3.3.0.tar.bz2'
-  homepage 'http://trac.osgeo.org/geos/'
-  md5 '3301f3d1d747b95749384b8a356b022a'
+  homepage 'http://trac.osgeo.org/geos'
+  url 'http://download.osgeo.org/geos/geos-3.4.2.tar.bz2'
+  sha1 'b8aceab04dd09f4113864f2d12015231bb318e9a'
 
-  def skip_clean? path
-    path.extname == '.la'
-  end
-
-  fails_with_llvm "Some symbols are missing during link step."
+  option :universal
+  option :cxx11
 
   def install
-    ENV.O3
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    ENV.universal_binary if build.universal?
+    ENV.cxx11 if build.cxx11?
+
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

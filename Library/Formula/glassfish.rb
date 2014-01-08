@@ -1,22 +1,29 @@
 require 'formula'
 
 class Glassfish < Formula
-  url 'http://download.java.net/glassfish/3.1.1/release/glassfish-3.1.1.zip'
-  homepage 'http://glassfish.org/'
-  md5 'bf92c2c99b3d53b83bbc8c7e2124a897'
+  homepage 'https://glassfish.java.net'
+  url 'http://download.java.net/glassfish/4.0/release/glassfish-4.0.zip'
+  sha1 'daca9808d80df35b26cd9545a84e8324ed34fe7e'
 
-  skip_clean :all
+  # To keep empty folders around
+  skip_clean 'libexec'
 
   def install
     rm_rf Dir['bin/*.bat']
-    libexec.install Dir['*']
-    bin.mkpath
-    Dir["#{libexec}/bin/*"].each do |f|
-      ln_s f, bin
-      chmod 0755, (bin + File.basename(f))
-    end
-    inreplace "#{libexec}/bin/asadmin" do |s|
-      s.change_make_var! 'AS_INSTALL', "#{libexec}/glassfish"
-    end
+    libexec.install Dir["*"]
+    libexec.install Dir[".org.opensolaris,pkg"]
+  end
+
+  def caveats; <<-EOS.undent
+    The home of GlassFish Application Server 4 is:
+      #{opt_prefix}/libexec
+
+    You may want to add the following to your .bash_profile:
+      export GLASSFISH_HOME=#{opt_prefix}/libexec
+      export PATH=${PATH}:${GLASSFISH_HOME}/bin
+
+    Note: The support scripts used by GlassFish Application Server 4
+    are *NOT* linked to bin.
+  EOS
   end
 end

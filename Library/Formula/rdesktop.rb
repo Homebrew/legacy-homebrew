@@ -1,13 +1,19 @@
 require 'formula'
 
 class Rdesktop < Formula
-  url 'http://downloads.sourceforge.net/project/rdesktop/rdesktop/1.6.0/rdesktop-1.6.0.tar.gz'
   homepage 'http://www.rdesktop.org/'
-  md5 'c6fcbed7f0ad7e60ac5fcb2d324d8b16'
+  url 'http://downloads.sourceforge.net/project/rdesktop/rdesktop/1.8.1/rdesktop-1.8.1.tar.gz'
+  sha1 '57bb41f98ddf9eeef875c613d790fee37971d0f8'
+
+  depends_on :x11
 
   def install
-    ENV.x11
-    system "./configure", "--prefix=#{prefix}", "--disable-debug"
+    args = ["--prefix=#{prefix}",
+            "--disable-credssp",
+            "--disable-smartcard", # disable temporally before upstream fix
+            "--with-openssl=#{MacOS.sdk_path}/usr",
+            "--x-includes=#{MacOS::X11.include}"]
+    system "./configure", *args
     system "make install"
   end
 end

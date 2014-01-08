@@ -1,17 +1,16 @@
 require 'formula'
 
 class GnuUnits < Formula
-  url 'http://ftp.gnu.org/gnu/units/units-1.88.tar.gz'
   homepage 'http://www.gnu.org/software/units/'
-  md5 '9b2ee6e7e0e9c62741944cf33fc8a656'
+  url 'http://ftpmirror.gnu.org/units/units-2.02.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/units/units-2.02.tar.gz'
+  sha1 'e460371dc97034d17ce452e6b64991f7fd2d1409'
 
-  def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
-  end
+  option 'default-names', "Do not prepend 'g' to the binary"
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--program-prefix=g" unless ARGV.include? '--default-names'
+    args << "--program-prefix=g" unless build.include? 'default-names'
 
     system "./configure", *args
     system "make install"

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ssdeep < Formula
-  url 'http://downloads.sourceforge.net/project/ssdeep/ssdeep-2.5/ssdeep-2.5.tar.gz'
   homepage 'http://ssdeep.sourceforge.net/'
-  md5 'f3212dbf27384a00ad5eab1fb81fe3d1'
+  url 'http://downloads.sourceforge.net/project/ssdeep/ssdeep-2.10/ssdeep-2.10.tar.gz'
+  sha256 '5b893b8059941476352fa1794c2839b2cc13bc2a09e2f2bb6dea4184217beddc'
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

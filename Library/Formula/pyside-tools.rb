@@ -1,25 +1,17 @@
 require 'formula'
 
-def which_python
-  "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-end
-
-def site_package_dir
-  "lib/#{which_python}/site-packages"
-end
-
 class PysideTools < Formula
   homepage 'http://www.pyside.org'
-  url 'http://www.pyside.org/files/pyside-tools-0.2.13.tar.bz2'
-  md5 '14d3a36df06d680357d7bc1960f19a6d'
+  url 'https://github.com/PySide/Tools/archive/0.2.15.tar.gz'
+  sha1 'b668d15e8d67e25a653db5abf8f542802e2ee2dd'
+
+  head 'git://gitorious.org/pyside/pyside-tools.git'
 
   depends_on 'cmake' => :build
-
-  depends_on 'qt'
   depends_on 'pyside'
 
   def install
-    system "cmake . #{std_cmake_parameters} -DSITE_PACKAGE=#{site_package_dir}"
+    system "cmake", ".", "-DSITE_PACKAGE=lib/python2.7/site-packages", *std_cmake_args
     system "make install"
   end
 end

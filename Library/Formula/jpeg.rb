@@ -1,14 +1,24 @@
 require 'formula'
 
 class Jpeg < Formula
-  url 'http://www.ijg.org/files/jpegsrc.v8c.tar.gz'
-  version '8c'
-  md5 'a2c10c04f396a9ce72894beb18b4e1f9'
   homepage 'http://www.ijg.org'
+  url 'http://www.ijg.org/files/jpegsrc.v8d.tar.gz'
+  sha1 'f080b2fffc7581f7d19b968092ba9ebc234556ff'
+
+  bottle do
+    cellar :any
+    revision 2
+    sha1 'f668b1e9cb382e194c632c1d5865b7bea096c3ac' => :mavericks
+    sha1 '4dd056f2bf243eef145a613ed1a51e65e4b5d0a4' => :mountain_lion
+    sha1 '396612e00ac31ca730d913ebdfd1b99881304702' => :lion
+  end
+
+  option :universal
 
   def install
-    ENV.universal_binary
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--enable-shared", "--enable-static"
+    ENV.universal_binary if build.universal?
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

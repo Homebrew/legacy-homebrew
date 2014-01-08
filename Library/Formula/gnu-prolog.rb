@@ -1,26 +1,22 @@
 require 'formula'
 
 class GnuProlog < Formula
-  url 'http://gprolog.univ-paris1.fr/gprolog-1.4.0.tar.gz'
   homepage 'http://www.gprolog.org/'
-  md5 'cc944e5637a04a9184c8aa46c947fd16'
+  url 'http://gprolog.univ-paris1.fr/gprolog-1.4.4.tar.gz'
+  sha1 '658b0efa5d916510dcddbbd980d90bc4d43a6e58'
 
-  skip_clean :all
-
-  fails_with_llvm
+  # Upstream patch:
+  # http://sourceforge.net/p/gprolog/code/ci/784b3443a0a2f087c1d1e7976739fa517efe6af6
+  def patches
+    "https://gist.github.com/jacknagel/7549696/raw/3078eef282ca141c95a0bf74396f4248bbe34775/gprolog-clang.patch"
+  end
 
   def install
-    ENV.j1 # make won't run in parallel
-
-    Dir.chdir 'src' do
-      # Applies fix as seen here:
-      # http://lists.gnu.org/archive/html/users-prolog/2011-07/msg00013.html
-      inreplace "configure", "darwin10", "darwin1"
-
-      system "./configure", "--prefix=#{prefix}"
+    cd 'src' do
+      system "./configure", "--prefix=#{prefix}", "--with-doc-dir=#{doc}"
       system "make"
-      system "make install-strip"
+      ENV.deparallelize
+      system "make", "install"
     end
   end
 end
-

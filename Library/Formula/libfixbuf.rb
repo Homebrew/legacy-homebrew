@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libfixbuf < Formula
-  url 'http://tools.netsa.cert.org/releases/libfixbuf-0.9.0.tar.gz'
   homepage 'http://tools.netsa.cert.org/fixbuf/'
-  md5 '3687a7a28bc9535544e2fbc1d1383077'
+  url 'http://tools.netsa.cert.org/releases/libfixbuf-1.4.0.tar.gz'
+  sha1 'cafb865c02ab78ef86f10153b1ff671fbe7d375a'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

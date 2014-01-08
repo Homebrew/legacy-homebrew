@@ -1,10 +1,17 @@
 require 'formula'
 
 class Midgard2 < Formula
-  url 'http://www.midgard-project.org/midcom-serveattachmentguid-b459b3e443f711e0a6353dc3bca0241a241a/midgard2-core-10.05.4.tar.gz'
-  head 'https://github.com/midgardproject/midgard-core.git', :branch => 'ratatoskr'
   homepage 'http://www.midgard-project.org/'
-  md5 '99dcf5d5e39901712a882598e3da17d2'
+  url 'https://github.com/downloads/midgardproject/midgard-core/midgard2-core-12.09.tar.gz'
+  sha1 'dc5f21833b4a9ba9e714dd523a563b7e6ee777af'
+
+  head do
+    url 'https://github.com/midgardproject/midgard-core.git', :branch => 'ratatoskr'
+
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -12,15 +19,21 @@ class Midgard2 < Formula
   depends_on 'libgda'
 
   def install
-    if ARGV.build_head?
-      system "autoreconf", "-i", "--force"
-      system "automake"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --with-libgda5
+      --with-dbus-support
+      --enable-introspection=no
+    ]
+
+    if build.head?
+      inreplace 'autogen.sh', 'libtoolize', 'glibtoolize'
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
     end
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-libgda4",
-                          "--with-dbus-support",
-                          "--enable-introspection=no"
+
     system "make install"
   end
 end

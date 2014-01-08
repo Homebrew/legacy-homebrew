@@ -1,49 +1,51 @@
 require 'formula'
 
-def glib?; ARGV.include? "--with-glib"; end
-
-class PopplerData < Formula
-  url 'http://poppler.freedesktop.org/poppler-data-0.4.4.tar.gz'
-  md5 'f3a1afa9218386b50ffd262c00b35b31'
-end
-
 class Poppler < Formula
-  url 'http://poppler.freedesktop.org/poppler-0.16.7.tar.gz'
-  homepage 'http://poppler.freedesktop.org/'
-  md5 '3afa28e3c8c4f06b0fbca3c91e06394e'
+  homepage 'http://poppler.freedesktop.org'
+  url 'http://poppler.freedesktop.org/poppler-0.24.4.tar.xz'
+  sha1 '7938c92c61b63331f2af463db0d10048bf0d4712'
+
+  option 'with-qt4', 'Build Qt backend'
+  option 'with-glib', 'Build Glib backend'
 
   depends_on 'pkg-config' => :build
-  depends_on 'qt' if ARGV.include? "--with-qt4"
-  depends_on 'glib' if glib?
-  depends_on 'cairo' if glib? # Needs a newer Cairo build than OS X 10.6.7 provides
+  depends_on 'xz' => :build
 
-  def options
-    [
-      ["--with-qt4", "Build Qt backend"],
-      ["--with-glib", "Build Glib backend"],
-      ["--enable-xpdf-headers", "Also install XPDF headers"]
-    ]
+  depends_on :fontconfig
+  depends_on 'openjpeg'
+
+  depends_on 'qt' if build.with? 'qt4'
+  depends_on 'glib' => :optional
+  depends_on 'cairo' if build.with? 'glib' # Needs a newer Cairo build than OS X 10.6.7 provides
+
+  conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
+
+  conflicts_with 'pdf2image', 'xpdf',
+    :because => 'poppler, pdf2image, and xpdf install conflicting executables'
+
+  resource 'font-data' do
+    url 'http://poppler.freedesktop.org/poppler-data-0.4.6.tar.gz'
+    sha1 'f030563eed9f93912b1a546e6d87936d07d7f27d'
   end
 
   def install
-    ENV.x11 # For Fontconfig headers
-
-    if ARGV.include? "--with-qt4"
-      ENV['POPPLER_QT4_CFLAGS'] = `#{HOMEBREW_PREFIX}/bin/pkg-config QtCore QtGui --libs`.chomp.strip
+    if build.with? 'qt4'
+      ENV['POPPLER_QT4_CFLAGS'] = `#{HOMEBREW_PREFIX}/bin/pkg-config QtCore QtGui --libs`.chomp
       ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
     end
 
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    args << "--enable-poppler-qt4" if ARGV.include? "--with-qt4"
-    args << "--enable-poppler-glib" if glib?
-    args << "--enable-xpdf-headers" if ARGV.include? "--enable-xpdf-headers"
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-xpdf-headers"]
+    # Explicitly disable Qt if not requested because `POPPLER_QT4_CFLAGS` won't
+    # be set and the build will fail.
+    #
+    # Also, explicitly disable Glib as Poppler will find it and set up to
+    # build, but Superenv will have stripped the Glib utilities out of the
+    # PATH.
+    args << ( build.with?('qt4') ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
+    args << ( build.with?('glib') ? '--enable-poppler-glib' : '--disable-poppler-glib' )
 
     system "./configure", *args
     system "make install"
-
-    # Install poppler font data.
-    PopplerData.new.brew do
-      system "make install prefix=#{prefix}"
-    end
+    resource('font-data').stage { system "make", "install", "prefix=#{prefix}" }
   end
 end

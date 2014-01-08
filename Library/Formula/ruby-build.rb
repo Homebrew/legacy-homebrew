@@ -1,14 +1,22 @@
 require 'formula'
 
 class RubyBuild < Formula
-  url 'https://github.com/sstephenson/ruby-build/tarball/v20110906.1'
   homepage 'https://github.com/sstephenson/ruby-build'
-  md5 '4e1077ffd9549d502a4ecc86d8360b87'
+  url 'https://github.com/sstephenson/ruby-build/archive/v20131225.1.tar.gz'
+  sha1 '97e5a335b38a5068823494ba2f8776ec1b386947'
 
   head 'https://github.com/sstephenson/ruby-build.git'
+
+  depends_on 'autoconf' => [:recommended, :run]
+  depends_on 'pkg-config' => [:recommended, :run]
+  depends_on 'openssl' => :recommended
 
   def install
     ENV['PREFIX'] = prefix
     system "./install.sh"
+  end
+
+  test do
+    system "#{bin}/ruby-build --version | grep #{version}"
   end
 end

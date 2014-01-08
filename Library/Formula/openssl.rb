@@ -1,31 +1,81 @@
 require 'formula'
 
 class Openssl < Formula
-  url 'http://www.openssl.org/source/openssl-0.9.8r.tar.gz'
-  version '0.9.8r'
-  homepage 'http://www.openssl.org'
-  md5 '0352932ea863bc02b056cda7c9ac5b79'
+  homepage 'http://openssl.org'
+  url 'http://www.openssl.org/source/openssl-1.0.1f.tar.gz'
+  mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1f.tar.gz'
+  sha256 '6cc2a80b17d64de6b7bac985745fdaba971d54ffd7d38d3556f998d7c0c9cb5a'
 
   keg_only :provided_by_osx,
-    "The OpenSSL provided by Leopard (0.9.7) is too old for some software."
+    "The OpenSSL provided by OS X is too old for some software."
 
   def install
-    system "./config", "--prefix=#{prefix}",
-                       "--openssldir=#{etc}",
-                       "zlib-dynamic", "shared"
+    args = %W[./Configure
+               --prefix=#{prefix}
+               --openssldir=#{openssldir}
+               zlib-dynamic
+               shared
+             ]
 
-    inreplace 'Makefile' do |s|
-      s.change_make_var! 'MANDIR', man
+    if MacOS.prefer_64_bit?
+      args << "darwin64-x86_64-cc" << "enable-ec_nistp_64_gcc_128"
+
+      # -O3 is used under stdenv, which results in test failures when using clang
+      inreplace 'Configure',
+        %{"darwin64-x86_64-cc","cc:-arch x86_64 -O3},
+        %{"darwin64-x86_64-cc","cc:-arch x86_64 -Os}
+
+      setup_makedepend_shim
+    else
+      args << "darwin-i386-cc"
     end
 
-    ENV.j1 # Parallel compilation fails
+    system "perl", *args
+
+    ENV.deparallelize
+    system "make", "depend" if MacOS.prefer_64_bit?
     system "make"
-    system "make test"
-    system "make install"
+    system "make", "test"
+    system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
   end
 
-  def caveats; <<-EOS.undent
-    Note that the libraries built tend to be 32-bit only, even on Snow Leopard.
-    EOS
+  def setup_makedepend_shim
+    path = buildpath/"brew/makedepend"
+    path.write <<-EOS.undent
+      #!/bin/sh
+      exec "#{ENV.cc}" -M "$@"
+      EOS
+    path.chmod 0755
+    ENV.prepend_path 'PATH', path.parent
+  end
+
+  def openssldir
+    etc/"openssl"
+  end
+
+  def cert_pem
+    openssldir/"cert.pem"
+  end
+
+  def osx_cert_pem
+    openssldir/"osx_cert.pem"
+  end
+
+  def write_pem_file
+    system "security find-certificate -a -p /Library/Keychains/System.keychain > '#{osx_cert_pem}.tmp'"
+    system "security find-certificate -a -p /System/Library/Keychains/SystemRootCertificates.keychain >> '#{osx_cert_pem}.tmp'"
+    system "mv", "-f", "#{osx_cert_pem}.tmp", osx_cert_pem
+  end
+
+  def post_install
+    openssldir.mkpath
+
+    if cert_pem.exist?
+      write_pem_file
+    else
+      cert_pem.unlink if cert_pem.symlink?
+      write_pem_file
+      openssldir.install_symlink 'osx_cert.pem' => 'cert.pem'
+    end
   end
 end

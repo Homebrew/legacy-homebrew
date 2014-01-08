@@ -1,14 +1,17 @@
 require 'formula'
 
 class LibusbCompat < Formula
-  url 'http://downloads.sourceforge.net/project/libusb/libusb-compat-0.1/libusb-compat-0.1.3/libusb-compat-0.1.3.tar.bz2'
   homepage 'http://www.libusb.org/'
-  md5 '570ac2ea085b80d1f74ddc7c6a93c0eb'
+  url 'http://downloads.sourceforge.net/project/libusb/libusb-compat-0.1/libusb-compat-0.1.5/libusb-compat-0.1.5.tar.bz2'
+  sha256 '404ef4b6b324be79ac1bfb3d839eac860fbc929e6acb1ef88793a6ea328bc55a'
+
+  option :universal
 
   depends_on 'pkg-config' => :build
   depends_on 'libusb'
 
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end

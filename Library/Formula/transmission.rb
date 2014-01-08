@@ -1,39 +1,47 @@
 require 'formula'
 
 class Transmission < Formula
-  url 'http://download.transmissionbt.com/files/transmission-2.33.tar.bz2'
   homepage 'http://www.transmissionbt.com/'
-  md5 '082217a65713ac879410c622cbe6eb26'
+  url 'http://download.transmissionbt.com/files/transmission-2.82.tar.xz'
+  sha1 '1081542e2692147e45dde7c310b793abc4f33f2d'
 
-  # Actually depends on libcurl but doesn't find it without pkg-config
-  depends_on 'pkg-config' => :build
+  option 'with-nls', 'Build with native language support'
+
+  depends_on 'xz' => :build
+  depends_on 'pkg-config' => :build # So it will find system libcurl
+  depends_on 'curl' if MacOS.version <= :leopard
   depends_on 'libevent'
-  depends_on 'intltool' => :optional
-  depends_on 'gettext' => :optional # need gettext only if intltool is also installed
+
+  if build.with? 'nls'
+    depends_on 'intltool' => :build
+    depends_on 'gettext'
+  end
 
   def install
-    args = ["--disable-dependency-tracking",
-            "--disable-gtk", "--disable-mac",
-            "--prefix=#{prefix}"]
+    ENV.append 'LDFLAGS', '-framework Foundation -prebind'
+    ENV.append 'LDFLAGS', '-liconv'
 
-    args << "--disable-nls" unless Formula.factory("intltool").installed? and
-                                   Formula.factory("gettext").installed?
+    args = %W[--disable-dependency-tracking
+              --prefix=#{prefix}
+              --disable-mac
+              --without-gtk]
+
+    args << "--disable-nls" unless build.with? 'nls'
+
+    #fixes issue w/ webui files not being found #21151
+    #submitted upstream: https://trac.transmissionbt.com/ticket/5304
+    inreplace 'libtransmission/platform.c', 'SYS_DARWIN', 'BUILD_MAC_CLIENT'
+    inreplace 'libtransmission/utils.c', 'SYS_DARWIN', 'BUILD_MAC_CLIENT'
 
     system "./configure", *args
-    system "make" # build fails for some reason if make isn't done first
+    system "make" # Make and install in one step fails
     system "make install"
   end
 
   def caveats; <<-EOS.undent
-    This formula only installs the Transmission command line utilities:
-      transmission-cli
-      transmission-create
-      transmission-daemon
-      transmission-edit
-      transmission-remote
-      transmission-show
-
-    Transmission.app can be downloaded from Transmission's website.
+    This formula only installs the command line utilities.
+    Transmission.app can be downloaded from Transmission's website:
+      http://www.transmissionbt.com
     EOS
   end
 end

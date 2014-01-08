@@ -1,13 +1,13 @@
 require 'formula'
 
 class Recutils < Formula
-  url 'http://ftp.gnu.org/gnu/recutils/recutils-1.3.tar.gz'
   homepage 'http://www.gnu.org/software/recutils/'
-  md5 '243d46f191cbbf2be3fd72a86234cd1c'
+  url 'http://ftpmirror.gnu.org/recutils/recutils-1.6.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/recutils/recutils-1.6.tar.gz'
+  sha1 'dd7ac31ff0f8f519c4bac06613faa1ec775145ba'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

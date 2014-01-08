@@ -1,10 +1,11 @@
 require 'formula'
 
 class Icecast < Formula
-  url 'http://downloads.xiph.org/releases/icecast/icecast-2.3.2.tar.gz'
   homepage 'http://www.icecast.org/'
-  md5 'ff516b3ccd2bcc31e68f460cd316093f'
+  url 'http://downloads.xiph.org/releases/icecast/icecast-2.3.3.tar.gz'
+  sha1 '61cf1bd5b4ed491aad488dc6cf1ca2d8eb657363'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libogg' => :optional
   depends_on 'theora' => :optional
   depends_on 'speex'  => :optional
@@ -12,7 +13,8 @@ class Icecast < Formula
   depends_on 'libvorbis'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
 
     (prefix+'var/log/icecast').mkpath

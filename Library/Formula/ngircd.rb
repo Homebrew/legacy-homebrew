@@ -1,16 +1,18 @@
 require 'formula'
 
 class Ngircd < Formula
-  url 'ftp://ftp.berlios.de/pub/ngircd/ngircd-17.1.tar.gz'
-  md5 'b4ad0b1f18875ff3f2e92f076e64496b'
   homepage 'http://ngircd.barton.de'
+  url 'ftp://ftp.berlios.de/pub/ngircd/ngircd-21.tar.gz'
+  mirror 'http://ngircd.barton.de/pub/ngircd/ngircd-21.tar.gz'
+  sha256 '0edbd41304186e43f9d907a7017b40520cc90c2ce29b1339bdcd7622fffe19a0'
 
   depends_on 'libident'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-ident", "--with-openssl", "--with-tcp-wrappers",
+                          "--with-ident",
+                          "--with-openssl",
                           "--enable-ipv6"
     system "make install"
   end

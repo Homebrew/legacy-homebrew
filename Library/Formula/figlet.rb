@@ -1,43 +1,35 @@
 require 'formula'
 
-class ContribFonts < Formula
-  url 'ftp://ftp.figlet.org:21//pub/figlet/fonts/contributed.tar.gz'
-  version "2.2.2"
-  md5 '6e2dec4499f7a7fe178522e02e0b6cd1'
-end
-
-class InternationalFonts < Formula
-  url 'ftp://ftp.figlet.org:21//pub/figlet/fonts/international.tar.gz'
-  version "2.2.2"
-  md5 'b2d53f7e251014adcdb4d407c47f90ef'
-end
-
 class Figlet < Formula
-  url 'ftp://ftp.figlet.org/pub/figlet/program/unix/figlet-2.2.4.tar.gz'
   homepage 'http://www.figlet.org'
-  md5 'ea048d8d0b56f9c58e55514d4eb04203'
+  url 'ftp://ftp.figlet.org/pub/figlet/program/unix/figlet-2.2.5.tar.gz'
+  sha1 'dda696958c161bd71d6590152c94c4f705415727'
+
+  resource 'contrib' do
+    url 'ftp://ftp.figlet.org/pub/figlet/fonts/contributed.tar.gz'
+    sha1 'a23ecfdb54301e93b6578c3c465ba84c8f861d4f'
+  end
+
+  resource 'intl' do
+    url 'ftp://ftp.figlet.org/pub/figlet/fonts/international.tar.gz'
+    sha1 '4bdc505f82305debf8108b725ac418f404a8bcb0'
+  end
 
   def install
     share_fonts = share+"figlet/fonts"
+    share_fonts.install resource('contrib'), resource('intl')
 
-    File.chmod 0666, 'Makefile'
-    File.chmod 0666, 'showfigfonts'
+    chmod 0666, %w(Makefile showfigfonts)
     man6.mkpath
     bin.mkpath
 
-    ContribFonts.new.brew { share_fonts.install Dir['*'] }
-    InternationalFonts.new.brew { share_fonts.install Dir['*'] }
-
-    inreplace "Makefile" do |s|
-      s.gsub! "/usr/local", prefix
-      s.change_make_var! 'DEFAULTFONTDIR', share_fonts
-      s.change_make_var! 'MANDIR', man
-    end
-
-    system "make install"
+    system "make", "prefix=#{prefix}",
+                   "DEFAULTFONTDIR=#{share_fonts}",
+                   "MANDIR=#{man}",
+                   "install"
   end
 
   def test
-    system "#{bin}/figlet -f larry3d hello, figlet"
+    system "#{bin}/figlet", "-f", "larry3d", "hello, figlet"
   end
 end

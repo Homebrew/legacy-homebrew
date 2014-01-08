@@ -1,18 +1,30 @@
 require 'formula'
 
-class Task < Formula
-  url 'http://www.taskwarrior.org/download/task-1.9.4.tar.gz'
-  homepage 'http://www.taskwarrior.org/'
-  md5 '0c5d9dedb1ead69590af895d16708070'
+class TaskwarriorDownloadStrategy < GitDownloadStrategy
+  # CMakeLists.txt requires presence of .git to generate commit.h
+  # (version information), otherwise make fails.
+  def support_depth?
+    false
+  end
+end
 
-  skip_clean :all
+class Task < Formula
+  homepage 'http://www.taskwarrior.org/'
+  url 'http://www.taskwarrior.org/download/task-2.2.0.tar.gz'
+  sha1 '70656deb48a460f95370c885e388b475475f64eb'
+  head 'git://tasktools.org/task.git', :branch => :"2.3.0",
+                                       :using => TaskwarriorDownloadStrategy
+
+  depends_on "cmake" => :build
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "cmake", ".", *std_cmake_args
     system "make install"
+    bash_completion.install 'scripts/bash/task.sh'
+    zsh_completion.install 'scripts/zsh/_task'
+  end
 
-    # Install the bash completion file
-    (etc+'bash_completion.d').install 'scripts/bash/task_completion.sh'
+  test do
+    system "#{bin}/task", "--version"
   end
 end

@@ -1,14 +1,19 @@
 require 'formula'
 
 class S3cmd < Formula
-  url 'http://downloads.sourceforge.net/project/s3tools/s3cmd/1.0.1/s3cmd-1.0.1.tar.gz'
   homepage 'http://s3tools.org/s3cmd'
-  md5 'dc62becc03a3e6100843611ebe2707c2'
+  url 'https://github.com/s3tools/s3cmd/archive/v1.0.1.zip'
+  sha1 '4a6f7bfb9300b728ca466967b91aa07521ef6f80'
+  head 'https://github.com/s3tools/s3cmd.git'
+
+  devel do
+    url 'https://github.com/s3tools/s3cmd/archive/v1.5.0-beta1.zip'
+    sha1 'ce5738c8d389b705b5a1283da6356df92673863b'
+  end
 
   def install
-    libexec.install Dir['s3cmd', 'S3']
+    libexec.install 's3cmd', 'S3'
     man1.install 's3cmd.1'
-    bin.mkpath
-    ln_s libexec+'s3cmd', bin
+    bin.install_symlink libexec+'s3cmd'
   end
 end

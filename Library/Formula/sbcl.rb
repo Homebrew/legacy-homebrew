@@ -1,44 +1,47 @@
 require 'formula'
 
-class SbclBootstrapBinaries < Formula
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.49/sbcl-1.0.49-x86-darwin-binary.tar.bz2'
-  md5 '6ffae170cfa0f1858efb37aa7544aba6'
-  version "1.0.49"
-end
-
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.50/sbcl-1.0.50-source.tar.bz2'
-  md5 '74ce9b24516885d066ec4287cde52e8c'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.14/sbcl-1.1.14-source.tar.bz2'
+  sha1 'c6b855f1dc5750de4057a7cabb35750986db3825'
+
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
-  fails_with_llvm "Compilation fails with LLVM."
+  bottle do
+    sha1 '31436d55e803f7bb6a420179d202a608d0f51b1f' => :mavericks
+    sha1 '4b87f08e4d89965a1c48d0a5a280e440b0281039' => :mountain_lion
+    sha1 '4631c87e3b50df6b919564f6f028ef033d0144af' => :lion
+  end
 
-  skip_clean 'bin'
-  skip_clean 'lib'
+  fails_with :llvm do
+    build 2334
+    cause "Compilation fails with LLVM."
+  end
 
-  def options
-    [
-      ["--without-threads",  "Build SBCL without support for native threads"],
-      ["--with-ldb",  "Include low-level debugger in the build"],
-      ["--with-internal-xref",  "Include XREF information for SBCL internals (increases core size by 5-6MB)"]
-    ]
+  option "32-bit"
+  option "without-threads", "Build SBCL without support for native threads"
+  option "with-ldb", "Include low-level debugger in the build"
+  option "with-internal-xref", "Include XREF information for SBCL internals (increases core size by 5-6MB)"
+
+  resource 'bootstrap' do
+    url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.0/sbcl-1.1.0-x86-64-darwin-binary.tar.bz2'
+    sha1 'ed2069e124027c43926728c48d604efbb4e33950'
   end
 
   def patches
-    base = "http://svn.macports.org/repository/macports/trunk/dports/lang/sbcl/files"
-    { :p0 => ["patch-base-target-features.diff",
-              "patch-make-doc.diff",
-              "patch-posix-tests.diff",
-              "patch-use-mach-exception-handler.diff"].map { |file_name| "#{base}/#{file_name}" }
-    }
+    { :p0 => [
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-base-target-features.diff",
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-make-doc.diff",
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-posix-tests.diff",
+        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
+    ]}
   end
 
   def write_features
     features = []
-    features << ":sb-thread" unless ARGV.include? "--without-threads"
-    features << ":sb-ldb" if ARGV.include? "--with-ldb"
-    features << ":sb-xref-for-internals" if ARGV.include? "--with-internal-xref"
+    features << ":sb-thread" unless build.include? "without-threads"
+    features << ":sb-ldb" if build.include? "with-ldb"
+    features << ":sb-xref-for-internals" if build.include? "with-internal-xref"
 
     File.open("customize-target-features.lisp", "w") do |file|
       file.puts "(lambda (list)"
@@ -55,21 +58,26 @@ class Sbcl < Formula
     # Remove non-ASCII values from environment as they cause build failures
     # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
     ENV.delete_if do |key, value|
-      value =~ /[\x80-\xff]/
+      value =~ /[\x80-\xff]/n
     end
 
-    build_directory = Dir.pwd
-    SbclBootstrapBinaries.new.brew {
+    resource('bootstrap').stage do
       # We only need the binaries for bootstrapping, so don't install anything:
       command = Dir.pwd + "/src/runtime/sbcl"
       core = Dir.pwd + "/output/sbcl.core"
       xc_cmdline = "#{command} --core #{core} --disable-debugger --no-userinit --no-sysinit"
 
-      Dir.chdir(build_directory)
-      system "./make.sh --prefix='#{prefix}' --xc-host='#{xc_cmdline}'"
-    }
+      cd buildpath do
+        ENV['SBCL_ARCH'] = 'x86' if build.build_32_bit?
+        system "./make.sh", "--prefix=#{prefix}", "--xc-host=#{xc_cmdline}"
+      end
+    end
 
     ENV['INSTALL_ROOT'] = prefix
     system "sh install.sh"
+  end
+
+  test do
+    system "#{bin}/sbcl", "--version"
   end
 end

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lrzsz < Formula
-  url 'http://www.ohse.de/uwe/releases/lrzsz-0.12.20.tar.gz'
   homepage 'http://www.ohse.de/uwe/software/lrzsz.html'
-  md5 'b5ce6a74abc9b9eb2af94dffdfd372a4'
+  url 'http://www.ohse.de/uwe/releases/lrzsz-0.12.20.tar.gz'
+  sha1 '451e6a1813dfb71a412c973acd1b88b9ee3f28c4'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
@@ -11,12 +11,11 @@ class Lrzsz < Formula
 
     # there's a bug in lrzsz when using custom --prefix
     # must install the binaries manually first
-    bin.install "src/lrz"
-    bin.install "src/lsz"
+    bin.install "src/lrz", "src/lsz"
 
     system "make install"
 
-    ln_s bin + "lrz", bin + "rz"
-    ln_s bin + "lsz", bin + "sz"
+    ln_s bin/"lrz", bin/"rz"
+    ln_s bin/"lsz", bin/"sz"
   end
 end

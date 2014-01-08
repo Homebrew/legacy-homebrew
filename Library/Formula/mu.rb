@@ -1,25 +1,63 @@
 require 'formula'
 
-class Mu < Formula
-  url 'http://mu0.googlecode.com/files/mu-0.9.6.tar.gz'
-  homepage 'http://www.djcbsoftware.nl/code/mu/'
-  head 'http://mu0.googlecode.com/files/mu-0.9.7-pre.tar.gz'
+class Emacs23Installed < Requirement
+  fatal true
+  env :userpaths
+  default_formula 'emacs'
 
-  if ARGV.build_head?
-    md5 '811e896894f789ef1b87316d4322b412'
-  else
-    md5 '72fdf907f2b7922a54c8d14bc4b06ccf'
+  satisfy do
+    `emacs --version 2>/dev/null` =~ /^GNU Emacs (\d{2})/
+    $1.to_i >= 23
+  end
+end
+
+class Mu < Formula
+  homepage 'http://www.djcbsoftware.nl/code/mu/'
+  url 'http://mu0.googlecode.com/files/mu-0.9.9.5.tar.gz'
+  sha1 '825e3096e0763a12b8fdf77bd41625ee15ed09eb'
+
+  head do
+    url 'https://github.com/djcb/mu.git'
+
+    depends_on 'autoconf' => :build
+    depends_on 'automake' => :build
+    depends_on 'libtool' => :build
   end
 
+  option 'with-emacs', 'Build with emacs support'
+
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'gmime'
   depends_on 'xapian'
+  depends_on Emacs23Installed if build.with? 'emacs'
+
+  env :std if build.with? 'emacs'
 
   def install
-    system  "./configure", "--prefix=#{prefix}",
-      "--disable-dependency-tracking", "--with-gui=none"
+    # Explicitly tell the build not to include emacs support as the version
+    # shipped by default with Mac OS X is too old.
+    ENV['EMACS'] = 'no' unless build.with? 'emacs'
+
+    # I dunno.
+    # https://github.com/djcb/mu/issues/332
+    # https://github.com/Homebrew/homebrew/issues/25524
+    ENV.delete 'MACOSX_DEPLOYMENT_TARGET'
+
+    system 'autoreconf', '-ivf' if build.head?
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-gui=none"
     system "make"
+    system "make test"
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    Existing mu users are recommended to run the following after upgrading:
+
+      mu index --rebuild
+    EOS
   end
 end

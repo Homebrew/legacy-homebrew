@@ -1,16 +1,15 @@
 require 'formula'
 
 class Jags < Formula
-  url 'http://sourceforge.net/projects/mcmc-jags/files/JAGS/3.x/Source/JAGS-3.1.0.tar.gz'
-  homepage 'http://www-fis.iarc.fr/~martyn/software/jags/'
-  md5 '1f84163a3e5114d30d7832fc26e54acf'
+  homepage 'http://mcmc-jags.sourceforge.net'
+  url 'http://downloads.sourceforge.net/project/mcmc-jags/JAGS/3.x/Source/JAGS-3.4.0.tar.gz'
+  sha1 '129a8f97da91877473f209c67f1f9c5b04173586'
+
+  depends_on :fortran
 
   def install
-    ENV.fortran
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
-    system "chmod +x #{bin}/jags"
   end
 end

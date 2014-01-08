@@ -1,19 +1,22 @@
 require 'formula'
 
 class Ufraw < Formula
-  url 'http://sourceforge.net/project/downloading.php?group_id=127649&filename=ufraw-0.18.tar.gz'
   homepage 'http://ufraw.sourceforge.net'
-  md5 '454f40a402928998a82e2645d9265d96'
+  url 'http://downloads.sourceforge.net/project/ufraw/ufraw/ufraw-0.19.2/ufraw-0.19.2.tar.gz'
+  sha1 '11a607e874eb16453a8f7964e4946a29d18b071d'
 
   depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'libtiff'
-  depends_on 'jpeg'
-  depends_on 'little-cms'
+  depends_on :libpng
   depends_on 'dcraw'
+  depends_on 'glib'
+  depends_on 'jpeg'
+  depends_on 'libtiff'
+  depends_on 'little-cms'
   depends_on 'exiv2' => :optional
 
-  fails_with_llvm "Compiling with LLVM gives a segfault while linking."
+  fails_with :llvm do
+    cause "Segfault while linking"
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",

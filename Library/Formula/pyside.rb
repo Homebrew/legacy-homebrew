@@ -1,44 +1,62 @@
 require 'formula'
 
-def which_python
-  "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-end
-
-def site_package_dir
-  "lib/#{which_python}/site-packages"
-end
-
 class Pyside < Formula
   homepage 'http://www.pyside.org'
-  url 'http://www.pyside.org/files/pyside-qt4.7+1.0.6.tar.bz2'
-  md5 '6773cdd7c594f5bc314541d8cfb70256'
+  url 'https://download.qt-project.org/official_releases/pyside/pyside-qt4.8+1.2.1.tar.bz2'
+  mirror 'https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.2.1.tar.bz2'
+  sha1 'eec5bed37647dd8d3d1c7a610ad913312dd55910'
+
+  head 'git://gitorious.org/pyside/pyside.git'
 
   depends_on 'cmake' => :build
-
   depends_on 'shiboken'
-  depends_on 'generatorrunner'
-  depends_on 'apiextractor'
   depends_on 'qt'
 
-  def install
-    # The build will be unable to find Qt headers buried inside frameworks
-    # unless the folder containing those frameworks is added to the compiler
-    # search path.
-    qt = Formula.factory 'qt'
-    ENV.append_to_cflags "-F#{qt.prefix}/Frameworks"
-
-    # Also need `ALTERNATIVE_QT_INCLUDE_DIR` to prevent "missing file" errors.
-    system "cmake . #{std_cmake_parameters} -DALTERNATIVE_QT_INCLUDE_DIR=#{qt.prefix}/Frameworks -DSITE_PACKAGE=#{site_package_dir} -DBUILD_TESTS=NO"
-    system 'make install'
+  def patches
+    DATA  # Fix moc_qpytextobject.cxx not found (https://codereview.qt-project.org/62479)
   end
 
-  def caveats
-    <<-EOS
-PySide Python modules have been linked to:
-    #{HOMEBREW_PREFIX}/#{site_package_dir}
+  def install
+    # Add out of tree build because one of its deps, shiboken, itself needs an
+    # out of tree build in shiboken.rb.
+    mkdir "macbuild" do
+      args = std_cmake_args + %W[
+        -DSITE_PACKAGE=#{lib}/python2.7/site-packages
+        -DALTERNATIVE_QT_INCLUDE_DIR=#{Formula.factory('qt').opt_prefix}/include
+        -DQT_SRC_DIR=#{Formula.factory('qt').opt_prefix}/src
+        -DPYTHON_SUFFIX='-python2.7'
+        ..
+      ]
+      system 'cmake', *args
+      system 'make'
+      system 'make', 'install'
+    end
+  end
 
-Make sure this folder is on your PYTHONPATH. For PySide development tools,
-install the `pyside-tools` formula.
-    EOS
+  test do
+    system 'python', '-c', "from PySide import QtCore"
   end
 end
+
+__END__
+diff --git a/PySide/QtGui/CMakeLists.txt b/PySide/QtGui/CMakeLists.txt
+index 7625634..6e14706 100644
+--- a/PySide/QtGui/CMakeLists.txt
++++ b/PySide/QtGui/CMakeLists.txt
+@@ -403,7 +403,6 @@ ${CMAKE_CURRENT_BINARY_DIR}/PySide/QtGui/qwizard_wrapper.cpp
+ ${CMAKE_CURRENT_BINARY_DIR}/PySide/QtGui/qworkspace_wrapper.cpp
+
+ ${SPECIFIC_OS_FILES}
+-${QPYTEXTOBJECT_MOC}
+ ${QtGui_46_SRC}
+ ${QtGui_47_SRC}
+ ${QtGui_OPTIONAL_SRC}
+@@ -434,7 +433,7 @@ create_pyside_module(QtGui
+                      QtGui_deps
+                      QtGui_typesystem_path
+                      QtGui_SRC
+-                     ""
++                     QPYTEXTOBJECT_MOC
+                      ${CMAKE_CURRENT_BINARY_DIR}/typesystem_gui.xml)
+
+ install(FILES ${pyside_SOURCE_DIR}/qpytextobject.h DESTINATION include/PySide/QtGui/)

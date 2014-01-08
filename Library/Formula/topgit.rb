@@ -1,11 +1,11 @@
 require 'formula'
 
 class Topgit < Formula
-  url 'git://repo.or.cz/topgit.git', :tag => '1744aca50f3d7b6b4863523207e5010e112dfb85'
-  homepage 'http://repo.or.cz/w/topgit.git'
-  version '0.8'
+  homepage 'https://github.com/greenrd/topgit'
+  url 'https://github.com/greenrd/topgit/archive/topgit-0.9.tar.gz'
+  sha1 '619572db467259f9b56474b542f428dc52e0fbc9'
 
   def install
-    system "export prefix=#{prefix} && make install"
+    system "make", "install", "prefix=#{prefix}"
   end
 end

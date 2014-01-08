@@ -1,12 +1,19 @@
 require 'formula'
 
 class Alpine < Formula
-  url 'ftp://ftp.cac.washington.edu/alpine/alpine-2.00.tar.gz'
   homepage 'http://www.washington.edu/alpine/'
-  md5 '0f4757167baf5c73aa44f2ffa4860093'
+  url 'ftp://ftp.cac.washington.edu/alpine/alpine-2.00.tar.gz'
+  sha1 '363b3aa5d3eb1319e168639fbbc42b033b16f15b'
 
   def patches
-    DATA if MacOS.snow_leopard?
+    p = []
+    # Upstream builds are broken on Snow Leopard due to a hack put in
+    # for prior versions of OS X. See:
+    # http://trac.macports.org/ticket/20971
+    p <<  "https://trac.macports.org/export/89747/trunk/dports/mail/alpine/files/alpine-osx-10.6.patch" if MacOS.version >= :snow_leopard
+    # Fails to build against Tcl 8.6; reported upstream:
+    # http://mailman2.u.washington.edu/pipermail/alpine-info/2013-September/005291.html
+    p << DATA
   end
 
   def install
@@ -19,34 +26,23 @@ class Alpine < Formula
 end
 
 __END__
-diff -rc alpine-2.00/imap/Makefile alpine-2.00-10.6/imap/Makefile
-*** alpine-2.00/imap/Makefile	2008-06-04 19:43:35.000000000 +0100
---- alpine-2.00-10.6/imap/Makefile	2009-09-02 10:55:38.000000000 +0100
-***************
-*** 418,424 ****
-  	$(TOUCH) ip6
-  	$(BUILD) BUILDTYPE=osx IP=$(IP6) EXTRAAUTHENTICATORS="$(EXTRAAUTHENTICATORS) gss" \
-  	PASSWDTYPE=pam \
-- 	EXTRACFLAGS="$(EXTRACFLAGS) -DMAC_OSX_KLUDGE=1" \
-  	SPECIALS="SSLINCLUDE=/usr/include/openssl SSLLIB=/usr/lib SSLCERTS=/System/Library/OpenSSL/certs SSLKEYS=/System/Library/OpenSSL/private GSSINCLUDE=/usr/include GSSLIB=/usr/lib PAMDLFLAGS=-lpam"
-  
-  osx:	osxok an
---- 418,423 ----
-diff -rc alpine-2.00/imap/src/osdep/unix/ckp_pam.c alpine-2.00-10.6/imap/src/osdep/unix/ckp_pam.c
-*** alpine-2.00/imap/src/osdep/unix/ckp_pam.c	2008-06-04 19:18:34.000000000 +0100
---- alpine-2.00-10.6/imap/src/osdep/unix/ckp_pam.c	2009-09-02 10:56:36.000000000 +0100
-***************
-*** 27,37 ****
-   */
-  
-  
-- #ifdef MAC_OSX_KLUDGE		/* why can't Apple be compatible? */
-- #include <pam/pam_appl.h>
-- #else
-  #include <security/pam_appl.h>
-- #endif
-  
-  struct checkpw_cred {
-    char *uname;			/* user name */
---- 27,33 ----
+diff --git a/web/src/alpined.d/alpined.c b/web/src/alpined.d/alpined.c
+index 98c5a63..d2c63b5 100644
+--- a/web/src/alpined.d/alpined.c
++++ b/web/src/alpined.d/alpined.c
+@@ -751,10 +751,10 @@ main(int argc, char *argv[])
+ 				}
+ 
+ 				switch(Tcl_Eval(interp, &buf[co])){
+-				  case TCL_OK	  : peReturn(cs, "OK", interp->result); break;
+-				  case TCL_ERROR  : peReturn(cs, "ERROR", interp->result); break;
+-				  case TCL_BREAK  : peReturn(cs, "BREAK", interp->result); break;
+-				  case TCL_RETURN : peReturn(cs, "RETURN", interp->result); break;
++				  case TCL_OK	  : peReturn(cs, "OK",  Tcl_GetStringResult(interp)); break;
++				  case TCL_ERROR  : peReturn(cs, "ERROR", Tcl_GetStringResult(interp)); break;
++				  case TCL_BREAK  : peReturn(cs, "BREAK", Tcl_GetStringResult(interp)); break;
++				  case TCL_RETURN : peReturn(cs, "RETURN", Tcl_GetStringResult(interp)); break;
+ 				  default	  : peReturn(cs, "BOGUS", "eval returned unexpected value"); break;
+ 				}
+ 			    }
 

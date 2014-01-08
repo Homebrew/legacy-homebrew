@@ -1,19 +1,37 @@
 require 'formula'
 
+# https version doesn't download with system curl on Snow Leopard
+# https://github.com/Homebrew/homebrew/issues/20339
 class Cfengine < Formula
-  url 'https://cfengine.com/source_code/download?file=cfengine-3.2.0.tar.gz'
   homepage 'http://cfengine.com/'
-  md5 '5fdd5a0bf6c5111114ee8fb2259483ae'
+  url 'http://cfengine.com/source-code/download?file=cfengine-3.5.2.tar.gz'
+  sha1 '57ffeee2a2a6acb1764a8a0d7979538d683ccf5a'
 
+  depends_on 'pcre'
   depends_on 'tokyo-cabinet'
+  depends_on 'libxml2' if MacOS.version < :mountain_lion
+
+  def patches
+    # Upstream patches for OS X compilation
+    %w{
+      https://github.com/cfengine/core/commit/f748a005b39a7aafd554e41a528b2216e28dce92.patch
+      https://github.com/cfengine/core/commit/d03fcc2d38a4db0c79386aaef30597102bf45853.patch
+      https://github.com/cfengine/core/commit/228f27002018a82b339ddfe6a5510a24128ce0ab.patch
+    }
+  end
 
   def install
-    system "./configure", "--with-tokyocabinet", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    system "/usr/bin/make install"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-workdir=#{var}/cfengine",
+                          "--with-tokyocabinet",
+                          "--with-pcre=#{Formula.factory('pcre').opt_prefix}",
+                          "--without-mysql",
+                          "--without-postgresql"
+    system "make install"
   end
 
   def test
-    system "#{sbin}/cf-agent -V"
+    system "#{bin}/cf-agent", "-V"
   end
 end

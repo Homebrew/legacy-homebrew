@@ -7,22 +7,42 @@ class Monotone < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
-  depends_on 'botan'
   depends_on 'libidn'
   depends_on 'lua'
   depends_on 'pcre'
 
-  fails_with_llvm "linker fails"
+  # http://botan.randombit.net/
+  resource 'botan' do
+    url 'http://files.randombit.net/botan/v1.8/Botan-1.8.13.tbz'
+    sha1 '66cda9e05001e4a298cbb0095b9a3f6d11c4ef53'
+  end
+
+  fails_with :llvm do
+    build 2334
+    cause "linker fails"
+  end
 
   def install
-    # Monotone only needs headers from Boost (it's templates all the way down!), so let's avoid
-    # building boost (which takes approximately forever) if it's not already installed.
+    botan18_prefix = libexec+'botan18'
+    resource('botan').stage do
+      args = ["--prefix=#{botan18_prefix}"]
+      args << "--cpu=#{Hardware::CPU.arch_64_bit}" if MacOS.prefer_64_bit?
+      system "./configure.py", *args
+      system "make", "CXX=#{ENV.cxx}", "install"
+    end
+
+    ENV['botan_CFLAGS'] = "-I#{botan18_prefix}/include"
+    ENV['botan_LIBS'] = "-L#{botan18_prefix}/lib -lbotan"
+
+    # Monotone only needs headers from Boost, so let's avoid building the libraries.
     # This is suggested in the Monotone installation instructions.
 
-    boost = Formula.factory('boost')
-    unless boost.installed?
+    boost_prefix = buildpath/'boost'
+    boost = Formula.factory('boost149')
+    boost.brew do
+      boost_prefix.install Dir['*']
       # Add header location to CPPFLAGS
-      boost.brew { ENV.append "CXXFLAGS", "-I"+Dir.pwd }
+      ENV.append 'CPPFLAGS', "-I#{boost_prefix}"
     end
 
     system "./configure", "--disable-dependency-tracking",

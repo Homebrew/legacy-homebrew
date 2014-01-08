@@ -1,9 +1,9 @@
 require 'formula'
 
 class Dterm < Formula
+  homepage 'http://www.knossos.net.nz/resources/free-software/dterm/'
   url 'http://www.knossos.net.nz/downloads/dterm-0.3.tgz'
-  homepage 'http://www.knossos.net.nz/dterm.html'
-  md5 '4044341cf3b8e12559f8f25c9e428042'
+  sha1 'b7dd8cf8c0eb3ef43a32db6011361e886850390d'
 
   def install
     system "make"

@@ -1,41 +1,66 @@
 require 'formula'
 
 class John < Formula
-  url 'http://www.openwall.com/john/g/john-1.7.8.tar.bz2'
   homepage 'http://www.openwall.com/john/'
-  md5 'e6d7f261829610d6949c706ebac0517c'
+  url 'http://www.openwall.com/john/g/john-1.7.9.tar.bz2'
+  sha1 '8f77bdd42b7cf94ec176f55ea69c4da9b2b8fe3b'
+
+  conflicts_with 'john-jumbo', :because => 'both install the same binaries'
 
   def patches
-    { :p0 => DATA }
+    DATA # Taken from MacPorts, tells john where to find runtime files
   end
 
-  fails_with_llvm :build => 2334
+  fails_with :llvm do
+    build 2334
+    cause "Don't remember, but adding this to whitelist 2336."
+  end
 
   def install
     ENV.deparallelize
     arch = Hardware.is_64_bit? ? '64' : 'sse2'
 
-    Dir.chdir 'src' do
-      system "make clean macosx-x86-#{arch}"
+    cd 'src' do
+      inreplace 'Makefile' do |s|
+        s.change_make_var! "CC", ENV.cc
+      end
+      system "make", "clean", "macosx-x86-#{arch}"
     end
 
+    # Remove the README symlink and install the real file
     rm 'README'
-    # using mv over bin.install due to problem moving sym links
-    mv 'run', bin
-    chmod_R 0755, bin
+    prefix.install 'doc/README'
+    doc.install Dir['doc/*']
+
+    # Only symlink the binary into bin
+    (share/'john').install Dir['run/*']
+    bin.install_symlink share/'john/john'
+
+    # Source code defaults to 'john.ini', so rename
+    mv share/'john/john.conf', share/'john/john.ini'
   end
 end
 
 
 __END__
---- src/john.c.orig	2010-01-01 22:58:55.000000000 -0500
-+++ src/john.c	2010-01-01 22:59:11.000000000 -0500
-@@ -249,7 +249,7 @@ static void john_init(char *name, int ar
- 		cfg_init(CFG_PRIVATE_ALT_NAME, 1);
+--- a/src/params.h	2012-08-30 13:24:18.000000000 -0500
++++ b/src/params.h	2012-08-30 13:25:13.000000000 -0500
+@@ -70,15 +70,15 @@
+  * notes above.
+  */
+ #ifndef JOHN_SYSTEMWIDE
+-#define JOHN_SYSTEMWIDE			0
++#define JOHN_SYSTEMWIDE			1
  #endif
- 		cfg_init(CFG_FULL_NAME, 1);
--		cfg_init(CFG_ALT_NAME, 0);
-+		cfg_init(CFG_ALT_NAME, 1);
- 	}
  
- 	status_init(NULL, 1);
+ #if JOHN_SYSTEMWIDE
+ #ifndef JOHN_SYSTEMWIDE_EXEC /* please refer to the notes above */
+-#define JOHN_SYSTEMWIDE_EXEC		"/usr/libexec/john"
++#define JOHN_SYSTEMWIDE_EXEC		"HOMEBREW_PREFIX/share/john"
+ #endif
+ #ifndef JOHN_SYSTEMWIDE_HOME
+-#define JOHN_SYSTEMWIDE_HOME		"/usr/share/john"
++#define JOHN_SYSTEMWIDE_HOME		"HOMEBREW_PREFIX/share/john"
+ #endif
+ #define JOHN_PRIVATE_HOME		"~/.john"
+ #endif

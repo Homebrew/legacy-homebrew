@@ -1,9 +1,9 @@
 require 'formula'
 
 class Sleepwatcher < Formula
-  url 'http://www.bernhard-baehr.de/sleepwatcher_2.1.1.tgz'
   homepage 'http://www.bernhard-baehr.de/'
-  md5 '6770e615a89874fa07a8bdfc94ead19f'
+  url 'http://www.bernhard-baehr.de/sleepwatcher_2.2.tgz'
+  sha1 'd4e4abb0bf0e1b3db9166d1eae38b8701fc28bf8'
 
   def install
     # Adjust Makefile to build native binary only
@@ -19,22 +19,23 @@ class Sleepwatcher < Formula
     end
 
     # Build and install binary
-    Dir.chdir "sources" do
+    cd "sources" do
       system "mv", "../sleepwatcher.8", "."
       system "make", "install", "PREFIX=#{prefix}"
     end
-
-    # Write the usage ReadMe
-    prefix.install "ReadMe.rtf"
 
     # Write the sleep/wakeup scripts
     (prefix + 'etc/sleepwatcher').install Dir["config/rc.*"]
 
     # Write the launchd scripts
     inreplace Dir["config/*.plist"] do |s|
-      s.gsub! "/etc", (etc + 'sleepwatcher')
-      s.gsub! "/usr/local/sbin", (HOMEBREW_PREFIX + 'sbin')
+      s.gsub! "/usr/local/sbin", HOMEBREW_PREFIX/'sbin'
     end
+
+    inreplace 'config/de.bernhard-baehr.sleepwatcher-20compatibility.plist' do |s|
+      s.gsub! "/etc", (etc + 'sleepwatcher')
+    end
+
     prefix.install Dir["config/*.plist"]
   end
 

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libyubikey < Formula
-  url 'http://yubico-c.googlecode.com/files/libyubikey-1.7.tar.gz'
-  homepage 'http://code.google.com/p/yubico-c/'
-  md5 '6468ee9962b45b1daa8be4c040d6a877'
+  homepage 'http://yubico.github.io/yubico-c/'
+  url 'http://yubico.github.io/yubico-c/releases/libyubikey-1.11.tar.gz'
+  sha1 'a939abc129ed66af193d979765a8d8ac59ad7c40'
 
   def install
     system "./configure", "--prefix=#{prefix}"

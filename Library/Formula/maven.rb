@@ -1,25 +1,22 @@
 require 'formula'
 
 class Maven < Formula
-  url 'http://www.apache.org/dyn/closer.cgi?path=maven/binaries/apache-maven-3.0.3-bin.tar.gz'
   homepage 'http://maven.apache.org/'
-  md5 '507828d328eb3735103c0492443ef0f0'
+  url 'http://www.apache.org/dyn/closer.cgi?path=maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz'
+  sha1 '630eea2107b0742acb315b214009ba08602dda5f'
 
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
 
     # Fix the permissions on the global settings file.
-    chmod 0644, Dir["conf/settings.xml"]
+    chmod 0644, 'conf/settings.xml'
 
-    # Install jars in libexec to avoid conflicts
-    prefix.install %w{ NOTICE.txt LICENSE.txt README.txt }
+    prefix.install_metafiles
     libexec.install Dir['*']
 
-    # Symlink binaries
-    bin.mkpath
-    ln_s "#{libexec}/bin/mvn", bin+"mvn"
-    ln_s "#{libexec}/bin/mvnDebug", bin+"mvnDebug"
-    ln_s "#{libexec}/bin/mvnyjp", bin+"mvnyjp"
+    # Leave conf file in libexec. The mvn symlink will be resolved and the conf
+    # file will be found relative to it
+    bin.install_symlink Dir["#{libexec}/bin/*"] - ["#{libexec}/bin/m2.conf"]
   end
 end

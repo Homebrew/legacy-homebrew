@@ -1,7 +1,12 @@
 require 'pathname'
+require 'exceptions'
+require 'os/mac'
+require 'utils/json'
+require 'utils/inreplace'
+require 'open-uri'
 
 class Tty
-  class <<self
+  class << self
     def blue; bold 34; end
     def white; bold 39; end
     def red; underline 31; end
@@ -9,12 +14,18 @@ class Tty
     def reset; escape 0; end
     def em; underline 39; end
     def green; color 92 end
+    def gray; bold 30 end
 
     def width
       `/usr/bin/tput cols`.strip.to_i
     end
 
-  private
+    def truncate(str)
+      str.to_s[0, width - 4]
+    end
+
+    private
+
     def color n
       escape "0;#{n}"
     end
@@ -30,28 +41,36 @@ class Tty
   end
 end
 
-# args are additional inputs to puts until a nil arg is encountered
 def ohai title, *sput
-  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
+  title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput unless sput.empty?
 end
 
 def oh1 title
-  title = title.to_s[0, Tty.width - 4] unless ARGV.verbose?
-  puts "#{Tty.green}==> #{Tty.reset}#{title}"
+  title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
+  puts "#{Tty.green}==>#{Tty.white} #{title}#{Tty.reset}"
 end
 
 def opoo warning
-  puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
+  STDERR.puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
 end
 
 def onoe error
-  lines = error.to_s.split'\n'
-  puts "#{Tty.red}Error#{Tty.reset}: #{lines.shift}"
-  puts lines unless lines.empty?
+  lines = error.to_s.split("\n")
+  STDERR.puts "#{Tty.red}Error#{Tty.reset}: #{lines.shift}"
+  STDERR.puts lines unless lines.empty?
 end
 
+def ofail error
+  onoe error
+  Homebrew.failed = true
+end
+
+def odie error
+  onoe error
+  exit 1
+end
 
 def pretty_duration s
   return "2 seconds" if s < 3 # avoids the plural problem ;)
@@ -79,7 +98,7 @@ module Homebrew
     fork do
       yield if block_given?
       args.collect!{|arg| arg.to_s}
-      exec(cmd, *args) rescue nil
+      exec(cmd.to_s, *args) rescue nil
       exit! 1 # never gets here unless exec failed
     end
     Process.wait
@@ -87,27 +106,43 @@ module Homebrew
   end
 end
 
+def with_system_path
+  old_path = ENV['PATH']
+  ENV['PATH'] = '/usr/bin:/bin'
+  yield
+ensure
+  ENV['PATH'] = old_path
+end
+
 # Kernel.system but with exceptions
 def safe_system cmd, *args
   unless Homebrew.system cmd, *args
     args = args.map{ |arg| arg.to_s.gsub " ", "\\ " } * " "
-    raise "Failure while executing: #{cmd} #{args}"
+    raise ErrorDuringExecution, "Failure while executing: #{cmd} #{args}"
   end
 end
 
 # prints no output
 def quiet_system cmd, *args
   Homebrew.system(cmd, *args) do
-    $stdout.close
-    $stderr.close
+    # Redirect output streams to `/dev/null` instead of closing as some programs
+    # will fail to execute if they can't write to an open stream.
+    $stdout.reopen('/dev/null')
+    $stderr.reopen('/dev/null')
   end
 end
 
 def curl *args
-  # See https://github.com/mxcl/homebrew/issues/6103
-  args << "--insecure" if MacOS.version < 10.6
+  curl = Pathname.new '/usr/bin/curl'
+  raise "#{curl} is not executable" unless curl.exist? and curl.executable?
 
-  safe_system '/usr/bin/curl', HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args unless args.empty?
+  args = [HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args]
+  # See https://github.com/Homebrew/homebrew/issues/6103
+  args << "--insecure" if MacOS.version < "10.6"
+  args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
+  args << "--silent" unless $stdout.tty?
+
+  safe_system curl, *args
 end
 
 def puts_columns items, star_items=[]
@@ -131,92 +166,58 @@ def puts_columns items, star_items=[]
   end
 end
 
+def which cmd, path=ENV['PATH']
+  dir = path.split(File::PATH_SEPARATOR).find {|p| File.executable? File.join(p, cmd)}
+  Pathname.new(File.join(dir, cmd)) unless dir.nil?
+end
+
+def which_editor
+  editor = ENV.values_at('HOMEBREW_EDITOR', 'VISUAL', 'EDITOR').compact.first
+  # If an editor wasn't set, try to pick a sane default
+  return editor unless editor.nil?
+
+  # Find Textmate
+  return 'mate' if which "mate"
+  # Find BBEdit / TextWrangler
+  return 'edit' if which "edit"
+  # Default to vim
+  return '/usr/bin/vim'
+end
+
 def exec_editor *args
   return if args.to_s.empty?
+  safe_exec(which_editor, *args)
+end
 
-  editor = ENV['HOMEBREW_EDITOR'] || ENV['EDITOR']
-  if editor.nil?
-    editor = if system "/usr/bin/which -s mate"
-      'mate'
-    elsif system "/usr/bin/which -s edit"
-      'edit' # BBEdit / TextWrangler
-    else
-      '/usr/bin/vim' # Default to vim
-    end
-  end
+def exec_browser *args
+  browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] || "open"
+  safe_exec(browser, *args)
+end
 
-  # Invoke bash to evaluate env vars in $EDITOR
-  # This also gets us proper argument quoting.
-  # See: https://github.com/mxcl/homebrew/issues/5123
-  system "bash", "-c", editor + ' "$@"', "--", *args
+def safe_exec cmd, *args
+  # This buys us proper argument quoting and evaluation
+  # of environment variables in the cmd parameter.
+  exec "/bin/sh", "-i", "-c", cmd + ' "$@"', "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
 def gzip *paths
   paths.collect do |path|
-    system "/usr/bin/gzip", path
+    with_system_path { safe_system 'gzip', path }
     Pathname.new("#{path}.gz")
-  end
-end
-
-module ArchitectureListExtension
-  def universal?
-    self.include? :i386 and self.include? :x86_64
-  end
-
-  def remove_ppc!
-    self.delete :ppc7400
-    self.delete :ppc64
-  end
-
-  def as_arch_flags
-    self.collect{ |a| "-arch #{a}" }.join(' ')
   end
 end
 
 # Returns array of architectures that the given command or library is built for.
 def archs_for_command cmd
-  cmd = cmd.to_s # If we were passed a Pathname, turn it into a string.
-  cmd = `/usr/bin/which #{cmd}` unless Pathname.new(cmd).absolute?
-  cmd.gsub! ' ', '\\ '  # Escape spaces in the filename.
-
-  lines = `/usr/bin/file -L #{cmd}`
-  archs = lines.to_a.inject([]) do |archs, line|
-    case line
-    when /Mach-O (executable|dynamically linked shared library) ppc/
-      archs << :ppc7400
-    when /Mach-O 64-bit (executable|dynamically linked shared library) ppc64/
-      archs << :ppc64
-    when /Mach-O (executable|dynamically linked shared library) i386/
-      archs << :i386
-    when /Mach-O 64-bit (executable|dynamically linked shared library) x86_64/
-      archs << :x86_64
-    else
-      archs
-    end
-  end
-  archs.extend(ArchitectureListExtension)
+  cmd = which(cmd) unless Pathname.new(cmd).absolute?
+  Pathname.new(cmd).archs
 end
 
-def inreplace path, before=nil, after=nil
-  [*path].each do |path|
-    f = File.open(path, 'r')
-    s = f.read
-
-    if before == nil and after == nil
-      s.extend(StringInreplaceExtension)
-      yield s
-    else
-      s.gsub!(before, after)
-    end
-
-    f.reopen(path, 'w').write(s)
-    f.close
+def ignore_interrupts(opt = nil)
+  std_trap = trap("INT") do
+    puts "One sec, just cleaning up" unless opt == :quietly
   end
-end
-
-def ignore_interrupts
-  std_trap = trap("INT") {}
   yield
 ensure
   trap("INT", std_trap)
@@ -237,157 +238,49 @@ def nostdout
   end
 end
 
-module MacOS extend self
-  def version
-    MACOS_VERSION
-  end
-
-  def default_cc
-    Pathname.new("/usr/bin/cc").realpath.basename.to_s
-  end
-
-  def default_compiler
-    case default_cc
-      when /^gcc/ then :gcc
-      when /^llvm/ then :llvm
-      when "clang" then :clang
-      else :gcc # a hack, but a sensible one prolly
+def paths
+  @paths ||= ENV['PATH'].split(File::PATH_SEPARATOR).collect do |p|
+    begin
+      File.expand_path(p).chomp('/')
+    rescue ArgumentError
+      onoe "The following PATH component is invalid: #{p}"
     end
-  end
-
-  def gcc_42_build_version
-    `/usr/bin/gcc-4.2 -v 2>&1` =~ /build (\d{4,})/
-    if $1
-      $1.to_i
-    elsif system "/usr/bin/which gcc"
-      # Xcode 3.0 didn't come with gcc-4.2
-      # We can't change the above regex to use gcc because the version numbers
-      # are different and thus, not useful.
-      # FIXME I bet you 20 quid this causes a side effect — magic values tend to
-      401
-    else
-      nil
-    end
-  end
-
-  def gcc_40_build_version
-    `/usr/bin/gcc-4.0 -v 2>&1` =~ /build (\d{4,})/
-    if $1
-      $1.to_i
-    else
-      nil
-    end
-  end
-
-  # usually /Developer
-  def xcode_prefix
-    @xcode_prefix ||= begin
-      path = `/usr/bin/xcode-select -print-path 2>&1`.chomp
-      path = Pathname.new path
-      if path.directory? and path.absolute?
-        path
-      elsif File.directory? '/Developer'
-        # we do this to support cowboys who insist on installing
-        # only a subset of Xcode
-        Pathname.new '/Developer'
-      else
-        nil
-      end
-    end
-  end
-
-  def xcode_version
-    @xcode_version ||= begin
-      raise unless system "/usr/bin/which -s xcodebuild"
-      `xcodebuild -version 2>&1` =~ /Xcode (\d(\.\d)*)/
-      raise if $1.nil?
-      $1
-    rescue
-      # for people who don't have xcodebuild installed due to using
-      # some variety of minimal installer, let's try and guess their
-      # Xcode version
-      case llvm_build_version.to_i
-      when 0..2063 then "3.1.0"
-      when 2064..2065 then "3.1.4"
-      when 2366..2325
-        # we have no data for this range so we are guessing
-        "3.2.0"
-      when 2326
-        # also applies to "3.2.3"
-        "3.2.4"
-      when 2327..2333 then "3.2.5"
-      when 2335
-        # this build number applies to 3.2.6, 4.0 and 4.1
-        # https://github.com/mxcl/homebrew/wiki/Xcode
-        "4.0"
-      else
-        "4.2"
-      end
-    end
-  end
-
-  def llvm_build_version
-    # for Xcode 3 on OS X 10.5 this will not exist
-    # NOTE may not be true anymore but we can't test
-    @llvm_build_version ||= if File.exist? "/usr/bin/llvm-gcc"
-      `/usr/bin/llvm-gcc -v 2>&1` =~ /LLVM build (\d{4,})/
-      $1.to_i
-    end
-  end
-
-  def x11_installed?
-    Pathname.new('/usr/X11/lib/libpng.dylib').exist?
-  end
-
-  def macports_or_fink_installed?
-    # See these issues for some history:
-    # http://github.com/mxcl/homebrew/issues/#issue/13
-    # http://github.com/mxcl/homebrew/issues/#issue/41
-    # http://github.com/mxcl/homebrew/issues/#issue/48
-
-    %w[port fink].each do |ponk|
-      path = `/usr/bin/which -s #{ponk}`
-      return ponk unless path.empty?
-    end
-
-    # we do the above check because macports can be relocated and fink may be
-    # able to be relocated in the future. This following check is because if
-    # fink and macports are not in the PATH but are still installed it can
-    # *still* break the build -- because some build scripts hardcode these paths:
-    %w[/sw/bin/fink /opt/local/bin/port].each do |ponk|
-      return ponk if File.exist? ponk
-    end
-
-    # finally, sometimes people make their MacPorts or Fink read-only so they
-    # can quickly test Homebrew out, but still in theory obey the README's
-    # advise to rename the root directory. This doesn't work, many build scripts
-    # error out when they try to read from these now unreadable directories.
-    %w[/sw /opt/local].each do |path|
-      path = Pathname.new(path)
-      return path if path.exist? and not path.readable?
-    end
-
-    false
-  end
-
-  def leopard?
-    10.5 == MACOS_VERSION
-  end
-
-  def snow_leopard?
-    10.6 <= MACOS_VERSION # Actually Snow Leopard or newer
-  end
-
-  def lion?
-    10.7 <= MACOS_VERSION #Actually Lion or newer
-  end
-
-  def prefer_64_bit?
-    Hardware.is_64_bit? and 10.6 <= MACOS_VERSION
-  end
+  end.uniq.compact
 end
 
 module GitHub extend self
+  ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/Homebrew/homebrew/open/")
+
+  Error = Class.new(StandardError)
+
+  def open url, headers={}, &block
+    # This is a no-op if the user is opting out of using the GitHub API.
+    return if ENV['HOMEBREW_NO_GITHUB_API']
+
+    require 'net/https' # for exception classes below
+
+    default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
+    default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
+    Kernel.open(url, default_headers.merge(headers), &block)
+  rescue OpenURI::HTTPError => e
+    if e.io.meta['x-ratelimit-remaining'].to_i <= 0
+      raise <<-EOS.undent
+        GitHub #{Utils::JSON.load(e.io.read)['message']}
+        You may want to create an API token: https://github.com/settings/applications
+        and then set HOMEBREW_GITHUB_API_TOKEN.
+        EOS
+    else
+      raise e
+    end
+  rescue SocketError, OpenSSL::SSL::SSLError => e
+    raise Error, "Failed to connect to: #{url}\n#{e.message}"
+  end
+
+  def each_issue_matching(query, &block)
+    uri = ISSUES_URI + query
+    open(uri) { |f| Utils::JSON.load(f.read)['issues'].each(&block) }
+  end
+
   def issues_for_formula name
     # bit basic as depends on the issue at github having the exact name of the
     # formula in it. Which for stuff like objective-caml is unlikely. So we
@@ -395,23 +288,26 @@ module GitHub extend self
 
     name = f.name if Formula === name
 
-    require 'open-uri'
-    require 'yaml'
-
     issues = []
 
-    open "http://github.com/api/v2/yaml/issues/search/mxcl/homebrew/open/#{name}" do |f|
-      yaml = YAML::load(f.read);
-      yaml['issues'].each do |issue|
-        # don't include issues that just refer to the tool in their body
-        if issue['title'].include? name
-          issues << issue['html_url']
-        end
-      end
+    each_issue_matching(name) do |issue|
+      # don't include issues that just refer to the tool in their body
+      issues << issue['html_url'] if issue['title'].include? name
     end
 
     issues
-  rescue
-    []
+  end
+
+  def find_pull_requests rx
+    return if ENV['HOMEBREW_NO_GITHUB_API']
+    puts "Searching open pull requests..."
+
+    query = rx.source.delete('.*').gsub('\\', '')
+
+    each_issue_matching(query) do |issue|
+      if rx === issue['title'] && issue.has_key?('pull_request_url')
+        yield issue['pull_request_url']
+      end
+    end
   end
 end

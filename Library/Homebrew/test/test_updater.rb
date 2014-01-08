@@ -1,142 +1,104 @@
-abort if ARGV.include? "--skip-update"
-
 require 'testing_env'
-HOMEBREW_CELLAR.mkpath
-
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-ARGV.extend(HomebrewArgvExtension)
-
-require 'formula'
-require 'utils'
 require 'cmd/update'
+require 'yaml'
 
-class RefreshBrewMock < RefreshBrew
-  def git_repo?
-    @git_repo
-  end
-  attr_writer :git_repo
-
-  def in_prefix_expect(cmd, output = '')
+class UpdaterMock < Updater
+  def in_repo_expect(cmd, output = '')
     @outputs  ||= Hash.new { |h,k| h[k] = [] }
     @expected ||= []
     @expected << cmd
     @outputs[cmd] << output
   end
-  
-  def `(cmd)
-    if Dir.pwd == HOMEBREW_PREFIX.to_s and @expected.include?(cmd) and !@outputs[cmd].empty?
+
+  def `(cmd, *args)
+    cmd = "#{cmd} #{args*' '}".strip
+    if @expected.include?(cmd) and !@outputs[cmd].empty?
       @called ||= []
       @called << cmd
       @outputs[cmd].shift
     else
-      raise "#{inspect} Unexpectedly called backticks in pwd `#{HOMEBREW_PREFIX}' and command `#{cmd}'"
+      raise "#<#{self.class.name} #{object_id}> unexpectedly called backticks: `#{cmd}'"
     end
   end
 
-  alias safe_system `
-  
+  alias safe_system ` #`
+
   def expectations_met?
     @expected == @called
-  end
-  
-  def inspect
-    "#<#{self.class.name} #{object_id}>"
   end
 end
 
 class UpdaterTests < Test::Unit::TestCase
-  OUTSIDE_PREFIX = '/tmp'
-  def outside_prefix
-    Dir.chdir(OUTSIDE_PREFIX) { yield }
-  end
-  
   def fixture(name)
     self.class.fixture_data[name]
   end
-  
+
   def self.fixture_data
-    unless @fixture_data
-      require 'yaml'
-      @fixture_data = YAML.load_file(Pathname.new(ABS__FILE__).parent.realpath + 'fixtures/updater_fixture.yaml')
-    end
-    @fixture_data
+    @fixture_data ||= load_fixture_data
   end
 
-  def test_init_homebrew
-    outside_prefix do
-      updater = RefreshBrewMock.new
-      updater.git_repo = false
-      updater.in_prefix_expect("git init")
-      updater.in_prefix_expect("git remote add origin #{RefreshBrewMock::REPOSITORY_URL}")
-      updater.in_prefix_expect("git fetch origin")
-      updater.in_prefix_expect("git reset --hard origin/master")
-      updater.in_prefix_expect("git pull origin refs/heads/master:refs/remotes/origin/master")
-      updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
-      
-      assert_equal false, updater.update_from_masterbrew!
-      assert updater.expectations_met?
-      assert updater.updated_formulae.empty?
-      assert updater.added_formulae.empty?
+  def self.load_fixture_data
+    YAML.load_file(Pathname.new(ABS__FILE__).parent.realpath + 'fixtures/updater_fixture.yaml')
+  end
+
+  def setup
+    @updater = UpdaterMock.new
+    @report = Report.new
+  end
+
+  def perform_update(diff_output="")
+    HOMEBREW_REPOSITORY.cd do
+      @updater.in_repo_expect("git checkout -q master")
+      @updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
+      @updater.in_repo_expect("git config core.autocrlf false")
+      @updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
+      @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
+      @updater.in_repo_expect("git diff-tree -r --raw -M85% 1234abcd 3456cdef", diff_output)
+      @updater.pull!
+      @report.merge!(@updater.report)
     end
   end
 
   def test_update_homebrew_without_any_changes
-    outside_prefix do
-      updater = RefreshBrewMock.new
-      updater.git_repo = true
-      updater.in_prefix_expect("git checkout -q master")
-      updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
-      updater.in_prefix_expect("git remote", "origin")
-      updater.in_prefix_expect("git pull origin refs/heads/master:refs/remotes/origin/master")
-      updater.in_prefix_expect("git rev-parse HEAD", "3456cdef")
-      updater.in_prefix_expect("git diff-tree -r --name-status -z 1234abcd 3456cdef", "")
-      
-      assert_equal false, updater.update_from_masterbrew!
-      assert updater.expectations_met?
-      assert updater.updated_formulae.empty?
-      assert updater.added_formulae.empty?
-    end
+    perform_update
+    assert @updater.expectations_met?
+    assert @report.empty?
   end
-  
+
   def test_update_homebrew_without_formulae_changes
-    outside_prefix do
-      updater = RefreshBrewMock.new
-      updater.git_repo = true
-      diff_output = fixture('update_git_diff_output_without_formulae_changes')
-
-      updater.in_prefix_expect("git checkout -q master")
-      updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
-      updater.in_prefix_expect("git remote", "origin")
-      updater.in_prefix_expect("git pull origin refs/heads/master:refs/remotes/origin/master")
-      updater.in_prefix_expect("git rev-parse HEAD", "3456cdef")
-      updater.in_prefix_expect("git diff-tree -r --name-status -z 1234abcd 3456cdef", diff_output.gsub(/\s+/, "\0"))
-      
-      assert_equal true, updater.update_from_masterbrew!
-      assert updater.expectations_met?
-      assert !updater.pending_formulae_changes?
-      assert updater.updated_formulae.empty?
-      assert updater.added_formulae.empty?
-    end
+    perform_update(fixture('update_git_diff_output_without_formulae_changes'))
+    assert @updater.expectations_met?
+    assert @report.select_formula(:M).empty?
+    assert @report.select_formula(:A).empty?
+    assert @report.select_formula(:R).empty?
   end
-  
-  def test_update_homebrew_with_formulae_changes
-    outside_prefix do
-      updater = RefreshBrewMock.new
-      updater.git_repo = true
-      diff_output = fixture('update_git_diff_output_with_formulae_changes')
 
-      updater.in_prefix_expect("git checkout -q master")
-      updater.in_prefix_expect("git rev-parse HEAD", "1234abcd")
-      updater.in_prefix_expect("git remote", "origin")
-      updater.in_prefix_expect("git pull origin refs/heads/master:refs/remotes/origin/master")
-      updater.in_prefix_expect("git rev-parse HEAD", "3456cdef")
-      updater.in_prefix_expect("git diff-tree -r --name-status -z 1234abcd 3456cdef", diff_output.gsub(/\s+/, "\0"))
-      
-      assert_equal true, updater.update_from_masterbrew!
-      assert updater.expectations_met?
-      assert updater.pending_formulae_changes?
-      assert_equal %w{ xar yajl }, updater.updated_formulae
-      assert_equal %w{ antiword bash-completion ddrescue dict lua }, updater.added_formulae
-    end
+  def test_update_homebrew_with_formulae_changes
+    perform_update(fixture('update_git_diff_output_with_formulae_changes'))
+    assert @updater.expectations_met?
+    assert_equal %w{ xar yajl }, @report.select_formula(:M)
+    assert_equal %w{ antiword bash-completion ddrescue dict lua }, @report.select_formula(:A)
+    assert_equal %w{ shapelib }, @report.select_formula(:R)
+  end
+
+  def test_update_homebrew_with_tapped_formula_changes
+    perform_update(fixture('update_git_diff_output_with_tapped_formulae_changes'))
+    assert @updater.expectations_met?
+    assert_equal [
+      Pathname('someuser-sometap/Formula/antiword.rb'),
+      Pathname('someuser-sometap/HomebrewFormula/lua.rb'),
+      Pathname('someuser-sometap/custom-formula.rb'),
+    ], @report.tapped_formula_for(:A)
+  end
+
+  def test_update_homebrew_with_removed_formulae
+    perform_update(fixture('update_git_diff_output_with_removed_formulae'))
+    assert @updater.expectations_met?
+    assert_equal %w{libgsasl}, @report.select_formula(:D)
+  end
+
+  def test_update_homebrew_with_changed_filetype
+    perform_update(fixture('update_git_diff_output_with_changed_filetype'))
+    assert @updater.expectations_met?
   end
 end

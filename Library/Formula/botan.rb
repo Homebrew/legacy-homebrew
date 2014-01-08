@@ -1,15 +1,29 @@
 require 'formula'
 
 class Botan < Formula
-  url 'http://files.randombit.net/botan/v1.10/Botan-1.10.1.tbz'
   homepage 'http://botan.randombit.net/'
-  md5 '7ae93e205491a8e75115bfca983ff7f9'
+  url 'http://botan.randombit.net/files/Botan-1.10.6.tbz'
+  sha1 '762decd775a4267d3b343ff14729cd9b96a1e4a0'
+
+  option 'enable-debug', 'Enable debug build of Botan'
 
   def install
-    args = ["--prefix=#{prefix}"]
-    args << "--cpu=x86_64" if MacOS.prefer_64_bit?
+    args = %W[
+      --prefix=#{prefix}
+      --docdir=#{share}/doc
+      --cpu=#{MacOS.preferred_arch}
+      --cc=#{ENV.compiler}
+      --os=darwin
+      --with-openssl
+      --with-zlib
+      --with-bzip2
+    ]
+
+    args << "--enable-debug" if build.include? "enable-debug"
 
     system "./configure.py", *args
-    system "make install"
+    # A hack to force them use our CFLAGS. MACH_OPT is empty in the Makefile
+    # but used for each call to cc/ld.
+    system "make", "install", "MACH_OPT=#{ENV.cflags}"
   end
 end

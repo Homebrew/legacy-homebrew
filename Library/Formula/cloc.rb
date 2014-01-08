@@ -1,11 +1,11 @@
 require 'formula'
 
-class Cloc < ScriptFileFormula
-  url 'http://downloads.sourceforge.net/project/cloc/cloc/v1.53/cloc-1.53.pl'
-  md5 '47f13134a3b2b0c18dede35132cc15b4'
+class Cloc < Formula
   homepage 'http://cloc.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/cloc/cloc/v1.60/cloc-1.60.pl'
+  sha1 'd002e85b7deb988e4f88eaf3f9697cf011ec0c8a'
 
   def install
-    bin.install 'cloc-1.53.pl' => 'cloc'
+    bin.install "cloc-#{version}.pl" => "cloc"
   end
 end

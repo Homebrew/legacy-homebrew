@@ -1,89 +1,75 @@
 require 'formula'
 
-def complete?
-  ARGV.include? "--complete"
-end
-
-def postgres?
-  ARGV.include? "--with-postgres"
-end
-
-def mysql?
-  ARGV.include? "--with-mysql"
-end
-
-def no_python?
-  ARGV.include? "--without-python"
-end
-
-def opencl?
-  ARGV.include? "--enable-opencl"
-end
-
 class Gdal < Formula
-  url 'http://download.osgeo.org/gdal/gdal-1.8.1.tar.gz'
   homepage 'http://www.gdal.org/'
-  md5 'b32269893afc9dc9eced45e74e4c6bb4'
+  url 'http://download.osgeo.org/gdal/1.10.1/gdal-1.10.1.tar.gz'
+  sha1 'b4df76e2c0854625d2bedce70cc1eaf4205594ae'
 
-  head 'https://svn.osgeo.org/gdal/trunk/gdal', :using => :svn
+  head do
+    url 'https://svn.osgeo.org/gdal/trunk/gdal'
+    depends_on 'doxygen' => :build
+  end
 
+  option 'complete', 'Use additional Homebrew libraries to provide more drivers.'
+  option 'enable-opencl', 'Build with OpenCL acceleration.'
+  option 'enable-armadillo', 'Build with Armadillo accelerated TPS transforms.'
+  option 'enable-unsupported', "Allow configure to drag in any library it can find. Invoke this at your own risk."
+  option 'enable-mdb', 'Build with Access MDB driver (requires Java 1.6+ JDK/JRE, from Apple or Oracle).'
+
+  depends_on :python => :recommended
+  depends_on :libpng
   depends_on 'jpeg'
   depends_on 'giflib'
+  depends_on 'libtiff'
+  depends_on 'libgeotiff'
   depends_on 'proj'
   depends_on 'geos'
 
-  depends_on "postgresql" if postgres?
-  depends_on "mysql" if mysql?
+  depends_on 'sqlite' # To ensure compatibility with SpatiaLite.
+  depends_on 'freexl'
+  depends_on 'libspatialite'
 
-  if complete?
+  depends_on "postgresql" => :optional
+  depends_on "mysql" => :optional
+
+  # Without Numpy, the Python bindings can't deal with raster data.
+  depends_on 'numpy' => :python if build.with? 'python'
+
+  depends_on 'homebrew/science/armadillo' if build.include? 'enable-armadillo'
+
+  if build.include? 'complete'
     # Raster libraries
-    depends_on "netcdf" # Also brings in HDF5
-    depends_on "jasper" # May need a keg-only GeoJasPer library as this one is
-                        # not geo-spatially enabled.
+    depends_on "homebrew/science/netcdf" # Also brings in HDF5
+    depends_on "jasper"
+    depends_on "webp"
     depends_on "cfitsio"
     depends_on "epsilon"
+    depends_on "libdap"
 
     # Vector libraries
     depends_on "unixodbc" # OS X version is not complete enough
-    depends_on "libspatialite"
     depends_on "xerces-c"
-    depends_on "poppler"
 
     # Other libraries
     depends_on "xz" # get liblzma compression algorithm library from XZutils
+    depends_on "poppler"
   end
 
-  def patches
-    if complete?
-      # EPSILON v0.9.x slightly modified the naming of some struct members. A
-      # fix is in the GDAL trunk but was kept out of 1.8.1 due to concern for
-      # users of EPSILON v0.8.x. Homebrew installs 0.9.2+ so this concern is a
-      # moot point.
-      {:p1 => DATA}
-    end
-  end
-
-  def options
-    [
-      ['--complete', 'Use additional Homebrew libraries to provide more drivers.'],
-      ['--with-postgres', 'Specify PostgreSQL as a dependency.'],
-      ['--with-mysql', 'Specify MySQL as a dependency.'],
-      ['--without-python', 'Build without Python support (disables a lot of tools).'],
-      ['--enable-opencl', 'Build with support for OpenCL.']
-    ]
+  def png_prefix
+    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/libpng" : MacOS::X11.prefix
   end
 
   def get_configure_args
     args = [
       # Base configuration.
+      "--prefix=#{prefix}",
+      "--mandir=#{man}",
       "--disable-debug",
       "--with-local=#{prefix}",
       "--with-threads",
       "--with-libtool",
 
       # GDAL native backends.
-      "--with-libtiff=internal", # For bigTIFF support
-      "--with-geotiff=internal",
       "--with-pcraster=internal",
       "--with-pcidsk=internal",
       "--with-bsb",
@@ -91,92 +77,102 @@ class Gdal < Formula
       "--with-pam",
 
       # Backends supported by OS X.
+      "--with-libiconv-prefix=/usr",
       "--with-libz=/usr",
-      "--with-png=/usr/X11",
+      "--with-png=#{png_prefix}",
       "--with-expat=/usr",
-      "--with-sqlite3=/usr",
+      "--with-curl=/usr/bin/curl-config",
 
       # Default Homebrew backends.
       "--with-jpeg=#{HOMEBREW_PREFIX}",
-      "--with-jpeg12",
+      "--without-jpeg12", # Needs specially configured JPEG and TIFF libraries.
       "--with-gif=#{HOMEBREW_PREFIX}",
-      "--with-curl=/usr/bin/curl-config",
+      "--with-libtiff=#{HOMEBREW_PREFIX}",
+      "--with-geotiff=#{HOMEBREW_PREFIX}",
+      "--with-sqlite3=#{Formula.factory('sqlite').opt_prefix}",
+      "--with-freexl=#{HOMEBREW_PREFIX}",
+      "--with-spatialite=#{HOMEBREW_PREFIX}",
+      "--with-geos=#{HOMEBREW_PREFIX}/bin/geos-config",
+      "--with-static-proj4=#{HOMEBREW_PREFIX}",
 
       # GRASS backend explicitly disabled.  Creates a chicken-and-egg problem.
-      # Should be installed seperately after GRASS installation using the
+      # Should be installed separately after GRASS installation using the
       # official GDAL GRASS plugin.
       "--without-grass",
-      "--without-libgrass",
-
-      # OPeNDAP support also explicitly disabled for now---causes the
-      # configuration of other components such as Curl and Spatialite to fail
-      # for unknown reasons.
-      "--with-dods-root=no"
-
+      "--without-libgrass"
     ]
 
-    # Optional library support for additional formats.
-    if complete?
-      args.concat [
-        "--with-liblzma=yes",
-        "--with-netcdf=#{HOMEBREW_PREFIX}",
-        "--with-hdf5=#{HOMEBREW_PREFIX}",
-        "--with-jasper=#{HOMEBREW_PREFIX}",
-        "--with-cfitsio=#{HOMEBREW_PREFIX}",
-        "--with-epsilon=#{HOMEBREW_PREFIX}",
-        "--with-odbc=#{HOMEBREW_PREFIX}",
-        "--with-spatialite=#{HOMEBREW_PREFIX}",
-        "--with-xerces=#{HOMEBREW_PREFIX}",
-        "--with-poppler=#{HOMEBREW_PREFIX}"
-      ]
+    # Optional Homebrew packages supporting additional formats.
+    supported_backends = %w[
+      liblzma
+      cfitsio
+      hdf5
+      netcdf
+      jasper
+      xerces
+      odbc
+      dods-root
+      epsilon
+      webp
+      poppler
+    ]
+    if build.include? 'complete'
+      supported_backends.delete 'liblzma'
+      args << '--with-liblzma=yes'
+      args.concat supported_backends.map {|b| '--with-' + b + '=' + HOMEBREW_PREFIX}
     else
-      args.concat [
-        "--without-cfitsio",
-        "--without-netcdf",
-        "--without-ogdi",
-        "--without-hdf4",
-        "--without-hdf5",
-        "--without-openjpeg",
-        "--without-jasper",
-        "--without-xerces",
-        "--without-epsilon",
-        "--without-spatialite",
-        "--without-libkml",
-        "--without-poppler",
-
-        # The following libraries are either proprietary or available under
-        # non-free licenses.  Interested users will have to install such
-        # software manually.
-        "--without-msg",
-        "--without-mrsid",
-        "--without-jp2mrsid",
-        "--without-kakadu",
-        "--without-fme",
-        "--without-ecw",
-        "--without-dwgdirect"
-      ]
+      args.concat supported_backends.map {|b| '--without-' + b} unless build.include? 'enable-unsupported'
     end
 
+    # The following libraries are either proprietary, not available for public
+    # download or have no stable version in the Homebrew core that is
+    # compatible with GDAL. Interested users will have to install such software
+    # manually and most likely have to tweak the install routine.
+    #
+    # Podofo is disabled because Poppler provides the same functionality and
+    # then some.
+    unsupported_backends = %w[
+      gta
+      ogdi
+      fme
+      hdf4
+      openjpeg
+      fgdb
+      ecw
+      kakadu
+      mrsid
+      jp2mrsid
+      mrsid_lidar
+      msg
+      oci
+      ingres
+      libkml
+      dwgdirect
+      idb
+      sde
+      podofo
+      rasdaman
+    ]
+    args.concat unsupported_backends.map {|b| '--without-' + b} unless build.include? 'enable-unsupported'
+
     # Database support.
-    args << "--without-pg" unless postgres?
-    args << "--without-mysql" unless mysql?
-    args << "--without-sde"    # ESRI ArcSDE databases
-    args << "--without-ingres" # Ingres databases
-    args << "--without-oci"    # Oracle databases
-    args << "--without-idb"    # IBM Informix DataBlades
+    args << (build.with?("postgresql") ? "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" : "--without-pg")
+    args << (build.with?("mysql") ? "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" : "--without-mysql")
 
-    # Hombrew-provided databases.
-    args << "--with-pg=#{HOMEBREW_PREFIX}/bin/pg_config" if postgres?
-    args << "--with-mysql=#{HOMEBREW_PREFIX}/bin/mysql_config" if mysql?
+    if build.include? 'enable-mdb'
+      args << "--with-java=yes"
+      # The rpath is only embedded for Oracle (non-framework) installs
+      args << "--with-jvm-lib-add-rpath=yes"
+      args << "--with-mdb=yes"
+    end
 
-    args << "--without-python" # Installed using a seperate set of
-                                         # steps so that everything winds up
-                                         # in the prefix.
+    # Python is installed manually to ensure everything is properly sandboxed.
+    args << '--without-python'
 
     # Scripting APIs that have not been re-worked to respect Homebrew prefixes.
     #
     # Currently disabled as they install willy-nilly into locations outside of
-    # the Hombrew prefix.  Enable if you feel like it, but uninstallation may be
+    # the Homebrew prefix.  Enable if you feel like it, but uninstallation may be
     # a manual affair.
     #
     # TODO: Fix installation of script bindings so they install into the
@@ -185,112 +181,245 @@ class Gdal < Formula
     args << "--without-php"
     args << "--without-ruby"
 
-    # OpenCL support
-    args << "--with-opencl" if opencl?
+    args << (build.include?("enable-opencl") ? "--with-opencl" : "--without-opencl")
+    args << (build.include?("enable-armadillo") ? "--with-armadillo=yes" : "--with-armadillo=no")
 
     return args
   end
 
+  def patches
+    p = []
+
+    if build.stable?
+      # Patch of configure that finds Mac Java for MDB driver (uses Oracle or Mac default JDK)
+      # TODO: Remove when future GDAL release includes a fix
+      # http://trac.osgeo.org/gdal/ticket/5267  (patch applied to trunk, 2.0 release milestone)
+      # Must come before DATA
+      p << "https://gist.github.com/dakcarto/6877854/raw" if build.include? 'enable-mdb'
+
+      # Prevent build failure on 10.6 / 10.7: http://trac.osgeo.org/gdal/ticket/5197
+      # Fix build against MySQL 5.6.x: http://trac.osgeo.org/gdal/ticket/5284
+      p << DATA
+    end
+
+    return p
+  end
+
   def install
-    system "./configure", "--prefix=#{prefix}", *get_configure_args
+    # Linking flags for SQLite are not added at a critical moment when the GDAL
+    # library is being assembled. This causes the build to fail due to missing
+    # symbols. Also, ensure Homebrew SQLite is used so that Spatialite is
+    # functional.
+    #
+    # Fortunately, this can be remedied using LDFLAGS.
+    sqlite = Formula.factory 'sqlite'
+    ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib -lsqlite3"
+    ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
+    # Needed by libdap.
+    ENV.libxml2 if build.include? 'complete'
+
+    # Reset ARCHFLAGS to match how we build.
+    ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}"
+
+    # Fix hardcoded mandir: http://trac.osgeo.org/gdal/ticket/5092
+    inreplace 'configure', %r[^mandir='\$\{prefix\}/man'$], ''
+
+    system "./configure", *get_configure_args
     system "make"
     system "make install"
 
-    unless no_python?
-      # If setuptools happens to be installed, setup.py will cowardly refuse to
-      # install to anywhere that is not on the PYTHONPATH.
-      #
-      # Really setuptools, we're all consenting adults here...
-      python_lib = lib + "python"
-      ENV.append 'PYTHONPATH', python_lib
-
-      # setuptools is also apparently incapable of making the directory it's
-      # self
-      python_lib.mkpath
-
-      # `python-config` may try to talk us into building bindings for more
-      # architectures than we really should.
-      if MacOS.prefer_64_bit?
-        ENV.append_to_cflags '-arch x86_64'
-      else
-        ENV.append_to_cflags '-arch i386'
-      end
-
-      Dir.chdir 'swig/python' do
-        system "python", "setup.py", "install_lib", "--install-dir=#{python_lib}"
-        bin.install Dir['scripts/*']
-      end
+    # `python-config` may try to talk us into building bindings for more
+    # architectures than we really should.
+    if MacOS.prefer_64_bit?
+      ENV.append_to_cflags "-arch #{Hardware::CPU.arch_64_bit}"
+    else
+      ENV.append_to_cflags "-arch #{Hardware::CPU.arch_32_bit}"
     end
+
+    cd 'swig/python' do
+      system "python", "setup.py", "install", "--prefix=#{prefix}", "--record=installed.txt", "--single-version-externally-managed"
+      bin.install Dir['scripts/*']
+    end
+
+    system 'make', 'man' if build.head?
+    system 'make', 'install-man'
+    # Clean up any stray doxygen files.
+    Dir[bin + '*.dox'].each { |p| rm p }
   end
 
-  unless no_python?
-    def caveats
-      <<-EOS
-This version of GDAL was built with Python support.  In addition to providing
-modules that makes GDAL functions available to Python scripts, the Python
-binding provides ~18 additional command line tools.  However, both the Python
-bindings and the additional tools will be unusable unless the following
-directory is added to the PYTHONPATH:
-    #{HOMEBREW_PREFIX}/lib/python
+  def caveats
+    if build.include? 'enable-mdb'
+      <<-EOS.undent
+
+      To have a functional MDB driver, install supporting .jar files in:
+        `/Library/Java/Extensions/`
+
+      See: `http://www.gdal.org/ogr/drv_mdb.html`
       EOS
     end
   end
 end
 
-
 __END__
-
-This patch updates GDAL to be compatible with EPSILON 0.9.x. Changes sourced from the GDAL trunk:
-
-    http://trac.osgeo.org/gdal/changeset/22363
-
-Patch can be removed when GDAL hits 1.9.0.
-
-diff --git a/frmts/epsilon/epsilondataset.cpp b/frmts/epsilon/epsilondataset.cpp
-index b12928a..3f967cc 100644
---- a/frmts/epsilon/epsilondataset.cpp
-+++ b/frmts/epsilon/epsilondataset.cpp
-@@ -48,6 +48,13 @@ typedef struct
-     vsi_l_offset offset;
- } BlockDesc;
+diff --git a/GDALmake.opt.in b/GDALmake.opt.in
+index d7273aa..2fcbd53 100644
+--- a/GDALmake.opt.in
++++ b/GDALmake.opt.in
+@@ -123,6 +123,7 @@ INGRES_INC = @INGRES_INC@
+ HAVE_MYSQL =	@HAVE_MYSQL@
+ MYSQL_LIB  =	@MYSQL_LIB@
+ MYSQL_INC  =	@MYSQL_INC@
++MYSQL_NEEDS_LOAD_DEFAULTS_DECLARATION  =    @MYSQL_NEEDS_LOAD_DEFAULTS_DECLARATION@
+ LIBS	   +=	$(MYSQL_LIB)
  
-+#ifdef I_WANT_COMPATIBILITY_WITH_EPSILON_0_8_1
-+#define GET_FIELD(hdr, field) \
-+    (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.field : hdr.tc.field
-+#else
-+#define GET_FIELD(hdr, field) \
-+    (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.hdr_data.gs.field : hdr.hdr_data.tc.field
+ #
+diff --git a/configure b/configure
+index 1c4f8fb..120b17f 100755
+--- a/configure
++++ b/configure
+@@ -700,6 +700,7 @@ INGRES_INC
+ INGRES_LIB
+ II_SYSTEM
+ HAVE_INGRES
++MYSQL_NEEDS_LOAD_DEFAULTS_DECLARATION
+ MYSQL_LIB
+ MYSQL_INC
+ HAVE_MYSQL
+@@ -23045,6 +23046,34 @@ $as_echo "no, mysql is pre-4.x" >&6; }
+       MYSQL_INC="`$MYSQL_CONFIG --include`"
+       { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+ $as_echo "yes" >&6; }
++
++      # Check if mysql headers declare load_defaults
++      { $as_echo "$as_me:${as_lineno-$LINENO}: checking load_defaults() in MySQL" >&5
++$as_echo_n "checking load_defaults() in MySQL... " >&6; }
++      rm -f testmysql.*
++      echo '#include "my_global.h"' > testmysql.cpp
++      echo '#include "my_sys.h"' >> testmysql.cpp
++      echo 'int main(int argc, char** argv) { load_defaults(0, 0, 0, 0); return 0; } ' >> testmysql.cpp
++      if test -z "`${CXX} ${CXXFLAGS} ${MYSQL_INC} -o testmysql testmysql.cpp ${MYSQL_LIB} 2>&1`" ; then
++        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes, found in my_sys.h" >&5
++$as_echo "yes, found in my_sys.h" >&6; }
++      else
++        echo 'extern "C" void load_defaults(const char *conf_file, const char **groups, int *argc, char ***argv);' > testmysql.cpp
++        echo 'int main(int argc, char** argv) { load_defaults(0, 0, 0, 0); return 0; } ' >> testmysql.cpp
++        if test -z "`${CXX} ${CXXFLAGS} ${MYSQL_INC} -o testmysql testmysql.cpp ${MYSQL_LIB} 2>&1`" ; then
++            { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes, found in library but not in header" >&5
++$as_echo "yes, found in library but not in header" >&6; }
++            MYSQL_NEEDS_LOAD_DEFAULTS_DECLARATION=yes
++        else
++            HAVE_MYSQL=no
++            MYSQL_LIB=
++            MYSQL_INC=
++            as_fn_error $? "Cannot find load_defaults()" "$LINENO" 5
++        fi
++      fi
++      rm -f testmysql.*
++      rm -f testmysql
++
+ 	;;
+   esac
+ fi
+@@ -23055,6 +23084,8 @@ MYSQL_INC=$MYSQL_INC
+ 
+ MYSQL_LIB=$MYSQL_LIB
+ 
++MYSQL_NEEDS_LOAD_DEFAULTS_DECLARATION=$MYSQL_NEEDS_LOAD_DEFAULTS_DECLARATION
++
+ 
+ 
+ 
+diff --git a/configure.in b/configure.in
+index 481e8ea..d83797f 100644
+--- a/configure.in
++++ b/configure.in
+@@ -2294,6 +2294,31 @@ else
+       MYSQL_LIB="`$MYSQL_CONFIG --libs`"
+       MYSQL_INC="`$MYSQL_CONFIG --include`"
+       AC_MSG_RESULT([yes])
++
++      # Check if mysql headers declare load_defaults
++      AC_MSG_CHECKING([load_defaults() in MySQL])
++      rm -f testmysql.*
++      echo '#include "my_global.h"' > testmysql.cpp
++      echo '#include "my_sys.h"' >> testmysql.cpp
++      echo 'int main(int argc, char** argv) { load_defaults(0, 0, 0, 0); return 0; } ' >> testmysql.cpp
++      if test -z "`${CXX} ${CXXFLAGS} ${MYSQL_INC} -o testmysql testmysql.cpp ${MYSQL_LIB} 2>&1`" ; then
++        AC_MSG_RESULT([yes, found in my_sys.h])
++      else
++        echo 'extern "C" void load_defaults(const char *conf_file, const char **groups, int *argc, char ***argv);' > testmysql.cpp
++        echo 'int main(int argc, char** argv) { load_defaults(0, 0, 0, 0); return 0; } ' >> testmysql.cpp
++        if test -z "`${CXX} ${CXXFLAGS} ${MYSQL_INC} -o testmysql testmysql.cpp ${MYSQL_LIB} 2>&1`" ; then
++            AC_MSG_RESULT([yes, found in library but not in header])
++            MYSQL_NEEDS_LOAD_DEFAULTS_DECLARATION=yes
++        else
++            HAVE_MYSQL=no
++            MYSQL_LIB=
++            MYSQL_INC=
++            AC_MSG_ERROR([Cannot find load_defaults()])
++        fi
++      fi
++      rm -f testmysql.*
++      rm -f testmysql
++
+ 	;;
+   esac
+ fi
+@@ -2301,6 +2326,7 @@ fi
+ AC_SUBST(HAVE_MYSQL,$HAVE_MYSQL)
+ AC_SUBST(MYSQL_INC,$MYSQL_INC)
+ AC_SUBST(MYSQL_LIB,$MYSQL_LIB)
++AC_SUBST(MYSQL_NEEDS_LOAD_DEFAULTS_DECLARATION,$MYSQL_NEEDS_LOAD_DEFAULTS_DECLARATION)
+ 
+ dnl ---------------------------------------------------------------------------
+ dnl INGRES support.
+diff --git a/ogr/ogrsf_frmts/mysql/GNUmakefile b/ogr/ogrsf_frmts/mysql/GNUmakefile
+index 292ae45..e78398d 100644
+--- a/ogr/ogrsf_frmts/mysql/GNUmakefile
++++ b/ogr/ogrsf_frmts/mysql/GNUmakefile
+@@ -7,6 +7,11 @@ OBJ	=	ogrmysqldriver.o ogrmysqldatasource.o \
+ 
+ CPPFLAGS	:=	-I.. -I../.. $(GDAL_INCLUDE) $(MYSQL_INC) $(CPPFLAGS)
+ 
++ifeq ($(MYSQL_NEEDS_LOAD_DEFAULTS_DECLARATION),yes)
++CPPFLAGS +=   -DMYSQL_NEEDS_LOAD_DEFAULTS_DECLARATION
++endif
++
++
+ default:	$(O_OBJ:.o=.$(OBJ_EXT))
+ 
+ clean:
+diff --git a/ogr/ogrsf_frmts/mysql/ogrmysqldatasource.cpp b/ogr/ogrsf_frmts/mysql/ogrmysqldatasource.cpp
+index 65c275b..447e374 100644
+--- a/ogr/ogrsf_frmts/mysql/ogrmysqldatasource.cpp
++++ b/ogr/ogrsf_frmts/mysql/ogrmysqldatasource.cpp
+@@ -36,6 +36,16 @@
+ #include "cpl_conv.h"
+ #include "cpl_string.h"
+ 
++/* Recent versions of mysql no longer declare load_defaults() in my_sys.h */
++/* but they still have it in the lib. Very fragile... */
++#ifdef MYSQL_NEEDS_LOAD_DEFAULTS_DECLARATION
++extern "C" {
++int load_defaults(const char *conf_file, const char **groups,
++                  int *argc, char ***argv);
++void free_defaults(char **argv);
++}
 +#endif
- 
++
+ CPL_CVSID("$Id: ogrmysqldatasource.cpp 24947 2012-09-22 09:54:23Z rouault $");
  /************************************************************************/
- /* ==================================================================== */
-@@ -237,8 +244,8 @@ CPLErr EpsilonRasterBand::IReadBlock( int nBlockXOff,
-         return CE_Failure;
-     }
-     
--    int w = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.w : hdr.tc.w;
--    int h = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.h : hdr.tc.h;
-+    int w = GET_FIELD(hdr, w);
-+    int h = GET_FIELD(hdr, h);
-     int i;
- 
-     if (poGDS->nBands == 1)
-@@ -505,12 +512,12 @@ int EpsilonDataset::ScanBlocks(int* pnBands)
-             continue;
-         }
-         
--        int W = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.W : hdr.tc.W;
--        int H = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.H : hdr.tc.H;
--        int x = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.x : hdr.tc.x;
--        int y = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.y : hdr.tc.y;
--        int w = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.w : hdr.tc.w;
--        int h = (hdr.block_type == EPS_GRAYSCALE_BLOCK) ? hdr.gs.h : hdr.tc.h;
-+        int W = GET_FIELD(hdr, W);
-+        int H = GET_FIELD(hdr, H);
-+        int x = GET_FIELD(hdr, x);
-+        int y = GET_FIELD(hdr, y);
-+        int w = GET_FIELD(hdr, w);
-+        int h = GET_FIELD(hdr, h);
- 
-         //CPLDebug("EPSILON", "W=%d,H=%d,x=%d,y=%d,w=%d,h=%d,offset=" CPL_FRMT_GUIB,
-         //                    W, H, x, y, w, h, nStartBlockFileOff);
+ /*                         OGRMySQLDataSource()                         */
+diff --git a/port/cpl_spawn.cpp b/port/cpl_spawn.cpp
+index d702594..69ea3c2 100644
+--- a/port/cpl_spawn.cpp
++++ b/port/cpl_spawn.cpp
+@@ -464,7 +464,7 @@ void CPLSpawnAsyncCloseErrorFileHandle(CPLSpawnedProcess* p)
+     #ifdef __APPLE__
+         #include <TargetConditionals.h>
+     #endif
+-    #if defined(__APPLE__) && !defined(TARGET_OS_IPHONE)
++    #if defined(__APPLE__) && (!defined(TARGET_OS_IPHONE) || TARGET_OS_IPHONE==0)
+         #include <crt_externs.h>
+         #define environ (*_NSGetEnviron())
+     #else

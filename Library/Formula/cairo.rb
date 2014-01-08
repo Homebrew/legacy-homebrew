@@ -1,28 +1,47 @@
 require 'formula'
 
+# Use a mirror because of:
+# http://lists.cairographics.org/archives/cairo/2012-September/023454.html
+
 class Cairo < Formula
   homepage 'http://cairographics.org/'
-  url 'http://www.cairographics.org/releases/cairo-1.10.2.tar.gz'
-  sha1 'ccce5ae03f99c505db97c286a0c9a90a926d3c6e'
+  url 'http://cairographics.org/releases/cairo-1.12.16.tar.xz'
+  mirror 'https://downloads.sourceforge.net/project/machomebrew/mirror/cairo-1.12.16.tar.xz'
+  sha256 '2505959eb3f1de3e1841023b61585bfd35684b9733c7b6a3643f4f4cbde6d846'
+
+  keg_only :provided_pre_mountain_lion
+
+  option :universal
+  option 'without-x', 'Build without X11 support'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz'=> :build
+  # harfbuzz requires cairo-ft to build
+  depends_on :freetype
+  depends_on :fontconfig
+  depends_on :libpng
   depends_on 'pixman'
-
-  keg_only :provided_by_osx,
-            "The Cairo provided by Leopard is too old for newer software to link against."
-
-  fails_with_llvm "Gives an LLVM ERROR with Xcode 4 on some CPUs"
+  depends_on 'glib'
+  depends_on :x11 if build.with? 'x'
 
   def install
-    # Cairo doesn't build correctly with llvm-gcc 4.2, so force normal gcc.
-    # See:
-    # https://github.com/mxcl/homebrew/issues/6631
-    # https://trac.macports.org/ticket/30370
-    # https://trac.macports.org/browser/trunk/dports/graphics/cairo/Portfile
-    ENV.gcc_4_2
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-x"
+    ENV.universal_binary if build.universal?
+
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-gobject=yes
+    ]
+
+    if build.without? 'x'
+      args << '--enable-xlib=no' << '--enable-xlib-xrender=no'
+    else
+      args << '--with-x'
+    end
+
+    args << '--enable-xcb=no' if MacOS.version <= :leopard
+
+    system "./configure", *args
     system "make install"
   end
 end

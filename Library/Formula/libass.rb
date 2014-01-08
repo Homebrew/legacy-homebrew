@@ -1,14 +1,17 @@
 require 'formula'
 
 class Libass < Formula
-  url 'http://libass.googlecode.com/files/libass-0.9.13.tar.gz'
   homepage 'http://code.google.com/p/libass/'
-  md5 '006f48a9831c00914f05f830592f532c'
+  url 'http://libass.googlecode.com/files/libass-0.10.2.tar.gz'
+  sha1 'd50f9d242a26d5b84392608225f7fd03b1758af5'
 
   depends_on 'pkg-config' => :build
+  depends_on :freetype
+  depends_on 'fribidi'
+  depends_on :fontconfig
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

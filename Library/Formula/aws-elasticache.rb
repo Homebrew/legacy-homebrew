@@ -1,13 +1,10 @@
 require 'formula'
 
-# Require ec2-api-tools to get the base class
-require "#{File.dirname __FILE__}/ec2-api-tools.rb"
-
 class AwsElasticache < AmazonWebServicesFormula
   homepage 'http://aws.amazon.com/developertools/2310261897259567'
-  url 'https://s3.amazonaws.com/elasticache-downloads/AmazonElastiCacheCli-2011-07-15-1.5.000.zip'
-  version '1.5.0'
-  md5 '68581c62ef0a820f12294415c60fe45f'
+  url 'https://s3.amazonaws.com/elasticache-downloads/AmazonElastiCacheCli-2013-06-15-1.9.000.zip'
+  version '1.9.000'
+  sha1 'c8962cc2ea22f88883b38cda2674d1befbed1b71'
 
   depends_on 'ec2-api-tools'
 

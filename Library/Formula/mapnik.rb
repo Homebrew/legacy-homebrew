@@ -1,31 +1,93 @@
 require 'formula'
 
 class Mapnik < Formula
-  url 'http://download.berlios.de/mapnik/mapnik-0.7.1.tar.gz'
   homepage 'http://www.mapnik.org/'
-  md5 '3a070fdd7c6a3367ad78d95c2387b03b'
+  url 'http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2'
+  sha1 'e493ad87ca83471374a3b080f760df4b25f7060d'
+
+  # can be removed at Mapnik > 2.2.0
+  # https://github.com/mapnik/mapnik/issues/1973
+  def patches
+    DATA
+  end
+  head 'https://github.com/mapnik/mapnik.git'
 
   depends_on 'pkg-config' => :build
-  depends_on 'scons' => :build
+  depends_on 'freetype'
+  depends_on 'libpng'
   depends_on 'libtiff'
-  depends_on 'jpeg'
   depends_on 'proj'
   depends_on 'icu4c'
+  depends_on 'jpeg'
   depends_on 'boost'
-  depends_on 'cairomm' => :optional
+  depends_on 'gdal' => :optional
+  depends_on 'postgresql' => :optional
+  depends_on 'cairo' => :optional
+
+  depends_on 'py2cairo' if build.with? 'cairo'
 
   def install
-    ENV.x11 # for freetype-config
+    icu = Formula.factory("icu4c").opt_prefix
+    boost = Formula.factory('boost').opt_prefix
+    proj = Formula.factory('proj').opt_prefix
+    jpeg = Formula.factory('jpeg').opt_prefix
+    libpng = Formula.factory('libpng').opt_prefix
+    libtiff = Formula.factory('libtiff').opt_prefix
+    freetype = Formula.factory('freetype').opt_prefix
 
-    # Allow compilation against boost 1.46
-    inreplace ["src/datasource_cache.cpp", "src/libxml2_loader.cpp", "src/load_map.cpp", "src/tiff_reader.cpp"],
-      "#include <boost/filesystem/operations.hpp>",
-      "#define BOOST_FILESYSTEM_VERSION 2\n#include <boost/filesystem/operations.hpp>"
+    # mapnik compiles can take ~1.5 GB per job for some .cpp files
+    # so lets be cautious by limiting to CPUS/2
+    jobs = ENV.make_jobs.to_i
+    jobs /= 2 if jobs > 2
 
-    icu = Formula.factory("icu4c")
-    system "scons",
-        "PREFIX=#{prefix}",
-        "ICU_INCLUDES=#{icu.include}", "ICU_LIBS=#{icu.lib}",
-        "install"
+    args = [ "CC=\"#{ENV.cc}\"",
+             "CXX=\"#{ENV.cxx}\"",
+             "JOBS=#{jobs}",
+             "PREFIX=#{prefix}",
+             "ICU_INCLUDES=#{icu}/include",
+             "ICU_LIBS=#{icu}/lib",
+             "PYTHON_PREFIX=#{prefix}",  # Install to Homebrew's site-packages
+             "JPEG_INCLUDES=#{jpeg}/include",
+             "JPEG_LIBS=#{jpeg}/lib",
+             "PNG_INCLUDES=#{libpng}/include",
+             "PNG_LIBS=#{libpng}/lib",
+             "TIFF_INCLUDES=#{libtiff}/include",
+             "TIFF_LIBS=#{libtiff}/lib",
+             "BOOST_INCLUDES=#{boost}/include",
+             "BOOST_LIBS=#{boost}/lib",
+             "PROJ_INCLUDES=#{proj}/include",
+             "PROJ_LIBS=#{proj}/lib",
+             "FREETYPE_CONFIG=#{freetype}/bin/freetype-config"
+           ]
+
+    if build.with? 'cairo'
+      args << "CAIRO=True" # cairo paths will come from pkg-config
+    else
+      args << "CAIRO=False"
+    end
+    args << "GDAL_CONFIG=#{Formula.factory('gdal').opt_prefix}/bin/gdal-config" if build.with? 'gdal'
+    args << "PG_CONFIG=#{Formula.factory('postgresql').opt_prefix}/bin/pg_config" if build.with? 'postgresql'
+
+    system "python", "scons/scons.py", "configure", *args
+    system "python", "scons/scons.py", "install"
   end
 end
+
+__END__
+diff --git a/bindings/python/mapnik_text_placement.cpp b/bindings/python/mapnik_text_placement.cpp
+index 0520132..4897c28 100644
+--- a/bindings/python/mapnik_text_placement.cpp
++++ b/bindings/python/mapnik_text_placement.cpp
+@@ -194,7 +194,11 @@ struct ListNodeWrap: formatting::list_node, wrapper<formatting::list_node>
+     ListNodeWrap(object l) : formatting::list_node(), wrapper<formatting::list_node>()
+     {
+         stl_input_iterator<formatting::node_ptr> begin(l), end;
+-        children_.insert(children_.end(), begin, end);
++        while (begin != end)
++        {
++            children_.push_back(*begin);
++            ++begin;
++        }
+     }
+
+     /* TODO: Add constructor taking variable number of arguments.

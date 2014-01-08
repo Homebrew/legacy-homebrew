@@ -1,15 +1,16 @@
 require 'formula'
 
 class Ftimes < Formula
-  url 'http://downloads.sourceforge.net/project/ftimes/ftimes/3.8.0/ftimes-3.8.0.tgz'
   homepage 'http://ftimes.sourceforge.net/FTimes/index.shtml'
-  md5 'b4bc8a3c00b3aed9e9cc9583234ec6a7'
+  url 'http://downloads.sourceforge.net/project/ftimes/ftimes/3.10.0/ftimes-3.10.0.tgz'
+  sha1 '96a59d7524d6b2013d0dc42c91e3e5a420667398'
 
   depends_on 'pcre'
-  depends_on 'openssl'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--with-pcre=#{Formula.factory('pcre').opt_prefix}",
                           "--prefix=#{prefix}"
 
     inreplace 'doc/ftimes/Makefile' do |s|

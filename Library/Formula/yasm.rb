@@ -1,12 +1,36 @@
 require 'formula'
 
 class Yasm < Formula
-  url 'http://www.tortall.net/projects/yasm/releases/yasm-1.1.0.tar.gz'
-  homepage 'http://www.tortall.net/projects/yasm/'
-  md5 '8392e5f2235c2c2a981e1a633f2698cb'
+  homepage 'http://yasm.tortall.net/'
+  url 'http://tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz'
+  sha256 '768ffab457b90a20a6d895c39749adb547c1b7cb5c108e84b151a838a23ccf31'
+
+  head do
+    url 'https://github.com/yasm/yasm.git'
+
+    depends_on 'gettext'
+    depends_on :autoconf
+    depends_on :automake
+  end
+
+  depends_on :python => :optional
+  depends_on 'Cython' => :python if build.with? 'python'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
+    # https://github.com/Homebrew/homebrew/pull/19593
+    ENV.deparallelize
+    args = %W[
+      --disable-debug
+      --prefix=#{prefix}
+    ]
+
+    if build.with? 'python'
+      args << '--enable-python'
+      args << '--enable-python-bindings'
+    end
+
+    system './autogen.sh' if build.head?
+    system './configure', *args
+    system 'make install'
   end
 end

@@ -1,15 +1,16 @@
 require 'formula'
 
 class Atf < Formula
-  url 'ftp://ftp.NetBSD.org/pub/NetBSD/misc/jmmv/atf/0.12/atf-0.12.tar.gz'
-  homepage 'http://www.netbsd.org/~jmmv/atf/index.html'
-  md5 'e3681dcf39f514bcddf057cabecf4944'
+  homepage 'http://code.google.com/p/kyua/wiki/ATF'
+  url 'http://kyua.googlecode.com/files/atf-0.18.tar.gz'
+  sha1 '2dedc4472e0cd8b30cb54d3c96984ed7a0a1c61c'
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}",
-                          "--mandir=#{man}"
-    system "make install"
+                          "--sysconfdir=#{etc}"
+    system 'make'
+    ENV.j1
+    system 'make install'
   end
 end

@@ -1,16 +1,20 @@
 require 'formula'
 
 class Dos2unix < Formula
-  url 'http://sourceforge.net/projects/dos2unix/files/dos2unix/3.2/dos2unix-3.2.tar.gz'
-  md5 'db3902feba8a4bae26e9a1bd27c7ce53'
-  homepage 'http://dos2unix.sourceforge.net/'
+  homepage 'http://waterlan.home.xs4all.nl/dos2unix.html'
+  url 'http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.0.3.tar.gz'
+  sha1 '2c9ae9177fcb0d8b63d141f73a75c928c38ace01'
+
+  depends_on 'gettext'
 
   def install
-    # we don't use the Makefile as it doesn't optimize
-    system "#{ENV.cc} #{ENV.cflags} dos2unix.c -o dos2unix"
-
-    bin.install %w[dos2unix]
-    ln_sf bin+'dos2unix', bin+'mac2unix'
-    man1.install %w[mac2unix.1 dos2unix.1]
+    gettext = Formula.factory("gettext")
+    system "make", "prefix=#{prefix}",
+                   "CC=#{ENV.cc}",
+                   "CPP=#{ENV.cc}",
+                   "CFLAGS=#{ENV.cflags}",
+                   "CFLAGS_OS=-I#{gettext.include}",
+                   "LDFLAGS_EXTRA=-L#{gettext.lib} -lintl",
+                   "install"
   end
 end

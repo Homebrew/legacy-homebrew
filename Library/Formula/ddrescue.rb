@@ -1,13 +1,14 @@
 require 'formula'
 
 class Ddrescue < Formula
-  url 'http://ftp.gnu.org/gnu/ddrescue/ddrescue-1.14.tar.gz'
   homepage 'http://www.gnu.org/software/ddrescue/ddrescue.html'
-  md5 'd6f6cc63df9ad352bc6e43b65c975af5'
+  url 'http://ftpmirror.gnu.org/ddrescue/ddrescue-1.17.tar.lz'
+  mirror 'http://ftp.gnu.org/gnu/ddrescue/ddrescue-1.17.tar.lz'
+  sha1 '2d91b070fe629f713d53a97213165a8c568f5ffd'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking",
-           "CXX=#{ENV['CXX']}"
+    system "./configure", "--prefix=#{prefix}",
+                          "CXX=#{ENV.cxx}"
     system "make install"
   end
 end

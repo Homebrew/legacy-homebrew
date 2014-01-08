@@ -1,13 +1,10 @@
 require 'formula'
 
-# Require ec2-api-tools to get the base class
-require "#{File.dirname __FILE__}/ec2-api-tools.rb"
-
 class ElbTools < AmazonWebServicesFormula
-  homepage 'http://developer.amazonwebservices.com/connect/entry.jspa?categoryID=251&externalID=2536'
+  homepage 'http://aws.amazon.com/developertools/2536'
   url 'http://ec2-downloads.s3.amazonaws.com/ElasticLoadBalancing.zip'
-  version '1.0.12.0'
-  md5 'e97939c0d5082f143cf3b716c0abeda7'
+  version '1.0.23.0'
+  sha1 '525ee0ff595b88ffba2a5aa54d49451d0973c90a'
 
   depends_on 'ec2-api-tools'
 

@@ -1,44 +1,63 @@
 require 'formula'
 
-class Libstemmer < Formula
-  # upstream is constantly changing the tarball,
-  # so doing checksumv verification here would require
-  # constant, rapid updates to this formula.
-  head 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
-  homepage 'http://snowball.tartarus.org/'
-end
-
 class Sphinx < Formula
-  url 'http://sphinxsearch.com/downloads/sphinx-0.9.9.tar.gz'
   homepage 'http://www.sphinxsearch.com'
-  md5 '7b9b618cb9b378f949bb1b91ddcc4f54'
+  url 'http://sphinxsearch.com/files/sphinx-2.1.4-release.tar.gz'
+  sha1 '072e4f813937e2d65145b272494185a73a3bc8e0'
+
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
-  fails_with_llvm "fails with: ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)"
+  devel do
+    url 'http://sphinxsearch.com/files/sphinx-2.2.1-beta.tar.gz'
+    sha1 'dccaa7d14f71cec8fe6dfdb059315856c0712885'
+  end
+
+  option 'mysql', 'Force compiling against MySQL'
+  option 'pgsql', 'Force compiling against PostgreSQL'
+  option 'id64',  'Force compiling with 64-bit ID support'
+
+  depends_on :mysql if build.include? 'mysql'
+  depends_on :postgresql if build.include? 'pgsql'
+
+  # http://snowball.tartarus.org/
+  resource 'stemmer' do
+    url 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
+    sha1 '69056075b9fa1382e07cec6c32c8e82f3f35677b'
+  end
+
+  fails_with :llvm do
+    build 2334
+    cause "ld: rel32 out of range in _GetPrivateProfileString from /usr/lib/libodbc.a(SQLGetPrivateProfileString.o)"
+  end
+
+  fails_with :clang do
+    build 421
+    cause "sphinxexpr.cpp:1802:11: error: use of undeclared identifier 'ExprEval'"
+  end
 
   def install
-    lstem = Pathname.pwd+'libstemmer_c'
-    lstem.mkpath
-    Libstemmer.new.brew { mv Dir['*'], lstem }
+    (buildpath/'libstemmer_c').install resource('stemmer')
 
-    args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
-            "--localstatedir=#{var}"]
+    args = %W[--prefix=#{prefix}
+              --disable-dependency-tracking
+              --localstatedir=#{var}
+              --with-libstemmer]
 
-    # always build with libstemmer support
-    args << "--with-libstemmer"
+    args << "--enable-id64" if build.include? 'id64'
 
-    # configure script won't auto-select PostgreSQL
-    args << "--with-pgsql" if `/usr/bin/which pg_config`.size > 0
-    args << "--without-mysql" if `/usr/bin/which mysql`.size <= 0
+    %w{mysql pgsql}.each do |db|
+      if build.include? db
+        args << "--with-#{db}"
+      else
+        args << "--without-#{db}"
+      end
+    end
 
     system "./configure", *args
     system "make install"
   end
 
-  def caveats
-    <<-EOS.undent
+  def caveats; <<-EOS.undent
     Sphinx has been compiled with libstemmer support.
 
     Sphinx depends on either MySQL or PostreSQL as a datasource.

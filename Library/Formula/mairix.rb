@@ -2,8 +2,10 @@ require 'formula'
 
 class Mairix < Formula
   homepage 'http://www.rpcurnow.force9.co.uk/mairix/'
-  url 'http://downloads.sourceforge.net/project/mairix/mairix/0.22/mairix-0.22.tar.gz'
-  md5 '6c6aaca19c2b2de3bf567b856705ce1a' #821619895931711c370f51f3442a0ded'
+  url 'http://downloads.sourceforge.net/project/mairix/mairix/0.23/mairix-0.23.tar.gz'
+  sha1 '1621d60db5fb76453e48b98d12ca86b4a68ea1de'
+
+  head 'https://github.com/rc0/mairix.git'
 
   def install
     ENV.j1

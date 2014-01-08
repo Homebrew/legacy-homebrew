@@ -1,12 +1,9 @@
 require 'formula'
 
-# NOTE this formula conflicts with icu4c on Snow Leopard at the moment
-# if this is a problem for you then please fix it! Thanks.
-
 class Yaz < Formula
-  url 'http://ftp.indexdata.dk/pub/yaz/yaz-4.2.7.tar.gz'
   homepage 'http://www.indexdata.com/yaz'
-  md5 '7bb9d007ce288b6c4095bd3a1f9ef627'
+  url 'http://ftp.indexdata.dk/pub/yaz/yaz-5.0.7.tar.gz'
+  sha1 '72585ba2cb3e9bc30846bac473a8113433d69758'
 
   depends_on 'pkg-config' => :build
 

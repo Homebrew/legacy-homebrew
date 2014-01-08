@@ -1,12 +1,13 @@
 require 'formula'
 
 class Ascii < Formula
-  url 'http://www.catb.org/~esr/ascii/ascii-3.10.tar.gz'
   homepage 'http://www.catb.org/~esr/ascii/'
-  md5 '9dcae3ab8b097efd16a24c5d20e0044e'
+  url 'http://www.catb.org/~esr/ascii/ascii-3.14.tar.gz'
+  sha1 'fd8281078c1b3d52d4080ced1855f4f540d5a501'
 
   def install
     system "make"
     bin.install "ascii"
+    man1.install 'ascii.1'
   end
 end

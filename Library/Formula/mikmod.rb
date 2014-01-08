@@ -1,9 +1,9 @@
 require 'formula'
 
 class Mikmod < Formula
-  url 'http://mikmod.raphnet.net/files/mikmod-3.2.2-beta1.tar.bz2'
   homepage 'http://mikmod.raphnet.net/'
-  md5 '006378681d520fa8ee1dacca965bbd3c'
+  url 'http://sourceforge.net/projects/mikmod/files/mikmod/3.2.4/mikmod-3.2.4.tar.gz'
+  sha1 '7d37c60d96c83ea38b36845a5fb7e5c757b42233'
 
   depends_on 'libmikmod'
 
@@ -12,5 +12,9 @@ class Mikmod < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make install"
+  end
+
+  def test
+    system "#{bin}/mikmod", "-V"
   end
 end

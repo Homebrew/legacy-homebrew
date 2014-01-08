@@ -1,38 +1,40 @@
 require 'formula'
 
 class Luajit < Formula
-  url 'http://luajit.org/download/LuaJIT-2.0.0-beta8.tar.gz'
-  head 'http://luajit.org/git/luajit-2.0.git', :using => :git
   homepage 'http://luajit.org/luajit.html'
-  md5 'f0748a73ae268d49b1d01f56c4fe3e61'
+  url 'http://luajit.org/download/LuaJIT-2.0.2.tar.gz'
+  sha1 'd21426c4fc6ad8888255139039a014f7e28e7300'
+  head 'http://luajit.org/git/luajit-2.0.git'
 
-  # Skip cleaning both empty folders and bin/libs so external symbols still work.
-  skip_clean :all
+  skip_clean 'lib/lua/5.1', 'share/lua/5.1'
 
-  def options
-    [["--debug", "Build with debugging symbols."]]
-  end
-
-  # Apply beta8 hotfix #1
-  def patches
-    if not ARGV.build_head?
-      { :p1 => "http://luajit.org/download/beta8_hotfix1.patch" }
-    end
-  end
+  option "enable-debug", "Build with debugging symbols"
 
   def install
-    if ARGV.include? '--debug'
-      system "make", "CCDEBUG=-g", "PREFIX=#{prefix}", "install"
-    else
-      system "make", "PREFIX=#{prefix}", "install"
+    # 1 - Override the hardcoded gcc.
+    # 2 - Remove the '-march=i686' so we can set the march in cflags.
+    # Both changes should persist and were discussed upstream.
+    inreplace 'src/Makefile' do |f|
+      f.change_make_var! 'CC', ENV.cc
+      f.change_make_var! 'CCOPT_x86', ''
     end
 
-    # Non-versioned symlink
-    if ARGV.build_head?
-      version = "2.0.0-beta8"
-    else
-      version = @version
-    end
-    ln_s bin+"luajit-#{version}", bin+"luajit"
+    ENV.O2 # Respect the developer's choice.
+
+    args = %W[PREFIX=#{prefix}]
+
+    # This doesn't yet work under superenv because it removes '-g'
+    args << 'CCDEBUG=-g' if build.include? 'enable-debug'
+
+    system 'make', 'amalg', *args
+    system 'make', 'install', *args
+  end
+
+  test do
+    system "#{bin}/luajit", "-e", <<-EOS.strip
+      local ffi = require("ffi")
+      ffi.cdef("int printf(const char *fmt, ...);")
+      ffi.C.printf("Hello %s!\\n", "#{ENV['USER']}")
+      EOS
   end
 end

@@ -1,11 +1,12 @@
 require 'formula'
 
 class Ipv6calc < Formula
-  url 'ftp://ftp.bieringer.de/pub/linux/IPv6/ipv6calc/ipv6calc-0.90.0.tar.gz'
   homepage 'http://www.deepspace6.net/projects/ipv6calc.html'
-  md5 'c1a654214058fdac5f8c2ba6a196e2b8'
+  url 'ftp://ftp.deepspace6.net/pub/ds6/sources/ipv6calc/ipv6calc-0.94.1.tar.gz'
+  sha1 'c36689ed84472bb39897167fea14529b06da4647'
 
   def install
+    # This needs --mandir, otherwise it tries to install to /share/man/man8.
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make install"
   end

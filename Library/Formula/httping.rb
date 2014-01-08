@@ -1,11 +1,16 @@
 require 'formula'
 
 class Httping < Formula
-  url 'http://www.vanheusden.com/httping/httping-1.4.1.tgz'
   homepage 'http://www.vanheusden.com/httping/'
-  md5 'bde1ff3c01343d2371d8f34fbf8a1d9a'
+  url 'http://www.vanheusden.com/httping/httping-2.3.3.tgz'
+  sha1 '6b9e77039346388e2b02dbb1d60f7422e7133488'
+
+  depends_on 'gettext'
+  depends_on 'fftw' => :optional
 
   def install
-    system "make install PREFIX=#{prefix}"
+    ENV.append "LDFLAGS", "-lintl"
+    inreplace "Makefile", "cp nl.mo $(DESTDIR)/$(PREFIX)/share/locale/nl/LC_MESSAGES/httping.mo", ""
+    system "make", "install", "PREFIX=#{prefix}"
   end
 end

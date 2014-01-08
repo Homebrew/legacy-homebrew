@@ -1,18 +1,17 @@
 require 'formula'
 
 class Gengetopt < Formula
-  url 'ftp://ftp.gnu.org/gnu/gengetopt/gengetopt-2.22.4.tar.gz'
   homepage 'http://www.gnu.org/software/gengetopt/'
-  md5 'e69d1b051784eb3a1c9fae36cb8b25ea'
+  url 'http://ftpmirror.gnu.org/gengetopt/gengetopt-2.22.6.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/gengetopt/gengetopt-2.22.6.tar.gz'
+  sha1 'c93bdec17f247aa32b3cd6530a6f68aa430d67f5'
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make"
-    # Bug in gengetopt's build system; permissions not set on some
-    # scripts required for installation
-    chmod_R 0755, 'build-aux/'
+
+    ENV.deparallelize
     system "make install"
   end
 end

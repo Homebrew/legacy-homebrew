@@ -1,27 +1,23 @@
 require 'formula'
 
 class Binutils < Formula
-  url 'http://ftp.gnu.org/gnu/binutils/binutils-2.21.1a.tar.bz2'
   homepage 'http://www.gnu.org/software/binutils/binutils.html'
-  md5 'bde820eac53fa3a8d8696667418557ad'
-
-  def options
-    [['--default-names', "Do NOT prepend 'g' to the binary; will override system utils."]]
-  end
+  url 'http://ftpmirror.gnu.org/binutils/binutils-2.24.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/binutils/binutils-2.24.tar.gz'
+  sha1 '1b2bc33003f4997d38fadaa276c1f0321329ec56'
 
   def install
-    args = ["--disable-debug", "--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--infodir=#{info}",
-            "--mandir=#{man}",
-            "--disable-werror",
-            "--enable-interwork",
-            "--enable-multilib",
-            "--enable-targets=x86_64-elf",
-            "--enable-targets=arm-none-eabi"]
-    args << "--program-prefix=g" unless ARGV.include? '--default-names'
-
-    system "./configure", *args
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--program-prefix=g",
+                          "--prefix=#{prefix}",
+                          "--infodir=#{info}",
+                          "--mandir=#{man}",
+                          "--disable-werror",
+                          "--enable-interwork",
+                          "--enable-multilib",
+                          "--enable-64-bit-bfd",
+                          "--enable-targets=all"
     system "make"
     system "make install"
   end

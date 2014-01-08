@@ -1,15 +1,21 @@
 require 'formula'
 
 class Cclive < Formula
-  url 'http://cclive.googlecode.com/files/cclive-0.6.5.tar.bz2'
-  homepage 'http://code.google.com/p/cclive/'
-  md5 'c3d50c05ca332b01286f9f3b6dd21841'
+  homepage 'http://cclive.sourceforge.net/'
+  url 'http://downloads.sourceforge.net/project/cclive/0.7/cclive-0.7.16.tar.xz'
+  sha1 '2bdee70f5e2026165ca444a306bb76fc5ede97b4'
+
+  conflicts_with 'clozure-cl', :because => 'both install a ccl binary'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'quvi'
+  depends_on 'boost'
+  depends_on 'pcre'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

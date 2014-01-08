@@ -1,16 +1,14 @@
 require 'formula'
 
 class Thrulay < Formula
-  url 'http://shlang.com/thrulay/thrulay-0.8.tar.gz'
-  homepage 'http://shlang.com/thrulay/'
-  md5 '725fb13344608a652e818bcd16fe9ef6'
+  homepage 'http://sourceforge.net/projects/thrulay/'
+  url 'http://downloads.sourceforge.net/project/thrulay/thrulay/0.9/thrulay-0.9.tar.gz'
+  sha1 '9128ebdd6b2213f5e166f9e1d95322161a3290f2'
 
   def install
-    inreplace "doc/Makefile.in", "@prefix@/man", "@prefix@/share/man"
-
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make" # make install does not make
+    ENV.j1
     system "make install"
   end
 end

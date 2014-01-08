@@ -1,29 +1,36 @@
 require 'formula'
 
 class BulkExtractor < Formula
-  url 'http://afflib.org/downloads/bulk_extractor-1.0.2.tar.gz'
-  homepage 'http://afflib.org/software/bulk_extractor'
-  md5 'd78558c0989eb776278ab3fbc85875f1'
+  homepage 'https://github.com/simsong/bulk_extractor/wiki'
+  url 'http://digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.4.0.tar.gz'
+  sha1 'b2cc34865e2c0cf4340a56a5f9396457579111b7'
+
+  depends_on :autoconf
+  depends_on :automake
 
   depends_on 'afflib' => :optional
   depends_on 'exiv2' => :optional
   depends_on 'libewf' => :optional
 
+  def patches
+    # Error in exec install hooks; installing java GUI manually. Reported in
+    # https://groups.google.com/group/bulk_extractor-users/browse_thread/thread/ff7cc11e8e6d8e8d
+    "https://gist.github.com/raw/3785687/3a61d57539c2b9ecde44121b370db85ff9d4f86e/makefile.in.patch"
+  end
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "make"
     system "make install"
 
     # Install documentation
-    (share+name+'doc').install Dir['doc/*.{html,txt,pdf}']
+    (share/'bulk_extractor/doc').install Dir['doc/*.{html,txt,pdf}']
 
-    # Install Python utilities
-    (share+name+'python').install Dir['python/*.py']
-  end
+    (lib/'python2.7/site-packages').install Dir['python/*.py']
 
-  def caveats; <<-EOS.undent
-    You may need to add the directory containing the Python bindings to your PYTHONPATH:
-      #{share+name}/python
-    EOS
+    # Install the GUI the Homebrew way
+    libexec.install 'java_gui/BEViewer.jar'
+    bin.write_jar_script libexec/"BEViewer.jar", "BEViewer", "-Xmx1g"
   end
 end

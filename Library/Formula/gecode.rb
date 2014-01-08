@@ -1,13 +1,12 @@
 require 'formula'
 
 class Gecode < Formula
-  url 'http://www.gecode.org/download/gecode-3.5.0.tar.gz'
   homepage 'http://www.gecode.org/'
-  md5 'bb920bb708b6ef9c4e9f5fa47681a659'
+  url 'http://www.gecode.org/download/gecode-4.2.1.tar.gz'
+  sha1 '41464bcb5bbbc62858ec6ae6b28a6d115343a040'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--disable-examples"
     system "make install"
   end
 end

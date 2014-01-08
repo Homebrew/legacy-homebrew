@@ -1,24 +1,26 @@
 require 'formula'
 
 class Goaccess < Formula
-  url 'http://downloads.sourceforge.net/project/goaccess/0.4.2/goaccess-0.4.2.tar.gz'
   homepage 'http://goaccess.prosoftcorp.com/'
-  md5 '7d7707c294c949d612e451da2f003c37'
-  head 'git://goaccess.git.sourceforge.net/gitroot/goaccess/goaccess'
+  url 'https://downloads.sourceforge.net/project/goaccess/0.7/goaccess-0.7.tar.gz'
+  sha1 '1a887dc7182c91726137aaf6a4627efdd82d988e'
 
+  head 'https://github.com/allinurl/goaccess.git'
+
+  option 'enable-geoip', "Enable IP location information using GeoIP"
+
+  depends_on 'pkg-config' => :build
   depends_on 'glib'
-  depends_on 'geoip' if ARGV.include? "--enable-geoip"
-
-  def options
-    [['--enable-geoip', "Enable IP location information using GeoIP"]]
-  end
+  depends_on 'geoip' if build.include? "enable-geoip"
 
   def install
-    args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking"]
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
 
-    args << "--enable-geoip" if ARGV.include? '--enable-geoip'
+    args << "--enable-geoip" if build.include? "enable-geoip"
 
     system "./configure", *args
     system "make install"

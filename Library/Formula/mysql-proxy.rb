@@ -1,25 +1,17 @@
 require 'formula'
 
 class MysqlProxy < Formula
-  url 'http://launchpad.net/mysql-proxy/0.8/0.8.0/+download/mysql-proxy-0.8.0.tar.gz'
-  homepage 'https://launchpad.net/mysql-proxy'
-  md5 'b6a9748d72e8db7fe3789fbdd60ff451'
+  homepage 'http://dev.mysql.com/doc/refman/5.6/en/mysql-proxy.html'
+  url 'http://cdn.mysql.com/Downloads/MySQL-Proxy/mysql-proxy-0.8.3.tar.gz'
+  sha1 'ce6e03e2bdcafecd06a9c3582096dd4eeacdaaa8'
 
+  depends_on :mysql
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libevent'
   depends_on 'lua'
 
   def install
-    if `which mysql_config`.chomp.empty?
-      opoo "`mysql_config` not found"
-      puts "This software requires the MySQL client libraries."
-      puts "You can install them via Homebrew with one of these:"
-      puts "  brew install mysql-connector-c"
-      puts "  brew install mysql [--client-only]"
-      puts "Without the client libraries, this formula will fail to compile."
-    end
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           # Ugh, don't dump these directly into /usr/local/include.

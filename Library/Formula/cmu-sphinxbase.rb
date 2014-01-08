@@ -1,12 +1,17 @@
 require 'formula'
 
 class CmuSphinxbase < Formula
-  url 'http://downloads.sourceforge.net/project/cmusphinx/sphinxbase/0.6.1/sphinxbase-0.6.1.tar.gz'
   homepage 'http://cmusphinx.sourceforge.net/'
-  md5 '779647b5fb9e9942994f02fdf2282351'
+  url 'http://downloads.sourceforge.net/project/cmusphinx/sphinxbase/0.8/sphinxbase-0.8.tar.gz'
+  sha1 'c0c4d52e143d07cd593bd6bcaeb92b9a8a5a8c8e'
+
+  depends_on 'pkg-config' => :build
+  depends_on 'libsndfile' => :optional
+  depends_on 'libsamplerate' => :optional
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end

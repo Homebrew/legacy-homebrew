@@ -1,51 +1,59 @@
 require 'formula'
 
 class Io < Formula
-  head 'https://github.com/stevedekorte/io.git'
   homepage 'http://iolanguage.com/'
+  url 'https://github.com/stevedekorte/io/archive/2013.12.04.tar.gz'
+  sha1 '47d9a3e7a8e14c9fbe3b376e4967bb55f6c68aed'
+
+  head 'https://github.com/stevedekorte/io.git'
+
+  option 'without-addons', 'Build without addons'
 
   depends_on 'cmake' => :build
-  depends_on 'libsgml'
-  depends_on 'ossp-uuid'
+  depends_on :python => :recommended
   depends_on 'libevent'
+  depends_on 'libffi'
+  depends_on 'ossp-uuid'
+  depends_on 'pcre'
+  depends_on 'yajl'
+  depends_on 'xz'
 
-  # Either CMake doesn't detect OS X's png include path correctly,
-  # or there's an issue with io's build system; force the path in
-  # so we can build.
-  def patches
-    DATA
+  # Used by Bignum add-on
+  depends_on 'gmp' unless build.include? 'without-addons'
+
+  # Used by Fonts add-on
+  depends_on :freetype unless build.include? 'without-addons'
+
+  fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+      make never completes. see:
+      https://github.com/stevedekorte/io/issues/223
+    EOS
   end
 
   def install
-    opoo "IO fails to build often!"
-    puts "There is no stable revision: https://github.com/mxcl/homebrew/issues/7399"
-
     ENV.j1
-    mkdir 'io-build'
-
-    Dir.chdir 'io-build' do
-      system "cmake .. #{std_cmake_parameters}"
-      system "make install"
+    if build.without? 'addons'
+      inreplace  "CMakeLists.txt",
+        'add_subdirectory(addons)',
+        '#add_subdirectory(addons)'
     end
-
-    rm_f Dir['docs/*.pdf']
-    doc.install Dir['docs/*']
-
-    prefix.install 'license/bsd_license.txt' => 'LICENSE'
+    if build.without? 'python'
+      inreplace  "addons/CMakeLists.txt",
+        'add_subdirectory(Python)',
+        '#add_subdirectory(Python)'
+    end
+    mkdir 'buildroot' do
+      system "cmake", "..", *std_cmake_args
+      system 'make'
+      output = %x[./_build/binaries/io ../libs/iovm/tests/correctness/run.io]
+      if $?.exitstatus != 0
+        opoo "Test suite not 100% successful:\n#{output}"
+      else
+        ohai "Test suite ran successfully:\n#{output}"
+      end
+      system 'make install'
+    end
   end
 end
-
-__END__
-diff --git a/addons/Image/CMakeLists.txt b/addons/Image/CMakeLists.txt
-index a65693d..2166f1b 100644
---- a/addons/Image/CMakeLists.txt
-+++ b/addons/Image/CMakeLists.txt
-@@ -22,7 +22,7 @@ if(PNG_FOUND AND TIFF_FOUND AND JPEG_FOUND)
- 	add_definitions(-DBUILDING_IMAGE_ADDON)
- 
- 	# Additional include directories
--	include_directories(${PNG_INCLUDE_DIR} ${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
-+	include_directories("/usr/X11/include" ${PNG_INCLUDE_DIR} ${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
- 
- 	# Generate the IoImageInit.c file.
- 	# Argument SHOULD ALWAYS be the exact name of the addon, case is

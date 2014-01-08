@@ -2,21 +2,47 @@ require 'formula'
 
 class Pango < Formula
   homepage 'http://www.pango.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.28/pango-1.28.4.tar.bz2'
-  sha256 '7eb035bcc10dd01569a214d5e2bc3437de95d9ac1cfa9f50035a687c45f05a9f'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.36/pango-1.36.1.tar.xz'
+  sha256 '42e4b51cdc99e6878a9ea2a5ef2b31b79c1033f8518726df738a3c54c90e59f8'
+
+  option 'without-x', 'Build without X11 support'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'glib'
+  depends_on 'cairo'
+  depends_on 'harfbuzz'
+  depends_on 'fontconfig'
+  depends_on :x11 unless build.without? 'x'
+  depends_on 'gobject-introspection'
 
-  fails_with_llvm "Undefined symbols when linking", :build => "2326"
-
-  if MacOS.leopard?
-    depends_on 'fontconfig' # Leopard's fontconfig is too old.
-    depends_on 'cairo' # Leopard doesn't come with Cairo.
+  fails_with :llvm do
+    build 2326
+    cause "Undefined symbols when linking"
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-x"
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --enable-man
+      --with-html-dir=#{share}/doc
+      --enable-introspection=yes
+    ]
+
+    if build.include? 'without-x'
+      args << '--without-xft'
+    else
+      args << '--with-xft'
+    end
+
+    system "./configure", *args
+    system "make"
     system "make install"
+  end
+
+  def test
+    system "#{bin}/pango-querymodules", "--version"
   end
 end

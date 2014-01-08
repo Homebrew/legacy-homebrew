@@ -1,9 +1,9 @@
 require 'formula'
 
 class Aview < Formula
-  url 'http://downloads.sourceforge.net/aa-project/aview-1.3.0rc1.tar.gz'
   homepage 'http://aa-project.sourceforge.net/aview/'
-  md5 '093f298e7787591e229b59d039c72f4d'
+  url 'http://downloads.sourceforge.net/aa-project/aview-1.3.0rc1.tar.gz'
+  sha1 'd757ff9f62e6ce4d926c03ae4f4096d9fcf353fc'
 
   depends_on 'aalib'
 
@@ -12,7 +12,8 @@ class Aview < Formula
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make install"

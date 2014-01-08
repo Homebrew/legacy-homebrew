@@ -1,15 +1,19 @@
 require 'formula'
 
 class Uriparser < Formula
-  url 'http://downloads.sourceforge.net/project/uriparser/Sources/0.7.5/uriparser-0.7.5.tar.gz'
   homepage 'http://uriparser.sourceforge.net/'
-  md5 '459c2786758929b92bfbd0cee25b5aa0'
+  url 'http://downloads.sourceforge.net/project/uriparser/Sources/0.7.9/uriparser-0.7.9.tar.bz2'
+  sha1 'c02d1db3c4e132863b6fc4e4f5e08cec535089d1'
 
+  depends_on 'pkg-config' => :build
   depends_on 'cpptest'
 
+  conflicts_with 'libkml', :because => 'both install `liburiparser.dylib`'
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--disable-doc"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--disable-doc"
     system "make check"
     system "make install"
   end

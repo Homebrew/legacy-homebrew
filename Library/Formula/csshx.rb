@@ -1,10 +1,11 @@
 require 'formula'
 
 class Csshx < Formula
-  url 'http://csshx.googlecode.com/files/csshX-0.73.tgz'
   homepage 'http://code.google.com/p/csshx/'
-  md5 'ba5fc81f6ccb43c9f5908dbfd5901576'
-  head 'http://csshx.googlecode.com/svn/trunk/'
+  url 'http://csshx.googlecode.com/files/csshX-0.74.tgz'
+  sha1 'aa686b71161d6144d539d077b960da10d7b96993'
+
+  head 'https://code.google.com/p/csshx/', :using => :git
 
   def install
     bin.install 'csshX'

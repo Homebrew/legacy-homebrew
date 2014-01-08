@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pinentry < Formula
-  url 'ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.8.1.tar.gz'
   homepage 'http://www.gnupg.org/related_software/pinentry/index.en.html'
-  sha1 '84a6940175b552a8562b4014f4661dec3ff10165'
+  url 'ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.8.3.tar.bz2'
+  sha1 'fc0efe5d375568f90ddbb23ee68e173411a49d4a'
 
   depends_on 'pkg-config' => :build
 
@@ -11,7 +11,9 @@ class Pinentry < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-pinentry-qt",
-                          "--disable-pinentry-qt4"
+                          "--disable-pinentry-qt4",
+                          "--disable-pinentry-gtk",
+                          "--disable-pinentry-gtk2"
     system "make install"
   end
 end

@@ -2,35 +2,37 @@ require 'formula'
 
 class Dmd < Formula
   homepage 'http://www.digitalmars.com/d/'
-  url 'http://ftp.digitalmars.com/dmd.2.054.zip'
-  md5 'caa653b1d92648e6103acfe5fb8e6732'
-
-  def doc
-    #use d and not dmd, rationale: meh
-    prefix+'share/doc/d'
-  end
+  url 'http://downloads.dlang.org/releases/2013/dmd.2.064.2.zip'
+  sha1 'c09a7787b9137409a2169268b57655ce29c9f0d3'
 
   def install
-    ohai "Installing dmd"
-
     # clean it up a little first
-    Dir['src/*.mak'].each {|f| File.unlink f}
+    rm Dir['src/*.mak']
     mv 'license.txt', 'COPYING'
     mv 'README.TXT', 'README'
-    mv 'src/phobos/phoboslicense.txt', 'src/phobos/COPYING.phobos'
 
-    prefix.install 'osx/lib'
-    prefix.install 'osx/bin'
-    prefix.install 'src'
-    man.install 'man/man1'
-
-    (prefix+'src/dmd').rmtree # we don't need the dmd sources thanks
-    man5.install man1+'dmd.conf.5' # oops
-    (share+'d/examples').install Dir['samples/d/*.d']
-
-    (bin+'dmd.conf').open('w') do |f|
-      f.puts "[Environment]"
-      f.puts "DFLAGS=-I#{prefix}/src/phobos -I#{prefix}/src/druntime/import"
+    cd 'osx/bin' do
+      rm 'dmdx.conf'
+      rm 'dmd.conf'
     end
+
+    rmtree 'src/dmd'
+    libexec.install 'osx/bin', 'osx/lib', 'src'
+
+    man.install 'man/man1'
+    man5.install man1/'dmd.conf.5'
+
+    (share+'d/examples').install Dir['samples/d/*.d']
+    (libexec+'bin/dmd.conf').open('w') do |f|
+      f.puts "[Environment]"
+      f.puts "DFLAGS=-I#{libexec}/src/phobos -I#{libexec}/src/druntime/import -L-L#{libexec}/lib"
+    end
+    bin.write_exec_script libexec/'bin/dmd'
+    bin.write_exec_script libexec/'bin/rdmd'
+    bin.write_exec_script libexec/'bin/dman'
+  end
+  def test
+    system "dmd", "#{share}/d/examples/hello.d"
+    system "./hello"
   end
 end

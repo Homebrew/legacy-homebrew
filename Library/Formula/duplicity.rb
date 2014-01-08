@@ -1,27 +1,24 @@
 require 'formula'
 
 class Duplicity < Formula
-  url 'http://launchpad.net/duplicity/0.6-series/0.6.15/+download/duplicity-0.6.15.tar.gz'
   homepage 'http://www.nongnu.org/duplicity/'
-  md5 '88f3c990f41fde86cd7d5af5a1bc7b81'
+  url 'http://code.launchpad.net/duplicity/0.6-series/0.6.22/+download/duplicity-0.6.22.tar.gz'
+  sha1 'afa144f444148b67d7649b32b80170d917743783'
 
+  depends_on :python
   depends_on 'librsync'
   depends_on 'gnupg'
 
-  def install
-    ENV.universal_binary
-    # Install mostly into libexec
-    system "python", "setup.py", "install",
-                     "--prefix=#{prefix}",
-                     "--install-purelib=#{libexec}",
-                     "--install-platlib=#{libexec}",
-                     "--install-scripts=#{bin}"
+  option :universal
 
-    # Shift files around to avoid needing a PYTHONPATH
-    system "mv #{bin}/duplicity #{bin}/duplicity.py"
-    system "mv #{bin}/* #{libexec}"
-    # Symlink the executables
-    ln_s "#{libexec}/duplicity.py", "#{bin}/duplicity"
-    ln_s "#{libexec}/rdiffdir", "#{bin}/rdiffdir"
+  def install
+    ENV.universal_binary if build.universal?
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+  end
+
+  test do
+    system "duplicity", "--version"
   end
 end

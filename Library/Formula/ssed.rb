@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ssed < Formula
-  url 'http://sed.sourceforge.net/grabbag/ssed/sed-3.62.tar.gz'
   homepage 'http://sed.sourceforge.net/grabbag/ssed/'
-  md5 '8f35882af95da4e5ddbf3de1add26f79'
+  url 'http://sed.sourceforge.net/grabbag/ssed/sed-3.62.tar.gz'
+  sha1 '6bdc4cd07780e397787c0d494c962827bb407fa2'
 
   def install
     system "./configure", "--disable-dependency-tracking",

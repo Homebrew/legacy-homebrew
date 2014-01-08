@@ -1,25 +1,25 @@
 require 'formula'
 
 class Ushare < Formula
-  url 'http://ushare.geexbox.org/releases/ushare-1.1a.tar.bz2'
   homepage 'http://ushare.geexbox.org/'
-  md5 '5bbcdbf1ff85a9710fa3d4e82ccaa251'
+  url 'http://ushare.geexbox.org/releases/ushare-1.1a.tar.bz2'
+  sha1 '1539e83cde5d80f433d262d971f5fe78486c9375'
 
+  depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'libupnp'
   depends_on 'libdlna'
 
-  def patches
-    { :p0 =>
-      "http://svn.macports.org/repository/macports/trunk/dports/net/ushare/files/patch-configure.diff"
-    }
-  end
+  # Fix compilation with newer libupnp
+  def patches; DATA; end
 
   def install
-    # Need to explicitly add gettext here.
+    ENV.append 'CFLAGS', '-std=gnu89'
+
+    # Need to explicitly add intl and gettext here.
     gettext = Formula.factory("gettext")
-    ENV.append 'LDFLAGS', "-lintl"
     ENV.append 'CFLAGS', "-I#{gettext.include}"
+    ENV.append 'LDFLAGS', "-lintl"
 
     inreplace 'configure', /config.h/, 'src/config.h'
     system "./configure", "--disable-debug",
@@ -32,3 +32,18 @@ class Ushare < Formula
     man1.install "src/ushare.1"
   end
 end
+
+__END__
+diff --git a/src/ushare.c b/src/ushare.c
+index 717e862..8e51bf7 100644
+--- a/src/ushare.c
++++ b/src/ushare.c
+@@ -188,7 +188,7 @@ handle_action_request (struct Upnp_Action_Request *request)
+   if (strcmp (request->DevUDN + 5, ut->udn))
+     return;
+ 
+-  ip = request->CtrlPtIPAddr.s_addr;
++  ip = ((struct sockaddr *) &request->CtrlPtIPAddr)->sa_data;
+   ip = ntohl (ip);
+   sprintf (val, "%d.%d.%d.%d",
+            (ip >> 24) & 0xFF, (ip >> 16) & 0xFF, (ip >> 8) & 0xFF, ip & 0xFF);

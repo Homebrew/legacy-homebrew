@@ -1,12 +1,21 @@
 require 'formula'
 
 class Smartmontools < Formula
-  url 'http://downloads.sourceforge.net/project/smartmontools/smartmontools/5.41/smartmontools-5.41.tar.gz'
   homepage 'http://sourceforge.net/apps/trac/smartmontools/'
-  md5 '4577886bea79d4ff12bd9a7d323ce692'
+  url 'http://downloads.sourceforge.net/project/smartmontools/smartmontools/6.2/smartmontools-6.2.tar.gz'
+  sha1 '37848ff5103d68b672463a30cd99e7d23d6696a5'
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
+    (var/'run').mkpath
+    (var/'lib/smartmontools').mkpath
+
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
+                          "--localstatedir=#{var}",
+                          "--enable-drivedb",
+                          "--enable-savestates",
+                          "--enable-attributelog"
     system "make install"
   end
 end

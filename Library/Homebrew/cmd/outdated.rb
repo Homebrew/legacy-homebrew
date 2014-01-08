@@ -1,28 +1,24 @@
 require 'formula'
+require 'keg'
 
 module Homebrew extend self
   def outdated
-    outdated_brews.each do |keg, name, version|
+    outdated_brews do |f, versions|
       if $stdout.tty? and not ARGV.flag? '--quiet'
-        versions = keg.cd{ Dir['*'] }.join(', ')
-        puts "#{name} (#{versions} < #{version})"
+        puts "#{f.name} (#{versions*', '} < #{f.version})"
       else
-        puts name
+        puts f.name
       end
     end
   end
 
   def outdated_brews
-    HOMEBREW_CELLAR.subdirs.map do |rack|
-      # Skip kegs with no versions installed
-      next unless rack.subdirs
-
-      # Skip HEAD formulae, consider them "evergreen"
-      next if rack.subdirs.map{ |keg| keg.basename.to_s }.include? "HEAD"
-
-      name = rack.basename.to_s
-      f = Formula.factory name rescue nil
-      [rack, name, f.version] if f and not f.installed?
+    Formula.installed.map do |f|
+      versions = f.rack.subdirs.map { |d| Keg.new(d).version }.sort!
+      if versions.all? { |version| f.version > version }
+        yield f, versions if block_given?
+        f
+      end
     end.compact
   end
 end

@@ -1,12 +1,13 @@
 require 'formula'
 
 class Fribidi < Formula
-  url 'http://fribidi.org/download/fribidi-0.10.9.tar.gz'
-  md5 '647aee89079b056269ff0918dc1c6d28'
   homepage 'http://fribidi.org/'
+  url 'http://fribidi.org/download/fribidi-0.19.5.tar.bz2'
+  sha1 '58445266df185f7e5109f356c0261d41db39182a'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

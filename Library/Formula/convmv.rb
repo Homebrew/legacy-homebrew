@@ -1,9 +1,9 @@
 require 'formula'
 
 class Convmv < Formula
-  url 'http://www.j3e.de/linux/convmv/convmv-1.14.tar.gz'
   homepage 'http://www.j3e.de/linux/convmv/'
-  md5 'd41238051c13b2e6c0cc2310a8f69d68'
+  url 'http://www.j3e.de/linux/convmv/convmv-1.15.tar.gz'
+  sha1 '7ca8599a37480a99058c4498fba7cfed64134de5'
 
   def install
     system "make", "install", "PREFIX=#{prefix}"

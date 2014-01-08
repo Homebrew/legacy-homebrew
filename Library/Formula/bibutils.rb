@@ -1,20 +1,48 @@
 require 'formula'
 
 class Bibutils < Formula
-  url 'http://www.scripps.edu/~cdputnam/software/bibutils/bibutils_4.12_src.tgz'
-  homepage 'http://www.scripps.edu/~cdputnam/software/bibutils/'
-  md5 '395f46393eca8e184652c5e8e1ae83b6'
+  homepage 'http://sourceforge.net/p/bibutils/home/Bibutils/'
+  url 'http://downloads.sourceforge.net/project/bibutils/bibutils_5.2_src.tgz'
+  sha1 '4ae54726100535d0f5e726405de4a35f0a62c578'
+
+  #fix uint not being defined clang error
+  def patches; DATA; end
 
   def install
-    system "./configure --install-dir #{prefix}"
-    inreplace "Makefile" do |s|
-      s.change_make_var! "CC", "CC=\"#{ENV.cc}\""
-    end
-    system "make"
+    system "./configure", "--install-dir", prefix
+    system "make", "CC=#{ENV.cc}"
 
-    executables = %w{ bib2xml ris2xml end2xml endx2xml med2xml isi2xml copac2xml
-        biblatex2xml ebi2xml wordbib2xml xml2ads xml2bib xml2end xml2isi
-        xml2ris xml2wordbib modsclean }
-    executables.each { |x| bin.install "bin/#{x}" }
+    cd 'bin' do
+      bin.install %w{bib2xml ris2xml end2xml endx2xml med2xml isi2xml copac2xml
+        biblatex2xml ebi2xml wordbib2xml xml2ads xml2bib xml2end xml2isi xml2ris
+        xml2wordbib modsclean}
+    end
   end
 end
+
+__END__
+diff --git a/lib/biblatexin.c b/lib/biblatexin.c
+index 41c51dc..8d6f57a 100644
+--- a/lib/biblatexin.c
++++ b/lib/biblatexin.c
+@@ -21,6 +21,8 @@
+ #include "reftypes.h"
+ #include "biblatexin.h"
+
++#include <sys/types.h>
++
+ extern const char progname[];
+
+ static list find    = { 0, 0, 0, NULL };
+diff --git a/lib/bibtexin.c b/lib/bibtexin.c
+index 5d97832..bce0847 100644
+--- a/lib/bibtexin.c
++++ b/lib/bibtexin.c
+@@ -21,6 +21,8 @@
+ #include "reftypes.h"
+ #include "bibtexin.h"
+
++#include <sys/types.h>
++
+ static list find    = { 0, 0, 0, NULL };
+ static list replace = { 0, 0, 0, NULL };

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Sdelta3 < Formula
-  url 'ftp://ftp.berlios.de//pub/sdelta/files/sdelta3-20100323.tar.bz2'
   homepage 'http://sdelta.berlios.de/'
-  md5 'f419f4e7ade7751cf2feacbebfbc8aa9'
+  url 'ftp://ftp.berlios.de//pub/sdelta/files/sdelta3-20100323.tar.bz2'
+  sha1 'd99718e95b2828f2d4ec376a16b5fedc950792ee'
 
   def patches; DATA; end
 

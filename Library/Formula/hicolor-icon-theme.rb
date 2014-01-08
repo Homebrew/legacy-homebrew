@@ -1,9 +1,9 @@
 require 'formula'
 
 class HicolorIconTheme < Formula
-  url 'http://icon-theme.freedesktop.org/releases/hicolor-icon-theme-0.12.tar.gz'
   homepage 'http://icon-theme.freedesktop.org/wiki/HicolorTheme'
-  md5 '55cafbcef8bcf7107f6d502149eb4d87'
+  url 'http://icon-theme.freedesktop.org/releases/hicolor-icon-theme-0.13.tar.gz'
+  sha1 '15e30dfcf5e7b53c1a6f9028c30665006abba55c'
 
   def install
     system "./configure", "--prefix=#{prefix}"

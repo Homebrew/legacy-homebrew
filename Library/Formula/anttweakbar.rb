@@ -1,25 +1,56 @@
 require 'formula'
 
 class Anttweakbar < Formula
-  url 'http://www.antisphere.com/Tools/AntTweakBar/AntTweakBar_114.zip'
   homepage 'http://www.antisphere.com/Wiki/tools:anttweakbar'
-  md5 '5aaee2ea2bca03a258f8dad494828d7e'
+  url 'http://downloads.sourceforge.net/project/anttweakbar/AntTweakBar_116.zip'
+  version '1.16'
+  sha1 '5743321df3b074f9a82b5ef3e6b54830a715b938'
 
-  depends_on 'dos2unix' => :build
-
+  # See
+  # http://sourceforge.net/p/anttweakbar/code/ci/5a076d13f143175a6bda3c668e29a33406479339/tree/src/LoadOGLCore.h?diff=5528b167ed12395a60949d7c643262b6668f15d5&diformat=regular
   def patches
-    # this was developed by a windows guy (apparently); need to run dos2unix
-    # in order to apply a patch
-    system 'dos2unix `find src/ -type f`'
-
-    # patch two small issues -- one related to 10.7 compatibility, one related
-    # to missing symbols due to an (apparently) erroneous 'extern "C"' wrapper
-    'https://raw.github.com/gist/1182684/8afd29c2bef6c410f1886d297012af752c0d0ac3/atb_10_7_patch_minimal.diff'
+    DATA
   end
 
   def install
-    system 'cd src; make -f Makefile.osx'
+    cd 'src' do
+      system 'make -f Makefile.osx'
+    end
     lib.install 'lib/libAntTweakBar.dylib'
     include.install 'include/AntTweakBar.h'
   end
 end
+
+__END__
+diff --git a/src/LoadOGLCore.h b/src/LoadOGLCore.h
+index 8aaab1e..b606d2b 100644
+--- a/src/LoadOGLCore.h
++++ b/src/LoadOGLCore.h
+@@ -146,7 +146,13 @@ ANT_GL_CORE_DECL(void, glGetCompressedTexImage, (GLenum target, GLint level, GLv
+ // GL 1.4
+ ANT_GL_CORE_DECL(void, glBlendFuncSeparate, (GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha))
+ ANT_GL_CORE_DECL(void, glMultiDrawArrays, (GLenum mode, const GLint *first, const GLsizei *count, GLsizei primcount))
++#if defined(ANT_OSX) && (MAC_OS_X_VERSION_MAX_ALLOWED >= 1080)
++// Mac OSX 10.8 SDK from March 2013 redefines this OpenGL call: glMultiDrawElements
++// if it doesn't compile, please update XCode.
++ANT_GL_CORE_DECL(void, glMultiDrawElements, (GLenum mode, const GLsizei *count, GLenum type, const GLvoid* const*indices, GLsizei primcount))
++#else
+ ANT_GL_CORE_DECL(void, glMultiDrawElements, (GLenum mode, const GLsizei *count, GLenum type, const GLvoid* *indices, GLsizei primcount))
++#endif
+ ANT_GL_CORE_DECL(void, glPointParameterf, (GLenum pname, GLfloat param))
+ ANT_GL_CORE_DECL(void, glPointParameterfv, (GLenum pname, const GLfloat *params))
+ ANT_GL_CORE_DECL(void, glPointParameteri, (GLenum pname, GLint param))
+@@ -211,7 +217,13 @@ ANT_GL_CORE_DECL(void, glGetVertexAttribPointerv, (GLuint index, GLenum pname, G
+ ANT_GL_CORE_DECL(GLboolean, glIsProgram, (GLuint program))
+ ANT_GL_CORE_DECL(GLboolean, glIsShader, (GLuint shader))
+ ANT_GL_CORE_DECL(void, glLinkProgram, (GLuint program))
++#if defined(ANT_OSX) && (MAC_OS_X_VERSION_MAX_ALLOWED >= 1080)
++// Mac OSX 10.8 SDK from March 2013 redefines this OpenGL call: glShaderSource
++// if it doesn't compile, please update XCode.
++ANT_GL_CORE_DECL(void, glShaderSource, (GLuint shader, GLsizei count, const GLchar* const*string, const GLint *length))
++#else
+ ANT_GL_CORE_DECL(void, glShaderSource, (GLuint shader, GLsizei count, const GLchar* *string, const GLint *length))
++#endif
+ ANT_GL_CORE_DECL(void, glUseProgram, (GLuint program))
+ ANT_GL_CORE_DECL(void, glUniform1f, (GLint location, GLfloat v0))
+ ANT_GL_CORE_DECL(void, glUniform2f, (GLint location, GLfloat v0, GLfloat v1))

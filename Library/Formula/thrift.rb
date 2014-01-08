@@ -2,50 +2,78 @@ require 'formula'
 
 class Thrift < Formula
   homepage 'http://thrift.apache.org'
-  head 'http://svn.apache.org/repos/asf/thrift/trunk'
-  url 'http://www.apache.org/dyn/closer.cgi?path=thrift/0.7.0/thrift-0.7.0.tar.gz'
-  md5 '7a57a480745eab3dd25e02f5d5cc3770'
+  url 'http://archive.apache.org/dist/thrift/0.9.0/thrift-0.9.0.tar.gz'
+  sha1 'fefcf4d729bf80da419407dfa028740aa95fa2e3'
+
+  head do
+    url 'https://git-wip-us.apache.org/repos/asf/thrift.git', :branch => "master"
+
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
+
+  option "with-haskell", "Install Haskell binding"
+  option "with-erlang", "Install Erlang binding"
+  option "with-java", "Install Java binding"
+  option "with-perl", "Install Perl binding"
+  option "with-php", "Install Php binding"
 
   depends_on 'boost'
+  depends_on :python => :optional
+
+  # Includes are fixed in the upstream. Please remove this patch in the next version > 0.9.0
+  def patches
+    DATA
+  end
 
   def install
-    # No reason for this step is known. On Lion at least the pkg.m4 doesn't
-    # even exist. Turns out that it isn't needed on Lion either. Possibly it
-    # isn't needed anymore at all but I can't test that.
-    cp "/usr/X11/share/aclocal/pkg.m4", "aclocal" if MACOS_VERSION < 10.7
+    system "./bootstrap.sh" if build.head?
 
-    system "./bootstrap.sh" if version == 'HEAD'
+    exclusions = ["--without-ruby"]
 
-    # This is a known bug in Thrift 0.7
-    system "chmod +x ./configure ./install*sh"
+    exclusions << "--without-python" unless build.with? "python"
+    exclusions << "--without-haskell" unless build.include? "with-haskell"
+    exclusions << "--without-java" unless build.include? "with-java"
+    exclusions << "--without-perl" unless build.include? "with-perl"
+    exclusions << "--without-php" unless build.include? "with-php"
+    exclusions << "--without-erlang" unless build.include? "with-erlang"
 
-    # Language bindings try to install outside of Homebrew's prefix, so
-    # omit them here. For ruby you can install the gem, and for Python
-    # you can use pip or easy_install.
+    ENV["PY_PREFIX"] = prefix  # So python bindins don't install to /usr!
+
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--libdir=#{lib}",
-                          "--without-haskell",
-                          "--without-java",
-                          "--without-python",
-                          "--without-ruby",
-                          "--without-perl",
-                          "--without-php",
-                          "--without-erlang"
+                          *exclusions
     ENV.j1
     system "make"
     system "make install"
   end
 
-  def caveats; <<-EOS.undent
-    Most language bindings were not installed. You may like to do the
-    following:
+  def caveats
+    <<-EOS.undent
+    To install Ruby bindings:
+      gem install thrift
 
-        gem install thrift
-        easy_install thrift
+    To install PHP bindings:
+      export PHP_PREFIX=/path/to/homebrew/thrift/0.9.0/php
+      export PHP_CONFIG_PREFIX=/path/to/homebrew/thrift/0.9.0/php_extensions
+      brew install thrift --with-php
 
-    If anyone figures out the steps to reliably build a set of bindings, please
-    open a pull request.
     EOS
   end
 end
+__END__
+diff --git a/lib/cpp/src/thrift/transport/TSocket.h b/lib/cpp/src/thrift/transport/TSocket.h
+index ff5e541..65e6aea 100644
+--- a/lib/cpp/src/thrift/transport/TSocket.h
++++ b/lib/cpp/src/thrift/transport/TSocket.h
+@@ -21,6 +21,8 @@
+ #define _THRIFT_TRANSPORT_TSOCKET_H_ 1
+
+ #include <string>
++#include <sys/socket.h>
++#include <arpa/inet.h>
+
+ #include "TTransport.h"
+ #include "TVirtualTransport.h"

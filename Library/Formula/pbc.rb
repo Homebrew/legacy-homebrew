@@ -1,14 +1,15 @@
 require 'formula'
 
 class Pbc < Formula
-  url 'http://crypto.stanford.edu/pbc/files/pbc-0.5.12.tar.gz'
   homepage 'http://crypto.stanford.edu/pbc/'
-  md5 '4f3f017b5709fcc46b58d1ebc6b30e3f'
+  url 'http://crypto.stanford.edu/pbc/files/pbc-0.5.13.tar.gz'
+  sha256 '6207b7aea96e61df991c59a27ff9a954922954bc4b3cb9db325a37806b41dc89'
 
   depends_on 'gmp'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end

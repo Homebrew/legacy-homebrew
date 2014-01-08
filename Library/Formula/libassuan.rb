@@ -1,9 +1,9 @@
 require 'formula'
 
 class Libassuan < Formula
-  url 'ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.0.2.tar.bz2'
   homepage 'http://www.gnupg.org/related_software/libassuan/index.en.html'
-  sha1 'dbcd96e2525d4c3a2da9e8054a06fa517f20a185'
+  url 'ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.1.1.tar.bz2'
+  sha1 '8bd3826de30651eb8f9b8673e2edff77cd70aca1'
 
   depends_on 'libgpg-error'
 

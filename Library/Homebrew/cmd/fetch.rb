@@ -1,49 +1,57 @@
 require 'formula'
 
-# Downloads the tarballs for the given formulae to the Cache
-
 module Homebrew extend self
   def fetch
+    raise FormulaUnspecifiedError if ARGV.named.empty?
+
     if ARGV.include? '--deps'
       bucket = []
       ARGV.formulae.each do |f|
         bucket << f
-        bucket << f.recursive_deps
+        bucket.concat f.recursive_dependencies.map(&:to_formula)
       end
-      
-      bucket = bucket.flatten.uniq
+      bucket.uniq!
     else
       bucket = ARGV.formulae
     end
 
     puts "Fetching: #{bucket * ', '}" if bucket.size > 1
-
     bucket.each do |f|
-      if ARGV.include? "--force" or ARGV.include? "-f"
-        where_to = f.cached_download
-        FileUtils.rm_rf where_to if File.exist? where_to
-      end
-
-      the_tarball = f.downloader.fetch
-      next unless the_tarball.kind_of? Pathname
-
-      previous_md5 = f.instance_variable_get(:@md5)
-      previous_sha1 = f.instance_variable_get(:@sha1)
-      previous_sha2 = f.instance_variable_get(:@sha2)
-
-      puts "MD5:  #{the_tarball.md5}"
-      puts "SHA1: #{the_tarball.sha1}"
-      puts "SHA256: #{the_tarball.sha2}"
-
-      unless previous_md5.nil? or previous_md5.empty? or  the_tarball.md5 == previous_md5
-        opoo "Formula reports different MD5: #{previous_md5}"
-      end
-      unless previous_sha1.nil? or previous_sha1.empty? or the_tarball.sha1 == previous_sha1
-        opoo "Formula reports different SHA1: #{previous_sha1}"
-      end
-      unless previous_sha2.nil? or previous_sha2.empty? or  the_tarball.sha2 == previous_sha2
-        opoo "Formula reports different SHA256: #{previous_sha2}"
+      fetch_formula(f)
+      f.resources.each do |r|
+        fetch_resource(r)
       end
     end
+  end
+
+  def fetch_resource r
+    puts "Resource: #{r.name}"
+    fetch_fetchable r
+  rescue ChecksumMismatchError => e
+    Homebrew.failed = true
+    opoo "Resource #{r.name} reports different #{e.hash_type}: #{e.expected}"
+  end
+
+  def fetch_formula f
+    fetch_fetchable f
+  rescue ChecksumMismatchError => e
+    Homebrew.failed = true
+    opoo "Formula reports different #{e.hash_type}: #{e.expected}"
+  end
+
+  private
+
+  def fetch_fetchable f
+    f.clear_cache if ARGV.force?
+
+    already_fetched = f.cached_download.exist?
+    download = f.fetch
+
+    return unless download.file?
+
+    puts "Downloaded to: #{download}" unless already_fetched
+    puts Checksum::TYPES.map { |t| "#{t.to_s.upcase}: #{download.send(t)}" }
+
+    f.verify_download_integrity(download)
   end
 end

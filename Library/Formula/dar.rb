@@ -1,15 +1,16 @@
 require 'formula'
 
 class Dar < Formula
-  url 'http://downloads.sourceforge.net/project/dar/dar/2.3.10/dar-2.3.10.tar.gz'
   homepage 'http://dar.linux.free.fr/doc/index.html'
-  md5 'f134276bb9dc761dbb318c5511e65833'
+  url 'http://downloads.sourceforge.net/project/dar/dar/2.4.11/dar-2.4.11.tar.gz'
+  sha1 '02c6257dca054fecbee1e7bcd91ce525f986a67d'
 
   depends_on 'gettext'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--disable-build-html"
     system "make install"
   end
