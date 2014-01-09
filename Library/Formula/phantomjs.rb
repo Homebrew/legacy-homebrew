@@ -14,7 +14,10 @@ class Phantomjs < Formula
   end
 
   def patches
-    DATA
+    [
+      DATA,
+      'https://github.com/ariya/phantomjs/commit/b67866.patch',
+    ]
   end
 
   def install
