@@ -18,7 +18,6 @@ class GmailBackup < Formula
       cd #{libexec}
       exec ./gmail-backup.sh "$@"
     EOS
-    exec_script.chmod 0644
   end
 
   def test
