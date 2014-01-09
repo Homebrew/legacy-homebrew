@@ -13,7 +13,7 @@ module HomebrewArgvExtension
     return @formulae
   end
 
-  def kegs
+  def kegs(use_latest_installed=false)
     rack = nil
     require 'keg'
     require 'formula'
@@ -38,6 +38,8 @@ module HomebrewArgvExtension
           prefix = Formula.factory(canonical_name).prefix
           if prefix.directory?
             Keg.new(prefix)
+          elsif use_latest_installed && !dirs.empty?
+            Keg.new(dirs.sort.last)
           else
             raise MultipleVersionsInstalledError.new(name)
           end
@@ -57,6 +59,10 @@ module HomebrewArgvExtension
     else
       raise
     end
+  end
+
+  def latest_installed_kegs
+    kegs(true)
   end
 
   # self documenting perhaps?
