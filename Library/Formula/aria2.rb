@@ -6,7 +6,7 @@ class Aria2 < Formula
   sha1 '2f04a17567e6b793420a517b3fb0511f12c76289'
 
   depends_on 'pkg-config' => :build
-  depends_on 'sqlite' => :build
+  depends_on 'sqlite' => :build # required for --with-sqlite3 to support Chrome cookies
   depends_on :macos => :lion # Needs a c++11 compiler
 
   def install
