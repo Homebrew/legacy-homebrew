@@ -14,7 +14,12 @@ class Phantomjs < Formula
   end
 
   def patches
-    DATA
+    # Second patch fixes CoreText warnings on mavericks
+    # See https://github.com/ariya/phantomjs/issues/11418
+    [
+      DATA,
+      'https://github.com/ariya/phantomjs/commit/b67866b612e079f1df67e5bdac4cc6b053f0ff77.patch'
+    ]
   end
 
   def install
