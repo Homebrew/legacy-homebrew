@@ -15,7 +15,7 @@ class Gearman < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--with-mysql" if build.with? 'mysql'
+    args << "--without-mysql" unless build.with? 'mysql'
 
     system "./configure", *args
     system "make install"
