@@ -15,7 +15,7 @@ class Phantomjs < Formula
 
   def patches
     [
-      DATA,
+      'https://github.com/ariya/phantomjs/commit/fe6a96.patch',
       'https://github.com/ariya/phantomjs/commit/b67866.patch',
     ]
   end
@@ -31,24 +31,3 @@ class Phantomjs < Formula
     (share+'phantomjs').install 'examples'
   end
 end
-__END__
-diff --git a/src/qt/src/gui/kernel/qt_cocoa_helpers_mac_p.h b/src/qt/src/gui/kernel/qt_cocoa_helpers_mac_p.h
-index c068234..90d2ca0 100644
---- a/src/qt/src/gui/kernel/qt_cocoa_helpers_mac_p.h
-+++ b/src/qt/src/gui/kernel/qt_cocoa_helpers_mac_p.h
-@@ -110,6 +110,7 @@
- #include "private/qt_mac_p.h"
-
- struct HIContentBorderMetrics;
-+struct TabletProximityRec;
-
- #ifdef Q_WS_MAC32
- typedef struct _NSPoint NSPoint; // Just redefine here so I don't have to pull in all of Cocoa.
-@@ -155,7 +156,6 @@ bool qt_dispatchKeyEvent(void * /*NSEvent * */ keyEvent, QWidget *widgetToGetEve
- void qt_dispatchModifiersChanged(void * /*NSEvent * */flagsChangedEvent, QWidget *widgetToGetEvent);
- bool qt_mac_handleTabletEvent(void * /*QCocoaView * */view, void * /*NSEvent * */event);
- inline QApplication *qAppInstance() { return static_cast<QApplication *>(QCoreApplication::instance()); }
--struct ::TabletProximityRec;
- void qt_dispatchTabletProximityEvent(const ::TabletProximityRec &proxRec);
- Qt::KeyboardModifiers qt_cocoaModifiers2QtModifiers(ulong modifierFlags);
- Qt::KeyboardModifiers qt_cocoaDragOperation2QtModifiers(uint dragOperations);
