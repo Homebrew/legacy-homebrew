@@ -11,6 +11,11 @@ class Irssi < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
 
+  devel do
+    url 'http://irssi.org/files/irssi-0.8.16-rc1.tar.gz'
+    sha1 '40d560841d92ca3555e5dc5e2be922510cd348d5'
+  end
+
   # Fix Perl build flags and paths in man page
   def patches; DATA; end
 
@@ -20,7 +25,6 @@ class Irssi < Formula
       --sysconfdir=#{etc}
       --with-bot
       --with-proxy
-      --enable-ssl
       --enable-ipv6
       --with-socks
     ]
