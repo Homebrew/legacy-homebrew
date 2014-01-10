@@ -2,8 +2,8 @@ require 'formula'
 
 class PyenvVirtualenv < Formula
   homepage 'https://github.com/yyuu/pyenv-virtualenv'
-  url 'https://github.com/yyuu/pyenv-virtualenv/archive/v20130622.tar.gz'
-  sha1 '2e27b3b76931e6f0eecc4bccb3166d1abc130393'
+  url 'https://github.com/yyuu/pyenv-virtualenv/archive/v20140110.1.tar.gz'
+  sha1 '56e4823b13e00d17c2d73eb8e0c3e5eddc7e3d51'
 
   head 'https://github.com/yyuu/pyenv-virtualenv.git'
 
@@ -12,6 +12,5 @@ class PyenvVirtualenv < Formula
   def install
     ENV['PREFIX'] = prefix
     system "./install.sh"
-    ln_sf opt_prefix, "#{HOMEBREW_PREFIX}/var/lib/pyenv/plugins/#{name}"
   end
 end
