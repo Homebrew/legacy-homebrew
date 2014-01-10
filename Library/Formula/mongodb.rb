@@ -16,9 +16,7 @@ class Mongodb < Formula
     if build.stable?
       [
         # Fix Clang v8 build failure from build warnings and -Werror
-        'https://github.com/mongodb/mongo/commit/be4bc7.patch',
-        # Fixes crash on shell exit for 2.4.x
-        'https://github.com/mongodb/mongo/commit/670c98.patch'
+        'https://github.com/mongodb/mongo/commit/be4bc7.patch'
       ]
     end
   end
