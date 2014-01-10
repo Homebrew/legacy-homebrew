@@ -5,6 +5,8 @@ class Texapp < Formula
   url 'http://www.floodgap.com/software/texapp/dist0/0.6.06.txt'
   sha1 '5dbf1caf40bd70bc1ed121601c384bf9823ee1e4'
 
+  depends_on 'curl'
+
   def install
     bin.install "#{version}.txt" => "texapp"
   end
