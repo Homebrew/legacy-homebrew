@@ -7,12 +7,12 @@ class SeleniumServerStandalone < Formula
 
   def install
     libexec.install "selenium-server-standalone-#{version}.jar"
-    sh = libexec + "selenium-server-standalone"
+
+    sh = bin + "selenium-server-standalone"
     sh.write <<-EOS.undent
       #!/usr/bin/env bash
       java -jar #{libexec}/selenium-server-standalone-#{version}.jar $*
       EOS
-    chmod 0755, sh
     bin.install_symlink sh
   end
 
