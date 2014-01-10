@@ -15,8 +15,7 @@ class GmailBackup < Formula
 
     exec_script.write <<-EOS.undent
       #!/bin/bash
-      cd #{libexec}
-      exec ./gmail-backup.sh "$@"
+      PYTHONPATH="#{libexec}:$PYTHONPATH" exec python #{libexec/'gmail-backup.py'} "$@"
     EOS
   end
 
