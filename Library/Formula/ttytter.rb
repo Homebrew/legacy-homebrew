@@ -5,6 +5,8 @@ class Ttytter < Formula
   url 'http://www.floodgap.com/software/ttytter/dist2/2.1.00.txt'
   sha1 'dd20d55aa819699b3e39ca4c35bf390b3e074db3'
 
+  depends_on 'curl'
+
   def install
     bin.install "#{version}.txt" => "ttytter"
   end
