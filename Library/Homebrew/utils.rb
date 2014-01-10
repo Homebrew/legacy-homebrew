@@ -277,8 +277,17 @@ module GitHub extend self
   end
 
   def each_issue_matching(query, &block)
-    uri = ISSUES_URI + query
+    uri = ISSUES_URI + uri_escape(query)
     open(uri) { |f| Utils::JSON.load(f.read)['issues'].each(&block) }
+  end
+
+  def uri_escape(query)
+    if URI.respond_to?(:encode_www_form_component)
+      URI.encode_www_form_component(query)
+    else
+      require "erb"
+      ERB::Util.url_encode(query)
+    end
   end
 
   def issues_for_formula name
