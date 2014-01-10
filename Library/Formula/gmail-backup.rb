@@ -6,9 +6,12 @@ class GmailBackup < Formula
   head 'http://gmail-backup-com.googlecode.com/svn/trunk'
 
   def install
+    bin.install "gmail-backup.py" => "gmail-backup"
     libexec.install Dir["*"]
+
     ENV.prepend_path 'PYTHONPATH', libexec
-    (bin/'gmail-backup').write_env_script libexec/'gmail-backup.py', :PYTHONPATH => ENV['PYTHONPATH']
+
+    bin.env_script_all_files(libexec, :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
   def test
