@@ -7,18 +7,12 @@ class SeleniumServerStandalone < Formula
 
   def install
     libexec.install "selenium-server-standalone-#{version}.jar"
-
-    sh = bin + "selenium-server-standalone"
-    sh.write <<-EOS.undent
-      #!/usr/bin/env bash
-      java -jar #{libexec}/selenium-server-standalone-#{version}.jar $*
-      EOS
-    bin.install_symlink sh
+    bin.write_jar_script libexec/"selenium-server-standalone-#{version}.jar", "selenium-server"
   end
 
   def caveats; <<-EOS.undent
     The simplest way to run the server is via the included executable:
-        selenium-server-standalone -p 4444
+        selenium-server -p 4444
     EOS
   end
 
