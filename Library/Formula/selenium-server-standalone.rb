@@ -6,7 +6,20 @@ class SeleniumServerStandalone < Formula
   sha1 'f2391600481dd285002d04b66916fc4286ff70ce'
 
   def install
-    prefix.install "selenium-server-standalone-#{version}.jar"
+    libexec.install "selenium-server-standalone-#{version}.jar"
+    sh = libexec + "selenium-server-standalone"
+    sh.write <<-EOS.undent
+      #!/usr/bin/env bash
+      java -jar #{libexec}/selenium-server-standalone-#{version}.jar $*
+      EOS
+    chmod 0755, sh
+    bin.install_symlink sh
+  end
+
+  def caveats; <<-EOS.undent
+    The simplest way to run the server is via the included executable:
+        selenium-server-standalone -p 4444
+    EOS
   end
 
   plist_options :manual => "java -jar #{HOMEBREW_PREFIX}/opt/selenium-server-standalone/selenium-server-standalone-#{version}.jar -p 4444"
