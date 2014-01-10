@@ -28,6 +28,15 @@ class Afflib < Formula
     system "./configure", *args
     system "make install"
   end
+
+  def caveats
+    if build.include? 'osxfuse'
+      <<-EOS.undent
+        Make sure to follow the directions given by 'brew info osxfuse'
+        before trying to use a FUSE-based filesystem.
+      EOS
+    end
+  end
 end
 
 __END__
