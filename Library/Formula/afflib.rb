@@ -18,16 +18,14 @@ class Afflib < Formula
   def install
     system "sh bootstrap.sh"
 
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+ 
     if build.with? 'osxfuse'
-       ENV['CPPFLAGS'] = "-I/usr/local/include/osxfuse"
-       system "./configure", "--disable-dependency-tracking",
-                             "--enable-fuse",
-                             "--prefix=#{prefix}"
-    else
-      system "./configure", "--disable-dependency-tracking",
-                            "--prefix=#{prefix}"
+      ENV['CPPFLAGS'] = "-I/usr/local/include/osxfuse"
+      args << "--enable-fuse"
     end
 
+    system "./configure", *args
     system "make install"
   end
 end
