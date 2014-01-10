@@ -2,8 +2,8 @@ require 'formula'
 
 class Openrtsp < Formula
   homepage 'http://www.live555.com/openRTSP'
-  url 'http://www.live555.com/liveMedia/public/live.2013.12.21.tar.gz'
-  sha1 '0afd1f0f8e59c199ca073aa121b8147c3844905d'
+  url 'http://www.live555.com/liveMedia/public/live.2014.01.07.tar.gz'
+  sha1 '09fcf815a448d0ba27cff367099a241adde97a33'
 
   option "32-bit"
 
