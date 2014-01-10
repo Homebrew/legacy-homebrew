@@ -7,16 +7,8 @@ class GmailBackup < Formula
 
   def install
     libexec.install Dir["*"]
-
-    # bin.write_exec_script won't cut it here, because gmail-backup has to be
-    # run from within its install directory.
-
-    exec_script = bin/'gmail-backup'
-
-    exec_script.write <<-EOS.undent
-      #!/bin/bash
-      PYTHONPATH="#{libexec}:$PYTHONPATH" exec python #{libexec/'gmail-backup.py'} "$@"
-    EOS
+    ENV.prepend_path 'PYTHONPATH', libexec
+    (bin/'gmail-backup').write_env_script libexec/'gmail-backup.py', :PYTHONPATH => ENV['PYTHONPATH']
   end
 
   def test
