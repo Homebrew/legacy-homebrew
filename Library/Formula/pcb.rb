@@ -21,6 +21,7 @@ class Pcb < Formula
   depends_on 'glib'
   depends_on 'gtkglext'
   depends_on :x11
+  depends_on :tex if build.with? 'doc'
 
   # See comments in intltool formula
   depends_on 'XML::Parser' => :perl
