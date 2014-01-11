@@ -11,6 +11,15 @@ class Zopfli < Formula
     inreplace 'Makefile', 'gcc', ENV.cc
     system 'make'
     bin.install 'zopfli'
+    if build.head?
+      system 'make', 'zopflipng'
+      bin.install 'zopflipng'
+    end
+  end
+
+  def caveats; <<-EOS.undent
+    NOTE: zopflipng is built when this formula is compiled from HEAD.
+    EOS
   end
 
   test do
