@@ -8,6 +8,8 @@ class Pcb < Formula
 
   head 'git://git.geda-project.org/pcb.git'
 
+  option 'no-doc', "Don't build documentation."
+
   depends_on :autoconf
   depends_on :automake
   depends_on 'pkg-config' => :build
@@ -31,11 +33,13 @@ class Pcb < Formula
 
   def install
     system "./autogen.sh" if build.head?
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--disable-update-desktop-database",
+            "--disable-update-mime-database"]
+    args << "--disable-doc" if build.without? 'doc'
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-update-desktop-database",
-                          "--disable-update-mime-database"
+    system "./configure", *args
 
     system "make"
     system "make install"
