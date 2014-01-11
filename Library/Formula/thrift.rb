@@ -23,15 +23,20 @@ class Thrift < Formula
   depends_on 'boost'
   depends_on :python => :optional
 
-  # Includes are fixed in the upstream. Please remove this patch in the next version > 0.9.0
   def patches
     [
-      # Fix issue with C++11 and reserved-user-defined-literal
-      "https://gist.github.com/duedal/7156317/raw/a7edf1de9d092ef5b0a4f3fc3c048e1985248d36/thrifty.patch",
       # Apply THRIFT-2201 fix from master to 0.9.1 branch (required for clang to compile with C++11 support)
       "https://git-wip-us.apache.org/repos/asf?p=thrift.git;a=patch;h=836d95f9f00be73c6936d407977796181d1a506c",
-      # Tutorial includes both boost and std, so shared_ptr is ambigous with C++11 support enabled
-      "https://gist.github.com/duedal/7156317/raw/9fec9ed82d160f027730ec1790852135dd37ef9f/cpp-tutorial.patch"
+      # Apply THRIFT-667
+      "https://git-wip-us.apache.org/repos/asf?p=thrift.git;a=patch;h=12c09f44cb291b1ecc4074cb3a55775b375fa8b2",
+      # Apply THRIFT-1755
+      "https://git-wip-us.apache.org/repos/asf?p=thrift.git;a=patch;h=8cd3efe50a42975375e8ff3bc03306d9e4174314",
+      # Apply THRIFT-2045
+      "https://git-wip-us.apache.org/repos/asf?p=thrift.git;a=patch;h=282e440c6de219b7b8f32b01cc7eb599f534f33f",
+      "https://git-wip-us.apache.org/repos/asf?p=thrift.git;a=patch;h=9f9cd10e813ef574dd5578d78ca26a9088383d3a",
+      "https://git-wip-us.apache.org/repos/asf?p=thrift.git;a=patch;h=e957675647d3d7caafe842aa85cbd987e91b21f9",
+      # Apply THRIFT-2229 fix from master to 0.9.1 branch
+      "https://git-wip-us.apache.org/repos/asf?p=thrift.git;a=patch;h=5f2d34e5ab33651059a085525b3adbab6a877e6f"
     ]
   end
 
