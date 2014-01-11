@@ -26,7 +26,7 @@ class Thrift < Formula
   def patches
     # These patches are 0.9.1-specific and can go away once a newer
     # version is released:
-    unless build.head? or build.devel?
+    if build.stable?
       [
         # Apply THRIFT-2201 fix from master to 0.9.1 branch (required for clang to compile with C++11 support)
         "https://git-wip-us.apache.org/repos/asf?p=thrift.git;a=patch;h=836d95f9f00be73c6936d407977796181d1a506c",
@@ -45,7 +45,7 @@ class Thrift < Formula
   end
 
   def install
-    system "./bootstrap.sh" if build.head? or build.devel?
+    system "./bootstrap.sh" unless build.stable?
 
     exclusions = ["--without-ruby", "--without-tests", "--without-php_extension"]
 
