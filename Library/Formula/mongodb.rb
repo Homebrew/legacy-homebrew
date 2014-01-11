@@ -5,6 +5,12 @@ class Mongodb < Formula
   url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.9.tar.gz'
   sha1 '3aa495cf32769a09ee9532827391892d96337d6b'
 
+  bottle do
+    sha1 '04d49071102d86ac06f35ed9e4c855a677d97c68' => :mavericks
+    sha1 '2ee3ed1b44777ea740da87b952acdadf19084bd4' => :mountain_lion
+    sha1 'b4898545634c7015093036c260dca69bc96fa5b8' => :lion
+  end
+
   devel do
     url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.4.tar.gz'
     sha1 'ad40b93c9638178cd487c80502084ac3a9472270'
