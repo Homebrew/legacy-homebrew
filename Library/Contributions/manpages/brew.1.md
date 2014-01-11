@@ -3,7 +3,7 @@ brew(1) -- The missing package manager for OS X
 
 ## SYNOPSIS
 
-`brew` --version  
+`brew` --version<br>
 `brew` command [--verbose|-v] [options] [formula] ...
 
 ## DESCRIPTION
