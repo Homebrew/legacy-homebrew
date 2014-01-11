@@ -11,6 +11,10 @@ class Zopfli < Formula
     inreplace 'Makefile', 'gcc', ENV.cc
     system 'make'
     bin.install 'zopfli'
+    if build.head?
+      system 'make', 'zopflipng'
+      bin.install 'zopflipng'
+    end
   end
 
   test do
