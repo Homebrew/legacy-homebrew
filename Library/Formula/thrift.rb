@@ -43,8 +43,7 @@ class Thrift < Formula
   def install
     system "./bootstrap.sh" if build.head?
 
-    exclusions = ["--without-ruby"]
-    exclusions << "--without-tests"
+    exclusions = ["--without-ruby", "--without-tests", "--without-php_extension"]
 
     exclusions << "--without-python" unless build.with? "python"
     exclusions << "--without-haskell" unless build.include? "with-haskell"
@@ -55,7 +54,9 @@ class Thrift < Formula
 
     ENV.cxx11 if MacOS.version >= :mavericks && ENV.compiler == :clang
 
-    ENV["PY_PREFIX"] = prefix  # So python bindins don't install to /usr!
+    # Don't install extensions to /usr:
+    ENV["PY_PREFIX"] = prefix
+    ENV["PHP_PREFIX"] = prefix
 
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
@@ -72,9 +73,8 @@ class Thrift < Formula
       gem install thrift
 
     To install PHP bindings:
-      export PHP_PREFIX=/path/to/homebrew/thrift/0.9.1/php
-      export PHP_CONFIG_PREFIX=/path/to/homebrew/thrift/0.9.1/php_extensions
-      brew install thrift --with-php
+      brew install thrift-backport --with-php
+      extension available from josegonzalez/php tap
 
     EOS
   end
