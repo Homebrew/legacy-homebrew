@@ -2,12 +2,13 @@ require 'formula'
 
 class Mkvtoolnix < Formula
   homepage 'http://www.bunkus.org/videotools/mkvtoolnix/'
-  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-6.6.0.tar.xz'
-  sha1 'e0fb5713fcf21ab81bf187eeb108b05d1f53e347'
+  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-6.7.0.tar.xz'
+  sha1 '3322fdcc5be3f6b799703380584ab3565c576c9e'
 
   head 'https://github.com/mbunkus/mkvtoolnix.git'
 
   depends_on 'pkg-config' => :build
+  depends_on 'ruby' => :build if MacOS.version < :mavericks
   depends_on 'boost' => 'c++11'
   depends_on 'libvorbis'
   depends_on 'libmatroska' => 'c++11'
