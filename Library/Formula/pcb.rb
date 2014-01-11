@@ -8,6 +8,8 @@ class Pcb < Formula
 
   head 'git://git.geda-project.org/pcb.git'
 
+  option 'with-doc', "Build the documentation (requires LaTeX)."
+
   depends_on :autoconf
   depends_on :automake
   depends_on 'pkg-config' => :build
@@ -19,6 +21,7 @@ class Pcb < Formula
   depends_on 'glib'
   depends_on 'gtkglext'
   depends_on :x11
+  depends_on :tex if build.with? 'doc'
 
   # See comments in intltool formula
   depends_on 'XML::Parser' => :perl
@@ -31,11 +34,13 @@ class Pcb < Formula
 
   def install
     system "./autogen.sh" if build.head?
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--disable-update-desktop-database",
+            "--disable-update-mime-database"]
+    args << "--disable-doc" unless build.with? 'doc'
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-update-desktop-database",
-                          "--disable-update-mime-database"
+    system "./configure", *args
 
     system "make"
     system "make install"
