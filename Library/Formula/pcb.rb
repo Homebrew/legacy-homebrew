@@ -8,7 +8,7 @@ class Pcb < Formula
 
   head 'git://git.geda-project.org/pcb.git'
 
-  option 'no-doc', "Don't build documentation."
+  option 'with-doc', "Build the documentation (requires LaTeX)."
 
   depends_on :autoconf
   depends_on :automake
@@ -37,7 +37,7 @@ class Pcb < Formula
             "--prefix=#{prefix}",
             "--disable-update-desktop-database",
             "--disable-update-mime-database"]
-    args << "--disable-doc" if build.without? 'doc'
+    args << "--disable-doc" unless build.with? 'doc'
 
     system "./configure", *args
 
