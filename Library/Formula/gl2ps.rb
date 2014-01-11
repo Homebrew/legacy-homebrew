@@ -7,7 +7,7 @@ class Gl2ps < Formula
   head "http://geuz.org/gl2ps/src/gl2ps-svn.tgz"
 
   depends_on "cmake" => :build
-  depends_on 'libpng'
+  depends_on :libpng
 
   def install
     system "cmake", ".", *std_cmake_args
