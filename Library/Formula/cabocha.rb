@@ -2,14 +2,13 @@ require 'formula'
 
 class Cabocha < Formula
   homepage 'http://code.google.com/p/cabocha/'
-  url 'http://cabocha.googlecode.com/files/cabocha-0.66.tar.bz2'
-  sha1 '33172b7973239a53d98eabbd309f70d88e36c94c'
+  url 'http://cabocha.googlecode.com/files/cabocha-0.67.tar.bz2'
+  sha1 '457a9bd0d264a1146a5eb1c5a504dd90a8b51fb8'
 
   depends_on 'crf++'
   depends_on 'mecab'
 
-  # Fix finding unistd
-  def patches; DATA; end
+  option 'posset', 'choose default posset: IPA, JUMAN, UNIDIC'
 
   def install
     ENV["LIBS"] = '-liconv'
@@ -19,25 +18,13 @@ class Cabocha < Formula
       s.change_make_var! 'CXXFLAGS', ENV.cflags
     end
 
-    system "./configure", "--with-charset=utf8",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    posset = ARGV.value('posset') || "IPA"
+    args = ["--with-charset=utf8",
+            "--disable-dependency-tracking",
+            "--prefix=#{prefix}"]
+    args << "--with-posset=#{posset}"
+
+    system "./configure", *args
     system "make install"
   end
 end
-
-__END__
-diff --git a/src/utils.cpp b/src/utils.cpp
-index b0cee48..4ab074a 100644
---- a/src/utils.cpp
-+++ b/src/utils.cpp
-@@ -3,9 +3,7 @@
- //  $Id: utils.cpp 50 2009-05-03 08:25:36Z taku-ku $;
- //
- //  Copyright(C) 2001-2008 Taku Kudo <taku@chasen.org>
--#ifdef HAVE_UNISTD_H
- #include <unistd.h>
--#endif
- 
- #include <iostream>
- #include <fstream>
