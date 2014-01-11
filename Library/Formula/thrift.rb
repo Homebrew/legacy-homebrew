@@ -7,10 +7,10 @@ class Thrift < Formula
 
   head 'https://git-wip-us.apache.org/repos/asf/thrift.git'
 
-  if build.head? or build.devel?
-    depends_on :autoconf => :build
-    depends_on :automake => :build
-    depends_on :libtool => :build
+  unless build.stable?
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
     depends_on 'pkg-config' => :build
   end
 
