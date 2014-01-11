@@ -5,12 +5,12 @@ class Thrift < Formula
   url 'http://archive.apache.org/dist/thrift/0.9.1/thrift-0.9.1.tar.gz'
   sha1 'dc54a54f8dc706ffddcd3e8c6cd5301c931af1cc'
 
-  head do
-    url 'https://git-wip-us.apache.org/repos/asf/thrift.git', :branch => "master"
+  head 'https://git-wip-us.apache.org/repos/asf/thrift.git'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+  if build.head? or build.devel?
+    depends_on :autoconf => :build
+    depends_on :automake => :build
+    depends_on :libtool => :build
     depends_on 'pkg-config' => :build
   end
 
@@ -45,7 +45,7 @@ class Thrift < Formula
   end
 
   def install
-    system "./bootstrap.sh" if build.head?
+    system "./bootstrap.sh" if build.head? or build.devel?
 
     exclusions = ["--without-ruby", "--without-tests", "--without-php_extension"]
 
