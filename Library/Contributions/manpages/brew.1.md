@@ -275,6 +275,9 @@ Note that these flags should only appear after a command.
     Remove dead symlinks from the Homebrew prefix. This is generally not
     needed, but can be useful when doing DIY installations.
 
+  * `reinstall` <formula>:
+    Uninstall then install <formula>
+
   * `rm`, `remove`, `uninstall [--force]` <formula>:
     Uninstall <formula>.
 
