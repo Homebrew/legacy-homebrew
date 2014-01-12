@@ -15,6 +15,7 @@ class Xdu < Formula
   def install
     ENV["IMAKECPP"] = "cpp"
     ENV["DESTDIR"] = "#{prefix}"
+    ENV["HOMEBREW_X11_LIB"] = "#{MacOS::X11.lib}"
 
     system "xmkmf"
     system "make install"
@@ -32,7 +33,7 @@ diff -u a/Imakefile b/Imakefile
             OBJS = xdu.o xwin.o
 +CCOPTIONS = -Wno-return-type
 +PREPROCESSCMD = cpp
-+XAWLIB = -L/usr/X11/lib -lXaw
++XAWLIB = "-L${HOMEBREW_X11_LIB}" -lXaw
  
  ComplexProgramTarget(xdu)
  InstallAppDefaults(XDu)
