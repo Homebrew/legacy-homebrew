@@ -13,6 +13,7 @@ Troubleshooting:
   brew doctor
   brew install -vd FORMULA
   brew [--env | --config]
+  brew test [FORMULA...]
 
 Brewing:
   brew create [URL [--no-fetch]]
