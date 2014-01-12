@@ -12,7 +12,7 @@ class Halibut < Formula
     mkdir_p "#{man1}"
 
     system "make", "prefix=#{prefix}", "mandir=#{man}", "all"
-    cd "doc/" do
+    cd "doc" do
       system "make", "prefix=#{prefix}", "mandir=#{man}"
     end
     system "make", "prefix=#{prefix}", "mandir=#{man}", "install"
