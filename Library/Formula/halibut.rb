@@ -6,8 +6,8 @@ class Halibut < Formula
   sha1 '1e4643faf2bb4e1843740b8c70635d3d33bb7989'
 
   def install
-    mkdir_p "#{bin}"
-    mkdir_p "#{man1}"
+    bin.mkpath
+    man1.mkpath
 
     system "make", "prefix=#{prefix}", "mandir=#{man}", "all"
     cd "doc" do
@@ -22,10 +22,8 @@ class Halibut < Formula
 
     # Test converting to HTML.
     (testpath/'sample.but').write('Hello, world!')
-    # Halibut doesn't accept fully qualified paths in the --html arg, so cd in.
-    cd testpath do
-      system "#{bin}/halibut", "--html=sample.html", "sample.but"
-    end
+    system "#{bin}/halibut", "--html=sample.html", "sample.but"
+
     assert_match /<p>\nHello, world!\n<\/p>/, (testpath/'sample.html').read()
   end
 end
