@@ -97,6 +97,10 @@ module VersionAssertions
   def assert_version_nil url
     assert_nil Version.parse(url)
   end
+
+  def assert_version_tokens tokens, version
+    assert_equal tokens, version.send(:tokens).map(&:to_s)
+  end
 end
 
 module Test::Unit::Assertions
