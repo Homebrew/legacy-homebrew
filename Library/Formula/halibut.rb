@@ -17,6 +17,15 @@ class Halibut < Formula
   end
 
   test do
+    # Initial sanity test
     system "#{bin}/halibut", "--version"
+
+    # Test converting to HTML.
+    (testpath/'sample.but').write('Hello, world!')
+    # Halibut doesn't accept fully qualified paths in the --html arg, so cd in.
+    cd testpath do
+      system "#{bin}/halibut", "--html=sample.html", "sample.but"
+    end
+    assert_match /<p>\nHello, world!\n<\/p>/, (testpath/'sample.html').read()
   end
 end
