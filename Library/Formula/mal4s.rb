@@ -2,8 +2,8 @@ require 'formula'
 
 class Mal4s < Formula
   homepage 'https://github.com/secure411dotorg/mal4s/'
-  url 'https://service.dissectcyber.com/mal4s/mal4s-1.1.0.tar.gz'
-  sha1 '6431784384b11deaf4448b7f94bbb6eb4877a66e'
+  url 'https://service.dissectcyber.com/mal4s/mal4s-1.1.2.tar.gz'
+  sha1 'a99b2ffb9d2e1395c8f38a27108611611ca925df'
 
   head 'https://github.com/secure411dotorg/mal4s.git'
 
@@ -33,6 +33,6 @@ class Mal4s < Formula
   end
 
   test do
-    system "#{bin}/mal4s", "--help"
+    system "#{bin}/mal4s", "--stop-at-end", "#{share}/mal4s/sample--newns.mal4s"
   end
 end
