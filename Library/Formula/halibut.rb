@@ -6,8 +6,6 @@ class Halibut < Formula
   sha1 '1e4643faf2bb4e1843740b8c70635d3d33bb7989'
 
   def install
-    ENV.deparallelize
-
     mkdir_p "#{bin}"
     mkdir_p "#{man1}"
 
