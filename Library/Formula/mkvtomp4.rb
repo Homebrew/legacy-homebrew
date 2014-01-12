@@ -11,9 +11,13 @@ class Mkvtomp4 < Formula
   depends_on :python
 
   def install
+    ENV.prepend_create_path 'PYTHONPATH', lib+'python2.7/site-packages'
+
     system "make"
     system "python", "setup.py", "install", "--prefix=#{prefix}"
+
     mv bin/'mkvtomp4.py', bin/'mkvtomp4'
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
   test do
