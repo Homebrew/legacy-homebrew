@@ -2,8 +2,8 @@ require 'formula'
 
 class Pdfmarks < Formula
   homepage 'https://bitbucket.org/alexreg/pdfmarks'
-  url 'https://bitbucket.org/alexreg/pdfmarks/get/0.1.tar.gz'
-  sha1 '8897430451ae0d46e5a507710f9c3f42af5c8d90'
+  url 'https://bitbucket.org/alexreg/pdfmarks/get/v0.2.tar.gz'
+  sha1 '75943601cfb3b8aed110357a152838b86507403b'
 
   depends_on 'ghostscript'
 
@@ -13,9 +13,9 @@ class Pdfmarks < Formula
       s.gsub! "\"pdfmarks.ps\"", "\"#{share}/pdfmarks.ps\""
     end
 
-    share.install('pdfmarks.ps')
-    libexec.install('common')
-    bin.install('pdfmarks')
+    share.install 'pdfmarks.ps'
+    libexec.install 'common'
+    bin.install 'pdfmarks'
   end
 
   test do
