@@ -2,8 +2,8 @@ require 'formula'
 
 class Tomcat < Formula
   homepage 'http://tomcat.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.47/bin/apache-tomcat-7.0.47.tar.gz'
-  sha1 'ea54881535fccb3dfd7da122358d983297d69196'
+  url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.50/bin/apache-tomcat-7.0.50.tar.gz'
+  sha1 '5f8d82b6f142a7b4936680a6bd774bb7330b862e'
 
   option "with-fulldocs", "Install full documentation locally"
 
@@ -19,9 +19,9 @@ class Tomcat < Formula
   end
 
   resource 'fulldocs' do
-    url 'http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-7/v7.0.47/bin/apache-tomcat-7.0.47-fulldocs.tar.gz'
-    version '7.0.47'
-    sha1 '31d26adb234c4b58a74ad717aaf83b39f67e8ea3'
+    url 'http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-7/v7.0.50/bin/apache-tomcat-7.0.50-fulldocs.tar.gz'
+    version '7.0.50'
+    sha1 '86a913223582f7c7e4fbf8d88f89870f5b1fd81b'
   end
 
   # Keep log folders
