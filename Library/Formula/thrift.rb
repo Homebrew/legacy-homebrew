@@ -77,7 +77,7 @@ class Thrift < Formula
       gem install thrift
 
     To install PHP bindings:
-      brew install thrift-backport --with-php
+      brew install thrift --with-php
       extension available from josegonzalez/php tap
 
     EOS
