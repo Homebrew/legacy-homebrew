@@ -1,4 +1,3 @@
-require 'open-uri'
 require 'utils/json'
 require 'erb'
 
@@ -36,6 +35,7 @@ class AbstractDownloadStrategy
   def fetch; end
   def stage; end
   def cached_location; end
+  def clear_cache; end
 end
 
 class VCSDownloadStrategy < AbstractDownloadStrategy
@@ -64,6 +64,10 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   def cached_location
     @clone
   end
+
+  def clear_cache
+    cached_location.rmtree if cached_location.exist?
+  end
 end
 
 class CurlDownloadStrategy < AbstractDownloadStrategy
@@ -85,6 +89,10 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
   def cached_location
     tarball_path
+  end
+
+  def clear_cache
+    [cached_location, temporary_path].each { |f| f.unlink if f.exist? }
   end
 
   def downloaded_size
@@ -154,6 +162,9 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when :xz
       with_system_path { safe_system "#{xzpath} -dc \"#{tarball_path}\" | tar xf -" }
       chdir
+    when :lzip
+      with_system_path { safe_system "#{lzippath} -dc \"#{tarball_path}\" | tar xf -" }
+      chdir
     when :pkg
       safe_system '/usr/sbin/pkgutil', '--expand', tarball_path, basename_without_params
       chdir
@@ -175,6 +186,10 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
   def xzpath
     "#{HOMEBREW_PREFIX}/opt/xz/bin/xz"
+  end
+
+  def lzippath
+    "#{HOMEBREW_PREFIX}/opt/lzip/bin/lzip"
   end
 
   def chdir
@@ -208,14 +223,36 @@ end
 
 # Detect and download from Apache Mirror
 class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
-  def _fetch
-    mirrors = Utils::JSON.load(open("#{@url}&asjson=1").read)
-    url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
+  def apache_mirrors
+    rd, wr = IO.pipe
+    buf = ""
 
-    ohai "Best Mirror #{url}"
-    curl url, '-C', downloaded_size, '-o', temporary_path
+    pid = fork do
+      rd.close
+      $stdout.reopen(wr)
+      $stderr.reopen(wr)
+      curl "#{@url}&asjson=1"
+    end
+    wr.close
+
+    rd.readline if ARGV.verbose? # Remove Homebrew output
+    buf << rd.read until rd.eof?
+    rd.close
+    Process.wait(pid)
+    buf
+  end
+
+  def _fetch
+    return super if @tried_apache_mirror
+    @tried_apache_mirror = true
+
+    mirrors = Utils::JSON.load(apache_mirrors)
+    @url = mirrors.fetch('preferred') + mirrors.fetch('path_info')
+
+    ohai "Best Mirror #{@url}"
+    super
   rescue IndexError, Utils::JSON::Error
-    raise "Couldn't determine mirror. Try again later."
+    raise CurlDownloadStrategyError, "Couldn't determine mirror, try again later."
   end
 end
 
@@ -328,13 +365,19 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     @clone.join(".svn").directory?
   end
 
+  def repo_url
+    `svn info '#{@clone}' 2>/dev/null`.strip[/^URL: (.+)$/, 1]
+  end
+
   def fetch
     @url = @url.sub(/^svn\+/, '') if @url =~ %r[^svn\+http://]
     ohai "Checking out #{@url}"
 
+    clear_cache unless @url.chomp("/") == repo_url or quiet_system 'svn', 'switch', @url, @clone
+
     if @clone.exist? and not repo_valid?
       puts "Removing invalid SVN repo from cache"
-      @clone.rmtree
+      clear_cache
     end
 
     case @ref_type
@@ -364,7 +407,7 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 
   def get_externals
-    `'#{shell_quote('svn')}' propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
+    `svn propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
       name, url = line.split(/\s+/)
       yield name, url
     end
@@ -437,7 +480,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
       end
     elsif @clone.exist?
       puts "Removing invalid .git repo from cache"
-      FileUtils.rm_rf @clone
+      clear_cache
       clone_repo
     else
       clone_repo
@@ -472,8 +515,15 @@ class GitDownloadStrategy < VCSDownloadStrategy
     @ref_type != :revision and host_supports_depth?
   end
 
+  SHALLOW_CLONE_WHITELIST = [
+    %r{git://},
+    %r{https://github\.com},
+    %r{http://git\.sv\.gnu\.org},
+    %r{http://llvm\.org},
+  ]
+
   def host_supports_depth?
-    @url =~ %r{git://} or @url =~ %r{https://github.com/}
+    SHALLOW_CLONE_WHITELIST.any? { |rx| rx === @url }
   end
 
   def repo_valid?
@@ -557,6 +607,15 @@ class GitDownloadStrategy < VCSDownloadStrategy
 end
 
 class CVSDownloadStrategy < VCSDownloadStrategy
+  def cvspath
+    @path ||= %W[
+      /usr/bin/cvs
+      #{HOMEBREW_PREFIX}/bin/cvs
+      #{HOMEBREW_PREFIX}/opt/cvs/bin/cvs
+      #{which("cvs")}
+      ].find { |p| File.executable? p }
+  end
+
   def cache_tag; "cvs" end
 
   def fetch
@@ -570,12 +629,12 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 
     unless @clone.exist?
       HOMEBREW_CACHE.cd do
-        safe_system '/usr/bin/cvs', '-d', url, 'login'
-        safe_system '/usr/bin/cvs', '-d', url, 'checkout', '-d', cache_filename("cvs"), mod
+        safe_system cvspath, '-d', url, 'login'
+        safe_system cvspath, '-d', url, 'checkout', '-d', cache_filename("cvs"), mod
       end
     else
       puts "Updating #{@clone}"
-      @clone.cd { safe_system '/usr/bin/cvs', 'up' }
+      @clone.cd { safe_system cvspath, 'up' }
     end
   end
 
@@ -605,7 +664,7 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
   def cache_tag; "hg" end
 
   def hgpath
-    # #{HOMEBREW_PREFIX}/share/python/hg is deprecated, but we levae it in for a while
+    # Note: #{HOMEBREW_PREFIX}/share/python/hg is deprecated
     @path ||= %W[
       #{which("hg")}
       #{HOMEBREW_PREFIX}/bin/hg
@@ -622,7 +681,7 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
       @clone.cd { quiet_safe_system hgpath, 'pull', '--update' }
     elsif @clone.exist?
       puts "Removing invalid hg repo from cache"
-      @clone.rmtree
+      clear_cache
       clone_repo
     else
       clone_repo
@@ -673,7 +732,7 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
       @clone.cd { safe_system bzrpath, 'update' }
     elsif @clone.exist?
       puts "Removing invalid bzr repo from cache"
-      @clone.rmtree
+      clear_cache
       clone_repo
     else
       clone_repo

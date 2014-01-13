@@ -6,7 +6,6 @@ class Omniorb < Formula
   sha1 'e039eba5f63458651cfdc8a67c664c1ce4134540'
 
   depends_on 'pkg-config' => :build
-  depends_on :python => :recommended
 
   resource 'bindings' do
     url 'http://downloads.sourceforge.net/project/omniorb/omniORBpy/omniORBpy-3.7/omniORBpy-3.7.tar.bz2'
@@ -23,23 +22,14 @@ class Omniorb < Formula
     system "make"
     system "make install"
 
-    python do
-      resource('bindings').stage do
-        system "./configure", "--prefix=#{prefix}"
-        system "make install"
-      end
+    resource('bindings').stage do
+      system "./configure", "--prefix=#{prefix}"
+      system "make install"
     end
-  end
-
-  def caveats
-    python.standard_caveats if python
   end
 
   test do
     system "#{bin}/omniidl", "-h"
-    python do
-      system python, "-c", %(import omniORB; print 'omniORBpy', omniORB.__version__)
-    end
   end
 end
 

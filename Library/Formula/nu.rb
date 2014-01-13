@@ -19,29 +19,11 @@ class Nu < Formula
   end
 
   def install
-
     ENV['PREFIX'] = prefix
 
-    inreplace "Makefile" do |s|
-      cflags = s.get_make_var "CFLAGS"
-      s.change_make_var! "CFLAGS", "#{cflags} #{ENV.cppflags}"
-      # nu hardcodes its compiler paths to a location which no longer works
-      # This should work for both Xcode-only and CLT-only systems
-      s.gsub! "$(DEVROOT)/usr/bin/clang", ENV.cc
-    end
-
     inreplace "Nukefile" do |s|
-      s.gsub!'"#{DEVROOT}/usr/bin/clang"', "\"#{ENV.cc}\""
-      case Hardware.cpu_type
-      when :intel
-        arch = :i386
-      when :ppc
-        arch = :ppc
-      end
-      arch = :x86_64 if arch == :i386 && Hardware.is_64_bit?
-      s.sub!(/^;;\(set @arch '\("i386"\)\)$/, "(set @arch '(\"#{arch}\"))") unless arch.nil?
       s.gsub!('(SH "sudo ', '(SH "') # don't use sudo to install
-      s.gsub!('#{@destdir}/Library/Frameworks', '#{@prefix}/Library/Frameworks')
+      s.gsub!('#{@destdir}/Library/Frameworks', '#{@prefix}/Frameworks')
       s.sub! /^;; source files$/, <<-EOS
 ;; source files
 (set @framework_install_path "#{frameworks}")
@@ -56,7 +38,7 @@ EOS
   end
 
   def caveats
-    if self.installed? and File.exists? frameworks+"Nu.framework"
+    if self.installed? and File.exist? frameworks+"Nu.framework"
       return <<-EOS.undent
         Nu.framework was installed to:
           #{frameworks}/Nu.framework

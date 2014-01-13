@@ -2,8 +2,8 @@ require 'formula'
 
 class Jruby < Formula
   homepage 'http://www.jruby.org'
-  url 'http://jruby.org.s3.amazonaws.com/downloads/1.7.5/jruby-bin-1.7.5.tar.gz'
-  sha1 'ffe25392764db210cf385e61c4f0a410c6f2d32d'
+  url 'http://jruby.org.s3.amazonaws.com/downloads/1.7.10/jruby-bin-1.7.10.tar.gz'
+  sha1 '5ec267dd3ddaa6e27801692a7080204067662289'
 
   def install
     # Remove Windows files

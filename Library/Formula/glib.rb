@@ -2,8 +2,8 @@ require 'formula'
 
 class Glib < Formula
   homepage 'http://developer.gnome.org/glib/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.38/glib-2.38.1.tar.xz'
-  sha256 '01906c62ac666d2ab3183cc07261b2536fab7b211c6129ab66b119c2af56d159'
+  url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.38/glib-2.38.2.tar.xz'
+  sha256 '056a9854c0966a0945e16146b3345b7a82562a5ba4d5516fd10398732aea5734'
 
   option :universal
   option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
@@ -41,16 +41,12 @@ class Glib < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    # -w is said to causes gcc to emit spurious errors for this package
-    ENV.enable_warnings if ENV.compiler == :gcc
-
     # Disable dtrace; see https://trac.macports.org/ticket/30413
     args = %W[
       --disable-maintainer-mode
       --disable-dependency-tracking
       --disable-silent-rules
       --disable-dtrace
-      --disable-modular-tests
       --disable-libelf
       --prefix=#{prefix}
       --localstatedir=#{var}
@@ -69,10 +65,8 @@ class Glib < Formula
     system "ulimit -n 1024; make check" if build.include? 'test'
     system "make install"
 
-    # This sucks; gettext is Keg only to prevent conflicts with the wider
-    # system, but pkg-config or glib is not smart enough to have determined
-    # that libintl.dylib isn't in the DYLIB_PATH so we have to add it
-    # manually.
+    # `pkg-config --libs glib-2.0` includes -lintl, and gettext itself does not
+    # have a pkgconfig file, so we add gettext lib and include paths here.
     gettext = Formula.factory('gettext').opt_prefix
     inreplace lib+'pkgconfig/glib-2.0.pc' do |s|
       s.gsub! 'Libs: -L${libdir} -lglib-2.0 -lintl',

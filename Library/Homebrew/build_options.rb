@@ -7,6 +7,7 @@ class BuildOptions
 
   attr_accessor :args
   attr_accessor :universal
+  attr_accessor :cxx11
   attr_reader :options
   protected :options
 
@@ -25,6 +26,7 @@ class BuildOptions
     description ||= case name.to_s
       when "universal" then "Build a universal binary"
       when "32-bit" then "Build 32-bit only"
+      when "c++11" then "Build using C++11 mode"
       end.to_s
 
     @options << Option.new(name, description)
@@ -59,7 +61,13 @@ class BuildOptions
     args.include? '--' + name
   end
 
-  def with? name
+  def with? val
+    if val.respond_to?(:option_name)
+      name = val.option_name
+    else
+      name = val
+    end
+
     if has_option? "with-#{name}"
       include? "with-#{name}"
     elsif has_option? "without-#{name}"
@@ -94,6 +102,11 @@ class BuildOptions
     universal || args.include?('--universal') && has_option?('universal')
   end
 
+  # True if the user requested to enable C++11 mode.
+  def cxx11?
+    cxx11 || args.include?('--c++11') && has_option?('c++11')
+  end
+
   # Request a 32-bit only build.
   # This is needed for some use-cases though we prefer to build Universal
   # when a 32-bit version is needed.
@@ -125,7 +138,8 @@ class BuildOptions
   end
 
   def opposite_of option
-    option = Option.new option
+    option = Option.new(option) unless Option === option
+
     if option.name =~ /^with-(.+)$/
       Option.new("without-#{$1}")
     elsif option.name =~ /^without-(.+)$/

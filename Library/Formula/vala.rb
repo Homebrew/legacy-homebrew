@@ -2,13 +2,12 @@ require 'formula'
 
 class Vala < Formula
   homepage 'http://live.gnome.org/Vala'
-  url 'http://ftp.gnome.org/pub/gnome/sources/vala/0.22/vala-0.22.0.tar.xz'
-  sha1 '1421a19c03ea565599e2df4ead6864cca761020a'
+  url 'http://ftp.gnome.org/pub/gnome/sources/vala/0.23/vala-0.23.1.tar.xz'
+  sha1 'e69b34c6c0e52231ae272bb21b4668d0ac68cd1d'
 
   head 'git://git.gnome.org/vala'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'glib'
 

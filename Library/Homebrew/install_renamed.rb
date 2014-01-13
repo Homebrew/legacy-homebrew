@@ -15,7 +15,7 @@ module InstallRenamed
   private
 
   def append_default_if_different src, dst
-    if File.file? dst and !FileUtils.identical?(src, dst) and !ENV['HOMEBREW_GIT_ETC']
+    if File.file? dst and !FileUtils.identical?(src, dst)
       dst += ".default"
     end
     dst

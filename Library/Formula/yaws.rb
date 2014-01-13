@@ -2,8 +2,8 @@ require 'formula'
 
 class Yaws < Formula
   homepage 'http://yaws.hyber.org'
-  url 'https://github.com/klacke/yaws/archive/yaws-1.97.tar.gz'
-  sha1 'b280e8e181ec3ded73c6ba7fa0ec9ebf7af32b1a'
+  url 'https://github.com/klacke/yaws/archive/yaws-1.98.tar.gz'
+  sha1 'a4628ef14f13ac33e4ace1b679e600a9fbd2f1ba'
   head 'https://github.com/klacke/yaws.git'
 
   option "without-yapp", "Omit yaws applications"

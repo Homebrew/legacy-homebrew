@@ -1,3 +1,5 @@
+require 'formula'
+
 module SharedEnvExtension
   CC_FLAG_VARS = %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
   FC_FLAG_VARS = %w{FCFLAGS FFLAGS}
@@ -6,7 +8,7 @@ module SharedEnvExtension
   GNU_GCC_VERSIONS = (3..9)
   GNU_GCC_REGEXP = /gcc-(4\.[3-9])/
 
-  COMPLER_ALIASES = {'gcc' => 'gcc-4.2', 'llvm' => 'llvm-gcc'}
+  COMPILER_ALIASES = {'gcc' => 'gcc-4.2', 'llvm' => 'llvm-gcc'}
   COMPILER_SYMBOL_MAP = { 'gcc-4.0'  => :gcc_4_0,
                           'gcc-4.2'  => :gcc,
                           'llvm-gcc' => :llvm,
@@ -53,6 +55,12 @@ module SharedEnvExtension
 
   def prepend_path key, path
     prepend key, path, File::PATH_SEPARATOR if File.directory? path
+  end
+
+  def prepend_create_path key, path
+    path = Pathname.new(path) unless path.is_a? Pathname
+    path.mkpath
+    prepend_path key, path
   end
 
   def remove keys, value
@@ -102,10 +110,8 @@ module SharedEnvExtension
     elsif ARGV.include? '--use-clang'
       :clang
     elsif self['HOMEBREW_CC']
-      cc = COMPLER_ALIASES.fetch(self['HOMEBREW_CC'], self['HOMEBREW_CC'])
-      COMPILER_SYMBOL_MAP.fetch(cc) do |invalid|
-        MacOS.default_compiler
-      end
+      cc = COMPILER_ALIASES.fetch(self['HOMEBREW_CC'], self['HOMEBREW_CC'])
+      COMPILER_SYMBOL_MAP.fetch(cc) { MacOS.default_compiler }
     else
       MacOS.default_compiler
     end
@@ -116,11 +122,7 @@ module SharedEnvExtension
   # If no valid compiler is found, raises an exception.
   def validate_cc!(formula)
     if formula.fails_with? ENV.compiler
-      begin
-        send CompilerSelector.new(formula).compiler
-      rescue CompilerSelectionError => e
-        raise e.message
-      end
+      send CompilerSelector.new(formula).compiler
     end
   end
 

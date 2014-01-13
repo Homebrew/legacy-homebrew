@@ -5,16 +5,16 @@ class Imagemagick < Formula
 
   # upstream's stable tarballs tend to disappear, so we provide our own mirror
   # Tarball and checksum from: http://www.imagemagick.org/download
-  url 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.7-0.tar.bz2'
-  sha256 '841f34ffd92cf043b2b5ec949887c6e09e4af53812fd0f4b0186f8954cb0910f'
+  url 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.7-7.tar.bz2'
+  sha256 '4d8b0889d78cca2f1501b5f66f61c5efcd2f585a03002f2a7b407c11808e5e28'
 
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
     :using => UnsafeSubversionDownloadStrategy
 
   bottle do
-    sha1 'f352bf49c3f5376f4536b62f0f2c90f60df18f66' => :mountain_lion
-    sha1 '68b4f53526f8703df0dafbeffd8b793e193cc334' => :lion
-    sha1 '40110c9eded6425c6863de96f907edc0ab51cb63' => :snow_leopard
+    sha1 '4448b26ad8efd3552c1523a56a828051a47d3e8f' => :mavericks
+    sha1 '94fac9505724f27d4e48d482a41034e3e711f007' => :mountain_lion
+    sha1 '589843d0771e61fe68cf7a9eb02d8e6b947b86a2' => :lion
   end
 
   option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
@@ -23,7 +23,7 @@ class Imagemagick < Formula
   option 'with-perl', 'enable build/install of PerlMagick'
   option 'without-magick-plus-plus', 'disable build/install of Magick++'
 
-  depends_on :libltdl
+  depends_on :libtool => :run
 
   depends_on 'pkg-config' => :build
 
@@ -45,9 +45,6 @@ class Imagemagick < Formula
   depends_on 'webp' => :optional
 
   opoo '--with-ghostscript is not recommended' if build.with? 'ghostscript'
-  if build.with? 'openmp' and (MacOS.version == :leopard or ENV.compiler == :clang)
-    opoo '--with-openmp is not supported on Leopard or with Clang'
-  end
 
   def pour_bottle?
     # If libtool is keg-only it currently breaks the bottle.
@@ -64,9 +61,9 @@ class Imagemagick < Formula
              "--enable-shared",
              "--disable-static",
              "--without-pango",
-             "--with-modules"]
+             "--with-modules",
+             "--disable-openmp"]
 
-    args << "--disable-openmp" unless build.include? 'enable-openmp'
     args << "--disable-opencl" if build.include? 'disable-opencl'
     args << "--without-gslib" unless build.with? 'ghostscript'
     args << "--without-perl" unless build.with? 'perl'

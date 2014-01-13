@@ -7,6 +7,8 @@ class Salt < Formula
 
   depends_on :fortran
 
+  conflicts_with 'fastbit', :because => 'both install `include/filter.h`'
+
   resource 'SALT2' do
     url 'http://supernovae.in2p3.fr/~guy/salt-dev/download/salt2_model_data-2-0.tar.gz'
     sha1 '271e67d764c98b423dfaa264b9baf759a46acff1'

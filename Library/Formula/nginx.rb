@@ -2,12 +2,12 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.4.3.tar.gz'
-  sha1 '8d0c34c84ce6dd8ba4442889e8f2599044c90930'
+  url 'http://nginx.org/download/nginx-1.4.4.tar.gz'
+  sha1 '304d5991ccde398af2002c0da980ae240cea9356'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.5.6.tar.gz'
-    sha1 '24d84eccc7fecd98d19330ef708d3ea29031abc7'
+    url 'http://nginx.org/download/nginx-1.5.8.tar.gz'
+    sha1 '5c02b293a59c32172d2d5b3c52da7fe0afc179ef'
   end
 
   head 'http://hg.nginx.org/nginx/', :using => :hg
@@ -30,10 +30,10 @@ class Nginx < Formula
   skip_clean 'logs'
 
   def passenger_config_args
-    passenger_root = `passenger-config --root`.chomp
+    nginx_ext = `passenger-config --nginx-addon-dir`.chomp
 
-    if File.directory?(passenger_root)
-      return "--add-module=#{passenger_root}/ext/nginx"
+    if File.directory?(nginx_ext)
+      return "--add-module=#{nginx_ext}"
     end
 
     puts "Unable to install nginx with passenger support. The passenger"
@@ -125,7 +125,7 @@ class Nginx < Formula
   def passenger_caveats; <<-EOS.undent
 
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf:
-      passenger_root #{HOMEBREW_PREFIX}/opt/passenger/libexec
+      passenger_root #{HOMEBREW_PREFIX}/opt/passenger/libexec/lib/phusion_passenger/locations.ini
       passenger_ruby /usr/bin/ruby
     EOS
   end

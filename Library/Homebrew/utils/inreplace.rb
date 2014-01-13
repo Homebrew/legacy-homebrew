@@ -12,8 +12,11 @@ module Utils
           after = after.to_s if Symbol === after
           sub = s.gsub!(before, after)
           if sub.nil?
-            opoo "inreplace in '#{path}' failed"
-            puts "Expected replacement of '#{before}' with '#{after}'"
+            message = <<-EOS.undent
+              inreplace in '#{path}' failed
+              Expected replacement of '#{before}' with '#{after}'
+            EOS
+            ARGV.homebrew_developer? ? odie(message) : opoo(message)
           end
         end
 

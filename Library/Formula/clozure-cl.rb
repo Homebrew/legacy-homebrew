@@ -6,6 +6,8 @@ class ClozureCl < Formula
   version '1.9'
   sha1 '589b94093fc356c458ab288aceb5a3d5d9d7b829'
 
+  conflicts_with 'cclive', :because => 'both install a ccl binary'
+
   def install
     # Get rid of all the .svn dirs, that for some reason are
     # included in the tarball

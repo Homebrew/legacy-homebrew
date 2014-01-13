@@ -12,9 +12,10 @@ class Unar < Formula
 
   bottle do
     cellar :any
-    sha1 '18a517d2e2e79da17567fc2457e1a398336de27b' => :mountain_lion
-    sha1 '84b82f23f0a053f4d3a6ee9eb0d1edd66cc1f97c' => :lion
-    sha1 'c0313a5a1c6fad5b4ba6b3ac729871bdc76839bd' => :snow_leopard
+    revision 2
+    sha1 'cb7c91f0aab580a0d4edb2db4934b7879cb468e3' => :mavericks
+    sha1 '35f2b3655adfed8daed2eee14f757c0ada553c00' => :mountain_lion
+    sha1 'a6254624528195ab69b6adf3b649571814b4d638' => :lion
   end
 
   def install

@@ -31,6 +31,22 @@ when '-v'
   exit 0 if ARGV.length == 1
 end
 
+# Check for bad xcode-select before anything else, because `doctor` and
+# many other things will hang
+# Note that this bug was fixed in 10.9
+if OS.mac? && `xcode-select -print-path 2>/dev/null`.chomp == '/' && MacOS.version < :mavericks
+  ofail <<-EOS.undent
+  Your xcode-select path is currently set to '/'.
+  This causes the `xcrun` tool to hang, and can render Homebrew unusable.
+  If you are using Xcode, you should:
+    sudo xcode-select -switch /Applications/Xcode.app
+  Otherwise, you should:
+    sudo rm -rf /usr/share/xcode-select
+  EOS
+
+  exit 1
+end
+
 case HOMEBREW_PREFIX.to_s when '/', '/usr'
   # it may work, but I only see pain this route and don't want to support it
   abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
@@ -70,16 +86,12 @@ begin
              'abv' => 'info',
              'dr' => 'doctor',
              '--repo' => '--repository',
-             'environment' => '--env'  # same as gem
+             'environment' => '--env',
+             '-c1' => '--config',
              }
 
   cmd = ARGV.shift
   cmd = aliases[cmd] if aliases[cmd]
-
-  if cmd == '-c1' # Shortcut for one line of configuration
-    cmd = '--config'
-    ARGV.unshift('-1')
-  end
 
   sudo_check = Set.new %w[ install link pin unpin upgrade ]
 
@@ -90,7 +102,7 @@ begin
   end
 
   # Add contributed commands to PATH before checking.
-  ENV['PATH'] += ":#{HOMEBREW_REPOSITORY}/Library/Contributions/cmd"
+  ENV['PATH'] += ":#{HOMEBREW_CONTRIB}/cmd"
   if require? HOMEBREW_REPOSITORY/"Library/Homebrew/cmd"/cmd
     Homebrew.send cmd.to_s.gsub('-', '_').downcase
   elsif which "brew-#{cmd}"

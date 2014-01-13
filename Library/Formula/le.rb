@@ -7,6 +7,8 @@ class Le < Formula
   url 'http://ftp.de.debian.org/debian/pool/main/l/le/le_1.14.9.orig.tar.gz'
   sha1 'ce85cbefb30cf1f5a7e8349dbb24ffa0f65b1fd7'
 
+  conflicts_with 'logentries', :because => 'both install a le binary'
+
   def install
     ENV.j1
     system "./configure", "--disable-dependency-tracking",

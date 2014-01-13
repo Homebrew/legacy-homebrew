@@ -6,7 +6,7 @@ module Homebrew extend self
     ENV.activate_extensions!
 
     if superenv?
-      ENV.x11 = true
+      ENV.x11 = MacOS::X11.installed?
       ENV.deps = Formula.installed.select{|f| f.keg_only? and f.opt_prefix.directory? }.map(&:name)
     end
     ENV.setup_build_environment

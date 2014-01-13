@@ -12,7 +12,7 @@ class Squirrel < Formula
     prefix.install %w[bin include lib]
     doc.install Dir['doc/*.pdf']
     doc.install %w[etc samples]
-    # See: https://github.com/mxcl/homebrew/pull/9977
+    # See: https://github.com/Homebrew/homebrew/pull/9977
     (lib+'pkgconfig/libsquirrel.pc').write pc_file
   end
 

@@ -6,6 +6,7 @@ class Protobuf < Formula
   sha1 '62c10dcdac4b69cc8c6bb19f73db40c264cb2726'
 
   option :universal
+  option :cxx11
 
   depends_on :python => :optional
 
@@ -15,10 +16,12 @@ class Protobuf < Formula
 
   def install
     # Don't build in debug mode. See:
-    # https://github.com/mxcl/homebrew/issues/9279
+    # https://github.com/Homebrew/homebrew/issues/9279
     # http://code.google.com/p/protobuf/source/browse/trunk/configure.ac#61
     ENV.prepend 'CXXFLAGS', '-DNDEBUG'
     ENV.universal_binary if build.universal?
+    ENV.cxx11 if build.cxx11?
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-zlib"
@@ -29,15 +32,13 @@ class Protobuf < Formula
     doc.install %w( editors examples )
 
     if build.with? 'python'
-      python do
-        chdir 'python' do
-          ENV['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'cpp'
-          ENV.append_to_cflags "-I#{include}"
-          ENV.append_to_cflags "-L#{lib}"
-          system python, 'setup.py', 'build'
-          system python, 'setup.py', 'install', "--prefix=#{prefix}",
-                 '--single-version-externally-managed', '--record=installed.txt'
-        end
+      chdir 'python' do
+        ENV['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'cpp'
+        ENV.append_to_cflags "-I#{include}"
+        ENV.append_to_cflags "-L#{lib}"
+        system 'python', 'setup.py', 'build'
+        system 'python', 'setup.py', 'install', "--prefix=#{prefix}",
+               '--single-version-externally-managed', '--record=installed.txt'
       end
     end
   end
@@ -45,7 +46,6 @@ class Protobuf < Formula
   def caveats; <<-EOS.undent
     Editor support and examples have been installed to:
       #{doc}
-    #{python.standard_caveats if build.with? 'python'}
     EOS
   end
 end

@@ -18,10 +18,10 @@ class LibreadlineJava < Formula
 
     # Current Oracle JDKs put the jni.h and jni_md.h in a different place than the
     # original Apple/Sun JDK used to.
-    if File.exists? ENV['JAVA_HOME'] + "/include/jni.h" then
+    if File.exist? ENV['JAVA_HOME'] + "/include/jni.h" then
       ENV['JAVAINCLUDE'] = ENV['JAVA_HOME'] + "/include"
       ENV['JAVANATINC'] = ENV['JAVA_HOME'] + "/include/darwin"
-    elsif File.exists? "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/jni.h"
+    elsif File.exist? "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/jni.h"
       ENV['JAVAINCLUDE'] = "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/"
       ENV['JAVANATINC'] = "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/"
     end

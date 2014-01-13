@@ -14,6 +14,7 @@ class Fontforge < Formula
   head do
     url 'https://github.com/fontforge/fontforge.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
     depends_on 'pkg-config' => :build
@@ -24,7 +25,7 @@ class Fontforge < Formula
   end
 
   option 'with-gif', 'Build with GIF support'
-  option 'with-x', 'Build with X'
+  option 'with-x', 'Build with X11 support, including FontForge.app'
 
   depends_on 'gettext'
   depends_on :python => :recommended
@@ -68,7 +69,7 @@ class Fontforge < Formula
     if build.with? 'python'
       args << "--enable-pyextension"
       # Fix linking to correct Python library
-      ENV.prepend "LDFLAGS", "-L#{python.libdir}"
+      ENV.prepend "LDFLAGS", "-L#{%x(python-config --prefix).chomp}/lib"
     else
       args << "--without-python"
     end
@@ -101,16 +102,19 @@ class Fontforge < Formula
     # Fix install location of Python extension; see:
     # http://sourceforge.net/mailarchive/message.php?msg_id=26827938
     inreplace "Makefile" do |s|
-      s.gsub! "python setup.py install --prefix=$(prefix) --root=$(DESTDIR)", "#{python} setup.py install --prefix=$(prefix)"
+      s.gsub! "python setup.py install --prefix=$(prefix) --root=$(DESTDIR)", "python setup.py install --prefix=$(prefix)"
     end
 
     # Replace FlatCarbon headers with the real paths
     # Fixes building on 10.8
-    inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
-      s.gsub! "/Developer/Headers/FlatCarbon/Files.h", "CarbonCore/Files.h"
-    end
-    inreplace %w(fontforge/startui.c) do |s|
-      s.gsub! "/Developer/Headers/FlatCarbon/CarbonEvents.h", "HIToolbox/CarbonEvents.h"
+    # Only needed for non-head build
+    unless build.head?
+      inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
+        s.gsub! "/Developer/Headers/FlatCarbon/Files.h", "CarbonCore/Files.h"
+      end
+      inreplace %w(fontforge/startui.c) do |s|
+        s.gsub! "/Developer/Headers/FlatCarbon/CarbonEvents.h", "HIToolbox/CarbonEvents.h"
+      end
     end
 
     system "make"
@@ -118,23 +122,19 @@ class Fontforge < Formula
   end
 
   def caveats
-    x_caveats = <<-EOS.undent
-      fontforge is an X11 application.
+    if build.with? "x"
+      <<-EOS.undent
+        fontforge is an X11 application.
 
-      To install the Mac OS X wrapper application run:
-        brew linkapps
-      or:
-        ln -s #{opt_prefix}/FontForge.app /Applications
-    EOS
-
-    s = ""
-    s += x_caveats if build.with? "x"
-    s += python.standard_caveats if python
-    return s
+        To install the Mac OS X wrapper application run:
+          brew linkapps
+        or:
+          ln -s #{opt_prefix}/FontForge.app /Applications
+      EOS
+    end
   end
 
   test do
     system "#{bin}/fontforge", "-version"
-    system python, "-c", "import fontforge"
   end
 end

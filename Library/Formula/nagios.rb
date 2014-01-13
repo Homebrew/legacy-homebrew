@@ -38,7 +38,7 @@ class Nagios < Formula
     # Install config
     system "make install-config"
     system "make install-webconf"
-    mkdir HOMEBREW_PREFIX+'var/lib/nagios/rw' unless File.exists? HOMEBREW_PREFIX+'var/lib/nagios/rw'
+    mkdir HOMEBREW_PREFIX+'var/lib/nagios/rw' unless File.exist? HOMEBREW_PREFIX+'var/lib/nagios/rw'
   end
 
   plist_options :startup => true, :manual => "nagios #{HOMEBREW_PREFIX}/etc/nagios/nagios.cfg"

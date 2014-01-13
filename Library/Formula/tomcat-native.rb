@@ -16,7 +16,7 @@ class TomcatNative < Formula
       args = %W[
         --prefix=#{prefix}
         --with-apr=#{MacOS.sdk_path}/usr
-        --with-java-home=/System/Library/Frameworks/JavaVM.framework/
+        --with-java-home=#{`/usr/libexec/java_home`}
       ]
       args << ((build.with? 'brewed-openssl') ? "--with-ssl=#{Formula.factory('openssl').prefix}" : "--with-ssl=#{MacOS.sdk_path}/usr")
       system "./configure", *args
@@ -31,8 +31,12 @@ class TomcatNative < Formula
   end
 
   def caveats; <<-EOS.undent
-    You have to symlink Apache Tomcat Native to /Library/Java/Extensions to be recognized by Apache Tomcat:
-      sudo ln -fs #{lib}/libtcnative-1.* /Library/Java/Extensions
+    In order for tomcat's APR lifecycle listener to find this library, you'll need to add it to java.library.path.
+    This can be done by adding the following line to $CATALINA_HOME/bin/setenv.sh
+
+    CATALINA_OPTS=\"$CATALINA_OPTS -Djava.library.path=#{lib}\"
+
+    If $CATALINA_HOME/bin/setenv.sh doesn't exist, create it and make it executable.
     EOS
   end
 end

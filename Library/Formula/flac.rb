@@ -7,6 +7,7 @@ class Flac < Formula
 
   option :universal
 
+  depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'lame'
   depends_on 'libogg' => :optional
@@ -18,6 +19,8 @@ class Flac < Formula
 
   def install
     ENV.universal_binary if build.universal?
+
+    ENV.append 'CFLAGS', '-std=gnu89'
 
     # sadly the asm optimisations won't compile since Leopard
     system "./configure", "--disable-dependency-tracking",

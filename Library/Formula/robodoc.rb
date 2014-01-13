@@ -8,6 +8,7 @@ class Robodoc < Formula
   head do
     url 'https://github.com/gumpu/ROBODoc.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

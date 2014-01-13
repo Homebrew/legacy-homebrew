@@ -2,8 +2,8 @@ require 'formula'
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.24.1.tar.xz'
-  sha1 'f805db83a4cf1c2169574a21b43582998bc03011'
+  url 'http://poppler.freedesktop.org/poppler-0.24.4.tar.xz'
+  sha1 '7938c92c61b63331f2af463db0d10048bf0d4712'
 
   option 'with-qt4', 'Build Qt backend'
   option 'with-glib', 'Build Glib backend'
@@ -17,6 +17,8 @@ class Poppler < Formula
   depends_on 'qt' if build.with? 'qt4'
   depends_on 'glib' => :optional
   depends_on 'cairo' if build.with? 'glib' # Needs a newer Cairo build than OS X 10.6.7 provides
+
+  conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
 
   conflicts_with 'pdf2image', 'xpdf',
     :because => 'poppler, pdf2image, and xpdf install conflicting executables'

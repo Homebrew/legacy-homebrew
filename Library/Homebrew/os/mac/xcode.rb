@@ -108,7 +108,7 @@ module OS
       rescue
         # For people who's xcode-select is unset, or who have installed
         # xcode-gcc-installer or whatever other combinations we can try and
-        # supprt. See https://github.com/mxcl/homebrew/wiki/Xcode
+        # supprt. See https://github.com/Homebrew/homebrew/wiki/Xcode
         case MacOS.llvm_build_version.to_i
         when 1..2063 then "3.1.0"
         when 2064..2065 then "3.1.4"
@@ -121,7 +121,7 @@ module OS
         when 2327..2333 then "3.2.5"
         when 2335
           # this build number applies to 3.2.6, 4.0 and 4.1
-          # https://github.com/mxcl/homebrew/wiki/Xcode
+          # https://github.com/Homebrew/homebrew/wiki/Xcode
           "4.0"
         else
           case (MacOS.clang_version.to_f * 10).to_i
@@ -150,6 +150,10 @@ module OS
         version < "4.3"
       end
 
+      def provides_cvs?
+        version < "5.0"
+      end
+
       def default_prefix?
         if version < "4.3"
           %r{^/Developer} === prefix
@@ -169,11 +173,16 @@ module OS
 
       # True if:
       #  - Xcode < 4.3 is installed. The tools are found under /usr.
-      #  - The "Command Line Tools" package has been installed
-      #    For OS X < 10.9, the tools are found under /usr. For 10.9,
-      #    they are found under /Library/Developer/CommandLineTools.
+      #  - The "Command Line Tools" package has been installed.
+      #    For OS X < 10.9, the tools are found under /usr. 10.9 always
+      #    includes tools there, which run the real tools inside Xcode on
+      #    Xcode-only installs, so it's necessary to look elsewhere.
       def installed?
-        mavericks_dev_tools? || usr_dev_tools?
+        if MacOS.version < :mavericks
+          usr_dev_tools?
+        else
+          mavericks_dev_tools?
+        end
       end
 
       def mavericks_dev_tools?
@@ -185,13 +194,20 @@ module OS
         MacOS.dev_tools_path == Pathname("/usr/bin") && File.directory?("/usr/include")
       end
 
-      def latest_version?
-        `/usr/bin/clang --version` =~ %r{clang-(\d+)\.(\d+)\.(\d+)}
-        $1.to_i >= 425 and $3.to_i >= 28
+      def latest_version
+        if MacOS.version >= "10.9"
+          "500.2.79"
+        elsif MacOS.version == "10.8"
+          "500.2.78"
+        else
+          "425.0.28"
+        end
       end
 
       def outdated?
-        !latest_version?
+        version = `/usr/bin/clang --version`[%r{clang-(\d+\.\d+\.\d+)}, 1]
+        return true unless version
+        version < latest_version
       end
 
       # Version string (a pretty damn long one) of the CLT package.
@@ -202,7 +218,7 @@ module OS
       end
 
       def detect_version
-        [STANDALONE_PKG_ID, FROM_XCODE_PKG_ID, MAVERICKS_PKG_ID].find do |id|
+        [MAVERICKS_PKG_ID, STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
           version = MacOS.pkgutil_info(id)[/version: (.+)$/, 1]
           return version if version
         end

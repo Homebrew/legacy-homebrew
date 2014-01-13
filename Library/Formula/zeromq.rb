@@ -2,12 +2,13 @@ require 'formula'
 
 class Zeromq < Formula
   homepage 'http://www.zeromq.org/'
-  url 'http://download.zeromq.org/zeromq-3.2.4.tar.gz'
-  sha1 '08303259f08edd1faeac2e256f5be3899377135e'
+  url 'http://download.zeromq.org/zeromq-4.0.3.tar.gz'
+  sha1 'a363ddfff75f73976f656b3ba48f32544b214075'
 
   head do
     url 'https://github.com/zeromq/libzmq.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
@@ -18,6 +19,7 @@ class Zeromq < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libpgm' if build.include? 'with-pgm'
+  depends_on 'libsodium' => :optional
 
   def install
     ENV.universal_binary if build.universal?
@@ -29,6 +31,8 @@ class Zeromq < Formula
       ENV['OpenPGM_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp
       args << "--with-system-pgm"
     end
+
+    args << "--with-libsodium" if build.with? 'libsodium'
 
     system "./autogen.sh" if build.head?
     system "./configure", *args

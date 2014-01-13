@@ -8,6 +8,7 @@ class Ode < Formula
   head do
     url 'http://opende.svn.sourceforge.net/svnroot/opende/trunk'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

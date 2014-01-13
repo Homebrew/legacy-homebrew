@@ -85,7 +85,7 @@ class PythonDependency < Requirement
       ENV['PYTHONPATH'] = nil
       @unsatisfied_because = ''
       if binary.nil? || !binary.executable?
-        @unsatisfied_because += "No `#{@python}` found in your PATH! Consider to `brew install #{@python}`."
+        @unsatisfied_because += "No `#{@python}` found in your PATH. To install with Homebrew use `brew install #{@python}`."
         false
       elsif pypy?
         @unsatisfied_because += "Your #{@python} executable appears to be a PyPy, which is not supported."
@@ -97,7 +97,7 @@ class PythonDependency < Requirement
         @unsatisfied_because += "Python version #{version} is too old (need at least #{@min_version})."
         false
       elsif @min_version.major == 2 && `python -c "import sys; print(sys.version_info[0])"`.strip == "3"
-        @unsatisfied_because += "Your `python` points to a Python 3.x. This is not supported."
+        @unsatisfied_because += "Your `python` points to Python 3.x; this is not supported."
         false
       else
         @imports.keys.all? do |module_name|
@@ -142,8 +142,8 @@ class PythonDependency < Requirement
     if brewed?
       # Homebrew since a long while only supports frameworked python
       HOMEBREW_PREFIX/"opt/#{python}/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}"
-    elsif from_osx?
-      # Python on OS X has been stripped off its includes (unless you install the CLT), therefore we use the MacOS.sdk.
+    elsif from_osx? and MacOS.version < :mavericks
+      # Python on OS X before Mavericks has been stripped off its includes (unless you install the CLT), therefore we use the MacOS.sdk.
       Pathname.new("#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}")
     else
       # What Python knows about itself
@@ -278,7 +278,7 @@ class PythonDependency < Requirement
     # Todo: If Jack's formula revisions arrive, we can get rid of this here!
     if brewed?
       require 'formula'
-      file = Formula.factory(@python).prefix/"Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/lib/#{xy}/distutils/distutils.cfg"
+      file = Formula.factory(@python).opt_prefix/"Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/lib/#{xy}/distutils/distutils.cfg"
       ohai "Writing #{file}" if ARGV.verbose? && ARGV.debug?
       file.delete if file.exist?
       file.write <<-EOF.undent
@@ -295,11 +295,11 @@ class PythonDependency < Requirement
     <<-EOF.undent
       # This file is created by Homebrew and is executed on each python startup.
       # Don't print from here, or else python command line scripts may fail!
-      # <https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python>
+      # <https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python>
+      import os
       import sys
 
       if sys.version_info[0] != #{version.major}:
-          import os
           # This can only happen if the user has set the PYTHONPATH for 3.x and run Python 2.x or vice versa.
           # Every Python looks at the PYTHONPATH variable and we can't fix it here in sitecustomize.py,
           # because the PYTHONPATH is evaluated after the sitecustomize.py. Many modules (e.g. PyQt4) are
@@ -310,7 +310,8 @@ class PythonDependency < Requirement
                '     You should `unset PYTHONPATH` to fix this.')
       else:
           # Only do this for a brewed python:
-          if sys.executable.startswith('#{HOMEBREW_PREFIX}'):
+          opt_executable = '#{HOMEBREW_PREFIX}/opt/#{python}/bin/#{xy}'
+          if os.path.realpath(sys.executable) == os.path.realpath(opt_executable):
               # Remove /System site-packages, and the Cellar site-packages
               # which we moved to lib/pythonX.Y/site-packages. Further, remove
               # HOMEBREW_PREFIX/lib/python because we later addsitedir(...).
@@ -331,7 +332,7 @@ class PythonDependency < Requirement
                   pass  # remember: don't print here. Better to fail silently.
 
               # Set the sys.executable to use the opt_prefix
-              sys.executable = '#{HOMEBREW_PREFIX}/opt/#{python}/bin/#{xy}'
+              sys.executable = opt_executable
 
           # Tell about homebrew's site-packages location.
           # This is needed for Python to parse *.pth.
