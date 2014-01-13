@@ -18,7 +18,7 @@ class Xdu < Formula
     ENV["HOMEBREW_X11_LIB"] = "#{MacOS::X11.lib}"
 
     system "xmkmf"
-    system "make install"
+    system "make", "install"
   end
 
 end
