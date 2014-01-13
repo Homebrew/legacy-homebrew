@@ -3,8 +3,8 @@ require 'formula'
 class Luarocks < Formula
   homepage 'http://luarocks.org'
   head 'https://github.com/keplerproject/luarocks.git'
-  url 'http://luarocks.org/releases/luarocks-2.1.1.tar.gz'
-  sha1 '696e4ccb5caa3af478c0fbf562d16ad42bf404d5'
+  url 'http://luarocks.org/releases/luarocks-2.1.2.tar.gz'
+  sha1 '406253d15c9d50bb0d09efa9807fb2ddd31cba9d'
 
   option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
   option 'with-lua52', 'Use Lua 5.2 instead of the stock Lua'
