@@ -5,16 +5,17 @@ class Jhiccup < Formula
   url "http://www.azulsystems.com/sites/default/files/images/jHiccup.1.3.7.zip"
   sha1 "2bd5ad585b50b80b6a12d6b2d5338fde8c18a10b"
 
-  # Simple script to create and open a new plotter spreadsheet
-  def script; %Q(#!/bin/sh
-TMPFILE="/tmp/jHiccupPlotter.$$.xls"
-cp "#{prefix}/jHiccupPlotter.xls" $TMPFILE
-open $TMPFILE)
-  end
-
   def install
     bin.install "jHiccup"
-    (bin+'jHiccupPlotter').write script
+
+    # Simple script to create and open a new plotter spreadsheet
+    (bin+'jHiccupPlotter').write <<-EOS.undent
+      #!/bin/sh
+      TMPFILE="/tmp/jHiccupPlotter.$$.xls"
+      cp "#{prefix}/jHiccupPlotter.xls" $TMPFILE
+      open $TMPFILE
+    EOS
+
     prefix.install "target"
     prefix.install "jHiccupPlotter.xls"
     inreplace "#{bin}/jHiccup" do |s|
