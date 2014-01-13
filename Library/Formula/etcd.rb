@@ -2,15 +2,11 @@ require 'formula'
 
 class Etcd < Formula
   homepage 'https://github.com/coreos/etcd'
-  url 'https://github.com/coreos/etcd/archive/v0.1.1.tar.gz'
-  sha1 '60f39379b7f916a7e3e87fdefc1104cd2330c1ae'
+  url 'https://github.com/coreos/etcd/archive/v0.2.0.tar.gz'
+  sha1 'c18bfe533a5c180012188e4039b740b9564894ce'
   head 'https://github.com/coreos/etcd.git'
 
   depends_on 'go' => :build
-
-  fails_with :clang do
-    cause "clang: error: no such file or directory: 'libgcc.a'"
-  end
 
   def install
     ENV['GOPATH'] = buildpath

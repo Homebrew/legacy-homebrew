@@ -2,12 +2,13 @@ require 'formula'
 
 class OpusTools < Formula
   homepage 'http://www.opus-codec.org'
-  url 'http://downloads.xiph.org/releases/opus/opus-tools-0.1.7.tar.gz'
-  sha1 '9550bebdea884ee545ff6d556476209f76b28242'
+  url 'http://downloads.xiph.org/releases/opus/opus-tools-0.1.8.tar.gz'
+  sha1 '71e3cf393399af0231d86434923093ca79eea8ab'
 
   head do
     url 'https://git.xiph.org/opus-tools.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

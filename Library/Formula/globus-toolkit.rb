@@ -2,9 +2,9 @@ require 'formula'
 
 class GlobusToolkit < Formula
   homepage 'http://www.globus.org/toolkit/'
-  url 'http://www.globus.org/ftppub/gt5/5.2/5.2.3/installers/src/gt5.2.3-all-source-installer.tar.gz'
-  version '5.2.3'
-  sha1 '47b1d6579adbd5b62accffbb69bd8d9deeb75236'
+  url 'http://toolkit.globus.org/ftppub/gt5/5.2/5.2.5/installers/src/gt5.2.5-all-source-installer.tar.gz'
+  version '5.2.5'
+  sha1 '2e39065e0c3970b660e081705915d45640d3c350'
 
   depends_on :libtool
 
@@ -13,5 +13,6 @@ class GlobusToolkit < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
+    share.install prefix/'man'
   end
 end

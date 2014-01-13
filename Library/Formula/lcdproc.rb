@@ -7,6 +7,7 @@ class Lcdproc < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libusb'
+  depends_on 'libhid'
   depends_on 'libftdi0'
 
   def install

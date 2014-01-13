@@ -76,7 +76,7 @@ class DependencyCollector
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
       # Next line only for legacy support of `depends_on 'module' => :python`
       # It should be replaced by `depends_on :python => 'module'`
-      return PythonDependency.new("2", spec) if tag == :python
+      return PythonDependency.new("2", Array(spec)) if tag == :python
       LanguageModuleDependency.new(tag, spec)
     else
       Dependency.new(spec, tags)
@@ -109,6 +109,7 @@ class DependencyCollector
     when :python3    then PythonDependency.new("3", tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
+    when :ant        then ant_dep(spec, tags)
     else
       raise "Unsupported special dependency #{spec.inspect}"
     end
@@ -131,12 +132,20 @@ class DependencyCollector
   end
 
   def autotools_dep(spec, tags)
-    unless MacOS::Xcode.provides_autotools?
-      case spec
-      when :libltdl then spec = :libtool
-      else tags << :build
-      end
+    return if MacOS::Xcode.provides_autotools?
 
+    if spec == :libltdl
+      spec = :libtool
+      tags << :run
+    end
+
+    tags << :build unless tags.include? :run
+    Dependency.new(spec.to_s, tags)
+  end
+
+  def ant_dep(spec, tags)
+    if MacOS.version >= :mavericks
+      tags << :build
       Dependency.new(spec.to_s, tags)
     end
   end
@@ -156,6 +165,8 @@ class DependencyCollector
       Dependency.new("fossil", tags)
     when strategy <= BazaarDownloadStrategy
       Dependency.new("bazaar", tags)
+    when strategy <= CVSDownloadStrategy
+      Dependency.new("cvs", tags) unless MacOS::Xcode.provides_cvs?
     when strategy < AbstractDownloadStrategy
       # allow unknown strategies to pass through
     else
@@ -167,6 +178,7 @@ class DependencyCollector
   def parse_url_spec(url, tags)
     case File.extname(url)
     when '.xz'  then Dependency.new('xz', tags)
+    when '.lz'  then Dependency.new('lzip', tags)
     when '.rar' then Dependency.new('unrar', tags)
     when '.7z'  then Dependency.new('p7zip', tags)
     end

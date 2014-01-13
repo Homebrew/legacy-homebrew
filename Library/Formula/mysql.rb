@@ -2,14 +2,13 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.13.tar.gz/from/http://cdn.mysql.com/'
-  version '5.6.13'
-  sha1 '06e1d856cfb1f98844ef92af47d4f4f7036ef294'
+  url 'http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.15.tar.gz'
+  sha1 '90b46f973930c27eb8586387de5dfbc2af04d3ed'
 
   bottle do
-    sha1 '98152e8145a6b505706a6bdbc896c8443436c2fc' => :mountain_lion
-    sha1 '9883662840fdc7582911f2e703990a61a1e40161' => :lion
-    sha1 '82577b2851ac1040593e1b22ccf26cff6475b33b' => :snow_leopard
+    sha1 '3d2f69c1c9449daf06a7785f1d4d11796bfa393c' => :mavericks
+    sha1 'c234513a06992981d626ed1008e35a4d5481eb72' => :mountain_lion
+    sha1 '404e5dac0c91dad178adb7d66a5d26d46a8e9fd2' => :lion
   end
 
   depends_on 'cmake' => :build
@@ -18,7 +17,6 @@ class Mysql < Formula
   option :universal
   option 'with-tests', 'Build with unit tests'
   option 'with-embedded', 'Build the embedded server'
-  option 'with-libedit', 'Compile with editline wrapper instead of readline'
   option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
   option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
   option 'enable-local-infile', 'Build with local infile loading support'
@@ -27,17 +25,19 @@ class Mysql < Formula
 
   conflicts_with 'mysql-cluster', 'mariadb', 'percona-server',
     :because => "mysql, mariadb, and percona install the same binaries."
+  conflicts_with 'mysql-connector-c',
+    :because => 'both install MySQL client libraries'
 
   env :std if build.universal?
 
   fails_with :llvm do
     build 2326
-    cause "https://github.com/mxcl/homebrew/issues/issue/144"
+    cause "https://github.com/Homebrew/homebrew/issues/issue/144"
   end
 
   def install
     # Don't hard-code the libtool path. See:
-    # https://github.com/mxcl/homebrew/issues/20185
+    # https://github.com/Homebrew/homebrew/issues/20185
     inreplace "cmake/libutils.cmake",
       "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
       "COMMAND libtool -static -o ${TARGET_LOCATION}"
@@ -46,37 +46,41 @@ class Mysql < Formula
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
 
-    args = [".",
-            "-DCMAKE_INSTALL_PREFIX=#{prefix}",
-            "-DMYSQL_DATADIR=#{var}/mysql",
-            "-DINSTALL_MANDIR=#{man}",
-            "-DINSTALL_DOCDIR=#{doc}",
-            "-DINSTALL_INFODIR=#{info}",
-            # CMake prepends prefix, so use share.basename
-            "-DINSTALL_MYSQLSHAREDIR=#{share.basename}/#{name}",
-            "-DWITH_SSL=yes",
-            "-DDEFAULT_CHARSET=utf8",
-            "-DDEFAULT_COLLATION=utf8_general_ci",
-            "-DSYSCONFDIR=#{etc}"]
+    # -DINSTALL_* are relative to prefix
+    args = %W[
+      .
+      -DCMAKE_INSTALL_PREFIX=#{prefix}
+      -DCMAKE_FIND_FRAMEWORK=LAST
+      -DCMAKE_VERBOSE_MAKEFILE=ON
+      -DMYSQL_DATADIR=#{var}/mysql
+      -DINSTALL_INCLUDEDIR=include/mysql
+      -DINSTALL_MANDIR=share/man
+      -DINSTALL_DOCDIR=share/doc/#{name}
+      -DINSTALL_INFODIR=share/info
+      -DINSTALL_MYSQLSHAREDIR=share/mysql
+      -DWITH_SSL=yes
+      -DDEFAULT_CHARSET=utf8
+      -DDEFAULT_COLLATION=utf8_general_ci
+      -DSYSCONFDIR=#{etc}
+      -DCOMPILATION_COMMENT=Homebrew
+      -DWITH_EDITLINE=system
+    ]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if build.include? 'with-tests'
+    if build.with? 'tests'
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
     end
 
     # Build the embedded server
-    args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
-
-    # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless build.include? 'with-libedit'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'
 
     # Compile with ARCHIVE engine enabled if chosen
-    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.include? 'with-archive-storage-engine'
+    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.with? 'archive-storage-engine'
 
     # Compile with BLACKHOLE engine enabled if chosen
-    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.include? 'with-blackhole-storage-engine'
+    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? 'blackhole-storage-engine'
 
     # Make universal for binding to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
@@ -98,28 +102,31 @@ class Mysql < Formula
     system "make install"
 
     # Don't create databases inside of the prefix!
-    # See: https://github.com/mxcl/homebrew/issues/4975
+    # See: https://github.com/Homebrew/homebrew/issues/4975
     rm_rf prefix+'data'
 
     # Link the setup script into bin
     ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
       s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
       # pidof can be replaced with pgrep from proctools on Mountain Lion
       s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
+
     ln_s "#{prefix}/support-files/mysql.server", bin
 
     # Move mysqlaccess to libexec
+    libexec.mkpath
     mv "#{bin}/mysqlaccess", libexec
     mv "#{bin}/mysqlaccess.conf", libexec
+
+    # Make sure the var/mysql directory exists
+    (var+"mysql").mkpath
   end
 
   def post_install
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
-
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",
@@ -167,3 +174,4 @@ class Mysql < Formula
     end
   end
 end
+

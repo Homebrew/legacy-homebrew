@@ -2,11 +2,7 @@ require 'hardware'
 
 module Homebrew extend self
   def __config
-    if ARGV.first == '-1'
-      dump_c1
-    else
-      dump_verbose_config
-    end
+    dump_verbose_config
   end
 
   def llvm
@@ -42,7 +38,7 @@ module Homebrew extend self
   def clt
     if instance_variable_defined?(:@clt)
       @clt
-    elsif MacOS::CLT.installed? && MacOS::Xcode.version.to_f >= 4.3
+    elsif MacOS::CLT.installed? && MacOS::Xcode.version >= "4.3"
       @clt = MacOS::CLT.version
     end
   end
@@ -56,7 +52,7 @@ module Homebrew extend self
 
   def origin
     origin = HOMEBREW_REPOSITORY.cd do
-      `git config --get remote.origin.url`.chomp
+      `git config --get remote.origin.url 2>/dev/null`.chomp
     end
     if origin.empty? then "(none)" else origin end
   end
@@ -112,7 +108,7 @@ module Homebrew extend self
     unless MacOS.compilers_standard?
       puts "GCC-4.0: build #{gcc_40}" if gcc_40
       puts "GCC-4.2: build #{gcc_42}" if gcc_42
-      puts "LLVM-GCC: #{llvm ? "build #{llvm}" : "N/A"}"
+      puts "LLVM-GCC: build #{llvm}"  if llvm
       puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
     end
 
@@ -141,7 +137,7 @@ module Homebrew extend self
     puts "CLT: #{clt}" if clt
     puts "GCC-4.0: build #{gcc_40}" if gcc_40
     puts "GCC-4.2: build #{gcc_42}" if gcc_42
-    puts "LLVM-GCC: #{llvm ? "build #{llvm}" : "N/A"}"
+    puts "LLVM-GCC: build #{llvm}"  if llvm
     puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
     puts "MacPorts/Fink: #{macports_or_fink}" if macports_or_fink
     puts "X11: #{describe_x11}"
@@ -149,18 +145,5 @@ module Homebrew extend self
     puts "Perl: #{describe_perl}"
     puts "Python: #{describe_python}"
     puts "Ruby: #{describe_ruby}"
-  end
-
-  def dump_c1
-    print "#{HOMEBREW_PREFIX}-#{HOMEBREW_VERSION} "
-    print MACOS_FULL_VERSION
-    print "-#{kernel}" if MacOS.version < :lion
-    print ' '
-    print MacOS::Xcode.prefix unless MacOS::Xcode.default_prefix?
-    print "#{MacOS::Xcode.version}"
-    print "-noclt" unless MacOS::CLT.installed?
-    print " clang-#{clang_build} llvm-#{llvm} "
-    print "#{MacOS::XQuartz.prefix}-#{MacOS::XQuartz.version}" if MacOS::XQuartz.prefix
-    puts
   end
 end

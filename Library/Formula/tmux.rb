@@ -8,6 +8,7 @@ class Tmux < Formula
   head do
     url 'git://git.code.sf.net/p/tmux/tmux-code'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
@@ -39,7 +40,7 @@ class Tmux < Formula
   end
 
   def caveats; <<-EOS.undent
-    Exmample configurations have been installed to:
+    Example configurations have been installed to:
       #{share}/tmux/examples
     EOS
   end

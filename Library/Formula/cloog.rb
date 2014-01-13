@@ -2,13 +2,15 @@ require 'formula'
 
 class Cloog < Formula
   homepage 'http://www.cloog.org/'
-  url 'http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.0.tar.gz'
-  sha1 '85f620a26aabf6a934c44ca40a9799af0952f863'
+  url 'http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.1.tar.gz'
+  sha1 '2dc70313e8e2c6610b856d627bce9c9c3f848077'
 
   bottle do
-    sha1 'f8a2a2221ff9f24f7db53d5de810df8cbd33f5d8' => :mountain_lion
-    sha1 'ad314e5ad8f54d183272dfa1971bd705e1d5e46b' => :lion
-    sha1 '203c6dd5b1fba557715e8fbb92cbd2d4025b1911' => :snow_leopard
+    cellar :any
+    revision 1
+    sha1 '38afdce382abcd3c46fb94af7eb72e87d87859d4' => :mavericks
+    sha1 'd6984ce335cf7b8eb482cdd4f0301c6583b00073' => :mountain_lion
+    sha1 'fd707268c3e5beafa9b98a768f7064d5b9699178' => :lion
   end
 
   depends_on 'pkg-config' => :build

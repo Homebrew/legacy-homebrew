@@ -15,6 +15,7 @@ class Gnuplot < Formula
   head do
     url 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

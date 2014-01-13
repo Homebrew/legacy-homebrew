@@ -2,12 +2,15 @@ require 'formula'
 
 class Lighttpd < Formula
   homepage 'http://www.lighttpd.net/'
-  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.32.tar.bz2'
-  sha256 '60691b2dcf3ad2472c06b23d75eb0c164bf48a08a630ed3f308f61319104701f'
+  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.33.tar.bz2'
+  sha256 '2ff2324658c0f90e7d39afd40f08f11ca230903b9019c31a2bbecd8f087f235e'
 
   option 'with-lua', 'Include Lua scripting support for mod_magnet'
 
   depends_on 'pkg-config' => :build
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
   depends_on 'pcre'
   depends_on 'lua' => :optional
   depends_on 'libev' => :optional
@@ -34,12 +37,18 @@ class Lighttpd < Formula
     args << "--with-lua" if build.with? 'lua'
     args << "--with-libev" if build.with? 'libev'
 
+    # fixed upstream, should be in next release: http://redmine.lighttpd.net/issues/2517
+    inreplace 'src/Makefile.am', '$(LDAP_LIB)', '$(SSL_LIB) $(LDAP_LIB)'
+
+    # autogen must be run, otherwise prebuilt configure may complain
+    # about a version mismatch between included automake and Homebrew's
+    system "./autogen.sh"
     system "./configure", *args
     system "make install"
 
     mv sbin, bin
 
-    unless File.exists? config_path
+    unless File.exist? config_path
       config_path.install Dir["doc/config/lighttpd.conf"]
       config_path.install Dir["doc/config/modules.conf"]
       (config_path/"conf.d/").install Dir["doc/config/conf.d/*.conf"]
@@ -67,11 +76,8 @@ class Lighttpd < Formula
         s.sub!(/^server\.max-connections = .+$/,'server.max-connections = ' + (MAX_FDS / 2).to_s())
       end
     end
-  end
 
-  def post_install
     log_path.mkpath
-    www_path.mkpath
     (www_path/'htdocs').mkpath
     run_path.mkpath
   end

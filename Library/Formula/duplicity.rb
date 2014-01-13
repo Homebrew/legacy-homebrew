@@ -12,10 +12,13 @@ class Duplicity < Formula
   option :universal
 
   def install
-    python do
-      ENV.universal_binary if build.universal?
-      # Install mostly into libexec
-      system python, "setup.py", "install", "--prefix=#{prefix}"
-    end
+    ENV.universal_binary if build.universal?
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+  end
+
+  test do
+    system "duplicity", "--version"
   end
 end

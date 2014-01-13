@@ -14,7 +14,6 @@ class Mapserver < Formula
 
   depends_on :freetype
   depends_on :libpng
-  depends_on :python => :recommended
   depends_on 'swig' => :build
   depends_on 'giflib'
   depends_on 'gd' => %w{with-freetype}
@@ -60,12 +59,10 @@ class Mapserver < Formula
     install_args << "PHP_EXT_DIR=#{prefix}" if build.include? 'with-php'
     system "make", "install", *install_args
 
-    python do
-      cd 'mapscript/python' do
-        system python, "setup.py", "install", "--prefix=#{prefix}",
+    cd 'mapscript/python' do
+      system "python", "setup.py", "install", "--prefix=#{prefix}",
                                    "--single-version-externally-managed",
                                    "--record=installed-files.txt"
-      end
     end
   end
 

@@ -7,11 +7,12 @@ class Libp11 < Formula
 
   head do
     url 'https://github.com/OpenSC/libp11.git'
+    depends_on :autoconf
     depends_on :automake
   end
 
   depends_on 'pkg-config' => :build
-  depends_on :libltdl
+  depends_on :libtool => :run
 
   def install
     system "./bootstrap" if build.head?

@@ -2,9 +2,9 @@ require 'formula'
 
 class Openssl < Formula
   homepage 'http://openssl.org'
-  url 'http://openssl.org/source/openssl-1.0.1e.tar.gz'
-  mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1e.tar.gz'
-  sha256 'f74f15e8c8ff11aa3d5bb5f276d202ec18d7246e95f961db76054199c69c1ae3'
+  url 'http://www.openssl.org/source/openssl-1.0.1f.tar.gz'
+  mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1f.tar.gz'
+  sha256 '6cc2a80b17d64de6b7bac985745fdaba971d54ffd7d38d3556f998d7c0c9cb5a'
 
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."

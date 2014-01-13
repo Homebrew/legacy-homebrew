@@ -2,8 +2,8 @@ require 'formula'
 
 class Libzdb < Formula
   homepage 'http://tildeslash.com/libzdb/'
-  url 'http://tildeslash.com/libzdb/dist/libzdb-2.11.3.tar.gz'
-  sha1 '0554b6a83e6767488bff58a7d0bd3ad024be092b'
+  url 'http://tildeslash.com/libzdb/dist/libzdb-2.12.tar.gz'
+  sha1 '4d34be255afddbd025b2f60c5cd11b4389b5c88c'
 
   depends_on :postgresql => :recommended
   depends_on :mysql => :recommended

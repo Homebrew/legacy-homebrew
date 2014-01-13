@@ -10,7 +10,7 @@ require 'utils/json'
 class Tab < OpenStruct
   FILENAME = 'INSTALL_RECEIPT.json'
 
-  def self.create f, stdlib, compiler, args
+  def self.create f, compiler, stdlib, args
     f.build.args = args
 
     sha = HOMEBREW_REPOSITORY.cd do
@@ -30,7 +30,7 @@ class Tab < OpenStruct
   end
 
   def self.from_file path
-    tab = Tab.new Utils::JSON.load(open(path).read)
+    tab = Tab.new Utils::JSON.load(File.read(path))
     tab.tabfile = path
     tab
   end
@@ -63,7 +63,6 @@ class Tab < OpenStruct
             :tapped_from => "",
             :time => nil,
             :HEAD => nil,
-            :stdlib => :libstdcxx,
             :compiler => :clang
   end
 
@@ -99,9 +98,9 @@ class Tab < OpenStruct
 
   def cxxstdlib
     # Older tabs won't have these values, so provide sensible defaults
-    lib = stdlib || :libstdcxx
+    lib = stdlib.to_sym if stdlib
     cc = compiler || MacOS.default_compiler
-    CxxStdlib.new(lib.to_sym, cc.to_sym)
+    CxxStdlib.new(lib, cc.to_sym)
   end
 
   def to_json

@@ -2,17 +2,16 @@ require 'formula'
 
 class MongoC < Formula
   homepage 'http://docs.mongodb.org/ecosystem/drivers/c/'
-  url 'https://github.com/mongodb/mongo-c-driver/archive/v0.8.zip'
-  sha1 'f21924cea0011ad71309f86f1358d082d855aa79'
+  url 'https://github.com/mongodb/mongo-c-driver/releases/download/0.90.0/libmongoc-0.90.0.tar.gz'
+  sha1 '15e552b04f3e124fb80e1397e80ddb46fbf36a46'
 
-  # Reported upstream:
-  # https://github.com/mxcl/homebrew/pull/22096
-  def patches
-    "https://gist.github.com/planas/6321873/raw"
-  end
+  depends_on 'pkg-config' => :build
+  depends_on 'libbson'
 
   def install
-    system "make"
-    system "make", "install", "DESTDIR=", "PREFIX=#{prefix}"
+    # https://github.com/mongodb/mongo-c-driver/issues/5
+    inreplace 'configure', 'enable_libclang=yes', 'enable_libclang=no'
+    system "./configure", "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

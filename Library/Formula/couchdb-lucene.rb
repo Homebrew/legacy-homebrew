@@ -5,6 +5,8 @@ class CouchdbLucene < Formula
   url 'https://github.com/rnewson/couchdb-lucene/archive/v0.9.0.tar.gz'
   sha1 '99b8f8f1e644e6840896ee6c9b19c402042c1896'
 
+  conflicts_with 'clusterit', :because => 'both install a `run` binary'
+
   depends_on 'couchdb'
   depends_on 'maven'
 
@@ -14,7 +16,7 @@ class CouchdbLucene < Formula
     system "tar", "-xzf", "target/couchdb-lucene-#{version}-dist.tar.gz"
     prefix.install Dir["couchdb-lucene-#{version}/*"]
 
-    (etc + "couchdb/local.d/couchdb-lucene.ini").write ini_file
+    (etc/"couchdb/local.d/couchdb-lucene.ini").write ini_file
   end
 
   def ini_file; <<-EOS.undent

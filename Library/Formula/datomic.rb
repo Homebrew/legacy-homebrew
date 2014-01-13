@@ -2,8 +2,9 @@ require 'formula'
 
 class Datomic < Formula
   homepage 'http://www.datomic.com/'
-  url "http://downloads.datomic.com/0.8.4159/datomic-free-0.8.4159.zip"
-  sha1 '594e228cf984289cfb10b2174df9378b4ef6df95'
+  url 'https://my.datomic.com/downloads/free/0.9.4360'
+  sha1 '15e8752e2ee03036d34326bfd4a99efcad8704bf'
+  version '0.9.4360'
 
   def write_libexec_alias *script_names
     script_names.each do |script_name|
@@ -25,6 +26,10 @@ class Datomic < Formula
       You may need to set JAVA_HOME:
         export JAVA_HOME="$(/usr/libexec/java_home)"
       All commands have been installed with the prefix 'datomic-'.
+
+      We agreed to the Datomic Free Edition License for you:
+        http://www.datomic.com/datomic-free-edition-license.html
+      If this is unacceptable you should uninstall.
     EOS
   end
 end

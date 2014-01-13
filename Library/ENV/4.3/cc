@@ -1,68 +1,63 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 
-#TODO make it work with homebrew/dupes/gcc
-#TODO? If we find -mmacosx-version-min=10.8, change sdkroot? warn visibly if no such SDK?
-#TODO fix pkg-config files, should point to /usr/local or /usr/local/opt
-#TODO create mechanism to specify build effects like %w{-O0 -O4 vanilla-arg-parsing sdk=10.6} etc.
-
 require "#{File.dirname __FILE__}/../libsuperenv"
 require 'set'
+require 'stringio'
 
-def cccfg? flags
-  flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
-end
-def nclt?
-  $sdkroot != nil
-end
-def syspath
-  if nclt?
-    %W{#$sdkroot/usr #$sdkroot/usr/local}
-  else
-    %W{/usr /usr/local}
+class Logger
+  def initialize
+    @io = StringIO.new
+  end
+
+  def puts(*args)
+    @io.puts(*args)
+  end
+
+  def log!
+    return unless ENV.key? 'HOMEBREW_CC_LOG_PATH'
+    path = "#{ENV['HOMEBREW_CC_LOG_PATH']}.cc"
+
+    puts
+    File.open(path, File::WRONLY | File::APPEND | File::CREAT) { |f| f.write(@io.string) }
   end
 end
 
-module ExecLogExtension
-  def exec *args
-    path = File.expand_path('~/Library/Logs/Homebrew/cc.log')
-    open(path, 'a') do |f|
-      f.print '[', $0
-      f.print " -%s" % ENV['HOMEBREW_CCCFG'] if ENV['HOMEBREW_CCCFG']
-      f.print '] '
-      f.puts args.join(' ')
-      f.puts
-    end
-    Kernel.exec *args
-  end
-end
+LOGGER = Logger.new
 
 class Cmd
+  attr_reader :brewfix, :brewtmp, :sdkroot
+
   def initialize path, args
-    @arg0 = path.basename.freeze
+    @arg0 = File.basename(path).freeze
     @args = args.freeze
+    @brewfix = ENV['HOMEBREW_PREFIX']
+    @brewtmp = ENV['HOMEBREW_TEMP']
+    @sdkroot = ENV['HOMEBREW_SDKROOT']
   end
   def mode
     if @arg0 == 'cpp' or @arg0 == 'ld'
       @arg0.to_sym
     elsif @args.include? '-c'
-      :cc
+      if @arg0 =~ /(?:c|g|clang)\+\+/
+        :cxx
+      else
+        :cc
+      end
     elsif @args.include? '-E'
       :ccE
     else
-      :ccld
+      if @arg0 =~ /(?:c|g|clang)\+\+/
+        :cxxld
+      else
+        :ccld
+      end
     end
   end
   def tool
     @tool ||= case @arg0
     when 'ld' then 'ld'
     when 'cpp' then 'cpp'
-    when 'cc', 'c99', 'c89'
-      # Ideally we would run `cx9`, however these tools are POSIX compliant
-      # and don't support many flags. We need -isystem for instance, but also
-      # reliability is generally much higher if we just get clang/gcc to do
-      # the work since Makefiles are dumb and include a lot of excess flags.
-      ENV['HOMEBREW_CC']
-    when 'c++'
+    when /\w\+\+(-\d\.\d)?$/
       case ENV['HOMEBREW_CC']
       when /clang/
         'clang++'
@@ -72,7 +67,9 @@ class Cmd
         'g++' + $1.to_s
       end
     else
-      @arg0
+      # Note that this is a universal fallback, so that we'll always invoke
+      # HOMEBREW_CC regardless of what name under which the tool was invoked.
+      ENV['HOMEBREW_CC']
     end
   end
   def args
@@ -82,15 +79,19 @@ class Cmd
       refurbished_args
     end
     if tool != 'ld'
-      args << "--sysroot=#$sdkroot"
+      args << "--sysroot=#{sdkroot}"
     else
-      args << "-syslibroot" << $sdkroot
+      args << "-syslibroot" << sdkroot
     end if nclt?
-    case mode
+    allflags = case mode
     when :ccld
       cflags + args + cppflags + ldflags
+    when :cxxld
+      cxxflags + args + cppflags + ldflags
     when :cc
       cflags + args + cppflags
+    when :cxx
+      cxxflags + args + cppflags
     when :ccE
       args + cppflags
     when :cpp
@@ -98,6 +99,8 @@ class Cmd
     when :ld
       ldflags + args
     end.compact
+    make_fuss(allflags)
+    allflags
   end
   def refurbished_args
     lset = Set.new(libpath + syslibpath)
@@ -114,13 +117,13 @@ class Cmd
         args << '-m32' if cccfg? '3'
       when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
            /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/, '-m64',
-           /^-O[0-9zs]?$/, '-fast',
+           /^-O[0-9zs]?$/, '-fast', '-no-cpp-precomp',
            '-pedantic', '-pedantic-errors'
       when '-fopenmp', '-lgomp'
         # clang doesn't support OpenMP
         args << arg if not tool =~ /^clang/
       when /^-W.*/
-        args << arg if arg =~ /^-W[alp],/
+        args << arg if arg =~ /^-W[alp],/ or arg =~ /^-Wno-/
       when '-macosx_version_min', '-dylib_install_name'
         args << "-Wl,#{arg},#{whittler.next}"
       when /^-isysroot/
@@ -128,59 +131,74 @@ class Cmd
         whittler.next
       when '-dylib'
         args << "-Wl,#{arg}"
-      when /^-I(.+)/
-        # it is okay to add a space after the -I; so let's support it
+      when /^-I(.+)?/
+        # Support both "-Ifoo" (one argument) and "-I foo" (two arguments)
         path = $1.chuzzle || whittler.next
-        args << "-I#{path}" if iset.add?(path.cleanpath)
-      when /^-L(.+)/
+        args << "-I#{path}" if keep?(path) and iset.add?(path.cleanpath)
+      when /^-L(.+)?/
         path = $1.chuzzle || whittler.next
-        doit = case path.cleanpath
-        when %r{^#$brewfix}
-          # maybe homebrew is installed to /sw or /opt/brew
-          true
-        when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
-          false
-        else
-          true
-        end
-        args << "-L#{path}" if doit and lset.add?(path.cleanpath)
+        args << "-L#{path}" if keep?(path) and lset.add?(path.cleanpath)
       else
         args << arg
       end
     end
-    make_fuss(args)
     args
   end
-  def cflags
-    return [] unless cccfg? 'O'
 
-    args = %w{-pipe -w -Os}
-
-    # When bottling use the oldest supported CPU type.
-    if cccfg? 'bc'
-      # Custom bottle specified during the build
-      args << ENV['HOMEBREW_ARCHFLAGS']
-    elsif cccfg? 'bi6'
-      args << '-march=core2'
-    elsif cccfg? 'bi'
-      args << '-march=prescott'
-    elsif cccfg? 'bpA'
-      args << '-mcpu=7400'
-    elsif cccfg? 'bp'
-      args << '-mcpu=750'
+  def keep? path
+    case path.cleanpath
+    when %r{^#{Regexp.escape(brewfix)}}, %r{^#{Regexp.escape(brewtmp)}}
+      # maybe homebrew is installed to /sw or /opt/brew
+      true
+    when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
+      false
     else
-      args << '-march=native' if tool =~ /clang/
+      true
     end
+  end
 
-    ENV['HOMEBREW_ARCHS'].split(',').each { |a| args << "-arch" << a } if cccfg? 'u'
+  def cflags
+    args = []
+
+    return args unless cccfg? 'O' or configure?
+
+    args << '-pipe'
+    args << '-w' unless configure?
+    args.concat(optflags)
+    args.concat(archflags)
     args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
     args
+  end
+  def cxxflags
+    args = cflags
+    args << '-std=c++11' if cccfg? 'x'
+    args << '-stdlib=libc++' if cccfg? 'g'
+    args << '-stdlib=libstdc++' if cccfg? 'h'
+    args
+  end
+  def optflags
+    args = []
+    args << "-#{ENV['HOMEBREW_OPTIMIZATION_LEVEL']}"
+    args.concat ENV['HOMEBREW_OPTFLAGS'].split(' ') if ENV['HOMEBREW_OPTFLAGS']
+    args
+  end
+  def archflags
+    args = []
+    args.concat ENV['HOMEBREW_ARCHFLAGS'].split(' ') if cccfg? 'u'
+    args
+  end
+  def syspath
+    if nclt?
+      %W{#{sdkroot}/usr #{sdkroot}/usr/local}
+    else
+      %W{/usr /usr/local}
+    end
   end
   def syslibpath
     # We reject brew's lib as we explicitly add this as a -L flag, thus it
     # is given higher priority by cc, so it surpasses the system libpath.
     # NOTE this only counts if Homebrew is installed at /usr/local
-    syspath.map{|d| "#{d}/lib" }.reject{|d| d == "#$brewfix/lib" }
+    syspath.map{|d| "#{d}/lib" }.reject{|d| d == "#{brewfix}/lib" }
   end
   def syscpath
     isystem, _ = cpath
@@ -188,7 +206,7 @@ class Cmd
   end
   def cpath
     cpath = ENV['CMAKE_PREFIX_PATH'].split(':').map{|d| "#{d}/include" } + ENV['CMAKE_INCLUDE_PATH'].split(':')
-    opt = cpath.select{|prefix| prefix =~ %r{^#$brewfix/opt} }
+    opt = cpath.grep(%r{^#{Regexp.escape(brewfix)}/opt})
     sys = cpath - opt
     [sys, opt]
   end
@@ -202,6 +220,10 @@ class Cmd
     case mode
     when :ld   then args << '-headerpad_max_install_names'
     when :ccld then args << '-Wl,-headerpad_max_install_names'
+    when :cxxld
+      args << '-Wl,-headerpad_max_install_names'
+      args << '-stdlib=libc++' if cccfg? 'g'
+      args << '-stdlib=libstdc++' if cccfg? 'h'
     end
     args
   end
@@ -212,13 +234,28 @@ class Cmd
     sys.to_flags('-isystem') + opt.to_flags('-I')
   end
   def make_fuss args
+    return unless make_fuss?
+
     dels = @args - args
     adds = args - @args
     dups = dels & args
 
-    STDERR.puts "brew: superenv removed: #{dels*' '}" unless dels.empty?
-    STDERR.puts "brew: superenv deduped: #{dups}" unless dups.empty?
-    STDERR.puts "brew: superenv added: #{adds*' '}" unless adds.empty?
+    LOGGER.puts "superenv removed:  #{dels*' '}" unless dels.empty?
+    LOGGER.puts "superenv deduped:  #{dups}" unless dups.empty?
+    LOGGER.puts "superenv added:    #{adds*' '}" unless adds.empty?
+  end
+  def make_fuss?
+    cccfg? 'O' and not configure?
+  end
+  def configure?
+    # configure scripts generated with autoconf 2.61 or later export as_nl
+    ENV.key? 'as_nl'
+  end
+  def nclt?
+    sdkroot != nil
+  end
+  def cccfg? flags
+    flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
   end
 end
 
@@ -232,7 +269,14 @@ if __FILE__ == $PROGRAM_NAME
   end
 
   ####################################################################### main
-  extend(ExecLogExtension) if ENV['HOMEBREW_LOG']
+
+  LOGGER.puts "#{File.basename($0)} called with: #{ARGV.join(" ")}"
+
   cmd = Cmd.new($0, ARGV)
-  exec "xcrun", cmd.tool, *cmd.args
+  tool, args = cmd.tool, cmd.args
+
+  LOGGER.puts "superenv executed: #{tool} #{args.join(" ")}"
+  LOGGER.log!
+
+  exec "xcrun", tool, *args
 end

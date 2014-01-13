@@ -25,6 +25,7 @@ _brew_outdated_formulae() {
 local -a _1st_arguments
 _1st_arguments=(
   'audit:check formulae for Homebrew coding style'
+  'bundle:look for a Brewfile and run each line as a brew command'
   'cat:display formula file for a formula'
   'cleanup:uninstall unused and old versions of packages'
   'commands:show a list of commands'

@@ -61,10 +61,8 @@ class Build
 
   def initialize(f)
     @f = f
-    # Expand requirements before dependencies, as requirements
-    # may add dependencies if a default formula is activated.
-    @reqs = expand_reqs
     @deps = expand_deps
+    @reqs = expand_reqs
   end
 
   def post_superenv_hacks
@@ -83,12 +81,12 @@ class Build
 
   def expand_reqs
     f.recursive_requirements do |dependent, req|
-      if (req.optional? || req.recommended?) && dependent.build.without?(req.name)
+      if (req.optional? || req.recommended?) && dependent.build.without?(req)
         Requirement.prune
       elsif req.build? && dependent != f
         Requirement.prune
       elsif req.satisfied? && req.default_formula? && (dep = req.to_dependency).installed?
-        dependent.deps << dep
+        deps << dep
         Requirement.prune
       end
     end
@@ -96,10 +94,12 @@ class Build
 
   def expand_deps
     f.recursive_dependencies do |dependent, dep|
-      if (dep.optional? || dep.recommended?) && dependent.build.without?(dep.name)
+      if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
         Dependency.prune
       elsif dep.build? && dependent != f
         Dependency.prune
+      elsif dep.build?
+        Dependency.keep_but_prune_recursive_deps
       end
     end
   end
@@ -141,14 +141,6 @@ class Build
       end
     end
 
-    # We only support libstdc++ right now
-    stdlib_in_use = CxxStdlib.new(:libstdcxx, ENV.compiler)
-
-    # This is a bad place for this check, but we don't have access to
-    # compiler selection within the formula installer, only inside the
-    # build instance.
-    stdlib_in_use.check_dependencies(f, deps)
-
     f.brew do
       if ARGV.flag? '--git'
         system "git init"
@@ -171,7 +163,17 @@ class Build
 
         begin
           f.install
-          Tab.create(f, :libstdcxx, ENV.compiler,
+
+          stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
+          # It's technically possible for the same lib to link to multiple
+          # C++ stdlibs, but very bad news. Right now we don't track this
+          # woeful scenario.
+          stdlib_in_use = CxxStdlib.new(stdlibs.first, ENV.compiler)
+          # This will raise and fail the build if there's an
+          # incompatibility.
+          stdlib_in_use.check_dependencies(f, deps)
+
+          Tab.create(f, ENV.compiler, stdlibs.first,
             Options.coerce(ARGV.options_only)).write
         rescue Exception => e
           if ARGV.debug?

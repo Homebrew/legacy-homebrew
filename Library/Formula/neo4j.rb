@@ -2,15 +2,9 @@ require 'formula'
 
 class Neo4j < Formula
   homepage 'http://neo4j.org'
-  url 'http://dist.neo4j.org/neo4j-community-1.9.3-unix.tar.gz'
-  sha1 '503dfa4409708922f98247d0a8c888d6356d5d1c'
-  version 'community-1.9.3-unix'
-
-  devel do
-    url 'http://dist.neo4j.org/neo4j-community-2.0.0-M05-unix.tar.gz'
-    sha1 '30a1b1a93ad6923cbce3563779faff23f25a100c'
-    version 'community-2.0.0-M05-unix'
-  end
+  url 'http://dist.neo4j.org/neo4j-community-2.0.0-unix.tar.gz'
+  sha1 'b03a7e52ef7312d23ee290db57104100df70ecb3'
+  version '2.0.0'
 
   def install
     # Remove windows files
@@ -28,6 +22,9 @@ class Neo4j < Formula
     # Adjust UDC props
     open("#{libexec}/conf/neo4j-wrapper.conf", 'a') { |f|
       f.puts "wrapper.java.additional.4=-Dneo4j.ext.udc.source=homebrew"
+
+      # suppress the empty, focus-stealing java gui
+      f.puts "wrapper.java.additional=-Djava.awt.headless=true"
     }
   end
 
@@ -37,8 +34,8 @@ class Neo4j < Formula
         1. Start the server manually:
             neo4j start
 
-        2. Open webadmin:
-            open http://localhost:7474/webadmin/
+        2. Open the neo4j browser:
+            open http://localhost:7474/browser/
 
         3. Start exploring the REST API:
             curl -v http://localhost:7474/db/data/
@@ -55,8 +52,8 @@ class Neo4j < Formula
     The manual can be found in:
         #{libexec}/doc/
 
-    You may need to add JAVA_HOME to your shell profile:
-        export JAVA_HOME="$(/usr/libexec/java_home)"
+    You may need to set JAVA_HOME for Java 7 in your shell profile:
+        export JAVA_HOME="$(/usr/libexec/java_home -v 1.7)"
 
     EOS
   end

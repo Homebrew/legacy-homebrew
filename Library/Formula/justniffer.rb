@@ -8,11 +8,8 @@ class Justniffer < Formula
   depends_on "boost"
 
   fails_with :clang do
-    build 425
-    cause <<-EOS.undent
-          Symbols declared inline in headers are then expected by the linker.
-          Probably declaring them static would fix it properly.
-          EOS
+    build 500
+    cause "Missing ext/stdio_filebuf.h; this is a GCC-specific header"
   end
 
   # Patch lib/libnids-1.21_patched/configure.gnu so that CFLAGS and/or

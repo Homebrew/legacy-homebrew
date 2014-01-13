@@ -2,8 +2,8 @@ require 'formula'
 
 class Harfbuzz < Formula
   homepage 'http://www.freedesktop.org/wiki/Software/HarfBuzz'
-  url 'http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.21.tar.bz2'
-  sha256 'a0d36f883d98f2375f9b2a03c8a6c361b161a76d4b58ea9d08be59e39e73dae8'
+  url 'http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.25.tar.bz2'
+  sha256 'dc6e5997a569526cd28147a80a0f65466e87ae617753b38704a60184bc6d6bee'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

@@ -8,6 +8,7 @@ class Opensc < Formula
   head do
     url 'https://github.com/OpenSC/OpenSC.git'
 
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end

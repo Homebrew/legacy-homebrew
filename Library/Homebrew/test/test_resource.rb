@@ -40,6 +40,14 @@ class ResourceTests < Test::Unit::TestCase
     assert_equal GitDownloadStrategy, @resource.download_strategy
   end
 
+  def test_does_not_mutate_specs_hash
+    specs = { :using => :git, :branch => 'master' }
+    @resource.url('foo', specs)
+    assert_equal({ :branch => 'master' }, @resource.specs)
+    assert_equal(:git, @resource.using)
+    assert_equal({ :using => :git, :branch => 'master' }, specs)
+  end
+
   def test_version
     @resource.version('1.0')
     assert_version_equal '1.0', @resource.version
@@ -75,16 +83,15 @@ class ResourceTests < Test::Unit::TestCase
     assert_empty @resource.mirrors
     @resource.mirror('foo')
     @resource.mirror('bar')
-    assert_equal 'foo', @resource.mirrors.shift
-    assert_equal 'bar', @resource.mirrors.shift
+    assert_equal %w{foo bar}, @resource.mirrors
   end
 
   def test_checksum_setters
     assert_nil @resource.checksum
-    @resource.sha1('baadidea'*5)
-    assert_equal Checksum.new(:sha1, 'baadidea'*5), @resource.checksum
-    @resource.sha256('baadidea'*8)
-    assert_equal Checksum.new(:sha256, 'baadidea'*8), @resource.checksum
+    @resource.sha1(TEST_SHA1)
+    assert_equal Checksum.new(:sha1, TEST_SHA1), @resource.checksum
+    @resource.sha256(TEST_SHA256)
+    assert_equal Checksum.new(:sha256, TEST_SHA256), @resource.checksum
   end
 
   def test_download_strategy
@@ -97,18 +104,17 @@ class ResourceTests < Test::Unit::TestCase
 
   def test_verify_download_integrity_missing
     fn = Pathname.new('test')
-    checksum = @resource.sha1('baadidea'*5)
 
-    fn.expects(:verify_checksum).
-      with(checksum).raises(ChecksumMissingError)
+    fn.stubs(:file? => true)
+    fn.expects(:verify_checksum).raises(ChecksumMissingError)
     fn.expects(:sha1)
 
     shutup { @resource.verify_download_integrity(fn) }
   end
 
   def test_verify_download_integrity_mismatch
-    fn = Object.new
-    checksum = @resource.sha1('baadidea'*5)
+    fn = stub(:file? => true)
+    checksum = @resource.sha1(TEST_SHA1)
 
     fn.expects(:verify_checksum).with(checksum).
       raises(ChecksumMismatchError.new(checksum, Object.new))

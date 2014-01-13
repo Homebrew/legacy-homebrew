@@ -2,8 +2,16 @@ require 'formula'
 
 class CabalInstall < Formula
   homepage 'http://www.haskell.org/haskellwiki/Cabal-Install'
-  url 'http://hackage.haskell.org/packages/archive/cabal-install/1.18.0.1/cabal-install-1.18.0.1.tar.gz'
-  sha1 'ac403d580bd399d682e5d8f4fd8d6d07c03622d9'
+  url 'http://hackage.haskell.org/package/cabal-install-1.18.0.2/cabal-install-1.18.0.2.tar.gz'
+  sha1 '2d1f7a48d17b1e02a1e67584a889b2ff4176a773'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 'f155f9353d3b76ca63213cfe9e49fa6a9bae9b02' => :mavericks
+    sha1 'd2564690f06cbba7e81a5555656383bc457ce6d5' => :mountain_lion
+    sha1 '23905bb5789f079fcfe10f4b889d1b8d9c792ef9' => :lion
+  end
 
   depends_on 'ghc'
 
@@ -21,5 +29,9 @@ class CabalInstall < Formula
     system 'sh', 'bootstrap.sh'
     bin.install "bin/cabal"
     bash_completion.install 'bash-completion/cabal'
+  end
+
+  test do
+    system "#{bin}/cabal", "--config-file=#{testpath}/config", 'info', 'cabal'
   end
 end

@@ -2,9 +2,9 @@ require 'formula'
 
 class Doxygen < Formula
   homepage 'http://www.doxygen.org/'
-  url 'http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.5.src.tar.gz'
-  mirror 'http://downloads.sourceforge.net/project/doxygen/rel-1.8.5/doxygen-1.8.5.src.tar.gz'
-  sha1 '1fc5ceec21122fe5037edee4c308ac94b59ee33e'
+  url 'http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.6.src.tar.gz'
+  mirror 'http://downloads.sourceforge.net/project/doxygen/rel-1.8.6/doxygen-1.8.5.src.tar.gz'
+  sha1 '204f1b3695c73efac44a521609c5360241d64045'
 
   head 'https://doxygen.svn.sourceforge.net/svnroot/doxygen/trunk'
 
@@ -32,10 +32,6 @@ class Doxygen < Formula
                   tmake/lib/macosx-c++/tmake.conf
                   tmake/lib/macosx-intel-c++/tmake.conf
                   tmake/lib/macosx-uni-c++/tmake.conf ] do |s|
-      # otherwise clang may use up large amounts of RAM while
-      # processing localization files
-      # gcc doesn't support the flag
-      s.gsub! '-Wno-invalid-source-encoding', '' unless ENV.compiler == :clang
       # makefiles hardcode both cc and c++
       s.gsub! /cc$/, ENV.cc
       s.gsub! /c\+\+$/, ENV.cxx
