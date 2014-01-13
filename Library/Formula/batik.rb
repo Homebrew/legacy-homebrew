@@ -11,5 +11,6 @@ class Batik < Formula
 
     bin.write_jar_script libexec/'batik-rasterizer.jar', 'batik-rasterizer'
     bin.write_jar_script libexec/'batik.jar', 'batik'
+    bin.write_jar_script libexec/'batik-ttf2svg.jar', 'batik-ttf2svg'
   end
 end
