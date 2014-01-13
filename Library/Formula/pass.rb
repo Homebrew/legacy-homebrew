@@ -2,8 +2,8 @@ require 'formula'
 
 class Pass < Formula
   homepage 'http://zx2c4.com/projects/password-store'
-  url 'http://git.zx2c4.com/password-store/snapshot/password-store-1.4.2.tar.xz'
-  sha256 'a10a8016a3d6bb32891a9a4086ac0a049587db1a55c1ac3b431c66189bc1a302'
+  url 'http://git.zx2c4.com/password-store/snapshot/password-store-1.4.2.zip'
+  sha256 '7e7ff669117951330436534025e39a07ee358a8932a6908870457f6b7f8702c2'
 
   head 'http://git.zx2c4.com/password-store', :using => :git
 
