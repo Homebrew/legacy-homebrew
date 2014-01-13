@@ -17,6 +17,9 @@ class HaskellPlatform < Formula
   end
 
   def caveats; <<-EOS.undent
+    Add cabal binaries to your PATH:
+      export PATH=~/.cabal/bin:$PATH
+
     Run `cabal update` to initialize the package list.
 
     If you are replacing a previous version of haskell-platform, you may want
