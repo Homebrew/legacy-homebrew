@@ -22,4 +22,13 @@ class Dos2unix < Formula
                    "LDFLAGS_EXTRA=-L#{gettext.lib} -lintl",
                    "install"
   end
+
+  test do
+    (testpath/'dosfile.txt').write("File with CRLFs\r\nThey will be converted")
+    system "#{bin}/dos2unix", 'dosfile.txt'
+    open('dosfile.txt') do |f|
+      converted = f.read(64)
+      fail if converted.include?("\r")
+    end
+  end
 end
