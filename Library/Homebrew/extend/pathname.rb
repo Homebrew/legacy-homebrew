@@ -383,6 +383,27 @@ class Pathname
     end
   end
 
+  # Writes an exec script that sets environment variables
+  def write_env_script target, env
+    env_export = ''
+    env.each {|key, value| env_export += "#{key}=\"#{value}\" "}
+    self.write <<-EOS.undent
+    #!/bin/bash
+    #{env_export}exec "#{target}" "$@"
+    EOS
+  end
+
+  # Writes a wrapper env script and moves all files to the dst
+  def env_script_all_files dst, env
+    dst.mkpath
+    Dir["#{self}/*"].each do |file|
+      file = Pathname.new(file)
+      dst.install_p file
+      new_file = dst+file.basename
+      file.write_env_script(new_file, env)
+    end
+  end
+
   # Writes an exec script that invokes a java jar
   def write_jar_script target_jar, script_name, java_opts=""
     (self+script_name).write <<-EOS.undent

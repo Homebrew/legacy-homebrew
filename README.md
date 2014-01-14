@@ -15,11 +15,19 @@ More Documentation
 
 Who Are You?
 ------------
-I'm [Max Howell][mxcl] and I'm a splendid chap.
+Homebrew is maintained by the [core contributors][team].
+
+Homebrew was originally created by [Max Howell][mxcl].
 
 License
 -------
 Code is under the [BSD 2 Clause (NetBSD) license][license].
+
+Donations
+---------
+We accept tips through [Gittip][tip].
+
+[![Gittip](http://img.shields.io/gittip/Homebrew.png)](https://www.gittip.com/Homebrew/)
 
 [home]:http://brew.sh
 [wiki]:http://wiki.github.com/Homebrew/homebrew
@@ -27,3 +35,5 @@ Code is under the [BSD 2 Clause (NetBSD) license][license].
 [formula]:http://github.com/Homebrew/homebrew/tree/master/Library/Formula/
 [braumeister]:http://braumeister.org
 [license]:https://github.com/Homebrew/homebrew/tree/master/Library/Homebrew/LICENSE
+[team]:https://github.com/Homebrew?tab=members
+[tip]:https://www.gittip.com/Homebrew/

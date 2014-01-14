@@ -73,7 +73,6 @@ module Homebrew extend self
 
   SEARCHABLE_TAPS = [
     %w{josegonzalez php},
-    %w{samueljohn python},
     %w{marcqualie nginx},
     %w{Homebrew apache},
     %w{Homebrew versions},
@@ -82,6 +81,7 @@ module Homebrew extend self
     %w{Homebrew science},
     %w{Homebrew completions},
     %w{Homebrew binary},
+    %w{Homebrew python},
   ]
 
   def query_regexp(query)
@@ -113,7 +113,10 @@ module Homebrew extend self
       end
     end
     results
-  rescue GitHub::Error, Utils::JSON::Error
+  rescue OpenURI::HTTPError, GitHub::Error, Utils::JSON::Error
+    opoo <<-EOS.undent
+      Failed to search tap: #{user}/#{repo}. Please run `brew update`.
+    EOS
     []
   end
 

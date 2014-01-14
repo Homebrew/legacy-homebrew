@@ -69,8 +69,8 @@ class Llvm < Formula
 
     # install llvm python bindings
     if python
-      python.site_packages.install buildpath/'bindings/python/llvm'
-      python.site_packages.install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
+      (lib+'python2.7/site-packages').install buildpath/'bindings/python/llvm'
+      (lib+'python2.7/site-packages').install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
     end
   end
 
@@ -79,9 +79,7 @@ class Llvm < Formula
   end
 
   def caveats
-    s = ''
-    s += python.standard_caveats if python
-    s += <<-EOS.undent
+    <<-EOS.undent
       Extra tools are installed in #{share}/llvm and #{share}/clang.
 
       If you already have LLVM installed, then "brew upgrade llvm" might not work.

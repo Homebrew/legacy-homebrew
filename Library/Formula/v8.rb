@@ -19,6 +19,7 @@ class V8 < Formula
   # gyp currently depends on a full xcode install
   # https://code.google.com/p/gyp/issues/detail?id=292
   depends_on :xcode
+  depends_on Python27Dependency # gyp doesn't run under 2.6 or lower
   depends_on 'readline' => :optional
 
   resource 'gyp' do

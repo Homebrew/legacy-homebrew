@@ -1,7 +1,7 @@
 require 'formula'
 
 class SafeRm < Formula
-  homepage 'http://www.safe-rm.org.nz/'
+  homepage 'https://launchpad.net/safe-rm'
   url 'https://launchpad.net/safe-rm/trunk/0.10/+download/safe-rm-0.10.tar.gz'
   sha1 '6b829ae68e1fa3c8016e15ab37fcc08caef7712f'
 
