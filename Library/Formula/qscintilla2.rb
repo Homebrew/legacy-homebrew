@@ -9,6 +9,13 @@ class Qscintilla2 < Formula
   depends_on 'sip'
 
   def install
+    # On Mavericks we want to target libc++, this requires a unsupported/macx-clang-libc++ flag
+    if ENV.compiler == :clang and MacOS.version >= :mavericks
+      spec = "unsupported/macx-clang-libc++"
+    else
+      spec = "macx-g++"
+    end
+    args = %W[-config release -spec #{spec}]
 
     cd 'Qt4Qt5' do
       inreplace 'qscintilla.pro' do |s|
@@ -18,7 +25,7 @@ class Qscintilla2 < Formula
         s.gsub! "$$[QT_INSTALL_DATA]", "#{prefix}/data"
       end
 
-      system "qmake", "qscintilla.pro"
+      system "qmake", "qscintilla.pro", *args
       system "make"
       system "make", "install"
     end
@@ -29,7 +36,8 @@ class Qscintilla2 < Formula
                        "--apidir=#{prefix}/qsci",
                        "--destdir=#{lib}/python2.7/site-packages/PyQt4",
                        "--qsci-sipdir=#{share}/sip",
-                       "--pyqt-sipdir=#{HOMEBREW_PREFIX}/share/sip"
+                       "--pyqt-sipdir=#{HOMEBREW_PREFIX}/share/sip",
+                       "--spec=#{spec}"
       system 'make'
       system 'make', 'install'
     end
