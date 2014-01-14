@@ -38,11 +38,11 @@ class Privoxy < Formula
       <key>Label</key>
       <string>#{plist_name}</string>
       <key>WorkingDirectory</key>
-      <string>#{etc}/privoxy</string>
+      <string>#{var}</string>
       <key>ProgramArguments</key>
       <array>
         <string>#{sbin}/privoxy</string>
-        <string>./config</string>
+        <string>#{etc}/privoxy/config</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
