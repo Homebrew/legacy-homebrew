@@ -39,6 +39,7 @@ class Luarocks < Formula
     if build.include? 'with-luajit'
       args << "--with-lua-include=#{HOMEBREW_PREFIX}/include/luajit-2.0"
       args << "--lua-suffix=jit"
+      args << "--with-lua=luajit"
     end
 
     system "./configure", *args
