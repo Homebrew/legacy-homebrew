@@ -2,8 +2,8 @@ require 'formula'
 
 class Submarine < Formula
   homepage 'https://github.com/rastersoft/submarine'
-  url 'https://github.com/rastersoft/submarine/archive/0.1.3.tar.gz'
-  sha1 '43882918fecc5f71a705363b4437512dad307bcc'
+  url 'https://github.com/rastersoft/submarine/archive/0.1.4.tar.gz'
+  sha1 '9ecbdfd25c299839a55ec7878b585525b03f2e8b'
   head 'https://github.com/rastersoft/submarine.git'
 
   depends_on 'glib'

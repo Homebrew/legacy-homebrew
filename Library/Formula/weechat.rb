@@ -36,21 +36,15 @@ class Weechat < Formula
     args << '-DENABLE_RUBY=OFF'   unless build.with? 'ruby'
     args << '-DENABLE_ASPELL=OFF' unless build.with? 'aspell'
     args << '-DENABLE_GUILE=OFF'  unless build.with? 'guile'
+    args << '-DENABLE_PYTHON=OFF' unless build.with? 'python'
 
     # NLS/gettext support disabled for now since it doesn't work in stdenv
-    # see https://github.com/mxcl/homebrew/issues/18722
+    # see https://github.com/Homebrew/homebrew/issues/18722
     args << "-DENABLE_NLS=OFF"
     args << '..'
 
     mkdir 'build' do
-      if python do
-        system 'cmake', *args
-      end
-      else
-        # The same cmake call but without any python set up.
-        args << '-DENABLE_PYTHON=OFF'
-        system 'cmake', *args
-      end
+      system 'cmake', *args
       system 'make install'
     end
   end

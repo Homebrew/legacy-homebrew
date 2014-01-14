@@ -17,11 +17,16 @@ class Wine < Formula
       version '2.21'
       sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
     end
+
+    resource 'mono' do
+      url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
+      sha256 '3dfc23bbc29015e4e538dab8b83cb825d3248a0e5cf3b3318503ee7331115402'
+    end
   end
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.7.tar.bz2'
-    sha256 '110603b6bff33441356ef6e72f94a70abf3b4822be1f0fb6c84b5240e9d5aca7'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.10.tar.bz2'
+    sha256 '44270e4b97ef930e4e4b59088e6e3972e91e85bacf9a9a4d8712a877c9d5cbdb'
     depends_on 'little-cms2'
   end
 
@@ -54,8 +59,8 @@ class Wine < Formula
   end
 
   resource 'mono' do
-    url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
-    sha256 '3dfc23bbc29015e4e538dab8b83cb825d3248a0e5cf3b3318503ee7331115402'
+    url 'http://downloads.sourceforge.net/wine/wine-mono-4.5.2.msi', :using => :nounzip
+    sha256 'd9124edb41ba4418af10eba519dafb25ab4338c567d25ce0eb4ce1e1b4d7eaad'
   end
 
   fails_with :llvm do
@@ -80,7 +85,7 @@ class Wine < Formula
   # libncurses.5.4.dylib, and fails to find it without the fallback path.
 
   def library_path
-    path = %W[#{HOMEBREW_PREFIX}/lib /usr/lib]
+    paths = %W[#{HOMEBREW_PREFIX}/lib /usr/lib]
     paths.unshift(MacOS::X11.lib) unless build.without? 'x11'
     paths.join(':')
   end

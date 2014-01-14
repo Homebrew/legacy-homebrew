@@ -21,9 +21,10 @@ class Boost < Formula
 
   bottle do
     cellar :any
-    sha1 'f4fc12094f9aa754cc964a42907e4e808de5a98f' => :mavericks
-    sha1 '2e4a8f3acb057d641f5eec4fec9c686f09a833db' => :mountain_lion
-    sha1 '62aef45efb9d4247b99c2bca04ec29ac898e940f' => :lion
+    revision 1
+    sha1 'e715bed5765c5a89fd2c7f2938bf4db405a11fbc' => :mavericks
+    sha1 '099a7374e95690e2268f7abbd4ccfb0559541b73' => :mountain_lion
+    sha1 '1961f75f2139f3f0998aae03a1be8e9ac553d292' => :lion
   end
 
   env :userpaths
@@ -125,7 +126,7 @@ class Boost < Formula
 
     # The context library is implemented as x86_64 ASM, so it
     # won't build on PPC or 32-bit builds
-    # see https://github.com/mxcl/homebrew/issues/17646
+    # see https://github.com/Homebrew/homebrew/issues/17646
     if Hardware::CPU.ppc? || Hardware::CPU.is_32_bit? || build.universal?
       without_libraries << "context"
       # The coroutine library depends on the context library.

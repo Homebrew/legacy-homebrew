@@ -5,10 +5,13 @@ class Webp < Formula
   url 'https://webp.googlecode.com/files/libwebp-0.3.1.tar.gz'
   sha1 '52e3d2b6c0b80319baa33b8ebed89618769d9dd8'
 
+  option :universal
+
   depends_on :libpng
   depends_on 'jpeg' => :recommended
 
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--enable-libwebpmux",
                           "--enable-libwebpdemux",

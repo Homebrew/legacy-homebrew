@@ -2,8 +2,8 @@ require 'formula'
 
 class RakudoStar < Formula
   homepage 'http://rakudo.org/'
-  url 'http://rakudo.org/downloads/star/rakudo-star-2013.11.tar.gz'
-  sha256 '7f867f0e4ce7fee7c0f8ecf207d8cb118c334bc71b1a849c0dfa6aa11fd8b4fe'
+  url 'http://rakudo.org/downloads/star/rakudo-star-2013.12.tar.gz'
+  sha256 '6a257e5f7879e0a9d7199edcfd47bd5a09dc4d9f5d91f124429af04974a836d3'
 
   conflicts_with 'parrot'
 

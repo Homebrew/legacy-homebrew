@@ -25,8 +25,8 @@ class Python < Formula
   skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.3.2.tar.gz'
-    sha1 '77180132225c5b4696e6d061655e291f3d1b20f5'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.0.1.tar.gz'
+    sha1 '5283b4dca46d45efd1156713ab51836509646c03'
   end
 
   resource 'pip' do
@@ -121,24 +121,18 @@ class Python < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
-    # We ship setuptools and pip and reuse the PythonDependency
-    # Requirement here to write the sitecustomize.py
-    py = PythonDependency.new("2.7")
-    py.binary = bin/'python'
-    py.modify_build_environment
-
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.5-py3.3.egg
-    rm_rf Dir["#{py.global_site_packages}/setuptools*"]
-    rm_rf Dir["#{py.global_site_packages}/distribute*"]
+    rm_rf Dir[HOMEBREW_PREFIX/"lib/python2.7/site-packages/setuptools*"]
+    rm_rf Dir[HOMEBREW_PREFIX/"lib/python2.7/site-packages/distribute*"]
 
     setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
 
-    resource('setuptools').stage { system py.binary, *setup_args }
-    resource('pip').stage { system py.binary, *setup_args }
+    resource('setuptools').stage { system "#{bin}/python", *setup_args }
+    resource('pip').stage { system "#{bin}/python", *setup_args }
 
     # And now we write the distutils.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg"
@@ -162,7 +156,7 @@ class Python < Formula
       EOS
 
       # Fixes setting Python build flags for certain software
-      # See: https://github.com/mxcl/homebrew/pull/20182
+      # See: https://github.com/Homebrew/homebrew/pull/20182
       # http://bugs.python.org/issue3588
       inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile" do |s|
         s.change_make_var! "LINKFORSHARED",
@@ -216,7 +210,7 @@ class Python < Formula
     ENV.minimal_optimization
 
     # We need to enable warnings because the configure.in uses -Werror to detect
-    # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
+    # "whether gcc supports ParseTuple" (https://github.com/Homebrew/homebrew/issues/12194)
     ENV.enable_warnings
     if ENV.compiler == :clang
       # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
@@ -244,7 +238,7 @@ class Python < Formula
       They will install into the site-package directory
         #{site_packages}
 
-      See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+      See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
     EOS
   end
 

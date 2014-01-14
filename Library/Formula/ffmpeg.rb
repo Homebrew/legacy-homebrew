@@ -12,6 +12,9 @@ class Ffmpeg < Formula
   devel do
     url 'http://ffmpeg.org/releases/ffmpeg-2.1.1.tar.bz2'
     sha1 'e7a5b2d7f702c4e9ca69e23c6d3527f93de0d1bd'
+
+    depends_on 'libbluray' => :optional
+    depends_on 'libquvi' => :optional
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -55,11 +58,10 @@ class Ffmpeg < Formula
   depends_on 'opus' => :optional
   depends_on 'frei0r' => :optional
   depends_on 'libcaca' => :optional
-  depends_on 'libquvi' => :optional if build.devel?
 
   # Fix build against freetype 2.5.1
   # http://ffmpeg.org/pipermail/ffmpeg-devel/2013-November/151404.html
-  def patches; DATA; end
+  def patches; DATA; end unless build.head?
 
   def install
     # Remove when fix for freetype 2.5.1+ is incorporated upstream

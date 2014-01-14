@@ -2,14 +2,10 @@ require 'formula'
 
 class Juju < Formula
   homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.16/1.16.3/+download/juju-core_1.16.3.tar.gz'
-  sha1 '986ae55f58ce1838c20eea556a0afc23aff9cdd4'
+  url 'https://launchpad.net/juju-core/1.16/1.16.5/+download/juju-core_1.16.5.tar.gz'
+  sha1 '2202805d09dffe64d1e07988b9d1b16e02c7bd52'
 
   depends_on 'go' => :build
-
-  fails_with :clang do
-    cause "clang: error: no such file or directory: 'libgcc.a'"
-  end
 
   def install
     ENV['GOPATH'] = buildpath

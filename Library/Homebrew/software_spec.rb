@@ -4,6 +4,7 @@ require 'checksum'
 require 'version'
 require 'build_options'
 require 'dependency_collector'
+require 'bottles'
 
 class SoftwareSpec
   extend Forwardable
@@ -87,6 +88,7 @@ end
 
 class Bottle < SoftwareSpec
   attr_rw :root_url, :prefix, :cellar, :revision
+  attr_accessor :current_tag
 
   def_delegators :@resource, :version=, :url=
 
@@ -95,6 +97,7 @@ class Bottle < SoftwareSpec
     @revision = 0
     @prefix = '/usr/local'
     @cellar = '/usr/local/Cellar'
+    @root_url = nil
   end
 
   # Checksum methods in the DSL's bottle block optionally take
@@ -103,16 +106,16 @@ class Bottle < SoftwareSpec
     class_eval <<-EOS, __FILE__, __LINE__ + 1
       def #{cksum}(val=nil)
         return @#{cksum} if val.nil?
-        @#{cksum} ||= Hash.new
+        @#{cksum} ||= BottleCollector.new
         case val
         when Hash
           key, value = val.shift
-          @#{cksum}[value] = Checksum.new(:#{cksum}, key)
+          @#{cksum}.add(Checksum.new(:#{cksum}, key), value)
         end
 
-        if @#{cksum}.has_key? bottle_tag
-          @resource.checksum = @#{cksum}[bottle_tag]
-        end
+        cksum, current_tag = @#{cksum}.fetch_bottle_for(bottle_tag)
+        @resource.checksum = cksum if cksum
+        @current_tag = current_tag if cksum
       end
     EOS
   end
@@ -123,7 +126,7 @@ class Bottle < SoftwareSpec
       checksum_os_versions = send checksum_type
       next unless checksum_os_versions
       os_versions = checksum_os_versions.keys
-      os_versions.map! {|osx| MacOS::Version.from_symbol osx rescue nil }
+      os_versions.map! {|osx| MacOS::Version.from_symbol osx rescue nil }.compact!
       os_versions.sort.reverse.each do |os_version|
         osx = os_version.to_sym
         checksum = checksum_os_versions[osx]

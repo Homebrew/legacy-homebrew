@@ -11,7 +11,6 @@ class Mplayer < Formula
   option 'without-osd', 'Build without OSD'
 
   depends_on 'yasm' => :build
-  depends_on 'xz' => :build
   depends_on 'libcaca' => :optional
   depends_on :x11 if build.include? 'with-x'
 

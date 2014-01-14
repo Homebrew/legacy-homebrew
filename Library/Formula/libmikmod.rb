@@ -2,8 +2,8 @@ require 'formula'
 
 class Libmikmod < Formula
   homepage 'http://mikmod.shlomifish.org'
-  url 'http://sourceforge.net/projects/mikmod/files/libmikmod/3.3.3/libmikmod-3.3.3.tar.gz'
-  sha256 '79f02478c5abd8b2af73df4cc5f9d52625aa044327c01563168e270cf79b2437'
+  url 'http://sourceforge.net/projects/mikmod/files/libmikmod/3.3.4/libmikmod-3.3.4.tar.gz'
+  sha256 '2e8ca1d945ff7330741d085548a6d4e8b2f6a9d41edda773607905d8905683ae'
 
   option 'with-debug', 'Enable debugging symbols'
 

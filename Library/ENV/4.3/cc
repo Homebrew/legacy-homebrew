@@ -25,12 +25,13 @@ end
 LOGGER = Logger.new
 
 class Cmd
-  attr_reader :brewfix, :sdkroot
+  attr_reader :brewfix, :brewtmp, :sdkroot
 
   def initialize path, args
     @arg0 = File.basename(path).freeze
     @args = args.freeze
     @brewfix = ENV['HOMEBREW_PREFIX']
+    @brewtmp = ENV['HOMEBREW_TEMP']
     @sdkroot = ENV['HOMEBREW_SDKROOT']
   end
   def mode
@@ -133,25 +134,29 @@ class Cmd
       when /^-I(.+)?/
         # Support both "-Ifoo" (one argument) and "-I foo" (two arguments)
         path = $1.chuzzle || whittler.next
-        args << "-I#{path}" if iset.add?(path.cleanpath)
+        args << "-I#{path}" if keep?(path) and iset.add?(path.cleanpath)
       when /^-L(.+)?/
         path = $1.chuzzle || whittler.next
-        doit = case path.cleanpath
-        when %r{^#{brewfix}}
-          # maybe homebrew is installed to /sw or /opt/brew
-          true
-        when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
-          false
-        else
-          true
-        end
-        args << "-L#{path}" if doit and lset.add?(path.cleanpath)
+        args << "-L#{path}" if keep?(path) and lset.add?(path.cleanpath)
       else
         args << arg
       end
     end
     args
   end
+
+  def keep? path
+    case path.cleanpath
+    when %r{^#{Regexp.escape(brewfix)}}, %r{^#{Regexp.escape(brewtmp)}}
+      # maybe homebrew is installed to /sw or /opt/brew
+      true
+    when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
+      false
+    else
+      true
+    end
+  end
+
   def cflags
     args = []
 
@@ -201,7 +206,7 @@ class Cmd
   end
   def cpath
     cpath = ENV['CMAKE_PREFIX_PATH'].split(':').map{|d| "#{d}/include" } + ENV['CMAKE_INCLUDE_PATH'].split(':')
-    opt = cpath.grep(%r{^#{brewfix}/opt})
+    opt = cpath.grep(%r{^#{Regexp.escape(brewfix)}/opt})
     sys = cpath - opt
     [sys, opt]
   end

@@ -28,6 +28,7 @@ module Superenv
     # done on the singleton class, because in MRI all ENV methods are defined
     # on its singleton class, precluding the use of extend.
     class << base
+      alias_method :"old_[]", :[]
       def [] key
         if has_key? key
           fetch(key)
@@ -45,7 +46,7 @@ module Superenv
   def reset
     %w{CC CXX OBJC OBJCXX CPP MAKE LD LDSHARED
       CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
-      MACOS_DEPLOYMENT_TARGET SDKROOT
+      MACOSX_DEPLOYMENT_TARGET SDKROOT
       CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH
       CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH}.
       each{ |x| delete(x) }
@@ -73,6 +74,7 @@ module Superenv
     self['HOMEBREW_OPTIMIZATION_LEVEL'] = 'Os'
     self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
     self['HOMEBREW_PREFIX'] = HOMEBREW_PREFIX
+    self['HOMEBREW_TEMP'] = HOMEBREW_TEMP
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
     self['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
     self['HOMEBREW_VERBOSE'] = "1" if ARGV.verbose?
@@ -82,6 +84,7 @@ module Superenv
     self['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
     self['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     self['ACLOCAL_PATH'] = determine_aclocal_path
+    self['M4'] = MacOS.locate("m4") if deps.include? "autoconf"
 
     # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
     # compiler flag stripping. It consists of a string of characters which act

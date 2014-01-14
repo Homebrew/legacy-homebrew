@@ -137,7 +137,7 @@ def curl *args
   raise "#{curl} is not executable" unless curl.exist? and curl.executable?
 
   args = [HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args]
-  # See https://github.com/mxcl/homebrew/issues/6103
+  # See https://github.com/Homebrew/homebrew/issues/6103
   args << "--insecure" if MacOS.version < "10.6"
   args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
   args << "--silent" unless $stdout.tty?
@@ -249,7 +249,7 @@ def paths
 end
 
 module GitHub extend self
-  ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/")
+  ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/Homebrew/homebrew/open/")
 
   Error = Class.new(StandardError)
 
@@ -277,8 +277,17 @@ module GitHub extend self
   end
 
   def each_issue_matching(query, &block)
-    uri = ISSUES_URI + query
+    uri = ISSUES_URI + uri_escape(query)
     open(uri) { |f| Utils::JSON.load(f.read)['issues'].each(&block) }
+  end
+
+  def uri_escape(query)
+    if URI.respond_to?(:encode_www_form_component)
+      URI.encode_www_form_component(query)
+    else
+      require "erb"
+      ERB::Util.url_encode(query)
+    end
   end
 
   def issues_for_formula name

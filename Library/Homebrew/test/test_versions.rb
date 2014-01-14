@@ -2,6 +2,8 @@ require 'testing_env'
 require 'version'
 
 class VersionTests < Test::Unit::TestCase
+  include VersionAssertions
+
   def test_accepts_objects_responding_to_to_str
     value = stub(:to_str => '0.1')
     assert_equal '0.1', Version.new(value).to_s
@@ -11,6 +13,18 @@ class VersionTests < Test::Unit::TestCase
     assert_raises(TypeError) { Version.new(1.1) }
     assert_raises(TypeError) { Version.new(1) }
     assert_raises(TypeError) { Version.new(:symbol) }
+  end
+
+  def test_tokens
+    assert_version_tokens %w{1 0 z23}, version('1.0z23')
+    assert_version_tokens %w{1 0 z23}, version('1.0.z23')
+    assert_version_tokens %w{1 0 z 23}, version('1.0.z.23')
+    assert_version_tokens %w{1 0 23 z}, version('1.0.23z')
+    assert_version_tokens %w{1 0 23 z}, version('1.0.23.z')
+  end
+
+  def test_openssl_style_tokenization
+    assert_version_tokens %w{1 0 1 f}, version('1.0.1f')
   end
 end
 
@@ -64,6 +78,20 @@ class VersionComparisonTests < Test::Unit::TestCase
     versions = %w{R16B R15B03-1 R15B03 R15B02 R15B01 R14B04 R14B03
                   R14B02 R14B01 R14B R13B04 R13B03 R13B02-1}.reverse
     assert_equal versions, versions.sort_by { |v| version(v) }
+  end
+
+  def test_hash_equality
+    v1 = version('0.1.0')
+    v2 = version('0.1.0')
+    v3 = version('0.1.1')
+
+    assert v1.eql?(v2)
+    assert v2.eql?(v1)
+    assert !v1.eql?(v3)
+    assert_equal v1.hash, v2.hash
+
+    h = { v1 => :foo }
+    assert_equal :foo, h[v2]
   end
 end
 

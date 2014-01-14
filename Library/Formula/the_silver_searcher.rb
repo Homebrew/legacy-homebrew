@@ -3,8 +3,8 @@ require 'formula'
 class TheSilverSearcher < Formula
   homepage 'https://github.com/ggreer/the_silver_searcher'
   head 'https://github.com/ggreer/the_silver_searcher.git'
-  url 'https://github.com/ggreer/the_silver_searcher/archive/0.18.tar.gz'
-  sha1 '43c399f5add3921b4fcb7c7f3d21909d81cd0559'
+  url 'https://github.com/ggreer/the_silver_searcher/archive/0.18.1.tar.gz'
+  sha1 'efffa28a7e15261dfc027cf94653459a4db0dd92'
 
   depends_on :automake
   depends_on :autoconf

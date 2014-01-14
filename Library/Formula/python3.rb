@@ -26,8 +26,8 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.3.2.tar.gz'
-    sha1 '77180132225c5b4696e6d061655e291f3d1b20f5'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.0.1.tar.gz'
+    sha1 '5283b4dca46d45efd1156713ab51836509646c03'
   end
 
   resource 'pip' do
@@ -134,26 +134,20 @@ class Python3 < Formula
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
     ln_s "#{bin}/python#{VER}", "#{bin}/python3" unless (bin/"python3").exist?
 
-    # We ship setuptools and pip and reuse the PythonDependency
-    # Requirement here to write the sitecustomize.py
-    py = PythonDependency.new(VER)
-    py.binary = bin/"python#{VER}"
-    py.modify_build_environment
-
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.8-py3.3.egg
-    rm_rf Dir["#{py.global_site_packages}/setuptools*"]
-    rm_rf Dir["#{py.global_site_packages}/distribute*"]
+    rm_rf Dir[HOMEBREW_PREFIX/"lib/python3/site-packages/setuptools*"]
+    rm_rf Dir[HOMEBREW_PREFIX/"lib/python3/site-packages/distribute*"]
 
     setup_args = [ "-s", "setup.py", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
 
-    resource('setuptools').stage { system py.binary, *setup_args }
+    resource('setuptools').stage { system "#{bin}/python3", *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
 
-    resource('pip').stage { system py.binary, *setup_args }
+    resource('pip').stage { system "#{bin}/python3", *setup_args }
     mv bin/'pip', bin/'pip3'
 
     # And now we write the distutils.cfg
@@ -168,7 +162,7 @@ class Python3 < Formula
 
     # A fix, because python and python3 both want to install Python.framework
     # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
-    # https://github.com/mxcl/homebrew/issues/15943
+    # https://github.com/Homebrew/homebrew/issues/15943
     ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
     rm prefix/"Frameworks/Python.framework/Versions/Current"
   end
@@ -213,7 +207,7 @@ class Python3 < Formula
     ENV.minimal_optimization
 
     # We need to enable warnings because the configure.in uses -Werror to detect
-    # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
+    # "whether gcc supports ParseTuple" (https://github.com/Homebrew/homebrew/issues/12194)
     ENV.enable_warnings
     if ENV.compiler == :clang
       # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
@@ -238,7 +232,7 @@ class Python3 < Formula
       They will install into the site-package directory
         #{site_packages}
 
-      See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+      See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
     EOS
 
     # Tk warning only for 10.6

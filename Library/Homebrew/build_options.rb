@@ -61,7 +61,13 @@ class BuildOptions
     args.include? '--' + name
   end
 
-  def with? name
+  def with? val
+    if val.respond_to?(:option_name)
+      name = val.option_name
+    else
+      name = val
+    end
+
     if has_option? "with-#{name}"
       include? "with-#{name}"
     elsif has_option? "without-#{name}"
@@ -132,7 +138,8 @@ class BuildOptions
   end
 
   def opposite_of option
-    option = Option.new option
+    option = Option.new(option) unless Option === option
+
     if option.name =~ /^with-(.+)$/
       Option.new("without-#{$1}")
     elsif option.name =~ /^without-(.+)$/

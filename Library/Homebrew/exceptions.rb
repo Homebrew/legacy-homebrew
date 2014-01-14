@@ -122,7 +122,7 @@ class IncompatibleCxxStdlibs < Homebrew::InstallationError
     to build #{f}: #{right.type_string} (from #{right.compiler})
 
     Please reinstall #{dep} using a compatible compiler.
-    hint: Check https://github.com/mxcl/homebrew/wiki/C++-Standard-Libraries
+    hint: Check https://github.com/Homebrew/homebrew/wiki/C++-Standard-Libraries
     EOS
   end
 end
@@ -185,7 +185,7 @@ class BuildError < Homebrew::InstallationError
       if formula.tap?
         user, repo = formula.tap.split '/'
         tap_issues_url = "https://github.com/#{user}/homebrew-#{repo}/issues"
-        puts "If reporting this issue please do so at (not mxcl/homebrew):"
+        puts "If reporting this issue please do so at (not Homebrew/homebrew):"
         puts "  #{tap_issues_url}"
       end
     else
@@ -218,18 +218,14 @@ end
 
 # raised by CompilerSelector if the formula fails with all of
 # the compilers available on the user's system
-class CompilerSelectionError < StandardError
-  def message; <<-EOS.undent
-    This formula cannot be built with any available compilers.
+class CompilerSelectionError < Homebrew::InstallationError
+  def initialize f
+    super f, <<-EOS.undent
+    #{f.name} cannot be built with any available compilers.
     To install this formula, you may need to:
       brew install apple-gcc42
     EOS
   end
-end
-
-# raised in install_tap
-class AlreadyTappedError < RuntimeError
-  def initialize; super "Already tapped!" end
 end
 
 # raised in CurlDownloadStrategy.fetch
