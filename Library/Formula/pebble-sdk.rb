@@ -84,19 +84,15 @@ class PebbleSdk < Formula
   end
 
   test do
-    # Test the top-level pebble script
-    system pebble, '--version'
+    system 'pebble', '--version'
 
-    # Test the toolchain itself
-    arm_gcc = prefix/'arm-cs-tools/bin/arm-none-eabi-gcc'
-    system arm_gcc, '--version'
-
-    (testpath/'test.c').write <<-EOS.undent
-      int main() { return 0; }
-    EOS
-    system arm_gcc, '-o', testpath/'test', testpath/'test.c'
-
-    assert File.exist?(testpath/'test')
+    system 'pebble', 'new-project', 'test'
+    cd 'test' do
+      # We have to remove the default /usr/local/include from the CPATH
+      # because the toolchain has -Werror=poison-system-directories set
+      ENV['CPATH'] = ''
+      system 'pebble', 'build'
+    end
   end
 end
 
