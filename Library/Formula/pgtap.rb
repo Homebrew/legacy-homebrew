@@ -8,7 +8,7 @@ class Pgtap < Formula
   head       'https://github.com/theory/pgtap.git'
 
   depends_on :postgresql
-  depends_on :cpanminus
+  depends_on 'cpanminus'
 
   skip_clean 'share'
 
