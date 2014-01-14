@@ -14,6 +14,13 @@ class Sshfs < Formula
   depends_on 'glib'
   depends_on :xcode
 
+  bottle do
+    cellar :any
+    sha1 '9a227c8c85f410c48c95e766599d04fafd6c42b7' => :mavericks
+    sha1 '9f40f3614b424be69c19b13a5cc0b22fe9566faf' => :mountain_lion
+    sha1 '78164b5d1f374f9177017ccef88734d4af19d390' => :lion
+  end
+
   def install
     # Compatibility with Automake 1.13 and newer.
     inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
