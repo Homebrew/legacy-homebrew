@@ -2,9 +2,9 @@ require 'formula'
 
 class PebbleSdk < Formula
   homepage 'https://developer.getpebble.com/2/'
-  url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.0-BETA2.tar.gz'
-  version '2.0-BETA2'
-  sha1 '6c45a9a91d82444c77cc10523e9059927d155787'
+  url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.0-BETA5.tar.gz'
+  version '2.0-BETA5'
+  sha1 'f2d7f274c751baeb34fbb970f99b4d298ffdacc2'
 
   depends_on 'freetype' => :recommended
   depends_on 'mpfr'
