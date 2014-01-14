@@ -104,6 +104,16 @@ module Homebrew
     Process.wait
     $?.success?
   end
+
+  def self.outdated? assumed
+    # Don't throw error
+    rsp = `curl -sf https://api.github.com/repos/Homebrew/homebrew/git/refs/heads/master`.chomp
+    return assumed if $?.exitstatus > 0
+
+    rem_hash = Utils::JSON.load(rsp)['object']['sha']
+    loc_hash = Dir.chdir(HOMEBREW_REPOSITORY) { `git show-ref --heads --hash master`.chomp }
+    rem_hash != loc_hash
+  end
 end
 
 def with_system_path

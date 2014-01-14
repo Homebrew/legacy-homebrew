@@ -114,9 +114,14 @@ module Homebrew extend self
     end
     results
   rescue OpenURI::HTTPError, GitHub::Error, Utils::JSON::Error
-    opoo <<-EOS.undent
-      Failed to search tap: #{user}/#{repo}. Please run `brew update`.
-    EOS
+    msg = "Failed to search tap: #{user}/#{repo}."
+    if Homebrew.outdated? true
+      msg += " Please run `brew update`."
+    else
+      msg += "\n#{Tty.white}If this issue persists over several attempts, please report:"
+      msg += "\n    #{Tty.em}https://github.com/Homebrew/homebrew/issues#{Tty.reset}"
+    end
+    opoo msg
     []
   end
 
