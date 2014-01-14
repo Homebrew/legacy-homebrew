@@ -2,21 +2,24 @@ require 'formula'
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.24.4.tar.xz'
-  sha1 '7938c92c61b63331f2af463db0d10048bf0d4712'
+  url 'http://poppler.freedesktop.org/poppler-0.24.5.tar.xz'
+  sha1 '7b7cabee85bd81a7e55c939740d5d7ccd7c0dda5'
 
   option 'with-qt4', 'Build Qt backend'
-  option 'with-glib', 'Build Glib backend'
+  option 'with-glib', 'Build Glib backend' # requires cairo
+  option 'with-lcms2', 'Use color management system'
+  option 'with-splash-output', 'Build with Splash output backend'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
 
-  depends_on :fontconfig
+  depends_on 'fontconfig'
   depends_on 'openjpeg'
 
   depends_on 'qt' if build.with? 'qt4'
   depends_on 'glib' => :optional
-  depends_on 'cairo' if build.with? 'glib' # Needs a newer Cairo build than OS X 10.6.7 provides
+  depends_on 'little-cms2' if build.with? 'lcms2'
+  depends_on 'cairo' if build.with? 'glib'
 
   conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
 
@@ -43,6 +46,9 @@ class Poppler < Formula
     # PATH.
     args << ( build.with?('qt4') ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
     args << ( build.with?('glib') ? '--enable-poppler-glib' : '--disable-poppler-glib' )
+    args << ( build.with?('glib') ? '' : '--disable-cairo-output' )
+    args << ( build.with?('lcms2') ? '--enable-cms=lcms2' : '' )
+    args << ( build.with?('splash-output') ? '' : '--disable-splash-output' )
 
     system "./configure", *args
     system "make install"
