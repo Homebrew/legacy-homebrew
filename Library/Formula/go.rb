@@ -78,6 +78,9 @@ class Go < Formula
 
     You may wish to add the GOROOT-based install location to your PATH:
       export PATH=$PATH:#{`#{bin}/go env GOROOT`.chomp}/bin
+    
+    You may wish to set the GOROOT variable in your environment:
+      export GOROOT=#{`#{bin}/go env GOROOT`.chomp}/libexec
     EOS
   end
 
