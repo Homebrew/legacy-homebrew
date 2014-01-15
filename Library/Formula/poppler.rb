@@ -11,7 +11,7 @@ class Poppler < Formula
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
 
-  depends_on :fontconfig
+  depends_on 'fontconfig'
   depends_on 'openjpeg'
 
   depends_on 'qt' if build.with? 'qt4'
