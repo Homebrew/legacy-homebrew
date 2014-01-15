@@ -2,8 +2,8 @@ require 'formula'
 
 class Masscan < Formula
   homepage 'https://github.com/robertdavidgraham/masscan/'
-  url 'https://github.com/robertdavidgraham/masscan/archive/1.0.tar.gz'
-  sha1 'c5a7604f52ba0d2578232c6c7a833d3a8756149f'
+  url 'https://github.com/robertdavidgraham/masscan/archive/1.0.1.tar.gz'
+  sha1 '0b23454bc6c37fa7d095977601ff117588064e7f'
   head 'https://github.com/kaizoku/masscan.git'
 
   def install
