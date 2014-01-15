@@ -2,8 +2,8 @@ require 'formula'
 
 class Cppcheck < Formula
   homepage 'http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page'
-  url 'https://github.com/danmar/cppcheck/archive/1.62.1.tar.gz'
-  sha1 '2494a603bd505cc6ae5bd67286410a66cf7996b2'
+  url 'https://github.com/danmar/cppcheck/archive/1.63.1.tar.gz'
+  sha1 '19ad7251603356a82dc75a836dfad9629a3d12a0'
 
   head 'https://github.com/danmar/cppcheck.git'
 
