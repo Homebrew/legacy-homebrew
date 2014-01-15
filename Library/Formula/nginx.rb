@@ -27,15 +27,14 @@ class Nginx < Formula
   skip_clean 'logs'
 
   def passenger_config_args
-    nginx_ext = `passenger-config --nginx-addon-dir`.chomp
+    passenger_config = "#{HOMEBREW_PREFIX}/opt/passenger/bin/passenger-config"
+    nginx_ext = `#{passenger_config} --nginx-addon-dir`.chomp
 
     if File.directory?(nginx_ext)
       return "--add-module=#{nginx_ext}"
     end
 
-    puts "Unable to install nginx with passenger support. The passenger"
-    puts "gem must be installed and passenger-config must be in your path"
-    puts "in order to continue."
+    puts "Unable to install nginx with passenger support."
     exit
   end
 
@@ -130,7 +129,7 @@ class Nginx < Formula
     The default port has been set in #{HOMEBREW_PREFIX}/etc/nginx/nginx.conf to 8080 so that
     nginx can run without sudo.
     EOS
-    s << passenger_caveats if build.include? 'with-passenger'
+    s << passenger_caveats if build.with? 'passenger'
     s
   end
 
