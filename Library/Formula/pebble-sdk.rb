@@ -54,14 +54,12 @@ class PebbleSdk < Formula
     sha1 '7085c6ef371213e3e766a1cbd7e6e1951ccf1d87'
   end
 
-  def patches
-    # This patch fixes a path that got messed up because of the
+  def install
+    # This replacement fixes a path that gets messed up because of the
     # bin.env_script_all_files call (which relocates actual pebble.py script
     # to libexec/, causing problems with the absolute path expected below).
-    DATA
-  end
+    inreplace 'bin/pebble', /^script_path = .*?$/m, "script_path = '#{libexec}/../tools/pebble.py'"
 
-  def install
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
@@ -84,8 +82,6 @@ class PebbleSdk < Formula
   end
 
   test do
-    system 'pebble', '--version'
-
     system 'pebble', 'new-project', 'test'
     cd 'test' do
       # We have to remove the default /usr/local/include from the CPATH
@@ -95,19 +91,4 @@ class PebbleSdk < Formula
     end
   end
 end
-
-__END__
-diff --git a/bin/pebble b/bin/pebble
-index 20391d5..0ca5b11 100755
---- a/bin/pebble
-+++ b/bin/pebble
-@@ -26,7 +26,7 @@ def signal_handler(signal, frame):
- signal.signal(signal.SIGINT, signal_handler)
- 
- # Form the command line
--script_path = os.path.join(os.path.dirname(__file__), os.pardir, "tools", "pebble.py")
-+script_path = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, "tools", "pebble.py")
- args = [cmd_name, script_path]
- args += sys.argv[1:]
- retval = subprocess.call(args, shell=False)
 
