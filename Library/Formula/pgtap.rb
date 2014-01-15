@@ -7,28 +7,34 @@ class Pgtap < Formula
   head 'https://github.com/theory/pgtap.git'
 
   depends_on :postgresql
-  depends_on 'cpanminus'
 
   skip_clean 'share'
 
-  def install
-    pg_prove
-    ENV.prepend_path 'PATH', Formula.factory('postgresql').bin
-    system "make install"
+  resource 'Test::Harness' do
+    url 'http://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-3.30.tar.gz'
+    sha1 '5f7cc2392accaf47100cf2a57c5513c3fa29b1dc'
   end
 
-  def pg_prove
-    arch  = %x(perl -MConfig -E 'print $Config{archname}')
-    plib  = "#{HOMEBREW_PREFIX}/lib/perl5"
-    ENV['PERL5LIB'] = "#{plib}:#{plib}/#{arch}:#{lib}:#{lib}/#{arch}"
-    ENV.remove_from_cflags(/-march=\w+/)
-    ENV.remove_from_cflags(/-msse\d?/)
+  resource 'TAP::Parser::SourceHandler::pgTAP' do
+    url 'http://cpan.metacpan.org/authors/id/D/DW/DWHEELER/TAP-Parser-SourceHandler-pgTAP-3.29.tar.gz'
+    sha1 '8cf6dc2ec833b896a0638390a33e2c477a58e020'
+  end
 
-    # Install TAP::Parser::SourceHandler::pgTAP.
-    system "cpanm --local-lib '#{prefix}' --notest TAP::Parser::SourceHandler::pgTAP"
+  def install
+    resource('Test::Harness').stage do
+      system 'perl', 'Makefile.PL', "INSTALL_BASE=#{libexec}"
+      system 'make'
+      system 'make', 'install'
+    end
 
-    # Remove perllocal.pod, since it just gets in the way of other modules.
-    rm "#{prefix}/lib/perl5/#{arch}/perllocal.pod", :force => true
+    resource('TAP::Parser::SourceHandler::pgTAP').stage do
+      system 'perl', 'Build.PL', "--install_base", libexec
+      system './Build'
+      system './Build', 'install'
+    end
+
+    ENV.prepend_path 'PATH', Formula.factory('postgresql').bin
+    system "make install"
   end
 
 end
