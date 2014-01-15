@@ -34,7 +34,8 @@ class Pgtap < Formula
     end
 
     ENV.prepend_path 'PATH', Formula.factory('postgresql').bin
-    system "make install"
+    system 'make'
+    system 'make', 'install'
   end
 
 end
