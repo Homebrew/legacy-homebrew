@@ -12,6 +12,8 @@ class Afflib < Formula
   depends_on 'osxfuse' => :optional
 
   def patches
+    # This patch fixes a bug reported upstream overthere
+    # https://github.com/simsong/AFFLIBv3/issues/4
     DATA
   end
 
