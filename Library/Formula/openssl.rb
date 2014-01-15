@@ -78,4 +78,14 @@ class Openssl < Formula
       openssldir.install_symlink 'osx_cert.pem' => 'cert.pem'
     end
   end
+
+  test do
+    (testpath/'testfile.txt').write("This is a test file")
+    expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32"
+    system "#{bin}/openssl", 'dgst', '-sha1', '-out', 'checksum.txt', 'testfile.txt'
+    open("checksum.txt") do |f|
+      checksum = f.read(100).split("=").last.strip
+      assert_equal checksum, expected_checksum
+    end
+  end
 end
