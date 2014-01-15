@@ -10,6 +10,6 @@ class Ec2ApiTools < AmazonWebServicesFormula
   end
 
   def caveats
-    standard_instructions "EC2_HOME"
+    standard_instructions "EC2_HOME", prefix
   end
 end
