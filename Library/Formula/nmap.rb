@@ -32,4 +32,8 @@ class Nmap < Formula
     system "make" # separate steps required otherwise the build fails
     system "make install"
   end
+
+  test do
+    system "#{bin}/nmap", '-p80,443', 'google.com'
+  end
 end
