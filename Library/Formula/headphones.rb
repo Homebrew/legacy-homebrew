@@ -3,8 +3,8 @@ require 'formula'
 class Headphones < Formula
   homepage 'https://github.com/rembo10/headphones'
   head 'https://github.com/rembo10/headphones.git'
-  url 'https://github.com/rembo10/headphones/archive/v0.1.2.zip'
-  sha1 'd02b4ba4b513e318abf08d72c5b8b9ed4e35de3a'
+  url 'https://github.com/rembo10/headphones/archive/v0.2.1.tar.gz'
+  sha1 '82cfc794ba803228b18c18d703a84e61c0184e8f'
 
   depends_on 'Cheetah' => :python
 
