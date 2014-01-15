@@ -6,7 +6,8 @@ class Pgtap < Formula
   sha1 '58c04a57d79345c18525ed4aee9db058964408a1'
   head 'https://github.com/theory/pgtap.git'
 
-  depends_on :postgresql
+  # Not :postgresql, because we need to install into its share directory.
+  depends_on 'postgresql'
 
   skip_clean 'share'
 
