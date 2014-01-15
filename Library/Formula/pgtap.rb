@@ -22,6 +22,11 @@ class Pgtap < Formula
   end
 
   def install
+    # Make sure modules can find just-installed dependencies.
+    arch  = %x(perl -MConfig -E 'print $Config{archname}')
+    plib  = "#{lib}/perl5"
+    ENV['PERL5LIB'] = "#{plib}:#{plib}/#{arch}:#{lib}:#{lib}/#{arch}"
+
     resource('Test::Harness').stage do
       system 'perl', 'Makefile.PL', "INSTALL_BASE=#{prefix}", "INSTALLSITEMAN1DIR=#{man1}", "INSTALLSITEMAN3DIR=#{man3}"
       system 'make'
