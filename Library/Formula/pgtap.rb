@@ -22,13 +22,13 @@ class Pgtap < Formula
 
   def install
     resource('Test::Harness').stage do
-      system 'perl', 'Makefile.PL', "INSTALL_BASE=#{prefix}"
+      system 'perl', 'Makefile.PL', "INSTALL_BASE=#{prefix}", "INSTALLSITEMAN1DIR=#{man1}", "INSTALLSITEMAN3DIR=#{man3}"
       system 'make'
       system 'make', 'install'
     end
 
     resource('TAP::Parser::SourceHandler::pgTAP').stage do
-      system 'perl', 'Build.PL', "--install_base", prefix
+      system 'perl', 'Build.PL', "--install_base", prefix, '--install_path', "bindoc=#{man1}", '--install_path', "libdoc=#{man3}"
       system './Build'
       system './Build', 'install'
     end
