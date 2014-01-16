@@ -2,8 +2,8 @@ require 'formula'
 
 class Grails < Formula
   homepage 'http://grails.org'
-  url 'http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-2.3.4.zip'
-  sha1 '13c39936f1b820ebb13e03fd56cc617b0c68eaee'
+  url 'http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-2.3.5.zip'
+  sha1 '32a7acbabb22d6d78898f109a3b265ba83589a1b'
 
   def install
     rm_f Dir["bin/*.bat", "bin/cygrails", "*.bat"]
