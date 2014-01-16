@@ -16,6 +16,10 @@ class Hadoop < Formula
     inreplace "#{libexec}/conf/hadoop-env.sh",
       "# export JAVA_HOME=/usr/lib/j2sdk1.5-sun",
       "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
+
+    inreplace "#{libexec}/conf/hadoop-env.sh",
+      "# export HADOOP_OPTS=-server",
+      "export HADOOP_OPTS='-Djava.security.krb5.realm=-Djava.security.krb5.kdc='"
   end
 
   def caveats; <<-EOS.undent
