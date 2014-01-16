@@ -13,7 +13,7 @@ class Gnuplot < Formula
   sha256 'df5ffafa25fb32b3ecc0206a520f6bca8680e6dcc961efd30df34c0a1b7ea7f5'
 
   head do
-    url 'cvs://:pserver:anonymous@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot'
+    url 'cvs://:pserver:anonymous:@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot'
 
     depends_on :autoconf
     depends_on :automake
