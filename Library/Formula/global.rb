@@ -15,7 +15,7 @@ class Global < Formula
 
   option 'with-exuberant-ctags', 'Enable Exuberant Ctags as a plug-in parser'
 
-  if build.include? 'with-exuberant-ctags'
+  if build.with? 'exuberant-ctags'
     depends_on 'ctags'
     skip_clean 'lib/gtags/exuberant-ctags.la'
   end
@@ -28,7 +28,7 @@ class Global < Formula
       --prefix=#{prefix}
     ]
 
-    if build.include? 'with-exuberant-ctags'
+    if build.with? 'exuberant-ctags'
       args << "--with-exuberant-ctags=#{HOMEBREW_PREFIX}/bin/ctags"
     end
 
