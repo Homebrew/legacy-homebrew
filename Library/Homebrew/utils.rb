@@ -314,7 +314,7 @@ module GitHub extend self
     query = rx.source.delete('.*').gsub('\\', '')
 
     each_issue_matching(query) do |issue|
-      if rx === issue['title'] && issue.has_key?('pull_request_url')
+      if rx === issue['title'] && issue.has_key?('pull_request_url') && issue['state'] != 'closed'
         yield issue['pull_request_url']
       end
     end
