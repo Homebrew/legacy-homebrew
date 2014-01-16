@@ -11,8 +11,12 @@ class Bear < Formula
 
   def install
     mkdir "build" do
-      system "cmake", "..", "-DCMAKE_BUILD_TYPE=Release", *std_cmake_args
+      system "cmake", "..", *std_cmake_args
       system "make", "install"
     end
+  end
+
+  test do
+    system "bear", "-v"
   end
 end
