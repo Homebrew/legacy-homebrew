@@ -25,8 +25,9 @@ class Imake < Formula
     system "make install"
 
     resource('xorg-cf-files').stage do
+      # Adapt to any homebrew and X11 location before installing
       inreplace "X11.rules", "define TopXInclude	/**/",
-                "define TopXInclude	-I/usr/X11/include"   
+                "define TopXInclude	-I#{MacOS::X11.include}" # Explicite X11 location
       system "./configure", "--with-config-dir=#{lib}/X11/config", "--prefix=#{HOMEBREW_PREFIX}"
       system "make install"
     end
