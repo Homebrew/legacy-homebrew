@@ -1,17 +1,17 @@
 require 'formula'
 
 class SagaGis < Formula
-  homepage 'http://saga-project.org'
-  url 'http://downloads.sourceforge.net/project/saga-gis/SAGA%20-%202.1/SAGA%202.1.0/saga_2.1.0.tar.gz'
-  sha1 '1da4d7aed8ceb9efab9698b2c3bdb2670e65c5dd'
+  homepage 'http://saga-gis.org'
+  url 'http://downloads.sourceforge.net/project/saga-gis/SAGA%20-%202.1/SAGA%202.1.1/saga_2.1.1.tar.gz'
+  sha1 '40ac4d0646e04187aa6728181c3954993e51dcd5'
 
   head 'svn://svn.code.sf.net/p/saga-gis/code-0/trunk/saga-gis'
 
   option "build-app", "Build SAGA.app Package"
 
   depends_on :automake
+  depends_on :autoconf
   depends_on :libtool
-  depends_on 'boost'
   depends_on 'gdal'
   depends_on 'jasper'
   depends_on 'proj'
@@ -45,15 +45,8 @@ class SagaGis < Formula
 
     # Need to remove unsupported libraries from various Makefiles
     # http://sourceforge.net/apps/trac/saga-gis/wiki/Compiling%20SAGA%20on%20Mac%20OS%20X
-    # The current SVN version doesn't have a saga_odbc folder, so that replace isn't applied
-    if build.head?
-      inreplace "src/saga_core/saga_gui/Makefile.am", "aui,base,", ""
-      inreplace "src/saga_core/saga_gui/Makefile.am", "propgrid,", ""
-    else
-      inreplace "src/saga_core/saga_gui/Makefile.am", "aui,base,", ""
-      inreplace "src/saga_core/saga_gui/Makefile.am", "propgrid,", ""
-      inreplace "src/saga_core/saga_odbc/Makefile.am", "-lodbc", "-liodbc"
-    end
+    inreplace "src/saga_core/saga_gui/Makefile.am", "aui,base,", ""
+    inreplace "src/saga_core/saga_gui/Makefile.am", "propgrid,", ""
 
     system "autoreconf", "-i"
     system "./configure", "--prefix=#{prefix}"
