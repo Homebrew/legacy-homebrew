@@ -2,8 +2,8 @@ require 'formula'
 
 class Ktoblzcheck < Formula
   homepage 'http://ktoblzcheck.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.43.tar.gz'
-  sha1 '9b03780f17c5e4ef6a821cd9d819cb39e4fb559f'
+  url 'http://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.44.tar.gz'
+  sha1 'ccb02a59ae216ca65b9de4a545f83c56e0290d5e'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
