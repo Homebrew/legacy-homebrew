@@ -2,8 +2,8 @@ require 'formula'
 
 class E2fsprogs < Formula
   homepage 'http://e2fsprogs.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/e2fsprogs/e2fsprogs-1.42.8.tar.gz'
-  sha1 '79cdb2374a9c0e68f01739598679db06d546b897'
+  url 'http://downloads.sourceforge.net/e2fsprogs/e2fsprogs-1.42.9.tar.gz'
+  sha1 'fb8e3662302bcab1682d567d6ee0ff051faa1bbd'
 
   head 'https://git.kernel.org/pub/scm/fs/ext2/e2fsprogs.git'
 
@@ -21,7 +21,7 @@ class E2fsprogs < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--disable-e2initrd-helper"
     system "make"
     system "make install"
     system "make install-libs"
