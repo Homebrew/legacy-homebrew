@@ -17,16 +17,12 @@ class SagaGis < Formula
   depends_on 'proj'
   depends_on 'wxmac'
   depends_on 'libharu' => :recommended
+  depends_on 'postgresql' => :optional
 
   def patches
     # Compiling on Mavericks with libc++ causes issues with LC_NUMERIC.
     # https://sourceforge.net/p/saga-gis/patches/12/
     DATA
-  end
-
-  resource 'app_script' do
-    url 'http://web.fastermac.net/~MacPgmr/SAGA/create_saga_app.sh'
-    sha1 '60467354402daa24ba707c21f9b04219e565b69c'
   end
 
   resource 'app_icon' do
@@ -35,8 +31,8 @@ class SagaGis < Formula
   end
 
   resource 'projects' do
-    url 'https://gist.github.com/nickrobison/6531625/raw/projects.h'
-    sha1 '50e646dfd60c432c934d2020c75b6232dfac9202'
+    url 'http://trac.osgeo.org/proj/export/2409/branches/4.8/proj/src/projects.h'
+    sha1 '867367a8ef097d5ff772b7f50713830d2d4bc09c'
     version '4.8.0'
   end
 
@@ -53,11 +49,47 @@ class SagaGis < Formula
     system "make install"
 
     if build.include? "build-app"
-      (buildpath).install resource('app_script')
+      # Based on original script by Phil Hess
+      # http://web.fastermac.net/~MacPgmr/
+
       (buildpath).install resource('app_icon')
-      chmod 0755, 'create_saga_app.sh'
-      system "./create_saga_app.sh", "#{bin}/saga_gui", "SAGA"
-      prefix.install "SAGA.app"
+      mkdir_p "#{buildpath}/SAGA.app/Contents/MacOS"
+      mkdir_p "#{buildpath}/SAGA.app/Contents/Resources"
+
+      Pathname(buildpath/'SAGA.app/Contents/PkgInfo').write 'APPLSAGA'
+      cp "#{buildpath}/saga_gui.icns", "#{buildpath}/SAGA.app/Contents/Resources/"
+      ln_s "#{bin}/saga_gui", "#{buildpath}/SAGA.app/Contents/MacOS/saga_gui"
+
+      config = <<-EOS.undent
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+          <key>CFBundleDevelopmentRegion</key>
+          <string>English</string>
+          <key>CFBundleExecutable</key>
+          <string>saga_gui</string>
+          <key>CFBundleIconFile</key>
+          <string>saga_gui.icns</string>
+          <key>CFBundleInfoDictionaryVersion</key>
+          <string>6.0</string>
+          <key>CFBundleName</key>
+          <string>SAGA</string>
+          <key>CFBundlePackageType</key>
+          <string>APPL</string>
+          <key>CFBundleSignature</key>
+          <string>SAGA</string>
+          <key>CFBundleVersion</key>
+          <string>1.0</string>
+          <key>CSResourcesFileMapped</key>
+          <true/>
+        </dict>
+        </plist>
+    EOS
+
+    Pathname(buildpath/'SAGA.app/Contents/Info.plist').write config
+    prefix.install "SAGA.app"
+
     end
   end
 
@@ -89,4 +121,3 @@ index 0ce6d36..9f554a8 100644
  
  
  ///////////////////////////////////////////////////////////
-
