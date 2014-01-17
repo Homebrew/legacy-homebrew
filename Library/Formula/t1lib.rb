@@ -10,4 +10,8 @@ class T1lib < Formula
     system 'make', 'without_doc'
     system 'make', 'install'
   end
+
+  def test
+    system "#{bin}/type1afm"
+  end
 end
