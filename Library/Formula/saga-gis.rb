@@ -19,10 +19,12 @@ class SagaGis < Formula
   depends_on 'unixodbc' => :recommended
   depends_on 'libharu' => :recommended
   depends_on 'postgresql' => :optional
+  depends_on :python => :optional
 
   def patches
     # Compiling on Mavericks with libc++ causes issues with LC_NUMERIC.
     # https://sourceforge.net/p/saga-gis/patches/12/
+    # Fixes issue with libio_grid.dylib. Thanks @dakcarto
     DATA
   end
 
@@ -54,6 +56,7 @@ class SagaGis < Formula
 
     args << "--disable-odbc" if build.without? "unixodbc"
     args << "--with-postgresql" if build.with? "postgresql"
+    args << "--with-python" if build.with? "python"
 
     system "autoreconf", "-i"
     system "./configure", *args
@@ -132,3 +135,15 @@ index 0ce6d36..9f554a8 100644
  
  
  ///////////////////////////////////////////////////////////
+ diff --git a/src/modules_io/grid/io_grid/xyz.h b/src/modules_io/grid/io_grid/xyz.h
+index ffbd194..33b62fd 100644
+--- a/src/modules_io/grid/io_grid/xyz.h
++++ b/src/modules_io/grid/io_grid/xyz.h
+@@ -86,6 +86,7 @@ class CXYZ_Export : public CSG_Module_Grid
+ {
+ public:
+ 	CXYZ_Export(void);
++	virtual ~CXYZ_Export(void);
+
+ 	virtual CSG_String		Get_MenuPath	(void)			{	return( _TL("R:Export") );	}
+
