@@ -9,15 +9,6 @@ class Gettext < Formula
   keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
 
   option :universal
-  option 'with-examples', 'Keep example files'
-
-  def patches
-    unless build.include? 'with-examples'
-      # Use a MacPorts patch to disable building examples at all,
-      # rather than build them and remove them afterwards.
-      {:p0 => ['https://trac.macports.org/export/102008/trunk/dports/devel/gettext/files/patch-gettext-tools-Makefile.in']}
-    end
-  end
 
   def install
     ENV.libxml2
