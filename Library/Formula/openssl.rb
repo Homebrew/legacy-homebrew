@@ -2,7 +2,7 @@ require 'formula'
 
 class Openssl < Formula
   homepage 'http://openssl.org'
-  url 'http://www.openssl.org/source/openssl-1.0.1f.tar.gz'
+  url 'https://www.openssl.org/source/openssl-1.0.1f.tar.gz'
   mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1f.tar.gz'
   sha256 '6cc2a80b17d64de6b7bac985745fdaba971d54ffd7d38d3556f998d7c0c9cb5a'
 
@@ -76,6 +76,16 @@ class Openssl < Formula
       cert_pem.unlink if cert_pem.symlink?
       write_pem_file
       openssldir.install_symlink 'osx_cert.pem' => 'cert.pem'
+    end
+  end
+
+  test do
+    (testpath/'testfile.txt').write("This is a test file")
+    expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32"
+    system "#{bin}/openssl", 'dgst', '-sha1', '-out', 'checksum.txt', 'testfile.txt'
+    open("checksum.txt") do |f|
+      checksum = f.read(100).split("=").last.strip
+      assert_equal checksum, expected_checksum
     end
   end
 end
