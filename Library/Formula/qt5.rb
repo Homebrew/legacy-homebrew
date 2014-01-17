@@ -45,6 +45,10 @@ class Qt5 < Formula
   odie 'qt5: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
 
   def install
+    # fixed hardcoded link to plugin dir: https://bugreports.qt-project.org/browse/QTBUG-29188
+    inreplace "qttools/src/macdeployqt/macdeployqt/main.cpp", "deploymentInfo.pluginPath = \"/Developer/Applications/Qt/plugins\";",
+              "deploymentInfo.pluginPath = \"#{prefix}/plugins\";"
+
     ENV.universal_binary if build.universal?
     args = ["-prefix", prefix,
             "-system-zlib",
