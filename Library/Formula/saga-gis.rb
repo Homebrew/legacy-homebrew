@@ -7,7 +7,7 @@ class SagaGis < Formula
 
   head 'svn://svn.code.sf.net/p/saga-gis/code-0/trunk/saga-gis'
 
-  option "build-app", "Build SAGA.app Package"
+  option "with-app", "Build SAGA.app Package"
 
   depends_on :automake
   depends_on :autoconf
@@ -16,6 +16,7 @@ class SagaGis < Formula
   depends_on 'jasper'
   depends_on 'proj'
   depends_on 'wxmac'
+  depends_on 'unixodbc' => :recommended
   depends_on 'libharu' => :recommended
   depends_on 'postgresql' => :optional
 
@@ -44,11 +45,21 @@ class SagaGis < Formula
     inreplace "src/saga_core/saga_gui/Makefile.am", "aui,base,", ""
     inreplace "src/saga_core/saga_gui/Makefile.am", "propgrid,", ""
 
+    args = [
+      "--prefix=#{prefix}",
+      "--disable-dependency-tracking",
+      "--disable-openmp"
+
+      ]
+
+    args << "--disable-odbc" if build.without? "unixodbc"
+    args << "--with-postgresql" if build.with? "postgresql"
+
     system "autoreconf", "-i"
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", *args
     system "make install"
 
-    if build.include? "build-app"
+    if build.include? "with-app"
       # Based on original script by Phil Hess
       # http://web.fastermac.net/~MacPgmr/
 
@@ -56,7 +67,7 @@ class SagaGis < Formula
       mkdir_p "#{buildpath}/SAGA.app/Contents/MacOS"
       mkdir_p "#{buildpath}/SAGA.app/Contents/Resources"
 
-      Pathname(buildpath/'SAGA.app/Contents/PkgInfo').write 'APPLSAGA'
+      (buildpath/'SAGA.app/Contents/PkgInfo').write 'APPLSAGA'
       cp "#{buildpath}/saga_gui.icns", "#{buildpath}/SAGA.app/Contents/Resources/"
       ln_s "#{bin}/saga_gui", "#{buildpath}/SAGA.app/Contents/MacOS/saga_gui"
 
@@ -87,14 +98,14 @@ class SagaGis < Formula
         </plist>
     EOS
 
-    Pathname(buildpath/'SAGA.app/Contents/Info.plist').write config
+    (buildpath/'SAGA.app/Contents/Info.plist').write config
     prefix.install "SAGA.app"
 
     end
   end
 
   def caveats
-    if build.include? "build-app" then <<-EOS.undent
+    if build.include? "with-app" then <<-EOS.undent
       SAGA.app was installed in:
         #{prefix}
 
