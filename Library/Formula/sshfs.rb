@@ -16,6 +16,13 @@ class Sshfs < Formula
   depends_on 'glib'
   depends_on :xcode
 
+  bottle do
+    cellar :any
+    sha1 '57778d401e579bc32a6153419a3bbb34ef76b2aa' => :mavericks
+    sha1 '7ef7bbf791ca3031f992ff6907a79bef65fbc51f' => :mountain_lion
+    sha1 'a98aff34dca5da77ff894ff230885f1025ea45ba' => :lion
+  end
+
   def patches
     # Fixes issue with semaphore type
     # Reported upstream: https://github.com/osxfuse/sshfs/issues/6
