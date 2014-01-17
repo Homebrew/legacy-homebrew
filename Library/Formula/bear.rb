@@ -15,4 +15,8 @@ class Bear < Formula
       system "make", "install"
     end
   end
+
+  test do
+    system "#{bin}/bear", "--", "true"
+  end
 end
