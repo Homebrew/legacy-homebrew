@@ -9,11 +9,11 @@ class T1lib < Formula
     system './configure', "--prefix=#{prefix}"
     system 'make', 'without_doc'
     system 'make', 'install'
-    FileUtils.cp_r 'Fonts', "#{prefix}/share/t1lib/fonts"
+    cp_r 'Fonts', "#{share}/t1lib/fonts"
   end
 
   test do
-    FileUtils.cp "#{prefix}/share/t1lib/fonts/type1/bchri.pfb", 'test.pfb'
+    cp "#{share}/t1lib/fonts/type1/bchri.pfb", 'test.pfb'
     system "#{bin}/type1afm", 'test.pfb'
     assert File.exist? 'test.afm'
   end
