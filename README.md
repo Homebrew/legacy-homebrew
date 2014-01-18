@@ -12,6 +12,14 @@ More Documentation
 ------------------
 `brew help` or `man brew` or check our [wiki][].
 
+Troubleshooting
+---------------
+First, please run `brew update` and `brew doctor`.
+
+Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebrew/wiki/troubleshooting).
+
+**If you don't read these it will take us far longer to help you with your problem.**
+
 Who Are You?
 ------------
 Homebrew is maintained by the [core contributors][team].
