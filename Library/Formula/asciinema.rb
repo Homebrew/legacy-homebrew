@@ -8,7 +8,7 @@ class Asciinema < Formula
   depends_on :python
 
   def install
-    system "python", "setup.py" "install"
+    system "python", "setup.py", "install"
   end
 
   def test
