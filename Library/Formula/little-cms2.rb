@@ -8,7 +8,11 @@ class LittleCms2 < Formula
   depends_on 'jpeg' => :recommended
   depends_on 'libtiff' => :recommended
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
+
     args = %W{--disable-dependency-tracking --prefix=#{prefix}}
     args << "--without-tiff" if build.without? "libtiff"
     args << "--without-jpeg" if build.without? "jpeg"
