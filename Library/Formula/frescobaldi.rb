@@ -36,15 +36,4 @@ class Frescobaldi < Formula
              bin/"frescobaldi", bin/"Frescobaldi.app"
     end
   end
-
-  def caveats
-    if build.with? "launcher"
-      <<-EOS.undent
-        To install the Mac OS X launcher application run:
-          brew linkapps (to install in ~/Applications)
-        or:
-          ln -s #{bin}/Frescobaldi.app /Applications
-      EOS
-    end
-  end
 end
