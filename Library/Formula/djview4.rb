@@ -28,15 +28,6 @@ class Djview4 < Formula
     # Simply copy the application bundle where you want it.
     prefix.install 'src/djview.app'
   end
-
-  def caveats; <<-EOS
-    djview.app was installed in:
-      #{opt_prefix}
-
-    To symlink into ~/Applications, you can do:
-      brew linkapps
-    EOS
-  end
 end
 
 
