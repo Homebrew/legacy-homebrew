@@ -317,7 +317,7 @@ module GitHub extend self
     each_issue_matching(query) do |issue|
       if rx === issue['title'] && issue.has_key?('pull_request_url') && issue['state'] != 'closed'
         pull_request_found = true
-        yield issue['pull_request_url']
+        yield "#{issue['title']} (#{issue['pull_request_url']})"
       end
     end
 
@@ -325,7 +325,7 @@ module GitHub extend self
 
     each_issue_matching(query) do |issue|
       if rx === issue['title'] && issue.has_key?('pull_request_url')
-        yield issue['pull_request_url']
+        yield "#{issue['title']} (#{issue['pull_request_url']})"
       end
     end
   end
