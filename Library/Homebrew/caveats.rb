@@ -13,6 +13,7 @@ class Caveats
     caveats << zsh_completion_caveats
     caveats << plist_caveats
     caveats << python_caveats
+    caveats << app_caveats
     caveats.compact.join("\n")
   end
 
@@ -55,6 +56,15 @@ class Caveats
       <<-EOS.undent
         Set PYTHONPATH if you want Python to find your site-packages:
           export PYTHONPATH=#{site_packages}:$PYTHONPATH
+      EOS
+    end
+  end
+
+  def app_caveats
+    if keg and keg.app_installed?
+      <<-EOS.undent
+        .app bundles were installed to #{f.prefix} (or libexec).
+        Run `brew linkapps` to symlink these to /Applications.
       EOS
     end
   end
