@@ -25,12 +25,14 @@ class SagaGis < Formula
     # Compiling on Mavericks with libc++ causes issues with LC_NUMERIC.
     # https://sourceforge.net/p/saga-gis/patches/12/
     # Fixes issue with libio_grid.dylib. Thanks @dakcarto
+    # https://sourceforge.net/p/saga-gis/bugs/176/
     DATA
   end
 
   resource 'app_icon' do
     url 'http://web.fastermac.net/~MacPgmr/SAGA/saga_gui.icns'
     sha1 '1ff67c6d600dd161684d3e8b33a1d138c65b00f4'
+    version '1.0.0'
   end
 
   resource 'projects' do
@@ -40,7 +42,7 @@ class SagaGis < Formula
   end
 
   def install
-    (buildpath/'src/modules_projection/pj_proj4/pj_proj4/').install resource('projects')
+    (buildpath/'src/modules_projection/pj_proj4/pj_proj4/').install resource 'projects'
 
     # Need to remove unsupported libraries from various Makefiles
     # http://sourceforge.net/apps/trac/saga-gis/wiki/Compiling%20SAGA%20on%20Mac%20OS%20X
@@ -51,7 +53,6 @@ class SagaGis < Formula
       "--prefix=#{prefix}",
       "--disable-dependency-tracking",
       "--disable-openmp"
-
       ]
 
     args << "--disable-odbc" if build.without? "unixodbc"
@@ -60,13 +61,13 @@ class SagaGis < Formula
 
     system "autoreconf", "-i"
     system "./configure", *args
-    system "make install"
+    system "make", "install"
 
-    if build.include? "with-app"
+    if build.with? "app"
       # Based on original script by Phil Hess
       # http://web.fastermac.net/~MacPgmr/
 
-      (buildpath).install resource('app_icon')
+      buildpath.install resource 'app_icon'
       mkdir_p "#{buildpath}/SAGA.app/Contents/MacOS"
       mkdir_p "#{buildpath}/SAGA.app/Contents/Resources"
 
@@ -74,49 +75,50 @@ class SagaGis < Formula
       cp "#{buildpath}/saga_gui.icns", "#{buildpath}/SAGA.app/Contents/Resources/"
       ln_s "#{bin}/saga_gui", "#{buildpath}/SAGA.app/Contents/MacOS/saga_gui"
 
-      config = <<-EOS.undent
+      (buildpath/'SAGA.app/Contents/Info.plist').write <<-EOS.undent
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
         <plist version="1.0">
-        <dict>
-          <key>CFBundleDevelopmentRegion</key>
-          <string>English</string>
-          <key>CFBundleExecutable</key>
-          <string>saga_gui</string>
-          <key>CFBundleIconFile</key>
-          <string>saga_gui.icns</string>
-          <key>CFBundleInfoDictionaryVersion</key>
-          <string>6.0</string>
-          <key>CFBundleName</key>
-          <string>SAGA</string>
-          <key>CFBundlePackageType</key>
-          <string>APPL</string>
-          <key>CFBundleSignature</key>
-          <string>SAGA</string>
-          <key>CFBundleVersion</key>
-          <string>1.0</string>
-          <key>CSResourcesFileMapped</key>
-          <true/>
-        </dict>
+          <dict>
+            <key>CFBundleDevelopmentRegion</key>
+            <string>English</string>
+            <key>CFBundleExecutable</key>
+            <string>saga_gui</string>
+            <key>CFBundleIconFile</key>
+            <string>saga_gui.icns</string>
+            <key>CFBundleInfoDictionaryVersion</key>
+            <string>6.0</string>
+            <key>CFBundleName</key>
+            <string>SAGA</string>
+            <key>CFBundlePackageType</key>
+            <string>APPL</string>
+            <key>CFBundleSignature</key>
+            <string>SAGA</string>
+            <key>CFBundleVersion</key>
+            <string>1.0</string>
+            <key>CSResourcesFileMapped</key>
+            <true/>
+          </dict>
         </plist>
-    EOS
+      EOS
 
-    (buildpath/'SAGA.app/Contents/Info.plist').write config
     prefix.install "SAGA.app"
 
     end
   end
 
   def caveats
-    if build.include? "with-app" then <<-EOS.undent
-      SAGA.app was installed in:
-        #{prefix}
+    if build.with? "app"
+      <<-EOS.undent
+        SAGA.app was installed in:
+          #{prefix}
 
-      To symlink into ~/Applications, you can do:
-        brew linkapps
+        To symlink into ~/Applications, you can do:
+          brew linkapps
 
-      Note that the SAGA GUI does not work very well yet.
-      It has problems with creating a preferences file in the correct location and sometimes won't shut down (use Activity Monitor to force quit if necessary).
+        Note that the SAGA GUI does not work very well yet.
+        It has problems with creating a preferences file in the correct location
+        and sometimes won't shut down (use Activity Monitor to force quit if necessary).
       EOS
     end
   end
