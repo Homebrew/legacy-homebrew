@@ -223,9 +223,6 @@ class Python3 < Formula
         pip3 install --upgrade setuptools
         pip3 install --upgrade pip
 
-      To symlink "Idle 3" and the "Python Launcher 3" to ~/Applications
-        `brew linkapps`
-
       You can install Python packages with
         `pip3 install <your_favorite_package>`
 
