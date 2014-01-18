@@ -17,13 +17,13 @@ end
 
 BOTTLE_ERB = <<-EOS
   bottle do
-    <% if prefix.to_s != '/usr/local' %>
-    prefix '<%= prefix %>'
+    <% if prefix.to_s != "/usr/local" %>
+    prefix "<%= prefix %>"
     <% end %>
     <% if cellar.is_a? Symbol %>
     cellar :<%= cellar %>
-    <% elsif cellar.to_s != '/usr/local/Cellar' %>
-    cellar '<%= cellar %>'
+    <% elsif cellar.to_s != "/usr/local/Cellar" %>
+    cellar "<%= cellar %>"
     <% end %>
     <% if revision > 0 %>
     revision <%= revision %>
@@ -31,7 +31,7 @@ BOTTLE_ERB = <<-EOS
     <% checksums.each do |checksum_type, checksum_values| %>
     <% checksum_values.each do |checksum_value| %>
     <% checksum, osx = checksum_value.shift %>
-    <%= checksum_type %> '<%= checksum %>' => :<%= osx %>
+    <%= checksum_type %> "<%= checksum %>" => :<%= osx %>
     <% end %>
     <% end %>
   end
