@@ -11,4 +11,9 @@ class Asciinema < Formula
     system "python", "setup.py", "--prefix=#{prefix}"
   end
 
+  def test
+	system "#{bin}/asciinema", "--help"
+	system "#{bin}/asciinema", "--version"
+  end
+
 end
