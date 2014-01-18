@@ -21,6 +21,7 @@
 require 'formula'
 require 'utils'
 require 'date'
+require 'open3'
 require 'rexml/document'
 require 'rexml/xmldecl'
 require 'rexml/cdata'
@@ -386,6 +387,19 @@ class Test
   end
 end
 
+class String
+  def mangle
+    stdin, stdout, _ = Open3.popen3('iconv -f utf-8 -t utf-8 --byte-subst="?"')
+    stdin.write self
+    stdin.flush
+    stdin.close
+    mangled = stdout.read
+    stdout.close
+
+    mangled
+  end
+end
+
 if Pathname.pwd == HOMEBREW_PREFIX and ARGV.include? "--cleanup"
   odie 'cannot use --cleanup from HOMEBREW_PREFIX as it will delete all output.'
 end
@@ -475,7 +489,7 @@ if ARGV.include? "--junit"
       failure = testcase.add_element 'failure' if step.failed?
       if step.has_output?
         # Remove invalid XML CData characters from step output.
-        output = REXML::CData.new step.output.delete("\000\f\e")
+        output = REXML::CData.new step.output.delete("\000\f\e").mangle
         if step.passed?
           system_out = testcase.add_element 'system-out'
           system_out.text = output
