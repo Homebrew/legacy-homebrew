@@ -8,7 +8,7 @@ class Asciinema < Formula
   depends_on :python
 
   def install
-    system 'make', 'install', "PREFIX=#{prefix}"
+    system "python", "setup.py", "--prefix=#{prefix}"
   end
 
 end
