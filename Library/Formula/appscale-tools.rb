@@ -67,14 +67,11 @@ class AppscaleTools < Formula
     resource('httplib2').stage { system "python", *install_args }
     resource('python-gflags').stage { system "python", *install_args }
 
+    Dir.glob('bin/appscale*') do |command_file|
+      inreplace command_file do |s|
+        s.gsub! 'os.path.dirname(__file__))', 'os.path.dirname(os.path.realpath(__file__))'
+      end
+    end
     prefix.install 'bin', 'lib', 'templates', 'LICENSE', 'README.md'
   end
-  
-  def caveats; <<-EOS.undent
-    By default, the ~/.ssh/id_rsa key will be used by appscale-tools
-    If you do not have an existing keypair, please generate one:
-      ssh-keygen -q -t rsa -f ~/.ssh/id_rsa -N ""
-    EOS
-  end
-  
 end
