@@ -229,9 +229,6 @@ class Python < Formula
         pip install --upgrade setuptools
         pip install --upgrade pip
 
-      To symlink "Idle" and the "Python Launcher" to ~/Applications
-        `brew linkapps`
-
       You can install Python packages with (the outdated easy_install or)
         `pip install <your_favorite_package>`
 
