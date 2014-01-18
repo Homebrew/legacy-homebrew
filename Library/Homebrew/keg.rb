@@ -96,6 +96,10 @@ class Keg < Pathname
     (self/'lib/python2.7/site-packages').directory?
   end
 
+  def app_installed?
+    not Dir.glob("#{self}/{,libexec/}*.app").empty?
+  end
+
   def version
     require 'version'
     Version.new(basename.to_s)
