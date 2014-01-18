@@ -82,16 +82,4 @@ class Graphviz < Formula
 
     system "#{bin}/dot", "-Tpdf", "-o", "sample.pdf", "sample.dot"
   end
-
-  def caveats
-    if build.include? 'with-app'
-      <<-EOS
-        Graphviz.app was installed in:
-          #{prefix}
-
-        To symlink into ~/Applications, you can do:
-          brew linkapps
-        EOS
-    end
-  end
 end
