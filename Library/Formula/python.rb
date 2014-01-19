@@ -5,6 +5,7 @@ class Python < Formula
   head 'http://hg.python.org/cpython', :using => :hg, :branch => '2.7'
   url 'http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz'
   sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
+  VER='2.7'  # The <major>.<minor> is used so often.
 
   option :universal
   option 'quicktest', "Run `make quicktest` after the build (for devs; may fail)"
@@ -21,8 +22,8 @@ class Python < Formula
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
   depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
 
-  skip_clean 'bin/pip', 'bin/pip-2.7'
-  skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
+  skip_clean 'bin/pip', "bin/pip-#{VER}"
+  skip_clean 'bin/easy_install', "bin/easy_install-#{VER}"
 
   resource 'setuptools' do
     url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.0.1.tar.gz'
@@ -39,18 +40,18 @@ class Python < Formula
     # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
     DATA if build.with? 'brewed-tk'
   end
-  
+
   def framework_prefix
-    prefix/"Frameworks/Python.framework/Versions/2.7"
-  end 
+    prefix/"Frameworks/Python.framework/Versions/#{VER}"
+  end
 
   def site_packages_cellar
-    framework_prefix/"lib/python2.7/site-packages"
+    framework_prefix/"lib/python#{VER}/site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
   def site_packages
-    HOMEBREW_PREFIX/"lib/python2.7/site-packages"
+    HOMEBREW_PREFIX/"lib/python#{VER}/site-packages"
   end
 
   def install
@@ -139,7 +140,7 @@ class Python < Formula
     resource('pip').stage { system "#{bin}/python", *setup_args }
 
     # And now we write the distutils.cfg
-    cfg = framework_prefix/"lib/python2.7/distutils/distutils.cfg"
+    cfg = framework_prefix/"lib/python#{VER}/distutils/distutils.cfg"
     cfg.delete if cfg.exist?
     cfg.write <<-EOF.undent
       [global]
@@ -150,7 +151,7 @@ class Python < Formula
     EOF
 
     # Work-around for that bug: http://bugs.python.org/issue18050
-    inreplace framework_prefix/"lib/python2.7/re.py", 'import sys', <<-EOS.undent
+    inreplace framework_prefix/"lib/python#{VER}/re.py", 'import sys', <<-EOS.undent
       import sys
       try:
           from _sre import MAXREPEAT
@@ -162,7 +163,7 @@ class Python < Formula
       # Fixes setting Python build flags for certain software
       # See: https://github.com/Homebrew/homebrew/pull/20182
       # http://bugs.python.org/issue3588
-      inreplace framework_prefix/"lib/python2.7/config/Makefile" do |s|
+      inreplace framework_prefix/"lib/python#{VER}/config/Makefile" do |s|
         s.change_make_var! "LINKFORSHARED",
           "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
       end
@@ -267,7 +268,7 @@ index 716f08e..66114ef 100644
 -        if (host_platform == 'darwin' and
 -            self.detect_tkinter_darwin(inc_dirs, lib_dirs)):
 -            return
- 
+
          # Assume we haven't found any of the libraries or include files
          # The versions with dots are used on Unix, and the versions without
 @@ -1858,21 +1855,6 @@ class PyBuildExt(build_ext):
@@ -289,16 +290,16 @@ index 716f08e..66114ef 100644
 -            # Assume default location for X11
 -            include_dirs.append('/usr/X11/include')
 -            added_lib_dirs.append('/usr/X11/lib')
- 
+
          # If Cygwin, then verify that X is installed before proceeding
          if host_platform == 'cygwin':
 @@ -1897,9 +1879,6 @@ class PyBuildExt(build_ext):
          if host_platform in ['aix3', 'aix4']:
              libs.append('ld')
- 
+
 -        # Finally, link with the X11 libraries (not appropriate on cygwin)
 -        if host_platform != "cygwin":
 -            libs.append('X11')
- 
+
          ext = Extension('_tkinter', ['_tkinter.c', 'tkappinit.c'],
                          define_macros=[('WITH_APPINIT', 1)] + defs,
