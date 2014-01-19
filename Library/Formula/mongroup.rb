@@ -10,7 +10,6 @@ class Mongroup < Formula
 
   # build
   def install
-    system "make"
-    bin.install "mongroup"
+    system "make", "install"
   end
 end
