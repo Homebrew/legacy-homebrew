@@ -7,6 +7,7 @@ class Osslsigncode < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'openssl'
+  depends_on 'libgsf' => :optional
 
   def install
     system "./configure", "--prefix=#{prefix}"
