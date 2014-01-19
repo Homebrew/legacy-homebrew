@@ -3,9 +3,9 @@ require 'formula'
 class Icmake < Formula
   homepage 'http://icmake.sourceforge.net/'
   url 'http://downloads.sourceforge.net/project/icmake/icmake/7.16.00/icmake_7.16.00.orig.tar.gz'
-  head 'https://icmake.svn.sourceforge.net/svnroot/icmake/trunk/icmake'
   sha1 '8e175538dabc40afbb933202166bfdffd5f675c2'
-  
+  head 'https://icmake.svn.sourceforge.net/svnroot/icmake/trunk/icmake'
+
   def patches
     [
       # Fix sed syntax
@@ -18,19 +18,21 @@ class Icmake < Formula
   end
 
   def install
-    # Write config file used during build process
-    File.open('INSTALL.im', 'w') { |file| file.write <<-EOS.undent
-        #define BINDIR      "#{bin}"
-        #define SKELDIR     "#{share}"
-        #define MANDIR      "#{man}"
-        #define LIBDIR      "#{lib}"
-        #define CONFDIR     "#{etc}icmake"
-        #define DOCDIR      "#{doc}"
-        #define DOCDOCDIR   "#{doc.dirname()}icmake-doc"
-      EOS
-    }
+    (buildpath/"INSTALL.im").atomic_write <<-EOS.undent
+      #define BINDIR      "#{bin}"
+      #define SKELDIR     "#{share}/icmake"
+      #define MANDIR      "#{man}"
+      #define LIBDIR      "#{libexec}"
+      #define CONFDIR     "#{etc}/icmake"
+      #define DOCDIR      "#{doc}"
+      #define DOCDOCDIR   "#{doc}"
+    EOS
 
-    system "./icm_bootstrap /"
-    system "./icm_install all"
+    system "./icm_bootstrap", "/"
+    rm_r "tmp/#{bin}/icmake.dSYM"
+    rm_r "tmp/#{bin}/icmun.dSYM"
+    rm_r "tmp/#{libexec}/icm-comp.dSYM"
+    rm_r "tmp/#{libexec}/icm-pp.dSYM"
+    system "./icm_install", "strip", "all"
   end
 end
