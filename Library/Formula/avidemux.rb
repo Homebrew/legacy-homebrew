@@ -139,9 +139,6 @@ class Avidemux < Formula
 
   def caveats
     if build.with? 'qt' then <<-EOS.undent
-      You may want to `brew linkapps` to link the Qt GUI app
-      #{opt_prefix}/Avidemux2.6.app it to `~/Applications`.
-
       To enable sound: In preferences, set the audio to CoreAudio instead of Dummy.
       EOS
     end

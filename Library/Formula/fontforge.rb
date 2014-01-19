@@ -121,19 +121,6 @@ class Fontforge < Formula
     system "make install"
   end
 
-  def caveats
-    if build.with? "x"
-      <<-EOS.undent
-        fontforge is an X11 application.
-
-        To install the Mac OS X wrapper application run:
-          brew linkapps
-        or:
-          ln -s #{opt_prefix}/FontForge.app /Applications
-      EOS
-    end
-  end
-
   test do
     system "#{bin}/fontforge", "-version"
   end
