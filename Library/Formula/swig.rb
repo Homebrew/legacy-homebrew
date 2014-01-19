@@ -10,7 +10,7 @@ class Swig < Formula
 
   depends_on 'pcre'
 
-  def patches 
+  def patches
     p = []
     p << "https://gist.github.com/FloFra/8486763/raw" if build.head?
     return p
@@ -22,9 +22,9 @@ class Swig < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    
+
     if build.head?
-      system "./autogen.sh" 
+      system "./autogen.sh"
     end
 
     system "./configure", "--disable-dependency-tracking",
