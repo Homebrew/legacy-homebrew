@@ -142,8 +142,8 @@ class Python3 < Formula
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.8-py3.3.egg
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/python3/site-packages/setuptools*"]
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/python3/site-packages/distribute*"]
+    rm_rf Dir[HOMEBREW_PREFIX/"lib/python#{VER}/site-packages/setuptools*"]
+    rm_rf Dir[HOMEBREW_PREFIX/"lib/python#{VER}/site-packages/distribute*"]
 
     setup_args = [ "-s", "setup.py", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
