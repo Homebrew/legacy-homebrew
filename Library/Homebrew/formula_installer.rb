@@ -125,6 +125,7 @@ class FormulaInstaller
         stdlib_in_use = CxxStdlib.new(stdlibs.first, MacOS.default_compiler)
         stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
 
+        stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs :skip_executables => true
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
         tab.tabfile.delete if tab.tabfile
