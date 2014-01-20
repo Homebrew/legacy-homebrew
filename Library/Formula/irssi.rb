@@ -10,6 +10,7 @@ class Irssi < Formula
   depends_on :clt # See https://github.com/Homebrew/homebrew/issues/20952
   depends_on 'pkg-config' => :build
   depends_on 'glib'
+  depends_on 'openssl'
 
   devel do
     url 'http://irssi.org/files/irssi-0.8.16-rc1.tar.gz'
@@ -23,6 +24,7 @@ class Irssi < Formula
     args =%W[
       --prefix=#{prefix}
       --sysconfdir=#{etc}
+      --enable-ssl
       --with-bot
       --with-proxy
       --enable-ipv6
