@@ -193,7 +193,7 @@ class Python3 < Formula
               "do_readline = '#{HOMEBREW_PREFIX}/opt/readline/lib/libhistory.dylib'"
   end
 
-  def distutils_fix_stdenv()
+  def distutils_fix_stdenv
     # Python scans all "-I" dirs but not "-isysroot", so we add
     # the needed includes with "-I" here to avoid this err:
     #     building dbm using ndbm
