@@ -6,7 +6,7 @@ class Bindfs < Formula
   sha1 'e4d5d9ab3056c06e1e8b9fe423222de86cce46cf'
 
   depends_on 'pkg-config' => :build
-  depends_on 'fuse4x'
+  depends_on 'osxfuse'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
