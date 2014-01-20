@@ -9,7 +9,7 @@ class Irods < Formula
 
   option 'with-fuse', 'Install iRODS FUSE client'
 
-  depends_on 'fuse4x' if build.include? 'with-fuse'
+  depends_on 'osxfuse' if build.include? 'with-fuse'
 
   def install
     chdir 'iRODS'
