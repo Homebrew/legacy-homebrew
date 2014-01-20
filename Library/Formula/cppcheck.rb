@@ -42,15 +42,4 @@ class Cppcheck < Formula
   def test
     system "#{bin}/cppcheck", "--version"
   end
-
-  def caveats; <<-EOS.undent
-    --with-gui installs cppcheck-gui.app in:
-      #{bin}
-
-    To link the application to a normal Mac OS X location:
-      brew linkapps
-    or:
-      ln -s #{bin}/cppcheck-gui.app /Applications
-    EOS
-  end
 end
