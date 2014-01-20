@@ -63,8 +63,14 @@ def wait_for_user
   abort unless c == 13 or c == 10
 end
 
+module Version
+  def <=>(other)
+    split(".").map { |i| i.to_i } <=> other.split(".").map { |i| i.to_i }
+  end
+end
+
 def macos_version
-  @macos_version ||= `/usr/bin/sw_vers -productVersion`.chomp[/10\.\d+/]
+  @macos_version ||= `/usr/bin/sw_vers -productVersion`.chomp[/10\.\d+/].extend(Version)
 end
 
 def git
