@@ -8,6 +8,7 @@ class Plplot < Formula
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
   depends_on 'pango'
+  depends_on :x11 => :optional
 
   option 'with-java'
 
@@ -15,6 +16,7 @@ class Plplot < Formula
     args = std_cmake_args
     args << '-DPLD_wxwidgets=OFF' << '-DENABLE_wxwidgets=OFF'
     args << '-DENABLE_java=OFF' unless build.with? 'java'
+    args << '-DPLD_xcairo=OFF' unless MacOS::X11.installed?
     mkdir "plplot-build" do
       system "cmake", "..", *args
       system "make"
