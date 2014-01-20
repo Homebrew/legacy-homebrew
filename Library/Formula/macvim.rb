@@ -121,15 +121,6 @@ class Macvim < Formula
 
   def caveats
     s = ''
-    s += <<-EOS.undent
-      MacVim.app installed to:
-        #{prefix}
-
-      Run the following to make MacVim available as a Mac OS X application:
-          brew linkapps
-      or:
-          brew linkapps --local
-    EOS
     if build.with? "python" and build.with? "python3"
       s += <<-EOS.undent
 
