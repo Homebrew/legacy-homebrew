@@ -57,7 +57,7 @@ end
 
 def wait_for_user
   puts
-  puts "Press ENTER to continue or any other key to abort"
+  puts "Press RETURN to continue or any other key to abort"
   c = getc
   # we test for \r and \n because some stuff does \r instead
   abort unless c == 13 or c == 10
