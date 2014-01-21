@@ -8,6 +8,7 @@ Example usage:
   brew update
   brew upgrade [FORMULA...]
   brew pin/unpin [FORMULA...]
+  brew services [command] [FORMULA]
 
 Troubleshooting:
   brew doctor
