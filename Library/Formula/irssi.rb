@@ -37,9 +37,7 @@ class Irssi < Formula
       args << "--with-perl=no"
     end
 
-    if build.with? "openssl"
-      args << "--enable-ssl"
-    end
+    args << "--enable-ssl" if build.with? "openssl"
 
     system "./configure", *args
 
@@ -59,7 +57,7 @@ __END__
 -		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null`
 +		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null | $SED -e 's/-arch [^ ]\{1,\}//g'`
  	fi
- 
+
  	if test "x$ac_cv_c_compiler_gnu" = "xyes" -a -z "`echo $host_os|grep 'bsd\|linux'`"; then
 @@ -27437,7 +27437,7 @@
  $as_echo "not found, building without Perl" >&6; }
@@ -67,7 +65,7 @@ __END__
  	else
 -		PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts 2>/dev/null`
 +		PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts 2>/dev/null | $SED -e 's/-arch [^ ]\{1,\}//g'`
- 
+
  		if test "x$DYNLIB_MODULES" = "xno" -a "$want_perl" != "static"; then
  						want_perl=static
 
