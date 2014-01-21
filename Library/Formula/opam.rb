@@ -59,16 +59,16 @@ class Opam < Formula
     zsh_completion.install 'shell/opam_completion_zsh.sh' => '_opam'
   end
 
+  def post_install
+    # Initialize the package database.
+    system bin/'opam', 'init', '--no-setup'
+  end
+
   test do
     system "#{bin}/opam", "--help"
   end
 
   def caveats; <<-EOS.undent
-    OPAM uses ~/.opam by default for its package database, so you need to
-    initialize it first by running (as a normal user):
-
-    $  opam init
-
     Run the following to initialize your environment variables:
 
     $  eval `opam config env`
