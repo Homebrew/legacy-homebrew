@@ -4,7 +4,7 @@ class PythonDependency < Requirement
   fatal true
 
   satisfy :build_env => false do
-    which python_binary
+    which 'python'
   end
 
   def modify_build_environment
@@ -13,30 +13,14 @@ class PythonDependency < Requirement
 
   # Deprecated
   def to_s
-    python_binary
-  end
-
-  protected
-
-  def python_binary
     'python'
-  end
-
-  def system_python?
-    which(python_binary).to_s == "/usr/bin/python"
   end
 end
 
 class Python3Dependency < PythonDependency
   default_formula 'python3'
 
-  protected
-
-  def python_binary
-    'python3'
-  end
-
-  def system_python?
-    false
+  satisfy :build_env => false do
+    which 'python3'
   end
 end
