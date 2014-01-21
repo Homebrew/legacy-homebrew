@@ -6,6 +6,12 @@ class Openssl < Formula
   mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1f.tar.gz'
   sha256 '6cc2a80b17d64de6b7bac985745fdaba971d54ffd7d38d3556f998d7c0c9cb5a'
 
+  bottle do
+    sha1 "2687c0abb5e23d765bbd0024a010e36b05a8939e" => :mavericks
+    sha1 "dcaee2f1e51e8d0da7614e6dab4fc334f736d0de" => :mountain_lion
+    sha1 "4fabb39f5db46e8e62bf0b05e0133cd7e717860a" => :lion
+  end
+
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."
 
