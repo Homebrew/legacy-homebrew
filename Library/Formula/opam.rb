@@ -56,7 +56,7 @@ class Opam < Formula
     system "make", "install"
 
     bash_completion.install "shell/opam_completion.sh"
-    zsh_completion.install "shell/opam_completion_zsh.sh"
+    zsh_completion.install 'shell/opam_completion_zsh.sh' => '_opam'
   end
 
   test do
