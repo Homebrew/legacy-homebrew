@@ -7,7 +7,7 @@ class Swatchbooker < Formula
 
   depends_on :python
   depends_on 'PIL' => :python
-  #depends_on 'little-cms' => 'with-python'
+  depends_on 'little-cms' => 'with-python'
   depends_on 'pyqt'
 
   def patches
