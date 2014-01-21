@@ -2,8 +2,9 @@ require 'formula'
 
 class GnuApl < Formula
   homepage 'http://www.gnu.org/software/apl/'
-  url 'http://ftpmirror.gnu.org/apl/apl-1.1.tar.gz'
-  sha1 'de5071372b64a6d6921141cbbc3555e3b40da7af'
+  url 'http://ftpmirror.gnu.org/apl/apl-1.2.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/apl/apl-1.2.tar.gz'
+  sha1 'ea037a7edc4da90bd8eecfe7d1d9f904e993e64f'
 
   # GNU Readline is required; libedit won't work.
   depends_on 'readline'
@@ -17,6 +18,7 @@ class GnuApl < Formula
   end
 
   test do
+    ENV["TERM"] = "dumb"
     system "#{bin}/apl", "--version"
   end
 end

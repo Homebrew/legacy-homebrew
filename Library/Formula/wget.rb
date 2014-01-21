@@ -5,9 +5,9 @@ require 'formula'
 
 class Wget < Formula
   homepage 'http://www.gnu.org/software/wget/'
-  url 'http://ftpmirror.gnu.org/wget/wget-1.14.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/wget/wget-1.14.tar.gz'
-  sha1 'c487bce740b3a1847a35fb29b5c6700c46f639b8'
+  url 'http://ftpmirror.gnu.org/wget/wget-1.15.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/wget/wget-1.15.tar.gz'
+  sha1 'f3c925f19dfe5ed386daae4f339175c108c50574'
 
   head do
     url 'git://git.savannah.gnu.org/wget.git'
