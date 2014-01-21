@@ -121,6 +121,10 @@ class Python < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
+    # Write our sitecustomize.py
+    Dir["#{site_packages}/*.py{,c,o}"].each {|f| Pathname.new(f).unlink }
+    (site_packages/"sitecustomize.py").write(sitecustomize)
+
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
@@ -196,7 +200,7 @@ class Python < Formula
               "do_readline = '#{HOMEBREW_PREFIX}/opt/readline/lib/libhistory.dylib'"
   end
 
-  def distutils_fix_stdenv()
+  def distutils_fix_stdenv
     # Python scans all "-I" dirs but not "-isysroot", so we add
     # the needed includes with "-I" here to avoid this err:
     #     building dbm using ndbm
@@ -218,6 +222,56 @@ class Python < Formula
       ENV.append_to_cflags '-Wno-empty-body'
       ENV.append_to_cflags '-Qunused-arguments'
     end
+  end
+
+  def sitecustomize
+    <<-EOF.undent
+      # This file is created by Homebrew and is executed on each python startup.
+      # Don't print from here, or else python command line scripts may fail!
+      # <https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python>
+      import os
+      import sys
+
+      if sys.version_info[0] != 2:
+          # This can only happen if the user has set the PYTHONPATH for 3.x and run Python 2.x or vice versa.
+          # Every Python looks at the PYTHONPATH variable and we can't fix it here in sitecustomize.py,
+          # because the PYTHONPATH is evaluated after the sitecustomize.py. Many modules (e.g. PyQt4) are
+          # built only for a specific version of Python and will fail with cryptic error messages.
+          # In the end this means: Don't set the PYTHONPATH permanently if you use different Python versions.
+          exit('Your PYTHONPATH points to a site-packages dir for Python 2.x but you are running Python ' +
+               str(sys.version_info[0]) + '.x!\\n     PYTHONPATH is currently: "' + str(os.environ['PYTHONPATH']) + '"\\n' +
+               '     You should `unset PYTHONPATH` to fix this.')
+      else:
+          # Only do this for a brewed python:
+          opt_executable = '#{HOMEBREW_PREFIX}/opt/python/bin/python2.7'
+          if os.path.realpath(sys.executable) == os.path.realpath(opt_executable):
+              # Remove /System site-packages, and the Cellar site-packages
+              # which we moved to lib/pythonX.Y/site-packages. Further, remove
+              # HOMEBREW_PREFIX/lib/python because we later addsitedir(...).
+              sys.path = [ p for p in sys.path
+                           if (not p.startswith('/System') and
+                               not p.startswith('#{HOMEBREW_PREFIX}/lib/python') and
+                               not (p.startswith('#{HOMEBREW_PREFIX}/Cellar/python') and p.endswith('site-packages'))) ]
+
+              # LINKFORSHARED (and python-config --ldflags) return the
+              # full path to the lib (yes, "Python" is actually the lib, not a
+              # dir) so that third-party software does not need to add the
+              # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
+              # Assume Framework style build (default since months in brew)
+              try:
+                  from _sysconfigdata import build_time_vars
+                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{HOMEBREW_PREFIX}/opt/python/Frameworks/Python.framework/Versions/2.7/Python'
+              except:
+                  pass  # remember: don't print here. Better to fail silently.
+
+              # Set the sys.executable to use the opt_prefix
+              sys.executable = opt_executable
+
+          # Tell about homebrew's site-packages location.
+          # This is needed for Python to parse *.pth.
+          import site
+          site.addsitedir('#{HOMEBREW_PREFIX}/lib/python2.7/site-packages')
+    EOF
   end
 
   def caveats
