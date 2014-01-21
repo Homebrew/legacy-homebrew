@@ -309,13 +309,23 @@ module GitHub extend self
 
   def find_pull_requests rx
     return if ENV['HOMEBREW_NO_GITHUB_API']
-    puts "Searching open pull requests..."
+    puts "Searching pull requests..."
 
     query = rx.source.delete('.*').gsub('\\', '')
 
+    pull_request_found = false
     each_issue_matching(query) do |issue|
       if rx === issue['title'] && issue.has_key?('pull_request_url') && issue['state'] != 'closed'
-        yield issue['pull_request_url']
+        pull_request_found = true
+        yield "#{issue['title']} (#{issue['pull_request_url']})"
+      end
+    end
+
+    return if pull_request_found
+
+    each_issue_matching(query) do |issue|
+      if rx === issue['title'] && issue.has_key?('pull_request_url')
+        yield "#{issue['title']} (#{issue['pull_request_url']})"
       end
     end
   end
