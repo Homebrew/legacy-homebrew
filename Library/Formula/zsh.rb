@@ -46,6 +46,8 @@ class Zsh < Formula
   end
 
   def caveats; <<-EOS.undent
+    To use this build of Zsh as your login shell, add it to /etc/shells.
+    
     Add the following to your zshrc to access the online help:
       unalias run-help
       autoload run-help
