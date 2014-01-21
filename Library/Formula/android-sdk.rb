@@ -19,6 +19,9 @@ class AndroidSdk < Formula
 
   skip_clean var_dirs
 
+  conflicts_with 'android-platform-tools',
+    :because => "the Android Platform-tools will be installed as part of this Android SDK."
+
   def install
     prefix.install 'tools', 'SDK Readme.txt' => 'README'
 
