@@ -5,11 +5,12 @@ class Irssi < Formula
   url 'http://irssi.org/files/irssi-0.8.15.tar.bz2'
   sha1 'b79ce8c2c98a76b004f63706e7868cd363000d89'
 
-  option "without-perl", "Build without perl support."
+  option "without-perl", "Build without perl support"
 
   depends_on :clt # See https://github.com/Homebrew/homebrew/issues/20952
   depends_on 'pkg-config' => :build
   depends_on 'glib'
+  depends_on 'openssl' => :optional
 
   devel do
     url 'http://irssi.org/files/irssi-0.8.16-rc1.tar.gz'
@@ -35,6 +36,8 @@ class Irssi < Formula
     else
       args << "--with-perl=no"
     end
+
+    args << "--enable-ssl" if build.with? "openssl"
 
     system "./configure", *args
 
