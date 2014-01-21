@@ -12,6 +12,6 @@ class Rig < Formula
   end
 
   test do
-    system "rig"
+    system "#{bin}/rig"
   end
 end
