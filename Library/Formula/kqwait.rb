@@ -3,7 +3,7 @@ require 'formula'
 class Kqwait < Formula
   homepage 'https://github.com/sschober/kqwait'
   url 'https://github.com/sschober/kqwait/archive/kqwait-v1.0.3.tar.gz'
-  sha1 '7b4e762de8867593b21b06908a6ee13dbc1c863a'
+  sha1 '47d12184dc67b7d16ca2895c0ce0de5937fa20cb'
 
   head 'https://github.com/sschober/kqwait.git'
 
