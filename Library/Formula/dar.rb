@@ -7,6 +7,12 @@ class Dar < Formula
 
   depends_on 'gettext'
 
+  def patches
+    [
+      "https://sourceforge.net/p/dar/patches/32/attachment/osx_10.9_compat.patch",
+    ]
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
