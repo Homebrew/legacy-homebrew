@@ -21,7 +21,7 @@ class Git < Formula
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
   depends_on 'openssl' if build.with? 'brewed-openssl'
-  depends_on 'curl' => 'with-darwinssl' if build.with? 'brewed-curl'
+  depends_on 'curl' if build.with? 'brewed-curl'
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
