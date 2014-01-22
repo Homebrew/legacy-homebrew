@@ -2,8 +2,8 @@ require 'formula'
 
 class Libvorbis < Formula
   homepage 'http://vorbis.com'
-  url 'http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.3.tar.xz'
-  sha1 '31d1a0ec4815bf1ee638b0f2850f03efcd48022a'
+  url 'http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.xz'
+  sha1 'b99724acdf3577982b3146b9430d765995ecf9e1'
 
   head do
     url 'http://svn.xiph.org/trunk/vorbis'
