@@ -43,9 +43,10 @@ class Nginx < Formula
     # Changes default port to 8080
     inreplace 'conf/nginx.conf', 'listen       80;', 'listen       8080;'
 
+    pcre    = Formula.factory("pcre")
     openssl = Formula.factory("openssl")
-    cc_opt = "-I#{HOMEBREW_PREFIX}/include -I#{openssl.include}"
-    ld_opt = "-L#{HOMEBREW_PREFIX}/lib -L#{openssl.lib}"
+    cc_opt = "-I#{pcre.include} -I#{openssl.include}"
+    ld_opt = "-L#{pcre.lib} -L#{openssl.lib}"
 
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
