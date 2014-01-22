@@ -6,16 +6,9 @@ class Dovecot < Formula
   mirror 'http://fossies.org/linux/misc/dovecot-2.2.10.tar.gz'
   sha256 '75592483d40dc4f76cc3b41af40caa4be80478946a699d46846d5d03e4d2e09b'
 
-  # http://snowball.tartarus.org/
-  resource 'stemmer' do
-    url 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
-    sha1 '69056075b9fa1382e07cec6c32c8e82f3f35677b'
-  end
-
   depends_on 'clucene' => :optional
 
   def install
-    (buildpath/'libstemmer_c').install resource('stemmer')
 
     ENV.append 'CPPFLAGS', "-I/usr/local/Cellar/clucene/2.3.3.4/lib"
     system "./configure", "--disable-dependency-tracking",
