@@ -6,7 +6,7 @@ class Dovecot < Formula
   mirror 'http://fossies.org/linux/misc/dovecot-2.2.10.tar.gz'
   sha256 '75592483d40dc4f76cc3b41af40caa4be80478946a699d46846d5d03e4d2e09b'
 
-  depends_on 'clucene' => :optional
+  depends_on 'clucene' => [:optional, 'with-lucene']
 
   def install
 
@@ -18,7 +18,6 @@ class Dovecot < Formula
                           "--localstatedir=#{var}",
                           "--with-ssl=openssl",
                           "--with-sqlite",
-                          "--with-lucene",
                           "--with-zlib",
                           "--with-bzlib"
     system "make install"
