@@ -60,6 +60,8 @@ class Llvm < Formula
     system 'make'
     system 'make', 'install'
 
+    (share/'llvm/cmake').install buildpath/'cmake/modules'
+
     # install llvm python bindings
     if build.with? "python"
       (lib+'python2.7/site-packages').install buildpath/'bindings/python/llvm'
