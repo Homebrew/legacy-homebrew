@@ -13,7 +13,7 @@ class Dovecot < Formula
     sha1 '69056075b9fa1382e07cec6c32c8e82f3f35677b'
   end
 
-  depends_on 'clucene' => :build
+  depends_on 'clucene' => :optional
 
   def install
     (buildpath/'libstemmer_c').install resource('stemmer')
