@@ -1,23 +1,24 @@
-require "formula"
+require 'formula'
 
 class Bob < Formula
-  homepage "http://www.idiap.ch/software/bob/docs/releases/last/sphinx/html/index.html"
-  url "http://www.idiap.ch/software/bob/packages/bob-1.2.2.tar.gz"
-  sha1 "c557712996ae8a6a1e161026f539d1f1fd108fb0"
+  homepage 'http://www.idiap.ch/software/bob/docs/releases/last/sphinx/html/index.html'
+  url 'http://www.idiap.ch/software/bob/packages/bob-1.2.2.tar.gz'
+  sha1 'c557712996ae8a6a1e161026f539d1f1fd108fb0'
 
-  depends_on "blitz"
-  depends_on "lapack"
-  depends_on "boost"
-  depends_on "fftw"
-  depends_on "jpeg"
-  depends_on "netpbm"
-  depends_on "libpng"
-  depends_on "libtiff"
-  depends_on "giflib"
-  depends_on "hdf5"
-  depends_on "ffmpeg"
-  depends_on "libmatio"
-  depends_on "qt"
+  depends_on 'blitz'
+  depends_on 'lapack'
+  depends_on 'boost'
+  depends_on 'fftw'
+  depends_on 'jpeg'
+  depends_on 'netpbm'
+  depends_on 'libpng'
+  depends_on 'libsvm'
+  depends_on 'libtiff'
+  depends_on 'giflib'
+  depends_on 'hdf5'
+  depends_on 'ffmpeg'
+  depends_on 'libmatio'
+  depends_on 'qt'
   depends_on :python
 
   resource 'numpy' do
@@ -36,29 +37,30 @@ class Bob < Formula
   end
 
   resource 'sqlalchemy' do
-    url "https://pypi.python.org/packages/source/S/SQLAlchemy/SQLAlchemy-0.9.1.tar.gz"
-    sha1 "9270483fd82fe3de4add20e2b7b7548168d03a2b"
+    url 'https://pypi.python.org/packages/source/S/SQLAlchemy/SQLAlchemy-0.9.1.tar.gz'
+    sha1 '9270483fd82fe3de4add20e2b7b7548168d03a2b'
   end
 
   resource 'argparse' do
-    url "http://argparse.googlecode.com/files/argparse-1.2.1.tar.gz"
-    sha1 "caadac82aa2576d6b445058c1fcf6ef0b14dbaa1"
-  do
+    url 'http://argparse.googlecode.com/files/argparse-1.2.1.tar.gz'
+    sha1 'caadac82aa2576d6b445058c1fcf6ef0b14dbaa1'
+  end
 
   resource 'nose' do
-    url "https://pypi.python.org/packages/source/n/nose/nose-1.3.0.tar.gz#md5=95d6d32b9d6b029c3c65674bd9e7eabe"
-    sha1 "bd1bb889e421948ca57595e9e8d52246cb308294"
+    url 'https://pypi.python.org/packages/source/n/nose/nose-1.3.0.tar.gz'
+    sha1 'bd1bb889e421948ca57595e9e8d52246cb308294'
   end
 
   resource 'setuptools' do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-2.1.tar.gz"
-    sha1 "3e4a325d807eb0104e98985e7bd9f1ef86fc2efa"
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.1.tar.gz'
+    sha1 '3e4a325d807eb0104e98985e7bd9f1ef86fc2efa'
   end
 
-  depends_on "cmake" => :build
+  depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
 
   def install
+
     args = *std_cmake_args + ["-DWITH_VLFEAT=OFF"]
 
     mkdir "build" do
@@ -109,3 +111,4 @@ class Bob < Formula
     system "nosetests", *TEST_PATH + "test_wiener.py"
   end
 end
+
