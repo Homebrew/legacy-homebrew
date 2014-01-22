@@ -9,6 +9,7 @@ class S3cmd < Formula
   devel do
     url 'https://github.com/s3tools/s3cmd/archive/v1.5.0-beta1.zip'
     sha1 'ce5738c8d389b705b5a1283da6356df92673863b'
+    version "1.5.0-beta1"
   end
 
   def install
