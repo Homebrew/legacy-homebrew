@@ -10,8 +10,8 @@ class Ffmpeg < Formula
   # This is actually the new stable, not a devel release,
   # but not everything builds with it yet - notably gpac
   devel do
-    url 'http://ffmpeg.org/releases/ffmpeg-2.1.1.tar.bz2'
-    sha1 'e7a5b2d7f702c4e9ca69e23c6d3527f93de0d1bd'
+    url 'http://ffmpeg.org/releases/ffmpeg-2.1.3.tar.bz2'
+    sha1 '9dc54bbef673f3938e280bf48d07e7b24fe445ab'
 
     depends_on 'libbluray' => :optional
     depends_on 'libquvi' => :optional
@@ -61,11 +61,11 @@ class Ffmpeg < Formula
 
   # Fix build against freetype 2.5.1
   # http://ffmpeg.org/pipermail/ffmpeg-devel/2013-November/151404.html
-  def patches; DATA; end unless build.head?
+  def patches; DATA; end if build.stable?
 
   def install
     # Remove when fix for freetype 2.5.1+ is incorporated upstream
-    inreplace 'configure', 'ft2build.h freetype/freetype.h', 'ft2build.h freetype.h'
+    inreplace 'configure', 'ft2build.h freetype/freetype.h', 'ft2build.h freetype.h' if build.stable?
 
     args = ["--prefix=#{prefix}",
             "--enable-shared",
