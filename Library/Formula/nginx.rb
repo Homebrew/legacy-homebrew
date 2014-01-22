@@ -22,10 +22,7 @@ class Nginx < Formula
 
   depends_on 'pcre'
   depends_on 'passenger' => :optional
-  # SPDY needs openssl >= 1.0.1 for NPN; see:
-  # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
-  # http://www.openssl.org/news/changelog.html
-  depends_on 'openssl' if build.with? 'spdy'
+  depends_on 'openssl'
 
   skip_clean 'logs'
 
@@ -46,14 +43,9 @@ class Nginx < Formula
     # Changes default port to 8080
     inreplace 'conf/nginx.conf', 'listen       80;', 'listen       8080;'
 
-    cc_opt = "-I#{HOMEBREW_PREFIX}/include"
-    ld_opt = "-L#{HOMEBREW_PREFIX}/lib"
-
-    if build.with? 'spdy'
-      openssl_path = Formula.factory("openssl").opt_prefix
-      cc_opt += " -I#{openssl_path}/include"
-      ld_opt += " -L#{openssl_path}/lib"
-    end
+    openssl = Formula.factory("openssl")
+    cc_opt = "-I#{HOMEBREW_PREFIX}/include -I#{openssl.include}"
+    ld_opt = "-L#{HOMEBREW_PREFIX}/lib -L#{openssl.lib}"
 
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
