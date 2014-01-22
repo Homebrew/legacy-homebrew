@@ -44,12 +44,38 @@ class Ice < Formula
       system "make", *args
       system "make", "install", *args
     end
+
+    cd "php" do
+      system "make", *args
+      system "make", "install", *args
+    end
+
     args << "install_pythondir=#{lib}/python2.7/site-packages"
     args << "install_libdir=#{lib}/python2.7/site-packages"
     cd "py" do
       system "make", *args
       system "make", "install", *args
     end
+  end
+
+  def caveats
+    <<-EOS.undent
+      To enable IcePHP, you will need to change your php.ini
+      to load the IcePHP extension. You can do this by adding
+      IcePHP.dy to your list of extensions:
+
+          extension=#{prefix}/php/IcePHP.dy
+
+      Typical Ice PHP scripts will also expect to be able to 'require Ice.php'.
+
+      You can ensure this is possible by appending the path to
+      Ice's PHP includes to your global include_path in php.ini:
+
+          include_path=<your-original-include-path>:#{prefix}/php
+
+      However, you can also accomplish this on a script-by-script basis
+      or via .htaccess if you so desire...
+      EOS
   end
 end
 
