@@ -1,18 +1,35 @@
 require 'formula'
 
+
+class Libstemmer < Formula
+  # upstream is constantly changing the tarball,
+  # so doing checksum verification here would require
+  # constant, rapid updates to this formula.
+  head 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
+  homepage 'http://snowball.tartarus.org/'
+end
+
 class Dovecot < Formula
   homepage 'http://dovecot.org/'
   url 'http://dovecot.org/releases/2.2/dovecot-2.2.10.tar.gz'
   mirror 'http://fossies.org/linux/misc/dovecot-2.2.10.tar.gz'
   sha256 '75592483d40dc4f76cc3b41af40caa4be80478946a699d46846d5d03e4d2e09b'
 
+
   def install
+    Libstemmer.new.brew { (buildpath/'libstemmer_c').install Dir['*'] }
+    ENV.append 'CPPFLAGS', "-I/usr/local/Cellar/clucene/2.3.3.4/lib"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--libexecdir=#{libexec}",
                           "--sysconfdir=#{etc}",
                           "--localstatedir=#{var}",
-                          "--with-ssl=openssl"
+                          "--with-ssl=openssl",
+                          "--with-sqlite",
+                          "--with-lucene",
+                          "--with-stemmer",
+                          "--with-zlib",
+                          "--with-bzlib"
     system "make install"
   end
 
@@ -49,4 +66,3 @@ Source: http://wiki.dovecot.org/LaunchdInstall
     EOS
   end
 end
-
