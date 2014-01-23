@@ -1,0 +1,4 @@
+#!/bin/sh
+
+export PATH=$USER_PATH
+exec $(basename $0) $@
