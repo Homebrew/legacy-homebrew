@@ -19,7 +19,6 @@ class Dovecot < Formula
               --localstatedir=#{var}
               --with-ssl=openssl
               --with-sqlite
-              --with-lucene
               --with-zlib
               --with-bzlib]
 
