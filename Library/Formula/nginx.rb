@@ -27,13 +27,15 @@ class Nginx < Formula
   skip_clean 'logs'
 
   def passenger_config_args
-    nginx_ext = `/usr/bin/ruby #{HOMEBREW_PREFIX}/opt/passenger/bin/passenger-config --nginx-addon-dir`.chomp
+    nginx_ext = `passenger-config --nginx-addon-dir`.chomp
 
     if File.directory?(nginx_ext)
       return "--add-module=#{nginx_ext}"
     end
 
-    puts "Unable to install nginx with passenger support."
+    puts "Unable to install nginx with passenger support. The passenger"
+    puts "gem must be installed and passenger-config must be in your path"
+    puts "in order to continue."
     exit
   end
 
