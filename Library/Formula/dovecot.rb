@@ -6,13 +6,22 @@ class Dovecot < Formula
   mirror 'http://fossies.org/linux/misc/dovecot-2.2.10.tar.gz'
   sha256 '75592483d40dc4f76cc3b41af40caa4be80478946a699d46846d5d03e4d2e09b'
 
+  depends_on 'clucene' => :optional
+
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--libexecdir=#{libexec}",
-                          "--sysconfdir=#{etc}",
-                          "--localstatedir=#{var}",
-                          "--with-ssl=openssl"
+    args = %W[--prefix=#{prefix}
+              --disable-dependency-tracking
+              --libexecdir=#{libexec}
+              --sysconfdir=#{etc}
+              --localstatedir=#{var}
+              --with-ssl=openssl
+              --with-sqlite
+              --with-zlib
+              --with-bzlib]
+
+    args << "--with-lucene" if build.with? "clucene"
+
+    system "./configure",  *args
     system "make install"
   end
 
@@ -49,4 +58,3 @@ Source: http://wiki.dovecot.org/LaunchdInstall
     EOS
   end
 end
-
