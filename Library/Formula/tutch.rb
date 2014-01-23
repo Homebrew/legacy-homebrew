@@ -11,15 +11,21 @@ class Tutch < Formula
     # the makefile will, by default, use the temporary installation
     # folder. We need it to use the Keg folder instead
     inreplace "Makefile", /"`pwd`"/, prefix
+    # the makefile also creates a `.heap` folder in `bin/`, which makes
+    # `brew audit` yell at it. We move that `.heap` folder into the main
+    # Keg file instead
+    inreplace "Makefile", /mkdir bin\/.heap/, 'mkdir .heap'
+    inreplace "Makefile", /bin\/.heap\/tutch/, '.heap/tutch'
+    inreplace "bin/.tutch", /bin\/.heap/, '.heap'
     system "make"
     bin.install "bin/tutch"
-    bin.install "bin/.heap"
+    prefix.install ".heap"
   end
 
   test do
     # Test by proving modus ponens
     (testpath/'test.tut').write(
-      "proof mp: A & (A=>B) => B = 
+      "proof mp: A & (A=>B) => B =
        begin
        [A & (A=>B); A=>B; A; B ];
        A & (A=>B) => B
