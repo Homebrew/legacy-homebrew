@@ -6,11 +6,11 @@ class Dovecot < Formula
   mirror 'http://fossies.org/linux/misc/dovecot-2.2.10.tar.gz'
   sha256 '75592483d40dc4f76cc3b41af40caa4be80478946a699d46846d5d03e4d2e09b'
 
-  depends_on 'clucene' => [:optional, 'with-lucene']
+  depends_on 'clucene' => :optional
 
   def install
 
-    ENV.append 'CPPFLAGS', "-I/usr/local/Cellar/clucene/2.3.3.4/lib"
+    ENV.append 'CPPFLAGS', "-I#{Formula.factory('clucene').lib}"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--libexecdir=#{libexec}",
@@ -18,6 +18,7 @@ class Dovecot < Formula
                           "--localstatedir=#{var}",
                           "--with-ssl=openssl",
                           "--with-sqlite",
+                          "--with-lucene",
                           "--with-zlib",
                           "--with-bzlib"
     system "make install"
