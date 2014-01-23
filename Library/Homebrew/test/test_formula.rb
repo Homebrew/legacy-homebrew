@@ -6,7 +6,7 @@ class FormulaTests < Test::Unit::TestCase
 
   def test_prefix
     f = TestBall.new
-    assert_equal File.expand_path(f.prefix), (HOMEBREW_CELLAR+f.name+'0.1').to_s
+    assert_equal HOMEBREW_CELLAR/f.name/'0.1', f.prefix
     assert_kind_of Pathname, f.prefix
   end
 
@@ -154,23 +154,17 @@ class FormulaTests < Test::Unit::TestCase
       homepage 'http://example.com'
       url 'file:///foo.com/testball-0.1.tbz'
       mirror 'file:///foo.org/testball-0.1.tbz'
-      sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
+      sha1 TEST_SHA1
 
-      head 'https://github.com/mxcl/homebrew.git', :tag => 'foo'
+      head 'https://github.com/Homebrew/homebrew.git', :tag => 'foo'
 
       devel do
         url 'file:///foo.com/testball-0.2.tbz'
         mirror 'file:///foo.org/testball-0.2.tbz'
-        sha256 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
+        sha256 TEST_SHA256
       end
 
-      bottle do
-        sha1 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef' => :snow_leopard_32
-        sha1 'faceb00cfaceb00cfaceb00cfaceb00cfaceb00c' => :snow_leopard
-        sha1 'baadf00dbaadf00dbaadf00dbaadf00dbaadf00d' => :lion
-        sha1 '8badf00d8badf00d8badf00d8badf00d8badf00d' => :mountain_lion
-        sha1 'deadf00ddeadf00ddeadf00ddeadf00ddeadf00d' => :mavericks
-      end
+      bottle { sha1 TEST_SHA1 => bottle_tag }
 
       def initialize(name="spec_test_ball", path=nil)
         super

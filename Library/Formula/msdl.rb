@@ -7,7 +7,7 @@ class Msdl < Formula
   sha1 'd30a637fc8be4ea80ddd373e428542bef15297fb'
 
   # Fixes linker error under clang; apparently reported upstream:
-  # https://github.com/mxcl/homebrew/pull/13907
+  # https://github.com/Homebrew/homebrew/pull/13907
   def patches
     DATA
   end

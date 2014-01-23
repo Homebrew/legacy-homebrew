@@ -137,7 +137,7 @@ def curl *args
   raise "#{curl} is not executable" unless curl.exist? and curl.executable?
 
   args = [HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args]
-  # See https://github.com/mxcl/homebrew/issues/6103
+  # See https://github.com/Homebrew/homebrew/issues/6103
   args << "--insecure" if MacOS.version < "10.6"
   args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
   args << "--silent" unless $stdout.tty?
@@ -178,7 +178,7 @@ def which_editor
 
   # Find Textmate
   return 'mate' if which "mate"
-  # Find # BBEdit / TextWrangler
+  # Find BBEdit / TextWrangler
   return 'edit' if which "edit"
   # Default to vim
   return '/usr/bin/vim'
@@ -250,7 +250,7 @@ def paths
 end
 
 module GitHub extend self
-  ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/mxcl/homebrew/open/")
+  ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/Homebrew/homebrew/open/")
 
   Error = Class.new(StandardError)
 
@@ -277,9 +277,18 @@ module GitHub extend self
     raise Error, "Failed to connect to: #{url}\n#{e.message}"
   end
 
-  def each_issue_matching(query, &block)
-    uri = ISSUES_URI + query
-    open(uri) { |f| Utils::JSON.load(f.read)['issues'].each(&block) }
+  def issues_matching(query)
+    uri = ISSUES_URI + uri_escape(query)
+    open(uri) { |f| Utils::JSON.load(f.read)['issues'] }
+  end
+
+  def uri_escape(query)
+    if URI.respond_to?(:encode_www_form_component)
+      URI.encode_www_form_component(query)
+    else
+      require "erb"
+      ERB::Util.url_encode(query)
+    end
   end
 
   def issues_for_formula name
@@ -289,26 +298,30 @@ module GitHub extend self
 
     name = f.name if Formula === name
 
-    issues = []
-
-    each_issue_matching(name) do |issue|
-      # don't include issues that just refer to the tool in their body
-      issues << issue['html_url'] if issue['title'].include? name
-    end
-
-    issues
+    # don't include issues that just refer to the tool in their body
+    issues_matching(name).select {|issue| issue['title'].include? name }
   end
 
   def find_pull_requests rx
     return if ENV['HOMEBREW_NO_GITHUB_API']
-    puts "Searching open pull requests..."
+    puts "Searching pull requests..."
 
     query = rx.source.delete('.*').gsub('\\', '')
 
-    each_issue_matching(query) do |issue|
-      if rx === issue['title'] && issue.has_key?('pull_request_url')
-        yield issue['pull_request_url']
-      end
+    open_or_closed_prs = issues_matching(query).select do |issue|
+      rx === issue['title'] && issue.has_key?('pull_request_url')
     end
+    open_prs = open_or_closed_prs.select {|i| i['state'] != 'closed' }
+    if open_prs.any?
+      puts "Open pull requests:"
+      prs = open_prs
+    elsif open_or_closed_prs.any?
+      puts "Closed pull requests:"
+      prs = open_or_closed_prs
+    else
+      return
+    end
+
+    prs.each {|i| yield "#{i['title']} (#{i['pull_request_url']})" }
   end
 end

@@ -7,8 +7,9 @@ class S3cmd < Formula
   head 'https://github.com/s3tools/s3cmd.git'
 
   devel do
-    url 'https://github.com/s3tools/s3cmd/archive/v1.5.0-alpha3.tar.gz'
-    sha1 '6307e4c0ca17ca632f40745f441438aa9c22a223'
+    url 'https://github.com/s3tools/s3cmd/archive/v1.5.0-beta1.zip'
+    sha1 'ce5738c8d389b705b5a1283da6356df92673863b'
+    version "1.5.0-beta1"
   end
 
   def install

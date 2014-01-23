@@ -51,24 +51,22 @@ module OS
     end
 
     def dev_tools_prefix
-      @dev_tools_prefix ||= if tools_in_prefix? CLT::MAVERICKS_PKG_PATH
-        Pathname.new CLT::MAVERICKS_PKG_PATH
-      elsif tools_in_prefix? "/"
-        # probably a safe enough assumption (the unix way)
-        Pathname.new "/"
-      elsif not Xcode.bad_xcode_select_path? and not `/usr/bin/xcrun -find make 2>/dev/null`.empty?
-        # Note that the exit status of system "xcrun foo" isn't always accurate
-        # Wherever "make" is there are the dev tools.
-        Pathname.new(`/usr/bin/xcrun -find make`.chomp.sub('/usr/bin/make', ''))
-      elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
-        # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
-        Pathname.new Xcode.prefix
-      end
+      dev_tools_path.parent.parent
     end
 
     def dev_tools_path
-      @dev_tools_path ||= if File.exist? "#{dev_tools_prefix}/usr/bin/make"
-        Pathname.new "#{dev_tools_prefix}/usr/bin"
+      @dev_tools_path ||= if tools_in_prefix? CLT::MAVERICKS_PKG_PATH
+        Pathname.new "#{CLT::MAVERICKS_PKG_PATH}/usr/bin"
+      elsif tools_in_prefix? "/"
+        # probably a safe enough assumption (the unix way)
+        Pathname.new "/usr/bin"
+      elsif not Xcode.bad_xcode_select_path? and not `/usr/bin/xcrun -find make 2>/dev/null`.empty?
+        # Note that the exit status of system "xcrun foo" isn't always accurate
+        # Wherever "make" is there are the dev tools.
+        Pathname.new(`/usr/bin/xcrun -find make`.chomp).dirname
+      elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
+        # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
+        Pathname.new "#{Xcode.prefix}/usr/bin"
       end
     end
 
@@ -101,11 +99,12 @@ module OS
 
     def default_cc
       cc = locate 'cc'
-      Pathname.new(cc).realpath.basename.to_s rescue nil
+      cc.realpath.basename.to_s rescue nil
     end
 
     def default_compiler
       case default_cc
+        when /^gcc-4.0/ then :gcc_4_0
         when /^gcc/ then :gcc
         when /^llvm/ then :llvm
         when "clang" then :clang
@@ -182,9 +181,9 @@ module OS
     end
 
     # See these issues for some history:
-    # http://github.com/mxcl/homebrew/issues/#issue/13
-    # http://github.com/mxcl/homebrew/issues/#issue/41
-    # http://github.com/mxcl/homebrew/issues/#issue/48
+    # http://github.com/Homebrew/homebrew/issues/13
+    # http://github.com/Homebrew/homebrew/issues/41
+    # http://github.com/Homebrew/homebrew/issues/48
     def macports_or_fink
       paths = []
 
@@ -262,7 +261,9 @@ module OS
         Homebrew doesn't know what compiler versions ship with your version
         of Xcode (#{Xcode.version}). Please `brew update` and if that doesn't help, file
         an issue with the output of `brew --config`:
-          https://github.com/mxcl/homebrew/issues
+          https://github.com/Homebrew/homebrew/issues
+
+        Note that we only track stable, released versions of Xcode.
 
         Thanks!
       EOS

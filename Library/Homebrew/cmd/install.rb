@@ -6,6 +6,19 @@ module Homebrew extend self
   def install
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
+    {
+      'gcc' => 'gcc-4.2',
+      'llvm' => 'llvm-gcc',
+      'clang' => 'clang'
+    }.each_pair do |old, new|
+      opt = "--use-#{old}"
+      if ARGV.include? opt then opoo <<-EOS.undent
+        #{opt.inspect} is deprecated and will be removed in a future version.
+        Please use "--cc=#{new}" instead.
+        EOS
+      end
+    end
+
     if ARGV.include? '--head'
       raise "Specify `--HEAD` in uppercase to build from trunk."
     end
@@ -18,10 +31,7 @@ module Homebrew extend self
       end
       if not File.exist? name and name =~ HOMEBREW_TAP_FORMULA_REGEX then
         require 'cmd/tap'
-        begin
-          install_tap $1, $2
-        rescue AlreadyTappedError => e
-        end
+        install_tap $1, $2
       end
     end unless ARGV.force?
 

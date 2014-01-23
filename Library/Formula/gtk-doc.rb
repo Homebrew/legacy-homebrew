@@ -7,7 +7,6 @@ class GtkDoc < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gnome-doc-utils' => :build
-  depends_on :python
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'docbook'
@@ -15,8 +14,8 @@ class GtkDoc < Formula
   depends_on 'libxml2' => 'with-python'
 
   def install
-    # libxml2 is keg_only but we installed the python bindings globally, so
-    # configure should find them.
+    ENV.append_path 'PYTHONPATH', HOMEBREW_PREFIX/"opt/libxml2/lib/python2.7/site-packages"
+
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

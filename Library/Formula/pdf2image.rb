@@ -6,6 +6,8 @@ class Pdf2image < Formula
   sha1 '2acc8d1597eb470fce761d3f35b548318d446c2a'
 
   depends_on :x11
+  depends_on :freetype
+  depends_on 'ghostscript'
 
   conflicts_with 'poppler', 'xpdf',
     :because => 'pdf2image, poppler, and xpdf install conflicting executables'

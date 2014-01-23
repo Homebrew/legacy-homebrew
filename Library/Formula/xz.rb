@@ -1,7 +1,7 @@
 require 'formula'
 
 # Upstream project has requested we use a mirror as the main URL
-# https://github.com/mxcl/homebrew/pull/21419
+# https://github.com/Homebrew/homebrew/pull/21419
 class Xz < Formula
   homepage 'http://tukaani.org/xz/'
   url 'http://fossies.org/linux/misc/xz-5.0.5.tar.gz'
@@ -10,10 +10,10 @@ class Xz < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 '38f4e91b7f0ab45aa542de3a558c3077a928f7c5' => :mavericks
-    sha1 'eed9e2dde1cea8dda3915ac0350fdf3fa3753640' => :mountain_lion
-    sha1 '809720f5602d11f0e4507f43563d9061f4cd444e' => :lion
+    revision 2
+    sha1 'ed851938129e0173354a4e0a7058037dac8e0104' => :mavericks
+    sha1 'e73944a34e81f7e4f097c24203bd935a140965ca' => :mountain_lion
+    sha1 'aff7ceb3547130722b9928a6f1e72c9d44b92a21' => :lion
   end
 
   option :universal

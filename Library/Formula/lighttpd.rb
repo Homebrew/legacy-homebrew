@@ -10,6 +10,7 @@ class Lighttpd < Formula
   depends_on 'pkg-config' => :build
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
+  depends_on 'libtool' => :build
   depends_on 'pcre'
   depends_on 'lua' => :optional
   depends_on 'libev' => :optional
@@ -39,12 +40,15 @@ class Lighttpd < Formula
     # fixed upstream, should be in next release: http://redmine.lighttpd.net/issues/2517
     inreplace 'src/Makefile.am', '$(LDAP_LIB)', '$(SSL_LIB) $(LDAP_LIB)'
 
+    # autogen must be run, otherwise prebuilt configure may complain
+    # about a version mismatch between included automake and Homebrew's
+    system "./autogen.sh"
     system "./configure", *args
     system "make install"
 
     mv sbin, bin
 
-    unless File.exists? config_path
+    unless File.exist? config_path
       config_path.install Dir["doc/config/lighttpd.conf"]
       config_path.install Dir["doc/config/modules.conf"]
       (config_path/"conf.d/").install Dir["doc/config/conf.d/*.conf"]

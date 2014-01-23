@@ -8,7 +8,7 @@ class Help2man < Formula
 
   def install
     # install is not parallel safe
-    # see https://github.com/mxcl/homebrew/issues/12609
+    # see https://github.com/Homebrew/homebrew/issues/12609
     ENV.j1
 
     system "./configure", "--prefix=#{prefix}"

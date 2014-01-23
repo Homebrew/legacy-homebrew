@@ -21,6 +21,7 @@ HOMEBREW_CACHE         = HOMEBREW_PREFIX.parent+'cache'
 HOMEBREW_CACHE_FORMULA = HOMEBREW_PREFIX.parent+'formula_cache'
 HOMEBREW_CELLAR        = HOMEBREW_PREFIX.parent+'cellar'
 HOMEBREW_LOGS          = HOMEBREW_PREFIX.parent+'logs'
+HOMEBREW_TEMP          = Pathname.new(ENV.fetch('HOMEBREW_TEMP', '/tmp'))
 HOMEBREW_USER_AGENT    = 'Homebrew'
 HOMEBREW_WWW           = 'http://example.com'
 HOMEBREW_CURL_ARGS     = '-fsLA'
@@ -96,6 +97,10 @@ module VersionAssertions
   def assert_version_nil url
     assert_nil Version.parse(url)
   end
+
+  def assert_version_tokens tokens, version
+    assert_equal tokens, version.send(:tokens).map(&:to_s)
+  end
 end
 
 module Test::Unit::Assertions
@@ -106,6 +111,9 @@ module Test::Unit::Assertions
 end
 
 class Test::Unit::TestCase
+  TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
+  TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
+
   def formula(*args, &block)
     @_f = Class.new(Formula, &block).new(*args)
   end

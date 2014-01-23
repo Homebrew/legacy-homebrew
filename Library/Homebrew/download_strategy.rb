@@ -162,6 +162,9 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when :xz
       with_system_path { safe_system "#{xzpath} -dc \"#{tarball_path}\" | tar xf -" }
       chdir
+    when :lzip
+      with_system_path { safe_system "#{lzippath} -dc \"#{tarball_path}\" | tar xf -" }
+      chdir
     when :pkg
       safe_system '/usr/sbin/pkgutil', '--expand', tarball_path, basename_without_params
       chdir
@@ -183,6 +186,10 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
 
   def xzpath
     "#{HOMEBREW_PREFIX}/opt/xz/bin/xz"
+  end
+
+  def lzippath
+    "#{HOMEBREW_PREFIX}/opt/lzip/bin/lzip"
   end
 
   def chdir
@@ -358,13 +365,19 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     @clone.join(".svn").directory?
   end
 
+  def repo_url
+    `svn info '#{@clone}' 2>/dev/null`.strip[/^URL: (.+)$/, 1]
+  end
+
   def fetch
     @url = @url.sub(/^svn\+/, '') if @url =~ %r[^svn\+http://]
     ohai "Checking out #{@url}"
 
+    clear_cache unless @url.chomp("/") == repo_url or quiet_system 'svn', 'switch', @url, @clone
+
     if @clone.exist? and not repo_valid?
       puts "Removing invalid SVN repo from cache"
-      @clone.rmtree
+      clear_cache
     end
 
     case @ref_type
@@ -394,7 +407,7 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 
   def get_externals
-    `'#{shell_quote('svn')}' propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
+    `svn propget svn:externals '#{shell_quote(@url)}'`.chomp.each_line do |line|
       name, url = line.split(/\s+/)
       yield name, url
     end
@@ -467,7 +480,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
       end
     elsif @clone.exist?
       puts "Removing invalid .git repo from cache"
-      FileUtils.rm_rf @clone
+      clear_cache
       clone_repo
     else
       clone_repo
@@ -651,7 +664,7 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
   def cache_tag; "hg" end
 
   def hgpath
-    # #{HOMEBREW_PREFIX}/share/python/hg is deprecated, but we levae it in for a while
+    # Note: #{HOMEBREW_PREFIX}/share/python/hg is deprecated
     @path ||= %W[
       #{which("hg")}
       #{HOMEBREW_PREFIX}/bin/hg
@@ -668,7 +681,7 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
       @clone.cd { quiet_safe_system hgpath, 'pull', '--update' }
     elsif @clone.exist?
       puts "Removing invalid hg repo from cache"
-      @clone.rmtree
+      clear_cache
       clone_repo
     else
       clone_repo
@@ -719,7 +732,7 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
       @clone.cd { safe_system bzrpath, 'update' }
     elsif @clone.exist?
       puts "Removing invalid bzr repo from cache"
-      @clone.rmtree
+      clear_cache
       clone_repo
     else
       clone_repo

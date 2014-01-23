@@ -2,8 +2,8 @@ require 'formula'
 
 class Liquibase < Formula
   homepage 'http://liquibase.org'
-  url 'http://downloads.sourceforge.net/project/liquibase/Liquibase%20Core/liquibase-3.0.6-bin.tar.gz'
-  sha1 '82e26da2dd866cd47a849cddc3c643c485ea3764'
+  url 'http://downloads.sourceforge.net/project/liquibase/Liquibase%20Core/liquibase-3.1.1-bin.tar.gz'
+  sha1 '48af02bd837eab401236963c5868fc4dae5dfbee'
 
   def install
     rm_f Dir['*.bat']

@@ -3,7 +3,7 @@ brew(1) -- The missing package manager for OS X
 
 ## SYNOPSIS
 
-`brew` --version  
+`brew` --version<br>
 `brew` command [--verbose|-v] [options] [formula] ...
 
 ## DESCRIPTION
@@ -151,7 +151,7 @@ Note that these flags should only appear after a command.
   * `info` <URL>:
     Print the name and version that will be detected for <URL>.
 
-  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--fresh] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
+  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--fresh] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
@@ -169,6 +169,9 @@ Note that these flags should only appear after a command.
     If `--ignore-dependencies` is passed, skip installing any dependencies of
     any kind. If they are not already present, the formula will probably fail
     to install.
+
+    If `--only-dependencies` is passed, install the dependencies with specified
+    options but do not install the specified formula.
 
     If `--fresh` is passed, the installation process will not re-use any
     options from previous installs.
@@ -271,6 +274,9 @@ Note that these flags should only appear after a command.
   * `prune`:
     Remove dead symlinks from the Homebrew prefix. This is generally not
     needed, but can be useful when doing DIY installations.
+
+  * `reinstall` <formula>:
+    Uninstall then install <formula>
 
   * `rm`, `remove`, `uninstall [--force]` <formula>:
     Uninstall <formula>.
@@ -415,7 +421,7 @@ by default:
 
 Documentation for the included external commands as well as instructions for
 creating your own can be found on the wiki:
-<http://wiki.github.com/mxcl/homebrew/External-Commands>
+<http://wiki.github.com/Homebrew/homebrew/External-Commands>
 
 ## SPECIFYING FORMULAE
 
@@ -426,13 +432,13 @@ can take several different forms:
     e.g. `git`, `node`, `wget`.
 
   * The fully-qualified name of a tapped formula:
-    Sometimes a formula from a tapped repository may conflict with one in mxcl/master.
+    Sometimes a formula from a tapped repository may conflict with one in Homebrew/homebrew.
     You can still access these formulae by using a special syntax, e.g.
     `homebrew/dupes/vim` or `homebrew/versions/node4`.
 
   * An arbitrary URL:
     Homebrew can install formulae via URL, e.g.
-    `https://raw.github.com/mxcl/homebrew/master/Library/Formula/git.rb`.
+    `https://raw.github.com/Homebrew/homebrew/master/Library/Formula/git.rb`.
     The formula file will be cached for later use.
 
 ## ENVIRONMENT
@@ -578,7 +584,7 @@ If your proxy requires authentication:
 
 ## SEE ALSO
 
-Homebrew Wiki: <http://wiki.github.com/mxcl/homebrew/>
+Homebrew Wiki: <http://wiki.github.com/Homebrew/homebrew/>
 
 `git`(1), `git-log`(1)
 
@@ -588,5 +594,5 @@ Max Howell, a splendid chap.
 
 ## BUGS
 
-See Issues on GitHub: <http://github.com/mxcl/homebrew/issues>
+See Issues on GitHub: <http://github.com/Homebrew/homebrew/issues>
 

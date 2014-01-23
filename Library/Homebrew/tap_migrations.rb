@@ -11,4 +11,11 @@ TAP_MIGRATIONS = {
   'librets' => 'homebrew/boneyard',
   'drizzle' => 'homebrew/boneyard',
   'boost149' => 'homebrew/versions',
+  'aimage' => 'homebrew/boneyard',
+  'cmucl' => 'homebrew/binary',
+  'lmutil' => 'homebrew/binary',
+  'jscoverage' => 'homebrew/boneyard',
+  'jsl' => 'homebrew/binary',
+  'nlopt' => 'homebrew/science',
+  'comparepdf' => 'homebrew/boneyard',
 }

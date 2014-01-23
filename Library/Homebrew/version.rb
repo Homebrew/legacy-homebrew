@@ -43,7 +43,7 @@ class Version
   NULL_TOKEN = NullToken.new
 
   class StringToken < Token
-    PATTERN = /[a-z]+[0-9]+/i
+    PATTERN = /[a-z]+[0-9]*/i
 
     def initialize(value)
       @value = value.to_s
@@ -188,6 +188,11 @@ class Version
 
     max = [tokens.length, other.tokens.length].max
     pad_to(max) <=> other.pad_to(max)
+  end
+  alias_method :eql?, :==
+
+  def hash
+    @version.hash
   end
 
   def to_s

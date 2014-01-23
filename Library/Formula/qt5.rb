@@ -19,16 +19,16 @@ end
 
 class Qt5 < Formula
   homepage 'http://qt-project.org/'
-  url 'http://download.qt-project.org/official_releases/qt/5.1/5.1.1/single/qt-everywhere-opensource-src-5.1.1.tar.gz'
-  sha1 '131b023677cd5207b0b0d1864f5d3ac37f10a5ba'
+  url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.0/single/qt-everywhere-opensource-src-5.2.0.tar.gz'
+  sha1 'd0374c769a29886ee61f08a6386b9af39e861232'
   head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
     :using => Qt5HeadDownloadStrategy
 
   bottle do
-    revision 1
-    sha1 '7cf5fec167c1b0d8a8a719fad79756b9892d04dd' => :mountain_lion
-    sha1 '5d6a4a10362ba66d6471cd45a40b1bcde8137f62' => :lion
-    sha1 'd1790e3b17b5a0855efa8df68187a62774aad9b9' => :snow_leopard
+    revision 3
+    sha1 'dc89426ad513d84d7df6869340070cd6b663906c' => :mavericks
+    sha1 '041ea93c80d04f5a43b77d69ce0d621df13cc389' => :mountain_lion
+    sha1 'c427063895302623a8e17248b523f722a9109dea' => :lion
   end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
@@ -45,11 +45,17 @@ class Qt5 < Formula
   odie 'qt5: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
 
   def install
+    # fixed hardcoded link to plugin dir: https://bugreports.qt-project.org/browse/QTBUG-29188
+    inreplace "qttools/src/macdeployqt/macdeployqt/main.cpp", "deploymentInfo.pluginPath = \"/Developer/Applications/Qt/plugins\";",
+              "deploymentInfo.pluginPath = \"#{prefix}/plugins\";"
+
     ENV.universal_binary if build.universal?
     args = ["-prefix", prefix,
             "-system-zlib",
+            "-qt-libpng", "-qt-libjpeg",
             "-confirm-license", "-opensource",
             "-nomake", "examples",
+            "-nomake", "tests",
             "-release"]
 
     unless MacOS::CLT.installed?
@@ -58,7 +64,7 @@ class Qt5 < Formula
     end
 
     # https://bugreports.qt-project.org/browse/QTBUG-34382
-    args << "-no-xcb" if build.head?
+    args << "-no-xcb"
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
@@ -86,17 +92,10 @@ class Qt5 < Formula
     system "make"
     ENV.j1
     system "make install"
-
-    # Fix https://github.com/mxcl/homebrew/issues/20020 (upstream: https://bugreports.qt-project.org/browse/QTBUG-32417)
-    system "install_name_tool", "-change", "#{pwd}/qtwebkit/lib/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets", #old
-                                           "#{lib}/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets",  #new
-                                           "#{libexec}/QtWebProcess" # in this lib
-    system "install_name_tool", "-change", "#{pwd}/qtwebkit/lib/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{lib}/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{prefix}/qml/QtWebKit/libqmlwebkitplugin.dylib"
-    system "install_name_tool", "-change", "#{pwd}/qtwebkit/lib/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{lib}/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{lib}/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets"
+    if build.with? 'docs'
+      system "make", "docs"
+      system "make", "install_docs"
+    end
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     cd prefix do

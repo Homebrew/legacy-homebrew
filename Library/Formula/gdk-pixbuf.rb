@@ -2,8 +2,8 @@ require 'formula'
 
 class GdkPixbuf < Formula
   homepage 'http://gtk.org'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.30/gdk-pixbuf-2.30.1.tar.xz'
-  sha256 'a3263b1e15668c009313bf04ab67420bec9f2b167c402a71a486307cadee8d30'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.30/gdk-pixbuf-2.30.3.tar.xz'
+  sha256 'c229c53f59573eab9410b53690a4b9db770312c80a4d84ecd6295aa894574494'
 
   option :universal
 

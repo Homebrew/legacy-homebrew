@@ -8,6 +8,8 @@ class Devil < Formula
   depends_on :libpng
   depends_on 'jpeg'
 
+  option :universal
+
   # see http://sourceforge.net/tracker/?func=detail&aid=3404133&group_id=4470&atid=104470
   # also, even with -std=gnu99 removed from the configure script,
   # devil fails to build with clang++ while compiling il_exr.cpp
@@ -19,6 +21,8 @@ class Devil < Formula
   def patches; DATA; end
 
   def install
+    ENV.universal_binary if build.universal?
+
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

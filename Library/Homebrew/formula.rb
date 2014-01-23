@@ -46,7 +46,8 @@ class Formula
       # into a validation method on the bottle instance.
       unless bottle.checksum.nil? || bottle.checksum.empty?
         @bottle = bottle
-        bottle.url ||= bottle_url(self)
+        bottle.url ||= bottle_url(self, bottle.current_tag)
+        bottle.version = stable.version
       end
     end
 
@@ -70,12 +71,12 @@ class Formula
 
   def determine_active_spec
     case
-    when @head && ARGV.build_head?        then @head    # --HEAD
-    when @devel && ARGV.build_devel?      then @devel   # --devel
-    when @bottle && install_bottle?(self) then @bottle  # bottle available
-    when @stable                          then @stable
-    when @devel && @stable.nil?           then @devel   # devel-only
-    when @head && @stable.nil?            then @head    # head-only
+    when head && ARGV.build_head?        then head    # --HEAD
+    when devel && ARGV.build_devel?      then devel   # --devel
+    when bottle && install_bottle?(self) then bottle  # bottle available
+    when stable                          then stable
+    when devel && stable.nil?            then devel   # devel-only
+    when head && stable.nil?             then head    # head-only
     else
       raise FormulaSpecificationError, "formulae require at least a URL"
     end
@@ -241,12 +242,10 @@ class Formula
   def fails_with? cc
     cc = Compiler.new(cc) unless cc.is_a? Compiler
     (self.class.cc_failures || []).any? do |failure|
-      if cc.version
-        # non-Apple GCCs don't have builds, just version numbers
-        failure.compiler == cc.name && failure.version >= cc.version
-      else
-        failure.compiler == cc.name && failure.build >= cc.build
-      end
+      # Major version check distinguishes between, e.g.,
+      # GCC 4.7.1 and GCC 4.8.2, where a comparison is meaningless
+      failure.compiler == cc.name && failure.major_version == cc.major_version && \
+        failure.version >= cc.version
     end
   end
 
@@ -341,24 +340,14 @@ class Formula
     ]
   end
 
-  # Install python bindings inside of a block given to this method and/or
-  # call python so: `system python, "setup.py", "install", "--prefix=#{prefix}"
-  # Note that there are no quotation marks around python!
-  # <https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python>
-  def python(options={:allowed_major_versions => [2, 3]}, &block)
-    require 'python_helper'
-    python_helper(options, &block)
+  # Deprecated
+  def python(options={}, &block)
+    opoo 'Formula#python is deprecated and will go away shortly.'
+    block.call if block_given?
+    PythonDependency.new
   end
-
-  # Explicitly only execute the block for 2.x (if a python 2.x is available)
-  def python2 &block
-    python(:allowed_major_versions => [2], &block)
-  end
-
-  # Explicitly only execute the block for 3.x (if a python 3.x is available)
-  def python3 &block
-    python(:allowed_major_versions => [3], &block)
-  end
+  alias_method :python2, :python
+  alias_method :python3, :python
 
   # Generates a formula's ruby class name from a formula's name
   def self.class_s name
@@ -452,7 +441,7 @@ class Formula
     if path.realpath.to_s =~ HOMEBREW_TAP_DIR_REGEX
       "#$1/#$2"
     elsif core_formula?
-      "mxcl/master"
+      "Homebrew/homebrew"
     else
       "path or URL"
     end
@@ -604,6 +593,8 @@ class Formula
 
       Process.wait
 
+      $stdout.flush
+
       unless $?.success?
         f.flush
         Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
@@ -666,8 +657,8 @@ class Formula
   # The methods below define the formula DSL.
   class << self
 
-    attr_rw :homepage, :keg_only_reason, :cc_failures
-    attr_rw :plist_startup, :plist_manual
+    attr_reader :keg_only_reason, :cc_failures
+    attr_rw :homepage, :plist_startup, :plist_manual
 
     def specs
       @specs ||= [stable, devel, head, bottle].freeze
@@ -765,10 +756,7 @@ class Formula
         return
       end
 
-      paths.each do |p|
-        p = p.to_s unless p == :la # Keep :la in paths as a symbol
-        skip_clean_paths << p
-      end
+      skip_clean_paths.merge(paths)
     end
 
     def skip_clean_all?
@@ -783,6 +771,33 @@ class Formula
       @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
     end
 
+    # For Apple compilers, this should be in the format:
+    # fails_with compiler do
+    #   cause "An explanation for why the build doesn't work."
+    #   build "The Apple build number for the newest incompatible release."
+    # end
+    #
+    # The block may be omitted, and if present the build may be omitted;
+    # if so, then the compiler will be blacklisted for *all* versions.
+    #
+    # For GNU GCC compilers, this should be in the format:
+    # fails_with compiler => major_version do
+    #   cause
+    #   version "The official release number for the latest incompatible
+    #            version, for instance 4.8.1"
+    # end
+    #
+    # `major_version` should be the major release number only, for instance
+    # '4.8' for the GCC 4.8 series (4.8.0, 4.8.1, etc.).
+    # If `version` or the block is omitted, then the compiler will be
+    # blacklisted for all compilers in that series.
+    #
+    # For example, if a bug is only triggered on GCC 4.8.1 but is not
+    # encountered on 4.8.2:
+    #
+    # fails_with :gcc => '4.8' do
+    #   version '4.8.1'
+    # end
     def fails_with compiler, &block
       @cc_failures ||= Set.new
       @cc_failures << CompilerFailure.new(compiler, &block)

@@ -11,7 +11,6 @@ class Grass < Formula
   depends_on :macos => :lion
   depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
   depends_on "pkg-config" => :build
-  depends_on :python
   depends_on "gettext"
   depends_on "readline"
   depends_on "gdal"
@@ -91,7 +90,7 @@ class Grass < Formula
     args << "--with-cairo"
 
     # Database support
-    args << "--with-postgres" if build.with? "postgres"
+    args << "--with-postgres" if build.with? "postgresql"
 
     if build.with? "mysql"
       mysql = Formula.factory('mysql')

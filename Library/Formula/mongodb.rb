@@ -2,8 +2,14 @@ require 'formula'
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.8.tar.gz'
-  sha1 '59fa237e102c9760271df9433ee7357dd0ec831f'
+  url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.9.tar.gz'
+  sha1 '3aa495cf32769a09ee9532827391892d96337d6b'
+
+  bottle do
+    sha1 '04d49071102d86ac06f35ed9e4c855a677d97c68' => :mavericks
+    sha1 '2ee3ed1b44777ea740da87b952acdadf19084bd4' => :mountain_lion
+    sha1 'b4898545634c7015093036c260dca69bc96fa5b8' => :lion
+  end
 
   devel do
     url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.4.tar.gz'
@@ -13,8 +19,12 @@ class Mongodb < Formula
   head 'https://github.com/mongodb/mongo.git'
 
   def patches
-    # Fix Clang v8 build failure from build warnings and -Werror
-    'https://github.com/mongodb/mongo/commit/be4bc7.patch' if build.stable?
+    if build.stable?
+      [
+        # Fix Clang v8 build failure from build warnings and -Werror
+        'https://github.com/mongodb/mongo/commit/be4bc7.patch'
+      ]
+    end
   end
 
   depends_on 'scons' => :build
@@ -24,6 +34,8 @@ class Mongodb < Formula
     # mongodb currently can't build with libc++; this should be fixed in
     # 2.6, but can't be backported to the current stable release.
     ENV.cxx += ' -stdlib=libstdc++' if ENV.compiler == :clang && MacOS.version >= :mavericks
+
+    scons = Formula.factory('scons').opt_prefix/'bin/scons'
 
     args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
     args << '--64' if MacOS.prefer_64_bit?
@@ -35,7 +47,7 @@ class Mongodb < Formula
       args << "--extrapathdyn=#{Formula.factory('openssl').opt_prefix}"
     end
 
-    system 'scons', 'install', *args
+    system scons, 'install', *args
 
     (prefix+'mongod.conf').write mongodb_conf
 

@@ -2,8 +2,8 @@ require 'formula'
 
 class Opencolorio < Formula
   homepage 'http://opencolorio.org/'
-  url 'https://github.com/imageworks/OpenColorIO/archive/v1.0.8.tar.gz'
-  sha1 '83b28202bdb1f692f74a80affea95d832354ec23'
+  url 'https://github.com/imageworks/OpenColorIO/archive/v1.0.9.tar.gz'
+  sha1 '45efcc24db8f8830b6892830839da085e19eeb6d'
 
   head 'https://github.com/imageworks/OpenColorIO.git'
 
@@ -26,15 +26,7 @@ class Opencolorio < Formula
     # Python note:
     # OCIO's PyOpenColorIO.so doubles as a shared library. So it lives in lib, rather
     # than the usual HOMEBREW_PREFIX/lib/python2.7/site-packages per developer choice.
-
-    if python do
-      # For Xcode-only systems, the headers of system's python are inside of Xcode:
-      args << "-DPYTHON_INCLUDE_DIR='#{python.incdir}'"
-      # Cmake picks up the system's python dylib, even if we have a brewed one:
-      args << "-DPYTHON_LIBRARY='#{python.libdir}/lib#{python.xy}.dylib'"
-    end; else
-      args << "-DOCIO_BUILD_PYGLUE=OFF"
-    end
+    args << "-DOCIO_BUILD_PYGLUE=OFF" if build.without? 'python'
 
     args << '..'
 

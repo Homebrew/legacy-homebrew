@@ -2,8 +2,8 @@ require 'formula'
 
 class YoutubeDl < Formula
   homepage 'http://rg3.github.io/youtube-dl/'
-  url 'http://youtube-dl.org/downloads/2013.11.25.1/youtube-dl-2013.11.25.1.tar.gz'
-  sha1 'de51ebe69f689d91fa7f6bcadbaf82fbef207c73'
+  url 'https://yt-dl.org/downloads/2014.01.20/youtube-dl-2014.01.20.tar.gz'
+  sha1 '73e98cc1788dd8c2fca8b253fdf5061c9bc1425a'
 
   def install
     system "make", "youtube-dl", "PREFIX=#{prefix}"
@@ -14,5 +14,9 @@ class YoutubeDl < Formula
 
   def caveats
     "To use post-processing options, `brew install ffmpeg`."
+  end
+
+  def test
+    system "#{bin}/youtube-dl", '--simulate', 'http://www.youtube.com/watch?v=he2a4xK8ctk'
   end
 end

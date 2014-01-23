@@ -2,12 +2,12 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.32/kvm-tarbake-jaunty-x86/mariadb-5.5.32.tar.gz'
-  sha1 'cc468beebf3b27439d29635a4e8aec8314f27175'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.34/kvm-tarbake-jaunty-x86/mariadb-5.5.34.tar.gz'
+  sha1 '8a7d8f6094faa35cc22bc084a0e0d8037fd4ba03'
 
   devel do
-    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.3/kvm-tarbake-jaunty-x86/mariadb-10.0.3.tar.gz'
-    sha1 'c36c03ad78bdadf9a10e7b695159857d6432726d'
+    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.7/kvm-tarbake-jaunty-x86/mariadb-10.0.7.tar.gz'
+    sha1 '14d830cf322175a3fc772e3b265faca1246a7b07'
   end
 
   depends_on 'cmake' => :build
@@ -24,12 +24,24 @@ class Mariadb < Formula
 
   conflicts_with 'mysql', 'mysql-cluster', 'percona-server',
     :because => "mariadb, mysql, and percona install the same binaries."
+  conflicts_with 'mysql-connector-c',
+    :because => 'both install MySQL client libraries'
 
   env :std if build.universal?
 
+  def patches
+    if build.devel?
+      [
+        # Prevent name collision leading to compilation failure. See:
+        # issue #24489, upstream: https://mariadb.atlassian.net/browse/MDEV-5314
+        'https://gist.github.com/makigumo/8199195/raw/ab0bc78fd0e839aafcf072505f017feba2b6f6fa/mariadb-10.0.7.mac.patch',
+      ]
+    end
+  end
+
   def install
     # Don't hard-code the libtool path. See:
-    # https://github.com/mxcl/homebrew/issues/20185
+    # https://github.com/Homebrew/homebrew/issues/20185
     inreplace "cmake/libutils.cmake",
       "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
       "COMMAND libtool -static -o ${TARGET_LOCATION}"
@@ -86,13 +98,14 @@ class Mariadb < Formula
     system "make install"
 
     # Fix my.cnf to point to #{etc} instead of /etc
+    (etc+'my.cnf.d').mkpath
     inreplace "#{etc}/my.cnf" do |s|
       s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
     end
 
     unless build.include? 'client-only'
       # Don't create databases inside of the prefix!
-      # See: https://github.com/mxcl/homebrew/issues/4975
+      # See: https://github.com/Homebrew/homebrew/issues/4975
       rm_rf prefix+'data'
 
       (prefix+'mysql-test').rmtree unless build.with? 'tests' # save 121MB!
@@ -155,11 +168,5 @@ class Mariadb < Formula
     </dict>
     </plist>
     EOS
-  end
-
-  test do
-    (prefix+'mysql-test').cd do
-      system './mysql-test-run.pl', 'status'
-    end
   end
 end

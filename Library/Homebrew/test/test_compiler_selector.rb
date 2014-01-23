@@ -3,8 +3,11 @@ require 'compilers'
 
 class CompilerSelectorTests < Test::Unit::TestCase
   class Double
+    attr_reader :name
+
     def initialize
       @failures = []
+      @name = "double"
     end
 
     def <<(cc)

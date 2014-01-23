@@ -6,8 +6,8 @@ class Nginx < Formula
   sha1 '304d5991ccde398af2002c0da980ae240cea9356'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.5.7.tar.gz'
-    sha1 '4dd04c73c3081277fe9c98c4a386c8baf956f5ca'
+    url 'http://nginx.org/download/nginx-1.5.9.tar.gz'
+    sha1 '9904f15c877d679c5164242f8e59a176392aa573'
   end
 
   head 'http://hg.nginx.org/nginx/', :using => :hg
@@ -22,18 +22,15 @@ class Nginx < Formula
 
   depends_on 'pcre'
   depends_on 'passenger' => :optional
-  # SPDY needs openssl >= 1.0.1 for NPN; see:
-  # https://tools.ietf.org/agenda/82/slides/tls-3.pdf
-  # http://www.openssl.org/news/changelog.html
-  depends_on 'openssl' if build.with? 'spdy'
+  depends_on 'openssl'
 
   skip_clean 'logs'
 
   def passenger_config_args
-    passenger_root = `passenger-config --root`.chomp
+    nginx_ext = `passenger-config --nginx-addon-dir`.chomp
 
-    if File.directory?(passenger_root)
-      return "--add-module=#{passenger_root}/ext/nginx"
+    if File.directory?(nginx_ext)
+      return "--add-module=#{nginx_ext}"
     end
 
     puts "Unable to install nginx with passenger support. The passenger"
@@ -46,14 +43,10 @@ class Nginx < Formula
     # Changes default port to 8080
     inreplace 'conf/nginx.conf', 'listen       80;', 'listen       8080;'
 
-    cc_opt = "-I#{HOMEBREW_PREFIX}/include"
-    ld_opt = "-L#{HOMEBREW_PREFIX}/lib"
-
-    if build.with? 'spdy'
-      openssl_path = Formula.factory("openssl").opt_prefix
-      cc_opt += " -I#{openssl_path}/include"
-      ld_opt += " -L#{openssl_path}/lib"
-    end
+    pcre    = Formula.factory("pcre")
+    openssl = Formula.factory("openssl")
+    cc_opt = "-I#{pcre.include} -I#{openssl.include}"
+    ld_opt = "-L#{pcre.lib} -L#{openssl.lib}"
 
     args = ["--prefix=#{prefix}",
             "--with-http_ssl_module",
@@ -125,7 +118,7 @@ class Nginx < Formula
   def passenger_caveats; <<-EOS.undent
 
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf:
-      passenger_root #{HOMEBREW_PREFIX}/opt/passenger/libexec
+      passenger_root #{HOMEBREW_PREFIX}/opt/passenger/libexec/lib/phusion_passenger/locations.ini
       passenger_ruby /usr/bin/ruby
     EOS
   end

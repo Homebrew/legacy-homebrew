@@ -6,8 +6,8 @@ class Graphviz < Formula
   sha1 '5a0c00bebe7f4c7a04523db21f40966dc9f0d441'
 
   devel do
-    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.35.20130914.0446.tar.gz'
-    sha1 '9512a01b31cc0d06fa7cc49068d3c1704f3108c2'
+    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.35.20131215.0545.tar.gz'
+    sha1 '6eb9c3b6f842ae094feaa37a3e91c8d572b72e38'
   end
 
   # To find Ruby and Co.
@@ -26,7 +26,6 @@ class Graphviz < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pango' if build.include? 'with-pangocairo'
   depends_on 'swig' if build.include? 'with-bindings'
-  depends_on :python if build.include? 'with-bindings'  # this will set up python
   depends_on 'gts' => :optional
   depends_on :freetype if build.include? 'with-freetype' or MacOS::X11.installed?
   depends_on :x11 if build.include? 'with-x' or MacOS::X11.installed?
@@ -37,9 +36,15 @@ class Graphviz < Formula
   end
 
   def patches
-    {:p0 =>
+    p = {:p0 =>
       "https://trac.macports.org/export/103168/trunk/dports/graphics/graphviz/files/patch-project.pbxproj.diff",
      }
+
+     # The following patch is already upstream and can be removed in the next release.
+     if build.stable?
+       p[:p1] = "https://gist.github.com/mvertes/7929246/raw/2093e77bbed7ca0f4092f478cae870e021cbe5af/graphviz-2.34.0-dotty-patch"
+     end
+     return p
   end
 
   def install
@@ -59,7 +64,6 @@ class Graphviz < Formula
     system "make install"
 
     if build.include? 'with-app'
-      # build Graphviz.app
       cd "macosx" do
         system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
       end
@@ -77,17 +81,5 @@ class Graphviz < Formula
     EOS
 
     system "#{bin}/dot", "-Tpdf", "-o", "sample.pdf", "sample.dot"
-  end
-
-  def caveats
-    if build.include? 'with-app'
-      <<-EOS
-        Graphviz.app was installed in:
-          #{prefix}
-
-        To symlink into ~/Applications, you can do:
-          brew linkapps
-        EOS
-    end
   end
 end

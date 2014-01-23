@@ -19,7 +19,7 @@ class Pygobject3 < Formula
 
   depends_on 'libffi' => :optional
   depends_on 'glib'
-  depends_on :python => %w{2.7}
+  depends_on :python
   depends_on :python3 => :optional
   depends_on 'py2cairo'
   depends_on 'py3cairo' if build.with? 'python3'
@@ -34,17 +34,15 @@ class Pygobject3 < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    python do
-      if build.with? 'tests'
-        # autogen.sh is necessary to update the build system after the above
-        # patch and XDG_DATA_DIRS needs to be fixed for some tests to run
-        inreplace 'tests/Makefile.am', '/usr/share', HOMEBREW_PREFIX/'share'
-        system "./autogen.sh"
-      end
-
-      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-      system "make", "install"
-      system "make", "check" if build.with? 'tests'
+    if build.with? 'tests'
+      # autogen.sh is necessary to update the build system after the above
+      # patch and XDG_DATA_DIRS needs to be fixed for some tests to run
+      inreplace 'tests/Makefile.am', '/usr/share', HOMEBREW_PREFIX/'share'
+      system "./autogen.sh"
     end
+
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "make", "install"
+    system "make", "check" if build.with? 'tests'
   end
 end
