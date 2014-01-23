@@ -9,8 +9,8 @@ class Play < Formula
   conflicts_with 'sox', :because => 'both install `play` binaries'
 
   devel do
-    url 'http://downloads.typesafe.com/play/2.2.2-RC1/play-2.2.2-RC1.zip'
-    sha1 '42b2b035fb51befc83a45cfab811efe6fe4da337'
+    url 'http://downloads.typesafe.com/play/2.2.2-RC2/play-2.2.2-RC2.zip'
+    sha1 '30a31d9f01893f4ab57e554aa339994eea20bd51'
   end
 
   def install
