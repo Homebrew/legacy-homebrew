@@ -38,11 +38,6 @@ class Tesseract < Formula
     end
   end
 
-  def patches
-    # Fix rt link attempt due to host OS being incorrectly identified
-    'https://gist.github.com/raudabaugh/8573217/raw/65edf4f3ec92287ca7d8ca92d7ba357c67709b74/remove-rt-link.patch'
-  end if build.head?
-
   def install
     # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
     # which doesn't work for non-default homebrew location
