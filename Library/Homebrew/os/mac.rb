@@ -262,6 +262,8 @@ module OS
         an issue with the output of `brew --config`:
           https://github.com/Homebrew/homebrew/issues
 
+        Note that we only track stable, released versions of Xcode.
+
         Thanks!
       EOS
     end
