@@ -7,6 +7,14 @@ class Tesseract < Formula
 
   option "all-languages", "Install recognition data for all languages"
 
+  head 'http://tesseract-ocr.googlecode.com/svn/trunk'
+
+  if build.head?
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
+
   depends_on 'libtiff'
   depends_on 'leptonica'
 
@@ -34,6 +42,8 @@ class Tesseract < Formula
     # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
     # which doesn't work for non-default homebrew location
     ENV['LIBLEPT_HEADERSDIR'] = HOMEBREW_PREFIX/"include"
+
+    system './autogen.sh' if build.head?
 
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
