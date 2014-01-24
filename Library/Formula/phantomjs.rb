@@ -7,9 +7,10 @@ class Phantomjs < Formula
 
   bottle do
     cellar :any
-    sha1 "43718bd97637d1c771001c332b841cbe370ead45" => :mavericks
-    sha1 "a7099dc37cc859ca6e2bcf401b849174bc5cc59b" => :mountain_lion
-    sha1 "ae814f40a04f7199bd76de1ed0789c45d6b28495" => :lion
+    revision 4
+    sha1 "b6b4fd6cc542cd5445474156599286126a82c146" => :mavericks
+    sha1 "a2e90490e3e0f9b9d4aa969a87be8efc801b6853" => :mountain_lion
+    sha1 "933e15b3b70fcc19f9bd08e77a3a2ed8cef2bf64" => :lion
   end
 
   def patches
