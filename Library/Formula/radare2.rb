@@ -2,10 +2,10 @@ require 'formula'
 
 class Radare2 < Formula
   homepage 'http://radare.org'
-  url 'http://radare.org/get/radare2-0.9.2.tar.gz'
-  sha1 '7cfa170a59453d57361d730f4c4a1495d36930a8'
+  url 'http://radare.org/get/radare2-0.9.6.tar.xz'
+  sha1 'a12a2de9588d9925d32e1fb2e1942e491c602358'
 
-  head 'http://radare.org/hg/radare2', :using => :hg
+  head 'https://github.com/radare/radare2.git'
 
   depends_on 'libewf'
   depends_on 'libmagic'
