@@ -31,7 +31,7 @@ class Llvm < Formula
   keg_only :provided_by_osx
 
   def install
-    if python and build.include? 'disable-shared'
+    if build.with? "python" and build.include? 'disable-shared'
       raise 'The Python bindings need the shared library.'
     end
 
@@ -68,7 +68,7 @@ class Llvm < Formula
     system 'make', 'VERBOSE=1', 'install'
 
     # install llvm python bindings
-    if python
+    if build.with? "python"
       (lib+'python2.7/site-packages').install buildpath/'bindings/python/llvm'
       (lib+'python2.7/site-packages').install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
     end
@@ -87,5 +87,4 @@ class Llvm < Formula
           brew rm llvm && brew install llvm
     EOS
   end
-
 end
