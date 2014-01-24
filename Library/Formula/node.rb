@@ -36,8 +36,8 @@ class Node < Formula
   sha1 'd162d01eb173cb5a0e7e46c9d706421c4c771039'
 
   devel do
-    url 'http://nodejs.org/dist/v0.11.9/node-v0.11.9.tar.gz'
-    sha1 'b4fc0e38ccde4edae45db198f331499055d77ca2'
+    url 'http://nodejs.org/dist/v0.11.10/node-v0.11.10.tar.gz'
+    sha1 'b860f511e4fc657a64594fc9f3f1225c1a140e5e'
   end
 
   head 'https://github.com/joyent/node.git'
@@ -46,7 +46,8 @@ class Node < Formula
   option 'without-npm', 'npm will not be installed'
 
   depends_on NpmNotInstalled unless build.without? 'npm'
-  depends_on Python27Dependency # gyp doesn't run under 2.6 or lower
+  # gyp doesn't run under 2.6 or lower, fixed by joyent/node#6859
+  depends_on Python27Dependency unless build.head?
 
   fails_with :llvm do
     build 2326
@@ -55,11 +56,7 @@ class Node < Formula
   # fixes gyp's detection of system paths on CLT-only systems
   # merged upstream; can be removed the next time node syncs updates from gyp
   def patches
-    # Latest versions of NodeJS stable have changed gyp's xcode_emulation, so
-    # it requires a different patch than devel currently. This will probably go away soon
-    if build.devel?
-      'https://gist.github.com/bbhoss/7439859/raw/9037240e90c62ce462383469874d4c269e3ead0d/xcode_emulation.patch'
-    else
+    if build.stable?
       DATA
     end
   end
