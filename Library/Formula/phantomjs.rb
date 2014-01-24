@@ -16,7 +16,7 @@ class Phantomjs < Formula
   def patches
     [
       'https://github.com/ariya/phantomjs/commit/fe6a96.patch',
-      'https://github.com/mikemcquaid/phantomjs/commit/50e046.patch',
+      'https://github.com/ariya/phantomjs/commit/b1cfe1.patch',
     ]
   end
 
