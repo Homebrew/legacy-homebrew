@@ -268,6 +268,12 @@ class Test
       return
     end
 
+    begin
+      CompilerSelector.new(formula_object).compiler
+    rescue CompilerSelectionError
+      test "brew install apple-gcc42"
+    end
+
     test "brew fetch #{dependencies}" unless dependencies.empty?
     formula_fetch_options = " "
     formula_fetch_options << " --build-bottle" unless ARGV.include? '--no-bottle'
