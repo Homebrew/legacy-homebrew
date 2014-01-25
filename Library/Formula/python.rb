@@ -39,9 +39,13 @@ class Python < Formula
     # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
     DATA if build.with? 'brewed-tk'
   end
+  
+  def framework_prefix
+    prefix/"Frameworks/Python.framework/Versions/2.7"
+  end 
 
   def site_packages_cellar
-    prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
+    framework_prefix/"lib/python2.7/site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
@@ -115,7 +119,7 @@ class Python < Formula
     # software survives minor updates, such as going from 2.7.0 to 2.7.1:
 
     # Remove the site-packages that Python created in its Cellar.
-    site_packages_cellar.rmtree
+    site_packages_cellar().rmtree
     # Create a site-packages in HOMEBREW_PREFIX/lib/python2.7/site-packages
     site_packages.mkpath
     # Symlink the prefix site-packages into the cellar.
@@ -129,8 +133,8 @@ class Python < Formula
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.5-py3.3.egg
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/python2.7/site-packages/setuptools*"]
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/python2.7/site-packages/distribute*"]
+    rm_rf Dir["#{site_packages}/setuptools*"]
+    rm_rf Dir["#{site_packages}/distribute*"]
 
     setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
@@ -139,7 +143,7 @@ class Python < Formula
     resource('pip').stage { system "#{bin}/python", *setup_args }
 
     # And now we write the distutils.cfg
-    cfg = prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg"
+    cfg = framework_prefix/"lib/python2.7/distutils/distutils.cfg"
     cfg.delete if cfg.exist?
     cfg.write <<-EOF.undent
       [global]
@@ -150,7 +154,7 @@ class Python < Formula
     EOF
 
     # Work-around for that bug: http://bugs.python.org/issue18050
-    inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/re.py", 'import sys', <<-EOS.undent
+    inreplace framework_prefix/"lib/python2.7/re.py", 'import sys', <<-EOS.undent
       import sys
       try:
           from _sre import MAXREPEAT
@@ -162,7 +166,7 @@ class Python < Formula
       # Fixes setting Python build flags for certain software
       # See: https://github.com/Homebrew/homebrew/pull/20182
       # http://bugs.python.org/issue3588
-      inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile" do |s|
+      inreplace framework_prefix/"lib/python2.7/config/Makefile" do |s|
         s.change_make_var! "LINKFORSHARED",
           "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
       end
