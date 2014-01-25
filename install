@@ -3,6 +3,7 @@
 # untar https://github.com/Homebrew/homebrew/tarball/master anywhere you like or
 # change the value of HOMEBREW_PREFIX.
 HOMEBREW_PREFIX = '/usr/local'
+HOMEBREW_CACHE = '/Library/Caches/Homebrew'
 
 module Tty extend self
   def blue; bold 34; end
@@ -117,7 +118,7 @@ abort <<-EOABORT if File.directory? HOMEBREW_PREFIX and not File.executable? HOM
 The Homebrew prefix, #{HOMEBREW_PREFIX}, exists but is not searchable. If this is
 not intentional, please restore the default permissions and try running the
 installer again:
-    sudo chmod 755 #{HOMEBREW_PREFIX}
+    sudo chmod 775 #{HOMEBREW_PREFIX}
 EOABORT
 
 ohai "This script will install:"
@@ -153,6 +154,9 @@ else
   # the group is set to wheel by default for some reason
   sudo "/usr/bin/chgrp admin #{HOMEBREW_PREFIX}"
 end
+
+sudo "/bin/mkdir #{HOMEBREW_CACHE}" unless File.directory? HOMEBREW_CACHE
+sudo "/bin/chmod g+rwx #{HOMEBREW_CACHE}"
 
 if macos_version > "10.8"
   unless File.exist? "/Library/Developer/CommandLineTools/usr/bin/clang"
