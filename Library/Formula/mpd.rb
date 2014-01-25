@@ -43,6 +43,10 @@ class Mpd < Formula
 
   depends_on 'libvorbis' if build.with? 'vorbis' # Vorbis support
 
+  # Removes usage of deprecated AVCODEC_MAX_AUDIO_FRAME_SIZE constant
+  # We're many versions behind; this bug has long since been fixed upstream
+  def patches; DATA; end
+
   def install
     if build.include? 'lastfm' or build.include? 'libwrap' \
        or build.include? 'enable-soundcloud'
@@ -97,3 +101,23 @@ class Mpd < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/src/decoder/ffmpeg_decoder_plugin.c b/src/decoder/ffmpeg_decoder_plugin.c
+index 58bd2f5..65aa37f 100644
+--- a/src/decoder/ffmpeg_decoder_plugin.c
++++ b/src/decoder/ffmpeg_decoder_plugin.c
+@@ -299,11 +299,11 @@ ffmpeg_send_packet(struct decoder *decoder, struct input_stream *is,
+ #endif
+ 
+ #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53,25,0)
+-	uint8_t aligned_buffer[(AVCODEC_MAX_AUDIO_FRAME_SIZE * 3) / 2 + 16];
++	uint8_t aligned_buffer[(192000 * 3) / 2 + 16];
+ 	const size_t buffer_size = sizeof(aligned_buffer);
+ #else
+ 	/* libavcodec < 0.8 needs an aligned buffer */
+-	uint8_t audio_buf[(AVCODEC_MAX_AUDIO_FRAME_SIZE * 3) / 2 + 16];
++	uint8_t audio_buf[(192000 * 3) / 2 + 16];
+ 	size_t buffer_size = sizeof(audio_buf);
+ 	int16_t *aligned_buffer = align16(audio_buf, &buffer_size);
+ #endif

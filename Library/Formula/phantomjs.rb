@@ -2,21 +2,21 @@ require 'formula'
 
 class Phantomjs < Formula
   homepage 'http://www.phantomjs.org/'
-  url 'https://phantomjs.googlecode.com/files/phantomjs-1.9.2-source.zip'
-  sha1 '08559acdbbe04e963632bc35e94c1a9a082b6da1'
+  url 'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.6-source.zip'
+  sha1 '515844971dc4ffce54241f750ada52f537b34160'
 
   bottle do
     cellar :any
-    revision 3
-    sha1 'eb1a54dc4a5e13f9fe83f83fc82c8b3429ff28eb' => :mavericks
-    sha1 'f80e0ff497dafba134a1a29356aa7a4e5192ef6d' => :mountain_lion
-    sha1 '07aefd1baff3a3a63e9d6a1385fe9e83f63eedba' => :lion
+    revision 4
+    sha1 "b6b4fd6cc542cd5445474156599286126a82c146" => :mavericks
+    sha1 "a2e90490e3e0f9b9d4aa969a87be8efc801b6853" => :mountain_lion
+    sha1 "933e15b3b70fcc19f9bd08e77a3a2ed8cef2bf64" => :lion
   end
 
   def patches
     [
       'https://github.com/ariya/phantomjs/commit/fe6a96.patch',
-      'https://github.com/ariya/phantomjs/commit/b67866.patch',
+      'https://github.com/ariya/phantomjs/commit/b1cfe1.patch',
     ]
   end
 
