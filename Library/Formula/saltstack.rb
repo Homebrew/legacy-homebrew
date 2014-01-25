@@ -14,8 +14,8 @@ end
 
 class Saltstack < Formula
   homepage 'http://www.saltstack.org'
-  url 'https://pypi.python.org/packages/source/s/salt/salt-0.17.4.tar.gz'
-  sha1 '4433b8b7c9988d8805788b04d687cf09f78e2325'
+  url 'https://pypi.python.org/packages/source/s/salt/salt-0.17.5.tar.gz'
+  sha1 '7751eb59f3b52e7da541121cc4a543afd7f609f9'
 
   head 'https://github.com/saltstack/salt.git', :branch => :develop,
     :using => SaltHeadDownloadStrategy
