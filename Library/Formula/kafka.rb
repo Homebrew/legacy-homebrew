@@ -7,31 +7,30 @@ class Kafka < Formula
   sha1 "65175b5c854cebb1276b9b062898d2a4d9c297b7"
 
   def default_log4j_properties
-      <<-EOS.undent
-        log4j.rootCategory=WARN, kafka
-        log4j.appender.kafka = org.apache.log4j.FileAppender
-        log4j.appender.kafka.File = #{var}/log/kafka/kafka.log
-        log4j.appender.kafka.Append = true
-        log4j.appender.kafka.layout = org.apache.log4j.PatternLayout
-        log4j.appender.kafka.layout.ConversionPattern = %d{yyyy-MM-dd HH:mm:ss} %c{1} [%p] %m%n
-      EOS
+    <<-EOS.undent
+      log4j.rootCategory=WARN, kafka
+      log4j.appender.kafka = org.apache.log4j.FileAppender
+      log4j.appender.kafka.File = #{var}/log/kafka/kafka.log
+      log4j.appender.kafka.Append = true
+      log4j.appender.kafka.layout = org.apache.log4j.PatternLayout
+      log4j.appender.kafka.layout.ConversionPattern = %d{yyyy-MM-dd HH:mm:ss} %c{1} [%p] %m%n
+    EOS
   end
 
   def default_log4jzk_properties
-      <<-EOS.undent
-        log4j.rootCategory=WARN, zkLog
-        log4j.appender.zkLog = org.apache.log4j.FileAppender
-        log4j.appender.zkLog.File = #{var}/log/kafka/zookeeper.log
-        log4j.appender.zkLog.Append = true
-        log4j.appender.zkLog.layout = org.apache.log4j.PatternLayout
-        log4j.appender.zkLog.layout.ConversionPattern = %d{yyyy-MM-dd HH:mm:ss} %c{1} [%p] %m%n
-      EOS
+    <<-EOS.undent
+      log4j.rootCategory=WARN, zkLog
+      log4j.appender.zkLog = org.apache.log4j.FileAppender
+      log4j.appender.zkLog.File = #{var}/log/kafka/zookeeper.log
+      log4j.appender.zkLog.Append = true
+      log4j.appender.zkLog.layout = org.apache.log4j.PatternLayout
+      log4j.appender.zkLog.layout.ConversionPattern = %d{yyyy-MM-dd HH:mm:ss} %c{1} [%p] %m%n
+    EOS
   end
 
   def install
     # remove windows files
     rm_rf Dir['bin/windows']
-
 
     # Create necessair destination directories
     (etc+'kafka').mkpath
