@@ -152,11 +152,6 @@ class Subversion < Formula
     system "make tools"
     system "make install-tools"
 
-    # Swig don't understand "-isystem" flags added by Homebrew, so
-    # filter them out.
-    #inreplace buildpath/"build-outputs.mk", /SWIG_CPPFLAGS/,
-    #  "$(filter-out -F/% -isystem/%,$(SWIG_CPPFLAGS))"
-
     if build.with? 'python'
       system "make swig-py"
       system "make install-swig-py"
