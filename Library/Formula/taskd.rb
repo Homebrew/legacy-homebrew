@@ -18,5 +18,6 @@ class Taskd < Formula
 
   test do
     system "#{bin}/taskd", 'diagnostics'
-  end 
+  end
 end
+
