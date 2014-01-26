@@ -1,9 +1,9 @@
 require 'formula'
 
-class taskd < Formula
+class Taskd < Formula
   homepage 'http://taskwarrior.org'
-  url 'http://taskwarrior.org/download/taskd-1.0.0.beta2.tar.gz'
-  sha1 'e74f4004db571338f48094d28c7f1c39e772745b'
+  url 'http://taskwarrior.org/download/taskd-1.0.0.tar.gz'
+  sha1 '5a89406a21be1f95ece03674315b35814fe4f037'
   head 'http://tasktools.org/taskd.git'
 
   depends_on 'cmake' => :build
