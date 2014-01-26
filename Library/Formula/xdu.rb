@@ -5,40 +5,19 @@ class Xdu < Formula
   url "http://sd.wareonearth.com/~phil/xdu/xdu-3.0.tar.Z"
   sha1 "196e2ba03253fd6b8a88fafe6b00e40632183d0c"
 
-  depends_on "imake" => :build
   depends_on :x11
 
-  def patches
-    DATA
-  end
-
-  fails_with :clang do
-    build 500
-    cause "cpp: upstream imake incompatibility with clang preprocessor (unsupported Concat3 macro)"
-  end
-
   def install
-    ENV["IMAKECPP"] = "cpp"
-    ENV["DESTDIR"] = "#{prefix}"
-    ENV["HOMEBREW_X11_LIB"] = "#{MacOS::X11.lib}"
+    ENV.append_to_cflags "-I#{MacOS::X11.include}"
+    ENV.append_to_cflags "-Wno-return-type"
+    ENV.append "LDFLAGS", "-L#{MacOS::X11.lib}"
 
-    system "xmkmf"
-    system "make", "install"
+    system "#{ENV.cc} -o xdu #{ENV.cflags} #{ENV.ldflags} -lXaw -lXmu -lXt -lSM -lICE -lXpm -lXext -lX11 xdu.c xwin.c"
+    bin.install "xdu"
+    man1.install "xdu.man" => "xdu.1x"
+    (etc/"X11/app-defaults").install "XDu.ad" => "XDu"
+
   end
 
 end
 
-__END__
-diff -u a/Imakefile b/Imakefile
---- a/Imakefile
-+++ b/Imakefile
-@@ -7,6 +7,9 @@
- LOCAL_LIBRARIES = XawClientLibs
-            SRCS = xdu.c xwin.c 
-            OBJS = xdu.o xwin.o
-+CCOPTIONS = -Wno-return-type
-+PREPROCESSCMD = cpp
-+XAWLIB = "-L${HOMEBREW_X11_LIB}" -lXaw
- 
- ComplexProgramTarget(xdu)
- InstallAppDefaults(XDu)
