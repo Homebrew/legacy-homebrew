@@ -5,10 +5,10 @@ class Libsndfile < Formula
   url 'http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.25.tar.gz'
   sha1 'e95d9fca57f7ddace9f197071cbcfb92fa16748e'
 
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
   depends_on 'pkg-config' => :build
+  depends_on 'autoconf'
+  depends_on 'automake'
+  depends_on 'libtool'
   depends_on 'flac'
   depends_on 'libogg'
   depends_on 'libvorbis'
