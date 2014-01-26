@@ -12,6 +12,11 @@ class Xdu < Formula
     DATA
   end
 
+  fails_with :clang do
+    build 500
+    cause "cpp: upstream imake incompatibility with clang preprocessor (unsupported Concat3 macro)"
+  end
+
   def install
     ENV["IMAKECPP"] = "cpp"
     ENV["DESTDIR"] = "#{prefix}"
