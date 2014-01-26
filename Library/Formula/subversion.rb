@@ -43,9 +43,7 @@ class Subversion < Formula
   # If building bindings, allow non-system interpreters
   env :userpaths if build.include? 'perl' or build.include? 'ruby'
 
-  # 1. Prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
-  # 2. Fix python bindings compile on 10.9
-  #    http://subversion.tigris.org/issues/show_bug.cgi?id=4465
+  # Prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
   def patches
     { :p0 => DATA }
   end
@@ -257,14 +255,3 @@ __END__
                   " -I$swig_srcdir/perl/libsvn_swig_perl",
                   " -I$svnlib_srcdir/include",
 
---- build.conf 2014-01-24 19:55:04.000000000 -0700
-+++ build.conf.orig    2014-01-24 19:53:58.000000000 -0700
-@@ -71,7 +71,7 @@
- 
- bdb-test-scripts =
- 
--swig-python-opts = $(CPPFLAGS) -python -classic
-+swig-python-opts = $(filter-out -F/% -isystem/%,$(CPPFLAGS)) -python -classic
- swig-perl-opts = $(CPPFLAGS) -perl -nopm -noproxy
- swig-ruby-opts = $(CPPFLAGS) -ruby
- swig-languages = python perl ruby
