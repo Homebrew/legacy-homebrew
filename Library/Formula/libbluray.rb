@@ -2,8 +2,8 @@ require 'formula'
 
 class Libbluray < Formula
   homepage 'http://www.videolan.org/developers/libbluray.html'
-  url 'ftp://ftp.videolan.org/pub/videolan/libbluray/0.4.0/libbluray-0.4.0.tar.bz2'
-  sha1 '39984aae77efde2e0917ed7e183ebf612813d7f3'
+  url 'ftp://ftp.videolan.org/pub/videolan/libbluray/0.5.0/libbluray-0.5.0.tar.bz2'
+  sha1 '1a9c61daefc31438f9165e7681c563d0524b2d3e'
 
   head do
     url 'git://git.videolan.org/libbluray.git'
@@ -30,17 +30,3 @@ class Libbluray < Formula
 end
 
 __END__
-diff --git a/src/libbluray/decoders/textst_render.c b/src/libbluray/decoders/textst_render.c
-index 780b640..ffcb1bd 100644
---- a/src/libbluray/decoders/textst_render.c
-+++ b/src/libbluray/decoders/textst_render.c
-@@ -30,7 +30,7 @@
- #ifdef HAVE_FT2
- #include <ft2build.h>
- #include FT_FREETYPE_H
--#include <freetype/ftsynth.h>
-+#include FT_SYNTHESIS_H
- #endif
- 
- #include "textst_render.h"
-
