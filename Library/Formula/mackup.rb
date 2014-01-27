@@ -11,8 +11,8 @@ class Mackup < Formula
 
   def install
     bin.install 'bin/mackup'
-    (prefix + 'mackup').install 'mackup/__init__.py', 'mackup/main.py'
-    (share).install '.mackup.cfg' => 'mackup.cfg.example'
+    (prefix+'mackup').install 'mackup/__init__.py', 'mackup/main.py'
+    share.install '.mackup.cfg' => 'mackup.cfg.example'
   end
 
   def test
