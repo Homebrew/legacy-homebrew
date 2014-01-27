@@ -14,6 +14,7 @@ Contributing
 Please read:
 
 * [Formula Cookbook](https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook)
+* [Commit Messages](https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook#wiki-commit)
 * [Acceptable Formulae](https://github.com/Homebrew/homebrew/wiki/Acceptable-Formulae)
 * [Ruby Style Guide](https://github.com/styleguide/ruby)
 
