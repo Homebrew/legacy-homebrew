@@ -1,7 +1,5 @@
 require "formula"
 
-# Documentation: http://taktuk.gforge.inria.fr/
-
 class Taktuk < Formula
   homepage "http://http://taktuk.gforge.inria.fr/"
   url "https://gforge.inria.fr/frs/download.php/30903/taktuk-3.7.4.tar.gz"
