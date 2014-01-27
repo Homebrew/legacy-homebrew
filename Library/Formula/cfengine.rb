@@ -4,8 +4,8 @@ require 'formula'
 # https://github.com/Homebrew/homebrew/issues/20339
 class Cfengine < Formula
   homepage 'http://cfengine.com/'
-  url 'http://cfengine.com/source-code/download?file=cfengine-3.5.2.tar.gz'
-  sha1 '57ffeee2a2a6acb1764a8a0d7979538d683ccf5a'
+  url 'http://cfengine.com/source-code/download?file=cfengine-3.5.3.tar.gz'
+  sha1 '95a03e7bc9e31704d6aac4b3023b9c5037fc33f6'
 
   depends_on 'pcre'
   depends_on 'tokyo-cabinet'
@@ -14,9 +14,7 @@ class Cfengine < Formula
   def patches
     # Upstream patches for OS X compilation
     %w{
-      https://github.com/cfengine/core/commit/f748a005b39a7aafd554e41a528b2216e28dce92.patch
       https://github.com/cfengine/core/commit/d03fcc2d38a4db0c79386aaef30597102bf45853.patch
-      https://github.com/cfengine/core/commit/228f27002018a82b339ddfe6a5510a24128ce0ab.patch
     }
   end
 
