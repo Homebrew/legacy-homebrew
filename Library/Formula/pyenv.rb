@@ -29,11 +29,11 @@ class Pyenv < Formula
   end
 
   def caveats; <<-EOS.undent
+    To use Homebrew's directories rather than ~/.pyenv add to your profile:
+      export PYENV_ROOT=#{var}/pyenv
+
     To enable shims and autocompletion add to your profile:
       if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-
-    To use Homebrew's directories rather than ~/.pyenv add to your profile:
-      export PYENV_ROOT=#{opt_prefix}
     EOS
   end
 end
