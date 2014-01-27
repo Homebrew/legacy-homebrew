@@ -2,8 +2,8 @@ require 'formula'
 
 class Launch < Formula
   homepage 'http://web.sabi.net/nriley/software/'
-  url 'http://sabi.net/nriley/software/launch-1.2.tar.gz'
-  sha1 '173b75081caf451f3d3a49630bbe5c5b7e7ab17d'
+  url 'http://sabi.net/nriley/software/launch-1.2.1.tar.gz'
+  sha1 'c9d8034da5778ee973bf64c3d3acc19e143730bd'
 
   head 'https://github.com/nriley/launch.git'
 
