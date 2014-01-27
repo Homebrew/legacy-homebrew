@@ -17,13 +17,13 @@ end
 
 BOTTLE_ERB = <<-EOS
   bottle do
-    <% if prefix.to_s != '/usr/local' %>
-    prefix '<%= prefix %>'
+    <% if prefix.to_s != "/usr/local" %>
+    prefix "<%= prefix %>"
     <% end %>
     <% if cellar.is_a? Symbol %>
     cellar :<%= cellar %>
-    <% elsif cellar.to_s != '/usr/local/Cellar' %>
-    cellar '<%= cellar %>'
+    <% elsif cellar.to_s != "/usr/local/Cellar" %>
+    cellar "<%= cellar %>"
     <% end %>
     <% if revision > 0 %>
     revision <%= revision %>
@@ -31,7 +31,7 @@ BOTTLE_ERB = <<-EOS
     <% checksums.each do |checksum_type, checksum_values| %>
     <% checksum_values.each do |checksum_value| %>
     <% checksum, osx = checksum_value.shift %>
-    <%= checksum_type %> '<%= checksum %>' => :<%= osx %>
+    <%= checksum_type %> "<%= checksum %>" => :<%= osx %>
     <% end %>
     <% end %>
   end
@@ -51,9 +51,10 @@ module Homebrew extend self
     index = 0
 
     keg.each_unique_file_matching(string) do |file|
-      opoo "String '#{string}' still exists in these files:" if index.zero?
-
-      puts "#{Tty.red}#{file}#{Tty.reset}"
+      if ARGV.verbose?
+        opoo "String '#{string}' still exists in these files:" if index.zero?
+        puts "#{Tty.red}#{file}#{Tty.reset}"
+      end
 
       # Check dynamic library linkage. Importantly, do not run otool on static
       # libraries, which will falsely report "linkage" to themselves.
@@ -64,8 +65,10 @@ module Homebrew extend self
         linked_libraries = []
       end
 
-      linked_libraries.each do |lib|
-        puts " #{Tty.gray}-->#{Tty.reset} links to #{lib}"
+      if ARGV.verbose?
+        linked_libraries.each do |lib|
+          puts " #{Tty.gray}-->#{Tty.reset} links to #{lib}"
+        end
       end
 
       # Use strings to search through the file for each string
@@ -78,7 +81,9 @@ module Homebrew extend self
           offset, match = str.split(" ", 2)
 
           next if linked_libraries.include? match # Don't bother reporting a string if it was found by otool
-          puts " #{Tty.gray}-->#{Tty.reset} match '#{match}' at offset #{Tty.em}0x#{offset}#{Tty.reset}"
+          if ARGV.verbose?
+            puts " #{Tty.gray}-->#{Tty.reset} match '#{match}' at offset #{Tty.em}0x#{offset}#{Tty.reset}"
+          end
         end
       end
 
@@ -149,7 +154,7 @@ module Homebrew extend self
 
         relocatable = !keg_contains(prefix_check, keg)
         relocatable = !keg_contains(HOMEBREW_CELLAR, keg) && relocatable
-        puts unless relocatable
+        puts if !relocatable && ARGV.verbose?
       rescue Interrupt
         ignore_interrupts { bottle_path.unlink if bottle_path.exist? }
         raise

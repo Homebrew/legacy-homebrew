@@ -25,10 +25,10 @@ class Qt5 < Formula
     :using => Qt5HeadDownloadStrategy
 
   bottle do
-    revision 2
-    sha1 '1a5b899ee0fefe314dd888165a09b97911bcfe64' => :mavericks
-    sha1 '7f2474db9e9ef425b437a55836b5cf8b6c468ce9' => :mountain_lion
-    sha1 'd3da157c54337a020b25cf1358b5362345416ccc' => :lion
+    revision 3
+    sha1 'dc89426ad513d84d7df6869340070cd6b663906c' => :mavericks
+    sha1 '041ea93c80d04f5a43b77d69ce0d621df13cc389' => :mountain_lion
+    sha1 'c427063895302623a8e17248b523f722a9109dea' => :lion
   end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
@@ -45,6 +45,10 @@ class Qt5 < Formula
   odie 'qt5: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
 
   def install
+    # fixed hardcoded link to plugin dir: https://bugreports.qt-project.org/browse/QTBUG-29188
+    inreplace "qttools/src/macdeployqt/macdeployqt/main.cpp", "deploymentInfo.pluginPath = \"/Developer/Applications/Qt/plugins\";",
+              "deploymentInfo.pluginPath = \"#{prefix}/plugins\";"
+
     ENV.universal_binary if build.universal?
     args = ["-prefix", prefix,
             "-system-zlib",

@@ -49,6 +49,18 @@ class Guile < Formula
     # A really messed up workaround required on OS X --mkhl
     lib.cd { Dir["*.dylib"].each {|p| ln_sf p, File.basename(p, ".dylib")+".so" }}
   end
+
+  test do
+    hello = testpath/'hello.scm'
+    hello.write <<-EOS.undent
+    (display "Hello World")
+    (newline)
+    EOS
+
+    ENV['GUILE_AUTO_COMPILE'] = '0'
+
+    system bin/'guile', hello
+  end
 end
 
 __END__
