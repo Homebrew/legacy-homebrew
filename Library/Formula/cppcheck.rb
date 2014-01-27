@@ -24,7 +24,7 @@ class Cppcheck < Formula
     end
 
     system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=#{prefix}/cfg", "install"
-    system "cp", "-r", "cfg", "#{prefix}/cfg"
+    prefix.install "cfg"
 
     if build.include? 'with-gui'
       cd "gui" do
