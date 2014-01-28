@@ -67,10 +67,6 @@ class Python3 < Formula
     ENV['PYTHONHOME'] = nil
     ENV['PYTHONPATH'] = nil
 
-    # Otherwise the formula may attempt to use the python3 shim
-    # even though python3 isn't installed yet
-    ENV['PYTHON'] = 'python'
-
     args = %W[
       --prefix=#{prefix}
       --enable-ipv6

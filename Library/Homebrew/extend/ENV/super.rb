@@ -67,7 +67,6 @@ module Superenv
     validate_cc!(formula) unless formula.nil?
     self['DEVELOPER_DIR'] = determine_developer_dir
     self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
-    self['USER_PATH'] = self['PATH']
     self['PATH'] = determine_path
     self['PKG_CONFIG_PATH'] = determine_pkg_config_path
     self['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
