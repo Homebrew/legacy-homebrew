@@ -31,12 +31,11 @@ class Ledger < Formula
     ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
 
     if build.head?
-      args = [((build.include? 'debug') ? 'debug' : 'opt'), "make", "-N", "-j#{ENV.make_jobs}", "--output=build"]
-      args << '--python' if build.with? 'python'
       # Support homebrew not at /usr/local. Also support Xcode-only setups:
       inreplace 'acprep', 'search_prefixes = [', "search_prefixes = ['#{HOMEBREW_PREFIX}','#{MacOS.sdk_path}/usr',"
+      args = [((build.include? 'debug') ? 'debug' : 'opt'), "make", "install", "-N", "-j#{ENV.make_jobs}", "--output=build"]
+      args << '--python' if build.with? 'python'
       system "./acprep", "--prefix=#{prefix}", *args
-      system "cmake", "-P", "build/cmake_install.cmake", "-DUSE_PYTHON=ON"
     else
       args = []
       if build.with? 'libofx'
