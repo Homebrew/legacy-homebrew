@@ -1,4 +1,0 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
-
-ENV['PATH'] = ENV['USER_PATH']
-exec File.basename($0), *ARGV
