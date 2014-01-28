@@ -36,6 +36,7 @@ class Ledger < Formula
       args = [((build.include? 'debug') ? 'debug' : 'opt'), "make", "install", "-N", "-j#{ENV.make_jobs}", "--output=build"]
       args << '--python' if build.with? 'python'
       system "./acprep", "--prefix=#{prefix}", *args
+      (share+'ledger').install 'python/demo.py', 'test/input/sample.dat'
     else
       args = []
       if build.with? 'libofx'
@@ -48,12 +49,19 @@ class Ledger < Formula
       system 'make'
       ENV.deparallelize
       system 'make install'
+      (share+'ledger').install 'sample.dat', Dir['scripts']
     end
   end
 
-  def caveats; <<-EOS.undent
-    If ledger was built with python support be sure to
-    add #{HOMEBREW_PREFIX}/lib to your PYTHONPATH.
-    EOS
+  test do
+    system "ledger", "--version"
+
+    output = `#{bin}/ledger --file #{share}/ledger/sample.dat balance --collapse equity`
+    assert_equal '          $-2,500.00  Equity', output.split(/\n/)[0]
+    assert_equal 0, $?.exitstatus
+
+    if build.head? and build.with? 'python'
+      system "python", "#{share}/ledger/demo.py"
+    end
   end
 end
