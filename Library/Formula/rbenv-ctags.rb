@@ -8,7 +8,6 @@ class RbenvCtags < Formula
   head 'https://github.com/tpope/rbenv-ctags.git'
 
   depends_on 'rbenv'
-  depends_on 'ruby-build'
   depends_on 'ctags'
 
   def install
