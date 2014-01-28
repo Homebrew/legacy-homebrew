@@ -2,8 +2,8 @@ require 'formula'
 
 class Rethinkdb < Formula
   homepage 'http://www.rethinkdb.com/'
-  url 'http://download.rethinkdb.com/dist/rethinkdb-1.9.0.tgz'
-  sha1 '0e6948ce90f818c6d368f64fe2301bf1eabd451b'
+  url 'http://download.rethinkdb.com/dist/rethinkdb-1.11.3.tgz'
+  sha1 '5ee4712e0d7462aca122823b48b1a6e39bd778a7'
 
   depends_on :macos => :lion
   depends_on 'boost' => :build
@@ -14,7 +14,16 @@ class Rethinkdb < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--fetch", "protobuf"
+    args = ["--prefix=#{prefix}"]
+
+    # brew's v8 is too recent. rethinkdb uses an older v8 API
+    args += ["--fetch", "v8"]
+
+    # rethinkdb requires that protobuf be linked against libc++
+    # but brew's protobuf is sometimes linked against libstdc++
+    args += ["--fetch", "protobuf"]
+
+    system "./configure", *args
     system "make"
     system "make install-osx"
   end

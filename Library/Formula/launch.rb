@@ -7,6 +7,11 @@ class Launch < Formula
 
   head 'http://dev.sabi.net/svn/dev/trunk/launch/launch/', :using => :svn
 
+  # Fix compilation on 10.8 and newer, per MacPorts
+  def patches
+    {:p0 => "https://trac.macports.org/export/114086/trunk/dports/aqua/launch/files/patch-main.c.diff"}
+  end
+
   def install
     rm_rf "launch" # We'll build it ourself, thanks.
     system "#{ENV.cc} -o launch -std=c99 #{ENV.cflags} main.c -framework ApplicationServices"

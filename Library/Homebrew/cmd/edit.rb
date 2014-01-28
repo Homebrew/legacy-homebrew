@@ -43,7 +43,7 @@ module Homebrew extend self
   end
 
   def library_folders
-    Dir["#{HOMEBREW_REPOSITORY}/Library/*"].reject do |d|
+    Dir["#{HOMEBREW_LIBRARY}/*"].reject do |d|
       case File.basename(d) when 'LinkedKegs', 'Aliases' then true end
     end
   end

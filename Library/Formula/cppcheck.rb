@@ -2,8 +2,8 @@ require 'formula'
 
 class Cppcheck < Formula
   homepage 'http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page'
-  url 'https://github.com/danmar/cppcheck/archive/1.61.tar.gz'
-  sha1 'ca08fc6b6f57153930661beb9c88046aed9875da'
+  url 'https://github.com/danmar/cppcheck/archive/1.63.1.tar.gz'
+  sha1 '19ad7251603356a82dc75a836dfad9629a3d12a0'
 
   head 'https://github.com/danmar/cppcheck.git'
 
@@ -18,12 +18,13 @@ class Cppcheck < Formula
 
     # Pass to make variables.
     if build.include? 'no-rules'
-      system "make", "HAVE_RULES=no"
+      system "make", "HAVE_RULES=no", "CFGDIR=#{prefix}/cfg"
     else
-      system "make", "HAVE_RULES=yes"
+      system "make", "HAVE_RULES=yes", "CFGDIR=#{prefix}/cfg"
     end
 
-    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "install"
+    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=#{prefix}/cfg", "install"
+    prefix.install "cfg"
 
     if build.include? 'with-gui'
       cd "gui" do
@@ -41,16 +42,5 @@ class Cppcheck < Formula
 
   def test
     system "#{bin}/cppcheck", "--version"
-  end
-
-  def caveats; <<-EOS.undent
-    --with-gui installs cppcheck-gui.app in:
-      #{bin}
-
-    To link the application to a normal Mac OS X location:
-      brew linkapps
-    or:
-      ln -s #{bin}/cppcheck-gui.app /Applications
-    EOS
   end
 end

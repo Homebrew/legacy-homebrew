@@ -2,8 +2,8 @@ require 'formula'
 
 class Weechat < Formula
   homepage 'http://www.weechat.org'
-  url 'http://www.weechat.net/files/src/weechat-0.4.1.tar.bz2'
-  sha1 'a5185d6b8a2b330713ea354f06601a205270e3a2'
+  url 'http://www.weechat.net/files/src/weechat-0.4.2.tar.bz2'
+  sha1 '837892c8eb24b3d7de26e17e87aafe88d7da0862'
 
   head 'git://git.savannah.nongnu.org/weechat.git'
 
@@ -27,16 +27,6 @@ class Weechat < Formula
   end
 
   def install
-    # Remove all arch flags from the PERL_*FLAGS as we specify them ourselves.
-    # This messes up because the system perl is a fat binary with 32, 64 and PPC
-    # compiles, but our deps don't have that. Remove at v0.3.8, fixed in HEAD.
-    archs = %W[-arch ppc -arch i386 -arch x86_64].join('|')
-    inreplace  "src/plugins/perl/CMakeLists.txt",
-      'IF(PERL_FOUND)',
-      'IF(PERL_FOUND)' +
-      %Q{\n  STRING(REGEX REPLACE "#{archs}" "" PERL_CFLAGS "${PERL_CFLAGS}")} +
-      %Q{\n  STRING(REGEX REPLACE "#{archs}" "" PERL_LFLAGS "${PERL_LFLAGS}")}
-
     args = std_cmake_args + %W[
       -DPREFIX=#{prefix}
       -DENABLE_GTK=OFF
@@ -46,21 +36,15 @@ class Weechat < Formula
     args << '-DENABLE_RUBY=OFF'   unless build.with? 'ruby'
     args << '-DENABLE_ASPELL=OFF' unless build.with? 'aspell'
     args << '-DENABLE_GUILE=OFF'  unless build.with? 'guile'
+    args << '-DENABLE_PYTHON=OFF' unless build.with? 'python'
 
     # NLS/gettext support disabled for now since it doesn't work in stdenv
-    # see https://github.com/mxcl/homebrew/issues/18722
+    # see https://github.com/Homebrew/homebrew/issues/18722
     args << "-DENABLE_NLS=OFF"
     args << '..'
 
     mkdir 'build' do
-      if python do
-        system 'cmake', *args
-      end
-      else
-        # The same cmake call but without any python set up.
-        args << '-DENABLE_PYTHON=OFF'
-        system 'cmake', *args
-      end
+      system 'cmake', *args
       system 'make install'
     end
   end

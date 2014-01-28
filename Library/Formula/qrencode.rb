@@ -2,8 +2,8 @@ require 'formula'
 
 class Qrencode < Formula
   homepage 'http://fukuchi.org/works/qrencode/index.html.en'
-  url 'http://fukuchi.org/works/qrencode/qrencode-3.4.2.tar.gz'
-  sha1 '7daaad61f333ff6cdabfb0d925c3ab668d16dee2'
+  url 'http://fukuchi.org/works/qrencode/qrencode-3.4.3.tar.bz2'
+  sha1 'a5056cf2fdc699ecf1d3c0cbea7b50993b0bf54e'
 
   depends_on 'pkg-config' => :build
   depends_on :libpng

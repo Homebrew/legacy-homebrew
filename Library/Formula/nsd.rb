@@ -2,12 +2,13 @@ require 'formula'
 
 class Nsd < Formula
   homepage 'http://www.nlnetlabs.nl/projects/nsd/'
-  url 'http://www.nlnetlabs.nl/downloads/nsd/nsd-3.2.16.tar.gz'
-  sha1 'cb95efa819902799365691a0a7ddb3690a97df88'
+  url 'http://www.nlnetlabs.nl/downloads/nsd/nsd-4.0.0.tar.gz'
+  sha1 'b3ebd669be8e830f62062d12be55242ca41da369'
+
+  depends_on 'libevent'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 end

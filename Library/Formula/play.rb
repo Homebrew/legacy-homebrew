@@ -3,12 +3,14 @@ require 'formula'
 class Play < Formula
   homepage 'http://www.playframework.org/'
   head 'https://github.com/playframework/playframework.git'
-  url 'http://downloads.typesafe.com/play/2.1.4/play-2.1.4.zip'
-  sha1 'b733bbd4a67bd99e9821366cdbae87bc3c40892c'
+  url 'http://downloads.typesafe.com/play/2.2.1/play-2.2.1.zip'
+  sha1 'e4567f3cf61536908d66e85bde48d7e953f0a01f'
+
+  conflicts_with 'sox', :because => 'both install `play` binaries'
 
   devel do
-    url 'http://downloads.typesafe.com/play/2.2.0-RC1/play-2.2.0-RC1.zip'
-    sha1 'f4f7d577220c7f9be4020517d256f827b5a7d36d'
+    url 'http://downloads.typesafe.com/play/2.2.2-RC2/play-2.2.2-RC2.zip'
+    sha1 '30a31d9f01893f4ab57e554aa339994eea20bd51'
   end
 
   def install
@@ -17,16 +19,6 @@ class Play < Formula
     # remove Windows .bat files
     rm Dir['*.bat']
     rm Dir["#{buildpath}/**/*.bat"] if build.head?
-
-    # apply workaround for relative symlink, remove block when stable version reaches 2.2.x.
-    # https://github.com/playframework/playframework/issues/1516
-    # https://github.com/playframework/playframework/pull/777
-    if build.stable?
-      inreplace buildpath/"play" do |s|
-        s.gsub! "$dir/", "$dir/../libexec/"
-        s.gsub! "dir=`dirname $PRG`", "dir=`dirname $0` && dir=$dir/`dirname $PRG`"
-      end
-    end
 
     libexec.install Dir['*']
     bin.install_symlink libexec/'play'

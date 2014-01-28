@@ -30,7 +30,7 @@ class Logrotate < Formula
       s.gsub! "/etc/logrotate.d", "#{etc}/logrotate.d"
     end
 
-    etc.install 'logrotate.conf' unless (etc/'logrotate.conf').exist?
+    etc.install 'logrotate.conf'
     (etc/'logrotate.d').mkpath
   end
 

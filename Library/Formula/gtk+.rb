@@ -2,8 +2,8 @@ require 'formula'
 
 class Gtkx < Formula
   homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.20.tar.xz'
-  sha256 'cc66bcbf9239a7d9861175c681ba95894b55c70dc0b37aad8345c46ecfda0da3'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.22.tar.xz'
+  sha256 'b114b6e9fb389bf3aa8a6d09576538f58dce740779653084046852fb4140ae7f'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build

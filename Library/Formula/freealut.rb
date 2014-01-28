@@ -9,6 +9,7 @@ class Freealut < Formula
   # Adds the OpenAL frameworks to the library list so linking succeeds
   def patches; DATA; end
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 

@@ -5,16 +5,18 @@ class Zookeeper < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz'
   sha1 'fd921575e02478909557034ea922de871926efc7'
 
-  head 'http://svn.apache.org/repos/asf/zookeeper/trunk'
+  head do
+    url 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
-  option "c",      "Build C bindings."
-  option "perl",   "Build Perl bindings."
-
-  if build.head?
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
+  option "c", "Build C bindings"
+  option "perl", "Build Perl bindings"
+
+  depends_on :ant
   depends_on :python => :optional
 
   def shim_script target
@@ -70,14 +72,6 @@ class Zookeeper < Formula
                             "--without-cppunit"
       system "make install"
     end if build_c
-
-    # Install Python bindings
-    python do
-      cd "src/contrib/zkpython" do
-        system python, "src/python/setup.py", "build"
-        system python, "src/python/setup.py", "install", "--prefix=#{prefix}"
-      end
-    end
 
     # Install Perl bindings
     cd "src/contrib/zkperl" do

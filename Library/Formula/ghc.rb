@@ -1,38 +1,42 @@
 require 'formula'
 
-class Ghcbinary < Formula
-  if Hardware.is_64_bit? and not build.build_32_bit?
-    url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
-    sha1 '7c655701672f4b223980c3a1068a59b9fbd08825'
-  else
-    url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2'
-    sha1 '60f749893332d7c22bb4905004a67510992d8ef6'
-  end
-  version '7.4.2'
-end
-
-class Ghctestsuite < Formula
-  url 'https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz'
-  sha1 '6a1973ae3cccdb2f720606032ae84ffee8680ca1'
-end
-
 class Ghc < Formula
   homepage 'http://haskell.org/ghc/'
   url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-src.tar.bz2'
   sha1 '8938e1ef08b37a4caa071fa169e79a3001d065ff'
+
+  bottle do
+    revision 2
+    sha1 'a6ceeb3f1f9ba2cf0454dc9d45dce69f8a5ae736' => :mavericks
+    sha1 'd91ee56c8066bae5173f705e83e15dbb8842f67f' => :mountain_lion
+    sha1 '1569f19cdad2675cbff328c0e259d6b8573e9d11' => :lion
+  end
 
   env :std
 
   # http://hackage.haskell.org/trac/ghc/ticket/6009
   depends_on :macos => :snow_leopard
 
+  depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
+
   option '32-bit'
   option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'
 
-  bottle do
-    sha1 '332ed50be17831557b5888f7e8395f1beb008731' => :mountain_lion
-    sha1 '64a7548eb2135a4b5f2276e59f435a39c2d2961f' => :lion
-    sha1 '166bf3c8a512b58da4119b2997a1f45c1f7c65b5' => :snow_leopard
+  # build is not available in the resource's context, so exploit the closure.
+  build_32_bit = build.build_32_bit?
+  resource 'binary' do
+    if Hardware.is_64_bit? and not build_32_bit
+      url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
+      sha1 '7c655701672f4b223980c3a1068a59b9fbd08825'
+    else
+      url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2'
+      sha1 '60f749893332d7c22bb4905004a67510992d8ef6'
+    end
+  end
+
+  resource 'testsuite' do
+    url 'https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz'
+    sha1 '6a1973ae3cccdb2f720606032ae84ffee8680ca1'
   end
 
   fails_with :clang do
@@ -51,13 +55,13 @@ class Ghc < Formula
     # Move the main tarball contents into a subdirectory
     (buildpath+'Ghcsource').install Dir['*']
 
-    Ghcbinary.new.brew do
+    resource('binary').stage do
       # Define where the subformula will temporarily install itself
       subprefix = buildpath+'subfo'
 
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       args = ["--prefix=#{subprefix}"]
-      args << "--with-gcc=#{ENV.cc}" if ENV.compiler == :gcc
+      args << "--with-gcc=#{ENV.cc}"
 
       system "./configure", *args
       system 'make -j1 install' # -j1 fixes an intermittent race condition
@@ -66,7 +70,7 @@ class Ghc < Formula
 
     cd 'Ghcsource' do
       # Fix an assertion when linking ghc with llvm-gcc
-      # https://github.com/mxcl/homebrew/issues/13650
+      # https://github.com/Homebrew/homebrew/issues/13650
       ENV['LD'] = 'ld'
 
       if Hardware.is_64_bit? and not build.build_32_bit?
@@ -78,12 +82,12 @@ class Ghc < Formula
 
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       args = ["--prefix=#{prefix}", "--build=#{arch}-apple-darwin"]
-      args << "--with-gcc=#{ENV.cc}" if ENV.compiler == :gcc
+      args << "--with-gcc=#{ENV.cc}"
 
       system "./configure", *args
       system 'make'
       if build.include? 'tests'
-        Ghctestsuite.new.brew do
+        resource('testsuite').stage do
           (buildpath+'Ghcsource/config').install Dir['config/*']
           (buildpath+'Ghcsource/driver').install Dir['driver/*']
           (buildpath+'Ghcsource/mk').install Dir['mk/*']

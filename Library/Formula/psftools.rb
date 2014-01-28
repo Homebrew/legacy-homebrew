@@ -11,9 +11,19 @@ class Psftools < Formula
   sha1 '4e8b2e7686532a25c18cacaeb90a8f0ed57a30c6'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    # This very old configure script does not anticipate that passing -g
+    # will result in .dSYM directories being created. -g is only passed
+    # when CFLAGS is unset (superenv), so let's set it to the empty string
+    cflags = ENV['CFLAGS']
+    ENV['CFLAGS'] = ''
+
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
+
+    ENV['CFLAGS'] = cflags
+
     system "make install"
   end
 

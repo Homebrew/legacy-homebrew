@@ -2,19 +2,14 @@ require 'formula'
 
 class Guile < Formula
   homepage 'http://www.gnu.org/software/guile/'
-  url 'http://ftpmirror.gnu.org/guile/guile-1.8.8.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/guile/guile-1.8.8.tar.gz'
-  sha1 '548d6927aeda332b117f8fc5e4e82c39a05704f9'
+  url 'http://ftpmirror.gnu.org/guile/guile-2.0.9.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.9.tar.gz'
+  sha1 'fc5d770e8b1d364b2f222a8f8c96ccf740b2956f'
 
-  devel do
-    url 'http://ftpmirror.gnu.org/guile/guile-2.0.9.tar.gz'
-    mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.9.tar.gz'
-    sha1 'fc5d770e8b1d364b2f222a8f8c96ccf740b2956f'
-  end
+  head do
+    url 'http://git.sv.gnu.org/r/guile.git'
 
-  head 'git://git.sv.gnu.org/guile.git'
-
-  if build.head?
+    depends_on 'autoconf' => :build
     depends_on 'automake' => :build
     depends_on 'gettext' => :build
   end
@@ -37,13 +32,11 @@ class Guile < Formula
   fails_with :clang do
     build 211
     cause "Segfaults during compilation"
-  end if build.devel?
+  end
 
   # Only for 2.0.9: Fix shebang shell in build-aux/install-sh.
   # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14201#19
-  def patches
-    DATA if build.devel?
-  end
+  def patches; DATA; end
 
   def install
     system './autogen.sh' if build.head?
@@ -55,6 +48,18 @@ class Guile < Formula
 
     # A really messed up workaround required on OS X --mkhl
     lib.cd { Dir["*.dylib"].each {|p| ln_sf p, File.basename(p, ".dylib")+".so" }}
+  end
+
+  test do
+    hello = testpath/'hello.scm'
+    hello.write <<-EOS.undent
+    (display "Hello World")
+    (newline)
+    EOS
+
+    ENV['GUILE_AUTO_COMPILE'] = '0'
+
+    system bin/'guile', hello
   end
 end
 

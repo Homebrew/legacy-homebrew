@@ -9,6 +9,7 @@ class Transmission < Formula
 
   depends_on 'xz' => :build
   depends_on 'pkg-config' => :build # So it will find system libcurl
+  depends_on 'curl' if MacOS.version <= :leopard
   depends_on 'libevent'
 
   if build.with? 'nls'

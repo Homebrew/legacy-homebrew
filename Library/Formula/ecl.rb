@@ -6,6 +6,7 @@ class Ecl < Formula
   sha1 'db7f732e5e12182118f00c02d8d2531f6d6aefb2'
 
   fails_with :clang do
+    build 425
     cause "The built-in gmp library fails to build with clang"
   end
 

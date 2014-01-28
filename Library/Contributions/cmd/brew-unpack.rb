@@ -89,7 +89,7 @@ module Homebrew extend self
       ENV['VERBOSE'] = '1' # show messages about tar
       f.brew do
         entries = Dir['*']
-        cd entries.first if entries.one? && File.directory?(entries.first)
+        cd entries.first if entries.length == 1 && File.directory?(entries.first)
         cp_r getwd, stage_dir
       end
       ENV['VERBOSE'] = nil

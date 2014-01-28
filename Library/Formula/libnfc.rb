@@ -2,8 +2,8 @@ require 'formula'
 
 class Libnfc < Formula
   homepage 'http://www.libnfc.org/'
-  url 'http://libnfc.googlecode.com/files/libnfc-1.7.0-rc7.tar.gz'
-  sha1 '6ceb5e1ab810f49fadff9c5e2ecb8bf28a611c56'
+  url 'https://libnfc.googlecode.com/files/libnfc-1.7.0.tar.bz2'
+  sha1 '5adfb6c6238b1659ad8609837dc8e59eb41a8768'
 
   depends_on 'pkg-config' => :build
   depends_on 'libusb-compat'

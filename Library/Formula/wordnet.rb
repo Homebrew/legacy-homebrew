@@ -12,6 +12,7 @@ class Wordnet < Formula
   resource 'dict' do
     url 'http://wordnetcode.princeton.edu/wn3.1.dict.tar.gz'
     sha1 '67dee39f6e83c9a05d98c5790722b807812cda87'
+    version '3.1'
   end
 
   def install

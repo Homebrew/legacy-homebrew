@@ -7,12 +7,13 @@ class Curlftpfs < Formula
 
   head 'https://github.com/rfw/curlftpfs.git'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 
   depends_on 'pkg-config' => :build
 
-  depends_on 'fuse4x'
+  depends_on 'osxfuse'
   depends_on 'glib'
 
   def install
@@ -27,7 +28,7 @@ class Curlftpfs < Formula
   end
 
   def caveats; <<-EOS.undent
-    Make sure to follow the directions given by `brew info fuse4x-kext`
+    Make sure to follow the directions given by `brew info osxfuse`
     before trying to use a FUSE-based filesystem.
     EOS
   end

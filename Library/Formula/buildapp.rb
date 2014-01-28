@@ -2,8 +2,8 @@ require 'formula'
 
 class Buildapp < Formula
   homepage 'http://www.xach.com/lisp/buildapp/'
-  url 'https://github.com/xach/buildapp/archive/release-1.4.8.tar.gz'
-  sha1 '2a0b045d6b39976331c918607c38f49353a81e43'
+  url 'https://github.com/xach/buildapp/archive/release-1.5.1.tar.gz'
+  sha1 '164377c4cf7f23e69d80d55cbd7a0db028ae97d5'
 
   depends_on 'sbcl'
 

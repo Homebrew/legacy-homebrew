@@ -2,19 +2,19 @@ require 'formula'
 
 class Gstreamer < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.0.10.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.0.10.tar.xz'
-  sha256 '8e0aa9f41370586171a2616326fbc508bc4b61ffc4d55b2a8c4c3459d0cc1130'
+  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.2.1.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.2.1.tar.xz'
+  sha256 'a4523d2471bca6cd0059a32e3b042f50faa4dadc6439852af8b43ca3f17d1fc9'
 
-  head 'git://anongit.freedesktop.org/gstreamer/gstreamer'
+  head do
+    url 'git://anongit.freedesktop.org/gstreamer/gstreamer'
 
-  if build.head?
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gobject-introspection' => :optional
   depends_on 'gettext'
   depends_on 'glib'

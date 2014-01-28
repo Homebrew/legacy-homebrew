@@ -2,8 +2,8 @@ require 'formula'
 
 class FetchCrl < Formula
   homepage 'http://wiki.nikhef.nl/grid/FetchCRL3'
-  url 'https://dist.eugridpma.info/distribution/util/fetch-crl3/fetch-crl-3.0.8.tar.gz'
-  sha1 '5e4474d70ef5a5a1a29bff1944114ad58987f731'
+  url 'https://dist.eugridpma.info/distribution/util/fetch-crl3/fetch-crl-3.0.12.tar.gz'
+  sha1 '78c25808517da2846f918f60ca4e86cb432cdf73'
 
   def install
     system "make", "install", "PREFIX=#{prefix}", "ETC=#{etc}", "CACHE=#{var}/cache"

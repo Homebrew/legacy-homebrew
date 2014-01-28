@@ -2,13 +2,10 @@ require 'formula'
 
 class Genstats < Formula
   homepage 'http://www.vanheusden.com/genstats/'
-  url 'http://www.vanheusden.com/genstats/genstats-1.0.0.tgz'
-  sha1 '8ca19e5fe72f1d881bf38298e155b15f07e6bd66'
+  url 'http://www.vanheusden.com/genstats/genstats-1.2.tgz'
+  sha1 '9b60278d3b0cc5dace63f081f4d5a7c3b6cbc473'
 
-  def patches
-    # fix compile errors on OS X for 1.0.0. I've emailed the author.
-    DATA
-  end
+  depends_on :macos => :lion # uses strndup
 
   def install
     # Tried to make this a patch.  Applying the patch hunk would
@@ -24,27 +21,6 @@ class Genstats < Formula
   end
 
   def test
-    # TODO(dan): be more thorough
     system "genstats -h | grep folkert@vanheusden.com"
   end
 end
-__END__
-diff --git a/br.h b/br.h
-index addf8bc..dfdb5d4 100644
---- a/br.h
-+++ b/br.h
-@@ -8,6 +8,14 @@
- #define likely(x)       __builtin_expect((x),1)
- #define unlikely(x)     __builtin_expect((x),0)
- 
-+#ifdef __APPLE__
-+/* See http://fixunix.com/bsd/539901-definition-off64_t.html */
-+typedef off_t off64_t;
-+/* See http://lists.apple.com/archives/unix-porting/2002/Jul/msg00099.html */
-+#define lseek64 lseek
-+#define open64 open
-+#endif
-+
- class buffered_reader
-   {
- private:

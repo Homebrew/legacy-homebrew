@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gibo < Formula
-  homepage 'https://github.com/simonwhitaker/gitignore-boilerplates'
-  url 'https://github.com/simonwhitaker/gitignore-boilerplates/archive/1.0.1.tar.gz'
-  sha1 'f1c232bb04c1514586fda2e60fb11ab2fcdd8ea0'
+  homepage 'https://github.com/simonwhitaker/gibo'
+  url 'https://github.com/simonwhitaker/gibo/archive/1.0.2.tar.gz'
+  sha1 '58c809c99841975a00fbdc540af4b3c478b95c7b'
 
   def install
     bin.install "gibo"

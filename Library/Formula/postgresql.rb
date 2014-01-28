@@ -2,8 +2,14 @@ require 'formula'
 
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp.postgresql.org/pub/source/v9.2.4/postgresql-9.2.4.tar.bz2'
-  sha1 '75b53c884cb10ed9404747b51677358f12082152'
+  url 'http://ftp.postgresql.org/pub/source/v9.3.2/postgresql-9.3.2.tar.bz2'
+  sha256 '700da51a71857e092f6af1c85fcd86b46d7d5cd2f2ba343cafb1f206c20232d7'
+
+  bottle do
+    sha1 '106eb209038abdaa2cad8d91d2a422404f8fbe56' => :mavericks
+    sha1 '283c27e518a789d2cd57640375be00e18c829ef4' => :mountain_lion
+    sha1 'f6775c74300b4aee0bf449ac7466310d86701a5f' => :lion
+  end
 
   option '32-bit'
   option 'no-perl', 'Build without Perl support'
@@ -23,7 +29,6 @@ class Postgresql < Formula
     cause 'Miscompilation resulting in segfault on queries'
   end
 
-  # Fix PL/Python build: https://github.com/mxcl/homebrew/issues/11162
   # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
   def patches
     DATA
@@ -60,11 +65,6 @@ class Postgresql < Formula
       ENV.append 'LIBS', `uuid-config --libs`.strip
     end
 
-    if build.with? 'python'
-      args << "ARCHFLAGS='-arch #{MacOS.preferred_arch}'"
-      check_python_arch
-    end
-
     if build.build_32_bit?
       ENV.append 'CFLAGS', "-arch #{MacOS.preferred_arch}"
       ENV.append 'LDFLAGS', "-arch #{MacOS.preferred_arch}"
@@ -74,42 +74,20 @@ class Postgresql < Formula
     system "make install-world"
   end
 
-  def check_python_arch
-    # On 64-bit systems, we need to look for a 32-bit Framework Python.
-    # The configure script prefers this Python version, and if it doesn't
-    # have 64-bit support then linking will fail.
-    framework_python = Pathname.new("/Library/Frameworks/Python.framework/Versions/Current/Python")
-    return unless framework_python.exist?
-    unless (archs_for_command(framework_python)).include? :x86_64
-      opoo "Detected a framework Python that does not have 64-bit support in:"
-      puts <<-EOS.undent
-          #{framework_python}
-
-        The configure script seems to prefer this version of Python over any others,
-        so you may experience linker problems as described in:
-          http://osdir.com/ml/pgsql-general/2009-09/msg00160.html
-
-        To fix this issue, you may need to either delete the version of Python
-        shown above, or move it out of the way before brewing PostgreSQL.
-      EOS
+  def post_install
+    unless File.exist? "#{var}/postgres"
+      system "#{bin}/initdb", "#{var}/postgres", '-E', 'utf8'
     end
   end
 
   def caveats
     s = <<-EOS.undent
-        initdb #{var}/postgres -E utf8    # create a database
-        postgres -D #{var}/postgres       # serve that database
-        PGDATA=#{var}/postgres postgres   # …alternatively
-
     If builds of PostgreSQL 9 are failing and you have version 8.x installed,
     you may need to remove the previous version first. See:
-      https://github.com/mxcl/homebrew/issues/issue/2510
+      https://github.com/Homebrew/homebrew/issues/issue/2510
 
-    To migrate existing data from a previous major version (pre-9.2) of PostgreSQL, see:
-      http://www.postgresql.org/docs/9.2/static/upgrading.html
-
-    Some machines may require provisioning of shared memory:
-      http://www.postgresql.org/docs/9.2/static/kernel-resources.html#SYSVIPC
+    To migrate existing data from a previous major version (pre-9.3) of PostgreSQL, see:
+      http://www.postgresql.org/docs/9.3/static/upgrading.html
     EOS
 
     s << "\n" << gem_caveats if MacOS.prefer_64_bit?
@@ -124,7 +102,7 @@ class Postgresql < Formula
     EOS
   end
 
-  plist_options :manual => "pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres -l #{HOMEBREW_PREFIX}/var/postgres/server.log start"
+  plist_options :manual => "postgres -D #{HOMEBREW_PREFIX}/var/postgres"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -157,17 +135,6 @@ end
 
 
 __END__
---- a/src/pl/plpython/Makefile	2011-09-23 08:03:52.000000000 +1000
-+++ b/src/pl/plpython/Makefile	2011-10-26 21:43:40.000000000 +1100
-@@ -24,8 +24,6 @@
- # Darwin (OS X) has its own ideas about how to do this.
- ifeq ($(PORTNAME), darwin)
- shared_libpython = yes
--override python_libspec = -framework Python
--override python_additional_libs =
- endif
- 
- # If we don't have a shared library and the platform doesn't allow it
 --- a/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:34:53.000000000 -0700
 +++ b/contrib/uuid-ossp/uuid-ossp.c	2012-07-30 18:35:03.000000000 -0700
 @@ -9,6 +9,8 @@

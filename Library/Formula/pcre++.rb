@@ -7,6 +7,11 @@ class Pcrexx < Formula
 
   depends_on 'pcre'
 
+  def patches
+    # Fix building with libc++. Patch sent to maintainer.
+    DATA
+  end
+
   def install
     pcre = Formula.factory('pcre').opt_prefix
     system "./configure", "--disable-debug",
@@ -29,3 +34,16 @@ class Pcrexx < Formula
     EOS
   end
 end
+
+__END__
+diff -urN pcre++-0.9.5.orig/libpcre++/pcre++.cc pcre++-0.9.5/libpcre++/pcre++.cc
+--- pcre++-0.9.5.orig/libpcre++/pcre++.cc	2004-08-24 14:59:21.000000000 -0700
++++ pcre++-0.9.5/libpcre++/pcre++.cc	2013-11-01 11:30:21.000000000 -0700
+@@ -38,6 +38,7 @@
+  *
+  */
+ 
++#include <clocale>
+ 
+ #include "pcre++.h"
+ 

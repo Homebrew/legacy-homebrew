@@ -3,8 +3,8 @@ require 'formula'
 class Watchman < Formula
   homepage 'https://github.com/facebook/watchman'
   head 'https://github.com/facebook/watchman.git'
-  url 'https://github.com/facebook/watchman/archive/v2.9.tar.gz'
-  sha1 '142e6cf71117f3b3c856d75272eedc5259d75e85'
+  url 'https://github.com/facebook/watchman/archive/v2.9.3.tar.gz'
+  sha1 '6647e36105b18b99b03eb009d13d8decc91e1898'
 
   depends_on :autoconf
   depends_on :automake
@@ -13,7 +13,7 @@ class Watchman < Formula
 
   def install
     system "./autogen.sh"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-pcre"
     system "make"

@@ -2,12 +2,16 @@ require 'formula'
 
 class Juise < Formula
   homepage 'https://github.com/Juniper/juise/wiki'
-  url 'https://github.com/Juniper/juise/releases/download/0.5.8/juise-0.5.8.tar.gz'
-  sha1 '4529b0d5cf08185d0f9e991aea8fc62468290d9c'
+  url 'https://github.com/Juniper/juise/releases/download/0.5.9/juise-0.5.9.tar.gz'
+  sha1 '0d1663164904fee8ebbf29025fb2819e0ad34404'
 
-  head 'https://github.com/Juniper/juise.git'
+  head do
+    url 'https://github.com/Juniper/juise.git'
 
-  depends_on 'automake' => :build if build.head?
+    depends_on 'autoconf' => :build
+    depends_on 'automake' => :build
+  end
+
   depends_on 'libtool'  => :build
   depends_on 'libslax'
   depends_on 'libssh2'

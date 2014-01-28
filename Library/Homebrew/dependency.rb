@@ -5,10 +5,10 @@ class Dependency
   include Dependable
 
   attr_reader :name, :tags
-  attr_accessor :env_proc
+  attr_accessor :env_proc, :option_name
 
   def initialize(name, tags=[])
-    @name = name
+    @name = @option_name = name
     @tags = tags
   end
 
@@ -17,12 +17,9 @@ class Dependency
   end
 
   def ==(other)
-    name == other.name
-  end
-
-  def eql?(other)
     instance_of?(other.class) && name == other.name
   end
+  alias_method :eql?, :==
 
   def hash
     name.hash
@@ -63,25 +60,37 @@ class Dependency
     "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
   end
 
+  # Define marshaling semantics because we cannot serialize @env_proc
+  def _dump(*)
+    Marshal.dump([name, tags])
+  end
+
+  def self._load(marshaled)
+    new(*Marshal.load(marshaled))
+  end
+
   class << self
     # Expand the dependencies of dependent recursively, optionally yielding
     # [dependent, dep] pairs to allow callers to apply arbitrary filters to
     # the list.
     # The default filter, which is applied when a block is not given, omits
     # optionals and recommendeds based on what the dependent has asked for.
-    def expand(dependent, &block)
-      deps = dependent.deps.map do |dep|
+    def expand(dependent, deps=dependent.deps, &block)
+      expanded_deps = deps.map do |dep|
         case action(dependent, dep, &block)
         when :prune
           next []
         when :skip
           expand(dep.to_formula, &block)
+        when :keep_but_prune_recursive_deps
+          [dep]
         else
+          next [] if dependent.to_s == dep.name
           expand(dep.to_formula, &block) << dep
         end
       end.flatten
 
-      merge_repeats(deps)
+      merge_repeats(expanded_deps)
     end
 
     def action(dependent, dep, &block)
@@ -89,7 +98,7 @@ class Dependency
         if block_given?
           yield dependent, dep
         elsif dep.optional? || dep.recommended?
-          prune unless dependent.build.with?(dep.name)
+          prune unless dependent.build.with?(dep)
         end
       end
     end
@@ -102,6 +111,11 @@ class Dependency
     # Prune a single dependency but do not prune its dependencies
     def skip
       throw(:action, :skip)
+    end
+
+    # Keep a dependency, but prune its dependencies
+    def keep_but_prune_recursive_deps
+      throw(:action, :keep_but_prune_recursive_deps)
     end
 
     def merge_repeats(deps)

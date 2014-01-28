@@ -16,6 +16,8 @@ class Tinysvm < Formula
     # Needed to select proper getopt, per MacPorts
     ENV.append_to_cflags '-D__GNU_LIBRARY__'
 
+    inreplace 'configure', '-O9', '' # clang barfs on -O9
+
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

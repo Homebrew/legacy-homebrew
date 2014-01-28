@@ -28,7 +28,7 @@ module Homebrew extend self
       end
     end
 
-    dirs.sort.reverse_each do |d|
+    dirs.reverse_each do |d|
       if ARGV.dry_run? && d.children.empty?
         puts "Would remove (empty directory): #{d}"
       else

@@ -1,18 +1,20 @@
 require 'formula'
 
 class Liblastfm < Formula
-  homepage 'https://github.com/mxcl/liblastfm/'
-  url 'https://github.com/mxcl/liblastfm/archive/e380c7f03f4b2417db87372df733606f4a153c53.tar.gz'
-  version '0.3.3.1'
-  sha1 '68c0d23364afd7e6bb5dbd9b71419d808fe0d005'
+  homepage 'https://github.com/lastfm/liblastfm/'
+  url 'https://github.com/lastfm/liblastfm/archive/1.0.8.tar.gz'
+  sha1 '5ef084d0ba27c5e2bc1ec1754618ded0cd2b430e'
 
+  depends_on 'pkg-config' => :build
+  depends_on 'cmake' => :build
   depends_on 'qt'
   depends_on 'fftw'
   depends_on 'libsamplerate'
 
   def install
-    system "./configure", "--release", "--prefix", prefix
-    system "make"
-    system "make install"
+    mkdir 'build' do
+      system 'cmake', '..', *std_cmake_args
+      system 'make', 'install'
+    end
   end
 end

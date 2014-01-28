@@ -32,12 +32,12 @@ end
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.18/node-v0.10.18.tar.gz'
-  sha1 '0bc3c544ca1707ea4b8bd601706304e9c0609fe5'
+  url 'http://nodejs.org/dist/v0.10.25/node-v0.10.25.tar.gz'
+  sha1 '1e330b4fbb6f7bb858a0b37d8573dd4956f40885'
 
   devel do
-    url 'http://nodejs.org/dist/v0.11.7/node-v0.11.7.tar.gz'
-    sha1 'a3b0d7fb818754ad55f06a02745d7ec53986de64'
+    url 'http://nodejs.org/dist/v0.11.10/node-v0.11.10.tar.gz'
+    sha1 'b860f511e4fc657a64594fc9f3f1225c1a140e5e'
   end
 
   head 'https://github.com/joyent/node.git'
@@ -46,21 +46,14 @@ class Node < Formula
   option 'without-npm', 'npm will not be installed'
 
   depends_on NpmNotInstalled unless build.without? 'npm'
-  depends_on :python => ["2.6", :build]
+  depends_on :python
+
+  if build.devel?
+    depends_on Python27Dependency # gyp doesn't run under 2.6 or lower
+  end
 
   fails_with :llvm do
     build 2326
-  end
-
-  # fixes gyp's detection of system paths on CLT-only systems
-  # fix compilation of libuv on <= 10.6, fixed upstream
-  def patches
-    p = [DATA]
-
-    if build.stable? && MacOS.version <= :snow_leopard
-      p << "https://gist.github.com/jacknagel/6452630/raw/4d2af17010bad40c14ad9c920ef5562a646fb449/fsevents.diff"
-    end
-    p
   end
 
   def install
@@ -74,6 +67,14 @@ class Node < Formula
 
     unless build.include? 'without-npm'
       (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
+
+      # Link npm manpages
+      Pathname.glob("#{lib}/node_modules/npm/man/*").each do |man|
+        dir = send(man.basename)
+        man.children.each do |file|
+          dir.install_symlink(file.relative_path_from(dir))
+        end
+      end
     end
   end
 
@@ -99,83 +100,3 @@ class Node < Formula
     end
   end
 end
-
-__END__
-diff --git a/tools/gyp/pylib/gyp/xcode_emulation.py b/tools/gyp/pylib/gyp/xcode_emulation.py
-index 806f92b..5256856 100644
---- a/tools/gyp/pylib/gyp/xcode_emulation.py
-+++ b/tools/gyp/pylib/gyp/xcode_emulation.py
-@@ -224,8 +224,7 @@ class XcodeSettings(object):
- 
-   def _GetSdkVersionInfoItem(self, sdk, infoitem):
-     job = subprocess.Popen(['xcodebuild', '-version', '-sdk', sdk, infoitem],
--                           stdout=subprocess.PIPE,
--                           stderr=subprocess.STDOUT)
-+                           stdout=subprocess.PIPE)
-     out = job.communicate()[0]
-     if job.returncode != 0:
-       sys.stderr.write(out + '\n')
-@@ -234,9 +233,17 @@ class XcodeSettings(object):
- 
-   def _SdkPath(self):
-     sdk_root = self.GetPerTargetSetting('SDKROOT', default='macosx')
-+    if sdk_root.startswith('/'):
-+      return sdk_root
-     if sdk_root not in XcodeSettings._sdk_path_cache:
--      XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
--          sdk_root, 'Path')
-+      try:
-+        XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
-+            sdk_root, 'Path')
-+      except:
-+        # if this fails it's because xcodebuild failed, which means
-+        # the user is probably on a CLT-only system, where there
-+        # is no valid SDK root
-+        XcodeSettings._sdk_path_cache[sdk_root] = None
-     return XcodeSettings._sdk_path_cache[sdk_root]
- 
-   def _AppendPlatformVersionMinFlags(self, lst):
-@@ -339,10 +346,11 @@ class XcodeSettings(object):
- 
-     cflags += self._Settings().get('WARNING_CFLAGS', [])
- 
--    config = self.spec['configurations'][self.configname]
--    framework_dirs = config.get('mac_framework_dirs', [])
--    for directory in framework_dirs:
--      cflags.append('-F' + directory.replace('$(SDKROOT)', sdk_root))
-+    if 'SDKROOT' in self._Settings():
-+      config = self.spec['configurations'][self.configname]
-+      framework_dirs = config.get('mac_framework_dirs', [])
-+      for directory in framework_dirs:
-+        cflags.append('-F' + directory.replace('$(SDKROOT)', sdk_root))
- 
-     self.configname = None
-     return cflags
-@@ -572,10 +580,11 @@ class XcodeSettings(object):
-     for rpath in self._Settings().get('LD_RUNPATH_SEARCH_PATHS', []):
-       ldflags.append('-Wl,-rpath,' + rpath)
- 
--    config = self.spec['configurations'][self.configname]
--    framework_dirs = config.get('mac_framework_dirs', [])
--    for directory in framework_dirs:
--      ldflags.append('-F' + directory.replace('$(SDKROOT)', self._SdkPath()))
-+    if 'SDKROOT' in self._Settings():
-+      config = self.spec['configurations'][self.configname]
-+      framework_dirs = config.get('mac_framework_dirs', [])
-+      for directory in framework_dirs:
-+        ldflags.append('-F' + directory.replace('$(SDKROOT)', self._SdkPath()))
- 
-     self.configname = None
-     return ldflags
-@@ -700,7 +709,10 @@ class XcodeSettings(object):
-         l = '-l' + m.group(1)
-       else:
-         l = library
--    return l.replace('$(SDKROOT)', self._SdkPath())
-+    if self._SdkPath():
-+      return l.replace('$(SDKROOT)', self._SdkPath())
-+    else:
-+      return l
- 
-   def AdjustLibraries(self, libraries):
-     """Transforms entries like 'Cocoa.framework' in libraries into entries like

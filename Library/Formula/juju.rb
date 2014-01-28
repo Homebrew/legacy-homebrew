@@ -2,14 +2,8 @@ require 'formula'
 
 class Juju < Formula
   homepage 'https://juju.ubuntu.com'
-  url "https://launchpad.net/juju-core/1.12/1.12.0/+download/juju-core_1.12.0-1.tar.gz"
-  version "1.12.0-1"
-  sha1 "b552919f5f4ed5a34885a2a6a8a4a0d7be485267"
-
-  devel do
-    url "https://launchpad.net/juju-core/trunk/1.13.1/+download/juju-core_1.13.1.tar.gz"
-    sha1 "1c1346378763d6aa469c434c1467b8ea4f8530be"
-  end
+  url 'https://launchpad.net/juju-core/1.16/1.16.5/+download/juju-core_1.16.5.tar.gz'
+  sha1 '2202805d09dffe64d1e07988b9d1b16e02c7bd52'
 
   depends_on 'go' => :build
 
@@ -19,6 +13,19 @@ class Juju < Formula
     args.insert(1, "-v") if ARGV.verbose?
     system "go", *args
     bin.install 'bin/juju'
+    (bash_completion/'juju-completion.bash').write <<-EOS.undent
+    _juju()
+    {
+        local cur prev options files targets
+        COMPREPLY=()
+        cur="${COMP_WORDS[COMP_CWORD]}"
+        prev="${COMP_WORDS[COMP_CWORD-1]}"
+        actions=$(juju help commands 2>/dev/null | awk '{print $1}')
+        COMPREPLY=( $( compgen -W "${actions}" -- ${cur} ) )
+        return 0
+    }
+    complete -F _juju juju
+    EOS
   end
 
   def test

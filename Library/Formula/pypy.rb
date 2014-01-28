@@ -2,21 +2,37 @@ require 'formula'
 
 class Pypy < Formula
   homepage 'http://pypy.org/'
-  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.1-osx64.tar.bz2'
-  version '2.1.0'
-  sha1 '6cdaa1dc0a47d9eb6d816f7d394ca46f290a1ed5'
+  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.2.1-osx64.tar.bz2'
+  version '2.2.1'
+  sha1 'caf13d377fcdced4bfadd4158ba3d18d520396f3'
 
   depends_on :arch => :x86_64
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.4.tar.gz'
-    sha1 'b8bf9c2b8a114045598f0e16681d6a63a4d6cdf9'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.0.1.tar.gz'
+    sha1 '5283b4dca46d45efd1156713ab51836509646c03'
+  end
+
+  resource 'pip' do
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
+    sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
   end
 
   def install
+    # Having PYTHONPATH set can cause the build to fail if another
+    # Python is present, e.g. a Homebrew-provided Python 2.x
+    # See https://github.com/Homebrew/homebrew/issues/24364
+    ENV['PYTHONPATH'] = ''
+
     rmtree 'site-packages'
 
-    prefix.install Dir['*']
+    # The PyPy binary install instructions suggest installing somewhere
+    # (like /opt) and symlinking in binaries as needed. Specifically,
+    # we want to avoid putting PyPy's Python.h somewhere that configure
+    # scripts will find it.
+    libexec.install Dir['*']
+    bin.mkpath
+    ln_s libexec/'bin/pypy', bin/'pypy'
 
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
@@ -26,7 +42,7 @@ class Pypy < Formula
     prefix_site_packages.mkpath
 
     # Symlink the prefix site-packages into the cellar.
-    ln_s prefix_site_packages, prefix+'site-packages'
+    ln_s prefix_site_packages, libexec+'site-packages'
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
@@ -39,7 +55,8 @@ class Pypy < Formula
     # $ easy_install pip
     # $ pip install --upgrade setuptools
     # to get newer versions of setuptools outside of Homebrew.
-    resource('setuptools').stage { system "#{bin}/pypy", "setup.py", "install" }
+    resource('setuptools').stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
+    resource('pip').stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
 
     # Symlink to easy_install_pypy.
     unless (scripts_folder+'easy_install_pypy').exist?
@@ -68,7 +85,7 @@ class Pypy < Formula
         #{scripts_folder}/easy_install pip
         #{scripts_folder}/pip install --upgrade setuptools
 
-    See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+    See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
     EOS
   end
 
@@ -84,6 +101,6 @@ class Pypy < Formula
 
   # The Cellar location of distutils
   def distutils
-    prefix+"lib-python/2.7/distutils"
+    libexec+"lib-python/2.7/distutils"
   end
 end

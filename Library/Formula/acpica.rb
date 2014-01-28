@@ -2,8 +2,10 @@ require 'formula'
 
 class Acpica < Formula
   homepage 'https://www.acpica.org/'
-  url 'https://acpica.org/sites/acpica/files/acpica-unix2-20130517.tar.gz'
-  sha1 '527fd7c06d7cb7182dd2f3f9a1feb55e2271adc3'
+  url 'https://acpica.org/sites/acpica/files/acpica-unix2-20130823.tar.gz'
+  sha1 'a10f2a3708d02074e283ee105dd3fcc6e1940c3e'
+
+  head 'https://github.com/acpica/acpica.git'
 
   def install
     ENV.deparallelize

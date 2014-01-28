@@ -2,8 +2,8 @@ require 'formula'
 
 class Zabbix < Formula
   homepage 'http://www.zabbix.com/'
-  url 'http://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.0.7/zabbix-2.0.7.tar.gz'
-  sha1 'd7b6e97af514afd131d38dd692b75644080a4aaa'
+  url 'http://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.2.1/zabbix-2.2.1.tar.gz'
+  sha1 '2f07bfa08123f341ff16df88590d154282ce704f'
 
   option 'with-mysql', 'Use Zabbix Server with MySQL library instead PostgreSQL.'
   option 'agent-only', 'Install only the Zabbix Agent without Server and Proxy.'
@@ -17,7 +17,7 @@ class Zabbix < Formula
 
   def brewed_or_shipped(db_config)
     brewed_db_config = "#{HOMEBREW_PREFIX}/bin/#{db_config}"
-    (File.exists?(brewed_db_config) && brewed_db_config) || which(db_config)
+    (File.exist?(brewed_db_config) && brewed_db_config) || which(db_config)
   end
 
   def install

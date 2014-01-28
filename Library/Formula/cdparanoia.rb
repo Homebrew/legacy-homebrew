@@ -23,9 +23,7 @@ class Cdparanoia < Formula
     system "autoconf"
     # Libs are installed as keg-only because most software that searches for cdparanoia
     # will fail to link against it cleanly due to our patches
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
+    system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--libdir=#{libexec}"
     system "make all"

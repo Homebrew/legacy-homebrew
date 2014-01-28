@@ -1,5 +1,5 @@
 require 'testing_env'
-require 'formula_support'
+require 'software_spec'
 require 'bottles'
 
 class SoftwareSpecTests < Test::Unit::TestCase
@@ -9,116 +9,70 @@ class SoftwareSpecTests < Test::Unit::TestCase
     @spec = SoftwareSpec.new
   end
 
-  def test_url
-    @spec.url('foo')
-    assert_equal 'foo', @spec.url
+  def test_resource
+    @spec.resource('foo') { url 'foo-1.0' }
+    assert @spec.resource?('foo')
   end
 
-  def test_url_with_specs
-    @spec.url('foo', :branch => 'master')
-    assert_equal 'foo', @spec.url
-    assert_equal({ :branch => 'master' }, @spec.specs)
-  end
-
-  def test_url_with_custom_download_strategy_class
-    strategy = Class.new(AbstractDownloadStrategy)
-    @spec.url('foo', :using => strategy)
-    assert_equal 'foo', @spec.url
-    assert_equal strategy, @spec.download_strategy
-  end
-
-  def test_url_with_specs_and_download_strategy
-    strategy = Class.new(AbstractDownloadStrategy)
-    @spec.url('foo', :using => strategy, :branch => 'master')
-    assert_equal 'foo', @spec.url
-    assert_equal({ :branch => 'master' }, @spec.specs)
-    assert_equal strategy, @spec.download_strategy
-  end
-
-  def test_url_with_custom_download_strategy_symbol
-    @spec.url('foo', :using => :git)
-    assert_equal 'foo', @spec.url
-    assert_equal GitDownloadStrategy, @spec.download_strategy
-  end
-
-  def test_version
-    @spec.version('1.0')
-    assert_version_equal '1.0', @spec.version
-    assert !@spec.version.detected_from_url?
-  end
-
-  def test_version_from_url
-    @spec.url('http://foo.com/bar-1.0.tar.gz')
-    assert_version_equal '1.0', @spec.version
-    assert @spec.version.detected_from_url?
-  end
-
-  def test_version_with_scheme
-    scheme = Class.new(Version)
-    @spec.version('1.0' => scheme)
-    assert_version_equal '1.0', @spec.version
-    assert_instance_of scheme, @spec.version
-  end
-
-  def test_version_from_tag
-    @spec.url('http://foo.com/bar-1.0.tar.gz', :tag => 'v1.0.2')
-    assert_version_equal '1.0.2', @spec.version
-    assert @spec.version.detected_from_url?
-  end
-
-  def test_rejects_non_string_versions
-    assert_raises(TypeError) { @spec.version(1) }
-    assert_raises(TypeError) { @spec.version(2.0) }
-    assert_raises(TypeError) { @spec.version(Object.new) }
-  end
-
-  def test_mirrors
-    assert_empty @spec.mirrors
-    @spec.mirror('foo')
-    @spec.mirror('bar')
-    assert_equal 'foo', @spec.mirrors.shift
-    assert_equal 'bar', @spec.mirrors.shift
-  end
-
-  def test_checksum_setters
-    assert_nil @spec.checksum
-    @spec.sha1('baadidea'*5)
-    assert_equal Checksum.new(:sha1, 'baadidea'*5), @spec.checksum
-    @spec.sha256('baadidea'*8)
-    assert_equal Checksum.new(:sha256, 'baadidea'*8), @spec.checksum
-  end
-
-  def test_download_strategy
-    strategy = Object.new
-    DownloadStrategyDetector.
-      expects(:detect).with("foo", nil).returns(strategy)
-    @spec.url("foo")
-    assert_equal strategy, @spec.download_strategy
-  end
-
-  def test_verify_download_integrity_missing
-    fn = Object.new
-    checksum = @spec.sha1('baadidea'*5)
-
-    fn.expects(:verify_checksum).
-      with(checksum).raises(ChecksumMissingError)
-    fn.expects(:sha1)
-
-    shutup { @spec.verify_download_integrity(fn) }
-  end
-
-  def test_verify_download_integrity_mismatch
-    fn = Object.new
-    checksum = @spec.sha1('baadidea'*5)
-
-    fn.expects(:verify_checksum).with(checksum).
-      raises(ChecksumMismatchError.new(checksum, Object.new))
-
-    shutup do
-      assert_raises(ChecksumMismatchError) do
-        @spec.verify_download_integrity(fn)
-      end
+  def test_raises_when_duplicate_resources_are_defined
+    @spec.resource('foo') { url 'foo-1.0' }
+    assert_raises(DuplicateResourceError) do
+      @spec.resource('foo') { url 'foo-1.0' }
     end
+  end
+
+  def test_raises_when_accessing_missing_resources
+    assert_raises(ResourceMissingError) { @spec.resource('foo') }
+  end
+
+  def test_resource_owner
+    @spec.resource('foo') { url 'foo-1.0' }
+    @spec.owner = stub(:name => 'some_name')
+    assert_equal 'some_name', @spec.name
+    @spec.resources.each_value { |r| assert_equal @spec, r.owner }
+  end
+
+  def test_resource_without_version_receives_owners_version
+    @spec.url('foo-42')
+    @spec.resource('bar') { url 'bar' }
+    @spec.owner = stub(:name => 'some_name')
+    assert_version_equal '42', @spec.resource('bar').version
+  end
+
+  def test_option
+    @spec.option('foo')
+    assert @spec.build.has_option? 'foo'
+  end
+
+  def test_option_raises_when_begins_with_dashes
+    assert_raises(RuntimeError) { @spec.option('--foo') }
+  end
+
+  def test_option_raises_when_name_empty
+    assert_raises(RuntimeError) { @spec.option('') }
+  end
+
+  def test_option_accepts_symbols
+    @spec.option(:foo)
+    assert @spec.build.has_option? 'foo'
+  end
+
+  def test_depends_on
+    @spec.depends_on('foo')
+    assert_equal 'foo', @spec.deps.first.name
+  end
+
+  def test_dependency_option_integration
+    @spec.depends_on 'foo' => :optional
+    @spec.depends_on 'bar' => :recommended
+    assert @spec.build.has_option?('with-foo')
+    assert @spec.build.has_option?('without-bar')
+  end
+
+  def test_explicit_options_override_default_dep_option_description
+    @spec.option('with-foo', 'blah')
+    @spec.depends_on('foo' => :optional)
+    assert_equal 'blah', @spec.build.first.description
   end
 end
 
@@ -156,8 +110,8 @@ class BottleTests < Test::Unit::TestCase
     end
 
     checksums.each_pair do |cat, sha1|
-      assert_equal Checksum.new(:sha1, sha1),
-        @spec.instance_variable_get(:@sha1)[cat]
+      hsh, _ = @spec.instance_variable_get(:@sha1).fetch_bottle_for(cat)
+      assert_equal Checksum.new(:sha1, sha1), hsh
     end
   end
 

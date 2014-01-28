@@ -1,9 +1,9 @@
 require 'formula'
 
 class Miniupnpc < Formula
-  homepage 'http://miniupnp.free.fr'
-  url 'http://miniupnp.free.fr/files/download.php?file=miniupnpc-1.8.20130503.tar.gz'
-  sha1 '260f3304246fde1833b8aa344892d950199a32a6'
+  homepage 'http://miniupnp.tuxfamily.org'
+  url 'http://miniupnp.tuxfamily.org/files/download.php?file=miniupnpc-1.8.20131007.tar.gz'
+  sha1 'e2881e9583e90d6706abe0663330f46579efc64a'
 
   def install
     # Reported upstream:

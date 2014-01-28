@@ -2,12 +2,11 @@ require 'formula'
 
 class BulkExtractor < Formula
   homepage 'https://github.com/simsong/bulk_extractor/wiki'
-  url 'http://digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.4.0.tar.gz'
-  sha1 '177232620c36fe9b5a3998666b5fba89580d3d85'
+  url 'http://digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.4.4.tar.gz'
+  sha1 'e95ed6db74d9998842089b53eb4322dd0a730a82'
 
   depends_on :autoconf
   depends_on :automake
-  depends_on :python
 
   depends_on 'afflib' => :optional
   depends_on 'exiv2' => :optional
@@ -20,7 +19,6 @@ class BulkExtractor < Formula
   end
 
   def install
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
@@ -29,16 +27,10 @@ class BulkExtractor < Formula
     # Install documentation
     (share/'bulk_extractor/doc').install Dir['doc/*.{html,txt,pdf}']
 
-    python do
-      (lib/python.xy/"site-packages").install Dir['python/*.py']
-    end
+    (lib/'python2.7/site-packages').install Dir['python/*.py']
 
     # Install the GUI the Homebrew way
     libexec.install 'java_gui/BEViewer.jar'
     bin.write_jar_script libexec/"BEViewer.jar", "BEViewer", "-Xmx1g"
-  end
-
-  def caveats
-    python.standard_caveats if python
   end
 end

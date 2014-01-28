@@ -78,9 +78,11 @@ class FormulaCreator
     @url = url
     path = Pathname.new(url)
     if @name.nil?
+      %r{github.com/\S+/(\S+)/archive/}.match url
+      @name ||= $1
       /(.*?)[-_.]?#{path.version}/.match path.basename
-      @name = $1
-      @path = Formula.path $1 unless $1.nil?
+      @name ||= $1
+      @path = Formula.path @name unless @name.nil?
     else
       @path = Formula.path name
     end
@@ -102,39 +104,40 @@ class FormulaCreator
       puts "You'll need to add an explicit 'version' to the formula."
     end
 
+    # XXX: why is "and version" here?
     unless ARGV.include? "--no-fetch" and version
-      spec = SoftwareSpec.new(url, version)
-      strategy = spec.download_strategy
-      @sha1 = strategy.new(name, spec).fetch.sha1 if strategy == CurlDownloadStrategy
+      r = Resource.new
+      r.url, r.version, r.owner = url, version, self
+      @sha1 = r.fetch.sha1 if r.download_strategy == CurlDownloadStrategy
     end
 
     path.write ERB.new(template, nil, '>').result(binding)
   end
 
   def template; <<-EOS.undent
-    require 'formula'
+    require "formula"
 
-    # Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
-    #                #{HOMEBREW_PREFIX}/Library/Contributions/example-formula.rb
+    # Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
+    #                #{HOMEBREW_CONTRIB}/example-formula.rb
     # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
     class #{Formula.class_s name} < Formula
-      homepage ''
-      url '#{url}'
-    <% if not version.nil? and not version.detected_from_url? %>
-      version '#{version}'
+      homepage ""
+      url "#{url}"
+    <% unless version.nil? or version.detected_from_url? %>
+      version "#{version}"
     <% end %>
-      sha1 '#{sha1}'
+      sha1 "#{sha1}"
 
     <% if mode == :cmake %>
-      depends_on 'cmake' => :build
+      depends_on "cmake" => :build
     <% elsif mode.nil? %>
-      # depends_on 'cmake' => :build
+      # depends_on "cmake" => :build
     <% end %>
       depends_on :x11 # if your formula requires any X11/XQuartz components
 
       def install
-        # ENV.j1  # if your formula's build system can't parallelize
+        # ENV.deparallelize  # if your formula fails when building in parallel
 
     <% if mode == :cmake %>
         system "cmake", ".", *std_cmake_args
@@ -161,6 +164,9 @@ class FormulaCreator
         # This test will fail and we won't accept that! It's enough to just replace
         # "false" with the main program this formula installs, but it'd be nice if you
         # were more thorough. Run the test with `brew test #{name}`.
+        #
+        # The installed folder is not in the path, so use the entire path to any
+        # executables being tested: `system "\#{bin}/program", "do", "something"`.
         system "false"
       end
     end

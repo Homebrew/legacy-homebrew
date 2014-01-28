@@ -2,8 +2,9 @@ require 'formula'
 
 class Gnupg < Formula
   homepage 'http://www.gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.14.tar.bz2'
-  sha1 '6202181ba2871fb3448c751a573b4ae0c4770806'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.16.tar.bz2'
+  mirror 'http://mirror.switch.ch/ftp/mirror/gnupg/gnupg/gnupg-1.4.16.tar.bz2'
+  sha1 '0bf5e475f3eb6f33d5474d017fe5bf66070e43f4'
 
   option '8192', 'Build with support for private keys of up to 8192 bits'
 

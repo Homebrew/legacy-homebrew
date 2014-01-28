@@ -6,11 +6,14 @@ class Fuse4x < Formula
   sha1 '3a9700f716eff930dcd2426772c642a09adcc73a'
 
   # Always use newer versions of these tools
+  depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
 
   depends_on 'gettext'
   depends_on 'fuse4x-kext'
+
+  conflicts_with 'osxfuse', :because => 'both install `fuse.pc`'
 
   def install
     # Build universal if the hardware can handle it---otherwise 32 bit only

@@ -11,4 +11,8 @@ class Pwgen < Formula
                           "--mandir=#{man}"
     system "make install"
   end
+
+  test do
+    system "#{bin}/pwgen", '--secure', '20', '10'
+  end
 end

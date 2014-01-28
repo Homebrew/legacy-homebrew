@@ -7,7 +7,6 @@ class Tree < Formula
 
   def install
     ENV.append 'CFLAGS', '-fomit-frame-pointer'
-    ENV.append 'CFLAGS', '-no-cpp-precomp' unless ENV.compiler == :clang
     objs = 'tree.o unix.o html.o xml.o hash.o color.o strverscmp.o'
 
     system "make", "prefix=#{prefix}",
@@ -17,5 +16,9 @@ class Tree < Formula
                    "LDFLAGS=#{ENV.ldflags}",
                    "OBJS=#{objs}",
                    "install"
+  end
+
+  test do
+    system "#{bin}/tree", prefix
   end
 end

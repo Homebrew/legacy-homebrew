@@ -2,8 +2,8 @@ require 'formula'
 
 class SharedMimeInfo < Formula
   homepage 'http://www.freedesktop.org/wiki/Software/shared-mime-info'
-  url 'http://freedesktop.org/~hadess/shared-mime-info-1.1.tar.xz'
-  sha1 '752668b0cc5729433c99cbad00f21241ec4797ef'
+  url 'http://freedesktop.org/~hadess/shared-mime-info-1.2.tar.xz'
+  sha1 '4c1598e30c632f1f9e825d95da7e3a1f47a32948'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build

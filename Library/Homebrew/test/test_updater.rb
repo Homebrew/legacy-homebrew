@@ -90,4 +90,15 @@ class UpdaterTests < Test::Unit::TestCase
       Pathname('someuser-sometap/custom-formula.rb'),
     ], @report.tapped_formula_for(:A)
   end
+
+  def test_update_homebrew_with_removed_formulae
+    perform_update(fixture('update_git_diff_output_with_removed_formulae'))
+    assert @updater.expectations_met?
+    assert_equal %w{libgsasl}, @report.select_formula(:D)
+  end
+
+  def test_update_homebrew_with_changed_filetype
+    perform_update(fixture('update_git_diff_output_with_changed_filetype'))
+    assert @updater.expectations_met?
+  end
 end

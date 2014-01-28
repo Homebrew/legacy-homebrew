@@ -2,13 +2,15 @@ require 'formula'
 
 class Yaws < Formula
   homepage 'http://yaws.hyber.org'
-  url 'http://yaws.hyber.org/download/yaws-1.94.tar.gz'
-  sha1 '36295e40bb4db1812901c31d41152f942a63b5cc'
+  url 'https://github.com/klacke/yaws/archive/yaws-1.98.tar.gz'
+  sha1 'a4628ef14f13ac33e4ace1b679e600a9fbd2f1ba'
+  head 'https://github.com/klacke/yaws.git'
 
   option "without-yapp", "Omit yaws applications"
   option '32-bit'
 
   depends_on 'erlang'
+  depends_on 'autoconf' => :build
 
   # the default config expects these folders to exist
   skip_clean 'var/log/yaws'
@@ -23,21 +25,27 @@ class Yaws < Formula
       end
     end
 
-    cd 'yaws' do
-      system "./configure", "--prefix=#{prefix}"
-      system "make install"
+    system "autoconf"
+    system "./configure", "--prefix=#{prefix}"
+    system "make install"
 
-      unless build.include? 'without-yapp'
-        cd 'applications/yapp' do
-          system "make"
-          system "make install"
-        end
+    unless build.include? 'without-yapp'
+      cd 'applications/yapp' do
+        system "make"
+        system "make install"
       end
     end
 
     # the default config expects these folders to exist
-    (var/'log/yaws').mkpath
     (lib/'yaws/examples/ebin').mkpath
     (lib/'yaws/examples/include').mkpath
+
+    (var/'log/yaws').mkpath
+    (var/'yaws/www').mkpath
   end
+
+  def test
+    system bin/'yaws', '--version'
+  end
+
 end

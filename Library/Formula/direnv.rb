@@ -2,8 +2,8 @@ require 'formula'
 
 class Direnv < Formula
   homepage 'http://www.direnv.net'
-  url 'https://github.com/zimbatm/direnv/archive/v2.0.1.tar.gz'
-  sha1 '9942d40f96778f44c370c854360faca05d9a91af'
+  url 'https://github.com/zimbatm/direnv/archive/v2.2.1.tar.gz'
+  sha1 '8bf456b800be3fb5f340e168d61aae713bcc87d1'
 
   head 'https://github.com/zimbatm/direnv.git'
 

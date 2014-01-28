@@ -2,8 +2,8 @@ require 'formula'
 
 class Liblinear < Formula
   homepage 'http://www.csie.ntu.edu.tw/~cjlin/liblinear/'
-  url 'http://www.csie.ntu.edu.tw/~cjlin/liblinear/oldfiles/liblinear-1.93.tar.gz'
-  sha1 '88aac78a7ba163a3cd528e934219a56c0e1e2d86'
+  url 'http://www.csie.ntu.edu.tw/~cjlin/liblinear/oldfiles/liblinear-1.94.tar.gz'
+  sha1 '19678355e6c933b7ec133e07fef77796e50df0d5'
 
   # Fix sonames
   def patches

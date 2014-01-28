@@ -5,15 +5,14 @@ class Dash < Formula
   url 'http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.7.tar.gz'
   sha1 'a3ebc16f2e2c7ae8adf64e5e62ae3dcb631717c6'
 
-  head 'https://git.kernel.org/pub/scm/utils/dash/dash.git'
-
-  depends_on :automake if build.head?
+  head do
+    url 'https://git.kernel.org/pub/scm/utils/dash/dash.git'
+    depends_on :autoconf
+    depends_on :automake
+  end
 
   def install
-    if build.head?
-      system "aclocal"
-      system "autoreconf -f -i -Wall,no-obsolete"
-    end
+    system "./autogen.sh" if build.head?
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-libedit",

@@ -17,6 +17,10 @@ end
 
 
 class ConfigureTests < Test::Unit::TestCase
+  def teardown
+    HOMEBREW_CACHE.rmtree
+  end
+
   def test_detect_failed_configure
     f = ConfigureFails.new
     shutup { f.brew { f.install } }
@@ -27,6 +31,10 @@ end
 
 
 class InstallTests < Test::Unit::TestCase
+  def teardown
+    HOMEBREW_CACHE.rmtree
+  end
+
   def temporary_install f
     # Brew and install the given formula
     shutup do

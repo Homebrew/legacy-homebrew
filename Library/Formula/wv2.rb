@@ -6,6 +6,7 @@ class Wv2 < Formula
   sha1 'f04fceb02c048ae46fbe679caaf694e40214a547'
 
   depends_on 'pkg-config' => :build
+  depends_on 'cmake' => :build
   depends_on 'glib'
   depends_on 'libgsf'
 

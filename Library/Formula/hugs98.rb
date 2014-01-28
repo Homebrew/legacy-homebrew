@@ -9,8 +9,7 @@ class Hugs98 < Formula
   depends_on 'readline'
 
   fails_with :clang do
-    build 425
-    cause %[ERROR "libraries/bootlib/Data/Dynamic.hs" - Module "Main" already loaded]
+    cause %[ERROR "../libraries/bootlib/Data/Dynamic.hs" - Module "Main" already loaded]
   end
 
   def patches

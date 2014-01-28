@@ -8,12 +8,20 @@ class VorbisTools < Formula
   depends_on 'libogg'
   depends_on 'libvorbis'
   depends_on 'libao'
-  depends_on 'flac'
+  depends_on 'flac' => :optional
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--disable-nls",
-                          "--prefix=#{prefix}"
+
+    args = [
+      "--disable-debug",
+      "--disable-dependency-tracking",
+      "--disable-nls",
+      "--prefix=#{prefix}"
+    ]
+
+    args << "--without-flac" unless build.with? 'flac'
+
+    system "./configure", *args
     system "make install"
   end
 end

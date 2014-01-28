@@ -2,11 +2,11 @@ require 'formula'
 
 class Ape < Formula
   homepage 'http://www.ape-project.org/'
-  url 'https://github.com/APE-Project/APE_Server/archive/v1.1.0.tar.gz'
-  sha1 '5543822a0455f59ae249a85740d8d040bb8c03cf'
+  url 'https://github.com/APE-Project/APE_Server/archive/v1.1.2.tar.gz'
+  sha1 'a2710108c0130fb4c00777ddde238f68aa4bc0e3'
 
   fails_with :clang do
-    build 425
+    build 500
     cause 'multiple configure and compile errors'
   end
 

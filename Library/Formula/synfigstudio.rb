@@ -2,9 +2,11 @@ require 'formula'
 
 class Synfigstudio < Formula
   homepage 'http://synfig.org'
-  url 'http://downloads.sourceforge.net/project/synfig/synfigstudio/0.63.05/synfigstudio-0.63.05.tar.gz'
-  sha1 '3e8f590b2b1b3cfdef7ecc898fcef3c9254f21e2'
+  url 'http://downloads.sourceforge.net/project/synfig/releases/0.64.1/source/synfigstudio-0.64.1.tar.gz'
+  sha1 '0ba926d567fbfb79ba84899a2fcd79e54e33d4a4'
 
+  depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on 'gettext'
   depends_on 'libsigc++'
   depends_on 'gtkmm'

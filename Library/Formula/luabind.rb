@@ -10,18 +10,24 @@ class Luabind < Formula
   depends_on 'boost-build' => :build
 
   def patches
-  [
-    # patch Jamroot to perform lookup for shared objects with .dylib suffix
-    "https://raw.github.com/gist/3728987/052251fcdc23602770f6c543be9b3e12f0cac50a/Jamroot.diff",
-    # apply upstream commit to enable building with clang
-    "https://github.com/luabind/luabind/commit/3044a9053ac50977684a75c4af42b2bddb853fad.diff"
-  ]
+    p = [
+      # patch Jamroot to perform lookup for shared objects with .dylib suffix
+      "https://gist.github.com/DennisOSRM/3728987/raw/052251fcdc23602770f6c543be9b3e12f0cac50a/Jamroot.diff",
+      # apply upstream commit to enable building with clang
+      "https://github.com/luabind/luabind/commit/3044a9053ac50977684a75c4af42b2bddb853fad.diff",
+    ]
+    if MacOS.version >= :mavericks
+      # include C header that is not pulled in automatically on OS X 10.9 anymore
+      # submitted https://github.com/luabind/luabind/pull/20
+      p << "https://gist.github.com/DennisOSRM/a246514bf7d01631dda8/raw/0e83503dbf862ebfb6ac063338a6d7bca793f94d/object_rep.diff"
+    end
+    p
   end
 
   def install
     args = [
       "release",
-      "install"
+      "install",
     ]
     if ENV.compiler == :clang
       args << "--toolset=clang"

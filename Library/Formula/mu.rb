@@ -16,7 +16,13 @@ class Mu < Formula
   url 'http://mu0.googlecode.com/files/mu-0.9.9.5.tar.gz'
   sha1 '825e3096e0763a12b8fdf77bd41625ee15ed09eb'
 
-  head 'https://github.com/djcb/mu.git'
+  head do
+    url 'https://github.com/djcb/mu.git'
+
+    depends_on 'autoconf' => :build
+    depends_on 'automake' => :build
+    depends_on 'libtool' => :build
+  end
 
   option 'with-emacs', 'Build with emacs support'
 
@@ -27,11 +33,6 @@ class Mu < Formula
   depends_on 'xapian'
   depends_on Emacs23Installed if build.with? 'emacs'
 
-  if build.head?
-    depends_on 'automake' => :build
-    depends_on 'libtool' => :build
-  end
-
   env :std if build.with? 'emacs'
 
   def install
@@ -39,11 +40,17 @@ class Mu < Formula
     # shipped by default with Mac OS X is too old.
     ENV['EMACS'] = 'no' unless build.with? 'emacs'
 
+    # I dunno.
+    # https://github.com/djcb/mu/issues/332
+    # https://github.com/Homebrew/homebrew/issues/25524
+    ENV.delete 'MACOSX_DEPLOYMENT_TARGET'
+
     system 'autoreconf', '-ivf' if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-gui=none"
     system "make"
+    system "make test"
     system "make install"
   end
 

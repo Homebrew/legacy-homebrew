@@ -5,6 +5,7 @@ class Libdnet < Formula
   url 'http://libdnet.googlecode.com/files/libdnet-1.12.tgz'
   sha1 '71302be302e84fc19b559e811951b5d600d976f8'
 
+  depends_on :autoconf
   depends_on :automake => :build
   depends_on :libtool => :build
   depends_on :python => :optional

@@ -2,29 +2,32 @@ require 'formula'
 
 class Libxml2 < Formula
   homepage 'http://xmlsoft.org'
-  url 'ftp://xmlsoft.org/libxml2/libxml2-2.9.1.tar.gz'
-  mirror 'http://xmlsoft.org/sources/libxml2-2.9.1.tar.gz'
-  sha256 'fd3c64cb66f2c4ea27e934d275904d92cec494a8e8405613780cbc8a71680fdb'
 
-  head 'https://git.gnome.org/browse/libxml2', :using => :git
+  stable do
+    url 'ftp://xmlsoft.org/libxml2/libxml2-2.9.1.tar.gz'
+    mirror 'http://xmlsoft.org/sources/libxml2-2.9.1.tar.gz'
+    sha256 'fd3c64cb66f2c4ea27e934d275904d92cec494a8e8405613780cbc8a71680fdb'
 
-  keg_only :provided_by_osx
+    # 2.9.1 cannot build with Python 2.6: https://github.com/Homebrew/homebrew/issues/20249
+    if MacOS.version <= :snow_leopard
+      depends_on 'python' => :optional
+    else
+      depends_on :python => :recommended
+    end
+  end
 
-  option :universal
+  head do
+    url 'https://git.gnome.org/browse/libxml2', :using => :git
 
-  if build.head?
     depends_on :python => :recommended # satisfied by Python 2.6+
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
-  else
-    # 2.9.1 cannot build with Python 2.6: https://github.com/mxcl/homebrew/issues/20249
-    if MacOS.version <= :snow_leopard
-      depends_on :python => ["2.7", :optional]
-    else
-      depends_on :python => ["2.7", :recommended]
-    end
   end
+
+  keg_only :provided_by_osx
+
+  option :universal
 
   fails_with :llvm do
     build 2326
@@ -45,38 +48,12 @@ class Libxml2 < Formula
     ENV.deparallelize
     system "make install"
 
-    python do
-      # This python do block sets up the site-packages in the Cellar.
+    if build.with? 'python'
       cd 'python' do
         # We need to insert our include dir first
         inreplace 'setup.py', 'includes_dir = [', "includes_dir = ['#{include}', '#{MacOS.sdk_path}/usr/include',"
-        system python, 'setup.py', "install", "--prefix=#{prefix}"
+        system "python", 'setup.py', "install", "--prefix=#{prefix}"
       end
-      # This is keg_only but it makes sense to have the python bindings:
-      ohai 'Linking python bindings'
-      Dir["#{python.site_packages}/*"].each{ |f|
-        path = python.global_site_packages/(Pathname.new(f).basename)
-        puts path
-        rm path if path.exist?
-        ln_s f, path
-      }
-    end if build.with? 'python'
-  end
-
-  def caveats
-    if build.with? 'python'
-      <<-EOS.undent
-        Even if this formula is keg_only, the python bindings have been linked
-        into Homebrew's global site-packages for your convenience.
-          #{python.global_site_packages}
-
-      EOS
-    end
-  end
-
-  test do
-    python do
-      system python, '-c', "import libxml2"
     end
   end
 end

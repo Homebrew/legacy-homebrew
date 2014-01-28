@@ -2,8 +2,8 @@ require 'formula'
 
 class Pango < Formula
   homepage 'http://www.pango.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.34/pango-1.34.1.tar.xz'
-  sha256 '1aea30df34a8ae4fcce71afd22aa5b57224b52916d46e3ea81ff9f1eb130e64c'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pango/1.36/pango-1.36.1.tar.xz'
+  sha256 '42e4b51cdc99e6878a9ea2a5ef2b31b79c1033f8518726df738a3c54c90e59f8'
 
   option 'without-x', 'Build without X11 support'
 
@@ -14,6 +14,7 @@ class Pango < Formula
   depends_on 'harfbuzz'
   depends_on 'fontconfig'
   depends_on :x11 unless build.without? 'x'
+  depends_on 'gobject-introspection'
 
   fails_with :llvm do
     build 2326
@@ -23,10 +24,11 @@ class Pango < Formula
   def install
     args = %W[
       --disable-dependency-tracking
+      --disable-silent-rules
       --prefix=#{prefix}
       --enable-man
       --with-html-dir=#{share}/doc
-      --disable-introspection
+      --enable-introspection=yes
     ]
 
     if build.include? 'without-x'

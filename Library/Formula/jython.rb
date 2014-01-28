@@ -13,6 +13,7 @@ class Jython < Formula
 
   def install
     system "java", "-jar", cached_download, "-s", "-d", libexec
+    inreplace libexec/'bin/jython', 'PRG=$0', "PRG=#{libexec}/bin/jython"
     bin.install_symlink libexec/'bin/jython'
   end
 end

@@ -6,6 +6,11 @@ class Stunnel < Formula
   mirror 'http://ftp.nluug.nl/pub/networking/stunnel/stunnel-4.56.tar.gz'
   sha256 '9cae2cfbe26d87443398ce50d7d5db54e5ea363889d5d2ec8d2778a01c871293'
 
+  # We need Homebrew OpenSSL for TLSv1.2 support
+  option 'with-brewed-openssl', 'Build with Homebrew OpenSSL instead of the system version'
+
+  depends_on "openssl" if MacOS.version <= :leopard or build.with?('brewed-openssl')
+
   # This patch installs a bogus .pem in lieu of interactive cert generation.
   # - additionally stripping carriage-returns
   def patches
@@ -13,11 +18,20 @@ class Stunnel < Formula
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-libwrap",
-                          "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}",
-                          "--mandir=#{man}"
+
+    args = [
+      "--disable-dependency-tracking",
+      "--disable-libwrap",
+      "--prefix=#{prefix}",
+      "--sysconfdir=#{etc}",
+      "--mandir=#{man}",
+    ]
+
+    if MacOS.version <= :leopard or build.with?('brewed-openssl')
+      args << "--with-ssl-dir=#{Formula.factory('openssl').opt_prefix}"
+    end
+
+    system "./configure", *args
     system "make install"
   end
 

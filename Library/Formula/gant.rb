@@ -2,9 +2,9 @@ require 'formula'
 
 class Gant < Formula
   homepage 'http://gant.codehaus.org/'
-  url 'http://dist.codehaus.org/gant/distributions/gant-1.9.8-_groovy-2.0.0.tgz'
-  version '1.9.8'
-  sha1 '995c33754dfdb28f2c7ab1f2c3f6d73db41a5cca'
+  url 'http://dist.codehaus.org/gant/distributions/gant-1.9.10-_groovy-2.2.0.zip'
+  version '1.9.10'
+  sha1 '90095416f659b626863b38acd4ca83d2ff65285a'
 
   depends_on 'groovy'
 

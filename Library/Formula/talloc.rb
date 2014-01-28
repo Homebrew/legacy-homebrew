@@ -5,6 +5,8 @@ class Talloc < Formula
   url 'http://www.samba.org/ftp/talloc/talloc-2.0.8.tar.gz'
   sha1 '5ca7710a3f95a1db873c97fcf83f92dddfd57907'
 
+  conflicts_with 'samba', :because => 'both install `include/talloc.h`'
+
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-rpath"
     system "make install"

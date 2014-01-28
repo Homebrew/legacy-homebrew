@@ -12,7 +12,6 @@ class Shocco < Formula
   sha1 'e29d58fb8109040b4fb4a816f330bb1c67064f6d'
 
   depends_on MarkdownProvider
-  depends_on :python
 
   # Include a private copy of this Python library
   resource 'pygments' do
@@ -25,7 +24,7 @@ class Shocco < Formula
   end
 
   def install
-    resource('pygments').stage { libexec.install 'pygmentize','pygments' }
+    libexec.install resource('pygments').files('pygmentize', 'pygments')
 
     system "./configure",
       "PYGMENTIZE=#{libexec}/pygmentize",

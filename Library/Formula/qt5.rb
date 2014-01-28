@@ -1,18 +1,35 @@
 require 'formula'
 
-class Qt5 < Formula
-  homepage 'http://qt-project.org/'
-  url 'http://download.qt-project.org/official_releases/qt/5.1/5.1.0/single/qt-everywhere-opensource-src-5.1.0.tar.gz'
-  sha1 '12d706124dbfac3d542dd3165176a978d478c085'
+class Qt5HeadDownloadStrategy < GitDownloadStrategy
+  include FileUtils
 
-  bottle do
-    revision 1
-    sha1 '559797c1240c758aea1755b664fb898d492fca03' => :mountain_lion
-    sha1 '67d969a4a260f4576f3fcaf5e1cef23edfd35177' => :lion
-    sha1 '61cfa853784d2493ffa00b3e2897f6f46df5815f' => :snow_leopard
+  def support_depth?
+    # We need to make a local clone so we can't use "--depth 1"
+    false
   end
 
-  head 'git://gitorious.org/qt/qt5.git', :branch => 'stable'
+  def stage
+    @clone.cd { reset }
+    safe_system 'git', 'clone', @clone, '.'
+    ln_s @clone, 'qt'
+    safe_system './init-repository', '--mirror', "#{Dir.pwd}/"
+    rm 'qt'
+  end
+end
+
+class Qt5 < Formula
+  homepage 'http://qt-project.org/'
+  url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.0/single/qt-everywhere-opensource-src-5.2.0.tar.gz'
+  sha1 'd0374c769a29886ee61f08a6386b9af39e861232'
+  head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
+    :using => Qt5HeadDownloadStrategy
+
+  bottle do
+    revision 3
+    sha1 'dc89426ad513d84d7df6869340070cd6b663906c' => :mavericks
+    sha1 '041ea93c80d04f5a43b77d69ce0d621df13cc389' => :mountain_lion
+    sha1 'c427063895302623a8e17248b523f722a9109dea' => :lion
+  end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
@@ -23,25 +40,31 @@ class Qt5 < Formula
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
 
-  odie 'qt5: --with-qtdbus has been renamed to --with-d-bus' if ARGV.include? '--with-qtdbus'
-  odie 'qt5: --with-demos-examples is no longer supported' if ARGV.include? '--with-demos-examples'
-  odie 'qt5: --with-debug-and-release is no longer supported' if ARGV.include? '--with-debug-and-release'
+  odie 'qt5: --with-qtdbus has been renamed to --with-d-bus' if build.include? 'with-qtdbus'
+  odie 'qt5: --with-demos-examples is no longer supported' if build.include? 'with-demos-examples'
+  odie 'qt5: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
 
   def install
+    # fixed hardcoded link to plugin dir: https://bugreports.qt-project.org/browse/QTBUG-29188
+    inreplace "qttools/src/macdeployqt/macdeployqt/main.cpp", "deploymentInfo.pluginPath = \"/Developer/Applications/Qt/plugins\";",
+              "deploymentInfo.pluginPath = \"#{prefix}/plugins\";"
+
     ENV.universal_binary if build.universal?
     args = ["-prefix", prefix,
             "-system-zlib",
+            "-qt-libpng", "-qt-libjpeg",
             "-confirm-license", "-opensource",
             "-nomake", "examples",
+            "-nomake", "tests",
             "-release"]
-
-    # In latest head `-nomake demos` is no longer recognized
-    args << "-nomake" << "demos" unless build.head?
 
     unless MacOS::CLT.installed?
       # ... too stupid to find CFNumber.h, so we give a hint:
       ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
     end
+
+    # https://bugreports.qt-project.org/browse/QTBUG-34382
+    args << "-no-xcb"
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
@@ -53,10 +76,6 @@ class Qt5 < Formula
       args << "-I#{dbus_opt}/include/dbus-1.0"
       args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
-    end
-
-    unless build.with? 'docs'
-      args << "-nomake" << "docs"
     end
 
     if MacOS.prefer_64_bit? or build.universal?
@@ -73,14 +92,10 @@ class Qt5 < Formula
     system "make"
     ENV.j1
     system "make install"
-
-    # Fix https://github.com/mxcl/homebrew/issues/20020 (upstream: https://bugreports.qt-project.org/browse/QTBUG-32417)
-    system "install_name_tool", "-change", "#{pwd}/qt-everywhere-opensource-src-5.1.0/qtwebkit/lib/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets", #old
-                                           "#{lib}/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets",  #new
-                                           "#{libexec}/QtWebProcess" # in this lib
-    system "install_name_tool", "-change", "#{pwd}/qt-everywhere-opensource-src-5.1.0/qtwebkit/lib/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{lib}/QtWebKit.framework/Versions/5/QtWebKit",
-                                           "#{prefix}/qml/QtWebKit/libqmlwebkitplugin.dylib"
+    if build.with? 'docs'
+      system "make", "docs"
+      system "make", "install_docs"
+    end
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     cd prefix do

@@ -6,6 +6,8 @@ class Pdf2image < Formula
   sha1 '2acc8d1597eb470fce761d3f35b548318d446c2a'
 
   depends_on :x11
+  depends_on :freetype
+  depends_on 'ghostscript'
 
   conflicts_with 'poppler', 'xpdf',
     :because => 'pdf2image, poppler, and xpdf install conflicting executables'
@@ -16,6 +18,9 @@ class Pdf2image < Formula
     # Fix manpage install location. See:
     # http://code.google.com/p/pdf2json/issues/detail?id=2
     inreplace "Makefile", "/man/", "/share/man/"
+
+    # Fix incorrect variable name in Makefile
+    inreplace "src/Makefile", "$(srcdir)", "$(SRCDIR)"
 
     # Add X11 libs manually; the Makefiles don't use LDFLAGS properly
     inreplace ["src/Makefile", "xpdf/Makefile"],

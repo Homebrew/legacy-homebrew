@@ -8,6 +8,7 @@ class Twemcache < Formula
 
   option "enable-debug", "Debug mode with assertion panics enabled"
 
+  depends_on :autoconf
   depends_on :automake
   depends_on 'libevent'
 

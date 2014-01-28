@@ -2,9 +2,12 @@ require 'formula'
 
 class Coreutils < Formula
   homepage 'http://www.gnu.org/software/coreutils'
-  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.21.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.21.tar.xz'
-  sha256 'adaa44bdab3fa5eb352e80d8a31fdbf957b78653d0c2cd30d63e161444288e18'
+  url 'http://ftpmirror.gnu.org/coreutils/coreutils-8.22.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.22.tar.xz'
+  sha256 '5b3e94998152c017e6c75d56b9b994188eb71bf46d4038a642cb9141f6ff1212'
+
+  conflicts_with 'ganglia', :because => 'both install `gstat` binaries'
+  conflicts_with 'idutils', :because => 'both install `gid` and `gid.1`'
 
   depends_on 'xz' => :build
 

@@ -7,8 +7,8 @@ class Fox < Formula
 
   # Development and stable branches are incompatible
   devel do
-    url 'ftp://ftp.fox-toolkit.org/pub/fox-1.7.40.tar.gz'
-    sha1 'eaec035e2f28c262c5cadbe23b21743ff10f5ade'
+    url 'ftp://ftp.fox-toolkit.org/pub/fox-1.7.45.tar.gz'
+    sha1 'bdd50d1bcadb29ebeb634aba2bd6b887d328953b'
   end
 
   depends_on :x11

@@ -2,8 +2,8 @@ require 'formula'
 
 class Logstash < Formula
   homepage 'http://logstash.net/'
-  url 'https://logstash.objects.dreamhost.com/release/logstash-1.1.13-flatjar.jar'
-  sha1 '8eb1bde96a2d92b2c8157330858b4da190df8900'
+  url 'https://download.elasticsearch.org/logstash/logstash/logstash-1.3.3-flatjar.jar'
+  sha1 '8effc7027093188b968fed37513ca647f96d6d8c'
 
   def install
     libexec.install "logstash-#{version}-flatjar.jar"

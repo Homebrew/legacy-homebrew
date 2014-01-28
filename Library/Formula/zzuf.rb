@@ -5,6 +5,8 @@ class Zzuf < Formula
   url 'http://caca.zoy.org/files/zzuf/zzuf-0.13.tar.gz'
   sha1 '19f904d63d045194885639c381a607ca86a319b5'
 
+  conflicts_with 'libzzip', :because => 'both install `zzcat` binaries'
+
   def patches
     # Fix OS X-specific bug in zzuf 0.13; see https://trac.macports.org/ticket/29157
     # This has been fixed upstream and should be included in the next release.

@@ -9,7 +9,9 @@ class IcalBuddy < Formula
   head 'http://hasseg.org/git-public/icalBuddy.git'
 
   def install
-    system "make icalBuddy icalBuddy.1 icalBuddyLocalization.1 icalBuddyConfig.1"
+    args = %W[icalBuddy icalBuddy.1 icalBuddyLocalization.1
+      icalBuddyConfig.1 COMPILER=#{ENV.cc}]
+    system "make", *args
     bin.install "icalBuddy"
     man1.install Dir["*.1"]
   end

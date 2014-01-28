@@ -1,7 +1,10 @@
 class Module
   def attr_rw(*attrs)
+    file, line, _ = caller.first.split(":")
+    line = line.to_i
+
     attrs.each do |attr|
-      module_eval <<-EOS, __FILE__, __LINE__ + 1
+      module_eval <<-EOS, file, line
         def #{attr}(val=nil)
           val.nil? ? @#{attr} : @#{attr} = val
         end

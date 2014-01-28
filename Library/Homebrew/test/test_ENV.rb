@@ -117,3 +117,45 @@ class EnvironmentTests < Test::Unit::TestCase
     assert_equal "/bin#{File::PATH_SEPARATOR}/usr/bin", @env['FOO']
   end
 end
+
+module SharedEnvTests
+  def test_switching_compilers_updates_compiler
+    [:clang, :llvm, :gcc, :gcc_4_0].each do |compiler|
+      @env.send(compiler)
+      assert_equal compiler, @env.compiler
+    end
+  end
+end
+
+class StdenvTests < Test::Unit::TestCase
+  include SharedEnvTests
+
+  def setup
+    @env = {}.extend(Stdenv)
+  end
+end
+
+class SuperenvTests < Test::Unit::TestCase
+  include SharedEnvTests
+
+  attr_reader :env, :bin
+
+  def setup
+    @env = {}.extend(Superenv)
+    @bin = HOMEBREW_REPOSITORY/"Library/ENV/#{MacOS::Xcode.version}"
+    bin.mkpath
+  end
+
+  def test_bin
+    assert_equal bin, Superenv.bin
+  end
+
+  def test_initializes_deps
+    assert_equal [], env.deps
+    assert_equal [], env.keg_only_deps
+  end
+
+  def teardown
+    bin.rmtree
+  end
+end

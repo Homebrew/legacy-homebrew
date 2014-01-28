@@ -5,6 +5,7 @@ require 'extend/ARGV'
 require 'extend/string'
 require 'extend/symbol'
 require 'extend/enumerable'
+require 'os'
 require 'utils'
 require 'exceptions'
 require 'set'
@@ -12,7 +13,7 @@ require 'rbconfig'
 
 ARGV.extend(HomebrewArgvExtension)
 
-HOMEBREW_VERSION = '0.9.4'
+HOMEBREW_VERSION = '0.9.5'
 HOMEBREW_WWW = 'http://brew.sh'
 
 def cache
@@ -63,20 +64,20 @@ else
   HOMEBREW_REPOSITORY+"Cellar"
 end
 
-HOMEBREW_LOGS = Pathname.new('~/Library/Logs/Homebrew/').expand_path
+HOMEBREW_LOGS = Pathname.new(ENV['HOMEBREW_LOGS'] || '~/Library/Logs/Homebrew/').expand_path
+
+HOMEBREW_TEMP = Pathname.new(ENV.fetch('HOMEBREW_TEMP', '/tmp'))
 
 RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
 RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
 
 if RUBY_PLATFORM =~ /darwin/
   MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
-  MACOS_VERSION = MACOS_FULL_VERSION[/10\.\d+/].to_f
+  MACOS_VERSION = MACOS_FULL_VERSION[/10\.\d+/]
   OS_VERSION = "Mac OS X #{MACOS_FULL_VERSION}"
-  MACOS = true
 else
-  MACOS_FULL_VERSION = MACOS_VERSION = 0
+  MACOS_FULL_VERSION = MACOS_VERSION = "0"
   OS_VERSION = RUBY_PLATFORM
-  MACOS = false
 end
 
 HOMEBREW_GITHUB_API_TOKEN = ENV["HOMEBREW_GITHUB_API_TOKEN"]
@@ -84,7 +85,10 @@ HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY
 
 HOMEBREW_CURL_ARGS = '-f#LA'
 
-HOMEBREW_GIT_ETC = !ENV['HOMEBREW_GIT_ETC'].nil?
+HOMEBREW_TAP_FORMULA_REGEX = %r{^(\w+)/(\w+)/([^/]+)$}
+HOMEBREW_TAP_DIR_REGEX = %r{#{HOMEBREW_LIBRARY}/Taps/(\w+)-(\w+)}
+HOMEBREW_TAP_PATH_REGEX = Regexp.new(HOMEBREW_TAP_DIR_REGEX.source \
+                                     + %r{/(.*)}.source)
 
 module Homebrew extend self
   include FileUtils
@@ -95,7 +99,7 @@ end
 
 require 'metafiles'
 FORMULA_META_FILES = Metafiles.new
-ISSUES_URL = "https://github.com/mxcl/homebrew/wiki/troubleshooting"
+ISSUES_URL = "https://github.com/Homebrew/homebrew/wiki/troubleshooting"
 HOMEBREW_PULL_OR_COMMIT_URL_REGEX = 'https:\/\/github.com\/(\w+)\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
 
 require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']

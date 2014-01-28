@@ -1,38 +1,61 @@
 require 'formula'
 
 class Dmd < Formula
-  homepage 'http://www.digitalmars.com/d/'
-  url 'http://downloads.dlang.org/releases/2013/dmd.2.063.2.zip'
-  sha1 '774b351132ae4f35f5fd08c32d6dddbe26605337'
+  homepage 'http://dlang.org'
+  url 'https://github.com/D-Programming-Language/dmd/archive/v2.064.2.tar.gz'
+  sha1 '8f88af77aab4c206841d93d7f4cfd399cbe3fdd6'
+
+  resource 'druntime' do
+    url 'https://github.com/D-Programming-Language/druntime/archive/v2.064.2.tar.gz'
+    sha1 '42bc0f252bbb0c71de6789bdf2697b5daf41dd43'
+  end
+
+  resource 'phobos' do
+    url 'https://github.com/D-Programming-Language/phobos/archive/v2.064.2.tar.gz'
+    sha1 'e39489a6c7c60c947559a084cc7619e373d3c464'
+  end
+
+  resource 'tools' do
+    url 'https://github.com/D-Programming-Language/tools/archive/v2.064.2.tar.gz'
+    sha1 '590dfb8cd4b6fea74d03ddf230ec2734e7c71c99'
+  end
 
   def install
-    # clean it up a little first
-    rm Dir['src/*.mak']
-    mv 'license.txt', 'COPYING'
-    mv 'README.TXT', 'README'
+    make_args = ["INSTALL_DIR=#{prefix}", "MODEL=#{Hardware::bits}", "-f", "posix.mak"]
 
-    cd 'osx/bin' do
-      rm 'dmdx.conf'
-      rm 'dmd.conf'
+    system "make", "install", "TARGET_CPU=X86", "RELEASE=1", *make_args
+
+    share.install prefix/'man'
+
+    rm bin/'dmd.conf'
+
+    make_args.unshift "DMD=#{bin}/dmd"
+
+    resource('druntime').stage do
+      system "make", "install", *make_args
     end
 
-    rmtree 'src/dmd'
-    libexec.install 'osx/bin', 'osx/lib', 'src'
+    resource('phobos').stage do
+      system "make", "install", "DRUNTIME_PATH=#{prefix}", "VERSION=#{buildpath}/VERSION", *make_args
+    end
 
-    man.install 'man/man1'
-    man5.install man1/'dmd.conf.5'
-
-    (share+'d/examples').install Dir['samples/d/*.d']
-    (libexec+'bin/dmd.conf').open('w') do |f|
+    (bin/'dmd.conf').open('w+') do |f|
       f.puts "[Environment]"
-      f.puts "DFLAGS=-I#{libexec}/src/phobos -I#{libexec}/src/druntime/import -L-L#{libexec}/lib"
+      f.puts "DFLAGS=-I#{prefix}/import -L-L#{lib}"
     end
-    bin.write_exec_script libexec/'bin/dmd'
-    bin.write_exec_script libexec/'bin/rdmd'
-    bin.write_exec_script libexec/'bin/dman'
+
+    resource('tools').stage do
+      inreplace 'posix.mak' do |s|
+        s.gsub! 'install: $(TOOLS) $(CURL_TOOLS)', 'install: $(TOOLS)'
+        #Remove on next release
+        s.gsub! 'install -t $(DESTDIR)$(PREFIX) $(^)', 'cp $^ $(INSTALL_DIR)/bin'
+      end
+      system "make", "install", *make_args
+    end
   end
+
   def test
-    system "dmd", "#{share}/d/examples/hello.d"
+    system "dmd", "#{prefix}/samples/hello.d"
     system "./hello"
   end
 end

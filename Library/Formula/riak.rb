@@ -1,18 +1,28 @@
 require 'formula'
 
 class Riak < Formula
-  homepage 'http://wiki.basho.com/Riak.html'
-  url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.1/osx/10.8/riak-1.4.1-OSX-x86_64.tar.gz'
-  version '1.4.1'
-  sha256 'ebe68fb9fa2ee87636d2e8bb38d3a8e805c61edbd329fdf648e68933aae79668'
+  homepage 'http://basho.com/riak/'
+  url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.6/osx/10.8/riak-1.4.6-OSX-x86_64.tar.gz'
+  version '1.4.6'
+  sha256 'f837a865565165e00203de4cb343448db4994899ff418ef28eba72fda14aacf1'
+
+  devel do
+    url 'http://s3.amazonaws.com/downloads.basho.com/riak/2.0/2.0.0pre5/osx/10.8/riak-2.0.0pre5-OSX-x86_64.tar.gz'
+    sha1 '2394a7244329b60afd87307e3362d784a1611689'
+    version '2.0.0-pre5'
+  end
 
   depends_on :macos => :mountain_lion
   depends_on :arch => :x86_64
 
   def install
-    prefix.install Dir['*']
-    inreplace Dir["#{lib}/env.sh"] do |s|
-      s.change_make_var! "RUNNER_BASE_DIR", prefix
+    libexec.install Dir['*']
+    inreplace Dir["#{libexec}/lib/env.sh"] do |s|
+      s.change_make_var! "RUNNER_BASE_DIR", prefix/libexec
     end
+    bin.write_exec_script libexec/'bin/riak'
+    bin.write_exec_script libexec/'bin/riak-admin'
+    bin.write_exec_script libexec/'bin/riak-debug'
+    bin.write_exec_script libexec/'bin/search-cmd'
   end
 end

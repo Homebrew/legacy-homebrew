@@ -2,27 +2,49 @@ require 'formula'
 
 class Tbb < Formula
   homepage 'http://www.threadingbuildingblocks.org/'
-  url 'http://threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb41_20130613oss_src.tgz'
-  mirror 'https://distfiles.macports.org/tbb/tbb41_20130613oss_src.tgz'
-  sha1 'b1322bd10c5b05a79f61edb236adc0513b4a1532'
-  version '4.1u4'
+  url 'https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb42_20130725oss_src.tgz'
+  sha1 'f354bd9b67295f65c43531b751e34f483ed8a024'
+  version '4.2'
 
-  fails_with :clang do
-    build 425
-    cause "Undefined symbols for architecture x86_64: vtable for tbb::tbb_exception"
+  option :cxx11
+
+  fails_with :llvm do
+    cause 'llvm is not supported on macos. Add build/macos.llvm.inc file with compiler-specific settings.'
   end
+
+  # tbb uses the wrong command (-v, verbose) to fetch the version from the
+  # compiler, causing problems if the compiler returns additional debug info
+  # Reported upstream at http://software.intel.com/en-us/forums/topic/475120
+  def patches; DATA; end
 
   def install
     # Intel sets varying O levels on each compile command.
     ENV.no_optimization
+    ENV.cxx11 if build.cxx11?
     # Override build prefix so we can copy the dylibs out of the same place
     # no matter what system we're on, and use our compilers.
+    compiler = ENV.compiler.to_s.start_with?('gcc') ? 'gcc' : ENV.compiler
     args = ['tbb_build_prefix=BUILDPREFIX',
-            "CONLY=#{ENV.cc}",
-            "CPLUS=#{ENV.cxx}"]
+            "compiler=#{compiler}"]
     args << (MacOS.prefer_64_bit? ? "arch=intel64" : "arch=ia32")
+    args << "cpp0x=1" << "stdlib=libc++" if build.cxx11?
     system "make", *args
     lib.install Dir['build/BUILDPREFIX_release/*.dylib']
     include.install 'include/tbb'
   end
 end
+
+__END__
+diff --git a/build/version_info_macos.sh b/build/version_info_macos.sh
+index 5970aad..20c863a 100644
+--- a/build/version_info_macos.sh
++++ b/build/version_info_macos.sh
+@@ -31,7 +31,7 @@ echo "#define __TBB_VERSION_STRINGS(N) \\"
+ echo '#N": BUILD_HOST'"\t\t"`hostname -s`" ("`arch`")"'" ENDL \'
+ echo '#N": BUILD_OS'"\t\t"`sw_vers -productName`" version "`sw_vers -productVersion`'" ENDL \'
+ echo '#N": BUILD_KERNEL'"\t"`uname -v`'" ENDL \'
+-echo '#N": BUILD_GCC'"\t\t"`gcc -v </dev/null 2>&1 | grep 'version'`'" ENDL \'
++echo '#N": BUILD_GCC'"\t\t"`gcc --version </dev/null 2>&1 | head -1`'" ENDL \'
+ [ -z "$COMPILER_VERSION" ] || echo '#N": BUILD_COMPILER'"\t"$COMPILER_VERSION'" ENDL \'
+ echo '#N": BUILD_TARGET'"\t$arch on $runtime"'" ENDL \'
+ echo '#N": BUILD_COMMAND'"\t"$*'" ENDL \'

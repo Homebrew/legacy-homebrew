@@ -2,9 +2,12 @@ require 'formula'
 
 class Ganglia < Formula
   homepage 'http://ganglia.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.1.7/ganglia-3.1.7.tar.gz'
-  sha1 'e234d64814af1c9f55f1cd039a5840039d175f85'
+  url 'http://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.6.0/ganglia-3.6.0.tar.gz'
+  sha1 'b06529ac49deb1f1c65c6215b8d2d13c3f3fa23f'
 
+  conflicts_with 'coreutils', :because => 'both install `gstat` binaries'
+
+  depends_on 'pkg-config' => :build # to find APR
   depends_on 'confuse'
   depends_on 'pcre'
   depends_on 'rrdtool'
@@ -25,22 +28,12 @@ class Ganglia < Formula
                           "--prefix=#{prefix}",
                           "--sbindir=#{bin}",
                           "--sysconfdir=#{etc}",
-                          "--with-gexec",
                           "--with-gmetad",
                           "--with-libpcre=#{HOMEBREW_PREFIX}"
     system "make install"
 
-    cd "web" do
-      system "make", "conf.php"
-      system "make", "version.php"
-      inreplace "conf.php", "/usr/bin/rrdtool", "#{HOMEBREW_PREFIX}/bin/rrdtool"
-    end
-
     # Generate the default config file
-    system "#{bin}/gmond -t > #{etc}/gmond.conf" unless File.exists? "#{etc}/gmond.conf"
-
-    # Install the web files
-    (share+"ganglia").install "web"
+    system "#{bin}/gmond -t > #{etc}/gmond.conf" unless File.exist? "#{etc}/gmond.conf"
 
     # Install man pages
     man1.install Dir['mans/*']
@@ -49,9 +42,6 @@ class Ganglia < Formula
   def caveats; <<-EOS.undent
     If you didn't have a default config file, one was created here:
       #{etc}/gmond.conf
-
-    You might want to copy these someplace served by a PHP-capable web server:
-      #{share}/ganglia/web/* to someplace
     EOS
   end
 end

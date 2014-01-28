@@ -2,19 +2,19 @@ require 'formula'
 
 class GstPluginsUgly < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.0.10.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.0.10.tar.xz'
-  sha256 'bed3510e09f036e7609e8d291535c395d25109b1180324b16859f475eac3a3c0'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.2.1.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.2.1.tar.xz'
+  sha256 '35ae5d45de54827604e24f57f54ab30a5ab2245b4c4120977273eb11d19c2395'
 
-  head 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
+  head do
+    url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
 
-  if build.head?
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
 
@@ -44,7 +44,7 @@ class GstPluginsUgly < Formula
   # Does not work with libcdio 0.9
 
   def install
-    ENV.append "CFLAGS", "-no-cpp-precomp -funroll-loops -fstrict-aliasing"
+    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing"
 
     args = %W[
       --prefix=#{prefix}
@@ -60,7 +60,7 @@ class GstPluginsUgly < Formula
 
     if build.with? "opencore-amr"
       # Fixes build error, missing includes.
-      # https://github.com/mxcl/homebrew/issues/14078
+      # https://github.com/Homebrew/homebrew/issues/14078
       nbcflags = `pkg-config --cflags opencore-amrnb`.chomp
       wbcflags = `pkg-config --cflags opencore-amrwb`.chomp
       ENV['AMRNB_CFLAGS'] = nbcflags + "-I#{HOMEBREW_PREFIX}/include/opencore-amrnb"

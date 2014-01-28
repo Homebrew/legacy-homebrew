@@ -1,9 +1,9 @@
 require 'formula'
 
 class Scamper < Formula
-  homepage 'http://www.wand.net.nz/scamper/'
-  url 'http://www.wand.net.nz/scamper/scamper-cvs-20111202c.tar.gz'
-  sha1 'eb0dc6bf13a0d568f65e079ad39be53c3e8457d9'
+  homepage 'http://www.caida.org/tools/measurement/scamper/'
+  url 'http://www.caida.org/tools/measurement/scamper/code/scamper-cvs-20130824.tar.gz'
+  sha1 'c3d5c5bb28fd39020a13d9d7be25e4e5ac0cb05e'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

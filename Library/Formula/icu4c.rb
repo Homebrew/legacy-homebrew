@@ -2,30 +2,33 @@ require 'formula'
 
 class Icu4c < Formula
   homepage 'http://site.icu-project.org/'
-  url 'http://download.icu-project.org/files/icu4c/51.1/icu4c-51_1-src.tgz'
-  version '51.1'
-  sha1 '7905632335e3dcd6667224da0fa087b49f9095e9'
+  url 'http://download.icu-project.org/files/icu4c/52.1/icu4c-52_1-src.tgz'
+  version '52.1'
+  sha1 '6de440b71668f1a65a9344cdaf7a437291416781'
   head 'http://source.icu-project.org/repos/icu/icu/trunk/', :using => :svn
 
   bottle do
-    sha1 '6b5b4ab5704cc2a8b17070a087c7f9594466cf1d' => :mountain_lion
-    sha1 'a555b051a65717e1ca731eec5743969d8190a9f8' => :lion
-    sha1 'bcb1ab988f67c3d48fb7c5829153c136c16c059b' => :snow_leopard
+    revision 1
+    sha1 'c38fd0be5f63a0dd187ee76a9321d543d02d3638' => :mavericks
+    sha1 '636b03a9cfd3e686b7c89891eddb74ba34cbf456' => :mountain_lion
+    sha1 'f09512efdb8b12edfe080492a5a1c0bafc5a2941' => :lion
   end
 
-  keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
+  keg_only "Conflicts; see: https://github.com/Homebrew/homebrew/issues/issue/167"
 
   option :universal
+  option :cxx11
 
   def install
     ENV.universal_binary if build.universal?
+    ENV.cxx11 if build.cxx11?
 
     args = ["--prefix=#{prefix}", "--disable-samples", "--disable-tests", "--enable-static"]
     args << "--with-library-bits=64" if MacOS.prefer_64_bit?
     cd "source" do
       system "./configure", *args
-      system "make"
-      system "make install"
+      system "make", "VERBOSE=1"
+      system "make", "VERBOSE=1", "install"
     end
   end
 end

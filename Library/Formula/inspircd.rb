@@ -1,11 +1,11 @@
 require 'formula'
 
 class Inspircd < Formula
-  homepage 'http://inspircd.github.com'
-  url 'https://github.com/inspircd/inspircd/archive/v2.0.14.tar.gz'
-  sha1 'b8b29fef06579ca624027a26a989cdea90a290a8'
+  homepage 'http://www.inspircd.org'
+  url 'https://github.com/inspircd/inspircd/archive/v2.0.15.tar.gz'
+  sha1 '3591c1a9d2d2866f2f3c63caa8997f3bc0cb656d'
 
-  head 'https://github.com/inspircd/inspircd.git', :branch => 'master'
+  head 'https://github.com/inspircd/inspircd.git'
 
   skip_clean 'data'
   skip_clean 'logs'
@@ -16,12 +16,12 @@ class Inspircd < Formula
   depends_on 'libgcrypt' if build.with? 'gnutls'
   depends_on :mysql => :optional
   depends_on 'pcre' => :optional
+  depends_on 'postgresql' => :optional
   depends_on 'sqlite' => :optional
   depends_on 'tre' => :optional
 
   option 'without-ldap', 'Build without ldap support'
   option 'without-openssl', 'Build without openssl support'
-  option 'without-postgres', 'Build without postgres support'
 
   def install
     modules = []
@@ -32,7 +32,7 @@ class Inspircd < Formula
     modules << 'm_ldapauth.cpp' unless build.without? 'ldap'
     modules << 'm_ldapoper.cpp' unless build.without? 'ldap'
     modules << 'm_regex_pcre.cpp' if build.with? 'pcre'
-    modules << 'm_ssl_pgsql.cpp' unless build.without? 'postgres'
+    modules << 'm_pgsql.cpp' if build.with? 'postgresql'
     modules << 'm_sqlite3.cpp' if build.with? 'sqlite'
     modules << 'm_regex_tre.cpp' if build.with? 'tre'
 

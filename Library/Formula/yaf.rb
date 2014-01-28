@@ -2,10 +2,11 @@ require 'formula'
 
 class Yaf < Formula
   homepage 'http://tools.netsa.cert.org/yaf/'
-  url 'http://tools.netsa.cert.org/releases/yaf-2.2.2.tar.gz'
-  sha1 '03ea518d322d3ce76f312a71e5e444eb5a6a7273'
+  url 'http://tools.netsa.cert.org/releases/yaf-2.4.0.tar.gz'
+  sha1 '0c5efb5543e61d0acd91b7e2b028d8f6d3497ae8'
 
   depends_on 'pkg-config' => :build
+  depends_on :libtool
   depends_on 'glib'
   depends_on 'libfixbuf'
 

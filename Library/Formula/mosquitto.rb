@@ -2,11 +2,12 @@ require 'formula'
 
 class Mosquitto < Formula
   homepage 'http://mosquitto.org/'
-  url 'http://mosquitto.org/files/source/mosquitto-1.2.tar.gz'
-  sha1 'eb374899637310cfc785c661ec22117df496d949'
+  url 'http://mosquitto.org/files/source/mosquitto-1.2.3.tar.gz'
+  sha1 '1675048286e0e32dc33126ec62466d083c0857f3'
 
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
+
   # mosquitto requires OpenSSL >=1.0 for TLS support
   depends_on 'openssl'
 
@@ -31,8 +32,7 @@ class Mosquitto < Formula
     Python client bindings can be installed from the Python Package Index:
         pip install mosquitto
 
-    Javascript client is available at:
-        http://mosquitto.org/js/
+    Javascript client has been removed, see Eclipse Paho for an alternative.
     EOD
   end
 

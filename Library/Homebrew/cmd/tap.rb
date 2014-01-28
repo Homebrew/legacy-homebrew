@@ -10,7 +10,7 @@ module Homebrew extend self
     elsif ARGV.first == "--repair"
       repair_taps
     else
-      install_tap(*tap_args)
+      opoo "Already tapped!" unless install_tap(*tap_args)
     end
   end
 
@@ -23,7 +23,7 @@ module Homebrew extend self
 
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
-    raise "Already tapped!" if tapd.directory?
+    return false if tapd.directory?
     abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
 
     files = []
@@ -46,6 +46,8 @@ module Homebrew extend self
       puts "   git remote set-url origin git@github.com:#{repouser}/homebrew-#{repo}.git"
       puts
     end
+
+    true
   end
 
   def link_tap_formula formulae
@@ -67,7 +69,10 @@ module Homebrew extend self
           tapped += 1
         else
           to = to.realpath if to.exist?
-          opoo "Could not tap #{Tty.white}#{from.tap_ref}#{Tty.reset} over #{Tty.white}#{to.tap_ref}#{Tty.reset}"
+          # Whitelist gcc42 temporarily until Mavericks/Xcode 5.0 issues are resolved.
+          unless to.tap_ref == 'Homebrew/homebrew/apple-gcc42'
+            opoo "Could not tap #{Tty.white}#{from.tap_ref}#{Tty.reset} over #{Tty.white}#{to.tap_ref}#{Tty.reset}"
+          end
         end
       end
     end
@@ -80,7 +85,7 @@ module Homebrew extend self
   def repair_taps
     count = 0
     # prune dead symlinks in Formula
-    Dir["#{HOMEBREW_REPOSITORY}/Library/Formula/*.rb"].each do |fn|
+    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].each do |fn|
       if not File.exist? fn
         File.delete fn
         count += 1
@@ -105,7 +110,7 @@ module Homebrew extend self
 
   def tap_args
     ARGV.first =~ %r{^(\S+)/(homebrew-)?(\w+)$}
-    raise "Invalid usage" unless $1 and $3
+    raise "Invalid tap name" unless $1 && $3
     [$1, $3]
   end
 
@@ -118,7 +123,7 @@ class Pathname
     when %r{^#{HOMEBREW_LIBRARY}/Taps/([a-z\-_]+)-(\w+)/(.+)}
       "#$1/#$2/#{File.basename($3, '.rb')}"
     when %r{^#{HOMEBREW_LIBRARY}/Formula/(.+)}
-      "mxcl/master/#{File.basename($1, '.rb')}"
+      "Homebrew/homebrew/#{File.basename($1, '.rb')}"
     else
       nil
     end

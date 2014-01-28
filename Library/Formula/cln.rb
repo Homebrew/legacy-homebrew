@@ -2,10 +2,15 @@ require 'formula'
 
 class Cln < Formula
   homepage 'http://www.ginac.de/CLN/'
-  url 'http://www.ginac.de/CLN/cln-1.3.2.tar.bz2'
-  sha1 'c30dca80e75f45e2107f233075e6d0339ea884b0'
+  url 'http://www.ginac.de/CLN/cln-1.3.3.tar.bz2'
+  sha1 '11c56780eb83ed54f2ad1ecef7f0dc0f609c426d'
 
-  depends_on "gmp"
+  depends_on 'gmp'
+
+  # Patch for Clang from MacPorts
+  def patches
+    "https://trac.macports.org/export/114806/trunk/dports/math/cln/files/patch-clang.diff"
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}",

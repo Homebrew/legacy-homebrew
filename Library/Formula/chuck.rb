@@ -2,8 +2,8 @@ require 'formula'
 
 class Chuck < Formula
   homepage 'http://chuck.cs.princeton.edu/'
-  url 'http://chuck.cs.princeton.edu/release/files/chuck-1.3.1.3.tgz'
-  sha1 '67d45941535f311b7700ed4958a4ad6929bca284'
+  url 'http://chuck.cs.princeton.edu/release/files/chuck-1.3.2.0.tgz'
+  sha1 'a684ef41848a55de84e714dc6f644c38a1b69fd5'
 
   def install
     cd "src" do

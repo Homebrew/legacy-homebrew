@@ -28,8 +28,10 @@ class Llvm < Formula
 
   env :std if build.universal?
 
+  keg_only :provided_by_osx
+
   def install
-    if python and build.include? 'disable-shared'
+    if build.with? "python" and build.include? 'disable-shared'
       raise 'The Python bindings need the shared library.'
     end
 
@@ -66,16 +68,10 @@ class Llvm < Formula
     system 'make', 'VERBOSE=1', 'install'
 
     # install llvm python bindings
-    if python
-      python.site_packages.install buildpath/'bindings/python/llvm'
-      python.site_packages.install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
+    if build.with? "python"
+      (lib+'python2.7/site-packages').install buildpath/'bindings/python/llvm'
+      (lib+'python2.7/site-packages').install buildpath/'tools/clang/bindings/python/clang' if build.with? 'clang'
     end
-
-    # Remove all binaries except llvm-config
-    rm_f Dir["#{bin}/*"] - Dir["#{bin}/llvm-config"]
-
-    # Remove all man pages
-    man.rmtree if build.with? 'clang'
   end
 
   def test
@@ -83,16 +79,7 @@ class Llvm < Formula
   end
 
   def caveats
-    s = ''
-    s += python.standard_caveats if python
-    s += <<-EOS.undent
-      This formula only provide library components of LLVM. To use full
-      featured LLVM please try the llvm* formulae in homebrew-versions tap,
-      for instance:
-
-          brew tap homebrew/versions
-          brew install llvm33
-
+    <<-EOS.undent
       Extra tools are installed in #{share}/llvm and #{share}/clang.
 
       If you already have LLVM installed, then "brew upgrade llvm" might not work.
@@ -100,5 +87,4 @@ class Llvm < Formula
           brew rm llvm && brew install llvm
     EOS
   end
-
 end

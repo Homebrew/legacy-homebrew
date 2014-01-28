@@ -9,10 +9,12 @@ class Gpsbabel < Formula
   head 'http://gpsbabel.googlecode.com/svn/trunk/gpsbabel'
 
   depends_on 'libusb' => :optional
-  depends_on 'expat' => :optional
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    args = ['--disable-debug', '--disable-dependency-tracking',
+            "--prefix=#{prefix}", '--with-zlib=system']
+    args << '--without-libusb' if build.without? 'libusb'
+    system "./configure", *args
+    system 'make', 'install'
   end
 end

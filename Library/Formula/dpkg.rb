@@ -2,16 +2,12 @@ require 'formula'
 
 class Dpkg < Formula
   homepage 'https://wiki.debian.org/Teams/Dpkg'
-  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.1.tar.xz'
-  sha1 'c94b33573806cf9662c5a6f2bbae64900113a538'
+  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.5.tar.xz'
+  sha1 '30656d70795c463d67e3507dfad9351e92fe3354'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
   depends_on 'gnu-tar'
-
-  fails_with :clang do
-    cause 'cstdlib:142:3: error: declaration conflicts with target of using declaration already in scope'
-  end
 
   # Fixes the PERL_LIBDIR.
   # Uses Homebrew-install gnu-tar instead of bsd tar.
@@ -60,7 +56,7 @@ index c0f633d..b692806 100644
  #define DEBSIGVERIFY	"/usr/bin/debsig-verify"
  
 -#define TAR		"tar"
-+#define TAR		"gnutar"
++#define TAR		"gtar"
  #define RM		"rm"
  #define CAT		"cat"
  #define FIND		"find"
@@ -90,3 +86,49 @@ index 754488e..8b233fb 100644
  		    -e "s:\$$CONFDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$CONFDIR='$(pkgconfdir)':" \
  		    -e "s:\$$ADMINDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$ADMINDIR='$(admindir)':" \
  		    -e "s:\$$LIBDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$LIBDIR='$(pkglibdir)':" \
+
+diff --git a/scripts/Dpkg/Checksums.pm b/scripts/Dpkg/Checksums.pm
+index 4a64fd1..bb19f59 100644
+--- a/scripts/Dpkg/Checksums.pm
++++ b/scripts/Dpkg/Checksums.pm
+@@ -50,15 +50,15 @@ about supported checksums.
+ 
+ my $CHECKSUMS = {
+     md5 => {
+-	program => [ 'md5sum' ],
++	program => [ 'md5', '-q' ],
+ 	regex => qr/[0-9a-f]{32}/,
+     },
+     sha1 => {
+-	program => [ 'sha1sum' ],
++	program => [ 'shasum', '-a', '1' ],
+ 	regex => qr/[0-9a-f]{40}/,
+     },
+     sha256 => {
+-	program => [ 'sha256sum' ],
++	program => [ 'shasum', '-a', '256' ],
+ 	regex => qr/[0-9a-f]{64}/,
+     },
+ };
+diff --git a/scripts/Dpkg/Source/Archive.pm b/scripts/Dpkg/Source/Archive.pm
+index de30bf4..c97d421 100644
+--- a/scripts/Dpkg/Source/Archive.pm
++++ b/scripts/Dpkg/Source/Archive.pm
+@@ -47,7 +47,7 @@ sub create {
+     $spawn_opts{from_pipe} = \*$self->{tar_input};
+     # Call tar creation process
+     $spawn_opts{delete_env} = [ 'TAR_OPTIONS' ];
+-    $spawn_opts{exec} = [ 'tar', '--null', '-T', '-', '--numeric-owner',
++    $spawn_opts{exec} = [ 'gtar', '--null', '-T', '-', '--numeric-owner',
+                             '--owner', '0', '--group', '0',
+                             @{$opts{options}}, '-cf', '-' ];
+     *$self->{pid} = spawn(%spawn_opts);
+@@ -123,7 +123,7 @@ sub extract {
+
+     # Call tar extraction process
+     $spawn_opts{delete_env} = [ 'TAR_OPTIONS' ];
+-    $spawn_opts{exec} = [ 'tar', '--no-same-owner', '--no-same-permissions',
++    $spawn_opts{exec} = [ 'gtar', '--no-same-owner', '--no-same-permissions',
+                             @{$opts{options}}, '-xf', '-' ];
+     spawn(%spawn_opts);
+     $self->close();

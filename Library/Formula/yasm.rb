@@ -5,10 +5,11 @@ class Yasm < Formula
   url 'http://tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz'
   sha256 '768ffab457b90a20a6d895c39749adb547c1b7cb5c108e84b151a838a23ccf31'
 
-  head 'https://github.com/yasm/yasm.git'
+  head do
+    url 'https://github.com/yasm/yasm.git'
 
-  if build.head?
     depends_on 'gettext'
+    depends_on :autoconf
     depends_on :automake
   end
 
@@ -16,7 +17,7 @@ class Yasm < Formula
   depends_on 'Cython' => :python if build.with? 'python'
 
   def install
-    # https://github.com/mxcl/homebrew/pull/19593
+    # https://github.com/Homebrew/homebrew/pull/19593
     ENV.deparallelize
     args = %W[
       --disable-debug
@@ -32,9 +33,4 @@ class Yasm < Formula
     system './configure', *args
     system 'make install'
   end
-
-  def caveats
-    python.standard_caveats if python
-  end
-
 end

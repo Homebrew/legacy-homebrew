@@ -1,7 +1,6 @@
 require 'formula'
 
 class GooglePerftools < Formula
-  # TODO rename to gperftools when renames are supported
   homepage 'http://code.google.com/p/gperftools/'
   url 'http://gperftools.googlecode.com/files/gperftools-2.1.tar.gz'
   sha1 'b799b99d9f021988bbc931db1c21b2f94826d4f0'
@@ -9,6 +8,13 @@ class GooglePerftools < Formula
   fails_with :llvm do
     build 2326
     cause "Segfault during linking"
+  end
+
+  # * DATA is incorporated upstream, remove on next version update
+  # * configure patch removes __thread support, which breaks tcmalloc since it internally calls malloc as well
+  #   upstream: https://code.google.com/p/gperftools/issues/detail?id=573
+  def patches
+    [DATA, "https://gist.github.com/JustSid/7430366/raw/54979ac61602eec5e59223164cb1f0d136044d1f/gistfile1.txt"]
   end
 
   def install
@@ -19,3 +25,14 @@ class GooglePerftools < Formula
     system "make install"
   end
 end
+
+__END__
+--- a/src/static_vars.cc
++++ b/src/static_vars.cc
+@@ -37,6 +37,7 @@
+ #include "common.h"
+ #include "sampler.h"           // for Sampler
+ #include "base/googleinit.h"
++#include <pthread.h>
+
+ namespace tcmalloc {

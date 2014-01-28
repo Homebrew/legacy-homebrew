@@ -12,8 +12,8 @@ class Jsvc < Formula
   end
 
   def install
-    ENV.append "CFLAGS", MacOS.preferred_arch
-    ENV.append "LDFLAGS", MacOS.preferred_arch
+    ENV.append "CFLAGS", "-arch #{MacOS.preferred_arch}"
+    ENV.append "LDFLAGS", "-arch #{MacOS.preferred_arch}"
     ENV.append "CPPFLAGS", "-I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers"
 
     prefix.install %w{ NOTICE.txt LICENSE.txt RELEASE-NOTES.txt }

@@ -11,7 +11,7 @@ class SpatialiteTools < Formula
   depends_on 'readosm'
 
   def install
-    # See: https://github.com/mxcl/homebrew/issues/3328
+    # See: https://github.com/Homebrew/homebrew/issues/3328
     ENV.append 'LDFLAGS', '-liconv'
     # Ensure Homebrew SQLite is found before system SQLite.
     sqlite = Formula.factory 'sqlite'

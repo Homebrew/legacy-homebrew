@@ -4,8 +4,15 @@ class Tesseract < Formula
   homepage 'http://code.google.com/p/tesseract-ocr/'
   url 'http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz'
   sha1 'a950acf7b75cf851de2de787e9abb62c58ca1827'
+  head 'http://tesseract-ocr.googlecode.com/svn/trunk'
 
   option "all-languages", "Install recognition data for all languages"
+
+  if build.head?
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
 
   depends_on 'libtiff'
   depends_on 'leptonica'
@@ -35,6 +42,7 @@ class Tesseract < Formula
     # which doesn't work for non-default homebrew location
     ENV['LIBLEPT_HEADERSDIR'] = HOMEBREW_PREFIX/"include"
 
+    system './autogen.sh' if build.head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
     if build.include? "all-languages"

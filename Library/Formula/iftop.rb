@@ -14,4 +14,16 @@ class Iftop < Formula
                           "--mandir=#{man}"
     system "make install"
   end
+
+  def caveats; <<-EOS.undent
+    iftop requires superuser privileges. You can either run the program
+    via `sudo`, or change its ownership to root and set the setuid bit:
+    $ sudo chown root:wheel #{sbin}/iftop
+    $ sudo chmod u+s #{sbin}/iftop
+
+    In any case, you should be certain that you trust the software you
+    are executing with elevated privileges.
+    EOS
+  end
+
 end

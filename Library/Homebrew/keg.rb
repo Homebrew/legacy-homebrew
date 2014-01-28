@@ -92,6 +92,14 @@ class Keg < Pathname
     end
   end
 
+  def python_site_packages_installed?
+    (self/'lib/python2.7/site-packages').directory?
+  end
+
+  def app_installed?
+    not Dir.glob("#{self}/{,libexec/}*.app").empty?
+  end
+
   def version
     require 'version'
     Version.new(basename.to_s)
@@ -114,7 +122,7 @@ class Keg < Pathname
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
-    link_dir('etc', mode) {:mkpath} unless HOMEBREW_GIT_ETC
+    link_dir('etc', mode) {:mkpath}
     link_dir('bin', mode) {:skip_dir}
     link_dir('sbin', mode) {:skip_dir}
     link_dir('include', mode) {:link}
@@ -139,6 +147,7 @@ class Keg < Pathname
       # pkg-config database gets explicitly created
       when 'pkgconfig' then :mkpath
       # lib/language folders also get explicitly created
+      when 'dtrace' then :mkpath
       when /^gdk-pixbuf/ then :mkpath
       when 'ghc' then :mkpath
       when 'lua' then :mkpath
@@ -245,7 +254,7 @@ class Keg < Pathname
         Find.prune if File.basename(src) == '.DS_Store'
         # Don't link pyc files because Python overwrites these cached object
         # files and next time brew wants to link, the pyc file is in the way.
-        if src.extname.to_s == '.pyc' && src.to_s =~ /site-packages/
+        if src.extname == '.pyc' && src.to_s =~ /site-packages/
           Find.prune
         end
 
@@ -273,7 +282,7 @@ class Keg < Pathname
         next if dst.directory? and not dst.symlink?
         # no need to put .app bundles in the path, the user can just use
         # spotlight, or the open command and actual mac apps use an equivalent
-        Find.prune if src.extname.to_s == '.app'
+        Find.prune if src.extname == '.app'
 
         case yield src.relative_path_from(root)
         when :skip_dir

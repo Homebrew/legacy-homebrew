@@ -151,23 +151,12 @@ class FormulaAuditor
 
       case dep.name
       when *BUILD_TIME_DEPS
-        next if dep.build?
-        next if dep.name == 'autoconf' && f.name =~ /automake/
-        next if dep.name == 'libtool' && %w{imagemagick libgphoto2 libp11}.any? { |n| f.name == n }
-        next if dep.name =~ /autoconf|pkg-config/ && f.name == 'ruby-build'
-
+        next if dep.build? or dep.run?
         problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
       when "git", "ruby", "emacs", "mercurial"
         problem <<-EOS.undent
           Don't use #{dep} as a dependency. We allow non-Homebrew
           #{dep} installations.
-          EOS
-      when 'python', 'python2', 'python3'
-        problem <<-EOS.undent
-          Don't use #{dep} as a dependency (string).
-             We have special `depends_on :python` (or :python2 or :python3 )
-             that works with brewed and system Python and allows us to support
-             bindings for 2.x and 3.x in parallel and much more.
           EOS
       when 'gfortran'
         problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
@@ -225,7 +214,7 @@ class FormulaAuditor
       next if p =~ %r[svn\.sourceforge]
 
       # Is it a sourceforge http(s) URL?
-      next unless p =~ %r[^https?://.*\bsourceforge\.]
+      next unless p =~ %r[^https?://.*\bsourceforge\.com]
 
       if p =~ /(\?|&)use_mirror=/
         problem "Don't use #{$1}use_mirror in SourceForge urls (url is #{p})."
@@ -263,68 +252,30 @@ class FormulaAuditor
     urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
     end
-
-    if urls.any? { |u| u =~ /\.xz/ } && !f.deps.any? { |d| d.name == "xz" }
-      problem "Missing a build-time dependency on 'xz'"
-    end
   end
 
   def audit_specs
     problem "Head-only (no stable download)" if f.head_only?
 
-    [:stable, :devel].each do |spec|
-      s = f.send(spec)
-      next if s.nil?
+    %w[Stable Devel HEAD].each do |name|
+      next unless spec = f.send(name.downcase)
 
-      if s.version.to_s.empty?
-        problem "Invalid or missing #{spec} version"
-      else
-        version_text = s.version unless s.version.detected_from_url?
-        version_url = Version.detect(s.url, s.specs)
-        if version_url.to_s == version_text.to_s && s.version.instance_of?(Version)
-          problem "#{spec} version #{version_text} is redundant with version scanned from URL"
-        end
+      ra = ResourceAuditor.new(spec).audit
+      problems.concat ra.problems.map { |problem| "#{name}: #{problem}" }
+
+      spec.resources.each_value do |resource|
+        ra = ResourceAuditor.new(resource).audit
+        problems.concat ra.problems.map { |problem|
+          "#{name} resource #{resource.name.inspect}: #{problem}"
+        }
       end
-
-      if s.version.to_s =~ /^v/
-        problem "#{spec} version #{s.version} should not have a leading 'v'"
-      end
-
-      cksum = s.checksum
-      next if cksum.nil?
-
-      case cksum.hash_type
-      when :md5
-        problem "md5 checksums are deprecated, please use sha1 or sha256"
-        next
-      when :sha1   then len = 40
-      when :sha256 then len = 64
-      end
-
-      if cksum.empty?
-        problem "#{cksum.hash_type} is empty"
-      else
-        problem "#{cksum.hash_type} should be #{len} characters" unless cksum.hexdigest.length == len
-        problem "#{cksum.hash_type} contains invalid characters" unless cksum.hexdigest =~ /^[a-fA-F0-9]+$/
-        problem "#{cksum.hash_type} should be lowercase" unless cksum.hexdigest == cksum.hexdigest.downcase
-      end
-    end
-
-    # Check for :using that is already detected from the url
-    @specs.each do |s|
-      next if s.using.nil?
-
-      url_strategy = DownloadStrategyDetector.detect(s.url)
-      using_strategy = DownloadStrategyDetector.detect('', s.using)
-
-      problem "redundant :using specification in url or head" if url_strategy == using_strategy
     end
   end
 
   def audit_patches
     Patches.new(f.patches).select(&:external?).each do |p|
       case p.url
-      when %r[raw\.github\.com], %r[gist\.github\.com/raw]
+      when %r[raw\.github\.com], %r[gist\.github\.com/raw], %r[gist\.github\.com/.+/raw$]
         unless p.url =~ /[a-fA-F0-9]{40}/
           problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
         end
@@ -365,7 +316,8 @@ class FormulaAuditor
     end
 
     # FileUtils is included in Formula
-    if line =~ /FileUtils\.(\w+)/
+    # encfs modifies a file with this name, so check for some leading characters
+    if line =~ /[^'"\/]FileUtils\.(\w+)/
       problem "Don't need 'FileUtils.' before #{$1}."
     end
 
@@ -437,8 +389,10 @@ class FormulaAuditor
     end
 
     # Avoid hard-coding compilers
-    if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
-      problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
+    unless f.name == 'go' # Go needs to set CC for cgo support.
+      if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
+        problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
+      end
     end
 
     if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]}
@@ -525,71 +479,6 @@ class FormulaAuditor
     Symbol === dep ? dep.inspect : "'#{dep}'"
   end
 
-  def audit_python
-    if text =~ /(def\s*)?which_python/
-      problem "Replace `which_python` by `python.xy`, which returns e.g. 'python2.7'"
-    end
-
-    if text =~ /which\(?["']python/
-      problem "Don't locate python with `which 'python'`, use `python.binary` instead"
-    end
-
-    if text =~ /LanguageModuleDependency.new\s?\(\s?:python/
-      problem <<-EOS.undent
-        Python: Replace `LanguageModuleDependency.new(:python,'PyPi-name','module')`
-           by the new `depends_on :python => ['module' => 'PyPi-name']`
-      EOS
-    end
-
-    # Checks that apply only to code in def install
-    if text =~ /(\s*)def\s+install((.*\n)*?)(\1end)/
-      install_body = $2
-
-      if install_body =~ /system\(?\s*['"]python/
-        problem "Instead of `system 'python', ...`, call `system python, ...`"
-      end
-
-      if text =~ /system\(?\s*python\.binary/
-        problem "Instead of `system python.binary, ...`, call `system python, ...`"
-      end
-    end
-
-    # Checks that apply only to code in def caveats
-    if text =~ /(\s*)def\s+caveats((.*\n)*?)(\1end)/ || text =~ /(\s*)def\s+caveats;(.*?)end/
-      caveats_body = $2
-      if caveats_body =~ /[ \{=](python[23]?)\.(.*\w)/
-        # So if in the body of caveats there is a `python.whatever` called,
-        # check that there is a guard like `if python` or similiar:
-        python = $1
-        method = $2
-        unless caveats_body =~ /(if python[23]?)|(if build\.with\?\s?\(?['"]python)|(unless build.without\?\s?\(?['"]python)/
-          problem "Please guard `#{python}.#{method}` like so `#{python}.#{method} if #{python}`"
-        end
-      end
-    end
-
-    unless f.requirements.any?{ |r| r.kind_of?(PythonInstalled) }
-      # So if there is no PythonInstalled requirement, we can check if the
-      # formula still uses python and should add a `depends_on :python`
-      unless f.name.to_s =~ /(pypy[0-9]*)|(python[0-9]*)/
-        if text =~ /system.["' ]?python([0-9"'])?/
-          problem "If the formula uses Python, it should declare so by `depends_on :python#{$1}`"
-        end
-        if text =~ /setup\.py/
-          problem <<-EOS.undent
-            If the formula installs Python bindings you should declare `depends_on :python[3]`"
-          EOS
-        end
-      end
-    end
-
-    # Todo:
-    # The python do ... end block is possibly executed twice. Once for
-    # python 2.x and once for 3.x. So if a `system 'make'` is called, a
-    # `system 'make clean'` should also be called at the end of the block.
-
-  end
-
   def audit_check_output warning_and_description
     return unless warning_and_description
     warning, description = *warning_and_description
@@ -602,7 +491,9 @@ class FormulaAuditor
     audit_check_output(check_jars)
     audit_check_output(check_non_libraries)
     audit_check_output(check_non_executables(f.bin))
+    audit_check_output(check_generic_executables(f.bin))
     audit_check_output(check_non_executables(f.sbin))
+    audit_check_output(check_generic_executables(f.sbin))
   end
 
   def audit
@@ -614,7 +505,6 @@ class FormulaAuditor
     audit_patches
     audit_text
     text.each_line { |line| audit_line(line) }
-    audit_python
     audit_installed
   end
 
@@ -622,5 +512,79 @@ class FormulaAuditor
 
   def problem p
     @problems << p
+  end
+end
+
+class ResourceAuditor
+  attr_reader :problems
+  attr_reader :version, :checksum, :using, :specs, :url
+
+  def initialize(resource)
+    @version  = resource.version
+    @checksum = resource.checksum
+    @url      = resource.url
+    @using    = resource.using
+    @specs    = resource.specs
+    @problems = []
+  end
+
+  def audit
+    audit_version
+    audit_checksum
+    audit_download_strategy
+    self
+  end
+
+  def audit_version
+    if version.nil?
+      problem "missing version"
+    elsif version.to_s.empty?
+      problem "version is set to an empty string"
+    elsif not version.detected_from_url?
+      version_text = version
+      version_url = Version.detect(url, specs)
+      if version_url.to_s == version_text.to_s && version.instance_of?(Version)
+        problem "version #{version_text} is redundant with version scanned from URL"
+      end
+    end
+
+    if version.to_s =~ /^v/
+      problem "version #{version} should not have a leading 'v'"
+    end
+  end
+
+  def audit_checksum
+    return unless checksum
+
+    case checksum.hash_type
+    when :md5
+      problem "MD5 checksums are deprecated, please use SHA1 or SHA256"
+      return
+    when :sha1   then len = 40
+    when :sha256 then len = 64
+    end
+
+    if checksum.empty?
+      problem "#{checksum.hash_type} is empty"
+    else
+      problem "#{checksum.hash_type} should be #{len} characters" unless checksum.hexdigest.length == len
+      problem "#{checksum.hash_type} contains invalid characters" unless checksum.hexdigest =~ /^[a-fA-F0-9]+$/
+      problem "#{checksum.hash_type} should be lowercase" unless checksum.hexdigest == checksum.hexdigest.downcase
+    end
+  end
+
+  def audit_download_strategy
+    return unless using
+
+    url_strategy   = DownloadStrategyDetector.detect(url)
+    using_strategy = DownloadStrategyDetector.detect('', using)
+
+    if url_strategy == using_strategy
+      problem "redundant :using specification in URL"
+    end
+  end
+
+  def problem text
+    @problems << text
   end
 end

@@ -2,19 +2,19 @@ require 'formula'
 
 class GstPluginsBase < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.0.10.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-base-1.0.10.tar.xz'
-  sha256 '9754e83b2a3ff61266112915bfc84c895c4d145519ad9a3381edceb216bc97e8'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.2.1.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-base-1.2.1.tar.xz'
+  sha256 'de2444a5c150d4e4b680364d7c0414cd8b015d95b305ff65d65a17683379532f'
 
-  head 'git://anongit.freedesktop.org/gstreamer/gst-plugins-base'
+  head do
+    url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-base'
 
-  if build.head?
+    depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gettext'
   if build.with? 'gobject-introspection'
     depends_on 'gstreamer' => 'with-gobject-introspection'

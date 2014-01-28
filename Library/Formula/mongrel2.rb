@@ -9,9 +9,16 @@ class Mongrel2 < Formula
 
   depends_on 'zeromq'
 
+  def patches
+    # allow mongrel2 to build against libzmq 4
+    [
+       "https://gist.github.com/minrk/7632116/raw/44d0ed09ecfc68a9f9d6a940c6367f703cd55c46/0001-add-zmq_compat-check-for-libzmq-4.patch"
+    ]
+  end
+
   def install
     # Build in serial. See:
-    # https://github.com/mxcl/homebrew/issues/8719
+    # https://github.com/Homebrew/homebrew/issues/8719
     ENV.j1
 
     # Mongrel2 pulls from these ENV vars instead

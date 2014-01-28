@@ -2,9 +2,9 @@ require 'formula'
 
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r22.0.5-macosx.zip'
-  version '22.0.5'
-  sha1 'a4585d7e87a61a2a8cfd29a45514292f686e5281'
+  url 'http://dl.google.com/android/android-sdk_r22.3-macosx.zip'
+  version '22.3'
+  sha1 '547ea51c4aa61d623a4823d0b635d3b66b6c9329'
 
   resource 'completion' do
     url 'https://raw.github.com/CyanogenMod/android_sdk/3bf0a01ef66a9b99149ba3faaf34a1362581dd01/bash_completion/adb.bash'
@@ -18,6 +18,9 @@ class AndroidSdk < Formula
   end
 
   skip_clean var_dirs
+
+  conflicts_with 'android-platform-tools',
+    :because => "the Platform-tools are be installed as part of the SDK."
 
   def install
     prefix.install 'tools', 'SDK Readme.txt' => 'README'
@@ -59,7 +62,7 @@ class AndroidSdk < Formula
       EOS
     end
 
-    resource('completion').stage { bash_completion.install 'adb.bash' => 'adb-completion.bash' }
+    bash_completion.install resource('completion').files('adb.bash' => 'adb-completion.bash')
   end
 
   def caveats; <<-EOS.undent

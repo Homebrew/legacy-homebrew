@@ -3,7 +3,7 @@ require 'cmd/outdated'
 
 class Fixnum
   def plural_s
-    if self > 1 then "s" else "" end
+    if self != 1 then "s" else "" end
   end
 end
 
@@ -34,8 +34,12 @@ module Homebrew extend self
       outdated -= pinned
     end
 
-    oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
-    puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
+    unless outdated.empty?
+      oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
+      puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
+    else
+      oh1 "No packages to upgrade"
+    end
 
     unless upgrade_pinned? || pinned.empty?
       oh1 "Not upgrading #{pinned.length} pinned package#{pinned.length.plural_s}:"

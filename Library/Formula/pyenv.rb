@@ -2,14 +2,16 @@ require 'formula'
 
 class Pyenv < Formula
   homepage 'https://github.com/yyuu/pyenv'
-  url 'https://github.com/yyuu/pyenv/archive/v0.4.0-20130726.tar.gz'
-  sha1 'e56af71947e178b8f0281cfe6bf9a3f2070fb962'
+  url 'https://github.com/yyuu/pyenv/archive/v0.4.0-20140110.1.tar.gz'
+  sha1 '40204db80537741edbed87a6eefcbf823433ddc2'
 
   head 'https://github.com/yyuu/pyenv.git'
 
-  skip_clean "plugins", "versions"
+  depends_on 'autoconf' => [:recommended, :run]
+  depends_on 'pkg-config' => [:recommended, :run]
 
   def install
+    inreplace 'libexec/pyenv', '/usr/local', HOMEBREW_PREFIX
     prefix.install "LICENSE", "README.md", "bin", "completions", "libexec"
     prefix.install "plugins" => "default-plugins"
 

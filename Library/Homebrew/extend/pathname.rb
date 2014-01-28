@@ -1,5 +1,6 @@
 require 'pathname'
 require 'mach'
+require 'resource'
 
 # we enhance pathname to make our code more readable
 class Pathname
@@ -12,6 +13,8 @@ class Pathname
       case src
       when Resource
         src.stage(self)
+      when Resource::Partial
+        src.resource.stage { install(*src.files) }
       when Array
         if src.empty?
           opoo "tried to install empty array to #{self}"
@@ -46,6 +49,8 @@ class Pathname
     # it points to before we move it
     # and also broken symlinks are not the end of the world
     raise "#{src} does not exist" unless File.symlink? src or File.exist? src
+
+    dst = yield(src, dst) if block_given?
 
     mkpath
     if File.symlink? src
@@ -110,12 +115,33 @@ class Pathname
     return dst
   end
 
+  def cp_path_sub pattern, replacement
+    raise "#{self} does not exist" unless self.exist?
+
+    src = self.to_s
+    dst = src.sub(pattern, replacement)
+    raise "#{src} is the same file as #{dst}" if src == dst
+
+    dst_path = Pathname.new dst
+
+    if self.directory?
+      dst_path.mkpath
+      return
+    end
+
+    dst_path.dirname.mkpath
+
+    dst = yield(src, dst) if block_given?
+
+    FileUtils.cp(src, dst)
+  end
+
   # extended to support common double extensions
   alias extname_old extname
   def extname(path=to_s)
     BOTTLE_EXTNAME_RX.match(path)
     return $1 if $1
-    /(\.(tar|cpio)\.(gz|bz2|xz|Z))$/.match(path)
+    /(\.(tar|cpio|pax)\.(gz|bz2|lz|xz|Z))$/.match(path)
     return $1 if $1
     return File.extname(path)
   end
@@ -147,13 +173,6 @@ class Pathname
     FileUtils.chmod_R perms, to_s
   end
 
-  def abv
-    out=''
-    n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
-    out<<"#{n} files, " if n > 1
-    out<<`/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
-  end
-
   def version
     require 'version'
     Version.parse(self)
@@ -174,13 +193,14 @@ class Pathname
     # Get enough of the file to detect common file types
     # POSIX tar magic has a 257 byte offset
     # magic numbers stolen from /usr/share/file/magic/
-    case open { |f| f.read(262) }
+    case open('rb') { |f| f.read(262) }
     when /^PK\003\004/n         then :zip
     when /^\037\213/n           then :gzip
     when /^BZh/n                then :bzip2
     when /^\037\235/n           then :compress
     when /^.{257}ustar/n        then :tar
     when /^\xFD7zXZ\x00/n       then :xz
+    when /^LZIP/n               then :lzip
     when /^Rar!/n               then :rar
     when /^7z\xBC\xAF\x27\x1C/n then :p7zip
     else
@@ -200,7 +220,7 @@ class Pathname
   def incremental_hash(hasher)
     incr_hash = hasher.new
     buf = ""
-    open('r') { |f| incr_hash << buf while f.read(1024, buf) }
+    open('rb') { |f| incr_hash << buf while f.read(1024, buf) }
     incr_hash.hexdigest
   end
 
@@ -209,11 +229,10 @@ class Pathname
     incremental_hash(Digest::SHA1)
   end
 
-  def sha2
+  def sha256
     require 'digest/sha2'
     incremental_hash(Digest::SHA2)
   end
-  alias_method :sha256, :sha2
 
   def verify_checksum expected
     raise ChecksumMissingError if expected.nil? or expected.empty?
@@ -351,22 +370,48 @@ class Pathname
     targets.flatten!
     if targets.empty?
       opoo "tried to write exec scripts to #{self} for an empty list of targets"
+      return
     end
     targets.each do |target|
       target = Pathname.new(target) # allow pathnames or strings
       (self+target.basename()).write <<-EOS.undent
-      #!/bin/bash
-      exec "#{target}" "$@"
+        #!/bin/bash
+        exec "#{target}" "$@"
       EOS
+      # +x here so this will work during post-install as well
+      (self+target.basename()).chmod 0644
+    end
+  end
+
+  # Writes an exec script that sets environment variables
+  def write_env_script target, env
+    env_export = ''
+    env.each {|key, value| env_export += "#{key}=\"#{value}\" "}
+    self.write <<-EOS.undent
+    #!/bin/bash
+    #{env_export}exec "#{target}" "$@"
+    EOS
+  end
+
+  # Writes a wrapper env script and moves all files to the dst
+  def env_script_all_files dst, env
+    dst.mkpath
+    Dir["#{self}/*"].each do |file|
+      file = Pathname.new(file)
+      dst.install_p file
+      new_file = dst+file.basename
+      file.write_env_script(new_file, env)
     end
   end
 
   # Writes an exec script that invokes a java jar
   def write_jar_script target_jar, script_name, java_opts=""
     (self+script_name).write <<-EOS.undent
-    #!/bin/bash
-    exec java #{java_opts} -jar #{target_jar} "$@"
+      #!/bin/bash
+      exec java #{java_opts} -jar #{target_jar} "$@"
     EOS
+    # +x here so this will work during post-install as well
+    (self+script_name).chmod 0644
   end
 
   def install_metafiles from=nil
@@ -385,6 +430,13 @@ class Pathname
       filename.chmod 0644
       self.install filename
     end
+  end
+
+  def abv
+    out=''
+    n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
+    out<<"#{n} files, " if n > 1
+    out<<`/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
   end
 
   # We redefine these private methods in order to add the /o modifier to

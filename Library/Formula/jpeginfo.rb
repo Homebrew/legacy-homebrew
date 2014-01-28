@@ -8,7 +8,6 @@ class Jpeginfo < Formula
   depends_on 'jpeg'
 
   def install
-    # See https://github.com/mxcl/homebrew/issues/13393
     ENV.deparallelize
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

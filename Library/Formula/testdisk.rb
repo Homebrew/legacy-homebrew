@@ -2,8 +2,8 @@ require 'formula'
 
 class Testdisk < Formula
   homepage 'http://www.cgsecurity.org/wiki/TestDisk'
-  url 'http://www.cgsecurity.org/testdisk-6.13.tar.bz2'
-  sha1 'b08ace0257e3e437b6fc140360d75807ca4d46ae'
+  url 'http://www.cgsecurity.org/testdisk-6.14.tar.bz2'
+  sha1 'a2359406db5e3e3f9db81d8e8fce2a125dcc3677'
 
   def install
     system "./configure", "--disable-dependency-tracking",

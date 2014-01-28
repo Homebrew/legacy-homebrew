@@ -7,6 +7,7 @@ class Atomicparsley < Formula
 
   head 'https://bitbucket.org/wez/atomicparsley', :using => :hg
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 

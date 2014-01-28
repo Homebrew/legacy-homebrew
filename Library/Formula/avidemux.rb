@@ -43,7 +43,7 @@ class Avidemux < Formula
 
     # For 32-bit compilation under gcc 4.2, see:
     # http://trac.macports.org/ticket/20938#comment:22
-    if MacOS.version <= :leopard or Hardware.is_32_bit? && Hardware.cpu_type == :intel && ENV.compiler == :clang
+    if MacOS.version <= :leopard or Hardware.is_32_bit? && Hardware::CPU.intel? && ENV.compiler == :clang
       inreplace 'cmake/admFFmpegBuild.cmake',
         '${CMAKE_INSTALL_PREFIX})',
         '${CMAKE_INSTALL_PREFIX} --extra-cflags=-mdynamic-no-pic)'
@@ -59,13 +59,11 @@ class Avidemux < Formula
       args << "-DSDL=OFF"
 
       if build.with? 'debug'
+        ENV.O2
         ENV.enable_warnings
         args << '-DCMAKE_BUILD_TYPE=Debug'
         args << '-DCMAKE_VERBOSE_MAKEFILE=true'
-        if ENV.compiler == :clang
-          ENV.Og
-        else
-          ENV.O2
+        unless ENV.compiler == :clang
           args << '-DCMAKE_C_FLAGS_DEBUG=-ggdb3'
           args << '-DCMAKE_CXX_FLAGS_DEBUG=-ggdb3'
         end
@@ -113,7 +111,7 @@ class Avidemux < Formula
         if build.with? 'debug'
           args << '-DCMAKE_BUILD_TYPE=Debug'
           args << '-DCMAKE_VERBOSE_MAKEFILE=true'
-          if ENV.compiler != :clang
+          unless ENV.compiler == :clang
             args << '-DCMAKE_C_FLAGS_DEBUG=-ggdb3'
             args << '-DCMAKE_CXX_FLAGS_DEBUG=-ggdb3'
           end
@@ -141,9 +139,6 @@ class Avidemux < Formula
 
   def caveats
     if build.with? 'qt' then <<-EOS.undent
-      You may want to `brew linkapps` to link the Qt GUI app
-      #{opt_prefix}/Avidemux2.6.app it to `~/Applications`.
-
       To enable sound: In preferences, set the audio to CoreAudio instead of Dummy.
       EOS
     end

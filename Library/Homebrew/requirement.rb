@@ -10,12 +10,13 @@ class Requirement
   include Dependable
   extend BuildEnvironmentDSL
 
-  attr_reader :tags, :name
+  attr_reader :tags, :name, :option_name
 
   def initialize(tags=[])
     @tags = tags
     @tags << :build if self.class.build
     @name ||= infer_name
+    @option_name = @name
   end
 
   # The message to show when the requirement is not met.
@@ -70,6 +71,7 @@ class Requirement
     f = self.class.default_formula
     raise "No default formula defined for #{inspect}" if f.nil?
     dep = Dependency.new(f, tags)
+    dep.option_name = name
     dep.env_proc = method(:modify_build_environment)
     dep
   end
@@ -174,7 +176,7 @@ class Requirement
         if block_given?
           yield dependent, req
         elsif req.optional? || req.recommended?
-          prune unless dependent.build.with?(req.name)
+          prune unless dependent.build.with?(req)
         end
       end
     end

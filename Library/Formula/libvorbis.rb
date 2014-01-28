@@ -2,22 +2,21 @@ require 'formula'
 
 class Libvorbis < Formula
   homepage 'http://vorbis.com'
-  url 'http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.3.tar.xz'
-  sha1 '31d1a0ec4815bf1ee638b0f2850f03efcd48022a'
+  url 'http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.xz'
+  sha1 'b99724acdf3577982b3146b9430d765995ecf9e1'
 
-  head 'http://svn.xiph.org/trunk/vorbis'
+  head do
+    url 'http://svn.xiph.org/trunk/vorbis'
 
-  option :universal
-
-  depends_on 'xz' => :build
-  depends_on 'pkg-config' => :build
-  depends_on 'libogg'
-
-  if build.head?
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
+
+  option :universal
+
+  depends_on 'pkg-config' => :build
+  depends_on 'libogg'
 
   def install
     ENV.universal_binary if build.universal?

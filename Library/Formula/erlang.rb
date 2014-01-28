@@ -1,41 +1,30 @@
 require 'formula'
 
-class ErlangManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R16B01.tar.gz'
-  sha1 '57ef01620386108db83ef13921313e600d351d44'
-end
-
-class ErlangHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R16B01.tar.gz'
-  sha1 '6741e15e0b3e58736987e38fb8803084078ff99f'
-end
-
-class ErlangHeadManuals < Formula
-  url 'http://erlang.org/download/otp_doc_man_R16B01.tar.gz'
-  sha1 '57ef01620386108db83ef13921313e600d351d44'
-end
-
-class ErlangHeadHtmls < Formula
-  url 'http://erlang.org/download/otp_doc_html_R16B01.tar.gz'
-  sha1 '6741e15e0b3e58736987e38fb8803084078ff99f'
-end
-
 # Major releases of erlang should typically start out as separate formula in
 # Homebrew-versions, and only be merged to master when things like couchdb and
 # elixir are compatible.
 class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/archive/OTP_R16B01.tar.gz'
-  sha1 'ddbff080ee39c50b86b847514c641f0a9aab0333'
+  url 'https://github.com/erlang/otp/archive/OTP_R16B03.tar.gz'
+  sha1 '3230f2ec4bb0cc11d2c89a21c396e7db3045474d'
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
   bottle do
-    revision 1
-    sha1 '772d2c72a3fd24474499d8bd1ca050a5deb5d56c' => :mountain_lion
-    sha1 'dbcd966cca49c16d6c2598d49a0bc9a31d6cb702' => :lion
-    sha1 '65f9b0d2ea1a7d12d0477f51e3d5cc0415361789' => :snow_leopard
+    sha1 'ab820bf4be42fb4496fca3ca2dc4fc83bffdd9b5' => :mavericks
+    sha1 '131f82f5ed7c272f80b9ead96b016a4d04be8bab' => :mountain_lion
+    sha1 'dccac71186d57b7be40c1901d1169c7010cbde1d' => :lion
+  end
+
+  resource 'man' do
+    url 'http://erlang.org/download/otp_doc_man_R16B03.tar.gz'
+    sha1 '66e866de2e8f371251ab230677124c1a4874b9ea'
+  end
+
+  resource 'html' do
+    url 'http://erlang.org/download/otp_doc_html_R16B03.tar.gz'
+    sha1 '69a2680c8dfe82a2200fa7bcdbc89f798c160b84'
   end
 
   option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
@@ -43,35 +32,38 @@ class Erlang < Formula
   option 'time', '`brew test --time` to include a time-consuming test'
   option 'no-docs', 'Do not install documentation'
 
+  depends_on :autoconf
   depends_on :automake
   depends_on :libtool
   depends_on 'unixodbc' if MacOS.version >= :mavericks
   depends_on 'fop' => :optional # enables building PDF docs
 
-  fails_with :llvm do
-    build 2334
+  fails_with :llvm
+
+  def patches
+    # Fixes problem with ODBC on Mavericks. Reported upstream:
+    # https://github.com/erlang/otp/pull/142
+    DATA if MacOS.version >= :mavericks
   end
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
 
-    if ENV.compiler == :llvm
-      # Don't use optimizations. Fixes build on Lion/Xcode 4.2
-      ENV.remove_from_cflags /-O./
-      ENV.append_to_cflags '-O0'
-    end
     ENV.append "FOP", "#{HOMEBREW_PREFIX}/bin/fop" if build.with? 'fop'
 
     # Do this if building from a checkout to generate configure
     system "./otp_build autoconf" if File.exist? "otp_build"
 
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
-            "--enable-kernel-poll",
-            "--enable-threads",
-            "--enable-dynamic-ssl-lib",
-            "--enable-shared-zlib",
-            "--enable-smp-support"]
+    args = %W[
+      --disable-debug
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --enable-kernel-poll
+      --enable-threads
+      --enable-dynamic-ssl-lib
+      --enable-shared-zlib
+      --enable-smp-support
+    ]
 
     args << "--with-dynamic-trace=dtrace" unless MacOS.version <= :leopard or not MacOS::CLT.installed?
 
@@ -93,10 +85,8 @@ class Erlang < Formula
     system "make install"
 
     unless build.include? 'no-docs'
-      manuals = build.head? ? ErlangHeadManuals : ErlangManuals
-      manuals.new.brew { (lib/'erlang').install 'man' }
-      htmls = build.head? ? ErlangHeadHtmls : ErlangHtmls
-      htmls.new.brew { doc.install Dir['*'] }
+      (lib/'erlang').install resource('man').files('man')
+      doc.install resource('html')
     end
   end
 
@@ -114,7 +104,21 @@ class Erlang < Formula
     # This test takes some time to run, but per bug #120 should finish in
     # "less than 20 minutes". It takes about 20 seconds on a Mac Pro (2009).
     if build.include?("time") && !build.head?
-      `#{bin}/dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.16.2/ebin/`
+      `#{bin}/dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.16.3/ebin/`
     end
   end
 end
+__END__
+diff --git a/lib/odbc/configure.in b/lib/odbc/configure.in
+index 83f7a47..fd711fe 100644
+--- a/lib/odbc/configure.in
++++ b/lib/odbc/configure.in
+@@ -130,7 +130,7 @@ AC_SUBST(THR_LIBS)
+ odbc_lib_link_success=no
+ AC_SUBST(TARGET_FLAGS)
+     case $host_os in
+-        darwin*)
++        darwin1[[0-2]].*|darwin[[0-9]].*)
+                 TARGET_FLAGS="-DUNIX"
+                if test ! -d "$with_odbc" || test "$with_odbc" = "yes"; then
+                    ODBC_LIB= -L"/usr/lib"

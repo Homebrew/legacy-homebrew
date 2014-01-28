@@ -3,16 +3,15 @@ require 'formula'
 class Python < Formula
   homepage 'http://www.python.org'
   head 'http://hg.python.org/cpython', :using => :hg, :branch => '2.7'
-  url 'http://www.python.org/ftp/python/2.7.5/Python-2.7.5.tar.bz2'
-  sha1 '6cfada1a739544a6fa7f2601b500fba02229656b'
+  url 'http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz'
+  sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
 
   option :universal
-  option 'quicktest', 'Run `make quicktest` after the build (for devs; may fail)'
+  option 'quicktest', "Run `make quicktest` after the build (for devs; may fail)"
   option 'with-brewed-openssl', "Use Homebrew's openSSL instead of the one from OS X"
   option 'with-brewed-tk', "Use Homebrew's Tk (has optional Cocoa and threads support)"
-  option 'with-poll', 'Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)'
-  # --with-dtrace relies on CLT as dtrace hard-codes paths to /usr
-  option 'with-dtrace', 'Experimental DTrace support (http://bugs.python.org/issue13405)' if MacOS::CLT.installed?
+  option 'with-poll', "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
+  option 'with-dtrace', "Experimental DTrace support (http://bugs.python.org/issue13405)"
 
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
@@ -26,8 +25,8 @@ class Python < Formula
   skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.1.4.tar.gz'
-    sha1 'b8bf9c2b8a114045598f0e16681d6a63a4d6cdf9'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.0.1.tar.gz'
+    sha1 '5283b4dca46d45efd1156713ab51836509646c03'
   end
 
   resource 'pip' do
@@ -36,12 +35,9 @@ class Python < Formula
   end
 
   def patches
-    p = []
-    p << 'https://gist.github.com/paxswill/5402840/raw/75646d5860685c8be98858288d1772f64d6d5193/pythondtrace-patch.diff' if build.with? 'dtrace'
     # Patch to disable the search for Tk.framework, since Homebrew's Tk is
     # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
-    p << DATA if build.with? 'brewed-tk'
-    p
+    DATA if build.with? 'brewed-tk'
   end
 
   def site_packages_cellar
@@ -125,24 +121,22 @@ class Python < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
-    # We ship setuptools and pip and reuse the PythonInstalled
-    # Requirement here to write the sitecustomize.py
-    py = PythonInstalled.new("2.7")
-    py.binary = bin/'python'
-    py.modify_build_environment
+    # Write our sitecustomize.py
+    Dir["#{site_packages}/*.py{,c,o}"].each {|f| Pathname.new(f).unlink }
+    (site_packages/"sitecustomize.py").write(sitecustomize)
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.5-py3.3.egg
-    rm_rf Dir["#{py.global_site_packages}/setuptools*"]
-    rm_rf Dir["#{py.global_site_packages}/distribute*"]
+    rm_rf Dir[HOMEBREW_PREFIX/"lib/python2.7/site-packages/setuptools*"]
+    rm_rf Dir[HOMEBREW_PREFIX/"lib/python2.7/site-packages/distribute*"]
 
     setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
 
-    resource('setuptools').stage { system py.binary, *setup_args }
-    resource('pip').stage { system py.binary, *setup_args }
+    resource('setuptools').stage { system "#{bin}/python", *setup_args }
+    resource('pip').stage { system "#{bin}/python", *setup_args }
 
     # And now we write the distutils.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg"
@@ -166,7 +160,7 @@ class Python < Formula
       EOS
 
       # Fixes setting Python build flags for certain software
-      # See: https://github.com/mxcl/homebrew/pull/20182
+      # See: https://github.com/Homebrew/homebrew/pull/20182
       # http://bugs.python.org/issue3588
       inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile" do |s|
         s.change_make_var! "LINKFORSHARED",
@@ -206,7 +200,7 @@ class Python < Formula
               "do_readline = '#{HOMEBREW_PREFIX}/opt/readline/lib/libhistory.dylib'"
   end
 
-  def distutils_fix_stdenv()
+  def distutils_fix_stdenv
     # Python scans all "-I" dirs but not "-isysroot", so we add
     # the needed includes with "-I" here to avoid this err:
     #     building dbm using ndbm
@@ -220,7 +214,7 @@ class Python < Formula
     ENV.minimal_optimization
 
     # We need to enable warnings because the configure.in uses -Werror to detect
-    # "whether gcc supports ParseTuple" (https://github.com/mxcl/homebrew/issues/12194)
+    # "whether gcc supports ParseTuple" (https://github.com/Homebrew/homebrew/issues/12194)
     ENV.enable_warnings
     if ENV.compiler == :clang
       # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
@@ -228,6 +222,56 @@ class Python < Formula
       ENV.append_to_cflags '-Wno-empty-body'
       ENV.append_to_cflags '-Qunused-arguments'
     end
+  end
+
+  def sitecustomize
+    <<-EOF.undent
+      # This file is created by Homebrew and is executed on each python startup.
+      # Don't print from here, or else python command line scripts may fail!
+      # <https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python>
+      import os
+      import sys
+
+      if sys.version_info[0] != 2:
+          # This can only happen if the user has set the PYTHONPATH for 3.x and run Python 2.x or vice versa.
+          # Every Python looks at the PYTHONPATH variable and we can't fix it here in sitecustomize.py,
+          # because the PYTHONPATH is evaluated after the sitecustomize.py. Many modules (e.g. PyQt4) are
+          # built only for a specific version of Python and will fail with cryptic error messages.
+          # In the end this means: Don't set the PYTHONPATH permanently if you use different Python versions.
+          exit('Your PYTHONPATH points to a site-packages dir for Python 2.x but you are running Python ' +
+               str(sys.version_info[0]) + '.x!\\n     PYTHONPATH is currently: "' + str(os.environ['PYTHONPATH']) + '"\\n' +
+               '     You should `unset PYTHONPATH` to fix this.')
+      else:
+          # Only do this for a brewed python:
+          opt_executable = '#{HOMEBREW_PREFIX}/opt/python/bin/python2.7'
+          if os.path.realpath(sys.executable) == os.path.realpath(opt_executable):
+              # Remove /System site-packages, and the Cellar site-packages
+              # which we moved to lib/pythonX.Y/site-packages. Further, remove
+              # HOMEBREW_PREFIX/lib/python because we later addsitedir(...).
+              sys.path = [ p for p in sys.path
+                           if (not p.startswith('/System') and
+                               not p.startswith('#{HOMEBREW_PREFIX}/lib/python') and
+                               not (p.startswith('#{HOMEBREW_PREFIX}/Cellar/python') and p.endswith('site-packages'))) ]
+
+              # LINKFORSHARED (and python-config --ldflags) return the
+              # full path to the lib (yes, "Python" is actually the lib, not a
+              # dir) so that third-party software does not need to add the
+              # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
+              # Assume Framework style build (default since months in brew)
+              try:
+                  from _sysconfigdata import build_time_vars
+                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{HOMEBREW_PREFIX}/opt/python/Frameworks/Python.framework/Versions/2.7/Python'
+              except:
+                  pass  # remember: don't print here. Better to fail silently.
+
+              # Set the sys.executable to use the opt_prefix
+              sys.executable = opt_executable
+
+          # Tell about homebrew's site-packages location.
+          # This is needed for Python to parse *.pth.
+          import site
+          site.addsitedir('#{HOMEBREW_PREFIX}/lib/python2.7/site-packages')
+    EOF
   end
 
   def caveats
@@ -239,16 +283,13 @@ class Python < Formula
         pip install --upgrade setuptools
         pip install --upgrade pip
 
-      To symlink "Idle" and the "Python Launcher" to ~/Applications
-        `brew linkapps`
-
       You can install Python packages with (the outdated easy_install or)
         `pip install <your_favorite_package>`
 
       They will install into the site-package directory
         #{site_packages}
 
-      See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+      See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
     EOS
   end
 
@@ -262,29 +303,6 @@ class Python < Formula
 end
 
 __END__
-# http://bugs.python.org/issue18071 (Remove this hung for 2.7.6!)
-diff --git a/Lib/_osx_support.py b/Lib/_osx_support.py
---- a/Lib/_osx_support.py
-+++ b/Lib/_osx_support.py
-@@ -53,7 +53,7 @@ def _find_executable(executable, path=No
-
-
- def _read_output(commandstring):
--    """Output from succesful command execution or None"""
-+    """Output from successful command execution or None"""
-     # Similar to os.popen(commandstring, "r").read(),
-     # but without actually using os.popen because that
-     # function is not usable during python bootstrap.
-@@ -68,7 +68,7 @@ def _read_output(commandstring):
-
-     with contextlib.closing(fp) as fp:
-         cmd = "%s 2>/dev/null >'%s'" % (commandstring, fp.name)
--        return fp.read().decode('utf-8').strip() if not os.system(cmd) else None
-+        return fp.read().strip() if not os.system(cmd) else None
-
-
-# X11 header find fix (and let homebrew handle this.)
-
 diff --git a/setup.py b/setup.py
 index 716f08e..66114ef 100644
 --- a/setup.py

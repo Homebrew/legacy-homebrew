@@ -15,7 +15,7 @@ class Abcde < Formula
 
   def install
     bin.install 'abcde', 'abcde-musicbrainz-tool', 'cddb-tool'
-    etc.install 'abcde.conf' unless (etc/'abcde.conf').exist?
+    etc.install 'abcde.conf'
     man1.install 'abcde.1', 'cddb-tool.1'
   end
 end

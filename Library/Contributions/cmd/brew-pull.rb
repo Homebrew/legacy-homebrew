@@ -19,7 +19,7 @@ end
 
 ARGV.named.each do|arg|
   if arg.to_i > 0
-    url = 'https://github.com/mxcl/homebrew/pull/' + arg
+    url = 'https://github.com/Homebrew/homebrew/pull/' + arg
   else
     url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
     unless url_match
@@ -36,6 +36,13 @@ ARGV.named.each do|arg|
     Dir.chdir HOMEBREW_REPOSITORY
   end
 
+  issue = arg.to_i > 0 ? arg.to_i : url_match[4]
+
+  if ARGV.include? '--bottle'
+    raise 'No pull request detected!' unless issue
+    url = "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+  end
+
   # GitHub provides commits'/pull-requests' raw patches using this URL.
   url += '.patch'
 
@@ -48,16 +55,24 @@ ARGV.named.each do|arg|
   revision = `git rev-parse --short HEAD`.strip
 
   ohai 'Applying patch'
-  patch_args = ['am']
+  patch_args = []
   patch_args << '--signoff' unless ARGV.include? '--clean'
   # Normally we don't want whitespace errors, but squashing them can break
   # patches so an option is provided to skip this step.
-  patch_args << '--whitespace=fix' unless ARGV.include? '--ignore-whitespace' or ARGV.include? '--clean'
+  if ARGV.include? '--ignore-whitespace' or ARGV.include? '--clean'
+    patch_args << '--whitespace=nowarn'
+  else
+    patch_args << '--whitespace=fix'
+  end
   patch_args << patchpath
 
-  safe_system 'git', *patch_args
+  begin
+    safe_system 'git', 'am', *patch_args
+  rescue => e
+    system 'git', 'am', '--abort'
+    odie 'Patch failed to apply: aborted.'
+  end
 
-  issue = arg.to_i > 0 ? arg.to_i : url_match[4]
   if issue and not ARGV.include? '--clean'
     ohai "Patch closes issue ##{issue}"
     message = `git log HEAD^.. --format=%B`
@@ -78,7 +93,7 @@ ARGV.named.each do|arg|
     `git diff #{revision}.. --name-status`.each_line do |line|
       status, filename = line.split
       # Don't try and do anything to removed files.
-      if (status == 'A' or status == 'M') and filename.include? '/Formula/' or tap url
+      if (status == 'A' or status == 'M') and filename.match /Formula\/.+\.rb$/ or tap url
         formula = File.basename(filename, '.rb')
         ohai "Installing #{formula}"
         install = Formula.factory(formula).installed? ? 'upgrade' : 'install'

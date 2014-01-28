@@ -2,8 +2,8 @@ require 'formula'
 
 class Sqlcipher < Formula
   homepage "http://sqlcipher.net"
-  url "https://github.com/sqlcipher/sqlcipher/archive/v2.2.1.tar.gz"
-  sha1 "dc8af219f71ddae63ed7caf9cff5c0e9b00c3f13"
+  url 'https://github.com/sqlcipher/sqlcipher/archive/v3.0.1.tar.gz'
+  sha1 '9cec88e5a6e59058e675d37bbd4b0899689f9956'
 
   head "https://github.com/sqlcipher/sqlcipher.git"
 

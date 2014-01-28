@@ -2,8 +2,16 @@ require 'formula'
 
 class Cloog < Formula
   homepage 'http://www.cloog.org/'
-  url 'http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.0.tar.gz'
-  sha1 '85f620a26aabf6a934c44ca40a9799af0952f863'
+  url 'http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.1.tar.gz'
+  sha1 '2dc70313e8e2c6610b856d627bce9c9c3f848077'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 '38afdce382abcd3c46fb94af7eb72e87d87859d4' => :mavericks
+    sha1 'd6984ce335cf7b8eb482cdd4f0301c6583b00073' => :mountain_lion
+    sha1 'fd707268c3e5beafa9b98a768f7064d5b9699178' => :lion
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'gmp'

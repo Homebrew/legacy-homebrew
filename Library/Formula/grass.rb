@@ -2,29 +2,35 @@ require 'formula'
 
 class Grass < Formula
   homepage 'http://grass.osgeo.org/'
-  url 'http://grass.osgeo.org/grass64/source/grass-6.4.2.tar.gz'
-  sha1 '74481611573677d90ae0cd446c04a3895e232004'
-
   head 'https://svn.osgeo.org/grass/grass/trunk'
+  url 'http://grass.osgeo.org/grass64/source/grass-6.4.3.tar.gz'
+  sha1 '925da985f3291c41c7a0411eaee596763f7ff26e'
 
   option "without-gui", "Build without WxPython interface. Command line tools still available."
 
+  depends_on :macos => :lion
+  depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
   depends_on "pkg-config" => :build
-  depends_on :python
   depends_on "gettext"
   depends_on "readline"
   depends_on "gdal"
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
-  depends_on 'wxmac' => :recommended # prefer over OS X's version because of 64bit
+  depends_on "wxmac" => :recommended # prefer over OS X's version because of 64bit
   depends_on :postgresql => :optional
   depends_on :mysql => :optional
-  depends_on "cairo" if MacOS.version <= :leopard
+  depends_on "cairo"
   depends_on :x11  # needs to find at least X11/include/GL/gl.h
 
   # Patches that files are not installed outside of the prefix.
-  def patches; DATA; end
+  def patches;
+    if build.head?
+      "https://gist.github.com/jctull/0fe3db92a3e7c19fa6e0/raw/42e819f0a9b144de782c94f730dbc4da136e9227/grassPatchHead.diff"
+    else
+      DATA
+    end
+  end
 
   fails_with :clang do
     cause "Multiple build failures while compiling GRASS tools."
@@ -78,32 +84,24 @@ class Grass < Formula
     args << "--enable-64bit" if MacOS.prefer_64_bit?
     args << "--with-macos-archs=#{MacOS.preferred_arch}"
 
-    # Deal with Cairo support
-    if MacOS.version <= :leopard
-      cairo = Formula.factory('cairo')
-      args << "--with-cairo-includes=#{cairo.include}/cairo"
-      args << "--with-cairo-libs=#{cairo.lib}"
-    else
-      args << "--with-cairo-includes=#{MacOS::X11.include} #{MacOS::X11.include}/cairo"
-    end
-
+    cairo = Formula.factory('cairo')
+    args << "--with-cairo-includes=#{cairo.include}/cairo"
+    args << "--with-cairo-libs=#{cairo.lib}"
     args << "--with-cairo"
 
     # Database support
-    if build.with? "postgres"
-      args << "--with-postgres"
-    end
+    args << "--with-postgres" if build.with? "postgresql"
 
     if build.with? "mysql"
       mysql = Formula.factory('mysql')
-      args << "--with-mysql-includes=#{mysql.include + 'mysql'}"
-      args << "--with-mysql-libs=#{mysql.lib + 'mysql'}"
+      args << "--with-mysql-includes=#{mysql.include}/mysql"
+      args << "--with-mysql-libs=#{mysql.lib}"
       args << "--with-mysql"
     end
 
     system "./configure", "--prefix=#{prefix}", *args
-    system "make" # make and make install must be separate steps.
-    system "make install"
+    system "make GDAL_DYNAMIC=" # make and make install must be separate steps.
+    system "make GDAL_DYNAMIC= install" # GDAL_DYNAMIC set to blank for r.external compatability
   end
 
   def caveats

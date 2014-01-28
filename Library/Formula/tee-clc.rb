@@ -5,6 +5,8 @@ class TeeClc < Formula
   url 'http://download.microsoft.com/download/4/2/7/427AC2CF-8A5B-4DE9-8221-22F54B1903E2/TEE-CLC-11.0.0.1212.zip'
   sha1 '1f16ac62ab64cfbd88ad471ea3d21a62d5eb78e6'
 
+  conflicts_with 'tiny-fugue', :because => 'both install a `tf` binary'
+
   def install
     if build.stable?
       install_prefix = ''
@@ -14,9 +16,9 @@ class TeeClc < Formula
       install_prefix = Dir['target/tf-*/'].to_s
     end
 
-    libexec.install install_prefix + 'tf'
-    libexec.install install_prefix + 'lib'
-    (libexec + "native").install install_prefix + 'native/macosx'
+    libexec.install install_prefix/'tf'
+    libexec.install install_prefix/'lib'
+    (libexec/"native").install install_prefix/'native/macosx'
 
     bin.write_exec_script libexec/'tf'
     share.install 'help'

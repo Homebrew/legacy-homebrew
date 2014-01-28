@@ -7,7 +7,7 @@ class Cmigemo < Formula
 
   depends_on 'nkf' => :build
 
-  # Patch per discussion at: https://github.com/mxcl/homebrew/pull/7005
+  # Patch per discussion at: https://github.com/Homebrew/homebrew/pull/7005
   def patches
     DATA
   end

@@ -1,3 +1,5 @@
+require 'formula'
+
 module SharedEnvExtension
   CC_FLAG_VARS = %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
   FC_FLAG_VARS = %w{FCFLAGS FFLAGS}
@@ -6,7 +8,7 @@ module SharedEnvExtension
   GNU_GCC_VERSIONS = (3..9)
   GNU_GCC_REGEXP = /gcc-(4\.[3-9])/
 
-  COMPLER_ALIASES = {'gcc' => 'gcc-4.2', 'llvm' => 'llvm-gcc'}
+  COMPILER_ALIASES = {'gcc' => 'gcc-4.2', 'llvm' => 'llvm-gcc'}
   COMPILER_SYMBOL_MAP = { 'gcc-4.0'  => :gcc_4_0,
                           'gcc-4.2'  => :gcc,
                           'llvm-gcc' => :llvm,
@@ -55,6 +57,12 @@ module SharedEnvExtension
     prepend key, path, File::PATH_SEPARATOR if File.directory? path
   end
 
+  def prepend_create_path key, path
+    path = Pathname.new(path) unless path.is_a? Pathname
+    path.mkpath
+    prepend_path key, path
+  end
+
   def remove keys, value
     Array(keys).each do |key|
       next unless self[key]
@@ -82,7 +90,7 @@ module SharedEnvExtension
   def fcflags;  self['FCFLAGS'];      end
 
   def compiler
-    if (cc = ARGV.cc)
+    @compiler ||= if (cc = ARGV.cc)
       COMPILER_SYMBOL_MAP.fetch(cc) do |other|
         if other =~ GNU_GCC_REGEXP then other
         else
@@ -102,12 +110,19 @@ module SharedEnvExtension
     elsif ARGV.include? '--use-clang'
       :clang
     elsif self['HOMEBREW_CC']
-      cc = COMPLER_ALIASES.fetch(self['HOMEBREW_CC'], self['HOMEBREW_CC'])
-      COMPILER_SYMBOL_MAP.fetch(cc) do |invalid|
-        MacOS.default_compiler
-      end
+      cc = COMPILER_ALIASES.fetch(self['HOMEBREW_CC'], self['HOMEBREW_CC'])
+      COMPILER_SYMBOL_MAP.fetch(cc) { MacOS.default_compiler }
     else
       MacOS.default_compiler
+    end
+  end
+
+  # If the given compiler isn't compatible, will try to select
+  # an alternate compiler, altering the value of environment variables.
+  # If no valid compiler is found, raises an exception.
+  def validate_cc!(formula)
+    if formula.fails_with? ENV.compiler
+      send CompilerSelector.new(formula).compiler
     end
   end
 
@@ -157,13 +172,20 @@ module SharedEnvExtension
     set_cpu_flags(flags)
   end
 
+  # ld64 is a newer linker provided for Xcode 2.5
+  def ld64
+    ld64 = Formula.factory('ld64')
+    self['LD'] = ld64.bin/'ld'
+    append "LDFLAGS", "-B#{ld64.bin.to_s+"/"}"
+  end
+
   def warn_about_non_apple_gcc(gcc)
     opoo "Experimental support for non-Apple GCC enabled. Some builds may fail!"
 
     begin
       gcc_name = 'gcc' + gcc.delete('.')
-      gcc = Formula.factory(gcc_name)
-      if !gcc.installed?
+      gcc = Formulary.factory(gcc_name)
+      if !gcc.opt_prefix.exist?
         raise <<-EOS.undent
         The requested Homebrew GCC, #{gcc_name}, was not installed.
         You must:
@@ -171,8 +193,6 @@ module SharedEnvExtension
           brew install #{gcc_name}
         EOS
       end
-
-      ENV.append('PATH', gcc.opt_prefix/'bin', ':')
     rescue FormulaUnavailableError
       raise <<-EOS.undent
       Homebrew GCC requested, but formula #{gcc_name} not found!

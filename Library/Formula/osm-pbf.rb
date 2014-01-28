@@ -2,8 +2,8 @@ require 'formula'
 
 class OsmPbf < Formula
   homepage 'http://wiki.openstreetmap.org/wiki/PBF_Format'
-  url 'https://github.com/scrosby/OSM-binary/archive/v1.3.0.tar.gz'
-  sha1 'bb9bcd776f2876696b5c5d970d3a68c2222a7ac3'
+  url 'https://github.com/scrosby/OSM-binary/archive/v1.3.1.tar.gz'
+  sha1 '4713e693dee3da42178764c8cb9b08188eb47a0d'
 
   depends_on 'protobuf'
 

@@ -1,11 +1,5 @@
 require 'formula'
 
-class Button < Formula
-  url 'http://www.ucm.es/info/Astrof/software/button/button.tar.gz'
-  sha1 'd1bfcb51a9ce5819e00d5d1a1d8c658691193f11'
-  version '1.0'
-end
-
 class Pgplot < Formula
   homepage 'http://www.astro.caltech.edu/~tjp/pgplot/'
   url 'ftp://ftp.astro.caltech.edu/pub/pgplot/pgplot522.tar.gz'
@@ -16,6 +10,12 @@ class Pgplot < Formula
 
   depends_on :x11
   depends_on :fortran
+
+  resource 'button' do
+    url 'http://www.ucm.es/info/Astrof/software/button/button.tar.gz'
+    sha1 'd1bfcb51a9ce5819e00d5d1a1d8c658691193f11'
+    version '1.0'
+  end
 
   def patches
     # from MacPorts: https://trac.macports.org/browser/trunk/dports/graphics/pgplot/files
@@ -87,13 +87,10 @@ class Pgplot < Formula
       (prefix/'examples').install Dir['*demo*', '../examples/pgdemo*.f', '../cpg/cpgdemo*.c', '../drivers/*/pg*demo.*']
     end
 
-    # install libbutton
-    if build.include? 'with-button'
-      Button.new.brew do
-        inreplace 'Makefile', 'f77', "#{ENV.fc} #{ENV.fcflags}"
-        system "make"
-        lib.install 'libbutton.a'
-      end
-    end
+    resource('button').stage do
+      inreplace 'Makefile', 'f77', "#{ENV.fc} #{ENV.fcflags}"
+      system "make"
+      lib.install 'libbutton.a'
+    end if build.with? 'button'
   end
 end

@@ -39,16 +39,7 @@ class FormulaSpecSelectionTests < Test::Unit::TestCase
       def install_bottle?(*); true; end
 
       url 'foo-1.0'
-      bottle do
-        {
-          :snow_leopard_32 => 'deadbeef'*5,
-          :snow_leopard    => 'faceb00c'*5,
-          :lion            => 'baadf00d'*5,
-          :mountain_lion   => '8badf00d'*5,
-        }.each_pair do |cat, val|
-          sha1(val => cat)
-        end
-      end
+      bottle { sha1 TEST_SHA1 => bottle_tag }
     end
 
     assert_spec_selected :bottle
@@ -99,7 +90,7 @@ class FormulaSpecSelectionTests < Test::Unit::TestCase
 
   def test_incomplete_spec_not_selected
     formula do
-      sha1 'deadbeef'*5
+      sha1 TEST_SHA1
       version '1.0'
       head 'foo'
     end
@@ -109,7 +100,7 @@ class FormulaSpecSelectionTests < Test::Unit::TestCase
 
   def test_incomplete_stable_not_set
     formula do
-      sha1 'foo'
+      sha1 TEST_SHA1
       devel { url 'foo-1.1a' }
       head 'foo'
     end
@@ -132,9 +123,7 @@ class FormulaSpecSelectionTests < Test::Unit::TestCase
   def test_incomplete_bottle_not_set
     formula do
       url 'foo-1.0'
-      bottle do
-        sha1 'deadbeef'*5 => :some_nonexistent_thing
-      end
+      bottle { sha1 TEST_SHA1 => :some_nonexistent_thing }
     end
 
     assert_spec_unset :bottle

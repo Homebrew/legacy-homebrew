@@ -6,6 +6,12 @@ class Makeicns < Formula
   sha1 '2a3b1229781516c8cc36089bf09729d5c17ac17c'
   head 'https://bitbucket.org/mkae/makeicns', :using => :hg
 
+  def patches
+    {:p0 => [
+      "https://trac.macports.org/export/114372/trunk/dports/graphics/makeicns/files/patch-IconFamily.m.diff"
+    ]}
+  end
+
   def install
     system "make"
     bin.install "makeicns"

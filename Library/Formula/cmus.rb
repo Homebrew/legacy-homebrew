@@ -16,6 +16,7 @@ class Cmus < Formula
   depends_on 'flac'
   depends_on 'mp4v2'
   depends_on 'libcue'
+  depends_on 'ffmpeg' => :optional
 
   def install
     system "./configure", "prefix=#{prefix}", "mandir=#{man}"

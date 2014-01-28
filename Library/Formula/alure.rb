@@ -16,7 +16,7 @@ class Alure < Formula
   def install
     # fix a broken include flags line, which fixes a build error.
     # Not reported upstream.
-    # https://github.com/mxcl/homebrew/pull/6368
+    # https://github.com/Homebrew/homebrew/pull/6368
     inreplace 'CMakeLists.txt', '${VORBISFILE_CFLAGS}',
                                 %x[pkg-config --cflags vorbisfile].chomp
 

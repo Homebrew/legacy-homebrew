@@ -5,8 +5,9 @@ class Djmount < Formula
   url 'http://downloads.sourceforge.net/project/djmount/djmount/0.71/djmount-0.71.tar.gz'
   sha1 '527d4603d85b7fb86dc97d326b78c97bdcc4d687'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libupnp'
-  depends_on 'fuse4x'
+  depends_on 'osxfuse'
 
   def patches
     { :p0 => DATA }
@@ -26,7 +27,7 @@ class Djmount < Formula
   end
 
   def caveats; <<-EOS.undent
-    Make sure to follow the directions given by `brew info fuse4x-kext`
+    Make sure to follow the directions given by `brew info osxfuse`
     before trying to use a FUSE-based filesystem.
     EOS
   end
@@ -100,3 +101,33 @@ diff -u -r configure configure
  
  
  #
+--- djmount/upnp_util.h.orig	2006-08-27 20:12:20.000000000 +0000
++++ djmount/upnp_util.h
+@@ -27,6 +27,7 @@
+ #define UPNP_UTIL_H_INCLUDED
+ 
+ 
++#include <upnp/upnp.h>
+ #include <upnp/upnptools.h>
+ 
+ 
+@@ -46,8 +47,8 @@ extern "C" {
+  *****************************************************************************/
+ char*
+ UpnpUtil_GetEventString (void* talloc_context,
+-			 IN Upnp_EventType eventType, 
+-			 IN const void* event);
++			 Upnp_EventType eventType, 
++			 const void* event);
+ 
+ 
+ /*****************************************************************************
+@@ -55,7 +56,7 @@ UpnpUtil_GetEventString (void* talloc_co
+  * @return 	a static constant string, or NULL if unknown event type.
+  *****************************************************************************/
+ const char*
+-UpnpUtil_GetEventTypeString (IN Upnp_EventType e);
++UpnpUtil_GetEventTypeString (Upnp_EventType e);
+ 
+ 
+ 
