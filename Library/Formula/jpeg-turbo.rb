@@ -10,7 +10,7 @@ class JpegTurbo < Formula
   keg_only "libjpeg-turbo is not linked to prevent conflicts with the standard libjpeg."
 
   def install
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--with-jpeg8"]
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--with-jpeg8", "--mandir=#{man}"]
     if MacOS.prefer_64_bit?
       args << "--host=x86_64-apple-darwin"
       # Auto-detect our 64-bit nasm
