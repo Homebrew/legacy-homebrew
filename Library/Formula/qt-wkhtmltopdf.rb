@@ -15,14 +15,8 @@ class QtWkhtmltopdf < Formula
   depends_on 'libpng'
   depends_on 'libtiff' # note: libtiff requires jpeg so we don't need to explicitly require it
 
-  # Software that will not be sym-linked into the `brew --prefix` will only
-  # live in it's Cellar. Other formulae can depend on it and then brew will
-  # add the necessary includes and libs (etc.) during the brewing of that
-  # other formula. But generally, keg_only formulae are not in your PATH
-  # and not seen by compilers if you build your own software outside of
-  # Homebrew. This way, we don't shadow software provided by OS X.
   keg_only :provided_by_osx
-  keg_only "Only used to build a statically compiled wkhtmltopdf"
+  keg_only "This QT formula is only used to build a patched, statically compiled wkhtmltopdf"
 
   def patches
     patches = []
@@ -132,25 +126,39 @@ class QtWkhtmltopdf < Formula
     # https://github.com/antialize/wkhtmltopdf/blob/master/static_qt_conf_base
     # https://github.com/antialize/wkhtmltopdf/blob/master/static_qt_conf_osx
     args = ["-prefix", prefix,
+
+            # open source license without prompting
             "-confirm-license", "-opensource",
-            "-nomake", "demos", "-nomake", "examples", "-nomake", "tools", "-nomake", "docs",
-            "-nomake", "translations", "-nomake", "tests",
-            "-static", "-cocoa", "-fast", "-release",
-            "-xmlpatterns", "-webkit", "-xrender", "-openssl", "-largefile", "-rpath",
+
+            # use system libraries for most things
             "-system-zlib", "-qt-libmng", "-system-libtiff", "-system-libpng", "-system-libjpeg",
-            "-graphicssystem", "raster",
-            "-no-dwarf2", "-no-framework",
+
+            # static build with cocoa
+            "-static", "-cocoa", "-fast", "-release",
+
+            # don't build things we don't need
+            "-nomake", "demos", "-nomake", "examples", "-nomake", "tools", "-nomake", "docs", "-nomake", "translations", "-nomake", "tests",
+
+            # OS X sdk
             "-sdk", "#{MacOS.sdk_path}",
-            "-no-accessibility", "-no-stl", "-no-sql-ibase", "-no-sql-mysql", "-no-sql-odbc", "-no-sql-psql",
-            "-no-sql-sqlite", "-no-sql-sqlite2", "-no-qt3support", "-no-phonon", "-no-phonon-backend",
-            "-no-scripttools", "-no-mmx", "-no-3dnow", "-no-sse", "-no-sse2", "-no-opengl", "-no-dbus",
-            "-no-multimedia", "-no-declarative", "-no-nis", "-no-cups", "-no-iconv", "-no-pch", "-no-gtkstyle",
-            "-no-nas-sound", "-no-sm", "-no-xshape", "-no-xinerama", "-no-xfixes", "-no-xrandr", "-no-mitshm",
-            "-no-xkb", "-no-glib", "-no-openvg", "-no-opengl", "-no-xsync", "-no-javascript-jit", "-no-egl", ]
+
+            # requirements for wkhtmltopdf
+            "-xmlpatterns", "-webkit", "-xrender", "-openssl", "-largefile", "-rpath",
+
+            # raster graphics
+            "-graphicssystem", "raster",
+
+            # turn this off or we will get duplicate symbols
+            "-no-script",
+
+            # turn off things we don't need
+            "-no-qt3support", "-no-javascript-jit",
+            "-no-sql-ibase", "-no-sql-mysql", "-no-sql-odbc", "-no-sql-psql", "-no-sql-sqlite", "-no-sql-sqlite2",
+          ]
 
     # we have to disable these to avoid triggering optimization code
     # that will fail in superenv (in --env=std, Qt seems aware of this)
-    args << '-no-3dnow' << '-no-ssse3' if superenv?
+    args << '-no-3dnow' << '-no-ssse3' << '-no-sse2' << '-no-sse' << '-no-mmx' if superenv?
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
@@ -164,24 +172,6 @@ class QtWkhtmltopdf < Formula
         end
     end
 
-    args << "-plugin-sql-mysql" if build.with? 'mysql'
-
-    if build.with? 'd-bus'
-      dbus_opt = Formula.factory('d-bus').opt_prefix
-      args << "-I#{dbus_opt}/lib/dbus-1.0/include"
-      args << "-I#{dbus_opt}/include/dbus-1.0"
-      args << "-L#{dbus_opt}/lib"
-      args << "-ldbus-1"
-    end
-
-    if build.with? 'qt3support'
-      args << "-qt3support"
-    else
-      args << "-no-qt3support"
-    end
-
-    args << "-nomake" << "docs" if build.without? 'docs'
-
     if MacOS.prefer_64_bit? or build.universal?
       args << '-arch' << 'x86_64'
     end
@@ -190,10 +180,8 @@ class QtWkhtmltopdf < Formula
       args << '-arch' << 'x86'
     end
 
-    args << '-developer-build' if build.include? 'developer'
-
     system "./configure", *args
-    system "make", "-j3"
+    system "make"
     ENV.j1
     system "make install"
 
