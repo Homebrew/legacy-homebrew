@@ -27,8 +27,6 @@ class Ledger < Formula
   depends_on :python => :optional
 
   def install
-    opoo "Homebrew: Sorry, python bindings for --HEAD seem not to install. Help us fixing this!" if build.with? 'python'
-
     # find Homebrew's libpcre
     ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
 
@@ -52,5 +50,11 @@ class Ledger < Formula
       ENV.deparallelize
       system 'make install'
     end
+  end
+
+  def caveats; <<-EOS.undent
+    If ledger was built with python support be sure to
+    add #{HOMEBREW_PREFIX}/lib to your PYTHONPATH.
+    EOS
   end
 end
