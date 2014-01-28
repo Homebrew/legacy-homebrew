@@ -7,11 +7,11 @@ class DuoUnix < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}",
-                          "--sysconfdir=#{prefix}/etc"
+                          "--sysconfdir=#{etc}"
     system "make", "install"
   end
 
   test do
-    system "#{sbin}/login_duo", "-d", "-c", "#{prefix}/etc/login_duo.conf", "-f", "foobar", "echo", "SUCCESS"
+    system "#{sbin}/login_duo", "-d", "-c", "#{etc}/login_duo.conf", "-f", "foobar", "echo", "SUCCESS"
   end
 end
