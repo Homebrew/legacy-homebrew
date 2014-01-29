@@ -11,32 +11,32 @@ class Opam < Formula
 
   resource 'cudf' do
     url 'https://gforge.inria.fr/frs/download.php/31910/cudf-0.6.3.tar.gz'
-    md5 '40c4e2c50ea96d0c9e565db16d20639a'
+    sha1 'e2699dd33b8c49d8122c4402a20561a4dfdd1bae'
   end
 
   resource 'extlib' do
     url 'http://ocaml-extlib.googlecode.com/files/extlib-1.5.3.tar.gz'
-    md5 '3de5f4e0a95fda7b2f3819c4a655b17c'
+    sha1 '6e395ae70e690d5ec6f166cce4761798ce494580'
   end
 
   resource 'ocaml-re' do
     url 'https://github.com/ocaml/ocaml-re/archive/ocaml-re-1.2.0.tar.gz'
-    md5 '5cbfc137683ef2b0e91f931577f2e673'
+    sha1 'd54439efaaf888d619cbf1ccd92fbb077aed5d6a'
   end
 
   resource 'ocamlgraph' do
     url 'http://ocamlgraph.lri.fr/download/ocamlgraph-1.8.1.tar.gz'
-    md5 '5aa256e9587a6d264d189418230af698'
+    sha1 '1eac55604956f566f525c3e043188d626d1924ce'
   end
 
   resource 'dose3' do
     url 'https://gforge.inria.fr/frs/download.php/31595/dose3-3.1.2.tar.gz'
-    md5 'e98ff720fcc3873def46c85c6a980a1b'
+    sha1 'c1033921e907a1cfa7a8873683b0debe24319f87'
   end
 
   resource 'cmdliner' do
     url 'http://erratique.ch/software/cmdliner/releases/cmdliner-0.9.3.tbz'
-    md5 'd63dd3b03966d65fc242246859c831c7'
+    sha1 'af7e32e5f2eb829aab9ba6c1d85574b2a3ba174e'
   end
 
   def install
