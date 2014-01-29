@@ -2,14 +2,14 @@ require 'formula'
 
 class Riak < Formula
   homepage 'http://basho.com/riak/'
-  url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.6/osx/10.8/riak-1.4.6-OSX-x86_64.tar.gz'
-  version '1.4.6'
-  sha256 'f837a865565165e00203de4cb343448db4994899ff418ef28eba72fda14aacf1'
+  url 'http://s3.amazonaws.com/downloads.basho.com/riak/1.4/1.4.7/osx/10.8/riak-1.4.7-OSX-x86_64.tar.gz'
+  version '1.4.7'
+  sha256 'bef2cee7d8819b8c7fbfb62700304fb20f7ba38748d441e8fd84ab622c0f9eaf'
 
   devel do
-    url 'http://s3.amazonaws.com/downloads.basho.com/riak/2.0/2.0.0pre5/osx/10.8/riak-2.0.0pre5-OSX-x86_64.tar.gz'
-    sha1 '2394a7244329b60afd87307e3362d784a1611689'
-    version '2.0.0-pre5'
+    url 'http://s3.amazonaws.com/downloads.basho.com/riak/2.0/2.0.0pre11/osx/10.8/riak-2.0.0pre11-OSX-x86_64.tar.gz'
+    sha1 '555eaf744dffae1e205bb612ea90569144487a29'
+    version '2.0.0-pre11'
   end
 
   depends_on :macos => :mountain_lion
