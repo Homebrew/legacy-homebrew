@@ -2,13 +2,8 @@ require 'formula'
 
 class QtWkhtmltopdf < Formula
   homepage 'http://qt-project.org/'
-  if MacOS.version < :mavericks
-    url 'http://download.qt-project.org/official_releases/qt/4.8/4.8.5/qt-everywhere-opensource-src-4.8.5.tar.gz'
-    sha1 '745f9ebf091696c0d5403ce691dc28c039d77b9e'
-  else
-    url 'git://github.com/wkhtmltopdf/qt.git', :branch => 'wk_4.8.6'
-    version '4.8.6'
-  end
+  url 'git://github.com/wkhtmltopdf/qt.git', :branch => 'wk_4.8.6'
+  version '4.8.6'
 
   option :universal
 
