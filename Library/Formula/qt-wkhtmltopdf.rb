@@ -2,7 +2,7 @@ require 'formula'
 
 class QtWkhtmltopdf < Formula
   homepage 'http://qt-project.org/'
-  url 'git://github.com/wkhtmltopdf/qt.git', :branch => 'wk_4.8.6'
+  url 'https://github.com/wkhtmltopdf/qt.git', :branch => 'wk_4.8.6'
   version '4.8.6'
 
   option :universal

@@ -2,7 +2,7 @@ require 'formula'
 
 class Wkhtmltopdf < Formula
   homepage 'http://code.google.com/p/wkhtmltopdf/'
-  url 'git://github.com/wkhtmltopdf/wkhtmltopdf.git'
+  url 'https://github.com/wkhtmltopdf/wkhtmltopdf.git'
   version '0.12.0'
 
   option 'static'
