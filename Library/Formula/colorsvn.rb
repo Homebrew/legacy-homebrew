@@ -68,3 +68,18 @@ index 84a3d97..54c2f74 100644
 -	$(RM) $(DESTDIR)/$(confdir)/profile.d/$(PROFFILE)
 +	$(RM) $(DESTDIR)/$(sysconfdir)/$(CONFIGFILE)  && \
 +	$(RM) $(DESTDIR)/$(sysconfdir)/profile.d/$(PROFFILE)
+ 
+diff --git a/colorsvnrc-original b/colorsvnrc-original
+index 567bd0c..2c44445 100644
+--- a/colorsvnrc-original
++++ b/colorsvnrc-original
+@@ -12,7 +12,7 @@ nocolor: dumb other test
+ 
+ # Do color if our terminal type ($TERM) is one of these.
+ # (List all terminal types on one line, seperated by whitespace.)
+-colortty: linux console con132x25 con132x30 con132x43 con132x60 con80x25 con80x28 con80x30 con80x43 con80x50 con80x60 cons25 xterm rxvt xterm-color color-xterm vt100 dtterm color_xterm ansi screen screen.linux kon kterm gnome konsole
++colortty: linux console con132x25 con132x30 con132x43 con132x60 con80x25 con80x28 con80x30 con80x43 con80x50 con80x60 cons25 xterm rxvt xterm-color color-xterm vt100 dtterm color_xterm ansi screen screen.linux kon kterm gnome konsole xterm-16color xterm-256color
+ 
+ 
+ # The following groups of attributes may be combined for a given color:
+
