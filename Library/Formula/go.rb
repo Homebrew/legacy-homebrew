@@ -77,7 +77,7 @@ class Go < Formula
       go get code.google.com/p/go.tools/cmd/vet
 
     You may wish to add the GOROOT-based install location to your PATH:
-      export PATH=$PATH:#{`#{bin}/go env GOROOT`.chomp}/bin
+      export PATH=$PATH:#{libexec}/bin
     EOS
   end
 
