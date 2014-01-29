@@ -19,8 +19,15 @@ class Libbluray < Formula
   def install
     ENV.libxml2
 
+    args = [
+      "--prefix=#{prefix}",
+      "--disable-dependency-tracking"
+    ]
+
+    args << "--without-freetype" if build.include? 'without-freetype'
+
     system "./bootstrap" if build.head?
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./configure", *args
     system "make"
     system "make install"
   end
