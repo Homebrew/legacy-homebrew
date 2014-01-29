@@ -26,18 +26,18 @@ class GitTf < Formula
     bin.write_exec_script libexec/'git-tf'
     (share/'doc/git-tf').install Dir['Git-TF_*'] + Dir['ThirdPartyNotices*']
   end
-  
+
   def caveats; <<-EOS.undent
-    This release deprecates support for legacy Microsoft Team Foundation Server 
-    versions (anything older to TFS 2010). If you still need support for 
-    previous releases, install an older client from homebrew-versions:
-      
+    This release deprecates support for Microsoft Team Foundation Server versions
+    prior to 2010. If you still need support for those, install an older client
+    from homebrew-versions:
+
       brew tap homebrew/versions
       brew install homebrew/versions/git-tf-2.0.2.20130214
-    
+
     Or, just switch to the older client if you still have it installed:
-      
-      brew switch git-tf 2.0.2.20130214 
+
+      brew switch git-tf 2.0.2.20130214
     EOS
   end
 
