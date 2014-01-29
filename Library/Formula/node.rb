@@ -36,8 +36,8 @@ class Node < Formula
   sha1 '1e330b4fbb6f7bb858a0b37d8573dd4956f40885'
 
   devel do
-    url 'http://nodejs.org/dist/v0.11.10/node-v0.11.10.tar.gz'
-    sha1 'b860f511e4fc657a64594fc9f3f1225c1a140e5e'
+    url 'http://nodejs.org/dist/v0.11.11/node-v0.11.11.tar.gz'
+    sha1 '65b257ec6584bf339f06f58a8a02ba024e13f283'
   end
 
   head 'https://github.com/joyent/node.git'
@@ -47,10 +47,6 @@ class Node < Formula
 
   depends_on NpmNotInstalled unless build.without? 'npm'
   depends_on :python
-
-  if build.devel?
-    depends_on Python27Dependency # gyp doesn't run under 2.6 or lower
-  end
 
   fails_with :llvm do
     build 2326
