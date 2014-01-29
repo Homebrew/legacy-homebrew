@@ -26,7 +26,7 @@ class QtWkhtmltopdf < Formula
     # based on https://github.com/ariya/phantomjs/blob/master/src/qt/src/3rdparty/webkit/Source/WebKit/qt/QtWebKit.pro
     # see also https://code.google.com/p/wkhtmltopdf/wiki/compilation#commentlist comment by arnedebruijn on Aug 6, 2013
     # patch from comment above 'https://gist.github.com/arbruijn/6165458/raw/c5f1b702585694737243c0b887b790db03e0406b/qtwebkit-static-from-ariya-phantomjs-31157fbb98a9765c0043847a3a41359838aad0d0.diff',
-    patches << 'https://gist.github.com/npinchot/5a8feefed0af5a3b702a/raw/fbfd5338fe11cbee8d4316c8894182e146566bc4/gistfile1.diff'
+    patches << 'https://gist.github.com/npinchot/5a8feefed0af5a3b702a/raw/6b9905ed29169906cf0986c60c1f8bc09af6403b/gistfile1.diff'
 
     # Made by wkhtmltopdf
     # https://qt.gitorious.org/qt/antializes-qt/commit/6f58ce5a2c6ab6234c9ff2b84e8cc9e14f59abb2
