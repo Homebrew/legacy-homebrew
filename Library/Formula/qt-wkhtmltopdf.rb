@@ -79,15 +79,6 @@ class QtWkhtmltopdf < Formula
     ENV.j1
     system "make install"
 
-    if MacOS.version < :mavericks
-      # these are no longer in the 4.8 branch
-      # what are these anyway?
-      (bin+'pixeltool.app').rmtree
-      (bin+'qhelpconverter.app').rmtree
-      # remove porting file for non-humans
-      (prefix+'q3porting.xml').unlink if build.without? 'qt3support'
-    end
-
     # Some config scripts will only find Qt in a "Frameworks" folder
     frameworks.mkpath
     ln_s Dir["#{lib}/*.framework"], frameworks
