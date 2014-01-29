@@ -42,9 +42,6 @@ class QtWkhtmltopdf < Formula
             # raster graphics
             "-graphicssystem", "raster",
 
-            # turn this off or we will get duplicate symbols
-            "-no-script",
-
             # turn off things we don't need
             "-no-qt3support", "-no-javascript-jit",
             "-no-sql-ibase", "-no-sql-mysql", "-no-sql-odbc", "-no-sql-psql", "-no-sql-sqlite", "-no-sql-sqlite2",
