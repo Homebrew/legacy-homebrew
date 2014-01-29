@@ -8,4 +8,8 @@ class Archey < Formula
   def install
     bin.install 'bin/archey'
   end
+
+  test do
+    system "#{bin}/archey"
+  end
 end
