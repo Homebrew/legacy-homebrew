@@ -33,8 +33,9 @@ Note that these flags should only appear after a command.
   * `search` <text>|/<text>/:
     Perform a substring search of formula names for <text>. If <text> is
     surrounded with slashes, then it is interpreted as a regular expression.
-    The search for <text> is extended online to some popular taps.
-    If no search term is given, all locally available formulae are listed.
+    The search for <text> is extended online to some popular taps, unless 
+    `HOMEBREW_NO_SEARCH_DEFAULT_TAPS` is set. If no search term is given,
+    all locally available formulae are listed.
 
 ## COMMANDS
 
@@ -535,6 +536,9 @@ can take several different forms:
   * HOMEBREW\_NO\_GITHUB\_API:
     If set, Homebrew will not use the GitHub API for e.g searches or
     fetching relevant issues on a failed install.
+
+  * HOMEBREW\_NO\_SEARCH\_DEFAULT\_TAPS
+    If set, Homebrew will not search popular taps.
 
   * HOMEBREW\_INSTALL\_BADGE:
     Text printed before the installation summary of each successful build.
