@@ -28,16 +28,7 @@ class GitTf < Formula
   end
 
   def caveats; <<-EOS.undent
-    This release deprecates support for Microsoft Team Foundation Server versions
-    prior to 2010. If you still need support for those, install an older client
-    from homebrew-versions:
-
-      brew tap homebrew/versions
-      brew install homebrew/versions/git-tf-2.0.2.20130214
-
-    Or, just switch to the older client if you still have it installed:
-
-      brew switch git-tf 2.0.2.20130214
+    This release removes support for TFS 2005 and 2008. Use a previous version if needed.
     EOS
   end
 
