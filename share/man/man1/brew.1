@@ -39,7 +39,7 @@ List all installed formulae\.
 .
 .TP
 \fBsearch\fR \fItext\fR|/\fItext\fR/
-Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. The search for \fItext\fR is extended online to some popular taps\. If no search term is given, all locally available formulae are listed\.
+Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. The search for \fItext\fR is extended online to some popular taps, unless \fBHOMEBREW_NO_SEARCH_DEFAULT_TAPS\fR is set\. If no search term is given, all locally available formulae are listed\.
 .
 .SH "COMMANDS"
 .
@@ -568,6 +568,10 @@ If set, Homebrew will not print the \fBHOMEBREW_INSTALL_BADGE\fR on a successful
 .TP
 HOMEBREW_NO_GITHUB_API
 If set, Homebrew will not use the GitHub API for e\.g searches or fetching relevant issues on a failed install\.
+.
+.TP
+HOMEBREW_NO_SEARCH_DEFAULT_TAPS
+If set, Homebrew will not search popular taps\.
 .
 .TP
 HOMEBREW_INSTALL_BADGE

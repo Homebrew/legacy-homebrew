@@ -92,6 +92,7 @@ module Homebrew extend self
   end
 
   def search_taps(rx)
+    return [] if ENV['HOMEBREW_NO_SEARCH_DEFAULT_TAPS']
     SEARCHABLE_TAPS.map do |user, repo|
       Thread.new { search_tap(user, repo, rx) }
     end.inject([]) do |results, t|
