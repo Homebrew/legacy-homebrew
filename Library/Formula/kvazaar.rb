@@ -9,6 +9,8 @@ class Kvazaar < Formula
 
   def install
     cd 'src' do
+      # Have to manually change these right now; see:
+      #   https://github.com/ultravideo/kvazaar/issues/2
       inreplace 'Makefile', 'elf64', 'macho64'
       inreplace 'Makefile', 'elf', 'macho32'
       inreplace 'x64/test64.asm', 'cpuId64', '_cpuId64'
