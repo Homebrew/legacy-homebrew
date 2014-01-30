@@ -2,11 +2,16 @@ require 'formula'
 
 class Wkhtmltopdf < Formula
   homepage 'http://code.google.com/p/wkhtmltopdf/'
-  url 'http://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.11.0_rc1.tar.bz2'
-  sha1 'db03922d281856e503b3d562614e3936285728c7'
-  version '0.11.0_rc1'
+  url 'https://github.com/wkhtmltopdf/wkhtmltopdf.git'
+  version '0.12.0'
 
-  depends_on 'qt'
+  option 'static'
+
+  if build.include? 'static'
+    depends_on 'qt-wkhtmltopdf'
+  else
+    depends_on 'qt'
+  end
 
   def install
     # fix that missing TEMP= include.
@@ -30,7 +35,13 @@ class Wkhtmltopdf < Formula
       spec = 'macx-g++'
     end
 
-    system 'qmake', '-spec', spec
+    if build.include? 'static'
+      qmake = "#{Formula.factory('qt-wkhtmltopdf').prefix}/bin/qmake"
+    else
+      qmake = "qmake"
+    end
+
+    system qmake, '-spec', spec
     system 'make'
     ENV['DYLD_LIBRARY_PATH'] = './bin'
     `bin/wkhtmltopdf --manpage > wkhtmltopdf.1`
