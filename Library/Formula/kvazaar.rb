@@ -18,7 +18,7 @@ class Kvazaar < Formula
     end
     bin.install 'src/kvazaar'
   end
-  
+
   def test
     system "kvazaar 2>&1 | grep 'HEVC Encoder v. 0.2'"
   end
