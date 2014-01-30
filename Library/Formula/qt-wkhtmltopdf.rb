@@ -7,7 +7,6 @@ class QtWkhtmltopdf < Formula
 
   option :universal
 
-  keg_only :provided_by_osx
   keg_only "This QT formula is only used to build a patched, statically compiled wkhtmltopdf"
 
   def install
