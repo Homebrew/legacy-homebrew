@@ -2,8 +2,8 @@ require 'formula'
 
 class Entr < Formula
   homepage 'http://entrproject.org/'
-  url 'http://entrproject.org/code/entr-2.2.tar.gz'
-  sha1 '71eedf5d9397a08a231f0ab400f5aeec4f77571b'
+  url 'http://entrproject.org/code/entr-2.6.tar.gz'
+  sha1 'ad0fed4e0311c72b4c2eb70c93b7d1267bd4de4c'
 
   def install
     ENV['PREFIX'] = prefix

@@ -21,7 +21,7 @@ class Git < Formula
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
   depends_on 'openssl' if build.with? 'brewed-openssl'
-  depends_on 'curl' => 'with-darwinssl' if build.with? 'brewed-curl'
+  depends_on 'curl' if build.with? 'brewed-curl'
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
@@ -35,7 +35,7 @@ class Git < Formula
   end
 
   def patches
-    if MacOS.version >= :mavericks
+    if MacOS.version >= :mavericks and not build.head?
       # Allow using PERLLIB_EXTRA to find Subversion Perl bindings location
       # in the CLT/Xcode. Should be included in Git 1.8.6.
       # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=07981d

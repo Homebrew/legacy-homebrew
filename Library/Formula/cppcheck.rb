@@ -18,12 +18,13 @@ class Cppcheck < Formula
 
     # Pass to make variables.
     if build.include? 'no-rules'
-      system "make", "HAVE_RULES=no"
+      system "make", "HAVE_RULES=no", "CFGDIR=#{prefix}/cfg"
     else
-      system "make", "HAVE_RULES=yes"
+      system "make", "HAVE_RULES=yes", "CFGDIR=#{prefix}/cfg"
     end
 
-    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "install"
+    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=#{prefix}/cfg", "install"
+    prefix.install "cfg"
 
     if build.include? 'with-gui'
       cd "gui" do
