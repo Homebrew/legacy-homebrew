@@ -12,7 +12,7 @@ class Afflib < Formula
   depends_on 'osxfuse' => :optional
 
   def patches
-    # This patch fixes a bug reported upstream overthere
+    # This patch fixes a bug reported upstream over there
     # https://github.com/simsong/AFFLIBv3/issues/4
     DATA
   end
@@ -29,15 +29,6 @@ class Afflib < Formula
 
     system "./configure", *args
     system "make install"
-  end
-
-  def caveats
-    if build.include? 'osxfuse'
-      <<-EOS.undent
-        Make sure to follow the directions given by 'brew info osxfuse'
-        before trying to use a FUSE-based filesystem.
-      EOS
-    end
   end
 end
 
