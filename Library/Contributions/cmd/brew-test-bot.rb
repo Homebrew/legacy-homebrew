@@ -487,7 +487,7 @@ if ARGV.include? "--junit"
       failure = testcase.add_element 'failure' if step.failed?
       if step.has_output?
         # Remove invalid XML CData characters from step output.
-        output = REXML::CData.new step.output.delete("\000\f\e")
+        output = REXML::CData.new step.output.delete("\000\b\e\f")
         if step.passed?
           system_out = testcase.add_element 'system-out'
           system_out.text = output
