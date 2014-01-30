@@ -8,10 +8,14 @@ class Subnetcalc < Formula
   depends_on 'geoip' => :recommended
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--with-geoip=no" if build.with? "geoip"
+
+    args = ["--disable-dependency-tracking",
+            "--disable-silent-rules",
+            "--prefix=#{prefix}"]
+    args << "--with-geoip=no" if build.without? "geoip"
+
+    system "./configure", *args
+
     system "make", "install"
   end
 
