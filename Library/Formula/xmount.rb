@@ -16,8 +16,6 @@ class Xmount < Formula
   end
 
   def install
-    ENV.append 'PKG_CONFIG', "#{HOMEBREW_PREFIX}/bin/pkg-config"
-
     system "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
     system "autoconf"
     system "./configure", "--disable-dependency-tracking",
