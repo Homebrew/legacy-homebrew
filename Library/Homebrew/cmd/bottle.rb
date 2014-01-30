@@ -219,6 +219,7 @@ module Homebrew extend self
 
         update_or_add = has_bottle_block ? 'update' : 'add'
 
+        system 'git', 'diff'
         safe_system 'git', 'commit', '--no-edit', '--verbose',
           "--message=#{f.name}: #{update_or_add} #{f.version} bottle.",
           '--', f.path
