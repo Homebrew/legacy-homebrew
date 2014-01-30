@@ -11,8 +11,9 @@ class Kvazaar < Formula
     inreplace 'src/Makefile', 'elf64', 'macho64'
     inreplace 'src/Makefile', 'elf', 'macho32'
     inreplace 'src/x64/test64.asm', 'cpuId64', '_cpuId64'
-    cd "src" do
-      system "make"
+    cd 'src' do
+      system 'make'
     end
+    bin.install 'src/kvazaar'
   end
 end
