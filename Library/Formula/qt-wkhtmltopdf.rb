@@ -7,9 +7,6 @@ class QtWkhtmltopdf < Formula
 
   option :universal
 
-  depends_on 'libpng'
-  depends_on 'libtiff' # note: libtiff requires jpeg so we don't need to explicitly require it
-
   keg_only :provided_by_osx
   keg_only "This QT formula is only used to build a patched, statically compiled wkhtmltopdf"
 
@@ -25,7 +22,7 @@ class QtWkhtmltopdf < Formula
             "-confirm-license", "-opensource",
 
             # use system libraries for most things
-            "-system-zlib", "-qt-libmng", "-system-libtiff", "-system-libpng", "-system-libjpeg",
+            "-qt-zlib", "-qt-libmng", "-qt-libtiff", "-qt-libpng", "-qt-libjpeg",
 
             # static build with cocoa
             "-static", "-cocoa", "-fast", "-release",
