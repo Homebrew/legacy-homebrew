@@ -8,10 +8,10 @@ class Kvazaar < Formula
   depends_on 'yasm' => :build
 
   def install
-    inreplace 'src/Makefile', 'elf64', 'macho64'
-    inreplace 'src/Makefile', 'elf', 'macho32'
-    inreplace 'src/x64/test64.asm', 'cpuId64', '_cpuId64'
     cd 'src' do
+      inreplace 'Makefile', 'elf64', 'macho64'
+      inreplace 'Makefile', 'elf', 'macho32'
+      inreplace 'x64/test64.asm', 'cpuId64', '_cpuId64'
       system 'make'
     end
     bin.install 'src/kvazaar'
