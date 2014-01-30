@@ -2,8 +2,8 @@ require 'formula'
 
 class Libmaxminddb < Formula
   homepage 'https://github.com/maxmind/libmaxminddb'
-  url 'https://github.com/maxmind/libmaxminddb/releases/download/0.5.2/libmaxminddb-0.5.2.tar.gz'
-  sha1 'db7618a97c222cab0a0ba2fb8439abcd1465f10c'
+  url 'https://github.com/maxmind/libmaxminddb/releases/download/0.5.3/libmaxminddb-0.5.3.tar.gz'
+  sha1 'ce6dd4fecb1a4c97cfede70e6fc6af863ffeddab'
 
   head do
     url 'https://github.com/maxmind/libmaxminddb.git'
