@@ -2,24 +2,14 @@ require 'formula'
 
 class X265 < Formula
   homepage 'http://x265.org'
-  url 'https://bitbucket.org/multicoreware/x265/get/0.6.tar.bz2'
-  sha1 '67221e7455a3b844d1c6edad771df3b299dab442'
+  url 'https://bitbucket.org/multicoreware/x265/get/0.7.tar.bz2'
+  sha1 'c9bec77b86ba131211c7901542228c3d52abe065'
 
   head 'https://bitbucket.org/multicoreware/x265', :using => :hg
 
   depends_on 'yasm' => :build
   depends_on 'cmake' => :build
   depends_on :macos => :lion
-
-  fails_with :gcc do
-    build 5666
-    cause '-mstackrealign not supported in the 64bit mode'
-  end
-
-  fails_with :llvm do
-    build 2335
-    cause '-mstackrealign not supported in the 64bit mode'
-  end
 
   def install
 
@@ -28,7 +18,6 @@ class X265 < Formula
     args << '-DCMAKE_BUILD_TYPE=Release'
 
     system "cmake", "source",  *args
-    system "make"
     system "make", "install"
   end
 end
