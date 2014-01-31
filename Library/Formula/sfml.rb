@@ -6,6 +6,10 @@ class Sfml < Formula
   sha1 "c27bdffdc4bedb5f6a20db03ceca715d42aa5752"
 
   depends_on "cmake" => :build
+  depends_on "freetype"
+  depends_on "glew"
+  depends_on "jpeg"
+  depends_on "libsndfile"
 
   def install
     system "cmake", ".", "-DCMAKE_INSTALL_FRAMEWORK_PREFIX=#{prefix}/Frameworks/", *std_cmake_args
