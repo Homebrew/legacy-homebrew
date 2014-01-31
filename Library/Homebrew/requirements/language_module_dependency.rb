@@ -10,7 +10,7 @@ class LanguageModuleDependency < Requirement
     super([language, module_name, import_name])
   end
 
-  satisfy { quiet_system(*the_test) }
+  satisfy(:build_env => false) { quiet_system(*the_test) }
 
   def message; <<-EOS.undent
     Unsatisfied dependency: #{@module_name}

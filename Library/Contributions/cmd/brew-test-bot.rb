@@ -431,6 +431,12 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
   pr = ENV['UPSTREAM_PULL_REQUEST']
   number = ENV['UPSTREAM_BUILD_NUMBER']
 
+  system "git am --abort 2>/dev/null"
+  system "git rebase --abort 2>/dev/null"
+  safe_system "git reset --hard"
+  safe_system "git checkout -f master"
+  safe_system "brew update"
+
   if ARGV.include? '--ci-pr-upload'
     safe_system "brew pull --clean #{pr}"
   end
@@ -481,7 +487,7 @@ if ARGV.include? "--junit"
       failure = testcase.add_element 'failure' if step.failed?
       if step.has_output?
         # Remove invalid XML CData characters from step output.
-        output = REXML::CData.new step.output.delete("\000\f\e")
+        output = REXML::CData.new step.output.delete("\000\b\e\f")
         if step.passed?
           system_out = testcase.add_element 'system-out'
           system_out.text = output
