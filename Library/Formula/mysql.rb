@@ -2,14 +2,8 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url 'http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.15.tar.gz'
-  sha1 '90b46f973930c27eb8586387de5dfbc2af04d3ed'
-
-  bottle do
-    sha1 '3d2f69c1c9449daf06a7785f1d4d11796bfa393c' => :mavericks
-    sha1 'c234513a06992981d626ed1008e35a4d5481eb72' => :mountain_lion
-    sha1 '404e5dac0c91dad178adb7d66a5d26d46a8e9fd2' => :lion
-  end
+  url 'http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.16.tar.gz'
+  sha1 '64a3b4058e2039d2b812d23c8793f74b4f168cc0'
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
@@ -96,9 +90,6 @@ class Mysql < Formula
 
     system "cmake", *args
     system "make"
-    # Reported upstream:
-    # http://bugs.mysql.com/bug.php?id=69645
-    inreplace "scripts/mysql_config", / +-Wno[\w-]+/, ""
     system "make install"
 
     # Don't create databases inside of the prefix!
