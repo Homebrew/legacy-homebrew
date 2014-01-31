@@ -18,7 +18,7 @@ class Poppler < Formula
 
   depends_on 'qt' if build.with? 'qt4'
   depends_on 'glib' => :optional
-  depends_on 'lcms2' => :optional
+  depends_on 'little-cms2' if build.with? 'lcms2'
   depends_on 'cairo' if build.with? 'glib'
 
   conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
