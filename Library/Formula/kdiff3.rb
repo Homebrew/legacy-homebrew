@@ -13,5 +13,11 @@ class Kdiff3 < Formula
     prefix.install "releaseQt/kdiff3.app"
     bin.install_symlink prefix+"kdiff3.app/Contents/MacOS/kdiff3"
   end
+
+  test do
+    (testpath/"test1.in").write "test"
+    (testpath/"test2.in").write "test"
+    system "#{bin}/kdiff3", "--auto", "test1.in", "test2.in", "-o", "test.out"
+    assert (testpath/"test.out").exist?
   end
 end
