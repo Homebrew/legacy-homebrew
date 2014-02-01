@@ -207,17 +207,19 @@ module Homebrew extend self
 
       if ARGV.include? '--write'
         f = Formula.factory formula_name
-        has_bottle_block = f.class.bottle.checksums.any?
+        update_or_add = nil
 
         inreplace f.path do |s|
-          if has_bottle_block
-            s.sub!(/  bottle do.+?end\n/m, output)
+          if s.include? 'bottle do'
+            update_or_add = 'add'
+            string = s.sub!(/  bottle do.+?end\n/m, output)
+            odie 'Bottle block replacement failed!' unless string
           else
-            s.sub!(/(  (url|sha1|sha256|head|version) '\S*'\n+)+/m, '\0' + output + "\n")
+            update_or_add = 'update'
+            string = s.sub!(/(  (url|sha1|sha256|head|version) '\S*'\n+)+/m, '\0' + output + "\n")
+            odie 'Bottle block addition failed!' unless string
           end
         end
-
-        update_or_add = has_bottle_block ? 'update' : 'add'
 
         safe_system 'git', 'commit', '--no-edit', '--verbose',
           "--message=#{f.name}: #{update_or_add} #{f.version} bottle.",
