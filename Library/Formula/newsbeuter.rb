@@ -2,8 +2,8 @@ require 'formula'
 
 class Newsbeuter < Formula
   homepage 'http://newsbeuter.org/'
-  url 'http://newsbeuter.org/downloads/newsbeuter-2.7.tar.gz'
-  sha1 'e49e00b57b98dacc95ce73ddaba91748665e992c'
+  url 'http://www.newsbeuter.org/downloads/newsbeuter-2.8.tar.gz'
+  sha1 'de284124c840062941b500ffbd72e3f183fb2b61'
 
   head 'https://github.com/akrennmair/newsbeuter.git'
 
