@@ -10,6 +10,8 @@ class Kdiff3 < Formula
   def install
     # configure builds the binary
     system "./configure", "qt4"
-    bin.install "releaseQt/kdiff3.app/Contents/MacOS/kdiff3"
+    prefix.install "releaseQt/kdiff3.app"
+    bin.install_symlink prefix+"kdiff3.app/Contents/MacOS/kdiff3"
+  end
   end
 end
