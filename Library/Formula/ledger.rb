@@ -36,7 +36,7 @@ class Ledger < Formula
       args = [((build.include? 'debug') ? 'debug' : 'opt'), "make", "install", "-N", "-j#{ENV.make_jobs}", "--output=build"]
       args << '--python' if build.with? 'python'
       system "./acprep", "--prefix=#{prefix}", *args
-      (share+'ledger').install 'python/demo.py', 'test/input/sample.dat'
+      (share+'ledger').install 'python/demo.py', 'test/input/sample.dat', Dir['contrib']
     else
       args = []
       if build.with? 'libofx'
