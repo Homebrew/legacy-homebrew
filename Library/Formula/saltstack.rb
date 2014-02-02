@@ -21,8 +21,8 @@ class Saltstack < Formula
     :using => SaltHeadDownloadStrategy
 
   devel do
-    url 'https://github.com/saltstack/salt/archive/v2014.1.0rc1.tar.gz'
-    sha1 'b7348a8aada847d1423a73d2a1a277d7cf9930eb'
+    url 'https://github.com/saltstack/salt/archive/v2014.1.0rc3.tar.gz'
+    sha1 '2c1bd6d9b26b66ef32b30af9ccae38733383efce'
   end
 
   depends_on :python
