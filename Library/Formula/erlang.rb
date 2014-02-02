@@ -41,9 +41,9 @@ class Erlang < Formula
   fails_with :llvm
 
   def patches
-    # Fixes problem with ODBC on Mavericks. Reported upstream:
+    # Fixes problem with ODBC on Mavericks. Fixed upstream/HEAD:
     # https://github.com/erlang/otp/pull/142
-    DATA if MacOS.version >= :mavericks
+    DATA if MacOS.version >= :mavericks && !build.head?
   end
 
   def install
