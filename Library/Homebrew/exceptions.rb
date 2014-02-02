@@ -231,6 +231,19 @@ end
 # raised in CurlDownloadStrategy.fetch
 class CurlDownloadStrategyError < RuntimeError; end
 
+# raised in LocalDownloadStrategy.fetch
+class LocalDownloadStrategyError < RuntimeError
+  def initialize
+    message = <<-EOS.undent
+    Define HOMEBREW_LOCAL_DOWNLOADS environment variable that points to a
+    directory, which contains the unaltered, already-downloaded archive(s):
+
+      export HOMEBREW_LOCAL_DOWNLOADS=/path/to/directory/of/archives
+    EOS
+    super message
+  end
+end
+
 # raised by safe_system in utils.rb
 class ErrorDuringExecution < RuntimeError; end
 
