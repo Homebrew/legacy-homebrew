@@ -161,11 +161,17 @@ module SharedEnvExtension
         EOS
       end
 
-    elsif (gfortran = which('gfortran', ORIGINAL_PATHS.join(File::PATH_SEPARATOR)))
-      ohai "Using Homebrew-provided fortran compiler."
-      puts "This may be changed by setting the FC environment variable."
-      self['FC'] = self['F77'] = gfortran
-      flags = FC_FLAG_VARS
+    else
+      if (gfortran = which('gfortran', (HOMEBREW_PREFIX/'bin').to_s))
+        ohai "Using Homebrew-provided fortran compiler."
+      elsif (gfortran = which('gfortran', ORIGINAL_PATHS.join(File::PATH_SEPARATOR)))
+        ohai "Using a fortran compiler found at #{gfortran}."
+      end
+      if gfortran
+        puts "This may be changed by setting the FC environment variable."
+        self['FC'] = self['F77'] = gfortran
+        flags = FC_FLAG_VARS
+      end
     end
 
     flags.each { |key| self[key] = cflags }
