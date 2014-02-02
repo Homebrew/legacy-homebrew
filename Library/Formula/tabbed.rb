@@ -2,8 +2,8 @@ require 'formula'
 
 class Tabbed < Formula
   homepage 'http://tools.suckless.org/tabbed'
-  url 'http://dl.suckless.org/tools/tabbed-0.5.tar.gz'
-  sha1 'fbe19653b65bec4670eda2e95d934eab2e5d4e45'
+  url 'http://dl.suckless.org/tools/tabbed-0.6.tar.gz'
+  sha1 '3c64d79817337f86f0cdd60b5b79af7e77d4a5f9'
 
   head 'http://git.suckless.org/tabbed'
 
