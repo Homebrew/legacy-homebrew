@@ -11,7 +11,7 @@ class Plan9port < Formula
 
     libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/9"]
-    Dir["#{libexec}/mac/*.app"].each {|path| mv path, prefix }
+    prefix.install Dir["#{libexec}/mac/*.app"]
   end
 
   test do
