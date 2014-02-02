@@ -17,6 +17,12 @@ class Glui < Formula
       include.install 'include/GL'
     end
   end
+
+  def caveats; <<-EOS.undent
+        Use #include <GL/glui.h> and pass the compiler -lglui
+      EOS
+  end
+
 end
 
 __END__
