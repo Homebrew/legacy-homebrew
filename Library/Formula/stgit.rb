@@ -14,4 +14,13 @@ class Stgit < Formula
     system "make", "prefix=#{prefix}", "all"
     system "make", "prefix=#{prefix}", "install"
   end
+
+  test do
+    system "git", "init"
+    (testpath/"test").write "test"
+    system "git", "add", "test"
+    system "git", "commit", "--message", "Initial commit", "test"
+    system "#{bin}/stg", "init"
+    system "#{bin}/stg", "log"
+  end
 end
