@@ -1,12 +1,12 @@
 require 'formula'
 
 class Libusb < Formula
-  homepage 'http://www.libusb.org/'
-  url 'http://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-1.0.9/libusb-1.0.9.tar.bz2'
-  sha256 'e920eedc2d06b09606611c99ec7304413c6784cba6e33928e78243d323195f9b'
+  homepage 'http://libusb.info'
+  url 'http://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-1.0.18/libusb-1.0.18.tar.bz2'
+  sha256 'c73f5cec45a5de94418da4e151b7232958571926984acfb9bce02b9424e83720'
 
   head do
-    url 'git://git.libusb.org/libusb.git'
+    url 'https://github.com/libusb/libusb.git'
 
     depends_on :autoconf
     depends_on :automake
@@ -14,19 +14,18 @@ class Libusb < Formula
   end
 
   option :universal
-
-  conflicts_with 'libusbx',
-    :because => 'both provide libusb compatible libraries'
+  option 'no-runtime-logging', 'Build without runtime logging functionality'
+  option 'with-default-log-level-debug', 'Build with default runtime log level of debug (instead of none)'
 
   def install
     ENV.universal_binary if build.universal?
 
-    if build.head?
-      inreplace "configure.ac", "AM_CONFIG_HEADER", "AC_CONFIG_HEADERS"
-      system "./autogen.sh"
-    end
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args << "--disable-log" if build.include? 'no-runtime-logging'
+    args << "--enable-debug-log" if build.include? 'with-default-log-level-debug'
 
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    system "./autogen.sh" if build.head?
+    system "./configure", *args
     system "make install"
   end
 end
