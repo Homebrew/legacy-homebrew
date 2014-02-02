@@ -34,9 +34,9 @@ end
 
 class Xulrunner < Formula
   homepage "https://developer.mozilla.org/docs/XULRunner"
-  url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/27.0b4/source/xulrunner-27.0b4.source.tar.bz2"
-  sha1 "8dda88378454d9996cd908eeee48fcdfe47bc3ba"
-  version "27.0b4"
+  version "27.0b9"
+  url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/#{version}/source/xulrunner-#{version}.source.tar.bz2"
+  sha1 '462477f819173cf637d1aeaa7f107634a804a455'
 
   head do
     url "http://ftp.mozilla.org/pub/mozilla.org/firefox/bundles/mozilla-central.hg|https://hg.mozilla.org/mozilla-central/", :using => HgBundleDownloadStrategy
