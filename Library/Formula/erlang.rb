@@ -43,7 +43,7 @@ class Erlang < Formula
   def patches
     # Fixes problem with ODBC on Mavericks. Reported upstream:
     # https://github.com/erlang/otp/pull/142
-    DATA if MacOS.version >= :mavericks
+    DATA if MacOS.version >= :mavericks && !build.head?
   end
 
   def install
