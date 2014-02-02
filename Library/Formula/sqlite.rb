@@ -20,13 +20,25 @@ class Sqlite < Formula
   option 'without-rtree', 'Disable the R*Tree index module'
   option 'with-fts', 'Enable the FTS module'
   option 'with-functions', 'Enable more math and string functions for SQL queries'
+  option 'with-regexp', 'Enable regular expressions for SQL queries'
 
   depends_on 'readline' => :recommended
+
+  if build.with? 'regexp'
+    depends_on 'pkg-config' => :build
+    depends_on 'pcre'
+  end
 
   resource 'functions' do
     url 'http://www.sqlite.org/contrib/download/extension-functions.c?get=25', :using  => :nounzip
     version '2010-01-06'
     sha1 'c68fa706d6d9ff98608044c00212473f9c14892f'
+  end
+
+  resource 'regexp' do
+    url 'https://raw2.github.com/ralight/sqlite3-pcre/c98da412b431edb4db22d3245c99e6c198d49f7a/pcre.c', :using  => :nounzip
+    version '2010-02-08'
+    sha1 'fcc2355570e648ecb9a525252590c3770b04b3ac'
   end
 
   resource 'docs' do
@@ -53,33 +65,70 @@ class Sqlite < Formula
       system ENV.cc, "-fno-common",
                      "-dynamiclib",
                      "extension-functions.c",
-                     "-o", "libsqlitefunctions.dylib",
+                     "-o", "libsqlite3-functions.dylib",
                      *ENV.cflags.split
-      lib.install "libsqlitefunctions.dylib"
+      lib.install "libsqlite3-functions.dylib"
     end
+
+    if build.with? "regexp"
+      buildpath.install resource('regexp')
+      ENV.append_path 'PKG_CONFIG_PATH', lib + 'pkgconfig'
+      ENV.append 'CFLAGS', `pkg-config --cflags sqlite3 libpcre`.chomp.strip
+      ENV.append 'LDFLAGS', `pkg-config --libs libpcre`.chomp.strip
+      system ENV.cc, "-fno-common",
+                     "-dynamiclib",
+                     "pcre.c",
+                     "-o", "libsqlite3-regexp.dylib",
+                     *(ENV.cflags.split + ENV.ldflags.split)
+      lib.install "libsqlite3-regexp.dylib"
+    end
+
     doc.install resource('docs') if build.with? "docs"
   end
 
   def caveats
-    if build.with? 'functions' then <<-EOS.undent
-      Usage instructions for applications calling the sqlite3 API functions:
+    msg = ''
+    if build.with? 'functions' or build.with? "regexp" then msg += <<-EOS.undent
+      Usage instructions for applications calling the SQLite3 API functions:
 
-        In your application, call sqlite3_enable_load_extension(db,1) to
-        allow loading external libraries.  Then load the library libsqlitefunctions
-        using sqlite3_load_extension; the third argument should be 0.
-        See http://www.sqlite.org/cvstrac/wiki?p=LoadableExtensions.
-        Select statements may now use these functions, as in
-        SELECT cos(radians(inclination)) FROM satsum WHERE satnum = 25544;
+          In your application, call sqlite3_enable_load_extension(db, TRUE) to
+          allow loading of external libraries. Then load the extension library
+          using sqlite3_load_extension(filename, entrypoint).
+          See http://www.sqlite.org/cvstrac/wiki?p=LoadableExtensions.
 
       Usage instructions for the sqlite3 program:
 
-        If the program is built so that loading extensions is permitted,
-        the following will work:
-         sqlite> SELECT load_extension('#{lib}/libsqlitefunctions.dylib');
-         sqlite> select cos(radians(45));
-         0.707106781186548
-      EOS
+          Use either of the following two lines to load the extension library:
+
+          sqlite> SELECT load_extension('#{lib}/libsqlite3-<extension>.dylib');
+          sqlite> .load #{lib}/libsqlite3-<extension>.dylib
+
+          The second line can be put in ~/.sqliterc to auto load the extension
+          at startup.
+    EOS
     end
+
+    if build.with? 'functions' then msg += <<-EOS.undent
+
+      libsqlite3-functions:
+
+          Select statements may now use functions:
+
+          SELECT cos(radians(inclination)) FROM satsum WHERE satnum = 25544;
+    EOS
+    end
+
+    if build.with? 'regexp' then msg += <<-EOS.undent
+
+      libsqlite3-regexp:
+
+          Select statements may now use regular expressions:
+
+          SELECT id,name FROM people WHERE name REGEXP '^George.*$';
+    EOS
+    end
+
+    msg
   end
 
   test do
