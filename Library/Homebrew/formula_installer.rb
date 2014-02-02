@@ -135,9 +135,10 @@ class FormulaInstaller
         tab.tabfile.delete if tab.tabfile
         tab.write
       end
-    rescue
-      raise if ARGV.homebrew_developer?
+    rescue => e
+      raise e if ARGV.homebrew_developer?
       @pour_failed = true
+      onoe e.message
       opoo "Bottle installation failed: building from source."
     end
 
