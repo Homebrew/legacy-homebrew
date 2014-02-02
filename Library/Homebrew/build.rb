@@ -165,13 +165,15 @@ class Build
           f.install
 
           stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
-          # It's technically possible for the same lib to link to multiple
-          # C++ stdlibs, but very bad news. Right now we don't track this
-          # woeful scenario.
+          # This currently only tracks a single C++ stdlib per dep,
+          # though it's possible for different libs/executables in
+          # a given formula to link to different ones.
           stdlib_in_use = CxxStdlib.new(stdlibs.first, ENV.compiler)
-          # This will raise and fail the build if there's an
-          # incompatibility.
-          stdlib_in_use.check_dependencies(f, deps)
+          begin
+            stdlib_in_use.check_dependencies(f, deps)
+          rescue IncompatibleCxxStdlibs => e
+            opoo e.message
+          end
 
           Tab.create(f, ENV.compiler, stdlibs.first,
             Options.coerce(ARGV.options_only)).write

@@ -123,7 +123,11 @@ class FormulaInstaller
 
         stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
         stdlib_in_use = CxxStdlib.new(stdlibs.first, MacOS.default_compiler)
-        stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
+        begin
+          stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
+        rescue IncompatibleCxxStdlibs => e
+          opoo e.message
+        end
 
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
