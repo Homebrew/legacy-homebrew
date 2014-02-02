@@ -2,8 +2,8 @@ require 'formula'
 
 class PltRacket < Formula
   homepage 'http://racket-lang.org/'
-  url 'https://github.com/plt/racket/archive/v5.92.tar.gz'
-  sha1 'e5be589bf8686e002c580405058616d754a1e6d1'
+  url 'https://github.com/plt/racket/archive/v5.93.tar.gz'
+  sha1 '87bbf5f0f2819658b523fa74fbc566627164702b'
 
   def install
     cd 'racket/src' do
