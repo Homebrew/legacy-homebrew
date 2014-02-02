@@ -289,6 +289,19 @@ class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
   end
 end
 
+# This strategy 'downloads' unaltered, already-downloaded archives from a local
+# directory defined by the HOMEBREW_LOCAL_DOWNLOADS environment variable.
+# Helpful for installing SDKs and other proprietary software that require the
+# user to agree to licenses online first, i.e. no direct download link.
+class LocalDownloadStrategy < CurlDownloadStrategy
+  def fetch
+    ldls = ENV["HOMEBREW_LOCAL_DOWNLOADS"]
+    raise LocalDownloadStrategyError unless ldls && File.directory?(ldls)
+    @url = @url.sub(%r[^local://], "file://#{ldls}/")
+    super
+  end
+end
+
 # This strategy extracts our binary packages.
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
   def initialize name, resource
@@ -821,6 +834,8 @@ class DownloadStrategyDetector
     when %r[^https?://svn\.] then SubversionDownloadStrategy
     when bottle_native_regex, bottle_regex
       CurlBottleDownloadStrategy
+      # Local-only
+    when %r[^local://] then LocalDownloadStrategy
       # Otherwise just try to download
     else CurlDownloadStrategy
     end
