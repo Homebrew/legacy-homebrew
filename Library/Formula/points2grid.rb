@@ -7,7 +7,6 @@ class Points2grid < Formula
 
   depends_on 'cmake' => :build
   depends_on 'boost'
-  depends_on 'pdal'
 
   def install
     system "cmake", ".", *std_cmake_args
