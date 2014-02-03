@@ -3,7 +3,6 @@ require 'formula'
 class PebbleSdk < Formula
   homepage 'https://developer.getpebble.com/2/'
   url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.0.0.tar.gz'
-  version '2.0.0'
   sha1 'e06d77d26c8adb20760217b7f68944a5b72bd223'
 
   depends_on 'freetype' => :recommended
