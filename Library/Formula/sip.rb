@@ -10,48 +10,36 @@ class Sip < Formula
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
-
-  odie 'sip: --with-python3 must be specified when using --without-python' if (!build.with? 'python3' and build.without? 'python')
+  if build.without? 'python3' and build.without? 'python'
+    odie 'sip: --with-python3 must be specified when using --without-python'
+  end
 
   def install
+    pythons = Array.new
     # default (python 2.x)
-    unless build.without? 'python'
-      ENV['PYTHONPATH'] = lib/'python2.7/site-packages'
-      if build.head?
-        # Link the Mercurial repository into the download directory so
-        # buid.py can use it to figure out a version number.
-        ln_s downloader.cached_location + '.hg', '.hg'
-        system "python", "build.py", "prepare"
-      end
-
-      # Note the binary `sip` is the same for python 2.x and 3.x
-      # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
-      system "python", "configure.py",
-                              "--deployment-target=#{MacOS.version}",
-                              "--destdir=#{lib}/python2.7/site-packages",
-                              "--bindir=#{bin}",
-                              "--incdir=#{include}",
-                              "--sipdir=#{HOMEBREW_PREFIX}/share/sip"
-      system "make"
-      system "make install"
-      system "make clean"
+    if build.with? "python"
+      pythons.push(Hash["name" => "python", "version" => "2.7"])
     end
 
-    # optional (python 3.x)
-    if build.with? 'python3'
-      ENV['PYTHONPATH'] = lib/'python3.3/site-packages'
+    if build.with? "python3"
+      pythons.push(Hash["name" => "python3", "version" => "3.3"])
+    end
+
+    pythons.each do |python|
+      ENV["PYTHONPATH"] = lib/"python#{python["version"]}/site-packages"
+
       if build.head?
         # Link the Mercurial repository into the download directory so
         # buid.py can use it to figure out a version number.
-        ln_s downloader.cached_location + '.hg', '.hg'
-        system "python3", "build.py", "prepare"
+        ln_s downloader.cached_location + ".hg", ".hg"
+        system "#{python["name"]}", "build.py", "prepare"
       end
 
       # Note the binary `sip` is the same for python 2.x and 3.x
       # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
-      system "python3", "configure.py",
+      system "#{python["name"]}", "configure.py",
                               "--deployment-target=#{MacOS.version}",
-                              "--destdir=#{lib}/python3.3/site-packages",
+                              "--destdir=#{lib}/python#{python["version"]}/site-packages",
                               "--bindir=#{bin}",
                               "--incdir=#{include}",
                               "--sipdir=#{HOMEBREW_PREFIX}/share/sip"
