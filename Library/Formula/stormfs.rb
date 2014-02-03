@@ -10,9 +10,25 @@ class Stormfs < Formula
   depends_on 'fuse4x'
   depends_on 'curl' if MacOS.version <= :leopard
 
+  def patches; DATA; end
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
 end
+
+__END__
+diff --git a/src/curl.c b/src/curl.c
+index de43059..0b02053 100644
+--- a/src/curl.c
++++ b/src/curl.c
+@@ -23,7 +23,6 @@
+ #include <sys/stat.h>
+ #include <unistd.h>
+ #include <curl/curl.h>
+-#include <curl/types.h>
+ #include <curl/easy.h>
+ #include <pthread.h>
+ #include <glib.h>
