@@ -7,7 +7,7 @@ class Mp3fs < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'lame'
-  depends_on 'fuse4x'
+  depends_on 'osxfuse'
   depends_on 'libid3tag'
   depends_on 'flac'
 
