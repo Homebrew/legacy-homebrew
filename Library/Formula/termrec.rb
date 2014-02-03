@@ -8,7 +8,7 @@ class Termrec < Formula
   depends_on "xz"
 
   def install
-    system "sed", "-i", "-e", "s/libtoolize/glibtoolize/", "autogen"
+    inreplace "autogen", "libtoolize", "glibtoolize"
     system "./autogen"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
