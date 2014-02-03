@@ -15,31 +15,34 @@ class Sip < Formula
   end
 
   def install
-    pythons = Array.new
+    pythons = {}
     # default (python 2.x)
     if build.with? "python"
-      pythons.push(Hash["name" => "python", "version" => "2.7"])
+      # regex to determine python version. e.g. 2.6 vs 2.7
+      pythons[:python] = /\d+(.)\d+/.match(`python --version 2>&1`)
     end
 
+    #optional (python 3.x)
     if build.with? "python3"
-      pythons.push(Hash["name" => "python3", "version" => "3.3"])
+      # regex to determine python version. e.g. 3.2 vs 3.3
+      pythons[:python3] = /\d+(.)\d+/.match(`python3 --version 2>&1`)
     end
 
-    pythons.each do |python|
-      ENV["PYTHONPATH"] = lib/"python#{python["version"]}/site-packages"
+    pythons.each do |python, version|
+      ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
 
       if build.head?
         # Link the Mercurial repository into the download directory so
         # buid.py can use it to figure out a version number.
         ln_s downloader.cached_location + ".hg", ".hg"
-        system "#{python["name"]}", "build.py", "prepare"
+        system python, "build.py", "prepare"
       end
 
       # Note the binary `sip` is the same for python 2.x and 3.x
       # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
-      system "#{python["name"]}", "configure.py",
+      system python, "configure.py",
                               "--deployment-target=#{MacOS.version}",
-                              "--destdir=#{lib}/python#{python["version"]}/site-packages",
+                              "--destdir=#{lib}/python#{version}/site-packages",
                               "--bindir=#{bin}",
                               "--incdir=#{include}",
                               "--sipdir=#{HOMEBREW_PREFIX}/share/sip"
