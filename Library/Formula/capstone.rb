@@ -7,6 +7,6 @@ class Capstone < Formula
 
   def install
     system "./make.sh"
-    system "export PREFIX=/usr/local; ./make.sh install"
+    system "PREFIX=#{prefix}", "./make.sh", "install"
   end
 end
