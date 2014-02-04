@@ -15,7 +15,7 @@ class Mercurial < Formula
 
   def install
     ENV.minimal_optimization if MacOS.version <= :snow_leopard
-    if build.include? 'enable-doc'
+    if build.include? 'enable-docs'
       system "make", "doc", "PREFIX=#{prefix}"
       system "make", "install-doc", "PREFIX=#{prefix}"
     end
