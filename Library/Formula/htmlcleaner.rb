@@ -9,4 +9,13 @@ class Htmlcleaner < Formula
     libexec.install "htmlcleaner-#{version}.jar"
     bin.write_jar_script libexec/"htmlcleaner-#{version}.jar", "htmlcleaner"
   end
+
+  test do
+    path = testpath/"index.html"
+    path.write "<html>"
+
+    output = `#{bin}/htmlcleaner src=#{path}`
+    assert output.include?("</html>")
+    assert_equal 0, $?.exitstatus
+  end
 end
