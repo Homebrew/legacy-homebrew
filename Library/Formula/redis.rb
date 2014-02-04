@@ -5,6 +5,12 @@ class Redis < Formula
   url 'http://download.redis.io/releases/redis-2.8.5.tar.gz'
   sha1 'f0eb48609ff66ead3c7f06bbe8a8dd1aa7341b73'
 
+  bottle do
+    sha1 "3670032929123972994cdc29374628311e5fb874" => :mavericks
+    sha1 "9240b55f06576409d8f9e9f6f4d00d67a6861da0" => :mountain_lion
+    sha1 "1ee0860611776df9e9d361df6a2d1ba6d5111cbb" => :lion
+  end
+
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
 
   fails_with :llvm do
