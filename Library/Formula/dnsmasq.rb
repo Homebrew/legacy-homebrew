@@ -6,6 +6,7 @@ class Dnsmasq < Formula
   sha1 'c78f5992539ff29924ca6aa1ba06ecb81710e743'
 
   option 'with-idn', 'Compile with IDN support'
+  option 'FTABSIZ=', 'Max number of outstanding requests (default: 150)'
 
   depends_on "libidn" if build.include? 'with-idn'
   depends_on 'pkg-config' => :build
@@ -19,6 +20,11 @@ class Dnsmasq < Formula
     # Optional IDN support
     if build.include? 'with-idn'
       inreplace "src/config.h", "/* #define HAVE_IDN */", "#define HAVE_IDN"
+    end
+
+    # Optional FTABSIZ
+    if build.args.any? {|a| a.name =~ /FTABSIZ/}
+      inreplace "src/config.h", "#define FTABSIZ 150", "#define FTABSIZ " + ARGV.value('FTABSIZ')
     end
 
     # Fix compilation on Lion
