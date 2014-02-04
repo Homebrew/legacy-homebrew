@@ -34,9 +34,13 @@ end
 
 class Xulrunner < Formula
   homepage "https://developer.mozilla.org/docs/XULRunner"
-  url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/27.0b9/source/xulrunner-27.0b9.source.tar.bz2"
-  version "27.0b9"
-  sha1 '462477f819173cf637d1aeaa7f107634a804a455'
+  url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/27.0/source/xulrunner-27.0.source.tar.bz2"
+  sha1 "fbce25e33aea4291d83e8d5420a870b5e29371ec"
+
+  devel do
+    url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/28.0b1/source/xulrunner-28.0b1.source.tar.bz2"
+    sha1 "ede3088dae3023e4ad42615d07112565bbd54e3c"
+  end
 
   head do
     url "http://ftp.mozilla.org/pub/mozilla.org/firefox/bundles/mozilla-central.hg|https://hg.mozilla.org/mozilla-central/",
@@ -94,7 +98,7 @@ class Xulrunner < Formula
     if build.head?
       # update HEAD version here with every version bump
       system "tar", "-xvj", "-C", frameworks, "-f",
-                    "objdir/dist/xulrunner-29.0a1.en-US.mac64.tar.bz2"
+                    "objdir/dist/xulrunner-30.0a1.en-US.mac64.tar.bz2"
     else
       system "tar", "-xvj", "-C", frameworks, "-f",
                     "objdir/dist/xulrunner-#{version.to_s[/\d+.\d/]}.en-US.mac64.tar.bz2"
