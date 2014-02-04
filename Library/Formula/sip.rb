@@ -10,32 +10,31 @@ class Sip < Formula
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
-  if build.without? 'python3' and build.without? 'python'
+  if build.without?("python3") && build.without?("python")
     odie 'sip: --with-python3 must be specified when using --without-python'
   end
 
-  def install
-    pythons = {}
+  def pythons
+    pythons_hash = {}
     # default (python 2.x)
-    if build.with? "python"
-      # regex to determine python version. e.g. 2.6 vs 2.7
-      pythons[:python] = /\d+(.)\d+/.match(`python --version 2>&1`)
-    end
+    # regex to determine python version. e.g. 2.6 vs 2.7
+    pythons_hash[:python] = /\d+(.)\d+/.match(`python --version 2>&1`) if build.with? "python"
 
     #optional (python 3.x)
-    if build.with? "python3"
-      # regex to determine python version. e.g. 3.2 vs 3.3
-      pythons[:python3] = /\d+(.)\d+/.match(`python3 --version 2>&1`)
-    end
+    # regex to determine python version. e.g. 3.2 vs 3.3
+    pythons_hash[:python3] = /\d+(.)\d+/.match(`python3 --version 2>&1`) if build.with? "python3"
+    return pythons_hash
+  end
 
+  def install
     pythons.each do |python, version|
       ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
 
       if build.head?
         # Link the Mercurial repository into the download directory so
         # buid.py can use it to figure out a version number.
-        ln_s downloader.cached_location + ".hg", ".hg"
-        system python, "build.py", "prepare"
+        ln_s downloader.cached_location + '.hg', '.hg'
+        system python, 'build.py', 'prepare'
       end
 
       # Note the binary `sip` is the same for python 2.x and 3.x
