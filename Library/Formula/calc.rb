@@ -41,4 +41,10 @@ class Calc < Formula
     system "make"
     system "make install"
   end
+
+  test do
+    output = `#{bin}/calc 0xA + 1`.strip
+    assert_equal "11", output
+    assert_equal 0, $?.exitstatus
+  end
 end
