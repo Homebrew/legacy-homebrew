@@ -81,4 +81,19 @@ class Sqlite < Formula
       EOS
     end
   end
+
+  test do
+    path = testpath/"school.sql"
+    path.write <<-EOS.undent
+      create table students (name text, age integer);
+      insert into students (name, age) values ('Bob', 14);
+      insert into students (name, age) values ('Sue', 12);
+      insert into students (name, age) values ('Tim', 13);
+      select name from students order by age asc;
+    EOS
+
+    names = `#{bin}/sqlite3 < #{path}`.strip.split("\n")
+    assert_equal %w[Sue Tim Bob], names
+    assert_equal 0, $?.exitstatus
+  end
 end
