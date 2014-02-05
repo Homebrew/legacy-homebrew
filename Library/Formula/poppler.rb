@@ -8,7 +8,6 @@ class Poppler < Formula
   option 'with-qt4', 'Build Qt backend'
   option 'with-glib', 'Build Glib backend' # requires cairo
   option 'with-lcms2', 'Use color management system'
-  option 'with-splash-output', 'Build with Splash output backend'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
@@ -48,7 +47,6 @@ class Poppler < Formula
     args << ( build.with?('glib') ? '--enable-poppler-glib' : '--disable-poppler-glib' )
     args << ( build.with?('glib') ? '' : '--disable-cairo-output' )
     args << ( build.with?('lcms2') ? '--enable-cms=lcms2' : '' )
-    args << ( build.with?('splash-output') ? '' : '--disable-splash-output' )
 
     system "./configure", *args
     system "make install"

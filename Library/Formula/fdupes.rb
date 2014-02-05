@@ -11,4 +11,13 @@ class Fdupes < Formula
     bin.install "fdupes"
     man1.install "fdupes.1"
   end
+
+  test do
+    touch "a"
+    touch "b"
+
+    dupes = `#{bin}/fdupes .`.strip.split("\n").sort
+    assert_equal ["./a", "./b"], dupes
+    assert_equal 0, $?.exitstatus
+  end
 end
