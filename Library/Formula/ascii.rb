@@ -10,4 +10,10 @@ class Ascii < Formula
     bin.install "ascii"
     man1.install 'ascii.1'
   end
+
+  test do
+    output = `#{bin}/ascii 0x0a`
+    assert output.include?("Official name: Line Feed")
+    assert_equal 0, $?.exitstatus
+  end
 end
