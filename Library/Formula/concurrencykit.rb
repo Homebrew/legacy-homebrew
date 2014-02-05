@@ -11,7 +11,8 @@ class Concurrencykit < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make", "CC=#{ENV.cc}"
     system "make install"
-    mv lib/"libck.so.0", lib/"libck.0.dylib"
     mv lib/"libck.so.#{version}", lib/"libck.#{version}.dylib"
+    ln_s "libck.#{version}.dylib",  lib/"libck.0.dylib"
+    ln_s "libck.#{version}.dylib",  lib/"libck.dylib"
   end
 end

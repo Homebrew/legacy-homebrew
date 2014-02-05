@@ -2,14 +2,14 @@ require 'formula'
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'https://git-core.googlecode.com/files/git-1.8.5.2.tar.gz'
-  sha1 '3a09d6d5d4e31c702f17e664a527b4c2f6e84faf'
+  url 'https://git-core.googlecode.com/files/git-1.8.5.3.tar.gz'
+  sha1 '767aa30c0f569f9b6e04cb215dfeec0c013c355a'
   head 'https://github.com/git/git.git'
 
   bottle do
-    sha1 '96d04727c003453524c76db9e62d06efa9c96cb5' => :mavericks
-    sha1 '041f911d683da52f2544299035836337e67417cd' => :mountain_lion
-    sha1 '27e3ca8f3005f8405daab4f66dfe6df0d6affcd3' => :lion
+    sha1 '6849cffc6d286228cdfb2fa52f2b0db4c054f569' => :mavericks
+    sha1 'd2e8b603141f45d5a22891909b1c076e4cb1a5d6' => :mountain_lion
+    sha1 '40b475da5b25459b697ac8815dd575a0e1653abd' => :lion
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -21,21 +21,21 @@ class Git < Formula
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
   depends_on 'openssl' if build.with? 'brewed-openssl'
-  depends_on 'curl' => 'with-darwinssl' if build.with? 'brewed-curl'
+  depends_on 'curl' if build.with? 'brewed-curl'
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
-    url 'http://git-core.googlecode.com/files/git-manpages-1.8.5.2.tar.gz'
-    sha1 '54450c09138b8d65c5f9d2b19ca86fd63c645bb5'
+    url 'http://git-core.googlecode.com/files/git-manpages-1.8.5.3.tar.gz'
+    sha1 'e4b66ca3ab1b089af651bf742aa030718e9af978'
   end
 
   resource 'html' do
-    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.5.2.tar.gz'
-    sha1 'eaf2e3cfd07c1b88eff688fc3ba79dd4f3f2bc43'
+    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.5.3.tar.gz'
+    sha1 '47da8e2b1d23ae501ee2c03414c04f8225079037'
   end
 
   def patches
-    if MacOS.version >= :mavericks
+    if MacOS.version >= :mavericks and not build.head?
       # Allow using PERLLIB_EXTRA to find Subversion Perl bindings location
       # in the CLT/Xcode. Should be included in Git 1.8.6.
       # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=07981d

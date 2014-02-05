@@ -115,14 +115,8 @@ end
 class IncompatibleCxxStdlibs < Homebrew::InstallationError
   def initialize(f, dep, wrong, right)
     super f, <<-EOS.undent
-    #{f} dependency #{dep} was built with the following
-    C++ standard library: #{wrong.type_string} (from #{wrong.compiler})
-
-    This is incompatible with the standard library being used
-    to build #{f}: #{right.type_string} (from #{right.compiler})
-
-    Please reinstall #{dep} using a compatible compiler.
-    hint: Check https://github.com/Homebrew/homebrew/wiki/C++-Standard-Libraries
+    #{f} dependency #{dep} was built with a different C++ standard
+    library (#{wrong.type_string} from #{wrong.compiler}). This could cause problems at runtime.
     EOS
   end
 end
@@ -211,7 +205,7 @@ class BuildError < Homebrew::InstallationError
     puts
     unless RUBY_VERSION < "1.8.6" || issues.empty?
       puts "These open issues may also help:"
-      puts issues.map{ |s| "    #{s}" }.join("\n")
+      puts issues.map{ |i| "#{i['title']} (#{i['html_url']})" }.join("\n")
     end
   end
 end

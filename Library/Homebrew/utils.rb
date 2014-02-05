@@ -276,9 +276,9 @@ module GitHub extend self
     raise Error, "Failed to connect to: #{url}\n#{e.message}"
   end
 
-  def each_issue_matching(query, &block)
+  def issues_matching(query)
     uri = ISSUES_URI + uri_escape(query)
-    open(uri) { |f| Utils::JSON.load(f.read)['issues'].each(&block) }
+    open(uri) { |f| Utils::JSON.load(f.read)['issues'] }
   end
 
   def uri_escape(query)
@@ -297,26 +297,30 @@ module GitHub extend self
 
     name = f.name if Formula === name
 
-    issues = []
-
-    each_issue_matching(name) do |issue|
-      # don't include issues that just refer to the tool in their body
-      issues << issue['html_url'] if issue['title'].include? name
-    end
-
-    issues
+    # don't include issues that just refer to the tool in their body
+    issues_matching(name).select {|issue| issue['title'].include? name }
   end
 
   def find_pull_requests rx
     return if ENV['HOMEBREW_NO_GITHUB_API']
-    puts "Searching open pull requests..."
+    puts "Searching pull requests..."
 
     query = rx.source.delete('.*').gsub('\\', '')
 
-    each_issue_matching(query) do |issue|
-      if rx === issue['title'] && issue.has_key?('pull_request_url')
-        yield issue['pull_request_url']
-      end
+    open_or_closed_prs = issues_matching(query).select do |issue|
+      rx === issue['title'] && issue.has_key?('pull_request_url')
     end
+    open_prs = open_or_closed_prs.select {|i| i['state'] != 'closed' }
+    if open_prs.any?
+      puts "Open pull requests:"
+      prs = open_prs
+    elsif open_or_closed_prs.any?
+      puts "Closed pull requests:"
+      prs = open_or_closed_prs
+    else
+      return
+    end
+
+    prs.each {|i| yield "#{i['title']} (#{i['pull_request_url']})" }
   end
 end

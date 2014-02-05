@@ -42,6 +42,7 @@ class Privoxy < Formula
       <key>ProgramArguments</key>
       <array>
         <string>#{sbin}/privoxy</string>
+        <string>--no-daemon</string>
         <string>#{etc}/privoxy/config</string>
       </array>
       <key>RunAtLoad</key>

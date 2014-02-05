@@ -7,10 +7,8 @@ class Wine < Formula
   homepage 'http://winehq.org/'
 
   stable do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.1.tar.bz2'
-    sha256 'd5bc2c088b555caa60a7ba1156e6ed74d791ba3c438129c75ab53805215a384c'
-
-    depends_on 'little-cms'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2'
+    sha256 'f0ab9eede5a0ccacbf6e50682649f9377b9199e49cf55641f1787cf72405acbe'
 
     resource 'gecko' do
       url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
@@ -25,14 +23,12 @@ class Wine < Formula
   end
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.10.tar.bz2'
-    sha256 '44270e4b97ef930e4e4b59088e6e3972e91e85bacf9a9a4d8712a877c9d5cbdb'
-    depends_on 'little-cms2'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.11.tar.bz2'
+    sha256 'c07d2771ed96c45d428bb11d164c5e4bbe48d6857a0a4cba2e0b73c5f1044f93'
   end
 
   head do
     url 'git://source.winehq.org/git/wine.git'
-    depends_on 'little-cms2'
   end
 
   env :std
@@ -47,6 +43,7 @@ class Wine < Formula
   depends_on 'freetype' if build.without? 'x11'
   depends_on 'jpeg'
   depends_on 'libgphoto2'
+  depends_on 'little-cms2'
   depends_on 'libicns'
   depends_on 'libtiff'
   depends_on 'sane-backends'

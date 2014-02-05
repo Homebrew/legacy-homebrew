@@ -126,14 +126,6 @@ class Emacs < Formula
     s = ""
     if build.include? "cocoa"
       s += <<-EOS.undent
-        Emacs.app was installed to:
-          #{prefix}
-
-        To link the application to a normal Mac OS X location:
-          brew linkapps
-        or:
-          ln -s #{prefix}/Emacs.app /Applications
-
         A command line wrapper for the cocoa app was installed to:
          #{bin}/emacs
       EOS

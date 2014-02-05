@@ -7,29 +7,47 @@ class Sip < Formula
 
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
 
-  def install
-    if build.head?
-      # Link the Mercurial repository into the download directory so
-      # buid.py can use it to figure out a version number.
-      ln_s downloader.cached_location + '.hg', '.hg'
-      system "python", "build.py", "prepare"
-    end
+  depends_on :python => :recommended
+  depends_on :python3 => :optional
 
-    # The python block is run once for each python (2.x and 3.x if requested)
-    # Note the binary `sip` is the same for python 2.x and 3.x
-    # Set --destdir such that the python modules will be in the HOMEBREWPREFIX/lib/pythonX.Y/site-packages
-    system "python", "configure.py",
-                            "--deployment-target=#{MacOS.version}",
-                            "--destdir=#{lib}/python2.7/site-packages",
-                            "--bindir=#{bin}",
-                            "--incdir=#{include}",
-                            "--sipdir=#{HOMEBREW_PREFIX}/share/sip"
-    system "make"
-    system "make install"
-    system "make clean"
+  if build.without?("python3") && build.without?("python")
+    odie "sip: --with-python3 must be specified when using --without-python"
+  end
+
+  def pythons
+    pythons = {}
+    ["python", "python3"].each do |python|
+      next if build.without? python
+      pythons[python] = /\d\.\d/.match `#{python} --version 2>&1`
+    end
+    pythons
+  end
+
+  def install
+    pythons.each do |python, version|
+      ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
+
+      if build.head?
+        # Link the Mercurial repository into the download directory so
+        # build.py can use it to figure out a version number.
+        ln_s downloader.cached_location + ".hg", ".hg"
+        system python, "build.py", "prepare"
+      end
+
+      # Note the binary `sip` is the same for python 2.x and 3.x
+      system python, "configure.py",
+                     "--deployment-target=#{MacOS.version}",
+                     "--destdir=#{lib}/python#{version}/site-packages",
+                     "--bindir=#{bin}",
+                     "--incdir=#{include}",
+                     "--sipdir=#{HOMEBREW_PREFIX}/share/sip"
+      system "make"
+      system "make", "install"
+      system "make", "clean" if pythons.length > 1
+    end
   end
 
   def caveats
-    "The sip-dir for Python 2.x is #{HOMEBREW_PREFIX}/share/sip."
+    "The sip-dir for Python is #{HOMEBREW_PREFIX}/share/sip."
   end
 end

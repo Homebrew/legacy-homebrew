@@ -340,24 +340,14 @@ class Formula
     ]
   end
 
-  # Install python bindings inside of a block given to this method and/or
-  # call python so: `system python, "setup.py", "install", "--prefix=#{prefix}"
-  # Note that there are no quotation marks around python!
-  # <https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python>
-  def python(options={:allowed_major_versions => [2, 3]}, &block)
-    require 'python_helper'
-    python_helper(options, &block)
+  # Deprecated
+  def python(options={}, &block)
+    opoo 'Formula#python is deprecated and will go away shortly.'
+    block.call if block_given?
+    PythonDependency.new
   end
-
-  # Explicitly only execute the block for 2.x (if a python 2.x is available)
-  def python2 &block
-    python(:allowed_major_versions => [2], &block)
-  end
-
-  # Explicitly only execute the block for 3.x (if a python 3.x is available)
-  def python3 &block
-    python(:allowed_major_versions => [3], &block)
-  end
+  alias_method :python2, :python
+  alias_method :python3, :python
 
   # Generates a formula's ruby class name from a formula's name
   def self.class_s name
@@ -645,7 +635,7 @@ class Formula
         when :bzip2 then with_system_path { safe_system "bunzip2", p.compressed_filename }
       end
       # -f means don't prompt the user if there are errors; just exit with non-zero status
-      safe_system '/usr/bin/patch', '-f', *(p.patch_args)
+      safe_system '/usr/bin/patch', '-g', '0', '-f', *(p.patch_args)
     end
   end
 

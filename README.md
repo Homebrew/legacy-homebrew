@@ -6,12 +6,19 @@ What Packages Are Available?
 ----------------------------
 1. You can [browse the Formula directory on GitHub][formula].
 2. Or type `brew search` for a list.
-3. Or run `brew server` to browse packages off of a local web server.
-4. Or visit [braumeister.org][braumeister] to browse packages online.
+3. Or visit [braumeister.org][braumeister] to browse packages online.
 
 More Documentation
 ------------------
 `brew help` or `man brew` or check our [wiki][].
+
+Troubleshooting
+---------------
+First, please run `brew update` and `brew doctor`.
+
+Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebrew/wiki/troubleshooting).
+
+**If you don't read these it will take us far longer to help you with your problem.**
 
 Who Are You?
 ------------
