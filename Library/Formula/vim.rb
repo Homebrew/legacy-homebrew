@@ -4,8 +4,8 @@ class Vim < Formula
   homepage 'http://www.vim.org/'
   head 'https://vim.googlecode.com/hg/'
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
-  url 'http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.052.orig.tar.gz'
-  sha1 '216ab69faf7e73e4b86da7f00e4ad3b3cca1fdb8'
+  url 'http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.161.orig.tar.gz'
+  sha1 '111e9a237fa240895db013c1e546dd02580a2940'
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
@@ -33,14 +33,6 @@ class Vim < Formula
 
   conflicts_with 'ex-vi',
     :because => 'vim and ex-vi both install bin/ex and bin/view'
-
-  # First patch: vim uses the obsolete Apple-only -no-cpp-precomp flag, which
-  # FSF GCC can't understand; reported upstream:
-  # https://groups.google.com/forum/#!topic/vim_dev/X5yG3-IiUp8
-  #
-  # Second patch: includes Mac OS X version macros not included by default on 10.9
-  # Reported upstream: https://groups.google.com/forum/#!topic/vim_mac/5kVAMSPb6uU
-  def patches; DATA; end unless build.head?
 
   def install
     ENV['LUA_PREFIX'] = HOMEBREW_PREFIX if build.with?('lua')
