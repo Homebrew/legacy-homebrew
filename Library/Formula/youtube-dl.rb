@@ -2,8 +2,8 @@ require 'formula'
 
 class YoutubeDl < Formula
   homepage 'http://rg3.github.io/youtube-dl/'
-  url 'https://yt-dl.org/downloads/2014.02.04.1/youtube-dl-2014.02.04.1.tar.gz'
-  sha1 '44224d35b363f8ff33f3d04fe003c9641592ac00'
+  url 'https://yt-dl.org/downloads/2014.02.05/youtube-dl-2014.02.05.tar.gz'
+  sha1 'cf8f7b5edfb10fde117dd55efc2b916939ed85af'
 
   def install
     system "make", "youtube-dl", "PREFIX=#{prefix}"
