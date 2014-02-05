@@ -95,4 +95,13 @@ class Node < Formula
       end
     end
   end
+
+  test do
+    path = testpath/"test.js"
+    path.write "console.log('hello');"
+
+    output = `#{bin}/node #{path}`.strip
+    assert_equal "hello", output
+    assert_equal 0, $?.exitstatus
+  end
 end
