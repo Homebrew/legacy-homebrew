@@ -23,4 +23,19 @@ class Html2text < Formula
     man1.install "html2text.1.gz"
     man5.install "html2textrc.5.gz"
   end
+
+  test do
+    path = testpath/"index.html"
+    path.write <<-EOS.undent
+      <!DOCTYPE html>
+      <html>
+        <head><title>Home</title></head>
+        <body><p>Hello World</p></body>
+      </html>
+    EOS
+
+    output = `#{bin}/html2text #{path}`.strip
+    assert_equal "Hello World", output
+    assert_equal 0, $?.exitstatus
+  end
 end
