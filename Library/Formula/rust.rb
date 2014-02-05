@@ -29,6 +29,6 @@ class Rust < Formula
   def test
     system "#{bin}/rustc"
     system "#{bin}/rustdoc -h"
-    system "#{bin}/rustpkg -v"
+    system "#{bin}/rustpkg -v" unless build.head?
   end
 end
