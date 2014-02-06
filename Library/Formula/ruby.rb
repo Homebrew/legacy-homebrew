@@ -19,7 +19,7 @@ class Ruby < Formula
   depends_on 'readline' => :recommended
   depends_on 'gdbm' => :optional
   depends_on 'libyaml'
-  depends_on 'openssl' if MacOS.version >= :mountain_lion
+  depends_on 'openssl'
   depends_on :x11 if build.with? 'tcltk'
 
   fails_with :llvm do
@@ -35,14 +35,7 @@ class Ruby < Formula
     args << "--with-out-ext=tk" unless build.with? "tcltk"
     args << "--disable-install-doc" unless build.with? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
-
-    # OpenSSL is deprecated on OS X 10.8 and Ruby can't find the outdated
-    # version (0.9.8r 8 Feb 2011) that ships with the system.
-    # See discussion https://github.com/sstephenson/ruby-build/issues/304
-    # and https://github.com/Homebrew/homebrew/pull/18054
-    if MacOS.version >= :mountain_lion
-      args << "--with-opt-dir=#{Formula.factory('openssl').opt_prefix}"
-    end
+    args << "--with-opt-dir=#{Formula.factory('openssl').opt_prefix}"
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
     ruby_lib = HOMEBREW_PREFIX/"lib/ruby"
