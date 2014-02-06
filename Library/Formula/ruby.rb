@@ -18,6 +18,8 @@ class Ruby < Formula
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
   depends_on 'gdbm' => :optional
+  depends_on 'gmp' => :optional
+  depends_on 'libffi' => :optional
   depends_on 'libyaml'
   depends_on 'openssl'
   depends_on :x11 if build.with? 'tcltk'
