@@ -5,8 +5,6 @@ class Burl < Formula
   url "https://github.com/visionmedia/burl/archive/1.0.1.zip"
   sha1 "1c082369f45dd1a9236f7cc078608578e8b06dc1"
 
-  depends_on 'curl' => :optional
-
   def install
     bin.install 'bin/burl'
   end
