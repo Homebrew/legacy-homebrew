@@ -15,6 +15,8 @@ class Openssl < Formula
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."
 
+  option 'enable-cms', "Enable cms on openssl"
+
   def install
     args = %W[./Configure
                --prefix=#{prefix}
@@ -22,6 +24,8 @@ class Openssl < Formula
                zlib-dynamic
                shared
              ]
+    
+    args << "enable-cms" if build.include? 'enable-cms'
 
     if MacOS.prefer_64_bit?
       args << "darwin64-x86_64-cc" << "enable-ec_nistp_64_gcc_128"
