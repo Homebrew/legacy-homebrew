@@ -37,7 +37,18 @@ class Ruby < Formula
     args << "--with-out-ext=tk" unless build.with? "tcltk"
     args << "--disable-install-doc" unless build.with? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
-    args << "--with-opt-dir=#{Formula.factory('openssl').opt_prefix}"
+
+    paths = []
+
+    paths.concat %w[readline gdbm gmp libffi].map { |dep|
+      Formula.factory(dep).opt_prefix if build.with? dep
+    }.compact
+
+    paths.concat %w[libyaml openssl].map { |dep|
+      Formula.factory(dep).opt_prefix
+    }
+
+    args << "--with-opt-dir=#{paths.join(":")}"
 
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
     ruby_lib = HOMEBREW_PREFIX/"lib/ruby"
