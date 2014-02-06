@@ -30,8 +30,8 @@ class Python < Formula
   end
 
   resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
-    sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.2.tar.gz'
+    sha1 '4f43a6b04f83b8d83bee702750ff35be2a2b6af1'
   end
 
   def patches
