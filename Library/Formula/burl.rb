@@ -12,6 +12,6 @@ class Burl < Formula
   end
 
   test do
-    system "#{bin}/burl", "--help"
+    system "#{bin}/burl", "-I", "github.com"
   end
 end
