@@ -7,7 +7,7 @@ class Stormfs < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
-  depends_on 'fuse4x'
+  depends_on 'osxfuse'
   depends_on 'curl' if MacOS.version <= :leopard
 
   def install
