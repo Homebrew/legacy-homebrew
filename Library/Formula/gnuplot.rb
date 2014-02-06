@@ -82,7 +82,7 @@ class Gnuplot < Formula
     args << '--enable-qt'             if build.include? 'qt'
     args << '--without-lua'           if build.include? 'nolua'
     args << '--without-lisp-files'    if build.include? 'without-emacs'
-    args << build.with?('aquaterm') ? '--with-aquaterm' : '--without-aquaterm'
+    args << (build.with?('aquaterm') ? '--with-aquaterm' : '--without-aquaterm')
 
     if build.include? 'latex'
       args << '--with-latex'
