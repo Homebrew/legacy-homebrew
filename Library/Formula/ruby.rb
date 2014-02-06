@@ -29,7 +29,7 @@ class Ruby < Formula
   def install
     system "autoconf" if build.head?
 
-    args = %W[--prefix=#{prefix} --enable-shared]
+    args = %W[--prefix=#{prefix} --enable-shared --disable-silent-rules]
     args << "--program-suffix=21" if build.with? "suffix"
     args << "--with-arch=#{Hardware::CPU.universal_archs.join(',')}" if build.universal?
     args << "--with-out-ext=tk" unless build.with? "tcltk"
