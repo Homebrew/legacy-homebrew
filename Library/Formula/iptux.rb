@@ -19,4 +19,8 @@ class Iptux < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    system "#{bin}/iptux", '--version'
+  end
 end
