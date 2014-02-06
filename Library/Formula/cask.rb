@@ -29,6 +29,9 @@ class Cask < Formula
     bin.install 'bin/cask'
     prefix.install Dir['*.el']
     prefix.install 'templates'
+    # Cask will refuse to upgrade in the presence of this file
+    # Homebrew updates will therefore work more reliably
+    FileUtils.touch prefix/".no-upgrade"
   end
 
 end
