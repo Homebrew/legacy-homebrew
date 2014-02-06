@@ -5,8 +5,6 @@ class Freeipmi < Formula
   url 'http://ftpmirror.gnu.org/freeipmi/freeipmi-1.3.4.tar.gz'
   sha1 '3848b5b014d60cf9ff8b848b65f192bb15ad0816'
 
-  depends_on 'apple-gcc42' => :build
-  depends_on 'texinfo'     => :build
   depends_on 'libgcrypt'   => :build
 
   fails_with :clang do
@@ -18,10 +16,10 @@ class Freeipmi < Formula
   end
 
   def install
-    system('./configure', "--prefix=#{prefix}")
+    system './configure', "--prefix=#{prefix}"
     # This is a big hammer to disable building the man pages
     # It breaks under homebrew's build system and I'm not sure why
-    system('sed', '-i', "''", 's/install: install-am/install:/', './man/Makefile')
+    system 'sed', '-i', "''", 's/install: install-am/install:/', './man/Makefile'
     system 'make', 'install'
   end
 
