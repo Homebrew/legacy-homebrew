@@ -16,6 +16,7 @@ class Freerdp < Formula
     [
       'https://github.com/FreeRDP/FreeRDP/commit/1d3289.patch',
       'https://github.com/FreeRDP/FreeRDP/commit/e32f9e.patch',
+      # https://github.com/FreeRDP/FreeRDP/pull/1682/files
       'https://gist.github.com/bmiklautz/8832375/raw/ac77b61185d11aa69e5f6b5e88c0fa597c04d964/freerdp-1.0.2-osxversion-patch.diff'
     ]
   end unless build.head?
