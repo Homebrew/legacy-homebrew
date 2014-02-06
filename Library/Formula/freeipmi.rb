@@ -5,12 +5,10 @@ class Freeipmi < Formula
   url 'http://ftpmirror.gnu.org/freeipmi/freeipmi-1.3.4.tar.gz'
   sha1 '3848b5b014d60cf9ff8b848b65f192bb15ad0816'
 
-  depends_on 'libgcrypt'   => :build
+  depends_on "argp-standalone" => :build
+  depends_on 'libgcrypt'       => :build
 
-  fails_with :clang do
-    cause 'redefinition of a "extern inline" function "argp_fmtstream_write" is not supported in C99 mode'
-  end
-
+  #Patches can be removed when freeipmi 1.4.1 is released in Feb/March 2014
   def patches
     DATA
   end
