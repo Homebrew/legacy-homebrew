@@ -28,6 +28,10 @@ class Ruby < Formula
     build 2326
   end
 
+  # pthread_setname_np() is unavailable before Snow Leopard
+  # Reported upstream: https://bugs.ruby-lang.org/issues/9492
+  def patches; DATA; end if MacOS.version < :snow_leopard
+
   def install
     system "autoconf" if build.head?
 
@@ -76,3 +80,36 @@ class Ruby < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/thread_pthread.c b/thread_pthread.c
+index 3911f8f..74d1ab7 100644
+--- a/thread_pthread.c
++++ b/thread_pthread.c
+@@ -1416,15 +1416,6 @@ timer_thread_sleep(rb_global_vm_lock_t* unused)
+ }
+ #endif /* USE_SLEEPY_TIMER_THREAD */
+ 
+-#if defined(__linux__) && defined(PR_SET_NAME)
+-# define SET_THREAD_NAME(name) prctl(PR_SET_NAME, name)
+-#elif defined(__APPLE__)
+-/* pthread_setname_np() on Darwin does not have target thread argument */
+-# define SET_THREAD_NAME(name) pthread_setname_np(name)
+-#else
+-# define SET_THREAD_NAME(name) (void)0
+-#endif
+-
+ static void *
+ thread_timer(void *p)
+ {
+@@ -1432,7 +1423,9 @@ thread_timer(void *p)
+ 
+     if (TT_DEBUG) WRITE_CONST(2, "start timer thread\n");
+ 
+-    SET_THREAD_NAME("ruby-timer-thr");
++#if defined(__linux__) && defined(PR_SET_NAME)
++    prctl(PR_SET_NAME, "ruby-timer-thr");
++#endif
+ 
+ #if !USE_SLEEPY_TIMER_THREAD
+     native_mutex_initialize(&timer_thread_lock);
