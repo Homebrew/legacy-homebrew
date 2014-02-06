@@ -19,6 +19,23 @@ class Splint < Formula
     system "make"
     system "make install"
   end
+
+  test do
+    path = testpath/"test.c"
+    path.write <<-EOS.undent
+      #include <stdio.h>
+      int main()
+      {
+          char c;
+          printf("%c", c);
+          return 0;
+      }
+    EOS
+
+    output = `#{bin}/splint #{path} 2>&1`
+    assert output.include?("5:18: Variable c used before definition")
+    assert_equal 1, $?.exitstatus
+  end
 end
 
 
