@@ -5,7 +5,7 @@ class Ansible < Formula
   url 'https://github.com/ansible/ansible/archive/v1.4.4.tar.gz'
   sha1 '743c365d3639fae99129e04b49865aec0d76462d'
 
-  head 'https://github.com/ansible/ansible.git', :branch => :devel
+  head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
   depends_on :python
   depends_on 'libyaml'
