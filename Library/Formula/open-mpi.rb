@@ -24,7 +24,7 @@ class OpenMpi < Formula
       --disable-dependency-tracking
       --disable-silent-rules
       --enable-ipv6
-      --with-libevent=#{Formula.factory('libevent').prefix}
+      --with-libevent=#{Formula.factory('libevent').opt_prefix}
     ]
     if build.include? 'disable-fortran'
       args << '--disable-mpi-f77' << '--disable-mpi-f90'
