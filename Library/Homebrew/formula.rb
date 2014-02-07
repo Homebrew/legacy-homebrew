@@ -635,7 +635,7 @@ class Formula
         when :bzip2 then with_system_path { safe_system "bunzip2", p.compressed_filename }
       end
       # -f means don't prompt the user if there are errors; just exit with non-zero status
-      safe_system '/usr/bin/patch', '-f', *(p.patch_args)
+      safe_system '/usr/bin/patch', '-g', '0', '-f', *(p.patch_args)
     end
   end
 

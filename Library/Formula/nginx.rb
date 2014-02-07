@@ -6,8 +6,8 @@ class Nginx < Formula
   sha1 '304d5991ccde398af2002c0da980ae240cea9356'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.5.9.tar.gz'
-    sha1 '9904f15c877d679c5164242f8e59a176392aa573'
+    url 'http://nginx.org/download/nginx-1.5.10.tar.gz'
+    sha1 '89e2317c0d27a7386f62c3ba9362ae10b05e3159'
   end
 
   head 'http://hg.nginx.org/nginx/', :using => :hg
@@ -27,15 +27,14 @@ class Nginx < Formula
   skip_clean 'logs'
 
   def passenger_config_args
-    nginx_ext = `passenger-config --nginx-addon-dir`.chomp
+    passenger_config = "#{HOMEBREW_PREFIX}/opt/passenger/bin/passenger-config"
+    nginx_ext = `#{passenger_config} --nginx-addon-dir`.chomp
 
     if File.directory?(nginx_ext)
       return "--add-module=#{nginx_ext}"
     end
 
-    puts "Unable to install nginx with passenger support. The passenger"
-    puts "gem must be installed and passenger-config must be in your path"
-    puts "in order to continue."
+    puts "Unable to install nginx with passenger support."
     exit
   end
 
@@ -130,7 +129,7 @@ class Nginx < Formula
     The default port has been set in #{HOMEBREW_PREFIX}/etc/nginx/nginx.conf to 8080 so that
     nginx can run without sudo.
     EOS
-    s << passenger_caveats if build.include? 'with-passenger'
+    s << passenger_caveats if build.with? 'passenger'
     s
   end
 

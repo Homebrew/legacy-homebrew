@@ -21,6 +21,7 @@ class Openssl < Formula
                --openssldir=#{openssldir}
                zlib-dynamic
                shared
+               enable-cms
              ]
 
     if OS.linux?
