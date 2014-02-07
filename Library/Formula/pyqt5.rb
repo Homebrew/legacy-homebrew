@@ -2,15 +2,13 @@ require 'formula'
 
 class Pyqt5 < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt/download5'
-  url 'http://downloads.sf.net/project/pyqt/PyQt5/PyQt-5.1.1/PyQt-gpl-5.1.1.tar.gz'
-  sha1 '90a3d6a805da7559ad83704866c1751d698f1873'
+  url 'http://downloads.sf.net/project/pyqt/PyQt5/PyQt-5.2/PyQt-gpl-5.2.tar.gz'
+  sha1 'a1c232d34ab268587c127ad3097c725ee1a70cf0'
 
   option 'enable-debug', "Build with debug symbols"
 
   depends_on :python
-
   depends_on 'qt5'
-
   depends_on 'sip'
 
   def install
@@ -25,7 +23,7 @@ class Pyqt5 < Formula
              "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}" ]
     args << '--debug' if build.include? 'enable-debug'
 
-    system "python", "./configure.py", *args
+    system "python", "configure.py", *args
     system "make"
     system "make", "install"
   end
