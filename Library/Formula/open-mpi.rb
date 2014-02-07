@@ -2,8 +2,10 @@ require 'formula'
 
 class OpenMpi < Formula
   homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7.3.tar.bz2'
-  sha1 'ce61ee466ac2b21024c7d8dabc4f18676b2f1b76'
+  url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7.4.tar.bz2'
+  sha1 '1e3bf2b6cebfdd3571a2f25bba9aa61aed4bbe85'
+
+  depends_on 'libevent'
 
   option 'disable-fortran', 'Do not build the Fortran bindings'
   option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
@@ -14,12 +16,6 @@ class OpenMpi < Formula
 
   depends_on :fortran unless build.include? 'disable-fortran'
 
-  def patches
-    # Do not install the libevent header files.
-    # See http://www.open-mpi.org/community/lists/users/2013/11/22900.php
-    DATA
-  end
-
   def install
     ENV.cxx11 if build.cxx11?
 
@@ -28,6 +24,7 @@ class OpenMpi < Formula
       --disable-dependency-tracking
       --disable-silent-rules
       --enable-ipv6
+      --with-libevent=#{Formula.factory('libevent').prefix}
     ]
     if build.include? 'disable-fortran'
       args << '--disable-mpi-f77' << '--disable-mpi-f90'
@@ -51,25 +48,3 @@ class OpenMpi < Formula
     bin.write_jar_script libexec/'vtsetup.jar', 'vtsetup.jar'
   end
 end
-
-__END__
-
-diff --git a/opal/mca/event/libevent2021/libevent/include/Makefile.in b/opal/mca/event/libevent2021/libevent/include/Makefile.in
-index 99fb60b..5f7cad0 100644
---- a/opal/mca/event/libevent2021/libevent/include/Makefile.in
-+++ b/opal/mca/event/libevent2021/libevent/include/Makefile.in
-@@ -281,10 +281,10 @@ EVENT2_EXPORT = \
- 	event2/util.h
- 
- EXTRA_SRC = $(EVENT2_EXPORT)
--@INSTALL_LIBEVENT_TRUE@nobase_include_HEADERS = $(EVENT2_EXPORT)
--@INSTALL_LIBEVENT_TRUE@nobase_nodist_include_HEADERS = ./event2/event-config.h
--@INSTALL_LIBEVENT_FALSE@noinst_HEADERS = $(EVENT2_EXPORT)
--@INSTALL_LIBEVENT_FALSE@nodist_noinst_HEADERS = ./event2/event-config.h
-+#@INSTALL_LIBEVENT_TRUE@nobase_include_HEADERS = $(EVENT2_EXPORT)
-+#@INSTALL_LIBEVENT_TRUE@nobase_nodist_include_HEADERS = ./event2/event-config.h
-+#@INSTALL_LIBEVENT_FALSE@noinst_HEADERS = $(EVENT2_EXPORT)
-+#@INSTALL_LIBEVENT_FALSE@nodist_noinst_HEADERS = ./event2/event-config.h
- all: all-am
- 
- .SUFFIXES:
