@@ -4,7 +4,7 @@ class Agedu < Formula
   homepage 'http://www.chiark.greenend.org.uk/~sgtatham/agedu/'
   url 'http://www.chiark.greenend.org.uk/~sgtatham/agedu/agedu-r10126.tar.gz'
   version 'r10126'
-  sha1 'b16e5b68a0c093298bb453fac6abe9a330c9a694'
+  sha1 'a8fc32bd78e79f4c65e8d87140a243dcccda3a8d'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
