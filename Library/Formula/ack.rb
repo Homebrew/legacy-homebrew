@@ -13,6 +13,10 @@ class Ack < Formula
   end
 
   test do
-    system "#{bin}/ack", '--version'
+    IO.popen("#{bin}/ack --noenv --nocolor bar -", "w+") do |pipe|
+      pipe.write "foo\nfoo bar\nbaz"
+      pipe.close_write
+      assert_equal "foo bar\n", pipe.read
+    end
   end
 end
