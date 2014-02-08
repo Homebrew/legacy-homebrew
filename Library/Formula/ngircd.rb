@@ -9,10 +9,9 @@ class Ngircd < Formula
   option 'with-iconv', 'Enable character conversion using libiconv.'
   option 'with-pam', 'Enable user authentication using PAM.'
 
-  # Older Formula used the next two options by default, so keep them unless
+  # Older Formula used the next option by default, so keep it unless
   # deactivated by the user:
   option 'without-ident', 'Disable "IDENT" ("AUTH") protocol support.'
-  option 'without-openssl', 'Disable SSL support using OpenSSL.'
 
   depends_on 'libident' if build.with? 'ident'
 
@@ -22,11 +21,11 @@ class Ngircd < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --enable-ipv6
+      --with-openssl
     ]
 
     args << "--with-iconv" if build.with? "iconv"
     args << "--with-ident" if build.with? "ident"
-    args << "--with-openssl" if build.with? "openssl"
     args << "--with-pam" if build.with? "pam"
 
     system "./configure", *args
