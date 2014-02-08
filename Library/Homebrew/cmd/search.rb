@@ -112,7 +112,7 @@ module Homebrew extend self
       end
     end
     results
-  rescue OpenURI::HTTPError, GitHub::Error
+  rescue GitHub::Error
     opoo "Failed to search tap: #{user}/#{repo}. Please run `brew update`"
     []
   end
