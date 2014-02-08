@@ -9,7 +9,7 @@ class Gnutls < Formula
   depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'libtasn1'
-  depends_on 'p11-kit'
+  depends_on 'p11-kit' => :optional
   depends_on 'nettle'
   depends_on 'guile' => :optional
 
