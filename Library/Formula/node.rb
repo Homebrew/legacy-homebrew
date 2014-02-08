@@ -71,6 +71,9 @@ class Node < Formula
           dir.install_symlink(file.relative_path_from(dir))
         end
       end
+
+      # install bash completion
+      bash_completion.install lib/"node_modules/npm/lib/utils/completion.sh" => 'npm'
     end
   end
 
@@ -94,5 +97,14 @@ class Node < Formula
           #{npm_prefix}/bin
       end
     end
+  end
+
+  test do
+    path = testpath/"test.js"
+    path.write "console.log('hello');"
+
+    output = `#{bin}/node #{path}`.strip
+    assert_equal "hello", output
+    assert_equal 0, $?.exitstatus
   end
 end

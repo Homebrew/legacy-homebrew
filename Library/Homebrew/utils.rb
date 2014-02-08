@@ -252,6 +252,7 @@ module GitHub extend self
   ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/Homebrew/homebrew/open/")
 
   Error = Class.new(StandardError)
+  RateLimitExceededError = Class.new(Error)
 
   def open url, headers={}, &block
     # This is a no-op if the user is opting out of using the GitHub API.
@@ -261,24 +262,28 @@ module GitHub extend self
 
     default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
     default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
-    Kernel.open(url, default_headers.merge(headers), &block)
+    Kernel.open(url, default_headers.merge(headers)) do |f|
+      yield Utils::JSON.load(f.read)
+    end
   rescue OpenURI::HTTPError => e
     if e.io.meta['x-ratelimit-remaining'].to_i <= 0
-      raise <<-EOS.undent
+      raise RateLimitExceededError, <<-EOS.undent, e.backtrace
         GitHub #{Utils::JSON.load(e.io.read)['message']}
         You may want to create an API token: https://github.com/settings/applications
         and then set HOMEBREW_GITHUB_API_TOKEN.
         EOS
     else
-      raise e
+      raise Error, e.message, e.backtrace
     end
   rescue SocketError, OpenSSL::SSL::SSLError => e
-    raise Error, "Failed to connect to: #{url}\n#{e.message}"
+    raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
+  rescue Utils::JSON::Error => e
+    raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
   end
 
   def issues_matching(query)
     uri = ISSUES_URI + uri_escape(query)
-    open(uri) { |f| Utils::JSON.load(f.read)['issues'] }
+    open(uri) { |json| json["issues"] }
   end
 
   def uri_escape(query)

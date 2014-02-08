@@ -1,7 +1,6 @@
 require 'formula'
 require 'blacklist'
 require 'utils'
-require 'utils/json'
 
 module Homebrew extend self
 
@@ -103,9 +102,9 @@ module Homebrew extend self
     return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
 
     results = []
-    GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |f|
-      user.downcase! if user == "Homebrew" # special handling for the Homebrew organization
-      Utils::JSON.load(f.read)["tree"].map{ |hash| hash['path'] }.compact.each do |file|
+    GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
+      user = user.downcase if user == "Homebrew" # special handling for the Homebrew organization
+      json["tree"].map{ |hash| hash['path'] }.compact.each do |file|
         name = File.basename(file, '.rb')
         if file =~ /\.rb$/ and name =~ rx
           results << "#{user}/#{repo}/#{name}"
@@ -113,10 +112,10 @@ module Homebrew extend self
       end
     end
     results
-  rescue OpenURI::HTTPError, GitHub::Error, Utils::JSON::Error
-    opoo <<-EOS.undent
-      Failed to search tap: #{user}/#{repo}. Please run `brew update`.
-    EOS
+  rescue GitHub::RateLimitExceededError => e
+    []
+  rescue GitHub::Error => e
+    opoo "Failed to search tap: #{user}/#{repo}. Please run `brew update`"
     []
   end
 
