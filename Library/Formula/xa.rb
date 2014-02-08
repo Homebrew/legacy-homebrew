@@ -14,6 +14,8 @@ class Xa < Formula
   end
 
   def install
+    inreplace "src/xa.c", /\bgetline\b/, "xa_getline"
+
     system "make", "CC=#{ENV.cc}",
                    "CFLAGS=#{ENV.cflags}",
                    "DESTDIR=#{prefix}",
