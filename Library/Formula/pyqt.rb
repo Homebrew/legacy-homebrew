@@ -15,10 +15,12 @@ class Pyqt < Formula
   depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
 
   if build.with? "python3"
-    depends_on "sip" => "with-python3"
+    option = "with-python3"
   else
-    depends_on "sip"
+    option = ""
   end
+
+  depends_on "sip" => option
 
   def pythons
     pythons = []
