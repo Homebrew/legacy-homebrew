@@ -40,9 +40,12 @@ class Emacs < Formula
       # Fix default-directory on Cocoa and Mavericks.
       # Fixed upstream in r114730 and r114882.
       :p0 => [ DATA ],
-      # Make native fullscreen mode optional, mostly from
-      # upstream r111679
-      :p1 => [ 'https://gist.github.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch' ]
+      :p1 => [
+        # Make native fullscreen mode optional, mostly from upstream r111679
+        'https://gist.github.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch',
+        # Fix memory leaks in NS version from upstream r114945
+        'https://gist.github.com/anonymous/8553178/raw/c0ddb67b6e92da35a815d3465c633e036df1a105/emacs.memory.leak.aka.distnoted.patch.diff',
+      ]
     }
     # "--japanese" option:
     # to apply a patch from MacEmacsJP for Japanese input methods
