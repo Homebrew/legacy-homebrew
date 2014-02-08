@@ -169,7 +169,14 @@ class BuildError < Homebrew::InstallationError
   end
 
   def issues
-    @issues ||= GitHub.issues_for_formula(formula.name)
+    @issues ||= fetch_issues
+  end
+
+  def fetch_issues
+    GitHub.issues_for_formula(formula.name)
+  rescue GitHub::RateLimitExceededError => e
+    opoo e.message
+    []
   end
 
   def dump
