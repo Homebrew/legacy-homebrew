@@ -5,8 +5,8 @@ An experimental fork of Homebrew for Linux.
 Installation
 ------------
 
-* Debian or Ubuntu: `sudo apt-get install build-essential curl git ruby libbz2-dev libexpat-dev libncurses-dev`
-* Fedora: `sudo yum groupinstall 'Development Tools' && sudo yum install curl git ruby bzip2-devel expat-devel ncurses-devel`
+* Debian or Ubuntu: `sudo apt-get install build-essential curl git ruby libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev`
+* Fedora: `sudo yum groupinstall 'Development Tools' && sudo yum install curl git ruby bzip2-devel curl-devel expat-devel ncurses-devel`
 * `git clone https://github.com/Homebrew/linuxbrew.git ~/.linuxbrew`
 * Add to your `.bashrc` or `.zshrc`:
 
