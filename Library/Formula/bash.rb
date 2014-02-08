@@ -41,6 +41,12 @@ class Bash < Formula
     it must be added to /etc/shells.
     EOS
   end
+
+  test do
+    output = `#{bin}/bash -c "echo hello"`.strip
+    assert_equal "hello", output
+    assert_equal 0, $?.exitstatus
+  end
 end
 
 __END__
