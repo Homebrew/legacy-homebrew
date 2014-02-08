@@ -112,7 +112,9 @@ module Homebrew extend self
       end
     end
     results
-  rescue GitHub::Error
+  rescue GitHub::RateLimitExceededError => e
+    []
+  rescue GitHub::Error => e
     opoo "Failed to search tap: #{user}/#{repo}. Please run `brew update`"
     []
   end
