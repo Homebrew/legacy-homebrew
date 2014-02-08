@@ -266,13 +266,13 @@ module GitHub extend self
     end
   rescue OpenURI::HTTPError => e
     if e.io.meta['x-ratelimit-remaining'].to_i <= 0
-      raise <<-EOS.undent
+      raise Error, <<-EOS.undent
         GitHub #{Utils::JSON.load(e.io.read)['message']}
         You may want to create an API token: https://github.com/settings/applications
         and then set HOMEBREW_GITHUB_API_TOKEN.
         EOS
     else
-      raise e
+      raise Error, e.message
     end
   rescue SocketError, OpenSSL::SSL::SSLError => e
     raise Error, "Failed to connect to: #{url}\n#{e.message}"
