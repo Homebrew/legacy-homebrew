@@ -6,10 +6,29 @@ class Pyqt < Formula
   sha1 'ba5465f92fb43c9f0a5b948fa25df5045f160bf0'
 
   depends_on :python => :recommended
+  depends_on :python3 => :optional
+
+  if (build.without? "python3") && (build.without? "python")
+   odie "pyqt: --with-python3 must be specified when using --without-python"
+  end
 
   depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
 
-  depends_on 'sip'
+  if build.with? "python3"
+    depends_on "sip" => "with-python3"
+  else
+    depends_on "sip"
+  end
+
+  def pythons
+    pythons = []
+    ["python", "python3"].each do |python|
+      next if build.without? python
+      version = /\d\.\d/.match `#{python} --version 2>&1`
+      pythons << [python, version]
+    end
+    pythons
+  end
 
   def patches
     # On Mavericks we want to target libc++, but this requires a user specified
@@ -27,27 +46,39 @@ class Pyqt < Formula
       ENV.append "QMAKESPEC", "unsupported/macx-clang-libc++"
     end
 
-    args = [ "--confirm-license",
-             "--bindir=#{bin}",
-             "--destdir=#{lib}/python2.7/site-packages",
-             "--sipdir=#{share}/sip" ]
-    # We need to run "configure.py" so that pyqtconfig.py is generated, which
-    # is needed by PyQWT (and many other PyQt interoperable implementations such
-    # as the ROS GUI libs). This file is currently needed for generating build
-    # files appropriate for the qmake spec that was used to build Qt. This method
-    # is deprecated and will be removed with SIP v5, so we do the actual compile
-    # using the newer configure-ng.py as recommended.
-    system "python", "configure.py", *args
-    (lib/'python2.7/site-packages/PyQt4').install 'pyqtconfig.py'
+    pythons.each do |python, version|
+      ENV.prepend_path "PYTHONPATH", HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
+      ENV.prepend_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+      args = ["--confirm-license",
+              "--bindir=#{bin}",
+              "--destdir=#{lib}/python#{version}/site-packages",
+              "--sipdir=#{HOMEBREW_PREFIX}/share/sip"]
 
-    # On Mavericks we want to target libc++, this requires a non default qt makespec
-    if ENV.compiler == :clang and MacOS.version >= :mavericks
-      args << "--spec" << "unsupported/macx-clang-libc++"
+      # We need to run "configure.py" so that pyqtconfig.py is generated, which
+      # is needed by PyQWT (and many other PyQt interoperable implementations such
+      # as the ROS GUI libs). This file is currently needed for generating build
+      # files appropriate for the qmake spec that was used to build Qt. This method
+      # is deprecated and will be removed with SIP v5, so we do the actual compile
+      # using the newer configure-ng.py as recommended.
+
+      inreplace "configure.py", "iteritems", "items" if python == "python3"
+      system python, "configure.py", *args
+      (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
+
+      # On Mavericks we want to target libc++, this requires a non default qt makespec
+      if ENV.compiler == :clang and MacOS.version >= :mavericks
+        args << "--spec" << "unsupported/macx-clang-libc++"
+      end
+
+      system python, "./configure-ng.py", *args
+      system "make"
+      system "make", "install"
+      system "make", "clean" if pythons.length > 1
     end
+  end
 
-    system "python", "./configure-ng.py", *args
-    system "make"
-    system "make", "install"
+  def caveats
+    "Phonon support is broken."
   end
 
   test do
@@ -69,7 +100,11 @@ class Pyqt < Formula
       window.show()
       sys.exit(app.exec_())
     EOS
-    system "python", "test.py"
+
+    pythons.each do |python, version|
+      ENV.prepend_path "PYTHONPATH", HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
+      system python, "test.py"
+    end
   end
 end
 __END__
@@ -80,7 +115,7 @@ index a8e5dcd..a5f1474 100644
 @@ -1886,7 +1886,7 @@ def get_build_macros(overrides):
      if "QMAKESPEC" in list(os.environ.keys()):
          fname = os.environ["QMAKESPEC"]
- 
+
 -        if not os.path.dirname(fname):
 +        if not os.path.dirname(fname) or fname.startswith('unsupported'):
              qt_macx_spec = fname
@@ -98,3 +133,4 @@ index a8e5dcd..a5f1474 100644
      # Qt5 doesn't seem to support the specific macros so add them if they are
      # missing.
      if macros.get("INCDIR_QT", "") == "":
+
