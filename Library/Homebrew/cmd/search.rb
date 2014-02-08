@@ -104,9 +104,13 @@ module Homebrew extend self
     results = []
     GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
       user = user.downcase if user == "Homebrew" # special handling for the Homebrew organization
-      json["tree"].map{ |hash| hash['path'] }.compact.each do |file|
-        name = File.basename(file, '.rb')
-        if file =~ /\.rb$/ and name =~ rx
+      json["tree"].each do |object|
+        next unless object["type"] == "blob"
+
+        path = object["path"]
+        name = File.basename(path, ".rb")
+
+        if path.end_with?(".rb") && rx === name
           results << "#{user}/#{repo}/#{name}"
         end
       end
