@@ -47,7 +47,8 @@ class Pyqt < Formula
     end
 
     pythons.each do |python, version|
-      ENV.append_path 'PYTHONPATH', HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+      ENV.prepend_path "PYTHONPATH", "#{lib}/python#{version}/site-packages"
+      ENV.prepend_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
       args = ["--confirm-license",
               "--bindir=#{bin}",
               "--destdir=#{lib}/python#{version}/site-packages",
@@ -101,7 +102,8 @@ class Pyqt < Formula
     EOS
 
     pythons.each do |python, version|
-      ENV.append_path 'PYTHONPATH', HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+      ENV.prepend_path "PYTHONPATH", "#{lib}/python#{version}/site-packages"
+      ENV.prepend_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
       system python, "test.py"
     end
   end
