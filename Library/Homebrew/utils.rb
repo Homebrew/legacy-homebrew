@@ -261,7 +261,9 @@ module GitHub extend self
 
     default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
     default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
-    Kernel.open(url, default_headers.merge(headers), &block)
+    Kernel.open(url, default_headers.merge(headers)) do |f|
+      yield Utils::JSON.load(f.read)
+    end
   rescue OpenURI::HTTPError => e
     if e.io.meta['x-ratelimit-remaining'].to_i <= 0
       raise <<-EOS.undent
@@ -274,11 +276,13 @@ module GitHub extend self
     end
   rescue SocketError, OpenSSL::SSL::SSLError => e
     raise Error, "Failed to connect to: #{url}\n#{e.message}"
+  rescue Utils::JSON::Error => e
+    raise Error, "Failed to parse JSON response\n#{e.message}"
   end
 
   def issues_matching(query)
     uri = ISSUES_URI + uri_escape(query)
-    open(uri) { |f| Utils::JSON.load(f.read)['issues'] }
+    open(uri) { |json| json["issues"] }
   end
 
   def uri_escape(query)
