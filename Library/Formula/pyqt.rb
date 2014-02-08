@@ -53,6 +53,7 @@ class Pyqt < Formula
               "--bindir=#{bin}",
               "--destdir=#{lib}/python#{version}/site-packages",
               "--sipdir=#{HOMEBREW_PREFIX}/share/sip"]
+
       # We need to run "configure.py" so that pyqtconfig.py is generated, which
       # is needed by PyQWT (and many other PyQt interoperable implementations such
       # as the ROS GUI libs). This file is currently needed for generating build
@@ -63,6 +64,9 @@ class Pyqt < Formula
       inreplace "configure.py", "iteritems", "items" if python == "python3"
       system python, "configure.py", *args
       (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
+
+      # This option is only available in configure-ng.py
+      args << "--sip-incdir=#{Formula.factory('sip').opt_prefix}/include"
 
       # On Mavericks we want to target libc++, this requires a non default qt makespec
       if ENV.compiler == :clang and MacOS.version >= :mavericks
