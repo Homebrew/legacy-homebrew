@@ -15,12 +15,10 @@ class Pyqt < Formula
   depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
 
   if build.with? "python3"
-    option = "with-python3"
+    depends_on "sip" => "with-python3"
   else
-    option = ""
+    depends_on "sip"
   end
-
-  depends_on "sip" => option
 
   def pythons
     pythons = []
@@ -49,7 +47,7 @@ class Pyqt < Formula
     end
 
     pythons.each do |python, version|
-      ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
+      ENV.append "PYTHONPATH", "#{lib}/python#{version}/site-packages"
 
       args = ["--confirm-license",
               "--bindir=#{bin}",
@@ -66,9 +64,6 @@ class Pyqt < Formula
       inreplace "configure.py", "iteritems", "items" if python == "python3"
       system python, "configure.py", *args
       (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
-
-      # This option is only available in configure-ng.py
-      args << "--sip-incdir=#{Formula.factory('sip').opt_prefix}/include"
 
       # On Mavericks we want to target libc++, this requires a non default qt makespec
       if ENV.compiler == :clang and MacOS.version >= :mavericks
