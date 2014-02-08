@@ -101,7 +101,7 @@ class Pyqt < Formula
     EOS
 
     pythons.each do |python, version|
-      ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
+      ENV.append_path 'PYTHONPATH', HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
       system python, "test.py"
     end
   end
