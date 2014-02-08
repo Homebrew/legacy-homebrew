@@ -12,39 +12,18 @@ class Ghc < Formula
     sha1 '1569f19cdad2675cbff328c0e259d6b8573e9d11' => :lion
   end
 
+  env :std
+
+  # http://hackage.haskell.org/trac/ghc/ticket/6009
+  depends_on :macos => :snow_leopard
+  depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
+
+  option '32-bit'
   option 'tests', 'Verify the build using the testsuite.'
 
-  devel do
-    # http://www.haskell.org/ghc/dist/7.8.1-rc1/README.osx.html
-    # This block should largely translate over for 7.8.1 when GM.
-    url 'http://www.haskell.org/ghc/dist/7.8.1-rc1/ghc-7.8.20140130-src.tar.bz2'
-    sha1 'b9c4d76ff71225fe58bdc4e53d7c659643463b5a'
-
-    # Upstream documentation says lion, but brew test-bot 10.7 fails.
-    depends_on :macos => :mountain_lion
-
-    resource 'binary' do
-      url 'http://www.haskell.org/ghc/dist/7.8.1-rc1/ghc-7.8.20140130-x86_64-apple-darwin-lion.tar.bz2'
-      sha1 '9026d889b160fbf56f97ec1e91576a20e5eec725'
-    end
-
-    resource 'testsuite' do
-      url 'http://www.haskell.org/ghc/dist/7.8.1-rc1/ghc-7.8.20140130-testsuite.tar.bz2'
-      sha1 '17b1d486c1111633bcfa940b9bf940194cf09bc9'
-    end
-  end
-
-  unless build.devel?
-    env :std
-
-    # http://hackage.haskell.org/trac/ghc/ticket/6009
-    depends_on :macos => :snow_leopard
-    depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
-
-    option '32-bit'
-
-    # build is not available in the resource's context, so exploit the closure.
-    build_32_bit = build.build_32_bit?
+  # build is not available in the resource's context, so exploit the closure.
+  build_32_bit = build.build_32_bit?
+  stable do
     resource 'binary' do
       if Hardware.is_64_bit? and not build_32_bit
         url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
@@ -59,18 +38,41 @@ class Ghc < Formula
       url 'https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz'
       sha1 '6a1973ae3cccdb2f720606032ae84ffee8680ca1'
     end
+  end
 
-    fails_with :clang do
-      cause <<-EOS.undent
-        Building with Clang configures GHC to use Clang as its preprocessor,
-        which causes subsequent GHC-based builds to fail.
-        EOS
+  devel do
+    # http://www.haskell.org/ghc/dist/7.8.1-rc1/README.osx.html
+    # This block should largely translate over for 7.8.1 when GM.
+    url 'http://www.haskell.org/ghc/dist/7.8.1-rc1/ghc-7.8.20140130-src.tar.bz2'
+    sha1 'b9c4d76ff71225fe58bdc4e53d7c659643463b5a'
+    version '7.8-rc1'
+
+    resource 'binary' do
+      if Hardware.is_64_bit? and not build_32_bit
+        url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-x86_64-apple-darwin.tar.bz2'
+        sha1 'fb9f18197852181a9472221e1944081985b75992'
+      else
+        url 'http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-i386-apple-darwin.tar.bz2'
+        sha1 'fb9f18197852181a9472221e1944081985b75992'
+      end
     end
 
-    def patches
-      # Fixes 7.6.3 compilation on 10.9
-      DATA if MacOS.version >= :mavericks
+    resource 'testsuite' do
+      url 'http://www.haskell.org/ghc/dist/7.8.1-rc1/ghc-7.8.20140130-testsuite.tar.bz2'
+      sha1 '17b1d486c1111633bcfa940b9bf940194cf09bc9'
     end
+  end
+
+  fails_with :clang do
+    cause <<-EOS.undent
+      Building with Clang configures GHC to use Clang as its preprocessor,
+      which causes subsequent GHC-based builds to fail.
+    EOS
+  end
+
+  def patches
+    # Fixes 7.6.3 compilation on 10.9
+    DATA if build.stable? && MacOS.version >= :mavericks
   end
 
   def install
@@ -107,6 +109,12 @@ class Ghc < Formula
       args << "--with-gcc=#{ENV.cc}"
 
       system "./configure", *args
+      if MacOS.version <= :lion
+        # __thread is not supported on Lion but configure enables it anyway.
+        File.open('mk/config.h', 'a') do |f|
+          f.write('#undef CC_SUPPORTS_TLS')
+        end
+      end
       system 'make'
       if build.include? 'tests'
         resource('testsuite').stage do
