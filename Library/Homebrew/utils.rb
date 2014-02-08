@@ -252,6 +252,7 @@ module GitHub extend self
   ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/Homebrew/homebrew/open/")
 
   Error = Class.new(StandardError)
+  RateLimitExceededError = Class.new(Error)
 
   def open url, headers={}, &block
     # This is a no-op if the user is opting out of using the GitHub API.
@@ -266,7 +267,7 @@ module GitHub extend self
     end
   rescue OpenURI::HTTPError => e
     if e.io.meta['x-ratelimit-remaining'].to_i <= 0
-      raise Error, <<-EOS.undent, e.backtrace
+      raise RateLimitExceededError, <<-EOS.undent, e.backtrace
         GitHub #{Utils::JSON.load(e.io.read)['message']}
         You may want to create an API token: https://github.com/settings/applications
         and then set HOMEBREW_GITHUB_API_TOKEN.
