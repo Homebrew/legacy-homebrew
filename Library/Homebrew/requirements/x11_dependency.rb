@@ -27,9 +27,7 @@ class X11Dependency < Requirement
   end
 
   def <=> other
-    unless other.is_a? X11Dependency
-      raise TypeError, "expected X11Dependency"
-    end
+    return nil unless X11Dependency === other
 
     if min_version.nil? && other.min_version.nil?
       0
