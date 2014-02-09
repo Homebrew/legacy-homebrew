@@ -11,4 +11,10 @@ class Psgrep < Formula
     bin.install "psgrep"
     man1.install "psgrep.1"
   end
+
+  test do
+    output = `#{bin}/psgrep #{Process.pid}`
+    assert output.include?($0)
+    assert_equal 0, $?.exitstatus
+  end
 end
