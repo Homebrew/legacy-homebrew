@@ -10,6 +10,7 @@ class Lynx < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--disable-echo",
+                          "--enable-default-colors",
                           "--with-zlib",
                           "--with-bzlib",
                           "--with-ssl=#{MacOS.sdk_path}/usr",
