@@ -21,6 +21,12 @@ class Qt5 < Formula
   homepage 'http://qt-project.org/'
   url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.1/single/qt-everywhere-opensource-src-5.2.1.tar.gz'
   sha1 '31a5cf175bb94dbde3b52780d3be802cbeb19d65'
+  bottle do
+    sha1 "242518522d1cfc33330586a189d005bd674244de" => :mavericks
+    sha1 "f7f6ff607fe69ae4c215167235f3f851717a6584" => :mountain_lion
+    sha1 "53697eeaca97521ed681460c91a046be8969ab26" => :lion
+  end
+
   head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
     :using => Qt5HeadDownloadStrategy
 
