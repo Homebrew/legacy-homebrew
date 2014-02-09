@@ -33,10 +33,10 @@ class X11Dependency < Requirement
       0
     elsif other.min_version.nil?
       1
-    elsif @min_version.nil?
+    elsif min_version.nil?
       -1
     else
-      @min_version <=> other.min_version
+      min_version <=> other.min_version
     end
   end
 
