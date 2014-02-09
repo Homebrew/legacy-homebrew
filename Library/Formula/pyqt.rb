@@ -48,7 +48,8 @@ class Pyqt < Formula
 
     python_path = ENV["PYTHONPATH"]
     pythons.each do |python, version|
-      ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+      ENV.prepend_path "PYTHONPATH", HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
+      ENV.prepend_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
 
       args = ["--confirm-license",
               "--bindir=#{bin}",
@@ -107,7 +108,8 @@ class Pyqt < Formula
 
     python_path = ENV["PYTHONPATH"]
     pythons.each do |python, version|
-      ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
+      ENV.prepend_path "PYTHONPATH", HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
+      ENV.prepend_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
       system python, "test.py"
       ENV["PYTHONPATH"] = python_path if pythons.length > 1
     end
