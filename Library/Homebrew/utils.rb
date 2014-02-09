@@ -253,6 +253,7 @@ module GitHub extend self
 
   Error = Class.new(StandardError)
   RateLimitExceededError = Class.new(Error)
+  HTTPNotFoundError = Class.new(Error)
 
   def open url, headers={}, &block
     # This is a no-op if the user is opting out of using the GitHub API.
@@ -276,6 +277,8 @@ module GitHub extend self
         You may want to create an API token: https://github.com/settings/applications
         and then set HOMEBREW_GITHUB_API_TOKEN.
         EOS
+    elsif e.io.status.first == "404"
+      raise HTTPNotFoundError, e.message, e.backtrace
     else
       raise Error, e.message, e.backtrace
     end
@@ -333,5 +336,10 @@ module GitHub extend self
     end
 
     prs.each {|i| yield "#{i["title"]} (#{i["pull_request"]["html_url"]})" }
+  end
+
+  def private_repo?(user, repo)
+    uri = URI.parse("https://api.github.com/repos/#{user}/#{repo}")
+    open(uri) { |json| json["private"] }
   end
 end
