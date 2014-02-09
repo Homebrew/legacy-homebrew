@@ -40,6 +40,7 @@ class Calc < Formula
 
     system "make"
     system "make install"
+    libexec.install "#{bin}/cscript"
   end
 
   test do
