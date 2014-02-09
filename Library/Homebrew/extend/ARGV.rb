@@ -111,7 +111,7 @@ module HomebrewArgvExtension
   end
 
   def build_head?
-    include? '--HEAD'
+    include?('--HEAD') || include?('--head')
   end
 
   def build_devel?
