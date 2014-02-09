@@ -26,7 +26,7 @@ class JohnJumbo < Formula
 
   def install
     ENV.deparallelize
-    arch = Hardware.is_64_bit? ? '64' : 'sse2'
+    arch = Hardware.prefer_64_bit? ? '64' : 'sse2'
     arch += '-opencl'
 
     cd 'src' do
