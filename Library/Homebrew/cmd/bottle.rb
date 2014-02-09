@@ -216,7 +216,7 @@ module Homebrew extend self
             odie 'Bottle block replacement failed!' unless string
           else
             update_or_add = 'update'
-            string = s.sub!(/(  (url|sha1|sha256|head|version) '\S*'\n+)+/m, '\0' + output + "\n")
+            string = s.sub!(/(  (url|sha1|sha256|head|version) ['"]\S*['"]\n+)+/m, '\0' + output + "\n")
             odie 'Bottle block addition failed!' unless string
           end
         end
