@@ -2,6 +2,8 @@ require 'testing_env'
 require 'version'
 
 class VersionTests < Test::Unit::TestCase
+  include VersionAssertions
+
   def test_accepts_objects_responding_to_to_str
     value = stub(:to_str => '0.1')
     assert_equal '0.1', Version.new(value).to_s
@@ -11,6 +13,18 @@ class VersionTests < Test::Unit::TestCase
     assert_raises(TypeError) { Version.new(1.1) }
     assert_raises(TypeError) { Version.new(1) }
     assert_raises(TypeError) { Version.new(:symbol) }
+  end
+
+  def test_tokens
+    assert_version_tokens %w{1 0 z23}, version('1.0z23')
+    assert_version_tokens %w{1 0 z23}, version('1.0.z23')
+    assert_version_tokens %w{1 0 z 23}, version('1.0.z.23')
+    assert_version_tokens %w{1 0 23 z}, version('1.0.23z')
+    assert_version_tokens %w{1 0 23 z}, version('1.0.23.z')
+  end
+
+  def test_openssl_style_tokenization
+    assert_version_tokens %w{1 0 1 f}, version('1.0.1f')
   end
 end
 

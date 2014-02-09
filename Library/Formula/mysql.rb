@@ -2,13 +2,13 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url 'http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.15.tar.gz'
-  sha1 '90b46f973930c27eb8586387de5dfbc2af04d3ed'
+  url 'http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.16.tar.gz'
+  sha1 '64a3b4058e2039d2b812d23c8793f74b4f168cc0'
 
   bottle do
-    sha1 '3d2f69c1c9449daf06a7785f1d4d11796bfa393c' => :mavericks
-    sha1 'c234513a06992981d626ed1008e35a4d5481eb72' => :mountain_lion
-    sha1 '404e5dac0c91dad178adb7d66a5d26d46a8e9fd2' => :lion
+    sha1 "d3a5e4520a7ca88bc78977d7d2276e7f35e4a456" => :mavericks
+    sha1 "edf5bde3e4c2e96a45231c1feee7b2cfd6cc1cba" => :mountain_lion
+    sha1 "5ac5f5db4ea3f00ed276c303523870afcecd68c2" => :lion
   end
 
   depends_on 'cmake' => :build
@@ -96,9 +96,6 @@ class Mysql < Formula
 
     system "cmake", *args
     system "make"
-    # Reported upstream:
-    # http://bugs.mysql.com/bug.php?id=69645
-    inreplace "scripts/mysql_config", / +-Wno[\w-]+/, ""
     system "make install"
 
     # Don't create databases inside of the prefix!
@@ -118,6 +115,7 @@ class Mysql < Formula
     ln_s "#{prefix}/support-files/mysql.server", bin
 
     # Move mysqlaccess to libexec
+    libexec.mkpath
     mv "#{bin}/mysqlaccess", libexec
     mv "#{bin}/mysqlaccess.conf", libexec
 

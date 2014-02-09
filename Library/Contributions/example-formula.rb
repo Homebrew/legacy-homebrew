@@ -299,6 +299,7 @@ class ExampleFormula < Formula
     info # == share+'info'
     lib # == prefix+'lib'
     libexec # == prefix+'libexec'
+    buildpath # The temporary directory where build occurs.
 
     man # share+'man'
     man1 # man+'man1'
@@ -325,7 +326,7 @@ class ExampleFormula < Formula
     # Sometime you will see that instead of `+` we build up a path with `/`
     # because it looks nicer (but you can't nest more than two `/`):
     (var/'foo').mkpath
-    # Copy `./example_code/simple/ones` to share/demos/examples
+    # Copy `./example_code/simple/ones` to share/demos
     (share/'demos').install "example_code/simple/ones"
     # Copy `./example_code/simple/ones` to share/demos/examples
     (share/'demos').install "example_code/simple/ones" => 'examples'

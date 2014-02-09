@@ -14,6 +14,26 @@ class Ant < Formula
   end
 
   test do
-    system "#{bin}/ant", "-version"
+    (testpath/'build.xml').write <<-EOS.undent
+      <project name="HomebrewTest" basedir=".">
+        <property name="src" location="src"/>
+        <property name="build" location="build"/>
+        <target name="init">
+          <mkdir dir="${build}"/>
+        </target>
+        <target name="compile" depends="init">
+          <javac srcdir="${src}" destdir="${build}"/>
+        </target>
+      </project>
+    EOS
+    (testpath/'src/main/java/org/homebrew/AntTest.java').write <<-EOS.undent
+      package org.homebrew;
+      public class AntTest {
+        public static void main(String[] args) {
+          System.out.println("Testing Ant with Homebrew!");
+        }
+      }
+    EOS
+    system "#{bin}/ant", "compile"
   end
 end

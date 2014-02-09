@@ -43,11 +43,24 @@ class Guile < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libreadline-prefix=#{Formula.factory('readline').prefix}"
+                          "--with-libreadline-prefix=#{Formula.factory('readline').prefix}",
+                          "--with-libgmp-prefix=#{Formula.factory('gmp').prefix}"
     system "make install"
 
     # A really messed up workaround required on OS X --mkhl
     lib.cd { Dir["*.dylib"].each {|p| ln_sf p, File.basename(p, ".dylib")+".so" }}
+  end
+
+  test do
+    hello = testpath/'hello.scm'
+    hello.write <<-EOS.undent
+    (display "Hello World")
+    (newline)
+    EOS
+
+    ENV['GUILE_AUTO_COMPILE'] = '0'
+
+    system bin/'guile', hello
   end
 end
 

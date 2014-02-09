@@ -2,9 +2,9 @@ require 'formula'
 
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-2.8.2.tar.gz'
-  mirror 'http://fossies.org/linux/misc/mercurial-2.8.2.tar.gz'
-  sha1 'a724217d66f4a3f0a8ade971aefa66523e7a2ea9'
+  url 'http://mercurial.selenic.com/release/mercurial-2.9.tar.gz'
+  mirror 'http://fossies.org/linux/misc/mercurial-2.9.tar.gz'
+  sha1 '9b7d8259434f6aae29f6eee3dd5665b516857cf3'
 
   head 'http://selenic.com/repo/hg', :using => :hg
 
@@ -15,7 +15,7 @@ class Mercurial < Formula
 
   def install
     ENV.minimal_optimization if MacOS.version <= :snow_leopard
-    if build.include? 'enable-doc'
+    if build.include? 'enable-docs'
       system "make", "doc", "PREFIX=#{prefix}"
       system "make", "install-doc", "PREFIX=#{prefix}"
     end

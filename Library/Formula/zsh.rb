@@ -2,14 +2,14 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'http://fossies.org/linux/misc/zsh-5.0.5.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.bz2'
   mirror 'http://www.zsh.org/pub/zsh-5.0.5.tar.bz2'
   sha1 '75426146bce45ee176d9d50b32f1ced78418ae16'
 
   depends_on 'gdbm'
   depends_on 'pcre'
 
-  option 'enable-etcdir', 'Enable the reading of Zsh rc files in /etc'
+  option 'disable-etcdir', 'Disable the reading of Zsh rc files in /etc'
 
   def install
     args = %W[
@@ -26,10 +26,10 @@ class Zsh < Formula
       --with-tcsetpgrp
     ]
 
-    if build.include? 'enable-etcdir'
-      args << '--enable-etcdir=/etc'
-    else
+    if build.include? 'disable-etcdir'
       args << '--disable-etcdir'
+    else
+      args << '--enable-etcdir=/etc'
     end
 
     system "./configure", *args
@@ -46,8 +46,6 @@ class Zsh < Formula
   end
 
   def caveats; <<-EOS.undent
-    To use this build of Zsh as your login shell, add it to /etc/shells.
-
     Add the following to your zshrc to access the online help:
       unalias run-help
       autoload run-help

@@ -2,15 +2,17 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.33.tar.gz'
-  sha1 'b82ef1f51eab692ea0422028ced210c65d192083'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.37.tar.gz'
+  sha1 'db3d21fdbb68403fc43a39de0ab485e8e0444922'
   head 'https://github.com/phusion/passenger.git'
 
+  depends_on 'pcre'
   depends_on :macos => :lion
 
   def install
     rake "apache2"
     rake "nginx"
+    rake "webhelper"
 
     necessary_files = Dir["configure", "Rakefile", "README.md", "CONTRIBUTORS",
       "CONTRIBUTING.md", "LICENSE", "INSTALL.md", "NEWS", "passenger.gemspec",
@@ -28,8 +30,8 @@ class Passenger < Formula
 
     # Ensure that the Phusion Passenger commands can always find their library
     # files.
-    locations_ini = `/usr/bin/ruby ./bin/passenger-config --make-locations-ini`
-    locations_ini.gsub!(/=#{Regexp.compile Dir.pwd}\//, "=#{libexec}/")
+    locations_ini = `/usr/bin/ruby ./bin/passenger-config --make-locations-ini --for-native-packaging-method=homebrew`
+    locations_ini.gsub!(/=#{Regexp.escape Dir.pwd}/, "=#{libexec}")
     (libexec/"lib/phusion_passenger/locations.ini").write(locations_ini)
     system "/usr/bin/ruby", "./dev/install_scripts_bootstrap_code.rb",
       "--ruby", libexec/"lib", *Dir[libexec/"bin/*"]

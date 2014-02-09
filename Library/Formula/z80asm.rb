@@ -13,6 +13,11 @@ class Z80asm < Formula
   end
 
   test do
-    system bin/'z80asm', '-V'
+    path = testpath/"a.asm"
+    path.write "call 1234h\n"
+
+    system bin/"z80asm", path
+    code = File.open(testpath/"a.bin", "rb") { |f| f.read.unpack("C*") }
+    assert_equal [0xcd, 0x34, 0x12], code
   end
 end

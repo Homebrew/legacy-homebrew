@@ -2,24 +2,33 @@ require 'formula'
 
 class Global < Formula
   homepage 'http://www.gnu.org/software/global/'
-  url 'http://ftpmirror.gnu.org/global/global-6.2.9.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/global/global-6.2.9.tar.gz'
-  sha1 '036001a99da1ed9c8b7329df11929335375945b9'
+  url 'http://ftpmirror.gnu.org/global/global-6.2.10.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/global/global-6.2.10.tar.gz'
+  sha1 'aeaa31fec3ab693e75f659ff526c15da7c85c0f9'
+  head 'cvs://:pserver:anonymous:@cvs.savannah.gnu.org:/sources/global:global'
+
+  if build.head?
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
 
   option 'with-exuberant-ctags', 'Enable Exuberant Ctags as a plug-in parser'
 
-  if build.include? 'with-exuberant-ctags'
+  if build.with? 'exuberant-ctags'
     depends_on 'ctags'
     skip_clean 'lib/gtags/exuberant-ctags.la'
   end
 
   def install
+    system "sh", "reconf.sh" if build.head?
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
 
-    if build.include? 'with-exuberant-ctags'
+    if build.with? 'exuberant-ctags'
       args << "--with-exuberant-ctags=#{HOMEBREW_PREFIX}/bin/ctags"
     end
 

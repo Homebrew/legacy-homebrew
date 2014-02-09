@@ -18,4 +18,5 @@ TAP_MIGRATIONS = {
   'jsl' => 'homebrew/binary',
   'nlopt' => 'homebrew/science',
   'comparepdf' => 'homebrew/boneyard',
+  'colormake' => 'homebrew/headonly',
 }

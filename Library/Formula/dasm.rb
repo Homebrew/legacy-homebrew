@@ -9,4 +9,17 @@ class Dasm < Formula
     system "make"
     prefix.install 'bin', 'doc'
   end
+
+  test do
+    path = testpath/"a.asm"
+    path.write <<-EOS
+      processor 6502
+      org $c000
+      jmp $fce2
+    EOS
+
+    system bin/"dasm", path
+    code = File.open(testpath/"a.out", "rb") { |f| f.read.unpack("C*") }
+    assert_equal [0x00, 0xc0, 0x4c, 0xe2, 0xfc], code
+  end
 end

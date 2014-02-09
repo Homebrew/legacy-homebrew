@@ -5,11 +5,17 @@ class Irssi < Formula
   url 'http://irssi.org/files/irssi-0.8.15.tar.bz2'
   sha1 'b79ce8c2c98a76b004f63706e7868cd363000d89'
 
-  option "without-perl", "Build without perl support."
+  option "without-perl", "Build without perl support"
 
   depends_on :clt # See https://github.com/Homebrew/homebrew/issues/20952
   depends_on 'pkg-config' => :build
   depends_on 'glib'
+  depends_on 'openssl' => :optional
+
+  devel do
+    url 'http://irssi.org/files/irssi-0.8.16-rc1.tar.gz'
+    sha1 '40d560841d92ca3555e5dc5e2be922510cd348d5'
+  end
 
   # Fix Perl build flags and paths in man page
   def patches; DATA; end
@@ -20,7 +26,6 @@ class Irssi < Formula
       --sysconfdir=#{etc}
       --with-bot
       --with-proxy
-      --enable-ssl
       --enable-ipv6
       --with-socks
     ]
@@ -31,6 +36,8 @@ class Irssi < Formula
     else
       args << "--with-perl=no"
     end
+
+    args << "--enable-ssl" if build.with? "openssl"
 
     system "./configure", *args
 
@@ -50,7 +57,7 @@ __END__
 -		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null`
 +		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null | $SED -e 's/-arch [^ ]\{1,\}//g'`
  	fi
- 
+
  	if test "x$ac_cv_c_compiler_gnu" = "xyes" -a -z "`echo $host_os|grep 'bsd\|linux'`"; then
 @@ -27437,7 +27437,7 @@
  $as_echo "not found, building without Perl" >&6; }
@@ -58,7 +65,7 @@ __END__
  	else
 -		PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts 2>/dev/null`
 +		PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts 2>/dev/null | $SED -e 's/-arch [^ ]\{1,\}//g'`
- 
+
  		if test "x$DYNLIB_MODULES" = "xno" -a "$want_perl" != "static"; then
  						want_perl=static
 

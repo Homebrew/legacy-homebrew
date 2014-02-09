@@ -14,11 +14,16 @@ end
 
 class Saltstack < Formula
   homepage 'http://www.saltstack.org'
-  url 'https://pypi.python.org/packages/source/s/salt/salt-0.17.4.tar.gz'
-  sha1 '4433b8b7c9988d8805788b04d687cf09f78e2325'
+  url 'https://pypi.python.org/packages/source/s/salt/salt-0.17.5.tar.gz'
+  sha1 '7751eb59f3b52e7da541121cc4a543afd7f609f9'
 
-  head 'https://github.com/saltstack/salt.git', :branch => :develop,
+  head 'https://github.com/saltstack/salt.git', :branch => 'develop',
     :using => SaltHeadDownloadStrategy
+
+  devel do
+    url 'https://github.com/saltstack/salt/archive/v2014.1.0rc3.tar.gz'
+    sha1 '2c1bd6d9b26b66ef32b30af9ccae38733383efce'
+  end
 
   depends_on :python
   depends_on 'swig' => :build

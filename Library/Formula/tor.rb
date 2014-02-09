@@ -2,8 +2,8 @@ require 'formula'
 
 class Tor < Formula
   homepage 'https://www.torproject.org/'
-  url 'https://www.torproject.org/dist/tor-0.2.4.19.tar.gz'
-  sha1 'f0050921016d63c426f0c61dbaa8ced50a36474b'
+  url 'https://www.torproject.org/dist/tor-0.2.4.20.tar.gz'
+  sha1 '09ba4eda9a73c46852a277b721ed74c8263e8dba'
 
   devel do
     url 'https://www.torproject.org/dist/tor-0.2.5.1-alpha.tar.gz'

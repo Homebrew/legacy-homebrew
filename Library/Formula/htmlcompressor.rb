@@ -26,4 +26,17 @@ class Htmlcompressor < Formula
       ln_s "#{closure.opt_prefix}/libexec/build/compiler.jar", "#{libexec}/compiler.jar"
     end
   end
+
+  test do
+    path = testpath/"index.xml"
+    path.write <<-EOS
+      <foo>
+        <bar /> <!-- -->
+      </foo>
+    EOS
+
+    output = `#{bin}/htmlcompressor #{path}`.strip
+    assert_equal "<foo><bar/></foo>", output
+    assert_equal 0, $?.exitstatus
+  end
 end
