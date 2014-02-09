@@ -75,6 +75,7 @@ class Qt5 < Formula
       args << "-I#{dbus_opt}/include/dbus-1.0"
       args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
+      args << "-dbus-linked"
     end
 
     if MacOS.prefer_64_bit? or build.universal?
