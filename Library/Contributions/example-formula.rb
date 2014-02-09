@@ -299,6 +299,7 @@ class ExampleFormula < Formula
     info # == share+'info'
     lib # == prefix+'lib'
     libexec # == prefix+'libexec'
+    buildpath # The temporary directory where build occurs.
 
     man # share+'man'
     man1 # man+'man1'
