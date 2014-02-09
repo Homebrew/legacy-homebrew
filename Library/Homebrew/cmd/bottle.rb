@@ -211,11 +211,11 @@ module Homebrew extend self
 
         inreplace f.path do |s|
           if s.include? 'bottle do'
-            update_or_add = 'add'
-            string = s.sub!(/  bottle do.+?end\n/m, output)
-            odie 'Bottle block replacement failed!' unless string
-          else
             update_or_add = 'update'
+            string = s.sub!(/  bottle do.+?end\n/m, output)
+            odie 'Bottle block update failed!' unless string
+          else
+            update_or_add = 'add'
             string = s.sub!(/(  (url|sha1|sha256|head|version) ['"]\S*['"]\n+)+/m, '\0' + output + "\n")
             odie 'Bottle block addition failed!' unless string
           end
