@@ -29,14 +29,16 @@ class JohnJumbo < Formula
     arch = Hardware.prefer_64_bit? ? '64' : 'sse2'
     arch += '-opencl'
 
+    target = "macosx-x86-#{arch}"
+
     cd 'src' do
       inreplace 'Makefile' do |s|
         s.change_make_var! "CC", ENV.cc
-        if MacOS.version != :leopard && ENV.compiler != :clang
+        if MacOS.version > :leopard && ENV.compiler != :clang
           s.change_make_var! "OMPFLAGS", "-fopenmp -msse2 -D_FORTIFY_SOURCE=0"
         end
       end
-      system "make", "clean", "macosx-x86-#{arch}"
+      system "make", "clean", target
     end
 
     # Remove the README symlink and install the real file
