@@ -19,17 +19,10 @@ end
 
 class Qt5 < Formula
   homepage 'http://qt-project.org/'
-  url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.0/single/qt-everywhere-opensource-src-5.2.0.tar.gz'
-  sha1 'd0374c769a29886ee61f08a6386b9af39e861232'
+  url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.1/single/qt-everywhere-opensource-src-5.2.1.tar.gz'
+  sha1 '31a5cf175bb94dbde3b52780d3be802cbeb19d65'
   head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
     :using => Qt5HeadDownloadStrategy
-
-  bottle do
-    revision 3
-    sha1 'dc89426ad513d84d7df6869340070cd6b663906c' => :mavericks
-    sha1 '041ea93c80d04f5a43b77d69ce0d621df13cc389' => :mountain_lion
-    sha1 'c427063895302623a8e17248b523f722a9109dea' => :lion
-  end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
