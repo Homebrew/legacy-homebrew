@@ -9,7 +9,18 @@ class Points2grid < Formula
   depends_on 'boost'
 
   def install
+    libexec.install "example.las"
     system "cmake", ".", *std_cmake_args
     system "make install"
+  end
+
+  test do
+    mktemp do
+      system bin/"points2grid",
+             "-i", libexec/"example.las",
+             "-o", "example",
+             "--max", "--output_format", "grid"
+      assert_equal 5, %x(grep -c '423.820000' < example.max.grid).strip.to_i
+    end
   end
 end
