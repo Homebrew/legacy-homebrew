@@ -260,7 +260,11 @@ module GitHub extend self
 
     require 'net/https' # for exception classes below
 
-    default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
+    default_headers = {
+      "User-Agent" => HOMEBREW_USER_AGENT,
+      "Accept"     => "application/vnd.github.v3+json",
+    }
+
     default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
     Kernel.open(url, default_headers.merge(headers)) do |f|
       yield Utils::JSON.load(f.read)
