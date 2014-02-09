@@ -249,7 +249,7 @@ def paths
 end
 
 module GitHub extend self
-  ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/Homebrew/homebrew/open/")
+  ISSUES_URI = URI.parse("https://api.github.com/search/issues")
 
   Error = Class.new(StandardError)
   RateLimitExceededError = Class.new(Error)
@@ -282,8 +282,9 @@ module GitHub extend self
   end
 
   def issues_matching(query)
-    uri = ISSUES_URI + uri_escape(query)
-    open(uri) { |json| json["issues"] }
+    uri = ISSUES_URI.dup
+    uri.query = "q=#{uri_escape(query)}+repo:Homebrew/homebrew&per_page=100"
+    open(uri) { |json| json["items"] }
   end
 
   def uri_escape(query)
@@ -313,9 +314,10 @@ module GitHub extend self
     query = rx.source.delete('.*').gsub('\\', '')
 
     open_or_closed_prs = issues_matching(query).select do |issue|
-      rx === issue['title'] && issue.has_key?('pull_request_url')
+      rx === issue["title"] && issue["pull_request"]["html_url"]
     end
-    open_prs = open_or_closed_prs.select {|i| i['state'] != 'closed' }
+
+    open_prs = open_or_closed_prs.select {|i| i["state"] == "open" }
     if open_prs.any?
       puts "Open pull requests:"
       prs = open_prs
@@ -326,6 +328,6 @@ module GitHub extend self
       return
     end
 
-    prs.each {|i| yield "#{i['title']} (#{i['pull_request_url']})" }
+    prs.each {|i| yield "#{i["title"]} (#{i["pull_request"]["html_url"]})" }
   end
 end
