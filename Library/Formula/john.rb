@@ -18,13 +18,14 @@ class John < Formula
 
   def install
     ENV.deparallelize
-    arch = Hardware.is_64_bit? ? '64' : 'sse2'
+    arch = MacOS.prefer_64_bit? ? '64' : 'sse2'
+    target = "macosx-x86-#{arch}"
 
     cd 'src' do
       inreplace 'Makefile' do |s|
         s.change_make_var! "CC", ENV.cc
       end
-      system "make", "clean", "macosx-x86-#{arch}"
+      system "make", "clean", target
     end
 
     # Remove the README symlink and install the real file
