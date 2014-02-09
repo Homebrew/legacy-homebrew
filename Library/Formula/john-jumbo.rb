@@ -26,7 +26,7 @@ class JohnJumbo < Formula
 
   def install
     ENV.deparallelize
-    arch = Hardware.prefer_64_bit? ? '64' : 'sse2'
+    arch = MacOS.prefer_64_bit? ? '64' : 'sse2'
     arch += '-opencl'
 
     target = "macosx-x86-#{arch}"
