@@ -39,9 +39,8 @@ class Sqlite < Formula
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_RTREE" unless build.without? "rtree"
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if build.with? "fts"
 
-    # enable these options by default
+    # enable this option by default
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_COLUMN_METADATA"
-    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_STAT3"
 
     ENV.universal_binary if build.universal?
 
