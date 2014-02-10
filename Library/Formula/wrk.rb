@@ -11,8 +11,6 @@ class Wrk < Formula
   conflicts_with 'wrk-trello', :because => 'both install `wrk` binaries'
 
   def install
-    ENV.append 'LDFLAGS', "-L#{Formula.factory('openssl').opt_prefix}/lib"
-    ENV.append 'CPPFLAGS', "-I#{Formula.factory('openssl').opt_prefix}/include"
     ENV.j1
     system "make"
     bin.install "wrk"
