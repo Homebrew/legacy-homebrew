@@ -8,6 +8,8 @@ class Groonga < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
   depends_on 'msgpack'
+  depends_on "mecab" => :optional
+  depends_on "mecab-ipadic" if build.with? "mecab"
 
   depends_on 'glib' if build.include? 'enable-benchmark'
 
@@ -20,9 +22,8 @@ class Groonga < Formula
       --disable-zeromq
     ]
 
-    if build.include? 'enable-benchmark'
-      args << '--enable-benchmark'
-    end
+    args << "--enable-benchmark" if build.include? "enable-benchmark"
+    args << "--with-mecab" if build.with? "mecab"
 
     # ZeroMQ is an optional dependency that will be auto-detected unless we disable it
     system "./configure", *args
