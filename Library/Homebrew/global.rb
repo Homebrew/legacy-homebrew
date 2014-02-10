@@ -52,6 +52,7 @@ if not defined? HOMEBREW_BREW_FILE
 end
 
 HOMEBREW_PREFIX = Pathname.new(HOMEBREW_BREW_FILE).dirname.parent # Where we link under
+HOMEBREW_PREFIX = HOMEBREW_PREFIX.realpath if HOMEBREW_PREFIX.symlink?
 HOMEBREW_REPOSITORY = Pathname.new(HOMEBREW_BREW_FILE).realpath.dirname.parent # Where .git is found
 HOMEBREW_LIBRARY = HOMEBREW_REPOSITORY/"Library"
 HOMEBREW_CONTRIB = HOMEBREW_REPOSITORY/"Library/Contributions"
