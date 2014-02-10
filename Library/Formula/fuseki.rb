@@ -2,9 +2,9 @@ require 'formula'
 
 class Fuseki < Formula
   homepage 'http://jena.apache.org/documentation/serving_data/'
-  url "http://www.apache.org/dist/jena/binaries/jena-fuseki-1.0.0-distribution.tar.gz"
-  version "1.0.0"
-  sha1 '94349d9795a20cabb8b4f5887fc1b341b08cc271'
+  url 'http://www.apache.org/dist/jena/binaries/jena-fuseki-1.0.1-distribution.tar.gz'
+  version '1.0.1'
+  sha1 '556d3bbe0dbac67ea1335c1933576492ecc9213f'
 
   def install
     # Remove windows files
