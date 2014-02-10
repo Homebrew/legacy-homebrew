@@ -11,4 +11,12 @@ class Csvprintf < Formula
                           "--prefix=#{prefix}"
     system "make install"
   end
+
+  test do
+    IO.popen("#{bin}/csvprintf -i '%2$s %1$s\n'", "w+") do |pipe|
+      pipe.write "Last,First\nSmith,Fred\n"
+      pipe.close_write
+      assert_equal "Fred Smith\n", pipe.read
+    end
+  end
 end
