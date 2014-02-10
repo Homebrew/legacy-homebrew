@@ -17,20 +17,7 @@ class Fuseki < Formula
     inreplace 'fuseki-server' do |s|
       s.gsub! /export FUSEKI_HOME=.+/,
               %'export FUSEKI_HOME="#{libexec}"'
-      s.gsub! /^exec java\s+(.+)/,
-              "exec java -Dlog4j.configuration=file:#{etc/'fuseki.log4j.properties'} \\1"
     end
-
-    # Use file logging instead of STDOUT logging
-    inreplace 'log4j.properties' do |s|
-      s.gsub! /^log4j\.rootLogger=.+/,                  '### \0'
-      s.gsub! /^log4j\.appender\.stdlog.+/,             '### \0'
-      s.gsub! /^## (log4j\.rootLogger=.+)/,             '\1'
-      s.gsub! /^## (log4j\.appender\.FusekiFileLog.+)/, '\1'
-      s.gsub! /^log4j.appender.FusekiFileLog.File=.+/,
-              "log4j.appender.FusekiFileLog.File=#{(var/'log/fuseki/fuseki.log')}"
-    end
-    etc.install 'log4j.properties' => 'fuseki.log4j.properties'
 
     # Install and symlink wrapper binaries into place
     libexec.install 'fuseki-server'
@@ -68,9 +55,9 @@ class Fuseki < Formula
       uses traditional Unix paths: please inspect the settings here first:
       #{etc}/fuseki.ttl
 
-      NOTE: Currently the logging configuration file will be overwritten
-            if you re-install or upgrade Fuseki. This file is located here:
-            #{etc}/'fuseki.log4j.properties'
+    * NOTE: Fuseki uses 1) log4j.configuration if defined, 2) 'log4j.properties' file if exists,
+      or built-in configuration. See also:
+      https://issues.apache.org/jira/browse/JENA-536
     EOS
   end
 
