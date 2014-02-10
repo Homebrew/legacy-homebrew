@@ -119,5 +119,7 @@ class Zookeeper < Formula
               /^dataDir=.*/, "dataDir=#{var}/run/zookeeper/data"
     cp 'conf/zoo_sample.cfg', 'conf/zoo.cfg'
     (etc/'zookeeper').install ['conf/zoo.cfg', 'conf/zoo_sample.cfg']
+
+    puts "\nZookeeper can be started with:\n    sudo zkServer start\n\n"
   end
 end
