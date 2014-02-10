@@ -75,6 +75,9 @@ class Qt5 < Formula
       args << "-I#{dbus_opt}/include/dbus-1.0"
       args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
+      # note - dbus-linked is required, otherwise, Qt will not find d-bus libraries
+      # if homebrew is installed in a non-standard dir
+      args << "-dbus-linked"
     end
 
     if MacOS.prefer_64_bit? or build.universal?
