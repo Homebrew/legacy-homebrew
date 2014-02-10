@@ -12,4 +12,13 @@ class Disktype < Formula
     bin.install "disktype"
     man1.install "disktype.1"
   end
+
+  test do
+    path = testpath/"foo"
+    path.write "1234"
+
+    output = `#{bin}/disktype #{path}`
+    assert output.include?("Regular file, size 4 bytes")
+    assert_equal 0, $?.exitstatus
+  end
 end
