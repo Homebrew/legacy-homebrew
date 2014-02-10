@@ -2,8 +2,8 @@ require 'formula'
 
 class Rebar < Formula
   homepage 'https://github.com/rebar/rebar'
-  url 'https://github.com/rebar/rebar/archive/2.1.0.zip'
-  sha1 '4137e2b8fb4fc9fb7fb0c75dc9fc8c908f8393b1'
+  url 'https://github.com/rebar/rebar/archive/2.2.0.zip'
+  sha1 '48e3b6e4293129b990c4e35dc0be5f822c66e08d'
 
   head "https://github.com/basho/rebar.git", :branch => "master"
 
