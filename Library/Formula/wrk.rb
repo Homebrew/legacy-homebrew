@@ -5,12 +5,12 @@ class Wrk < Formula
   url 'https://github.com/wg/wrk/archive/3.1.0.tar.gz'
   sha1 '3ddc1e591a846b92899a534abf4bc49d2c6cd98e'
   head 'https://github.com/wg/wrk.git'
-  
+
   depends_on 'openssl'
 
   conflicts_with 'wrk-trello', :because => 'both install `wrk` binaries'
 
-  def install    
+  def install
     ENV.append 'LDFLAGS', "-L#{Formula.factory('openssl').opt_prefix}/lib"
     ENV.append 'CPPFLAGS', "-I#{Formula.factory('openssl').opt_prefix}/include"
     ENV.j1
@@ -19,6 +19,6 @@ class Wrk < Formula
   end
 
   test do
-    system *%W{#{bin}/wrk -c 1 -t 1 https://github.com/}
+    system *%W{#{bin}/wrk -c 1 -t 1 http://www.github.com/}
   end
 end
