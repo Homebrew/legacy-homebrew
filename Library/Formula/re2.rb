@@ -9,7 +9,7 @@ class Re2 < Formula
 
   def install
     # https://code.google.com/p/re2/issues/detail?id=99
-    if MacOS.version < :mavericks
+    if ENV.compiler != :clang || MacOS.version < :mavericks
       inreplace 'libre2.symbols.darwin',
                 '__ZlsRNSt3__113basic_ostreamIcNS_11char_traitsIcEEEERKN3re211StringPieceE',
                 '__ZlsRSoRKN3re211StringPieceE'
