@@ -2,8 +2,8 @@ require 'formula'
 
 class SimpleTiles < Formula
   homepage 'http://propublica.github.io/simple-tiles/'
-  url 'https://github.com/propublica/simple-tiles/archive/v0.4.0.tar.gz'
-  sha1 '7ab95f5bd697ac00e8a5406e26007dc717734209'
+  url 'https://github.com/propublica/simple-tiles/archive/v0.4.1.tar.gz'
+  sha1 'fae2f115bf99e725f8fe38dc011718ec1364ed6f'
 
   head 'https://github.com/propublica/simple-tiles.git'
 
@@ -15,5 +15,9 @@ class SimpleTiles < Formula
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make install"
+  end
+
+  def test
+    system "make test"
   end
 end
