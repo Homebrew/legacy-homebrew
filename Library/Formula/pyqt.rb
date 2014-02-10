@@ -12,6 +12,13 @@ class Pyqt < Formula
    odie "pyqt: --with-python3 must be specified when using --without-python"
   end
 
+  if (!Formula.factory("python").installed?) && (build.with? "python") && (build.with? "python3")
+    odie "pyqt: You cannot use system Python and Python 3 simultaneously.
+       Use `--with-python3 --without-python` to install with just Python 3.
+       Use `brew install python && brew install pyqt --with-python3`
+       to install pyqt with brewed Python and Python 3."
+  end
+
   depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
 
   if build.with? "python3"
@@ -48,8 +55,7 @@ class Pyqt < Formula
 
     python_path = ENV["PYTHONPATH"]
     pythons.each do |python, version|
-      ENV.prepend_path "PYTHONPATH", HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
-      ENV.prepend_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+      ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
 
       args = ["--confirm-license",
               "--bindir=#{bin}",
@@ -108,8 +114,7 @@ class Pyqt < Formula
 
     python_path = ENV["PYTHONPATH"]
     pythons.each do |python, version|
-      ENV.prepend_path "PYTHONPATH", HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
-      ENV.prepend_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+      ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
       system python, "test.py"
       ENV["PYTHONPATH"] = python_path if pythons.length > 1
     end
