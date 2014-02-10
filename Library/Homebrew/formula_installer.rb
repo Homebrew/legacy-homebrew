@@ -706,7 +706,7 @@ end
 
 class Formula
   def keg_only_text
-    s = "This formula is keg-only, so it was not symlinked into #{HOMEBREW_PREFIX}."
+    s = "This formula is keg-only, which means it was not symlinked into #{HOMEBREW_PREFIX}."
     s << "\n\n#{keg_only_reason.to_s}"
     if lib.directory? or include.directory?
       s <<
