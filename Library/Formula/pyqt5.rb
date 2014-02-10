@@ -10,8 +10,14 @@ class Pyqt5 < Formula
   depends_on :python3 => :recommended
   depends_on :python => :optional
 
-  if (build.without? "python") && (build.without? "python3")
-    odie "pyqt: --with-python must be specified when using --without-python3"
+  if !Formula.factory("python").installed? && build.with?("python") &&
+     build.with?("python3")
+    odie <<-EOS.undent
+      pyqt5: You cannot use system Python 2 and Homebrew's Python 3 simultaneously.
+      Either `brew install python` or use `--without-python3`.
+    EOS
+  elsif build.without?("python3") && build.without?("python")
+    odie "pyqt5: --with-python3 must be specified when using --without-python"
   end
 
   depends_on 'qt5'
@@ -34,11 +40,10 @@ class Pyqt5 < Formula
 
   def install
     pythons.each do |python, version|
-      ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
       args = [ "--confirm-license",
                "--bindir=#{bin}",
                "--destdir=#{lib}/python#{version}/site-packages",
-               # To avoid conflicst with PyQt (for Qt4):
+               # To avoid conflicts with PyQt (for Qt4):
                "--sipdir=#{share}/sip/Qt5/",
                # sip.h could not be found automatically
                "--sip-incdir=#{Formula.factory('sip').opt_prefix}/include",
