@@ -119,7 +119,12 @@ class Zookeeper < Formula
               /^dataDir=.*/, "dataDir=#{var}/run/zookeeper/data"
     cp 'conf/zoo_sample.cfg', 'conf/zoo.cfg'
     (etc/'zookeeper').install ['conf/zoo.cfg', 'conf/zoo_sample.cfg']
+  end
 
-    puts "\nZookeeper can be started with:\n    sudo zkServer start\n\n"
+  def caveats; <<-EOS.undent
+    Zookeeper can be started with:
+
+        sudo zkServer start
+    EOS
   end
 end
