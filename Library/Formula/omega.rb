@@ -18,6 +18,8 @@ class Omega < Formula
 
   test do
     system "#{bin}/omindex", "--version"
+    system "#{bin}/omindex", "--db", "./test", "--url", "/", "#{share}/doc/xapian-omega" 
+    assert File.exist?("./test/flintlock")
   end
 
 end
