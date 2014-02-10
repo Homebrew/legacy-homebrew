@@ -16,4 +16,8 @@ class Omega < Formula
     system "make", "install"
   end
 
+  test do
+    system "#{bin}/omindex", "--version"
+  end
+
 end
