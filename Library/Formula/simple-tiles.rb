@@ -16,8 +16,4 @@ class SimpleTiles < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
-
-  def test
-    system "make test"
-  end
 end
