@@ -11,7 +11,9 @@ class Re2 < Formula
     # https://code.google.com/p/re2/issues/detail?id=99
     if ENV.compiler != :clang || MacOS.version < :mavericks
       inreplace 'libre2.symbols.darwin',
+                # operator<<(std::__1::basic_ostream<char, std::__1::char_traits<char> >&, re2::StringPiece const&)
                 '__ZlsRNSt3__113basic_ostreamIcNS_11char_traitsIcEEEERKN3re211StringPieceE',
+                # operator<<(std::ostream&, re2::StringPiece const&)
                 '__ZlsRSoRKN3re211StringPieceE'
     end
     system "make", "install", "prefix=#{prefix}"
