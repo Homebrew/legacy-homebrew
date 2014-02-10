@@ -15,10 +15,11 @@ class Sip < Formula
   end
 
   def pythons
-    pythons = {}
+    pythons = []
     ["python", "python3"].each do |python|
       next if build.without? python
-      pythons[python] = /\d\.\d/.match `#{python} --version 2>&1`
+      version = /\d\.\d/.match `#{python} --version 2>&1`
+      pythons << [python, version]
     end
     pythons
   end

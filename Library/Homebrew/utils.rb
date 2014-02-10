@@ -249,9 +249,11 @@ def paths
 end
 
 module GitHub extend self
-  ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/Homebrew/homebrew/open/")
+  ISSUES_URI = URI.parse("https://api.github.com/search/issues")
 
   Error = Class.new(StandardError)
+  RateLimitExceededError = Class.new(Error)
+  HTTPNotFoundError = Class.new(Error)
 
   def open url, headers={}, &block
     # This is a no-op if the user is opting out of using the GitHub API.
@@ -259,26 +261,37 @@ module GitHub extend self
 
     require 'net/https' # for exception classes below
 
-    default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
+    default_headers = {
+      "User-Agent" => HOMEBREW_USER_AGENT,
+      "Accept"     => "application/vnd.github.v3+json",
+    }
+
     default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
-    Kernel.open(url, default_headers.merge(headers), &block)
+    Kernel.open(url, default_headers.merge(headers)) do |f|
+      yield Utils::JSON.load(f.read)
+    end
   rescue OpenURI::HTTPError => e
     if e.io.meta['x-ratelimit-remaining'].to_i <= 0
-      raise <<-EOS.undent
+      raise RateLimitExceededError, <<-EOS.undent, e.backtrace
         GitHub #{Utils::JSON.load(e.io.read)['message']}
         You may want to create an API token: https://github.com/settings/applications
         and then set HOMEBREW_GITHUB_API_TOKEN.
         EOS
+    elsif e.io.status.first == "404"
+      raise HTTPNotFoundError, e.message, e.backtrace
     else
-      raise e
+      raise Error, e.message, e.backtrace
     end
   rescue SocketError, OpenSSL::SSL::SSLError => e
-    raise Error, "Failed to connect to: #{url}\n#{e.message}"
+    raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
+  rescue Utils::JSON::Error => e
+    raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
   end
 
   def issues_matching(query)
-    uri = ISSUES_URI + uri_escape(query)
-    open(uri) { |f| Utils::JSON.load(f.read)['issues'] }
+    uri = ISSUES_URI.dup
+    uri.query = "q=#{uri_escape(query)}+repo:Homebrew/homebrew&per_page=100"
+    open(uri) { |json| json["items"] }
   end
 
   def uri_escape(query)
@@ -308,9 +321,10 @@ module GitHub extend self
     query = rx.source.delete('.*').gsub('\\', '')
 
     open_or_closed_prs = issues_matching(query).select do |issue|
-      rx === issue['title'] && issue.has_key?('pull_request_url')
+      rx === issue["title"] && issue["pull_request"]["html_url"]
     end
-    open_prs = open_or_closed_prs.select {|i| i['state'] != 'closed' }
+
+    open_prs = open_or_closed_prs.select {|i| i["state"] == "open" }
     if open_prs.any?
       puts "Open pull requests:"
       prs = open_prs
@@ -321,6 +335,11 @@ module GitHub extend self
       return
     end
 
-    prs.each {|i| yield "#{i['title']} (#{i['pull_request_url']})" }
+    prs.each {|i| yield "#{i["title"]} (#{i["pull_request"]["html_url"]})" }
+  end
+
+  def private_repo?(user, repo)
+    uri = URI.parse("https://api.github.com/repos/#{user}/#{repo}")
+    open(uri) { |json| json["private"] }
   end
 end
