@@ -14,4 +14,12 @@ class Udis86 < Formula
     system "make"
     system "make install"
   end
+
+  test do
+    IO.popen("#{bin}/udcli -x", "w+") do |pipe|
+      pipe.write "cd 80"
+      pipe.close_write
+      assert pipe.read.include?("int 0x80")
+    end
+  end
 end
