@@ -1,13 +1,11 @@
-require 'utils/json'
+require "utils/json"
 
-GitHub.open "https://api.github.com/legacy/repos/search/homebrew" do |f|
-  Utils::JSON.load(f.read)["repositories"].each do |repo|
-    if repo['name'] =~ /^homebrew-(\S+)$/
-      puts tap = if repo['username'] == "Homebrew"
-        "homebrew/#{$1}"
-      else
-        repo['username']+"/"+$1
-      end
+GitHub.open("https://api.github.com/search/repositories?q=homebrew+sort:stars&per_page=100") do |json|
+  json["items"].each do |repo|
+    if repo["name"] =~ /^homebrew-(\S+)$/
+      user = repo["owner"]["login"]
+      user = user.downcase if user == "Homebrew"
+      puts "#{user}/#{$1}"
     end
   end
 end
