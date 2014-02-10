@@ -6,9 +6,10 @@ class Docker < Formula
   sha1 "1e9362dab2ac2ecb4a1f193a7e72d060000438c3"
 
   bottle do
-    sha1 "3ff7bceb60e918424e57a07d780d62a61443ae17" => :mavericks
-    sha1 "f27703485378e335e4bde8fa0321087aa94a52a3" => :mountain_lion
-    sha1 "3f054cc6e3f55cf3a14e466d19dde0adc2889dcf" => :lion
+    revision 1
+    sha1 "d2cdd9ed152a43cf1008a1025a9fefa5b9cb6ed3" => :mavericks
+    sha1 "809bc0bbceb5d8d690f8ac6230ebe2d4ffc5aa9c" => :mountain_lion
+    sha1 "cbef97454f2b063b0345d75c6642d09c9fdb2949" => :lion
   end
 
   def patches
