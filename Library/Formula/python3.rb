@@ -4,7 +4,7 @@ class Python3 < Formula
   homepage 'http://www.python.org/'
   url 'http://python.org/ftp/python/3.3.4/Python-3.3.4.tgz'
   sha1 '0561d2a24067c03ed2b29c58a12e126e86ccdc58'
-  VER='3.4'  # The <major>.<minor> is used so often.
+  VER='3.3'  # The <major>.<minor> is used so often.
 
   head 'http://hg.python.org/cpython', :using => :hg, :branch => VER
 
