@@ -10,7 +10,7 @@ class Cputhrottle < Formula
 
   def install
     system "make", "all"
-    bin.install('cputhrottle')
+    bin.install "cputhrottle"
   end
 
 end
