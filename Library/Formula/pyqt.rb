@@ -8,8 +8,14 @@ class Pyqt < Formula
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
-  if (build.without? "python3") && (build.without? "python")
-   odie "pyqt: --with-python3 must be specified when using --without-python"
+  if !Formula.factory("python").installed? && build.with?("python") &&
+     build.with?("python3")
+    odie <<-EOS.undent
+      pyqt: You cannot use system Python 2 and Homebrew's Python 3 simultaneously.
+      Either `brew install python` or use `--without-python3`.
+    EOS
+  elsif build.without?("python3") && build.without?("python")
+    odie "pyqt: --with-python3 must be specified when using --without-python"
   end
 
   depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
@@ -46,9 +52,8 @@ class Pyqt < Formula
       ENV.append "QMAKESPEC", "unsupported/macx-clang-libc++"
     end
 
-    python_path = ENV["PYTHONPATH"]
     pythons.each do |python, version|
-      ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+      ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
 
       args = ["--confirm-license",
               "--bindir=#{bin}",
@@ -74,10 +79,7 @@ class Pyqt < Formula
       system python, "./configure-ng.py", *args
       system "make"
       system "make", "install"
-      if pythons.length > 1
-        system "make", "clean"
-        ENV["PYTHONPATH"] = python_path
-      end
+      system "make", "clean" if pythons.length > 1
     end
   end
 
@@ -105,11 +107,11 @@ class Pyqt < Formula
       sys.exit(app.exec_())
     EOS
 
-    python_path = ENV["PYTHONPATH"]
     pythons.each do |python, version|
-      ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
+      unless Formula.factory(python).installed?
+        ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
+      end
       system python, "test.py"
-      ENV["PYTHONPATH"] = python_path if pythons.length > 1
     end
   end
 end

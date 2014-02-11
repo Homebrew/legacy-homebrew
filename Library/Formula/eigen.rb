@@ -4,6 +4,7 @@ class Eigen < Formula
   homepage 'http://eigen.tuxfamily.org/'
   url 'http://bitbucket.org/eigen/eigen/get/3.2.0.tar.bz2'
   sha1 '97de9df52c035dd260ccee6cf6ab09bb559fa441'
+  head 'https://bitbucket.org/eigen/eigen', :using => :hg
 
   depends_on 'cmake' => :build
 
