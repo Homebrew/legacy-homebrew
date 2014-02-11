@@ -39,6 +39,10 @@ class Zsh < Formula
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
+
+    if ENV['HOMEBREW_KEEP_INFO']
+      system "make install.info"
+    end
   end
 
   def test
