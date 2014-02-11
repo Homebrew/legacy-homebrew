@@ -11,8 +11,6 @@ class Encfs < Formula
   depends_on 'rlog'
   depends_on 'osxfuse'
 
-  conflicts_with 'fuse4x'
-
   # Following patch and changes in install section,
   # required for better compatibility with OSX, especially OSX 10.9.
   # Changes are already in usptream and planned to be included in next stable release 1.75.
