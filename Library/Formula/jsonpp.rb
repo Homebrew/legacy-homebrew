@@ -9,4 +9,17 @@ class Jsonpp < Formula
   def install
     bin.install 'jsonpp'
   end
+
+  test do
+    IO.popen("#{bin}/jsonpp", "w+") do |pipe|
+      pipe.puts '{"foo":"bar","baz":"qux"}'
+      pipe.close_write
+      assert_equal <<-EOS.undent, pipe.read
+        {
+          "foo": "bar",
+          "baz": "qux"
+        }
+      EOS
+    end
+  end
 end
