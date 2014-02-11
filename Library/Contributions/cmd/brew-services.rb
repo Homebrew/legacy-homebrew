@@ -94,7 +94,7 @@ module ServicesCli
     def bin; "brew services" end
 
     # Path to launchctl binary.
-    def launchctl; "/bin/launchctl" end
+    def launchctl; which("launchctl") end
 
     # Wohoo, we are root dude!
     def root?; Process.uid == 0 end
