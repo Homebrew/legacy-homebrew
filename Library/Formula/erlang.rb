@@ -37,6 +37,7 @@ class Erlang < Formula
   depends_on :libtool
   depends_on 'unixodbc' if MacOS.version >= :mavericks
   depends_on 'fop' => :optional # enables building PDF docs
+  depends_on 'wxmac' => ['disable-monolithic', :recommended]
 
   fails_with :llvm
 
@@ -65,6 +66,7 @@ class Erlang < Formula
       --enable-smp-support
     ]
 
+    args << "--enable-wx" if build.with? 'wxmac'
     args << "--with-dynamic-trace=dtrace" unless MacOS.version <= :leopard or not MacOS::CLT.installed?
 
     unless build.include? 'disable-hipe'
