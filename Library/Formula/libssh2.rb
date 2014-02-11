@@ -7,10 +7,12 @@ class Libssh2 < Formula
 
   depends_on 'openssl' => :recommended
 
-  system "./configure", "--prefix=#{prefix}",
-                        "--disable-debug",
-                        "--disable-dependency-tracking",
-                        "--with-libz",
-                        "--with-openssl"
-  system "make install"
+  def install
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--with-libz",
+                          "--with-openssl"
+    system "make install"
+  end
 end
