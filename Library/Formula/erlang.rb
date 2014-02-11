@@ -5,17 +5,10 @@ require 'formula'
 # elixir are compatible.
 class Erlang < Formula
   homepage 'http://www.erlang.org'
-  # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/archive/OTP_R16B03-1.tar.gz'
-  sha1 'b8f6ff90d9eb766984bb63bf553c3be72674d970'
+  url 'http://www.erlang.org/download/otp_src_R16B03-1.tar.gz'
+  sha1 'c2634ea0c078500f1c6a1369f4be59a6d14673e0'
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
-
-  bottle do
-    sha1 "8ddcb4731b804d517ea05eca4933f1f82bdcee6e" => :mavericks
-    sha1 "7b1ffcfae2cc6583fdf454398c8081f955a6e57a" => :mountain_lion
-    sha1 "eac0744faed837fd928e44f37458a7a0c4e44835" => :lion
-  end
 
   resource 'man' do
     url 'http://erlang.org/download/otp_doc_man_R16B03-1.tar.gz'
@@ -32,9 +25,11 @@ class Erlang < Formula
   option 'time', '`brew test --time` to include a time-consuming test'
   option 'no-docs', 'Do not install documentation'
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  if build.head?
+    depends_on :autoconf
+    depends_on :automake
+    depends_on :libtool
+  end
   depends_on 'unixodbc' if MacOS.version >= :mavericks
   depends_on 'fop' => :optional # enables building PDF docs
   depends_on 'wxmac' => ['disable-monolithic', :recommended]
@@ -53,7 +48,7 @@ class Erlang < Formula
     ENV.append "FOP", "#{HOMEBREW_PREFIX}/bin/fop" if build.with? 'fop'
 
     # Do this if building from a checkout to generate configure
-    system "./otp_build autoconf" if File.exist? "otp_build"
+    system "./otp_build autoconf" if build.head?
 
     args = %W[
       --disable-debug
