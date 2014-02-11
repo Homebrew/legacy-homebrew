@@ -46,4 +46,8 @@ class Dependencies
   def default
     build + required + recommended
   end
+
+  def runtime
+    required + recommended + optional
+  end
 end
