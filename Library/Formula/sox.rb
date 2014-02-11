@@ -14,6 +14,7 @@ class Sox < Formula
   depends_on 'libsndfile' => :optional
   depends_on 'libao' => :optional
   depends_on 'lame' => :optional
+  depends_on 'ffmpeg' => :optional
 
   conflicts_with 'play', :because => 'both install `play` binaries'
 
