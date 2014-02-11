@@ -6,8 +6,8 @@ class Mariadb < Formula
   sha1 '9b0c062c96edb07724ddf9b0235c7662065496a4'
 
   devel do
-    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.7/kvm-tarbake-jaunty-x86/mariadb-10.0.7.tar.gz'
-    sha1 '14d830cf322175a3fc772e3b265faca1246a7b07'
+    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.8/kvm-tarbake-jaunty-x86/mariadb-10.0.8.tar.gz'
+    sha1 '2b56a7d78b5cf063374f8d6cf03986020b0290c1'
   end
 
   depends_on 'cmake' => :build
@@ -34,7 +34,7 @@ class Mariadb < Formula
       [
         # Prevent name collision leading to compilation failure. See:
         # issue #24489, upstream: https://mariadb.atlassian.net/browse/MDEV-5314
-        'https://gist.github.com/makigumo/8199195/raw/ab0bc78fd0e839aafcf072505f017feba2b6f6fa/mariadb-10.0.7.mac.patch',
+        'https://gist.github.com/makigumo/8931768/raw/28ab86eb6d2fc0f400d0acc07d4b5773027ab9d2/mariadb-10.0.8.mac.patch',
       ]
     end
   end
