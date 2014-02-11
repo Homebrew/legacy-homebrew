@@ -27,6 +27,7 @@ class Graphviz < Formula
   depends_on 'pango' if build.include? 'with-pangocairo'
   depends_on 'swig' if build.include? 'with-bindings'
   depends_on 'gts' => :optional
+  depends_on "librsvg" => :optional
   depends_on :freetype if build.include? 'with-freetype' or MacOS::X11.installed?
   depends_on :x11 if build.include? 'with-x' or MacOS::X11.installed?
   depends_on :xcode if build.include? 'with-app'
@@ -53,6 +54,7 @@ class Graphviz < Formula
     args << "--without-pangocairo" unless build.include? 'with-pangocairo'
     args << "--without-freetype2" unless build.include? 'with-freetype' or MacOS::X11.installed?
     args << "--without-x" unless build.include? 'with-x' or MacOS::X11.installed?
+    args << "--without-rsvg" if build.without? "librsvg"
 
     system "./configure", *args
     system "make install"
