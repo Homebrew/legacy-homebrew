@@ -15,6 +15,6 @@ class FuseZip < Formula
   end
 
   test do
-    system "fuse-zip", "--help"
+    system bin/"fuse-zip", "--help"
   end
 end
