@@ -2,7 +2,7 @@ require 'formula'
 
 class Gd < Formula
   homepage 'http://libgd.bitbucket.org/'
-  url 'https://bitbucket.org/libgd/gd-libgd/downloads/libgd-2.1.0.tar.gz'
+  url 'http://fossies.org/linux/www/libgd-2.1.0.tar.gz'
   sha1 'a0f3053724403aef9e126f4aa5c662573e5836cd'
 
   head 'https://bitbucket.org/libgd/gd-libgd', :using => :hg
