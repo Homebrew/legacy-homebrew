@@ -15,4 +15,12 @@ class Zpaq < Formula
     include.install "libzpaq.h"
     bin.install "zpaq"
   end
+
+  test do
+    archive = testpath/'test.zpaq'
+    zpaq = bin/"zpaq"
+    system zpaq, "a", archive, "#{include}/libzpaq.h"
+    system zpaq, "t", archive
+    archive.read(4) == "7kSt"
+  end
 end
