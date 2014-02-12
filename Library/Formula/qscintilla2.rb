@@ -68,18 +68,6 @@ class Qscintilla2 < Formula
         system "make", "clean" if pythons.length > 1
       end
     end
-
-    # QtDesigner Plugin
-    cd "designer-Qt4Qt5" do
-      ENV.append_path "CPLUS_INCLUDE_PATH", "#{include}"
-      inreplace "designer.pro" do |s|
-        s.gsub! "$$[QT_INSTALL_LIBS]", lib
-        s.gsub! "$$[QT_INSTALL_PLUGINS]", "#{HOMEBREW_PREFIX}/Cellar/qt/4.8.5/plugins"
-      end
-      system "qmake", "designer.pro"
-      system "make"
-      system "make", "install"
-    end
   end
 
   test do
