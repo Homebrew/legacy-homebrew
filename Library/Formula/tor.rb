@@ -17,6 +17,12 @@ class Tor < Formula
   depends_on 'openssl' if build.with?('brewed-openssl') || MacOS.version < :snow_leopard
 
   def install
+    # Fix the path to the control cookie.
+    inreplace \
+      'contrib/tor-ctrl.sh',
+      'TOR_COOKIE="/var/lib/tor/data/control_auth_cookie"',
+      'TOR_COOKIE="$HOME/.tor/control_auth_cookie"'
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
@@ -26,6 +32,12 @@ class Tor < Formula
 
     system "./configure", *args
     system "make install"
+
+    bin.install "contrib/tor-ctrl.sh" => "tor-ctrl"
+  end
+
+  test do
+    system "tor", "--version"
   end
 
   def plist; <<-EOS.undent
@@ -50,3 +62,4 @@ class Tor < Formula
     EOS
   end
 end
+
