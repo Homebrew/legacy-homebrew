@@ -1,6 +1,5 @@
 #!/bin/sh
 BREW_FILE_DIRECTORY=$(dirname "$0")
-BREW_FILE_DIRECTORY=$(cd "$BREW_FILE_DIRECTORY" && pwd -P)
 
 BREW_FILENAME=$(basename "$0")
 export HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/$BREW_FILENAME"
@@ -9,7 +8,7 @@ BREW_SYMLINK=$(readlink $0)
 if [ -n "$BREW_SYMLINK" ]
 then
 	BREW_SYMLINK_DIRECTORY=$(dirname "$BREW_SYMLINK")
-	BREW_FILE_DIRECTORY=$(cd "$BREW_FILE_DIRECTORY" &&
+	BREW_FILE_DIRECTORY=$(cd "$BREW_FILE_DIRECTORY" && cd "$(pwd -P)" &&
 	                      cd "$BREW_SYMLINK_DIRECTORY" && pwd -P)
 fi
 

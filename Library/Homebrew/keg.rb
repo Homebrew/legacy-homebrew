@@ -41,7 +41,7 @@ class Keg < Pathname
       next unless dir.exist?
       dir.find do |src|
         next if src == self
-        dst = HOMEBREW_PREFIX + src.relative_path_from(self)
+        dst = HOMEBREW_PREFIX.realpath + src.relative_path_from(self)
         dst.extend(ObserverPathnameExtension)
 
         dirs << dst if dst.directory? && !dst.symlink?
@@ -187,7 +187,7 @@ class Keg < Pathname
   end
 
   def optlink
-    from = HOMEBREW_PREFIX/:opt/fname
+    from = HOMEBREW_PREFIX.realpath/:opt/fname
     if from.symlink?
       from.delete
     elsif from.directory?
@@ -247,7 +247,7 @@ class Keg < Pathname
     return unless root.exist?
     root.find do |src|
       next if src == root
-      dst = HOMEBREW_PREFIX+src.relative_path_from(self)
+      dst = HOMEBREW_PREFIX.realpath + src.relative_path_from(self)
       dst.extend ObserverPathnameExtension
 
       if src.file?

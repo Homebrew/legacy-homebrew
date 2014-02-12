@@ -253,7 +253,7 @@ class Pathname
   end
 
   def resolved_path
-    self.symlink? ? dirname+readlink : self
+    self.symlink? ? dirname.realpath+readlink : self
   end
 
   def resolved_path_exists?
@@ -262,7 +262,7 @@ class Pathname
     # The link target contains NUL bytes
     false
   else
-    (dirname+link).exist?
+    (dirname.realpath+link).exist?
   end
 
   # perhaps confusingly, this Pathname object becomes the symlink pointing to
