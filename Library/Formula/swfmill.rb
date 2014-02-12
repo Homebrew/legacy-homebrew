@@ -10,6 +10,13 @@ class Swfmill < Formula
   depends_on :libpng
 
   def install
+    # Use inreplace isntead of a patch due to newlines
+    # Reported usptream:
+    # https://github.com/djcsdy/swfmill/issues/32
+    inreplace "src/swft/swft_import_ttf.cpp",
+      "#include <freetype/tttables.h>",
+      "#include FT_TRUETYPE_TABLES_H"
+
     system "./configure", "--prefix=#{prefix}"
     # Has trouble linking against zlib unless we add it here - @adamv
     system "make", "LIBS=-lz", "install"
