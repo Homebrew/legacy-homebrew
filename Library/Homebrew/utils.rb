@@ -308,8 +308,6 @@ module GitHub extend self
     # formula in it. Which for stuff like objective-caml is unlikely. So we
     # really should search for aliases too.
 
-    name = f.name if Formula === name
-
     # don't include issues that just refer to the tool in their body
     issues_matching(name).select { |issue|
       issue["state"] == "open" && issue["title"].include?(name)
