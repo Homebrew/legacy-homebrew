@@ -19,13 +19,35 @@ class Pygobject3 < Formula
 
   depends_on 'libffi' => :optional
   depends_on 'glib'
-  depends_on :python
+  depends_on :python => :recommended
   depends_on :python3 => :optional
-  depends_on 'py2cairo'
+  depends_on 'py2cairo' if build.with? 'python'
   depends_on 'py3cairo' if build.with? 'python3'
   depends_on 'gobject-introspection'
 
   option :universal
+
+  if !Formula.factory("python").installed? && build.with?("python") &&
+    build.with?("python3")
+  odie <<-EOS.undent
+    gobject-introspection: You cannot use system Python 2 and Homebrew's Python 3
+    simultaneously.
+    Either `brew install python` or use `--without-python3`.
+  EOS
+  elsif build.without?("python3") && build.without?("python")
+    odie "gobject-introspection: --with-python3 must be specified when using --without-python"
+  end
+
+  def pythons
+    pythons = []
+    ["python", "python3"].each do |python|
+      next if build.without? python
+      version = /\d\.\d/.match `#{python} --version 2>&1`
+      pythons << [python, version]
+    end
+    pythons
+  end
+
 
   def patches
     "https://gist.github.com/krrk/6439665/raw/a527e14cd3a77c19b089f27bea884ce46c988f55/pygobject-fix-module.patch" if build.with? 'tests'
@@ -41,8 +63,27 @@ class Pygobject3 < Formula
       system "./autogen.sh"
     end
 
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make", "install"
-    system "make", "check" if build.with? 'tests'
+    pythons.each do |python, version|
+      ENV["PYTHON"] = "#{python}"
+      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+      system "make", "install"
+      system "make", "check" if build.with? 'tests'
+      system "make", "clean" if pythons.length > 1
+    end
+  end
+
+  test do
+    Pathname('test.py').write <<-EOS.undent
+      from gi.repository import Gtk
+      win = Gtk.Window()
+      win.connect("delete-event", Gtk.main_quit)
+      win.show_all()
+    EOS
+    pythons.each do |python, version|
+      unless Formula.factory(python).installed?
+        ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
+      end
+      system python, "test.py"
+    end
   end
 end
