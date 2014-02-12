@@ -8,13 +8,9 @@ module Homebrew extend self
 
     real_cellar = HOMEBREW_CELLAR.realpath
 
-    paths=%w[bin sbin lib].collect {|d| HOMEBREW_PREFIX+d}
-
-    paths.each do |path|
-      path.find do |path|
-        next unless path.symlink? && path.resolved_path_exists?
-        brew_links << Pathname.new(path.realpath)
-      end
+    (HOMEBREW_PREFIX/'opt').subdirs.each do |path|
+      next unless path.symlink? && path.resolved_path_exists?
+      brew_links << Pathname.new(path.realpath)
     end
 
     brew_links = brew_links.collect{|p|p.relative_path_from(real_cellar).to_s}.reject{|p|p.start_with?("../")}

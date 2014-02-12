@@ -2,8 +2,8 @@ require 'formula'
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.3.3/Python-3.3.3.tar.bz2'
-  sha1 '6ff7d34427cbf7bf875e6a456850231e488118ca'
+  url 'http://python.org/ftp/python/3.3.4/Python-3.3.4.tgz'
+  sha1 '0561d2a24067c03ed2b29c58a12e126e86ccdc58'
   VER='3.3'  # The <major>.<minor> is used so often.
 
   head 'http://hg.python.org/cpython', :using => :hg, :branch => VER
@@ -136,7 +136,8 @@ class Python3 < Formula
 
     # "python3" executable is forgotten for framework builds.
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
-    ln_s "#{bin}/python#{VER}", "#{bin}/python3" unless (bin/"python3").exist?
+    ln_sf "#{bin}/python#{VER}", "#{bin}/python3"
+    ln_sf "#{bin}/python#{VER}-config", "#{bin}/python3-config"
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
