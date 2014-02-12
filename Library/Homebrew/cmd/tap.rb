@@ -24,7 +24,10 @@ module Homebrew extend self
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
     return false if tapd.directory?
-    abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
+    # try ssh first then fall back to https to avoid 2 factor issues
+    unless system "git clone git@github.com:#{repouser}/homebrew-#{repo} #{tapd}"
+      abort system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
+    end
 
     files = []
     tapd.find_formula{ |file| files << tapd.basename.join(file) }
