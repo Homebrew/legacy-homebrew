@@ -308,11 +308,9 @@ module GitHub extend self
     issues_matching(name).select { |issue| issue["state"] == "open" }
   end
 
-  def find_pull_requests rx
+  def find_pull_requests query
     return if ENV['HOMEBREW_NO_GITHUB_API']
     puts "Searching pull requests..."
-
-    query = rx.source.delete('.*').gsub('\\', '')
 
     open_or_closed_prs = issues_matching(query).select do |issue|
       issue["pull_request"]["html_url"]
