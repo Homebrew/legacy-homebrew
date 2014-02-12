@@ -2,8 +2,9 @@ require 'formula'
 
 class Elasticsearch < Formula
   homepage 'http://www.elasticsearch.org'
-  url 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.11.tar.gz'
-  sha1 'af86b1165f7a40bd90c17cfd2f92f5ebf2a45d32'
+  url 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.0.0.tar.gz'
+  sha1 'f190f496502a6608373fca3e8faf65b13dbcc3cd'
+  version '1.0.0'
 
   head do
     url 'https://github.com/elasticsearch/elasticsearch.git'
@@ -83,7 +84,7 @@ class Elasticsearch < Formula
     EOS
   end
 
-  plist_options :manual => "elasticsearch -f -D es.config=#{HOMEBREW_PREFIX}/opt/elasticsearch/config/elasticsearch.yml"
+  plist_options :manual => "elasticsearch --config=#{HOMEBREW_PREFIX}/opt/elasticsearch/config/elasticsearch.yml"
 
   def plist; <<-EOS.undent
       <?xml version="1.0" encoding="UTF-8"?>
@@ -97,8 +98,7 @@ class Elasticsearch < Formula
           <key>ProgramArguments</key>
           <array>
             <string>#{HOMEBREW_PREFIX}/bin/elasticsearch</string>
-            <string>-f</string>
-            <string>-D es.config=#{prefix}/config/elasticsearch.yml</string>
+            <string>--config=#{prefix}/config/elasticsearch.yml</string>
           </array>
           <key>EnvironmentVariables</key>
           <dict>
