@@ -136,7 +136,8 @@ class Python3 < Formula
 
     # "python3" executable is forgotten for framework builds.
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
-    ln_s "#{bin}/python#{VER}", "#{bin}/python3" unless (bin/"python3").exist?
+    ln_sf "#{bin}/python#{VER}", "#{bin}/python3"
+    ln_sf "#{bin}/python#{VER}-config", "#{bin}/python3-config"
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
