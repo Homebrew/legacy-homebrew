@@ -340,24 +340,14 @@ class Formula
     ]
   end
 
-  # Install python bindings inside of a block given to this method and/or
-  # call python so: `system python, "setup.py", "install", "--prefix=#{prefix}"
-  # Note that there are no quotation marks around python!
-  # <https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python>
-  def python(options={:allowed_major_versions => [2, 3]}, &block)
-    require 'python_helper'
-    python_helper(options, &block)
+  # Deprecated
+  def python(options={}, &block)
+    opoo 'Formula#python is deprecated and will go away shortly.'
+    block.call if block_given?
+    PythonDependency.new
   end
-
-  # Explicitly only execute the block for 2.x (if a python 2.x is available)
-  def python2 &block
-    python(:allowed_major_versions => [2], &block)
-  end
-
-  # Explicitly only execute the block for 3.x (if a python 3.x is available)
-  def python3 &block
-    python(:allowed_major_versions => [3], &block)
-  end
+  alias_method :python2, :python
+  alias_method :python3, :python
 
   # Generates a formula's ruby class name from a formula's name
   def self.class_s name
@@ -451,7 +441,7 @@ class Formula
     if path.realpath.to_s =~ HOMEBREW_TAP_DIR_REGEX
       "#$1/#$2"
     elsif core_formula?
-      "mxcl/master"
+      "Homebrew/homebrew"
     else
       "path or URL"
     end
@@ -645,7 +635,7 @@ class Formula
         when :bzip2 then with_system_path { safe_system "bunzip2", p.compressed_filename }
       end
       # -f means don't prompt the user if there are errors; just exit with non-zero status
-      safe_system '/usr/bin/patch', '-f', *(p.patch_args)
+      safe_system '/usr/bin/patch', '-g', '0', '-f', *(p.patch_args)
     end
   end
 
@@ -766,10 +756,7 @@ class Formula
         return
       end
 
-      paths.each do |p|
-        p = p.to_s unless p == :la # Keep :la in paths as a symbol
-        skip_clean_paths << p
-      end
+      skip_clean_paths.merge(paths)
     end
 
     def skip_clean_all?
@@ -799,7 +786,7 @@ class Formula
     #   version "The official release number for the latest incompatible
     #            version, for instance 4.8.1"
     # end
-    # 
+    #
     # `major_version` should be the major release number only, for instance
     # '4.8' for the GCC 4.8 series (4.8.0, 4.8.1, etc.).
     # If `version` or the block is omitted, then the compiler will be
@@ -807,7 +794,7 @@ class Formula
     #
     # For example, if a bug is only triggered on GCC 4.8.1 but is not
     # encountered on 4.8.2:
-    # 
+    #
     # fails_with :gcc => '4.8' do
     #   version '4.8.1'
     # end

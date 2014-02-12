@@ -3,7 +3,7 @@ require 'formula'
 # This is a non-functional example formula to showcase all features and
 # therefore, its overly complex and dupes stuff just to comment on it.
 # You may want to use `brew create` to start your own new formula!
-# Documentation: https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
+# Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
 
 
 ## Naming -- Every Homebrew formula is a class of the type `Formula`.
@@ -73,7 +73,7 @@ class ExampleFormula < Formula
   # Bottles are pre-built and added by the Homebrew maintainers for you.
   # If you maintain your own repository, you can add your own bottle links.
   # Read in the wiki about how to provide bottles:
-  # <https://github.com/mxcl/homebrew/wiki/Bottles>
+  # <https://github.com/Homebrew/homebrew/wiki/Bottles>
   bottle do
     root_url 'http://mikemcquaid.com' # Optional root to calculate bottle URLs
     prefix '/opt/homebrew' # Optional HOMEBREW_PREFIX in which the bottles were built.
@@ -87,8 +87,7 @@ class ExampleFormula < Formula
 
   def pour_bottle?
     # Only needed if this formula has to check if using the pre-built
-    # bottle is fine. (For example boost bottled with system python breaks
-    # if the user has a brewed python)
+    # bottle is fine.
     true
   end
 
@@ -158,24 +157,13 @@ class ExampleFormula < Formula
   depends_on :postgresql if build.without? 'sqlite'
   depends_on :hg # Mercurial (external or brewed) is needed
 
-  # The formula needs python or needs certain Python modules that
-  # should be installed via pip?
   # If any Python >= 2.6 < 3.x is okay (either from OS X or brewed):
   depends_on :python
-  depends_on :python2 # this is a synonym
-  # Specify the minimum version, for example 2.6 is too old:
-  depends_on :python => "2.7"
-  # Any Python 2.x but with the modules 'numpy' and 'docutils' importable.
-  depends_on :python => ['numpy', 'docutils']
   # Python 3.x if the `--with-python3` is given to `brew install example`
   depends_on :python3 => :optional
-  # A python module with a different name on PyPi than on import:
-  depends_on :python2 => ['enchant' => 'pyenchant'] # 'import_name' => 'pip_install_name'
-  # All in one. The version - if specified - has to come first
-  depends_on :python => ['2.7.4', 'numpy', {'yaml' =>'PyYAML'}, 'twisted', :optional ]
 
   # Modules/Packages from other languages, such as :chicken, :jruby, :lua,
-  # :node, :ocaml, :perl, :rbx, :ruby, can be specified by
+  # :node, :ocaml, :perl, :python, :rbx, :ruby, can be specified by
   depends_on 'some_module' => :lua
 
   ## Conflicts
@@ -275,25 +263,6 @@ class ExampleFormula < Formula
                           "--prefix=#{prefix}",
                           *args # our custom arg list (needs `*` to unpack)
 
-    # Calling a setup.py as provided by (many) python based projects:
-    # The `python do ... end` block sets up PYTHONPATH, PYTHON and other
-    # vars so that distutils are happy to install into the Cellar. This
-    # allows brewed python modules to be un/installed and updated properly.
-    # https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
-    python do
-      # If you `depend_on :python` and `depend_on :python3`, this block
-      # will be run twice - for each Python version one pass!
-      # `python` points to the corresponding Python binary (e.g. `python3`)
-      system python, "setup.py", "install", "--prefix=#{prefix}"
-
-      # Sometimes, for old setup.py files, you'll get a warning that
-      # your formula cannot be linked because easy-install.pth would be
-      # overwritten. In this case, please add these two flags:
-      system python, "setup.py", "install", "--prefix=#{prefix}",
-                                            "--single-version-externally-managed",
-                                            "--record=installed.txt"
-    end
-
     # If your formula's build system is not thread safe:
     ENV.deparallelize
 
@@ -330,6 +299,7 @@ class ExampleFormula < Formula
     info # == share+'info'
     lib # == prefix+'lib'
     libexec # == prefix+'libexec'
+    buildpath # The temporary directory where build occurs.
 
     man # share+'man'
     man1 # man+'man1'
@@ -356,7 +326,7 @@ class ExampleFormula < Formula
     # Sometime you will see that instead of `+` we build up a path with `/`
     # because it looks nicer (but you can't nest more than two `/`):
     (var/'foo').mkpath
-    # Copy `./example_code/simple/ones` to share/demos/examples
+    # Copy `./example_code/simple/ones` to share/demos
     (share/'demos').install "example_code/simple/ones"
     # Copy `./example_code/simple/ones` to share/demos/examples
     (share/'demos').install "example_code/simple/ones" => 'examples'
@@ -384,7 +354,6 @@ class ExampleFormula < Formula
       called or when brewing a formula.
       This is optional. You can use all the vars like #{version} here.
     EOS
-    s += python.standard_caveats if python
     s += "Some issue only on older systems" if MacOS.version < :mountain_lion
     s
   end
@@ -428,7 +397,7 @@ end
 
 class AdditionalStuff < Formula
   # Often, a second formula is used to download some resource
-  # NOTE: This is going to change when https://github.com/mxcl/homebrew/pull/21714 happens.
+  # NOTE: This is going to change when https://github.com/Homebrew/homebrew/pull/21714 happens.
   url 'https://example.com/additional-stuff.tar.gz'
   sha1 'deadbeef7890123456789012345678901234567890'
 end
@@ -436,7 +405,7 @@ end
 __END__
 # Room for a patch after the `__END__`
 # Read in the wiki about how to get a patch in here:
-#    https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
+#    https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
 # In short, `brew install --interactive --git <formula>` and make your edits.
 # Then `git diff >> path/to/your/formula.rb`
 # Note, that HOMEBREW_PREFIX will be replaced in the path before it is

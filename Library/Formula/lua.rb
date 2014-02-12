@@ -17,7 +17,7 @@ class Lua < Formula
   option 'without-sigaction', 'Revert to ANSI signal instead of improved POSIX sigaction'
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
-  # See: https://github.com/mxcl/homebrew/pull/5043
+  # See: https://github.com/Homebrew/homebrew/pull/5043
   def patches
     p = [DATA]
     # sigaction provided by posix signalling power patch from
@@ -61,6 +61,12 @@ class Lua < Formula
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
 
     (lib+"pkgconfig").install 'etc/lua.pc'
+  end
+
+  test do
+    output = `#{bin}/lua -e "for i=0,9 do io.write(i) end"`
+    assert_equal "0123456789", output
+    assert_equal 0, $?.exitstatus
   end
 end
 

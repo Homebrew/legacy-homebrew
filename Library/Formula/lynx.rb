@@ -10,10 +10,15 @@ class Lynx < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--disable-echo",
+                          "--enable-default-colors",
                           "--with-zlib",
                           "--with-bzlib",
                           "--with-ssl=#{MacOS.sdk_path}/usr",
                           "--enable-ipv6"
     system "make install"
+  end
+
+  test do
+    system "#{bin}/lynx", '-dump', 'http://checkip.dyndns.org'
   end
 end

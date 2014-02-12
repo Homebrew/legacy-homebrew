@@ -61,10 +61,7 @@ module Homebrew extend self
       migration = TAP_MIGRATIONS[f]
       next unless migration
       tap_user, tap_repo = migration.split '/'
-      begin
-        install_tap tap_user, tap_repo
-      rescue AlreadyTappedError => e
-      end
+      install_tap tap_user, tap_repo
     end if load_tap_migrations
 
     if report.empty?
@@ -81,9 +78,14 @@ module Homebrew extend self
     if Dir['.git/*'].empty?
       safe_system "git init"
       safe_system "git config core.autocrlf false"
-      safe_system "git remote add origin https://github.com/mxcl/homebrew.git"
+      safe_system "git remote add origin https://github.com/Homebrew/homebrew.git"
       safe_system "git fetch origin"
       safe_system "git reset --hard origin/master"
+    end
+
+    if `git remote show origin -n` =~ /Fetch URL: \S+mxcl\/homebrew/
+      safe_system "git remote set-url origin https://github.com/Homebrew/homebrew.git"
+      safe_system "git remote set-url --delete origin .*mxcl\/homebrew.*"
     end
   rescue Exception
     FileUtils.rm_rf ".git"

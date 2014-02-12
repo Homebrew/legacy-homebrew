@@ -1,4 +1,4 @@
-# See: http://github.com/mxcl/homebrew/issues/issue/1359
+# See: http://github.com/Homebrew/homebrew/issues/issue/1359
 
 require 'keg'
 

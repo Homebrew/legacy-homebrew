@@ -1,7 +1,7 @@
 require 'formula'
 
 # Upstream project has requested we use a mirror as the main URL
-# https://github.com/mxcl/homebrew/pull/21419
+# https://github.com/Homebrew/homebrew/pull/21419
 class Xz < Formula
   homepage 'http://tukaani.org/xz/'
   url 'http://fossies.org/linux/misc/xz-5.0.5.tar.gz'

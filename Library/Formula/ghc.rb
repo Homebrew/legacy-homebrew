@@ -12,43 +12,65 @@ class Ghc < Formula
     sha1 '1569f19cdad2675cbff328c0e259d6b8573e9d11' => :lion
   end
 
-  env :std
+  option 'tests', 'Verify the build using the testsuite.'
 
-  # http://hackage.haskell.org/trac/ghc/ticket/6009
-  depends_on :macos => :snow_leopard
+  devel do
+    # http://www.haskell.org/ghc/dist/7.8.1-rc1/README.osx.html
+    # This block should largely translate over for 7.8.1 when GM.
+    url 'http://www.haskell.org/ghc/dist/7.8.1-rc1/ghc-7.8.20140130-src.tar.bz2'
+    sha1 'b9c4d76ff71225fe58bdc4e53d7c659643463b5a'
 
-  depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
+    # Upstream documentation says lion, but brew test-bot 10.7 fails.
+    depends_on :macos => :mountain_lion
 
-  option '32-bit'
-  option 'tests', 'Verify the build using the testsuite in Fast Mode, 5 min'
+    resource 'binary' do
+      url 'http://www.haskell.org/ghc/dist/7.8.1-rc1/ghc-7.8.20140130-x86_64-apple-darwin-lion.tar.bz2'
+      sha1 '9026d889b160fbf56f97ec1e91576a20e5eec725'
+    end
 
-  # build is not available in the resource's context, so exploit the closure.
-  build_32_bit = build.build_32_bit?
-  resource 'binary' do
-    if Hardware.is_64_bit? and not build_32_bit
-      url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
-      sha1 '7c655701672f4b223980c3a1068a59b9fbd08825'
-    else
-      url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2'
-      sha1 '60f749893332d7c22bb4905004a67510992d8ef6'
+    resource 'testsuite' do
+      url 'http://www.haskell.org/ghc/dist/7.8.1-rc1/ghc-7.8.20140130-testsuite.tar.bz2'
+      sha1 '17b1d486c1111633bcfa940b9bf940194cf09bc9'
     end
   end
 
-  resource 'testsuite' do
-    url 'https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz'
-    sha1 '6a1973ae3cccdb2f720606032ae84ffee8680ca1'
-  end
+  unless build.devel?
+    env :std
 
-  fails_with :clang do
-    cause <<-EOS.undent
-      Building with Clang configures GHC to use Clang as its preprocessor,
-      which causes subsequent GHC-based builds to fail.
-      EOS
-  end
+    # http://hackage.haskell.org/trac/ghc/ticket/6009
+    depends_on :macos => :snow_leopard
+    depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
 
-  def patches
-    # Fixes 7.6.3 compilation on 10.9
-    DATA if MacOS.version >= :mavericks
+    option '32-bit'
+
+    # build is not available in the resource's context, so exploit the closure.
+    build_32_bit = build.build_32_bit?
+    resource 'binary' do
+      if Hardware.is_64_bit? and not build_32_bit
+        url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2'
+        sha1 '7c655701672f4b223980c3a1068a59b9fbd08825'
+      else
+        url 'http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2'
+        sha1 '60f749893332d7c22bb4905004a67510992d8ef6'
+      end
+    end
+
+    resource 'testsuite' do
+      url 'https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz'
+      sha1 '6a1973ae3cccdb2f720606032ae84ffee8680ca1'
+    end
+
+    fails_with :clang do
+      cause <<-EOS.undent
+        Building with Clang configures GHC to use Clang as its preprocessor,
+        which causes subsequent GHC-based builds to fail.
+        EOS
+    end
+
+    def patches
+      # Fixes 7.6.3 compilation on 10.9
+      DATA if MacOS.version >= :mavericks
+    end
   end
 
   def install
@@ -70,7 +92,7 @@ class Ghc < Formula
 
     cd 'Ghcsource' do
       # Fix an assertion when linking ghc with llvm-gcc
-      # https://github.com/mxcl/homebrew/issues/13650
+      # https://github.com/Homebrew/homebrew/issues/13650
       ENV['LD'] = 'ld'
 
       if Hardware.is_64_bit? and not build.build_32_bit?

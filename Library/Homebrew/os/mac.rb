@@ -99,11 +99,12 @@ module OS
 
     def default_cc
       cc = locate 'cc'
-      Pathname.new(cc).realpath.basename.to_s rescue nil
+      cc.realpath.basename.to_s rescue nil
     end
 
     def default_compiler
       case default_cc
+        when /^gcc-4.0/ then :gcc_4_0
         when /^gcc/ then :gcc
         when /^llvm/ then :llvm
         when "clang" then :clang
@@ -180,9 +181,9 @@ module OS
     end
 
     # See these issues for some history:
-    # http://github.com/mxcl/homebrew/issues/#issue/13
-    # http://github.com/mxcl/homebrew/issues/#issue/41
-    # http://github.com/mxcl/homebrew/issues/#issue/48
+    # http://github.com/Homebrew/homebrew/issues/13
+    # http://github.com/Homebrew/homebrew/issues/41
+    # http://github.com/Homebrew/homebrew/issues/48
     def macports_or_fink
       paths = []
 
@@ -259,7 +260,9 @@ module OS
         Homebrew doesn't know what compiler versions ship with your version
         of Xcode (#{Xcode.version}). Please `brew update` and if that doesn't help, file
         an issue with the output of `brew --config`:
-          https://github.com/mxcl/homebrew/issues
+          https://github.com/Homebrew/homebrew/issues
+
+        Note that we only track stable, released versions of Xcode.
 
         Thanks!
       EOS

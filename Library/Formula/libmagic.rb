@@ -2,9 +2,9 @@ require 'formula'
 
 class Libmagic < Formula
   homepage 'http://www.darwinsys.com/file/'
-  url 'ftp://ftp.astron.com/pub/file/file-5.15.tar.gz'
-  mirror 'http://fossies.org/unix/misc/file-5.15.tar.gz'
-  sha1 'de1a060aa5fe61c1a6f0359fb526e824b4244323'
+  url 'ftp://ftp.astron.com/pub/file/file-5.16.tar.gz'
+  mirror 'http://fossies.org/unix/misc/file-5.16.tar.gz'
+  sha1 '12fd8ca35705bb24b00135ee65cb7de2d53aa69a'
 
   option :universal
 
@@ -25,21 +25,13 @@ class Libmagic < Formula
                           "--enable-fsect-man5"
     system "make install"
 
-    python do
-      cd "python" do
-        system python, "setup.py", "install", "--prefix=#{prefix}"
-      end
+    cd "python" do
+      system "python", "setup.py", "install", "--prefix=#{prefix}"
     end
 
     # Don't dupe this system utility
     rm bin/"file"
     rm man1/"file.1"
-  end
-
-  test do
-    if build.with? 'python'
-      system 'python', '-c', "import magic; magic._init()"
-    end
   end
 end
 

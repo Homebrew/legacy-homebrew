@@ -15,8 +15,8 @@ end
 
 class Wxmac < Formula
   homepage 'http://www.wxwidgets.org'
-  url 'http://downloads.sourceforge.net/project/wxpython/wxPython/2.9.5.0/wxPython-src-2.9.5.0.tar.bz2'
-  sha1 '9183b2ffc6631cb2551c51b655a9d08904aa7b52'
+  url 'http://downloads.sourceforge.net/project/wxpython/wxPython/3.0.0.0/wxPython-src-3.0.0.0.tar.bz2'
+  sha1 '48451763275cfe4e5bbec49ccd75bc9652cba719'
 
   option 'disable-monolithic', "Build a non-monolithic library (split into multiple files)"
   depends_on :python => :recommended
@@ -39,17 +39,15 @@ class Wxmac < Formula
     cd "wxPython" do
       ENV.append_to_cflags "-arch #{MacOS.preferred_arch}"
 
-      python do
-        system python, "setup.py",
-                       "build_ext",
-                       "WXPORT=osx_cocoa",
-                       *args
-        system python, "setup.py",
-                       "install",
-                       "--prefix=#{prefix}",
-                       "WXPORT=osx_cocoa",
-                       *args
-      end
+      system "python", "setup.py",
+                     "build_ext",
+                     "WXPORT=osx_cocoa",
+                     *args
+      system "python", "setup.py",
+                     "install",
+                     "--prefix=#{prefix}",
+                     "WXPORT=osx_cocoa",
+                     *args
     end
   end
 
@@ -72,7 +70,7 @@ class Wxmac < Formula
       "--with-libtiff",
       # Otherwise, even in superenv, the internal libtiff can pick
       # up on a nonuniversal xz and fail
-      # https://github.com/mxcl/homebrew/issues/22732
+      # https://github.com/Homebrew/homebrew/issues/22732
       "--without-liblzma",
       "--with-libpng",
       "--with-zlib",
@@ -80,6 +78,10 @@ class Wxmac < Formula
       "--enable-clipboard",
       "--enable-webkit",
       "--enable-svg",
+      "--enable-mediactrl",
+      "--enable-graphics_ctx",
+      "--enable-controls",
+      "--enable-dataviewctrl",
       "--with-expat",
       "--with-macosx-version-min=#{MacOS.version}",
       "--with-macosx-sdk=#{MacOS.sdk_path}",

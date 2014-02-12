@@ -31,7 +31,7 @@ end
 class Formula
   def versions
     versions = []
-    rev_list.each do |sha|
+    rev_list do |sha|
       version = version_for_sha sha
       unless versions.include? version or version.nil?
         yield version, sha if block_given?
@@ -43,9 +43,9 @@ class Formula
 
   def bottle_version_map branch='HEAD'
     map = Hash.new { |h, k| h[k] = [] }
-    rev_list(branch).each do |rev|
+    rev_list(branch) do |rev|
       formula_for_sha(rev) do |f|
-        bottle = f.class.send(:bottle)
+        bottle = f.class.bottle
         unless bottle.checksums.empty?
           map[bottle.version] << bottle.revision
         end
@@ -81,7 +81,9 @@ class Formula
 
     def rev_list branch='HEAD'
       repository.cd do
-        `git rev-list --abbrev-commit --remove-empty #{branch} -- #{entry_name}`.split
+        IO.popen("git rev-list --abbrev-commit --remove-empty #{branch} -- #{entry_name}") do |io|
+          yield io.readline.chomp until io.eof?
+        end
       end
     end
 

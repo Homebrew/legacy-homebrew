@@ -56,7 +56,7 @@ class Checks
 ############# END HELPERS
 
 # Sorry for the lack of an indent here, the diff would have been unreadable.
-# See https://github.com/mxcl/homebrew/pull/9986
+# See https://github.com/Homebrew/homebrew/pull/9986
 def check_path_for_trailing_slashes
   bad_paths = ENV['PATH'].split(File::PATH_SEPARATOR).select { |p| p[-1..-1] == '/' }
   return if bad_paths.empty?
@@ -437,15 +437,7 @@ def check_xcode_prefix_exists
 end
 
 def check_xcode_select_path
-  # with the advent of CLT-only support, we don't need xcode-select
-
-  if MacOS::Xcode.bad_xcode_select_path?
-    <<-EOS.undent
-      Your xcode-select path is set to /
-      You must unset it or builds will hang:
-        sudo rm /usr/share/xcode-select/xcode_dir_*
-    EOS
-  elsif not MacOS::CLT.installed? and not File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild"
+  if not MacOS::CLT.installed? and not File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild"
     path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::Xcode::V3_BUNDLE_ID)
     path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent
@@ -500,7 +492,7 @@ def check_user_path_2
     <<-EOS.undent
       Homebrew's bin was not found in your PATH.
       Consider setting the PATH for example like so
-          echo export PATH="#{HOMEBREW_PREFIX}/bin:$PATH" >> ~/.bash_profile
+          echo export PATH='#{HOMEBREW_PREFIX}/bin:$PATH' >> ~/.bash_profile
     EOS
   end
 end
@@ -514,7 +506,7 @@ def check_user_path_3
         Homebrew's sbin was not found in your PATH but you have installed
         formulae that put executables in #{HOMEBREW_PREFIX}/sbin.
         Consider setting the PATH for example like so
-            echo export PATH="#{HOMEBREW_PREFIX}/sbin:$PATH" >> ~/.bash_profile
+            echo export PATH='#{HOMEBREW_PREFIX}/sbin:$PATH' >> ~/.bash_profile
       EOS
     end
   end
@@ -689,8 +681,7 @@ def check_for_multiple_volumes
   # Find the volumes for the TMP folder & HOMEBREW_CELLAR
   real_cellar = HOMEBREW_CELLAR.realpath
 
-  tmp_prefix = ENV['HOMEBREW_TEMP'] || '/tmp'
-  tmp = Pathname.new with_system_path { `mktemp -d #{tmp_prefix}/homebrew-brew-doctor-XXXX` }.strip
+  tmp = Pathname.new with_system_path { `mktemp -d #{HOMEBREW_TEMP}/homebrew-brew-doctor-XXXX` }.strip
   real_temp = tmp.realpath.parent
 
   where_cellar = volumes.which real_cellar
@@ -711,8 +702,7 @@ end
 
 def check_filesystem_case_sensitive
   volumes = Volumes.new
-  tmp_prefix = Pathname.new(ENV['HOMEBREW_TEMP'] || '/tmp')
-  case_sensitive_vols = [HOMEBREW_PREFIX, HOMEBREW_REPOSITORY, HOMEBREW_CELLAR, tmp_prefix].select do |dir|
+  case_sensitive_vols = [HOMEBREW_PREFIX, HOMEBREW_REPOSITORY, HOMEBREW_CELLAR, HOMEBREW_TEMP].select do |dir|
     # We select the dir as being case-sensitive if either the UPCASED or the
     # downcased variant is missing.
     # Of course, on a case-insensitive fs, both exist because the os reports so.
@@ -768,7 +758,7 @@ def check_git_newline_settings
 
     If you are not routinely dealing with Windows-based projects,
     consider removing these by running:
-    `git config --global --set core.autocrlf input`
+    `git config --global core.autocrlf input`
     EOS
   end
 end
@@ -785,9 +775,9 @@ def check_git_origin
       Without a correctly configured origin, Homebrew won't update
       properly. You can solve this by adding the Homebrew remote:
         cd #{HOMEBREW_REPOSITORY}
-        git remote add origin https://github.com/mxcl/homebrew.git
+        git remote add origin https://github.com/Homebrew/homebrew.git
       EOS
-    elsif origin !~ /mxcl\/homebrew(\.git)?$/ then <<-EOS.undent
+    elsif origin !~ /(mxcl|Homebrew)\/homebrew(\.git)?$/ then <<-EOS.undent
       Suspicious git origin remote found.
 
       With a non-standard origin, Homebrew won't pull updates from
@@ -796,7 +786,7 @@ def check_git_origin
 
       Unless you have compelling reasons, consider setting the
       origin remote to point at the main repository, located at:
-        https://github.com/mxcl/homebrew.git
+        https://github.com/Homebrew/homebrew.git
       EOS
     end
   end
@@ -919,7 +909,7 @@ end
 def check_git_status
   return unless which "git"
   HOMEBREW_REPOSITORY.cd do
-    unless `git status -s -- Library/Homebrew/ 2>/dev/null`.chomp.empty?
+    unless `git status --untracked-files=all --porcelain -- Library/Homebrew/ 2>/dev/null`.chomp.empty?
       <<-EOS.undent_________________________________________________________72
       You have uncommitted modifications to Homebrew
       If this a surprise to you, then you should stash these modifications.

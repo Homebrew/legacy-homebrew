@@ -17,4 +17,8 @@ class Tree < Formula
                    "OBJS=#{objs}",
                    "install"
   end
+
+  test do
+    system "#{bin}/tree", prefix
+  end
 end

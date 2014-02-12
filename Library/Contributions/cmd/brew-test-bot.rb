@@ -261,11 +261,17 @@ class Test
     dependencies = dependencies.join(' ')
     formula_object = Formula.factory(formula)
     requirements = formula_object.recursive_requirements
-    unsatisfied_requirements = requirements.reject {|r| r.satisfied?}
+    unsatisfied_requirements = requirements.reject {|r| r.satisfied? or r.default_formula?}
     unless unsatisfied_requirements.empty?
       puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula}#{Tty.reset}"
       unsatisfied_requirements.each {|r| puts r.message}
       return
+    end
+
+    begin
+      CompilerSelector.new(formula_object).compiler
+    rescue CompilerSelectionError
+      test "brew install apple-gcc42"
     end
 
     test "brew fetch #{dependencies}" unless dependencies.empty?
@@ -277,6 +283,7 @@ class Test
     install_args = '--verbose'
     install_args << ' --build-bottle' unless ARGV.include? '--no-bottle'
     install_args << ' --HEAD' if ARGV.include? '--HEAD'
+    test "brew install --only-dependencies #{formula}" unless dependencies.empty?
     test "brew install #{install_args} #{formula}"
     install_passed = steps.last.passed?
     test "brew audit #{formula}"
@@ -328,7 +335,8 @@ class Test
     @category = __method__
     force_flag = ''
     if ARGV.include? '--cleanup'
-      test 'brew cleanup'
+      test 'brew cleanup -s'
+      test "rm -vrf #{HOMEBREW_CACHE}/*"
       test 'git clean --force -dx'
       force_flag = '-f'
     end
@@ -423,6 +431,12 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
   pr = ENV['UPSTREAM_PULL_REQUEST']
   number = ENV['UPSTREAM_BUILD_NUMBER']
 
+  system "git am --abort 2>/dev/null"
+  system "git rebase --abort 2>/dev/null"
+  safe_system "git checkout -f master"
+  safe_system "git reset --hard origin/master"
+  safe_system "brew update"
+
   if ARGV.include? '--ci-pr-upload'
     safe_system "brew pull --clean #{pr}"
   end
@@ -473,7 +487,7 @@ if ARGV.include? "--junit"
       failure = testcase.add_element 'failure' if step.failed?
       if step.has_output?
         # Remove invalid XML CData characters from step output.
-        output = REXML::CData.new step.output.delete("\000\e")
+        output = REXML::CData.new step.output.delete("\000\b\e\f")
         if step.passed?
           system_out = testcase.add_element 'system-out'
           system_out.text = output

@@ -32,12 +32,12 @@ end
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.22/node-v0.10.22.tar.gz'
-  sha1 'd7c6a39dfa714eae1f8da7a00c9a07efd74a03b3'
+  url 'http://nodejs.org/dist/v0.10.25/node-v0.10.25.tar.gz'
+  sha1 '1e330b4fbb6f7bb858a0b37d8573dd4956f40885'
 
   devel do
-    url 'http://nodejs.org/dist/v0.11.9/node-v0.11.9.tar.gz'
-    sha1 'b4fc0e38ccde4edae45db198f331499055d77ca2'
+    url 'http://nodejs.org/dist/v0.11.11/node-v0.11.11.tar.gz'
+    sha1 '65b257ec6584bf339f06f58a8a02ba024e13f283'
   end
 
   head 'https://github.com/joyent/node.git'
@@ -46,14 +46,11 @@ class Node < Formula
   option 'without-npm', 'npm will not be installed'
 
   depends_on NpmNotInstalled unless build.without? 'npm'
-  depends_on :python => ["2.6", :build]
+  depends_on :python
 
   fails_with :llvm do
     build 2326
   end
-
-  # fixes gyp's detection of system paths on CLT-only systems
-  def patches; DATA; end
 
   def install
     args = %W{--prefix=#{prefix}}
@@ -74,6 +71,9 @@ class Node < Formula
           dir.install_symlink(file.relative_path_from(dir))
         end
       end
+
+      # install bash completion
+      bash_completion.install lib/"node_modules/npm/lib/utils/completion.sh" => 'npm'
     end
   end
 
@@ -98,71 +98,13 @@ class Node < Formula
       end
     end
   end
+
+  test do
+    path = testpath/"test.js"
+    path.write "console.log('hello');"
+
+    output = `#{bin}/node #{path}`.strip
+    assert_equal "hello", output
+    assert_equal 0, $?.exitstatus
+  end
 end
-
-__END__
-diff --git a/tools/gyp/pylib/gyp/xcode_emulation.py b/tools/gyp/pylib/gyp/xcode_emulation.py
-index f9cec33..4b3c035 100644
---- a/tools/gyp/pylib/gyp/xcode_emulation.py
-+++ b/tools/gyp/pylib/gyp/xcode_emulation.py
-@@ -285,8 +285,14 @@ class XcodeSettings(object):
-     if sdk_root.startswith('/'):
-       return sdk_root
-     if sdk_root not in XcodeSettings._sdk_path_cache:
--      XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
--          sdk_root, 'Path')
-+      try:
-+        XcodeSettings._sdk_path_cache[sdk_root] = self._GetSdkVersionInfoItem(
-+            sdk_root, 'Path')
-+      except:
-+        # if this fails it's because xcodebuild failed, which means
-+        # the user is probably on a CLT-only system, where there
-+        # is no valid SDK root
-+        XcodeSettings._sdk_path_cache[sdk_root] = None
-     return XcodeSettings._sdk_path_cache[sdk_root]
-
-   def _AppendPlatformVersionMinFlags(self, lst):
-@@ -397,10 +403,11 @@ class XcodeSettings(object):
-
-     cflags += self._Settings().get('WARNING_CFLAGS', [])
-
--    config = self.spec['configurations'][self.configname]
--    framework_dirs = config.get('mac_framework_dirs', [])
--    for directory in framework_dirs:
--      cflags.append('-F' + directory.replace('$(SDKROOT)', sdk_root))
-+    if 'SDKROOT' in self._Settings():
-+      config = self.spec['configurations'][self.configname]
-+      framework_dirs = config.get('mac_framework_dirs', [])
-+      for directory in framework_dirs:
-+        cflags.append('-F' + directory.replace('$(SDKROOT)', sdk_root))
-
-     self.configname = None
-     return cflags
-@@ -647,10 +654,11 @@ class XcodeSettings(object):
-     for rpath in self._Settings().get('LD_RUNPATH_SEARCH_PATHS', []):
-       ldflags.append('-Wl,-rpath,' + rpath)
-
--    config = self.spec['configurations'][self.configname]
--    framework_dirs = config.get('mac_framework_dirs', [])
--    for directory in framework_dirs:
--      ldflags.append('-F' + directory.replace('$(SDKROOT)', self._SdkPath()))
-+    if 'SDKROOT' in self._Settings():
-+      config = self.spec['configurations'][self.configname]
-+      framework_dirs = config.get('mac_framework_dirs', [])
-+      for directory in framework_dirs:
-+        ldflags.append('-F' + directory.replace('$(SDKROOT)', self._SdkPath()))
-
-     self.configname = None
-     return ldflags
-@@ -826,7 +834,10 @@ class XcodeSettings(object):
-         l = '-l' + m.group(1)
-       else:
-         l = library
--    return l.replace('$(SDKROOT)', self._SdkPath(config_name))
-+    if self._SdkPath():
-+      return l.replace('$(SDKROOT)', self._SdkPath(config_name))
-+    else:
-+      return l
-
-   def AdjustLibraries(self, libraries, config_name=None):
-     """Transforms entries like 'Cocoa.framework' in libraries into entries like

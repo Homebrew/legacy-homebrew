@@ -6,7 +6,7 @@ class Skytools < Formula
   sha1 'c94eb1d86f9b33e49b929e02cefda95150e2fdcf'
 
   # Works only with homebrew postgres:
-  # https://github.com/mxcl/homebrew/issues/16024
+  # https://github.com/Homebrew/homebrew/issues/16024
   depends_on 'postgresql'
 
   def install

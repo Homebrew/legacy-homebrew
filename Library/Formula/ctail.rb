@@ -11,7 +11,7 @@ class Ctail < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-debug"
-    system 'make'
+    system 'make', 'LIBTOOL=glibtool --tag=CC'
     system 'make install'
   end
 end

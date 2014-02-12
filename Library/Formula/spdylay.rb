@@ -2,8 +2,8 @@ require 'formula'
 
 class Spdylay < Formula
   homepage 'https://github.com/tatsuhiro-t/spdylay'
-  url 'https://github.com/tatsuhiro-t/spdylay/archive/v1.2.1.tar.gz'
-  sha1 '2fa1e30fcf746dbb9e8d473545890dccf6f17171'
+  url 'https://github.com/tatsuhiro-t/spdylay/archive/v1.2.2.tar.gz'
+  sha1 '04f0e65161ab63b48bf101ed100bf6575eec73f7'
 
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build

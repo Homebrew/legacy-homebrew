@@ -17,7 +17,7 @@ class Yasm < Formula
   depends_on 'Cython' => :python if build.with? 'python'
 
   def install
-    # https://github.com/mxcl/homebrew/pull/19593
+    # https://github.com/Homebrew/homebrew/pull/19593
     ENV.deparallelize
     args = %W[
       --disable-debug
@@ -33,9 +33,4 @@ class Yasm < Formula
     system './configure', *args
     system 'make install'
   end
-
-  def caveats
-    python.standard_caveats if python
-  end
-
 end

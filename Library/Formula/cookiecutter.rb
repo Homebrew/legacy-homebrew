@@ -8,12 +8,10 @@ class Cookiecutter < Formula
   depends_on :python
 
   def install
-    python do
-      system python, "setup.py", "install", "--prefix=#{prefix}"
-    end
-  end
+    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    system "python", "setup.py", "install", "--prefix=#{libexec}"
 
-  def caveats
-    python.standard_caveats if python
+    bin.install Dir[libexec/'bin/*']
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 end

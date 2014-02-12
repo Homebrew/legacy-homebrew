@@ -6,26 +6,25 @@ require 'formula'
 class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/archive/OTP_R16B02.tar.gz'
-  sha1 '81f72efe58a99ab1839eb6294935572137133717'
+  url 'https://github.com/erlang/otp/archive/OTP_R16B03-1.tar.gz'
+  sha1 'b8f6ff90d9eb766984bb63bf553c3be72674d970'
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
   bottle do
-    revision 3
-    sha1 'bb535a13fcd11180cc9a68c52264ded677b9d160' => :mavericks
-    sha1 '3107a1bae9912d18e4a54c9eda57a4862e0999c5' => :mountain_lion
-    sha1 '0f857e488fd239625c6181b210394f0bd05fea78' => :lion
+    sha1 "8ddcb4731b804d517ea05eca4933f1f82bdcee6e" => :mavericks
+    sha1 "7b1ffcfae2cc6583fdf454398c8081f955a6e57a" => :mountain_lion
+    sha1 "eac0744faed837fd928e44f37458a7a0c4e44835" => :lion
   end
 
   resource 'man' do
-    url 'http://erlang.org/download/otp_doc_man_R16B02.tar.gz'
-    sha1 'c64c19d5ab176c8b7c1e05b02b4f2affbed7b0ef'
+    url 'http://erlang.org/download/otp_doc_man_R16B03-1.tar.gz'
+    sha1 'afde5507a389734adadcd4807595f8bc76ebde1b'
   end
 
   resource 'html' do
-    url 'http://erlang.org/download/otp_doc_html_R16B02.tar.gz'
-    sha1 '142e0b4becc04d3b5bf46a7fa2d48aae43cc84d0'
+    url 'http://erlang.org/download/otp_doc_html_R16B03-1.tar.gz'
+    sha1 'a2c0d2b7b9abe6214aff4c75ecc6be62042924e6'
   end
 
   option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
@@ -42,9 +41,9 @@ class Erlang < Formula
   fails_with :llvm
 
   def patches
-    # Fixes problem with ODBC on Mavericks. Reported upstream:
+    # Fixes problem with ODBC on Mavericks. Fixed upstream/HEAD:
     # https://github.com/erlang/otp/pull/142
-    DATA if MacOS.version >= :mavericks
+    DATA if MacOS.version >= :mavericks && !build.head?
   end
 
   def install

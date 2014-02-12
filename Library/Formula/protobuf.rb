@@ -16,7 +16,7 @@ class Protobuf < Formula
 
   def install
     # Don't build in debug mode. See:
-    # https://github.com/mxcl/homebrew/issues/9279
+    # https://github.com/Homebrew/homebrew/issues/9279
     # http://code.google.com/p/protobuf/source/browse/trunk/configure.ac#61
     ENV.prepend 'CXXFLAGS', '-DNDEBUG'
     ENV.universal_binary if build.universal?
@@ -32,15 +32,13 @@ class Protobuf < Formula
     doc.install %w( editors examples )
 
     if build.with? 'python'
-      python do
-        chdir 'python' do
-          ENV['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'cpp'
-          ENV.append_to_cflags "-I#{include}"
-          ENV.append_to_cflags "-L#{lib}"
-          system python, 'setup.py', 'build'
-          system python, 'setup.py', 'install', "--prefix=#{prefix}",
-                 '--single-version-externally-managed', '--record=installed.txt'
-        end
+      chdir 'python' do
+        ENV['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'cpp'
+        ENV.append_to_cflags "-I#{include}"
+        ENV.append_to_cflags "-L#{lib}"
+        system 'python', 'setup.py', 'build'
+        system 'python', 'setup.py', 'install', "--prefix=#{prefix}",
+               '--single-version-externally-managed', '--record=installed.txt'
       end
     end
   end
@@ -48,7 +46,6 @@ class Protobuf < Formula
   def caveats; <<-EOS.undent
     Editor support and examples have been installed to:
       #{doc}
-    #{python.standard_caveats if build.with? 'python'}
     EOS
   end
 end

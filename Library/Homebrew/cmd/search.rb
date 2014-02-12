@@ -1,7 +1,6 @@
 require 'formula'
 require 'blacklist'
 require 'utils'
-require 'utils/json'
 
 module Homebrew extend self
 
@@ -63,7 +62,7 @@ module Homebrew extend self
       if count == 0 and not blacklisted? query
         puts "No formula found for #{query.inspect}."
         begin
-          GitHub.find_pull_requests(rx) { |pull| puts pull }
+          GitHub.find_pull_requests(query) { |pull| puts pull }
         rescue GitHub::Error => e
           opoo e.message
         end
@@ -73,7 +72,6 @@ module Homebrew extend self
 
   SEARCHABLE_TAPS = [
     %w{josegonzalez php},
-    %w{samueljohn python},
     %w{marcqualie nginx},
     %w{Homebrew apache},
     %w{Homebrew versions},
@@ -82,6 +80,7 @@ module Homebrew extend self
     %w{Homebrew science},
     %w{Homebrew completions},
     %w{Homebrew binary},
+    %w{Homebrew python},
   ]
 
   def query_regexp(query)
@@ -103,17 +102,24 @@ module Homebrew extend self
     return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
 
     results = []
-    GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |f|
-      user.downcase! if user == "Homebrew" # special handling for the Homebrew organization
-      Utils::JSON.load(f.read)["tree"].map{ |hash| hash['path'] }.compact.each do |file|
-        name = File.basename(file, '.rb')
-        if file =~ /\.rb$/ and name =~ rx
+    GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
+      user = user.downcase if user == "Homebrew" # special handling for the Homebrew organization
+      json["tree"].each do |object|
+        next unless object["type"] == "blob"
+
+        path = object["path"]
+        name = File.basename(path, ".rb")
+
+        if path.end_with?(".rb") && rx === name
           results << "#{user}/#{repo}/#{name}"
         end
       end
     end
     results
-  rescue GitHub::Error, Utils::JSON::Error
+  rescue GitHub::RateLimitExceededError => e
+    []
+  rescue GitHub::Error => e
+    opoo "Failed to search tap: #{user}/#{repo}. Please run `brew update`"
     []
   end
 

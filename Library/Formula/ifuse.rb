@@ -28,7 +28,7 @@ class Ifuse < Formula
 
   def caveats
     <<-EOS.undent
-      Make sure to follow the directions given by `brew info fuse4x-kext`
+      Make sure to follow the directions given by `brew info fuse4x`
       before trying to use a FUSE-based filesystem.
     EOS
   end

@@ -7,27 +7,28 @@ class Wine < Formula
   homepage 'http://winehq.org/'
 
   stable do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.1.tar.bz2'
-    sha256 'd5bc2c088b555caa60a7ba1156e6ed74d791ba3c438129c75ab53805215a384c'
-
-    depends_on 'little-cms'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2'
+    sha256 'f0ab9eede5a0ccacbf6e50682649f9377b9199e49cf55641f1787cf72405acbe'
 
     resource 'gecko' do
       url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
       version '2.21'
       sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
     end
+
+    resource 'mono' do
+      url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
+      sha256 '3dfc23bbc29015e4e538dab8b83cb825d3248a0e5cf3b3318503ee7331115402'
+    end
   end
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.8.tar.bz2'
-    sha256 '30e17f5f863a09416f3d229666566b318dbb40f683d4ca6630012c60bb511804'
-    depends_on 'little-cms2'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.11.tar.bz2'
+    sha256 'c07d2771ed96c45d428bb11d164c5e4bbe48d6857a0a4cba2e0b73c5f1044f93'
   end
 
   head do
     url 'git://source.winehq.org/git/wine.git'
-    depends_on 'little-cms2'
   end
 
   env :std
@@ -42,6 +43,7 @@ class Wine < Formula
   depends_on 'freetype' if build.without? 'x11'
   depends_on 'jpeg'
   depends_on 'libgphoto2'
+  depends_on 'little-cms2'
   depends_on 'libicns'
   depends_on 'libtiff'
   depends_on 'sane-backends'
@@ -54,8 +56,8 @@ class Wine < Formula
   end
 
   resource 'mono' do
-    url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
-    sha256 '3dfc23bbc29015e4e538dab8b83cb825d3248a0e5cf3b3318503ee7331115402'
+    url 'http://downloads.sourceforge.net/wine/wine-mono-4.5.2.msi', :using => :nounzip
+    sha256 'd9124edb41ba4418af10eba519dafb25ab4338c567d25ce0eb4ce1e1b4d7eaad'
   end
 
   fails_with :llvm do

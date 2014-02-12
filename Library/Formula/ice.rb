@@ -36,8 +36,6 @@ class Ice < Formula
       OPTIMIZE=yes
     ]
     args << "CXXFLAGS=#{ENV.cflags} -Wall -D_REENTRANT"
-    args << "PYTHON_FLAGS=-F#{python.framework} -framework Python"
-    args << "PYTHON_LIBS=-F#{python.framework} -framework Python"
 
     # Unset ICE_HOME as it interferes with the build
     ENV.delete('ICE_HOME')
@@ -46,8 +44,8 @@ class Ice < Formula
       system "make", *args
       system "make", "install", *args
     end
-    args << "install_pythondir=#{python.site_packages}"
-    args << "install_libdir=#{python.site_packages}"
+    args << "install_pythondir=#{lib}/python2.7/site-packages"
+    args << "install_libdir=#{lib}/python2.7/site-packages"
     cd "py" do
       system "make", *args
       system "make", "install", *args

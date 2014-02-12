@@ -115,14 +115,8 @@ end
 class IncompatibleCxxStdlibs < Homebrew::InstallationError
   def initialize(f, dep, wrong, right)
     super f, <<-EOS.undent
-    #{f} dependency #{dep} was built with the following
-    C++ standard library: #{wrong.type_string} (from #{wrong.compiler})
-
-    This is incompatible with the standard library being used
-    to build #{f}: #{right.type_string} (from #{right.compiler})
-
-    Please reinstall #{dep} using a compatible compiler.
-    hint: Check https://github.com/mxcl/homebrew/wiki/C++-Standard-Libraries
+    #{f} dependency #{dep} was built with a different C++ standard
+    library (#{wrong.type_string} from #{wrong.compiler}). This could cause problems at runtime.
     EOS
   end
 end
@@ -175,7 +169,14 @@ class BuildError < Homebrew::InstallationError
   end
 
   def issues
-    @issues ||= GitHub.issues_for_formula(formula.name)
+    @issues ||= fetch_issues
+  end
+
+  def fetch_issues
+    GitHub.issues_for_formula(formula.name)
+  rescue GitHub::RateLimitExceededError => e
+    opoo e.message
+    []
   end
 
   def dump
@@ -185,7 +186,7 @@ class BuildError < Homebrew::InstallationError
       if formula.tap?
         user, repo = formula.tap.split '/'
         tap_issues_url = "https://github.com/#{user}/homebrew-#{repo}/issues"
-        puts "If reporting this issue please do so at (not mxcl/homebrew):"
+        puts "If reporting this issue please do so at (not Homebrew/homebrew):"
         puts "  #{tap_issues_url}"
       end
     else
@@ -211,7 +212,7 @@ class BuildError < Homebrew::InstallationError
     puts
     unless RUBY_VERSION < "1.8.6" || issues.empty?
       puts "These open issues may also help:"
-      puts issues.map{ |s| "    #{s}" }.join("\n")
+      puts issues.map{ |i| "#{i['title']} (#{i['html_url']})" }.join("\n")
     end
   end
 end
@@ -226,11 +227,6 @@ class CompilerSelectionError < Homebrew::InstallationError
       brew install apple-gcc42
     EOS
   end
-end
-
-# raised in install_tap
-class AlreadyTappedError < RuntimeError
-  def initialize; super "Already tapped!" end
 end
 
 # raised in CurlDownloadStrategy.fetch

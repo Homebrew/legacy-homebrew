@@ -14,7 +14,7 @@ class Goffice < Formula
   depends_on :x11
 
   # Fix for goffice trying to use a retired pcre api. Reported/source = Macports
-  # https://github.com/mxcl/homebrew/issues/15171
+  # https://github.com/Homebrew/homebrew/issues/15171
   def patches
     DATA
   end

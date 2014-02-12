@@ -2,6 +2,7 @@ require 'formula'
 
 class Tig < Formula
   homepage 'http://jonas.nitro.dk/tig/'
+  head 'https://github.com/jonas/tig.git'
   url 'http://jonas.nitro.dk/tig/releases/tig-1.2.1.tar.gz'
   sha1 '5755bae7342debf94ef33973e0eaff6207e623dc'
 
@@ -13,13 +14,10 @@ class Tig < Formula
   end
 
   def install
+    system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
     system "make install"
-
-    if build.with? "docs"
-      system "make install-doc-man"
-    end
-
+    system "make install-doc-man" if build.with? "docs"
     bash_completion.install 'contrib/tig-completion.bash'
   end
 end

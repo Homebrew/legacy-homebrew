@@ -19,27 +19,19 @@ class Pyqwt < Formula
 
   def install
     cd "configure" do
-      python do
-        system python,
-               "configure.py",
-               "--module-install-path=#{lib}/#{python.xy}/site-packages/PyQt4/Qwt5",
-               "--sip-install-path=#{share}/sip#{python.if3then3}/Qwt5",
-               "--uic-install-path=#{lib}/#{python.xy}/site-packages/PyQt4",
-               "-Q", "../qwt-5.2"
-        system "make install"
-        system 'make clean'
-      end
+      system "python",
+             "configure.py",
+             "--module-install-path=#{lib}/python2.7/site-packages/PyQt4/Qwt5",
+             "--sip-install-path=#{share}/sip/Qwt5",
+             "--uic-install-path=#{lib}/python2.7/site-packages/PyQt4",
+             "-Q", "../qwt-5.2"
+      system "make install"
+      system 'make clean'
     end
-  end
-
-  def caveats
-    python.standard_caveats if python
   end
 
   def test
-    python do
-      system python, "-c", "from PyQt4 import Qwt5 as Qwt"
-    end
+    system "python", "-c", "from PyQt4 import Qwt5 as Qwt"
   end
 end
 

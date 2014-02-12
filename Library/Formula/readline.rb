@@ -30,11 +30,11 @@ EOS
   #
   # We are carrying an additional patch to add Darwin 13 as a build target.
   # Presumably when 10.9 comes out this patch will move upstream.
-  # https://github.com/mxcl/homebrew/pull/21625
+  # https://github.com/Homebrew/homebrew/pull/21625
   def patches; DATA; end
 
   def install
-    # Always build universal, per https://github.com/mxcl/homebrew/issues/issue/899
+    # Always build universal, per https://github.com/Homebrew/homebrew/issues/issue/899
     ENV.universal_binary
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}",

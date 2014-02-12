@@ -2,8 +2,8 @@ require 'formula'
 
 class Goaccess < Formula
   homepage 'http://goaccess.prosoftcorp.com/'
-  url 'http://downloads.sourceforge.net/project/goaccess/0.6.1/goaccess-0.6.1.tar.gz'
-  sha1 '9604087ca730c288b461a260ab50bf7dd38ca281'
+  url 'https://downloads.sourceforge.net/project/goaccess/0.7/goaccess-0.7.tar.gz'
+  sha1 '1a887dc7182c91726137aaf6a4627efdd82d988e'
 
   head 'https://github.com/allinurl/goaccess.git'
 

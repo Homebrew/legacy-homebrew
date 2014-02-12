@@ -2,15 +2,14 @@ require 'formula'
 
 class RubyBuild < Formula
   homepage 'https://github.com/sstephenson/ruby-build'
-  url 'https://github.com/sstephenson/ruby-build/archive/v20131206.tar.gz'
-  sha1 'bebb0f0421ad9cbb57efa5f4492b3a291e46fabc'
+  url 'https://github.com/sstephenson/ruby-build/archive/v20140210.tar.gz'
+  sha1 'e165295b7effb2749a8ad398b2801c0c0f77f4a3'
 
   head 'https://github.com/sstephenson/ruby-build.git'
 
   depends_on 'autoconf' => [:recommended, :run]
   depends_on 'pkg-config' => [:recommended, :run]
-  depends_on 'libyaml' => :recommended
-  depends_on 'openssl' => :optional
+  depends_on 'openssl' => :recommended
 
   def install
     ENV['PREFIX'] = prefix

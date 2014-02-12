@@ -12,10 +12,8 @@ class Namebench < Formula
   def install
     ENV['NO_THIRD_PARTY']='1' if build.include?('no-third-party')
 
-    python do
-      system python, "setup.py", "install", "--prefix=#{prefix}",
-                                            "--install-data=#{python.site_packages}"
-    end
+    system "python", "setup.py", "install", "--prefix=#{prefix}",
+                                            "--install-data=#{lib}/python2.7/site-packages"
 
     bin.install bin/'namebench.py' => 'namebench'
   end

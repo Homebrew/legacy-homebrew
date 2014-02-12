@@ -12,12 +12,14 @@ class Libmongoclient < Formula
 
   def install
     scons = Formula.factory('scons').opt_prefix/'bin/scons'
+    boost = Formula.factory('boost').opt_prefix
 
     args = [
       "--prefix=#{prefix}",
       "-j#{ENV.make_jobs}",
       "--cc=#{ENV.cc}",
       "--cxx=#{ENV.cxx}",
+      "--extrapath=#{boost}",
       "--full",
       "--use-system-all",
       "--sharedclient"

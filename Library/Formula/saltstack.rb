@@ -14,11 +14,16 @@ end
 
 class Saltstack < Formula
   homepage 'http://www.saltstack.org'
-  url 'https://pypi.python.org/packages/source/s/salt/salt-0.17.2.tar.gz'
-  sha1 'd2568cb72a0eab21f273aa8ab36eacd6f1e58dc9'
+  url 'https://pypi.python.org/packages/source/s/salt/salt-0.17.5.tar.gz'
+  sha1 '7751eb59f3b52e7da541121cc4a543afd7f609f9'
 
-  head 'https://github.com/saltstack/salt.git', :branch => :develop,
+  head 'https://github.com/saltstack/salt.git', :branch => 'develop',
     :using => SaltHeadDownloadStrategy
+
+  devel do
+    url 'https://github.com/saltstack/salt/archive/v2014.1.0rc3.tar.gz'
+    sha1 '2c1bd6d9b26b66ef32b30af9ccae38733383efce'
+  end
 
   depends_on :python
   depends_on 'swig' => :build
@@ -60,40 +65,24 @@ class Saltstack < Formula
     sha1 '5915f60033168a7b6f1e76ddb8a514f84ebcdf81'
   end
 
-  def wrap bin_file, pythonpath
-    bin_file = Pathname.new bin_file
-    libexec_bin = Pathname.new libexec/'bin'
-    libexec_bin.mkpath
-    mv bin_file, libexec_bin
-    bin_file.write <<-EOS.undent
-      #!/bin/sh
-      PYTHONPATH="#{pythonpath}:$PYTHONPATH" "#{libexec_bin}/#{bin_file.basename}" "$@"
-    EOS
-  end
-
   def install
+    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    python do
-      resource('pycrypto').stage { system python, *install_args }
-      resource('pyyaml').stage { system python, *install_args }
-      resource('pyzmq').stage { system python, *install_args }
-      resource('msgpack-python').stage { system python, *install_args }
-      resource('markupsafe').stage { system python, *install_args }
-      resource('m2crypto').stage { system python, *install_args }
-      resource('jinja2').stage { system python, *install_args }
-    end
+    resource('pycrypto').stage { system "python", *install_args }
+    resource('pyyaml').stage { system "python", *install_args }
+    resource('pyzmq').stage { system "python", *install_args }
+    resource('msgpack-python').stage { system "python", *install_args }
+    resource('markupsafe').stage { system "python", *install_args }
+    resource('m2crypto').stage { system "python", *install_args }
+    resource('jinja2').stage { system "python", *install_args }
 
-  inreplace 'salt/__init__.py',
-    "import warnings",
-    "import warnings; import site; site.addsitedir('#{python.private_site_packages}')"
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
 
-   system python, "setup.py", "install", "--prefix=#{prefix}"
-    Dir["#{bin}/*"].each do |bin_file|
-      wrap bin_file, python.site_packages
-    end
-   man1.install Dir['doc/man/*.1']
-   man7.install Dir['doc/man/*.7']
+    man1.install Dir['doc/man/*.1']
+    man7.install Dir['doc/man/*.7']
+
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
   test do

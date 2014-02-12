@@ -19,13 +19,13 @@ module Homebrew extend self
           if f.recursive_dependencies.any? { |dep| dep.name == ff.name }
             uses << f.to_s
           elsif f.recursive_requirements.any? { |req| req.name == ff.name }
-            uses << ":#{f}"
+            uses << f.to_s
           end
         else
           if f.deps.any? { |dep| dep.name == ff.name }
             uses << f.to_s
           elsif f.requirements.any? { |req| req.name == ff.name }
-            uses << ":#{f}"
+            uses << f.to_s
           end
         end
       end

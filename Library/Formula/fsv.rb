@@ -3,7 +3,7 @@ require 'formula'
 class Fsv < Formula
   homepage 'http://fsv.sourceforge.net/'
   url 'https://github.com/natritmeyer/fsv.git', :tag => 'v0.9.1'
-  # See https://github.com/mxcl/homebrew/pull/19161 for discussion and
+  # See https://github.com/Homebrew/homebrew/pull/19161 for discussion and
   # reason about why we use this fork here. Eventually upstream at
   # 'https://github.com/mcuelenaere/fsv.git' should add tags!
   # Also note the sourceforge repo (but that seems no longer maintained.)

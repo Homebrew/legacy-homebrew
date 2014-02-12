@@ -62,7 +62,7 @@ class Gfortran < Formula
       '--disable-nls'
     ]
 
-    # https://github.com/mxcl/homebrew/issues/19584#issuecomment-19661219
+    # https://github.com/Homebrew/homebrew/issues/19584#issuecomment-19661219
     if build.include? 'enable-multilib' and MacOS.prefer_64_bit?
       args << '--enable-multilib'
     else

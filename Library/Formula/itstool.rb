@@ -2,8 +2,8 @@ require 'formula'
 
 class Itstool < Formula
   homepage 'http://itstool.org/'
-  url 'http://files.itstool.org/itstool/itstool-2.0.0.tar.bz2'
-  sha256 '14708111b11b4a70e240e3b404d7a58941e61dbb5caf7e18833294d654c09169'
+  url 'http://files.itstool.org/itstool/itstool-2.0.2.tar.bz2'
+  sha256 'bf909fb59b11a646681a8534d5700fec99be83bb2c57badf8c1844512227033a'
 
   head do
     url 'git://gitorious.org/itstool/itstool.git'
@@ -13,9 +13,11 @@ class Itstool < Formula
   end
 
   depends_on :python
-  depends_on 'libxml2'
+  depends_on 'libxml2' => 'with-python'
 
   def install
+    ENV.append_path 'PYTHONPATH', "#{Formula.factory('libxml2').lib}/python2.7/site-packages"
+
     system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}"
     system "make install"

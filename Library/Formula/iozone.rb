@@ -6,7 +6,7 @@ class Iozone < Formula
   sha1 '397c2aae67f74dc9d189912b2e72ca594b790101'
 
   # Patch by @nijotz, adds O_DIRECT support when using -I flag.
-  # See: https://github.com/mxcl/homebrew/pull/10585
+  # See: https://github.com/Homebrew/homebrew/pull/10585
   def patches
     DATA
   end

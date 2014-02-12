@@ -16,19 +16,12 @@ class Mimms < Formula
   end
 
   def install
-    python do
-      system python, "setup.py", "install", "--prefix=#{prefix}"
-    end
-  end
-
-  def caveats
-    python.standard_caveats if python
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
   test do
-    python do
-      system "#{bin}/mimms", "--version"
-    end
+    system "#{bin}/mimms", "--version"
   end
 end
 

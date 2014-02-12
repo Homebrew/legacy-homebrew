@@ -2,15 +2,9 @@ require 'formula'
 
 class Neo4j < Formula
   homepage 'http://neo4j.org'
-  url 'http://dist.neo4j.org/neo4j-community-1.9.5-unix.tar.gz'
-  sha1 '8d3569fdd4f3b396fd8101a7f9f92087cef3ac7f'
-  version '1.9.5'
-
-  devel do
-    url 'http://dist.neo4j.org/neo4j-community-2.0.0-RC1-unix.tar.gz'
-    sha1 'c7c59df7c0363439244ad1c4e2e837db5ab07cb3'
-    version '2.0.0-RC1'
-  end
+  url 'http://dist.neo4j.org/neo4j-community-2.0.1-unix.tar.gz'
+  sha1 '7fbe494177cfa47cb33eaebdd4c0fb0c68a462bf'
+  version '2.0.1'
 
   def install
     # Remove windows files
@@ -40,8 +34,8 @@ class Neo4j < Formula
         1. Start the server manually:
             neo4j start
 
-        2. Open webadmin:
-            open http://localhost:7474/webadmin/
+        2. Open the neo4j browser:
+            open http://localhost:7474/browser/
 
         3. Start exploring the REST API:
             curl -v http://localhost:7474/db/data/
@@ -58,8 +52,8 @@ class Neo4j < Formula
     The manual can be found in:
         #{libexec}/doc/
 
-    You may need to add JAVA_HOME to your shell profile:
-        export JAVA_HOME="$(/usr/libexec/java_home)"
+    You may need to set JAVA_HOME for Java 7 in your shell profile:
+        export JAVA_HOME="$(/usr/libexec/java_home -v 1.7)"
 
     EOS
   end

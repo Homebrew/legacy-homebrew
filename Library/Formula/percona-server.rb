@@ -2,9 +2,9 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/Percona-Server-5.6.14-rel62.0.tar.gz'
-  version '5.6.14-rel62.0'
-  sha1 '6d9ddd92338c70ec13bdeb9a23568a990a5766f9'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/Percona-Server-5.6.15-rel63.0/source/Percona-Server-5.6.15-rel63.0.tar.gz'
+  version '5.6.15-rel63.0'
+  sha1 '9a8c856f8dd1c3c0a576b65e9d34354babf82bc9'
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
@@ -27,7 +27,7 @@ class PerconaServer < Formula
 
   fails_with :llvm do
     build 2334
-    cause "https://github.com/mxcl/homebrew/issues/issue/144"
+    cause "https://github.com/Homebrew/homebrew/issues/issue/144"
   end
 
   # Where the database files should be located. Existing installs have them
@@ -37,16 +37,9 @@ class PerconaServer < Formula
     @datadir ||= (var/'percona').directory? ? var/'percona' : var/'mysql'
   end
 
-  def patches
-    # Fixes percona server 5.6 compilation on OS X 10.9, based on
-    # https://github.com/mxcl/homebrew/commit/aad5d93f4fabbf69766deb83780d3a6eeab7061a
-    # for mysql 5.6
-    "https://gist.github.com/israelshirk/7cc640498cf264ebfce3/raw/846839c84647c4190ad683e4cbf0fabcd8931f97/gistfile1.txt"
-  end
-
   def install
     # Don't hard-code the libtool path. See:
-    # https://github.com/mxcl/homebrew/issues/20185
+    # https://github.com/Homebrew/homebrew/issues/20185
     inreplace "cmake/libutils.cmake",
       "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
       "COMMAND libtool -static -o ${TARGET_LOCATION}"
@@ -108,7 +101,7 @@ class PerconaServer < Formula
     system "make install"
 
     # Don't create databases inside of the prefix!
-    # See: https://github.com/mxcl/homebrew/issues/4975
+    # See: https://github.com/Homebrew/homebrew/issues/4975
     rm_rf prefix+'data'
 
     # Link the setup script into bin

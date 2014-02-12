@@ -85,6 +85,7 @@ class Dependency
         when :keep_but_prune_recursive_deps
           [dep]
         else
+          next [] if dependent.to_s == dep.name
           expand(dep.to_formula, &block) << dep
         end
       end.flatten

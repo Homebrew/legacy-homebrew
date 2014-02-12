@@ -15,17 +15,21 @@ class FormulaInstaller
   include FormulaCellarChecks
 
   attr_reader :f
-  attr_accessor :tab, :options, :ignore_deps
+  attr_accessor :tab, :options, :ignore_deps, :only_deps
   attr_accessor :show_summary_heading, :show_header
 
   def initialize ff
     @f = ff
     @show_header = false
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
+    @only_deps = ARGV.only_deps?
     @options = Options.new
     @tab = Tab.dummy_tab(ff)
 
     @@attempted ||= Set.new
+
+    @poured_bottle = false
+    @pour_failed   = false
 
     lock
     check_install_sanity
@@ -102,6 +106,8 @@ class FormulaInstaller
 
     compute_and_install_dependencies unless ignore_deps
 
+    return if only_deps
+
     if ARGV.build_bottle? && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
@@ -110,8 +116,6 @@ class FormulaInstaller
 
     @@attempted << f
 
-    @poured_bottle = false
-
     begin
       if pour_bottle? :warn => true
         pour
@@ -119,16 +123,22 @@ class FormulaInstaller
 
         stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
         stdlib_in_use = CxxStdlib.new(stdlibs.first, MacOS.default_compiler)
-        stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
+        begin
+          stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
+        rescue IncompatibleCxxStdlibs => e
+          opoo e.message
+        end
 
+        stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs :skip_executables => true
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
         tab.tabfile.delete if tab.tabfile
         tab.write
       end
-    rescue
-      raise if ARGV.homebrew_developer?
+    rescue => e
+      raise e if ARGV.homebrew_developer?
       @pour_failed = true
+      onoe e.message
       opoo "Bottle installation failed: building from source."
     end
 
@@ -172,8 +182,13 @@ class FormulaInstaller
     check_requirements(req_map)
 
     deps = [].concat(req_deps).concat(f.deps)
+    deps = expand_dependencies(deps)
 
-    install_dependencies expand_dependencies(deps)
+    if deps.empty? and only_deps
+      puts "All dependencies for #{f} are satisfied."
+    else
+      install_dependencies(deps)
+    end
   end
 
   def check_requirements(req_map)
@@ -269,6 +284,7 @@ class FormulaInstaller
     fi.tab = dep_tab
     fi.options = dep_options
     fi.ignore_deps = true
+    fi.only_deps = false
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
@@ -281,6 +297,8 @@ class FormulaInstaller
   end
 
   def caveats
+    return if only_deps
+
     if ARGV.homebrew_developer? and not f.keg_only?
       audit_bin
       audit_sbin
@@ -298,6 +316,8 @@ class FormulaInstaller
   end
 
   def finish
+    return if only_deps
+
     ohai 'Finishing up' if ARGV.verbose?
 
     install_plist
@@ -318,14 +338,21 @@ class FormulaInstaller
     post_install
 
     ohai "Summary" if ARGV.verbose? or show_summary_heading
-    unless ENV['HOMEBREW_NO_EMOJI']
-      print "#{ENV['HOMEBREW_INSTALL_BADGE'] || "\xf0\x9f\x8d\xba"}  " if MacOS.version >= :lion
-    end
-    print "#{f.prefix}: #{f.prefix.abv}"
-    print ", built in #{pretty_duration build_time}" if build_time
-    puts
+    puts summary
   ensure
     unlock if hold_locks?
+  end
+
+  def emoji
+    ENV['HOMEBREW_INSTALL_BADGE'] || "\xf0\x9f\x8d\xba"
+  end
+
+  def summary
+    s = ""
+    s << "#{emoji}  " if MacOS.version >= :lion and not ENV['HOMEBREW_NO_EMOJI']
+    s << "#{f.prefix}: #{f.prefix.abv}"
+    s << ", built in #{pretty_duration build_time}" if build_time
+    s
   end
 
   def build_time

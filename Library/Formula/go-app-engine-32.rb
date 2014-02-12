@@ -2,8 +2,8 @@ require 'formula'
 
 class GoAppEngine32 < Formula
   homepage 'http://code.google.com/appengine/docs/go/overview.html'
-  url 'http://googleappengine.googlecode.com/files/go_appengine_sdk_darwin_386-1.8.8.zip'
-  sha1 'fc087bb492fe2560d1d328ef4e5c65273f94a97a'
+  url 'http://googleappengine.googlecode.com/files/go_appengine_sdk_darwin_386-1.8.9.zip'
+  sha1 '697ea243d50632751417b83dcecc702c8196564d'
 
   def install
     cd '..'

@@ -18,7 +18,7 @@ class Mongrel2 < Formula
 
   def install
     # Build in serial. See:
-    # https://github.com/mxcl/homebrew/issues/8719
+    # https://github.com/Homebrew/homebrew/issues/8719
     ENV.j1
 
     # Mongrel2 pulls from these ENV vars instead

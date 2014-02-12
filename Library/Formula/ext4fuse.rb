@@ -8,7 +8,7 @@ class Ext4fuse < Formula
   head 'https://github.com/gerard/ext4fuse.git'
 
   depends_on 'pkg-config' => :build
-  depends_on 'fuse4x'
+  depends_on 'osxfuse'
 
   def install
     system 'make'

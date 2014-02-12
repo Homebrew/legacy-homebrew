@@ -9,19 +9,19 @@ class Pypy < Formula
   depends_on :arch => :x86_64
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-1.3.2.tar.gz'
-    sha1 '77180132225c5b4696e6d061655e291f3d1b20f5'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.1.tar.gz'
+    sha1 '3e4a325d807eb0104e98985e7bd9f1ef86fc2efa'
   end
 
   resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
-    sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.2.tar.gz'
+    sha1 '4f43a6b04f83b8d83bee702750ff35be2a2b6af1'
   end
 
   def install
     # Having PYTHONPATH set can cause the build to fail if another
     # Python is present, e.g. a Homebrew-provided Python 2.x
-    # See https://github.com/mxcl/homebrew/issues/24364
+    # See https://github.com/Homebrew/homebrew/issues/24364
     ENV['PYTHONPATH'] = ''
 
     rmtree 'site-packages'
@@ -85,7 +85,7 @@ class Pypy < Formula
         #{scripts_folder}/easy_install pip
         #{scripts_folder}/pip install --upgrade setuptools
 
-    See: https://github.com/mxcl/homebrew/wiki/Homebrew-and-Python
+    See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
     EOS
   end
 

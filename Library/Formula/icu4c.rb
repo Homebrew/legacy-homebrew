@@ -14,7 +14,7 @@ class Icu4c < Formula
     sha1 'f09512efdb8b12edfe080492a5a1c0bafc5a2941' => :lion
   end
 
-  keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
+  keg_only "Conflicts; see: https://github.com/Homebrew/homebrew/issues/issue/167"
 
   option :universal
   option :cxx11

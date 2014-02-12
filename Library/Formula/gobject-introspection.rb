@@ -6,6 +6,7 @@ class GobjectIntrospection < Formula
   sha256 '3575e5d353c17a567fdf7ffaaa7aebe9347b5b0eee8e69d612ba56a9def67d73'
 
   option :universal
+  option 'with-tests', 'Run tests in addition to the build (requires cairo)'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build
@@ -21,6 +22,7 @@ class GobjectIntrospection < Formula
   end if build.with? 'tests'
 
   def install
+    ENV['GI_SCANNER_DISABLE_CACHE'] = 'true'
     ENV.universal_binary if build.universal?
     inreplace 'giscanner/transformer.py', '/usr/share', HOMEBREW_PREFIX/'share'
     inreplace 'configure' do |s|

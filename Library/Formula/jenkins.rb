@@ -2,8 +2,8 @@ require 'formula'
 
 class Jenkins < Formula
   homepage 'http://jenkins-ci.org'
-  url 'http://mirrors.jenkins-ci.org/war/1.541/jenkins.war'
-  sha1 '4ef5e3ec2ba8b9463d3cdb6ce65c03590438a71b'
+  url 'http://mirrors.jenkins-ci.org/war/1.549/jenkins.war'
+  sha1 '47b452555add17e215e9d73440c5d5d94175c2b1'
 
   head 'https://github.com/jenkinsci/jenkins.git'
 

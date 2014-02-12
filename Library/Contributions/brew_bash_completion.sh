@@ -88,6 +88,23 @@ __brew_complete_outdated ()
     COMPREPLY=($(compgen -W "$od" -- "$cur"))
 }
 
+__brew_complete_versions ()
+{
+    local formula="$1"
+    local versions=$(brew list --versions "$formula")
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    COMPREPLY=($(compgen -W "$versions" -X "$formula" -- "$cur"))
+}
+
+_brew_switch ()
+{
+    case "$COMP_CWORD" in
+    2)  __brew_complete_installed ;;
+    3)  __brew_complete_versions "${COMP_WORDS[COMP_CWORD-1]}" ;;
+    *)  ;;
+    esac
+}
+
 __brew_complete_tapped ()
 {
     __brewcomp "$(\ls $(brew --repository)/Library/Taps 2>/dev/null | sed 's/-/\//g')"
@@ -218,6 +235,7 @@ _brew_install ()
                 --HEAD
                 --ignore-dependencies
                 --interactive
+                --only-dependencies
                 --verbose
                 $(brew options --compact "$prv" 2>/dev/null)
                 "
@@ -458,6 +476,7 @@ _brew ()
     outdated)                   _brew_outdated ;;
     pin)                        __brew_complete_formulae ;;
     search|-S)                  _brew_search ;;
+    switch)                     _brew_switch ;;
     tap)                        _brew_complete_tap ;;
     uninstall|remove|rm)        _brew_uninstall ;;
     unpin)                      __brew_complete_formulae ;;

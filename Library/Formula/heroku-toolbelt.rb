@@ -2,8 +2,8 @@ require 'formula'
 
 class HerokuToolbelt < Formula
   homepage 'https://toolbelt.heroku.com/other'
-  url 'http://assets.heroku.com.s3.amazonaws.com/heroku-client/heroku-client-3.0.1.tgz'
-  sha1 '11a70ecbb686c187be8502814e9249f4970163e3'
+  url 'http://assets.heroku.com.s3.amazonaws.com/heroku-client/heroku-client-3.3.0.tgz'
+  sha1 '5c4760414623b3e92bb0deaf5d49da695f8c7ad4'
 
   def install
     libexec.install Dir["*"]
@@ -12,5 +12,11 @@ class HerokuToolbelt < Formula
 
   def test
     system "#{bin}/heroku", "version"
+  end
+
+  # Possibly temporary; see https://github.com/heroku/heroku/issues/1020
+  def caveats; <<-EOS.undent
+    heroku-toolbelt requires an installation of Ruby 1.9 or greater.
+    EOS
   end
 end

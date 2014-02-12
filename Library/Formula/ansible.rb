@@ -2,10 +2,10 @@ require 'formula'
 
 class Ansible < Formula
   homepage 'http://www.ansibleworks.com/'
-  url 'https://github.com/ansible/ansible/archive/v1.4.1.tar.gz'
-  sha1 '7a63fca5b84901c3fa7b98f1c616df4fb5c26a03'
+  url 'https://github.com/ansible/ansible/archive/v1.4.4.tar.gz'
+  sha1 '743c365d3639fae99129e04b49865aec0d76462d'
 
-  head 'https://github.com/ansible/ansible.git', :branch => :devel
+  head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
   depends_on :python
   depends_on 'libyaml'
@@ -44,54 +44,32 @@ class Ansible < Formula
     end
   end
 
-  # TODO: Move this into Library/Homebrew somewhere (see also mitmproxy.rb).
-  def wrap bin_file, pythonpath
-    bin_file = Pathname.new bin_file
-    libexec_bin = Pathname.new libexec/'bin'
-    libexec_bin.mkpath
-    mv bin_file, libexec_bin
-    bin_file.write <<-EOS.undent
-      #!/bin/sh
-      PYTHONPATH="#{pythonpath}:$PYTHONPATH" "#{libexec_bin}/#{bin_file.basename}" "$@"
-    EOS
-  end
-
   def install
+    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    python do
-      resource('pycrypto').stage { system python, *install_args }
-      resource('pyyaml').stage { system python, *install_args }
-      resource('paramiko').stage { system python, *install_args }
-      resource('markupsafe').stage { system python, *install_args }
-      resource('jinja2').stage { system python, *install_args }
-      if build.with? 'accelerate'
-        resource('python-keyczar').stage { system python, *install_args }
-      end
-
-      inreplace 'lib/ansible/constants.py' do |s|
-        s.gsub! '/usr/share/ansible', share+'ansible'
-        s.gsub! '/etc/ansible', etc+'ansible'
-      end
-
-      # The "main" ansible module is installed in the default location and
-      # in order for it to be usable, we add the private_site_packages
-      # to the __init__.py of ansible so the deps (PyYAML etc) are found.
-      inreplace 'lib/ansible/__init__.py',
-                "__author__ = 'Michael DeHaan'",
-                "__author__ = 'Michael DeHaan'; import site; site.addsitedir('#{python.private_site_packages}')"
-
-      system python, "setup.py", "install", "--prefix=#{prefix}"
+    resource('pycrypto').stage { system "python", *install_args }
+    resource('pyyaml').stage { system "python", *install_args }
+    resource('paramiko').stage { system "python", *install_args }
+    resource('markupsafe').stage { system "python", *install_args }
+    resource('jinja2').stage { system "python", *install_args }
+    if build.with? 'accelerate'
+      resource('python-keyczar').stage { system "python", *install_args }
     end
+
+    inreplace 'lib/ansible/constants.py' do |s|
+      s.gsub! '/usr/share/ansible', share+'ansible'
+      s.gsub! '/etc/ansible', etc+'ansible'
+    end
+
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
 
     man1.install Dir['docs/man/man1/*.1']
 
-    Dir["#{bin}/*"].each do |bin_file|
-      wrap bin_file, python.site_packages
-    end
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
-  def test
+  test do
     system "#{bin}/ansible", "--version"
   end
 end

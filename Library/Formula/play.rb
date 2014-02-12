@@ -8,6 +8,11 @@ class Play < Formula
 
   conflicts_with 'sox', :because => 'both install `play` binaries'
 
+  devel do
+    url 'http://downloads.typesafe.com/play/2.2.2-RC2/play-2.2.2-RC2.zip'
+    sha1 '30a31d9f01893f4ab57e554aa339994eea20bd51'
+  end
+
   def install
     system "./framework/build", "publish-local" if build.head?
 

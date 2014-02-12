@@ -6,7 +6,7 @@ require 'formula'
 # JACKOSX, a pre-built binary form for which the source is not available.
 # If you require JACKv2, you should use that. Otherwise, this formula should
 # operate fine.
-# Please see https://github.com/mxcl/homebrew/pull/22043 for more info
+# Please see https://github.com/Homebrew/homebrew/pull/22043 for more info
 class Jack < Formula
   homepage 'http://jackaudio.org'
   url 'http://jackaudio.org/downloads/jack-audio-connection-kit-0.121.3.tar.gz'
