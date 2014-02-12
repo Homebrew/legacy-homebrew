@@ -66,12 +66,6 @@ class Ntfs3g < Formula
       EOS
     end
   end
-
-  def caveats; <<-EOS.undent
-    Make sure to follow the directions given by `brew info osxfuse`
-    before trying to use a FUSE-based filesystem.
-    EOS
-  end
 end
 
 __END__

@@ -19,10 +19,4 @@ class Tup < Formula
   def test
     system "#{bin}/tup", "-v"
   end
-
-  def caveats; <<-EOS.undent
-    Make sure to follow the directions given by `brew info osxfuse`
-    before using 'tup' build tool.
-    EOS
-  end
 end
