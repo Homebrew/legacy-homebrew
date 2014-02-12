@@ -9,4 +9,16 @@ class Gputils < Formula
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
+
+  test do
+    # assemble with gpasm
+    (testpath/"test.asm").write " movlw 0x42\n end\n"
+    system "#{bin}/gpasm -p p16f84 test.asm"
+    assert File.exist?("test.hex")
+
+    # disassemble with gpdasm
+    output = `#{bin}/gpdasm -p p16f84 test.hex`
+    assert_equal "000000:  3042  movlw\t0x42\n", output
+    assert_equal 0, $?.exitstatus
+  end
 end
