@@ -10,4 +10,12 @@ class Jsmin < Formula
     system ENV.cc, 'jsmin.c', '-o', 'jsmin'
     bin.install 'jsmin'
   end
+
+  test do
+    IO.popen("#{bin}/jsmin", "w+") do |pipe|
+      pipe.puts "var i = 0; // comment"
+      pipe.close_write
+      assert_equal "\nvar i=0;", pipe.read
+    end
+  end
 end
