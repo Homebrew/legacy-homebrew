@@ -19,8 +19,8 @@ class Subversion < Formula
   option 'ruby', 'Build Ruby bindings'
 
   resource 'serf' do
-    url 'http://serf.googlecode.com/files/serf-1.3.3.tar.bz2'
-    sha1 'b25c44a8651805f20f66dcaa76db08442ec4fa0e'
+    url 'http://serf.googlecode.com/svn/src_releases/serf-1.3.4.tar.bz2', :using => :curl
+    sha1 'eafc8317d7a9c77d4db9ce1e5c71a33822f57c3a'
   end
 
   depends_on 'pkg-config' => :build
