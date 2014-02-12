@@ -6,6 +6,7 @@ class Scons < Formula
   sha1 '728edf20047a9f8a537107dbff8d8f803fd2d5e3'
 
   def install
+    bin.mkpath # Script won't create this if it doesn't already exist
     man1.install gzip('scons-time.1', 'scons.1', 'sconsign.1')
     system "/usr/bin/python", "setup.py", "install",
              "--prefix=#{prefix}",
