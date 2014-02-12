@@ -83,5 +83,9 @@ def blacklisted? name
     ruby-build` to build and install specific versions of Ruby:
         brew install ruby-build
     EOS
+  when 'osmium' then <<-EOS.undent
+    The creator of Osmium requests that it not be packaged and that people
+    use the GitHub master branch instead.
+    EOS
   end
 end
