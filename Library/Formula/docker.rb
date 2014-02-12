@@ -8,10 +8,10 @@ class Docker < Formula
   option 'without-completions', 'Disable bash/zsh completions'
 
   bottle do
-    revision 1
-    sha1 "d2cdd9ed152a43cf1008a1025a9fefa5b9cb6ed3" => :mavericks
-    sha1 "809bc0bbceb5d8d690f8ac6230ebe2d4ffc5aa9c" => :mountain_lion
-    sha1 "cbef97454f2b063b0345d75c6642d09c9fdb2949" => :lion
+    revision 2
+    sha1 "6656fe911e1db382fbe704dbe9e0e68272f0ee01" => :mavericks
+    sha1 "d73586890467d00728db185cf0550479e4b94628" => :mountain_lion
+    sha1 "bd6595664d5384c4e1584864d96d409d475016ce" => :lion
   end
 
   def patches
