@@ -10,6 +10,6 @@ class Histo < Formula
 
   def install
     system "make"
-    bin.install('histo')
+    bin.install 'histo'
   end
 end
