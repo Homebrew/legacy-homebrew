@@ -19,6 +19,10 @@ module Homebrew extend self
       end
     end
 
+    if ARGV.include? '--head'
+      raise "Specify `--HEAD` in uppercase to build from trunk."
+    end
+
     ARGV.named.each do |name|
       # if a formula has been tapped ignore the blacklisting
       if not File.file? HOMEBREW_REPOSITORY/"Library/Formula/#{name}.rb"
