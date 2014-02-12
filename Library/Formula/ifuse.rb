@@ -16,7 +16,7 @@ class Ifuse < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'libimobiledevice'
-  depends_on 'osxfuse'
+  depends_on 'fuse4x'
 
   def install
     system "./autogen.sh" if build.head?
@@ -28,7 +28,7 @@ class Ifuse < Formula
 
   def caveats
     <<-EOS.undent
-      Make sure to follow the directions given by `brew info osxfuse`
+      Make sure to follow the directions given by `brew info fuse4x`
       before trying to use a FUSE-based filesystem.
     EOS
   end
