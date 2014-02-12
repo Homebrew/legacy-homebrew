@@ -4,7 +4,6 @@ class Elasticsearch < Formula
   homepage 'http://www.elasticsearch.org'
   url 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.0.0.tar.gz'
   sha1 'f190f496502a6608373fca3e8faf65b13dbcc3cd'
-  version '1.0.0'
 
   head do
     url 'https://github.com/elasticsearch/elasticsearch.git'
