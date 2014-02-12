@@ -311,7 +311,9 @@ module GitHub extend self
     name = f.name if Formula === name
 
     # don't include issues that just refer to the tool in their body
-    issues_matching(name).select {|issue| issue['title'].include? name }
+    issues_matching(name).select { |issue|
+      issue["state"] == "open" && issue["title"].include?(name)
+    }
   end
 
   def find_pull_requests rx
