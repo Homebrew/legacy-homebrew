@@ -13,17 +13,14 @@ class WildflyAs < Formula
   def caveats; <<-EOS.undent
     The home of WildFly Application Server 8 is:
       #{opt_prefix}/libexec
-
     You may want to add the following to your .bash_profile:
       export JBOSS_HOME=#{opt_prefix}/libexec
       export PATH=${PATH}:${JBOSS_HOME}/bin
-
-    Note: WildFly 8 still uses JBOSS_HOME, do not use WILDFLY_HOME or something like that.
-
-    Note: The support scripts used by WildFly Application Server 7 have
-    very generic names. These are likely to conflict with support scripts
-    used by other Java-based server software. Hence they are *NOT* linked
-    to bin.
-  EOS
+    EOS
   end
+
+  test do
+    system "#{opt_prefix}/libexec/bin/standalone.sh --version | grep #{version}"
+  end
+
 end
