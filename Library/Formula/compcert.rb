@@ -10,6 +10,11 @@ class Compcert < Formula
   depends_on "camlp5" => :build
 
   def install
+
+    # Compcert's configure script hard-codes gcc. On Lion and under, this
+    # creates problems since XCode's gcc does not support CFI.
+    inreplace 'configure', '${toolprefix}gcc', "${toolprefix}#{ENV.cc}"
+
     system "./configure", "-prefix", prefix, "ia32-macosx"
     system "make", "all"
     system "make", "install"
