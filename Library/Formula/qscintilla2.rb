@@ -1,5 +1,21 @@
 require 'formula'
 
+class PythonEnvironment < Requirement
+  fatal true
+
+  satisfy do
+    !(!Formula.factory("python").installed? && ARGV.include?("--without-python") && ARGV.include?("--with-python3"))
+  end
+
+  def message
+    <<-EOS.undent
+      You cannot use system Python 2 and Homebrew's Python 3
+      simultaneously.
+      Either `brew install python` or use `--without-python3`.
+    EOS
+  end
+end
+
 class Qscintilla2 < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/qscintilla/intro'
   url 'http://downloads.sf.net/project/pyqt/QScintilla2/QScintilla-2.8/QScintilla-gpl-2.8.tar.gz'
@@ -7,14 +23,6 @@ class Qscintilla2 < Formula
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
-
-  if !Formula.factory("python").installed? && build.with?("python") &&
-     build.with?("python3")
-    odie <<-EOS.undent
-      qscintilla2: You cannot use system Python 2 and Homebrew's Python 3 simultaneously.
-      Either `brew install python` or use `--without-python3`.
-    EOS
-  end
 
   if build.with? "python3"
     depends_on "pyqt" => "with-python3"
