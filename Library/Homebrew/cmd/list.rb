@@ -11,6 +11,8 @@ module Homebrew extend self
     if ARGV.include? '--pinned'
       require 'formula'
       list_pinned
+    elsif ARGV.include? '--reserved'
+      list_reserved
     elsif ARGV.include? '--versions'
       list_versions
     elsif ARGV.named.empty?
@@ -77,6 +79,22 @@ module Homebrew extend self
       keg_pin.exist? or keg_pin.symlink?
     end.each do |d|
       puts d.basename
+    end
+  end
+
+  def list_reserved
+    if ARGV.named.empty?
+      HOMEBREW_CELLAR.subdirs.each do |rack|
+        if Pathname.new(rack/'.reserved').exist?
+          puts rack.basename
+        end
+      end
+    else
+      ARGV.named.each do |f|
+        if Pathname.new(HOMEBREW_CELLAR/f/'.reserved').exist?
+          puts f
+        end
+      end
     end
   end
 end
