@@ -56,7 +56,9 @@ Note that these flags should only appear after a command.
     software may link directly to specific versions. In addition old downloads from
     the Homebrew download-cache are deleted.
 
-    If `--force` is passed, remove out-of-date keg-only brews as well.
+    Reserved brews (see `reserve` and `unreserve`) are not deleted.
+
+    If `--force` is passed, remove out-of-date keg-only and reserved brews as well.
 
     If `-n` is passed, show what would be removed, but do not actually remove anything.
 
@@ -225,7 +227,7 @@ Note that these flags should only appear after a command.
     If provided, `--local` will move them into the user's `~/Applications`
     folder instead of the system folder. It may need to be created, first.
 
-  * `ls, list [--unbrewed] [--versions] [--pinned]` [<formulae>]:
+  * `ls, list [--unbrewed] [--versions] [--pinned] [--reserved]` [<formulae>]:
     Without any arguments, list all installed formulae.
 
     If <formulae> are given, list the installed files for <formulae>.
@@ -241,6 +243,9 @@ Note that these flags should only appear after a command.
     If `--pinned` is passed, show the versions of pinned formulae, or only the
     specified (pinned) formulae if <formulae> are given.
     See also `pin`, `unpin`.
+
+    If `--reserved` is passed, show all reserved formulae, or check the reserved
+    status of <formulae>. See also `reserve`, `unreserve`.
 
   * `log [git-log-options]` <formula> ...:
     Show the git log for the given formulae. Options that `git-log`(1)
@@ -277,6 +282,10 @@ Note that these flags should only appear after a command.
 
   * `reinstall` <formula>:
     Uninstall then install <formula>
+
+  * `reserve` <formulae>:
+    Reserve the specified <formulae>, protecting them from being deleted
+    by `brew cleanup`. See also `unreserve`.
 
   * `rm`, `remove`, `uninstall [--force]` <formula>:
     Uninstall <formula>.
@@ -337,6 +346,10 @@ Note that these flags should only appear after a command.
   * `unpin` <formulae>:
     Unpin <formulae>, allowing them to be upgraded by `brew upgrade`. See also
     `pin`.
+
+  * `unreserve` <formulae>:
+    Unreserve <formulae>, allowing old versions to be deleted by `brew cleanup`.
+    See also `reserve`.
 
   * `untap` <tap>:
     Remove a tapped repository.
