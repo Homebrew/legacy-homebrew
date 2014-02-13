@@ -319,7 +319,6 @@ module GitHub extend self
   end
 
   def issues_for_formula name
-    # don't include issues that just refer to the tool in their body
     issues_matching(name, :state => "open")
   end
 
