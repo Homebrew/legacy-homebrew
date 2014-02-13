@@ -57,12 +57,12 @@ class Node < Formula
     args = %W{--prefix=#{prefix}}
 
     args << "--debug" if build.include? 'enable-debug'
-    args << "--without-npm" if build.include? 'without-npm'
+    args << "--without-npm" if build.without? "npm"
 
     system "./configure", *args
     system "make install"
 
-    unless build.include? 'without-npm'
+    if build.with? "npm"
       (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
 
       # Link npm manpages
@@ -90,7 +90,7 @@ class Node < Formula
   end
 
   def caveats
-    if build.include? 'without-npm' then <<-end.undent
+    if build.without? "npm"; <<-end.undent
       Homebrew has NOT installed npm. If you later install it, you should supplement
       your NODE_PATH with the npm module folder:
           #{npm_prefix}/lib/node_modules
