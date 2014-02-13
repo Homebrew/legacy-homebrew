@@ -8,17 +8,23 @@ class PythonDependency < Requirement
   end
 
   def which_python
-    @which_python ||= which python_binary
+    @which_python ||= if brewed_python?
+      Formula.factory(python_binary).bin/python_binary
+    else
+      which python_binary
+    end
   end
 
   def modify_build_environment
-    if system_python?
-      if python_binary == 'python'
-        ENV['PYTHONPATH'] = "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages"
-      end
-    elsif which_python
-      ENV.prepend_path 'PATH', which_python.dirname
+    if !brewed_python? && python_binary == "python"
+      ENV['PYTHONPATH'] = "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages"
     end
+
+    ENV.prepend_path "PATH", which_python.dirname if which_python
+  end
+
+  def brewed_python?
+    Formula.factory(python_binary).installed?
   end
 
   def system_python?
