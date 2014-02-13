@@ -40,8 +40,12 @@ class Python < Formula
     DATA if build.with? 'brewed-tk'
   end
 
+  def lib_cellar
+    prefix/'Frameworks/Python.framework/Versions/2.7/lib/python2.7'
+  end
+
   def site_packages_cellar
-    prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages"
+    lib_cellar/'site-packages'
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
@@ -139,7 +143,7 @@ class Python < Formula
     resource('pip').stage { system "#{bin}/python", *setup_args }
 
     # And now we write the distutils.cfg
-    cfg = prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/distutils.cfg"
+    cfg = lib_cellar / 'distutils/distutils.cfg'
     cfg.delete if cfg.exist?
     cfg.write <<-EOF.undent
       [global]
@@ -150,7 +154,7 @@ class Python < Formula
     EOF
 
     # Work-around for that bug: http://bugs.python.org/issue18050
-    inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/re.py", 'import sys', <<-EOS.undent
+    inreplace lib_cellar / 're.py', 'import sys', <<-EOS.undent
       import sys
       try:
           from _sre import MAXREPEAT
@@ -162,7 +166,7 @@ class Python < Formula
       # Fixes setting Python build flags for certain software
       # See: https://github.com/Homebrew/homebrew/pull/20182
       # http://bugs.python.org/issue3588
-      inreplace "#{prefix}/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/Makefile" do |s|
+      inreplace lib_cellar / 'config/Makefile' do |s|
         s.change_make_var! "LINKFORSHARED",
           "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
       end
