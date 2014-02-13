@@ -15,15 +15,16 @@ class Docker < Formula
   end
 
   def patches
-    "https://github.com/dotcloud/docker/commit/6174ba.patch"
+    [
+      "https://github.com/dotcloud/docker/commit/6174ba.patch",
+      "https://github.com/dotcloud/docker/commit/f794fb.patch",
+    ]
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["DOCKER_GITCOMMIT"] = downloader.cached_location.cd do
-      `git rev-parse HEAD`
-    end
+    ENV["GIT_DIR"] = downloader.cached_location/".git"
     ENV["AUTO_GOPATH"] = "1"
     inreplace "hack/make/dynbinary", "sha1sum", "shasum"
 
