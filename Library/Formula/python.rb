@@ -41,7 +41,8 @@ class Python < Formula
   end
 
   def lib_cellar
-    prefix/'Frameworks/Python.framework/Versions/2.7/lib/python2.7'
+    prefix / (if OS.mac? then 'Frameworks/Python.framework/Versions/2.7' end) /
+      'lib/python2.7'
   end
 
   def site_packages_cellar
@@ -66,9 +67,9 @@ class Python < Formula
              --enable-ipv6
              --datarootdir=#{share}
              --datadir=#{share}
-             --enable-framework=#{prefix}/Frameworks
            ]
 
+    args << "--enable-framework=#{prefix}/Frameworks" if OS.mac?
     args << '--without-gcc' if ENV.compiler == :clang
     args << '--with-dtrace' if build.with? 'dtrace'
 
@@ -112,7 +113,7 @@ class Python < Formula
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
     (HOMEBREW_PREFIX/'share/python').mkpath
-    system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
+    system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python" if OS.mac?
     system "make", "quicktest" if build.include? 'quicktest'
 
     # Post-install, fix up the site-packages so that user-installed Python
