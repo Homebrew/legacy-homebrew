@@ -13,7 +13,7 @@ class Libmemcached < Formula
 
     args = []
     args << "--prefix=#{prefix}"
-    args << "--with-memcached-sasl=/usr/local/bin/memcached" if build.include? 'with-sasl'
+    args << "--with-memcached-sasl=#{Formula.factory("memcached").bin}/memcached" if build.include? 'with-sasl'
 
     system "./configure", *args
     system "make install"
