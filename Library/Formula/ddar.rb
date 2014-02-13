@@ -17,7 +17,7 @@ class Ddar < Formula
                      "--single-version-externally-managed",
                      "--record=installed.txt"
 
-    bin.env_script_all_files (libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
     man1.install Dir["*.1"]
   end
 
