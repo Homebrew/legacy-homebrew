@@ -11,6 +11,6 @@ class Gpm < Formula
   end
 
   test do
-    system "gpm version"
+    system "gpm help"
   end
 end
