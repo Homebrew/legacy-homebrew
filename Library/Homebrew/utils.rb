@@ -320,16 +320,14 @@ module GitHub extend self
 
   def issues_for_formula name
     # don't include issues that just refer to the tool in their body
-    issues_matching(name).select { |issue| issue["state"] == "open" }
+    issues_matching(name, :state => "open")
   end
 
   def find_pull_requests query
     return if ENV['HOMEBREW_NO_GITHUB_API']
     puts "Searching pull requests..."
 
-    open_or_closed_prs = issues_matching(query).select do |issue|
-      issue["pull_request"]["html_url"]
-    end
+    open_or_closed_prs = issues_matching(query, :type => "pr")
 
     open_prs = open_or_closed_prs.select {|i| i["state"] == "open" }
     if open_prs.any?
