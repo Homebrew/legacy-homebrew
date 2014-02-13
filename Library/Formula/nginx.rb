@@ -19,10 +19,17 @@ class Nginx < Formula
   option 'with-debug', 'Compile with support for debug log'
   option 'with-spdy', 'Compile with support for SPDY module'
   option 'with-gunzip', 'Compile with support for gunzip module'
+  option 'with-rtmp', 'Compile with support for RTMP module'
 
   depends_on 'pcre'
   depends_on 'passenger' => :optional
   depends_on 'openssl'
+
+  if build.with? 'rtmp'
+    resource 'nginx-rtmp-module' do
+      url 'https://github.com/arut/nginx-rtmp-module.git', :using => :git, :tag => 'v1.1.2'
+    end
+  end
 
   skip_clean 'logs'
 
@@ -38,7 +45,15 @@ class Nginx < Formula
     exit
   end
 
+  def patches
+    if build.with? 'rtmp'
+      'https://gist.github.com/cadmi/8973541/raw/1a9994615ab0e304e90b866e12f239a6c8ff0628/homebrew-nginx-rtmp.patch'
+    end
+  end
+
   def install
+    (buildpath/'nginx-rtmp-module').install resource('nginx-rtmp-module') if build.with? 'rtmp'
+
     # Changes default port to 8080
     inreplace 'conf/nginx.conf', 'listen       80;', 'listen       8080;'
 
@@ -72,6 +87,7 @@ class Nginx < Formula
     args << "--with-debug" if build.include? 'with-debug'
     args << "--with-http_spdy_module" if build.include? 'with-spdy'
     args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
+    args << "--add-module=#{buildpath}/nginx-rtmp-module" if build.with? 'rtmp'
 
     if build.head?
       system "./auto/configure", *args
@@ -122,6 +138,15 @@ class Nginx < Formula
     EOS
   end
 
+  def rtmp_caveats; <<-EOS.undent
+
+    To activate RMTP module, add this to #{etc}/nginx/nginx.conf (or uncomment):
+      include rtmp.conf;
+    And also change the settings in the file #{etc}/nginx/rtmp.conf to suit your needs, of course.
+
+    EOS
+  end
+
   def caveats
     s = <<-EOS.undent
     Docroot is: #{HOMEBREW_PREFIX}/var/www
@@ -130,6 +155,7 @@ class Nginx < Formula
     nginx can run without sudo.
     EOS
     s << passenger_caveats if build.with? 'passenger'
+    s << rtmp_caveats if build.with? 'rtmp'
     s
   end
 
