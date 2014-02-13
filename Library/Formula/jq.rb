@@ -21,4 +21,12 @@ class Jq < Formula
     bin.install 'jq'
     man1.install 'jq.1'
   end
+
+  test do
+    IO.popen("#{bin}/jq .bar", "w+") do |pipe|
+      pipe.puts '{"foo":1, "bar":2}'
+      pipe.close_write
+      assert_equal "2\n", pipe.read
+    end
+  end
 end
