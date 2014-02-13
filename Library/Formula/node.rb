@@ -72,7 +72,7 @@ class Node < Formula
           dir.install_symlink(file.relative_path_from(dir))
         end
       end
-      
+
       # Install npm's bash completion
       unless build.include? 'without-completion'
         bash_completion.install_symlink lib/"node_modules/npm/lib/utils/completion.sh" => 'npm'
