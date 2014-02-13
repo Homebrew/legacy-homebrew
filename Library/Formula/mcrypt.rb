@@ -36,15 +36,19 @@ end
 
 __END__
 diff --git a/src/rfc2440.c b/src/rfc2440.c
-index 5a1f296..4d6a5db 100644
+index 5a1f296..fe15198 100644
 --- a/src/rfc2440.c
 +++ b/src/rfc2440.c
-@@ -23,7 +23,7 @@
+@@ -23,7 +23,12 @@
  #include <zlib.h>
  #endif
  #include <stdio.h>
--#include <malloc.h>
-+#include <stdlib.h>
-
++
++#ifdef __APPLE__
++#include <malloc/malloc.h>
++#else
+ #include <malloc.h>
++#endif
+ 
  #include "xmalloc.h"
  #include "keys.h"
