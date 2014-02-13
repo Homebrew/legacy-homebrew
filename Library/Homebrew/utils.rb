@@ -288,10 +288,25 @@ module GitHub extend self
     raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
   end
 
-  def issues_matching(query)
+  def issues_matching(query, qualifiers={})
     uri = ISSUES_URI.dup
-    uri.query = "q=#{uri_escape(query)}+repo:Homebrew/homebrew+in:title&per_page=100"
+    uri.query = build_query_string(query, qualifiers)
     open(uri) { |json| json["items"] }
+  end
+
+  def build_query_string(query, qualifiers)
+    s = "q=#{uri_escape(query)}+"
+    s << build_search_qualifier_string(qualifiers)
+    s << "&per_page=100"
+  end
+
+  def build_search_qualifier_string(qualifiers)
+    {
+      :repo => "Homebrew/homebrew",
+      :in => "title",
+    }.update(qualifiers).map { |qualifier, value|
+      "#{qualifier}:#{value}"
+    }.join("+")
   end
 
   def uri_escape(query)
