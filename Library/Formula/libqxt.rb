@@ -9,10 +9,16 @@ class Libqxt < Formula
   depends_on 'berkeley-db' => :optional
 
   def patches
-    # Patch src/gui/qxtglobalshortcut_mac.cpp to fix a bug caused by obsolete
-    # constants in Mac OS X 10.6.
-    # http://dev.libqxt.org/libqxt-old-hg/issue/50/
-    "https://gist.github.com/uranusjr/6019051/raw/"
+    [
+      # Patch src/gui/qxtglobalshortcut_mac.cpp to fix a bug caused by obsolete
+      # constants in Mac OS X 10.6.
+      # http://dev.libqxt.org/libqxt-old-hg/issue/50/
+      "https://gist.github.com/uranusjr/6019051/raw/",
+      # Patch configure script to remove explicit g++ build spec. Homebrew Qt
+      # already provides sane settings, while LibQxt's default is problematic.
+      # http://dev.libqxt.org/libqxt/issue/82/
+      "https://gist.github.com/uranusjr/8971675/raw"
+    ]
   end
 
   def install
