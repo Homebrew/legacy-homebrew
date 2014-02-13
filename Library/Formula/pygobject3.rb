@@ -1,5 +1,33 @@
 require 'formula'
 
+class PythonEnvironment < Requirement
+  fatal true
+
+  satisfy do
+    !(!Formula.factory("python").installed? && ARGV.include?("--with-python3"))
+  end
+
+  def message
+    <<-EOS.undent
+      You cannot use system Python 2 and Homebrew's Python 3
+      simultaneously.
+      Either `brew install python` or use `--without-python3`.
+    EOS
+  end
+end
+
+class AtLeastOnePython < Requirement
+  fatal true
+
+  satisfy do
+    !(ARGV.include?("--without-python") && !ARGV.include?("--with-python3"))
+  end
+
+  def message
+    " --with-python3 must be specified when using --without-python"
+  end
+end
+
 class Pygobject3 < Formula
   homepage 'http://live.gnome.org/PyGObject'
   url 'http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.10/pygobject-3.10.2.tar.xz'
@@ -27,16 +55,8 @@ class Pygobject3 < Formula
 
   option :universal
 
-  if !Formula.factory("python").installed? && build.with?("python") &&
-    build.with?("python3")
-  odie <<-EOS.undent
-    gobject-introspection: You cannot use system Python 2 and Homebrew's Python 3
-    simultaneously.
-    Either `brew install python` or use `--without-python3`.
-  EOS
-  elsif build.without?("python3") && build.without?("python")
-    odie "gobject-introspection: --with-python3 must be specified when using --without-python"
-  end
+  depends_on PythonEnvironment
+  depends_on AtLeastOnePython
 
   def pythons
     pythons = []
@@ -47,7 +67,6 @@ class Pygobject3 < Formula
     end
     pythons
   end
-
 
   def patches
     "https://gist.github.com/krrk/6439665/raw/a527e14cd3a77c19b089f27bea884ce46c988f55/pygobject-fix-module.patch" if build.with? 'tests'
