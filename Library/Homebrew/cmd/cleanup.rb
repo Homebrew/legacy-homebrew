@@ -15,16 +15,26 @@ module Homebrew extend self
         rm_DS_Store
       end
     else
-      ARGV.formulae.each { |f| cleanup_formula(f) }
+      ARGV.formulae.each do |f|
+        if reserved? rack and not ARGV.force?
+          opoo "Skipping reserved: #{rack} (pass -f to force)"
+        else
+          cleanup_formula(f)
+        end
+      end
     end
   end
 
   def cleanup_cellar
     HOMEBREW_CELLAR.subdirs.each do |rack|
-      begin
-        cleanup_formula Formula.factory(rack.basename.to_s)
-      rescue FormulaUnavailableError
-        # Don't complain about directories from DIY installs
+      if reserved? rack and not ARGV.force?
+        opoo "Skipping reserved: #{rack} (pass -f to force)"
+      else
+        begin
+          cleanup_formula Formula.factory(rack.basename.to_s)
+        rescue FormulaUnavailableError
+          # Don't complain about directories from DIY installs
+        end
       end
     end
   end
@@ -69,7 +79,9 @@ module Homebrew extend self
       end
 
       if f.version > version || ARGV.switch?('s') && !f.installed? || bottle_file_outdated?(f, file)
-        cleanup_cached_file(file)
+        unless reserved? Pathname.new(HOMEBREW_CELLAR/f.name)
+          cleanup_cached_file(file)
+        end
       end
     end
   end
@@ -94,6 +106,10 @@ module Homebrew extend self
 
   def rm_DS_Store
     system "find #{HOMEBREW_PREFIX} -name .DS_Store -delete 2>/dev/null"
+  end
+
+  def reserved? rack
+    Pathname.new(rack/'.reserved').exist?
   end
 
 end
