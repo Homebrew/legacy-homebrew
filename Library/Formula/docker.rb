@@ -5,7 +5,7 @@ class Docker < Formula
   url "https://github.com/dotcloud/docker.git", :tag => "v0.8.0"
   sha1 "1e9362dab2ac2ecb4a1f193a7e72d060000438c3"
 
-  option 'without-completions', 'Disable bash/zsh completions'
+  option "without-completions", "Disable bash/zsh completions"
 
   bottle do
     revision 2
@@ -31,9 +31,9 @@ class Docker < Formula
     system "hack/make.sh", "dynbinary"
     bin.install "bundles/0.8.0/dynbinary/docker-0.8.0" => "docker"
 
-    if build.with? 'completions'
-        bash_completion.install 'contrib/completion/bash/docker'
-        zsh_completion.install 'contrib/completion/zsh/_docker'
+    if build.with? "completions"
+      bash_completion.install "contrib/completion/bash/docker"
+      zsh_completion.install "contrib/completion/zsh/_docker"
     end
   end
 
