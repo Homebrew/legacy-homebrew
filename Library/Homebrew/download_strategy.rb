@@ -43,12 +43,13 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
 
   def initialize name, resource
     super
-    @ref_type, @ref = destructure_spec_hash(resource.specs)
+    @ref_type, @ref = extract_ref(resource.specs)
     @clone = HOMEBREW_CACHE/cache_filename
   end
 
-  def destructure_spec_hash(spec)
-    spec.each { |o| return o }
+  def extract_ref(specs)
+    key = REF_TYPES.find { |type| specs.key?(type) }
+    return key, specs[key]
   end
 
   def cache_filename(tag=cache_tag)
