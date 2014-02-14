@@ -3,28 +3,24 @@ require 'formula'
 class PythonEnvironment < Requirement
   fatal true
 
+  def error_message
+    if !Formula.factory("python").installed? && ARGV.include?("--with-python3")
+      error_message =  <<-EOS.undent
+        You cannot use system Python 2 and Homebrew's Python 3
+        simultaneously.
+        Either `brew install python` or use `--without-python3`.
+      EOS
+    elsif ARGV.include?("--without-python") && !ARGV.include?("--with-python3")
+      error_message =  " --with-python3 must be specified when using --without-python"
+    end
+  end
+
   satisfy do
-    !(!Formula.factory("python").installed? && ARGV.include?("--with-python3"))
+    !error_message
   end
 
   def message
-    <<-EOS.undent
-      You cannot use system Python 2 and Homebrew's Python 3
-      simultaneously.
-      Either `brew install python` or use `--without-python3`.
-    EOS
-  end
-end
-
-class AtLeastOnePython < Requirement
-  fatal true
-
-  satisfy do
-    !(ARGV.include?("--without-python") && !ARGV.include?("--with-python3"))
-  end
-
-  def message
-    " --with-python3 must be specified when using --without-python"
+    error_message
   end
 end
 
@@ -56,7 +52,6 @@ class Pygobject3 < Formula
   option :universal
 
   depends_on PythonEnvironment
-  depends_on AtLeastOnePython
 
   def pythons
     pythons = []
