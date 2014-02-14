@@ -8,7 +8,6 @@ class Sipp < Formula
   option 'pcap',     'Build with PCAP support'
   option 'openssl',  'Build with OpenSSL support'
 
-
   depends_on 'openssl'   if build.include? 'openssl'
 
   def install
