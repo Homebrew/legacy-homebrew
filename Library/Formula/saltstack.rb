@@ -1,11 +1,6 @@
 require 'formula'
 
 class SaltHeadDownloadStrategy < GitDownloadStrategy
-  # We need to make a local clone so we can't use "--depth 1"
-  def support_depth?
-    false
-  end
-
   def stage
     @clone.cd {reset}
     safe_system 'git', 'clone', @clone, '.'
@@ -18,7 +13,7 @@ class Saltstack < Formula
   sha1 '7751eb59f3b52e7da541121cc4a543afd7f609f9'
 
   head 'https://github.com/saltstack/salt.git', :branch => 'develop',
-    :using => SaltHeadDownloadStrategy
+    :using => SaltHeadDownloadStrategy, :shallow => false
 
   devel do
     url 'https://github.com/saltstack/salt/archive/v2014.1.0rc3.tar.gz'
