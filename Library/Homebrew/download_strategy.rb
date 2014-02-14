@@ -474,6 +474,11 @@ class GitDownloadStrategy < VCSDownloadStrategy
     %r{http://llvm\.org},
   ]
 
+  def initialize name, resources
+    super
+    @shallow = resource.specs.fetch(:shallow) { true }
+  end
+
   def cache_tag; "git" end
 
   def fetch
@@ -513,6 +518,10 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   private
 
+  def shallow_clone?
+    @shallow && support_depth?
+  end
+
   def support_depth?
     @ref_type != :revision && SHALLOW_CLONE_WHITELIST.any? { |rx| rx === @url }
   end
@@ -535,7 +544,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def clone_args
     args = %w{clone}
-    args << '--depth' << '1' if support_depth?
+    args << '--depth' << '1' if shallow_clone?
 
     case @ref_type
     when :branch, :tag then args << '--branch' << @ref
