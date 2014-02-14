@@ -49,10 +49,10 @@ class Gpm < Formula
       )
 
       func main() {
-              fmt.Println(gpm_testing_package.Version())
+              fmt.Print(gpm_testing_package.Version())
       }
 EOF
 
-    system "go", "run", "go_code.go"
+    `go run go_code.go` == "v6.1"
   end
 end
