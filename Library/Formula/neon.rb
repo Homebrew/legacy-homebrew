@@ -28,6 +28,7 @@ class Neon < Formula
       "--prefix=#{prefix}",
       "--enable-shared",
       "--disable-static",
+      "--with-ca-bundle=/usr/share/curl/curl-ca-bundle.crt",
       "--disable-nls",
       "--with-ssl",
     ]
