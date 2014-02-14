@@ -464,6 +464,13 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
 end
 
 class GitDownloadStrategy < VCSDownloadStrategy
+  SHALLOW_CLONE_WHITELIST = [
+    %r{git://},
+    %r{https://github\.com},
+    %r{http://git\.sv\.gnu\.org},
+    %r{http://llvm\.org},
+  ]
+
   def cache_tag; "git" end
 
   def fetch
@@ -514,13 +521,6 @@ class GitDownloadStrategy < VCSDownloadStrategy
   def support_depth?
     @ref_type != :revision and host_supports_depth?
   end
-
-  SHALLOW_CLONE_WHITELIST = [
-    %r{git://},
-    %r{https://github\.com},
-    %r{http://git\.sv\.gnu\.org},
-    %r{http://llvm\.org},
-  ]
 
   def host_supports_depth?
     SHALLOW_CLONE_WHITELIST.any? { |rx| rx === @url }
