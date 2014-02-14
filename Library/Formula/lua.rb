@@ -132,3 +132,16 @@ index e0d4c9f..4477d7b 100644
  # use this on Mac OS X 10.3-
  #	$(MAKE) all MYCFLAGS=-DLUA_USE_MACOSX
  
+diff --git a/etc/lua.pc b/etc/lua.pc
+index 07e2852..596b93e 100644
+--- a/etc/lua.pc
++++ b/etc/lua.pc
+@@ -25,7 +25,7 @@ Name: Lua
+ Description: An Extensible Extension Language
+ Version: ${R}
+ Requires: 
+-Libs: -L${libdir} -llua -lm
++Libs: -L${libdir} -llua.5.1 -lm
+ Cflags: -I${includedir}
+ 
+ # (end of lua.pc)
