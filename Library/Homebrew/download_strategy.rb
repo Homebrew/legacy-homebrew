@@ -510,20 +510,16 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   private
 
+  def support_depth?
+    @ref_type != :revision && SHALLOW_CLONE_WHITELIST.any? { |rx| rx === @url }
+  end
+
   def git_dir
     @clone.join(".git")
   end
 
   def has_ref?
     quiet_system 'git', '--git-dir', git_dir, 'rev-parse', '-q', '--verify', @ref
-  end
-
-  def support_depth?
-    @ref_type != :revision and host_supports_depth?
-  end
-
-  def host_supports_depth?
-    SHALLOW_CLONE_WHITELIST.any? { |rx| rx === @url }
   end
 
   def repo_valid?
