@@ -2,6 +2,7 @@ require "formula"
 
 class GoInstalled < Requirement
   fatal true
+
   satisfy { which("go") }
 
   def message; <<-EOS.undent
@@ -29,7 +30,7 @@ class Gpm < Formula
   end
 
   test do
-    Pathname.write "Godeps", "github.com/pote/gpm-testing-package v6.1"
+    Pathname("Godeps").write "github.com/pote/gpm-testing-package v6.1"
 
     ## Runs the install action in gpm with $GOPATH pointing to
     ## homebrew"s temporary test path.
@@ -39,7 +40,7 @@ class Gpm < Formula
 
     ## Create a Go executable file that imports and uses the test package
     ## and execute it.
-    Pathname.write "go_code.go", <<EOF.undent
+    Pathname("go_code.go").write <<EOF.undent
       package main
 
       import (
