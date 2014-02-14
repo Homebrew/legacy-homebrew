@@ -6,6 +6,12 @@ class Git < Formula
   sha1 'e60667fc16e5a5f1cde46616b0458cc802707743'
   head 'https://github.com/git/git.git'
 
+  bottle do
+    sha1 "78bb720052e624b889b7c39e47ec40e463fa13b0" => :mavericks
+    sha1 "95b604ef6dff8a8abbc6819b1769c6df6ac45b03" => :mountain_lion
+    sha1 "10d46b289e9877f866e953dfc65fde260c80acb8" => :lion
+  end
+
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
   option 'with-brewed-openssl', "Build with Homebrew OpenSSL instead of the system version"
