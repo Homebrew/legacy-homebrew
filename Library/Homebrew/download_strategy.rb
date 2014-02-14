@@ -39,6 +39,8 @@ class AbstractDownloadStrategy
 end
 
 class VCSDownloadStrategy < AbstractDownloadStrategy
+  REF_TYPES = [:branch, :revision, :revisions, :tag].freeze
+
   def initialize name, resource
     super
     @ref_type, @ref = destructure_spec_hash(resource.specs)
