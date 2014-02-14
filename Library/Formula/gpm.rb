@@ -1,11 +1,27 @@
 require "formula"
 
+class GoInstalled < Requirement
+  fatal true
+  satisfy { which("go") }
+
+  def message; <<-EOS.undent
+    Go is required to use gpm
+
+    You can install Go with Homebrew:
+      brew install go
+
+    You can also installed from source in
+    http://golang.org/doc/install
+    EOS
+  end
+end
+
 class Gpm < Formula
   homepage "https://github.com/pote/gpm"
   url "https://github.com/pote/gpm/archive/v1.0.1.tar.gz"
   sha1 "f2e74eb20479bff9ddbb05369d19f82290a7b744"
 
-  depends_on "go" => :recommended
+  depends_on GoInstalled
 
   def install
     system "./configure", "--prefix=#{prefix}"
