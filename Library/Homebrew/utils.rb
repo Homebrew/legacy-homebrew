@@ -339,7 +339,7 @@ module GitHub extend self
       return
     end
 
-    prs.each {|i| yield "#{i["title"]} (#{i["pull_request"]["html_url"]})" }
+    prs.each { |i| yield "#{i["title"]} (#{i["html_url"]})" }
   end
 
   def private_repo?(user, repo)
