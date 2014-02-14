@@ -16,7 +16,7 @@ class PythonEnvironment < Requirement
   end
 
   satisfy do
-    !error_message
+    error_message == nil
   end
 
   def message
