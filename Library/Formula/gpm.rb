@@ -2,7 +2,7 @@ require "formula"
 
 class GoInstalled < Requirement
   fatal true
-
+  default_formula "go"
   satisfy { which("go") }
 
   def message; <<-EOS.undent
@@ -11,7 +11,7 @@ class GoInstalled < Requirement
     You can install Go with Homebrew:
       brew install go
 
-    You can also installed from source in
+    You can also installed from source in:
     http://golang.org/doc/install
     EOS
   end
