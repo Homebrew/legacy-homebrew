@@ -72,7 +72,7 @@ class Boost < Formula
       EOS
     end
 
-    if build.cxx11? and build.with? 'mpi' and python
+    if build.cxx11? and build.with? 'mpi' and build.with? 'python'
       raise <<-EOS.undent
         Building MPI support for Python using C++11 mode results in
         failure and hence disabled.  Please don't use this combination
