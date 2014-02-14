@@ -62,7 +62,7 @@ module Homebrew extend self
       if count == 0 and not blacklisted? query
         puts "No formula found for #{query.inspect}."
         begin
-          GitHub.find_pull_requests(query) { |pull| puts pull }
+          GitHub.print_pull_requests_matching(query)
         rescue GitHub::Error => e
           opoo e.message
         end
