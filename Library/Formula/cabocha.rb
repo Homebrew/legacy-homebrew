@@ -8,8 +8,7 @@ class Cabocha < Formula
   depends_on 'crf++'
   depends_on 'mecab'
 
-  option 'with-juman', 'use juman posset'
-  option 'with-unidic', 'use unidic posset'
+  option 'posset', 'choose default posset: IPA, JUMAN, UNIDIC'
 
   def install
     ENV["LIBS"] = '-liconv'
@@ -19,11 +18,11 @@ class Cabocha < Formula
       s.change_make_var! 'CXXFLAGS', ENV.cflags
     end
 
+    posset = ARGV.value('posset') || "IPA"
     args = ["--with-charset=utf8",
             "--disable-dependency-tracking",
             "--prefix=#{prefix}"]
-    args << "--with-posset=JUMAN" if build.with? "juman"
-    args << "--with-posset=UNIDIC" if build.with? "unidic"
+    args << "--with-posset=#{posset}"
 
     system "./configure", *args
     system "make install"
