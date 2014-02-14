@@ -78,7 +78,7 @@ class Pygobject3 < Formula
     end
 
     pythons.each do |python, version|
-      ENV["PYTHON"] = "#{python}"
+      ENV["PYTHON"] = "#{python}" if Formula.factory(python).installed?
       system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
       system "make", "install"
       system "make", "check" if build.with? 'tests'
