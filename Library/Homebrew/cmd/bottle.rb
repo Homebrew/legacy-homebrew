@@ -108,6 +108,10 @@ module Homebrew extend self
       return ofail "Formula not installed with '--build-bottle': #{f.name}"
     end
 
+    unless f.stable
+      return ofail "Formula has no stable version: #{f.name}"
+    end
+
     if ARGV.include? '--no-revision'
       bottle_revision = 0
     else
