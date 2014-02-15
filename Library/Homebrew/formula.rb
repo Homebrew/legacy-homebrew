@@ -569,7 +569,7 @@ class Formula
     @exec_count ||= 0
     @exec_count += 1
     logd = HOMEBREW_LOGS/name
-    logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd.to_s).split(' ').first]
+    logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
     rd, wr = IO.pipe
@@ -579,7 +579,7 @@ class Formula
       $stdout.reopen wr
       $stderr.reopen wr
       args.collect!{|arg| arg.to_s}
-      exec(cmd.to_s, *args) rescue nil
+      exec(cmd, *args) rescue nil
       puts "Failed to execute: #{cmd}"
       exit! 1 # never gets here unless exec threw or failed
     end
