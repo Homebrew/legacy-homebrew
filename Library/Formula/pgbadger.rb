@@ -2,8 +2,8 @@ require 'formula'
 
 class Pgbadger < Formula
   homepage 'http://dalibo.github.io/pgbadger/'
-  url 'http://downloads.sourceforge.net/project/pgbadger/4.1/pgbadger-4.1.tar.gz'
-  sha1 'c865887aaab22c99ea557ac426629cef10f1471a'
+  url 'http://downloads.sourceforge.net/project/pgbadger/5.0/pgbadger-5.0.tar.gz'
+  sha1 'df374665eb5c2e6bbb3232ff728ad3bf22976903'
 
   def install
     system "perl", "Makefile.PL", "DESTDIR=."
