@@ -2,8 +2,8 @@ require 'formula'
 
 class RabbitmqC < Formula
   homepage 'https://github.com/alanxz/rabbitmq-c'
-  url 'https://github.com/alanxz/rabbitmq-c/archive/v0.4.1.tar.gz'
-  sha1 '97ceb4039ca5a71b73b417bc7257e263ea1e2f4d'
+  url 'https://github.com/alanxz/rabbitmq-c/archive/v0.5.0.tar.gz'
+  sha1 '826286c3f04695bdc231d8e7b0541f871975cdcc'
 
   head 'https://github.com/alanxz/rabbitmq-c.git'
 
@@ -17,8 +17,8 @@ class RabbitmqC < Formula
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
 
   resource 'codegen' do
-    url 'https://github.com/rabbitmq/rabbitmq-codegen/archive/rabbitmq_v3_2_1.tar.gz'
-    sha1 '9fb2453018f499b2188076f5bd6d4cf9a902e90b'
+    url 'https://github.com/rabbitmq/rabbitmq-codegen/archive/rabbitmq_v3_2_3.tar.gz'
+    sha1 '67a0857e78b5cfce7ea8c433313faa60dc557f9a'
   end
 
   def install
