@@ -2,8 +2,8 @@ require 'formula'
 
 class Check < Formula
   homepage 'http://check.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/check/check/0.9.11/check-0.9.11.tar.gz'
-  sha1 '84b5af72dd49df4ac837645d117ce9126535d549'
+  url 'http://downloads.sourceforge.net/project/check/check/0.9.12/check-0.9.12.tar.gz'
+  sha1 'eaa4c1c3273901b63c7bf054d402b554ad8dd9c9'
 
   option :universal
 
