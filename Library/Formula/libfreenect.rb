@@ -2,8 +2,8 @@ require 'formula'
 
 class Libfreenect < Formula
   homepage 'http://openkinect.org'
-  url 'https://github.com/OpenKinect/libfreenect/archive/v0.2.0.tar.gz'
-  sha1 'cc6ec1d48411439769d51a645f684a8aeedcf1f1'
+  url 'https://github.com/OpenKinect/libfreenect/archive/v0.4.0.tar.gz'
+  sha1 'bec4c9f8a9e5ba39a874680882903858d52574df'
 
   head 'https://github.com/OpenKinect/libfreenect.git'
 
