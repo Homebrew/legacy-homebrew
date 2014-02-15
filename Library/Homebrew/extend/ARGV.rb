@@ -158,7 +158,7 @@ module HomebrewArgvExtension
   end
 
   def help?
-    empty? || grep(/(-h|--help|--usage|-\?|help)/).any?
+    empty? || grep(/(-h$|--help$|--usage$|-\?$|help$)/).any?
   end
 
   def version?
