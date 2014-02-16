@@ -419,7 +419,9 @@ class FormulaAuditor
       problem "No double 'without': Use `build.without? '#{$1}'` to check for \"--without-#{$1}\""
     end
 
-    unless f.name == 'mongodb' # Mongo writes out a Ruby script that uses ARGV
+    # Mongo writes out a Ruby script that uses ARGV
+    # Python formulae need ARGV for Requirements
+    unless f.name == 'mongodb' || f.name == "pyobject3"
       if line =~ /ARGV\.(?!(debug\?|verbose\?|value[\(\s]))/
         problem "Use build instead of ARGV to check options"
       end
