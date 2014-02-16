@@ -14,7 +14,7 @@ class Mikmod < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/mikmod", "-V"
   end
 end

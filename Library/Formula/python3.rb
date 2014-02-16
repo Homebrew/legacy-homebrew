@@ -26,13 +26,13 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.1.tar.gz'
-    sha1 '3e4a325d807eb0104e98985e7bd9f1ef86fc2efa'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.2.tar.gz'
+    sha1 '547eff11ea46613e8a9ba5b12a89c1010ecc4e51'
   end
 
   resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.2.tar.gz'
-    sha1 '4f43a6b04f83b8d83bee702750ff35be2a2b6af1'
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.4.tar.gz'
+    sha1 '35ccb7430356186cf253615b70f8ee580610f734'
   end
 
   def patches

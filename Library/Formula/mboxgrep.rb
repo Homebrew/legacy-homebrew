@@ -15,7 +15,7 @@ class Mboxgrep < Formula
     system "make", "install"
   end
 
-  def test
+  test do
     system "#{bin}/mboxgrep", "--version"
   end
 end

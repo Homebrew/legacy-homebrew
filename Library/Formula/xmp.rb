@@ -31,7 +31,7 @@ class Xmp < Formula
     share.install "ub-name.it" unless build.head?
   end
 
-  def test
+  test do
     system "#{bin}/xmp", "--load-only", share/"ub-name.it"
   end
 end

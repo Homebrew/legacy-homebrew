@@ -6,6 +6,12 @@ class Zsh < Formula
   mirror 'http://www.zsh.org/pub/zsh-5.0.5.tar.bz2'
   sha1 '75426146bce45ee176d9d50b32f1ced78418ae16'
 
+  bottle do
+    sha1 "d8d7ba4016377561d5d823a30abff7c81fee1577" => :mavericks
+    sha1 "34fbefd6275edb7ee9fcc8d0ce3da4438ca412b1" => :mountain_lion
+    sha1 "63a53240287c1f11204217176aab8246eab4d43c" => :lion
+  end
+
   depends_on 'gdbm'
   depends_on 'pcre'
 
@@ -38,14 +44,11 @@ class Zsh < Formula
     inreplace ["Makefile", "Src/Makefile"],
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
-    system "make install"
-
-    if ENV['HOMEBREW_KEEP_INFO']
-      system "make install.info"
-    end
+    system "make", "install"
+    system "make", "install.info"
   end
 
-  def test
+  test do
     system "#{bin}/zsh", "--version"
   end
 

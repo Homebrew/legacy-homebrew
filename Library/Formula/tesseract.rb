@@ -4,15 +4,16 @@ class Tesseract < Formula
   homepage 'http://code.google.com/p/tesseract-ocr/'
   url 'http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz'
   sha1 'a950acf7b75cf851de2de787e9abb62c58ca1827'
-  head 'http://tesseract-ocr.googlecode.com/svn/trunk'
 
-  option "all-languages", "Install recognition data for all languages"
+  head do
+    url 'http://tesseract-ocr.googlecode.com/svn/trunk'
 
-  if build.head?
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
+
+  option "all-languages", "Install recognition data for all languages"
 
   depends_on 'libtiff'
   depends_on 'leptonica'

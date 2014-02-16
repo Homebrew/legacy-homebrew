@@ -15,6 +15,7 @@ class Minbif < Formula
   depends_on 'glib'
   depends_on 'gettext'
   depends_on 'finch'
+  depends_on 'gnutls'
   depends_on 'imlib2' => :optional
   depends_on 'libcaca' => :optional
 
@@ -33,12 +34,12 @@ class Minbif < Formula
     args = %W[
       PREFIX=#{prefix}
       ENABLE_MINBIF=ON
-      ENABLE_IMLIB=ON
-      ENABLE_CACA=ON
       ENABLE_PLUGIN=ON
       ENABLE_VIDEO=OFF
       ENABLE_TLS=ON
     ]
+    args << 'ENABLE_IMLIB=' + ((build.include? 'imlib2') ? 'ON' : 'OFF')
+    args << 'ENABLE_CACA=' + ((build.include? 'libcaca') ? 'ON' : 'OFF')
     args << 'ENABLE_PAM=' + ((build.include? 'pam') ? 'ON' : 'OFF')
 
     system 'make', *args

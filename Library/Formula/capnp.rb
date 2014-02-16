@@ -5,11 +5,12 @@ class Capnp < Formula
   url 'http://capnproto.org/capnproto-c++-0.4.0.tar.gz'
   sha1 '1d356a0229a9c6b3665930a4b166b91cba03825b'
 
+  # TODO add fails_with statements for FSF GCC
   fails_with :gcc do
     cause "Cap'n Proto requires C++11 support"
   end
 
-  fails_with :gcc_4_7 do
+  fails_with :gcc_4_0 do
     cause "Cap'n Proto requires C++11 support"
   end
 

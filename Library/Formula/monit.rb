@@ -12,7 +12,7 @@ class Monit < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/monit", "-h"
   end
 end

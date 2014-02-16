@@ -25,7 +25,7 @@ class Docker < Formula
   depends_on "go" => :build
 
   def install
-    ENV["GIT_DIR"] = downloader.cached_location/".git"
+    ENV["GIT_DIR"] = cached_download/".git"
     ENV["AUTO_GOPATH"] = "1"
 
     system "hack/make.sh", "dynbinary"

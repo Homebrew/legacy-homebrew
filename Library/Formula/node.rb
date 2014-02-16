@@ -1,6 +1,6 @@
 require 'formula'
 
-class NpmNotInstalled < Requirement
+class NpmRequirement < Requirement
   fatal true
 
   def modules_folder
@@ -32,8 +32,8 @@ end
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.25/node-v0.10.25.tar.gz'
-  sha1 '1e330b4fbb6f7bb858a0b37d8573dd4956f40885'
+  url 'http://nodejs.org/dist/v0.10.26/node-v0.10.26.tar.gz'
+  sha1 '2340ec2dce1794f1ca1c685b56840dd515a271b2'
 
   devel do
     url 'http://nodejs.org/dist/v0.11.11/node-v0.11.11.tar.gz'
@@ -46,7 +46,7 @@ class Node < Formula
   option 'without-npm', 'npm will not be installed'
   option 'without-completion', 'npm bash completion will not be installed'
 
-  depends_on NpmNotInstalled unless build.without? 'npm'
+  depends_on NpmRequirement => :recommended
   depends_on :python
 
   fails_with :llvm do

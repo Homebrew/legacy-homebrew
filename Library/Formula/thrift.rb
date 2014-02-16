@@ -5,9 +5,9 @@ class Thrift < Formula
   url 'http://archive.apache.org/dist/thrift/0.9.1/thrift-0.9.1.tar.gz'
   sha1 'dc54a54f8dc706ffddcd3e8c6cd5301c931af1cc'
 
-  head 'https://git-wip-us.apache.org/repos/asf/thrift.git'
+  head do
+    url 'https://git-wip-us.apache.org/repos/asf/thrift.git'
 
-  unless build.stable?
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool

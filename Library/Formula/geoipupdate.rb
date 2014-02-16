@@ -19,8 +19,10 @@ class Geoipupdate < Formula
 
   # Fixes use of getline on pre-Lion; will be in next release
   def patches
-    "https://github.com/maxmind/geoipupdate/commit/bdf11969f4c7c6b173466092287a2fdbd485b248.patch"
-  end unless build.head?
+    unless build.head?
+      "https://github.com/maxmind/geoipupdate/commit/bdf11969f4c7c6b173466092287a2fdbd485b248.patch"
+    end
+  end
 
   def install
     ENV.universal_binary if build.universal?

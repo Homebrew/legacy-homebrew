@@ -15,7 +15,7 @@ class SofiaSip < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/localinfo"
     system "#{bin}/sip-date"
   end
