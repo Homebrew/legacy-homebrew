@@ -108,6 +108,11 @@ class MysqlCluster < Formula
       s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
     ln_s "#{prefix}/support-files/mysql.server", bin
+
+    # Move mysqlaccess to libexec
+    libexec.mkpath
+    libexec.install "#{bin}/mysqlaccess", "#{bin}/mysqlaccess.conf",
+                    "#{bin}/mcc_config.py"
   end
 
   def caveats; <<-EOS.undent
