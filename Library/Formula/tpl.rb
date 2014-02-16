@@ -6,25 +6,23 @@ class Tpl < Formula
   sha1 "b7d16e9bcda16d86a5dd2d0af0ab90f7e85aa050"
   head "https://github.com/troydhanson/tpl.git"
 
-  option 'with-tests', 'Verify the build using the test suite.'
+  option "with-tests", "Verify the build using the test suite."
 
   depends_on :autoconf
   depends_on :automake
   depends_on :libtool
 
   def install
-    inreplace 'configure.ac' do |s|
-      s.gsub! "AM_INIT_AUTOMAKE", "AM_INIT_AUTOMAKE([foreign])"
-    end
+    inreplace "configure.ac", "AM_INIT_AUTOMAKE", "AM_INIT_AUTOMAKE([foreign])"
 
-    system "autoreconf -i"
+    system "autoreconf", "-i"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
 
-    if build.include? 'tests'
+    if build.with? "tests"
       cd "tests" do
         system "make"
       end
