@@ -94,7 +94,8 @@ class Formula
     end
 
     IGNORED_EXCEPTIONS = [SyntaxError, TypeError, NameError,
-                          ArgumentError, FormulaSpecificationError]
+                          ArgumentError, FormulaSpecificationError,
+                          FormulaValidationError,]
 
     def version_for_sha sha
       formula_for_sha(sha) {|f| f.version }
