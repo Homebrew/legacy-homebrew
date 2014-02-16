@@ -2,7 +2,7 @@ require 'formula'
 
 class MysqlConnectorOdbc < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.1/en/connector-odbc.html'
-  url 'http://mysql.mirror.iweb.ca/Downloads/Connector-ODBC/5.1/mysql-connector-odbc-5.1.12-src.tar.gz'
+  url 'http://mysql.mirror.iweb.ca/Connector-ODBC/5.1/mysql-connector-odbc-5.1.12-src.tar.gz'
   sha1 '6ee162de8a277cdb017c5c8eee6284601837e7da'
 
   # Won't compile against mysql-connector-c, as the C connector exports an API version
