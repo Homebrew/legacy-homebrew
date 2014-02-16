@@ -143,8 +143,14 @@ class FormulaAuditor
       end
 
       dep.options.reject do |opt|
-        # TODO -- fix for :recommended, should still allow --with-xyz
-        dep_f.build.has_option?(opt.name)
+        next true if dep_f.build.has_option?(opt.name)
+        dep_f.requirements.detect do |r|
+          if r.tags.include? :recommended
+            opt.name == "with-#{r.name}"
+          elsif r.tags.include? :optional
+            opt.name == "without-#{r.name}"
+          end
+        end
       end.each do |opt|
         problem "Dependency #{dep} does not define option #{opt.name.inspect}"
       end
