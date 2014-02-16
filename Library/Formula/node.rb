@@ -72,11 +72,11 @@ class Node < Formula
           dir.install_symlink(file.relative_path_from(dir))
         end
       end
+    end
 
-      if build.with? "completion"
-        bash_completion.install_symlink \
-          lib/"node_modules/npm/lib/utils/completion.sh" => "npm"
-      end
+    if build.with? "completion"
+      bash_completion.install_symlink \
+        lib/"node_modules/npm/lib/utils/completion.sh" => "npm"
     end
   end
 
