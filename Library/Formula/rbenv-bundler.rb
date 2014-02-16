@@ -8,6 +8,11 @@ class RbenvBundler < Formula
 
   depends_on 'rbenv'
 
+  def patches
+    # Pending new tag: https://github.com/carsomyr/rbenv-bundler/issues/38
+    "https://github.com/carsomyr/rbenv-bundler/commit/0aebf2.patch"
+  end
+
   def install
     prefix.install Dir['*']
   end
