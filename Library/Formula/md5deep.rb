@@ -11,6 +11,7 @@ class Md5deep < Formula
   end
 
   def test
-    system("#{bin}/md5deep -h") && system("#{bin}/hashdeep -h")
+    system bin/"md5deep", "-h"
+    system bin/"hashdeep", "-h"
   end
 end
