@@ -17,8 +17,8 @@ class Mpich2 < Formula
   end
 
   devel do
-    url 'http://www.mpich.org/static/downloads/3.1rc3/mpich-3.1rc3.tar.gz'
-    sha1 '5dc3aff479df6b88328f9800652eae3b0ec587e7'
+    url 'http://www.mpich.org/static/downloads/3.1rc4/mpich-3.1rc4.tar.gz'
+    sha1 '8948f61ec6ee2a36f354f892b083f63cfc7c5c28'
   end
 
   option 'disable-fortran', "Do not attempt to build Fortran bindings"
