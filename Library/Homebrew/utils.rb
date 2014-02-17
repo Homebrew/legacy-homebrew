@@ -254,6 +254,7 @@ module GitHub extend self
   Error = Class.new(StandardError)
   RateLimitExceededError = Class.new(Error)
   HTTPNotFoundError = Class.new(Error)
+  AuthenticationFailedError = Class.new(Error)
 
   def open url, headers={}, &block
     # This is a no-op if the user is opting out of using the GitHub API.
@@ -288,6 +289,8 @@ module GitHub extend self
     end
 
     case e.io.status.first
+    when "401", "403"
+      raise AuthenticationFailedError, e.message, e.backtrace
     when "404"
       raise HTTPNotFoundError, e.message, e.backtrace
     else
