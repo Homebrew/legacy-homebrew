@@ -1,8 +1,11 @@
 require 'formula'
 require 'blacklist'
 require 'utils'
+require 'thread'
 
 module Homebrew extend self
+
+  SEARCH_ERROR_QUEUE = Queue.new
 
   # A regular expession to capture the username (one or more char but no `/`,
   # which has to be escaped like `\/`), repository, followed by an optional `/`
@@ -64,10 +67,12 @@ module Homebrew extend self
         begin
           GitHub.print_pull_requests_matching(query)
         rescue GitHub::Error => e
-          opoo e.message
+          SEARCH_ERROR_QUEUE << e
         end
       end
     end
+
+    raise SEARCH_ERROR_QUEUE.pop unless SEARCH_ERROR_QUEUE.empty?
   end
 
   SEARCHABLE_TAPS = [
@@ -115,12 +120,14 @@ module Homebrew extend self
         end
       end
     end
-    results
-  rescue GitHub::RateLimitExceededError => e
-    []
-  rescue GitHub::Error => e
+  rescue GitHub::HTTPNotFoundError => e
     opoo "Failed to search tap: #{user}/#{repo}. Please run `brew update`"
     []
+  rescue GitHub::Error => e
+    SEARCH_ERROR_QUEUE << e
+    []
+  else
+    results
   end
 
   def search_formulae rx
