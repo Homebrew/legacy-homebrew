@@ -271,21 +271,28 @@ module GitHub extend self
       yield Utils::JSON.load(f.read)
     end
   rescue OpenURI::HTTPError => e
+    handle_api_error(e)
+  rescue SocketError, OpenSSL::SSL::SSLError => e
+    raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
+  rescue Utils::JSON::Error => e
+    raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
+  end
+
+  def handle_api_error(e)
     if e.io.meta['x-ratelimit-remaining'].to_i <= 0
       raise RateLimitExceededError, <<-EOS.undent, e.backtrace
         GitHub #{Utils::JSON.load(e.io.read)['message']}
         You may want to create an API token: https://github.com/settings/applications
         and then set HOMEBREW_GITHUB_API_TOKEN.
         EOS
-    elsif e.io.status.first == "404"
+    end
+
+    case e.io.status.first
+    when "404"
       raise HTTPNotFoundError, e.message, e.backtrace
     else
       raise Error, e.message, e.backtrace
     end
-  rescue SocketError, OpenSSL::SSL::SSLError => e
-    raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
-  rescue Utils::JSON::Error => e
-    raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
   end
 
   def issues_matching(query, qualifiers={})
