@@ -253,7 +253,6 @@ module GitHub extend self
 
   Error = Class.new(RuntimeError)
   HTTPNotFoundError = Class.new(Error)
-  AuthenticationFailedError = Class.new(Error)
 
   class RateLimitExceededError < Error
     def initialize(reset, error)
@@ -271,6 +270,16 @@ module GitHub extend self
       else
         "#{seconds} seconds"
       end
+    end
+  end
+
+  class AuthenticationFailedError < Error
+    def initialize(error)
+      super <<-EOS.undent
+        GitHub #{error}
+        HOMEBREW_GITHUB_API_TOKEN may be invalid or expired, check:
+          https://github.com/settings/applications
+        EOS
     end
   end
 
@@ -306,7 +315,7 @@ module GitHub extend self
 
     case e.io.status.first
     when "401", "403"
-      raise AuthenticationFailedError, e.message, e.backtrace
+      raise AuthenticationFailedError.new(e.message)
     when "404"
       raise HTTPNotFoundError, e.message, e.backtrace
     else
