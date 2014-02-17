@@ -1,7 +1,7 @@
 require 'formula'
 
 class Calc < Formula
-  homepage 'http://www.isthe.com/chongo/tech/comp/calc/'
+  homepage 'http://members.tip.net.au/~dbell/'
   url 'http://members.tip.net.au/%7Edbell/programs/calc-3.1.tar.gz'
   sha1 'befa3faf144827fd742bdde22d2e0c5aec50dd4c'
   
