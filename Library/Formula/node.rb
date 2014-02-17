@@ -44,7 +44,7 @@ class Node < Formula
 
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'
-  option 'without-completion', 'npm bash completion will not be installed'
+  option 'without-npm-completion', 'npm bash completion will not be installed'
 
   depends_on NpmNotInstalled unless build.without? 'npm'
   depends_on :python
@@ -74,7 +74,7 @@ class Node < Formula
       end
     end
 
-    if build.with? "completion"
+    if build.with? "npm-completion"
       bash_completion.install_symlink \
         lib/"node_modules/npm/lib/utils/completion.sh" => "npm"
     end
