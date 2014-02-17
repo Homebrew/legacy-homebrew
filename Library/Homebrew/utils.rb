@@ -251,7 +251,7 @@ end
 module GitHub extend self
   ISSUES_URI = URI.parse("https://api.github.com/search/issues")
 
-  Error = Class.new(StandardError)
+  Error = Class.new(RuntimeError)
   RateLimitExceededError = Class.new(Error)
   HTTPNotFoundError = Class.new(Error)
   AuthenticationFailedError = Class.new(Error)
