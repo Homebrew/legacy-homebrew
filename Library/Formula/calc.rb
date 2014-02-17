@@ -4,7 +4,7 @@ class Calc < Formula
   homepage 'http://members.tip.net.au/~dbell/'
   url 'http://members.tip.net.au/%7Edbell/programs/calc-3.1.tar.gz'
   sha1 'befa3faf144827fd742bdde22d2e0c5aec50dd4c'
-  
+
   depends_on 'readline'
 
   def patches
@@ -46,7 +46,7 @@ class Calc < Formula
 
   test do
     output = `#{bin}/calc 0xA + 1`.strip
-    assert_equal "11", output
+    assert_equal "$1:\t11", output
     assert_equal 0, $?.exitstatus
   end
 end
