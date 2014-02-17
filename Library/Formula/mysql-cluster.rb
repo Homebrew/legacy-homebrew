@@ -2,8 +2,8 @@ require 'formula'
 
 class MysqlCluster < Formula
   homepage 'http://www.mysql.com/cluster/'
-  url 'http://mysql.llarian.net/Downloads/MySQL-Cluster-7.3/mysql-cluster-gpl-7.3.2.tar.gz'
-  sha1 '5b94e177ccbefd28e10b3734fbfc007da296bedd'
+  url 'http://mysql.llarian.net/Downloads/MySQL-Cluster-7.3/mysql-cluster-gpl-7.3.4.tar.gz'
+  sha1 '01003903da6802885bc98565ebe07f76714488fe'
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
@@ -108,6 +108,11 @@ class MysqlCluster < Formula
       s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
     ln_s "#{prefix}/support-files/mysql.server", bin
+
+    # Move mysqlaccess to libexec
+    libexec.mkpath
+    libexec.install "#{bin}/mysqlaccess", "#{bin}/mysqlaccess.conf",
+                    "#{bin}/mcc_config.py"
   end
 
   def caveats; <<-EOS.undent

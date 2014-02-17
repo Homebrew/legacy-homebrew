@@ -76,19 +76,22 @@ class Dependency
     # The default filter, which is applied when a block is not given, omits
     # optionals and recommendeds based on what the dependent has asked for.
     def expand(dependent, deps=dependent.deps, &block)
-      expanded_deps = deps.map do |dep|
+      expanded_deps = []
+
+      deps.each do |dep|
         case action(dependent, dep, &block)
         when :prune
-          next []
+          next
         when :skip
-          expand(dep.to_formula, &block)
+          expanded_deps.concat(expand(dep.to_formula, &block))
         when :keep_but_prune_recursive_deps
-          [dep]
+          expanded_deps << dep
         else
-          next [] if dependent.to_s == dep.name
-          expand(dep.to_formula, &block) << dep
+          next if dependent.to_s == dep.name
+          expanded_deps.concat(expand(dep.to_formula, &block))
+          expanded_deps << dep
         end
-      end.flatten
+      end
 
       merge_repeats(expanded_deps)
     end
