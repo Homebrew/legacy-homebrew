@@ -28,4 +28,16 @@ class Phantomjs < Formula
     bin.install 'bin/phantomjs'
     (share+'phantomjs').install 'examples'
   end
+
+  test do
+    path = testpath/"test.js"
+    path.write <<-EOS
+      console.log('hello');
+      phantom.exit();
+    EOS
+
+    output = `#{bin}/phantomjs #{path}`.strip
+    assert_equal "hello", output
+    assert_equal 0, $?.exitstatus
+  end
 end
