@@ -6,39 +6,43 @@ class Mercurial < Formula
   mirror 'http://fossies.org/linux/misc/mercurial-2.9.tar.gz'
   sha1 '9b7d8259434f6aae29f6eee3dd5665b516857cf3'
 
-  head 'http://selenic.com/repo/hg', :using => :hg
-
-  option 'enable-docs', "Build the docs (and require docutils)"
-
-  depends_on :python
-  depends_on 'docutils' => :python if build.include? 'enable-docs'
-
-  def install
-    ENV.minimal_optimization if MacOS.version <= :snow_leopard
-    if build.include? 'enable-docs'
-      system "make", "doc", "PREFIX=#{prefix}"
-      system "make", "install-doc", "PREFIX=#{prefix}"
-    end
-
-    system "make", "PREFIX=#{prefix}", "install-bin"
-    # Install man pages, which come pre-built in source releases
-    man1.install 'doc/hg.1'
-    man5.install 'doc/hgignore.5', 'doc/hgrc.5'
-
-    # install the completion scripts
-    bash_completion.install 'contrib/bash_completion' => 'hg-completion.bash'
-    zsh_completion.install 'contrib/zsh_completion' => '_hg'
+  # The hg repo is a recursive dep - so build stable in-place then checkout.
+  head do
+    url 'http://mercurial.selenic.com/release/mercurial-2.9.tar.gz'
+    sha1 '9b7d8259434f6aae29f6eee3dd5665b516857cf3'
   end
 
-  def caveats
-    if build.head?; <<-EOS.undent
-      To install the --HEAD version of mercurial, you have to:
-        1. `brew install mercurial`  # so brew can use this to fetch sources!
-        2. `brew unlink mercurial`
-        3. `brew install mercurial --HEAD`
-        4. `brew cleanup mercurial`  # to remove the older non-HEAD version
-      EOS
+  # Pull in docutils to buildpath/doc for manpage. It's not installed.
+  resource 'docutils' do
+    url 'http://prdownloads.sourceforge.net/docutils/docutils-0.11.tar.gz'
+    sha1 '3894ebcbcbf8aa54ce7c3d2c8f05460544912d67'
+  end
+
+  depends_on :python
+
+  def install
+    ENV.append 'CFLAGS', '-Qunused-arguments' if ENV.compiler == :clang
+    ENV.minimal_optimization if MacOS.version <= :snow_leopard
+
+    if build.head?
+      # Move to parent directory of buildpath.
+      mv Dir['*'], '..'
+      cd '..' do
+        buildpath.rmtree
+        system 'python', 'setup.py', 'build_ext', '--inplace'
+        system './hg', 'clone', 'http://selenic.com/repo/hg', buildpath
+      end
     end
+
+    (buildpath/'docutils').install resource('docutils')
+    mv 'docutils/docutils', 'doc'
+
+    system 'make', 'doc'
+    system 'make', 'install', "PREFIX=#{prefix}"
+
+    bin.install 'hgeditor'
+    bash_completion.install 'contrib/bash_completion' => 'hg-completion.bash'
+    zsh_completion.install 'contrib/zsh_completion' => '_hg'
   end
 
   test do
