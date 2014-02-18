@@ -11,7 +11,9 @@ class Uade < Formula
   depends_on 'libao'
 
   # Upstream patch to fix compiler detection under superenv
-  def patches; DATA; end unless build.head?
+  def patches
+    DATA unless build.head?
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}"
