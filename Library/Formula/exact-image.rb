@@ -15,6 +15,7 @@ class ExactImage < Formula
 
   def patches
     # fixes exact-image to adhere to libPNG 1.4+ APIs
+    # submitted a bugfix on http://freecode.com/projects/exact-image
     DATA
   end
 
