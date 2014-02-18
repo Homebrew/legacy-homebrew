@@ -35,8 +35,10 @@ class Zpython < Formula
   def patches
     # Note, non-head version is completly implemented in this lengthy patch
     # later on, we hope to use https://bitbucket.org/ZyX_I/zsh.git to download a tagged release.
-    {:p1 => "https://gist.github.com/felixbuenemann/5790777/raw/cb5ea3b34617174e50fd3972792ec0944959de3c/zpython.patch"}
-  end unless build.head?
+    unless build.head?
+      {:p1 => "https://gist.github.com/felixbuenemann/5790777/raw/cb5ea3b34617174e50fd3972792ec0944959de3c/zpython.patch"}
+    end
+  end
 
   def install
     args = %W[
