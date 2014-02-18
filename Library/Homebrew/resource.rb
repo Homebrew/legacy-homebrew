@@ -80,7 +80,7 @@ class Resource
     HOMEBREW_CACHE.mkpath
     downloader.fetch
   rescue ErrorDuringExecution, CurlDownloadStrategyError => e
-    raise DownloadError.new(downloader.name)
+    raise DownloadError.new(self, e)
   else
     cached_download
   end
