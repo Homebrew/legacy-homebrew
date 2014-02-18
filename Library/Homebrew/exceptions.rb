@@ -231,8 +231,11 @@ end
 
 # Raised in Resource.fetch
 class DownloadError < RuntimeError
-  def initialize(formula)
-    super "Failed to download resource for package: #{formula}"
+  def initialize(resource, e)
+    super <<-EOS.undent
+      Failed to download resource #{resource.download_name.inspect}
+      #{e.message}
+      EOS
   end
 end
 
