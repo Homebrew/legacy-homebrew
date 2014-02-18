@@ -2,8 +2,8 @@ require 'formula'
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.3.3/Python-3.3.3.tar.bz2'
-  sha1 '6ff7d34427cbf7bf875e6a456850231e488118ca'
+  url 'http://python.org/ftp/python/3.3.4/Python-3.3.4.tgz'
+  sha1 '0561d2a24067c03ed2b29c58a12e126e86ccdc58'
   VER='3.3'  # The <major>.<minor> is used so often.
 
   head 'http://hg.python.org/cpython', :using => :hg, :branch => VER
@@ -26,13 +26,13 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.0.1.tar.gz'
-    sha1 '5283b4dca46d45efd1156713ab51836509646c03'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.1.tar.gz'
+    sha1 '3e4a325d807eb0104e98985e7bd9f1ef86fc2efa'
   end
 
   resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
-    sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.2.tar.gz'
+    sha1 '4f43a6b04f83b8d83bee702750ff35be2a2b6af1'
   end
 
   def patches
@@ -136,7 +136,8 @@ class Python3 < Formula
 
     # "python3" executable is forgotten for framework builds.
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
-    ln_s "#{bin}/python#{VER}", "#{bin}/python3" unless (bin/"python3").exist?
+    ln_sf "#{bin}/python#{VER}", "#{bin}/python3"
+    ln_sf "#{bin}/python#{VER}-config", "#{bin}/python3-config"
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with

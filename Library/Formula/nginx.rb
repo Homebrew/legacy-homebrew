@@ -2,12 +2,12 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.4.4.tar.gz'
-  sha1 '304d5991ccde398af2002c0da980ae240cea9356'
+  url 'http://nginx.org/download/nginx-1.4.5.tar.gz'
+  sha1 '96c1aecd314f73a3c30a0db8c39ad15ddacb074e'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.5.9.tar.gz'
-    sha1 '9904f15c877d679c5164242f8e59a176392aa573'
+    url 'http://nginx.org/download/nginx-1.5.10.tar.gz'
+    sha1 '89e2317c0d27a7386f62c3ba9362ae10b05e3159'
   end
 
   head 'http://hg.nginx.org/nginx/', :using => :hg

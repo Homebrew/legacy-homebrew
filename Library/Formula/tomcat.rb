@@ -8,13 +8,13 @@ class Tomcat < Formula
   option "with-fulldocs", "Install full documentation locally"
 
   devel do
-    url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.0-RC10/bin/apache-tomcat-8.0.0-RC10.tar.gz'
-    sha1 'c6a8dc2a62dd6a3980d30ca2961c283c39e28ebe'
+    url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.3/bin/apache-tomcat-8.0.3.tar.gz'
+    sha1 'f98f796c17c7653fc6bceac8be049df1e2bedc4d'
 
     resource 'fulldocs' do
-      url 'http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.0-RC10/bin/apache-tomcat-8.0.0-RC10-fulldocs.tar.gz'
-      version '8.0.0-RC10'
-      sha1 'a1859e67f6aa70e448d7db8901b0fc5bc4051aa6'
+      url 'http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.3/bin/apache-tomcat-8.0.3-fulldocs.tar.gz'
+      version '8.0.3'
+      sha1 '3270682abb87d8ec94beabf4ca4952807c6aa6db'
     end
   end
 

@@ -21,8 +21,16 @@ class Doxygen < Formula
   end
 
   def install
+    # libclang is installed under #{HOMEBREW_PREFIX}/opt/llvm/
+    if build.with? 'libclang'
+      inreplace 'configure' do |s|
+        s.gsub! /libclang_hdr_dir=\".*$/, "libclang_hdr_dir=\"#{HOMEBREW_PREFIX}/opt/llvm/include\""
+        s.gsub! /libclang_lib_dir=\".*$/, "libclang_lib_dir=\"#{HOMEBREW_PREFIX}/opt/llvm/lib\""
+      end
+    end
+
     args = ["--prefix", prefix]
-    args << '--with-libclang' if build.with? 'libclang'
+    args << '--with-libclang-static' if build.with? 'libclang'
     args << '--with-doxywizard' if build.with? 'doxywizard'
     system "./configure", *args
     # Per Macports:

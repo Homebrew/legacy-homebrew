@@ -44,6 +44,7 @@ class Node < Formula
 
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'
+  option 'without-completion', 'npm bash completion will not be installed'
 
   depends_on NpmNotInstalled unless build.without? 'npm'
   depends_on :python
@@ -56,12 +57,12 @@ class Node < Formula
     args = %W{--prefix=#{prefix}}
 
     args << "--debug" if build.include? 'enable-debug'
-    args << "--without-npm" if build.include? 'without-npm'
+    args << "--without-npm" if build.without? "npm"
 
     system "./configure", *args
     system "make install"
 
-    unless build.include? 'without-npm'
+    if build.with? "npm"
       (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
 
       # Link npm manpages
@@ -70,6 +71,11 @@ class Node < Formula
         man.children.each do |file|
           dir.install_symlink(file.relative_path_from(dir))
         end
+      end
+
+      if build.with? "completion"
+        bash_completion.install_symlink \
+          lib/"node_modules/npm/lib/utils/completion.sh" => "npm"
       end
     end
   end
@@ -84,7 +90,7 @@ class Node < Formula
   end
 
   def caveats
-    if build.include? 'without-npm' then <<-end.undent
+    if build.without? "npm"; <<-end.undent
       Homebrew has NOT installed npm. If you later install it, you should supplement
       your NODE_PATH with the npm module folder:
           #{npm_prefix}/lib/node_modules
@@ -94,5 +100,14 @@ class Node < Formula
           #{npm_prefix}/bin
       end
     end
+  end
+
+  test do
+    path = testpath/"test.js"
+    path.write "console.log('hello');"
+
+    output = `#{bin}/node #{path}`.strip
+    assert_equal "hello", output
+    assert_equal 0, $?.exitstatus
   end
 end

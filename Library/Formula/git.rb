@@ -2,14 +2,14 @@ require 'formula'
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'https://git-core.googlecode.com/files/git-1.8.5.3.tar.gz'
-  sha1 '767aa30c0f569f9b6e04cb215dfeec0c013c355a'
+  url 'https://git-core.googlecode.com/files/git-1.8.5.5.tar.gz'
+  sha1 '7bb4ea883b1f8f6f7f927035f85e8e27b57e0194'
   head 'https://github.com/git/git.git'
 
   bottle do
-    sha1 '6849cffc6d286228cdfb2fa52f2b0db4c054f569' => :mavericks
-    sha1 'd2e8b603141f45d5a22891909b1c076e4cb1a5d6' => :mountain_lion
-    sha1 '40b475da5b25459b697ac8815dd575a0e1653abd' => :lion
+    sha1 "582a276b608de17888da01922648522bf7a9c11a" => :mavericks
+    sha1 "f308b293aa5664b65c57c3b206b892537397d3b9" => :mountain_lion
+    sha1 "fa5f896b766bb103804800abde58e25579cf58a7" => :lion
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -25,13 +25,13 @@ class Git < Formula
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
-    url 'http://git-core.googlecode.com/files/git-manpages-1.8.5.3.tar.gz'
-    sha1 'e4b66ca3ab1b089af651bf742aa030718e9af978'
+    url 'http://git-core.googlecode.com/files/git-manpages-1.8.5.5.tar.gz'
+    sha1 'a4a2aef1440d4751f37c65359da57c9bd51a7beb'
   end
 
   resource 'html' do
-    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.5.3.tar.gz'
-    sha1 '47da8e2b1d23ae501ee2c03414c04f8225079037'
+    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.5.5.tar.gz'
+    sha1 '39dd7979c8757d2dc4bc3aaa82741ba93557d566'
   end
 
   def patches

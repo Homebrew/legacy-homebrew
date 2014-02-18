@@ -6,7 +6,9 @@ class Capstone < Formula
   sha1 '209cdc69518f754c5d7d07672d8e28cdda9feae7'
 
   def install
+    inreplace 'Makefile', 'lib64', 'lib'
     system "./make.sh"
-    system "PREFIX=#{prefix}", "./make.sh", "install"
+    ENV["PREFIX"] = prefix
+    system "./make.sh", "install"
   end
 end

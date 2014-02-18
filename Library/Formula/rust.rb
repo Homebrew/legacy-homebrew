@@ -20,6 +20,7 @@ class Rust < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
+    args << "--disable-rpath" if build.head?
     args << "--enable-clang" if ENV.compiler == :clang
     system "./configure", *args
     system "make"
@@ -29,6 +30,6 @@ class Rust < Formula
   def test
     system "#{bin}/rustc"
     system "#{bin}/rustdoc -h"
-    system "#{bin}/rustpkg -v"
+    system "#{bin}/rustpkg -v" unless build.head?
   end
 end

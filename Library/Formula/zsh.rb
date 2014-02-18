@@ -2,7 +2,7 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'http://downloads.sourceforge.net/project/zsh/zsh/zsh-5.0.5.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.bz2'
   mirror 'http://www.zsh.org/pub/zsh-5.0.5.tar.bz2'
   sha1 '75426146bce45ee176d9d50b32f1ced78418ae16'
 
@@ -39,6 +39,10 @@ class Zsh < Formula
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
     system "make install"
+
+    if ENV['HOMEBREW_KEEP_INFO']
+      system "make install.info"
+    end
   end
 
   def test

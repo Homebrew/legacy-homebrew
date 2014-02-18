@@ -21,6 +21,7 @@ class IrcdHybrid < Formula
                           # there's no config setting for this so set it to something generous
                           "--with-nicklen=30"
     system "make install"
+    etc.install "doc/reference.conf" => "ircd.conf"
   end
 
   def test

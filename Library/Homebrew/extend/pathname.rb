@@ -343,17 +343,6 @@ class Pathname
     system '/usr/bin/install-info', '--delete', '--quiet', self.to_s, (self.dirname+'dir').to_s
   end
 
-  def all_formula pwd = self
-    children.map{ |child| child.relative_path_from(pwd) }.each do |pn|
-      yield pn if pn.to_s =~ /.rb$/
-    end
-    children.each do |child|
-      child.all_formula(pwd) do |pn|
-        yield pn
-      end if child.directory?
-    end
-  end
-
   def find_formula
     [self/:Formula, self/:HomebrewFormula, self].each do |d|
       if d.exist?
