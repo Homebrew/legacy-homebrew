@@ -13,6 +13,12 @@ class Tig < Formula
     depends_on "xmlto"
   end
 
+  def patches
+    # fixes the problem with displaying/searching multibyte characters
+    "https://github.com/spin6lock/tig/commit/159eff692b24aa05f766f76922b0f2515fbbf415.diff"
+    #  end
+  end
+
   def install
     system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
