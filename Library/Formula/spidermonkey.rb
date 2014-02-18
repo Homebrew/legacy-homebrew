@@ -41,4 +41,13 @@ class Spidermonkey < Formula
       bin.install "shell/js"
     end
   end
+
+  test do
+    path = testpath/"test.js"
+    path.write "print('hello');"
+
+    output = `#{bin}/js #{path}`.strip
+    assert_equal "hello", output
+    assert_equal 0, $?.exitstatus
+  end
 end
