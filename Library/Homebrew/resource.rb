@@ -76,10 +76,14 @@ class Resource
 
   # For brew-fetch and others.
   def fetch
-    # Ensure the cache exists
-    HOMEBREW_CACHE.mkpath
-    downloader.fetch
-    cached_download
+    begin
+      # Ensure the cache exists
+      HOMEBREW_CACHE.mkpath
+      downloader.fetch
+      cached_download
+    rescue ErrorDuringExecution, CurlDownloadStrategyError => e
+      raise DownloadError.new(downloader.name)
+    end
   end
 
   def verify_download_integrity fn

@@ -92,6 +92,8 @@ module Homebrew extend self
     e.dump
     puts
     Homebrew.failed = true
+  rescue DownloadError => e
+    ofail e
   ensure
     # restore previous installation state if build failed
     outdated_keg.link if outdated_keg and not f.installed? rescue nil

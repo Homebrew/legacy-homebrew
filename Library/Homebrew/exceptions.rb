@@ -229,6 +229,13 @@ class CompilerSelectionError < Homebrew::InstallationError
   end
 end
 
+# Raised in Resource.fetch
+class DownloadError < RuntimeError
+  def initialize(formula)
+    super "Failed to download resource for package: #{formula}"
+  end
+end
+
 # raised in CurlDownloadStrategy.fetch
 class CurlDownloadStrategyError < RuntimeError; end
 
