@@ -237,7 +237,7 @@ class Pathname
   def verify_checksum expected
     raise ChecksumMissingError if expected.nil? or expected.empty?
     actual = Checksum.new(expected.hash_type, send(expected.hash_type).downcase)
-    raise ChecksumMismatchError.new(expected, actual) unless expected == actual
+    raise ChecksumMismatchError.new(self, expected, actual) unless expected == actual
   end
 
   if '1.9' <= RUBY_VERSION
