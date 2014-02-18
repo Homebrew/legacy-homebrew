@@ -2,8 +2,7 @@ require 'formula'
 
 class ExactImage < Formula
   homepage 'http://www.exactcode.de/site/open_source/exactimage/'
-  url 'http://dl.exactcode.de/oss/exact-image/exact-image-0.8.9.tar.bz2'
-  sha1 'd68edb48df333d31b3f87723e487d1b3ee45fdbf'
+  head 'https://svn.exactcode.de/exact-image/trunk'
 
   depends_on :x11
   depends_on 'freetype'
