@@ -6,7 +6,7 @@ class ChromeCli < Formula
   sha1 "96b03d2e60d5998a8a549af95412253ad7337e7f"
 
   head "https://github.com/prasmussen/chrome-cli.git"
-  
+
   depends_on :xcode
 
   def install
