@@ -8,6 +8,6 @@ class Mongroup < Formula
   depends_on "mon"
 
   def install
-    system "make", "install"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 end
