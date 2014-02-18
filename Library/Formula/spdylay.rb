@@ -9,6 +9,7 @@ class Spdylay < Formula
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
   depends_on 'pkg-config' => :build
+  depends_on 'libevent' => :recommended
   depends_on 'libxml2'
   depends_on 'openssl'
 
