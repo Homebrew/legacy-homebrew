@@ -16,8 +16,10 @@ class Libopkele < Formula
   depends_on 'pkg-config' => :build
 
   def patches
-    "https://github.com/hacker/libopkele/commit/9ff6244998b0d41e71f7cc7351403ad590e990e4.patch"
-  end unless build.head?
+    unless build.head?
+      "https://github.com/hacker/libopkele/commit/9ff6244998b0d41e71f7cc7351403ad590e990e4.patch"
+    end
+  end
 
   def install
     system "./autogen.bash" if build.head?
