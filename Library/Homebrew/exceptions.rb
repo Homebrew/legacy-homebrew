@@ -240,23 +240,19 @@ class ChecksumMissingError < ArgumentError; end
 
 # raised by Pathname#verify_checksum when verification fails
 class ChecksumMismatchError < RuntimeError
-  attr_accessor :advice
-  attr_reader :expected, :actual, :hash_type
+  attr_reader :expected, :hash_type
 
-  def initialize expected, actual
+  def initialize fn, expected, actual
     @expected = expected
-    @actual = actual
     @hash_type = expected.hash_type.to_s.upcase
 
     super <<-EOS.undent
       #{@hash_type} mismatch
-      Expected: #{@expected}
-      Actual: #{@actual}
+      Expected: #{expected}
+      Actual: #{actual}
+      Archive: #{fn}
+      To retry an incomplete download, remove the file above.
       EOS
-  end
-
-  def to_s
-    super + advice.to_s
   end
 end
 
