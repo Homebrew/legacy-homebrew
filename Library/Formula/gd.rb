@@ -11,6 +11,7 @@ class Gd < Formula
 
   depends_on :libpng => :recommended
   depends_on 'jpeg' => :recommended
+  depends_on :fontconfig => :optional
   depends_on :freetype => :optional
   depends_on 'libtiff' => :optional
   depends_on 'libvpx' => :optional
@@ -22,6 +23,10 @@ class Gd < Formula
 
   def png_prefix
     MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/libpng" : MacOS::X11.prefix
+  end
+
+  def fontconfig_prefix
+    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/fontconfig" : MacOS::X11.prefix
   end
 
   def freetype_prefix
@@ -36,6 +41,12 @@ class Gd < Formula
       args << "--with-png=#{png_prefix}"
     else
       args << "--without-png"
+    end
+
+    if build.with? "fontconfig"
+      args << "--with-fontconfig=#{fontconfig_prefix}"
+    else
+      args << "--without-fontconfig"
     end
 
     if build.with? "freetype"
