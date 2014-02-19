@@ -119,12 +119,11 @@ class PerconaServer < Formula
     # Move mysqlaccess to libexec
     mv "#{bin}/mysqlaccess", libexec
     mv "#{bin}/mysqlaccess.conf", libexec
-
-    # Make sure that data directory exists
-    datadir.mkpath
   end
 
   def post_install
+    # Make sure that data directory exists
+    datadir.mkpath
     unless File.exist? "#{datadir}/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
