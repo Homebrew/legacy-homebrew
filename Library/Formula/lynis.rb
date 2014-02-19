@@ -2,8 +2,8 @@ require 'formula'
 
 class Lynis < Formula
   homepage 'http://www.rootkit.nl/projects/lynis.html'
-  url 'http://cisofy.com/files/lynis-1.3.9.tar.gz'
-  sha1 '83b28aa50f22271c56e74d7020015a949b68dedc'
+  url 'http://cisofy.com/files/lynis-1.4.2.tar.gz'
+  sha1 '68f6d5e471167afeb96b209c55a13d93227a9937'
 
   def install
     inreplace 'lynis' do |s|
