@@ -261,6 +261,12 @@ module Superenv
 
   def universal_binary
     self['HOMEBREW_ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
+    if compiler != :clang && Hardware.is_32_bit?
+      # Can't mix "-march" for a 32-bit CPU with "-arch x86_64"
+      self['HOMEBREW_OPTFLAGS'] =
+        self['HOMEBREW_OPTFLAGS'].sub(/-march=\S*/,
+                                      "-Xarch_#{Hardware::CPU.arch_32_bit \\0")
+    end
     append 'HOMEBREW_CCCFG', "u", ''
   end
 
