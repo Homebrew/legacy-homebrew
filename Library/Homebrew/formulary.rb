@@ -94,7 +94,7 @@ class Formulary
     end
 
     def get_formula
-      return klass.new(name)
+      klass.new(name, path)
     end
   end
 
