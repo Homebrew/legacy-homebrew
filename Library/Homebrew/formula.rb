@@ -552,6 +552,8 @@ class Formula
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
+    removed_ENV_variables = {}
+
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
@@ -561,15 +563,14 @@ class Formula
     end
     ohai "#{cmd} #{pretty_args*' '}".strip
 
-    removed_ENV_variables = case if args.empty? then cmd.split(' ').first else cmd end
-    when "xcodebuild"
-      ENV.remove_cc_etc
+    if cmd.to_s.start_with? "xcodebuild"
+      removed_ENV_variables.update(ENV.remove_cc_etc)
     end
 
     @exec_count ||= 0
     @exec_count += 1
     logd = HOMEBREW_LOGS/name
-    logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd.to_s).split(' ').first]
+    logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
     rd, wr = IO.pipe
@@ -579,7 +580,7 @@ class Formula
       $stdout.reopen wr
       $stderr.reopen wr
       args.collect!{|arg| arg.to_s}
-      exec(cmd.to_s, *args) rescue nil
+      exec(cmd, *args) rescue nil
       puts "Failed to execute: #{cmd}"
       exit! 1 # never gets here unless exec threw or failed
     end
@@ -606,7 +607,7 @@ class Formula
     end
   ensure
     rd.close if rd and not rd.closed?
-    ENV.update(removed_ENV_variables) if removed_ENV_variables
+    ENV.update(removed_ENV_variables)
   end
 
   private

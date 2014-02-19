@@ -2,11 +2,21 @@ require 'formula'
 
 class Valgrind < Formula
   homepage 'http://www.valgrind.org/'
-  url 'http://valgrind.org/downloads/valgrind-3.9.0.tar.bz2'
-  sha1 '9415e28933de9d6687f993c4bb797e6bd49583f1'
-  head 'svn://svn.valgrind.org/valgrind/trunk'
 
-  if build.head? || MacOS.version == :mavericks
+  stable do
+    url 'http://valgrind.org/downloads/valgrind-3.9.0.tar.bz2'
+    sha1 '9415e28933de9d6687f993c4bb797e6bd49583f1'
+
+    if MacOS.version == :mavericks
+      depends_on :autoconf
+      depends_on :automake
+      depends_on :libtool
+    end
+  end
+
+  head do
+    url 'svn://svn.valgrind.org/valgrind/trunk'
+
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool

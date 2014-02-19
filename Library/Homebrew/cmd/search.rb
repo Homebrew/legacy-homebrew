@@ -1,8 +1,11 @@
 require 'formula'
 require 'blacklist'
 require 'utils'
+require 'thread'
 
 module Homebrew extend self
+
+  SEARCH_ERROR_QUEUE = Queue.new
 
   # A regular expession to capture the username (one or more char but no `/`,
   # which has to be escaped like `\/`), repository, followed by an optional `/`
@@ -62,12 +65,14 @@ module Homebrew extend self
       if count == 0 and not blacklisted? query
         puts "No formula found for #{query.inspect}."
         begin
-          GitHub.find_pull_requests(rx) { |pull| puts pull }
+          GitHub.print_pull_requests_matching(query)
         rescue GitHub::Error => e
-          opoo e.message
+          SEARCH_ERROR_QUEUE << e
         end
       end
     end
+
+    raise SEARCH_ERROR_QUEUE.pop unless SEARCH_ERROR_QUEUE.empty?
   end
 
   SEARCHABLE_TAPS = [
@@ -104,19 +109,25 @@ module Homebrew extend self
     results = []
     GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
       user = user.downcase if user == "Homebrew" # special handling for the Homebrew organization
-      json["tree"].map{ |hash| hash['path'] }.compact.each do |file|
-        name = File.basename(file, '.rb')
-        if file =~ /\.rb$/ and name =~ rx
+      json["tree"].each do |object|
+        next unless object["type"] == "blob"
+
+        path = object["path"]
+        name = File.basename(path, ".rb")
+
+        if path.end_with?(".rb") && rx === name
           results << "#{user}/#{repo}/#{name}"
         end
       end
     end
-    results
-  rescue GitHub::RateLimitExceededError => e
-    []
-  rescue GitHub::Error => e
+  rescue GitHub::HTTPNotFoundError => e
     opoo "Failed to search tap: #{user}/#{repo}. Please run `brew update`"
     []
+  rescue GitHub::Error => e
+    SEARCH_ERROR_QUEUE << e
+    []
+  else
+    results
   end
 
   def search_formulae rx

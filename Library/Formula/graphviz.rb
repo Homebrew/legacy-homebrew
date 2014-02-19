@@ -2,12 +2,12 @@ require 'formula'
 
 class Graphviz < Formula
   homepage 'http://graphviz.org/'
-  url 'http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.34.0.tar.gz'
-  sha1 '5a0c00bebe7f4c7a04523db21f40966dc9f0d441'
+  url 'http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.36.0.tar.gz'
+  sha1 'a41e9f1cbcc9a24651e14dd15a4cda3d912d7d19'
 
   devel do
-    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.35.20131215.0545.tar.gz'
-    sha1 '6eb9c3b6f842ae094feaa37a3e91c8d572b72e38'
+    url 'http://graphviz.org/pub/graphviz/development/SOURCES/graphviz-2.37.20140209.1615.tar.gz'
+    sha1 'f5703ce6e34d11920d687c6be98f913bf397018c'
   end
 
   # To find Ruby and Co.
@@ -27,6 +27,7 @@ class Graphviz < Formula
   depends_on 'pango' if build.include? 'with-pangocairo'
   depends_on 'swig' if build.include? 'with-bindings'
   depends_on 'gts' => :optional
+  depends_on "librsvg" => :optional
   depends_on :freetype if build.include? 'with-freetype' or MacOS::X11.installed?
   depends_on :x11 if build.include? 'with-x' or MacOS::X11.installed?
   depends_on :xcode if build.include? 'with-app'
@@ -39,12 +40,6 @@ class Graphviz < Formula
     p = {:p0 =>
       "https://trac.macports.org/export/103168/trunk/dports/graphics/graphviz/files/patch-project.pbxproj.diff",
      }
-
-     # The following patch is already upstream and can be removed in the next release.
-     if build.stable?
-       p[:p1] = "https://gist.github.com/mvertes/7929246/raw/2093e77bbed7ca0f4092f478cae870e021cbe5af/graphviz-2.34.0-dotty-patch"
-     end
-     return p
   end
 
   def install
@@ -59,6 +54,7 @@ class Graphviz < Formula
     args << "--without-pangocairo" unless build.include? 'with-pangocairo'
     args << "--without-freetype2" unless build.include? 'with-freetype' or MacOS::X11.installed?
     args << "--without-x" unless build.include? 'with-x' or MacOS::X11.installed?
+    args << "--without-rsvg" if build.without? "librsvg"
 
     system "./configure", *args
     system "make install"

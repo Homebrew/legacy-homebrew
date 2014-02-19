@@ -108,6 +108,10 @@ module Homebrew extend self
       return ofail "Formula not installed with '--build-bottle': #{f.name}"
     end
 
+    unless f.stable
+      return ofail "Formula has no stable version: #{f.name}"
+    end
+
     if ARGV.include? '--no-revision'
       bottle_revision = 0
     else
@@ -211,12 +215,12 @@ module Homebrew extend self
 
         inreplace f.path do |s|
           if s.include? 'bottle do'
-            update_or_add = 'add'
-            string = s.sub!(/  bottle do.+?end\n/m, output)
-            odie 'Bottle block replacement failed!' unless string
-          else
             update_or_add = 'update'
-            string = s.sub!(/(  (url|sha1|sha256|head|version) '\S*'\n+)+/m, '\0' + output + "\n")
+            string = s.sub!(/  bottle do.+?end\n/m, output)
+            odie 'Bottle block update failed!' unless string
+          else
+            update_or_add = 'add'
+            string = s.sub!(/(  (url|sha1|sha256|head|version) ['"]\S*['"]\n+)+/m, '\0' + output + "\n")
             odie 'Bottle block addition failed!' unless string
           end
         end

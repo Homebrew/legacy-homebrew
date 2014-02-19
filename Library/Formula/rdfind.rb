@@ -19,7 +19,7 @@ class Rdfind < Formula
     touch 'folder/file1'
     touch 'folder/file2'
     system "#{bin}/rdfind -deleteduplicates true -ignoreempty false folder"
-    File.exist?('folder/file1')==true
-    File.exist?('folder/file2')==false
+    assert File.exist?('folder/file1')
+    assert !File.exist?('folder/file2')
   end
 end
