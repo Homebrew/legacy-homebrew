@@ -7,7 +7,7 @@ class GitOpen < Formula
 
 
   def install
-    FileUtils.cp("git-open.sh", "git-open")
+    cp("git-open.sh", "git-open")
     bin.install "git-open"
   end
 end
