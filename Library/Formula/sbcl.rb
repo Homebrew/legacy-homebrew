@@ -23,9 +23,16 @@ class Sbcl < Formula
   option "with-ldb", "Include low-level debugger in the build"
   option "with-internal-xref", "Include XREF information for SBCL internals (increases core size by 5-6MB)"
 
-  resource 'bootstrap' do
-    url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.0/sbcl-1.1.0-x86-64-darwin-binary.tar.bz2'
-    sha1 'ed2069e124027c43926728c48d604efbb4e33950'
+  # Current binary versions are listed at http://sbcl.sourceforge.net/platform-table.html
+
+  resource 'bootstrap64' do
+    url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.8/sbcl-1.1.8-x86-64-darwin-binary.tar.bz2'
+    sha1 'cffd8c568588f48bd0c69295a385b662d27983cf'
+  end
+
+  resource 'bootstrap32' do
+    url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.6/sbcl-1.1.6-x86-darwin-binary.tar.bz2'
+    sha1 '35a76b93f8714bc34ba127df4aaf69aacfc08164'
   end
 
   def patches
@@ -61,7 +68,8 @@ class Sbcl < Formula
       value =~ /[\x80-\xff]/n
     end
 
-    resource('bootstrap').stage do
+    bootstrap = (build.build_32_bit? || !MacOS.prefer_64_bit?) ? 'bootstrap32' : 'bootstrap64'
+    resource(bootstrap).stage do
       # We only need the binaries for bootstrapping, so don't install anything:
       command = Dir.pwd + "/src/runtime/sbcl"
       core = Dir.pwd + "/output/sbcl.core"
