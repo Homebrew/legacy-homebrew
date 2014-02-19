@@ -14,7 +14,8 @@ class Podofo < Formula
 
   def patches
     # FindFREEType.cmake has dos line endings, have to
-    # replace dos line endings before applying the patch
+    # replace dos line endings before applying the patch to
+    # FindFREEType.cmake
     inreplace "cmake/modules/FindFREEType.cmake", "\r\n", "\n"
 
     # the first two patches fix missing includes (didn't compile in Mavericks)
