@@ -44,6 +44,7 @@ class Zpython < Formula
     args = %W[
       --disable-gdbm
       --enable-zpython
+      --with-tcsetpgrp
     ]
 
     system "autoreconf"
