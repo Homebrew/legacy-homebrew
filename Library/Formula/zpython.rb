@@ -15,16 +15,16 @@ end
 
 class Zpython < Formula
   homepage 'https://bitbucket.org/ZyX_I/zsh'
-  url 'http://www.zsh.org/pub/zsh-5.0.2.tar.bz2'
-  url 'http://downloads.sourceforge.net/project/zsh/zsh/5.0.2/zsh-5.0.2.tar.bz2'
+  url 'http://www.zsh.org/pub/zsh-5.0.5.tar.bz2'
+  url 'http://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.bz2'
   # We prepend `00-` for the first version of the zpython module, which is
   # itself a patch on top of zsh and does not have own version number yes.
   # Hoping that upstream will provide tags that we could download properly.
   # Starting here with `00-`, so that once we get tags for the upstream
   # repository at https://bitbucket.org/ZyX_I/zsh.git, brew outdated will
   # be able to tell us to upgrade zpython.
-  version '00-5.0.2'
-  sha1 '9f55ecaaae7cdc1495f91237ba2ec087777a4ad9'
+  version '00-5.0.5'
+  sha1 '75426146bce45ee176d9d50b32f1ced78418ae16'
 
   head 'https://bitbucket.org/ZyX_I/zsh.git', :branch => 'zpython'
 
@@ -44,6 +44,7 @@ class Zpython < Formula
     args = %W[
       --disable-gdbm
       --enable-zpython
+      --with-tcsetpgrp
     ]
 
     system "autoreconf"
