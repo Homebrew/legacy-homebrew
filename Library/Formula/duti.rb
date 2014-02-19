@@ -3,8 +3,8 @@ require 'formula'
 class Duti < Formula
   homepage 'http://duti.org/'
   head 'https://github.com/fitterhappier/duti.git'
-  url 'https://github.com/fitterhappier/duti/archive/duti-1.5.2.tar.gz'
-  sha1 '1833c0a56646a132fa09bcb31c557d4393f19a3b'
+  url 'http://downloads.sourceforge.net/project/duti/duti/duti-1.5.1/duti-1.5.1.tar.gz'
+  sha1 '4964cef4196daf4efd3970b09843fc624a21079b'
 
   depends_on :autoconf
 
