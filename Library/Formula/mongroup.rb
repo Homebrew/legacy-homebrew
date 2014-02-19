@@ -11,4 +11,8 @@ class Mongroup < Formula
     bin.mkpath
     system "make", "install", "PREFIX=#{prefix}"
   end
+
+  def test
+    system "#{bin}/mongroup", "-V"
+  end
 end
