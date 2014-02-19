@@ -105,7 +105,7 @@ class Formulary
       # in our codebase will require an exact and fullpath.
       path = "#{path}.rb" unless path =~ /\.rb$/
 
-      @path = Pathname.new(path)
+      @path = Pathname.new(path).expand_path
       @name = @path.stem
     end
 
