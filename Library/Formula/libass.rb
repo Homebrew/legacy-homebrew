@@ -1,7 +1,7 @@
 require 'formula'
 
 class Libass < Formula
-  homepage 'http://code.google.com/p/libass/'
+  homepage 'https://github.com/libass/libass'
   url 'https://github.com/libass/libass/releases/download/0.11.1/libass-0.11.1.tar.gz'
   sha1 '2a5517e634b3606c7dad5a42eae6ad8b23f8e097'
 
