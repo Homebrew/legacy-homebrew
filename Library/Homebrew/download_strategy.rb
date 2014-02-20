@@ -609,8 +609,8 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def checkout_submodules(dst)
-    sub_cmd = %W{git checkout-index -a -f --prefix=#{dst}/$path/}
-    safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', *sub_cmd
+    sub_cmd = "git checkout-index -a -f --prefix=#{dst}/$path/"
+    safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
   end
 end
 
