@@ -2,8 +2,8 @@ require 'formula'
 
 class YoutubeDl < Formula
   homepage 'http://rg3.github.io/youtube-dl/'
-  url 'https://yt-dl.org/downloads/2014.02.19.1/youtube-dl-2014.02.19.1.tar.gz'
-  sha1 '6d02e9b07ffee6b898349bc2532d0ab9e653f6d4'
+  url 'https://yt-dl.org/downloads/2014.02.20/youtube-dl-2014.02.20.tar.gz'
+  sha1 '4a39d03326b4a037d75238646282b617fae44e3c'
 
   depends_on 'rtmpdump' => :optional
 
