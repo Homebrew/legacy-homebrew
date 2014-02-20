@@ -80,7 +80,7 @@ class Formulary
     end
 
     def get_formula
-      formula = klass.new(name)
+      formula = klass.new(name, path)
       formula.local_bottle_path = @bottle_filename
       return formula
     end
