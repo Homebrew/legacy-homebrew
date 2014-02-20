@@ -27,6 +27,7 @@ class Global < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --sysconfdir=#{etc}
     ]
 
     if build.with? 'exuberant-ctags'
@@ -35,6 +36,8 @@ class Global < Formula
 
     system "./configure", *args
     system "make install"
+
+    etc.install 'gtags.conf'
 
     # we copy these in already
     cd share/'gtags' do
