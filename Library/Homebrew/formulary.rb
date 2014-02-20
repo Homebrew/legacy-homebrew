@@ -44,7 +44,7 @@ class Formulary
       unless have_klass
         puts "#{$0}: loading #{path}" if ARGV.debug?
         begin
-          require path.to_s
+          require path
         rescue NoMethodError
           # This is a programming error in an existing formula, and should not
           # have a "no such formula" message.
@@ -94,7 +94,7 @@ class Formulary
     end
 
     def get_formula
-      return klass.new(name)
+      klass.new(name, path)
     end
   end
 
@@ -105,12 +105,12 @@ class Formulary
       # in our codebase will require an exact and fullpath.
       path = "#{path}.rb" unless path =~ /\.rb$/
 
-      @path = Pathname.new(path)
+      @path = Pathname.new(path).expand_path
       @name = @path.stem
     end
 
     def get_formula
-      klass.new(name, path.to_s)
+      klass.new(name, path)
     end
   end
 
@@ -134,7 +134,7 @@ class Formulary
     end
 
     def get_formula
-      return klass.new(name, path.to_s)
+      return klass.new(name, path)
     end
   end
 
@@ -146,7 +146,7 @@ class Formulary
     end
 
     def get_formula
-      klass.new(tapped_name, path.to_s)
+      klass.new(tapped_name, path)
     end
   end
 
