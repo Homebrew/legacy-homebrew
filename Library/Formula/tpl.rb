@@ -2,8 +2,8 @@ require "formula"
 
 class Tpl < Formula
   homepage "http://troydhanson.github.io/tpl/"
-  url "https://github.com/troydhanson/tpl/archive/v1.6.tar.gz"
-  sha1 "b7d16e9bcda16d86a5dd2d0af0ab90f7e85aa050"
+  url "https://github.com/troydhanson/tpl/archive/v1.6.1.tar.gz"
+  sha1 "2ee92627e8f67400061d8fc606b601988ed90217"
   head "https://github.com/troydhanson/tpl.git"
 
   option "with-tests", "Verify the build using the test suite."
@@ -13,8 +13,6 @@ class Tpl < Formula
   depends_on :libtool
 
   def install
-    inreplace "configure.ac", "AM_INIT_AUTOMAKE", "AM_INIT_AUTOMAKE([foreign])"
-
     system "autoreconf", "-i"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
