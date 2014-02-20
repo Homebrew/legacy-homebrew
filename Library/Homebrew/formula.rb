@@ -16,7 +16,7 @@ class Formula
   include Utils::Inreplace
   extend BuildEnvironmentDSL
 
-  attr_reader :name, :path, :homepage, :downloader, :build
+  attr_reader :name, :path, :homepage, :build
   attr_reader :stable, :bottle, :devel, :head, :active_spec
 
   # The current working directory during builds and tests.
@@ -53,7 +53,6 @@ class Formula
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
-    @downloader = active_spec.downloader
     @build = determine_build_options
 
     @pin = FormulaPin.new(self)
@@ -118,6 +117,10 @@ class Formula
 
   def requirements
     active_spec.requirements
+  end
+
+  def downloader
+    active_spec.downloader
   end
 
   # if the dir is there, but it's empty we consider it not installed
