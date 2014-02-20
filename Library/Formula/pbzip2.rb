@@ -2,8 +2,8 @@ require 'formula'
 
 class Pbzip2 < Formula
   homepage 'http://compression.ca/pbzip2/'
-  url 'http://compression.ca/pbzip2/pbzip2-1.1.6.tar.gz'
-  sha1 '3b4d0ffa3ac362c3702793cc5d9e61664d468aeb'
+  url 'http://compression.ca/pbzip2/pbzip2-1.1.8.tar.gz'
+  sha1 '6957483690f00c33ffeabbe0e9e6475098820cd5'
 
   fails_with :llvm do
     build 2334
