@@ -1,6 +1,6 @@
 require 'formula'
 
-class NpmNotInstalled < Requirement
+class NpmRequirement < Requirement
   fatal true
 
   def modules_folder
@@ -46,7 +46,7 @@ class Node < Formula
   option 'without-npm', 'npm will not be installed'
   option 'without-completion', 'npm bash completion will not be installed'
 
-  depends_on NpmNotInstalled unless build.without? 'npm'
+  depends_on NpmRequirement => :recommended
   depends_on :python
 
   fails_with :llvm do
