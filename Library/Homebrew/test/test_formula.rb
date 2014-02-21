@@ -129,11 +129,11 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_class_naming
-    assert_equal 'ShellFm', Formula.class_s('shell.fm')
-    assert_equal 'Fooxx', Formula.class_s('foo++')
-    assert_equal 'SLang', Formula.class_s('s-lang')
-    assert_equal 'PkgConfig', Formula.class_s('pkg-config')
-    assert_equal 'FooBar', Formula.class_s('foo_bar')
+    assert_equal 'ShellFm', Formulary.class_s('shell.fm')
+    assert_equal 'Fooxx', Formulary.class_s('foo++')
+    assert_equal 'SLang', Formulary.class_s('s-lang')
+    assert_equal 'PkgConfig', Formulary.class_s('pkg-config')
+    assert_equal 'FooBar', Formulary.class_s('foo_bar')
   end
 
   def test_formula_spec_integration
@@ -180,7 +180,7 @@ class FormulaTests < Test::Unit::TestCase
     File.open(path, 'w') do |f|
       f << %{
         require 'formula'
-        class #{Formula.class_s(name)} < Formula
+        class #{Formulary.class_s(name)} < Formula
           url 'foo-1.0'
           def initialize(*args)
             @homepage = 'http://example.com/'

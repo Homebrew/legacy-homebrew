@@ -2,22 +2,29 @@
 class Formulary
 
   def self.unload_formula formula_name
-    Object.send(:remove_const, Formula.class_s(formula_name))
+    Object.send(:remove_const, class_s(formula_name))
   end
 
   def self.formula_class_defined? formula_name
-    Object.const_defined?(Formula.class_s(formula_name))
+    Object.const_defined?(class_s(formula_name))
   end
 
   def self.get_formula_class formula_name
-    Object.const_get(Formula.class_s(formula_name))
+    Object.const_get(class_s(formula_name))
   end
 
   def self.restore_formula formula_name, value
     old_verbose, $VERBOSE = $VERBOSE, nil
-    Object.const_set(Formula.class_s(formula_name), value)
+    Object.const_set(class_s(formula_name), value)
   ensure
     $VERBOSE = old_verbose
+  end
+
+  def self.class_s name
+    name = name.capitalize
+    name.gsub!(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase }
+    name.gsub!('+', 'x')
+    name
   end
 
   # A FormulaLoader returns instances of formulae.
