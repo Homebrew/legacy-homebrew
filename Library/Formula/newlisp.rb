@@ -31,6 +31,18 @@ class Newlisp < Formula
     will need to be be pointed to your newlisp executable.
     EOS
   end
+
+  test do
+    path = testpath/"test.lsp"
+    path.write <<-EOS
+      (println "hello")
+      (exit 0)
+    EOS
+
+    output = `#{bin}/newlisp #{path}`
+    assert_equal "hello\n", output
+    assert_equal 0, $?.exitstatus
+  end
 end
 
 __END__
