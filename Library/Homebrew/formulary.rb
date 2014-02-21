@@ -65,7 +65,7 @@ class Formulary
       end
 
       klass = Formulary.get_formula_class(name)
-      if (klass == Formula) || !klass.ancestors.include?(Formula)
+      if klass == Formula || !(klass < Formula)
         raise FormulaUnavailableError.new(name)
       end
       klass
