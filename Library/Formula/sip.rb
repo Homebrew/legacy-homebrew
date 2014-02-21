@@ -28,7 +28,7 @@ class Sip < Formula
     if build.head?
       # Link the Mercurial repository into the download directory so
       # build.py can use it to figure out a version number.
-      ln_s downloader.cached_location + ".hg", ".hg"
+      ln_s cached_download + ".hg", ".hg"
       # build.py doesn't run with python3
       system "python", "build.py", "prepare"
     end
