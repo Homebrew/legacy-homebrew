@@ -16,16 +16,6 @@ class Tmux < Formula
   depends_on 'pkg-config' => :build
   depends_on 'libevent'
 
-  def patches
-    # Fixes installation failure on Snow Leopard
-    # http://sourceforge.net/mailarchive/forum.php?thread_name=CAJfQvvc2QDU%3DtXWb-sc-NK0J8cgnDRMDod6CNKO1uYqu%3DY5CXg%40mail.gmail.com&forum_name=tmux-users
-    # http://sourceforge.net/p/tmux/tickets/41/
-    # Fixes abnormal displaying Korean letters on Mac OS X
-    # https://gist.github.com/niceview/5343842
-    # Accepted upstream, can be removed in next version.
-    DATA unless build.head?
-  end
-
   def install
     system "sh", "autogen.sh" if build.head?
 
