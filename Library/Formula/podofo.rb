@@ -13,14 +13,11 @@ class Podofo < Formula
   depends_on 'libtiff'
 
   def patches
-    # FindFREEType.cmake has dos line endings, have to
-    # replace dos line endings before applying the patch to
-    # FindFREEType.cmake
-    inreplace "cmake/modules/FindFREEType.cmake", "\r\n", "\n"
-
-    # the first two patches fix missing includes (didn't compile in Mavericks)
-    # the third patch is needed to make podofo work with freetype 2.5.1
-    return DATA
+    # fixes compilation on Mavericks (fixed ios includes, fixed freetype 2.5.1 includes)
+    [
+      "https://gist.githubusercontent.com/MeckiCologne/9137957/raw/d450a29e47097554a5fb79cf1f770bb13c05be33/podofo1.patch",
+      "https://gist.githubusercontent.com/MeckiCologne/9137957/raw/145d5d9187b71567824f813ebf9d9ff427b36fe3/podofo2.patch",
+    ]
   end
 
   def install
@@ -33,53 +30,3 @@ class Podofo < Formula
     end
   end
 end
-
-__END__
-diff --git a/src/base/PdfInputDevice.h b/src/base/PdfInputDevice.h
-index ade4ff2..a804e8a 100644
---- a/src/base/PdfInputDevice.h
-+++ b/src/base/PdfInputDevice.h
-@@ -22,6 +22,7 @@
- #define _PDF_INPUT_DEVICE_H_
-
- #include <istream>
-+#include <ios>
-
- #include "PdfDefines.h"
- #include "PdfLocale.h"
-
-diff --git a/src/base/PdfLocale.h b/src/base/PdfLocale.h
-index 726d5cf..7268365 100644
---- a/src/base/PdfLocale.h
-+++ b/src/base/PdfLocale.h
-@@ -1,7 +1,7 @@
- #ifndef PODOFO_PDFLOCALE_H
- #define PODOFO_PDFLOCALE_H
- 
--namespace std { class ios_base; };
-+#include <ios>
- 
- namespace PoDoFo {
-
-diff --git a/cmake/modules/FindFREETYPE.cmake b/cmake/modules/FindFREETYPE.cmake
-index ce0e3e9..5efc560 100644
---- a/cmake/modules/FindFREETYPE.cmake
-+++ b/cmake/modules/FindFREETYPE.cmake
-@@ -13,13 +13,13 @@
- SET(FREETYPE_FIND_QUIETLY 1)
- 
- FIND_PATH(FREETYPE_INCLUDE_DIR_FT2BUILD ft2build.h
--  /usr/include/
--  /usr/local/include/
--  /usr/X11/include/
-+  /usr/include/freetype2
-+  /usr/local/include/freetype2
-+  /usr/X11/include/freetype2
-   NO_CMAKE_SYSTEM_PATH
- )
- 
--FIND_PATH(FREETYPE_INCLUDE_DIR_FTHEADER freetype/config/ftheader.h
-+FIND_PATH(FREETYPE_INCLUDE_DIR_FTHEADER config/ftheader.h
-   /usr/include/freetype2
-   /usr/local/include/freetype2
-   /usr/X11/include/freetype2
