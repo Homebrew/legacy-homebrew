@@ -2,8 +2,8 @@ require 'formula'
 
 class Tmux < Formula
   homepage 'http://tmux.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.8/tmux-1.8.tar.gz'
-  sha1 '08677ea914e1973ce605b0008919717184cbd033'
+  url 'http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.9/tmux-1.9.tar.gz'
+  sha1 '43197e69716a0430a9e856c13df8ceae31783078'
 
   head do
     url 'git://git.code.sf.net/p/tmux/tmux-code'
