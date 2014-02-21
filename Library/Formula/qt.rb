@@ -118,6 +118,9 @@ class Qt < Formula
     Pathname.glob(bin + '*.app').each do |path|
       mv path, prefix
     end
+
+    # Install 'Qt' header directory for support of legacy projects
+    include.install 'include/Qt' if File.directory? 'include/Qt' and build.with? 'qt3support'
   end
 
   test do
