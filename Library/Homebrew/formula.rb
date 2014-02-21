@@ -123,6 +123,14 @@ class Formula
     active_spec.downloader
   end
 
+  def cached_download
+    downloader.cached_location
+  end
+
+  def clear_cache
+    downloader.clear_cache
+  end
+
   # if the dir is there, but it's empty we consider it not installed
   def installed?
     (dir = installed_prefix).directory? && dir.children.length > 0
@@ -196,14 +204,6 @@ class Formula
 
   def opt_prefix
     Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
-  end
-
-  def cached_download
-    downloader.cached_location
-  end
-
-  def clear_cache
-    downloader.clear_cache
   end
 
   # Can be overridden to selectively disable bottles from formulae.
