@@ -14,12 +14,17 @@ class Cassandra < Formula
     inreplace "conf/log4j-server.properties", "/var/log/cassandra", "#{var}/log/cassandra"
     inreplace "conf/cassandra-env.sh", "/lib/", "/"
 
+    # See https://github.com/Homebrew/homebrew/issues/26795#issuecomment-35723208
+    # Cassandra.in refers to lib/jamm-0.2.5.jar
+    # TODO: either pack jars in ./lib or remove from JAVA_AGENT="$JAVA_AGENT -javaagent:$CASSANDRA_HOME/jamm-0.2.5.jar" path
     inreplace "bin/cassandra.in.sh" do |s|
       s.gsub! "CASSANDRA_HOME=\"`dirname \"$0\"`/..\"", "CASSANDRA_HOME=\"#{prefix}\""
       # Store configs in etc, outside of keg
       s.gsub! "CASSANDRA_CONF=\"$CASSANDRA_HOME/conf\"", "CASSANDRA_CONF=\"#{etc}/cassandra\""
       # Jars installed to prefix, no longer in a lib folder
       s.gsub! "\"$CASSANDRA_HOME\"/lib/*.jar", "\"$CASSANDRA_HOME\"/*.jar"
+      # Something like this perhaps
+      s.gsub "-javaagent:$CASSANDRA_HOME/lib/jamm-0.2.5.jar", "-javaagent:$CASSANDRA_HOME/jamm-0.2.5.jar"
     end
 
     rm Dir["bin/*.bat"]
