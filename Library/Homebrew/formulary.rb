@@ -21,10 +21,12 @@ class Formulary
   end
 
   def self.class_s name
-    name = name.capitalize
-    name.gsub!(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase }
-    name.gsub!('+', 'x')
-    name
+    (@class_s ||= {}).fetch(name) do
+      class_name = name.capitalize
+      class_name.gsub!(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase }
+      class_name.gsub!('+', 'x')
+      @class_s[name] = class_name
+    end
   end
 
   # A FormulaLoader returns instances of formulae.
