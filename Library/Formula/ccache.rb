@@ -13,6 +13,15 @@ class Ccache < Formula
     depends_on :libtool
   end
 
+  def shim_script target
+    <<-EOS.undent
+      #!/bin/bash
+      # see http://petereisentraut.blogspot.fr/2011/05/ccache-and-clang.html
+      # and http://petereisentraut.blogspot.fr/2011/09/ccache-and-clang-part-2.html
+      CCACHE_CPP2=yes exec ccache #{target} -Qunused-arguments `test -t 2 && echo -fcolor-diagnostics` "$@"
+    EOS
+  end
+
   def install
     system './autogen.sh' if build.head?
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
@@ -22,14 +31,21 @@ class Ccache < Formula
     libexec.mkpath
 
     %w[
-      clang
-      clang++
-      cc
-      gcc gcc2 gcc3 gcc-3.3 gcc-4.0 gcc-4.2 gcc-4.3 gcc-4.4 gcc-4.5 gcc-4.6 gcc-4.7 gcc-4.8 gcc-4.9
-      c++ c++3 c++-3.3 c++-4.0 c++-4.2 c++-4.3 c++-4.4 c++-4.5 c++-4.6 c++-4.7 c++-4.8 c++-4.9
-      g++ g++2 g++3 g++-3.3 g++-4.0 g++-4.2 g++-4.3 g++-4.4 g++-4.5 g++-4.6 g++-4.7 g++-4.8 g++-4.9
+      gcc2 gcc3 gcc-3.3 gcc-4.0 gcc-4.2 gcc-4.3 gcc-4.4 gcc-4.5 gcc-4.6 gcc-4.7 gcc-4.8 gcc-4.9
+      c++3 c++-3.3 c++-4.0 c++-4.2 c++-4.3 c++-4.4 c++-4.5 c++-4.6 c++-4.7 c++-4.8 c++-4.9
+      g++2 g++3 g++-3.3 g++-4.0 g++-4.2 g++-4.3 g++-4.4 g++-4.5 g++-4.6 g++-4.7 g++-4.8 g++-4.9
     ].each do |prog|
       ln_s bin+"ccache", libexec + prog
+    end
+
+    %w[clang++ c++ g++].each do |prog|
+      (libexec + prog).write shim_script("/usr/bin/clang++")
+      (libexec + prog).chmod(0755)
+    end
+
+    %w[clang cc gcc].each do |prog|
+      (libexec + prog).write shim_script("/usr/bin/clang")
+      (libexec + prog).chmod(0755)
     end
   end
 
