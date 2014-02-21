@@ -11,7 +11,7 @@ class Irrlicht < Formula
   def install
     args = %W(-project source/Irrlicht/MacOSX/MacOSX.xcodeproj -configuration Release -target libIrrlicht.a)
     args << 'SYMROOT=build'
-    args << '-sdk' << 'macosx10.8' if MacOS.version == :mountain_lion
+    args << '-sdk' << "macosx#{MacOS.version}"
     system 'xcodebuild', *args
     lib.install "source/Irrlicht/MacOSX/build/Release/libIrrlicht.a"
     include.install "include" => "irrlicht"
