@@ -5,6 +5,13 @@ class Sshfs < Formula
   url 'https://github.com/osxfuse/sshfs/archive/osxfuse-sshfs-2.5.0.tar.gz'
   sha1 '34d81a2f6b4150bff5ee55978b98df50c0bd3152'
 
+  bottle do
+    cellar :any
+    sha1 "af9fbf03eff59354c0d4071de23ad44f68d986bd" => :mavericks
+    sha1 "7fa3b69a4f3f4cd06a32c11df13db57f21437c88" => :mountain_lion
+    sha1 "8828686ca5c28061825fe059d7d6b9afae5972e9" => :lion
+  end
+
   option 'without-sshnodelay', "Don't compile NODELAY workaround for ssh"
 
   depends_on 'autoconf' => :build
