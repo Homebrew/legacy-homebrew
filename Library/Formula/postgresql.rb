@@ -5,6 +5,12 @@ class Postgresql < Formula
   url 'http://ftp.postgresql.org/pub/source/v9.3.3/postgresql-9.3.3.tar.bz2'
   sha256 'e925d8abe7157bd8bece6b7c0dd0c343d87a2b4336f85f4681ce596af99c3879'
 
+  bottle do
+    sha1 "299a72eac118abd9847379f2a247ed663e97cc64" => :mavericks
+    sha1 "6799c9ae3ae1f954e1b6c8b06818e2168ca2efe2" => :mountain_lion
+    sha1 "f44a9cf2fe073a8cce40bc8c2a8618553d826ac8" => :lion
+  end
+
   option '32-bit'
   option 'no-perl', 'Build without Perl support'
   option 'no-tcl', 'Build without Tcl support'
