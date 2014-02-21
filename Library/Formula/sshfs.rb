@@ -2,8 +2,8 @@ require 'formula'
 
 class Sshfs < Formula
   homepage 'http://osxfuse.github.io/'
-  url 'https://github.com/osxfuse/sshfs/archive/osxfuse-sshfs-2.4.1.tar.gz'
-  sha1 'cf614508db850a719529dec845ae59309f8a79c2'
+  url 'https://github.com/osxfuse/sshfs/archive/osxfuse-sshfs-2.5.0.tar.gz'
+  sha1 '34d81a2f6b4150bff5ee55978b98df50c0bd3152'
 
   option 'without-sshnodelay', "Don't compile NODELAY workaround for ssh"
 
@@ -16,17 +16,9 @@ class Sshfs < Formula
   depends_on 'glib'
   depends_on :xcode
 
-  bottle do
-    cellar :any
-    sha1 '57778d401e579bc32a6153419a3bbb34ef76b2aa' => :mavericks
-    sha1 '7ef7bbf791ca3031f992ff6907a79bef65fbc51f' => :mountain_lion
-    sha1 'a98aff34dca5da77ff894ff230885f1025ea45ba' => :lion
-  end
-
   def patches
-    # Fixes issue with semaphore type
-    # Reported upstream: https://github.com/osxfuse/sshfs/issues/6
-    "https://gist.github.com/denji/ce3c628d7def7f6ea490/raw/c441e0426dfb83decc0031ee54c48a8c22a35201/sshfs-fix.patch"
+    # Fixes issue https://github.com/osxfuse/sshfs/pull/4
+    DATA
   end
 
   def install
@@ -45,3 +37,16 @@ class Sshfs < Formula
     system "make install"
   end
 end
+
+__END__
+--- a/sshfs.c
++++ b/sshfs.c
+@@ -313,6 +313,8 @@
+ 	"ConnectTimeout",
+ 	"ControlMaster",
+ 	"ControlPath",
++	"ForwardAgent",
++	"ForwardX11",
+ 	"GlobalKnownHostsFile",
+ 	"GSSAPIAuthentication",
+ 	"GSSAPIDelegateCredentials",
