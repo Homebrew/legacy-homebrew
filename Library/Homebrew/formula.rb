@@ -119,16 +119,12 @@ class Formula
     active_spec.requirements
   end
 
-  def downloader
-    active_spec.downloader
-  end
-
   def cached_download
-    downloader.cached_location
+    active_spec.cached_download
   end
 
   def clear_cache
-    downloader.clear_cache
+    active_spec.clear_cache
   end
 
   # if the dir is there, but it's empty we consider it not installed

@@ -161,7 +161,6 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal 'http://example.com', f.homepage
     assert_version_equal '0.1', f.version
     assert_equal f.stable, f.active_spec
-    assert_instance_of CurlDownloadStrategy, f.downloader
 
     assert_instance_of SoftwareSpec, f.stable
     assert_instance_of Bottle, f.bottle
