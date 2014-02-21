@@ -13,6 +13,7 @@ class Cf < Formula
     system 'sed -i "" -e "s/SHA/homebrew/g" src/cf/app_constants.go'
     system 'bin/build'
     bin.install 'out/cf'
+    doc.install 'LICENSE'
   end
 
   test do
