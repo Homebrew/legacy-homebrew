@@ -1,6 +1,6 @@
 require 'formula'
 
-class Cf < Formula
+class CloudfoundryCli < Formula
   homepage 'https://github.com/cloudfoundry/cli'
   url 'https://github.com/cloudfoundry/cli.git', :tag => 'v6.0.0'
 
