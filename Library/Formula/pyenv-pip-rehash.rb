@@ -13,4 +13,8 @@ class PyenvPipRehash < Formula
     ENV['PREFIX'] = prefix
     system "./install.sh"
   end
+
+  test do
+    %x(pyenv hooks exec).include?('pip.bash')
+  end
 end
