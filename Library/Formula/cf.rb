@@ -10,6 +10,7 @@ class Cf < Formula
   depends_on 'go' => :build
 
   def install
+    system 'sed -i "" -e "s/SHA/homebrew/g" src/cf/app_constants.go'
     system 'bin/build'
     bin.install 'out/cf'
   end
