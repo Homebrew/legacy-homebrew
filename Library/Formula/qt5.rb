@@ -3,11 +3,6 @@ require 'formula'
 class Qt5HeadDownloadStrategy < GitDownloadStrategy
   include FileUtils
 
-  def support_depth?
-    # We need to make a local clone so we can't use "--depth 1"
-    false
-  end
-
   def stage
     @clone.cd { reset }
     safe_system 'git', 'clone', @clone, '.'
@@ -28,7 +23,7 @@ class Qt5 < Formula
   end
 
   head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
-    :using => Qt5HeadDownloadStrategy
+    :using => Qt5HeadDownloadStrategy, :shallow => false
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 

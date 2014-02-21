@@ -43,12 +43,12 @@ class Wireshark < Formula
   end
 
   def patches
-    {
+    if build.stable?
       # Removes SDK checks that prevent the build from working on CLT-only systems
       # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
-      :p1 => DATA
-    }
-  end if build.stable?
+      { :p1 => DATA }
+    end
+  end
 
   def install
     system "./autogen.sh" if build.head?

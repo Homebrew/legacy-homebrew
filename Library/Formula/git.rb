@@ -2,14 +2,14 @@ require 'formula'
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'https://git-core.googlecode.com/files/git-1.8.5.4.tar.gz'
-  sha1 'cbf14318ee9652232489982bb2da15d2e5ebb580'
+  url 'https://git-core.googlecode.com/files/git-1.9.0.tar.gz'
+  sha1 'e60667fc16e5a5f1cde46616b0458cc802707743'
   head 'https://github.com/git/git.git'
 
   bottle do
-    sha1 "9d04e5286a1cc55bc32c29e5813cf44727134c11" => :mavericks
-    sha1 "bf37c73ffa74e4cf6383ae7450f718476d9c874c" => :mountain_lion
-    sha1 "206e244f8c4e6e7c6c181b746c9293543cfe2257" => :lion
+    sha1 "78bb720052e624b889b7c39e47ec40e463fa13b0" => :mavericks
+    sha1 "95b604ef6dff8a8abbc6819b1769c6df6ac45b03" => :mountain_lion
+    sha1 "10d46b289e9877f866e953dfc65fde260c80acb8" => :lion
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -25,24 +25,13 @@ class Git < Formula
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
-    url 'http://git-core.googlecode.com/files/git-manpages-1.8.5.4.tar.gz'
-    sha1 '4ee26cf0d2db87b0be21192c4433359b6f38b217'
+    url 'http://git-core.googlecode.com/files/git-manpages-1.9.0.tar.gz'
+    sha1 'cff590c92b4d1c8a143c078473140b653cc5d56a'
   end
 
   resource 'html' do
-    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.5.4.tar.gz'
-    sha1 '6cfb7f23d2a3493d5b7657cc4558ff791294beb0'
-  end
-
-  def patches
-    if MacOS.version >= :mavericks and not build.head?
-      # Allow using PERLLIB_EXTRA to find Subversion Perl bindings location
-      # in the CLT/Xcode. Should be included in Git 1.8.6.
-      # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=07981d
-      # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=0386dd
-      ['https://git.kernel.org/cgit/git/git.git/patch/?id=07981d',
-       'https://git.kernel.org/cgit/git/git.git/patch/?id=0386dd']
-    end
+    url 'http://git-core.googlecode.com/files/git-htmldocs-1.9.0.tar.gz'
+    sha1 '65eb3f411f4699695c7081a7c716cabb9ce23d75'
   end
 
   def install

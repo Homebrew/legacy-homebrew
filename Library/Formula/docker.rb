@@ -18,15 +18,15 @@ class Docker < Formula
     [
       "https://github.com/dotcloud/docker/commit/6174ba.patch",
       "https://github.com/dotcloud/docker/commit/f794fb.patch",
+      "https://github.com/dotcloud/docker/commit/32535e.patch",
     ]
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GIT_DIR"] = downloader.cached_location/".git"
+    ENV["GIT_DIR"] = cached_download/".git"
     ENV["AUTO_GOPATH"] = "1"
-    inreplace "hack/make/dynbinary", "sha1sum", "shasum"
 
     system "hack/make.sh", "dynbinary"
     bin.install "bundles/0.8.0/dynbinary/docker-0.8.0" => "docker"

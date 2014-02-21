@@ -17,16 +17,7 @@ class Ddar < Formula
                      "--single-version-externally-managed",
                      "--record=installed.txt"
 
-    bin.env_script_all_files (libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
     man1.install Dir["*.1"]
-  end
-
-  test do
-    test_file = "test.out"
-    test_ddar_file = "#{test_file}.ddar"
-    (testpath/test_file).write "test"
-    `"#{bin}/ddar" -c "#{test_ddar_file}" "#{test_file}"`
-    extracted_file = `"#{bin}/ddar" -x "#{test_ddar_file}"`
-    assert_equal File.read(test_file), extracted_file
   end
 end

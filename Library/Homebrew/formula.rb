@@ -16,7 +16,7 @@ class Formula
   include Utils::Inreplace
   extend BuildEnvironmentDSL
 
-  attr_reader :name, :path, :homepage, :downloader, :build
+  attr_reader :name, :path, :homepage, :build
   attr_reader :stable, :bottle, :devel, :head, :active_spec
 
   # The current working directory during builds and tests.
@@ -33,7 +33,7 @@ class Formula
   def initialize name='__UNKNOWN__', path=nil
     @name = name
     # If we got an explicit path, use that, else determine from the name
-    @path = path.nil? ? self.class.path(name) : Pathname.new(path).expand_path
+    @path = path.nil? ? self.class.path(name) : path
     @homepage = self.class.homepage
 
     set_spec :stable
@@ -53,7 +53,6 @@ class Formula
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
-    @downloader = active_spec.downloader
     @build = determine_build_options
 
     @pin = FormulaPin.new(self)
@@ -118,6 +117,14 @@ class Formula
 
   def requirements
     active_spec.requirements
+  end
+
+  def cached_download
+    active_spec.cached_download
+  end
+
+  def clear_cache
+    active_spec.clear_cache
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -193,14 +200,6 @@ class Formula
 
   def opt_prefix
     Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
-  end
-
-  def cached_download
-    downloader.cached_location
-  end
-
-  def clear_cache
-    downloader.clear_cache
   end
 
   # Can be overridden to selectively disable bottles from formulae.
@@ -349,11 +348,8 @@ class Formula
   alias_method :python2, :python
   alias_method :python3, :python
 
-  # Generates a formula's ruby class name from a formula's name
   def self.class_s name
-    # remove invalid characters and then camelcase it
-    name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
-                   .gsub('+', 'x')
+    Formulary.class_s(name)
   end
 
   # an array of all Formula names
@@ -552,6 +548,8 @@ class Formula
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
+    removed_ENV_variables = {}
+
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
@@ -561,15 +559,14 @@ class Formula
     end
     ohai "#{cmd} #{pretty_args*' '}".strip
 
-    removed_ENV_variables = case if args.empty? then cmd.split(' ').first else cmd end
-    when "xcodebuild"
-      ENV.remove_cc_etc
+    if cmd.to_s.start_with? "xcodebuild"
+      removed_ENV_variables.update(ENV.remove_cc_etc)
     end
 
     @exec_count ||= 0
     @exec_count += 1
     logd = HOMEBREW_LOGS/name
-    logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd.to_s).split(' ').first]
+    logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
     rd, wr = IO.pipe
@@ -579,7 +576,7 @@ class Formula
       $stdout.reopen wr
       $stderr.reopen wr
       args.collect!{|arg| arg.to_s}
-      exec(cmd.to_s, *args) rescue nil
+      exec(cmd, *args) rescue nil
       puts "Failed to execute: #{cmd}"
       exit! 1 # never gets here unless exec threw or failed
     end
@@ -606,7 +603,7 @@ class Formula
     end
   ensure
     rd.close if rd and not rd.closed?
-    ENV.update(removed_ENV_variables) if removed_ENV_variables
+    ENV.update(removed_ENV_variables)
   end
 
   private

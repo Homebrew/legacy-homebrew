@@ -117,7 +117,7 @@ class ResourceTests < Test::Unit::TestCase
     checksum = @resource.sha1(TEST_SHA1)
 
     fn.expects(:verify_checksum).with(checksum).
-      raises(ChecksumMismatchError.new(checksum, Object.new))
+      raises(ChecksumMismatchError.new(fn, checksum, Object.new))
 
     shutup do
       assert_raises(ChecksumMismatchError) do
