@@ -348,11 +348,8 @@ class Formula
   alias_method :python2, :python
   alias_method :python3, :python
 
-  # Generates a formula's ruby class name from a formula's name
   def self.class_s name
-    # remove invalid characters and then camelcase it
-    name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
-                   .gsub('+', 'x')
+    Formulary.class_s(name)
   end
 
   # an array of all Formula names
