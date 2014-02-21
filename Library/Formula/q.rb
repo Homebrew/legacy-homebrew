@@ -8,5 +8,13 @@ class Q < Formula
   def install
     bin.install 'q'
   end
+
+  test do
+    IO.popen("#{bin}/q 'select sum(c1) from -'", "w+") do |pipe|
+      1.upto(100) { |i| pipe.puts i }
+      pipe.close_write
+      assert_equal "5050\n", pipe.read
+    end
+  end
 end
 
