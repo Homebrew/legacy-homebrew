@@ -40,7 +40,7 @@ class Elasticsearch < Formula
       rm_rf "#{prefix}/target/"
     end
 
-    # Set up ElasticSearch for local development:
+    # Set up Elasticsearch for local development:
     inreplace "#{prefix}/config/elasticsearch.yml" do |s|
       # 1. Give the cluster a unique name
       s.gsub! /#\s*cluster\.name\: elasticsearch/, "cluster.name: #{cluster_name}"
