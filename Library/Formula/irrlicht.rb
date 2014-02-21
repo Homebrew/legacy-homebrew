@@ -9,7 +9,9 @@ class Irrlicht < Formula
   depends_on :xcode
 
   def install
-    system *%W(xcodebuild -project source/Irrlicht/MacOSX/MacOSX.xcodeproj -configuration Release -target libIrrlicht.a)
+    command = %W(xcodebuild -project source/Irrlicht/MacOSX/MacOSX.xcodeproj -configuration Release -target libIrrlicht.a)
+    command << "-sdk" << "macosx10.8" if MacOS.version == :mountain_lion
+    system *command
     lib.install "source/Irrlicht/MacOSX/build/Release/libIrrlicht.a"
     include.install "include" => "irrlicht"
   end
