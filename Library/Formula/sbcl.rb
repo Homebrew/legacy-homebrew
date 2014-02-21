@@ -69,6 +69,7 @@ class Sbcl < Formula
 
       cd buildpath do
         ENV['SBCL_ARCH'] = 'x86' if build.build_32_bit?
+        Pathname.new("version.lisp-expr").write('"1.0.99.999"') if build.head?
         system "./make.sh", "--prefix=#{prefix}", "--xc-host=#{xc_cmdline}"
       end
     end
