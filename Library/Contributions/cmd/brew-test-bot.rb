@@ -447,7 +447,7 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
 
   remote = "git@github.com:BrewTestBot/homebrew.git"
   tag = pr ? "pr-#{pr}" : "testing-#{number}"
-  safe_system "git push --force #{remote} :refs/tags/#{tag}"
+  safe_system "git push --force #{remote} master:master :refs/tags/#{tag}"
 
   path = "/home/frs/project/m/ma/machomebrew/Bottles/"
   url = "BrewTestBot,machomebrew@frs.sourceforge.net:#{path}"
