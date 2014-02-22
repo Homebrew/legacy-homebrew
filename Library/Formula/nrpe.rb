@@ -37,4 +37,31 @@ class Nrpe < Formula
       #{bin}/nrpe -c #{etc}/nrpe.cfg -d
     EOS
   end
+
+  def plist; <<-EOS.undent
+  <?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+  <plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>org.nrpe.agent</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>#{HOMEBREW_PREFIX}/bin/nrpe</string>
+      <string>-c</string>
+      <string>#{etc}/nrpe.cfg</string>
+      <string>-d</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>ServiceDescription</key>
+    <string>Homebrew NRPE Agent</string>
+    <key>Debug</key>
+    <true/>
+  </dict>
+  </plist>
+  EOS
+  end
+
 end
+
