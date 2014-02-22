@@ -5,6 +5,13 @@ class Gd < Formula
   url 'https://bitbucket.org/libgd/gd-libgd/downloads/libgd-2.1.0.tar.gz'
   sha1 'a0f3053724403aef9e126f4aa5c662573e5836cd'
 
+  bottle do
+    cellar :any
+    sha1 "87bbfcde2e61c0a0ba04fd6e23fd5b74abae254a" => :mavericks
+    sha1 "91e5c6ed43c2118dca085f5615dde950bbc5fa56" => :mountain_lion
+    sha1 "9c3e0d5b7256a6404e728ea4e10d720d8eb2fab5" => :lion
+  end
+
   head 'https://bitbucket.org/libgd/gd-libgd', :using => :hg
 
   option :universal
