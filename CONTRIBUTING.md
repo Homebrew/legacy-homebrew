@@ -13,6 +13,7 @@ Contributing
 ------------
 Please read:
 
+* [Code of Conduct](https://github.com/Homebrew/homebrew/blob/master/CODEOFCONDUCT.md)
 * [Formula Cookbook](https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook)
 * [Acceptable Formulae](https://github.com/Homebrew/homebrew/wiki/Acceptable-Formulae)
 * [Ruby Style Guide](https://github.com/styleguide/ruby)
