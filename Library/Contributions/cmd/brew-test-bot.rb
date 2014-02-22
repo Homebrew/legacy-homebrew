@@ -337,8 +337,6 @@ class Test
     @category = __method__
     force_flag = ''
     if ARGV.include? '--cleanup'
-      test 'brew cleanup -s'
-      test "rm -vrf #{HOMEBREW_CACHE}/*"
       test 'git clean --force -dx'
       force_flag = '-f'
     end
@@ -525,6 +523,11 @@ if ARGV.include? "--email"
   File.open EMAIL_SUBJECT_FILE, 'w' do |file|
     file.write email_subject
   end
+end
+
+if ARGV.include? "--cleanup"
+  safe_system "brew cleanup -s"
+  safe_system "rm -vrf #{HOMEBREW_CACHE}/*"
 end
 
 exit any_errors ? 0 : 1
