@@ -88,10 +88,8 @@ class Pygobject3 < Formula
 
   test do
     Pathname('test.py').write <<-EOS.undent
-      from gi.repository import Gtk
-      win = Gtk.Window()
-      win.connect("delete-event", Gtk.main_quit)
-      win.show_all()
+    import gi
+    assert("__init__" in gi.__file__)
     EOS
     pythons.each do |python, version|
       unless Formula.factory(python).installed?
