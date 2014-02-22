@@ -30,8 +30,4 @@ class Gtkx < Formula
                           "--disable-visibility"
     system "make install"
   end
-
-  def test
-    system "#{bin}/gtk-demo"
-  end
 end
