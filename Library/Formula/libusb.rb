@@ -5,6 +5,13 @@ class Libusb < Formula
   url 'http://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-1.0.18/libusb-1.0.18.tar.bz2'
   sha256 'c73f5cec45a5de94418da4e151b7232958571926984acfb9bce02b9424e83720'
 
+  bottle do
+    cellar :any
+    sha1 "a49364f9964a1198159d2ed1645dabb5770013bf" => :mavericks
+    sha1 "6bbf08c8fbd747d00dbe67d03be150b5950cf482" => :mountain_lion
+    sha1 "e8863bdf84a928a79b07f48fabe6b15fddd74296" => :lion
+  end
+
   head do
     url 'https://github.com/libusb/libusb.git'
 
