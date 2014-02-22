@@ -9,9 +9,17 @@ class Diffpdf < Formula
   depends_on 'poppler' => 'with-qt4'
 
   def install
+    # The location of Poppler library/include paths is hardcoded in
+    # the project file which causes builds to fail if Homebrew is not
+    # installed to /usr/local.
+    inreplace 'diffpdf.pro', '$(HOME)/opt/poppler024',
+              "#{Formula.factory('poppler').opt_prefix}"
+
     # The 2.0 sources shipped without translation files. Generate them so that
     # compilation does not fail.
+
     system 'lrelease', 'diffpdf.pro'
+
     # Generate makefile and disable .app creation
     if MacOS.version >= :mavericks && ENV.compiler == :clang
       spec = 'unsupported/macx-clang-libc++'
