@@ -274,7 +274,9 @@ class Test
       test "brew install apple-gcc42"
     end
 
-    test "brew fetch #{dependencies}" unless dependencies.empty?
+    deps_fetch_options = " "
+    deps_fetch_options << " --force" if ARGV.include? '--cleanup'
+    test "brew fetch#{deps_fetch_options} #{dependencies}" unless dependencies.empty?
     formula_fetch_options = " "
     formula_fetch_options << " --build-bottle" unless ARGV.include? '--no-bottle'
     formula_fetch_options << " --force" if ARGV.include? '--cleanup'
