@@ -66,9 +66,8 @@ class Libffi < Formula
      }
     TEST_SCRIPT
 
-    ENV['PKG_CONFIG_PATH'] = "#{opt_prefix}/lib/pkgconfig"
-    flags = `pkg-config --cflags --libs libffi`.split + ENV.cflags.split
-    system ENV.cc, "-o", "closure", "closure.c", *flags
+    flags = ["-L#{lib}", "-lffi", "-I#{lib}/libffi-#{version}/include"]
+    system ENV.cc, "-o", "closure", "closure.c", *(flags + ENV.cflags.split)
     system "./closure"
   end
 end
