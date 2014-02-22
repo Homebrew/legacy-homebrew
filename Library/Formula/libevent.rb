@@ -5,6 +5,13 @@ class Libevent < Formula
   url 'https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz'
   sha1 '3e6674772eb77de24908c6267c698146420ab699'
 
+  bottle do
+    cellar :any
+    sha1 "b02833c4b3bae479169e98e02640d54f0399c536" => :mavericks
+    sha1 "4cb2ac89054de52fa0d4e001d5df5d17f9855a71" => :mountain_lion
+    sha1 "eab82e104a488a3367b1cbd9cd01a885c6ed1df6" => :lion
+  end
+
   head do
     url 'git://levent.git.sourceforge.net/gitroot/levent/levent'
 
