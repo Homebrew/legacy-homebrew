@@ -9,6 +9,12 @@ class Wget < Formula
   mirror 'http://ftp.gnu.org/gnu/wget/wget-1.15.tar.gz'
   sha1 'f3c925f19dfe5ed386daae4f339175c108c50574'
 
+  bottle do
+    sha1 "f3dc7cadc6099443213ada31019c603818c46717" => :mavericks
+    sha1 "21f0463fd39bcf363814929d863850608c7b87c1" => :mountain_lion
+    sha1 "934a195951c6df94bebc3e710dd15398bb6cd7b9" => :lion
+  end
+
   head do
     url 'git://git.savannah.gnu.org/wget.git'
 
