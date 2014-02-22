@@ -7,6 +7,10 @@ class BottleVersion < Version
     m = /-([\d\.]+-x86(_64)?)/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. x264-r2197.4.mavericks.bottle.tar.gz
+    m = /(r\d+\.\d)/.match(stem)
+    return m.captures.first unless m.nil?
+
     # e.g. ssh-copy-id-6.2p2.mountain_lion.bottle.tar.gz
     # e.g. icu4c-52.1.mountain_lion.bottle.tar.gz
     m = /(\d+\.(\d)+(p(\d)+)?)/.match(stem)
