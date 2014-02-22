@@ -30,10 +30,9 @@ class Formula
   attr_reader :cxxstdlib
 
   # Homebrew determines the name
-  def initialize name='__UNKNOWN__', path=nil
+  def initialize name='__UNKNOWN__', path=self.class.path(name)
     @name = name
-    # If we got an explicit path, use that, else determine from the name
-    @path = path.nil? ? self.class.path(name) : path
+    @path = path
     @homepage = self.class.homepage
 
     set_spec :stable
