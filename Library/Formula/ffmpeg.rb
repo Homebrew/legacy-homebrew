@@ -4,8 +4,13 @@ class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
   url 'http://ffmpeg.org/releases/ffmpeg-2.1.3.tar.bz2'
   sha1 '9dc54bbef673f3938e280bf48d07e7b24fe445ab'
-
   head 'git://git.videolan.org/ffmpeg.git'
+
+  bottle do
+    sha1 "34d8acf67634424b6abc65afcc6038f79b2d40f2" => :mavericks
+    sha1 "2264aed0b2ea6a52daedff190cdfff6269db1671" => :mountain_lion
+    sha1 "c175566d8ae23d82d5999b06b78b75fb5b15b2fb" => :lion
+  end
 
   option "without-x264", "Disable H.264 encoder"
   option "without-lame", "Disable MP3 encoder"
