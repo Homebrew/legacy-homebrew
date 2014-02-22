@@ -56,7 +56,7 @@ class Formula
 
     @pin = FormulaPin.new(self)
 
-    @cxxstdlib ||= Set.new
+    @cxxstdlib = Set.new
   end
 
   def set_spec(name)
