@@ -12,7 +12,13 @@ class Jruby < Formula
     # Prefix a 'j' on some commands
     cd 'bin' do
       Dir['*'].each do |file|
-        mv file, "j#{file}" unless file.match /^[j]/
+        unless file.match /^[j]/
+          if File.exists? "j#{file}"
+            rm file
+          else
+            mv file, "j#{file}"
+          end
+        end
       end
     end
 
