@@ -38,11 +38,8 @@ class Zsh < Formula
     inreplace ["Makefile", "Src/Makefile"],
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
-    system "make install"
-
-    if ENV['HOMEBREW_KEEP_INFO']
-      system "make install.info"
-    end
+    system "make", "install"
+    system "make", "install.info"
   end
 
   def test
