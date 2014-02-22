@@ -22,6 +22,15 @@ class Hunspell < Formula
     ENV.deparallelize
     system "make install"
   end
+
+  def caveats; <<-EOS.undent
+    Dictionary files (*.aff and *.dic) should be placed in
+    ~/Library/Spelling/ or /Library/Spelling/.  Homebrew itself
+    provides no dictionaries for Hunspell, but you can download
+    compatible dictionaries from other sources, such as
+    https://wiki.openoffice.org/wiki/Dictionaries .
+    EOS
+  end
 end
 
 __END__
