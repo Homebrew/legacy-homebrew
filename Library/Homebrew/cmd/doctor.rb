@@ -1085,6 +1085,16 @@ end
         https://xquartz.macosforge.org
     EOS
   end
+
+  def check_for_old_env_vars
+    if ENV["HOMEBREW_KEEP_INFO"]
+      <<-EOS.undent
+      `HOMEBREW_KEEP_INFO` is no longer used
+      info files are no longer deleted by default; you may
+      remove this environment variable.
+      EOS
+    end
+  end
 end # end class Checks
 
 module Homebrew extend self
