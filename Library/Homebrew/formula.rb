@@ -548,6 +548,7 @@ class Formula
   # Throws if there's an error
   def system cmd, *args
     removed_ENV_variables = {}
+    rd, wr = IO.pipe
 
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
@@ -568,7 +569,6 @@ class Formula
     logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
-    rd, wr = IO.pipe
     fork do
       ENV['HOMEBREW_CC_LOG_PATH'] = logfn
       rd.close
@@ -601,7 +601,7 @@ class Formula
       end
     end
   ensure
-    rd.close if rd and not rd.closed?
+    rd.close unless rd.closed?
     ENV.update(removed_ENV_variables)
   end
 
