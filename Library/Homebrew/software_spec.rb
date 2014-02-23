@@ -13,8 +13,7 @@ class SoftwareSpec
   attr_reader :build, :resources, :owner
   attr_reader :dependency_collector
 
-  def_delegators :@resource, :stage, :fetch
-  def_delegators :@resource, :download_strategy, :verify_download_integrity
+  def_delegators :@resource, :stage, :fetch, :verify_download_integrity
   def_delegators :@resource, :cached_download, :clear_cache
   def_delegators :@resource, :checksum, :mirrors, :specs, :using, :downloader
   def_delegators :@resource, :version, :mirror, *Checksum::TYPES
