@@ -12,6 +12,12 @@ class Nginx < Formula
 
   head 'http://hg.nginx.org/nginx/', :using => :hg
 
+  bottle do
+    sha1 "b5964496b5365e51cc9b7eb838b0499795e71861" => :mavericks
+    sha1 "2757fecb0611a6dd6e22a8122f775b917fac476f" => :mountain_lion
+    sha1 "f64a845d905589c9ad580ab4d5e6fe27c0eb53f9" => :lion
+  end
+
   env :userpaths
 
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
