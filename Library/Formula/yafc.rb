@@ -7,6 +7,7 @@ class Yafc < Formula
 
   depends_on 'xz' => :build
   depends_on 'readline'
+  depends_on 'libssh' => :recommended
 
   def patches
     DATA
@@ -15,8 +16,12 @@ class Yafc < Formula
   def install
     readline = Formula["readline"].opt_prefix
 
-    system "./configure", "--prefix=#{prefix}",
-                          "--with-readline=#{readline}"
+    readline = Formula.factory('readline').opt_prefix
+    args = ["--prefix=#{prefix}",
+            "--with-readline=#{readline}"]
+    args << "--without-ssh" if build.without? "libssh"
+
+    system "./configure", *args
     system "make", "install"
   end
 
