@@ -99,11 +99,12 @@ module OS
 
     def default_cc
       cc = locate 'cc'
-      Pathname.new(cc).realpath.basename.to_s rescue nil
+      cc.realpath.basename.to_s rescue nil
     end
 
     def default_compiler
       case default_cc
+        when /^gcc-4.0/ then :gcc_4_0
         when /^gcc/ then :gcc
         when /^llvm/ then :llvm
         when "clang" then :clang
@@ -260,6 +261,8 @@ module OS
         of Xcode (#{Xcode.version}). Please `brew update` and if that doesn't help, file
         an issue with the output of `brew --config`:
           https://github.com/Homebrew/homebrew/issues
+
+        Note that we only track stable, released versions of Xcode.
 
         Thanks!
       EOS

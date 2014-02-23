@@ -10,4 +10,16 @@ class Jslint4java < Formula
     libexec.install Dir['*.jar']
     bin.write_jar_script Dir[libexec/'jslint4java*.jar'].first, 'jslint4java'
   end
+
+  test do
+    path = testpath/"test.js"
+    path.write <<-EOS.undent
+      var i = 0;
+      var j = 1  // no semicolon
+    EOS
+
+    output = `#{bin}/jslint4java #{path}`
+    assert output.include?("2:10:Expected ';' and instead saw '(end)'")
+    assert_equal 1, $?.exitstatus
+  end
 end

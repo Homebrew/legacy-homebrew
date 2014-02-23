@@ -2,8 +2,8 @@ require 'formula'
 
 class Texapp < Formula
   homepage 'http://www.floodgap.com/software/texapp/'
-  url 'http://www.floodgap.com/software/texapp/dist0/0.6.06.txt'
-  sha1 '5dbf1caf40bd70bc1ed121601c384bf9823ee1e4'
+  url 'http://www.floodgap.com/software/texapp/dist0/0.6.07.txt'
+  sha1 '172dad45a1f71c6927b3dbf5fc3cea51e31f7938'
 
   def install
     bin.install "#{version}.txt" => "texapp"

@@ -64,23 +64,25 @@ class Macvim < Formula
       args << "--with-luajit"
     end
 
-    if build.with? "python" and build.with? "python3"
-      args << "--enable-pythoninterp=dynamic" << "--enable-python3interp=dynamic"
-    else
-      args << "--enable-pythoninterp" if build.with? "python"
-      args << "--enable-python3interp" if build.with? "python3"
-    end
+    if build.with? "python"
+      if build.without? "python3"
+        # MacVim seems to link Python by `-framework Python` (instead of
+        # `python-config --ldflags`) and so we have to pass the -F to point to
+        # where the Python.framework is located, we want it to use!
+        # Also the -L is needed for the correct linking. This is a mess but we have
+        # to wait until MacVim is really able to link against different Python's
+        # on the Mac. Note configure detects brewed python correctly, but that
+        # is ignored.
+        # See https://github.com/Homebrew/homebrew/issues/17908
+        py_prefix = Pathname.new `python-config --prefix`.chomp
+        ENV.prepend "LDFLAGS", "-L#{py_prefix}/lib/python2.7/config -F#{py_prefix.parent.parent.parent}"
 
-    # MacVim seems to link Python by `-framework Python` (instead of
-    # `python-config --ldflags`) and so we have to pass the -F to point to
-    # where the Python.framework is located, we want it to use!
-    # Also the -L is needed for the correct linking. This is a mess but we have
-    # to wait until MacVim is really able to link against different Python's
-    # on the Mac. Note configure detects brewed python correctly, but that
-    # is ignored.
-    # See https://github.com/Homebrew/homebrew/issues/17908
-    if python2 and python2.framework? and not build.with? "python3"
-      ENV.prepend 'LDFLAGS', "-L#{python2.libdir} -F#{python2.framework}"
+        args << "--enable-pythoninterp"
+      else
+        args << "--enable-pythoninterp=dynamic" << "--enable-python3interp=dynamic"
+      end
+    elsif build.with? "python3"
+      args << "--enable-python3interp"
     end
 
     unless MacOS::CLT.installed?
@@ -94,32 +96,22 @@ class Macvim < Formula
 
     system "./configure", *args
 
-    if build.with? "python" and build.with? "python3"
-      # On 64-bit systems, we need to avoid a 32-bit Framework Python.
-      # MacVim doesn't check Python while compiling.
-      python do
-        if MacOS.prefer_64_bit? and python.framework? and not archs_for_command("#{python.prefix}/Python").include? :x86_64
-          opoo "Detected a framework Python that does not have 64-bit support built in:"
-          puts <<-EOS.undent
-            #{python.prefix}
-
-            Dynamic loading Python library requires the same architecture.
-
-            Note that a framework Python in /Library/Frameworks/Python.framework is
-            the "MacPython" version, and not the system-provided version which is in:
-              /System/Library/Frameworks/Python.framework
-          EOS
-        end
+    if build.with? "python"
+      if build.with? "python3"
+        py_prefix = `python-config --prefix`.chomp
+        inreplace "src/auto/config.mk", /-DDYNAMIC_PYTHON_DLL=\\".*\\"/,
+                    %Q[-DDYNAMIC_PYTHON_DLL=\'\"#{py_prefix}/Python\"\']
+        py3_version = /\d\.\d/.match `python3 --version 2>&1`
+        py3_prefix = `python#{py3_version}-config --prefix`.chomp
+        inreplace 'src/auto/config.mk', /-DDYNAMIC_PYTHON3_DLL=\\".*\\"/,
+                  %Q[-DDYNAMIC_PYTHON3_DLL=\'\"#{py3_prefix}/Python\"\']
       end
-      # Help vim find Python's library as absolute path.
-      python do
-        inreplace 'src/auto/config.mk', /-DDYNAMIC_PYTHON#{python.if3then3}_DLL=\\".*\\"/, %Q[-DDYNAMIC_PYTHON#{python.if3then3}_DLL=\'\"#{python.prefix}/Python\"\'] if python.framework?
-      end
-      # Force vim loading different Python on same time, may cause vim crash.
-      unless python.brewed?
-        opoo "You seem to have a version of Python not installed by Homebrew. Attempting to modify config.h. You may see warning message during brewing."
-        inreplace 'src/auto/config.h', "/* #undef PY_NO_RTLD_GLOBAL */", "#define PY_NO_RTLD_GLOBAL 1"
-        inreplace 'src/auto/config.h', "/* #undef PY3_NO_RTLD_GLOBAL */", "#define PY3_NO_RTLD_GLOBAL 1"
+
+      unless Formula.factory("python").installed?
+        inreplace "src/auto/config.h", "/* #undef PY_NO_RTLD_GLOBAL */",
+                                        "#define PY_NO_RTLD_GLOBAL 1"
+        inreplace "src/auto/config.h", "/* #undef PY3_NO_RTLD_GLOBAL */",
+                                       "#define PY3_NO_RTLD_GLOBAL 1"
       end
     end
 
@@ -148,19 +140,8 @@ class Macvim < Formula
   end
 
   def caveats
-    s = ''
-    s += <<-EOS.undent
-      MacVim.app installed to:
-        #{prefix}
-
-      Run the following to make MacVim available as a Mac OS X application:
-          brew linkapps
-      or:
-          brew linkapps --local
-    EOS
     if build.with? "python" and build.with? "python3"
-      s += <<-EOS.undent
-
+      <<-EOS.undent
         MacVim has been built with dynamic loading of Python 2 and Python 3.
 
         Note: if MacVim dynamically loads both Python 2 and Python 3, it may
@@ -168,6 +149,5 @@ class Macvim < Formula
             http://vimdoc.sourceforge.net/htmldoc/if_pyth.html#python3
       EOS
     end
-    return s
   end
 end

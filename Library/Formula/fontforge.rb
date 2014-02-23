@@ -69,7 +69,7 @@ class Fontforge < Formula
     if build.with? 'python'
       args << "--enable-pyextension"
       # Fix linking to correct Python library
-      ENV.prepend "LDFLAGS", "-L#{python.libdir}"
+      ENV.prepend "LDFLAGS", "-L#{%x(python-config --prefix).chomp}/lib"
     else
       args << "--without-python"
     end
@@ -102,7 +102,7 @@ class Fontforge < Formula
     # Fix install location of Python extension; see:
     # http://sourceforge.net/mailarchive/message.php?msg_id=26827938
     inreplace "Makefile" do |s|
-      s.gsub! "python setup.py install --prefix=$(prefix) --root=$(DESTDIR)", "#{python} setup.py install --prefix=$(prefix)"
+      s.gsub! "python setup.py install --prefix=$(prefix) --root=$(DESTDIR)", "python setup.py install --prefix=$(prefix)"
     end
 
     # Replace FlatCarbon headers with the real paths
@@ -121,24 +121,7 @@ class Fontforge < Formula
     system "make install"
   end
 
-  def caveats
-    x_caveats = <<-EOS.undent
-      fontforge is an X11 application.
-
-      To install the Mac OS X wrapper application run:
-        brew linkapps
-      or:
-        ln -s #{opt_prefix}/FontForge.app /Applications
-    EOS
-
-    s = ""
-    s += x_caveats if build.with? "x"
-    s += python.standard_caveats if python
-    return s
-  end
-
   test do
     system "#{bin}/fontforge", "-version"
-    system python, "-c", "import fontforge"
   end
 end

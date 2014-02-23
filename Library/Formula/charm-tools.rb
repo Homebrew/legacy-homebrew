@@ -2,31 +2,21 @@ require 'formula'
 
 class CharmTools < Formula
   homepage 'https://launchpad.net/charm-tools'
-  url 'https://launchpad.net/charm-tools/1.2/1.2.5/+download/charm-tools-1.2.5.tar.gz'
-  sha1 'eb425dd554e471c6bae740d91cbc1b873c7e586d'
+  url 'https://launchpad.net/charm-tools/1.2/1.2.9/+download/charm-tools-1.2.9-1.tar.gz'
+  sha1 '9da948b85dc2fc547335d28669f694338b0b77e8'
 
   depends_on :python
   depends_on 'libyaml'
 
   def install
-    python do
-      system python, "setup.py", "install", "--prefix=#{libexec}"
-    end
+    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    system "python", "setup.py", "install", "--prefix=#{libexec}"
 
-    # charm-tools installs its own copies of many, many common python
-    # libraries; these shim scripts makes sure the privately-installed
-    # tools can find them
-    Dir[libexec/'bin/*charm*'].each do |tool|
-      toolname = File.basename(tool)
-      (bin/toolname).write <<-EOS.undent
-      #!/bin/sh
-      export PYTHONPATH=#{libexec}/lib/python2.7/site-packages
-      exec #{tool}
-      EOS
-    end
+    bin.install Dir[libexec/'bin/*charm*']
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
-  def caveats
-    python.standard_caveats if python
+  test do
+    system "#{bin}/charm", "list"
   end
 end

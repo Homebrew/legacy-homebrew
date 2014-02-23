@@ -10,7 +10,7 @@ module Homebrew extend self
     elsif ARGV.first == "--repair"
       repair_taps
     else
-      install_tap(*tap_args)
+      opoo "Already tapped!" unless install_tap(*tap_args)
     end
   end
 
@@ -23,7 +23,7 @@ module Homebrew extend self
 
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}"
-    raise AlreadyTappedError if tapd.directory?
+    return false if tapd.directory?
     abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
 
     files = []
@@ -31,21 +31,17 @@ module Homebrew extend self
     link_tap_formula(files)
     puts "Tapped #{files.length} formula"
 
-    # Figure out if this repo is private
-    # curl will throw an exception if the repo is private (Github returns a 404)
-    begin
-      curl('-Ifso', '/dev/null', "https://api.github.com/repos/#{repouser}/homebrew-#{repo}")
-    rescue
-      puts
-      puts "It looks like you tapped a private repository"
-      puts "In order to not input your credentials every time"
-      puts "you can use git HTTP credential caching or issue the"
-      puts "following command:"
-      puts
-      puts "   cd #{tapd}"
-      puts "   git remote set-url origin git@github.com:#{repouser}/homebrew-#{repo}.git"
-      puts
+    if private_tap?(repouser, repo) then puts <<-EOS.undent
+      It looks like you tapped a private repository. To avoid entering your
+      credentials each time you update, you can use git HTTP credential caching
+      or issue the following command:
+
+        cd #{tapd}
+        git remote set-url origin git@github.com:#{repouser}/homebrew-#{repo}.git
+      EOS
     end
+
+    true
   end
 
   def link_tap_formula formulae
@@ -108,10 +104,17 @@ module Homebrew extend self
 
   def tap_args
     ARGV.first =~ %r{^(\S+)/(homebrew-)?(\w+)$}
-    raise "Invalid usage" unless $1 and $3
+    raise "Invalid tap name" unless $1 && $3
     [$1, $3]
   end
 
+  def private_tap?(user, repo)
+    GitHub.private_repo?(user, "homebrew-#{repo}")
+  rescue GitHub::HTTPNotFoundError => e
+    true
+  rescue GitHub::Error
+    false
+  end
 end
 
 

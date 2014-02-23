@@ -23,8 +23,9 @@ class Tbb < Formula
     ENV.cxx11 if build.cxx11?
     # Override build prefix so we can copy the dylibs out of the same place
     # no matter what system we're on, and use our compilers.
+    compiler = ENV.compiler.to_s.start_with?('gcc') ? 'gcc' : ENV.compiler
     args = ['tbb_build_prefix=BUILDPREFIX',
-            "compiler=#{ENV.compiler}"]
+            "compiler=#{compiler}"]
     args << (MacOS.prefer_64_bit? ? "arch=intel64" : "arch=ia32")
     args << "cpp0x=1" << "stdlib=libc++" if build.cxx11?
     system "make", *args

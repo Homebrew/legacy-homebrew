@@ -3,7 +3,7 @@ brew(1) -- The missing package manager for OS X
 
 ## SYNOPSIS
 
-`brew` --version  
+`brew` --version<br>
 `brew` command [--verbose|-v] [options] [formula] ...
 
 ## DESCRIPTION
@@ -274,6 +274,9 @@ Note that these flags should only appear after a command.
   * `prune`:
     Remove dead symlinks from the Homebrew prefix. This is generally not
     needed, but can be useful when doing DIY installations.
+
+  * `reinstall` <formula>:
+    Uninstall then install <formula>
 
   * `rm`, `remove`, `uninstall [--force]` <formula>:
     Uninstall <formula>.

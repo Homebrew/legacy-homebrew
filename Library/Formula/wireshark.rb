@@ -2,9 +2,9 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.3.tar.bz2'
-  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.3.tar.bz2'
-  sha1 '58b02d6c2f1ae086a6ec46289d1eea0cc4343309'
+  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.5.tar.bz2'
+  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.5.tar.bz2'
+  sha1 'ebbf4f8382fc8961c1fb7959727b3e6792e597c1'
 
   head do
     url 'http://anonsvn.wireshark.org/wireshark/trunk/', :using => :svn
@@ -21,6 +21,7 @@ class Wireshark < Formula
 
   option 'with-x', 'Include X11 support'
   option 'with-qt', 'Use QT for GUI instead of GTK+'
+  option 'with-headers', 'Install Wireshark library headers for plug-in developemnt'
 
   depends_on 'pkg-config' => :build
 
@@ -42,12 +43,12 @@ class Wireshark < Formula
   end
 
   def patches
-    {
+    if build.stable?
       # Removes SDK checks that prevent the build from working on CLT-only systems
       # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
-      :p1 => DATA
-    }
-  end if build.stable?
+      { :p1 => DATA }
+    end
+  end
 
   def install
     system "./autogen.sh" if build.head?
@@ -66,6 +67,18 @@ class Wireshark < Formula
     system "make"
     ENV.deparallelize # parallel install fails
     system "make install"
+
+    if build.with? 'headers'
+        (include/"wireshark").install Dir["*.h"]
+        (include/"wireshark/epan").install Dir["epan/*.h"]
+        (include/"wireshark/epan/crypt").install Dir["epan/crypt/*.h"]
+        (include/"wireshark/epan/dfilter").install Dir["epan/dfilter/*.h"]
+        (include/"wireshark/epan/dissectors").install Dir["epan/dissectors/*.h"]
+        (include/"wireshark/epan/ftypes").install Dir["epan/ftypes/*.h"]
+        (include/"wireshark/epan/wmem").install Dir["epan/wmem/*.h"]
+        (include/"wireshark/wiretap").install Dir["wiretap/*.h"]
+        (include/"wireshark/wsutil").install Dir["wsutil/*.h"]
+    end
   end
 
   def caveats; <<-EOS.undent

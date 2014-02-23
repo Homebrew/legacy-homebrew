@@ -2,8 +2,8 @@ require 'formula'
 
 class Tcpflow < Formula
   homepage 'https://github.com/simsong/tcpflow'
-  url 'http://www.digitalcorpora.org/downloads/tcpflow/tcpflow-1.4.2.tar.gz'
-  sha1 '69c291b4248300ff5caae031a7fa56b533e49779'
+  url 'http://www.digitalcorpora.org/downloads/tcpflow/tcpflow-1.4.4.tar.gz'
+  sha1 'e4bc5ad08a81a39943bd1c799edefcdee09de784'
 
   head do
     url 'https://github.com/simsong/tcpflow.git'

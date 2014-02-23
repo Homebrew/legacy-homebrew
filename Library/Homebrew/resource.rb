@@ -79,6 +79,9 @@ class Resource
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath
     downloader.fetch
+  rescue ErrorDuringExecution, CurlDownloadStrategyError => e
+    raise DownloadError.new(self, e)
+  else
     cached_download
   end
 
@@ -91,12 +94,6 @@ class Resource
     opoo "Cannot verify integrity of #{fn.basename}"
     puts "A checksum was not provided for this resource"
     puts "For your reference the SHA1 is: #{fn.sha1}"
-  rescue ChecksumMismatchError => e
-    e.advice = <<-EOS.undent
-    Archive: #{fn}
-    (To retry an incomplete download, remove the file above.)
-    EOS
-    raise e
   end
 
   Checksum::TYPES.each do |cksum|

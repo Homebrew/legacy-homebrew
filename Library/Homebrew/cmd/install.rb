@@ -31,10 +31,7 @@ module Homebrew extend self
       end
       if not File.exist? name and name =~ HOMEBREW_TAP_FORMULA_REGEX then
         require 'cmd/tap'
-        begin
-          install_tap $1, $2
-        rescue AlreadyTappedError
-        end
+        install_tap $1, $2
       end
     end unless ARGV.force?
 

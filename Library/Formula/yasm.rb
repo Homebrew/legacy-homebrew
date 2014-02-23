@@ -5,6 +5,13 @@ class Yasm < Formula
   url 'http://tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz'
   sha256 '768ffab457b90a20a6d895c39749adb547c1b7cb5c108e84b151a838a23ccf31'
 
+  bottle do
+    cellar :any
+    sha1 "cd4b87a7ab1a80b4461b6b21f4a51e98186a225e" => :mavericks
+    sha1 "adf3e0d26dbb17a37c310d7bdf8821d54a4f5914" => :mountain_lion
+    sha1 "b5f60c20bd5e5b475d982f994f3754f07e63674f" => :lion
+  end
+
   head do
     url 'https://github.com/yasm/yasm.git'
 
@@ -33,9 +40,4 @@ class Yasm < Formula
     system './configure', *args
     system 'make install'
   end
-
-  def caveats
-    python.standard_caveats if python
-  end
-
 end

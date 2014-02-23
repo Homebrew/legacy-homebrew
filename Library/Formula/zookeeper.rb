@@ -73,14 +73,6 @@ class Zookeeper < Formula
       system "make install"
     end if build_c
 
-    # Install Python bindings
-    python do
-      cd "src/contrib/zkpython" do
-        system python, "src/python/setup.py", "build"
-        system python, "src/python/setup.py", "install", "--prefix=#{prefix}"
-      end
-    end
-
     # Install Perl bindings
     cd "src/contrib/zkperl" do
       system "perl", "Makefile.PL", "PREFIX=#{prefix}",
@@ -123,10 +115,9 @@ class Zookeeper < Formula
     log4j_properties = etc/'zookeeper/log4j.properties'
     log4j_properties.write(default_log4j_properties) unless log4j_properties.exist?
 
-    unless (etc/'zookeeper/zoo.cfg').exist?
-      inreplace 'conf/zoo_sample.cfg',
-                /^dataDir=.*/, "dataDir=#{var}/run/zookeeper/data"
-      (etc/'zookeeper').install 'conf/zoo_sample.cfg'
-    end
+    inreplace 'conf/zoo_sample.cfg',
+              /^dataDir=.*/, "dataDir=#{var}/run/zookeeper/data"
+    cp 'conf/zoo_sample.cfg', 'conf/zoo.cfg'
+    (etc/'zookeeper').install ['conf/zoo.cfg', 'conf/zoo_sample.cfg']
   end
 end

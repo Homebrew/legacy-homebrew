@@ -6,7 +6,8 @@ class Ntfs3g < Formula
   sha1 '8c12b7644d90ae9fb8d0aca0d7ebd5f8fac2c818'
 
   depends_on 'pkg-config' => :build
-  depends_on 'fuse4x'
+  depends_on 'osxfuse'
+  depends_on 'gettext'
 
   def patches
     # From macports:
@@ -64,14 +65,6 @@ class Ntfs3g < Formula
       exit $?;
       EOS
     end
-  end
-
-  def caveats
-    <<-EOS.undent
-    Remember to install the fuse4x kernel extension as the root user.
-    Instructions are found here:
-        brew info fuse4x-kext
-    EOS
   end
 end
 

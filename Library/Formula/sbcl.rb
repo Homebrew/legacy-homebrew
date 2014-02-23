@@ -2,15 +2,15 @@ require 'formula'
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.14/sbcl-1.1.14-source.tar.bz2'
-  sha1 'c6b855f1dc5750de4057a7cabb35750986db3825'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.15/sbcl-1.1.15-source.tar.bz2'
+  sha1 '345b505353c3ed6a2b2a18e3de9e704527bf32a4'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
-    sha1 '31436d55e803f7bb6a420179d202a608d0f51b1f' => :mavericks
-    sha1 '4b87f08e4d89965a1c48d0a5a280e440b0281039' => :mountain_lion
-    sha1 '4631c87e3b50df6b919564f6f028ef033d0144af' => :lion
+    sha1 "0fbd8c1f8ff12f6fd4c2ccb660edad3a40f57cb6" => :mavericks
+    sha1 "91f483bf6f8001a0b1557727450de769528f1c79" => :mountain_lion
+    sha1 "a2160042c9d0dc94208966ac3034a44364e6c2a0" => :lion
   end
 
   fails_with :llvm do
@@ -23,9 +23,16 @@ class Sbcl < Formula
   option "with-ldb", "Include low-level debugger in the build"
   option "with-internal-xref", "Include XREF information for SBCL internals (increases core size by 5-6MB)"
 
-  resource 'bootstrap' do
-    url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.0/sbcl-1.1.0-x86-64-darwin-binary.tar.bz2'
-    sha1 'ed2069e124027c43926728c48d604efbb4e33950'
+  # Current binary versions are listed at http://sbcl.sourceforge.net/platform-table.html
+
+  resource 'bootstrap64' do
+    url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.8/sbcl-1.1.8-x86-64-darwin-binary.tar.bz2'
+    sha1 'cffd8c568588f48bd0c69295a385b662d27983cf'
+  end
+
+  resource 'bootstrap32' do
+    url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.6/sbcl-1.1.6-x86-darwin-binary.tar.bz2'
+    sha1 '35a76b93f8714bc34ba127df4aaf69aacfc08164'
   end
 
   def patches
@@ -61,7 +68,8 @@ class Sbcl < Formula
       value =~ /[\x80-\xff]/n
     end
 
-    resource('bootstrap').stage do
+    bootstrap = (build.build_32_bit? || !MacOS.prefer_64_bit?) ? 'bootstrap32' : 'bootstrap64'
+    resource(bootstrap).stage do
       # We only need the binaries for bootstrapping, so don't install anything:
       command = Dir.pwd + "/src/runtime/sbcl"
       core = Dir.pwd + "/output/sbcl.core"

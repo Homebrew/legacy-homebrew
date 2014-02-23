@@ -1,15 +1,16 @@
 require 'formula'
 
 class Fuse4xKext < Formula
-  homepage 'http://fuse4x.github.com'
+  homepage 'http://fuse4x.github.io'
   url 'https://github.com/fuse4x/kext/archive/fuse4x_0_9_2.tar.gz'
   sha1 '4222c14b38325d9e41fb0925d2681dda3e73e861'
 
   bottle do
-    # cellar :any
-    revision 3
-    sha1 'f571d853f081883d943a6e8c1b12753c96fa4b28' => :mountain_lion
-    sha1 'd64873c1c3afa179929651ce2c08cd6f893b421f' => :lion
+    cellar :any
+    revision 4
+    sha1 '1d1ab89b714ea897c981f356a659afaff977a0da' => :mavericks
+    sha1 '0a03e6a51e40fe3456b8f132549516e4cb996985' => :mountain_lion
+    sha1 '6f306f38557d016f5eaa0c999f2092d0767870e6' => :lion
   end
 
   def install

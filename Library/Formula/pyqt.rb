@@ -8,38 +8,68 @@ class Pyqt < Formula
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
+  if !Formula.factory("python").installed? && build.with?("python") &&
+     build.with?("python3")
+    odie <<-EOS.undent
+      pyqt: You cannot use system Python 2 and Homebrew's Python 3 simultaneously.
+      Either `brew install python` or use `--without-python3`.
+    EOS
+  elsif build.without?("python3") && build.without?("python")
+    odie "pyqt: --with-python3 must be specified when using --without-python"
+  end
+
   depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
 
-  if build.with? 'python3'
-    depends_on 'sip' => 'with-python3'
+  if build.with? "python3"
+    depends_on "sip" => "with-python3"
   else
-    depends_on 'sip'
+    depends_on "sip"
+  end
+
+  def pythons
+    pythons = []
+    ["python", "python3"].each do |python|
+      next if build.without? python
+      version = /\d\.\d/.match `#{python} --version 2>&1`
+      pythons << [python, version]
+    end
+    pythons
   end
 
   def patches
     # On Mavericks we want to target libc++, but this requires a user specified
     # qmake makespec. Unfortunately user specified makespecs are broken in the
     # configure.py script, so we have to fix the makespec path handling logic.
+    # Also qmake spec macro parsing does not properly handle inline comments,
+    # which can result in ignored build flags when they are concatenated together.
+    # Changes proposed upstream: http://www.riverbankcomputing.com/pipermail/pyqt/2013-December/033537.html
     DATA
   end
 
   def install
-    python do
+    # On Mavericks we want to target libc++, this requires a non default qt makespec
+    if ENV.compiler == :clang and MacOS.version >= :mavericks
+      ENV.append "QMAKESPEC", "unsupported/macx-clang-libc++"
+    end
 
-      # On Mavericks we want to target libc++, this requires a non default qt makespec
-      if ENV.compiler == :clang and MacOS.version >= :mavericks
-        ENV.append "QMAKESPEC", "unsupported/macx-clang-libc++"
-      end
+    pythons.each do |python, version|
+      ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
 
-      args = [ "--confirm-license",
-               "--bindir=#{bin}",
-               "--destdir=#{lib}/#{python.xy}/site-packages",
-               "--sipdir=#{share}/sip#{python.if3then3}" ]
+      args = ["--confirm-license",
+              "--bindir=#{bin}",
+              "--destdir=#{lib}/python#{version}/site-packages",
+              "--sipdir=#{HOMEBREW_PREFIX}/share/sip"]
+
       # We need to run "configure.py" so that pyqtconfig.py is generated, which
-      # is needed by PyQWT for determining the correct build settings. But do
-      # the actual compile, we use the newer configure-ng.py.
+      # is needed by PyQWT (and many other PyQt interoperable implementations such
+      # as the ROS GUI libs). This file is currently needed for generating build
+      # files appropriate for the qmake spec that was used to build Qt. This method
+      # is deprecated and will be removed with SIP v5, so we do the actual compile
+      # using the newer configure-ng.py as recommended.
+
+      inreplace "configure.py", "iteritems", "items" if python == "python3"
       system python, "configure.py", *args
-      (python.site_packages/'PyQt4').install 'pyqtconfig.py'
+      (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
 
       # On Mavericks we want to target libc++, this requires a non default qt makespec
       if ENV.compiler == :clang and MacOS.version >= :mavericks
@@ -49,20 +79,15 @@ class Pyqt < Formula
       system python, "./configure-ng.py", *args
       system "make"
       system "make", "install"
-      system "make", "clean"  # because this python block may be run twice
-    end
-
-    if build.with? 'python3' and build.with? 'python'
-      ['pyuic4', 'pyrcc4', 'pylupdate4'].each { |f| mv(bin/f, bin/"#{f}-py3")}
+      system "make", "clean" if pythons.length > 1
     end
   end
 
   def caveats
-    python.standard_caveats if python
+    "Phonon support is broken."
   end
 
   test do
-    # To test Python 3.x, you have to `brew test pyqt --with-python3`
     Pathname('test.py').write <<-EOS.undent
       import sys
       from PyQt4 import QtGui, QtCore
@@ -81,7 +106,11 @@ class Pyqt < Formula
       window.show()
       sys.exit(app.exec_())
     EOS
-    python do
+
+    pythons.each do |python, version|
+      unless Formula.factory(python).installed?
+        ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
+      end
       system python, "test.py"
     end
   end
@@ -94,9 +123,21 @@ index a8e5dcd..a5f1474 100644
 @@ -1886,7 +1886,7 @@ def get_build_macros(overrides):
      if "QMAKESPEC" in list(os.environ.keys()):
          fname = os.environ["QMAKESPEC"]
- 
+
 -        if not os.path.dirname(fname):
 +        if not os.path.dirname(fname) or fname.startswith('unsupported'):
              qt_macx_spec = fname
              fname = os.path.join(qt_archdatadir, "mkspecs", fname)
      elif sys.platform == "darwin":
+@@ -1934,6 +1934,11 @@ def get_build_macros(overrides):
+     if macros is None:
+         return None
+
++    # QMake macros may contain comments on the same line so we need to remove them
++    for macro, value in macros.iteritems():
++        if "#" in value:
++            macros[macro] = value.split("#", 1)[0]
++
+     # Qt5 doesn't seem to support the specific macros so add them if they are
+     # missing.
+     if macros.get("INCDIR_QT", "") == "":

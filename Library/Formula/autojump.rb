@@ -10,11 +10,14 @@ class Autojump < Formula
   def install
     inreplace 'bin/autojump.sh', ' /etc/profile.d/', " #{prefix}/etc/"
 
-    bin.install 'bin/autojump'
+    libexec.install 'bin/autojump'
+    libexec.install 'bin/autojump_argparse.py', 'bin/autojump_data.py', 'bin/autojump_utils.py' if build.head?
     man1.install 'docs/autojump.1'
     (prefix/'etc').install 'bin/autojump.sh', 'bin/autojump.bash', 'bin/autojump.zsh'
     zsh_completion.install 'bin/_j'
     (prefix/'etc').install 'bin/autojump.fish' if build.head?
+
+    bin.write_exec_script libexec+'autojump'
   end
 
   def caveats;

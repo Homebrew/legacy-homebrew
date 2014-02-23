@@ -6,17 +6,22 @@ class Gearman < Formula
   sha1 '59ec305a4535451c3b51a21d2525e1c07770419d'
 
   option 'with-mysql', 'Compile with MySQL persistent queue enabled'
+  option 'with-postgresql', 'Compile with Postgresql persistent queue enabled'
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'
   depends_on 'libevent'
   depends_on 'ossp-uuid'
   depends_on :mysql => :optional
+  depends_on :postgresql => :optional
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--with-mysql" if build.with? 'mysql'
-
+    args << "--without-mysql" unless build.with? 'mysql'
+    if build.with? 'postgresql'
+      pg_config = "#{Formula.factory('postgresql').opt_prefix}/bin/pg_config"
+      args << "--with-postgresql=#{pg_config}"
+    end
     system "./configure", *args
     system "make install"
   end

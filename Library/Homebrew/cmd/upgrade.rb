@@ -34,8 +34,12 @@ module Homebrew extend self
       outdated -= pinned
     end
 
-    oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
-    puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
+    unless outdated.empty?
+      oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
+      puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
+    else
+      oh1 "No packages to upgrade"
+    end
 
     unless upgrade_pinned? || pinned.empty?
       oh1 "Not upgrading #{pinned.length} pinned package#{pinned.length.plural_s}:"
@@ -88,6 +92,8 @@ module Homebrew extend self
     e.dump
     puts
     Homebrew.failed = true
+  rescue DownloadError => e
+    ofail e
   ensure
     # restore previous installation state if build failed
     outdated_keg.link if outdated_keg and not f.installed? rescue nil

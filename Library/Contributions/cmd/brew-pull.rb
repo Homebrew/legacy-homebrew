@@ -30,8 +30,11 @@ ARGV.named.each do|arg|
     url = url_match[0]
   end
 
-  if tap url
-    Dir.chdir HOMEBREW_REPOSITORY/"Library/Taps/#{url_match[1].downcase}-#{tap url}"
+  if tap_name = tap(url)
+    user = url_match[1].downcase
+    tap_dir = HOMEBREW_REPOSITORY/"Library/Taps/#{user}-#{tap_name}"
+    safe_system "brew", "tap", "#{user}/#{tap_name}" unless tap_dir.exist?
+    Dir.chdir tap_dir
   else
     Dir.chdir HOMEBREW_REPOSITORY
   end
@@ -40,7 +43,7 @@ ARGV.named.each do|arg|
 
   if ARGV.include? '--bottle'
     raise 'No pull request detected!' unless issue
-    url = "https://github.com/BrewTestBot/homebrew/compare/mxcl:master...pr-#{issue}"
+    url = "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
   end
 
   # GitHub provides commits'/pull-requests' raw patches using this URL.

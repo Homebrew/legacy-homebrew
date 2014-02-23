@@ -237,7 +237,7 @@ class Pathname
   def verify_checksum expected
     raise ChecksumMissingError if expected.nil? or expected.empty?
     actual = Checksum.new(expected.hash_type, send(expected.hash_type).downcase)
-    raise ChecksumMismatchError.new(expected, actual) unless expected == actual
+    raise ChecksumMismatchError.new(self, expected, actual) unless expected == actual
   end
 
   if '1.9' <= RUBY_VERSION
@@ -343,17 +343,6 @@ class Pathname
     system '/usr/bin/install-info', '--delete', '--quiet', self.to_s, (self.dirname+'dir').to_s
   end
 
-  def all_formula pwd = self
-    children.map{ |child| child.relative_path_from(pwd) }.each do |pn|
-      yield pn if pn.to_s =~ /.rb$/
-    end
-    children.each do |child|
-      child.all_formula(pwd) do |pn|
-        yield pn
-      end if child.directory?
-    end
-  end
-
   def find_formula
     [self/:Formula, self/:HomebrewFormula, self].each do |d|
       if d.exist?
@@ -380,6 +369,27 @@ class Pathname
       EOS
       # +x here so this will work during post-install as well
       (self+target.basename()).chmod 0644
+    end
+  end
+
+  # Writes an exec script that sets environment variables
+  def write_env_script target, env
+    env_export = ''
+    env.each {|key, value| env_export += "#{key}=\"#{value}\" "}
+    self.write <<-EOS.undent
+    #!/bin/bash
+    #{env_export}exec "#{target}" "$@"
+    EOS
+  end
+
+  # Writes a wrapper env script and moves all files to the dst
+  def env_script_all_files dst, env
+    dst.mkpath
+    Dir["#{self}/*"].each do |file|
+      file = Pathname.new(file)
+      dst.install_p file
+      new_file = dst+file.basename
+      file.write_env_script(new_file, env)
     end
   end
 

@@ -2,14 +2,14 @@ require 'formula'
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'https://git-core.googlecode.com/files/git-1.8.5.2.tar.gz'
-  sha1 '3a09d6d5d4e31c702f17e664a527b4c2f6e84faf'
+  url 'https://git-core.googlecode.com/files/git-1.9.0.tar.gz'
+  sha1 'e60667fc16e5a5f1cde46616b0458cc802707743'
   head 'https://github.com/git/git.git'
 
   bottle do
-    sha1 '96d04727c003453524c76db9e62d06efa9c96cb5' => :mavericks
-    sha1 '041f911d683da52f2544299035836337e67417cd' => :mountain_lion
-    sha1 '27e3ca8f3005f8405daab4f66dfe6df0d6affcd3' => :lion
+    sha1 "78bb720052e624b889b7c39e47ec40e463fa13b0" => :mavericks
+    sha1 "95b604ef6dff8a8abbc6819b1769c6df6ac45b03" => :mountain_lion
+    sha1 "10d46b289e9877f866e953dfc65fde260c80acb8" => :lion
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -18,32 +18,20 @@ class Git < Formula
   option 'with-brewed-curl', "Use Homebrew's version of cURL library"
   option 'with-persistent-https', 'Build git-remote-persistent-https from "contrib" directory'
 
-  depends_on :python
   depends_on 'pcre' => :optional
   depends_on 'gettext' => :optional
   depends_on 'openssl' if build.with? 'brewed-openssl'
-  depends_on 'curl' => 'with-darwinssl' if build.with? 'brewed-curl'
+  depends_on 'curl' if build.with? 'brewed-curl'
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
-    url 'http://git-core.googlecode.com/files/git-manpages-1.8.5.2.tar.gz'
-    sha1 '54450c09138b8d65c5f9d2b19ca86fd63c645bb5'
+    url 'http://git-core.googlecode.com/files/git-manpages-1.9.0.tar.gz'
+    sha1 'cff590c92b4d1c8a143c078473140b653cc5d56a'
   end
 
   resource 'html' do
-    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.5.2.tar.gz'
-    sha1 'eaf2e3cfd07c1b88eff688fc3ba79dd4f3f2bc43'
-  end
-
-  def patches
-    if MacOS.version >= :mavericks
-      # Allow using PERLLIB_EXTRA to find Subversion Perl bindings location
-      # in the CLT/Xcode. Should be included in Git 1.8.6.
-      # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=07981d
-      # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=0386dd
-      ['https://git.kernel.org/cgit/git/git.git/patch/?id=07981d',
-       'https://git.kernel.org/cgit/git/git.git/patch/?id=0386dd']
-    end
+    url 'http://git-core.googlecode.com/files/git-htmldocs-1.9.0.tar.gz'
+    sha1 '65eb3f411f4699695c7081a7c716cabb9ce23d75'
   end
 
   def install
@@ -52,7 +40,7 @@ class Git < Formula
     ENV['NO_DARWIN_PORTS'] = '1'
     ENV['V'] = '1' # build verbosely
     ENV['NO_R_TO_GCC_LINKER'] = '1' # pass arguments to LD correctly
-    ENV['PYTHON_PATH'] = python.binary if python
+    ENV['PYTHON_PATH'] = which 'python'
     ENV['PERL_PATH'] = which 'perl'
 
     if MacOS.version >= :mavericks and MacOS.dev_tools_prefix

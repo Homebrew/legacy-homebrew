@@ -25,6 +25,7 @@ class Lsyncd < Formula
     "10.8.4" => ['xnu-2050.24.15.tar.gz', 'a080f28b7385b0cc63f9ba5a07d922d53ea0a4a3'],
     "10.8.5" => ['xnu-2050.48.11.tar.gz', '1f6860148f8231a53a6b393aa1af589cdedfc70c'],
     "10.9"   => ['xnu-2422.1.72.tar.gz',  'c7bdc40396df3c51ece934c0e3b4a19b063ea34c'],
+    "10.9.1" => ['xnu-2422.1.72.tar.gz',  'c7bdc40396df3c51ece934c0e3b4a19b063ea34c'],
   }
 
   if xnu_headers.key? osx_version

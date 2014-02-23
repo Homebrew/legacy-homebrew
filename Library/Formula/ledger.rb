@@ -27,23 +27,16 @@ class Ledger < Formula
   depends_on :python => :optional
 
   def install
-    opoo "Homebrew: Sorry, python bindings for --HEAD seem not to install. Help us fixing this!" if build.with? 'python'
-
     # find Homebrew's libpcre
     ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
 
     if build.head?
-      args = [((build.include? 'debug') ? 'debug' : 'opt'), "make", "-N", "-j#{ENV.make_jobs}", "--output=build"]
-      if build.with? 'python'
-        args << '--python'
-        # acprep picks up system python because CMake is used
-        inreplace 'acprep', "self.configure_args  = []",
-                            "self.configure_args  = ['-DPYTHON_INCLUDE_DIR=#{python.incdir}', '-DPYTHON_LIBRARY=#{python.libdir}/lib#{python.xy}.dylib']"
-      end
       # Support homebrew not at /usr/local. Also support Xcode-only setups:
       inreplace 'acprep', 'search_prefixes = [', "search_prefixes = ['#{HOMEBREW_PREFIX}','#{MacOS.sdk_path}/usr',"
+      args = [((build.include? 'debug') ? 'debug' : 'opt'), "make", "install", "-N", "-j#{ENV.make_jobs}", "--output=build"]
+      args << '--python' if build.with? 'python'
       system "./acprep", "--prefix=#{prefix}", *args
-      system "cmake", "-P", "build/cmake_install.cmake", "-DUSE_PYTHON=ON"
+      (share+'ledger').install 'python/demo.py', 'test/input/sample.dat', Dir['contrib']
     else
       args = []
       if build.with? 'libofx'
@@ -56,6 +49,17 @@ class Ledger < Formula
       system 'make'
       ENV.deparallelize
       system 'make install'
+      (share+'ledger').install 'sample.dat', Dir['scripts']
+    end
+  end
+
+  test do
+    output = `#{bin}/ledger --file #{share}/ledger/sample.dat balance --collapse equity`
+    assert_equal '          $-2,500.00  Equity', output.split(/\n/)[0]
+    assert_equal 0, $?.exitstatus
+
+    if build.head? and build.with? 'python'
+      system "python", "#{share}/ledger/demo.py"
     end
   end
 end

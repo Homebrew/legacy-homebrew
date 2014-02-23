@@ -2,12 +2,12 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.34/kvm-tarbake-jaunty-x86/mariadb-5.5.34.tar.gz'
-  sha1 '8a7d8f6094faa35cc22bc084a0e0d8037fd4ba03'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.35/kvm-tarbake-jaunty-x86/mariadb-5.5.35.tar.gz'
+  sha1 '9b0c062c96edb07724ddf9b0235c7662065496a4'
 
   devel do
-    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.6/kvm-tarbake-jaunty-x86/mariadb-10.0.6.tar.gz'
-    sha1 '320722a5bdea2c23743bf08deb642c430f6ce5e3'
+    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.8/kvm-tarbake-jaunty-x86/mariadb-10.0.8.tar.gz'
+    sha1 '2b56a7d78b5cf063374f8d6cf03986020b0290c1'
   end
 
   depends_on 'cmake' => :build
@@ -34,11 +34,7 @@ class Mariadb < Formula
       [
         # Prevent name collision leading to compilation failure. See:
         # issue #24489, upstream: https://mariadb.atlassian.net/browse/MDEV-5314
-        'https://gist.github.com/makigumo/7735363/raw/e7b1bc368dbf0517ccae64947e4ef9d5fa00f51c/mariadb-10.0.6.mac.patch',
-        # Cherry-picked from upstream.
-        # http://bazaar.launchpad.net/~maria-captains/maria/10.0-base/revision/3941#support-files/CMakeLists.txt
-        # Resolved in 10.0.7, see: https://mariadb.atlassian.net/browse/MDEV-5314
-        'https://gist.github.com/makigumo/7735363/raw/d7f475d7937f51d7d18c35dd3dd424d74f0284f3/mariadb-10.0.6.mac.2.patch'
+        'https://gist.github.com/makigumo/8931768/raw/28ab86eb6d2fc0f400d0acc07d4b5773027ab9d2/mariadb-10.0.8.mac.patch',
       ]
     end
   end
@@ -172,11 +168,5 @@ class Mariadb < Formula
     </dict>
     </plist>
     EOS
-  end
-
-  test do
-    (prefix+'mysql-test').cd do
-      system './mysql-test-run.pl', 'status'
-    end
   end
 end

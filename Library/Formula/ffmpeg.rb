@@ -2,19 +2,14 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-1.2.4.tar.bz2'
-  sha1 'ee73a05bde209fc23441c7e49767c1b7a4b6f124'
-
+  url 'http://ffmpeg.org/releases/ffmpeg-2.1.3.tar.bz2'
+  sha1 '9dc54bbef673f3938e280bf48d07e7b24fe445ab'
   head 'git://git.videolan.org/ffmpeg.git'
 
-  # This is actually the new stable, not a devel release,
-  # but not everything builds with it yet - notably gpac
-  devel do
-    url 'http://ffmpeg.org/releases/ffmpeg-2.1.1.tar.bz2'
-    sha1 'e7a5b2d7f702c4e9ca69e23c6d3527f93de0d1bd'
-
-    depends_on 'libbluray' => :optional
-    depends_on 'libquvi' => :optional
+  bottle do
+    sha1 "34d8acf67634424b6abc65afcc6038f79b2d40f2" => :mavericks
+    sha1 "2264aed0b2ea6a52daedff190cdfff6269db1671" => :mountain_lion
+    sha1 "c175566d8ae23d82d5999b06b78b75fb5b15b2fb" => :lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -58,15 +53,10 @@ class Ffmpeg < Formula
   depends_on 'opus' => :optional
   depends_on 'frei0r' => :optional
   depends_on 'libcaca' => :optional
-
-  # Fix build against freetype 2.5.1
-  # http://ffmpeg.org/pipermail/ffmpeg-devel/2013-November/151404.html
-  def patches; DATA; end unless build.head?
+  depends_on 'libbluray' => :optional
+  depends_on 'libquvi' => :optional
 
   def install
-    # Remove when fix for freetype 2.5.1+ is incorporated upstream
-    inreplace 'configure', 'ft2build.h freetype/freetype.h', 'ft2build.h freetype.h'
-
     args = ["--prefix=#{prefix}",
             "--enable-shared",
             "--enable-pthreads",
@@ -133,18 +123,3 @@ class Ffmpeg < Formula
   end
 
 end
-
-__END__
-diff --git a/libavfilter/vf_drawtext.c b/libavfilter/vf_drawtext.c
-index 2358e35..4c08092 100644
---- a/libavfilter/vf_drawtext.c
-+++ b/libavfilter/vf_drawtext.c
-@@ -48,7 +48,6 @@
- #include "video.h"
- 
- #include <ft2build.h>
--#include <freetype/config/ftheader.h>
- #include FT_FREETYPE_H
- #include FT_GLYPH_H
- #if CONFIG_FONTCONFIG
-

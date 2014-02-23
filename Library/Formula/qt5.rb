@@ -3,11 +3,6 @@ require 'formula'
 class Qt5HeadDownloadStrategy < GitDownloadStrategy
   include FileUtils
 
-  def support_depth?
-    # We need to make a local clone so we can't use "--depth 1"
-    false
-  end
-
   def stage
     @clone.cd { reset }
     safe_system 'git', 'clone', @clone, '.'
@@ -19,16 +14,16 @@ end
 
 class Qt5 < Formula
   homepage 'http://qt-project.org/'
-  url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.0/single/qt-everywhere-opensource-src-5.2.0.tar.gz'
-  sha1 'd0374c769a29886ee61f08a6386b9af39e861232'
-  head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
-    :using => Qt5HeadDownloadStrategy
-
+  url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.1/single/qt-everywhere-opensource-src-5.2.1.tar.gz'
+  sha1 '31a5cf175bb94dbde3b52780d3be802cbeb19d65'
   bottle do
-    sha1 '38ae6b107af1e34635cf9e6efc69e630518cc0a6' => :mavericks
-    sha1 '7623e90ae623360a1f6ca282ca8003ae8ee04c55' => :mountain_lion
-    sha1 '1f58eab10d42880b444c6c151e2075227574fa8d' => :lion
+    sha1 "242518522d1cfc33330586a189d005bd674244de" => :mavericks
+    sha1 "f7f6ff607fe69ae4c215167235f3f851717a6584" => :mountain_lion
+    sha1 "53697eeaca97521ed681460c91a046be8969ab26" => :lion
   end
+
+  head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
+    :using => Qt5HeadDownloadStrategy, :shallow => false
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
@@ -44,11 +39,17 @@ class Qt5 < Formula
   odie 'qt5: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
 
   def install
+    # fixed hardcoded link to plugin dir: https://bugreports.qt-project.org/browse/QTBUG-29188
+    inreplace "qttools/src/macdeployqt/macdeployqt/main.cpp", "deploymentInfo.pluginPath = \"/Developer/Applications/Qt/plugins\";",
+              "deploymentInfo.pluginPath = \"#{prefix}/plugins\";"
+
     ENV.universal_binary if build.universal?
     args = ["-prefix", prefix,
             "-system-zlib",
+            "-qt-libpng", "-qt-libjpeg",
             "-confirm-license", "-opensource",
             "-nomake", "examples",
+            "-nomake", "tests",
             "-release"]
 
     unless MacOS::CLT.installed?
@@ -69,6 +70,7 @@ class Qt5 < Formula
       args << "-I#{dbus_opt}/include/dbus-1.0"
       args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
+      args << "-dbus-linked"
     end
 
     if MacOS.prefer_64_bit? or build.universal?
@@ -85,6 +87,10 @@ class Qt5 < Formula
     system "make"
     ENV.j1
     system "make install"
+    if build.with? 'docs'
+      system "make", "docs"
+      system "make", "install_docs"
+    end
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     cd prefix do

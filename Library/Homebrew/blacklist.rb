@@ -27,7 +27,7 @@ def blacklisted? name
         sudo easy_install pip
     EOS
   when 'pil' then <<-EOS.undent
-    Instead of PIL, consider `pip install pillow` or `brew install samueljohn/python/pillow`.
+    Instead of PIL, consider `pip install pillow` or `brew install Homebrew/python/pillow`.
     EOS
   when 'macruby' then <<-EOS.undent
     MacRuby works better when you install their package:
@@ -82,6 +82,10 @@ def blacklisted? name
     Doing this through Homebrew is error-prone. Instead, consider using
     ruby-build` to build and install specific versions of Ruby:
         brew install ruby-build
+    EOS
+  when 'osmium' then <<-EOS.undent
+    The creator of Osmium requests that it not be packaged and that people
+    use the GitHub master branch instead.
     EOS
   end
 end

@@ -61,10 +61,7 @@ module Homebrew extend self
       migration = TAP_MIGRATIONS[f]
       next unless migration
       tap_user, tap_repo = migration.split '/'
-      begin
-        install_tap tap_user, tap_repo
-      rescue AlreadyTappedError
-      end
+      install_tap tap_user, tap_repo
     end if load_tap_migrations
 
     if report.empty?

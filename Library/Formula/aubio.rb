@@ -28,15 +28,11 @@ class Aubio < Formula
                           "--prefix=#{prefix}"
     system "make"
     system "make install"
-  end
-
-  def caveats
-    python.standard_caveats if python
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
   def test
-    # this will blow up if not everything went right
-    system "#{bin}/aubiocut"
+    system "#{bin}/aubiocut", "--help"
   end
 end
 

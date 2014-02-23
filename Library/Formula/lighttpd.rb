@@ -2,14 +2,15 @@ require 'formula'
 
 class Lighttpd < Formula
   homepage 'http://www.lighttpd.net/'
-  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.33.tar.bz2'
-  sha256 '2ff2324658c0f90e7d39afd40f08f11ca230903b9019c31a2bbecd8f087f235e'
+  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.34.tar.bz2'
+  sha256 'e4b5682ef21b0bdea4a18dc7ccac6b5a0bf526b691ad0fe5c25c8b9fc38d0c12'
 
   option 'with-lua', 'Include Lua scripting support for mod_magnet'
 
   depends_on 'pkg-config' => :build
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
+  depends_on 'libtool' => :build
   depends_on 'pcre'
   depends_on 'lua' => :optional
   depends_on 'libev' => :optional
@@ -39,6 +40,9 @@ class Lighttpd < Formula
     # fixed upstream, should be in next release: http://redmine.lighttpd.net/issues/2517
     inreplace 'src/Makefile.am', '$(LDAP_LIB)', '$(SSL_LIB) $(LDAP_LIB)'
 
+    # autogen must be run, otherwise prebuilt configure may complain
+    # about a version mismatch between included automake and Homebrew's
+    system "./autogen.sh"
     system "./configure", *args
     system "make install"
 

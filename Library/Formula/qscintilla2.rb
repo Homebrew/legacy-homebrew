@@ -1,15 +1,53 @@
 require 'formula'
 
+class PythonEnvironment < Requirement
+  fatal true
+
+  satisfy do
+    !(!Formula.factory("python").installed? && ARGV.include?("--without-python") && ARGV.include?("--with-python3"))
+  end
+
+  def message
+    <<-EOS.undent
+      You cannot use system Python 2 and Homebrew's Python 3
+      simultaneously.
+      Either `brew install python` or use `--without-python3`.
+    EOS
+  end
+end
+
 class Qscintilla2 < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/qscintilla/intro'
-  url 'http://downloads.sf.net/project/pyqt/QScintilla2/QScintilla-2.7.1/QScintilla-gpl-2.7.1.tar.gz'
-  sha1 '646b5e6e6658c70d9bca034d670a3b56690662f2'
+  url 'http://downloads.sf.net/project/pyqt/QScintilla2/QScintilla-2.8/QScintilla-gpl-2.8.tar.gz'
+  sha1 '3edf9d476d4e6af0706a4d33401667a38e3a697e'
 
-  depends_on 'pyqt'
-  depends_on 'sip'
-  depends_on :python
+  depends_on :python => :recommended
+  depends_on :python3 => :optional
+
+  if build.with? "python3"
+    depends_on "pyqt" => "with-python3"
+  else
+    depends_on "pyqt"
+  end
+
+  def pythons
+    pythons = []
+    ["python", "python3"].each do |python|
+      next if build.without? python
+      version = /\d\.\d/.match `#{python} --version 2>&1`
+      pythons << [python, version]
+    end
+    pythons
+  end
 
   def install
+    # On Mavericks we want to target libc++, this requires a unsupported/macx-clang-libc++ flag
+    if ENV.compiler == :clang and MacOS.version >= :mavericks
+      spec = "unsupported/macx-clang-libc++"
+    else
+      spec = "macx-g++"
+    end
+    args = %W[-config release -spec #{spec}]
 
     cd 'Qt4Qt5' do
       inreplace 'qscintilla.pro' do |s|
@@ -19,27 +57,37 @@ class Qscintilla2 < Formula
         s.gsub! "$$[QT_INSTALL_DATA]", "#{prefix}/data"
       end
 
-      system "qmake", "qscintilla.pro"
+      system "qmake", "qscintilla.pro", *args
       system "make"
       system "make", "install"
     end
 
-    python do
-      cd 'Python' do
-        (share/"sip#{python.if3then3}").mkpath
-        system python, 'configure.py', "-o", lib, "-n", include,
+    cd 'Python' do
+      pythons.each do |python, version|
+        (share/"sip").mkpath
+        system python, "configure.py", "-o", lib, "-n", include,
                          "--apidir=#{prefix}/qsci",
-                         "--destdir=#{python.site_packages}/PyQt4",
-                         "--qsci-sipdir=#{share}/sip#{python.if3then3}",
-                         "--pyqt-sipdir=#{HOMEBREW_PREFIX}/share/sip#{python.if3then3}"
+                         "--destdir=#{lib}/python#{version}/site-packages/PyQt4",
+                         "--qsci-sipdir=#{share}/sip",
+                         "--pyqt-sipdir=#{HOMEBREW_PREFIX}/share/sip",
+                         "--spec=#{spec}"
         system 'make'
         system 'make', 'install'
+        system "make", "clean" if pythons.length > 1
       end
     end
   end
 
-  def caveats
-    python.standard_caveats if python
+  test do
+    Pathname("test.py").write <<-EOS.undent
+      import PyQt4.Qsci
+      assert("QsciLexer" in dir(PyQt4.Qsci))
+    EOS
+    pythons.each do |python, version|
+      unless Formula.factory(python).installed?
+        ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
+      end
+      system python, "test.py"
+    end
   end
-
 end

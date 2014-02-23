@@ -123,16 +123,22 @@ class FormulaInstaller
 
         stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
         stdlib_in_use = CxxStdlib.new(stdlibs.first, MacOS.default_compiler)
-        stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
+        begin
+          stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
+        rescue IncompatibleCxxStdlibs => e
+          opoo e.message
+        end
 
+        stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs :skip_executables => true
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
         tab.tabfile.delete if tab.tabfile
         tab.write
       end
-    rescue
-      raise if ARGV.homebrew_developer?
+    rescue => e
+      raise e if ARGV.homebrew_developer?
       @pour_failed = true
+      onoe e.message
       opoo "Bottle installation failed: building from source."
     end
 
@@ -505,9 +511,9 @@ class FormulaInstaller
     if f.local_bottle_path
       downloader = LocalBottleDownloadStrategy.new(f)
     else
-      downloader = f.downloader
-      fetched = f.fetch
-      f.verify_download_integrity fetched
+      bottle = f.bottle
+      downloader = bottle.downloader
+      bottle.verify_download_integrity(bottle.fetch)
     end
     HOMEBREW_CELLAR.cd do
       downloader.stage

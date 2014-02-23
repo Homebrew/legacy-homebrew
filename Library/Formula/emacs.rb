@@ -15,15 +15,22 @@ class Emacs < Formula
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
   option "japanese", "Patch for Japanese input methods"
 
-  if build.include? "use-git-head"
-    head 'http://git.sv.gnu.org/r/emacs.git'
-  else
-    head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
-  end
+  head do
+    if build.include? "use-git-head"
+      url 'http://git.sv.gnu.org/r/emacs.git'
+    else
+      url 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
+    end
 
-  if build.head? or build.include? "cocoa"
     depends_on :autoconf
     depends_on :automake
+  end
+
+  stable do
+    if build.include? "cocoa"
+      depends_on :autoconf
+      depends_on :automake
+    end
   end
 
   depends_on 'pkg-config' => :build
@@ -36,13 +43,18 @@ class Emacs < Formula
   end
 
   def patches
+    return if build.head?
+
     p = {
       # Fix default-directory on Cocoa and Mavericks.
       # Fixed upstream in r114730 and r114882.
       :p0 => [ DATA ],
-      # Make native fullscreen mode optional, mostly from
-      # upstream r111679
-      :p1 => [ 'https://gist.github.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch' ]
+      :p1 => [
+        # Make native fullscreen mode optional, mostly from upstream r111679
+        'https://gist.github.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch',
+        # Fix memory leaks in NS version from upstream r114945
+        'https://gist.github.com/anonymous/8553178/raw/c0ddb67b6e92da35a815d3465c633e036df1a105/emacs.memory.leak.aka.distnoted.patch.diff',
+      ]
     }
     # "--japanese" option:
     # to apply a patch from MacEmacsJP for Japanese input methods
@@ -50,7 +62,7 @@ class Emacs < Formula
       p[:p0].push("http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp&pathrev=583")
     end
     p
-  end unless build.head?
+  end
 
   # Follow MacPorts and don't install ctags from Emacs. This allows Vim
   # and Emacs and ctags to play together without violence.
@@ -80,7 +92,7 @@ class Emacs < Formula
     if build.include? "cocoa"
       # Patch for color issues described here:
       # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=8402
-      if build.include? "srgb"
+      if build.include? "srgb" and not build.head?
         inreplace "src/nsterm.m",
           "*col = [NSColor colorWithCalibratedRed: r green: g blue: b alpha: 1.0];",
           "*col = [NSColor colorWithDeviceRed: r green: g blue: b alpha: 1.0];"
@@ -126,17 +138,12 @@ class Emacs < Formula
     s = ""
     if build.include? "cocoa"
       s += <<-EOS.undent
-        Emacs.app was installed to:
-          #{prefix}
-
-         To link the application to a normal Mac OS X location:
-           brew linkapps
-         or:
-           ln -s #{prefix}/Emacs.app /Applications
-
-         A command line wrapper for the cocoa app was installed to:
-          #{bin}/emacs
+        A command line wrapper for the cocoa app was installed to:
+         #{bin}/emacs
       EOS
+      if build.include? "srgb" and build.head?
+        s << "\nTo enable sRGB, use (setq ns-use-srgb-colorspace t)"
+      end
     end
     return s
   end

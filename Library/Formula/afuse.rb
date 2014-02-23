@@ -10,17 +10,11 @@ class Afuse < Formula
   depends_on :libtool
 
   depends_on 'pkg-config' => :build
-  depends_on 'fuse4x'
+  depends_on 'osxfuse'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
-  end
-
-  def caveats; <<-EOS.undent
-    Make sure to follow the directions given by `brew info fuse4x-kext`
-    before trying to use a FUSE-based filesystem.
-    EOS
   end
 end

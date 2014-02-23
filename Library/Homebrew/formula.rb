@@ -16,7 +16,7 @@ class Formula
   include Utils::Inreplace
   extend BuildEnvironmentDSL
 
-  attr_reader :name, :path, :homepage, :downloader, :build
+  attr_reader :name, :path, :homepage, :build
   attr_reader :stable, :bottle, :devel, :head, :active_spec
 
   # The current working directory during builds and tests.
@@ -30,10 +30,9 @@ class Formula
   attr_reader :cxxstdlib
 
   # Homebrew determines the name
-  def initialize name='__UNKNOWN__', path=nil
+  def initialize name='__UNKNOWN__', path=self.class.path(name)
     @name = name
-    # If we got an explicit path, use that, else determine from the name
-    @path = path.nil? ? self.class.path(name) : Pathname.new(path).expand_path
+    @path = path
     @homepage = self.class.homepage
 
     set_spec :stable
@@ -53,12 +52,11 @@ class Formula
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
-    @downloader = active_spec.downloader
     @build = determine_build_options
 
     @pin = FormulaPin.new(self)
 
-    @cxxstdlib ||= Set.new
+    @cxxstdlib = Set.new
   end
 
   def set_spec(name)
@@ -118,6 +116,14 @@ class Formula
 
   def requirements
     active_spec.requirements
+  end
+
+  def cached_download
+    active_spec.cached_download
+  end
+
+  def clear_cache
+    active_spec.clear_cache
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -193,14 +199,6 @@ class Formula
 
   def opt_prefix
     Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
-  end
-
-  def cached_download
-    downloader.cached_location
-  end
-
-  def clear_cache
-    downloader.clear_cache
   end
 
   # Can be overridden to selectively disable bottles from formulae.
@@ -340,30 +338,17 @@ class Formula
     ]
   end
 
-  # Install python bindings inside of a block given to this method and/or
-  # call python so: `system python, "setup.py", "install", "--prefix=#{prefix}"
-  # Note that there are no quotation marks around python!
-  # <https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python>
-  def python(options={:allowed_major_versions => [2, 3]}, &block)
-    require 'python_helper'
-    python_helper(options, &block)
+  # Deprecated
+  def python(options={}, &block)
+    opoo 'Formula#python is deprecated and will go away shortly.'
+    block.call if block_given?
+    PythonDependency.new
   end
+  alias_method :python2, :python
+  alias_method :python3, :python
 
-  # Explicitly only execute the block for 2.x (if a python 2.x is available)
-  def python2 &block
-    python(:allowed_major_versions => [2], &block)
-  end
-
-  # Explicitly only execute the block for 3.x (if a python 3.x is available)
-  def python3 &block
-    python(:allowed_major_versions => [3], &block)
-  end
-
-  # Generates a formula's ruby class name from a formula's name
   def self.class_s name
-    # remove invalid characters and then camelcase it
-    name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
-                   .gsub('+', 'x')
+    Formulary.class_s(name)
   end
 
   # an array of all Formula names
@@ -562,6 +547,9 @@ class Formula
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
+    removed_ENV_variables = {}
+    rd, wr = IO.pipe
+
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
@@ -571,25 +559,23 @@ class Formula
     end
     ohai "#{cmd} #{pretty_args*' '}".strip
 
-    removed_ENV_variables = case if args.empty? then cmd.split(' ').first else cmd end
-    when "xcodebuild"
-      ENV.remove_cc_etc
+    if cmd.to_s.start_with? "xcodebuild"
+      removed_ENV_variables.update(ENV.remove_cc_etc)
     end
 
     @exec_count ||= 0
     @exec_count += 1
     logd = HOMEBREW_LOGS/name
-    logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd.to_s).split(' ').first]
+    logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
-    rd, wr = IO.pipe
     fork do
       ENV['HOMEBREW_CC_LOG_PATH'] = logfn
       rd.close
       $stdout.reopen wr
       $stderr.reopen wr
       args.collect!{|arg| arg.to_s}
-      exec(cmd.to_s, *args) rescue nil
+      exec(cmd, *args) rescue nil
       puts "Failed to execute: #{cmd}"
       exit! 1 # never gets here unless exec threw or failed
     end
@@ -615,8 +601,8 @@ class Formula
       end
     end
   ensure
-    rd.close if rd and not rd.closed?
-    ENV.update(removed_ENV_variables) if removed_ENV_variables
+    rd.close unless rd.closed?
+    ENV.update(removed_ENV_variables)
   end
 
   private
@@ -645,14 +631,14 @@ class Formula
         when :bzip2 then with_system_path { safe_system "bunzip2", p.compressed_filename }
       end
       # -f means don't prompt the user if there are errors; just exit with non-zero status
-      safe_system '/usr/bin/patch', '-f', *(p.patch_args)
+      safe_system '/usr/bin/patch', '-g', '0', '-f', *(p.patch_args)
     end
   end
 
   # Explicitly request changing C++ standard library compatibility check
   # settings. Use with caution!
   def cxxstdlib_check check_type
-    @cxxstdlib << check_type
+    cxxstdlib << check_type
   end
 
   def self.method_added method
@@ -766,10 +752,7 @@ class Formula
         return
       end
 
-      paths.each do |p|
-        p = p.to_s unless p == :la # Keep :la in paths as a symbol
-        skip_clean_paths << p
-      end
+      skip_clean_paths.merge(paths)
     end
 
     def skip_clean_all?
@@ -799,7 +782,7 @@ class Formula
     #   version "The official release number for the latest incompatible
     #            version, for instance 4.8.1"
     # end
-    # 
+    #
     # `major_version` should be the major release number only, for instance
     # '4.8' for the GCC 4.8 series (4.8.0, 4.8.1, etc.).
     # If `version` or the block is omitted, then the compiler will be
@@ -807,7 +790,7 @@ class Formula
     #
     # For example, if a bug is only triggered on GCC 4.8.1 but is not
     # encountered on 4.8.2:
-    # 
+    #
     # fails_with :gcc => '4.8' do
     #   version '4.8.1'
     # end

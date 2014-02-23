@@ -2,8 +2,8 @@ require 'formula'
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.3.3/Python-3.3.3.tar.bz2'
-  sha1 '6ff7d34427cbf7bf875e6a456850231e488118ca'
+  url 'http://python.org/ftp/python/3.3.4/Python-3.3.4.tgz'
+  sha1 '0561d2a24067c03ed2b29c58a12e126e86ccdc58'
   VER='3.3'  # The <major>.<minor> is used so often.
 
   head 'http://hg.python.org/cpython', :using => :hg, :branch => VER
@@ -26,13 +26,13 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.0.1.tar.gz'
-    sha1 '5283b4dca46d45efd1156713ab51836509646c03'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.2.tar.gz'
+    sha1 '547eff11ea46613e8a9ba5b12a89c1010ecc4e51'
   end
 
   resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.4.1.tar.gz'
-    sha1 '9766254c7909af6d04739b4a7732cc29e9a48cb0'
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.4.tar.gz'
+    sha1 '35ccb7430356186cf253615b70f8ee580610f734'
   end
 
   def patches
@@ -130,30 +130,29 @@ class Python3 < Formula
     # Symlink the prefix site-packages into the cellar.
     ln_s site_packages, site_packages_cellar
 
+    # Write our sitecustomize.py
+    Dir["#{site_packages}/*.py{,c,o}"].each {|f| Pathname.new(f).unlink }
+    (site_packages/"sitecustomize.py").write(sitecustomize)
+
     # "python3" executable is forgotten for framework builds.
     # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
-    ln_s "#{bin}/python#{VER}", "#{bin}/python3" unless (bin/"python3").exist?
-
-    # We ship setuptools and pip and reuse the PythonDependency
-    # Requirement here to write the sitecustomize.py
-    py = PythonDependency.new(VER)
-    py.binary = bin/"python#{VER}"
-    py.modify_build_environment
+    ln_sf "#{bin}/python#{VER}", "#{bin}/python3"
+    ln_sf "#{bin}/python#{VER}-config", "#{bin}/python3-config"
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.8-py3.3.egg
-    rm_rf Dir["#{py.global_site_packages}/setuptools*"]
-    rm_rf Dir["#{py.global_site_packages}/distribute*"]
+    rm_rf Dir[HOMEBREW_PREFIX/"lib/python#{VER}/site-packages/setuptools*"]
+    rm_rf Dir[HOMEBREW_PREFIX/"lib/python#{VER}/site-packages/distribute*"]
 
     setup_args = [ "-s", "setup.py", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
 
-    resource('setuptools').stage { system py.binary, *setup_args }
+    resource('setuptools').stage { system "#{bin}/python3", *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
 
-    resource('pip').stage { system py.binary, *setup_args }
+    resource('pip').stage { system "#{bin}/python3", *setup_args }
     mv bin/'pip', bin/'pip3'
 
     # And now we write the distutils.cfg
@@ -199,7 +198,7 @@ class Python3 < Formula
               "do_readline = '#{HOMEBREW_PREFIX}/opt/readline/lib/libhistory.dylib'"
   end
 
-  def distutils_fix_stdenv()
+  def distutils_fix_stdenv
     # Python scans all "-I" dirs but not "-isysroot", so we add
     # the needed includes with "-I" here to avoid this err:
     #     building dbm using ndbm
@@ -223,14 +222,61 @@ class Python3 < Formula
     end
   end
 
+  def sitecustomize
+    <<-EOF.undent
+      # This file is created by Homebrew and is executed on each python startup.
+      # Don't print from here, or else python command line scripts may fail!
+      # <https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python>
+      import os
+      import sys
+
+      if sys.version_info[0] != 3:
+          # This can only happen if the user has set the PYTHONPATH for 3.x and run Python 2.x or vice versa.
+          # Every Python looks at the PYTHONPATH variable and we can't fix it here in sitecustomize.py,
+          # because the PYTHONPATH is evaluated after the sitecustomize.py. Many modules (e.g. PyQt4) are
+          # built only for a specific version of Python and will fail with cryptic error messages.
+          # In the end this means: Don't set the PYTHONPATH permanently if you use different Python versions.
+          exit('Your PYTHONPATH points to a site-packages dir for Python 3.x but you are running Python ' +
+               str(sys.version_info[0]) + '.x!\\n     PYTHONPATH is currently: "' + str(os.environ['PYTHONPATH']) + '"\\n' +
+               '     You should `unset PYTHONPATH` to fix this.')
+      else:
+          # Only do this for a brewed python:
+          opt_executable = '#{HOMEBREW_PREFIX}/opt/python3/bin/python#{VER}'
+          if os.path.realpath(sys.executable) == os.path.realpath(opt_executable):
+              # Remove /System site-packages, and the Cellar site-packages
+              # which we moved to lib/pythonX.Y/site-packages. Further, remove
+              # HOMEBREW_PREFIX/lib/python because we later addsitedir(...).
+              sys.path = [ p for p in sys.path
+                           if (not p.startswith('/System') and
+                               not p.startswith('#{HOMEBREW_PREFIX}/lib/python') and
+                               not (p.startswith('#{HOMEBREW_PREFIX}/Cellar/python') and p.endswith('site-packages'))) ]
+
+              # LINKFORSHARED (and python-config --ldflags) return the
+              # full path to the lib (yes, "Python" is actually the lib, not a
+              # dir) so that third-party software does not need to add the
+              # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
+              # Assume Framework style build (default since months in brew)
+              try:
+                  from _sysconfigdata import build_time_vars
+                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{HOMEBREW_PREFIX}/opt/python3/Frameworks/Python.framework/Versions/#{VER}/Python'
+              except:
+                  pass  # remember: don't print here. Better to fail silently.
+
+              # Set the sys.executable to use the opt_prefix
+              sys.executable = opt_executable
+
+          # Tell about homebrew's site-packages location.
+          # This is needed for Python to parse *.pth.
+          import site
+          site.addsitedir('#{HOMEBREW_PREFIX}/lib/python#{VER}/site-packages')
+    EOF
+  end
+
   def caveats
     text = <<-EOS.undent
       Setuptools and Pip have been installed. To update them
         pip3 install --upgrade setuptools
         pip3 install --upgrade pip
-
-      To symlink "Idle 3" and the "Python Launcher 3" to ~/Applications
-        `brew linkapps`
 
       You can install Python packages with
         `pip3 install <your_favorite_package>`

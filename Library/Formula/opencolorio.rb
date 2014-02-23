@@ -26,15 +26,7 @@ class Opencolorio < Formula
     # Python note:
     # OCIO's PyOpenColorIO.so doubles as a shared library. So it lives in lib, rather
     # than the usual HOMEBREW_PREFIX/lib/python2.7/site-packages per developer choice.
-
-    if python do
-      # For Xcode-only systems, the headers of system's python are inside of Xcode:
-      args << "-DPYTHON_INCLUDE_DIR='#{python.incdir}'"
-      # Cmake picks up the system's python dylib, even if we have a brewed one:
-      args << "-DPYTHON_LIBRARY='#{python.libdir}/lib#{python.xy}.dylib'"
-    end; else
-      args << "-DOCIO_BUILD_PYGLUE=OFF"
-    end
+    args << "-DOCIO_BUILD_PYGLUE=OFF" if build.without? 'python'
 
     args << '..'
 

@@ -27,21 +27,10 @@ class Libplist < Formula
     # Disable Swig Python bindings
     args << "-DENABLE_SWIG='OFF'"
 
-    if python do
-      # For Xcode-only systems, the headers of system's python are inside of Xcode:
-      args << "-DPYTHON_INCLUDE_DIR='#{python.incdir}'"
-      # Cmake picks up the system's python dylib, even if we have a brewed one:
-      args << "-DPYTHON_LIBRARY='#{python.libdir}/lib#{python.xy}.dylib'"
-    end; else
-      # Also disable Cython Python bindings if we're not building --with-python
-      args << "-DENABLE_CYTHON='OFF'"
-    end
+    # Also disable Cython Python bindings if we're not building --with-python
+    args << "-DENABLE_CYTHON='OFF'" if build.without? 'python'
 
     system "cmake", ".", "-DCMAKE_INSTALL_NAME_DIR=#{lib}", *args
     system "make install"
-  end
-
-  def caveats
-    python.standard_caveats if python
   end
 end
