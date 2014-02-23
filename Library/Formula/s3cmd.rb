@@ -12,6 +12,13 @@ class S3cmd < Formula
     version "1.5.0-beta1"
   end
 
+  bottle do
+    cellar :any
+    sha1 "6504b103e65ce2dfdde9220a0f2b9033bf90bb5f" => :mavericks
+    sha1 "59fbbbfc85dba185128e69b03f2c73ec96653bf9" => :mountain_lion
+    sha1 "54e4d1c752eb3da312d05ce507d4979e8edb898f" => :lion
+  end
+
   def install
     libexec.install 's3cmd', 'S3'
     man1.install 's3cmd.1'
