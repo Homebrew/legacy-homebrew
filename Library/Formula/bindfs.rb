@@ -14,7 +14,7 @@ class Bindfs < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/bindfs", "-V"
   end
 end

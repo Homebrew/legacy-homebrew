@@ -37,7 +37,7 @@ class Libraw < Formula
     prefix.install 'samples'
   end
 
-  def test
+  test do
     resource('librawtestfile').stage do
       filename = 'RAW_NIKON_D1.NEF'
       system "#{bin}/raw-identify", "-u", filename
