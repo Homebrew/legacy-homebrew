@@ -11,6 +11,7 @@ class GitSubdir < Formula
   end
 
   test do
-    system "git init && git subdir"
+    system "git init"
+    system "git subdir"
   end
 end
