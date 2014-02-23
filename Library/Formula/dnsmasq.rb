@@ -5,6 +5,12 @@ class Dnsmasq < Formula
   url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.68.tar.gz'
   sha1 'c78f5992539ff29924ca6aa1ba06ecb81710e743'
 
+  bottle do
+    sha1 "604566d789db22d8c25b7bc28d255d5957c8d28a" => :mavericks
+    sha1 "cb1e603aa85cbbd86d871d4530c6a741e4b1968f" => :mountain_lion
+    sha1 "b3746e517c4ba585e595b9ff2ae36d2055a65037" => :lion
+  end
+
   option 'with-idn', 'Compile with IDN support'
 
   depends_on "libidn" if build.include? 'with-idn'
