@@ -6,8 +6,7 @@ class Grenchman < Formula
   sha1 "a1468c2e31deeeaf9925c6a3d1ebf9b3aac96521"
 
   def install
-    File.rename('grench-0.2.0-mac', 'grench') 
-    bin.install('grench')
+    bin.install 'grench-0.2.0-mac' => 'grench'
   end
 
 end
