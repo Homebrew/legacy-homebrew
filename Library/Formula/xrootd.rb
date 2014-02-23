@@ -15,7 +15,7 @@ class Xrootd < Formula
     share.install prefix/'man'
   end
 
-  def test
+  test do
     system "#{bin}/xrootd", "-H"
   end
 end

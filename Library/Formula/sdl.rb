@@ -63,7 +63,7 @@ class Sdl < Formula
     libexec.install Dir["src/main/macosx/*"] unless build.head?
   end
 
-  def test
+  test do
     system "#{bin}/sdl-config", "--version"
   end
 end

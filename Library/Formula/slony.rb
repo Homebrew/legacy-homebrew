@@ -15,7 +15,7 @@ class Slony < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "slon", "-v"
   end
 end

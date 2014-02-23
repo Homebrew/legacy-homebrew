@@ -28,7 +28,7 @@ class TheSilverSearcher < Formula
     bash_completion.install 'ag.bashcomp.sh'
   end
 
-  def test
+  test do
     system "#{bin}/ag", "--version"
   end
 end

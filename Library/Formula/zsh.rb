@@ -48,7 +48,7 @@ class Zsh < Formula
     system "make", "install.info"
   end
 
-  def test
+  test do
     system "#{bin}/zsh", "--version"
   end
 
