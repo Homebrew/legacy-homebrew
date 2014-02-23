@@ -19,7 +19,7 @@ class Texi2html < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/texi2html", "--help"
   end
 end

@@ -10,7 +10,7 @@ class Tcpurify < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/tcpurify", "-v"
   end
 end

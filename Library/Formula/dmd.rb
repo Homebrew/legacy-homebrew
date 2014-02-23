@@ -54,7 +54,7 @@ class Dmd < Formula
     end
   end
 
-  def test
+  test do
     system "dmd", "#{prefix}/samples/hello.d"
     system "./hello"
   end

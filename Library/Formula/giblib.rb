@@ -13,7 +13,7 @@ class Giblib < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/giblib-config", "--version"
   end
 end

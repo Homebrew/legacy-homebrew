@@ -21,7 +21,7 @@ class SonarRunner < Formula
       EOS
   end
 
-  def test
+  test do
     system "#{bin}/sonar-runner", "-h"
   end
 end

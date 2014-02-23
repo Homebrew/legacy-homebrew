@@ -10,7 +10,7 @@ class Md5deep < Formula
     system "make install"
   end
 
-  def test
+  test do
     system bin/"md5deep", "-h"
     system bin/"hashdeep", "-h"
   end

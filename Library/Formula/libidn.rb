@@ -18,7 +18,7 @@ class Libidn < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/idn", "--version"
   end
 end

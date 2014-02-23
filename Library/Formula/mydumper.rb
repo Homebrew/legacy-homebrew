@@ -16,7 +16,7 @@ class Mydumper < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/mydumper", "--version"
   end
 end
