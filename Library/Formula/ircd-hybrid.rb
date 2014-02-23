@@ -24,7 +24,7 @@ class IrcdHybrid < Formula
     etc.install "doc/reference.conf" => "ircd.conf"
   end
 
-  def test
+  test do
     system "#{sbin}/ircd", "-version"
   end
 

@@ -15,7 +15,7 @@ class TaLib < Formula
     bin.install 'src/tools/ta_regtest/.libs/ta_regtest'
   end
 
-  def test
+  test do
     system "#{bin}/ta_regtest"
   end
 end

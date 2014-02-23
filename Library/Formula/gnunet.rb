@@ -18,7 +18,7 @@ class Gnunet < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/gnunet-search", "--version"
   end
 end

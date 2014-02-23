@@ -12,7 +12,7 @@ class Asciitex < Formula
     prefix.install 'EXAMPLES'
   end
 
-  def test
+  test do
     system "#{bin}/asciiTeX", "-f", "#{prefix}/EXAMPLES"
   end
 end

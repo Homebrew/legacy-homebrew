@@ -13,7 +13,7 @@ class Mackup < Formula
     system 'python', 'setup.py', 'install', "--prefix=#{prefix}"
   end
 
-  def test
+  test do
     system "#{bin}/mackup", '--help'
   end
 end

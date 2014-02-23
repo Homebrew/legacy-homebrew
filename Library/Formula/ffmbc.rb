@@ -66,7 +66,7 @@ class Ffmbc < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/ffmbc", "-h"
   end
 end

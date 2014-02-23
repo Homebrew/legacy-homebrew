@@ -14,7 +14,7 @@ class Uchardet < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/uchardet", __FILE__
   end
 end

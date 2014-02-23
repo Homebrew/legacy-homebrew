@@ -45,7 +45,7 @@ class Libcaca < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/img2txt", "--version"
   end
 end

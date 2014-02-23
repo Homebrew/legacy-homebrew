@@ -18,7 +18,7 @@ class UcspiTcp < Formula
     share.install prefix/'man'
   end
 
-  def test
+  test do
     system "tcpserver"
   end
 end

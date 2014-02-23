@@ -31,7 +31,7 @@ class Aubio < Formula
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
-  def test
+  test do
     system "#{bin}/aubiocut", "--help"
   end
 end

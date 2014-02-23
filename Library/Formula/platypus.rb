@@ -31,7 +31,7 @@ class Platypus < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/platypus", "-v"
   end
 

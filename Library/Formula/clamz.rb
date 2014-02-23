@@ -13,7 +13,7 @@ class Clamz < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/clamz"
   end
 end

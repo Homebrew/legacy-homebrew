@@ -48,7 +48,7 @@ class Pango < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/pango-querymodules", "--version"
   end
 end

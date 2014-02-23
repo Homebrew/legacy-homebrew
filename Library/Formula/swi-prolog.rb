@@ -65,7 +65,7 @@ class SwiProlog < Formula
     bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 
-  def test
+  test do
     system "#{bin}/swipl", "--version"
   end
 end

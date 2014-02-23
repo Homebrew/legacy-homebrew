@@ -77,7 +77,7 @@ class Mapserver < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/mapserver-config", "--version"
   end
 end

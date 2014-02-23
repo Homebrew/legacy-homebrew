@@ -15,7 +15,7 @@ class Quex < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/quex", "--help"
   end
 end

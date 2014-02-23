@@ -14,7 +14,7 @@ class Diffuse < Formula
                      "--prefix=#{prefix}"
   end
 
-  def test
+  test do
     system "#{bin}/diffuse", "--help"
   end
 end

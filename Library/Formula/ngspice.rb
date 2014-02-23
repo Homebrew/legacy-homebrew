@@ -23,7 +23,7 @@ class Ngspice < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/ngspice", "-v"
   end
 end

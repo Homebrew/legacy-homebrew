@@ -23,7 +23,7 @@ class Rdup < Formula
     system "make", "install"
   end
 
-  def test
+  test do
     # tell rdup to archive itself, then let rdup-tr make a tar archive of it,
     # and test with tar and grep whether the resulting tar archive actually
     # contains rdup

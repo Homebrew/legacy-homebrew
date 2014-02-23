@@ -36,7 +36,7 @@ class Unar < Formula
     end
   end
 
-  def test
+  test do
     system bin/'unar', '--version'
     system bin/'lsar', '--version'
   end

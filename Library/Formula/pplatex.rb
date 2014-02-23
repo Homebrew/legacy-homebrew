@@ -13,7 +13,7 @@ class Pplatex < Formula
     bin.install 'bin/pplatex', 'bin/ppdflatex'
   end
 
-  def test
+  test do
     system "#{bin}/pplatex", "-h"
   end
 end

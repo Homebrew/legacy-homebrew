@@ -17,7 +17,7 @@ class AptDater < Formula
     system "make", "AM_LDFLAGS=", "install"
   end
 
-  def test
+  test do
     system "#{bin}/apt-dater", "-v"
   end
 end

@@ -28,7 +28,7 @@ class Juju < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/juju", "version"
   end
 end

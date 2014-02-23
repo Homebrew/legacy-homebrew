@@ -14,7 +14,7 @@ class OpenCobol < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/cobc", "--help"
   end
 end

@@ -10,7 +10,7 @@ class Dylibbundler < Formula
     bin.install "dylibbundler"
   end
 
-  def test
+  test do
     system "#{bin}/dylibbundler", "-h"
   end
 

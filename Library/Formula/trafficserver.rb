@@ -23,7 +23,7 @@ class Trafficserver < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/trafficserver", "status"
   end
 end

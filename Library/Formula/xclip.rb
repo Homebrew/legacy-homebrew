@@ -12,7 +12,7 @@ class Xclip < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/xclip", "-version"
   end
 end

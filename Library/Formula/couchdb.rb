@@ -76,7 +76,7 @@ class Couchdb < Formula
     EOS
   end
 
-  def test
+  test do
     # ensure couchdb embedded spidermonkey vm works
     system "#{bin}/couchjs", "-h"
   end

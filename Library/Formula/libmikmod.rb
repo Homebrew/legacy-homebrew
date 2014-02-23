@@ -24,7 +24,7 @@ class Libmikmod < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/libmikmod-config", "--version"
   end
 end

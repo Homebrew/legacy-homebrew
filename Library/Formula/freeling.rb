@@ -23,7 +23,7 @@ class Freeling < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "echo 'Hello world' | #{bin}/analyze -f #{share}/freeling/config/en.cfg | grep -c 'world world NN 1'"
   end
 end

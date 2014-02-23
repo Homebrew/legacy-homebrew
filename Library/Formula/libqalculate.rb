@@ -22,7 +22,7 @@ class Libqalculate < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/qalc", "(2+2)/4 hours to minutes"
   end
 end

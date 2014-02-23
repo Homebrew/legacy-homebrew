@@ -23,7 +23,7 @@ class Pixie < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/rndr", "-v"
   end
 end

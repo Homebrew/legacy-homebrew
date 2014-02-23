@@ -18,7 +18,7 @@ class Mspdebug < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/mspdebug", "--help"
   end
 end

@@ -11,7 +11,7 @@ class Torrentcheck < Formula
     bin.install 'torrentcheck'
   end
 
-  def test
+  test do
     system "#{bin}/torrentcheck"
   end
 end

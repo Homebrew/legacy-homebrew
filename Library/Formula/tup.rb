@@ -16,7 +16,7 @@ class Tup < Formula
     man1.install 'tup.1'
   end
 
-  def test
+  test do
     system "#{bin}/tup", "-v"
   end
 end

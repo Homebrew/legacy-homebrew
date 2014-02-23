@@ -23,7 +23,7 @@ class Appledoc < Formula
     prefix.install "Templates/"
   end
 
-  def test
+  test do
     system "#{bin}/appledoc", "--version"
   end
 end

@@ -48,7 +48,7 @@ class Libswiften < Formula
     man1.install 'Swift/Packaging/Debian/debian/swiften-config.1' unless build.stable?
   end
 
-  def test
+  test do
     system "#{bin}/swiften-config"
   end
 end

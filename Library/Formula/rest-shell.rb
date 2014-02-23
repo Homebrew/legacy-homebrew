@@ -11,7 +11,7 @@ class RestShell < Formula
     bin.write_exec_script libexec/'bin/rest-shell'
   end
 
-  def test
+  test do
     system "#{bin}/rest-shell"
   end
 end

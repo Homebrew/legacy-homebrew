@@ -9,7 +9,7 @@ class NicovideoDl < Formula
     bin.install 'nicovideo-dl'
   end
 
-  def test
+  test do
     system "#{bin}/nicovideo-dl",  "-v"
   end
 end
