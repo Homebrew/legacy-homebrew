@@ -121,7 +121,7 @@ class FormulaCreator
     #                #{HOMEBREW_CONTRIB}/example-formula.rb
     # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
-    class #{Formulary.class_s name} < Formula
+    class #{Formulary.class_s(name)} < Formula
       homepage ""
       url "#{url}"
     <% unless version.nil? or version.detected_from_url? %>
