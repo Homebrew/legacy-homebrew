@@ -12,7 +12,7 @@ class Log4c < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/log4c-config", "--version"
   end
 end

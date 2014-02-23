@@ -25,7 +25,7 @@ class Findbugs < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/fb"
   end
 end

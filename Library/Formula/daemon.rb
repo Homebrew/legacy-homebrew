@@ -11,7 +11,7 @@ class Daemon < Formula
     system "make", "PREFIX=#{prefix}", "install"
   end
 
-  def test
+  test do
     system "#{bin}/daemon", "--version"
   end
 end

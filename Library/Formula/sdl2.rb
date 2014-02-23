@@ -34,7 +34,7 @@ class Sdl2 < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/sdl2-config", "--version"
   end
 end

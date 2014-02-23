@@ -13,7 +13,7 @@ class Djvu2pdf < Formula
     man1.install 'djvu2pdf.1.gz'
   end
 
-  def test
+  test do
     system "#{bin}/djvu2pdf", "-h"
   end
 end

@@ -51,7 +51,7 @@ class Csync < Formula
     end
   end
 
-  def test
+  test do
     system "csync", "-V"
   end
 end

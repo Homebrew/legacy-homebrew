@@ -21,7 +21,7 @@ class Analog < Formula
     man1.install "analog.man" => "analog.1"
   end
 
-  def test
+  test do
     system "\"#{bin}/analog\" > /dev/null"
   end
 end

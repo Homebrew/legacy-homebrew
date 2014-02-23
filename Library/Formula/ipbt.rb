@@ -11,7 +11,7 @@ class Ipbt < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/ipbt"
   end
 end

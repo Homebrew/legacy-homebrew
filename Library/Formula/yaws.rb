@@ -44,7 +44,7 @@ class Yaws < Formula
     (var/'yaws/www').mkpath
   end
 
-  def test
+  test do
     system bin/'yaws', '--version'
   end
 

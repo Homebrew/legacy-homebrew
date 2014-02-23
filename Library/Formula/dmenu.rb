@@ -12,7 +12,7 @@ class Dmenu < Formula
     system "make", "PREFIX=#{prefix}", "install"
   end
 
-  def test
+  test do
     system "#{bin}/dmenu", "-v"
   end
 end

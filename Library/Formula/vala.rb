@@ -17,7 +17,7 @@ class Vala < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/valac", "--version"
   end
 end

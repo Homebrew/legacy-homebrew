@@ -18,7 +18,7 @@ class Torsocks < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/torsocks"
   end
 end

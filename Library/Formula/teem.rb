@@ -29,7 +29,7 @@ class Teem < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/nrrdSanity"
   end
 end

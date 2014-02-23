@@ -27,7 +27,7 @@ class Rust < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/rustc"
     system "#{bin}/rustdoc -h"
     system "#{bin}/rustpkg -v" unless build.head?

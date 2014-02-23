@@ -32,7 +32,7 @@ class Gtkx3 < Formula
     mv bin/'gtk-update-icon-cache', bin/'gtk3-update-icon-cache'
   end
 
-  def test
+  test do
     system "#{bin}/gtk3-demo"
   end
 end

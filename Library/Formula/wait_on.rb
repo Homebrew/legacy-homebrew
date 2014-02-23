@@ -13,7 +13,7 @@ class WaitOn < Formula
     man1.install 'wait_on.1.gz'
   end
 
-  def test
+  test do
     system "#{bin}/wait_on", "-v"
   end
 end

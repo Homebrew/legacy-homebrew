@@ -9,7 +9,7 @@ class Ispc < Formula
     bin.install 'ispc'
   end
 
-  def test
+  test do
     system "#{bin}/ispc", "-v"
   end
 end

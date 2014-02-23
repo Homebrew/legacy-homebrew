@@ -30,7 +30,7 @@ class Imapfilter < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/imapfilter", "-V"
   end
 end

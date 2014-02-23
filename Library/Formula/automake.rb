@@ -33,7 +33,7 @@ class Automake < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/automake", "--version"
   end
 end

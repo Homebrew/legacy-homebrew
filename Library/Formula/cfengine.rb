@@ -27,7 +27,7 @@ class Cfengine < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/cf-agent", "-V"
   end
 end

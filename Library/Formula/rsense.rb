@@ -22,7 +22,7 @@ class Rsense < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/rsense", "version"
   end
 end

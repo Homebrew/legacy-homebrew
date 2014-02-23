@@ -15,7 +15,7 @@ class Pdfgrep < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/pdfgrep", "--version"
   end
 end

@@ -10,7 +10,7 @@ class Gcutil < Formula
     bin.install_symlink libexec/"gcutil"
   end
 
-  def test
+  test do
     system "#{bin}/gcutil", "version"
   end
 end

@@ -11,7 +11,7 @@ class Primesieve < Formula
     system 'make install'
   end
 
-  def test
+  test do
     system "#{bin}/primesieve", '2', '1000', '--count=1', '-p2'
   end
 end

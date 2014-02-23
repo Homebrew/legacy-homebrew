@@ -18,7 +18,7 @@ class Libextractor < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/extract", "-v"
   end
 end

@@ -47,7 +47,7 @@ class Wget < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/wget", "-O", "-", "www.google.com"
   end
 end

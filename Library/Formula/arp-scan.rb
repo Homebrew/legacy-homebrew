@@ -11,7 +11,7 @@ class ArpScan < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/arp-scan", "-V"
   end
 end

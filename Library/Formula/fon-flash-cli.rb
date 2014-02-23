@@ -14,7 +14,7 @@ class FonFlashCli < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/fon-flash"
   end
 end

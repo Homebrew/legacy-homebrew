@@ -40,7 +40,7 @@ class Cppcheck < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/cppcheck", "--version"
   end
 end

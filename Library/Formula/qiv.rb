@@ -18,7 +18,7 @@ class Qiv < Formula
     man1.install "qiv.1"
   end
 
-  def test
+  test do
     system "#{bin}/qiv"
   end
 end

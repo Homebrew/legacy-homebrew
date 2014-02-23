@@ -11,7 +11,7 @@ class StanfordParser < Formula
     bin.write_exec_script Dir["#{libexec}/*.sh"]
   end
 
-  def test
+  test do
     system "#{bin}/lexparser.sh", "#{libexec}/data/testsent.txt"
   end
 end

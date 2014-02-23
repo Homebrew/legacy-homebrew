@@ -10,7 +10,7 @@ class Hilite < Formula
     bin.install 'hilite'
   end
 
-  def test
+  test do
     system "#{bin}/hilite", "bash", "-c", "echo 'stderr in red' >&2"
   end
 end

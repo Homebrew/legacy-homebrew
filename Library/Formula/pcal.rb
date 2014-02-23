@@ -14,7 +14,7 @@ class Pcal < Formula
     man1.install gzip('doc/pcal.man') => 'pcal.1.gz'
   end
 
-  def test
+  test do
     system "#{bin}/pcal"
   end
 end

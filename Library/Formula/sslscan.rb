@@ -16,7 +16,7 @@ class Sslscan < Formula
     man1.install "sslscan.1"
   end
 
-  def test
+  test do
     system "#{bin}/sslscan"
   end
 end

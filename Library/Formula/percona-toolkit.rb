@@ -15,7 +15,7 @@ class PerconaToolkit < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/pt-agent"
     system "#{bin}/pt-align"
     system "#{bin}/pt-archiver"

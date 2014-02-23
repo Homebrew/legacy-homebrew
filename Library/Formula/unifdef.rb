@@ -12,7 +12,7 @@ class Unifdef < Formula
     system "make", "prefix=#{prefix}", "install"
   end
 
-  def test
+  test do
     system "echo '' | #{bin}/unifdef"
   end
 end

@@ -25,7 +25,7 @@ class Irrtoolset < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/peval", "ANY"
   end
 end

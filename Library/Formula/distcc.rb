@@ -58,7 +58,7 @@ class Distcc < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/distcc", "--version"
   end
 end

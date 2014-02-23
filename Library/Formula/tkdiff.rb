@@ -9,7 +9,7 @@ class Tkdiff < Formula
     bin.install 'tkdiff'
   end
 
-  def test
+  test do
     system "#{bin}/tkdiff", "--help"
   end
 end

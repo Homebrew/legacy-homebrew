@@ -13,7 +13,7 @@ class Jp2a < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/jp2a", "-V"
   end
 end

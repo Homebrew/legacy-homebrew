@@ -30,7 +30,7 @@ class Pyqwt < Formula
     end
   end
 
-  def test
+  test do
     system "python", "-c", "from PyQt4 import Qwt5 as Qwt"
   end
 end

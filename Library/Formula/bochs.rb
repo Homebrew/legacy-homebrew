@@ -48,7 +48,7 @@ class Bochs < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/bochs"
   end
 end
