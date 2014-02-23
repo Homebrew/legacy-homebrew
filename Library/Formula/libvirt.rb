@@ -5,6 +5,12 @@ class Libvirt < Formula
   url 'http://libvirt.org/sources/libvirt-1.2.1.tar.gz'
   sha256 'bc29b5751bf36753c17e2fdbb75e70c7b07df3d9527586d3426e90f5f4abb898'
 
+  bottle do
+    sha1 "e9a67d211ac1432daa71e5d06021cd21989f0bbf" => :mavericks
+    sha1 "a81c7363a5bd553b6b33551538b8a85cb0143122" => :mountain_lion
+    sha1 "5c1b88af908fec958a8bc1d5e20383e3f29de69d" => :lion
+  end
+
   option 'without-libvirtd', 'Build only the virsh client and development libraries'
 
   depends_on 'pkg-config' => :build
