@@ -1,5 +1,7 @@
 require 'formula'
 require 'blacklist'
+require 'digest'
+require 'erb'
 
 module Homebrew extend self
 
@@ -95,9 +97,6 @@ class FormulaCreator
 
   def generate!
     raise "#{path} already exists" if path.exist?
-
-    require 'digest'
-    require 'erb'
 
     if version.nil?
       opoo "Version cannot be determined from URL."
