@@ -482,14 +482,6 @@ class FormulaInstaller
 
   def clean
     ohai "Cleaning" if ARGV.verbose?
-    if f.class.skip_clean_all?
-      opoo "skip_clean :all is deprecated"
-      puts "Skip clean was commonly used to prevent brew from stripping binaries."
-      puts "brew no longer strips binaries, if skip_clean is required to prevent"
-      puts "brew from removing empty directories, you should specify exact paths"
-      puts "in the formula."
-      return
-    end
     Cleaner.new(f).clean
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
