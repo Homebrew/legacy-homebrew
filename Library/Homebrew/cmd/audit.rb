@@ -447,7 +447,8 @@ class FormulaAuditor
     end
 
     if line =~ /skip_clean\s+:all/
-      problem "`skip_clean :all` is deprecated; brew no longer strips symbols"
+      problem "`skip_clean :all` is deprecated; brew no longer strips symbols\n" +
+              "\tPass explicit paths to prevent Homebrew from removing empty folders."
     end
 
     if line =~ /depends_on [A-Z][\w:]+\.new$/

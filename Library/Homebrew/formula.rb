@@ -247,12 +247,12 @@ class Formula
     end
   end
 
-  # sometimes the clean process breaks things
+  # sometimes the formula cleaner breaks things
   # skip cleaning paths in a formula with a class method like this:
-  #   skip_clean [bin+"foo", lib+"bar"]
-  # redefining skip_clean? now deprecated
+  #   skip_clean "bin/foo", "lib"bar"
+  # keep .la files with:
+  #   skip_clean :la
   def skip_clean? path
-    return true if self.class.skip_clean_all?
     return true if path.extname == '.la' and self.class.skip_clean_paths.include? :la
     to_check = path.relative_path_from(prefix).to_s
     self.class.skip_clean_paths.include? to_check
@@ -745,18 +745,8 @@ class Formula
 
     def skip_clean *paths
       paths.flatten!
-
-      # :all is deprecated though
-      if paths.include? :all
-        @skip_clean_all = true
-        return
-      end
-
+      # Specifying :all is deprecated and will become an error
       skip_clean_paths.merge(paths)
-    end
-
-    def skip_clean_all?
-      @skip_clean_all
     end
 
     def skip_clean_paths
