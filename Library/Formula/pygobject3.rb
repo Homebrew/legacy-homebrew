@@ -33,6 +33,8 @@ class Pygobject3 < Formula
 
   depends_on 'pkg-config' => :build
 
+  # these dependencies are not required for `brew test`, but rather for
+  # the tests included with the source code.
   if build.with? 'tests'
     depends_on 'automake' => :build
     depends_on 'autoconf' => :build
