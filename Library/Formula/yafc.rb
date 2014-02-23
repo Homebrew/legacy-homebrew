@@ -8,21 +8,16 @@ class Yafc < Formula
   depends_on 'xz' => :build
   depends_on 'readline'
 
-  def cflags
-    cflags = ENV.cflags.to_s
-    cflags += ' -DHAVE_STRLCPY'
-    cflags
-  end
-
   def patches
     DATA
   end
 
   def install
     readline = Formula["readline"].opt_prefix
+
     system "./configure", "--prefix=#{prefix}",
                           "--with-readline=#{readline}"
-    system "make", "install", "CFLAGS=#{cflags}"
+    system "make", "install"
   end
 
   test do
