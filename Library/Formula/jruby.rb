@@ -9,17 +9,13 @@ class Jruby < Formula
     # Remove Windows files
     rm Dir['bin/*.{bat,dll,exe}']
 
-    # Prefix a 'j' on some commands
     cd 'bin' do
-      Dir['*'].each do |file|
-        unless file.match /^[j]/
-          if File.exists? "j#{file}"
-            rm file
-          else
-            mv file, "j#{file}"
-          end
-        end
-      end
+      # Prefix a 'j' on some commands to avoid clashing with other ruby installations
+      ['ast', 'rake', 'rdoc', 'ri', 'testrb'].each { |f| mv f, "j#{f}" }
+      # Delete some unnecessary command
+      #  gem is a wrapper script for jgem
+      #  irb is an identical copy of jirb
+      ['gem', 'irb'].each { |f| rm f }
     end
 
     # Only keep the OS X native libraries
