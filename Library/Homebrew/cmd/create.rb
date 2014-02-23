@@ -95,6 +95,10 @@ class FormulaCreator
     end
   end
 
+  def fetch?
+    !ARGV.include?("--no-fetch")
+  end
+
   def generate!
     raise "#{path} already exists" if path.exist?
 
@@ -103,8 +107,7 @@ class FormulaCreator
       puts "You'll need to add an explicit 'version' to the formula."
     end
 
-    # XXX: why is "and version" here?
-    unless ARGV.include? "--no-fetch" and version
+    if fetch? && version
       r = Resource.new
       r.url, r.version, r.owner = url, version, self
       @sha1 = r.fetch.sha1 if r.download_strategy == CurlDownloadStrategy
