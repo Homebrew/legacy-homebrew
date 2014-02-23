@@ -490,7 +490,7 @@ class FormulaInstaller
       puts "in the formula."
       return
     end
-    Cleaner.new f
+    Cleaner.new(f).clean
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix"
