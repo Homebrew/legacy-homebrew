@@ -6,14 +6,21 @@ class Libmemcached < Formula
   sha1 '1023bc8c738b1f5b8ea2cd16d709ec6b47c3efa8'
 
   option 'with-sasl', "Build with sasl support"
-  depends_on 'memcached'
+
+  if build.with? "sasl"
+    depends_on "memcached" => "enable-sasl"
+  else
+    depends_on "memcached"
+  end
 
   def install
     ENV.append_to_cflags "-undefined dynamic_lookup" if MacOS.version <= :leopard
 
-    args = []
-    args << "--prefix=#{prefix}"
-    args << "--with-memcached-sasl=#{Formula.factory("memcached").bin}/memcached" if build.include? 'with-sasl'
+    args = ["--prefix=#{prefix}"]
+
+    if build.with? "sasl"
+      args << "--with-memcached-sasl=#{Formula.factory("memcached").bin}/memcached"
+    end
 
     system "./configure", *args
     system "make install"
