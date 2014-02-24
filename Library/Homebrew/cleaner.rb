@@ -3,6 +3,7 @@
 # * removes .la files
 # * removes empty directories
 # * sets permissions on executables
+# * removes unresolved symlinks
 class Cleaner
 
   # Create a cleaner for the given formula
@@ -33,6 +34,8 @@ class Cleaner
 
   private
 
+  # Removes any empty directories in the formula's prefix subtree
+  # Keeps any empty directions projected by skip_clean
   def prune
     dirs = []
     symlinks = []
@@ -46,6 +49,8 @@ class Cleaner
       end
     end
 
+    # Remove directories opposite from traversal, so that a subtree with no
+    # actual files gets removed correctly.
     dirs.reverse_each do |d|
       if d.children.empty?
         puts "rmdir: #{d} (empty)" if ARGV.verbose?
@@ -53,6 +58,7 @@ class Cleaner
       end
     end
 
+    # Remove unresolved symlinks
     symlinks.reverse_each do |s|
       s.unlink unless s.resolved_path_exists?
     end
