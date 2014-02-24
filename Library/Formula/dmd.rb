@@ -5,6 +5,12 @@ class Dmd < Formula
   url 'https://github.com/D-Programming-Language/dmd/archive/v2.065.0.tar.gz'
   sha1 '15f67e9b088d599c4091f1844676d107e873e850'
 
+  bottle do
+    sha1 "581cd8093ffe9fca493f06996e1d95e538fbb99e" => :mavericks
+    sha1 "3dfec90ecfc970e05efea17d6f786a0a1fbbb322" => :mountain_lion
+    sha1 "68d88b84a7f3407e867a83d093bf649f99830e23" => :lion
+  end
+
   resource 'druntime' do
     url 'https://github.com/D-Programming-Language/druntime/archive/v2.065.0.tar.gz'
     sha1 '0118d9386b2d5f006381a5e4802f295132c8717b'
