@@ -6,21 +6,13 @@ class AndroidSdk < Formula
   version '22.3'
   sha1 '547ea51c4aa61d623a4823d0b635d3b66b6c9329'
 
+  conflicts_with 'android-platform-tools',
+    :because => "the Platform-tools are be installed as part of the SDK."
+
   resource 'completion' do
     url 'https://raw.github.com/CyanogenMod/android_sdk/3bf0a01ef66a9b99149ba3faaf34a1362581dd01/bash_completion/adb.bash'
     sha1 '8e7dad45b8c98c359516d4a818a9090125bc6f7a'
   end
-
-  # TODO docs and platform-tools
-  # See the long comment below for the associated problems
-  def self.var_dirs
-    %w[platforms samples temp add-ons sources system-images extras]
-  end
-
-  skip_clean var_dirs
-
-  conflicts_with 'android-platform-tools',
-    :because => "the Platform-tools are be installed as part of the SDK."
 
   def install
     prefix.install 'tools', 'SDK Readme.txt' => 'README'
@@ -37,7 +29,7 @@ class AndroidSdk < Formula
 
     # this is data that should be preserved across upgrades, but the Android
     # SDK isn't too smart, so we still have to symlink it back into its tree.
-    AndroidSdk.var_dirs.each do |d|
+    %w[platforms samples temp add-ons sources system-images extras].each do |d|
       dst = prefix/d
       src = var/'lib/android-sdk'/d
       src.mkpath unless src.directory?
