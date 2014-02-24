@@ -13,6 +13,12 @@ class Cleaner
   # Clean the keg of formula @f
   def clean
     ObserverPathnameExtension.reset_counts!
+
+    # Many formulae include 'lib/charset.alias', but it is not strictly needed
+    # and will conflict if more than one formula provides it
+    alias_path = @f.lib/'charset.alias'
+    alias_path.extend(ObserverPathnameExtension).unlink if alias_path.exist?
+
     [@f.bin, @f.sbin, @f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
 
     # Get rid of any info 'dir' files, so they don't conflict at the link stage
@@ -30,7 +36,6 @@ class Cleaner
   def prune
     dirs = []
     symlinks = []
-
     @f.prefix.find do |path|
       if @f.skip_clean? path
         Find.prune
@@ -79,9 +84,6 @@ class Cleaner
       if path.symlink? or path.directory?
         next
       elsif path.extname == '.la'
-        path.unlink
-      elsif path == @f.lib+'charset.alias'
-        # Many formulae symlink this file, but it is not strictly needed
         path.unlink
       else
         clean_file_permissions(path)
