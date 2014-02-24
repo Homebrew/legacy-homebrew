@@ -74,7 +74,8 @@ class Cleaner
     path.chmod perms
   end
 
-  # Clean a single folder (non-recursively)
+  # Removes .la files and fixes file permissions for a directory tree, keeping
+  # existing files and permissions if instructed to by the formula
   def clean_dir d
     d.find do |path|
       path.extend(ObserverPathnameExtension)
