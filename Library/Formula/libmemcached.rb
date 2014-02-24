@@ -5,12 +5,24 @@ class Libmemcached < Formula
   url 'https://launchpad.net/libmemcached/1.0/1.0.17/+download/libmemcached-1.0.17.tar.gz'
   sha1 '1023bc8c738b1f5b8ea2cd16d709ec6b47c3efa8'
 
-  depends_on 'memcached'
+  option 'with-sasl', "Build with sasl support"
+
+  if build.with? "sasl"
+    depends_on "memcached" => "enable-sasl"
+  else
+    depends_on "memcached"
+  end
 
   def install
     ENV.append_to_cflags "-undefined dynamic_lookup" if MacOS.version <= :leopard
 
-    system "./configure", "--prefix=#{prefix}"
+    args = ["--prefix=#{prefix}"]
+
+    if build.with? "sasl"
+      args << "--with-memcached-sasl=#{Formula.factory("memcached").bin}/memcached"
+    end
+
+    system "./configure", *args
     system "make install"
   end
 
