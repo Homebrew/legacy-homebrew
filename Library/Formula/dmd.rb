@@ -2,54 +2,52 @@ require 'formula'
 
 class Dmd < Formula
   homepage 'http://dlang.org'
-  url 'https://github.com/D-Programming-Language/dmd/archive/v2.064.2.tar.gz'
-  sha1 '8f88af77aab4c206841d93d7f4cfd399cbe3fdd6'
+  url 'https://github.com/D-Programming-Language/dmd/archive/v2.065.0.tar.gz'
+  sha1 '15f67e9b088d599c4091f1844676d107e873e850'
 
   resource 'druntime' do
-    url 'https://github.com/D-Programming-Language/druntime/archive/v2.064.2.tar.gz'
-    sha1 '42bc0f252bbb0c71de6789bdf2697b5daf41dd43'
+    url 'https://github.com/D-Programming-Language/druntime/archive/v2.065.0.tar.gz'
+    sha1 '0118d9386b2d5f006381a5e4802f295132c8717b'
   end
 
   resource 'phobos' do
-    url 'https://github.com/D-Programming-Language/phobos/archive/v2.064.2.tar.gz'
-    sha1 'e39489a6c7c60c947559a084cc7619e373d3c464'
+    url 'https://github.com/D-Programming-Language/phobos/archive/v2.065.0.tar.gz'
+    sha1 '2af606451ee5d651fea91f252e09411714f779df'
   end
 
   resource 'tools' do
-    url 'https://github.com/D-Programming-Language/tools/archive/v2.064.2.tar.gz'
-    sha1 '590dfb8cd4b6fea74d03ddf230ec2734e7c71c99'
+    url 'https://github.com/D-Programming-Language/tools/archive/v2.065.0.tar.gz'
+    sha1 '54b5855599e64d0efbfc1cb21f1a31ef9939f8be'
   end
 
   def install
     make_args = ["INSTALL_DIR=#{prefix}", "MODEL=#{Hardware::bits}", "-f", "posix.mak"]
 
-    system "make", "install", "TARGET_CPU=X86", "RELEASE=1", *make_args
+    system "make", "install", "SYSCONFDIR=#{etc}", "TARGET_CPU=X86", "RELEASE=1", *make_args
 
     share.install prefix/'man'
 
-    rm bin/'dmd.conf'
+    inreplace bin/'dmd.conf', "DFLAGS=-I%@P%/../../src/phobos -I%@P%/../../src/druntime/import -L-L%@P%/../lib",
+                              "DFLAGS=-I#{prefix}/import -L-L#{lib}"
+
+    etc.install bin/'dmd.conf'
 
     make_args.unshift "DMD=#{bin}/dmd"
 
-    resource('druntime').stage do
+    (buildpath/'druntime').install resource('druntime')
+
+    cd 'druntime' do
       system "make", "install", *make_args
     end
 
-    resource('phobos').stage do
-      system "make", "install", "DRUNTIME_PATH=#{prefix}", "VERSION=#{buildpath}/VERSION", *make_args
-    end
+    (buildpath/'phobos').install resource('phobos')
 
-    (bin/'dmd.conf').open('w+') do |f|
-      f.puts "[Environment]"
-      f.puts "DFLAGS=-I#{prefix}/import -L-L#{lib}"
+    cd 'phobos' do
+      system "make", "install", "VERSION=#{buildpath}/VERSION", *make_args
     end
 
     resource('tools').stage do
-      inreplace 'posix.mak' do |s|
-        s.gsub! 'install: $(TOOLS) $(CURL_TOOLS)', 'install: $(TOOLS)'
-        #Remove on next release
-        s.gsub! 'install -t $(DESTDIR)$(PREFIX) $(^)', 'cp $^ $(INSTALL_DIR)/bin'
-      end
+      inreplace 'posix.mak', 'install: $(TOOLS) $(CURL_TOOLS)', 'install: $(TOOLS)'
       system "make", "install", *make_args
     end
   end
