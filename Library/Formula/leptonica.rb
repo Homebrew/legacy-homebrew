@@ -2,8 +2,10 @@ require 'formula'
 
 class Leptonica < Formula
   homepage 'http://www.leptonica.org/'
-  url 'http://www.leptonica.org/source/leptonica-1.69.tar.gz'
-  sha1 '91199f99d2e78b15b76ffa6fc4e86ee458a330e8'
+  url 'http://www.leptonica.com/source/leptonica-1.70.tar.gz'
+  sha1 '2c7a893c48aec7844d6b2c7123a0ede7a0d8300e'
+
+  option 'check', 'Run the build checks'
 
   depends_on :libpng => :recommended
   depends_on 'jpeg' => :recommended
@@ -15,10 +17,8 @@ class Leptonica < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "make"
+    system "make check" if build.include? 'check'
     system "make install"
-  end
-
-  def test
-    system "#{bin}/yuvtest"
   end
 end

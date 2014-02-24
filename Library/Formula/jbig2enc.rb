@@ -6,7 +6,7 @@ class Jbig2enc < Formula
   sha1 'd2d73f732168eeb6fa18962dbe7743337363c3b6'
   version '0.28'
 
-  depends_on 'leptonica'
+  depends_on 'leptonica169'
 
   def install
     system "./configure", "--prefix=#{prefix}"
