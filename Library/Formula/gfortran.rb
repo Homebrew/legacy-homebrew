@@ -44,11 +44,11 @@ class Gfortran < Formula
       "--enable-languages=fortran",
       "--with-system-zlib",
       # ...opt_prefix survives upgrades and works even if `brew unlink gmp`
-      "--with-gmp=#{Formula.factory('gmp').opt_prefix}",
-      "--with-mpfr=#{Formula.factory('mpfr').opt_prefix}",
-      "--with-mpc=#{Formula.factory('libmpc').opt_prefix}",
-      "--with-cloog=#{Formula.factory('cloog').opt_prefix}",
-      "--with-isl=#{Formula.factory('isl').opt_prefix}",
+      "--with-gmp=#{Formula['gmp'].opt_prefix}",
+      "--with-mpfr=#{Formula['mpfr'].opt_prefix}",
+      "--with-mpc=#{Formula['libmpc'].opt_prefix}",
+      "--with-cloog=#{Formula['cloog'].opt_prefix}",
+      "--with-isl=#{Formula['isl'].opt_prefix}",
       # ...and disable isl and cloog version checks in case they upgrade
       "--disable-cloog-version-check",
       "--disable-isl-version-check",
@@ -97,7 +97,6 @@ class Gfortran < Formula
     info.children.reject{ |p| p.basename.to_s.match(/gfortran/) }.each(&:unlink)
     man1.children.reject{ |p| p.basename.to_s.match(/gfortran/) }.each(&:unlink)
     man7.rmtree  # dupes: fsf fundraising and gpl
-    # (share/'locale').rmtree
     (share/"gcc-#{version}").rmtree # dupes: libstdc++ pretty printer, will be added by gcc* formula
   end
 
