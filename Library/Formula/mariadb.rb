@@ -5,6 +5,12 @@ class Mariadb < Formula
   url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.36/kvm-tarbake-jaunty-x86/mariadb-5.5.36.tar.gz'
   sha1 'a6091356ffe524322431670ad03d68c389243d04'
 
+  bottle do
+    sha1 "46a842d51c95aa8e6463f373e7312d28c2d89192" => :mavericks
+    sha1 "40868bd7621732f92f998e13badc6b46399e3b43" => :mountain_lion
+    sha1 "61b9289369f12ba10edd77e2cbe2d54ab7fb8396" => :lion
+  end
+
   devel do
     url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.8/kvm-tarbake-jaunty-x86/mariadb-10.0.8.tar.gz'
     sha1 '2b56a7d78b5cf063374f8d6cf03986020b0290c1'
