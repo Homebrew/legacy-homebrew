@@ -26,6 +26,7 @@ class Libmagic < Formula
   def install
     ENV.universal_binary if build.universal?
 
+    system "make distclean"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-fsect-man5"
