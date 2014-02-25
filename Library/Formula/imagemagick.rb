@@ -49,7 +49,7 @@ class Imagemagick < Formula
   def pour_bottle?
     # If libtool is keg-only it currently breaks the bottle.
     # This is a temporary workaround until we have a better fix.
-    not Formula.factory('libtool').keg_only?
+    not Formula["libtool"].keg_only?
   end
 
   skip_clean :la
