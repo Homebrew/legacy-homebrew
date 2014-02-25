@@ -8,7 +8,7 @@ class Slony < Formula
   depends_on :postgresql
 
   def install
-    postgres = Formula.factory('postgresql')
+    postgres = Formula['postgresql']
     system "./configure", "--disable-debug",
                           "--with-pgconfigdir=#{postgres.opt_prefix}/bin",
                           "--prefix=#{prefix}"
@@ -16,6 +16,6 @@ class Slony < Formula
   end
 
   test do
-    system "slon", "-v"
+    system bin/"slon", "-v"
   end
 end
