@@ -43,7 +43,7 @@ class GnuSmalltalk < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --disable-gtk
-      --with-readline=#{Formula.factory('readline').lib}
+      --with-readline=#{Formula['readline'].lib}
     ]
     unless build.include? 'tcltk'
       args << '--without-tcl' << '--without-tk' << '--without-x'
