@@ -35,6 +35,8 @@ class Mplayer < Formula
     else
       # Fix compilation on 10.9, adapted from upstream revision r36500
       p << "https://gist.github.com/jacknagel/7441175/raw/37657c264a6a3bb4d30dee14538c367f7ffccba9/vo_corevideo.h.patch"
+      # Fix C99-style 'for (int i=0...)'
+      p << "https://gist.githubusercontent.com/dscho/9210644/raw/16094d8d17b58689dec0e9f3a957fb2fd5744a9c/ao_coreaudio.c.patch"
     end
     p
   end
