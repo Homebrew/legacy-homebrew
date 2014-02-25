@@ -76,7 +76,7 @@ class Glib < Formula
 
     # `pkg-config --libs glib-2.0` includes -lintl, and gettext itself does not
     # have a pkgconfig file, so we add gettext lib and include paths here.
-    gettext = Formula.factory('gettext').opt_prefix
+    gettext = Formula["gettext"].opt_prefix
     inreplace lib+'pkgconfig/glib-2.0.pc' do |s|
       s.gsub! 'Libs: -L${libdir} -lglib-2.0 -lintl',
               "Libs: -L${libdir} -lglib-2.0 -L#{gettext}/lib -lintl"
