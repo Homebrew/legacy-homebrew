@@ -30,7 +30,7 @@ class Freetds < Formula
             ]
 
     if build.include? "with-unixodbc"
-      args << "--with-unixodbc=#{Formula.factory('unixodbc').prefix}"
+      args << "--with-unixodbc=#{Formula['unixodbc'].prefix}"
     end
 
     if build.include? "enable-msdblib"
