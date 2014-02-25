@@ -18,20 +18,21 @@ class GedaGaf < Formula
   depends_on :x11
 
   def install
-    # Help configure find libraries
-    gettext = Formula.factory('gettext')
-    pcb = Formula.factory('pcb')
+    gettext = Formula['gettext']
 
-    extra_configure_args = []
-    if !build.devel?
-      extra_configure_args << "--with-pcb-confdir=#{pcb.etc/:pcb}"
+    args = [
+      "--prefix=#{prefix}",
+      "--with-gettext=#{gettext.prefix}",
+      "--disable-update-xdg-database",
+      "--with-pcb-datadir=#{HOMEBREW_PREFIX}/share/pcb"
+    ]
+
+    if build.stable?
+      pcb = Formula['pcb']
+      args << "--with-pcb-confdir=#{pcb.etc}/pcb"
     end
-    system "./configure", "--prefix=#{prefix}",
-                          "--with-gettext=#{gettext.prefix}",
-                          "--disable-update-xdg-database",
-                          "--with-pcb-datadir=#{HOMEBREW_PREFIX/:share/:pcb}",
-                          *extra_configure_args
 
+    system "./configure", *args
     system "make"
     system "make install"
   end
