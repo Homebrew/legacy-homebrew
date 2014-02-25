@@ -22,7 +22,7 @@ class Fceux < Formula
   def install
     args = []
     args << "GTK=0" if build.include? "no-gtk"
-    system "scons", *args
+    scons *args
     bin.install 'src/fceux'
   end
 end
