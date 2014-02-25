@@ -242,8 +242,8 @@ class Formula
     (self.class.cc_failures || []).any? do |failure|
       # Major version check distinguishes between, e.g.,
       # GCC 4.7.1 and GCC 4.8.2, where a comparison is meaningless
-      failure.compiler == cc.name && failure.major_version == cc.major_version && \
-        failure.version >= cc.version
+      failure.compiler == cc.name && failure.major_version == cc.major_version &&
+        failure.version >= (cc.version || 0)
     end
   end
 
