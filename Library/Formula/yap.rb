@@ -28,8 +28,6 @@ class Yap < Formula
                           "--with-java=/Library/Java/Home",
                           "--prefix=#{prefix}"
 
-    inreplace 'Makefile', '-DMYDDAS_ODBC', ''
-
     system "make"
     system "make install"
   end
