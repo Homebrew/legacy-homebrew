@@ -19,8 +19,8 @@ class Fragroute < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libevent=#{Formula.factory("libevent").opt_prefix}",
-                          "--with-libdnet=#{Formula.factory("libdnet").opt_prefix}"
+                          "--with-libevent=#{Formula["libevent"].opt_prefix}",
+                          "--with-libdnet=#{Formula["libdnet"].opt_prefix}"
     system "make", "install"
   end
 end
