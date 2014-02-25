@@ -29,7 +29,7 @@ class Ejabberd < Formula
               "--localstatedir=#{var}"]
 
       if MacOS.version <= :leopard
-        openssl = Formula.factory('openssl')
+        openssl = Formula['openssl']
         args << "--with-openssl=#{openssl.prefix}"
       end
 
