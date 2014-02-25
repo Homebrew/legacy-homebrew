@@ -45,11 +45,21 @@ class ExampleFormula < Formula
   head 'https://example.com/.git', :branch => 'name_of_branch', :revision => 'abc123'
   head 'https://hg.is.awesome.but.git.has.won.example.com/', :using => :hg # If autodetect fails.
 
+  head do
+    url "https://example.com/repo.git"
+
+    depends_on :autoconf
+    depends_on :automake
+  end
+
   # The optional devel block is only executed if the user passes `--devel`.
   # Use this to specify a not-yet-released version of a software.
   devel do
-   url 'https://example.com/archive-2.0-beta.tar.gz'
-   sha1 '1234567890123456789012345678901234567890'
+    url "https://example.com/archive-2.0-beta.tar.gz"
+    sha1 "1234567890123456789012345678901234567890"
+
+    depends_on "cairo"
+    depends_on "pixman"
   end
 
 
@@ -143,14 +153,10 @@ class ExampleFormula < Formula
   depends_on :libpng # Often, not all of X11 is needed.
   depends_on :fontconfig
   # autoconf/automake is sometimes needed for --HEAD checkouts:
-  depends_on :autoconf if build.head?
-  depends_on :automake if build.head?
   depends_on :bsdmake
   depends_on :libtool
   depends_on :libltdl
   depends_on :mysql => :recommended
-  depends_on :cairo if build.devel?
-  depends_on :pixman if build.devel?
   # It is possible to only depend on something if
   # `build.with?` or `build.without? 'another_formula'`:
   depends_on :mysql # allows brewed or external mysql to be used
