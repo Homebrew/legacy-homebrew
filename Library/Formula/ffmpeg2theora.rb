@@ -23,6 +23,6 @@ class Ffmpeg2theora < Formula
   def install
     args = ["prefix=#{prefix}", "mandir=PREFIX/share/man"]
     args << "libkate=1" if Formula.factory('libkate').installed?
-    system "scons", "install", *args
+    scons "install", *args
   end
 end
