@@ -40,7 +40,7 @@ class Hexchat < Formula
     end
 
     # The locations of the gettext dependencies are hardcoded, so copy them
-    gettext = Formula.factory('gettext').opt_prefix/'share/gettext'
+    gettext = Formula['gettext'].opt_prefix/'share/gettext'
     cp_r ["#{gettext}/intl", "#{gettext}/po"], "."
 
     system "autoreconf -vi"
