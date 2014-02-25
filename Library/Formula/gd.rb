@@ -63,19 +63,19 @@ class Gd < Formula
     end
 
     if build.with? "jpeg"
-      args << "--with-jpeg=#{Formula.factory("jpeg").opt_prefix}"
+      args << "--with-jpeg=#{Formula["jpeg"].opt_prefix}"
     else
       args << "--without-jpeg"
     end
 
     if build.with? "libtiff"
-      args << "--with-tiff=#{Formula.factory("libtiff").opt_prefix}"
+      args << "--with-tiff=#{Formula["libtiff"].opt_prefix}"
     else
       args << "--without-tiff"
     end
 
     if build.with? "libvpx"
-      args << "--with-vpx=#{Formula.factory("libvpx").opt_prefix}"
+      args << "--with-vpx=#{Formula["libvpx"].opt_prefix}"
     else
       args << "--without-vpx"
     end
