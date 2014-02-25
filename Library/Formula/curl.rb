@@ -32,14 +32,14 @@ class Curl < Formula
     ]
 
     if MacOS.version < :mountain_lion or build.with? "openssl"
-      args << "--with-ssl=#{Formula.factory("openssl").opt_prefix}"
+      args << "--with-ssl=#{Formula["openssl"].opt_prefix}"
     else
       args << "--with-darwinssl"
     end
 
     args << "--with-libssh2" if build.with? 'ssh'
     args << "--with-libmetalink" if build.with? 'libmetalink'
-    args << "--enable-ares=#{Formula.factory("c-ares").opt_prefix}" if build.with? 'ares'
+    args << "--enable-ares=#{Formula["c-ares"].opt_prefix}" if build.with? 'ares'
     args << "--with-gssapi" if build.with? 'gssapi'
 
     system "./configure", *args
