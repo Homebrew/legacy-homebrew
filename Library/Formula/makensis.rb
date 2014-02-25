@@ -23,8 +23,7 @@ class Makensis < Formula
     # https://sourceforge.net/p/nsis/bugs/1085/
     ENV.libstdcxx if ENV.compiler == :clang
 
-    scons = Formula.factory('scons').opt_prefix/'bin/scons'
-    system scons, "makensis"
+    scons "makensis"
     bin.install "build/release/makensis/makensis"
     (share/'nsis').install resource('nsis')
   end
