@@ -23,7 +23,7 @@ class Bind < Formula
     ]
 
     if build.with? 'brewed-openssl'
-      args << "--with-ssl-dir=#{Formula.factory('openssl').opt_prefix}"
+      args << "--with-ssl-dir=#{Formula['openssl'].opt_prefix}"
     elsif MacOS.version > :leopard
       # For Xcode-only systems we help a bit to find openssl.
       # If CLT.installed?, it evaluates to "/usr", which works.
