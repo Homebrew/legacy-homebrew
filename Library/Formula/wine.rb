@@ -70,8 +70,12 @@ class Wine < Formula
     cause 'error: invalid operand for instruction lretw'
   end
 
-  # There may be flicker in fullscreen mode, but there is no current patch:
-  # # http://bugs.winehq.org/show_bug.cgi?id=34166
+  def patches
+    if build.devel?
+      # http://bugs.winehq.org/show_bug.cgi?id=34166
+      'http://bugs.winehq.org/attachment.cgi?id=47639'
+    end
+  end
 
   # These libraries are not specified as dependencies, or not built as 32-bit:
   # configure: libv4l, gstreamer-0.10, libcapi20, libgsm
