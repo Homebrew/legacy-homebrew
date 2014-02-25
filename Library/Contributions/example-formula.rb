@@ -38,6 +38,17 @@ class ExampleFormula < Formula
   # Leave it empty at first and `brew install` will tell you the expected.
   sha1 'cafebabe78901234567890123456789012345678'
 
+  # Stable-only dependencies should be nested inside a `stable` block rather than
+  # using a conditional. It is preferrable to also pull the URL and checksum into
+  # the block if one is necessary.
+  stable do
+    url "https://example.com/foo-1.0.tar.gz"
+    sha1 "cafebabe78901234567890123456789012345678"
+
+    depends_on "libxml2"
+    depends_on "libffi"
+  end
+
   # Optionally, specify a repository to be used. Brew then generates a
   # `--HEAD` option. Remember to also test it.
   # The download strategies (:using =>) are the same as for `url`.
