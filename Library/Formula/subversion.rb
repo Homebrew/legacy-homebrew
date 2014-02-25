@@ -78,8 +78,8 @@ class Subversion < Formula
       args = %W[PREFIX=#{serf_prefix} GSSAPI=/usr CC=#{ENV.cc}
                 CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}]
       args << "OPENSSL=#{Formula.factory('openssl').opt_prefix}" if build.with? 'brewed-openssl'
-      system "scons", *args
-      system "scons install"
+      scons *args
+      scons "install"
     end
 
     if build.include? 'unicode-path'
