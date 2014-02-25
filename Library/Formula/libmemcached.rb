@@ -55,3 +55,19 @@ index 8bd0dbf..cdba743 100644
      {
        std::cerr << "No Servers provided" << std::endl;
        exit(EXIT_FAILURE);
+diff --git a/libmemcached-1.0/memcached.h b/libmemcached-1.0/memcached.h
+index bc16e73..dcee395 100644
+--- a/libmemcached-1.0/memcached.h
++++ b/libmemcached-1.0/memcached.h
+@@ -43,7 +43,11 @@
+ #endif
+ 
+ #ifdef __cplusplus
++#ifdef _LIBCPP_VERSION
+ #  include <cinttypes>
++#else
++#  include <tr1/cinttypes>
++#endif
+ #  include <cstddef>
+ #  include <cstdlib>
+ #else
