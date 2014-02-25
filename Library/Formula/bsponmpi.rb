@@ -12,7 +12,7 @@ class Bsponmpi < Formula
     # Don't install 'CVS' folders from tarball
     rm_rf 'include/CVS'
     rm_rf 'include/tools/CVS'
-    system "scons -Q mode=release"
+    scons "-Q", "mode=release"
     prefix.install 'lib', 'include'
   end
 end
