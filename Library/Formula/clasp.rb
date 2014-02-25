@@ -11,7 +11,7 @@ class Clasp < Formula
 
   def install
     if build.include? 'with-mt'
-      ENV['TBB30_INSTALL_DIR'] = Formula.factory("tbb").opt_prefix
+      ENV['TBB30_INSTALL_DIR'] = Formula["tbb"].opt_prefix
       build_dir = 'build/release_mt'
     else
       build_dir = 'build/release'
