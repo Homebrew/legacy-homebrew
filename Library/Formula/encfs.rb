@@ -24,8 +24,9 @@ class Encfs < Formula
 
   def install
     # Add correct flags for linkage with {osx,}fuse and gettext libs
-    ENV.append 'CPPFLAGS', %x[pkg-config fuse --cflags].chomp + "-I#{Formula.factory('gettext').include}"
-    ENV.append 'LDFLAGS', %x[pkg-config fuse --libs].chomp + "-L#{Formula.factory('gettext').lib}"
+    gettext = Formula['gettext']
+    ENV.append 'CPPFLAGS', %x[pkg-config fuse --cflags].chomp + "-I#{gettext.include}"
+    ENV.append 'LDFLAGS', %x[pkg-config fuse --libs].chomp + "-L#{gettext.lib}"
     inreplace "configure", "-lfuse", "-losxfuse"
 
     # Adapt to changes in recent Xcode by making local copy of endian-ness definitions
