@@ -17,7 +17,7 @@ class Ori < Formula
     system "scons", "install", "PREFIX=#{prefix}"
   end
 
-  def test
+  test do
     system "#{bin}/ori"
   end
 end

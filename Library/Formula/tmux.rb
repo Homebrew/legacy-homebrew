@@ -42,7 +42,7 @@ class Tmux < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/tmux", "-V"
   end
 end

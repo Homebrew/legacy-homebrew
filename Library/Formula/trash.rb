@@ -14,7 +14,7 @@ class Trash < Formula
     man1.install "trash.1"
   end
 
-  def test
+  test do
     system "#{bin}/trash"
   end
 end

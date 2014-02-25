@@ -20,7 +20,7 @@ class Abcmidi < Formula
     system "make", "install"
   end
 
-  def test
+  test do
     system "#{bin}/abc2midi"
   end
 end

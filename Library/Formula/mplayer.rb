@@ -66,7 +66,7 @@ class Mplayer < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/mplayer", "-ao", "null", "/System/Library/Sounds/Glass.aiff"
   end
 end
