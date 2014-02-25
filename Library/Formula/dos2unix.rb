@@ -13,7 +13,7 @@ class Dos2unix < Formula
   end
 
   def install
-    gettext = Formula.factory("gettext")
+    gettext = Formula["gettext"]
     system "make", "prefix=#{prefix}",
                    "CC=#{ENV.cc}",
                    "CPP=#{ENV.cc}",
