@@ -44,7 +44,7 @@ class Libswiften < Formula
 
     args << prefix
 
-    system "scons", *args
+    scons *args
     man1.install 'Swift/Packaging/Debian/debian/swiften-config.1' unless build.stable?
   end
 
