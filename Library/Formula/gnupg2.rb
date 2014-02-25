@@ -35,7 +35,7 @@ class Gnupg2 < Formula
 
     ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
 
-    agent = Formula.factory("gpg-agent").opt_prefix
+    agent = Formula["gpg-agent"].opt_prefix
 
     args = %W[
       --disable-dependency-tracking
@@ -48,7 +48,7 @@ class Gnupg2 < Formula
     ]
 
     if build.with? 'readline'
-      args << "--with-readline=#{Formula.factory('readline').opt_prefix}"
+      args << "--with-readline=#{Formula["readline"].opt_prefix}"
     end
 
     system "./configure", *args
