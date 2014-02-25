@@ -5,7 +5,7 @@ class Bitlbee < Formula
   url 'http://get.bitlbee.org/src/bitlbee-3.2.1.tar.gz'
   sha1 '954471ab87206826c072f31b3def40a1be5a78f5'
 
-  option 'with-libpurple', "Use libpurple for all communication with instant messaging networks"
+  option 'with-finch', "Use finch/libpurple for all communication with instant messaging networks"
   option 'with-libotr', "Build with otr (off the record) support"
 
   depends_on 'pkg-config' => :build
@@ -23,7 +23,7 @@ class Bitlbee < Formula
             "--config=#{var}/bitlbee/lib/",
             "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"]
 
-    args << "--purple=1" if build.with? "libpurple"
+    args << "--purple=1" if build.with? "finch"
     args << "--otr=1" if build.with? "libotr"
 
     system "./configure", *args
