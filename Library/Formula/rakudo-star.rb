@@ -13,7 +13,7 @@ class RakudoStar < Formula
   depends_on 'libffi'
 
   def install
-    libffi = Formula.factory("libffi")
+    libffi = Formula["libffi"]
     ENV.remove 'CPPFLAGS', "-I#{libffi.include}"
     ENV.prepend 'CPPFLAGS', "-I#{libffi.lib}/libffi-#{libffi.version}/include"
 
