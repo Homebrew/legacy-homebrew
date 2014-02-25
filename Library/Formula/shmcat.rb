@@ -17,7 +17,7 @@ class Shmcat < Formula
     ]
     args << "--disable-ftok" unless build.include? 'with-ftok'
     if build.include? 'with-nls'
-      gettext = Formula.factory('gettext')
+      gettext = Formula['gettext']
       args << "--with-libintl-prefix=#{gettext.include}"
     else
       args << "--disable-nls"
