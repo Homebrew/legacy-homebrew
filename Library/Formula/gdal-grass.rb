@@ -9,12 +9,13 @@ class GdalGrass < Formula
   depends_on 'grass'
 
   def install
-    grass = Formula.factory('grass')
+    gdal = Formula['gdal']
+    grass = Formula['grass']
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--with-gdal=#{HOMEBREW_PREFIX}/bin/gdal-config",
+                          "--with-gdal=#{gdal.bin}/gdal-config",
                           "--with-grass=#{grass.prefix}/grass-#{grass.version}",
                           "--with-autoload=#{lib}/gdalplugins"
 
