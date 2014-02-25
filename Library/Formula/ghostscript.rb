@@ -5,6 +5,12 @@ class Ghostscript < Formula
   url 'http://downloads.ghostscript.com/public/ghostscript-9.07.tar.gz'
   sha1 'b04a88ea8d661fc53d4f7eac34d84456272afc06'
 
+  bottle do
+    sha1 "62c5af8448d5e4e210ff947fdad0f70a6868ce10" => :mavericks
+    sha1 "b193970e7117a94cfab13e150f1c0c45d783ab4f" => :mountain_lion
+    sha1 "85b32dc39472b2617a2797e6a12ac8aa0c5579eb" => :lion
+  end
+
   head do
     url 'git://git.ghostscript.com/ghostpdl.git'
 

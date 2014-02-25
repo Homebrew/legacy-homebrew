@@ -12,7 +12,7 @@ class Imageworsener < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/imagew", "--version"
   end
 end

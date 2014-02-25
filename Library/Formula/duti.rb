@@ -14,7 +14,7 @@ class Duti < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/duti", "-x", "txt"
   end
 end

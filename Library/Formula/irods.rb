@@ -36,7 +36,7 @@ class Irods < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/ipwd"
   end
 end

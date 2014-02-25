@@ -29,7 +29,7 @@ class Jruby < Formula
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
-  def test
+  test do
     system "#{bin}/jruby", "-e", "puts 'hello'"
   end
 end
