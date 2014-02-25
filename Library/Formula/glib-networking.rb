@@ -16,7 +16,7 @@ class GlibNetworking < Formula
 
   def install
     if build.with? "curl-ca-bundle"
-      curl_ca_bundle = Formula.factory('curl-ca-bundle').opt_prefix
+      curl_ca_bundle = Formula["curl-ca-bundle"].opt_prefix
       certs_options = "--with-ca-certificates=#{curl_ca_bundle}/share/ca-bundle.crt"
     else
       certs_options = "--without-ca-certificates"
