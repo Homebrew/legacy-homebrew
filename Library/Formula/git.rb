@@ -55,7 +55,7 @@ class Git < Formula
 
     if build.with? 'pcre'
       ENV['USE_LIBPCRE'] = '1'
-      ENV['LIBPCREDIR'] = Formula.factory('pcre').opt_prefix
+      ENV['LIBPCREDIR'] = Formula['pcre'].opt_prefix
     end
 
     ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'
