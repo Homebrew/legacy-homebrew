@@ -359,7 +359,7 @@ class Formula
   def self.each
     names.each do |name|
       begin
-        yield Formula.factory(name)
+        yield Formulary.factory(name)
       rescue StandardError => e
         # Don't let one broken formula break commands. But do complain.
         onoe "Failed to import: #{name}"
@@ -377,7 +377,7 @@ class Formula
 
     HOMEBREW_CELLAR.subdirs.map do |rack|
       begin
-        factory(rack.basename.to_s)
+        Formulary.factory(rack.basename.to_s)
       rescue FormulaUnavailableError
       end
     end.compact
@@ -424,6 +424,11 @@ class Formula
     return name
   end
 
+  def self.[](name)
+    Formulary.factory(name)
+  end
+
+  # deprecated
   def self.factory name
     Formulary.factory name
   end
