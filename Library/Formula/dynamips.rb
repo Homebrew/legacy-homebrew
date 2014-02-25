@@ -8,7 +8,7 @@ class Dynamips < Formula
   depends_on 'libelf'
 
   def install
-    ENV.append 'CFLAGS', "-I#{Formula.factory("libelf").include}/libelf"
+    ENV.append 'CFLAGS', "-I#{Formula["libelf"].include}/libelf"
 
     arch = Hardware.is_64_bit? ? 'amd64' : 'x86'
 
