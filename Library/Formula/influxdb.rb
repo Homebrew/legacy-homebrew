@@ -25,8 +25,8 @@ class Influxdb < Formula
   def install
     ENV["GOPATH"] = buildpath
 
-    flex = Formula.factory("flex").bin/"flex"
-    bison = Formula.factory("bison").bin/"bison"
+    flex = Formula["flex"].bin/"flex"
+    bison = Formula["bison"].bin/"bison"
 
     system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
     system "make", "dependencies", "protobuf", "parser"
