@@ -292,6 +292,10 @@ class FormulaAuditor
   end
 
   def audit_text
+    if text =~ /system\s+['"]scons/
+      problem "use \"scons, *args\" instead of \"system 'scons', *args\""
+    end
+
     if text =~ /system\s+['"]xcodebuild/ && text !~ /SYMROOT=/
       problem "xcodebuild should be passed an explicit \"SYMROOT\""
     end
