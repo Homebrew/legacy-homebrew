@@ -34,6 +34,7 @@ class Libmemcached < Formula
   end
 
   def patches
+    # https://bugs.launchpad.net/libmemcached/+bug/1284765
     DATA
   end
 
