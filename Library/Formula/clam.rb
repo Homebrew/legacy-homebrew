@@ -16,8 +16,8 @@ class Clam < Formula
   depends_on 'id3lib'
 
   def install
-    system "scons", "configure", "prefix=#{prefix}", "with_ladspa=no", "xmlbackend=none"
-    system "scons"
-    system "scons install"
+    scons "configure", "prefix=#{prefix}", "with_ladspa=no", "xmlbackend=none"
+    scons
+    scons "install"
   end
 end
