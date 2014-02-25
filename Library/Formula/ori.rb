@@ -13,8 +13,8 @@ class Ori < Formula
   depends_on 'openssl'
 
   def install
-    system "scons", "BUILDTYPE=RELEASE"
-    system "scons", "install", "PREFIX=#{prefix}"
+    scons "BUILDTYPE=RELEASE"
+    scons "install", "PREFIX=#{prefix}"
   end
 
   test do
