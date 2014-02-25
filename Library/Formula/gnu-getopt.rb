@@ -11,7 +11,7 @@ class GnuGetopt < Formula
 
   def install
     inreplace 'Makefile' do |s|
-      gettext = Formula.factory 'gettext'
+      gettext = Formula['gettext']
       s.change_make_var! "CPPFLAGS", "\\1 -I#{gettext.include}"
       s.change_make_var! "LDFLAGS", "\\1 -L#{gettext.lib} -lintl"
     end
