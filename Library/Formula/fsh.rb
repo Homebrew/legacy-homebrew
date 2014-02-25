@@ -16,7 +16,7 @@ class Fsh < Formula
     system "make install"
 
     cd bin do
-      if Formula.factory('python').installed?
+      if Formula['python'].installed?
         inreplace ["fsh", "fshd", "in.fshd"],
             "#! /usr/local/bin/python", "#!/usr/bin/env python"
         end
