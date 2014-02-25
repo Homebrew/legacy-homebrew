@@ -17,7 +17,7 @@ class Grass < Formula
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
-  depends_on "wxmac" => :recommended # prefer over OS X's version because of 64bit
+  depends_on "wxpython" => :recommended # prefer over OS X's version because of 64bit
   depends_on :postgresql => :optional
   depends_on :mysql => :optional
   depends_on "cairo"

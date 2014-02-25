@@ -1,55 +1,11 @@
 require 'formula'
 
-class FrameworkPython < Requirement
-  fatal true
-
-  satisfy do
-    q = `python -c "import distutils.sysconfig as c; print(c.get_config_var('PYTHONFRAMEWORK'))"`
-    not q.chomp.empty?
-  end
-
-  def message
-    "Python needs to be built as a framework."
-  end
-end
-
 class Wxmac < Formula
   homepage 'http://www.wxwidgets.org'
-  url 'http://downloads.sourceforge.net/project/wxpython/wxPython/3.0.0.0/wxPython-src-3.0.0.0.tar.bz2'
-  sha1 '48451763275cfe4e5bbec49ccd75bc9652cba719'
+  url 'http://downloads.sourceforge.net/project/wxwindows/3.0.0/wxWidgets-3.0.0.tar.bz2'
+  sha1 '756a9c54d1f411e262f03bacb78ccef085a9880a'
 
   option 'disable-monolithic', "Build a non-monolithic library (split into multiple files)"
-  depends_on :python => :recommended
-  depends_on FrameworkPython if build.with? "python"
-
-  def install_wx_python
-    args = [
-      # Reference our wx-config
-      "WX_CONFIG=#{bin}/wx-config",
-      # At this time Wxmac is installed Unicode only
-      "UNICODE=1",
-      # Some scripts (e.g. matplotlib) expect to `import wxversion`, which is
-      # only available on a multiversion build. Besides that `import wx` still works.
-      "INSTALL_MULTIVERSION=1",
-      # OpenGL and stuff
-      "BUILD_GLCANVAS=1",
-      "BUILD_GIZMOS=1",
-      "BUILD_STC=1"
-    ]
-    cd "wxPython" do
-      ENV.append_to_cflags "-arch #{MacOS.preferred_arch}"
-
-      system "python", "setup.py",
-                     "build_ext",
-                     "WXPORT=osx_cocoa",
-                     *args
-      system "python", "setup.py",
-                     "install",
-                     "--prefix=#{prefix}",
-                     "WXPORT=osx_cocoa",
-                     *args
-    end
-  end
 
   def install
     # need to set with-macosx-version-min to avoid configure defaulting to 10.5
@@ -92,21 +48,5 @@ class Wxmac < Formula
 
     system "./configure", *args
     system "make install"
-
-    if build.with? "python"
-      ENV['WXWIN'] = Dir.getwd
-      # We have already downloaded wxPython in a bundle with wxWidgets
-      install_wx_python
-    end
-  end
-
-  def caveats
-    s = ''
-    fp = FrameworkPython.new
-    unless build.without? 'python' or fp.satisfied?
-      s += fp.message
-    end
-
-    return s
   end
 end
