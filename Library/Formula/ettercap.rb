@@ -19,7 +19,7 @@ class Ettercap < Formula
   end
 
   def install
-    libnet = Formula.factory 'libnet'
+    libnet = Formula['libnet']
 
     args = ['..'] + std_cmake_args + [
       "-DINSTALL_SYSCONFDIR=#{etc}",
