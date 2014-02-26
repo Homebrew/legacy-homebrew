@@ -5,6 +5,11 @@ class Clib < Formula
   url "https://github.com/clibs/clib/archive/1.0.0.tar.gz"
   sha1 "d840b4259190e1b3ce6cc0970f3e9f659226b9d3"
 
+  def patches
+    # Fix exit codes.
+    "https://github.com/clibs/clib/commit/000a5a.patch"
+  end
+
   bottle do
     cellar :any
     sha1 "b533a51036f0013496bf8ca8a5039d0a705436f9" => :mavericks
@@ -19,6 +24,5 @@ class Clib < Formula
 
   test do
     system "#{bin}/clib", "install", "stephenmathieson/rot13.c"
-    File.exist? "deps/rot13/rot13.c"
   end
 end
