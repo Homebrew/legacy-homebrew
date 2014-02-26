@@ -9,7 +9,7 @@ class Yafc < Formula
   depends_on 'readline'
 
   def install
-    readline = Formula.factory('readline').opt_prefix
+    readline = Formula["readline"].opt_prefix
     system "./configure", "--prefix=#{prefix}",
                           "--with-readline=#{readline}"
     system "make", "install"
