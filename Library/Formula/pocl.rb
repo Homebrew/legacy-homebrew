@@ -31,4 +31,29 @@ class Pocl < Formula
     system "\"#{Formula["llvm"].opt_prefix}/bin/llvm-dis\" < foo.bc | grep foo_workgroup"
     system "pkg-config pocl --modversion | grep #{version}"
   end
+
+  def patches
+    # Check if ndebug flag is required for compiling pocl didn't work on osx
+    # for some reason. Information if bug is fixed is found from
+    # https://github.com/pocl/pocl/issues/59
+    DATA
+  end
 end
+
+__END__
+diff --git a/configure b/configure
+index 01d3e24..55bf55c 100755
+--- a/configure
++++ b/configure
+@@ -18375,6 +18375,11 @@ else
+   LLVM_HAS_ASSERTIONS_FALSE=
+ fi
+ 
++# Hardcoded information that llvm compiled by homebrew has asserts
++# for some reason test above did not give correct result
++# https://github.com/pocl/pocl/issues/59
++LLVM_HAS_ASSERTIONS_TRUE=
++LLVM_HAS_ASSERTIONS_FALSE='#'
+ 
+ fi
+ rm -f core conftest.err conftest.$ac_objext \
