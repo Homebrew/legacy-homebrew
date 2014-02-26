@@ -20,8 +20,8 @@ class Libmpc < Formula
     args = [
       "--prefix=#{prefix}",
       "--disable-dependency-tracking",
-      "--with-gmp=#{Formula.factory('gmp').opt_prefix}",
-      "--with-mpfr=#{Formula.factory('mpfr').opt_prefix}"
+      "--with-gmp=#{Formula["gmp"].opt_prefix}",
+      "--with-mpfr=#{Formula["mpfr"].opt_prefix}"
     ]
 
     system "./configure", *args
