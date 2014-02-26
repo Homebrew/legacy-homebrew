@@ -9,6 +9,7 @@ class Spdylay < Formula
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
   depends_on 'pkg-config' => :build
+  depends_on 'libevent' => :recommended
   depends_on 'libxml2'
   depends_on 'openssl'
 
@@ -25,7 +26,7 @@ class Spdylay < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/spdycat", "-ns", "https://www.google.com"
   end
 end

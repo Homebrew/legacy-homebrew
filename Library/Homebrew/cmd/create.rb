@@ -1,5 +1,7 @@
 require 'formula'
 require 'blacklist'
+require 'digest'
+require 'erb'
 
 module Homebrew extend self
 
@@ -93,19 +95,19 @@ class FormulaCreator
     end
   end
 
+  def fetch?
+    !ARGV.include?("--no-fetch")
+  end
+
   def generate!
     raise "#{path} already exists" if path.exist?
-
-    require 'digest'
-    require 'erb'
 
     if version.nil?
       opoo "Version cannot be determined from URL."
       puts "You'll need to add an explicit 'version' to the formula."
     end
 
-    # XXX: why is "and version" here?
-    unless ARGV.include? "--no-fetch" and version
+    if fetch? && version
       r = Resource.new
       r.url, r.version, r.owner = url, version, self
       @sha1 = r.fetch.sha1 if r.download_strategy == CurlDownloadStrategy
@@ -121,7 +123,7 @@ class FormulaCreator
     #                #{HOMEBREW_CONTRIB}/example-formula.rb
     # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
-    class #{Formula.class_s name} < Formula
+    class #{Formulary.class_s(name)} < Formula
       homepage ""
       url "#{url}"
     <% unless version.nil? or version.detected_from_url? %>

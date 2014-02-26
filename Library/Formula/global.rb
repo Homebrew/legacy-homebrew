@@ -5,9 +5,10 @@ class Global < Formula
   url 'http://ftpmirror.gnu.org/global/global-6.2.10.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/global/global-6.2.10.tar.gz'
   sha1 'aeaa31fec3ab693e75f659ff526c15da7c85c0f9'
-  head 'cvs://:pserver:anonymous:@cvs.savannah.gnu.org:/sources/global:global'
 
-  if build.head?
+  head do
+    url 'cvs://:pserver:anonymous:@cvs.savannah.gnu.org:/sources/global:global'
+
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
@@ -26,6 +27,7 @@ class Global < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --sysconfdir=#{etc}
     ]
 
     if build.with? 'exuberant-ctags'
@@ -34,6 +36,8 @@ class Global < Formula
 
     system "./configure", *args
     system "make install"
+
+    etc.install 'gtags.conf'
 
     # we copy these in already
     cd share/'gtags' do

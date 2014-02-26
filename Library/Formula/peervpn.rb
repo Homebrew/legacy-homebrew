@@ -22,7 +22,7 @@ class Peervpn < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/peervpn"
   end
 end

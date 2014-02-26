@@ -2,8 +2,14 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.35/kvm-tarbake-jaunty-x86/mariadb-5.5.35.tar.gz'
-  sha1 '9b0c062c96edb07724ddf9b0235c7662065496a4'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.36/kvm-tarbake-jaunty-x86/mariadb-5.5.36.tar.gz'
+  sha1 'a6091356ffe524322431670ad03d68c389243d04'
+
+  bottle do
+    sha1 "46a842d51c95aa8e6463f373e7312d28c2d89192" => :mavericks
+    sha1 "40868bd7621732f92f998e13badc6b46399e3b43" => :mountain_lion
+    sha1 "61b9289369f12ba10edd77e2cbe2d54ab7fb8396" => :lion
+  end
 
   devel do
     url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.8/kvm-tarbake-jaunty-x86/mariadb-10.0.8.tar.gz'
@@ -123,12 +129,11 @@ class Mariadb < Formula
 
       ln_s "#{prefix}/support-files/mysql.server", bin
     end
-
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
   end
 
   def post_install
+    # Make sure the var/mysql directory exists
+    (var+"mysql").mkpath
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",

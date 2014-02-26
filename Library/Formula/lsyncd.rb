@@ -60,7 +60,7 @@ class Lsyncd < Formula
 
   end
 
-  def test
+  test do
     system "lsyncd", "--version"
   end
 end

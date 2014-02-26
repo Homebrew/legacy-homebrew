@@ -1,27 +1,25 @@
 # Cleans a newly installed keg.
 # By default:
-# * removes info files
 # * removes .la files
 # * removes empty directories
 # * sets permissions on executables
 class Cleaner
 
-  # Create a cleaner for the given formula and clean its keg
+  # Create a cleaner for the given formula
   def initialize f
-    ObserverPathnameExtension.reset_counts!
-
     @f = f
-    [f.bin, f.sbin, f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
+  end
 
-    if ENV['HOMEBREW_KEEP_INFO']
-      # Get rid of the directory file, so it no longer bother us at link stage.
-      info_dir_file = f.info + 'dir'
-      if info_dir_file.file? and not f.skip_clean? info_dir_file
-        puts "rm #{info_dir_file}" if ARGV.verbose?
-        info_dir_file.unlink
-      end
-    else
-      f.info.rmtree if f.info.directory? and not f.skip_clean? f.info
+  # Clean the keg of formula @f
+  def clean
+    ObserverPathnameExtension.reset_counts!
+    [@f.bin, @f.sbin, @f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
+
+    # Get rid of any info 'dir' files, so they don't conflict at the link stage
+    info_dir_file = @f.info + 'dir'
+    if info_dir_file.file? and not @f.skip_clean? info_dir_file
+      puts "rm #{info_dir_file}" if ARGV.verbose?
+      info_dir_file.unlink
     end
 
     prune
