@@ -10,6 +10,6 @@ class GitImerge < Formula
   end
 
   test do
-    system "git-imerge"
+    system "git-imerge -h"
   end
 end
