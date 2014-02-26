@@ -107,7 +107,7 @@ class Macvim < Formula
                   %Q[-DDYNAMIC_PYTHON3_DLL=\'\"#{py3_prefix}/Python\"\']
       end
 
-      unless Formula.factory("python").installed?
+      unless Formula["python"].installed?
         inreplace "src/auto/config.h", "/* #undef PY_NO_RTLD_GLOBAL */",
                                         "#define PY_NO_RTLD_GLOBAL 1"
         inreplace "src/auto/config.h", "/* #undef PY3_NO_RTLD_GLOBAL */",
