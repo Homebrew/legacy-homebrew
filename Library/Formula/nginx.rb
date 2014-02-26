@@ -30,8 +30,6 @@ class Nginx < Formula
   depends_on 'passenger' => :optional
   depends_on 'openssl'
 
-  skip_clean 'logs'
-
   def passenger_config_args
     passenger_config = "#{HOMEBREW_PREFIX}/opt/passenger/bin/passenger-config"
     nginx_ext = `#{passenger_config} --nginx-addon-dir`.chomp
