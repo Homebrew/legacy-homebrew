@@ -6,8 +6,8 @@ class Askwiki < Formula
   sha1 '473aa171d98307aa8f1e459f29bc04968bab2206'
 
   def install
-    bin.install "askwiki"
-    man1.install "man/askwiki.1"
+    # bin.install "askwiki"
+    # man1.install "man/askwiki.1"
   end
 
   test do
