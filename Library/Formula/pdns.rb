@@ -17,7 +17,7 @@ class Pdns < Formula
     args = ["--prefix=#{prefix}",
             "--with-lua",
             "--with-sqlite3",
-            "--with-sqlite=#{Formula.factory("sqlite").opt_prefix}"]
+            "--with-sqlite=#{Formula["sqlite"].opt_prefix}"]
 
     # Include the PostgreSQL backend if requested
     if build.include? "pgsql"
