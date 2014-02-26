@@ -13,7 +13,7 @@ class Mupdf < Formula
   depends_on :x11 # libpng, freetype and the X11 libs
 
   def install
-    openjpeg = Formula.factory 'openjpeg'
+    openjpeg = Formula["openjpeg"]
     ENV.append 'CPPFLAGS', "-I#{Dir[openjpeg.include/'openjpeg-*'].first}"
     ENV.append 'CFLAGS', '-DNDEBUG'
     ENV['SYS_FREETYPE_INC'] = "-I#{MacOS::X11.include}/freetype2"
