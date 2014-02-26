@@ -12,8 +12,7 @@ class Yara < Formula
     ENV.append 'CFLAGS', '-std=gnu89' if ENV.compiler == :clang
 
     # find Homebrew's libpcre
-    ENV.append 'LDFLAGS',
-      "-L#{Formula.factory('pcre').opt_prefix}/lib -lpcre"
+    ENV.append 'LDFLAGS', "-L#{Formula["pcre"].opt_prefix}/lib -lpcre"
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
