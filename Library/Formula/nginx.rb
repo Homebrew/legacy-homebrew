@@ -30,8 +30,6 @@ class Nginx < Formula
   depends_on 'passenger' => :optional
   depends_on 'openssl'
 
-  skip_clean 'logs'
-
   def passenger_config_args
     passenger_config = "#{HOMEBREW_PREFIX}/opt/passenger/bin/passenger-config"
     nginx_ext = `#{passenger_config} --nginx-addon-dir`.chomp
@@ -89,7 +87,7 @@ class Nginx < Formula
     man8.install "objs/nginx.8"
     (var/'run/nginx').mkpath
 
-    # nginx’s docroot is #{prefix}/html, this isn't useful, so we symlink it
+    # nginx's docroot is #{prefix}/html, this isn't useful, so we symlink it
     # to #{HOMEBREW_PREFIX}/var/www. The reason we symlink instead of patching
     # is so the user can redirect it easily to something else if they choose.
     prefix.cd do
@@ -104,7 +102,7 @@ class Nginx < Formula
       Pathname.new("#{prefix}/html").make_relative_symlink(dst)
     end
 
-    # for most of this formula’s life the binary has been placed in sbin
+    # for most of this formula's life the binary has been placed in sbin
     # and Homebrew used to suggest the user copy the plist for nginx to their
     # ~/Library/LaunchAgents directory. So we need to have a symlink there
     # for such cases

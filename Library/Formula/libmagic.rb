@@ -7,9 +7,10 @@ class Libmagic < Formula
   sha1 'f7e837a0d3e4f40a02ffe7da5e146b967448e0d8'
 
   bottle do
-    sha1 "a3aaabb44d0d2bc2fc4ef0a1ebbc4965f80a8233" => :mavericks
-    sha1 "0417d4852e18ec03641ac5496a7d2f56eaed0297" => :mountain_lion
-    sha1 "fb3472e63b1720e26d96f74b2f2d7f59bdee8e98" => :lion
+    revision 1
+    sha1 "e39a611cc0351b0f633b96ca7fc8834b8575c4e9" => :mavericks
+    sha1 "049bf4c884b40b53a0e2db2dd3a7c6a4fba2e46d" => :mountain_lion
+    sha1 "6cb0d8979255f0d7b53665e547e4941b79b7dd81" => :lion
   end
 
   option :universal
@@ -25,6 +26,9 @@ class Libmagic < Formula
 
   def install
     ENV.universal_binary if build.universal?
+
+    # Clean up "src/magic.h" as per http://bugs.gw.com/view.php?id=330
+    rm "src/magic.h"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
