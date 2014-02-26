@@ -10,14 +10,14 @@ class Xmlto < Formula
   depends_on 'gnu-getopt'
 
   def patches
-    # xmlto forces --no-net on xsltproc, which causes it to fail when
+    # xmlto forces --nonet on xsltproc, which causes it to fail when
     # DTDs/entities aren't available locally.
     DATA
   end
 
   def install
     # GNU getopt is keg-only, so point configure to it
-    ENV['GETOPT'] = Formula.factory('gnu-getopt').bin+"getopt"
+    ENV['GETOPT'] = Formula["gnu-getopt"].bin/"getopt"
     # Find our docbook catalog
     ENV['XML_CATALOG_FILES'] = "#{etc}/xml/catalog"
 
