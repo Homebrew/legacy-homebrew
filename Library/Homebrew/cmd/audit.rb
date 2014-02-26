@@ -223,7 +223,7 @@ class FormulaAuditor
       next if p =~ %r[svn\.sourceforge]
 
       # Is it a sourceforge http(s) URL?
-      next unless p =~ %r[^https?://.*\bsourceforge\.com]
+      next unless p =~ %r[^https?://.*\b(sourceforge|sf)\.(com|net)]
 
       if p =~ /(\?|&)use_mirror=/
         problem "Don't use #{$1}use_mirror in SourceForge urls (url is #{p})."
@@ -244,6 +244,10 @@ class FormulaAuditor
 
       if p =~ %r[^http://\w+\.dl\.]
         problem "Don't use specific dl mirrors in SourceForge urls (url is #{p})."
+      end
+
+      if p.start_with? "http://downloads"
+        problem "Use https:// URLs for downloads from SourceForge (url is #{p})."
       end
     end
 
