@@ -1071,7 +1071,7 @@ end
   end
 
   def check_for_latest_xquartz
-    return unless MacOS::XQuartz.installed?
+    return unless MacOS::XQuartz.version
     return if MacOS::XQuartz.provided_by_apple?
 
     installed_version = Version.new(MacOS::XQuartz.version)
