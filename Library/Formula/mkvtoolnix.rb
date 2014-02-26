@@ -45,7 +45,7 @@ class Mkvtoolnix < Formula
     ENV['ZLIB_CFLAGS'] = '-I/usr/include'
     ENV['ZLIB_LIBS'] = '-L/usr/lib -lz'
 
-    boost = Formula.factory('boost').opt_prefix
+    boost = Formula["boost"].opt_prefix
 
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
