@@ -90,7 +90,7 @@ class Xulrunner < Formula
     buildpath.install resource("mozconfig")
     # fixed usage of bsdtar with unsupported parameters (replaced with gnu-tar)
     inreplace "toolkit/mozapps/installer/packager.mk", "$(TAR) -c --owner=0 --group=0 --numeric-owner",
-              "#{Formula.factory("gnu-tar").bin}/gtar -c --owner=0 --group=0 --numeric-owner"
+              "#{Formula["gnu-tar"].bin}/gtar -c --owner=0 --group=0 --numeric-owner"
 
     system "make", "-f", "client.mk", "build"
     system "make", "-f", "client.mk", "package"
