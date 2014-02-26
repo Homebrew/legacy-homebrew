@@ -6,9 +6,7 @@ class Vassh < Formula
   sha1 "74e6954e030e0e578390dd16d98a5c7dcaf09208"
 
   def install
-    bin.install "./vassh.sh"
-    bin.install "./vasshin"
-    bin.install "./vassh"
+    bin.install "vassh.sh", "vasshin", "vassh"
   end
 
   test do
