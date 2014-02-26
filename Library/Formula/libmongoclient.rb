@@ -11,7 +11,7 @@ class Libmongoclient < Formula
   depends_on 'boost' => :build
 
   def install
-    boost = Formula.factory('boost').opt_prefix
+    boost = Formula["boost"].opt_prefix
 
     args = [
       "--prefix=#{prefix}",
@@ -29,6 +29,6 @@ class Libmongoclient < Formula
       args << "--libc++"
     end
 
-    scons 'install-mongoclient', *args
+    scons "install-mongoclient", *args
   end
 end
