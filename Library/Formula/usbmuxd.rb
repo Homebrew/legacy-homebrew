@@ -14,7 +14,7 @@ class Usbmuxd < Formula
   depends_on 'libplist'
 
   def install
-    libusb = Formula.factory 'libusb'
+    libusb = Formula["libusb"]
     inreplace 'Modules/VersionTag.cmake', '"sh"', '"bash"'
 
     # The CMake scripts responsible for locating libusb headers are broken. So,
