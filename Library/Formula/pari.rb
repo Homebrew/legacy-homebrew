@@ -9,11 +9,10 @@ class Pari < Formula
   depends_on :x11
 
   def install
-    readline = Formula.factory 'readline'
+    readline = Formula["readline"].opt_prefix
     system "./Configure", "--prefix=#{prefix}",
                           "--without-gmp",
-                          "--with-readline-include=#{readline.include}",
-                          "--with-readline-lib=#{readline.lib}"
+                          "--with-readline=#{readline}"
     # make needs to be done in two steps
     system "make all"
     system "make install"
