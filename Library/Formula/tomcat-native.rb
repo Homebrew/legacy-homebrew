@@ -18,7 +18,13 @@ class TomcatNative < Formula
         --with-apr=#{MacOS.sdk_path}/usr
         --with-java-home=#{`/usr/libexec/java_home`}
       ]
-      args << ((build.with? 'brewed-openssl') ? "--with-ssl=#{Formula.factory('openssl').prefix}" : "--with-ssl=#{MacOS.sdk_path}/usr")
+
+      if build.with? 'brewed-openssl'
+        args << "--with-ssl=#{Formula["openssl"].prefix}"
+      else
+        args << "--with-ssl=#{MacOS.sdk_path}/usr"
+      end
+
       system "./configure", *args
       # fixes occasional compiling issue: glibtool: compile: specify a tag with `--tag'
       args = ["LIBTOOL=glibtool --tag=CC"]
@@ -31,10 +37,11 @@ class TomcatNative < Formula
   end
 
   def caveats; <<-EOS.undent
-    In order for tomcat's APR lifecycle listener to find this library, you'll need to add it to java.library.path.
-    This can be done by adding the following line to $CATALINA_HOME/bin/setenv.sh
+    In order for tomcat's APR lifecycle listener to find this library, you'll
+    need to add it to java.library.path. This can be done by adding this line
+    to $CATALINA_HOME/bin/setenv.sh
 
-    CATALINA_OPTS=\"$CATALINA_OPTS -Djava.library.path=#{lib}\"
+      CATALINA_OPTS=\"$CATALINA_OPTS -Djava.library.path=#{lib}\"
 
     If $CATALINA_HOME/bin/setenv.sh doesn't exist, create it and make it executable.
     EOS
