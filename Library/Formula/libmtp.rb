@@ -1,7 +1,7 @@
 require 'formula'
 
 class NoGcrypt < Requirement
-  satisfy(:build_env => false) { !Formula.factory("libgcrypt").installed? }
+  satisfy(:build_env => false) { !Formula["libgcrypt"].installed? }
 
   def message; <<-EOS.undent
     This software can fail to compile when libgcrypt is installed.
