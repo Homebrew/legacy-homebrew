@@ -20,24 +20,23 @@ class Libmemcached < Formula
     depends_on "memcached"
   end
 
+  def patches
+    # https://bugs.launchpad.net/libmemcached/+bug/1284765
+    DATA
+  end
+
   def install
     ENV.append_to_cflags "-undefined dynamic_lookup" if MacOS.version <= :leopard
 
     args = ["--prefix=#{prefix}"]
 
     if build.with? "sasl"
-      args << "--with-memcached-sasl=#{Formula.factory("memcached").bin}/memcached"
+      args << "--with-memcached-sasl=#{Formula["memcached"].bin}/memcached"
     end
 
     system "./configure", *args
     system "make install"
   end
-
-  def patches
-    # https://bugs.launchpad.net/libmemcached/+bug/1284765
-    DATA
-  end
-
 end
 
 __END__
