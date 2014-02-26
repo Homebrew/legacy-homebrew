@@ -39,7 +39,7 @@ class Liblwgeom < Formula
       "--disable-nls",
 
       "--with-projdir=#{HOMEBREW_PREFIX}",
-      "--with-jsondir=#{Formula.factory('json-c').opt_prefix}",
+      "--with-jsondir=#{Formula["json-c"].opt_prefix}",
 
       # Disable extraneous support
       "--without-libiconv-prefix",
@@ -48,7 +48,9 @@ class Liblwgeom < Formula
       "--without-topology"
     ]
 
-    args << "--with-pgconfig=#{Formula.factory('postgresql').opt_prefix.realpath}/bin/pg_config" if build.head?
+    if build.head?
+      args << "--with-pgconfig=#{Formula["postgresql"].opt_prefix.realpath}/bin/pg_config"
+    end
 
     system './autogen.sh'
     system './configure', *args
