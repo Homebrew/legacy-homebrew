@@ -23,7 +23,7 @@ class Afflib < Formula
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
 
     if build.with? 'osxfuse'
-      ENV['CPPFLAGS'] = "-I/usr/local/include/osxfuse"
+      ENV['CPPFLAGS'] = "-I#{Formula.factory('osxfuse').include}/osxfuse"
       args << "--enable-fuse"
     end
 
