@@ -9,7 +9,7 @@ class Qpdf < Formula
 
   def install
     # find Homebrew's libpcre
-    ENV.append 'LDFLAGS', "-L#{Formula.factory('pcre').opt_prefix}/lib"
+    ENV.append 'LDFLAGS', "-L#{Formula["pcre"].opt_prefix}/lib"
 
     system "./configure", "--prefix=#{prefix}"
     system "make"
