@@ -22,7 +22,7 @@ module Homebrew extend self
     else
       raise FormulaUnspecifiedError if ARGV.named.empty?
       all_deps = deps_for_formulae(ARGV.formulae, !ARGV.one?)
-      all_deps.sort! unless mode.topo_order?
+      all_deps = all_deps.sort_by(&:name) unless mode.topo_order?
       puts all_deps
     end
   end
@@ -35,9 +35,8 @@ module Homebrew extend self
       deps = f.deps.default
       reqs = f.requirements
     end
-    deps.map(&:name) + reqs.to_a.map do |r|
-      r.class.default_formula if r.default_formula?
-    end.compact
+
+    deps + reqs.select(&:default_formula?).map(&:to_dependency)
   end
 
   def deps_for_formulae(formulae, recursive=false)
@@ -45,7 +44,7 @@ module Homebrew extend self
   end
 
   def puts_deps(formulae)
-    formulae.each { |f| puts "#{f.name}: #{deps_for_formula(f)*' '}" }
+    formulae.each { |f| puts "#{f.name}: #{deps_for_formula(f).sort_by(&:name) * " "}" }
   end
 
   def puts_deps_tree(formulae)
