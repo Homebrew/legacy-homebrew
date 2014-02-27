@@ -99,8 +99,9 @@ class Python3 < Formula
     end
 
     if build.with? 'brewed-tk'
-      ENV.append 'CPPFLAGS', "-I#{Formula.factory('tcl-tk').opt_prefix}/include"
-      ENV.append 'LDFLAGS', "-L#{Formula.factory('tcl-tk').opt_prefix}/lib"
+      tcl_tk = Formula["tcl-tk"].opt_prefix
+      ENV.append 'CPPFLAGS', "-I#{tcl_tk}/include"
+      ENV.append 'LDFLAGS', "-L#{tcl_tk}/lib"
     end
 
     system "./configure", *args
@@ -174,8 +175,9 @@ class Python3 < Formula
 
   def distutils_fix_superenv(args)
     # To allow certain Python bindings to find brewed software (and sqlite):
-    cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
-    ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
+    sqlite = Formula["sqlite"].opt_prefix
+    cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{sqlite}/include"
+    ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{sqlite}/lib"
     unless MacOS::CLT.installed?
       # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
