@@ -3,7 +3,7 @@ require "formula"
 class Getdns < Formula
   homepage "http://getdnsapi.net"
   url "http://getdnsapi.net/dist/getdns-0.1.0.tar.gz"
-  sha1 "75e588e30a59feb6c33d04a2e25e17de46dcc94a"
+  sha1 "176d7a6d16ec5e0cfb8d34a303be1ccdbb0b4e5d"
 
   depends_on 'ldns'
   depends_on 'unbound'
@@ -19,5 +19,4 @@ class Getdns < Formula
     system "make"
     system "make install"
   end
-
 end
