@@ -36,10 +36,6 @@ class Dependency
     to_formula.installed?
   end
 
-  def requested?
-    ARGV.formulae.include?(to_formula) rescue false
-  end
-
   def satisfied?
     installed? && missing_options.empty?
   end
