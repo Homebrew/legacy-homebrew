@@ -4,7 +4,7 @@ class PythonEnvironment < Requirement
   fatal true
 
   def error_message
-    if !Formula.factory("python").installed? && ARGV.include?("--with-python3")
+    if !Formula["python"].installed? && ARGV.include?("--with-python3")
       error_message =  <<-EOS.undent
         You cannot use system Python 2 and Homebrew's Python 3
         simultaneously.
@@ -80,7 +80,7 @@ class Pygobject3 < Formula
     end
 
     pythons.each do |python, version|
-      ENV["PYTHON"] = "#{python}" if Formula.factory(python).installed?
+      ENV["PYTHON"] = "#{python}" if Formula[python].installed?
       system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
       system "make", "install"
       system "make", "check" if build.with? 'tests'
@@ -94,7 +94,7 @@ class Pygobject3 < Formula
     assert("__init__" in gi.__file__)
     EOS
     pythons.each do |python, version|
-      unless Formula.factory(python).installed?
+      unless Formula[python].installed?
         ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
         ENV.append_path "PYTHONPATH", "#{opt_prefix}/lib/python#{version}/site-packages"
       end
