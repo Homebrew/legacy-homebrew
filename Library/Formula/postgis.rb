@@ -27,7 +27,7 @@ class Postgis < Formula
   def install
     # Follow the PostgreSQL linked keg back to the active Postgres installation
     # as it is common for people to avoid upgrading Postgres.
-    postgres_realpath = Formula.factory('postgresql').opt_prefix.realpath
+    postgres_realpath = Formula["postgresql"].opt_prefix.realpath
 
     ENV.deparallelize
 
@@ -36,7 +36,7 @@ class Postgis < Formula
       # Can't use --prefix, PostGIS disrespects it and flat-out refuses to
       # accept it with 2.0.
       "--with-projdir=#{HOMEBREW_PREFIX}",
-      "--with-jsondir=#{Formula.factory('json-c').opt_prefix}",
+      "--with-jsondir=#{Formula["json-c"].opt_prefix}",
       # This is against Homebrew guidelines, but we have to do it as the
       # PostGIS plugin libraries can only be properly inserted into Homebrew's
       # Postgresql keg.
@@ -93,7 +93,7 @@ class Postgis < Formula
   end
 
   def caveats;
-    pg = Formula.factory('postgresql').opt_prefix
+    pg = Formula["postgresql"].opt_prefix
     <<-EOS.undent
       To create a spatially-enabled database, see the documentation:
         http://postgis.net/docs/manual-2.1/postgis_installation.html#create_new_db_extensions
