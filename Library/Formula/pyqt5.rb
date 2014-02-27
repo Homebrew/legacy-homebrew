@@ -10,7 +10,7 @@ class Pyqt5 < Formula
   depends_on :python3 => :recommended
   depends_on :python => :optional
 
-  if !Formula.factory("python").installed? && build.with?("python") &&
+  if !Formula["python"].installed? && build.with?("python") &&
      build.with?("python3")
     odie <<-EOS.undent
       pyqt5: You cannot use system Python 2 and Homebrew's Python 3 simultaneously.
@@ -46,7 +46,7 @@ class Pyqt5 < Formula
                # To avoid conflicts with PyQt (for Qt4):
                "--sipdir=#{share}/sip/Qt5/",
                # sip.h could not be found automatically
-               "--sip-incdir=#{Formula.factory('sip').opt_prefix}/include",
+               "--sip-incdir=#{Formula["sip"].opt_prefix}/include",
                # Force deployment target to avoid libc++ issues
                "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}" ]
       args << '--debug' if build.include? 'enable-debug'
