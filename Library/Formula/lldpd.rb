@@ -1,4 +1,4 @@
-Lrequire 'formula'
+require 'formula'
 
 class Lldpd < Formula
   homepage 'http://vincentbernat.github.io/lldpd/'
