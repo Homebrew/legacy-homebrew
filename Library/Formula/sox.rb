@@ -2,7 +2,7 @@ require 'formula'
 
 class Sox < Formula
   homepage 'http://sox.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/sox/sox/14.4.1/sox-14.4.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/sox/sox/14.4.1/sox-14.4.1.tar.gz'
   sha1 '71f05afc51e3d9b03376b2f98fd452d3a274d595'
 
   depends_on 'pkg-config' => :build

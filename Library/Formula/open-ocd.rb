@@ -2,7 +2,7 @@ require 'formula'
 
 class OpenOcd < Formula
   homepage 'http://sourceforge.net/projects/openocd/'
-  url 'http://downloads.sourceforge.net/project/openocd/openocd/0.7.0/openocd-0.7.0.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/openocd/openocd/0.7.0/openocd-0.7.0.tar.bz2'
   sha1 '40fa518af4fae273f24478249fc03aa6fcce9176'
 
   head do

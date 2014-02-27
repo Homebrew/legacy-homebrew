@@ -2,7 +2,7 @@ require 'formula'
 
 class Mediatomb < Formula
   homepage 'http://mediatomb.cc'
-  url 'http://downloads.sourceforge.net/mediatomb/mediatomb-0.12.1.tar.gz'
+  url 'https://downloads.sourceforge.net/mediatomb/mediatomb-0.12.1.tar.gz'
   sha1 '86e880584cc9c8aaf3926d56048510d1d06e76b4'
 
   depends_on 'libexif' => :recommended

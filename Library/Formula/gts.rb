@@ -2,7 +2,7 @@ require 'formula'
 
 class Gts < Formula
   homepage 'http://gts.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz'
+  url 'https://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz'
   sha1 '000720bebecf0b153eb28260bd30fbd979dcc040'
 
   option :universal

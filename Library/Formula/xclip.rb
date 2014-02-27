@@ -2,7 +2,7 @@ require 'formula'
 
 class Xclip < Formula
   homepage 'http://xclip.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/xclip/xclip/0.12/xclip-0.12.tar.gz'
+  url 'https://downloads.sourceforge.net/project/xclip/xclip/0.12/xclip-0.12.tar.gz'
   sha1 'aed2cff18b9aecfe3377ad064c6a67518bbec211'
 
   depends_on :x11

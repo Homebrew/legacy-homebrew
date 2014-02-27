@@ -39,13 +39,13 @@ class Ghostscript < Formula
 
   # http://sourceforge.net/projects/gs-fonts/
   resource 'fonts' do
-    url 'http://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz'
+    url 'https://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz'
     sha1 '2a7198e8178b2e7dba87cb5794da515200b568f5'
   end
 
   # http://djvu.sourceforge.net/gsdjvu.html
   resource 'djvu' do
-    url 'http://downloads.sourceforge.net/project/djvu/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
+    url 'https://downloads.sourceforge.net/project/djvu/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
     sha1 'c7d0677dae5fe644cf3d714c04b3c2c343906342'
   end
 
