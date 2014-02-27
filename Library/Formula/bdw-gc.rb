@@ -1,8 +1,8 @@
 require 'formula'
 
 class BdwGc < Formula
-  homepage 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/'
-  url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2e.tar.gz'
+  homepage 'http://www.hboehm.info/gc/'
+  url 'http://www.hboehm.info/gc/gc_source/gc-7.2e.tar.gz'
   sha1 '3ad593c6d0ed9c0951c21a657b86c55dab6365c8'
 
   bottle do
