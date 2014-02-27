@@ -16,7 +16,7 @@ class Libxmlsec1 < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libxml=#{Formula.factory("libxml2").opt_prefix}",
+                          "--with-libxml=#{Formula["libxml2"].opt_prefix}",
                           "--disable-crypto-dl",
                           "--disable-apps-crypto-dl"
     system "make install"
