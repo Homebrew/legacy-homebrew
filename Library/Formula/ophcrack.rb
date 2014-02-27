@@ -2,7 +2,7 @@ require 'formula'
 
 class Ophcrack < Formula
   homepage 'http://ophcrack.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/ophcrack/ophcrack/3.6.0/ophcrack-3.6.0.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/ophcrack/ophcrack/3.6.0/ophcrack-3.6.0.tar.bz2'
   sha1 '8e39b8c013b3f2144b23e33abeeadbb81e4120ca'
 
   def install

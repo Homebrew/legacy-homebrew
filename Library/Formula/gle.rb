@@ -2,7 +2,7 @@ require 'formula'
 
 class Gle < Formula
   homepage 'http://glx.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/glx/gle-graphics-4.2.4cf-src.tar.gz'
+  url 'https://downloads.sourceforge.net/glx/gle-graphics-4.2.4cf-src.tar.gz'
   version '4.2.4c'
   sha1 '5528528dfe54c74f69bfad174105d55a3dd90e49'
 
