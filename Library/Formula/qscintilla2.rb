@@ -4,7 +4,7 @@ class PythonEnvironment < Requirement
   fatal true
 
   satisfy do
-    !(!Formula.factory("python").installed? && ARGV.include?("--without-python") && ARGV.include?("--with-python3"))
+    !(!Formula["python"].installed? && ARGV.include?("--without-python") && ARGV.include?("--with-python3"))
   end
 
   def message
@@ -84,7 +84,7 @@ class Qscintilla2 < Formula
       assert("QsciLexer" in dir(PyQt4.Qsci))
     EOS
     pythons.each do |python, version|
-      unless Formula.factory(python).installed?
+      unless Formula[python].installed?
         ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
       end
       system python, "test.py"
