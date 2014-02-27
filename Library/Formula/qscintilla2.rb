@@ -18,7 +18,7 @@ end
 
 class Qscintilla2 < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/qscintilla/intro'
-  url 'http://downloads.sf.net/project/pyqt/QScintilla2/QScintilla-2.8/QScintilla-gpl-2.8.tar.gz'
+  url 'https://downloads.sf.net/project/pyqt/QScintilla2/QScintilla-2.8/QScintilla-gpl-2.8.tar.gz'
   sha1 '3edf9d476d4e6af0706a4d33401667a38e3a697e'
 
   depends_on :python => :recommended

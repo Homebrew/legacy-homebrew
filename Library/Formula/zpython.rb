@@ -16,7 +16,7 @@ end
 class Zpython < Formula
   homepage 'https://bitbucket.org/ZyX_I/zsh'
   url 'http://www.zsh.org/pub/zsh-5.0.5.tar.bz2'
-  url 'http://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.bz2'
   # We prepend `00-` for the first version of the zpython module, which is
   # itself a patch on top of zsh and does not have own version number yes.
   # Hoping that upstream will provide tags that we could download properly.

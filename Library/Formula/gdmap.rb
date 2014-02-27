@@ -2,7 +2,7 @@ require 'formula'
 
 class Gdmap < Formula
   homepage 'http://sourceforge.net/projects/gdmap/'
-  url 'http://downloads.sourceforge.net/project/gdmap/gdmap/0.8.1/gdmap-0.8.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/gdmap/gdmap/0.8.1/gdmap-0.8.1.tar.gz'
   sha1 'd97cc7c107dbaf9f3f3ed22ee6cef6172c115295'
 
   depends_on 'pkg-config' => :build

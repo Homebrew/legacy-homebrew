@@ -2,7 +2,7 @@ require 'formula'
 
 class Liquibase < Formula
   homepage 'http://liquibase.org'
-  url 'http://downloads.sourceforge.net/project/liquibase/Liquibase%20Core/liquibase-3.1.1-bin.tar.gz'
+  url 'https://downloads.sourceforge.net/project/liquibase/Liquibase%20Core/liquibase-3.1.1-bin.tar.gz'
   sha1 '48af02bd837eab401236963c5868fc4dae5dfbee'
 
   def install

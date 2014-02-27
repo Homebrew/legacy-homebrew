@@ -2,7 +2,7 @@ require 'formula'
 
 class Burp < Formula
   homepage 'http://burp.grke.org/'
-  url 'http://downloads.sourceforge.net/project/burp/burp-1.3.36/burp-1.3.36.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/burp/burp-1.3.36/burp-1.3.36.tar.bz2'
   sha1 '471237090e631b3cb91ff864db84c7644c42bf87'
 
   head 'https://github.com/grke/burp.git'

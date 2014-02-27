@@ -2,7 +2,7 @@ require 'formula'
 
 class Srtp < Formula
   homepage 'http://srtp.sourceforge.net/srtp.html'
-  url 'http://downloads.sourceforge.net/project/srtp/srtp/1.4.4/srtp-1.4.4.tgz'
+  url 'https://downloads.sourceforge.net/project/srtp/srtp/1.4.4/srtp-1.4.4.tgz'
   sha1 '299c6cfe0c9d6f1804bc5921cfbdb6a6bc76a521'
 
   def patches

@@ -2,7 +2,7 @@ require 'formula'
 
 class Sshguard < Formula
   homepage 'http://www.sshguard.net/'
-  url 'http://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
   sha1 'f8f713bfb3f5c9877b34f6821426a22a7eec8df3'
 
   def patches

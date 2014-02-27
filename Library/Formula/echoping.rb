@@ -2,7 +2,7 @@ require 'formula'
 
 class Echoping < Formula
   homepage 'http://echoping.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/echoping/echoping/6.0.2/echoping-6.0.2.tar.gz'
+  url 'https://downloads.sourceforge.net/project/echoping/echoping/6.0.2/echoping-6.0.2.tar.gz'
   sha1 '8b414d1dbc5a0f21a7f2cccb0138aec13117a1a4'
 
   depends_on 'popt'
