@@ -17,8 +17,8 @@ module Homebrew extend self
     else
       outdated = ARGV.formulae.select do |f|
         if f.installed?
-          onoe "#{f}-#{f.installed_version} already installed"
-          false
+          oh1 "#{f}-#{f.installed_version} already installed"
+          exit 0
         elsif not f.rack.directory? or f.rack.subdirs.empty?
           onoe "#{f} not installed"
           false
