@@ -56,13 +56,12 @@ module Homebrew extend self
   end
 
   def recursive_deps_tree f, level
-    f.requirements.each do |requirement|
-      next unless requirement.default_formula?
-      puts "|  "*(level-1)+"|- :"+requirement.class.default_formula.to_s
+    f.requirements.select(&:default_formula?).each do |req|
+      puts "|  "*(level-1) + "|- :#{req.to_dependency.name}"
     end
     f.deps.default.each do |dep|
-      puts "|  "*(level-1)+"|- "+dep.to_s
-      recursive_deps_tree(Formula.factory(dep.to_s), level+1)
+      puts "|  "*(level-1) + "|- #{dep.name}"
+      recursive_deps_tree(Formulary.factory(dep.name), level+1)
     end
   end
 end
