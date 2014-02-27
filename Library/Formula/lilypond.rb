@@ -65,14 +65,14 @@ class Lilypond < Formula
     resource('guile18').stage do
        system "./configure", "--disable-dependency-tracking",
                              "--prefix=#{prefix}",
-                             "--with-libreadline-prefix=#{Formula.factory('readline').opt_prefix}"
+                             "--with-libreadline-prefix=#{Formula["readline"].opt_prefix}"
        system "make", "install"
        # A really messed up workaround required on OS X --mkhl
        lib.cd { Dir["*.dylib"].each {|p| ln_sf p, File.basename(p, ".dylib")+".so" }}
        ENV.prepend_path 'PATH', "#{bin}"
     end
 
-    gs = Formula.factory('ghostscript')
+    gs = Formula["ghostscript"]
 
     args = ["--prefix=#{prefix}",
             "--enable-rpath",
