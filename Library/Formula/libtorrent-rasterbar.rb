@@ -10,7 +10,7 @@ class LibtorrentRasterbar < Formula
   depends_on 'openssl' if MacOS.version <= :snow_leopard # Needs a newer version of OpenSSL on Snow Leopard
 
   def install
-    boost = Formula.factory('boost')
+    boost = Formula["boost"]
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
