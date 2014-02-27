@@ -16,7 +16,7 @@ class Tenyr < Formula
   end
 
   def install
-    bison = Formula.factory('bison').bin/"bison"
+    bison = Formula["bison"].bin/"bison"
 
     inreplace "Makefile" do |s|
       s.gsub! "bison", bison
