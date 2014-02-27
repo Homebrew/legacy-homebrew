@@ -21,6 +21,8 @@ class DependencyCollector
     :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby
   ].freeze
 
+  CACHE = {}
+
   attr_reader :deps, :requirements
 
   def initialize
@@ -29,13 +31,25 @@ class DependencyCollector
   end
 
   def add(spec)
-    case dep = build(spec)
+    case dep = fetch(spec)
     when Dependency
       @deps << dep
     when Requirement
       @requirements << dep
     end
     dep
+  end
+
+  def fetch(spec)
+    CACHE.fetch(cache_key(spec)) { |key| CACHE[key] = build(spec) }
+  end
+
+  def cache_key(spec)
+    if Resource === spec && spec.download_strategy == CurlDownloadStrategy
+      File.extname(spec.url)
+    else
+      spec
+    end
   end
 
   def build(spec)
