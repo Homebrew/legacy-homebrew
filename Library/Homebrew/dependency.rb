@@ -75,6 +75,9 @@ class Dependency
       expanded_deps = []
 
       deps.each do |dep|
+        # FIXME don't hide cyclic dependencies
+        next if dependent.name == dep.name
+
         case action(dependent, dep, &block)
         when :prune
           next
@@ -83,7 +86,6 @@ class Dependency
         when :keep_but_prune_recursive_deps
           expanded_deps << dep
         else
-          next if dependent.to_s == dep.name
           expanded_deps.concat(expand(dep.to_formula, &block))
           expanded_deps << dep
         end
