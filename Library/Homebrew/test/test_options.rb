@@ -126,6 +126,13 @@ class OptionsTests < Test::Unit::TestCase
     assert_equal [foo], (@options & options).to_a
   end
 
+  def test_set_union
+    foo, bar, baz = %w{foo bar baz}.map { |o| Option.new(o) }
+    options = Options.new << foo << bar
+    @options << foo << baz
+    assert_equal [foo, bar, baz].sort, (@options | options).to_a.sort
+  end
+
   def test_coerce_with_options
     assert_same @options, Options.coerce(@options)
   end
