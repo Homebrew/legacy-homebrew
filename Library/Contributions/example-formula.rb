@@ -272,7 +272,7 @@ class ExampleFormula < Formula
     # break if they remember that exact path. In contrast to that, the
     # `$(brew --prefix)/opt/formula` is the same path for all future
     # versions of the formula!
-    args << "--with-readline=#{Formula.factory('readline').opt_prefix}/lib" if build.with? "readline"
+    args << "--with-readline=#{Formula["readline"].opt_prefix}/lib" if build.with? "readline"
 
     # Most software still uses `configure` and `make`.
     # Check with `./configure --help` what our options are.
