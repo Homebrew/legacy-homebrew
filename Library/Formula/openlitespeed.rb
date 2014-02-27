@@ -20,7 +20,7 @@ class Openlitespeed < Formula
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
     args << "--enable-debug" if build.with? 'debug'
     args << "--enable-spdy" if build.with? 'spdy'
-    args << "--with-openssl=#{Formula.factory('openssl').opt_prefix}" if build.with? 'spdy'
+    args << "--with-openssl=#{Formula["openssl"].opt_prefix}" if build.with? 'spdy'
     system "./configure", *args
     system "make", "install"
   end
