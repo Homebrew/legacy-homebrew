@@ -28,7 +28,7 @@ class Stunnel < Formula
     ]
 
     if MacOS.version <= :leopard or build.with?('brewed-openssl')
-      args << "--with-ssl-dir=#{Formula.factory('openssl').opt_prefix}"
+      args << "--with-ssl-dir=#{Formula["openssl"].opt_prefix}"
     end
 
     system "./configure", *args
