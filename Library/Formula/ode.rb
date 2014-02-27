@@ -2,7 +2,7 @@ require 'formula'
 
 class Ode < Formula
   homepage 'http://www.ode.org/'
-  url 'http://downloads.sourceforge.net/project/opende/ODE/0.13/ode-0.13.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/opende/ODE/0.13/ode-0.13.tar.bz2'
   sha1 '0279d58cc390ff5cc048f2baf96cff23887f3838'
 
   head do

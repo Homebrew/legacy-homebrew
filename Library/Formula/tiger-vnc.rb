@@ -2,7 +2,7 @@ require 'formula'
 
 class TigerVnc < Formula
   homepage 'http://tigervnc.org/'
-  url 'http://downloads.sourceforge.net/project/tigervnc/tigervnc/1.3.0/tigervnc-1.3.0.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/tigervnc/tigervnc/1.3.0/tigervnc-1.3.0.tar.bz2'
   sha1 'eda373336bee1bcfa806df1ea6389d918945a258'
 
   depends_on 'cmake' => :build

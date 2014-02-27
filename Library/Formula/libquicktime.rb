@@ -2,7 +2,7 @@ require 'formula'
 
 class Libquicktime < Formula
   homepage 'http://libquicktime.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.4/libquicktime-1.2.4.tar.gz'
+  url 'https://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.4/libquicktime-1.2.4.tar.gz'
   sha1 '7008b2dc27b9b40965bd2df42d39ff4cb8b6305e'
 
   depends_on 'pkg-config' => :build
