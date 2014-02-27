@@ -9,4 +9,8 @@ class Mon < Formula
     bin.mkpath
     system "make", "install", "PREFIX=#{prefix}"
   end
+
+  test do
+    system "mon", "-V"
+  end
 end
