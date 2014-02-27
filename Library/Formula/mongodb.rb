@@ -12,12 +12,28 @@ class Mongodb < Formula
     sha1 "c62f44838aac80a38596b0980f5575ffd99b79fe" => :lion
   end
 
+  stable do
+    # When 2.6 is released this conditional can be removed.
+    if MacOS.version < :mavericks
+      option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+      depends_on "boost" => :optional
+    end
+  end
+
   devel do
     url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.5.tar.gz'
     sha1 '4827f3da107174a3cbb1f5b969c7f597ca09b4f8'
+
+    option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+    depends_on "boost" => :optional
   end
 
-  head 'https://github.com/mongodb/mongo.git'
+  head do
+    url 'https://github.com/mongodb/mongo.git'
+
+    option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+    depends_on "boost" => :optional
+  end
 
   def patches
     if build.stable?
@@ -26,12 +42,6 @@ class Mongodb < Formula
         'https://github.com/mongodb/mongo/commit/be4bc7.patch'
       ]
     end
-  end
-
-  # When 2.6 is released this conditional can be removed.
-  if MacOS.version < :mavericks || !build.stable?
-    option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
-    depends_on "boost" => :optional
   end
 
   depends_on 'scons' => :build
