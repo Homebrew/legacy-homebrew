@@ -41,8 +41,8 @@ class Pgtap < Formula
       system './Build', 'install'
     end
 
-    pg_config = Formula.factory('postgresql').opt_prefix/'bin/pg_config'
-    system 'make', "PG_CONFIG=#{pg_config}"
-    system 'make', "PG_CONFIG=#{pg_config}", 'install'
+    pg_config = Formula["postgresql"].opt_prefix/'bin/pg_config'
+    system "make", "PG_CONFIG=#{pg_config}"
+    system "make", "PG_CONFIG=#{pg_config}", "install"
   end
 end

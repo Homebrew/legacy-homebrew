@@ -14,7 +14,7 @@ class Nsd < Formula
   def install
     args = %W[
       --prefix=#{prefix}
-      --with-libevent=#{Formula.factory('libevent').opt_prefix}
+      --with-libevent=#{Formula["libevent"].opt_prefix}
     ]
 
     args << '--enable-root-server' if build.with? 'root-server'

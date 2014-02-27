@@ -19,7 +19,7 @@ class Gearman < Formula
     args = ["--prefix=#{prefix}"]
     args << "--without-mysql" unless build.with? 'mysql'
     if build.with? 'postgresql'
-      pg_config = "#{Formula.factory('postgresql').opt_prefix}/bin/pg_config"
+      pg_config = "#{Formula['postgresql'].opt_prefix}/bin/pg_config"
       args << "--with-postgresql=#{pg_config}"
     end
     system "./configure", *args

@@ -67,7 +67,7 @@ class Mongodb < Formula
 
     if build.with? 'openssl'
       args << '--ssl'
-      args << "--extrapathdyn=#{Formula.factory('openssl').opt_prefix}"
+      args << "--extrapathdyn=#{Formula["openssl"].opt_prefix}"
     end
 
     scons 'install', *args
