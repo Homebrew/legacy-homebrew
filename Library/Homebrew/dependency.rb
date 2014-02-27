@@ -4,12 +4,15 @@ require 'dependable'
 class Dependency
   include Dependable
 
-  attr_reader :name, :tags
-  attr_accessor :env_proc, :option_name
+  attr_reader :name, :tags, :env_proc, :option_name
 
-  def initialize(name, tags=[])
-    @name = @option_name = name
+  DEFAULT_ENV_PROC = proc {}
+
+  def initialize(name, tags=[], env_proc=DEFAULT_ENV_PROC, option_name=name)
+    @name = name
     @tags = tags
+    @env_proc = env_proc
+    @option_name = option_name
   end
 
   def to_s
@@ -45,10 +48,6 @@ class Dependency
     missing -= Tab.for_formula(to_formula).used_options
     missing -= to_formula.build.implicit_options
     missing
-  end
-
-  def universal!
-    tags << 'universal' if to_formula.build.has_option? 'universal'
   end
 
   def modify_build_environment
@@ -127,9 +126,7 @@ class Dependency
 
       deps.uniq.map do |dep|
         tags = grouped.fetch(dep.name).map(&:tags).flatten.uniq
-        merged_dep = dep.class.new(dep.name, tags)
-        merged_dep.env_proc = dep.env_proc
-        merged_dep
+        dep.class.new(dep.name, tags, dep.env_proc)
       end
     end
   end
