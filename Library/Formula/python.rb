@@ -212,7 +212,7 @@ class Python < Formula
     ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
 
     # Don't use optimizations other than "-Os" here, because Python's distutils
-    # remembers (hint: `python3-config --cflags`) and reuses them for C
+    # remembers (hint: `python-config --cflags`) and reuses them for C
     # extensions which can break software (such as scipy 0.11 fails when
     # "-msse4" is present.)
     ENV.minimal_optimization
