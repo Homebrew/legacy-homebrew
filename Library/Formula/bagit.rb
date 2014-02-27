@@ -23,4 +23,8 @@ class Bagit < Formula
     bin.install 'bin/bag'
     (prefix+'conf').install 'bin/bag.classworlds.conf'
   end
+
+  test do
+    system bin/'bag'
+  end
 end
