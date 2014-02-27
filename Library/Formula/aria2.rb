@@ -2,7 +2,7 @@ require 'formula'
 
 class Aria2 < Formula
   homepage 'http://aria2.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.3/aria2-1.18.3.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.3/aria2-1.18.3.tar.bz2'
   sha1 '1a0b42e69b49fa9efb624ba2ba86118f0fb77aef'
 
   depends_on 'pkg-config' => :build

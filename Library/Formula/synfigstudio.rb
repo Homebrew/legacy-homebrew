@@ -2,7 +2,7 @@ require 'formula'
 
 class Synfigstudio < Formula
   homepage 'http://synfig.org'
-  url 'http://downloads.sourceforge.net/project/synfig/releases/0.64.1/source/synfigstudio-0.64.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/synfig/releases/0.64.1/source/synfigstudio-0.64.1.tar.gz'
   sha1 '0ba926d567fbfb79ba84899a2fcd79e54e33d4a4'
 
   depends_on 'pkg-config' => :build

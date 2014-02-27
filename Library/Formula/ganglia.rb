@@ -2,7 +2,7 @@ require 'formula'
 
 class Ganglia < Formula
   homepage 'http://ganglia.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.6.0/ganglia-3.6.0.tar.gz'
+  url 'https://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.6.0/ganglia-3.6.0.tar.gz'
   sha1 'b06529ac49deb1f1c65c6215b8d2d13c3f3fa23f'
 
   conflicts_with 'coreutils', :because => 'both install `gstat` binaries'

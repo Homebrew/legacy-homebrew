@@ -2,7 +2,7 @@ require 'formula'
 
 class Tinyxml < Formula
   homepage 'http://www.grinninglizard.com/tinyxml/'
-  url 'http://downloads.sourceforge.net/project/tinyxml/tinyxml/2.6.2/tinyxml_2_6_2.tar.gz'
+  url 'https://downloads.sourceforge.net/project/tinyxml/tinyxml/2.6.2/tinyxml_2_6_2.tar.gz'
   sha1 'cba3f50dd657cb1434674a03b21394df9913d764'
 
   option :universal

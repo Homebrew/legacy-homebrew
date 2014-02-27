@@ -2,7 +2,7 @@ require 'formula'
 
 class Pcre < Formula
   homepage 'http://www.pcre.org/'
-  url 'http://downloads.sourceforge.net/project/pcre/pcre/8.34/pcre-8.34.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/pcre/pcre/8.34/pcre-8.34.tar.bz2'
   mirror 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.34.tar.bz2'
   sha256 'b6043ae1ff2720be665ffa28dc22b7c637cdde96f389a116c0c3020caeae583f'
 

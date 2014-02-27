@@ -2,7 +2,7 @@ require 'formula'
 
 class Proctools < Formula
   homepage 'http://proctools.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/proctools/proctools/0.4pre1/proctools-0.4pre1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/proctools/proctools/0.4pre1/proctools-0.4pre1.tar.gz'
   version '0.4pre1'
   sha1 '2e60ac272532406e595698b1315ccfb481e76d42'
 

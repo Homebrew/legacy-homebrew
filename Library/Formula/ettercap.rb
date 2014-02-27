@@ -2,7 +2,7 @@ require 'formula'
 
 class Ettercap < Formula
   homepage 'http://ettercap.github.io/ettercap/'
-  url 'http://downloads.sourceforge.net/project/ettercap/ettercap/0.7.6-Locard/ettercap-0.7.6.tar.gz'
+  url 'https://downloads.sourceforge.net/project/ettercap/ettercap/0.7.6-Locard/ettercap-0.7.6.tar.gz'
   sha1 '55818952a8c28beb1b650f3ccc9600a2d784a18f'
 
   depends_on 'cmake' => :build
