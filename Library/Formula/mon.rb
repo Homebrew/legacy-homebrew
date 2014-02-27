@@ -6,7 +6,7 @@ class Mon < Formula
   sha1 '9c5013332b6ecccb6368b100e6aee377e35b5bb1'
 
   def install
-    system "make"
-    bin.install 'mon'
+    bin.mkpath
+    system "make", "install", "PREFIX=#{prefix}"
   end
 end
