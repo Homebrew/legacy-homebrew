@@ -23,7 +23,7 @@ class Opensc < Formula
     # If OpenSC's configure script detects docbook it will build manual
     # pages. This extends the spirit of that logic to support homebrew
     # installed docbook.
-    docbook = Formula.factory 'docbook'
+    docbook = Formula["docbook"]
     if docbook.installed?
       # OpenSC looks in a set of common paths for docbook's xsl files,
       # but not in /usr/local, and certainly not in homebrew's
