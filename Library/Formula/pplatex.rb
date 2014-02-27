@@ -10,7 +10,7 @@ class Pplatex < Formula
   depends_on :tex
 
   def install
-    scons "PCREPATH=#{Formula.factory('pcre').opt_prefix}"
+    scons "PCREPATH=#{Formula["pcre"].opt_prefix}"
     bin.install 'bin/pplatex', 'bin/ppdflatex'
   end
 
