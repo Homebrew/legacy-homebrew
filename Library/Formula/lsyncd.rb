@@ -43,7 +43,7 @@ class Lsyncd < Formula
     ENV.append 'CPPFLAGS', "-I./xnu"
 
     # Docbook Catalog
-    docbook = Formula["docboo"]
+    docbook = Formula["docbook"]
     ENV.append 'XML_CATALOG_FILES', docbook.opt_prefix/'docbook/xml/4.5/catalog.xml'
 
     # Asciidoc Binary
