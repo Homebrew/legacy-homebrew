@@ -2,7 +2,7 @@ require 'formula'
 
 class Libgphoto2 < Formula
   homepage 'http://www.gphoto.org/proj/libgphoto2/'
-  url 'http://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.3.1/libgphoto2-2.5.3.1.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.3.1/libgphoto2-2.5.3.1.tar.bz2'
   sha1 '6e5c9254c65d4768ac4e4c1a423147542005987f'
 
   option :universal

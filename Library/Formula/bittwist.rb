@@ -2,7 +2,7 @@ require "formula"
 
 class Bittwist < Formula
   homepage "http://bittwist.sourceforge.net"
-  url "http://downloads.sourceforge.net/project/bittwist/Mac%20OS%20X/Bit-Twist%202.0/bittwist-macosx-2.0.tar.gz"
+  url "https://downloads.sourceforge.net/project/bittwist/Mac%20OS%20X/Bit-Twist%202.0/bittwist-macosx-2.0.tar.gz"
   sha1 "fcc652f838858edbf86546af945a71b815cf4d6b"
 
   def install

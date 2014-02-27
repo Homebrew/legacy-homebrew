@@ -2,7 +2,7 @@ require 'formula'
 
 class Geeqie < Formula
   homepage 'http://geeqie.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/geeqie/geeqie/geeqie-1.1/geeqie-1.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/geeqie/geeqie/geeqie-1.1/geeqie-1.1.tar.gz'
   sha1 '77167479e91e03d9512535a146c5d2d77941257f'
 
   depends_on :x11

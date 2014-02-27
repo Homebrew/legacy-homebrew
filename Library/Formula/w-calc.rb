@@ -1,7 +1,7 @@
 require 'formula'
 
 class WCalc < Formula
-  url 'http://downloads.sourceforge.net/w-calc/wcalc-2.4.1.tar.bz2'
+  url 'https://downloads.sourceforge.net/w-calc/wcalc-2.4.1.tar.bz2'
   homepage 'http://w-calc.sourceforge.net'
   sha1 'e3ba04dcfc60a47b60c79fc6f9f4a8fa750ee5f9'
 

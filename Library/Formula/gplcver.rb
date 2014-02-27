@@ -2,7 +2,7 @@ require 'formula'
 
 class Gplcver < Formula
   homepage 'http://gplcver.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/gplcver/gplcver/2.12a/gplcver-2.12a.src.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/gplcver/gplcver/2.12a/gplcver-2.12a.src.tar.bz2'
   sha1 '946bb35b6279646c6e10c309922ed17deb2aca8a'
 
   def install

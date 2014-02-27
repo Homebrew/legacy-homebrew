@@ -2,7 +2,7 @@ require 'formula'
 
 class Bibutils < Formula
   homepage 'http://sourceforge.net/p/bibutils/home/Bibutils/'
-  url 'http://downloads.sourceforge.net/project/bibutils/bibutils_5.2_src.tgz'
+  url 'https://downloads.sourceforge.net/project/bibutils/bibutils_5.2_src.tgz'
   sha1 '4ae54726100535d0f5e726405de4a35f0a62c578'
 
   #fix uint not being defined clang error

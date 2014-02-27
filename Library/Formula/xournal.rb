@@ -2,7 +2,7 @@ require 'formula'
 
 class Xournal < Formula
   homepage 'http://xournal.sourceforge.net'
-  url 'http://downloads.sourceforge.net/xournal/xournal-0.4.7.tar.gz'
+  url 'https://downloads.sourceforge.net/xournal/xournal-0.4.7.tar.gz'
   sha1 'd2556bf21bef2df99bef0a6d1cb251d5e0f12d3f'
 
   depends_on :autoconf

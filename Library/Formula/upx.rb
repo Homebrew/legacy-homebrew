@@ -9,7 +9,7 @@ class Upx < Formula
   depends_on 'ucl'
 
   resource 'lzma' do
-    url 'http://downloads.sourceforge.net/project/sevenzip/LZMA%20SDK/4.65/lzma465.tar.bz2'
+    url 'https://downloads.sourceforge.net/project/sevenzip/LZMA%20SDK/4.65/lzma465.tar.bz2'
     sha1 '5ec1c4606fec88c770a9712073e83916f8aed173'
   end
 

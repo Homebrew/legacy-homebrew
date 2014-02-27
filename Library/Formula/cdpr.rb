@@ -2,7 +2,7 @@ require 'formula'
 
 class Cdpr < Formula
   homepage 'http://www.monkeymental.com/'
-  url 'http://downloads.sourceforge.net/project/cdpr/cdpr/2.4/cdpr-2.4.tgz'
+  url 'https://downloads.sourceforge.net/project/cdpr/cdpr/2.4/cdpr-2.4.tgz'
   sha1 '45cc185ad0eb16178a795a46e676fa698eedb832'
 
   def install

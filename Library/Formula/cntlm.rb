@@ -2,7 +2,7 @@ require 'formula'
 
 class Cntlm < Formula
   homepage 'http://cntlm.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/cntlm/cntlm/cntlm%200.92.3/cntlm-0.92.3.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/cntlm/cntlm/cntlm%200.92.3/cntlm-0.92.3.tar.bz2'
   sha1 '9b68a687218dd202c04b678ba8c559edba6f6f7b'
 
   def install

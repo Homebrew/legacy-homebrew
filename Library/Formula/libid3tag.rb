@@ -2,7 +2,7 @@ require 'formula'
 
 class Libid3tag < Formula
   homepage 'http://www.underbit.com/products/mad/'
-  url 'http://downloads.sourceforge.net/project/mad/libid3tag/0.15.1b/libid3tag-0.15.1b.tar.gz'
+  url 'https://downloads.sourceforge.net/project/mad/libid3tag/0.15.1b/libid3tag-0.15.1b.tar.gz'
   sha1 '4d867e8a8436e73cd7762fe0e85958e35f1e4306'
 
   bottle do

@@ -2,7 +2,7 @@ require 'formula'
 
 class Madplay < Formula
   homepage 'http://www.underbit.com/products/mad/'
-  url 'http://downloads.sourceforge.net/project/mad/madplay/0.15.2b/madplay-0.15.2b.tar.gz'
+  url 'https://downloads.sourceforge.net/project/mad/madplay/0.15.2b/madplay-0.15.2b.tar.gz'
   sha1 '29105eb27c1416aa33c8d1ab3404a8e5f0aecd3f'
 
   depends_on 'mad'

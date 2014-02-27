@@ -2,7 +2,7 @@ require 'formula'
 
 class Devil < Formula
   homepage 'http://sourceforge.net/projects/openil/'
-  url 'http://downloads.sourceforge.net/project/openil/DevIL/1.7.8/DevIL-1.7.8.tar.gz'
+  url 'https://downloads.sourceforge.net/project/openil/DevIL/1.7.8/DevIL-1.7.8.tar.gz'
   sha1 'bc27e3e830ba666a3af03548789700d10561fcb1'
 
   depends_on :libpng

@@ -2,7 +2,7 @@ require 'formula'
 
 class Lcdproc < Formula
   homepage 'http://www.lcdproc.org/'
-  url 'http://downloads.sourceforge.net/project/lcdproc/lcdproc/0.5.6/lcdproc-0.5.6.tar.gz'
+  url 'https://downloads.sourceforge.net/project/lcdproc/lcdproc/0.5.6/lcdproc-0.5.6.tar.gz'
   sha1 '1d0a4d068141f3c8526cadea035b58b37697600c'
 
   depends_on 'pkg-config' => :build

@@ -2,7 +2,7 @@ require 'formula'
 
 class Freetype < Formula
   homepage 'http://www.freetype.org'
-  url 'http://downloads.sf.net/project/freetype/freetype2/2.5.2/freetype-2.5.2.tar.bz2'
+  url 'https://downloads.sf.net/project/freetype/freetype2/2.5.2/freetype-2.5.2.tar.bz2'
   sha1 '72731cf405b9f7c0b56d144130a8daafa262b729'
 
   bottle do

@@ -2,7 +2,7 @@ require 'formula'
 
 class Ufraw < Formula
   homepage 'http://ufraw.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/ufraw/ufraw/ufraw-0.19.2/ufraw-0.19.2.tar.gz'
+  url 'https://downloads.sourceforge.net/project/ufraw/ufraw/ufraw-0.19.2/ufraw-0.19.2.tar.gz'
   sha1 '11a607e874eb16453a8f7964e4946a29d18b071d'
 
   depends_on 'pkg-config' => :build

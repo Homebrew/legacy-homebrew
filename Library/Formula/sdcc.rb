@@ -2,7 +2,7 @@ require 'formula'
 
 class Sdcc < Formula
   homepage 'http://sdcc.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/sdcc/sdcc/3.3.0/sdcc-src-3.3.0.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/sdcc/sdcc/3.3.0/sdcc-src-3.3.0.tar.bz2'
   sha1 'beed1b8c73f13344e018f48b1563ff2a948b70cf'
 
   head 'https://sdcc.svn.sourceforge.net/svnroot/sdcc/trunk/sdcc/'

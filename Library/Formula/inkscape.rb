@@ -2,7 +2,7 @@ require 'formula'
 
 class Inkscape < Formula
   homepage 'http://inkscape.org/'
-  url 'http://downloads.sourceforge.net/project/inkscape/inkscape/0.48.4/inkscape-0.48.4.tar.gz'
+  url 'https://downloads.sourceforge.net/project/inkscape/inkscape/0.48.4/inkscape-0.48.4.tar.gz'
   sha1 'ce453cc9aff56c81d3b716020cd8cc7fa1531da0'
 
   depends_on 'pkg-config' => :build

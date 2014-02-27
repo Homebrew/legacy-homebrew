@@ -2,7 +2,7 @@ require 'formula'
 
 class Cdrdao < Formula
   homepage 'http://cdrdao.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/cdrdao/cdrdao/1.2.3/cdrdao-1.2.3.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/cdrdao/cdrdao/1.2.3/cdrdao-1.2.3.tar.bz2'
   sha1 '70d6547795a1342631c7ab56709fd1940c2aff9f'
 
   depends_on 'pkg-config' => :build

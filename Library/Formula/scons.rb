@@ -2,7 +2,7 @@ require 'formula'
 
 class Scons < Formula
   homepage 'http://www.scons.org'
-  url 'http://downloads.sourceforge.net/scons/scons-2.3.0.tar.gz'
+  url 'https://downloads.sourceforge.net/scons/scons-2.3.0.tar.gz'
   sha1 '728edf20047a9f8a537107dbff8d8f803fd2d5e3'
 
   bottle do

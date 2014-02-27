@@ -2,7 +2,7 @@ require 'formula'
 
 class Owfs < Formula
   homepage 'http://owfs.org/'
-  url 'http://downloads.sourceforge.net/project/owfs/owfs/2.9p1/owfs-2.9p1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/owfs/owfs/2.9p1/owfs-2.9p1.tar.gz'
   version '2.9p1'
   sha1 'd431ae5b8eec6988f8ee1e401325eba845cf3696'
 

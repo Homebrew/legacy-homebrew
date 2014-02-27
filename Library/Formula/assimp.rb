@@ -2,7 +2,7 @@ require 'formula'
 
 class Assimp < Formula
   homepage 'http://assimp.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/assimp/assimp-3.0/assimp--3.0.1270-source-only.zip'
+  url 'https://downloads.sourceforge.net/project/assimp/assimp-3.0/assimp--3.0.1270-source-only.zip'
   sha1 'e80a3a4326b649ed6585c0ce312ed6dd68942834'
   head 'https://github.com/assimp/assimp.git'
 

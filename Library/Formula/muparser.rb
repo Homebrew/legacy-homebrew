@@ -2,7 +2,7 @@ require 'formula'
 
 class Muparser < Formula
   homepage 'http://muparser.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/muparser/muparser/Version%201.34/muparser_v134.tar.gz'
+  url 'https://downloads.sourceforge.net/project/muparser/muparser/Version%201.34/muparser_v134.tar.gz'
   sha1 'd6d834d3ba2bd3c316c9b3070369d32701703f78'
   version '1.34'
 

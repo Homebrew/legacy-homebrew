@@ -2,7 +2,7 @@ require 'formula'
 
 class Msdl < Formula
   homepage 'http://msdl.sourceforge.net'
-  url 'http://downloads.sourceforge.net/msdl/msdl-1.2.7-r2.tar.gz'
+  url 'https://downloads.sourceforge.net/msdl/msdl-1.2.7-r2.tar.gz'
   version '1.2.7-r2'
   sha1 'd30a637fc8be4ea80ddd373e428542bef15297fb'
 

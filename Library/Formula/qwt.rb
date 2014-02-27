@@ -2,7 +2,7 @@ require 'formula'
 
 class Qwt < Formula
   homepage 'http://qwt.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/qwt/qwt/6.1.0/qwt-6.1.0.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/qwt/qwt/6.1.0/qwt-6.1.0.tar.bz2'
   sha1 '48a967038f7aa9a9c87c64bcb2eb07c5df375565'
 
   depends_on 'qt'

@@ -2,7 +2,7 @@ require 'formula'
 
 class Libmms < Formula
   homepage 'http://sourceforge.net/projects/libmms/'
-  url 'http://downloads.sourceforge.net/project/libmms/libmms/0.6.2/libmms-0.6.2.tar.gz'
+  url 'https://downloads.sourceforge.net/project/libmms/libmms/0.6.2/libmms-0.6.2.tar.gz'
   sha1 'cdef62fd1a0e2585dd2111fc94b032f84290e351'
 
   depends_on 'pkg-config' => :build

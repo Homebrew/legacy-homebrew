@@ -2,7 +2,7 @@ require 'formula'
 
 class Sysbench < Formula
   homepage 'http://sysbench.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/sysbench/sysbench/0.4.12/sysbench-0.4.12.tar.gz'
+  url 'https://downloads.sourceforge.net/project/sysbench/sysbench/0.4.12/sysbench-0.4.12.tar.gz'
   sha1 '3f346e8b29b738711546970b027bbb7359d4672a'
 
   depends_on 'autoconf' => :build

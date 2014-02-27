@@ -2,7 +2,7 @@ require 'formula'
 
 class Ipmitool < Formula
   homepage 'http://ipmitool.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/ipmitool/ipmitool/1.8.13/ipmitool-1.8.13.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/ipmitool/ipmitool/1.8.13/ipmitool-1.8.13.tar.bz2'
   sha1 '22254a2b814c8cd323866a4dd835e390521c1dfa'
 
   def install

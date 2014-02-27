@@ -2,7 +2,7 @@ require 'formula'
 
 class Viewglob < Formula
   homepage 'http://viewglob.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/viewglob/viewglob/2.0.4/viewglob-2.0.4.tar.gz'
+  url 'https://downloads.sourceforge.net/project/viewglob/viewglob/2.0.4/viewglob-2.0.4.tar.gz'
   sha1 'd3173706c4c089d4b1ac99bbe96de805093727f4'
 
   depends_on :x11

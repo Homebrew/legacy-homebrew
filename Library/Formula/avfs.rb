@@ -2,7 +2,7 @@ require 'formula'
 
 class Avfs < Formula
   homepage 'http://avf.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/avf/avfs/1.0.1/avfs-1.0.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/avf/avfs/1.0.1/avfs-1.0.1.tar.gz'
   sha1 '77ce08fb10c680e6d5821ea8634d06a351b747f2'
 
   depends_on 'pkg-config' => :build

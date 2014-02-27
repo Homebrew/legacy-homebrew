@@ -2,7 +2,7 @@ require 'formula'
 
 class Cracklib < Formula
   homepage 'http://cracklib.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/cracklib/cracklib/2.9.0/cracklib-2.9.0.tar.gz'
+  url 'https://downloads.sourceforge.net/project/cracklib/cracklib/2.9.0/cracklib-2.9.0.tar.gz'
   sha1 '827dcd24b14bf23911c34f4226b4453b24f949a3'
 
   depends_on "gettext"

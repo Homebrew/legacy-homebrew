@@ -19,7 +19,7 @@ end
 
 class Mlton < Formula
   homepage 'http://mlton.org'
-  url 'http://downloads.sourceforge.net/project/mlton/mlton/20130715/mlton-20130715-1.amd64-darwin.gmp-static.tgz'
+  url 'https://downloads.sourceforge.net/project/mlton/mlton/20130715/mlton-20130715-1.amd64-darwin.gmp-static.tgz'
   sha1 'b3b13e0a606bf42d62d4d028687336106ada160a'
 
   # We download and install the version of MLton which is statically linked to libgmp, but all

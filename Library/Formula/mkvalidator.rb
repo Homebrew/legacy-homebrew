@@ -2,7 +2,7 @@ require 'formula'
 
 class Mkvalidator < Formula
   homepage 'http://www.matroska.org/downloads/mkvalidator.html'
-  url 'http://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.4.0.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.4.0.tar.bz2'
   sha1 'c1e9fc8de67694f7a3dcb9beb25488db513f8f6f'
 
   def patches
