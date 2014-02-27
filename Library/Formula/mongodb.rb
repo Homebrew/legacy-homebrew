@@ -27,18 +27,42 @@ class Mongodb < Formula
     end
   end
 
+  # When 2.6 is released this conditional can be removed.
+  if MacOS.version < :mavericks || !build.stable?
+    option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+    depends_on "boost" => :optional
+  end
+
   depends_on 'scons' => :build
   depends_on 'openssl' => :optional
 
   def install
-    # mongodb currently can't build with libc++; this should be fixed in
-    # 2.6, but can't be backported to the current stable release.
-    ENV.cxx += ' -stdlib=libstdc++' if ENV.compiler == :clang && MacOS.version >= :mavericks
-
     args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
+
+    cxx = ENV.cxx
+    if ENV.compiler == :clang && MacOS.version >= :mavericks
+      if build.stable?
+        # When 2.6 is released this cxx hack can be removed
+        # ENV.append "CXXFLAGS", "-stdlib=libstdc++" does not work with scons
+        # so use this hack of appending the flag to the --cxx parameter of the sconscript.
+        # mongodb 2.4 can't build with libc++, but defaults to it on Mavericks
+        cxx += " -stdlib=libstdc++"
+      else
+        # build devel and HEAD version on Mavericks with libc++
+        # Use --osx-version-min=10.9 such that the compiler defaults to libc++.
+        # Upstream issue discussing the default flags:
+        # https://jira.mongodb.org/browse/SERVER-12682
+        args << "--osx-version-min=10.9"
+      end
+    end
+
     args << '--64' if MacOS.prefer_64_bit?
     args << "--cc=#{ENV.cc}"
-    args << "--cxx=#{ENV.cxx}"
+    args << "--cxx=#{cxx}"
+
+    # --full installs development headers and client library, not just binaries
+    args << "--full"
+    args << "--use-system-boost" if build.with? "boost"
 
     if build.with? 'openssl'
       args << '--ssl'
