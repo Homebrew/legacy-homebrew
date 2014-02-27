@@ -8,7 +8,7 @@ class Pyqt < Formula
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
-  if !Formula.factory("python").installed? && build.with?("python") &&
+  if !Formula["python"].installed? && build.with?("python") &&
      build.with?("python3")
     odie <<-EOS.undent
       pyqt: You cannot use system Python 2 and Homebrew's Python 3 simultaneously.
@@ -108,7 +108,7 @@ class Pyqt < Formula
     EOS
 
     pythons.each do |python, version|
-      unless Formula.factory(python).installed?
+      unless Formula[python].installed?
         ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
       end
       system python, "test.py"
