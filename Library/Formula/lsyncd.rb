@@ -42,11 +42,11 @@ class Lsyncd < Formula
     ENV.append 'CPPFLAGS', "-I./xnu"
 
     # Docbook Catalog
-    docbook = Formula.factory 'docbook'
+    docbook = Formula["docboo"]
     ENV.append 'XML_CATALOG_FILES', docbook.opt_prefix/'docbook/xml/4.5/catalog.xml'
 
     # Asciidoc Binary
-    a2x = Formula.factory 'asciidoc'
+    a2x = Formula["asciidoc"]
     a2x_path = a2x.bin/'a2x'
     inreplace "Makefile.am", "$(A2X)", a2x_path
 
