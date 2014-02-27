@@ -239,9 +239,11 @@ class FormulaInstaller
     # because it depends on the contents of ARGV.
     pour_bottle = pour_bottle?
 
-    ARGV.filter_for_dependencies do
+    inherited_options = {}
+
+    expanded_deps = ARGV.filter_for_dependencies do
       Dependency.expand(f, deps) do |dependent, dep|
-        dep.universal! if f.build.universal? && !dep.build?
+        inherited_options[dep] = inherited_options_for(f, dep)
 
         if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
           Dependency.prune
@@ -249,13 +251,21 @@ class FormulaInstaller
           Dependency.prune
         elsif dep.build? && dependent != f && install_bottle?(dependent)
           Dependency.prune
-        elsif dep.satisfied?
+        elsif dep.satisfied?(inherited_options)
           Dependency.skip
         elsif dep.installed?
-          raise UnsatisfiedDependencyError.new(f, dep)
+          raise UnsatisfiedDependencyError.new(f, dep, inherited_options)
         end
       end
     end
+
+    expanded_deps.map { |dep| [dep, inherited_options[dep]] }
+  end
+
+  def inherited_options_for(f, dep)
+    options = Options.new
+    options << Option.new("universal") if f.build.universal? && !dep.build?
+    options
   end
 
   def install_dependencies(deps)
@@ -264,20 +274,20 @@ class FormulaInstaller
     end
 
     ARGV.filter_for_dependencies do
-      deps.each { |dep| install_dependency(dep) }
+      deps.each { |dep, options| install_dependency(dep, options) }
     end
 
     @show_header = true unless deps.empty?
   end
 
-  def install_dependency dep
+  def install_dependency(dep, inherited_options)
     df = dep.to_formula
 
     outdated_keg = Keg.new(df.linked_keg.realpath) rescue nil
 
     fi = FormulaInstaller.new(df)
     fi.tab = Tab.for_formula(dep.to_formula)
-    fi.options = dep.options
+    fi.options = dep.options | inherited_options
     fi.ignore_deps = true
     fi.only_deps = false
     fi.show_header = false
