@@ -13,13 +13,12 @@ class SyncGateway < Formula
     else
       ENV["GOBIN"] = "#{Dir.pwd}/bin"
       system "./go.sh", "install", "-v", "github.com/couchbaselabs/sync_gateway"
-      bin.install("bin/sync_gateway")
+      bin.install "bin/sync_gateway"
     end
   end
 
   test do
-    # test gateway startup and shutdown
-    pid = fork { exec("#{bin}/sync_gateway") }
+    pid = fork { exec "#{bin}/sync_gateway" }
     sleep 1
     Process.kill("SIGINT", pid)
     Process.wait(pid)
