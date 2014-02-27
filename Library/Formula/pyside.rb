@@ -20,10 +20,11 @@ class Pyside < Formula
     # Add out of tree build because one of its deps, shiboken, itself needs an
     # out of tree build in shiboken.rb.
     mkdir "macbuild" do
+      qt = Formula["qt"].opt_prefix
       args = std_cmake_args + %W[
         -DSITE_PACKAGE=#{lib}/python2.7/site-packages
-        -DALTERNATIVE_QT_INCLUDE_DIR=#{Formula.factory('qt').opt_prefix}/include
-        -DQT_SRC_DIR=#{Formula.factory('qt').opt_prefix}/src
+        -DALTERNATIVE_QT_INCLUDE_DIR=#{qt}/include
+        -DQT_SRC_DIR=#{qt}/src
         -DPYTHON_SUFFIX='-python2.7'
         ..
       ]
