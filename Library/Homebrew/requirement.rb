@@ -70,10 +70,7 @@ class Requirement
   def to_dependency
     f = self.class.default_formula
     raise "No default formula defined for #{inspect}" if f.nil?
-    dep = Dependency.new(f, tags)
-    dep.option_name = name
-    dep.env_proc = method(:modify_build_environment)
-    dep
+    Dependency.new(f, tags, method(:modify_build_environment), name)
   end
 
   private
