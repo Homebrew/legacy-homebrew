@@ -19,8 +19,8 @@ class Libswiften < Formula
   def patches; DATA unless build.head?; end
 
   def install
-    boost = Formula.factory("boost")
-    libidn = Formula.factory("libidn")
+    boost = Formula["boost"]
+    libidn = Formula["libidn"]
 
     args = %W[
       -j #{ENV.make_jobs}
@@ -36,7 +36,7 @@ class Libswiften < Formula
     ]
 
     if build.with? "lua"
-      lua = Formula.factory("lua")
+      lua = Formula["lua"]
       args << "SLUIFT_INSTALLDIR=#{prefix}"
       args << "lua_includedir=#{lua.include}"
       args << "lua_libdir=#{lua.lib}"
