@@ -239,9 +239,11 @@ class FormulaInstaller
     # because it depends on the contents of ARGV.
     pour_bottle = pour_bottle?
 
-    ARGV.filter_for_dependencies do
+    inherited_options = {}
+
+    expanded_deps = ARGV.filter_for_dependencies do
       Dependency.expand(f, deps) do |dependent, dep|
-        dep.universal! if f.build.universal? && !dep.build?
+        inherited_options[dep] = inherited_options_for(f, dep)
 
         if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
           Dependency.prune
@@ -249,13 +251,21 @@ class FormulaInstaller
           Dependency.prune
         elsif dep.build? && dependent != f && install_bottle?(dependent)
           Dependency.prune
-        elsif dep.satisfied?
+        elsif dep.satisfied?(inherited_options)
           Dependency.skip
         elsif dep.installed?
-          raise UnsatisfiedDependencyError.new(f, dep)
+          raise UnsatisfiedDependencyError.new(f, dep, inherited_options)
         end
       end
     end
+
+    expanded_deps.map { |dep| [dep, inherited_options[dep]] }
+  end
+
+  def inherited_options_for(f, dep)
+    options = Options.new
+    options << Option.new("universal") if f.build.universal? && !dep.build?
+    options
   end
 
   def install_dependencies(deps)
@@ -263,37 +273,32 @@ class FormulaInstaller
       oh1 "Installing dependencies for #{f}: #{Tty.green}#{deps*", "}#{Tty.reset}"
     end
 
-    deps.each do |dep|
-      if dep.requested?
-       install_dependency(dep)
-      else
-        ARGV.filter_for_dependencies { install_dependency(dep) }
-      end
+    ARGV.filter_for_dependencies do
+      deps.each { |dep, options| install_dependency(dep, options) }
     end
+
     @show_header = true unless deps.empty?
   end
 
-  def install_dependency dep
-    dep_tab = Tab.for_formula(dep.to_formula)
-    dep_options = dep.options
-    dep = dep.to_formula
+  def install_dependency(dep, inherited_options)
+    df = dep.to_formula
 
-    outdated_keg = Keg.new(dep.linked_keg.realpath) rescue nil
+    outdated_keg = Keg.new(df.linked_keg.realpath) rescue nil
 
-    fi = FormulaInstaller.new(dep)
-    fi.tab = dep_tab
-    fi.options = dep_options
+    fi = FormulaInstaller.new(df)
+    fi.tab = Tab.for_formula(dep.to_formula)
+    fi.options = dep.options | inherited_options
     fi.ignore_deps = true
     fi.only_deps = false
     fi.show_header = false
-    oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
+    oh1 "Installing #{f} dependency: #{Tty.green}#{df}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
     fi.caveats
     fi.finish
   ensure
     # restore previous installation state if build failed
-    outdated_keg.link if outdated_keg and not dep.installed? rescue nil
+    outdated_keg.link if outdated_keg and not df.installed? rescue nil
   end
 
   def caveats

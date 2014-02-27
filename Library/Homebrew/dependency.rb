@@ -4,12 +4,15 @@ require 'dependable'
 class Dependency
   include Dependable
 
-  attr_reader :name, :tags
-  attr_accessor :env_proc, :option_name
+  attr_reader :name, :tags, :env_proc, :option_name
 
-  def initialize(name, tags=[])
-    @name = @option_name = name
+  DEFAULT_ENV_PROC = proc {}
+
+  def initialize(name, tags=[], env_proc=DEFAULT_ENV_PROC, option_name=name)
+    @name = name
     @tags = tags
+    @env_proc = env_proc
+    @option_name = option_name
   end
 
   def to_s
@@ -36,20 +39,15 @@ class Dependency
     to_formula.installed?
   end
 
-  def requested?
-    ARGV.formulae.include?(to_formula) rescue false
+  def satisfied?(inherited_options)
+    installed? && missing_options(inherited_options).empty?
   end
 
-  def satisfied?
-    installed? && missing_options.empty?
-  end
-
-  def missing_options
-    options - Tab.for_formula(to_formula).used_options - to_formula.build.implicit_options
-  end
-
-  def universal!
-    tags << 'universal' if to_formula.build.has_option? 'universal'
+  def missing_options(inherited_options=[])
+    missing = options | inherited_options
+    missing -= Tab.for_formula(to_formula).used_options
+    missing -= to_formula.build.implicit_options
+    missing
   end
 
   def modify_build_environment
@@ -79,6 +77,9 @@ class Dependency
       expanded_deps = []
 
       deps.each do |dep|
+        # FIXME don't hide cyclic dependencies
+        next if dependent.name == dep.name
+
         case action(dependent, dep, &block)
         when :prune
           next
@@ -87,7 +88,6 @@ class Dependency
         when :keep_but_prune_recursive_deps
           expanded_deps << dep
         else
-          next if dependent.to_s == dep.name
           expanded_deps.concat(expand(dep.to_formula, &block))
           expanded_deps << dep
         end
@@ -126,9 +126,7 @@ class Dependency
 
       deps.uniq.map do |dep|
         tags = grouped.fetch(dep.name).map(&:tags).flatten.uniq
-        merged_dep = dep.class.new(dep.name, tags)
-        merged_dep.env_proc = dep.env_proc
-        merged_dep
+        dep.class.new(dep.name, tags, dep.env_proc)
       end
     end
   end
