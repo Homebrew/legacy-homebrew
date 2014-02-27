@@ -3,24 +3,29 @@ require 'formula'
 class Bash < Formula
   homepage 'http://www.gnu.org/software/bash/'
   url 'http://ftpmirror.gnu.org/bash/bash-4.2.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/bash/bash-4.2.tar.gz'
+  mirror 'ftp://ftp.cwru.edu/pub/bash/bash-4.2.tar.gz'
   sha256 'a27a1179ec9c0830c65c6aa5d7dab60f7ce1a2a608618570f96bfa72e95ab3d8'
   version '4.2.45'
 
-  head 'git://git.savannah.gnu.org/bash.git'
+  devel do
+    url 'ftp://ftp.cwru.edu/pub/bash/bash-4.3-rc2.tar.gz'
+    sha1 'e0b2012b0aacf1ba2791b1c0e364364eaa31436d'
+  end
 
-  depends_on 'readline'
+  head 'git://git.sv.gnu.org/bash.git', :branch => 'devel'
 
-  # Vendor the patches. The mirrors are unreliable for getting the patches,
-  # and the more patches there are, the more unreliable they get. Upstream
-  # patches can be found in: http://ftpmirror.gnu.org/bash/bash-4.2-patches
-  def patches
-    # http://article.gmane.org/gmane.comp.shells.bash.bugs/20242
-    p = { :p1 => DATA }
-    if build.stable?
-      p[:p0] = "https://gist.github.com/jacknagel/4008180/raw/1509a257060aa94e5349250306cce9eb884c837d/bash-4.2-001-045.patch"
+  if build.stable?
+    depends_on 'readline' => :recommended
+
+    # Vendor the patches. The mirrors are unreliable for getting the patches,
+    # and the more patches there are, the more unreliable they get. Upstream
+    # patches can be found in: http://ftpmirror.gnu.org/bash/bash-4.2-patches
+    def patches
+      # http://article.gmane.org/gmane.comp.shells.bash.bugs/20242
+      p = { :p1 => DATA }
+      p[:p0] = 'https://gist.github.com/jacknagel/4008180/raw/1509a257060aa94e5349250306cce9eb884c837d/bash-4.2-001-045.patch'
+      p
     end
-    p
   end
 
   def install
@@ -30,10 +35,16 @@ class Bash < Formula
     # /bin/bash that ships with Mac OS X defines this, and without it, some
     # things (e.g. git+ssh) will break if the user sets their default shell to
     # Homebrew's bash instead of /bin/bash.
-    ENV.append_to_cflags "-DSSH_SOURCE_BASHRC"
+    ENV.append_to_cflags '-DSSH_SOURCE_BASHRC'
 
-    system "./configure", "--prefix=#{prefix}", "--with-installed-readline"
-    system "make install"
+    args = ["--prefix=#{prefix}"]
+
+    if (build.without? 'readline') && build.stable?
+      args << '--with-installed-readline'
+    end
+
+    system './configure', *args
+    system 'make install'
   end
 
   def caveats; <<-EOS.undent
@@ -43,8 +54,8 @@ class Bash < Formula
   end
 
   test do
-    output = `#{bin}/bash -c "echo hello"`.strip
-    assert_equal "hello", output
+    output = %x(#{bin}/bash -c "echo hello").strip
+    assert_equal 'hello', output
     assert_equal 0, $?.exitstatus
   end
 end
