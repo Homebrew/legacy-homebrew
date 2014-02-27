@@ -21,7 +21,7 @@ class Libtiff < Formula
   def install
     ENV.universal_binary if build.universal?
     ENV.cxx11 if build.cxx11?
-    jpeg = Formula.factory('jpeg').opt_prefix
+    jpeg = Formula["jpeg"].opt_prefix
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-x",
