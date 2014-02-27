@@ -83,6 +83,10 @@ class Options
     Options.new(@options & o)
   end
 
+  def |(o)
+    Options.new(@options | o)
+  end
+
   def *(arg)
     @options.to_a * arg
   end
