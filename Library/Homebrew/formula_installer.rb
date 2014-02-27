@@ -263,13 +263,10 @@ class FormulaInstaller
       oh1 "Installing dependencies for #{f}: #{Tty.green}#{deps*", "}#{Tty.reset}"
     end
 
-    deps.each do |dep|
-      if dep.requested?
-       install_dependency(dep)
-      else
-        ARGV.filter_for_dependencies { install_dependency(dep) }
-      end
+    ARGV.filter_for_dependencies do
+      deps.each { |dep| install_dependency(dep) }
     end
+
     @show_header = true unless deps.empty?
   end
 
