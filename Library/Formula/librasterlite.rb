@@ -12,7 +12,7 @@ class Librasterlite < Formula
 
   def install
     # Ensure Homebrew SQLite libraries are found before the system SQLite
-    sqlite = Formula.factory 'sqlite'
+    sqlite = Formula["sqlite"]
     ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
