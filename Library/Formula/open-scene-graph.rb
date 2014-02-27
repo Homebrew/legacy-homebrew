@@ -56,14 +56,14 @@ class OpenSceneGraph < Formula
       args << "-DCMAKE_OSX_ARCHITECTURES=i386"
     end
 
-    if Formula.factory('collada-dom').installed?
+    if Formula["collada-dom"].installed?
       args << "-DCOLLADA_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/collada-dom"
     end
 
     if build.with? 'qt5'
-      args << "-DCMAKE_PREFIX_PATH=#{Formula.factory('qt5').opt_prefix}"
+      args << "-DCMAKE_PREFIX_PATH=#{Formula["qt5"].opt_prefix}"
     elsif build.with? 'qt'
-      args << "-DCMAKE_PREFIX_PATH=#{Formula.factory('qt').opt_prefix}"
+      args << "-DCMAKE_PREFIX_PATH=#{Formula["qt"].opt_prefix}"
     end
 
     args << '..'
