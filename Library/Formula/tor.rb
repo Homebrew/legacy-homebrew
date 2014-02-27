@@ -28,7 +28,7 @@ class Tor < Formula
       --prefix=#{prefix}
     ]
 
-    args << "-with-ssl=#{Formulary.factory('openssl').opt_prefix}" if build.with?('brewed-openssl') || MacOS.version < :snow_leopard
+    args << "-with-ssl=#{Formula["openssl"].opt_prefix}" if build.with?("brewed-openssl") || MacOS.version < :snow_leopard
 
     system "./configure", *args
     system "make install"
