@@ -65,7 +65,9 @@ class Erlang < Formula
       --enable-smp-support
     ]
 
-    args << "--with-dynamic-trace=dtrace" unless MacOS.version <= :leopard or not MacOS::CLT.installed?
+    if MacOS.version >= :snow_leopard and MacOS::CLT.installed?
+      args << "--with-dynamic-trace=dtrace"
+    end
 
     unless build.include? 'disable-hipe'
       # HIPE doesn't strike me as that reliable on OS X
