@@ -27,7 +27,7 @@ class Netpbm < Formula
       s.change_make_var! "PNGLIB", "-lpng"
       s.change_make_var! "ZLIB", "-lz"
       s.change_make_var! "JASPERLIB", "-ljasper"
-      s.change_make_var! "JASPERHDR_DIR", "#{Formula.factory('jasper').opt_prefix}/include/jasper"
+      s.change_make_var! "JASPERHDR_DIR", "#{Formula["jasper"].opt_prefix}/include/jasper"
     end
 
     ENV.deparallelize
