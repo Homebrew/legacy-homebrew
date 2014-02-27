@@ -92,10 +92,10 @@ class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
 end
 
 class UnsatisfiedDependencyError < Homebrew::InstallationError
-  def initialize(f, dep)
+  def initialize(f, dep, inherited_options)
     super f, <<-EOS.undent
     #{f} dependency #{dep} not installed with:
-      #{dep.missing_options * ', '}
+      #{dep.missing_options(inherited_options) * ', '}
     EOS
   end
 end

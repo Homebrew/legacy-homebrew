@@ -36,12 +36,15 @@ class Dependency
     to_formula.installed?
   end
 
-  def satisfied?
-    installed? && missing_options.empty?
+  def satisfied?(inherited_options)
+    installed? && missing_options(inherited_options).empty?
   end
 
-  def missing_options
-    options - Tab.for_formula(to_formula).used_options - to_formula.build.implicit_options
+  def missing_options(inherited_options=[])
+    missing = options | inherited_options
+    missing -= Tab.for_formula(to_formula).used_options
+    missing -= to_formula.build.implicit_options
+    missing
   end
 
   def universal!
