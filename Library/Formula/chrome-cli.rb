@@ -8,10 +8,10 @@ class ChromeCli < Formula
   head "https://github.com/prasmussen/chrome-cli.git"
 
   depends_on :xcode
-  depends_on :macos => :mountain_lion # strange error with lion
+  depends_on :macos => :mountain_lion
 
   def install
-    system 'xcodebuild', 'SDKROOT=', 'SYMROOT=build'
+    xcodebuild "SDKROOT=", "SYMROOT=build"
     bin.install 'build/Release/chrome-cli'
   end
 
