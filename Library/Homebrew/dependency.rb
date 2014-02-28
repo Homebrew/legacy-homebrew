@@ -131,3 +131,15 @@ class Dependency
     end
   end
 end
+
+class TapDependency < Dependency
+  def initialize(name, tags=[], env_proc=DEFAULT_ENV_PROC, option_name=name)
+    super(name, tags, env_proc, name.split("/").last)
+  end
+
+  def installed?
+    super
+  rescue FormulaUnavailableError
+    false
+  end
+end
