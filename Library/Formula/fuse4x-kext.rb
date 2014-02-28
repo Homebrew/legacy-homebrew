@@ -29,7 +29,7 @@ class Fuse4xKext < Formula
       "ARCHS=i386 #{'x86_64' if MacOS.prefer_64_bit?}", 'ONLY_ACTIVE_ARCH=NO'
     ]
 
-    system "/usr/bin/xcodebuild", *args
+    xcodebuild *args
     system "/bin/mkdir -p build/Release/fuse4x.kext/Support"
     system "/bin/cp build/Release/load_fuse4x build/Release/fuse4x.kext/Support"
 
