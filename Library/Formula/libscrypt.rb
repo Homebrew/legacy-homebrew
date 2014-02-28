@@ -8,6 +8,9 @@ class Libscrypt < Formula
   def install
     system "make", "install", "PREFIX=#{prefix}", "LDFLAGS=", "CFLAGS_EXTRA="
     system "make", "check", "LDFLAGS=", "CFLAGS_EXTRA="
+    # libscrypt builds a shared object in the non-OS X style (.so.0), so we
+    # rename it to the OS X convention of using .dylib. See
+    # https://github.com/technion/libscrypt/issues/12
     system "mv", "#{lib}/libscrypt.so.0", "#{lib}/libscrypt.dylib"
   end
 end
