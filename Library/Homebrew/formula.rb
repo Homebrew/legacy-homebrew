@@ -403,7 +403,7 @@ class Formula
     end
 
     # test if the name is a core formula
-    formula_with_that_name = Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb")
+    formula_with_that_name = Formula.path(name)
     if formula_with_that_name.file? and formula_with_that_name.readable?
       return name
     end
