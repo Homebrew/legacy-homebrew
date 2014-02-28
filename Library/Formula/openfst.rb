@@ -7,13 +7,9 @@ class Openfst < Formula
 
   def install
     ENV.libstdcxx if ENV.compiler == :clang
-    #if MacOS.version > :mountain_lion
-    #  ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include/c++/4.2.1"
-    #  ENV.append 'LIBS', "#{MacOS.sdk_path}/usr/lib/libstdc++.dylib"
-    #end
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
-                          "--enable-far", 
+                          "--enable-far",
                           "--enable-pdt"
     system "make install"
   end
