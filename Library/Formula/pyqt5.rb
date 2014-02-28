@@ -47,6 +47,9 @@ class Pyqt5 < Formula
                "--sipdir=#{share}/sip/Qt5/",
                # sip.h could not be found automatically
                "--sip-incdir=#{Formula["sip"].opt_prefix}/include",
+               # Make sure the qt5 version of qmake is found.
+               # If qt4 is linked it will pickup that version otherwise.
+               "--qmake=#{Formula["qt5"].bin}/qmake",
                # Force deployment target to avoid libc++ issues
                "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}" ]
       args << '--debug' if build.include? 'enable-debug'
