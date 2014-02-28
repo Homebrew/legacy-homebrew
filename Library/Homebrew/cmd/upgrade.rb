@@ -15,18 +15,20 @@ module Homebrew extend self
       outdated = Homebrew.outdated_brews
       exit 0 if outdated.empty?
     else
-      outdated = ARGV.formulae.select do |f|
+      uninstalled = []
+      outdated = []
+      ARGV.formulae.each do |f|
         if f.installed?
           oh1 "#{f}-#{f.installed_version} already installed"
-          exit 0
         elsif not f.rack.directory? or f.rack.subdirs.empty?
           onoe "#{f} not installed"
-          false
+          uninstalled << f
         else
-          true
+          outdated << f
         end
       end
-      exit 1 if outdated.empty?
+      exit 1 unless uninstalled.empty?
+      exit 0 if outdated.empty?
     end
 
     unless upgrade_pinned?
