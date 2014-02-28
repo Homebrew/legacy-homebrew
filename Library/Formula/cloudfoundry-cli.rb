@@ -3,7 +3,7 @@ require 'formula'
 class CloudfoundryCli < Formula
   homepage 'https://github.com/cloudfoundry/cli'
   head 'https://github.com/cloudfoundry/cli.git', :branch => 'master'
-  url 'https://github.com/cloudfoundry/cli.git', :tag => 'v6.0.0'
+  url 'https://github.com/cloudfoundry/cli.git', :tag => 'v6.0.1'
 
   depends_on 'go' => :build
 
