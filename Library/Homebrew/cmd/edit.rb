@@ -30,7 +30,7 @@ module Homebrew extend self
         if name.include? '/'
           Pathname.new(name)
         else
-          HOMEBREW_REPOSITORY+"Library/Formula/#{name}.rb"
+          Formula.path(name)
         end
       end
       unless ARGV.force?

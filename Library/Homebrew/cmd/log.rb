@@ -8,7 +8,7 @@ module Homebrew extend self
         path = ARGV.formulae.first.path.realpath
       rescue FormulaUnavailableError
         # Maybe the formula was deleted
-        path = HOMEBREW_REPOSITORY/"Library/Formula/#{ARGV.named.first}.rb"
+        path = Formula.path(ARGV.named.first)
       end
       cd path.dirname # supports taps
       exec "git", "log", *ARGV.options_only + ["--", path]
