@@ -11,6 +11,12 @@ require 'cleaner'
 require 'formula_cellar_checks'
 require 'install_renamed'
 
+GLOBAL_INSTALL_OPTIONS = %w(
+  bottle-arch build-bottle build-from-source
+  d debug devel env=std env=super force fresh
+  HEAD homebrew-developer ignore-dependencies
+  interactive no-compat universal v verbose)
+
 class FormulaInstaller
   include FormulaCellarChecks
 
@@ -69,6 +75,15 @@ class FormulaInstaller
       end
       raise CannotInstallFormulaError,
         "You must `brew link #{unlinked_deps*' '}' before #{f} can be installed" unless unlinked_deps.empty?
+    end
+
+    opts_provided = Options.coerce(ARGV.options_only)
+    opts_local = f.build.to_a
+    opts_global = Options.coerce(GLOBAL_INSTALL_OPTIONS)
+    opts_unknown = opts_provided - (opts_local + opts_global)
+
+    unless opts_unknown.empty?
+      raise UnknownOptionError.new opts_unknown
     end
 
   rescue FormulaUnavailableError => e

@@ -248,6 +248,17 @@ class ErrorDuringExecution < RuntimeError; end
 # raised by Pathname#verify_checksum when "expected" is nil or empty
 class ChecksumMissingError < ArgumentError; end
 
+# raised by formula_installer
+class UnknownOptionError < ArgumentError
+  def initialize opts
+    @opts = opts
+  end
+  def to_s
+    noun = @opts.count > 1 ? "options" : "option"
+    "Unknown #{noun} specified: " + (@opts * ' ')
+  end
+end
+
 # raised by Pathname#verify_checksum when verification fails
 class ChecksumMismatchError < RuntimeError
   attr_reader :expected, :hash_type
