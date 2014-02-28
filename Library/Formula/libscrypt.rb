@@ -7,9 +7,6 @@ class Libscrypt < Formula
 
   def install
     system "make", "install", "PREFIX=#{prefix}", "LDFLAGS=", "CFLAGS_EXTRA="
-  end
-
-  test do
-    system "make", "check"
+    system "make", "check", "LDFLAGS=", "CFLAGS_EXTRA="
   end
 end
