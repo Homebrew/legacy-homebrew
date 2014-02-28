@@ -28,8 +28,6 @@ module Homebrew extend self
       elsif HOMEBREW_CELLAR.exist?
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
       end
-    elsif valid_url ARGV[0]
-      info_formula Formula.factory(ARGV.shift)
     else
       ARGV.named.each do |f|
         begin
@@ -158,11 +156,4 @@ module Homebrew extend self
     end
     deps_status * ", "
   end
-
-  private
-
-  def valid_url u
-    u[0..6] == 'http://' or u[0..7] == 'https://' or u[0..5] == 'ftp://'
-  end
-
 end
