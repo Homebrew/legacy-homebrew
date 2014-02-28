@@ -155,7 +155,9 @@ class Formulary
     end
 
     def get_formula
-      klass.new(tapped_name, path)
+      klass.new(name, path)
+    rescue FormulaUnavailableError => e
+      raise TapFormulaUnavailableError.new(e.name)
     end
   end
 
