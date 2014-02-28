@@ -6,17 +6,34 @@ class Mongodb < Formula
   sha1 '3aa495cf32769a09ee9532827391892d96337d6b'
 
   bottle do
-    sha1 '04d49071102d86ac06f35ed9e4c855a677d97c68' => :mavericks
-    sha1 '2ee3ed1b44777ea740da87b952acdadf19084bd4' => :mountain_lion
-    sha1 'b4898545634c7015093036c260dca69bc96fa5b8' => :lion
+    revision 1
+    sha1 "7ace0e0f8f6b2096a54e4e7dd976b3728227e95a" => :mavericks
+    sha1 "b917ff86005452c303132616df27d787967ecdf6" => :mountain_lion
+    sha1 "c62f44838aac80a38596b0980f5575ffd99b79fe" => :lion
+  end
+
+  stable do
+    # When 2.6 is released this conditional can be removed.
+    if MacOS.version < :mavericks
+      option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+      depends_on "boost" => :optional
+    end
   end
 
   devel do
     url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.5.tar.gz'
     sha1 '4827f3da107174a3cbb1f5b969c7f597ca09b4f8'
+
+    option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+    depends_on "boost" => :optional
   end
 
-  head 'https://github.com/mongodb/mongo.git'
+  head do
+    url 'https://github.com/mongodb/mongo.git'
+
+    option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+    depends_on "boost" => :optional
+  end
 
   def patches
     if build.stable?
@@ -31,18 +48,36 @@ class Mongodb < Formula
   depends_on 'openssl' => :optional
 
   def install
-    # mongodb currently can't build with libc++; this should be fixed in
-    # 2.6, but can't be backported to the current stable release.
-    ENV.cxx += ' -stdlib=libstdc++' if ENV.compiler == :clang && MacOS.version >= :mavericks
-
     args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
+
+    cxx = ENV.cxx
+    if ENV.compiler == :clang && MacOS.version >= :mavericks
+      if build.stable?
+        # When 2.6 is released this cxx hack can be removed
+        # ENV.append "CXXFLAGS", "-stdlib=libstdc++" does not work with scons
+        # so use this hack of appending the flag to the --cxx parameter of the sconscript.
+        # mongodb 2.4 can't build with libc++, but defaults to it on Mavericks
+        cxx += " -stdlib=libstdc++"
+      else
+        # build devel and HEAD version on Mavericks with libc++
+        # Use --osx-version-min=10.9 such that the compiler defaults to libc++.
+        # Upstream issue discussing the default flags:
+        # https://jira.mongodb.org/browse/SERVER-12682
+        args << "--osx-version-min=10.9"
+      end
+    end
+
     args << '--64' if MacOS.prefer_64_bit?
     args << "--cc=#{ENV.cc}"
-    args << "--cxx=#{ENV.cxx}"
+    args << "--cxx=#{cxx}"
+
+    # --full installs development headers and client library, not just binaries
+    args << "--full"
+    args << "--use-system-boost" if build.with? "boost"
 
     if build.with? 'openssl'
       args << '--ssl'
-      args << "--extrapathdyn=#{Formula.factory('openssl').opt_prefix}"
+      args << "--extrapath=#{Formula["openssl"].opt_prefix}"
     end
 
     scons 'install', *args

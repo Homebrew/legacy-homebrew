@@ -19,12 +19,13 @@ class Mplayershell < Formula
   depends_on :xcode
 
   def install
-    system "xcodebuild", "-project", "MPlayerShell.xcodeproj",
-                         "-target", "mps",
-                         "-configuration", "Release",
-                         "clean", "build",
-                         "SYMROOT=build",
-                         "DSTROOT=build"
+    xcodebuild "-project",
+               "MPlayerShell.xcodeproj",
+               "-target", "mps",
+               "-configuration", "Release",
+               "clean", "build",
+               "SYMROOT=build",
+               "DSTROOT=build"
     bin.install "build/Release/mps"
     man1.install "Source/mps.1"
   end

@@ -15,16 +15,16 @@ class Lldpd < Formula
   depends_on 'jansson'  if build.include? 'with-json'
 
   def install
-    readline = Formula.factory 'readline'
-    args = [ "--prefix=#{prefix}",
-             "--with-xml",
-             "--with-readline",
-             "--with-privsep-chroot=/var/empty",
-             "--with-privsep-user=nobody",
-             "--with-privsep-group=nogroup",
-             "--with-launchddaemonsdir=no",
-             "CPPFLAGS=-I#{readline.include} -DRONLY=1",
-             "LDFLAGS=-L#{readline.lib}" ]
+    readline = Formula["readline"]
+    args = ["--prefix=#{prefix}",
+            "--with-xml",
+            "--with-readline",
+            "--with-privsep-chroot=/var/empty",
+            "--with-privsep-user=nobody",
+            "--with-privsep-group=nogroup",
+            "--with-launchddaemonsdir=no",
+            "CPPFLAGS=-I#{readline.include} -DRONLY=1",
+            "LDFLAGS=-L#{readline.lib}"]
     args << "--with-snmp" if build.include? 'with-snmp'
     args << "--with-json" if build.include? 'with-json'
 

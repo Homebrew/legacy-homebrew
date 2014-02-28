@@ -95,8 +95,9 @@ class Python < Formula
     end
 
     if build.with? 'brewed-tk'
-      ENV.append 'CPPFLAGS', "-I#{Formula.factory('tcl-tk').opt_prefix}/include"
-      ENV.append 'LDFLAGS', "-L#{Formula.factory('tcl-tk').opt_prefix}/lib"
+      tcl_tk = Formula["tcl-tk"].opt_prefix
+      ENV.append 'CPPFLAGS', "-I#{tcl_tk}/include"
+      ENV.append 'LDFLAGS', "-L#{tcl_tk}/lib"
     end
 
     system "./configure", *args
@@ -175,11 +176,13 @@ class Python < Formula
   def distutils_fix_superenv(args)
     # This is not for building python itself but to allow Python's build tools
     # (pip) to find brewed stuff when installing python packages.
-    cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
-    ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
+    sqlite = Formula["sqlite"].opt_prefix
+    cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{sqlite}/include"
+    ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{sqlite}/lib"
     if build.with? 'brewed-tk'
-      cflags += " -I#{Formula.factory('tcl-tk').opt_prefix}/include"
-      ldflags += " -L#{Formula.factory('tcl-tk').opt_prefix}/lib"
+      tcl_tk = Formula["tcl-tk"].opt_prefix
+      cflags += " -I#{tcl_tk}/include"
+      ldflags += " -L#{tcl_tk}/lib"
     end
     unless MacOS::CLT.installed?
       # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
@@ -212,7 +215,7 @@ class Python < Formula
     ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
 
     # Don't use optimizations other than "-Os" here, because Python's distutils
-    # remembers (hint: `python3-config --cflags`) and reuses them for C
+    # remembers (hint: `python-config --cflags`) and reuses them for C
     # extensions which can break software (such as scipy 0.11 fails when
     # "-msse4" is present.)
     ENV.minimal_optimization

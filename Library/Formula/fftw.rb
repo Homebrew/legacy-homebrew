@@ -13,6 +13,7 @@ class Fftw < Formula
   end
 
   option "with-fortran", "Enable Fortran bindings"
+  option :universal
 
   depends_on :fortran => :optional
 
@@ -26,6 +27,8 @@ class Fftw < Formula
     simd_args << "--enable-avx" if ENV.compiler == :clang and Hardware::CPU.avx? and !build.bottle?
 
     args << "--disable-fortran" unless build.with? "fortran"
+
+    ENV.universal_binary if build.universal?
 
     # single precision
     # enable-sse2 and enable-avx works for both single and double precision

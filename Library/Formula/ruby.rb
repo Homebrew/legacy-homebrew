@@ -42,14 +42,13 @@ class Ruby < Formula
     args << "--disable-install-doc" unless build.with? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
 
-    paths = []
+    paths = [
+      Formula["libyaml"].opt_prefix,
+      Formula["openssl"].opt_prefix
+    ]
 
-    paths.concat %w[readline gdbm gmp libffi].map { |dep|
-      Formula.factory(dep).opt_prefix if build.with? dep
-    }.compact
-
-    paths.concat %w[libyaml openssl].map { |dep|
-      Formula.factory(dep).opt_prefix
+    %w[readline gdbm gmp libffi].each { |dep|
+      paths << Formula[dep].opt_prefix if build.with? dep
     }
 
     args << "--with-opt-dir=#{paths.join(":")}"
