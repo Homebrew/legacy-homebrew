@@ -14,8 +14,16 @@ class Fits < Formula
     prefix.install %w{ COPYING COPYING.LESSER tools xml }
     prefix.install Dir['*.txt']
     libexec.install Dir['lib/*']
+
+    # fits-env.sh is a helper script that sets up environment
+    # variables, so we want to tuck this away in libexec
+    libexec.install 'fits-env.sh'
+    %w[fits.sh fits-ngserver.sh].each do |file|
+      inreplace file, '"$(dirname $BASH_SOURCE)/fits-env.sh"',
+        "'#{libexec/'fits-env.sh'}'"
+    end
+
     bin.install 'fits.sh' => 'fits'
     bin.install 'fits-ngserver.sh' => 'fits-ngserver'
-    bin.install 'fits-env.sh'
   end
 end
