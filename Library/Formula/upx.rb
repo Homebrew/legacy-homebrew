@@ -2,8 +2,8 @@ require 'formula'
 
 class Upx < Formula
   homepage 'http://upx.sourceforge.net'
-  url 'http://upx.sourceforge.net/download/upx-3.09-src.tar.bz2'
-  sha1 'df474a9909e6697a4d3240767c34e2dcb39002c1'
+  url 'http://upx.sourceforge.net/download/upx-3.91-src.tar.bz2'
+  sha1 'da962c0affb27eae11aa9b6fbd751c3699717b36'
   head 'https://www.pysol.org:4443/hg/upx.hg', :using => :hg
 
   depends_on 'ucl'
