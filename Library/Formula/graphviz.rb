@@ -61,7 +61,7 @@ class Graphviz < Formula
 
     if build.include? 'with-app'
       cd "macosx" do
-        system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
+        xcodebuild "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
       end
       prefix.install "macosx/build/Release/Graphviz.app"
     end
