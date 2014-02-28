@@ -16,7 +16,7 @@ class Podofo < Formula
     # fixes compilation on Mavericks (fixed ios includes, fixed freetype 2.5.1 includes)
     [
       "https://gist.githubusercontent.com/MeckiCologne/9137957/raw/d450a29e47097554a5fb79cf1f770bb13c05be33/podofo1.patch",
-      "https://gist.githubusercontent.com/MeckiCologne/9137957/raw/145d5d9187b71567824f813ebf9d9ff427b36fe3/podofo2.patch",
+      "https://gist.githubusercontent.com/MeckiCologne/9137957/raw/0e4eda9986652ff778ce95288adf4815c7c5699c/podofo2.patch",
     ]
   end
 
