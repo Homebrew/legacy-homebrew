@@ -565,6 +565,7 @@ class Formula
     ohai "#{cmd} #{pretty_args*' '}".strip
 
     if cmd.to_s.start_with? "xcodebuild"
+      opoo %{system "xcodebuild" is deprecated, use the xcodebuild method instead}
       removed_ENV_variables.update(ENV.remove_cc_etc)
     end
 
