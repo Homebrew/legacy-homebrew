@@ -25,7 +25,7 @@ module Homebrew extend self
 
     ARGV.named.each do |name|
       # if a formula has been tapped ignore the blacklisting
-      if not File.file? HOMEBREW_REPOSITORY/"Library/Formula/#{name}.rb"
+      unless Formula.path(name).file?
         msg = blacklisted? name
         raise "No available formula for #{name}\n#{msg}" if msg
       end
