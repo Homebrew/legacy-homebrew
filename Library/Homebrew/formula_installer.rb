@@ -31,6 +31,7 @@ class FormulaInstaller
     @poured_bottle = false
     @pour_failed   = false
 
+    verify_deps_exist
     lock
     check_install_sanity
   end
@@ -39,6 +40,13 @@ class FormulaInstaller
     return false if @pour_failed
     tab.used_options.empty? && options.empty? && \
       install_bottle?(f, install_bottle_options)
+  end
+
+  def verify_deps_exist
+    f.recursive_dependencies.map(&:to_formula)
+  rescue FormulaUnavailableError => e
+    e.dependent = f.name
+    raise
   end
 
   def check_install_sanity
@@ -70,12 +78,6 @@ class FormulaInstaller
       raise CannotInstallFormulaError,
         "You must `brew link #{unlinked_deps*' '}' before #{f} can be installed" unless unlinked_deps.empty?
     end
-
-  rescue FormulaUnavailableError => e
-    # this is sometimes wrong if the dependency chain is more than one deep
-    # but can't easily fix this without a rewrite FIXME-brew2
-    e.dependent = f.name
-    raise
   end
 
   def build_bottle_preinstall
