@@ -1,7 +1,10 @@
 def blacklisted? name
   case name.downcase
-  when 'screen', /^rubygems?$/, 'libpcap' then <<-EOS.undent
+  when 'screen', /^rubygems?$/, then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/bin.
+    EOS
+  when 'libpcap' then <<-EOS.undent
+    Apple distributes #{name} with OS X, you can find it in /usr/lib.
     EOS
   when 'libiconv' then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/lib.
