@@ -10,6 +10,7 @@ require 'caveats'
 require 'cleaner'
 require 'formula_cellar_checks'
 require 'install_renamed'
+require 'cmd/tap'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -44,6 +45,9 @@ class FormulaInstaller
 
   def verify_deps_exist
     f.recursive_dependencies.map(&:to_formula)
+  rescue TapFormulaUnavailableError => e
+    Homebrew.install_tap(e.user, e.repo)
+    retry
   rescue FormulaUnavailableError => e
     e.dependent = f.name
     raise
