@@ -17,11 +17,11 @@ class Platypus < Formula
 
         inreplace "Platypus.xcodeproj/project.pbxproj", "GCC_VERSION", "//GCC_VERSION"
       end
-      system "xcodebuild", "SYMROOT=build", "DSTROOT=#{buildpath}",
-                           "-project", "Platypus.xcodeproj",
-                           "-target", "platypus",
-                           "-target", "ScriptExec",
-                           "clean", "install"
+      xcodebuild "SYMROOT=build", "DSTROOT=#{buildpath}",
+                 "-project", "Platypus.xcodeproj",
+                 "-target", "platypus",
+                 "-target", "ScriptExec",
+                 "clean", "install"
       man1.install "CommandLineTool/platypus.1"
     end
 
