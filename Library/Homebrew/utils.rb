@@ -148,14 +148,6 @@ def curl *args
   safe_system curl, *args
 end
 
-# Run scons using a Homebrew-installed version, instead of whatever
-# is in the user's PATH
-def scons *args
-  scons = Formulary.factory("scons").opt_prefix/'bin/scons'
-  raise "#{scons} is not executable" unless scons.exist? and scons.executable?
-  safe_system scons, *args
-end
-
 def puts_columns items, star_items=[]
   return if items.empty?
 
