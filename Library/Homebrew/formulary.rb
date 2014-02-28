@@ -174,7 +174,7 @@ class Formulary
       f = BottleLoader.new(ref)
     else
       name_or_path = Formula.canonical_name(ref)
-      if name_or_path =~ %r{^(\w+)/(\w+)/([^/])+$}
+      if name_or_path =~ HOMEBREW_TAP_FORMULA_REGEX
         # name appears to be a tapped formula, so we don't munge it
         # in order to provide a useful error message when require fails.
         f = TapLoader.new(name_or_path)
