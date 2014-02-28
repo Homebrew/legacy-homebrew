@@ -25,8 +25,7 @@ class Moc < Formula
   depends_on 'faad2' => :optional
   depends_on 'timidity' => :optional
   depends_on 'libmagic' => :optional
-  # TODO: make this :optional when it works for tap dependencies.
-  depends_on 'homebrew/dupes/ncurses' if build.with? 'ncurses'
+  depends_on 'homebrew/dupes/ncurses' => :optional
 
   def patches
     unless build.head?
