@@ -31,7 +31,7 @@ class FormulaInstaller
     @poured_bottle = false
     @pour_failed   = false
 
-    verify_deps_exist
+    verify_deps_exist unless ignore_deps
     lock
     check_install_sanity
   end
