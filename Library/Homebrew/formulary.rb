@@ -184,7 +184,7 @@ class Formulary
         # If name was a path or mapped to a cached formula
         f = FromPathLoader.new(name_or_path)
       elsif name_or_path =~ /\.rb$/
-        f = FromPathLoader.new("./#{name_or_path}")
+        f = FromPathLoader.new(File.expand_path(name_or_path))
       else
         f = StandardLoader.new(name_or_path)
       end
