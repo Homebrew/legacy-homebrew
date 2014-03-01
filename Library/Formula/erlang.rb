@@ -37,6 +37,7 @@ class Erlang < Formula
   depends_on :libtool
   depends_on 'unixodbc' if MacOS.version >= :mavericks
   depends_on 'fop' => :optional # enables building PDF docs
+  depends_on 'wxmac' => :recommended
 
   fails_with :llvm
 
@@ -65,7 +66,11 @@ class Erlang < Formula
       --enable-smp-support
     ]
 
-    args << "--with-dynamic-trace=dtrace" unless MacOS.version <= :leopard or not MacOS::CLT.installed?
+    args << "--enable-wx" if build.with? 'wxmac'
+
+    if MacOS.version >= :snow_leopard and MacOS::CLT.installed?
+      args << "--with-dynamic-trace=dtrace"
+    end
 
     unless build.include? 'disable-hipe'
       # HIPE doesn't strike me as that reliable on OS X
@@ -98,7 +103,7 @@ class Erlang < Formula
     EOS
   end
 
-  def test
+  test do
     `#{bin}/erl -noshell -eval 'crypto:start().' -s init stop`
 
     # This test takes some time to run, but per bug #120 should finish in
@@ -108,6 +113,7 @@ class Erlang < Formula
     end
   end
 end
+
 __END__
 diff --git a/lib/odbc/configure.in b/lib/odbc/configure.in
 index 83f7a47..fd711fe 100644

@@ -2,8 +2,8 @@ require 'formula'
 
 class Ruby < Formula
   homepage 'https://www.ruby-lang.org/'
-  url 'http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.0.tar.bz2'
-  sha256 '1d3f4ad5f619ec15229206b6667586dcec7cc986672c8fbb8558161ecf07e277'
+  url 'http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.1.tar.bz2'
+  sha256 '96aabab4dd4a2e57dd0d28052650e6fcdc8f133fa8980d9b936814b1e93f6cfc'
 
   head do
     url 'http://svn.ruby-lang.org/repos/ruby/trunk/'
@@ -42,14 +42,13 @@ class Ruby < Formula
     args << "--disable-install-doc" unless build.with? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
 
-    paths = []
+    paths = [
+      Formula["libyaml"].opt_prefix,
+      Formula["openssl"].opt_prefix
+    ]
 
-    paths.concat %w[readline gdbm gmp libffi].map { |dep|
-      Formula.factory(dep).opt_prefix if build.with? dep
-    }.compact
-
-    paths.concat %w[libyaml openssl].map { |dep|
-      Formula.factory(dep).opt_prefix
+    %w[readline gdbm gmp libffi].each { |dep|
+      paths << Formula[dep].opt_prefix if build.with? dep
     }
 
     args << "--with-opt-dir=#{paths.join(":")}"

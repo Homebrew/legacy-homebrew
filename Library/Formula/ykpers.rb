@@ -10,7 +10,7 @@ class Ykpers < Formula
   depends_on 'pkg-config' => :build
 
   def install
-    libyubikey_prefix = Formula.factory('libyubikey').opt_prefix
+    libyubikey_prefix = Formula["libyubikey"].opt_prefix
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libyubikey-prefix=#{libyubikey_prefix}",

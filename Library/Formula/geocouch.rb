@@ -25,7 +25,7 @@ class Geocouch < Formula
   def install
     #  Grab couchdb 1.3.x.
     couchdb_dir = buildpath/'couchdb-src'
-    couchdb = Formula.factory 'couchdb'
+    couchdb = Formula["couchdb"]
     couchdb.brew { couchdb_dir.install Dir['*'] }
     ENV['COUCH_SRC'] = couchdb_dir/"src/couchdb"
 

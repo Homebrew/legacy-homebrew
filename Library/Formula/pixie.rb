@@ -12,8 +12,8 @@ class Pixie < Formula
   depends_on :x11
 
   def install
-    openexr = Formula.factory('openexr')
-    ilmbase = Formula.factory('ilmbase')
+    openexr = Formula["openexr"]
+    ilmbase = Formula["ilmbase"]
 
     ENV.append "CPPFLAGS", "-I#{openexr.include}/OpenEXR -I#{ilmbase.include}/OpenEXR"
     ENV.append "LDFLAGS",  "-L#{openexr.lib} -L#{ilmbase.lib}"
@@ -23,7 +23,7 @@ class Pixie < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/rndr", "-v"
   end
 end

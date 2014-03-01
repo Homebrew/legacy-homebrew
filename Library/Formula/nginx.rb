@@ -12,6 +12,12 @@ class Nginx < Formula
 
   head 'http://hg.nginx.org/nginx/', :using => :hg
 
+  bottle do
+    sha1 "b5964496b5365e51cc9b7eb838b0499795e71861" => :mavericks
+    sha1 "2757fecb0611a6dd6e22a8122f775b917fac476f" => :mountain_lion
+    sha1 "f64a845d905589c9ad580ab4d5e6fe27c0eb53f9" => :lion
+  end
+
   env :userpaths
 
   option 'with-passenger', 'Compile with support for Phusion Passenger module'
@@ -23,8 +29,6 @@ class Nginx < Formula
   depends_on 'pcre'
   depends_on 'passenger' => :optional
   depends_on 'openssl'
-
-  skip_clean 'logs'
 
   def passenger_config_args
     passenger_config = "#{HOMEBREW_PREFIX}/opt/passenger/bin/passenger-config"
@@ -42,8 +46,8 @@ class Nginx < Formula
     # Changes default port to 8080
     inreplace 'conf/nginx.conf', 'listen       80;', 'listen       8080;'
 
-    pcre    = Formula.factory("pcre")
-    openssl = Formula.factory("openssl")
+    pcre = Formula["pcre"]
+    openssl = Formula["openssl"]
     cc_opt = "-I#{pcre.include} -I#{openssl.include}"
     ld_opt = "-L#{pcre.lib} -L#{openssl.lib}"
 
@@ -83,7 +87,7 @@ class Nginx < Formula
     man8.install "objs/nginx.8"
     (var/'run/nginx').mkpath
 
-    # nginx’s docroot is #{prefix}/html, this isn't useful, so we symlink it
+    # nginx's docroot is #{prefix}/html, this isn't useful, so we symlink it
     # to #{HOMEBREW_PREFIX}/var/www. The reason we symlink instead of patching
     # is so the user can redirect it easily to something else if they choose.
     prefix.cd do
@@ -98,7 +102,7 @@ class Nginx < Formula
       Pathname.new("#{prefix}/html").make_relative_symlink(dst)
     end
 
-    # for most of this formula’s life the binary has been placed in sbin
+    # for most of this formula's life the binary has been placed in sbin
     # and Homebrew used to suggest the user copy the plist for nginx to their
     # ~/Library/LaunchAgents directory. So we need to have a symlink there
     # for such cases

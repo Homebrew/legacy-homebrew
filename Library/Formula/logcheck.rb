@@ -13,7 +13,7 @@ class Logcheck < Formula
                    "BINDIR=bin"
   end
 
-  def test
+  test do
     system "#{sbin}/logtail", "-f", "#{HOMEBREW_REPOSITORY}/README.md"
   end
 end

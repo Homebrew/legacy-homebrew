@@ -30,7 +30,7 @@ class Freetds < Formula
             ]
 
     if build.include? "with-unixodbc"
-      args << "--with-unixodbc=#{Formula.factory('unixodbc').prefix}"
+      args << "--with-unixodbc=#{Formula['unixodbc'].prefix}"
     end
 
     if build.include? "enable-msdblib"
@@ -48,7 +48,7 @@ class Freetds < Formula
     system 'make install'
   end
 
-  def test
+  test do
     system "#{bin}/tsql", "-C"
   end
 end

@@ -2,22 +2,31 @@
 class Formulary
 
   def self.unload_formula formula_name
-    Object.send(:remove_const, Formula.class_s(formula_name))
+    Object.send(:remove_const, class_s(formula_name))
   end
 
   def self.formula_class_defined? formula_name
-    Object.const_defined?(Formula.class_s(formula_name))
+    Object.const_defined?(class_s(formula_name))
   end
 
   def self.get_formula_class formula_name
-    Object.const_get(Formula.class_s(formula_name))
+    Object.const_get(class_s(formula_name))
   end
 
   def self.restore_formula formula_name, value
     old_verbose, $VERBOSE = $VERBOSE, nil
-    Object.const_set(Formula.class_s(formula_name), value)
+    Object.const_set(class_s(formula_name), value)
   ensure
     $VERBOSE = old_verbose
+  end
+
+  def self.class_s name
+    (@class_s ||= {}).fetch(name) do
+      class_name = name.capitalize
+      class_name.gsub!(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase }
+      class_name.gsub!('+', 'x')
+      @class_s[name] = class_name
+    end
   end
 
   # A FormulaLoader returns instances of formulae.
@@ -44,7 +53,7 @@ class Formulary
       unless have_klass
         puts "#{$0}: loading #{path}" if ARGV.debug?
         begin
-          require path.to_s
+          require path
         rescue NoMethodError
           # This is a programming error in an existing formula, and should not
           # have a "no such formula" message.
@@ -56,7 +65,7 @@ class Formulary
       end
 
       klass = Formulary.get_formula_class(name)
-      if (klass == Formula) || !klass.ancestors.include?(Formula)
+      if klass == Formula || !(klass < Formula)
         raise FormulaUnavailableError.new(name)
       end
       klass
@@ -80,7 +89,7 @@ class Formulary
     end
 
     def get_formula
-      formula = klass.new(name)
+      formula = klass.new(name, path)
       formula.local_bottle_path = @bottle_filename
       return formula
     end
@@ -94,7 +103,7 @@ class Formulary
     end
 
     def get_formula
-      return klass.new(name)
+      klass.new(name, path)
     end
   end
 
@@ -105,12 +114,12 @@ class Formulary
       # in our codebase will require an exact and fullpath.
       path = "#{path}.rb" unless path =~ /\.rb$/
 
-      @path = Pathname.new(path)
+      @path = Pathname.new(path).expand_path
       @name = @path.stem
     end
 
     def get_formula
-      klass.new(name, path.to_s)
+      klass.new(name, path)
     end
   end
 
@@ -134,7 +143,7 @@ class Formulary
     end
 
     def get_formula
-      return klass.new(name, path.to_s)
+      return klass.new(name, path)
     end
   end
 
@@ -146,7 +155,9 @@ class Formulary
     end
 
     def get_formula
-      klass.new(tapped_name, path.to_s)
+      klass.new(name, path)
+    rescue FormulaUnavailableError => e
+      raise TapFormulaUnavailableError.new(e.name)
     end
   end
 
@@ -165,7 +176,7 @@ class Formulary
       f = BottleLoader.new(ref)
     else
       name_or_path = Formula.canonical_name(ref)
-      if name_or_path =~ %r{^(\w+)/(\w+)/([^/])+$}
+      if name_or_path =~ HOMEBREW_TAP_FORMULA_REGEX
         # name appears to be a tapped formula, so we don't munge it
         # in order to provide a useful error message when require fails.
         f = TapLoader.new(name_or_path)
@@ -173,7 +184,7 @@ class Formulary
         # If name was a path or mapped to a cached formula
         f = FromPathLoader.new(name_or_path)
       elsif name_or_path =~ /\.rb$/
-        f = FromPathLoader.new("./#{name_or_path}")
+        f = FromPathLoader.new(File.expand_path(name_or_path))
       else
         f = StandardLoader.new(name_or_path)
       end

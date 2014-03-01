@@ -13,11 +13,13 @@ class Ettercap < Formula
 
   # fixes absence of strndup function on 10.6 and lower; merged upstream
   def patches
-    "https://github.com/Ettercap/ettercap/commit/1692218693ed419465466299c8c76da41c37c945.patch"
-  end if MacOS.version < :lion
+    if MacOS.version < :lion
+      "https://github.com/Ettercap/ettercap/commit/1692218693ed419465466299c8c76da41c37c945.patch"
+    end
+  end
 
   def install
-    libnet = Formula.factory 'libnet'
+    libnet = Formula['libnet']
 
     args = ['..'] + std_cmake_args + [
       "-DINSTALL_SYSCONFDIR=#{etc}",

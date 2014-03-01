@@ -58,7 +58,7 @@ class Luarocks < Formula
     EOS
   end
 
-  def test
+  test do
     opoo "Luarocks test script installs 'lpeg'"
     system "#{bin}/luarocks", "install", "lpeg"
     system "lua", "-llpeg", "-e", 'print ("Hello World!")'

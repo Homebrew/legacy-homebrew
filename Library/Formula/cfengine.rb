@@ -21,13 +21,13 @@ class Cfengine < Formula
                           "--prefix=#{prefix}",
                           "--with-workdir=#{var}/cfengine",
                           "--with-tokyocabinet",
-                          "--with-pcre=#{Formula.factory('pcre').opt_prefix}",
+                          "--with-pcre=#{Formula['pcre'].opt_prefix}",
                           "--without-mysql",
                           "--without-postgresql"
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/cf-agent", "-V"
   end
 end

@@ -16,7 +16,7 @@ class Formula
   include Utils::Inreplace
   extend BuildEnvironmentDSL
 
-  attr_reader :name, :path, :homepage, :downloader, :build
+  attr_reader :name, :path, :homepage, :build
   attr_reader :stable, :bottle, :devel, :head, :active_spec
 
   # The current working directory during builds and tests.
@@ -30,10 +30,9 @@ class Formula
   attr_reader :cxxstdlib
 
   # Homebrew determines the name
-  def initialize name='__UNKNOWN__', path=nil
+  def initialize name='__UNKNOWN__', path=self.class.path(name)
     @name = name
-    # If we got an explicit path, use that, else determine from the name
-    @path = path.nil? ? self.class.path(name) : Pathname.new(path).expand_path
+    @path = path
     @homepage = self.class.homepage
 
     set_spec :stable
@@ -53,12 +52,11 @@ class Formula
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
-    @downloader = active_spec.downloader
     @build = determine_build_options
 
     @pin = FormulaPin.new(self)
 
-    @cxxstdlib ||= Set.new
+    @cxxstdlib = Set.new
   end
 
   def set_spec(name)
@@ -118,6 +116,14 @@ class Formula
 
   def requirements
     active_spec.requirements
+  end
+
+  def cached_download
+    active_spec.cached_download
+  end
+
+  def clear_cache
+    active_spec.clear_cache
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -195,14 +201,6 @@ class Formula
     Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
   end
 
-  def cached_download
-    downloader.cached_location
-  end
-
-  def clear_cache
-    downloader.clear_cache
-  end
-
   # Can be overridden to selectively disable bottles from formulae.
   # Defaults to true so overridden version does not have to check if bottles
   # are supported.
@@ -244,17 +242,17 @@ class Formula
     (self.class.cc_failures || []).any? do |failure|
       # Major version check distinguishes between, e.g.,
       # GCC 4.7.1 and GCC 4.8.2, where a comparison is meaningless
-      failure.compiler == cc.name && failure.major_version == cc.major_version && \
-        failure.version >= cc.version
+      failure.compiler == cc.name && failure.major_version == cc.major_version &&
+        failure.version >= (cc.version || 0)
     end
   end
 
-  # sometimes the clean process breaks things
+  # sometimes the formula cleaner breaks things
   # skip cleaning paths in a formula with a class method like this:
-  #   skip_clean [bin+"foo", lib+"bar"]
-  # redefining skip_clean? now deprecated
+  #   skip_clean "bin/foo", "lib"bar"
+  # keep .la files with:
+  #   skip_clean :la
   def skip_clean? path
-    return true if self.class.skip_clean_all?
     return true if path.extname == '.la' and self.class.skip_clean_paths.include? :la
     to_check = path.relative_path_from(prefix).to_s
     self.class.skip_clean_paths.include? to_check
@@ -349,11 +347,8 @@ class Formula
   alias_method :python2, :python
   alias_method :python3, :python
 
-  # Generates a formula's ruby class name from a formula's name
   def self.class_s name
-    # remove invalid characters and then camelcase it
-    name.capitalize.gsub(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase } \
-                   .gsub('+', 'x')
+    Formulary.class_s(name)
   end
 
   # an array of all Formula names
@@ -364,7 +359,7 @@ class Formula
   def self.each
     names.each do |name|
       begin
-        yield Formula.factory(name)
+        yield Formulary.factory(name)
       rescue StandardError => e
         # Don't let one broken formula break commands. But do complain.
         onoe "Failed to import: #{name}"
@@ -382,7 +377,7 @@ class Formula
 
     HOMEBREW_CELLAR.subdirs.map do |rack|
       begin
-        factory(rack.basename.to_s)
+        Formulary.factory(rack.basename.to_s)
       rescue FormulaUnavailableError
       end
     end.compact
@@ -408,7 +403,7 @@ class Formula
     end
 
     # test if the name is a core formula
-    formula_with_that_name = Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb")
+    formula_with_that_name = Formula.path(name)
     if formula_with_that_name.file? and formula_with_that_name.readable?
       return name
     end
@@ -429,6 +424,11 @@ class Formula
     return name
   end
 
+  def self.[](name)
+    Formulary.factory(name)
+  end
+
+  # deprecated
   def self.factory name
     Formulary.factory name
   end
@@ -553,6 +553,7 @@ class Formula
   # Throws if there's an error
   def system cmd, *args
     removed_ENV_variables = {}
+    rd, wr = IO.pipe
 
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
@@ -573,7 +574,6 @@ class Formula
     logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
-    rd, wr = IO.pipe
     fork do
       ENV['HOMEBREW_CC_LOG_PATH'] = logfn
       rd.close
@@ -606,7 +606,7 @@ class Formula
       end
     end
   ensure
-    rd.close if rd and not rd.closed?
+    rd.close unless rd.closed?
     ENV.update(removed_ENV_variables)
   end
 
@@ -643,7 +643,7 @@ class Formula
   # Explicitly request changing C++ standard library compatibility check
   # settings. Use with caution!
   def cxxstdlib_check check_type
-    @cxxstdlib << check_type
+    cxxstdlib << check_type
   end
 
   def self.method_added method
@@ -750,18 +750,8 @@ class Formula
 
     def skip_clean *paths
       paths.flatten!
-
-      # :all is deprecated though
-      if paths.include? :all
-        @skip_clean_all = true
-        return
-      end
-
+      # Specifying :all is deprecated and will become an error
       skip_clean_paths.merge(paths)
-    end
-
-    def skip_clean_all?
-      @skip_clean_all
     end
 
     def skip_clean_paths

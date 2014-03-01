@@ -11,7 +11,7 @@ class Gringo < Formula
   depends_on :macos => :mavericks
 
   def install
-    system "scons", "--build-dir=release", "gringo", "clingo"
+    scons "--build-dir=release", "gringo", "clingo"
     bin.install "build/release/gringo", "build/release/clingo"
   end
 end

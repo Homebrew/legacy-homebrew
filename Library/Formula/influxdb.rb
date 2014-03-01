@@ -11,6 +11,11 @@ class Influxdb < Formula
     sha1 "be6df288b6d385c27e48ba221a12970be0eb0beb" => :lion
   end
 
+  devel do
+    url "http://get.influxdb.org/influxdb-0.5.0-rc.2.src.tar.gz"
+    sha1 "6a92bd84de31a1bd4e9b50e2190be3512347f306"
+  end
+
   depends_on "leveldb"
   depends_on "protobuf" => :build
   depends_on "bison" => :build
@@ -20,8 +25,8 @@ class Influxdb < Formula
   def install
     ENV["GOPATH"] = buildpath
 
-    flex = Formula.factory("flex").bin/"flex"
-    bison = Formula.factory("bison").bin/"bison"
+    flex = Formula["flex"].bin/"flex"
+    bison = Formula["bison"].bin/"bison"
 
     system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
     system "make", "dependencies", "protobuf", "parser"

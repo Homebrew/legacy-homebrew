@@ -14,7 +14,7 @@ class JpegTurbo < Formula
     if MacOS.prefer_64_bit?
       args << "--host=x86_64-apple-darwin"
       # Auto-detect our 64-bit nasm
-      args << "NASM=#{Formula.factory('nasm').bin}/nasm"
+      args << "NASM=#{Formula["nasm"].bin}/nasm"
     end
 
     system "./configure", *args

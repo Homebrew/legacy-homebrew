@@ -10,6 +10,7 @@ require 'caveats'
 require 'cleaner'
 require 'formula_cellar_checks'
 require 'install_renamed'
+require 'cmd/tap'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -31,6 +32,7 @@ class FormulaInstaller
     @poured_bottle = false
     @pour_failed   = false
 
+    verify_deps_exist unless ignore_deps
     lock
     check_install_sanity
   end
@@ -39,6 +41,16 @@ class FormulaInstaller
     return false if @pour_failed
     tab.used_options.empty? && options.empty? && \
       install_bottle?(f, install_bottle_options)
+  end
+
+  def verify_deps_exist
+    f.recursive_dependencies.map(&:to_formula)
+  rescue TapFormulaUnavailableError => e
+    Homebrew.install_tap(e.user, e.repo)
+    retry
+  rescue FormulaUnavailableError => e
+    e.dependent = f.name
+    raise
   end
 
   def check_install_sanity
@@ -70,12 +82,6 @@ class FormulaInstaller
       raise CannotInstallFormulaError,
         "You must `brew link #{unlinked_deps*' '}' before #{f} can be installed" unless unlinked_deps.empty?
     end
-
-  rescue FormulaUnavailableError => e
-    # this is sometimes wrong if the dependency chain is more than one deep
-    # but can't easily fix this without a rewrite FIXME-brew2
-    e.dependent = f.name
-    raise
   end
 
   def build_bottle_preinstall
@@ -239,9 +245,11 @@ class FormulaInstaller
     # because it depends on the contents of ARGV.
     pour_bottle = pour_bottle?
 
-    ARGV.filter_for_dependencies do
+    inherited_options = {}
+
+    expanded_deps = ARGV.filter_for_dependencies do
       Dependency.expand(f, deps) do |dependent, dep|
-        dep.universal! if f.build.universal? && !dep.build?
+        options = inherited_options[dep] = inherited_options_for(f, dep)
 
         if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
           Dependency.prune
@@ -249,51 +257,54 @@ class FormulaInstaller
           Dependency.prune
         elsif dep.build? && dependent != f && install_bottle?(dependent)
           Dependency.prune
-        elsif dep.satisfied?
+        elsif dep.satisfied?(options)
           Dependency.skip
         elsif dep.installed?
-          raise UnsatisfiedDependencyError.new(f, dep)
+          raise UnsatisfiedDependencyError.new(f, dep, options)
         end
       end
     end
+
+    expanded_deps.map { |dep| [dep, inherited_options[dep]] }
+  end
+
+  def inherited_options_for(f, dep)
+    options = Options.new
+    options << Option.new("universal") if f.build.universal? && !dep.build?
+    options
   end
 
   def install_dependencies(deps)
     if deps.length > 1
-      oh1 "Installing dependencies for #{f}: #{Tty.green}#{deps*", "}#{Tty.reset}"
+      oh1 "Installing dependencies for #{f}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
     end
 
-    deps.each do |dep|
-      if dep.requested?
-       install_dependency(dep)
-      else
-        ARGV.filter_for_dependencies { install_dependency(dep) }
-      end
+    ARGV.filter_for_dependencies do
+      deps.each { |dep, options| install_dependency(dep, options) }
     end
+
     @show_header = true unless deps.empty?
   end
 
-  def install_dependency dep
-    dep_tab = Tab.for_formula(dep.to_formula)
-    dep_options = dep.options
-    dep = dep.to_formula
+  def install_dependency(dep, inherited_options)
+    df = dep.to_formula
 
-    outdated_keg = Keg.new(dep.linked_keg.realpath) rescue nil
+    outdated_keg = Keg.new(df.linked_keg.realpath) rescue nil
 
-    fi = FormulaInstaller.new(dep)
-    fi.tab = dep_tab
-    fi.options = dep_options
+    fi = FormulaInstaller.new(df)
+    fi.tab = Tab.for_formula(dep.to_formula)
+    fi.options = dep.options | inherited_options
     fi.ignore_deps = true
     fi.only_deps = false
     fi.show_header = false
-    oh1 "Installing #{f} dependency: #{Tty.green}#{dep}#{Tty.reset}"
+    oh1 "Installing #{f} dependency: #{Tty.green}#{df}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
     fi.caveats
     fi.finish
   ensure
     # restore previous installation state if build failed
-    outdated_keg.link if outdated_keg and not dep.installed? rescue nil
+    outdated_keg.link if outdated_keg and not df.installed? rescue nil
   end
 
   def caveats
@@ -482,15 +493,7 @@ class FormulaInstaller
 
   def clean
     ohai "Cleaning" if ARGV.verbose?
-    if f.class.skip_clean_all?
-      opoo "skip_clean :all is deprecated"
-      puts "Skip clean was commonly used to prevent brew from stripping binaries."
-      puts "brew no longer strips binaries, if skip_clean is required to prevent"
-      puts "brew from removing empty directories, you should specify exact paths"
-      puts "in the formula."
-      return
-    end
-    Cleaner.new f
+    Cleaner.new(f).clean
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix"
@@ -511,9 +514,9 @@ class FormulaInstaller
     if f.local_bottle_path
       downloader = LocalBottleDownloadStrategy.new(f)
     else
-      downloader = f.downloader
-      fetched = f.fetch
-      f.verify_download_integrity fetched
+      bottle = f.bottle
+      downloader = bottle.downloader
+      bottle.verify_download_integrity(bottle.fetch)
     end
     HOMEBREW_CELLAR.cd do
       downloader.stage

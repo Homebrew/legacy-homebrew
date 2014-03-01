@@ -16,7 +16,7 @@ class Gpredict < Formula
   depends_on 'hamlib'
 
   def install
-    gettext = Formula.factory('gettext')
+    gettext = Formula['gettext']
     ENV.append "CFLAGS", "-I#{gettext.include}"
     ENV.append "LDFLAGS", "-L#{gettext.lib}"
 

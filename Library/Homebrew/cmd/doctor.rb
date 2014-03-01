@@ -1071,7 +1071,7 @@ end
   end
 
   def check_for_latest_xquartz
-    return unless MacOS::XQuartz.installed?
+    return unless MacOS::XQuartz.version
     return if MacOS::XQuartz.provided_by_apple?
 
     installed_version = Version.new(MacOS::XQuartz.version)
@@ -1084,6 +1084,16 @@ end
       Please install XQuartz #{latest_version}:
         https://xquartz.macosforge.org
     EOS
+  end
+
+  def check_for_old_env_vars
+    if ENV["HOMEBREW_KEEP_INFO"]
+      <<-EOS.undent
+      `HOMEBREW_KEEP_INFO` is no longer used
+      info files are no longer deleted by default; you may
+      remove this environment variable.
+      EOS
+    end
   end
 end # end class Checks
 

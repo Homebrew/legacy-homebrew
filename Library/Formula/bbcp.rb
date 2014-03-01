@@ -21,7 +21,7 @@ class Bbcp < Formula
     bin.install "bin/bbcp"
   end
 
-  def test
+  test do
     system "#{bin}/bbcp", "--help"
   end
 end

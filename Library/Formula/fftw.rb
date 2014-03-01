@@ -5,7 +5,15 @@ class Fftw < Formula
   url 'http://www.fftw.org/fftw-3.3.3.tar.gz'
   sha1 '11487180928d05746d431ebe7a176b52fe205cf9'
 
+  bottle do
+    cellar :any
+    sha1 "9aeaea9d8cfacda9b6b4a2be377e5cff1c639de6" => :mavericks
+    sha1 "d59acf1f5bd1ac955ab930fbbef2a2efc8ee3a55" => :mountain_lion
+    sha1 "272dc2ed950d7ddf59dee0eaf00499c7fd965f95" => :lion
+  end
+
   option "with-fortran", "Enable Fortran bindings"
+  option :universal
 
   depends_on :fortran => :optional
 
@@ -19,6 +27,8 @@ class Fftw < Formula
     simd_args << "--enable-avx" if ENV.compiler == :clang and Hardware::CPU.avx? and !build.bottle?
 
     args << "--disable-fortran" unless build.with? "fortran"
+
+    ENV.universal_binary if build.universal?
 
     # single precision
     # enable-sse2 and enable-avx works for both single and double precision

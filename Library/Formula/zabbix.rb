@@ -52,7 +52,7 @@ class Zabbix < Formula
     end
   end
 
-  def test
+  test do
     system "#{sbin}/zabbix_agentd", "--print"
   end
 end

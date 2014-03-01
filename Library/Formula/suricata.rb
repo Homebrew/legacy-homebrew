@@ -2,8 +2,8 @@ require 'formula'
 
 class Suricata < Formula
   homepage 'http://suricata-ids.org'
-  url 'http://www.openinfosecfoundation.org/download/suricata-1.4.5.tar.gz'
-  sha1 '723e111d19376dd352df4b50f3ee635a5328b01e'
+  url 'http://www.openinfosecfoundation.org/download/suricata-1.4.7.tar.gz'
+  sha1 '33eb752ee40e4377e78465d089c5113b7295ce2f'
 
   depends_on :autoconf
   depends_on :automake

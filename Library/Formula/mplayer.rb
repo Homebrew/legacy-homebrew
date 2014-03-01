@@ -12,9 +12,9 @@ class Mplayer < Formula
 
   depends_on 'yasm' => :build
   depends_on 'libcaca' => :optional
-  depends_on :x11 if build.include? 'with-x'
+  depends_on :x11 if build.with? 'x'
 
-  unless build.include? 'without-osd' or build.include? 'with-x'
+  unless build.without? 'osd' or build.with? 'x'
     # These are required for the OSD. We can get them from X11, or we can
     # build our own.
     depends_on :fontconfig
@@ -57,8 +57,8 @@ class Mplayer < Formula
       --disable-libopenjpeg
     ]
 
-    args << "--enable-menu" unless build.include? 'without-osd'
-    args << "--disable-x11" unless build.include? 'with-x'
+    args << "--enable-menu" unless build.without? 'osd'
+    args << "--disable-x11" unless build.with? 'x'
     args << "--enable-caca" if build.with? 'libcaca'
 
     system "./configure", *args
@@ -66,7 +66,7 @@ class Mplayer < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/mplayer", "-ao", "null", "/System/Library/Sounds/Glass.aiff"
   end
 end

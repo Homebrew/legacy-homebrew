@@ -3,7 +3,7 @@ def blacklisted? name
   when 'screen', /^rubygems?$/ then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/bin.
     EOS
-  when 'libarchive', 'libpcap' then <<-EOS.undent
+  when 'libpcap' then <<-EOS.undent
     Apple distributes #{name} with OS X, you can find it in /usr/lib.
     EOS
   when 'libiconv' then <<-EOS.undent

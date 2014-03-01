@@ -39,22 +39,31 @@ class FormulaUnavailableError < RuntimeError
   attr_reader :name
   attr_accessor :dependent
 
+  def initialize name
+    @name = name
+  end
+
   def dependent_s
     "(dependency of #{dependent})" if dependent and dependent != name
   end
 
   def to_s
-    if name =~ HOMEBREW_TAP_FORMULA_REGEX then <<-EOS.undent
-      No available formula for #$3 #{dependent_s}
-      Please tap it and then try again: brew tap #$1/#$2
-      EOS
-    else
-      "No available formula for #{name} #{dependent_s}"
-    end
+    "No available formula for #{name} #{dependent_s}"
   end
+end
+
+class TapFormulaUnavailableError < FormulaUnavailableError
+  attr_reader :user, :repo, :shortname
 
   def initialize name
-    @name = name
+    super
+    @user, @repo, @shortname = name.split("/", 3)
+  end
+
+  def to_s; <<-EOS.undent
+      No available formula for #{shortname} #{dependent_s}
+      Please tap it and then try again: brew tap #{user}/#{repo}
+    EOS
   end
 end
 
@@ -92,10 +101,10 @@ class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
 end
 
 class UnsatisfiedDependencyError < Homebrew::InstallationError
-  def initialize(f, dep)
+  def initialize(f, dep, inherited_options)
     super f, <<-EOS.undent
     #{f} dependency #{dep} not installed with:
-      #{dep.missing_options * ', '}
+      #{dep.missing_options(inherited_options) * ', '}
     EOS
   end
 end

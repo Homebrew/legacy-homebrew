@@ -11,7 +11,7 @@ class Wry < Formula
   depends_on :xcode
 
   def install
-    system 'xcodebuild -target wry -configuration Release SYMROOT=build OBJROOT=objroot'
+    xcodebuild "-target", "wry", "-configuration", "Release", "SYMROOT=build", "OBJROOT=objroot"
     bin.install 'build/Release/wry'
   end
 end
