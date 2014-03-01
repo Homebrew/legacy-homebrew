@@ -9,7 +9,14 @@ class Drush < Formula
   def install
     prefix.install_metafiles
     libexec.install Dir['*'] -['drush.bat']
-    bin.install_symlink libexec/'drush'
+    (bin+'drush').write <<-EOS.undent
+      #!/bin/sh
+
+      export ETC_PREFIX=${ETC_PREFIX:=#{HOMEBREW_PREFIX}}
+      export SHARE_PREFIX=${SHARE_PREFIX:=#{HOMEBREW_PREFIX}}
+
+      exec "#{libexec}/drush" "$@"
+    EOS
     bash_completion.install libexec/'drush.complete.sh' => 'drush'
   end
 end

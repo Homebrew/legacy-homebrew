@@ -22,6 +22,11 @@ class Wxmac < Formula
   depends_on :python => :recommended
   depends_on FrameworkPython if build.with? "python"
 
+  def patches
+    # Upstream patch for starting non-bundled apps like gnuplot (see http://trac.wxwidgets.org/ticket/15613)
+    {:p2 => 'http://trac.wxwidgets.org/changeset/75142/wxWidgets/trunk/src/osx/cocoa/utils.mm?format=diff&new=75142'}
+  end
+
   def install_wx_python
     args = [
       # Reference our wx-config
@@ -78,6 +83,10 @@ class Wxmac < Formula
       "--enable-clipboard",
       "--enable-webkit",
       "--enable-svg",
+      "--enable-mediactrl",
+      "--enable-graphics_ctx",
+      "--enable-controls",
+      "--enable-dataviewctrl",
       "--with-expat",
       "--with-macosx-version-min=#{MacOS.version}",
       "--with-macosx-sdk=#{MacOS.sdk_path}",

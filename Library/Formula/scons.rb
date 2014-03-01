@@ -5,7 +5,14 @@ class Scons < Formula
   url 'http://downloads.sourceforge.net/scons/scons-2.3.0.tar.gz'
   sha1 '728edf20047a9f8a537107dbff8d8f803fd2d5e3'
 
+  bottle do
+    sha1 "ba61be5122f1b4d918f50403dc68f27ee0b5e4d9" => :mavericks
+    sha1 "35b7e5c98b133d28606eb4ca2afe11a5a5550fa2" => :mountain_lion
+    sha1 "24c58992d86f2a4d618993d002bc266fc0e362e4" => :lion
+  end
+
   def install
+    bin.mkpath # Script won't create this if it doesn't already exist
     man1.install gzip('scons-time.1', 'scons.1', 'sconsign.1')
     system "/usr/bin/python", "setup.py", "install",
              "--prefix=#{prefix}",

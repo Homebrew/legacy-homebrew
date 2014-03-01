@@ -31,7 +31,7 @@ class Exim < Formula
       s << "LOOKUP_LIBS=-L#{HOMEBREW_PREFIX}/lib\n"
     end
 
-    bdb4 = Formula.factory("berkeley-db4")
+    bdb4 = Formula["berkeley-db4"]
 
     inreplace 'OS/Makefile-Darwin' do |s|
       s.remove_make_var! %w{CC CFLAGS}

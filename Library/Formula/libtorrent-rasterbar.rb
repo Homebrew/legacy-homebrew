@@ -2,17 +2,19 @@ require 'formula'
 
 class LibtorrentRasterbar < Formula
   homepage 'http://www.rasterbar.com/products/libtorrent/'
-  url 'https://libtorrent.googlecode.com/files/libtorrent-rasterbar-0.16.13.tar.gz'
-  sha1 '93a2098d77e9f36ff99966311be1e6cbb131e70f'
+  url 'http://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-0.16.14.tar.gz'
+  sha1 'e9075354af9b7c3f6a62d54d34c407c75b0bfaff'
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'
   depends_on 'openssl' if MacOS.version <= :snow_leopard # Needs a newer version of OpenSSL on Snow Leopard
 
   def install
+    boost = Formula["boost"]
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-boost=#{boost.opt_prefix}"
     system "make install"
   end
 end

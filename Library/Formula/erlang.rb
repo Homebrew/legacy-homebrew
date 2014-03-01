@@ -6,25 +6,25 @@ require 'formula'
 class Erlang < Formula
   homepage 'http://www.erlang.org'
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/archive/OTP_R16B03.tar.gz'
-  sha1 '3230f2ec4bb0cc11d2c89a21c396e7db3045474d'
+  url 'https://github.com/erlang/otp/archive/OTP_R16B03-1.tar.gz'
+  sha1 'b8f6ff90d9eb766984bb63bf553c3be72674d970'
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
   bottle do
-    sha1 'ab820bf4be42fb4496fca3ca2dc4fc83bffdd9b5' => :mavericks
-    sha1 '131f82f5ed7c272f80b9ead96b016a4d04be8bab' => :mountain_lion
-    sha1 'dccac71186d57b7be40c1901d1169c7010cbde1d' => :lion
+    sha1 "8ddcb4731b804d517ea05eca4933f1f82bdcee6e" => :mavericks
+    sha1 "7b1ffcfae2cc6583fdf454398c8081f955a6e57a" => :mountain_lion
+    sha1 "eac0744faed837fd928e44f37458a7a0c4e44835" => :lion
   end
 
   resource 'man' do
-    url 'http://erlang.org/download/otp_doc_man_R16B03.tar.gz'
-    sha1 '66e866de2e8f371251ab230677124c1a4874b9ea'
+    url 'http://erlang.org/download/otp_doc_man_R16B03-1.tar.gz'
+    sha1 'afde5507a389734adadcd4807595f8bc76ebde1b'
   end
 
   resource 'html' do
-    url 'http://erlang.org/download/otp_doc_html_R16B03.tar.gz'
-    sha1 '69a2680c8dfe82a2200fa7bcdbc89f798c160b84'
+    url 'http://erlang.org/download/otp_doc_html_R16B03-1.tar.gz'
+    sha1 'a2c0d2b7b9abe6214aff4c75ecc6be62042924e6'
   end
 
   option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
@@ -65,7 +65,9 @@ class Erlang < Formula
       --enable-smp-support
     ]
 
-    args << "--with-dynamic-trace=dtrace" unless MacOS.version <= :leopard or not MacOS::CLT.installed?
+    if MacOS.version >= :snow_leopard and MacOS::CLT.installed?
+      args << "--with-dynamic-trace=dtrace"
+    end
 
     unless build.include? 'disable-hipe'
       # HIPE doesn't strike me as that reliable on OS X
@@ -98,7 +100,7 @@ class Erlang < Formula
     EOS
   end
 
-  def test
+  test do
     `#{bin}/erl -noshell -eval 'crypto:start().' -s init stop`
 
     # This test takes some time to run, but per bug #120 should finish in

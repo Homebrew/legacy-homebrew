@@ -30,7 +30,7 @@ class Web100clt < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/web100clt", "-v"
   end
 end

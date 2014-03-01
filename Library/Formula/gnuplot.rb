@@ -65,18 +65,18 @@ class Gnuplot < Formula
     end
 
     # Help configure find libraries
-    readline = Formula.factory 'readline'
-    pdflib = Formula.factory 'pdflib-lite'
-    gd = Formula.factory 'gd'
+    readline = Formula["readline"].opt_prefix
+    pdflib = Formula["pdflib-lite"].opt_prefix
+    gd = Formula["gd"].opt_prefix
 
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
-      --with-readline=#{readline.opt_prefix}
+      --with-readline=#{readline}
     ]
 
-    args << "--with-pdf=#{pdflib.opt_prefix}" if build.include? 'pdf'
-    args << '--with' + ((build.include? 'nogd') ? 'out-gd' : "-gd=#{gd.opt_prefix}")
+    args << "--with-pdf=#{pdflib}" if build.include? 'pdf'
+    args << '--with' + ((build.include? 'nogd') ? 'out-gd' : "-gd=#{gd}")
     args << '--disable-wxwidgets' unless build.include? 'wx'
     args << '--without-cairo'     unless build.include? 'cairo'
     args << '--enable-qt'             if build.include? 'qt'
@@ -100,7 +100,7 @@ class Gnuplot < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/gnuplot", "--version"
   end
 

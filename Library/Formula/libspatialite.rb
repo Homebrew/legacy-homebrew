@@ -38,12 +38,12 @@ class Libspatialite < Formula
     end
 
     # Ensure Homebrew's libsqlite is found before the system version.
-    sqlite = Formula.factory 'sqlite'
+    sqlite = Formula["sqlite"]
     ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib"
     ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
 
     unless build.without? 'liblwgeom'
-      lwgeom = Formula.factory 'liblwgeom'
+      lwgeom = Formula["liblwgeom"]
       ENV.append 'LDFLAGS', "-L#{lwgeom.opt_prefix}/lib"
       ENV.append 'CFLAGS', "-I#{lwgeom.opt_prefix}/include"
     end

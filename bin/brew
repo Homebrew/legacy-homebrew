@@ -15,6 +15,11 @@ fi
 
 BREW_LIBRARY_DIRECTORY=$(cd "$BREW_FILE_DIRECTORY"/../Library && pwd -P)
 
+# Users may have these set, pointing the system Ruby
+# at non-system gem paths
+unset GEM_HOME
+unset GEM_PATH
+
 BREW_SYSTEM=$(uname -s | tr "[:upper:]" "[:lower:]")
 if [ "$BREW_SYSTEM" = "darwin" ]
 then

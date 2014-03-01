@@ -26,6 +26,7 @@ class Lsyncd < Formula
     "10.8.5" => ['xnu-2050.48.11.tar.gz', '1f6860148f8231a53a6b393aa1af589cdedfc70c'],
     "10.9"   => ['xnu-2422.1.72.tar.gz',  'c7bdc40396df3c51ece934c0e3b4a19b063ea34c'],
     "10.9.1" => ['xnu-2422.1.72.tar.gz',  'c7bdc40396df3c51ece934c0e3b4a19b063ea34c'],
+    "10.9.2" => ['xnu-2422.1.72.tar.gz',  'c7bdc40396df3c51ece934c0e3b4a19b063ea34c'],
   }
 
   if xnu_headers.key? osx_version
@@ -42,11 +43,11 @@ class Lsyncd < Formula
     ENV.append 'CPPFLAGS', "-I./xnu"
 
     # Docbook Catalog
-    docbook = Formula.factory 'docbook'
+    docbook = Formula["docbook"]
     ENV.append 'XML_CATALOG_FILES', docbook.opt_prefix/'docbook/xml/4.5/catalog.xml'
 
     # Asciidoc Binary
-    a2x = Formula.factory 'asciidoc'
+    a2x = Formula["asciidoc"]
     a2x_path = a2x.bin/'a2x'
     inreplace "Makefile.am", "$(A2X)", a2x_path
 
@@ -60,7 +61,7 @@ class Lsyncd < Formula
 
   end
 
-  def test
+  test do
     system "lsyncd", "--version"
   end
 end

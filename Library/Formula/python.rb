@@ -25,13 +25,13 @@ class Python < Formula
   skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.1.tar.gz'
-    sha1 '3e4a325d807eb0104e98985e7bd9f1ef86fc2efa'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.2.tar.gz'
+    sha1 '547eff11ea46613e8a9ba5b12a89c1010ecc4e51'
   end
 
   resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.2.tar.gz'
-    sha1 '4f43a6b04f83b8d83bee702750ff35be2a2b6af1'
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.4.tar.gz'
+    sha1 '35ccb7430356186cf253615b70f8ee580610f734'
   end
 
   def patches
@@ -41,12 +41,12 @@ class Python < Formula
   end
 
   def lib_cellar
-    prefix / (if OS.mac? then 'Frameworks/Python.framework/Versions/2.7' end) /
-      'lib/python2.7'
+    prefix / (if OS.mac? then "Frameworks/Python.framework/Versions/2.7" end) /
+      "lib/python2.7"
   end
 
   def site_packages_cellar
-    lib_cellar/'site-packages'
+    lib_cellar/"site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
@@ -96,8 +96,9 @@ class Python < Formula
     end
 
     if build.with? 'brewed-tk'
-      ENV.append 'CPPFLAGS', "-I#{Formula.factory('tcl-tk').opt_prefix}/include"
-      ENV.append 'LDFLAGS', "-L#{Formula.factory('tcl-tk').opt_prefix}/lib"
+      tcl_tk = Formula["tcl-tk"].opt_prefix
+      ENV.append 'CPPFLAGS', "-I#{tcl_tk}/include"
+      ENV.append 'LDFLAGS', "-L#{tcl_tk}/lib"
     end
 
     system "./configure", *args
@@ -144,7 +145,7 @@ class Python < Formula
     resource('pip').stage { system "#{bin}/python", *setup_args }
 
     # And now we write the distutils.cfg
-    cfg = lib_cellar / 'distutils/distutils.cfg'
+    cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.delete if cfg.exist?
     cfg.write <<-EOF.undent
       [global]
@@ -155,7 +156,7 @@ class Python < Formula
     EOF
 
     # Work-around for that bug: http://bugs.python.org/issue18050
-    inreplace lib_cellar / 're.py', 'import sys', <<-EOS.undent
+    inreplace lib_cellar/"re.py", "import sys", <<-EOS.undent
       import sys
       try:
           from _sre import MAXREPEAT
@@ -167,7 +168,7 @@ class Python < Formula
       # Fixes setting Python build flags for certain software
       # See: https://github.com/Homebrew/homebrew/pull/20182
       # http://bugs.python.org/issue3588
-      inreplace lib_cellar / 'config/Makefile' do |s|
+      inreplace lib_cellar/"config/Makefile" do |s|
         s.change_make_var! "LINKFORSHARED",
           "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
       end
@@ -176,11 +177,13 @@ class Python < Formula
   def distutils_fix_superenv(args)
     # This is not for building python itself but to allow Python's build tools
     # (pip) to find brewed stuff when installing python packages.
-    cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
-    ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
+    sqlite = Formula["sqlite"].opt_prefix
+    cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{sqlite}/include"
+    ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{sqlite}/lib"
     if build.with? 'brewed-tk'
-      cflags += " -I#{Formula.factory('tcl-tk').opt_prefix}/include"
-      ldflags += " -L#{Formula.factory('tcl-tk').opt_prefix}/lib"
+      tcl_tk = Formula["tcl-tk"].opt_prefix
+      cflags += " -I#{tcl_tk}/include"
+      ldflags += " -L#{tcl_tk}/lib"
     end
     unless MacOS::CLT.installed?
       # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
@@ -213,7 +216,7 @@ class Python < Formula
     ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
 
     # Don't use optimizations other than "-Os" here, because Python's distutils
-    # remembers (hint: `python3-config --cflags`) and reuses them for C
+    # remembers (hint: `python-config --cflags`) and reuses them for C
     # extensions which can break software (such as scipy 0.11 fails when
     # "-msse4" is present.)
     ENV.minimal_optimization

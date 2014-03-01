@@ -12,11 +12,11 @@ class PythonDependency < Requirement
   end
 
   def modify_build_environment
-    if python_binary == 'python'
-      ENV['PYTHONPATH'] = "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages"
-    end
-
-    if !system_python? && which_python
+    if system_python?
+      if python_binary == 'python'
+        ENV['PYTHONPATH'] = "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages"
+      end
+    elsif which_python
       ENV.prepend_path 'PATH', which_python.dirname
     end
   end

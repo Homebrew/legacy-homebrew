@@ -18,7 +18,7 @@ class Jcal < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/jcal", "-y"
     system "#{bin}/jdate"
   end

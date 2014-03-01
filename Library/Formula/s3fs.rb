@@ -16,16 +16,12 @@ class S3fs < Formula
     system "make install"
   end
 
-  def caveats
-    <<-EOS.undent
-      Make sure to follow the directions given by `brew info fuse4x-kext`
-      before trying to use a FUSE-based filesystem.
+  def caveats; <<-EOS.undent
+    Be aware that s3fs has some caveats concerning S3 "directories"
+    that have been created by other tools. See the following issue for
+    details:
 
-      Also, be aware that s3fs has some caveats concerning S3 "directories"
-      that have been created by other tools. See the following issue for
-      details:
-
-        http://code.google.com/p/s3fs/issues/detail?id=73
+      http://code.google.com/p/s3fs/issues/detail?id=73
     EOS
   end
 end

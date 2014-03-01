@@ -5,8 +5,6 @@ class OpenMpi < Formula
   url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7.4.tar.bz2'
   sha1 '1e3bf2b6cebfdd3571a2f25bba9aa61aed4bbe85'
 
-  depends_on 'libevent'
-
   option 'disable-fortran', 'Do not build the Fortran bindings'
   option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
   option :cxx11
@@ -15,6 +13,7 @@ class OpenMpi < Formula
   conflicts_with 'lcdf-typetools', :because => 'both install same set of binaries.'
 
   depends_on :fortran unless build.include? 'disable-fortran'
+  depends_on 'libevent'
 
   def install
     ENV.cxx11 if build.cxx11?
@@ -24,7 +23,7 @@ class OpenMpi < Formula
       --disable-dependency-tracking
       --disable-silent-rules
       --enable-ipv6
-      --with-libevent=#{Formula.factory('libevent').opt_prefix}
+      --with-libevent=#{Formula["libevent"].opt_prefix}
     ]
     if build.include? 'disable-fortran'
       args << '--disable-mpi-f77' << '--disable-mpi-f90'

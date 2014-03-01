@@ -1,6 +1,6 @@
 require 'formula'
 
-class NpmNotInstalled < Requirement
+class NpmRequirement < Requirement
   fatal true
 
   def modules_folder
@@ -32,8 +32,8 @@ end
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.25/node-v0.10.25.tar.gz'
-  sha1 '1e330b4fbb6f7bb858a0b37d8573dd4956f40885'
+  url 'http://nodejs.org/dist/v0.10.26/node-v0.10.26.tar.gz'
+  sha1 '2340ec2dce1794f1ca1c685b56840dd515a271b2'
 
   devel do
     url 'http://nodejs.org/dist/v0.11.11/node-v0.11.11.tar.gz'
@@ -44,8 +44,9 @@ class Node < Formula
 
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'
+  option 'without-completion', 'npm bash completion will not be installed'
 
-  depends_on NpmNotInstalled unless build.without? 'npm'
+  depends_on NpmRequirement => :recommended
   depends_on :python
 
   fails_with :llvm do
@@ -56,12 +57,12 @@ class Node < Formula
     args = %W{--prefix=#{prefix}}
 
     args << "--debug" if build.include? 'enable-debug'
-    args << "--without-npm" if build.include? 'without-npm'
+    args << "--without-npm" if build.without? "npm"
 
     system "./configure", *args
     system "make install"
 
-    unless build.include? 'without-npm'
+    if build.with? "npm"
       (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
 
       # Link npm manpages
@@ -72,8 +73,10 @@ class Node < Formula
         end
       end
 
-      # install bash completion
-      bash_completion.install lib/"node_modules/npm/lib/utils/completion.sh" => 'npm'
+      if build.with? "completion"
+        bash_completion.install_symlink \
+          lib/"node_modules/npm/lib/utils/completion.sh" => "npm"
+      end
     end
   end
 
@@ -87,7 +90,7 @@ class Node < Formula
   end
 
   def caveats
-    if build.include? 'without-npm' then <<-end.undent
+    if build.without? "npm"; <<-end.undent
       Homebrew has NOT installed npm. If you later install it, you should supplement
       your NODE_PATH with the npm module folder:
           #{npm_prefix}/lib/node_modules

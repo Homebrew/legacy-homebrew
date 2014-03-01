@@ -23,8 +23,8 @@ class Wine < Formula
   end
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.11.tar.bz2'
-    sha256 'c07d2771ed96c45d428bb11d164c5e4bbe48d6857a0a4cba2e0b73c5f1044f93'
+    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.13.tar.bz2'
+    sha256 'a72fdee6e1898007b38f3b30584f86d996567ad8d2f1cc0fe3a877be0493b9df'
   end
 
   head do
@@ -70,8 +70,12 @@ class Wine < Formula
     cause 'error: invalid operand for instruction lretw'
   end
 
-  # There may be flicker in fullscreen mode, but there is no current patch:
-  # # http://bugs.winehq.org/show_bug.cgi?id=34166
+  def patches
+    if build.devel?
+      # http://bugs.winehq.org/show_bug.cgi?id=34166
+      'http://bugs.winehq.org/attachment.cgi?id=47639'
+    end
+  end
 
   # These libraries are not specified as dependencies, or not built as 32-bit:
   # configure: libv4l, gstreamer-0.10, libcapi20, libgsm

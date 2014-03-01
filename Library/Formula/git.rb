@@ -2,14 +2,14 @@ require 'formula'
 
 class Git < Formula
   homepage 'http://git-scm.com'
-  url 'https://git-core.googlecode.com/files/git-1.8.5.3.tar.gz'
-  sha1 '767aa30c0f569f9b6e04cb215dfeec0c013c355a'
+  url 'https://git-core.googlecode.com/files/git-1.9.0.tar.gz'
+  sha1 'e60667fc16e5a5f1cde46616b0458cc802707743'
   head 'https://github.com/git/git.git'
 
   bottle do
-    sha1 '6849cffc6d286228cdfb2fa52f2b0db4c054f569' => :mavericks
-    sha1 'd2e8b603141f45d5a22891909b1c076e4cb1a5d6' => :mountain_lion
-    sha1 '40b475da5b25459b697ac8815dd575a0e1653abd' => :lion
+    sha1 "78bb720052e624b889b7c39e47ec40e463fa13b0" => :mavericks
+    sha1 "95b604ef6dff8a8abbc6819b1769c6df6ac45b03" => :mountain_lion
+    sha1 "10d46b289e9877f866e953dfc65fde260c80acb8" => :lion
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -25,24 +25,13 @@ class Git < Formula
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
-    url 'http://git-core.googlecode.com/files/git-manpages-1.8.5.3.tar.gz'
-    sha1 'e4b66ca3ab1b089af651bf742aa030718e9af978'
+    url 'http://git-core.googlecode.com/files/git-manpages-1.9.0.tar.gz'
+    sha1 'cff590c92b4d1c8a143c078473140b653cc5d56a'
   end
 
   resource 'html' do
-    url 'http://git-core.googlecode.com/files/git-htmldocs-1.8.5.3.tar.gz'
-    sha1 '47da8e2b1d23ae501ee2c03414c04f8225079037'
-  end
-
-  def patches
-    if MacOS.version >= :mavericks and not build.head?
-      # Allow using PERLLIB_EXTRA to find Subversion Perl bindings location
-      # in the CLT/Xcode. Should be included in Git 1.8.6.
-      # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=07981d
-      # https://git.kernel.org/cgit/git/git.git/commit/?h=next&id=0386dd
-      ['https://git.kernel.org/cgit/git/git.git/patch/?id=07981d',
-       'https://git.kernel.org/cgit/git/git.git/patch/?id=0386dd']
-    end
+    url 'http://git-core.googlecode.com/files/git-htmldocs-1.9.0.tar.gz'
+    sha1 '65eb3f411f4699695c7081a7c716cabb9ce23d75'
   end
 
   def install
@@ -66,7 +55,7 @@ class Git < Formula
 
     if build.with? 'pcre'
       ENV['USE_LIBPCRE'] = '1'
-      ENV['LIBPCREDIR'] = Formula.factory('pcre').opt_prefix
+      ENV['LIBPCREDIR'] = Formula['pcre'].opt_prefix
     end
 
     ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'

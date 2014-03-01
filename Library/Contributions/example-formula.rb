@@ -38,6 +38,17 @@ class ExampleFormula < Formula
   # Leave it empty at first and `brew install` will tell you the expected.
   sha1 'cafebabe78901234567890123456789012345678'
 
+  # Stable-only dependencies should be nested inside a `stable` block rather than
+  # using a conditional. It is preferrable to also pull the URL and checksum into
+  # the block if one is necessary.
+  stable do
+    url "https://example.com/foo-1.0.tar.gz"
+    sha1 "cafebabe78901234567890123456789012345678"
+
+    depends_on "libxml2"
+    depends_on "libffi"
+  end
+
   # Optionally, specify a repository to be used. Brew then generates a
   # `--HEAD` option. Remember to also test it.
   # The download strategies (:using =>) are the same as for `url`.
@@ -45,11 +56,21 @@ class ExampleFormula < Formula
   head 'https://example.com/.git', :branch => 'name_of_branch', :revision => 'abc123'
   head 'https://hg.is.awesome.but.git.has.won.example.com/', :using => :hg # If autodetect fails.
 
+  head do
+    url "https://example.com/repo.git"
+
+    depends_on :autoconf
+    depends_on :automake
+  end
+
   # The optional devel block is only executed if the user passes `--devel`.
   # Use this to specify a not-yet-released version of a software.
   devel do
-   url 'https://example.com/archive-2.0-beta.tar.gz'
-   sha1 '1234567890123456789012345678901234567890'
+    url "https://example.com/archive-2.0-beta.tar.gz"
+    sha1 "1234567890123456789012345678901234567890"
+
+    depends_on "cairo"
+    depends_on "pixman"
   end
 
 
@@ -143,14 +164,10 @@ class ExampleFormula < Formula
   depends_on :libpng # Often, not all of X11 is needed.
   depends_on :fontconfig
   # autoconf/automake is sometimes needed for --HEAD checkouts:
-  depends_on :autoconf if build.head?
-  depends_on :automake if build.head?
   depends_on :bsdmake
   depends_on :libtool
   depends_on :libltdl
   depends_on :mysql => :recommended
-  depends_on :cairo if build.devel?
-  depends_on :pixman if build.devel?
   # It is possible to only depend on something if
   # `build.with?` or `build.without? 'another_formula'`:
   depends_on :mysql # allows brewed or external mysql to be used
@@ -255,7 +272,7 @@ class ExampleFormula < Formula
     # break if they remember that exact path. In contrast to that, the
     # `$(brew --prefix)/opt/formula` is the same path for all future
     # versions of the formula!
-    args << "--with-readline=#{Formula.factory('readline').opt_prefix}/lib" if build.with? "readline"
+    args << "--with-readline=#{Formula["readline"].opt_prefix}/lib" if build.with? "readline"
 
     # Most software still uses `configure` and `make`.
     # Check with `./configure --help` what our options are.
@@ -299,6 +316,7 @@ class ExampleFormula < Formula
     info # == share+'info'
     lib # == prefix+'lib'
     libexec # == prefix+'libexec'
+    buildpath # The temporary directory where build occurs.
 
     man # share+'man'
     man1 # man+'man1'

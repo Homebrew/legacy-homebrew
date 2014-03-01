@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "January 2014" "Homebrew" "brew"
+.TH "BREW" "1" "February 2014" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -168,10 +168,6 @@ Open a browser to the GitHub History page for formula \fIformula\fR\.
 .
 .IP
 To view formula history locally: \fBbrew log \-p <formula>\fR\.
-.
-.TP
-\fBinfo\fR \fIURL\fR
-Print the name and version that will be detected for \fIURL\fR\.
 .
 .TP
 \fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-only\-dependencies] [\-\-fresh] [\-\-cc=<compiler>] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
@@ -543,13 +539,6 @@ If set, Homebrew will use this editor when editing a single formula, or several 
 .TP
 HOMEBREW_GITHUB_API_TOKEN
 A personal GitHub API Access token, which you can create at \fIhttps://github\.com/settings/applications\fR\. If set, GitHub will allow you a greater number of API requests\. See \fIhttp://developer\.github\.com/v3/#rate\-limiting\fR for more information\. Homebrew uses the GitHub API for features such as \fBbrew search\fR\.
-.
-.TP
-HOMEBREW_KEEP_INFO
-If set, Homebrew will not remove files from \fBshare/info\fR, allowing them to be linked from the Cellar\. To access these info files, prepend \fBshare/info\fR to your \fBINFOPATH\fR environment variable\.
-.
-.IP
-\fIExample:\fR \fBexport INFOPATH=\'/usr/local/share/info:/usr/share/info\'\fR
 .
 .TP
 HOMEBREW_MAKE_JOBS

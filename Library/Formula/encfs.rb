@@ -11,8 +11,6 @@ class Encfs < Formula
   depends_on 'rlog'
   depends_on 'osxfuse'
 
-  conflicts_with 'fuse4x'
-
   # Following patch and changes in install section,
   # required for better compatibility with OSX, especially OSX 10.9.
   # Changes are already in usptream and planned to be included in next stable release 1.75.
@@ -26,8 +24,9 @@ class Encfs < Formula
 
   def install
     # Add correct flags for linkage with {osx,}fuse and gettext libs
-    ENV.append 'CPPFLAGS', %x[pkg-config fuse --cflags].chomp + "-I#{Formula.factory('gettext').include}"
-    ENV.append 'LDFLAGS', %x[pkg-config fuse --libs].chomp + "-L#{Formula.factory('gettext').lib}"
+    gettext = Formula['gettext']
+    ENV.append 'CPPFLAGS', %x[pkg-config fuse --cflags].chomp + "-I#{gettext.include}"
+    ENV.append 'LDFLAGS', %x[pkg-config fuse --libs].chomp + "-L#{gettext.lib}"
     inreplace "configure", "-lfuse", "-losxfuse"
 
     # Adapt to changes in recent Xcode by making local copy of endian-ness definitions
@@ -53,12 +52,6 @@ class Encfs < Formula
                           "--with-boost=#{HOMEBREW_PREFIX}"
     system "make"
     system "make install"
-  end
-
-  def caveats; <<-EOS.undent
-    Make sure to follow the directions given by 'brew info osxfuse'
-    before trying to use a FUSE-based filesystem.
-    EOS
   end
 end
 

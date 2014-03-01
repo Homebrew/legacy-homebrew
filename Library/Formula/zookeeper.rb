@@ -115,10 +115,9 @@ class Zookeeper < Formula
     log4j_properties = etc/'zookeeper/log4j.properties'
     log4j_properties.write(default_log4j_properties) unless log4j_properties.exist?
 
-    unless (etc/'zookeeper/zoo.cfg').exist?
-      inreplace 'conf/zoo_sample.cfg',
-                /^dataDir=.*/, "dataDir=#{var}/run/zookeeper/data"
-      (etc/'zookeeper').install 'conf/zoo_sample.cfg'
-    end
+    inreplace 'conf/zoo_sample.cfg',
+              /^dataDir=.*/, "dataDir=#{var}/run/zookeeper/data"
+    cp 'conf/zoo_sample.cfg', 'conf/zoo.cfg'
+    (etc/'zookeeper').install ['conf/zoo.cfg', 'conf/zoo_sample.cfg']
   end
 end

@@ -2,12 +2,12 @@ require 'formula'
 
 class Tika < Formula
   homepage 'http://tika.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tika/tika-app-1.4.jar'
-  sha1 'e91c758149ce9ce799fff184e9bf3aabda394abc'
+  url 'http://www.apache.org/dyn/closer.cgi?path=tika/tika-app-1.5.jar'
+  sha1 '7f3657da1075bf95ac8faa2bafcba24228e6c714'
 
   resource 'server' do
-    url 'http://repo1.maven.org/maven2/org/apache/tika/tika-server/1.4/tika-server-1.4.jar'
-    sha1 '52c6a2ca5be920ead267ecce191b1644232244ee'
+    url 'http://repo1.maven.org/maven2/org/apache/tika/tika-server/1.5/tika-server-1.5.jar'
+    sha1 '4c0a659ca54d881ab187091169439cf0891a8154'
   end
 
   def install
