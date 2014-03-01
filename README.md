@@ -1,6 +1,15 @@
 Linuxbrew
 =========
+
 An experimental fork of Homebrew for Linux.
+
+Features
+--------
+
++ Can install software to a home directory and so does not require sudo
++ Install software not packaged by the native distribution
++ Install up-to-date versions of software when the native distribution is old
++ Use the same package manager to manage both your Mac and Linux machines 
 
 Installation
 ------------
