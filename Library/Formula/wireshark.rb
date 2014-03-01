@@ -7,7 +7,7 @@ class Wireshark < Formula
   sha1 'ebbf4f8382fc8961c1fb7959727b3e6792e597c1'
 
   head do
-    url 'http://anonsvn.wireshark.org/wireshark/trunk/', :using => :svn
+    url 'https://code.wireshark.org/review/wireshark', :using => :git
 
     depends_on :autoconf
     depends_on :automake
