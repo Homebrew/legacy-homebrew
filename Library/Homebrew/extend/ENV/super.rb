@@ -84,6 +84,7 @@ module Superenv
     self['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     self['ACLOCAL_PATH'] = determine_aclocal_path
     self['M4'] = MacOS.locate("m4") if deps.include? "autoconf"
+    self['PYTHONDONTWRITEBYTECODE'] = "1" if ARGV.build_bottle?
 
     # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
     # compiler flag stripping. It consists of a string of characters which act
