@@ -28,18 +28,32 @@ module Homebrew extend self
     puts "Resource: #{r.name}"
     fetch_fetchable r
   rescue ChecksumMismatchError => e
-    Homebrew.failed = true
+    retry if retry_fetch? f
     opoo "Resource #{r.name} reports different #{e.hash_type}: #{e.expected}"
   end
 
   def fetch_formula f
     fetch_fetchable f
   rescue ChecksumMismatchError => e
-    Homebrew.failed = true
+    retry if retry_fetch? f
     opoo "Formula reports different #{e.hash_type}: #{e.expected}"
   end
 
   private
+
+  def retry_fetch? f
+    @failed ||= {}
+    already_failed = @failed.fetch(f.name, false)
+
+    if already_failed || !ARGV.include?("--retry")
+      Homebrew.failed = true
+      return false
+    end
+
+    f.clear_cache
+    @failed[f.name] = true
+    true
+  end
 
   def fetch_fetchable f
     f.clear_cache if ARGV.force?
