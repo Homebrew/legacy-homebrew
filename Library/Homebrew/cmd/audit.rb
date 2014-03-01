@@ -137,6 +137,9 @@ class FormulaAuditor
     f.deps.each do |dep|
       begin
         dep_f = dep.to_formula
+      rescue TapFormulaUnavailableError
+        # Don't complain about missing cross-tap dependencies
+        next
       rescue FormulaUnavailableError
         problem "Can't find dependency #{dep.name.inspect}."
         next
