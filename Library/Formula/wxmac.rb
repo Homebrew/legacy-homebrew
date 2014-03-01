@@ -1,13 +1,20 @@
 require 'formula'
 
 class Wxmac < Formula
-  homepage 'http://www.wxwidgets.org'
-  url 'http://downloads.sourceforge.net/project/wxwindows/3.0.0/wxWidgets-3.0.0.tar.bz2'
-  sha1 '756a9c54d1f411e262f03bacb78ccef085a9880a'
+  homepage "http://www.wxwidgets.org"
+  url "http://downloads.sourceforge.net/project/wxwindows/3.0.0/wxWidgets-3.0.0.tar.bz2"
+  sha1 "756a9c54d1f411e262f03bacb78ccef085a9880a"
+
+  bottle do
+    sha1 "6a5b2ff59a3f7b4c78658ed4f3cda543bfc7f325" => :mavericks
+    sha1 "fed5982d493eb7881a253c09d80f47a34fe06bb7" => :mountain_lion
+    sha1 "a1d9c9c5698d7459d2dce266647b04312dcc12e5" => :lion
+  end
 
   def patches
-    # Upstream patch for starting non-bundled apps like gnuplot (see http://trac.wxwidgets.org/ticket/15613)
-    {:p2 => 'http://trac.wxwidgets.org/changeset/75142/wxWidgets/trunk/src/osx/cocoa/utils.mm?format=diff&new=75142'}
+    # Upstream patch for starting non-bundled apps like gnuplot, see:
+    # http://trac.wxwidgets.org/ticket/15613
+    {:p2 => "http://trac.wxwidgets.org/changeset/75142/wxWidgets/trunk/src/osx/cocoa/utils.mm?format=diff&new=75142"}
   end
 
   def install
