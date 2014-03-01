@@ -34,10 +34,10 @@ __END__
 # extended regular expressions. OSX's sed calls this 'E' (they're not
 # entirely compatible, but enough for this use case).
 diff --git a/completion/yafc b/completion/yafc
-index d4f2189..4694d44 100644
+index 03c452a..87f02e2 100644
 --- a/completion/yafc
 +++ b/completion/yafc
-@@ -9,7 +9,7 @@ _yafc()
+@@ -8,7 +8,7 @@ _yafc()
      cur=`_get_cword`
  
      if [ $COMP_CWORD -eq 1 ] && [ -f ~/.yafc/bookmarks ]; then
@@ -45,3 +45,5 @@ index d4f2189..4694d44 100644
 +        COMPREPLY=( $( compgen -W '$( sed -nEe "/machine/ s/.* alias '\''([^'\'']*)'\''/\1/ p" \
              ~/.yafc/bookmarks )' -- "$cur" ) )
      fi
+ 
+
