@@ -148,9 +148,6 @@ Note that these flags should only appear after a command.
 
     To view formula history locally: `brew log -p <formula>`.
 
-  * `info` <URL>:
-    Print the name and version that will be detected for <URL>.
-
   * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--fresh] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 

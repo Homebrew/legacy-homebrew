@@ -155,7 +155,9 @@ class Formulary
     end
 
     def get_formula
-      klass.new(tapped_name, path)
+      klass.new(name, path)
+    rescue FormulaUnavailableError => e
+      raise TapFormulaUnavailableError.new(e.name)
     end
   end
 
@@ -174,7 +176,7 @@ class Formulary
       f = BottleLoader.new(ref)
     else
       name_or_path = Formula.canonical_name(ref)
-      if name_or_path =~ %r{^(\w+)/(\w+)/([^/])+$}
+      if name_or_path =~ HOMEBREW_TAP_FORMULA_REGEX
         # name appears to be a tapped formula, so we don't munge it
         # in order to provide a useful error message when require fails.
         f = TapLoader.new(name_or_path)
@@ -182,7 +184,7 @@ class Formulary
         # If name was a path or mapped to a cached formula
         f = FromPathLoader.new(name_or_path)
       elsif name_or_path =~ /\.rb$/
-        f = FromPathLoader.new("./#{name_or_path}")
+        f = FromPathLoader.new(File.expand_path(name_or_path))
       else
         f = StandardLoader.new(name_or_path)
       end
