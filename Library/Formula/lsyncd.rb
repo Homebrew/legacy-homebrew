@@ -48,12 +48,12 @@ class Lsyncd < Formula
 
     # Asciidoc Binary
     a2x = Formula["asciidoc"]
-    a2x_path = a2x.bin/'a2x'
-    inreplace "Makefile.am", "$(A2X)", a2x_path
+    inreplace "Makefile.am", "$(A2X)", a2x.bin/'a2x'
 
     system "autoreconf", "--install"
     system "./configure", "--disable-dependency-tracking",
-                          "--with-fsevents", "--without-inotify",
+                          "--with-fsevents",
+                          "--without-inotify",
                           "--prefix=#{prefix}"
 
     system "make"
@@ -62,6 +62,6 @@ class Lsyncd < Formula
   end
 
   test do
-    system "lsyncd", "--version"
+    system bin/"lsyncd", "--version"
   end
 end
