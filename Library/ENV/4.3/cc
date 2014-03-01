@@ -73,10 +73,10 @@ class Cmd
     end
   end
   def args
-    args = if not cccfg? 'O' or tool == 'ld'
-      @args.dup
+    if !cccfg?("O") || tool == "ld" || configure?
+      args = @args.dup
     else
-      refurbished_args
+      args = refurbished_args
     end
     if tool != 'ld'
       args << "--sysroot=#{sdkroot}"
