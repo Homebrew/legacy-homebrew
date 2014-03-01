@@ -2,8 +2,8 @@ require 'formula'
 
 class Yafc < Formula
   homepage 'http://www.yafc-ftp.com/'
-  url 'http://www.yafc-ftp.com/upload/yafc-1.3.1.tar.xz'
-  sha1 '63f958446c9a88fed2413e95cc1e8058570f77df'
+  url 'http://www.yafc-ftp.com/upload/yafc-1.3.2.tar.xz'
+  sha1 'a4cd5518b84cd40c4503f2e022ba946a8bd5484a'
 
   depends_on 'xz' => :build
   depends_on 'readline'
@@ -16,7 +16,6 @@ class Yafc < Formula
   def install
     readline = Formula["readline"].opt_prefix
 
-    readline = Formula.factory('readline').opt_prefix
     args = ["--prefix=#{prefix}",
             "--with-readline=#{readline}"]
     args << "--without-ssh" if build.without? "libssh"
