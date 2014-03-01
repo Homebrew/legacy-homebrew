@@ -82,18 +82,8 @@ class Mongodb < Formula
 
     scons 'install', *args
 
-    (prefix+'mongod.conf').write mongodb_conf
-
-    mv bin/'mongod', prefix
-    (bin/'mongod').write <<-EOS.undent
-      #!/usr/bin/env ruby
-      ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.find { |arg|
-        arg =~ /^\s*\-\-config$/ or arg =~ /^\s*\-f$/
-      }
-      exec "#{prefix}/mongod", *ARGV
-    EOS
-
-    etc.install prefix+'mongod.conf'
+    (buildpath+"mongod.conf").write mongodb_conf
+    etc.install "mongod.conf"
 
     (var+'mongodb').mkpath
     (var+'log/mongodb').mkpath
@@ -112,7 +102,7 @@ class Mongodb < Formula
     EOS
   end
 
-  plist_options :manual => "mongod"
+  plist_options :manual => "mongod --config #{HOMEBREW_PREFIX}/etc/mongod.conf"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -124,7 +114,6 @@ class Mongodb < Formula
       <key>ProgramArguments</key>
       <array>
         <string>#{opt_prefix}/mongod</string>
-        <string>run</string>
         <string>--config</string>
         <string>#{etc}/mongod.conf</string>
       </array>
