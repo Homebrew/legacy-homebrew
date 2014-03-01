@@ -53,6 +53,8 @@ module Stdenv
       self['CMAKE_FRAMEWORK_PATH'] = HOMEBREW_PREFIX/"Frameworks"
     end
 
+    self['PYTHONDONTWRITEBYTECODE'] = "1" if ARGV.build_bottle?
+
     # Os is the default Apple uses for all its stuff so let's trust them
     set_cflags "-Os #{SAFE_CFLAGS_FLAGS}"
 
