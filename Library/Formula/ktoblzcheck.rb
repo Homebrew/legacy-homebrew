@@ -2,7 +2,7 @@ require 'formula'
 
 class Ktoblzcheck < Formula
   homepage 'http://ktoblzcheck.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.45.tar.gz'
+  url 'https://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.45.tar.gz'
   sha1 'a552012bb219ac24dcdbac977cf94c951bfe31bc'
 
   def install
