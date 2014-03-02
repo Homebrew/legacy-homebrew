@@ -71,4 +71,8 @@ class Redis < Formula
     </plist>
     EOS
   end
+
+  test do
+    system "#{bin}/redis-server", "--test-memory", "2"
+  end
 end
