@@ -2,7 +2,7 @@ require 'formula'
 
 class Plantuml < Formula
   homepage 'http://plantuml.sourceforge.net/'
-  url 'http://sourceforge.net/projects/plantuml/files/plantuml.7987.jar'
+  url 'https://downloads.sourceforge.net/project/plantuml/plantuml.7987.jar'
   sha1 '69beeb97a982b71fefd5ec5637de18b498910b13'
 
   depends_on 'graphviz'
