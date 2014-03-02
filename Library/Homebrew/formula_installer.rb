@@ -16,7 +16,7 @@ class FormulaInstaller
   include FormulaCellarChecks
 
   attr_reader :f
-  attr_accessor :tab, :options, :ignore_deps, :only_deps
+  attr_accessor :options, :ignore_deps, :only_deps
   attr_accessor :show_summary_heading, :show_header
 
   def initialize ff
@@ -25,7 +25,6 @@ class FormulaInstaller
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @only_deps = ARGV.only_deps?
     @options = Options.new
-    @tab = Tab.dummy_tab(ff)
 
     @@attempted ||= Set.new
 
@@ -39,8 +38,7 @@ class FormulaInstaller
 
   def pour_bottle? install_bottle_options={:warn=>false}
     return false if @pour_failed
-    tab.used_options.empty? && options.empty? && \
-      install_bottle?(f, install_bottle_options)
+    options.empty? && install_bottle?(f, install_bottle_options)
   end
 
   def verify_deps_exist
@@ -294,8 +292,9 @@ class FormulaInstaller
     outdated_keg = Keg.new(df.linked_keg.realpath) rescue nil
 
     fi = FormulaInstaller.new(df)
-    fi.tab = Tab.for_formula(dep.to_formula)
-    fi.options = dep.options | inherited_options
+    fi.options |= Tab.for_formula(df).used_options
+    fi.options |= dep.options
+    fi.options |= inherited_options
     fi.ignore_deps = true
     fi.only_deps = false
     fi.show_header = false
@@ -374,10 +373,7 @@ class FormulaInstaller
 
   def build_argv
     opts = Options.coerce(ARGV.options_only)
-    unless opts.include? '--fresh'
-      opts.concat(options) # from a dependent formula
-      opts.concat(tab.used_options) # from a previous install
-    end
+    opts.concat(options) unless opts.include? "--fresh"
     opts << Option.new("--build-from-source") # don't download bottle
   end
 
