@@ -26,7 +26,7 @@ class Gawk < Formula
   end
 
   test do
-    output = `echo "Macrobrew" | gawk  '{ gsub(/Macro/, "Home"); print }' -`
+    output = `echo "Macrobrew" | '#{bin}/gawk'  '{ gsub(/Macro/, "Home"); print }' -`
     assert_equal 'Homebrew', output.strip
     assert_equal 0, $?.exitstatus
   end
