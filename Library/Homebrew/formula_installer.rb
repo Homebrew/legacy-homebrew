@@ -373,14 +373,12 @@ class FormulaInstaller
   end
 
   def build_argv
-    @build_argv ||= begin
-      opts = Options.coerce(ARGV.options_only)
-      unless opts.include? '--fresh'
-        opts.concat(options) # from a dependent formula
-        opts.concat(tab.used_options) # from a previous install
-      end
-      opts << Option.new("--build-from-source") # don't download bottle
+    opts = Options.coerce(ARGV.options_only)
+    unless opts.include? '--fresh'
+      opts.concat(options) # from a dependent formula
+      opts.concat(tab.used_options) # from a previous install
     end
+    opts << Option.new("--build-from-source") # don't download bottle
   end
 
   def build
