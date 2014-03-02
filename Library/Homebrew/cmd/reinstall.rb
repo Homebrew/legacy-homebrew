@@ -18,12 +18,11 @@ module Homebrew extend self
         ARGV << '--build-bottle'
       end
 
-      canonical_name = Formula.canonical_name(name)
-      formula = Formula.factory(canonical_name)
+      formula = Formulary.factory(name)
 
       begin
         oh1 "Reinstalling #{name} #{ARGV.options_only*' '}"
-        opt_link = HOMEBREW_PREFIX/'opt'/canonical_name
+        opt_link = formula.opt_prefix
         if opt_link.exist?
           keg = Keg.new(opt_link.realpath)
           backup keg
