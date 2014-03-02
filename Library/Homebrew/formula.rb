@@ -452,7 +452,7 @@ class Formula
 
   # True if this formula is provided by Homebrew itself
   def core_formula?
-    path.realpath.to_s == Formula.path(name).to_s
+    path.realpath == Formula.path(name)
   end
 
   def self.path name
