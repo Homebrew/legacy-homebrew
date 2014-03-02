@@ -247,7 +247,7 @@ class FormulaInstaller
 
     expanded_deps = ARGV.filter_for_dependencies do
       Dependency.expand(f, deps) do |dependent, dep|
-        options = inherited_options[dep] = inherited_options_for(f, dep)
+        options = inherited_options[dep] = inherited_options_for(dep)
 
         if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
           Dependency.prune
@@ -266,7 +266,7 @@ class FormulaInstaller
     expanded_deps.map { |dep| [dep, inherited_options[dep]] }
   end
 
-  def inherited_options_for(f, dep)
+  def inherited_options_for(dep)
     options = Options.new
     if f.build.universal? && !dep.build? && dep.to_formula.build.has_option?("universal")
       options << Option.new("universal")
