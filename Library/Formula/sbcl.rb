@@ -2,8 +2,8 @@ require 'formula'
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.15/sbcl-1.1.15-source.tar.bz2'
-  sha1 '345b505353c3ed6a2b2a18e3de9e704527bf32a4'
+  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.16/sbcl-1.1.16-source.tar.bz2'
+  sha1 '27bad72be3eb4a078c362d1ec2a52cf9ec1d5ecb'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
@@ -87,6 +87,11 @@ class Sbcl < Formula
   end
 
   test do
-    system "#{bin}/sbcl", "--version"
+    (testpath/'simple.sbcl').write <<-EOS.undent
+      (write-line (write-to-string (+ 2 2)))
+    EOS
+    output = `'#{bin}/sbcl' --script #{testpath}/simple.sbcl`
+    assert_equal '4', output.strip
+    assert_equal 0, $?.exitstatus
   end
 end
