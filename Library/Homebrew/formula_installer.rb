@@ -22,8 +22,8 @@ class FormulaInstaller
   def initialize ff
     @f = ff
     @show_header = false
-    @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
-    @only_deps = ARGV.only_deps?
+    @ignore_deps = false
+    @only_deps = false
     @options = Options.new
 
     @@attempted ||= Set.new
@@ -296,7 +296,6 @@ class FormulaInstaller
     fi.options |= dep.options
     fi.options |= inherited_options
     fi.ignore_deps = true
-    fi.only_deps = false
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{Tty.green}#{df}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
