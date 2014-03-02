@@ -141,4 +141,8 @@ class Mongodb < Formula
     </plist>
     EOS
   end
+
+  test do
+    system "#{bin}/mongod", '--sysinfo'
+  end
 end
