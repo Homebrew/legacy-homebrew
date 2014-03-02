@@ -217,7 +217,9 @@ class FormulaInstaller
 
       ARGV.filter_for_dependencies do
         f.recursive_requirements do |dependent, req|
-          if (req.optional? || req.recommended?) && dependent.build.without?(req)
+          build = effective_build_options_for(dependent)
+
+          if (req.optional? || req.recommended?) && build.without?(req)
             Requirement.prune
           elsif req.build? && install_bottle?(dependent)
             Requirement.prune
@@ -248,8 +250,9 @@ class FormulaInstaller
     expanded_deps = ARGV.filter_for_dependencies do
       Dependency.expand(f, deps) do |dependent, dep|
         options = inherited_options[dep] = inherited_options_for(dep)
+        build = effective_build_options_for(dependent)
 
-        if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
+        if (dep.optional? || dep.recommended?) && build.without?(dep)
           Dependency.prune
         elsif dep.build? && dependent == f && pour_bottle
           Dependency.prune
@@ -264,6 +267,16 @@ class FormulaInstaller
     end
 
     expanded_deps.map { |dep| [dep, inherited_options[dep]] }
+  end
+
+  def effective_build_options_for(dependent)
+    if dependent == f
+      build = dependent.build.dup
+      build.args |= options
+      build
+    else
+      dependent.build
+    end
   end
 
   def inherited_options_for(dep)
