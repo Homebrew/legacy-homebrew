@@ -37,6 +37,7 @@ class Erlang < Formula
   depends_on :libtool
   depends_on 'unixodbc' if MacOS.version >= :mavericks
   depends_on 'fop' => :optional # enables building PDF docs
+  depends_on 'wxmac' => :recommended
 
   fails_with :llvm
 
@@ -64,6 +65,8 @@ class Erlang < Formula
       --enable-shared-zlib
       --enable-smp-support
     ]
+
+    args << "--enable-wx" if build.with? 'wxmac'
 
     if MacOS.version >= :snow_leopard and MacOS::CLT.installed?
       args << "--with-dynamic-trace=dtrace"
@@ -110,6 +113,7 @@ class Erlang < Formula
     end
   end
 end
+
 __END__
 diff --git a/lib/odbc/configure.in b/lib/odbc/configure.in
 index 83f7a47..fd711fe 100644

@@ -948,6 +948,17 @@ def check_for_enthought_python
   end
 end
 
+def check_for_library_python
+  if File.exist?("/Library/Frameworks/Python.framework") then <<-EOS.undent
+    A Python is installed in /Library/Frameworks
+
+    Homebrew only supports building against the System-provided Python or a
+    brewed Python. In particular, Pythons installed to /Library can interfere
+    with other software installs.
+    EOS
+  end
+end
+
 def check_for_old_homebrew_share_python_in_path
   s = ''
   ['', '3'].map do |suffix|

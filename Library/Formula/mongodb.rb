@@ -6,10 +6,10 @@ class Mongodb < Formula
   sha1 '3aa495cf32769a09ee9532827391892d96337d6b'
 
   bottle do
-    revision 1
-    sha1 "7ace0e0f8f6b2096a54e4e7dd976b3728227e95a" => :mavericks
-    sha1 "b917ff86005452c303132616df27d787967ecdf6" => :mountain_lion
-    sha1 "c62f44838aac80a38596b0980f5575ffd99b79fe" => :lion
+    revision 2
+    sha1 "5447af6e8f6a2870306e03d318351f1d8efecb1f" => :mavericks
+    sha1 "8b40016996e9dd42bbef3657d3a3c9357bd5d5ea" => :mountain_lion
+    sha1 "e9686685cf1fdbd65109ea8e9979169f0ce728b6" => :lion
   end
 
   stable do
@@ -82,18 +82,8 @@ class Mongodb < Formula
 
     scons 'install', *args
 
-    (prefix+'mongod.conf').write mongodb_conf
-
-    mv bin/'mongod', prefix
-    (bin/'mongod').write <<-EOS.undent
-      #!/usr/bin/env ruby
-      ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.find { |arg|
-        arg =~ /^\s*\-\-config$/ or arg =~ /^\s*\-f$/
-      }
-      exec "#{prefix}/mongod", *ARGV
-    EOS
-
-    etc.install prefix+'mongod.conf'
+    (buildpath+"mongod.conf").write mongodb_conf
+    etc.install "mongod.conf"
 
     (var+'mongodb').mkpath
     (var+'log/mongodb').mkpath
@@ -112,7 +102,7 @@ class Mongodb < Formula
     EOS
   end
 
-  plist_options :manual => "mongod"
+  plist_options :manual => "mongod --config #{HOMEBREW_PREFIX}/etc/mongod.conf"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -124,7 +114,6 @@ class Mongodb < Formula
       <key>ProgramArguments</key>
       <array>
         <string>#{opt_prefix}/mongod</string>
-        <string>run</string>
         <string>--config</string>
         <string>#{etc}/mongod.conf</string>
       </array>
@@ -151,5 +140,9 @@ class Mongodb < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/mongod", '--sysinfo'
   end
 end

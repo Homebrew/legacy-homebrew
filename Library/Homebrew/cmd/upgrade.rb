@@ -63,8 +63,10 @@ module Homebrew extend self
     outdated_keg = Keg.new(f.linked_keg.realpath) rescue nil
 
     installer = FormulaInstaller.new(f)
-    installer.tab = tab
+    installer.options |= tab.used_options
     installer.show_header = false
+    installer.ignore_deps = ARGV.ignore_deps?
+    installer.only_deps = ARGV.only_deps?
 
     oh1 "Upgrading #{f.name}"
 

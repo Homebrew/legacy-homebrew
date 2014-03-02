@@ -2,14 +2,14 @@ require 'formula'
 
 class Libav < Formula
   homepage 'https://libav.org/'
-  url 'http://libav.org/releases/libav-9.10.tar.xz'
-  sha1 '08274bc85e501bdb141022eb900dfe0d9eb89ad5'
+  url 'http://libav.org/releases/libav-9.11.tar.xz'
+  sha1 '4eb48cbe70515734f70bde8dceff28896d76adf2'
   head 'git://git.libav.org/libav.git'
 
   bottle do
-    sha1 "7aa086d1a0651214dbb80a546f2f9d5ec9ecc639" => :mavericks
-    sha1 "d9f88235b6a8676f4d8ad8f3190a260e46d64b2a" => :mountain_lion
-    sha1 "134db27c390c3fc8a24338e9b95f834484485f91" => :lion
+    sha1 "189d6d475037c6ef0fa4911b5e3cc99e4c2e6a5c" => :mavericks
+    sha1 "83f1183b38fbf58d847a180c1c0f5d4d3f7745bd" => :mountain_lion
+    sha1 "874965f99e97869e88a24e09e494d1f49ed83ba3" => :lion
   end
 
   option "without-faac", "Disable AAC encoder via faac"

@@ -394,9 +394,12 @@ class Formula
       if name =~ %r{(.+)/(.+)/(.+)}
         tap_name = "#$1-#$2".downcase
         tapd = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{tap_name}")
-        tapd.find_formula do |relative_pathname|
-          return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
-        end if tapd.directory?
+
+        if tapd.directory?
+          tapd.find_formula do |relative_pathname|
+            return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
+          end
+        end
       end
       # Otherwise don't resolve paths or URLs
       return name
@@ -449,7 +452,7 @@ class Formula
 
   # True if this formula is provided by Homebrew itself
   def core_formula?
-    path.realpath.to_s == Formula.path(name).to_s
+    path.realpath == Formula.path(name)
   end
 
   def self.path name

@@ -19,4 +19,5 @@ TAP_MIGRATIONS = {
   'nlopt' => 'homebrew/science',
   'comparepdf' => 'homebrew/boneyard',
   'colormake' => 'homebrew/headonly',
+  'wkhtmltopdf' => 'homebrew/boneyard',
 }
