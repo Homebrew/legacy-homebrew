@@ -148,6 +148,10 @@ Note that these flags should only appear after a command.
 
     To view formula history locally: `brew log -p <formula>`.
 
+  * `info --json=<version>` <formula>:
+    Print a JSON representation of <formula>. Currently the only accepted value
+    for <version> is `v1`.
+
   * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--fresh] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
