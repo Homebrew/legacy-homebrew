@@ -16,18 +16,23 @@ class Mlt < Formula
   depends_on 'sdl'
   depends_on 'sox'
 
-  option "with-gtk", "Enable GTK+"
+  depends_on 'gtk+' => :optional
 
-  if build.include? 'with-gtk'
-    depends_on 'gtk+' 
-    depends_on 'pango' 
-    depends_on 'gdk-pixbuf' 
-  end 
+  if build.with? 'gtk+'
+    depends_on 'pango'
+    depends_on 'gdk-pixbuf'
+  end
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-jackrack",
-                          "--disable-swfdec"
+
+    args = ["--prefix=#{prefix}",
+            "--disable-jackrack",
+            "--disable-swfdec"
+           ]
+
+    args << "--disable-gtk" if !build.with? 'gtk+'
+
+    system "./configure", *args
 
     system "make"
     system "make", "install"
