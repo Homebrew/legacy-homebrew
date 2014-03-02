@@ -38,7 +38,7 @@ class Keg
       end
     end
 
-    (pkgconfig_files | libtool_files).each do |file|
+    (pkgconfig_files | libtool_files | script_files).each do |file|
       file.ensure_writable do
         file.open('rb') do |f|
           s = f.read
@@ -157,6 +157,18 @@ class Keg
     mach_o_files
   end
 
+  def script_files
+    script_files = []
+
+    # find all files with shebangs
+    Pathname.new(self).find do |pn|
+      next if pn.symlink? or pn.directory?
+      script_files << pn if pn.text_executable?
+    end
+
+    script_files
+  end
+
   def pkgconfig_files
     pkgconfig_files = []
 
@@ -169,11 +181,6 @@ class Keg
       end
     end
 
-    # find name-config scripts, which can be all over the keg
-    Pathname.new(self).find do |pn|
-      next if pn.symlink? or pn.directory?
-      pkgconfig_files << pn if pn.basename.to_s.end_with? '-config' and pn.text_executable?
-    end
     pkgconfig_files
   end
 
