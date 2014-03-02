@@ -28,10 +28,9 @@ module Homebrew extend self
           backup keg
         end
         self.install_formula formula
-      rescue Exception => e
-        ofail e.message unless e.message.empty?
-        restore_backup keg, formula
-        raise 'Reinstall failed.'
+      rescue Exception
+        ignore_interrupts { restore_backup(keg, formula) }
+        raise
       else
         backup_path(keg).rmtree if backup_path(keg).exist?
       end
