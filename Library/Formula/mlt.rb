@@ -5,22 +5,22 @@ class Mlt < Formula
   url 'http://downloads.sourceforge.net/mlt/mlt/mlt-0.9.0.tar.gz'
   sha1 '76bf18f4442801fae963c5a676d6626e383d1617'
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
 
-  depends_on 'atk'
-  depends_on 'ffmpeg'
-  depends_on 'frei0r'
-  depends_on 'libdv'
-  depends_on 'libsamplerate'
-  depends_on 'libvorbis'
-  depends_on 'sdl'
-  depends_on 'sox'
+  depends_on "atk"
+  depends_on "ffmpeg"
+  depends_on "frei0r"
+  depends_on "libdv"
+  depends_on "libsamplerate"
+  depends_on "libvorbis"
+  depends_on "sdl"
+  depends_on "sox"
 
-  depends_on 'gtk+' => :optional
+  depends_on "gtk+" => :optional
 
-  if build.with? 'gtk+'
-    depends_on 'pango'
-    depends_on 'gdk-pixbuf'
+  if build.with? "gtk"
+    depends_on "pango"
+    depends_on "gdk-pixbuf"
   end
 
   def install
@@ -30,7 +30,7 @@ class Mlt < Formula
             "--disable-swfdec"
            ]
 
-    args << "--disable-gtk" if !build.with? 'gtk+'
+    args << "--disable-gtk" unless build.with? "gtk"
 
     system "./configure", *args
 
