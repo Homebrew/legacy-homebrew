@@ -66,7 +66,7 @@ module Homebrew extend self
     installer.options |= tab.used_options
     installer.show_header = false
     installer.ignore_deps = ARGV.ignore_deps?
-    fi.only_deps = ARGV.only_deps?
+    installer.only_deps = ARGV.only_deps?
 
     oh1 "Upgrading #{f.name}"
 
