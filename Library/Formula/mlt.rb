@@ -15,9 +15,14 @@ class Mlt < Formula
   depends_on 'libvorbis'
   depends_on 'sdl'
   depends_on 'sox'
-  depends_on 'gtk+'
-  depends_on 'pango'
-  depends_on 'gdk-pixbuf'
+
+  option "with-gtk", "Enable GTK+"
+
+  if build.include? 'with-gtk'
+    depends_on 'gtk+' 
+    depends_on 'pango' 
+    depends_on 'gdk-pixbuf' 
+  end 
 
   def install
     system "./configure", "--prefix=#{prefix}",
