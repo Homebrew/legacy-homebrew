@@ -15,10 +15,12 @@ class Mlt < Formula
   depends_on 'libvorbis'
   depends_on 'sdl'
   depends_on 'sox'
+  depends_on 'gtk+'
+  depends_on 'pango'
+  depends_on 'gdk-pixbuf'
 
   def install
     system "./configure", "--prefix=#{prefix}",
-                          "--disable-gtk2",
                           "--disable-jackrack",
                           "--disable-swfdec"
 
