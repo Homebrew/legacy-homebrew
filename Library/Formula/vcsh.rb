@@ -6,7 +6,7 @@ class Vcsh < Formula
   version '1.20131229'
   sha1 'e8e19f433e81f396179b58edf45797de7a7a630a'
 
-  depends_on 'mr'
+  depends_on 'myrepos'
 
   def install
     bin.install 'vcsh'
