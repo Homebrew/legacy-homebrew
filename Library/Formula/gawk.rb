@@ -24,4 +24,10 @@ class Gawk < Formula
     system "make check"
     system "make install"
   end
+
+  test do
+    output = `echo "Macrobrew" | gawk  '{ gsub(/Macro/, "Home"); print }' -`
+    assert_equal 'Homebrew', output.strip
+    assert_equal 0, $?.exitstatus
+  end
 end
