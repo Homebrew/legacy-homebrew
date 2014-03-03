@@ -3,7 +3,7 @@ require 'formula'
 class Leptonica < Formula
   homepage 'http://www.leptonica.org/'
   url 'http://www.leptonica.com/source/leptonica-1.70.tar.gz'
-  sha1 '2c7a893c48aec7844d6b2c7123a0ede7a0d8300e'
+  sha1 '476edd5cc3f627f5ad988fcca6b62721188fce13'
 
   option 'check', 'Run the build checks'
 
