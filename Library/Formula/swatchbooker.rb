@@ -25,7 +25,7 @@ class Swatchbooker < Formula
     chmod 0755, libexec/'bin/swatchbooker'
   end
 
-  def test
+  test do
     system "#{bin}/swatchbooker"
   end
 end

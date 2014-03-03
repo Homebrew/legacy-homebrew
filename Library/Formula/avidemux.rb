@@ -4,7 +4,7 @@ require 'formula'
 
 class Avidemux < Formula
   homepage 'http://avidemux.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/avidemux/avidemux_2.6.4.tar.gz'
+  url 'https://downloads.sourceforge.net/avidemux/avidemux_2.6.4.tar.gz'
   sha1 '7ed55fd5cfb6cfa73ebb9058af72fa2e3c9717c3'
   head 'git://gitorious.org/avidemux2-6/avidemux2-6.git'
 
@@ -53,7 +53,7 @@ class Avidemux < Formula
     mkdir 'buildCore' do
       args = std_cmake_args
       args << "-DAVIDEMUX_SOURCE_DIR=#{buildpath}"
-      args << "-DGETTEXT_INCLUDE_DIR=#{Formula.factory('gettext').opt_prefix}/include"
+      args << "-DGETTEXT_INCLUDE_DIR=#{Formula['gettext'].opt_prefix}/include"
       # Todo: We could depend on SDL and then remove the `-DSDL=OFF` arguments
       # but I got build errors about NSview.
       args << "-DSDL=OFF"
@@ -87,8 +87,6 @@ class Avidemux < Formula
         args = std_cmake_args
         args << "-DAVIDEMUX_SOURCE_DIR=#{buildpath}"
         args << "-DAVIDEMUX_LIB_DIR=#{lib}"
-        # If you get SDL to work with avidemux, you might still need to add -I like so:
-        # args << "-DCMAKE_CXX_FLAGS=-I#{Formula.factory('sdl').opt_prefix}/include/SDL"
         args << "-DSDL=OFF"
         args << "../avidemux/#{interface}"
         system "cmake", *args
@@ -130,7 +128,7 @@ class Avidemux < Formula
     mkdir_p app/"MacOS"
     cp_r "./cmake/osx/Avidemux2.6", app/"MacOS/Avidemux2.6.app"
     chmod 0755, app/"MacOS/Avidemux2.6.app"
-    cp_r Formula.factory('qt').opt_prefix/"lib/QtGui.framework/Resources/qt_menu.nib", app/"MacOS/" if build.with? 'qt'
+    cp_r Formula['qt'].opt_prefix/"lib/QtGui.framework/Resources/qt_menu.nib", app/"MacOS/" if build.with? 'qt'
     cp "./cmake/osx/Info.plist", app
     ln_s lib, app/"Resources/"
     ln_s bin, app/"Resources/"

@@ -2,7 +2,7 @@ require 'formula'
 
 class Djmount < Formula
   homepage 'http://djmount.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/djmount/djmount/0.71/djmount-0.71.tar.gz'
+  url 'https://downloads.sourceforge.net/project/djmount/djmount/0.71/djmount-0.71.tar.gz'
   sha1 '527d4603d85b7fb86dc97d326b78c97bdcc4d687'
 
   depends_on 'pkg-config' => :build
@@ -24,12 +24,6 @@ class Djmount < Formula
                           "--with-libupnp-prefix=#{HOMEBREW_PREFIX}"
     system "make"
     system "make install"
-  end
-
-  def caveats; <<-EOS.undent
-    Make sure to follow the directions given by `brew info osxfuse`
-    before trying to use a FUSE-based filesystem.
-    EOS
   end
 end
 

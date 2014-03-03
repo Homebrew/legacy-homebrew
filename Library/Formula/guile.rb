@@ -43,7 +43,8 @@ class Guile < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libreadline-prefix=#{Formula.factory('readline').prefix}"
+                          "--with-libreadline-prefix=#{Formula["readline"].prefix}",
+                          "--with-libgmp-prefix=#{Formula["gmp"].prefix}"
     system "make install"
 
     # A really messed up workaround required on OS X --mkhl

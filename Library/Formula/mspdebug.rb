@@ -2,7 +2,7 @@ require 'formula'
 
 class Mspdebug < Formula
   homepage 'http://mspdebug.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/mspdebug/mspdebug-0.22.tar.gz'
+  url 'https://downloads.sourceforge.net/project/mspdebug/mspdebug-0.22.tar.gz'
   sha1 'f55692d90ccb1f3686e94df53e5e30408fde963f'
 
   depends_on 'libusb-compat'
@@ -18,7 +18,7 @@ class Mspdebug < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/mspdebug", "--help"
   end
 end

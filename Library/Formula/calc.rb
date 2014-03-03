@@ -18,7 +18,7 @@ class Calc < Formula
     ENV['EXTRA_CFLAGS'] = ENV.cflags
     ENV['EXTRA_LDFLAGS'] = ENV.ldflags
 
-    readline = Formula.factory('readline')
+    readline = Formula['readline']
     inreplace "Makefile" do |s|
       s.change_make_var! "INCDIR", include
       s.change_make_var! "BINDIR", bin
@@ -34,11 +34,17 @@ class Calc < Formula
         "-single_module -undefined dynamic_lookup -dynamiclib -install_name ${LIBDIR}/libcustcalc${LIB_EXT_VERSION}"
       s.change_make_var! 'CC',
         "MACOSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET} #{ENV.cc}"
-      s.change_make_var! 'MACOSX_DEPLOYMENT_TARGET',
-        "#{MacOS.version}"
+      s.change_make_var! 'MACOSX_DEPLOYMENT_TARGET', MacOS.version
     end
 
     system "make"
     system "make install"
+    libexec.install "#{bin}/cscript"
+  end
+
+  test do
+    output = `#{bin}/calc 0xA + 1`.strip
+    assert_equal "11", output
+    assert_equal 0, $?.exitstatus
   end
 end

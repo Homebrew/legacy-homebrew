@@ -14,7 +14,7 @@ end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2'
   sha1 'cef9a0cc7084b1d639e06cd3bc34e4251524c840'
 
   head 'http://svn.boost.org/svn/boost/trunk'
@@ -72,7 +72,7 @@ class Boost < Formula
       EOS
     end
 
-    if build.cxx11? and build.with? 'mpi' and python
+    if build.cxx11? and build.with? 'mpi' and build.with? 'python'
       raise <<-EOS.undent
         Building MPI support for Python using C++11 mode results in
         failure and hence disabled.  Please don't use this combination
@@ -115,7 +115,7 @@ class Boost < Formula
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
     if build.with? 'icu'
-      icu4c_prefix = Formula.factory('icu4c').opt_prefix
+      icu4c_prefix = Formula['icu4c'].opt_prefix
       bargs << "--with-icu=#{icu4c_prefix}"
     else
       bargs << '--without-icu'
@@ -187,7 +187,7 @@ class Boost < Formula
       EOS
     end
 
-    if pour_bottle? and Formula.factory('python').installed?
+    if pour_bottle? and Formula['python'].installed?
       s += <<-EOS.undent
 
       The Boost bottle's module will not import into a Homebrew-installed Python.

@@ -2,10 +2,10 @@ require 'formula'
 
 class Ansible < Formula
   homepage 'http://www.ansibleworks.com/'
-  url 'https://github.com/ansible/ansible/archive/v1.4.4.tar.gz'
-  sha1 '743c365d3639fae99129e04b49865aec0d76462d'
+  url 'https://github.com/ansible/ansible/archive/v1.5.0.tar.gz'
+  sha1 'b11b4e981a6c2af8a526139a67c8eda121910d48'
 
-  head 'https://github.com/ansible/ansible.git', :branch => :devel
+  head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
   depends_on :python
   depends_on 'libyaml'

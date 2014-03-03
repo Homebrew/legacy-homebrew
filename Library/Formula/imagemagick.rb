@@ -5,7 +5,7 @@ class Imagemagick < Formula
 
   # upstream's stable tarballs tend to disappear, so we provide our own mirror
   # Tarball and checksum from: http://www.imagemagick.org/download
-  url 'http://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.7-7.tar.bz2'
+  url 'https://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.7-7.tar.bz2'
   sha256 '4d8b0889d78cca2f1501b5f66f61c5efcd2f585a03002f2a7b407c11808e5e28'
 
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
@@ -49,7 +49,7 @@ class Imagemagick < Formula
   def pour_bottle?
     # If libtool is keg-only it currently breaks the bottle.
     # This is a temporary workaround until we have a better fix.
-    not Formula.factory('libtool').keg_only?
+    not Formula["libtool"].keg_only?
   end
 
   skip_clean :la

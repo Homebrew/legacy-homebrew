@@ -1,20 +1,13 @@
 require 'formula'
 
-class Clang < Formula
-  homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.3/cfe-3.3.src.tar.gz'
-  sha1      'ccd6dbf2cdb1189a028b70bcb8a22509c25c74c8'
-end
-
 class Llvm < Formula
-  homepage  'http://llvm.org/'
-  url       'http://llvm.org/releases/3.3/llvm-3.3.src.tar.gz'
-  sha1      'c6c22d5593419e3cb47cbcf16d967640e5cce133'
+  homepage 'http://llvm.org/'
+  url 'http://llvm.org/releases/3.4/llvm-3.4.src.tar.gz'
+  sha1 '10b1fd085b45d8b19adb9a628353ce347bc136b8'
 
-  bottle do
-    sha1 '61854a2cf08a1398577f74fea191a749bec3e72d' => :mountain_lion
-    sha1 'fbe7b85a50f4b283ad55be020c7ddfbf655435ad' => :lion
-    sha1 'f68fdb89d44a72c83db1e55e25444de4dcde5375' => :snow_leopard
+  resource 'clang' do
+    url 'http://llvm.org/releases/3.4/clang-3.4.src.tar.gz'
+    sha1 'a6a3c815dd045e9c13c7ae37d2cfefe65607860d'
   end
 
   option :universal
@@ -35,7 +28,7 @@ class Llvm < Formula
       raise 'The Python bindings need the shared library.'
     end
 
-    Clang.new("clang").brew do
+    resource('clang').stage do
       (buildpath/'tools/clang').install Dir['*']
     end if build.with? 'clang'
 
@@ -64,8 +57,10 @@ class Llvm < Formula
     args << "--disable-assertions" if build.include? 'disable-assertions'
 
     system "./configure", *args
-    system 'make', 'VERBOSE=1'
-    system 'make', 'VERBOSE=1', 'install'
+    system 'make'
+    system 'make', 'install'
+
+    (share/'llvm/cmake').install buildpath/'cmake/modules'
 
     # install llvm python bindings
     if build.with? "python"
@@ -74,7 +69,7 @@ class Llvm < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/llvm-config", "--version"
   end
 

@@ -4,6 +4,20 @@ require 'test/testball'
 class FormulaTests < Test::Unit::TestCase
   include VersionAssertions
 
+  def test_formula_path_initialization
+    name = "formula_name"
+    klass = Class.new(Formula) { url "http://example.com/foo-1.0.tar.gz" }
+
+    f = klass.new(name)
+    assert_equal Formula.path(name), f.path
+
+    f = klass.new(name, path = Object.new)
+    assert_equal path, f.path
+
+    f = klass.new(name, nil)
+    assert_nil f.path
+  end
+
   def test_prefix
     f = TestBall.new
     assert_equal HOMEBREW_CELLAR/f.name/'0.1', f.prefix
@@ -129,24 +143,11 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_class_naming
-    assert_equal 'ShellFm', Formula.class_s('shell.fm')
-    assert_equal 'Fooxx', Formula.class_s('foo++')
-    assert_equal 'SLang', Formula.class_s('s-lang')
-    assert_equal 'PkgConfig', Formula.class_s('pkg-config')
-    assert_equal 'FooBar', Formula.class_s('foo_bar')
-  end
-
-  def test_mirror_support
-    f = Class.new(Formula) do
-      url "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
-      mirror "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-    end.new("test_mirror_support")
-
-    shutup { f.fetch }
-
-    assert_equal "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz", f.url
-    assert_equal "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz",
-      f.downloader.instance_variable_get(:@url)
+    assert_equal 'ShellFm', Formulary.class_s('shell.fm')
+    assert_equal 'Fooxx', Formulary.class_s('foo++')
+    assert_equal 'SLang', Formulary.class_s('s-lang')
+    assert_equal 'PkgConfig', Formulary.class_s('pkg-config')
+    assert_equal 'FooBar', Formulary.class_s('foo_bar')
   end
 
   def test_formula_spec_integration
@@ -174,7 +175,6 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal 'http://example.com', f.homepage
     assert_version_equal '0.1', f.version
     assert_equal f.stable, f.active_spec
-    assert_instance_of CurlDownloadStrategy, f.downloader
 
     assert_instance_of SoftwareSpec, f.stable
     assert_instance_of Bottle, f.bottle
@@ -194,7 +194,7 @@ class FormulaTests < Test::Unit::TestCase
     File.open(path, 'w') do |f|
       f << %{
         require 'formula'
-        class #{Formula.class_s(name)} < Formula
+        class #{Formulary.class_s(name)} < Formula
           url 'foo-1.0'
           def initialize(*args)
             @homepage = 'http://example.com/'

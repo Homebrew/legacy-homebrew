@@ -17,7 +17,7 @@ class Pass < Formula
     zsh_completion.install "contrib/pass.zsh-completion" => "_pass"
   end
 
-  def test
+  test do
     system "#{bin}/pass", "--version"
   end
 end

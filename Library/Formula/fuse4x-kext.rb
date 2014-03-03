@@ -1,7 +1,7 @@
 require 'formula'
 
 class Fuse4xKext < Formula
-  homepage 'http://fuse4x.github.com'
+  homepage 'http://fuse4x.github.io'
   url 'https://github.com/fuse4x/kext/archive/fuse4x_0_9_2.tar.gz'
   sha1 '4222c14b38325d9e41fb0925d2681dda3e73e861'
 
@@ -29,7 +29,7 @@ class Fuse4xKext < Formula
       "ARCHS=i386 #{'x86_64' if MacOS.prefer_64_bit?}", 'ONLY_ACTIVE_ARCH=NO'
     ]
 
-    system "/usr/bin/xcodebuild", *args
+    xcodebuild *args
     system "/bin/mkdir -p build/Release/fuse4x.kext/Support"
     system "/bin/cp build/Release/load_fuse4x build/Release/fuse4x.kext/Support"
 

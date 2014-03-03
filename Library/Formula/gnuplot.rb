@@ -9,7 +9,7 @@ end
 
 class Gnuplot < Formula
   homepage 'http://www.gnuplot.info'
-  url 'http://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.3/gnuplot-4.6.3.tar.gz'
+  url 'https://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.3/gnuplot-4.6.3.tar.gz'
   sha256 'df5ffafa25fb32b3ecc0206a520f6bca8680e6dcc961efd30df34c0a1b7ea7f5'
 
   head do
@@ -30,6 +30,7 @@ class Gnuplot < Formula
   option 'tests',  'Verify the build with make check (1 min)'
   option 'without-emacs', 'Do not build Emacs lisp files'
   option 'latex',  'Build with LaTeX support'
+  option 'without-aquaterm', 'Do not build AquaTerm support'
 
   depends_on 'pkg-config' => :build
   depends_on LuaRequirement unless build.include? 'nolua'
@@ -43,24 +44,45 @@ class Gnuplot < Formula
   depends_on :tex          if build.include? 'latex'
 
   def install
+    if build.with? "aquaterm"
+      # Add "/Library/Frameworks" to the default framework search path, so that an
+      # installed AquaTerm framework can be found. Brew does not add this path
+      # when building against an SDK (Nov 2013).
+      ENV.prepend "CPPFLAGS", "-F/Library/Frameworks"
+      ENV.prepend "LDFLAGS", "-F/Library/Frameworks"
+
+      unless build.head?
+        # Fix up Gnuplot v4.6.x to accommodate framework style linking. This is
+        # required with a standard install of AquaTerm 1.1.1 and is supported under
+        # earlier versions of AquaTerm. Refer:
+        # https://github.com/AquaTerm/AquaTerm/blob/v1.1.1/aquaterm/ReleaseNotes#L1-11
+        # https://github.com/AquaTerm/AquaTerm/blob/v1.1.1/aquaterm/INSTALL#L7-15
+        inreplace "configure", "-laquaterm", "-framework AquaTerm"
+        inreplace "term/aquaterm.trm", "<aquaterm/AQTAdapter.h>", "<AquaTerm/AQTAdapter.h>"
+      end
+    elsif !build.head?
+      inreplace "configure", "-laquaterm", ""
+    end
+
     # Help configure find libraries
-    readline = Formula.factory 'readline'
-    pdflib = Formula.factory 'pdflib-lite'
-    gd = Formula.factory 'gd'
+    readline = Formula["readline"].opt_prefix
+    pdflib = Formula["pdflib-lite"].opt_prefix
+    gd = Formula["gd"].opt_prefix
 
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
-      --with-readline=#{readline.opt_prefix}
+      --with-readline=#{readline}
     ]
 
-    args << "--with-pdf=#{pdflib.opt_prefix}" if build.include? 'pdf'
-    args << '--with' + ((build.include? 'nogd') ? 'out-gd' : "-gd=#{gd.opt_prefix}")
+    args << "--with-pdf=#{pdflib}" if build.include? 'pdf'
+    args << '--with' + ((build.include? 'nogd') ? 'out-gd' : "-gd=#{gd}")
     args << '--disable-wxwidgets' unless build.include? 'wx'
     args << '--without-cairo'     unless build.include? 'cairo'
     args << '--enable-qt'             if build.include? 'qt'
     args << '--without-lua'           if build.include? 'nolua'
     args << '--without-lisp-files'    if build.include? 'without-emacs'
+    args << (build.with?('aquaterm') ? '--with-aquaterm' : '--without-aquaterm')
 
     if build.include? 'latex'
       args << '--with-latex'
@@ -78,7 +100,18 @@ class Gnuplot < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/gnuplot", "--version"
+  end
+
+  def caveats
+    if build.with? "aquaterm"
+      <<-EOS.undent
+        AquaTerm support will only be built into Gnuplot if the standard AquaTerm
+        package from SourceForge has already been installed onto your system.
+        If you subsequently remove AquaTerm, you will need to uninstall and then
+        reinstall Gnuplot.
+      EOS
+    end
   end
 end

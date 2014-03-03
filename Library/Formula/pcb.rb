@@ -2,11 +2,13 @@ require 'formula'
 
 class Pcb < Formula
   homepage 'http://pcb.geda-project.org/'
-  url 'http://downloads.sourceforge.net/project/pcb/pcb/pcb-20110918/pcb-20110918.tar.gz'
+  url 'https://downloads.sourceforge.net/project/pcb/pcb/pcb-20110918/pcb-20110918.tar.gz'
   version '20110908'
   sha1 '53ca27797d4db65a068b56f157e3ea6c5c29051f'
 
   head 'git://git.geda-project.org/pcb.git'
+
+  option 'with-doc', "Build the documentation (requires LaTeX)."
 
   depends_on :autoconf
   depends_on :automake
@@ -19,6 +21,7 @@ class Pcb < Formula
   depends_on 'glib'
   depends_on 'gtkglext'
   depends_on :x11
+  depends_on :tex if build.with? 'doc'
 
   # See comments in intltool formula
   depends_on 'XML::Parser' => :perl
@@ -31,11 +34,13 @@ class Pcb < Formula
 
   def install
     system "./autogen.sh" if build.head?
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--disable-update-desktop-database",
+            "--disable-update-mime-database"]
+    args << "--disable-doc" unless build.with? 'doc'
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-update-desktop-database",
-                          "--disable-update-mime-database"
+    system "./configure", *args
 
     system "make"
     system "make install"

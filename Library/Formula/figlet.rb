@@ -29,7 +29,7 @@ class Figlet < Formula
                    "install"
   end
 
-  def test
+  test do
     system "#{bin}/figlet", "-f", "larry3d", "hello, figlet"
   end
 end

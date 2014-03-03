@@ -12,4 +12,18 @@ class AardvarkShellUtils < Formula
     system "make"
     system "make install"
   end
+
+  test do
+    output = `#{bin}/filebase movcpm.com`
+    assert_equal "movcpm\n", output
+    assert_equal 0, $?.exitstatus
+
+    output = `#{bin}/fileext movcpm.com`
+    assert_equal "com\n", output
+    assert_equal 0, $?.exitstatus
+
+    output = `#{bin}/realpath .`
+    assert_equal "#{testpath}\n", output
+    assert_equal 0, $?.exitstatus
+  end
 end

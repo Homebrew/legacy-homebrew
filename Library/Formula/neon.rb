@@ -28,11 +28,12 @@ class Neon < Formula
       "--prefix=#{prefix}",
       "--enable-shared",
       "--disable-static",
+      "--with-ca-bundle=/usr/share/curl/curl-ca-bundle.crt",
       "--disable-nls",
       "--with-ssl",
     ]
     if build.with? 'brewed-openssl'
-      args << "--with-libs=" + Formula.factory('openssl').opt_prefix.to_s
+      args << "--with-libs=#{Formula['openssl']/opt_prefix}"
     end
     system "./configure", *args
     system "make install"

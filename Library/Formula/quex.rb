@@ -2,7 +2,7 @@ require 'formula'
 
 class Quex < Formula
   homepage 'http://quex.org/'
-  url 'http://downloads.sourceforge.net/project/quex/DOWNLOAD/quex-0.64.8.tar.gz'
+  url 'https://downloads.sourceforge.net/project/quex/DOWNLOAD/quex-0.64.8.tar.gz'
   sha1 'efe3d3f5fa0cf9a1130c16d1e0dd4e48cf72011b'
 
   def install
@@ -15,7 +15,7 @@ class Quex < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/quex", "--help"
   end
 end

@@ -2,7 +2,7 @@ require 'formula'
 
 class Nrpe < Formula
   homepage 'http://www.nagios.org/'
-  url 'http://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz'
+  url 'https://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz'
   sha1 '45f434758c547c0af516e8b3324717f8dcd100a3'
 
   depends_on 'nagios-plugins'
@@ -26,6 +26,31 @@ class Nrpe < Formula
     system "make install"
     system "make install-daemon-config"
     (var+'run').mkpath
+  end
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>org.nrpe.agent</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{HOMEBREW_PREFIX}/bin/nrpe</string>
+        <string>-c</string>
+        <string>#{etc}/nrpe.cfg</string>
+        <string>-d</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+      <key>ServiceDescription</key>
+      <string>Homebrew NRPE Agent</string>
+      <key>Debug</key>
+      <true/>
+    </dict>
+    </plist>
+    EOS
   end
 
   def caveats

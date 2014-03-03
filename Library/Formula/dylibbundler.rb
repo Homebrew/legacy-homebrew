@@ -2,7 +2,7 @@ require 'formula'
 
 class Dylibbundler < Formula
   homepage 'http://macdylibbundler.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/macdylibbundler/macdylibbundler/0.4.4/dylibbundler-0.4.4.zip'
+  url 'https://downloads.sourceforge.net/project/macdylibbundler/macdylibbundler/0.4.4/dylibbundler-0.4.4.zip'
   sha1 '8d120bababc5218927447cf7fec57abf5d093ff6'
 
   def install
@@ -10,7 +10,7 @@ class Dylibbundler < Formula
     bin.install "dylibbundler"
   end
 
-  def test
+  test do
     system "#{bin}/dylibbundler", "-h"
   end
 

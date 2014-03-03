@@ -6,6 +6,12 @@ class Gnupg < Formula
   mirror 'http://mirror.switch.ch/ftp/mirror/gnupg/gnupg/gnupg-1.4.16.tar.bz2'
   sha1 '0bf5e475f3eb6f33d5474d017fe5bf66070e43f4'
 
+  bottle do
+    sha1 "eb0eb56c77ee61a43ec63393cf63493f0a04c4aa" => :mavericks
+    sha1 "3f2e2ebd287d57d5c89565d087cfbaa1e2586f54" => :mountain_lion
+    sha1 "a077b3a698ef320d82a05d5a538ec4860504251c" => :lion
+  end
+
   option '8192', 'Build with support for private keys of up to 8192 bits'
 
   def cflags

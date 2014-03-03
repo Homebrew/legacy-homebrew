@@ -148,8 +148,9 @@ Note that these flags should only appear after a command.
 
     To view formula history locally: `brew log -p <formula>`.
 
-  * `info` <URL>:
-    Print the name and version that will be detected for <URL>.
+  * `info --json=<version>` <formula>:
+    Print a JSON representation of <formula>. Currently the only accepted value
+    for <version> is `v1`.
 
   * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--fresh] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
@@ -512,13 +513,6 @@ can take several different forms:
     greater number of API requests. See
     <http://developer.github.com/v3/#rate-limiting> for more information.
     Homebrew uses the GitHub API for features such as `brew search`.
-
-  * HOMEBREW\_KEEP\_INFO:
-    If set, Homebrew will not remove files from `share/info`, allowing them
-    to be linked from the Cellar. To access these info files, prepend
-    `share/info` to your `INFOPATH` environment variable.
-
-    *Example:* `export INFOPATH='/usr/local/share/info:/usr/share/info'`
 
   * HOMEBREW\_MAKE\_JOBS:
     If set, instructs Homebrew to use the value of `HOMEBREW_MAKE_JOBS` as

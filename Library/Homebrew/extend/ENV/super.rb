@@ -77,7 +77,6 @@ module Superenv
     self['HOMEBREW_TEMP'] = HOMEBREW_TEMP
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
     self['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
-    self['HOMEBREW_VERBOSE'] = "1" if ARGV.verbose?
     self['HOMEBREW_OPTFLAGS'] = determine_optflags
     self['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
     self['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
@@ -85,6 +84,7 @@ module Superenv
     self['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     self['ACLOCAL_PATH'] = determine_aclocal_path
     self['M4'] = MacOS.locate("m4") if deps.include? "autoconf"
+    self['PYTHONDONTWRITEBYTECODE'] = "1" if ARGV.build_bottle?
 
     # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
     # compiler flag stripping. It consists of a string of characters which act
@@ -263,6 +263,14 @@ module Superenv
   def universal_binary
     self['HOMEBREW_ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
     append 'HOMEBREW_CCCFG', "u", ''
+
+    # GCC doesn't accept "-march" for a 32-bit CPU with "-arch x86_64"
+    if compiler != :clang && Hardware.is_32_bit?
+      self['HOMEBREW_OPTFLAGS'] = self['HOMEBREW_OPTFLAGS'].sub(
+        /-march=\S*/,
+        "-Xarch_#{Hardware::CPU.arch_32_bit} \\0"
+      )
+    end
   end
 
   def cxx11

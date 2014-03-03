@@ -2,7 +2,7 @@ require 'formula'
 
 class Opensc < Formula
   homepage 'https://github.com/OpenSC/OpenSC/wiki'
-  url 'http://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.13.0/opensc-0.13.0.tar.gz'
+  url 'https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.13.0/opensc-0.13.0.tar.gz'
   sha1 '9285ccbed7b49f63e488c8fb1b3e102994a28218'
 
   head do
@@ -23,7 +23,7 @@ class Opensc < Formula
     # If OpenSC's configure script detects docbook it will build manual
     # pages. This extends the spirit of that logic to support homebrew
     # installed docbook.
-    docbook = Formula.factory 'docbook'
+    docbook = Formula["docbook"]
     if docbook.installed?
       # OpenSC looks in a set of common paths for docbook's xsl files,
       # but not in /usr/local, and certainly not in homebrew's

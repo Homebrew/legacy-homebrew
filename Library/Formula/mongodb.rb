@@ -6,17 +6,34 @@ class Mongodb < Formula
   sha1 '3aa495cf32769a09ee9532827391892d96337d6b'
 
   bottle do
-    sha1 '04d49071102d86ac06f35ed9e4c855a677d97c68' => :mavericks
-    sha1 '2ee3ed1b44777ea740da87b952acdadf19084bd4' => :mountain_lion
-    sha1 'b4898545634c7015093036c260dca69bc96fa5b8' => :lion
+    revision 2
+    sha1 "5447af6e8f6a2870306e03d318351f1d8efecb1f" => :mavericks
+    sha1 "8b40016996e9dd42bbef3657d3a3c9357bd5d5ea" => :mountain_lion
+    sha1 "e9686685cf1fdbd65109ea8e9979169f0ce728b6" => :lion
+  end
+
+  stable do
+    # When 2.6 is released this conditional can be removed.
+    if MacOS.version < :mavericks
+      option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+      depends_on "boost" => :optional
+    end
   end
 
   devel do
-    url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.4.tar.gz'
-    sha1 'ad40b93c9638178cd487c80502084ac3a9472270'
+    url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.5.tar.gz'
+    sha1 '4827f3da107174a3cbb1f5b969c7f597ca09b4f8'
+
+    option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+    depends_on "boost" => :optional
   end
 
-  head 'https://github.com/mongodb/mongo.git'
+  head do
+    url 'https://github.com/mongodb/mongo.git'
+
+    option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+    depends_on "boost" => :optional
+  end
 
   def patches
     if build.stable?
@@ -31,36 +48,42 @@ class Mongodb < Formula
   depends_on 'openssl' => :optional
 
   def install
-    # mongodb currently can't build with libc++; this should be fixed in
-    # 2.6, but can't be backported to the current stable release.
-    ENV.cxx += ' -stdlib=libstdc++' if ENV.compiler == :clang && MacOS.version >= :mavericks
-
-    scons = Formula.factory('scons').opt_prefix/'bin/scons'
-
     args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
+
+    cxx = ENV.cxx
+    if ENV.compiler == :clang && MacOS.version >= :mavericks
+      if build.stable?
+        # When 2.6 is released this cxx hack can be removed
+        # ENV.append "CXXFLAGS", "-stdlib=libstdc++" does not work with scons
+        # so use this hack of appending the flag to the --cxx parameter of the sconscript.
+        # mongodb 2.4 can't build with libc++, but defaults to it on Mavericks
+        cxx += " -stdlib=libstdc++"
+      else
+        # build devel and HEAD version on Mavericks with libc++
+        # Use --osx-version-min=10.9 such that the compiler defaults to libc++.
+        # Upstream issue discussing the default flags:
+        # https://jira.mongodb.org/browse/SERVER-12682
+        args << "--osx-version-min=10.9"
+      end
+    end
+
     args << '--64' if MacOS.prefer_64_bit?
     args << "--cc=#{ENV.cc}"
-    args << "--cxx=#{ENV.cxx}"
+    args << "--cxx=#{cxx}"
+
+    # --full installs development headers and client library, not just binaries
+    args << "--full"
+    args << "--use-system-boost" if build.with? "boost"
 
     if build.with? 'openssl'
       args << '--ssl'
-      args << "--extrapathdyn=#{Formula.factory('openssl').opt_prefix}"
+      args << "--extrapath=#{Formula["openssl"].opt_prefix}"
     end
 
-    system scons, 'install', *args
+    scons 'install', *args
 
-    (prefix+'mongod.conf').write mongodb_conf
-
-    mv bin/'mongod', prefix
-    (bin/'mongod').write <<-EOS.undent
-      #!/usr/bin/env ruby
-      ARGV << '--config' << '#{etc}/mongod.conf' unless ARGV.find { |arg|
-        arg =~ /^\s*\-\-config$/ or arg =~ /^\s*\-f$/
-      }
-      exec "#{prefix}/mongod", *ARGV
-    EOS
-
-    etc.install prefix+'mongod.conf'
+    (buildpath+"mongod.conf").write mongodb_conf
+    etc.install "mongod.conf"
 
     (var+'mongodb').mkpath
     (var+'log/mongodb').mkpath
@@ -79,7 +102,7 @@ class Mongodb < Formula
     EOS
   end
 
-  plist_options :manual => "mongod"
+  plist_options :manual => "mongod --config #{HOMEBREW_PREFIX}/etc/mongod.conf"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -91,7 +114,6 @@ class Mongodb < Formula
       <key>ProgramArguments</key>
       <array>
         <string>#{opt_prefix}/mongod</string>
-        <string>run</string>
         <string>--config</string>
         <string>#{etc}/mongod.conf</string>
       </array>
@@ -118,5 +140,9 @@ class Mongodb < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/mongod", '--sysinfo'
   end
 end

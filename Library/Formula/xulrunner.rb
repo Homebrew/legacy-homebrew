@@ -34,12 +34,18 @@ end
 
 class Xulrunner < Formula
   homepage "https://developer.mozilla.org/docs/XULRunner"
-  url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/27.0b4/source/xulrunner-27.0b4.source.tar.bz2"
-  sha1 "8dda88378454d9996cd908eeee48fcdfe47bc3ba"
-  version "27.0b4"
+  url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/27.0.1/source/xulrunner-27.0.1.source.tar.bz2"
+  sha1 'c9c5a6142fc9c50113c18eb8b1fb9249c08c4aac'
+
+  devel do
+    url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/28.0b3/source/xulrunner-28.0b3.source.tar.bz2"
+    sha1 'f35c986e2889dcee1d9f458ff7942ec6d3b1bbe9'
+    version '28.0b3'
+  end
 
   head do
-    url "http://ftp.mozilla.org/pub/mozilla.org/firefox/bundles/mozilla-central.hg|https://hg.mozilla.org/mozilla-central/", :using => HgBundleDownloadStrategy
+    url "http://ftp.mozilla.org/pub/mozilla.org/firefox/bundles/mozilla-central.hg|https://hg.mozilla.org/mozilla-central/",
+      :using => HgBundleDownloadStrategy
     depends_on "mercurial" => :build
     depends_on "gettext" => :build
   end
@@ -84,7 +90,7 @@ class Xulrunner < Formula
     buildpath.install resource("mozconfig")
     # fixed usage of bsdtar with unsupported parameters (replaced with gnu-tar)
     inreplace "toolkit/mozapps/installer/packager.mk", "$(TAR) -c --owner=0 --group=0 --numeric-owner",
-              "#{Formula.factory("gnu-tar").bin}/gtar -c --owner=0 --group=0 --numeric-owner"
+              "#{Formula["gnu-tar"].bin}/gtar -c --owner=0 --group=0 --numeric-owner"
 
     system "make", "-f", "client.mk", "build"
     system "make", "-f", "client.mk", "package"
@@ -92,12 +98,13 @@ class Xulrunner < Formula
     frameworks.mkpath
     if build.head?
       # update HEAD version here with every version bump
-      system "tar", "-xvj", "-C", frameworks, "-f",
-                    "objdir/dist/xulrunner-29.0a1.en-US.mac64.tar.bz2"
+      tar_path = "objdir/dist/xulrunner-30.0a1.en-US.mac64.tar.bz2"
+    elsif build.devel?
+      tar_path = "objdir/dist/xulrunner-#{version.to_s[/\d+.\d/]}.en-US.mac64.tar.bz2"
     else
-      system "tar", "-xvj", "-C", frameworks, "-f",
-                    "objdir/dist/xulrunner-#{version.to_s[/\d+.\d/]}.en-US.mac64.tar.bz2"
+      tar_path = "objdir/dist/xulrunner-#{version}.en-US.mac64.tar.bz2"
     end
+    system "tar", "-xvj", "-C", frameworks, "-f", tar_path
 
     # symlink only xulrunner here will fail (assumes dylibs in same directory)
     bin.write_exec_script frameworks/"XUL.framework/Versions/Current/xulrunner"

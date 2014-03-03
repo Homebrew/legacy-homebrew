@@ -49,7 +49,7 @@ class Keg < Pathname
         # check whether the file to be unlinked is from the current keg first
         next if !dst.symlink? || !dst.exist? || src != dst.resolved_path
 
-        dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
+        dst.uninstall_info if dst.to_s =~ INFOFILE_RX
         dst.unlink
         Find.prune if src.directory?
       end
@@ -130,7 +130,7 @@ class Keg < Pathname
     link_dir('share', mode) do |path|
       case path.to_s
       when 'locale/locale.alias' then :skip_file
-      when INFOFILE_RX then ENV['HOMEBREW_KEEP_INFO'] ? :info : :skip_file
+      when INFOFILE_RX then :info
       when LOCALEDIR_RX then :mkpath
       when *share_mkpaths then :mkpath
       when /^icons\/.*\/icon-theme\.cache$/ then :skip_file

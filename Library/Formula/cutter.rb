@@ -2,8 +2,8 @@ require 'formula'
 
 class Cutter < Formula
   homepage 'http://cutter.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/cutter/cutter/1.2.2/cutter-1.2.2.tar.gz'
-  sha1 'ce33471d343af21488ad0f36c8ed4f4ab3f6cd72'
+  url 'https://downloads.sourceforge.net/project/cutter/cutter/1.2.3/cutter-1.2.3.tar.gz'
+  sha1 '97446319f0a4892433912ab91633b6e0ffa2d09c'
 
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build

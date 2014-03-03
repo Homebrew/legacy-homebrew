@@ -2,7 +2,7 @@ require 'formula'
 
 class DfuProgrammer < Formula
   homepage 'http://dfu-programmer.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/dfu-programmer/dfu-programmer/0.6.2/dfu-programmer-0.6.2.tar.gz'
+  url 'https://downloads.sourceforge.net/project/dfu-programmer/dfu-programmer/0.6.2/dfu-programmer-0.6.2.tar.gz'
   sha1 '3a7d7b3770b85030a5b84ac73f1c06efca99a591'
 
   depends_on 'libusb-compat'

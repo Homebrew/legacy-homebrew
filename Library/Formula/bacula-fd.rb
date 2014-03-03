@@ -2,7 +2,7 @@ require 'formula'
 
 class BaculaFd < Formula
   homepage 'http://www.bacula.org/'
-  url 'http://downloads.sourceforge.net/project/bacula/bacula/5.2.13/bacula-5.2.13.tar.gz'
+  url 'https://downloads.sourceforge.net/project/bacula/bacula/5.2.13/bacula-5.2.13.tar.gz'
   sha1 '30b1eb2efb515138807163d046f675eaa29fad1c'
 
   def install

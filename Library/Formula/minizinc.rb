@@ -21,7 +21,7 @@ class Minizinc < Formula
     (bin/'private').unlink
   end
 
-  def test
+  test do
     system "#{bin}/mzn2fzn", "--help"
   end
 end

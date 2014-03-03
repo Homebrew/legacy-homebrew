@@ -43,7 +43,7 @@ class GnuSmalltalk < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --disable-gtk
-      --with-readline=#{Formula.factory('readline').lib}
+      --with-readline=#{Formula['readline'].lib}
     ]
     unless build.include? 'tcltk'
       args << '--without-tcl' << '--without-tk' << '--without-x'
@@ -59,5 +59,14 @@ class GnuSmalltalk < Formula
     system "make"
     system 'make', '-j1', 'check' if build.include? 'tests'
     system "make install"
+  end
+
+  test do
+    path = testpath/"test.gst"
+    path.write "0 to: 9 do: [ :n | n display ]\n"
+
+    output = `#{bin}/gst #{path}`.strip
+    assert_equal "0123456789", output
+    assert_equal 0, $?.exitstatus
   end
 end

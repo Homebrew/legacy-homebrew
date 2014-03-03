@@ -15,7 +15,6 @@ class Qt < Formula
     # It would be nice if this was a real version number but unfortunately
     # that will mess with the bottles.
     version '4.8.5'
-
   end
 
   head 'git://gitorious.org/qt/qt.git', :branch => '4.8'
@@ -67,11 +66,12 @@ class Qt < Formula
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 
     if build.with? 'd-bus'
-      dbus_opt = Formula.factory('d-bus').opt_prefix
+      dbus_opt = Formula["d-bus"].opt_prefix
       args << "-I#{dbus_opt}/lib/dbus-1.0/include"
       args << "-I#{dbus_opt}/include/dbus-1.0"
       args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
+      args << "-dbus-linked"
     end
 
     if build.with? 'qt3support'

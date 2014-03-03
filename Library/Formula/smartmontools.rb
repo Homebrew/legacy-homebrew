@@ -2,7 +2,7 @@ require 'formula'
 
 class Smartmontools < Formula
   homepage 'http://sourceforge.net/apps/trac/smartmontools/'
-  url 'http://downloads.sourceforge.net/project/smartmontools/smartmontools/6.2/smartmontools-6.2.tar.gz'
+  url 'https://downloads.sourceforge.net/project/smartmontools/smartmontools/6.2/smartmontools-6.2.tar.gz'
   sha1 '37848ff5103d68b672463a30cd99e7d23d6696a5'
 
   def install

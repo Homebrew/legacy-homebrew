@@ -2,7 +2,7 @@ require 'formula'
 
 class Unfs3 < Formula
   homepage 'http://unfs3.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/unfs3/unfs3/0.9.22/unfs3-0.9.22.tar.gz'
+  url 'https://downloads.sourceforge.net/project/unfs3/unfs3/0.9.22/unfs3-0.9.22.tar.gz'
   sha1 'a6c83e1210ce75836c672cd76e66577bfef7a17a'
 
   head do

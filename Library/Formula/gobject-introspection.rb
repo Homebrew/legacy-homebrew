@@ -5,7 +5,14 @@ class GobjectIntrospection < Formula
   url 'http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.38/gobject-introspection-1.38.0.tar.xz'
   sha256 '3575e5d353c17a567fdf7ffaaa7aebe9347b5b0eee8e69d612ba56a9def67d73'
 
+  bottle do
+    sha1 "08dcb543c8b7f2c8fc112278db752159edb420ba" => :mavericks
+    sha1 "a65b28dde0014e5cf622657ac913e6ad5fd29709" => :mountain_lion
+    sha1 "2adfc7d361663cd40780b19cccebfb275a180791" => :lion
+  end
+
   option :universal
+  option 'with-tests', 'Run tests in addition to the build (requires cairo)'
 
   depends_on 'pkg-config' => :build
   depends_on 'xz' => :build

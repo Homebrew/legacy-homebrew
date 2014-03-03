@@ -16,13 +16,7 @@ class Tup < Formula
     man1.install 'tup.1'
   end
 
-  def test
+  test do
     system "#{bin}/tup", "-v"
-  end
-
-  def caveats; <<-EOS.undent
-    Make sure to follow the directions given by `brew info osxfuse`
-    before using 'tup' build tool.
-    EOS
   end
 end

@@ -35,17 +35,20 @@ class Gnupg2 < Formula
 
     ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
 
+    agent = Formula["gpg-agent"].opt_prefix
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
       --sbindir=#{bin}
       --enable-symcryptrun
       --disable-agent
-      --with-agent-pgm=#{Formula.factory('gpg-agent').opt_prefix}/bin/gpg-agent
+      --with-agent-pgm=#{agent}/bin/gpg-agent
+      --with-protect-tool-pgm=#{agent}/libexec/gpg-protect-tool
     ]
 
     if build.with? 'readline'
-      args << "--with-readline=#{Formula.factory('readline').opt_prefix}"
+      args << "--with-readline=#{Formula["readline"].opt_prefix}"
     end
 
     system "./configure", *args

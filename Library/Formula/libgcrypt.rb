@@ -5,6 +5,13 @@ class Libgcrypt < Formula
   url 'ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.5.3.tar.bz2'
   sha1 '2c6553cc17f2a1616d512d6870fe95edf6b0e26e'
 
+  bottle do
+    cellar :any
+    sha1 "a33a63856c29913821deaa1c38d063bb49ce3e8d" => :mavericks
+    sha1 "3fb74c54503971bc5d1ab02027d8430dedf06b6f" => :mountain_lion
+    sha1 "6b7e4f8ee5c3e71a935bd1785121e84311679543" => :lion
+  end
+
   depends_on 'libgpg-error'
 
   option :universal

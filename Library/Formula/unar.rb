@@ -20,9 +20,9 @@ class Unar < Formula
 
   def install
     # Build XADMaster.framework, unar and lsar
-    system "xcodebuild -project ./XADMaster/XADMaster.xcodeproj -target XADMaster SYMROOT=../ -configuration Release"
-    system "xcodebuild -project ./XADMaster/XADMaster.xcodeproj -target unar SYMROOT=../ -configuration Release"
-    system "xcodebuild -project ./XADMaster/XADMaster.xcodeproj -target lsar SYMROOT=../ -configuration Release"
+    xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "XADMaster", "SYMROOT=../", "-configuration", "Release"
+    xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "unar", "SYMROOT=../", "-configuration", "Release"
+    xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "lsar", "SYMROOT=../", "-configuration", "Release"
 
     bin.install "./Release/unar", "./Release/lsar"
 
@@ -36,7 +36,7 @@ class Unar < Formula
     end
   end
 
-  def test
+  test do
     system bin/'unar', '--version'
     system bin/'lsar', '--version'
   end

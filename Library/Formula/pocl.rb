@@ -2,8 +2,8 @@ require 'formula'
 
 class Pocl < Formula
   homepage 'http://pocl.sourceforge.net'
-  url 'http://pocl.sourceforge.net/downloads/pocl-0.8.tar.gz'
-  sha1 '773f761bdca4c53654cfc0e59363e01757735c8b'
+  url 'http://pocl.sourceforge.net/downloads/pocl-0.9.tar.gz'
+  sha1 'd6e30f3120c7952dec9004db1db91a11d08c7b74'
 
   depends_on 'pkg-config' => :build
   depends_on 'hwloc'
@@ -11,8 +11,9 @@ class Pocl < Formula
   depends_on :libltdl
 
   def patches
-    # fix llvm-link command in script with version found by
-    # configure. This should be fixed in 0.9
+    # Check if ndebug flag is required for compiling pocl didn't work on osx
+    # for some reason. Information if bug is fixed is found from
+    # https://github.com/pocl/pocl/issues/59
     DATA
   end
 
@@ -34,21 +35,25 @@ class Pocl < Formula
       }
     EOS
     system "#{bin}/pocl-standalone -h head.h -o foo.bc foo.cl"
-    system "\"#{Formula.factory('llvm').opt_prefix}/bin/llvm-dis\" < foo.bc | grep foo_workgroup"
-    system "pkg-config pocl --modversion | grep 0.8"
+    system "\"#{Formula["llvm"].opt_prefix}/bin/llvm-dis\" < foo.bc | grep foo_workgroup"
+    system "pkg-config pocl --modversion | grep #{version}"
   end
 end
 
 __END__
-diff --git a/scripts/pocl-standalone.in b/scripts/pocl-standalone.in
-index 739fc4b..9542bf3 100644
---- a/scripts/pocl-standalone.in
-+++ b/scripts/pocl-standalone.in
-@@ -106,7 +106,7 @@ pocl_lib="@abs_top_builddir@/lib/llvmopencl/.libs/llvmopencl.so"
- full_target_dir="@abs_top_builddir@/lib/kernel/${target_dir}"
- # END REMOVE ONCE INSTALLED
+diff --git a/configure b/configure
+index 01d3e24..55bf55c 100755
+--- a/configure
++++ b/configure
+@@ -18375,6 +18375,11 @@ else
+   LLVM_HAS_ASSERTIONS_FALSE=
+ fi
 
--llvm-link -o ${linked_bc} ${kernel_bc} ${full_target_dir}/kernel*.bc
-+@LLVM_LINK@ -o ${linked_bc} ${kernel_bc} ${full_target_dir}/kernel*.bc
++# Hardcoded information that llvm compiled by homebrew has asserts
++# for some reason test above did not give correct result
++# https://github.com/pocl/pocl/issues/59
++LLVM_HAS_ASSERTIONS_TRUE=
++LLVM_HAS_ASSERTIONS_FALSE='#'
 
- OPT_SWITCH="-O3"
+ fi
+ rm -f core conftest.err conftest.$ac_objext \
