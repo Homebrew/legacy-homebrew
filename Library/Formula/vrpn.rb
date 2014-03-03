@@ -16,7 +16,7 @@ class Vrpn < Formula
 
   def install
     if ENV.compiler == :clang && MacOS.version >= :mavericks
-      ENV.cxx += ' -stdlib=libstdc++'
+      ENV.append 'CXXFLAGS', '-stdlib=libstdc++'
     end
 
     args = std_cmake_args
