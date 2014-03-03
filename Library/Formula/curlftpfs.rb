@@ -2,7 +2,7 @@ require 'formula'
 
 class Curlftpfs < Formula
   homepage 'http://curlftpfs.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/curlftpfs/curlftpfs/0.9.2/curlftpfs-0.9.2.tar.gz'
+  url 'https://downloads.sourceforge.net/project/curlftpfs/curlftpfs/0.9.2/curlftpfs-0.9.2.tar.gz'
   sha1 '83f148afe6bd4d44c9790790f1c30986c8b9ea56'
 
   head 'https://github.com/rfw/curlftpfs.git'

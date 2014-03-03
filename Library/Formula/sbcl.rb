@@ -2,15 +2,15 @@ require 'formula'
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.16/sbcl-1.1.16-source.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.16/sbcl-1.1.16-source.tar.bz2'
   sha1 '27bad72be3eb4a078c362d1ec2a52cf9ec1d5ecb'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
-    sha1 "0fbd8c1f8ff12f6fd4c2ccb660edad3a40f57cb6" => :mavericks
-    sha1 "91f483bf6f8001a0b1557727450de769528f1c79" => :mountain_lion
-    sha1 "a2160042c9d0dc94208966ac3034a44364e6c2a0" => :lion
+    sha1 "86a3582cfbb2789c438c6a174869861842df32be" => :mavericks
+    sha1 "95cd6954553cc4f98c62d18475c83e6ff7bb02b0" => :mountain_lion
+    sha1 "07f044546e8a15e802b82907bbb1c4805bf99a28" => :lion
   end
 
   fails_with :llvm do
@@ -26,12 +26,12 @@ class Sbcl < Formula
   # Current binary versions are listed at http://sbcl.sourceforge.net/platform-table.html
 
   resource 'bootstrap64' do
-    url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.8/sbcl-1.1.8-x86-64-darwin-binary.tar.bz2'
+    url 'https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.8/sbcl-1.1.8-x86-64-darwin-binary.tar.bz2'
     sha1 'cffd8c568588f48bd0c69295a385b662d27983cf'
   end
 
   resource 'bootstrap32' do
-    url 'http://downloads.sourceforge.net/project/sbcl/sbcl/1.1.6/sbcl-1.1.6-x86-darwin-binary.tar.bz2'
+    url 'https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.6/sbcl-1.1.6-x86-darwin-binary.tar.bz2'
     sha1 '35a76b93f8714bc34ba127df4aaf69aacfc08164'
   end
 

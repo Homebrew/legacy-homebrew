@@ -11,14 +11,15 @@ class Tab < OpenStruct
   FILENAME = 'INSTALL_RECEIPT.json'
 
   def self.create f, compiler, stdlib, args
-    f.build.args = args
+    build = f.build.dup
+    build.args = args
 
     sha = HOMEBREW_REPOSITORY.cd do
       `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle
     end
 
-    Tab.new :used_options => f.build.used_options,
-            :unused_options => f.build.unused_options,
+    Tab.new :used_options => build.used_options,
+            :unused_options => build.unused_options,
             :tabfile => f.prefix.join(FILENAME),
             :built_as_bottle => !!ARGV.build_bottle?,
             :poured_from_bottle => false,

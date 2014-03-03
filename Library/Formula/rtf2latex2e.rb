@@ -2,7 +2,7 @@ require 'formula'
 
 class Rtf2latex2e < Formula
   homepage 'http://rtf2latex2e.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/rtf2latex2e/rtf2latex2e-unix/2-2/rtf2latex2e-2-2-2.tar.gz'
+  url 'https://downloads.sourceforge.net/project/rtf2latex2e/rtf2latex2e-unix/2-2/rtf2latex2e-2-2-2.tar.gz'
   version '2.2.2'
   sha1 'e5092341b4aa01940a5279fc7f7d8804fda60dd8'
 

@@ -2,7 +2,7 @@ require 'formula'
 
 class Pidgin < Formula
   homepage 'http://pidgin.im/'
-  url 'http://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.7/pidgin-2.10.7.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.7/pidgin-2.10.7.tar.bz2'
   sha1 '01bc06e3a5712dded3ad4a4913ada12a3cd01e15'
 
   depends_on :x11

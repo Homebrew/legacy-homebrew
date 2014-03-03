@@ -22,8 +22,8 @@ class FormulaInstaller
   def initialize ff
     @f = ff
     @show_header = false
-    @ignore_deps = false
-    @only_deps = false
+    @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
+    @only_deps = ARGV.only_deps?
     @options = Options.new
 
     @@attempted ||= Set.new
@@ -217,7 +217,9 @@ class FormulaInstaller
 
       ARGV.filter_for_dependencies do
         f.recursive_requirements do |dependent, req|
-          if (req.optional? || req.recommended?) && dependent.build.without?(req)
+          build = effective_build_options_for(dependent)
+
+          if (req.optional? || req.recommended?) && build.without?(req)
             Requirement.prune
           elsif req.build? && install_bottle?(dependent)
             Requirement.prune
@@ -247,9 +249,10 @@ class FormulaInstaller
 
     expanded_deps = ARGV.filter_for_dependencies do
       Dependency.expand(f, deps) do |dependent, dep|
-        options = inherited_options[dep] = inherited_options_for(f, dep)
+        options = inherited_options[dep] = inherited_options_for(dep)
+        build = effective_build_options_for(dependent)
 
-        if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
+        if (dep.optional? || dep.recommended?) && build.without?(dep)
           Dependency.prune
         elsif dep.build? && dependent == f && pour_bottle
           Dependency.prune
@@ -266,7 +269,17 @@ class FormulaInstaller
     expanded_deps.map { |dep| [dep, inherited_options[dep]] }
   end
 
-  def inherited_options_for(f, dep)
+  def effective_build_options_for(dependent)
+    if dependent == f
+      build = dependent.build.dup
+      build.args |= options
+      build
+    else
+      dependent.build
+    end
+  end
+
+  def inherited_options_for(dep)
     options = Options.new
     if f.build.universal? && !dep.build? && dep.to_formula.build.has_option?("universal")
       options << Option.new("universal")
@@ -296,6 +309,7 @@ class FormulaInstaller
     fi.options |= dep.options
     fi.options |= inherited_options
     fi.ignore_deps = true
+    fi.only_deps = false
     fi.show_header = false
     oh1 "Installing #{f} dependency: #{Tty.green}#{df}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg

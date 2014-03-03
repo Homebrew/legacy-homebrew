@@ -2,7 +2,7 @@ require 'formula'
 
 class Libusb < Formula
   homepage 'http://libusb.info'
-  url 'http://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-1.0.18/libusb-1.0.18.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-1.0.18/libusb-1.0.18.tar.bz2'
   sha256 'c73f5cec45a5de94418da4e151b7232958571926984acfb9bce02b9424e83720'
 
   bottle do

@@ -2,7 +2,7 @@ require 'formula'
 
 class Librsync < Formula
   homepage 'http://librsync.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/librsync/librsync/0.9.7/librsync-0.9.7.tar.gz'
+  url 'https://downloads.sourceforge.net/project/librsync/librsync/0.9.7/librsync-0.9.7.tar.gz'
   sha1 'd575eb5cae7a815798220c3afeff5649d3e8b4ab'
 
   bottle do
