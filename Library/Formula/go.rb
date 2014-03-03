@@ -62,7 +62,7 @@ class Go < Formula
     (buildpath/'pkg/obj').rmtree
 
     libexec.install Dir['*']
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink Dir["#{libexec}/bin/go*"]
   end
 
   def caveats; <<-EOS.undent
