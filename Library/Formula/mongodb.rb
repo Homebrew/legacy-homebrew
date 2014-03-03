@@ -113,7 +113,7 @@ class Mongodb < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/mongod</string>
+        <string>#{opt_prefix}/bin/mongod</string>
         <string>--config</string>
         <string>#{etc}/mongod.conf</string>
       </array>
