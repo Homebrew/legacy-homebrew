@@ -2,8 +2,7 @@ require "formula"
 
 class Docker < Formula
   homepage "http://docker.io"
-  url "https://github.com/dotcloud/docker.git", :tag => "v0.8.0"
-  sha1 "1e9362dab2ac2ecb4a1f193a7e72d060000438c3"
+  url "https://github.com/dotcloud/docker.git", :tag => "v0.8.1"
 
   option "without-completions", "Disable bash/zsh completions"
 
@@ -14,14 +13,6 @@ class Docker < Formula
     sha1 "bd6595664d5384c4e1584864d96d409d475016ce" => :lion
   end
 
-  def patches
-    [
-      "https://github.com/dotcloud/docker/commit/6174ba.patch",
-      "https://github.com/dotcloud/docker/commit/f794fb.patch",
-      "https://github.com/dotcloud/docker/commit/32535e.patch",
-    ]
-  end
-
   depends_on "go" => :build
 
   def install
@@ -29,7 +20,7 @@ class Docker < Formula
     ENV["AUTO_GOPATH"] = "1"
 
     system "hack/make.sh", "dynbinary"
-    bin.install "bundles/0.8.0/dynbinary/docker-0.8.0" => "docker"
+    bin.install "bundles/0.8.1/dynbinary/docker-0.8.1" => "docker"
 
     if build.with? "completions"
       bash_completion.install "contrib/completion/bash/docker"
