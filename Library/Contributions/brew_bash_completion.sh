@@ -204,7 +204,7 @@ _brew_info ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--all --github"
+        __brewcomp "--all --github --json=v1"
         return
         ;;
     esac
