@@ -2,7 +2,7 @@ require 'formula'
 
 class Haxe < Formula
   homepage 'http://haxe.org'
-  url 'https://github.com/HaxeFoundation/haxe.git', :tag => 'v3.0.1'
+  url 'https://github.com/HaxeFoundation/haxe.git', :tag => 'v3.1.0'
 
   head 'https://github.com/HaxeFoundation/haxe.git', :branch => 'development'
 
@@ -12,10 +12,9 @@ class Haxe < Formula
   def install
     # Build requires targets to be built in specific order
     ENV.deparallelize
-    system 'make'
-    bin.install 'haxe'
-    bin.install 'std/tools/haxelib/haxelib.sh' => 'haxelib'
-    (lib/'haxe').install 'std'
+    system "make"
+    bin.mkpath
+    system "make", "install", "INSTALL_BIN_DIR=#{bin}", "INSTALL_LIB_DIR=#{lib}/haxe"
   end
 
   test do
