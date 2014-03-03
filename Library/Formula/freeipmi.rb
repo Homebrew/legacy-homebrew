@@ -5,10 +5,10 @@ class Freeipmi < Formula
   url 'http://ftpmirror.gnu.org/freeipmi/freeipmi-1.3.4.tar.gz'
   sha1 '3848b5b014d60cf9ff8b848b65f192bb15ad0816'
 
-  depends_on "argp-standalone" => :build
-  depends_on 'libgcrypt'       => :build
+  depends_on 'argp-standalone'
+  depends_on 'libgcrypt'
 
-  #Patches can be removed when freeipmi 1.4.1 is released in Feb/March 2014
+  # Patches can be removed when freeipmi 1.4.1 is released in Feb/March 2014
   def patches
     DATA
   end
@@ -17,7 +17,7 @@ class Freeipmi < Formula
     system './configure', "--prefix=#{prefix}"
     # This is a big hammer to disable building the man pages
     # It breaks under homebrew's build system and I'm not sure why
-    system 'sed', '-i', "''", 's/install: install-am/install:/', './man/Makefile'
+    inreplace "man/Makefile", "install: install-am", "install:"
     system 'make', 'install'
   end
 
