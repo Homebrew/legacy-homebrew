@@ -5,6 +5,13 @@ class DocbookXsl < Formula
   url 'https://downloads.sourceforge.net/project/docbook/docbook-xsl/1.78.1/docbook-xsl-1.78.1.tar.bz2'
   sha1 '1d668c845bb43c65115d1a1d9542f623801cfb6f'
 
+  bottle do
+    cellar :any
+    sha1 "1e3f2c99e079fd558c388552c1844bde033e06f4" => :mavericks
+    sha1 "5e64aaef0b5e4efd37192fc8be39ed1388de5da4" => :mountain_lion
+    sha1 "4cc76192fcdc38b0d41177cb4263456c14d910f6" => :lion
+  end
+
   depends_on 'docbook'
 
   resource 'ns' do
