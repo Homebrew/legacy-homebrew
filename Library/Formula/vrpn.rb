@@ -15,6 +15,10 @@ class Vrpn < Formula
   depends_on 'doxygen' if build.include? 'docs'
 
   def install
+    if ENV.compiler == :clang && MacOS.version >= :mavericks
+      ENV.cxx += ' -stdlib=libstdc++'
+    end
+
     args = std_cmake_args
 
     if build.include? 'clients'
