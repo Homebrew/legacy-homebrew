@@ -19,7 +19,7 @@ class Docker < Formula
     ENV["AUTO_GOPATH"] = "1"
 
     system "hack/make.sh", "dynbinary"
-    bin.install "bundles/0.8.1/dynbinary/docker-0.8.1" => "docker"
+    bin.install "bundles/#{version}/dynbinary/docker-#{version}" => "docker"
 
     if build.with? "completions"
       bash_completion.install "contrib/completion/bash/docker"
