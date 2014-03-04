@@ -13,4 +13,8 @@ class PyenvVirtualenvwrapper < Formula
     ENV['PREFIX'] = prefix
     system "./install.sh"
   end
+
+  test do
+    system "eval \"$(pyenv init -)\" && pyenv virtualenvwrapper && pyenv virtualenvwrapper --version"
+  end
 end
