@@ -311,7 +311,7 @@ class FormulaInstaller
     fi.ignore_deps = true
     fi.only_deps = false
     fi.show_header = false
-    oh1 "Installing #{f} dependency: #{Tty.green}#{df}#{Tty.reset}"
+    oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
     fi.caveats
