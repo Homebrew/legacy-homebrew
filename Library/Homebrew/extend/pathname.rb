@@ -397,7 +397,7 @@ class Pathname
   def write_jar_script target_jar, script_name, java_opts=""
     (self+script_name).write <<-EOS.undent
       #!/bin/bash
-      exec java #{java_opts} -jar #{target_jar} "$@"
+      exec java #{java_opts} $JAVA_OPTS -jar #{target_jar} "$@"
     EOS
     # +x here so this will work during post-install as well
     (self+script_name).chmod 0644
