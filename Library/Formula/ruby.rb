@@ -78,6 +78,12 @@ class Ruby < Formula
     to restore binstubs for installed gems.
     EOS
   end
+
+  test do
+    output = `#{bin}/ruby -e 'puts "hello"'`
+    assert_equal "hello\n", output
+    assert_equal 0, $?.exitstatus
+  end
 end
 
 __END__
