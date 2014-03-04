@@ -13,9 +13,9 @@ module Homebrew extend self
       f.deps.each do |dep|
         if dep.optional? || dep.recommended?
           tab = Tab.for_formula(f)
-          deps << dep.name if tab.with?(dep.name)
+          deps << dep.to_formula.name if tab.with?(dep.to_formula.name)
         else
-          deps << dep.name
+          deps << dep.to_formula.name
         end
       end
 
