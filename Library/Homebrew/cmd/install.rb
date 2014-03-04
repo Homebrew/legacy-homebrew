@@ -104,6 +104,7 @@ module Homebrew extend self
 
   def install_formula f
     fi = FormulaInstaller.new(f)
+    fi.prelude
     fi.install
     fi.caveats
     fi.finish

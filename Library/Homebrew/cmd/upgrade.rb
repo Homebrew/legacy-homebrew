@@ -59,6 +59,7 @@ module Homebrew extend self
     installer = FormulaInstaller.new(f)
     installer.options |= Tab.for_formula(f).used_options
     installer.show_header = false
+    installer.prelude
 
     oh1 "Upgrading #{f.name}"
 

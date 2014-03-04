@@ -30,15 +30,17 @@ class FormulaInstaller
 
     @poured_bottle = false
     @pour_failed   = false
-
-    verify_deps_exist unless ignore_deps
-    lock
-    check_install_sanity
   end
 
   def pour_bottle? install_bottle_options={:warn=>false}
     return false if @pour_failed
     options.empty? && install_bottle?(f, install_bottle_options)
+  end
+
+  def prelude
+    verify_deps_exist unless ignore_deps
+    lock
+    check_install_sanity
   end
 
   def verify_deps_exist
@@ -311,6 +313,7 @@ class FormulaInstaller
     fi.ignore_deps = true
     fi.only_deps = false
     fi.show_header = false
+    fi.prelude
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
