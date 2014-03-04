@@ -2,7 +2,7 @@ require 'formula'
 
 class Aspcud < Formula
   homepage 'http://potassco.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/potassco/aspcud/1.8.0/aspcud-1.8.0-source.tar.gz'
+  url 'https://downloads.sourceforge.net/project/potassco/aspcud/1.8.0/aspcud-1.8.0-source.tar.gz'
   sha1 '8e05dca2bcf3a388a985317b71f2fcd5586351f7'
 
   depends_on 'boost' => :build

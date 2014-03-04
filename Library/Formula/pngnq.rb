@@ -2,7 +2,7 @@ require 'formula'
 
 class Pngnq < Formula
   homepage 'http://pngnq.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/pngnq/pngnq/1.1/pngnq-1.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/pngnq/pngnq/1.1/pngnq-1.1.tar.gz'
   sha1 '6a43dc046171eee56ac2d91cebb93aecde24d26a'
 
   depends_on 'pkg-config' => :build

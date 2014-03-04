@@ -2,7 +2,7 @@ require 'formula'
 
 class Exif < Formula
   homepage 'http://libexif.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/libexif/exif/0.6.21/exif-0.6.21.tar.gz'
+  url 'https://downloads.sourceforge.net/project/libexif/exif/0.6.21/exif-0.6.21.tar.gz'
   sha1 'd23139d26226b70c66d035bbc64482792c9f1101'
 
   depends_on 'pkg-config' => :build

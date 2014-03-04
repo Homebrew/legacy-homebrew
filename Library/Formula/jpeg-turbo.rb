@@ -2,7 +2,7 @@ require 'formula'
 
 class JpegTurbo < Formula
   homepage 'http://www.libjpeg-turbo.org/'
-  url 'http://downloads.sourceforge.net/project/libjpeg-turbo/1.3.0/libjpeg-turbo-1.3.0.tar.gz'
+  url 'https://downloads.sourceforge.net/project/libjpeg-turbo/1.3.0/libjpeg-turbo-1.3.0.tar.gz'
   sha1 '1792c964b35604cebd3a8846f1ca6de5976e9c28'
 
   depends_on 'nasm' => :build if MacOS.prefer_64_bit?

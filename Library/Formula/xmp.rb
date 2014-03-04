@@ -2,7 +2,7 @@ require 'formula'
 
 class Xmp < Formula
   homepage 'http://xmp.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/xmp/xmp/4.0.7/xmp-4.0.7.tar.gz'
+  url 'https://downloads.sourceforge.net/project/xmp/xmp/4.0.7/xmp-4.0.7.tar.gz'
   sha1 '0817146ff66ba3557963b8857aa80b4f63a56fc8'
 
   head do

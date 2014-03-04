@@ -16,7 +16,7 @@ class FormulaInstaller
   include FormulaCellarChecks
 
   attr_reader :f
-  attr_accessor :tab, :options, :ignore_deps, :only_deps
+  attr_accessor :options, :ignore_deps, :only_deps
   attr_accessor :show_summary_heading, :show_header
 
   def initialize ff
@@ -25,7 +25,6 @@ class FormulaInstaller
     @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
     @only_deps = ARGV.only_deps?
     @options = Options.new
-    @tab = Tab.dummy_tab(ff)
 
     @@attempted ||= Set.new
 
@@ -39,8 +38,7 @@ class FormulaInstaller
 
   def pour_bottle? install_bottle_options={:warn=>false}
     return false if @pour_failed
-    tab.used_options.empty? && options.empty? && \
-      install_bottle?(f, install_bottle_options)
+    options.empty? && install_bottle?(f, install_bottle_options)
   end
 
   def verify_deps_exist
@@ -219,7 +217,9 @@ class FormulaInstaller
 
       ARGV.filter_for_dependencies do
         f.recursive_requirements do |dependent, req|
-          if (req.optional? || req.recommended?) && dependent.build.without?(req)
+          build = effective_build_options_for(dependent)
+
+          if (req.optional? || req.recommended?) && build.without?(req)
             Requirement.prune
           elsif req.build? && install_bottle?(dependent)
             Requirement.prune
@@ -249,9 +249,10 @@ class FormulaInstaller
 
     expanded_deps = ARGV.filter_for_dependencies do
       Dependency.expand(f, deps) do |dependent, dep|
-        options = inherited_options[dep] = inherited_options_for(f, dep)
+        options = inherited_options[dep] = inherited_options_for(dep)
+        build = effective_build_options_for(dependent)
 
-        if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
+        if (dep.optional? || dep.recommended?) && build.without?(dep)
           Dependency.prune
         elsif dep.build? && dependent == f && pour_bottle
           Dependency.prune
@@ -268,9 +269,21 @@ class FormulaInstaller
     expanded_deps.map { |dep| [dep, inherited_options[dep]] }
   end
 
-  def inherited_options_for(f, dep)
+  def effective_build_options_for(dependent)
+    if dependent == f
+      build = dependent.build.dup
+      build.args |= options
+      build
+    else
+      dependent.build
+    end
+  end
+
+  def inherited_options_for(dep)
     options = Options.new
-    options << Option.new("universal") if f.build.universal? && !dep.build?
+    if f.build.universal? && !dep.build? && dep.to_formula.build.has_option?("universal")
+      options << Option.new("universal")
+    end
     options
   end
 
@@ -292,8 +305,9 @@ class FormulaInstaller
     outdated_keg = Keg.new(df.linked_keg.realpath) rescue nil
 
     fi = FormulaInstaller.new(df)
-    fi.tab = Tab.for_formula(dep.to_formula)
-    fi.options = dep.options | inherited_options
+    fi.options |= Tab.for_formula(df).used_options
+    fi.options |= dep.options
+    fi.options |= inherited_options
     fi.ignore_deps = true
     fi.only_deps = false
     fi.show_header = false
@@ -371,14 +385,9 @@ class FormulaInstaller
   end
 
   def build_argv
-    @build_argv ||= begin
-      opts = Options.coerce(ARGV.options_only)
-      unless opts.include? '--fresh'
-        opts.concat(options) # from a dependent formula
-        opts.concat(tab.used_options) # from a previous install
-      end
-      opts << Option.new("--build-from-source") # don't download bottle
-    end
+    opts = Options.coerce(ARGV.options_only)
+    opts.concat(options) unless opts.include? "--fresh"
+    opts << Option.new("--build-from-source") # don't download bottle
   end
 
   def build
