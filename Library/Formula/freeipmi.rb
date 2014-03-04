@@ -2,16 +2,11 @@ require 'formula'
 
 class Freeipmi < Formula
   homepage 'http://www.gnu.org/software/freeipmi/'
-  url 'http://ftpmirror.gnu.org/freeipmi/freeipmi-1.3.4.tar.gz'
-  sha1 '3848b5b014d60cf9ff8b848b65f192bb15ad0816'
+  url 'http://ftpmirror.gnu.org/freeipmi/freeipmi-1.4.1.tar.gz'
+  sha1 'd59fd66e6fe9a58437d55a4bdd96ee431a8348e4'
 
   depends_on 'argp-standalone'
   depends_on 'libgcrypt'
-
-  # Patches can be removed when freeipmi 1.4.1 is released in Feb/March 2014
-  def patches
-    DATA
-  end
 
   def install
     system './configure', "--prefix=#{prefix}"
@@ -26,28 +21,3 @@ class Freeipmi < Formula
   end
 
 end
-
-__END__
-diff -u -r freeipmi-1.3.4.orig/common/toolcommon/tool-daemon-common.h freeipmi-1.3.4/common/toolcommon/tool-daemon-common.h
---- freeipmi-1.3.4.orig/common/toolcommon/tool-daemon-common.h  2013-04-26 10:01:55.000000000 -0700
-+++ freeipmi-1.3.4/common/toolcommon/tool-daemon-common.h 2014-02-05 15:54:20.000000000 -0800
-@@ -24,6 +24,7 @@
-
- int daemonize_common (const char *pidfile);
-
-+typedef void (*sighandler_t)(int);
- /* can pass NULL for no callback */
- int daemon_signal_handler_setup (sighandler_t cb);
-
-diff -u -r freeipmi-1.3.4.orig/libfreeipmi/driver/ipmi-semaphores.h freeipmi-1.3.4/libfreeipmi/driver/ipmi-semaphores.h
---- freeipmi-1.3.4.orig/libfreeipmi/driver/ipmi-semaphores.h  2013-04-26 10:01:55.000000000 -0700
-+++ freeipmi-1.3.4/libfreeipmi/driver/ipmi-semaphores.h 2014-02-05 15:55:02.000000000 -0800
-@@ -30,7 +30,7 @@
- #include <sys/ipc.h>
- #include <sys/sem.h>
-
--#if defined(__FreeBSD__)
-+#if defined(__FreeBSD__) || defined(__APPLE__)
- /* union semun is defined by including <sys/sem.h> */
- #else
- /* according to X/OPEN we have to define it ourselves */
