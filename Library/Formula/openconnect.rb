@@ -13,9 +13,21 @@ class Openconnect < Formula
     sha1 '9915539c34393c1f8d7de9c3fc2c7396476bd998'
   end
 
+  head do
+    url 'git://git.infradead.org/users/dwmw2/openconnect.git'
+    depends_on :autoconf => :build
+    depends_on :automake => :build
+    depends_on :libtool => :build
+  end
+
   def install
     etc.install resource('vpnc-script')
     chmod 0755, "#{etc}/vpnc-script"
+
+    if build.head?
+      inreplace 'autogen.sh', /libtoolize/, "glibtoolize"
+      system "./autogen.sh"
+    end
 
     args = %W[
       --prefix=#{prefix}
