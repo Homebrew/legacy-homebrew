@@ -6,7 +6,7 @@ class Openfst < Formula
   sha1 '21972c05896b2154a3fa1bdca5c9a56350194b38'
 
   def install
-    ENV.libstdcxx if ENV.compiler == :clang
+    ENV.libstdcxx if ENV.compiler == :clang && MacOS.version >= :mavericks
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--enable-far",
