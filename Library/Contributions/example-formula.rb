@@ -10,9 +10,7 @@ require 'formula'
 # Ruby classes have to start Upper case and dashes are not allowed.
 # So we transform: `example-formula.rb` into `ExampleFormula`. Further,
 # Homebrew does enforce that the name of the file and the class correspond.
-# Check with `brew search` that the name is free. A file may contain multiple
-# classes (we call them sub-formulae) but the main one is the class that
-# corresponds to the filename.
+# Check with `brew search` that the name is free.
 class ExampleFormula < Formula
 
   homepage 'http://www.example.com' # used by `brew home example-formula`.
