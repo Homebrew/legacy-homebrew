@@ -15,6 +15,6 @@ class PyenvVirtualenvwrapper < Formula
   end
 
   test do
-    system "eval \"$(pyenv init -)\" && pyenv virtualenvwrapper && pyenv virtualenvwrapper --version"
+    system "eval \"$(pyenv init -)\" && pyenv virtualenvwrapper"
   end
 end
