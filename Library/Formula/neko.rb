@@ -11,6 +11,13 @@ class Neko < Formula
 
   head 'https://github.com/HaxeFoundation/neko.git'
 
+  bottle do
+    cellar :any
+    sha1 "d72b7af1c8ae7c58c613df9883f27466bfcca60f" => :mavericks
+    sha1 "ad22cc3edca5ae05b663edf63d5cd496d3ad2b78" => :mountain_lion
+    sha1 "77daff389d401d6764d1082ecc3448afbe27fccd" => :lion
+  end
+
   depends_on 'bdw-gc'
   depends_on 'pcre'
 
