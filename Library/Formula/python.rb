@@ -37,7 +37,11 @@ class Python < Formula
   def patches
     # Patch to disable the search for Tk.framework, since Homebrew's Tk is
     # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
-    DATA if build.with? 'brewed-tk'
+    patches = {:p0 => 'https://gist.githubusercontent.com/leepa/9351856/raw/7f9130077fd760fcf9a25f50b69d9c77b155fbc5/CVE-2014-1912.patch'}
+    if build.with? 'brewed-tk'
+      patches[:p1] = DATA
+    end
+    patches
   end
 
   def lib_cellar
