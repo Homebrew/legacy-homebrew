@@ -2,8 +2,8 @@ require 'formula'
 
 class RubyInstall < Formula
   homepage 'https://github.com/postmodern/ruby-install#readme'
-  url 'https://github.com/postmodern/ruby-install/archive/v0.4.0.tar.gz'
-  sha1 'b5d3e202abd90c748d56e14bf50e99c5e97d2ef3'
+  url 'https://github.com/postmodern/ruby-install/archive/v0.4.1.tar.gz'
+  sha1 '8a62fa5e551101d433cf25bd67c06d47d00c3ab8'
 
   head 'https://github.com/postmodern/ruby-install.git'
 
