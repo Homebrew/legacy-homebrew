@@ -202,6 +202,16 @@ class ExampleFormula < Formula
     cause 'multiple configure and compile errors'
   end
 
+  ## Resources
+
+  # Additional downloads can be defined as resources and accessed in the
+  # install method. Resources can also be defined inside a stable, devel, or
+  # head block. This mechanism replaces ad-hoc "subformula" classes.
+  resource "additional_files" do
+    url 'https://example.com/additional-stuff.tar.gz'
+    sha1 'deadbeef7890123456789012345678901234567890'
+  end
+
 
   ## Patches
 
@@ -348,12 +358,10 @@ class ExampleFormula < Formula
     # Copy `./example_code/simple/ones` to share/demos/examples
     (share/'demos').install "example_code/simple/ones" => 'examples'
 
-    # Additional stuff can be defined in a sub-formula (see below) and
-    # with a block like this, it will be extracted into its own temporary
-    # dir. We can install into the Cellar of the main formula easily,
-    # because `prefix`, `bin` and all the other pre-defined variables are
-    # from the main formula.
-    AdditionalStuff.new.brew { bin.install 'my/extra/tool' }
+    # Additional downloads can be defined as resources (see above).
+    # The stage method will create a temporary directory and yield
+    # to a block.
+    resource("additional_files").stage { bin.install 'my/extra/tool' }
 
     # `name` and `version` are accessible too, if you need them.
   end
@@ -410,13 +418,6 @@ class ExampleFormula < Formula
   # Todo: Expand this example with a little demo plist? I dunno.
   # There is more to startup plists. Help, I suck a plists!
   def plist; nil; end
-end
-
-class AdditionalStuff < Formula
-  # Often, a second formula is used to download some resource
-  # NOTE: This is going to change when https://github.com/Homebrew/homebrew/pull/21714 happens.
-  url 'https://example.com/additional-stuff.tar.gz'
-  sha1 'deadbeef7890123456789012345678901234567890'
 end
 
 __END__
