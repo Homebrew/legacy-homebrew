@@ -123,8 +123,8 @@ class Build
     end
 
     if superenv?
-      ENV.keg_only_deps = keg_only_deps.map(&:to_s)
-      ENV.deps = deps.map { |d| d.to_formula.to_s }
+      ENV.keg_only_deps = keg_only_deps.map(&:name)
+      ENV.deps = deps.map { |d| d.to_formula.name }
       ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
       ENV.setup_build_environment(f)
       post_superenv_hacks
