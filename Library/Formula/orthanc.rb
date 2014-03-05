@@ -58,7 +58,7 @@ class Orthanc < Formula
   end
 
   test do
-    system "#{bin}/Orthanc"
+    system "#{sbin}/Orthanc", "--version"
   end
 end
 
