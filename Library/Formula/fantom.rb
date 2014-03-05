@@ -2,7 +2,7 @@ require 'formula'
 
 class Fantom < Formula
   homepage 'http://fantom.org'
-  url 'http://fan.googlecode.com/files/fantom-1.0.65.zip'
+  url 'https://fan.googlecode.com/files/fantom-1.0.65.zip'
   sha1 'f88852a680b91963d8df7136fbcfe9ff54a5bb94'
 
   option 'with-src', 'Also install fantom source'

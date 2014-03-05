@@ -2,7 +2,7 @@ require 'formula'
 
 class Plowshare < Formula
   homepage 'http://code.google.com/p/plowshare/'
-  url 'http://plowshare.googlecode.com/files/plowshare4-snapshot-git20131130.3c63b19.tar.gz'
+  url 'https://plowshare.googlecode.com/files/plowshare4-snapshot-git20131130.3c63b19.tar.gz'
   version '4.GIT-3c63b19'
   sha1 '806076746394d06f118aef98fbc1c8bbd3585269'
 
