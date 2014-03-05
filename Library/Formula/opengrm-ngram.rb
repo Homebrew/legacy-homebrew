@@ -14,4 +14,3 @@ class OpengrmNgram < Formula
     system "make install"
   end
 end
-
