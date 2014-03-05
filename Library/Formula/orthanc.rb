@@ -7,10 +7,10 @@ class Orthanc < Formula
 
   depends_on "cmake" => :build
   depends_on "glog"
-  depends_on 'boost'
-  depends_on 'dcmtk'
-  depends_on 'lua'
-  depends_on 'libpng'
+  depends_on "boost"
+  depends_on "dcmtk"
+  depends_on "lua"
+  depends_on "libpng"
 
   def patches
     #This patch fixes build & code issues directly related to running on Mac OS X.
