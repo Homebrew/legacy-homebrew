@@ -7,7 +7,7 @@ class Fop < Formula
 
   # http://offo.sourceforge.net/hyphenation/
   resource 'hyph' do
-    url 'http://downloads.sourceforge.net/project/offo/offo-hyphenation-utf8/0.1/offo-hyphenation-fop-stable-utf8.zip'
+    url 'https://downloads.sourceforge.net/project/offo/offo-hyphenation-utf8/0.1/offo-hyphenation-fop-stable-utf8.zip'
     sha1 'c2a3f6e985b21c9702a714942ac747864c8b1759'
   end
 

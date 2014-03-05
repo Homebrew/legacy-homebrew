@@ -2,7 +2,7 @@ require 'formula'
 
 class Clucene < Formula
   homepage 'http://clucene.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/clucene/clucene-core-stable/0.9.21b/clucene-core-0.9.21b.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/clucene/clucene-core-stable/0.9.21b/clucene-core-0.9.21b.tar.bz2'
   sha1 '8bc505b64f82723c2dc901036cb0607500870973'
 
   head do

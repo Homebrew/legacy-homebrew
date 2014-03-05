@@ -2,7 +2,7 @@ require 'formula'
 
 class Lcov < Formula
   homepage 'http://ltp.sourceforge.net/coverage/lcov.php'
-  url 'http://downloads.sourceforge.net/ltp/lcov-1.10.tar.gz'
+  url 'https://downloads.sourceforge.net/ltp/lcov-1.10.tar.gz'
   sha1 '70fb361bcfd7dd81ea30731d6fe532ddea56f283'
 
   def install

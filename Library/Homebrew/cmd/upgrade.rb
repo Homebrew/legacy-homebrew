@@ -54,17 +54,13 @@ module Homebrew extend self
   end
 
   def upgrade_formula f
-    tab = Tab.for_formula(f)
-
-    # Inject options from a previous install into the formula's
-    # BuildOptions object. TODO clean this up.
-    f.build.args += tab.used_options
-
     outdated_keg = Keg.new(f.linked_keg.realpath) rescue nil
 
     installer = FormulaInstaller.new(f)
-    installer.tab = tab
+    installer.options |= Tab.for_formula(f).used_options
     installer.show_header = false
+    installer.ignore_deps = false
+    installer.prelude
 
     oh1 "Upgrading #{f.name}"
 

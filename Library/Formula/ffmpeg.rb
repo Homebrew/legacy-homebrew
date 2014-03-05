@@ -2,14 +2,14 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-2.1.3.tar.bz2'
-  sha1 '9dc54bbef673f3938e280bf48d07e7b24fe445ab'
+  url 'http://ffmpeg.org/releases/ffmpeg-2.1.4.tar.bz2'
+  sha1 '99c2f7af3e6d5f4a962ae8bf627d3c53bc282fec'
   head 'git://git.videolan.org/ffmpeg.git'
 
   bottle do
-    sha1 "34d8acf67634424b6abc65afcc6038f79b2d40f2" => :mavericks
-    sha1 "2264aed0b2ea6a52daedff190cdfff6269db1671" => :mountain_lion
-    sha1 "c175566d8ae23d82d5999b06b78b75fb5b15b2fb" => :lion
+    sha1 "ddd8f0cce3e64047cd9c77eccc5d23af48ef7814" => :mavericks
+    sha1 "57ed9eb6e22e0d8debf6e528399c643270569a04" => :mountain_lion
+    sha1 "5661800a746ba073b39ade6d5c608dce7a795594" => :lion
   end
 
   option "without-x264", "Disable H.264 encoder"

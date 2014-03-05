@@ -2,24 +2,14 @@ require "formula"
 
 class Docker < Formula
   homepage "http://docker.io"
-  url "https://github.com/dotcloud/docker.git", :tag => "v0.8.0"
-  sha1 "1e9362dab2ac2ecb4a1f193a7e72d060000438c3"
+  url "https://github.com/dotcloud/docker.git", :tag => "v0.8.1"
 
   option "without-completions", "Disable bash/zsh completions"
 
   bottle do
-    revision 2
-    sha1 "6656fe911e1db382fbe704dbe9e0e68272f0ee01" => :mavericks
-    sha1 "d73586890467d00728db185cf0550479e4b94628" => :mountain_lion
-    sha1 "bd6595664d5384c4e1584864d96d409d475016ce" => :lion
-  end
-
-  def patches
-    [
-      "https://github.com/dotcloud/docker/commit/6174ba.patch",
-      "https://github.com/dotcloud/docker/commit/f794fb.patch",
-      "https://github.com/dotcloud/docker/commit/32535e.patch",
-    ]
+    sha1 "65c07eaf8d721f9270a12a1a129a01edd8ed186f" => :mavericks
+    sha1 "b5de1b29b7db1ea6cd1a321c1f640d5618a8368c" => :mountain_lion
+    sha1 "688cbc6dcbe651fe9e92fb9751bf4b7e9bcd5064" => :lion
   end
 
   depends_on "go" => :build
@@ -29,7 +19,7 @@ class Docker < Formula
     ENV["AUTO_GOPATH"] = "1"
 
     system "hack/make.sh", "dynbinary"
-    bin.install "bundles/0.8.0/dynbinary/docker-0.8.0" => "docker"
+    bin.install "bundles/#{version}/dynbinary/docker-#{version}" => "docker"
 
     if build.with? "completions"
       bash_completion.install "contrib/completion/bash/docker"

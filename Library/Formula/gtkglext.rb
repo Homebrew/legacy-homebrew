@@ -2,7 +2,7 @@ require 'formula'
 
 class Gtkglext < Formula
   homepage 'http://projects.gnome.org/gtkglext/'
-  url 'http://downloads.sourceforge.net/gtkglext/gtkglext-1.2.0.tar.gz'
+  url 'https://downloads.sourceforge.net/gtkglext/gtkglext-1.2.0.tar.gz'
   sha1 'db9ce38ee555fd14f55083ec7f4ae30e5338d5cc'
 
   depends_on 'pkg-config' => :build

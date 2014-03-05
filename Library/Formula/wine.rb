@@ -7,23 +7,23 @@ class Wine < Formula
   homepage 'http://winehq.org/'
 
   stable do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2'
+    url 'https://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2'
     sha256 'f0ab9eede5a0ccacbf6e50682649f9377b9199e49cf55641f1787cf72405acbe'
 
     resource 'gecko' do
-      url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
+      url 'https://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
       version '2.21'
       sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
     end
 
     resource 'mono' do
-      url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
+      url 'https://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
       sha256 '3dfc23bbc29015e4e538dab8b83cb825d3248a0e5cf3b3318503ee7331115402'
     end
   end
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.13.tar.bz2'
+    url 'https://downloads.sourceforge.net/project/wine/Source/wine-1.7.13.tar.bz2'
     sha256 'a72fdee6e1898007b38f3b30584f86d996567ad8d2f1cc0fe3a877be0493b9df'
   end
 
@@ -50,13 +50,13 @@ class Wine < Formula
   depends_on 'libgsm' => :optional
 
   resource 'gecko' do
-    url 'http://downloads.sourceforge.net/wine/wine_gecko-2.24-x86.msi', :using => :nounzip
+    url 'https://downloads.sourceforge.net/wine/wine_gecko-2.24-x86.msi', :using => :nounzip
     version '2.24'
     sha1 'b4923c0565e6cbd20075a0d4119ce3b48424f962'
   end
 
   resource 'mono' do
-    url 'http://downloads.sourceforge.net/wine/wine-mono-4.5.2.msi', :using => :nounzip
+    url 'https://downloads.sourceforge.net/wine/wine-mono-4.5.2.msi', :using => :nounzip
     sha256 'd9124edb41ba4418af10eba519dafb25ab4338c567d25ce0eb4ce1e1b4d7eaad'
   end
 
