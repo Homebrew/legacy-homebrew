@@ -32,7 +32,7 @@ class GstPluginsGood < Formula
   depends_on 'aalib' => :optional
   depends_on 'libcdio' => :optional
   depends_on 'esound' => :optional
-  depends_on 'flac' => :optional
+  depends_on 'flac' => [:optional, 'with-libogg']
   depends_on 'jpeg' => :optional
   depends_on 'libcaca' => :optional
   depends_on 'libdv' => :optional
