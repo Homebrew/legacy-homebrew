@@ -9,37 +9,40 @@ class Orthanc < Formula
   depends_on "glog"
   depends_on 'boost'
   depends_on 'dcmtk'
-  depends_on 'mongoose'
   depends_on 'lua'
-  depends_on 'png'
-  depends_on 'libiconv'
-  
+  depends_on 'libpng'
+
   def patches
+    #This patch fixes build & code issues directly related to running on Mac OS X.
+    #Until this is merged back into Orthanc this is required to build for Mac.
     DATA
   end
 
   resource "gtest" do
-      url 'http://www.montefiore.ulg.ac.be/~jodogne/Orthanc/ThirdPartyDownloads/gtest-1.6.0.zip'
-      sha1 '00d6be170eb9fc3b2198ffdcb1f1d6ba7fc6e621'
+    url 'http://www.montefiore.ulg.ac.be/~jodogne/Orthanc/ThirdPartyDownloads/gtest-1.6.0.zip'
+    sha1 '00d6be170eb9fc3b2198ffdcb1f1d6ba7fc6e621'
   end
-    
+
   resource "mongoose" do
     url 'http://www.montefiore.ulg.ac.be/~jodogne/Orthanc/ThirdPartyDownloads/mongoose-3.1.tgz'
     sha1 'c367932b5faa7c86b70bf8f0351792a0bcc68c03'
   end
 
   def install
-    # ENV.deparallelize  # if your formula fails when building in parallel
     system "mkdir", 'ThirdPartyDownloads'
     cd 'ThirdPartyDownloads' do
       resource("mongoose").fetch.cp "mongoose-3.1.tgz"
       resource("gtest").fetch.cp "gtest-1.6.0.zip"
     end
 
-    system "cmake", ".", "-DUSE_SYSTEM_MONGOOSE=OFF", "-DUSE_SYSTEM_GOOGLE_TEST=NO", "-DCMAKE_INCLUDE_PATH=#{HOMEBREW_PREFIX}/include", "-DCMAKE_LIBRARY_PATH=#{HOMEBREW_PREFIX}/lib",
-     "-DDCMTK_DIR=#{HOMEBREW_PREFIX}/include/dcmtk", "-DDCMTK_DICTIONARY_DIR=#{HOMEBREW_PREFIX}/share/dcmtk" , "-DHAVE_JSONCPP_H=#{HOMEBREW_PREFIX}/json/reader.h", *std_cmake_args
-    system "make", "install" # if this fails, try separate make/make install steps
-    
+    system "cmake", ".", "-DUSE_SYSTEM_MONGOOSE=OFF",
+    "-DUSE_SYSTEM_GOOGLE_TEST=NO", "-DCMAKE_INCLUDE_PATH=#{HOMEBREW_PREFIX}/include",
+    "-DCMAKE_LIBRARY_PATH=#{HOMEBREW_PREFIX}/lib", "-DDCMTK_DIR=#{HOMEBREW_PREFIX}/include/dcmtk",
+    "-DDCMTK_DICTIONARY_DIR=#{HOMEBREW_PREFIX}/share/dcmtk",
+    "-DHAVE_JSONCPP_H=#{HOMEBREW_PREFIX}/json/reader.h", *std_cmake_args
+
+    system "make", "install"
+
     bin.install "Orthanc"
   end
 
@@ -75,7 +78,6 @@ diff -ur Orthanc-0.7.3/CMakeLists.txt Orthanc-0.7.3-C/CMakeLists.txt
    elseif (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
      target_link_libraries(OrthancClient OpenSSL ws2_32)
  
-Only in Orthanc-0.7.3-C/Core: .DS_Store
 diff -ur Orthanc-0.7.3/Core/Toolbox.cpp Orthanc-0.7.3-C/Core/Toolbox.cpp
 --- Orthanc-0.7.3/Core/Toolbox.cpp	2014-02-14 11:06:31.000000000 +0000
 +++ Orthanc-0.7.3-C/Core/Toolbox.cpp	2014-03-04 18:13:09.000000000 +0000
@@ -126,7 +128,6 @@ diff -ur Orthanc-0.7.3/OrthancServer/Internals/StoreScp.cpp Orthanc-0.7.3-C/Orth
            {
              // which SOP class and SOP instance ?
              if (!DU_findSOPClassAndInstanceInDataSet(*imageDataSet, sopClass, sopInstance, /*opt_correctUIDPadding*/ OFFalse))
-Only in Orthanc-0.7.3-C/Resources: .DS_Store
 diff -ur Orthanc-0.7.3/Resources/CMake/DcmtkConfiguration.cmake Orthanc-0.7.3-C/Resources/CMake/DcmtkConfiguration.cmake
 --- Orthanc-0.7.3/Resources/CMake/DcmtkConfiguration.cmake	2014-02-14 11:06:31.000000000 +0000
 +++ Orthanc-0.7.3-C/Resources/CMake/DcmtkConfiguration.cmake	2014-03-04 20:30:21.000000000 +0000
@@ -144,9 +145,6 @@ diff -ur Orthanc-0.7.3/Resources/CMake/DcmtkConfiguration.cmake Orthanc-0.7.3-C/
  
    add_definitions(
      -DHAVE_CONFIG_H=1
-Only in Orthanc-0.7.3/Resources: LinuxStandardBaseToolchain.cmake
-Only in Orthanc-0.7.3/Resources: MinGW64Toolchain.cmake
-Only in Orthanc-0.7.3/Resources: MinGWToolchain.cmake
 diff -ur Orthanc-0.7.3/UnitTestsSources/main.cpp Orthanc-0.7.3-C/UnitTestsSources/main.cpp
 --- Orthanc-0.7.3/UnitTestsSources/main.cpp	2014-02-14 11:06:31.000000000 +0000
 +++ Orthanc-0.7.3-C/UnitTestsSources/main.cpp	2014-03-04 20:10:23.000000000 +0000

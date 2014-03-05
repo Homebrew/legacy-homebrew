@@ -1,25 +1,24 @@
 require "formula"
 
-
 class Jsoncpp < Formula
   homepage "http://sourceforge.net/projects/jsoncpp/"
-  url "http://downloads.sourceforge.net/project/jsoncpp/jsoncpp/0.6.0-rc2/jsoncpp-src-0.6.0-rc2.tar.gz"
+  url "https://downloads.sourceforge.net/project/jsoncpp/jsoncpp/0.6.0-rc2/jsoncpp-src-0.6.0-rc2.tar.gz"
   sha1 "a14eb501c44e610b8aaa2962bd1cc1775ed4fde2"
 
-  depends_on 'scons' => :build 
-  
-  def install
-    # ENV.deparallelize  # if your formula fails when building in parallel
+  depends_on 'scons' => :build
 
-    system "scons", "platform=linux-gcc"
-    lib.install Pathname.glob("libs/*/libj*dylib") => "libjsoncpp.dylib"
-    lib.install Pathname.glob("libs/*/libj*a") => "libjsoncpp.a"
-    cd 'include' do
-      include.install "json"
-    end
+  def install
+    scons "platform=linux-gcc" #linux-gcc is correct - despite the fact that the library is built with CLANG
+    lib.install Dir["libs/linux-gcc*/libjson*.dylib"] => "libjsoncpp.dylib"
+    lib.install Dir["libs/linux*/libjson*.a"] => "libjsoncpp.a"
+    prefix.install "include"
+    
+    system "install_name_tool", "-change", Dir["buildscons/linux-gcc-*/src/lib_json/libjson_linux-gcc-*.dylib"],
+    "#{HOMEBREW_PREFIX}/lib/libjsoncpp.dylib", Dir["bin/linux-gcc-*/test_lib_json"]
+    bin.install Dir["bin/linux-gcc*/test_lib_json"] => "test_lib_json"
   end
 
   test do
-    system "otool", "-L" , "#{lib}/libjsoncpp.dylib"
+    system "#{bin}/test_lib_json"
   end
 end
