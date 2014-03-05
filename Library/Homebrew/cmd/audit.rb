@@ -251,6 +251,11 @@ class FormulaAuditor
       end
     end
 
+    # Check for Google Code download urls, https:// is preferred
+    urls.grep(%r[^http://.*\.googlecode\.com/files.*]) do |u|
+      problem "Use https:// URLs for downloads from Google Code (url is #{u})."
+    end
+
     # Check for git:// GitHub repo urls, https:// is preferred.
     urls.grep(%r[^git://[^/]*github\.com/]) do |u|
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
