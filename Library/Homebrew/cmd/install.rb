@@ -104,6 +104,9 @@ module Homebrew extend self
 
   def install_formula f
     fi = FormulaInstaller.new(f)
+    fi.ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
+    fi.only_deps = ARGV.only_deps?
+    fi.prelude
     fi.install
     fi.caveats
     fi.finish

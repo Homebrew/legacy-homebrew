@@ -22,23 +22,25 @@ class FormulaInstaller
   def initialize ff
     @f = ff
     @show_header = false
-    @ignore_deps = ARGV.ignore_deps? || ARGV.interactive?
-    @only_deps = ARGV.only_deps?
+    @ignore_deps = false
+    @only_deps = false
     @options = Options.new
 
     @@attempted ||= Set.new
 
     @poured_bottle = false
     @pour_failed   = false
-
-    verify_deps_exist unless ignore_deps
-    lock
-    check_install_sanity
   end
 
   def pour_bottle? install_bottle_options={:warn=>false}
     return false if @pour_failed
     options.empty? && install_bottle?(f, install_bottle_options)
+  end
+
+  def prelude
+    verify_deps_exist unless ignore_deps
+    lock
+    check_install_sanity
   end
 
   def verify_deps_exist
@@ -309,9 +311,9 @@ class FormulaInstaller
     fi.options |= dep.options
     fi.options |= inherited_options
     fi.ignore_deps = true
-    fi.only_deps = false
     fi.show_header = false
-    oh1 "Installing #{f} dependency: #{Tty.green}#{df}#{Tty.reset}"
+    fi.prelude
+    oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
     fi.install
     fi.caveats
