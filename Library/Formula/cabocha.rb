@@ -2,7 +2,7 @@ require 'formula'
 
 class Cabocha < Formula
   homepage 'http://code.google.com/p/cabocha/'
-  url 'http://cabocha.googlecode.com/files/cabocha-0.67.tar.bz2'
+  url 'https://cabocha.googlecode.com/files/cabocha-0.67.tar.bz2'
   sha1 '457a9bd0d264a1146a5eb1c5a504dd90a8b51fb8'
 
   depends_on 'crf++'

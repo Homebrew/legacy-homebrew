@@ -2,7 +2,7 @@ require 'formula'
 
 class SeleniumServerStandalone < Formula
   homepage 'http://seleniumhq.org/'
-  url 'http://selenium.googlecode.com/files/selenium-server-standalone-2.39.0.jar'
+  url 'https://selenium.googlecode.com/files/selenium-server-standalone-2.39.0.jar'
   sha1 'f2391600481dd285002d04b66916fc4286ff70ce'
 
   def install

@@ -2,7 +2,7 @@ require 'formula'
 
 class Xsw < Formula
   homepage 'http://code.google.com/p/xsw/'
-  url 'http://xsw.googlecode.com/files/xsw-0.3.5.tar.gz'
+  url 'https://xsw.googlecode.com/files/xsw-0.3.5.tar.gz'
   sha1 'fe4cffcc8bcd3149f4ecbf2011ad78a8ab7f1dd4'
 
   depends_on 'sdl'
