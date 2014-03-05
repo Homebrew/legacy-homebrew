@@ -11,12 +11,9 @@ class Itsol < Formula
 
     system "make"
 
-    include.install('INC/defs.h')
-    include.install('INC/globheads.h')
-    include.install('INC/ios.h')
-    include.install('INC/protos.h')
+    lib.install("LIB/libitsol.a")
 
-    lib.install('LIB/libitsol.a')
+    (include/"itsol").install Dir["INC/*.h"]
 
   end
 
