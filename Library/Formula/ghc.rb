@@ -12,25 +12,30 @@ class Ghc < Formula
     sha1 "1569f19cdad2675cbff328c0e259d6b8573e9d11" => :lion
   end
 
+  option "32-bit"
   option "tests", "Verify the build using the testsuite."
 
   devel do
-    # http://www.haskell.org/ghc/dist/7.8.1-rc1/README.osx.html
     # This block should largely translate over for 7.8.1 when GM.
-    url "http://www.haskell.org/ghc/dist/7.8.1-rc1/ghc-7.8.20140130-src.tar.bz2"
-    sha1 "b9c4d76ff71225fe58bdc4e53d7c659643463b5a"
+    url "http://www.haskell.org/ghc/dist/7.8.1-rc2/ghc-7.8.0.20140228-src.tar.bz2"
+    sha1 "8bd8eb3410a7fccc322c0e23e8045fcb5793ea5a"
 
-    # Upstream documentation says lion, but brew test-bot 10.7 fails.
+    depends_on "apple-gcc42" if build.build_32_bit?
     depends_on :macos => :mountain_lion
 
     resource "binary" do
-      url "http://www.haskell.org/ghc/dist/7.8.1-rc1/ghc-7.8.20140130-x86_64-apple-darwin-lion.tar.bz2"
-      sha1 "9026d889b160fbf56f97ec1e91576a20e5eec725"
+      url "https://www.haskell.org/ghc/dist/7.8.1-rc2/ghc-7.8.0.20140228-x86_64-apple-darwin-lion.tar.bz2"
+      sha1 "0b5d9a25afc516682dcae62e9955552ce857e715"
+    end
+
+    resource "binary-32" do
+      url "http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-i386-apple-darwin.tar.bz2"
+      sha1 "6a312263fef41e06003f0676b879f2d2d5a1f30c"
     end
 
     resource "testsuite" do
-      url "http://www.haskell.org/ghc/dist/7.8.1-rc1/ghc-7.8.20140130-testsuite.tar.bz2"
-      sha1 "17b1d486c1111633bcfa940b9bf940194cf09bc9"
+      url "http://www.haskell.org/ghc/dist/7.8.1-rc2/ghc-7.8.0.20140228-testsuite.tar.bz2"
+      sha1 "0c52e15c699b1c624fbc218b98ddfb44bc43cec8"
     end
   end
 
@@ -51,8 +56,6 @@ class Ghc < Formula
     depends_on :macos => :snow_leopard
     depends_on "apple-gcc42" if MacOS.version >= :mountain_lion
     depends_on "gmp"
-
-    option "32-bit"
 
     resource "binary" do
       url "http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2"
@@ -81,7 +84,7 @@ class Ghc < Formula
     # Move the main tarball contents into a subdirectory
     (buildpath+"Ghcsource").install Dir["*"]
 
-    if (not build.stable?) or (Hardware.is_64_bit? and not build.build_32_bit?)
+    if (Hardware.is_64_bit? and not build.build_32_bit?)
       binary_resource = "binary"
     else
       binary_resource = "binary32"
@@ -96,6 +99,13 @@ class Ghc < Formula
       args << "--with-gcc=#{ENV.cc}"
 
       system "./configure", *args
+      if build.devel? and MacOS.version <= :lion
+        # __thread is not supported on Lion but configure enables it anyway.
+        File.open("mk/config.h", "a") do |file|
+          file.write("#undef CC_SUPPORTS_TLS")
+        end
+      end
+
       # -j1 fixes an intermittent race condition
       system "make", "-j1", "install"
       ENV.prepend_path "PATH", subprefix/"bin"
