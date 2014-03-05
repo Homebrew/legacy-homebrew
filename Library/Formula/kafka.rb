@@ -14,16 +14,23 @@ class Kafka < Formula
     system "sbt", "package"
     system "sbt", "assembly-package-dependency"
 
+    # Change default partition count to 1
+    inreplace "config/server.properties", "num.partitions=2", "num.partitions=1"
+
+    # Install application
     libexec.install %w(bin config contrib core examples lib perf project system_test)
     bin.write_exec_script Dir["#{libexec}/bin/*"]
-    prefix.install_symlink "#{libexec}/config"
+
+    # Symlink configuration files
+    (etc+'kafka').mkpath
+    (etc/'kafka').install_symlink Dir["#{libexec}/config/*"]
   end
 
   def caveats; <<-EOS.undent
     Kafka requires JAVA_HOME to be set:
       export JAVA_HOME=`/usr/libexec/java_home`
-    To start Kafka, ensure that ZooKeeper is first running and then execute:
-      kafka-server-start.sh #{prefix}/config/server.properties
+    To start Kafka, ensure that ZooKeeper is running and then execute:
+      kafka-server-start.sh #{etc}/kafka/server.properties
     EOS
   end
 end
