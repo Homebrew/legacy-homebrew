@@ -2,11 +2,14 @@ require 'formula'
 
 class Keychain < Formula
   homepage 'http://www.funtoo.org/wiki/Keychain'
-  url 'http://www.funtoo.org/archive/keychain/keychain-2.7.1.tar.bz2'
-  sha1 'e7ad7da374ba81e57792bb2695eb6c352f769de7'
+  url 'https://github.com/funtoo/keychain.git',
+    :revision => '7bca870a1f920820adf0e4fa319b30b7e4985ed3'
+  version '2.7.1'
+  head 'https://github.com/funtoo/keychain.git'
 
   def install
-    bin.install "keychain"
-    man1.install "keychain.1"
+    system 'make'
+    bin.install 'keychain'
+    man1.install 'keychain.1'
   end
 end
