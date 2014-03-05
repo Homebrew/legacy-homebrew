@@ -28,36 +28,24 @@ class Gd < Formula
     cause "Undefined symbols when linking"
   end
 
-  def png_prefix
-    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/libpng" : MacOS::X11.prefix
-  end
-
-  def fontconfig_prefix
-    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/fontconfig" : MacOS::X11.prefix
-  end
-
-  def freetype_prefix
-    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/freetype" : MacOS::X11.prefix
-  end
-
   def install
     ENV.universal_binary if build.universal?
     args = %W{--disable-dependency-tracking --prefix=#{prefix}}
 
     if build.with? "libpng"
-      args << "--with-png=#{png_prefix}"
+      args << "--with-png=#{Formula["libpng"].opt_prefix}"
     else
       args << "--without-png"
     end
 
     if build.with? "fontconfig"
-      args << "--with-fontconfig=#{fontconfig_prefix}"
+      args << "--with-fontconfig=#{Formula["fontconfig"].opt_prefix}"
     else
       args << "--without-fontconfig"
     end
 
     if build.with? "freetype"
-      args << "--with-freetype=#{freetype_prefix}"
+      args << "--with-freetype=#{Formula["fontconfig"].opt_prefix}"
     else
       args << "--without-freetype"
     end
