@@ -424,7 +424,7 @@ class FormulaAuditor
       problem "Use \"\#{ENV.cxx}\" instead of hard-coding \"#{$3}\""
     end
 
-    if line =~ /system\s+['"](env|export)/
+    if line =~ /system\s+['"](env|export)\s+/
       problem "Use ENV instead of invoking '#{$1}' to modify the environment"
     end
 
