@@ -2,7 +2,7 @@ require 'formula'
 
 class Ydict < Formula
   homepage 'http://code.google.com/p/ydict/'
-  url 'http://ydict.googlecode.com/files/ydict-1.3.1.tar.gz'
+  url 'https://ydict.googlecode.com/files/ydict-1.3.1.tar.gz'
   sha1 'ac144b75cd221f69cc24b66340146341808871dd'
 
   def ydict_wrapper; <<-EOS.undent

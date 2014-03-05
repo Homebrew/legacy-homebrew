@@ -2,7 +2,7 @@ require 'formula'
 
 class Logstalgia < Formula
   homepage 'http://code.google.com/p/logstalgia/'
-  url 'http://logstalgia.googlecode.com/files/logstalgia-1.0.3.tar.gz'
+  url 'https://logstalgia.googlecode.com/files/logstalgia-1.0.3.tar.gz'
   sha1 '9d5db0f3598291b3a7a10b8f4bff9f6164eccadc'
 
   head do

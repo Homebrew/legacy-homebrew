@@ -2,7 +2,7 @@ require 'formula'
 
 class Reaver < Formula
   homepage 'http://code.google.com/p/reaver-wps/'
-  url 'http://reaver-wps.googlecode.com/files/reaver-1.4.tar.gz'
+  url 'https://reaver-wps.googlecode.com/files/reaver-1.4.tar.gz'
   sha1 '2ebec75c3979daa7b576bc54adedc60eb0e27a21'
 
   # Adds general support for Mac OS X in reaver:

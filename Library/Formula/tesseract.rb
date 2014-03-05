@@ -2,7 +2,7 @@ require 'formula'
 
 class Tesseract < Formula
   homepage 'http://code.google.com/p/tesseract-ocr/'
-  url 'http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz'
+  url 'https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz'
   sha1 'a950acf7b75cf851de2de787e9abb62c58ca1827'
 
   head do
@@ -33,7 +33,7 @@ class Tesseract < Formula
 
   LANGS.each do |name, sha|
     resource name do
-      url "http://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.#{name}.tar.gz"
+      url "https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.#{name}.tar.gz"
       sha1 sha
     end
   end
@@ -80,7 +80,7 @@ class Tesseract < Formula
   # pre-3.01 language data uses a different URL format and installs differently
   LANGS_OLD.each do |lang, sha|
     resource lang do
-      url "http://tesseract-ocr.googlecode.com/files/#{lang}.traineddata.gz"
+      url "https://tesseract-ocr.googlecode.com/files/#{lang}.traineddata.gz"
       version "3.00"
       sha1 sha
     end

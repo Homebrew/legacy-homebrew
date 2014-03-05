@@ -29,7 +29,7 @@ class AppscaleTools < Formula
   end
 
   resource 'argparse' do
-    url 'http://argparse.googlecode.com/files/argparse-1.2.1.tar.gz'
+    url 'https://argparse.googlecode.com/files/argparse-1.2.1.tar.gz'
     sha1 'caadac82aa2576d6b445058c1fcf6ef0b14dbaa1'
   end
 
