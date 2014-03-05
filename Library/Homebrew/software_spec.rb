@@ -98,7 +98,7 @@ class Bottle < SoftwareSpec
     @revision = 0
     @prefix = '/usr/local'
     @cellar = '/usr/local/Cellar'
-    @root_url = nil
+    @root_url = 'https://downloads.sf.net/project/machomebrew/Bottles'
   end
 
   # Checksum methods in the DSL's bottle block optionally take
