@@ -191,6 +191,7 @@ _brew_fetch ()
         __brewcomp "
           --deps --force
           --devel --HEAD
+          --build-from-source --force-bottle
           $(brew options --compact "$prv" 2>/dev/null)
           "
         return
