@@ -20,7 +20,6 @@ class GstPluginsGood < Formula
     depends_on 'check'
   end
 
-  depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
@@ -40,6 +39,8 @@ class GstPluginsGood < Formula
   depends_on 'libshout' => :optional
   depends_on 'speex' => :optional
   depends_on 'taglib' => :optional
+
+  depends_on 'libogg' if build.with? 'flac'
 
   def install
     args = %W[
