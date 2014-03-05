@@ -2,14 +2,8 @@ require 'formula'
 
 class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
-  url 'http://downloads.ghostscript.com/public/ghostscript-9.07.tar.gz'
-  sha1 'b04a88ea8d661fc53d4f7eac34d84456272afc06'
-
-  bottle do
-    sha1 "62c5af8448d5e4e210ff947fdad0f70a6868ce10" => :mavericks
-    sha1 "b193970e7117a94cfab13e150f1c0c45d783ab4f" => :mountain_lion
-    sha1 "85b32dc39472b2617a2797e6a12ac8aa0c5579eb" => :lion
-  end
+  url 'http://downloads.ghostscript.com/public/ghostscript-9.10.tar.gz'
+  sha1 '29d6538ae77565c09f399b06455e94e7bcd83d01'
 
   head do
     url 'git://git.ghostscript.com/ghostpdl.git'
@@ -58,7 +52,7 @@ class Ghostscript < Formula
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
-    renames = %w{freetype jbig2dec jpeg lcms2 libpng tiff zlib}
+    renames = %w{freetype jbig2dec jpeg libpng tiff zlib}
     renames.each { |lib| mv lib, "#{lib}_local" }
   end
 
@@ -98,8 +92,8 @@ class Ghostscript < Formula
       end if build.with? 'djvu'
 
       # Install binaries and libraries
-      system 'make install'
-      system 'make install-so'
+      system 'make', 'install'
+      system 'make', 'install-so'
     end
 
     (share+'ghostscript/fonts').install resource('fonts')
@@ -111,7 +105,7 @@ end
 __END__
 --- a/base/unix-dll.mak
 +++ b/base/unix-dll.mak
-@@ -59,12 +59,12 @@
+@@ -64,12 +64,12 @@
  
  
  # MacOS X
@@ -124,8 +118,20 @@ __END__
 +GS_SONAME_MAJOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_SOEXT)
 +GS_SONAME_MAJOR_MINOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_VERSION_MINOR).$(GS_SOEXT)
  #LDFLAGS_SO=-dynamiclib -flat_namespace
--LDFLAGS_SO_MAC=-dynamiclib -install_name $(GS_SONAME_MAJOR_MINOR)
+-#LDFLAGS_SO_MAC=-dynamiclib -install_name $(GS_SONAME_MAJOR_MINOR)
 +LDFLAGS_SO_MAC=-dynamiclib -install_name __PREFIX__/lib/$(GS_SONAME_MAJOR_MINOR)
  #LDFLAGS_SO=-dynamiclib -install_name $(FRAMEWORK_NAME)
  
  GS_SO=$(BINDIR)/$(GS_SONAME)
+
+#--- a/base/stdpre.h
+#+++ b/base/stdpre.h
+#@@ -20,7 +20,7 @@
+ ##  define stdpre_INCLUDED
+
+ #/* Ghostscript uses transitional LFS functions. */
+#-#define _LARGEFILE64_SOURCE 1
+#+/* #define _LARGEFILE64_SOURCE 1 */
+
+ ##ifndef _FILE_OFFSET_BITS
+ ##define _FILE_OFFSET_BITS 64
