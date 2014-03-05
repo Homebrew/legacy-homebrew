@@ -13,6 +13,7 @@ class Tcpflow < Formula
   end
 
   depends_on 'boost' => :build
+  depends_on 'sqlite' if MacOS.version < :lion
 
   def install
     system "bash", "./bootstrap.sh" if build.head?
