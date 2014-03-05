@@ -1,122 +1,72 @@
 require 'formula'
 
 class Fontforge < Formula
-  homepage 'http://fontforge.org/'
+  homepage 'http://fontforge.github.io/'
 
   stable do
-    url 'https://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
-    sha1 'b520f532b48e557c177dffa29120225066cc4e84'
-
-    depends_on 'cairo' => :optional
-    depends_on 'pango' => :optional
+    url 'https://github.com/fontforge/fontforge/archive/2.0.20140101.tar.gz'
+    sha1 'abce297e53e8b6ff6f08871e53d1eb0be5ab82e7'
   end
 
-  head do
-    url 'https://github.com/fontforge/fontforge.git'
-
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
-    depends_on 'pkg-config' => :build
-    depends_on 'glib'
-    depends_on 'pango'
-    depends_on 'cairo'
-    depends_on 'ossp-uuid'
-  end
-
-  option 'with-gif', 'Build with GIF support'
-  option 'with-x', 'Build with X11 support, including FontForge.app'
+  depends_on :autoconf => :build
+  depends_on :automake => :build
+  depends_on :libtool => :build
+  depends_on 'pkg-config' => :build
 
   depends_on 'gettext'
+  depends_on 'glib'
+  depends_on 'freetype'
+  depends_on 'pango'
+  depends_on 'cairo'
+  depends_on 'readline'
+
   depends_on :python => :recommended
+  depends_on 'giflib' => :recommended
+  depends_on :libpng => :recommended
+  depends_on 'jpeg' => :recommended
+  depends_on 'libtiff' => :recommended
+  depends_on 'libxml2' => :recommended
+  depends_on 'libspiro' => :recommended
 
-  depends_on :libpng    => :recommended
-  depends_on 'jpeg'     => :recommended
-  depends_on 'libtiff'  => :recommended
+  option 'with-x', 'Build with X11 support, including FontForge.app'
   depends_on :x11 if build.with? 'x'
-  depends_on 'giflib' if build.with? 'gif'
-  depends_on 'libspiro' => :optional
-  depends_on 'czmq'=> :optional
-  depends_on 'fontconfig'
 
-  fails_with :llvm do
-    build 2336
-    cause "Compiling cvexportdlg.c fails with error: initializer element is not constant"
-  end
-
-  def patches
-    unless build.head?
-      # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
-      "https://gist.github.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
-    end
-  end
+  depends_on 'czmq' => :optional
+  depends_on 'zeromq' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
-            "--enable-double",
-            "--without-freetype-bytecode"]
+            '--disable-freetype-debugger',
+            '--without-libuninameslist',
+            '--without-libunicodenames']
 
-    unless build.head?
-      # These are optional in the stable release, but required in head
-      args << "--without-cairo" if build.without? "cairo"
-      args << "--without-pango" if build.without? "pango"
-    end
-    args << "--without-x" unless build.with? 'x'
+    args << '--without-giflib' if build.without? 'giflib'
+    args << '--without-libpng' if build.without? 'libpng'
+    args << '--without-libjpeg' if build.without? 'jpeg'
+    args << '--without-libtiff' if build.without? 'libtiff'
+    args << '--without-libxml2' if build.without? 'libxml2'
+    args << '--without-libspiro' if build.without? 'libspiro'
 
-    # To avoid "dlopen(/opt/local/lib/libpng.2.dylib, 1): image not found"
-    args << "--with-static-imagelibs"
+    args << '--with-x' if build.with? 'x'
 
     if build.with? 'python'
-      args << "--enable-pyextension"
-      # Fix linking to correct Python library
-      ENV.prepend "LDFLAGS", "-L#{%x(python-config --prefix).chomp}/lib"
+      args << '--enable-python-scripting'
+      args << '--enable-python-extension'
+
+      # This is required because pkg-config cannot find the python package.
+      ENV['PYTHON_CFLAGS'] = `/usr/bin/python-config --cflags`.strip
+      ENV['PYTHON_LIBS'] = `/usr/bin/python-config --libs`.strip
     else
-      args << "--without-python"
+      args << '--disable-python-scripting'
+      args << '--disable-python-extension'
     end
 
-    # Fix linker error; see: http://trac.macports.org/ticket/25012
-    ENV.append "LDFLAGS", "-lintl"
+    # Add environment variables for system libs
+    ENV['ZLIB_CFLAGS'] = '-I/usr/include'
+    ENV['ZLIB_LIBS'] = '-L/usr/lib -lz'
 
-    # Add environment variables for system libs if building head
-    if build.head?
-      ENV.append "ZLIB_CFLAGS", "-I/usr/include"
-      ENV.append "ZLIB_LIBS", "-L/usr/lib -lz"
-    end
-
-    # Reset ARCHFLAGS to match how we build
-    ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
-
-    # Set up framework paths so FlatCarbon replacement paths work (see below)
-    ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/CoreServices.framework/Frameworks"
-    ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/Carbon.framework/Frameworks"
-
-    system "./autogen.sh" if build.head?
+    system './autogen.sh'
     system "./configure", *args
-
-    # Fix hard-coded install locations that don't respect the target bindir
-    inreplace "Makefile" do |s|
-      s.gsub! "/Applications", "$(prefix)"
-      s.gsub! "ln -s /usr/local/bin/fontforge", "ln -s $(bindir)/fontforge"
-    end
-
-    # Fix install location of Python extension; see:
-    # http://sourceforge.net/mailarchive/message.php?msg_id=26827938
-    inreplace "Makefile" do |s|
-      s.gsub! "python setup.py install --prefix=$(prefix) --root=$(DESTDIR)", "python setup.py install --prefix=$(prefix)"
-    end
-
-    # Replace FlatCarbon headers with the real paths
-    # Fixes building on 10.8
-    # Only needed for non-head build
-    unless build.head?
-      inreplace %w(fontforge/macbinary.c fontforge/startui.c gutils/giomime.c) do |s|
-        s.gsub! "/Developer/Headers/FlatCarbon/Files.h", "CarbonCore/Files.h"
-      end
-      inreplace %w(fontforge/startui.c) do |s|
-        s.gsub! "/Developer/Headers/FlatCarbon/CarbonEvents.h", "HIToolbox/CarbonEvents.h"
-      end
-    end
-
     system "make"
     system "make install"
   end
