@@ -2,7 +2,7 @@ require 'formula'
 
 class Ry < Formula
   homepage 'https://github.com/jayferd/ry'
-  url 'https://github.com/jayferd/ry/archive/0.4.0.tar.gz'
+  url 'https://github.com/jayferd/ry/archive/0.4.1.tar.gz'
 
   depends_on 'ruby-build'
 
@@ -16,6 +16,9 @@ class Ry < Formula
 
     Alternatively, to enable completion, add to your profile:
       which ry >/dev/null 2>/dev/null && eval "$(ry setup)"
+
+    To switch to another ruby locally to your shell, set
+    your $PATH to the output of `ry fullpath <ruby_name>`
     EOS
   end
 
