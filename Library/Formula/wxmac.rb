@@ -2,7 +2,7 @@ require 'formula'
 
 class Wxmac < Formula
   homepage "http://www.wxwidgets.org"
-  url "http://downloads.sourceforge.net/project/wxwindows/3.0.0/wxWidgets-3.0.0.tar.bz2"
+  url "https://downloads.sourceforge.net/project/wxwindows/3.0.0/wxWidgets-3.0.0.tar.bz2"
   sha1 "756a9c54d1f411e262f03bacb78ccef085a9880a"
 
   bottle do
