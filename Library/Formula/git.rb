@@ -4,7 +4,7 @@ class Git < Formula
   homepage 'http://git-scm.com'
   url 'https://git-core.googlecode.com/files/git-1.9.0.tar.gz'
   sha1 'e60667fc16e5a5f1cde46616b0458cc802707743'
-  head 'https://github.com/git/git.git'
+  head 'https://github.com/git/git.git', :shallow => false
 
   bottle do
     sha1 "78bb720052e624b889b7c39e47ec40e463fa13b0" => :mavericks
@@ -59,6 +59,8 @@ class Git < Formula
     end
 
     ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'
+
+    ENV['GIT_DIR'] = cached_download/".git" if build.head?
 
     system "make", "prefix=#{prefix}",
                    "sysconfdir=#{etc}",
