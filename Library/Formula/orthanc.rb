@@ -11,6 +11,7 @@ class Orthanc < Formula
   depends_on "dcmtk"
   depends_on "lua"
   depends_on "libpng"
+  depends_on "jsoncpp"
 
   def patches
     # The git checkout on the homebrew test server strips <CR><LF>, therefore to get the patch
@@ -126,18 +127,6 @@ diff -ur Orthanc-0.7.3/OrthancServer/DicomProtocol/DicomUserConnection.cpp Ortha
  
  static const char* DEFAULT_PREFERRED_TRANSFER_SYNTAX = UID_LittleEndianImplicitTransferSyntax;
  
-diff -ur Orthanc-0.7.3/OrthancServer/Internals/StoreScp.cpp Orthanc-0.7.3-C/OrthancServer/Internals/StoreScp.cpp
---- Orthanc-0.7.3/OrthancServer/Internals/StoreScp.cpp	2014-02-14 11:06:31.000000000 +0000
-+++ Orthanc-0.7.3-C/OrthancServer/Internals/StoreScp.cpp	2014-03-04 18:46:50.000000000 +0000
-@@ -130,7 +130,7 @@
- 
-           // check the image to make sure it is consistent, i.e. that its sopClass and sopInstance correspond
-           // to those mentioned in the request. If not, set the status in the response message variable.
--          if ((rsp->DimseStatus == STATUS_Success))
-+          if (rsp->DimseStatus == STATUS_Success)
-           {
-             // which SOP class and SOP instance ?
-             if (!DU_findSOPClassAndInstanceInDataSet(*imageDataSet, sopClass, sopInstance, /*opt_correctUIDPadding*/ OFFalse))
 --- Orthanc-0.7.3/UnitTestsSources/main.cpp	2014-02-14 11:06:31.000000000 +0000
 +++ Orthanc-0.7.3-C/UnitTestsSources/main.cpp	2014-03-04 20:10:23.000000000 +0000
 @@ -621,7 +621,7 @@
