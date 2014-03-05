@@ -7,6 +7,8 @@ class Verilator < Formula
 
   skip_clean 'bin' # Allows perl scripts to keep their executable flag
 
+  depends_on "flex"
+
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make"
