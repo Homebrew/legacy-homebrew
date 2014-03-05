@@ -6,7 +6,7 @@ class Openconnect < Formula
   sha1 '40344fc910a19c8781a79204808f1229acaee2a4'
 
   head do
-    url 'git://git.infradead.org/users/dwmw2/openconnect.git'
+    url 'git://git.infradead.org/users/dwmw2/openconnect.git', :shallow => false
     depends_on :autoconf => :build
     depends_on :automake => :build
     depends_on :libtool => :build
@@ -25,8 +25,10 @@ class Openconnect < Formula
     chmod 0755, "#{etc}/vpnc-script"
 
     if build.head?
-      inreplace "autogen.sh", /libtoolize/, "glibtoolize"
-      system "./autogen.sh"
+      ln_s cached_download/".git", ".git"
+      cp "autogen.sh", "autogen_modified.sh"
+      inreplace "autogen_modified.sh", /libtoolize/, "glibtoolize"
+      system "./autogen_modified.sh"
     end
 
     args = %W[
