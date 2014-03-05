@@ -20,6 +20,7 @@ class Sbcl < Formula
 
   option "32-bit"
   option "without-threads", "Build SBCL without support for native threads"
+  option "without-core-compression", "Build SBCL without support for compressed cores and without a dependency on zlib"
   option "with-ldb", "Include low-level debugger in the build"
   option "with-internal-xref", "Include XREF information for SBCL internals (increases core size by 5-6MB)"
 
@@ -47,6 +48,7 @@ class Sbcl < Formula
   def write_features
     features = []
     features << ":sb-thread" if build.with? "threads"
+    features << ":sb-core-compression" if build.with? "core-compression"
     features << ":sb-ldb" if build.with? "ldb"
     features << ":sb-xref-for-internals" if build.with? "internal-xref"
 
