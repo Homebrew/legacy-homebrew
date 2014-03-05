@@ -5,6 +5,13 @@ class X265 < Formula
   url 'https://bitbucket.org/multicoreware/x265/get/0.8.tar.bz2'
   sha1 '79c60b3fe528e7b91b799b85e971885c1b040b6e'
 
+  bottle do
+    cellar :any
+    sha1 "1d3a8f05eb2994290fd08b9a42a84c5db3561e42" => :mavericks
+    sha1 "810c333f3d71f73e69b6ac6e391464eb7259c601" => :mountain_lion
+    sha1 "518b8997f9f7707a3079f76d24b3e0075eaa8ea5" => :lion
+  end
+
   head 'https://bitbucket.org/multicoreware/x265', :using => :hg
 
   depends_on 'yasm' => :build
