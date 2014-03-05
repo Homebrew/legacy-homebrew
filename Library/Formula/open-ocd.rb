@@ -11,6 +11,10 @@ class OpenOcd < Formula
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
+    depends_on 'pkg-config' => :build
+
+    option 'enable-cmsis-dap', 'Enable building support for devices using CMSIS-DAP'
+    depends_on 'hidapi' if build.include? 'enable-cmsis-dap'
   end
 
   option 'enable-ft2232_libftdi', 'Enable building support for FT2232 based devices with libftdi driver'
@@ -48,6 +52,10 @@ class OpenOcd < Formula
     if build.include? "enable-ft2232_ftd2xx"
       args << "--enable-ft2232_ftd2xx"
       args << "--enable-presto_ftd2xx"
+    end
+
+    if build.head? && build.include?("enable-cmsis-dap")
+      args << "--enable-cmsis-dap"
     end
 
     ENV['CCACHE'] = 'none'
