@@ -117,7 +117,7 @@ Note that these flags should only appear after a command.
   * `edit` <formula>:
     Open <formula> in the editor.
 
-  * `fetch [--force] [-v] [--HEAD] [--deps] [--build-from-source]` <formulae>:
+  * `fetch [--force] [-v] [--HEAD] [--deps] [--build-from-source|--force-bottle]` <formulae>:
     Download the source packages for the given <formulae>.
     For tarballs, also print SHA1 and SHA-256 checksums.
 
@@ -131,6 +131,9 @@ Note that these flags should only appear after a command.
 
     If `--build-from-source` is passed, download the source rather than a
     bottle.
+
+    If `--force-bottle` is passed, download a bottle if it exists for the current
+    version of OS X, even if it would not be used during installation.
 
   * `home`:
     Open Homebrew's own homepage in a browser.
