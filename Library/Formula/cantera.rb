@@ -53,6 +53,7 @@ class Cantera < Formula
                           (buildname ? "--build=#{buildname}" : "")
     system "make"
     system "make install"
+    prefix.install Dir["#{bin}/License.*"]
   end
 
   def caveats; <<-EOS.undent
