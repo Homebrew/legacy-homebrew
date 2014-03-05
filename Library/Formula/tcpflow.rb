@@ -13,6 +13,12 @@ class Tcpflow < Formula
   end
 
   depends_on 'boost' => :build
+  depends_on 'sqlite' if MacOS.version < :lion
+
+  # Upstream fix for 10.6; can be removed in next release
+  def patches
+    "https://github.com/simsong/tcpflow/commit/1cd5a9168c2ebf72c1fadcd64634398bd8470bce.diff"
+  end
 
   def install
     system "bash", "./bootstrap.sh" if build.head?
