@@ -12,7 +12,7 @@ class Jsoncpp < Formula
     lib.install Dir["libs/linux-gcc*/libjson*.dylib"] => "libjsoncpp.dylib"
     lib.install Dir["libs/linux*/libjson*.a"] => "libjsoncpp.a"
     prefix.install "include"
-    
+
     #Due to problems with the build system homebrew does not automatically fix this library reference
     system "install_name_tool", "-change", Dir["buildscons/linux-gcc-*/src/lib_json/libjson_linux-gcc-*.dylib"],
     "#{HOMEBREW_PREFIX}/lib/libjsoncpp.dylib", Dir["bin/linux-gcc-*/test_lib_json"]
