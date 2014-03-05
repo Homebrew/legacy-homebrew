@@ -7,6 +7,7 @@ class Kafka < Formula
   sha1 "051e72b9ed9c3342c4e1210ffa9a9f4364171f26"
 
   depends_on "sbt"
+  depends_on "zookeeper"
 
   def install
     system "sbt", "update"
@@ -21,8 +22,7 @@ class Kafka < Formula
   def caveats; <<-EOS.undent
     Kafka requires JAVA_HOME to be set:
       export JAVA_HOME=`/usr/libexec/java_home`
-    To start Kafka:
-      zookeeper-server-start.sh #{prefix}/config/zookeeper.properties
+    To start Kafka, ensure that ZooKeeper is first running and then execute:
       kafka-server-start.sh #{prefix}/config/server.properties
     EOS
   end
