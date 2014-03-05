@@ -21,6 +21,7 @@ class Capstone < Formula
 end
 
 
+# Upstream update is at https://github.com/aquynh/capstone/commit/ae603d
 __END__
 --- a/Makefile.org	2014-03-05 11:26:42.000000000 +0800
 +++ a/Makefile	2014-03-05 11:28:34.000000000 +0800
