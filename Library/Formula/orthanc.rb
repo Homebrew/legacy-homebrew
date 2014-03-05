@@ -13,8 +13,15 @@ class Orthanc < Formula
   depends_on "libpng"
 
   def patches
-    #This patch fixes build & code issues directly related to running on Mac OS X.
-    #Until this is merged back into Orthanc this is required to build for Mac.
+    # The git checkout on the homebrew test server strips <CR><LF>, therefore to get the patch
+    # to apply cleanly, we must strip them from the file to be patched too.
+    if @buildpath then
+      inreplace 'CMakeLists.txt' do |s|
+        s.gsub! /\r\n/, "\n"
+      end
+    end
+    # This patch fixes build & code issues directly related to running on Mac OS X.
+    # Until this is merged back into Orthanc this is required to build for Mac.
     DATA
   end
 
@@ -29,21 +36,24 @@ class Orthanc < Formula
   end
 
   def install
-    system "mkdir", 'ThirdPartyDownloads'
+    Pathname.new('ThirdPartyDownloads').mkpath
     cd 'ThirdPartyDownloads' do
       resource("mongoose").fetch.cp "mongoose-3.1.tgz"
       resource("gtest").fetch.cp "gtest-1.6.0.zip"
     end
 
-    system "cmake", ".", "-DUSE_SYSTEM_MONGOOSE=OFF",
-    "-DUSE_SYSTEM_GOOGLE_TEST=NO", "-DCMAKE_INCLUDE_PATH=#{HOMEBREW_PREFIX}/include",
-    "-DCMAKE_LIBRARY_PATH=#{HOMEBREW_PREFIX}/lib", "-DDCMTK_DIR=#{HOMEBREW_PREFIX}/include/dcmtk",
-    "-DDCMTK_DICTIONARY_DIR=#{HOMEBREW_PREFIX}/share/dcmtk",
-    "-DHAVE_JSONCPP_H=#{HOMEBREW_PREFIX}/json/reader.h", *std_cmake_args
+    system "cmake", ".",  "-DUSE_SYSTEM_MONGOOSE=OFF",
+                          "-DUSE_SYSTEM_GOOGLE_TEST=NO",
+                          "-DCMAKE_INCLUDE_PATH=#{HOMEBREW_PREFIX}/include",
+                          "-DCMAKE_LIBRARY_PATH=#{HOMEBREW_PREFIX}/lib",
+                          "-DDCMTK_DIR=#{HOMEBREW_PREFIX}/include/dcmtk",
+                          "-DDCMTK_DICTIONARY_DIR=#{HOMEBREW_PREFIX}/share/dcmtk",
+                          "-DDCMTK_LIBRARIES=oflog;iconv",
+                          "-DHAVE_JSONCPP_H=#{HOMEBREW_PREFIX}/json/reader.h",
+                          *std_cmake_args
 
     system "make", "install"
 
-    bin.install "Orthanc"
   end
 
   test do
@@ -53,8 +63,8 @@ end
 
 __END__
 diff -ur Orthanc-0.7.3/CMakeLists.txt Orthanc-0.7.3-C/CMakeLists.txt
---- Orthanc-0.7.3/CMakeLists.txt	2014-02-14 11:06:31.000000000 +0000
-+++ Orthanc-0.7.3-C/CMakeLists.txt	2014-03-04 20:18:45.000000000 +0000
+--- Orthanc-0.7.3/CMakeLists.txt	2014-03-05 11:04:17.000000000 +0000
++++ Orthanc-0.7.3-C/CMakeLists.txt	2014-03-05 10:52:28.000000000 +0000
 @@ -248,7 +248,7 @@
    add_definitions(-DUNIT_TESTS_WITH_HTTP_CONNEXIONS=0)
  endif()
@@ -128,24 +138,6 @@ diff -ur Orthanc-0.7.3/OrthancServer/Internals/StoreScp.cpp Orthanc-0.7.3-C/Orth
            {
              // which SOP class and SOP instance ?
              if (!DU_findSOPClassAndInstanceInDataSet(*imageDataSet, sopClass, sopInstance, /*opt_correctUIDPadding*/ OFFalse))
-diff -ur Orthanc-0.7.3/Resources/CMake/DcmtkConfiguration.cmake Orthanc-0.7.3-C/Resources/CMake/DcmtkConfiguration.cmake
---- Orthanc-0.7.3/Resources/CMake/DcmtkConfiguration.cmake	2014-02-14 11:06:31.000000000 +0000
-+++ Orthanc-0.7.3-C/Resources/CMake/DcmtkConfiguration.cmake	2014-03-04 20:30:21.000000000 +0000
-@@ -102,9 +102,12 @@
-   set(tmp "${DCMTK_LIBRARIES}")
-   include(FindDCMTK)
-   list(APPEND DCMTK_LIBRARIES "${tmp}")
-+  list(APPEND DCMTK_LIBRARIES "${DCMTK_DIR}/../../lib/liboflog.a") 
-+  #Temorary fix for FindDCMTK bug in CMAKE - See http://www.cmake.org/pipermail/cmake/2011-November/047834.html
- 
-   include_directories(${DCMTK_INCLUDE_DIR})
--  link_libraries(${DCMTK_LIBRARIES})
-+  message("DCM LIB: ${DCMTK_LIBRARIES}")
-+  link_libraries(${DCMTK_LIBRARIES} iconv)
- 
-   add_definitions(
-     -DHAVE_CONFIG_H=1
-diff -ur Orthanc-0.7.3/UnitTestsSources/main.cpp Orthanc-0.7.3-C/UnitTestsSources/main.cpp
 --- Orthanc-0.7.3/UnitTestsSources/main.cpp	2014-02-14 11:06:31.000000000 +0000
 +++ Orthanc-0.7.3-C/UnitTestsSources/main.cpp	2014-03-04 20:10:23.000000000 +0000
 @@ -621,7 +621,7 @@
