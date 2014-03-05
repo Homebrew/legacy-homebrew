@@ -20,7 +20,7 @@ class Kafka < Formula
 
   def caveats; <<-EOS.undent
     Kafka requires JAVA_HOME to be set:
-      export JAVA_HOME=`/System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java_home`
+      export JAVA_HOME=`/usr/libexec/java_home`
     To start Kafka:
       zookeeper-server-start.sh #{prefix}/config/zookeeper.properties
       kafka-server-start.sh #{prefix}/config/server.properties
