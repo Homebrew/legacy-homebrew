@@ -2,7 +2,7 @@ require 'formula'
 
 class Bindfs < Formula
   homepage 'http://bindfs.org/'
-  url 'http://bindfs.googlecode.com/files/bindfs-1.12.tar.gz'
+  url 'https://bindfs.googlecode.com/files/bindfs-1.12.tar.gz'
   sha1 'e4d5d9ab3056c06e1e8b9fe423222de86cce46cf'
 
   depends_on 'pkg-config' => :build
