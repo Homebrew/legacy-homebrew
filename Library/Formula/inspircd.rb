@@ -4,6 +4,7 @@ class Inspircd < Formula
   homepage 'http://www.inspircd.org'
   url 'https://github.com/inspircd/inspircd/archive/v2.0.15.tar.gz'
   sha1 '3591c1a9d2d2866f2f3c63caa8997f3bc0cb656d'
+  revision 1
 
   head 'https://github.com/inspircd/inspircd.git'
 

@@ -4,7 +4,7 @@ class Weechat < Formula
   homepage 'http://www.weechat.org'
   url 'http://www.weechat.net/files/src/weechat-0.4.3.tar.bz2'
   sha1 'c9043ae4df8057c1410eeaf4c5c8818e97963e16'
-  revision 1
+  revision 2
 
   head 'git://git.savannah.nongnu.org/weechat.git'
 

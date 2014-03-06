@@ -4,6 +4,7 @@ class GpgAgent < Formula
   homepage 'http://www.gnupg.org/'
   url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.22.tar.bz2'
   sha1 '9ba9ee288e9bf813e0f1e25cbe06b58d3072d8b8'
+  revision 1
 
   depends_on 'libgpg-error'
   depends_on 'libgcrypt'
