@@ -10,13 +10,18 @@ class Jsoncpp < Formula
   def install
     # linux-gcc is correct - despite the fact that the library is built with CLANG (see README.txt).
     scons "platform=linux-gcc"
-    lib.install Dir["libs/linux-gcc*/libjson*.dylib"] => "libjsoncpp.dylib"
-    lib.install Dir["libs/linux*/libjson*.a"] => "libjsoncpp.a"
+    gccVersion = `g++ -dumpversion`.chomp
+
+    lib.install "libs/linux-gcc-#{gccVersion}/libjson_linux-gcc-#{gccVersion}_libmt.dylib" => "libjsoncpp.dylib"
+    lib.install "libs/linux-gcc-#{gccVersion}/libjson_linux-gcc-#{gccVersion}_libmt.a" => "libjsoncpp.a"
     prefix.install "include"
 
     # Due to problems with the build system homebrew does not automatically fix this library reference.
-    system "install_name_tool", "-change", Dir["buildscons/linux-gcc-*/src/lib_json/libjson_linux-gcc-*.dylib"],
-    "#{HOMEBREW_PREFIX}/lib/libjsoncpp.dylib", Dir["bin/linux-gcc-*/test_lib_json"]
+    system "install_name_tool", "-change",
+      "buildscons/linux-gcc-#{gccVersion}/src/lib_json/libjson_linux-gcc-#{gccVersion}_libmt.dylib",
+      "#{HOMEBREW_PREFIX}/lib/libjsoncpp.dylib",
+      "bin/linux-gcc-#{gccVersion}/test_lib_json"
+    
     bin.install Dir["bin/linux-gcc*/test_lib_json"] => "test_lib_json"
   end
 
