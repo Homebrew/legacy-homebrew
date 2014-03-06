@@ -2,8 +2,8 @@ require 'formula'
 
 class JsonSpirit < Formula
   homepage 'http://www.codeproject.com/KB/recipes/JSON_Spirit.aspx'
-  url 'https://github.com/png85/json_spirit/archive/json_spirit-4.07.zip'
-  sha1 'e7055cb8fd596fc89b73e6898d8162a56fd80ec7'
+  url 'https://github.com/png85/json_spirit/archive/json_spirit-4.07.tar.gz'
+  sha1 'b29272c59f8f840c255f75a0949ba839b7cec13b'
 
   depends_on 'boost'
   depends_on 'cmake' => :build

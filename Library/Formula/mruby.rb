@@ -2,7 +2,7 @@ require "formula"
 
 class Mruby < Formula
   homepage "http://www.mruby.org"
-  url "https://github.com/mruby/mruby/archive/1.0.0.zip"
+  url "https://github.com/mruby/mruby/archive/1.0.0.tar.gz"
   sha1 "48861f5e01019fd82da4543c01d163fc03ec4643"
 
   head "https://github.com/mruby/mruby.git"
