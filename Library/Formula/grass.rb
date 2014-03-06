@@ -57,7 +57,7 @@ class Grass < Formula
       "--with-lapack",
       "--with-sqlite",
       "--with-odbc",
-      "--with-geos=#{Formula["geos"].opt_prefix}/bin/geos-config",
+      "--with-geos=#{Formula["geos"].opt_bin}/geos-config",
       "--with-png",
       "--with-readline-includes=#{readline}/include",
       "--with-readline-libs=#{readline}/lib",
@@ -78,7 +78,7 @@ class Grass < Formula
     if headless? or build.without? 'wxmac'
       args << "--without-wxwidgets"
     else
-      args << "--with-wxwidgets=#{Formula["wxmac"].opt_prefix}/bin/wx-config"
+      args << "--with-wxwidgets=#{Formula["wxmac"].opt_bin}/wx-config"
     end
 
     args << "--enable-64bit" if MacOS.prefer_64_bit?

@@ -56,7 +56,7 @@ class Redis < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/redis-server</string>
+          <string>#{opt_bin}/redis-server</string>
           <string>#{etc}/redis.conf</string>
         </array>
         <key>RunAtLoad</key>

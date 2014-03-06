@@ -44,7 +44,7 @@ class Pgbouncer < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/pgbouncer</string>
+          <string>#{opt_bin}/pgbouncer</string>
           <string>-d</string>
           <string>-q</string>
           <string>#{etc}/pgbouncer.ini</string>
