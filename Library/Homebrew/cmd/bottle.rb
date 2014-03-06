@@ -115,7 +115,7 @@ module Homebrew extend self
     if ARGV.include? '--no-revision'
       bottle_revision = 0
     else
-      max = f.bottle_version_map('origin/master')[f.version].max
+      max = f.bottle_version_map('origin/master')[f.pkg_version].max
       bottle_revision = max ? max + 1 : 0
     end
 
@@ -143,7 +143,7 @@ module Homebrew extend self
         HOMEBREW_CELLAR.cd do
           # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
           # or an uncompressed tarball (and more bandwidth friendly).
-          safe_system 'tar', 'czf', bottle_path, "#{f.name}/#{f.version}"
+          safe_system 'tar', 'czf', bottle_path, "#{f.name}/#{f.pkg_version}"
         end
 
         if File.size?(bottle_path) > 1*1024*1024

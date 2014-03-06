@@ -6,7 +6,7 @@ require 'bottle_version'
 def bottle_filename f, options={}
   options = { :tag => bottle_tag }.merge(options)
   name = f.name.downcase
-  version = f.stable.version
+  version = PkgVersion.new(f.stable.version, f.revision)
   options[:revision] ||= f.bottle.revision.to_i if f.bottle
   "#{name}-#{version}#{bottle_native_suffix(options)}"
 end
