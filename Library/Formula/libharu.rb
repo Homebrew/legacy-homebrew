@@ -16,16 +16,11 @@ class Libharu < Formula
     "http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/media-libs/libharu/files/libharu-2.2.1-libpng-1.5.patch?revision=1.1"
   end
 
-  def png_prefix
-    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/libpng" : MacOS::X11.prefix
-  end
-
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          # libpng doesn't get picked up
-                          "--with-png=#{png_prefix}"
+                          "--with-png=#{Formula["libpng"].opt_prefix}"
     system "make install"
   end
 end

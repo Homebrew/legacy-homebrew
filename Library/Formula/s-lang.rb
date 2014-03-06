@@ -10,14 +10,11 @@ class SLang < Formula
   depends_on 'pcre' => :optional
   depends_on 'oniguruma' => :optional
 
-  def png_prefix
-    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/libpng" : MacOS::X11.prefix
-  end
-
   def install
+    png = Formula["libpng"]
     system "./configure", "--prefix=#{prefix}",
-                          "--with-pnglib=#{png_prefix}/lib",
-                          "--with-pnginc=#{png_prefix}/include"
+                          "--with-pnglib=#{png.lib}",
+                          "--with-pnginc=#{png.include}"
     ENV.j1
     system "make"
     system "make install"
