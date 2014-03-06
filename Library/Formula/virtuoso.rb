@@ -24,7 +24,7 @@ class Virtuoso < Formula
     ENV.m64 if MacOS.prefer_64_bit?
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
-    "--prefix=#{prefix}"
+                          "--prefix=#{prefix}"
     system "make install"
   end
 
