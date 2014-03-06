@@ -46,9 +46,9 @@ class Sbcl < Formula
 
   def write_features
     features = []
-    features << ":sb-thread" unless build.include? "without-threads"
-    features << ":sb-ldb" if build.include? "with-ldb"
-    features << ":sb-xref-for-internals" if build.include? "with-internal-xref"
+    features << ":sb-thread" if build.with? "threads"
+    features << ":sb-ldb" if build.with? "ldb"
+    features << ":sb-xref-for-internals" if build.with? "internal-xref"
 
     File.open("customize-target-features.lisp", "w") do |file|
       file.puts "(lambda (list)"

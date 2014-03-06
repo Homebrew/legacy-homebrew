@@ -38,7 +38,7 @@ class Mu < Formula
   def install
     # Explicitly tell the build not to include emacs support as the version
     # shipped by default with Mac OS X is too old.
-    ENV['EMACS'] = 'no' unless build.with? 'emacs'
+    ENV['EMACS'] = 'no' if build.without? 'emacs'
 
     # I dunno.
     # https://github.com/djcb/mu/issues/332
