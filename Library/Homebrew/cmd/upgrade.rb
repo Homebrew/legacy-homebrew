@@ -36,14 +36,14 @@ module Homebrew extend self
 
     unless outdated.empty?
       oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
-      puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
+      puts outdated.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
     else
       oh1 "No packages to upgrade"
     end
 
     unless upgrade_pinned? || pinned.empty?
       oh1 "Not upgrading #{pinned.length} pinned package#{pinned.length.plural_s}:"
-      puts pinned.map{ |f| "#{f.name} #{f.version}" } * ", "
+      puts pinned.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
     end
 
     outdated.each { |f| upgrade_formula(f) }
