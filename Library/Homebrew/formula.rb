@@ -10,6 +10,7 @@ require 'build_options'
 require 'formulary'
 require 'software_spec'
 require 'install_renamed'
+require 'pkg_version'
 
 class Formula
   include FileUtils
@@ -18,6 +19,7 @@ class Formula
 
   attr_reader :name, :path, :homepage, :build
   attr_reader :stable, :bottle, :devel, :head, :active_spec
+  attr_reader :pkg_version, :revision
 
   # The current working directory during builds and tests.
   # Will only be non-nil inside #stage and #test.
@@ -34,6 +36,7 @@ class Formula
     @name = name
     @path = path
     @homepage = self.class.homepage
+    @revision = self.class.revision || 0
 
     set_spec :stable
     set_spec :devel
@@ -46,13 +49,23 @@ class Formula
       unless bottle.checksum.nil? || bottle.checksum.empty?
         @bottle = bottle
         bottle.url ||= bottle_url(self, bottle.current_tag)
-        bottle.version = stable.version
+        bottle.version = PkgVersion.new(stable.version, revision)
       end
     end
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
     @build = determine_build_options
+
+    # TODO: @pkg_version is already set for bottles, since constructing it
+    # requires passing in the active_spec version. This should be fixed by
+    # making the bottle an attribute of SoftwareSpec rather than a separate
+    # spec itself.
+    if active_spec == bottle
+      @pkg_version = bottle.version
+    else
+      @pkg_version = PkgVersion.new(version, revision)
+    end
 
     @pin = FormulaPin.new(self)
 
@@ -150,7 +163,7 @@ class Formula
     Keg.new(installed_prefix).version
   end
 
-  def prefix(v=version)
+  def prefix(v=pkg_version)
     Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{v}")
   end
   def rack; prefix.parent end
@@ -662,7 +675,7 @@ class Formula
   class << self
 
     attr_reader :keg_only_reason, :cc_failures
-    attr_rw :homepage, :plist_startup, :plist_manual
+    attr_rw :homepage, :plist_startup, :plist_manual, :revision
 
     def specs
       @specs ||= [stable, devel, head, bottle].freeze

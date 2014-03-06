@@ -54,4 +54,18 @@ class Scala < Formula
       #{opt_prefix}/idea
     EOS
   end
+
+  test do
+    file = testpath/'hello.scala'
+    file.write <<-EOS.undent
+      object Computer {
+        def main(args: Array[String]) {
+          println(2 + 2)
+        }
+      }
+    EOS
+    output = `'#{bin}/scala' #{file}`
+    assert_equal "4", output.strip
+    assert $?.success?
+  end
 end

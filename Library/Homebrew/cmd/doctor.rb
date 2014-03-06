@@ -950,7 +950,7 @@ end
 
 def check_for_library_python
   if File.exist?("/Library/Frameworks/Python.framework") then <<-EOS.undent
-    A Python is installed in /Library/Frameworks
+    Python is installed at /Library/Frameworks/Python.framework
 
     Homebrew only supports building against the System-provided Python or a
     brewed Python. In particular, Pythons installed to /Library can interfere
