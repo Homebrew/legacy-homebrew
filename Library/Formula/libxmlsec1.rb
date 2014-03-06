@@ -4,6 +4,7 @@ class Libxmlsec1 < Formula
   homepage 'http://www.aleksey.com/xmlsec/'
   url 'http://www.aleksey.com/xmlsec/download/xmlsec1-1.2.19.tar.gz'
   sha1 '9f24f84bf6f4a61fc55637f016b56c0f44c048ba'
+  revision 1
 
   depends_on 'pkg-config' => :build
   depends_on 'libxml2' # Version on 10.6/10.7 is too old
