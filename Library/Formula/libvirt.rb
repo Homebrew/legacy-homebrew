@@ -7,9 +7,9 @@ class Libvirt < Formula
   revision 1
 
   bottle do
-    sha1 "e9a67d211ac1432daa71e5d06021cd21989f0bbf" => :mavericks
-    sha1 "a81c7363a5bd553b6b33551538b8a85cb0143122" => :mountain_lion
-    sha1 "5c1b88af908fec958a8bc1d5e20383e3f29de69d" => :lion
+    sha1 "4fbae12166798f0d14c5ce93567e2e02a4b67db7" => :mavericks
+    sha1 "bec4b7b2ab1f45bb091db265d915892d30aba9c2" => :mountain_lion
+    sha1 "b9a52ff49f753b87d7a7ba07eefc8ae68dd1cfd4" => :lion
   end
 
   option 'without-libvirtd', 'Build only the virsh client and development libraries'
