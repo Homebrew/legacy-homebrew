@@ -414,10 +414,8 @@ class FormulaAuditor
     end
 
     # Avoid hard-coding compilers
-    unless f.name == 'go' # Go needs to set CC for cgo support.
-      if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
-        problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
-      end
+    if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
+      problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
     end
 
     if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]}
@@ -444,12 +442,10 @@ class FormulaAuditor
       problem "No double 'without': Use `build.without? '#{$1}'` to check for \"--without-#{$1}\""
     end
 
-    # Mongo writes out a Ruby script that uses ARGV
-    # Python formulae need ARGV for Requirements
-    unless f.name == 'mongodb' || f.name == "pyobject3"
-      if line =~ /ARGV\.(?!(debug\?|verbose\?|value[\(\s]))/
-        problem "Use build instead of ARGV to check options"
-      end
+    if line =~ /ARGV\.(?!(debug\?|verbose\?|value[\(\s]))/
+      # Python formulae need ARGV for Requirements
+      problem "Use build instead of ARGV to check options",
+              :whitelist => %w{pygobject3 qscintilla2}
     end
 
     if line =~ /def options/
@@ -538,7 +534,8 @@ class FormulaAuditor
 
   private
 
-  def problem p
+  def problem p, options={}
+    return if options[:whitelist].to_a.include? f.name
     @problems << p
   end
 end
