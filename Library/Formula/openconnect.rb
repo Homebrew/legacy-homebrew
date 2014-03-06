@@ -2,8 +2,8 @@ require 'formula'
 
 class Openconnect < Formula
   homepage 'http://www.infradead.org/openconnect.html'
-  url 'ftp://ftp.infradead.org/pub/openconnect/openconnect-5.03.tar.gz'
-  sha1 '40344fc910a19c8781a79204808f1229acaee2a4'
+  url 'ftp://ftp.infradead.org/pub/openconnect/openconnect-5.99.tar.gz'
+  sha1 '3ac20e50f2700ff58d1635f210fc263d29cf7768'
 
   head do
     url 'git://git.infradead.org/users/dwmw2/openconnect.git', :shallow => false
