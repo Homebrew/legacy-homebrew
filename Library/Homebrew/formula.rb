@@ -61,7 +61,11 @@ class Formula
     # requires passing in the active_spec version. This should be fixed by
     # making the bottle an attribute of SoftwareSpec rather than a separate
     # spec itself.
-    @pkg_version = PkgVersion.new(version, revision) unless active_spec == bottle
+    if active_spec == bottle
+      @pkg_version = bottle.version
+    else
+      @pkg_version = PkgVersion.new(version, revision)
+    end
 
     @pin = FormulaPin.new(self)
 
