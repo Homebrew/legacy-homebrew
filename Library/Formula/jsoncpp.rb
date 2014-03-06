@@ -21,7 +21,7 @@ class Jsoncpp < Formula
       "buildscons/linux-gcc-#{gccVersion}/src/lib_json/libjson_linux-gcc-#{gccVersion}_libmt.dylib",
       "#{HOMEBREW_PREFIX}/lib/libjsoncpp.dylib",
       "bin/linux-gcc-#{gccVersion}/test_lib_json"
-    
+
     bin.install Dir["bin/linux-gcc*/test_lib_json"] => "test_lib_json"
   end
 
