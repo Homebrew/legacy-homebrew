@@ -105,7 +105,7 @@ class Lighttpd < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/lighttpd</string>
+        <string>#{opt_bin}/lighttpd</string>
         <string>-D</string>
         <string>-f</string>
         <string>#{config_path}lighttpd.conf</string>

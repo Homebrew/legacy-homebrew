@@ -49,7 +49,7 @@ class ScmManager < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/scm-server</string>
+          <string>#{opt_bin}/scm-server</string>
           <string>start</string>
         </array>
         <key>RunAtLoad</key>

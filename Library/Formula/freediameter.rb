@@ -68,7 +68,7 @@ class Freediameter < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/freeDiameterd</string>
+          <string>#{opt_bin}/freeDiameterd</string>
         </array>
         <key>KeepAlive</key>
         <dict>

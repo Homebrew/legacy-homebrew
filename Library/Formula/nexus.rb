@@ -27,7 +27,7 @@ class Nexus < Formula
         <string>com.sonatype.nexus</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/nexus</string>
+          <string>#{opt_bin}/nexus</string>
           <string>start</string>
         </array>
         <key>RunAtLoad</key>

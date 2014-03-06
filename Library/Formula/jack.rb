@@ -34,7 +34,7 @@ class Jack < Formula
       <string>#{prefix}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/jackd</string>
+        <string>#{opt_bin}/jackd</string>
         <string>-d</string>
         <string>coreaudio</string>
       </array>

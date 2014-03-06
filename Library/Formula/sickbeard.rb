@@ -25,7 +25,7 @@ class Sickbeard < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/sickbeard</string>
+        <string>#{opt_bin}/sickbeard</string>
         <string>-q</string>
         <string>--nolaunch</string>
         <string>-p</string>

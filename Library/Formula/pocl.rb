@@ -35,7 +35,7 @@ class Pocl < Formula
       }
     EOS
     system "#{bin}/pocl-standalone -h head.h -o foo.bc foo.cl"
-    system "\"#{Formula["llvm"].opt_prefix}/bin/llvm-dis\" < foo.bc | grep foo_workgroup"
+    system "\"#{Formula["llvm"].opt_bin}/llvm-dis\" < foo.bc | grep foo_workgroup"
     system "pkg-config pocl --modversion | grep #{version}"
   end
 end

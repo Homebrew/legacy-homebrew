@@ -38,7 +38,7 @@ class Ser2net < Formula
         <true/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/sbin/ser2net</string>
+            <string>#{opt_sbin}/ser2net</string>
             <string>-p</string>
             <string>12345</string>
         </array>

@@ -38,7 +38,7 @@ class H2 < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/h2</string>
+            <string>#{opt_bin}/h2</string>
             <string>-tcp</string>
             <string>-web</string>
             <string>-pg</string>

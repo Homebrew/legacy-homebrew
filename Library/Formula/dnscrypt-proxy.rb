@@ -66,7 +66,7 @@ class DnscryptProxy < Formula
         <true/>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/sbin/dnscrypt-proxy</string>
+          <string>#{opt_sbin}/dnscrypt-proxy</string>
           <string>--local-address=127.0.0.1:53</string>
           <string>--user=nobody</string>
         </array>

@@ -40,7 +40,7 @@ class Memcached < Formula
       <true/>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/memcached</string>
+        <string>#{opt_bin}/memcached</string>
         <string>-l</string>
         <string>localhost</string>
       </array>

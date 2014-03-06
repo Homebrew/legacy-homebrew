@@ -22,7 +22,7 @@ class Couchpotatoserver < Formula
         <key>Label</key>
         <string>#{plist_name}</string>
         <key>Program</key>
-        <string>#{opt_prefix}/bin/couchpotatoserver</string>
+        <string>#{opt_bin}/couchpotatoserver</string>
         <key>ProgramArguments</key>
         <array>
           <string>--quiet</string>

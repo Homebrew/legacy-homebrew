@@ -31,7 +31,7 @@ class Proftpd < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/proftpd</string>
+          <string>#{opt_bin}/proftpd</string>
         </array>
         <key>UserName</key>
         <string>root</string>

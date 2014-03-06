@@ -153,7 +153,7 @@ class Nginx < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/nginx</string>
+            <string>#{opt_bin}/nginx</string>
             <string>-g</string>
             <string>daemon off;</string>
         </array>

@@ -10,7 +10,7 @@ class Slony < Formula
   def install
     postgres = Formula['postgresql']
     system "./configure", "--disable-debug",
-                          "--with-pgconfigdir=#{postgres.opt_prefix}/bin",
+                          "--with-pgconfigdir=#{postgres.opt_bin}",
                           "--prefix=#{prefix}"
     system "make install"
   end

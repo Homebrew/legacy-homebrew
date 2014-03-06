@@ -65,8 +65,8 @@ class Mapnik < Formula
     else
       args << "CAIRO=False"
     end
-    args << "GDAL_CONFIG=#{Formula["gdal"].opt_prefix}/bin/gdal-config" if build.with? 'gdal'
-    args << "PG_CONFIG=#{Formula["postgresql"].opt_prefix}/bin/pg_config" if build.with? 'postgresql'
+    args << "GDAL_CONFIG=#{Formula["gdal"].opt_bin}/gdal-config" if build.with? 'gdal'
+    args << "PG_CONFIG=#{Formula["postgresql"].opt_bin}/pg_config" if build.with? 'postgresql'
 
     system "python", "scons/scons.py", "configure", *args
     system "python", "scons/scons.py", "install"

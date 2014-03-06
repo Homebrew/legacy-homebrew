@@ -54,7 +54,7 @@ class Sshguard < Formula
       <true/>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/sshguard</string>
+        <string>#{opt_sbin}/sshguard</string>
         <string>-l</string>
         <string>#{log_path}</string>
       </array>

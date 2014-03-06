@@ -96,7 +96,7 @@ class Pygobject3 < Formula
     pythons.each do |python, version|
       unless Formula[python].installed?
         ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
-        ENV.append_path "PYTHONPATH", "#{opt_prefix}/lib/python#{version}/site-packages"
+        ENV.append_path "PYTHONPATH", "#{opt_lib}/python#{version}/site-packages"
       end
       system python, "test.py"
     end

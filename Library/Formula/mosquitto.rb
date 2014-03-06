@@ -47,7 +47,7 @@ class Mosquitto < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/mosquitto</string>
+        <string>#{opt_sbin}/mosquitto</string>
         <string>-c</string>
         <string>#{etc}/mosquitto/mosquitto.conf</string>
       </array>

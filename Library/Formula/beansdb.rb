@@ -35,7 +35,7 @@ class Beansdb < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/beansdb</string>
+        <string>#{opt_bin}/beansdb</string>
         <string>-p</string>
         <string>7900</string>
         <string>-H</string>

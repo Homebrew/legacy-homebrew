@@ -49,7 +49,7 @@ class Lldpd < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/lldpd</string>
+        <string>#{opt_sbin}/lldpd</string>
         #{additional_args}
       </array>
       <key>RunAtLoad</key><true/>

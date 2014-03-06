@@ -35,7 +35,7 @@ class OfflineImap < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/offlineimap</string>
+          <string>#{opt_bin}/offlineimap</string>
         </array>
         <key>StartInterval</key>
         <integer>300</integer>

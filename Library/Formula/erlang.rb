@@ -97,7 +97,7 @@ class Erlang < Formula
 
   def caveats; <<-EOS.undent
     Man pages can be found in:
-      #{opt_prefix}/lib/erlang/man
+      #{opt_lib}/erlang/man
 
     Access them with `erl -man`, or add this directory to MANPATH.
     EOS

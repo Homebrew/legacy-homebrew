@@ -54,7 +54,7 @@ class Nagios < Formula
             <string>#{plist_name}</string>
             <key>ProgramArguments</key>
             <array>
-                    <string>#{opt_prefix}/bin/nagios</string>
+                    <string>#{opt_bin}/nagios</string>
                     <string>#{nagios_etc}/nagios.cfg</string>
             </array>
             <key>RunAtLoad</key>

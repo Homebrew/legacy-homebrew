@@ -34,7 +34,7 @@ class Polipo < Formula
         <true/>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/polipo</string>
+          <string>#{opt_bin}/polipo</string>
         </array>
       </dict>
     </plist>

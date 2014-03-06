@@ -14,8 +14,8 @@ class SpatialiteTools < Formula
     ENV.append 'LDFLAGS', '-liconv'
     # Ensure Homebrew SQLite is found before system SQLite.
     sqlite = Formula["sqlite"]
-    ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib"
-    ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
+    ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib}"
+    ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

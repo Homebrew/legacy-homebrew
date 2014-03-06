@@ -28,7 +28,7 @@ class Wxpython < Formula
     args = [
       "WXPORT=osx_cocoa",
       # Reference our wx-config
-      "WX_CONFIG=#{Formula["wxmac"].opt_prefix}/bin/wx-config",
+      "WX_CONFIG=#{Formula["wxmac"].opt_bin}/wx-config",
       # At this time Wxmac is installed Unicode only
       "UNICODE=1",
       # Some scripts (e.g. matplotlib) expect to `import wxversion`, which is

@@ -37,7 +37,7 @@ class Rethinkdb < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-          <string>#{opt_prefix}/bin/rethinkdb</string>
+          <string>#{opt_bin}/rethinkdb</string>
           <string>-d</string>
           <string>#{var}/rethinkdb</string>
       </array>

@@ -58,7 +58,7 @@ class Cassandra < Formula
 
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/cassandra</string>
+            <string>#{opt_bin}/cassandra</string>
             <string>-f</string>
         </array>
 

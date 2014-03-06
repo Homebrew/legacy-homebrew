@@ -53,7 +53,7 @@ class Squid < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/squid</string>
+        <string>#{opt_sbin}/squid</string>
         <string>-N</string>
         <string>-d 1</string>
       </array>
