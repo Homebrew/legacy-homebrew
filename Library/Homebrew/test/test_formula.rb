@@ -24,6 +24,11 @@ class FormulaTests < Test::Unit::TestCase
     assert_kind_of Pathname, f.prefix
   end
 
+  def test_revised_prefix
+    f = Class.new(TestBall) { revision 1 }.new
+    assert_equal HOMEBREW_CELLAR/f.name/'0.1_1', f.prefix
+  end
+
   def test_installed?
     f = TestBall.new
     f.stubs(:installed_prefix).returns(stub(:directory? => false))
@@ -232,5 +237,30 @@ class FormulaTests < Test::Unit::TestCase
     %w{stable devel head bottle}.each do |spec|
       assert_equal 'foo', f.class.send(spec).deps.first.name
     end
+  end
+
+  def test_simple_version
+    assert_equal PkgVersion.parse('1.0'), formula { url 'foo-1.0.bar' }.pkg_version
+  end
+
+  def test_version_with_revision
+    f = formula do
+      url 'foo-1.0.bar'
+      revision 1
+    end
+
+    assert_equal PkgVersion.parse('1.0_1'), f.pkg_version
+  end
+
+  def test_head_ignores_revisions
+    ARGV.stubs(:build_head?).returns(true)
+
+    f = formula do
+      url 'foo-1.0.bar'
+      revision 1
+      head 'foo'
+    end
+
+    assert_equal PkgVersion.parse('HEAD'), f.pkg_version
   end
 end

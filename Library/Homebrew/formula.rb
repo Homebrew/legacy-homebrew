@@ -10,6 +10,7 @@ require 'build_options'
 require 'formulary'
 require 'software_spec'
 require 'install_renamed'
+require 'pkg_version'
 
 class Formula
   include FileUtils
@@ -18,7 +19,7 @@ class Formula
 
   attr_reader :name, :path, :homepage, :build
   attr_reader :stable, :bottle, :devel, :head, :active_spec
-  attr_reader :revision
+  attr_reader :pkg_version, :revision
 
   # The current working directory during builds and tests.
   # Will only be non-nil inside #stage and #test.
@@ -55,6 +56,7 @@ class Formula
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
     @build = determine_build_options
+    @pkg_version = PkgVersion.new(version, revision)
 
     @pin = FormulaPin.new(self)
 
@@ -152,7 +154,7 @@ class Formula
     Keg.new(installed_prefix).version
   end
 
-  def prefix(v=version)
+  def prefix(v=pkg_version)
     Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{v}")
   end
   def rack; prefix.parent end
