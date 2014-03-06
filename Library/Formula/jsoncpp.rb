@@ -22,7 +22,7 @@ class Jsoncpp < Formula
       "#{HOMEBREW_PREFIX}/lib/libjsoncpp.dylib",
       "bin/linux-gcc-#{gccVersion}/test_lib_json"
 
-    bin.install Dir["bin/linux-gcc*/test_lib_json"] => "test_lib_json"
+    bin.install "bin/linux-gcc-#{gccVersion}/test_lib_json" => "test_lib_json"
   end
 
   test do
