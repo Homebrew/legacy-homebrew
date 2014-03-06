@@ -38,8 +38,8 @@ class Ruby < Formula
     args = %W[--prefix=#{prefix} --enable-shared --disable-silent-rules]
     args << "--program-suffix=21" if build.with? "suffix"
     args << "--with-arch=#{Hardware::CPU.universal_archs.join(',')}" if build.universal?
-    args << "--with-out-ext=tk" unless build.with? "tcltk"
-    args << "--disable-install-doc" unless build.with? "doc"
+    args << "--with-out-ext=tk" if build.without? "tcltk"
+    args << "--disable-install-doc" if build.without? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
 
     paths = [
@@ -94,7 +94,7 @@ index 3911f8f..74d1ab7 100644
 @@ -1416,15 +1416,6 @@ timer_thread_sleep(rb_global_vm_lock_t* unused)
  }
  #endif /* USE_SLEEPY_TIMER_THREAD */
- 
+
 -#if defined(__linux__) && defined(PR_SET_NAME)
 -# define SET_THREAD_NAME(name) prctl(PR_SET_NAME, name)
 -#elif defined(__APPLE__)
@@ -108,13 +108,13 @@ index 3911f8f..74d1ab7 100644
  thread_timer(void *p)
  {
 @@ -1432,7 +1423,9 @@ thread_timer(void *p)
- 
+
      if (TT_DEBUG) WRITE_CONST(2, "start timer thread\n");
- 
+
 -    SET_THREAD_NAME("ruby-timer-thr");
 +#if defined(__linux__) && defined(PR_SET_NAME)
 +    prctl(PR_SET_NAME, "ruby-timer-thr");
 +#endif
- 
+
  #if !USE_SLEEPY_TIMER_THREAD
      native_mutex_initialize(&timer_thread_lock);

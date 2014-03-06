@@ -19,10 +19,10 @@ class Io < Formula
   depends_on 'xz'
 
   # Used by Bignum add-on
-  depends_on 'gmp' unless build.include? 'without-addons'
+  depends_on 'gmp' if build.with? "addons"
 
   # Used by Fonts add-on
-  depends_on :freetype unless build.include? 'without-addons'
+  depends_on :freetype if build.with? "addons"
 
   fails_with :clang do
     build 421

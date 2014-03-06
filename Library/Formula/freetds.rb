@@ -29,7 +29,7 @@ class Freetds < Formula
               --mandir=#{man}
             ]
 
-    if build.include? "with-unixodbc"
+    if build.with? "unixodbc"
       args << "--with-unixodbc=#{Formula['unixodbc'].prefix}"
     end
 

@@ -13,7 +13,7 @@ class Dnsmasq < Formula
 
   option 'with-idn', 'Compile with IDN support'
 
-  depends_on "libidn" if build.include? 'with-idn'
+  depends_on "libidn" if build.with? "idn"
   depends_on 'pkg-config' => :build
 
   def install
@@ -23,7 +23,7 @@ class Dnsmasq < Formula
     inreplace "src/config.h", "/etc/dnsmasq.conf", "#{etc}/dnsmasq.conf"
 
     # Optional IDN support
-    if build.include? 'with-idn'
+    if build.with? "idn"
       inreplace "src/config.h", "/* #define HAVE_IDN */", "#define HAVE_IDN"
     end
 
