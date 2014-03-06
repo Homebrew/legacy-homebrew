@@ -2,8 +2,8 @@ require 'formula'
 
 class Libgcrypt < Formula
   homepage 'http://gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.5.3.tar.bz2'
-  sha1 '2c6553cc17f2a1616d512d6870fe95edf6b0e26e'
+  url 'ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.1.tar.bz2'
+  sha1 'f03d9b63ac3b17a6972fc11150d136925b702f02'
 
   bottle do
     cellar :any
@@ -27,11 +27,8 @@ class Libgcrypt < Formula
     cause "basic test fails"
   end
 
-  def patches
-    if ENV.compiler == :clang and (build.universal? or build.build_32_bit?)
-      { :p0 => "https://trac.macports.org/export/85232/trunk/dports/devel/libgcrypt/files/clang-asm.patch" }
-    end
-  end
+  # NOTE: the patch for building with clang and "universal" doesn't
+  # apply anymore
 
   def install
     ENV.universal_binary if build.universal?
