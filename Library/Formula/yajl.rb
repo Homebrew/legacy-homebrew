@@ -21,4 +21,10 @@ class Yajl < Formula
     system "make install"
     (include/'yajl').install Dir['src/api/*.h']
   end
+
+  test do
+    output = `echo "[0,1,2,3]" | '#{bin}/json_verify'`
+    assert $?.success?
+    assert_match /valid/i, output.strip
+  end
 end
