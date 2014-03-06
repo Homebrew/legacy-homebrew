@@ -4,6 +4,7 @@ class Libvirt < Formula
   homepage 'http://www.libvirt.org'
   url 'http://libvirt.org/sources/libvirt-1.2.1.tar.gz'
   sha256 'bc29b5751bf36753c17e2fdbb75e70c7b07df3d9527586d3426e90f5f4abb898'
+  revision 1
 
   bottle do
     sha1 "e9a67d211ac1432daa71e5d06021cd21989f0bbf" => :mavericks
