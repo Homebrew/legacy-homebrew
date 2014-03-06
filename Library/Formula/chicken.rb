@@ -15,4 +15,10 @@ class Chicken < Formula
     system "make", *args
     system "make", "install", *args
   end
+
+  test do
+    output = `'#{bin}/csi' -e '(print (* 5 5))'`
+    assert_equal "25", output.strip
+    assert $?.success?
+  end
 end
