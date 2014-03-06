@@ -2,8 +2,8 @@ require 'formula'
 
 class Lrdf < Formula
   homepage 'https://github.com/swh/LRDF'
-  url 'https://github.com/swh/LRDF/archive/0.5.0.zip'
-  sha1 'c983c78f27ec2ddf1b699879ded840291aaba0c1'
+  url 'https://github.com/swh/LRDF/archive/0.5.0.tar.gz'
+  sha1 'f44889937a70581c737976687f81cee71f92032f'
 
   depends_on "pkg-config" => :build
   depends_on "automake" => :build
