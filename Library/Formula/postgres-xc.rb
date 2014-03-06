@@ -167,7 +167,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/gtm</string>
+        <string>#{opt_bin}/gtm</string>
         <string>-D</string>
         <string>#{var}/postgres-xc/#{name}</string>
         <string>-l</string>
@@ -195,7 +195,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/gtm_proxy</string>
+        <string>#{opt_bin}/gtm_proxy</string>
         <string>-D</string>
         <string>#{var}/postgres-xc/#{name}</string>
         <string>-n</string>
@@ -229,7 +229,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/postgres</string>
+        <string>#{opt_bin}/postgres</string>
         <string>-i</string>
         <string>-C</string>
         <string>-D</string>
@@ -259,7 +259,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/postgres</string>
+        <string>#{opt_bin}/postgres</string>
         <string>-i</string>
         <string>-X</string>
         <string>-D</string>

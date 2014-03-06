@@ -38,7 +38,7 @@ class Ddclient < Formula
   def caveats; <<-EOS.undent
     For ddclient to work, you will need to create a configuration file
     in #{etc}/ddclient, a sample configuration can be found in
-    #{opt_prefix}/share/doc/ddclient.
+    #{opt_share}/doc/ddclient.
 
     Note: don't enable daemon mode in the configuration file; see
     additional information below.
@@ -62,7 +62,7 @@ class Ddclient < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/ddclient</string>
+        <string>#{opt_sbin}/ddclient</string>
         <string>-file</string>
         <string>#{etc}/ddclient/ddclient.conf</string>
       </array>

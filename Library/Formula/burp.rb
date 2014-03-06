@@ -41,7 +41,7 @@ class Burp < Formula
       <false/>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/burp</string>
+        <string>#{opt_bin}/burp</string>
         <string>-a</string>
         <string>t</string>
       </array>

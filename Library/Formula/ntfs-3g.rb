@@ -46,7 +46,7 @@ class Ntfs3g < Formula
         GROUP_ID=`/usr/bin/stat -f %g /dev/console`
       fi
 
-      #{opt_prefix}/bin/ntfs-3g \\
+      #{opt_bin}/ntfs-3g \\
         -o volname="${VOLUME_NAME}" \\
         -o local \\
         -o negative_vncache \\

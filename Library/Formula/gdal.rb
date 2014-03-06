@@ -209,8 +209,8 @@ class Gdal < Formula
     #
     # Fortunately, this can be remedied using LDFLAGS.
     sqlite = Formula["sqlite"]
-    ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib -lsqlite3"
-    ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
+    ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib} -lsqlite3"
+    ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
     # Needed by libdap
     ENV.libxml2 if build.include? 'complete'
 

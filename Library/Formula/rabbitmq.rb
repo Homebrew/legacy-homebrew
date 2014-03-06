@@ -67,7 +67,7 @@ class Rabbitmq < Formula
         <key>Label</key>
         <string>#{plist_name}</string>
         <key>Program</key>
-        <string>#{opt_prefix}/sbin/rabbitmq-server</string>
+        <string>#{opt_sbin}/rabbitmq-server</string>
         <key>RunAtLoad</key>
         <true/>
         <key>EnvironmentVariables</key>

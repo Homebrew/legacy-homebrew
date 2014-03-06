@@ -255,7 +255,7 @@ class Bind < Formula
       <true/>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/named</string>
+        <string>#{opt_sbin}/named</string>
         <string>-f</string>
         <string>-c</string>
         <string>#{etc}/named.conf</string>
