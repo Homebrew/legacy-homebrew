@@ -5,6 +5,12 @@ class Openconnect < Formula
   url "ftp://ftp.infradead.org/pub/openconnect/openconnect-5.99.tar.gz"
   sha1 "3ac20e50f2700ff58d1635f210fc263d29cf7768"
 
+  bottle do
+    sha1 "444194b062852c484490c9a3b4b0e08247731525" => :mavericks
+    sha1 "580e55016a4ff86300dc8fe2a24e353f9a7306cf" => :mountain_lion
+    sha1 "ee6d840bb43176e32aab3f31d93d43451f42bfad" => :lion
+  end
+
   head do
     url "git://git.infradead.org/users/dwmw2/openconnect.git", :shallow => false
     depends_on :autoconf => :build
