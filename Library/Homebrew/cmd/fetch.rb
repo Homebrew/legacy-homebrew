@@ -42,8 +42,8 @@ module Homebrew extend self
   private
 
   def retry_fetch? f
-    @failed ||= {}
-    already_failed = @failed.fetch(f.name, false)
+    @fetch_failed ||= {}
+    already_failed = @fetch_failed.fetch(f.name, false)
 
     if already_failed || !ARGV.include?("--retry")
       Homebrew.failed = true
@@ -51,7 +51,7 @@ module Homebrew extend self
     end
 
     f.clear_cache
-    @failed[f.name] = true
+    @fetch_failed[f.name] = true
     true
   end
 
