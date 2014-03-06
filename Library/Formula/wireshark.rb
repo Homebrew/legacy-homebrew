@@ -60,8 +60,8 @@ class Wireshark < Formula
             "--with-ssl"]
 
     args << "--disable-warnings-as-errors" if build.head?
-    args << "--disable-wireshark" unless build.with? "x" or build.with? "qt"
-    args << "--disable-gtktest" unless build.with? "x"
+    args << "--disable-wireshark" if build.without? "x" or build.with? "qt"
+    args << "--disable-gtktest" if build.without? "x"
     args << "--with-qt" if build.with? "qt"
 
     system "./configure", *args
@@ -120,7 +120,7 @@ index cd41b63..c473fe7 100755
  $as_echo "yes" >&6; }
  		;;
  	esac
- 
+
  	#
 -	# Add a -mmacosx-version-min flag to force tests that
 -	# use the compiler, as well as the build itself, not to,

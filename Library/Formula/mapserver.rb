@@ -21,7 +21,7 @@ class Mapserver < Formula
   depends_on 'gdal'
   depends_on 'geos' => :optional
   depends_on 'postgresql' => :optional unless MacOS.version >= :lion
-  depends_on 'fcgi' if build.include? 'with-fastcgi'
+  depends_on 'fcgi' if build.with? "fastcgi"
   depends_on 'cairo' => :optional
 
   def install
@@ -34,7 +34,7 @@ class Mapserver < Formula
     ]
 
     args << "--with-geos" if build.with? 'geos'
-    args << "--with-php=/usr/bin/php-config" if build.include? 'with-php'
+    args << "--with-php=/usr/bin/php-config" if build.with? "php"
     args << "--with-cairo" if build.with? 'cairo'
 
     if build.with? 'postgresql'
@@ -45,7 +45,7 @@ class Mapserver < Formula
       end
     end
 
-    args << "--with-fastcgi=#{HOMEBREW_PREFIX}" if build.include? 'with-fastcgi'
+    args << "--with-fastcgi=#{HOMEBREW_PREFIX}" if build.with? "fastcgi"
 
     unless MacOS::CLT.installed?
       inreplace 'configure', "_JTOPDIR=`echo \"$_ACJNI_FOLLOWED\" | sed -e 's://*:/:g' -e 's:/[^/]*$::'`",
@@ -56,7 +56,7 @@ class Mapserver < Formula
     system "make"
 
     install_args = []
-    install_args << "PHP_EXT_DIR=#{prefix}" if build.include? 'with-php'
+    install_args << "PHP_EXT_DIR=#{prefix}" if build.with? "php"
     system "make", "install", *install_args
 
     cd 'mapscript/python' do

@@ -20,7 +20,7 @@ class Liblunar < Formula
        --disable-dependency-tracking
        --prefix=#{prefix}
     ]
-    args << '--disable-python' unless build.with? 'python'
+    args << '--disable-python' if build.without? 'python'
     system './configure', *args
     system 'make install'
   end

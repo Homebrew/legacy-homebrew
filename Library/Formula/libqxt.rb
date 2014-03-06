@@ -22,7 +22,7 @@ class Libqxt < Formula
             "-docdir", "#{prefix}/doc",
             "-featuredir", "#{prefix}/features",
             "-release"]
-    args << "-no-db" unless build.with? 'berkeley-db'
+    args << "-no-db" if build.without? 'berkeley-db'
 
     system "./configure", *args
     system "make"

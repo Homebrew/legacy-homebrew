@@ -41,7 +41,7 @@ class OpenSceneGraph < Formula
     ENV.cxx11 if build.cxx11?
 
     # Turning off FFMPEG takes this change or a dozen "-DFFMPEG_" variables
-    unless build.with? 'ffmpeg'
+    if build.without? 'ffmpeg'
       inreplace 'CMakeLists.txt', 'FIND_PACKAGE(FFmpeg)', '#FIND_PACKAGE(FFmpeg)'
     end
 

@@ -50,23 +50,23 @@ class MysqlCluster < Formula
             "-DSYSCONFDIR=#{etc}"]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if build.include? 'with-tests'
+    if build.with? "tests"
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
     end
 
     # Build the embedded server
-    args << "-DWITH_EMBEDDED_SERVER=ON" if build.include? 'with-embedded'
+    args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? "embedded"
 
     # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless build.include? 'with-libedit'
+    args << "-DWITH_READLINE=yes" if build.without? "libedit"
 
     # Compile with ARCHIVE engine enabled if chosen
-    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.include? 'with-archive-storage-engine'
+    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.with? "archive-storage-engine"
 
     # Compile with BLACKHOLE engine enabled if chosen
-    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.include? 'with-blackhole-storage-engine'
+    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? "blackhole-storage-engine"
 
     # Make universal for binding to universal applications
     args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?

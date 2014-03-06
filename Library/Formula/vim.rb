@@ -45,7 +45,7 @@ class Vim < Formula
       "--enable-#{language}interp" if build.with? language
     end
     opts += LANGUAGES_DEFAULT.map do |language|
-      "--enable-#{language}interp" unless build.without? language
+      "--enable-#{language}interp" if build.with? language
     end
     if opts.include? "--enable-pythoninterp" and opts.include? "--enable-python3interp"
       opts = opts - %W[--enable-pythoninterp --enable-python3interp] + %W[--enable-pythoninterp=dynamic --enable-python3interp=dynamic]

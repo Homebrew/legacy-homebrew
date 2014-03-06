@@ -39,7 +39,7 @@ class GambitScheme < Formula
     end
 
     system "./configure", *args
-    system "make check" if build.include? 'with-check'
+    system "make check" if build.with? "check"
 
     ENV.j1
     system "make"

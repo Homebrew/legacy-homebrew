@@ -15,7 +15,7 @@ class Opensc < Formula
 
   option 'with-man-pages', 'Build manual pages'
 
-  depends_on 'docbook' if build.include? 'with-man-pages'
+  depends_on 'docbook' if build.with? "man-pages"
 
   def install
     extra_args = []

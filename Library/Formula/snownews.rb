@@ -7,7 +7,7 @@ class Snownews < Formula
 
   option 'without-nls', "Build without translations"
 
-  depends_on 'gettext' unless build.without? 'nls'
+  depends_on 'gettext' if build.with? 'nls'
 
   # Fix zlib linking issue on OS X
   # snownews author assisted on quest creating this working Formula.

@@ -65,9 +65,9 @@ class Imagemagick < Formula
              "--disable-openmp"]
 
     args << "--disable-opencl" if build.include? 'disable-opencl'
-    args << "--without-gslib" unless build.with? 'ghostscript'
-    args << "--without-perl" unless build.with? 'perl'
-    args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" unless build.with? 'ghostscript'
+    args << "--without-gslib" if build.without? 'ghostscript'
+    args << "--without-perl" if build.without? 'perl'
+    args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" if build.without? 'ghostscript'
     args << "--without-magick-plus-plus" if build.without? 'magick-plus-plus'
     args << "--enable-hdri=yes" if build.include? 'enable-hdri'
 
@@ -81,7 +81,7 @@ class Imagemagick < Formula
 
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
     args << "--with-rsvg" if build.with? 'librsvg'
-    args << "--without-x" unless build.with? 'x11'
+    args << "--without-x" if build.without? 'x11'
     args << "--with-fontconfig=yes" if build.with? 'fontconfig'
     args << "--with-freetype=yes" if build.with? 'freetype'
     args << "--with-webp=yes" if build.include? 'webp'

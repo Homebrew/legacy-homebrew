@@ -82,7 +82,7 @@ class Ghostscript < Formula
         --disable-gtk
         --with-system-libtiff
       ]
-      args << '--without-x' unless build.with? 'x11'
+      args << '--without-x' if build.without? 'x11'
 
       if build.head?
         system './autogen.sh', *args
@@ -112,8 +112,8 @@ __END__
 --- a/base/unix-dll.mak
 +++ b/base/unix-dll.mak
 @@ -64,12 +64,12 @@
- 
- 
+
+
  # MacOS X
 -#GS_SOEXT=dylib
 -#GS_SONAME=$(GS_SONAME_BASE).$(GS_SOEXT)
@@ -127,7 +127,7 @@ __END__
 -#LDFLAGS_SO_MAC=-dynamiclib -install_name $(GS_SONAME_MAJOR_MINOR)
 +LDFLAGS_SO_MAC=-dynamiclib -install_name __PREFIX__/lib/$(GS_SONAME_MAJOR_MINOR)
  #LDFLAGS_SO=-dynamiclib -install_name $(FRAMEWORK_NAME)
- 
+
  GS_SO=$(BINDIR)/$(GS_SONAME)
 
 #--- a/base/stdpre.h

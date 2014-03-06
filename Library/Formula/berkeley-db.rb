@@ -32,7 +32,7 @@ class BerkeleyDb < Formula
       --enable-cxx
       --enable-compat185
     ]
-    args << "--enable-java" if build.include? "with-java"
+    args << "--enable-java" if build.with? "java"
     args << "--enable-sql" if build.include? "enable-sql"
 
     # BerkeleyDB requires you to build everything from the build_unix subdirectory

@@ -49,10 +49,10 @@ class Graphicsmagick < Formula
              "--with-modules",
              "--disable-openmp"]
 
-    args << "--without-gslib" unless build.with? 'ghostscript'
-    args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" unless build.with? 'ghostscript'
+    args << "--without-gslib" if build.without? 'ghostscript'
+    args << "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts" if build.without? 'ghostscript'
     args << "--without-magick-plus-plus" if build.without? 'magick-plus-plus'
-    args << "--with-perl" if build.include? 'with-perl'
+    args << "--with-perl" if build.with? "perl"
 
     if build.with? 'quantum-depth-32'
       quantum_depth = 32
@@ -63,17 +63,17 @@ class Graphicsmagick < Formula
     end
 
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
-    args << "--without-x" unless build.with? 'x11'
+    args << "--without-x" if build.without? 'x11'
     args << "--without-ttf" if build.without? 'freetype'
     args << "--without-xml" if build.without? 'svg'
-    args << "--without-lcms" unless build.with? 'little-cms'
-    args << "--without-lcms2" unless build.with? 'little-cms2'
+    args << "--without-lcms" if build.without? 'little-cms'
+    args << "--without-lcms2" if build.without? 'little-cms2'
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'
     system "./configure", *args
     system "make", "install"
-    if build.include? 'with-perl'
+    if build.with? "perl"
       cd 'PerlMagick' do
         # Install the module under the GraphicsMagick prefix
         system "perl", "Makefile.PL", "INSTALL_BASE=#{prefix}"
@@ -88,7 +88,7 @@ class Graphicsmagick < Formula
   end
 
   def caveats
-    if build.include? 'with-perl'
+    if build.with? "perl"
       <<-EOS.undent
         The Graphics::Magick perl module has been installed under:
 

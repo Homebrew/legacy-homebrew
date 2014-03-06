@@ -58,7 +58,7 @@ class Git < Formula
       ENV['LIBPCREDIR'] = Formula['pcre'].opt_prefix
     end
 
-    ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'
+    ENV['NO_GETTEXT'] = '1' if build.without? 'gettext'
 
     ENV['GIT_DIR'] = cached_download/".git" if build.head?
 
@@ -97,7 +97,7 @@ class Git < Formula
       end
     end
 
-    unless build.without? 'completions'
+    if build.with? 'completions'
       # install the completion script first because it is inside 'contrib'
       bash_completion.install 'contrib/completion/git-completion.bash'
       bash_completion.install 'contrib/completion/git-prompt.sh'

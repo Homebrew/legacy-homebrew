@@ -29,7 +29,7 @@ class Lua < Formula
     p = [DATA]
     # sigaction provided by posix signalling power patch from
     # http://lua-users.org/wiki/LuaPowerPatches
-    unless build.without? 'sigaction'
+    if build.with? 'sigaction'
       p << 'http://lua-users.org/files/wiki_insecure/power_patches/5.1/sig_catch.patch'
     end
     # completion provided by advanced readline power patch from
@@ -89,7 +89,7 @@ index 209a132..9387b09 100644
 -TO_LIB= liblua.a
 +TO_LIB= liblua.5.1.5.dylib
  TO_MAN= lua.1 luac.1
- 
+
  # Lua version and release.
 @@ -64,6 +64,8 @@ install: dummy
  	cd src && $(INSTALL_DATA) $(TO_INC) $(INSTALL_INC)
@@ -97,7 +97,7 @@ index 209a132..9387b09 100644
  	cd doc && $(INSTALL_DATA) $(TO_MAN) $(INSTALL_MAN)
 +	ln -s -f liblua.5.1.5.dylib $(INSTALL_LIB)/liblua.5.1.dylib
 +	ln -s -f liblua.5.1.dylib $(INSTALL_LIB)/liblua.dylib
- 
+
  ranlib:
  	cd src && cd $(INSTALL_LIB) && $(RANLIB) $(TO_LIB)
 diff --git a/src/Makefile b/src/Makefile
@@ -105,9 +105,9 @@ index e0d4c9f..4477d7b 100644
 --- a/src/Makefile
 +++ b/src/Makefile
 @@ -22,7 +22,7 @@ MYLIBS=
- 
+
  PLATS= aix ansi bsd freebsd generic linux macosx mingw posix solaris
- 
+
 -LUA_A=	liblua.a
 +LUA_A=	liblua.5.1.5.dylib
  CORE_O=	lapi.o lcode.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o \
@@ -115,27 +115,26 @@ index e0d4c9f..4477d7b 100644
  	lundump.o lvm.o lzio.o
 @@ -48,11 +48,13 @@ o:	$(ALL_O)
  a:	$(ALL_A)
- 
+
  $(LUA_A): $(CORE_O) $(LIB_O)
 -	$(AR) $@ $(CORE_O) $(LIB_O)	# DLL needs all object files
 -	$(RANLIB) $@
 +	$(CC) -dynamiclib -install_name HOMEBREW_PREFIX/lib/liblua.5.1.dylib \
 +		-compatibility_version 5.1 -current_version 5.1.5 \
 +		-o liblua.5.1.5.dylib $^
- 
+
  $(LUA_T): $(LUA_O) $(LUA_A)
 -	$(CC) -o $@ $(MYLDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
 +	$(CC) -fno-common $(MYLDFLAGS) \
 +		-o $@ $(LUA_O) $(LUA_A) -L. -llua.5.1.5 $(LIBS)
- 
+
  $(LUAC_T): $(LUAC_O) $(LUA_A)
  	$(CC) -o $@ $(MYLDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
 @@ -99,7 +101,7 @@ linux:
  	$(MAKE) all MYCFLAGS=-DLUA_USE_LINUX MYLIBS="-Wl,-E -ldl -lreadline -lhistory -lncurses"
- 
+
  macosx:
 -	$(MAKE) all MYCFLAGS=-DLUA_USE_LINUX MYLIBS="-lreadline"
 +	$(MAKE) all MYCFLAGS="MYCFLAGS_VAL" MYLIBS="-lreadline"
  # use this on Mac OS X 10.3-
  #	$(MAKE) all MYCFLAGS=-DLUA_USE_MACOSX
- 

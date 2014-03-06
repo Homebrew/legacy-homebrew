@@ -19,7 +19,7 @@ class VorbisTools < Formula
       "--prefix=#{prefix}"
     ]
 
-    args << "--without-flac" unless build.with? 'flac'
+    args << "--without-flac" if build.without? 'flac'
 
     system "./configure", *args
     system "make install"

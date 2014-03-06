@@ -13,8 +13,8 @@ class Fantom < Formula
 
   def install
     rm_f Dir["bin/*.exe", "lib/dotnet/*"]
-    rm_rf "examples" unless build.include? 'with-examples'
-    rm_rf "src" unless build.include? 'with-src'
+    rm_rf "examples" if build.without? "examples"
+    rm_rf "src" if build.without? "src"
 
     libexec.install Dir['*']
     system "chmod 0755 #{libexec}/bin/*"
@@ -26,16 +26,16 @@ __END__
 diff --git a/etc/build/config.props b/etc/build/config.props
 index 368bce3..ebbff42 100755
 --- a/etc/build/config.props
-+++ b/etc/build/config.props    
++++ b/etc/build/config.props
 @@ -22,8 +22,8 @@ buildVersion=1.0.65
  javacParams=-target 1.5
- 
+
  // Windows setup
 -jdkHome=/C:/Program Files/Java/jdk1.6/
 -dotnetHome=/C:/WINDOWS/Microsoft.NET/Framework/v2.0.50727/
 +//jdkHome=/C:/Program Files/Java/jdk1.6/
 +//dotnetHome=/C:/WINDOWS/Microsoft.NET/Framework/v2.0.50727/
- 
+
  // Mac setup
 -//jdkHome=/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home/
 \ No newline at end of file

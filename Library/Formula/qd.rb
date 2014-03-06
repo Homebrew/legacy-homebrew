@@ -9,7 +9,7 @@ class Qd < Formula
 
   def install
     args = ["--disable-dependency-tracking", "--enable-shared", "--prefix=#{prefix}"]
-    args << "--enable-fortran=no" unless build.with? :fortran
+    args << "--enable-fortran=no" if build.without? :fortran
     system "./configure", *args
     system "make"
     system "make check"

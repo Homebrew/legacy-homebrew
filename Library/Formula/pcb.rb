@@ -38,7 +38,7 @@ class Pcb < Formula
             "--prefix=#{prefix}",
             "--disable-update-desktop-database",
             "--disable-update-mime-database"]
-    args << "--disable-doc" unless build.with? 'doc'
+    args << "--disable-doc" if build.without? 'doc'
 
     system "./configure", *args
 
@@ -56,9 +56,9 @@ index 15273a6..ff73ca7 100644
 @@ -66,6 +66,7 @@
  #include <dmalloc.h>
  #endif
- 
+
 +typedef GLvoid (*_GLUfuncptr)(GLvoid);
- 
+
  triangle_buffer buffer;
  float global_depth = 0;
 

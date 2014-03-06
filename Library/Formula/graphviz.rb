@@ -24,13 +24,13 @@ class Graphviz < Formula
   depends_on :libpng
 
   depends_on 'pkg-config' => :build
-  depends_on 'pango' if build.include? 'with-pangocairo'
-  depends_on 'swig' if build.include? 'with-bindings'
+  depends_on 'pango' if build.with? "pangocairo"
+  depends_on 'swig' if build.with? "bindings"
   depends_on 'gts' => :optional
   depends_on "librsvg" => :optional
-  depends_on :freetype if build.include? 'with-freetype' or MacOS::X11.installed?
-  depends_on :x11 if build.include? 'with-x' or MacOS::X11.installed?
-  depends_on :xcode if build.include? 'with-app'
+  depends_on :freetype if build.with? "freetype" or MacOS::X11.installed?
+  depends_on :x11 if build.with? "x" or MacOS::X11.installed?
+  depends_on :xcode if build.with? "app"
 
   fails_with :clang do
     build 318
@@ -50,16 +50,16 @@ class Graphviz < Formula
             "--without-qt",
             "--with-quartz"]
     args << "--with-gts" if build.with? 'gts'
-    args << "--disable-swig" unless build.include? 'with-bindings'
-    args << "--without-pangocairo" unless build.include? 'with-pangocairo'
-    args << "--without-freetype2" unless build.include? 'with-freetype' or MacOS::X11.installed?
-    args << "--without-x" unless build.include? 'with-x' or MacOS::X11.installed?
+    args << "--disable-swig" if build.without? "bindings"
+    args << "--without-pangocairo" if build.without? "pangocairo"
+    args << "--without-freetype2" if build.without? "freetype" or MacOS::X11.installed?
+    args << "--without-x" if build.without? "x" or MacOS::X11.installed?
     args << "--without-rsvg" if build.without? "librsvg"
 
     system "./configure", *args
     system "make install"
 
-    if build.include? 'with-app'
+    if build.with? "app"
       cd "macosx" do
         xcodebuild "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
       end

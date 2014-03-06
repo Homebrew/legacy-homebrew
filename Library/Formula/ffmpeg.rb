@@ -46,7 +46,7 @@ class Ffmpeg < Formula
   depends_on 'libvo-aacenc' => :optional
   depends_on 'libass' => :optional
   depends_on 'openjpeg' => :optional
-  depends_on 'sdl' if build.include? 'with-ffplay'
+  depends_on 'sdl' if build.with? "ffplay"
   depends_on 'speex' => :optional
   depends_on 'schroedinger' => :optional
   depends_on 'fdk-aac' => :optional
@@ -84,7 +84,7 @@ class Ffmpeg < Formula
     args << "--enable-libopencore-amrnb" << "--enable-libopencore-amrwb" if build.with? 'opencore-amr'
     args << "--enable-libvo-aacenc" if build.with? 'libvo-aacenc'
     args << "--enable-libass" if build.with? 'libass'
-    args << "--enable-ffplay" if build.include? 'with-ffplay'
+    args << "--enable-ffplay" if build.with? "ffplay"
     args << "--enable-libspeex" if build.with? 'speex'
     args << '--enable-libschroedinger' if build.with? 'schroedinger'
     args << "--enable-libfdk-aac" if build.with? 'fdk-aac'
@@ -116,7 +116,7 @@ class Ffmpeg < Formula
 
     system "make install"
 
-    if build.include? 'with-tools'
+    if build.with? "tools"
       system "make alltools"
       bin.install Dir['tools/*'].select {|f| File.executable? f}
     end

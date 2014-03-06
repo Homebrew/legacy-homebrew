@@ -87,7 +87,7 @@ class Wine < Formula
 
   def library_path
     paths = %W[#{HOMEBREW_PREFIX}/lib /usr/lib]
-    paths.unshift(MacOS::X11.lib) unless build.without? 'x11'
+    paths.unshift(MacOS::X11.lib) if build.with? 'x11'
     paths.join(':')
   end
 
@@ -122,7 +122,7 @@ class Wine < Formula
     # separately and not built universal, it's going to get picked up and break the build.
     # We cannot use FREETYPE_LIBS because it is inserted after LDFLAGS and thus cannot
     # take precedence over the homebrew freetype.
-    ENV.prepend "LDFLAGS", "-L#{MacOS::X11.lib}" unless build.without? 'x11'
+    ENV.prepend "LDFLAGS", "-L#{MacOS::X11.lib}" if build.with? 'x11'
 
     args = ["--prefix=#{prefix}"]
     args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang
@@ -166,7 +166,7 @@ class Wine < Formula
         http://bugs.winehq.org/show_bug.cgi?id=31374
     EOS
 
-    unless build.without? 'x11'
+    if build.with? 'x11'
       s += <<-EOS.undent
 
         By default Wine uses a native Mac driver. To switch to the X11 driver, use

@@ -21,7 +21,7 @@ class Cairomm < Formula
     depends_on 'libsigc++'
   end
   depends_on 'cairo'
-  depends_on :x11 unless build.include? 'without-x'
+  depends_on :x11 if build.with? "x"
 
   def install
     ENV.cxx11 if build.cxx11?

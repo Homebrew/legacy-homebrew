@@ -61,7 +61,7 @@ class Fontforge < Formula
       args << "--without-cairo" if build.without? "cairo"
       args << "--without-pango" if build.without? "pango"
     end
-    args << "--without-x" unless build.with? 'x'
+    args << "--without-x" if build.without? 'x'
 
     # To avoid "dlopen(/opt/local/lib/libpng.2.dylib, 1): image not found"
     args << "--with-static-imagelibs"

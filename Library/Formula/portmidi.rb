@@ -14,7 +14,7 @@ class Portmidi < Formula
   def patches
     # Avoid that the Makefile.osx builds the java app and fails because: fatal error: 'jni.h' file not found
     # Since 217 the Makefile.osx includes pm_common/CMakeLists.txt wich builds the Java app
-    DATA unless build.include? 'with-java'
+    DATA if build.without? "java"
   end
 
   def install

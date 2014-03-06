@@ -19,7 +19,7 @@ class Pango < Formula
   depends_on 'cairo'
   depends_on 'harfbuzz'
   depends_on 'fontconfig'
-  depends_on :x11 unless build.without? 'x'
+  depends_on :x11 if build.with? 'x'
   depends_on 'gobject-introspection'
 
   fails_with :llvm do
@@ -37,7 +37,7 @@ class Pango < Formula
       --enable-introspection=yes
     ]
 
-    if build.include? 'without-x'
+    if build.without? "x"
       args << '--without-xft'
     else
       args << '--with-xft'

@@ -8,7 +8,7 @@ class Strongswan < Formula
   option 'with-curl', 'Build with libcurl based fetcher'
   option 'with-suite-b', 'Build with Suite B support (does not use the IPsec implementation provided by the kernel)'
 
-  depends_on 'openssl' if build.include? 'with-suite-b' or MacOS.version <= :leopard
+  depends_on 'openssl' if build.with? "suite-b" or MacOS.version <= :leopard
   depends_on 'curl' => :optional
 
   def install
@@ -46,7 +46,7 @@ class Strongswan < Formula
       --enable-xauth-generic
     ]
     args << "--enable-curl" if build.with? 'curl'
-    args << "--enable-kernel-pfkey" unless build.with? 'suite-b'
+    args << "--enable-kernel-pfkey" if build.without? 'suite-b'
     args << "--enable-kernel-libipsec" if build.with? 'suite-b'
 
     system "./configure", *args

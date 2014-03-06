@@ -33,7 +33,7 @@ class Ejabberd < Formula
         args << "--with-openssl=#{openssl.prefix}"
       end
 
-      args << "--enable-odbc" if build.include? 'with-odbc'
+      args << "--enable-odbc" if build.with? "odbc"
 
       system "./configure", *args
       system "make"
