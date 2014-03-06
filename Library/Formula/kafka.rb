@@ -20,7 +20,7 @@ class Kafka < Formula
     # Store logs in var/log/kafka
     logs = var/'log/kafka'
     logs.mkpath
-    ["config/log4j.properties", "config/test-log4j.properties"].each do |f| 
+    ["config/log4j.properties", "config/test-log4j.properties"].each do |f|
       inreplace f,
         "log4j.appender.kafkaAppender.File=logs/server.log",
         "log4j.appender.kafkaAppender.File=#{logs}/server.log"
