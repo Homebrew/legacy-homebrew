@@ -129,6 +129,14 @@ class Ghc < Formula
     This brew is for GHC only; you might also be interested in haskell-platform.
     EOS
   end
+
+  test do
+    hello = (testpath/"hello.hs")
+    hello.write('main = putStrLn "Hello Homebrew"')
+    output = `echo "main" | '#{bin}/ghci' #{hello}`
+    assert $?.success?
+    assert_match /Hello Homebrew/i, output
+  end
 end
 
 __END__
