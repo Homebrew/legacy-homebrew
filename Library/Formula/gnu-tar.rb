@@ -29,7 +29,7 @@ class GnuTar < Formula
     If you really need to use it as 'tar', you can add a 'gnubin' directory
     to your PATH from your bashrc like:
 
-        PATH="#{opt_prefix}/libexec/gnubin:$PATH"
+        PATH="#{opt_libexec}/gnubin:$PATH"
     EOS
   end
 end

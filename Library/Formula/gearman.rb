@@ -19,7 +19,7 @@ class Gearman < Formula
     args = ["--prefix=#{prefix}"]
     args << "--without-mysql" unless build.with? 'mysql'
     if build.with? 'postgresql'
-      pg_config = "#{Formula['postgresql'].opt_prefix}/bin/pg_config"
+      pg_config = "#{Formula["postgresql"].opt_bin}/pg_config"
       args << "--with-postgresql=#{pg_config}"
     end
     system "./configure", *args
@@ -44,7 +44,7 @@ class Gearman < Formula
         <key>Label</key>
         <string>#{plist_name}</string>
         <key>Program</key>
-        <string>#{opt_prefix}/sbin/gearmand</string>
+        <string>#{opt_sbin}/gearmand</string>
         <key>RunAtLoad</key>
         <true/>
       </dict>

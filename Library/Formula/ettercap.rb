@@ -19,12 +19,12 @@ class Ettercap < Formula
   end
 
   def install
-    libnet = Formula['libnet']
+    libnet = Formula['libnet'].opt_lib
 
     args = ['..'] + std_cmake_args + [
       "-DINSTALL_SYSCONFDIR=#{etc}",
       '-DENABLE_GTK=OFF',
-      "-DHAVE_LIBNET:FILEPATH=#{libnet.opt_prefix}/lib/libnet.dylib"
+      "-DHAVE_LIBNET:FILEPATH=#{libnet}/libnet.dylib"
     ]
 
     mkdir "build" do

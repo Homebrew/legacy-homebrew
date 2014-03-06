@@ -46,7 +46,7 @@ class Pyqt5 < Formula
                # To avoid conflicts with PyQt (for Qt4):
                "--sipdir=#{share}/sip/Qt5/",
                # sip.h could not be found automatically
-               "--sip-incdir=#{Formula["sip"].opt_prefix}/include",
+               "--sip-incdir=#{Formula["sip"].opt_include}",
                # Make sure the qt5 version of qmake is found.
                # If qt4 is linked it will pickup that version otherwise.
                "--qmake=#{Formula["qt5"].bin}/qmake",

@@ -70,7 +70,7 @@ class Ruby < Formula
 
   def caveats; <<-EOS.undent
     By default, gem installed executables will be placed into:
-      #{opt_prefix}/bin
+      #{opt_bin}
 
     You may want to add this to your PATH. After upgrades, you can run
       gem pristine --all --only-executables

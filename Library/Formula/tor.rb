@@ -53,7 +53,7 @@ class Tor < Formula
         <true/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/tor</string>
+            <string>#{opt_bin}/tor</string>
         </array>
         <key>WorkingDirectory</key>
         <string>#{HOMEBREW_PREFIX}</string>
