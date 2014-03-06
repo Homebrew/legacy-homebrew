@@ -49,14 +49,19 @@ class Formula
       unless bottle.checksum.nil? || bottle.checksum.empty?
         @bottle = bottle
         bottle.url ||= bottle_url(self, bottle.current_tag)
-        bottle.version = stable.version
+        bottle.version = PkgVersion.new(stable.version, revision)
       end
     end
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
     @build = determine_build_options
-    @pkg_version = PkgVersion.new(version, revision)
+
+    # TODO: @pkg_version is already set for bottles, since constructing it
+    # requires passing in the active_spec version. This should be fixed by
+    # making the bottle an attribute of SoftwareSpec rather than a separate
+    # spec itself.
+    @pkg_version = PkgVersion.new(version, revision) unless active_spec == bottle
 
     @pin = FormulaPin.new(self)
 
