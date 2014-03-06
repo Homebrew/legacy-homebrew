@@ -102,11 +102,9 @@ class DependencyCollector
       # Xcode no longer provides autotools or some other build tools
       autotools_dep(spec, tags)
     when :x11        then X11Dependency.new(spec.to_s, tags)
-    when *X11Dependency::Proxy::PACKAGES
-      x11_dep(spec, tags)
-    when :cairo, :pixman
-      # We no longer use X11 psuedo-deps for cairo or pixman,
-      # so just return a standard formula dependency.
+    when :cairo, :fontconfig, :freetype, :libpng, :pixman
+      # We no longer use X11 proxy deps, but we support the symbols
+      # for backwards compatibility.
       Dependency.new(spec.to_s, tags)
     when :xcode      then XcodeDependency.new(tags)
     when :macos      then MinimumMacOSRequirement.new(tags)
@@ -134,14 +132,6 @@ class DependencyCollector
       spec.new(tags)
     else
       raise TypeError, "#{spec.inspect} is not a Requirement subclass"
-    end
-  end
-
-  def x11_dep(spec, tags)
-    if MacOS.version >= :mountain_lion
-      Dependency.new(spec.to_s, tags)
-    else
-      X11Dependency::Proxy.for(spec.to_s, tags)
     end
   end
 
