@@ -21,7 +21,7 @@ class Pulseaudio < Formula
   depends_on :x11 => :optional
   depends_on "glib" => :optional
   depends_on "gconf" => :optional
-  depends_on "dbus" => :optional
+  depends_on "d-bus" => :optional
   depends_on "gtk+3" => :optional
   depends_on "jack" => :optional
 
