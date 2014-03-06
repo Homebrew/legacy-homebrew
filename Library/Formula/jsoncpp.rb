@@ -10,7 +10,7 @@ class Jsoncpp < Formula
   def install
     # linux-gcc is correct - despite the fact that the library is built with CLANG (see README.txt).
     scons "platform=linux-gcc"
-    gccVersion = `g++ -dumpversion`.chomp
+    gccVersion = `#{ENV.cc} -dumpversion`.chomp
 
     lib.install "libs/linux-gcc-#{gccVersion}/libjson_linux-gcc-#{gccVersion}_libmt.dylib" => "libjsoncpp.dylib"
     lib.install "libs/linux-gcc-#{gccVersion}/libjson_linux-gcc-#{gccVersion}_libmt.a" => "libjsoncpp.a"
