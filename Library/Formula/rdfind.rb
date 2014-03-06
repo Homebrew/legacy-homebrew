@@ -4,6 +4,7 @@ class Rdfind < Formula
   homepage 'http://rdfind.pauldreik.se'
   url 'http://rdfind.pauldreik.se/rdfind-1.3.4.tar.gz'
   sha1 'c01bd2910cdec885b6c24164a389457e4f01ef61'
+  revision 1
 
   depends_on 'nettle'
 

@@ -4,6 +4,7 @@ class Pike < Formula
   homepage 'http://pike.lysator.liu.se'
   url 'http://pike.lysator.liu.se/pub/pike/latest-stable/Pike-v7.8.700.tar.gz'
   sha1 '877bd50d2bb202aa485d1f7c62398922d60696c7'
+  revision 1
 
   depends_on "nettle"
   depends_on "gmp"
