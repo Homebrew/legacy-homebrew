@@ -9,8 +9,7 @@ class OpengrmNgram < Formula
 
   def install
     ENV.libstdcxx if ENV.compiler == :clang && MacOS.version >= :mavericks
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking"
-    system "make install"
+    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
+    system 'make install'
   end
 end
