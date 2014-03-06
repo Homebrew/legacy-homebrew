@@ -101,8 +101,8 @@ class Keg < Pathname
   end
 
   def version
-    require 'version'
-    Version.new(basename.to_s)
+    require 'pkg_version'
+    PkgVersion.parse(basename.to_s)
   end
 
   def basename
