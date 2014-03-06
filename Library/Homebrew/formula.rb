@@ -224,6 +224,13 @@ class Formula
     Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
   end
 
+  def opt_bin;     opt_prefix+'bin'     end
+  def opt_include; opt_prefix+'include' end
+  def opt_lib;     opt_prefix+'lib'     end
+  def opt_libexec; opt_prefix+'libexec' end
+  def opt_sbin;    opt_prefix+'sbin'    end
+  def opt_share;   opt_prefix+'share'   end
+
   # Can be overridden to selectively disable bottles from formulae.
   # Defaults to true so overridden version does not have to check if bottles
   # are supported.
