@@ -5,6 +5,7 @@ class GnuSmalltalk < Formula
   url 'http://ftpmirror.gnu.org/smalltalk/smalltalk-3.2.5.tar.xz'
   mirror 'http://ftp.gnu.org/gnu/smalltalk/smalltalk-3.2.5.tar.xz'
   sha1 '0eb5895b9b5bebe4f75308efbe34f8721fc2fd6b'
+  revision 1
 
   devel do
     url 'ftp://alpha.gnu.org/gnu/smalltalk/smalltalk-3.2.90.tar.gz'

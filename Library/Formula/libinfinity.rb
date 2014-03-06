@@ -4,6 +4,7 @@ class Libinfinity < Formula
   homepage 'http://gobby.0x539.de/trac/wiki/Infinote/Libinfinity'
   url 'http://releases.0x539.de/libinfinity/libinfinity-0.5.4.tar.gz'
   sha1 '75e3349452bdd182a385f62100c09f47b277b145'
+  revision 1
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

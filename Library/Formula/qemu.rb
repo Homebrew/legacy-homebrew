@@ -4,6 +4,7 @@ class Qemu < Formula
   homepage 'http://www.qemu.org/'
   url 'http://wiki.qemu-project.org/download/qemu-1.7.0.tar.bz2'
   sha1 '4b5a21a614207e74a61659f7a6edecad6c31be95'
+  revision 1
 
   head 'git://git.qemu-project.org/qemu.git'
 
