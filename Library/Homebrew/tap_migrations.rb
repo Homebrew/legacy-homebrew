@@ -20,4 +20,5 @@ TAP_MIGRATIONS = {
   'comparepdf' => 'homebrew/boneyard',
   'colormake' => 'homebrew/headonly',
   'wkhtmltopdf' => 'homebrew/boneyard',
+  'kerl' => 'homebrew/headonly',
 }
