@@ -46,7 +46,7 @@ class Lilypond < Formula
   depends_on 'flex' => :build
 
   # Assert documentation dependencies if requested.
-  if build.include? 'with-doc'
+  if build.with? "doc"
     depends_on 'netpbm'
     depends_on 'imagemagick'
     depends_on 'docbook'
@@ -78,7 +78,7 @@ class Lilypond < Formula
             "--enable-rpath",
             "--with-ncsb-dir=#{gs.share}/ghostscript/fonts/"]
 
-    args << "--disable-documentation" unless build.include? 'with-doc'
+    args << "--disable-documentation" if build.without? "doc"
     system "./configure", *args
 
     # Separate steps to ensure that lilypond's custom fonts are created.
@@ -86,7 +86,7 @@ class Lilypond < Formula
     system "make install"
 
     # Build documentation if requested.
-    if build.include? 'with-doc'
+    if build.with? "doc"
       system "make doc"
       system "make install-doc"
     end

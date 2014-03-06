@@ -75,7 +75,7 @@ class Mariadb < Formula
       -DCOMPILATION_COMMENT=Homebrew
     ]
 
-    args << "-DWITH_UNIT_TESTS=OFF" unless build.with? 'tests'
+    args << "-DWITH_UNIT_TESTS=OFF" if build.without? 'tests'
 
     # oqgraph requires boost, but fails to compile against boost 1.54
     # Upstream bug: https://mariadb.atlassian.net/browse/MDEV-4795
@@ -85,7 +85,7 @@ class Mariadb < Formula
     args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'
 
     # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless build.with? 'libedit'
+    args << "-DWITH_READLINE=yes" if build.without? 'libedit'
 
     # Compile with ARCHIVE engine enabled if chosen
     args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.with? 'archive-storage-engine'
@@ -114,8 +114,8 @@ class Mariadb < Formula
       # See: https://github.com/Homebrew/homebrew/issues/4975
       rm_rf prefix+'data'
 
-      (prefix+'mysql-test').rmtree unless build.with? 'tests' # save 121MB!
-      (prefix+'sql-bench').rmtree unless build.with? 'bench'
+      (prefix+'mysql-test').rmtree if build.without? 'tests' # save 121MB!
+      (prefix+'sql-bench').rmtree if build.without? 'bench'
 
       # Link the setup script into bin
       ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'

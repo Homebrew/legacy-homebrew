@@ -17,7 +17,7 @@ class EmacsClangCompleteAsync < Formula
   def install
     system "make"
     bin.install "clang-complete"
-    share.install "auto-complete-clang-async.el" if build.include? 'with-elisp'
+    share.install "auto-complete-clang-async.el" if build.with? "elisp"
   end
 end
 

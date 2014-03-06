@@ -42,7 +42,7 @@ class Libspatialite < Formula
     ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib}"
     ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
 
-    unless build.without? 'liblwgeom'
+    if build.with? 'liblwgeom'
       lwgeom = Formula["liblwgeom"]
       ENV.append 'LDFLAGS', "-L#{lwgeom.opt_lib}"
       ENV.append 'CFLAGS', "-I#{lwgeom.opt_include}"
@@ -54,8 +54,8 @@ class Libspatialite < Formula
       --with-sysroot=#{HOMEBREW_PREFIX}
     ]
     args << '--enable-freexl=no' if build.without? 'freexl'
-    args << '--enable-libxml2=yes' unless build.without? 'libxml2'
-    args << '--enable-lwgeom=yes' unless build.without? 'liblwgeom'
+    args << '--enable-libxml2=yes' if build.with? 'libxml2'
+    args << '--enable-lwgeom=yes' if build.with? 'liblwgeom'
     args << "--enable-geopackage=yes" if build.with? "geopackage"
 
     system './configure', *args

@@ -9,7 +9,7 @@ class Libxmlsec1 < Formula
   depends_on 'pkg-config' => :build
   depends_on 'libxml2' # Version on 10.6/10.7 is too old
   depends_on 'gnutls' => :recommended
-  depends_on 'libgcrypt' unless build.without? 'gnutls'
+  depends_on 'libgcrypt' if build.with? 'gnutls'
 
   # Add HOMEBREW_PREFIX/lib to dl load path
   def patches; DATA; end
@@ -31,7 +31,7 @@ index 6e8a56a..0e7f06b 100644
 +++ b/src/dl.c
 @@ -141,6 +141,7 @@ xmlSecCryptoDLLibraryCreate(const xmlChar* name) {
      }
- 
+
  #ifdef XMLSEC_DL_LIBLTDL
 +    lt_dlsetsearchpath("HOMEBREW_PREFIX/lib");
      lib->handle = lt_dlopenext((char*)lib->filename);
