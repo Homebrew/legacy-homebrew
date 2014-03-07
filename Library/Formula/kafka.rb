@@ -17,30 +17,31 @@ class Kafka < Formula
     # Use 1 partition by default so individual consumers receive all topic messages
     inreplace "config/server.properties", "num.partitions=2", "num.partitions=1"
 
-    logs = var/'log/kafka'
+    logs = var/"log/kafka"
     logs.mkpath
     ["config/log4j.properties", "config/test-log4j.properties"].each do |f|
       inreplace f, ".File=logs/", ".File=#{logs}/"
     end
 
-    data = var/'lib'
+    data = var/"lib"
     inreplace "config/server.properties",
       "log.dirs=/tmp/kafka-logs", "log.dirs=#{data}/kafka-logs"
 
     inreplace "config/zookeeper.properties",
       "dataDir=/tmp/zookeeper", "dataDir=#{data}/zookeeper"
 
-    libexec.install %w(bin config contrib core examples lib perf project
+    libexec.install %w(config contrib core examples lib perf project
                        system_test)
-    bin.write_exec_script Dir["#{libexec}/bin/*"]
 
-    (etc+'kafka').mkpath
-    (etc/'kafka').install_symlink Dir["#{libexec}/config/*"]
+    bin.install Dir["bin/*"]
+    ENV["JAVA_HOME"] = "`/usr/libexec/java_home`"
+    bin.env_script_all_files(libexec/"bin", :JAVA_HOME => ENV["JAVA_HOME"])
+
+    (etc/"kafka").mkpath
+    (etc/"kafka").install_symlink Dir["#{libexec}/config/*"]
   end
 
   def caveats; <<-EOS.undent
-    Kafka requires JAVA_HOME to be set:
-      export JAVA_HOME=`/usr/libexec/java_home`
     To start Kafka, ensure that ZooKeeper is running and then execute:
       kafka-server-start.sh #{etc}/kafka/server.properties
     EOS
