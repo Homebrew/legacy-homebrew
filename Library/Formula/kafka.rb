@@ -14,31 +14,15 @@ class Kafka < Formula
     system "sbt", "package"
     system "sbt", "assembly-package-dependency"
 
-    # Change default partition count to 1
+    # Use 1 partition by default so individual consumers receive all topic messages
     inreplace "config/server.properties", "num.partitions=2", "num.partitions=1"
 
-    # Store logs in var/log/kafka
     logs = var/'log/kafka'
     logs.mkpath
     ["config/log4j.properties", "config/test-log4j.properties"].each do |f|
-      inreplace f,
-        "log4j.appender.kafkaAppender.File=logs/server.log",
-        "log4j.appender.kafkaAppender.File=#{logs}/server.log"
-
-      inreplace f,
-        "log4j.appender.stateChangeAppender.File=logs/state-change.log",
-        "log4j.appender.stateChangeAppender.File=#{logs}/state-change.log"
-
-      inreplace f,
-        "log4j.appender.requestAppender.File=logs/kafka-request.log",
-        "log4j.appender.requestAppender.File=#{logs}/kafka-request.log"
-
-      inreplace f,
-        "log4j.appender.controllerAppender.File=logs/controller.log",
-        "log4j.appender.controllerAppender.File=#{logs}/controller.log"
+      inreplace f, ".File=logs/", ".File=#{logs}/"
     end
 
-    # Store data in var/lib
     data = var/'lib'
     inreplace "config/server.properties",
       "log.dirs=/tmp/kafka-logs", "log.dirs=#{data}/kafka-logs"
@@ -46,12 +30,10 @@ class Kafka < Formula
     inreplace "config/zookeeper.properties",
       "dataDir=/tmp/zookeeper", "dataDir=#{data}/zookeeper"
 
-    # Install application
     libexec.install %w(bin config contrib core examples lib perf project
                        system_test)
     bin.write_exec_script Dir["#{libexec}/bin/*"]
 
-    # Symlink configuration files
     (etc+'kafka').mkpath
     (etc/'kafka').install_symlink Dir["#{libexec}/config/*"]
   end
