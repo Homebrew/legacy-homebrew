@@ -3,6 +3,7 @@ require 'formula'
 class Ghi < Formula
   homepage 'https://github.com/stephencelis/ghi'
   url 'https://github.com/stephencelis/ghi/archive/0.9.2.tar.gz'
+  head 'https://github.com/stephencelis/ghi.git'
   sha1 'c62c8d0e8e510db82ca3880a13c4f965c728cfb5'
 
   def install
