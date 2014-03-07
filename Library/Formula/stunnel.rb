@@ -2,8 +2,8 @@ require 'formula'
 
 class Stunnel < Formula
   homepage 'http://www.stunnel.org/'
-  url 'ftp://ftp.stunnel.org/stunnel/archive/4.x/stunnel-4.56.tar.gz'
-  mirror 'http://ftp.nluug.nl/pub/networking/stunnel/stunnel-4.56.tar.gz'
+  url 'ftp://ftp.nluug.nl/pub/networking/stunnel/archive/4.x/stunnel-4.56.tar.gz'
+  mirror 'http://ftp.nluug.nl/pub/networking/stunnel/archive/4.x/stunnel-4.56.tar.gz'
   sha256 '9cae2cfbe26d87443398ce50d7d5db54e5ea363889d5d2ec8d2778a01c871293'
 
   # We need Homebrew OpenSSL for TLSv1.2 support
