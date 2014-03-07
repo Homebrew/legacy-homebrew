@@ -17,9 +17,10 @@ class Qt5 < Formula
   url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.1/single/qt-everywhere-opensource-src-5.2.1.tar.gz'
   sha1 '31a5cf175bb94dbde3b52780d3be802cbeb19d65'
   bottle do
-    sha1 "242518522d1cfc33330586a189d005bd674244de" => :mavericks
-    sha1 "f7f6ff607fe69ae4c215167235f3f851717a6584" => :mountain_lion
-    sha1 "53697eeaca97521ed681460c91a046be8969ab26" => :lion
+    revision 1
+    sha1 "88f554a67bf9345c9e7abd980f7334f60b9c91cf" => :mavericks
+    sha1 "5d270c3d91bd729f3ddffcff5e201e7083914071" => :mountain_lion
+    sha1 "d2415a72aafb3ce24dc5812599fb7f7ff1f8cddd" => :lion
   end
 
   head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
@@ -31,6 +32,7 @@ class Qt5 < Formula
   option 'with-docs', 'Build documentation'
   option 'developer', 'Build and link with developer options'
 
+  depends_on "pkg-config" => :build
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
 

@@ -10,7 +10,7 @@ class Swfmill < Formula
   depends_on :libpng
 
   def install
-    # Use inreplace isntead of a patch due to newlines
+    # Use inreplace instead of a patch due to newlines
     # Reported usptream:
     # https://github.com/djcsdy/swfmill/issues/32
     inreplace "src/swft/swft_import_ttf.cpp",
