@@ -3,7 +3,6 @@ require "formula"
 class MecabKoDic < Formula
   homepage "https://bitbucket.org/bibreen/mecab-ko-dic"
   url "https://bitbucket.org/bibreen/mecab-ko-dic/downloads/mecab-ko-dic-1.4.3-20131115.tar.gz"
-  version "1.4.3-20131115"
   sha1 "8a6165f564f8285942dbd838f12c52e7dfa29357"
 
   depends_on :autoconf
