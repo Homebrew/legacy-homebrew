@@ -187,14 +187,6 @@ class Boost < Formula
       EOS
     end
 
-    if pour_bottle? and Formula['python'].installed?
-      s += <<-EOS.undent
-
-      The Boost bottle's module will not import into a Homebrew-installed Python.
-      If you use the Boost Python module then please:
-        brew install boost --build-from-source
-      EOS
-    end
     s
   end
 end
