@@ -11,8 +11,8 @@ class Jmeter < Formula
   end
 
   resource "serveragent" do
-    url 'http://jmeter-plugins.org/downloads/file/ServerAgent-2.2.1.zip'
-    sha1 'c8ee7015b10f48acf4664ec33733e0c1eb025cb7'
+    url "http://jmeter-plugins.org/downloads/file/ServerAgent-2.2.1.zip"
+    sha1 "c8ee7015b10f48acf4664ec33733e0c1eb025cb7"
   end
 
   resource "jmeterplugins-extras" do
@@ -35,24 +35,20 @@ class Jmeter < Formula
     sha1 "2d7362ea0e10215647eccd9505c49bb55269be27"
   end
 
-  option 'with-plugin-standard', "add JMeterPlugins-Standard"
-  option 'with-plugin-extras', "add JMeterPlugins-Extras"
-  option 'with-plugin-extraslibs', "add JMeterPlugins-ExtrasLibs"
-  option 'with-plugin-webdriver', "add JMeterPlugins-WebDriver"
-  option 'with-plugin-hadoop', "add JMeterPlugins-Hadoop"
+  option "with-plugins", "add JMeterPlugins Standard, Extras, ExtrasLibs, WebDriver and Hadoop"
 
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
     prefix.install_metafiles
-    libexec.install Dir['*']
-    bin.write_exec_script libexec/'bin/jmeter'
+    libexec.install Dir["*"]
+    bin.write_exec_script libexec/"bin/jmeter"
 
-    if build.with? 'plugin-standard'
+    if build.with? "plugins"
       resource("jmeterplugins-standard").stage do
         rm_f Dir["lib/ext/*.bat"]
-        (libexec/'lib/ext').install Dir['lib/ext/*']
-        (libexec/'licenses/plugins/standard').install 'LICENSE', 'README'
+        (libexec/"lib/ext").install Dir["lib/ext/*"]
+        (libexec/"licenses/plugins/standard").install "LICENSE", "README"
       end
       resource("serveragent").stage do
         rm_f Dir["*.bat"]
@@ -62,34 +58,26 @@ class Jmeter < Formula
         rm_f Dir["lib/*hpux*"]
         rm_f Dir["lib/*linux*"]
         rm_f Dir["lib/*freebsd*"]
-        (libexec/'serveragent').install Dir['*']
+        (libexec/"serveragent").install Dir["*"]
       end
-    end
-    if build.with? 'plugin-extras'
       resource("jmeterplugins-extras").stage do
-        (libexec/'lib/ext').install Dir['lib/ext/*.jar']
-        (libexec/'licenses/plugins/extras').install 'LICENSE', 'README'
+        (libexec/"lib/ext").install Dir["lib/ext/*.jar"]
+        (libexec/"licenses/plugins/extras").install "LICENSE", "README"
       end
-    end
-    if build.with? 'plugin-extraslibs'
       resource("jmeterplugins-extraslibs").stage do
-        (libexec/'lib/ext').install Dir['lib/ext/*.jar']
-        (libexec/'lib').install Dir['lib/*.jar']
-        (libexec/'licenses/plugins/extras').install 'LICENSE', 'README'
+        (libexec/"lib/ext").install Dir["lib/ext/*.jar"]
+        (libexec/"lib").install Dir["lib/*.jar"]
+        (libexec/"licenses/plugins/extras").install "LICENSE", "README"
       end
-    end
-    if build.with? 'plugin-webdriver'
       resource("jmeterplugins-webdriver").stage do
-        (libexec/'lib/ext').install Dir['lib/ext/*.jar']
-        (libexec/'lib').install Dir['lib/*.jar']
-        (libexec/'licenses/plugins/extras').install 'LICENSE', 'README'
+        (libexec/"lib/ext").install Dir["lib/ext/*.jar"]
+        (libexec/"lib").install Dir["lib/*.jar"]
+        (libexec/"licenses/plugins/extras").install "LICENSE", "README"
       end
-    end
-    if build.with? 'plugin-hadoop'
       resource("jmeterplugins-hadoop").stage do
-        (libexec/'lib/ext').install Dir['lib/ext/*.jar']
-        (libexec/'lib').install Dir['lib/*.jar']
-        (libexec/'licenses/plugins/extras').install 'LICENSE', 'README', 'NOTICE'
+        (libexec/"lib/ext").install Dir["lib/ext/*.jar"]
+        (libexec/"lib").install Dir["lib/*.jar"]
+        (libexec/"licenses/plugins/extras").install "LICENSE", "README", "NOTICE"
       end
     end
   end
