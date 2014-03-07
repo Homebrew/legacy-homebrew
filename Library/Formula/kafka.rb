@@ -38,7 +38,7 @@ class Kafka < Formula
     bin.env_script_all_files(libexec/"bin", :JAVA_HOME => ENV["JAVA_HOME"])
 
     (etc/"kafka").mkpath
-    (etc/"kafka").install_symlink Dir["#{libexec}/config/*"]
+    (etc/"kafka").install_symlink Dir[libexec/"config/*"]
   end
 
   def caveats; <<-EOS.undent
