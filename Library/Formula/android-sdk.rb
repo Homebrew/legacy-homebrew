@@ -2,16 +2,16 @@ require 'formula'
 
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r22.3-macosx.zip'
-  version '22.3'
-  sha1 '547ea51c4aa61d623a4823d0b635d3b66b6c9329'
+  url 'http://dl.google.com/android/android-sdk_r22.6-macosx.zip'
+  version '22.6'
+  sha1 'f1da847ba793b38a510f9c9c70ff4baa5eba1427'
 
   conflicts_with 'android-platform-tools',
     :because => "the Platform-tools are be installed as part of the SDK."
 
   resource 'completion' do
-    url 'https://raw.github.com/CyanogenMod/android_sdk/3bf0a01ef66a9b99149ba3faaf34a1362581dd01/bash_completion/adb.bash'
-    sha1 '8e7dad45b8c98c359516d4a818a9090125bc6f7a'
+    url 'https://raw.github.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash'
+    sha1 '6dfead9b1350dbe1c16a1c80ed70beedebfa39eb'
   end
 
   def install
