@@ -38,8 +38,9 @@ class Formulary
     attr_reader :path
 
     # Gets the formula instance.
-    # Subclasses must define this.
-    def get_formula; end
+    def get_formula
+      klass.new(name, path)
+    end
 
     # Return the Class for this formula, `require`-ing it if
     # it has not been parsed before.
@@ -89,9 +90,9 @@ class Formulary
     end
 
     def get_formula
-      formula = klass.new(name, path)
+      formula = super
       formula.local_bottle_path = @bottle_filename
-      return formula
+      formula
     end
   end
 
@@ -100,10 +101,6 @@ class Formulary
     def initialize name
       @name = name
       @path = Formula.path(name)
-    end
-
-    def get_formula
-      klass.new(name, path)
     end
   end
 
@@ -116,10 +113,6 @@ class Formulary
 
       @path = Pathname.new(path).expand_path
       @name = @path.stem
-    end
-
-    def get_formula
-      klass.new(name, path)
     end
   end
 
@@ -143,7 +136,8 @@ class Formulary
     end
 
     def get_formula
-      return klass.new(name, path)
+      fetch
+      super
     end
   end
 
@@ -155,7 +149,7 @@ class Formulary
     end
 
     def get_formula
-      klass.new(name, path)
+      super
     rescue FormulaUnavailableError => e
       raise TapFormulaUnavailableError.new(e.name)
     end
@@ -171,7 +165,6 @@ class Formulary
     # If a URL is passed, download to the cache and install
     if ref =~ %r[(https?|ftp)://]
       f = FromUrlLoader.new(ref)
-      f.fetch
     elsif ref =~ Pathname::BOTTLE_EXTNAME_RX
       f = BottleLoader.new(ref)
     else
