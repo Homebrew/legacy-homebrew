@@ -1,15 +1,13 @@
 require 'formula'
 
 class Tinyproxy < Formula
-  homepage 'https://www.banu.com/tinyproxy/'
-  url 'https://www.banu.com/pub/tinyproxy/1.8/tinyproxy-1.8.3.tar.bz2'
-  sha1 '2538fbd190d3dc357a2e7c2a07ea0fbefb768a13'
+  homepage "https://www.banu.com/tinyproxy/"
+  url "https://www.banu.com/pub/tinyproxy/1.8/tinyproxy-1.8.3.tar.bz2"
+  sha1 "2538fbd190d3dc357a2e7c2a07ea0fbefb768a13"
 
-  skip_clean 'var/run'
+  option "reverse", "Enable reverse proxying"
 
-  option 'reverse', "Enable reverse proxying"
-
-  depends_on 'asciidoc' => :build
+  depends_on "asciidoc" => :build
 
   # Fix linking error, via MacPorts
   # See: https://trac.macports.org/ticket/27762
@@ -27,7 +25,7 @@ class Tinyproxy < Formula
       --disable-regexcheck
     ]
 
-    args << '--enable-reverse' if build.include? 'reverse'
+    args << "--enable-reverse" if build.include? "reverse"
 
     system "./configure", *args
 
