@@ -7,7 +7,7 @@ class Urlview < Formula
   sha1 '323af9ba30ba87ec600531629f5dd84c720984b6'
 
   def patches
-    "http://ftp.aarnet.edu.au/debian/pool/main/u/urlview/urlview_0.9-19.diff.gz"
+    "http://mirrors.kernel.org/debian/pool/main/u/urlview/urlview_0.9-19.diff.gz"
   end
 
   def install
