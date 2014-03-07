@@ -6,12 +6,20 @@ class Chisel < Formula
   sha1 "78e1c10d6e1e625291377aac1b27487d210bb04e"
 
   def install
-    prefix.install Dir["*"]
+    libexec.install Dir["*.py", "commands"]
+    prefix.install "PATENTS"
   end
 
   def caveats; <<-EOS.undent
-    You may want to add the following line to your ~/.lldbinit file:
-      command source #{prefix}/fblldb.py
-  EOS
+    Add the following line to ~/.lldbinit to load chisel when Xcode launches:
+      command script import #{libexec}/fblldb.py
+    EOS
+  end
+
+  test do
+    xcode_path = `xcode-select --print-path`.strip
+    lldb_rel_path = "Contents/SharedFrameworks/LLDB.framework/Resources/Python"
+    ENV["PYTHONPATH"] = "#{xcode_path}/../../#{lldb_rel_path}"
+    system "python #{libexec}/fblldb.py"
   end
 end
