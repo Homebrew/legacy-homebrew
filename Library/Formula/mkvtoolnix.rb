@@ -1,5 +1,28 @@
 require 'formula'
 
+class Ruby19 < Requirement
+  fatal true
+  default_formula "ruby"
+
+  satisfy :build_env => false do
+    next unless which "ruby"
+    version = /\d\.\d/.match `ruby --version 2>&1`
+    next unless version
+    version >= Version.new("1.9")
+  end
+
+  def modify_build_environment
+    ruby = which "ruby"
+    return unless ruby
+    ENV.prepend_path "PATH", ruby.dirname
+  end
+
+  def message; <<-EOS.undent
+    The mkvtoolnix buildsystem needs Ruby >=1.9
+    EOS
+  end
+end
+
 class Mkvtoolnix < Formula
   homepage 'http://www.bunkus.org/videotools/mkvtoolnix/'
   url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-6.8.0.tar.xz'
@@ -8,7 +31,7 @@ class Mkvtoolnix < Formula
   head 'https://github.com/mbunkus/mkvtoolnix.git'
 
   depends_on 'pkg-config' => :build
-  depends_on 'ruby' => :build if MacOS.version < :mavericks
+  depends_on Ruby19
   depends_on 'boost' => 'c++11'
   depends_on 'libvorbis'
   depends_on 'libmatroska' => 'c++11'
