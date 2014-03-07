@@ -85,6 +85,14 @@ ARGV.named.each do |arg|
       changed_formulae << Formula.factory(formula)
     end
   end
+
+  unless ARGV.include?('--bottle')
+    changed_formulae.each do |f|
+      next unless f.bottle
+      opoo "#{f} has a bottle: do you need to update it with --bottle?"
+    end
+  end
+
   if issue && !ARGV.include?('--clean')
     ohai "Patch closes issue ##{issue}"
     message = `git log HEAD^.. --format=%B`
