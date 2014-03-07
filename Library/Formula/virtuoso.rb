@@ -2,7 +2,7 @@ require 'formula'
 
 class Virtuoso < Formula
   homepage 'http://virtuoso.openlinksw.com/wiki/main/'
-  url "https://downloads.sourceforge.net/projects/virtuoso/files/virtuoso/7.1.0/virtuoso-opensource-7.1.0.tar.gz"
+  url "https://downloads.sourceforge.net/project/virtuoso/virtuoso/7.1.0/virtuoso-opensource-7.1.0.tar.gz"
   sha1 "255d275d810bdb7cfa55fef46517724823c4c561"
 
   head do
