@@ -17,7 +17,7 @@ if ARGV[0] == '--rebase'
   onoe 'You meant `git pull --rebase`.'
 end
 
-ARGV.named.each do|arg|
+ARGV.named.each do |arg|
   if arg.to_i > 0
     url = 'https://github.com/Homebrew/homebrew/pull/' + arg
   else
@@ -59,7 +59,6 @@ ARGV.named.each do|arg|
 
   ohai 'Applying patch'
   patch_args = []
-  patch_args << '--signoff' unless ARGV.include? '--clean'
   # Normally we don't want whitespace errors, but squashing them can break
   # patches so an option is provided to skip this step.
   if ARGV.include? '--ignore-whitespace' or ARGV.include? '--clean'
@@ -76,16 +75,24 @@ ARGV.named.each do|arg|
     odie 'Patch failed to apply: aborted.'
   end
 
-  if issue and not ARGV.include? '--clean'
+  changed_formulae = []
+
+  `git diff #{revision}.. --name-status`.each_line do |line|
+    status, filename = line.split
+    # Don't try and do anything to removed files.
+    if (status =~ /A|M/) && (filename =~ %r{Formula/.+\.rb$}) || tap(url)
+      formula = File.basename(filename, '.rb')
+      changed_formulae << Formula.factory(formula)
+    end
+  end
+  if issue && !ARGV.include?('--clean')
     ohai "Patch closes issue ##{issue}"
     message = `git log HEAD^.. --format=%B`
 
     # If this is a pull request, append a close message.
     unless message.include? 'Closes #'
-      issueline = "Closes ##{issue}."
-      signed = 'Signed-off-by:'
-      message = message.gsub signed, issueline + "\n\n" + signed
-      safe_system 'git', 'commit', '--amend', '-q', '-m', message
+      message += "\nCloses ##{issue}."
+      safe_system 'git', 'commit', '--amend', '--signoff', '-q', '-m', message
     end
   end
 
@@ -93,15 +100,10 @@ ARGV.named.each do|arg|
   safe_system 'git', '--no-pager', 'diff', "#{revision}..", '--stat'
 
   if ARGV.include? '--install'
-    `git diff #{revision}.. --name-status`.each_line do |line|
-      status, filename = line.split
-      # Don't try and do anything to removed files.
-      if (status == 'A' or status == 'M') and filename.match /Formula\/.+\.rb$/ or tap url
-        formula = File.basename(filename, '.rb')
-        ohai "Installing #{formula}"
-        install = Formula.factory(formula).installed? ? 'upgrade' : 'install'
-        safe_system 'brew', install, '--debug', '--fresh', formula
-      end
+    changed_formulae.each do |f|
+      ohai "Installing #{formula}"
+      install = f.installed? ? 'upgrade' : 'install'
+      safe_system 'brew', install, '--debug', '--fresh', formula
     end
   end
 end
