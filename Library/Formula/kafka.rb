@@ -33,11 +33,9 @@ class Kafka < Formula
     libexec.install %w(config contrib core examples lib perf project
                        system_test)
 
-    bin.install Dir["bin/*"]
-    ENV["JAVA_HOME"] = "`/usr/libexec/java_home`"
-    bin.env_script_all_files(libexec/"bin", :JAVA_HOME => ENV["JAVA_HOME"])
+    prefix.install "bin"
+    bin.env_script_all_files(libexec/"bin", :JAVA_HOME => "`/usr/libexec/java_home`")
 
-    (etc/"kafka").mkpath
     (etc/"kafka").install_symlink Dir[libexec/"config/*"]
   end
 
