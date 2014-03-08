@@ -1,4 +1,4 @@
-require "formula"
+require 'formula'
 
 class Awscli < Formula
   homepage 'https://aws.amazon.com/cli/'
@@ -20,8 +20,6 @@ class Awscli < Formula
       url 'https://github.com/boto/jmespath.git', :branch => :develop
     end
   end
-
-  option 'without-completions', 'Disable bash/zsh completions'
 
   depends_on :python
 
@@ -73,14 +71,8 @@ class Awscli < Formula
     system "python", "setup.py", "install", "--prefix=#{prefix}",
       "--single-version-externally-managed", "--record=installed.txt"
 
-    unless build.without? 'completions'
-      # Can't get this to work for automatic installation
-      # Install bash completion
-      # system "complete", "-C", "aws_completer", "aws"
-
-      # Install zsh completion
-      zsh_completion.install 'bin/aws_zsh_completer.sh' => '_aws'
-    end
+    # Install zsh completion
+    zsh_completion.install 'bin/aws_zsh_completer.sh' => '_aws'
 
     # Install the examples
     (share+'awscli').install 'awscli/examples'
@@ -90,29 +82,24 @@ class Awscli < Formula
 
   def caveats; <<-EOS.undent
     The 'examples' directory has been installed to:
-
       #{HOMEBREW_PREFIX}/share/awscli/examples
 
     Add the following to ~/.bashrc to enable bash completion:
-
       complete -C aws_completer aws
 
     Add the following to ~/.zshrc to enable zsh completion:
-
       source #{HOMEBREW_PREFIX}/share/zsh/site-functions/_aws
 
     Before using awscli, you need to tell it about your AWS credentials.
     The easiest way to do this is to run:
-
       aws configure
 
     More information:
-
       http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
     EOS
   end
 
   test do
-    system "#{bin}/aws", "help"
+    system "#{bin}/aws", "--version"
   end
 end
