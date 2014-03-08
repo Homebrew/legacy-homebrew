@@ -34,9 +34,19 @@ class Ghc < Formula
     end
   end
 
+  # These don't work inside of a `stable do` block
   if build.stable?
     env :std
 
+    fails_with :clang do
+      cause <<-EOS.undent
+        Building with Clang configures GHC to use Clang as its preprocessor,
+        which causes subsequent GHC-based builds to fail.
+      EOS
+    end
+  end
+
+  stable do
     # http://hackage.haskell.org/trac/ghc/ticket/6009
     depends_on :macos => :snow_leopard
     depends_on "apple-gcc42" if MacOS.version >= :mountain_lion
@@ -44,28 +54,19 @@ class Ghc < Formula
 
     option "32-bit"
 
-    # build is not available in the resource's context, so exploit the closure.
-    build_32_bit = build.build_32_bit?
     resource "binary" do
-      if Hardware.is_64_bit? and not build_32_bit
-        url "http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2"
-        sha1 "7c655701672f4b223980c3a1068a59b9fbd08825"
-      else
-        url "http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2"
-        sha1 "60f749893332d7c22bb4905004a67510992d8ef6"
-      end
+      url "http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2"
+      sha1 "7c655701672f4b223980c3a1068a59b9fbd08825"
+    end
+
+    resource "binary32" do
+      url "http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2"
+      sha1 "60f749893332d7c22bb4905004a67510992d8ef6"
     end
 
     resource "testsuite" do
       url "https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz"
       sha1 "6a1973ae3cccdb2f720606032ae84ffee8680ca1"
-    end
-
-    fails_with :clang do
-      cause <<-EOS.undent
-        Building with Clang configures GHC to use Clang as its preprocessor,
-        which causes subsequent GHC-based builds to fail.
-        EOS
     end
   end
 
@@ -80,7 +81,13 @@ class Ghc < Formula
     # Move the main tarball contents into a subdirectory
     (buildpath+"Ghcsource").install Dir["*"]
 
-    resource("binary").stage do
+    if (not build.stable?) or (Hardware.is_64_bit? and not build.build_32_bit?)
+      binary_resource = "binary"
+    else
+      binary_resource = "binary32"
+    end
+
+    resource(binary_resource).stage do
       # Define where the subformula will temporarily install itself
       subprefix = buildpath+"subfo"
 
