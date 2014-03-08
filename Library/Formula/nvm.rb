@@ -8,7 +8,7 @@ class Nvm < Formula
 
   def install
     prefix.install 'nvm.sh'
-    prefix.install 'bash_completion'
+    bash_completion.install 'bash_completion' => 'nvm'
   end
 
   def caveats;
