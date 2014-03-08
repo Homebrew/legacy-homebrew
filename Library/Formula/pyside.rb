@@ -24,15 +24,15 @@ class Pyside < Formula
   depends_on 'cmake' => :build
   depends_on 'qt'
 
-  # if build.with? 'python3'
-  #   if build.without? 'python'
-  #     depends_on 'shiboken' => ['with-python3', 'without-python']
-  #   else
-  #     depends_on 'shiboken' => 'with-python3'
-  #   end
-  # else
-  #   depends_on 'shiboken'
-  # end
+  if build.with? 'python3'
+    if build.without? 'python'
+      depends_on 'shiboken' => ['with-python3', 'without-python']
+    else
+      depends_on 'shiboken' => 'with-python3'
+    end
+  else
+    depends_on 'shiboken'
+  end
 
   def pythons
     pythons = []
