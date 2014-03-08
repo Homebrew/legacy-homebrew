@@ -29,7 +29,8 @@ module Homebrew extend self
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
       end
     else
-      ARGV.named.each do |f|
+      last = ARGV.named.count - 1
+      ARGV.named.each_with_index do |f,i|
         begin
           info_formula Formula.factory(f)
         rescue FormulaUnavailableError
@@ -40,6 +41,7 @@ module Homebrew extend self
             raise
           end
         end
+        puts unless i == last
       end
     end
   end
