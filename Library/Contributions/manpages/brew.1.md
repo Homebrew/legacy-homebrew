@@ -141,10 +141,8 @@ Note that these flags should only appear after a command.
   * `home` <formula>:
     Open <formula>'s homepage in a browser.
 
-  * `info [--all]` <formula>:
+  * `info <formula>:
     Display information about <formula>.
-
-    If `--all` is passed, show info for all formulae.
 
   * `info --github` <formula>:
     Open a browser to the GitHub History page for formula <formula>.

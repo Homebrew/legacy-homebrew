@@ -20,12 +20,7 @@ module Homebrew extend self
 
   def print_info
     if ARGV.named.empty?
-      if ARGV.include? "--all"
-        Formula.each do |f|
-          info_formula f
-          puts '---'
-        end
-      elsif HOMEBREW_CELLAR.exist?
+      if HOMEBREW_CELLAR.exist?
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
       end
     else
