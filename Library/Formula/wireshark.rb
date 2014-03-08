@@ -60,7 +60,7 @@ class Wireshark < Formula
             "--with-ssl"]
 
     args << "--disable-warnings-as-errors" if build.head?
-    args << "--disable-wireshark" if build.without? "x" or build.with? "qt"
+    args << "--disable-wireshark" if build.without?("x") && build.without?("qt")
     args << "--disable-gtktest" if build.without? "x"
     args << "--with-qt" if build.with? "qt"
 
