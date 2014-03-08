@@ -34,7 +34,7 @@ class Ghc < Formula
     end
   end
 
-  unless build.devel?
+  if build.stable?
     env :std
 
     # http://hackage.haskell.org/trac/ghc/ticket/6009
