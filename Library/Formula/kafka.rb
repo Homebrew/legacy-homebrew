@@ -19,9 +19,8 @@ class Kafka < Formula
 
     logs = var/"log/kafka"
     logs.mkpath
-    ["config/log4j.properties", "config/test-log4j.properties"].each do |f|
-      inreplace f, ".File=logs/", ".File=#{logs}/"
-    end
+    inreplace ["config/log4j.properties", "config/test-log4j.properties"],
+      ".File=logs/", ".File=#{logs}/"
 
     data = var/"lib"
     inreplace "config/server.properties",
