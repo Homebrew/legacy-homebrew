@@ -36,9 +36,9 @@ class Qt5 < Formula
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
 
-  odie 'qt5: --with-qtdbus has been renamed to --with-d-bus' if build.include? 'with-qtdbus'
-  odie 'qt5: --with-demos-examples is no longer supported' if build.include? 'with-demos-examples'
-  odie 'qt5: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
+  odie 'qt5: --with-qtdbus has been renamed to --with-d-bus' if build.with? "qtdbus"
+  odie 'qt5: --with-demos-examples is no longer supported' if build.with? "demos-examples"
+  odie 'qt5: --with-debug-and-release is no longer supported' if build.with? "debug-and-release"
 
   def install
     # fixed hardcoded link to plugin dir: https://bugreports.qt-project.org/browse/QTBUG-29188

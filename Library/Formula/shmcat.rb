@@ -8,15 +8,15 @@ class Shmcat < Formula
   option 'with-ftok', "Build the ftok utility"
   option 'with-nls', "Use Native Language Support"
 
-  depends_on 'gettext' if build.include? 'with-nls'
+  depends_on 'gettext' if build.with? "nls"
 
   def install
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
-    args << "--disable-ftok" unless build.include? 'with-ftok'
-    if build.include? 'with-nls'
+    args << "--disable-ftok" if build.without? "ftok"
+    if build.with? "nls"
       gettext = Formula['gettext']
       args << "--with-libintl-prefix=#{gettext.include}"
     else

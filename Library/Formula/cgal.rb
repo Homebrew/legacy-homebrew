@@ -22,7 +22,7 @@ class Cgal < Formula
   depends_on 'mpfr'
 
   depends_on 'qt' if build.include? 'imaging'
-  depends_on 'eigen' if build.include? 'with-eigen3'
+  depends_on 'eigen' if build.with? "eigen3"
 
   def patches
     # Allows to compile with clang 425: http://goo.gl/y9Dg2y
@@ -38,10 +38,10 @@ class Cgal < Formula
     unless build.include? 'imaging'
       args << "-DWITH_CGAL_Qt3=OFF" << "-DWITH_CGAL_Qt4=OFF" << "-DWITH_CGAL_ImageIO=OFF"
     end
-    if build.include? 'with-eigen3'
+    if build.with? "eigen3"
       args << "-DWITH_Eigen3=ON"
     end
-    if build.include? 'with-lapack'
+    if build.with? "lapack"
       args << "-DWITH_LAPACK=ON"
     end
     args << '.'

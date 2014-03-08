@@ -23,7 +23,7 @@ class SwiProlog < Formula
   depends_on 'readline'
   depends_on 'gmp'
 
-  if build.include? 'with-xpce'
+  if build.with? "xpce"
     depends_on 'pkg-config' => :build
     depends_on :x11
     depends_on 'jpeg'
@@ -42,8 +42,8 @@ class SwiProlog < Formula
 
   def install
     args = ["--prefix=#{libexec}", "--mandir=#{man}"]
-    ENV.append 'DISABLE_PKGS', "jpl" unless build.include? "with-jpl"
-    ENV.append 'DISABLE_PKGS', "xpce" unless build.include? 'with-xpce'
+    ENV.append 'DISABLE_PKGS', "jpl" if build.without? "jpl"
+    ENV.append 'DISABLE_PKGS', "xpce" if build.without? "xpce"
 
     # SWI-Prolog's Makefiles don't add CPPFLAGS to the compile command, but do
     # include CIFLAGS. Setting it here. Also, they clobber CFLAGS, so including
