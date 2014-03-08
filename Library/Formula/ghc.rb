@@ -110,11 +110,7 @@ class Ghc < Formula
       system 'make'
       if build.include? 'tests'
         resource('testsuite').stage do
-          (buildpath+'Ghcsource/config').install Dir['config/*']
-          (buildpath+'Ghcsource/driver').install Dir['driver/*']
-          (buildpath+'Ghcsource/mk').install Dir['mk/*']
-          (buildpath+'Ghcsource/tests').install Dir['tests/*']
-          (buildpath+'Ghcsource/timeout').install Dir['timeout/*']
+          (buildpath/"Ghcsource").install "config", "driver", "mk", "tests", "timeout"
           cd (buildpath+'Ghcsource/tests') do
             system 'make', 'CLEANUP=1', "THREADS=#{ENV.make_jobs}", 'fast'
           end
