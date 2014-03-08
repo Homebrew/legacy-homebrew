@@ -66,8 +66,10 @@ class Ghc < Formula
         which causes subsequent GHC-based builds to fail.
         EOS
     end
+  end
 
-    def patches
+  def patches
+    if build.stable?
       # Fixes 7.6.3 compilation on 10.9
       DATA if MacOS.version >= :mavericks
     end
