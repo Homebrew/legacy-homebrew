@@ -7,6 +7,7 @@ class PythonDependency < Requirement
   satisfy :build_env => false do
     # Always build bottles against Homebrew Python as they still work
     # against a 2.7 system Python.
+    # TODO: this doesn't work yet, ask @jacknagel.
     next if ARGV.build_bottle?
     python = which_python
     next unless python
