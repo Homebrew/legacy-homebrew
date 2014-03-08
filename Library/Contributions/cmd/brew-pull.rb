@@ -97,6 +97,14 @@ ARGV.named.each do |arg|
     ohai "Patch closes issue ##{issue}"
     message = `git log HEAD^.. --format=%B`
 
+    if ARGV.include? '--bump'
+      onoe 'Can only bump one changed formula' unless changed_formulae.length == 1
+      f = changed_formulae.first
+      subject = "#{f.name} #{f.version}"
+      ohai "New bump commit subject: #{subject}"
+      message = "#{subject}\n\n#{message}"
+    end
+
     # If this is a pull request, append a close message.
     unless message.include? 'Closes #'
       message += "\nCloses ##{issue}."
