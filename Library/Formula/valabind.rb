@@ -11,8 +11,27 @@ class Valabind < Formula
   depends_on 'swig' => :run
   depends_on 'vala'
 
+  # Fixes an issue in the vala version detection script.
+  #  * https://github.com/radare/valabind/pull/24
+  patch :DATA
+
   def install
     system 'make'
     system 'make', 'install', "PREFIX=#{prefix}"
   end
 end
+
+__END__
+diff --git i/getvv w/getvv
+index 14183dc..59a42bb 100755
+--- i/getvv
++++ w/getvv
+@@ -3,7 +3,7 @@ IFS=:
+ [ -z "${VALAC}" ] && VALAC=valac
+ for a in $PATH; do
+ 	if [ -e "$a/valac" ]; then
+-		v=$(strings $a/${VALAC} | grep vala- | grep -v lib)
++		v=$(cat $a/${VALAC} | strings | grep vala- | grep -v lib)
+ 		if [ -n "$v" ]; then
+ 			printf lib$v
+ 			exit 0
