@@ -25,4 +25,10 @@ class PltRacket < Formula
     the PLT-provided packages from http://racket-lang.org/download/.
     EOS
   end
+
+  test do
+    output = `'#{bin}/racket' -e '(displayln "Hello Homebrew")'`
+    assert $?.success?
+    assert_match /Hello Homebrew/, output
+  end
 end
