@@ -5,8 +5,6 @@ class Mpd < Formula
   url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.9.tar.gz"
   sha1 "a1ea1adfe126fd9f69673d610882c8a1398f066d"
 
-  depends_on :macos => :mavericks
-
   head "git://git.musicpd.org/master/mpd.git"
 
   option "with-wavpack", "Build with wavpack support (for .wv files)"
