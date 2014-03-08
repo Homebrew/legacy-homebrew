@@ -28,7 +28,7 @@ module Homebrew extend self
     puts "Resource: #{r.name}"
     fetch_fetchable r
   rescue ChecksumMismatchError => e
-    retry if retry_fetch? f
+    retry if retry_fetch? r
     opoo "Resource #{r.name} reports different #{e.hash_type}: #{e.expected}"
   end
 
