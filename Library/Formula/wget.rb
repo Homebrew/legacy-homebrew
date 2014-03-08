@@ -37,7 +37,7 @@ class Wget < Formula
       --prefix=#{prefix}
       --sysconfdir=#{etc}
       --with-ssl=openssl
-      --with-libssl-prefix=#{Formula.factory("openssl").opt_prefix}
+      --with-libssl-prefix=#{Formula["openssl"].opt_prefix}
     ]
 
     args << "--disable-debug" unless build.include? "enable-debug"
@@ -47,7 +47,7 @@ class Wget < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/wget", "-O", "-", "www.google.com"
   end
 end

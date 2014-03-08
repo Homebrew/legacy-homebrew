@@ -5,6 +5,7 @@ class GnuSmalltalk < Formula
   url 'http://ftpmirror.gnu.org/smalltalk/smalltalk-3.2.5.tar.xz'
   mirror 'http://ftp.gnu.org/gnu/smalltalk/smalltalk-3.2.5.tar.xz'
   sha1 '0eb5895b9b5bebe4f75308efbe34f8721fc2fd6b'
+  revision 1
 
   devel do
     url 'ftp://alpha.gnu.org/gnu/smalltalk/smalltalk-3.2.90.tar.gz'
@@ -43,7 +44,7 @@ class GnuSmalltalk < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --disable-gtk
-      --with-readline=#{Formula.factory('readline').lib}
+      --with-readline=#{Formula['readline'].lib}
     ]
     unless build.include? 'tcltk'
       args << '--without-tcl' << '--without-tk' << '--without-x'

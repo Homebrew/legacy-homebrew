@@ -25,6 +25,12 @@ class SoftwareSpecTests < Test::Unit::TestCase
     assert_raises(ResourceMissingError) { @spec.resource('foo') }
   end
 
+  def test_set_owner
+    owner = stub(:name => 'some_name')
+    @spec.owner = owner
+    assert_equal owner, @spec.owner
+  end
+
   def test_resource_owner
     @spec.resource('foo') { url 'foo-1.0' }
     @spec.owner = stub(:name => 'some_name')

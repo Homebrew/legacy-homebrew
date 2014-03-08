@@ -36,14 +36,14 @@ module Homebrew extend self
 
     unless outdated.empty?
       oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
-      puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
+      puts outdated.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
     else
       oh1 "No packages to upgrade"
     end
 
     unless upgrade_pinned? || pinned.empty?
       oh1 "Not upgrading #{pinned.length} pinned package#{pinned.length.plural_s}:"
-      puts pinned.map{ |f| "#{f.name} #{f.version}" } * ", "
+      puts pinned.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
     end
 
     outdated.each { |f| upgrade_formula(f) }
@@ -54,17 +54,13 @@ module Homebrew extend self
   end
 
   def upgrade_formula f
-    tab = Tab.for_formula(f)
-
-    # Inject options from a previous install into the formula's
-    # BuildOptions object. TODO clean this up.
-    f.build.args += tab.used_options
-
     outdated_keg = Keg.new(f.linked_keg.realpath) rescue nil
 
     installer = FormulaInstaller.new(f)
-    installer.tab = tab
+    installer.options |= Tab.for_formula(f).used_options
     installer.show_header = false
+    installer.ignore_deps = false
+    installer.prelude
 
     oh1 "Upgrading #{f.name}"
 

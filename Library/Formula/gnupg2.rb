@@ -4,6 +4,7 @@ class Gnupg2 < Formula
   homepage 'http://www.gnupg.org/'
   url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.22.tar.bz2'
   sha1 '9ba9ee288e9bf813e0f1e25cbe06b58d3072d8b8'
+  revision 1
 
   option '8192', 'Build with support for private keys of up to 8192 bits'
 
@@ -35,7 +36,7 @@ class Gnupg2 < Formula
 
     ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
 
-    agent = Formula.factory("gpg-agent").opt_prefix
+    agent = Formula["gpg-agent"].opt_prefix
 
     args = %W[
       --disable-dependency-tracking
@@ -48,7 +49,7 @@ class Gnupg2 < Formula
     ]
 
     if build.with? 'readline'
-      args << "--with-readline=#{Formula.factory('readline').opt_prefix}"
+      args << "--with-readline=#{Formula["readline"].opt_prefix}"
     end
 
     system "./configure", *args

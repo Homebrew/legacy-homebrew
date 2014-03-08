@@ -34,7 +34,7 @@ class Emacs < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on :x11 if build.include? "with-x"
+  depends_on :x11 if build.with? "x"
   depends_on 'gnutls' => :optional
 
   fails_with :llvm do
@@ -114,7 +114,7 @@ class Emacs < Formula
         #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
       EOS
     else
-      if build.include? "with-x"
+      if build.with? "x"
         # These libs are not specified in xft's .pc. See:
         # https://trac.macports.org/browser/trunk/dports/editors/emacs/Portfile#L74
         # https://github.com/Homebrew/homebrew/issues/8156

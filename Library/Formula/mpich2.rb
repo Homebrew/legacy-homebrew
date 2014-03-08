@@ -56,7 +56,7 @@ class Mpich2 < Formula
     system "make install"
   end
 
-  def test
+  test do
     # a better test would be to build and run a small MPI program
     system "#{bin}/mpicc", "-show"
   end

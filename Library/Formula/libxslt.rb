@@ -13,7 +13,7 @@ class Libxslt < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libxml-prefix=#{Formula.factory('libxml2').prefix}"
+                          "--with-libxml-prefix=#{Formula["libxml2"].prefix}"
     system "make"
     system "make install"
   end

@@ -2,7 +2,7 @@ require 'formula'
 
 class Pev < Formula
   homepage 'http://pev.sf.net/'
-  url 'http://downloads.sourceforge.net/project/pev/pev-0.70/pev-0.70.tar.gz'
+  url 'https://downloads.sourceforge.net/project/pev/pev-0.70/pev-0.70.tar.gz'
   sha1 'b2d1191c3b57049c78ef77b8f54f7f78838af129'
 
   head 'https://github.com/merces/pev.git'

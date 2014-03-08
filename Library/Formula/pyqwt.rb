@@ -2,7 +2,7 @@ require 'formula'
 
 class Pyqwt < Formula
   homepage 'http://pyqwt.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/pyqwt/pyqwt5/PyQwt-5.2.0/PyQwt-5.2.0.tar.gz'
+  url 'https://downloads.sourceforge.net/project/pyqwt/pyqwt5/PyQwt-5.2.0/PyQwt-5.2.0.tar.gz'
   sha1 '797f37c63dec660272f6a8ccfd16a017df0ad640'
 
   depends_on :python => :recommended
@@ -30,7 +30,7 @@ class Pyqwt < Formula
     end
   end
 
-  def test
+  test do
     system "python", "-c", "from PyQt4 import Qwt5 as Qwt"
   end
 end

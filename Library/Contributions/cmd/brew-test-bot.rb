@@ -275,11 +275,11 @@ class Test
       test "brew install apple-gcc42"
     end
 
-    test "brew fetch #{dependencies}" unless dependencies.empty?
+    test "brew fetch --retry #{dependencies}" unless dependencies.empty?
     formula_fetch_options = " "
     formula_fetch_options << " --build-bottle" unless ARGV.include? '--no-bottle'
     formula_fetch_options << " --force" if ARGV.include? '--cleanup'
-    test "brew fetch#{formula_fetch_options} #{formula}"
+    test "brew fetch --retry#{formula_fetch_options} #{formula}"
     test "brew uninstall --force #{formula}" if formula_object.installed?
     install_args = '--verbose'
     install_args << ' --build-bottle' unless ARGV.include? '--no-bottle'
@@ -303,7 +303,7 @@ class Test
       test "brew uninstall --force #{formula}"
     end
     if formula_object.devel and not ARGV.include? '--HEAD'
-      test "brew fetch --devel#{formula_fetch_options} #{formula}"
+      test "brew fetch --retry --devel#{formula_fetch_options} #{formula}"
       test "brew install --devel --verbose #{formula}"
       devel_install_passed = steps.last.passed?
       test "brew audit --devel #{formula}"

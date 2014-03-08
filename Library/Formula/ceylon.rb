@@ -20,7 +20,7 @@ class Ceylon < Formula
     "Ceylon requires Java 7."
   end
 
-  def test
+  test do
     cd "#{libexec}/samples/helloworld" do
       system "#{bin}/ceylon", "compile", "com.acme.helloworld"
       system "#{bin}/ceylon", "doc", "--non-shared", "com.acme.helloworld"

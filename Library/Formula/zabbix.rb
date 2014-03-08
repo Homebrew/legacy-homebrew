@@ -2,7 +2,7 @@ require 'formula'
 
 class Zabbix < Formula
   homepage 'http://www.zabbix.com/'
-  url 'http://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.2.2/zabbix-2.2.2.tar.gz'
+  url 'https://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.2.2/zabbix-2.2.2.tar.gz'
   sha1 '0be3f194a9ee6a9354d9f18e17b717289fe35a4f'
 
   option 'with-mysql', 'Use Zabbix Server with MySQL library instead PostgreSQL.'
@@ -10,7 +10,7 @@ class Zabbix < Formula
 
   unless build.include? 'agent-only'
     depends_on :mysql => :optional
-    depends_on :postgresql unless build.with? 'mysql'
+    depends_on :postgresql if build.without? 'mysql'
     depends_on 'fping'
     depends_on 'libssh2'
   end
@@ -52,7 +52,7 @@ class Zabbix < Formula
     end
   end
 
-  def test
+  test do
     system "#{sbin}/zabbix_agentd", "--print"
   end
 end

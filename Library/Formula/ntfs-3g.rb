@@ -2,19 +2,18 @@ require 'formula'
 
 class Ntfs3g < Formula
   homepage 'http://www.tuxera.com/community/ntfs-3g-download/'
-  url 'http://tuxera.com/opensource/ntfs-3g_ntfsprogs-2013.1.13.tgz'
-  sha1 '8c12b7644d90ae9fb8d0aca0d7ebd5f8fac2c818'
+  url 'http://tuxera.com/opensource/ntfs-3g_ntfsprogs-2014.2.15.tgz'
+  sha1 'c9836f340b508f5d7776156e5afb02434d3f0174'
+
+  bottle do
+    sha1 "fe9fe60adee81fdb8fc5eb73bfbf5ac9d75db9e0" => :mavericks
+    sha1 "dac4e91b2e2f42fed5e1b703bb80754b863d2059" => :mountain_lion
+    sha1 "38407af2c691ff1cf6feb64030f9f29ac883e7b0" => :lion
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'osxfuse'
   depends_on 'gettext'
-
-  def patches
-    # From macports:
-    # http://trunk/dports/fuse/ntfs-3g/files/patch-configure.diff
-    # Modify configure such that it does not modify the default PKG_CONFIG_PATH
-    { :p0 => DATA }
-  end
 
   def install
     # Workaround for hardcoded /sbin in ntfsprogs
@@ -47,7 +46,7 @@ class Ntfs3g < Formula
         GROUP_ID=`/usr/bin/stat -f %g /dev/console`
       fi
 
-      #{opt_prefix}/bin/ntfs-3g \\
+      #{opt_bin}/ntfs-3g \\
         -o volname="${VOLUME_NAME}" \\
         -o local \\
         -o negative_vncache \\
@@ -67,17 +66,3 @@ class Ntfs3g < Formula
     end
   end
 end
-
-__END__
---- configure.orig	2011-08-02 19:13:55.000000000 -0400
-+++ configure	2011-08-02 19:14:14.000000000 -0400
-@@ -20530,9 +20530,6 @@
-	test "x${PKG_CONFIG}" = "xno" && { { echo "$as_me:$LINENO: error: pkg-config wasn't found! Please install from your vendor, or see http://pkg-config.freedesktop.org/wiki/" >&5
- echo "$as_me: error: pkg-config wasn't found! Please install from your vendor, or see http://pkg-config.freedesktop.org/wiki/" >&2;}
-    { (exit 1); exit 1; }; }
--	# Libraries often install their metadata .pc files in directories
--	# not searched by pkg-config. Let's workaround this.
--	export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/lib/pkgconfig:/usr/lib/pkgconfig:/opt/gnome/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig:$prefix/lib/pkgconfig:/opt/gnome/share/pkgconfig:/usr/local/share/pkgconfig
-
- pkg_failed=no
- { echo "$as_me:$LINENO: checking for FUSE_MODULE" >&5

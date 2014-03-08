@@ -2,13 +2,13 @@ require 'formula'
 
 class Pyqt < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  url 'http://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.3/PyQt-mac-gpl-4.10.3.tar.gz'
+  url 'https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.3/PyQt-mac-gpl-4.10.3.tar.gz'
   sha1 'ba5465f92fb43c9f0a5b948fa25df5045f160bf0'
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
-  if !Formula.factory("python").installed? && build.with?("python") &&
+  if !Formula["python"].installed? && build.with?("python") &&
      build.with?("python3")
     odie <<-EOS.undent
       pyqt: You cannot use system Python 2 and Homebrew's Python 3 simultaneously.
@@ -108,7 +108,7 @@ class Pyqt < Formula
     EOS
 
     pythons.each do |python, version|
-      unless Formula.factory(python).installed?
+      unless Formula[python].installed?
         ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
       end
       system python, "test.py"

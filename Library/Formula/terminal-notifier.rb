@@ -11,10 +11,10 @@ class TerminalNotifier < Formula
   depends_on :xcode
 
   def install
-    system 'xcodebuild', "-project", "Terminal Notifier.xcodeproj",
-                         "-target", "terminal-notifier",
-                         "SYMROOT=build",
-                         "-verbose"
+    xcodebuild "-project", "Terminal Notifier.xcodeproj",
+               "-target", "terminal-notifier",
+               "SYMROOT=build",
+               "-verbose"
     prefix.install Dir['build/Release/*']
     inner_binary = "#{prefix}/terminal-notifier.app/Contents/MacOS/terminal-notifier"
     bin.write_exec_script inner_binary

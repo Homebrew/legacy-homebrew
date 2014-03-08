@@ -10,6 +10,7 @@ require 'build_options'
 require 'formulary'
 require 'software_spec'
 require 'install_renamed'
+require 'pkg_version'
 
 class Formula
   include FileUtils
@@ -18,6 +19,7 @@ class Formula
 
   attr_reader :name, :path, :homepage, :build
   attr_reader :stable, :bottle, :devel, :head, :active_spec
+  attr_reader :pkg_version, :revision
 
   # The current working directory during builds and tests.
   # Will only be non-nil inside #stage and #test.
@@ -34,6 +36,7 @@ class Formula
     @name = name
     @path = path
     @homepage = self.class.homepage
+    @revision = self.class.revision || 0
 
     set_spec :stable
     set_spec :devel
@@ -46,13 +49,23 @@ class Formula
       unless bottle.checksum.nil? || bottle.checksum.empty?
         @bottle = bottle
         bottle.url ||= bottle_url(self, bottle.current_tag)
-        bottle.version = stable.version
+        bottle.version = PkgVersion.new(stable.version, revision)
       end
     end
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
     @build = determine_build_options
+
+    # TODO: @pkg_version is already set for bottles, since constructing it
+    # requires passing in the active_spec version. This should be fixed by
+    # making the bottle an attribute of SoftwareSpec rather than a separate
+    # spec itself.
+    if active_spec == bottle
+      @pkg_version = bottle.version
+    else
+      @pkg_version = PkgVersion.new(version, revision)
+    end
 
     @pin = FormulaPin.new(self)
 
@@ -150,9 +163,13 @@ class Formula
     Keg.new(installed_prefix).version
   end
 
-  def prefix(v=version)
+  # The directory in the cellar that the formula is installed to.
+  # This directory contains the formula's name and version.
+  def prefix(v=pkg_version)
     Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{v}")
   end
+  # The parent of the prefix; the named directory in the cellar containing all
+  # installed versions of this software
   def rack; prefix.parent end
 
   def bin;     prefix+'bin'     end
@@ -197,9 +214,22 @@ class Formula
   def plist_manual; self.class.plist_manual end
   def plist_startup; self.class.plist_startup end
 
+  # A stable path for this formula, when installed. Contains the formula name
+  # but no version number. Only the active version will be linked here if
+  # multiple versions are installed.
+  #
+  # This is the prefered way to refer a formula in plists or from another
+  # formula, as the path is stable even when the software is updated.
   def opt_prefix
     Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
   end
+
+  def opt_bin;     opt_prefix+'bin'     end
+  def opt_include; opt_prefix+'include' end
+  def opt_lib;     opt_prefix+'lib'     end
+  def opt_libexec; opt_prefix+'libexec' end
+  def opt_sbin;    opt_prefix+'sbin'    end
+  def opt_share;   opt_prefix+'share'   end
 
   # Can be overridden to selectively disable bottles from formulae.
   # Defaults to true so overridden version does not have to check if bottles
@@ -242,17 +272,17 @@ class Formula
     (self.class.cc_failures || []).any? do |failure|
       # Major version check distinguishes between, e.g.,
       # GCC 4.7.1 and GCC 4.8.2, where a comparison is meaningless
-      failure.compiler == cc.name && failure.major_version == cc.major_version && \
-        failure.version >= cc.version
+      failure.compiler == cc.name && failure.major_version == cc.major_version &&
+        failure.version >= (cc.version || 0)
     end
   end
 
-  # sometimes the clean process breaks things
+  # sometimes the formula cleaner breaks things
   # skip cleaning paths in a formula with a class method like this:
-  #   skip_clean [bin+"foo", lib+"bar"]
-  # redefining skip_clean? now deprecated
+  #   skip_clean "bin/foo", "lib"bar"
+  # keep .la files with:
+  #   skip_clean :la
   def skip_clean? path
-    return true if self.class.skip_clean_all?
     return true if path.extname == '.la' and self.class.skip_clean_paths.include? :la
     to_check = path.relative_path_from(prefix).to_s
     self.class.skip_clean_paths.include? to_check
@@ -359,7 +389,7 @@ class Formula
   def self.each
     names.each do |name|
       begin
-        yield Formula.factory(name)
+        yield Formulary.factory(name)
       rescue StandardError => e
         # Don't let one broken formula break commands. But do complain.
         onoe "Failed to import: #{name}"
@@ -377,7 +407,7 @@ class Formula
 
     HOMEBREW_CELLAR.subdirs.map do |rack|
       begin
-        factory(rack.basename.to_s)
+        Formulary.factory(rack.basename.to_s)
       rescue FormulaUnavailableError
       end
     end.compact
@@ -394,16 +424,19 @@ class Formula
       if name =~ %r{(.+)/(.+)/(.+)}
         tap_name = "#$1-#$2".downcase
         tapd = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{tap_name}")
-        tapd.find_formula do |relative_pathname|
-          return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
-        end if tapd.directory?
+
+        if tapd.directory?
+          tapd.find_formula do |relative_pathname|
+            return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
+          end
+        end
       end
       # Otherwise don't resolve paths or URLs
       return name
     end
 
     # test if the name is a core formula
-    formula_with_that_name = Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb")
+    formula_with_that_name = Formula.path(name)
     if formula_with_that_name.file? and formula_with_that_name.readable?
       return name
     end
@@ -424,6 +457,11 @@ class Formula
     return name
   end
 
+  def self.[](name)
+    Formulary.factory(name)
+  end
+
+  # deprecated
   def self.factory name
     Formulary.factory name
   end
@@ -444,7 +482,7 @@ class Formula
 
   # True if this formula is provided by Homebrew itself
   def core_formula?
-    path.realpath.to_s == Formula.path(name).to_s
+    path.realpath == Formula.path(name)
   end
 
   def self.path name
@@ -654,7 +692,7 @@ class Formula
   class << self
 
     attr_reader :keg_only_reason, :cc_failures
-    attr_rw :homepage, :plist_startup, :plist_manual
+    attr_rw :homepage, :plist_startup, :plist_manual, :revision
 
     def specs
       @specs ||= [stable, devel, head, bottle].freeze
@@ -745,18 +783,8 @@ class Formula
 
     def skip_clean *paths
       paths.flatten!
-
-      # :all is deprecated though
-      if paths.include? :all
-        @skip_clean_all = true
-        return
-      end
-
+      # Specifying :all is deprecated and will become an error
       skip_clean_paths.merge(paths)
-    end
-
-    def skip_clean_all?
-      @skip_clean_all
     end
 
     def skip_clean_paths

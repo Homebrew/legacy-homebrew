@@ -17,9 +17,10 @@ class Qt5 < Formula
   url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.1/single/qt-everywhere-opensource-src-5.2.1.tar.gz'
   sha1 '31a5cf175bb94dbde3b52780d3be802cbeb19d65'
   bottle do
-    sha1 "242518522d1cfc33330586a189d005bd674244de" => :mavericks
-    sha1 "f7f6ff607fe69ae4c215167235f3f851717a6584" => :mountain_lion
-    sha1 "53697eeaca97521ed681460c91a046be8969ab26" => :lion
+    revision 1
+    sha1 "88f554a67bf9345c9e7abd980f7334f60b9c91cf" => :mavericks
+    sha1 "5d270c3d91bd729f3ddffcff5e201e7083914071" => :mountain_lion
+    sha1 "d2415a72aafb3ce24dc5812599fb7f7ff1f8cddd" => :lion
   end
 
   head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
@@ -31,12 +32,13 @@ class Qt5 < Formula
   option 'with-docs', 'Build documentation'
   option 'developer', 'Build and link with developer options'
 
+  depends_on "pkg-config" => :build
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
 
-  odie 'qt5: --with-qtdbus has been renamed to --with-d-bus' if build.include? 'with-qtdbus'
-  odie 'qt5: --with-demos-examples is no longer supported' if build.include? 'with-demos-examples'
-  odie 'qt5: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
+  odie 'qt5: --with-qtdbus has been renamed to --with-d-bus' if build.with? "qtdbus"
+  odie 'qt5: --with-demos-examples is no longer supported' if build.with? "demos-examples"
+  odie 'qt5: --with-debug-and-release is no longer supported' if build.with? "debug-and-release"
 
   def install
     # fixed hardcoded link to plugin dir: https://bugreports.qt-project.org/browse/QTBUG-29188
@@ -65,7 +67,7 @@ class Qt5 < Formula
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 
     if build.with? 'd-bus'
-      dbus_opt = Formula.factory('d-bus').opt_prefix
+      dbus_opt = Formula["d-bus"].opt_prefix
       args << "-I#{dbus_opt}/lib/dbus-1.0/include"
       args << "-I#{dbus_opt}/include/dbus-1.0"
       args << "-L#{dbus_opt}/lib"

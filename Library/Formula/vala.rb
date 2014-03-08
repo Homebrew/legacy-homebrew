@@ -2,8 +2,8 @@ require 'formula'
 
 class Vala < Formula
   homepage 'http://live.gnome.org/Vala'
-  url 'http://ftp.gnome.org/pub/gnome/sources/vala/0.23/vala-0.23.2.tar.xz'
-  sha1 'dcd68492f14b9324d211695c3a310c9c2ba3d929'
+  url 'http://ftp.gnome.org/pub/gnome/sources/vala/0.23/vala-0.23.3.tar.xz'
+  sha1 '77496e829f49b0b718ffc72fe2be8893f8b09f5d'
 
   head 'git://git.gnome.org/vala'
 
@@ -17,7 +17,7 @@ class Vala < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/valac", "--version"
   end
 end

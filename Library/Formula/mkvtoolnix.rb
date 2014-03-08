@@ -2,8 +2,8 @@ require 'formula'
 
 class Mkvtoolnix < Formula
   homepage 'http://www.bunkus.org/videotools/mkvtoolnix/'
-  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-6.7.0.tar.xz'
-  sha1 '3322fdcc5be3f6b799703380584ab3565c576c9e'
+  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-6.8.0.tar.xz'
+  sha1 'd742eb0c38de48d0f12363252115c0d966e8abc3'
 
   head 'https://github.com/mbunkus/mkvtoolnix.git'
 
@@ -45,7 +45,7 @@ class Mkvtoolnix < Formula
     ENV['ZLIB_CFLAGS'] = '-I/usr/include'
     ENV['ZLIB_LIBS'] = '-L/usr/lib -lz'
 
-    boost = Formula.factory('boost').opt_prefix
+    boost = Formula["boost"].opt_prefix
 
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
@@ -55,5 +55,19 @@ class Mkvtoolnix < Formula
                           "--with-boost=#{boost}"
     system "./drake", "-j#{ENV.make_jobs}"
     system "./drake install"
+  end
+
+  test do
+    mkv_path = testpath/"Great.Movie.mkv"
+    sub_path = testpath/"subtitles.srt"
+    sub_path.write <<-EOS.undent
+      1
+      00:00:10,500 --> 00:00:13,000
+      Homebrew
+    EOS
+
+    system "#{bin}/mkvmerge", "-o", mkv_path, sub_path
+    system "#{bin}/mkvinfo", mkv_path
+    system "#{bin}/mkvextract", "tracks", mkv_path, "0:#{sub_path}"
   end
 end

@@ -2,7 +2,7 @@ require 'formula'
 
 class Libdc1394 < Formula
   homepage 'http://damien.douxchamps.net/ieee1394/libdc1394/'
-  url 'http://downloads.sourceforge.net/project/libdc1394/libdc1394-2/2.2.1/libdc1394-2.2.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/libdc1394/libdc1394-2/2.2.1/libdc1394-2.2.1.tar.gz'
   sha1 'b92c9670b68c4e5011148f16c87532bef2e5b808'
 
   depends_on :libtool

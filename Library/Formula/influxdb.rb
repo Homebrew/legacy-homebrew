@@ -11,6 +11,11 @@ class Influxdb < Formula
     sha1 "be6df288b6d385c27e48ba221a12970be0eb0beb" => :lion
   end
 
+  devel do
+    url "http://get.influxdb.org/influxdb-0.5.0-rc.4.src.tar.gz"
+    sha1 "5b96491e09c1dd14055990fcaac91bab49ffc6a7"
+  end
+
   depends_on "leveldb"
   depends_on "protobuf" => :build
   depends_on "bison" => :build
@@ -20,8 +25,8 @@ class Influxdb < Formula
   def install
     ENV["GOPATH"] = buildpath
 
-    flex = Formula.factory("flex").bin/"flex"
-    bison = Formula.factory("bison").bin/"bison"
+    flex = Formula["flex"].bin/"flex"
+    bison = Formula["bison"].bin/"bison"
 
     system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
     system "make", "dependencies", "protobuf", "parser"
@@ -30,7 +35,7 @@ class Influxdb < Formula
     inreplace "config.toml.sample" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
       s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
-      s.gsub! "./admin", "#{opt_prefix}/share/admin"
+      s.gsub! "./admin", "#{opt_share}/admin"
     end
 
     bin.install "daemon" => "influxdb"
@@ -57,7 +62,7 @@ class Influxdb < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/influxdb</string>
+          <string>#{opt_bin}/influxdb</string>
           <string>-config=#{etc}/influxdb.conf</string>
         </array>
         <key>RunAtLoad</key>

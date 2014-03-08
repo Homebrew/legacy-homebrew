@@ -16,7 +16,7 @@ class Pngquant < Formula
     man1.install 'pngquant.1'
   end
 
-  def test
+  test do
     system "#{bin}/pngquant", "--help"
   end
 end

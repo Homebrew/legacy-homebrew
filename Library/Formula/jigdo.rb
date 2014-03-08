@@ -23,7 +23,7 @@ class Jigdo < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/jigdo-file", "-h"
   end
 end

@@ -34,7 +34,19 @@ class Ledger < Formula
       # Support homebrew not at /usr/local. Also support Xcode-only setups:
       inreplace 'acprep', 'search_prefixes = [', "search_prefixes = ['#{HOMEBREW_PREFIX}','#{MacOS.sdk_path}/usr',"
       args = [((build.include? 'debug') ? 'debug' : 'opt'), "make", "install", "-N", "-j#{ENV.make_jobs}", "--output=build"]
-      args << '--python' if build.with? 'python'
+
+      if build.with? 'python'
+        # Per #25118, CMake does a poor job of detecting a brewed Python.
+        # We need to tell CMake explicitly where our default python lives.
+        # Inspired by
+        # https://github.com/Homebrew/homebrew/blob/51d054c/Library/Formula/opencv.rb
+        args << '--python' << '--'
+
+        python_prefix = `python-config --prefix`.strip
+        args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+        args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
+      end
+
       system "./acprep", "--prefix=#{prefix}", *args
       (share+'ledger').install 'python/demo.py', 'test/input/sample.dat', Dir['contrib']
     else
@@ -42,7 +54,7 @@ class Ledger < Formula
       if build.with? 'libofx'
         args << "--enable-ofx"
         # the libofx.h appears to have moved to a subdirectory
-        ENV.append 'CXXFLAGS', "-I#{Formula.factory('libofx').opt_prefix}/include/libofx"
+        ENV.append 'CXXFLAGS', "-I#{Formula["libofx"].opt_include}/libofx"
       end
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
                             "--prefix=#{prefix}", *args

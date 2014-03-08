@@ -2,7 +2,7 @@ require 'formula'
 
 class UnittestCpp < Formula
   homepage 'http://unittest-cpp.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/unittest-cpp/UnitTest++/1.4/unittest-cpp-1.4.zip'
+  url 'https://downloads.sourceforge.net/project/unittest-cpp/UnitTest++/1.4/unittest-cpp-1.4.zip'
   sha1 'dad944159e2e135aea74039987490eaaee00f2ad'
 
   def install

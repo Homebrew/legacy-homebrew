@@ -26,7 +26,7 @@ class Spdylay < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/spdycat", "-ns", "https://www.google.com"
   end
 end

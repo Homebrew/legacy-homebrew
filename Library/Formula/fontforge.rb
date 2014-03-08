@@ -4,7 +4,7 @@ class Fontforge < Formula
   homepage 'http://fontforge.org/'
 
   stable do
-    url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
+    url 'https://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
     sha1 'b520f532b48e557c177dffa29120225066cc4e84'
 
     depends_on 'cairo' => :optional
@@ -61,7 +61,7 @@ class Fontforge < Formula
       args << "--without-cairo" if build.without? "cairo"
       args << "--without-pango" if build.without? "pango"
     end
-    args << "--without-x" unless build.with? 'x'
+    args << "--without-x" if build.without? 'x'
 
     # To avoid "dlopen(/opt/local/lib/libpng.2.dylib, 1): image not found"
     args << "--with-static-imagelibs"

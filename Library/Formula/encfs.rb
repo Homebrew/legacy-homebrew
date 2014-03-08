@@ -2,7 +2,7 @@ require 'formula'
 
 class Encfs < Formula
   homepage 'http://www.arg0.net/encfs'
-  url 'http://encfs.googlecode.com/files/encfs-1.7.4.tgz'
+  url 'https://encfs.googlecode.com/files/encfs-1.7.4.tgz'
   sha1 '3d824ba188dbaabdc9e36621afb72c651e6e2945'
 
   depends_on 'pkg-config' => :build
@@ -24,8 +24,9 @@ class Encfs < Formula
 
   def install
     # Add correct flags for linkage with {osx,}fuse and gettext libs
-    ENV.append 'CPPFLAGS', %x[pkg-config fuse --cflags].chomp + "-I#{Formula.factory('gettext').include}"
-    ENV.append 'LDFLAGS', %x[pkg-config fuse --libs].chomp + "-L#{Formula.factory('gettext').lib}"
+    gettext = Formula['gettext']
+    ENV.append 'CPPFLAGS', %x[pkg-config fuse --cflags].chomp + "-I#{gettext.include}"
+    ENV.append 'LDFLAGS', %x[pkg-config fuse --libs].chomp + "-L#{gettext.lib}"
     inreplace "configure", "-lfuse", "-losxfuse"
 
     # Adapt to changes in recent Xcode by making local copy of endian-ness definitions

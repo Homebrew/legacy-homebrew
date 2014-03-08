@@ -20,7 +20,7 @@ class Fwknop < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/fwknop", "--version"
   end
 end

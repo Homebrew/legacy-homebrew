@@ -137,6 +137,9 @@ class FormulaAuditor
     f.deps.each do |dep|
       begin
         dep_f = dep.to_formula
+      rescue TapFormulaUnavailableError
+        # Don't complain about missing cross-tap dependencies
+        next
       rescue FormulaUnavailableError
         problem "Can't find dependency #{dep.name.inspect}."
         next
@@ -180,7 +183,7 @@ class FormulaAuditor
   def audit_conflicts
     f.conflicts.each do |c|
       begin
-        Formula.factory(c.name)
+        Formulary.factory(c.name)
       rescue FormulaUnavailableError
         problem "Can't find conflicting formula #{c.name.inspect}."
       end
@@ -220,7 +223,7 @@ class FormulaAuditor
       next if p =~ %r[svn\.sourceforge]
 
       # Is it a sourceforge http(s) URL?
-      next unless p =~ %r[^https?://.*\bsourceforge\.com]
+      next unless p =~ %r[^https?://.*\b(sourceforge|sf)\.(com|net)]
 
       if p =~ /(\?|&)use_mirror=/
         problem "Don't use #{$1}use_mirror in SourceForge urls (url is #{p})."
@@ -242,6 +245,15 @@ class FormulaAuditor
       if p =~ %r[^http://\w+\.dl\.]
         problem "Don't use specific dl mirrors in SourceForge urls (url is #{p})."
       end
+
+      if p.start_with? "http://downloads"
+        problem "Use https:// URLs for downloads from SourceForge (url is #{p})."
+      end
+    end
+
+    # Check for Google Code download urls, https:// is preferred
+    urls.grep(%r[^http://.*\.googlecode\.com/files.*]) do |u|
+      problem "Use https:// URLs for downloads from Google Code (url is #{u})."
     end
 
     # Check for git:// GitHub repo urls, https:// is preferred.
@@ -257,6 +269,11 @@ class FormulaAuditor
     # Use new-style archive downloads
     urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
+    end
+
+    # Don't use GitHub .zip files
+    urls.select { |u| u =~ %r[https://.*github.*/(archive|releases)/.*\.zip$] && u !~ %r[releases/download] }.each do |u|
+      problem "Use GitHub tarballs rather than zipballs (url is #{u})."
     end
   end
 
@@ -292,8 +309,20 @@ class FormulaAuditor
   end
 
   def audit_text
-    if text =~ /system\s+['"]xcodebuild/ && text !~ /SYMROOT=/
-      problem "xcodebuild should be passed an explicit \"SYMROOT\""
+    if text =~ /system\s+['"]scons/
+      problem "use \"scons *args\" instead of \"system 'scons', *args\""
+    end
+
+    if text =~ /system\s+['"]xcodebuild/
+      problem %{use "xcodebuild *args" instead of "system 'xcodebuild', *args"}
+    end
+
+    if text =~ /xcodebuild[ (]["'*]/ && text !~ /SYMROOT=/
+      problem %{xcodebuild should be passed an explicit "SYMROOT"}
+    end
+
+    if text =~ /Formula\.factory\(/
+      problem "\"Formula.factory(name)\" is deprecated in favor of \"Formula[name]\""
     end
   end
 
@@ -395,17 +424,15 @@ class FormulaAuditor
     end
 
     # Avoid hard-coding compilers
-    unless f.name == 'go' # Go needs to set CC for cgo support.
-      if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
-        problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
-      end
+    if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
+      problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
     end
 
     if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]}
       problem "Use \"\#{ENV.cxx}\" instead of hard-coding \"#{$3}\""
     end
 
-    if line =~ /system\s+['"](env|export)/
+    if line =~ /system\s+['"](env|export)(\s+|['"])/
       problem "Use ENV instead of invoking '#{$1}' to modify the environment"
     end
 
@@ -413,24 +440,38 @@ class FormulaAuditor
       problem "Use 'build.head?' instead of inspecting 'version'"
     end
 
-    if line =~ /build\.include\?\s+['"]\-\-(.*)['"]/
+    if line =~ /build\.include\?[\s\(]+['"]\-\-(.*)['"]/
       problem "Reference '#{$1}' without dashes"
     end
 
-    if line =~ /build\.with\?\s+['"]-?-?with-(.*)['"]/
-      problem "No double 'with': Use `build.with? '#{$1}'` to check for \"--with-#{$1}\""
+    if line =~ /build\.include\?[\s\(]+['"]with(out)?-(.*)['"]/
+      problem "Use build.with#{$1}? \"#{$2}\" instead of build.include? 'with#{$1}-#{$2}'"
     end
 
-    if line =~ /build\.without\?\s+['"]-?-?without-(.*)['"]/
-      problem "No double 'without': Use `build.without? '#{$1}'` to check for \"--without-#{$1}\""
+    if line =~ /build\.with\?[\s\(]+['"]-?-?with-(.*)['"]/
+      problem "Don't duplicate 'with': Use `build.with? \"#{$1}\"` to check for \"--with-#{$1}\""
     end
 
-    # Mongo writes out a Ruby script that uses ARGV
-    # Python formulae need ARGV for Requirements
-    unless f.name == 'mongodb' || f.name == "pyobject3"
-      if line =~ /ARGV\.(?!(debug\?|verbose\?|value[\(\s]))/
-        problem "Use build instead of ARGV to check options"
-      end
+    if line =~ /build\.without\?[\s\(]+['"]-?-?without-(.*)['"]/
+      problem "Don't duplicate 'without': Use `build.without? \"#{$1}\"` to check for \"--without-#{$1}\""
+    end
+
+    if line =~ /unless build\.with(out)?\?/
+      problem "Don't use unless with 'build.with#{$1}': use 'if build.with#{$1}?'"
+    end
+
+    if line =~ /(not\s|!)\s*build\.with?\?/
+      problem "Don't negate 'build.without?': use 'build.with?'"
+    end
+
+    if line =~ /(not\s|!)\s*build\.without?\?/
+      problem "Don't negate 'build.with?': use 'build.without?'"
+    end
+
+    if line =~ /ARGV\.(?!(debug\?|verbose\?|value[\(\s]))/
+      # Python formulae need ARGV for Requirements
+      problem "Use build instead of ARGV to check options",
+              :whitelist => %w{pygobject3 qscintilla2}
     end
 
     if line =~ /def options/
@@ -447,7 +488,8 @@ class FormulaAuditor
     end
 
     if line =~ /skip_clean\s+:all/
-      problem "`skip_clean :all` is deprecated; brew no longer strips symbols"
+      problem "`skip_clean :all` is deprecated; brew no longer strips symbols\n" +
+              "\tPass explicit paths to prevent Homebrew from removing empty folders."
     end
 
     if line =~ /depends_on [A-Z][\w:]+\.new$/
@@ -518,7 +560,8 @@ class FormulaAuditor
 
   private
 
-  def problem p
+  def problem p, options={}
+    return if options[:whitelist].to_a.include? f.name
     @problems << p
   end
 end

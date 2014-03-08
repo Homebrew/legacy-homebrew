@@ -4,6 +4,7 @@ class Ncdc < Formula
   homepage 'http://dev.yorhel.nl/ncdc'
   url 'http://dev.yorhel.nl/download/ncdc-1.19.tar.gz'
   sha1 '7f478b7daf09202586b40899cc6beabeb0d23178'
+  revision 1
 
   option 'with-geoip', "Build with geoip support"
 
