@@ -8,7 +8,7 @@ class Valabind < Formula
   head 'https://github.com/radare/valabind.git'
 
   depends_on 'pkg-config' => :build
-  depends_on 'swig'
+  depends_on 'swig' => :run
   depends_on 'vala'
 
   def install
