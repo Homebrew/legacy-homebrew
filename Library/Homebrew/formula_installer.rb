@@ -386,8 +386,15 @@ class FormulaInstaller
     @build_time ||= Time.now - @start_time unless pour_bottle? or ARGV.interactive? or @start_time.nil?
   end
 
+  def sanitized_ARGV_options
+    args = ARGV.options_only
+    args.delete "--ignore-dependencies" unless ignore_deps
+    args.delete "--only-dependencies" unless only_deps
+    args
+  end
+
   def build_argv
-    opts = Options.coerce(ARGV.options_only)
+    opts = Options.coerce(sanitized_ARGV_options)
     opts.concat(options) unless opts.include? "--fresh"
     opts << Option.new("--build-from-source") # don't download bottle
   end
