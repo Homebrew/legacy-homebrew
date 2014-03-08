@@ -2,10 +2,19 @@ require "formula"
 
 class Selecta < Formula
   homepage "https://github.com/garybernhardt/selecta"
-  url "https://github.com/garybernhardt/selecta/archive/v0.0.1.tar.gz"
-  sha1 "7528a7b817ffa428759b12533e3382b5e7482603"
+  url "https://github.com/garybernhardt/selecta/archive/v0.0.3.tar.gz"
+  sha1 "0530f2145d5eb018ba9cf7108bd78d3e5bb03434"
 
   def install
-    bin.install 'selecta'
+    bin.install "selecta"
+  end
+
+  test do
+    system "#{bin}/selecta", "--version"
+  end
+
+  def caveats; <<-EOS.undent
+    Selecta requires Ruby 1.9 or better.
+    EOS
   end
 end
