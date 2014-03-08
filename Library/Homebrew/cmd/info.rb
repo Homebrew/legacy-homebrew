@@ -24,7 +24,8 @@ module Homebrew extend self
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
       end
     else
-      ARGV.named.each do |f|
+      ARGV.named.each_with_index do |f,i|
+        puts unless i == 0
         begin
           info_formula Formula.factory(f)
         rescue FormulaUnavailableError
