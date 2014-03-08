@@ -34,19 +34,19 @@ end
 
 class Xulrunner < Formula
   homepage "https://developer.mozilla.org/docs/XULRunner"
-  url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/27.0.1/source/xulrunner-27.0.1.source.tar.bz2"
-  sha1 "c9c5a6142fc9c50113c18eb8b1fb9249c08c4aac"
+  url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/28.0/source/xulrunner-28.0.source.tar.bz2"
+  sha1 "7965105b34441ebfab650930dffa4648c85ac6c6"
 
   devel do
-    url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/28.0b8/source/xulrunner-28.0b8.source.tar.bz2"
-    sha1 "2c2bda033f7ce771b0aff82237551264911a32c3"
-    version "28.0b8"
+    url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/29.0b1/source/xulrunner-29.0b1.source.tar.bz2"
+    sha1 "80ea2209c0ea9316b5c8dc16208514d14c410c22"
+    version "29.0b1"
   end
 
   head do
-    url "http://ftp.mozilla.org/pub/mozilla.org/firefox/bundles/mozilla-central.hg|https://hg.mozilla.org/mozilla-central/",
+    url "https://ftp.mozilla.org/pub/mozilla.org/firefox/bundles/mozilla-central.hg|https://hg.mozilla.org/mozilla-central/",
       :using => HgBundleDownloadStrategy
-    depends_on "mercurial" => :build
+    depends_on :hg => :build
     depends_on "gettext" => :build
   end
 
@@ -68,7 +68,7 @@ class Xulrunner < Formula
 
   resource "autoconf213" do
     url "http://ftpmirror.gnu.org/autoconf/autoconf-2.13.tar.gz"
-    mirror "http://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz"
+    mirror "https://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz"
     sha1 "e4826c8bd85325067818f19b2b2ad2b625da66fc"
   end
 
@@ -102,7 +102,7 @@ class Xulrunner < Formula
     frameworks.mkpath
     if build.head?
       # update HEAD version here with every version bump
-      tar_path = "objdir/dist/xulrunner-30.0a1.en-US.mac64.tar.bz2"
+      tar_path = "objdir/dist/xulrunner-31.0a1.en-US.mac64.tar.bz2"
     else
       tar_path = "objdir/dist/xulrunner-#{version.to_s[/\d+\.\d+(\.\d+)?/]}.en-US.mac64.tar.bz2"
     end
