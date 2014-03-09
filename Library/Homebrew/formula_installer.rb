@@ -389,7 +389,6 @@ class FormulaInstaller
   def sanitized_ARGV_options
     args = ARGV.options_only
     args.delete "--ignore-dependencies" unless ignore_deps
-    args.delete "--only-dependencies" unless only_deps
     args
   end
 
