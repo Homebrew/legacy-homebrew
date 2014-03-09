@@ -88,7 +88,7 @@ class DependencyCollector
     if tags.empty?
       Dependency.new(spec, tags)
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
-      LanguageModuleDependency.new(tag, spec)
+      LanguageModuleDependency.new(tag, spec, tags[1])
     elsif HOMEBREW_TAP_FORMULA_REGEX === spec
       TapDependency.new(spec, tags)
     else
