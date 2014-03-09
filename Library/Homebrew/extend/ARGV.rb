@@ -143,8 +143,7 @@ module HomebrewArgvExtension
   end
 
   def build_from_source?
-    include? '--build-from-source' or !ENV['HOMEBREW_BUILD_FROM_SOURCE'].nil? \
-      or build_head? or build_devel? or build_universal?
+    include? '--build-from-source' or !ENV['HOMEBREW_BUILD_FROM_SOURCE'].nil?
   end
 
   def flag? flag
