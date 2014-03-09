@@ -2,8 +2,8 @@ require 'formula'
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.3.4/Python-3.3.4.tgz'
-  sha1 '0561d2a24067c03ed2b29c58a12e126e86ccdc58'
+  url 'http://python.org/ftp/python/3.3.5/Python-3.3.5.tgz'
+  sha1 '15f24702c5ae07d364606c663e515c1d9ba58615'
   VER='3.3'  # The <major>.<minor> is used so often.
 
   head 'http://hg.python.org/cpython', :using => :hg, :branch => VER
