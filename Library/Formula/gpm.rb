@@ -12,8 +12,8 @@ end
 
 class Gpm < Formula
   homepage "https://github.com/pote/gpm"
-  url "https://github.com/pote/gpm/archive/v1.1.0.tar.gz"
-  sha1 "feede16a13f50e762bd372a83aef6778c702726e"
+  url "https://github.com/pote/gpm/archive/v1.1.1.tar.gz"
+  sha1 "dfa0a633f28cdbc48a7ade593a7a5dfe8136cc2f"
 
   depends_on GoInstalled
 
