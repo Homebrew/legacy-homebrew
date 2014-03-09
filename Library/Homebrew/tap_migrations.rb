@@ -3,7 +3,6 @@ TAP_MIGRATIONS = {
   "blackbox" => "homebrew/boneyard",
   "boost149" => "homebrew/versions",
   "cmucl" => "homebrew/binary",
-  "colormake" => "homebrew/headonly",
   "comparepdf" => "homebrew/boneyard",
   "denyhosts" => "homebrew/boneyard",
   "dotwrp" => "homebrew/science",
