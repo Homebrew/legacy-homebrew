@@ -18,12 +18,15 @@ class FormulaInstaller
   attr_reader :f
   attr_accessor :options, :ignore_deps, :only_deps
   attr_accessor :show_summary_heading, :show_header
+  attr_accessor :build_from_source, :build_bottle
 
   def initialize ff
     @f = ff
     @show_header = false
     @ignore_deps = false
     @only_deps = false
+    @build_from_source = false
+    @build_bottle = false
     @options = Options.new
 
     @@attempted ||= Set.new
@@ -34,6 +37,7 @@ class FormulaInstaller
 
   def pour_bottle? install_bottle_options={:warn=>false}
     return false if @pour_failed
+    return false if build_from_source || build_bottle
     options.empty? && install_bottle?(f, install_bottle_options)
   end
 
