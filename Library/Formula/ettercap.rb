@@ -2,14 +2,14 @@ require 'formula'
 
 class Ettercap < Formula
   homepage 'http://ettercap.github.io/ettercap/'
-  url 'https://github.com/Ettercap/ettercap/archive/v0.8.0.tar.gz'
-  sha1 '008fca94bbd67b578699300eb321766cd41fbfff'
+  url "https://github.com/Ettercap/ettercap/archive/v0.8.0.tar.gz"
+  sha1 "008fca94bbd67b578699300eb321766cd41fbfff"
 
-  head 'https://github.com/Ettercap/ettercap.git'
+  head "https://github.com/Ettercap/ettercap.git"
 
-  option 'without-curses', 'Install without curses interface'
-  option 'without-plugins', 'Install without plugins support'
-  option 'with-ipv6', 'Install with IPv6 support'
+  option "without-curses", "Install without curses interface"
+  option "without-plugins", "Install without plugins support"
+  option "with-ipv6", "Install with IPv6 support"
 
   depends_on 'cmake' => :build
   depends_on 'ghostscript' => :build
@@ -24,17 +24,20 @@ class Ettercap < Formula
       # Fixes issue #326: redefinition of 'bpf_program', 'bpf_version',
       #  and 'bpf_insn' in ec_send.c on Mac OS X.
       # url: https://github.com/Ettercap/ettercap/issues/326
-      "https://github.com/Ettercap/ettercap/commit/4aaaa2fb6a4ea98e110548802ed015694244b90e.patch",
+      "https://github.com/Ettercap/ettercap/commit/4aaaa2.patch",
       # Fixes issue #344: undefined symbol safe_free_mem caused by the previous fix.
       # url: https://github.com/Ettercap/ettercap/issues/344
-      "https://github.com/Ettercap/ettercap/commit/33ac95f78e4f6f067e6bc33b8883b3b7daa896f3.patch"
+      "https://github.com/Ettercap/ettercap/commit/33ac95.patch",
     ]
   end
 
   def install
     args = std_cmake_args
+
+    # specify build type manually since std_cmake_args sets the build type to "None".
+    args << "-DCMAKE_BUILD_TYPE=Release"
+
     args << "-DINSTALL_SYSCONFDIR=#{etc}"
-    args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     args << "-DENABLE_CURSES=OFF" if build.without? "curses"
     args << "-DENABLE_PLUGINS=OFF" if build.without? "plugins"
     args << "-DENABLE_IPV6=ON" if build.with? "ipv6"
