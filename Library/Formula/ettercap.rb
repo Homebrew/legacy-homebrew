@@ -10,7 +10,6 @@ class Ettercap < Formula
   option 'without-curses', 'Install without curses interface'
   option 'without-plugins', 'Install without plugins support'
   option 'with-ipv6', 'Install with IPv6 support'
-  option 'with-debug', 'Enable debug mode'
 
   depends_on 'cmake' => :build
   depends_on 'ghostscript' => :build
@@ -23,7 +22,7 @@ class Ettercap < Formula
   def patches
     [
       # Fixes issue #326: redefinition of 'bpf_program', 'bpf_version',
-      #  and 'bpf_insn' in ec_send.c on Mac OS X
+      #  and 'bpf_insn' in ec_send.c on Mac OS X.
       # url: https://github.com/Ettercap/ettercap/issues/326
       "https://github.com/Ettercap/ettercap/commit/4aaaa2fb6a4ea98e110548802ed015694244b90e.patch",
       # Fixes issue #344: undefined symbol safe_free_mem caused by the previous fix.
@@ -33,11 +32,8 @@ class Ettercap < Formula
   end
 
   def install
-    build_type = build.with? "debug" ? "Debug" : "Release"
-
     args = std_cmake_args
     args << "-DINSTALL_SYSCONFDIR=#{etc}"
-    args << "-DCMAKE_BUILD_TYPE=#{build_type}"
     args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     args << "-DENABLE_CURSES=OFF" if build.without? "curses"
     args << "-DENABLE_PLUGINS=OFF" if build.without? "plugins"
