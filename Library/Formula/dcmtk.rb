@@ -10,7 +10,7 @@ class Dcmtk < Formula
   depends_on 'cmake' => :build
   depends_on "libpng"
   depends_on 'libtiff'
-  depends_on 'doxygen' if build.include? 'with-docs'
+  depends_on 'doxygen' if build.with? "docs"
 
   # This roughly corresponds to thefollowing upstream patch:
   #
@@ -31,12 +31,12 @@ class Dcmtk < Formula
     ENV.m64 if MacOS.prefer_64_bit?
 
     args = std_cmake_args
-    args << '-DDCMTK_WITH_DOXYGEN=YES' if build.include? 'with-docs'
+    args << '-DDCMTK_WITH_DOXYGEN=YES' if build.with? "docs"
     args << '..'
 
     mkdir 'build' do
       system 'cmake', *args
-      system 'make DOXYGEN' if build.include? 'with-docs'
+      system 'make DOXYGEN' if build.with? "docs"
       system 'make install'
     end
   end

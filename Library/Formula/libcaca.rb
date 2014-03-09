@@ -8,9 +8,9 @@ class Libcaca < Formula
 
   option 'with-imlib2', 'Build with Imlib2 support'
 
-  depends_on :x11 if MacOS::X11.installed? or build.include? "with-imlib2"
+  depends_on :x11 if MacOS::X11.installed? or build.with? "imlib2"
 
-  if build.include? "with-imlib2"
+  if build.with? "imlib2"
     depends_on 'pkg-config' => :build
     depends_on 'imlib2' => :optional
   end
@@ -56,7 +56,7 @@ __END__
 @@ -645,7 +645,7 @@ typedef struct cucul_buffer cucul_buffer
  #       define CACA_DEPRECATED
  #   endif
- 
+
 -#   if defined __GNUC__ && __GNUC__ > 3
 +#   if !defined __APPLE__ && defined __GNUC__ && __GNUC__ > 3
  #       define CACA_ALIAS(x) __attribute__ ((weak, alias(#x)))

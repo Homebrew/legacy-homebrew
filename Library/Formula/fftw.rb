@@ -26,7 +26,7 @@ class Fftw < Formula
     simd_args = ["--enable-sse2"]
     simd_args << "--enable-avx" if ENV.compiler == :clang and Hardware::CPU.avx? and !build.bottle?
 
-    args << "--disable-fortran" unless build.with? "fortran"
+    args << "--disable-fortran" if build.without? "fortran"
 
     ENV.universal_binary if build.universal?
 
