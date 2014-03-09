@@ -8,6 +8,8 @@ class Pyside < Formula
 
   head 'git://gitorious.org/pyside/pyside.git'
 
+  option "without-docs", "Skip building documentation"
+
   depends_on 'cmake' => :build
   depends_on 'shiboken'
   depends_on 'qt'
@@ -16,7 +18,27 @@ class Pyside < Formula
     DATA  # Fix moc_qpytextobject.cxx not found (https://codereview.qt-project.org/62479)
   end
 
+  resource 'sphinx' do
+    url 'https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.2.tar.gz'
+    sha1 '9e424b03fe1f68e0326f3905738adcf27782f677'
+  end
+
   def install
+    if build.with? "docs"
+      (buildpath/"sphinx").mkpath
+
+      resource("sphinx").stage do
+        system "python", "setup.py", "install",
+                                     "--prefix=#{buildpath}/sphinx",
+                                     "--record=installed.txt",
+                                     "--single-version-externally-managed"
+      end
+
+      ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
+    else
+      rm buildpath/"doc/CMakeLists.txt"
+    end
+
     # Add out of tree build because one of its deps, shiboken, itself needs an
     # out of tree build in shiboken.rb.
     mkdir "macbuild" do
