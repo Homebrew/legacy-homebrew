@@ -6,7 +6,7 @@ class Xplanet < Formula
   sha1 '7c5208b501b441a0184cbb334a5658d0309d7dac'
 
   option "with-x", "Build for X11 instead of Aqua"
-  option "with-all", "Installs the additional dependencies, except the JPL CSPICE package, included as part of Xplanet's default configuration.  CSPICE support will be built in Xplanet if it has already been installed."
+  option "with-all", "Build with default Xplanet configuration dependencies except JPL CSPICE (manual install)"
 
   depends_on 'pkg-config' => :build
   depends_on "libpng"
