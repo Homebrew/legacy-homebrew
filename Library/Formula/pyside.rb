@@ -11,13 +11,7 @@ class Pyside < Formula
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
-  if !Formula["python"].installed? && build.with?("python") &&
-     build.with?("python3")
-    odie <<-EOS.undent
-      pyside: You cannot use system Python 2 and Homebrew's Python 3 simultaneously.
-      Either `brew install python` or use `--without-python3`.
-    EOS
-  elsif build.without?("python3") && build.without?("python")
+  if build.without?("python3") && build.without?("python")
     odie "pyside: --with-python3 must be specified when using --without-python"
   end
 
@@ -34,16 +28,6 @@ class Pyside < Formula
     depends_on 'shiboken'
   end
 
-  def pythons
-    pythons = []
-    ["python", "python3"].each do |python|
-      next if build.without? python
-      version = /\d\.\d/.match `#{python} --version 2>&1`
-      pythons << [python, version]
-    end
-    pythons
-  end
-
   def patches
     DATA  # Fix moc_qpytextobject.cxx not found (https://codereview.qt-project.org/62479)
   end
@@ -51,7 +35,7 @@ class Pyside < Formula
   def install
     # Add out of tree build because one of its deps, shiboken, itself needs an
     # out of tree build in shiboken.rb.
-    pythons.each do |python, version|
+    PythonUtils.for_each_python_version(build) do |python, version|
       ohai "Install for Python #{version}"
       mkdir "macbuild#{version}" do
         qt = Formula["qt"].opt_prefix
@@ -76,10 +60,7 @@ class Pyside < Formula
   end
 
   test do
-    pythons.each do |python, version|
-      unless Formula[python].installed?
-        ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
-      end
+    PythonUtils.for_each_python_version(build) do |python, version|
       system python, '-c', "from PySide import QtCore"
     end
   end
