@@ -80,11 +80,15 @@ class Formula
     end
   end
 
+  def select_bottle?
+    !ARGV.build_bottle? && install_bottle?(self)
+  end
+
   def determine_active_spec
     case
     when head && ARGV.build_head?        then head    # --HEAD
     when devel && ARGV.build_devel?      then devel   # --devel
-    when bottle && install_bottle?(self) then bottle  # bottle available
+    when bottle && select_bottle?        then bottle  # bottle available
     when stable                          then stable
     when devel && stable.nil?            then devel   # devel-only
     when head && stable.nil?             then head    # head-only

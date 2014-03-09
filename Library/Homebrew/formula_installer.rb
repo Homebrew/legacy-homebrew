@@ -118,7 +118,7 @@ class FormulaInstaller
 
     return if only_deps
 
-    if ARGV.build_bottle? && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
+    if build_bottle && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
 
@@ -152,7 +152,7 @@ class FormulaInstaller
       opoo "Bottle installation failed: building from source."
     end
 
-    build_bottle_preinstall if ARGV.build_bottle?
+    build_bottle_preinstall if build_bottle
 
     unless @poured_bottle
       compute_and_install_dependencies if @pour_failed and not ignore_deps
@@ -160,7 +160,7 @@ class FormulaInstaller
       clean
     end
 
-    build_bottle_postinstall if ARGV.build_bottle?
+    build_bottle_postinstall if build_bottle
 
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
@@ -394,6 +394,7 @@ class FormulaInstaller
   def sanitized_ARGV_options
     args = ARGV.options_only
     args.delete "--ignore-dependencies" unless ignore_deps
+    args.delete "--build-bottle" unless build_bottle
     args
   end
 
