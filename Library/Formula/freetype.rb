@@ -7,9 +7,9 @@ class Freetype < Formula
 
   bottle do
     cellar :any
-    sha1 '0165d6c3c81c986b82605206f8afc5f1ce23e5b7' => :mavericks
-    sha1 '46f1a1b6f323a951982345452bd262907c7d9429' => :mountain_lion
-    sha1 '4d87eee4bfc2052951fe948d5483869c0923a3e3' => :lion
+    sha1 "f6f9a0ac918a5ef32d9245d74aa63a329a016b34" => :mavericks
+    sha1 "643f9ea163b59e13a00251a2b151a5ea110675dd" => :mountain_lion
+    sha1 "09b3677ce3fe49f7dba549679470d6e3cadd2954" => :lion
   end
 
   keg_only :provided_pre_mountain_lion
