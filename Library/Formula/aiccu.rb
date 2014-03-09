@@ -27,7 +27,7 @@ class Aiccu < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/aiccu</string>
+        <string>#{opt_sbin}/aiccu</string>
         <string>start</string>
         <string>#{etc}/aiccu.conf</string>
       </array>

@@ -17,10 +17,10 @@ class Portaudio < Formula
 
   # Fix PyAudio compilation on Lion
   def patches
-    { :p0 =>
-      "https://trac.macports.org/export/94150/trunk/dports/audio/portaudio/files/patch-include__pa_mac_core.h.diff"
-    }
-  end if MacOS.version >= :lion and not build.head?
+    if MacOS.version >= :lion and not build.head?
+      { :p0 => "https://trac.macports.org/export/94150/trunk/dports/audio/portaudio/files/patch-include__pa_mac_core.h.diff" }
+    end
+  end
 
   def install
     ENV.universal_binary if build.universal?

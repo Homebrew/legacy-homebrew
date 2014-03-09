@@ -3,12 +3,16 @@ class BottleVersion < Version
     spec = Pathname.new(spec) unless spec.is_a? Pathname
     stem = spec.stem
 
-    # e.g. perforce-2013.1.610569-x86_64
+    # e.g. perforce-2013.1.610569-x86_64.mountain_lion.bottle.tar.gz
     m = /-([\d\.]+-x86(_64)?)/.match(stem)
     return m.captures.first unless m.nil?
 
-    # e.g. ssh-copy-id-6.2p2.bottle.tar.gz
-    # e.g. icu4c-52.1.bottle.tar.gz
+    # e.g. x264-r2197.4.mavericks.bottle.tar.gz
+    m = /(r\d+\.\d)/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. ssh-copy-id-6.2p2.mountain_lion.bottle.tar.gz
+    # e.g. icu4c-52.1.mountain_lion.bottle.tar.gz
     m = /(\d+\.(\d)+(p(\d)+)?)/.match(stem)
     return m.captures.first unless m.nil?
 

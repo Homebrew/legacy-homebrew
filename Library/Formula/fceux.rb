@@ -2,7 +2,7 @@ require 'formula'
 
 class Fceux < Formula
   homepage 'http://fceux.com'
-  url 'http://downloads.sourceforge.net/project/fceultra/Source%20Code/2.2.2%20src/fceux-2.2.2.src.tar.gz'
+  url 'https://downloads.sourceforge.net/project/fceultra/Source%20Code/2.2.2%20src/fceux-2.2.2.src.tar.gz'
   sha1 'ec50d8eae04794ba10f441a26cdb410c1cf6832b'
 
   option 'no-gtk', "Build without Gtk+ support"
@@ -22,7 +22,7 @@ class Fceux < Formula
   def install
     args = []
     args << "GTK=0" if build.include? "no-gtk"
-    system "scons", *args
+    scons *args
     bin.install 'src/fceux'
   end
 end

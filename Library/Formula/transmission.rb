@@ -26,7 +26,7 @@ class Transmission < Formula
               --disable-mac
               --without-gtk]
 
-    args << "--disable-nls" unless build.with? 'nls'
+    args << "--disable-nls" if build.without? 'nls'
 
     #fixes issue w/ webui files not being found #21151
     #submitted upstream: https://trac.transmissionbt.com/ticket/5304

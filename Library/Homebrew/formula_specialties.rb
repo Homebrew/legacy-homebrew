@@ -28,7 +28,7 @@ class AmazonWebServicesFormula < Formula
   end
 
   # Use this method to generate standard caveats.
-  def standard_instructions home_name
+  def standard_instructions home_name, home_value=libexec
     <<-EOS.undent
       Before you can use these tools you must export some variables to your $SHELL
       and download your X.509 certificate and private key from Amazon Web Services.
@@ -46,7 +46,7 @@ class AmazonWebServicesFormula < Formula
       export JAVA_HOME="$(/usr/libexec/java_home)"
       export EC2_PRIVATE_KEY="$(/bin/ls "$HOME"/.ec2/pk-*.pem | /usr/bin/head -1)"
       export EC2_CERT="$(/bin/ls "$HOME"/.ec2/cert-*.pem | /usr/bin/head -1)"
-      export #{home_name}="#{libexec}"
+      export #{home_name}="#{home_value}"
     EOS
   end
 end

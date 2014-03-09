@@ -11,6 +11,8 @@ class Chuck < Formula
       # private framework it needs
       # See: https://github.com/Homebrew/homebrew/issues/26519
       inreplace 'makefile.osx' do |s|
+        # Continuation of another line, which the change_make_var! will mangle
+        s.gsub! '    -weak_framework MultitouchSupport', ''
         s.change_make_var! 'LINK_EXTRAS',
           '-F/System/Library/PrivateFrameworks -weak_framework MultitouchSupport'
         s.remove_make_var! 'ISYSROOT'

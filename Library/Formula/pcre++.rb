@@ -13,7 +13,7 @@ class Pcrexx < Formula
   end
 
   def install
-    pcre = Formula.factory('pcre').opt_prefix
+    pcre = Formula["pcre"].opt_prefix
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

@@ -2,7 +2,7 @@ require 'formula'
 
 class Pyqt5 < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt/download5'
-  url 'http://downloads.sf.net/project/pyqt/PyQt5/PyQt-5.2/PyQt-gpl-5.2.tar.gz'
+  url 'https://downloads.sf.net/project/pyqt/PyQt5/PyQt-5.2/PyQt-gpl-5.2.tar.gz'
   sha1 'a1c232d34ab268587c127ad3097c725ee1a70cf0'
 
   option 'enable-debug', "Build with debug symbols"
@@ -10,8 +10,14 @@ class Pyqt5 < Formula
   depends_on :python3 => :recommended
   depends_on :python => :optional
 
-  if (build.without? "python") && (build.without? "python3")
-    odie "pyqt: --with-python must be specified when using --without-python3"
+  if !Formula["python"].installed? && build.with?("python") &&
+     build.with?("python3")
+    odie <<-EOS.undent
+      pyqt5: You cannot use system Python 2 and Homebrew's Python 3 simultaneously.
+      Either `brew install python` or use `--without-python3`.
+    EOS
+  elsif build.without?("python3") && build.without?("python")
+    odie "pyqt5: --with-python3 must be specified when using --without-python"
   end
 
   depends_on 'qt5'
@@ -34,14 +40,16 @@ class Pyqt5 < Formula
 
   def install
     pythons.each do |python, version|
-      ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
       args = [ "--confirm-license",
                "--bindir=#{bin}",
                "--destdir=#{lib}/python#{version}/site-packages",
-               # To avoid conflicst with PyQt (for Qt4):
+               # To avoid conflicts with PyQt (for Qt4):
                "--sipdir=#{share}/sip/Qt5/",
                # sip.h could not be found automatically
-               "--sip-incdir=#{Formula.factory('sip').opt_prefix}/include",
+               "--sip-incdir=#{Formula["sip"].opt_include}",
+               # Make sure the qt5 version of qmake is found.
+               # If qt4 is linked it will pickup that version otherwise.
+               "--qmake=#{Formula["qt5"].bin}/qmake",
                # Force deployment target to avoid libc++ issues
                "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}" ]
       args << '--debug' if build.include? 'enable-debug'

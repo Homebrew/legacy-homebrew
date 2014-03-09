@@ -2,8 +2,15 @@ require 'formula'
 
 class Openconnect < Formula
   homepage 'http://www.infradead.org/openconnect.html'
-  url 'ftp://ftp.infradead.org/pub/openconnect/openconnect-5.02.tar.gz'
-  sha1 '79f9cce830c22f3662332132b3443e470a52a9af'
+  url 'ftp://ftp.infradead.org/pub/openconnect/openconnect-5.03.tar.gz'
+  sha1 '40344fc910a19c8781a79204808f1229acaee2a4'
+
+  head do
+    url 'git://git.infradead.org/users/dwmw2/openconnect.git'
+    depends_on :autoconf => :build
+    depends_on :automake => :build
+    depends_on :libtool => :build
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -16,6 +23,11 @@ class Openconnect < Formula
   def install
     etc.install resource('vpnc-script')
     chmod 0755, "#{etc}/vpnc-script"
+
+    if build.head?
+      inreplace "autogen.sh", /libtoolize/, "glibtoolize"
+      system "./autogen.sh"
+    end
 
     args = %W[
       --prefix=#{prefix}

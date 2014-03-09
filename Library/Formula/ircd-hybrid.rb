@@ -2,7 +2,7 @@ require 'formula'
 
 class IrcdHybrid < Formula
   homepage 'http://www.ircd-hybrid.org/'
-  url 'http://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.1.13/ircd-hybrid-8.1.13.tgz'
+  url 'https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.1.13/ircd-hybrid-8.1.13.tgz'
   sha1 '5874cf6972333b4944cc218cd21918a2120e0304'
 
   # ircd-hybrid needs the .la files
@@ -24,7 +24,7 @@ class IrcdHybrid < Formula
     etc.install "doc/reference.conf" => "ircd.conf"
   end
 
-  def test
+  test do
     system "#{sbin}/ircd", "-version"
   end
 
@@ -47,7 +47,7 @@ class IrcdHybrid < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/ircd</string>
+        <string>#{opt_sbin}/ircd</string>
       </array>
       <key>RunAtLoad</key>
       <true/>

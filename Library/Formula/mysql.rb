@@ -118,12 +118,11 @@ class Mysql < Formula
     libexec.mkpath
     mv "#{bin}/mysqlaccess", libexec
     mv "#{bin}/mysqlaccess.conf", libexec
-
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
   end
 
   def post_install
+    # Make sure the var/mysql directory exists
+    (var+"mysql").mkpath
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",
@@ -153,7 +152,7 @@ class Mysql < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/mysqld_safe</string>
+        <string>#{opt_bin}/mysqld_safe</string>
         <string>--bind-address=127.0.0.1</string>
       </array>
       <key>RunAtLoad</key>

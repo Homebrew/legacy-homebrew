@@ -237,7 +237,7 @@ class Pathname
   def verify_checksum expected
     raise ChecksumMissingError if expected.nil? or expected.empty?
     actual = Checksum.new(expected.hash_type, send(expected.hash_type).downcase)
-    raise ChecksumMismatchError.new(expected, actual) unless expected == actual
+    raise ChecksumMismatchError.new(self, expected, actual) unless expected == actual
   end
 
   if '1.9' <= RUBY_VERSION
@@ -341,17 +341,6 @@ class Pathname
       raise "Cannot uninstall info entry for unbrewed info file '#{self}'"
     end
     system '/usr/bin/install-info', '--delete', '--quiet', self.to_s, (self.dirname+'dir').to_s
-  end
-
-  def all_formula pwd = self
-    children.map{ |child| child.relative_path_from(pwd) }.each do |pn|
-      yield pn if pn.to_s =~ /.rb$/
-    end
-    children.each do |child|
-      child.all_formula(pwd) do |pn|
-        yield pn
-      end if child.directory?
-    end
   end
 
   def find_formula

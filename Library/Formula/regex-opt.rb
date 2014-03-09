@@ -15,7 +15,7 @@ class RegexOpt < Formula
     bin.install 'regex-opt'
   end
 
-  def test
+  test do
     system "#{bin}/regex-opt"
   end
 end

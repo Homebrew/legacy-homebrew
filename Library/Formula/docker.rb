@@ -2,29 +2,29 @@ require "formula"
 
 class Docker < Formula
   homepage "http://docker.io"
-  url "https://github.com/dotcloud/docker.git", :tag => "v0.8.0"
-  sha1 "1e9362dab2ac2ecb4a1f193a7e72d060000438c3"
+  url "https://github.com/dotcloud/docker.git", :tag => "v0.8.1"
+
+  option "without-completions", "Disable bash/zsh completions"
 
   bottle do
-    sha1 "3ff7bceb60e918424e57a07d780d62a61443ae17" => :mavericks
-    sha1 "f27703485378e335e4bde8fa0321087aa94a52a3" => :mountain_lion
-    sha1 "3f054cc6e3f55cf3a14e466d19dde0adc2889dcf" => :lion
+    sha1 "65c07eaf8d721f9270a12a1a129a01edd8ed186f" => :mavericks
+    sha1 "b5de1b29b7db1ea6cd1a321c1f640d5618a8368c" => :mountain_lion
+    sha1 "688cbc6dcbe651fe9e92fb9751bf4b7e9bcd5064" => :lion
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["DOCKER_GITCOMMIT"] = downloader.cached_location.cd do
-      `git rev-parse HEAD`
-    end
-    ENV["GOPATH"] = "#{buildpath}/vendor"
-    (buildpath/"vendor/src/github.com/dotcloud").mkpath
-    ln_s buildpath, "vendor/src/github.com/dotcloud/docker"
-    inreplace "hack/make/dynbinary", "sha1sum", "shasum"
+    ENV["GIT_DIR"] = cached_download/".git"
+    ENV["AUTO_GOPATH"] = "1"
 
     system "hack/make.sh", "dynbinary"
-    bin.install "bundles/0.8.0/dynbinary/docker-0.8.0" => "docker"
-    bin.install "bundles/0.8.0/dynbinary/dockerinit-0.8.0" => "dockerinit"
+    bin.install "bundles/#{version}/dynbinary/docker-#{version}" => "docker"
+
+    if build.with? "completions"
+      bash_completion.install "contrib/completion/bash/docker"
+      zsh_completion.install "contrib/completion/zsh/_docker"
+    end
   end
 
   test do

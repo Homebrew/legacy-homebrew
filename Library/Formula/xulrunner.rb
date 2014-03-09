@@ -34,12 +34,13 @@ end
 
 class Xulrunner < Formula
   homepage "https://developer.mozilla.org/docs/XULRunner"
-  url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/27.0/source/xulrunner-27.0.source.tar.bz2"
-  sha1 "fbce25e33aea4291d83e8d5420a870b5e29371ec"
+  url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/27.0.1/source/xulrunner-27.0.1.source.tar.bz2"
+  sha1 "c9c5a6142fc9c50113c18eb8b1fb9249c08c4aac"
 
   devel do
-    url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/28.0b1/source/xulrunner-28.0b1.source.tar.bz2"
-    sha1 "ede3088dae3023e4ad42615d07112565bbd54e3c"
+    url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/28.0b8/source/xulrunner-28.0b8.source.tar.bz2"
+    sha1 "2c2bda033f7ce771b0aff82237551264911a32c3"
+    version "28.0b8"
   end
 
   head do
@@ -50,8 +51,9 @@ class Xulrunner < Formula
   end
 
   depends_on :macos => :lion # needs clang++
-  depends_on Python273Requirement
-  depends_on :python
+  depends_on :xcode
+  depends_on :python => :build
+  depends_on Python273Requirement => :build
   depends_on "gnu-tar" => :build
   depends_on "pkg-config" => :build
   depends_on "yasm"
@@ -62,12 +64,6 @@ class Xulrunner < Formula
 
   fails_with :llvm do
     cause "Mozilla XULRunner only supports Clang on OS X"
-  end
-
-  resource "mozconfig" do
-    url "https://gist.github.com/chrmoritz/7815762/raw/d1ec6a29fe3ee2e59f39f854371ee9978cdb684a/mozconfig"
-    sha1 "af105b46d126ee0b25f2f2487eb2b577725aa3c0"
-    version "1.0"
   end
 
   resource "autoconf213" do
@@ -85,24 +81,32 @@ class Xulrunner < Formula
       ENV["AUTOCONF"] = buildpath/"ac213/bin/autoconf213"
     end
 
-    # build xulrunner to objdir and disable tests, updater.app and crashreporter.app
-    buildpath.install resource("mozconfig")
+    # build xulrunner to objdir and disable tests, updater.app and crashreporter.app, specify sdk path
+    (buildpath/"mozconfig").write <<-EOS.undent
+      . $topsrcdir/xulrunner/config/mozconfig
+      mk_add_options MOZ_OBJDIR=objdir
+      ac_add_options --disable-tests
+      ac_add_options --disable-updater
+      ac_add_options --disable-crashreporter
+      ac_add_options --with-macos-sdk=#{MacOS.sdk_path}
+    EOS
     # fixed usage of bsdtar with unsupported parameters (replaced with gnu-tar)
     inreplace "toolkit/mozapps/installer/packager.mk", "$(TAR) -c --owner=0 --group=0 --numeric-owner",
-              "#{Formula.factory("gnu-tar").bin}/gtar -c --owner=0 --group=0 --numeric-owner"
+              "#{Formula["gnu-tar"].bin}/gtar -c --owner=0 --group=0 --numeric-owner"
 
+    # nss is not fully parallel build safe (fixes rare ld: library not found for -lplc4 issues)
+    ENV.deparallelize
     system "make", "-f", "client.mk", "build"
     system "make", "-f", "client.mk", "package"
 
     frameworks.mkpath
     if build.head?
       # update HEAD version here with every version bump
-      system "tar", "-xvj", "-C", frameworks, "-f",
-                    "objdir/dist/xulrunner-30.0a1.en-US.mac64.tar.bz2"
+      tar_path = "objdir/dist/xulrunner-30.0a1.en-US.mac64.tar.bz2"
     else
-      system "tar", "-xvj", "-C", frameworks, "-f",
-                    "objdir/dist/xulrunner-#{version.to_s[/\d+.\d/]}.en-US.mac64.tar.bz2"
+      tar_path = "objdir/dist/xulrunner-#{version.to_s[/\d+\.\d+(\.\d+)?/]}.en-US.mac64.tar.bz2"
     end
+    system "tar", "-xvj", "-C", frameworks, "-f", tar_path
 
     # symlink only xulrunner here will fail (assumes dylibs in same directory)
     bin.write_exec_script frameworks/"XUL.framework/Versions/Current/xulrunner"

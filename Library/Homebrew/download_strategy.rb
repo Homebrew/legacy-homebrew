@@ -39,14 +39,17 @@ class AbstractDownloadStrategy
 end
 
 class VCSDownloadStrategy < AbstractDownloadStrategy
+  REF_TYPES = [:branch, :revision, :revisions, :tag].freeze
+
   def initialize name, resource
     super
-    @ref_type, @ref = destructure_spec_hash(resource.specs)
+    @ref_type, @ref = extract_ref(resource.specs)
     @clone = HOMEBREW_CACHE/cache_filename
   end
 
-  def destructure_spec_hash(spec)
-    spec.each { |o| return o }
+  def extract_ref(specs)
+    key = REF_TYPES.find { |type| specs.key?(type) }
+    return key, specs[key]
   end
 
   def cache_filename(tag=cache_tag)
@@ -464,6 +467,18 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
 end
 
 class GitDownloadStrategy < VCSDownloadStrategy
+  SHALLOW_CLONE_WHITELIST = [
+    %r{git://},
+    %r{https://github\.com},
+    %r{http://git\.sv\.gnu\.org},
+    %r{http://llvm\.org},
+  ]
+
+  def initialize name, resource
+    super
+    @shallow = resource.specs.fetch(:shallow) { true }
+  end
+
   def cache_tag; "git" end
 
   def fetch
@@ -503,27 +518,20 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   private
 
+  def shallow_clone?
+    @shallow && support_depth?
+  end
+
+  def support_depth?
+    @ref_type != :revision && SHALLOW_CLONE_WHITELIST.any? { |rx| rx === @url }
+  end
+
   def git_dir
     @clone.join(".git")
   end
 
   def has_ref?
     quiet_system 'git', '--git-dir', git_dir, 'rev-parse', '-q', '--verify', @ref
-  end
-
-  def support_depth?
-    @ref_type != :revision and host_supports_depth?
-  end
-
-  SHALLOW_CLONE_WHITELIST = [
-    %r{git://},
-    %r{https://github\.com},
-    %r{http://git\.sv\.gnu\.org},
-    %r{http://llvm\.org},
-  ]
-
-  def host_supports_depth?
-    SHALLOW_CLONE_WHITELIST.any? { |rx| rx === @url }
   end
 
   def repo_valid?
@@ -536,7 +544,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def clone_args
     args = %w{clone}
-    args << '--depth' << '1' if support_depth?
+    args << '--depth' << '1' if shallow_clone?
 
     case @ref_type
     when :branch, :tag then args << '--branch' << @ref
@@ -601,8 +609,8 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def checkout_submodules(dst)
-    sub_cmd = %W{git checkout-index -a -f --prefix=#{dst}/$path/}
-    safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', *sub_cmd
+    sub_cmd = "git checkout-index -a -f --prefix=#{dst}/$path/"
+    safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
   end
 end
 

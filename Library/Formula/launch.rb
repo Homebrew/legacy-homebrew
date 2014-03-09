@@ -10,16 +10,8 @@ class Launch < Formula
 
   def install
     rm_rf "launch" # We'll build it ourself, thanks.
-    system  "xcodebuild",
-            "-configuration",
-            "Deployment",
-            "SYMROOT=build",
-            "clean"
-
-    system  "xcodebuild",
-            "-configuration",
-            "Deployment",
-            "SYMROOT=build"
+    xcodebuild "-configuration", "Deployment", "SYMROOT=build", "clean"
+    xcodebuild "-configuration", "Deployment", "SYMROOT=build"
 
     man1.install gzip('launch.1')
     bin.install 'build/Deployment/launch'

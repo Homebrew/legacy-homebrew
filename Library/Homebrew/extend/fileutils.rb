@@ -82,6 +82,14 @@ module FileUtils extend self
     end
   end
 
+  # Run scons using a Homebrew-installed version, instead of whatever
+  # is in the user's PATH
+  def scons *args
+    scons = Formulary.factory("scons").opt_prefix/'bin/scons'
+    raise "#{scons} is not executable" unless scons.exist? and scons.executable?
+    safe_system scons, *args
+  end
+
   def rake *args
     system RUBY_BIN/'rake', *args
   end
@@ -89,5 +97,12 @@ module FileUtils extend self
   alias_method :old_ruby, :ruby if method_defined?(:ruby)
   def ruby *args
     system RUBY_PATH, *args
+  end
+
+  def xcodebuild *args
+    removed = ENV.remove_cc_etc
+    system "xcodebuild", *args
+  ensure
+    ENV.update(removed)
   end
 end

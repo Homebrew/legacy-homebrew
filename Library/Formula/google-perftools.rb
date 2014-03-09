@@ -2,7 +2,7 @@ require 'formula'
 
 class GooglePerftools < Formula
   homepage 'http://code.google.com/p/gperftools/'
-  url 'http://gperftools.googlecode.com/files/gperftools-2.1.tar.gz'
+  url 'https://gperftools.googlecode.com/files/gperftools-2.1.tar.gz'
   sha1 'b799b99d9f021988bbc931db1c21b2f94826d4f0'
 
   fails_with :llvm do

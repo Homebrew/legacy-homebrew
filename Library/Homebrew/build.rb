@@ -61,8 +61,14 @@ class Build
 
   def initialize(f)
     @f = f
-    @deps = expand_deps
-    @reqs = expand_reqs
+
+    if ARGV.ignore_deps?
+      @deps = []
+      @reqs = []
+    else
+      @deps = expand_deps
+      @reqs = expand_reqs
+    end
   end
 
   def post_superenv_hacks
@@ -113,12 +119,12 @@ class Build
 
     deps.map(&:to_formula).each do |dep|
       opt = HOMEBREW_PREFIX/:opt/dep
-      fixopt(dep) unless opt.directory? or ARGV.ignore_deps?
+      fixopt(dep) unless opt.directory?
     end
 
     if superenv?
-      ENV.keg_only_deps = keg_only_deps.map(&:to_s)
-      ENV.deps = deps.map { |d| d.to_formula.to_s }
+      ENV.keg_only_deps = keg_only_deps.map(&:name)
+      ENV.deps = deps.map { |d| d.to_formula.name }
       ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
       ENV.setup_build_environment(f)
       post_superenv_hacks

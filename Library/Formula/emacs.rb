@@ -15,19 +15,26 @@ class Emacs < Formula
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
   option "japanese", "Patch for Japanese input methods"
 
-  if build.include? "use-git-head"
-    head 'http://git.sv.gnu.org/r/emacs.git'
-  else
-    head 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
-  end
+  head do
+    if build.include? "use-git-head"
+      url 'http://git.sv.gnu.org/r/emacs.git'
+    else
+      url 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
+    end
 
-  if build.head? or build.include? "cocoa"
     depends_on :autoconf
     depends_on :automake
   end
 
+  stable do
+    if build.include? "cocoa"
+      depends_on :autoconf
+      depends_on :automake
+    end
+  end
+
   depends_on 'pkg-config' => :build
-  depends_on :x11 if build.include? "with-x"
+  depends_on :x11 if build.with? "x"
   depends_on 'gnutls' => :optional
 
   fails_with :llvm do
@@ -36,6 +43,8 @@ class Emacs < Formula
   end
 
   def patches
+    return if build.head?
+
     p = {
       # Fix default-directory on Cocoa and Mavericks.
       # Fixed upstream in r114730 and r114882.
@@ -53,7 +62,7 @@ class Emacs < Formula
       p[:p0].push("http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp&pathrev=583")
     end
     p
-  end unless build.head?
+  end
 
   # Follow MacPorts and don't install ctags from Emacs. This allows Vim
   # and Emacs and ctags to play together without violence.
@@ -105,7 +114,7 @@ class Emacs < Formula
         #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
       EOS
     else
-      if build.include? "with-x"
+      if build.with? "x"
         # These libs are not specified in xft's .pc. See:
         # https://trac.macports.org/browser/trunk/dports/editors/emacs/Portfile#L74
         # https://github.com/Homebrew/homebrew/issues/8156

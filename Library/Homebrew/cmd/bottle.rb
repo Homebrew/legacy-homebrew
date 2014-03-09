@@ -108,17 +108,21 @@ module Homebrew extend self
       return ofail "Formula not installed with '--build-bottle': #{f.name}"
     end
 
+    unless f.stable
+      return ofail "Formula has no stable version: #{f.name}"
+    end
+
     if ARGV.include? '--no-revision'
       bottle_revision = 0
     else
-      max = f.bottle_version_map('origin/master')[f.version].max
+      max = f.bottle_version_map('origin/master')[f.pkg_version].max
       bottle_revision = max ? max + 1 : 0
     end
 
     filename = bottle_filename(f, :tag => bottle_tag, :revision => bottle_revision)
 
     if bottle_filename_formula_name(filename).empty?
-      return ofail "Add a new regex to bottle_version.rb to parse the bottle filename."
+      return ofail "Add a new regex to bottle_version.rb to parse #{f.version} from #{filename}"
     end
 
     bottle_path = Pathname.pwd/filename
@@ -139,7 +143,7 @@ module Homebrew extend self
         HOMEBREW_CELLAR.cd do
           # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
           # or an uncompressed tarball (and more bandwidth friendly).
-          safe_system 'tar', 'czf', bottle_path, "#{f.name}/#{f.version}"
+          safe_system 'tar', 'czf', bottle_path, "#{f.name}/#{f.pkg_version}"
         end
 
         if File.size?(bottle_path) > 1*1024*1024
@@ -216,7 +220,7 @@ module Homebrew extend self
             odie 'Bottle block update failed!' unless string
           else
             update_or_add = 'add'
-            string = s.sub!(/(  (url|sha1|sha256|head|version) ['"]\S*['"]\n+)+/m, '\0' + output + "\n")
+            string = s.sub!(/(  (url|sha1|sha256|head|version) ['"][\S ]+['"]\n+)+/m, '\0' + output + "\n")
             odie 'Bottle block addition failed!' unless string
           end
         end

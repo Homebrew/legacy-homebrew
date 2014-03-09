@@ -2,7 +2,7 @@ require 'formula'
 
 class Libpar2 < Formula
   homepage 'http://parchive.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/parchive/libpar2/0.2/libpar2-0.2.tar.gz'
+  url 'https://downloads.sourceforge.net/project/parchive/libpar2/0.2/libpar2-0.2.tar.gz'
   sha1 '4b3da928ea6097a8299aadafa703fc6d59bdfb4b'
 
   def patches
@@ -13,8 +13,8 @@ end
 
 class Nzbget < Formula
   homepage 'http://sourceforge.net/projects/nzbget/'
-  url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/11.0/nzbget-11.0.tar.gz'
-  sha1 '0c0f83de3ef25a6117c1c988d99db9d92c3739eb'
+  url 'https://downloads.sourceforge.net/project/nzbget/nzbget-stable/12.0/nzbget-12.0.tar.gz'
+  sha1 'b7f3037ca664f09c28ab359cf6091d876d63ba5f'
 
   head 'https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk'
 

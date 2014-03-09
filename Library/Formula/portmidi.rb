@@ -2,7 +2,7 @@ require 'formula'
 
 class Portmidi < Formula
   homepage 'http://sourceforge.net/apps/trac/portmedia/wiki/portmidi'
-  url 'http://downloads.sourceforge.net/project/portmedia/portmidi/217/portmidi-src-217.zip'
+  url 'https://downloads.sourceforge.net/project/portmedia/portmidi/217/portmidi-src-217.zip'
   sha1 'f45bf4e247c0d7617deacd6a65d23d9fddae6117'
 
   option 'with-java', 'Build java based app and bindings. You need the Java SDK for this.'
@@ -14,7 +14,7 @@ class Portmidi < Formula
   def patches
     # Avoid that the Makefile.osx builds the java app and fails because: fatal error: 'jni.h' file not found
     # Since 217 the Makefile.osx includes pm_common/CMakeLists.txt wich builds the Java app
-    DATA unless build.include? 'with-java'
+    DATA if build.without? "java"
   end
 
   def install

@@ -2,7 +2,7 @@ require 'formula'
 
 class Unar < Formula
   homepage 'http://unarchiver.c3.cx/commandline'
-  url 'http://theunarchiver.googlecode.com/files/unar1.8.1_src.zip'
+  url 'https://theunarchiver.googlecode.com/files/unar1.8.1_src.zip'
   version '1.8.1'
   sha1 'fe052cd7042651cccc7ba0e9c4d6d7dba5102fd4'
 
@@ -20,9 +20,9 @@ class Unar < Formula
 
   def install
     # Build XADMaster.framework, unar and lsar
-    system "xcodebuild -project ./XADMaster/XADMaster.xcodeproj -target XADMaster SYMROOT=../ -configuration Release"
-    system "xcodebuild -project ./XADMaster/XADMaster.xcodeproj -target unar SYMROOT=../ -configuration Release"
-    system "xcodebuild -project ./XADMaster/XADMaster.xcodeproj -target lsar SYMROOT=../ -configuration Release"
+    xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "XADMaster", "SYMROOT=../", "-configuration", "Release"
+    xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "unar", "SYMROOT=../", "-configuration", "Release"
+    xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "lsar", "SYMROOT=../", "-configuration", "Release"
 
     bin.install "./Release/unar", "./Release/lsar"
 
@@ -36,7 +36,7 @@ class Unar < Formula
     end
   end
 
-  def test
+  test do
     system bin/'unar', '--version'
     system bin/'lsar', '--version'
   end

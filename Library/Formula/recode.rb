@@ -11,7 +11,7 @@ class Recode < Formula
 
   def copy_libtool_files!
     if not MacOS::Xcode.provides_autotools?
-      s = Formula.factory('libtool').share
+      s = Formula['libtool'].share
       d = "#{s}/libtool/config"
       cp ["#{d}/config.guess", "#{d}/config.sub"], "."
     elsif MacOS.version <= :leopard
