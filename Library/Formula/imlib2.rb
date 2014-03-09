@@ -9,7 +9,7 @@ class Imlib2 < Formula
 
   depends_on :freetype
   depends_on :libpng => :recommended
-  depends_on :x11 if MacOS::X11.installed? or not build.include? "without-x"
+  depends_on :x11 if MacOS::X11.installed? or build.with? "x"
   depends_on 'pkg-config' => :build
   depends_on 'jpeg' => :recommended
 
@@ -19,7 +19,7 @@ class Imlib2 < Formula
       --prefix=#{prefix}
       --enable-amd64=no
     ]
-    args << "--without-x" if build.include? "without-x"
+    args << "--without-x" if build.without? "x"
 
     system "./configure", *args
     system "make install"

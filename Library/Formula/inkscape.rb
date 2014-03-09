@@ -28,7 +28,7 @@ class Inkscape < Formula
     args = [ "--disable-dependency-tracking",
              "--prefix=#{prefix}",
              "--enable-lcms" ]
-    args << "--disable-poppler-cairo" unless build.with? "poppler"
+    args << "--disable-poppler-cairo" if build.without? "poppler"
     system "./configure", *args
 
     system "make install"

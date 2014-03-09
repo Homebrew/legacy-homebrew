@@ -26,7 +26,7 @@ class Xplanet < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
-    if build.include? "with-x"
+    if build.with? "x"
       args << "--with-x"
     else
       args << "--with-aqua" << "--without-x"

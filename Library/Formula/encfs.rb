@@ -2,7 +2,7 @@ require 'formula'
 
 class Encfs < Formula
   homepage 'http://www.arg0.net/encfs'
-  url 'http://encfs.googlecode.com/files/encfs-1.7.4.tgz'
+  url 'https://encfs.googlecode.com/files/encfs-1.7.4.tgz'
   sha1 '3d824ba188dbaabdc9e36621afb72c651e6e2945'
 
   depends_on 'pkg-config' => :build

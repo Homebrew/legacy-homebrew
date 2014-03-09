@@ -8,9 +8,10 @@ class Sbcl < Formula
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
-    sha1 "86a3582cfbb2789c438c6a174869861842df32be" => :mavericks
-    sha1 "95cd6954553cc4f98c62d18475c83e6ff7bb02b0" => :mountain_lion
-    sha1 "07f044546e8a15e802b82907bbb1c4805bf99a28" => :lion
+    revision 1
+    sha1 "bba5afd9b1ba430b472774a1278a2ec7ce2011f7" => :mavericks
+    sha1 "bc0023d6d917ad517c7039130fbf051520e9fc07" => :mountain_lion
+    sha1 "5cb17257c806c51f01e763afa988da37b276bf74" => :lion
   end
 
   fails_with :llvm do
@@ -20,6 +21,7 @@ class Sbcl < Formula
 
   option "32-bit"
   option "without-threads", "Build SBCL without support for native threads"
+  option "without-core-compression", "Build SBCL without support for compressed cores and without a dependency on zlib"
   option "with-ldb", "Include low-level debugger in the build"
   option "with-internal-xref", "Include XREF information for SBCL internals (increases core size by 5-6MB)"
 
@@ -46,9 +48,10 @@ class Sbcl < Formula
 
   def write_features
     features = []
-    features << ":sb-thread" unless build.include? "without-threads"
-    features << ":sb-ldb" if build.include? "with-ldb"
-    features << ":sb-xref-for-internals" if build.include? "with-internal-xref"
+    features << ":sb-thread" if build.with? "threads"
+    features << ":sb-core-compression" if build.with? "core-compression"
+    features << ":sb-ldb" if build.with? "ldb"
+    features << ":sb-xref-for-internals" if build.with? "internal-xref"
 
     File.open("customize-target-features.lisp", "w") do |file|
       file.puts "(lambda (list)"

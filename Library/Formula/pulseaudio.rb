@@ -42,7 +42,7 @@ class Pulseaudio < Formula
 
     args << "--with-mac-sysroot=#{MacOS.sdk_path}"
     args << "--with-mac-version-min=#{MacOS.version}"
-    args << "--disable-nls" unless build.with? "nls"
+    args << "--disable-nls" if build.without? "nls"
 
     if build.universal?
       args << "--enable-mac-universal"

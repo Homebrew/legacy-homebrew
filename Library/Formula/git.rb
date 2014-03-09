@@ -25,12 +25,12 @@ class Git < Formula
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
-    url 'http://git-core.googlecode.com/files/git-manpages-1.9.0.tar.gz'
+    url 'https://git-core.googlecode.com/files/git-manpages-1.9.0.tar.gz'
     sha1 'cff590c92b4d1c8a143c078473140b653cc5d56a'
   end
 
   resource 'html' do
-    url 'http://git-core.googlecode.com/files/git-htmldocs-1.9.0.tar.gz'
+    url 'https://git-core.googlecode.com/files/git-htmldocs-1.9.0.tar.gz'
     sha1 '65eb3f411f4699695c7081a7c716cabb9ce23d75'
   end
 
@@ -58,7 +58,7 @@ class Git < Formula
       ENV['LIBPCREDIR'] = Formula['pcre'].opt_prefix
     end
 
-    ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'
+    ENV['NO_GETTEXT'] = '1' if build.without? 'gettext'
 
     ENV['GIT_DIR'] = cached_download/".git" if build.head?
 
@@ -97,7 +97,7 @@ class Git < Formula
       end
     end
 
-    unless build.without? 'completions'
+    if build.with? 'completions'
       # install the completion script first because it is inside 'contrib'
       bash_completion.install 'contrib/completion/git-completion.bash'
       bash_completion.install 'contrib/completion/git-prompt.sh'

@@ -3,10 +3,10 @@ require 'requirement'
 class LanguageModuleDependency < Requirement
   fatal true
 
-  def initialize language, module_name, import_name=module_name
+  def initialize language, module_name, import_name=nil
     @language = language
     @module_name = module_name
-    @import_name = import_name
+    @import_name = import_name || module_name
     super([language, module_name, import_name])
   end
 

@@ -2,7 +2,7 @@ require 'formula'
 
 class Gwt < Formula
   homepage 'https://developers.google.com/web-toolkit/'
-  url 'http://google-web-toolkit.googlecode.com/files/gwt-2.6.0.zip'
+  url 'https://google-web-toolkit.googlecode.com/files/gwt-2.6.0.zip'
   sha1 '36d45c9dffbe59d15c6f6d04657438dc78e343c1'
 
   def install
