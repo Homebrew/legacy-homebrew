@@ -187,7 +187,6 @@ module HomebrewArgvExtension
       --build-bottle
       --debug -d
       --devel
-      --fresh
       --interactive -i
       --HEAD
     ]

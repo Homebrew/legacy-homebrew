@@ -394,7 +394,7 @@ class FormulaInstaller
 
   def build_argv
     opts = Options.coerce(sanitized_ARGV_options)
-    opts.concat(options) unless opts.include? "--fresh"
+    opts.concat(options)
     opts << Option.new("--build-from-source") # don't download bottle
   end
 

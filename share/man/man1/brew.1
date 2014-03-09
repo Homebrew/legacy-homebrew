@@ -174,7 +174,7 @@ To view formula history locally: \fBbrew log \-p <formula>\fR\.
 Print a JSON representation of \fIformula\fR\. Currently the only accepted value for \fIversion\fR is \fBv1\fR\.
 .
 .TP
-\fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-only\-dependencies] [\-\-fresh] [\-\-cc=<compiler>] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
+\fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-only\-dependencies] [\-\-cc=<compiler>] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.
 .
 .IP
@@ -194,9 +194,6 @@ If \fB\-\-ignore\-dependencies\fR is passed, skip installing any dependencies of
 .
 .IP
 If \fB\-\-only\-dependencies\fR is passed, install the dependencies with specified options but do not install the specified formula\.
-.
-.IP
-If \fB\-\-fresh\fR is passed, the installation process will not re\-use any options from previous installs\.
 .
 .IP
 If \fB\-\-cc=<compiler>\fR is passed, attempt to compile using \fIcompiler\fR\. \fIcompiler\fR should be the name of the compiler\'s executable, for instance \fBgcc\-4\.2\fR for Apple\'s GCC 4\.2, or \fBgcc\-4\.8\fR for a Homebrew\-provided GCC 4\.8\.
