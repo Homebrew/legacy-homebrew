@@ -2,8 +2,8 @@ require 'formula'
 
 class Mpd < Formula
   homepage "http://www.musicpd.org/"
-  url "http://www.musicpd.org/download/mpd/0.17/mpd-0.17.5.tar.bz2"
-  sha1 "91e4d8d364a3db02e6f92676dd938880e5bb200a"
+  url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.9.tar.gz"
+  sha1 "a1ea1adfe126fd9f69673d610882c8a1398f066d"
 
   head "git://git.musicpd.org/master/mpd.git"
 
@@ -14,17 +14,13 @@ class Mpd < Formula
   option "with-flac", "Build with flac support (for Flac encoding when streaming)"
   option "with-vorbis", "Build with vorbis support (for Ogg encoding)"
   option "with-yajl", "Build with yajl support (for playing from soundcloud)"
-  if MacOS.version < :lion
-    option "with-libwrap", "Build with libwrap (TCP Wrappers) support"
-  elsif MacOS.version == :lion
-    option "with-libwrap", "Build with libwrap (TCP Wrappers) support (buggy)"
-  end
 
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "libid3tag"
   depends_on "sqlite"
   depends_on "libsamplerate"
+  depends_on 'libmpdclient'
 
   depends_on "ffmpeg"                   # lots of codecs
   # mpd also supports mad, mpg123, libsndfile, and audiofile, but those are
@@ -54,7 +50,7 @@ class Mpd < Formula
       opoo "See this formula's caveats for details."
     end
 
-    if build.with? "libwrap" and MacOS.version > :lion
+    if build.with? "libwrap"
       opoo "Ignoring --with-libwrap: TCP Wrappers were removed in OSX 10.8"
     end
 
@@ -67,10 +63,10 @@ class Mpd < Formula
       --enable-bzip2
       --enable-ffmpeg
       --enable-fluidsynth
+      --enable-osx
     ]
 
     args << "--disable-mad"
-    args << "--disable-curl" if MacOS.version <= :leopard
 
     args << "--with-faad=#{Formula["faad2"].opt_prefix}"
     args << "--enable-zzip" if build.with? "libzzip"
@@ -103,21 +99,3 @@ class Mpd < Formula
 end
 
 __END__
-diff --git a/src/decoder/ffmpeg_decoder_plugin.c b/src/decoder/ffmpeg_decoder_plugin.c
-index 58bd2f5..65aa37f 100644
---- a/src/decoder/ffmpeg_decoder_plugin.c
-+++ b/src/decoder/ffmpeg_decoder_plugin.c
-@@ -299,11 +299,11 @@ ffmpeg_send_packet(struct decoder *decoder, struct input_stream *is,
- #endif
- 
- #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53,25,0)
--	uint8_t aligned_buffer[(AVCODEC_MAX_AUDIO_FRAME_SIZE * 3) / 2 + 16];
-+	uint8_t aligned_buffer[(192000 * 3) / 2 + 16];
- 	const size_t buffer_size = sizeof(aligned_buffer);
- #else
- 	/* libavcodec < 0.8 needs an aligned buffer */
--	uint8_t audio_buf[(AVCODEC_MAX_AUDIO_FRAME_SIZE * 3) / 2 + 16];
-+	uint8_t audio_buf[(192000 * 3) / 2 + 16];
- 	size_t buffer_size = sizeof(audio_buf);
- 	int16_t *aligned_buffer = align16(audio_buf, &buffer_size);
- #endif
