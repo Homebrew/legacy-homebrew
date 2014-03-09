@@ -18,7 +18,7 @@ class Formula
   extend BuildEnvironmentDSL
 
   attr_reader :name, :path, :homepage, :build
-  attr_reader :stable, :bottle, :devel, :head, :active_spec
+  attr_reader :stable, :devel, :head, :active_spec
   attr_reader :pkg_version, :revision
 
   # The current working directory during builds and tests.
@@ -41,31 +41,11 @@ class Formula
     set_spec :stable
     set_spec :devel
     set_spec :head
-    set_spec :bottle do |bottle|
-      # Ensure the bottle URL is set. If it does not have a checksum,
-      # then a bottle is not available for the current platform.
-      # TODO: push this down into Bottle; we can pass the formula instance
-      # into a validation method on the bottle instance.
-      unless bottle.checksum.nil? || bottle.checksum.empty?
-        @bottle = bottle
-        bottle.url ||= bottle_url(self, bottle.current_tag)
-        bottle.version = PkgVersion.new(stable.version, revision)
-      end
-    end
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
     @build = determine_build_options
-
-    # TODO: @pkg_version is already set for bottles, since constructing it
-    # requires passing in the active_spec version. This should be fixed by
-    # making the bottle an attribute of SoftwareSpec rather than a separate
-    # spec itself.
-    if active_spec == bottle
-      @pkg_version = bottle.version
-    else
-      @pkg_version = PkgVersion.new(version, revision)
-    end
+    @pkg_version = PkgVersion.new(version, revision)
 
     @pin = FormulaPin.new(self)
 
@@ -74,21 +54,16 @@ class Formula
 
   def set_spec(name)
     spec = self.class.send(name)
-    if block_given? && yield(spec) || spec.url
+    if spec.url
       spec.owner = self
       instance_variable_set("@#{name}", spec)
     end
-  end
-
-  def select_bottle?
-    !ARGV.build_bottle? && install_bottle?(self)
   end
 
   def determine_active_spec
     case
     when head && ARGV.build_head?        then head    # --HEAD
     when devel && ARGV.build_devel?      then devel   # --devel
-    when bottle && select_bottle?        then bottle  # bottle available
     when stable                          then stable
     when devel && stable.nil?            then devel   # devel-only
     when head && stable.nil?             then head    # head-only
@@ -113,6 +88,10 @@ class Formula
     build = active_spec.build
     options.each { |opt, desc| build.add(opt, desc) }
     build
+  end
+
+  def bottle
+    Bottle.new(self, active_spec.bottle_specification) if active_spec.bottled?
   end
 
   def url;      active_spec.url;     end
@@ -699,7 +678,7 @@ class Formula
     attr_rw :homepage, :plist_startup, :plist_manual, :revision
 
     def specs
-      @specs ||= [stable, devel, head, bottle].freeze
+      @specs ||= [stable, devel, head].freeze
     end
 
     def url val, specs={}
@@ -722,6 +701,10 @@ class Formula
       EOS
     end
 
+    def bottle *, &block
+      stable.bottle(&block)
+    end
+
     def build
       stable.build
     end
@@ -730,13 +713,6 @@ class Formula
       @stable ||= SoftwareSpec.new
       return @stable unless block_given?
       @stable.instance_eval(&block)
-    end
-
-    def bottle *, &block
-      @bottle ||= Bottle.new
-      return @bottle unless block_given?
-      @bottle.instance_eval(&block)
-      @bottle.version = @stable.version
     end
 
     def devel &block

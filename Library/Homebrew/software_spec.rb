@@ -12,6 +12,7 @@ class SoftwareSpec
   attr_reader :name
   attr_reader :build, :resources, :owner
   attr_reader :dependency_collector
+  attr_reader :bottle_specification
 
   def_delegators :@resource, :stage, :fetch, :verify_download_integrity
   def_delegators :@resource, :cached_download, :clear_cache
@@ -23,6 +24,7 @@ class SoftwareSpec
     @resources = {}
     @build = BuildOptions.new(ARGV.options_only)
     @dependency_collector = DependencyCollector.new
+    @bottle_specification = BottleSpecification.new
   end
 
   def owner= owner
@@ -39,6 +41,14 @@ class SoftwareSpec
     return @resource.url if val.nil?
     @resource.url(val, specs)
     dependency_collector.add(@resource)
+  end
+
+  def bottled?
+    bottle_specification.fully_specified?
+  end
+
+  def bottle &block
+    bottle_specification.instance_eval(&block)
   end
 
   def resource? name
@@ -87,18 +97,45 @@ class HeadSoftwareSpec < SoftwareSpec
   end
 end
 
-class Bottle < SoftwareSpec
-  attr_rw :root_url, :prefix, :cellar, :revision
-  attr_accessor :current_tag
+class Bottle
+  extend Forwardable
 
-  def_delegators :@resource, :version=, :url=
+  attr_reader :resource, :prefix, :cellar, :revision
+
+  def_delegators :resource, :url, :fetch, :verify_download_integrity
+  def_delegators :resource, :downloader, :cached_download, :clear_cache
+
+  def initialize(f, spec)
+    @resource = Resource.new
+    @resource.owner = f
+    @resource.url = bottle_url(
+      spec.root_url,
+      :name => f.name,
+      :version => f.pkg_version,
+      :revision => spec.revision,
+      :tag => spec.current_tag
+    )
+    @resource.version = f.pkg_version
+    @resource.checksum = spec.checksum
+    @prefix = spec.prefix
+    @cellar = spec.cellar
+    @revision = spec.revision
+  end
+end
+
+class BottleSpecification
+  attr_rw :root_url, :prefix, :cellar, :revision
+  attr_reader :current_tag, :checksum
 
   def initialize
-    super
     @revision = 0
     @prefix = '/usr/local'
     @cellar = '/usr/local/Cellar'
     @root_url = 'https://downloads.sf.net/project/machomebrew/Bottles'
+  end
+
+  def fully_specified?
+    checksum && !checksum.empty?
   end
 
   # Checksum methods in the DSL's bottle block optionally take
@@ -115,7 +152,7 @@ class Bottle < SoftwareSpec
         end
 
         cksum, current_tag = @#{cksum}.fetch_bottle_for(bottle_tag)
-        @resource.checksum = cksum if cksum
+        @checksum = cksum if cksum
         @current_tag = current_tag if cksum
       end
     EOS
