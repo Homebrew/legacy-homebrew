@@ -109,6 +109,7 @@ module Homebrew extend self
     fi.only_deps = ARGV.only_deps?
     fi.build_bottle = ARGV.build_bottle?
     fi.build_from_source = ARGV.build_from_source?
+    fi.force_bottle = ARGV.force_bottle?
     fi.prelude
     fi.install
     fi.caveats
