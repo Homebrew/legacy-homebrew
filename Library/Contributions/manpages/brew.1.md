@@ -141,7 +141,7 @@ Note that these flags should only appear after a command.
   * `home` <formula>:
     Open <formula>'s homepage in a browser.
 
-  * `info <formula>:
+  * `info` <formula>:
     Display information about <formula>.
 
   * `info --github` <formula>:
