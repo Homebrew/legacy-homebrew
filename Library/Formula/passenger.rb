@@ -2,8 +2,8 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.37.tar.gz'
-  sha1 'db3d21fdbb68403fc43a39de0ab485e8e0444922'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.38.tar.gz'
+  sha1 'c1e80c27b3f1c43d91dbd239ddecd4b81e6c13bd'
   head 'https://github.com/phusion/passenger.git'
 
   depends_on 'pcre'
@@ -15,9 +15,9 @@ class Passenger < Formula
     rake "webhelper"
 
     necessary_files = Dir["configure", "Rakefile", "README.md", "CONTRIBUTORS",
-      "CONTRIBUTING.md", "LICENSE", "INSTALL.md", "NEWS", "passenger.gemspec",
-      "build", "lib", "node_lib", "bin", "doc", "man", "helper-scripts",
-      "ext", "resources", "buildout"]
+      "CONTRIBUTING.md", "LICENSE", "CHANGELOG", "INSTALL.md",
+      "passenger.gemspec", "build", "lib", "node_lib", "bin", "doc", "man",
+      "helper-scripts", "ext", "resources", "buildout"]
     libexec.mkpath
     cp_r necessary_files, libexec, :preserve => true
 
