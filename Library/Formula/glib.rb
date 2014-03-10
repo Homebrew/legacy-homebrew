@@ -16,6 +16,7 @@ class Glib < Formula
   option 'with-static', 'Build glib with a static archive.'
 
   depends_on 'pkg-config' => :build
+  depends_on 'xz' => :build
   depends_on 'gettext'
   depends_on 'libffi'
 
