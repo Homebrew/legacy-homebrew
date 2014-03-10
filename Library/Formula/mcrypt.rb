@@ -14,6 +14,8 @@ class Mcrypt < Formula
 
   option :universal
 
+  # Patch to correct inclusion of malloc function on OSX.
+  # Upstream: https://sourceforge.net/p/mcrypt/patches/14/
   def patches
     DATA
   end
