@@ -80,10 +80,6 @@ class Formula
     end
   end
 
-  def default_build?
-    self.class.build.used_options.empty?
-  end
-
   def determine_build_options
     build = active_spec.build
     options.each { |opt, desc| build.add(opt, desc) }
