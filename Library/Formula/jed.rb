@@ -6,11 +6,12 @@ class Jed < Formula
   sha1 '7783ac9035c7221575e74b544902151309d0d0ef'
 
   depends_on 's-lang'
+  depends_on :x11
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make"
+    system "make && make xjed"
 
     ENV.deparallelize
     system "make install"
