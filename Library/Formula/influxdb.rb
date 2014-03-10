@@ -35,6 +35,7 @@ class Influxdb < Formula
     inreplace "config.toml.sample" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
       s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
+      s.gsub! "/tmp/influxdb/development/wal", "#{var}/influxdb/wal"
       s.gsub! "./admin", "#{opt_share}/admin"
     end
 
