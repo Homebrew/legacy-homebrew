@@ -18,7 +18,7 @@ class FormulaInstaller
   attr_reader :f
   attr_accessor :options, :ignore_deps, :only_deps
   attr_accessor :show_summary_heading, :show_header
-  attr_accessor :build_from_source, :build_bottle
+  attr_accessor :build_from_source, :build_bottle, :force_bottle
 
   def initialize ff
     @f = ff
@@ -27,6 +27,7 @@ class FormulaInstaller
     @only_deps = false
     @build_from_source = false
     @build_bottle = false
+    @force_bottle = false
     @options = Options.new
 
     @@attempted ||= Set.new
@@ -37,11 +38,11 @@ class FormulaInstaller
 
   def pour_bottle? install_bottle_options={:warn=>false}
     return false if @pour_failed
+    return true  if force_bottle && f.bottle
     return false if build_from_source || build_bottle
     return false unless options.empty?
 
     return true if f.local_bottle_path
-    return true if ARGV.force_bottle?
     return false unless f.bottle && f.pour_bottle?
 
     unless f.bottle.compatible_cellar?
