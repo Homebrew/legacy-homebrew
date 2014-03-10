@@ -18,7 +18,7 @@ class Postgis < Formula
   depends_on 'proj'
   depends_on 'geos'
 
-  depends_on 'gtk+' if build.include? 'with-gui'
+  depends_on 'gtk+' if build.with? "gui"
 
   # For GeoJSON and raster handling
   depends_on 'json-c'
@@ -47,7 +47,7 @@ class Postgis < Formula
       # gettext installations are.
       "--disable-nls"
     ]
-    args << '--with-gui' if build.include? 'with-gui'
+    args << '--with-gui' if build.with? "gui"
 
     system './autogen.sh'
     system './configure', *args

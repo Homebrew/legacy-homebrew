@@ -72,11 +72,11 @@ class Nginx < Formula
             "--with-http_gzip_static_module"
           ]
 
-    args << passenger_config_args if build.include? 'with-passenger'
-    args << "--with-http_dav_module" if build.include? 'with-webdav'
-    args << "--with-debug" if build.include? 'with-debug'
-    args << "--with-http_spdy_module" if build.include? 'with-spdy'
-    args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
+    args << passenger_config_args if build.with? "passenger"
+    args << "--with-http_dav_module" if build.with? "webdav"
+    args << "--with-debug" if build.with? "debug"
+    args << "--with-http_spdy_module" if build.with? "spdy"
+    args << "--with-http_gunzip_module" if build.with? "gunzip"
 
     if build.head?
       system "./auto/configure", *args
@@ -153,7 +153,7 @@ class Nginx < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/nginx</string>
+            <string>#{opt_bin}/nginx</string>
             <string>-g</string>
             <string>daemon off;</string>
         </array>

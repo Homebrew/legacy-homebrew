@@ -17,6 +17,10 @@ class DependencyCollectorTests < Test::Unit::TestCase
     @d = DependencyCollector.new.extend(DependencyCollectorTestExtension)
   end
 
+  def teardown
+    DependencyCollector::CACHE.clear
+  end
+
   def test_dependency_creation
     @d.add 'foo' => :build
     @d.add 'bar' => ['--universal', :optional]

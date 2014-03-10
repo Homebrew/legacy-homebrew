@@ -21,7 +21,7 @@ class Libgetdata < Formula
       --prefix=#{prefix}
     ]
 
-    args << "--disable-perl" unless build.with? "perl"
+    args << "--disable-perl" if build.without? "perl"
 
     system "./configure", *args
     system "make"

@@ -12,8 +12,8 @@ class Influxdb < Formula
   end
 
   devel do
-    url "http://get.influxdb.org/influxdb-0.5.0-rc.3.src.tar.gz"
-    sha1 "480d9c356e4075a865477e9fc3e02ec6750856fd"
+    url "http://get.influxdb.org/influxdb-0.5.0-rc.4.src.tar.gz"
+    sha1 "5b96491e09c1dd14055990fcaac91bab49ffc6a7"
   end
 
   depends_on "leveldb"
@@ -35,7 +35,7 @@ class Influxdb < Formula
     inreplace "config.toml.sample" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
       s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
-      s.gsub! "./admin", "#{opt_prefix}/share/admin"
+      s.gsub! "./admin", "#{opt_share}/admin"
     end
 
     bin.install "daemon" => "influxdb"
@@ -62,7 +62,7 @@ class Influxdb < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/influxdb</string>
+          <string>#{opt_bin}/influxdb</string>
           <string>-config=#{etc}/influxdb.conf</string>
         </array>
         <key>RunAtLoad</key>
