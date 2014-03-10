@@ -14,7 +14,7 @@ def install_bottle? f, options={:warn=>false}
   return false unless f.pour_bottle?
   return false unless f.bottle
 
-  if f.bottle.cellar != :any && f.bottle.cellar != HOMEBREW_CELLAR.to_s
+  unless f.bottle.compatible_cellar?
     if options[:warn]
       opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}"
     end
