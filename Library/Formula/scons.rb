@@ -6,7 +6,6 @@ class Scons < Formula
   sha1 '728edf20047a9f8a537107dbff8d8f803fd2d5e3'
 
   bottle do
-    cellar :any
     revision 1
     sha1 "839f2f8506ffeeab91acfe5f786ed97c41cc3c5a" => :mavericks
     sha1 "74023d56d5ae0db3ab07bf18cd505b5c550cf4bd" => :mountain_lion
