@@ -18,12 +18,15 @@ class FormulaInstaller
   attr_reader :f
   attr_accessor :options, :ignore_deps, :only_deps
   attr_accessor :show_summary_heading, :show_header
+  attr_accessor :build_from_source, :build_bottle
 
   def initialize ff
     @f = ff
     @show_header = false
     @ignore_deps = false
     @only_deps = false
+    @build_from_source = false
+    @build_bottle = false
     @options = Options.new
 
     @@attempted ||= Set.new
@@ -34,6 +37,7 @@ class FormulaInstaller
 
   def pour_bottle? install_bottle_options={:warn=>false}
     return false if @pour_failed
+    return false if build_from_source || build_bottle
     options.empty? && install_bottle?(f, install_bottle_options)
   end
 
@@ -312,6 +316,7 @@ class FormulaInstaller
     fi.options |= inherited_options
     fi.ignore_deps = true
     fi.show_header = false
+    fi.build_from_source = build_from_source
     fi.prelude
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
@@ -386,9 +391,15 @@ class FormulaInstaller
     @build_time ||= Time.now - @start_time unless pour_bottle? or ARGV.interactive? or @start_time.nil?
   end
 
+  def sanitized_ARGV_options
+    args = ARGV.options_only
+    args.delete "--ignore-dependencies" unless ignore_deps
+    args
+  end
+
   def build_argv
-    opts = Options.coerce(ARGV.options_only)
-    opts.concat(options) unless opts.include? "--fresh"
+    opts = Options.coerce(sanitized_ARGV_options)
+    opts.concat(options)
     opts << Option.new("--build-from-source") # don't download bottle
   end
 

@@ -53,7 +53,7 @@ class Avidemux < Formula
     mkdir 'buildCore' do
       args = std_cmake_args
       args << "-DAVIDEMUX_SOURCE_DIR=#{buildpath}"
-      args << "-DGETTEXT_INCLUDE_DIR=#{Formula['gettext'].opt_prefix}/include"
+      args << "-DGETTEXT_INCLUDE_DIR=#{Formula["gettext"].opt_include}"
       # Todo: We could depend on SDL and then remove the `-DSDL=OFF` arguments
       # but I got build errors about NSview.
       args << "-DSDL=OFF"

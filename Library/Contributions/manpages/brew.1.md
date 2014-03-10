@@ -141,10 +141,8 @@ Note that these flags should only appear after a command.
   * `home` <formula>:
     Open <formula>'s homepage in a browser.
 
-  * `info [--all]` <formula>:
+  * `info <formula>:
     Display information about <formula>.
-
-    If `--all` is passed, show info for all formulae.
 
   * `info --github` <formula>:
     Open a browser to the GitHub History page for formula <formula>.
@@ -155,7 +153,7 @@ Note that these flags should only appear after a command.
     Print a JSON representation of <formula>. Currently the only accepted value
     for <version> is `v1`.
 
-  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--fresh] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
+  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
@@ -176,9 +174,6 @@ Note that these flags should only appear after a command.
 
     If `--only-dependencies` is passed, install the dependencies with specified
     options but do not install the specified formula.
-
-    If `--fresh` is passed, the installation process will not re-use any
-    options from previous installs.
 
     If `--cc=<compiler>` is passed, attempt to compile using <compiler>.
     <compiler> should be the name of the compiler's executable, for instance

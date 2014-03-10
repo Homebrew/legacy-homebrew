@@ -11,7 +11,7 @@ class Cppcheck < Formula
   option 'with-gui', "Build the cppcheck gui (requires Qt)"
 
   depends_on 'pcre' unless build.include? 'no-rules'
-  depends_on 'qt' if build.include? 'with-gui'
+  depends_on 'qt' if build.with? "gui"
 
   def install
     # Man pages aren't installed as they require docbook schemas.
@@ -26,7 +26,7 @@ class Cppcheck < Formula
     system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=#{prefix}/cfg", "install"
     prefix.install "cfg"
 
-    if build.include? 'with-gui'
+    if build.with? "gui"
       cd "gui" do
         if build.include? 'no-rules'
           system "qmake", "HAVE_RULES=no"

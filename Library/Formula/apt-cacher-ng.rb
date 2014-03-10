@@ -44,7 +44,7 @@ class AptCacherNg < Formula
       <true/>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/apt-cacher-ng</string>
+        <string>#{opt_sbin}/apt-cacher-ng</string>
         <string>-c</string>
         <string>#{etc}/apt-cacher-ng</string>
         <string>foreground=1</string>

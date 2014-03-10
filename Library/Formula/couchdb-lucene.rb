@@ -44,7 +44,7 @@ class CouchdbLucene < Formula
         </dict>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/run</string>
+          <string>#{opt_bin}/run</string>
         </array>
         <key>StandardOutPath</key>
         <string>/dev/null</string>

@@ -27,7 +27,7 @@ class Libcppa < Formula
     ]
 
     args << '--with-opencl' if build.with? 'opencl'
-    args << '--no-examples' unless build.with? 'examples'
+    args << '--no-examples' if build.without? 'examples'
 
     system "./configure", *args
     system "make"

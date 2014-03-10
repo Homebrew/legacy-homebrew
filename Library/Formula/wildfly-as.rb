@@ -12,15 +12,15 @@ class WildflyAs < Formula
 
   def caveats; <<-EOS.undent
     The home of WildFly Application Server 8 is:
-      #{opt_prefix}/libexec
+      #{opt_libexec}
     You may want to add the following to your .bash_profile:
-      export JBOSS_HOME=#{opt_prefix}/libexec
+      export JBOSS_HOME=#{opt_libexec}
       export PATH=${PATH}:${JBOSS_HOME}/bin
     EOS
   end
 
   test do
-    system "#{opt_prefix}/libexec/bin/standalone.sh --version | grep #{version}"
+    system "#{opt_libexec}/bin/standalone.sh --version | grep #{version}"
   end
 
 end

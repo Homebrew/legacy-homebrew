@@ -15,7 +15,7 @@ class Freediameter < Formula
   depends_on 'libgcrypt'
   depends_on 'libidn'
 
-  if build.include? 'with-all-extensions'
+  if build.with? "all-extensions"
     depends_on :postgresql
     depends_on :mysql
     depends_on 'swig' => :build
@@ -28,7 +28,7 @@ class Freediameter < Formula
       -DDISABLE_SCTP=ON
     ]
 
-    args << '-DALL_EXTENSIONS=ON' if build.include? 'with-all-extensions'
+    args << '-DALL_EXTENSIONS=ON' if build.with? "all-extensions"
     args << '..'
 
     mkdir 'build' do
@@ -68,7 +68,7 @@ class Freediameter < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/freeDiameterd</string>
+          <string>#{opt_bin}/freeDiameterd</string>
         </array>
         <key>KeepAlive</key>
         <dict>

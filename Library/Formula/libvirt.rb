@@ -59,7 +59,7 @@ class Libvirt < Formula
 
     # If the libvirt daemon is built, update its config file to reflect
     # the Homebrew prefix
-    unless build.include? 'without-libvirtd'
+    if build.with? "libvirtd"
       inreplace "#{etc}/libvirt/libvirtd.conf" do |s|
         s.gsub! "/etc/", "#{HOMEBREW_PREFIX}/etc/"
         s.gsub! "/var/", "#{HOMEBREW_PREFIX}/var/"

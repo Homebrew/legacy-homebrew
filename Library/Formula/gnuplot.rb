@@ -36,7 +36,7 @@ class Gnuplot < Formula
   depends_on LuaRequirement unless build.include? 'nolua'
   depends_on 'readline'
   depends_on 'pango'       if build.include? 'cairo' or build.include? 'wx'
-  depends_on :x11          if build.include? 'with-x' or MacOS::X11.installed?
+  depends_on :x11          if build.with? "x" or MacOS::X11.installed?
   depends_on 'pdflib-lite' if build.include? 'pdf'
   depends_on 'gd'          unless build.include? 'nogd'
   depends_on 'wxmac'       if build.include? 'wx'
@@ -81,7 +81,7 @@ class Gnuplot < Formula
     args << '--without-cairo'     unless build.include? 'cairo'
     args << '--enable-qt'             if build.include? 'qt'
     args << '--without-lua'           if build.include? 'nolua'
-    args << '--without-lisp-files'    if build.include? 'without-emacs'
+    args << '--without-lisp-files'    if build.without? "emacs"
     args << (build.with?('aquaterm') ? '--with-aquaterm' : '--without-aquaterm')
 
     if build.include? 'latex'

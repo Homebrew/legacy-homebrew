@@ -39,7 +39,7 @@ class Grass < Formula
   def headless?
     # The GRASS GUI is based on WxPython. Unfortunately, Lion does not include
     # this module so we have to drop it.
-    build.include? 'without-gui' or MacOS.version == :lion
+    build.without? "gui" or MacOS.version == :lion
   end
 
   def install
@@ -57,7 +57,7 @@ class Grass < Formula
       "--with-lapack",
       "--with-sqlite",
       "--with-odbc",
-      "--with-geos=#{Formula["geos"].opt_prefix}/bin/geos-config",
+      "--with-geos=#{Formula["geos"].opt_bin}/geos-config",
       "--with-png",
       "--with-readline-includes=#{readline}/include",
       "--with-readline-libs=#{readline}/lib",
@@ -78,7 +78,7 @@ class Grass < Formula
     if headless? or build.without? 'wxmac'
       args << "--without-wxwidgets"
     else
-      args << "--with-wxwidgets=#{Formula["wxmac"].opt_prefix}/bin/wx-config"
+      args << "--with-wxwidgets=#{Formula["wxmac"].opt_bin}/wx-config"
     end
 
     args << "--enable-64bit" if MacOS.prefer_64_bit?
@@ -151,6 +151,6 @@ index f1edea6..be404b0 100644
  endif
 -	@# enable OSX Help Viewer
 -	@if [ "`cat include/Make/Platform.make | grep -i '^ARCH.*darwin'`" ] ; then /bin/ln -sfh "${INST_DIR}/docs/html" /Library/Documentation/Help/GRASS-${GRASS_VERSION_MAJOR}.${GRASS_VERSION_MINOR} ; fi
- 
- 
+
+
  install-strip: FORCE
