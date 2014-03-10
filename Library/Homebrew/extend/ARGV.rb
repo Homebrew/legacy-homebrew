@@ -144,7 +144,7 @@ module HomebrewArgvExtension
 
   def build_from_source?
     include? '--build-from-source' or !ENV['HOMEBREW_BUILD_FROM_SOURCE'].nil? \
-      or build_head? or build_devel? or build_universal? or build_bottle?
+      or build_head? or build_devel? or build_universal?
   end
 
   def flag? flag
@@ -184,7 +184,6 @@ module HomebrewArgvExtension
     old_args = clone
 
     flags_to_clear = %w[
-      --build-bottle
       --debug -d
       --devel
       --interactive -i
