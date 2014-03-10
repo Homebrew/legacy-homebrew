@@ -121,6 +121,10 @@ class Bottle
     @cellar = spec.cellar
     @revision = spec.revision
   end
+
+  def compatible_cellar?
+    cellar == :any || cellar == HOMEBREW_CELLAR.to_s
+  end
 end
 
 class BottleSpecification
