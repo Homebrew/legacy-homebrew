@@ -17,11 +17,23 @@ module Homebrew extend self
 
     puts "Fetching: #{bucket * ', '}" if bucket.size > 1
     bucket.each do |f|
-      fetch_formula(f)
-      f.resources.each do |r|
-        fetch_resource(r)
+      if fetch_bottle?(f)
+        fetch_formula(f.bottle)
+      else
+        fetch_formula(f)
+        f.resources.each do |r|
+          fetch_resource(r)
+        end
       end
     end
+  end
+
+  def fetch_bottle? f
+    return true if ARGV.force_bottle? && f.bottle
+    return false unless f.bottle && f.pour_bottle?
+    return false if ARGV.build_from_source? || ARGV.build_bottle?
+    return false unless f.bottle.compatible_cellar?
+    return true
   end
 
   def fetch_resource r
