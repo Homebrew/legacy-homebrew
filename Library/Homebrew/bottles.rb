@@ -12,7 +12,6 @@ def install_bottle? f, options={:warn=>false}
   return true if f.local_bottle_path
   return true if ARGV.force_bottle?
   return false unless f.pour_bottle?
-  return false unless f.default_build?
   return false unless f.bottle
 
   if f.bottle.cellar != :any && f.bottle.cellar != HOMEBREW_CELLAR.to_s
