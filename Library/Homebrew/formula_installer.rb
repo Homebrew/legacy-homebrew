@@ -38,7 +38,28 @@ class FormulaInstaller
   def pour_bottle? install_bottle_options={:warn=>false}
     return false if @pour_failed
     return false if build_from_source || build_bottle
-    options.empty? && install_bottle?(f, install_bottle_options)
+    return false unless options.empty?
+
+    return true if f.local_bottle_path
+    return true if ARGV.force_bottle?
+    return false unless f.bottle && f.pour_bottle?
+
+    unless f.bottle.compatible_cellar?
+      if install_bottle_options[:warn]
+        opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}"
+      end
+      return false
+    end
+
+    true
+  end
+
+  def install_bottle_for_dep?(dep, build)
+    return false if build_from_source
+    return false unless dep.bottle && dep.pour_bottle?
+    return false unless build.used_options.empty?
+    return false unless dep.bottle.compatible_cellar?
+    return true
   end
 
   def prelude
@@ -227,7 +248,9 @@ class FormulaInstaller
 
           if (req.optional? || req.recommended?) && build.without?(req)
             Requirement.prune
-          elsif req.build? && install_bottle?(dependent)
+          elsif req.build? && dependent == f && pour_bottle?
+            Requirement.prune
+          elsif req.build? && dependent != f && install_bottle_for_dep?(dependent, build)
             Requirement.prune
           elsif req.satisfied?
             Requirement.prune
@@ -258,7 +281,7 @@ class FormulaInstaller
           Dependency.prune
         elsif dep.build? && dependent == f && pour_bottle?
           Dependency.prune
-        elsif dep.build? && dependent != f && install_bottle?(dependent)
+        elsif dep.build? && dependent != f && install_bottle_for_dep?(dependent, build)
           Dependency.prune
         elsif dep.satisfied?(options)
           Dependency.skip

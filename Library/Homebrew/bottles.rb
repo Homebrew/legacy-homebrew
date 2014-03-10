@@ -8,22 +8,6 @@ def bottle_filename options={}
   "#{options[:name]}-#{options[:version]}#{bottle_native_suffix(options)}"
 end
 
-def install_bottle? f, options={:warn=>false}
-  return true if f.local_bottle_path
-  return true if ARGV.force_bottle?
-  return false unless f.pour_bottle?
-  return false unless f.bottle
-
-  unless f.bottle.compatible_cellar?
-    if options[:warn]
-      opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}"
-    end
-    return false
-  end
-
-  true
-end
-
 def built_as_bottle? f
   return false unless f.installed?
   tab = Tab.for_keg(f.installed_prefix)
