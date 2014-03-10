@@ -247,10 +247,6 @@ class FormulaInstaller
   end
 
   def expand_dependencies(deps)
-    # FIXME: can't check this inside the block for the top-level dependent
-    # because it depends on the contents of ARGV.
-    pour_bottle = pour_bottle?
-
     inherited_options = {}
 
     expanded_deps = ARGV.filter_for_dependencies do
@@ -260,7 +256,7 @@ class FormulaInstaller
 
         if (dep.optional? || dep.recommended?) && build.without?(dep)
           Dependency.prune
-        elsif dep.build? && dependent == f && pour_bottle
+        elsif dep.build? && dependent == f && pour_bottle?
           Dependency.prune
         elsif dep.build? && dependent != f && install_bottle?(dependent)
           Dependency.prune
@@ -401,7 +397,7 @@ class FormulaInstaller
   def build_argv
     opts = Options.coerce(sanitized_ARGV_options)
     opts.concat(options)
-    opts << Option.new("--build-from-source") # don't download bottle
+    opts
   end
 
   def build
