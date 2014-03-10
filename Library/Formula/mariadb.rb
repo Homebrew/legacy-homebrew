@@ -12,8 +12,8 @@ class Mariadb < Formula
   end
 
   devel do
-    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.8/kvm-tarbake-jaunty-x86/mariadb-10.0.8.tar.gz'
-    sha1 '2b56a7d78b5cf063374f8d6cf03986020b0290c1'
+    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.9/kvm-tarbake-jaunty-x86/mariadb-10.0.9.tar.gz'
+    sha1 '474310268649fd00ddf8c813987a2b05ad0a4d2d'
   end
 
   depends_on 'cmake' => :build
@@ -34,16 +34,6 @@ class Mariadb < Formula
     :because => 'both install MySQL client libraries'
 
   env :std if build.universal?
-
-  def patches
-    if build.devel?
-      [
-        # Prevent name collision leading to compilation failure. See:
-        # issue #24489, upstream: https://mariadb.atlassian.net/browse/MDEV-5314
-        'https://gist.github.com/makigumo/8931768/raw/28ab86eb6d2fc0f400d0acc07d4b5773027ab9d2/mariadb-10.0.8.mac.patch',
-      ]
-    end
-  end
 
   def install
     # Don't hard-code the libtool path. See:
