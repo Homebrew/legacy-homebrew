@@ -11,6 +11,12 @@ class Fop < Formula
     sha1 'c2a3f6e985b21c9702a714942ac747864c8b1759'
   end
 
+  def patches
+    # fixes broken default java path as in
+    # http://svn.apache.org/viewvc/ant/core/trunk/src/script/ant?r1=1238725&r2=1434680&pathrev=1434680&view=patch
+    DATA
+  end
+
   def install
     libexec.install Dir["*"]
     bin.write_exec_script libexec/'fop'
@@ -19,3 +25,22 @@ class Fop < Formula
     end
   end
 end
+
+__END__
+diff --git a/fop b/fop
+index aca642b..1cae344 100755
+--- a/fop
++++ b/fop
+@@ -81,7 +81,11 @@ case "`uname`" in
+   CYGWIN*) cygwin=true ;;
+   Darwin*) darwin=true
+            if [ -z "$JAVA_HOME" ] ; then
+-             JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
++               if [ -x '/usr/libexec/java_home' ] ; then
++                   JAVA_HOME=`/usr/libexec/java_home`
++               elif [ -d "/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home" ]; then
++                   JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home
++               fi
+            fi
+            ;;
+ esac
