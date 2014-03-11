@@ -29,13 +29,14 @@ class Kafka < Formula
     inreplace "config/zookeeper.properties",
       "dataDir=/tmp/zookeeper", "dataDir=#{data}/zookeeper"
 
-    libexec.install %w(config contrib core examples lib perf project
+    libexec.install %w(contrib core examples lib perf project
                        system_test)
 
     prefix.install "bin"
     bin.env_script_all_files(libexec/"bin", :JAVA_HOME => "`/usr/libexec/java_home`")
 
-    (etc/"kafka").install_symlink Dir[libexec/"config/*"]
+    (etc/"kafka").install Dir["config/*"]
+    libexec.install_symlink etc/"kafka" => "config"
   end
 
   def caveats; <<-EOS.undent
