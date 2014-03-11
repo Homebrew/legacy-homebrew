@@ -87,9 +87,7 @@ class Keg < Pathname
   end
 
   def plist_installed?
-    Dir.chdir self do
-      not Dir.glob("*.plist").empty?
-    end
+    not Dir.glob("#{self}/*.plist").empty?
   end
 
   def python_site_packages_installed?
