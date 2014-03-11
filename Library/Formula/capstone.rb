@@ -2,12 +2,12 @@ require 'formula'
 
 class Capstone < Formula
   homepage 'http://capstone-engine.org'
-  url 'http://capstone-engine.org/download/2.1/capstone-2.1.tgz'
-  sha1 '3e5fe91684cfc76d73caa857a268332ac9d40659'
+  url 'http://capstone-engine.org/download/2.1/capstone-2.1.1.tgz'
+  sha1 'f4b114aba2626832f1c217191faaa748245d76a8'
 
   def patches
-    # Fix pkgconfig path. Fixed upstream:
-    # https://github.com/aquynh/capstone/commit/ae603d
+    # Fix Makefile. Upstream fix is at :
+    # https://github.com/aquynh/capstone/commit/22b867e
     DATA
   end
 
@@ -22,12 +22,12 @@ class Capstone < Formula
 end
 
 __END__
---- a/Makefile.org	2014-03-05 11:26:42.000000000 +0800
-+++ a/Makefile	2014-03-05 11:28:34.000000000 +0800
-@@ -144,13 +144,6 @@
- ifeq ($(UNAME_S),Darwin)
- EXT = dylib
- AR_EXT = a
+--- a/Makefile.org	2014-03-11 11:51:47.000000000 +0800
++++ a/Makefile	2014-03-11 11:56:07.000000000 +0800
+@@ -149,13 +149,6 @@
+ # remove string check because OSX kernel complains about missing symbols
+ CFLAGS += -D_FORTIFY_SOURCE=0
+ endif
 -# By default, suppose that Brew is installed & use Brew path for pkgconfig file
 -PKGCFCGDIR = /usr/local/lib/pkgconfig
 -# is Macport installed instead?
