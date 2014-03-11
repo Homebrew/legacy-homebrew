@@ -30,9 +30,8 @@ class Makedepend < Formula
       system "make", "install"
     end
 
+    ENV.append_path "PKG_CONFIG_PATH", "#{buildpath}/xproto/lib/pkgconfig"
     ENV.append_path "PKG_CONFIG_PATH", "#{buildpath}/xorg-macros/share/pkgconfig"
-    ENV["X_CFLAGS"] = "-I#{buildpath}/xproto/include"
-    ENV["X_LIBS"] = "-L#{buildpath}/xproto/lib"
 
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
