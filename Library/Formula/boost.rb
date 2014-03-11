@@ -57,6 +57,14 @@ class Boost < Formula
 
   odie 'boost: --with-c++11 has been renamed to --c++11' if build.with? 'c++11'
 
+  # Patches boost::atomic for LLVM 3.4 as it is used on OS X 10.9 with Xcode 5.1
+  def patches
+    { :p2 => [
+      "https://github.com/boostorg/atomic/commit/6bb71fdd.patch",
+      "https://github.com/boostorg/atomic/commit/e4bde20f.patch",
+    ]}
+  end
+
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
