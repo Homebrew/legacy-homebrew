@@ -25,7 +25,7 @@ __END__
 --- a/Makefile.org	2014-03-11 11:51:47.000000000 +0800
 +++ a/Makefile	2014-03-11 11:56:07.000000000 +0800
 @@ -149,13 +149,6 @@
- # remove string check because OSX kernel complains about missing symbols
+ # remove string check because OS X kernel complains about missing symbols
  CFLAGS += -D_FORTIFY_SOURCE=0
  endif
 -# By default, suppose that Brew is installed & use Brew path for pkgconfig file
