@@ -9,6 +9,12 @@ class Erlang < Formula
   url 'https://github.com/erlang/otp/archive/OTP_R16B03-1.tar.gz'
   sha1 'b8f6ff90d9eb766984bb63bf553c3be72674d970'
 
+  devel do
+    url 'http://www.erlang.org/download/otp_src_17.0-rc2.tar.gz'
+    sha1 'bb223dddb59a56c2ec3dba5fe6abfbe3a1400d6e'
+    version '17.0-rc2'
+  end
+
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
   bottle do
@@ -30,6 +36,8 @@ class Erlang < Formula
   option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
   option 'halfword', 'Enable halfword emulator (64-bit builds only)'
   option 'time', '`brew test --time` to include a time-consuming test'
+  option 'with-native-libs', 'Enable native library compilation'
+  option 'with-dirty-schedulers', 'Enable experimental dirty schedulers'
   option 'no-docs', 'Do not install documentation'
 
   depends_on :autoconf
@@ -37,18 +45,25 @@ class Erlang < Formula
   depends_on :libtool
   depends_on 'unixodbc' if MacOS.version >= :mavericks
   depends_on 'fop' => :optional # enables building PDF docs
-  depends_on 'wxmac' => :recommended
+  depends_on 'wxmac' => :recommended # for GUI apps like observer
 
   fails_with :llvm
 
   def patches
     # Fixes problem with ODBC on Mavericks. Fixed upstream/HEAD:
     # https://github.com/erlang/otp/pull/142
-    DATA if MacOS.version >= :mavericks && !build.head?
+    DATA if MacOS.version >= :mavericks && build.stable?
   end
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
+
+    # Unset these so that building wx, kernel, compiler and
+    # other modules doesn't fail with an unintelligable error.
+    ENV['ERL_LIBS']   = nil
+    ENV['ERL_FLAGS']  = nil
+    ENV['ERL_AFLAGS'] = nil
+    ENV['ERL_ZFLAGS'] = nil
 
     ENV.append "FOP", "#{HOMEBREW_PREFIX}/bin/fop" if build.with? 'fop'
 
@@ -61,10 +76,16 @@ class Erlang < Formula
       --prefix=#{prefix}
       --enable-kernel-poll
       --enable-threads
+      --enable-sctp
       --enable-dynamic-ssl-lib
       --enable-shared-zlib
       --enable-smp-support
     ]
+
+    unless build.stable?
+      args << '--enable-native-libs' if build.with? 'native-libs'
+      args << '--enable-dirty-schedulers' if build.with? 'dirty-schedulers'
+    end
 
     args << "--enable-wx" if build.with? 'wxmac'
 
@@ -109,7 +130,7 @@ class Erlang < Formula
     # This test takes some time to run, but per bug #120 should finish in
     # "less than 20 minutes". It takes about 20 seconds on a Mac Pro (2009).
     if build.include?("time") && !build.head?
-      `#{bin}/dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.16.3/ebin/`
+      `#{bin}/dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.16.4/ebin/`
     end
   end
 end
