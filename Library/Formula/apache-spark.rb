@@ -16,15 +16,6 @@ class ApacheSpark < Formula
     bin.write_exec_script libexec/'bin/spark-shell'
   end
 
-  def caveats
-    s = <<-EOS.undent
-        Apache Spark has been installed into #{prefix}
-        Most file live under the #{libexec} directory and
-        only spark-shell has been linked.
-    EOS
-    s
-  end
-
   test do
     system "#{libexec}/bin/spark-shell", "-h"
   end
