@@ -2,8 +2,8 @@ require 'formula'
 
 class Sdl2 < Formula
   homepage 'http://www.libsdl.org/'
-  url 'http://libsdl.org/release/SDL2-2.0.1.tar.gz'
-  sha1 'e40051311b648e4e60ed1683f62a948d93a0a49f'
+  url 'http://libsdl.org/release/SDL2-2.0.2.tar.gz'
+  sha1 '304c7cd3dddca98724a3e162f232a8a8f6e1ceb3'
 
   head do
     url 'http://hg.libsdl.org/SDL', :using => :hg
