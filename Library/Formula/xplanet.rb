@@ -15,7 +15,7 @@ class Xplanet < Formula
   depends_on 'libtiff'
   depends_on :x11
 
-  if build.include? "with-all"
+  if build.with? "all"
     depends_on "netpbm"
     depends_on "freetype"
     depends_on "pango"
@@ -32,7 +32,7 @@ class Xplanet < Formula
       args << "--with-aqua" << "--without-x"
     end
 
-    if build.include? "with-all"
+    if build.with? "all"
       netpbm = Formula["netpbm"].opt_prefix
       ENV.append 'CPPFLAGS', "-I#{netpbm}/include/netpbm"
       ENV.append 'LDFLAGS', "-L#{netpbm}/lib"
