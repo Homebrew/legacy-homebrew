@@ -6,7 +6,7 @@ class GitImerge < Formula
   sha1 "b3bab94743a79426ea79c1b5e503020ef7fbf2ec"
 
   def install
-    bin.install 'git-imerge'
+    bin.install "git-imerge"
   end
 
   test do
