@@ -22,12 +22,16 @@ class Capstone < Formula
 end
 
 __END__
---- a/Makefile.org	2014-03-11 11:51:47.000000000 +0800
-+++ a/Makefile	2014-03-11 11:56:07.000000000 +0800
-@@ -149,13 +149,6 @@
- # remove string check because OS X kernel complains about missing symbols
- CFLAGS += -D_FORTIFY_SOURCE=0
- endif
+--- Makefile.org	2014-03-11 16:41:54.000000000 +0800
++++ Makefile	2014-03-11 16:43:12.000000000 +0800
+@@ -145,17 +145,6 @@
+ ifeq ($(UNAME_S),Darwin)
+ EXT = dylib
+ AR_EXT = a
+-ifneq ($(USE_SYS_DYN_MEM),yes)
+-# remove string check because OSX kernel complains about missing symbols
+-CFLAGS += -D_FORTIFY_SOURCE=0
+-endif
 -# By default, suppose that Brew is installed & use Brew path for pkgconfig file
 -PKGCFCGDIR = /usr/local/lib/pkgconfig
 -# is Macport installed instead?
