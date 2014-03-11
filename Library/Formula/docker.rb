@@ -2,7 +2,7 @@ require "formula"
 
 class Docker < Formula
   homepage "http://docker.io"
-  url "https://github.com/dotcloud/docker.git", :tag => "v0.8.1"
+  url "https://github.com/dotcloud/docker.git", :tag => "v0.9.0"
 
   option "without-completions", "Disable bash/zsh completions"
 
@@ -17,6 +17,7 @@ class Docker < Formula
   def install
     ENV["GIT_DIR"] = cached_download/".git"
     ENV["AUTO_GOPATH"] = "1"
+    ENV["DOCKER_CLIENTONLY"] = "1"
 
     system "hack/make.sh", "dynbinary"
     bin.install "bundles/#{version}/dynbinary/docker-#{version}" => "docker"
