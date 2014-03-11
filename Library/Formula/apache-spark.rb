@@ -17,6 +17,6 @@ class ApacheSpark < Formula
   end
 
   test do
-    system "#{libexec}/bin/spark-shell", "-h"
+    system "#{libexec}/bin/run-example", "org.apache.spark.examples.SparkPi", "local"
   end
 end
