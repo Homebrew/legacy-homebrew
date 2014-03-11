@@ -7,14 +7,6 @@ require 'utils/inreplace'
 require 'erb'
 require 'extend/pathname'
 
-class BottleMerger < Formula
-  # This provides a URL and Version which are the only needed properties of
-  # a Formula. This object is used to access the Formula bottle DSL to merge
-  # multiple outputs of `brew bottle`.
-  url '1'
-  def self.reset_bottle; @bottle = Bottle.new; end
-end
-
 BOTTLE_ERB = <<-EOS
   bottle do
     <% if prefix.to_s != "/usr/local" %>
@@ -119,7 +111,12 @@ module Homebrew extend self
       bottle_revision = max ? max + 1 : 0
     end
 
-    filename = bottle_filename(f, :tag => bottle_tag, :revision => bottle_revision)
+    filename = bottle_filename(
+      :name => f.name,
+      :version => f.pkg_version,
+      :revision => bottle_revision,
+      :tag => bottle_tag
+    )
 
     if bottle_filename_formula_name(filename).empty?
       return ofail "Add a new regex to bottle_version.rb to parse #{f.version} from #{filename}"
@@ -170,7 +167,7 @@ module Homebrew extend self
       end
     end
 
-    bottle = Bottle.new
+    bottle = BottleSpecification.new
     bottle.prefix HOMEBREW_PREFIX
     bottle.cellar relocatable ? :any : HOMEBREW_CELLAR
     bottle.revision bottle_revision
@@ -197,15 +194,13 @@ module Homebrew extend self
       bottle_block = IO.read argument
       merge_hash[formula_name] << bottle_block
     end
-    merge_hash.keys.each do |formula_name|
-      BottleMerger.reset_bottle
+
+    merge_hash.each do |formula_name, bottle_blocks|
       ohai formula_name
-      bottle_blocks = merge_hash[formula_name]
-      bottle_blocks.each do |bottle_block|
-        BottleMerger.class_eval bottle_block
-      end
-      bottle = BottleMerger.new.bottle
-      next unless bottle
+
+      bottle = BottleSpecification.new
+      bottle_blocks.each { |block| bottle.instance_eval(block) }
+
       output = bottle_output bottle
       puts output
 
