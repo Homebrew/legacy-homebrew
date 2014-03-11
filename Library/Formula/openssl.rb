@@ -15,6 +15,8 @@ class Openssl < Formula
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."
 
+  env :std
+
   def install
     args = %W[./Configure
                --prefix=#{prefix}
