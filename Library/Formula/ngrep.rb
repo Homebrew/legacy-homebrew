@@ -8,6 +8,7 @@ class Ngrep < Formula
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
+                          "--enable-ipv6",
                           "--prefix=#{prefix}",
                           # this line required to make configure succeed
                           "--with-pcap-includes=/usr/include"
