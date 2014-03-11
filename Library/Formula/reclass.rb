@@ -2,8 +2,8 @@ require "formula"
 
 class Reclass < Formula
   homepage "http://reclass.pantsfullofunix.net/"
-  url "http://ftp.nl.debian.org/debian/pool/main/r/reclass/reclass_1.2.2.orig.tar.gz"
-  sha1 "18baca3e853cdcfac441939a8db85478c3c7a87e"
+  url "https://github.com/madduck/reclass/archive/reclass-1.3.tar.gz"
+  sha1 "eaa8eb1fd22aa040fa7a57c613c6223706904578"
 
   head 'https://github.com/madduck/reclass.git'
 
