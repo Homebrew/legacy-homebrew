@@ -8,7 +8,6 @@ class Justniffer < Formula
   depends_on "boost"
 
   fails_with :clang do
-    build 500
     cause "Missing ext/stdio_filebuf.h; this is a GCC-specific header"
   end
 
