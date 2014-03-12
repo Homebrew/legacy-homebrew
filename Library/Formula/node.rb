@@ -1,34 +1,5 @@
 require 'formula'
 
-class NpmRequirement < Requirement
-  fatal true
-
-  def modules_folder
-    "#{HOMEBREW_PREFIX}/lib/node_modules"
-  end
-
-  def message; <<-EOS.undent
-    Beginning with 0.8.0, this recipe now comes with npm.
-    It appears you already have npm installed at #{modules_folder}/npm.
-    To use the npm that comes with this recipe, first uninstall npm with
-    `npm uninstall npm -g`, then run this command again.
-
-    If you would like to keep your installation of npm instead of
-    using the one provided with homebrew, install the formula with
-    the `--without-npm` option.
-    EOS
-  end
-
-  satisfy :build_env => false do
-    begin
-      path = Pathname.new("#{modules_folder}/npm/bin/npm")
-      path.realpath.to_s.include?(HOMEBREW_CELLAR)
-    rescue Errno::ENOENT
-      true
-    end
-  end
-end
-
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage 'http://nodejs.org/'
@@ -43,10 +14,7 @@ class Node < Formula
   head 'https://github.com/joyent/node.git'
 
   option 'enable-debug', 'Build with debugger hooks'
-  option 'without-npm', 'npm will not be installed'
-  option 'without-completion', 'npm bash completion will not be installed'
 
-  depends_on NpmRequirement => :recommended
   depends_on :python
 
   fails_with :llvm do
@@ -57,49 +25,15 @@ class Node < Formula
     args = %W{--prefix=#{prefix}}
 
     args << "--debug" if build.include? 'enable-debug'
-    args << "--without-npm" if build.without? "npm"
 
     system "./configure", *args
     system "make install"
 
-    if build.with? "npm"
-      (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
-
-      # Link npm manpages
-      Pathname.glob("#{lib}/node_modules/npm/man/*").each do |man|
-        dir = send(man.basename)
-        man.children.each do |file|
-          dir.install_symlink(file.relative_path_from(dir))
-        end
-      end
-
-      if build.with? "completion"
-        bash_completion.install_symlink \
-          lib/"node_modules/npm/lib/utils/completion.sh" => "npm"
-      end
-    end
-  end
-
-  def npm_prefix
-    d = "#{HOMEBREW_PREFIX}/share/npm"
-    if File.directory? d
-      d
-    else
-      HOMEBREW_PREFIX.to_s
-    end
-  end
-
-  def caveats
-    if build.without? "npm"; <<-end.undent
-      Homebrew has NOT installed npm. If you later install it, you should supplement
-      your NODE_PATH with the npm module folder:
-          #{npm_prefix}/lib/node_modules
-      end
-    elsif not ENV['PATH'].split(':').include? "#{npm_prefix}/bin"; <<-end.undent
-      Probably you should amend your PATH to include npm-installed binaries:
-          #{npm_prefix}/bin
-      end
-    end
+  def caveats; <<-end.undent
+      Homebrew has NOT installed npm. If you want npm (you do right?)
+      then run the following:
+      
+      curl http://npmjs.org/install.sh | sh
   end
 
   test do
