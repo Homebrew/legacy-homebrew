@@ -5,6 +5,14 @@ require 'formula'
 # The intersection is harder to achieve with shell tools.
 
 module Homebrew extend self
+  def test_dependencies f, ff
+    if ARGV.flag? '--recursive'
+      f.recursive_dependencies.any? { |dep| dep.name == ff.name } || f.recursive_requirements.any? { |req| req.name == ff.name }
+    else
+      f.deps.any? { |dep| dep.name == ff.name } || f.requirements.any? { |req| req.name == ff.name }
+    end
+  end
+
   def uses
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
@@ -12,20 +20,16 @@ module Homebrew extend self
     formulae = (ARGV.include? "--installed") ? Formula.installed : Formula
 
     uses = []
-    formulae.each do |f|
-      used_formulae.all? do |ff|
-        if ARGV.flag? '--recursive'
-          if f.recursive_dependencies.any? { |dep| dep.name == ff.name }
-            uses << f.to_s
-          elsif f.recursive_requirements.any? { |req| req.name == ff.name }
-            uses << f.to_s
-          end
-        else
-          if f.deps.any? { |dep| dep.name == ff.name }
-            uses << f.to_s
-          elsif f.requirements.any? { |req| req.name == ff.name }
-            uses << f.to_s
-          end
+    if ARGV.include? '--or'
+      formulae.each do |f|
+        uses << f.to_s if used_formulae.any? do |ff|
+          test_dependencies f, ff
+        end
+      end
+    else
+      formulae.each do |f|
+        uses << f.to_s if used_formulae.all? do |ff|
+          test_dependencies f, ff
         end
       end
     end
