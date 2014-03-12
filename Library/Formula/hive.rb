@@ -9,7 +9,7 @@ class Hive < Formula
 
   def install
     rm_f Dir["bin/*.bat"]
-    libexec.install %w[bin conf examples hcatalog lib]
+    libexec.install %w[bin conf examples hcatalog lib scripts]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 
