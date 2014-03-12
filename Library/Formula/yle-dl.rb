@@ -9,7 +9,7 @@ class YleDl < Formula
 
   depends_on 'rtmpdump'
   depends_on :python
-  depends_on 'Crypto' => :python
+  depends_on "pycrypto" => [:python, "Crypto"]
 
   def install
     system "make", "install", "SYS=darwin", "prefix=#{prefix}", "mandir=#{man}"
