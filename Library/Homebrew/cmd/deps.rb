@@ -22,7 +22,6 @@ module Homebrew extend self
       puts_deps_tree ARGV.formulae
     else
       raise FormulaUnspecifiedError if ARGV.named.empty?
-      # blk = mode.union? ? :| : :&
       all_deps = deps_for_formulae(ARGV.formulae, !ARGV.one?, &(mode.union? ? :| : :&))
       all_deps = all_deps.sort_by(&:name) unless mode.topo_order?
       puts all_deps
