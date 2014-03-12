@@ -5,6 +5,13 @@ class Makedepend < Formula
   url "http://xorg.freedesktop.org/releases/individual/util/makedepend-1.0.5.tar.bz2"
   sha1 "2599afa039d2070bae9df6ce43da288b3a4adf97"
 
+  bottle do
+    cellar :any
+    sha1 "83db1daee01e4eb752c711934eb88850b3ee70d6" => :mavericks
+    sha1 "9c55ea85af719a448a4522958bd0e57e5e7741d1" => :mountain_lion
+    sha1 "66c5cb0f796db17741c38fb98bd2c05c82bf989c" => :lion
+  end
+
   depends_on "pkg-config" => :build
 
   resource "xproto" do
