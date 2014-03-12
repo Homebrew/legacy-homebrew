@@ -2,7 +2,7 @@ require 'formula'
 
 class X11vnc < Formula
   homepage 'http://www.karlrunge.com/x11vnc/'
-  url 'http://sourceforge.net/projects/libvncserver/files/x11vnc/0.9.13/x11vnc-0.9.13.tar.gz'
+  url 'https://downloads.sourceforge.net/project/libvncserver/x11vnc/0.9.13/x11vnc-0.9.13.tar.gz'
   sha1 'f011d81488ac94dc8dce2d88739c23bd85a976fa'
 
   depends_on 'jpeg'

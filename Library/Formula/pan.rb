@@ -4,6 +4,7 @@ class Pan < Formula
   homepage 'http://pan.rebelbase.com/'
   url 'http://pan.rebelbase.com/download/releases/0.139/source/pan-0.139.tar.bz2'
   sha1 '01ea0361a6d81489888e6abb075fd552999c3c60'
+  revision 1
 
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build

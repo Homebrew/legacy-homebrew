@@ -2,7 +2,7 @@ require 'formula'
 
 class Synfig < Formula
   homepage 'http://synfig.org'
-  url 'http://downloads.sourceforge.net/project/synfig/releases/0.64.1/source/synfig-0.64.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/synfig/releases/0.64.1/source/synfig-0.64.1.tar.gz'
   sha1 '19fe81f144100c3f5e14a1b88b26a9b659fee3b8'
 
   head 'git://synfig.git.sourceforge.net/gitroot/synfig/synfig'

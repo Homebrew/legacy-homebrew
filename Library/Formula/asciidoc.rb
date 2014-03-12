@@ -2,7 +2,7 @@ require 'formula'
 
 class Asciidoc < Formula
   homepage 'http://www.methods.co.nz/asciidoc'
-  url 'http://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.9/asciidoc-8.6.9.tar.gz'
+  url 'https://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.9/asciidoc-8.6.9.tar.gz'
   sha1 '82e574dd061640561fa0560644bc74df71fb7305'
 
   head do

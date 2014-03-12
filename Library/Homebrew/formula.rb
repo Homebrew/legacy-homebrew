@@ -10,6 +10,7 @@ require 'build_options'
 require 'formulary'
 require 'software_spec'
 require 'install_renamed'
+require 'pkg_version'
 
 class Formula
   include FileUtils
@@ -17,7 +18,8 @@ class Formula
   extend BuildEnvironmentDSL
 
   attr_reader :name, :path, :homepage, :build
-  attr_reader :stable, :bottle, :devel, :head, :active_spec
+  attr_reader :stable, :devel, :head, :active_spec
+  attr_reader :pkg_version, :revision
 
   # The current working directory during builds and tests.
   # Will only be non-nil inside #stage and #test.
@@ -34,25 +36,16 @@ class Formula
     @name = name
     @path = path
     @homepage = self.class.homepage
+    @revision = self.class.revision || 0
 
     set_spec :stable
     set_spec :devel
     set_spec :head
-    set_spec :bottle do |bottle|
-      # Ensure the bottle URL is set. If it does not have a checksum,
-      # then a bottle is not available for the current platform.
-      # TODO: push this down into Bottle; we can pass the formula instance
-      # into a validation method on the bottle instance.
-      unless bottle.checksum.nil? || bottle.checksum.empty?
-        @bottle = bottle
-        bottle.url ||= bottle_url(self, bottle.current_tag)
-        bottle.version = stable.version
-      end
-    end
 
     @active_spec = determine_active_spec
     validate_attributes :url, :name, :version
     @build = determine_build_options
+    @pkg_version = PkgVersion.new(version, revision)
 
     @pin = FormulaPin.new(self)
 
@@ -61,7 +54,7 @@ class Formula
 
   def set_spec(name)
     spec = self.class.send(name)
-    if block_given? && yield(spec) || spec.url
+    if spec.url
       spec.owner = self
       instance_variable_set("@#{name}", spec)
     end
@@ -71,7 +64,6 @@ class Formula
     case
     when head && ARGV.build_head?        then head    # --HEAD
     when devel && ARGV.build_devel?      then devel   # --devel
-    when bottle && install_bottle?(self) then bottle  # bottle available
     when stable                          then stable
     when devel && stable.nil?            then devel   # devel-only
     when head && stable.nil?             then head    # head-only
@@ -88,14 +80,14 @@ class Formula
     end
   end
 
-  def default_build?
-    self.class.build.used_options.empty?
-  end
-
   def determine_build_options
     build = active_spec.build
     options.each { |opt, desc| build.add(opt, desc) }
     build
+  end
+
+  def bottle
+    Bottle.new(self, active_spec.bottle_specification) if active_spec.bottled?
   end
 
   def url;      active_spec.url;     end
@@ -150,9 +142,13 @@ class Formula
     Keg.new(installed_prefix).version
   end
 
-  def prefix(v=version)
+  # The directory in the cellar that the formula is installed to.
+  # This directory contains the formula's name and version.
+  def prefix(v=pkg_version)
     Pathname.new("#{HOMEBREW_CELLAR}/#{name}/#{v}")
   end
+  # The parent of the prefix; the named directory in the cellar containing all
+  # installed versions of this software
   def rack; prefix.parent end
 
   def bin;     prefix+'bin'     end
@@ -197,9 +193,22 @@ class Formula
   def plist_manual; self.class.plist_manual end
   def plist_startup; self.class.plist_startup end
 
+  # A stable path for this formula, when installed. Contains the formula name
+  # but no version number. Only the active version will be linked here if
+  # multiple versions are installed.
+  #
+  # This is the prefered way to refer a formula in plists or from another
+  # formula, as the path is stable even when the software is updated.
   def opt_prefix
     Pathname.new("#{HOMEBREW_PREFIX}/opt/#{name}")
   end
+
+  def opt_bin;     opt_prefix+'bin'     end
+  def opt_include; opt_prefix+'include' end
+  def opt_lib;     opt_prefix+'lib'     end
+  def opt_libexec; opt_prefix+'libexec' end
+  def opt_sbin;    opt_prefix+'sbin'    end
+  def opt_share;   opt_prefix+'share'   end
 
   # Can be overridden to selectively disable bottles from formulae.
   # Defaults to true so overridden version does not have to check if bottles
@@ -394,9 +403,12 @@ class Formula
       if name =~ %r{(.+)/(.+)/(.+)}
         tap_name = "#$1-#$2".downcase
         tapd = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{tap_name}")
-        tapd.find_formula do |relative_pathname|
-          return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
-        end if tapd.directory?
+
+        if tapd.directory?
+          tapd.find_formula do |relative_pathname|
+            return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
+          end
+        end
       end
       # Otherwise don't resolve paths or URLs
       return name
@@ -449,7 +461,7 @@ class Formula
 
   # True if this formula is provided by Homebrew itself
   def core_formula?
-    path.realpath.to_s == Formula.path(name).to_s
+    path.realpath == Formula.path(name)
   end
 
   def self.path name
@@ -659,10 +671,10 @@ class Formula
   class << self
 
     attr_reader :keg_only_reason, :cc_failures
-    attr_rw :homepage, :plist_startup, :plist_manual
+    attr_rw :homepage, :plist_startup, :plist_manual, :revision
 
     def specs
-      @specs ||= [stable, devel, head, bottle].freeze
+      @specs ||= [stable, devel, head].freeze
     end
 
     def url val, specs={}
@@ -685,6 +697,10 @@ class Formula
       EOS
     end
 
+    def bottle *, &block
+      stable.bottle(&block)
+    end
+
     def build
       stable.build
     end
@@ -693,13 +709,6 @@ class Formula
       @stable ||= SoftwareSpec.new
       return @stable unless block_given?
       @stable.instance_eval(&block)
-    end
-
-    def bottle *, &block
-      @bottle ||= Bottle.new
-      return @bottle unless block_given?
-      @bottle.instance_eval(&block)
-      @bottle.version = @stable.version
     end
 
     def devel &block

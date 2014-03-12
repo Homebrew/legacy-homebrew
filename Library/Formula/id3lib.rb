@@ -2,7 +2,7 @@ require 'formula'
 
 class Id3lib < Formula
   homepage 'http://id3lib.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/id3lib/id3lib/3.8.3/id3lib-3.8.3.tar.gz'
+  url 'https://downloads.sourceforge.net/project/id3lib/id3lib/3.8.3/id3lib-3.8.3.tar.gz'
   sha1 'c92c880da41d1ec0b242745a901702ae87970838'
 
   head "cvs://:pserver:anonymous:@id3lib.cvs.sourceforge.net:/cvsroot/id3lib:id3lib-devel"

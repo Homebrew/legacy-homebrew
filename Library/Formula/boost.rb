@@ -14,7 +14,7 @@ end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2'
   sha1 'cef9a0cc7084b1d639e06cd3bc34e4251524c840'
 
   head 'http://svn.boost.org/svn/boost/trunk'
@@ -64,7 +64,7 @@ class Boost < Formula
 
   def install
     # https://svn.boost.org/trac/boost/ticket/8841
-    if build.with? 'mpi' and not build.without? 'single'
+    if build.with? 'mpi' and build.with? 'single'
       raise <<-EOS.undent
         Building MPI support for both single and multi-threaded flavors
         is not supported.  Please use '--with-mpi' together with
@@ -150,16 +150,16 @@ class Boost < Formula
             "--user-config=user-config.jam",
             "install"]
 
-    if build.include? 'without-single'
-      args << "threading=multi"
-    else
+    if build.with? "single"
       args << "threading=multi,single"
+    else
+      args << "threading=multi"
     end
 
-    if build.include? 'without-static'
-      args << "link=shared"
-    else
+    if build.with? "static"
       args << "link=shared,static"
+    else
+      args << "link=shared"
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?

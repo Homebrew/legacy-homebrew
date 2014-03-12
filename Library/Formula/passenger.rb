@@ -2,9 +2,15 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.37.tar.gz'
-  sha1 'db3d21fdbb68403fc43a39de0ab485e8e0444922'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.38.tar.gz'
+  sha1 'c1e80c27b3f1c43d91dbd239ddecd4b81e6c13bd'
   head 'https://github.com/phusion/passenger.git'
+
+  bottle do
+    sha1 "363ea4bcfede79fcc2eb13eb13d7110ba6fb15ce" => :mavericks
+    sha1 "1a85e572065bdf3eaa2bc16dc0db615b220c81be" => :mountain_lion
+    sha1 "8b14e945b72d4de6c9866041fb6ecf9e37a9b4ae" => :lion
+  end
 
   depends_on 'pcre'
   depends_on :macos => :lion
@@ -15,9 +21,9 @@ class Passenger < Formula
     rake "webhelper"
 
     necessary_files = Dir["configure", "Rakefile", "README.md", "CONTRIBUTORS",
-      "CONTRIBUTING.md", "LICENSE", "INSTALL.md", "NEWS", "passenger.gemspec",
-      "build", "lib", "node_lib", "bin", "doc", "man", "helper-scripts",
-      "ext", "resources", "buildout"]
+      "CONTRIBUTING.md", "LICENSE", "CHANGELOG", "INSTALL.md",
+      "passenger.gemspec", "build", "lib", "node_lib", "bin", "doc", "man",
+      "helper-scripts", "ext", "resources", "buildout"]
     libexec.mkpath
     cp_r necessary_files, libexec, :preserve => true
 
@@ -43,8 +49,8 @@ class Passenger < Formula
 
   def caveats; <<-EOS.undent
     To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
-      LoadModule passenger_module #{opt_prefix}/libexec/buildout/apache2/mod_passenger.so
-      PassengerRoot #{opt_prefix}/libexec/lib/phusion_passenger/locations.ini
+      LoadModule passenger_module #{opt_libexec}/buildout/apache2/mod_passenger.so
+      PassengerRoot #{opt_libexec}/lib/phusion_passenger/locations.ini
       PassengerDefaultRuby /usr/bin/ruby
 
     To activate Phusion Passenger for Nginx, run:

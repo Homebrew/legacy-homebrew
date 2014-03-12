@@ -152,7 +152,7 @@ class Mysql < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/mysqld_safe</string>
+        <string>#{opt_bin}/mysqld_safe</string>
         <string>--bind-address=127.0.0.1</string>
       </array>
       <key>RunAtLoad</key>

@@ -2,7 +2,7 @@ require 'formula'
 
 class Ffmbc < Formula
   homepage 'http://code.google.com/p/ffmbc/'
-  url 'http://ffmbc.googlecode.com/files/FFmbc-0.7-rc8.tar.bz2'
+  url 'https://ffmbc.googlecode.com/files/FFmbc-0.7-rc8.tar.bz2'
   sha1 '85a9673ac82a698bb96057fe027222efe6ebae28'
 
   option "without-x264", "Disable H.264 encoder"
@@ -32,10 +32,10 @@ class Ffmbc < Formula
             "--enable-nonfree",
             "--cc=#{ENV.cc}"]
 
-    args << "--enable-libx264" unless build.without? 'x264'
-    args << "--enable-libfaac" unless build.without? 'faac'
-    args << "--enable-libmp3lame" unless build.without? 'lame'
-    args << "--enable-libxvid" unless build.without? 'xvid'
+    args << "--enable-libx264" if build.with? 'x264'
+    args << "--enable-libfaac" if build.with? 'faac'
+    args << "--enable-libmp3lame" if build.with? 'lame'
+    args << "--enable-libxvid" if build.with? 'xvid'
 
     args << "--enable-libfreetype" if build.with? 'freetype'
     args << "--enable-libtheora" if build.with? 'theora'

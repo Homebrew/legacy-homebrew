@@ -55,10 +55,6 @@ class Gdal < Formula
     depends_on "poppler"
   end
 
-  def png_prefix
-    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/libpng" : MacOS::X11.prefix
-  end
-
   def get_configure_args
     args = [
       # Base configuration.
@@ -79,7 +75,7 @@ class Gdal < Formula
       # Backends supported by OS X.
       "--with-libiconv-prefix=/usr",
       "--with-libz=/usr",
-      "--with-png=#{png_prefix}",
+      "--with-png=#{Formula["libpng"].opt_prefix}",
       "--with-expat=/usr",
       "--with-curl=/usr/bin/curl-config",
 
@@ -213,8 +209,8 @@ class Gdal < Formula
     #
     # Fortunately, this can be remedied using LDFLAGS.
     sqlite = Formula["sqlite"]
-    ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib -lsqlite3"
-    ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
+    ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib} -lsqlite3"
+    ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
     # Needed by libdap
     ENV.libxml2 if build.include? 'complete'
 

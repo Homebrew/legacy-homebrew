@@ -4,7 +4,7 @@ require 'formula'
 
 class Avidemux < Formula
   homepage 'http://avidemux.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/avidemux/avidemux_2.6.4.tar.gz'
+  url 'https://downloads.sourceforge.net/avidemux/avidemux_2.6.4.tar.gz'
   sha1 '7ed55fd5cfb6cfa73ebb9058af72fa2e3c9717c3'
   head 'git://gitorious.org/avidemux2-6/avidemux2-6.git'
 
@@ -53,7 +53,7 @@ class Avidemux < Formula
     mkdir 'buildCore' do
       args = std_cmake_args
       args << "-DAVIDEMUX_SOURCE_DIR=#{buildpath}"
-      args << "-DGETTEXT_INCLUDE_DIR=#{Formula['gettext'].opt_prefix}/include"
+      args << "-DGETTEXT_INCLUDE_DIR=#{Formula["gettext"].opt_include}"
       # Todo: We could depend on SDL and then remove the `-DSDL=OFF` arguments
       # but I got build errors about NSview.
       args << "-DSDL=OFF"

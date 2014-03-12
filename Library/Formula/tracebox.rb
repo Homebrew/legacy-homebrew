@@ -3,7 +3,7 @@ require 'formula'
 class Tracebox < Formula
   homepage 'http://www.tracebox.org/'
   url 'https://drone.io/github.com/tracebox/tracebox/files/tracebox-0.1.tar.gz'
-  sha1 'bb79f17cb799c3b4b1b8f4e3ab0775ae40b2060c'
+  sha1 '4656b0a6660e2a9833ff8f541d6d88034d011e7b'
 
   depends_on 'lua'
 

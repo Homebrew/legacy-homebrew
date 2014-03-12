@@ -61,7 +61,7 @@ class Openvpn < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/openvpn</string>
+        <string>#{opt_sbin}/openvpn</string>
         <string>--config</string>
         <string>#{etc}/openvpn/openvpn.conf</string>
       </array>

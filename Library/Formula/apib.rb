@@ -2,8 +2,8 @@ require 'formula'
 
 class Apib < Formula
   homepage 'https://github.com/apigee/apib'
-  url 'https://github.com/apigee/apib/archive/APIB_1_0.zip'
-  sha1 '25d5b29bfab858e71ca166d29e9218bd39ba5cc6'
+  url 'https://github.com/apigee/apib/archive/APIB_1_0.tar.gz'
+  sha1 'd7a5a2accd6bda7efeca433141b5df44ccd7f0b0'
 
   def install
     system "./configure", "--prefix=#{prefix}"

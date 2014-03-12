@@ -74,7 +74,7 @@ class Fuseki < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/fuseki-server</string>
+          <string>#{opt_bin}/fuseki-server</string>
           <string>--config</string>
           <string>/usr/local/etc/fuseki.ttl</string>
         </array>

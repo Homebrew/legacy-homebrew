@@ -4,9 +4,8 @@ class TestBall < Formula
   def initialize(name="test_ball")
     @homepage = 'http://example.com/'
     self.class.instance_eval do
-      @stable ||= SoftwareSpec.new
-      @stable.url "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-      @stable.sha1 "482e737739d946b7c8cbaf127d9ee9c148b999f5"
+      stable.url "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+      stable.sha1 "482e737739d946b7c8cbaf127d9ee9c148b999f5"
     end
     super
   end

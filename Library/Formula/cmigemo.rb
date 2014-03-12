@@ -2,7 +2,7 @@ require 'formula'
 
 class Cmigemo < Formula
   homepage 'http://www.kaoriya.net/software/cmigemo'
-  url 'http://cmigemo.googlecode.com/files/cmigemo-default-src-20110227.zip'
+  url 'https://cmigemo.googlecode.com/files/cmigemo-default-src-20110227.zip'
   sha1 '25e279c56d3a8f1e82cbfb3526d1b38742d1d66c'
 
   depends_on 'nkf' => :build

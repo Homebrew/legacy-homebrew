@@ -14,7 +14,7 @@ class Mplayer < Formula
   depends_on 'libcaca' => :optional
   depends_on :x11 if build.with? 'x'
 
-  unless build.without? 'osd' or build.with? 'x'
+  if build.with? 'osd' or build.with? 'x'
     # These are required for the OSD. We can get them from X11, or we can
     # build our own.
     depends_on :fontconfig
@@ -57,8 +57,8 @@ class Mplayer < Formula
       --disable-libopenjpeg
     ]
 
-    args << "--enable-menu" unless build.without? 'osd'
-    args << "--disable-x11" unless build.with? 'x'
+    args << "--enable-menu" if build.with? 'osd'
+    args << "--disable-x11" if build.without? 'x'
     args << "--enable-caca" if build.with? 'libcaca'
 
     system "./configure", *args
@@ -78,7 +78,7 @@ index a1fba5f..5deaa80 100755
 +++ b/configure
 @@ -49,8 +49,6 @@ if test -e ffmpeg/mp_auto_pull ; then
  fi
- 
+
  if ! test -e ffmpeg ; then
 -    echo "No FFmpeg checkout, press enter to download one with git or CTRL+C to abort"
 -    read tmp

@@ -25,7 +25,7 @@ class Varnish < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/sbin/varnishd</string>
+          <string>#{opt_sbin}/varnishd</string>
           <string>-n</string>
           <string>#{var}/varnish</string>
           <string>-f</string>

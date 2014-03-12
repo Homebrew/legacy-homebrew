@@ -2,7 +2,7 @@ require 'formula'
 
 class Opensc < Formula
   homepage 'https://github.com/OpenSC/OpenSC/wiki'
-  url 'http://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.13.0/opensc-0.13.0.tar.gz'
+  url 'https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.13.0/opensc-0.13.0.tar.gz'
   sha1 '9285ccbed7b49f63e488c8fb1b3e102994a28218'
 
   head do
@@ -15,7 +15,7 @@ class Opensc < Formula
 
   option 'with-man-pages', 'Build manual pages'
 
-  depends_on 'docbook' if build.include? 'with-man-pages'
+  depends_on 'docbook' if build.with? "man-pages"
 
   def install
     extra_args = []

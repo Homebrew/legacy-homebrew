@@ -2,12 +2,12 @@ require 'formula'
 
 class SwiProlog < Formula
   homepage 'http://www.swi-prolog.org/'
-  url 'http://www.swi-prolog.org/download/stable/src/pl-6.6.1.tar.gz'
-  sha1 '94022f4c26d86761e3b998c21da400e0fce4acb3'
+  url 'http://www.swi-prolog.org/download/stable/src/pl-6.6.2.tar.gz'
+  sha1 'b893a45c910e11e703e73fb15ce55a3d3c792489'
 
   devel do
-    url 'http://www.swi-prolog.org/download/devel/src/pl-7.1.8.tar.gz'
-    sha1 'a6685e5598f11f1cf9127f0b9e281ba00070f047'
+    url 'http://www.swi-prolog.org/download/devel/src/pl-7.1.9.tar.gz'
+    sha1 'ae8e6a93ac0beb57239772572211976432e91f34'
   end
 
   head do
@@ -23,7 +23,7 @@ class SwiProlog < Formula
   depends_on 'readline'
   depends_on 'gmp'
 
-  if build.include? 'with-xpce'
+  if build.with? "xpce"
     depends_on 'pkg-config' => :build
     depends_on :x11
     depends_on 'jpeg'
@@ -42,8 +42,8 @@ class SwiProlog < Formula
 
   def install
     args = ["--prefix=#{libexec}", "--mandir=#{man}"]
-    ENV.append 'DISABLE_PKGS', "jpl" unless build.include? "with-jpl"
-    ENV.append 'DISABLE_PKGS', "xpce" unless build.include? 'with-xpce'
+    ENV.append 'DISABLE_PKGS', "jpl" if build.without? "jpl"
+    ENV.append 'DISABLE_PKGS', "xpce" if build.without? "xpce"
 
     # SWI-Prolog's Makefiles don't add CPPFLAGS to the compile command, but do
     # include CIFLAGS. Setting it here. Also, they clobber CFLAGS, so including

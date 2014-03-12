@@ -20,12 +20,7 @@ module Homebrew extend self
 
   def print_info
     if ARGV.named.empty?
-      if ARGV.include? "--all"
-        Formula.each do |f|
-          info_formula f
-          puts '---'
-        end
-      elsif HOMEBREW_CELLAR.exist?
+      if HOMEBREW_CELLAR.exist?
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
       end
     else
@@ -82,10 +77,19 @@ module Homebrew extend self
 
   def info_formula f
     specs = []
-    stable = "stable #{f.stable.version}" if f.stable
-    stable += " (bottled)" if f.bottle
-    specs << stable if stable
-    specs << "devel #{f.devel.version}" if f.devel
+
+    if stable = f.stable
+      s = "stable #{stable.version}"
+      s += " (bottled)" if stable.bottled?
+      specs << s
+    end
+
+    if devel = f.devel
+      s = "devel #{stable.version}"
+      s += " (bottled)" if devel.bottled?
+      specs << s
+    end
+
     specs << "HEAD" if f.head
 
     puts "#{f.name}: #{specs*', '}#{' (pinned)' if f.pinned?}"
