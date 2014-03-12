@@ -41,11 +41,6 @@ class Opendylan < Formula
     #   consider keeping them synchronized with the documentation.
     #
     # 1. Example from opendylan/README.rst
-    #
-    # > Once installed, the following command-line will produce a binary in
-    # > _build/bin/hello-world in the current working directory:
-    # >
-    # >   dylan-compiler -build hello-world
     system bin/"dylan-compiler", "-build", "hello-world"
     assert_equal "hello there!\n",
                  `_build/bin/hello-world`
@@ -53,17 +48,11 @@ class Opendylan < Formula
 
     # 2. Example from
     # opendylan/documentation/getting-started-cli/source/hello-world.rst
-    #
-    # >   $ make-dylan-app hello-world
-    # >   $ cd hello-world
-    # >   $ dylan-compiler -build hello-world.lid
     app_name = "hello-world"
     system bin/"make-dylan-app", app_name
     cd app_name do
       system bin/"dylan-compiler", "-build", app_name + ".lid"
     end
-    # >   $ _build/bin/hello-world
-    # >   Hello, world!
     assert_equal "Hello, world!\n",
                  `#{ app_name }/_build/bin/#{ app_name }`
     assert_equal 0, $?.exitstatus
