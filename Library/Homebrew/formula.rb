@@ -117,6 +117,10 @@ class Formula
     active_spec.clear_cache
   end
 
+  def patchlist
+    active_spec.patches
+  end
+
   # if the dir is there, but it's empty we consider it not installed
   def installed?
     (dir = installed_prefix).directory? && dir.children.length > 0
