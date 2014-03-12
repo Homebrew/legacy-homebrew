@@ -6,7 +6,7 @@ class Swatchbooker < Formula
   sha1 'fd2e46c278e762dc0c3ed69f824ab620773f153e'
 
   depends_on :python
-  depends_on 'PIL' => :python
+  depends_on "pillow" => [:python, "PIL"]
   depends_on 'little-cms' => 'with-python'
   depends_on 'pyqt'
 
