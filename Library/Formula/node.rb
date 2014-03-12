@@ -36,7 +36,8 @@ class Node < Formula
       https://www.npmjs.org/doc/README.html#Fancy-Install-Unix
       
       It's easy.
-  EOS
+    EOS
+  end
 
   test do
     path = testpath/"test.js"
