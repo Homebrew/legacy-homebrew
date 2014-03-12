@@ -28,6 +28,7 @@ class Node < Formula
 
     system "./configure", *args
     system "make install"
+  end
 
   def caveats; <<-EOS.undent
       Homebrew has NOT installed npm. If you want npm (you do right?)
