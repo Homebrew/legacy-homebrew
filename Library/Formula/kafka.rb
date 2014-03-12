@@ -18,7 +18,6 @@ class Kafka < Formula
     inreplace "config/server.properties", "num.partitions=2", "num.partitions=1"
 
     logs = var/"log/kafka"
-    logs.mkpath
     inreplace ["config/log4j.properties", "config/test-log4j.properties"],
       ".File=logs/", ".File=#{logs}/"
 
