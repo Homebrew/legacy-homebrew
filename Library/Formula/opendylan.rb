@@ -1,20 +1,20 @@
-require 'formula'
+require "formula"
 
 class Opendylan < Formula
-  homepage 'http://opendylan.org'
-  url 'http://opendylan.org/downloads/opendylan/2013.2/opendylan-2013.2-sources.tar.bz2'
-  sha1 'df614e11c2aec74448602ba51caf5d664534c06e'
-  head 'https://github.com/dylan-lang/opendylan.git'
+  homepage "http://opendylan.org"
+  url "http://opendylan.org/downloads/opendylan/2013.2/opendylan-2013.2-sources.tar.bz2"
+  sha1 "df614e11c2aec74448602ba51caf5d664534c06e"
+  head "https://github.com/dylan-lang/opendylan.git"
 
   depends_on :macos => :lion
   depends_on :arch => :intel
   depends_on :autoconf
   depends_on :automake
-  depends_on 'bdw-gc' => 'universal'
+  depends_on "bdw-gc" => "universal"
 
   resource :bootstrapping_binary do
-    url 'http://opendylan.org/downloads/opendylan/2013.2/opendylan-2013.2-x86-darwin.tar.bz2'
-    sha1 '78faaec910c67356cd4b5ce7101153b6acf01cbe'
+    url "http://opendylan.org/downloads/opendylan/2013.2/opendylan-2013.2-x86-darwin.tar.bz2"
+    sha1 "78faaec910c67356cd4b5ce7101153b6acf01cbe"
   end
 
   env :std  # do not use Superenv, the source does not like it
@@ -22,18 +22,18 @@ class Opendylan < Formula
   def install
     ENV.deparallelize  # the source does not want to build in parallel
     resource(:bootstrapping_binary).stage do
-      ENV.prepend_path 'PATH', Pathname.pwd/'bin'
+      ENV.prepend_path "PATH", Pathname.pwd/"bin"
       cd buildpath do
-        system './autogen.sh'
-        system './configure', '--disable-debug',
-                              '--disable-dependency-tracking',
-                              '--disable-silent-rules',
+        system "./autogen.sh"
+        system "./configure", "--disable-debug",
+                              "--disable-dependency-tracking",
+                              "--disable-silent-rules",
                               "--prefix=#{ prefix }"
-        system 'make', '3-stage-bootstrap'
+        system "make", "3-stage-bootstrap"
       end
     end
 
-    system 'make', 'install'
+    system "make", "install"
   end
 
   test do
@@ -46,7 +46,7 @@ class Opendylan < Formula
     # > _build/bin/hello-world in the current working directory:
     # >
     # >   dylan-compiler -build hello-world
-    system bin/'dylan-compiler', '-build', 'hello-world'
+    system bin/"dylan-compiler", "-build", "hello-world"
     assert_equal "hello there!\n",
                  `_build/bin/hello-world`
     assert_equal 0, $?.exitstatus
@@ -57,10 +57,10 @@ class Opendylan < Formula
     # >   $ make-dylan-app hello-world
     # >   $ cd hello-world
     # >   $ dylan-compiler -build hello-world.lid
-    app_name = 'hello-world'
-    system bin/'make-dylan-app', app_name
+    app_name = "hello-world"
+    system bin/"make-dylan-app", app_name
     cd app_name do
-      system bin/'dylan-compiler', '-build', app_name + '.lid'
+      system bin/"dylan-compiler", "-build", app_name + ".lid"
     end
     # >   $ _build/bin/hello-world
     # >   Hello, world!
