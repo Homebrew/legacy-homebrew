@@ -13,7 +13,7 @@ class Opendylan < Formula
   # XXX: "universal" is not good but currently necessary
   depends_on "bdw-gc" => "universal"
 
-  resource :bootstrapping_binary do
+  resource "bootstrapping" do
     url "http://opendylan.org/downloads/opendylan/2013.2/opendylan-2013.2-x86-darwin.tar.bz2"
     sha1 "78faaec910c67356cd4b5ce7101153b6acf01cbe"
   end
@@ -24,7 +24,7 @@ class Opendylan < Formula
   def install
     # XXX: this is not good but currently necessary
     ENV.deparallelize  # the source does not want to build in parallel
-    resource(:bootstrapping_binary).stage do
+    resource("bootstrapping").stage do
       ENV.prepend_path "PATH", Pathname.pwd/"bin"
       cd buildpath do
         system "./autogen.sh"
