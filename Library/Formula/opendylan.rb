@@ -10,6 +10,7 @@ class Opendylan < Formula
   depends_on :arch => :intel
   depends_on :autoconf
   depends_on :automake
+  # XXX: "universal" is not good but currently necessary
   depends_on "bdw-gc" => "universal"
 
   resource :bootstrapping_binary do
@@ -17,9 +18,11 @@ class Opendylan < Formula
     sha1 "78faaec910c67356cd4b5ce7101153b6acf01cbe"
   end
 
+  # XXX: this is bad but currently necessary
   env :std  # do not use Superenv, the source does not like it
 
   def install
+    # XXX: this is not good but currently necessary
     ENV.deparallelize  # the source does not want to build in parallel
     resource(:bootstrapping_binary).stage do
       ENV.prepend_path "PATH", Pathname.pwd/"bin"
