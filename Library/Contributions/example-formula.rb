@@ -213,26 +213,36 @@ class ExampleFormula < Formula
 
   ## Patches
 
-  # Optionally define a `patches` method returning `DATA` and/or a string with
-  # the url to a patch or a list thereof.
-  def patches
-    # DATA is the embedded diff that comes after __END__ in this file!
-    # In this example we only need the patch for older clang than 425:
-    DATA unless MacOS.clang_build_version >= 425
+  # External patches can be declared using resource-style blocks.
+  patch do
+    url "https://example.com/example_patch.diff"
+    sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
   end
 
-  # More than the one embedded patch? Use a dict with keys :p0, :p1 and/or
-  # p2: as you need, for example:
-  def patches
-    {:p0 => [
-      'https://trac.macports.org/export/yeah/we/often/steal/a/patch.diff',
-      'https://github.com/example/foobar/commit/d46a8c6265c4c741aaae2b807a41ea31bc097052.diff',
-      DATA ],
-     # For gists, please use the link to a specific hash, so nobody can change it unnoticed.
-     :p2 => ['https://raw.github.com/gist/4010022/ab0697dc87a40e65011e2192439609c17578c5be/tags.patch']
-    }
+  # A strip level of -p1 is assumed. It can be overridden using a symbol
+  # argument:
+  patch :p0 do
+    url "https://example.com/example_patch.diff"
+    sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
   end
 
+  # Patches can be declared in stable, devel, and head blocks. This form is
+  # preferred over using conditionals.
+  stable do
+    patch do
+      url "https://example.com/example_patch.diff"
+      sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+    end
+  end
+
+  # Embedded (__END__) patches are declared like so:
+  patch :DATA
+  patch :p0, :DATA
+
+  # Patches can also be embedded by passing a string. This makes it possible
+  # to provide multiple embedded patches while making only some of them
+  # conditional.
+  patch :p0, "..."
 
   ## The install method.
 

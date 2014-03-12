@@ -5,12 +5,13 @@ require 'version'
 require 'build_options'
 require 'dependency_collector'
 require 'bottles'
+require 'patch'
 
 class SoftwareSpec
   extend Forwardable
 
-  attr_reader :name
-  attr_reader :build, :resources, :owner
+  attr_reader :name, :owner
+  attr_reader :build, :resources, :patches
   attr_reader :dependency_collector
   attr_reader :bottle_specification
 
@@ -25,6 +26,7 @@ class SoftwareSpec
     @build = BuildOptions.new(ARGV.options_only)
     @dependency_collector = DependencyCollector.new
     @bottle_specification = BottleSpecification.new
+    @patches = []
   end
 
   def owner= owner
@@ -35,6 +37,7 @@ class SoftwareSpec
       r.owner     = self
       r.version ||= version
     end
+    patches.each { |p| p.owner = self }
   end
 
   def url val=nil, specs={}
@@ -83,6 +86,10 @@ class SoftwareSpec
 
   def requirements
     dependency_collector.requirements
+  end
+
+  def patch strip=:p1, io=nil, &block
+    patches << Patch.create(strip, io, &block)
   end
 end
 
