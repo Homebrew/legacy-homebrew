@@ -31,9 +31,11 @@ class Node < Formula
 
   def caveats; <<-end.undent
       Homebrew has NOT installed npm. If you want npm (you do right?)
-      then run the following:
+      then view the install instructions here:
       
-      curl -L https://npmjs.org/install.sh | sh
+      https://www.npmjs.org/doc/README.html#Fancy-Install-Unix
+      
+      It's easy.
   end
 
   test do
