@@ -6,7 +6,6 @@ class GitOpen < Formula
   sha1 "86a2a9b67e5fe20779b2ae7ad59a3450c7c72d23"
 
   def install
-    cp("git-open.sh", "git-open")
-    bin.install "git-open"
+    bin.install "git-open.sh" => "git-open"
   end
 end
