@@ -3,7 +3,7 @@ require "formula"
 class Kafka < Formula
   homepage "http://kafka.apache.org"
   head "http://git-wip-us.apache.org/repos/asf/kafka.git"
-  url "http://download.nextag.com/apache/kafka/0.8.0/kafka-0.8.0-src.tgz"
+  url "http://mirrors.ibiblio.org/apache/kafka/0.8.0/kafka-0.8.0-src.tgz"
   sha1 "051e72b9ed9c3342c4e1210ffa9a9f4364171f26"
 
   depends_on "sbt"
