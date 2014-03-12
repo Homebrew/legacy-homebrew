@@ -40,7 +40,7 @@ class Wine < Formula
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
   depends_on :x11 => :recommended
-  depends_on 'freetype' if build.without? 'x11'
+  depends_on 'freetype'
   depends_on 'jpeg'
   depends_on 'libgphoto2'
   depends_on 'little-cms2'
@@ -117,12 +117,6 @@ class Wine < Formula
     # FIXME we include pkg-config files for libxml2 and libxslt. Is this really necessary?
     ENV.libxml2
     ENV.append "LDFLAGS", "-lxslt"
-
-    # Note: we get freetype from :x11, but if the freetype formula has been installed
-    # separately and not built universal, it's going to get picked up and break the build.
-    # We cannot use FREETYPE_LIBS because it is inserted after LDFLAGS and thus cannot
-    # take precedence over the homebrew freetype.
-    ENV.prepend "LDFLAGS", "-L#{MacOS::X11.lib}" if build.with? 'x11'
 
     args = ["--prefix=#{prefix}"]
     args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang
