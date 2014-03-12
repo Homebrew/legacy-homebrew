@@ -32,7 +32,7 @@ class Mutt < Formula
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
 
-  depends_on 'tokyo-cabinet'
+  depends_on 'kyoto-cabinet'
   depends_on 's-lang' => :optional
   depends_on 'gpgme' => :optional
 
@@ -66,7 +66,7 @@ class Mutt < Formula
             "--enable-smtp",
             "--enable-pop",
             "--enable-hcache",
-            "--with-tokyocabinet",
+            "--with-kyotocabinet",
             # This is just a trick to keep 'make install' from trying to chgrp
             # the mutt_dotlock file (which we can't do if we're running as an
             # unpriviledged user)
