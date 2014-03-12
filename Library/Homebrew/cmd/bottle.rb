@@ -186,6 +186,12 @@ module Homebrew extend self
     end
   end
 
+  module BottleMerger
+    def bottle(&block)
+      instance_eval(&block)
+    end
+  end
+
   def merge
     merge_hash = {}
     ARGV.named.each do |argument|
@@ -198,7 +204,7 @@ module Homebrew extend self
     merge_hash.each do |formula_name, bottle_blocks|
       ohai formula_name
 
-      bottle = BottleSpecification.new
+      bottle = BottleSpecification.new.extend(BottleMerger)
       bottle_blocks.each { |block| bottle.instance_eval(block) }
 
       output = bottle_output bottle
