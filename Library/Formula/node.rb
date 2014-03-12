@@ -33,7 +33,7 @@ class Node < Formula
       Homebrew has NOT installed npm. If you want npm (you do right?)
       then run the following:
       
-      curl http://npmjs.org/install.sh | sh
+      curl -L https://npmjs.org/install.sh | sh
   end
 
   test do
