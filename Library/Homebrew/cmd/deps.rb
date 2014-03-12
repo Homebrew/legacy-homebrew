@@ -7,7 +7,8 @@ module Homebrew extend self
       :installed?  => ARGV.include?('--installed'),
       :tree?       => ARGV.include?('--tree'),
       :all?        => ARGV.include?('--all'),
-      :topo_order? => ARGV.include?('-n')
+      :topo_order? => ARGV.include?('-n'),
+      :union?      => ARGV.include?('--union')
     )
 
     if mode.installed? && mode.tree?
@@ -21,7 +22,7 @@ module Homebrew extend self
       puts_deps_tree ARGV.formulae
     else
       raise FormulaUnspecifiedError if ARGV.named.empty?
-      all_deps = deps_for_formulae(ARGV.formulae, !ARGV.one?)
+      all_deps = deps_for_formulae(ARGV.formulae, !ARGV.one?, &(mode.union? ? :| : :&))
       all_deps = all_deps.sort_by(&:name) unless mode.topo_order?
       puts all_deps
     end
@@ -39,8 +40,8 @@ module Homebrew extend self
     deps + reqs.select(&:default_formula?).map(&:to_dependency)
   end
 
-  def deps_for_formulae(formulae, recursive=false)
-    formulae.map {|f| deps_for_formula(f, recursive) }.inject(&:&)
+  def deps_for_formulae(formulae, recursive=false, &block)
+    formulae.map {|f| deps_for_formula(f, recursive) }.inject(&block)
   end
 
   def puts_deps(formulae)
