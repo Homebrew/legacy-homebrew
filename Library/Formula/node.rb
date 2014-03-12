@@ -29,14 +29,14 @@ class Node < Formula
     system "./configure", *args
     system "make install"
 
-  def caveats; <<-end.undent
+  def caveats; <<-EOS.undent
       Homebrew has NOT installed npm. If you want npm (you do right?)
       then view the install instructions here:
       
       https://www.npmjs.org/doc/README.html#Fancy-Install-Unix
       
       It's easy.
-  end
+  EOS
 
   test do
     path = testpath/"test.js"
