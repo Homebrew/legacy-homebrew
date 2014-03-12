@@ -3,8 +3,8 @@ require 'formula'
 class Camlistore < Formula
   homepage 'http://camlistore.org'
   head 'https://camlistore.googlesource.com/camlistore', :using => :git
-  url 'https://github.com/bradfitz/camlistore/archive/0.6.tar.gz'
-  sha1 'ca2a530fb2eb39a6cecf2f60e290934a9b6414f4'
+  url 'https://github.com/bradfitz/camlistore/archive/0.7.tar.gz'
+  sha1 'fae4e18f03f545f6232c24861e1f13c4bb653b34'
 
   depends_on 'pkg-config' => :build
   depends_on 'go' => :build
