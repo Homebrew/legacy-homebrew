@@ -42,7 +42,7 @@ module Homebrew extend self
   end
 
   def deps_for_formulae(formulae, recursive=false, &block)
-    formulae.map {|f| deps_for_formula(f, recursive) }.inject(&block).uniq
+    formulae.map {|f| deps_for_formula(f, recursive) }.inject(&block)
   end
 
   def puts_deps(formulae)
