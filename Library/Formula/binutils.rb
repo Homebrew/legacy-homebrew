@@ -13,7 +13,7 @@ class Binutils < Formula
     # of target_header_dir wasn't deleted.  So we end up initializing properly
     # at the top only to reset it at the end all the time.
     #  http://gcc.gnu.org/ml/gcc-patches/2014-01/msg00213.html
-    'http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo/src/patchsets/binutils/2.24/20_all_libiberty-install.patch'
+    "http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo/src/patchsets/binutils/2.24/20_all_libiberty-install.patch"
   end
 
   def install
