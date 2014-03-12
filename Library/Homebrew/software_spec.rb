@@ -91,6 +91,12 @@ class SoftwareSpec
   def patch strip=:p1, io=nil, &block
     patches << Patch.create(strip, io, &block)
   end
+
+  def add_legacy_patches(list)
+    list = Patch.normalize_legacy_patches(list)
+    list.each { |p| p.owner = self }
+    patches.concat(list)
+  end
 end
 
 class HeadSoftwareSpec < SoftwareSpec

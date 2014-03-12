@@ -1,5 +1,6 @@
 require 'resource'
 require 'stringio'
+require 'erb'
 
 class Patch
   def self.create(strip, io=nil, &block)
@@ -20,6 +21,32 @@ class Patch
     else
       raise ArgumentError, "unexpected value #{strip.inspect} for strip"
     end
+  end
+
+  def self.normalize_legacy_patches(list)
+    patches = []
+
+    case list
+    when Hash
+      list
+    when Array, String, IO, StringIO
+      { :p1 => list }
+    else
+      {}
+    end.each_pair do |strip, urls|
+      urls = [urls] unless Array === urls
+      urls.each do |url|
+        case url
+        when IO, StringIO
+          patch = IOPatch.new(url, strip)
+        else
+          patch = LegacyPatch.new(strip, url)
+        end
+        patches << patch
+      end
+    end
+
+    patches
   end
 
   attr_reader :whence
@@ -78,5 +105,33 @@ class ExternalPatch < Patch
       patchfile = Pathname.pwd.children.first
       safe_system "/usr/bin/patch", "-g", "0", "-f", "-d", dir, "-#{strip}", "-i", patchfile
     end
+  end
+end
+
+# Legacy patches have no checksum and are not cached
+class LegacyPatch < ExternalPatch
+  def initialize(strip, url)
+    super(strip)
+    resource.url = url
+  end
+
+  def owner= owner
+    super
+    resource.name = "patch-#{ERB::Util.url_encode(resource.url)}"
+  end
+
+  def fetch
+    resource.clear_cache
+    super
+  end
+
+  def verify_download_integrity(fn)
+    # no-op
+  end
+
+  def apply
+    super
+  ensure
+    resource.clear_cache
   end
 end
