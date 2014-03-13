@@ -110,6 +110,8 @@ module Homebrew extend self
     fi.build_bottle = ARGV.build_bottle?
     fi.build_from_source = ARGV.build_from_source?
     fi.force_bottle = ARGV.force_bottle?
+    fi.interactive = ARGV.interactive?
+    fi.interactive &&= :git if ARGV.flag? "--git"
     fi.prelude
     fi.install
     fi.caveats
