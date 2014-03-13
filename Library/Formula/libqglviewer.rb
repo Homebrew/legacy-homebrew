@@ -27,10 +27,4 @@ class Libqglviewer < Formula
       system "make"
     end
   end
-
-  def caveats; <<-EOS.undent
-    To avoid issues with runtime linking and facilitate usage of the library:
-      sudo ln -s "#{prefix}/QGLViewer.framework" "/Library/Frameworks/QGLViewer.framework"
-    EOS
-  end
 end
