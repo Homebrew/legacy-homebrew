@@ -14,10 +14,6 @@ class Shiboken < Formula
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
-  if build.without?("python3") && build.without?("python")
-    odie "shiboken: --with-python3 must be specified when using --without-python"
-  end
-
   def patches
     # This fixes issues with libc++ and its lack of the tr1 namespace.
     # Upstream ticket: https://bugreports.qt-project.org/browse/PYSIDE-200
@@ -29,17 +25,16 @@ class Shiboken < Formula
     # As of 1.1.1 the install fails unless you do an out of tree build and put
     # the source dir last in the args.
     Language::Python.each_python(build) do |python, version|
-      ohai "Install for Python #{version}"
       mkdir "macbuild#{version}" do
         args = std_cmake_args
         # Building the tests also runs them.
         args << "-DBUILD_TESTS=ON"
         # if not System Python
         python_framework = "#{Formula[python].prefix}/Frameworks/Python.framework/Versions/#{version}"
-        if version.to_s[0,1] == '2' && Formula["python"].installed?
+        if version.to_s[0,1] == "2" && Formula["python"].installed?
           args << "-DPYTHON_INCLUDE_DIR:PATH=#{python_framework}/Headers"
           args << "-DPYTHON_LIBRARY:FILEPATH=#{python_framework}/lib/libpython#{version}.dylib"
-        elsif version.to_s[0,1] == '3'
+        elsif version.to_s[0,1] == "3"
           args << "-DPYTHON3_INCLUDE_DIR:PATH=#{python_framework}/Headers"
           args << "-DPYTHON3_LIBRARY:FILEPATH=#{python_framework}/lib/libpython#{version}.dylib"
           args << "-DUSE_PYTHON3:BOOL=ON"
