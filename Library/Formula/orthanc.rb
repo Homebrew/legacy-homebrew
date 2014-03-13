@@ -37,8 +37,7 @@ class Orthanc < Formula
   end
 
   def install
-    Pathname.new('ThirdPartyDownloads').mkpath
-    cd 'ThirdPartyDownloads' do
+    mkdir "ThirdPartyDownloads" do
       resource("mongoose").fetch.cp "mongoose-3.1.tgz"
       resource("gtest").fetch.cp "gtest-1.6.0.zip"
     end
