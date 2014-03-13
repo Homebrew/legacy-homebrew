@@ -18,12 +18,21 @@ class Synfig < Formula
   depends_on 'cairo'
   depends_on 'pango'
   depends_on 'boost'
+  depends_on 'openexr'
   depends_on :libtool => :run
 
+  def patches
+    # Candidate upstream patch for Xcode 5
+    # http://www.synfig.org/issues/thebuggenie/synfig/issues/504
+    "http://www.synfig.org/issues/thebuggenie/files/show/79"
+  end
+
   def install
+    boost = Formula["boost"]
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-boost=#{boost.opt_prefix}"
     system "make install"
   end
 end

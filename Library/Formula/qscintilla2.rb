@@ -1,21 +1,5 @@
 require 'formula'
 
-class PythonEnvironment < Requirement
-  fatal true
-
-  satisfy do
-    !(!Formula["python"].installed? && ARGV.include?("--without-python") && ARGV.include?("--with-python3"))
-  end
-
-  def message
-    <<-EOS.undent
-      You cannot use system Python 2 and Homebrew's Python 3
-      simultaneously.
-      Either `brew install python` or use `--without-python3`.
-    EOS
-  end
-end
-
 class Qscintilla2 < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/qscintilla/intro'
   url 'https://downloads.sf.net/project/pyqt/QScintilla2/QScintilla-2.8/QScintilla-gpl-2.8.tar.gz'
@@ -28,16 +12,6 @@ class Qscintilla2 < Formula
     depends_on "pyqt" => "with-python3"
   else
     depends_on "pyqt"
-  end
-
-  def pythons
-    pythons = []
-    ["python", "python3"].each do |python|
-      next if build.without? python
-      version = /\d\.\d/.match `#{python} --version 2>&1`
-      pythons << [python, version]
-    end
-    pythons
   end
 
   def install
@@ -63,7 +37,7 @@ class Qscintilla2 < Formula
     end
 
     cd 'Python' do
-      pythons.each do |python, version|
+      Language::Python.each_python(build) do |python, version|
         (share/"sip").mkpath
         system python, "configure.py", "-o", lib, "-n", include,
                          "--apidir=#{prefix}/qsci",
@@ -73,7 +47,7 @@ class Qscintilla2 < Formula
                          "--spec=#{spec}"
         system 'make'
         system 'make', 'install'
-        system "make", "clean" if pythons.length > 1
+        system "make", "clean"
       end
     end
   end
@@ -83,10 +57,7 @@ class Qscintilla2 < Formula
       import PyQt4.Qsci
       assert("QsciLexer" in dir(PyQt4.Qsci))
     EOS
-    pythons.each do |python, version|
-      unless Formula[python].installed?
-        ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
-      end
+    Language::Python.each_python(build) do |python, version|
       system python, "test.py"
     end
   end
