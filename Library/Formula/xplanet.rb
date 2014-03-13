@@ -16,6 +16,7 @@ class Xplanet < Formula
   depends_on :x11
 
   if build.with? "all"
+    depends_on "cspice"
     depends_on "netpbm"
     depends_on "freetype"
     depends_on "pango"
