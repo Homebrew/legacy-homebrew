@@ -11,12 +11,21 @@ class Aubio < Formula
   depends_on 'pkg-config' => :build
   depends_on :libtool => :build
 
-  depends_on 'numpy' => :python
+  resource 'numpy' do
+    url 'http://downloads.sourceforge.net/project/numpy/NumPy/1.8.0/numpy-1.8.0.tar.gz'
+    sha1 'a2c02c5fb2ab8cf630982cddc6821e74f5769974'
+  end
 
   option :universal
 
   def install
     ENV.universal_binary if build.universal?
+
+    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    numpy_args = [ "build", "--fcompiler=gnu95",
+                   "install", "--prefix=#{libexec}" ]
+    resource('numpy').stage { system "python", "setup.py", *numpy_args }
+
     system "./waf", "configure", "--prefix=#{prefix}"
     system "./waf", "build"
     system "./waf", "install"
@@ -24,6 +33,7 @@ class Aubio < Formula
     cd 'python' do
       system "./setup.py", "build"
       system "./setup.py", "install", "--prefix", "#{prefix}"
+      bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
     end
   end
 
