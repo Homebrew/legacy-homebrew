@@ -411,9 +411,25 @@ class FormulaInstaller
   end
 
   def sanitized_ARGV_options
-    args = ARGV.options_only
-    args.delete "--ignore-dependencies" unless ignore_deps
-    args.delete "--build-bottle" unless build_bottle
+    args = []
+    args << "--ignore-dependencies" if ignore_deps
+
+    if build_bottle
+      args << "--build-bottle"
+      args << "--bottle-arch=#{ARGV.bottle_arch}" if ARGV.bottle_arch
+    end
+
+    if ARGV.interactive?
+      args << "--interactive"
+      args << "--git" if ARGV.flag? "--git"
+    end
+
+    args << "--verbose" if ARGV.verbose?
+    args << "--debug" if ARGV.debug?
+    args << "--cc=#{ARGV.cc}" if ARGV.cc
+    args << "--env=#{ARGV.env}" if ARGV.env
+    args << "--HEAD" if ARGV.build_head?
+    args << "--devel" if ARGV.build_devel?
     args
   end
 
