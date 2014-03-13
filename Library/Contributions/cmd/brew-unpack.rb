@@ -91,9 +91,9 @@ module Homebrew extend self
       if ARGV.switch? 'g'
         ohai "Setting up git repository"
         cd stage_dir
-        system "git init -q"
-        system "git add -A"
-        system 'git commit -qm"Vanilla"'
+        system "git", "init", "-q"
+        system "git", "add", "-A"
+        system "git", "commit", "-q", "-m", "brew-unpack"
       end
     end
   end
