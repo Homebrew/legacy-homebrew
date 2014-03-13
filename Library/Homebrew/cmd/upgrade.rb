@@ -58,8 +58,6 @@ module Homebrew extend self
 
     installer = FormulaInstaller.new(f)
     installer.options |= Tab.for_formula(f).used_options
-    installer.show_header = false
-    installer.ignore_deps = false
     installer.build_from_source = ARGV.build_from_source?
     installer.prelude
 
