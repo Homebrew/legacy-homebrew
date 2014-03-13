@@ -11,7 +11,10 @@ class Aubio < Formula
   depends_on 'pkg-config' => :build
   depends_on :libtool => :build
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
     system "./waf", "configure", "--prefix=#{prefix}"
     system "./waf", "build"
     system "./waf", "install"
