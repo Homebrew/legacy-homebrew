@@ -59,6 +59,8 @@ module Homebrew extend self
     installer = FormulaInstaller.new(f)
     installer.options |= Tab.for_formula(f).used_options
     installer.build_from_source = ARGV.build_from_source?
+    installer.verbose = ARGV.verbose?
+    installer.verbose &&= :quieter if ARGV.quieter?
     installer.prelude
 
     oh1 "Upgrading #{f.name}"
