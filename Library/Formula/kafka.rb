@@ -11,20 +11,17 @@ class Kafka < Formula
   mirror "http://mirror.sdunix.com/apache/kafka/0.8.1/kafka-0.8.1-src.tgz"
   sha1 "af88a986ef711f5fd30063a9cb3395e63884bf0b"
 
-  depends_on "sbt"
   depends_on "zookeeper"
 
   def install
-    system "sbt", "update"
-    system "sbt", "package"
-    system "sbt", "assembly-package-dependency"
+    system "./gradlew", "jar"
 
     # Use 1 partition by default so individual consumers receive all topic messages
     inreplace "config/server.properties", "num.partitions=2", "num.partitions=1"
 
     logs = var/"log/kafka"
-    inreplace ["config/log4j.properties", "config/test-log4j.properties"],
-      ".File=logs/", ".File=#{logs}/"
+    inreplace "config/log4j.properties", "kafka.logs.dir=logs", "kafka.logs.dir=#{logs}"
+    inreplace "config/test-log4j.properties", ".File=logs/", ".File=#{logs}/"
 
     data = var/"lib"
     inreplace "config/server.properties",
@@ -33,8 +30,7 @@ class Kafka < Formula
     inreplace "config/zookeeper.properties",
       "dataDir=/tmp/zookeeper", "dataDir=#{data}/zookeeper"
 
-    libexec.install %w(contrib core examples lib perf project
-                       system_test)
+    libexec.install %w(contrib core examples lib perf system_test)
 
     prefix.install "bin"
     bin.env_script_all_files(libexec/"bin", :JAVA_HOME => "`/usr/libexec/java_home`")
