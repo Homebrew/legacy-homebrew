@@ -81,11 +81,7 @@ module Homebrew extend self
 
       oh1 "Unpacking #{f.name} to: #{stage_dir}"
       ENV['VERBOSE'] = '1' # show messages about tar
-      f.brew do
-        entries = Dir['*']
-        cd entries.first if entries.length == 1 && File.directory?(entries.first)
-        cp_r getwd, stage_dir
-      end
+      f.brew { cp_r getwd, stage_dir }
       ENV['VERBOSE'] = nil
 
       if ARGV.switch? 'g'
