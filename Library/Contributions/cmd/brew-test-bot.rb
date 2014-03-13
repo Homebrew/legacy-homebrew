@@ -61,7 +61,7 @@ class Step
   end
 
   def command_short
-    @command.gsub(/(brew|--force|--verbose|--build-bottle|--rb) /, '').strip.squeeze ' '
+    @command.gsub(/(brew|--force|--retry|--verbose|--build-bottle|--rb) /, '').strip.squeeze ' '
   end
 
   def passed?
