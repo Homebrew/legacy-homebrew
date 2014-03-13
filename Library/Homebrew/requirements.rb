@@ -116,5 +116,5 @@ end
 class GitDependency < Requirement
   fatal true
   default_formula 'git'
-  satisfy { which('git') }
+  satisfy { !!which('git') }
 end
