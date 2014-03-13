@@ -5,6 +5,13 @@ class Capstone < Formula
   url 'http://capstone-engine.org/download/2.1/capstone-2.1.1.tgz'
   sha1 'f4b114aba2626832f1c217191faaa748245d76a8'
 
+  bottle do
+    cellar :any
+    sha1 "78e0d5efaf37351b9bcc279ced71276970198478" => :mavericks
+    sha1 "d396a6ed6269442aa24217158a995a43e5850ffd" => :mountain_lion
+    sha1 "691452cdf102cc24fb885c487f97f69cbb0b2771" => :lion
+  end
+
   def patches
     # Fix Makefile. Upstream fix is at :
     # https://github.com/aquynh/capstone/commit/22b867e
