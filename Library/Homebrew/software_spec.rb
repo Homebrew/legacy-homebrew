@@ -102,11 +102,11 @@ class Bottle
 
   attr_reader :resource, :prefix, :cellar, :revision
 
-  def_delegators :resource, :name, :url, :fetch, :verify_download_integrity
+  def_delegators :resource, :url, :fetch, :verify_download_integrity
   def_delegators :resource, :downloader, :cached_download, :clear_cache
 
   def initialize(f, spec)
-    @resource = Resource.new f.name
+    @resource = Resource.new
     @resource.owner = f
     @resource.url = bottle_url(
       spec.root_url,
