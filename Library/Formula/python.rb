@@ -6,6 +6,12 @@ class Python < Formula
   url 'http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz'
   sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
 
+  bottle do
+    sha1 "bd1a71fbaa383011828fce5ff7c011c427e76761" => :mavericks
+    sha1 "365dd0affa9dabd97ff607af9f7cba425510a645" => :mountain_lion
+    sha1 "02326a2f3b2e5e55cd2830f39478178f9074ff92" => :lion
+  end
+
   option :universal
   option 'quicktest', "Run `make quicktest` after the build (for devs; may fail)"
   option 'with-brewed-openssl', "Use Homebrew's openSSL instead of the one from OS X"
