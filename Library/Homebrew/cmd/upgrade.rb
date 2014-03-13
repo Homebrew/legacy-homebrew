@@ -61,6 +61,7 @@ module Homebrew extend self
     installer.build_from_source = ARGV.build_from_source?
     installer.verbose = ARGV.verbose?
     installer.verbose &&= :quieter if ARGV.quieter?
+    installer.debug = ARGV.debug?
     installer.prelude
 
     oh1 "Upgrading #{f.name}"

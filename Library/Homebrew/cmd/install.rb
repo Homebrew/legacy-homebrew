@@ -114,6 +114,7 @@ module Homebrew extend self
     fi.interactive &&= :git if ARGV.flag? "--git"
     fi.verbose = ARGV.verbose?
     fi.verbose &&= :quieter if ARGV.quieter?
+    fi.debug = ARGV.debug?
     fi.prelude
     fi.install
     fi.caveats

@@ -25,7 +25,7 @@ class FormulaInstaller
   mode_attr_accessor :show_summary_heading, :show_header
   mode_attr_accessor :build_from_source, :build_bottle, :force_bottle
   mode_attr_accessor :ignore_deps, :only_deps, :interactive
-  mode_attr_accessor :verbose
+  mode_attr_accessor :verbose, :debug
 
   def initialize ff
     @f = ff
@@ -37,6 +37,7 @@ class FormulaInstaller
     @force_bottle = false
     @interactive = false
     @verbose = false
+    @debug = false
     @options = Options.new
 
     @@attempted ||= Set.new
@@ -199,7 +200,7 @@ class FormulaInstaller
   # HACK: If readline is present in the dependency tree, it will clash
   # with the stdlib's Readline module when the debugger is loaded
   def perform_readline_hack
-    if f.recursive_dependencies.any? { |d| d.name == "readline" } && ARGV.debug?
+    if f.recursive_dependencies.any? { |d| d.name == "readline" } && debug?
       ENV['HOMEBREW_NO_READLINE'] = '1'
     end
   end
@@ -346,6 +347,7 @@ class FormulaInstaller
     fi.ignore_deps = true
     fi.build_from_source = build_from_source?
     fi.verbose = verbose? unless verbose == :quieter
+    fi.debug = debug?
     fi.prelude
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
@@ -435,7 +437,7 @@ class FormulaInstaller
     end
 
     args << "--verbose" if verbose?
-    args << "--debug" if ARGV.debug?
+    args << "--debug" if debug?
     args << "--cc=#{ARGV.cc}" if ARGV.cc
     args << "--env=#{ARGV.env}" if ARGV.env
     args << "--HEAD" if ARGV.build_head?
@@ -528,7 +530,7 @@ class FormulaInstaller
       puts "Possible conflicting files are:"
       mode = OpenStruct.new(:dry_run => true, :overwrite => true)
       keg.link(mode)
-      ohai e, e.backtrace if ARGV.debug?
+      ohai e, e.backtrace if debug?
       @show_summary_heading = true
       ignore_interrupts{ keg.unlink }
       raise unless e.kind_of? RuntimeError
@@ -555,7 +557,7 @@ class FormulaInstaller
     onoe "Failed to fix install names"
     puts "The formula built, but you may encounter issues using it or linking other"
     puts "formula against it."
-    ohai e, e.backtrace if ARGV.debug?
+    ohai e, e.backtrace if debug?
     @show_summary_heading = true
   end
 
@@ -565,7 +567,7 @@ class FormulaInstaller
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix"
-    ohai e, e.backtrace if ARGV.debug?
+    ohai e, e.backtrace if debug?
     @show_summary_heading = true
   end
 
@@ -574,7 +576,7 @@ class FormulaInstaller
   rescue Exception => e
     opoo "The post-install step did not complete successfully"
     puts "You can try again using `brew postinstall #{f.name}`"
-    ohai e, e.backtrace if ARGV.debug?
+    ohai e, e.backtrace if debug?
     @show_summary_heading = true
   end
 

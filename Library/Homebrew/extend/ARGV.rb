@@ -183,7 +183,6 @@ module HomebrewArgvExtension
     old_args = clone
 
     flags_to_clear = %w[
-      --debug -d
       --devel
       --HEAD
     ]
