@@ -5,6 +5,8 @@ class Aubio < Formula
   url 'http://aubio.org/pub/aubio-0.4.1.tar.bz2'
   sha1 '338ec9f633e82c371a370b9727d6f0b86b0ba376'
 
+  option :universal
+
   depends_on :macos => :lion
   depends_on :python
 
@@ -19,8 +21,13 @@ class Aubio < Formula
     sha1 'a2c02c5fb2ab8cf630982cddc6821e74f5769974'
   end
 
+  def patches
+    # remove -arch flags if not building for universal
+    { :p0 => DATA }
+  end if not build.universal?
+
   def install
-    ENV.universal_binary
+    ENV.universal_binary if build.universal?
 
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     numpy_args = [ "build", "--fcompiler=gnu95",
@@ -42,3 +49,15 @@ class Aubio < Formula
     system "#{bin}/aubiocut", "--help"
   end
 end
+
+__END__
+--- wscript
++++ wscript
+@@ -103,8 +103,6 @@ def configure(ctx):
+         ctx.env['cshlib_PATTERN'] = 'lib%s.dll'
+
+     if target_platform == 'darwin':
+-        ctx.env.CFLAGS += ['-arch', 'i386', '-arch', 'x86_64']
+-        ctx.env.LINKFLAGS += ['-arch', 'i386', '-arch', 'x86_64']
+         ctx.env.FRAMEWORK = ['CoreFoundation', 'AudioToolbox', 'Accelerate']
+         ctx.define('HAVE_ACCELERATE', 1)
