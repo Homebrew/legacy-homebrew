@@ -185,7 +185,6 @@ module HomebrewArgvExtension
     flags_to_clear = %w[
       --debug -d
       --devel
-      --interactive -i
       --HEAD
     ]
     flags_to_clear.concat %w[--verbose -v] if quieter?
