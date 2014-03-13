@@ -8,7 +8,7 @@ class Ruby19 < Requirement
     next unless which "ruby"
     version = /\d\.\d/.match `ruby --version 2>&1`
     next unless version
-    version >= Version.new("1.9")
+    Version.new(version.to_s) >= Version.new("1.9")
   end
 
   def modify_build_environment
