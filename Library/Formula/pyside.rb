@@ -8,11 +8,27 @@ class Pyside < Formula
 
   head 'git://gitorious.org/pyside/pyside.git'
 
+  depends_on :python => :recommended
+  depends_on :python3 => :optional
+
+  if build.without?("python3") && build.without?("python")
+    odie "pyside: --with-python3 must be specified when using --without-python"
+  end
+
   option "without-docs", "Skip building documentation"
 
   depends_on 'cmake' => :build
-  depends_on 'shiboken'
   depends_on 'qt'
+
+  if build.with? 'python3'
+    if build.without? 'python'
+      depends_on 'shiboken' => ['with-python3', 'without-python']
+    else
+      depends_on 'shiboken' => 'with-python3'
+    end
+  else
+    depends_on 'shiboken'
+  end
 
   def patches
     DATA  # Fix moc_qpytextobject.cxx not found (https://codereview.qt-project.org/62479)
@@ -41,23 +57,34 @@ class Pyside < Formula
 
     # Add out of tree build because one of its deps, shiboken, itself needs an
     # out of tree build in shiboken.rb.
-    mkdir "macbuild" do
-      qt = Formula["qt"].opt_prefix
-      args = std_cmake_args + %W[
-        -DSITE_PACKAGE=#{lib}/python2.7/site-packages
-        -DALTERNATIVE_QT_INCLUDE_DIR=#{qt}/include
-        -DQT_SRC_DIR=#{qt}/src
-        -DPYTHON_SUFFIX='-python2.7'
-        ..
-      ]
-      system 'cmake', *args
-      system 'make'
-      system 'make', 'install'
+    Language::Python.each_python(build) do |python, version|
+      ohai "Install for Python #{version}"
+      mkdir "macbuild#{version}" do
+        qt = Formula["qt"].opt_prefix
+        args = std_cmake_args + %W[
+          -DSITE_PACKAGE=#{lib}/python#{version}/site-packages
+          -DALTERNATIVE_QT_INCLUDE_DIR=#{qt}/include
+          -DQT_SRC_DIR=#{qt}/src
+        ]
+        if version.to_s[0,1] == '2'
+          args << "-DPYTHON_SUFFIX=-python#{version}"
+        else
+          python_suffix=".cpython-#{version.to_s[0,1]}#{version.to_s[2,3]}m"
+          args << "-DPYTHON_SUFFIX=#{python_suffix}"
+          args << "-DUSE_PYTHON3=1"
+        end
+        args << ".."
+        system "cmake", *args
+        system "make"
+        system "make", "install"
+      end
     end
   end
 
   test do
-    system 'python', '-c', "from PySide import QtCore"
+    Language::Python.each_python(build) do |python, version|
+      system python, '-c', "from PySide import QtCore"
+    end
   end
 end
 
