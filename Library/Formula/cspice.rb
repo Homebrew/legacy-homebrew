@@ -8,6 +8,20 @@ class Cspice < Formula
 
   def install
     prefix.install Dir["*"]
-    cp_r "#{lib}/cspice.a", "#{lib}/libcspice.a"
+    rm_f Dir["#{lib}/*"]
+    rm_f Dir["#{prefix}/exe/*"]
+
+    chdir "#{prefix}"
+    system "csh", "#{prefix}/makeall.csh"
+
+    Dir["#{lib}/*"].each do |file|
+      symlink file, "#{lib}"+"/lib"+File.basename(file)
+    end
+
+    mv "#{prefix}/exe", "#{bin}"
+  end
+
+  test do
+    system "#{bin}/tobin #{prefix}/data/cook_01.tsp DELME"
   end
 end
