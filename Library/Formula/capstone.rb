@@ -22,8 +22,8 @@ class Capstone < Formula
 end
 
 __END__
---- Makefile.org	2014-03-11 16:41:54.000000000 +0800
-+++ Makefile	2014-03-11 16:43:12.000000000 +0800
+--- a/Makefile.org	2014-03-11 16:41:54.000000000 +0800
++++ a/Makefile	2014-03-11 16:43:12.000000000 +0800
 @@ -145,17 +145,6 @@
  ifeq ($(UNAME_S),Darwin)
  EXT = dylib
