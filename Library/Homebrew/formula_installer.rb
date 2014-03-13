@@ -407,7 +407,7 @@ class FormulaInstaller
   end
 
   def build_time
-    @build_time ||= Time.now - @start_time unless pour_bottle? or ARGV.interactive? or @start_time.nil?
+    @build_time ||= Time.now - @start_time unless ARGV.interactive? or @start_time.nil?
   end
 
   def sanitized_ARGV_options
