@@ -136,6 +136,7 @@ module Homebrew extend self
       begin
         keg.relocate_install_names prefix, Keg::PREFIX_PLACEHOLDER,
           cellar, Keg::CELLAR_PLACEHOLDER, :keg_only => f.keg_only?
+        keg.delete_pyc_files!
 
         HOMEBREW_CELLAR.cd do
           # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
