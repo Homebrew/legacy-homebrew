@@ -428,6 +428,9 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
   copied = system "cp #{jenkins}/jobs/\"#{job}\"/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
   exit unless copied
 
+  ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
+  ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
+
   pr = ENV['UPSTREAM_PULL_REQUEST']
   number = ENV['UPSTREAM_BUILD_NUMBER']
 
@@ -441,6 +444,8 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
     safe_system "brew pull --clean #{pr}"
   end
 
+  ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
+  ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
   safe_system "brew bottle --merge --write *.bottle*.rb"
 
   remote = "git@github.com:BrewTestBot/homebrew.git"
