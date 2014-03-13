@@ -2,8 +2,8 @@ require 'formula'
 
 class Cabocha < Formula
   homepage 'http://code.google.com/p/cabocha/'
-  url 'https://cabocha.googlecode.com/files/cabocha-0.67.tar.bz2'
-  sha1 '457a9bd0d264a1146a5eb1c5a504dd90a8b51fb8'
+  url 'https://cabocha.googlecode.com/files/cabocha-0.68.tar.bz2'
+  sha1 '5e22a71eb86d778fdeb1b725c0b27f1fb4af7f4b'
 
   depends_on 'crf++'
   depends_on 'mecab'
