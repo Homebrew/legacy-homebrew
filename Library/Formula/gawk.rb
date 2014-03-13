@@ -6,6 +6,12 @@ class Gawk < Formula
   mirror 'http://ftp.gnu.org/gnu/gawk/gawk-4.1.0.tar.xz'
   sha1 'caabca3c1a59d05807c826c45a4639b82cad612a'
 
+  bottle do
+    sha1 "c65a78da9b8bc8eceb24f1bbae2892c16aa0c202" => :mavericks
+    sha1 "db98589dfcbf0875e172b41bc4b08148737e46bd" => :mountain_lion
+    sha1 "a90fa8c6c4ce4ffec0a103f567db5eec319bb3bf" => :lion
+  end
+
   depends_on 'xz' => :build
 
   fails_with :llvm do
