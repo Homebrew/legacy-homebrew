@@ -167,6 +167,8 @@ class Build
       else
         f.prefix.mkpath
 
+        f.resources.each { |r| r.extend(ResourceDebugger) } if ARGV.debug?
+
         begin
           f.install
 
