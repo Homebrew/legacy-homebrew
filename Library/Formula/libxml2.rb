@@ -9,6 +9,12 @@ class Libxml2 < Formula
     sha256 'fd3c64cb66f2c4ea27e934d275904d92cec494a8e8405613780cbc8a71680fdb'
   end
 
+  bottle do
+    sha1 "1971dcb3cfb9a68555ee6eaff7c83d0dd8109442" => :mavericks
+    sha1 "558653754996428880b14123dac08baa639f97c3" => :mountain_lion
+    sha1 "93b5c4b98475f71cbf1915b2293df14d7621b262" => :lion
+  end
+
   head do
     url 'https://git.gnome.org/browse/libxml2', :using => :git
 
