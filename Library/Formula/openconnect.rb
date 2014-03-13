@@ -2,11 +2,11 @@ require 'formula'
 
 class Openconnect < Formula
   homepage 'http://www.infradead.org/openconnect.html'
-  url 'ftp://ftp.infradead.org/pub/openconnect/openconnect-5.03.tar.gz'
-  sha1 '40344fc910a19c8781a79204808f1229acaee2a4'
+  url "ftp://ftp.infradead.org/pub/openconnect/openconnect-5.99.tar.gz"
+  sha1 "3ac20e50f2700ff58d1635f210fc263d29cf7768"
 
   head do
-    url 'git://git.infradead.org/users/dwmw2/openconnect.git', :shallow => false
+    url "git://git.infradead.org/users/dwmw2/openconnect.git", :shallow => false
     depends_on :autoconf => :build
     depends_on :automake => :build
     depends_on :libtool => :build
@@ -14,7 +14,7 @@ class Openconnect < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
-  depends_on 'openssl'
+  depends_on "openssl"
 
   resource 'vpnc-script' do
     url 'http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/d2c5a77f3f0ea6ad80fc59158127d63ede81a6cb:/vpnc-script'
