@@ -10,7 +10,7 @@ class Cmigemo < Formula
 
   # Patch per discussion at: https://github.com/Homebrew/homebrew/pull/7005
   def patches
-    DATA if not build.head?
+    DATA if build.stable?
   end
 
   def install
@@ -18,7 +18,7 @@ class Cmigemo < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make osx"
     system "make osx-dict"
-    if not build.head?
+    if build.stable?
       cd 'dict' do
         system "make utf-8"
       end
