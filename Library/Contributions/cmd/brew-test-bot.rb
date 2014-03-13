@@ -284,7 +284,7 @@ class Test
     install_args = '--verbose'
     install_args << ' --build-bottle' unless ARGV.include? '--no-bottle'
     install_args << ' --HEAD' if ARGV.include? '--HEAD'
-    test "brew install --only-dependencies #{formula}" unless dependencies.empty?
+    test "brew install --only-dependencies #{install_args} #{formula}" unless dependencies.empty?
     test "brew install #{install_args} #{formula}"
     install_passed = steps.last.passed?
     test "brew audit #{formula}"
