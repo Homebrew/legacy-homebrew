@@ -335,7 +335,6 @@ class FormulaInstaller
     fi.options |= dep.options
     fi.options |= inherited_options
     fi.ignore_deps = true
-    fi.show_header = false
     fi.build_from_source = build_from_source
     fi.prelude
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
