@@ -25,6 +25,7 @@ class FormulaInstaller
   mode_attr_accessor :show_summary_heading, :show_header
   mode_attr_accessor :build_from_source, :build_bottle, :force_bottle
   mode_attr_accessor :ignore_deps, :only_deps, :interactive
+  mode_attr_accessor :verbose
 
   def initialize ff
     @f = ff
@@ -35,6 +36,7 @@ class FormulaInstaller
     @build_bottle = false
     @force_bottle = false
     @interactive = false
+    @verbose = false
     @options = Options.new
 
     @@attempted ||= Set.new
@@ -343,6 +345,7 @@ class FormulaInstaller
     fi.options |= inherited_options
     fi.ignore_deps = true
     fi.build_from_source = build_from_source?
+    fi.verbose = verbose? unless verbose == :quieter
     fi.prelude
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
@@ -376,7 +379,7 @@ class FormulaInstaller
   def finish
     return if only_deps?
 
-    ohai 'Finishing up' if ARGV.verbose?
+    ohai 'Finishing up' if verbose?
 
     install_plist
 
@@ -395,7 +398,7 @@ class FormulaInstaller
 
     post_install
 
-    ohai "Summary" if ARGV.verbose? or show_summary_heading?
+    ohai "Summary" if verbose? or show_summary_heading?
     puts summary
   ensure
     unlock if hold_locks?
@@ -431,7 +434,7 @@ class FormulaInstaller
       args << "--git" if interactive == :git
     end
 
-    args << "--verbose" if ARGV.verbose?
+    args << "--verbose" if verbose?
     args << "--debug" if ARGV.debug?
     args << "--cc=#{ARGV.cc}" if ARGV.cc
     args << "--env=#{ARGV.env}" if ARGV.env
@@ -557,7 +560,7 @@ class FormulaInstaller
   end
 
   def clean
-    ohai "Cleaning" if ARGV.verbose?
+    ohai "Cleaning" if verbose?
     Cleaner.new(f).clean
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"

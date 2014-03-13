@@ -112,6 +112,8 @@ module Homebrew extend self
     fi.force_bottle = ARGV.force_bottle?
     fi.interactive = ARGV.interactive?
     fi.interactive &&= :git if ARGV.flag? "--git"
+    fi.verbose = ARGV.verbose?
+    fi.verbose &&= :quieter if ARGV.quieter?
     fi.prelude
     fi.install
     fi.caveats
