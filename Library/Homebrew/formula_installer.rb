@@ -15,10 +15,16 @@ require 'cmd/tap'
 class FormulaInstaller
   include FormulaCellarChecks
 
+  def self.mode_attr_accessor(*names)
+    attr_accessor(*names)
+    names.each { |name| define_method("#{name}?") { !!send(name) }}
+  end
+
   attr_reader :f
-  attr_accessor :options, :ignore_deps, :only_deps
-  attr_accessor :show_summary_heading, :show_header
-  attr_accessor :build_from_source, :build_bottle, :force_bottle
+  attr_accessor :options
+  mode_attr_accessor :show_summary_heading, :show_header
+  mode_attr_accessor :build_from_source, :build_bottle, :force_bottle
+  mode_attr_accessor :ignore_deps, :only_deps
 
   def initialize ff
     @f = ff
@@ -38,8 +44,8 @@ class FormulaInstaller
 
   def pour_bottle? install_bottle_options={:warn=>false}
     return false if @pour_failed
-    return true  if force_bottle && f.bottle
-    return false if build_from_source || build_bottle
+    return true  if force_bottle? && f.bottle
+    return false if build_from_source? || build_bottle?
     return false unless options.empty?
 
     return true if f.local_bottle_path
@@ -56,7 +62,7 @@ class FormulaInstaller
   end
 
   def install_bottle_for_dep?(dep, build)
-    return false if build_from_source
+    return false if build_from_source?
     return false unless dep.bottle && dep.pour_bottle?
     return false unless build.used_options.empty?
     return false unless dep.bottle.compatible_cellar?
@@ -64,7 +70,7 @@ class FormulaInstaller
   end
 
   def prelude
-    verify_deps_exist unless ignore_deps
+    verify_deps_exist unless ignore_deps?
     lock
     check_install_sanity
   end
@@ -101,7 +107,7 @@ class FormulaInstaller
       raise CannotInstallFormulaError, "No head is defined for #{f.name}"
     end
 
-    unless ignore_deps
+    unless ignore_deps?
       unlinked_deps = f.recursive_dependencies.map(&:to_formula).select do |dep|
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
@@ -136,15 +142,15 @@ class FormulaInstaller
 
     check_conflicts
 
-    compute_and_install_dependencies unless ignore_deps
+    compute_and_install_dependencies unless ignore_deps?
 
-    return if only_deps
+    return if only_deps?
 
-    if build_bottle && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
+    if build_bottle? && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
 
-    oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
+    oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header?
 
     @@attempted << f
 
@@ -174,15 +180,15 @@ class FormulaInstaller
       opoo "Bottle installation failed: building from source."
     end
 
-    build_bottle_preinstall if build_bottle
+    build_bottle_preinstall if build_bottle?
 
     unless @poured_bottle
-      compute_and_install_dependencies if @pour_failed and not ignore_deps
+      compute_and_install_dependencies if @pour_failed and not ignore_deps?
       build
       clean
     end
 
-    build_bottle_postinstall if build_bottle
+    build_bottle_postinstall if build_bottle?
 
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
@@ -216,7 +222,7 @@ class FormulaInstaller
     deps = [].concat(req_deps).concat(f.deps)
     deps = expand_dependencies(deps)
 
-    if deps.empty? and only_deps
+    if deps.empty? and only_deps?
       puts "All dependencies for #{f} are satisfied."
     else
       install_dependencies(deps)
@@ -335,7 +341,7 @@ class FormulaInstaller
     fi.options |= dep.options
     fi.options |= inherited_options
     fi.ignore_deps = true
-    fi.build_from_source = build_from_source
+    fi.build_from_source = build_from_source?
     fi.prelude
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
@@ -348,7 +354,7 @@ class FormulaInstaller
   end
 
   def caveats
-    return if only_deps
+    return if only_deps?
 
     if ARGV.homebrew_developer? and not f.keg_only?
       audit_bin
@@ -367,7 +373,7 @@ class FormulaInstaller
   end
 
   def finish
-    return if only_deps
+    return if only_deps?
 
     ohai 'Finishing up' if ARGV.verbose?
 
@@ -388,7 +394,7 @@ class FormulaInstaller
 
     post_install
 
-    ohai "Summary" if ARGV.verbose? or show_summary_heading
+    ohai "Summary" if ARGV.verbose? or show_summary_heading?
     puts summary
   ensure
     unlock if hold_locks?
@@ -412,9 +418,9 @@ class FormulaInstaller
 
   def sanitized_ARGV_options
     args = []
-    args << "--ignore-dependencies" if ignore_deps
+    args << "--ignore-dependencies" if ignore_deps?
 
-    if build_bottle
+    if build_bottle?
       args << "--build-bottle"
       args << "--bottle-arch=#{ARGV.bottle_arch}" if ARGV.bottle_arch
     end
@@ -633,7 +639,7 @@ class FormulaInstaller
     if (@@locked ||= []).empty?
       f.recursive_dependencies.each do |dep|
         @@locked << dep.to_formula
-      end unless ignore_deps
+      end unless ignore_deps?
       @@locked.unshift(f)
       @@locked.each(&:lock)
       @hold_locks = true
