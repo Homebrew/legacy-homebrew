@@ -11,6 +11,8 @@ class Aubio < Formula
   depends_on 'pkg-config' => :build
   depends_on :libtool => :build
 
+  depends_on 'numpy' => :python
+
   option :universal
 
   def install
