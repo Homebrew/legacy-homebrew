@@ -23,11 +23,7 @@ class Nzbget < Formula
 
   fails_with :clang do
     build 500
-    cause <<-EOS.undent
-      Configure errors out when testing the libpar2 headers because
-      Clang does not support flexible arrays of non-POD types.
-      ./par2fileformat.h:87:25: error: flexible array member 'entries' of non-POD element type 'FILEVERIFICATIONENTRY []'
-      EOS
+    cause "Clang older than 5.1 requires flexible array members to be trivially destructible"
   end
 
   def install

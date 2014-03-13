@@ -21,10 +21,10 @@ class Boost < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 'e715bed5765c5a89fd2c7f2938bf4db405a11fbc' => :mavericks
-    sha1 '099a7374e95690e2268f7abbd4ccfb0559541b73' => :mountain_lion
-    sha1 '1961f75f2139f3f0998aae03a1be8e9ac553d292' => :lion
+    revision 2
+    sha1 "e18905c7fc76c1f1a8422071ae887eca92c0e8df" => :mavericks
+    sha1 "a6dc7ba2be38e08b3648bfd79ec1b635c606654c" => :mountain_lion
+    sha1 "edbad0334143511e40a044191fa5711be9ce6838" => :lion
   end
 
   env :userpaths
@@ -56,6 +56,14 @@ class Boost < Formula
   end
 
   odie 'boost: --with-c++11 has been renamed to --c++11' if build.with? 'c++11'
+
+  # Patches boost::atomic for LLVM 3.4 as it is used on OS X 10.9 with Xcode 5.1
+  def patches
+    { :p2 => [
+      "https://github.com/boostorg/atomic/commit/6bb71fdd.patch",
+      "https://github.com/boostorg/atomic/commit/e4bde20f.patch",
+    ]}
+  end
 
   fails_with :llvm do
     build 2335
@@ -187,14 +195,6 @@ class Boost < Formula
       EOS
     end
 
-    if pour_bottle? and Formula['python'].installed?
-      s += <<-EOS.undent
-
-      The Boost bottle's module will not import into a Homebrew-installed Python.
-      If you use the Boost Python module then please:
-        brew install boost --build-from-source
-      EOS
-    end
     s
   end
 end

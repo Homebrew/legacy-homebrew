@@ -23,9 +23,6 @@ module ScriptDataReader
   end
 end
 
-# otherwise we may unpack bottles
-ENV['HOMEBREW_BUILD_FROM_SOURCE'] = '1'
-
 # Need to tweak the Formula class slightly so that patching is option and `DATA`
 # patches work correctly.
 class Formula

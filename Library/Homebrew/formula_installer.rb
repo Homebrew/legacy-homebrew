@@ -18,7 +18,7 @@ class FormulaInstaller
   attr_reader :f
   attr_accessor :options, :ignore_deps, :only_deps
   attr_accessor :show_summary_heading, :show_header
-  attr_accessor :build_from_source, :build_bottle
+  attr_accessor :build_from_source, :build_bottle, :force_bottle
 
   def initialize ff
     @f = ff
@@ -27,6 +27,7 @@ class FormulaInstaller
     @only_deps = false
     @build_from_source = false
     @build_bottle = false
+    @force_bottle = false
     @options = Options.new
 
     @@attempted ||= Set.new
@@ -37,8 +38,29 @@ class FormulaInstaller
 
   def pour_bottle? install_bottle_options={:warn=>false}
     return false if @pour_failed
+    return true  if force_bottle && f.bottle
     return false if build_from_source || build_bottle
-    options.empty? && install_bottle?(f, install_bottle_options)
+    return false unless options.empty?
+
+    return true if f.local_bottle_path
+    return false unless f.bottle && f.pour_bottle?
+
+    unless f.bottle.compatible_cellar?
+      if install_bottle_options[:warn]
+        opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}"
+      end
+      return false
+    end
+
+    true
+  end
+
+  def install_bottle_for_dep?(dep, build)
+    return false if build_from_source
+    return false unless dep.bottle && dep.pour_bottle?
+    return false unless build.used_options.empty?
+    return false unless dep.bottle.compatible_cellar?
+    return true
   end
 
   def prelude
@@ -118,7 +140,7 @@ class FormulaInstaller
 
     return if only_deps
 
-    if ARGV.build_bottle? && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
+    if build_bottle && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
 
@@ -152,7 +174,7 @@ class FormulaInstaller
       opoo "Bottle installation failed: building from source."
     end
 
-    build_bottle_preinstall if ARGV.build_bottle?
+    build_bottle_preinstall if build_bottle
 
     unless @poured_bottle
       compute_and_install_dependencies if @pour_failed and not ignore_deps
@@ -160,7 +182,7 @@ class FormulaInstaller
       clean
     end
 
-    build_bottle_postinstall if ARGV.build_bottle?
+    build_bottle_postinstall if build_bottle
 
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
@@ -227,7 +249,9 @@ class FormulaInstaller
 
           if (req.optional? || req.recommended?) && build.without?(req)
             Requirement.prune
-          elsif req.build? && install_bottle?(dependent)
+          elsif req.build? && dependent == f && pour_bottle?
+            Requirement.prune
+          elsif req.build? && dependent != f && install_bottle_for_dep?(dependent, build)
             Requirement.prune
           elsif req.satisfied?
             Requirement.prune
@@ -247,10 +271,6 @@ class FormulaInstaller
   end
 
   def expand_dependencies(deps)
-    # FIXME: can't check this inside the block for the top-level dependent
-    # because it depends on the contents of ARGV.
-    pour_bottle = pour_bottle?
-
     inherited_options = {}
 
     expanded_deps = ARGV.filter_for_dependencies do
@@ -260,9 +280,9 @@ class FormulaInstaller
 
         if (dep.optional? || dep.recommended?) && build.without?(dep)
           Dependency.prune
-        elsif dep.build? && dependent == f && pour_bottle
+        elsif dep.build? && dependent == f && pour_bottle?
           Dependency.prune
-        elsif dep.build? && dependent != f && install_bottle?(dependent)
+        elsif dep.build? && dependent != f && install_bottle_for_dep?(dependent, build)
           Dependency.prune
         elsif dep.satisfied?(options)
           Dependency.skip
@@ -394,13 +414,14 @@ class FormulaInstaller
   def sanitized_ARGV_options
     args = ARGV.options_only
     args.delete "--ignore-dependencies" unless ignore_deps
+    args.delete "--build-bottle" unless build_bottle
     args
   end
 
   def build_argv
     opts = Options.coerce(sanitized_ARGV_options)
     opts.concat(options)
-    opts << Option.new("--build-from-source") # don't download bottle
+    opts
   end
 
   def build
