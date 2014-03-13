@@ -11,6 +11,8 @@ class Aubio < Formula
   depends_on 'pkg-config' => :build
   depends_on :libtool => :build
 
+  # fortran is needed to build numpy
+  depends_on :fortran
   resource 'numpy' do
     url 'http://downloads.sourceforge.net/project/numpy/NumPy/1.8.0/numpy-1.8.0.tar.gz'
     sha1 'a2c02c5fb2ab8cf630982cddc6821e74f5769974'
