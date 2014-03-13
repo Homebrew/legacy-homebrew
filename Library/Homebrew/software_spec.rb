@@ -100,12 +100,13 @@ end
 class Bottle
   extend Forwardable
 
-  attr_reader :resource, :prefix, :cellar, :revision
+  attr_reader :name, :resource, :prefix, :cellar, :revision
 
   def_delegators :resource, :url, :fetch, :verify_download_integrity
   def_delegators :resource, :downloader, :cached_download, :clear_cache
 
   def initialize(f, spec)
+    @name = f.name
     @resource = Resource.new
     @resource.owner = f
     @resource.url = bottle_url(
