@@ -24,7 +24,7 @@ class FormulaInstaller
   attr_accessor :options
   mode_attr_accessor :show_summary_heading, :show_header
   mode_attr_accessor :build_from_source, :build_bottle, :force_bottle
-  mode_attr_accessor :ignore_deps, :only_deps
+  mode_attr_accessor :ignore_deps, :only_deps, :interactive
 
   def initialize ff
     @f = ff
@@ -34,6 +34,7 @@ class FormulaInstaller
     @build_from_source = false
     @build_bottle = false
     @force_bottle = false
+    @interactive = false
     @options = Options.new
 
     @@attempted ||= Set.new
@@ -413,7 +414,7 @@ class FormulaInstaller
   end
 
   def build_time
-    @build_time ||= Time.now - @start_time unless ARGV.interactive? or @start_time.nil?
+    @build_time ||= Time.now - @start_time unless interactive? or @start_time.nil?
   end
 
   def sanitized_ARGV_options
@@ -425,9 +426,9 @@ class FormulaInstaller
       args << "--bottle-arch=#{ARGV.bottle_arch}" if ARGV.bottle_arch
     end
 
-    if ARGV.interactive?
+    if interactive?
       args << "--interactive"
-      args << "--git" if ARGV.flag? "--git"
+      args << "--git" if interactive == :git
     end
 
     args << "--verbose" if ARGV.verbose?
