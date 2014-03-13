@@ -5,12 +5,6 @@ class Pyqt < Formula
   url 'https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.3/PyQt-mac-gpl-4.10.3.tar.gz'
   sha1 'ba5465f92fb43c9f0a5b948fa25df5045f160bf0'
 
-  bottle do
-    sha1 "889a67ff342caf18263d8b778947be6cf6d73b90" => :mavericks
-    sha1 "87a9c7aa3d55dcb33ab2bf6b0485b407d221f248" => :mountain_lion
-    sha1 "ce8f509b6101618e25657aaf337063540a359421" => :lion
-  end
-
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
