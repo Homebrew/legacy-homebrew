@@ -419,7 +419,7 @@ class FormulaInstaller
   end
 
   def build_time
-    @build_time ||= Time.now - @start_time unless interactive? or @start_time.nil?
+    @build_time ||= Time.now - @start_time if @start_time && !interactive?
   end
 
   def sanitized_ARGV_options
