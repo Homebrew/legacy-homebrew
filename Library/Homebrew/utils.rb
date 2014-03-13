@@ -170,7 +170,10 @@ def puts_columns items, star_items=[]
 end
 
 def which cmd, path=ENV['PATH']
-  dir = path.split(File::PATH_SEPARATOR).find {|p| File.executable? File.join(p, cmd)}
+  dir = path.split(File::PATH_SEPARATOR).find {|p|
+    pcmd = File.join(p, cmd)
+    File.executable?(pcmd) && !File.directory?(pcmd)
+  }
   Pathname.new(File.join(dir, cmd)) unless dir.nil?
 end
 
