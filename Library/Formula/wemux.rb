@@ -7,6 +7,13 @@ class Wemux < Formula
 
   head 'https://github.com/zolrath/wemux.git'
 
+  bottle do
+    cellar :any
+    sha1 "4f67e551a15578c2af0304ef41b96f8b00889283" => :mavericks
+    sha1 "9ae3fc6f6d24fe035c5c1df2c86bfa189ea744b3" => :mountain_lion
+    sha1 "7f5f6a408d6895cd90c33593d3c89dbffae15893" => :lion
+  end
+
   depends_on 'tmux'
 
   def install
