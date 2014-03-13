@@ -341,13 +341,13 @@ class FormulaInstaller
     outdated_keg = Keg.new(df.linked_keg.realpath) rescue nil
 
     fi = FormulaInstaller.new(df)
-    fi.options |= Tab.for_formula(df).used_options
-    fi.options |= dep.options
-    fi.options |= inherited_options
-    fi.ignore_deps = true
-    fi.build_from_source = build_from_source?
-    fi.verbose = verbose? unless verbose == :quieter
-    fi.debug = debug?
+    fi.options           |= Tab.for_formula(df).used_options
+    fi.options           |= dep.options
+    fi.options           |= inherited_options
+    fi.ignore_deps        = true
+    fi.build_from_source  = build_from_source?
+    fi.verbose            = verbose? unless verbose == :quieter
+    fi.debug              = debug?
     fi.prelude
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
