@@ -7,6 +7,13 @@ class Libqglviewer < Formula
 
   head 'https://github.com/GillesDebunne/libQGLViewer.git'
 
+  bottle do
+    cellar :any
+    sha1 "6c20fb8bac46fad1829c90f07b1d80b4ba797799" => :mavericks
+    sha1 "c3abf90b9e9eaa835e5c5faa979670175e2715a2" => :mountain_lion
+    sha1 "0ef379d978e5277914f9887bbf6240aa7f81294a" => :lion
+  end
+
   option :universal
 
   depends_on 'qt'
