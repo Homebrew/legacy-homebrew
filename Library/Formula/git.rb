@@ -25,12 +25,12 @@ class Git < Formula
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource 'man' do
-    url 'http://git-core.googlecode.com/files/git-manpages-1.9.0.tar.gz'
+    url 'https://git-core.googlecode.com/files/git-manpages-1.9.0.tar.gz'
     sha1 'cff590c92b4d1c8a143c078473140b653cc5d56a'
   end
 
   resource 'html' do
-    url 'http://git-core.googlecode.com/files/git-htmldocs-1.9.0.tar.gz'
+    url 'https://git-core.googlecode.com/files/git-htmldocs-1.9.0.tar.gz'
     sha1 '65eb3f411f4699695c7081a7c716cabb9ce23d75'
   end
 

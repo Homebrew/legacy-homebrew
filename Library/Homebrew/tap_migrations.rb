@@ -15,10 +15,13 @@ TAP_MIGRATIONS = {
   "libgtextutils" => "homebrew/science",
   "librets" => "homebrew/boneyard",
   "lmutil" => "homebrew/binary",
+  "mlkit" => "homebrew/boneyard",
+  "mlton" => "homebrew/boneyard",
   "nlopt" => "homebrew/science",
   "octave" => "homebrew/science",
   "opencv" => "homebrew/science",
   "qfits" => "homebrew/boneyard",
   "syslog-ng" => "homebrew/boneyard",
+  "urweb" => "homebrew/boneyard",
   "wkhtmltopdf" => "homebrew/boneyard",
 }

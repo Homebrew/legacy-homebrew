@@ -60,7 +60,7 @@ class Wireshark < Formula
             "--with-ssl"]
 
     args << "--disable-warnings-as-errors" if build.head?
-    args << "--disable-wireshark" if build.without? "x" or build.with? "qt"
+    args << "--disable-wireshark" if build.without?("x") && build.without?("qt")
     args << "--disable-gtktest" if build.without? "x"
     args << "--with-qt" if build.with? "qt"
 
@@ -98,6 +98,12 @@ class Wireshark < Formula
     See bug report:
       https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=3760
     EOS
+  end
+
+  test do
+    system "#{bin}/randpkt", "-b", "100", "-c", "2", "capture.pcap"
+    output = `#{bin}/capinfos -Tmc capture.pcap`
+    assert_equal "File name,Number of packets\ncapture.pcap,2\n", output
   end
 end
 

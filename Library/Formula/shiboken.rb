@@ -28,7 +28,7 @@ class Shiboken < Formula
   def install
     # As of 1.1.1 the install fails unless you do an out of tree build and put
     # the source dir last in the args.
-    PythonUtils.for_each_python_version(build) do |python, version|
+    Language::Python.each_python(build) do |python, version|
       ohai "Install for Python #{version}"
       mkdir "macbuild#{version}" do
         args = std_cmake_args
@@ -51,7 +51,7 @@ class Shiboken < Formula
   end
 
   test do
-    PythonUtils.for_each_python_version(build) do |python, version|
+    Language::Python.each_python(build) do |python, version|
       system python, "-c", "import shiboken"
     end
   end

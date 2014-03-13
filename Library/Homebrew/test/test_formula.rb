@@ -182,7 +182,6 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal f.stable, f.active_spec
 
     assert_instance_of SoftwareSpec, f.stable
-    assert_instance_of Bottle, f.bottle
     assert_instance_of SoftwareSpec, f.devel
     assert_instance_of HeadSoftwareSpec, f.head
   end
@@ -216,7 +215,7 @@ class FormulaTests < Test::Unit::TestCase
   def test_class_specs_are_always_initialized
     f = formula { url 'foo-1.0' }
 
-    %w{stable devel head bottle}.each do |spec|
+    %w{stable devel head}.each do |spec|
       assert_kind_of SoftwareSpec, f.class.send(spec)
     end
   end
@@ -224,7 +223,7 @@ class FormulaTests < Test::Unit::TestCase
   def test_incomplete_instance_specs_are_not_accessible
     f = formula { url 'foo-1.0' }
 
-    %w{devel head bottle}.each { |spec| assert_nil f.send(spec) }
+    %w{devel head}.each { |spec| assert_nil f.send(spec) }
   end
 
   def test_honors_attributes_declared_before_specs
@@ -234,7 +233,7 @@ class FormulaTests < Test::Unit::TestCase
       devel { url 'foo-1.1' }
     end
 
-    %w{stable devel head bottle}.each do |spec|
+    %w{stable devel head}.each do |spec|
       assert_equal 'foo', f.class.send(spec).deps.first.name
     end
   end
