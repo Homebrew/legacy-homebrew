@@ -5,6 +5,13 @@ class Sip < Formula
   url 'http://download.sf.net/project/pyqt/sip/sip-4.15.4/sip-4.15.4.tar.gz'
   sha1 'a5f6342dbb3cdc1fb61440ee8acb805f5fec3c41'
 
+  bottle do
+    revision 1
+    sha1 "9878571bc2243c277c4cd8998700c3278e005134" => :mavericks
+    sha1 "b19196325105a2e18de487b5258288865e6435e0" => :mountain_lion
+    sha1 "2eed686f9c0656b7e6aca9e9be1e75858e61c475" => :lion
+  end
+
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
 
   depends_on :python => :recommended
