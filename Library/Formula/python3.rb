@@ -4,6 +4,13 @@ class Python3 < Formula
   homepage 'http://www.python.org/'
   url 'http://python.org/ftp/python/3.3.5/Python-3.3.5.tgz'
   sha1 '15f24702c5ae07d364606c663e515c1d9ba58615'
+
+  bottle do
+    sha1 "1ce3be8086248a1200d5e5e5f08b544177b812eb" => :mavericks
+    sha1 "f0e160264e6f94c0fbb66a9fd1f2e914d4e2522a" => :mountain_lion
+    sha1 "c44b97698b7c002c3aa38323a774c0883049d569" => :lion
+  end
+
   VER='3.3'  # The <major>.<minor> is used so often.
 
   head 'http://hg.python.org/cpython', :using => :hg, :branch => VER
