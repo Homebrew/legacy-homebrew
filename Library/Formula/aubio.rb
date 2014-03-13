@@ -5,8 +5,6 @@ class Aubio < Formula
   url 'http://aubio.org/pub/aubio-0.4.1.tar.bz2'
   sha1 '338ec9f633e82c371a370b9727d6f0b86b0ba376'
 
-  option :universal
-
   depends_on :macos => :lion
   depends_on :python
 
@@ -22,7 +20,7 @@ class Aubio < Formula
   end
 
   def install
-    ENV.universal_binary if build.universal?
+    ENV.universal_binary
 
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     numpy_args = [ "build", "--fcompiler=gnu95",
