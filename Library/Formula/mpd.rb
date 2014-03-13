@@ -5,7 +5,11 @@ class Mpd < Formula
   url "http://www.musicpd.org/download/mpd/0.17/mpd-0.17.5.tar.bz2"
   sha1 "91e4d8d364a3db02e6f92676dd938880e5bb200a"
 
-  head "git://git.musicpd.org/master/mpd.git"
+  head do
+    url "git://git.musicpd.org/master/mpd.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
 
   option "with-wavpack", "Build with wavpack support (for .wv files)"
   option "with-lastfm", "Build with last-fm support (for experimental Last.fm radio)"
@@ -45,7 +49,7 @@ class Mpd < Formula
 
   # Removes usage of deprecated AVCODEC_MAX_AUDIO_FRAME_SIZE constant
   # We're many versions behind; this bug has long since been fixed upstream
-  def patches; DATA; end
+  def patches; DATA unless build.head?; end
 
   def install
     if build.include? "lastfm" or build.include? "libwrap" \
