@@ -11,6 +11,13 @@ class Shiboken < Formula
   depends_on 'cmake' => :build
   depends_on 'qt'
 
+  depends_on :python => :recommended
+  depends_on :python3 => :optional
+
+  if build.without?("python3") && build.without?("python")
+    odie "shiboken: --with-python3 must be specified when using --without-python"
+  end
+
   def patches
     # This fixes issues with libc++ and its lack of the tr1 namespace.
     # Upstream ticket: https://bugreports.qt-project.org/browse/PYSIDE-200
@@ -21,18 +28,32 @@ class Shiboken < Formula
   def install
     # As of 1.1.1 the install fails unless you do an out of tree build and put
     # the source dir last in the args.
-    mkdir "macbuild" do
-      args = std_cmake_args
-      # Building the tests also runs them.
-      args << "-DBUILD_TESTS=ON"
-      args << '..'
-      system 'cmake', *args
-      system "make install"
+    Language::Python.each_python(build) do |python, version|
+      ohai "Install for Python #{version}"
+      mkdir "macbuild#{version}" do
+        args = std_cmake_args
+        # Building the tests also runs them.
+        args << "-DBUILD_TESTS=ON"
+        # if not System Python
+        if version.to_s[0,1] == '2' && Formula["python"].installed?
+          args << "-DPYTHON_INCLUDE_DIR:PATH=#{Formula["python"].prefix}/Frameworks/Python.framework/Versions/#{version}/Headers"
+          args << "-DPYTHON_LIBRARY:FILEPATH=#{Formula["python"].prefix}/Frameworks/Python.framework/Versions/#{version}/lib/libpython#{version}.dylib"
+        elsif version.to_s[0,1] == '3'
+          args << "-DPYTHON3_INCLUDE_DIR:PATH=#{Formula["python3"].prefix}/Frameworks/Python.framework/Versions/#{version}/Headers"
+          args << "-DPYTHON3_LIBRARY:FILEPATH=#{Formula["python3"].prefix}/Frameworks/Python.framework/Versions/#{version}/lib/libpython#{version}.dylib"
+          args << "-DUSE_PYTHON3:BOOL=ON"
+        end
+        args << '..'
+        system 'cmake', *args
+        system "make install"
+      end
     end
   end
 
   test do
-    system "python", "-c", "import shiboken"
+    Language::Python.each_python(build) do |python, version|
+      system python, "-c", "import shiboken"
+    end
   end
 end
 
