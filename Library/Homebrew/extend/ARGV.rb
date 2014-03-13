@@ -200,6 +200,10 @@ module HomebrewArgvExtension
     value 'cc'
   end
 
+  def env
+    value 'env'
+  end
+
   private
 
   def downcased_unique_named
