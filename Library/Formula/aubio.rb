@@ -35,7 +35,7 @@ class Aubio < Formula
 
     cd 'python' do
       system "./setup.py", "build"
-      system "./setup.py", "install", "--prefix", "#{prefix}"
+      system "./setup.py", "install", "--prefix", prefix
       bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
     end
   end
