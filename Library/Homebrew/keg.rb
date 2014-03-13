@@ -196,6 +196,13 @@ class Keg < Pathname
     from.make_relative_symlink(self)
   end
 
+  def delete_pyc_files!
+    Pathname.new(self).find do |pn|
+      next if pn.extname != '.pyc'
+      pn.delete
+    end
+  end
+
   protected
 
   def resolve_any_conflicts dst
