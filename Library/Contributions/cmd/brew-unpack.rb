@@ -23,24 +23,19 @@ module ScriptDataReader
   end
 end
 
-# Need to tweak the Formula class slightly so that patching is option and `DATA`
-# patches work correctly.
-class Formula
-  # Create a reference to the original Formula.patch method and then override
-  # so that paching only happens if the user asks.
-  alias do_patch patch
+module UnpackPatch
   def patch
-    if ARGV.flag? '--patch'
-      begin
-        old_verbose = $VERBOSE
-        $VERBOSE = nil
-        Formula.const_set 'DATA', ScriptDataReader.load(path)
-      ensure
-        $VERBOSE = old_verbose
-      end
+    return unless ARGV.flag? "--patch"
 
-      do_patch
+    begin
+      old_verbose = $VERBOSE
+      $VERBOSE = nil
+      Formula.const_set "DATA", ScriptDataReader.load(path)
+    ensure
+      $VERBOSE = old_verbose
     end
+
+    super
   end
 end
 
@@ -74,6 +69,8 @@ module Homebrew extend self
     raise "Cannot write to #{unpack_dir}" unless unpack_dir.writable_real?
 
     formulae.each do |f|
+      f.extend(UnpackPatch)
+
       # Create a nice name for the stage folder.
       stage_dir = unpack_dir + [f.name, f.version].join('-')
 
