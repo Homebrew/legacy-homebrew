@@ -5,6 +5,8 @@ class Aubio < Formula
   url 'http://aubio.org/pub/aubio-0.4.1.tar.bz2'
   sha1 '338ec9f633e82c371a370b9727d6f0b86b0ba376'
 
+  option :universal
+
   depends_on :macos => :lion
   depends_on :python
 
@@ -18,8 +20,6 @@ class Aubio < Formula
     url 'http://downloads.sourceforge.net/project/numpy/NumPy/1.8.0/numpy-1.8.0.tar.gz'
     sha1 'a2c02c5fb2ab8cf630982cddc6821e74f5769974'
   end
-
-  option :universal
 
   def install
     ENV.universal_binary if build.universal?
