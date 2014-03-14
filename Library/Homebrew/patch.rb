@@ -96,8 +96,8 @@ class ExternalPatch < Patch
 
   def owner= owner
     resource.owner   = owner
-    resource.name    = "patch-#{resource.checksum}"
-    resource.version = owner.version
+    resource.name    = "patch"
+    resource.version = resource.checksum
   end
 
   def apply
@@ -119,7 +119,7 @@ class LegacyPatch < ExternalPatch
 
   def owner= owner
     super
-    resource.name = "patch-#{ERB::Util.url_encode(resource.url)}"
+    resource.version = ERB::Util.url_encode(resource.url)
   end
 
   def fetch
