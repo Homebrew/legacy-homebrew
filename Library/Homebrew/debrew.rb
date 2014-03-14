@@ -18,6 +18,8 @@ end
 
 module ResourceDebugger
   def stage(target=nil, &block)
+    return super if target
+
     super do
       begin
         block.call(self)
