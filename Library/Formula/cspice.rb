@@ -7,18 +7,16 @@ class Cspice < Formula
   version "64"
 
   def install
+    rm_f Dir["lib/*"]
+    rm_f Dir["exe/*"]
+    system "csh", "makeall.csh"
+    mv "exe", "bin"
     prefix.install Dir["*"]
-    rm_f Dir["#{lib}/*"]
-    rm_f Dir["#{prefix}/exe/*"]
-
-    chdir "#{prefix}"
-    system "csh", "#{prefix}/makeall.csh"
 
     Dir["#{lib}/*"].each do |file|
       symlink file, "#{lib}"+"/lib"+File.basename(file)
     end
 
-    mv "#{prefix}/exe", "#{bin}"
   end
 
   test do
