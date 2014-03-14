@@ -12,7 +12,7 @@ class Mmv < Formula
   end
 
   def install
-    system "make"
+    system "make", "CC=#{ENV.cc}", "LDFLAGS="
 
     bin.install 'mmv'
     man1.install 'mmv.1'
