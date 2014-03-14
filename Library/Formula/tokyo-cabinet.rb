@@ -7,7 +7,7 @@ class TokyoCabinet < Formula
   sha256 'a003f47c39a91e22d76bc4fe68b9b3de0f38851b160bbb1ca07a4f6441de1f90'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--enable-fastest"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"
   end
