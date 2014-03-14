@@ -5,6 +5,13 @@ class Gvp < Formula
   url "https://github.com/pote/gvp/archive/v0.0.2.tar.gz"
   sha1 "28cbdea4c579ae4119bfd0fa451f03cb0572b43b"
 
+  bottle do
+    cellar :any
+    sha1 "455e8325565c0f6ebedfba821081b2e15b4446c1" => :mavericks
+    sha1 "ccf547cf67919c8d47e8698ae3464331cc082efb" => :mountain_lion
+    sha1 "98d111ddf331bcfe7ba61675283e01f7a43cfc61" => :lion
+  end
+
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
