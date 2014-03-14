@@ -15,8 +15,11 @@ class Fltk < Formula
     cause "http://llvm.org/bugs/show_bug.cgi?id=10338"
   end
 
-  # The patch is to fix issue with -lpng not found.
+  # First patch is to fix issue with -lpng not found.
   # Based on: https://trac.macports.org/browser/trunk/dports/aqua/fltk/files/patch-src-Makefile.diff
+  #
+  # Second patch is to fix compile issue with clang 3.4.
+  # Based on: http://www.fltk.org/strfiles/3046/fltk-clang3.4-1.patch
   patch :DATA
 
   def install
@@ -42,3 +45,15 @@ index fcad5f0..5a5a850 100644
  	$(RM) libfltk_images.dylib
  	$(LN) libfltk_images.1.3.dylib libfltk_images.dylib
  
+diff --git a/fluid/Fl_Type.h b/fluid/Fl_Type.h
+index fdbe320..bd7e741 100644
+--- a/fluid/Fl_Type.h
++++ b/fluid/Fl_Type.h
+@@ -36,7 +36,7 @@ void set_modflag(int mf);
+ class Fl_Type {
+
+   friend class Widget_Browser;
+-  friend Fl_Widget *make_type_browser(int,int,int,int,const char *l=0);
++  friend Fl_Widget *make_type_browser(int,int,int,int,const char *);
+   friend class Fl_Window_Type;
+   virtual void setlabel(const char *); // virtual part of label(char*)
