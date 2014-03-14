@@ -18,7 +18,7 @@ class Portaudio < Formula
   # Fix PyAudio compilation on Lion
   def patches
     if MacOS.version >= :lion and not build.head?
-      { :p0 => "https://github.com/sakuro/macports/blob/9ee0b7dd6045a3967348638a228bc1a658bcaa3f/audio/portaudio/files/patch-include__pa_mac_core.h.diff" }
+      { :p0 => "https://raw.github.com/sakuro/macports/9ee0b7dd6045a3967348638a228bc1a658bcaa3f/audio/portaudio/files/patch-include__pa_mac_core.h.diff" }
     end
   end
 
