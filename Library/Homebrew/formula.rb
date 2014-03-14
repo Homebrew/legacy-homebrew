@@ -3,7 +3,6 @@ require 'formula_lock'
 require 'formula_pin'
 require 'hardware'
 require 'bottles'
-require 'patches'
 require 'compilers'
 require 'build_environment'
 require 'build_options'
@@ -224,16 +223,7 @@ class Formula
   # any e.g. configure options for this package
   def options; [] end
 
-  # patches are automatically applied after extracting the tarball
-  # return an array of strings, or if you need a patch level other than -p1
-  # return a Hash eg.
-  #   {
-  #     :p0 => ['http://foo.com/patch1', 'http://foo.com/patch2'],
-  #     :p1 =>  'http://bar.com/patch2'
-  #   }
-  # The final option is to return DATA, then put a diff after __END__. You
-  # can still return a Hash with DATA as the value for a patch level key.
-  def patches; end
+  def patches; {} end
 
   # rarely, you don't want your library symlinked into the main prefix
   # see gettext.rb for an example
@@ -633,23 +623,15 @@ class Formula
   end
 
   def patch
-    patch_list = Patches.new(patches)
-    return if patch_list.empty?
+    active_spec.add_legacy_patches(patches)
+    return if patchlist.empty?
 
-    if patch_list.external_patches?
-      ohai "Downloading patches"
-      patch_list.download!
+    active_spec.patches.select(&:external?).each do |patch|
+      patch.verify_download_integrity(patch.fetch)
     end
 
     ohai "Patching"
-    patch_list.each do |p|
-      case p.compression
-        when :gzip  then with_system_path { safe_system "gunzip",  p.compressed_filename }
-        when :bzip2 then with_system_path { safe_system "bunzip2", p.compressed_filename }
-      end
-      # -f means don't prompt the user if there are errors; just exit with non-zero status
-      safe_system '/usr/bin/patch', '-g', '0', '-f', *(p.patch_args)
-    end
+    active_spec.patches.each(&:apply)
   end
 
   # Explicitly request changing C++ standard library compatibility check
