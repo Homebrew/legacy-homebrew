@@ -14,7 +14,7 @@ class Libtar < Formula
     system './configure', '--disable-debug',
                           '--disable-dependency-tracking',
                           "--prefix=#{prefix}",
-                          "--mandir=#{man}",
+                          "--mandir=#{man}"
     system 'make', 'install'
   end
 end
