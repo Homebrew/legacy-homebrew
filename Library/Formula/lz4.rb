@@ -7,11 +7,15 @@ class Lz4 < Formula
   version "r114"
 
   def install
+    # OS X Makefile incompatibility reported to upstream in
+    # https://code.google.com/p/lz4/issues/detail?id=115
     inreplace "Makefile", /-Wl,-soname=[^ ]+/, ""
     inreplace "Makefile", /\.so/, ".dylib"
     system "make", "install", "PREFIX=#{prefix}"
-    rm prefix/"lib/liblz4.dylib.1"
-    rm prefix/"lib/liblz4.dylib.1.0.0"
+    # Naming of shared libraries reported to upstream in
+    # https://code.google.com/p/lz4/issues/detail?id=122
+    mv prefix/"lib/liblz4.dylib.1", prefix/"lib/liblz4.1.dylib"
+    mv prefix/"lib/liblz4.dylib.1.0.0", prefix/"lib/liblz4.1.0.0.dylib"
   end
 
   test do
