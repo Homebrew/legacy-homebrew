@@ -119,8 +119,9 @@ class Cmd
            /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/, '-m64',
            /^-O[0-9zs]?$/, '-fast', '-no-cpp-precomp',
            '-pedantic', '-pedantic-errors'
-      when '-fopenmp', '-lgomp'
-        # clang doesn't support OpenMP
+      when '-fopenmp', '-lgomp', '-mno-fused-madd', '-fforce-addr',
+           '-fno-defer-pop'
+        # clang doesn't support these flags
         args << arg if not tool =~ /^clang/
       when /^-W.*/
         args << arg if arg =~ /^-W[alp],/ or arg =~ /^-Wno-/
