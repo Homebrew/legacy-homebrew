@@ -20,6 +20,7 @@ class Mercurial < Formula
       system "make", "install-doc", "PREFIX=#{prefix}"
     end
 
+    ENV.append 'CFLAGS', '-Qunused-arguments'
     system "make", "PREFIX=#{prefix}", "install-bin"
     # Install man pages, which come pre-built in source releases
     man1.install 'doc/hg.1'
