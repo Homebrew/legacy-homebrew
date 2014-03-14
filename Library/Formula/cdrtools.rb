@@ -10,10 +10,9 @@ class Cdrtools < Formula
   conflicts_with 'dvdrtools',
     :because => 'both dvdrtools and cdrtools install binaries by the same name'
 
-  def patches
-  {:p0 => [
-    "https://trac.macports.org/export/104091/trunk/dports/sysutils/cdrtools/files/patch-include_schily_sha2.h"
-  ]}
+  patch :p0 do
+    url "https://trac.macports.org/export/104091/trunk/dports/sysutils/cdrtools/files/patch-include_schily_sha2.h"
+    sha1 "6c2c06b7546face6dd58c3fb39484b9120e3e1ca"
   end
 
   def install
