@@ -21,9 +21,8 @@ module Homebrew extend self
         fetch_formula(f.bottle)
       else
         fetch_formula(f)
-        f.resources.each do |r|
-          fetch_resource(r)
-        end
+        f.resources.each { |r| fetch_resource(r) }
+        f.patchlist.select(&:external?).each { |p| fetch_patch(p) }
       end
     end
   end
@@ -49,6 +48,13 @@ module Homebrew extend self
   rescue ChecksumMismatchError => e
     retry if retry_fetch? f
     opoo "Formula reports different #{e.hash_type}: #{e.expected}"
+  end
+
+  def fetch_patch p
+    fetch_fetchable p
+  rescue ChecksumMismatchError => e
+    Homebrew.failed = true
+    opoo "Patch reports different #{e.hash_type}: #{e.expected}"
   end
 
   private
