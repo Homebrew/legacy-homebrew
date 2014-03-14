@@ -1,6 +1,7 @@
 require 'resource'
 require 'stringio'
 require 'erb'
+require 'forwardable'
 
 class Patch
   def self.create(strip, io=nil, &block)
@@ -80,7 +81,12 @@ class IOPatch < Patch
 end
 
 class ExternalPatch < Patch
+  extend Forwardable
+
   attr_reader :resource, :strip
+
+  def_delegators :@resource, :fetch, :verify_download_integrity,
+    :cached_download, :clear_cache
 
   def initialize(strip, &block)
     @strip    = strip
