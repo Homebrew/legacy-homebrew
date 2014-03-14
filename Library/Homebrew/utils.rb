@@ -361,7 +361,7 @@ module GitHub extend self
   end
 
   def print_pull_requests_matching(query)
-    return if ENV['HOMEBREW_NO_GITHUB_API']
+    return [] if ENV['HOMEBREW_NO_GITHUB_API']
     puts "Searching pull requests..."
 
     open_or_closed_prs = issues_matching(query, :type => "pr")

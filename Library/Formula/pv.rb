@@ -2,8 +2,14 @@ require 'formula'
 
 class Pv < Formula
   homepage 'http://www.ivarch.com/programs/pv.shtml'
-  url 'http://www.ivarch.com/programs/sources/pv-1.4.12.tar.bz2'
-  sha1 'ce1b9b90a0f6bdfb533d548b3d56d83cd1df4fd3'
+  url 'http://www.ivarch.com/programs/sources/pv-1.5.2.tar.bz2'
+  sha1 '0ca480d0ef2400bb9ebe9a992e011a9f004f42b8'
+
+  bottle do
+    sha1 "13db5f53546f554a1a1cef88f763022e0ba08974" => :mavericks
+    sha1 "96bedf90d0688c722e7fe1743230e74713089ef9" => :mountain_lion
+    sha1 "cea67d8b62b936e80dfa80fe7d84706bbd258e29" => :lion
+  end
 
   depends_on 'gettext'
 

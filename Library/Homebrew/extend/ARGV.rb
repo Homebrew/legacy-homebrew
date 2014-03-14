@@ -178,19 +178,9 @@ module HomebrewArgvExtension
   end
 
   def filter_for_dependencies
-    # Clears some flags that affect installation, yields to a block, then
-    # restores to original state.
     old_args = clone
-
-    flags_to_clear = %w[
-      --debug -d
-      --devel
-      --interactive -i
-      --HEAD
-    ]
-    flags_to_clear.concat %w[--verbose -v] if quieter?
-    flags_to_clear.each {|flag| delete flag}
-
+    delete "--devel"
+    delete "--HEAD"
     yield
   ensure
     replace(old_args)
@@ -198,6 +188,10 @@ module HomebrewArgvExtension
 
   def cc
     value 'cc'
+  end
+
+  def env
+    value 'env'
   end
 
   private
