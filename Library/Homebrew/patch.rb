@@ -86,16 +86,12 @@ class ExternalPatch < Patch
   attr_reader :resource, :strip
 
   def_delegators :@resource, :fetch, :verify_download_integrity,
-    :cached_download, :clear_cache
+    :cached_download, :clear_cache, :url
 
   def initialize(strip, &block)
     @strip    = strip
     @resource = Resource.new(&block)
     @whence   = :resource
-  end
-
-  def url
-    resource.url
   end
 
   def owner= owner

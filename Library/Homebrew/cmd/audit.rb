@@ -292,19 +292,24 @@ class FormulaAuditor
           "#{name} resource #{resource.name.inspect}: #{problem}"
         }
       end
+
+      spec.patches.select(&:external?).each { |p| audit_patch(p) }
     end
   end
 
   def audit_patches
-    Patches.new(f.patches).select(&:external?).each do |p|
-      case p.url
-      when %r[raw\.github\.com], %r[gist\.github\.com/raw], %r[gist\.github\.com/.+/raw$]
-        unless p.url =~ /[a-fA-F0-9]{40}/
-          problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
-        end
-      when %r[macports/trunk]
-        problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
+    patches = Patch.normalize_legacy_patches(f.patches)
+    patches.grep(LegacyPatch).each { |p| audit_patch(p) }
+  end
+
+  def audit_patch(patch)
+    case patch.url
+    when %r[raw\.github\.com], %r[gist\.github\.com/raw], %r[gist\.github\.com/.+/raw$]
+      unless patch.url =~ /[a-fA-F0-9]{40}/
+        problem "GitHub/Gist patches should specify a revision:\n#{patch.url}"
       end
+    when %r[macports/trunk]
+      problem "MacPorts patches should specify a revision instead of trunk:\n#{patch.url}"
     end
   end
 
