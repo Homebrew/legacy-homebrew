@@ -109,11 +109,13 @@ class Ghostscript < Formula
 end
 
 __END__
+diff --git a/base/unix-dll.mak b/base/unix-dll.mak
+index ae2d7d8..4f4daed 100644
 --- a/base/unix-dll.mak
 +++ b/base/unix-dll.mak
-@@ -64,12 +64,12 @@
-
-
+@@ -64,12 +64,12 @@ GS_SONAME_MAJOR_MINOR=$(GS_SONAME_BASE)$(GS_SOEXT)$(SO_LIB_VERSION_SEPARATOR)$(G
+ 
+ 
  # MacOS X
 -#GS_SOEXT=dylib
 -#GS_SONAME=$(GS_SONAME_BASE).$(GS_SOEXT)
@@ -127,17 +129,6 @@ __END__
 -#LDFLAGS_SO_MAC=-dynamiclib -install_name $(GS_SONAME_MAJOR_MINOR)
 +LDFLAGS_SO_MAC=-dynamiclib -install_name __PREFIX__/lib/$(GS_SONAME_MAJOR_MINOR)
  #LDFLAGS_SO=-dynamiclib -install_name $(FRAMEWORK_NAME)
-
+ 
  GS_SO=$(BINDIR)/$(GS_SONAME)
 
-#--- a/base/stdpre.h
-#+++ b/base/stdpre.h
-#@@ -20,7 +20,7 @@
- ##  define stdpre_INCLUDED
-
- #/* Ghostscript uses transitional LFS functions. */
-#-#define _LARGEFILE64_SOURCE 1
-#+/* #define _LARGEFILE64_SOURCE 1 */
-
- ##ifndef _FILE_OFFSET_BITS
- ##define _FILE_OFFSET_BITS 64
