@@ -2,8 +2,8 @@ require 'formula'
 
 class MongoC < Formula
   homepage 'http://docs.mongodb.org/ecosystem/drivers/c/'
-  url 'https://github.com/mongodb/mongo-c-driver/releases/download/0.90.0/libmongoc-0.90.0.tar.gz'
-  sha1 '15e552b04f3e124fb80e1397e80ddb46fbf36a46'
+  url 'https://github.com/mongodb/mongo-c-driver/releases/download/0.92.0/mongo-c-driver-0.92.0.tar.gz'
+  sha1 'ca22f3ef44f1c8f6d23446936cc22027abc14dfc'
 
   depends_on 'pkg-config' => :build
   depends_on 'libbson'
