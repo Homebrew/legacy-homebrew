@@ -78,6 +78,10 @@ class IOPatch < Patch
     # in case we are indirectly referenced by an exception later.
     @io = nil
   end
+
+  def inspect
+    "#<#{self.class}: #{strip.inspect}>"
+  end
 end
 
 class ExternalPatch < Patch
@@ -107,6 +111,10 @@ class ExternalPatch < Patch
       patchfile = Pathname.pwd.children.first
       safe_system "/usr/bin/patch", "-g", "0", "-f", "-d", dir, "-#{strip}", "-i", patchfile
     end
+  end
+
+  def inspect
+    "#<#{self.class}: #{strip.inspect} #{url.inspect}>"
   end
 end
 
