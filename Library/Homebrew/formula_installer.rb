@@ -424,7 +424,7 @@ class FormulaInstaller
 
   def sanitized_ARGV_options
     args = []
-    args << "--ignore-dependencies" if ARGV.ignore_deps?
+    args << "--ignore-dependencies" if ignore_deps?
 
     if build_bottle?
       args << "--build-bottle"
