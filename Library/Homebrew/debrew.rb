@@ -17,7 +17,7 @@ class Object
 end
 
 module ResourceDebugger
-  def stage(&block)
+  def stage(target=nil, &block)
     super do
       begin
         block.call(self)
