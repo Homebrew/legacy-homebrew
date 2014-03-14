@@ -335,16 +335,28 @@ class FormulaInstaller
     @show_header = true unless deps.empty?
   end
 
+  class DependencyInstaller < FormulaInstaller
+    def initialize ff
+      super
+      @ignore_deps = true
+    end
+
+    def sanitized_ARGV_options
+      args = super
+      args.delete "--ignore-dependencies"
+      args
+    end
+  end
+
   def install_dependency(dep, inherited_options)
     df = dep.to_formula
 
     outdated_keg = Keg.new(df.linked_keg.realpath) rescue nil
 
-    fi = FormulaInstaller.new(df)
+    fi = DependencyInstaller.new(df)
     fi.options           |= Tab.for_formula(df).used_options
     fi.options           |= dep.options
     fi.options           |= inherited_options
-    fi.ignore_deps        = true
     fi.build_from_source  = build_from_source?
     fi.verbose            = verbose? unless verbose == :quieter
     fi.debug              = debug?
