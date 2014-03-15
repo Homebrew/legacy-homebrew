@@ -2,7 +2,7 @@ require 'formula'
 
 class Haxe < Formula
   homepage 'http://haxe.org'
-  url 'https://github.com/HaxeFoundation/haxe.git', :tag => 'v3.1.0'
+  url 'https://github.com/HaxeFoundation/haxe.git', :tag => 'v3.1.1'
 
   head 'https://github.com/HaxeFoundation/haxe.git', :branch => 'development'
 
