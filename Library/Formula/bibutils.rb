@@ -2,8 +2,8 @@ require 'formula'
 
 class Bibutils < Formula
   homepage 'http://sourceforge.net/p/bibutils/home/Bibutils/'
-  url 'https://downloads.sourceforge.net/project/bibutils/bibutils_5.2_src.tgz'
-  sha1 '4ae54726100535d0f5e726405de4a35f0a62c578'
+  url 'https://downloads.sourceforge.net/project/bibutils/bibutils_5.3_src.tgz'
+  sha1 'd592ff4fea53dfc5440dc182204b5955fedb9ea2'
 
   #fix uint not being defined clang error
   def patches; DATA; end
