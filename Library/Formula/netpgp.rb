@@ -12,4 +12,8 @@ class Netpgp < Formula
                           "--mandir=#{man}"
     system "make", "install"
   end
+
+  test do
+    system "#{bin}/netpgp", "--version"
+  end
 end
