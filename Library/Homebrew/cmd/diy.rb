@@ -1,3 +1,5 @@
+require "formula"
+
 module Homebrew extend self
   def diy
     %w[name version].each do |opt|
@@ -18,12 +20,8 @@ module Homebrew extend self
     end
 
     name = ARGV.value "name"
-    name ||= if ARGV.include? "--set-name"
-      ARGV.next
-    else
-      basename = path.basename.to_s
-      basename[/(.*?)-?#{Regexp.escape(version)}/, 1] || basename
-    end
+    name ||= ARGV.next if ARGV.include? "--set-name"
+    name ||= detected_name(path, version)
 
     prefix = HOMEBREW_CELLAR/name/version
 
@@ -34,5 +32,22 @@ module Homebrew extend self
     else
       raise "Couldn't determine build system"
     end
+  end
+
+  def detected_name(path, version)
+    basename = path.basename.to_s
+    detected_name = basename[/(.*?)-?#{Regexp.escape(version)}/, 1] || basename
+    canonical_name = Formula.canonical_name(detected_name)
+
+    odie <<-EOS.undent if detected_name != canonical_name
+      The detected name #{detected_name.inspect} exists in Homebrew as an alias
+      of #{canonical_name.inspect}. Consider using the canonical name instead:
+        brew diy --name=#{canonical_name}
+
+      To continue using the detected name, pass it explicitly:
+        brew diy --name=#{detected_name}
+      EOS
+
+    detected_name
   end
 end
