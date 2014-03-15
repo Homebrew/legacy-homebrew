@@ -38,7 +38,7 @@ class Graphviz < Formula
 
   def patches
     p = {:p0 =>
-      "https://trac.macports.org/export/103168/trunk/dports/graphics/graphviz/files/patch-project.pbxproj.diff",
+      "https://gist.githubusercontent.com/grncdr/9535637/raw/7b84753ed5dcf159fffc367f316bf5df66963f90/patch-project.pbxproj.diff",
      }
   end
 
