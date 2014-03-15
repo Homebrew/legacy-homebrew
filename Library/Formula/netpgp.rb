@@ -7,7 +7,7 @@ class Netpgp < Formula
   version "3.99.14"
 
   def install
-    ENV['CFLAGS'] = '-Wno-deprecated-declarations'
+    ENV["CFLAGS"] = "-Wno-deprecated-declarations"
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make", "install"
