@@ -61,7 +61,9 @@ class SoftwareSpec
   def resource name, &block
     if block_given?
       raise DuplicateResourceError.new(name) if resource?(name)
-      resources[name] = Resource.new(name, &block)
+      res = Resource.new(name, &block)
+      resources[name] = res
+      dependency_collector.add(res)
     else
       resources.fetch(name) { raise ResourceMissingError.new(owner, name) }
     end
