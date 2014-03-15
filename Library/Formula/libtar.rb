@@ -10,11 +10,11 @@ class Libtar < Formula
   depends_on 'libtool' => :build
 
   def install
-    system 'autoreconf', '--force', '--install'
-    system './configure', '--disable-debug',
-                          '--disable-dependency-tracking',
+    system "autoreconf", "--force", "--install"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system 'make', 'install'
+    system "make", "install"
   end
 end
