@@ -13,7 +13,6 @@ class Gnutls < Formula
     sha1 "76cf541a1736da00417d499b3223b80c0677ed18" => :lion
   end
 
-  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'libtasn1'
   depends_on 'p11-kit' => :optional

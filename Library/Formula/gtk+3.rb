@@ -7,7 +7,6 @@ class Gtkx3 < Formula
 
   depends_on :x11 => '2.5' # needs XInput2, introduced in libXi 1.3
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'jpeg'
   depends_on 'libtiff'

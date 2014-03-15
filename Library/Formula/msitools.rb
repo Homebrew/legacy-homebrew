@@ -5,7 +5,6 @@ class Msitools < Formula
   url 'http://ftp.gnome.org/pub/GNOME/sources/msitools/0.93/msitools-0.93.tar.xz'
   sha1 'b8dcf394a1aeddd8404ae1702ce42af623f54101'
 
-  depends_on 'xz' => :build
   depends_on 'intltool' => :build
   depends_on 'pkg-config' => :build
   depends_on :autoconf

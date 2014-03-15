@@ -5,7 +5,6 @@ class Gcab < Formula
   url 'http://ftp.gnome.org/pub/GNOME/sources/gcab/0.4/gcab-0.4.tar.xz'
   sha1 'd81dfe35125e611e3a94c0d4def37ebf62b9187c'
 
-  depends_on 'xz' => :build
   depends_on 'intltool' => :build
   depends_on 'pkg-config' => :build
   depends_on 'vala' => :build

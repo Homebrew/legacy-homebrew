@@ -6,7 +6,6 @@ class Gconf < Formula
   sha256 '4ddea9503a212ee126c5b46a0a958fd5484574c3cb6ef2baf38db02e819e58c6'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'intltool' => :build
   depends_on 'gettext'
   depends_on 'd-bus'

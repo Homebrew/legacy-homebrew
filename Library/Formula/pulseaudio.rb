@@ -9,7 +9,6 @@ class Pulseaudio < Formula
   option :universal
 
   depends_on "pkg-config" => :build
-  depends_on "xz" => :build
   depends_on "libtool" => :build
   depends_on "intltool" => :build if build.with? "nls"
   depends_on "gettext" => :build if build.with? "nls"

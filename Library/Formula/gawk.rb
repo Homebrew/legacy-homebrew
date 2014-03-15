@@ -12,8 +12,6 @@ class Gawk < Formula
     sha1 "a90fa8c6c4ce4ffec0a103f567db5eec319bb3bf" => :lion
   end
 
-  depends_on 'xz' => :build
-
   fails_with :llvm do
     build 2326
     cause "Undefined symbols when linking"

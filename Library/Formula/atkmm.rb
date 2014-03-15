@@ -11,7 +11,6 @@ class Atkmm < Formula
     sha1 "eb053cdcba6fc56e0bddde08ac356a18d9bf53b0" => :lion
   end
 
-  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'atk'
   depends_on 'glibmm'

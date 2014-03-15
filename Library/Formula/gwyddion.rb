@@ -6,7 +6,6 @@ class Gwyddion < Formula
   sha1 'ad52085fd6f2374757e16e5263a7029051ee021b'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gtk+'
   depends_on 'libxml2'
   depends_on 'fftw'

@@ -11,7 +11,6 @@ class Libsigcxx < Formula
     sha1 "328a7b8efcfd560caae155d3acf25087c2a05462" => :lion
   end
 
-  depends_on 'xz' => :build
   option :cxx11
 
   def patches

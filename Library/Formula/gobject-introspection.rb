@@ -15,7 +15,6 @@ class GobjectIntrospection < Formula
   option 'with-tests', 'Run tests in addition to the build (requires cairo)'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'libffi'
   # To avoid: ImportError: dlopen(./.libs/_giscanner.so, 2): Symbol not found: _PyList_Check
