@@ -32,8 +32,11 @@ module HomebrewArgvExtension
       raise NoSuchKegError.new(rack.basename.to_s) if not rack.directory? or dirs.empty?
 
       linked_keg_ref = HOMEBREW_REPOSITORY/"Library/LinkedKegs"/name
+      opt_prefix = HOMEBREW_PREFIX/"opt"/name
 
-      if linked_keg_ref.symlink? && linked_keg_ref.directory?
+      if opt_prefix.symlink? && opt_prefix.directory?
+        Keg.new(opt_prefix.realpath)
+      elsif linked_keg_ref.symlink? && linked_keg_ref.directory?
         Keg.new(linked_keg_ref.realpath)
       elsif dirs.length == 1
         Keg.new(dirs.first)
