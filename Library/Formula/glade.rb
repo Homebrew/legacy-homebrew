@@ -9,7 +9,7 @@ class Glade < Formula
   depends_on 'intltool' => :build
   depends_on 'gettext'
   depends_on 'libglade'
-  depends_on 'libxml2'  # make this dep explicit
+  depends_on 'libxml2'
   depends_on 'hicolor-icon-theme'
   depends_on :x11
 
