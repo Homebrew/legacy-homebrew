@@ -8,10 +8,9 @@ class Sqlite < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "30610abbf91be81648725fa8a6200ed1cfe74e39" => :mavericks
-    sha1 "85d6a700cc5f09d30aa6a4cc8037bb716637d9f9" => :mountain_lion
-    sha1 "1f1ce5e691ba769a68fbd489163f641d9c497a38" => :lion
+    sha1 "a4f34dc2ddc1b3bc746f0a20f46119f329202568" => :mavericks
+    sha1 "8d83ddf94eee27919d5e31149f1af3406cc808aa" => :mountain_lion
+    sha1 "c727ba9ea711afc8179aac43c8e25a7d002e3403" => :lion
   end
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
