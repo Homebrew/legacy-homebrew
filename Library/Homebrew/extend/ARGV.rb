@@ -33,7 +33,7 @@ module HomebrewArgvExtension
 
       linked_keg_ref = HOMEBREW_REPOSITORY/"Library/LinkedKegs"/name
 
-      if linked_keg_ref.symlink?
+      if linked_keg_ref.symlink? && linked_keg_ref.directory?
         Keg.new(linked_keg_ref.realpath)
       elsif dirs.length == 1
         Keg.new(dirs.first)
