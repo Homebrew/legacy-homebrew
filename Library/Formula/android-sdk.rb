@@ -7,11 +7,16 @@ class AndroidSdk < Formula
   sha1 'f1da847ba793b38a510f9c9c70ff4baa5eba1427'
 
   conflicts_with 'android-platform-tools',
-    :because => "the Platform-tools are be installed as part of the SDK."
+    :because => "The Android Platform-Tools need to be installed as part of the SDK."
 
   resource 'completion' do
     url 'https://raw.github.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash'
     sha1 '6dfead9b1350dbe1c16a1c80ed70beedebfa39eb'
+  end
+
+  # Version of the android-build-tools the wrapper scripts reference.
+  def build_tools_version
+    "19.0.3"
   end
 
   def install
@@ -21,7 +26,7 @@ class AndroidSdk < Formula
     emulator-arm emulator-x86 hierarchyviewer hprof-conv lint mksdcard
     monitor monkeyrunner traceview zipalign].each do |tool|
       (bin/tool).write <<-EOS.undent
-        #!/bin/sh
+        #!/bin/bash
         TOOL="#{prefix}/tools/#{tool}"
         exec "$TOOL" "$@"
       EOS
@@ -38,19 +43,24 @@ class AndroidSdk < Formula
 
     %w[adb fastboot].each do |platform_tool|
       (bin/platform_tool).write <<-EOS.undent
-        #!/bin/sh
+        #!/bin/bash
         PLATFORM_TOOL="#{prefix}/platform-tools/#{platform_tool}"
-        test -f "$PLATFORM_TOOL" && exec "$PLATFORM_TOOL" "$@"
-        echo Use the \\`android\\' tool to install the \\"Android SDK Platform-tools\\".
+        test -x "$PLATFORM_TOOL" && exec "$PLATFORM_TOOL" "$@"
+        echo "It appears you do not have 'Android SDK Platform-tools' installed."
+        echo "Use the 'android' tool to install them: "
+        echo "    android update sdk --no-ui --filter 'platform-tools'"
       EOS
     end
 
     %w[aapt aidl dexdump dx llvm-rs-cc].each do |build_tool|
       (bin/build_tool).write <<-EOS.undent
-        #!/bin/sh
-        BUILD_TOOL="#{prefix}/build-tools/17.0.0/#{build_tool}"
-        test -f "$BUILD_TOOL" && exec "$BUILD_TOOL" "$@"
-        echo Use the \\`android\\' tool to install the \\"Android SDK Build-tools\\".
+        #!/bin/bash
+        BUILD_TOOLS_VERSION='#{build_tools_version}'
+        BUILD_TOOL="#{prefix}/build-tools/$BUILD_TOOLS_VERSION/#{build_tool}"
+        test -x "$BUILD_TOOL" && exec "$BUILD_TOOL" "$@"
+        echo "It appears you do not have 'build-tools-$BUILD_TOOLS_VERSION' installed."
+        echo "Use the 'android' tool to install them: "
+        echo "    android update sdk --no-ui --filter 'build-tools-$BUILD_TOOLS_VERSION'"
       EOS
     end
 
@@ -58,7 +68,7 @@ class AndroidSdk < Formula
   end
 
   def caveats; <<-EOS.undent
-    Now run the `android' tool to install the actual SDK stuff.
+    Now run the 'android' tool to install the actual SDK stuff.
 
     The Android-SDK location for IDEs such as Eclipse, IntelliJ etc is:
       #{prefix}
@@ -71,7 +81,7 @@ class AndroidSdk < Formula
     EOS
   end
 
-  # The `android' tool insists on deleting #{prefix}/platform-tools
+  # The 'android' tool insists on deleting #{prefix}/platform-tools
   # and then installing the new one. So it is impossible for us to redirect
   # the SDK location to var so that the platform-tools don't have to be
   # freshly installed EVERY DANG time the base SDK updates.
