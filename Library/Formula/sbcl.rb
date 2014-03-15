@@ -37,13 +37,24 @@ class Sbcl < Formula
     sha1 '35a76b93f8714bc34ba127df4aaf69aacfc08164'
   end
 
-  def patches
-    { :p0 => [
-        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-base-target-features.diff",
-        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-make-doc.diff",
-        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-posix-tests.diff",
-        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
-    ]}
+  patch :p0 do
+    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-base-target-features.diff"
+    sha1 "49cf79e8d687e0a90db0fdc022a5f73181629d6e"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-make-doc.diff"
+    sha1 "65d0beec43707ff5bf3262b8f12ca4514e58ce15"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-posix-tests.diff"
+    sha1 "cde8db247d153c6272cc96a6716721fd623010cb"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
+    sha1 "4d08e56e7e261db47ffdfef044149b001e6cd7c1"
   end
 
   def write_features

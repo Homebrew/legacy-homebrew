@@ -10,7 +10,6 @@ class Poppler < Formula
   option 'with-lcms2', 'Use color management system'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
 
   depends_on 'fontconfig'
   depends_on 'openjpeg'
