@@ -191,7 +191,8 @@ _brew_fetch ()
         __brewcomp "
           --deps --force
           --devel --HEAD
-          --build-from-source --force-bottle
+          --build-from-source --force-bottle --build-bottle
+          --retry
           $(brew options --compact "$prv" 2>/dev/null)
           "
         return
@@ -220,19 +221,12 @@ _brew_install ()
     case "$cur" in
     --*)
         if __brewcomp_words_include "--interactive"; then
-            __brewcomp "
-                --devel
-                --force
-                --git
-                --HEAD
-                "
+            __brewcomp "--devel --git --HEAD"
         else
             __brewcomp "
-                --build-from-source
+                --build-from-source --build-bottle --force-bottle
                 --debug
                 --devel
-                --force
-                --fresh
                 --HEAD
                 --ignore-dependencies
                 --interactive
@@ -360,6 +354,24 @@ _brew_update ()
     esac
 }
 
+_brew_upgrade ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local prv=$(__brewcomp_prev)
+
+    case "$cur" in
+    --*)
+        __brewcomp "
+            --build-from-source --build-bottle --force-bottle
+            --debug
+            --verbose
+            "
+        return
+        ;;
+    esac
+    __brew_complete_outdated
+}
+
 _brew_uses ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -459,7 +471,6 @@ _brew ()
     --cache|--cellar|--prefix)  __brew_complete_formulae ;;
     audit|cat|edit|home)        __brew_complete_formulae ;;
     test|unlink)                __brew_complete_installed ;;
-    upgrade)                    __brew_complete_outdated ;;
     cleanup)                    _brew_cleanup ;;
     create)                     _brew_create ;;
     deps)                       _brew_deps ;;
@@ -467,8 +478,7 @@ _brew ()
     diy|configure)              _brew_diy ;;
     fetch)                      _brew_fetch ;;
     info|abv)                   _brew_info ;;
-    install|instal)             _brew_install ;;
-    reinstall|reinstal)         _brew_install ;;
+    install|instal|reinstall)   _brew_install ;;
     link|ln)                    _brew_link ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
@@ -483,6 +493,7 @@ _brew ()
     unpin)                      __brew_complete_formulae ;;
     untap)                      __brew_complete_tapped ;;
     update)                     _brew_update ;;
+    upgrade)                    _brew_upgrade ;;
     uses)                       _brew_uses ;;
     versions)                   _brew_versions ;;
     *)                          ;;
