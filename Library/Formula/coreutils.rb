@@ -9,8 +9,6 @@ class Coreutils < Formula
   conflicts_with 'ganglia', :because => 'both install `gstat` binaries'
   conflicts_with 'idutils', :because => 'both install `gid` and `gid.1`'
 
-  depends_on 'xz' => :build
-
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--program-prefix=g",

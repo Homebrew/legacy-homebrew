@@ -6,7 +6,6 @@ class Dpkg < Formula
   sha1 '93d1d55fa82a9bcebfa4f7fdc50f1cb7d1d734e1'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gnu-tar'
 
   # Fixes the PERL_LIBDIR.
