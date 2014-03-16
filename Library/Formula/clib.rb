@@ -2,13 +2,8 @@ require "formula"
 
 class Clib < Formula
   homepage "https://github.com/clibs/clib"
-  url "https://github.com/clibs/clib/archive/1.0.0.tar.gz"
-  sha1 "d840b4259190e1b3ce6cc0970f3e9f659226b9d3"
-
-  def patches
-    # Fix exit codes.
-    "https://github.com/clibs/clib/commit/000a5a.patch"
-  end
+  url "https://github.com/clibs/clib/archive/1.1.1.tar.gz"
+  sha1 "0b4c59f7f281e8c43d212e789b7b7c81002301e3"
 
   bottle do
     cellar :any
