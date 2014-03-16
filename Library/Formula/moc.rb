@@ -25,13 +25,14 @@ class Moc < Formula
   depends_on 'faad2' => :optional
   depends_on 'timidity' => :optional
   depends_on 'libmagic' => :optional
-  # TODO: make this :optional when it works for tap dependencies.
-  depends_on 'homebrew/dupes/ncurses' if build.with? 'ncurses'
+  depends_on 'homebrew/dupes/ncurses' => :optional
 
   def patches
-    # Patches up to r2544 (HEAD at 2013-08-13)
-    { :p0 => 'https://gist.github.com/toroidal-code/6310844/raw/23c460144b64040eb6c3117693fd7e129a462b26/ffmpeg-patch.diff' }
-  end unless build.head?
+    unless build.head?
+      # Patches up to r2544 (HEAD at 2013-08-13)
+      { :p0 => 'https://gist.github.com/toroidal-code/6310844/raw/23c460144b64040eb6c3117693fd7e129a462b26/ffmpeg-patch.diff' }
+    end
+  end
 
   def install
     system "autoreconf", "-i" # required to fix ffmpeg issues (updated ffmpeg.m4)

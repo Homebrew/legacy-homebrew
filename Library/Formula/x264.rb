@@ -5,8 +5,14 @@ class X264 < Formula
   url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120812-2245-stable.tar.bz2'
   sha1 '4be913fb12cd5b3628edc68dedb4b6e664eeda0a'
   version 'r2197.4' # brew install -v --HEAD x264 will display the version.
-
   head 'http://git.videolan.org/git/x264.git', :branch => 'stable'
+
+  bottle do
+    cellar :any
+    sha1 "ce6311ee8bb0ce64edd888bd9494b51ba4a91b46" => :mavericks
+    sha1 "15f59b5c6965efd112cc7f6ecc4fcf76d0f1740a" => :mountain_lion
+    sha1 "2667e3a601042682d9a1d4b7a9b69809b47c82e5" => :lion
+  end
 
   depends_on 'yasm' => :build
 

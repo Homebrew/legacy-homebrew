@@ -2,13 +2,12 @@ require 'formula'
 
 class Justniffer < Formula
   homepage 'http://justniffer.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/justniffer/justniffer/justniffer%200.5.11/justniffer_0.5.11.tar.gz'
+  url 'https://downloads.sourceforge.net/project/justniffer/justniffer/justniffer%200.5.11/justniffer_0.5.11.tar.gz'
   sha1 '3f3222361794a6f79f47567753550995c318a037'
 
   depends_on "boost"
 
   fails_with :clang do
-    build 500
     cause "Missing ext/stdio_filebuf.h; this is a GCC-specific header"
   end
 

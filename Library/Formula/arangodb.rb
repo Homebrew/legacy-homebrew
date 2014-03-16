@@ -2,8 +2,8 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://www.arangodb.org/repositories/Source/ArangoDB-1.4.5.tar.gz'
-  sha1 '580c21270404727a8847b6acf5250a1fa20ac043'
+  url 'https://www.arangodb.org/repositories/Source/ArangoDB-1.4.12.tar.gz'
+  sha1 '1603f2f8b474b21aa2411fc6353bf777cb8db3e8'
 
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
@@ -75,7 +75,7 @@ class Arangodb < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/sbin/arangod</string>
+          <string>#{opt_sbin}/arangod</string>
           <string>-c</string>
           <string>#{etc}/arangodb/arangod.conf</string>
         </array>

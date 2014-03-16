@@ -2,8 +2,8 @@ require 'formula'
 
 class Radare2 < Formula
   homepage 'http://radare.org'
-  url 'http://radare.org/get/radare2-0.9.2.tar.gz'
-  sha1 '7cfa170a59453d57361d730f4c4a1495d36930a8'
+  url 'http://radare.org/get/radare2-0.9.7.tar.xz'
+  sha1 '34af6c6ba53ac08c852b4e110ac6908054616b9d'
 
   head 'http://radare.org/hg/radare2', :using => :hg
 

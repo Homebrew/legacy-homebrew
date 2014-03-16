@@ -5,9 +5,9 @@ class Thrift < Formula
   url 'http://archive.apache.org/dist/thrift/0.9.1/thrift-0.9.1.tar.gz'
   sha1 'dc54a54f8dc706ffddcd3e8c6cd5301c931af1cc'
 
-  head 'https://git-wip-us.apache.org/repos/asf/thrift.git'
+  head do
+    url 'https://git-wip-us.apache.org/repos/asf/thrift.git'
 
-  unless build.stable?
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
@@ -49,12 +49,12 @@ class Thrift < Formula
 
     exclusions = ["--without-ruby", "--without-tests", "--without-php_extension"]
 
-    exclusions << "--without-python" unless build.with? "python"
-    exclusions << "--without-haskell" unless build.include? "with-haskell"
-    exclusions << "--without-java" unless build.include? "with-java"
-    exclusions << "--without-perl" unless build.include? "with-perl"
-    exclusions << "--without-php" unless build.include? "with-php"
-    exclusions << "--without-erlang" unless build.include? "with-erlang"
+    exclusions << "--without-python" if build.without? "python"
+    exclusions << "--without-haskell" if build.without? "haskell"
+    exclusions << "--without-java" if build.without? "java"
+    exclusions << "--without-perl" if build.without? "perl"
+    exclusions << "--without-php" if build.without? "php"
+    exclusions << "--without-erlang" if build.without? "erlang"
 
     ENV.cxx11 if MacOS.version >= :mavericks && ENV.compiler == :clang
 

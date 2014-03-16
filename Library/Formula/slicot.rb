@@ -22,7 +22,7 @@ class Slicot < Formula
     lib.install "#{slicotlibname}"
     system "make", "clean"
 
-    if build.include? 'with-default-integer-8'
+    if build.with? "default-integer-8"
       slicotlibname = "libslicot64_pic.a"
       system "make", "lib", "OPTS=-fPIC -fdefault-integer-8", "SLICOTLIB=../#{slicotlibname}", *args
       lib.install "#{slicotlibname}"

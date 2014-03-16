@@ -38,14 +38,14 @@ class Libspatialite < Formula
     end
 
     # Ensure Homebrew's libsqlite is found before the system version.
-    sqlite = Formula.factory 'sqlite'
-    ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib"
-    ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
+    sqlite = Formula["sqlite"]
+    ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib}"
+    ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
 
-    unless build.without? 'liblwgeom'
-      lwgeom = Formula.factory 'liblwgeom'
-      ENV.append 'LDFLAGS', "-L#{lwgeom.opt_prefix}/lib"
-      ENV.append 'CFLAGS', "-I#{lwgeom.opt_prefix}/include"
+    if build.with? 'liblwgeom'
+      lwgeom = Formula["liblwgeom"]
+      ENV.append 'LDFLAGS', "-L#{lwgeom.opt_lib}"
+      ENV.append 'CFLAGS', "-I#{lwgeom.opt_include}"
     end
 
     args = %W[
@@ -54,8 +54,8 @@ class Libspatialite < Formula
       --with-sysroot=#{HOMEBREW_PREFIX}
     ]
     args << '--enable-freexl=no' if build.without? 'freexl'
-    args << '--enable-libxml2=yes' unless build.without? 'libxml2'
-    args << '--enable-lwgeom=yes' unless build.without? 'liblwgeom'
+    args << '--enable-libxml2=yes' if build.with? 'libxml2'
+    args << '--enable-lwgeom=yes' if build.with? 'liblwgeom'
     args << "--enable-geopackage=yes" if build.with? "geopackage"
 
     system './configure', *args

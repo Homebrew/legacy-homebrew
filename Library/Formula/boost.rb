@@ -14,17 +14,17 @@ end
 
 class Boost < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2'
   sha1 'cef9a0cc7084b1d639e06cd3bc34e4251524c840'
 
   head 'http://svn.boost.org/svn/boost/trunk'
 
   bottle do
     cellar :any
-    revision 1
-    sha1 'e715bed5765c5a89fd2c7f2938bf4db405a11fbc' => :mavericks
-    sha1 '099a7374e95690e2268f7abbd4ccfb0559541b73' => :mountain_lion
-    sha1 '1961f75f2139f3f0998aae03a1be8e9ac553d292' => :lion
+    revision 2
+    sha1 "e18905c7fc76c1f1a8422071ae887eca92c0e8df" => :mavericks
+    sha1 "a6dc7ba2be38e08b3648bfd79ec1b635c606654c" => :mountain_lion
+    sha1 "edbad0334143511e40a044191fa5711be9ce6838" => :lion
   end
 
   env :userpaths
@@ -57,6 +57,17 @@ class Boost < Formula
 
   odie 'boost: --with-c++11 has been renamed to --c++11' if build.with? 'c++11'
 
+  # Patches boost::atomic for LLVM 3.4 as it is used on OS X 10.9 with Xcode 5.1
+  patch :p2 do
+    url "https://github.com/boostorg/atomic/commit/6bb71fdd.patch"
+    sha1 "9ab8e6c041b4ecc291b2dd1a3c93e9b342d5e0e4"
+  end
+
+  patch :p2 do
+    url "https://github.com/boostorg/atomic/commit/e4bde20f.patch"
+    sha1 "f206e7261d00503788ae8ec3a0635ced8a816293"
+  end
+
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
@@ -64,7 +75,7 @@ class Boost < Formula
 
   def install
     # https://svn.boost.org/trac/boost/ticket/8841
-    if build.with? 'mpi' and not build.without? 'single'
+    if build.with? 'mpi' and build.with? 'single'
       raise <<-EOS.undent
         Building MPI support for both single and multi-threaded flavors
         is not supported.  Please use '--with-mpi' together with
@@ -72,7 +83,7 @@ class Boost < Formula
       EOS
     end
 
-    if build.cxx11? and build.with? 'mpi' and python
+    if build.cxx11? and build.with? 'mpi' and build.with? 'python'
       raise <<-EOS.undent
         Building MPI support for Python using C++11 mode results in
         failure and hence disabled.  Please don't use this combination
@@ -115,7 +126,7 @@ class Boost < Formula
     bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
     if build.with? 'icu'
-      icu4c_prefix = Formula.factory('icu4c').opt_prefix
+      icu4c_prefix = Formula['icu4c'].opt_prefix
       bargs << "--with-icu=#{icu4c_prefix}"
     else
       bargs << '--without-icu'
@@ -150,16 +161,16 @@ class Boost < Formula
             "--user-config=user-config.jam",
             "install"]
 
-    if build.include? 'without-single'
-      args << "threading=multi"
-    else
+    if build.with? "single"
       args << "threading=multi,single"
+    else
+      args << "threading=multi"
     end
 
-    if build.include? 'without-static'
-      args << "link=shared"
-    else
+    if build.with? "static"
       args << "link=shared,static"
+    else
+      args << "link=shared"
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
@@ -187,14 +198,6 @@ class Boost < Formula
       EOS
     end
 
-    if pour_bottle? and Formula.factory('python').installed?
-      s += <<-EOS.undent
-
-      The Boost bottle's module will not import into a Homebrew-installed Python.
-      If you use the Boost Python module then please:
-        brew install boost --build-from-source
-      EOS
-    end
     s
   end
 end

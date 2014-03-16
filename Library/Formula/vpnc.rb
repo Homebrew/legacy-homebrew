@@ -5,6 +5,7 @@ class Vpnc < Formula
   url 'http://ftp.debian.org/debian/pool/main/v/vpnc/vpnc_0.5.3r512.orig.tar.gz'
   version '0.5.3r512'
   sha256 'd421ac20b6c65d22d2ee88066e487f740f4d367f9143b6045bcb8fa177b384fe'
+  revision 2
 
   depends_on 'pkg-config' => :build
   depends_on 'libgcrypt'

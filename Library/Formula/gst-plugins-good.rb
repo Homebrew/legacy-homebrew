@@ -4,9 +4,9 @@ class GstPluginsGood < Formula
   homepage 'http://gstreamer.freedesktop.org/'
 
   stable do
-    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.2.1.tar.xz'
-    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.2.1.tar.xz'
-    sha256 '660fa02dbe01086fcf702d87acc0ba5dde2559d6a11ecf438874afe504c50517'
+    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.2.3.tar.xz'
+    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.2.3.tar.xz'
+    sha256 'bfb33536a515bdcc34482f64b8d9cc3e47c753878b254923b419bc2f7485e470'
 
     depends_on 'check' => :optional
   end
@@ -20,7 +20,6 @@ class GstPluginsGood < Formula
     depends_on 'check'
   end
 
-  depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
@@ -33,13 +32,15 @@ class GstPluginsGood < Formula
   depends_on 'aalib' => :optional
   depends_on 'libcdio' => :optional
   depends_on 'esound' => :optional
-  depends_on 'flac' => :optional
+  depends_on 'flac' => [:optional, 'with-libogg']
   depends_on 'jpeg' => :optional
   depends_on 'libcaca' => :optional
   depends_on 'libdv' => :optional
   depends_on 'libshout' => :optional
   depends_on 'speex' => :optional
   depends_on 'taglib' => :optional
+
+  depends_on 'libogg' if build.with? 'flac'
 
   def install
     args = %W[

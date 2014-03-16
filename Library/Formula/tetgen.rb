@@ -12,7 +12,7 @@ class Tetgen < Formula
     lib.install 'libtet.a'
   end
 
-  def test
+  test do
     system "#{bin}/tetgen"
   end
 end

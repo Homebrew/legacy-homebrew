@@ -12,7 +12,7 @@ class Txt2man < Formula
     bin.install %W[bookman src2man txt2man]
   end
 
-  def test
+  test do
     system "#{bin}/txt2man", "-h"
     system "#{bin}/src2man", "-h"
     system "#{bin}/bookman", "-h"

@@ -14,7 +14,7 @@ class Fastbit < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/fastbit-config", "--version"
   end
 end

@@ -12,6 +12,8 @@ class Openssl < Formula
     sha1 "4fabb39f5db46e8e62bf0b05e0133cd7e717860a" => :lion
   end
 
+  depends_on "makedepend" => :build if MacOS.prefer_64_bit?
+
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."
 
@@ -21,6 +23,7 @@ class Openssl < Formula
                --openssldir=#{openssldir}
                zlib-dynamic
                shared
+               enable-cms
              ]
 
     if MacOS.prefer_64_bit?
@@ -30,8 +33,6 @@ class Openssl < Formula
       inreplace 'Configure',
         %{"darwin64-x86_64-cc","cc:-arch x86_64 -O3},
         %{"darwin64-x86_64-cc","cc:-arch x86_64 -Os}
-
-      setup_makedepend_shim
     else
       args << "darwin-i386-cc"
     end
@@ -43,16 +44,6 @@ class Openssl < Formula
     system "make"
     system "make", "test"
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
-  end
-
-  def setup_makedepend_shim
-    path = buildpath/"brew/makedepend"
-    path.write <<-EOS.undent
-      #!/bin/sh
-      exec "#{ENV.cc}" -M "$@"
-      EOS
-    path.chmod 0755
-    ENV.prepend_path 'PATH', path.parent
   end
 
   def openssldir

@@ -13,6 +13,15 @@ class Acme < Formula
   end
 
   test do
-    system bin/'acme', '-V'
+    path = testpath/"a.asm"
+    path.write <<-EOS
+      !to "a.out", cbm
+      * = $c000
+      jmp $fce2
+    EOS
+
+    system bin/"acme", path
+    code = File.open(testpath/"a.out", "rb") { |f| f.read.unpack("C*") }
+    assert_equal [0x00, 0xc0, 0x4c, 0xe2, 0xfc], code
   end
 end

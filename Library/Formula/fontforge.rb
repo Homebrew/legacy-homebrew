@@ -4,11 +4,17 @@ class Fontforge < Formula
   homepage 'http://fontforge.org/'
 
   stable do
-    url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
+    url 'https://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
     sha1 'b520f532b48e557c177dffa29120225066cc4e84'
 
     depends_on 'cairo' => :optional
     depends_on 'pango' => :optional
+
+    # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
+    patch do
+      url "https://gist.github.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
+      sha1 "baa7d60f4c6e672180e66438ee675b4ee0fda5ce"
+    end
   end
 
   head do
@@ -44,13 +50,6 @@ class Fontforge < Formula
     cause "Compiling cvexportdlg.c fails with error: initializer element is not constant"
   end
 
-  def patches
-    unless build.head?
-      # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
-      "https://gist.github.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
-    end
-  end
-
   def install
     args = ["--prefix=#{prefix}",
             "--enable-double",
@@ -61,7 +60,7 @@ class Fontforge < Formula
       args << "--without-cairo" if build.without? "cairo"
       args << "--without-pango" if build.without? "pango"
     end
-    args << "--without-x" unless build.with? 'x'
+    args << "--without-x" if build.without? 'x'
 
     # To avoid "dlopen(/opt/local/lib/libpng.2.dylib, 1): image not found"
     args << "--with-static-imagelibs"

@@ -3,11 +3,6 @@ require 'formula'
 class Qt5HeadDownloadStrategy < GitDownloadStrategy
   include FileUtils
 
-  def support_depth?
-    # We need to make a local clone so we can't use "--depth 1"
-    false
-  end
-
   def stage
     @clone.cd { reset }
     safe_system 'git', 'clone', @clone, '.'
@@ -19,17 +14,17 @@ end
 
 class Qt5 < Formula
   homepage 'http://qt-project.org/'
-  url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.0/single/qt-everywhere-opensource-src-5.2.0.tar.gz'
-  sha1 'd0374c769a29886ee61f08a6386b9af39e861232'
-  head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
-    :using => Qt5HeadDownloadStrategy
-
+  url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.1/single/qt-everywhere-opensource-src-5.2.1.tar.gz'
+  sha1 '31a5cf175bb94dbde3b52780d3be802cbeb19d65'
   bottle do
-    revision 3
-    sha1 'dc89426ad513d84d7df6869340070cd6b663906c' => :mavericks
-    sha1 '041ea93c80d04f5a43b77d69ce0d621df13cc389' => :mountain_lion
-    sha1 'c427063895302623a8e17248b523f722a9109dea' => :lion
+    revision 1
+    sha1 "88f554a67bf9345c9e7abd980f7334f60b9c91cf" => :mavericks
+    sha1 "5d270c3d91bd729f3ddffcff5e201e7083914071" => :mountain_lion
+    sha1 "d2415a72aafb3ce24dc5812599fb7f7ff1f8cddd" => :lion
   end
+
+  head 'git://gitorious.org/qt/qt5.git', :branch => 'stable',
+    :using => Qt5HeadDownloadStrategy, :shallow => false
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
@@ -37,12 +32,13 @@ class Qt5 < Formula
   option 'with-docs', 'Build documentation'
   option 'developer', 'Build and link with developer options'
 
+  depends_on "pkg-config" => :build
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
 
-  odie 'qt5: --with-qtdbus has been renamed to --with-d-bus' if build.include? 'with-qtdbus'
-  odie 'qt5: --with-demos-examples is no longer supported' if build.include? 'with-demos-examples'
-  odie 'qt5: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
+  odie 'qt5: --with-qtdbus has been renamed to --with-d-bus' if build.with? "qtdbus"
+  odie 'qt5: --with-demos-examples is no longer supported' if build.with? "demos-examples"
+  odie 'qt5: --with-debug-and-release is no longer supported' if build.with? "debug-and-release"
 
   def install
     # fixed hardcoded link to plugin dir: https://bugreports.qt-project.org/browse/QTBUG-29188
@@ -71,11 +67,12 @@ class Qt5 < Formula
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 
     if build.with? 'd-bus'
-      dbus_opt = Formula.factory('d-bus').opt_prefix
+      dbus_opt = Formula["d-bus"].opt_prefix
       args << "-I#{dbus_opt}/lib/dbus-1.0/include"
       args << "-I#{dbus_opt}/include/dbus-1.0"
       args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
+      args << "-dbus-linked"
     end
 
     if MacOS.prefer_64_bit? or build.universal?

@@ -7,6 +7,7 @@ class Minbif < Formula
   url 'http://ftp.de.debian.org/debian/pool/main/m/minbif/minbif_1.0.5+git20120508.orig.tar.gz'
   version '1.0.5'
   sha1 '5827df8954e29df80d1e81ee5df354b76c5fd86a'
+  revision 1
 
   option 'pam', 'Build with PAM support, patching for OSX PAM headers'
 
@@ -15,6 +16,7 @@ class Minbif < Formula
   depends_on 'glib'
   depends_on 'gettext'
   depends_on 'finch'
+  depends_on 'gnutls'
   depends_on 'imlib2' => :optional
   depends_on 'libcaca' => :optional
 
@@ -33,12 +35,12 @@ class Minbif < Formula
     args = %W[
       PREFIX=#{prefix}
       ENABLE_MINBIF=ON
-      ENABLE_IMLIB=ON
-      ENABLE_CACA=ON
       ENABLE_PLUGIN=ON
       ENABLE_VIDEO=OFF
       ENABLE_TLS=ON
     ]
+    args << 'ENABLE_IMLIB=' + ((build.include? 'imlib2') ? 'ON' : 'OFF')
+    args << 'ENABLE_CACA=' + ((build.include? 'libcaca') ? 'ON' : 'OFF')
     args << 'ENABLE_PAM=' + ((build.include? 'pam') ? 'ON' : 'OFF')
 
     system 'make', *args

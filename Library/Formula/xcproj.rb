@@ -11,13 +11,13 @@ class Xcproj < Formula
   depends_on :xcode
 
   def install
-    system 'xcodebuild', "-project", "xcproj.xcodeproj",
-                         "-scheme", "xcproj",
-                         "SYMROOT=build",
-                         "DSTROOT=#{prefix}",
-                         "INSTALL_PATH=/bin",
-                         "-verbose",
-                         "install"
+    xcodebuild "-project", "xcproj.xcodeproj",
+               "-scheme", "xcproj",
+               "SYMROOT=build",
+               "DSTROOT=#{prefix}",
+               "INSTALL_PATH=/bin",
+               "-verbose",
+               "install"
   end
 
   def caveats

@@ -2,13 +2,19 @@ require "formula"
 
 class Influxdb < Formula
   homepage "http://influxdb.org"
-  url "http://get.influxdb.org/influxdb-0.4.0.src.tar.gz"
-  sha1 "102f44c19f0b202205109b871f09ecdbadb38403"
+  url "http://get.influxdb.org/influxdb-0.4.1.src.tar.gz"
+  sha1 "f452cfce6e08f56e0fd6071d2a127446c165e08b"
 
   bottle do
-    sha1 "12101de682f664f213c1cbc8703789df0ba0648b" => :mavericks
-    sha1 "1e6aab431a126a07accddfd391aa77cab9208067" => :mountain_lion
-    sha1 "afb43b10959c140411ce75d051aa0635dd3aaaf5" => :lion
+    revision 1
+    sha1 "53a44dbefeeff41290b56aba3d19cf6e023d0365" => :mavericks
+    sha1 "401465576c5d57e0e57c2c4cf4a9d51a4f657f6f" => :mountain_lion
+    sha1 "28ef892dd211dbb8f9262b77f6c687c6ddafe33f" => :lion
+  end
+
+  devel do
+    url "http://get.influxdb.org/influxdb-0.5.0-rc.5.src.tar.gz"
+    sha1 "8dd4a61d7557446b0846921c9d93111445d35a72"
   end
 
   depends_on "leveldb"
@@ -20,8 +26,8 @@ class Influxdb < Formula
   def install
     ENV["GOPATH"] = buildpath
 
-    flex = Formula.factory("flex").bin/"flex"
-    bison = Formula.factory("bison").bin/"bison"
+    flex = Formula["flex"].bin/"flex"
+    bison = Formula["bison"].bin/"bison"
 
     system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
     system "make", "dependencies", "protobuf", "parser"
@@ -30,7 +36,8 @@ class Influxdb < Formula
     inreplace "config.toml.sample" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
       s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
-      s.gsub! "./admin", "#{opt_prefix}/share/admin"
+      s.gsub! "/tmp/influxdb/development/wal", "#{var}/influxdb/wal"
+      s.gsub! "./admin", "#{opt_share}/admin"
     end
 
     bin.install "daemon" => "influxdb"
@@ -57,7 +64,7 @@ class Influxdb < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/influxdb</string>
+          <string>#{opt_bin}/influxdb</string>
           <string>-config=#{etc}/influxdb.conf</string>
         </array>
         <key>RunAtLoad</key>

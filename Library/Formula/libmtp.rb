@@ -1,7 +1,7 @@
 require 'formula'
 
 class NoGcrypt < Requirement
-  satisfy(:build_env => false) { !Formula.factory("libgcrypt").installed? }
+  satisfy(:build_env => false) { !Formula["libgcrypt"].installed? }
 
   def message; <<-EOS.undent
     This software can fail to compile when libgcrypt is installed.
@@ -15,7 +15,7 @@ end
 
 class Libmtp < Formula
   homepage 'http://libmtp.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/libmtp/libmtp/1.1.6/libmtp-1.1.6.tar.gz'
+  url 'https://downloads.sourceforge.net/project/libmtp/libmtp/1.1.6/libmtp-1.1.6.tar.gz'
   sha1 'f9e55c75399fc5f4deabcdfa58e1b01b2e6e3283'
 
   depends_on NoGcrypt

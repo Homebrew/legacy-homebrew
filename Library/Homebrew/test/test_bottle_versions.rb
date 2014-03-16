@@ -18,6 +18,11 @@ class BottleVersionParsingTests < Test::Unit::TestCase
 
   def test_icu4c_style
     assert_version_detected '52.1',
-      '/usr/local/icu4c-52.1.bottle.tar.gz'
+      '/usr/local/icu4c-52.1.mavericks.bottle.tar.gz'
+  end
+
+  def test_x264_style
+    assert_version_detected 'r2197.4',
+      '/usr/local/x264-r2197.4.mavericks.bottle.tar.gz'
   end
 end

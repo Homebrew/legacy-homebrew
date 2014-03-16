@@ -16,14 +16,14 @@ $:.unshift(HOMEBREW_LIBRARY_PATH + '/vendor')
 $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
-case ARGV.first when '-h', '--help', '--usage', '-?', 'help', nil
+if ARGV.help?
   require 'cmd/help'
-  puts Homebrew.help_s
-  exit ARGV.first ? 0 : 1
-when '--version'
+  puts ARGV.usage
+  exit ARGV.any? ? 0 : 1
+elsif ARGV.version?
   puts HOMEBREW_VERSION
   exit 0
-when '-v'
+elsif ARGV.first == '-v'
   puts "Homebrew #{HOMEBREW_VERSION}"
   # Shift the -v to the end of the parameter list
   ARGV << ARGV.shift

@@ -38,7 +38,7 @@ class Keg
       end
     end
 
-    (pkgconfig_files | libtool_files).each do |file|
+    (pkgconfig_files | libtool_files | script_files).each do |file|
       file.ensure_writable do
         file.open('rb') do |f|
           s = f.read
@@ -66,10 +66,11 @@ class Keg
   # lib/, and ignores binaries and other mach-o objects
   # Note that this doesn't attempt to distinguish between libstdc++ versions,
   # for instance between Apple libstdc++ and GNU libstdc++
-  def detect_cxx_stdlibs
+  def detect_cxx_stdlibs(opts={:skip_executables => false})
     results = Set.new
 
     mach_o_files.each do |file|
+      next if file.mach_o_executable? && opts[:skip_executables]
       dylibs = file.dynamically_linked_libraries
       results << :libcxx unless dylibs.grep(/libc\+\+.+\.dylib/).empty?
       results << :libstdcxx unless dylibs.grep(/libstdc\+\+.+\.dylib/).empty?
@@ -156,6 +157,18 @@ class Keg
     mach_o_files
   end
 
+  def script_files
+    script_files = []
+
+    # find all files with shebangs
+    Pathname.new(self).find do |pn|
+      next if pn.symlink? or pn.directory?
+      script_files << pn if pn.text_executable?
+    end
+
+    script_files
+  end
+
   def pkgconfig_files
     pkgconfig_files = []
 
@@ -168,11 +181,6 @@ class Keg
       end
     end
 
-    # find name-config scripts, which can be all over the keg
-    Pathname.new(self).find do |pn|
-      next if pn.symlink? or pn.directory?
-      pkgconfig_files << pn if pn.basename.to_s.end_with? '-config' and pn.text_executable?
-    end
     pkgconfig_files
   end
 
