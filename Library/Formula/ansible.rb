@@ -13,8 +13,8 @@ class Ansible < Formula
   option 'with-accelerate', "Enable accelerated mode"
 
   resource 'pycrypto' do
-    url 'https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz'
-    sha1 'c17e41a80b3fbf2ee4e8f2d8bb9e28c5d08bbb84'
+    url 'https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.1.tar.gz'
+    sha1 'aeda3ed41caf1766409d4efc689b9ca30ad6aeb2'
   end
 
   resource 'pyyaml' do
@@ -23,8 +23,8 @@ class Ansible < Formula
   end
 
   resource 'paramiko' do
-    url 'https://pypi.python.org/packages/source/p/paramiko/paramiko-1.11.0.tar.gz'
-    sha1 'fd925569b9f0b1bd32ce6575235d152616e64e46'
+    url 'https://pypi.python.org/packages/source/p/paramiko/paramiko-1.13.0.tar.gz'
+    sha1 'e30e8a349282934606793c57d8f057d78ac08381'
   end
 
   resource 'markupsafe' do
@@ -33,14 +33,14 @@ class Ansible < Formula
   end
 
   resource 'jinja2' do
-    url 'https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.1.tar.gz'
-    sha1 'a9b24d887f2be772921b3ee30a0b9d435cffadda'
+    url 'https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.2.tar.gz'
+    sha1 '1ce4c8bc722444ec3e77ef9db76faebbd17a40d8'
   end
 
   if build.with? 'accelerate'
     resource 'python-keyczar' do
-      url 'https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71b.tar.gz'
-      sha1 '20c7c5d54c0ce79262092b4cc691aa309fb277fa'
+      url 'https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71c.tar.gz'
+      sha1 '0ac1e85e05acac470029d1eaeece5c47d59fcc89'
     end
   end
 
