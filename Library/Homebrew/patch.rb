@@ -88,13 +88,12 @@ class ExternalPatch < Patch
 
   def initialize(strip, &block)
     @strip    = strip
-    @resource = Resource.new(&block)
+    @resource = Resource.new("patch", &block)
     @whence   = :resource
   end
 
   def owner= owner
     resource.owner   = owner
-    resource.name    = "patch"
     resource.version = resource.checksum || ERB::Util.url_encode(resource.url)
   end
 
