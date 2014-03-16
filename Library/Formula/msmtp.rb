@@ -2,8 +2,8 @@ require 'formula'
 
 class Msmtp < Formula
   homepage 'http://msmtp.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/msmtp/msmtp/1.4.31/msmtp-1.4.31.tar.bz2'
-  sha1 'c0edce1e1951968853f15209c8509699ff9e9ab5'
+  url 'https://downloads.sourceforge.net/project/msmtp/msmtp/1.4.32/msmtp-1.4.32.tar.bz2'
+  sha1 '03186a70035dbbf7a31272a20676b96936599704'
 
   depends_on 'pkg-config' => :build
   depends_on 'curl-ca-bundle' => :optional
