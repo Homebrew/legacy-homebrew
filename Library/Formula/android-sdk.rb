@@ -48,7 +48,7 @@ class AndroidSdk < Formula
     %w[aapt aidl dexdump dx llvm-rs-cc].each do |build_tool|
       (bin/build_tool).write <<-EOS.undent
         #!/bin/sh
-        BUILD_TOOLS_HOME="/usr/local/Cellar/android-sdk/22.6/build-tools"
+        BUILD_TOOLS_HOME="#{prefix}/build-tools"
         for DIR in $(ls -r "$BUILD_TOOLS_HOME")
         do
                 BUILD_TOOL="$BUILD_TOOLS_HOME/$DIR/aapt"
