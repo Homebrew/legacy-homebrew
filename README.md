@@ -1,4 +1,5 @@
-spark-job-server provides a RESTful interface for submitting and managing Spark jobs, jars, and job contexts.
+spark-jobserver provides a RESTful interface for submitting and managing Spark jobs, jars, and job contexts.
+This repo contains the complete Spark job server project, including unit tests and deploy scripts.
 
 ## Features
 
