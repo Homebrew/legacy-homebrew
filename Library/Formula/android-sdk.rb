@@ -51,7 +51,7 @@ class AndroidSdk < Formula
         BUILD_TOOLS_HOME="#{prefix}/build-tools"
         for DIR in $(ls -r "$BUILD_TOOLS_HOME")
         do
-                BUILD_TOOL="$BUILD_TOOLS_HOME/$DIR/aapt"
+                BUILD_TOOL="$BUILD_TOOLS_HOME/$DIR/#{build_tool}"
                 test -f "$BUILD_TOOL" && exec "$BUILD_TOOL" "$@" && break
         done
         echo Use the \\`android\\' tool to install the \\"Android SDK Build-tools\\".
