@@ -6,7 +6,7 @@ class Weechat < Formula
   sha1 'c9043ae4df8057c1410eeaf4c5c8818e97963e16'
   revision 2
 
-  head 'git://github.com/weechat/weechat.git'
+  head 'https://github.com/weechat/weechat.git'
 
   depends_on 'cmake' => :build
   depends_on 'gnutls'
