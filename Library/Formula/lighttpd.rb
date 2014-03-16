@@ -2,8 +2,8 @@ require 'formula'
 
 class Lighttpd < Formula
   homepage 'http://www.lighttpd.net/'
-  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.34.tar.bz2'
-  sha256 'e4b5682ef21b0bdea4a18dc7ccac6b5a0bf526b691ad0fe5c25c8b9fc38d0c12'
+  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.35.tar.bz2'
+  sha256 '4a71c1f6d8af41ed894b507720c4c17184dc320590013881d5170ca7f15c5bf7'
 
   option 'with-lua', 'Include Lua scripting support for mod_magnet'
 
