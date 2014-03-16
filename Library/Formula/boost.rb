@@ -58,6 +58,8 @@ class Boost < Formula
   odie 'boost: --with-c++11 has been renamed to --c++11' if build.with? 'c++11'
 
   # Patches boost::atomic for LLVM 3.4 as it is used on OS X 10.9 with Xcode 5.1
+  # https://github.com/Homebrew/homebrew/issues/27396
+  # https://github.com/Homebrew/homebrew/pull/27436
   patch :p2 do
     url "https://github.com/boostorg/atomic/commit/6bb71fdd.patch"
     sha1 "9ab8e6c041b4ecc291b2dd1a3c93e9b342d5e0e4"
