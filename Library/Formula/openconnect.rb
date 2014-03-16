@@ -32,10 +32,9 @@ class Openconnect < Formula
     chmod 0755, "#{etc}/vpnc-script"
 
     if build.head?
-      ln_s cached_download/".git", ".git"
-      cp "autogen.sh", "autogen_modified.sh"
-      inreplace "autogen_modified.sh", /libtoolize/, "glibtoolize"
-      system "./autogen_modified.sh"
+      ENV["GIT_DIR"] = cached_download/".git"
+      ENV["LIBTOOLIZE"] = "glibtoolize"
+      system "./autogen.sh"
     end
 
     args = %W[
