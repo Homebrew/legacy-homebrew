@@ -2,8 +2,8 @@ require 'formula'
 
 class Ace < Formula
   homepage 'http://www.cse.wustl.edu/~schmidt/ACE.html'
-  url 'http://download.dre.vanderbilt.edu/previous_versions/ACE-6.2.4.tar.bz2'
-  sha1 '8dba7ced5d337c1073c0fc28d53e3869a9bd0048'
+  url 'http://download.dre.vanderbilt.edu/previous_versions/ACE-6.2.5.tar.bz2'
+  sha1 '54a38cbfa363c1a4d3a702c779e4dc9c15e8c4cd'
 
   def install
     # ACE has two methods of compilation, "traditional" and ./configure.
