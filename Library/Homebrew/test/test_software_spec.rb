@@ -80,6 +80,12 @@ class SoftwareSpecTests < Test::Unit::TestCase
     @spec.depends_on('foo' => :optional)
     assert_equal 'blah', @spec.build.first.description
   end
+
+  def test_patch
+    @spec.patch :p1, :DATA
+    assert_equal 1, @spec.patches.length
+    assert_equal :p1, @spec.patches.first.strip
+  end
 end
 
 class HeadSoftwareSpecTests < Test::Unit::TestCase
@@ -98,9 +104,9 @@ class HeadSoftwareSpecTests < Test::Unit::TestCase
   end
 end
 
-class BottleTests < Test::Unit::TestCase
+class BottleSpecificationTests < Test::Unit::TestCase
   def setup
-    @spec = Bottle.new
+    @spec = BottleSpecification.new
   end
 
   def test_checksum_setters

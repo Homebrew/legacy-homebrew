@@ -11,7 +11,6 @@ class Glibmm < Formula
     sha1 "a6155e561ab340ba24553ee953f74f917e7fca2c" => :lion
   end
 
-  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'libsigc++'
   depends_on 'glib'

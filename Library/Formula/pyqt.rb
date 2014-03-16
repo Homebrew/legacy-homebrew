@@ -5,16 +5,17 @@ class Pyqt < Formula
   url 'https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.3/PyQt-mac-gpl-4.10.3.tar.gz'
   sha1 'ba5465f92fb43c9f0a5b948fa25df5045f160bf0'
 
+  bottle do
+    revision 1
+    sha1 "180b8e1e4ee9d12923c9ffe244f9675ac1890c6b" => :mavericks
+    sha1 "37fd9d146851de13ceb08c63db27ff9eb0d147a4" => :mountain_lion
+    sha1 "6bfcc601cc98953f656f49f3ec3e8a243f62a9bb" => :lion
+  end
+
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
-  if !Formula["python"].installed? && build.with?("python") &&
-     build.with?("python3")
-    odie <<-EOS.undent
-      pyqt: You cannot use system Python 2 and Homebrew's Python 3 simultaneously.
-      Either `brew install python` or use `--without-python3`.
-    EOS
-  elsif build.without?("python3") && build.without?("python")
+  if build.without?("python3") && build.without?("python")
     odie "pyqt: --with-python3 must be specified when using --without-python"
   end
 
@@ -24,16 +25,6 @@ class Pyqt < Formula
     depends_on "sip" => "with-python3"
   else
     depends_on "sip"
-  end
-
-  def pythons
-    pythons = []
-    ["python", "python3"].each do |python|
-      next if build.without? python
-      version = /\d\.\d/.match `#{python} --version 2>&1`
-      pythons << [python, version]
-    end
-    pythons
   end
 
   def patches
@@ -52,8 +43,8 @@ class Pyqt < Formula
       ENV.append "QMAKESPEC", "unsupported/macx-clang-libc++"
     end
 
-    pythons.each do |python, version|
-      ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+    Language::Python.each_python(build) do |python, version|
+      ENV.append_path 'PYTHONPATH', HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
 
       args = ["--confirm-license",
               "--bindir=#{bin}",
@@ -79,7 +70,7 @@ class Pyqt < Formula
       system python, "./configure-ng.py", *args
       system "make"
       system "make", "install"
-      system "make", "clean" if pythons.length > 1
+      system "make", "clean"
     end
   end
 
@@ -107,10 +98,7 @@ class Pyqt < Formula
       sys.exit(app.exec_())
     EOS
 
-    pythons.each do |python, version|
-      unless Formula[python].installed?
-        ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
-      end
+    Language::Python.each_python(build) do |python, version|
       system python, "test.py"
     end
   end
