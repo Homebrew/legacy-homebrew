@@ -2,8 +2,8 @@ require 'formula'
 
 class GtkGnutella < Formula
   homepage 'http://gtk-gnutella.sourceforge.net/en/?page=news'
-  url 'https://downloads.sourceforge.net/project/gtk-gnutella/gtk-gnutella/1.0.0/gtk-gnutella-1.0.0.tar.bz2'
-  sha1 'bd38b103dbccbca5d1431330df5c5d5b3eca4a24'
+  url 'https://downloads.sourceforge.net/project/gtk-gnutella/gtk-gnutella/1.0.1/gtk-gnutella-1.0.1.tar.bz2'
+  sha1 'd01b7ac03550200a858efd076bff4fa625962111'
 
   depends_on 'gtk+'
 
