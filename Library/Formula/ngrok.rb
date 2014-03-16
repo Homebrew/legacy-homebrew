@@ -7,6 +7,12 @@ class Ngrok < Formula
 
   head "https://github.com/inconshreveable/ngrok.git", :branch => "master"
 
+  bottle do
+    sha1 "b6160dc85cbaccb43a739e3dea2a7b493c41aed1" => :mavericks
+    sha1 "420811e92bcf7155164f1d4ac2d5a9768376765e" => :mountain_lion
+    sha1 "5374c93b860377dab5e9349957bf26085c73614e" => :lion
+  end
+
   depends_on "bazaar" => :build
   depends_on "go" => :build
   depends_on :hg => :build
