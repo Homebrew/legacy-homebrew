@@ -16,6 +16,14 @@ class ObjectiveCaml < Formula
     sha1 "8c5d442779abdb051ff40471871c5c6185b0bb84" => :lion
   end
 
+  # recent versions of clang fail with a hard error if -fno-defer-pop
+  # is specified, and older versions warn.  This patch fixes the OCaml
+  # configure script to not pass this option on recent MacOS versions.
+  # See http://caml.inria.fr/mantis/view.php?id=6346 for upstream bug.
+  def patches
+    DATA
+  end
+
   def install
     system "./configure", "--prefix", HOMEBREW_PREFIX,
                           "--mandir", man,
@@ -33,3 +41,24 @@ class ObjectiveCaml < Formula
     ln_s HOMEBREW_PREFIX/"lib/ocaml/site-lib", lib/"ocaml/site-lib"
   end
 end
+__END__
+diff --git a/configure b/configure
+index d45e88f..25d872b 100755
+--- a/configure
++++ b/configure
+@@ -322,7 +322,14 @@ case "$bytecc,$target" in
+     bytecccompopts="-fno-defer-pop $gcc_warnings -DSHRINKED_GNUC"
+     mathlib="";;
+   *,*-*-darwin*)
+-    bytecccompopts="-fno-defer-pop $gcc_warnings"
++    # On recent version of OSX, gcc is a symlink to clang
++    if $bytecc --version | grep -q clang; then
++        # -fno-defer-pop is not supported by clang, and make recent
++        # versions of clang to fail
++        bytecccompopts="$gcc_warnings"
++    else
++        bytecccompopts="-fno-defer-pop $gcc_warnings"
++    fi
+     mathlib=""
+     mkexe="$mkexe -Wl,-no_compact_unwind"
+     # Tell gcc that we can use 32-bit code addresses for threaded code
