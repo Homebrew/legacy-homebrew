@@ -2,8 +2,8 @@ require 'formula'
 
 class Scons < Formula
   homepage 'http://www.scons.org'
-  url 'https://downloads.sourceforge.net/scons/scons-2.3.0.tar.gz'
-  sha1 '728edf20047a9f8a537107dbff8d8f803fd2d5e3'
+  url 'https://downloads.sourceforge.net/scons/scons-2.3.1.tar.gz'
+  sha1 '775e715e49fe5fd8e1d29551a296fdc9267509e7'
 
   bottle do
     revision 2
