@@ -6,8 +6,8 @@ class Newlisp < Formula
   sha1 'a1fa37eb21f8045858a30493429d243ababc2488'
 
   devel do
-    url 'http://www.newlisp.org/downloads/development/newlisp-10.5.7.tgz'
-    sha1 '92e1d10dcf5d36bf774b706d3483294b3cc97017'
+    url 'http://www.newlisp.org/downloads/development/newlisp-10.5.8.tgz'
+    sha1 '90938faa8b87e5d3973b5b51d5491fe0117f0a9c'
   end
 
   depends_on 'readline'
