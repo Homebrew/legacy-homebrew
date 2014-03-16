@@ -2,8 +2,8 @@ require "formula"
 
 class Mongroup < Formula
   homepage "https://github.com/jgallen23/mongroup"
-  url "https://github.com/jgallen23/mongroup/archive/0.4.0.tar.gz"
-  sha1 "b6472e325016353afaac04528e3226dc80401e95"
+  url "https://github.com/jgallen23/mongroup/archive/0.4.1.tar.gz"
+  sha1 "fa0f7b1e43ff3963f4851f378478a86a362dd345"
 
   bottle do
     cellar :any
