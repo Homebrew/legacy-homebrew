@@ -2,9 +2,8 @@ require 'formula'
 
 class Pcb < Formula
   homepage 'http://pcb.geda-project.org/'
-  url 'https://downloads.sourceforge.net/project/pcb/pcb/pcb-20110918/pcb-20110918.tar.gz'
-  version '20110908'
-  sha1 '53ca27797d4db65a068b56f157e3ea6c5c29051f'
+  url 'https://downloads.sourceforge.net/project/pcb/pcb/pcb-20140316/pcb-20140316.tar.gz'
+  sha1 'ec714ff136d1817e500e1a9e654e786883b9501e'
 
   head 'git://git.geda-project.org/pcb.git'
 
