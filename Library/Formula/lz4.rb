@@ -6,6 +6,13 @@ class Lz4 < Formula
   sha1 "7b6c4c3b01edbb60e4c07657c3c41e8b5e95770e"
   version "r114"
 
+  bottle do
+    cellar :any
+    sha1 "d81daa2070d46528c4fa70c4eb77ee15fe790687" => :mavericks
+    sha1 "7ea1b15048bdaf49e27ae0b327c4dd501e653bde" => :mountain_lion
+    sha1 "4ed51a6cf8004f234c840887d3b7e75852e2c9cf" => :lion
+  end
+
   def install
     # OS X Makefile incompatibility reported to upstream in
     # https://code.google.com/p/lz4/issues/detail?id=115
