@@ -7,10 +7,11 @@ class Libgsm < Formula
 
   option :universal
 
-  def patches
-    # Builds a dynamic library for gsm, this package is no longer developed
-    # upstream. Patch taken from Debian and modified to build a dylib.
-    'https://gist.github.com/dholm/5840964/raw/'
+  # Builds a dynamic library for gsm, this package is no longer developed
+  # upstream. Patch taken from Debian and modified to build a dylib.
+  patch do
+    url "https://gist.github.com/dholm/5840964/raw/"
+    sha1 "41fff9bb2dc4958aeb503180ab30ae2e45354e54"
   end
 
   def install
