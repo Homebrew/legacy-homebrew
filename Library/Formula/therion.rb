@@ -8,7 +8,7 @@ class Therion < Formula
   #depends_on 'cmake' => :build
   depends_on 'lcdf-typetools'
   depends_on 'wxmac'
-  depends_on 'freetype'
+  depends_on :freetype
   depends_on 'vtk'
   depends_on 'imagemagick'
   depends_on :tex
