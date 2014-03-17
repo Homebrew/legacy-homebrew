@@ -14,7 +14,6 @@ class Tinyxml2 < Formula
   end
 
   test do
-    system "pkg-config", "--modversion", "tinyxml2"
     (testpath/'test.cpp').write <<-EOS.undent
       #include <tinyxml2.h>
       int main() {
