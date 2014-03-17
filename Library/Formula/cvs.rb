@@ -50,15 +50,13 @@ class Cvs < Formula
   end
 
   test do
-    system "mkdir", "cvsroot"
-
-    cvsroot = %x[echo ${PWD}/cvsroot].chomp
-
+    cvsroot = testpath/"cvsroot"
+    cvsroot.mkpath
     system "#{bin}/cvs", "-d", cvsroot, "init"
 
     mkdir "cvsexample" do
-      ENV['CVSROOT'] = "#{cvsroot}"
-      system "#{bin}/cvs", "import", "-m ", "'dir structure'", "cvsexample", "homebrew", "start"
+      ENV["CVSROOT"] = cvsroot
+      system "#{bin}/cvs", "import", "-m", "dir structure", "cvsexample", "homebrew", "start"
     end
   end
 end
