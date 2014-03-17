@@ -9,8 +9,13 @@ class ObjectiveCaml < Formula
 
   depends_on :x11 if MacOS::X11.installed?
 
+  patch do
+    url 'https://gist.githubusercontent.com/nox/9589142/raw'
+    sha1 '89ac45e89bfb1239a5920df230b8c3b80ba5b7dd'
+  end
+
   bottle do
-    revision 1
+    revision 2
     sha1 "0e6d92ef4f7034033603838d4501955ade323b7d" => :mavericks
     sha1 "56baaa3f8ae7f074d8b2c49f895d085e45352011" => :mountain_lion
     sha1 "8c5d442779abdb051ff40471871c5c6185b0bb84" => :lion
