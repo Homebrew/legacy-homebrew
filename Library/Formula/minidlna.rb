@@ -15,11 +15,9 @@ class Minidlna < Formula
   depends_on 'sqlite'
   depends_on 'ffmpeg'
 
-  def patches
-    [
-      # From http://sourceforge.net/p/minidlna/patches/104/
-      "http://sourceforge.net/p/minidlna/patches/104/attachment/0001-Remove-check-for-getifaddr-returning-IFF_SLAVE-if-IF.patch",
-    ]
+  patch do
+    url "http://sourceforge.net/p/minidlna/patches/104/attachment/0001-Remove-check-for-getifaddr-returning-IFF_SLAVE-if-IF.patch"
+    sha1 "768b119a59c803af4d074138b70b245aa72e426f"
   end
 
   def install
