@@ -17,9 +17,7 @@ class Podofo < Formula
     # fixes compilation on Lion (fixed CommonCrypto include)
     # upstream bug report: http://sourceforge.net/p/podofo/mailman/message/32039124/
     [
-      "https://gist.githubusercontent.com/MeckiCologne/9137957/raw/d450a29e47097554a5fb79cf1f770bb13c05be33/podofo1.patch",
-      "https://gist.githubusercontent.com/MeckiCologne/9137957/raw/0e4eda9986652ff778ce95288adf4815c7c5699c/podofo2.patch",
-      "https://gist.githubusercontent.com/MeckiCologne/9137957/raw/0c8cbce02b310c83e97dc9a279dcd52db77bff1c/podofo3.patch",
+      "https://gist.githubusercontent.com/MeckiCologne/9599737/raw/784809a9288daa251f59a1cfd3fec9762df5830b/podofo.patch",
     ]
   end
 
