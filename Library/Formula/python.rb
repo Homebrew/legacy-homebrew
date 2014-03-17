@@ -34,18 +34,15 @@ class Python < Formula
     sha1 '35ccb7430356186cf253615b70f8ee580610f734'
   end
 
-  def patches
-    p = {}
-    # Backported security fix for CVE-2014-1912:
-    # http://bugs.python.org/issue20246
-    p[:p0] = "https://gist.githubusercontent.com/leepa/9351856/raw/7f9130077fd760fcf9a25f50b69d9c77b155fbc5/CVE-2014-1912.patch"
-    # Patch to disable the search for Tk.framework, since Homebrew's Tk is
-    # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
-    if build.with? "brewed-tk"
-      p[:p1] = DATA
-    end
-    p
+  # Backported security fix for CVE-2014-1912: http://bugs.python.org/issue20246
+  patch :p0 do
+    url "https://gist.githubusercontent.com/leepa/9351856/raw/7f9130077fd760fcf9a25f50b69d9c77b155fbc5/CVE-2014-1912.patch"
+    sha1 "db25abc381f62e9f501ad56aaa2537e48e1b0889"
   end
+
+  # Patch to disable the search for Tk.framework, since Homebrew's Tk is
+  # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
+  patch :DATA if build.with? "brewed-tk"
 
   def lib_cellar
     prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7"
