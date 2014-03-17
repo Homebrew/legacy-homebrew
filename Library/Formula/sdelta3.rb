@@ -11,12 +11,6 @@ class Sdelta3 < Formula
     # Sdelta3 code is not 64-bit clean
     ENV.m32
 
-    inreplace 'Makefile' do |s|
-      s.change_make_var! "PREFIX", prefix
-      s.change_make_var! "CC", ENV.cc
-      s.change_make_var! "CFLAGS", ENV.cflags
-    end
-
     # fix verbatim references to /usr
     inreplace 'sd3', "/usr/share", "#{HOMEBREW_PREFIX}/share"
 
@@ -24,7 +18,10 @@ class Sdelta3 < Formula
     # Makefile installs LICENSE into /usr/share/sdelta3, not into /usr/doc/sdelta
     inreplace 'sdelta3.c', "/usr/doc/sdelta", "#{HOMEBREW_PREFIX}/share/#{name}"
 
-    system "make install"
+    system "make", "CC=#{ENV.cc}",
+                   "CFLAGS=#{ENV.cflags}",
+                   "PREFIX=#{prefix}",
+                   "install"
   end
 end
 
