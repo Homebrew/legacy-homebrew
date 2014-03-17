@@ -12,7 +12,7 @@ class Libqxt < Formula
   # constants in Mac OS X 10.6.
   # http://dev.libqxt.org/libqxt-old-hg/issue/50/
   patch do
-    url "https://gist.github.com/uranusjr/6019051/raw/"
+    url "https://gist.githubusercontent.com/uranusjr/6019051/raw/866c99ee0031ef2ca7fe6b6495120861d1bd5ec8/qxtglobalshortcut_mac.cpp.diff"
     sha1 "b2e9f4af0f4cc318a053ccf13fc1a6ccbd25cb67"
   end
 
