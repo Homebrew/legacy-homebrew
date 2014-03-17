@@ -13,10 +13,11 @@ class Synfigstudio < Formula
   depends_on 'etl'
   depends_on 'synfig'
 
-  def patches
-    # Candidate upstream patch for Xcode 5
-    # http://www.synfig.org/issues/thebuggenie/synfig/issues/504
-    "http://www.synfig.org/issues/thebuggenie/files/show/80"
+  # Candidate upstream patch for Xcode 5
+  # http://www.synfig.org/issues/thebuggenie/synfig/issues/504
+  patch do
+    url "http://www.synfig.org/issues/thebuggenie/files/show/80"
+    sha1 "b489670fca50ef2907f213dad9c2f4f51462da61"
   end
 
   def install
