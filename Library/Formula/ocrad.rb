@@ -6,10 +6,11 @@ class Ocrad < Formula
   mirror 'http://ftp.gnu.org/gnu/ocrad/ocrad-0.22.tar.lz'
   sha1 'cfb3284b9d7387af80bcd795c093624eb40f6d13'
 
-  def patches
-    # Patch to compile with libc++ in Mavericks. Reported to list:
-    # http://lists.gnu.org/archive/html/bug-ocrad/2013-11/msg00000.html
-    "https://gist.github.com/mcs07/7751030/raw/4f43e7cd123c33fbcc2459fa496b3ee8ecf344a0/ocrad-mavericks.diff"
+  # Patch to compile with libc++ in Mavericks. Reported to list:
+  # http://lists.gnu.org/archive/html/bug-ocrad/2013-11/msg00000.html
+  patch do
+    url "https://gist.github.com/mcs07/7751030/raw/4f43e7cd123c33fbcc2459fa496b3ee8ecf344a0/ocrad-mavericks.diff"
+    sha1 "02a8658a629b4c955a7aff160424aefb876cfee2"
   end
 
   def install
