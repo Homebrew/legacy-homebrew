@@ -8,11 +8,12 @@ class Libqxt < Formula
   depends_on 'qt'
   depends_on 'berkeley-db' => :optional
 
-  def patches
-    # Patch src/gui/qxtglobalshortcut_mac.cpp to fix a bug caused by obsolete
-    # constants in Mac OS X 10.6.
-    # http://dev.libqxt.org/libqxt-old-hg/issue/50/
-    "https://gist.github.com/uranusjr/6019051/raw/"
+  # Patch src/gui/qxtglobalshortcut_mac.cpp to fix a bug caused by obsolete
+  # constants in Mac OS X 10.6.
+  # http://dev.libqxt.org/libqxt-old-hg/issue/50/
+  patch do
+    url "https://gist.github.com/uranusjr/6019051/raw/"
+    sha1 "b2e9f4af0f4cc318a053ccf13fc1a6ccbd25cb67"
   end
 
   def install
