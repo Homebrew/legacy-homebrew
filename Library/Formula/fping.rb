@@ -12,6 +12,8 @@ class Fping < Formula
                           "--prefix=#{prefix}",
                           "--enable-ipv6"
     system "make install"
+    bin.install_symlink sbin/'fping'
+    bin.install_symlink sbin/'fping6'
   end
 
 end
