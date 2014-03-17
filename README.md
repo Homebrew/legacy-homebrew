@@ -178,8 +178,11 @@ serialized properly:
 
 If we encounter a data type that is not supported, then the entire result will be serialized to a string.
 
-## Development hints
+## Contribution and Development
 
+Contributions via Github Pull Request are welcome.
+
+- From the "master" project, please run "test" to ensure nothing is broken.
 - Please run scalastyle to ensure your code changes don't break the style guide
 - Do "re-start" from SBT for quick restarts of the job server process
 - Please update the g8 template if you change the SparkJob API
