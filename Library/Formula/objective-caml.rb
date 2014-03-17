@@ -10,10 +10,10 @@ class ObjectiveCaml < Formula
   depends_on :x11 if MacOS::X11.installed?
 
   bottle do
-    revision 1
-    sha1 "0e6d92ef4f7034033603838d4501955ade323b7d" => :mavericks
-    sha1 "56baaa3f8ae7f074d8b2c49f895d085e45352011" => :mountain_lion
-    sha1 "8c5d442779abdb051ff40471871c5c6185b0bb84" => :lion
+    revision 2
+    sha1 "27fa5b1bcafd6e3915b9858a757991d3ccc40323" => :mavericks
+    sha1 "f289bb746eafccfc714e194eca4b24ec481e9df6" => :mountain_lion
+    sha1 "e091a997d111e5eb664f95479d84e5799a2284f0" => :lion
   end
 
   # recent versions of clang fail with a hard error if -fno-defer-pop
