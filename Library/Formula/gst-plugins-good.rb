@@ -45,7 +45,6 @@ class GstPluginsGood < Formula
   def install
     args = %W[
       --prefix=#{prefix}
-      --disable-schemas-install
       --disable-gtk-doc
       --disable-goom
       --with-default-videosink=ximagesink
