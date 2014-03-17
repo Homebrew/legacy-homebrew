@@ -48,8 +48,12 @@ class AndroidSdk < Formula
     %w[aapt aidl dexdump dx llvm-rs-cc].each do |build_tool|
       (bin/build_tool).write <<-EOS.undent
         #!/bin/sh
-        BUILD_TOOL="#{prefix}/build-tools/17.0.0/#{build_tool}"
-        test -f "$BUILD_TOOL" && exec "$BUILD_TOOL" "$@"
+        BUILD_TOOLS_HOME="#{prefix}/build-tools"
+        for DIR in $(ls -r "$BUILD_TOOLS_HOME")
+        do
+                BUILD_TOOL="$BUILD_TOOLS_HOME/$DIR/#{build_tool}"
+                test -f "$BUILD_TOOL" && exec "$BUILD_TOOL" "$@" && break
+        done
         echo Use the \\`android\\' tool to install the \\"Android SDK Build-tools\\".
       EOS
     end
