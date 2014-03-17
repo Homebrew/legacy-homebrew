@@ -42,6 +42,10 @@ class Geoipupdate < Formula
     system "make", "install"
   end
 
+  def post_install
+    (var/"GeoIP").mkpath
+  end
+
   test do
     system "#{bin}/geoipupdate", "-v"
   end
