@@ -16,8 +16,9 @@ class Tcpflow < Formula
   depends_on 'sqlite' if MacOS.version < :lion
 
   # Upstream fix for 10.6; can be removed in next release
-  def patches
-    "https://github.com/simsong/tcpflow/commit/1cd5a9168c2ebf72c1fadcd64634398bd8470bce.diff"
+  patch do
+    url "https://github.com/simsong/tcpflow/commit/1cd5a9168c2ebf72c1fadcd64634398bd8470bce.diff"
+    sha1 "5264d287a5e62b647da0aa6f2bfa237bc8171c3a"
   end
 
   def install

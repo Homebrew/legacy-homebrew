@@ -8,12 +8,11 @@ class Libmms < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
 
-  def patches
-    # see https://trac.macports.org/ticket/27988
-    if MacOS.version <= :leopard
-      { :p0 => "https://trac.macports.org/export/87883/trunk/dports/multimedia/libmms/files/src_mms-common.h.patch" }
-    end
-  end
+  # https://trac.macports.org/ticket/27988
+  patch :p0 do
+    url "https://trac.macports.org/export/87883/trunk/dports/multimedia/libmms/files/src_mms-common.h.patch"
+    sha1 "57b526dc9de76cfde236d3331e18eb7ae92f999f"
+  end if MacOS.version <= :leopard
 
   def install
     ENV.append 'LDFLAGS', '-liconv'

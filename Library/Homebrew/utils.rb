@@ -170,8 +170,11 @@ def puts_columns items, star_items=[]
 end
 
 def which cmd, path=ENV['PATH']
-  dir = path.split(File::PATH_SEPARATOR).find {|p| File.executable? File.join(p, cmd)}
-  Pathname.new(File.join(dir, cmd)) unless dir.nil?
+  path.split(File::PATH_SEPARATOR).find do |p|
+    pcmd = File.join(p, cmd)
+    return Pathname.new(pcmd) if File.executable?(pcmd) && !File.directory?(pcmd)
+  end
+  return nil
 end
 
 def which_editor

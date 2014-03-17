@@ -12,11 +12,10 @@ class ArgpStandalone < Formula
     sha1 "58936047ba691811df5aa11dbbb4ed2304ef3b8b" => :lion
   end
 
-  def patches
-    # This patch fixes compilation with Clang.
-    {:p0 =>
-      "https://trac.macports.org/export/86556/trunk/dports/devel/argp-standalone/files/patch-argp-fmtstream.h"
-    }
+  # This patch fixes compilation with Clang.
+  patch :p0 do
+    url "https://trac.macports.org/export/86556/trunk/dports/devel/argp-standalone/files/patch-argp-fmtstream.h"
+    sha1 "61b2d1f416869666cf3f81e3961a82fcbfa84837"
   end
 
   def install

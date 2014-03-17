@@ -5,7 +5,6 @@ class Libquvi < Formula
   url 'https://downloads.sourceforge.net/project/quvi/0.4/libquvi/libquvi-0.4.1.tar.bz2'
   sha1 'b7ac371185c35a1a9a2135ef4ee61c86c48f78f4'
 
-  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'lua'
 

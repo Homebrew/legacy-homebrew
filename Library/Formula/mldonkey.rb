@@ -18,8 +18,9 @@ class Mldonkey < Formula
   end
 
   # Fix gd detection, there are various upstream tickets referencing this
-  def patches
-    { :p0 => "https://trac.macports.org/export/113436/trunk/dports/net/mldonkey/files/patch-config-configure.diff" }
+  patch :p0 do
+    url "https://trac.macports.org/export/113436/trunk/dports/net/mldonkey/files/patch-config-configure.diff"
+    sha1 "4c2fb3f8337f12533a03940834c1fb4bd7eaa9bf"
   end
 
   def install
