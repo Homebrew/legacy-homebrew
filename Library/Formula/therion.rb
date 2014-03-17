@@ -9,7 +9,7 @@ class Therion < Formula
   depends_on 'lcdf-typetools'
   depends_on 'wxmac'
   depends_on 'freetype'
-  depends_on 'vtk5'
+  depends_on 'vtk'
   depends_on 'imagemagick'
   depends_on :tex
 
