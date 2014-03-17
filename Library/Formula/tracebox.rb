@@ -2,12 +2,17 @@ require 'formula'
 
 class Tracebox < Formula
   homepage 'http://www.tracebox.org/'
-  url 'https://drone.io/github.com/tracebox/tracebox/files/tracebox-0.1.tar.gz'
-  sha1 '4656b0a6660e2a9833ff8f541d6d88034d011e7b'
+  head 'https://github.com/tracebox/tracebox.git'
+  url 'https://github.com/tracebox/tracebox.git', :tag => 'v0.2'
 
   depends_on 'lua'
+  depends_on :autoconf
+  depends_on :automake
+  depends_on :libtool
 
   def install
+    ENV.append "AUTOHEADER", "true"
+    system "autoreconf", "--install"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
