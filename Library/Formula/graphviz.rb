@@ -36,10 +36,9 @@ class Graphviz < Formula
     build 318
   end
 
-  def patches
-    p = {:p0 =>
-      "https://trac.macports.org/export/103168/trunk/dports/graphics/graphviz/files/patch-project.pbxproj.diff",
-     }
+  patch :p0 do
+    url "https://trac.macports.org/export/103168/trunk/dports/graphics/graphviz/files/patch-project.pbxproj.diff"
+    sha1 "b242fb8fa81489dd16830e5df6bbf5448a3874d5"
   end
 
   def install
