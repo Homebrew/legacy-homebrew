@@ -14,9 +14,9 @@ class Libsigcxx < Formula
   option :cxx11
 
   def patches
-      # apply this patch for C++11 mode
-      # see https://git.gnome.org/browse/libsigc++2/commit/tests/test_cpp11_lambda.cc?id=cd600a31fbf8e76e25f4be4c10c0645f090a9b80
-      DATA if build.cxx11?
+    # apply this patch for C++11 mode
+    # see https://git.gnome.org/browse/libsigc++2/commit/tests/test_cpp11_lambda.cc?id=cd600a31fbf8e76e25f4be4c10c0645f090a9b80
+    DATA if build.cxx11?
   end
 
   def install
