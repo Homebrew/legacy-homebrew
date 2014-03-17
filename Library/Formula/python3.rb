@@ -2,10 +2,10 @@ require 'formula'
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.3.5/Python-3.3.5.tgz'
-  sha1 '15f24702c5ae07d364606c663e515c1d9ba58615'
+  url 'http://python.org/ftp/python/3.4.0/Python-3.4.0.tgz'
+  sha1 'bb5125d1c437caa5a62e0a3d0fee298e91196d6f'
 
-  VER='3.3'  # The <major>.<minor> is used so often.
+  VER='3.4'  # The <major>.<minor> is used so often.
 
   head 'http://hg.python.org/cpython', :using => :hg, :branch => VER
 
@@ -25,16 +25,6 @@ class Python3 < Formula
 
   skip_clean "bin/pip3", "bin/pip-#{VER}"
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
-
-  resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.2.tar.gz'
-    sha1 '547eff11ea46613e8a9ba5b12a89c1010ecc4e51'
-  end
-
-  resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.4.tar.gz'
-    sha1 '35ccb7430356186cf253615b70f8ee580610f734'
-  end
 
   patch :DATA if build.with? 'brewed-tk'
 
@@ -146,14 +136,8 @@ class Python3 < Formula
     rm_rf Dir[HOMEBREW_PREFIX/"lib/python#{VER}/site-packages/setuptools*"]
     rm_rf Dir[HOMEBREW_PREFIX/"lib/python#{VER}/site-packages/distribute*"]
 
-    setup_args = [ "-s", "setup.py", "install", "--force", "--verbose",
-                   "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-
-    resource('setuptools').stage { system "#{bin}/python3", *setup_args }
-    mv bin/'easy_install', bin/'easy_install3'
-
-    resource('pip').stage { system "#{bin}/python3", *setup_args }
-    mv bin/'pip', bin/'pip3'
+    # Install the bundled pip if it's newer than the installed version
+    system bin/"python3", "-m", "ensurepip", "--upgrade"
 
     # And now we write the distutils.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/distutils/distutils.cfg"
@@ -170,6 +154,9 @@ class Python3 < Formula
     # https://github.com/Homebrew/homebrew/issues/15943
     ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
     rm prefix/"Frameworks/Python.framework/Versions/Current"
+
+    # Remove 2to3 because python2 also installs it
+    rm bin/"2to3"
   end
 
   def distutils_fix_superenv(args)
@@ -275,8 +262,7 @@ class Python3 < Formula
 
   def caveats
     text = <<-EOS.undent
-      Setuptools and Pip have been installed. To update them
-        pip3 install --upgrade setuptools
+      Pip has been installed. To update it
         pip3 install --upgrade pip
 
       You can install Python packages with
