@@ -50,6 +50,17 @@ module Homebrew extend self
     if head.empty? then "(none)" else head end
   end
 
+  def head_last_fetched
+    head_last_fetched = HOMEBREW_REPOSITORY.cd do
+      fetch_head_file = Pathname.new(File.join('.git', 'FETCH_HEAD'))
+      if fetch_head_file.exist?
+        fetch_head_file.mtime.to_i
+      else
+        "(none)"
+      end
+    end
+  end
+
   def origin
     origin = HOMEBREW_REPOSITORY.cd do
       `git config --get remote.origin.url 2>/dev/null`.chomp
@@ -129,6 +140,7 @@ module Homebrew extend self
     puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
     puts "ORIGIN: #{origin}"
     puts "HEAD: #{head}"
+    puts "HEAD_LAST_FETCHED: #{head_last_fetched}"
     puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}"
     puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
     puts hardware
