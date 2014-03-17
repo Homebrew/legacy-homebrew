@@ -12,4 +12,8 @@ class Tinyxml2 < Formula
     system "cmake", ".", *std_cmake_args
     system "make", "install"
   end
+
+  def test
+    system "pkg-config", "--modversion", "tinyxml2"
+  end
 end
