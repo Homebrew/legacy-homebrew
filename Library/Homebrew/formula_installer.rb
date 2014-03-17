@@ -15,10 +15,17 @@ require 'cmd/tap'
 class FormulaInstaller
   include FormulaCellarChecks
 
+  def self.mode_attr_accessor(*names)
+    attr_accessor(*names)
+    names.each { |name| define_method("#{name}?") { !!send(name) }}
+  end
+
   attr_reader :f
-  attr_accessor :options, :ignore_deps, :only_deps
-  attr_accessor :show_summary_heading, :show_header
-  attr_accessor :build_from_source, :build_bottle, :force_bottle
+  attr_accessor :options
+  mode_attr_accessor :show_summary_heading, :show_header
+  mode_attr_accessor :build_from_source, :build_bottle, :force_bottle
+  mode_attr_accessor :ignore_deps, :only_deps, :interactive
+  mode_attr_accessor :verbose, :debug
 
   def initialize ff
     @f = ff
@@ -28,6 +35,9 @@ class FormulaInstaller
     @build_from_source = false
     @build_bottle = false
     @force_bottle = false
+    @interactive = false
+    @verbose = false
+    @debug = false
     @options = Options.new
 
     @@attempted ||= Set.new
@@ -38,8 +48,8 @@ class FormulaInstaller
 
   def pour_bottle? install_bottle_options={:warn=>false}
     return false if @pour_failed
-    return true  if force_bottle && f.bottle
-    return false if build_from_source || build_bottle
+    return true  if force_bottle? && f.bottle
+    return false if build_from_source? || build_bottle?
     return false unless options.empty?
 
     return true if f.local_bottle_path
@@ -56,7 +66,7 @@ class FormulaInstaller
   end
 
   def install_bottle_for_dep?(dep, build)
-    return false if build_from_source
+    return false if build_from_source?
     return false unless dep.bottle && dep.pour_bottle?
     return false unless build.used_options.empty?
     return false unless dep.bottle.compatible_cellar?
@@ -64,7 +74,7 @@ class FormulaInstaller
   end
 
   def prelude
-    verify_deps_exist unless ignore_deps
+    verify_deps_exist unless ignore_deps?
     lock
     check_install_sanity
   end
@@ -101,7 +111,7 @@ class FormulaInstaller
       raise CannotInstallFormulaError, "No head is defined for #{f.name}"
     end
 
-    unless ignore_deps
+    unless ignore_deps?
       unlinked_deps = f.recursive_dependencies.map(&:to_formula).select do |dep|
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
@@ -136,15 +146,15 @@ class FormulaInstaller
 
     check_conflicts
 
-    compute_and_install_dependencies unless ignore_deps
+    compute_and_install_dependencies unless ignore_deps?
 
-    return if only_deps
+    return if only_deps?
 
-    if build_bottle && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
+    if build_bottle? && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
 
-    oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header
+    oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header?
 
     @@attempted << f
 
@@ -174,15 +184,15 @@ class FormulaInstaller
       opoo "Bottle installation failed: building from source."
     end
 
-    build_bottle_preinstall if build_bottle
+    build_bottle_preinstall if build_bottle?
 
     unless @poured_bottle
-      compute_and_install_dependencies if @pour_failed and not ignore_deps
+      compute_and_install_dependencies if @pour_failed and not ignore_deps?
       build
       clean
     end
 
-    build_bottle_postinstall if build_bottle
+    build_bottle_postinstall if build_bottle?
 
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
@@ -190,7 +200,7 @@ class FormulaInstaller
   # HACK: If readline is present in the dependency tree, it will clash
   # with the stdlib's Readline module when the debugger is loaded
   def perform_readline_hack
-    if f.recursive_dependencies.any? { |d| d.name == "readline" } && ARGV.debug?
+    if f.recursive_dependencies.any? { |d| d.name == "readline" } && debug?
       ENV['HOMEBREW_NO_READLINE'] = '1'
     end
   end
@@ -216,7 +226,7 @@ class FormulaInstaller
     deps = [].concat(req_deps).concat(f.deps)
     deps = expand_dependencies(deps)
 
-    if deps.empty? and only_deps
+    if deps.empty? and only_deps?
       puts "All dependencies for #{f} are satisfied."
     else
       install_dependencies(deps)
@@ -325,18 +335,31 @@ class FormulaInstaller
     @show_header = true unless deps.empty?
   end
 
+  class DependencyInstaller < FormulaInstaller
+    def initialize ff
+      super
+      @ignore_deps = true
+    end
+
+    def sanitized_ARGV_options
+      args = super
+      args.delete "--ignore-dependencies"
+      args
+    end
+  end
+
   def install_dependency(dep, inherited_options)
     df = dep.to_formula
 
     outdated_keg = Keg.new(df.linked_keg.realpath) rescue nil
 
-    fi = FormulaInstaller.new(df)
-    fi.options |= Tab.for_formula(df).used_options
-    fi.options |= dep.options
-    fi.options |= inherited_options
-    fi.ignore_deps = true
-    fi.show_header = false
-    fi.build_from_source = build_from_source
+    fi = DependencyInstaller.new(df)
+    fi.options           |= Tab.for_formula(df).used_options
+    fi.options           |= dep.options
+    fi.options           |= inherited_options
+    fi.build_from_source  = build_from_source?
+    fi.verbose            = verbose? unless verbose == :quieter
+    fi.debug              = debug?
     fi.prelude
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     outdated_keg.unlink if outdated_keg
@@ -349,7 +372,7 @@ class FormulaInstaller
   end
 
   def caveats
-    return if only_deps
+    return if only_deps?
 
     if ARGV.homebrew_developer? and not f.keg_only?
       audit_bin
@@ -368,9 +391,9 @@ class FormulaInstaller
   end
 
   def finish
-    return if only_deps
+    return if only_deps?
 
-    ohai 'Finishing up' if ARGV.verbose?
+    ohai 'Finishing up' if verbose?
 
     install_plist
 
@@ -389,7 +412,7 @@ class FormulaInstaller
 
     post_install
 
-    ohai "Summary" if ARGV.verbose? or show_summary_heading
+    ohai "Summary" if verbose? or show_summary_heading?
     puts summary
   ensure
     unlock if hold_locks?
@@ -408,13 +431,29 @@ class FormulaInstaller
   end
 
   def build_time
-    @build_time ||= Time.now - @start_time unless pour_bottle? or ARGV.interactive? or @start_time.nil?
+    @build_time ||= Time.now - @start_time if @start_time && !interactive?
   end
 
   def sanitized_ARGV_options
-    args = ARGV.options_only
-    args.delete "--ignore-dependencies" unless ignore_deps
-    args.delete "--build-bottle" unless build_bottle
+    args = []
+    args << "--ignore-dependencies" if ignore_deps?
+
+    if build_bottle?
+      args << "--build-bottle"
+      args << "--bottle-arch=#{ARGV.bottle_arch}" if ARGV.bottle_arch
+    end
+
+    if interactive?
+      args << "--interactive"
+      args << "--git" if interactive == :git
+    end
+
+    args << "--verbose" if verbose?
+    args << "--debug" if debug?
+    args << "--cc=#{ARGV.cc}" if ARGV.cc
+    args << "--env=#{ARGV.env}" if ARGV.env
+    args << "--HEAD" if ARGV.build_head?
+    args << "--devel" if ARGV.build_devel?
     args
   end
 
@@ -503,7 +542,7 @@ class FormulaInstaller
       puts "Possible conflicting files are:"
       mode = OpenStruct.new(:dry_run => true, :overwrite => true)
       keg.link(mode)
-      ohai e, e.backtrace if ARGV.debug?
+      ohai e, e.backtrace if debug?
       @show_summary_heading = true
       ignore_interrupts{ keg.unlink }
       raise unless e.kind_of? RuntimeError
@@ -530,17 +569,17 @@ class FormulaInstaller
     onoe "Failed to fix install names"
     puts "The formula built, but you may encounter issues using it or linking other"
     puts "formula against it."
-    ohai e, e.backtrace if ARGV.debug?
+    ohai e, e.backtrace if debug?
     @show_summary_heading = true
   end
 
   def clean
-    ohai "Cleaning" if ARGV.verbose?
+    ohai "Cleaning" if verbose?
     Cleaner.new(f).clean
   rescue Exception => e
     opoo "The cleaning step did not complete successfully"
     puts "Still, the installation was successful, so we will link it into your prefix"
-    ohai e, e.backtrace if ARGV.debug?
+    ohai e, e.backtrace if debug?
     @show_summary_heading = true
   end
 
@@ -549,7 +588,7 @@ class FormulaInstaller
   rescue Exception => e
     opoo "The post-install step did not complete successfully"
     puts "You can try again using `brew postinstall #{f.name}`"
-    ohai e, e.backtrace if ARGV.debug?
+    ohai e, e.backtrace if debug?
     @show_summary_heading = true
   end
 
@@ -618,7 +657,7 @@ class FormulaInstaller
     if (@@locked ||= []).empty?
       f.recursive_dependencies.each do |dep|
         @@locked << dep.to_formula
-      end unless ignore_deps
+      end unless ignore_deps?
       @@locked.unshift(f)
       @@locked.each(&:lock)
       @hold_locks = true

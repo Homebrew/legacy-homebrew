@@ -15,7 +15,6 @@ class GobjectIntrospection < Formula
   option 'with-tests', 'Run tests in addition to the build (requires cairo)'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'libffi'
   # To avoid: ImportError: dlopen(./.libs/_giscanner.so, 2): Symbol not found: _PyList_Check
@@ -23,9 +22,10 @@ class GobjectIntrospection < Formula
   depends_on 'cairo' => :build if build.with? 'tests'
 
   # Allow tests to execute on OS X (.so => .dylib)
-  def patches
-    "https://gist.github.com/krrk/6958869/raw/de8d83009d58eefa680a590f5839e61a6e76ff76/gobject-introspection-tests.patch"
-  end if build.with? 'tests'
+  patch do
+    url "https://gist.github.com/krrk/6958869/raw/de8d83009d58eefa680a590f5839e61a6e76ff76/gobject-introspection-tests.patch"
+    sha1 "1f57849db76cd2ca26ddb35dc36c373606414dfc"
+  end if build.with? "tests"
 
   def install
     ENV['GI_SCANNER_DISABLE_CACHE'] = 'true'

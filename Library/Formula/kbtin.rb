@@ -6,7 +6,6 @@ class Kbtin < Formula
   sha1 'b6e09ee7702fe52d48db53098c79fe243505cc0f'
   revision 1
 
-  depends_on 'xz' => :build
   depends_on 'gnutls'
 
   def install

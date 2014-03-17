@@ -13,8 +13,10 @@ class GooglePerftools < Formula
   # * DATA is incorporated upstream, remove on next version update
   # * configure patch removes __thread support, which breaks tcmalloc since it internally calls malloc as well
   #   upstream: https://code.google.com/p/gperftools/issues/detail?id=573
-  def patches
-    [DATA, "https://gist.github.com/JustSid/7430366/raw/54979ac61602eec5e59223164cb1f0d136044d1f/gistfile1.txt"]
+  patch :DATA
+  patch do
+    url "https://gist.github.com/JustSid/7430366/raw/54979ac61602eec5e59223164cb1f0d136044d1f/gistfile1.txt"
+    sha1 "4fde81e106b31198622db587fea51f01e2640789"
   end
 
   def install

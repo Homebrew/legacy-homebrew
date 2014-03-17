@@ -2,11 +2,17 @@ require 'formula'
 
 class Openconnect < Formula
   homepage 'http://www.infradead.org/openconnect.html'
-  url 'ftp://ftp.infradead.org/pub/openconnect/openconnect-5.03.tar.gz'
-  sha1 '40344fc910a19c8781a79204808f1229acaee2a4'
+  url "ftp://ftp.infradead.org/pub/openconnect/openconnect-5.99.tar.gz"
+  sha1 "3ac20e50f2700ff58d1635f210fc263d29cf7768"
+
+  bottle do
+    sha1 "444194b062852c484490c9a3b4b0e08247731525" => :mavericks
+    sha1 "580e55016a4ff86300dc8fe2a24e353f9a7306cf" => :mountain_lion
+    sha1 "ee6d840bb43176e32aab3f31d93d43451f42bfad" => :lion
+  end
 
   head do
-    url 'git://git.infradead.org/users/dwmw2/openconnect.git'
+    url "git://git.infradead.org/users/dwmw2/openconnect.git", :shallow => false
     depends_on :autoconf => :build
     depends_on :automake => :build
     depends_on :libtool => :build
@@ -14,6 +20,7 @@ class Openconnect < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
+  depends_on "openssl"
 
   resource 'vpnc-script' do
     url 'http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/d2c5a77f3f0ea6ad80fc59158127d63ede81a6cb:/vpnc-script'
@@ -25,7 +32,8 @@ class Openconnect < Formula
     chmod 0755, "#{etc}/vpnc-script"
 
     if build.head?
-      inreplace "autogen.sh", /libtoolize/, "glibtoolize"
+      ENV["GIT_DIR"] = cached_download/".git"
+      ENV["LIBTOOLIZE"] = "glibtoolize"
       system "./autogen.sh"
     end
 

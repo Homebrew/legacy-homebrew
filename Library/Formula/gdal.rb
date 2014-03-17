@@ -55,6 +55,21 @@ class Gdal < Formula
     depends_on "poppler"
   end
 
+  # Prevent build failure on 10.6 / 10.7: http://trac.osgeo.org/gdal/ticket/5197
+  # Fix build against MySQL 5.6.x: http://trac.osgeo.org/gdal/ticket/5284
+  patch :DATA
+
+  stable do
+    # Patch of configure that finds Mac Java for MDB driver (uses Oracle or Mac default JDK)
+    # TODO: Remove when future GDAL release includes a fix
+    # http://trac.osgeo.org/gdal/ticket/5267  (patch applied to trunk, 2.0 release milestone)
+    # Must come before DATA
+    patch do
+      url "https://gist.githubusercontent.com/dakcarto/6877854/raw/82ae81e558c0b6048336f0acb5d7577bd0a237d5/gdal-mdb-patch.diff"
+      sha1 "ea6c753df9e35abd90d7078f8a727eaab7f7d996"
+    end if build.include? "enable-mdb"
+  end
+
   def get_configure_args
     args = [
       # Base configuration.
@@ -181,24 +196,6 @@ class Gdal < Formula
     args << (build.include?("enable-armadillo") ? "--with-armadillo=yes" : "--with-armadillo=no")
 
     return args
-  end
-
-  def patches
-    p = []
-
-    if build.stable?
-      # Patch of configure that finds Mac Java for MDB driver (uses Oracle or Mac default JDK)
-      # TODO: Remove when future GDAL release includes a fix
-      # http://trac.osgeo.org/gdal/ticket/5267  (patch applied to trunk, 2.0 release milestone)
-      # Must come before DATA
-      p << "https://gist.github.com/dakcarto/6877854/raw" if build.include? 'enable-mdb'
-
-      # Prevent build failure on 10.6 / 10.7: http://trac.osgeo.org/gdal/ticket/5197
-      # Fix build against MySQL 5.6.x: http://trac.osgeo.org/gdal/ticket/5284
-      p << DATA
-    end
-
-    return p
   end
 
   def install

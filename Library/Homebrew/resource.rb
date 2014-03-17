@@ -8,13 +8,12 @@ require 'version'
 class Resource
   include FileUtils
 
-  attr_reader :name
   attr_reader :checksum, :mirrors, :specs, :using
   attr_writer :url, :checksum, :version
 
   # Formula name must be set after the DSL, as we have no access to the
   # formula name before initialization of the formula
-  attr_accessor :owner
+  attr_accessor :name, :owner
 
   def initialize name=nil, &block
     @name = name

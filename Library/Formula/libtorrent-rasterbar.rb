@@ -2,8 +2,8 @@ require 'formula'
 
 class LibtorrentRasterbar < Formula
   homepage 'http://www.rasterbar.com/products/libtorrent/'
-  url 'https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-0.16.14.tar.gz'
-  sha1 'e9075354af9b7c3f6a62d54d34c407c75b0bfaff'
+  url 'https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-0.16.15.tar.gz'
+  sha1 '8657a493fb2ee4e6bf55e484deb922d23b65818d'
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'

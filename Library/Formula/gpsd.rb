@@ -8,8 +8,9 @@ class Gpsd < Formula
   depends_on 'scons' => :build
   depends_on 'libusb' => :optional
 
-  def patches
-    {:p0 => "https://trac.macports.org/export/113474/trunk/dports/net/gpsd/files/string.patch"}
+  patch :p0 do
+    url "https://trac.macports.org/export/113474/trunk/dports/net/gpsd/files/string.patch"
+    sha1 "7f6bacc0379282bf27b05d754807000680befb26"
   end
 
   def install

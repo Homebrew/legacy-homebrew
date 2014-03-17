@@ -7,9 +7,10 @@ class Exempi < Formula
 
   depends_on 'boost'
 
-  def patches
-    # https://bugs.freedesktop.org/show_bug.cgi?id=73058
-    "http://cgit.freedesktop.org/exempi/patch/?id=75af16b221dca0bf6a9656d5b187c3141d82c200"
+  # https://bugs.freedesktop.org/show_bug.cgi?id=73058
+  patch do
+    url "http://cgit.freedesktop.org/exempi/patch/?id=75af16b221dca0bf6a9656d5b187c3141d82c200"
+    sha1 "a5ccc2f56ff685a52578ddcca2dc12105347c1d2"
   end
 
   def install

@@ -18,6 +18,12 @@ class Mongodb < Formula
       option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
       depends_on "boost" => :optional
     end
+
+    # Fix Clang v8 build failure from build warnings and -Werror
+    patch do
+      url "https://github.com/mongodb/mongo/commit/be4bc7.patch"
+      sha1 "72152f9bec94aaaacb16d0b17511b0862d38ac21"
+    end
   end
 
   devel do
@@ -33,15 +39,6 @@ class Mongodb < Formula
 
     option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
     depends_on "boost" => :optional
-  end
-
-  def patches
-    if build.stable?
-      [
-        # Fix Clang v8 build failure from build warnings and -Werror
-        'https://github.com/mongodb/mongo/commit/be4bc7.patch'
-      ]
-    end
   end
 
   depends_on 'scons' => :build
