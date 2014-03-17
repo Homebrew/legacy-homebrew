@@ -23,12 +23,12 @@ class Podofo < Formula
 
   def install
     mkdir 'build' do
-    	# Build shared to simplify linking for other programs.
-    	args = ["..", "-DPODOFO_BUILD_SHARED:BOOL=TRUE"]
-    	if MacOS.version <= :lion
-    		args << "-DCMAKE_INCLUDE_PATH=" + Formula['freetype'].include
-    	end
-    	args += std_cmake_args
+      # Build shared to simplify linking for other programs.
+      args = ["..", "-DPODOFO_BUILD_SHARED:BOOL=TRUE"]
+      if MacOS.version <= :lion
+        args << "-DCMAKE_INCLUDE_PATH=" + Formula['freetype'].include
+      end
+      args += std_cmake_args
       system "cmake", *args
       system "make install"
     end
