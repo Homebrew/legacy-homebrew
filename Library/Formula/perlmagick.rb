@@ -5,7 +5,6 @@ class Perlmagick < Formula
   url "http://www.imagemagick.org/download/perl/PerlMagick-6.88.tar.gz"
   sha1 "f234b49a5c570f78d693c04924fe74ddb5595292"
 
-#  depends_on "apple-gcc42" if MacOS.version >= :mountain_lion
   depends_on "freetype"
   depends_on "libxml2"
   depends_on "imagemagick"
@@ -14,13 +13,11 @@ class Perlmagick < Formula
   def install
     inreplace "Makefile.PL", "-I/usr/include/libxml2", "-I#{HOMEBREW_PREFIX}/include/libxml2"
     inreplace "Makefile.PL", "-I/usr/include/freetype2", "-I#{HOMEBREW_PREFIX}/include/freetype2"
-#    inreplace "Makefile.PL", "#'CC' => 'gcc -std=gnu99 -std=gnu99'", "'CC' => 'gcc -std=gnu99 -std=gnu99'"
-#    inreplace "Makefile.PL", "#'LD' => $Config{'ld'} == $Config{'cc'}", "'LD' => $Config{'ld'} == $Config{'cc'}"
     inreplace "Makefile.PL", "'INSTALLBIN'	=> '/usr/local/bin'", "'INSTALLBIN'	=> '#{bin}'"
-#    inreplace "Makefile.PL", "'PERLMAINCC'	=> ' '", "#'PERLMAINCC'	=> ' '"
     inreplace "Makefile.PL", "# 'PREFIX'	=> '/usr/local'", "'PREFIX'	=> '#{prefix}'"
 
     system "perl", "Makefile.PL"
+    system "make"
     system "make", "install"
   end
 
