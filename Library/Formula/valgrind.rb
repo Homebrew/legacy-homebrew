@@ -44,7 +44,7 @@ class Valgrind < Formula
 
   # Fix for 10.9 Mavericks. From upstream bug:
   # https://bugs.kde.org/show_bug.cgi?id=326724#c12
-  patch do
+  patch :p0 do
     url "http://bugsfiles.kde.org/attachment.cgi?id=83590"
     sha1 "22819a4a02140974e6330f3521b240b68f1619d7"
   end if MacOS.version == :mavericks
