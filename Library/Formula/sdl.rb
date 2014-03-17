@@ -30,15 +30,18 @@ class Sdl < Formula
     depends_on :libtool
   end
 
-  def patches
-    p = []
-    # Fix for a bug preventing SDL from building at all on OSX 10.9 Mavericks
-    # Related ticket: https://bugzilla.libsdl.org/show_bug.cgi?id=2085
-    p << "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1320" if MacOS.version >= :mavericks
-    # Fix build against recent libX11; requires regenerating configure script
-    p << "http://hg.libsdl.org/SDL/raw-rev/91ad7b43317a" if build.with? 'x11-driver'
-    p
+  # Fix for a bug preventing SDL from building at all on OSX 10.9 Mavericks
+  # Related ticket: https://bugzilla.libsdl.org/show_bug.cgi?id=2085
+  patch do
+    url "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1320"
+    sha1 "3137feb503a89a8d606405373905b92dcf7e293b"
   end
+
+  # Fix build against recent libX11; requires regenerating configure script
+  patch do
+    url "http://hg.libsdl.org/SDL/raw-rev/91ad7b43317a"
+    sha1 "1b35949d9ac360a7e39aac76d1f0a6ad5381b0f4"
+  end if build.with? "x11-driver"
 
   def install
     # we have to do this because most build scripts assume that all sdl modules
