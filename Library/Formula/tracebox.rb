@@ -28,14 +28,10 @@ class Tracebox < Formula
   end
 
   def caveats; <<-EOS.undent
-    tracebox requires superuser privileges. You can either run the program
-    via `sudo`, or change its ownership to root and set the setuid bit:
+    tracebox requires superuser privileges e.g. run with sudo.
 
-      sudo chown root:wheel #{bin}/tracebox
-      sudo chmod u+s #{bin}/tracebox
-
-    In any case, you should be certain that you trust the software you
-    are executing with elevated privileges.
+    You should be certain that you trust any software you are executing with
+    elevated privileges.
     EOS
   end
 end
