@@ -8,7 +8,8 @@ class BottleVersion < Version
     return m.captures.first unless m.nil?
 
     # e.g. x264-r2197.4.mavericks.bottle.tar.gz
-    m = /(r\d+\.\d)/.match(stem)
+    # e.g. lz4-r114.mavericks.bottle.tar.gz
+    m = /(r\d+\.?\d*)/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. ssh-copy-id-6.2p2.mountain_lion.bottle.tar.gz

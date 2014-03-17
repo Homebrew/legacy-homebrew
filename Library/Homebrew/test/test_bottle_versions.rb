@@ -25,4 +25,9 @@ class BottleVersionParsingTests < Test::Unit::TestCase
     assert_version_detected 'r2197.4',
       '/usr/local/x264-r2197.4.mavericks.bottle.tar.gz'
   end
+
+  def test_lz4_style
+    assert_version_detected 'r114',
+      '/usr/local/lz4-r114.mavericks.bottle.tar.gz'
+  end
 end
