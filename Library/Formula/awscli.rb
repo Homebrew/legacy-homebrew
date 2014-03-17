@@ -2,8 +2,8 @@ require "formula"
 
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.3.0.tar.gz"
-  sha1 "c19800087168a93fc04b32b58a3ae5cfb8cc1d97"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.3.1.tar.gz"
+  sha1 "13fadaafd6519cb84e6c7b42653527b220954968"
 
   head do
     url "https://github.com/aws/aws-cli.git", :branch => :develop
@@ -24,8 +24,8 @@ class Awscli < Formula
   depends_on :python
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.34.0.tar.gz"
-    sha1 "67740a07b25816a7ead70376be5946748acef76b"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.35.0.tar.gz"
+    sha1 "b28816d1a1222d4b6f52f5b57501c0a4bf5a2233"
   end
 
   resource "bcdoc" do
@@ -34,8 +34,8 @@ class Awscli < Formula
   end
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.5.2.tar.gz"
-    sha1 "90128862139a79d10cf213b3baad9c6e2f72fc78"
+    url "https://pypi.python.org/packages/source/s/six/six-1.6.1.tar.gz"
+    sha1 "2a7941cc2233d9ad6d7d54dd5265d1eb9726c5a1"
   end
 
   resource "colorama" do
