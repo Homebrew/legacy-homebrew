@@ -17,9 +17,10 @@ class Coin < Formula
     sha1 "c64f00f8c219b69f10ddfffe6294fb02be73dd20"
   end
 
-  def patches
-    # https://bitbucket.org/Coin3D/coin/pull-request/3/missing-include/diff
-    "https://bitbucket.org/cbuehler/coin/commits/e146a6a93a6b807c28c3d73b3baba80fa41bc5f6/raw"
+  # https://bitbucket.org/Coin3D/coin/pull-request/3/missing-include/diff
+  patch do
+    url "https://bitbucket.org/cbuehler/coin/commits/e146a6a93a6b807c28c3d73b3baba80fa41bc5f6/raw"
+    sha1 "0afaabc6582e6bbf1d5f3ccfed982f846fef18a6"
   end
 
   def install
