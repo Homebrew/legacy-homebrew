@@ -13,7 +13,15 @@ class Tinyxml2 < Formula
     system "make", "install"
   end
 
-  def test
+  test do
     system "pkg-config", "--modversion", "tinyxml2"
+    (testpath/'test.cpp').write <<-EOS.undent
+      #include <tinyxml2.h>
+      int main() {
+        tinyxml2::XMLDocument doc (false);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.cpp", "-ltinyxml2"
   end
 end
