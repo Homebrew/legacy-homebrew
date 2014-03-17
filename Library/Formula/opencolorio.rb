@@ -16,9 +16,10 @@ class Opencolorio < Formula
   option 'with-java', 'Build ocio with java bindings'
   option 'with-docs', 'Build the documentation'
 
-  def patches
-    # Fix build with libc++
-    "https://github.com/imageworks/OpenColorIO/commit/ebd6efc036b6d0b17c869e3342f17f9c5ef8bbfc.patch"
+  # Fix build with libc++
+  patch do
+    url "https://github.com/imageworks/OpenColorIO/commit/ebd6efc036b6d0b17c869e3342f17f9c5ef8bbfc.patch"
+    sha1 "89d2cb42e634faab5b83d16fdc48a048b2ddb6f5"
   end
 
   def install
