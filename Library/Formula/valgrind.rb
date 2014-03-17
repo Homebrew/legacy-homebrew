@@ -28,19 +28,26 @@ class Valgrind < Formula
   # See #2150 for more information.
   skip_clean 'lib/valgrind'
 
-  def patches
-    # 1: For Xcode-only systems, we have to patch hard-coded paths, use xcrun &
-    #    add missing CFLAGS. See: https://bugs.kde.org/show_bug.cgi?id=295084
-    # 2: Fix for 10.7.4 w/XCode-4.5, duplicate symbols. Reported upstream in
-    #    https://bugs.kde.org/show_bug.cgi?id=307415
-    # 3: Fix for 10.9 Mavericks. From upstream bug:
-    #    https://bugs.kde.org/show_bug.cgi?id=326724#c12
-    p = { :p1 => [] }
-    p[:p1] << 'https://gist.github.com/raw/3784836/f046191e72445a2fc8491cb6aeeabe84517687d9/patch1.diff' unless MacOS::CLT.installed?
-    p[:p1] << 'https://gist.github.com/raw/3784930/dc8473c0ac5274f6b7d2eb23ce53d16bd0e2993a/patch2.diff' if MacOS.version == :lion
-    p[:p0] = 'http://bugsfiles.kde.org/attachment.cgi?id=83590' if MacOS.version == :mavericks
-    p
-  end
+  # For Xcode-only systems, we have to patch hard-coded paths, use xcrun &
+  # add missing CFLAGS. See: https://bugs.kde.org/show_bug.cgi?id=295084
+  patch do
+    url "https://gist.github.com/raw/3784836/f046191e72445a2fc8491cb6aeeabe84517687d9/patch1.diff"
+    sha1 "a2252d977302a37873b0f2efe8aa4a4fed2eb2c2"
+  end unless MacOS::CLT.installed?
+
+  # Fix for 10.7.4 w/XCode-4.5, duplicate symbols. Reported upstream in
+  # https://bugs.kde.org/show_bug.cgi?id=307415
+  patch do
+    url "https://gist.github.com/raw/3784930/dc8473c0ac5274f6b7d2eb23ce53d16bd0e2993a/patch2.diff"
+    sha1 "6e57aa087fafd178b594e22fd0e00ea7c0eed438"
+  end if MacOS.version == :lion
+
+  # Fix for 10.9 Mavericks. From upstream bug:
+  # https://bugs.kde.org/show_bug.cgi?id=326724#c12
+  patch do
+    url "http://bugsfiles.kde.org/attachment.cgi?id=83590"
+    sha1 "22819a4a02140974e6330f3521b240b68f1619d7"
+  end if MacOS.version == :mavericks
 
   def install
     if (build.head? || MacOS.version == :mavericks) && ENV.compiler == :clang
