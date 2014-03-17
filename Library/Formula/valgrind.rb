@@ -50,15 +50,6 @@ class Valgrind < Formula
   end if MacOS.version == :mavericks
 
   def install
-    if (build.head? || MacOS.version == :mavericks) && ENV.compiler == :clang
-      # Clang does not support '-mno-dynamic-no-pic'. Before clang 3.4,
-      # this is simply a warning, however, with clang 3.4 and later,
-      # this becomes a fatal error.
-      #
-      # Reported upstream in https://bugs.kde.org/show_bug.cgi?id=330257
-      inreplace 'Makefile.all.am', '-mno-dynamic-no-pic', ''
-    end
-
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
