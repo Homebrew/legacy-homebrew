@@ -29,9 +29,10 @@ class Pygobject3 < Formula
 
   option :universal
 
-  def patches
-    "https://gist.github.com/krrk/6439665/raw/a527e14cd3a77c19b089f27bea884ce46c988f55/pygobject-fix-module.patch" if build.with? 'tests'
-  end
+  patch do
+    url "https://gist.github.com/krrk/6439665/raw/a527e14cd3a77c19b089f27bea884ce46c988f55/pygobject-fix-module.patch"
+    sha1 "1d7aad99256d87d616a41b7026cd05267bd9f97f"
+  end if build.with? 'tests'
 
   def install
     ENV.universal_binary if build.universal?
