@@ -5,6 +5,13 @@ class Tracebox < Formula
   head 'https://github.com/tracebox/tracebox.git'
   url 'https://github.com/tracebox/tracebox.git', :tag => 'v0.2'
 
+  bottle do
+    cellar :any
+    sha1 "ec8033c2cd6db48f747cb0d3a1881ae90bccfd81" => :mavericks
+    sha1 "08425c77bfbae29a31f4b60acbc614235023a6e7" => :mountain_lion
+    sha1 "9a71c329fad5e6e39108e198506fa0b8b2d40e6c" => :lion
+  end
+
   depends_on 'lua'
   depends_on :autoconf
   depends_on :automake
