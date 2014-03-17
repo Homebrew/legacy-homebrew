@@ -2,12 +2,11 @@ require "formula"
 
 class Screenfetch < Formula
   homepage "http://git.silverirc.com/cgit.cgi/screenfetch.git"
-  url "http://git.silverirc.com/cgit.cgi/screenfetch.git/snapshot/screenfetch-3.2.2.tar.gz"
-  sha1 "a520cfcc58cb4c63055dafb7d1df62a967496537"
+  url "http://git.silverirc.com/cgit.cgi/screenfetch.git/snapshot/screenfetch-3.2.2.tar.bz2"
+  sha1 "29ec0d68b2799a946dc75b390d96e5f1b2bb8aaf"
 
   def install
-    system "mv screenfetch-dev screenfetch"
-    bin.install "screenfetch"
+    bin.install "screenfetch-dev" => "screenfetch"
   end
 
   test do
