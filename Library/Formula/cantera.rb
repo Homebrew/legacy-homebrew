@@ -10,9 +10,7 @@ class Cantera < Formula
   depends_on 'graphviz'
 
   # fixes the Makefiles in Cantera/cxx/demos/ that have broken install commands
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     if MacOS.prefer_64_bit?
