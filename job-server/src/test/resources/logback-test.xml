@@ -1,0 +1,20 @@
+<configuration>
+
+  <logger name="ooyala.common" level="DEBUG" />
+
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>job-server-test.log</file>
+
+    <!-- truncate the logfile every time we start the test -->
+    <append>false</append>
+
+    <encoder>
+      <pattern>[%date{ISO8601}] %-5level %logger{26} [%X{akkaSource}] - %msg%n</pattern>
+    </encoder>
+
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="FILE" />
+  </root>
+</configuration>
