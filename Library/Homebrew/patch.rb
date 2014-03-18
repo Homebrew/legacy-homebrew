@@ -136,6 +136,7 @@ class LegacyPatch < ExternalPatch
   def initialize(strip, url)
     super(strip)
     resource.url = url
+    resource.download_strategy = CurlDownloadStrategy
   end
 
   def owner= owner
