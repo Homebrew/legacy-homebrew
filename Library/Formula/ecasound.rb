@@ -9,7 +9,7 @@ class Ecasound < Formula
 
   # 2.9.0 uses clock_gettime which is not available on OS X, patch upstream:
   # http://sourceforge.net/p/ecasound/code/ci/6524048e0717dfbbf7e243edb5b96b40e5983782/tree/kvutils/kvu_threads.cpp?diff=4db2d070691fbabf6af47c68f054a9efcb6d8d47
-  def patches; DATA; end
+  patch :DATA
 
   fails_with :clang do
     build 500
