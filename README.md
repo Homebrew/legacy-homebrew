@@ -98,6 +98,13 @@ Now let's run the job in the context and get the results back right away:
 
 Note the addition of `context=` and `sync=true`.
 
+## Deployment
+
+1. Copy `config/local.sh.template` to `<environment>.sh` and edit as appropriate.
+2. `bin/server_deploy.sh <environment>` -- this packages the job server along with config files and pushes
+   it to the remotes you have configured in `<environment>.sh`
+3. On the remote server, start it in the deployed directory with `server_start.sh`.
+
 ## Architecture
 
 The job server is intended to be run as one or more independent processes, separate from the Spark cluster
