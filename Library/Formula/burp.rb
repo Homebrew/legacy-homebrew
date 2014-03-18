@@ -2,8 +2,8 @@ require 'formula'
 
 class Burp < Formula
   homepage 'http://burp.grke.org/'
-  url 'https://downloads.sourceforge.net/project/burp/burp-1.3.36/burp-1.3.36.tar.bz2'
-  sha1 '471237090e631b3cb91ff864db84c7644c42bf87'
+  url 'https://downloads.sourceforge.net/project/burp/burp-1.3.48/burp-1.3.48.tar.bz2'
+  sha1 'ca3cd489f6ee843771858f9aae26877209851473'
 
   head 'https://github.com/grke/burp.git'
 
