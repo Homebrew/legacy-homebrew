@@ -23,9 +23,7 @@ class Dcmtk < Formula
   # since this is a very rare occurrence (the last development preview
   # release is from mid 2012), it seems justifiable to keep the patch
   # ourselves for a while.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.m64 if MacOS.prefer_64_bit?
