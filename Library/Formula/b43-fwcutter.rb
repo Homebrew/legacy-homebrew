@@ -5,13 +5,11 @@ class B43Fwcutter < Formula
   url "http://bues.ch/b43/fwcutter/b43-fwcutter-018.tar.bz2"
   sha1 "e77ff733ec43d77761330e16480b7ffa16c7c5dd"
 
-  def patches
-    # Use OSSwapInt16/32 instead of GNU byteswap.h.
-    # This has been accepted upstream but has not yet been
-    # officially released. See:
-    # https://github.com/mbuesch/b43-tools/pull/1
-    DATA
-  end
+  # Use OSSwapInt16/32 instead of GNU byteswap.h.
+  # This has been accepted upstream but has not yet been
+  # officially released. See:
+  # https://github.com/mbuesch/b43-tools/pull/1
+  patch :DATA
 
   def install
     inreplace 'Makefile' do |m|
