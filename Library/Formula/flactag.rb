@@ -14,11 +14,9 @@ class Flactag < Formula
   depends_on 's-lang'
   depends_on 'unac'
 
-  def patches
-    # Don't have a2x run xmllint on the a2x-generated DocBook - it
-    # fails its own validation.
-    DATA
-  end
+  # Don't have a2x run xmllint on the a2x-generated DocBook - it
+  # fails its own validation.
+  patch :DATA
 
   def install
     ENV.append 'LDFLAGS', '-liconv'
