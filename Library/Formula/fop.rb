@@ -11,11 +11,9 @@ class Fop < Formula
     sha1 'c2a3f6e985b21c9702a714942ac747864c8b1759'
   end
 
-  def patches
-    # fixes broken default java path as in
-    # http://svn.apache.org/viewvc/ant/core/trunk/src/script/ant?r1=1238725&r2=1434680&pathrev=1434680&view=patch
-    DATA
-  end
+  # fixes broken default java path as in
+  # http://svn.apache.org/viewvc/ant/core/trunk/src/script/ant?r1=1238725&r2=1434680&pathrev=1434680&view=patch
+  patch :DATA
 
   def install
     libexec.install Dir["*"]
