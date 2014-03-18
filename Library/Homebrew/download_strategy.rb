@@ -828,8 +828,6 @@ class DownloadStrategyDetector
       SubversionDownloadStrategy
     when %r[^https?://(.+?\.)?sourceforge\.net/hgweb/]
       MercurialDownloadStrategy
-    when bottle_native_regex, bottle_regex
-      CurlBottleDownloadStrategy
     else
       CurlDownloadStrategy
     end
