@@ -2,10 +2,10 @@ require 'formula'
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.3.5/Python-3.3.5.tgz'
-  sha1 '15f24702c5ae07d364606c663e515c1d9ba58615'
+  url 'http://python.org/ftp/python/3.4.0/Python-3.4.0.tar.xz'
+  sha1 'f54d7cf6af5dbd9bddbe31cf4772f39711381dbe'
 
-  VER='3.3'  # The <major>.<minor> is used so often.
+  VER='3.4'  # The <major>.<minor> is used so often.
 
   head 'http://hg.python.org/cpython', :using => :hg, :branch => VER
 
@@ -27,13 +27,8 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.2.tar.gz'
-    sha1 '547eff11ea46613e8a9ba5b12a89c1010ecc4e51'
-  end
-
-  resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.4.tar.gz'
-    sha1 '35ccb7430356186cf253615b70f8ee580610f734'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-3.3.tar.gz'
+    sha1 '1bd8397aad681cef29f145a4d6f04033b7ba9bff'
   end
 
   def patches
@@ -154,8 +149,8 @@ class Python3 < Formula
     resource('setuptools').stage { system "#{bin}/python3", *setup_args }
     mv bin/'easy_install', bin/'easy_install3'
 
-    resource('pip').stage { system "#{bin}/python3", *setup_args }
-    mv bin/'pip', bin/'pip3'
+#    resource('pip').stage { system "#{bin}/python3", *setup_args }
+#    mv bin/'pip', bin/'pip3'
 
     # And now we write the distutils.cfg
     cfg = prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/distutils/distutils.cfg"
