@@ -6,7 +6,7 @@ class Bibutils < Formula
   sha1 'd592ff4fea53dfc5440dc182204b5955fedb9ea2'
 
   #fix uint not being defined clang error
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--install-dir", prefix
