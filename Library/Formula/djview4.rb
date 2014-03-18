@@ -12,9 +12,7 @@ class Djview4 < Formula
   # Patch for Qt 4.8 compatibility. See:
   # https://build.opensuse.org/package/view_file?file=djview4-qt-4.8.patch&package=djvulibre-djview4&project=graphics&rev=8c40ae0f91469bb1af80f36c24516251
   # When updating this formula, check if this patch is still needed.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug",
