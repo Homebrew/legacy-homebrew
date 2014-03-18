@@ -7,6 +7,8 @@ class ObjectiveCaml < Formula
 
   head 'http://caml.inria.fr/svn/ocaml/trunk', :using => :svn
 
+  revision 1
+
   depends_on :x11 if MacOS::X11.installed?
 
   bottle do
