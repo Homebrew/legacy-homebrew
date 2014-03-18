@@ -1,0 +1,43 @@
+# Template for a Spark Job Server configuration file
+# When deployed these settings are loaded when job server starts
+#
+# Spark Cluster / Job Server configuration
+spark {
+  # spark.master will be passed to each job's JobContext
+  master = "local[4]"
+
+  # Default # of CPUs for jobs to use for Spark standalone cluster
+  job-number-cpus = 4
+
+  jobserver {
+    port = 8090
+    jar-store-rootdir = /tmp/jobserver/jars
+
+    jobdao = spark.jobserver.io.JobFileDAO
+
+    filedao {
+      rootdir = /tmp/spark-job-server/filedao/data
+    }
+  }
+
+  # predefined Spark contexts
+  # contexts {
+  #   my-low-latency-context {
+  #     num-cpu-cores = 1           # Number of cores to allocate.  Required.
+  #     memory-per-node = 512m         # Executor memory per node, -Xmx style eg 512m, 1G, etc.
+  #   }
+  #   # define additional contexts here
+  # }
+
+  # universal context configuration.  These settings can be overridden, see README.md
+  context-settings {
+    num-cpu-cores = 2           # Number of cores to allocate.  Required.
+    memory-per-node = 512m         # Executor memory per node, -Xmx style eg 512m, #1G, etc.
+  }
+
+  # This needs to match SPARK_HOME for cluster SparkContexts to be created successfully
+  # home = "/home/spark/spark"
+}
+
+# Note that you can use this file to define settings not only for job server,
+# but for your Spark jobs as well.  Spark job configuration merges with this configuration file as defaults.

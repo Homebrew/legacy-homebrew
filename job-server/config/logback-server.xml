@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Logging config for server deploys, with automatic date based log rollover -->
+
+<configuration>
+    <!-- Enable JMX-based changing of log levels, reloading of config, etc. -->
+    <jmxConfigurator />
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
+        <!--for further documentation-->
+
+        <!-- This is where the current log file is written -->
+        <file>${LOG_DIR}/spark-job-server.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_DIR}/spark-job-server.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+    <encoder>
+      <pattern>[%date{ISO8601}] %-5level %logger{20} [%X{jobId}] [%X{akkaSource}] - %msg%n</pattern>
+    </encoder>
+    </appender>
+    <root level="info">
+        <appender-ref ref="file"/>
+    </root>
+</configuration>
