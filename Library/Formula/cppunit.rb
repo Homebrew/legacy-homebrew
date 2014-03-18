@@ -7,9 +7,7 @@ class Cppunit < Formula
 
   option :universal
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?
