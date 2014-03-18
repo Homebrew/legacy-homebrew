@@ -7,9 +7,9 @@ class Clib < Formula
 
   bottle do
     cellar :any
-    sha1 "10a397578f2b73b308a5d0303e58a293537f985e" => :mavericks
-    sha1 "b685a52f56d730a8e9bc3ed17b3e1af623b7ca1b" => :mountain_lion
-    sha1 "6797bfb01ff5d24f774e77ebd0d99bd3ec7fb610" => :lion
+    sha1 "a6697350e19e0ce6102381d4d8a18868655ce19d" => :mavericks
+    sha1 "42627582b910bdf6348beffbbbf02cf1856ea7aa" => :mountain_lion
+    sha1 "3e1a8fc43c719a55e3ad0a9e9bab1740aefe3fd6" => :lion
   end
 
   def install
