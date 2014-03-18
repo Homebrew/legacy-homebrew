@@ -79,12 +79,8 @@ class Pathname
     end
   end
 
-  def install_symlink_p src, new_basename = nil
-    if new_basename.nil?
-      dst = self+File.basename(src)
-    else
-      dst = self+File.basename(new_basename)
-    end
+  def install_symlink_p src, new_basename=src
+    dst = join File.basename(new_basename)
     mkpath
     FileUtils.ln_s src.to_s, dst.to_s
   end
