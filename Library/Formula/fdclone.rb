@@ -7,9 +7,7 @@ class Fdclone < Formula
 
   depends_on 'nkf' => :build
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.j1
