@@ -8,9 +8,7 @@ class Bsdsfv < Formula
   # bug report:
   # http://sourceforge.net/tracker/?func=detail&aid=2887842&group_id=7211&atid=107211
   # Patch from MacPorts
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     bin.mkpath
