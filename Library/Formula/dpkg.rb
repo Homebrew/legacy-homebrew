@@ -10,7 +10,7 @@ class Dpkg < Formula
 
   # Fixes the PERL_LIBDIR.
   # Uses Homebrew-install gnu-tar instead of bsd tar.
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",
