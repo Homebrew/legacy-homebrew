@@ -16,15 +16,15 @@ class Boost < Formula
   homepage 'http://www.boost.org'
   url 'https://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2'
   sha1 'cef9a0cc7084b1d639e06cd3bc34e4251524c840'
+  revision 1
 
   head 'http://svn.boost.org/svn/boost/trunk'
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "e18905c7fc76c1f1a8422071ae887eca92c0e8df" => :mavericks
-    sha1 "a6dc7ba2be38e08b3648bfd79ec1b635c606654c" => :mountain_lion
-    sha1 "edbad0334143511e40a044191fa5711be9ce6838" => :lion
+    sha1 "8febaa2cf64152663551ae34a30f3030a1c1c023" => :mavericks
+    sha1 "1567fbf688e212f0e5a24d246fa386ea99cab5ae" => :mountain_lion
+    sha1 "2ed8000a0abb993fdd2985383eae9126c4170f5e" => :lion
   end
 
   env :userpaths

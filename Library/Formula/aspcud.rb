@@ -11,7 +11,7 @@ class Aspcud < Formula
   depends_on 'gringo'
   depends_on 'clasp'
 
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "make"

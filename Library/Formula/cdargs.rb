@@ -12,9 +12,7 @@ class Cdargs < Formula
 
   # fixes zsh usage using the patch provided at the cdargs homepage
   # (See http://www.skamphausen.de/cgi-bin/ska/CDargs)
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
