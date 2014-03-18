@@ -5,7 +5,7 @@ class Colordiff < Formula
   url 'http://www.colordiff.org/colordiff-1.0.13.tar.gz'
   sha1 '64e369aed2230f3aa5f1510b231fcac270793c09'
 
-  def patches; DATA; end
+  patch :DATA
 
   def install
     man1.mkpath
