@@ -9,6 +9,9 @@ class Autopsy < Formula
   depends_on 'afflib' => :optional
   depends_on 'libewf' => :optional
 
+  # fixes weird configure script that wouldn't work nicely with homebrew
+  patch :DATA
+
   def autcfg; <<-EOS.undent
     # Autopsy configuration settings
 
@@ -42,11 +45,6 @@ class Autopsy < Formula
     # Evidence locker location
     $LOCKDIR = '#{var}/lib/autopsy';
     EOS
-  end
-
-  def patches
-    # fixes weird configure script that wouldn't work nicely with homebrew
-    DATA
   end
 
   def install
