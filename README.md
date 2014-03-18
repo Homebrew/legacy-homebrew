@@ -16,6 +16,8 @@ We deploy our job server off of this repo at Ooyala and it is tested against CDH
 
 ## Quick start / development mode
 
+You need to have [SBT](http://www.scala-sbt.org/release/docs/Getting-Started/Setup.html) installed.
+
 From SBT shell, simply type "re-start".  This uses a default configuration file.  An optional argument is a
 path to an alternative config file.  You can also specify JVM parameters after "---".  Including all the
 options looks like this:
@@ -28,12 +30,12 @@ very fast turnaround cycles.
 
 ### WordCountExample walk-through
 
-First, to package the test jar containing the WordCountExample: `sbt/sbt jobserver/test:package`.
+First, to package the test jar containing the WordCountExample: `sbt job-server-tests/package`.
 Then go ahead and start the job server using the instructions above.
 
 Let's upload the jar:
 
-    curl --data-binary @jobserver/target/scala-2.9.3/spark-job-server_2.9.3-0.9.0-incubating-SNAPSHOT-test.jar localhost:8090/jars/test
+    curl --data-binary @job-server-tests/target/job-server-tests-0.3.0.jar localhost:8090/jars/test
     OK⏎
 
 The above jar is uploaded as app `test`.  Next, let's start an ad-hoc word count job, meaning that the job
