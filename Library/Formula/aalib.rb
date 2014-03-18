@@ -7,7 +7,7 @@ class Aalib < Formula
 
   # Fix malloc/stdlib issue on OS X
   # Fix underquoted definition of AM_PATH_AALIB in aalib.m4
-  def patches; DATA end
+  patch :DATA
 
   def install
     ENV.ncurses_define
