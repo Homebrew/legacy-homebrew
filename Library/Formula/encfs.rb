@@ -16,11 +16,8 @@ class Encfs < Formula
   # Changes are already in usptream and planned to be included in next stable release 1.75.
   # For more details refer to:
   # https://code.google.com/p/encfs/issues/detail?id=185#c10
-
-  def patches
-    # Fixes link times and xattr on links for OSX
-    DATA
-  end
+  # Fixes link times and xattr on links for OSX
+  patch :DATA
 
   def install
     # Add correct flags for linkage with {osx,}fuse and gettext libs
