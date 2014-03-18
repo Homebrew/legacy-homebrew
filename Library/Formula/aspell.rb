@@ -568,7 +568,7 @@ class Aspell < Formula
   end
 
   # const problems with llvm: http://www.freebsd.org/cgi/query-pr.cgi?pr=180565&cat=
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}"
