@@ -188,6 +188,7 @@ Contributions via Github Pull Request are welcome.  See the TODO for some ideas.
 - From the "master" project, please run "test" to ensure nothing is broken.
    - You may need to set `SPARK_LOCAL_IP` to `localhost` to ensure Akka port can bind successfully
 - Logging for tests goes to "job-server-test.log"
+- When you use `re-start`, the log file goes to `job-server/job-server-local.log`.
 - Please run scalastyle to ensure your code changes don't break the style guide
 - Do "re-start" from SBT for quick restarts of the job server process
 - Please update the g8 template if you change the SparkJob API

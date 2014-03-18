@@ -1,0 +1,21 @@
+<configuration debug="true">
+
+  <logger name="ooyala.common" level="DEBUG" />
+  <logger name="spark.jobserver" level="DEBUG" />
+
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>spark-jobserver.log</file>
+
+    <!-- truncate the logfile every time we start the app -->
+    <append>false</append>
+
+    <encoder>
+      <pattern>[%date{ISO8601}] %-5level %logger{26} [%X{jobId}] [%X{akkaSource}] - %msg%n</pattern>
+    </encoder>
+
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="FILE" />
+  </root>
+</configuration>
