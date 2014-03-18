@@ -2,7 +2,7 @@ require "formula"
 
 class Cspice < Formula
   homepage "http://naif.jpl.nasa.gov/naif/index.html"
-  url "http://naif.jpl.nasa.gov/pub/naif/toolkit//C/MacIntel_OSX_AppleC_64bit/packages/cspice.tar.Z"
+  url "http://naif.jpl.nasa.gov/pub/naif/toolkit/C/MacIntel_OSX_AppleC_64bit/packages/cspice.tar.Z"
   sha1 "e5546a72a2d0c7e337850a10d208014efb57d78d"
   version "64"
 
@@ -11,15 +11,17 @@ class Cspice < Formula
     rm_f Dir["exe/*"]
     system "csh", "makeall.csh"
     mv "exe", "bin"
-    prefix.install Dir["*"]
+    mkdir_p "share/cspice"
+    mv Dir["doc"], Dir["share/cspice/"]
+    mv Dir["data"], Dir["share/cspice/"]
+    prefix.install Dir["bin", "share", "include", "lib"]
 
-    Dir["#{lib}/*"].each do |file|
-      symlink file, "#{lib}"+"/lib"+File.basename(file)
-    end
+    symlink "#{lib}/cspice.a", "#{lib}/libcspice.a"
+    symlink "#{lib}/csupport.a", "#{lib}/libcsupport.a"
 
   end
 
   test do
-    system "#{bin}/tobin #{prefix}/data/cook_01.tsp DELME"
+    system "#{bin}/tobin", "#{prefix}/data/cook_01.tsp", "DELME"
   end
 end
