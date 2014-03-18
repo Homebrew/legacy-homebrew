@@ -20,11 +20,9 @@ class Cogl < Formula
   depends_on 'pango'
   depends_on :x11 => '2.5.1' if build.with? 'x'
 
-  def patches
-    # Patch from MacPorts, reported upstream at https://bugzilla.gnome.org/show_bug.cgi?id=708825
-    # https://trac.macports.org/browser/trunk/dports/graphics/cogl/files/patch-clock_gettime.diff
-    DATA
-  end
+  # Patch from MacPorts, reported upstream at https://bugzilla.gnome.org/show_bug.cgi?id=708825
+  # https://trac.macports.org/browser/trunk/dports/graphics/cogl/files/patch-clock_gettime.diff
+  patch :DATA
 
   def install
     system "./autogen.sh" if build.head?
