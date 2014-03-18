@@ -13,10 +13,9 @@ class Nginx < Formula
   head 'http://hg.nginx.org/nginx/', :using => :hg
 
   bottle do
-    revision 1
-    sha1 "0e0388d8077de0f985662fab65f22c49a4525f33" => :mavericks
-    sha1 "0c1d1d70815f4e0a1a213a2a888740aac839cb97" => :mountain_lion
-    sha1 "706403994b8ec210a9fd027820107f1684988d12" => :lion
+    sha1 "af8e6255e40b0f7739e9b688d4ed5b9f9b11b50e" => :mavericks
+    sha1 "1aefa2af8af3162bc575d9353e6b54364ea05401" => :mountain_lion
+    sha1 "6625bc9194bd656d6e0e925cf37c1cec672dbf97" => :lion
   end
 
   env :userpaths
