@@ -837,15 +837,15 @@ class DownloadStrategyDetector
 
   def self.detect_from_symbol(symbol)
     case symbol
-    when :bzr then BazaarDownloadStrategy
-    when :curl then CurlDownloadStrategy
-    when :cvs then CVSDownloadStrategy
-    when :git then GitDownloadStrategy
-    when :hg then MercurialDownloadStrategy
+    when :hg      then MercurialDownloadStrategy
     when :nounzip then NoUnzipCurlDownloadStrategy
-    when :post then CurlPostDownloadStrategy
-    when :ssl3 then CurlSSL3DownloadStrategy
-    when :svn then SubversionDownloadStrategy
+    when :git     then GitDownloadStrategy
+    when :bzr     then BazaarDownloadStrategy
+    when :svn     then SubversionDownloadStrategy
+    when :curl    then CurlDownloadStrategy
+    when :ssl3    then CurlSSL3DownloadStrategy
+    when :cvs     then CVSDownloadStrategy
+    when :post    then CurlPostDownloadStrategy
     else
       raise "Unknown download strategy #{strategy} was requested."
     end
