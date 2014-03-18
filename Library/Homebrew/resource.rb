@@ -9,7 +9,7 @@ class Resource
   include FileUtils
 
   attr_reader :checksum, :mirrors, :specs, :using
-  attr_writer :url, :checksum, :version
+  attr_writer :url, :checksum, :version, :download_strategy
 
   # Formula name must be set after the DSL, as we have no access to the
   # formula name before initialization of the formula
