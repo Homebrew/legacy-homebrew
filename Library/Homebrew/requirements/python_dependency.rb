@@ -5,9 +5,6 @@ class PythonDependency < Requirement
   default_formula "python"
 
   satisfy :build_env => false do
-    # Always build bottles against Homebrew Python as they still work
-    # against a 2.7 system Python.
-    next if build_bottle?
     python = which_python
     next unless python
     version = python_short_version
@@ -25,10 +22,6 @@ class PythonDependency < Requirement
     elsif which_python
       ENV.prepend_path "PATH", which_python.dirname
     end
-  end
-
-  def build_bottle?
-    ARGV.build_bottle?
   end
 
   def python_short_version
