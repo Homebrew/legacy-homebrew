@@ -2,10 +2,9 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.5.tar.bz2'
-  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.5.tar.bz2'
-  sha1 'ebbf4f8382fc8961c1fb7959727b3e6792e597c1'
-  revision 2
+  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.6.tar.bz2'
+  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.6.tar.bz2'
+  sha1 '081a2daf85e3257d7a2699e84a330712e3e5b9bb'
 
   head do
     url 'https://code.wireshark.org/review/wireshark', :using => :git
