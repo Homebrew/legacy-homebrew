@@ -10,9 +10,7 @@ class Burp < Formula
   depends_on 'librsync'
 
   # patches to change directories to brew conventions in Makefile and config files
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
    system "./configure", "--prefix=#{prefix}",
