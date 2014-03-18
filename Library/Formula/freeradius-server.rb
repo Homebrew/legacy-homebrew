@@ -11,7 +11,7 @@ class FreeradiusServer < Formula
   depends_on 'libtool' => :build
 
   # libtool is glibtool on OS X
-  def patches; DATA end
+  patch :DATA
 
   def install
     ENV.deparallelize
