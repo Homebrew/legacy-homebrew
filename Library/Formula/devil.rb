@@ -18,7 +18,7 @@ class Devil < Formula
   end
 
   # fix compilation issue for iluc.c
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?
