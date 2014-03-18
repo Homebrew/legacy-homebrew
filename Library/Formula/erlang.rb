@@ -5,9 +5,16 @@ require 'formula'
 # elixir are compatible.
 class Erlang < Formula
   homepage 'http://www.erlang.org'
-  # Download tarball from GitHub; it is served faster than the official tarball.
-  url 'https://github.com/erlang/otp/archive/OTP_R16B03-1.tar.gz'
-  sha1 'b8f6ff90d9eb766984bb63bf553c3be72674d970'
+
+  stable do
+    # Download tarball from GitHub; it is served faster than the official tarball.
+    url 'https://github.com/erlang/otp/archive/OTP_R16B03-1.tar.gz'
+    sha1 'b8f6ff90d9eb766984bb63bf553c3be72674d970'
+
+    # Fixes problem with ODBC on Mavericks. Fixed upstream/HEAD:
+    # https://github.com/erlang/otp/pull/142
+    patch :DATA if MacOS.version >= :mavericks
+  end
 
   devel do
     url 'http://www.erlang.org/download/otp_src_17.0-rc2.tar.gz'
@@ -49,12 +56,6 @@ class Erlang < Formula
   depends_on 'wxmac' => :recommended # for GUI apps like observer
 
   fails_with :llvm
-
-  def patches
-    # Fixes problem with ODBC on Mavericks. Fixed upstream/HEAD:
-    # https://github.com/erlang/otp/pull/142
-    DATA if MacOS.version >= :mavericks && build.stable?
-  end
 
   def install
     ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
