@@ -5,6 +5,21 @@ class Libquvi < Formula
   url 'https://downloads.sourceforge.net/project/quvi/0.4/libquvi/libquvi-0.4.1.tar.bz2'
   sha1 'b7ac371185c35a1a9a2135ef4ee61c86c48f78f4'
 
+  devel do
+    url 'https://downloads.sourceforge.net/project/quvi/0.9/libquvi/libquvi-0.9.4.tar.xz'
+    sha1 'f7577530e00a07c7decdaf7a352f437da413bcdb'
+
+    depends_on 'libproxy'
+    depends_on 'libgcrypt'
+    depends_on 'glib'
+    depends_on 'luasocket' => :lua
+
+    resource 'scripts' do
+      url 'https://downloads.sourceforge.net/project/quvi/0.9/libquvi-scripts/libquvi-scripts-0.9.20131130.tar.xz'
+      sha1 '41f059964c8f47aeb241cc53b883592b5db77e53'
+    end
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'lua'
 
