@@ -12,7 +12,7 @@ class Chromaprint < Formula
 
   # Upstream patch:
   # https://bitbucket.org/acoustid/chromaprint/commits/d0a8d8bc7c1ad5bda3294836f49184fe34a92454
-  def patches; DATA; end
+  patch :DATA
 
   def install
     args = std_cmake_args
