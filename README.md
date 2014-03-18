@@ -28,6 +28,8 @@ Note that re-start (SBT Revolver) forks the job server in a separate process.  I
 type re-start again at the SBT shell prompt, it will compile your changes and restart the jobserver.  It enables
 very fast turnaround cycles.
 
+For example jobs see the job-server-tests/ project / folder.
+
 ### WordCountExample walk-through
 
 First, to package the test jar containing the WordCountExample: `sbt job-server-tests/package`.
