@@ -82,7 +82,7 @@ class Pathname
   def install_symlink_p src, new_basename=src
     dst = join File.basename(new_basename)
     mkpath
-    FileUtils.ln_s src.to_s, dst.to_s
+    FileUtils.ln_s Pathname(src).relative_path_from(dst.parent), dst
   end
   protected :install_symlink_p
 
