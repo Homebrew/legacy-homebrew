@@ -6,9 +6,9 @@ class Pango < Formula
   sha256 "ad48e32917f94aa9d507486d44366e59355fcfd46ef86d119ddcba566ada5d22"
 
   bottle do
-    sha1 "58eb78b432c1a6e99d3ef2c6171118c8cce3d569" => :mavericks
-    sha1 "0887ad9879ef06cbcebffb0298957d281cc4b83a" => :mountain_lion
-    sha1 "8cd38f8356eb11db8863555891be34d422f5f7dd" => :lion
+    sha1 "36247b917430643002dee42a674c5f5d9958511b" => :mavericks
+    sha1 "14dd7446da1014ae619eb15863494050df33110c" => :mountain_lion
+    sha1 "122324a9601b4186319e82712875c8ab892fd8a9" => :lion
   end
 
   option 'without-x', 'Build without X11 support'
