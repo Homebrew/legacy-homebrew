@@ -8,7 +8,7 @@ class Kite < Formula
   depends_on 'bdw-gc'
 
   # patch to build against bdw-gc 7.2, sent upstream
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
