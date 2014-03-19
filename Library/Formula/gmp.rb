@@ -20,9 +20,7 @@ class Gmp < Formula
   # Patches gmp.h to remove the __need_size_t define, which
   # was preventing libc++ builds from getting the ptrdiff_t type
   # Applied upstream in http://gmplib.org:8000/gmp/raw-rev/6cd3658f5621
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.cxx11 if build.cxx11?
