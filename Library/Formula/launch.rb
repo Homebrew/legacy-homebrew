@@ -3,8 +3,8 @@ require 'formula'
 class Launch < Formula
   homepage 'http://web.sabi.net/nriley/software/'
   head 'https://github.com/nriley/launch.git'
-  url 'http://sabi.net/nriley/software/launch-1.2.1.tar.gz'
-  sha1 'c9d8034da5778ee973bf64c3d3acc19e143730bd'
+  url 'http://sabi.net/nriley/software/launch-1.2.2.tar.gz'
+  sha1 'd6fabdb495d3395460148bb99341cbf0f1b9d575'
 
   depends_on :xcode
 
