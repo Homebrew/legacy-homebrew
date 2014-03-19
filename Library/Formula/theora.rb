@@ -13,7 +13,8 @@ class Theora < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-oggtest",
-                          "--disable-vorbistest"
+                          "--disable-vorbistest",
+                          "--disable-examples"
     system "make install"
   end
 end
