@@ -6,6 +6,12 @@ class Mutt < Formula
   mirror 'https://bitbucket.org/mutt/mutt/downloads/mutt-1.5.23.tar.gz'
   sha1 '8ac821d8b1e25504a31bf5fda9c08d93a4acc862'
 
+  bottle do
+    sha1 "18da37536ab216267e5240e79acab0eb550076d9" => :mavericks
+    sha1 "dabafeb01c0ad9669c13302c2898f4fee85a7cd4" => :mountain_lion
+    sha1 "0808c458478a316031e71ecb6c3d54e99b41781a" => :lion
+  end
+
   head do
     url 'http://dev.mutt.org/hg/mutt#default', :using => :hg
 
