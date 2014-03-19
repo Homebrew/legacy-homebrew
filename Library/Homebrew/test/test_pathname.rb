@@ -194,6 +194,8 @@ class PathnameExtensionTests < Test::Unit::TestCase
       assert((@dst+'bin').directory?)
       assert((@dst+'bin/a.txt').exist?)
       assert((@dst+'bin/b.txt').exist?)
+
+      assert((@dst+'bin').readlink.relative?)
     end
   end
 
