@@ -12,7 +12,7 @@ class Lrdf < Formula
   depends_on "raptor"
 
   # Fix for newer autotools
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "glibtoolize"
