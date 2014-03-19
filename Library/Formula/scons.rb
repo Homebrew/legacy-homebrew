@@ -6,9 +6,11 @@ class Scons < Formula
   sha1 '775e715e49fe5fd8e1d29551a296fdc9267509e7'
 
   bottle do
-    sha1 "f6a31c7fc99c208819e1fc252e575a18ae610344" => :mavericks
-    sha1 "22695889878b8ea52080a993a83f4629456c160c" => :mountain_lion
-    sha1 "d908b069967695504f40f0d89323657e64dc7ef7" => :lion
+    cellar :any
+    revision 3
+    sha1 "e95727216cded8197acd0cf2d77a078ba1a4ed05" => :mavericks
+    sha1 "b8ffa3da1b9378944a5b97c2783c1a8593331539" => :mountain_lion
+    sha1 "c4d0bd20be297fc6d3eb615abe22b78212a91655" => :lion
   end
 
   def install
