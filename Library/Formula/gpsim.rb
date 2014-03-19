@@ -12,9 +12,7 @@ class Gpsim < Formula
   depends_on 'glib'
 
   # Patch is upstream; test if it is needed in next release
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-gui",
