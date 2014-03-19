@@ -12,10 +12,7 @@ class Iulib < Formula
   depends_on "jpeg"
   depends_on "libtiff"
 
-  def patches
-    # fixes errors in header calls
-    DATA
-  end
+  patch :DATA # fixes errors in header calls
 
   def install
     system "aclocal"
