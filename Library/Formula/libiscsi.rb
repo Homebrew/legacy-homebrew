@@ -19,9 +19,7 @@ class Libiscsi < Formula
   # 10.6
   # Fix typo in libiscsi.syms (fixed upstream)
   # Fix SOL_TCP not being defined on OSX (fixed upstream)
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     if build.with? 'noinst'
