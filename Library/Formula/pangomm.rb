@@ -11,7 +11,6 @@ class Pangomm < Formula
     sha1 "9fe4cb5a9e9f3ccea84c2b9ed4b59c5c4d6c06c0" => :lion
   end
 
-  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'pango'
   depends_on 'glibmm'

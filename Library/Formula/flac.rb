@@ -15,7 +15,6 @@ class Flac < Formula
   option :universal
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'lame'
   depends_on 'libogg' => :optional
 
@@ -30,13 +29,20 @@ class Flac < Formula
     ENV.append 'CFLAGS', '-std=gnu89'
 
     # sadly the asm optimisations won't compile since Leopard
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-debug",
-                          "--disable-asm-optimizations",
-                          "--enable-sse",
-                          "--enable-static",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    args = %W[
+      --disable-dependency-tracking
+      --disable-debug
+      --prefix=#{prefix}
+      --mandir=#{man}
+      --disable-asm-optimizations
+      --enable-sse
+      --enable-static
+    ]
+
+    args << "--without-ogg" if build.without? "libogg"
+
+    system "./configure", *args
+
     ENV['OBJ_FORMAT']='macho'
 
     # adds universal flags to the generated libtool script

@@ -2,8 +2,8 @@ require 'formula'
 
 class Latex2rtf < Formula
   homepage 'http://latex2rtf.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/latex2rtf/latex2rtf-unix/2.3.5/latex2rtf-2.3.5.tar.gz'
-  sha1 '12d5d33b8b3c841a401bcdaf50752259cd3aa5d5'
+  url 'https://downloads.sourceforge.net/project/latex2rtf/latex2rtf-unix/2.3.6/latex2rtf-2.3.6.tar.gz'
+  sha1 'd0436c52ec4d82f379cdbd7c8b00ddac4f015da5'
 
   def install
     inreplace 'Makefile', "cp -p doc/latex2rtf.html $(DESTDIR)$(SUPPORTDIR)", "cp -p doc/web/* $(DESTDIR)$(SUPPORTDIR)"

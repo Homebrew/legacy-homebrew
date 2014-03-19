@@ -34,11 +34,15 @@ class Python < Formula
     sha1 '35ccb7430356186cf253615b70f8ee580610f734'
   end
 
-  def patches
-    # Patch to disable the search for Tk.framework, since Homebrew's Tk is
-    # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
-    DATA if build.with? 'brewed-tk'
+  # Backported security fix for CVE-2014-1912: http://bugs.python.org/issue20246
+  patch :p0 do
+    url "https://gist.githubusercontent.com/leepa/9351856/raw/7f9130077fd760fcf9a25f50b69d9c77b155fbc5/CVE-2014-1912.patch"
+    sha1 "db25abc381f62e9f501ad56aaa2537e48e1b0889"
   end
+
+  # Patch to disable the search for Tk.framework, since Homebrew's Tk is
+  # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
+  patch :DATA if build.with? "brewed-tk"
 
   def lib_cellar
     prefix / (if OS.mac? then "Frameworks/Python.framework/Versions/2.7" end) /
@@ -105,7 +109,7 @@ class Python < Formula
 
     # HAVE_POLL is "broken" on OS X
     # See: http://trac.macports.org/ticket/18376 and http://bugs.python.org/issue5154
-    inreplace 'pyconfig.h', /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1' unless build.with? "poll"
+    inreplace 'pyconfig.h', /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1' if build.without? "poll"
 
     system "make"
 
@@ -322,7 +326,7 @@ index 716f08e..66114ef 100644
 -        if (host_platform == 'darwin' and
 -            self.detect_tkinter_darwin(inc_dirs, lib_dirs)):
 -            return
- 
+
          # Assume we haven't found any of the libraries or include files
          # The versions with dots are used on Unix, and the versions without
 @@ -1858,21 +1855,6 @@ class PyBuildExt(build_ext):
@@ -344,16 +348,16 @@ index 716f08e..66114ef 100644
 -            # Assume default location for X11
 -            include_dirs.append('/usr/X11/include')
 -            added_lib_dirs.append('/usr/X11/lib')
- 
+
          # If Cygwin, then verify that X is installed before proceeding
          if host_platform == 'cygwin':
 @@ -1897,9 +1879,6 @@ class PyBuildExt(build_ext):
          if host_platform in ['aix3', 'aix4']:
              libs.append('ld')
- 
+
 -        # Finally, link with the X11 libraries (not appropriate on cygwin)
 -        if host_platform != "cygwin":
 -            libs.append('X11')
- 
+
          ext = Extension('_tkinter', ['_tkinter.c', 'tkappinit.c'],
                          define_macros=[('WITH_APPINIT', 1)] + defs,

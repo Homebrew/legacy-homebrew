@@ -18,6 +18,7 @@ class Slimerjs < Formula
       system "zip", "-r", "omni.ja", "chrome/", "components/", "modules/",
                     "defaults/", "chrome.manifest", "-x@package_exclude.lst"
     end
+    inreplace "application.ini" ,"MaxVersion=27.*", "MaxVersion=28.*" if build.stable? and build.with? "xulrunner"
     libexec.install ["application.ini", "omni.ja", "slimerjs", "slimerjs.py"]
     bin.install_symlink libexec/"slimerjs"
   end

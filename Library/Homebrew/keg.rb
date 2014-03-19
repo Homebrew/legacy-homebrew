@@ -87,9 +87,7 @@ class Keg < Pathname
   end
 
   def plist_installed?
-    Dir.chdir self do
-      not Dir.glob("*.plist").empty?
-    end
+    not Dir.glob("#{self}/*.plist").empty?
   end
 
   def python_site_packages_installed?
@@ -101,8 +99,8 @@ class Keg < Pathname
   end
 
   def version
-    require 'version'
-    Version.new(basename.to_s)
+    require 'pkg_version'
+    PkgVersion.parse(basename.to_s)
   end
 
   def basename
@@ -196,6 +194,13 @@ class Keg < Pathname
       from.delete
     end
     from.make_relative_symlink(self)
+  end
+
+  def delete_pyc_files!
+    Pathname.new(self).find do |pn|
+      next if pn.extname != '.pyc'
+      pn.delete
+    end
   end
 
   protected

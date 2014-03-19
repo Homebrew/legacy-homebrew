@@ -13,7 +13,7 @@ class Gitbucket < Formula
   def install
     if build.head?
       system "ant"
-      libexec.install 'war/target/gitbucket.war', '.'
+      libexec.install "war/target/gitbucket.war", "."
     else
       libexec.install "gitbucket.war"
     end
@@ -33,7 +33,7 @@ class Gitbucket < Formula
           <string>/usr/bin/java</string>
           <string>-Dmail.smtp.starttls.enable=true</string>
           <string>-jar</string>
-          <string>#{opt_prefix}/libexec/gitbucket.war</string>
+          <string>#{opt_libexec}/gitbucket.war</string>
           <string>--host=127.0.0.1</string>
           <string>--port=8080</string>
           <string>--https=true</string>

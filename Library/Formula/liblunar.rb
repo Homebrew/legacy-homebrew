@@ -2,7 +2,7 @@ require 'formula'
 
 class Liblunar < Formula
   homepage 'http://code.google.com/p/liblunar/'
-  url 'http://liblunar.googlecode.com/files/liblunar-2.2.5.tar.gz'
+  url 'https://liblunar.googlecode.com/files/liblunar-2.2.5.tar.gz'
   sha1 'c149dc32776667ed8d53124eec414ab15ace0981'
 
   option 'python', 'Build python bindings using pygobject'
@@ -20,7 +20,7 @@ class Liblunar < Formula
        --disable-dependency-tracking
        --prefix=#{prefix}
     ]
-    args << '--disable-python' unless build.with? 'python'
+    args << '--disable-python' if build.without? 'python'
     system './configure', *args
     system 'make install'
   end

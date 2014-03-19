@@ -12,7 +12,6 @@ class Gtkx < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'glib'
   depends_on 'jpeg'
   depends_on 'libtiff'

@@ -6,8 +6,8 @@ require 'extend/ENV/super'
 def superenv?
   return false if MacOS::Xcode.without_clt? && MacOS.sdk_path.nil?
   return false unless Superenv.bin && Superenv.bin.directory?
-  return false if ARGV.include? "--env=std"
-  return false if ARGV.include? "--env=inherit"
+  return false if ARGV.env == "std"
+  return false if ARGV.env == "inherit"
   true
 end
 

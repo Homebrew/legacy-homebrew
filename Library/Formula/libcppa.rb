@@ -2,7 +2,7 @@ require 'formula'
 
 class Libcppa < Formula
   homepage 'http://libcppa.blogspot.it'
-  url 'http://github.com/Neverlord/libcppa/archive/V0.8.1.tar.gz'
+  url 'https://github.com/Neverlord/libcppa/archive/V0.8.1.tar.gz'
   sha1 'd4f096aae2bb72e254ad6df45edf3fb62370acaa'
 
   depends_on :macos => :lion
@@ -27,7 +27,7 @@ class Libcppa < Formula
     ]
 
     args << '--with-opencl' if build.with? 'opencl'
-    args << '--no-examples' unless build.with? 'examples'
+    args << '--no-examples' if build.without? 'examples'
 
     system "./configure", *args
     system "make"

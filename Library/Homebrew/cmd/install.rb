@@ -36,14 +36,9 @@ module Homebrew extend self
     end unless ARGV.force?
 
     perform_preinstall_checks
+
     begin
-      ARGV.formulae.each do |f|
-        begin
-          install_formula(f)
-        rescue CannotInstallFormulaError => e
-          ofail e.message
-        end
-      end
+      ARGV.formulae.each { |f| install_formula(f) }
     rescue FormulaUnavailableError => e
       ofail e.message
       require 'cmd/search'
@@ -104,6 +99,18 @@ module Homebrew extend self
 
   def install_formula f
     fi = FormulaInstaller.new(f)
+    fi.options             = f.build.used_options
+    fi.ignore_deps         = ARGV.ignore_deps? || ARGV.interactive?
+    fi.only_deps           = ARGV.only_deps?
+    fi.build_bottle        = ARGV.build_bottle?
+    fi.build_from_source   = ARGV.build_from_source?
+    fi.force_bottle        = ARGV.force_bottle?
+    fi.interactive         = ARGV.interactive?
+    fi.interactive       &&= :git if ARGV.flag? "--git"
+    fi.verbose             = ARGV.verbose?
+    fi.verbose           &&= :quieter if ARGV.quieter?
+    fi.debug               = ARGV.debug?
+    fi.prelude
     fi.install
     fi.caveats
     fi.finish
@@ -112,6 +119,7 @@ module Homebrew extend self
     # another formula. In that case, don't generate an error, just move on.
   rescue FormulaAlreadyInstalledError => e
     opoo e.message
-  # Ignore CannotInstallFormulaError and let caller handle it.
+  rescue CannotInstallFormulaError => e
+    ofail e.message
   end
 end

@@ -61,7 +61,7 @@ class Step
   end
 
   def command_short
-    @command.gsub(/(brew|--force|--verbose|--build-bottle|--rb) /, '').strip.squeeze ' '
+    @command.gsub(/(brew|--force|--retry|--verbose|--build-bottle|--rb) /, '').strip.squeeze ' '
   end
 
   def passed?
@@ -284,7 +284,7 @@ class Test
     install_args = '--verbose'
     install_args << ' --build-bottle' unless ARGV.include? '--no-bottle'
     install_args << ' --HEAD' if ARGV.include? '--HEAD'
-    test "brew install --only-dependencies #{formula}" unless dependencies.empty?
+    test "brew install --only-dependencies #{install_args} #{formula}" unless dependencies.empty?
     test "brew install #{install_args} #{formula}"
     install_passed = steps.last.passed?
     test "brew audit #{formula}"
@@ -428,6 +428,9 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
   copied = system "cp #{jenkins}/jobs/\"#{job}\"/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
   exit unless copied
 
+  ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
+  ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
+
   pr = ENV['UPSTREAM_PULL_REQUEST']
   number = ENV['UPSTREAM_BUILD_NUMBER']
 
@@ -441,6 +444,8 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
     safe_system "brew pull --clean #{pr}"
   end
 
+  ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
+  ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
   safe_system "brew bottle --merge --write *.bottle*.rb"
 
   remote = "git@github.com:BrewTestBot/homebrew.git"

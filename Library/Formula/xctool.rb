@@ -10,7 +10,7 @@ class Xctool < Formula
   depends_on :macos => :lion
 
   def install
-    system "./scripts/build.sh 'XT_INSTALL_ROOT=#{libexec}'"
+    system "./scripts/build.sh", "XT_INSTALL_ROOT=#{libexec}"
     bin.install_symlink "#{libexec}/bin/xctool"
   end
 

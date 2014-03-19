@@ -6,11 +6,10 @@ class Glade < Formula
   sha256 'c7ae0775b96a400cf43be738b2f836663a505b1458255df9ce83a340057e3d08'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'intltool' => :build
   depends_on 'gettext'
   depends_on 'libglade'
-  depends_on 'libxml2'  # make this dep explicit
+  depends_on 'libxml2'
   depends_on 'hicolor-icon-theme'
   depends_on :x11
 

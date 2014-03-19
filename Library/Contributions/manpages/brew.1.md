@@ -98,14 +98,15 @@ Note that these flags should only appear after a command.
 
     If `--installed` is passed, show dependencies for all installed formulae.
 
-  * `diy [--set-name <name>] [--set-version <version>]`:
+  * `diy [--name=<name>] [--version=<version>]`:
     Automatically determine the installation prefix for non-Homebrew software.
 
     Using the output from this command, you can install your own software into
     the Cellar and then link it into Homebrew's prefix with `brew link`.
 
-    The options `--set-name` and `--set-version` each take an argument and allow
-    you to explicitly set the name and version of the package you are installing.
+    The options `--name=<name>` and `--version=<version>` each take an argument
+    and allow you to explicitly set the name and version of the package you are
+    installing.
 
   * `doctor`:
     Check your system for potential problems. Doctor exits with a non-zero status
@@ -117,7 +118,7 @@ Note that these flags should only appear after a command.
   * `edit` <formula>:
     Open <formula> in the editor.
 
-  * `fetch [--force] [-v] [--HEAD] [--deps] [--build-from-source]` <formulae>:
+  * `fetch [--force] [-v] [--HEAD] [--deps] [--build-from-source|--force-bottle]` <formulae>:
     Download the source packages for the given <formulae>.
     For tarballs, also print SHA1 and SHA-256 checksums.
 
@@ -132,16 +133,17 @@ Note that these flags should only appear after a command.
     If `--build-from-source` is passed, download the source rather than a
     bottle.
 
+    If `--force-bottle` is passed, download a bottle if it exists for the current
+    version of OS X, even if it would not be used during installation.
+
   * `home`:
     Open Homebrew's own homepage in a browser.
 
   * `home` <formula>:
     Open <formula>'s homepage in a browser.
 
-  * `info [--all]` <formula>:
+  * `info` <formula>:
     Display information about <formula>.
-
-    If `--all` is passed, show info for all formulae.
 
   * `info --github` <formula>:
     Open a browser to the GitHub History page for formula <formula>.
@@ -152,7 +154,7 @@ Note that these flags should only appear after a command.
     Print a JSON representation of <formula>. Currently the only accepted value
     for <version> is `v1`.
 
-  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--fresh] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
+  * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
     <formula> is usually the name of the formula to install, but it can be specified
@@ -173,9 +175,6 @@ Note that these flags should only appear after a command.
 
     If `--only-dependencies` is passed, install the dependencies with specified
     options but do not install the specified formula.
-
-    If `--fresh` is passed, the installation process will not re-use any
-    options from previous installs.
 
     If `--cc=<compiler>` is passed, attempt to compile using <compiler>.
     <compiler> should be the name of the compiler's executable, for instance

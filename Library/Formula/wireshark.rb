@@ -5,6 +5,7 @@ class Wireshark < Formula
   url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.5.tar.bz2'
   mirror 'http://www.wireshark.org/download/src/wireshark-1.10.5.tar.bz2'
   sha1 'ebbf4f8382fc8961c1fb7959727b3e6792e597c1'
+  revision 2
 
   head do
     url 'https://code.wireshark.org/review/wireshark', :using => :git
@@ -59,8 +60,8 @@ class Wireshark < Formula
             "--with-ssl"]
 
     args << "--disable-warnings-as-errors" if build.head?
-    args << "--disable-wireshark" unless build.with? "x" or build.with? "qt"
-    args << "--disable-gtktest" unless build.with? "x"
+    args << "--disable-wireshark" if build.without?("x") && build.without?("qt")
+    args << "--disable-gtktest" if build.without? "x"
     args << "--with-qt" if build.with? "qt"
 
     system "./configure", *args
@@ -98,6 +99,12 @@ class Wireshark < Formula
       https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=3760
     EOS
   end
+
+  test do
+    system "#{bin}/randpkt", "-b", "100", "-c", "2", "capture.pcap"
+    output = `#{bin}/capinfos -Tmc capture.pcap`
+    assert_equal "File name,Number of packets\ncapture.pcap,2\n", output
+  end
 end
 
 __END__
@@ -119,7 +126,7 @@ index cd41b63..c473fe7 100755
  $as_echo "yes" >&6; }
  		;;
  	esac
- 
+
  	#
 -	# Add a -mmacosx-version-min flag to force tests that
 -	# use the compiler, as well as the build itself, not to,

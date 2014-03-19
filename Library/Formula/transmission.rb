@@ -7,7 +7,6 @@ class Transmission < Formula
 
   option 'with-nls', 'Build with native language support'
 
-  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build # So it will find system libcurl
   depends_on 'curl' if MacOS.version <= :leopard
   depends_on 'libevent'
@@ -26,7 +25,7 @@ class Transmission < Formula
               --disable-mac
               --without-gtk]
 
-    args << "--disable-nls" unless build.with? 'nls'
+    args << "--disable-nls" if build.without? 'nls'
 
     #fixes issue w/ webui files not being found #21151
     #submitted upstream: https://trac.transmissionbt.com/ticket/5304

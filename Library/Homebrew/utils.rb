@@ -170,8 +170,11 @@ def puts_columns items, star_items=[]
 end
 
 def which cmd, path=ENV['PATH']
-  dir = path.split(File::PATH_SEPARATOR).find {|p| File.executable? File.join(p, cmd)}
-  Pathname.new(File.join(dir, cmd)) unless dir.nil?
+  path.split(File::PATH_SEPARATOR).find do |p|
+    pcmd = File.join(p, cmd)
+    return Pathname.new(pcmd) if File.executable?(pcmd) && !File.directory?(pcmd)
+  end
+  return nil
 end
 
 def which_editor
@@ -362,7 +365,7 @@ module GitHub extend self
   end
 
   def print_pull_requests_matching(query)
-    return if ENV['HOMEBREW_NO_GITHUB_API']
+    return [] if ENV['HOMEBREW_NO_GITHUB_API']
     puts "Searching pull requests..."
 
     open_or_closed_prs = issues_matching(query, :type => "pr")

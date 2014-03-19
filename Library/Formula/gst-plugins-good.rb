@@ -20,11 +20,12 @@ class GstPluginsGood < Formula
     depends_on 'check'
   end
 
-  depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'gst-plugins-base'
   depends_on 'libsoup'
+
+  depends_on :x11 => :optional
 
   # The set of optional dependencies is based on the intersection of
   # gst-plugins-good-0.10.30/REQUIREMENTS and Homebrew formulae
@@ -33,7 +34,7 @@ class GstPluginsGood < Formula
   depends_on 'aalib' => :optional
   depends_on 'libcdio' => :optional
   depends_on 'esound' => :optional
-  depends_on 'flac' => :optional
+  depends_on 'flac' => [:optional, 'with-libogg']
   depends_on 'jpeg' => :optional
   depends_on 'libcaca' => :optional
   depends_on 'libdv' => :optional
@@ -41,16 +42,24 @@ class GstPluginsGood < Formula
   depends_on 'speex' => :optional
   depends_on 'taglib' => :optional
 
+  depends_on 'libogg' if build.with? 'flac'
+
   def install
     args = %W[
       --prefix=#{prefix}
-      --disable-schemas-install
       --disable-gtk-doc
       --disable-goom
       --with-default-videosink=ximagesink
       --disable-debug
       --disable-dependency-tracking
+      --disable-silent-rules
     ]
+
+    if build.with? "x11"
+      args << "--with-x"
+    else
+      args << "--without-x"
+    end
 
     if build.head?
       ENV.append "NOCONFIGURE", "yes"
