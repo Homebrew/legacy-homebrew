@@ -19,7 +19,7 @@ class Libsamplerate < Formula
   # configure adds `/Developer/Headers/FlatCarbon` to the include, but this is
   # very deprecated. Correct the use of Carbon.h to the non-flat location.
   # See: https://github.com/Homebrew/homebrew/pull/10875
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",
