@@ -15,7 +15,7 @@ class Ice < Formula
   # 1. TODO: document the first patch
   # 2. Patch to fix build with libc++, reported upstream:
   # http://www.zeroc.com/forums/bug-reports/6152-mavericks-build-failure-because-unexported-symbols.html
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.O2
