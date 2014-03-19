@@ -25,7 +25,7 @@ class Libtool < Formula
   # Allow -stdlib= to pass through to linker
   # http://git.savannah.gnu.org/gitweb/?p=libtool.git;a=commitdiff;h=8f975a1368594126e37d85511f1f96164e466d93
   # https://trac.macports.org/ticket/32982
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?
