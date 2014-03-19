@@ -38,7 +38,7 @@ index 429b1d8..f5c90db 100644
 -	gcc -m32 -s -nostdlib -o $@ $<
 +	gcc -m32 -s -nostdlib -static -e _start -o $@ $<
 diff --git a/burnBX.S b/burnBX.S
-index 198b16c..b92aac6 100644
+index 198b16c..d6f8b41 100644
 --- a/burnBX.S
 +++ b/burnBX.S
 @@ -94,7 +94,7 @@ mov_again:
@@ -50,11 +50,13 @@ index 198b16c..b92aac6 100644
  test:
  	mov	0(%edi,%ecx,4), %eax
  	cmp	%eax, 4(%edi,%ecx,4)
-@@ -117,7 +117,7 @@ error:				# error abend
+@@ -116,8 +116,8 @@ error:				# error abend
+ 	pushl	%eax
  	int	$0x80
  #endif
- .bss				# Data allocation
+-.bss				# Data allocation
 -.align 32
++.data				# Data allocation
 +.balign 32
  .lcomm	buffer,	 32 <<20	# reduce both to 8 <<20 for only
  .lcomm	buf2,	 32 <<20	# 16 MB virtual memory available
@@ -106,7 +108,7 @@ index 9d41871..4c151c1 100644
  e:	.long 0xffffffff,0x3fdfffff
  rt:	.long 0xffffffff,0x3fefffff
 diff --git a/burnMMX.S b/burnMMX.S
-index 6a0841f..32a9d69 100644
+index 6a0841f..7a68f65 100644
 --- a/burnMMX.S
 +++ b/burnMMX.S
 @@ -81,7 +81,7 @@ mov_again:
@@ -127,11 +129,13 @@ index 6a0841f..32a9d69 100644
  0:				   # second workloop
  	movq	0(%esi,%ecx),%mm7
  	pmaddwd %mm0, %mm1
-@@ -154,7 +154,7 @@ error:				# error abend
+@@ -153,8 +153,8 @@ error:				# error abend
+ #endif
  rt:	.long	0x7fffffff, 0x7fffffff
  
- .bss				# Data allocation
+-.bss				# Data allocation
 -.align 32
++.data				# Data allocation
 +.balign 32
  .lcomm	buffer,	 32 <<20	# reduce both to 8 <<20 for only
  .lcomm	buf2,	 32 <<20	# 16 MB virtual memory available
