@@ -33,7 +33,7 @@ class Neon < Formula
       "--with-ssl",
     ]
     if build.with? 'brewed-openssl'
-      args << "--with-libs=#{Formula['openssl']/opt_prefix}"
+      args << "--with-libs=#{Formula['openssl'].opt_prefix}"
     end
     system "./configure", *args
     system "make install"
