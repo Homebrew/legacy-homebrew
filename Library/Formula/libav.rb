@@ -57,9 +57,7 @@ class Libav < Formula
   depends_on 'speex' => :optional
   depends_on 'theora' => :optional
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     args = [
