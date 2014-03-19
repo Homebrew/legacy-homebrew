@@ -2,9 +2,16 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.6.tar.bz2'
-  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.6.tar.bz2'
-  sha1 '081a2daf85e3257d7a2699e84a330712e3e5b9bb'
+
+  stable do
+    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.6.tar.bz2'
+    mirror 'http://www.wireshark.org/download/src/wireshark-1.10.6.tar.bz2'
+    sha1 '081a2daf85e3257d7a2699e84a330712e3e5b9bb'
+
+    # Removes SDK checks that prevent the build from working on CLT-only systems
+    # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
+    patch :DATA
+  end
 
   head do
     url 'https://code.wireshark.org/review/wireshark', :using => :git
@@ -40,14 +47,6 @@ class Wireshark < Formula
   if build.with? 'x'
     depends_on :x11
     depends_on 'gtk+'
-  end
-
-  def patches
-    if build.stable?
-      # Removes SDK checks that prevent the build from working on CLT-only systems
-      # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
-      { :p1 => DATA }
-    end
   end
 
   def install
