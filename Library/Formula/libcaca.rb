@@ -20,7 +20,7 @@ class Libcaca < Formula
   end
 
   # Make libcaca build with clang; see http://caca.zoy.org/ticket/90
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # Some people can't compile when Java is enabled. See:
