@@ -31,7 +31,8 @@ class Kafka < Formula
     prefix.install "bin"
     bin.env_script_all_files(libexec/"bin", :JAVA_HOME => "`/usr/libexec/java_home`")
 
-    (etc/"kafka").install Dir["config/*"]
+    mv "config", "kafka"
+    etc.install "kafka"
     libexec.install_symlink etc/"kafka" => "config"
   end
 
