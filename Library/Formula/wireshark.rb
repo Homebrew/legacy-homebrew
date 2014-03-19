@@ -68,15 +68,15 @@ class Wireshark < Formula
     system "make install"
 
     if build.with? 'headers'
-        (include/"wireshark").install Dir["*.h"]
-        (include/"wireshark/epan").install Dir["epan/*.h"]
-        (include/"wireshark/epan/crypt").install Dir["epan/crypt/*.h"]
-        (include/"wireshark/epan/dfilter").install Dir["epan/dfilter/*.h"]
-        (include/"wireshark/epan/dissectors").install Dir["epan/dissectors/*.h"]
-        (include/"wireshark/epan/ftypes").install Dir["epan/ftypes/*.h"]
-        (include/"wireshark/epan/wmem").install Dir["epan/wmem/*.h"]
-        (include/"wireshark/wiretap").install Dir["wiretap/*.h"]
-        (include/"wireshark/wsutil").install Dir["wsutil/*.h"]
+      (include/"wireshark").install Dir["*.h"]
+      (include/"wireshark/epan").install Dir["epan/*.h"]
+      (include/"wireshark/epan/crypt").install Dir["epan/crypt/*.h"]
+      (include/"wireshark/epan/dfilter").install Dir["epan/dfilter/*.h"]
+      (include/"wireshark/epan/dissectors").install Dir["epan/dissectors/*.h"]
+      (include/"wireshark/epan/ftypes").install Dir["epan/ftypes/*.h"]
+      (include/"wireshark/epan/wmem").install Dir["epan/wmem/*.h"]
+      (include/"wireshark/wiretap").install Dir["wiretap/*.h"]
+      (include/"wireshark/wsutil").install Dir["wsutil/*.h"]
     end
   end
 
