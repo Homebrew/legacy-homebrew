@@ -76,7 +76,7 @@ class JobManagerActor(dao: JobDAO,
   // the executors to re-download the jar every time, and causes race conditions.
   // NOTE: It's important that jobCache be lazy as sparkContext is not initialized until later
   private val jobCacheSize = Try(config.getInt("spark.job-cache.max-entries")).getOrElse(10000)
-  // Use Spark Context's built in classloader when PR #1230 is merged.
+  // Use Spark Context's built in classloader when SPARK-1230 is merged.
   private val jarLoader = new ContextURLClassLoader(Array[URL](), getClass.getClassLoader)
   lazy val jobCache = new JobCache(jobCacheSize, dao, sparkContext, jarLoader)
 
