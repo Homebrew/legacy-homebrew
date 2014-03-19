@@ -10,10 +10,9 @@ class Fping < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--sbindir=#{bin}",
                           "--enable-ipv6"
     system "make install"
-    bin.install_symlink sbin/'fping'
-    bin.install_symlink sbin/'fping6'
   end
 
 end
