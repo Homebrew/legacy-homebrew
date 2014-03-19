@@ -21,11 +21,13 @@ class Perlmagick < Formula
     system "make", "install"
   end
 
-  def caveats; <<-EOS.undent
-    You might need to define PerlMagick's Perl library directory.
+  def caveats;
+    version = "#{Dir.entries ("#{lib}/perl5/site_perl").reject{|entry| entry == "." || entry == ".."}}"
+    perllib = File.join ("#{HOMEBREW_PREFIX}/lib/perl5/site_perl", version)
+   <<-EOS.undent
+     You might need to define the Perl library directory for PerlMagick.
 
-        PERL5LIB=#{HOMEBREW_PREFIX}/lib/perl5/site_perl/5.16.2
-
-    EOS
+       export PERL5LIB=#{perllib}
+   EOS
   end
 end
