@@ -9,8 +9,6 @@ class MongoC < Formula
   depends_on 'libbson'
 
   def install
-    # https://github.com/mongodb/mongo-c-driver/issues/5
-    inreplace 'configure', 'enable_libclang=yes', 'enable_libclang=no'
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end
