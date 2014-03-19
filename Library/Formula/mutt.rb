@@ -2,9 +2,9 @@ require 'formula'
 
 class Mutt < Formula
   homepage 'http://www.mutt.org/'
-  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.22.tar.gz'
-  mirror 'https://bitbucket.org/mutt/mutt/downloads/mutt-1.5.22.tar.gz'
-  sha1 '728a114cb3a44df373dbf1292fc34dd8321057dc'
+  url 'ftp://ftp.mutt.org/mutt/mutt-1.5.23.tar.gz'
+  mirror 'https://bitbucket.org/mutt/mutt/downloads/mutt-1.5.23.tar.gz'
+  sha1 '8ac821d8b1e25504a31bf5fda9c08d93a4acc862'
 
   head do
     url 'http://dev.mutt.org/hg/mutt#default', :using => :hg
