@@ -14,9 +14,7 @@ class Libming < Formula
   depends_on 'giflib' => :optional
 
   # Helps us find libgif.dylib, not libungif.dylib which is retired.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # TODO: Libming also includes scripting front-ends for Perl, Python, TCL
