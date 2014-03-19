@@ -2,30 +2,13 @@ require 'formula'
 
 class Tcpreplay < Formula
   homepage 'http://tcpreplay.synfin.net'
-  url 'https://downloads.sourceforge.net/project/tcpreplay/tcpreplay/3.4.4/tcpreplay-3.4.4.tar.gz'
-  sha1 '9e4cca81cfbfb919f8759e1a27ce1b3b963ff3b8'
+  url 'https://downloads.sourceforge.net/project/tcpreplay/tcpreplay/4.0.3/tcpreplay-4.0.3.tar.gz'
+  sha1 '1410ddf0cd239ef825380cc8d1f495df39106404'
 
   # Hard-code use of dylib instead of so
   patch :DATA
 
-  # Use system strlcpy; fixed upstream
-  patch do
-    url "https://github.com/synfinatic/tcpreplay/commit/6f45329ba7e6300f07f253032e6feb8a650bea23.patch"
-    sha1 "06a8323b7dd8545ea1a629b193b2b1f04535a4a7"
-  end
-
-  patch do
-    url "https://github.com/synfinatic/tcpreplay/commit/0983f589a21bbd0d248e9b408bdf5aeacb61ce19.patch"
-    sha1 "1cb5080a6c032f78b3ac5be28a7e6ac9c4c821da"
-  end
-
   def install
-    # Don't attempt to compile strlcpy; fixed upstream
-    inreplace "lib/Makefile.in" do |s|
-      s.remove_make_var! "libstrl_a_SOURCES"
-      s.remove_make_var! "noinst_LIBRARIES"
-    end
-
     inreplace "src/common/Makefile.in" do |s|
       s.gsub! "libcommon_a_LIBADD = ../../lib/libstrl.a", ""
       s.gsub! "libcommon_a_DEPENDENCIES = ../../lib/libstrl.a", ""
