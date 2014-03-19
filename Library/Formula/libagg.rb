@@ -13,7 +13,7 @@ class Libagg < Formula
   depends_on :freetype => :optional
 
   # Fix build with clang; last release was in 2006
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # AM_C_PROTOTYPES was removed in automake 1.12, as it's only needed for
