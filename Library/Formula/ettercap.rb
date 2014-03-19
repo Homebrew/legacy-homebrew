@@ -2,8 +2,26 @@ require 'formula'
 
 class Ettercap < Formula
   homepage 'http://ettercap.github.io/ettercap/'
-  url "https://github.com/Ettercap/ettercap/archive/v0.8.0.tar.gz"
-  sha1 "008fca94bbd67b578699300eb321766cd41fbfff"
+
+  stable do
+    url "https://github.com/Ettercap/ettercap/archive/v0.8.0.tar.gz"
+    sha1 "008fca94bbd67b578699300eb321766cd41fbfff"
+
+    patch do
+      # Fixes issue #326: redefinition of 'bpf_program', 'bpf_version',
+      #  and 'bpf_insn' in ec_send.c on Mac OS X.
+      # url: https://github.com/Ettercap/ettercap/issues/326
+      url "https://github.com/Ettercap/ettercap/commit/4aaaa2.patch"
+      sha1 "f76b6bea3972949697f2925194aec6a4faf4aa5e"
+    end
+
+    patch do
+      # Fixes issue #344: undefined symbol safe_free_mem caused by the previous fix.
+      # url: https://github.com/Ettercap/ettercap/issues/344
+      url "https://github.com/Ettercap/ettercap/commit/33ac95.patch"
+      sha1 "17dbef4b16c1447f91e65a56d7398d176800beee"
+    end
+  end
 
   head "https://github.com/Ettercap/ettercap.git"
 
@@ -18,18 +36,6 @@ class Ettercap < Formula
   depends_on 'curl' # require libcurl >= 7.26.0
   depends_on 'gtk+' => :optional
   depends_on 'luajit' => :optional
-
-  def patches
-    [
-      # Fixes issue #326: redefinition of 'bpf_program', 'bpf_version',
-      #  and 'bpf_insn' in ec_send.c on Mac OS X.
-      # url: https://github.com/Ettercap/ettercap/issues/326
-      "https://github.com/Ettercap/ettercap/commit/4aaaa2.patch",
-      # Fixes issue #344: undefined symbol safe_free_mem caused by the previous fix.
-      # url: https://github.com/Ettercap/ettercap/issues/344
-      "https://github.com/Ettercap/ettercap/commit/33ac95.patch",
-    ]
-  end
 
   def install
     args = std_cmake_args
