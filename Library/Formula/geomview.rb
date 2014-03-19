@@ -9,9 +9,7 @@ class Geomview < Formula
   depends_on 'lesstif'
 
   # Per MacPorts: https://trac.macports.org/ticket/35856
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug",
