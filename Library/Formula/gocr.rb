@@ -10,9 +10,7 @@ class Gocr < Formula
   depends_on 'netpbm' => :optional
 
   # Edit makefile to install libs per developer documentation
-  def patches
-    DATA if build.with? "lib"
-  end
+  patch :DATA if build.with? "lib"
 
   def install
     system "./configure", "--disable-debug",
