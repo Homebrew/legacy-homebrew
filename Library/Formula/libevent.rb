@@ -31,9 +31,7 @@ class Libevent < Formula
   end
 
   # Enable manpage generation
-  def patches
-    DATA if build.include? 'enable-manpages'
-  end
+  patch :DATA if build.include? 'enable-manpages'
 
   def install
     ENV.universal_binary if build.universal?
