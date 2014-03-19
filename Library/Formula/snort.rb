@@ -14,11 +14,9 @@ class Snort < Formula
   def install
     args = %W[--prefix=#{prefix}
               --disable-dependency-tracking
-              --enable-ipv6
               --enable-gre
               --enable-mpls
               --enable-targetbased
-              --enable-decoder-preprocessor-rules
               --enable-ppm
               --enable-perfprofiling
               --enable-zlib
