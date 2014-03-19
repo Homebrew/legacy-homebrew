@@ -30,9 +30,7 @@ class Gpac < Formula
   depends_on 'openjpeg' => :optional
 
   # Fixes build against ffmpeg 2.x; backported from upstream SVN
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.deparallelize
