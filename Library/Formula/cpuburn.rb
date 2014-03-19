@@ -3,7 +3,7 @@ require "formula"
 class Cpuburn < Formula
   homepage "http://packages.debian.org/stable/misc/cpuburn"
   url "http://ftp.de.debian.org/debian/pool/main/c/cpuburn/cpuburn_1.4a.orig.tar.gz"
-  sha256 "eb191ce9bfbf453d30c218c3419573df102a3588f96c4a43686c84bb9da4bed6"
+  sha1 "bdec2233b5f473735c47ca6150c244f33a1fd82b"
 
   patch do
     url "http://patch-tracker.debian.org/patch/series/dl/cpuburn/1.4a-3/01-variables.patch"
