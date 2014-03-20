@@ -7,9 +7,7 @@ class Mapnik < Formula
 
   # can be removed at Mapnik > 2.2.0
   # https://github.com/mapnik/mapnik/issues/1973
-  def patches
-    DATA
-  end
+  patch :DATA
   head 'https://github.com/mapnik/mapnik.git'
 
   depends_on 'pkg-config' => :build
