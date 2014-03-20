@@ -51,7 +51,7 @@ class ClozureCl < Formula
     %Q{#{ccl} -e '(progn (format t "Hello world from #{bit}-bit ClozureCL") (ccl::quit))'}
   end
 
-  def test
+  test do
     system test_ccl
     system test_ccl(64)
   end

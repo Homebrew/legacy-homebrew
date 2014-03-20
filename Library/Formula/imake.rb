@@ -13,11 +13,9 @@ class Imake < Formula
     sha1 'ae22eb81d56d018f0b3b149f70965ebfef2385fd'
   end
 
-  def patches
-    # Remove cpp whitespace check and add "-" to pass the cpp -undef test.
-    # These are needed to support superenv (which uses clang)
-    DATA
-  end
+  # Remove cpp whitespace check and add "-" to pass the cpp -undef test.
+  # These are needed to support superenv (which uses clang)
+  patch :DATA
 
   def install
     ENV.deparallelize

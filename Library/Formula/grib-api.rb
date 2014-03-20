@@ -11,9 +11,7 @@ class GribApi < Formula
 
   # Fixes build errors in Lion
   # https://software.ecmwf.int/wiki/plugins/viewsource/viewpagesrc.action?pageId=12648475
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.deparallelize

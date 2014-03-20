@@ -6,14 +6,14 @@ class Scala < Formula
   sha1 '04cd6237f164940e1e993a127e7cb21297f3b7ae'
 
   devel do
-    url 'http://www.scala-lang.org/files/archive/scala-2.11.0-M7.tgz'
-    sha1 '4b7cb89af66a98d47b22dfe3137220ca8fe5e593'
-    version '2.11.0-M7'
+    url 'http://downloads.typesafe.com/scala/2.11.0-RC1/scala-2.11.0-RC1.tgz'
+    sha1 '1b8f9149015b4f017e1e295bd187ed726a416437'
+    version '2.11.0-RC1'
 
     resource 'docs' do
-      url 'http://www.scala-lang.org/files/archive/scala-docs-2.11.0-M7.zip'
-      sha1 'c1878aa566d71242c43ec46a358f18b671485647'
-      version '2.11.0-M7'
+      url 'http://downloads.typesafe.com/scala/2.11.0-RC1/scala-docs-2.11.0-RC1.zip'
+      sha1 '15411722b67a87186b87ceb61289d3a1a69b725e'
+      version '2.11.0-RC1'
     end
   end
 
@@ -53,5 +53,19 @@ class Scala < Formula
     To use with IntelliJ, set the Scala home to:
       #{opt_prefix}/idea
     EOS
+  end
+
+  test do
+    file = testpath/'hello.scala'
+    file.write <<-EOS.undent
+      object Computer {
+        def main(args: Array[String]) {
+          println(2 + 2)
+        }
+      }
+    EOS
+    output = `'#{bin}/scala' #{file}`
+    assert_equal "4", output.strip
+    assert $?.success?
   end
 end

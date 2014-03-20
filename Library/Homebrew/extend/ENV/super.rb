@@ -67,7 +67,6 @@ module Superenv
     validate_cc!(formula) unless formula.nil?
     self['DEVELOPER_DIR'] = determine_developer_dir
     self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
-    self['USER_PATH'] = self['PATH']
     self['PATH'] = determine_path
     self['PKG_CONFIG_PATH'] = determine_pkg_config_path
     self['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
@@ -78,7 +77,6 @@ module Superenv
     self['HOMEBREW_TEMP'] = HOMEBREW_TEMP
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
     self['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
-    self['HOMEBREW_VERBOSE'] = "1" if ARGV.verbose?
     self['HOMEBREW_OPTFLAGS'] = determine_optflags
     self['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
     self['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
@@ -264,6 +262,14 @@ module Superenv
   def universal_binary
     self['HOMEBREW_ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
     append 'HOMEBREW_CCCFG', "u", ''
+
+    # GCC doesn't accept "-march" for a 32-bit CPU with "-arch x86_64"
+    if compiler != :clang && Hardware.is_32_bit?
+      self['HOMEBREW_OPTFLAGS'] = self['HOMEBREW_OPTFLAGS'].sub(
+        /-march=\S*/,
+        "-Xarch_#{Hardware::CPU.arch_32_bit} \\0"
+      )
+    end
   end
 
   def cxx11

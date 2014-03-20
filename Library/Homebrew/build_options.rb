@@ -33,7 +33,7 @@ class BuildOptions
   end
 
   def add_dep_option(dep)
-    name = dep.name.split("/").last # strip any tap prefix
+    name = dep.option_name
     if dep.optional? && !has_option?("with-#{name}")
       add("with-#{name}", "Build with #{name} support")
     elsif dep.recommended? && !has_option?("without-#{name}")

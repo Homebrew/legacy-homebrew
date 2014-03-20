@@ -4,6 +4,7 @@ class Gnupg2 < Formula
   homepage 'http://www.gnupg.org/'
   url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.22.tar.bz2'
   sha1 '9ba9ee288e9bf813e0f1e25cbe06b58d3072d8b8'
+  revision 1
 
   option '8192', 'Build with support for private keys of up to 8192 bits'
 
@@ -24,7 +25,7 @@ class Gnupg2 < Formula
   # 2.x, and gpg-agent separately, and adjust tests to fit this scheme
   # Fix typo that breaks compilation:
   # http://lists.gnupg.org/pipermail/gnupg-users/2013-May/046652.html
-  def patches; DATA; end
+  patch :DATA
 
   def install
     inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if build.include? '8192'
@@ -35,17 +36,20 @@ class Gnupg2 < Formula
 
     ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
 
+    agent = Formula["gpg-agent"].opt_prefix
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
       --sbindir=#{bin}
       --enable-symcryptrun
       --disable-agent
-      --with-agent-pgm=#{Formula.factory('gpg-agent').opt_prefix}/bin/gpg-agent
+      --with-agent-pgm=#{agent}/bin/gpg-agent
+      --with-protect-tool-pgm=#{agent}/libexec/gpg-protect-tool
     ]
 
     if build.with? 'readline'
-      args << "--with-readline=#{Formula.factory('readline').opt_prefix}"
+      args << "--with-readline=#{Formula["readline"].opt_prefix}"
     end
 
     system "./configure", *args

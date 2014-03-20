@@ -1,7 +1,7 @@
 require 'formula'
 
 class Openvpn < Formula
-  homepage 'http://openvpn.net/'
+  homepage 'http://openvpn.net/index.php/download/community-downloads.html'
   url 'http://build.openvpn.net/downloads/releases/openvpn-2.3.2.tar.gz'
   mirror 'http://swupdate.openvpn.org/community/releases/openvpn-2.3.2.tar.gz'
   sha256 '20bda3f9debb9a52db262aecddfa4e814050a9404a9106136b7e3b6f7ef36ffc'
@@ -61,7 +61,7 @@ class Openvpn < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/openvpn</string>
+        <string>#{opt_sbin}/openvpn</string>
         <string>--config</string>
         <string>#{etc}/openvpn/openvpn.conf</string>
       </array>

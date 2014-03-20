@@ -21,6 +21,8 @@ class DependencyCollector
     :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby
   ].freeze
 
+  CACHE = {}
+
   attr_reader :deps, :requirements
 
   def initialize
@@ -29,13 +31,25 @@ class DependencyCollector
   end
 
   def add(spec)
-    case dep = build(spec)
+    case dep = fetch(spec)
     when Dependency
       @deps << dep
     when Requirement
       @requirements << dep
     end
     dep
+  end
+
+  def fetch(spec)
+    CACHE.fetch(cache_key(spec)) { |key| CACHE[key] = build(spec) }
+  end
+
+  def cache_key(spec)
+    if Resource === spec && spec.download_strategy == CurlDownloadStrategy
+      File.extname(spec.url)
+    else
+      spec
+    end
   end
 
   def build(spec)
@@ -74,7 +88,9 @@ class DependencyCollector
     if tags.empty?
       Dependency.new(spec, tags)
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
-      LanguageModuleDependency.new(tag, spec)
+      LanguageModuleDependency.new(tag, spec, tags[1])
+    elsif HOMEBREW_TAP_FORMULA_REGEX === spec
+      TapDependency.new(spec, tags)
     else
       Dependency.new(spec, tags)
     end
@@ -86,11 +102,9 @@ class DependencyCollector
       # Xcode no longer provides autotools or some other build tools
       autotools_dep(spec, tags)
     when :x11        then X11Dependency.new(spec.to_s, tags)
-    when *X11Dependency::Proxy::PACKAGES
-      x11_dep(spec, tags)
-    when :cairo, :pixman
-      # We no longer use X11 psuedo-deps for cairo or pixman,
-      # so just return a standard formula dependency.
+    when :cairo, :fontconfig, :freetype, :libpng, :pixman
+      # We no longer use X11 proxy deps, but we support the symbols
+      # for backwards compatibility.
       Dependency.new(spec.to_s, tags)
     when :xcode      then XcodeDependency.new(tags)
     when :macos      then MinimumMacOSRequirement.new(tags)
@@ -118,14 +132,6 @@ class DependencyCollector
       spec.new(tags)
     else
       raise TypeError, "#{spec.inspect} is not a Requirement subclass"
-    end
-  end
-
-  def x11_dep(spec, tags)
-    if MacOS.version >= :mountain_lion
-      Dependency.new(spec.to_s, tags)
-    else
-      X11Dependency::Proxy.for(spec.to_s, tags)
     end
   end
 

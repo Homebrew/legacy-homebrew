@@ -6,13 +6,11 @@ class Libunistring < Formula
   mirror 'http://ftp.gnu.org/gnu/libunistring/libunistring-0.9.3.tar.gz'
   sha1 'e1ea13c24a30bc93932d19eb5ad0704a618506dd'
 
-  def patches
-    # Submitted upstream: https://savannah.gnu.org/bugs/?37751
-    # I am not 100% sure if this is the right patch because libunistring
-    # provides its own stdint.h (and stdint.mini.h) which wraps the system's
-    # version of these files (in a complicated manner). This is fragile.
-    DATA unless MacOS::CLT.installed?
-  end
+  # Submitted upstream: https://savannah.gnu.org/bugs/?37751
+  # I am not 100% sure if this is the right patch because libunistring
+  # provides its own stdint.h (and stdint.mini.h) which wraps the system's
+  # version of these files (in a complicated manner). This is fragile.
+  patch :DATA unless MacOS::CLT.installed?
 
   def install
     system "./configure", "--disable-dependency-tracking",

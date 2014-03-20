@@ -14,7 +14,7 @@ class Remctl < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/remctl", "-v"
   end
 end

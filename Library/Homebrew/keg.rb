@@ -49,7 +49,7 @@ class Keg < Pathname
         # check whether the file to be unlinked is from the current keg first
         next if !dst.symlink? || !dst.exist? || src != dst.resolved_path
 
-        dst.uninstall_info if dst.to_s =~ INFOFILE_RX and ENV['HOMEBREW_KEEP_INFO']
+        dst.uninstall_info if dst.to_s =~ INFOFILE_RX
         dst.unlink
         Find.prune if src.directory?
       end
@@ -87,9 +87,7 @@ class Keg < Pathname
   end
 
   def plist_installed?
-    Dir.chdir self do
-      not Dir.glob("*.plist").empty?
-    end
+    not Dir.glob("#{self}/*.plist").empty?
   end
 
   def python_site_packages_installed?
@@ -101,8 +99,8 @@ class Keg < Pathname
   end
 
   def version
-    require 'version'
-    Version.new(basename.to_s)
+    require 'pkg_version'
+    PkgVersion.parse(basename.to_s)
   end
 
   def basename
@@ -130,7 +128,7 @@ class Keg < Pathname
     link_dir('share', mode) do |path|
       case path.to_s
       when 'locale/locale.alias' then :skip_file
-      when INFOFILE_RX then ENV['HOMEBREW_KEEP_INFO'] ? :info : :skip_file
+      when INFOFILE_RX then :info
       when LOCALEDIR_RX then :mkpath
       when *share_mkpaths then :mkpath
       when /^icons\/.*\/icon-theme\.cache$/ then :skip_file
@@ -196,6 +194,13 @@ class Keg < Pathname
       from.delete
     end
     from.make_relative_symlink(self)
+  end
+
+  def delete_pyc_files!
+    Pathname.new(self).find do |pn|
+      next if pn.extname != '.pyc'
+      pn.delete
+    end
   end
 
   protected

@@ -59,4 +59,22 @@ class DependenciesTests < Test::Unit::TestCase
     assert_equal [qux], @deps.recommended
     assert_equal [foo, baz, quux, qux].sort_by(&:name), @deps.default.sort_by(&:name)
   end
+
+  def test_equality
+    a = Dependencies.new
+    b = Dependencies.new
+
+    dep = Dependency.new("foo")
+
+    a << dep
+    b << dep
+
+    assert_equal a, b
+    assert a.eql?(b)
+
+    b << Dependency.new("bar", [:optional])
+
+    assert_not_equal a, b
+    assert !a.eql?(b)
+  end
 end

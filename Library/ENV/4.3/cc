@@ -73,10 +73,10 @@ class Cmd
     end
   end
   def args
-    args = if not cccfg? 'O' or tool == 'ld'
-      @args.dup
+    if !cccfg?("O") || tool == "ld" || configure?
+      args = @args.dup
     else
-      refurbished_args
+      args = refurbished_args
     end
     if tool != 'ld'
       args << "--sysroot=#{sdkroot}"
@@ -119,8 +119,10 @@ class Cmd
            /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/, '-m64',
            /^-O[0-9zs]?$/, '-fast', '-no-cpp-precomp',
            '-pedantic', '-pedantic-errors'
-      when '-fopenmp', '-lgomp'
-        # clang doesn't support OpenMP
+      when '-fopenmp', '-lgomp', '-mno-fused-madd', '-fforce-addr',
+           '-fno-defer-pop', '-fno-check-new', '-mno-dynamic-no-pic',
+           '-fearly-inlining', '-finline-functions-called-once', /^-finline-limit/
+        # clang doesn't support these flags
         args << arg if not tool =~ /^clang/
       when /^-W.*/
         args << arg if arg =~ /^-W[alp],/ or arg =~ /^-Wno-/

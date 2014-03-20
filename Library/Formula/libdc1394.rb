@@ -2,7 +2,7 @@ require 'formula'
 
 class Libdc1394 < Formula
   homepage 'http://damien.douxchamps.net/ieee1394/libdc1394/'
-  url 'http://downloads.sourceforge.net/project/libdc1394/libdc1394-2/2.2.1/libdc1394-2.2.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/libdc1394/libdc1394-2/2.2.1/libdc1394-2.2.1.tar.gz'
   sha1 'b92c9670b68c4e5011148f16c87532bef2e5b808'
 
   depends_on :libtool
@@ -10,15 +10,15 @@ class Libdc1394 < Formula
   depends_on :autoconf
   depends_on 'sdl'
 
-  def patches
-    p = []
-    # fix issue due to bug in OSX Firewire stack
-    # libdc1394 author comments here:
-    # http://permalink.gmane.org/gmane.comp.multimedia.libdc1394.devel/517
-    p << DATA
+  # fix issue due to bug in OSX Firewire stack
+  # libdc1394 author comments here:
+  # http://permalink.gmane.org/gmane.comp.multimedia.libdc1394.devel/517
+  patch :DATA
 
-    # Backport of upstream fixes for building on OS X
-    p << "https://gist.github.com/jacknagel/7395159/raw/3ba722636fb898d210170f5d8a494977c89626b7/libdc1394.patch"
+  # Backport of upstream fixes for building on OS X
+  patch do
+    url "https://gist.github.com/jacknagel/7395159/raw/3ba722636fb898d210170f5d8a494977c89626b7/libdc1394.patch"
+    sha1 "832869d05dabf8d62c1a5ac1b10a94fb7b7755c5"
   end
 
   def install

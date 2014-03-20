@@ -16,7 +16,7 @@ class Itstool < Formula
   depends_on 'libxml2' => 'with-python'
 
   def install
-    ENV.append_path 'PYTHONPATH', "#{Formula.factory('libxml2').lib}/python2.7/site-packages"
+    ENV.append_path 'PYTHONPATH', "#{Formula["libxml2"].lib}/python2.7/site-packages"
 
     system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}"

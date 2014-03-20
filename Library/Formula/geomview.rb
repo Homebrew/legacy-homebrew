@@ -2,16 +2,14 @@ require 'formula'
 
 class Geomview < Formula
   homepage 'http://www.geomview.org'
-  url 'http://downloads.sourceforge.net/project/geomview/geomview/1.9.4/geomview-1.9.4.tar.gz'
+  url 'https://downloads.sourceforge.net/project/geomview/geomview/1.9.4/geomview-1.9.4.tar.gz'
   sha1 'b5e04dfee5cef46655766c2456199905832cd45c'
 
   depends_on :x11
   depends_on 'lesstif'
 
   # Per MacPorts: https://trac.macports.org/ticket/35856
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug",

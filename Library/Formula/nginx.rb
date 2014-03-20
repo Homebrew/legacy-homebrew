@@ -2,15 +2,21 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.4.4.tar.gz'
-  sha1 '304d5991ccde398af2002c0da980ae240cea9356'
+  url 'http://nginx.org/download/nginx-1.4.7.tar.gz'
+  sha1 'e13b5b23f9be908b69652b0c394a95e9029687e3'
 
   devel do
-    url 'http://nginx.org/download/nginx-1.5.9.tar.gz'
-    sha1 '9904f15c877d679c5164242f8e59a176392aa573'
+    url 'http://nginx.org/download/nginx-1.5.12.tar.gz'
+    sha1 '7b298d4eff54041920c233df5c52ec429af11ccd'
   end
 
   head 'http://hg.nginx.org/nginx/', :using => :hg
+
+  bottle do
+    sha1 "af8e6255e40b0f7739e9b688d4ed5b9f9b11b50e" => :mavericks
+    sha1 "1aefa2af8af3162bc575d9353e6b54364ea05401" => :mountain_lion
+    sha1 "6625bc9194bd656d6e0e925cf37c1cec672dbf97" => :lion
+  end
 
   env :userpaths
 
@@ -23,8 +29,6 @@ class Nginx < Formula
   depends_on 'pcre'
   depends_on 'passenger' => :optional
   depends_on 'openssl'
-
-  skip_clean 'logs'
 
   def passenger_config_args
     passenger_config = "#{HOMEBREW_PREFIX}/opt/passenger/bin/passenger-config"
@@ -42,8 +46,8 @@ class Nginx < Formula
     # Changes default port to 8080
     inreplace 'conf/nginx.conf', 'listen       80;', 'listen       8080;'
 
-    pcre    = Formula.factory("pcre")
-    openssl = Formula.factory("openssl")
+    pcre = Formula["pcre"]
+    openssl = Formula["openssl"]
     cc_opt = "-I#{pcre.include} -I#{openssl.include}"
     ld_opt = "-L#{pcre.lib} -L#{openssl.lib}"
 
@@ -67,11 +71,11 @@ class Nginx < Formula
             "--with-http_gzip_static_module"
           ]
 
-    args << passenger_config_args if build.include? 'with-passenger'
-    args << "--with-http_dav_module" if build.include? 'with-webdav'
-    args << "--with-debug" if build.include? 'with-debug'
-    args << "--with-http_spdy_module" if build.include? 'with-spdy'
-    args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
+    args << passenger_config_args if build.with? "passenger"
+    args << "--with-http_dav_module" if build.with? "webdav"
+    args << "--with-debug" if build.with? "debug"
+    args << "--with-http_spdy_module" if build.with? "spdy"
+    args << "--with-http_gunzip_module" if build.with? "gunzip"
 
     if build.head?
       system "./auto/configure", *args
@@ -83,7 +87,7 @@ class Nginx < Formula
     man8.install "objs/nginx.8"
     (var/'run/nginx').mkpath
 
-    # nginx’s docroot is #{prefix}/html, this isn't useful, so we symlink it
+    # nginx's docroot is #{prefix}/html, this isn't useful, so we symlink it
     # to #{HOMEBREW_PREFIX}/var/www. The reason we symlink instead of patching
     # is so the user can redirect it easily to something else if they choose.
     prefix.cd do
@@ -98,7 +102,7 @@ class Nginx < Formula
       Pathname.new("#{prefix}/html").make_relative_symlink(dst)
     end
 
-    # for most of this formula’s life the binary has been placed in sbin
+    # for most of this formula's life the binary has been placed in sbin
     # and Homebrew used to suggest the user copy the plist for nginx to their
     # ~/Library/LaunchAgents directory. So we need to have a symlink there
     # for such cases
@@ -148,7 +152,7 @@ class Nginx < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/nginx</string>
+            <string>#{opt_bin}/nginx</string>
             <string>-g</string>
             <string>daemon off;</string>
         </array>

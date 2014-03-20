@@ -2,7 +2,7 @@ require 'formula'
 
 class Sc68 < Formula
   homepage 'http://sc68.atari.org/project.html'
-  url 'http://downloads.sourceforge.net/project/sc68/sc68/2.2.1/sc68-2.2.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/sc68/sc68/2.2.1/sc68-2.2.1.tar.gz'
   sha1 '503e8b027b1b8f98925344bc591248ab5f19f59d'
 
   def install
@@ -13,7 +13,7 @@ class Sc68 < Formula
     system "make install"
   end
 
-  def test
+  test do
     # SC68 ships with a sample module; test attempts to print its metadata
     system "#{bin}/info68", "#{share}/sc68/Sample/About-Intro.sc68", "-C", ": ", "-N", "-L"
   end

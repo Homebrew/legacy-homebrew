@@ -2,8 +2,8 @@ require 'formula'
 
 class Virtuoso < Formula
   homepage 'http://virtuoso.openlinksw.com/wiki/main/'
-  url 'http://downloads.sourceforge.net/project/virtuoso/virtuoso/7.0.0/virtuoso-opensource-7.0.0.tar.gz'
-  sha256 '7459ff8cefa42c051dc6790a8d34e31a4a873533314e24e529be90edd56f12fc'
+  url "https://downloads.sourceforge.net/project/virtuoso/virtuoso/7.1.0/virtuoso-opensource-7.1.0.tar.gz"
+  sha1 "255d275d810bdb7cfa55fef46517724823c4c561"
 
   head do
     url 'https://github.com/openlink/virtuoso-opensource.git', :branch => 'develop/7'

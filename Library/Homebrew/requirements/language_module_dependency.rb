@@ -3,14 +3,14 @@ require 'requirement'
 class LanguageModuleDependency < Requirement
   fatal true
 
-  def initialize language, module_name, import_name=module_name
+  def initialize language, module_name, import_name=nil
     @language = language
     @module_name = module_name
-    @import_name = import_name
+    @import_name = import_name || module_name
     super([language, module_name, import_name])
   end
 
-  satisfy { quiet_system(*the_test) }
+  satisfy(:build_env => false) { quiet_system(*the_test) }
 
   def message; <<-EOS.undent
     Unsatisfied dependency: #{@module_name}

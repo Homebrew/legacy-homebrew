@@ -16,6 +16,12 @@ class Opencolorio < Formula
   option 'with-java', 'Build ocio with java bindings'
   option 'with-docs', 'Build the documentation'
 
+  # Fix build with libc++
+  patch do
+    url "https://github.com/imageworks/OpenColorIO/commit/ebd6efc036b6d0b17c869e3342f17f9c5ef8bbfc.patch"
+    sha1 "89d2cb42e634faab5b83d16fdc48a048b2ddb6f5"
+  end
+
   def install
     args = std_cmake_args
     args << "-DOCIO_BUILD_JNIGLUE=ON" if build.with? 'java'

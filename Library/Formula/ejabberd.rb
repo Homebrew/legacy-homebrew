@@ -29,11 +29,11 @@ class Ejabberd < Formula
               "--localstatedir=#{var}"]
 
       if MacOS.version <= :leopard
-        openssl = Formula.factory('openssl')
+        openssl = Formula['openssl']
         args << "--with-openssl=#{openssl.prefix}"
       end
 
-      args << "--enable-odbc" if build.include? 'with-odbc'
+      args << "--enable-odbc" if build.with? "odbc"
 
       system "./configure", *args
       system "make"

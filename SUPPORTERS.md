@@ -450,7 +450,7 @@ These wonderful people supported our Kickstarter by giving us £10 or more:
 * [Gerry Cardinal III](http://gerrycardinal.com/)
 * [Andrew Kalek](http://anlek.com)
 * [Bryan Coe](http://www.BryanACoe.com)
-* [360 Virtual Tours](http://www.360virtualtours.co.uk)
+* 360 Virtual Tours
 * [James Turnbull](http://www.kartar.net)
 * [Dominic Morgan](http://d3r.com)
 * [Mario Witte](http://www.mariowitte.com)

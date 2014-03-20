@@ -31,20 +31,14 @@ module Homebrew extend self
     link_tap_formula(files)
     puts "Tapped #{files.length} formula"
 
-    # Figure out if this repo is private
-    # curl will throw an exception if the repo is private (Github returns a 404)
-    begin
-      curl('-Ifso', '/dev/null', "https://api.github.com/repos/#{repouser}/homebrew-#{repo}")
-    rescue
-      puts
-      puts "It looks like you tapped a private repository"
-      puts "In order to not input your credentials every time"
-      puts "you can use git HTTP credential caching or issue the"
-      puts "following command:"
-      puts
-      puts "   cd #{tapd}"
-      puts "   git remote set-url origin git@github.com:#{repouser}/homebrew-#{repo}.git"
-      puts
+    if private_tap?(repouser, repo) then puts <<-EOS.undent
+      It looks like you tapped a private repository. To avoid entering your
+      credentials each time you update, you can use git HTTP credential caching
+      or issue the following command:
+
+        cd #{tapd}
+        git remote set-url origin git@github.com:#{repouser}/homebrew-#{repo}.git
+      EOS
     end
 
     true
@@ -114,6 +108,13 @@ module Homebrew extend self
     [$1, $3]
   end
 
+  def private_tap?(user, repo)
+    GitHub.private_repo?(user, "homebrew-#{repo}")
+  rescue GitHub::HTTPNotFoundError
+    true
+  rescue GitHub::Error
+    false
+  end
 end
 
 

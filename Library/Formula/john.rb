@@ -7,9 +7,7 @@ class John < Formula
 
   conflicts_with 'john-jumbo', :because => 'both install the same binaries'
 
-  def patches
-    DATA # Taken from MacPorts, tells john where to find runtime files
-  end
+  patch :DATA # Taken from MacPorts, tells john where to find runtime files
 
   fails_with :llvm do
     build 2334
@@ -18,13 +16,14 @@ class John < Formula
 
   def install
     ENV.deparallelize
-    arch = Hardware.is_64_bit? ? '64' : 'sse2'
+    arch = MacOS.prefer_64_bit? ? '64' : 'sse2'
+    target = "macosx-x86-#{arch}"
 
     cd 'src' do
       inreplace 'Makefile' do |s|
         s.change_make_var! "CC", ENV.cc
       end
-      system "make", "clean", "macosx-x86-#{arch}"
+      system "make", "clean", target
     end
 
     # Remove the README symlink and install the real file

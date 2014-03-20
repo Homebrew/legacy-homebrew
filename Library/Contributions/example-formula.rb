@@ -10,9 +10,7 @@ require 'formula'
 # Ruby classes have to start Upper case and dashes are not allowed.
 # So we transform: `example-formula.rb` into `ExampleFormula`. Further,
 # Homebrew does enforce that the name of the file and the class correspond.
-# Check with `brew search` that the name is free. A file may contain multiple
-# classes (we call them sub-formulae) but the main one is the class that
-# corresponds to the filename.
+# Check with `brew search` that the name is free.
 class ExampleFormula < Formula
 
   homepage 'http://www.example.com' # used by `brew home example-formula`.
@@ -38,6 +36,17 @@ class ExampleFormula < Formula
   # Leave it empty at first and `brew install` will tell you the expected.
   sha1 'cafebabe78901234567890123456789012345678'
 
+  # Stable-only dependencies should be nested inside a `stable` block rather than
+  # using a conditional. It is preferrable to also pull the URL and checksum into
+  # the block if one is necessary.
+  stable do
+    url "https://example.com/foo-1.0.tar.gz"
+    sha1 "cafebabe78901234567890123456789012345678"
+
+    depends_on "libxml2"
+    depends_on "libffi"
+  end
+
   # Optionally, specify a repository to be used. Brew then generates a
   # `--HEAD` option. Remember to also test it.
   # The download strategies (:using =>) are the same as for `url`.
@@ -45,11 +54,21 @@ class ExampleFormula < Formula
   head 'https://example.com/.git', :branch => 'name_of_branch', :revision => 'abc123'
   head 'https://hg.is.awesome.but.git.has.won.example.com/', :using => :hg # If autodetect fails.
 
+  head do
+    url "https://example.com/repo.git"
+
+    depends_on :autoconf
+    depends_on :automake
+  end
+
   # The optional devel block is only executed if the user passes `--devel`.
   # Use this to specify a not-yet-released version of a software.
   devel do
-   url 'https://example.com/archive-2.0-beta.tar.gz'
-   sha1 '1234567890123456789012345678901234567890'
+    url "https://example.com/archive-2.0-beta.tar.gz"
+    sha1 "1234567890123456789012345678901234567890"
+
+    depends_on "cairo"
+    depends_on "pixman"
   end
 
 
@@ -143,14 +162,10 @@ class ExampleFormula < Formula
   depends_on :libpng # Often, not all of X11 is needed.
   depends_on :fontconfig
   # autoconf/automake is sometimes needed for --HEAD checkouts:
-  depends_on :autoconf if build.head?
-  depends_on :automake if build.head?
   depends_on :bsdmake
   depends_on :libtool
   depends_on :libltdl
   depends_on :mysql => :recommended
-  depends_on :cairo if build.devel?
-  depends_on :pixman if build.devel?
   # It is possible to only depend on something if
   # `build.with?` or `build.without? 'another_formula'`:
   depends_on :mysql # allows brewed or external mysql to be used
@@ -185,29 +200,49 @@ class ExampleFormula < Formula
     cause 'multiple configure and compile errors'
   end
 
+  ## Resources
+
+  # Additional downloads can be defined as resources and accessed in the
+  # install method. Resources can also be defined inside a stable, devel, or
+  # head block. This mechanism replaces ad-hoc "subformula" classes.
+  resource "additional_files" do
+    url 'https://example.com/additional-stuff.tar.gz'
+    sha1 'deadbeef7890123456789012345678901234567890'
+  end
+
 
   ## Patches
 
-  # Optionally define a `patches` method returning `DATA` and/or a string with
-  # the url to a patch or a list thereof.
-  def patches
-    # DATA is the embedded diff that comes after __END__ in this file!
-    # In this example we only need the patch for older clang than 425:
-    DATA unless MacOS.clang_build_version >= 425
+  # External patches can be declared using resource-style blocks.
+  patch do
+    url "https://example.com/example_patch.diff"
+    sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
   end
 
-  # More than the one embedded patch? Use a dict with keys :p0, :p1 and/or
-  # p2: as you need, for example:
-  def patches
-    {:p0 => [
-      'https://trac.macports.org/export/yeah/we/often/steal/a/patch.diff',
-      'https://github.com/example/foobar/commit/d46a8c6265c4c741aaae2b807a41ea31bc097052.diff',
-      DATA ],
-     # For gists, please use the link to a specific hash, so nobody can change it unnoticed.
-     :p2 => ['https://raw.github.com/gist/4010022/ab0697dc87a40e65011e2192439609c17578c5be/tags.patch']
-    }
+  # A strip level of -p1 is assumed. It can be overridden using a symbol
+  # argument:
+  patch :p0 do
+    url "https://example.com/example_patch.diff"
+    sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
   end
 
+  # Patches can be declared in stable, devel, and head blocks. This form is
+  # preferred over using conditionals.
+  stable do
+    patch do
+      url "https://example.com/example_patch.diff"
+      sha1 "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+    end
+  end
+
+  # Embedded (__END__) patches are declared like so:
+  patch :DATA
+  patch :p0, :DATA
+
+  # Patches can also be embedded by passing a string. This makes it possible
+  # to provide multiple embedded patches while making only some of them
+  # conditional.
+  patch :p0, "..."
 
   ## The install method.
 
@@ -255,7 +290,7 @@ class ExampleFormula < Formula
     # break if they remember that exact path. In contrast to that, the
     # `$(brew --prefix)/opt/formula` is the same path for all future
     # versions of the formula!
-    args << "--with-readline=#{Formula.factory('readline').opt_prefix}/lib" if build.with? "readline"
+    args << "--with-readline=#{Formula["readline"].opt_prefix}/lib" if build.with? "readline"
 
     # Most software still uses `configure` and `make`.
     # Check with `./configure --help` what our options are.
@@ -299,6 +334,7 @@ class ExampleFormula < Formula
     info # == share+'info'
     lib # == prefix+'lib'
     libexec # == prefix+'libexec'
+    buildpath # The temporary directory where build occurs.
 
     man # share+'man'
     man1 # man+'man1'
@@ -325,17 +361,15 @@ class ExampleFormula < Formula
     # Sometime you will see that instead of `+` we build up a path with `/`
     # because it looks nicer (but you can't nest more than two `/`):
     (var/'foo').mkpath
-    # Copy `./example_code/simple/ones` to share/demos/examples
+    # Copy `./example_code/simple/ones` to share/demos
     (share/'demos').install "example_code/simple/ones"
     # Copy `./example_code/simple/ones` to share/demos/examples
     (share/'demos').install "example_code/simple/ones" => 'examples'
 
-    # Additional stuff can be defined in a sub-formula (see below) and
-    # with a block like this, it will be extracted into its own temporary
-    # dir. We can install into the Cellar of the main formula easily,
-    # because `prefix`, `bin` and all the other pre-defined variables are
-    # from the main formula.
-    AdditionalStuff.new.brew { bin.install 'my/extra/tool' }
+    # Additional downloads can be defined as resources (see above).
+    # The stage method will create a temporary directory and yield
+    # to a block.
+    resource("additional_files").stage { bin.install 'my/extra/tool' }
 
     # `name` and `version` are accessible too, if you need them.
   end
@@ -392,13 +426,6 @@ class ExampleFormula < Formula
   # Todo: Expand this example with a little demo plist? I dunno.
   # There is more to startup plists. Help, I suck a plists!
   def plist; nil; end
-end
-
-class AdditionalStuff < Formula
-  # Often, a second formula is used to download some resource
-  # NOTE: This is going to change when https://github.com/Homebrew/homebrew/pull/21714 happens.
-  url 'https://example.com/additional-stuff.tar.gz'
-  sha1 'deadbeef7890123456789012345678901234567890'
 end
 
 __END__

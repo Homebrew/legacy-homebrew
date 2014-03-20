@@ -22,6 +22,7 @@ class Vsftpd < Formula
 
     # make install has all the paths hardcoded; this is easier:
     sbin.install "vsftpd"
+    etc.install  "vsftpd.conf"
     man5.install "vsftpd.conf.5"
     man8.install "vsftpd.8"
   end

@@ -7,9 +7,7 @@ class AircrackNg < Formula
 
   # Remove root requirement from OUI update script. See:
   # https://github.com/Homebrew/homebrew/pull/12755
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # Force i386, otherwise you get errors:

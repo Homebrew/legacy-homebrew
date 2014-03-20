@@ -13,9 +13,7 @@ class Ohcount < Formula
   depends_on 'ragel'
   depends_on 'pcre'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # find Homebrew's libpcre

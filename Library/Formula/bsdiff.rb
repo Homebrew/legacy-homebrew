@@ -7,9 +7,7 @@ class Bsdiff < Formula
 
   depends_on :bsdmake
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "bsdmake"

@@ -2,7 +2,7 @@ require 'formula'
 
 class Asymptote < Formula
   homepage 'http://asymptote.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/asymptote/asymptote-2.23.src.tgz'
+  url 'https://downloads.sourceforge.net/asymptote/asymptote-2.23.src.tgz'
   sha1 'c24de9766ae7195c1cda947f9d2ae07497a0af8f'
 
   depends_on :tex
