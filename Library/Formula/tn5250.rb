@@ -7,7 +7,7 @@ class Tn5250 < Formula
 
   # Fix segfault; reported here:
   # http://archive.midrange.com/linux5250/201207/msg00000.html
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
