@@ -22,9 +22,7 @@ class ObjectiveCaml < Formula
   # is specified, and older versions warn.  This patch fixes the OCaml
   # configure script to not pass this option on recent MacOS versions.
   # See http://caml.inria.fr/mantis/view.php?id=6346 for upstream bug.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--prefix", HOMEBREW_PREFIX,
