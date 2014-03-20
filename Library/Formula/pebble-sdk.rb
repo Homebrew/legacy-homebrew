@@ -65,6 +65,7 @@ class PebbleSdk < Formula
       s.gsub! /^process = subprocess\.Popen\(args, shell=False, env=local_python_env\)/, "process = subprocess.Popen(args, shell=False)"
     end
 
+    ENV.append_to_cflags '-Qunused-arguments'
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
