@@ -36,9 +36,7 @@ class Python3 < Formula
     sha1 '35ccb7430356186cf253615b70f8ee580610f734'
   end
 
-  def patches
-    DATA if build.with? 'brewed-tk'
-  end
+  patch :DATA if build.with? 'brewed-tk'
 
   def site_packages_cellar
     prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/site-packages"
