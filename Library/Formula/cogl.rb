@@ -2,8 +2,8 @@ require 'formula'
 
 class Cogl < Formula
   homepage 'http://developer.gnome.org/cogl/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/cogl/1.14/cogl-1.14.0.tar.xz'
-  sha256 '276e8c9f5ff0fcd57c1eaf74cc245f41ad469a95a18ac831fac2d5960baa5ae8'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/cogl/1.16/cogl-1.16.2.tar.xz'
+  sha256 '65be91591546ef6fdfec93a71979b2b108eee25edbc20c53190caafc9a92d4e7'
 
   head do
     url "git://git.gnome.org/cogl"
