@@ -5,6 +5,7 @@ class VorbisTools < Formula
   url 'http://downloads.xiph.org/releases/vorbis/vorbis-tools-1.4.0.tar.gz'
   sha1 'fc6a820bdb5ad6fcac074721fab5c3f96eaf6562'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libogg'
   depends_on 'libvorbis'
   depends_on 'libao'
