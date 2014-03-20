@@ -2,8 +2,8 @@ require 'formula'
 
 class PebbleSdk < Formula
   homepage 'https://developer.getpebble.com/2/'
-  url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.0.1.tar.gz'
-  sha1 'fc9ee49dd1773e4690488328b05bea3a5cbab88e'
+  url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.0.2.tar.gz'
+  sha1 'c6e2cefb638ebcfffae31c6cc3b175d3e62b3c44'
 
   depends_on 'freetype' => :recommended
   depends_on 'mpfr'
@@ -48,16 +48,27 @@ class PebbleSdk < Formula
     sha1 '39e6d9a37b826c48eab6959591a174135fc2873c'
   end
 
+  resource 'pypng' do
+    url 'https://pypi.python.org/packages/source/p/pypng/pypng-0.0.16.tar.gz'
+    sha1 'f90a1f88a7875f019b1fc0addde5410ce6daf2dd'
+  end
+
   resource 'pebble-arm-toolchain' do
-    url 'https://github.com/pebble/arm-eabi-toolchain/archive/v2.0.tar.gz'
-    sha1 '7085c6ef371213e3e766a1cbd7e6e1951ccf1d87'
+    url 'http://assets.getpebble.com.s3-website-us-east-1.amazonaws.com/sdk/arm-cs-tools-macos-universal-static.tar.gz'
+    sha1 'b1baaf455140d3c6e3a889217bb83986fe6527a0'
   end
 
   def install
     # This replacement fixes a path that gets messed up because of the
     # bin.env_script_all_files call (which relocates actual pebble.py script
     # to libexec/, causing problems with the absolute path expected below).
-    inreplace 'bin/pebble', /^script_path = .*?$/m, "script_path = '#{libexec}/../tools/pebble.py'"
+    # Also, remove the dependency from virtualenv
+    inreplace 'bin/pebble' do |s|
+      s.gsub! /^script_path = .*?$/m, "script_path = '#{libexec}/../tools/pebble.py'"
+
+      s.gsub! /^local_python_env.*?=.*?\(.*?\)$/m, ""
+      s.gsub! /^process = subprocess\.Popen\(args, shell=False, env=local_python_env\)/, "process = subprocess.Popen(args, shell=False)"
+    end
 
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
@@ -69,13 +80,12 @@ class PebbleSdk < Formula
     resource('autobahn').stage { system "python", *install_args }
     resource('websocket-client').stage { system "python", *install_args }
     resource('pyserial').stage { system "python", *install_args }
+    resource('pypng').stage { system "python", *install_args }
 
     prefix.install %w[Documentation Examples Pebble PebbleKit-Android
         PebbleKit-iOS bin tools requirements.txt version.txt]
 
-    resource('pebble-arm-toolchain').stage do
-      system "make", "PREFIX=#{prefix}/arm-cs-tools", "install-cross"
-    end
+    resource('pebble-arm-toolchain').stage "#{prefix}/arm-cs-tools"
 
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
