@@ -148,7 +148,7 @@ class Build
       end
     end
 
-    f.brew do
+    def brew_it
       if ARGV.flag? '--git'
         system "git init"
         system "git add -A"
@@ -208,6 +208,13 @@ class Build
         f.prefix.install_metafiles Pathname.pwd
       end
     end
+
+    if ARGV.flag? '--make'
+      begin brew_it end
+    else
+      f.brew do brew_it end
+    end
+
   end
 end
 
