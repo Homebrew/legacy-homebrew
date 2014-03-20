@@ -10,7 +10,7 @@ class Pyexiv2 < Formula
   depends_on 'boost'
 
   # Patch to use Framework Python
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # this build script ignores CPPFLAGS, but it honors CXXFLAGS
