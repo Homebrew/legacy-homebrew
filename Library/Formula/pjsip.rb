@@ -2,25 +2,53 @@ require 'formula'
 
 class Pjsip < Formula
   homepage 'http://www.pjsip.org'
-  url 'http://www.pjsip.org/release/2.1/pjproject-2.1.tar.bz2'
-  sha1 '244884fb900594104792c431946384e0fedc9560'
+  url 'http://www.pjsip.org/release/2.2/pjproject-2.2.tar.bz2'
+  sha1 '156212ba738e0f9029aff9e59a9083579b05457d'
 
-  def patches
-    # 1. We aren't cross compiling
-    #     pjsip thinks we are, this is fixed somewhere between
-    #     revision 4305 and 4621. This should be removed when
-    #     this formula is updated to 2.2.
-    # 2, 3. Clang compatibility
-    #     This is fixed in revision 4588 and should be removed
-    #     when this formula is updated to 2.2.
-    #     http://trac.pjsip.org/repos/ticket/1576
-    DATA
+  head "http://svn.pjsip.org/repos/pjproject/trunk"
+
+  option "use-bundled-libs", "Use bundled libs for third party dependencies"
+  option "disable-shared", "Disable building shared libs"
+
+  depends_on 'openssl'
+
+  unless build.include? "use-bundled-libs"
+    depends_on 'libgsm'
+    depends_on 'portaudio'
+    depends_on 'speex'
+    depends_on 'srtp'
   end
 
   def install
     ENV.j1
-    system "./configure", "--prefix=#{prefix}"
+
+    openssl = Formula['openssl']
+
+    args = ["--prefix=#{prefix}",
+            "--with-ssl=#{openssl.opt_prefix}"]
+
+    # PJSIP's resample library conflicts with libresample
+    args << "--disable-resample"
+
+    # opencore support isn't working
+    args << "--disable-opencore-amr"
+
+    unless build.include? "use-bundled-libs"
+      args << "--with-external-speex"
+      args << "--with-external-srtp"
+      args << "--with-external-gsm"
+      args << "--with-external-pa"
+    end
+
+    args << "--enable-shared" unless build.include? "disable-shared"
+
+    system "./configure", *args
+
     Pathname('pjlib/include/pj/config_site.h').write <<-EOS.undent
+      /* config_site_sample.h fails with GCC 4.8 without these defines */
+      #define PJ_CONFIG_IPHONE 0
+      #define PJ_CONFIG_ANDROID 0
+
       #define PJ_CONFIG_MAXIMUM_SPEED
       #include <pj/config_site_sample.h>
 
@@ -33,44 +61,16 @@ class Pjsip < Formula
         #define PJ_IOQUEUE_MAX_HANDLES     FD_SETSIZE
       #endif
 
+      #undef PJSUA_MAX_CALLS
       #define PJSUA_MAX_CALLS              1024
       #define PJSUA_MAX_PLAYERS            1024
       #define PJSUA_MAX_RECORDERS          1024
       #define PJSUA_MAX_CONF_PORTS         (PJSUA_MAX_CALLS+PJSUA_MAX_PLAYERS+PJSUA_MAX_RECORDERS)
+      /* libsrtp is a shared lib by default on OS X, no init/deinit needed */
+      #define PJMEDIA_LIBSRTP_AUTO_INIT_DEINIT 0
     EOS
     system "make", "dep"
     system "make"
     system "make", "install"
   end
 end
-
-__END__
---- a/aconfigure
-+++ b/aconfigure
-@@ -3526,7 +3526,7 @@
-
-
- if test -z "$CROSS_COMPILE"; then
--    CROSS_COMPILE=`echo ${CC} | sed 's/gcc//'`
-+    CROSS_COMPILE=
- fi
-
- if test "$AR" = ""; then AR="${CROSS_COMPILE}ar rv"; fi
---- a/third_party/srtp/crypto/cipher/aes_icm.c
-+++ b/third_party/srtp/crypto/cipher/aes_icm.c
-@@ -284,5 +284,5 @@
-  */
-
--inline void
-+static inline void
- aes_icm_advance_ismacryp(aes_icm_ctx_t *c, uint8_t forIsmacryp) {
-   /* fill buffer with new keystream */
---- a/third_party/srtp/crypto/math/datatypes.c
-+++ b/third_party/srtp/crypto/math/datatypes.c
-@@ -125,5 +125,5 @@
- }
-
--inline int
-+static inline int
- hex_char_to_nibble(uint8_t c) {
-   switch(c) {
