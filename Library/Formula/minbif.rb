@@ -22,9 +22,7 @@ class Minbif < Formula
 
   # Problem:  Apple doesn't have <security/pam_misc.h> so don't ask for it.
   # Reported: https://symlink.me/issues/917
-  def patches
-    DATA
-  end if build.include? 'pam'
+  patch :DATA if build.include? 'pam'
 
   def install
     inreplace "minbif.conf" do |s|
