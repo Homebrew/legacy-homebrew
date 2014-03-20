@@ -148,6 +148,12 @@ class Emacs < Formula
     end
     return s
   end
+
+  test do
+    output = `'#{bin}/emacs' --batch --eval="(print (+ 2 2))"`
+    assert $?.success?
+    assert_equal "4", output.strip
+  end
 end
 
 __END__
