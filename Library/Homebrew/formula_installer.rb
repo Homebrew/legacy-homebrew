@@ -448,6 +448,7 @@ class FormulaInstaller
       args << "--git" if interactive == :git
     end
 
+    args << "--make" if ARGV.flag? "--make"
     args << "--verbose" if verbose?
     args << "--debug" if debug?
     args << "--cc=#{ARGV.cc}" if ARGV.cc
