@@ -13,7 +13,7 @@ class Rrdtool < Formula
   env :userpaths # For perl, ruby
 
   # Ha-ha, but sleeping is annoying when running configure a lot
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.libxml2
