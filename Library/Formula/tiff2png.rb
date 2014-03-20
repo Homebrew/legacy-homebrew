@@ -10,7 +10,7 @@ class Tiff2png < Formula
   depends_on 'jpeg'
 
   # libpng 1.5 no longer #includes zlib.h
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "make", "-f", "Makefile.unx", "CC=#{ENV.cc}",
