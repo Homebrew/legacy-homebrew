@@ -12,9 +12,7 @@ class Newlisp < Formula
 
   depends_on 'readline'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # Required to use our configuration
