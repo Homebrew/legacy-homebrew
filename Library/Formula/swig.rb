@@ -2,7 +2,7 @@ require 'formula'
 
 class Swig < Formula
   homepage 'http://www.swig.org/'
-  url 'https://downloads.sourceforge.net/project/swig/swig/swig-2.0.12/swig-2.0.12.tar.gz'
+  url 'https://downloads.sourceforge.net/project/swig/swig/swig-3.0.0/swig-3.0.0.tar.gz'
   sha1 '4203c68f79012a2951f542018ff4358d838b5035'
 
   bottle do
