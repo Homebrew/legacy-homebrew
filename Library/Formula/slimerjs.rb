@@ -2,8 +2,8 @@ require 'formula'
 
 class Slimerjs < Formula
   homepage 'http://www.slimerjs.org'
-  url "http://download.slimerjs.org/v0.9/0.9.0/slimerjs-0.9.0.zip"
-  sha1 "c78cf0961eba2421abfdf5c99d28f6fe8dba7cc8"
+  url "http://download.slimerjs.org/v0.9/0.9.1/slimerjs-0.9.1.zip"
+  sha1 "15eed855c462c5b7ff2502d028702dcebae797cd"
 
   head 'https://github.com/laurentj/slimerjs.git'
 
@@ -18,7 +18,6 @@ class Slimerjs < Formula
       system "zip", "-r", "omni.ja", "chrome/", "components/", "modules/",
                     "defaults/", "chrome.manifest", "-x@package_exclude.lst"
     end
-    inreplace "application.ini" ,"MaxVersion=27.*", "MaxVersion=28.*" if build.stable? and build.with? "xulrunner"
     libexec.install ["application.ini", "omni.ja", "slimerjs", "slimerjs.py"]
     bin.install_symlink libexec/"slimerjs"
   end
@@ -32,7 +31,7 @@ class Slimerjs < Formula
       export SLIMERJSLAUNCHER=/Applications/Firefox.app/Contents/MacOS/firefox
 
     Note: If you use SlimerJS with an unstable version of Mozilla Firefox/XULRunner
-    (>27.*) you may have to change the [Gecko]MaxVersion in:
+    (>29.*) you may have to change the [Gecko]MaxVersion in:
       #{libexec}/application.ini
     EOS
   end
