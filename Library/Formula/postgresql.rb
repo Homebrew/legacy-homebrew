@@ -30,9 +30,7 @@ class Postgresql < Formula
   end
 
   # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.libxml2 if MacOS.version >= :snow_leopard
