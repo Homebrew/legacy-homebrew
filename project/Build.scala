@@ -36,6 +36,7 @@ object JobServerBuild extends Build {
       test in Test <<= (test in Test).dependsOn(packageBin in Compile in jobServerTestJar)
                                      .dependsOn(clean in Compile in jobServerTestJar),
 
+      fullClasspath in Compile ++= extraJarPaths,
       javaOptions in Revolver.reStart += jobServerLogging,
       javaOptions in Revolver.reStart += "-Djava.security.krb5.realm= -Djava.security.krb5.kdc=",
       // The only change from sbt-revolver task definition is the "fullClasspath in Compile" so that
@@ -73,6 +74,12 @@ object JobServerBuild extends Build {
         // So, we limit the sum of "Test", "Untagged" tags to 1 concurrent
         Tags.limitSum(1, Tags.Test, Tags.Untagged))
   )
+
+  // To add an extra jar to the classpath when doing "re-start" for quick development, set the
+  // env var EXTRA_JAR to the absolute full path to the jar
+  lazy val extraJarPaths = Option(System.getenv("EXTRA_JAR"))
+                             .map(jarpath => Seq(Attributed.blank(file(jarpath))))
+                             .getOrElse(Nil)
 
   lazy val commonSettings210 = Defaults.defaultSettings ++ dirSettings ++ Seq(
     organization := "ooyala.cnd",
