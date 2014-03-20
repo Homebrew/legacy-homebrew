@@ -10,7 +10,6 @@ class Collectd < Formula
   option "debug", "Enable debug support"
 
   depends_on 'pkg-config' => :build
-  depends_on :python
 
   fails_with :clang do
     build 318
@@ -28,7 +27,7 @@ class Collectd < Formula
               --disable-dependency-tracking
               --prefix=#{prefix}
               --localstatedir=#{var}
-              --with-python=#{python}]
+              --with-python=/usr/bin]
 
     args << "--disable-embedded-perl" if MacOS.version <= :leopard
     args << "--disable-java" unless build.include? "java"

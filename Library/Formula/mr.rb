@@ -1,8 +1,8 @@
 require 'formula'
 
 class Mr < Formula
-  homepage 'http://kitenet.net/~joey/code/mr/'
-  url 'http://git.kitenet.net/git/mr.git', :tag => '1.20130710'
+  homepage 'http://myrepos.branchable.com/'
+  url 'git://myrepos.branchable.com/', :tag => '1.20130826'
 
   def install
     system "make"

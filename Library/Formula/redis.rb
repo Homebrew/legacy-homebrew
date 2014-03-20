@@ -2,13 +2,13 @@ require 'formula'
 
 class Redis < Formula
   homepage 'http://redis.io/'
-  url 'http://download.redis.io/releases/redis-2.8.3.tar.gz'
-  sha1 'a751371eeed5f5f02965eb34d989c1963dd8d8c7'
+  url 'http://download.redis.io/releases/redis-2.8.7.tar.gz'
+  sha1 'acc369093ec74223e6da207921595187f7e64998'
 
   bottle do
-    sha1 'f6603de53354d870a84259ed6bf105cc86a3ed96' => :mavericks
-    sha1 'ec5633db0100bfdd27433cd4c83b3444de94147f' => :mountain_lion
-    sha1 'c2d7629dd955136191bf2aff7753666983113603' => :lion
+    sha1 "bb0e34b9ab6f71f5355e6e7a24045f5c5e960ed2" => :mavericks
+    sha1 "789d0ecf3a20a170ebe7e33c1087f1b144fd71f0" => :mountain_lion
+    sha1 "3002fa2f0fdfc9b801df9b5e6402121ce13c8724" => :lion
   end
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
@@ -56,7 +56,7 @@ class Redis < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/redis-server</string>
+          <string>#{opt_bin}/redis-server</string>
           <string>#{etc}/redis.conf</string>
         </array>
         <key>RunAtLoad</key>
@@ -70,5 +70,9 @@ class Redis < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/redis-server", "--test-memory", "2"
   end
 end

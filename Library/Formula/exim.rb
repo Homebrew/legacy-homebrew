@@ -2,8 +2,8 @@ require 'formula'
 
 class Exim < Formula
   homepage 'http://exim.org'
-  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.80.1.tar.gz'
-  sha1 'eeb6d1e4c7c1dc0e4de55ba61316718e44d810b3'
+  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.82.tar.gz'
+  sha1 'a473782ea9cd17e27798a2971c243973df999a71'
 
   option 'support-maildir', 'Support delivery in Maildir format'
 
@@ -31,7 +31,7 @@ class Exim < Formula
       s << "LOOKUP_LIBS=-L#{HOMEBREW_PREFIX}/lib\n"
     end
 
-    bdb4 = Formula.factory("berkeley-db4")
+    bdb4 = Formula["berkeley-db4"]
 
     inreplace 'OS/Makefile-Darwin' do |s|
       s.remove_make_var! %w{CC CFLAGS}

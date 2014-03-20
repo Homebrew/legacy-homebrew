@@ -15,6 +15,16 @@ class Scrub < Formula
                           "--prefix=#{prefix}"
     system "make install"
   end
+
+  test do
+    path = testpath/"foo.txt"
+    path.write "foo"
+
+    output = `#{bin}/scrub -r -p dod #{path}`
+    assert output.include?("scrubbing #{path}")
+    assert_equal 0, $?.exitstatus
+    assert !File.exist?(path)
+  end
 end
 
 __END__

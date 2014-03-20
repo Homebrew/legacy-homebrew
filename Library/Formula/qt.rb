@@ -15,7 +15,6 @@ class Qt < Formula
     # It would be nice if this was a real version number but unfortunately
     # that will mess with the bottles.
     version '4.8.5'
-
   end
 
   head 'git://gitorious.org/qt/qt.git', :branch => '4.8'
@@ -35,9 +34,9 @@ class Qt < Formula
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
 
-  odie 'qt: --with-qtdbus has been renamed to --with-d-bus' if build.include? 'with-qtdbus'
-  odie 'qt: --with-demos-examples is no longer supported' if build.include? 'with-demos-examples'
-  odie 'qt: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
+  odie 'qt: --with-qtdbus has been renamed to --with-d-bus' if build.with? "qtdbus"
+  odie 'qt: --with-demos-examples is no longer supported' if build.with? "demos-examples"
+  odie 'qt: --with-debug-and-release is no longer supported' if build.with? "debug-and-release"
 
   def install
     ENV.universal_binary if build.universal?
@@ -67,11 +66,12 @@ class Qt < Formula
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 
     if build.with? 'd-bus'
-      dbus_opt = Formula.factory('d-bus').opt_prefix
+      dbus_opt = Formula["d-bus"].opt_prefix
       args << "-I#{dbus_opt}/lib/dbus-1.0/include"
       args << "-I#{dbus_opt}/include/dbus-1.0"
       args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
+      args << "-dbus-linked"
     end
 
     if build.with? 'qt3support'
@@ -80,9 +80,7 @@ class Qt < Formula
       args << "-no-qt3support"
     end
 
-    unless build.with? 'docs'
-      args << "-nomake" << "docs"
-    end
+    args << "-nomake" << "docs" if build.without? 'docs'
 
     if MacOS.prefer_64_bit? or build.universal?
       args << '-arch' << 'x86_64'

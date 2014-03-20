@@ -2,7 +2,7 @@ require 'formula'
 
 class Htmlcompressor < Formula
   homepage 'http://code.google.com/p/htmlcompressor/'
-  url 'http://htmlcompressor.googlecode.com/files/htmlcompressor-1.5.3.jar'
+  url 'https://htmlcompressor.googlecode.com/files/htmlcompressor-1.5.3.jar'
   sha1 '57db73b92499e018b2f2978f1c7aa7b1238c7a39'
 
   option 'yuicompressor', "Use YUICompressor for JS/CSS compression"
@@ -16,14 +16,27 @@ class Htmlcompressor < Formula
     bin.write_jar_script libexec/"htmlcompressor-#{version}.jar", "htmlcompressor"
 
     if build.include? 'yuicompressor'
-      yui = Formula.factory('yuicompressor')
+      yui = Formula["yuicompressor"]
       yui_jar = "yuicompressor-#{yui.version}.jar"
-      ln_s "#{yui.opt_prefix}/libexec/#{yui_jar}", "#{libexec}/#{yui_jar}"
+      ln_s "#{yui.opt_libexec}/#{yui_jar}", "#{libexec}/#{yui_jar}"
     end
 
     if build.include? 'closure-compiler'
-      closure = Formula.factory('closure-compiler')
-      ln_s "#{closure.opt_prefix}/libexec/build/compiler.jar", "#{libexec}/compiler.jar"
+      closure = Formula["closure-compiler"]
+      ln_s "#{closure.opt_libexec}/build/compiler.jar", "#{libexec}/compiler.jar"
     end
+  end
+
+  test do
+    path = testpath/"index.xml"
+    path.write <<-EOS
+      <foo>
+        <bar /> <!-- -->
+      </foo>
+    EOS
+
+    output = `#{bin}/htmlcompressor #{path}`.strip
+    assert_equal "<foo><bar/></foo>", output
+    assert_equal 0, $?.exitstatus
   end
 end

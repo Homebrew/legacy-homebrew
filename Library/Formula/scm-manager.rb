@@ -2,15 +2,15 @@ require 'formula'
 
 class ScmManager < Formula
   homepage 'http://www.scm-manager.org'
-  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.34/scm-server-1.34-app.tar.gz'
-  version '1.34'
-  sha1 'a24a13fc9ba7c80355f210052e95c4b92eb1f2cf'
+  url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.36/scm-server-1.36-app.tar.gz'
+  version '1.36'
+  sha1 '610a45faa8d8f1d38811d614bb1492388b47eecf'
 
   skip_clean 'libexec/var/log'
 
   resource 'client' do
-    url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.34/scm-cli-client-1.34-jar-with-dependencies.jar'
-    sha1 '0753518a2d33e51fd7778ae243878e4d3d0a3a90'
+    url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.36/scm-cli-client-1.36-jar-with-dependencies.jar'
+    sha1 '5af0797d81307551d5f3de157a2c6a6f5d80e671'
   end
 
   def install
@@ -49,7 +49,7 @@ class ScmManager < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/scm-server</string>
+          <string>#{opt_bin}/scm-server</string>
           <string>start</string>
         </array>
         <key>RunAtLoad</key>

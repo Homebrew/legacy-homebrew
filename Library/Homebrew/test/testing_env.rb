@@ -27,6 +27,8 @@ HOMEBREW_WWW           = 'http://example.com'
 HOMEBREW_CURL_ARGS     = '-fsLA'
 HOMEBREW_VERSION       = '0.9-test'
 
+HOMEBREW_TAP_FORMULA_REGEX = %r{^(\w+)/(\w+)/([^/]+)$}
+
 RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
 RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
 
@@ -96,6 +98,10 @@ module VersionAssertions
 
   def assert_version_nil url
     assert_nil Version.parse(url)
+  end
+
+  def assert_version_tokens tokens, version
+    assert_equal tokens, version.send(:tokens).map(&:to_s)
   end
 end
 

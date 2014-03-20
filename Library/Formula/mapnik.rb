@@ -7,13 +7,10 @@ class Mapnik < Formula
 
   # can be removed at Mapnik > 2.2.0
   # https://github.com/mapnik/mapnik/issues/1973
-  def patches
-    DATA
-  end
+  patch :DATA
   head 'https://github.com/mapnik/mapnik.git'
 
   depends_on 'pkg-config' => :build
-  depends_on :python
   depends_on 'freetype'
   depends_on 'libpng'
   depends_on 'libtiff'
@@ -28,13 +25,13 @@ class Mapnik < Formula
   depends_on 'py2cairo' if build.with? 'cairo'
 
   def install
-    icu = Formula.factory("icu4c").opt_prefix
-    boost = Formula.factory('boost').opt_prefix
-    proj = Formula.factory('proj').opt_prefix
-    jpeg = Formula.factory('jpeg').opt_prefix
-    libpng = Formula.factory('libpng').opt_prefix
-    libtiff = Formula.factory('libtiff').opt_prefix
-    freetype = Formula.factory('freetype').opt_prefix
+    icu = Formula["icu4c"].opt_prefix
+    boost = Formula["boost"].opt_prefix
+    proj = Formula["proj"].opt_prefix
+    jpeg = Formula["jpeg"].opt_prefix
+    libpng = Formula["libpng"].opt_prefix
+    libtiff = Formula["libtiff"].opt_prefix
+    freetype = Formula["freetype"].opt_prefix
 
     # mapnik compiles can take ~1.5 GB per job for some .cpp files
     # so lets be cautious by limiting to CPUS/2
@@ -66,17 +63,11 @@ class Mapnik < Formula
     else
       args << "CAIRO=False"
     end
-    args << "GDAL_CONFIG=#{Formula.factory('gdal').opt_prefix}/bin/gdal-config" if build.with? 'gdal'
-    args << "PG_CONFIG=#{Formula.factory('postgresql').opt_prefix}/bin/pg_config" if build.with? 'postgresql'
+    args << "GDAL_CONFIG=#{Formula["gdal"].opt_bin}/gdal-config" if build.with? 'gdal'
+    args << "PG_CONFIG=#{Formula["postgresql"].opt_bin}/pg_config" if build.with? 'postgresql'
 
-    python do
-      system python, "scons/scons.py", "configure", *args
-      system python, "scons/scons.py", "install"
-    end
-  end
-
-  def caveats
-    python.standard_caveats if python
+    system "python", "scons/scons.py", "configure", *args
+    system "python", "scons/scons.py", "install"
   end
 end
 

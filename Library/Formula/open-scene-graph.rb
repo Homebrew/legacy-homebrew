@@ -23,17 +23,23 @@ class OpenSceneGraph < Formula
   depends_on 'collada-dom' => :optional
   depends_on 'gnuplot' => :optional
   depends_on 'ffmpeg' => :optional
+  depends_on 'qt5' => :optional
+  depends_on 'qt' => :optional
 
   if build.include? 'docs'
     depends_on 'doxygen'
     depends_on 'graphviz'
   end
 
+  # Fix osgQt for Qt 5.2
+  # Reported upstream http://forum.openscenegraph.org/viewtopic.php?t=13206
+  patch :DATA
+
   def install
     ENV.cxx11 if build.cxx11?
 
     # Turning off FFMPEG takes this change or a dozen "-DFFMPEG_" variables
-    unless build.with? 'ffmpeg'
+    if build.without? 'ffmpeg'
       inreplace 'CMakeLists.txt', 'FIND_PACKAGE(FFmpeg)', '#FIND_PACKAGE(FFmpeg)'
     end
 
@@ -48,8 +54,14 @@ class OpenSceneGraph < Formula
       args << "-DCMAKE_OSX_ARCHITECTURES=i386"
     end
 
-    if Formula.factory('collada-dom').installed?
+    if Formula["collada-dom"].installed?
       args << "-DCOLLADA_INCLUDE_DIR=#{HOMEBREW_PREFIX}/include/collada-dom"
+    end
+
+    if build.with? 'qt5'
+      args << "-DCMAKE_PREFIX_PATH=#{Formula["qt5"].opt_prefix}"
+    elsif build.with? 'qt'
+      args << "-DCMAKE_PREFIX_PATH=#{Formula["qt"].opt_prefix}"
     end
 
     args << '..'
@@ -65,3 +77,22 @@ class OpenSceneGraph < Formula
     end
   end
 end
+
+__END__
+diff --git a/src/osgQt/CMakeLists.txt b/src/osgQt/CMakeLists.txt
+index 43afffe..6c62e73 100644
+--- a/src/osgQt/CMakeLists.txt
++++ b/src/osgQt/CMakeLists.txt
+@@ -13,7 +13,11 @@ SET(SOURCES_H
+ )
+
+ IF ( Qt5Widgets_FOUND )
+-    QT5_WRAP_CPP( SOURCES_H_MOC ${SOURCES_H} OPTIONS "-f" )
++    IF (Qt5Widgets_VERSION VERSION_LESS 5.2.0)
++        QT5_WRAP_CPP( SOURCES_H_MOC ${SOURCES_H} OPTIONS "-f" )
++    ELSE()
++        QT5_WRAP_CPP( SOURCES_H_MOC ${SOURCES_H} )
++    ENDIF()
+ ELSE()
+     QT4_WRAP_CPP( SOURCES_H_MOC ${SOURCES_H} OPTIONS "-f" )
+ ENDIF()

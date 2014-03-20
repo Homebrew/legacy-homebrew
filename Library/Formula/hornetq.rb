@@ -2,9 +2,9 @@ require 'formula'
 
 class Hornetq < Formula
   homepage 'http://www.jboss.org/hornetq'
-  url 'http://downloads.jboss.org/hornetq/hornetq-2.3.0.Final-bin.tar.gz'
-  version '2.3.0'
-  sha1 '0afe0eb5b77732d1a7da73621d353f736a26899d'
+  url 'http://downloads.jboss.org/hornetq/hornetq-2.4.0.Final-bin.tar.gz'
+  version '2.4.0'
+  sha1 'b970f37625a951c23ca6d8a073e1ff400e0c28c6'
 
   def wrapper_script target
     <<-EOS.undent

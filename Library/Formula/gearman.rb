@@ -6,27 +6,30 @@ class Gearman < Formula
   sha1 '59ec305a4535451c3b51a21d2525e1c07770419d'
 
   option 'with-mysql', 'Compile with MySQL persistent queue enabled'
+  option 'with-postgresql', 'Compile with Postgresql persistent queue enabled'
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'
   depends_on 'libevent'
   depends_on 'ossp-uuid'
   depends_on :mysql => :optional
+  depends_on :postgresql => :optional
+
+  # build fix for tr1 -> std
+  # Fixes have also been applied upstream
+  patch :DATA if MacOS.version >= :mavericks
+
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--with-mysql" if build.with? 'mysql'
-
+    args << "--without-mysql" if build.without? 'mysql'
+    if build.with? 'postgresql'
+      pg_config = "#{Formula["postgresql"].opt_bin}/pg_config"
+      args << "--with-postgresql=#{pg_config}"
+    end
     system "./configure", *args
     system "make install"
   end
-
-  def patches
-    # build fix for tr1 -> std
-    # Fixes have also been applied upstream
-    DATA if MacOS.version >= :mavericks
-  end
-
 
   plist_options :manual => "gearmand -d"
 
@@ -39,7 +42,7 @@ class Gearman < Formula
         <key>Label</key>
         <string>#{plist_name}</string>
         <key>Program</key>
-        <string>#{opt_prefix}/sbin/gearmand</string>
+        <string>#{opt_sbin}/gearmand</string>
         <key>RunAtLoad</key>
         <true/>
       </dict>

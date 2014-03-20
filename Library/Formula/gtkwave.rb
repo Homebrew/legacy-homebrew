@@ -2,8 +2,8 @@ require 'formula'
 
 class Gtkwave < Formula
   homepage 'http://gtkwave.sourceforge.net/'
-  url 'http://gtkwave.sourceforge.net/gtkwave-3.3.52.tar.gz'
-  sha1 'd86b6225f878f62130f6dd4b609c590aaf8f87dc'
+  url 'http://gtkwave.sourceforge.net/gtkwave-3.3.57.tar.gz'
+  sha1 'ec81f03bac12852f24717159fa202c5077dfbe68'
 
   depends_on 'pkg-config' => :build
   depends_on 'gtk+'

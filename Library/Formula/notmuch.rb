@@ -16,8 +16,8 @@ end
 
 class Notmuch < Formula
   homepage 'http://notmuchmail.org'
-  url 'http://notmuchmail.org/releases/notmuch-0.16.tar.gz'
-  sha1 '1919277b322d7aaffa81b80a64aedbb8a1c52a2b'
+  url 'http://notmuchmail.org/releases/notmuch-0.17.tar.gz'
+  sha1 '0fe14140126a0da04754f548edf7e7b135eeec86'
 
   option "emacs", "Install emacs support."
 
@@ -27,13 +27,8 @@ class Notmuch < Formula
   depends_on 'talloc'
   depends_on 'gmime'
 
-  def patches
-    p = []
-    # Fix for mkdir behavior change in 10.9: http://notmuchmail.org/pipermail/notmuch/2013/016388.html
-    p << DATA
-    # Fix for building with clang: http://git.notmuchmail.org/git/notmuch/commit/db465e443f3cd5ef3ba52304ab8b5dc6e0d7e620
-    p << "http://git.notmuchmail.org/git/notmuch/patch/db465e443f3cd5ef3ba52304ab8b5dc6e0d7e620"
-  end
+  # Fix for mkdir behavior change in 10.9: http://notmuchmail.org/pipermail/notmuch/2013/016388.html
+  patch :DATA
 
   def install
     args = ["--prefix=#{prefix}"]

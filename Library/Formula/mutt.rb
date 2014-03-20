@@ -2,8 +2,15 @@ require 'formula'
 
 class Mutt < Formula
   homepage 'http://www.mutt.org/'
-  url 'ftp://ftp.mutt.org/mutt/devel/mutt-1.5.22.tar.gz'
-  sha1 '728a114cb3a44df373dbf1292fc34dd8321057dc'
+  url 'ftp://ftp.mutt.org/mutt/mutt-1.5.23.tar.gz'
+  mirror 'https://bitbucket.org/mutt/mutt/downloads/mutt-1.5.23.tar.gz'
+  sha1 '8ac821d8b1e25504a31bf5fda9c08d93a4acc862'
+
+  bottle do
+    sha1 "18da37536ab216267e5240e79acab0eb550076d9" => :mavericks
+    sha1 "dabafeb01c0ad9669c13302c2898f4fee85a7cd4" => :mountain_lion
+    sha1 "0808c458478a316031e71ecb6c3d54e99b41781a" => :lion
+  end
 
   head do
     url 'http://dev.mutt.org/hg/mutt#default', :using => :hg
@@ -16,8 +23,10 @@ class Mutt < Formula
     depends_on :automake
   end
 
-  conflicts_with 'signing-party',
-    :because => 'mutt installs private copies of pgpring and pgpewrap'
+  unless Tab.for_name('signing-party').used_options.include? 'with-rename-pgpring'
+    conflicts_with 'signing-party',
+      :because => 'mutt installs a private copy of pgpring'
+  end
 
   conflicts_with 'tin',
     :because => 'both install mmdf.5 and mbox.5 man pages'
@@ -29,17 +38,19 @@ class Mutt < Formula
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
 
+  depends_on 'openssl'
   depends_on 'tokyo-cabinet'
   depends_on 's-lang' => :optional
+  depends_on 'gpgme' => :optional
 
   def patches
     urls = [
-      ['with-trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.4/features/trash-folder'],
+      ['with-trash-patch', 'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2+deb7u1/features/trash-folder'],
       # original source for this went missing, patch sourced from Arch at
       # https://aur.archlinux.org/packages/mutt-ignore-thread/
       ['with-ignore-thread-patch', 'https://gist.github.com/mistydemeo/5522742/raw/1439cc157ab673dc8061784829eea267cd736624/ignore-thread-1.5.21.patch'],
       ['with-pgp-verbose-mime-patch',
-          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.4/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
+          'http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2+deb7u1/features-old/patch-1.5.4.vk.pgp_verbose_mime'],
       ['with-confirm-attachment-patch', 'https://gist.github.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch'],
     ]
 
@@ -55,7 +66,7 @@ class Mutt < Formula
     args = ["--disable-dependency-tracking",
             "--disable-warnings",
             "--prefix=#{prefix}",
-            "--with-ssl",
+            "--with-ssl=#{Formula['openssl'].opt_prefix}",
             "--with-sasl",
             "--with-gss",
             "--enable-imap",
@@ -68,6 +79,7 @@ class Mutt < Formula
             # unpriviledged user)
             "--with-homespool=.mbox"]
     args << "--with-slang" if build.with? 's-lang'
+    args << "--enable-gpgme" if build.with? 'gpgme'
 
     if build.with? 'debug'
       args << "--enable-debug"

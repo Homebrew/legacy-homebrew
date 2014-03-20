@@ -2,13 +2,18 @@ require 'formula'
 
 class Tcpreplay < Formula
   homepage 'http://tcpreplay.synfin.net'
-  url 'http://downloads.sourceforge.net/project/tcpreplay/tcpreplay/3.4.4/tcpreplay-3.4.4.tar.gz'
-  sha1 '9e4cca81cfbfb919f8759e1a27ce1b3b963ff3b8'
+  url 'https://downloads.sourceforge.net/project/tcpreplay/tcpreplay/4.0.3/tcpreplay-4.0.3.tar.gz'
+  sha1 '1410ddf0cd239ef825380cc8d1f495df39106404'
 
   # Hard-code use of dylib instead of so
-  def patches; DATA; end
+  patch :DATA
 
   def install
+    inreplace "src/common/Makefile.in" do |s|
+      s.gsub! "libcommon_a_LIBADD = ../../lib/libstrl.a", ""
+      s.gsub! "libcommon_a_DEPENDENCIES = ../../lib/libstrl.a", ""
+    end
+
     system "./configure", "--disable-dependency-tracking", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--enable-dynamic-link"

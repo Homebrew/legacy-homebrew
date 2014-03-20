@@ -24,22 +24,14 @@ class Enchant < Formula
     system "make", "install"
 
     if build.with? 'python'
-      python do
-        resource('pyenchant').stage do
-          # Don't download and install distribute now
-          inreplace 'setup.py', "distribute_setup.use_setuptools()", ""
-          ENV['PYENCHANT_LIBRARY_PATH'] = lib/'libenchant.dylib'
-          system python, 'setup.py', 'install', "--prefix=#{prefix}",
-                                '--single-version-externally-managed',
-                                '--record=installed.txt'
-        end
+      resource('pyenchant').stage do
+        # Don't download and install distribute now
+        inreplace 'setup.py', "distribute_setup.use_setuptools()", ""
+        ENV['PYENCHANT_LIBRARY_PATH'] = lib/'libenchant.dylib'
+        system 'python', 'setup.py', 'install', "--prefix=#{prefix}",
+                              '--single-version-externally-managed',
+                              '--record=installed.txt'
       end
-    end
-  end
-
-  test do
-    python do
-      system python, "-c", "import enchant; d=enchant.Dict('en_US'); print(d.suggest('homebrew'))"
     end
   end
 end

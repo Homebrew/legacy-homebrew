@@ -17,9 +17,7 @@ class Fltk < Formula
 
   # The patch is to fix issue with -lpng not found.
   # Based on: https://trac.macports.org/browser/trunk/dports/aqua/fltk/files/patch-src-Makefile.diff
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?

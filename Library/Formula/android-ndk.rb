@@ -2,8 +2,9 @@ require 'formula'
 
 class AndroidNdk < Formula
   homepage 'http://developer.android.com/sdk/ndk/index.html'
-  url 'http://dl.google.com/android/ndk/android-ndk-r9b-darwin-x86.tar.bz2'
-  sha1 'e9e44144a1db987f917eafe9fa2dc0b0de3ee78f'
+  url 'http://dl.google.com/android/ndk/android-ndk-r9d-darwin-x86.tar.bz2'
+  version 'r9d'
+  sha1 '91ac410a24ad6d1fc67b5161294a4a5cb78b2975'
 
   depends_on 'android-sdk'
 

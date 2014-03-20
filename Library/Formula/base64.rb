@@ -11,4 +11,13 @@ class Base64 < Formula
     bin.install "base64"
     man1.install "base64.1"
   end
+
+  test do
+    path = testpath/"a.txt"
+    path.write "hello"
+
+    output = `#{bin}/base64 #{path}`.strip
+    assert_equal "aGVsbG8=", output
+    assert_equal 0, $?.exitstatus
+  end
 end

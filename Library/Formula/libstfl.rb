@@ -8,7 +8,7 @@ class Libstfl < Formula
   depends_on :python => :recommended
   depends_on 'swig' => :build
 
-  def patches; DATA; end
+  patch :DATA
 
   def install
     args = ["CC=#{ENV.cc} -pthread", "prefix=#{prefix}"]
@@ -28,7 +28,7 @@ class Libstfl < Formula
     if build.with? 'python'
       # Install into the site-packages in the Cellar (so uninstall works)
       inreplace 'python/Makefile.snippet' do |s|
-        s.change_make_var! "PYTHON_SITEARCH", python.site_packages
+        s.change_make_var! "PYTHON_SITEARCH", lib/'python2.7/site-packages'
         s.gsub! 'lib-dynload/', ''
       end
       # Fails race condition of test:

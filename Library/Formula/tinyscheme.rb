@@ -2,7 +2,7 @@ require 'formula'
 
 class Tinyscheme < Formula
   homepage 'http://tinyscheme.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/tinyscheme/tinyscheme/tinyscheme-1.40/tinyscheme-1.40.tar.gz'
+  url 'https://downloads.sourceforge.net/project/tinyscheme/tinyscheme/tinyscheme-1.40/tinyscheme-1.40.tar.gz'
   sha1 'e03f7ac41f0517bb35eced2772c79eb9db42ea82'
 
   conflicts_with 'mit-scheme', :because => 'both install a `scheme` binary'

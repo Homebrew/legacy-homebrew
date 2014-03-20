@@ -9,7 +9,7 @@ class ClassDump < Formula
   depends_on :macos => :mavericks
 
   def install
-    system "xcodebuild", "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
+    xcodebuild "-configuration", "Release", "SYMROOT=build", "PREFIX=#{prefix}", "ONLY_ACTIVE_ARCH=YES"
     bin.install "build/Release/class-dump"
   end
 end

@@ -8,12 +8,8 @@ class Bup < Formula
 
   option "run-tests", "Run unit tests after compilation"
 
-  depends_on :python
-
   def install
-    python do
-      system "make"
-    end
+    system "make"
     system "make test" if build.include? "run-tests"
     system "make", "install", "DESTDIR=#{prefix}", "PREFIX="
   end

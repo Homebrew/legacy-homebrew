@@ -11,7 +11,7 @@ class Rancid < Formula
     system "make install"
   end
 
- def test
-   system "#{bin}/rancid", "localhost"
- end
+  test do
+    system "#{bin}/rancid", "localhost"
+  end
 end

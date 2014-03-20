@@ -6,14 +6,13 @@ class NinjaIde < Formula
   sha1 '64ccbbf8521a8fbef43c3d57cf616b7f8b466460'
 
   depends_on :python
-  depends_on :python => ['fsevents' => 'MacFSEvents']
+  depends_on "MacFSEvents" => [:python, "fsevents"]
   depends_on 'pyqt'
 
   def install
-    python do
-      system python, "setup.py", "install", "--prefix=#{prefix}",
+    system "python", "setup.py", "install", "--prefix=#{prefix}",
                      "--single-version-externally-managed", "--record=installed.txt"
-    end
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
   test do

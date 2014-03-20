@@ -8,7 +8,7 @@ class Wdfs < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'neon'
-  depends_on 'fuse4x'
+  depends_on 'osxfuse'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -16,7 +16,7 @@ class Wdfs < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/wdfs", "-v"
   end
 end

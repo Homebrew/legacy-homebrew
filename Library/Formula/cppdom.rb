@@ -2,14 +2,14 @@ require 'formula'
 
 class Cppdom < Formula
   homepage 'http://sourceforge.net/projects/xml-cppdom/'
-  url 'http://downloads.sourceforge.net/project/xml-cppdom/CppDOM/1.2.0/cppdom-1.2.0.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/xml-cppdom/CppDOM/1.2.0/cppdom-1.2.0.tar.bz2'
   sha1 'cf3a20689e82b8907825ac9d0602f469f879d934'
 
   depends_on 'scons' => :build
   depends_on 'boost'
 
   # Don't install to prefix/lib64
-  def patches; DATA; end
+  patch :DATA
 
   def install
     args = ["prefix=#{prefix}", "build_test=no", "var_type=optimized",

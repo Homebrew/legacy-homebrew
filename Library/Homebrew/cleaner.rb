@@ -1,25 +1,32 @@
 # Cleans a newly installed keg.
 # By default:
-# * removes info files
 # * removes .la files
 # * removes empty directories
 # * sets permissions on executables
+# * removes unresolved symlinks
 class Cleaner
 
-  # Create a cleaner for the given formula and clean its keg
+  # Create a cleaner for the given formula
   def initialize f
     @f = f
-    [f.bin, f.sbin, f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
+  end
 
-    if ENV['HOMEBREW_KEEP_INFO']
-      # Get rid of the directory file, so it no longer bother us at link stage.
-      info_dir_file = f.info + 'dir'
-      if info_dir_file.file? and not f.skip_clean? info_dir_file
-        puts "rm #{info_dir_file}" if ARGV.verbose?
-        info_dir_file.unlink
-      end
-    else
-      f.info.rmtree if f.info.directory? and not f.skip_clean? f.info
+  # Clean the keg of formula @f
+  def clean
+    ObserverPathnameExtension.reset_counts!
+
+    # Many formulae include 'lib/charset.alias', but it is not strictly needed
+    # and will conflict if more than one formula provides it
+    alias_path = @f.lib/'charset.alias'
+    alias_path.extend(ObserverPathnameExtension).unlink if alias_path.exist?
+
+    [@f.bin, @f.sbin, @f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
+
+    # Get rid of any info 'dir' files, so they don't conflict at the link stage
+    info_dir_file = @f.info + 'dir'
+    if info_dir_file.file? and not @f.skip_clean? info_dir_file
+      puts "rm #{info_dir_file}" if ARGV.verbose?
+      info_dir_file.unlink
     end
 
     prune
@@ -27,10 +34,11 @@ class Cleaner
 
   private
 
+  # Removes any empty directories in the formula's prefix subtree
+  # Keeps any empty directions projected by skip_clean
   def prune
     dirs = []
     symlinks = []
-
     @f.prefix.find do |path|
       if @f.skip_clean? path
         Find.prune
@@ -41,6 +49,8 @@ class Cleaner
       end
     end
 
+    # Remove directories opposite from traversal, so that a subtree with no
+    # actual files gets removed correctly.
     dirs.reverse_each do |d|
       if d.children.empty?
         puts "rmdir: #{d} (empty)" if ARGV.verbose?
@@ -48,6 +58,7 @@ class Cleaner
       end
     end
 
+    # Remove unresolved symlinks
     symlinks.reverse_each do |s|
       s.unlink unless s.resolved_path_exists?
     end
@@ -69,35 +80,22 @@ class Cleaner
     path.chmod perms
   end
 
-  # Clean a single folder (non-recursively)
+  # Removes .la files and fixes file permissions for a directory tree, keeping
+  # existing files and permissions if instructed to by the formula
   def clean_dir d
     d.find do |path|
-      path.extend(NoisyPathname) if ARGV.verbose?
+      path.extend(ObserverPathnameExtension)
 
-      if path.directory?
-        # Stop cleaning this subtree if protected
-        Find.prune if @f.skip_clean? path
-      elsif not path.file?
-        # Sanity?
+      Find.prune if @f.skip_clean? path
+
+      if path.symlink? or path.directory?
         next
       elsif path.extname == '.la'
-        # *.la files are stupid
-        path.unlink unless @f.skip_clean? path
-      elsif path == @f.lib+'charset.alias'
-        # Many formulae symlink this file, but it is not strictly needed
-        path.unlink unless @f.skip_clean? path
-      elsif not path.symlink?
-        # Fix permissions
-        clean_file_permissions(path) unless @f.skip_clean? path
+        path.unlink
+      else
+        clean_file_permissions(path)
       end
     end
   end
 
-end
-
-module NoisyPathname
-  def unlink
-    puts "rm: #{self}"
-    super
-  end
 end

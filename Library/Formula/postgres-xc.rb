@@ -2,7 +2,7 @@ require 'formula'
 
 class PostgresXc < Formula
   homepage 'http://postgres-xc.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/postgres-xc/Version_1.0/pgxc-v1.0.3.tar.gz'
+  url 'https://downloads.sourceforge.net/project/postgres-xc/Version_1.0/pgxc-v1.0.3.tar.gz'
   sha1 '76774cf32810dfa14b2174f2e939d3b28eb211a9'
 
   depends_on :arch => :x86_64
@@ -46,13 +46,13 @@ class PostgresXc < Formula
             "--with-libxml",
             "--with-libxslt"]
 
-    args << "--with-ossp-uuid" unless build.without? 'ossp-uuid'
+    args << "--with-ossp-uuid" if build.with? 'ossp-uuid'
     args << "--with-python" if build.with? 'python'
     args << "--with-perl" unless build.include? 'no-perl'
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
     args << "ARCHFLAGS='-arch x86_64'"
 
-    unless build.without? 'ossp-uuid'
+    if build.with? 'ossp-uuid'
       ENV.append 'CFLAGS', `uuid-config --cflags`.strip
       ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
       ENV.append 'LIBS', `uuid-config --libs`.strip
@@ -76,25 +76,27 @@ class PostgresXc < Formula
   end
 
   def check_python_arch
-    # On 64-bit systems, we need to avoid a 32-bit Framework Python.
-    if python.framework?
-      unless archs_for_command(python.binary).include? :x86_64
-        opoo "Detected a framework Python that does not have 64-bit support in:"
-        puts <<-EOS.undent
-          #{python.prefix}
+    # On 64-bit systems, we need to look for a 32-bit Framework Python.
+    # The configure script prefers this Python version, and if it doesn't
+    # have 64-bit support then linking will fail.
+    framework_python = Pathname.new "/Library/Frameworks/Python.framework/Versions/Current/Python"
+    return unless framework_python.exist?
+    unless (archs_for_command framework_python).include? :x86_64
+      opoo "Detected a framework Python that does not have 64-bit support in:"
+      puts <<-EOS.undent
+        #{framework_python}
 
-          The configure script seems to prefer this version of Python over any others,
-          so you may experience linker problems as described in:
-            http://osdir.com/ml/pgsql-general/2009-09/msg00160.html
+        The configure script seems to prefer this version of Python over any others,
+        so you may experience linker problems as described in:
+          http://osdir.com/ml/pgsql-general/2009-09/msg00160.html
 
-          To fix this issue, you may need to either delete the version of Python
-          shown above, or move it out of the way before brewing PostgreSQL.
+        To fix this issue, you may need to either delete the version of Python
+        shown above, or move it out of the way before brewing PostgreSQL.
 
-          Note that a framework Python in /Library/Frameworks/Python.framework is
-          the "MacPython" version, and not the system-provided version which is in:
-            /System/Library/Frameworks/Python.framework
-        EOS
-      end
+        Note that a framework Python in /Library/Frameworks/Python.framework is
+        the "MacPython" version, and not the system-provided version which is in:
+          /System/Library/Frameworks/Python.framework
+      EOS
     end
   end
 
@@ -165,7 +167,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/gtm</string>
+        <string>#{opt_bin}/gtm</string>
         <string>-D</string>
         <string>#{var}/postgres-xc/#{name}</string>
         <string>-l</string>
@@ -193,7 +195,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/gtm_proxy</string>
+        <string>#{opt_bin}/gtm_proxy</string>
         <string>-D</string>
         <string>#{var}/postgres-xc/#{name}</string>
         <string>-n</string>
@@ -227,7 +229,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/postgres</string>
+        <string>#{opt_bin}/postgres</string>
         <string>-i</string>
         <string>-C</string>
         <string>-D</string>
@@ -257,7 +259,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/postgres</string>
+        <string>#{opt_bin}/postgres</string>
         <string>-i</string>
         <string>-X</string>
         <string>-D</string>

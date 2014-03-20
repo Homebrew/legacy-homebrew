@@ -7,11 +7,13 @@ class Caveats
 
   def caveats
     caveats = []
-    caveats << f.caveats
+    caveats << f.caveats if f.caveats.to_s.length > 0
     caveats << f.keg_only_text if f.keg_only? && f.respond_to?(:keg_only_text)
     caveats << bash_completion_caveats
     caveats << zsh_completion_caveats
     caveats << plist_caveats
+    caveats << python_caveats
+    caveats << app_caveats
     caveats.compact.join("\n")
   end
 
@@ -39,6 +41,35 @@ class Caveats
     if keg and keg.completion_installed? :zsh then <<-EOS.undent
       zsh completion has been installed to:
         #{HOMEBREW_PREFIX}/share/zsh/site-functions
+      EOS
+    end
+  end
+
+  def python_caveats
+    return unless keg
+    return unless keg.python_site_packages_installed?
+    return if Formula["python"].installed?
+    site_packages = if f.keg_only?
+      "#{f.opt_prefix}/lib/python2.7/site-packages"
+    else
+      "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages"
+    end
+    dir = "~/Library/Python/2.7/lib/python/site-packages"
+    dir_path = Pathname.new(dir).expand_path
+    file = "#{dir}/homebrew.pth"
+    file_path = Pathname.new(file).expand_path
+    if !file_path.readable? || !file_path.read.include?(site_packages)
+      s = "If you need Python to find the installed site-packages:\n"
+      s += "  mkdir -p #{dir}\n" unless dir_path.exist?
+      s += "  echo '#{site_packages}' >> #{file}"
+    end
+  end
+
+  def app_caveats
+    if keg and keg.app_installed?
+      <<-EOS.undent
+        .app bundles were installed.
+        Run `brew linkapps` to symlink these to /Applications.
       EOS
     end
   end

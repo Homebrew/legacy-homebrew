@@ -2,8 +2,8 @@ require 'formula'
 
 class Hydra < Formula
   homepage 'http://www.thc.org/thc-hydra/'
-  url 'http://www.thc.org/releases/hydra-7.5.tar.gz'
-  sha1 '475980f8e6c0c97b7702201e89fbcf441a6fd2c0'
+  url 'http://www.thc.org/releases/hydra-7.6.tar.gz'
+  sha1 '7df230bb4f228a5cdc776ef1a215a1523b58f40b'
 
   def install
     system "./configure", "--prefix=#{prefix}"

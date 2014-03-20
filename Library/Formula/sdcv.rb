@@ -12,6 +12,16 @@ class Sdcv < Formula
   depends_on 'glib'
   depends_on 'readline'
 
+  # see: https://github.com/Homebrew/homebrew/issues/26321
+  fails_with :clang do
+    build 425
+    cause "clang 425 does not provide complete enough C++11 features"
+  end
+
+  fails_with :gcc
+  fails_with :llvm
+  fails_with :gcc_4_0
+
   def install
     mkdir 'build' do
       system "cmake", "..", *std_cmake_args

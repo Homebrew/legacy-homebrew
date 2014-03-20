@@ -2,9 +2,10 @@ require 'formula'
 
 class Capnp < Formula
   homepage 'http://kentonv.github.io/capnproto/'
-  url 'http://capnproto.org/capnproto-c++-0.3.0.tar.gz'
-  sha1 '26152010298db40687bf1b18ff6a438986289a44'
+  url 'http://capnproto.org/capnproto-c++-0.4.1.tar.gz'
+  sha1 '18ce1a404c2bf68e6625e44927bfe6b67186cb15'
 
+  # TODO add fails_with statements for FSF GCC
   fails_with :gcc do
     cause "Cap'n Proto requires C++11 support"
   end

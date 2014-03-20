@@ -2,8 +2,8 @@ require 'formula'
 
 class Jansson < Formula
   homepage 'http://www.digip.org/jansson/'
-  url 'http://www.digip.org/jansson/releases/jansson-2.4.tar.bz2'
-  sha1 'f11ff89dd484d89210d9f52a9ccc2ce2b9d2c1ae'
+  url 'http://www.digip.org/jansson/releases/jansson-2.5.tar.bz2'
+  sha1 '144e31826b7ab9a648511759c43b23db5865f4db'
 
   option :universal
 

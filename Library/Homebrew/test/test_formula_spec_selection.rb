@@ -34,17 +34,6 @@ class FormulaSpecSelectionTests < Test::Unit::TestCase
     assert_spec_selected :devel
   end
 
-  def test_selects_bottle_when_available
-    formula do
-      def install_bottle?(*); true; end
-
-      url 'foo-1.0'
-      bottle { sha1 TEST_SHA1 => bottle_tag }
-    end
-
-    assert_spec_selected :bottle
-  end
-
   def test_selects_stable_by_default
     formula do
       url 'foo-1.0'
@@ -117,16 +106,6 @@ class FormulaSpecSelectionTests < Test::Unit::TestCase
     end
 
     assert_spec_unset :devel
-    assert_spec_selected :stable
-  end
-
-  def test_incomplete_bottle_not_set
-    formula do
-      url 'foo-1.0'
-      bottle { sha1 TEST_SHA1 => :some_nonexistent_thing }
-    end
-
-    assert_spec_unset :bottle
     assert_spec_selected :stable
   end
 end

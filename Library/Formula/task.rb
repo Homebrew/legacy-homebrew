@@ -1,21 +1,13 @@
 require 'formula'
 
-class TaskwarriorDownloadStrategy < GitDownloadStrategy
-  # CMakeLists.txt requires presence of .git to generate commit.h
-  # (version information), otherwise make fails.
-  def support_depth?
-    false
-  end
-end
-
 class Task < Formula
   homepage 'http://www.taskwarrior.org/'
-  url 'http://www.taskwarrior.org/download/task-2.2.0.tar.gz'
-  sha1 '70656deb48a460f95370c885e388b475475f64eb'
-  head 'git://tasktools.org/task.git', :branch => :"2.3.0",
-                                       :using => TaskwarriorDownloadStrategy
+  url 'http://www.taskwarrior.org/download/task-2.3.0.tar.gz'
+  sha1 'b5390a1c1232bcb727f5a595ac1141184810d09d'
+  head 'git://tasktools.org/task.git', :branch => '2.4.0', :shallow => false
 
   depends_on "cmake" => :build
+  depends_on "gnutls" => :optional
 
   def install
     system "cmake", ".", *std_cmake_args

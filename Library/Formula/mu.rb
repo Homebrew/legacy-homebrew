@@ -13,7 +13,7 @@ end
 
 class Mu < Formula
   homepage 'http://www.djcbsoftware.nl/code/mu/'
-  url 'http://mu0.googlecode.com/files/mu-0.9.9.5.tar.gz'
+  url 'https://mu0.googlecode.com/files/mu-0.9.9.5.tar.gz'
   sha1 '825e3096e0763a12b8fdf77bd41625ee15ed09eb'
 
   head do
@@ -38,13 +38,19 @@ class Mu < Formula
   def install
     # Explicitly tell the build not to include emacs support as the version
     # shipped by default with Mac OS X is too old.
-    ENV['EMACS'] = 'no' unless build.with? 'emacs'
+    ENV['EMACS'] = 'no' if build.without? 'emacs'
+
+    # I dunno.
+    # https://github.com/djcb/mu/issues/332
+    # https://github.com/Homebrew/homebrew/issues/25524
+    ENV.delete 'MACOSX_DEPLOYMENT_TARGET'
 
     system 'autoreconf', '-ivf' if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-gui=none"
     system "make"
+    system "make test"
     system "make install"
   end
 

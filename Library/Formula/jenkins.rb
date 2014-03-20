@@ -2,8 +2,8 @@ require 'formula'
 
 class Jenkins < Formula
   homepage 'http://jenkins-ci.org'
-  url 'http://mirrors.jenkins-ci.org/war/1.544/jenkins.war'
-  sha1 '3cf4332ce31e0fe1f4ae7391f3400dcb87ef8238'
+  url 'http://mirrors.jenkins-ci.org/war/1.555/jenkins.war'
+  sha1 'd69ab68664916694649791fe23541301de5f47e2'
 
   head 'https://github.com/jenkinsci/jenkins.git'
 
@@ -30,7 +30,7 @@ class Jenkins < Formula
           <string>/usr/bin/java</string>
           <string>-Dmail.smtp.starttls.enable=true</string>
           <string>-jar</string>
-          <string>#{opt_prefix}/libexec/jenkins.war</string>
+          <string>#{opt_libexec}/jenkins.war</string>
           <string>--httpListenAddress=127.0.0.1</string>
           <string>--httpPort=8080</string>
         </array>

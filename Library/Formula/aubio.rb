@@ -18,9 +18,7 @@ class Aubio < Formula
 
   # get rid of -Wno-long-double in configure.  otherwise, breaks with modern xcode.
   # updates for py2.6+ compatibility (with is now a keyword)
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.deparallelize
@@ -28,15 +26,11 @@ class Aubio < Formula
                           "--prefix=#{prefix}"
     system "make"
     system "make install"
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
-  def caveats
-    python.standard_caveats if python
-  end
-
-  def test
-    # this will blow up if not everything went right
-    system "#{bin}/aubiocut"
+  test do
+    system "#{bin}/aubiocut", "--help"
   end
 end
 

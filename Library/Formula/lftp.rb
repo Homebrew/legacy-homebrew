@@ -2,9 +2,8 @@ require 'formula'
 
 class Lftp < Formula
   homepage 'http://lftp.yar.ru/'
-  url 'http://lftp.yar.ru/ftp/lftp-4.4.13.tar.bz2'
-  mirror 'ftp://ftp.cs.tu-berlin.de/pub/net/ftp/lftp/lftp-4.4.13.tar.bz2'
-  sha1 'cb3a115a34e9330b448fd5770f52923f8e8451f6'
+  url 'http://lftp.yar.ru/ftp/lftp-4.4.15.tar.bz2'
+  sha1 '3747de76b0ff472bcf1ce353025967cdbcc35cb7'
 
   option 'with-gnutls', "Use GnuTLS instead of the default OpenSSL"
   option 'with-brewed-openssl', 'Build with Homebrew OpenSSL instead of the system version'

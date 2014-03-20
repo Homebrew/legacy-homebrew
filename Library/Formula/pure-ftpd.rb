@@ -44,7 +44,7 @@ class PureFtpd < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/sbin/pure-ftpd</string>
+          <string>#{opt_sbin}/pure-ftpd</string>
           <string>-A -j -z</string>
         </array>
         <key>RunAtLoad</key>

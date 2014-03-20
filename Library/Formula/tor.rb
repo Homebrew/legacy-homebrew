@@ -2,30 +2,35 @@ require 'formula'
 
 class Tor < Formula
   homepage 'https://www.torproject.org/'
-  url 'https://www.torproject.org/dist/tor-0.2.4.19.tar.gz'
-  sha1 'f0050921016d63c426f0c61dbaa8ced50a36474b'
+  url 'https://www.torproject.org/dist/tor-0.2.4.21.tar.gz'
+  sha1 'b93b66e4d5162cefc711cb44f9167ed4799ef990'
 
   devel do
-    url 'https://www.torproject.org/dist/tor-0.2.5.1-alpha.tar.gz'
-    version '0.2.5.1-alpha'
-    sha1 'd10cb78e6a41657d970a1ce42105142bcfc315fb'
+    url 'https://www.torproject.org/dist/tor-0.2.5.2-alpha.tar.gz'
+    version '0.2.5.2-alpha'
+    sha1 '80f4697dfc0473bf5ec642b074cee4ce95fd0fa6'
   end
 
-  option "with-brewed-openssl", "Build with Homebrew's OpenSSL instead of the system version"
-
   depends_on 'libevent'
-  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'openssl'
 
   def install
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-    ]
+    # Fix the path to the control cookie.
+    inreplace \
+      'contrib/tor-ctrl.sh',
+      'TOR_COOKIE="/var/lib/tor/data/control_auth_cookie"',
+      'TOR_COOKIE="$HOME/.tor/control_auth_cookie"'
 
-    args << "-with-ssl=#{Formulary.factory('openssl').opt_prefix}" if build.with? 'brewed-openssl'
-
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"
     system "make install"
+
+    bin.install "contrib/tor-ctrl.sh" => "tor-ctrl"
+  end
+
+  test do
+    system "tor", "--version"
   end
 
   def plist; <<-EOS.undent
@@ -41,7 +46,7 @@ class Tor < Formula
         <true/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/tor</string>
+            <string>#{opt_bin}/tor</string>
         </array>
         <key>WorkingDirectory</key>
         <string>#{HOMEBREW_PREFIX}</string>

@@ -7,27 +7,11 @@ class Pssh < Formula
 
   depends_on :python
 
-  # TODO: Move this into Library/Homebrew somewhere (see also mitmproxy.rb and ansible.rb).
-  def wrap bin_file, pythonpath
-    bin_file = Pathname.new bin_file
-    libexec_bin = Pathname.new libexec/'bin'
-    libexec_bin.mkpath
-    mv bin_file, libexec_bin
-    bin_file.write <<-EOS.undent
-    #!/bin/sh
-    PYTHONPATH="#{pythonpath}:$PYTHONPATH" exec "#{libexec_bin}/#{bin_file.basename}" "$@"
-    EOS
-  end
-
   def install
-    python do
-      system python, "setup.py", "install",
-        "--prefix=#{prefix}", "--install-data=#{share}"
-    end
+    system "python", "setup.py", "install",
+      "--prefix=#{prefix}", "--install-data=#{share}"
 
-    Dir["#{bin}/*"].each do |bin_file|
-      wrap bin_file, python.global_site_packages
-    end
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
   test do

@@ -8,7 +8,7 @@ class Mdbtools < Formula
   option 'with-man-pages', 'Build manual pages'
 
   depends_on 'pkg-config' => :build
-  depends_on 'txt2man' => :build if build.include? 'with-man-pages'
+  depends_on 'txt2man' => :build if build.with? "man-pages"
   depends_on 'glib'
   depends_on 'readline'
 
@@ -20,7 +20,7 @@ class Mdbtools < Formula
     ENV.deparallelize
 
     args = ["--prefix=#{prefix}"]
-    args << "--disable-man" unless build.include? 'with-man-pages'
+    args << "--disable-man" if build.without? "man-pages"
 
     if MacOS.version == :snow_leopard
       # aclocal does not respect ACLOCAL_PATH on 10.6

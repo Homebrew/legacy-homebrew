@@ -2,8 +2,8 @@ require 'formula'
 
 class RakudoStar < Formula
   homepage 'http://rakudo.org/'
-  url 'http://rakudo.org/downloads/star/rakudo-star-2013.11.tar.gz'
-  sha256 '7f867f0e4ce7fee7c0f8ecf207d8cb118c334bc71b1a849c0dfa6aa11fd8b4fe'
+  url 'http://rakudo.org/downloads/star/rakudo-star-2014.01.tar.gz'
+  sha256 '017e28537c88475b2d82621671a7cd8062cb29aa31ec1ecebc67efcb2e1783c8'
 
   conflicts_with 'parrot'
 
@@ -13,7 +13,7 @@ class RakudoStar < Formula
   depends_on 'libffi'
 
   def install
-    libffi = Formula.factory("libffi")
+    libffi = Formula["libffi"]
     ENV.remove 'CPPFLAGS', "-I#{libffi.include}"
     ENV.prepend 'CPPFLAGS', "-I#{libffi.lib}/libffi-#{libffi.version}/include"
 

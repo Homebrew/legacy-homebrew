@@ -2,10 +2,11 @@ require 'formula'
 
 class Mitmproxy < Formula
   homepage 'http://mitmproxy.org'
-  url 'http://mitmproxy.org/download/mitmproxy-0.9.2.tar.gz'
-  sha1 '7fa95ef27a4ac5ec85010f4ddb85cf6b7f17ef27'
+  url 'http://mitmproxy.org/download/mitmproxy-0.10.tar.gz'
+  sha1 'de30fe4744d66a072b225da05d28f89ab2020391'
 
   option 'with-pyamf', 'Enable action message format (AMF) support for python'
+  option 'with-cssutils', 'Enable beautification of CSS responses'
 
   depends_on :python
   depends_on 'protobuf' => :optional
@@ -15,9 +16,9 @@ class Mitmproxy < Formula
     sha1 '60633ebb821d48d7132a436c897288ec0121b892'
   end
 
-  resource 'pil' do
-    url 'http://effbot.org/media/downloads/PIL-1.1.7.tar.gz'
-    sha1 'a1450d0f4f5bd1ca050b75fb363f73bddd5f1c23'
+  resource 'pillow' do
+    url 'https://github.com/python-imaging/Pillow/archive/2.3.0.tar.gz'
+    sha1 'f269109be21d27df3210e43fe11a17657bbfc261'
   end
 
   resource 'flask' do
@@ -26,13 +27,13 @@ class Mitmproxy < Formula
   end
 
   resource 'lxml' do
-    url 'https://pypi.python.org/packages/source/l/lxml/lxml-3.2.3.tar.gz'
-    sha1 '33a3017090903f13b329ef3d81b5082e8d6463f7'
+    url 'https://pypi.python.org/packages/source/l/lxml/lxml-3.3.0.tar.gz'
+    sha1 '7cff413526c9e797fd0b8ced37144e5e89ffc66e'
   end
 
   resource 'netlib' do
-    url 'https://pypi.python.org/packages/source/n/netlib/netlib-0.9.2.tar.gz'
-    sha1 '7c62c96829295d8e55f8644f242959f6a150720e'
+    url 'https://pypi.python.org/packages/source/n/netlib/netlib-0.10.tar.gz'
+    sha1 'd8bcd71a6670377ef70bb25e0b6a81679e8b651a'
   end
 
   resource 'pyasn1' do
@@ -41,8 +42,8 @@ class Mitmproxy < Formula
   end
 
   resource 'urwid' do
-    url 'https://pypi.python.org/packages/source/u/urwid/urwid-1.1.1.tar.gz'
-    sha1 '0d6aa34975bb516565cfbf951487d26161e400b7'
+    url 'https://pypi.python.org/packages/source/u/urwid/urwid-1.1.2.tar.gz'
+    sha1 '288f61b444b7f21964fdee33e656da4abeb76c53'
   end
 
   if build.with? 'pyamf'
@@ -52,42 +53,33 @@ class Mitmproxy < Formula
     end
   end
 
-  # TODO: Move this into Library/Homebrew somewhere (see also ansible.rb).
-  def wrap bin_file, pythonpath
-    bin_file = Pathname.new bin_file
-    libexec_bin = Pathname.new libexec/'bin'
-    libexec_bin.mkpath
-    mv bin_file, libexec_bin
-    bin_file.write <<-EOS.undent
-      #!/bin/sh
-      PYTHONPATH="#{pythonpath}:$PYTHONPATH" "#{libexec_bin}/#{bin_file.basename}" "$@"
-    EOS
+  if build.with? 'cssutils'
+    resource 'cssutils' do
+      url 'https://pypi.python.org/packages/source/c/cssutils/cssutils-1.0.zip'
+      sha1 '341e57dbb02b699745b13a9a3296634209d26169'
+    end
   end
 
   def install
+    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    python do
-      resource('pyopenssl').stage { system python, *install_args }
-      resource('pil').stage { system python, *install_args }
-      resource('flask').stage { system python, *install_args }
-      resource('lxml').stage { system python, *install_args }
-      resource('netlib').stage { system python, *install_args }
-      resource('pyasn1').stage { system python, *install_args }
-      resource('urwid').stage { system python, *install_args }
-      if build.with? 'pyamf'
-        resource('pyamf').stage { system python, *install_args }
-      end
-
-      inreplace 'libmproxy/__init__.py',
-                /^$/,
-                "import site; site.addsitedir('#{python.private_site_packages}')"
-
-      system python, "setup.py", "install", "--prefix=#{prefix}"
+    resource('pyopenssl').stage { system "python", *install_args }
+    resource('pillow').stage { system "python", *install_args }
+    resource('flask').stage { system "python", *install_args }
+    resource('lxml').stage { system "python", *install_args }
+    resource('netlib').stage { system "python", *install_args }
+    resource('pyasn1').stage { system "python", *install_args }
+    resource('urwid').stage { system "python", *install_args }
+    if build.with? 'pyamf'
+      resource('pyamf').stage { system "python", *install_args }
+    end
+    if build.with? 'cssutils'
+      resource('cssutils').stage { system "python", *install_args }
     end
 
-    Dir["#{bin}/*"].each do |bin_file|
-      wrap bin_file, python.site_packages
-    end
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 end

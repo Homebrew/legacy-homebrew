@@ -2,19 +2,20 @@ require 'formula'
 
 class Libpar2 < Formula
   homepage 'http://parchive.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/parchive/libpar2/0.2/libpar2-0.2.tar.gz'
+  url 'https://downloads.sourceforge.net/project/parchive/libpar2/0.2/libpar2-0.2.tar.gz'
   sha1 '4b3da928ea6097a8299aadafa703fc6d59bdfb4b'
 
-  def patches
-    # Patch libpar2 - bugfixes and ability to cancel par2 repair
-    "https://gist.github.com/raw/4576230/e722f2113195ee9b8ee67c1c424aa3f2085b1066/libpar2-0.2-nzbget.patch"
+  # Bugfixes and ability to cancel par2 repair
+  patch do
+    url "https://gist.github.com/raw/4576230/e722f2113195ee9b8ee67c1c424aa3f2085b1066/libpar2-0.2-nzbget.patch"
+    sha1 "0dca03f42c0997fd6b537a7dc539d705afb76157"
   end
 end
 
 class Nzbget < Formula
   homepage 'http://sourceforge.net/projects/nzbget/'
-  url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/11.0/nzbget-11.0.tar.gz'
-  sha1 '0c0f83de3ef25a6117c1c988d99db9d92c3739eb'
+  url 'https://downloads.sourceforge.net/project/nzbget/nzbget-stable/12.0/nzbget-12.0.tar.gz'
+  sha1 'b7f3037ca664f09c28ab359cf6091d876d63ba5f'
 
   head 'https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk'
 
@@ -23,11 +24,7 @@ class Nzbget < Formula
 
   fails_with :clang do
     build 500
-    cause <<-EOS.undent
-      Configure errors out when testing the libpar2 headers because
-      Clang does not support flexible arrays of non-POD types.
-      ./par2fileformat.h:87:25: error: flexible array member 'entries' of non-POD element type 'FILEVERIFICATIONENTRY []'
-      EOS
+    cause "Clang older than 5.1 requires flexible array members to be trivially destructible"
   end
 
   def install

@@ -2,8 +2,8 @@ require 'formula'
 
 class Matlab2tikz < Formula
   homepage 'https://github.com/nschloe/matlab2tikz'
-  url 'https://github.com/nschloe/matlab2tikz/archive/0.4.3.tar.gz'
-  sha1 '6a2e81785e6fa0ba1681dfd5d3c159d08ec91c03'
+  url 'https://github.com/nschloe/matlab2tikz/archive/0.4.7.tar.gz'
+  sha1 '0e950ae8a29d66610fc68b173f3a014e522ee1be'
 
   head 'https://github.com/nschloe/matlab2tikz.git'
 

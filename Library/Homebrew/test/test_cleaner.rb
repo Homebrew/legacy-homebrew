@@ -20,7 +20,7 @@ class CleanerTests < Test::Unit::TestCase
     cp "#{TEST_FOLDER}/mach/a.out", @f.bin
     cp Dir["#{TEST_FOLDER}/mach/*.dylib"], @f.lib
 
-    Cleaner.new @f
+    Cleaner.new(@f).clean
 
     assert_equal 0100555, (@f.bin/'a.out').stat.mode
     assert_equal 0100444, (@f.lib/'fat.dylib').stat.mode
@@ -29,7 +29,7 @@ class CleanerTests < Test::Unit::TestCase
   end
 
   def test_prunes_prefix_if_empty
-    Cleaner.new @f
+    Cleaner.new(@f).clean
     assert !@f.prefix.directory?
   end
 
@@ -37,7 +37,7 @@ class CleanerTests < Test::Unit::TestCase
     subdir = @f.bin/'subdir'
     subdir.mkpath
 
-    Cleaner.new @f
+    Cleaner.new(@f).clean
 
     assert !@f.bin.directory?
     assert !subdir.directory?
@@ -47,7 +47,7 @@ class CleanerTests < Test::Unit::TestCase
     @f.class.skip_clean 'bin'
     @f.bin.mkpath
 
-    Cleaner.new @f
+    Cleaner.new(@f).clean
 
     assert @f.bin.directory?
   end
@@ -57,7 +57,7 @@ class CleanerTests < Test::Unit::TestCase
     subdir = @f.bin/'subdir'
     subdir.mkpath
 
-    Cleaner.new @f
+    Cleaner.new(@f).clean
 
     assert @f.bin.directory?
     assert subdir.directory?
@@ -70,7 +70,7 @@ class CleanerTests < Test::Unit::TestCase
     dir.mkpath
     ln_s dir.basename, symlink
 
-    Cleaner.new @f
+    Cleaner.new(@f).clean
 
     assert !dir.exist?
     assert !symlink.symlink?
@@ -84,7 +84,7 @@ class CleanerTests < Test::Unit::TestCase
     dir.mkpath
     ln_s dir.basename, symlink
 
-    Cleaner.new @f
+    Cleaner.new(@f).clean
 
     assert !dir.exist?
     assert !symlink.symlink?
@@ -95,7 +95,7 @@ class CleanerTests < Test::Unit::TestCase
     symlink = @f.prefix/'symlink'
     ln_s 'target', symlink
 
-    Cleaner.new @f
+    Cleaner.new(@f).clean
 
     assert !symlink.symlink?
   end
@@ -105,7 +105,7 @@ class CleanerTests < Test::Unit::TestCase
     symlink = @f.prefix/'symlink'
     ln_s 'target', symlink
 
-    Cleaner.new @f
+    Cleaner.new(@f).clean
 
     assert symlink.symlink?
   end
@@ -118,7 +118,7 @@ class CleanerTests < Test::Unit::TestCase
     dir.mkpath
     ln_s dir.basename, symlink
 
-    Cleaner.new @f
+    Cleaner.new(@f).clean
 
     assert !dir.exist?
     assert symlink.symlink?
@@ -133,10 +133,69 @@ class CleanerTests < Test::Unit::TestCase
     dir.mkpath
     ln_s dir.basename, symlink
 
-    Cleaner.new @f
+    Cleaner.new(@f).clean
 
     assert !dir.exist?
     assert symlink.symlink?
     assert !symlink.exist?
+  end
+
+  def test_removes_la_files
+    file = @f.lib/'foo.la'
+
+    @f.lib.mkpath
+    touch file
+
+    Cleaner.new(@f).clean
+
+    assert !file.exist?
+  end
+
+  def test_skip_clean_la
+    file = @f.lib/'foo.la'
+
+    @f.class.skip_clean :la
+    @f.lib.mkpath
+    touch file
+
+    Cleaner.new(@f).clean
+
+    assert file.exist?
+  end
+
+  def test_remove_charset_alias
+    file = @f.lib/'charset.alias'
+
+    @f.lib.mkpath
+    touch file
+
+    Cleaner.new(@f).clean
+
+    assert !file.exist?
+  end
+
+  def test_skip_clean_subdir
+    dir = @f.lib/'subdir'
+    @f.class.skip_clean 'lib/subdir'
+
+    dir.mkpath
+
+    Cleaner.new(@f).clean
+
+    assert dir.directory?
+  end
+
+  def test_skip_clean_paths_are_anchored_to_prefix
+    dir1 = @f.bin/'a'
+    dir2 = @f.lib/'bin/a'
+
+    @f.class.skip_clean 'bin/a'
+    dir1.mkpath
+    dir2.mkpath
+
+    Cleaner.new(@f).clean
+
+    assert dir1.exist?
+    assert !dir2.exist?
   end
 end

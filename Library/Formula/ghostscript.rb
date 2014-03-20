@@ -2,8 +2,19 @@ require 'formula'
 
 class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
-  url 'http://downloads.ghostscript.com/public/ghostscript-9.07.tar.gz'
-  sha1 'b04a88ea8d661fc53d4f7eac34d84456272afc06'
+
+  stable do
+    url 'http://downloads.ghostscript.com/public/ghostscript-9.10.tar.gz'
+    sha1 '29d6538ae77565c09f399b06455e94e7bcd83d01'
+
+    patch :DATA # Uncomment OS X-specific make vars
+  end
+
+  bottle do
+    sha1 "be9d9be82c03ac8409994fee0cc638d20ceb145c" => :mavericks
+    sha1 "667bbb27e64fee6d46da07c98205a6daf51a28ad" => :mountain_lion
+    sha1 "fb6e8756db2016f88eeb23ed392a9742096efef3" => :lion
+  end
 
   head do
     url 'git://git.ghostscript.com/ghostpdl.git'
@@ -15,6 +26,12 @@ class Ghostscript < Formula
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
+
+    # Uncomment OS X-specific make vars
+    patch do
+      url "https://gist.githubusercontent.com/jacknagel/9559501/raw/9709b3234cc888d29f717838650d29e7062da917/gs.patch"
+      sha1 "65c99df4f0d57368a086154d34722f5c4b9c84cc"
+    end
   end
 
   option 'with-djvu', 'Build drivers for DjVU file format'
@@ -33,26 +50,21 @@ class Ghostscript < Formula
 
   # http://sourceforge.net/projects/gs-fonts/
   resource 'fonts' do
-    url 'http://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz'
+    url 'https://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz'
     sha1 '2a7198e8178b2e7dba87cb5794da515200b568f5'
   end
 
   # http://djvu.sourceforge.net/gsdjvu.html
   resource 'djvu' do
-    url 'http://downloads.sourceforge.net/project/djvu/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
+    url 'https://downloads.sourceforge.net/project/djvu/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
     sha1 'c7d0677dae5fe644cf3d714c04b3c2c343906342'
-  end
-
-  # Fix dylib names, per installation instructions
-  def patches
-    DATA
   end
 
   def move_included_source_copies
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
-    renames = %w{freetype jbig2dec jpeg lcms2 libpng tiff zlib}
+    renames = %w{freetype jbig2dec jpeg libpng tiff zlib}
     renames.each { |lib| mv lib, "#{lib}_local" }
   end
 
@@ -76,7 +88,7 @@ class Ghostscript < Formula
         --disable-gtk
         --with-system-libtiff
       ]
-      args << '--without-x' unless build.with? 'x11'
+      args << '--without-x' if build.without? 'x11'
 
       if build.head?
         system './autogen.sh', *args
@@ -92,8 +104,8 @@ class Ghostscript < Formula
       end if build.with? 'djvu'
 
       # Install binaries and libraries
-      system 'make install'
-      system 'make install-so'
+      system 'make', 'install'
+      system 'make', 'install-so'
     end
 
     (share+'ghostscript/fonts').install resource('fonts')
@@ -103,9 +115,11 @@ class Ghostscript < Formula
 end
 
 __END__
+diff --git a/base/unix-dll.mak b/base/unix-dll.mak
+index ae2d7d8..4f4daed 100644
 --- a/base/unix-dll.mak
 +++ b/base/unix-dll.mak
-@@ -59,12 +59,12 @@
+@@ -64,12 +64,12 @@ GS_SONAME_MAJOR_MINOR=$(GS_SONAME_BASE)$(GS_SOEXT)$(SO_LIB_VERSION_SEPARATOR)$(G
  
  
  # MacOS X
@@ -118,8 +132,9 @@ __END__
 +GS_SONAME_MAJOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_SOEXT)
 +GS_SONAME_MAJOR_MINOR=$(GS_SONAME_BASE).$(GS_VERSION_MAJOR).$(GS_VERSION_MINOR).$(GS_SOEXT)
  #LDFLAGS_SO=-dynamiclib -flat_namespace
--LDFLAGS_SO_MAC=-dynamiclib -install_name $(GS_SONAME_MAJOR_MINOR)
+-#LDFLAGS_SO_MAC=-dynamiclib -install_name $(GS_SONAME_MAJOR_MINOR)
 +LDFLAGS_SO_MAC=-dynamiclib -install_name __PREFIX__/lib/$(GS_SONAME_MAJOR_MINOR)
  #LDFLAGS_SO=-dynamiclib -install_name $(FRAMEWORK_NAME)
  
  GS_SO=$(BINDIR)/$(GS_SONAME)
+

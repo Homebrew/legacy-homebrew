@@ -2,7 +2,7 @@ require 'formula'
 
 class Encfs < Formula
   homepage 'http://www.arg0.net/encfs'
-  url 'http://encfs.googlecode.com/files/encfs-1.7.4.tgz'
+  url 'https://encfs.googlecode.com/files/encfs-1.7.4.tgz'
   sha1 '3d824ba188dbaabdc9e36621afb72c651e6e2945'
 
   depends_on 'pkg-config' => :build
@@ -11,23 +11,19 @@ class Encfs < Formula
   depends_on 'rlog'
   depends_on 'osxfuse'
 
-  conflicts_with 'fuse4x'
-
   # Following patch and changes in install section,
   # required for better compatibility with OSX, especially OSX 10.9.
   # Changes are already in usptream and planned to be included in next stable release 1.75.
   # For more details refer to:
   # https://code.google.com/p/encfs/issues/detail?id=185#c10
-
-  def patches
-    # Fixes link times and xattr on links for OSX
-    DATA
-  end
+  # Fixes link times and xattr on links for OSX
+  patch :DATA
 
   def install
     # Add correct flags for linkage with {osx,}fuse and gettext libs
-    ENV.append 'CPPFLAGS', %x[pkg-config fuse --cflags].chomp + "-I#{Formula.factory('gettext').include}"
-    ENV.append 'LDFLAGS', %x[pkg-config fuse --libs].chomp + "-L#{Formula.factory('gettext').lib}"
+    gettext = Formula['gettext']
+    ENV.append 'CPPFLAGS', %x[pkg-config fuse --cflags].chomp + "-I#{gettext.include}"
+    ENV.append 'LDFLAGS', %x[pkg-config fuse --libs].chomp + "-L#{gettext.lib}"
     inreplace "configure", "-lfuse", "-losxfuse"
 
     # Adapt to changes in recent Xcode by making local copy of endian-ness definitions
@@ -53,12 +49,6 @@ class Encfs < Formula
                           "--with-boost=#{HOMEBREW_PREFIX}"
     system "make"
     system "make install"
-  end
-
-  def caveats; <<-EOS.undent
-    Make sure to follow the directions given by 'brew info osxfuse'
-    before trying to use a FUSE-based filesystem.
-    EOS
   end
 end
 

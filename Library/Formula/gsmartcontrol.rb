@@ -14,9 +14,7 @@ class Gsmartcontrol < Formula
 
   # Fix bad includes with gtkmm-2.24.3
   # Check if this is still needed with new versions of gsmartcontrol and gtkmm
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",
@@ -25,7 +23,7 @@ class Gsmartcontrol < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/gsmartcontrol", "--version"
   end
 end
