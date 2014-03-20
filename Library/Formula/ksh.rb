@@ -39,7 +39,7 @@ class Ksh < Formula
     system "/bin/ksh", "bin/package", "read"
 
     # Needed due to unusal build system.
-    ENV["HOMEBREW_CCCFG"] += "O"
+    ENV.refurbish_args
 
     # From Apple"s ksh makefile.
     kshcppdefines = "-DSHOPT_SPAWN=0 -D_ast_int8_t=int64_t -D_lib_memccpy"
