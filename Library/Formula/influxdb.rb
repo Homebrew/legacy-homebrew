@@ -13,8 +13,8 @@ class Influxdb < Formula
   end
 
   devel do
-    url "http://get.influxdb.org/influxdb-0.5.0-rc.5.src.tar.gz"
-    sha1 "8dd4a61d7557446b0846921c9d93111445d35a72"
+    url "http://get.influxdb.org/influxdb-0.5.0-rc.6.src.tar.gz"
+    sha1 "56612d535ce308b92f2a5f26b3ee7f9028c25e94"
   end
 
   depends_on "leveldb"
