@@ -28,9 +28,7 @@ class SigningParty < Formula
 
   # gpgparticipants data on OS X behaves differently from linux version
   # https://github.com/Homebrew/homebrew/pull/21628
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # gpgdir and gpgwrap are not included as they have their own homepages
