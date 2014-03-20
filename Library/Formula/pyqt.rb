@@ -20,15 +20,13 @@ class Pyqt < Formula
     depends_on "sip"
   end
 
-  def patches
-    # On Mavericks we want to target libc++, but this requires a user specified
-    # qmake makespec. Unfortunately user specified makespecs are broken in the
-    # configure.py script, so we have to fix the makespec path handling logic.
-    # Also qmake spec macro parsing does not properly handle inline comments,
-    # which can result in ignored build flags when they are concatenated together.
-    # Changes proposed upstream: http://www.riverbankcomputing.com/pipermail/pyqt/2013-December/033537.html
-    DATA
-  end
+  # On Mavericks we want to target libc++, but this requires a user specified
+  # qmake makespec. Unfortunately user specified makespecs are broken in the
+  # configure.py script, so we have to fix the makespec path handling logic.
+  # Also qmake spec macro parsing does not properly handle inline comments,
+  # which can result in ignored build flags when they are concatenated together.
+  # Changes proposed upstream: http://www.riverbankcomputing.com/pipermail/pyqt/2013-December/033537.html
+  patch :DATA
 
   def install
     # On Mavericks we want to target libc++, this requires a non default qt makespec
