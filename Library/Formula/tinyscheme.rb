@@ -8,9 +8,7 @@ class Tinyscheme < Formula
   conflicts_with 'mit-scheme', :because => 'both install a `scheme` binary'
 
   # Modify compile flags for Mac OS X per instructions
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system 'make', "INITDEST=#{share}"
