@@ -12,9 +12,7 @@ class Pngnq < Formula
   # png.h on Lion does not, in fact, include zlib.h
   # See: http://sourceforge.net/tracker/?func=detail&aid=3353513&group_id=213072&atid=1024252
   # See: http://sourceforge.net/tracker/?func=detail&aid=3402960&group_id=213072&atid=1024252
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",
