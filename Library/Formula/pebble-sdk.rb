@@ -2,8 +2,8 @@ require 'formula'
 
 class PebbleSdk < Formula
   homepage 'https://developer.getpebble.com/2/'
-  url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.0.1.tar.gz'
-  sha1 'fc9ee49dd1773e4690488328b05bea3a5cbab88e'
+  url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.0.2.tar.gz'
+  sha1 'c6e2cefb638ebcfffae31c6cc3b175d3e62b3c44'
 
   depends_on 'freetype' => :recommended
   depends_on 'mpfr'
@@ -11,7 +11,7 @@ class PebbleSdk < Formula
   depends_on 'libmpc'
   depends_on 'libelf'
   depends_on 'texinfo'
-  depends_on :python
+  depends_on 'python'
 
   resource 'pillow' do
     url 'https://pypi.python.org/packages/source/P/Pillow/Pillow-2.3.0.zip'
