@@ -30,6 +30,7 @@ Requirements
 ------------
 
 * **Ruby** 1.8.6 or newer
++ **GCC** 4.2 or newer
 
 What Packages Are Available?
 ----------------------------
