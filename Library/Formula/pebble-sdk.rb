@@ -6,11 +6,6 @@ class PebbleSdk < Formula
   sha1 'c6e2cefb638ebcfffae31c6cc3b175d3e62b3c44'
 
   depends_on 'freetype' => :recommended
-  depends_on 'mpfr'
-  depends_on 'gmp'
-  depends_on 'libmpc'
-  depends_on 'libelf'
-  depends_on 'texinfo'
   depends_on :python
 
   resource 'pillow' do
