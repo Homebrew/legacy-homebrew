@@ -49,7 +49,7 @@ class FormulaInstaller
   def pour_bottle? install_bottle_options={:warn=>false}
     return false if @pour_failed
     return true  if force_bottle? && f.bottle
-    return false if build_from_source? || build_bottle?
+    return false if build_from_source? || build_bottle? || interactive?
     return false unless options.empty?
 
     return true if f.local_bottle_path
