@@ -11,9 +11,7 @@ class Tenyr < Formula
   depends_on 'sdl2'
   depends_on 'sdl2_image'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     bison = Formula["bison"].bin/"bison"
