@@ -8,7 +8,7 @@ class Peervpn < Formula
 
   depends_on "tuntap"
 
-  def patches; DATA; end if MacOS.version == :snow_leopard
+  patch :DATA if MacOS.version == :snow_leopard
 
   def install
     system "make"
