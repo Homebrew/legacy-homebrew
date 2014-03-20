@@ -10,12 +10,10 @@ class Pocl < Formula
   depends_on 'llvm' => 'with-clang'
   depends_on :libltdl
 
-  def patches
-    # Check if ndebug flag is required for compiling pocl didn't work on osx
-    # for some reason. Information if bug is fixed is found from
-    # https://github.com/pocl/pocl/issues/59
-    DATA
-  end
+  # Check if ndebug flag is required for compiling pocl didn't work on osx
+  # for some reason. Information if bug is fixed is found from
+  # https://github.com/pocl/pocl/issues/59
+  patch :DATA
 
   def install
     ENV.j1
