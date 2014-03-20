@@ -27,9 +27,7 @@ class Pcb < Formula
 
   conflicts_with 'gts', :because => 'both install `include/gts.h`'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./autogen.sh" if build.head?
