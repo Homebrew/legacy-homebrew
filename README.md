@@ -30,6 +30,9 @@ very fast turnaround cycles.
 
 For example jobs see the job-server-tests/ project / folder.
 
+When you use `re-start`, the log file goes to `job-server/job-server-local.log`.  There is also an environment variable
+EXTRA_JAR for adding a jar to the classpath.
+
 ### WordCountExample walk-through
 
 First, to package the test jar containing the WordCountExample: `sbt job-server-tests/package`.
@@ -195,7 +198,6 @@ Contributions via Github Pull Request are welcome.  See the TODO for some ideas.
 - From the "master" project, please run "test" to ensure nothing is broken.
    - You may need to set `SPARK_LOCAL_IP` to `localhost` to ensure Akka port can bind successfully
 - Logging for tests goes to "job-server-test.log"
-- When you use `re-start`, the log file goes to `job-server/job-server-local.log`.
 - Please run scalastyle to ensure your code changes don't break the style guide
 - Do "re-start" from SBT for quick restarts of the job server process
 - Please update the g8 template if you change the SparkJob API
