@@ -30,7 +30,7 @@ class Ruby < Formula
 
   # pthread_setname_np() is unavailable before Snow Leopard
   # Reported upstream: https://bugs.ruby-lang.org/issues/9492
-  def patches; DATA; end if MacOS.version < :snow_leopard
+  patch :DATA if MacOS.version < :snow_leopard
 
   def install
     system "autoconf" if build.head?
