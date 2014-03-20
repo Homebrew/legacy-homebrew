@@ -8,7 +8,7 @@ class Png2ico < Formula
   depends_on :libpng
 
   # Fix build with recent clang
-  def patches; DATA; end
+  patch :DATA
 
   def install
     inreplace 'Makefile', 'g++', '$(CXX)'
