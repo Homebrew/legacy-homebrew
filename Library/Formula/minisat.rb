@@ -7,9 +7,7 @@ class Minisat < Formula
 
   # Fixes compilation on mac; in next upstream release. See:
   # http://groups.google.com/group/minisat/browse_thread/thread/f5b6a180cadbb214
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV['MROOT'] = Dir.pwd
