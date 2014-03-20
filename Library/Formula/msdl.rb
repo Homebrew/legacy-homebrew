@@ -8,9 +8,7 @@ class Msdl < Formula
 
   # Fixes linker error under clang; apparently reported upstream:
   # https://github.com/Homebrew/homebrew/pull/13907
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",
