@@ -17,7 +17,7 @@ class Mpg321 < Formula
   # Both patches have been reported upstream here:
   # https://sourceforge.net/tracker/?func=detail&aid=3587769&group_id=36274&atid=416544
   # Remove these at: Unknown.  These have not been merged as of 0.3.2.
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",
