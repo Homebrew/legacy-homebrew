@@ -6,6 +6,11 @@ class PebbleSdk < Formula
   sha1 'c6e2cefb638ebcfffae31c6cc3b175d3e62b3c44'
 
   depends_on 'freetype' => :recommended
+  depends_on 'mpfr'
+  depends_on 'gmp'
+  depends_on 'libmpc'
+  depends_on 'libelf'
+  depends_on 'texinfo'
   depends_on :python
 
   resource 'pillow' do
@@ -49,8 +54,8 @@ class PebbleSdk < Formula
   end
 
   resource 'pebble-arm-toolchain' do
-    url 'http://assets.getpebble.com.s3-website-us-east-1.amazonaws.com/sdk/arm-cs-tools-macos-universal-static.tar.gz'
-    sha1 'b1baaf455140d3c6e3a889217bb83986fe6527a0'
+    url 'https://github.com/pebble/arm-eabi-toolchain/archive/v2.0.tar.gz'
+    sha1 '7085c6ef371213e3e766a1cbd7e6e1951ccf1d87'
   end
 
   def install
@@ -81,7 +86,9 @@ class PebbleSdk < Formula
     prefix.install %w[Documentation Examples Pebble PebbleKit-Android
         PebbleKit-iOS bin tools requirements.txt version.txt]
 
-    resource('pebble-arm-toolchain').stage "#{prefix}/arm-cs-tools"
+    resource('pebble-arm-toolchain').stage do
+      system "make", "PREFIX=#{prefix}/arm-cs-tools", "install-cross"
+    end
 
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
