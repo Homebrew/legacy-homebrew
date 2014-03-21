@@ -9,11 +9,9 @@ class Xmlto < Formula
   depends_on 'docbook-xsl'
   depends_on 'gnu-getopt'
 
-  def patches
-    # xmlto forces --nonet on xsltproc, which causes it to fail when
-    # DTDs/entities aren't available locally.
-    DATA
-  end
+  # xmlto forces --nonet on xsltproc, which causes it to fail when
+  # DTDs/entities aren't available locally.
+  patch :DATA
 
   def install
     # GNU getopt is keg-only, so point configure to it
