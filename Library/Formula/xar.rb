@@ -7,9 +7,7 @@ class Xar < Formula
 
   # Known issue upstream:
   # http://code.google.com/p/xar/issues/detail?id=51
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
