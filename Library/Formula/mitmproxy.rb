@@ -64,6 +64,7 @@ class Mitmproxy < Formula
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
+    ENV.append_to_cflags '-Qunused-arguments'
     resource('pyopenssl').stage { system "python", *install_args }
     resource('pillow').stage { system "python", *install_args }
     resource('flask').stage { system "python", *install_args }
@@ -77,6 +78,7 @@ class Mitmproxy < Formula
     if build.with? 'cssutils'
       resource('cssutils').stage { system "python", *install_args }
     end
+    ENV.remove_from_cflags '-Qunused-arguments'
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 
