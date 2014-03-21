@@ -73,7 +73,7 @@ class Cmd
     end
   end
   def args
-    if !cccfg?("O") || tool == "ld" || configure?
+    if (!cccfg?("O") || tool == "ld" || configure?) && tool != "clang"
       args = @args.dup
     else
       args = refurbished_args
