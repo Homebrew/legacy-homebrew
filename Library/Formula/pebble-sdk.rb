@@ -5,8 +5,9 @@ class PebbleSdk < Formula
   url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.0.2.tar.gz'
   sha1 'c6e2cefb638ebcfffae31c6cc3b175d3e62b3c44'
 
-  depends_on 'freetype' => :recommended
+  depends_on :macos => :mountain_lion
   depends_on :python
+  depends_on 'freetype' => :recommended
 
   resource 'pillow' do
     url 'https://pypi.python.org/packages/source/P/Pillow/Pillow-2.3.0.zip'
