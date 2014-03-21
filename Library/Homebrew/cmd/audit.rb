@@ -462,8 +462,12 @@ class FormulaAuditor
       problem "Don't duplicate 'without': Use `build.without? \"#{$1}\"` to check for \"--without-#{$1}\""
     end
 
-    if line =~ /unless build\.with(out)?\?/
-      problem "Don't use unless with 'build.with#{$1}': use 'if build.with#{$1}?'"
+    if line =~ /unless build\.with\?(.*)/
+      problem "Use if build.without?#{$1} instead of unless build.with?#{$1}"
+    end
+
+    if line =~ /unless build\.without\?(.*)/
+      problem "Use if build.with?#{$1} instead of unless build.without?#{$1}"
     end
 
     if line =~ /(not\s|!)\s*build\.with?\?/
