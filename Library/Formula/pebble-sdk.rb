@@ -8,11 +8,11 @@ class PebbleSdk < Formula
   depends_on :macos => :mountain_lion
   depends_on :python
   depends_on 'freetype' => :recommended
-  depends_on 'mpfr'
-  depends_on 'gmp'
-  depends_on 'libmpc'
-  depends_on 'libelf'
-  depends_on 'texinfo'
+  depends_on 'mpfr' => :build
+  depends_on 'gmp' => :build
+  depends_on 'libmpc' => :build
+  depends_on 'libelf' => :build
+  depends_on 'texinfo' => :build
 
   resource 'pillow' do
     url 'https://pypi.python.org/packages/source/P/Pillow/Pillow-2.3.0.zip'
