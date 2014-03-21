@@ -22,7 +22,7 @@ class Mongodb < Formula
     # Fix Clang v8 build failure from build warnings and -Werror
     patch do
       url "https://github.com/mongodb/mongo/commit/be4bc7.patch"
-      sha1 "72152f9bec94aaaacb16d0b17511b0862d38ac21"
+      sha1 "631676c22f98f9b7b87808130a4c1a99d7bf74b1"
     end
   end
 
