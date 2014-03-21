@@ -18,6 +18,8 @@ class Rkflashtool < Formula
   def install
     resource("version").stage { buildpath.install "version.h" } if build.stable?
     system "make"
+
+    # No 'install' method found in Makefile
     bin.install "rkflashtool", "rkcrc", "rkmisc", "rkpad",
       "rkparameters", "rkparametersblock", "rkunpack", "rkunsign"
   end
