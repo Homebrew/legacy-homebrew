@@ -2,10 +2,10 @@ require 'formula'
 
 class Python3 < Formula
   homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.3.5/Python-3.3.5.tgz'
-  sha1 '15f24702c5ae07d364606c663e515c1d9ba58615'
+  url 'http://python.org/ftp/python/3.4.0/Python-3.4.0.tgz'
+  sha1 '3ca973eb72bb06ed5cadde0e28eaaaca'
 
-  VER='3.3'  # The <major>.<minor> is used so often.
+  VER='3.4'  # The <major>.<minor> is used so often.
 
   head 'http://hg.python.org/cpython', :using => :hg, :branch => VER
 
