@@ -38,7 +38,7 @@ class Rrdtool < Formula
     # Needed to build proper Ruby bundle
     ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
-    system "make install"
+    system "make", "CC=#{ENV.cc}", "CXX=#{ENV.cxx}", "install"
     prefix.install "bindings/ruby/test.rb"
   end
 
