@@ -7,6 +7,13 @@ class Rkflashtool < Formula
 
   head "git://git.code.sf.net/p/rkflashtool/Git"
 
+  bottle do
+    cellar :any
+    sha1 "a51793a60e27ea73735ccf83a6386f809c34faf2" => :mavericks
+    sha1 "cd08e68dc4fdb0f56fb10b77f78ca13476ac8a63" => :mountain_lion
+    sha1 "4b7f416b735845a43c5a0ed2086d07f2b1a751b1" => :lion
+  end
+
   depends_on "libusb"
 
   # Add file 'version.h' that has been forgotten in the tarball
