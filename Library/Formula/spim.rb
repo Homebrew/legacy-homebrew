@@ -3,8 +3,8 @@ require 'formula'
 class Spim < Formula
   homepage 'http://spimsimulator.sourceforge.net/'
   # No source code tarball exists
-  url 'http://svn.code.sf.net/p/spimsimulator/code', :revision => 606
-  version '9.1.9'
+  url 'http://svn.code.sf.net/p/spimsimulator/code', :revision => 641
+  version '9.1.13'
 
   def install
     bin.mkpath
