@@ -71,13 +71,9 @@ class Ghc < Formula
       url "https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz"
       sha1 "6a1973ae3cccdb2f720606032ae84ffee8680ca1"
     end
-  end
 
-  def patches
-    if build.stable?
-      # Fixes 7.6.3 compilation on 10.9
-      DATA if MacOS.version >= :mavericks
-    end
+    # Fixes 7.6.3 compilation on 10.9
+    patch :DATA if MacOS.version >= :mavericks
   end
 
   def install
