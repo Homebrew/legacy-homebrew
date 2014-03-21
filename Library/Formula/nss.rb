@@ -6,6 +6,13 @@ class Nss < Formula
   sha1 "8ae6ddec43556b4deb949dc889123ff1d09ab737"
   version "3.16"
 
+  bottle do
+    cellar :any
+    sha1 "08ea6d10ebe317330129e03c184a0aaa59b300b0" => :mavericks
+    sha1 "3fd67a639a8fcdb253f8fe982a5ecf6f1ea25c6b" => :mountain_lion
+    sha1 "a4153f7a673f3f4703a9e4142958039e7b24bc51" => :lion
+  end
+
   depends_on "nspr"
 
   keg_only "NSS installs a libssl which conflicts with OpenSSL."
