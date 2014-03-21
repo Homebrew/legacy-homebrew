@@ -14,19 +14,17 @@ class Slicot < Formula
     args = [
       "FORTRAN=#{ENV.fc}",
       "LOADER=#{ENV.fc}",
-      "LAPACKLIB='-framework Accelerate'",
     ]
 
     slicotlibname = "libslicot_pic.a"
     system "make", "lib", "OPTS=-fPIC", "SLICOTLIB=../#{slicotlibname}", *args
     lib.install "#{slicotlibname}"
-    system "make", "clean"
 
     if build.with? "default-integer-8"
+      system "make", "clean"
       slicotlibname = "libslicot64_pic.a"
       system "make", "lib", "OPTS=-fPIC -fdefault-integer-8", "SLICOTLIB=../#{slicotlibname}", *args
       lib.install "#{slicotlibname}"
-      system "make", "clean"
     end
   end
 end
