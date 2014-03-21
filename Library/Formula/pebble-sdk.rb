@@ -8,6 +8,11 @@ class PebbleSdk < Formula
   depends_on :macos => :mountain_lion
   depends_on :python
   depends_on 'freetype' => :recommended
+  depends_on 'mpfr'
+  depends_on 'gmp'
+  depends_on 'libmpc'
+  depends_on 'libelf'
+  depends_on 'texinfo'
 
   resource 'pillow' do
     url 'https://pypi.python.org/packages/source/P/Pillow/Pillow-2.3.0.zip'
@@ -50,8 +55,8 @@ class PebbleSdk < Formula
   end
 
   resource 'pebble-arm-toolchain' do
-    url 'http://assets.getpebble.com.s3-website-us-east-1.amazonaws.com/sdk/arm-cs-tools-macos-universal-static.tar.gz'
-    sha1 'b1baaf455140d3c6e3a889217bb83986fe6527a0'
+    url 'https://github.com/pebble/arm-eabi-toolchain/archive/v2.0.tar.gz'
+    sha1 '7085c6ef371213e3e766a1cbd7e6e1951ccf1d87'
   end
 
   def install
@@ -66,10 +71,10 @@ class PebbleSdk < Formula
       s.gsub! /^process = subprocess\.Popen\(args, shell=False, env=local_python_env\)/, "process = subprocess.Popen(args, shell=False)"
     end
 
-    ENV.append_to_cflags '-Qunused-arguments'
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
+    ENV.append_to_cflags '-Qunused-arguments'
     resource('pillow').stage { system "python", *install_args }
     resource('freetype-py').stage { system "python", *install_args }
     resource('sh').stage { system "python", *install_args }
@@ -78,11 +83,14 @@ class PebbleSdk < Formula
     resource('websocket-client').stage { system "python", *install_args }
     resource('pyserial').stage { system "python", *install_args }
     resource('pypng').stage { system "python", *install_args }
+    ENV.remove_from_cflags '-Qunused-arguments'
 
     prefix.install %w[Documentation Examples Pebble PebbleKit-Android
         PebbleKit-iOS bin tools requirements.txt version.txt]
 
-    resource('pebble-arm-toolchain').stage "#{prefix}/arm-cs-tools"
+    resource('pebble-arm-toolchain').stage do
+      system "make", "PREFIX=#{prefix}/arm-cs-tools", "install-cross"
+    end
 
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
