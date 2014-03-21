@@ -8,7 +8,7 @@ class Hbase < Formula
   depends_on 'hadoop'
 
   def install
-    rm_f Dir["bin/*.cmd" "conf/*.cmd"]
+    rm_f Dir["bin/*.cmd", "conf/*.cmd"]
     libexec.install %w[bin conf docs lib hbase-webapps]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
 
