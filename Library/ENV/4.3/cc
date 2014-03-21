@@ -128,6 +128,10 @@ class Cmd
         args << arg if arg =~ /^-W[alp],/ or arg =~ /^-Wno-/
       when '-macosx_version_min', '-dylib_install_name'
         args << "-Wl,#{arg},#{whittler.next}"
+      when '-multiply_definedsuppress'
+        args << "-Wl,-multiply_defined,suppress"
+      when '-undefineddynamic_lookup'
+        args << "-Wl,-undefined,dynamic_lookup"
       when /^-isysroot/
         # We set the sysroot
         whittler.next
