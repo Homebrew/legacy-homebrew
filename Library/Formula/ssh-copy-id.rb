@@ -7,6 +7,13 @@ class SshCopyId < Formula
   version '6.6p1'
   sha1 'b850fd1af704942d9b3c2eff7ef6b3a59b6a6b6e'
 
+  bottle do
+    cellar :any
+    sha1 "c62e6863235b9cb0dc9c78c04971b8692332f935" => :mavericks
+    sha1 "76b719c4c3391344d5aa2d22ded2fcc0db45f2c9" => :mountain_lion
+    sha1 "4b679aea29d2ec0e9fd2292cc7ea6b3955747096" => :lion
+  end
+
   def install
     bin.install 'contrib/ssh-copy-id'
     man1.install 'contrib/ssh-copy-id.1'
