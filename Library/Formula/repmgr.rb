@@ -13,7 +13,7 @@ class Repmgr < Formula
   end
 
   test do
-    system "repmgr", "--version"
-    system "repmgrd", "--version"
+    system `pg_config --bindir`.strip + "/repmgr", "--version"
+    system `pg_config --bindir`.strip + "repmgrd", "--version"
   end
 end
