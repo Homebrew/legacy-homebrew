@@ -7,17 +7,29 @@ class Podofo < Formula
 
   depends_on 'cmake' => :build
   depends_on :libpng
-  depends_on :freetype
+  depends_on 'freetype'
   depends_on :fontconfig
   depends_on 'jpeg'
   depends_on 'libtiff'
 
+  def patches
+    # fixes compilation on Mavericks (fixed ios includes, fixed freetype 2.5.1 includes)
+    # fixes compilation on Lion (fixed CommonCrypto include)
+    # upstream bug report: http://sourceforge.net/p/podofo/mailman/message/32039124/
+    [
+      "https://gist.githubusercontent.com/MeckiCologne/9599737/raw/784809a9288daa251f59a1cfd3fec9762df5830b/podofo.patch",
+    ]
+  end
+
   def install
     mkdir 'build' do
       # Build shared to simplify linking for other programs.
-      system "cmake", "..",
-                      "-DPODOFO_BUILD_SHARED:BOOL=TRUE",
-                      *std_cmake_args
+      args = ["..", "-DPODOFO_BUILD_SHARED:BOOL=TRUE"]
+      if MacOS.version <= :lion
+        args << "-DCMAKE_INCLUDE_PATH=" + Formula['freetype'].include
+      end
+      args += std_cmake_args
+      system "cmake", *args
       system "make install"
     end
   end
