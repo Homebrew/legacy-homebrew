@@ -51,9 +51,21 @@ class Tab < OpenStruct
   end
 
   def self.for_formula f
-    path = [f.opt_prefix, f.linked_keg].map{ |pn| pn.join(FILENAME) }.find{ |pn| pn.exist? }
-    # Legacy kegs may lack a receipt. If it doesn't exist, fake one
-    if path.nil? then self.dummy_tab(f) else self.from_file(path) end
+    paths = [f.opt_prefix, f.linked_keg]
+
+    if f.rack.directory? && (dirs = f.rack.subdirs).length == 1
+      paths << dirs.first
+    end
+
+    paths << f.prefix
+
+    path = paths.map { |pn| pn.join(FILENAME) }.find(&:file?)
+
+    if path
+      from_file(path)
+    else
+      dummy_tab(f)
+    end
   end
 
   def self.dummy_tab f=nil
