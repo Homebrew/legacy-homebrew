@@ -1,20 +1,14 @@
 require 'formula'
 
 class Dotwrp < Formula
-  homepage 'https://github.com/tenomoto/dotwrp'
-  url 'https://github.com/tenomoto/dotwrp/archive/v1.1.tar.gz'
-  sha1 'd328705ec424898382956bb8a0be16a680372f05'
-
-  head 'https://github.com/tenomoto/dotwrp.git'
-
-  depends_on :fortran
-
+  homepage 'https://github.com/mcg1969/dotwrp'
+  url 'https://github.com/mcg1969/dotwrp/archive/v1.2.tar.gz'
+  sha1 'ec832b1ba160b6c5028af92bc77e725a6588b8bc'
+  head 'https://github.com/mcg1969/dotwrp.git'
   def install
-    # note: fno-underscoring is vital to override the symbols in Accelerate
-    system "#{ENV.fc} #{ENV.fflags} -fno-underscoring -c dotwrp.f90"
+    system "#{ENV.cc} #{ENV.cflags} -c dotwrp.c"
     system "ar -cru libdotwrp.a dotwrp.o"
     system "ranlib libdotwrp.a"
-
     lib.install 'libdotwrp.a'
   end
 end
