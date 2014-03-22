@@ -12,7 +12,7 @@ class Libxmlsec1 < Formula
   depends_on 'libgcrypt' if build.with? 'gnutls'
 
   # Add HOMEBREW_PREFIX/lib to dl load path
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",

@@ -11,11 +11,9 @@ class Viewglob < Formula
   depends_on 'glib'
   depends_on 'gtk+'
 
-  def patches
-    # Don't include the <sys/stropts.h> header, it's not available on OS X.
-    # Fixed upstream for next version.
-    DATA
-  end
+  # Don't include the <sys/stropts.h> header, it's not available on OS X.
+  # Fixed upstream for next version.
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

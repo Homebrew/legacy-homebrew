@@ -11,11 +11,9 @@ class Afflib < Formula
   depends_on 'expat' => :optional
   depends_on 'osxfuse' => :optional
 
-  def patches
-    # This patch fixes a bug reported upstream over there
-    # https://github.com/simsong/AFFLIBv3/issues/4
-    DATA
-  end
+  # This patch fixes a bug reported upstream over there
+  # https://github.com/simsong/AFFLIBv3/issues/4
+  patch :DATA
 
   def install
     system "sh bootstrap.sh"

@@ -6,7 +6,7 @@ class Libstxxl < Formula
   sha1 '5fba2bb26b919a07e966b2f69ae29aa671892a7d'
 
   # issue has been rectified in upstream and future 1.4.0 release
-  def patches; DATA; end if MacOS.version >= :mavericks
+  patch :DATA if MacOS.version >= :mavericks
 
   def install
     ENV['COMPILER'] = ENV.cxx

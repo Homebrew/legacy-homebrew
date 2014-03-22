@@ -10,9 +10,7 @@ class ColladaDom < Formula
   depends_on 'boost'
 
   # Fix build of minizip: quoting arguments to cmake's add_definitions doesn't work the way they thought it did.
-  def patches
-    return DATA
-  end
+  patch :DATA
 
   def install
     system "cmake", ".", *std_cmake_args

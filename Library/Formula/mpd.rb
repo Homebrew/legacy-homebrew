@@ -2,8 +2,15 @@ require 'formula'
 
 class Mpd < Formula
   homepage "http://www.musicpd.org/"
-  url "http://www.musicpd.org/download/mpd/0.17/mpd-0.17.5.tar.bz2"
-  sha1 "91e4d8d364a3db02e6f92676dd938880e5bb200a"
+
+  stable do
+    url "http://www.musicpd.org/download/mpd/0.17/mpd-0.17.5.tar.bz2"
+    sha1 "91e4d8d364a3db02e6f92676dd938880e5bb200a"
+
+    # Removes usage of deprecated AVCODEC_MAX_AUDIO_FRAME_SIZE constant
+    # We're many versions behind; this bug has long since been fixed upstream
+    patch :DATA
+  end
 
   head do
     url "git://git.musicpd.org/master/mpd.git"
@@ -46,10 +53,6 @@ class Mpd < Formula
   depends_on "yajl" => :optional        # JSON library for SoundCloud
 
   depends_on "libvorbis" if build.with? "vorbis" # Vorbis support
-
-  # Removes usage of deprecated AVCODEC_MAX_AUDIO_FRAME_SIZE constant
-  # We're many versions behind; this bug has long since been fixed upstream
-  def patches; DATA unless build.head?; end
 
   def install
     if build.include? "lastfm" or build.include? "libwrap" \

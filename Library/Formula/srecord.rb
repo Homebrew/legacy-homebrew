@@ -11,9 +11,7 @@ class Srecord < Formula
   depends_on 'libgcrypt'
 
   # Use OS X's pstopdf
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}", "LIBTOOL=glibtool"

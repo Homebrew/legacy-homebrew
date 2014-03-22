@@ -14,9 +14,7 @@ class Nload < Formula
 
   # Patching configure.in file to make configure compile on Mac OS.
   # Patch taken from MacPorts.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./run_autotools"

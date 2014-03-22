@@ -8,16 +8,12 @@ class Abook < Formula
   devel do
     url 'https://abook.sourceforge.net/devel/abook-0.6.0pre2.tar.gz'
     sha1 '42a939fba43e51aa011fa185113c12ec4bc1e1ec'
+
+    # Remove `inline` from function implementation for clang compatibility
+    patch :DATA
   end
 
   depends_on 'readline'
-
-  def patches
-    if build.devel?
-      # Remove `inline` from function implementation for clang compatibility
-      DATA
-    end
-  end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

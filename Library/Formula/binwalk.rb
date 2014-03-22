@@ -1,7 +1,7 @@
 require 'formula'
 
 class Binwalk < Formula
-  homepage 'http://code.google.com/p/binwalk/'
+  homepage 'http://binwalk.org/'
   url 'https://github.com/devttys0/binwalk/archive/v1.3.0.tar.gz'
   sha1 '6cab158b69e508081302305b354da12f45658272'
 

@@ -6,15 +6,8 @@ class Python < Formula
   url 'http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz'
   sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
 
-  bottle do
-    sha1 "bd1a71fbaa383011828fce5ff7c011c427e76761" => :mavericks
-    sha1 "365dd0affa9dabd97ff607af9f7cba425510a645" => :mountain_lion
-    sha1 "02326a2f3b2e5e55cd2830f39478178f9074ff92" => :lion
-  end
-
   option :universal
   option 'quicktest', "Run `make quicktest` after the build (for devs; may fail)"
-  option 'with-brewed-openssl', "Use Homebrew's openSSL instead of the one from OS X"
   option 'with-brewed-tk', "Use Homebrew's Tk (has optional Cocoa and threads support)"
   option 'with-poll', "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
   option 'with-dtrace', "Experimental DTrace support (http://bugs.python.org/issue13405)"
@@ -23,7 +16,7 @@ class Python < Formula
   depends_on 'readline' => :recommended
   depends_on 'sqlite' => :recommended
   depends_on 'gdbm' => :recommended
-  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'openssl'
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
   depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
 
@@ -40,18 +33,15 @@ class Python < Formula
     sha1 '35ccb7430356186cf253615b70f8ee580610f734'
   end
 
-  def patches
-    p = {}
-    # Backported security fix for CVE-2014-1912:
-    # http://bugs.python.org/issue20246
-    p[:p0] = "https://gist.githubusercontent.com/leepa/9351856/raw/7f9130077fd760fcf9a25f50b69d9c77b155fbc5/CVE-2014-1912.patch"
-    # Patch to disable the search for Tk.framework, since Homebrew's Tk is
-    # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
-    if build.with? "brewed-tk"
-      p[:p1] = DATA
-    end
-    p
+  # Backported security fix for CVE-2014-1912: http://bugs.python.org/issue20246
+  patch :p0 do
+    url "https://gist.githubusercontent.com/leepa/9351856/raw/7f9130077fd760fcf9a25f50b69d9c77b155fbc5/CVE-2014-1912.patch"
+    sha1 "db25abc381f62e9f501ad56aaa2537e48e1b0889"
   end
+
+  # Patch to disable the search for Tk.framework, since Homebrew's Tk is
+  # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
+  patch :DATA if build.with? "brewed-tk"
 
   def lib_cellar
     prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7"
@@ -79,7 +69,7 @@ class Python < Formula
              --enable-ipv6
              --datarootdir=#{share}
              --datadir=#{share}
-             --enable-framework=#{prefix}/Frameworks
+             --enable-framework=#{frameworks}
            ]
 
     args << '--without-gcc' if ENV.compiler == :clang

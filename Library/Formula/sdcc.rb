@@ -13,10 +13,11 @@ class Sdcc < Formula
   option 'enable-avr-port', "Enables the AVR port (UNSUPPORTED, MAY FAIL)"
   option 'enable-xa51-port', "Enables the xa51 port (UNSUPPORTED, MAY FAIL)"
 
-  def patches
-    # SDCC Doesn't build huge-stack-auto by default for mcs51, but it
-    # is needed by Contiki and others. This simple patch enables it to build.
-    'https://gist.github.com/anonymous/5042275/raw/a2e084f29cd4ad9cd95e38683209991b7ac038d3/sdcc-huge-stack-auto.diff'
+  # SDCC Doesn't build huge-stack-auto by default for mcs51, but it
+  # is needed by Contiki and others. This simple patch enables it to build.
+  patch do
+    url "https://gist.github.com/anonymous/5042275/raw/a2e084f29cd4ad9cd95e38683209991b7ac038d3/sdcc-huge-stack-auto.diff"
+    sha1 "57f638d8d81c4bb1ea9a74a006363b881f5aab8c"
   end
 
   def install
