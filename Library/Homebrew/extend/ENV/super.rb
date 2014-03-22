@@ -225,7 +225,7 @@ module Superenv
   end
 
   def determine_developer_dir
-    # If Xcode path is fucked then this is basically a fix. In the case where
+    # If Xcode path is broken then this is basically a fix. In the case where
     # nothing is valid, it still fixes most usage to supply a valid path that
     # is not "/".
     MacOS::Xcode.prefix || self['DEVELOPER_DIR']
