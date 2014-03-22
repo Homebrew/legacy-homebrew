@@ -74,6 +74,7 @@ class Vim < Formula
                           "--enable-multibyte",
                           "--with-tlib=ncurses",
                           "--enable-cscope",
+                          "--enable-conceal",
                           "--with-features=huge",
                           "--with-compiledby=Homebrew",
                           *opts
