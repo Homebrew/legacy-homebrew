@@ -5,6 +5,12 @@ class Namazu < Formula
   url "http://www.namazu.org/stable/namazu-2.0.21.tar.gz"
   sha1 "35aaff34d0cdbe96fff24da87671b6f902bb7d43"
 
+  bottle do
+    sha1 "b0c14a4f80b058708f11adb5219a7070ec668a1b" => :mavericks
+    sha1 "19f63fa3a25ca2c8e323cf9f4fcb7e095495b51d" => :mountain_lion
+    sha1 "2fec30bccc201125f27c657a7c8f7248bd65d155" => :lion
+  end
+
   option "with-japanese", "Support for japanese character encodings."
 
   depends_on "kakasi" if build.with? "japanese"
