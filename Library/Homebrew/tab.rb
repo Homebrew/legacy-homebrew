@@ -124,7 +124,7 @@ class Tab < OpenStruct
       :poured_from_bottle => poured_from_bottle,
       :tapped_from => tapped_from,
       :time => time,
-      :HEAD => send("HEAD"),
+      :HEAD => self.HEAD,
       :stdlib => (stdlib.to_s if stdlib),
       :compiler => (compiler.to_s if compiler)})
   end
