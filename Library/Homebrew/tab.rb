@@ -24,7 +24,7 @@ class Tab < OpenStruct
             :built_as_bottle => !!ARGV.build_bottle?,
             :poured_from_bottle => false,
             :tapped_from => f.tap,
-            :time => Time.now.to_i, # to_s would be better but Ruby has no from_s function :P
+            :time => Time.now.to_i,
             :HEAD => sha,
             :compiler => compiler,
             :stdlib => stdlib
