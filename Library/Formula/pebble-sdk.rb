@@ -14,7 +14,7 @@ class PebbleSdk < Formula
   depends_on 'libelf' => :build
   depends_on 'texinfo' => :build
 
-  # List of resources can be obtained from requirements.txt 
+  # List of resources can be obtained from requirements.txt
   resource 'pillow' do
     url 'https://pypi.python.org/packages/source/P/Pillow/Pillow-2.3.0.zip'
     sha1 '0d3fdaa9a8a40a59a66c6057b9f91a3553db852e'
