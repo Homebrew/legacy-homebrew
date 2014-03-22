@@ -96,7 +96,6 @@ class Boost < Formula
     end
 
     ENV.universal_binary if build.universal?
-    ENV.cxx11 if build.cxx11?
 
     # Force boost to compile using the appropriate GCC version.
     open("user-config.jam", "a") do |file|
@@ -156,6 +155,15 @@ class Boost < Formula
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
+
+    # Trunk starts using "clang++ -x c" to select C compiler which breaks C++11
+    # handling using ENV.cxx11. Using "cxxflags" and "linkflags" still works.
+    if build.cxx11?
+      args << "cxxflags=-std=c++11"
+      if ENV.compiler == :clang
+        args << "cxxflags=-stdlib=libc++" << "linkflags=-stdlib=libc++"
+      end
+    end
 
     system "./bootstrap.sh", *bargs
     system "./b2", *args
