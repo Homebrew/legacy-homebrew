@@ -5,6 +5,12 @@ class Lighttpd < Formula
   url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.35.tar.bz2'
   sha256 '4a71c1f6d8af41ed894b507720c4c17184dc320590013881d5170ca7f15c5bf7'
 
+  bottle do
+    sha1 "39d57cd89e0b885ce706b4a39fe14a25a33929e9" => :mavericks
+    sha1 "466c297940904499c24cf92550a0d7d5cc866994" => :mountain_lion
+    sha1 "13e06e79a8af9406bcd9e9cfc3c6e40e9bfe6045" => :lion
+  end
+
   option 'with-lua', 'Include Lua scripting support for mod_magnet'
 
   depends_on 'pkg-config' => :build
