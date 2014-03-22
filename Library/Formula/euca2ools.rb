@@ -9,13 +9,13 @@ class Euca2ools < Formula
   depends_on :python
 
   resource "requestbuilder" do
-    url "https://github.com/boto/requestbuilder/archive/v0.2.0-pre1.tar.gz"
-    sha1 "71c9bd5c846aa7125cd1b2b2c0fd286e6b2d5fb0"
+    url "https://github.com/boto/requestbuilder/archive/0.1.0.tar.gz"
+    sha1 "9674b907d6a152b2daccfd5e63e11463be31a5ab"
   end
 
   resource "requests" do
-    url "https://github.com/kennethreitz/requests/tarball/master/kennethreitz-requests-v2.2.1-56-g110048f.tar"
-    sha1 "d23294b6b5dabd88240dbda8c7cfcc6ee35d705b"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.2.1.tar.gz"
+    sha1 "88eb1fd6a0dfb8b97262f8029978d7c75eebc16f"
   end
 
   resource "setuptools" do
@@ -35,7 +35,7 @@ class Euca2ools < Formula
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
+    install_args = ["setup.py", "install", "--prefix=#{libexec}"]
 
     # pycrypto's C bindings use flags unrecognized by clang,
     # but since it doesn't use a makefile arg refurbishment
@@ -49,12 +49,13 @@ class Euca2ools < Formula
     resource("lxml").stage { system "python", *install_args }
     resource("six").stage { system "python", *install_args }
 
-    system "python", "setup.py", "install", "--single-version-externally-managed", "--record=installed.txt", "--prefix=#{prefix}"
+    system "python", "setup.py", "install", "--single-version-externally-managed", "--record=installed.txt",
+           "--prefix=#{prefix}"
 
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
   test do
-    system "#{bin}/euca-version"
+    system "#{bin}/euca-describe-instances", "--help"
   end
 end
