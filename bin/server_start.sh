@@ -1,14 +1,21 @@
 #!/bin/sh
 # Script to start the job server
 set -e
-appdir=$(dirname $0)
+
+get_abs_script_path() {
+  pushd . >/dev/null
+  cd $(dirname $0)
+  appdir=$(pwd)
+  popd  >/dev/null
+}
+
+get_abs_script_path
 
 GC_OPTS="-XX:+UseConcMarkSweepGC
          -verbose:gc -XX:+PrintGCTimeStamps -Xloggc:$appdir/gc.out
          -XX:MaxPermSize=512m
          -XX:+CMSClassUnloadingEnabled "
 
-## TODO(ev): REMOVE the serializer and registrator lines.  Just a temporary hack for end to end
 JAVA_OPTS="-Xmx5g -XX:MaxDirectMemorySize=512M
            -XX:+HeapDumpOnOutOfMemoryError -Djava.net.preferIPv4Stack=true
            -Dcom.sun.management.jmxremote.port=9999
@@ -58,7 +65,7 @@ fi
 export SPARK_HOME
 
 # job server jar needs to appear first so its deps take higher priority
-# log4j needs config/property files on the classpath
-CLASSPATH="$appdir/spark-job-server.jar:$appdir/log4j-server.properties:$($SPARK_HOME/bin/compute-classpath.sh)"
+# need to explicitly include app dir in classpath so logging configs can be found
+CLASSPATH="$appdir:$appdir/spark-job-server.jar:$($SPARK_HOME/bin/compute-classpath.sh)"
 
 exec java -cp $CLASSPATH $GC_OPTS $JAVA_OPTS $LOGGING_OPTS $CONFIG_OVERRIDES $MAIN $conffile 2>&1 &

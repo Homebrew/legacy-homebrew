@@ -108,6 +108,9 @@ Note the addition of `context=` and `sync=true`.
    it to the remotes you have configured in `<environment>.sh`
 3. On the remote server, start it in the deployed directory with `server_start.sh`.
 
+Note: to test out the deploy to a local staging dir, or package the job server for Mesos,
+use `bin/server_package.sh <environment>`.
+
 ## Architecture
 
 The job server is intended to be run as one or more independent processes, separate from the Spark cluster
