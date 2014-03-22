@@ -14,6 +14,7 @@ class PebbleSdk < Formula
   depends_on 'libelf' => :build
   depends_on 'texinfo' => :build
 
+  # List of resources can be obtained from requirements.txt 
   resource 'pillow' do
     url 'https://pypi.python.org/packages/source/P/Pillow/Pillow-2.3.0.zip'
     sha1 '0d3fdaa9a8a40a59a66c6057b9f91a3553db852e'
@@ -60,13 +61,14 @@ class PebbleSdk < Formula
   end
 
   def install
-    # This replacement fixes a path that gets messed up because of the
-    # bin.env_script_all_files call (which relocates actual pebble.py script
-    # to libexec/, causing problems with the absolute path expected below).
-    # Also, remove the dependency from virtualenv
     inreplace 'bin/pebble' do |s|
+      # This replacement fixes a path that gets messed up because of the
+      # bin.env_script_all_files call (which relocates actual pebble.py script
+      # to libexec/, causing problems with the absolute path expected below).
       s.gsub! /^script_path = .*?$/m, "script_path = '#{libexec}/../tools/pebble.py'"
 
+      # This replacement removes environment settings that were needed only
+      # if installation was done with the official script
       s.gsub! /^local_python_env.*?=.*?\(.*?\)$/m, ""
       s.gsub! /^process = subprocess\.Popen\(args, shell=False, env=local_python_env\)/, "process = subprocess.Popen(args, shell=False)"
     end
