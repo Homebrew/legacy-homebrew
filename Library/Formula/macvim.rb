@@ -40,6 +40,7 @@ class Macvim < Formula
     args = %W[
       --with-features=huge
       --enable-multibyte
+      --enable-conceal
       --with-macarchs=#{MacOS.preferred_arch}
       --enable-perlinterp
       --enable-rubyinterp
