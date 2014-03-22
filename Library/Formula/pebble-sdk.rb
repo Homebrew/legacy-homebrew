@@ -5,6 +5,11 @@ class PebbleSdk < Formula
   url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.0.2.tar.gz'
   sha1 'c6e2cefb638ebcfffae31c6cc3b175d3e62b3c44'
 
+  bottle do
+    sha1 "da9f9afac027ab201a4143908b31ff366ce8198c" => :mavericks
+    sha1 "5db9213a973ee1e4717fda515ac7b0623dc21dad" => :mountain_lion
+  end
+
   depends_on :macos => :mountain_lion
   depends_on :python
   depends_on 'freetype' => :recommended
