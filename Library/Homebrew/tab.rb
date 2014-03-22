@@ -118,7 +118,7 @@ class Tab < OpenStruct
   end
 
   def write
-    tabfile.write to_json
+    tabfile.atomic_write(to_json)
   end
 
   def to_s
