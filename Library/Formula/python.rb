@@ -69,7 +69,7 @@ class Python < Formula
              --enable-ipv6
              --datarootdir=#{share}
              --datadir=#{share}
-             --enable-framework=#{prefix}/Frameworks
+             --enable-framework=#{frameworks}
            ]
 
     args << '--without-gcc' if ENV.compiler == :clang
