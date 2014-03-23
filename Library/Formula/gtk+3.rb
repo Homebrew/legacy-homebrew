@@ -18,6 +18,12 @@ class Gtkx3 < Formula
   depends_on 'at-spi2-atk'
   depends_on 'gobject-introspection'
 
+  # Upstream patch to fix missing return value
+  patch do
+    url "https://git.gnome.org/browse/gtk+/patch/?id=1c42bb5e34783ea7170e96905d9d60e07e23933f"
+    sha1 "526ec4a577b24000ba88b32cac366a1c333c68eb"
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
