@@ -7,6 +7,7 @@ class Imagemagick < Formula
   # Tarball and checksum from: http://www.imagemagick.org/download
   url 'https://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.7-7.tar.bz2'
   sha256 '4d8b0889d78cca2f1501b5f66f61c5efcd2f585a03002f2a7b407c11808e5e28'
+  revision 1
 
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
     :using => UnsafeSubversionDownloadStrategy
@@ -28,11 +29,11 @@ class Imagemagick < Formula
   depends_on 'pkg-config' => :build
 
   depends_on 'jpeg' => :recommended
-  depends_on :libpng => :recommended
-  depends_on :freetype => :recommended
+  depends_on 'libpng' => :recommended
+  depends_on 'freetype' => :recommended
 
   depends_on :x11 => :optional
-  depends_on :fontconfig => :optional
+  depends_on 'fontconfig' => :optional
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
   depends_on 'little-cms2' => :optional
