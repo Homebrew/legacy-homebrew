@@ -37,6 +37,7 @@ class Ruby < Formula
     args << "--with-out-ext=tk" if build.without? "tcltk"
     args << "--disable-install-doc" if build.without? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
+    args << "--without-gmp" if build.without? "gmp"
 
     paths = [
       Formula["libyaml"].opt_prefix,
