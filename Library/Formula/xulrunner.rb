@@ -57,6 +57,7 @@ class Xulrunner < Formula
   depends_on "gnu-tar" => :build
   depends_on "pkg-config" => :build
   depends_on "yasm"
+  depends_on "nss"
 
   fails_with :gcc do
     cause "Mozilla XULRunner only supports Clang on OS X"
@@ -89,13 +90,12 @@ class Xulrunner < Formula
       ac_add_options --disable-updater
       ac_add_options --disable-crashreporter
       ac_add_options --with-macos-sdk=#{MacOS.sdk_path}
+      ac_add_options --with-nss-prefix=#{Formula["nss"].opt_prefix}
     EOS
     # fixed usage of bsdtar with unsupported parameters (replaced with gnu-tar)
     inreplace "toolkit/mozapps/installer/packager.mk", "$(TAR) -c --owner=0 --group=0 --numeric-owner",
-              "#{Formula["gnu-tar"].bin}/gtar -c --owner=0 --group=0 --numeric-owner"
+              "#{Formula["gnu-tar"].opt_bin}/gtar -c --owner=0 --group=0 --numeric-owner"
 
-    # nss is not fully parallel build safe (fixes rare ld: library not found for -lplc4 issues)
-    ENV.deparallelize
     system "make", "-f", "client.mk", "build"
     system "make", "-f", "client.mk", "package"
 
