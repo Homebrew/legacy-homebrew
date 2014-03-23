@@ -46,9 +46,9 @@ class Glib < Formula
     sha1 "5afea1a284747d31039449ca970376430951ec55"
   end
 
-  patch :p0 do
-    url "https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/patch-configure.diff"
-    sha1 "5afea1a284747d31039449ca970376430951ec55"
+  patch do
+    url "https://gist.githubusercontent.com/jacknagel/9726139/raw/a3e716034dc082e98f179c9e490910211be1df4c/universal.patch"
+    sha1 "1ce36591ff79bc05eeb89d91f008988e2f4c8cde"
   end if build.universal?
 
   def install
