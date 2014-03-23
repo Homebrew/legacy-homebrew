@@ -37,6 +37,13 @@ class Xulrunner < Formula
   url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/28.0/source/xulrunner-28.0.source.tar.bz2"
   sha1 "7965105b34441ebfab650930dffa4648c85ac6c6"
 
+  bottle do
+    cellar :any
+    sha1 "74b0f65bedb9e93f02a8dd52dba5d18a8796cd72" => :mavericks
+    sha1 "7381000fb344c775bad16a65ddd213a5fd163bf1" => :mountain_lion
+    sha1 "d336479051b4079582036e017253f37f99b5af63" => :lion
+  end
+
   devel do
     url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/29.0b1/source/xulrunner-29.0b1.source.tar.bz2"
     sha1 "80ea2209c0ea9316b5c8dc16208514d14c410c22"
