@@ -4,6 +4,7 @@ class Cairomm < Formula
   homepage 'http://cairographics.org/cairomm/'
   url 'http://cairographics.org/releases/cairomm-1.10.0.tar.gz'
   sha256 '068d96c43eae7b0a3d98648cbfc6fbd16acc385858e9ba6d37b5a47e4dba398f'
+  revision 1
 
   bottle do
     sha1 "a755e155b8568e9345b0519fadc9cc0f1520e0a3" => :mavericks
@@ -20,7 +21,9 @@ class Cairomm < Formula
   else
     depends_on 'libsigc++'
   end
+
   depends_on 'cairo'
+  depends_on 'libpng'
   depends_on :x11 if build.with? "x"
 
   def install
