@@ -38,6 +38,7 @@ class Ejabberd < Formula
     args << "--enable-mysql" if build.with? "mysql"
 
     system "./configure", *args
+    system "make"
     system "make", "install"
 
     (etc+"ejabberd").mkpath
