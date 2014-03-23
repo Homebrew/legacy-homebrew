@@ -5,17 +5,16 @@ class Imagemagick < Formula
 
   # upstream's stable tarballs tend to disappear, so we provide our own mirror
   # Tarball and checksum from: http://www.imagemagick.org/download
-  url 'https://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.7-7.tar.bz2'
-  sha256 '4d8b0889d78cca2f1501b5f66f61c5efcd2f585a03002f2a7b407c11808e5e28'
-  revision 1
+  url 'https://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.8-9.tar.bz2'
+  sha256 'e777ba7d170e940fa60c45fd110720b190acd124880399d3811dc0c528172de8'
 
   head 'https://www.imagemagick.org/subversion/ImageMagick/trunk',
     :using => UnsafeSubversionDownloadStrategy
 
   bottle do
-    sha1 "503f3854903995c4e9c45cbc646820607c3e0d8d" => :mavericks
-    sha1 "d9926c33b85ab0016c652a95a1cf39873e84958f" => :mountain_lion
-    sha1 "cf0bfdfdd56dc1dc75f63b25e755b39f52011dc8" => :lion
+    sha1 "61746cc991ab5930d0769a3919f9118fef6fc71d" => :mavericks
+    sha1 "7a551ef47159c99857fdef9d2917383476d338b0" => :mountain_lion
+    sha1 "617dfd69cf8dfd047153627365de51a268864977" => :lion
   end
 
   option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
