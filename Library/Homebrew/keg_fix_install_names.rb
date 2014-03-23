@@ -91,8 +91,6 @@ class Keg
     end
   end
 
-  private
-
   def install_name_tool(*args)
     system(MacOS.locate("install_name_tool"), *args)
   end
