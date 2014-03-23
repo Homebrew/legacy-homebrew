@@ -8,6 +8,7 @@ class Cairo < Formula
   url 'http://cairographics.org/releases/cairo-1.12.16.tar.xz'
   mirror 'https://downloads.sourceforge.net/project/machomebrew/mirror/cairo-1.12.16.tar.xz'
   sha256 '2505959eb3f1de3e1841023b61585bfd35684b9733c7b6a3643f4f4cbde6d846'
+  revision 1
 
   bottle do
     sha1 "fb623b0b06693dfb659c3dc87bd65d0285a9c0ed" => :mavericks
@@ -21,10 +22,9 @@ class Cairo < Formula
   option 'without-x', 'Build without X11 support'
 
   depends_on 'pkg-config' => :build
-  # harfbuzz requires cairo-ft to build
-  depends_on :freetype
-  depends_on :fontconfig
-  depends_on :libpng
+  depends_on 'freetype'
+  depends_on 'fontconfig'
+  depends_on 'libpng'
   depends_on 'pixman'
   depends_on 'glib'
   depends_on :x11 if build.with? 'x'
