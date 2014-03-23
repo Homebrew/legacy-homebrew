@@ -88,13 +88,12 @@ class ExternalPatch < Patch
 
   def initialize(strip, &block)
     @strip    = strip
-    @resource = Resource.new(&block)
+    @resource = Resource.new("patch", &block)
     @whence   = :resource
   end
 
   def owner= owner
     resource.owner   = owner
-    resource.name    = "patch"
     resource.version = resource.checksum || ERB::Util.url_encode(resource.url)
   end
 
@@ -137,11 +136,7 @@ class LegacyPatch < ExternalPatch
   def initialize(strip, url)
     super(strip)
     resource.url = url
-  end
-
-  def owner= owner
-    super
-    resource.version = ERB::Util.url_encode(resource.url)
+    resource.download_strategy = CurlDownloadStrategy
   end
 
   def fetch

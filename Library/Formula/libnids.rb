@@ -16,9 +16,7 @@ class Libnids < Formula
   depends_on 'glib' unless build.include? "disable-libglib"
 
   # Patch fixes -soname and .so shared library issues. Unreported.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # autoreconf the old 2005 era code for sanity.

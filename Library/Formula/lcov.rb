@@ -12,9 +12,7 @@ class Lcov < Formula
     system "make", "PREFIX=#{prefix}", "install"
   end
 
-  def patches
-    DATA
-  end
+  patch :DATA
 end
 
 __END__

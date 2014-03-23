@@ -7,9 +7,7 @@ class Udns < Formula
 
   # Build target for dylib. See:
   # http://www.corpit.ru/pipermail/udns/2011q3/000154.html
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure"

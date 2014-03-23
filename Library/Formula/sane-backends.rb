@@ -14,9 +14,7 @@ class SaneBackends < Formula
   # Fixes u_long missing error. Reported upstream:
   # https://github.com/fab1an/homebrew/commit/2a716f1a2b07705aa891e2c7fbb5148506aa5a01
   # When updating this formula, check on the usptream status of this patch.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?

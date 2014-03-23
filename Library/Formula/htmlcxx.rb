@@ -7,7 +7,7 @@ class Htmlcxx < Formula
 
   # Don't try to use internal GCC headers; rely on standards-compliant header
   # Reported upstream: https://sourceforge.net/p/htmlcxx/bugs/18/
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"

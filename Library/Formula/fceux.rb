@@ -17,7 +17,7 @@ class Fceux < Formula
 
   # Make scons honor PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR
   # Reported upstream: https://sourceforge.net/p/fceultra/bugs/625
-  def patches; DATA; end
+  patch :DATA
 
   def install
     args = []

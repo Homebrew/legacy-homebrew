@@ -6,7 +6,7 @@ class Cscope < Formula
   sha1 '00f76825791b895532778f720c509cd13b9d6846'
 
   # Patch from http://bugs.gentoo.org/show_bug.cgi?ctype=html&id=111621
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}",

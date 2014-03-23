@@ -11,11 +11,7 @@ class W3m < Formula
     build 2334
   end
 
-  def patches
-    # patch to build against bdw-gc 7.2 by @waltarix
-    # will be sent upstream
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-image"

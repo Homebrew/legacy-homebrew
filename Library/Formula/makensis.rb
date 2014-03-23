@@ -10,7 +10,7 @@ class Makensis < Formula
   # scons appears to have no builtin way to override the compiler selection,
   # and the only options supported on OS X are 'gcc' and 'g++'.
   # Use the right compiler by forcibly altering the scons config to set these
-  def patches; DATA; end
+  patch :DATA
 
   resource 'nsis' do
     url 'https://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46.zip'

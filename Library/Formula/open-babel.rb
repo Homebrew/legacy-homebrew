@@ -16,8 +16,9 @@ class OpenBabel < Formula
   depends_on 'eigen' if build.with?('python') || build.with?('java')
 
   # Patch to fix Molecule.draw() in pybel in accordance with upstream commit df59c4a630cf753723d1318c40479d48b7507e1c
-  def patches
-    "https://gist.github.com/fredrikw/5858168/raw/e4b5899e781d5707f5c386e436b5fc7810f2010d/ob-2-3-2-patch.diff"
+  patch do
+    url "https://gist.github.com/fredrikw/5858168/raw/e4b5899e781d5707f5c386e436b5fc7810f2010d/ob-2-3-2-patch.diff"
+    sha1 "e304c308b39a465b632b397aa669c26f4b375da1"
   end
 
   def install

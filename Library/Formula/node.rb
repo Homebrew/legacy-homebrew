@@ -68,9 +68,7 @@ class Node < Formula
       # Link npm manpages
       Pathname.glob("#{lib}/node_modules/npm/man/*").each do |man|
         dir = send(man.basename)
-        man.children.each do |file|
-          dir.install_symlink(file.relative_path_from(dir))
-        end
+        man.children.each { |file| dir.install_symlink(file) }
       end
 
       if build.with? "completion"

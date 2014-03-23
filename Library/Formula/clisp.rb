@@ -14,9 +14,10 @@ class Clisp < Formula
     cause "Configure fails on XCode 4/Snow Leopard."
   end
 
-  def patches
-    { :p0 => "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff",
-      :p1 => DATA }
+  patch :DATA
+  patch :p0 do
+    url "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff"
+    sha1 "8324152a1db755db6c66ce5c059092d55576f37b"
   end
 
   def install

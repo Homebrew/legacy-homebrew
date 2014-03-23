@@ -13,9 +13,7 @@ class Samba < Formula
   # Fixes the Grouplimit of 16 users os OS X.
   # Bug has been raised upstream:
   # https://bugzilla.samba.org/show_bug.cgi?id=8773
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     cd 'source3' do

@@ -808,43 +808,42 @@ class DownloadStrategyDetector
 
   def self.detect_from_url(url)
     case url
-      # We use a special URL pattern for cvs
-    when %r[^cvs://] then CVSDownloadStrategy
-      # Standard URLs
-    when %r[^bzr://] then BazaarDownloadStrategy
-    when %r[^git://] then GitDownloadStrategy
-    when %r[^https?://.+\.git$] then GitDownloadStrategy
-    when %r[^hg://] then MercurialDownloadStrategy
-    when %r[^svn://] then SubversionDownloadStrategy
-    when %r[^svn\+http://] then SubversionDownloadStrategy
-    when %r[^fossil://] then FossilDownloadStrategy
-      # Some well-known source hosts
-    when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
-    when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
-    when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
-    when %r[^https?://(.+?\.)?sourceforge\.net/hgweb/] then MercurialDownloadStrategy
-    when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
-    when %r[^http://www.apache.org/dyn/closer.cgi] then CurlApacheMirrorDownloadStrategy
-      # Common URL patterns
-    when %r[^https?://svn\.] then SubversionDownloadStrategy
-    when bottle_native_regex, bottle_regex
-      CurlBottleDownloadStrategy
-      # Otherwise just try to download
-    else CurlDownloadStrategy
+    when %r[^https?://.+\.git$], %r[^git://]
+      GitDownloadStrategy
+    when %r[^http://www\.apache\.org/dyn/closer\.cgi]
+      CurlApacheMirrorDownloadStrategy
+    when %r[^https?://(.+?\.)?googlecode\.com/svn], %r[^https?://svn\.], %r[^svn://], %r[^https?://(.+?\.)?sourceforge\.net/svnroot/]
+      SubversionDownloadStrategy
+    when %r[^cvs://]
+      CVSDownloadStrategy
+    when %r[^https?://(.+?\.)?googlecode\.com/hg]
+      MercurialDownloadStrategy
+    when %r[^hg://]
+      MercurialDownloadStrategy
+    when %r[^bzr://]
+      BazaarDownloadStrategy
+    when %r[^fossil://]
+      FossilDownloadStrategy
+    when %r[^http://svn\.apache\.org/repos/], %r[^svn\+http://]
+      SubversionDownloadStrategy
+    when %r[^https?://(.+?\.)?sourceforge\.net/hgweb/]
+      MercurialDownloadStrategy
+    else
+      CurlDownloadStrategy
     end
   end
 
   def self.detect_from_symbol(symbol)
     case symbol
-    when :bzr then BazaarDownloadStrategy
-    when :curl then CurlDownloadStrategy
-    when :cvs then CVSDownloadStrategy
-    when :git then GitDownloadStrategy
-    when :hg then MercurialDownloadStrategy
+    when :hg      then MercurialDownloadStrategy
     when :nounzip then NoUnzipCurlDownloadStrategy
-    when :post then CurlPostDownloadStrategy
-    when :ssl3 then CurlSSL3DownloadStrategy
-    when :svn then SubversionDownloadStrategy
+    when :git     then GitDownloadStrategy
+    when :bzr     then BazaarDownloadStrategy
+    when :svn     then SubversionDownloadStrategy
+    when :curl    then CurlDownloadStrategy
+    when :ssl3    then CurlSSL3DownloadStrategy
+    when :cvs     then CVSDownloadStrategy
+    when :post    then CurlPostDownloadStrategy
     else
       raise "Unknown download strategy #{strategy} was requested."
     end

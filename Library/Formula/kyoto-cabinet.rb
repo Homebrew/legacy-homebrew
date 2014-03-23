@@ -13,16 +13,12 @@ class KyotoCabinet < Formula
     EOS
   end
 
+  patch :DATA if MacOS.version >= :mavericks
+
   def install
     system "./configure", "--disable-debug", "--prefix=#{prefix}"
     system "make" # Separate steps required
     system "make install"
-  end
-
-  def patches
-    if MacOS.version >= :mavericks
-      DATA
-    end
   end
 end
 
