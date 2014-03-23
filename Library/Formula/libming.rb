@@ -4,12 +4,13 @@ class Libming < Formula
   homepage 'http://www.libming.org'
   url 'https://downloads.sourceforge.net/project/ming/Releases/ming-0.4.4.tar.bz2'
   sha1 'e803b3b94a00a361e3415105f26112cf6f7bac81'
+  revision 1
 
   option 'perl', 'Build the perl extension'
   option 'php', 'Build the php extension'
 
-  depends_on :libpng
-  depends_on :freetype
+  depends_on 'libpng'
+  depends_on 'freetype'
   depends_on :python => :optional
   depends_on 'giflib' => :optional
 
