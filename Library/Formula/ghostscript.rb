@@ -2,6 +2,7 @@ require 'formula'
 
 class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
+  revision 1
 
   stable do
     url 'http://downloads.ghostscript.com/public/ghostscript-9.10.tar.gz'
@@ -41,10 +42,10 @@ class Ghostscript < Formula
   depends_on 'libtiff'
   depends_on 'jbig2dec'
   depends_on 'little-cms2'
-  depends_on :libpng
+  depends_on 'libpng'
   depends_on :x11 => ['2.7.2', :optional]
   depends_on 'djvulibre' if build.with? 'djvu'
-  depends_on 'freetype' if MacOS.version == :snow_leopard
+  depends_on 'freetype'
 
   conflicts_with 'gambit-scheme', :because => 'both install `gsc` binaries'
 
