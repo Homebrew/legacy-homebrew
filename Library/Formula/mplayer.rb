@@ -22,6 +22,9 @@ class Mplayer < Formula
     patch :DATA
   end
 
+  # required by configure script to correctly identify compiler and set corresponding CFLAGS
+  env :std
+
   option 'with-x', 'Build with X11 support'
   option 'without-osd', 'Build without OSD'
 
