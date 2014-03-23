@@ -5,7 +5,7 @@ require 'dependency'
 # that comes with the OS.
 class LD64Dependency < Dependency
   def initialize(name='ld64', tags=[:build], env_proc=nil)
-    @env_proc = proc { ENV.ld64 }
     super
+    @env_proc = proc { ENV.ld64 }
   end
 end
