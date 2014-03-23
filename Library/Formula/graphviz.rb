@@ -4,6 +4,7 @@ class Graphviz < Formula
   homepage 'http://graphviz.org/'
   url 'http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.36.0.tar.gz'
   sha1 'a41e9f1cbcc9a24651e14dd15a4cda3d912d7d19'
+  revision 1
 
   bottle do
     sha1 "43edebeebd741085c814109b4a5721b382728968" => :mavericks
@@ -22,14 +23,14 @@ class Graphviz < Formula
   option 'with-app', 'Build GraphViz.app (requires full XCode install)'
   option 'with-gts', 'Build with GNU GTS support (required by prism)'
 
-  depends_on :libpng
+  depends_on "libpng"
 
   depends_on 'pkg-config' => :build
   depends_on 'pango' if build.with? "pangocairo"
   depends_on 'swig' if build.with? "bindings"
   depends_on 'gts' => :optional
   depends_on "librsvg" => :optional
-  depends_on :freetype if build.with? "freetype" or MacOS::X11.installed?
+  depends_on "freetype" if build.with? "freetype" or MacOS::X11.installed?
   depends_on :x11 if build.with? "x" or MacOS::X11.installed?
   depends_on :xcode if build.with? "app"
 
