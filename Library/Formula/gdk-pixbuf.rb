@@ -2,13 +2,13 @@ require 'formula'
 
 class GdkPixbuf < Formula
   homepage 'http://gtk.org'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.30/gdk-pixbuf-2.30.4.tar.xz'
-  sha256 'a13bbad0d804829b260bc901dc7d284d330c534489fc1666c126fa4555bbb051'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.30/gdk-pixbuf-2.30.6.tar.xz'
+  sha256 '43394fa4adfb49fa4d662fdc6f43f7f25a9f914509528f57720b18487b0a7f5a'
 
   bottle do
-    sha1 "5e264d248d4893087f1e8bcc044b6977f552032f" => :mavericks
-    sha1 "08fe8e370c69bda4b2fabbbc6a2817fcd24545d9" => :mountain_lion
-    sha1 "9bb3a41fc00a096cec2bce041729c59e74bdd617" => :lion
+    sha1 "8e76502fdd8ef8152d8605e36b0ee5ddd68d674c" => :mavericks
+    sha1 "65f7be7d03ca6068f07cafc4e734c8565dd680d6" => :mountain_lion
+    sha1 "97159c6b2f3f28463fb255cebd443fb50abac974" => :lion
   end
 
   option :universal
@@ -17,7 +17,7 @@ class GdkPixbuf < Formula
   depends_on 'glib'
   depends_on 'jpeg'
   depends_on 'libtiff'
-  depends_on :libpng
+  depends_on 'libpng'
   depends_on 'gobject-introspection'
 
   # 'loaders.cache' must be writable by other packages
