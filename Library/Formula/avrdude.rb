@@ -2,8 +2,8 @@ require 'formula'
 
 class Avrdude < Formula
   homepage 'http://savannah.nongnu.org/projects/avrdude/'
-  url 'http://download.savannah.gnu.org/releases/avrdude/avrdude-6.0.1.tar.gz'
-  sha1 'b0f440f1b1ba3890da6e5b752003ca99e550e3bf'
+  url 'http://download.savannah.gnu.org/releases/avrdude/avrdude-6.1.tar.gz'
+  sha1 '15525cbff5918568ef3955d871dbb94feaf83c79'
 
   head do
     url 'svn://svn.savannah.nongnu.org/avrdude/trunk/avrdude/'
@@ -17,6 +17,7 @@ class Avrdude < Formula
   depends_on 'libusb-compat'
   depends_on 'libftdi0'
   depends_on 'libelf'
+  depends_on 'libhid' => :optional
 
   def install
     system "./bootstrap" if build.head?
