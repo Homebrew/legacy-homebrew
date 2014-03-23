@@ -2,8 +2,8 @@ require 'formula'
 
 class OpenMpi < Formula
   homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7.4.tar.bz2'
-  sha1 '1e3bf2b6cebfdd3571a2f25bba9aa61aed4bbe85'
+  url 'http://www.open-mpi.org/software/ompi/v1.7/downloads/openmpi-1.7.5.tar.bz2'
+  sha1 '4a0de91c50a51e588810cc03d48c03429f3c1006'
 
   option 'disable-fortran', 'Do not build the Fortran bindings'
   option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
