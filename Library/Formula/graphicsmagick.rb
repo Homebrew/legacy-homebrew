@@ -5,6 +5,7 @@ class Graphicsmagick < Formula
   url 'https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.19/GraphicsMagick-1.3.19.tar.bz2'
   sha256 'b57cdeb1ab9492b667776bbbc265149eda5601d2c572d65f43b44273e892fff1'
   head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
+  revision 1
 
   option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
   option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
@@ -18,8 +19,8 @@ class Graphicsmagick < Formula
   depends_on 'pkg-config' => :build
 
   depends_on 'jpeg' => :recommended
-  depends_on :libpng => :recommended
-  depends_on :freetype => :recommended
+  depends_on 'libpng' => :recommended
+  depends_on 'freetype' => :recommended
 
   depends_on :x11 => :optional
   depends_on 'libtiff' => :optional

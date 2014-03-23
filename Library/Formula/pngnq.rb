@@ -4,9 +4,10 @@ class Pngnq < Formula
   homepage 'http://pngnq.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/pngnq/pngnq/1.1/pngnq-1.1.tar.gz'
   sha1 '6a43dc046171eee56ac2d91cebb93aecde24d26a'
+  revision 1
 
   depends_on 'pkg-config' => :build
-  depends_on :libpng
+  depends_on 'libpng'
 
   # Fixes compilation on OSX Lion
   # png.h on Lion does not, in fact, include zlib.h
