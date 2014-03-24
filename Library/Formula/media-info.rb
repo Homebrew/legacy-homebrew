@@ -6,6 +6,8 @@ class MediaInfo < Formula
   version '0.7.67'
   sha1 'e5bfc3af8d3a0995785f1963c78ff9a6505e9626'
 
+  patch :DATA
+
   depends_on 'pkg-config' => :build
   # fails to build against Leopard's older libcurl
   depends_on 'curl' if MacOS.version < :snow_leopard
@@ -33,3 +35,23 @@ class MediaInfo < Formula
     end
   end
 end
+
+__END__
+diff -Naur MediaInfo_CLI_GNU_FromSource.orig/MediaInfoLib/Source/MediaInfo/Text/File_Ttml.h MediaInfo_CLI_GNU_FromSource/MediaInfoLib/Source/MediaInfo/Text/File_Ttml.h
+--- a/MediaInfoLib/Source/MediaInfo/Text/File_Ttml.h	2014-03-24 08:04:18.000000000 -0400
++++ b/MediaInfoLib/Source/MediaInfo/Text/File_Ttml.h	2014-03-24 08:04:50.000000000 -0400
+@@ -19,8 +19,11 @@
+ #include "MediaInfo/File__Analyze.h"
+ //---------------------------------------------------------------------------
+ 
+-class tinyxml2::XMLDocument;
+-class tinyxml2::XMLElement;
++namespace tinyxml2
++{
++    class XMLDocument;
++    class XMLElement;
++}
+ 
+ namespace MediaInfoLib
+ {
+   
