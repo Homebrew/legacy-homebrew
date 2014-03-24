@@ -5,6 +5,12 @@ class Mono < Formula
   url "http://download.mono-project.com/sources/mono/mono-3.2.8.tar.bz2"
   sha1 "d58403caec82af414507cefa58ce74bbb792985a"
 
+  bottle do
+    sha1 "24b6d8979f74a645f6c9e479cd37c175f146f428" => :mavericks
+    sha1 "f64f94d411755ae039244bb47862c5f8196acf10" => :mountain_lion
+    sha1 "c2b73e639254287efc5a88ef9d07bf08d12b4d37" => :lion
+  end
+
   resource "monolite" do
     url "http://storage.bos.xamarin.com/mono-dist-master/latest/monolite-111-latest.tar.gz"
     sha1 "7f6715b8e569b6e7ad85c207311f145f688b3cf5"
