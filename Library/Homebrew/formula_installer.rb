@@ -351,7 +351,7 @@ class FormulaInstaller
   def install_dependency(dep, inherited_options)
     df = dep.to_formula
 
-    outdated_keg = Keg.new(df.linked_keg.realpath) rescue nil
+    outdated_keg = Keg.new(df.linked_keg.realpath) if df.linked_keg.directory?
 
     fi = DependencyInstaller.new(df)
     fi.options           |= Tab.for_formula(df).used_options
