@@ -15,7 +15,7 @@ class Perlmagick < Formula
       "#{Formula["freetype"].include}/freetype2"
     end
     inreplace "Makefile.PL" do |s|
-      s.gsub! "-I/usr/include/freetype2", "-I#{freetype_inc}"
+      s.gsub! "-I/usr/include/freetype2", "-I#{freetype}"
       s.gsub! "'INSTALLBIN'	=> '/usr/local/bin'", "'INSTALLBIN'	=> '#{bin}'"
       s.gsub! "# 'PREFIX'	=> '/usr/local'", "'PREFIX'	=> '#{prefix}'"
     end
