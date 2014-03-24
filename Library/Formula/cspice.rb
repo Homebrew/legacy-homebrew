@@ -12,12 +12,12 @@ class Cspice < Formula
     system "csh", "makeall.csh"
     mv "exe", "bin"
     mkdir_p "share/cspice"
-    mv Dir["doc"], Dir["share/cspice/"]
-    mv Dir["data"], Dir["share/cspice/"]
+    mv "doc", "share/cspice/"
+    mv "data", "share/cspice/"
     prefix.install Dir["bin", "share", "include", "lib"]
 
-    symlink "#{lib}/cspice.a", "#{lib}/libcspice.a"
-    symlink "#{lib}/csupport.a", "#{lib}/libcsupport.a"
+    ln_s "#{lib}/cspice.a", "#{lib}/libcspice.a"
+    ln_s "#{lib}/csupport.a", "#{lib}/libcsupport.a"
 
   end
 
