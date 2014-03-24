@@ -37,11 +37,11 @@ class Euca2ools < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
     install_args = ["setup.py", "install", "--prefix=#{libexec}"]
 
-    # pycrypto's C bindings use flags unrecognized by clang,
+    # lxml's C bindings use flags unrecognized by clang,
     # but since it doesn't use a makefile arg refurbishment
     # is normally not enabled.
     # See https://github.com/Homebrew/homebrew/issues/27639
-    ENV.append 'HOMEBREW_CCCFG', 'O'
+    ENV.append "HOMEBREW_CCCFG", "O"
 
     resource("requestbuilder").stage { system "python", *install_args }
     resource("requests").stage { system "python", *install_args }
@@ -52,7 +52,7 @@ class Euca2ools < Formula
     system "python", "setup.py", "install", "--single-version-externally-managed", "--record=installed.txt",
            "--prefix=#{prefix}"
 
-    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
