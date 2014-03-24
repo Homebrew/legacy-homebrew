@@ -494,9 +494,9 @@ class Formula
         "stable" => (stable.version.to_s if stable),
         "bottle" => bottle ? true : false,
         "devel" => (devel.version.to_s if devel),
-        "head" => (head.version.to_s if head),
-        "revision" => revision
+        "head" => (head.version.to_s if head)
       },
+      "revision" => revision,
       "installed" => [],
       "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
       "keg_only" => keg_only?,
