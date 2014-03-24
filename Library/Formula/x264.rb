@@ -1,11 +1,24 @@
 require 'formula'
 
 class X264 < Formula
-  homepage 'http://www.videolan.org/developers/x264.html'
-  url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120812-2245-stable.tar.bz2'
-  sha1 '4be913fb12cd5b3628edc68dedb4b6e664eeda0a'
-  version 'r2197.4' # brew install -v --HEAD x264 will display the version.
-  head 'http://git.videolan.org/git/x264.git', :branch => 'stable'
+  homepage "http://www.videolan.org/developers/x264.html"
+  # the latest commit on the stable branch
+  url "http://git.videolan.org/git/x264.git", :revision => "aff928d2a2f601072cebecfd1ac5ff768880cf88"
+  version "r2397"
+  head "http://git.videolan.org/git/x264.git"
+
+  devel do
+    # the latest commit on the master branch
+    url "http://git.videolan.org/git/x264.git", :revision => "d6b4e63d2ed8d444b77c11b36c1d646ee5549276"
+    version "r2409"
+  end
+
+  # Support building with Clang 3.4
+  # The patch will be merged in the official repository soon.
+  patch do
+    url "https://github.com/DarkShikari/x264-devel/commit/bc3b27.patch"
+    sha1 "6c3d1bc241c64d8df64273df403d43e3116bd567"
+  end
 
   bottle do
     cellar :any
@@ -19,25 +32,19 @@ class X264 < Formula
   option '10-bit', 'Build a 10-bit x264 (default: 8-bit)'
 
   def install
-    # https://github.com/Homebrew/homebrew/pull/19594
-    ENV.deparallelize
-    if build.head?
-      ENV['GIT_DIR'] = cached_download/'.git'
-      system './version.sh'
-    end
-    args = ["--prefix=#{prefix}", "--enable-shared"]
+    args = %W[
+      --prefix=#{prefix}
+      --enable-shared
+      --enable-static
+      --enable-strip
+    ]
     args << "--bit-depth=10" if build.include? '10-bit'
 
+    # For running version.sh correctly
+    buildpath.install_symlink cached_download/".git"
+
     system "./configure", *args
-
-    if MacOS.prefer_64_bit?
-      inreplace 'config.mak' do |s|
-        soflags = s.get_make_var 'SOFLAGS'
-        s.change_make_var! 'SOFLAGS', soflags.gsub(' -Wl,-read_only_relocs,suppress', '')
-      end
-    end
-
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
