@@ -54,7 +54,7 @@ module Homebrew extend self
   end
 
   def upgrade_formula f
-    outdated_keg = Keg.new(f.linked_keg.realpath) rescue nil
+    outdated_keg = Keg.new(f.linked_keg.realpath) if f.linked_keg.directory?
 
     fi = FormulaInstaller.new(f)
     fi.options             = Tab.for_formula(f).used_options

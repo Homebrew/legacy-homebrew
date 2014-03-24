@@ -2,9 +2,9 @@ require 'formula'
 
 class Guile < Formula
   homepage 'http://www.gnu.org/software/guile/'
-  url 'http://ftpmirror.gnu.org/guile/guile-2.0.10.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.10.tar.gz'
-  sha1 '784839fa8b925e3c4be75017e2dd65f4e9920a7b'
+  url 'http://ftpmirror.gnu.org/guile/guile-2.0.11.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.11.tar.gz'
+  sha1 '3cdd1c4956414bffadea13e5a1ca08949016a802'
 
   head do
     url 'http://git.sv.gnu.org/r/guile.git'
