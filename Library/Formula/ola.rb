@@ -6,7 +6,6 @@ class Ola < Formula
   sha1 "aff9bf0802d4e6fcbdc5a2ffcdb7ba25d67fd209"
 
   option :universal
-  require_universal_deps
 
   depends_on 'pkg-config' => :build
   depends_on "cppunit"
