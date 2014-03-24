@@ -5,6 +5,7 @@ class Ola < Formula
   url "https://github.com/OpenLightingProject/ola/releases/download/0.9.0/ola-0.9.0.tar.gz"
   sha1 "aff9bf0802d4e6fcbdc5a2ffcdb7ba25d67fd209"
 
+  option :universal
   require_universal_deps
 
   depends_on 'pkg-config' => :build
@@ -17,11 +18,6 @@ class Ola < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    build32 = "-arch i386 -m32"
-    ENV.append 'CFLAGS', build32
-    ENV.append 'LDFLAGS', build32
-
-
     system "./configure", "--disable-debug",
                           "--disable-fatal-warnings",
                           "--disable-dependency-tracking",
@@ -32,6 +28,6 @@ class Ola < Formula
   end
 
   test do
-    system "make check"
+    system "ola_plugin_info"
   end
 end
