@@ -4,6 +4,12 @@ class Fsharp < Formula
   homepage "http://fsharp.org/"
   url "https://github.com/fsharp/fsharp.git", :tag => "3.1.1.6"
 
+  bottle do
+    sha1 "df3f509b0d91c6341c4b082fca8a117686ec2fd4" => :mavericks
+    sha1 "7c362e7ae8b8bfa47544555c6497652bd9b964a3" => :mountain_lion
+    sha1 "5ba51de580838a3e365d1d6e16dc7f4804089665" => :lion
+  end
+
   depends_on :automake
   depends_on :autoconf
   depends_on "pkg-config" => :build
