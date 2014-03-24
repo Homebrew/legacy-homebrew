@@ -2,16 +2,9 @@ require 'formula'
 
 class Ocrad < Formula
   homepage 'http://www.gnu.org/software/ocrad/'
-  url 'http://ftpmirror.gnu.org/ocrad/ocrad-0.22.tar.lz'
-  mirror 'http://ftp.gnu.org/gnu/ocrad/ocrad-0.22.tar.lz'
-  sha1 'cfb3284b9d7387af80bcd795c093624eb40f6d13'
-
-  # Patch to compile with libc++ in Mavericks. Reported to list:
-  # http://lists.gnu.org/archive/html/bug-ocrad/2013-11/msg00000.html
-  patch do
-    url "https://gist.github.com/mcs07/7751030/raw/4f43e7cd123c33fbcc2459fa496b3ee8ecf344a0/ocrad-mavericks.diff"
-    sha1 "02a8658a629b4c955a7aff160424aefb876cfee2"
-  end
+  url 'http://ftpmirror.gnu.org/ocrad/ocrad-0.23.tar.lz'
+  mirror 'http://ftp.gnu.org/gnu/ocrad/ocrad-0.23.tar.lz'
+  sha1 '8f539613ce6eb816c691f37ef0977adfcdab5e92'
 
   def install
     system "./configure", "--prefix=#{prefix}"
