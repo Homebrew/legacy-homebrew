@@ -9,7 +9,11 @@ class Perlmagick < Formula
   depends_on "imagemagick"
 
   def install
-    freetype_inc = "#{MacOS::X11.include}/freetype2/freetype" if MacOS::X11.installed? else "#{Formula["freetype"].opt_prefix}"
+    freetype = if MacOS::X11.installed?
+      "#{MacOS::X11.include}/freetype2"
+    else
+      "#{Formula["freetype"].include}/freetype2"
+    end
     inreplace "Makefile.PL" do |s|
       s.gsub! "-I/usr/include/freetype2", "-I#{freetype_inc}"
       s.gsub! "'INSTALLBIN'	=> '/usr/local/bin'", "'INSTALLBIN'	=> '#{bin}'"
