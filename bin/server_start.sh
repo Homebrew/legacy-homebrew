@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Script to start the job server
 set -e
 
