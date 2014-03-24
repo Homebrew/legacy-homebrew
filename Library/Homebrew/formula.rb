@@ -491,11 +491,11 @@ class Formula
       "name" => name,
       "homepage" => homepage,
       "versions" => {
-        "stable"    => (stable.version.to_s if stable),
-        "bottle"    => bottle ? true : false,
-        "devel"     => (devel.version.to_s if devel),
-        "head"      => (head.version.to_s if head),
-        "revision"  => revision
+        "stable" => (stable.version.to_s if stable),
+        "bottle" => bottle ? true : false,
+        "devel" => (devel.version.to_s if devel),
+        "head" => (head.version.to_s if head),
+        "revision" => revision
       },
       "installed" => [],
       "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
@@ -518,11 +518,11 @@ class Formula
         tab = Tab.for_keg keg
 
         hsh["installed"] << {
-          "version"             => keg.basename.to_s,
-          "revision"            => tab.installed_revision,
-          "used_options"        => tab.used_options.map(&:flag),
-          "built_as_bottle"     => tab.built_bottle,
-          "poured_from_bottle"  => tab.poured_from_bottle
+          "version" => keg.basename.to_s,
+          "revision" => tab.installed_revision,
+          "used_options" => tab.used_options.map(&:flag),
+          "built_as_bottle" => tab.built_bottle,
+          "poured_from_bottle" => tab.poured_from_bottle
         }
       end
     end
