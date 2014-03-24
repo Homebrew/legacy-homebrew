@@ -38,6 +38,8 @@ object JobServerBuild extends Build {
 
       fullClasspath in Compile ++= extraJarPaths,
       javaOptions in Revolver.reStart += jobServerLogging,
+      // Give job server a bit more PermGen since it does classloading
+      javaOptions in Revolver.reStart += "-XX:MaxPermSize=256m",
       javaOptions in Revolver.reStart += "-Djava.security.krb5.realm= -Djava.security.krb5.kdc=",
       // The only change from sbt-revolver task definition is the "fullClasspath in Compile" so that
       // we can add Spark to the classpath without assembly barfing
