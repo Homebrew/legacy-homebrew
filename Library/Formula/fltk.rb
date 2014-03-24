@@ -4,10 +4,11 @@ class Fltk < Formula
   homepage 'http://www.fltk.org/'
   url 'http://fossies.org/linux/misc/fltk-1.3.2-source.tar.gz'
   sha1 '25071d6bb81cc136a449825bfd574094b48f07fb'
+  revision 1
 
   option :universal
 
-  depends_on :libpng
+  depends_on 'libpng'
   depends_on 'jpeg'
 
   fails_with :clang do
