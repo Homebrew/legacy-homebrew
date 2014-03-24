@@ -14,11 +14,11 @@ class Cspice < Formula
     mkdir_p "share/cspice"
     mv "doc", "share/cspice/"
     mv "data", "share/cspice/"
-    prefix.install Dir["bin", "share", "include", "lib"]
+    prefix.install "bin", "share", "include", "lib"
 
-    ln_s "#{lib}/cspice.a", "#{lib}/libcspice.a"
-    ln_s "#{lib}/csupport.a", "#{lib}/libcsupport.a"
-
+    cd "#{lib}"
+    ln_s "cspice.a", "libcspice.a"
+    ln_s "csupport.a", "libcsupport.a"
   end
 
   test do
