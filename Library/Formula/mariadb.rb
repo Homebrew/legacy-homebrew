@@ -108,7 +108,7 @@ class Mariadb < Formula
       (prefix+'sql-bench').rmtree if build.without? 'bench'
 
       # Link the setup script into bin
-      ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+      bin.install_symlink prefix/"scripts/mysql_install_db"
 
       # Fix up the control script and link into bin
       inreplace "#{prefix}/support-files/mysql.server" do |s|
@@ -117,7 +117,7 @@ class Mariadb < Formula
         s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
       end
 
-      ln_s "#{prefix}/support-files/mysql.server", bin
+      bin.install_symlink prefix/"support-files/mysql.server"
     end
   end
 
