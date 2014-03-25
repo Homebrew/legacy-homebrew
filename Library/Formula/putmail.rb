@@ -6,12 +6,9 @@ class Putmail < Formula
   sha1 '7903fd32a14192adb72560b99c01e6563bc9dd38'
 
   def install
-    # Install manually.
     bin.install "putmail.py"
     man1.install "man/man1/putmail.py.1"
-
-    # MacPorts does this, so why not
-    ln_s bin+"putmail.py", bin+"putmail"
-    ln_s man1+"putmail.py.1", man1+"putmail.1"
+    bin.install_symlink "putmail.py" => "putmail"
+    man1.install_symlink "putmail.py.1" => "putmail.1"
   end
 end
