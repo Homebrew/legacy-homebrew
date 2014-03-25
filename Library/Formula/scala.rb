@@ -6,14 +6,14 @@ class Scala < Formula
   sha1 '970f779f155719838e81a267a7418a958fd4c13f'
 
   devel do
-    url 'http://downloads.typesafe.com/scala/2.11.0-RC1/scala-2.11.0-RC1.tgz'
-    sha1 '1b8f9149015b4f017e1e295bd187ed726a416437'
-    version '2.11.0-RC1'
+    url 'http://downloads.typesafe.com/scala/2.11.0-RC3/scala-2.11.0-RC3.tgz'
+    sha1 'cd1b8fb5b6896c9e3b9f2c6b3eb52556fd25bd3a'
+    version '2.11.0-RC3'
 
     resource 'docs' do
-      url 'http://downloads.typesafe.com/scala/2.11.0-RC1/scala-docs-2.11.0-RC1.zip'
-      sha1 '15411722b67a87186b87ceb61289d3a1a69b725e'
-      version '2.11.0-RC1'
+      url 'http://downloads.typesafe.com/scala/2.11.0-RC3/scala-docs-2.11.0-RC3.zip'
+      sha1 '34b2dfb77c2fadd276aaaae2be74c52711079ddf'
+      version '2.11.0-RC3'
     end
   end
 
