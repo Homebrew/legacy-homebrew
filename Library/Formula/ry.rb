@@ -7,12 +7,13 @@ class Ry < Formula
   depends_on 'ruby-build'
 
   def install
-    system({ 'PREFIX' => prefix }, 'make install')
+    ENV['PREFIX'] = HOMEBREW_PREFIX
+    system('make install')
   end
 
   def caveats; <<-EOS.undent
     Please add to your $PATH:
-      #{prefix}/lib/ry/current/bin
+      #{HOMEBREW_PREFIX}/lib/ry/current/bin
 
     Alternatively, to enable completion, add to your profile:
       which ry >/dev/null 2>/dev/null && eval "$(ry setup)"
