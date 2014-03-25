@@ -12,6 +12,7 @@ class Grace < Formula
   depends_on 'lesstif'
 
   def install
+    ENV.O1 # https://github.com/Homebrew/homebrew/issues/27840#issuecomment-38536704
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--enable-grace-home=#{prefix}"
