@@ -9,6 +9,12 @@ class Avidemux < Formula
   head 'git://gitorious.org/avidemux2-6/avidemux2-6.git'
   revision 1
 
+  bottle do
+    sha1 "0f2b3d5a4a496458809204a3c126505f6473394e" => :mavericks
+    sha1 "6bc4a7c54fb50b836d653c4c076467c579123e94" => :mountain_lion
+    sha1 "5a39c8fff4e620975d2d70d7fd51e85e8dec24e6" => :lion
+  end
+
   option 'with-debug', 'Enable debug build.'
 
   depends_on 'pkg-config' => :build
