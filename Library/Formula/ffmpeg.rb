@@ -8,9 +8,9 @@ class Ffmpeg < Formula
   revision 1
 
   bottle do
-    sha1 "ddd8f0cce3e64047cd9c77eccc5d23af48ef7814" => :mavericks
-    sha1 "57ed9eb6e22e0d8debf6e528399c643270569a04" => :mountain_lion
-    sha1 "5661800a746ba073b39ade6d5c608dce7a795594" => :lion
+    sha1 "11803d2e80301197635d6e5fb38e80ba71b981e3" => :mavericks
+    sha1 "1fe2ddca396754f3a59555806637851f9e94ad2f" => :mountain_lion
+    sha1 "ffaa7cb1c458fc3d7d2c251606a6d19dde351e80" => :lion
   end
 
   option "without-x264", "Disable H.264 encoder"
