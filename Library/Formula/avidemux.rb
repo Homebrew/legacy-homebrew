@@ -7,6 +7,7 @@ class Avidemux < Formula
   url 'https://downloads.sourceforge.net/avidemux/avidemux_2.6.4.tar.gz'
   sha1 '7ed55fd5cfb6cfa73ebb9058af72fa2e3c9717c3'
   head 'git://gitorious.org/avidemux2-6/avidemux2-6.git'
+  revision 1
 
   option 'with-debug', 'Enable debug build.'
 

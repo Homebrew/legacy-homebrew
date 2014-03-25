@@ -5,6 +5,7 @@ class Libav < Formula
   url 'http://libav.org/releases/libav-9.11.tar.xz'
   sha1 '4eb48cbe70515734f70bde8dceff28896d76adf2'
   head 'git://git.libav.org/libav.git'
+  revision 1
 
   bottle do
     sha1 "189d6d475037c6ef0fa4911b5e3cc99e4c2e6a5c" => :mavericks
