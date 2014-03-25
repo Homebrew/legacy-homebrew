@@ -7,9 +7,10 @@ class Ngircd < Formula
   sha256 '96083ae7dbc5df852efc904fff4800959f103554de2c6d096deaa5408135f59e'
 
   bottle do
-    sha1 "ae77fb1753ea2f7cbb74c2bdc84fd8ba9099c51c" => :mavericks
-    sha1 "5aa7c8fad4ed9039fefebfc365b3424820bb7eeb" => :mountain_lion
-    sha1 "1740d36184de79859dabae87e5cd6320595abdc9" => :lion
+    revision 1
+    sha1 "4b57669606f323726abf6d9697c0f96bf1eff0a0" => :mavericks
+    sha1 "06252db0d529c3edcd14f054898e2b4220a56d80" => :mountain_lion
+    sha1 "780f4368b6b17e0ab0989d004b252291fb2775c8" => :lion
   end
 
   option 'with-iconv', 'Enable character conversion using libiconv.'
