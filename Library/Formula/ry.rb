@@ -13,14 +13,8 @@ class Ry < Formula
   end
 
   def caveats; <<-EOS.undent
-    Please add to your $PATH:
-      #{HOMEBREW_PREFIX}/lib/ry/current/bin
-
-    Alternatively, to enable completion, add to your profile:
+    Please add to your profile:
       which ry >/dev/null 2>/dev/null && eval "$(ry setup)"
-
-    To switch to another ruby locally to your shell, set
-    your $PATH to the output of `ry fullpath <ruby_name>`
     EOS
   end
 
