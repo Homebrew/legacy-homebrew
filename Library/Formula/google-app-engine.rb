@@ -8,7 +8,6 @@ class GoogleAppEngine < Formula
   def install
     cd '..'
     share.install 'google_appengine' => name
-    bin.mkpath
     %w[
       _python_runtime.py
       _php_runtime.py
@@ -24,7 +23,7 @@ class GoogleAppEngine < Formula
       old_dev_appserver.py
       remote_api_shell.py
     ].each do |fn|
-      ln_s share+name+fn, bin
+      bin.install_symlink share/name/fn
     end
   end
 end
