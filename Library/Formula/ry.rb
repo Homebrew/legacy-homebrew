@@ -9,7 +9,7 @@ class Ry < Formula
 
   def install
     ENV["PREFIX"] = HOMEBREW_PREFIX
-    system("make install")
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
@@ -19,6 +19,6 @@ class Ry < Formula
   end
 
   test do
-    system 'ry ls'
+    system "ry", "ls"
   end
 end
