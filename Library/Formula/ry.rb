@@ -10,7 +10,7 @@ class Ry < Formula
   depends_on "ruby-build" => :recommended
 
   def install
-    ENV["PREFIX"] = HOMEBREW_PREFIX
+    ENV["PREFIX"] = prefix
     system "make", "install"
   end
 
