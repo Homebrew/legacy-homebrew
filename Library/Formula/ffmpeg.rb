@@ -5,6 +5,7 @@ class Ffmpeg < Formula
   url 'http://ffmpeg.org/releases/ffmpeg-2.1.4.tar.bz2'
   sha1 '99c2f7af3e6d5f4a962ae8bf627d3c53bc282fec'
   head 'git://git.videolan.org/ffmpeg.git'
+  revision 1
 
   bottle do
     sha1 "ddd8f0cce3e64047cd9c77eccc5d23af48ef7814" => :mavericks
