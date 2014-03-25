@@ -7,6 +7,12 @@ class TerminalNotifier < Formula
 
   head 'https://github.com/alloy/terminal-notifier.git'
 
+  bottle do
+    cellar :any
+    sha1 "a47abd03d3c9574af6f28e343f065b0393e37ed9" => :mavericks
+    sha1 "063dfbda7818f78024f4d179a8037aa0bf99bc01" => :mountain_lion
+  end
+
   depends_on :macos => :mountain_lion
   depends_on :xcode
 
