@@ -2,8 +2,8 @@ require "formula"
 
 class Getdns < Formula
   homepage "http://getdnsapi.net"
-  url "http://getdnsapi.net/dist/getdns-0.1.0.tar.gz"
-  sha1 "176d7a6d16ec5e0cfb8d34a303be1ccdbb0b4e5d"
+  url "http://getdnsapi.net/dist/getdns-0.1.1.tar.gz"
+  sha1 "63abbf10f514c6125c4bee0d249b9c68a9e4f560"
 
   depends_on "ldns"
   depends_on "unbound"
@@ -40,6 +40,7 @@ class Getdns < Formula
             return -1;
         }
         puts(pp);
+        free(pp);
         getdns_dict_destroy(api_info);
         getdns_context_destroy(context);
         return 0;
