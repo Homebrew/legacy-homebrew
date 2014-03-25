@@ -6,8 +6,9 @@ class PebbleSdk < Formula
   sha1 'c6e2cefb638ebcfffae31c6cc3b175d3e62b3c44'
 
   bottle do
-    sha1 "da9f9afac027ab201a4143908b31ff366ce8198c" => :mavericks
-    sha1 "5db9213a973ee1e4717fda515ac7b0623dc21dad" => :mountain_lion
+    revision 1
+    sha1 "ff81876666e670b59a681104bfcfc109315fa14d" => :mavericks
+    sha1 "85141cdbcdbbbf71b9e776971dac15861ea9db91" => :mountain_lion
   end
 
   depends_on :macos => :mountain_lion
@@ -20,11 +21,6 @@ class PebbleSdk < Formula
   depends_on 'texinfo' => :build
 
   # List of resources can be obtained from requirements.txt
-  resource 'pillow' do
-    url 'https://pypi.python.org/packages/source/P/Pillow/Pillow-2.3.0.zip'
-    sha1 '0d3fdaa9a8a40a59a66c6057b9f91a3553db852e'
-  end
-
   resource 'freetype-py' do
     url 'https://pypi.python.org/packages/source/f/freetype-py/freetype-py-1.0.tar.gz'
     sha1 '3830e45ff9e9a96f1e209d786cbd5492f168127a'
@@ -82,7 +78,6 @@ class PebbleSdk < Formula
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
     ENV.append_to_cflags '-Qunused-arguments'
-    resource('pillow').stage { system "python", *install_args }
     resource('freetype-py').stage { system "python", *install_args }
     resource('sh').stage { system "python", *install_args }
     resource('twisted').stage { system "python", *install_args }

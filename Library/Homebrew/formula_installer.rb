@@ -200,7 +200,7 @@ class FormulaInstaller
   # HACK: If readline is present in the dependency tree, it will clash
   # with the stdlib's Readline module when the debugger is loaded
   def perform_readline_hack
-    if f.recursive_dependencies.any? { |d| d.name == "readline" } && debug?
+    if (f.recursive_dependencies.any? { |d| d.name == "readline" } || f.name == "readline") && debug?
       ENV['HOMEBREW_NO_READLINE'] = '1'
     end
   end
@@ -351,7 +351,7 @@ class FormulaInstaller
   def install_dependency(dep, inherited_options)
     df = dep.to_formula
 
-    outdated_keg = Keg.new(df.linked_keg.realpath) rescue nil
+    outdated_keg = Keg.new(df.linked_keg.realpath) if df.linked_keg.directory?
 
     fi = DependencyInstaller.new(df)
     fi.options           |= Tab.for_formula(df).used_options
