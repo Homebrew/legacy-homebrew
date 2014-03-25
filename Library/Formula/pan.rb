@@ -15,7 +15,7 @@ class Pan < Formula
   depends_on 'gnutls' => :optional
 
   # Fix compilation on 64-bit; see https://bugzilla.gnome.org/show_bug.cgi?id=673813
-  def patches; DATA end
+  patch :DATA
 
   def install
     ENV.append 'LDFLAGS', ' -liconv ' # iconv detection is broken.

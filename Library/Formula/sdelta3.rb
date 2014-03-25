@@ -5,7 +5,7 @@ class Sdelta3 < Formula
   url 'ftp://ftp.berlios.de//pub/sdelta/files/sdelta3-20100323.tar.bz2'
   sha1 'd99718e95b2828f2d4ec376a16b5fedc950792ee'
 
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # Sdelta3 code is not 64-bit clean

@@ -2,8 +2,16 @@ require 'formula'
 
 class Geoip < Formula
   homepage 'https://github.com/maxmind/geoip-api-c'
-  url 'https://github.com/maxmind/geoip-api-c/releases/download/v1.6.0/GeoIP-1.6.0.tar.gz'
-  sha1 '41ed21fb2d40e54648cae2a1f73e8a5210676def'
+
+  stable do
+    url "https://github.com/maxmind/geoip-api-c/releases/download/v1.6.0/GeoIP-1.6.0.tar.gz"
+    sha1 "41ed21fb2d40e54648cae2a1f73e8a5210676def"
+
+    # Download test data so `make check` works. Fixed in HEAD.
+    # See https://github.com/maxmind/geoip-api-c/commit/722707cc3a0adc06aec3e98bc36e7262f67ec0da
+    patch :DATA
+  end
+
   head 'https://github.com/maxmind/geoip-api-c.git'
 
   bottle do
@@ -19,12 +27,6 @@ class Geoip < Formula
   depends_on 'geoipupdate' => :optional
 
   option :universal
-
-  def patches
-    # Download test data so `make check` works. Fixed in HEAD.
-    # See https://github.com/maxmind/geoip-api-c/commit/722707cc3a0adc06aec3e98bc36e7262f67ec0da
-    DATA unless build.head?
-  end
 
   def install
     ENV.universal_binary if build.universal?

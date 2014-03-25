@@ -13,9 +13,7 @@ class Squashfs < Formula
   end
 
   # The instructions for this software say to do this on OS X
-  def patches
-    { :p0 => DATA }
-  end
+  patch :p0, :DATA
 
   def install
     cd 'squashfs-tools' do

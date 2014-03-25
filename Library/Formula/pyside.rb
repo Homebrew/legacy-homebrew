@@ -22,14 +22,12 @@ class Pyside < Formula
     depends_on 'shiboken'
   end
 
-  def patches
-    DATA  # Fix moc_qpytextobject.cxx not found (https://codereview.qt-project.org/62479)
-  end
-
   resource 'sphinx' do
     url 'https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.2.tar.gz'
     sha1 '9e424b03fe1f68e0326f3905738adcf27782f677'
   end
+
+  patch :DATA # Fix moc_qpytextobject.cxx not found (https://codereview.qt-project.org/62479)
 
   def install
     if build.with? "docs"

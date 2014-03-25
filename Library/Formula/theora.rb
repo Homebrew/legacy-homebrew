@@ -11,7 +11,10 @@ class Theora < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--disable-oggtest",
+                          "--disable-vorbistest",
+                          "--disable-examples"
     system "make install"
   end
 end
