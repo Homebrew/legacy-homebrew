@@ -2,7 +2,7 @@ require 'formula'
 
 class ClozureCl < Formula
   homepage 'http://ccl.clozure.com/'
-  url 'ftp://ftp.clozure.com/pub/release/1.9/ccl-1.9-darwinx86.tar.gz'
+  url 'http://ccl.clozure.com/ftp/pub/release/1.9/ccl-1.9-darwinx86.tar.gz'
   version '1.9'
   sha1 '589b94093fc356c458ab288aceb5a3d5d9d7b829'
 
