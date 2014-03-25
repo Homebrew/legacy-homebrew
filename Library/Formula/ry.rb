@@ -2,7 +2,7 @@ require 'formula'
 
 class Ry < Formula
   homepage 'https://github.com/jayferd/ry'
-  url 'https://github.com/jayferd/ry/archive/0.4.1.tar.gz'
+  url 'https://github.com/jayferd/ry/archive/v0.4.2.tar.gz'
 
   depends_on 'ruby-build'
 
