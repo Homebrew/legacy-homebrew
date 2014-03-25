@@ -16,7 +16,7 @@ class Ry < Formula
 
   def caveats; <<-EOS.undent
     Please add to your profile:
-      which ry >/dev/null 2>/dev/null && eval "$(ry setup)"
+      which ry &>/dev/null && eval "$(ry setup)"
     EOS
   end
 
