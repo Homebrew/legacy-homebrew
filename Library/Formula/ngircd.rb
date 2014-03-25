@@ -6,6 +6,12 @@ class Ngircd < Formula
   mirror 'http://ngircd.mirror.3rz.org/pub/ngircd/ngircd-21.1.tar.gz'
   sha256 '96083ae7dbc5df852efc904fff4800959f103554de2c6d096deaa5408135f59e'
 
+  bottle do
+    sha1 "ae77fb1753ea2f7cbb74c2bdc84fd8ba9099c51c" => :mavericks
+    sha1 "5aa7c8fad4ed9039fefebfc365b3424820bb7eeb" => :mountain_lion
+    sha1 "1740d36184de79859dabae87e5cd6320595abdc9" => :lion
+  end
+
   option 'with-iconv', 'Enable character conversion using libiconv.'
   option 'with-pam', 'Enable user authentication using PAM.'
 
