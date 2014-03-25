@@ -14,12 +14,10 @@ class Shiboken < Formula
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
-  def patches
-    # This fixes issues with libc++ and its lack of the tr1 namespace.
-    # Upstream ticket: https://bugreports.qt-project.org/browse/PYSIDE-200
-    # Patch is currently under code review at: https://codereview.qt-project.org/#change,69324
-    DATA
-  end
+  # This fixes issues with libc++ and its lack of the tr1 namespace.
+  # Upstream ticket: https://bugreports.qt-project.org/browse/PYSIDE-200
+  # Patch is currently under code review at: https://codereview.qt-project.org/#change,69324
+  patch :DATA
 
   def install
     # As of 1.1.1 the install fails unless you do an out of tree build and put

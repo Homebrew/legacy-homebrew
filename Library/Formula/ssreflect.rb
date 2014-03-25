@@ -12,10 +12,8 @@ class Ssreflect < Formula
   option 'with-doc', 'Install HTML documents'
   option 'with-static', 'Build with static linking'
 
-  def patches
-    # Fix an ill-formatted ocamldoc comment.
-    DATA
-  end
+  # Fix an ill-formatted ocamldoc comment.
+  patch :DATA
 
   def install
     ENV.j1

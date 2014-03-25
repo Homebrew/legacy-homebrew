@@ -4,7 +4,9 @@ class Autotrace < Formula
   homepage 'http://autotrace.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/autotrace/AutoTrace/0.31.1/autotrace-0.31.1.tar.gz'
   sha1 '679e4912528030b86f23db5b99e60f8e7df883fd'
+  revision 1
 
+  depends_on 'pkg-config' => :build
   depends_on 'imagemagick' => :recommended
 
   # Issue 16569: Use MacPorts patch to port input-png.c to libpng 1.5.

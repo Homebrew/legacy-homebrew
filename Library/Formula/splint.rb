@@ -5,10 +5,8 @@ class Splint < Formula
   url 'http://www.splint.org/downloads/splint-3.1.2.src.tgz'
   sha1 '0df489cb228dcfffb149b38c57614c2c3e200501'
 
-  def patches
-    # fix compiling error of osd.c
-    DATA
-  end
+  # fix compiling error of osd.c
+  patch :DATA
 
   def install
     ENV.j1 # build is not parallel-safe

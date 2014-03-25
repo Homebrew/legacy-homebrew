@@ -7,10 +7,7 @@ class Vncsnapshot < Formula
 
   depends_on 'jpeg'
 
-  def patches
-    # remove old PPC __APPLE__ ifdef from sockets.cxx
-    DATA
-  end
+  patch :DATA # remove old PPC __APPLE__ ifdef from sockets.cxx
 
   def install
     # From Ubuntu

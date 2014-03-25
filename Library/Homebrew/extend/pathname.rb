@@ -96,12 +96,34 @@ class Pathname
 
   # NOTE always overwrites
   def atomic_write content
-    require 'tempfile'
-    tf = Tempfile.new(self.basename.to_s)
+    require "tempfile"
+    tf = Tempfile.new(basename.to_s)
     tf.write(content)
     tf.close
-    FileUtils.mv tf.path, self.to_s
+
+    begin
+      old_stat = stat
+    rescue Errno::ENOENT
+      old_stat = default_stat
+    end
+
+    FileUtils.mv tf.path, self
+
+    begin
+      chown(old_stat.uid, old_stat.gid)
+      chmod(old_stat.mode)
+    rescue Errno::EPERM
+    end
   end
+
+  def default_stat
+    sentinel = parent.join(".brew.#{Process.pid}.#{rand(Time.now.to_i)}")
+    sentinel.open("w") { }
+    sentinel.stat
+  ensure
+    sentinel.unlink
+  end
+  private :default_stat
 
   def cp dst
     if file?

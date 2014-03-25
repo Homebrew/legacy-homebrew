@@ -209,7 +209,7 @@ module OS
         version < latest_version
       end
 
-      # Version string (a pretty damn long one) of the CLT package.
+      # Version string (a pretty long one) of the CLT package.
       # Note, that different ways to install the CLTs lead to different
       # version numbers.
       def version
