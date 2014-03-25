@@ -3,9 +3,9 @@ require 'formula'
 class Fossil < Formula
   homepage 'http://www.fossil-scm.org/'
   head 'fossil://http://www.fossil-scm.org/'
-  url 'http://www.fossil-scm.org/download/fossil-src-20130911114349.tar.gz'
-  sha1 '2e2149fff30d63a1869ecb5a7d6b17996477612a'
-  version '1.27'
+  url 'http://www.fossil-scm.org/download/fossil-src-20140127173344.tar.gz'
+  sha1 '9e547a27d2447f12df951e86670da12c7cfbd26a'
+  version '1.28'
 
   option 'without-json', 'Build without "json" command support.'
   option 'without-tcl', "Build without the tcl-th1 command bridge."
