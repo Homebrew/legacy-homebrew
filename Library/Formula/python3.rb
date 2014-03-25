@@ -118,7 +118,7 @@ class Python3 < Formula
     # Create a site-packages in HOMEBREW_PREFIX/lib/python#{VER}/site-packages
     site_packages.mkpath
     # Symlink the prefix site-packages into the cellar.
-    ln_s site_packages, site_packages_cellar
+    site_packages_cellar.parent.install_symlink site_packages
 
     # Write our sitecustomize.py
     Dir["#{site_packages}/*.py{,c,o}"].each {|f| Pathname.new(f).unlink }
