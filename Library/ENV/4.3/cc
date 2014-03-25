@@ -73,6 +73,9 @@ class Cmd
     end
   end
   def args
+    if @args.length == 1 and @args[0] == '-v'
+      return @args.dup
+    end
     if !cccfg?("O") || tool == "ld" || configure?
       args = @args.dup
     else
