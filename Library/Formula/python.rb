@@ -8,7 +8,6 @@ class Python < Formula
 
   option :universal
   option 'quicktest', "Run `make quicktest` after the build (for devs; may fail)"
-  option 'with-brewed-openssl', "Use Homebrew's openSSL instead of the one from OS X"
   option 'with-brewed-tk', "Use Homebrew's Tk (has optional Cocoa and threads support)"
   option 'with-poll', "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
   option 'with-dtrace', "Experimental DTrace support (http://bugs.python.org/issue13405)"
@@ -17,7 +16,7 @@ class Python < Formula
   depends_on 'readline' => :recommended
   depends_on 'sqlite' => :recommended
   depends_on 'gdbm' => :recommended
-  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'openssl'
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
   depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
 
@@ -70,7 +69,7 @@ class Python < Formula
              --enable-ipv6
              --datarootdir=#{share}
              --datadir=#{share}
-             --enable-framework=#{prefix}/Frameworks
+             --enable-framework=#{frameworks}
            ]
 
     args << '--without-gcc' if ENV.compiler == :clang
@@ -128,7 +127,7 @@ class Python < Formula
     # Create a site-packages in HOMEBREW_PREFIX/lib/python2.7/site-packages
     site_packages.mkpath
     # Symlink the prefix site-packages into the cellar.
-    ln_s site_packages, site_packages_cellar
+    site_packages_cellar.parent.install_symlink site_packages
 
     # Write our sitecustomize.py
     Dir["#{site_packages}/*.py{,c,o}"].each {|f| Pathname.new(f).unlink }

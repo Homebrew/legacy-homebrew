@@ -6,6 +6,7 @@ class Lesstif < Formula
   sha1 'b894e544d529a235a6a665d48ca94a465f44a4e5'
 
   depends_on :x11
+  depends_on "freetype"
 
   def install
     # LessTif does naughty, naughty, things by assuming we want autoconf macros

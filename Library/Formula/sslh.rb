@@ -11,7 +11,7 @@ class Sslh < Formula
     ENV.j1
     system 'make'
     bin.install 'sslh-fork', 'sslh-select'
-    ln_s bin/'sslh-fork', bin/'sslh'
+    bin.install_symlink 'sslh-fork' => 'sslh'
     man8.install 'sslh.8.gz'
   end
 end

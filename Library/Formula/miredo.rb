@@ -8,9 +8,7 @@ class Miredo < Formula
   depends_on 'tuntap'
   depends_on 'judy'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     args = %W[

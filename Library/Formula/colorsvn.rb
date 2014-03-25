@@ -5,9 +5,7 @@ class Colorsvn < Formula
   url 'http://colorsvn.tigris.org/files/documents/4414/49311/colorsvn-0.3.3.tar.gz'
   sha1 '963f46df16f60cb3a68d9d9cdb565357247ba0e7'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}",

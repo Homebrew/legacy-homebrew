@@ -29,9 +29,7 @@ class Luarocks < Formula
   # appropriate messaging if not. The check that luarocks does has been
   # seen to have false positives, so remove it.
   # TODO: better document the false positive cases, or remove this patch.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # Install to the Cellar, but direct modules to HOMEBREW_PREFIX

@@ -14,14 +14,14 @@ class AndroidNdk < Formula
 
     # Create a dummy script to launch the ndk apps
     ndk_exec = prefix+'ndk-exec.sh'
-    (ndk_exec).write <<-EOS.undent
+    ndk_exec.write <<-EOS.undent
       #!/bin/sh
       BASENAME=`basename $0`
       EXEC="#{prefix}/$BASENAME"
       test -f "$EXEC" && exec "$EXEC" "$@"
     EOS
-    (ndk_exec).chmod 0755
-    %w[ ndk-build ndk-gdb ndk-stack ].each { |app| ln_s ndk_exec, bin+app }
+    ndk_exec.chmod 0755
+    %w[ndk-build ndk-gdb ndk-stack].each { |app| bin.install_symlink ndk_exec => app }
   end
 
   def caveats; <<-EOS.undent

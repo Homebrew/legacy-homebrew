@@ -103,7 +103,7 @@ class Mysql < Formula
     rm_rf prefix+'data'
 
     # Link the setup script into bin
-    ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+    bin.install_symlink prefix/"scripts/mysql_install_db"
 
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
@@ -112,7 +112,7 @@ class Mysql < Formula
       s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
 
-    ln_s "#{prefix}/support-files/mysql.server", bin
+    bin.install_symlink prefix/"support-files/mysql.server"
 
     # Move mysqlaccess to libexec
     libexec.mkpath

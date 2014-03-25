@@ -10,7 +10,7 @@ class GnuTypist < Formula
 
   # Use Apple's ncurses instead of ncursesw.
   # TODO: use an IFDEF for apple and submit upstream
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # libiconv is not linked properly without this

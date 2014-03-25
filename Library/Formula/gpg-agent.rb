@@ -15,7 +15,7 @@ class GpgAgent < Formula
 
   # Adjust package name to fit our scheme of packaging both
   # gnupg 1.x and 2.x, and gpg-agent separately
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # don't use Clang's internal stdint.h

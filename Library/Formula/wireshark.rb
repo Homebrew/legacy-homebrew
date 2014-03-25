@@ -2,10 +2,16 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.5.tar.bz2'
-  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.5.tar.bz2'
-  sha1 'ebbf4f8382fc8961c1fb7959727b3e6792e597c1'
-  revision 2
+
+  stable do
+    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.6.tar.bz2'
+    mirror 'http://www.wireshark.org/download/src/wireshark-1.10.6.tar.bz2'
+    sha1 '081a2daf85e3257d7a2699e84a330712e3e5b9bb'
+
+    # Removes SDK checks that prevent the build from working on CLT-only systems
+    # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
+    patch :DATA
+  end
 
   head do
     url 'https://code.wireshark.org/review/wireshark', :using => :git
@@ -43,14 +49,6 @@ class Wireshark < Formula
     depends_on 'gtk+'
   end
 
-  def patches
-    if build.stable?
-      # Removes SDK checks that prevent the build from working on CLT-only systems
-      # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
-      { :p1 => DATA }
-    end
-  end
-
   def install
     system "./autogen.sh" if build.head?
 
@@ -70,15 +68,15 @@ class Wireshark < Formula
     system "make install"
 
     if build.with? 'headers'
-        (include/"wireshark").install Dir["*.h"]
-        (include/"wireshark/epan").install Dir["epan/*.h"]
-        (include/"wireshark/epan/crypt").install Dir["epan/crypt/*.h"]
-        (include/"wireshark/epan/dfilter").install Dir["epan/dfilter/*.h"]
-        (include/"wireshark/epan/dissectors").install Dir["epan/dissectors/*.h"]
-        (include/"wireshark/epan/ftypes").install Dir["epan/ftypes/*.h"]
-        (include/"wireshark/epan/wmem").install Dir["epan/wmem/*.h"]
-        (include/"wireshark/wiretap").install Dir["wiretap/*.h"]
-        (include/"wireshark/wsutil").install Dir["wsutil/*.h"]
+      (include/"wireshark").install Dir["*.h"]
+      (include/"wireshark/epan").install Dir["epan/*.h"]
+      (include/"wireshark/epan/crypt").install Dir["epan/crypt/*.h"]
+      (include/"wireshark/epan/dfilter").install Dir["epan/dfilter/*.h"]
+      (include/"wireshark/epan/dissectors").install Dir["epan/dissectors/*.h"]
+      (include/"wireshark/epan/ftypes").install Dir["epan/ftypes/*.h"]
+      (include/"wireshark/epan/wmem").install Dir["epan/wmem/*.h"]
+      (include/"wireshark/wiretap").install Dir["wiretap/*.h"]
+      (include/"wireshark/wsutil").install Dir["wsutil/*.h"]
     end
   end
 

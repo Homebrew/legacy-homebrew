@@ -13,7 +13,7 @@ class Rrdtool < Formula
   env :userpaths # For perl, ruby
 
   # Ha-ha, but sleeping is annoying when running configure a lot
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.libxml2
@@ -38,7 +38,7 @@ class Rrdtool < Formula
     # Needed to build proper Ruby bundle
     ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
-    system "make install"
+    system "make", "CC=#{ENV.cc}", "CXX=#{ENV.cxx}", "install"
     prefix.install "bindings/ruby/test.rb"
   end
 
