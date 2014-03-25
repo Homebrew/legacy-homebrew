@@ -5,6 +5,12 @@ class Getdns < Formula
   url "http://getdnsapi.net/dist/getdns-0.1.1.tar.gz"
   sha1 "63abbf10f514c6125c4bee0d249b9c68a9e4f560"
 
+  bottle do
+    sha1 "81336b0954cbe0eb533a4182abb21ec95c3ecd7e" => :mavericks
+    sha1 "7504ab2cfe385bf7465ea521388e2ffb7762192f" => :mountain_lion
+    sha1 "e8e24241af141b5ee10d8815c691b89f45986bd7" => :lion
+  end
+
   depends_on "ldns"
   depends_on "unbound"
   depends_on "libidn"
