@@ -1,8 +1,8 @@
 require 'formula'
 
 class Python3 < Formula
-  homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.4.0/Python-3.4.0.tgz'
+  homepage 'https://www.python.org/'
+  url 'https://python.org/ftp/python/3.4.0/Python-3.4.0.tgz'
   sha1 'bb5125d1c437caa5a62e0a3d0fee298e91196d6f'
 
   VER='3.4'  # The <major>.<minor> is used so often.
