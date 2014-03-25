@@ -2,9 +2,9 @@ require 'formula'
 
 class Ngircd < Formula
   homepage 'http://ngircd.barton.de'
-  url 'http://ngircd.barton.de/pub/ngircd/ngircd-21.tar.gz'
-  mirror 'http://ngircd.mirror.3rz.org/pub/ngircd/ngircd-21.tar.gz'
-  sha256 '0edbd41304186e43f9d907a7017b40520cc90c2ce29b1339bdcd7622fffe19a0'
+  url 'http://ngircd.barton.de/pub/ngircd/ngircd-21.1.tar.gz'
+  mirror 'http://ngircd.mirror.3rz.org/pub/ngircd/ngircd-21.1.tar.gz'
+  sha256 '96083ae7dbc5df852efc904fff4800959f103554de2c6d096deaa5408135f59e'
 
   option 'with-iconv', 'Enable character conversion using libiconv.'
   option 'with-pam', 'Enable user authentication using PAM.'
