@@ -5,6 +5,7 @@ class GstPluginsUgly < Formula
   url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.2.3.tar.xz'
   mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.2.3.tar.xz'
   sha256 '537b0a7607eee499026388bb705b5b68985a3fd59fe22ee09accaf8cdf57eb3b'
+  revision 1
 
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
