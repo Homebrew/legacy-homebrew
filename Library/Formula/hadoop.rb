@@ -22,6 +22,10 @@ class Hadoop < Formula
     inreplace "#{libexec}/etc/hadoop/mapred-env.sh",
       "# export JAVA_HOME=/home/y/libexec/jdk1.6.0/",
       "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
+
+    inreplace "#{libexec}/conf/hadoop-env.sh",
+      "# export HADOOP_OPTS=-server",
+      "export HADOOP_OPTS='-Djava.security.krb5.realm=-Djava.security.krb5.kdc='"
   end
 
   def caveats; <<-EOS.undent
