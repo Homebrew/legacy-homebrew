@@ -44,7 +44,9 @@ class Guile < Formula
     system "make install"
 
     # A really messed up workaround required on OS X --mkhl
-    lib.cd { Dir["*.dylib"].each {|p| ln_sf p, File.basename(p, ".dylib")+".so" }}
+    Pathname.glob("#{lib}/*.dylib") do |dylib|
+      lib.install_symlink dylib.basename => "#{dylib.basename(".dylib")}.so"
+    end
   end
 
   test do
