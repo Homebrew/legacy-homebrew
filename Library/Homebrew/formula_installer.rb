@@ -200,7 +200,7 @@ class FormulaInstaller
   # HACK: If readline is present in the dependency tree, it will clash
   # with the stdlib's Readline module when the debugger is loaded
   def perform_readline_hack
-    if f.recursive_dependencies.any? { |d| d.name == "readline" } && debug?
+    if (f.recursive_dependencies.any? { |d| d.name == "readline" } || f.name == "readline") && debug?
       ENV['HOMEBREW_NO_READLINE'] = '1'
     end
   end
