@@ -26,6 +26,7 @@ class Ngircd < Formula
       --disable-debug
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --sysconfdir=#{HOMEBREW_PREFIX}/etc
       --enable-ipv6
       --with-openssl
     ]
