@@ -73,6 +73,12 @@ class Cmd
     end
   end
   def args
+    if @args.length == 1 and @args[0] == '-v'
+      # Don't add linker arguments if -v passed as sole option. This stops gcc
+      # -v with no other arguments from outputting a linker error. Some
+      # software uses gcc -v (wrongly) to sniff the GCC version.
+      return @args.dup
+    end
     if !cccfg?("O") || tool == "ld" || configure?
       args = @args.dup
     else
