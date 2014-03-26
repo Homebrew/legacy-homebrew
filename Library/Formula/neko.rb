@@ -31,11 +31,10 @@ class Neko < Formula
     neko.install Dir['bin/*']
 
     # Symlink into bin so libneko.dylib resolves correctly for custom prefix
-    bin.mkpath
     %w(neko nekoc nekoml nekotools).each do |file|
-      (bin/file).make_relative_symlink(neko/file)
+      bin.install_symlink neko/file
     end
-    (lib/'libneko.dylib').make_relative_symlink(neko/'libneko.dylib')
+    lib.install_symlink neko/"libneko.dylib"
   end
 
   test do
