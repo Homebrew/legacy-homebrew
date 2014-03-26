@@ -14,7 +14,7 @@ class LibtorrentRasterbar < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-boost=#{boost.opt_prefix}"
+                          "--with-boost=#{boost.opt_prefix}",
                           "--enable-python-binding",
                           "PYTHON_EXTRA_LDFLAGS= "
     system "make install"
