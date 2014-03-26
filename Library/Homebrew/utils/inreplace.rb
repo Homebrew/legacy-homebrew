@@ -2,12 +2,10 @@ module Utils
   module Inreplace
     def inreplace paths, before=nil, after=nil
       Array(paths).each do |path|
-        f = File.open(path, 'rb')
-        s = f.read
+        s = File.open(path, "rb", &:read)
 
         if before.nil? && after.nil?
-          s.extend(StringInreplaceExtension)
-          yield s
+          yield s.extend(StringInreplaceExtension)
         else
           after = after.to_s if Symbol === after
           unless s.gsub!(before, after)
@@ -19,8 +17,7 @@ module Utils
           end
         end
 
-        f.reopen(path, 'wb').write(s)
-        f.close
+        Pathname(path).atomic_write(s)
       end
     end
   end
