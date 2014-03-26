@@ -8,10 +8,22 @@ class Cweb < Formula
   def install
     ENV.deparallelize
 
-    system "make", "all"
+    macrosdir = (share/"texmf/tex/generic")
+    emacsdir = (share/"emacs/site-lisp")
+    cwebinputs = (lib/"cweb")
 
-    bin.install "ctangle", "cweave"
-    man1.install "cweb.1"
+    # make install doesn't use `mkdir -p` so this is needed
+    [bin, man1, macrosdir, emacsdir, cwebinputs].each do |path|
+        path.mkpath
+    end
+
+    system "make", "install",
+      "DESTDIR=#{bin}/",
+      "MANDIR=#{man1}",
+      "MANEXT=1",
+      "MACROSDIR=#{macrosdir}",
+      "EMACSDIR=#{emacsdir}",
+      "CWEBINPUTS=#{cwebinputs}"
   end
 
   test do
