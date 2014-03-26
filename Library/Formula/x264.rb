@@ -30,6 +30,12 @@ class X264 < Formula
   depends_on 'yasm' => :build
 
   option '10-bit', 'Build a 10-bit x264 (default: 8-bit)'
+  option "with-mp4=", "Select mp4 output: none (default), l-smash or gpac"
+
+  case ARGV.value "with-mp4"
+  when "l-smash" then depends_on "l-smash"
+  when "gpac" then depends_on "gpac"
+  end
 
   def install
     args = %W[
@@ -38,6 +44,11 @@ class X264 < Formula
       --enable-static
       --enable-strip
     ]
+    if Formula["l-smash"].installed?
+      args << "--disable-gpac"
+    elsif Formula["gpac"].installed?
+      args << "--disable-lsmash"
+    end
     args << "--bit-depth=10" if build.include? '10-bit'
 
     # For running version.sh correctly
