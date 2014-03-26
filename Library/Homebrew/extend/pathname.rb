@@ -98,6 +98,7 @@ class Pathname
   def atomic_write content
     require "tempfile"
     tf = Tempfile.new(basename.to_s)
+    tf.binmode
     tf.write(content)
     tf.close
 
