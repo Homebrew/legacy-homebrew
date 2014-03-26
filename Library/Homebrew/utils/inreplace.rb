@@ -10,8 +10,7 @@ module Utils
           yield s
         else
           after = after.to_s if Symbol === after
-          sub = s.gsub!(before, after)
-          if sub.nil?
+          unless s.gsub!(before, after)
             message = <<-EOS.undent
               inreplace in '#{path}' failed
               Expected replacement of '#{before}' with '#{after}'
