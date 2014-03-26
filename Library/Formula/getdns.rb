@@ -2,8 +2,14 @@ require "formula"
 
 class Getdns < Formula
   homepage "http://getdnsapi.net"
-  url "http://getdnsapi.net/dist/getdns-0.1.0.tar.gz"
-  sha1 "176d7a6d16ec5e0cfb8d34a303be1ccdbb0b4e5d"
+  url "http://getdnsapi.net/dist/getdns-0.1.1.tar.gz"
+  sha1 "63abbf10f514c6125c4bee0d249b9c68a9e4f560"
+
+  bottle do
+    sha1 "81336b0954cbe0eb533a4182abb21ec95c3ecd7e" => :mavericks
+    sha1 "7504ab2cfe385bf7465ea521388e2ffb7762192f" => :mountain_lion
+    sha1 "e8e24241af141b5ee10d8815c691b89f45986bd7" => :lion
+  end
 
   depends_on "ldns"
   depends_on "unbound"
@@ -40,6 +46,7 @@ class Getdns < Formula
             return -1;
         }
         puts(pp);
+        free(pp);
         getdns_dict_destroy(api_info);
         getdns_context_destroy(context);
         return 0;

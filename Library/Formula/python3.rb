@@ -1,8 +1,8 @@
 require 'formula'
 
 class Python3 < Formula
-  homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.4.0/Python-3.4.0.tgz'
+  homepage 'https://www.python.org/'
+  url 'https://python.org/ftp/python/3.4.0/Python-3.4.0.tgz'
   sha1 'bb5125d1c437caa5a62e0a3d0fee298e91196d6f'
 
   VER='3.4'  # The <major>.<minor> is used so often.
@@ -118,16 +118,11 @@ class Python3 < Formula
     # Create a site-packages in HOMEBREW_PREFIX/lib/python#{VER}/site-packages
     site_packages.mkpath
     # Symlink the prefix site-packages into the cellar.
-    ln_s site_packages, site_packages_cellar
+    site_packages_cellar.parent.install_symlink site_packages
 
     # Write our sitecustomize.py
     Dir["#{site_packages}/*.py{,c,o}"].each {|f| Pathname.new(f).unlink }
     (site_packages/"sitecustomize.py").write(sitecustomize)
-
-    # "python3" executable is forgotten for framework builds.
-    # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
-    ln_sf "#{bin}/python#{VER}", "#{bin}/python3"
-    ln_sf "#{bin}/python#{VER}-config", "#{bin}/python3-config"
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with

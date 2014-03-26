@@ -18,8 +18,8 @@ class Mmv < Formula
     man1.install 'mmv.1'
 
     %w[mcp mad mln].each do |mxx|
-      ln bin+'mmv', bin+mxx
-      ln man1+'mmv.1', man1+"#{mxx}.1"
+      bin.install_symlink "mmv" => mxx
+      man1.install_symlink "mmv.1" => "#{mxx}.1"
     end
   end
 end

@@ -4,6 +4,13 @@ class Ffmbc < Formula
   homepage 'http://code.google.com/p/ffmbc/'
   url 'https://ffmbc.googlecode.com/files/FFmbc-0.7-rc8.tar.bz2'
   sha1 '85a9673ac82a698bb96057fe027222efe6ebae28'
+  revision 1
+
+  bottle do
+    sha1 "2ec4e61817f6dca744a74f366b9c9d8912fb3d89" => :mavericks
+    sha1 "f9fd79a535a052862c3695a1525990c6df31e5d4" => :mountain_lion
+    sha1 "bccbff468429c7af94e8047688b5452184826c22" => :lion
+  end
 
   option "without-x264", "Disable H.264 encoder"
   option "without-lame", "Disable MP3 encoder"
