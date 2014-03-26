@@ -10,24 +10,23 @@ class Cweb < Formula
 
     system "make", "all"
 
-    bin.install "ctangle"
-    bin.install "cweave"
+    bin.install "ctangle", "cweave"
     man1.install "cweb.1"
   end
 
   test do
     (testpath/"test.w").write <<-EOS.undent
-        @* Hello World
-        This is a minimal program written in CWEB.
+      @* Hello World
+      This is a minimal program written in CWEB.
 
-        @c
-        #include <stdio.h>
-        void main() {
-            printf("Hello world!");
-        }
+      @c
+      #include <stdio.h>
+      void main() {
+          printf("Hello world!");
+      }
     EOS
     system "ctangle", "test.w"
-    system ENV.cc, "test.c"
-    assert_equal "Hello world!", `./a.out`
+    system ENV.cc, "test.c", "-o", "hello"
+    assert_equal "Hello world!", `./hello`
   end
 end
