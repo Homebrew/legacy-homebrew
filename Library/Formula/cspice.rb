@@ -11,14 +11,11 @@ class Cspice < Formula
     rm_f Dir["exe/*"]
     system "csh", "makeall.csh"
     mv "exe", "bin"
-    mkdir_p "share/cspice"
-    mv "doc", "share/cspice/"
-    mv "data", "share/cspice/"
-    prefix.install "bin", "share", "include", "lib"
+    (share/"cspice").install "doc", "data"
+    prefix.install "bin", "include", "lib"
 
-    cd "#{lib}"
-    ln_s "cspice.a", "libcspice.a"
-    ln_s "csupport.a", "libcsupport.a"
+    lib.install_symlink "cspice.a" => "libcspice.a"
+    lib.install_symlink "csupport.a" => "libcsupport.a"
   end
 
   test do
