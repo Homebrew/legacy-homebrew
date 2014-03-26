@@ -551,9 +551,7 @@ class FormulaInstaller
 
   def install_plist
     return unless f.plist
-    # A plist may already exist if we are installing from a bottle
-    f.plist_path.unlink if f.plist_path.exist?
-    f.plist_path.write f.plist
+    f.plist_path.atomic_write(f.plist)
     f.plist_path.chmod 0644
   end
 
