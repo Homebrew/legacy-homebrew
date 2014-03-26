@@ -1,9 +1,9 @@
 require 'formula'
 
 class Iperf3 < Formula
-  homepage 'https://code.google.com/p/iperf/'
-  url 'http://stats.es.net/software/iperf-3.0.tar.gz'
-  sha1 '70df38f93f9c57987e00c7fd11f599944bbcae55'
+  homepage 'https://github.com/esnet/iperf'
+  url 'https://github.com/esnet/iperf/archive/3.0.2.tar.gz'
+  sha1 '3dacb887d4ba1b90c9fbb3ec2ae69389d40c01c8'
   head 'https://code.google.com/p/iperf/', :using => :hg
 
   depends_on 'autoconf' => :build
