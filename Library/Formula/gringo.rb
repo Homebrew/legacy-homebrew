@@ -13,9 +13,18 @@ class Gringo < Formula
   depends_on 're2c'  => :build
   depends_on 'scons' => :build
   depends_on 'bison' => :build
-  depends_on :macos => :mavericks
+  depends_on :macos => :lion
+
+  # Needs C++11
+  fails_with :gcc
+  fails_with :gcc_4_0
 
   def install
+    # Allow pre-10.9 clangs to build in C++11 mode
+    ENV.libcxx
+    inreplace "SConstruct",
+              "env['CXX']            = 'g++'",
+              "env['CXX']            = '#{ENV['CXX']}'"
     scons "--build-dir=release", "gringo", "clingo"
     bin.install "build/release/gringo", "build/release/clingo"
   end
