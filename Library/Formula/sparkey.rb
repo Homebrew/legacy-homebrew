@@ -5,6 +5,13 @@ class Sparkey < Formula
   url "https://github.com/spotify/sparkey/archive/sparkey-0.2.0.tar.gz"
   sha1 "1b7dca2410dffb55d96b8e6eef384830b7d96553"
 
+  bottle do
+    cellar :any
+    sha1 "5dfa39af0fe70769f77637c7fdbfffd67f273621" => :mavericks
+    sha1 "49276b9522232bdcfef1d0b4f43fb3c314b1a98d" => :mountain_lion
+    sha1 "6ae3cff3918cd0f4fbdcecc830a89118eaf4e453" => :lion
+  end
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
