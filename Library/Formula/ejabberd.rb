@@ -30,9 +30,6 @@ class Ejabberd < Formula
             "--sysconfdir=#{etc}",
             "--localstatedir=#{var}"]
 
-    ENV.prepend "LDFLAGS", "-L#{Formula["openssl"].opt_lib}"
-    ENV.prepend "CPPFLAGS", "-I#{Formula["openssl"].opt_include}"
-
     args << "--enable-odbc" if build.with? "odbc"
     args << "--enable-pgsql" if build.with? "pgsql"
     args << "--enable-mysql" if build.with? "mysql"
