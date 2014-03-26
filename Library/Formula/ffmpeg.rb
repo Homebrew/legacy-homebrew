@@ -2,10 +2,9 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-2.1.4.tar.bz2'
-  sha1 '99c2f7af3e6d5f4a962ae8bf627d3c53bc282fec'
+  url 'http://ffmpeg.org/releases/ffmpeg-2.2.tar.bz2'
+  sha1 '889a3a802e2ae9de2758e55c0ccae168d6b3301a'
   head 'git://git.videolan.org/ffmpeg.git'
-  revision 1
 
   bottle do
     sha1 "11803d2e80301197635d6e5fb38e80ba71b981e3" => :mavericks
