@@ -6,8 +6,7 @@ class Iperf3 < Formula
   sha1 '3dacb887d4ba1b90c9fbb3ec2ae69389d40c01c8'
   head 'https://code.google.com/p/iperf/', :using => :hg
 
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
+  depends_on :autoconf => :build
 
   def install
     system "./configure", "--disable-debug",
