@@ -16,10 +16,17 @@ class Freetype < Formula
   keg_only :provided_pre_mountain_lion
 
   option :universal
+  option 'subpixel', "Activate sub-pixel rendering (a.k.a. LCD rendering, or ClearType) in this build of the library. Note that this feature is covered by several Microsoft patents."
 
   depends_on "libpng"
 
   def install
+    if ARGV.include? "--subpixel"
+      inreplace "include/config/ftoption.h",
+          "/* #define FT_CONFIG_OPTION_SUBPIXEL_RENDERING */",
+          "#define FT_CONFIG_OPTION_SUBPIXEL_RENDERING"
+    end
+
     ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}", "--without-harfbuzz"
     system "make"
