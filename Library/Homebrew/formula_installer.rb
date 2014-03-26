@@ -174,7 +174,6 @@ class FormulaInstaller
         stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs :skip_executables => true
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
-        tab.tabfile.delete if tab.tabfile
         tab.write
       end
     rescue => e
