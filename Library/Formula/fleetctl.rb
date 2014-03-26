@@ -13,4 +13,8 @@ class Fleetctl < Formula
     system "./build"
     bin.install 'bin/fleetctl'
   end
+  
+  test do
+    system "#{bin}/fleetctl", '--version'
+  end
 end
