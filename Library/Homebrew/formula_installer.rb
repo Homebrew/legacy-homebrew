@@ -553,6 +553,9 @@ class FormulaInstaller
     return unless f.plist
     f.plist_path.atomic_write(f.plist)
     f.plist_path.chmod 0644
+  rescue Exception => e
+    onoe "Failed to install plist file"
+    ohai e, e.backtrace if debug?
   end
 
   def fix_install_names
