@@ -59,9 +59,12 @@ class Openssl < Formula
   end
 
   def write_pem_file
-    system "security find-certificate -a -p /Library/Keychains/System.keychain > '#{osx_cert_pem}.tmp'"
-    system "security find-certificate -a -p /System/Library/Keychains/SystemRootCertificates.keychain >> '#{osx_cert_pem}.tmp'"
-    system "mv", "-f", "#{osx_cert_pem}.tmp", osx_cert_pem
+    keychains = %w[
+      /Library/Keychains/System.keychain
+      /System/Library/Keychains/SystemRootCertificates.keychain
+    ]
+
+    osx_cert_pem.atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
   end
 
   def post_install
