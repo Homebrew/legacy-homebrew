@@ -305,6 +305,31 @@ class Formula
     @pin.unpin
   end
 
+  def ln(src, dest, options={})
+    absolute = options.delete :absolute
+    src = Pathname(src)
+    dest = Pathname(dest)
+    src = src.relative_path_from(dest.parent) unless absolute
+    super src, dest, options
+  end
+
+  def ln_s(src, dest, options={})
+    absolute = options.delete :absolute
+    src = Pathname(src)
+    dest = Pathname(dest)
+    src = src.relative_path_from(dest.parent) unless absolute
+    super src, dest, options
+  end
+  alias_method :symlink, :ln_s
+
+  def ln_sf(src, dest, options={})
+    absolute = options.delete :absolute
+    src = Pathname(src)
+    dest = Pathname(dest)
+    src = src.relative_path_from(dest.parent) unless absolute
+    super src, dest, options
+  end
+
   def == other
     instance_of?(other.class) && name == other.name
   end
