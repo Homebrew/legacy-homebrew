@@ -21,7 +21,7 @@ class Freetype < Formula
   depends_on "libpng"
 
   def install
-    if !ARGV.include? "--no-subpixel"
+    if !build.include? "no-subpixel"
       inreplace "include/config/ftoption.h",
           "/* #define FT_CONFIG_OPTION_SUBPIXEL_RENDERING */",
           "#define FT_CONFIG_OPTION_SUBPIXEL_RENDERING"
