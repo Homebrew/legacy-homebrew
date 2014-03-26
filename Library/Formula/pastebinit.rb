@@ -10,6 +10,7 @@ class Pastebinit < Formula
 
   def install
     inreplace "pastebinit", "/usr/bin/python3", Formula["python3"].opt_bin + "python3"
+    inreplace "pastebinit", "/usr/local/etc/pastebin.d", etc + "pastebin.d"
     system "docbook2man", "pastebinit.xml"
     bin.install "pastebinit"
     etc.install "pastebin.d"
