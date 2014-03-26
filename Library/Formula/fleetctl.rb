@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class Fleetctl < Formula
   homepage 'https://github.com/coreos/fleet'
