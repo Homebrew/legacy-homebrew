@@ -24,6 +24,6 @@ class Ry < Formula
   end
 
   test do
-    system "#{bin}/ry", "ls"
+    system bin/"ry", "ls"
   end
 end
