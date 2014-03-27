@@ -20,15 +20,13 @@ module Homebrew extend self
         puts "Note that doing so can interfere with building software."
         next
       elsif mode.dry_run && mode.overwrite
-        print "Would remove:\n" do
-          keg.link(mode)
-        end
+        puts "Would remove:"
+        keg.link(mode)
 
         next
       elsif mode.dry_run
-        print "Would link:\n" do
-          keg.link(mode)
-        end
+        puts "Would link:"
+        keg.link(mode)
 
         next
       end
