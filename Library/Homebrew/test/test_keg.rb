@@ -60,6 +60,11 @@ class LinkTests < Test::Unit::TestCase
     end
   end
 
+  def test_link_ignores_broken_symlinks_at_target
+    ln_s "/some/nonexistent/path", HOMEBREW_PREFIX/"bin/helloworld"
+    shutup { @keg.link }
+  end
+
   def test_link_overwrite
     touch HOMEBREW_PREFIX/"bin/helloworld"
     @mode.overwrite = true
