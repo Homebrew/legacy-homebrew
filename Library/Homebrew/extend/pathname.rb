@@ -291,49 +291,49 @@ class Pathname
   # perhaps confusingly, this Pathname object becomes the symlink pointing to
   # the src paramter.
   def make_relative_symlink src
-    self.dirname.mkpath
-    Dir.chdir self.dirname do
+    dirname.mkpath
+
+    dirname.cd do
       # NOTE only system ln -s will create RELATIVE symlinks
-      quiet_system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
-      if not $?.success?
-        if symlink? && exist?
-          raise <<-EOS.undent
-            Could not symlink file: #{src}
-            Target #{self} already exists as a symlink to #{readlink}.
-            If this file is from another formula, you may need to
-            `brew unlink` it. Otherwise, you may want to delete it.
-            To force the link and overwrite all other conflicting files, do:
-              brew link --overwrite formula_name
+      return if quiet_system("ln", "-s", src.relative_path_from(dirname), basename)
+    end
 
-            To list all files that would be deleted:
-              brew link --overwrite --dry-run formula_name
-            EOS
-        elsif exist?
-          raise <<-EOS.undent
-            Could not symlink file: #{src}
-            Target #{self} already exists. You may need to delete it.
-            To force the link and overwrite all other conflicting files, do:
-              brew link --overwrite formula_name
+    if symlink? && exist?
+      raise <<-EOS.undent
+        Could not symlink file: #{src}
+        Target #{self} already exists as a symlink to #{readlink}.
+        If this file is from another formula, you may need to
+        `brew unlink` it. Otherwise, you may want to delete it.
+        To force the link and overwrite all other conflicting files, do:
+          brew link --overwrite formula_name
 
-            To list all files that would be deleted:
-              brew link --overwrite --dry-run formula_name
-            EOS
-        elsif symlink?
-          unlink
-          make_relative_symlink(src)
-        elsif !dirname.writable_real?
-          raise <<-EOS.undent
-            Could not symlink file: #{src}
-            #{dirname} is not writable. You should change its permissions.
-            EOS
-        else
-          raise <<-EOS.undent
-            Could not symlink file: #{src}
-            #{self} may already exist.
-            #{dirname} may not be writable.
-            EOS
-        end
-      end
+        To list all files that would be deleted:
+          brew link --overwrite --dry-run formula_name
+        EOS
+    elsif exist?
+      raise <<-EOS.undent
+        Could not symlink file: #{src}
+        Target #{self} already exists. You may need to delete it.
+        To force the link and overwrite all other conflicting files, do:
+          brew link --overwrite formula_name
+
+        To list all files that would be deleted:
+          brew link --overwrite --dry-run formula_name
+        EOS
+    elsif symlink?
+      unlink
+      make_relative_symlink(src)
+    elsif !dirname.writable_real?
+      raise <<-EOS.undent
+        Could not symlink file: #{src}
+        #{dirname} is not writable. You should change its permissions.
+        EOS
+    else
+      raise <<-EOS.undent
+        Could not symlink file: #{src}
+        #{self} may already exist.
+        #{dirname} may not be writable.
+        EOS
     end
   end
 
