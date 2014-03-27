@@ -185,5 +185,4 @@ diff -r 462a4499f9c6 src/screen.c
  	    {
  		/* These messages can get long, avoid a wrap in a narrow
  		 * window.  Prefer showing edit_submode_extra. */
-=======
->>>>>>> master
+
