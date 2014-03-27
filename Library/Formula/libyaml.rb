@@ -7,9 +7,9 @@ class Libyaml < Formula
 
   bottle do
     cellar :any
-    sha1 "9aceef2301eaf12ac675c14706927e2d8889b7be" => :mavericks
-    sha1 "72c026103aafa9cba293d0213ddec6028de98b63" => :mountain_lion
-    sha1 "23909c4982f4d786c7339f6dfad09487561ce0f2" => :lion
+    sha1 "25a60fa0c77710616018e9b5b013916579147338" => :mavericks
+    sha1 "311062934d4bd12ef9881f568dbca21d22bbc8c6" => :mountain_lion
+    sha1 "69c062b4beccde415c46048dc77a14f480ba31f3" => :lion
   end
 
   option :universal
