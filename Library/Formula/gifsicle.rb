@@ -5,9 +5,7 @@ class Gifsicle < Formula
   url 'http://www.lcdf.org/gifsicle/gifsicle-1.81.tar.gz'
   sha1 'c2952fb3cb601dcfcdf5bd5b9522b6c23731f063'
 
-  option 'without-x', 'Build without X11 support'
-
-  depends_on :x11 if build.with? 'x'
+  depends_on :x11 => :optional
 
   def install
     args = %W[
@@ -15,11 +13,9 @@ class Gifsicle < Formula
       --prefix=#{prefix}
     ]
 
-    if build.without? 'x'
-      args << '--disable-gifview'
-    end
+    args << '--disable-gifview' if build.without? 'x11'
 
-    system "./configure", *args
-    system "make install"
+    system './configure', *args
+    system 'make install'
   end
 end
