@@ -2,8 +2,8 @@ require 'formula'
 
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r22.6-macosx.zip'
-  version '22.6'
+  url 'http://dl.google.com/android/android-sdk_r22.6.2-macosx.zip'
+  version '22.6.2'
   sha1 'f1da847ba793b38a510f9c9c70ff4baa5eba1427'
 
   conflicts_with 'android-platform-tools',
@@ -11,7 +11,7 @@ class AndroidSdk < Formula
 
   resource 'completion' do
     url 'https://raw.github.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash'
-    sha1 '6dfead9b1350dbe1c16a1c80ed70beedebfa39eb'
+    sha1 '6abb9cf56529a40ac29fa70a95f5741fa1ae0f86'
   end
 
   # Version of the android-build-tools the wrapper scripts reference.
