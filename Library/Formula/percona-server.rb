@@ -2,9 +2,9 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/Percona-Server-5.6.15-rel63.0/source/Percona-Server-5.6.15-rel63.0.tar.gz'
-  version '5.6.15-rel63.0'
-  sha1 '9a8c856f8dd1c3c0a576b65e9d34354babf82bc9'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/Percona-Server-5.6.16-64.2/source/tarball/percona-server-5.6.16-64.2.tar.gz'
+  version '5.6.16-64.2'
+  sha1 'b1b5380fe291c25b89377a8f110cf0031fce6897'
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
@@ -95,9 +95,6 @@ class PerconaServer < Formula
 
     system "cmake", *args
     system "make"
-    # Reported upstream:
-    # http://bugs.mysql.com/bug.php?id=69645
-    inreplace "scripts/mysql_config", / +-Wno[\w-]+/, ""
     system "make install"
 
     # Don't create databases inside of the prefix!
