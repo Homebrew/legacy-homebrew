@@ -2,7 +2,7 @@ require "formula"
 
 class Docker < Formula
   homepage "http://docker.io"
-  url "https://github.com/dotcloud/docker.git", :tag => "v0.9.0"
+  url "https://github.com/dotcloud/docker.git", :tag => "v0.9.1"
 
   option "without-completions", "Disable bash/zsh completions"
 
