@@ -2,8 +2,8 @@ require 'formula'
 
 class Libyaml < Formula
   homepage 'http://pyyaml.org/wiki/LibYAML'
-  url 'http://pyyaml.org/download/libyaml/yaml-0.1.5.tar.gz'
-  sha1 '8b78cb9f759c7d80db8a7328c0ebecfe34fde737'
+  url 'http://pyyaml.org/download/libyaml/yaml-0.1.6.tar.gz'
+  sha1 'f3d404e11bec3c4efcddfd14c42d46f1aabe0b5d'
 
   bottle do
     cellar :any
