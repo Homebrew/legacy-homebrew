@@ -40,10 +40,13 @@ class Keg
 
     (pkgconfig_files | libtool_files | script_files).each do |file|
       file.ensure_writable do
-        s = file.open("rb", &:read)
-        s.gsub!(old_cellar, new_cellar)
-        s.gsub!(old_prefix, new_prefix)
-        file.atomic_write(s)
+        file.open('rb') do |f|
+          s = f.read
+          s.gsub!(old_cellar, new_cellar)
+          s.gsub!(old_prefix, new_prefix)
+          f.reopen(file, 'wb')
+          f.write(s)
+        end
       end
     end
   end
