@@ -17,7 +17,7 @@ class LibtorrentRasterbar < Formula
              "--disable-dependency-tracking",
              "--prefix=#{prefix}",
              "--with-boost=#{boost.opt_prefix}" ]
-    
+
     if build.with? "python"
       args << "--enable-python-binding"
       args << "--with-boost-python=boost_python-mt"
