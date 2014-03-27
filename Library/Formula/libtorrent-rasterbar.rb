@@ -16,6 +16,7 @@ class LibtorrentRasterbar < Formula
     optional_args = []
     if build.with? "python"
       optional_args << "--enable-python-binding"
+      optional_args << "--with-boost-python=boost_python-mt"
       optional_args << "PYTHON_EXTRA_LDFLAGS= "
     end
 
