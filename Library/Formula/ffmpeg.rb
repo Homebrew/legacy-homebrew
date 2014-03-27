@@ -2,19 +2,14 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-1.2.4.tar.bz2'
-  sha1 'ee73a05bde209fc23441c7e49767c1b7a4b6f124'
-
+  url 'http://ffmpeg.org/releases/ffmpeg-2.2.tar.bz2'
+  sha1 '889a3a802e2ae9de2758e55c0ccae168d6b3301a'
   head 'git://git.videolan.org/ffmpeg.git'
 
-  # This is actually the new stable, not a devel release,
-  # but not everything builds with it yet - notably gpac
-  devel do
-    url 'http://ffmpeg.org/releases/ffmpeg-2.1.1.tar.bz2'
-    sha1 'e7a5b2d7f702c4e9ca69e23c6d3527f93de0d1bd'
-
-    depends_on 'libbluray' => :optional
-    depends_on 'libquvi' => :optional
+  bottle do
+    sha1 "3600f558473d05ecc35d346c0bc6af4e258d3ebc" => :mavericks
+    sha1 "440c33b06d74765a17edf60f430018901f0cda73" => :mountain_lion
+    sha1 "81f1e5e954bb495e27d69303ee4096844abc18bc" => :lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -51,22 +46,17 @@ class Ffmpeg < Formula
   depends_on 'libvo-aacenc' => :optional
   depends_on 'libass' => :optional
   depends_on 'openjpeg' => :optional
-  depends_on 'sdl' if build.include? 'with-ffplay'
+  depends_on 'sdl' if build.with? "ffplay"
   depends_on 'speex' => :optional
   depends_on 'schroedinger' => :optional
   depends_on 'fdk-aac' => :optional
   depends_on 'opus' => :optional
   depends_on 'frei0r' => :optional
   depends_on 'libcaca' => :optional
-
-  # Fix build against freetype 2.5.1
-  # http://ffmpeg.org/pipermail/ffmpeg-devel/2013-November/151404.html
-  def patches; DATA; end unless build.head?
+  depends_on 'libbluray' => :optional
+  depends_on 'libquvi' => :optional
 
   def install
-    # Remove when fix for freetype 2.5.1+ is incorporated upstream
-    inreplace 'configure', 'ft2build.h freetype/freetype.h', 'ft2build.h freetype.h'
-
     args = ["--prefix=#{prefix}",
             "--enable-shared",
             "--enable-pthreads",
@@ -94,7 +84,7 @@ class Ffmpeg < Formula
     args << "--enable-libopencore-amrnb" << "--enable-libopencore-amrwb" if build.with? 'opencore-amr'
     args << "--enable-libvo-aacenc" if build.with? 'libvo-aacenc'
     args << "--enable-libass" if build.with? 'libass'
-    args << "--enable-ffplay" if build.include? 'with-ffplay'
+    args << "--enable-ffplay" if build.with? "ffplay"
     args << "--enable-libspeex" if build.with? 'speex'
     args << '--enable-libschroedinger' if build.with? 'schroedinger'
     args << "--enable-libfdk-aac" if build.with? 'fdk-aac'
@@ -126,25 +116,10 @@ class Ffmpeg < Formula
 
     system "make install"
 
-    if build.include? 'with-tools'
+    if build.with? "tools"
       system "make alltools"
       bin.install Dir['tools/*'].select {|f| File.executable? f}
     end
   end
 
 end
-
-__END__
-diff --git a/libavfilter/vf_drawtext.c b/libavfilter/vf_drawtext.c
-index 2358e35..4c08092 100644
---- a/libavfilter/vf_drawtext.c
-+++ b/libavfilter/vf_drawtext.c
-@@ -48,7 +48,6 @@
- #include "video.h"
- 
- #include <ft2build.h>
--#include <freetype/config/ftheader.h>
- #include FT_FREETYPE_H
- #include FT_GLYPH_H
- #if CONFIG_FONTCONFIG
-

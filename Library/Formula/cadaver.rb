@@ -10,13 +10,11 @@ class Cadaver < Formula
   depends_on 'readline'
   depends_on 'neon'
 
-  def patches
-    # enable build with the latest neon 0.30
-    DATA
-  end
+  # enable build with the latest neon
+  patch :DATA
 
   def install
-    neon_prefix = Formula.factory('neon').opt_prefix
+    neon_prefix = Formula['neon'].opt_prefix
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-neon=#{neon_prefix}",

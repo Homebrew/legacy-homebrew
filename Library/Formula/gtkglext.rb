@@ -2,7 +2,7 @@ require 'formula'
 
 class Gtkglext < Formula
   homepage 'http://projects.gnome.org/gtkglext/'
-  url 'http://downloads.sourceforge.net/gtkglext/gtkglext-1.2.0.tar.gz'
+  url 'https://downloads.sourceforge.net/gtkglext/gtkglext-1.2.0.tar.gz'
   sha1 'db9ce38ee555fd14f55083ec7f4ae30e5338d5cc'
 
   depends_on 'pkg-config' => :build
@@ -11,11 +11,9 @@ class Gtkglext < Formula
   depends_on 'pangox-compat'
   depends_on :x11
 
-  def patches
-    # fixes an incompatibility with recent GTK versions
-    # patch from: <http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=585155>
-    DATA
-  end
+  # fixes an incompatibility with recent GTK versions
+  # patch from: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=585155
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

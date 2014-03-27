@@ -2,7 +2,7 @@ require 'formula'
 
 class Winexe < Formula
   homepage 'http://sourceforge.net/projects/winexe/'
-  url 'http://downloads.sourceforge.net/project/winexe/winexe-1.00.tar.gz'
+  url 'https://downloads.sourceforge.net/project/winexe/winexe-1.00.tar.gz'
   sha1 'bdb598745953fcad3a9b6bba8f728c2b714a7aeb'
 
   depends_on 'pkg-config' => :build
@@ -12,7 +12,7 @@ class Winexe < Formula
   # virtually everywhere, but for some reason it only breaks it on OS X.
   # http://miskstuf.tumblr.com/post/6840077505/winexe-1-00-linux-macos-windows-7-finally-working
   # Added by @vspy
-  def patches; DATA; end
+  patch :DATA
 
   def install
     cd "source4" do

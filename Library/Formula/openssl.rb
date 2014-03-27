@@ -6,6 +6,14 @@ class Openssl < Formula
   mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1f.tar.gz'
   sha256 '6cc2a80b17d64de6b7bac985745fdaba971d54ffd7d38d3556f998d7c0c9cb5a'
 
+  bottle do
+    sha1 "2687c0abb5e23d765bbd0024a010e36b05a8939e" => :mavericks
+    sha1 "dcaee2f1e51e8d0da7614e6dab4fc334f736d0de" => :mountain_lion
+    sha1 "4fabb39f5db46e8e62bf0b05e0133cd7e717860a" => :lion
+  end
+
+  depends_on "makedepend" => :build if MacOS.prefer_64_bit?
+
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."
 
@@ -15,6 +23,7 @@ class Openssl < Formula
                --openssldir=#{openssldir}
                zlib-dynamic
                shared
+               enable-cms
              ]
 
     if MacOS.prefer_64_bit?
@@ -24,8 +33,6 @@ class Openssl < Formula
       inreplace 'Configure',
         %{"darwin64-x86_64-cc","cc:-arch x86_64 -O3},
         %{"darwin64-x86_64-cc","cc:-arch x86_64 -Os}
-
-      setup_makedepend_shim
     else
       args << "darwin-i386-cc"
     end
@@ -37,16 +44,6 @@ class Openssl < Formula
     system "make"
     system "make", "test"
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
-  end
-
-  def setup_makedepend_shim
-    path = buildpath/"brew/makedepend"
-    path.write <<-EOS.undent
-      #!/bin/sh
-      exec "#{ENV.cc}" -M "$@"
-      EOS
-    path.chmod 0755
-    ENV.prepend_path 'PATH', path.parent
   end
 
   def openssldir
@@ -62,9 +59,12 @@ class Openssl < Formula
   end
 
   def write_pem_file
-    system "security find-certificate -a -p /Library/Keychains/System.keychain > '#{osx_cert_pem}.tmp'"
-    system "security find-certificate -a -p /System/Library/Keychains/SystemRootCertificates.keychain >> '#{osx_cert_pem}.tmp'"
-    system "mv", "-f", "#{osx_cert_pem}.tmp", osx_cert_pem
+    keychains = %w[
+      /Library/Keychains/System.keychain
+      /System/Library/Keychains/SystemRootCertificates.keychain
+    ]
+
+    osx_cert_pem.atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
   end
 
   def post_install

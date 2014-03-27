@@ -2,7 +2,7 @@ require 'formula'
 
 class Libdnet < Formula
   homepage 'http://code.google.com/p/libdnet/'
-  url 'http://libdnet.googlecode.com/files/libdnet-1.12.tgz'
+  url 'https://libdnet.googlecode.com/files/libdnet-1.12.tgz'
   sha1 '71302be302e84fc19b559e811951b5d600d976f8'
 
   depends_on :autoconf
@@ -12,9 +12,7 @@ class Libdnet < Formula
 
   # Fix use of deprecated macros
   # http://code.google.com/p/libdnet/issues/detail?id=27
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # autoreconf to get '.dylib' extension on shared lib

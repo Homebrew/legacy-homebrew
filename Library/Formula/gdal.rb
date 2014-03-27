@@ -4,6 +4,7 @@ class Gdal < Formula
   homepage 'http://www.gdal.org/'
   url 'http://download.osgeo.org/gdal/1.10.1/gdal-1.10.1.tar.gz'
   sha1 'b4df76e2c0854625d2bedce70cc1eaf4205594ae'
+  revision 1
 
   head do
     url 'https://svn.osgeo.org/gdal/trunk/gdal'
@@ -17,7 +18,7 @@ class Gdal < Formula
   option 'enable-mdb', 'Build with Access MDB driver (requires Java 1.6+ JDK/JRE, from Apple or Oracle).'
 
   depends_on :python => :recommended
-  depends_on :libpng
+  depends_on 'libpng'
   depends_on 'jpeg'
   depends_on 'giflib'
   depends_on 'libtiff'
@@ -55,8 +56,19 @@ class Gdal < Formula
     depends_on "poppler"
   end
 
-  def png_prefix
-    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/libpng" : MacOS::X11.prefix
+  # Prevent build failure on 10.6 / 10.7: http://trac.osgeo.org/gdal/ticket/5197
+  # Fix build against MySQL 5.6.x: http://trac.osgeo.org/gdal/ticket/5284
+  patch :DATA
+
+  stable do
+    # Patch of configure that finds Mac Java for MDB driver (uses Oracle or Mac default JDK)
+    # TODO: Remove when future GDAL release includes a fix
+    # http://trac.osgeo.org/gdal/ticket/5267  (patch applied to trunk, 2.0 release milestone)
+    # Must come before DATA
+    patch do
+      url "https://gist.githubusercontent.com/dakcarto/6877854/raw/82ae81e558c0b6048336f0acb5d7577bd0a237d5/gdal-mdb-patch.diff"
+      sha1 "ea6c753df9e35abd90d7078f8a727eaab7f7d996"
+    end if build.include? "enable-mdb"
   end
 
   def get_configure_args
@@ -79,7 +91,7 @@ class Gdal < Formula
       # Backends supported by OS X.
       "--with-libiconv-prefix=/usr",
       "--with-libz=/usr",
-      "--with-png=#{png_prefix}",
+      "--with-png=#{Formula["libpng"].opt_prefix}",
       "--with-expat=/usr",
       "--with-curl=/usr/bin/curl-config",
 
@@ -89,7 +101,7 @@ class Gdal < Formula
       "--with-gif=#{HOMEBREW_PREFIX}",
       "--with-libtiff=#{HOMEBREW_PREFIX}",
       "--with-geotiff=#{HOMEBREW_PREFIX}",
-      "--with-sqlite3=#{Formula.factory('sqlite').opt_prefix}",
+      "--with-sqlite3=#{Formula["sqlite"].opt_prefix}",
       "--with-freexl=#{HOMEBREW_PREFIX}",
       "--with-spatialite=#{HOMEBREW_PREFIX}",
       "--with-geos=#{HOMEBREW_PREFIX}/bin/geos-config",
@@ -187,24 +199,6 @@ class Gdal < Formula
     return args
   end
 
-  def patches
-    p = []
-
-    if build.stable?
-      # Patch of configure that finds Mac Java for MDB driver (uses Oracle or Mac default JDK)
-      # TODO: Remove when future GDAL release includes a fix
-      # http://trac.osgeo.org/gdal/ticket/5267  (patch applied to trunk, 2.0 release milestone)
-      # Must come before DATA
-      p << "https://gist.github.com/dakcarto/6877854/raw" if build.include? 'enable-mdb'
-
-      # Prevent build failure on 10.6 / 10.7: http://trac.osgeo.org/gdal/ticket/5197
-      # Fix build against MySQL 5.6.x: http://trac.osgeo.org/gdal/ticket/5284
-      p << DATA
-    end
-
-    return p
-  end
-
   def install
     # Linking flags for SQLite are not added at a critical moment when the GDAL
     # library is being assembled. This causes the build to fail due to missing
@@ -212,10 +206,10 @@ class Gdal < Formula
     # functional.
     #
     # Fortunately, this can be remedied using LDFLAGS.
-    sqlite = Formula.factory 'sqlite'
-    ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib -lsqlite3"
-    ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
-    # Needed by libdap.
+    sqlite = Formula["sqlite"]
+    ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib} -lsqlite3"
+    ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
+    # Needed by libdap
     ENV.libxml2 if build.include? 'complete'
 
     # Reset ARCHFLAGS to match how we build.

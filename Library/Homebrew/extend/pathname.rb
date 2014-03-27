@@ -79,14 +79,11 @@ class Pathname
     end
   end
 
-  def install_symlink_p src, new_basename = nil
-    if new_basename.nil?
-      dst = self+File.basename(src)
-    else
-      dst = self+File.basename(new_basename)
-    end
+  def install_symlink_p src, new_basename=src
+    src = Pathname(src).expand_path(self)
+    dst = join File.basename(new_basename)
     mkpath
-    FileUtils.ln_s src.to_s, dst.to_s
+    FileUtils.ln_s src.relative_path_from(dst.parent), dst
   end
   protected :install_symlink_p
 
@@ -99,12 +96,38 @@ class Pathname
 
   # NOTE always overwrites
   def atomic_write content
-    require 'tempfile'
-    tf = Tempfile.new(self.basename.to_s)
+    require "tempfile"
+    tf = Tempfile.new(basename.to_s)
+    tf.binmode
     tf.write(content)
     tf.close
-    FileUtils.mv tf.path, self.to_s
+
+    begin
+      old_stat = stat
+    rescue Errno::ENOENT
+      old_stat = default_stat
+    end
+
+    FileUtils.mv tf.path, self
+
+    uid = Process.uid
+    gid = Process.groups.delete(old_stat.gid) { Process.gid }
+
+    begin
+      chown(uid, gid)
+      chmod(old_stat.mode)
+    rescue Errno::EPERM
+    end
   end
+
+  def default_stat
+    sentinel = parent.join(".brew.#{Process.pid}.#{rand(Time.now.to_i)}")
+    sentinel.open("w") { }
+    sentinel.stat
+  ensure
+    sentinel.unlink
+  end
+  private :default_stat
 
   def cp dst
     if file?
@@ -237,7 +260,7 @@ class Pathname
   def verify_checksum expected
     raise ChecksumMissingError if expected.nil? or expected.empty?
     actual = Checksum.new(expected.hash_type, send(expected.hash_type).downcase)
-    raise ChecksumMismatchError.new(expected, actual) unless expected == actual
+    raise ChecksumMismatchError.new(self, expected, actual) unless expected == actual
   end
 
   if '1.9' <= RUBY_VERSION
@@ -341,17 +364,6 @@ class Pathname
       raise "Cannot uninstall info entry for unbrewed info file '#{self}'"
     end
     system '/usr/bin/install-info', '--delete', '--quiet', self.to_s, (self.dirname+'dir').to_s
-  end
-
-  def all_formula pwd = self
-    children.map{ |child| child.relative_path_from(pwd) }.each do |pn|
-      yield pn if pn.to_s =~ /.rb$/
-    end
-    children.each do |child|
-      child.all_formula(pwd) do |pn|
-        yield pn
-      end if child.directory?
-    end
   end
 
   def find_formula

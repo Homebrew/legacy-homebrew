@@ -18,13 +18,11 @@ class Swftools < Formula
     sha1 '499423e8a795e0efd76ca798239eb4d0d52fe248'
   end
 
-  def patches
-    # Fixes a conftest for libfftwf.dylib that mistakenly calls fftw_malloc()
-    # rather than fftwf_malloc().  Reported upstream to their mailing list:
-    # http://lists.nongnu.org/archive/html/swftools-common/2012-04/msg00014.html
-    # Patch is merged upstream.  Remove at swftools-0.9.3.
-    DATA
-  end
+  # Fixes a conftest for libfftwf.dylib that mistakenly calls fftw_malloc()
+  # rather than fftwf_malloc().  Reported upstream to their mailing list:
+  # http://lists.nongnu.org/archive/html/swftools-common/2012-04/msg00014.html
+  # Patch is merged upstream.  Remove at swftools-0.9.3.
+  patch :DATA
 
   def install
     (buildpath+'lib/pdf').install resource('xpdf') if build.with? "xpdf"

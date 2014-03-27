@@ -22,9 +22,9 @@ class Cloog < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--with-gmp=system",
-                          "--with-gmp-prefix=#{Formula.factory("gmp").opt_prefix}",
+                          "--with-gmp-prefix=#{Formula["gmp"].opt_prefix}",
                           "--with-isl=system",
-                          "--with-isl-prefix=#{Formula.factory("isl").opt_prefix}"
+                          "--with-isl-prefix=#{Formula["isl"].opt_prefix}"
     system "make install"
   end
 

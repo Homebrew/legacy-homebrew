@@ -9,7 +9,9 @@ class Tuntap < Formula
   def install
     ENV.j1 # to avoid race conditions (can't open: ../tuntap.o)
     cd 'tuntap' do
-      system "make"
+      # Makefile doesn't take these from the environment
+      # "CCP" is in fact the var used for C++, not CXX
+      system "make", "CC=#{ENV.cc}", "CCP=#{ENV.cxx}"
       kext_prefix.install "tun.kext", "tap.kext"
       prefix.install "startup_item/tap", "startup_item/tun"
     end

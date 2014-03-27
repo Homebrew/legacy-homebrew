@@ -9,7 +9,7 @@ class Libmusicbrainz < Formula
   depends_on 'neon'
 
   def install
-    neon = Formula.factory("neon")
+    neon = Formula["neon"]
     neon_args = %W[-DNEON_LIBRARIES:FILEPATH=#{neon.lib}/libneon.dylib
                  -DNEON_INCLUDE_DIR:PATH=#{neon.include}/neon]
     system "cmake", ".", *(std_cmake_args + neon_args)

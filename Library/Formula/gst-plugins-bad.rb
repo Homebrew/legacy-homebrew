@@ -2,9 +2,9 @@ require 'formula'
 
 class GstPluginsBad < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.2.1.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.2.1.tar.xz'
-  sha256 'f33e7c81fcb742fe50b73ad87ef8a4baa7d6b59c5002a10bf63c8dee22404929'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.2.3.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.2.3.tar.xz'
+  sha256 '595d7911a9e6207dea37200587724bdbf841b81a5eb0730118be36976684278c'
 
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-bad'
@@ -21,6 +21,7 @@ class GstPluginsBad < Formula
   depends_on 'dirac' => :optional
   depends_on 'faac' => :optional
   depends_on 'faad2' => :optional
+  depends_on 'gnutls' => :optional
   depends_on 'libdvdread' => :optional
   depends_on 'libexif' => :optional
   depends_on 'libmms' => :optional

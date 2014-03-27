@@ -5,6 +5,12 @@ class Docbook < Formula
   url 'http://www.docbook.org/xml/5.0/docbook-5.0.zip'
   sha1 '49f274e67efdee771300cba4da1f3e4bc00be1ec'
 
+  bottle do
+    sha1 "bf3e1674f6e1db1c38e5f56ecc7297f13c3c13f5" => :mavericks
+    sha1 "2878dc39a8d6125e3ecc2512462fb22dfba7b9bb" => :mountain_lion
+    sha1 "1c8362d72527056fede232590c18c1c23dce41e1" => :lion
+  end
+
   resource 'xml412' do
     url 'http://www.docbook.org/xml/4.1.2/docbkx412.zip'
     sha1 'b9ae7a41056bfaf885581812d60651b7b5531519'

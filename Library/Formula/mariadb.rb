@@ -2,12 +2,18 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.34/kvm-tarbake-jaunty-x86/mariadb-5.5.34.tar.gz'
-  sha1 '8a7d8f6094faa35cc22bc084a0e0d8037fd4ba03'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.36/kvm-tarbake-jaunty-x86/mariadb-5.5.36.tar.gz'
+  sha1 'a6091356ffe524322431670ad03d68c389243d04'
+
+  bottle do
+    sha1 "46a842d51c95aa8e6463f373e7312d28c2d89192" => :mavericks
+    sha1 "40868bd7621732f92f998e13badc6b46399e3b43" => :mountain_lion
+    sha1 "61b9289369f12ba10edd77e2cbe2d54ab7fb8396" => :lion
+  end
 
   devel do
-    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.7/kvm-tarbake-jaunty-x86/mariadb-10.0.7.tar.gz'
-    sha1 '14d830cf322175a3fc772e3b265faca1246a7b07'
+    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.9/kvm-tarbake-jaunty-x86/mariadb-10.0.9.tar.gz'
+    sha1 '474310268649fd00ddf8c813987a2b05ad0a4d2d'
   end
 
   depends_on 'cmake' => :build
@@ -28,16 +34,6 @@ class Mariadb < Formula
     :because => 'both install MySQL client libraries'
 
   env :std if build.universal?
-
-  def patches
-    if build.devel?
-      [
-        # Prevent name collision leading to compilation failure. See:
-        # issue #24489, upstream: https://mariadb.atlassian.net/browse/MDEV-5314
-        'https://gist.github.com/makigumo/8199195/raw/ab0bc78fd0e839aafcf072505f017feba2b6f6fa/mariadb-10.0.7.mac.patch',
-      ]
-    end
-  end
 
   def install
     # Don't hard-code the libtool path. See:
@@ -69,7 +65,7 @@ class Mariadb < Formula
       -DCOMPILATION_COMMENT=Homebrew
     ]
 
-    args << "-DWITH_UNIT_TESTS=OFF" unless build.with? 'tests'
+    args << "-DWITH_UNIT_TESTS=OFF" if build.without? 'tests'
 
     # oqgraph requires boost, but fails to compile against boost 1.54
     # Upstream bug: https://mariadb.atlassian.net/browse/MDEV-4795
@@ -79,7 +75,7 @@ class Mariadb < Formula
     args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'
 
     # Compile with readline unless libedit is explicitly chosen
-    args << "-DWITH_READLINE=yes" unless build.with? 'libedit'
+    args << "-DWITH_READLINE=yes" if build.without? 'libedit'
 
     # Compile with ARCHIVE engine enabled if chosen
     args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.with? 'archive-storage-engine'
@@ -108,11 +104,11 @@ class Mariadb < Formula
       # See: https://github.com/Homebrew/homebrew/issues/4975
       rm_rf prefix+'data'
 
-      (prefix+'mysql-test').rmtree unless build.with? 'tests' # save 121MB!
-      (prefix+'sql-bench').rmtree unless build.with? 'bench'
+      (prefix+'mysql-test').rmtree if build.without? 'tests' # save 121MB!
+      (prefix+'sql-bench').rmtree if build.without? 'bench'
 
       # Link the setup script into bin
-      ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+      bin.install_symlink prefix/"scripts/mysql_install_db"
 
       # Fix up the control script and link into bin
       inreplace "#{prefix}/support-files/mysql.server" do |s|
@@ -121,14 +117,13 @@ class Mariadb < Formula
         s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
       end
 
-      ln_s "#{prefix}/support-files/mysql.server", bin
+      bin.install_symlink prefix/"support-files/mysql.server"
     end
-
-    # Make sure the var/mysql directory exists
-    (var+"mysql").mkpath
   end
 
   def post_install
+    # Make sure the var/mysql directory exists
+    (var+"mysql").mkpath
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", '--verbose', "--user=#{ENV['USER']}",
@@ -158,7 +153,7 @@ class Mariadb < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/mysqld_safe</string>
+        <string>#{opt_bin}/mysqld_safe</string>
         <string>--bind-address=127.0.0.1</string>
       </array>
       <key>RunAtLoad</key>

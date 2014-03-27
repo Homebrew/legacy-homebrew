@@ -12,7 +12,7 @@ class Jstalk < Formula
 
   def install
     ["JSTalk Framework", "jstalk command line", "JSTalk Editor"].each do |t|
-      system "xcodebuild", "-target", t, "-configuration", "Release", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build"
+      xcodebuild "-target", t, "-configuration", "Release", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build"
     end
 
     cd 'build/Release' do
@@ -20,22 +20,5 @@ class Jstalk < Formula
       prefix.install "JSTalk Editor.app"
       frameworks.install 'JSTalk.framework'
     end
-  end
-
-  def caveats; <<-EOS.undent
-     Framework JSTalk was installed to:
-       #{frameworks}/JSTalk.framework
-
-     You may want to symlink this Framework to a standard OS X location,
-     such as:
-       mkdir ~/Frameworks
-       ln -s "#{frameworks}/JSTalk.framework" ~/Frameworks
-
-    JSTalk Editor.app was installed in:
-      #{prefix}
-
-    To symlink into ~/Applications, you can do:
-      brew linkapps
-    EOS
   end
 end

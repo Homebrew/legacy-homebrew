@@ -1,9 +1,16 @@
 require 'formula'
 
 class Nspr < Formula
-  homepage 'http://www.mozilla.org/projects/nspr/'
-  url 'https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.10/src/nspr-4.10.tar.gz'
-  sha256 '0cfbe561676b92e5af3ddc7ac77452014e3da8885da66baec811e7354138cc16'
+  homepage "https://developer.mozilla.org/docs/Mozilla/Projects/NSPR"
+  url "https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.10.4/src/nspr-4.10.4.tar.gz"
+  sha1 "43b2029d990515f952c89d2921397c064fbbe2e7"
+
+  bottle do
+    cellar :any
+    sha1 "329f42e5f9b3110234770423792c0c87e18c4d53" => :mavericks
+    sha1 "44a02dcd84912019fdc68398c4e23c1c303dac8b" => :mountain_lion
+    sha1 "33050ee6f28f92be7d7c63a385827db3e0ae8712" => :lion
+  end
 
   def install
     ENV.deparallelize
@@ -29,8 +36,8 @@ class Nspr < Formula
       system "make"
       system "make install"
 
-      (bin/'compile-et.pl').unlink
-      (bin/'prerr.properties').unlink
+      (bin/"compile-et.pl").unlink
+      (bin/"prerr.properties").unlink
     end
   end
 end

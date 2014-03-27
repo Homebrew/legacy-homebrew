@@ -2,8 +2,14 @@ require 'formula'
 
 class Swig < Formula
   homepage 'http://www.swig.org/'
-  url 'http://downloads.sourceforge.net/project/swig/swig/swig-2.0.11/swig-2.0.11.tar.gz'
-  sha1 'd3bf4e78824dba76bfb3269367f1ae0276b49df9'
+  url 'https://downloads.sourceforge.net/project/swig/swig/swig-2.0.12/swig-2.0.12.tar.gz'
+  sha1 '4203c68f79012a2951f542018ff4358d838b5035'
+
+  bottle do
+    sha1 "ee2c0b5ce1e8558b526db86beff4dedd34f5905b" => :mavericks
+    sha1 "bbb7e1d501d7b31c9df4ecbe49444ad5f00d808c" => :mountain_lion
+    sha1 "319772da45f1346ae49486c8851156351ef9f5af" => :lion
+  end
 
   option :universal
 

@@ -2,13 +2,12 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://www.arangodb.org/repositories/Source/ArangoDB-1.4.4.tar.gz'
-  sha1 'e4b099a47f384761fc6aeddc003c85d11e33f40f'
+  url 'https://www.arangodb.org/repositories/Source/ArangoDB-2.0.0.tar.gz'
+  sha1 '82fe5d1bb5e26232cdd3f765f4b9918bd0c22e04'
 
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
-  depends_on 'icu4c'
-  depends_on 'libev'
+  depends_on 'go' => :build
 
   def suffix
     if build.stable?
@@ -23,8 +22,8 @@ class Arangodb < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --disable-relative
-      --disable-all-in-one-icu
-      --disable-all-in-one-libev
+      --enable-all-in-one-icu
+      --enable-all-in-one-libev
       --enable-all-in-one-v8
       --enable-mruby
       --datadir=#{share}
@@ -75,7 +74,7 @@ class Arangodb < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/sbin/arangod</string>
+          <string>#{opt_sbin}/arangod</string>
           <string>-c</string>
           <string>#{etc}/arangodb/arangod.conf</string>
         </array>

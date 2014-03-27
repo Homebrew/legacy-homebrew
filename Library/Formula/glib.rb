@@ -5,8 +5,15 @@ class Glib < Formula
   url 'http://ftp.gnome.org/pub/gnome/sources/glib/2.38/glib-2.38.2.tar.xz'
   sha256 '056a9854c0966a0945e16146b3345b7a82562a5ba4d5516fd10398732aea5734'
 
+  bottle do
+    sha1 "4859364747094843599c19a42d7d150f91629f6c" => :mavericks
+    sha1 "bd656d91c1641f0f12a0c509c60a7cb7b10416de" => :mountain_lion
+    sha1 "2530552dce455e85f109ebeb090843cd9d7c4630" => :lion
+  end
+
   option :universal
   option 'test', 'Build a debug build and run tests. NOTE: Not all tests succeed yet'
+  option 'with-static', 'Build glib with a static archive.'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -23,20 +30,26 @@ class Glib < Formula
     sha1 '0926f19d62769dfd3ff91a80ade5eff2c668ec54'
   end if build.universal?
 
-  def patches
-    p = {}
-    p[:p1] = []
-    # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix,
-    # but needed to fix an assumption about the location of the d-bus machine
-    # id file.
-    p[:p1] << "https://gist.github.com/jacknagel/6700436/raw/a94f21a9c5ccd10afa0a61b11455c880640f3133/glib-configurable-paths.patch"
-    # Fixes compilation with FSF GCC. Doesn't fix it on every platform, due
-    # to unrelated issues in GCC, but improves the situation.
-    # Patch submitted upstream: https://bugzilla.gnome.org/show_bug.cgi?id=672777
-    p[:p1] << "https://gist.github.com/mistydemeo/8c7eaf0940b6b9159779/raw/11b3b1f09d15ccf805b0914a15eece11685ea8a5/gio.diff"
-    p[:p0] = "https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/patch-configure.diff" if build.universal?
-    p
+  # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix,
+  # but needed to fix an assumption about the location of the d-bus machine
+  # id file.
+  patch do
+    url "https://gist.github.com/jacknagel/6700436/raw/a94f21a9c5ccd10afa0a61b11455c880640f3133/glib-configurable-paths.patch"
+    sha1 "911df7b09452c52ee3e0d269775d546cf7c077d1"
   end
+
+  # Fixes compilation with FSF GCC. Doesn't fix it on every platform, due
+  # to unrelated issues in GCC, but improves the situation.
+  # Patch submitted upstream: https://bugzilla.gnome.org/show_bug.cgi?id=672777
+  patch do
+    url "https://gist.github.com/mistydemeo/8c7eaf0940b6b9159779/raw/11b3b1f09d15ccf805b0914a15eece11685ea8a5/gio.diff"
+    sha1 "5afea1a284747d31039449ca970376430951ec55"
+  end
+
+  patch do
+    url "https://gist.githubusercontent.com/jacknagel/9726139/raw/a3e716034dc082e98f179c9e490910211be1df4c/universal.patch"
+    sha1 "1ce36591ff79bc05eeb89d91f008988e2f4c8cde"
+  end if build.universal?
 
   def install
     ENV.universal_binary if build.universal?
@@ -53,6 +66,8 @@ class Glib < Formula
       --with-gio-module-dir=#{HOMEBREW_PREFIX}/lib/gio/modules
     ]
 
+    args << '--enable-static' if build.with? 'static'
+
     system "./configure", *args
 
     if build.universal?
@@ -67,7 +82,7 @@ class Glib < Formula
 
     # `pkg-config --libs glib-2.0` includes -lintl, and gettext itself does not
     # have a pkgconfig file, so we add gettext lib and include paths here.
-    gettext = Formula.factory('gettext').opt_prefix
+    gettext = Formula["gettext"].opt_prefix
     inreplace lib+'pkgconfig/glib-2.0.pc' do |s|
       s.gsub! 'Libs: -L${libdir} -lglib-2.0 -lintl',
               "Libs: -L${libdir} -lglib-2.0 -L#{gettext}/lib -lintl"
@@ -94,8 +109,8 @@ class Glib < Formula
           return (strcmp(str, result_2) == 0) ? 0 : 1;
       }
       EOS
-    flags = `pkg-config --cflags --libs glib-2.0`.split + ENV.cflags.split
-    system ENV.cc, "-o", "test", "test.c", *flags
+    flags = ["-I#{include}/glib-2.0", "-I#{lib}/glib-2.0/include", "-lglib-2.0"]
+    system ENV.cc, "-o", "test", "test.c", *(flags + ENV.cflags.split)
     system "./test"
   end
 end

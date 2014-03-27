@@ -11,7 +11,7 @@ end
 
 class Distcc < Formula
   homepage 'http://code.google.com/p/distcc/'
-  url 'http://distcc.googlecode.com/files/distcc-3.2rc1.tar.gz'
+  url 'https://distcc.googlecode.com/files/distcc-3.2rc1.tar.gz'
   sha1 '7cd46fe0926a3a859a516274e6ae59fa8ba0262d'
 
   depends_on PythonWithoutPPC
@@ -58,7 +58,7 @@ class Distcc < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/distcc", "--version"
   end
 end

@@ -10,7 +10,7 @@ class Mogenerator < Formula
   depends_on :xcode
 
   def install
-    system "xcodebuild -target mogenerator -configuration Release SYMROOT=symroot OBJROOT=objroot"
+    xcodebuild "-target", "mogenerator", "-configuration", "Release","SYMROOT=symroot", "OBJROOT=objroot"
     bin.install "symroot/Release/mogenerator"
   end
 end

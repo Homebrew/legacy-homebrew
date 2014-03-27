@@ -2,11 +2,18 @@ require 'formula'
 
 class Mosquitto < Formula
   homepage 'http://mosquitto.org/'
-  url 'http://mosquitto.org/files/source/mosquitto-1.2.3.tar.gz'
-  sha1 '1675048286e0e32dc33126ec62466d083c0857f3'
+  url 'http://mosquitto.org/files/source/mosquitto-1.3.1.tar.gz'
+  sha1 'dcba02c12dffa27a0e76e68f88de21fb5f7de29d'
+
+  bottle do
+    sha1 "2145cfe117359dddcdef529738790fe7728834ec" => :mavericks
+    sha1 "565228890c2b011b20fbe8f82bc01cef7af9dbf2" => :mountain_lion
+    sha1 "d3a130d012732ca2a3b78720dd235fe19b286bcc" => :lion
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
+  depends_on 'c-ares' => :build
 
   # mosquitto requires OpenSSL >=1.0 for TLS support
   depends_on 'openssl'
@@ -47,7 +54,7 @@ class Mosquitto < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/mosquitto</string>
+        <string>#{opt_sbin}/mosquitto</string>
         <string>-c</string>
         <string>#{etc}/mosquitto/mosquitto.conf</string>
       </array>

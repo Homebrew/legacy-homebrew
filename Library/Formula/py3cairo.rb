@@ -11,12 +11,10 @@ class Py3cairo < Formula
   depends_on :python3
 
   def install
-    python3 do
-      ENV['PYTHON'] = "python3"
-      system "./waf", "configure", "--prefix=#{prefix}"
-      system "./waf", "build"
-      system "./waf", "install"
-    end
+    ENV['PYTHON'] = "python3"
+    system "./waf", "configure", "--prefix=#{prefix}"
+    system "./waf", "build"
+    system "./waf", "install"
   end
 
   test do

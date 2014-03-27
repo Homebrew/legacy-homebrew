@@ -4,14 +4,23 @@ class Gd < Formula
   homepage 'http://libgd.bitbucket.org/'
   url 'https://bitbucket.org/libgd/gd-libgd/downloads/libgd-2.1.0.tar.gz'
   sha1 'a0f3053724403aef9e126f4aa5c662573e5836cd'
+  revision 1
+
+  bottle do
+    cellar :any
+    sha1 "e0a92ad54a7dfc067dfe20c3ef037cd0ab8660ef" => :mavericks
+    sha1 "affd1228cb47e93fe1709dfbb490c941e9482952" => :mountain_lion
+    sha1 "30aa39a8b79772f929f6718b4233bdd796c0fb75" => :lion
+  end
 
   head 'https://bitbucket.org/libgd/gd-libgd', :using => :hg
 
   option :universal
 
-  depends_on :libpng => :recommended
+  depends_on 'libpng' => :recommended
   depends_on 'jpeg' => :recommended
-  depends_on :freetype => :optional
+  depends_on 'fontconfig' => :optional
+  depends_on 'freetype' => :optional
   depends_on 'libtiff' => :optional
   depends_on 'libvpx' => :optional
 
@@ -20,44 +29,42 @@ class Gd < Formula
     cause "Undefined symbols when linking"
   end
 
-  def png_prefix
-    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/libpng" : MacOS::X11.prefix
-  end
-
-  def freetype_prefix
-    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/freetype" : MacOS::X11.prefix
-  end
-
   def install
     ENV.universal_binary if build.universal?
     args = %W{--disable-dependency-tracking --prefix=#{prefix}}
 
     if build.with? "libpng"
-      args << "--with-png=#{png_prefix}"
+      args << "--with-png=#{Formula["libpng"].opt_prefix}"
     else
       args << "--without-png"
     end
 
+    if build.with? "fontconfig"
+      args << "--with-fontconfig=#{Formula["fontconfig"].opt_prefix}"
+    else
+      args << "--without-fontconfig"
+    end
+
     if build.with? "freetype"
-      args << "--with-freetype=#{freetype_prefix}"
+      args << "--with-freetype=#{Formula["freetype"].opt_prefix}"
     else
       args << "--without-freetype"
     end
 
     if build.with? "jpeg"
-      args << "--with-jpeg=#{Formula.factory("jpeg").opt_prefix}"
+      args << "--with-jpeg=#{Formula["jpeg"].opt_prefix}"
     else
       args << "--without-jpeg"
     end
 
     if build.with? "libtiff"
-      args << "--with-tiff=#{Formula.factory("libtiff").opt_prefix}"
+      args << "--with-tiff=#{Formula["libtiff"].opt_prefix}"
     else
       args << "--without-tiff"
     end
 
     if build.with? "libvpx"
-      args << "--with-vpx=#{Formula.factory("libvpx").opt_prefix}"
+      args << "--with-vpx=#{Formula["libvpx"].opt_prefix}"
     else
       args << "--without-vpx"
     end

@@ -5,10 +5,16 @@ class Flac < Formula
   url 'http://downloads.xiph.org/releases/flac/flac-1.3.0.tar.xz'
   sha1 'a136e5748f8fb1e6c524c75000a765fc63bb7b1b'
 
+  bottle do
+    cellar :any
+    sha1 "c317706ce41258cf009152e7cba2cd37e209c2f0" => :mavericks
+    sha1 "df67e225d0db9999de767ee4478273f5f7c1ba4a" => :mountain_lion
+    sha1 "41bca30e9f6e3a54db1af6cf510e1fd37902039c" => :lion
+  end
+
   option :universal
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'lame'
   depends_on 'libogg' => :optional
 
@@ -23,13 +29,20 @@ class Flac < Formula
     ENV.append 'CFLAGS', '-std=gnu89'
 
     # sadly the asm optimisations won't compile since Leopard
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-debug",
-                          "--disable-asm-optimizations",
-                          "--enable-sse",
-                          "--enable-static",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    args = %W[
+      --disable-dependency-tracking
+      --disable-debug
+      --prefix=#{prefix}
+      --mandir=#{man}
+      --disable-asm-optimizations
+      --enable-sse
+      --enable-static
+    ]
+
+    args << "--without-ogg" if build.without? "libogg"
+
+    system "./configure", *args
+
     ENV['OBJ_FORMAT']='macho'
 
     # adds universal flags to the generated libtool script

@@ -2,20 +2,18 @@ require 'formula'
 
 class Disco < Formula
   homepage 'http://discoproject.org/'
-  url 'https://github.com/discoproject/disco/archive/0.4.5.tar.gz'
-  sha1 'c098ad91aa1a0676944c5548f8f860fb9b223002'
+  url 'https://github.com/discoproject/disco/archive/0.5.tar.gz'
+  sha1 '2728d2cc9ea398ddf1e4420e5c75750aa74fe0e2'
   # Periods in the install path cause disco-worker to complain so change to underscores.
-  version '0_4_5'
+  version '0_5_0'
 
   depends_on :python
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
   depends_on 'libcmph'
 
-  def patches
-    # Modifies config for single-node operation
-    DATA
-  end
+  # Modifies config for single-node operation
+  patch :DATA
 
   def install
     inreplace "Makefile" do |s|

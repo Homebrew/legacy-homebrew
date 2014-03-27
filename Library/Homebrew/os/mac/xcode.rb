@@ -26,12 +26,12 @@ module OS
         when "10.5"         then "3.1.4"
         when "10.6"         then "3.2.6"
         when "10.7"         then "4.6.3"
-        when "10.8"         then "5.0.1"
-        when "10.9"         then "5.0.1"
+        when "10.8"         then "5.1"
+        when "10.9"         then "5.1"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
           if MacOS.version > "10.9"
-            "5.0.1"
+            "5.1"
           else
             raise "Mac OS X '#{MacOS.version}' is invalid"
           end
@@ -137,7 +137,8 @@ module OS
           when 41      then "4.5"
           when 42      then "4.6"
           when 50      then "5.0"
-          else "5.0"
+          when 51      then "5.1"
+          else "5.1"
           end
         end
       end
@@ -171,18 +172,10 @@ module OS
       MAVERICKS_PKG_ID = "com.apple.pkg.CLTools_Executables"
       MAVERICKS_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
 
-      # True if:
-      #  - Xcode < 4.3 is installed. The tools are found under /usr.
-      #  - The "Command Line Tools" package has been installed.
-      #    For OS X < 10.9, the tools are found under /usr. 10.9 always
-      #    includes tools there, which run the real tools inside Xcode on
-      #    Xcode-only installs, so it's necessary to look elsewhere.
+      # Returns true even if outdated tools are installed, e.g.
+      # tools from Xcode 4.x on 10.9
       def installed?
-        if MacOS.version < :mavericks
-          usr_dev_tools?
-        else
-          mavericks_dev_tools?
-        end
+        !!detect_version
       end
 
       def mavericks_dev_tools?
@@ -195,10 +188,8 @@ module OS
       end
 
       def latest_version
-        if MacOS.version >= "10.9"
-          "500.2.79"
-        elsif MacOS.version == "10.8"
-          "500.2.78"
+        if MacOS.version >= "10.8"
+          "503.0.38"
         else
           "425.0.28"
         end
@@ -210,7 +201,7 @@ module OS
         version < latest_version
       end
 
-      # Version string (a pretty damn long one) of the CLT package.
+      # Version string (a pretty long one) of the CLT package.
       # Note, that different ways to install the CLTs lead to different
       # version numbers.
       def version

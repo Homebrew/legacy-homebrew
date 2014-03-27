@@ -2,9 +2,9 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/Percona-Server-5.6.14-rel62.0/source/Percona-Server-5.6.14-rel62.0.tar.gz'
-  version '5.6.14-rel62.0'
-  sha1 '6d9ddd92338c70ec13bdeb9a23568a990a5766f9'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/Percona-Server-5.6.15-rel63.0/source/Percona-Server-5.6.15-rel63.0.tar.gz'
+  version '5.6.15-rel63.0'
+  sha1 '9a8c856f8dd1c3c0a576b65e9d34354babf82bc9'
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
@@ -35,13 +35,6 @@ class PerconaServer < Formula
   # shared with the mysql and mariadb formulae.
   def datadir
     @datadir ||= (var/'percona').directory? ? var/'percona' : var/'mysql'
-  end
-
-  def patches
-    # Fixes percona server 5.6 compilation on OS X 10.9, based on
-    # https://github.com/Homebrew/homebrew/commit/aad5d93f4fabbf69766deb83780d3a6eeab7061a
-    # for mysql 5.6
-    "https://gist.github.com/israelshirk/7cc640498cf264ebfce3/raw/846839c84647c4190ad683e4cbf0fabcd8931f97/gistfile1.txt"
   end
 
   def install
@@ -112,7 +105,7 @@ class PerconaServer < Formula
     rm_rf prefix+'data'
 
     # Link the setup script into bin
-    ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+    bin.install_symlink prefix/"scripts/mysql_install_db"
 
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
@@ -121,17 +114,16 @@ class PerconaServer < Formula
       s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
 
-    ln_s "#{prefix}/support-files/mysql.server", bin
+    bin.install_symlink prefix/"support-files/mysql.server"
 
     # Move mysqlaccess to libexec
     mv "#{bin}/mysqlaccess", libexec
     mv "#{bin}/mysqlaccess.conf", libexec
-
-    # Make sure that data directory exists
-    datadir.mkpath
   end
 
   def post_install
+    # Make sure that data directory exists
+    datadir.mkpath
     unless File.exist? "#{datadir}/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
@@ -160,7 +152,7 @@ class PerconaServer < Formula
       <key>Label</key>
       <string>#{plist_name}</string>
       <key>Program</key>
-      <string>#{opt_prefix}/bin/mysqld_safe</string>
+      <string>#{opt_bin}/mysqld_safe</string>
       <key>RunAtLoad</key>
       <true/>
       <key>WorkingDirectory</key>

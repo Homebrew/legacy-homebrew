@@ -2,14 +2,14 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.5.tar.bz2'
-  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.5.tar.bz2'
-  sha1 'd21de7daf37d9dd1cb0f777e999a529b96f83082'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.8.tar.bz2'
+  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.8.tar.bz2'
+  sha1 '8e9f10b7a9704c90e17cfe76fd56e3fe74c01a7a'
 
   bottle do
-    sha1 '1022095a741a6fb2c43b28003cecd6d8f220fe1e' => :mavericks
-    sha1 '82f6a8eb37d89badd9ed77ee7620f84304278db7' => :mountain_lion
-    sha1 '00340eabc7849c05ec0611ae8aea79db3848578e' => :lion
+    sha1 "91bb1e36e6ce4ecdc921a0a9e01de99151b734d2" => :mavericks
+    sha1 "16fa933de8a8ab3eb3f770d8f7cb3966bf385895" => :mountain_lion
+    sha1 "c400c662deb09a2246d4cf2878f1897cbb328ce4" => :lion
   end
 
   option :universal
@@ -19,8 +19,8 @@ class Subversion < Formula
   option 'ruby', 'Build Ruby bindings'
 
   resource 'serf' do
-    url 'http://serf.googlecode.com/files/serf-1.3.3.tar.bz2'
-    sha1 'b25c44a8651805f20f66dcaa76db08442ec4fa0e'
+    url 'http://serf.googlecode.com/svn/src_releases/serf-1.3.4.tar.bz2', :using => :curl
+    sha1 'eafc8317d7a9c77d4db9ce1e5c71a33822f57c3a'
   end
 
   depends_on 'pkg-config' => :build
@@ -43,10 +43,9 @@ class Subversion < Formula
   # If building bindings, allow non-system interpreters
   env :userpaths if build.include? 'perl' or build.include? 'ruby'
 
-  # Prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
-  def patches
-    { :p0 => DATA }
-  end
+  # 1. Prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
+  # 2. Fix #23993 by stripping flags swig can't handle from SWIG_CPPFLAGS
+  patch :p0, :DATA
 
   # When building Perl or Ruby bindings, need to use a compiler that
   # recognizes GCC-style switches, since that's what the system languages
@@ -74,9 +73,9 @@ class Subversion < Formula
       # scons ignores our compiler and flags unless explicitly passed
       args = %W[PREFIX=#{serf_prefix} GSSAPI=/usr CC=#{ENV.cc}
                 CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}]
-      args << "OPENSSL=#{Formula.factory('openssl').opt_prefix}" if build.with? 'brewed-openssl'
-      system "scons", *args
-      system "scons install"
+      args << "OPENSSL=#{Formula["openssl"].opt_prefix}" if build.with? 'brewed-openssl'
+      scons *args
+      scons "install"
     end
 
     if build.include? 'unicode-path'
@@ -117,7 +116,7 @@ class Subversion < Formula
             "--prefix=#{prefix}",
             "--with-apr=#{apr_bin}",
             "--with-zlib=/usr",
-            "--with-sqlite=#{Formula.factory('sqlite').opt_prefix}",
+            "--with-sqlite=#{Formula["sqlite"].opt_prefix}",
             "--with-serf=#{serf_prefix}",
             "--disable-mod-activation",
             "--disable-nls",
@@ -179,7 +178,7 @@ class Subversion < Formula
       system "make", "install-swig-pl", "DESTDIR=#{prefix}"
       # Some of the libraries get installed into the wrong place, they end up having the
       # prefix in the directory name twice.
-      mv Dir.glob("#{prefix}/#{lib}/*"), "#{lib}"
+      mv Dir["#{prefix}/#{lib}/*"], "#{lib}"
     end
 
     if build.include? 'java'
@@ -202,7 +201,7 @@ class Subversion < Formula
   def caveats
     s = <<-EOS.undent
       svntools have been installed to:
-        #{opt_prefix}/libexec
+        #{opt_libexec}
     EOS
 
     if build.include? 'perl'
@@ -235,6 +234,9 @@ class Subversion < Formula
 end
 
 __END__
+
+Patch 1
+
 --- subversion/bindings/swig/perl/native/Makefile.PL.in~ 2013-06-20 18:58:55.000000000 +0200
 +++ subversion/bindings/swig/perl/native/Makefile.PL.in	2013-06-20 19:00:49.000000000 +0200
 @@ -69,10 +69,15 @@
@@ -255,3 +257,20 @@ __END__
                   " -I$swig_srcdir/perl/libsvn_swig_perl",
                   " -I$svnlib_srcdir/include",
 
+
+Patch 2
+
+diff -u configure.ac configure.ac
+--- configure.ac	(working copy)
++++ configure.ac	(working copy)
+@@ -1446,6 +1446,10 @@
+ # Need to strip '-no-cpp-precomp' from CPPFLAGS for SWIG as well.
+ SWIG_CPPFLAGS="$CPPFLAGS"
+ SVN_STRIP_FLAG(SWIG_CPPFLAGS, [-no-cpp-precomp ])
++# Swig don't understand "-F" and "-isystem" flags added by Homebrew,
++# so filter them out.
++SVN_STRIP_FLAG(SWIG_CPPFLAGS, [-F\/[[^ ]]* ])
++SVN_STRIP_FLAG(SWIG_CPPFLAGS, [-isystem\/[[^ ]]* ])
+ AC_SUBST([SWIG_CPPFLAGS])
+
+ dnl Since this is used only on Unix-y systems, define the path separator as '/'

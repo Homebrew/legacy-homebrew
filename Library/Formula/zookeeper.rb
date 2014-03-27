@@ -2,8 +2,8 @@ require 'formula'
 
 class Zookeeper < Formula
   homepage 'http://zookeeper.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz'
-  sha1 'fd921575e02478909557034ea922de871926efc7'
+  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz'
+  sha1 '2a9e53f5990dfe0965834a525fbcad226bf93474'
 
   head do
     url 'http://svn.apache.org/repos/asf/zookeeper/trunk'
@@ -115,10 +115,9 @@ class Zookeeper < Formula
     log4j_properties = etc/'zookeeper/log4j.properties'
     log4j_properties.write(default_log4j_properties) unless log4j_properties.exist?
 
-    unless (etc/'zookeeper/zoo.cfg').exist?
-      inreplace 'conf/zoo_sample.cfg',
-                /^dataDir=.*/, "dataDir=#{var}/run/zookeeper/data"
-      (etc/'zookeeper').install 'conf/zoo_sample.cfg'
-    end
+    inreplace 'conf/zoo_sample.cfg',
+              /^dataDir=.*/, "dataDir=#{var}/run/zookeeper/data"
+    cp 'conf/zoo_sample.cfg', 'conf/zoo.cfg'
+    (etc/'zookeeper').install ['conf/zoo.cfg', 'conf/zoo_sample.cfg']
   end
 end

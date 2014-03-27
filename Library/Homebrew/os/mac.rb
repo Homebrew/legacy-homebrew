@@ -249,6 +249,7 @@ module OS
       "5.0"   => { :clang => "5.0", :clang_build => 500 },
       "5.0.1" => { :clang => "5.0", :clang_build => 500 },
       "5.0.2" => { :clang => "5.0", :clang_build => 500 },
+      "5.1"   => { :clang => "5.1", :clang_build => 503 },
     }
 
     def compilers_standard?
@@ -261,6 +262,8 @@ module OS
         of Xcode (#{Xcode.version}). Please `brew update` and if that doesn't help, file
         an issue with the output of `brew --config`:
           https://github.com/Homebrew/homebrew/issues
+
+        Note that we only track stable, released versions of Xcode.
 
         Thanks!
       EOS

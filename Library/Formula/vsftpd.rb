@@ -8,7 +8,7 @@ class Vsftpd < Formula
   option "openssl", "Build with OpenSSL"
 
   # Patch so vsftpd doesn't depend on UTMPX, and can't find OS X's PAM library.
-  def patches; DATA; end
+  patch :DATA
 
   def install
     if build.include? "openssl"
@@ -22,6 +22,7 @@ class Vsftpd < Formula
 
     # make install has all the paths hardcoded; this is easier:
     sbin.install "vsftpd"
+    etc.install  "vsftpd.conf"
     man5.install "vsftpd.conf.5"
     man8.install "vsftpd.8"
   end

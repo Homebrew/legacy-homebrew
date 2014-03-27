@@ -2,8 +2,8 @@ require 'formula'
 
 class Cppcheck < Formula
   homepage 'http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page'
-  url 'https://github.com/danmar/cppcheck/archive/1.63.1.tar.gz'
-  sha1 '19ad7251603356a82dc75a836dfad9629a3d12a0'
+  url 'https://github.com/danmar/cppcheck/archive/1.64.tar.gz'
+  sha1 'feaa8b3333c20f950a38026461ff407de4ef1ba0'
 
   head 'https://github.com/danmar/cppcheck.git'
 
@@ -11,21 +11,22 @@ class Cppcheck < Formula
   option 'with-gui', "Build the cppcheck gui (requires Qt)"
 
   depends_on 'pcre' unless build.include? 'no-rules'
-  depends_on 'qt' if build.include? 'with-gui'
+  depends_on 'qt' if build.with? "gui"
 
   def install
     # Man pages aren't installed as they require docbook schemas.
 
     # Pass to make variables.
     if build.include? 'no-rules'
-      system "make", "HAVE_RULES=no"
+      system "make", "HAVE_RULES=no", "CFGDIR=#{prefix}/cfg"
     else
-      system "make", "HAVE_RULES=yes"
+      system "make", "HAVE_RULES=yes", "CFGDIR=#{prefix}/cfg"
     end
 
-    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "install"
+    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=#{prefix}/cfg", "install"
+    prefix.install "cfg"
 
-    if build.include? 'with-gui'
+    if build.with? "gui"
       cd "gui" do
         if build.include? 'no-rules'
           system "qmake", "HAVE_RULES=no"
@@ -39,18 +40,7 @@ class Cppcheck < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/cppcheck", "--version"
-  end
-
-  def caveats; <<-EOS.undent
-    --with-gui installs cppcheck-gui.app in:
-      #{bin}
-
-    To link the application to a normal Mac OS X location:
-      brew linkapps
-    or:
-      ln -s #{bin}/cppcheck-gui.app /Applications
-    EOS
   end
 end

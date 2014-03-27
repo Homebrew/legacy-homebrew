@@ -4,6 +4,7 @@ class Qemu < Formula
   homepage 'http://www.qemu.org/'
   url 'http://wiki.qemu-project.org/download/qemu-1.7.0.tar.bz2'
   sha1 '4b5a21a614207e74a61659f7a6edecad6c31be95'
+  revision 1
 
   head 'git://git.qemu-project.org/qemu.git'
 
@@ -16,8 +17,9 @@ class Qemu < Formula
   depends_on 'vde' => :optional
   depends_on 'sdl' => :optional
 
-  def patches
-    {:p0 => ['https://trac.macports.org/export/97499%20/trunk/dports/emulators/qemu/files/patch-configure.diff']}
+  patch :p0 do
+    url "https://trac.macports.org/export/97499%20/trunk/dports/emulators/qemu/files/patch-configure.diff"
+    sha1 "3cba7a61e2a63c73f45d086300a4c42f2ff7de17"
   end
 
   def install

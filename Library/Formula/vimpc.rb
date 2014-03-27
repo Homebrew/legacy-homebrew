@@ -2,7 +2,7 @@ require 'formula'
 
 class Vimpc < Formula
   homepage 'http://sourceforge.net/projects/vimpc/'
-  url 'http://downloads.sourceforge.net/project/vimpc/Release%200.08.1/vimpc-0.08.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/vimpc/Release%200.08.1/vimpc-0.08.1.tar.gz'
   sha1 '2620e7148b4cac7472952690e5b5df199188d3c8'
 
   head do
@@ -28,7 +28,7 @@ class Vimpc < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/vimpc", "-v"
   end
 end

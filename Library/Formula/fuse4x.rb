@@ -1,7 +1,7 @@
 require 'formula'
 
 class Fuse4x < Formula
-  homepage 'http://fuse4x.github.com'
+  homepage 'http://fuse4x.github.io'
   url 'https://github.com/fuse4x/fuse/archive/fuse4x_0_9_2.tar.gz'
   sha1 '3a9700f716eff930dcd2426772c642a09adcc73a'
 

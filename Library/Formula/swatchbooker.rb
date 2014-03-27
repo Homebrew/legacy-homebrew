@@ -6,13 +6,11 @@ class Swatchbooker < Formula
   sha1 'fd2e46c278e762dc0c3ed69f824ab620773f153e'
 
   depends_on :python
-  depends_on 'PIL' => :python
-  #depends_on 'little-cms' => 'with-python'
+  depends_on "pillow" => [:python, "PIL"]
+  depends_on 'little-cms' => 'with-python'
   depends_on 'pyqt'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # Tell launching shell scipts where the python library is
@@ -25,7 +23,7 @@ class Swatchbooker < Formula
     chmod 0755, libexec/'bin/swatchbooker'
   end
 
-  def test
+  test do
     system "#{bin}/swatchbooker"
   end
 end

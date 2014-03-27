@@ -10,16 +10,14 @@ end
 
 class Freeimage < Formula
   homepage 'http://sf.net/projects/freeimage'
-  url 'http://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.15.4/FreeImage3154.zip',
+  url 'https://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.15.4/FreeImage3154.zip',
         :using => FreeimageHttpDownloadStrategy
   version '3.15.4'
   sha1 '1d30057a127b2016cf9b4f0f8f2ba92547670f96'
 
   option :universal
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?

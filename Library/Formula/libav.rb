@@ -2,10 +2,16 @@ require 'formula'
 
 class Libav < Formula
   homepage 'https://libav.org/'
-  url 'http://libav.org/releases/libav-9.10.tar.xz'
-  sha1 '08274bc85e501bdb141022eb900dfe0d9eb89ad5'
-
+  url 'http://libav.org/releases/libav-9.11.tar.xz'
+  sha1 '4eb48cbe70515734f70bde8dceff28896d76adf2'
   head 'git://git.libav.org/libav.git'
+  revision 1
+
+  bottle do
+    sha1 "bf3aec728041ec2946a2da890556bdb2979c4ad3" => :mavericks
+    sha1 "45da5667a75d03400f06cfb7cd5ab294188be17f" => :mountain_lion
+    sha1 "8ad16247b63d8baebdd7fbc0824f5aaaf6641836" => :lion
+  end
 
   option "without-faac", "Disable AAC encoder via faac"
   option "without-lame", "Disable MP3 encoder via libmp3lame"
@@ -52,9 +58,7 @@ class Libav < Formula
   depends_on 'speex' => :optional
   depends_on 'theora' => :optional
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     args = [

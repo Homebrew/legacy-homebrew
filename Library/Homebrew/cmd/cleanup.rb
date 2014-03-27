@@ -31,7 +31,7 @@ module Homebrew extend self
 
   def cleanup_formula f
     if f.installed?
-      eligible_kegs = f.rack.subdirs.map { |d| Keg.new(d) }.select { |k| f.version > k.version }
+      eligible_kegs = f.rack.subdirs.map { |d| Keg.new(d) }.select { |k| f.pkg_version > k.version }
       eligible_kegs.each do |keg|
         if f.can_cleanup?
           cleanup_keg(keg)
@@ -68,7 +68,8 @@ module Homebrew extend self
         next
       end
 
-      if f.version > version || ARGV.switch?('s') && !f.installed? || bottle_file_outdated?(f, file)
+      spec = f.stable || f.devel || f.head
+      if spec.version > version || ARGV.switch?('s') && !f.installed? || bottle_file_outdated?(f, file)
         cleanup_cached_file(file)
       end
     end
@@ -113,7 +114,7 @@ class Formula
         select{ |ff| ff.deps.map{ |d| d.to_s }.include? name }.
         map{ |ff| ff.rack.subdirs rescue [] }.
         flatten.
-        map{ |keg_path| Tab.for_keg(keg_path).send("HEAD") }.
+        map{ |keg_path| Tab.for_keg(keg_path).HEAD }.
         include? nil
     end
   end

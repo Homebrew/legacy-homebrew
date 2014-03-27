@@ -2,13 +2,11 @@ require 'formula'
 
 class Mkvalidator < Formula
   homepage 'http://www.matroska.org/downloads/mkvalidator.html'
-  url 'http://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.4.0.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/matroska/mkvalidator/mkvalidator-0.4.0.tar.bz2'
   sha1 'c1e9fc8de67694f7a3dcb9beb25488db513f8f6f'
 
-  def patches
-    # see https://sourceforge.net/tracker/?group_id=68739&atid=522230
-    DATA if MacOS.prefer_64_bit?
-  end
+  # see https://sourceforge.net/tracker/?group_id=68739&atid=522230
+  patch :DATA if MacOS.prefer_64_bit?
 
   def install
     ENV.j1 # Otherwise there are races

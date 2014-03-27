@@ -2,7 +2,7 @@ require 'formula'
 
 class Cantera < Formula
   homepage 'http://code.google.com/p/cantera/'
-  url 'http://cantera.googlecode.com/files/cantera-1.8.0-beta.tar.gz'
+  url 'https://cantera.googlecode.com/files/cantera-1.8.0-beta.tar.gz'
   sha1 'c62666590c65c9a5a17c0867f0f6b6789984131f'
   head 'http://cantera.googlecode.com/svn/cantera18/trunk/'
 
@@ -10,9 +10,7 @@ class Cantera < Formula
   depends_on 'graphviz'
 
   # fixes the Makefiles in Cantera/cxx/demos/ that have broken install commands
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     if MacOS.prefer_64_bit?
@@ -53,6 +51,7 @@ class Cantera < Formula
                           (buildname ? "--build=#{buildname}" : "")
     system "make"
     system "make install"
+    prefix.install Dir["#{bin}/License.*"]
   end
 
   def caveats; <<-EOS.undent
