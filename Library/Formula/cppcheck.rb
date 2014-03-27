@@ -28,6 +28,10 @@ class Cppcheck < Formula
 
     if build.with? "gui"
       cd "gui" do
+        # fix make not finding cfg directory:
+        # https://github.com/Homebrew/homebrew/issues/27756
+        inreplace "gui.qrc", "../cfg/", "#{prefix}/cfg/"
+
         if build.include? 'no-rules'
           system "qmake", "HAVE_RULES=no"
         else
