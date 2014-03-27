@@ -61,8 +61,11 @@ class LinkTests < Test::Unit::TestCase
   end
 
   def test_link_ignores_broken_symlinks_at_target
-    ln_s "/some/nonexistent/path", HOMEBREW_PREFIX/"bin/helloworld"
+    dst = HOMEBREW_PREFIX/"bin/helloworld"
+    src = @keg/"bin/helloworld"
+    ln_s "/some/nonexistent/path", dst
     shutup { @keg.link }
+    assert_equal src.relative_path_from(dst.dirname), dst.readlink
   end
 
   def test_link_overwrite
