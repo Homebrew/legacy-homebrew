@@ -157,7 +157,7 @@ class Keg
     script_files = []
 
     # find all files with shebangs
-    Pathname.new(self).find do |pn|
+    find do |pn|
       next if pn.symlink? or pn.directory?
       script_files << pn if pn.text_executable?
     end
