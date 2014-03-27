@@ -35,6 +35,7 @@ module Homebrew extend self
 
       keg.lock do
         print "Linking #{keg}... " do
+          puts if ARGV.verbose?
           puts "#{keg.link(mode)} symlinks created"
         end
       end
@@ -54,9 +55,9 @@ module Homebrew extend self
   def print str, &block
     Kernel.print str
     puts_capture = Class.new do
-      def self.puts str
+      def self.puts(*args)
         $did_puts = true
-        Kernel.puts str
+        Kernel.puts(*args)
       end
     end
 
