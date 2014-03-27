@@ -9,6 +9,12 @@ class Xctool < Formula
   depends_on :xcode
   depends_on :macos => :lion
 
+  # Fix build with Xcode 5.1; fixed upstream, will be in next release
+  patch :p1 do
+    url "https://github.com/facebook/xctool/commit/dfaee8590006a384f53d25bcf4876e0ba28509f7.patch"
+    sha1 "00eff52c29d272c5ee091fbc1e32734817eafdfb"
+  end
+
   def install
     system "./scripts/build.sh", "XT_INSTALL_ROOT=#{libexec}"
     bin.install_symlink "#{libexec}/bin/xctool"
