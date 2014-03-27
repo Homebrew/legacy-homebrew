@@ -27,6 +27,7 @@ class LinkTests < Test::Unit::TestCase
 
   def test_linking_keg
     assert_equal 3, @keg.link
+    (HOMEBREW_PREFIX/"bin").children.each { |c| assert c.readlink.relative? }
   end
 
   def test_unlinking_keg
