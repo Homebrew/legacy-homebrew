@@ -2,8 +2,8 @@ require 'formula'
 
 class Libgphoto2 < Formula
   homepage 'http://www.gphoto.org/proj/libgphoto2/'
-  url 'https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.3.1/libgphoto2-2.5.3.1.tar.bz2'
-  sha1 '6e5c9254c65d4768ac4e4c1a423147542005987f'
+  url 'https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.4/libgphoto2-2.5.4.tar.bz2'
+  sha1 'f9ada3e1a54a3723ecbf0bc270cdfd6da20cf90c'
 
   option :universal
 
