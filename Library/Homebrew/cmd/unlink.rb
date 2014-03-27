@@ -5,6 +5,7 @@ module Homebrew extend self
     ARGV.kegs.each do |keg|
       keg.lock do
         print "Unlinking #{keg}... "
+        puts if ARGV.verbose?
         puts "#{keg.unlink} links removed"
       end
     end

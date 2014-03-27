@@ -98,6 +98,7 @@ class Pathname
   def atomic_write content
     require "tempfile"
     tf = Tempfile.new(basename.to_s)
+    tf.binmode
     tf.write(content)
     tf.close
 
@@ -109,8 +110,11 @@ class Pathname
 
     FileUtils.mv tf.path, self
 
+    uid = Process.uid
+    gid = Process.groups.delete(old_stat.gid) { Process.gid }
+
     begin
-      chown(old_stat.uid, old_stat.gid)
+      chown(uid, gid)
       chmod(old_stat.mode)
     rescue Errno::EPERM
     end

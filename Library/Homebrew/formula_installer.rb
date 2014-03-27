@@ -174,7 +174,6 @@ class FormulaInstaller
         stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs :skip_executables => true
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
-        tab.tabfile.delete if tab.tabfile
         tab.write
       end
     rescue => e
@@ -551,10 +550,11 @@ class FormulaInstaller
 
   def install_plist
     return unless f.plist
-    # A plist may already exist if we are installing from a bottle
-    f.plist_path.unlink if f.plist_path.exist?
-    f.plist_path.write f.plist
+    f.plist_path.atomic_write(f.plist)
     f.plist_path.chmod 0644
+  rescue Exception => e
+    onoe "Failed to install plist file"
+    ohai e, e.backtrace if debug?
   end
 
   def fix_install_names
