@@ -104,7 +104,11 @@ class Keg < Pathname
   end
 
   def basename
-    Pathname.new(self.to_s).basename
+    Pathname.new(self).basename
+  end
+
+  def find(*args, &block)
+    Pathname.new(self).find(*args, &block)
   end
 
   def link mode=OpenStruct.new
@@ -197,10 +201,7 @@ class Keg < Pathname
   end
 
   def delete_pyc_files!
-    Pathname.new(self).find do |pn|
-      next if pn.extname != '.pyc'
-      pn.delete
-    end
+    find { |pn| pn.delete if pn.extname == ".pyc" }
   end
 
   protected
