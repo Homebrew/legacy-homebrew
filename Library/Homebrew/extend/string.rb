@@ -33,6 +33,15 @@ class String
     end
   end unless method_defined?(:end_with?)
 
+  # 1.8.7 or later; used in bottle code
+  def rpartition(separator)
+    if ind = rindex(separator)
+      [slice(0, ind), separator, slice(ind+1, -1) || '']
+    else
+      ['', '', dup]
+    end
+  end unless method_defined?(:rpartition)
+
   # String.chomp, but if result is empty: returns nil instead.
   # Allows `chuzzle || foo` short-circuits.
   def chuzzle
