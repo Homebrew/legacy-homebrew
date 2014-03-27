@@ -249,7 +249,7 @@ class Keg < Pathname
       return
     end
 
-    dst.delete if mode.overwrite && (dst.exist? or dst.symlink?)
+    dst.delete if mode.overwrite && (dst.exist? || dst.symlink?)
     dst.make_relative_symlink src
   end
 
