@@ -13,18 +13,18 @@ class LibtorrentRasterbar < Formula
   def install
     boost = Formula["boost"]
 
-    optional_args = []
+    args = [ "--disable-debug",
+             "--disable-dependency-tracking",
+             "--prefix=#{prefix}",
+             "--with-boost=#{boost.opt_prefix}" ]
+    
     if build.with? "python"
-      optional_args << "--enable-python-binding"
-      optional_args << "--with-boost-python=boost_python-mt"
-      optional_args << "PYTHON_EXTRA_LDFLAGS= "
+      args << "--enable-python-binding"
+      args << "--with-boost-python=boost_python-mt"
+      args << "PYTHON_EXTRA_LDFLAGS= "
     end
 
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-boost=#{boost.opt_prefix}",
-                          *optional_args
+    system "./configure", *args
     system "make install"
   end
 end
