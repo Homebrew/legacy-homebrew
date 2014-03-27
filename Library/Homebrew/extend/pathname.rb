@@ -291,8 +291,6 @@ class Pathname
   # perhaps confusingly, this Pathname object becomes the symlink pointing to
   # the src paramter.
   def make_relative_symlink src
-    src = Pathname.new(src) unless src.kind_of? Pathname
-
     self.dirname.mkpath
     Dir.chdir self.dirname do
       # NOTE only system ln -s will create RELATIVE symlinks
@@ -300,7 +298,7 @@ class Pathname
       if not $?.success?
         if symlink? && exist?
           raise <<-EOS.undent
-            Could not symlink file: #{src.expand_path}
+            Could not symlink file: #{src}
             Target #{self} already exists as a symlink to #{readlink}.
             If this file is from another formula, you may need to
             `brew unlink` it. Otherwise, you may want to delete it.
@@ -312,7 +310,7 @@ class Pathname
             EOS
         elsif exist?
           raise <<-EOS.undent
-            Could not symlink file: #{src.expand_path}
+            Could not symlink file: #{src}
             Target #{self} already exists. You may need to delete it.
             To force the link and overwrite all other conflicting files, do:
               brew link --overwrite formula_name
@@ -325,12 +323,12 @@ class Pathname
           make_relative_symlink(src)
         elsif !dirname.writable_real?
           raise <<-EOS.undent
-            Could not symlink file: #{src.expand_path}
+            Could not symlink file: #{src}
             #{dirname} is not writable. You should change its permissions.
             EOS
         else
           raise <<-EOS.undent
-            Could not symlink file: #{src.expand_path}
+            Could not symlink file: #{src}
             #{self} may already exist.
             #{dirname} may not be writable.
             EOS
