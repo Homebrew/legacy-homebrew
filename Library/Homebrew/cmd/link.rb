@@ -52,6 +52,17 @@ module Homebrew extend self
   # an exception is thrown, its output starts on a new line.
   def print str, &block
     Kernel.print str
+
+    STDERR.extend Module.new {
+      def puts(*args)
+        unless $did_puts
+          STDOUT.puts
+          $did_puts = true
+        end
+        super
+      end
+    }
+
     puts_capture = Class.new do
       def self.puts(*args)
         $did_puts = true
