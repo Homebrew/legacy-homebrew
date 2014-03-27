@@ -18,6 +18,9 @@ class LibtorrentRasterbar < Formula
              "--prefix=#{prefix}",
              "--with-boost=#{boost.opt_prefix}" ]
 
+    # Build python bindings requires forcing usage of the mt version of boost_python.
+    # Be aware that if using a brewed python, boost will have to be built from source
+    # to ensure that boost_python is linked against the brewed python runtime.
     if build.with? "python"
       args << "--enable-python-binding"
       args << "--with-boost-python=boost_python-mt"
