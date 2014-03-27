@@ -6,6 +6,12 @@ class Ledger < Formula
   sha1 'cb0891f4770a33ba5cdbd6693b400ec0ff0b81da'
   head 'https://github.com/ledger/ledger.git', :branch => 'master'
 
+  bottle do
+    sha1 "700ac683623689a4086afaa64340609a8fdd53d1" => :mavericks
+    sha1 "c9dd5c87767ed914f1631c4d3095d97a91a005a6" => :mountain_lion
+    sha1 "4e0ec05ccbf893ea1e1d482253c972e0472267e4" => :lion
+  end
+
   resource 'utfcpp' do
     url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
     sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
