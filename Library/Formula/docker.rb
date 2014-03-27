@@ -7,9 +7,9 @@ class Docker < Formula
   option "without-completions", "Disable bash/zsh completions"
 
   bottle do
-    sha1 "b05505850b41b6d2498d3f5f372762c621f70555" => :mavericks
-    sha1 "ecdb854ee7903a042f684f6acd2cca1142b0a374" => :mountain_lion
-    sha1 "b26ecae5bfb99bcec8aa532b2e721a0cec4f7427" => :lion
+    sha1 "eafc56bfc492a625714d8ce48b554b6d07579e06" => :mavericks
+    sha1 "3151d6a5d9cf556335cb29584f9e6249b9975742" => :mountain_lion
+    sha1 "898802f9b8c436e6f312efe93eefe4e7bf594562" => :lion
   end
 
   depends_on "go" => :build
