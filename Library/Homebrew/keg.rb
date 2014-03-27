@@ -17,6 +17,18 @@ class Keg < Pathname
     case d when 'LinkedKegs' then HOMEBREW_LIBRARY/d else HOMEBREW_PREFIX/d end
   end
 
+  # These paths relative to the keg's share directory should always be real
+  # directories in the prefix, never symlinks.
+  SHARE_PATHS = %w[
+    aclocal doc info locale man
+    man/man1 man/man2 man/man3 man/man4
+    man/man5 man/man6 man/man7 man/man8
+    man/cat1 man/cat2 man/cat3 man/cat4
+    man/cat5 man/cat6 man/cat7 man/cat8
+    applications gnome gnome/help icons
+    mime-info pixmaps sounds
+  ]
+
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
     path = path.realpath
@@ -116,12 +128,6 @@ class Keg < Pathname
 
     ObserverPathnameExtension.reset_counts!
 
-    share_mkpaths = %w[aclocal doc info locale man]
-    share_mkpaths.concat((1..8).map { |i| "man/man#{i}" })
-    share_mkpaths.concat((1..8).map { |i| "man/cat#{i}" })
-    # Paths used by Gnome Desktop support
-    share_mkpaths.concat %w[applications gnome gnome/help icons mime-info pixmaps sounds]
-
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
     link_dir('etc', mode) {:mkpath}
@@ -134,7 +140,7 @@ class Keg < Pathname
       when 'locale/locale.alias' then :skip_file
       when INFOFILE_RX then :info
       when LOCALEDIR_RX then :mkpath
-      when *share_mkpaths then :mkpath
+      when *SHARE_PATHS then :mkpath
       when /^icons\/.*\/icon-theme\.cache$/ then :skip_file
       # all icons subfolders should also mkpath
       when /^icons\// then :mkpath
