@@ -11,6 +11,9 @@ class Stan < Formula
     system "make bin/libstan.a"
     system "make -j2 bin/stanc"
     system "make bin/print"
+    #prefix.install "makefile"
+    prefix.install Dir["*"]
+    #prefix.install Dir["bin/*"]
   end
 
   test do
