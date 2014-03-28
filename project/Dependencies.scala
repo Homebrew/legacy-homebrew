@@ -21,7 +21,8 @@ object Dependencies {
     // Force netty version.  This avoids some Spark netty dependency problem.
     "io.netty" % "netty" % "3.6.6.Final",
     "org.apache.hadoop" % "hadoop-client" % "2.2.0-cdh5.0.0-beta-2" % "provided" excludeAll(excludeJackson,
-      excludeNetty, excludeAsm, excludeCglib)
+      excludeNetty, excludeAsm, excludeCglib),
+    "org.xerial.snappy" % "snappy-java" % "1.0.4.1"
   )
 
   lazy val logbackDeps = Seq(
