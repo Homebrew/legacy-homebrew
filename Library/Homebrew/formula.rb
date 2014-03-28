@@ -583,6 +583,13 @@ class Formula
         ENV.remove_cc_etc
       end
 
+      # Turn on argument filtering in the superenv compiler wrapper.
+      # We should probably have a better mechanism for this than adding
+      # special cases to this method.
+      if cmd == "python" && %w[setup.py build.py].include?(args.first)
+        ENV.refurbish_args
+      end
+
       rd.close
       $stdout.reopen wr
       $stderr.reopen wr
