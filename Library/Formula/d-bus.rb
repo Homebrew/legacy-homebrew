@@ -5,6 +5,12 @@ class DBus < Formula
   url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.8.0.tar.gz'
   sha256 '769f8c7282b535ccbe610f63a5f14137a5549834b0b0c8a783e90891b8d70b13'
 
+  bottle do
+    sha1 "c5451cd5e612aede575b53aa82ec39e173e89ec8" => :mavericks
+    sha1 "351c16b4e98d9fca2ad036d6034d8c3e5cc07cb7" => :mountain_lion
+    sha1 "66a8e71cb96abcb648bfa020a9f09f24bb4d7962" => :lion
+  end
+
   def install
     # Fix the TMPDIR to one D-Bus doesn't reject due to odd symbols
     ENV["TMPDIR"] = "/tmp"
