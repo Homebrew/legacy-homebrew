@@ -11,20 +11,23 @@ import org.scalatest.{FunSpec, BeforeAndAfter, BeforeAndAfterAll}
 import scala.collection.mutable
 
 object JobManagerSpec {
+  import collection.JavaConverters._
+
   val JobResultCacheSize = 30
   val NumCpuCores = Runtime.getRuntime.availableProcessors()  // number of cores to allocate. Required.
   val MemoryPerNode = "512m"  // Executor memory per node, -Xmx style eg 512m, 1G, etc.
   val MaxJobsPerContext = 2
   val config = {
-    val ConfigMap = Map[String, Any](
+    val ConfigMap = Map(
       "spark.jobserver.job-result-cache-size" -> JobResultCacheSize,
       "num-cpu-cores" -> NumCpuCores,
       "memory-per-node" -> MemoryPerNode,
       "spark.jobserver.max-jobs-per-context" -> MaxJobsPerContext,
       "akka.log-dead-letters" -> 0,
-      "spark.master" -> "\"local[4]\""
+      "spark.master" -> "local[4]",
+      "spark.jobserver.context-factory" -> "spark.jobserver.util.DefaultSparkContextFactory"
     )
-    ConfigFactory.parseString(ConfigMap.map { case (k, v) => k + " = " + v }.mkString("\n"))
+    ConfigFactory.parseMap(ConfigMap.asJava)
   }
 
   def getNewSystem = ActorSystem("test", config)
