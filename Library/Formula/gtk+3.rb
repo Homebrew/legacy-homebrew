@@ -38,8 +38,4 @@ class Gtkx3 < Formula
     # Prevent a conflict between this and Gtk+2
     mv bin/'gtk-update-icon-cache', bin/'gtk3-update-icon-cache'
   end
-
-  test do
-    system "#{bin}/gtk3-demo"
-  end
 end
