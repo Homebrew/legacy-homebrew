@@ -18,20 +18,14 @@ class Rrdtool < Formula
   def install
     ENV.libxml2
 
-    which_perl = which 'perl'
-    which_ruby = which 'ruby'
-
-    opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby.realpath == RUBY_PATH
-    opoo "Using system Perl. RRD module will be installed to /Library/Perl/... If you want to install for your default Perl instead run 'brew install rrdtool --env=std'" if which_perl.to_s == "/usr/bin/perl"
-
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
       --disable-tcl
       --with-tcllib=/usr/lib
+      --disable-perl-site-install
+      --disable-ruby-site-install
     ]
-    args << "--enable-perl-site-install" if which_perl.to_s == "/usr/bin/perl"
-    args << "--enable-ruby-site-install" if which_ruby.realpath == RUBY_PATH
 
     system "./configure", *args
 
