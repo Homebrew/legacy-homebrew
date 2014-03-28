@@ -6,9 +6,9 @@ class GobjectIntrospection < Formula
   sha256 '96ea75e9679083e7fe39a105e810e2ead2d708abf189a5ba420bfccfffa24e98'
 
   bottle do
-    sha1 "08dcb543c8b7f2c8fc112278db752159edb420ba" => :mavericks
-    sha1 "a65b28dde0014e5cf622657ac913e6ad5fd29709" => :mountain_lion
-    sha1 "2adfc7d361663cd40780b19cccebfb275a180791" => :lion
+    sha1 "dbd65331012abd0570bfb8b115870a4ece51aad7" => :mavericks
+    sha1 "e553b3f537e998ef50ca42f1224aa981558ee29d" => :mountain_lion
+    sha1 "bb2353a61e8a05d4ef3e2a9f113d8ff348106e79" => :lion
   end
 
   option :universal
