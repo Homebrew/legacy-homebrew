@@ -2,8 +2,8 @@ require 'formula'
 
 class AtSpi2Atk < Formula
   homepage 'http://a11y.org'
-  url 'http://ftp.gnome.org/pub/gnome/sources/at-spi2-atk/2.10/at-spi2-atk-2.10.2.tar.xz'
-  sha256 'e348a811c4830251f0c3018019072e7979ef35fb9b7f0b1b0a0dd1e66942d0f5'
+  url 'http://ftp.gnome.org/pub/gnome/sources/at-spi2-atk/2.12/at-spi2-atk-2.12.0.tar.xz'
+  sha256 '3b5467c9f169812bc36a4245355b7deedea0a62eb22153df96ced88dcd1c3633'
 
   depends_on 'pkg-config' => :build
   depends_on 'at-spi2-core'
