@@ -4,12 +4,6 @@ require "formula_lock"
 require "ostruct"
 
 class Keg < Pathname
-  def initialize path
-    super path
-    raise "#{to_s} is not a valid keg" unless parent.parent.realpath == HOMEBREW_CELLAR.realpath
-    raise "#{to_s} is not a directory" unless directory?
-  end
-
   # locale-specific directories have the form language[_territory][.codeset][@modifier]
   LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
   INFOFILE_RX = %r[info/([^.].*?\.info|dir)$]
@@ -38,6 +32,12 @@ class Keg < Pathname
       path = path.parent.realpath # realpath() prevents root? failing
     end
     raise NotAKegError, "#{path} is not inside a keg"
+  end
+
+  def initialize path
+    super path
+    raise "#{to_s} is not a valid keg" unless parent.parent.realpath == HOMEBREW_CELLAR.realpath
+    raise "#{to_s} is not a directory" unless directory?
   end
 
   def uninstall
