@@ -558,7 +558,6 @@ class Formula
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
-    removed_ENV_variables = {}
     rd, wr = IO.pipe
 
     # remove "boring" arguments so that the important ones are more likely to
@@ -570,10 +569,6 @@ class Formula
     end
     ohai "#{cmd} #{pretty_args*' '}".strip
 
-    if cmd.to_s.start_with? "xcodebuild"
-      removed_ENV_variables.update(ENV.remove_cc_etc)
-    end
-
     @exec_count ||= 0
     @exec_count += 1
     logd = HOMEBREW_LOGS/name
@@ -582,6 +577,12 @@ class Formula
 
     fork do
       ENV['HOMEBREW_CC_LOG_PATH'] = logfn
+
+      # TODO system "xcodebuild" is deprecated, this should be removed soon.
+      if cmd.to_s.start_with? "xcodebuild"
+        ENV.remove_cc_etc
+      end
+
       rd.close
       $stdout.reopen wr
       $stderr.reopen wr
@@ -613,7 +614,6 @@ class Formula
     end
   ensure
     rd.close unless rd.closed?
-    ENV.update(removed_ENV_variables)
   end
 
   private
