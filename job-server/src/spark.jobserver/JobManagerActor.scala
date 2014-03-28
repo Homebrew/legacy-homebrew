@@ -36,7 +36,7 @@ object JobManagerActor {
  * It also creates and supervises a JobResultActor and JobStatusActor, although an existing JobResultActor
  * can be passed in as well.
  *
- * == Configuration ==
+ * == contextConfig ==
  * {{{
  *  num-cpu-cores = 4         # Total # of CPU cores to allocate across the cluster
  *  memory-per-node = 512m    # -Xmx style memory string for total memory to use for executor on one node
@@ -44,6 +44,16 @@ object JobManagerActor {
  *  max-jobs-per-context = 4  # Max # of jobs to run at the same time
  *  spark.mesos.coarse = true  # per-context, rather than per-job, resource allocation
  *  rdd-ttl = 24 h            # time-to-live for RDDs in a SparkContext.  Don't specify = forever
+ * }}}
+ *
+ * == global configuration ==
+ * {{{
+ *   spark {
+ *     jobserver {
+ *       max-jobs-per-context = 16      # Number of jobs that can be run simultaneously per context
+ *       context-factory = "spark.jobserver.DefaultSparkContextFactory"
+ *     }
+ *   }
  * }}}
  */
 class JobManagerActor(dao: JobDAO,
@@ -64,10 +74,7 @@ class JobManagerActor(dao: JobDAO,
   var sparkEnv: SparkEnv = _
   protected var rddManagerActor: ActorRef = _
 
-  private val maxRunningJobs = {
-    val cpuCores = Runtime.getRuntime.availableProcessors
-    Try(contextConfig.getInt("spark.jobserver.max-jobs-per-context")).getOrElse(cpuCores)
-  }
+  private val maxRunningJobs = SparkJobUtils.getMaxRunningJobs(config)
   private val currentRunningJobs = new AtomicInteger(0)
 
   // When the job cache retrieves a jar from the DAO, it also adds it to the SparkContext for distribution
@@ -230,14 +237,15 @@ class JobManagerActor(dao: JobDAO,
     }
   }
 
+  // Use our classloader and a factory to create the SparkContext.  This ensures the SparkContext will use
+  // our class loader when it spins off threads, and ensures SparkContext can find the job and dependent jars
+  // when doing serialization, for example.
   def createContextFromConfig(contextName: String = contextName): SparkContext = {
-    val conf = SparkJobUtils.configToSparkConf(config, contextConfig, contextName)
-
-    // Set number of akka threads
-    // TODO: need to figure out how many extra threads spark needs, besides the job threads
-    conf.set("spark.akka.threads", (maxRunningJobs + 4).toString)
-
-    new SparkContext(conf)
+    val factoryClassName = config.getString("spark.jobserver.context-factory")
+    val factoryClass = jarLoader.loadClass(factoryClassName)
+    val factory = factoryClass.newInstance.asInstanceOf[spark.jobserver.util.SparkContextFactory]
+    Thread.currentThread.setContextClassLoader(jarLoader)
+    factory.makeContext(config, contextConfig, contextName)
   }
 
   // This method should be called after each job is succeeded or failed
