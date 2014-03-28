@@ -16,6 +16,13 @@ class Mono < Formula
     sha1 "7f6715b8e569b6e7ad85c207311f145f688b3cf5"
   end
 
+  # help mono find its MonoPosixHelper lib when it is not in a system path
+  # see https://bugzilla.xamarin.com/show_bug.cgi?id=18555
+  patch do
+    url "https://bugzilla.xamarin.com/attachment.cgi?id=6399"
+    sha1 "d011dc55f341feea0bdb8aa645688b815910b734"
+  end
+
   def install
     # a working mono is required for the the build - monolite is enough
     # for the job
@@ -33,12 +40,6 @@ class Mono < Formula
     # mono-gdb.py and mono-sgen-gdb.py are meant to be loaded by gdb, not to be
     # run directly, so we move them out of bin
     libexec.install bin/"mono-gdb.py", bin/"mono-sgen-gdb.py"
-    # help mono find its MonoPosixHelper lib even when mono formula is not linked
-    # https://bugzilla.xamarin.com/show_bug.cgi?id=18555
-    mono_config = prefix/"etc/mono/config"
-    content = mono_config.read
-    content['"libMonoPosixHelper.dylib"'] = "\"#{lib}/libMonoPosixHelper.dylib\""
-    mono_config.atomic_write content
   end
 
   test do
