@@ -1,6 +1,7 @@
-require 'extend/pathname'
-require 'formula_lock'
-require 'ostruct'
+require "extend/pathname"
+require "keg_fix_install_names"
+require "formula_lock"
+require "ostruct"
 
 class Keg < Pathname
   def initialize path
@@ -311,5 +312,3 @@ class Keg < Pathname
     end
   end
 end
-
-require 'keg_fix_install_names'
