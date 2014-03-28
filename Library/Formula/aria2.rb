@@ -5,6 +5,13 @@ class Aria2 < Formula
   url 'https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.4/aria2-1.18.4.tar.bz2'
   sha1 '389829028d8e95f08d42a3bef00ab3237a4b246f'
 
+  bottle do
+    cellar :any
+    sha1 "83ea8bf0f0356ad51491dee88c6b8c1747daf8e5" => :mavericks
+    sha1 "cd2ce7a10e30a58c20554399bc7f9a115b1d7ca9" => :mountain_lion
+    sha1 "650cceb7cdf00bfc807a331c79523f941f1cbaec" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on :macos => :lion # Needs a c++11 compiler
 
