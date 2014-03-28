@@ -2,8 +2,8 @@ require 'formula'
 
 class GobjectIntrospection < Formula
   homepage 'http://live.gnome.org/GObjectIntrospection'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.38/gobject-introspection-1.38.0.tar.xz'
-  sha256 '3575e5d353c17a567fdf7ffaaa7aebe9347b5b0eee8e69d612ba56a9def67d73'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.40/gobject-introspection-1.40.0.tar.xz'
+  sha256 '96ea75e9679083e7fe39a105e810e2ead2d708abf189a5ba420bfccfffa24e98'
 
   bottle do
     sha1 "08dcb543c8b7f2c8fc112278db752159edb420ba" => :mavericks
