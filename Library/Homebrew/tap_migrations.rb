@@ -9,6 +9,7 @@ TAP_MIGRATIONS = {
   "dotwrp" => "homebrew/science",
   "drizzle" => "homebrew/boneyard",
   "grads" => "homebrew/binary",
+  "hwloc" => "homebrew/science",
   "ipopt" => "homebrew/science",
   "jscoverage" => "homebrew/boneyard",
   "jsl" => "homebrew/binary",
