@@ -13,30 +13,21 @@ class Stan < Formula
     system "make","bin/libstan.a"
     system "make", "-j2", "bin/stanc"
     system "make", "bin/print"
-    #(var/"stan-home").install "makefile"
-    #(var/"stan-home/bin").install Dir["bin/*"]
-    #(var/"stan-home").install "bin" => "bin"
-    mkdir_p "#{HOMEBREW_PREFIX}/var/stan-home/bin"
-    cp "bin/libstan.a", "#{HOMEBREW_PREFIX}/var/stan-home/bin"
-    #(var/"stan-home/make").install Dir["make/*"]
-    #(var/"stan-home/src").install Dir["src/*"]
-    #(var/"stan-home/lib").install Dir["lib/*"]
-    #doc.install Dir["doc/*"]
-    #lib.install Dir["lib/*"]
-    #(prefix/"src").install Dir["src/*"]
-    # prefix.install Dir["*"]
-    #bin.install Dir["bin/*"]
+    (var/"stan-home").install "makefile"
+    (var/"stan-home/bin").install Dir["bin/*"]
+    (var/"stan-home/make").install Dir["make/*"]
+    (var/"stan-home/src").install Dir["src/*"]
+    (var/"stan-home/lib").install Dir["lib/*"]
+    doc.install Dir["doc/*"]
   end
 
   test do
-    # `test do` will create, run in and delete a temporary directory.
-    #
-    # This test will fail and we won't accept that! It's enough to just replace
-    # "false" with the main program this formula installs, but it'd be nice if you
-    # were more thorough. Run the test with `brew test stan`.
-    #
-    # The installed folder is not in the path, so use the entire path to any
-    # executables being tested: `system "#{bin}/program", "do", "something"`.
-    system "stan"
+    cd "#{HOMEBREW_PREFIX}/var/stan-home/"
+    system "make", "-j4", "O=0", "test-headers"
+    system "make", "-j4", "O=0", "src/test/unit"
+    system "make", "-j4", "O=0", "src/test/unit-agrad-rev"
+    system "make", "-j4", "O=0", "src/test/unit-agrad-fwd"
+    system "make", "-j4", "O=0", "src/test/unit-distribution"
+    system "make", "-j4", "O=3", "src/test/CmdStan/models"
   end
 end
