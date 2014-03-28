@@ -11,7 +11,7 @@ class JobManagerActorAdHocSpec extends JobManagerSpec {
   before {
     dao = new InMemoryDAO
     manager =
-      system.actorOf(JobManagerActor.props(dao, "test", "local[4]", JobManagerSpec.config, true))
+      system.actorOf(JobManagerActor.props(dao, "test", JobManagerSpec.config, true))
   }
 
 }

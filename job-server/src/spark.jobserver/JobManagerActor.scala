@@ -25,9 +25,9 @@ object JobManagerActor {
   case class JobLoadingError(err: Throwable)
 
   // Akka 2.2.x style actor props for actor creation
-  def props(dao: JobDAO, name: String, master: String, config: Config, isAdHoc: Boolean,
+  def props(dao: JobDAO, name: String, config: Config, isAdHoc: Boolean,
             resultActorRef: Option[ActorRef] = None) =
-    Props(classOf[JobManagerActor], dao, name, master, config, isAdHoc, resultActorRef)
+    Props(classOf[JobManagerActor], dao, name, config, isAdHoc, resultActorRef)
 }
 
 /**
@@ -48,7 +48,6 @@ object JobManagerActor {
  */
 class JobManagerActor(dao: JobDAO,
                       contextName: String,
-                      sparkMaster: String,
                       contextConfig: Config,
                       isAdHoc: Boolean,
                       resultActorRef: Option[ActorRef] = None) extends InstrumentedActor {
@@ -232,7 +231,7 @@ class JobManagerActor(dao: JobDAO,
   }
 
   def createContextFromConfig(contextName: String = contextName): SparkContext = {
-    val conf = SparkJobUtils.configToSparkConf(config, contextConfig, sparkMaster, contextName)
+    val conf = SparkJobUtils.configToSparkConf(config, contextConfig, contextName)
 
     // Set number of akka threads
     // TODO: need to figure out how many extra threads spark needs, besides the job threads
