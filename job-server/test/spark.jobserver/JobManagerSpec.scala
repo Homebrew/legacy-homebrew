@@ -178,6 +178,21 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll with
       }
     }
 
+    it("should properly serialize case classes and other job jar classes") {
+      manager ! JobManagerActor.Initialize
+      expectMsgClass(classOf[JobManagerActor.Initialized])
+
+      uploadTestJar()
+      manager ! JobManagerActor.StartJob("demo", classPrefix + "ZookeeperJob", stringConfig,
+        syncEvents ++ errorEvents)
+      expectMsgPF(4 seconds, "Did not get JobResult") {
+        case JobResult(_, result: Array[Product]) =>
+          result.length should equal (1)
+          result(0).getClass.getName should include ("Animal")
+      }
+      expectNoMsg()
+    }
+
     it ("should refuse to start a job when too many jobs in the context are running") {
       val jobSleepTimeMillis = 2000L
       val jobConfig = ConfigFactory.parseString("sleep.time.millis = " + jobSleepTimeMillis)

@@ -66,6 +66,15 @@ class CacheRddByNameJob extends SparkTestJob with NamedRddSupport {
   }
 }
 
+case class Animal(name: String)
+
+class ZookeeperJob extends SparkTestJob {
+  def runJob(sc: SparkContext, config: Config): Any = {
+    val dd = sc.parallelize(Seq(Animal("dog"), Animal("cat"), Animal("horse")))
+    dd.filter(animal => animal.name.startsWith("ho")).collect()
+  }
+}
+
 object SimpleObjectJob extends SparkTestJob {
   def runJob(sc: SparkContext, config: Config): Any = {
     val rdd = sc.parallelize(Seq(1, 2, 3))
