@@ -118,14 +118,30 @@ class Python < Formula
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
     system "make", "quicktest" if build.include? 'quicktest'
 
-    # Post-install, fix up the site-packages so that user-installed Python
-    # software survives minor updates, such as going from 2.7.0 to 2.7.1:
+    # Fixes setting Python build flags for certain software
+    # See: https://github.com/Homebrew/homebrew/pull/20182
+    # http://bugs.python.org/issue3588
+    inreplace lib_cellar/"config/Makefile" do |s|
+      s.change_make_var! "LINKFORSHARED",
+        "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
+    end
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
+
+    (libexec/'setuptools').install resource('setuptools')
+    (libexec/'pip').install resource('pip')
+  end
+
+  def post_install
+    # Fix up the site-packages so that user-installed Python software survives
+    # minor updates, such as going from 2.7.0 to 2.7.1:
+
     # Create a site-packages in HOMEBREW_PREFIX/lib/python2.7/site-packages
     site_packages.mkpath
+
     # Symlink the prefix site-packages into the cellar.
+    site_packages_cellar.delete if site_packages_cellar.exist?
     site_packages_cellar.parent.install_symlink site_packages
 
     # Write our sitecustomize.py
@@ -142,8 +158,8 @@ class Python < Formula
     setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
 
-    resource('setuptools').stage { system "#{bin}/python", *setup_args }
-    resource('pip').stage { system "#{bin}/python", *setup_args }
+    (libexec/'setuptools').cd { system "#{bin}/python", *setup_args }
+    (libexec/'pip').cd { system "#{bin}/python", *setup_args }
 
     # And now we write the distutils.cfg
     cfg = lib_cellar/"distutils/distutils.cfg"
@@ -155,14 +171,6 @@ class Python < Formula
       force=1
       prefix=#{HOMEBREW_PREFIX}
     EOF
-
-    # Fixes setting Python build flags for certain software
-    # See: https://github.com/Homebrew/homebrew/pull/20182
-    # http://bugs.python.org/issue3588
-    inreplace lib_cellar/"config/Makefile" do |s|
-      s.change_make_var! "LINKFORSHARED",
-        "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
-    end
   end
 
   def distutils_fix_superenv(args)
