@@ -2,8 +2,8 @@ require 'formula'
 
 class Qiv < Formula
   homepage 'http://spiegl.de/qiv/'
-  url 'http://spiegl.de/qiv/download/qiv-2.3.tgz'
-  sha1 '48ec74194c87e3100c3b435e61e0174e87e7b51c'
+  url 'http://spiegl.de/qiv/download/qiv-2.3.1.tgz'
+  sha1 '8f8455951047ed41c773b9214375d02f7acaf814'
 
   head 'http://bitbucket.org/ciberandy/qiv/', :using => :hg
 
