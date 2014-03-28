@@ -69,7 +69,6 @@ class LocalContextSupervisorActor(dao: JobDAO) extends InstrumentedActor {
   import scala.concurrent.duration._
 
   val config = context.system.settings.config
-  val master = config.getString("spark.master")
   val defaultContextConfig = config.getConfig("spark.context-settings")
   val contextTimeout = config.getMilliseconds("spark.jobserver.context-creation-timeout").toInt / 1000
   import context.dispatcher   // to get ExecutionContext for futures
@@ -150,7 +149,7 @@ class LocalContextSupervisorActor(dao: JobDAO) extends InstrumentedActor {
 
     val resultActorRef = if (isAdHoc) Some(globalResultActor) else None
     val ref = context.actorOf(Props(
-      classOf[JobManagerActor], dao, name, master, contextConfig, isAdHoc, resultActorRef), name)
+      classOf[JobManagerActor], dao, name, contextConfig, isAdHoc, resultActorRef), name)
     (ref ? JobManagerActor.Initialize)(Timeout(timeoutSecs.second)).onComplete {
       case Failure(e: Exception) =>
         logger.error("Exception after sending Initialize to JobManagerActor", e)

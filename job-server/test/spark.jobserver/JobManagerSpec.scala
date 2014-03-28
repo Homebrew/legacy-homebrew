@@ -21,7 +21,8 @@ object JobManagerSpec {
       "num-cpu-cores" -> NumCpuCores,
       "memory-per-node" -> MemoryPerNode,
       "spark.jobserver.max-jobs-per-context" -> MaxJobsPerContext,
-      "akka.log-dead-letters" -> 0
+      "akka.log-dead-letters" -> 0,
+      "spark.master" -> "\"local[4]\""
     )
     ConfigFactory.parseString(ConfigMap.map { case (k, v) => k + " = " + v }.mkString("\n"))
   }

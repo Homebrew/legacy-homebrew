@@ -9,7 +9,7 @@ class JobManagerActorSpec extends JobManagerSpec {
   before {
     dao = new InMemoryDAO
     manager =
-      system.actorOf(JobManagerActor.props(dao, "test", "local[4]", JobManagerSpec.config, false))
+      system.actorOf(JobManagerActor.props(dao, "test", JobManagerSpec.config, false))
   }
 
   describe("starting jobs") {

@@ -18,14 +18,13 @@ object SparkJobUtils {
    * @param config the overall Job Server configuration (Typesafe Config)
    * @param contextConfig the Typesafe Config specific to initializing this context
    *                      (typically based on particular context/job)
-   * @param the spark master URL, ie "local[4]", "spark://<host>:7077"
    * @param the context name
    * @return a SparkConf with everything properly configured
    */
   def configToSparkConf(config: Config, contextConfig: Config,
-                        sparkMaster: String, contextName: String): SparkConf = {
+                        contextName: String): SparkConf = {
     val conf = new SparkConf()
-    conf.setMaster(sparkMaster)
+    conf.setMaster(config.getString("spark.master"))
         .setAppName(contextName)
 
     for (cores <- Try(contextConfig.getInt("num-cpu-cores"))) {
