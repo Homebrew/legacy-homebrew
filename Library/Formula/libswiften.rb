@@ -2,8 +2,15 @@ require 'formula'
 
 class Libswiften < Formula
   homepage 'http://swift.im/swiften'
-  url 'http://swift.im/downloads/releases/swift-2.0/swift-2.0.tar.gz'
-  sha1 'b04ba098fffb1edc2ef0215957371c249458f0be'
+
+  stable do
+    url "http://swift.im/downloads/releases/swift-2.0/swift-2.0.tar.gz"
+    sha1 "b04ba098fffb1edc2ef0215957371c249458f0be"
+
+    # Patch to include lock from boost. Taken from
+    # http://comments.gmane.org/gmane.linux.redhat.fedora.extras.cvs/957411
+    patch :DATA
+  end
 
   head do
     url 'git://swift.im/swift'
@@ -13,10 +20,6 @@ class Libswiften < Formula
   depends_on 'scons' => :build
   depends_on 'libidn'
   depends_on 'boost'
-
-  # Patch to include lock from boost. Taken from
-  # http://comments.gmane.org/gmane.linux.redhat.fedora.extras.cvs/957411
-  def patches; DATA unless build.head?; end
 
   def install
     boost = Formula["boost"]

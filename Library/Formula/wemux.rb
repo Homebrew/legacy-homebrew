@@ -2,10 +2,17 @@ require 'formula'
 
 class Wemux < Formula
   homepage 'https://github.com/zolrath/wemux'
-  url 'https://github.com/downloads/zolrath/wemux/wemux-3.1.0.tar.gz'
-  sha1 '707752b31dae746a28f0a33dfee21035820b1c15'
+  url 'https://github.com/zolrath/wemux/archive/v3.2.0.tar.gz'
+  sha1 '099e6afbd5313aadd9a4dae7fc416f3846888624'
 
   head 'https://github.com/zolrath/wemux.git'
+
+  bottle do
+    cellar :any
+    sha1 "519923d54faac98ebfc0772354a0c605e2566519" => :mavericks
+    sha1 "215e25340fc5fee5cd838668f928b530ad71a56f" => :mountain_lion
+    sha1 "01222b27c6a031f3a0ac1e01079b48664cc0c3af" => :lion
+  end
 
   depends_on 'tmux'
 

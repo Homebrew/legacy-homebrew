@@ -10,11 +10,7 @@ class KyotoTycoon < Formula
   depends_on 'lua' unless build.include? "no-lua"
   depends_on 'kyoto-cabinet'
 
-  def patches
-    if MacOS.version >= :mavericks
-      DATA
-    end
-  end
+  patch :DATA if MacOS.version >= :mavericks
 
   def install
     # Locate kyoto-cabinet for non-/usr/local builds

@@ -7,7 +7,7 @@ class Glui < Formula
 
   # Fix compiler warnings in glui.h. Reported upstream:
   # http://sourceforge.net/p/glui/patches/12/
-  def patches; DATA; end
+  patch :DATA
 
   def install
     cd 'src' do

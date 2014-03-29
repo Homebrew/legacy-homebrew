@@ -7,11 +7,9 @@ class LibreadlineJava < Formula
 
   depends_on 'readline'
 
-  def patches
-    # Fix "non-void function should return a value"-Error
-    # https://sourceforge.net/tracker/?func=detail&atid=453822&aid=3566332&group_id=48669
-    DATA
-  end
+  # Fix "non-void function should return a value"-Error
+  # https://sourceforge.net/tracker/?func=detail&atid=453822&aid=3566332&group_id=48669
+  patch :DATA
 
   def install
     ENV['JAVA_HOME'] = `/usr/libexec/java_home`.chomp!

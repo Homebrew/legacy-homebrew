@@ -13,7 +13,7 @@ class Finch < Formula
   depends_on 'gnutls'
   depends_on 'libidn'
 
-  option 'purple' 'Only build libpurple'
+  option 'purple', 'Only build libpurple'
   option 'perl', 'Build libpurple with perl support'
 
   def install

@@ -4,6 +4,7 @@ class Gdal < Formula
   homepage 'http://www.gdal.org/'
   url 'http://download.osgeo.org/gdal/1.10.1/gdal-1.10.1.tar.gz'
   sha1 'b4df76e2c0854625d2bedce70cc1eaf4205594ae'
+  revision 1
 
   head do
     url 'https://svn.osgeo.org/gdal/trunk/gdal'
@@ -17,7 +18,7 @@ class Gdal < Formula
   option 'enable-mdb', 'Build with Access MDB driver (requires Java 1.6+ JDK/JRE, from Apple or Oracle).'
 
   depends_on :python => :recommended
-  depends_on :libpng
+  depends_on 'libpng'
   depends_on 'jpeg'
   depends_on 'giflib'
   depends_on 'libtiff'
@@ -53,6 +54,21 @@ class Gdal < Formula
     # Other libraries
     depends_on "xz" # get liblzma compression algorithm library from XZutils
     depends_on "poppler"
+  end
+
+  # Prevent build failure on 10.6 / 10.7: http://trac.osgeo.org/gdal/ticket/5197
+  # Fix build against MySQL 5.6.x: http://trac.osgeo.org/gdal/ticket/5284
+  patch :DATA
+
+  stable do
+    # Patch of configure that finds Mac Java for MDB driver (uses Oracle or Mac default JDK)
+    # TODO: Remove when future GDAL release includes a fix
+    # http://trac.osgeo.org/gdal/ticket/5267  (patch applied to trunk, 2.0 release milestone)
+    # Must come before DATA
+    patch do
+      url "https://gist.githubusercontent.com/dakcarto/6877854/raw/82ae81e558c0b6048336f0acb5d7577bd0a237d5/gdal-mdb-patch.diff"
+      sha1 "ea6c753df9e35abd90d7078f8a727eaab7f7d996"
+    end if build.include? "enable-mdb"
   end
 
   def get_configure_args
@@ -181,24 +197,6 @@ class Gdal < Formula
     args << (build.include?("enable-armadillo") ? "--with-armadillo=yes" : "--with-armadillo=no")
 
     return args
-  end
-
-  def patches
-    p = []
-
-    if build.stable?
-      # Patch of configure that finds Mac Java for MDB driver (uses Oracle or Mac default JDK)
-      # TODO: Remove when future GDAL release includes a fix
-      # http://trac.osgeo.org/gdal/ticket/5267  (patch applied to trunk, 2.0 release milestone)
-      # Must come before DATA
-      p << "https://gist.github.com/dakcarto/6877854/raw" if build.include? 'enable-mdb'
-
-      # Prevent build failure on 10.6 / 10.7: http://trac.osgeo.org/gdal/ticket/5197
-      # Fix build against MySQL 5.6.x: http://trac.osgeo.org/gdal/ticket/5284
-      p << DATA
-    end
-
-    return p
   end
 
   def install

@@ -8,13 +8,13 @@ class Par2 < Formula
   conflicts_with "par2tbb",
     :because => "par2 and par2tbb install the same binaries."
 
-  def patches
-    [
-      # Fixes compilation with GCC 4 and still required for clang
-      "http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-arch/par2cmdline/files/par2cmdline-0.4-gcc4.patch?revision=1.1",
-      # Clang doesn't like variable length arrays of non-POD types.
-      DATA
-    ]
+  # Clang doesn't like variable length arrays of non-POD types.
+  patch :DATA
+
+  # Fixes compilation with GCC 4 and still required for clang
+  patch do
+    url "http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-arch/par2cmdline/files/par2cmdline-0.4-gcc4.patch?revision=1.1"
+    sha1 "e91540f729115c5ddc210c93bdda34090e2a2cf1"
   end
 
   def install

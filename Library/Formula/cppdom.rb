@@ -9,7 +9,7 @@ class Cppdom < Formula
   depends_on 'boost'
 
   # Don't install to prefix/lib64
-  def patches; DATA; end
+  patch :DATA
 
   def install
     args = ["prefix=#{prefix}", "build_test=no", "var_type=optimized",

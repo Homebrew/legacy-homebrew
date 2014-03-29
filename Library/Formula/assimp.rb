@@ -2,21 +2,22 @@ require 'formula'
 
 class Assimp < Formula
   homepage 'http://assimp.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/assimp/assimp-3.0/assimp--3.0.1270-source-only.zip'
-  sha1 'e80a3a4326b649ed6585c0ce312ed6dd68942834'
-  head 'https://github.com/assimp/assimp.git'
 
-  depends_on 'cmake' => :build
-  depends_on 'boost'
+  stable do
+    url "https://downloads.sourceforge.net/project/assimp/assimp-3.0/assimp--3.0.1270-source-only.zip"
+    sha1 "e80a3a4326b649ed6585c0ce312ed6dd68942834"
 
-  def patches
-    return if build.head?
     # makes assimp3 compile with clang
     # Reported upstream http://sourceforge.net/p/assimp/discussion/817654/thread/381fa18a
     # and http://sourceforge.net/p/assimp/patches/43/
     # Committed in R1339, so when building HEAD no need for this patch
-    DATA
+    patch :DATA
   end
+
+  head 'https://github.com/assimp/assimp.git'
+
+  depends_on 'cmake' => :build
+  depends_on 'boost'
 
   def install
     system "cmake", ".", *std_cmake_args

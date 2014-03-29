@@ -2,9 +2,9 @@ require 'formula'
 
 class Global < Formula
   homepage 'http://www.gnu.org/software/global/'
-  url 'http://ftpmirror.gnu.org/global/global-6.2.10.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/global/global-6.2.10.tar.gz'
-  sha1 'aeaa31fec3ab693e75f659ff526c15da7c85c0f9'
+  url 'http://ftpmirror.gnu.org/global/global-6.2.11.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/global/global-6.2.11.tar.gz'
+  sha1 'b0f50213680ec3288988354c34e3b3ae1a42719e'
 
   head do
     url 'cvs://:pserver:anonymous:@cvs.savannah.gnu.org:/sources/global:global'

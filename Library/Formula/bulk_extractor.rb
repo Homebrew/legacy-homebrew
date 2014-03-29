@@ -12,10 +12,11 @@ class BulkExtractor < Formula
   depends_on 'exiv2' => :optional
   depends_on 'libewf' => :optional
 
-  def patches
-    # Error in exec install hooks; installing java GUI manually. Reported in
-    # https://groups.google.com/group/bulk_extractor-users/browse_thread/thread/ff7cc11e8e6d8e8d
-    "https://gist.github.com/raw/3785687/3a61d57539c2b9ecde44121b370db85ff9d4f86e/makefile.in.patch"
+  # Error in exec install hooks; installing java GUI manually. Reported in
+  # https://groups.google.com/group/bulk_extractor-users/browse_thread/thread/ff7cc11e8e6d8e8d
+  patch do
+    url "https://gist.github.com/raw/3785687/3a61d57539c2b9ecde44121b370db85ff9d4f86e/makefile.in.patch"
+    sha1 "0b597214c15505d84602a28b74fc01ce5aa0c902"
   end
 
   def install

@@ -34,19 +34,26 @@ end
 
 class Xulrunner < Formula
   homepage "https://developer.mozilla.org/docs/XULRunner"
-  url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/27.0.1/source/xulrunner-27.0.1.source.tar.bz2"
-  sha1 "c9c5a6142fc9c50113c18eb8b1fb9249c08c4aac"
+  url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/28.0/source/xulrunner-28.0.source.tar.bz2"
+  sha1 "7965105b34441ebfab650930dffa4648c85ac6c6"
+
+  bottle do
+    cellar :any
+    sha1 "74b0f65bedb9e93f02a8dd52dba5d18a8796cd72" => :mavericks
+    sha1 "7381000fb344c775bad16a65ddd213a5fd163bf1" => :mountain_lion
+    sha1 "d336479051b4079582036e017253f37f99b5af63" => :lion
+  end
 
   devel do
-    url "http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/28.0b8/source/xulrunner-28.0b8.source.tar.bz2"
-    sha1 "2c2bda033f7ce771b0aff82237551264911a32c3"
-    version "28.0b8"
+    url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/29.0b1/source/xulrunner-29.0b1.source.tar.bz2"
+    sha1 "80ea2209c0ea9316b5c8dc16208514d14c410c22"
+    version "29.0b1"
   end
 
   head do
-    url "http://ftp.mozilla.org/pub/mozilla.org/firefox/bundles/mozilla-central.hg|https://hg.mozilla.org/mozilla-central/",
+    url "https://ftp.mozilla.org/pub/mozilla.org/firefox/bundles/mozilla-central.hg|https://hg.mozilla.org/mozilla-central/",
       :using => HgBundleDownloadStrategy
-    depends_on "mercurial" => :build
+    depends_on :hg => :build
     depends_on "gettext" => :build
   end
 
@@ -57,6 +64,7 @@ class Xulrunner < Formula
   depends_on "gnu-tar" => :build
   depends_on "pkg-config" => :build
   depends_on "yasm"
+  depends_on "nss"
 
   fails_with :gcc do
     cause "Mozilla XULRunner only supports Clang on OS X"
@@ -68,7 +76,7 @@ class Xulrunner < Formula
 
   resource "autoconf213" do
     url "http://ftpmirror.gnu.org/autoconf/autoconf-2.13.tar.gz"
-    mirror "http://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz"
+    mirror "https://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz"
     sha1 "e4826c8bd85325067818f19b2b2ad2b625da66fc"
   end
 
@@ -89,20 +97,19 @@ class Xulrunner < Formula
       ac_add_options --disable-updater
       ac_add_options --disable-crashreporter
       ac_add_options --with-macos-sdk=#{MacOS.sdk_path}
+      ac_add_options --with-nss-prefix=#{Formula["nss"].opt_prefix}
     EOS
     # fixed usage of bsdtar with unsupported parameters (replaced with gnu-tar)
     inreplace "toolkit/mozapps/installer/packager.mk", "$(TAR) -c --owner=0 --group=0 --numeric-owner",
-              "#{Formula["gnu-tar"].bin}/gtar -c --owner=0 --group=0 --numeric-owner"
+              "#{Formula["gnu-tar"].opt_bin}/gtar -c --owner=0 --group=0 --numeric-owner"
 
-    # nss is not fully parallel build safe (fixes rare ld: library not found for -lplc4 issues)
-    ENV.deparallelize
     system "make", "-f", "client.mk", "build"
     system "make", "-f", "client.mk", "package"
 
     frameworks.mkpath
     if build.head?
       # update HEAD version here with every version bump
-      tar_path = "objdir/dist/xulrunner-30.0a1.en-US.mac64.tar.bz2"
+      tar_path = "objdir/dist/xulrunner-31.0a1.en-US.mac64.tar.bz2"
     else
       tar_path = "objdir/dist/xulrunner-#{version.to_s[/\d+\.\d+(\.\d+)?/]}.en-US.mac64.tar.bz2"
     end

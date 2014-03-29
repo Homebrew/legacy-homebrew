@@ -18,7 +18,7 @@ class Libpqxx < Formula
   #     in the configure phase output.
   # (2) Patched configure on darwin to fix incorrect assumption
   #     that true and false always live in /bin; on OS X they live in /usr/bin.
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}", "--enable-shared"

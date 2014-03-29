@@ -18,7 +18,7 @@ class BerkeleyDb < Formula
   # Fix build under Xcode 4.6
   # Double-underscore names are reserved, and __atomic_compare_exchange is now
   # a built-in, so rename this to something non-conflicting.
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # BerkeleyDB dislikes parallel builds

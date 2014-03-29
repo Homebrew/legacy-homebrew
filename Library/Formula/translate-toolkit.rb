@@ -6,10 +6,13 @@ class TranslateToolkit < Formula
   sha1 'c67d17f9c0a3a04e1d18e8e0eb4c2440a11ec5ab'
 
   def install
-    bin.mkpath
+    minor = `python -c 'import sys; print(sys.version_info[1])'`.chomp
+
+    ENV.prepend_create_path 'PYTHONPATH', lib/"python2.#{minor}/site-packages"
     system "python", "setup.py", "install",
              "--prefix=#{prefix}",
              "--install-scripts=#{bin}",
              "--install-data=#{libexec}"
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 end

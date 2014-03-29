@@ -11,9 +11,10 @@ class Cfengine < Formula
   depends_on 'tokyo-cabinet'
   depends_on 'libxml2' if MacOS.version < :mountain_lion
 
-  def patches
-    # Upstream patches for OS X compilation
-    %w{https://github.com/cfengine/core/commit/d03fcc2d38a4db0c79386aaef30597102bf45853.patch}
+  # Upstream patches for OS X compilation
+  patch do
+    url "https://github.com/cfengine/core/commit/d03fcc2d38a4db0c79386aaef30597102bf45853.patch"
+    sha1 "99c043fc158f790fa8cc327ffa1ebcc36deb6470"
   end
 
   def install

@@ -36,8 +36,8 @@ class Node < Formula
   sha1 '2340ec2dce1794f1ca1c685b56840dd515a271b2'
 
   devel do
-    url 'http://nodejs.org/dist/v0.11.11/node-v0.11.11.tar.gz'
-    sha1 '65b257ec6584bf339f06f58a8a02ba024e13f283'
+    url 'http://nodejs.org/dist/v0.11.12/node-v0.11.12.tar.gz'
+    sha1 'd991057af05dd70feb2126469ce279a2fe869e86'
   end
 
   head 'https://github.com/joyent/node.git'
@@ -68,9 +68,7 @@ class Node < Formula
       # Link npm manpages
       Pathname.glob("#{lib}/node_modules/npm/man/*").each do |man|
         dir = send(man.basename)
-        man.children.each do |file|
-          dir.install_symlink(file.relative_path_from(dir))
-        end
+        man.children.each { |file| dir.install_symlink(file) }
       end
 
       if build.with? "completion"

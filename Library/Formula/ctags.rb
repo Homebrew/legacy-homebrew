@@ -11,9 +11,7 @@ class Ctags < Formula
   end
 
   # fixes http://sourceforge.net/tracker/?func=detail&aid=3247256&group_id=6556&atid=106556
-  def patches
-    { :p2 => DATA }
-  end
+  patch :p2, :DATA
 
   def install
     if build.head?

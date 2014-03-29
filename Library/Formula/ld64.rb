@@ -38,17 +38,22 @@ class Ld64 < Formula
     build 5370
   end
 
-  def patches
-    {
-      :p0 => [
-        # Fixes logic on PPC branch islands
-        "https://trac.macports.org/export/103948/trunk/dports/devel/ld64/files/ld64-97-ppc-branch-island.patch",
-        # Remove LTO support
-        "https://trac.macports.org/export/103949/trunk/dports/devel/ld64/files/ld64-97-no-LTO.patch",
-        # Fix version number
-        "https://trac.macports.org/export/103951/trunk/dports/devel/ld64/files/ld64-version.patch"
-      ]
-    }
+  # Fixes logic on PPC branch islands
+  patch :p0 do
+    url "https://trac.macports.org/export/103948/trunk/dports/devel/ld64/files/ld64-97-ppc-branch-island.patch"
+    sha1 "e3f42a52e201a40272ca29119bced50a270659b8"
+  end
+
+  # Remove LTO support
+  patch :p0 do
+    url "https://trac.macports.org/export/103949/trunk/dports/devel/ld64/files/ld64-97-no-LTO.patch"
+    sha1 "3a6f482f87c08ac6135b7a36fdb131d82daf9ea1"
+  end
+
+  # Fix version number
+  patch :p0 do
+    url "https://trac.macports.org/export/103951/trunk/dports/devel/ld64/files/ld64-version.patch"
+    sha1 "42a15f2bd7de9b01d24dba8744cd4a36a2dec87b"
   end
 
   def install

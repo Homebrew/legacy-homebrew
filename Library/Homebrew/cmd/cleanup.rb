@@ -114,7 +114,7 @@ class Formula
         select{ |ff| ff.deps.map{ |d| d.to_s }.include? name }.
         map{ |ff| ff.rack.subdirs rescue [] }.
         flatten.
-        map{ |keg_path| Tab.for_keg(keg_path).send("HEAD") }.
+        map{ |keg_path| Tab.for_keg(keg_path).HEAD }.
         include? nil
     end
   end

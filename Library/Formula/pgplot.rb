@@ -17,12 +17,15 @@ class Pgplot < Formula
     version '1.0'
   end
 
-  def patches
-    # from MacPorts: https://trac.macports.org/browser/trunk/dports/graphics/pgplot/files
-    {:p0 => [
-     "https://trac.macports.org/export/89961/trunk/dports/graphics/pgplot/files/patch-makemake.diff",
-     "https://trac.macports.org/export/89961/trunk/dports/graphics/pgplot/files/patch-proccom.c.diff",
-    ]}
+  # from MacPorts: https://trac.macports.org/browser/trunk/dports/graphics/pgplot/files
+  patch :p0 do
+    url "https://trac.macports.org/export/89961/trunk/dports/graphics/pgplot/files/patch-makemake.diff"
+    sha1 "cb91d933f2350d1a4a33039b61b525db17407ff1"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/89961/trunk/dports/graphics/pgplot/files/patch-proccom.c.diff"
+    sha1 "8a20d20720ee3ca314331300bb9a87781d69d1d7"
   end
 
   def install

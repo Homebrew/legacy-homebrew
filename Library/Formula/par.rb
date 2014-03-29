@@ -6,10 +6,11 @@ class Par < Formula
   version '1.52'
   sha1 '4b83d2ec593bb45ee46d4b7c2bfc590e1f4a41a8'
 
-  def patches
-    # A patch by Jérôme Pouiller that adds support for multibyte
-    # charsets (like UTF-8), plus Debian packaging.
-    "http://www.nicemice.net/par/par_1.52-i18n.3.diff.gz"
+  # A patch by Jérôme Pouiller that adds support for multibyte
+  # charsets (like UTF-8), plus Debian packaging.
+  patch do
+    url "http://www.nicemice.net/par/par_1.52-i18n.3.diff.gz"
+    sha1 "2a4fec5c2509be0dbd32c4706c245326db6dfeac"
   end
 
   def install

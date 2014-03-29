@@ -10,12 +10,19 @@ class Partio < Formula
   depends_on 'doxygen' => :build
 
   # These fixes are upstream and can be removed in the next released version.
-  def patches
-    [
-      "https://github.com/wdas/partio/commit/5b80b00ddedaef9ffed19ea4e6773ed1dc27394e.patch",
-      "https://github.com/wdas/partio/commit/bdce60e316b699fb4fd813c6cad9d369205657c8.patch",
-      "https://github.com/wdas/partio/commit/e557c212b0e8e0c4830e7991541686d568853afd.patch"
-    ]
+  patch do
+    url "https://github.com/wdas/partio/commit/5b80b00ddedaef9ffed19ea4e6773ed1dc27394e.patch"
+    sha1 "3b25c1eba327404ea49c3c6f0d3fe71eb114da7d"
+  end
+
+  patch do
+    url "https://github.com/wdas/partio/commit/bdce60e316b699fb4fd813c6cad9d369205657c8.patch"
+    sha1 "51e83e18323895fd5cf1e8725f67db082d8eaa33"
+  end
+
+  patch do
+    url "https://github.com/wdas/partio/commit/e557c212b0e8e0c4830e7991541686d568853afd.patch"
+    sha1 "a7c7d6a2ab47db1961bdc522e62c99b54b547d02"
   end
 
   def install

@@ -18,10 +18,9 @@ class Libnet < Formula
   depends_on :libtool
 
   # Fix raw sockets support
-  def patches
-    {:p0 =>
-     "https://trac.macports.org/export/95336/trunk/dports/net/libnet11/files/patch-configure.in.diff"
-    }
+  patch :p0 do
+    url "https://trac.macports.org/export/95336/trunk/dports/net/libnet11/files/patch-configure.in.diff"
+    sha1 "f315227dbb205098c6aab92ee9ea17ce87e91384"
   end
 
   def install

@@ -6,9 +6,7 @@ class Cconv < Formula
   sha1 '9775f91fd5600d176552a88625aaa1f64ece09c1'
 
   # fix link with iconv: http://code.google.com/p/cconv/issues/detail?id=18
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

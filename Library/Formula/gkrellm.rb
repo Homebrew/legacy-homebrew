@@ -17,11 +17,14 @@ class Gkrellm < Formula
   depends_on 'gtk+'
   depends_on 'pango'
 
-  def patches
-    { :p0 => [
-      'https://trac.macports.org/export/115088/trunk/dports/sysutils/gkrellm/files/207a0519ac73290ba65b6e5f7446549a2a66f5d2.patch',
-      'https://trac.macports.org/export/115088/trunk/dports/sysutils/gkrellm/files/patch-src-Makefile.diff'
-    ]}
+  patch :p0 do
+    url "https://trac.macports.org/export/115088/trunk/dports/sysutils/gkrellm/files/207a0519ac73290ba65b6e5f7446549a2a66f5d2.patch"
+    sha1 "db6342bdecc9ff0470dccbc4b3d10b1c0d078c67"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/115088/trunk/dports/sysutils/gkrellm/files/patch-src-Makefile.diff"
+    sha1 "419adbc2d41b36a435fa1ba76106b63bf8879df9"
   end
 
   def install

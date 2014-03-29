@@ -88,7 +88,7 @@ class DependencyCollector
     if tags.empty?
       Dependency.new(spec, tags)
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
-      LanguageModuleDependency.new(tag, spec)
+      LanguageModuleDependency.new(tag, spec, tags[1])
     elsif HOMEBREW_TAP_FORMULA_REGEX === spec
       TapDependency.new(spec, tags)
     else
@@ -123,7 +123,7 @@ class DependencyCollector
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     when :ant        then ant_dep(spec, tags)
     else
-      raise "Unsupported special dependency #{spec.inspect}"
+      raise ArgumentError, "Unsupported special dependency #{spec.inspect}"
     end
   end
 

@@ -18,7 +18,7 @@ class Neon < Formula
   # to CPPFLAGS, which is an obsolete Apple-only switch that breaks
   # builds under non-Apple compilers and which may or may not do anything
   # anymore.
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?
@@ -33,7 +33,7 @@ class Neon < Formula
       "--with-ssl",
     ]
     if build.with? 'brewed-openssl'
-      args << "--with-libs=#{Formula['openssl']/opt_prefix}"
+      args << "--with-libs=#{Formula['openssl'].opt_prefix}"
     end
     system "./configure", *args
     system "make install"

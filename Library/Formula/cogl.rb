@@ -5,7 +5,12 @@ class Cogl < Formula
   url 'http://ftp.gnome.org/pub/gnome/sources/cogl/1.14/cogl-1.14.0.tar.xz'
   sha256 '276e8c9f5ff0fcd57c1eaf74cc245f41ad469a95a18ac831fac2d5960baa5ae8'
 
-  head 'git://git.gnome.org/cogl'
+  head do
+    url "git://git.gnome.org/cogl"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   option 'without-x', 'Build without X11 support'
 
@@ -15,11 +20,9 @@ class Cogl < Formula
   depends_on 'pango'
   depends_on :x11 => '2.5.1' if build.with? 'x'
 
-  def patches
-    # Patch from MacPorts, reported upstream at https://bugzilla.gnome.org/show_bug.cgi?id=708825
-    # https://trac.macports.org/browser/trunk/dports/graphics/cogl/files/patch-clock_gettime.diff
-    DATA
-  end
+  # Patch from MacPorts, reported upstream at https://bugzilla.gnome.org/show_bug.cgi?id=708825
+  # https://trac.macports.org/browser/trunk/dports/graphics/cogl/files/patch-clock_gettime.diff
+  patch :DATA
 
   def install
     system "./autogen.sh" if build.head?

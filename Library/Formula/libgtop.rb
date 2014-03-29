@@ -5,7 +5,6 @@ class Libgtop < Formula
   url 'http://ftp.gnome.org/pub/gnome/sources/libgtop/2.28/libgtop-2.28.5.tar.xz'
   sha1 '7104a7546252e3fb26d162e9b34e1f7df42236d1'
 
-  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
   depends_on 'gettext'

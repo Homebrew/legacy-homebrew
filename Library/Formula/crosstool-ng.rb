@@ -18,10 +18,8 @@ class CrosstoolNg < Formula
   # Avoid superenv to prevent https://github.com/mxcl/homebrew/pull/10552#issuecomment-9736248
   env :std
 
-  def patches
-    # Fixes clang offsetof compatability. Took better patch from #14547
-    DATA
-  end
+  # Fixes clang offsetof compatability. Took better patch from #14547
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}",

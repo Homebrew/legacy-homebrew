@@ -15,8 +15,19 @@ end
 
 class Zpython < Formula
   homepage 'https://bitbucket.org/ZyX_I/zsh'
-  url 'http://www.zsh.org/pub/zsh-5.0.5.tar.bz2'
-  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.bz2'
+
+  stable do
+    url "https://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.bz2"
+    mirror "http://www.zsh.org/pub/zsh-5.0.5.tar.bz2"
+
+    # Note, non-head version is completly implemented in this lengthy patch
+    # later on, we hope to use https://bitbucket.org/ZyX_I/zsh.git to download a tagged release.
+    patch do
+      url "https://gist.github.com/felixbuenemann/5790777/raw/cb5ea3b34617174e50fd3972792ec0944959de3c/zpython.patch"
+      sha1 "b6ebdaf5f18da9c152f17f9a93987596a37fbf14"
+    end
+  end
+
   # We prepend `00-` for the first version of the zpython module, which is
   # itself a patch on top of zsh and does not have own version number yes.
   # Hoping that upstream will provide tags that we could download properly.
@@ -31,14 +42,6 @@ class Zpython < Formula
   depends_on Zsh5Installed
   depends_on :python
   depends_on :autoconf => :build
-
-  def patches
-    # Note, non-head version is completly implemented in this lengthy patch
-    # later on, we hope to use https://bitbucket.org/ZyX_I/zsh.git to download a tagged release.
-    unless build.head?
-      {:p1 => "https://gist.github.com/felixbuenemann/5790777/raw/cb5ea3b34617174e50fd3972792ec0944959de3c/zpython.patch"}
-    end
-  end
 
   def install
     args = %W[

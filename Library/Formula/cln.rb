@@ -8,8 +8,9 @@ class Cln < Formula
   depends_on 'gmp'
 
   # Patch for Clang from MacPorts
-  def patches
-    "https://trac.macports.org/export/114806/trunk/dports/math/cln/files/patch-clang.diff"
+  patch do
+    url "https://trac.macports.org/export/114806/trunk/dports/math/cln/files/patch-clang.diff"
+    sha1 "0e95e34b7b821fe8ddfc04c099cf5b9d72fc9093"
   end
 
   def install

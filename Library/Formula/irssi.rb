@@ -18,7 +18,7 @@ class Irssi < Formula
   end
 
   # Fix Perl build flags and paths in man page
-  def patches; DATA; end
+  patch :DATA
 
   def install
     args =%W[

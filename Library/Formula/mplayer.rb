@@ -2,10 +2,25 @@ require 'formula'
 
 class Mplayer < Formula
   homepage 'http://www.mplayerhq.hu/'
-  url 'http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.1.1.tar.xz'
-  sha1 'ba2f3bd1442d04b17b0143680850273d928689c1'
 
-  head 'svn://svn.mplayerhq.hu/mplayer/trunk', :using => StrictSubversionDownloadStrategy
+  stable do
+    url "http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.1.1.tar.xz"
+    sha1 "ba2f3bd1442d04b17b0143680850273d928689c1"
+
+    # Fix compilation on 10.9, adapted from upstream revision r36500
+    patch do
+      url "https://gist.github.com/jacknagel/7441175/raw/37657c264a6a3bb4d30dee14538c367f7ffccba9/vo_corevideo.h.patch"
+      sha1 "92717335aed9ec5d01fcf62f9787c6d50cf5d911"
+    end
+  end
+
+  head do
+    url "svn://svn.mplayerhq.hu/mplayer/trunk", :using => StrictSubversionDownloadStrategy
+
+    # When building SVN, configure prompts the user to pull FFmpeg from git.
+    # Don't do that.
+    patch :DATA
+  end
 
   option 'with-x', 'Build with X11 support'
   option 'without-osd', 'Build without OSD'
@@ -25,19 +40,6 @@ class Mplayer < Formula
     build 211
     cause 'Inline asm errors during compile on 32bit Snow Leopard.'
   end unless MacOS.prefer_64_bit?
-
-  def patches
-    p = []
-    if build.head?
-      # When building SVN, configure prompts the user to pull FFmpeg from git.
-      # Don't do that.
-      p << DATA
-    else
-      # Fix compilation on 10.9, adapted from upstream revision r36500
-      p << "https://gist.github.com/jacknagel/7441175/raw/37657c264a6a3bb4d30dee14538c367f7ffccba9/vo_corevideo.h.patch"
-    end
-    p
-  end
 
   def install
     # It turns out that ENV.O1 fixes link errors with llvm.

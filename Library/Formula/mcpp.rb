@@ -8,7 +8,7 @@ class Mcpp < Formula
   # stpcpy is a macro on OS X; trying to define it as an extern is invalid.
   # Patch from ZeroC fixing EOL comment parsing
   # http://www.zeroc.com/forums/bug-reports/5309-mishap-slice-compilers.html#post23231
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -84,8 +84,8 @@ def interactive_shell f=nil
     ENV['HOMEBREW_DEBUG_INSTALL'] = f.name
   end
 
-  fork {exec ENV['SHELL'] }
-  Process.wait
+  Process.wait fork { exec ENV['SHELL'] }
+
   unless $?.success?
     puts "Aborting due to non-zero exit status"
     exit $?
@@ -95,13 +95,13 @@ end
 module Homebrew
   def self.system cmd, *args
     puts "#{cmd} #{args*' '}" if ARGV.verbose?
-    fork do
+    pid = fork do
       yield if block_given?
       args.collect!{|arg| arg.to_s}
       exec(cmd.to_s, *args) rescue nil
       exit! 1 # never gets here unless exec failed
     end
-    Process.wait
+    Process.wait(pid)
     $?.success?
   end
 end
@@ -170,8 +170,11 @@ def puts_columns items, star_items=[]
 end
 
 def which cmd, path=ENV['PATH']
-  dir = path.split(File::PATH_SEPARATOR).find {|p| File.executable? File.join(p, cmd)}
-  Pathname.new(File.join(dir, cmd)) unless dir.nil?
+  path.split(File::PATH_SEPARATOR).find do |p|
+    pcmd = File.join(p, cmd)
+    return Pathname.new(pcmd) if File.executable?(pcmd) && !File.directory?(pcmd)
+  end
+  return nil
 end
 
 def which_editor
@@ -361,7 +364,7 @@ module GitHub extend self
   end
 
   def print_pull_requests_matching(query)
-    return if ENV['HOMEBREW_NO_GITHUB_API']
+    return [] if ENV['HOMEBREW_NO_GITHUB_API']
     puts "Searching pull requests..."
 
     open_or_closed_prs = issues_matching(query, :type => "pr")

@@ -81,8 +81,10 @@ ARGV.named.each do |arg|
     status, filename = line.split
     # Don't try and do anything to removed files.
     if (status =~ /A|M/) && (filename =~ %r{Formula/.+\.rb$}) || tap(url)
-      formula = File.basename(filename, '.rb')
-      changed_formulae << Formula.factory(formula)
+      formula_name = File.basename(filename, '.rb')
+      formula = Formula[formula_name] rescue nil
+      next unless formula
+      changed_formulae << formula
     end
   end
 

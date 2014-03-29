@@ -23,13 +23,17 @@ class Wine < Formula
   end
 
   devel do
-    url 'https://downloads.sourceforge.net/project/wine/Source/wine-1.7.14.tar.bz2'
-    sha256 '2df1937e28936ba33e70a42fddcee01097ca0fbdd4dbf2c2f05d8a2ff5263e09'
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.15.tar.bz2"
+    sha256 "519137adc562d32035fcf7b110d6e65fdd7721af0b176567a2187397c63f1380"
+
+    # http://bugs.winehq.org/show_bug.cgi?id=34166
+    patch do
+      url "http://bugs.winehq.org/attachment.cgi?id=47639"
+      sha1 "c195f4b9c0af450c7dc3f396e8661ea5248f2b01"
+    end
   end
 
-  head do
-    url 'git://source.winehq.org/git/wine.git'
-  end
+  head "git://source.winehq.org/git/wine.git"
 
   env :std
 
@@ -40,7 +44,7 @@ class Wine < Formula
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
   depends_on :x11 => :recommended
-  depends_on 'freetype' if build.without? 'x11'
+  depends_on 'freetype'
   depends_on 'jpeg'
   depends_on 'libgphoto2'
   depends_on 'little-cms2'
@@ -68,13 +72,6 @@ class Wine < Formula
   fails_with :clang do
     build 421
     cause 'error: invalid operand for instruction lretw'
-  end
-
-  def patches
-    if build.devel?
-      # http://bugs.winehq.org/show_bug.cgi?id=34166
-      'http://bugs.winehq.org/attachment.cgi?id=47639'
-    end
   end
 
   # These libraries are not specified as dependencies, or not built as 32-bit:
@@ -117,12 +114,6 @@ class Wine < Formula
     # FIXME we include pkg-config files for libxml2 and libxslt. Is this really necessary?
     ENV.libxml2
     ENV.append "LDFLAGS", "-lxslt"
-
-    # Note: we get freetype from :x11, but if the freetype formula has been installed
-    # separately and not built universal, it's going to get picked up and break the build.
-    # We cannot use FREETYPE_LIBS because it is inserted after LDFLAGS and thus cannot
-    # take precedence over the homebrew freetype.
-    ENV.prepend "LDFLAGS", "-L#{MacOS::X11.lib}" if build.with? 'x11'
 
     args = ["--prefix=#{prefix}"]
     args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang

@@ -5,7 +5,7 @@ class Rlog < Formula
   url 'https://rlog.googlecode.com/files/rlog-1.4.tar.gz'
   sha1 '9cd86b4ceec3988f0a17730a8987110233797dcd'
 
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"

@@ -2,26 +2,28 @@ require 'formula'
 
 class Bash < Formula
   homepage 'http://www.gnu.org/software/bash/'
-  url 'http://ftpmirror.gnu.org/bash/bash-4.2.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/bash/bash-4.2.tar.gz'
-  sha256 'a27a1179ec9c0830c65c6aa5d7dab60f7ce1a2a608618570f96bfa72e95ab3d8'
-  version '4.2.45'
+
+  stable do
+    url "http://ftpmirror.gnu.org/bash/bash-4.2.tar.gz"
+    mirror "http://ftp.gnu.org/gnu/bash/bash-4.2.tar.gz"
+    sha256 "a27a1179ec9c0830c65c6aa5d7dab60f7ce1a2a608618570f96bfa72e95ab3d8"
+    version "4.2.45"
+
+    # Vendor the patches. The mirrors are unreliable for getting the patches,
+    # and the more patches there are, the more unreliable they get. Upstream
+    # patches can be found in: http://ftpmirror.gnu.org/bash/bash-4.2-patches
+    patch :p0 do
+      url "https://gist.github.com/jacknagel/4008180/raw/1509a257060aa94e5349250306cce9eb884c837d/bash-4.2-001-045.patch"
+      sha1 "f10d42cf4a7bc6d5599d705d270a602e02dfd517"
+    end
+  end
 
   head 'git://git.savannah.gnu.org/bash.git'
 
   depends_on 'readline'
 
-  # Vendor the patches. The mirrors are unreliable for getting the patches,
-  # and the more patches there are, the more unreliable they get. Upstream
-  # patches can be found in: http://ftpmirror.gnu.org/bash/bash-4.2-patches
-  def patches
-    # http://article.gmane.org/gmane.comp.shells.bash.bugs/20242
-    p = { :p1 => DATA }
-    if build.stable?
-      p[:p0] = "https://gist.github.com/jacknagel/4008180/raw/1509a257060aa94e5349250306cce9eb884c837d/bash-4.2-001-045.patch"
-    end
-    p
-  end
+  # http://article.gmane.org/gmane.comp.shells.bash.bugs/20242
+  patch :DATA
 
   def install
     # When built with SSH_SOURCE_BASHRC, bash will source ~/.bashrc when

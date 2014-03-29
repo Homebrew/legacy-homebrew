@@ -2,8 +2,19 @@ require 'formula'
 
 class Liblwgeom < Formula
   homepage 'http://postgis.net'
-  url 'http://download.osgeo.org/postgis/source/postgis-2.1.1.tar.gz'
-  sha1 'eaff009fb22b8824f89e5aa581e8b900c5d8f65b'
+
+  stable do
+    url "http://download.osgeo.org/postgis/source/postgis-2.1.1.tar.gz"
+    sha1 "eaff009fb22b8824f89e5aa581e8b900c5d8f65b"
+
+      # Strip all the PostgreSQL functions from PostGIS configure.ac, to allow
+      # building liblwgeom.dylib without needing PostgreSQL
+      # NOTE: this will need to be maintained per postgis version
+    patch do
+      url "https://gist.github.com/dakcarto/7458788/raw/8df39204eef5a1e5671828ded7f377ad0f61d4e1/postgis-config_strip-pgsql.diff"
+      sha1 "3d93c9ede79439f1c683a604f9d906f5c788c690"
+    end
+  end
 
   head do
     url 'http://svn.osgeo.org/postgis/trunk/'
@@ -20,15 +31,6 @@ class Liblwgeom < Formula
   depends_on 'proj'
   depends_on 'geos'
   depends_on 'json-c'
-
-  def patches
-    if build.stable?
-      # Strip all the PostgreSQL functions from PostGIS configure.ac, to allow
-      # building liblwgeom.dylib without needing PostgreSQL
-      # NOTE: this will need to be maintained per postgis version
-      "https://gist.github.com/dakcarto/7458788/raw/8df39204eef5a1e5671828ded7f377ad0f61d4e1/postgis-config_strip-pgsql.diff"
-    end
-  end
 
   def install
     # See postgis.rb for comments about these settings

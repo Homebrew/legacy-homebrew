@@ -81,8 +81,9 @@ class Build
 
   def pre_superenv_hacks
     # Allow a formula to opt-in to the std environment.
-    ARGV.unshift '--env=std' if (f.env.std? or deps.any? { |d| d.name == 'scons' }) and
-      not ARGV.include? '--env=super'
+    if (f.env.std? || deps.any? { |d| d.name == "scons" }) && ARGV.env != "super"
+      ARGV.unshift "--env=std"
+    end
   end
 
   def expand_reqs
@@ -166,6 +167,8 @@ class Build
         interactive_shell f
       else
         f.prefix.mkpath
+
+        f.resources.each { |r| r.extend(ResourceDebugger) } if ARGV.debug?
 
         begin
           f.install

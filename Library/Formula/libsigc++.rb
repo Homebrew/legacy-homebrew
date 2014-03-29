@@ -11,14 +11,11 @@ class Libsigcxx < Formula
     sha1 "328a7b8efcfd560caae155d3acf25087c2a05462" => :lion
   end
 
-  depends_on 'xz' => :build
   option :cxx11
 
-  def patches
-      # apply this patch for C++11 mode
-      # see https://git.gnome.org/browse/libsigc++2/commit/tests/test_cpp11_lambda.cc?id=cd600a31fbf8e76e25f4be4c10c0645f090a9b80
-      DATA if build.cxx11?
-  end
+  # apply this patch for C++11 mode
+  # see https://git.gnome.org/browse/libsigc++2/commit/tests/test_cpp11_lambda.cc?id=cd600a31fbf8e76e25f4be4c10c0645f090a9b80
+  patch :DATA if build.cxx11?
 
   def install
     ENV.cxx11 if build.cxx11?

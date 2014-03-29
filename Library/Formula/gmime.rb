@@ -2,11 +2,10 @@ require 'formula'
 
 class Gmime < Formula
   homepage 'http://spruce.sourceforge.net/gmime/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gmime/2.6/gmime-2.6.19.tar.xz'
-  sha256 'affb402b991519f83fb9c88464a9c07891860df18246c0743689c027d773a14a'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gmime/2.6/gmime-2.6.20.tar.xz'
+  sha256 'e0a170fb264c2ae4cecd852f4e7aaddb8d58e8f3f0b569ce2d2a4704f55bdf65'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'libgpg-error' => :build
   depends_on 'glib'
 

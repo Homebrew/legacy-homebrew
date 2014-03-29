@@ -9,9 +9,7 @@ class MecabKoDic < Formula
   depends_on :automake
   depends_on 'mecab-ko'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}",

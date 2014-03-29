@@ -11,7 +11,6 @@ class Gtkmm < Formula
     sha1 "4cc024301f11dd741da9c229ec7e083dcd92613a" => :lion
   end
 
-  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'glibmm'
   depends_on 'gtk+'

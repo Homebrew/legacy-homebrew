@@ -8,7 +8,6 @@ class Cclive < Formula
   conflicts_with 'clozure-cl', :because => 'both install a ccl binary'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'quvi'
   depends_on 'boost'
   depends_on 'pcre'

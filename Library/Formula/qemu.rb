@@ -17,8 +17,9 @@ class Qemu < Formula
   depends_on 'vde' => :optional
   depends_on 'sdl' => :optional
 
-  def patches
-    {:p0 => ['https://trac.macports.org/export/97499%20/trunk/dports/emulators/qemu/files/patch-configure.diff']}
+  patch :p0 do
+    url "https://trac.macports.org/export/97499%20/trunk/dports/emulators/qemu/files/patch-configure.diff"
+    sha1 "3cba7a61e2a63c73f45d086300a4c42f2ff7de17"
   end
 
   def install

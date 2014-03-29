@@ -8,11 +8,14 @@ class Liboil < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
 
-  def patches
-    { :p0 => [
-      "https://trac.macports.org/export/89276/trunk/dports/devel/liboil/files/patch-liboil_liboilcpu-x86.c.diff",
-      "https://trac.macports.org/export/89276/trunk/dports/devel/liboil/files/host_cpu.diff"
-    ]}
+  patch :p0 do
+    url "https://trac.macports.org/export/89276/trunk/dports/devel/liboil/files/patch-liboil_liboilcpu-x86.c.diff"
+    sha1 "6e5043b0f493533a824ea251296e8a8d390a3eb5"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/89276/trunk/dports/devel/liboil/files/host_cpu.diff"
+    sha1 "08a0021cca90be8394d7ed5fe0e61d6f25618193"
   end
 
   def install

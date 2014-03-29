@@ -7,16 +7,20 @@ class Libssh2 < Formula
 
   bottle do
     cellar :any
-    sha1 "521d10a3fee016c550a520777b863170814deefd" => :mavericks
-    sha1 "c070043e006da160d36f8fd9ff6dabe757181c40" => :mountain_lion
-    sha1 "0e7776c9e56b639013d8a50cdc932d8a3f81a150" => :lion
+    revision 1
+    sha1 "77561b594fe158e8ce1d9abf8e4aac2534008438" => :mavericks
+    sha1 "09c45c7ad01aba94465be34c390ca6547a92ef88" => :mountain_lion
+    sha1 "12f1f78301ce481c34eed2abca5c79d11798dd1d" => :lion
   end
+
+  depends_on "openssl"
 
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--with-openssl",
+                          "--with-libssl-prefix=#{Formula['openssl'].opt_prefix}",
                           "--with-libz"
     system "make install"
   end

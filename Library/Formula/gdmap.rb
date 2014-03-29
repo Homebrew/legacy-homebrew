@@ -16,9 +16,7 @@ class Gdmap < Formula
   #The first patch turns off this disablement, making the code work fine as intended
   #The second patch is to remove an unused system header import on one of the files.
   #This header file doesn't exist in OSX and the program compiles and runs fine without it.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

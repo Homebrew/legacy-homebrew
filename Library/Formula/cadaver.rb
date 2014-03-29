@@ -11,9 +11,7 @@ class Cadaver < Formula
   depends_on 'neon'
 
   # enable build with the latest neon
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     neon_prefix = Formula['neon'].opt_prefix

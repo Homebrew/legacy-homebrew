@@ -11,10 +11,11 @@ class Wxmac < Formula
     sha1 "a1d9c9c5698d7459d2dce266647b04312dcc12e5" => :lion
   end
 
-  def patches
-    # Upstream patch for starting non-bundled apps like gnuplot, see:
-    # http://trac.wxwidgets.org/ticket/15613
-    {:p2 => "http://trac.wxwidgets.org/changeset/75142/wxWidgets/trunk/src/osx/cocoa/utils.mm?format=diff&new=75142"}
+  # Upstream patch for starting non-bundled apps like gnuplot, see:
+  # http://trac.wxwidgets.org/ticket/15613
+  patch :p2 do
+    url "http://trac.wxwidgets.org/changeset/75142/wxWidgets/trunk/src/osx/cocoa/utils.mm?format=diff&new=75142"
+    sha1 "f8f09838a8ac8ca9c16b2ac1bd8f938a7974f5f1"
   end
 
   def install

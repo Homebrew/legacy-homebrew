@@ -2,14 +2,14 @@ require "formula"
 
 class Mongroup < Formula
   homepage "https://github.com/jgallen23/mongroup"
-  url "https://github.com/jgallen23/mongroup/archive/0.4.0.tar.gz"
-  sha1 "b6472e325016353afaac04528e3226dc80401e95"
+  url "https://github.com/jgallen23/mongroup/archive/0.4.1.tar.gz"
+  sha1 "fa0f7b1e43ff3963f4851f378478a86a362dd345"
 
   bottle do
     cellar :any
-    sha1 "4bbb2d481dfe45155e4dee9d19dcb6bfa7ebb4a0" => :mavericks
-    sha1 "3509859c251caa6902fe5647ef1e76db63efbab4" => :mountain_lion
-    sha1 "99a09ceb9c043124e1210ccc253e15812dd4ab4a" => :lion
+    sha1 "362393e9e2409030379af478625bc1eac846acef" => :mavericks
+    sha1 "a813a9be26dd962ab7dd1a2e4f8b53adcb082b25" => :mountain_lion
+    sha1 "988c86f7ef36e75354dc676028d5ed560ecd3ae5" => :lion
   end
 
   depends_on "mon"

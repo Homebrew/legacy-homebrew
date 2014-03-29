@@ -23,7 +23,7 @@ class Ipe < Formula
   # Recommend we take upstream's recommendation and set ENV vars for
   # the paths to override those in configure.
   # @adamv
-  def patches; DATA; end
+  patch :DATA
 
   fails_with :clang do
     build 318

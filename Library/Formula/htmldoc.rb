@@ -1,23 +1,19 @@
 require 'formula'
 
 class Htmldoc < Formula
-  homepage 'http://www.msweet.org/projects.php?Z1'
-  url 'http://www.msweet.org/files/project1/htmldoc-1.8.27-source.tar.bz2'
-  sha1 '472908e0aafed1cedfbacd8ed3168734aebdec4b'
+  homepage "http://www.msweet.org/projects.php?Z1"
+  url "http://www.msweet.org/files/project1/htmldoc-1.8.28-source.tar.bz2"
+  sha1 "44ac8b5f116383e9ae44bb1fd7d8caf6e3edf9c2"
+  revision 1
 
-  # Fixes building with libpng-1.5, from upstream svn r1668 via Fedora
-  # Remove at version 1.8.28. cf. https://github.com/Homebrew/homebrew/issues/15915
-  def patches
-    { :p0 => 'http://pkgs.fedoraproject.org/cgit/htmldoc.git/plain/htmldoc-1.8.27-libpng15.patch?h=f18' }
-  end
+  depends_on "libpng"
+  depends_on "jpeg"
 
   def install
-    ENV.append_to_cflags "-I#{HOMEBREW_PREFIX}/include"
-
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

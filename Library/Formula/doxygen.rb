@@ -16,9 +16,7 @@ class Doxygen < Formula
   depends_on 'qt' if build.with? 'doxywizard'
   depends_on 'llvm' => 'with-clang' if build.with? 'libclang'
 
-  def patches
-    DATA if build.with? 'doxywizard'
-  end
+  patch :DATA if build.with? 'doxywizard'
 
   def install
     # libclang is installed under #{HOMEBREW_PREFIX}/opt/llvm/

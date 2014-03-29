@@ -8,16 +8,15 @@ class Socat < Formula
   devel do
     url 'http://www.dest-unreach.org/socat/download/socat-2.0.0-b6.tar.bz2'
     sha1 '8873c8ab721bc301bfd5026872bace9e01e7bfac'
+    patch :DATA
   end
 
   depends_on 'readline'
 
-  def patches
-    # Socat devs are aware; see:
-    # https://trac.macports.org/ticket/32044
-    p = { :p0 => "https://trac.macports.org/export/90442/trunk/dports/sysutils/socat/files/patch-xioexit.c.diff" }
-    p[:p1] = DATA if build.devel?
-    p
+  # Socat devs are aware; see: https://trac.macports.org/ticket/32044
+  patch :p0 do
+    url "https://trac.macports.org/export/90442/trunk/dports/sysutils/socat/files/patch-xioexit.c.diff"
+    sha1 "e555d20551f44cddc2613687ff31ec7f0ef09f79"
   end
 
   def install

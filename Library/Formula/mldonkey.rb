@@ -4,13 +4,14 @@ class Mldonkey < Formula
   homepage 'http://mldonkey.sourceforge.net/Main_Page'
   url 'https://downloads.sourceforge.net/project/mldonkey/mldonkey/3.1.3/mldonkey-3.1.3.tar.bz2'
   sha1 '424386f277e84df55a2cbab213fae60787e42c8b'
+  revision 1
 
   option "with-x", "Build mldonkey with X11 support"
 
   depends_on 'pkg-config' => :build
   depends_on 'objective-caml'
   depends_on 'gd'
-  depends_on :libpng
+  depends_on 'libpng'
 
   if build.with? "x"
     depends_on 'librsvg'
@@ -18,8 +19,9 @@ class Mldonkey < Formula
   end
 
   # Fix gd detection, there are various upstream tickets referencing this
-  def patches
-    { :p0 => "https://trac.macports.org/export/113436/trunk/dports/net/mldonkey/files/patch-config-configure.diff" }
+  patch :p0 do
+    url "https://trac.macports.org/export/113436/trunk/dports/net/mldonkey/files/patch-config-configure.diff"
+    sha1 "4c2fb3f8337f12533a03940834c1fb4bd7eaa9bf"
   end
 
   def install

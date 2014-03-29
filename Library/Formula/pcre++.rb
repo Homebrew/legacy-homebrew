@@ -7,10 +7,8 @@ class Pcrexx < Formula
 
   depends_on 'pcre'
 
-  def patches
-    # Fix building with libc++. Patch sent to maintainer.
-    DATA
-  end
+  # Fix building with libc++. Patch sent to maintainer.
+  patch :DATA
 
   def install
     pcre = Formula["pcre"].opt_prefix

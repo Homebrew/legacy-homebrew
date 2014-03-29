@@ -25,20 +25,21 @@ class Lua < Formula
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
   # See: https://github.com/Homebrew/homebrew/pull/5043
-  def patches
-    p = [DATA]
-    # sigaction provided by posix signalling power patch from
-    # http://lua-users.org/wiki/LuaPowerPatches
-    if build.with? 'sigaction'
-      p << 'http://lua-users.org/files/wiki_insecure/power_patches/5.1/sig_catch.patch'
-    end
-    # completion provided by advanced readline power patch from
-    # http://lua-users.org/wiki/LuaPowerPatches
-    if build.with? 'completion'
-      p << 'http://luajit.org/patches/lua-5.1.4-advanced_readline.patch'
-    end
-    p
-  end
+  patch :DATA
+
+  # sigaction provided by posix signalling power patch from
+  # http://lua-users.org/wiki/LuaPowerPatches
+  patch do
+    url "http://lua-users.org/files/wiki_insecure/power_patches/5.1/sig_catch.patch"
+    sha1 "19f361f0c590f80fccd033486cbee6c9dc8616c8"
+  end if build.with? "sigaction"
+
+  # completion provided by advanced readline power patch from
+  # http://lua-users.org/wiki/LuaPowerPatches
+  patch do
+    url "http://luajit.org/patches/lua-5.1.4-advanced_readline.patch"
+    sha1 "3cfe2eb027b51202923d20042ae37f3249508664"
+  end if build.with? "completion"
 
   def install
     ENV.universal_binary if build.universal?

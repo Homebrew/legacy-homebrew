@@ -9,7 +9,7 @@ class Trafficserver < Formula
   depends_on 'pcre'
 
   #remove some amd64 compiler options that fail on Snow Leopard
-  def patches; DATA; end if MacOS.version == :snow_leopard
+  patch :DATA if MacOS.version == :snow_leopard
 
   def install
     # Needed for correct ./configure detections.

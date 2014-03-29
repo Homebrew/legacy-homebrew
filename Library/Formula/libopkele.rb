@@ -2,8 +2,16 @@ require 'formula'
 
 class Libopkele < Formula
   homepage 'http://kin.klever.net/libopkele/'
-  url 'http://kin.klever.net/dist/libopkele-2.0.4.tar.bz2'
-  sha1 '0c403d118efe6b4ee4830914448078c0ee967757'
+
+  stable do
+    url "http://kin.klever.net/dist/libopkele-2.0.4.tar.bz2"
+    sha1 "0c403d118efe6b4ee4830914448078c0ee967757"
+
+    patch do
+      url "https://github.com/hacker/libopkele/commit/9ff6244998b0d41e71f7cc7351403ad590e990e4.patch"
+      sha1 "f799213b0e65d42b96ff78eb3b5be4f0ec06afa5"
+    end
+  end
 
   head do
     url 'https://github.com/hacker/libopkele.git'
@@ -14,12 +22,6 @@ class Libopkele < Formula
   end
 
   depends_on 'pkg-config' => :build
-
-  def patches
-    unless build.head?
-      "https://github.com/hacker/libopkele/commit/9ff6244998b0d41e71f7cc7351403ad590e990e4.patch"
-    end
-  end
 
   def install
     system "./autogen.bash" if build.head?

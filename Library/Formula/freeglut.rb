@@ -12,9 +12,7 @@ class Freeglut < Formula
 
   depends_on :x11
 
-  def patches
-    DATA if MacOS.version >= :lion
-  end
+  patch :DATA if MacOS.version >= :lion
 
   def install
     ENV.universal_binary if build.universal?

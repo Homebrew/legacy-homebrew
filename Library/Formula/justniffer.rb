@@ -8,7 +8,6 @@ class Justniffer < Formula
   depends_on "boost"
 
   fails_with :clang do
-    build 500
     cause "Missing ext/stdio_filebuf.h; this is a GCC-specific header"
   end
 
@@ -28,9 +27,7 @@ class Justniffer < Formula
   # I submitted this patch to the upstream author, Oreste Notelli, on
   # 2011-12-22, so this patch will probably not be necessary with future
   # justniffer versions after 0.5.11.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}"

@@ -5,10 +5,8 @@ class NewickUtils < Formula
   url 'http://cegg.unige.ch/pub/newick-utils-1.6.tar.gz'
   sha1 'a9779054dcbf957618458ebfed07991fabeb3e19'
 
-  def patches
-    # don't bother testing nw_gen, it's known to fail on MacOSX
-    DATA
-  end
+  # don't bother testing nw_gen, it's known to fail on MacOSX
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",

@@ -5,10 +5,8 @@ class Osmosis < Formula
   url 'http://bretth.dev.openstreetmap.org/osmosis-build/osmosis-0.43-RELEASE.zip'
   sha256 'c891fe095b7f960f575cb39d9794c67cc7df9f4c665d2dda88dfb57b770f0bbe'
 
-  def patches
-    # need to adjust home dir for a clean install
-    DATA
-  end
+  # need to adjust home dir for a clean install
+  patch :DATA
 
   def install
     bin.install 'bin/osmosis'
