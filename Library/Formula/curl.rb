@@ -13,6 +13,7 @@ class Curl < Formula
   option 'with-ssh', 'Build with scp and sftp support'
   option 'with-ares', 'Build with C-Ares async DNS support'
   option 'with-gssapi', 'Build with GSSAPI/Kerberos authentication support.'
+  option 'with-libmetalink', 'Build with libmetalink support.'
 
   if MacOS.version >= :mountain_lion
     option 'with-openssl', 'Build with OpenSSL instead of Secure Transport'
@@ -46,7 +47,6 @@ class Curl < Formula
     args << (build.with?("libmetalink") ? "--with-libmetalink" : "--without-libmetalink")
     args << (build.with?("gssapi") ? "--with-gssapi" : "--without-gssapi")
     args << (build.with?("rtmp") ? "--with-librtmp" : "--without-librtmp")
-    args << (build.with?("gssapi") ? "--with-gssapi" : "--without-gssapi")
 
     if build.with? "ares"
       args << "--enable-ares=#{Formula["c-ares"].opt_prefix}"
