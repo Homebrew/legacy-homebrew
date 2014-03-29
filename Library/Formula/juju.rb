@@ -6,8 +6,8 @@ class Juju < Formula
   sha1 '0483d7a4d3fda0981f822d540cded855eb5afbda'
 
   devel do
-    url  'https://launchpad.net/juju-core/trunk/1.17.3/+download/juju-core_1.17.3.tar.gz'
-    sha1 'a4579476a6fb83722da869228b887c39e8ec8c7e'
+    url  'https://launchpad.net/juju-core/trunk/1.17.7/+download/juju-core_1.17.7.tar.gz'
+    sha1 '7dc39b3e9291cc62f78065af19bce68a81f25421'
   end
 
   depends_on 'go' => :build
