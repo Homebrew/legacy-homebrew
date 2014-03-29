@@ -495,7 +495,7 @@ class Formula
       "installed" => [],
       "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
       "keg_only" => keg_only?,
-      "dependencies" => deps.map {|dep| dep.to_s},
+      "dependencies" => deps.map(&:name),
       "conflicts_with" => conflicts.map(&:name),
       "options" => [],
       "caveats" => caveats
