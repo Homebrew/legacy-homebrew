@@ -29,6 +29,7 @@ class Vim < Formula
   depends_on :python => :recommended
   depends_on 'python3' => :optional
   depends_on 'lua' => :optional
+  depends_on 'luajit' => :optional
   depends_on 'gtk+' if build.with? 'client-server'
 
   conflicts_with 'ex-vi',
@@ -58,6 +59,10 @@ class Vim < Formula
     else
       opts << "--enable-gui=no"
       opts << "--without-x"
+    end
+
+    if build.with? 'luajit'
+      opts << '--with-luajit'
     end
 
     # XXX: Please do not submit a pull request that hardcodes the path
