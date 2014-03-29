@@ -29,6 +29,7 @@ class Vim < Formula
   depends_on :python => :recommended
   depends_on 'python3' => :optional
   depends_on 'lua' => :optional
+  depends_on 'luajit' => :optional
   depends_on 'gtk+' if build.with? 'client-server'
 
   conflicts_with 'ex-vi',
@@ -59,6 +60,8 @@ class Vim < Formula
       opts << "--enable-gui=no"
       opts << "--without-x"
     end
+
+    opts << "--with-luajit" if build.with? 'luajit'
 
     # XXX: Please do not submit a pull request that hardcodes the path
     # to ruby: vim can be compiled against 1.8.x or 1.9.3-p385 and up.
