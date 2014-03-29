@@ -497,16 +497,12 @@ class Formula
       "keg_only" => keg_only?,
       "dependencies" => deps.map(&:name),
       "conflicts_with" => conflicts.map(&:name),
-      "options" => [],
       "caveats" => caveats
     }
 
-    build.each do |opt|
-      hsh["options"] << {
-        "option" => "--"+opt.name,
-        "description" => opt.description
-      }
-    end
+    hsh["options"] = build.map { |opt|
+      { "option" => opt.flag, "description" => opt.description }
+    }
 
     if rack.directory?
       rack.subdirs.each do |keg|
