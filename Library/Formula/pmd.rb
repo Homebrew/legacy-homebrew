@@ -15,7 +15,7 @@ class Pmd < Formula
 
     # the run script references paths which don't account for the
     # file structure of this brew.
-    inreplace "#{libexec}/bin/run.sh", "/../lib", "/../libexec/lib"
+    inreplace "#{libexec}/bin/run.sh", "${script_dir}/../lib", "#{libexec}/lib"
   end
 
   def caveats; <<-EOS.undent
