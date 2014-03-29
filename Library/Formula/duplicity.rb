@@ -23,6 +23,7 @@ class Duplicity < Formula
 
   def install
     ENV.universal_binary if build.universal?
+    ENV.refurbish_args
 
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]

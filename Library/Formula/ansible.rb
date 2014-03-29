@@ -52,7 +52,7 @@ class Ansible < Formula
     # but since it doesn't use a makefile arg refurbishment
     # is normally not enabled.
     # See https://github.com/Homebrew/homebrew/issues/27639
-    ENV.append 'HOMEBREW_CCCFG', 'O'
+    ENV.refurbish_args
 
     resource('pycrypto').stage { system "python", *install_args }
     resource('pyyaml').stage { system "python", *install_args }
