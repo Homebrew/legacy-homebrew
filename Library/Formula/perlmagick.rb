@@ -5,18 +5,12 @@ class Perlmagick < Formula
   url "http://www.imagemagick.org/download/perl/PerlMagick-6.88.tar.gz"
   sha1 "f234b49a5c570f78d693c04924fe74ddb5595292"
 
+  depends_on "freetype"
   depends_on "imagemagick"
-  depends_on :freetype
 
   def install
-    freetype = if MacOS::X11.installed?
-      "#{MacOS::X11.include}/freetype2"
-    else
-      "#{Formula["freetype"].include}/freetype2"
-    end
-
     inreplace "Makefile.PL" do |s|
-      s.gsub! "-I/usr/include/freetype2", "-I#{freetype}"
+      s.gsub! "-I/usr/include/freetype2", "-I#{Formula["freetype"].include}/freetype2"
       s.gsub! "'INSTALLBIN'	=> '/usr/local/bin'", "'INSTALLBIN'	=> '#{bin}'"
       s.gsub! "# 'PREFIX'	=> '/usr/local'", "'PREFIX'	=> '#{prefix}'"
     end
@@ -30,10 +24,8 @@ class Perlmagick < Formula
     # Manually referencing the Perl lib version that PerlMagick uses.
     # This is specific to the version of PerlMagick and
     # will need to be validated for each PerlMagick update.
-
    <<-EOS.undent
      You might need to define the Perl library directory for PerlMagick.
-
        export PERL5LIB="#{HOMEBREW_PREFIX}/lib/perl5/site_perl/5.16.2"
    EOS
   end
