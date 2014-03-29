@@ -145,6 +145,11 @@ class Formula
     Keg.new(installed_prefix).version
   end
 
+  def installed_revision
+    require 'keg'
+    Keg.new(installed_prefix).revision
+  end
+
   # The directory in the cellar that the formula is installed to.
   # This directory contains the formula's name and version.
   def prefix(v=pkg_version)
@@ -491,6 +496,7 @@ class Formula
         "devel" => (devel.version.to_s if devel),
         "head" => (head.version.to_s if head)
       },
+      "revision" => revision,
       "installed" => [],
       "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
       "keg_only" => keg_only?,
@@ -513,6 +519,7 @@ class Formula
 
         hsh["installed"] << {
           "version" => keg.basename.to_s,
+          "revision" => tab.installed_revision,
           "used_options" => tab.used_options.map(&:flag),
           "built_as_bottle" => tab.built_bottle,
           "poured_from_bottle" => tab.poured_from_bottle
