@@ -7,7 +7,10 @@ class Pmd < Formula
 
   def install
     rm Dir["bin/*.{bat,cmd,dll,exe}"]
-    libexec.install Dir["*"]
+
+    doc.install "LICENSE", "NOTICE", "ReadMe.txt", "licences", Dir["docs/*"]
+    libexec.install "bin", "etc", "lib"
+
     bin.install_symlink "#{libexec}/bin/run.sh" => "pmd"
 
     # the run script references paths which don't account for the
@@ -16,7 +19,7 @@ class Pmd < Formula
   end
 
   def caveats; <<-EOS.undent
-    Use `pmd` instead of run.sh as described in the official documentation.
+    Run with `pmd` (instead of `run.sh` as described in the documentation).
     EOS
   end
 
