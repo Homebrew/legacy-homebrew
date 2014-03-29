@@ -2,8 +2,14 @@ require 'formula'
 
 class Gtkx3 < Formula
   homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.10/gtk+-3.10.7.tar.xz'
-  sha256 'b7e9de15385031cff43897e7e59f6692eaabf500f36eef80e6b9d6486ad49427'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.12/gtk+-3.12.0.tar.xz'
+  sha256 'eb69741cd4029b5a1ac9cf04d9de55dcf9e30777a63891750f5d20cc554b6e4b'
+
+  bottle do
+    sha1 "9e2614c2560243bb2739c260b0c883a019321c14" => :mavericks
+    sha1 "2dd7df2a669a1fb41512008160a4f2a383b35028" => :mountain_lion
+    sha1 "6c9814dd0d3eef328823f782da098dc345135491" => :lion
+  end
 
   depends_on :x11 => '2.5' # needs XInput2, introduced in libXi 1.3
   depends_on 'pkg-config' => :build
@@ -18,13 +24,15 @@ class Gtkx3 < Formula
   depends_on 'at-spi2-atk'
   depends_on 'gobject-introspection'
 
-  # Upstream patch to fix missing return value
-  patch do
-    url "https://git.gnome.org/browse/gtk+/patch/?id=1c42bb5e34783ea7170e96905d9d60e07e23933f"
-    sha1 "526ec4a577b24000ba88b32cac366a1c333c68eb"
-  end
-
   def install
+    # gtk-update-icon-cache is used during installation, and
+    # we don't want to add a dependency on gtk+2 just for this.
+    inreplace %w[ gtk/makefile.msc.in
+                  demos/gtk-demo/Makefile.in
+                  demos/widget-factory/Makefile.in ],
+                  /gtk-update-icon-cache --(force|ignore-theme-index)/,
+                  "#{buildpath}/gtk/\\0"
+
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -35,9 +43,5 @@ class Gtkx3 < Formula
     system "make install"
     # Prevent a conflict between this and Gtk+2
     mv bin/'gtk-update-icon-cache', bin/'gtk3-update-icon-cache'
-  end
-
-  test do
-    system "#{bin}/gtk3-demo"
   end
 end
