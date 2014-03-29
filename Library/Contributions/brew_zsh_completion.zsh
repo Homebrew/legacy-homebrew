@@ -52,7 +52,7 @@ _1st_arguments=(
   'search:search for a formula (/regex/ or string)'
   'server:start a local web app that lets you browse formulae (requires Sinatra)'
   'services:small wrapper around `launchctl` for supported formulae'
-  'switch:switch between different version of a formula'
+  'switch:switch between different versions of a formula'
   'tap:tap a new formula repository from GitHub, or list existing taps'
   'unlink:unlink a formula'
   'unpin:unpin specified formulae'
