@@ -43,6 +43,7 @@ class Qt < Formula
 
     args = ["-prefix", prefix,
             "-system-zlib",
+            "-qt-libtiff", "-qt-libpng", "-qt-libjpeg",
             "-confirm-license", "-opensource",
             "-nomake", "demos", "-nomake", "examples",
             "-cocoa", "-fast", "-release"]
