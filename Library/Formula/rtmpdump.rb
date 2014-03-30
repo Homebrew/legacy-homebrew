@@ -10,7 +10,7 @@ class Rtmpdump < Formula
 
   head 'git://git.ffmpeg.org/rtmpdump'
 
-  depends_on 'openssl' if MacOS.version <= :leopard
+  depends_on 'openssl'
 
   fails_with :llvm do
     build '2336'
