@@ -171,13 +171,13 @@ class Keg < Pathname
   def pkgconfig_files
     pkgconfig_files = []
 
-    # find .pc files, which are stored in lib/pkgconfig
-    pc_dir = self/'lib/pkgconfig'
-    if pc_dir.directory?
-      pc_dir.find do |pn|
+    %w[lib share].each do |dir|
+      pcdir = join(dir, "pkgconfig")
+
+      pcdir.find do |pn|
         next if pn.symlink? or pn.directory? or pn.extname != '.pc'
         pkgconfig_files << pn
-      end
+      end if pcdir.directory?
     end
 
     pkgconfig_files
