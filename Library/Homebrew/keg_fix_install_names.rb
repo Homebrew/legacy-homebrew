@@ -190,7 +190,7 @@ class Keg < Pathname
     lib.find do |pn|
       next if pn.symlink? or pn.directory? or pn.extname != '.la'
       libtool_files << pn
-    end
+    end if lib.directory?
     libtool_files
   end
 end
