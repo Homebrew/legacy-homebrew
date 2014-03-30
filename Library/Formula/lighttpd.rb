@@ -33,6 +33,7 @@ class Lighttpd < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --sbindir=#{bin}
       --with-openssl
       --with-ldap
       --with-zlib
@@ -51,8 +52,6 @@ class Lighttpd < Formula
     system "./autogen.sh"
     system "./configure", *args
     system "make install"
-
-    mv sbin, bin
 
     unless File.exist? config_path
       config_path.install Dir["doc/config/lighttpd.conf"]
