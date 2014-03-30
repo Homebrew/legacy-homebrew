@@ -1,23 +1,23 @@
-require 'formula'
+require "formula"
 
 class Ejabberd < Formula
-  homepage 'http://www.ejabberd.im'
+  homepage "http://www.ejabberd.im"
   url "http://www.process-one.net/downloads/ejabberd/13.12/ejabberd-13.12.tgz"
-  sha1 '3aedb5012fab49181961ff24bad3af581f4b30ee'
+  sha1 "3aedb5012fab49181961ff24bad3af581f4b30ee"
 
   depends_on "openssl"
   depends_on "erlang"
   depends_on "libyaml"
 
   option "32-bit"
-  option 'with-odbc', "Build with ODBC support"
-  option 'with-pgsql', "Build with PostgreSQL support"
-  option 'with-mysql', "Build with MySQL support"
+  option "with-odbc", "Build with ODBC support"
+  option "with-pgsql", "Build with PostgreSQL support"
+  option "with-mysql", "Build with MySQL support"
 
   def install
-    ENV['TARGET_DIR'] = ENV['DESTDIR'] = "#{lib}/ejabberd/erlang/lib/ejabberd-#{version}"
-    ENV['MAN_DIR'] = man
-    ENV['SBIN_DIR'] = sbin
+    ENV["TARGET_DIR"] = ENV["DESTDIR"] = "#{lib}/ejabberd/erlang/lib/ejabberd-#{version}"
+    ENV["MAN_DIR"] = man
+    ENV["SBIN_DIR"] = sbin
 
     if build.build_32_bit?
       %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
