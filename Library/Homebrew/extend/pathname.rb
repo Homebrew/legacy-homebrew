@@ -96,12 +96,38 @@ class Pathname
 
   # NOTE always overwrites
   def atomic_write content
-    require 'tempfile'
-    tf = Tempfile.new(self.basename.to_s)
+    require "tempfile"
+    tf = Tempfile.new(basename.to_s)
+    tf.binmode
     tf.write(content)
     tf.close
-    FileUtils.mv tf.path, self.to_s
+
+    begin
+      old_stat = stat
+    rescue Errno::ENOENT
+      old_stat = default_stat
+    end
+
+    FileUtils.mv tf.path, self
+
+    uid = Process.uid
+    gid = Process.groups.delete(old_stat.gid) { Process.gid }
+
+    begin
+      chown(uid, gid)
+      chmod(old_stat.mode)
+    rescue Errno::EPERM
+    end
   end
+
+  def default_stat
+    sentinel = parent.join(".brew.#{Process.pid}.#{rand(Time.now.to_i)}")
+    sentinel.open("w") { }
+    sentinel.stat
+  ensure
+    sentinel.unlink
+  end
+  private :default_stat
 
   def cp dst
     if file?
@@ -265,49 +291,49 @@ class Pathname
   # perhaps confusingly, this Pathname object becomes the symlink pointing to
   # the src paramter.
   def make_relative_symlink src
-    src = Pathname.new(src) unless src.kind_of? Pathname
+    dirname.mkpath
 
-    self.dirname.mkpath
-    Dir.chdir self.dirname do
+    dirname.cd do
       # NOTE only system ln -s will create RELATIVE symlinks
-      quiet_system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
-      if not $?.success?
-        if self.exist?
-          raise <<-EOS.undent
-            Could not symlink file: #{src.expand_path}
-            Target #{self} already exists. You may need to delete it.
-            To force the link and overwrite all other conflicting files, do:
-              brew link --overwrite formula_name
+      return if quiet_system("ln", "-s", src.relative_path_from(dirname), basename)
+    end
 
-            To list all files that would be deleted:
-              brew link --overwrite --dry-run formula_name
-            EOS
-        # #exist? will return false for symlinks whose target doesn't exist
-        elsif self.symlink?
-          raise <<-EOS.undent
-            Could not symlink file: #{src.expand_path}
-            Target #{self} already exists as a symlink to #{readlink}.
-            If this file is from another formula, you may need to
-            `brew unlink` it. Otherwise, you may want to delete it.
-            To force the link and overwrite all other conflicting files, do:
-              brew link --overwrite formula_name
+    if symlink? && exist?
+      raise <<-EOS.undent
+        Could not symlink file: #{src}
+        Target #{self} already exists as a symlink to #{readlink}.
+        If this file is from another formula, you may need to
+        `brew unlink` it. Otherwise, you may want to delete it.
+        To force the link and overwrite all other conflicting files, do:
+          brew link --overwrite formula_name
 
-            To list all files that would be deleted:
-              brew link --overwrite --dry-run formula_name
-            EOS
-        elsif !dirname.writable_real?
-          raise <<-EOS.undent
-            Could not symlink file: #{src.expand_path}
-            #{dirname} is not writable. You should change its permissions.
-            EOS
-        else
-          raise <<-EOS.undent
-            Could not symlink file: #{src.expand_path}
-            #{self} may already exist.
-            #{dirname} may not be writable.
-            EOS
-        end
-      end
+        To list all files that would be deleted:
+          brew link --overwrite --dry-run formula_name
+        EOS
+    elsif exist?
+      raise <<-EOS.undent
+        Could not symlink file: #{src}
+        Target #{self} already exists. You may need to delete it.
+        To force the link and overwrite all other conflicting files, do:
+          brew link --overwrite formula_name
+
+        To list all files that would be deleted:
+          brew link --overwrite --dry-run formula_name
+        EOS
+    elsif symlink?
+      unlink
+      make_relative_symlink(src)
+    elsif !dirname.writable_real?
+      raise <<-EOS.undent
+        Could not symlink file: #{src}
+        #{dirname} is not writable. You should change its permissions.
+        EOS
+    else
+      raise <<-EOS.undent
+        Could not symlink file: #{src}
+        #{self} may already exist.
+        #{dirname} may not be writable.
+        EOS
     end
   end
 

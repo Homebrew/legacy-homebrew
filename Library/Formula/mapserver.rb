@@ -4,6 +4,7 @@ class Mapserver < Formula
   homepage 'http://mapserver.org/'
   url 'http://download.osgeo.org/mapserver/mapserver-6.2.1.tar.gz'
   sha1 'bbe4234a4dcc179812c6598f68fe59a3dae63e44'
+  revision 1
 
   option "with-fastcgi", "Build with fastcgi support"
   option "with-geos", "Build support for GEOS spatial operations"
@@ -12,8 +13,8 @@ class Mapserver < Formula
 
   env :userpaths
 
-  depends_on :freetype
-  depends_on :libpng
+  depends_on 'freetype'
+  depends_on 'libpng'
   depends_on 'swig' => :build
   depends_on 'giflib'
   depends_on 'gd' => %w{with-freetype}

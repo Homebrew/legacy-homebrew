@@ -4,6 +4,7 @@ class Dcmtk < Formula
   homepage 'http://dicom.offis.de/dcmtk.php.en'
   url 'ftp://dicom.offis.de/pub/dicom/offis/software/dcmtk/dcmtk360/dcmtk-3.6.0.tar.gz'
   sha1 '469e017cffc56f36e834aa19c8612111f964f757'
+  revision 1
 
   option 'with-docs', 'Install development libraries/headers and HTML docs'
 

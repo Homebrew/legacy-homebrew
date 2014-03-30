@@ -15,7 +15,7 @@ class Tbb < Formula
   # tbb uses the wrong command (-v, verbose) to fetch the version from the
   # compiler, causing problems if the compiler returns additional debug info
   # Reported upstream at http://software.intel.com/en-us/forums/topic/475120
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # Intel sets varying O levels on each compile command.

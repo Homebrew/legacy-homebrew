@@ -4,6 +4,7 @@ class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
   url 'http://poppler.freedesktop.org/poppler-0.24.5.tar.xz'
   sha1 '7b7cabee85bd81a7e55c939740d5d7ccd7c0dda5'
+  revision 1
 
   option 'with-qt4', 'Build Qt backend'
   option 'with-glib', 'Build Glib backend' # requires cairo
@@ -11,6 +12,7 @@ class Poppler < Formula
 
   depends_on 'pkg-config' => :build
 
+  depends_on 'libpng'
   depends_on 'fontconfig'
   depends_on 'openjpeg'
 

@@ -22,6 +22,14 @@ class Ohcount < Formula
     system "./build", "ohcount"
     bin.install 'bin/ohcount'
   end
+
+  test do
+    path = testpath/"test.rb"
+    path.write "# comment\n puts\n puts\n"
+    stats = `#{bin}/ohcount -i #{path}`.split("\n")[-1]
+    assert_equal 0, $?.exitstatus
+    assert_equal ["ruby", "2", "1", "33.3%"], stats.split[0..3]
+  end
 end
 
 __END__

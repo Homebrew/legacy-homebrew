@@ -14,9 +14,7 @@ class Snownews < Formula
   # Author is aware of the issue tackled. However, no statement has been made whether
   # any future release will change to a more (homebrew) robust = cleaner = simpler basis.
   # homebrew reference added on 2013-07-06 to https://kiza.eu/software/snownews/downloading
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     args = ["--prefix=#{prefix}"]

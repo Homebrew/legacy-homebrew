@@ -17,7 +17,7 @@ class Voltdb < Formula
     end
 
     (lib/'voltdb').install Dir['lib/*']
-    ln_s lib/'voltdb/python', lib/'python'
+    lib.install_symlink lib/"voltdb/python"
     prefix.install 'bin', 'tools', 'voltdb', 'version.txt', 'doc'
   end
 end

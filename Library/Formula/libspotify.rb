@@ -11,12 +11,8 @@ class Libspotify < Formula
     doc.install Dir['docs/*']
     doc.install %w(ChangeLog README LICENSE licenses.xhtml examples)
     man3.install Dir['man3/*']
-
-    lib.cd do
-      ln_s "libspotify.12.1.51.dylib", "libspotify.dylib"
-      ln_s "libspotify.12.1.51.dylib", "libspotify.12.dylib"
-    end
-
+    lib.install_symlink "libspotify.12.1.51.dylib" => "libspotify.dylib"
+    lib.install_symlink "libspotify.12.1.51.dylib" => "libspotify.12.dylib"
     (lib+'pkgconfig/libspotify.pc').write pc_file
   end
 

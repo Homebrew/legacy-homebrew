@@ -28,11 +28,7 @@ class Passenger < Formula
     cp_r necessary_files, libexec, :preserve => true
 
     # Allow Homebrew to create symlinks for the Phusion Passenger commands.
-    bin.mkpath
-    Dir[libexec/"bin/*"].each do |orig_script|
-      name = File.basename(orig_script)
-      ln_s orig_script, bin/name
-    end
+    bin.install_symlink Dir["#{libexec}/bin/*"]
 
     # Ensure that the Phusion Passenger commands can always find their library
     # files.

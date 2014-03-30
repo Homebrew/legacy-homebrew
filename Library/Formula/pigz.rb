@@ -9,6 +9,6 @@ class Pigz < Formula
     system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"
     bin.install "pigz", "unpigz"
     man1.install "pigz.1"
-    ln_s 'pigz.1', man1+'unpigz.1'
+    man1.install_symlink "pigz.1" => "unpigz.1"
   end
 end

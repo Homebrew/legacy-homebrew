@@ -10,7 +10,7 @@ class Tofrodos < Formula
       system "make"
       bin.install %w[todos fromdos]
       man1.install "fromdos.1"
-      ln_s man1+'fromdos.1', man1+'todos.1'
+      man1.install_symlink "fromdos.1" => "todos.1"
     end
   end
 end

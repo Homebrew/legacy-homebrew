@@ -8,9 +8,7 @@ class Yafc < Formula
   depends_on 'readline'
   depends_on 'libssh' => :recommended
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     readline = Formula["readline"].opt_prefix

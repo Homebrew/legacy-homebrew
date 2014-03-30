@@ -9,9 +9,10 @@ class Re2 < Formula
 
   bottle do
     cellar :any
-    sha1 "77343fcc302fa0f85e1ed1483d64a449585386a0" => :mavericks
-    sha1 "b45275dc3b6a80d3e6eae881c5c238f28334167e" => :mountain_lion
-    sha1 "08805163f83f7e7c42316e4c2dd733548b8d7bb3" => :lion
+    revision 1
+    sha1 "c502279673f7a522964161813c1d284d3dd12115" => :mavericks
+    sha1 "ed4e24ef60a2c44af9ed67b22d6f983f3177f0fc" => :mountain_lion
+    sha1 "50250f3de155321a6b93276f0df967e868fc4ca8" => :lion
   end
 
   def install
@@ -25,7 +26,7 @@ class Re2 < Formula
     end
     system "make", "install", "prefix=#{prefix}"
     mv lib/"libre2.so.0.0.0", lib/"libre2.0.0.0.dylib"
-    ln_s "libre2.0.0.0.dylib", lib/"libre2.0.dylib"
-    ln_s "libre2.0.0.0.dylib", lib/"libre2.dylib"
+    lib.install_symlink "libre2.0.0.0.dylib" => "libre2.0.dylib"
+    lib.install_symlink "libre2.0.0.0.dylib" => "libre2.dylib"
   end
 end

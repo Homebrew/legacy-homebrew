@@ -12,7 +12,7 @@ class Sfml < Formula
   depends_on "libsndfile"
 
   def install
-    system "cmake", ".", "-DCMAKE_INSTALL_FRAMEWORK_PREFIX=#{prefix}/Frameworks/", *std_cmake_args
+    system "cmake", ".", "-DCMAKE_INSTALL_FRAMEWORK_PREFIX=#{frameworks}/", *std_cmake_args
     system "make", "install"
   end
 end

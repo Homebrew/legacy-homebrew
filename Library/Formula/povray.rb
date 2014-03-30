@@ -4,11 +4,12 @@ class Povray < Formula
   homepage 'http://www.povray.org/'
   url 'https://github.com/POV-Ray/povray/archive/v3.7.0.0.tar.gz'
   sha1 '1d160d45e69d096e4c22f3b034dcc9ee94d22208'
+  revision 1
 
   depends_on :macos => :lion
   depends_on :autoconf
   depends_on :automake
-  depends_on :libpng
+  depends_on 'libpng'
   depends_on 'boost'
   depends_on 'jpeg'
   depends_on 'libtiff'

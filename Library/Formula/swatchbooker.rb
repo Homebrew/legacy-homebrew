@@ -10,9 +10,7 @@ class Swatchbooker < Formula
   depends_on 'little-cms' => 'with-python'
   depends_on 'pyqt'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # Tell launching shell scipts where the python library is

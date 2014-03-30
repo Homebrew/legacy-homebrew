@@ -2,13 +2,13 @@ require 'formula'
 
 class Gtkx < Formula
   homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.22.tar.xz'
-  sha256 'b114b6e9fb389bf3aa8a6d09576538f58dce740779653084046852fb4140ae7f'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.23.tar.xz'
+  sha256 'a0a406e27e9b5e7d6b2c4334212706ed5cdcd41e713e66c9ae950655dd61517c'
 
   bottle do
-    sha1 "eb029bd3457b4928b7186b33091eb41df18f468d" => :mavericks
-    sha1 "f28d77d1220574a9ec9b8910c2b6ab61a5b742df" => :mountain_lion
-    sha1 "2cb6f9dfa6b11fedca439c5983f3723b4e852f85" => :lion
+    sha1 "20ae36dde326eb65e35374b1fbb53cbda30b2d5c" => :mavericks
+    sha1 "de69fc7a763c5f6d6323eb892e7f9561c705e2dd" => :mountain_lion
+    sha1 "90a014b0ef048e5e8d31c2c24464d2862037b640" => :lion
   end
 
   depends_on 'pkg-config' => :build

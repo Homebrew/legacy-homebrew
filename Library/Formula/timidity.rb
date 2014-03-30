@@ -40,8 +40,9 @@ class Timidity < Formula
 
     if build.with? 'freepats'
       (share/'freepats').install resource('freepats')
-      (share/'timidity/').install_symlink share/'freepats/Tone_000', share/'freepats/Drum_000'
-      File.symlink share/'freepats/freepats.cfg', share/'timidity/timidity.cfg'
+      (share/'timidity').install_symlink share/'freepats/Tone_000',
+                                         share/'freepats/Drum_000',
+                                         share/'freepats/freepats.cfg' => 'timidity.cfg'
     end
   end
 

@@ -37,6 +37,13 @@ class Xulrunner < Formula
   url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/28.0/source/xulrunner-28.0.source.tar.bz2"
   sha1 "7965105b34441ebfab650930dffa4648c85ac6c6"
 
+  bottle do
+    cellar :any
+    sha1 "74b0f65bedb9e93f02a8dd52dba5d18a8796cd72" => :mavericks
+    sha1 "7381000fb344c775bad16a65ddd213a5fd163bf1" => :mountain_lion
+    sha1 "d336479051b4079582036e017253f37f99b5af63" => :lion
+  end
+
   devel do
     url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/29.0b1/source/xulrunner-29.0b1.source.tar.bz2"
     sha1 "80ea2209c0ea9316b5c8dc16208514d14c410c22"
@@ -57,6 +64,7 @@ class Xulrunner < Formula
   depends_on "gnu-tar" => :build
   depends_on "pkg-config" => :build
   depends_on "yasm"
+  depends_on "nss"
 
   fails_with :gcc do
     cause "Mozilla XULRunner only supports Clang on OS X"
@@ -89,13 +97,12 @@ class Xulrunner < Formula
       ac_add_options --disable-updater
       ac_add_options --disable-crashreporter
       ac_add_options --with-macos-sdk=#{MacOS.sdk_path}
+      ac_add_options --with-nss-prefix=#{Formula["nss"].opt_prefix}
     EOS
     # fixed usage of bsdtar with unsupported parameters (replaced with gnu-tar)
     inreplace "toolkit/mozapps/installer/packager.mk", "$(TAR) -c --owner=0 --group=0 --numeric-owner",
-              "#{Formula["gnu-tar"].bin}/gtar -c --owner=0 --group=0 --numeric-owner"
+              "#{Formula["gnu-tar"].opt_bin}/gtar -c --owner=0 --group=0 --numeric-owner"
 
-    # nss is not fully parallel build safe (fixes rare ld: library not found for -lplc4 issues)
-    ENV.deparallelize
     system "make", "-f", "client.mk", "build"
     system "make", "-f", "client.mk", "package"
 

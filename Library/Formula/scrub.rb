@@ -8,7 +8,7 @@ class Scrub < Formula
   # in src/genrand.c:109 the `return;` statement should be `return 0;` for clang
   # in src/util.h we need <sys/types.h> to get off_t which is reported:
   # https://code.google.com/p/diskscrub/issues/detail?id=21
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",

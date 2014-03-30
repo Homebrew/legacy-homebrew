@@ -7,9 +7,7 @@ class Sloccount < Formula
 
   depends_on 'md5sha1sum'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     rm "makefile.orig" # Delete makefile.orig or patch falls over

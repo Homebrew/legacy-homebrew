@@ -2,12 +2,12 @@ require 'formula'
 
 class SwiProlog < Formula
   homepage 'http://www.swi-prolog.org/'
-  url 'http://www.swi-prolog.org/download/stable/src/pl-6.6.2.tar.gz'
-  sha1 'b893a45c910e11e703e73fb15ce55a3d3c792489'
+  url 'http://www.swi-prolog.org/download/stable/src/pl-6.6.4.tar.gz'
+  sha1 '55dc574d7d928a15366bf2f2f0b84f7273edecd5'
 
   devel do
-    url 'http://www.swi-prolog.org/download/devel/src/pl-7.1.9.tar.gz'
-    sha1 'ae8e6a93ac0beb57239772572211976432e91f34'
+    url 'http://www.swi-prolog.org/download/devel/src/pl-7.1.10.tar.gz'
+    sha1 '29c3e645970331745b2774f999ec5f70d2a8e061'
   end
 
   head do
