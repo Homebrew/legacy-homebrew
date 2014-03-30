@@ -216,6 +216,10 @@ class FormulaAuditor
     # the rest of the checks apply to mirrors as well
     urls.concat(@specs.map(&:mirrors).flatten)
 
+    urls.grep(%r[^(https?|ftp)://ftp\.gnome]) do |u|
+      problem %{download.gnome.org is preferred for GNOME software (url is #{u}).}
+    end
+
     # Check SourceForge urls
     urls.each do |p|
       # Skip if the URL looks like a SVN repo
