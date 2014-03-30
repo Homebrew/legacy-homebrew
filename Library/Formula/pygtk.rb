@@ -2,7 +2,7 @@ require 'formula'
 
 class Pygtk < Formula
   homepage 'http://www.pygtk.org/'
-  url 'http://ftp.acc.umu.se/pub/GNOME/sources/pygtk/2.24/pygtk-2.24.0.tar.bz2'
+  url 'http://download.gnome.org/sources/pygtk/2.24/pygtk-2.24.0.tar.bz2'
   sha1 '344e6a32a5e8c7e0aaeb807e0636a163095231c2'
 
   depends_on 'pkg-config' => :build
