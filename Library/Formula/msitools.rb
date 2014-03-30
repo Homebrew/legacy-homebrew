@@ -2,7 +2,7 @@ require 'formula'
 
 class Msitools < Formula
   homepage 'https://wiki.gnome.org/msitools'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/msitools/0.93/msitools-0.93.tar.xz'
+  url 'http://download.gnome.org/sources/msitools/0.93/msitools-0.93.tar.xz'
   sha1 'b8dcf394a1aeddd8404ae1702ce42af623f54101'
 
   depends_on 'intltool' => :build
