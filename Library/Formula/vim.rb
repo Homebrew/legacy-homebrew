@@ -61,9 +61,7 @@ class Vim < Formula
       opts << "--without-x"
     end
 
-    if build.with? 'luajit'
-      opts << '--with-luajit'
-    end
+    opts << "--with-luajit" if build.with? 'luajit'
 
     # XXX: Please do not submit a pull request that hardcodes the path
     # to ruby: vim can be compiled against 1.8.x or 1.9.3-p385 and up.
