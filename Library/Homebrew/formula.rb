@@ -417,7 +417,7 @@ class Formula
     # test if the name is a formula alias
     possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{name}")
     if possible_alias.file?
-      return possible_alias.realpath.basename('.rb').to_s
+      return possible_alias.resolved_path.basename(".rb").to_s
     end
 
     # test if the name is a cached downloaded formula
