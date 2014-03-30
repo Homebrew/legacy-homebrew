@@ -5,27 +5,17 @@ class TomcatNative < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.29/source/tomcat-native-1.1.29-src.tar.gz'
   sha1 '16ce3eaee7a4c26f4a6fdd89eece83501d12b754'
 
-  option 'with-brewed-openssl', 'Build with Homebrew OpenSSL instead of the system version (required for TLSv1.1/TLSv1.2)'
-
   depends_on :libtool => :build
   depends_on 'tomcat' => :recommended
-  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'openssl'
 
   def install
-    cd "jni/native/" do
-      args = %W[
-        --prefix=#{prefix}
-        --with-apr=#{MacOS.sdk_path}/usr
-        --with-java-home=#{`/usr/libexec/java_home`}
-      ]
+    cd "jni/native" do
+      system "./configure", "--prefix=#{prefix}",
+                            "--with-apr=#{MacOS.sdk_path}/usr",
+                            "--with-java-home=#{`/usr/libexec/java_home`}",
+                            "--with-ssl=#{Formula["openssl"].prefix}"
 
-      if build.with? 'brewed-openssl'
-        args << "--with-ssl=#{Formula["openssl"].prefix}"
-      else
-        args << "--with-ssl=#{MacOS.sdk_path}/usr"
-      end
-
-      system "./configure", *args
       # fixes occasional compiling issue: glibtool: compile: specify a tag with `--tag'
       args = ["LIBTOOL=glibtool --tag=CC"]
       # fixes a broken link in mountain lion's apr-1-config (it should be /XcodeDefault.xctoolchain/):

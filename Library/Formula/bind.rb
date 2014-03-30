@@ -5,9 +5,7 @@ class Bind < Formula
   url 'http://ftp.isc.org/isc/bind9/9.9.5/bind-9.9.5.tar.gz'
   sha1 'f3fe8000628ec57f332aec1ad9587b767208a38f'
 
-  option 'with-brewed-openssl', 'Build with Homebrew OpenSSL instead of the system version'
-
-  depends_on "openssl" if MacOS.version <= :leopard or build.with?('brewed-openssl')
+  depends_on "openssl"
 
   def install
     ENV.libxml2
@@ -16,21 +14,10 @@ class Bind < Formula
 
     ENV['STD_CDEFINES'] = '-DDIG_SIGCHASE=1'
 
-    args = [
-      "--prefix=#{prefix}",
-      "--enable-threads",
-      "--enable-ipv6",
-    ]
-
-    if build.with? 'brewed-openssl'
-      args << "--with-ssl-dir=#{Formula['openssl'].opt_prefix}"
-    elsif MacOS.version > :leopard
-      # For Xcode-only systems we help a bit to find openssl.
-      # If CLT.installed?, it evaluates to "/usr", which works.
-      args << "--with-openssl=#{MacOS.sdk_path}/usr"
-    end
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}",
+                          "--enable-threads",
+                          "--enable-ipv6",
+                          "--with-ssl-dir=#{Formula['openssl'].opt_prefix}"
 
     # From the bind9 README: "Do not use a parallel 'make'."
     ENV.deparallelize

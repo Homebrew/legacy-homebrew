@@ -84,8 +84,8 @@ def interactive_shell f=nil
     ENV['HOMEBREW_DEBUG_INSTALL'] = f.name
   end
 
-  fork {exec ENV['SHELL'] }
-  Process.wait
+  Process.wait fork { exec ENV['SHELL'] }
+
   unless $?.success?
     puts "Aborting due to non-zero exit status"
     exit $?

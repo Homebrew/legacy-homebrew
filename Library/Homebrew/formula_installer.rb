@@ -490,7 +490,7 @@ class FormulaInstaller
     # to remain open in the child process.
     args << { write => write } if RUBY_VERSION >= "2.0"
 
-    fork do
+    pid = fork do
       begin
         read.close
         exec(*args)
@@ -501,9 +501,9 @@ class FormulaInstaller
       end
     end
 
-    ignore_interrupts(:quietly) do # the fork will receive the interrupt and marshall it back
+    ignore_interrupts(:quietly) do # the child will receive the interrupt and marshal it back
       write.close
-      Process.wait
+      Process.wait(pid)
       data = read.read
       read.close
       raise Marshal.load(data) unless data.nil? or data.empty?
