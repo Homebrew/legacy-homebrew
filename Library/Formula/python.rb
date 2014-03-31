@@ -243,8 +243,8 @@ class Python < Formula
                '     You should `unset PYTHONPATH` to fix this.')
       else:
           # Only do this for a brewed python:
-          opt_executable = '#{HOMEBREW_PREFIX}/opt/python/bin/python2.7'
-          if os.path.realpath(sys.executable) == os.path.realpath(opt_executable):
+          opt_executable = '#{opt_bin}/python2.7'
+          if os.path.commonprefix([os.path.realpath(e) for e in [opt_executable, sys.executable]]).startswith('#{rack}'):
               # Remove /System site-packages, and the Cellar site-packages
               # which we moved to lib/pythonX.Y/site-packages. Further, remove
               # HOMEBREW_PREFIX/lib/python because we later addsitedir(...).
@@ -260,7 +260,7 @@ class Python < Formula
               # Assume Framework style build (default since months in brew)
               try:
                   from _sysconfigdata import build_time_vars
-                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{HOMEBREW_PREFIX}/opt/python/Frameworks/Python.framework/Versions/2.7/Python'
+                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/2.7/Python'
               except:
                   pass  # remember: don't print here. Better to fail silently.
 
