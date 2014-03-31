@@ -12,8 +12,8 @@ class Mariadb < Formula
   end
 
   devel do
-    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.9/kvm-tarbake-jaunty-x86/mariadb-10.0.9.tar.gz'
-    sha1 '474310268649fd00ddf8c813987a2b05ad0a4d2d'
+    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.10/kvm-tarbake-jaunty-x86/mariadb-10.0.10.tar.gz'
+    sha1 '59e222bd261128aff89c216dc100d5bcc8c5acc4'
   end
 
   depends_on 'cmake' => :build
