@@ -273,22 +273,18 @@ class Python < Formula
     EOF
   end
 
-  def caveats
-    <<-EOS.undent
-      Python demo
-        #{HOMEBREW_PREFIX}/share/python/Extras
+  def caveats; <<-EOS.undent
+    Setuptools and Pip have been installed. To update them
+      pip install --upgrade setuptools
+      pip install --upgrade pip
 
-      Setuptools and Pip have been installed. To update them
-        pip install --upgrade setuptools
-        pip install --upgrade pip
+    You can install Python packages with
+      pip install <package>
 
-      You can install Python packages with (the outdated easy_install or)
-        `pip install <your_favorite_package>`
+    They will install into the site-package directory
+      #{site_packages}
 
-      They will install into the site-package directory
-        #{site_packages}
-
-      See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
+    See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
     EOS
   end
 
