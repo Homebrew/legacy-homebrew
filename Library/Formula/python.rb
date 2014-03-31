@@ -130,7 +130,7 @@ class Python < Formula
     site_packages_cellar.parent.install_symlink site_packages
 
     # Write our sitecustomize.py
-    Dir["#{site_packages}/*.py{,c,o}"].each {|f| Pathname.new(f).unlink }
+    rm_rf Dir["#{site_packages}/sitecustomize.py{,c,o}"]
     (site_packages/"sitecustomize.py").write(sitecustomize)
 
     # Remove old setuptools installations that may still fly around and be
