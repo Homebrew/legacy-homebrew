@@ -18,14 +18,13 @@ object SparkJobUtils {
    * @param config the overall Job Server configuration (Typesafe Config)
    * @param contextConfig the Typesafe Config specific to initializing this context
    *                      (typically based on particular context/job)
-   * @param the spark master URL, ie "local[4]", "spark://<host>:7077"
    * @param the context name
    * @return a SparkConf with everything properly configured
    */
   def configToSparkConf(config: Config, contextConfig: Config,
-                        sparkMaster: String, contextName: String): SparkConf = {
+                        contextName: String): SparkConf = {
     val conf = new SparkConf()
-    conf.setMaster(sparkMaster)
+    conf.setMaster(config.getString("spark.master"))
         .setAppName(contextName)
 
     for (cores <- Try(contextConfig.getInt("num-cpu-cores"))) {
@@ -41,11 +40,23 @@ object SparkJobUtils {
     // Set the Jetty port to 0 to find a random port
     conf.set("spark.ui.port", "0")
 
+    // Set number of akka threads
+    // TODO: need to figure out how many extra threads spark needs, besides the job threads
+    conf.set("spark.akka.threads", (getMaxRunningJobs(config) + 4).toString)
+
     // Set any other settings in context config that start with "spark"
     for (e <- contextConfig.entrySet().asScala if e.getKey.startsWith("spark.")) {
       conf.set(e.getKey, e.getValue.unwrapped.toString)
     }
 
     conf
+  }
+
+  /**
+   * Returns the maximum number of jobs that can run at the same time
+   */
+  def getMaxRunningJobs(config: Config): Int = {
+    val cpuCores = Runtime.getRuntime.availableProcessors
+    Try(config.getInt("spark.jobserver.max-jobs-per-context")).getOrElse(cpuCores)
   }
 }
