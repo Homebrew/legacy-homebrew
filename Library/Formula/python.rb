@@ -157,13 +157,13 @@ class Python < Formula
       prefix=#{HOMEBREW_PREFIX}
     EOF
 
-      # Fixes setting Python build flags for certain software
-      # See: https://github.com/Homebrew/homebrew/pull/20182
-      # http://bugs.python.org/issue3588
-      inreplace lib_cellar/"config/Makefile" do |s|
-        s.change_make_var! "LINKFORSHARED",
-          "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
-      end
+    # Fixes setting Python build flags for certain software
+    # See: https://github.com/Homebrew/homebrew/pull/20182
+    # http://bugs.python.org/issue3588
+    inreplace lib_cellar/"config/Makefile" do |s|
+      s.change_make_var! "LINKFORSHARED",
+        "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
+    end
   end
 
   def distutils_fix_superenv(args)
