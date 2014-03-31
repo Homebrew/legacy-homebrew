@@ -101,7 +101,6 @@ class Python3 < Formula
     # Tell Python not to install into /Applications (default for framework builds)
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
-    (HOMEBREW_PREFIX/'share/python3').mkpath
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python3"
     system "make", "quicktest" if build.include? "quicktest"
 
