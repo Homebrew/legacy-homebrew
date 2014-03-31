@@ -8,9 +8,9 @@ class Haxe < Formula
 
   bottle do
     cellar :any
-    sha1 "f72374f99b18d65849ee654223b54e3f2b885ab5" => :mavericks
-    sha1 "33ed8cc473a4ad83fec93a9ef4d45992c263aa8c" => :mountain_lion
-    sha1 "4dc8205334988bfc5b0f522db410abd89ea5c13a" => :lion
+    sha1 "b26c27ea86f207d838d039e7d18e6c61fdcc3354" => :mavericks
+    sha1 "203ad40ae2ca4b6d7747c4e69f316a99ae045e09" => :mountain_lion
+    sha1 "b8a047a98ed5d2f5cc8aedfd468a7ecbe027ca4e" => :lion
   end
 
   depends_on 'neko'
