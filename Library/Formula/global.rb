@@ -6,6 +6,12 @@ class Global < Formula
   mirror 'http://ftp.gnu.org/gnu/global/global-6.2.12.tar.gz'
   sha1 '1fc0948ee76185d38733750567a2bdb6b9b07304'
 
+  bottle do
+    sha1 "81160b83cf9bee1e5b97c1c1e40b10f340798f15" => :mavericks
+    sha1 "9dfc3ad14ae419089375dd44c4c6e618d1672063" => :mountain_lion
+    sha1 "8a5bc30cfd1733ddff466f28bd293a60fa175162" => :lion
+  end
+
   head do
     url 'cvs://:pserver:anonymous:@cvs.savannah.gnu.org:/sources/global:global'
 
