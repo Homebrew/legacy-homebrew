@@ -19,10 +19,7 @@ object Dependencies {
   lazy val sparkDeps = Seq(
     "org.apache.spark" %% "spark-core" % "0.9.0-incubating" % "provided" exclude("io.netty", "netty-all"),
     // Force netty version.  This avoids some Spark netty dependency problem.
-    "io.netty" % "netty" % "3.6.6.Final",
-    "org.apache.hadoop" % "hadoop-client" % "2.2.0-cdh5.0.0-beta-2" % "provided" excludeAll(excludeJackson,
-      excludeNetty, excludeAsm, excludeCglib),
-    "org.xerial.snappy" % "snappy-java" % "1.0.4.1"
+    "io.netty" % "netty" % "3.6.6.Final"
   )
 
   lazy val logbackDeps = Seq(
@@ -45,7 +42,6 @@ object Dependencies {
   val repos = Seq(
     "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/",
     "sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
-    "spray repo" at "http://repo.spray.io",
-    "Cloudera's CDH3 Maven repo" at "https://repository.cloudera.com/artifactory/cloudera-repos/"
+    "spray repo" at "http://repo.spray.io"
   )
 }
