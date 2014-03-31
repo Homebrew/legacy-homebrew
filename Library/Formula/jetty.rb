@@ -7,8 +7,6 @@ class Jetty < Formula
   sha1 '09cc96d187ad07bc86414b123475d0fe2d25e255'
 
   def install
-    rm_rf Dir['bin/*.{cmd,bat]}']
-
     libexec.install Dir['*']
     (libexec+'logs').mkpath
 
