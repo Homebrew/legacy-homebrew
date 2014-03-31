@@ -2,8 +2,8 @@ require 'formula'
 
 class Ykpers < Formula
   homepage 'http://yubico.github.io/yubikey-personalization/'
-  url 'http://yubico.github.io/yubikey-personalization/releases/ykpers-1.14.1.tar.gz'
-  sha1 '5ecc0d6bf9c58bdf825c2d8d158361fc61852ff8'
+  url 'http://opensource.yubico.com/yubikey-personalization/releases/ykpers-1.15.1.tar.gz'
+  sha1 'dd1478cc106c624318dfe74bb2beda54f18f1fc8'
 
   option :universal
 
