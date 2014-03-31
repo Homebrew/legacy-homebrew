@@ -260,7 +260,7 @@ class Python3 < Formula
         pip3 install --upgrade pip
 
       You can install Python packages with
-        `pip3 install <your_favorite_package>`
+        pip3 install <package>
 
       They will install into the site-package directory
         #{site_packages}
