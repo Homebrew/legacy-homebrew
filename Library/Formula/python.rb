@@ -137,8 +137,8 @@ class Python < Formula
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.5-py3.3.egg
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/python2.7/site-packages/setuptools*"]
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/python2.7/site-packages/distribute*"]
+    rm_rf Dir["#{site_packages}/setuptools*"]
+    rm_rf Dir["#{site_packages}/distribute*"]
 
     setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
@@ -270,7 +270,7 @@ class Python < Formula
           # Tell about homebrew's site-packages location.
           # This is needed for Python to parse *.pth.
           import site
-          site.addsitedir('#{HOMEBREW_PREFIX}/lib/python2.7/site-packages')
+          site.addsitedir('#{site_packages}')
     EOF
   end
 
