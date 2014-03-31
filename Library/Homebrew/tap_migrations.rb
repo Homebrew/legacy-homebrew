@@ -8,6 +8,7 @@ TAP_MIGRATIONS = {
   "denyhosts" => "homebrew/boneyard",
   "dotwrp" => "homebrew/science",
   "drizzle" => "homebrew/boneyard",
+  "dsniff" => "homebrew/boneyard",
   "grads" => "homebrew/binary",
   "hwloc" => "homebrew/science",
   "ipopt" => "homebrew/science",
