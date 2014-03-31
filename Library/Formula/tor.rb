@@ -6,9 +6,9 @@ class Tor < Formula
   sha1 'b93b66e4d5162cefc711cb44f9167ed4799ef990'
 
   devel do
-    url 'https://www.torproject.org/dist/tor-0.2.5.2-alpha.tar.gz'
-    version '0.2.5.2-alpha'
-    sha1 '80f4697dfc0473bf5ec642b074cee4ce95fd0fa6'
+    url 'https://www.torproject.org/dist/tor-0.2.5.3-alpha.tar.gz'
+    version '0.2.5.3-alpha'
+    sha1 '29784b3f711780cd60fff076f6deb9b1f633fe5c'
   end
 
   depends_on 'libevent'
