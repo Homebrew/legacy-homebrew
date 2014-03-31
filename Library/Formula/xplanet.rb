@@ -19,9 +19,9 @@ class Xplanet < Formula
   depends_on "libpng" => :recommended
   depends_on "libtiff" => :recommended
 
-  depends_on "pango" if (build.with? "pango" || build.with? "all")
-  depends_on "netpbm" if (build.with? "netpbm" || build.with? "all")
-  depends_on "cspice" if (build.with? "pango" || build.with? "all")
+  depends_on "pango" if (build.with? "pango") || (build.with? "all")
+  depends_on "netpbm" if (build.with? "netpbm") || (build.with? "all")
+  depends_on "cspice" if (build.with? "pango") || (build.with? "all")
 
   depends_on :freetype
   depends_on :x11
