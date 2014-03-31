@@ -22,6 +22,7 @@ class Pyenv < Formula
       ln_sf var_dir, "#{prefix}/#{dir}"
     end
 
+    rm_f "#{var_lib}/plugins/python-build"
     ln_sf "#{prefix}/default-plugins/python-build", "#{var_lib}/plugins/python-build"
     ["pyenv-install", "pyenv-uninstall", "python-build"].each do |cmd|
       bin.install_symlink "#{prefix}/default-plugins/python-build/bin/#{cmd}"
