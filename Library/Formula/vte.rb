@@ -11,11 +11,12 @@ class Vte < Formula
   depends_on 'glib'
   depends_on 'gtk+'
   depends_on 'pygtk'
+  depends_on :python
 
   def install
     # pygtk-codegen-2.0 has been deprecated and replaced by
     # pygobject-codegen-2.0, but the vte Makefile fails to detect this.
-    ENV["PYGTK_CODEGEN"] = Formula.factory('pygobject').bin/'pygobject-codegen-2.0'
+    ENV["PYGTK_CODEGEN"] = Formula["pygobject"].bin/'pygobject-codegen-2.0'
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
