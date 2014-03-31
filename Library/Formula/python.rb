@@ -157,16 +157,6 @@ class Python < Formula
       prefix=#{HOMEBREW_PREFIX}
     EOF
 
-    # Work-around for that bug: http://bugs.python.org/issue18050
-    inreplace lib_cellar/"re.py", "import sys", <<-EOS.undent
-      import sys
-      try:
-          from _sre import MAXREPEAT
-      except ImportError:
-          import _sre
-          _sre.MAXREPEAT = 65535 # this monkey-patches all other places of "from _sre import MAXREPEAT"'
-      EOS
-
       # Fixes setting Python build flags for certain software
       # See: https://github.com/Homebrew/homebrew/pull/20182
       # http://bugs.python.org/issue3588
