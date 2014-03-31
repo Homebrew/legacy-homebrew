@@ -61,6 +61,7 @@ class Mplayer < Formula
 
     args << "--enable-menu" if build.with? 'osd'
     args << "--disable-x11" if build.without? 'x'
+    args << "--enable-freetype" if build.with?('osd') || build.with?('x')
     args << "--enable-caca" if build.with? 'libcaca'
 
     system "./configure", *args
