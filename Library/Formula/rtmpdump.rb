@@ -25,6 +25,7 @@ class Rtmpdump < Formula
                    "MANDIR=#{man}",
                    "SYS=darwin",
                    "prefix=#{prefix}",
+                   "sbindir=#{bin}",
                    "install"
   end
 end
