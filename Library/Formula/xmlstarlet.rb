@@ -11,6 +11,6 @@ class Xmlstarlet < Formula
                           "--mandir=#{man}"
     system "make"
     system "make install"
-    ln_s bin/'xml', bin/'xmlstarlet'
+    bin.install_symlink "xml" => "xmlstarlet"
   end
 end

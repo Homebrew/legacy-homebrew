@@ -10,7 +10,7 @@ class BashCompletion < Formula
 
   # Backports the following upstream patch from 2.x:
   # http://anonscm.debian.org/gitweb/?p=bash-completion/bash-completion.git;a=patch;h=50ae57927365a16c830899cc1714be73237bdcb2
-  def patches; DATA; end
+  patch :DATA
 
   def compdir
     etc/'bash_completion.d'

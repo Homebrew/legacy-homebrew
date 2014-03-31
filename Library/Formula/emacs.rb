@@ -65,11 +65,6 @@ class Emacs < Formula
     cause "Duplicate symbol errors while linking."
   end
 
-  def patches
-    return if build.head?
-    p
-  end
-
   # Follow MacPorts and don't install ctags from Emacs. This allows Vim
   # and Emacs and ctags to play together without violence.
   def do_not_install_ctags
@@ -152,6 +147,12 @@ class Emacs < Formula
       end
     end
     return s
+  end
+
+  test do
+    output = `'#{bin}/emacs' --batch --eval="(print (+ 2 2))"`
+    assert $?.success?
+    assert_equal "4", output.strip
   end
 end
 

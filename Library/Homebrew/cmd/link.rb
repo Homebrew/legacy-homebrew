@@ -20,21 +20,20 @@ module Homebrew extend self
         puts "Note that doing so can interfere with building software."
         next
       elsif mode.dry_run && mode.overwrite
-        print "Would remove:\n" do
-          keg.link(mode)
-        end
+        puts "Would remove:"
+        keg.link(mode)
 
         next
       elsif mode.dry_run
-        print "Would link:\n" do
-          keg.link(mode)
-        end
+        puts "Would link:"
+        keg.link(mode)
 
         next
       end
 
       keg.lock do
         print "Linking #{keg}... " do
+          puts if ARGV.verbose?
           puts "#{keg.link(mode)} symlinks created"
         end
       end
@@ -53,10 +52,21 @@ module Homebrew extend self
   # an exception is thrown, its output starts on a new line.
   def print str, &block
     Kernel.print str
+
+    STDERR.extend Module.new {
+      def puts(*args)
+        unless $did_puts
+          STDOUT.puts
+          $did_puts = true
+        end
+        super
+      end
+    }
+
     puts_capture = Class.new do
-      def self.puts str
+      def self.puts(*args)
         $did_puts = true
-        Kernel.puts str
+        Kernel.puts(*args)
       end
     end
 

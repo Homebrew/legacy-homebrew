@@ -15,9 +15,7 @@ class Honeyd < Formula
 
   # make the setrlimit function work
   # honeyd is no longer developed so patching upstream won't happen
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     libevent1_prefix = libexec/'libevent1'

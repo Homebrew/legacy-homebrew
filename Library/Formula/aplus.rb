@@ -8,9 +8,7 @@ class Aplus < Formula
 
   # Fix the missing CoreServices include (via Fink version of aplus)
   # Fix C++ syntax errors for clang
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # replace placeholder w/ actual prefix

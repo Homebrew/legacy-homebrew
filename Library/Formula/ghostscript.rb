@@ -2,6 +2,7 @@ require 'formula'
 
 class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
+  revision 1
 
   stable do
     url 'http://downloads.ghostscript.com/public/ghostscript-9.10.tar.gz'
@@ -11,9 +12,9 @@ class Ghostscript < Formula
   end
 
   bottle do
-    sha1 "be9d9be82c03ac8409994fee0cc638d20ceb145c" => :mavericks
-    sha1 "667bbb27e64fee6d46da07c98205a6daf51a28ad" => :mountain_lion
-    sha1 "fb6e8756db2016f88eeb23ed392a9742096efef3" => :lion
+    sha1 "6c57df23147be016a8790cd4f831e3bfc060107a" => :mavericks
+    sha1 "1b172224cac0093d4264c874a4c5da7c8f13a217" => :mountain_lion
+    sha1 "a12d082b0e86e08cef11f5b59e27b827ed38367e" => :lion
   end
 
   head do
@@ -41,10 +42,10 @@ class Ghostscript < Formula
   depends_on 'libtiff'
   depends_on 'jbig2dec'
   depends_on 'little-cms2'
-  depends_on :libpng
+  depends_on 'libpng'
   depends_on :x11 => ['2.7.2', :optional]
   depends_on 'djvulibre' if build.with? 'djvu'
-  depends_on 'freetype' if MacOS.version == :snow_leopard
+  depends_on 'freetype'
 
   conflicts_with 'gambit-scheme', :because => 'both install `gsc` binaries'
 
@@ -76,7 +77,7 @@ class Ghostscript < Formula
       (buildpath+'base').install 'gdevdjvu.c'
       (buildpath+'lib').install 'ps2utf8.ps'
       ENV['EXTRA_INIT_FILES'] = 'ps2utf8.ps'
-      (buildpath/'base/contrib.mak').open('a') { |f| f.write(File.read('gsdjvu.mak')) }
+      (buildpath/'devices/contrib.mak').open('a') { |f| f.write(File.read('gsdjvu.mak')) }
     end if build.with? 'djvu'
 
     cd src_dir do

@@ -9,7 +9,7 @@ class Fantom < Formula
   option 'with-examples', 'Also install fantom examples'
 
   # Select the OS X JDK path in the config file
-  def patches; DATA; end
+  patch :DATA
 
   def install
     rm_f Dir["bin/*.exe", "lib/dotnet/*"]

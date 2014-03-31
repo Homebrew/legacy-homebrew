@@ -2,8 +2,8 @@ require 'formula'
 
 class Lilypond < Formula
   homepage 'http://lilypond.org/'
-  url 'http://download.linuxaudio.org/lilypond/sources/v2.18/lilypond-2.18.1.tar.gz'
-  sha1 '2da4b9881c5263179e41370624e6c08cddf23511'
+  url 'http://download.linuxaudio.org/lilypond/sources/v2.18/lilypond-2.18.2.tar.gz'
+  sha1 '09d3a1e0e9fadeb8ef6e279227a2b30812c7ee9b'
 
   devel do
     url 'http://download.linuxaudio.org/lilypond/source/v2.19/lilypond-2.19.3.tar.gz'

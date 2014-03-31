@@ -1,6 +1,5 @@
 require 'testing_env'
 require 'software_spec'
-require 'bottles'
 
 class SoftwareSpecTests < Test::Unit::TestCase
   include VersionAssertions

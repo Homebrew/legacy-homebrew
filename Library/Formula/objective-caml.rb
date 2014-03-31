@@ -7,22 +7,22 @@ class ObjectiveCaml < Formula
 
   head 'http://caml.inria.fr/svn/ocaml/trunk', :using => :svn
 
+  revision 1
+
   depends_on :x11 if MacOS::X11.installed?
 
   bottle do
-    revision 2
-    sha1 "27fa5b1bcafd6e3915b9858a757991d3ccc40323" => :mavericks
-    sha1 "f289bb746eafccfc714e194eca4b24ec481e9df6" => :mountain_lion
-    sha1 "e091a997d111e5eb664f95479d84e5799a2284f0" => :lion
+    revision 3
+    sha1 "33e3a1cb87802572e531c801958ca6cdeee4cfbc" => :mavericks
+    sha1 "c418ec76d9f5eba9e1c2151a6e1c89e91da8d212" => :mountain_lion
+    sha1 "7da29c24adfd64772e2c3cca8b8502a1d6ce9fe0" => :lion
   end
 
   # recent versions of clang fail with a hard error if -fno-defer-pop
   # is specified, and older versions warn.  This patch fixes the OCaml
   # configure script to not pass this option on recent MacOS versions.
   # See http://caml.inria.fr/mantis/view.php?id=6346 for upstream bug.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--prefix", HOMEBREW_PREFIX,
@@ -35,10 +35,12 @@ class ObjectiveCaml < Formula
     system "make opt"
     system "make opt.opt"
     system "make", "PREFIX=#{prefix}", "install"
+  end
 
+  def post_install
     # site-lib in the Cellar will be a symlink to the HOMEBREW_PREFIX location,
     # which is mkpath'd by Keg#link when something installs into it
-    ln_s HOMEBREW_PREFIX/"lib/ocaml/site-lib", lib/"ocaml/site-lib"
+    (lib/"ocaml").install_symlink HOMEBREW_PREFIX/"lib/ocaml/site-lib"
   end
 end
 __END__

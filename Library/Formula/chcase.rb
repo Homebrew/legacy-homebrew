@@ -7,9 +7,7 @@ class Chcase < ScriptFileFormula
   sha1 'ec81ad76d85cf9162d422e801092ddc5e0841e39'
 
   # add a shebang so that brew properly sets it executable
-  def patches
-    DATA
-  end
+  patch :DATA
 end
 
 __END__

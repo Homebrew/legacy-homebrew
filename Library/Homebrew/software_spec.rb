@@ -131,6 +131,7 @@ class Bottle
       :revision => spec.revision,
       :tag => spec.current_tag
     )
+    @resource.download_strategy = CurlBottleDownloadStrategy
     @resource.version = f.pkg_version
     @resource.checksum = spec.checksum
     @prefix = spec.prefix

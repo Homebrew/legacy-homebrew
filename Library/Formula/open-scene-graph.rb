@@ -31,11 +31,9 @@ class OpenSceneGraph < Formula
     depends_on 'graphviz'
   end
 
-  def patches
-    # Fix osgQt for Qt 5.2
-    # Reported upstream http://forum.openscenegraph.org/viewtopic.php?t=13206
-    DATA
-  end
+  # Fix osgQt for Qt 5.2
+  # Reported upstream http://forum.openscenegraph.org/viewtopic.php?t=13206
+  patch :DATA
 
   def install
     ENV.cxx11 if build.cxx11?

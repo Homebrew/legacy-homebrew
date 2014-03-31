@@ -2,7 +2,7 @@ require 'formula'
 
 class Gcab < Formula
   homepage 'https://wiki.gnome.org/msitools'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gcab/0.4/gcab-0.4.tar.xz'
+  url 'http://download.gnome.org/sources/gcab/0.4/gcab-0.4.tar.xz'
   sha1 'd81dfe35125e611e3a94c0d4def37ebf62b9187c'
 
   depends_on 'intltool' => :build
@@ -12,11 +12,9 @@ class Gcab < Formula
   depends_on 'glib'
   depends_on 'gobject-introspection'
 
- def patches
-   # work around ld not understanding --version-script argument
-   # upstream bug: https://bugzilla.gnome.org/show_bug.cgi?id=708257
-   DATA
- end
+  # work around ld not understanding --version-script argument
+  # upstream bug: https://bugzilla.gnome.org/show_bug.cgi?id=708257
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug",

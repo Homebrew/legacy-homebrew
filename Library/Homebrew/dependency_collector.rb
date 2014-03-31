@@ -123,7 +123,7 @@ class DependencyCollector
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     when :ant        then ant_dep(spec, tags)
     else
-      raise "Unsupported special dependency #{spec.inspect}"
+      raise ArgumentError, "Unsupported special dependency #{spec.inspect}"
     end
   end
 

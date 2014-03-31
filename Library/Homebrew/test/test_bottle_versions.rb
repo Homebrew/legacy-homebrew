@@ -30,4 +30,9 @@ class BottleVersionParsingTests < Test::Unit::TestCase
     assert_version_detected 'r114',
       '/usr/local/lz4-r114.mavericks.bottle.tar.gz'
   end
+
+  def test_pazpar2_style
+    assert_version_detected '1.6.39',
+      '/usr/local/pazpar2-1.6.39.mavericks.bottle.tar.gz'
+  end
 end

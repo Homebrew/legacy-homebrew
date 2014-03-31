@@ -16,7 +16,7 @@ class Gts < Formula
 
   # Fix for newer netpbm.
   # This software hasn't been updated in seven years
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?

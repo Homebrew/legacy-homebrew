@@ -2,26 +2,26 @@ require 'formula'
 
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/files/archive/scala-2.10.3.tgz'
-  sha1 '04cd6237f164940e1e993a127e7cb21297f3b7ae'
+  url 'http://www.scala-lang.org/files/archive/scala-2.10.4.tgz'
+  sha1 '970f779f155719838e81a267a7418a958fd4c13f'
 
   devel do
-    url 'http://downloads.typesafe.com/scala/2.11.0-RC1/scala-2.11.0-RC1.tgz'
-    sha1 '1b8f9149015b4f017e1e295bd187ed726a416437'
-    version '2.11.0-RC1'
+    url 'http://downloads.typesafe.com/scala/2.11.0-RC3/scala-2.11.0-RC3.tgz'
+    sha1 'cd1b8fb5b6896c9e3b9f2c6b3eb52556fd25bd3a'
+    version '2.11.0-RC3'
 
     resource 'docs' do
-      url 'http://downloads.typesafe.com/scala/2.11.0-RC1/scala-docs-2.11.0-RC1.zip'
-      sha1 '15411722b67a87186b87ceb61289d3a1a69b725e'
-      version '2.11.0-RC1'
+      url 'http://downloads.typesafe.com/scala/2.11.0-RC3/scala-docs-2.11.0-RC3.zip'
+      sha1 '34b2dfb77c2fadd276aaaae2be74c52711079ddf'
+      version '2.11.0-RC3'
     end
   end
 
   option 'with-docs', 'Also install library documentation'
 
   resource 'docs' do
-    url 'http://www.scala-lang.org/files/archive/scala-docs-2.10.3.zip'
-    sha1 '43bab3ceb8215dad9caefb07eac5c24edc36c605'
+    url 'http://www.scala-lang.org/files/archive/scala-docs-2.10.4.zip'
+    sha1 '7ad47f9634fd2f452cadf35f7241102207c1a1cc'
   end
 
   resource 'completion' do

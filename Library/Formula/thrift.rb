@@ -8,20 +8,20 @@ class Thrift < Formula
     sha1 "dc54a54f8dc706ffddcd3e8c6cd5301c931af1cc"
 
     # These patches are 0.9.1-specific and can go away once a newer version is released
-    {
+    [
       # Apply THRIFT-2201 fix from master to 0.9.1 branch (required for clang to compile with C++11 support)
-      "836d95f9f00be73c6936d407977796181d1a506c" => "4bc8c19c51f3d9f30799251a810dd1ca63c4bf1e",
+      %w{836d95f9f00be73c6936d407977796181d1a506c 4bc8c19c51f3d9f30799251a810dd1ca63c4bf1e},
       # Apply THRIFT-667
-      "12c09f44cb291b1ecc4074cb3a55775b375fa8b2" => "3c449146e13727a9dbeb66e9826968b85a6d8869",
+      %w{12c09f44cb291b1ecc4074cb3a55775b375fa8b2 3c449146e13727a9dbeb66e9826968b85a6d8869},
       # Apply THRIFT-1755
-      "8cd3efe50a42975375e8ff3bc03306d9e4174314" => "5b45d692b2e6a4480d088485d4f011b9cd7fff52",
+      %w{8cd3efe50a42975375e8ff3bc03306d9e4174314 5b45d692b2e6a4480d088485d4f011b9cd7fff52},
       # Apply THRIFT-2045
-      "282e440c6de219b7b8f32b01cc7eb599f534f33f" => "a5ab25621be48a803de7f0893ada1cdadaa1bc11",
-      "9f9cd10e813ef574dd5578d78ca26a9088383d3a" => "65db24f59989eab8b3b0a0f1393a52faa3cba7ee",
-      "e957675647d3d7caafe842aa85cbd987e91b21f9" => "478a5ad6b08a268460793112361726976fee8157",
+      %w{282e440c6de219b7b8f32b01cc7eb599f534f33f a5ab25621be48a803de7f0893ada1cdadaa1bc11},
+      %w{9f9cd10e813ef574dd5578d78ca26a9088383d3a 65db24f59989eab8b3b0a0f1393a52faa3cba7ee},
+      %w{e957675647d3d7caafe842aa85cbd987e91b21f9 478a5ad6b08a268460793112361726976fee8157},
       # Apply THRIFT-2229 fix from master to 0.9.1 branch
-      "5f2d34e5ab33651059a085525b3adbab6a877e6f" => "ff01eeca821a1d97485c9075c4d65f0c5eef4931",
-    }.each do |name, sha|
+      %w{5f2d34e5ab33651059a085525b3adbab6a877e6f ff01eeca821a1d97485c9075c4d65f0c5eef4931},
+    ].each do |name, sha|
       patch do
         url "https://git-wip-us.apache.org/repos/asf?p=thrift.git;a=patch;h=#{name}"
         sha1 sha

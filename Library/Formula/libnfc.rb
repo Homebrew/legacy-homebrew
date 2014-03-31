@@ -12,9 +12,7 @@ class Libnfc < Formula
   # Reported upstream:
   # https://groups.google.com/forum/?fromgroups=#!topic/libnfc-devel/K0cwIdPuqJg
   # Another patch adds support for USB CDC / ACM type serial ports (tty.usbmodem)
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -12,9 +12,7 @@ class Libdnet < Formula
 
   # Fix use of deprecated macros
   # http://code.google.com/p/libdnet/issues/detail?id=27
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # autoreconf to get '.dylib' extension on shared lib

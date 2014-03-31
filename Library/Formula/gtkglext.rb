@@ -11,11 +11,9 @@ class Gtkglext < Formula
   depends_on 'pangox-compat'
   depends_on :x11
 
-  def patches
-    # fixes an incompatibility with recent GTK versions
-    # patch from: <http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=585155>
-    DATA
-  end
+  # fixes an incompatibility with recent GTK versions
+  # patch from: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=585155
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

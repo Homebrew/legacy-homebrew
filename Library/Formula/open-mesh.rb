@@ -13,7 +13,7 @@ class OpenMesh < Formula
 
   # Reported upstream and incorporated into 2.4.1 and 3:
   # http://mailman.rwth-aachen.de/pipermail/openmesh/2013-November/000948.html
-  def patches; DATA; end
+  patch :DATA
 
   def install
     mkdir 'openmesh-build' do

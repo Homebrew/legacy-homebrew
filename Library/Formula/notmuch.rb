@@ -27,11 +27,8 @@ class Notmuch < Formula
   depends_on 'talloc'
   depends_on 'gmime'
 
-  def patches
-    p = []
-    # Fix for mkdir behavior change in 10.9: http://notmuchmail.org/pipermail/notmuch/2013/016388.html
-    p << DATA
-  end
+  # Fix for mkdir behavior change in 10.9: http://notmuchmail.org/pipermail/notmuch/2013/016388.html
+  patch :DATA
 
   def install
     args = ["--prefix=#{prefix}"]

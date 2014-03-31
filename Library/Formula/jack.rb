@@ -16,10 +16,8 @@ class Jack < Formula
   depends_on 'libsndfile'
   depends_on 'libsamplerate'
 
-  def patches
-    # Change pThread header include from CarbonCore
-    { :p0 => DATA }
-  end if MacOS.version >= :mountain_lion
+  # Change pThread header include from CarbonCore
+  patch :p0, :DATA if MacOS.version >= :mountain_lion
 
   plist_options :manual => "jackd -d coreaudio"
 

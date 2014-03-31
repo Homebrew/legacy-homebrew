@@ -8,7 +8,7 @@ class Botan < Formula
   option 'enable-debug', 'Enable debug build of Botan'
 
   # upstream ticket: https://bugs.randombit.net/show_bug.cgi?id=267
-  def patches; DATA; end
+  patch :DATA
 
   def install
     args = %W[

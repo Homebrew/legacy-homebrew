@@ -6,9 +6,7 @@ class Sslscan < Formula
   sha1 'c867d766b38401ea0c0cde597497188e456e6d71'
 
   # Remove hardcoded gcc in Makefile
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "make"

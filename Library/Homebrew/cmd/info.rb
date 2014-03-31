@@ -85,7 +85,7 @@ module Homebrew extend self
     end
 
     if devel = f.devel
-      s = "devel #{stable.version}"
+      s = "devel #{devel.version}"
       s += " (bottled)" if devel.bottled?
       specs << s
     end

@@ -2,16 +2,18 @@ require 'formula'
 
 class Cmigemo < Formula
   homepage 'http://www.kaoriya.net/software/cmigemo'
-  url 'https://cmigemo.googlecode.com/files/cmigemo-default-src-20110227.zip'
-  sha1 '25e279c56d3a8f1e82cbfb3526d1b38742d1d66c'
+
+  stable do
+    url "https://cmigemo.googlecode.com/files/cmigemo-default-src-20110227.zip"
+    sha1 "25e279c56d3a8f1e82cbfb3526d1b38742d1d66c"
+
+    # Patch per discussion at: https://github.com/Homebrew/homebrew/pull/7005
+    patch :DATA
+  end
+
   head 'https://github.com/koron/cmigemo.git'
 
   depends_on 'nkf' => :build
-
-  # Patch per discussion at: https://github.com/Homebrew/homebrew/pull/7005
-  def patches
-    DATA if build.stable?
-  end
 
   def install
     system "chmod +x ./configure"

@@ -4,8 +4,9 @@ class Devil < Formula
   homepage 'http://sourceforge.net/projects/openil/'
   url 'https://downloads.sourceforge.net/project/openil/DevIL/1.7.8/DevIL-1.7.8.tar.gz'
   sha1 'bc27e3e830ba666a3af03548789700d10561fcb1'
+  revision 1
 
-  depends_on :libpng
+  depends_on 'libpng'
   depends_on 'jpeg'
 
   option :universal
@@ -18,7 +19,7 @@ class Devil < Formula
   end
 
   # fix compilation issue for iluc.c
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?

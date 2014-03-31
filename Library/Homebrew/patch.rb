@@ -136,11 +136,7 @@ class LegacyPatch < ExternalPatch
   def initialize(strip, url)
     super(strip)
     resource.url = url
-  end
-
-  def owner= owner
-    super
-    resource.version = ERB::Util.url_encode(resource.url)
+    resource.download_strategy = CurlDownloadStrategy
   end
 
   def fetch

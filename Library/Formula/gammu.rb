@@ -9,10 +9,8 @@ class Gammu < Formula
   depends_on 'glib' => :recommended
   depends_on 'gettext' => :optional
 
-  def patches
-    # Fixes issue https://github.com/gammu/gammu/issues/13
-    DATA
-  end
+  # Fixes issue https://github.com/gammu/gammu/issues/13
+  patch :DATA
 
   def install
     args = std_cmake_args

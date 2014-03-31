@@ -6,7 +6,7 @@ class Apachetop < Formula
   sha1 '005c9479800a418ee7febe5027478ca8cbf3c51b'
 
   # Upstream hasn't had activity in years, patch from MacPorts
-  def patches; { :p0 => DATA }; end
+  patch :p0, :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}",

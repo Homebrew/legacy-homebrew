@@ -19,10 +19,7 @@ class Libmagic < Formula
 
   # Fixed upstream, should be in next release
   # See http://bugs.gw.com/view.php?id=230
-  def patches
-    p = []
-    p << DATA if MacOS.version < :lion
-  end
+  patch :DATA if MacOS.version < :lion
 
   def install
     ENV.universal_binary if build.universal?

@@ -7,10 +7,8 @@ class Beecrypt < Formula
 
   depends_on "icu4c"
 
-  def patches
-    # fix build with newer clang, gcc 4.7 (https://bugs.gentoo.org/show_bug.cgi?id=413951)
-    { :p0 => DATA }
-  end
+  # fix build with newer clang, gcc 4.7 (https://bugs.gentoo.org/show_bug.cgi?id=413951)
+  patch :p0, :DATA
 
   def darwin_major_version
     # kern.osrelease: 11.4.2

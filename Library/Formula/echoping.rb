@@ -10,9 +10,7 @@ class Echoping < Formula
 
   # Fixes a DNS issue with header files, taken from Macports
   # https://trac.macports.org/browser/trunk/dports/net/echoping/files/patch-plugins-dns-dns.c.diff
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

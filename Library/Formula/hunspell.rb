@@ -7,11 +7,9 @@ class Hunspell < Formula
 
   depends_on 'readline'
 
-  def patches
-    # hunspell does not prepend $HOME to all USEROODIRs
-    # http://sourceforge.net/p/hunspell/bugs/236/
-    { :p0 => DATA }
-  end
+  # hunspell does not prepend $HOME to all USEROODIRs
+  # http://sourceforge.net/p/hunspell/bugs/236/
+  patch :p0, :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",

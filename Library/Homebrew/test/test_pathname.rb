@@ -58,6 +58,19 @@ class PathnameExtensionTests < Test::Unit::TestCase
     assert_equal 'CONTENT', File.read(@file)
   end
 
+  def test_atomic_write_preserves_permissions
+    File.open(@file, "w", 0100777) { }
+    @file.atomic_write("CONTENT")
+    assert_equal 0100777 & ~File.umask, @file.stat.mode
+  end
+
+  def test_atomic_write_preserves_default_permissions
+    @file.atomic_write("CONTENT")
+    sentinel = @file.parent.join("sentinel")
+    touch sentinel
+    assert_equal sentinel.stat.mode, @file.stat.mode
+  end
+
   def test_cp
     touch @file
     mkdir_p @dir
@@ -194,6 +207,8 @@ class PathnameExtensionTests < Test::Unit::TestCase
       assert((@dst+'bin').directory?)
       assert((@dst+'bin/a.txt').exist?)
       assert((@dst+'bin/b.txt').exist?)
+
+      assert((@dst+'bin').readlink.relative?)
     end
   end
 

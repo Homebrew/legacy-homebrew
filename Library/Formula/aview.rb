@@ -7,9 +7,7 @@ class Aview < Formula
 
   depends_on 'aalib'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug",

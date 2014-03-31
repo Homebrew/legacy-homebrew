@@ -2,8 +2,8 @@ require "formula"
 
 class Kvazaar < Formula
   homepage "https://github.com/ultravideo/kvazaar"
-  url "https://github.com/ultravideo/kvazaar/archive/v0.2.4.tar.gz"
-  sha1 "636c26955b0b69249f51bc8661a8d57ad4c581df"
+  url "https://github.com/ultravideo/kvazaar/archive/v0.3.0.tar.gz"
+  sha1 "cd3924a2692d0b3ebaed7f0c88b300ea15155fb1"
 
   depends_on 'yasm' => :build
 
@@ -15,6 +15,6 @@ class Kvazaar < Formula
   end
 
   test do
-    system "kvazaar 2>&1 | grep 'HEVC Encoder v. 0.2'"
+    system "kvazaar 2>&1 | grep 'HEVC Encoder v. 0.3'"
   end
 end

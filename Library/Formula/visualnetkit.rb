@@ -12,9 +12,7 @@ class Visualnetkit < Formula
   # versions of Qt. Since the upstream project hasn't had activity in a while,
   # if a newer version of Qt breaks this formula we will consider moving it to
   # the boneyard instead.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "/bin/sh", "./build.sh", "-r"

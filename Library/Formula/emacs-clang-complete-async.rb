@@ -12,7 +12,7 @@ class EmacsClangCompleteAsync < Formula
   depends_on 'llvm' => 'with-clang'
 
   # https://github.com/Golevka/emacs-clang-complete-async/issues/65
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "make"

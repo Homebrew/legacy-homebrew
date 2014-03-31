@@ -12,11 +12,9 @@ class Capstone < Formula
     sha1 "691452cdf102cc24fb885c487f97f69cbb0b2771" => :lion
   end
 
-  def patches
-    # Fix Makefile. Upstream fix is at :
-    # https://github.com/aquynh/capstone/commit/22b867e
-    DATA
-  end
+  # Fix Makefile. Upstream fix is at:
+  # https://github.com/aquynh/capstone/commit/22b867e
+  patch :DATA
 
   def install
     # Fixed upstream in next version:

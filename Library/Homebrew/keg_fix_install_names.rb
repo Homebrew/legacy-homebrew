@@ -1,4 +1,4 @@
-class Keg
+class Keg < Pathname
   PREFIX_PLACEHOLDER = "@@HOMEBREW_PREFIX@@".freeze
   CELLAR_PLACEHOLDER = "@@HOMEBREW_CELLAR@@".freeze
 
@@ -38,15 +38,16 @@ class Keg
       end
     end
 
-    (pkgconfig_files | libtool_files | script_files).each do |file|
-      file.ensure_writable do
-        file.open('rb') do |f|
-          s = f.read
-          s.gsub!(old_cellar, new_cellar)
-          s.gsub!(old_prefix, new_prefix)
-          f.reopen(file, 'wb')
-          f.write(s)
-        end
+    files = pkgconfig_files | libtool_files | script_files
+
+    files.group_by { |f| f.stat.ino }.each_value do |first, *rest|
+      s = first.open("rb", &:read)
+      changed = s.gsub!(old_cellar, new_cellar)
+      changed = s.gsub!(old_prefix, new_prefix) || changed
+
+      if changed
+        first.atomic_write(s)
+        rest.each { |file| FileUtils.ln(first, file, :force => true) }
       end
     end
   end
@@ -90,8 +91,6 @@ class Keg
       end
     end
   end
-
-  private
 
   def install_name_tool(*args)
     system(MacOS.locate("install_name_tool"), *args)
@@ -161,7 +160,7 @@ class Keg
     script_files = []
 
     # find all files with shebangs
-    Pathname.new(self).find do |pn|
+    find do |pn|
       next if pn.symlink? or pn.directory?
       script_files << pn if pn.text_executable?
     end
@@ -172,13 +171,13 @@ class Keg
   def pkgconfig_files
     pkgconfig_files = []
 
-    # find .pc files, which are stored in lib/pkgconfig
-    pc_dir = self/'lib/pkgconfig'
-    if pc_dir.directory?
-      pc_dir.find do |pn|
+    %w[lib share].each do |dir|
+      pcdir = join(dir, "pkgconfig")
+
+      pcdir.find do |pn|
         next if pn.symlink? or pn.directory? or pn.extname != '.pc'
         pkgconfig_files << pn
-      end
+      end if pcdir.directory?
     end
 
     pkgconfig_files
@@ -191,7 +190,7 @@ class Keg
     lib.find do |pn|
       next if pn.symlink? or pn.directory? or pn.extname != '.la'
       libtool_files << pn
-    end
+    end if lib.directory?
     libtool_files
   end
 end

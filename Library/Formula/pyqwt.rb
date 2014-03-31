@@ -11,11 +11,8 @@ class Pyqwt < Formula
   depends_on 'sip'
   depends_on 'pyqt'
 
-  def patches
-    # Patch to build system to allow for specific
-    #  installation directories.
-    { :p0 => DATA }
-  end
+  # Patch to build system to allow for specific installation directories.
+  patch :p0, :DATA
 
   def install
     cd "configure" do

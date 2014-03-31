@@ -25,7 +25,7 @@ class Gnupg2 < Formula
   # 2.x, and gpg-agent separately, and adjust tests to fit this scheme
   # Fix typo that breaks compilation:
   # http://lists.gnupg.org/pipermail/gnupg-users/2013-May/046652.html
-  def patches; DATA; end
+  patch :DATA
 
   def install
     inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if build.include? '8192'

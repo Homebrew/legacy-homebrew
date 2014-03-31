@@ -12,7 +12,7 @@ class Xpdf < Formula
     :because => 'xpdf, pdf2image, and poppler install conflicting executables'
 
   # see: http://gnats.netbsd.org/45562
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.append_to_cflags "-I#{MacOS::X11.include} -I#{MacOS::X11.include}/freetype2"

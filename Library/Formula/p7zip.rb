@@ -21,7 +21,7 @@ class P7zip < Formula
                    "DEST_MAN=#{man}",
                    "install"
 
-    # install.sh chmods to 444, which is bullshit and breaks uninstalling
+    # install.sh chmods to 444, which is bad and breaks uninstalling
     system "chmod -R +w #{doc}"
   end
 end

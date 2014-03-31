@@ -6,7 +6,7 @@ class Proxytunnel < Formula
   sha1 '51d816125bb9e9bca267d35f861000eb0fa9d80b'
 
   # Remove conflicting strlcpy/strlcat declarations
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "make"
