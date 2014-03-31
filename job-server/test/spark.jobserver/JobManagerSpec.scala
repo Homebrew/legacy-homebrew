@@ -11,19 +11,23 @@ import org.scalatest.{FunSpec, BeforeAndAfter, BeforeAndAfterAll}
 import scala.collection.mutable
 
 object JobManagerSpec {
+  import collection.JavaConverters._
+
   val JobResultCacheSize = 30
   val NumCpuCores = Runtime.getRuntime.availableProcessors()  // number of cores to allocate. Required.
   val MemoryPerNode = "512m"  // Executor memory per node, -Xmx style eg 512m, 1G, etc.
   val MaxJobsPerContext = 2
   val config = {
-    val ConfigMap = Map[String, Any](
+    val ConfigMap = Map(
       "spark.jobserver.job-result-cache-size" -> JobResultCacheSize,
       "num-cpu-cores" -> NumCpuCores,
       "memory-per-node" -> MemoryPerNode,
       "spark.jobserver.max-jobs-per-context" -> MaxJobsPerContext,
-      "akka.log-dead-letters" -> 0
+      "akka.log-dead-letters" -> 0,
+      "spark.master" -> "local[4]",
+      "spark.jobserver.context-factory" -> "spark.jobserver.util.DefaultSparkContextFactory"
     )
-    ConfigFactory.parseString(ConfigMap.map { case (k, v) => k + " = " + v }.mkString("\n"))
+    ConfigFactory.parseMap(ConfigMap.asJava)
   }
 
   def getNewSystem = ActorSystem("test", config)
@@ -172,6 +176,23 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll with
         case JobResult(_, keys: Seq[String]) =>
           keys should contain ("foo")
       }
+    }
+
+    // TODO(velvia): Enable this test when we get SPARK-1210 / https://github.com/apache/spark/pull/15
+    // Otherwise there is a nasty ArrayStoreException bug that pops up all the time
+    ignore("should properly serialize case classes and other job jar classes") {
+      manager ! JobManagerActor.Initialize
+      expectMsgClass(classOf[JobManagerActor.Initialized])
+
+      uploadTestJar()
+      manager ! JobManagerActor.StartJob("demo", classPrefix + "ZookeeperJob", stringConfig,
+        syncEvents ++ errorEvents)
+      expectMsgPF(4 seconds, "Did not get JobResult") {
+        case JobResult(_, result: Array[Product]) =>
+          result.length should equal (1)
+          result(0).getClass.getName should include ("Animal")
+      }
+      expectNoMsg()
     }
 
     it ("should refuse to start a job when too many jobs in the context are running") {

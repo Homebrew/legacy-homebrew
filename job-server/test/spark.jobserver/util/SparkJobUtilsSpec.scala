@@ -9,14 +9,13 @@ class SparkJobUtilsSpec extends FunSpec with ShouldMatchers {
   import collection.JavaConverters._
 
   val config = ConfigFactory.parseMap(Map(
-                 "spark.home" -> "/etc/spark"
+                 "spark.home" -> "/etc/spark",
+                 "spark.master" -> "local[4]"
                ).asJava)
-  val sparkMaster = "local[4]"
   val contextName = "demo"
 
   def getSparkConf(configMap: Map[String, Any]): SparkConf =
-    SparkJobUtils.configToSparkConf(config, ConfigFactory.parseMap(configMap.asJava),
-                                    sparkMaster, contextName)
+    SparkJobUtils.configToSparkConf(config, ConfigFactory.parseMap(configMap.asJava), contextName)
 
   describe("SparkJobUtils.configToSparkConf") {
     it("should translate num-cpu-cores and memory-per-node properly") {
