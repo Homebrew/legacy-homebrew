@@ -218,7 +218,7 @@ class Keg < Pathname
     # it, and the exception that is generated will message to the user about
     # the situation
     if dst.symlink? and dst.directory?
-      src = (dst.parent+dst.readlink).cleanpath
+      src = dst.resolved_path
       keg = Keg.for(src)
       dst.unlink unless mode.dry_run
       keg.link_dir(src, mode) { :mkpath }
