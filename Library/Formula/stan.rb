@@ -4,11 +4,9 @@ class Stan < Formula
   homepage "http://mc-stan.org"
   url "https://github.com/stan-dev/stan/archive/v2.2.0.tar.gz"
   sha1 "4c9be875f3627bb5e1089fd24600aa4fa4f862f3"
-
   depends_on :xcode
-  
   keg_only "We don't want sym-links."
-  
+
   def install
     ENV['HOMEBREW_OPTIMIZATION_LEVEL'] ='O3'
     system "make", "bin/libstan.a"
