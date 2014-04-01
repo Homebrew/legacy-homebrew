@@ -146,13 +146,14 @@ end
 
 class BottleSpecification
   attr_rw :root_url, :prefix, :cellar, :revision
-  attr_reader :current_tag, :checksum
+  attr_reader :current_tag, :checksum, :collector
 
   def initialize
     @revision = 0
     @prefix = '/usr/local'
     @cellar = '/usr/local/Cellar'
     @root_url = 'https://downloads.sf.net/project/machomebrew/Bottles'
+    @collector = BottleCollector.new
   end
 
   def fully_specified?
@@ -164,15 +165,14 @@ class BottleSpecification
   Checksum::TYPES.each do |cksum|
     class_eval <<-EOS, __FILE__, __LINE__ + 1
       def #{cksum}(val=nil)
-        return @#{cksum} if val.nil?
-        @#{cksum} ||= BottleCollector.new
+        return collector if val.nil?
         case val
         when Hash
           key, value = val.shift
-          @#{cksum}.add(Checksum.new(:#{cksum}, key), value)
+          collector.add(Checksum.new(:#{cksum}, key), value)
         end
 
-        cksum, current_tag = @#{cksum}.fetch_bottle_for(bottle_tag)
+        cksum, current_tag = collector.fetch_bottle_for(bottle_tag)
         @checksum = cksum if cksum
         @current_tag = current_tag if cksum
       end
@@ -181,17 +181,13 @@ class BottleSpecification
 
   def checksums
     checksums = {}
-    Checksum::TYPES.each do |checksum_type|
-      checksum_os_versions = send checksum_type
-      next unless checksum_os_versions
-      os_versions = checksum_os_versions.keys
-      os_versions.map! {|osx| MacOS::Version.from_symbol osx rescue nil }.compact!
-      os_versions.sort.reverse.each do |os_version|
-        osx = os_version.to_sym
-        checksum = checksum_os_versions[osx]
-        checksums[checksum_type] ||= []
-        checksums[checksum_type] << { checksum => osx }
-      end
+    os_versions = collector.keys
+    os_versions.map! {|osx| MacOS::Version.from_symbol osx rescue nil }.compact!
+    os_versions.sort.reverse_each do |os_version|
+      osx = os_version.to_sym
+      checksum = collector[osx]
+      checksums[checksum.hash_type] ||= []
+      checksums[checksum.hash_type] << { checksum => osx }
     end
     checksums
   end
