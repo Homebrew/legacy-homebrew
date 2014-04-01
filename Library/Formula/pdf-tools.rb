@@ -12,10 +12,12 @@ class PdfTools < Formula
   depends_on :libtool
 
   depends_on "cairo"
-  depends_on "zlib"
   depends_on "poppler" => "with-glib"
 
   def install
+    ENV['zlib_CFLAGS'] = '-I/usr/include'
+    ENV['zlib_LIBS'] = '-L/usr/lib -lz'
+
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}"
     system "make"
