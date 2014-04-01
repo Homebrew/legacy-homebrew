@@ -8,9 +8,10 @@ class Stm32flash < Formula
   head "git://gitorious.org/stm32flash/stm32flash.git"
 
   stable do
+    #Create manual page folder in Makefile install target
     patch do
-        url "https://gitorious.org/stm32flash/stm32flash/commit/7af2d66ad29c156176c6f62b1045cd354294b12a.diff"
-        sha1 "872e15cf98e691a7ca02b5a8a0af09cfaad26881"
+      url "https://gitorious.org/stm32flash/stm32flash/commit/7af2d66ad29c156176c6f62b1045cd354294b12a.diff"
+      sha1 "872e15cf98e691a7ca02b5a8a0af09cfaad26881"
     end
   end
 
