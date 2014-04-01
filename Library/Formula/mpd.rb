@@ -5,6 +5,7 @@ class Mpd < Formula
 
   stable do
     url "http://www.musicpd.org/download/mpd/0.17/mpd-0.17.5.tar.bz2"
+    mirror "http://ftp.netbsd.org/pub/pkgsrc/distfiles/mpd-0.17.5.tar.bz2"
     sha1 "91e4d8d364a3db02e6f92676dd938880e5bb200a"
 
     # Removes usage of deprecated AVCODEC_MAX_AUDIO_FRAME_SIZE constant
