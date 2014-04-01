@@ -164,13 +164,9 @@ class BottleSpecification
   # a Hash, which indicates the platform the checksum applies on.
   Checksum::TYPES.each do |cksum|
     class_eval <<-EOS, __FILE__, __LINE__ + 1
-      def #{cksum}(val=nil)
-        return collector if val.nil?
-        case val
-        when Hash
-          key, value = val.shift
-          collector.add(Checksum.new(:#{cksum}, key), value)
-        end
+      def #{cksum}(val)
+        digest, tag = val.shift
+        collector.add(Checksum.new(:#{cksum}, digest), tag)
 
         cksum, current_tag = collector.fetch_bottle_for(bottle_tag)
         @checksum = cksum if cksum
