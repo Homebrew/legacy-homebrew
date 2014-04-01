@@ -27,4 +27,14 @@ class Elinks < Formula
                           "--enable-256-colors"
     system "make install"
   end
+
+  test do
+    (testpath/"test.html").write <<-EOS.undent
+      <!DOCTYPE html>
+      <title>elinks test</title>
+      Hello world!
+      <ol><li>one</li><li>two</li></ol>
+    EOS
+    assert_match /^\s*Hello world!\n+ *1. one\n *2. two\s*$/, `elinks test.html`
+  end
 end
