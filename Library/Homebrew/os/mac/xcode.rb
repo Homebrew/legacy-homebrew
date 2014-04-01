@@ -101,7 +101,9 @@ module OS
         # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
         raise if bad_xcode_select_path?
 
-        raise unless which "xcodebuild"
+        xcodebuild = which "xcodebuild"
+        raise unless xcodebuild && xcodebuild != xcode43build
+
         `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
         raise if $1.nil? or not $?.success?
         $1
