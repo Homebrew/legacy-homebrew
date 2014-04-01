@@ -8,7 +8,7 @@ class Charm < Formula
   depends_on :python
 
   def install
-      system "python", "setup.py", "install", "--prefix=#{prefix}"
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
   end
 
   test do
@@ -16,12 +16,7 @@ class Charm < Formula
   end
 
   def caveats; <<-EOS.undent
-    Charm requires a .charmrc file in your home directory.
-
-    A minimal .charmrc file for LiveJournal contains the line:
-        login = yourusername yourpassword
-
-    For an example, see:
+    Charm requires a .charmrc file in your home directory. See:
         #{HOMEBREW_PREFIX}/share/doc/charm/sample.charmrc
     EOS
   end
