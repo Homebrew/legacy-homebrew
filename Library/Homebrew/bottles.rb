@@ -75,7 +75,7 @@ class BottleCollector
     @bottles = {}
   end
 
-  def add(checksum, tag, url=nil)
+  def add(checksum, tag)
     @bottles[tag] = checksum
   end
 
