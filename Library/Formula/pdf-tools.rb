@@ -21,14 +21,14 @@ class PdfTools < Formula
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}"
     system "make"
-    system "cp pdf-tools-0.20.tar #{prefix}"
-    system "mkdir -p #{prefix}/elpa"
-    system "tar --strip-components=1 -xf pdf-tools-0.20.tar -C #{prefix}/elpa"
+
+    prefix.install "pdf-tools-0.20.tar"
+    mkdir_p "#{prefix}/elpa"
+    system "tar", "--strip-components=1", "-xf", "#{prefix}/pdf-tools-0.20.tar", "-C", "#{prefix}/elpa"
   end
 
   def caveats; <<-EOS.undent
     How to install to your Emacs, run
-
     emacs -Q --batch --eval "(package-install-file \\"#{prefix}/pdf-tools-0.20.tar\\")"
     EOS
   end
