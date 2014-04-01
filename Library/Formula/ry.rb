@@ -2,8 +2,8 @@ require "formula"
 
 class Ry < Formula
   homepage "https://github.com/jayferd/ry"
-  url "https://github.com/jayferd/ry/archive/v0.5.1.tar.gz"
-  sha1 "33bb21ca6871b426d6e347b7c7bdee38eef138c1"
+  url "https://github.com/jayferd/ry/archive/v0.5.2.tar.gz"
+  sha1 "1c44fa222911b5b3fdb806fa97752b16404aae0f"
 
   head "https://github.com/jayferd/ry.git"
 
