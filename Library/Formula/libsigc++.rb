@@ -2,7 +2,8 @@ require 'formula'
 
 class Libsigcxx < Formula
   homepage 'http://libsigc.sourceforge.net'
-  url 'http://download.gnome.org/sources/libsigc++/2.3/libsigc++-2.3.1.tar.xz'
+  url 'https://download.gnome.org/sources/libsigc++/2.3/libsigc++-2.3.1.tar.xz',
+      :using => :ssl3
   sha256 '67d05852b31fdb267c9fdcecd40b046a11aa54d884435e99e3c60dd20cd60393'
 
   bottle do
