@@ -34,8 +34,8 @@ end
 # Check for bad xcode-select before anything else, because `doctor` and
 # many other things will hang
 # Note that this bug was fixed in 10.9
-if OS.mac? && `xcode-select -print-path 2>/dev/null`.chomp == '/' && MacOS.version < :mavericks
-  ofail <<-EOS.undent
+if OS.mac? && MacOS.version < :mavericks && MacOS::Xcode.bad_xcode_select_path?
+  odie <<-EOS.undent
   Your xcode-select path is currently set to '/'.
   This causes the `xcrun` tool to hang, and can render Homebrew unusable.
   If you are using Xcode, you should:
@@ -43,8 +43,6 @@ if OS.mac? && `xcode-select -print-path 2>/dev/null`.chomp == '/' && MacOS.versi
   Otherwise, you should:
     sudo rm -rf /usr/share/xcode-select
   EOS
-
-  exit 1
 end
 
 case HOMEBREW_PREFIX.to_s when '/', '/usr'
