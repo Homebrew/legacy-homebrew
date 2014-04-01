@@ -14,14 +14,17 @@ class Getdns < Formula
   depends_on "ldns"
   depends_on "unbound"
   depends_on "libidn"
-  depends_on "libevent"
+  depends_on "libevent" => :optional
   depends_on "libuv" => :optional
+  depends_on "libev" => :optional
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    args = []
+    args << "--with-libevent" if build.with? "libevent"
+    args << "--with-libev" if build.with? "libev"
+    args << "--with-libuv" if build.with? "libuv"
+
+    system "./configure", "--prefix=#{prefix}", *args
     system "make", "install"
   end
 
