@@ -101,7 +101,6 @@ class Python3 < Formula
     # Tell Python not to install into /Applications (default for framework builds)
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
-    (HOMEBREW_PREFIX/'share/python3').mkpath
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python3"
     system "make", "quicktest" if build.include? "quicktest"
 
@@ -261,7 +260,7 @@ class Python3 < Formula
         pip3 install --upgrade pip
 
       You can install Python packages with
-        `pip3 install <your_favorite_package>`
+        pip3 install <package>
 
       They will install into the site-package directory
         #{site_packages}

@@ -525,6 +525,10 @@ class FormulaAuditor
     if line =~ /depends_on ['"](.+)['"] (if.+|unless.+)$/
       audit_conditional_dep($1, $2, $&)
     end
+
+    if line =~ /(Dir\[("[^\*{},]+")\])/
+      problem "#{$1} is unnecessary; just use #{$2}"
+    end
   end
 
   def audit_conditional_dep(dep, condition, line)
