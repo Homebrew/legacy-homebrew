@@ -23,7 +23,7 @@ class PdfTools < Formula
     system "make"
 
     prefix.install "pdf-tools-0.20.tar"
-    mkdir_p "#{prefix}/elpa"
+    (prefix/"elpa").mkpath
     system "tar", "--strip-components=1", "-xf", "#{prefix}/pdf-tools-0.20.tar", "-C", "#{prefix}/elpa"
   end
 
