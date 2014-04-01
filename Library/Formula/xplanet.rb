@@ -5,6 +5,12 @@ class Xplanet < Formula
   url "https://downloads.sourceforge.net/project/xplanet/xplanet/1.3.0/xplanet-1.3.0.tar.gz"
   sha1 "7c5208b501b441a0184cbb334a5658d0309d7dac"
 
+  bottle do
+    sha1 "e22172b3ee5a08cba075846194fc7f7f21c01ffc" => :mavericks
+    sha1 "35dc45eedc379c7fc91bb129e513e4c8e27d5f9e" => :mountain_lion
+    sha1 "50b7295df967c9418ebcca392e4c424a3f00c8a4" => :lion
+  end
+
   revision 1
 
   option "with-x", "Build for X11 instead of Aqua"
