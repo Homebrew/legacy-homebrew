@@ -17,7 +17,7 @@ class Charm < Formula
 
   def caveats; <<-EOS.undent
     Charm requires a .charmrc file in your home directory. See:
-        #{HOMEBREW_PREFIX}/share/doc/charm/sample.charmrc
+      #{HOMEBREW_PREFIX}/share/doc/charm/sample.charmrc
     EOS
   end
 end
