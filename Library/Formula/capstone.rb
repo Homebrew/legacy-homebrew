@@ -6,9 +6,6 @@ class Capstone < Formula
   sha1 '235ceab369025fbad9887fe826b741ca84b1ab41'
 
   def install
-    # Fixed upstream in the master tree:
-    # https://github.com/aquynh/capstone/commit/869bf7a
-    # https://github.com/aquynh/capstone/commit/c7d7884
     ENV["PREFIX"] = prefix
     ENV["HOMEBREW_CAPSTONE"] = "1"
     system "./make.sh"
