@@ -37,7 +37,7 @@ class Xplanet < Formula
       args << "--with-aqua" << "--without-x"
     end
 
-    if build.with? "netpbm" or build.with? "all"
+    if (build.with? "netpbm") || (build.with? "all")
       netpbm = Formula["netpbm"].opt_prefix
       ENV.append 'CPPFLAGS', "-I#{netpbm}/include/netpbm"
       ENV.append 'LDFLAGS', "-L#{netpbm}/lib"
