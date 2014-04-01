@@ -10,8 +10,11 @@ class Stan < Formula
   keg_only "We don't want sym-links."
   
   def install
-    system "make","bin/libstan.a"
-    system "make", "-j2", "bin/stanc"
+    ENV['HOMEBREW_OPTIMIZATION_LEVEL'] ='O3'
+    system "make", "bin/libstan.a"
+    ENV['HOMEBREW_OPTIMIZATION_LEVEL'] ='O0'
+    system "make", "bin/stanc"
+    ENV['HOMEBREW_OPTIMIZATION_LEVEL'] ='O3'
     system "make", "bin/print"
     (var/"stan-home").install "makefile"
     (var/"stan-home/bin").install Dir["bin/*"]
@@ -23,11 +26,13 @@ class Stan < Formula
 
   test do
     cd "#{HOMEBREW_PREFIX}/var/stan-home/"
-    system "make", "-j4", "O=0", "test-headers"
-    system "make", "-j4", "O=0", "src/test/unit"
-    system "make", "-j4", "O=0", "src/test/unit-agrad-rev"
-    system "make", "-j4", "O=0", "src/test/unit-agrad-fwd"
-    system "make", "-j4", "O=0", "src/test/unit-distribution"
-    system "make", "-j4", "O=3", "src/test/CmdStan/models"
+    ENV['HOMEBREW_OPTIMIZATION_LEVEL'] ='O0'
+    system "make", "test-headers"
+    system "make", "src/test/unit"
+    system "make", "src/test/unit-agrad-rev"
+    system "make", "src/test/unit-agrad-fwd"
+    system "make", "src/test/unit-distribution"
+    ENV['HOMEBREW_OPTIMIZATION_LEVEL'] ='O3'
+    system "make", "src/test/CmdStan/models"
   end
 end
