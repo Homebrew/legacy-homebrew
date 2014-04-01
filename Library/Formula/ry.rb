@@ -7,6 +7,13 @@ class Ry < Formula
 
   head "https://github.com/jayferd/ry.git"
 
+  bottle do
+    cellar :any
+    sha1 "68b813c169fc16024ac73774bba8ab074ec966d3" => :mavericks
+    sha1 "ffa8d32fade2e880391d4229e09c6b7bfb394910" => :mountain_lion
+    sha1 "370606fd9714e3f0eda2748f52fb404197c51d78" => :lion
+  end
+
   depends_on "ruby-build" => :recommended
   depends_on "bash-completion" => :recommended
 
