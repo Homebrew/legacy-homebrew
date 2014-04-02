@@ -22,6 +22,7 @@ class Mysql < Formula
   option 'enable-local-infile', 'Build with local infile loading support'
   option 'enable-memcached', 'Enable innodb-memcached support'
   option 'enable-debug', 'Build with debug support'
+  option 'with-handlersocket', 'Build with the HandlerSocket plugin'
 
   conflicts_with 'mysql-cluster', 'mariadb', 'percona-server',
     :because => "mysql, mariadb, and percona install the same binaries."
@@ -33,6 +34,10 @@ class Mysql < Formula
   fails_with :llvm do
     build 2326
     cause "https://github.com/Homebrew/homebrew/issues/issue/144"
+  end
+
+  resource "handlersocket" do
+    url "https://github.com/DeNA/HandlerSocket-Plugin-for-MySQL.git"
   end
 
   def install
@@ -118,6 +123,17 @@ class Mysql < Formula
     libexec.mkpath
     mv "#{bin}/mysqlaccess", libexec
     mv "#{bin}/mysqlaccess.conf", libexec
+
+    if build.include? "with-handlersocket"
+      resource("handlersocket").stage do
+        system "./autogen"
+        system "./configure", "--with-mysql-source=#{buildpath}", "--with-mysql-bindir=#{buildpath}/bin",
+          "--with-mysql-plugindir=#{prefix}/plugin"
+        system "make"
+        system "make", "install"
+      end
+    end
+
   end
 
   def post_install
