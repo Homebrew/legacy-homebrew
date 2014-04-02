@@ -2,8 +2,9 @@ require 'formula'
 
 class Jemalloc < Formula
   homepage 'http://www.canonware.com/jemalloc/download.html'
-  url 'http://www.canonware.com/download/jemalloc/jemalloc-3.5.0.tar.bz2'
-  sha1 '3c6aeed5adbd7267ec7db476f002051143a43ac0'
+  url 'http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2'
+  sha1 '40c0892b172e5dc14a6cea6fe4edda7dea4f3a68'
+  head "https://github.com/jemalloc/jemalloc.git"
 
   bottle do
     sha1 "3eae83e595a6140685008255b03549f7e5f73c7d" => :mavericks
