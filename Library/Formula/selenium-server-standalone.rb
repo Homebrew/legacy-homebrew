@@ -2,8 +2,8 @@ require 'formula'
 
 class SeleniumServerStandalone < Formula
   homepage 'http://seleniumhq.org/'
-  url 'https://selenium-release.storage.googleapis.com/2.40/selenium-server-standalone-2.40.0.jar'
-  sha1 '165f54ca53e5eefc6f27c26ac03d18bae99a544e'
+  url 'http://selenium-release.storage.googleapis.com/2.41/selenium-server-standalone-2.41.0.jar'
+  sha1 '36ff5dbb6f9592d511935f65ff262f5c1a53fef8'
 
   def install
     libexec.install "selenium-server-standalone-#{version}.jar"
