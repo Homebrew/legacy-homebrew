@@ -29,7 +29,12 @@ class Tinyxml < Formula
     url "https://gist.github.com/scpeters/6325123/raw/cfb079be67997cb19a1aee60449714a1dedefed5/tinyxml_CMakeLists.patch"
     sha1 "90c69322296a4144795aa66a94233a9409ff7ea5"
   end
-
+  
+  patch do
+    url "https://gist.githubusercontent.com/francesco-romano/9935649/raw/cf23329e434dbfc418bd5d6ad616cfb65e9615a7/tinyxml_pkg-config.patch"
+    sha1 "a9e19b706747fbc2d4c481d0f172aca4275b1b2e"
+  end
+  
   def install
     ENV.universal_binary if build.universal?
     system "cmake", ".", *std_cmake_args
