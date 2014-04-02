@@ -8,10 +8,16 @@ class Stm32flash < Formula
   head "git://gitorious.org/stm32flash/stm32flash.git"
 
   stable do
-    #Create manual page folder in Makefile install target
+    # Create manual page folder in Makefile install target
     patch do
       url "https://gitorious.org/stm32flash/stm32flash/commit/7af2d66ad29c156176c6f62b1045cd354294b12a.diff"
       sha1 "872e15cf98e691a7ca02b5a8a0af09cfaad26881"
+    end
+
+    # Exit with success when -h option is used to show help message
+    patch do
+      url "https://gitorious.org/stm32flash/stm32flash/commit/4d7ce4572f6a2d5977d505bef60e94346f7866e9.diff"
+      sha1 "5920e6dceddd1e878c753cfa173724aacf62397c"
     end
   end
 
@@ -20,6 +26,6 @@ class Stm32flash < Formula
   end
 
   test do
-    system "#{bin}/stm32flash"
+    system "#{bin}/stm32flash", "-h"
   end
 end
