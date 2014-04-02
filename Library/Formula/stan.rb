@@ -22,15 +22,9 @@ class Stan < Formula
     doc.install Dir["doc/*"]
   end
 
-#  test do
-#    cd "#{HOMEBREW_PREFIX}/var/stan-home/"
-#    ENV['HOMEBREW_OPTIMIZATION_LEVEL'] ='O0'
-#    system "make", "test-headers"
-#    system "make", "src/test/unit"
-#    system "make", "src/test/unit-agrad-rev"
-#    system "make", "src/test/unit-agrad-fwd"
-#    system "make", "src/test/unit-distribution"
-#    ENV['HOMEBREW_OPTIMIZATION_LEVEL'] ='O3'
-#    system "make", "src/test/CmdStan/models"
-#  end
+  test do
+    cd "#{HOMEBREW_PREFIX}/var/stan-home/"
+    ENV['HOMEBREW_OPTIMIZATION_LEVEL'] ='O0'
+    system "make", "test-headers"
+  end
 end
