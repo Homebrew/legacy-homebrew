@@ -101,7 +101,6 @@ class Python3 < Formula
     # Tell Python not to install into /Applications (default for framework builds)
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
-    (HOMEBREW_PREFIX/'share/python3').mkpath
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python3"
     system "make", "quicktest" if build.include? "quicktest"
 
@@ -121,15 +120,15 @@ class Python3 < Formula
     site_packages_cellar.parent.install_symlink site_packages
 
     # Write our sitecustomize.py
-    Dir["#{site_packages}/*.py{,c,o}"].each {|f| Pathname.new(f).unlink }
-    (site_packages/"sitecustomize.py").write(sitecustomize)
+    rm_rf Dir["#{site_packages}/sitecustomize.py[co]"]
+    (site_packages/"sitecustomize.py").atomic_write(sitecustomize)
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.8-py3.3.egg
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/python#{VER}/site-packages/setuptools*"]
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/python#{VER}/site-packages/distribute*"]
+    rm_rf Dir["#{site_packages}/setuptools*"]
+    rm_rf Dir["#{site_packages}/distribute*"]
 
     # Install the bundled pip if it's newer than the installed version
     system bin/"python3", "-m", "ensurepip", "--upgrade"
@@ -224,7 +223,7 @@ class Python3 < Formula
                '     You should `unset PYTHONPATH` to fix this.')
       else:
           # Only do this for a brewed python:
-          opt_executable = '#{HOMEBREW_PREFIX}/opt/python3/bin/python#{VER}'
+          opt_executable = '#{opt_bin}/python#{VER}'
           if os.path.realpath(sys.executable) == os.path.realpath(opt_executable):
               # Remove /System site-packages, and the Cellar site-packages
               # which we moved to lib/pythonX.Y/site-packages. Further, remove
@@ -232,7 +231,7 @@ class Python3 < Formula
               sys.path = [ p for p in sys.path
                            if (not p.startswith('/System') and
                                not p.startswith('#{HOMEBREW_PREFIX}/lib/python') and
-                               not (p.startswith('#{HOMEBREW_PREFIX}/Cellar/python') and p.endswith('site-packages'))) ]
+                               not (p.startswith('#{rack}') and p.endswith('site-packages'))) ]
 
               # LINKFORSHARED (and python-config --ldflags) return the
               # full path to the lib (yes, "Python" is actually the lib, not a
@@ -241,7 +240,7 @@ class Python3 < Formula
               # Assume Framework style build (default since months in brew)
               try:
                   from _sysconfigdata import build_time_vars
-                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{HOMEBREW_PREFIX}/opt/python3/Frameworks/Python.framework/Versions/#{VER}/Python'
+                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{VER}/Python'
               except:
                   pass  # remember: don't print here. Better to fail silently.
 
@@ -251,7 +250,7 @@ class Python3 < Formula
           # Tell about homebrew's site-packages location.
           # This is needed for Python to parse *.pth.
           import site
-          site.addsitedir('#{HOMEBREW_PREFIX}/lib/python#{VER}/site-packages')
+          site.addsitedir('#{site_packages}')
     EOF
   end
 
@@ -261,7 +260,7 @@ class Python3 < Formula
         pip3 install --upgrade pip
 
       You can install Python packages with
-        `pip3 install <your_favorite_package>`
+        pip3 install <package>
 
       They will install into the site-package directory
         #{site_packages}

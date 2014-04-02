@@ -417,7 +417,7 @@ class Formula
     # test if the name is a formula alias
     possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{name}")
     if possible_alias.file?
-      return possible_alias.realpath.basename('.rb').to_s
+      return possible_alias.resolved_path.basename(".rb").to_s
     end
 
     # test if the name is a cached downloaded formula
@@ -491,28 +491,25 @@ class Formula
         "devel" => (devel.version.to_s if devel),
         "head" => (head.version.to_s if head)
       },
+      "revision" => revision,
       "installed" => [],
       "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
       "keg_only" => keg_only?,
-      "dependencies" => deps.map {|dep| dep.to_s},
+      "dependencies" => deps.map(&:name),
       "conflicts_with" => conflicts.map(&:name),
-      "options" => [],
       "caveats" => caveats
     }
 
-    build.each do |opt|
-      hsh["options"] << {
-        "option" => "--"+opt.name,
-        "description" => opt.description
-      }
-    end
+    hsh["options"] = build.map { |opt|
+      { "option" => opt.flag, "description" => opt.description }
+    }
 
     if rack.directory?
       rack.subdirs.each do |keg|
         tab = Tab.for_keg keg
 
         hsh["installed"] << {
-          "version" => keg.basename.to_s,
+          "version" => keg.version.to_s,
           "used_options" => tab.used_options.map(&:flag),
           "built_as_bottle" => tab.built_bottle,
           "poured_from_bottle" => tab.poured_from_bottle
@@ -558,7 +555,6 @@ class Formula
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
-    removed_ENV_variables = {}
     rd, wr = IO.pipe
 
     # remove "boring" arguments so that the important ones are more likely to
@@ -570,18 +566,27 @@ class Formula
     end
     ohai "#{cmd} #{pretty_args*' '}".strip
 
-    if cmd.to_s.start_with? "xcodebuild"
-      removed_ENV_variables.update(ENV.remove_cc_etc)
-    end
-
     @exec_count ||= 0
     @exec_count += 1
     logd = HOMEBREW_LOGS/name
     logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
-    fork do
+    pid = fork do
       ENV['HOMEBREW_CC_LOG_PATH'] = logfn
+
+      # TODO system "xcodebuild" is deprecated, this should be removed soon.
+      if cmd.to_s.start_with? "xcodebuild"
+        ENV.remove_cc_etc
+      end
+
+      # Turn on argument filtering in the superenv compiler wrapper.
+      # We should probably have a better mechanism for this than adding
+      # special cases to this method.
+      if cmd == "python" && %w[setup.py build.py].include?(args.first)
+        ENV.refurbish_args
+      end
+
       rd.close
       $stdout.reopen wr
       $stderr.reopen wr
@@ -598,7 +603,7 @@ class Formula
         puts buf if ARGV.verbose?
       end
 
-      Process.wait
+      Process.wait(pid)
 
       $stdout.flush
 
@@ -613,7 +618,6 @@ class Formula
     end
   ensure
     rd.close unless rd.closed?
-    ENV.update(removed_ENV_variables)
   end
 
   private

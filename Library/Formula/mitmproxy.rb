@@ -64,8 +64,15 @@ class Mitmproxy < Formula
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
+    resource('pillow').stage do
+      # Disable freetype. Pillow tries really hard to find it, including
+      # querying Homebrew and looking for an X11 installation, but our
+      # compiler wrappers will filter out the paths, breaking the build.
+      (buildpath/"setup.cfg").write "[build_ext]\ndisable-freetype=1\n"
+      system "python", *install_args
+    end
+
     resource('pyopenssl').stage { system "python", *install_args }
-    resource('pillow').stage { system "python", *install_args }
     resource('flask').stage { system "python", *install_args }
     resource('lxml').stage { system "python", *install_args }
     resource('netlib').stage { system "python", *install_args }
