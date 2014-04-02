@@ -24,7 +24,7 @@ class Luciddb < Formula
     end
     Dir["#{libexec}/bin/*"].each do |b|
       next if b =~ /classpath.gen/ or b =~ /defineFarragoRuntime/
-      n = Pathname.new(b).basename
+      n = File.basename(b)
       (bin+n).write shim_script(n)
     end
   end

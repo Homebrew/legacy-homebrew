@@ -11,6 +11,14 @@ class Appledoc < Formula
   depends_on :xcode
   depends_on :macos => :lion
 
+  # Actually works with pre-503 clang, but we don't have a way to
+  # express this yet.
+  # clang 5.1 (build 503) removed support for Objective C GC, and
+  # there is no stable version of Appledoc with support for ARC yet.
+  # It's actually possible to build with GC disabled, but not advisable.
+  # See: https://github.com/tomaz/appledoc/issues/439
+  fails_with :clang
+
   def install
     xcodebuild "-project", "appledoc.xcodeproj",
                "-target", "appledoc",
@@ -19,9 +27,6 @@ class Appledoc < Formula
                "SYMROOT=build",
                "DSTROOT=build",
                "INSTALL_PATH=/bin",
-               # 2.2-963 no longer actually uses ObjC GC, but will still
-               # try to build with it due to this flag and hence will fail.
-               "GCC_ENABLE_OBJC_GC=unsupported",
                "OTHER_CFLAGS='-DCOMPILE_TIME_DEFAULT_TEMPLATE_PATH=@\"#{prefix}/Templates\"'"
     bin.install "build/bin/appledoc"
     prefix.install "Templates/"

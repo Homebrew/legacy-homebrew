@@ -13,7 +13,11 @@ class JsonC < Formula
     sha1 "13d7c03bb2c64a60d392390e693f750ccb38be6c" => :lion
   end
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     ENV.deparallelize

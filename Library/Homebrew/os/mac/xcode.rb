@@ -101,7 +101,9 @@ module OS
         # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
         raise if bad_xcode_select_path?
 
-        raise unless which "xcodebuild"
+        xcodebuild = which "xcodebuild"
+        raise unless xcodebuild && xcodebuild != xcode43build
+
         `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
         raise if $1.nil? or not $?.success?
         $1
@@ -172,18 +174,10 @@ module OS
       MAVERICKS_PKG_ID = "com.apple.pkg.CLTools_Executables"
       MAVERICKS_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
 
-      # True if:
-      #  - Xcode < 4.3 is installed. The tools are found under /usr.
-      #  - The "Command Line Tools" package has been installed.
-      #    For OS X < 10.9, the tools are found under /usr. 10.9 always
-      #    includes tools there, which run the real tools inside Xcode on
-      #    Xcode-only installs, so it's necessary to look elsewhere.
+      # Returns true even if outdated tools are installed, e.g.
+      # tools from Xcode 4.x on 10.9
       def installed?
-        if MacOS.version < :mavericks
-          usr_dev_tools?
-        else
-          mavericks_dev_tools?
-        end
+        !!detect_version
       end
 
       def mavericks_dev_tools?

@@ -27,6 +27,8 @@ class Cask < Formula
     bin.install "bin/cask"
     prefix.install Dir["*.el"]
     prefix.install "templates"
+    (share/"emacs/site-lisp").install_symlink "#{prefix}/cask-bootstrap.el"
+    (share/"emacs/site-lisp").install_symlink "#{prefix}/cask.el"
     # Stop cask performing self-upgrades.
     touch prefix/".no-upgrade"
   end

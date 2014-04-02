@@ -8,20 +8,28 @@ class Freetype < Formula
 
   bottle do
     cellar :any
-    sha1 "8bd9ed39a4cdf44ddecc7a296bcd7ca0a3f85b4c" => :mavericks
-    sha1 "a015c1d8d3436eff57c9368f353271aee776dbe4" => :mountain_lion
-    sha1 "25375d5fdb01e73587584d4d7883f5e646280e54" => :lion
+    revision 1
+    sha1 "f31e54b32a34a69998e120706ba13a99a948c190" => :mavericks
+    sha1 "d2f7099c87fe2dc8e969337326f1fe3036d4874e" => :mountain_lion
+    sha1 "df246259dde3352bac99dc08af757604c06a2e09" => :lion
   end
 
   keg_only :provided_pre_mountain_lion
 
   option :universal
+  option 'without-subpixel', "Disable sub-pixel rendering (a.k.a. LCD rendering, or ClearType)"
 
   depends_on "libpng"
 
   def install
+    if build.with? "subpixel"
+      inreplace "include/config/ftoption.h",
+          "/* #define FT_CONFIG_OPTION_SUBPIXEL_RENDERING */",
+          "#define FT_CONFIG_OPTION_SUBPIXEL_RENDERING"
+    end
+
     ENV.universal_binary if build.universal?
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--without-harfbuzz"
     system "make"
     system "make", "install"
   end

@@ -174,7 +174,6 @@ class FormulaInstaller
         stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs :skip_executables => true
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
-        tab.tabfile.delete if tab.tabfile
         tab.write
       end
     rescue => e
@@ -200,7 +199,7 @@ class FormulaInstaller
   # HACK: If readline is present in the dependency tree, it will clash
   # with the stdlib's Readline module when the debugger is loaded
   def perform_readline_hack
-    if f.recursive_dependencies.any? { |d| d.name == "readline" } && debug?
+    if (f.recursive_dependencies.any? { |d| d.name == "readline" } || f.name == "readline") && debug?
       ENV['HOMEBREW_NO_READLINE'] = '1'
     end
   end
@@ -491,7 +490,7 @@ class FormulaInstaller
     # to remain open in the child process.
     args << { write => write } if RUBY_VERSION >= "2.0"
 
-    fork do
+    pid = fork do
       begin
         read.close
         exec(*args)
@@ -502,9 +501,9 @@ class FormulaInstaller
       end
     end
 
-    ignore_interrupts(:quietly) do # the fork will receive the interrupt and marshall it back
+    ignore_interrupts(:quietly) do # the child will receive the interrupt and marshal it back
       write.close
-      Process.wait
+      Process.wait(pid)
       data = read.read
       read.close
       raise Marshal.load(data) unless data.nil? or data.empty?
@@ -551,10 +550,11 @@ class FormulaInstaller
 
   def install_plist
     return unless f.plist
-    # A plist may already exist if we are installing from a bottle
-    f.plist_path.unlink if f.plist_path.exist?
-    f.plist_path.write f.plist
+    f.plist_path.atomic_write(f.plist)
     f.plist_path.chmod 0644
+  rescue Exception => e
+    onoe "Failed to install plist file"
+    ohai e, e.backtrace if debug?
   end
 
   def fix_install_names

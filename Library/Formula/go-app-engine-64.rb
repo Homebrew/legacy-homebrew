@@ -8,11 +8,10 @@ class GoAppEngine64 < Formula
   def install
     cd '..'
     share.install 'go_appengine' => name
-    bin.mkpath
     %w[
       api_server.py appcfg.py bulkloader.py bulkload_client.py dev_appserver.py download_appstats.py goapp
     ].each do |fn|
-      ln_s share+name+fn, bin
+      bin.install_symlink share/name/fn
     end
   end
 end

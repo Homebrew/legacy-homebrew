@@ -12,8 +12,8 @@ class Mariadb < Formula
   end
 
   devel do
-    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.9/kvm-tarbake-jaunty-x86/mariadb-10.0.9.tar.gz'
-    sha1 '474310268649fd00ddf8c813987a2b05ad0a4d2d'
+    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.10/kvm-tarbake-jaunty-x86/mariadb-10.0.10.tar.gz'
+    sha1 '59e222bd261128aff89c216dc100d5bcc8c5acc4'
   end
 
   depends_on 'cmake' => :build
@@ -108,7 +108,7 @@ class Mariadb < Formula
       (prefix+'sql-bench').rmtree if build.without? 'bench'
 
       # Link the setup script into bin
-      ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+      bin.install_symlink prefix/"scripts/mysql_install_db"
 
       # Fix up the control script and link into bin
       inreplace "#{prefix}/support-files/mysql.server" do |s|
@@ -117,7 +117,7 @@ class Mariadb < Formula
         s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
       end
 
-      ln_s "#{prefix}/support-files/mysql.server", bin
+      bin.install_symlink prefix/"support-files/mysql.server"
     end
   end
 
