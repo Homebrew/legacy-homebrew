@@ -115,7 +115,6 @@ class Python < Formula
     # Tell Python not to install into /Applications (default for framework builds)
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
-    (HOMEBREW_PREFIX/'share/python').mkpath
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
     system "make", "quicktest" if build.include? 'quicktest'
 
@@ -274,22 +273,18 @@ class Python < Formula
     EOF
   end
 
-  def caveats
-    <<-EOS.undent
-      Python demo
-        #{HOMEBREW_PREFIX}/share/python/Extras
+  def caveats; <<-EOS.undent
+    Setuptools and Pip have been installed. To update them
+      pip install --upgrade setuptools
+      pip install --upgrade pip
 
-      Setuptools and Pip have been installed. To update them
-        pip install --upgrade setuptools
-        pip install --upgrade pip
+    You can install Python packages with
+      pip install <package>
 
-      You can install Python packages with (the outdated easy_install or)
-        `pip install <your_favorite_package>`
+    They will install into the site-package directory
+      #{site_packages}
 
-      They will install into the site-package directory
-        #{site_packages}
-
-      See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
+    See: https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python
     EOS
   end
 

@@ -29,6 +29,7 @@ class Vim < Formula
   depends_on :python => :recommended
   depends_on 'python3' => :optional
   depends_on 'lua' => :optional
+  depends_on 'luajit' => :optional
   depends_on 'gtk+' if build.with? 'client-server'
 
   conflicts_with 'ex-vi',
@@ -60,6 +61,8 @@ class Vim < Formula
       opts << "--without-x"
     end
 
+    opts << "--with-luajit" if build.with? 'luajit'
+
     # XXX: Please do not submit a pull request that hardcodes the path
     # to ruby: vim can be compiled against 1.8.x or 1.9.3-p385 and up.
     # If you have problems with vim because of ruby, ensure a compatible
@@ -82,7 +85,7 @@ class Vim < Formula
     # If stripping the binaries is not enabled, vim will segfault with
     # statically-linked interpreters like ruby
     # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
-    system "make", "install", "prefix=#{prefix}", "STRIP=/usr/bin/true"
+    system "make", "install", "prefix=#{prefix}", "STRIP=true"
     bin.install_symlink "vim" => "vi" if build.include? "override-system-vi"
   end
 

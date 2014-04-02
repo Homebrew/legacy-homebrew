@@ -2,8 +2,8 @@ require "formula"
 
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.3.4.tar.gz"
-  sha1 "be2e27868d353fc95ee4314eac91f87c78efaa6f"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.3.6.tar.gz"
+  sha1 "5971db1f8a19e87c9dd798a0233490114bb1d9ac"
 
   head do
     url "https://github.com/aws/aws-cli.git", :branch => :develop
@@ -24,8 +24,8 @@ class Awscli < Formula
   depends_on :python
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.38.0.tar.gz"
-    sha1 "99330d40d67e641849a477374137294fb82d0dc5"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.40.0.tar.gz"
+    sha1 "ca2eaee41fec17018f1e3e1d726bb6e2c40f704e"
   end
 
   resource "bcdoc" do
