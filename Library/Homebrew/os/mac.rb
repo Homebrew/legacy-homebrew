@@ -282,7 +282,7 @@ module OS
     end
 
     def pkgutil_info(id)
-      (@pkginfo ||= {}).fetch(id.to_s) do |key|
+      (@pkginfo ||= {}).fetch(id) do |key|
         @pkginfo[key] = `/usr/sbin/pkgutil --pkg-info "#{key}" 2>/dev/null`.strip
       end
     end
