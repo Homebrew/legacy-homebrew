@@ -28,6 +28,8 @@ class Calc < Formula
       s.change_make_var! "USE_READLINE", "-DUSE_READLINE"
       s.change_make_var! "READLINE_LIB", "-L#{readline.lib} -lreadline"
       s.change_make_var! "READLINE_EXTRAS", "-lhistory -lncurses"
+    end
+    inreplace "Makefile" do |s|
       s.change_make_var! "LIBCALC_SHLIB",
         "-single_module -undefined dynamic_lookup -dynamiclib -install_name ${LIBDIR}/libcalc${LIB_EXT_VERSION}"
       s.change_make_var! "LIBCUSTCALC_SHLIB",
@@ -35,7 +37,7 @@ class Calc < Formula
       s.change_make_var! 'CC',
         "MACOSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET} #{ENV.cc}"
       s.change_make_var! 'MACOSX_DEPLOYMENT_TARGET', MacOS.version
-    end
+    end if OS.mac?
 
     system "make"
     system "make install"
