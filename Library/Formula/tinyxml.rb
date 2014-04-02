@@ -36,7 +36,7 @@ class Tinyxml < Formula
     system "make", "install"
     (lib+'pkgconfig/tinyxml.pc').write pc_file
   end
-  
+
   def pc_file; <<-EOS.undent
       prefix=#{opt_prefix}
       exec_prefix=${prefix}
