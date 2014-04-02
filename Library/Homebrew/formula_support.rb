@@ -8,14 +8,15 @@ class KegOnlyReason
   def initialize reason, explanation=nil
     @reason = reason
     @explanation = explanation
-    @valid = case @reason
-      when :provided_pre_mountain_lion then MacOS.version < :mountain_lion
-      else true
-      end
   end
 
   def valid?
-    @valid
+    case @reason
+    when :provided_pre_mountain_lion
+      MacOS.version < :mountain_lion
+    else
+      true
+    end
   end
 
   def to_s
