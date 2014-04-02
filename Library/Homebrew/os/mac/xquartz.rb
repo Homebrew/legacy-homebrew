@@ -52,7 +52,7 @@ module OS
       end
 
       def bundle_path
-        MacOS.app_with_bundle_id(FORGE_BUNDLE_ID) || MacOS.app_with_bundle_id(APPLE_BUNDLE_ID)
+        MacOS.app_with_bundle_id(FORGE_BUNDLE_ID, APPLE_BUNDLE_ID)
       end
 
       def version_from_mdls(path)

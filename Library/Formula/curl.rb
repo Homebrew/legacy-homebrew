@@ -64,4 +64,12 @@ class Curl < Formula
     system "./configure", *args
     system "make install"
   end
+
+  test do
+    # Fetch the curl tarball and see that the checksum matches.
+    # This requires a network connection, but so does Homebrew in general.
+    filename = (testpath/"test.tar.gz")
+    system "#{bin}/curl", stable.url, "-o", filename
+    filename.verify_checksum stable.checksum
+  end
 end

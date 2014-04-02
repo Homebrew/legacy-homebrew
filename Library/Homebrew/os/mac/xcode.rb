@@ -70,7 +70,7 @@ module OS
       # helper tools and installed Xcode in a non-conventional place, this
       # is our only option. See: http://superuser.com/questions/390757
       def bundle_path
-        MacOS.app_with_bundle_id(V4_BUNDLE_ID) || MacOS.app_with_bundle_id(V3_BUNDLE_ID)
+        MacOS.app_with_bundle_id(V4_BUNDLE_ID, V3_BUNDLE_ID)
       end
 
       def installed?
@@ -101,7 +101,9 @@ module OS
         # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
         raise if bad_xcode_select_path?
 
-        raise unless which "xcodebuild"
+        xcodebuild = which "xcodebuild"
+        raise unless xcodebuild && xcodebuild != xcode43build
+
         `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
         raise if $1.nil? or not $?.success?
         $1
@@ -176,15 +178,6 @@ module OS
       # tools from Xcode 4.x on 10.9
       def installed?
         !!detect_version
-      end
-
-      def mavericks_dev_tools?
-        MacOS.dev_tools_path == Pathname("#{MAVERICKS_PKG_PATH}/usr/bin") &&
-          File.directory?("#{MAVERICKS_PKG_PATH}/usr/include")
-      end
-
-      def usr_dev_tools?
-        MacOS.dev_tools_path == Pathname("/usr/bin") && File.directory?("/usr/include")
       end
 
       def latest_version

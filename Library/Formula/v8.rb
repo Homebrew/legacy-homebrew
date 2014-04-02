@@ -23,7 +23,7 @@ class V8 < Formula
   depends_on 'readline' => :optional
 
   resource 'gyp' do
-    url 'https://gyp.googlecode.com/svn/trunk', :revision => 1685
+    url 'http://gyp.googlecode.com/svn/trunk', :revision => 1685
     version '1685'
   end
 
