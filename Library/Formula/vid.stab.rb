@@ -8,8 +8,7 @@ class VidStab < Formula
   depends_on "cmake" => :build
 
   def install
-    cmake_args = std_cmake_args + ["-DCMAKE_INSTALL_PREFIX:PATH=#{prefix}"]
-    system "cmake", ".", *cmake_args
+    system "cmake", ".", *std_cmake_args
     system "make", "install"
   end
 end
