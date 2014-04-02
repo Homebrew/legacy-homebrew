@@ -18,19 +18,12 @@ class IrssiOtr < Formula
   end
 
   def caveats
-    s = <<-EOS.undent
-      * Irssi's search path for system-wide plugin modules is relative.
-
+    <<-EOS.undent
       * For Irssi to find irssi-otr, symlink it into your personal config:
 
       mkdir -p ~/.irssi/modules
       ln -s #{lib}/irssi/modules/libotr.so ~/.irssi/modules/
-
-      * Documentation:
-
-      #{share}/doc/irssi-otr/README
     EOS
-    s
   end
 
   test do
