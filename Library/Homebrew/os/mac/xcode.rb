@@ -70,7 +70,7 @@ module OS
       # helper tools and installed Xcode in a non-conventional place, this
       # is our only option. See: http://superuser.com/questions/390757
       def bundle_path
-        MacOS.app_with_bundle_id(V4_BUNDLE_ID) || MacOS.app_with_bundle_id(V3_BUNDLE_ID)
+        MacOS.app_with_bundle_id(V4_BUNDLE_ID, V3_BUNDLE_ID)
       end
 
       def installed?

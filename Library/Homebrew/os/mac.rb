@@ -269,22 +269,26 @@ module OS
       EOS
     end
 
-    def app_with_bundle_id id
-      path = mdfind(id).first
+    def app_with_bundle_id(*ids)
+      path = mdfind(*ids).first
       Pathname.new(path) unless path.nil? or path.empty?
     end
 
-    def mdfind id
+    def mdfind(*ids)
       return [] unless OS.mac?
-      (@mdfind ||= {}).fetch(id.to_s) do |key|
-        @mdfind[key] = `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{key}'"`.split("\n")
+      (@mdfind ||= {}).fetch(ids) do
+        @mdfind[ids] = `/usr/bin/mdfind "#{mdfind_query(*ids)}"`.split("\n")
       end
     end
 
-    def pkgutil_info id
+    def pkgutil_info(id)
       (@pkginfo ||= {}).fetch(id.to_s) do |key|
         @pkginfo[key] = `/usr/sbin/pkgutil --pkg-info "#{key}" 2>/dev/null`.strip
       end
+    end
+
+    def mdfind_query(*ids)
+      ids.map! { |id| "kMDItemCFBundleIdentifier == #{id}" }.join(" || ")
     end
   end
 end
