@@ -15,10 +15,6 @@ class Ejabberd < Formula
   option "with-mysql", "Build with MySQL support"
 
   def install
-    ENV["TARGET_DIR"] = ENV["DESTDIR"] = "#{lib}/ejabberd/erlang/lib/ejabberd-#{version}"
-    ENV["MAN_DIR"] = man
-    ENV["SBIN_DIR"] = sbin
-
     if build.build_32_bit?
       %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
         ENV.remove compiler_flag, "-arch #{Hardware::CPU.arch_64_bit}"
@@ -28,7 +24,8 @@ class Ejabberd < Formula
 
     args = ["--prefix=#{prefix}",
             "--sysconfdir=#{etc}",
-            "--localstatedir=#{var}"]
+            "--localstatedir=#{var}",
+            "--sbindir=#{bin}"]
 
     args << "--enable-odbc" if build.with? "odbc"
     args << "--enable-pgsql" if build.with? "pgsql"
