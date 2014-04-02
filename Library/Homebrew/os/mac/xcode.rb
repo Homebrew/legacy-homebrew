@@ -180,15 +180,6 @@ module OS
         !!detect_version
       end
 
-      def mavericks_dev_tools?
-        MacOS.dev_tools_path == Pathname("#{MAVERICKS_PKG_PATH}/usr/bin") &&
-          File.directory?("#{MAVERICKS_PKG_PATH}/usr/include")
-      end
-
-      def usr_dev_tools?
-        MacOS.dev_tools_path == Pathname("/usr/bin") && File.directory?("/usr/include")
-      end
-
       def latest_version
         if MacOS.version >= "10.8"
           "503.0.38"
