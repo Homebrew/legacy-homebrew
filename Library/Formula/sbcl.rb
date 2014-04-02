@@ -8,10 +8,9 @@ class Sbcl < Formula
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
-    revision 1
-    sha1 "bba5afd9b1ba430b472774a1278a2ec7ce2011f7" => :mavericks
-    sha1 "bc0023d6d917ad517c7039130fbf051520e9fc07" => :mountain_lion
-    sha1 "5cb17257c806c51f01e763afa988da37b276bf74" => :lion
+    sha1 "504c7a06ded0e37c64b85a8083e348ef6078d5ad" => :mavericks
+    sha1 "aa76f71ee0184fb1661a434cf80f4a5b9354f2e5" => :mountain_lion
+    sha1 "7c82d8a544ddc213550fefd5aeb971b5d01441bd" => :lion
   end
 
   fails_with :llvm do
