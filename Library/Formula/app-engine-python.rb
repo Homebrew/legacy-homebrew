@@ -1,6 +1,6 @@
 require 'formula'
 
-class GoogleAppEngine < Formula
+class AppEnginePython < Formula
   homepage 'https://developers.google.com/appengine/'
   url 'https://commondatastorage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.1.zip'
   sha1 'fd1f0973733fcc3def77d48847d33ae529589d9c'
