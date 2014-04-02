@@ -27,8 +27,8 @@ class Mongodb < Formula
   end
 
   devel do
-    url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.5.tar.gz'
-    sha1 '4827f3da107174a3cbb1f5b969c7f597ca09b4f8'
+    url 'http://fastdl.mongodb.org/src/mongodb-src-r2.6.0-rc3.tar.gz'
+    sha1 'b3b1b47bf9c23c55089ec0db3b6e425dc7a67b87'
 
     option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
     depends_on "boost" => :optional
