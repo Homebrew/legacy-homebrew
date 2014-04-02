@@ -2,9 +2,9 @@ require 'formula'
 
 class StanfordParser < Formula
   homepage 'http://nlp.stanford.edu/software/lex-parser.shtml'
-  url 'http://nlp.stanford.edu/software/stanford-parser-full-2013-06-20.zip'
+  url 'http://nlp.stanford.edu/software/stanford-parser-full-2014-01-04.zip'
   sha1 'd22f3350b608e905e432b9278a5fa85c380cac30'
-  version '3.2.0'
+  version '3.3.1'
 
   def install
     libexec.install Dir['*']
