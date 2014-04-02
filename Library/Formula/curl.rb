@@ -69,7 +69,7 @@ class Curl < Formula
     # Fetch the curl tarball and see that the checksum matches.
     # This requires a network connection, but so does Homebrew in general.
     filename = (testpath/"test.tar.gz")
-    system "curl", stable.url, "-o", filename
+    system "#{bin}/curl", stable.url, "-o", filename
     filename.verify_checksum stable.checksum
   end
 end
