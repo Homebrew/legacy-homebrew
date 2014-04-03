@@ -4,7 +4,7 @@ class Mapserver < Formula
   homepage 'http://mapserver.org/'
   url 'http://download.osgeo.org/mapserver/mapserver-6.2.1.tar.gz'
   sha1 'bbe4234a4dcc179812c6598f68fe59a3dae63e44'
-  revision 1
+  revision 2
 
   option "with-fastcgi", "Build with fastcgi support"
   option "with-geos", "Build support for GEOS spatial operations"
@@ -24,6 +24,7 @@ class Mapserver < Formula
   depends_on 'postgresql' => :optional unless MacOS.version >= :lion
   depends_on 'fcgi' if build.with? "fastcgi"
   depends_on 'cairo' => :optional
+  depends_on 'curl'
 
   def install
     args = [
@@ -32,6 +33,8 @@ class Mapserver < Formula
       "--with-gdal",
       "--with-ogr",
       "--with-wfs",
+      "--with-wmsclient",
+      "--with-curl-config=/usr/bin/curl-config",
     ]
 
     args << "--with-geos" if build.with? 'geos'
