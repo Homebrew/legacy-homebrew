@@ -43,6 +43,10 @@ class PerconaServer < Formula
     @datadir ||= (var/'percona').directory? ? var/'percona' : var/'mysql'
   end
 
+  def pour_bottle?
+    datadir == var/"mysql"
+  end
+
   def install
     # Don't hard-code the libtool path. See:
     # https://github.com/Homebrew/homebrew/issues/20185
