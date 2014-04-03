@@ -15,7 +15,7 @@ class Vte < Formula
 
   def install
     # pygtk-codegen-2.0 has been deprecated and replaced by
-    # pygobject-codegen-2.0, but the vte Makefile fails to detect this.
+    # pygobject-codegen-2.0, but the vte Makefile does not detect this.
     ENV["PYGTK_CODEGEN"] = Formula["pygobject"].bin/'pygobject-codegen-2.0'
 
     system "./configure", "--disable-dependency-tracking",
