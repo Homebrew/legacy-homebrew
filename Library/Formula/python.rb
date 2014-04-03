@@ -6,6 +6,13 @@ class Python < Formula
   url 'http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz'
   sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
 
+  bottle do
+    revision 1
+    sha1 "6edbb41862da07d75845c8ca156956629c069523" => :mavericks
+    sha1 "30ebdd9f448d766ff1783a2dc7c4a2b4a6deecc4" => :mountain_lion
+    sha1 "9d40b1ce6ef16e9bee5f2dc26bf1a396b4ccca03" => :lion
+  end
+
   option :universal
   option 'quicktest', "Run `make quicktest` after the build (for devs; may fail)"
   option 'with-brewed-tk', "Use Homebrew's Tk (has optional Cocoa and threads support)"
