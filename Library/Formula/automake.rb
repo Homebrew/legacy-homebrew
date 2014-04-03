@@ -15,9 +15,7 @@ class Automake < Formula
   # Always needs a newer autoconf, even on Snow Leopard.
   depends_on 'autoconf' => :run
 
-  if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/automake"
-    keg_only "Xcode (up to and including 4.2) provides (a rather old) Automake."
-  end
+  keg_only :provided_until_xcode43
 
   def install
     ENV['PERL'] = '/usr/bin/perl'

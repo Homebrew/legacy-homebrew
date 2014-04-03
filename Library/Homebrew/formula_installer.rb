@@ -55,6 +55,14 @@ class FormulaInstaller
     return true if f.local_bottle_path
     return false unless f.bottle && f.pour_bottle?
 
+    f.requirements.each do |req|
+      next if req.optional? || req.pour_bottle?
+      if install_bottle_options[:warn]
+        ohai "Building source; bottle blocked by #{req} requirement"
+      end
+      return false
+    end
+
     unless f.bottle.compatible_cellar?
       if install_bottle_options[:warn]
         opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}"
@@ -174,7 +182,6 @@ class FormulaInstaller
         stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs :skip_executables => true
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
-        tab.tabfile.delete if tab.tabfile
         tab.write
       end
     rescue => e
@@ -491,7 +498,7 @@ class FormulaInstaller
     # to remain open in the child process.
     args << { write => write } if RUBY_VERSION >= "2.0"
 
-    fork do
+    pid = fork do
       begin
         read.close
         exec(*args)
@@ -502,9 +509,9 @@ class FormulaInstaller
       end
     end
 
-    ignore_interrupts(:quietly) do # the fork will receive the interrupt and marshall it back
+    ignore_interrupts(:quietly) do # the child will receive the interrupt and marshal it back
       write.close
-      Process.wait
+      Process.wait(pid)
       data = read.read
       read.close
       raise Marshal.load(data) unless data.nil? or data.empty?
@@ -551,10 +558,11 @@ class FormulaInstaller
 
   def install_plist
     return unless f.plist
-    # A plist may already exist if we are installing from a bottle
-    f.plist_path.unlink if f.plist_path.exist?
-    f.plist_path.write f.plist
+    f.plist_path.atomic_write(f.plist)
     f.plist_path.chmod 0644
+  rescue Exception => e
+    onoe "Failed to install plist file"
+    ohai e, e.backtrace if debug?
   end
 
   def fix_install_names
