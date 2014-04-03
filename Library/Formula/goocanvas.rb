@@ -2,7 +2,7 @@ require 'formula'
 
 class Goocanvas < Formula
   homepage 'https://live.gnome.org/GooCanvas'
-  url 'http://download.gnome.org/sources/goocanvas/1.0/goocanvas-1.0.0.tar.bz2'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/goocanvas/1.0/goocanvas-1.0.0.tar.bz2'
   sha1 'b41d38726fa537258a5f00908eff2d6aad9a5e50'
 
   depends_on :x11

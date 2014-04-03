@@ -2,7 +2,7 @@ require 'formula'
 
 class EasyTag < Formula
   homepage 'http://projects.gnome.org/easytag'
-  url 'https://download.gnome.org/sources/easytag/2.1/easytag-2.1.9.tar.xz', :using => :ssl3
+  url 'http://ftp.gnome.org/pub/GNOME/sources/easytag/2.1/easytag-2.1.9.tar.xz'
   sha256 'f5a6e742a458ef6f48f2d5e98a24182a9c87a213e847fcce75c757ac90273501'
 
   depends_on :x11
