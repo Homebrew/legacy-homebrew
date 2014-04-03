@@ -2,8 +2,8 @@ require 'formula'
 
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
-  url 'http://static.rust-lang.org/dist/rust-0.9.tar.gz'
-  sha1 '6c5ef4c3c87a1b424510e41ad95dd17981b707b3'
+  url 'http://static.rust-lang.org/dist/rust-0.10.tar.gz'
+  sha1 '20460730047ca6694eeb780d990f566572c32c43'
 
   head 'https://github.com/mozilla/rust.git'
 
@@ -29,7 +29,6 @@ class Rust < Formula
 
   test do
     system "#{bin}/rustc"
-    system "#{bin}/rustdoc -h"
-    system "#{bin}/rustpkg -v" unless build.head?
+    system "#{bin}/rustdoc", "-h"
   end
 end
