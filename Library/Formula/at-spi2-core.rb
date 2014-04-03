@@ -2,7 +2,7 @@ require 'formula'
 
 class AtSpi2Core < Formula
   homepage 'http://a11y.org'
-  url 'http://download.gnome.org/sources/at-spi2-core/2.12/at-spi2-core-2.12.0.tar.xz'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/at-spi2-core/2.12/at-spi2-core-2.12.0.tar.xz'
   sha256 'db550edd98e53b4252521459c2dcaf0f3b060a9bad52489b9dbadbaedad3fb89'
 
   bottle do

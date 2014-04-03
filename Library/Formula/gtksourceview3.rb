@@ -2,7 +2,7 @@ require 'formula'
 
 class Gtksourceview3 < Formula
   homepage 'http://projects.gnome.org/gtksourceview/'
-  url 'http://download.gnome.org/sources/gtksourceview/3.10/gtksourceview-3.10.1.tar.xz'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtksourceview/3.10/gtksourceview-3.10.1.tar.xz'
   sha1 '195da95964eedf16355c97f1ca5ae99c24ca398b'
 
   depends_on :x11

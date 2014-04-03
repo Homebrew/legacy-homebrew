@@ -2,7 +2,7 @@ require 'formula'
 
 class Gtksourceviewmm3 < Formula
   homepage 'https://developer.gnome.org/gtksourceviewmm/'
-  url 'http://download.gnome.org/sources/gtksourceviewmm/3.2/gtksourceviewmm-3.2.0.tar.xz'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gtksourceviewmm/3.2/gtksourceviewmm-3.2.0.tar.xz'
   sha1 'cac8d2fdde7b862bdb5eb12c6b8998a29e3fcf95'
 
   depends_on 'gtksourceview3'

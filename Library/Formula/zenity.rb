@@ -2,7 +2,7 @@ require 'formula'
 
 class Zenity < Formula
   homepage 'http://live.gnome.org/Zenity'
-  url 'http://download.gnome.org/sources/zenity/2.32/zenity-2.32.1.tar.gz'
+  url 'http://ftp.gnome.org/pub/gnome/sources/zenity/2.32/zenity-2.32.1.tar.gz'
   sha1 '41f323f88299618cefdde03fce95b283e5d81c8b'
 
   depends_on 'pkg-config' => :build
