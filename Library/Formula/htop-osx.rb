@@ -5,6 +5,12 @@ class HtopOsx < Formula
   url 'https://github.com/max-horvath/htop-osx/archive/0.8.2.2.tar.gz'
   sha1 '17c56fe5efe81cf6b0f4c13a958fa7e4d8591b23'
 
+  bottle do
+    root_url "https://github.com/max-horvath/htop-osx/releases/download/0.8.2.2"
+
+    sha1 "42e0e925d854bd6359109ab404aebd2bc3757fa4" => :mavericks
+  end
+
   depends_on :autoconf
   depends_on :automake
   depends_on :libtool
