@@ -8,7 +8,7 @@ class MitScheme < Formula
 
   conflicts_with 'tinyscheme', :because => 'both install a `scheme` binary'
 
-  depends_on :x11 if MacOS::X11.installed?
+  depends_on :x11 => :optional
 
   def install
     # The build breaks __HORRIBLY__ with parallel make -- one target will erase something

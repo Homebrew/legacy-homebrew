@@ -18,7 +18,6 @@ class Graphviz < Formula
   option :universal
   option 'with-bindings', 'Build Perl/Python/Ruby/etc. bindings'
   option 'with-pangocairo', 'Build with Pango/Cairo for alternate PDF output'
-  option 'with-freetype', 'Build with FreeType support'
   option 'with-x', 'Build with X11 support'
   option 'with-app', 'Build GraphViz.app (requires full XCode install)'
   option 'with-gts', 'Build with GNU GTS support (required by prism)'
@@ -30,8 +29,8 @@ class Graphviz < Formula
   depends_on 'swig' if build.with? "bindings"
   depends_on 'gts' => :optional
   depends_on "librsvg" => :optional
-  depends_on "freetype" if build.with? "freetype" or MacOS::X11.installed?
-  depends_on :x11 if build.with? "x" or MacOS::X11.installed?
+  depends_on "freetype" => :optional
+  depends_on :x11 if build.with? "x"
   depends_on :xcode if build.with? "app"
 
   fails_with :clang do
@@ -53,8 +52,8 @@ class Graphviz < Formula
     args << "--with-gts" if build.with? 'gts'
     args << "--disable-swig" if build.without? "bindings"
     args << "--without-pangocairo" if build.without? "pangocairo"
-    args << "--without-freetype2" if build.without? "freetype" or MacOS::X11.installed?
-    args << "--without-x" if build.without? "x" or MacOS::X11.installed?
+    args << "--without-freetype2" if build.without? "freetype"
+    args << "--without-x" if build.without? "x"
     args << "--without-rsvg" if build.without? "librsvg"
 
     system "./configure", *args

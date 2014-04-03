@@ -36,7 +36,7 @@ class Gnuplot < Formula
   depends_on LuaRequirement unless build.include? 'nolua'
   depends_on 'readline'
   depends_on 'pango'       if build.include? 'cairo' or build.include? 'wx'
-  depends_on :x11          if build.with? "x" or MacOS::X11.installed?
+  depends_on :x11          if build.with? "x"
   depends_on 'pdflib-lite' if build.include? 'pdf'
   depends_on 'gd'          unless build.include? 'nogd'
   depends_on 'wxmac'       if build.include? 'wx'
