@@ -8,7 +8,7 @@ class Postgis < Formula
   head 'http://svn.osgeo.org/postgis/trunk/'
 
   option 'with-gui', 'Build shp2pgsql-gui in addition to command line tools'
-  option 'without-raster', 'Disable postgis raster support'
+  option 'without-gdal', 'Disable postgis raster support'
 
   depends_on :autoconf
   depends_on :automake
@@ -23,7 +23,7 @@ class Postgis < Formula
 
   # For GeoJSON and raster handling
   depends_on 'json-c'
-  depends_on 'gdal' unless build.without? "raster"
+  depends_on 'gdal' => :recommended
 
   def install
     # Follow the PostgreSQL linked keg back to the active Postgres installation
@@ -50,7 +50,7 @@ class Postgis < Formula
     ]
     args << '--with-gui' if build.with? "gui"
 
-    args << '--without-raster' if build.without? "raster"
+    args << '--without-raster' if build.without? "gdal"
 
     system './autogen.sh'
     system './configure', *args
