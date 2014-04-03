@@ -13,7 +13,7 @@ class Mosquitto < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
-  depends_on 'c-ares' => :build
+  depends_on 'c-ares'
 
   # mosquitto requires OpenSSL >=1.0 for TLS support
   depends_on 'openssl'
