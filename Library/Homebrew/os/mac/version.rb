@@ -16,9 +16,16 @@ module OS
         new(SYMBOLS.fetch(sym))
       end
 
+      def initialize(*args)
+        super
+        @comparison_cache = {}
+      end
+
       def <=>(other)
-        v = SYMBOLS.fetch(other, other.to_s)
-        super(Version.new(v))
+        @comparison_cache.fetch(other) do
+          v = SYMBOLS.fetch(other, other.to_s)
+          @comparison_cache[other] = super(Version.new(v))
+        end
       end
 
       def to_sym
