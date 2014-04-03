@@ -2,8 +2,8 @@ require 'formula'
 
 class Fontconfig < Formula
   homepage 'http://fontconfig.org/'
-  url 'http://fontconfig.org/release/fontconfig-2.11.0.tar.bz2'
-  sha1 '969818b0326ac08241b11cbeaa4f203699f9b550'
+  url 'http://fontconfig.org/release/fontconfig-2.11.1.tar.bz2'
+  sha1 '08565feea5a4e6375f9d8a7435dac04e52620ff2'
 
   bottle do
     revision 1
@@ -27,7 +27,7 @@ class Fontconfig < Formula
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
                           "--sysconfdir=#{etc}"
-    system "make install"
+    system "make", "install", "RUN_FC_CACHE_TEST=false"
   end
 
   def post_install
