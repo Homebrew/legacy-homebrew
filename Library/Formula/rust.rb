@@ -8,9 +8,9 @@ class Rust < Formula
   head 'https://github.com/mozilla/rust.git'
 
   bottle do
-    sha1 'faecc6797465be3297554bf18c4b0ff73d27bfb1' => :mavericks
-    sha1 '4546c45d79531e0797af6e7bd9c6b2aaceb8b1e4' => :mountain_lion
-    sha1 '924740d0e449bab18e7f06f263ee2f1ececee5f4' => :lion
+    sha1 "b5b11a57f873c8fd3a794ede207839dcb0bfbe4b" => :mavericks
+    sha1 "ca4d44441ef88c71cd98852c36d15d89e95d9fb7" => :mountain_lion
+    sha1 "507705ef8749dd3cfae781f016e18bfcc09d8947" => :lion
   end
 
   fails_with :clang do
