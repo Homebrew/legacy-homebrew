@@ -2,7 +2,7 @@ require 'formula'
 
 class Pango < Formula
   homepage "http://www.pango.org/"
-  url "http://download.gnome.org/sources/pango/1.36/pango-1.36.3.tar.xz"
+  url "http://ftp.gnome.org/pub/GNOME/sources/pango/1.36/pango-1.36.3.tar.xz"
   sha256 "ad48e32917f94aa9d507486d44366e59355fcfd46ef86d119ddcba566ada5d22"
 
   bottle do
