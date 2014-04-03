@@ -36,7 +36,9 @@ object JobServerBuild extends Build {
       test in Test <<= (test in Test).dependsOn(packageBin in Compile in jobServerTestJar)
                                      .dependsOn(clean in Compile in jobServerTestJar),
 
-      fullClasspath in Compile ++= extraJarPaths,
+      fullClasspath in Compile <<= (fullClasspath in Compile).map { classpath =>
+        extraJarPaths ++ classpath
+      },
       javaOptions in Revolver.reStart += jobServerLogging,
       // Give job server a bit more PermGen since it does classloading
       javaOptions in Revolver.reStart += "-XX:MaxPermSize=256m",
