@@ -27,7 +27,7 @@ class Fontconfig < Formula
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
                           "--sysconfdir=#{etc}"
-    system "make install"
+    system "make", "install", "RUN_FC_CACHE_TEST=false"
   end
 
   def post_install
