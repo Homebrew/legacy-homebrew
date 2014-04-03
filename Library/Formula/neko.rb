@@ -21,6 +21,10 @@ class Neko < Formula
   depends_on 'bdw-gc'
   depends_on 'pcre'
 
+  def patches
+    DATA
+  end
+
   def install
     # Build requires targets to be built in specific order
     ENV.deparallelize
@@ -53,3 +57,17 @@ class Neko < Formula
     s
   end
 end
+
+__END__
+diff --git a/src/tools/install.neko b/src/tools/install.neko
+index 1f1c14c..f8cf75e 100644
+--- a/src/tools/install.neko
++++ b/src/tools/install.neko
+@@ -158,7 +158,6 @@ search_includes = function(isap2) {
+ 		"/opt/local/include",
+ 		"/opt/local/include/mysql",
+ 		"/opt/local/include/mysql5/mysql",
+-		"/Developer/Headers/FlatCarbon",
+ 		"/System/Library/Frameworks/Carbon.framework/Versions/A/Headers/",
+ 	);
+ 	var inc2;
