@@ -136,8 +136,6 @@ class DependencyCollector
   end
 
   def autotools_dep(spec, tags)
-    return if MacOS::Xcode.provides_autotools?
-
     if spec == :libltdl
       spec = :libtool
       tags << :run
