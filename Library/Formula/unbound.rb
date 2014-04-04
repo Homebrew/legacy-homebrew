@@ -6,9 +6,9 @@ class Unbound < Formula
   sha1 'a56e31e2f3a2fefa3caaad9200dd943d174ca81e'
 
   bottle do
-    sha1 "f012bd189beef2832b3af0b88679660eb092bd55" => :mavericks
-    sha1 "b64749fe75248d14c0164bf4e5e77833b0341f7f" => :mountain_lion
-    sha1 "a3ed34772ca84a0d800e7edc0c676498f4fa541e" => :lion
+    sha1 "24b82835213927e67a4ad83c91e188b2b494c6d3" => :mavericks
+    sha1 "84a921d4ad1ff56cd32c4062d1fb427443367527" => :mountain_lion
+    sha1 "e426817cd99c1997803b6425269f4b0f2ffccbe8" => :lion
   end
 
   def install
