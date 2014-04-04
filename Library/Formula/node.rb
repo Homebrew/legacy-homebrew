@@ -53,20 +53,24 @@ class Node < Formula
 
     npm_root = node_modules/"npm"
     npmrc = npm_root/"npmrc"
-    npmrc.delete if npmrc.exist?
-    npmrc.write("prefix = #{HOMEBREW_PREFIX}\n")
+    npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
 
     npm_root.cd { system "make", "install" }
     system "#{HOMEBREW_PREFIX}/bin/npm", "update", "npm", "-g"
 
     Pathname.glob(npm_root/"man/*") do |man|
       dir = send(man.basename)
-      man.children.each {|file| dir.install_symlink(file) }
+      man.children.each do |file|
+        next if (dir/file.basename).exist?
+        dir.install_symlink(file)
+      end
     end
 
     if build.with? "completion"
-      bash_completion.install_symlink \
-        npm_root/"lib/utils/completion.sh" => "npm"
+      unless (bash_completion/"npm").exist?
+        bash_completion.install_symlink \
+          npm_root/"lib/utils/completion.sh" => "npm"
+      end
     end
   end
 
