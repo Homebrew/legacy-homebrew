@@ -6,9 +6,11 @@ class Fontconfig < Formula
   sha1 '08565feea5a4e6375f9d8a7435dac04e52620ff2'
 
   bottle do
-    sha1 "c576b65e8c2f50459e4f82797977ee3951b58ab1" => :mavericks
-    sha1 "ab5545151307fc9ec617a9b291f16f5b83ef5895" => :mountain_lion
-    sha1 "37170b464e3ef08a56662c2b2a6311ee1bd3602e" => :lion
+    cellar :any
+    revision 2
+    sha1 "7f481637395b324e3f84ca098f9cf85d1ac9f5cb" => :mavericks
+    sha1 "1a5cea57cdd15d077e829fe93a2d794655249ba5" => :mountain_lion
+    sha1 "5bbe702fb724ea913579f0b22cc36da93f3c7687" => :lion
   end
 
   keg_only :provided_pre_mountain_lion
