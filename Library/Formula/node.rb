@@ -1,39 +1,16 @@
 require 'formula'
 
-class NpmRequirement < Requirement
-  fatal true
-
-  def modules_folder
-    "#{HOMEBREW_PREFIX}/lib/node_modules"
-  end
-
-  def message; <<-EOS.undent
-    Beginning with 0.8.0, this recipe now comes with npm.
-    It appears you already have npm installed at #{modules_folder}/npm.
-    To use the npm that comes with this recipe, first uninstall npm with
-    `npm uninstall npm -g`, then run this command again.
-
-    If you would like to keep your installation of npm instead of
-    using the one provided with homebrew, install the formula with
-    the `--without-npm` option.
-    EOS
-  end
-
-  satisfy :build_env => false do
-    begin
-      path = Pathname.new("#{modules_folder}/npm/bin/npm")
-      path.realpath.to_s.include?(HOMEBREW_CELLAR)
-    rescue Errno::ENOENT
-      true
-    end
-  end
-end
-
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage 'http://nodejs.org/'
   url 'http://nodejs.org/dist/v0.10.26/node-v0.10.26.tar.gz'
   sha1 '2340ec2dce1794f1ca1c685b56840dd515a271b2'
+
+  bottle do
+    sha1 "0db92b18d10cb7505d7c885058e337aeb5e9741c" => :mavericks
+    sha1 "b48b83e92cdb8b064620c7fef409b37a2ae90e67" => :mountain_lion
+    sha1 "ecd7b384658ad1a54a74174d07dcffc3aa5ddc92" => :lion
+  end
 
   devel do
     url 'http://nodejs.org/dist/v0.11.12/node-v0.11.12.tar.gz'
@@ -46,44 +23,54 @@ class Node < Formula
   option 'without-npm', 'npm will not be installed'
   option 'without-completion', 'npm bash completion will not be installed'
 
-  depends_on NpmRequirement => :recommended
-  depends_on :python
+  depends_on :python => :build
 
   fails_with :llvm do
     build 2326
   end
 
-  def install
-    args = %W{--prefix=#{prefix}}
-
-    args << "--debug" if build.include? 'enable-debug'
-    args << "--without-npm" if build.without? "npm"
-
-    system "./configure", *args
-    system "make install"
-
-    if build.with? "npm"
-      (lib/"node_modules/npm/npmrc").write("prefix = #{npm_prefix}\n")
-
-      # Link npm manpages
-      Pathname.glob("#{lib}/node_modules/npm/man/*") do |man|
-        dir = send(man.basename)
-        man.children.each { |file| dir.install_symlink(file) }
-      end
-
-      if build.with? "completion"
-        bash_completion.install_symlink \
-          lib/"node_modules/npm/lib/utils/completion.sh" => "npm"
-      end
-    end
+  resource "npm" do
+    url "http://registry.npmjs.org/npm/-/npm-1.4.6.tgz"
+    sha1 "0e151bce38e72cf2206a6299fa5164123f04256e"
   end
 
-  def npm_prefix
-    d = "#{HOMEBREW_PREFIX}/share/npm"
-    if File.directory? d
-      d
-    else
-      HOMEBREW_PREFIX.to_s
+  def install
+    args = %W{--prefix=#{prefix} --without-npm}
+    args << "--debug" if build.include? 'enable-debug'
+
+    system "./configure", *args
+    system "make", "install"
+
+    resource("npm").stage libexec/"npm" if build.with? "npm"
+  end
+
+  def post_install
+    return if build.without? "npm"
+
+    node_modules = HOMEBREW_PREFIX/"lib/node_modules"
+    node_modules.mkpath
+    cp_r libexec/"npm", node_modules
+
+    npm_root = node_modules/"npm"
+    npmrc = npm_root/"npmrc"
+    npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
+
+    npm_root.cd { system "make", "install" }
+    system "#{HOMEBREW_PREFIX}/bin/npm", "update", "npm", "-g"
+
+    Pathname.glob(npm_root/"man/*") do |man|
+      dir = send(man.basename)
+      man.children.each do |file|
+        next if (dir/file.basename).exist?
+        dir.install_symlink(file)
+      end
+    end
+
+    if build.with? "completion"
+      unless (bash_completion/"npm").exist?
+        bash_completion.install_symlink \
+          npm_root/"lib/utils/completion.sh" => "npm"
+      end
     end
   end
 
@@ -91,11 +78,7 @@ class Node < Formula
     if build.without? "npm"; <<-end.undent
       Homebrew has NOT installed npm. If you later install it, you should supplement
       your NODE_PATH with the npm module folder:
-          #{npm_prefix}/lib/node_modules
-      end
-    elsif not ENV['PATH'].split(':').include? "#{npm_prefix}/bin"; <<-end.undent
-      Probably you should amend your PATH to include npm-installed binaries:
-          #{npm_prefix}/bin
+        #{HOMEBREW_PREFIX}/lib/node_modules
       end
     end
   end
@@ -107,5 +90,7 @@ class Node < Formula
     output = `#{bin}/node #{path}`.strip
     assert_equal "hello", output
     assert_equal 0, $?.exitstatus
+
+    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "npm" if build.with? "npm"
   end
 end
