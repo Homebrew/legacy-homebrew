@@ -2,8 +2,8 @@ require 'formula'
 
 class X265 < Formula
   homepage 'http://x265.org'
-  url 'https://bitbucket.org/multicoreware/x265/get/0.8.tar.bz2'
-  sha1 '79c60b3fe528e7b91b799b85e971885c1b040b6e'
+  url 'https://bitbucket.org/multicoreware/x265/get/0.9.tar.bz2'
+  sha1 'e387c4249571a9202b5a6c8f66aea37ee5106c48'
 
   bottle do
     cellar :any
@@ -38,7 +38,7 @@ class X265 < Formula
         (1..3200).each do f.write("\xCO\xFF\xEE") end
     end
     system "#{bin}/x265 --input-res 80x80 --fps 1 #{yuv_path} #{x265_path}"
-    header = 'AAAAAUABDAH//wFgAAADAIAAAAMAAAMAHpXA'
-    assert_equal header.unpack("m"), [x265_path.read(27)]
+    header = 'AAAAAUABDAH//w=='
+    assert_equal header.unpack("m"), [x265_path.read(10)]
     end
 end
