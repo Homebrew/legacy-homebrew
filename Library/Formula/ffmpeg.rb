@@ -25,7 +25,7 @@ class Ffmpeg < Formula
   option 'with-ffplay', 'Enable FFplay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'
   option 'with-fdk-aac', 'Enable the Fraunhofer FDK AAC library'
-  option 'with-vid.stab', 'Enable vid.stab support for video stabilization'
+  option 'with-libvidstab', 'Enable vid.stab support for video stabilization'
 
   depends_on 'pkg-config' => :build
 
@@ -56,7 +56,7 @@ class Ffmpeg < Formula
   depends_on 'libcaca' => :optional
   depends_on 'libbluray' => :optional
   depends_on 'libquvi' => :optional
-  depends_on 'vid.stab' => :optional
+  depends_on 'libvidstab' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -95,7 +95,7 @@ class Ffmpeg < Formula
     args << "--enable-frei0r" if build.with? 'frei0r'
     args << "--enable-libcaca" if build.with? 'libcaca'
     args << "--enable-libquvi" if build.with? 'libquvi'
-    args << "--enable-libvidstab" if build.with? 'vid.stab'
+    args << "--enable-libvidstab" if build.with? 'libvidstab'
 
     if build.with? 'openjpeg'
       args << '--enable-libopenjpeg'
