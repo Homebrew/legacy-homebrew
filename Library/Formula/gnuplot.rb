@@ -71,6 +71,7 @@ class Gnuplot < Formula
 
     args = %W[
       --disable-dependency-tracking
+      --disable-silent-rules
       --prefix=#{prefix}
       --with-readline=#{readline}
     ]
@@ -83,6 +84,12 @@ class Gnuplot < Formula
     args << '--without-lua'           if build.include? 'nolua'
     args << '--without-lisp-files'    if build.without? "emacs"
     args << (build.with?('aquaterm') ? '--with-aquaterm' : '--without-aquaterm')
+
+    if build.with? "x"
+      args << "--with-x"
+    else
+      args << "--without-x"
+    end
 
     if build.include? 'latex'
       args << '--with-latex'
