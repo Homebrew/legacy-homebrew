@@ -7,9 +7,9 @@ class X265 < Formula
 
   bottle do
     cellar :any
-    sha1 "1d3a8f05eb2994290fd08b9a42a84c5db3561e42" => :mavericks
-    sha1 "810c333f3d71f73e69b6ac6e391464eb7259c601" => :mountain_lion
-    sha1 "518b8997f9f7707a3079f76d24b3e0075eaa8ea5" => :lion
+    sha1 "52dc440a26f98ab3e1376639bf0f9ab9839ca571" => :mavericks
+    sha1 "3279b91a78708542cc1f584feab4361675cb4473" => :mountain_lion
+    sha1 "54caf21ff2db0fb9eeed41f7487063b960c7d74d" => :lion
   end
 
   head 'https://bitbucket.org/multicoreware/x265', :using => :hg
