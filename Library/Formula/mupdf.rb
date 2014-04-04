@@ -7,20 +7,9 @@ class Mupdf < Formula
   revision 1
 
   depends_on :macos => :snow_leopard
-
-  depends_on 'jpeg'
-  depends_on 'openjpeg'
-  depends_on 'jbig2dec'
-  depends_on 'libpng'
-  depends_on 'freetype'
   depends_on :x11
 
   def install
-    openjpeg = Formula["openjpeg"]
-    ENV.append 'CPPFLAGS', "-I#{Dir[openjpeg.include/'openjpeg-*'].first}"
-    ENV.append 'CFLAGS', '-DNDEBUG'
-    ENV['SYS_FREETYPE_INC'] = "-I#{MacOS::X11.include}/freetype2"
-
-    system "make", "install", "prefix=#{prefix}"
+    system "make", "install", "build=release", "prefix=#{prefix}"
   end
 end
