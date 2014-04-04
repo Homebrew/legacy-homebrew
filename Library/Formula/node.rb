@@ -23,7 +23,7 @@ class Node < Formula
   option 'without-npm', 'npm will not be installed'
   option 'without-completion', 'npm bash completion will not be installed'
 
-  depends_on :python
+  depends_on :python => :build
 
   fails_with :llvm do
     build 2326
