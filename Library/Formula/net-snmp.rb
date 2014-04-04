@@ -1,14 +1,14 @@
-require 'formula'
+require "formula"
 
 class NetSnmp < Formula
-  homepage 'http://www.net-snmp.org/'
-  url 'https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.2/net-snmp-5.7.2.tar.gz'
-  sha1 'c493027907f32400648244d81117a126aecd27ee'
+  homepage "http://www.net-snmp.org/"
+  url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.2.1/net-snmp-5.7.2.1.tar.gz"
+  sha1 "815d4e5520a1ed96a27def33e7534b4190599f0f"
 
   devel do
-    url 'https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.3-pre-releases/net-snmp-5.7.3.pre1.tar.gz'
-    version '5.7.3.pre1'
-    sha1 '3420d54a8e78e460c8900bd752b91687fcba7b80'
+    url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.3-pre-releases/net-snmp-5.7.3.pre1.tar.gz"
+    version "5.7.3.pre1"
+    sha1 "3420d54a8e78e460c8900bd752b91687fcba7b80"
   end
 
   def install
