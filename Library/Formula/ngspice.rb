@@ -8,7 +8,7 @@ class Ngspice < Formula
   option "with-x", "Build with X support"
   option "without-xspice", "Build without x-spice extensions"
 
-  depends_on :x11 if MacOS::X11.installed? or build.with? "x"
+  depends_on :x11 if build.with? "x"
 
   def install
     args = %W[

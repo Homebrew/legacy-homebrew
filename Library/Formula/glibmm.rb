@@ -2,7 +2,7 @@ require 'formula'
 
 class Glibmm < Formula
   homepage 'http://www.gtkmm.org/'
-  url 'http://download.gnome.org/sources/glibmm/2.38/glibmm-2.38.1.tar.xz'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.38/glibmm-2.38.1.tar.xz'
   sha256 '49c925ee1d3c4d0d6cd7492d7173bd6826db51d0b55f458a6496406ae267c4a2'
 
   bottle do

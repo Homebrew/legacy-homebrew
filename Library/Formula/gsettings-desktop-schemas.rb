@@ -1,8 +1,8 @@
 require 'formula'
 
 class GsettingsDesktopSchemas < Formula
-  homepage 'http://download.gnome.org/sources/gsettings-desktop-schemas/'
-  url 'http://download.gnome.org/sources/gsettings-desktop-schemas/3.10/gsettings-desktop-schemas-3.10.1.tar.xz'
+  homepage 'http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/3.10/gsettings-desktop-schemas-3.10.1.tar.xz'
   sha256 '452378c4960a145747ec69f8c6a874e5b7715454df3e2452d1ff1a0a82e76811'
 
   depends_on 'pkg-config' => :build

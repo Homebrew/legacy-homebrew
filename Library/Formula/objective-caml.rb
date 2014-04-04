@@ -9,7 +9,7 @@ class ObjectiveCaml < Formula
 
   revision 1
 
-  depends_on :x11 if MacOS::X11.installed?
+  depends_on :x11
 
   bottle do
     revision 3

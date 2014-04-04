@@ -1,7 +1,7 @@
 require 'formula'
 
 class Libxmlxx < Formula
-  url 'http://download.gnome.org/sources/libxml++/2.34/libxml++-2.34.2.tar.bz2'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libxml++/2.34/libxml++-2.34.2.tar.bz2'
   homepage 'http://libxmlplusplus.sourceforge.net'
   sha256 '38f20632a711d06166b03a2a92ce71b08130ac30e014805a7052ae3f4c0b15e8'
 

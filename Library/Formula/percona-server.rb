@@ -6,6 +6,12 @@ class PerconaServer < Formula
   version '5.6.16-64.2'
   sha1 'b1b5380fe291c25b89377a8f110cf0031fce6897'
 
+  bottle do
+    sha1 "f33e6652b8c642e7bdcc187b8f21a5aa26a36e55" => :mavericks
+    sha1 "e114d13bc2a1581e280655234f617d4eca4d107c" => :mountain_lion
+    sha1 "b7a6396aa62d5f4dd51b6ef364a561931a34f3c7" => :lion
+  end
+
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
 
@@ -35,6 +41,10 @@ class PerconaServer < Formula
   # shared with the mysql and mariadb formulae.
   def datadir
     @datadir ||= (var/'percona').directory? ? var/'percona' : var/'mysql'
+  end
+
+  def pour_bottle?
+    datadir == var/"mysql"
   end
 
   def install
