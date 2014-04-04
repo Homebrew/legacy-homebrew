@@ -5,8 +5,9 @@ class Fontconfig < Formula
   url 'http://fontconfig.org/release/fontconfig-2.11.1.tar.bz2'
   sha1 '08565feea5a4e6375f9d8a7435dac04e52620ff2'
 
+  # The bottle tooling is too lenient and thinks fontconfig
+  # is relocatable, but it has hardcoded paths in the executables.
   bottle do
-    cellar :any
     revision 2
     sha1 "7f481637395b324e3f84ca098f9cf85d1ac9f5cb" => :mavericks
     sha1 "1a5cea57cdd15d077e829fe93a2d794655249ba5" => :mountain_lion
