@@ -8,9 +8,9 @@ class Gd < Formula
 
   bottle do
     cellar :any
-    sha1 "e0a92ad54a7dfc067dfe20c3ef037cd0ab8660ef" => :mavericks
-    sha1 "affd1228cb47e93fe1709dfbb490c941e9482952" => :mountain_lion
-    sha1 "30aa39a8b79772f929f6718b4233bdd796c0fb75" => :lion
+    sha1 "473c1d133b471b82d8467b27b2e152479c868d19" => :mavericks
+    sha1 "368a0ece40759b7c453cbd600091c54e322bb180" => :mountain_lion
+    sha1 "9a941105a87d7811c6220c9eb072002741476d4d" => :lion
   end
 
   head 'https://bitbucket.org/libgd/gd-libgd', :using => :hg
