@@ -12,10 +12,11 @@ class Ganglia < Formula
   depends_on 'pcre'
   depends_on 'rrdtool'
 
-  # fixes build on Leopard and newer, which lack kvm.h and its corresponding /dev/ node
-  patch :p0 do
-    url "https://trac.macports.org/export/105820/trunk/dports/net/ganglia/files/patch-libmetrics-darwin-metrics.c.diff"
-    sha1 "71a864d46ac963fec3709cd5eea61856b1eb0c93"
+  # fixes build on Leopard and newer, which lack kvm.h, cpu_steal_func() and its corresponding /dev/ node
+  # merged upstream: https://github.com/ganglia/monitor-core/issues/150
+  patch do
+    url "https://github.com/ganglia/monitor-core/commit/ba942f.patch"
+    sha1 "3e8cc693ce3af2236ea02a1836954d5bebf294db"
   end
 
   def install
