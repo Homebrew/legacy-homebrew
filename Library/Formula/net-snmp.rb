@@ -6,9 +6,9 @@ class NetSnmp < Formula
   sha1 "815d4e5520a1ed96a27def33e7534b4190599f0f"
 
   devel do
-    url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.3-pre-releases/net-snmp-5.7.3.pre1.tar.gz"
-    version "5.7.3.pre1"
-    sha1 "3420d54a8e78e460c8900bd752b91687fcba7b80"
+    url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.3-pre-releases/net-snmp-5.7.3.pre3.tar.gz"
+    version "5.7.3.pre3"
+    sha1 "5e46232a2508a3cb6543f0438569090f78e4a20e"
   end
 
   def install
