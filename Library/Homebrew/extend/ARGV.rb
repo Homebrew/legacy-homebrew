@@ -35,9 +35,9 @@ module HomebrewArgvExtension
       opt_prefix = HOMEBREW_PREFIX/"opt"/name
 
       if opt_prefix.symlink? && opt_prefix.directory?
-        Keg.new(opt_prefix.realpath)
+        Keg.new(opt_prefix.resolved_path)
       elsif linked_keg_ref.symlink? && linked_keg_ref.directory?
-        Keg.new(linked_keg_ref.realpath)
+        Keg.new(linked_keg_ref.resolved_path)
       elsif dirs.length == 1
         Keg.new(dirs.first)
       elsif (prefix = Formula.factory(canonical_name).prefix).directory?

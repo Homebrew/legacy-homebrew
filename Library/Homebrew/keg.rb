@@ -87,7 +87,7 @@ class Keg < Pathname
   end
 
   def linked?
-    linked_keg_record.directory? and self == linked_keg_record.realpath
+    linked_keg_record.directory? && self == linked_keg_record.resolved_path
   end
 
   def completion_installed? shell
@@ -125,7 +125,7 @@ class Keg < Pathname
   end
 
   def link mode=OpenStruct.new
-    raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
+    raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.resolved_path}" if linked_keg_record.directory?
 
     ObserverPathnameExtension.reset_counts!
 
