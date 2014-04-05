@@ -14,8 +14,8 @@ class Ganglia < Formula
 
   # fixes build on Leopard and newer, which lack kvm.h and its corresponding /dev/ node
   patch :p0 do
-    url "https://trac.macports.org/export/105820/trunk/dports/net/ganglia/files/patch-libmetrics-darwin-metrics.c.diff"
-    sha1 "71a864d46ac963fec3709cd5eea61856b1eb0c93"
+    url "https://gist.githubusercontent.com/bcbcarl/9996346/raw/e71120d3260a1ffdb3dfede411b21a6031ea647a/patch-libmetrics-darwin-metrics.c.diff"
+    sha1 "588c42106293e01392b002228d3f342a7ea6b0aa"
   end
 
   def install
