@@ -176,10 +176,8 @@ class Formulary
         # name appears to be a tapped formula, so we don't munge it
         # in order to provide a useful error message when require fails.
         f = TapLoader.new(name_or_path)
-      elsif name_or_path.include? "/"
+      elsif name_or_path.include?("/") || File.extname(name_or_path) == ".rb"
         # If name was a path or mapped to a cached formula
-        f = FromPathLoader.new(name_or_path)
-      elsif File.extname(name_or_path) == ".rb"
         f = FromPathLoader.new(name_or_path)
       else
         f = StandardLoader.new(name_or_path)
