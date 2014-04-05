@@ -383,11 +383,13 @@ class FormulaInstaller
     fi.caveats
     fi.finish
   rescue Exception
-    tmp_keg.rename(installed_keg) if tmp_keg && !installed_keg.directory?
-    linked_keg.link if linked_keg
+    ignore_interrupts do
+      tmp_keg.rename(installed_keg) if tmp_keg && !installed_keg.directory?
+      linked_keg.link if linked_keg
+    end
     raise
   else
-    tmp_keg.rmtree if tmp_keg && tmp_keg.directory?
+    ignore_interrupts { tmp_keg.rmtree if tmp_keg && tmp_keg.directory? }
   end
 
   def caveats
