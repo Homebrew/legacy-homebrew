@@ -361,7 +361,7 @@ class FormulaInstaller
     df = dep.to_formula
     tab = Tab.for_formula(df)
 
-    outdated_keg = Keg.new(df.linked_keg.realpath) if df.linked_keg.directory?
+    linked_keg = Keg.new(df.linked_keg.realpath) if df.linked_keg.directory?
 
     fi = DependencyInstaller.new(df)
     fi.options           |= tab.used_options
@@ -372,13 +372,13 @@ class FormulaInstaller
     fi.debug              = debug?
     fi.prelude
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
-    outdated_keg.unlink if outdated_keg
+    linked_keg.unlink if linked_keg
     fi.install
     fi.caveats
     fi.finish
   ensure
     # restore previous installation state if build failed
-    outdated_keg.link if outdated_keg and not df.installed? rescue nil
+    linked_keg.link if linked_keg and not df.installed? rescue nil
   end
 
   def caveats
