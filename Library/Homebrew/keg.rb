@@ -229,8 +229,8 @@ class Keg < Pathname
   end
 
   def make_relative_symlink dst, src, mode=OpenStruct.new
-    if dst.exist? and dst.realpath == src.realpath
-      puts "Skipping; already exists: #{dst}" if ARGV.verbose?
+    if dst.symlink? && dst.exist? && dst.resolved_path == src
+      puts "Skipping; link already exists: #{dst}" if ARGV.verbose?
       return
     end
 
