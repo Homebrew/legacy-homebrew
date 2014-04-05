@@ -63,7 +63,7 @@ class Boost < Formula
     # https://github.com/Homebrew/homebrew/pull/27436
     patch :p2 do
       url "https://github.com/boostorg/atomic/commit/6bb71fdd.patch"
-      sha1 "9ab8e6c041b4ecc291b2dd1a3c93e9b342d5e0e4"
+      sha1 "8dfaf4d123f1161c83fff91d4ef70b8f95a4ef94"
     end
 
     patch :p2 do
