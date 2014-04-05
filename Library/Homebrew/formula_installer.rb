@@ -303,8 +303,6 @@ class FormulaInstaller
           Dependency.prune
         elsif dep.satisfied?(options)
           Dependency.skip
-        elsif dep.installed?
-          raise UnsatisfiedDependencyError.new(f, dep, options)
         end
       end
     end
@@ -361,7 +359,16 @@ class FormulaInstaller
     df = dep.to_formula
     tab = Tab.for_formula(df)
 
-    linked_keg = Keg.new(df.linked_keg.realpath) if df.linked_keg.directory?
+    if df.linked_keg.directory?
+      linked_keg = Keg.new(df.linked_keg.realpath)
+      linked_keg.unlink
+    end
+
+    if df.installed?
+      installed_keg = Keg.new(df.prefix)
+      tmp_keg = Pathname.new("#{installed_keg}.tmp")
+      installed_keg.rename(tmp_keg)
+    end
 
     fi = DependencyInstaller.new(df)
     fi.options           |= tab.used_options
@@ -372,13 +379,15 @@ class FormulaInstaller
     fi.debug              = debug?
     fi.prelude
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
-    linked_keg.unlink if linked_keg
     fi.install
     fi.caveats
     fi.finish
-  ensure
-    # restore previous installation state if build failed
-    linked_keg.link if linked_keg and not df.installed? rescue nil
+  rescue Exception
+    tmp_keg.rename(installed_keg) if tmp_keg && !installed_keg.directory?
+    linked_keg.link if linked_keg
+    raise
+  else
+    tmp_keg.rmtree if tmp_keg && tmp_keg.directory?
   end
 
   def caveats
