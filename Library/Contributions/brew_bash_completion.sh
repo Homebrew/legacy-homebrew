@@ -131,6 +131,18 @@ __brew_complete_taps ()
     __brewcomp "$__brew_cached_taps"
 }
 
+_brew_bottle ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--merge --rb --write"
+        return
+        ;;
+    esac
+    __brew_complete_installed
+}
+
 _brew_cleanup ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -471,6 +483,7 @@ _brew ()
     --cache|--cellar|--prefix)  __brew_complete_formulae ;;
     audit|cat|edit|home)        __brew_complete_formulae ;;
     test|unlink)                __brew_complete_installed ;;
+    bottle)                     _brew_bottle ;;
     cleanup)                    _brew_cleanup ;;
     create)                     _brew_create ;;
     deps)                       _brew_deps ;;

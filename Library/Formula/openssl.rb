@@ -28,11 +28,6 @@ class Openssl < Formula
 
     if MacOS.prefer_64_bit?
       args << "darwin64-x86_64-cc" << "enable-ec_nistp_64_gcc_128"
-
-      # -O3 is used under stdenv, which results in test failures when using clang
-      inreplace 'Configure',
-        %{"darwin64-x86_64-cc","cc:-arch x86_64 -O3},
-        %{"darwin64-x86_64-cc","cc:-arch x86_64 -Os}
     else
       args << "darwin-i386-cc"
     end
@@ -59,9 +54,12 @@ class Openssl < Formula
   end
 
   def write_pem_file
-    system "security find-certificate -a -p /Library/Keychains/System.keychain > '#{osx_cert_pem}.tmp'"
-    system "security find-certificate -a -p /System/Library/Keychains/SystemRootCertificates.keychain >> '#{osx_cert_pem}.tmp'"
-    system "mv", "-f", "#{osx_cert_pem}.tmp", osx_cert_pem
+    keychains = %w[
+      /Library/Keychains/System.keychain
+      /System/Library/Keychains/SystemRootCertificates.keychain
+    ]
+
+    osx_cert_pem.atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
   end
 
   def post_install

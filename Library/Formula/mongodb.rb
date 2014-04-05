@@ -2,14 +2,13 @@ require 'formula'
 
 class Mongodb < Formula
   homepage 'http://www.mongodb.org/'
-  url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.9.tar.gz'
-  sha1 '3aa495cf32769a09ee9532827391892d96337d6b'
+  url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.10.tar.gz'
+  sha1 'faf1f41d45934bcb30684cfed95f5d3c698663a0'
 
   bottle do
-    revision 2
-    sha1 "5447af6e8f6a2870306e03d318351f1d8efecb1f" => :mavericks
-    sha1 "8b40016996e9dd42bbef3657d3a3c9357bd5d5ea" => :mountain_lion
-    sha1 "e9686685cf1fdbd65109ea8e9979169f0ce728b6" => :lion
+    sha1 "e24b77974f0a5f4babaf224dfda675bd297afdea" => :mavericks
+    sha1 "13d42b00a3251ee64779ba1bf7dc56776a843b87" => :mountain_lion
+    sha1 "f9a50b30bbf060d90ebd13dd8d09129b7db311aa" => :lion
   end
 
   stable do
@@ -27,8 +26,8 @@ class Mongodb < Formula
   end
 
   devel do
-    url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.5.tar.gz'
-    sha1 '4827f3da107174a3cbb1f5b969c7f597ca09b4f8'
+    url 'http://fastdl.mongodb.org/src/mongodb-src-r2.6.0-rc3.tar.gz'
+    sha1 'b3b1b47bf9c23c55089ec0db3b6e425dc7a67b87'
 
     option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
     depends_on "boost" => :optional

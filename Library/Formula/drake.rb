@@ -22,6 +22,6 @@ class Drake < Formula
     EOS
 
     # force run (no user prompt) the full workflow
-    system bin/'drake', '--auto', "--workflow=#{testpath/'Drakefile'}", '+...'
+    system bin/"drake", "--auto", "--workflow=#{testpath}/Drakefile", "+..."
   end
 end

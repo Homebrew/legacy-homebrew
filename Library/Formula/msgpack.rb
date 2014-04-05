@@ -5,6 +5,13 @@ class Msgpack < Formula
   url 'http://msgpack.org/releases/cpp/msgpack-0.5.7.tar.gz'
   sha256 '7c203265cf14a4723820e0fc7ac14bf4bad5578f7bc525e9835c70cd36e7d1b8'
 
+  bottle do
+    cellar :any
+    sha1 "b0003c9029ef802f425be65724556e9eadb792bd" => :mavericks
+    sha1 "f47ff4b3c871244a8bebbac1072ef37010acc3ad" => :mountain_lion
+    sha1 "c8e0d36c6aa4dc1c9163f2d3d64ea748ff2b0728" => :lion
+  end
+
   fails_with :llvm do
     build 2334
   end

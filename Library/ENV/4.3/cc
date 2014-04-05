@@ -73,6 +73,12 @@ class Cmd
     end
   end
   def args
+    if @args.length == 1 and @args[0] == '-v'
+      # Don't add linker arguments if -v passed as sole option. This stops gcc
+      # -v with no other arguments from outputting a linker error. Some
+      # software uses gcc -v (wrongly) to sniff the GCC version.
+      return @args.dup
+    end
     if !cccfg?("O") || tool == "ld" || configure?
       args = @args.dup
     else
@@ -121,7 +127,8 @@ class Cmd
            '-pedantic', '-pedantic-errors'
       when '-fopenmp', '-lgomp', '-mno-fused-madd', '-fforce-addr', '-fno-defer-pop',
            '-mno-dynamic-no-pic', '-fearly-inlining', '-finline-functions-called-once',
-           /^-finline-limit/,  /^-f(?:no-)?check-new/
+           /^-finline-limit/, /^-f(?:no-)?check-new/, '-fno-delete-null-pointer-checks',
+           '-fcaller-saves', '-fthread-jumps'
         # clang doesn't support these flags
         args << arg if not tool =~ /^clang/
       when /^-W.*/

@@ -2,8 +2,8 @@ require 'formula'
 
 class Sbuild < Formula
   homepage 'http://sbuild.org'
-  url 'http://sbuild.org/uploads/sbuild/0.7.3/sbuild-0.7.3-dist.zip'
-  sha1 'd41d88ddfccbe6745d7520af40cdf44257ad710c'
+  url 'http://sbuild.org/uploads/sbuild/0.7.4/sbuild-0.7.4-dist.zip'
+  sha1 '698306c8bad5aa32f42b9df6db30f06dba5ea5be'
 
   def install
     libexec.install Dir['*']

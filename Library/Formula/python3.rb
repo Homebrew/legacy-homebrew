@@ -1,9 +1,15 @@
 require 'formula'
 
 class Python3 < Formula
-  homepage 'http://www.python.org/'
-  url 'http://python.org/ftp/python/3.4.0/Python-3.4.0.tgz'
+  homepage 'https://www.python.org/'
+  url 'https://python.org/ftp/python/3.4.0/Python-3.4.0.tgz'
   sha1 'bb5125d1c437caa5a62e0a3d0fee298e91196d6f'
+
+  bottle do
+    sha1 "bb20c186917b11251be7c56a90b755add47eca38" => :mavericks
+    sha1 "13d450a6fc69566425327d6831827fae435767e0" => :mountain_lion
+    sha1 "cbf841f5d6dff6944535bae5c13da4c4abf2cd26" => :lion
+  end
 
   VER='3.4'  # The <major>.<minor> is used so often.
 
@@ -101,7 +107,6 @@ class Python3 < Formula
     # Tell Python not to install into /Applications (default for framework builds)
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
-    (HOMEBREW_PREFIX/'share/python3').mkpath
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python3"
     system "make", "quicktest" if build.include? "quicktest"
 
@@ -110,31 +115,40 @@ class Python3 < Formula
       mv app, app.gsub(".app", " 3.app")
     end
 
-    # Post-install, fix up the site-packages so that user-installed Python
-    # software survives minor updates, such as going from 3.3.2 to 3.3.3:
+    # A fix, because python and python3 both want to install Python.framework
+    # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
+    # https://github.com/Homebrew/homebrew/issues/15943
+    ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
+    rm prefix/"Frameworks/Python.framework/Versions/Current"
+
+    # Remove 2to3 because python2 also installs it
+    rm bin/"2to3"
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
+  end
+
+  def post_install
+    # Fix up the site-packages so that user-installed Python software survives
+    # minor updates, such as going from 3.3.2 to 3.3.3:
+
     # Create a site-packages in HOMEBREW_PREFIX/lib/python#{VER}/site-packages
     site_packages.mkpath
+
     # Symlink the prefix site-packages into the cellar.
-    ln_s site_packages, site_packages_cellar
+    site_packages_cellar.delete if site_packages_cellar.exist?
+    site_packages_cellar.parent.install_symlink site_packages
 
     # Write our sitecustomize.py
-    Dir["#{site_packages}/*.py{,c,o}"].each {|f| Pathname.new(f).unlink }
-    (site_packages/"sitecustomize.py").write(sitecustomize)
-
-    # "python3" executable is forgotten for framework builds.
-    # Make sure homebrew symlinks it to HOMEBREW_PREFIX/bin.
-    ln_sf "#{bin}/python#{VER}", "#{bin}/python3"
-    ln_sf "#{bin}/python#{VER}-config", "#{bin}/python3-config"
+    rm_rf Dir["#{site_packages}/sitecustomize.py[co]"]
+    (site_packages/"sitecustomize.py").atomic_write(sitecustomize)
 
     # Remove old setuptools installations that may still fly around and be
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.8-py3.3.egg
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/python#{VER}/site-packages/setuptools*"]
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/python#{VER}/site-packages/distribute*"]
+    rm_rf Dir["#{site_packages}/setuptools*"]
+    rm_rf Dir["#{site_packages}/distribute*"]
 
     # Install the bundled pip if it's newer than the installed version
     system bin/"python3", "-m", "ensurepip", "--upgrade"
@@ -148,15 +162,6 @@ class Python3 < Formula
       [install]
       prefix=#{HOMEBREW_PREFIX}
     EOF
-
-    # A fix, because python and python3 both want to install Python.framework
-    # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
-    # https://github.com/Homebrew/homebrew/issues/15943
-    ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
-    rm prefix/"Frameworks/Python.framework/Versions/Current"
-
-    # Remove 2to3 because python2 also installs it
-    rm bin/"2to3"
   end
 
   def distutils_fix_superenv(args)
@@ -229,7 +234,7 @@ class Python3 < Formula
                '     You should `unset PYTHONPATH` to fix this.')
       else:
           # Only do this for a brewed python:
-          opt_executable = '#{HOMEBREW_PREFIX}/opt/python3/bin/python#{VER}'
+          opt_executable = '#{opt_bin}/python#{VER}'
           if os.path.realpath(sys.executable) == os.path.realpath(opt_executable):
               # Remove /System site-packages, and the Cellar site-packages
               # which we moved to lib/pythonX.Y/site-packages. Further, remove
@@ -237,7 +242,7 @@ class Python3 < Formula
               sys.path = [ p for p in sys.path
                            if (not p.startswith('/System') and
                                not p.startswith('#{HOMEBREW_PREFIX}/lib/python') and
-                               not (p.startswith('#{HOMEBREW_PREFIX}/Cellar/python') and p.endswith('site-packages'))) ]
+                               not (p.startswith('#{rack}') and p.endswith('site-packages'))) ]
 
               # LINKFORSHARED (and python-config --ldflags) return the
               # full path to the lib (yes, "Python" is actually the lib, not a
@@ -246,7 +251,7 @@ class Python3 < Formula
               # Assume Framework style build (default since months in brew)
               try:
                   from _sysconfigdata import build_time_vars
-                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{HOMEBREW_PREFIX}/opt/python3/Frameworks/Python.framework/Versions/#{VER}/Python'
+                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{VER}/Python'
               except:
                   pass  # remember: don't print here. Better to fail silently.
 
@@ -256,7 +261,7 @@ class Python3 < Formula
           # Tell about homebrew's site-packages location.
           # This is needed for Python to parse *.pth.
           import site
-          site.addsitedir('#{HOMEBREW_PREFIX}/lib/python#{VER}/site-packages')
+          site.addsitedir('#{site_packages}')
     EOF
   end
 
@@ -266,7 +271,7 @@ class Python3 < Formula
         pip3 install --upgrade pip
 
       You can install Python packages with
-        `pip3 install <your_favorite_package>`
+        pip3 install <package>
 
       They will install into the site-package directory
         #{site_packages}

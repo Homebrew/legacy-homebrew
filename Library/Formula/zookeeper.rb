@@ -101,12 +101,12 @@ class Zookeeper < Formula
     (var+'run/zookeeper/data').mkpath
 
     # Install shim scripts to bin
-    Dir["#{libexec}/bin/*.sh"].map { |p| Pathname.new p }.each { |path|
+    Pathname.glob("#{libexec}/bin/*.sh") do |path|
       next if path == libexec+'bin/zkEnv.sh'
       script_name = path.basename
       bin_name    = path.basename '.sh'
       (bin+bin_name).write shim_script(script_name)
-    }
+    end
 
     # Install default config files
     defaults = etc/'zookeeper/defaults'

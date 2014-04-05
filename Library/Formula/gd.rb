@@ -4,13 +4,13 @@ class Gd < Formula
   homepage 'http://libgd.bitbucket.org/'
   url 'https://bitbucket.org/libgd/gd-libgd/downloads/libgd-2.1.0.tar.gz'
   sha1 'a0f3053724403aef9e126f4aa5c662573e5836cd'
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    sha1 "e0a92ad54a7dfc067dfe20c3ef037cd0ab8660ef" => :mavericks
-    sha1 "affd1228cb47e93fe1709dfbb490c941e9482952" => :mountain_lion
-    sha1 "30aa39a8b79772f929f6718b4233bdd796c0fb75" => :lion
+    sha1 "473c1d133b471b82d8467b27b2e152479c868d19" => :mavericks
+    sha1 "368a0ece40759b7c453cbd600091c54e322bb180" => :mountain_lion
+    sha1 "9a941105a87d7811c6220c9eb072002741476d4d" => :lion
   end
 
   head 'https://bitbucket.org/libgd/gd-libgd', :using => :hg
@@ -19,9 +19,9 @@ class Gd < Formula
 
   depends_on 'libpng' => :recommended
   depends_on 'jpeg' => :recommended
-  depends_on 'fontconfig' => :optional
-  depends_on 'freetype' => :optional
-  depends_on 'libtiff' => :optional
+  depends_on 'fontconfig' => :recommended
+  depends_on 'freetype' => :recommended
+  depends_on 'libtiff' => :recommended
   depends_on 'libvpx' => :optional
 
   fails_with :llvm do

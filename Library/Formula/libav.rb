@@ -5,11 +5,12 @@ class Libav < Formula
   url 'http://libav.org/releases/libav-9.11.tar.xz'
   sha1 '4eb48cbe70515734f70bde8dceff28896d76adf2'
   head 'git://git.libav.org/libav.git'
+  revision 1
 
   bottle do
-    sha1 "189d6d475037c6ef0fa4911b5e3cc99e4c2e6a5c" => :mavericks
-    sha1 "83f1183b38fbf58d847a180c1c0f5d4d3f7745bd" => :mountain_lion
-    sha1 "874965f99e97869e88a24e09e494d1f49ed83ba3" => :lion
+    sha1 "bf3aec728041ec2946a2da890556bdb2979c4ad3" => :mavericks
+    sha1 "45da5667a75d03400f06cfb7cd5ab294188be17f" => :mountain_lion
+    sha1 "8ad16247b63d8baebdd7fbc0824f5aaaf6641836" => :lion
   end
 
   option "without-faac", "Disable AAC encoder via faac"

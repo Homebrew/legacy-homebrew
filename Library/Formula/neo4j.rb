@@ -10,9 +10,6 @@ class Neo4j < Formula
     # Remove windows files
     rm_f Dir["bin/*.bat"]
 
-    # Fix the permissions on the global settings file.
-    chmod 0644, Dir["config"]
-
     # Install jars in libexec to avoid conflicts
     libexec.install Dir['*']
 

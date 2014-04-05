@@ -182,7 +182,7 @@ module SharedEnvExtension
   def ld64
     ld64 = Formula.factory('ld64')
     self['LD'] = ld64.bin/'ld'
-    append "LDFLAGS", "-B#{ld64.bin.to_s+"/"}"
+    append "LDFLAGS", "-B#{ld64.bin}/"
   end
 
   def warn_about_non_apple_gcc(gcc)

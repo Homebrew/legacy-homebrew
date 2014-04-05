@@ -5,9 +5,15 @@ class Juju < Formula
   url 'https://launchpad.net/juju-core/1.16/1.16.6/+download/juju-core_1.16.6.tar.gz'
   sha1 '0483d7a4d3fda0981f822d540cded855eb5afbda'
 
+  bottle do
+    sha1 "06dec5a1342231cc7721cb6afcb51ea0604ffa8c" => :mavericks
+    sha1 "04c65a325c275c66b490684daca7342ef5f7220a" => :mountain_lion
+    sha1 "80c65027bcb4ac3b11d39232d27171816236856a" => :lion
+  end
+
   devel do
-    url  'https://launchpad.net/juju-core/trunk/1.17.3/+download/juju-core_1.17.3.tar.gz'
-    sha1 'a4579476a6fb83722da869228b887c39e8ec8c7e'
+    url  'https://launchpad.net/juju-core/trunk/1.17.7/+download/juju-core_1.17.7.tar.gz'
+    sha1 '7dc39b3e9291cc62f78065af19bce68a81f25421'
   end
 
   depends_on 'go' => :build

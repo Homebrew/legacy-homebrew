@@ -84,7 +84,7 @@ module Homebrew extend self
     end
 
     index = 0
-    Pathname.new(keg).find do |pn|
+    keg.find do |pn|
       if pn.symlink? && (link = pn.readlink).absolute?
         if link.to_s.start_with?(string)
           opoo "Absolute symlink starting with #{string}:" if index.zero?

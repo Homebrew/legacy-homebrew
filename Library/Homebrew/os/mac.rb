@@ -250,6 +250,7 @@ module OS
       "5.0.1" => { :clang => "5.0", :clang_build => 500 },
       "5.0.2" => { :clang => "5.0", :clang_build => 500 },
       "5.1"   => { :clang => "5.1", :clang_build => 503 },
+      "5.1.1" => { :clang => "5.1", :clang_build => 503 },
     }
 
     def compilers_standard?
@@ -269,22 +270,26 @@ module OS
       EOS
     end
 
-    def app_with_bundle_id id
-      path = mdfind(id).first
+    def app_with_bundle_id(*ids)
+      path = mdfind(*ids).first
       Pathname.new(path) unless path.nil? or path.empty?
     end
 
-    def mdfind id
+    def mdfind(*ids)
       return [] unless OS.mac?
-      (@mdfind ||= {}).fetch(id.to_s) do |key|
-        @mdfind[key] = `/usr/bin/mdfind "kMDItemCFBundleIdentifier == '#{key}'"`.split("\n")
+      (@mdfind ||= {}).fetch(ids) do
+        @mdfind[ids] = `/usr/bin/mdfind "#{mdfind_query(*ids)}"`.split("\n")
       end
     end
 
-    def pkgutil_info id
-      (@pkginfo ||= {}).fetch(id.to_s) do |key|
+    def pkgutil_info(id)
+      (@pkginfo ||= {}).fetch(id) do |key|
         @pkginfo[key] = `/usr/sbin/pkgutil --pkg-info "#{key}" 2>/dev/null`.strip
       end
+    end
+
+    def mdfind_query(*ids)
+      ids.map! { |id| "kMDItemCFBundleIdentifier == #{id}" }.join(" || ")
     end
   end
 end

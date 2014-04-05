@@ -295,6 +295,10 @@ module Superenv
     end
   end
 
+  def refurbish_args
+    append 'HOMEBREW_CCCFG', "O", ''
+  end
+
   # m32 on superenv does not add any CC flags. It prevents "-m32" from being erased.
   def m32
     append 'HOMEBREW_CCCFG', "3", ''

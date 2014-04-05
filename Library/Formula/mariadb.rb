@@ -2,18 +2,13 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-5.5.36/kvm-tarbake-jaunty-x86/mariadb-5.5.36.tar.gz'
-  sha1 'a6091356ffe524322431670ad03d68c389243d04'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.10/kvm-tarbake-jaunty-x86/mariadb-10.0.10.tar.gz'
+  sha1 '59e222bd261128aff89c216dc100d5bcc8c5acc4'
 
   bottle do
-    sha1 "46a842d51c95aa8e6463f373e7312d28c2d89192" => :mavericks
-    sha1 "40868bd7621732f92f998e13badc6b46399e3b43" => :mountain_lion
-    sha1 "61b9289369f12ba10edd77e2cbe2d54ab7fb8396" => :lion
-  end
-
-  devel do
-    url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.9/kvm-tarbake-jaunty-x86/mariadb-10.0.9.tar.gz'
-    sha1 '474310268649fd00ddf8c813987a2b05ad0a4d2d'
+    sha1 "8cdd6ee44b7235a1ccccbdcc76a085c9f750463f" => :mavericks
+    sha1 "c4b2a4f8ab597565b23e0cff789db59bb693343c" => :mountain_lion
+    sha1 "2d1d225ed84b1b9096edc83380c178f3cf2e4c42" => :lion
   end
 
   depends_on 'cmake' => :build
@@ -108,7 +103,7 @@ class Mariadb < Formula
       (prefix+'sql-bench').rmtree if build.without? 'bench'
 
       # Link the setup script into bin
-      ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+      bin.install_symlink prefix/"scripts/mysql_install_db"
 
       # Fix up the control script and link into bin
       inreplace "#{prefix}/support-files/mysql.server" do |s|
@@ -117,7 +112,7 @@ class Mariadb < Formula
         s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
       end
 
-      ln_s "#{prefix}/support-files/mysql.server", bin
+      bin.install_symlink prefix/"support-files/mysql.server"
     end
   end
 

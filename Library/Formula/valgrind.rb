@@ -33,7 +33,7 @@ class Valgrind < Formula
   patch do
     url "https://gist.github.com/raw/3784836/f046191e72445a2fc8491cb6aeeabe84517687d9/patch1.diff"
     sha1 "a2252d977302a37873b0f2efe8aa4a4fed2eb2c2"
-  end unless MacOS::CLT.installed?
+  end
 
   # Fix for 10.7.4 w/XCode-4.5, duplicate symbols. Reported upstream in
   # https://bugs.kde.org/show_bug.cgi?id=307415
