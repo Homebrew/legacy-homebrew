@@ -13,7 +13,8 @@ class Aria2 < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on :macos => :lion # Needs a c++11 compiler
+
+  needs :cxx11
 
   def install
     args = %W[
