@@ -147,7 +147,7 @@ class FormulaInstaller
     if f.linked_keg.directory?
       # some other version is already installed *and* linked
       raise CannotInstallFormulaError, <<-EOS.undent
-        #{f}-#{f.linked_keg.realpath.basename} already installed
+        #{f}-#{f.linked_keg.resolved_path.basename} already installed
         To install this version, first `brew unlink #{f}'
       EOS
     end
@@ -360,7 +360,7 @@ class FormulaInstaller
     tab = Tab.for_formula(df)
 
     if df.linked_keg.directory?
-      linked_keg = Keg.new(df.linked_keg.realpath)
+      linked_keg = Keg.new(df.linked_keg.resolved_path)
       linked_keg.unlink
     end
 
@@ -545,7 +545,7 @@ class FormulaInstaller
   end
 
   def link
-    if f.linked_keg.directory? and f.linked_keg.realpath == f.prefix
+    if f.linked_keg.directory? and f.linked_keg.resolved_path == f.prefix
       opoo "This keg was marked linked already, continuing anyway"
       # otherwise Keg.link will bail
       f.linked_keg.unlink

@@ -493,7 +493,7 @@ class Formula
       },
       "revision" => revision,
       "installed" => [],
-      "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
+      "linked_keg" => (linked_keg.resolved_path.basename.to_s if linked_keg.exist?),
       "keg_only" => keg_only?,
       "dependencies" => deps.map(&:name),
       "conflicts_with" => conflicts.map(&:name),
