@@ -10,6 +10,8 @@ class Sysdig < Formula
   depends_on "cmake" => :build
 
   def install
+    ENV.libcxx if MacOS.version < :mavericks
+
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
       system "make", "install"
