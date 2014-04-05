@@ -22,6 +22,6 @@ class Fzf < Formula
 
   test do
     (testpath/"list").write %w[hello world].join($/)
-    `cat #{testpath/"list"} | fzf -f wld`.chomp == "world"
+    `cat #{testpath}/list | fzf -f wld`.chomp == "world"
   end
 end
