@@ -165,25 +165,54 @@ class Formulary
   # * a formula URL
   # * a local bottle reference
   def self.factory ref
-    # If a URL is passed, download to the cache and install
-    if ref =~ %r[(https?|ftp)://]
-      f = FromUrlLoader.new(ref)
-    elsif ref =~ Pathname::BOTTLE_EXTNAME_RX
-      f = BottleLoader.new(ref)
-    else
-      name_or_path = Formula.canonical_name(ref)
-      if name_or_path =~ HOMEBREW_TAP_FORMULA_REGEX
-        # name appears to be a tapped formula, so we don't munge it
-        # in order to provide a useful error message when require fails.
-        f = TapLoader.new(name_or_path)
-      elsif name_or_path.include?("/") || File.extname(name_or_path) == ".rb"
-        # If name was a path or mapped to a cached formula
-        f = FromPathLoader.new(name_or_path)
+    loader_for(ref).get_formula
+  end
+
+  def self.loader_for(ref)
+    case ref
+    when %r[(https?|ftp)://]
+      return FromUrlLoader.new(ref)
+    when Pathname::BOTTLE_EXTNAME_RX
+      return BottleLoader.new(ref)
+    end
+
+    if ref =~ HOMEBREW_TAP_FORMULA_REGEX
+      tap_name = "#$1-#$2".downcase
+      tapd = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{tap_name}")
+
+      if tapd.directory?
+        tapd.find_formula do |relative_pathname|
+          path = "#{tapd}/#{relative_pathname}"
+          if relative_pathname.stem.to_s == $3
+            return FromPathLoader.new(path)
+          end
+        end
       else
-        f = StandardLoader.new(name_or_path)
+        return TapLoader.new(ref)
       end
     end
 
-    f.get_formula
+    if ref.include?("/") || File.extname(ref) == ".rb"
+      return FromPathLoader.new(ref)
+    end
+
+    formula_with_that_name = Formula.path(ref)
+    if formula_with_that_name.file? and formula_with_that_name.readable?
+      return StandardLoader.new(ref)
+    end
+
+    # test if the name is a formula alias
+    possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{ref}")
+    if possible_alias.file?
+      name = possible_alias.resolved_path.basename(".rb").to_s
+      return StandardLoader.new(name)
+    end
+
+    possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{ref}.rb")
+    if possible_cached_formula.file?
+      return FromPathLoader.new(possible_cached_formula.to_s)
+    end
+
+    return StandardLoader.new(ref)
   end
 end
