@@ -110,6 +110,14 @@ class Formulary
     end
   end
 
+  class AliasLoader < FormulaLoader
+    def initialize alias_path
+      path = alias_path.resolved_path
+      name = path.basename(".rb").to_s
+      super name, path
+    end
+  end
+
   # Loads formulae from disk using a path
   class FromPathLoader < FormulaLoader
     def initialize path
@@ -192,12 +200,9 @@ class Formulary
       return StandardLoader.new(ref, formula_with_that_name)
     end
 
-    # test if the name is a formula alias
     possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{ref}")
     if possible_alias.file?
-      path = possible_alias.resolved_path
-      name = path.basename(".rb").to_s
-      return StandardLoader.new(name, path)
+      return AliasLoader.new(possible_alias)
     end
 
     possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{ref}.rb")
