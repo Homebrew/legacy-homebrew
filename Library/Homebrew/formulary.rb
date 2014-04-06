@@ -105,8 +105,8 @@ class Formulary
 
   # Loads formulae from Homebrew's provided Library
   class StandardLoader < FormulaLoader
-    def initialize name
-      super name, Formula.path(name)
+    def initialize name, path=Formula.path(name)
+      super
     end
   end
 
@@ -198,14 +198,15 @@ class Formulary
 
     formula_with_that_name = Formula.path(ref)
     if formula_with_that_name.file? and formula_with_that_name.readable?
-      return StandardLoader.new(ref)
+      return StandardLoader.new(ref, formula_with_that_name)
     end
 
     # test if the name is a formula alias
     possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{ref}")
     if possible_alias.file?
-      name = possible_alias.resolved_path.basename(".rb").to_s
-      return StandardLoader.new(name)
+      path = possible_alias.resolved_path
+      name = path.basename(".rb").to_s
+      return StandardLoader.new(name, path)
     end
 
     possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{ref}.rb")
