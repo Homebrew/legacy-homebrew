@@ -55,6 +55,7 @@ class Ffmpeg < Formula
   depends_on 'libcaca' => :optional
   depends_on 'libbluray' => :optional
   depends_on 'libquvi' => :optional
+  depends_on 'zvbi' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -93,6 +94,7 @@ class Ffmpeg < Formula
     args << "--enable-frei0r" if build.with? 'frei0r'
     args << "--enable-libcaca" if build.with? 'libcaca'
     args << "--enable-libquvi" if build.with? 'libquvi'
+    args << "--enable-libzvbi" if build.with? 'zvbi'
 
     if build.with? 'openjpeg'
       args << '--enable-libopenjpeg'
