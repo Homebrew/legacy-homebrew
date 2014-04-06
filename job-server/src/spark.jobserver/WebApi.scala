@@ -142,16 +142,21 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
   }
 
   def otherRoutes: Route = get {
+    implicit val ar = actorRefFactory
+
     // Main index.html page
     path("") {
-      //      respondWithMediaType(MediaTypes.`text/html`) { ctx =>
-      //         // Marshal to HTML so page displays in browsers
-      //         (supervisor ? ListJobs).mapTo[Seq[JobInfo]].map { jobs =>
-      //           val currentJobs = jobs.filter { _.endTime == None }
-      //           ctx.complete(HtmlUtils.jobsList("Current Jobs", currentJobs))
-      //         }
-      //      }
-      complete("Not implemented")
+      // respondWithMediaType(MediaTypes.`text/html`) { ctx =>
+      //   // Marshal to HTML so page displays in browsers
+      //   (supervisor ? ListJobs).mapTo[Seq[JobInfo]].map { jobs =>
+      //     val currentJobs = jobs.filter { _.endTime == None }
+      //     ctx.complete(HtmlUtils.jobsList("Current Jobs", currentJobs))
+      //   }
+      // }
+      getFromResource("html/index.html")
+      // complete("Not implemented")
+    } ~ pathPrefix("html") {
+      getFromResourceDirectory("html")
     } ~ path("healthz") {
       complete("OK")
     }
