@@ -202,7 +202,7 @@ class Formulary
 
     possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{ref}.rb")
     if possible_cached_formula.file?
-      return FromPathLoader.new(possible_cached_formula.to_s)
+      return StandardLoader.new(ref, possible_cached_formula)
     end
 
     return StandardLoader.new(ref)
