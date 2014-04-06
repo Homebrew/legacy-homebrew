@@ -172,9 +172,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when :lzip
       with_system_path { safe_system "#{lzippath} -dc \"#{tarball_path}\" | tar xf -" }
       chdir
-    when :pkg
-      safe_system '/usr/sbin/pkgutil', '--expand', tarball_path, basename_without_params
-      chdir
+    when :xar
+      safe_system "/usr/bin/xar", "-xf", tarball_path
     when :rar
       quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, tarball_path
     when :p7zip

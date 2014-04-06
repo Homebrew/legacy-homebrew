@@ -206,9 +206,6 @@ class Pathname
     when ".jar", ".war"
       # Don't treat jars or wars as compressed
       return
-    when ".pkg"
-      # OS X installer package
-      return :pkg
     when ".gz"
       # If the filename ends with .gz not preceded by .tar
       # then we want to gunzip but not tar
@@ -230,6 +227,7 @@ class Pathname
     when /^LZIP/n               then :lzip
     when /^Rar!/n               then :rar
     when /^7z\xBC\xAF\x27\x1C/n then :p7zip
+    when /^xar!/n               then :xar
     else
       # This code so that bad-tarballs and zips produce good error messages
       # when they don't unarchive properly.
