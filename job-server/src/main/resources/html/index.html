@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Spark Jobserver UI</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="html/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="html/bootstrap/js/bootstrap.min.js"></script>
+    <script src="html/js/spark-jobserver-ui.js"></script>
+  </head>
+  <body>
+    <div class="page-header">
+      <h1>Spark Job Server UI</h1>
+    </div>
+    <ul class="nav nav-tabs nav-justified">
+      <li class="active"><a href="#jobs" data-toggle="tab">Jobs</a></li>
+      <li><a href="#contexts" data-toggle="tab">Contexts</a></li>
+      <li><a href="#jars" data-toggle="tab">Jars</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="jobs">
+        <div class="panel panel-info">
+          <div class="panel-heading">Running Jobs</div>
+          <div class="panel-body">
+            <table class="table table-striped" id="runningJobsTable">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Classpath</th>
+                  <th>Context</th>
+                  <th>Start Time</th>
+                  <th>Duration</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel panel-success">
+          <div class="panel-heading">Completed Jobs</div>
+          <div class="panel-body">
+            <table class="table table-striped" id="completedJobsTable">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Classpath</th>
+                  <th>Context</th>
+                  <th>Start Time</th>
+                  <th>Duration</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel panel-danger">
+          <div class="panel-heading">Failed Jobs</div>
+          <div class="panel-body">
+            <table class="table table-striped" id="failedJobsTable">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Classpath</th>
+                  <th>Context</th>
+                  <th>Start Time</th>
+                  <th>Duration</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="contexts">
+        <div class="panel">
+          <div class="panel-heading"></div>
+          <div class="panel-body">
+            <table class="table table-striped" id="contextsTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="jars">
+        <div class="panel">
+          <div class="panel-heading"></div>
+          <div class="panel-body">
+            <table class="table table-striped" id="jarsTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Deployment Time</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
