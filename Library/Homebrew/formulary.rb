@@ -39,7 +39,7 @@ class Formulary
 
     def initialize(name, path)
       @name = name
-      @path = path
+      @path = path.resolved_path
       @class_name = Formulary.class_s(name)
     end
 
