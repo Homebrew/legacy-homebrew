@@ -138,36 +138,29 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     tarball_path
   end
 
+  # gunzip and bunzip2 write the output file in the same directory as the input
+  # file regardless of the current working directory, so we need to write it to
+  # the correct location ourselves.
+  def buffered_write(tool)
+    target = File.basename(basename_without_params, tarball_path.extname)
+
+    IO.popen("#{tool} -f '#{tarball_path}' -c") do |pipe|
+      File.open(target, "wb") do |f|
+        buf = ""
+        f.write(buf) while pipe.read(1024, buf)
+      end
+    end
+  end
+
   def stage
     case tarball_path.compression_type
     when :zip
       with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, tarball_path }
       chdir
     when :gzip_only
-      # gunzip writes the compressed data in the location of the original,
-      # regardless of the current working directory; the only way to
-      # write elsewhere is to use the stdout
-      with_system_path do
-        target = File.basename(basename_without_params, ".gz")
-
-        IO.popen("gunzip -f '#{tarball_path}' -c") do |pipe|
-          File.open(target, "wb") do |f|
-            buf = ""
-            f.write(buf) while pipe.read(1024, buf)
-          end
-        end
-      end
+      with_system_path { buffered_write("gunzip") }
     when :bzip2_only
-      with_system_path do
-        target = File.basename(basename_without_params, ".bz2")
-
-        IO.popen("bunzip2 -f '#{tarball_path}' -c") do |pipe|
-          File.open(target, "wb") do |f|
-            buf = ""
-            f.write(buf) while pipe.read(1024, buf)
-          end
-        end
-      end
+      with_system_path { buffered_write("bunzip2") }
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
       # TODO check if it's really a tar archive
