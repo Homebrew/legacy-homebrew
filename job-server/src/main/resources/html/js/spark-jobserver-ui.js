@@ -61,17 +61,20 @@ function getJars() {
     });
 }
 
-// TODO: not working?
-$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-  var target = $(e.target).attr("href") // activated tab
-  if ($(target).is(':empty')) {
-    alert(target);
-  }
-});
-
 $(document).ready(getJobs());
 $(document).ready(getContexts());
 $(document).ready(getJars());
 
-$(document).ajaxError(function (e, xhr, settings, exception) {
-            alert('error in: ' + settings.url + ' \\n' + 'error:\\n' + exception);});
+$(function () {
+  $('#navTabs a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+    var target = $(e.target).attr("href");
+
+    if (target == '#jobs') {
+      getJobs();
+    } else if (target == "#contexts") {
+      getContexts();
+    } else {
+      getJars();
+    }
+  })
+});
