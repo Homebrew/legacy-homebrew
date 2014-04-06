@@ -213,6 +213,8 @@ class Pathname
       # If the filename ends with .gz not preceded by .tar
       # then we want to gunzip but not tar
       return :gzip_only
+    when ".bz2"
+      return :bzip2_only
     end
 
     # Get enough of the file to detect common file types

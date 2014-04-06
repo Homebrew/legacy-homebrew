@@ -157,6 +157,17 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
           end
         end
       end
+    when :bzip2_only
+      with_system_path do
+        target = File.basename(basename_without_params, ".bz2")
+
+        IO.popen("bunzip2 -f '#{tarball_path}' -c") do |pipe|
+          File.open(target, "wb") do |f|
+            buf = ""
+            f.write(buf) while pipe.read(1024, buf)
+          end
+        end
+      end
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
       # TODO check if it's really a tar archive
