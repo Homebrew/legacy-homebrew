@@ -34,7 +34,7 @@ Donations
 ---------
 We accept tips through [Gittip][tip].
 
-[![Gittip](http://img.shields.io/gittip/Homebrew.png)](https://www.gittip.com/Homebrew/)
+[![Gittip](http://img.shields.io/gittip/Homebrew.svg)](https://www.gittip.com/Homebrew/)
 
 [home]:http://brew.sh
 [wiki]:http://wiki.github.com/Homebrew/homebrew
