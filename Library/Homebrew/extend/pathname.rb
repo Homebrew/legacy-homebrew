@@ -83,7 +83,7 @@ class Pathname
     src = Pathname(src).expand_path(self)
     dst = join File.basename(new_basename)
     mkpath
-    FileUtils.ln_s src.relative_path_from(dst.parent), dst
+    FileUtils.ln_sf src.relative_path_from(dst.parent), dst
   end
   protected :install_symlink_p
 
