@@ -19,16 +19,9 @@ module HomebrewArgvExtension
     require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
       canonical_name = Formula.canonical_name(name)
-
-      if canonical_name.include? "/"
-        # canonical_name returns a path if it was a formula installed via a
-        # URL. And we only want the name. FIXME that function is insane.
-        rack = HOMEBREW_CELLAR/Pathname.new(canonical_name).stem
-      else
-        rack = HOMEBREW_CELLAR/canonical_name
-      end
-
+      rack = HOMEBREW_CELLAR/canonical_name
       dirs = rack.directory? ? rack.subdirs : []
+
       raise NoSuchKegError.new(rack.basename.to_s) if not rack.directory? or dirs.empty?
 
       linked_keg_ref = HOMEBREW_REPOSITORY/"Library/LinkedKegs"/name
