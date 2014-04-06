@@ -61,7 +61,7 @@ class Caveats
     if !file_path.readable? || !file_path.read.include?(site_packages)
       s = "If you need Python to find the installed site-packages:\n"
       s += "  mkdir -p #{dir}\n" unless dir_path.exist?
-      s += "  echo '#{site_packages}' >> #{file}"
+      s += "  echo '#{site_packages}' > #{file}"
     end
   end
 
