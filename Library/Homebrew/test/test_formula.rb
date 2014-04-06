@@ -201,7 +201,6 @@ class FormulaTests < Test::Unit::TestCase
         class #{Formulary.class_s(name)} < Formula
           url 'foo-1.0'
           def initialize(*args)
-            @homepage = 'http://example.com/'
             super
           end
         end
