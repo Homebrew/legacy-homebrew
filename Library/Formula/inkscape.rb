@@ -8,8 +8,8 @@ class Inkscape < Formula
   head do
     url 'lp:inkscape/0.48.x', :using => :bzr
 
-    depends_on :autoconf
-    depends_on :automake
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
   end
 
   depends_on 'pkg-config' => :build
@@ -33,7 +33,6 @@ class Inkscape < Formula
 
   def install
     if build.head?
-      ENV['ACLOCAL_FLAGS'] = "-I #{HOMEBREW_PREFIX}/share/aclocal"
       system "./autogen.sh"
       ENV.cxx11
     end

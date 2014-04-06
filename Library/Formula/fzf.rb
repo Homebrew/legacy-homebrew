@@ -2,8 +2,8 @@ require "formula"
 
 class Fzf < Formula
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.8.2.tar.gz"
-  sha1 "b1f497f4bdedcc317425fcc6daeefed5df03eb0f"
+  url "https://github.com/junegunn/fzf/archive/0.8.3.tar.gz"
+  sha1 "9d598e42a3dbbad7df3dfae138a759042e004307"
 
   def install
     prefix.install "install", "fzf", "fzf-completion.bash", "fzf-completion.zsh"
@@ -22,6 +22,6 @@ class Fzf < Formula
 
   test do
     (testpath/"list").write %w[hello world].join($/)
-    `cat #{testpath/"list"} | fzf -f wld`.chomp == "world"
+    `cat #{testpath}/list | fzf -f wld`.chomp == "world"
   end
 end

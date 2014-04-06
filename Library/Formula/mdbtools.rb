@@ -8,13 +8,12 @@ class Mdbtools < Formula
   option 'with-man-pages', 'Build manual pages'
 
   depends_on 'pkg-config' => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on 'txt2man' => :build if build.with? "man-pages"
   depends_on 'glib'
   depends_on 'readline'
-
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
 
   def install
     ENV.deparallelize
@@ -23,12 +22,8 @@ class Mdbtools < Formula
     args << "--disable-man" if build.without? "man-pages"
 
     if MacOS.version == :snow_leopard
-      # aclocal does not respect ACLOCAL_PATH on 10.6
-      ENV['ACLOCAL'] = 'aclocal ' + ENV['ACLOCAL_PATH'].split(':').map {|p| '-I' + p}.join(' ')
       mkdir "build-aux"
       touch "build-aux/config.rpath"
-      # AM_PROG_AR does not exist in 10.6 automake
-      inreplace 'configure.ac', 'AM_PROG_AR', 'm4_ifdef([AM_PROG_AR], [AM_PROG_AR])'
     end
 
     system "autoreconf", "-i", "-f"
