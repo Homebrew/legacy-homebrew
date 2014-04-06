@@ -188,7 +188,7 @@ class Formulary
     end
 
     formula_with_that_name = Formula.path(ref)
-    if formula_with_that_name.file? and formula_with_that_name.readable?
+    if formula_with_that_name.file?
       return StandardLoader.new(ref, formula_with_that_name)
     end
 
