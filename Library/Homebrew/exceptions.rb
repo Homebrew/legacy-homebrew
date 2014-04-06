@@ -203,7 +203,7 @@ class BuildError < Homebrew::InstallationError
       ohai "ENV"
       Homebrew.dump_build_env(env)
       puts
-      onoe "#{formula.name} did not build"
+      onoe "#{formula.name} #{formula.version} did not build"
       unless (logs = Dir["#{HOMEBREW_LOGS}/#{formula}/*"]).empty?
         puts "Logs:"
         puts logs.map{|fn| "     #{fn}"}.join("\n")
