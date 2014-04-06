@@ -17,6 +17,8 @@ class Libbluray < Formula
   depends_on :freetype => :recommended
 
   def install
+    # https://mailman.videolan.org/pipermail/libbluray-devel/2014-April/001401.html
+    ENV.append_to_cflags "-D_DARWIN_C_SOURCE"
     ENV.libxml2
 
     args = %W[--prefix=#{prefix} --disable-dependency-tracking]
