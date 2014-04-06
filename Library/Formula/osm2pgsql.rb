@@ -13,6 +13,10 @@ class Osm2pgsql < Formula
   depends_on "proj"
   depends_on "protobuf-c" => :optional
 
+  fails_with :clang do
+    build 503
+  end
+
   def install
     args = ["--with-proj=#{Formula["proj"].opt_prefix}"]
     if build.with? "protobuf-c"
