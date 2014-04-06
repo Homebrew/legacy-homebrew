@@ -15,4 +15,10 @@ class Xmlsh < Formula
       exec #{libexec}/unix/xmlsh "$@"
     EOS
   end
+
+  test do
+    out = `#{bin}/xmlsh -c 'x=<[<foo bar="baz" />]> && echo <[$x/@bar]>'`
+    assert_equal "baz\n", out
+    assert_equal 0, $?.exitstatus
+  end
 end
