@@ -26,10 +26,6 @@ class Formula
 
   attr_accessor :local_bottle_path
 
-  # Flag for marking whether this formula needs C++ standard library
-  # compatibility check
-  attr_reader :cxxstdlib
-
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=self.class.path(name)
     @name = name
@@ -47,8 +43,6 @@ class Formula
     @pkg_version = PkgVersion.new(version, revision)
 
     @pin = FormulaPin.new(self)
-
-    @cxxstdlib = Set.new
   end
 
   def set_spec(name)
@@ -443,6 +437,12 @@ class Formula
   # The full set of Requirements for this formula's dependency tree.
   def recursive_requirements(&block)
     Requirement.expand(self, &block)
+  end
+
+  # Flag for marking whether this formula needs C++ standard library
+  # compatibility check
+  def cxxstdlib
+    @cxxstdlib ||= Set.new
   end
 
   def to_hash
