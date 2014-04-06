@@ -147,14 +147,19 @@ class Formulary
 
   # Loads tapped formulae.
   class TapLoader < FormulaLoader
+    attr_reader :tapped_name
+
     def initialize tapped_name
-      super tapped_name, Pathname.new(tapped_name)
+      @tapped_name = tapped_name
+      user, repo, name = tapped_name.split("/", 3).map(&:downcase)
+      path = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}-#{repo}/#{name}.rb")
+      super name, path
     end
 
     def get_formula
       super
-    rescue FormulaUnavailableError => e
-      raise TapFormulaUnavailableError.new(e.name)
+    rescue FormulaUnavailableError
+      raise TapFormulaUnavailableError.new(tapped_name)
     end
   end
 
@@ -174,22 +179,8 @@ class Formulary
       return FromUrlLoader.new(ref)
     when Pathname::BOTTLE_EXTNAME_RX
       return BottleLoader.new(ref)
-    end
-
-    if ref =~ HOMEBREW_TAP_FORMULA_REGEX
-      tap_name = "#$1-#$2".downcase
-      tapd = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{tap_name}")
-
-      if tapd.directory?
-        tapd.find_formula do |relative_pathname|
-          path = "#{tapd}/#{relative_pathname}"
-          if relative_pathname.stem.to_s == $3
-            return FromPathLoader.new(path)
-          end
-        end
-      else
-        return TapLoader.new(ref)
-      end
+    when HOMEBREW_TAP_FORMULA_REGEX
+      return TapLoader.new(ref)
     end
 
     if ref.include?("/") || File.extname(ref) == ".rb"
