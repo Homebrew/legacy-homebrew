@@ -121,11 +121,8 @@ class Formulary
   # Loads formulae from disk using a path
   class FromPathLoader < FormulaLoader
     def initialize path
-      # require allows filenames to drop the .rb extension, but everything else
-      # in our codebase will require an exact and fullpath.
-      path = "#{path}.rb" unless File.extname(path) == ".rb"
       path = Pathname.new(path).expand_path
-      super path.stem, path
+      super path.basename(".rb").to_s, path
     end
   end
 
@@ -191,7 +188,7 @@ class Formulary
       return TapLoader.new(ref)
     end
 
-    if ref.include?("/") || File.extname(ref) == ".rb"
+    if File.extname(ref) == ".rb"
       return FromPathLoader.new(ref)
     end
 
