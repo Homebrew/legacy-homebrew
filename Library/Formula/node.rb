@@ -61,16 +61,13 @@ class Node < Formula
     Pathname.glob(npm_root/"man/*") do |man|
       dir = send(man.basename)
       man.children.each do |file|
-        next if (dir/file.basename).exist?
         dir.install_symlink(file)
       end
     end
 
     if build.with? "completion"
-      unless (bash_completion/"npm").exist?
-        bash_completion.install_symlink \
-          npm_root/"lib/utils/completion.sh" => "npm"
-      end
+      bash_completion.install_symlink \
+        npm_root/"lib/utils/completion.sh" => "npm"
     end
   end
 
