@@ -17,6 +17,7 @@ class Libbluray < Formula
   depends_on :freetype => :recommended
 
   def install
+    ENV.append_to_cflags '-D_DARWIN_C_SOURCE'
     ENV.libxml2
 
     args = %W[--prefix=#{prefix} --disable-dependency-tracking]
