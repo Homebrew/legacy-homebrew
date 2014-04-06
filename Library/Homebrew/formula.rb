@@ -404,11 +404,11 @@ class Formula
   end
 
   def tap?
-    !!path.realpath.to_s.match(HOMEBREW_TAP_DIR_REGEX)
+    HOMEBREW_TAP_DIR_REGEX === path
   end
 
   def tap
-    if path.realpath.to_s =~ HOMEBREW_TAP_DIR_REGEX
+    if path.to_s =~ HOMEBREW_TAP_DIR_REGEX
       "#$1/#$2"
     elsif core_formula?
       "Homebrew/homebrew"
@@ -419,7 +419,7 @@ class Formula
 
   # True if this formula is provided by Homebrew itself
   def core_formula?
-    path.realpath == Formula.path(name)
+    path == Formula.path(name)
   end
 
   def self.path name
