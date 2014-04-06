@@ -53,7 +53,6 @@ class Keg < Pathname
     TOP_LEVEL_DIRECTORIES.map{ |d| self/d }.each do |dir|
       next unless dir.exist?
       dir.find do |src|
-        next if src == self
         dst = HOMEBREW_PREFIX + src.relative_path_from(self)
         dst.extend(ObserverPathnameExtension)
 
