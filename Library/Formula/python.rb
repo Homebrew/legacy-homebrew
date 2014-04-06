@@ -162,12 +162,6 @@ class Python < Formula
     rm_rf Dir["#{site_packages}/setuptools*"]
     rm_rf Dir["#{site_packages}/distribute*"]
 
-    setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
-                   "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
-
-    (libexec/'setuptools').cd { system "#{bin}/python", *setup_args }
-    (libexec/'pip').cd { system "#{bin}/python", *setup_args }
-
     # And now we write the distutils.cfg
     cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.delete if cfg.exist?
@@ -178,6 +172,12 @@ class Python < Formula
       force=1
       prefix=#{HOMEBREW_PREFIX}
     EOF
+
+    setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
+                   "--install-lib=#{site_packages}" ]
+
+    (libexec/'setuptools').cd { system "#{bin}/python", *setup_args }
+    (libexec/'pip').cd { system "#{bin}/python", *setup_args }
   end
 
   def distutils_fix_superenv(args)
