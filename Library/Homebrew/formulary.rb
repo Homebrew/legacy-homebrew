@@ -178,6 +178,10 @@ class Formulary
     loader_for(ref).get_formula
   end
 
+  def self.canonical_name(ref)
+    loader_for(ref).name
+  end
+
   def self.loader_for(ref)
     case ref
     when %r[(https?|ftp)://]
