@@ -522,6 +522,10 @@ class FormulaAuditor
       audit_conditional_dep($1, $2, $&)
     end
 
+    if line =~ /Dir\["\*"\]/
+      problem "Specify every file you want installed rather than `install Dir[\"*\"]`"
+    end
+
     if line =~ /(Dir\[("[^\*{},]+")\])/
       problem "#{$1} is unnecessary; just use #{$2}"
     end
