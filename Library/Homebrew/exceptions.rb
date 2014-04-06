@@ -196,7 +196,7 @@ class BuildError < Homebrew::InstallationError
       unless formula.core_formula?
         ohai "Formula"
         puts "Tap: #{formula.tap}"
-        puts "Path: #{formula.path.realpath}"
+        puts "Path: #{formula.path}"
       end
       ohai "Configuration"
       Homebrew.dump_build_config
