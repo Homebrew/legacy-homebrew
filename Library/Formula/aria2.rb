@@ -2,8 +2,8 @@ require 'formula'
 
 class Aria2 < Formula
   homepage 'http://aria2.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.4/aria2-1.18.4.tar.bz2'
-  sha1 '389829028d8e95f08d42a3bef00ab3237a4b246f'
+  url 'https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.5/aria2-1.18.5.tar.bz2'
+  sha1 '91639bf99a2e84873675f470fd36cee47f466770'
 
   bottle do
     cellar :any
