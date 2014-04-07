@@ -15,7 +15,7 @@ class Wxmac < Formula
   # http://trac.wxwidgets.org/ticket/15613
   patch :p2 do
     url "http://trac.wxwidgets.org/changeset/75142/wxWidgets/trunk/src/osx/cocoa/utils.mm?format=diff&new=75142"
-    sha1 "f8f09838a8ac8ca9c16b2ac1bd8f938a7974f5f1"
+    sha1 "de67a8f8da479a5ab553d1c5444fc093975ff818"
   end
 
   def install
