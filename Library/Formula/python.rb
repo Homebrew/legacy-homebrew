@@ -7,10 +7,10 @@ class Python < Formula
   sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
 
   bottle do
-    revision 1
-    sha1 "6edbb41862da07d75845c8ca156956629c069523" => :mavericks
-    sha1 "30ebdd9f448d766ff1783a2dc7c4a2b4a6deecc4" => :mountain_lion
-    sha1 "9d40b1ce6ef16e9bee5f2dc26bf1a396b4ccca03" => :lion
+    revision 2
+    sha1 "b04bd18f40628d0c21ad32f6805f52088967edf2" => :mavericks
+    sha1 "dd88dba83a21817b60fa6f54c06735edb1d33d55" => :mountain_lion
+    sha1 "c178c396a1a6010d000f88ae54acd26ac08ad129" => :lion
   end
 
   option :universal
@@ -31,8 +31,8 @@ class Python < Formula
   skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.2.tar.gz'
-    sha1 '547eff11ea46613e8a9ba5b12a89c1010ecc4e51'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-3.4.1.tar.gz'
+    sha1 '1a7bb4736d915ec140b4225245b585c14b39b8dd'
   end
 
   resource 'pip' do
@@ -148,7 +148,6 @@ class Python < Formula
     site_packages.mkpath
 
     # Symlink the prefix site-packages into the cellar.
-    site_packages_cellar.delete if site_packages_cellar.exist?
     site_packages_cellar.parent.install_symlink site_packages
 
     # Write our sitecustomize.py
