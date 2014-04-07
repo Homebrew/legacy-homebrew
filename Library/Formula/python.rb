@@ -167,6 +167,12 @@ class Python < Formula
     (libexec/'setuptools').cd { system "#{bin}/python", *setup_args }
     (libexec/'pip').cd { system "#{bin}/python", *setup_args }
 
+    # When building from source, these symlinks will not exist, since
+    # post_install happens after linking.
+    %w[pip pip2 pip2.7 easy_install easy_install-2.7].each do |e|
+      (HOMEBREW_PREFIX/"bin").install_symlink bin/e
+    end
+
     # And now we write the distutils.cfg
     cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.delete if cfg.exist?
