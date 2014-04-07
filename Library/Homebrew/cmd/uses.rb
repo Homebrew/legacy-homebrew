@@ -10,11 +10,12 @@ module Homebrew extend self
 
     used_formulae = ARGV.formulae
     formulae = (ARGV.include? "--installed") ? Formula.installed : Formula
+    recursive = ARGV.flag? "--recursive"
 
     uses = []
     formulae.each do |f|
       used_formulae.all? do |ff|
-        if ARGV.flag? '--recursive'
+        if recursive
           if f.recursive_dependencies.any? { |dep| dep.name == ff.name }
             uses << f.to_s
           elsif f.recursive_requirements.any? { |req| req.name == ff.name }
