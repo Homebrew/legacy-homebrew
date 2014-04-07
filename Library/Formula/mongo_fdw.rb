@@ -2,10 +2,10 @@ require "formula"
 
 class MongoFdw < Formula
   homepage "https://github.com/citusdata/mongo_fdw/"
-  url "https://github.com/citusdata/mongo_fdw/tarball/ed04bd0ba7481fa3e36b6d5eab51e6d8235b5d66"
-  sha1 "b050bc3ffe5fc0cc6356e7bd824f454bdefd5364"
-  version "1.0"
-  depends_on 'postgresql'
+  url "https://github.com/citusdata/mongo_fdw/archive/v3.0.tar.gz"
+  sha1 "d37657be846bd2cfd40fa7e62820a9ca6f425d84"
+  version "3.0"
+  depends_on "postgresql"
 
   def install
     system "make"
