@@ -23,7 +23,7 @@ class JobFileDAO(config: Config) extends JobDAO {
   private var jarsOutputStream: DataOutputStream = null
   private val jobsFile = new File(rootDirFile, "jobs.data")
   private var jobsOutputStream: DataOutputStream = null
-  private val jobConfigsFile = new File(rootDirFile, "config.data")
+  private val jobConfigsFile = new File(rootDirFile, "configs.data")
   private var jobConfigsOutputStream: DataOutputStream = null
 
   init()
