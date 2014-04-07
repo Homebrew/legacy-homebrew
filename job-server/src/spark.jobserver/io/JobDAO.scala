@@ -1,5 +1,6 @@
 package spark.jobserver.io
 
+import com.typesafe.config.Config
 import com.typesafe.config.ConfigException
 import org.joda.time.{ Duration, DateTime }
 
@@ -53,6 +54,14 @@ trait JobDAO {
    * @param jobInfo
    */
   def saveJobInfo(jobInfo: JobInfo)
+
+  /**
+   * Persist a job config.
+   *
+   * @param jobConfig
+   * @param jobInfo
+   */
+  def saveJobConfig(jobConfig: Config, jobInfo: JobInfo)
 
   /**
    * Return all job ids to their job info.

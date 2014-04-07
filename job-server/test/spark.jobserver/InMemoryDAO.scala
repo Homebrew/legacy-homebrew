@@ -4,6 +4,7 @@ import java.io.{BufferedOutputStream, FileOutputStream}
 import spark.jobserver.io.{JobDAO, JobInfo}
 import org.joda.time.DateTime
 import scala.collection.mutable
+import com.typesafe.config.Config
 
 /**
  * In-memory DAO for easy unit testing
@@ -41,4 +42,6 @@ class InMemoryDAO extends JobDAO {
   def saveJobInfo(jobInfo: JobInfo) { jobInfos(jobInfo.jobId) = jobInfo }
 
   def getJobInfos(): Map[String, JobInfo] = jobInfos.toMap
+
+  def saveJobConfig(jobConfig: Config, jobInfo: JobInfo) {}
 }

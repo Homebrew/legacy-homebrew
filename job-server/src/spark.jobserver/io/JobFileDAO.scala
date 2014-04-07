@@ -1,6 +1,6 @@
 package spark.jobserver.io
 
-import com.typesafe.config.Config
+import com.typesafe.config._
 import java.io._
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
@@ -23,6 +23,8 @@ class JobFileDAO(config: Config) extends JobDAO {
   private var jarsOutputStream: DataOutputStream = null
   private val jobsFile = new File(rootDirFile, "jobs.data")
   private var jobsOutputStream: DataOutputStream = null
+  private val jobConfigsFile = new File(rootDirFile, "config.data")
+  private var jobConfigsOutputStream: DataOutputStream = null
 
   init()
 
@@ -71,7 +73,7 @@ class JobFileDAO(config: Config) extends JobDAO {
     // Otherwise, server crash will lose the buffer data.
     jarsOutputStream = new DataOutputStream(new FileOutputStream(jarsFile, true))
     jobsOutputStream = new DataOutputStream(new FileOutputStream(jobsFile, true))
-
+    jobConfigsOutputStream = new DataOutputStream(new FileOutputStream(jobConfigsFile, true))
   }
 
   override def saveJar(appName: String, uploadTime: DateTime, jarBytes: Array[Byte]) {
@@ -147,4 +149,13 @@ class JobFileDAO(config: Config) extends JobDAO {
     readError(in))
 
   override def getJobInfos: Map[String, JobInfo] = jobs.toMap
+
+  override def saveJobConfig(jobConfig: Config, jobInfo: JobInfo) {
+    writeJobConfig(jobConfigsOutputStream, jobConfig, jobInfo)
+  }
+
+  private def writeJobConfig(out: DataOutputStream, jobConfig: Config, jobInfo: JobInfo) {
+    out.writeUTF(jobInfo.jobId)
+    out.writeUTF(jobConfig.root().render(ConfigRenderOptions.concise()))
+  }
 }
