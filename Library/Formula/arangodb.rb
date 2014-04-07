@@ -44,30 +44,7 @@ class Arangodb < Formula
     (var/'log/arangodb').mkpath
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod"
-
-  def caveats; <<-EOS.undent
-    ArangoDB (http://www.arangodb.org)
-      A universal open-source database with a flexible data model for documents,
-      graphs, and key-values.
-
-    First Steps with ArangoDB:
-      http:/www.arangodb.org/quickstart
-
-    Upgrading ArangoDB:
-      http://www.arangodb.org/manuals/current/Upgrading.html
-
-    Configuration file:
-      /usr/local/etc/arangodb/arangod.conf
-
-    Start ArangoDB server:
-      unix> /usr/local/sbin/arangod#{suffix} --log.file -
-
-    Start ArangoDB shell client (use empty password):
-      unix> /usr/local/bin/arangosh#{suffix}
-
-    EOS
-  end
+  plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod --log.file -"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
