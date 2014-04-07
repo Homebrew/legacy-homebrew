@@ -7,6 +7,12 @@ class Arangodb < Formula
 
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
+  bottle do
+    sha1 "609ce8f9c202f89059007de15fae68f36705d62d" => :mavericks
+    sha1 "5c04d74a3a87dff33c96b1d3d97a2c2757ae75b9" => :mountain_lion
+    sha1 "2aa32b6fbd28e7ddf731393fec8ad46728f6f828" => :lion
+  end
+
   depends_on 'go' => :build
 
   def suffix
