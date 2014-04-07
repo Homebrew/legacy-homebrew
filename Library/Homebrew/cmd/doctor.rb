@@ -815,7 +815,7 @@ def __check_linked_brew f
     next if src == prefix
     dst = HOMEBREW_PREFIX + src.relative_path_from(prefix)
 
-    next if !dst.symlink? || !dst.exist? || src != src.resolved_path
+    next if !dst.symlink? || !dst.exist? || src != dst.resolved_path
 
     if src.directory?
       Find.prune
