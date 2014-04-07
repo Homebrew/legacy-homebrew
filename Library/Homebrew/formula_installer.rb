@@ -11,6 +11,7 @@ require 'cleaner'
 require 'formula_cellar_checks'
 require 'install_renamed'
 require 'cmd/tap'
+require 'readline'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -24,7 +25,7 @@ class FormulaInstaller
   attr_accessor :options
   mode_attr_accessor :show_summary_heading, :show_header
   mode_attr_accessor :build_from_source, :build_bottle, :force_bottle
-  mode_attr_accessor :ignore_deps, :only_deps, :interactive
+  mode_attr_accessor :ignore_deps, :only_deps, :wizard_deps, :interactive
   mode_attr_accessor :verbose, :debug
 
   def initialize ff
@@ -226,8 +227,9 @@ class FormulaInstaller
   def compute_and_install_dependencies
     perform_readline_hack
 
-    req_map, req_deps = expand_requirements
+    wizard_dependencies if wizard_deps?
 
+    req_map, req_deps = expand_requirements
     check_requirements(req_map)
 
     deps = [].concat(req_deps).concat(f.deps)
@@ -238,6 +240,109 @@ class FormulaInstaller
     else
       install_dependencies(deps)
     end
+  end
+
+  def wizard_dependencies
+    deps = f.build.sort_by(&:flag)
+
+    return if deps.empty?
+
+    deps_toggle = Hash.new(deps.length)
+        
+    def do_wizard_print_dep(deps_toggle, index, dep)
+      if deps_toggle[index.to_i] == 1 
+        print "#{Tty.green}#{["2714".hex].pack("U*")}#{Tty.reset}"
+      elsif
+        print "#{Tty.red}#{["2718".hex].pack("U*")}#{Tty.reset}"
+      end
+      puts " [#{index}] #{dep} (#{dep.description})"
+    end
+
+    def do_wizard_print_deps(deps_toggle, _deps)
+      _deps.sort.each_with_index do |dep, index|
+	do_wizard_print_dep(deps_toggle, index, dep)
+      end
+    end
+    
+    def do_wizard_print_help
+      puts "Type #{Tty.green}{number}#{Tty.reset} or #{Tty.green}{numbers}#{Tty.reset} separated by space to toggle their install state"
+      puts "Type #{Tty.green}{all}#{Tty.reset} to enable all and #{Tty.green}{none}#{Tty.reset} to disable all"
+      puts "Type #{Tty.green}{enabled}#{Tty.reset} to see all enabled flags and #{Tty.green}{disabled}#{Tty.reset} to see all disabled"
+      puts "Type #{Tty.green}{y}#{Tty.reset}, #{Tty.green}{yes}#{Tty.reset}, #{Tty.green}{q}#{Tty.reset} or #{Tty.green}{enter}#{Tty.reset} to continue with install"
+      puts "Type #{Tty.green}{h}#{Tty.reset} or #{Tty.green}{help}#{Tty.reset} to get this help"
+    end
+
+    def do_wizard_set_all(deps_toggle, deps, status)
+      deps.each_with_index do |dep, index|
+	deps_toggle[index] = status
+      end
+      do_wizard_print_deps(deps_toggle, deps)
+    end
+
+    def do_wizard_parse_nums(readline_input)
+      case readline_input
+        when nil, ""
+	  return
+	when /^([0-9]{1,2}\.\.[0-9]{1,2})/
+	  range = readline_input.split("..").map{|a| Integer(a)}
+	  (range[0]..range[1]).to_a
+	else
+	  readline_input.split(" ")
+      end
+    end
+
+    def do_wizard_toggle_deps(deps_toggle, deps, nums = [])
+      nums.each do |num|
+	if num.to_i.to_s == num.to_s && deps[num.to_i] != nil
+	  deps_toggle[num.to_i] = deps_toggle[num.to_i] == 1 ? 0 : 1
+	  do_wizard_print_dep(deps_toggle, num, deps[num.to_i])
+	else
+	  puts "wrong input #{Tty.red}#{num}#{Tty.reset}"
+	end
+      end
+    end
+
+    puts "Select dependencies to install:"
+    do_wizard_print_deps(deps_toggle,deps)
+    do_wizard_print_help
+
+    while buf = Readline.readline("wizard: ", true)
+      case buf
+	when nil, "", "y", "yes", "q"
+	  break
+	when "h", "help"
+	  do_wizard_print_help
+	when "invert"
+	  do_wizard_toggle_deps(deps_toggle,deps,(0..deps.length-1).to_a)
+	when "all"
+	  do_wizard_set_all(deps_toggle,deps,1)
+	when "none"
+	  do_wizard_set_all(deps_toggle,deps,0)
+	when "enabled"
+	  deps_toggle.sort.each do |index,value|
+	    if deps_toggle[index] == 1
+	      do_wizard_print_dep(deps_toggle,index,deps[index])
+	    end
+	  end
+	when "disabled"
+	  deps.sort.each_with_index do |value,index|
+	    if deps_toggle[index] != 1
+              do_wizard_print_dep(deps_toggle,index,deps[index])
+	    end
+          end
+	else
+	  do_wizard_toggle_deps(deps_toggle,deps,do_wizard_parse_nums(buf))
+      end
+    end
+
+    deps_toggle.sort.each do |index, value|
+      if value == 1
+	ARGV << deps[index].to_s
+	f.build.args << Option.new(deps[index].to_s)
+      end
+    end
+
+    puts "Wizard finished, continuing with installation"
   end
 
   def check_requirements(req_map)
@@ -362,6 +467,10 @@ class FormulaInstaller
     df = dep.to_formula
     tab = Tab.for_formula(df)
 
+    if wizard_deps?
+      inherited_options << Option.new("--wizard")
+    end
+
     if df.linked_keg.directory?
       linked_keg = Keg.new(df.linked_keg.resolved_path)
       linked_keg.unlink
@@ -470,6 +579,10 @@ class FormulaInstaller
     if interactive?
       args << "--interactive"
       args << "--git" if interactive == :git
+    end
+
+    if wizard_deps?
+      args << "--wizard"
     end
 
     args << "--verbose" if verbose?

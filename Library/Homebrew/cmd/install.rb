@@ -102,6 +102,7 @@ module Homebrew extend self
     fi.options             = f.build.used_options
     fi.ignore_deps         = ARGV.ignore_deps? || ARGV.interactive?
     fi.only_deps           = ARGV.only_deps?
+    fi.wizard_deps         = ARGV.wizard_deps?
     fi.build_bottle        = ARGV.build_bottle?
     fi.build_from_source   = ARGV.build_from_source?
     fi.force_bottle        = ARGV.force_bottle?
