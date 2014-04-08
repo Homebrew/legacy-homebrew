@@ -8,7 +8,6 @@ class Rdesktop < Formula
   depends_on :x11
 
   patch :DATA
-  patch :p0, :DATA
 
   def install
     args = ["--prefix=#{prefix}",
