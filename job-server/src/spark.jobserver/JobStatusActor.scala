@@ -1,13 +1,13 @@
 package spark.jobserver
 
 import akka.actor.ActorRef
+import com.typesafe.config.Config
 import com.yammer.metrics.core.Meter
 import ooyala.common.akka.InstrumentedActor
 import ooyala.common.akka.metrics.YammerMetrics
-import spark.jobserver.io.{ JobInfo, JobDAO }
 import scala.collection.mutable
 import scala.util.Try
-import com.typesafe.config.Config
+import spark.jobserver.io.{ JobInfo, JobDAO }
 
 object JobStatusActor {
   case class JobInit(jobInfo: JobInfo, jobConfig: Config)

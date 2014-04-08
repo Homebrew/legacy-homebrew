@@ -1,7 +1,6 @@
 package spark.jobserver.io
 
-import com.typesafe.config.Config
-import com.typesafe.config.ConfigException
+import com.typesafe.config._
 import org.joda.time.{ Duration, DateTime }
 
 // Uniquely identifies the jar used to run a job
@@ -56,7 +55,7 @@ trait JobDAO {
   def saveJobInfo(jobInfo: JobInfo)
 
   /**
-   * Persist a job config.
+   * Persist a job configuration.
    *
    * @param jobConfig
    * @param jobInfo
