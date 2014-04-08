@@ -36,7 +36,7 @@ object JobServerBuild extends Build {
       test in Test <<= (test in Test).dependsOn(packageBin in Compile in jobServerTestJar)
                                      .dependsOn(clean in Compile in jobServerTestJar),
 
-      // Adds the path of extra jars to the front of the classpath  
+      // Adds the path of extra jars to the front of the classpath
       fullClasspath in Compile <<= (fullClasspath in Compile).map { classpath =>
         extraJarPaths ++ classpath
       },
@@ -44,15 +44,9 @@ object JobServerBuild extends Build {
       // Give job server a bit more PermGen since it does classloading
       javaOptions in Revolver.reStart += "-XX:MaxPermSize=256m",
       javaOptions in Revolver.reStart += "-Djava.security.krb5.realm= -Djava.security.krb5.kdc=",
-      // The only change from sbt-revolver task definition is the "fullClasspath in Compile" so that
-      // we can add Spark to the classpath without assembly barfing
-      Revolver.reStart <<= InputTask(Actions.startArgsParser) { args =>
-        (streams, state, Revolver.reForkOptions, mainClass in Revolver.reStart,
-         fullClasspath in Compile, Revolver.reStartArgs, args)
-          .map(Actions.restartApp)
-          .updateState(Actions.registerAppProcess)
-          .dependsOn(products in Compile)
-      } )
+      // This lets us add Spark back to the classpath without assembly barfing
+      fullClasspath in Revolver.reStart := (fullClasspath in Compile).value
+      )
   ) dependsOn(akkaApp)
 
   lazy val jobServerTestJar = Project(id = "job-server-tests", base = file("job-server-tests"),
