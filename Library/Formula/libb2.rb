@@ -5,6 +5,13 @@ class Libb2 < Formula
   url "https://blake2.net/libb2-0.96.tar.gz"
   sha1 "e52ce4c788a972e3a49bbbe4380331030c4aca32"
 
+  bottle do
+    cellar :any
+    sha1 "00e0573eec5ff0873c1ffabf934dd25b24ebdce7" => :mavericks
+    sha1 "f3703fa2c3767b40335b3879975e0a56dbc509d1" => :mountain_lion
+    sha1 "0ba183fbae79a9393649ba53472b345d4070eb14" => :lion
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
