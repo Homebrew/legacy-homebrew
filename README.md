@@ -224,4 +224,3 @@ Copyright(c) 2014, Ooyala, Inc.
 - Stream the current job progress via a Listener
 - Add routes to return stage info for a job.  Persist it via DAO so that we can always retrieve stage / performance info
   even for historical jobs.  This would be pretty kickass.
-- Store the config used to launch a job.  Again good for reproducability.
