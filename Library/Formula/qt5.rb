@@ -104,6 +104,11 @@ class Qt5 < Formula
       include.install_symlink path => path.parent.basename(".framework")
     end
 
+    # configure saved the PKG_CONFIG_LIBDIR set up by superenv; remove it
+    # see: https://github.com/Homebrew/homebrew/issues/27184
+    inreplace prefix/"mkspecs/qconfig.pri", /\n\n# pkgconfig/, ""
+    inreplace prefix/"mkspecs/qconfig.pri", /\nPKG_CONFIG_.*=.*$/, ""
+
     Pathname.glob("#{bin}/*.app") { |app| mv app, prefix }
   end
 
