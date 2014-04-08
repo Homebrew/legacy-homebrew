@@ -7,11 +7,6 @@ class Ecl < Formula
 
   depends_on 'gmp'
 
-  fails_with :clang do
-    build 425
-    cause "The built-in gmp library fails to build with clang"
-  end
-
   def install
     ENV.deparallelize
     system "./configure", "--prefix=#{prefix}", "--enable-unicode=yes", "--enable-threads=yes", "--with-system-gmp=yes" 
