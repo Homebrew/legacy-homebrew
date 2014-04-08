@@ -13,6 +13,7 @@ class Mysql < Formula
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on 'openssl' if build.include? 'with-openssl'
 
   option :universal
   option 'with-tests', 'Build with unit tests'
@@ -22,6 +23,7 @@ class Mysql < Formula
   option 'enable-local-infile', 'Build with local infile loading support'
   option 'enable-memcached', 'Enable innodb-memcached support'
   option 'enable-debug', 'Build with debug support'
+  option 'with-openssl', 'Build against OpenSSL'
 
   conflicts_with 'mysql-cluster', 'mariadb', 'percona-server',
     :because => "mysql, mariadb, and percona install the same binaries."
@@ -93,6 +95,9 @@ class Mysql < Formula
 
     # Build with debug support
     args << "-DWITH_DEBUG=1" if build.include? 'enable-debug'
+
+    # Build against OpenSSL if configured
+    args << "-DWITH_SSL=system" if build.include? 'with-openssl'
 
     system "cmake", *args
     system "make"
