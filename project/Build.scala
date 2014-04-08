@@ -80,12 +80,20 @@ object JobServerBuild extends Build {
                              .map(jarpath => Seq(Attributed.blank(file(jarpath))))
                              .getOrElse(Nil)
 
+  // Create a default Scala style task to run with compiles
+  lazy val runScalaStyle = taskKey[Unit]("testScalaStyle")
+
   lazy val commonSettings210 = Defaults.defaultSettings ++ dirSettings ++ Seq(
     organization := "ooyala.cnd",
     version      := "0.3.0",
     crossPaths   := false,
-    scalaVersion := "2.10.2",
+    scalaVersion := "2.10.4",
     scalaBinaryVersion := "2.10",
+
+    runScalaStyle := {
+      org.scalastyle.sbt.PluginKeys.scalastyle.toTask("").value
+    },
+    (compile in Compile) <<= (compile in Compile) dependsOn runScalaStyle,
 
     // In Scala 2.10, certain language features are disabled by default, such as implicit conversions.
     // Need to pass in language options or import scala.language.* to enable them.
