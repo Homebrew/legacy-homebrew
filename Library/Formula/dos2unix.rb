@@ -24,11 +24,10 @@ class Dos2unix < Formula
   end
 
   test do
-    (testpath/'dosfile.txt').write("File with CRLFs\r\nThey will be converted")
-    system "#{bin}/dos2unix", 'dosfile.txt'
-    open('dosfile.txt') do |f|
-      converted = f.read(64)
-      fail if converted.include?("\r")
-    end
+    path = testpath/"test.txt"
+    path.write "foo\r\nbar\r\n"
+
+    system "#{bin}/dos2unix", path
+    assert_equal "foo\nbar\n", path.read
   end
 end
