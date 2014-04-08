@@ -6,7 +6,6 @@ import spark.jobserver.io.{JarInfo, JobInfo, JobDAO}
 import org.joda.time.DateTime
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.{FunSpec, BeforeAndAfter, BeforeAndAfterAll}
-import com.typesafe.config._
 
 object JobStatusActorSpec {
   val system = ActorSystem("test")
@@ -15,6 +14,7 @@ object JobStatusActorSpec {
 class JobStatusActorSpec extends TestKit(JobStatusActorSpec.system) with ImplicitSender
 with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
 
+  import com.typesafe.config._
   import CommonMessages._
   import JobStatusActor._
 
