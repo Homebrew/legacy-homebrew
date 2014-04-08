@@ -11,7 +11,7 @@ class Scheme48 < Formula
   def install
     ENV.O0 if ENV.compiler == :clang
     ENV.deparallelize
-    system "./configure" "--prefix=#{prefix}", "--enable-gc=bibop"
+    system "./configure", "--prefix=#{prefix}", "--enable-gc=bibop"
     system "make"
     system "make install"
   end
