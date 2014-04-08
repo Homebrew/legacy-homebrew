@@ -30,7 +30,7 @@ with ScalatestRouteTest with HttpService {
   // for actors declared as inner classes we need to pass this as first arg
   val dummyActor = system.actorOf(Props(classOf[DummyActor], this))
   val statusActor = system.actorOf(Props(classOf[JobStatusActor], new InMemoryDAO))
-  val api = new WebApi(system, config, dummyPort, dummyActor, dummyActor, dummyActor)
+  val api = new WebApi(system, config, dummyPort, dummyActor, dummyActor, dummyActor, dummyActor)
   val routes = api.myRoutes
 
   val dt = DateTime.parse("2013-05-29T00Z")
@@ -42,6 +42,7 @@ with ScalatestRouteTest with HttpService {
 
     import CommonMessages._
     import ContextSupervisor._
+    import JobConfigActor._
     import JobInfoActor._
     import JobManagerActor._
 
@@ -91,6 +92,11 @@ with ScalatestRouteTest with HttpService {
         val map = config.entrySet().asScala.map { entry => (entry.getKey -> entry.getValue.unwrapped) }.toMap
         if (events.contains(classOf[JobResult])) sender ! JobResult("foo", map)
         statusActor ! Unsubscribe("foo", sender)
+
+      // These routes are part of JobConfigActor
+      case GetJobConfig("badjobid") => sender ! NoSuchJobId
+      case GetJobConfig(_)          => sender ! config
+
     }
   }
 
@@ -219,6 +225,18 @@ with ScalatestRouteTest with HttpService {
           StatusKey -> "OK",
           ResultKey -> "foobar!!!"
         ))
+      }
+    }
+
+    it("should be able to query job config from /jobs/<id>/config route") {
+      Get("/jobs/foobar/config") ~> sealRoute(routes) ~> check {
+        status should be (OK)
+      }
+    }
+
+    it("should respond with 404 Not Found from /jobs/<id>/config route if jobId does not exist") {
+      Get("/jobs/badjobid/config") ~> sealRoute(routes) ~> check {
+        status should be (NotFound)
       }
     }
 

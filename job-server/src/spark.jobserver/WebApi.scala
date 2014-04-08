@@ -3,7 +3,7 @@ package spark.jobserver
 import akka.actor.{ ActorSystem, ActorRef }
 import akka.pattern.ask
 import akka.util.Timeout
-import com.typesafe.config.{ Config, ConfigFactory, ConfigException }
+import com.typesafe.config.{ Config, ConfigFactory, ConfigException, ConfigRenderOptions }
 import java.util.NoSuchElementException
 import ooyala.common.akka.web.{ WebService, CommonRoutes }
 import org.joda.time.DateTime
@@ -19,7 +19,7 @@ import spray.json.DefaultJsonProtocol._
 import spray.routing.{ HttpService, Route, RequestContext }
 
 class WebApi(system: ActorSystem, config: Config, port: Int,
-             jarManager: ActorRef, supervisor: ActorRef, jobInfo: ActorRef)
+             jarManager: ActorRef, supervisor: ActorRef, jobInfo: ActorRef, jobConfigActor: ActorRef)
     extends HttpService with CommonRoutes {
   import CommonMessages._
   import ContextSupervisor._
@@ -165,27 +165,45 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
    * Main routes for starting a job, listing existing jobs, getting job results
    */
   def jobRoutes: Route = pathPrefix("jobs") {
-
+    import JobConfigActor._
     import JobManagerActor._
 
-    // GET /jobs/<jobId>  returns the result in JSON form in a table
-    //  JSON result always starts with: {"status": "ERROR" / "OK" / "RUNNING"}
-    // If the job isn't finished yet, then {"status": "RUNNING" | "ERROR"} is returned.
-    (get & path(Segment)) { jobId =>
-      val future = jobInfo ? GetJobResult(jobId)
+    /**
+     * GET /jobs/<jobId>/config -- returns the configuration used to launch this job or an error if not found.
+     *
+     * @required @param jobId
+     */
+    (get & path(Segment / "config")) { jobId =>
+      val renderOptions = ConfigRenderOptions.defaults().setComments(false).setOriginComments(false)
+
+      val future = jobConfigActor ? GetJobConfig(jobId)
       respondWithMediaType(MediaTypes.`application/json`) { ctx =>
         future.map {
           case NoSuchJobId =>
             notFound(ctx, "No such job ID " + jobId.toString)
-          case JobInfo(_, _, _, _, _, None, _) =>
-            ctx.complete(Map(StatusKey -> "RUNNING"))
-          case JobInfo(_, _, _, _, _, _, Some(ex)) =>
-            ctx.complete(Map(StatusKey -> "ERROR", "ERROR" -> formatException(ex)))
-          case JobResult(_, result) =>
-            ctx.complete(resultToTable(result))
+          case cnf: Config =>
+            ctx.complete(cnf.root().render(renderOptions))
         }
       }
     } ~
+      // GET /jobs/<jobId>  returns the result in JSON form in a table
+      //  JSON result always starts with: {"status": "ERROR" / "OK" / "RUNNING"}
+      // If the job isn't finished yet, then {"status": "RUNNING" | "ERROR"} is returned.
+      (get & path(Segment)) { jobId =>
+        val future = jobInfo ? GetJobResult(jobId)
+        respondWithMediaType(MediaTypes.`application/json`) { ctx =>
+          future.map {
+            case NoSuchJobId =>
+              notFound(ctx, "No such job ID " + jobId.toString)
+            case JobInfo(_, _, _, _, _, None, _) =>
+              ctx.complete(Map(StatusKey -> "RUNNING"))
+            case JobInfo(_, _, _, _, _, _, Some(ex)) =>
+              ctx.complete(Map(StatusKey -> "ERROR", "ERROR" -> formatException(ex)))
+            case JobResult(_, result) =>
+              ctx.complete(resultToTable(result))
+          }
+        }
+      } ~
       /**
        * GET /jobs   -- returns a JSON list of hashes containing job status, ex:
        * [

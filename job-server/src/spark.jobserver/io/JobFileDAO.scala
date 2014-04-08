@@ -13,6 +13,8 @@ class JobFileDAO(config: Config) extends JobDAO {
   private val apps = mutable.HashMap.empty[String, Seq[DateTime]]
   // jobId to its JobInfo
   private val jobs = mutable.HashMap.empty[String, JobInfo]
+  // jobId to its Config
+  private val configs = mutable.HashMap.empty[String, Config]
 
   private val rootDir = getOrElse(config.getString("spark.jobserver.filedao.rootdir"),
     "/tmp/spark-jobserver/filedao/data")
@@ -59,6 +61,23 @@ class JobFileDAO(config: Config) extends JobDAO {
         while (true) {
           val jobInfo = readJobInfo(in)
           jobs(jobInfo.jobId) = jobInfo
+        }
+      } catch {
+        case eof: EOFException => // do nothing
+        case e: Exception      => throw e
+
+      } finally {
+        in.close()
+      }
+    }
+
+    // read back all job configs during startup
+    if (jobConfigsFile.exists()) {
+      val in = new DataInputStream(new BufferedInputStream(new FileInputStream(jobConfigsFile)))
+      try {
+        while (true) {
+          val (jobId, jobConfig) = readJobConfig(in)
+          configs(jobId) = jobConfig
         }
       } catch {
         case eof: EOFException => // do nothing
@@ -152,10 +171,18 @@ class JobFileDAO(config: Config) extends JobDAO {
 
   override def saveJobConfig(jobId: String, jobConfig: Config) {
     writeJobConfig(jobConfigsOutputStream, jobId, jobConfig)
+    configs(jobId) = jobConfig
   }
+
+  override def getJobConfigs: Map[String, Config] = configs.toMap
 
   private def writeJobConfig(out: DataOutputStream, jobId: String, jobConfig: Config) {
     out.writeUTF(jobId)
     out.writeUTF(jobConfig.root().render(ConfigRenderOptions.concise()))
   }
+
+  private def readJobConfig(in: DataInputStream): (String, Config) = (
+    in.readUTF,
+    ConfigFactory.parseString(in.readUTF)
+  )
 }
