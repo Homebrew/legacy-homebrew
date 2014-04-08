@@ -11,9 +11,6 @@ class Mysql < Formula
     sha1 "f674566a77c3c950110df895f45cbe901b1c9ee2" => :lion
   end
 
-  depends_on 'cmake' => :build
-  depends_on 'pidof' unless MacOS.version >= :mountain_lion
-
   option :universal
   option 'with-tests', 'Build with unit tests'
   option 'with-embedded', 'Build the embedded server'
@@ -22,6 +19,10 @@ class Mysql < Formula
   option 'enable-local-infile', 'Build with local infile loading support'
   option 'enable-memcached', 'Enable innodb-memcached support'
   option 'enable-debug', 'Build with debug support'
+
+  depends_on 'cmake' => :build
+  depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on 'openssl'
 
   conflicts_with 'mysql-cluster', 'mariadb', 'percona-server',
     :because => "mysql, mariadb, and percona install the same binaries."
@@ -59,6 +60,7 @@ class Mysql < Formula
       -DINSTALL_INFODIR=share/info
       -DINSTALL_MYSQLSHAREDIR=share/mysql
       -DWITH_SSL=yes
+      -DWITH_SSL=system
       -DDEFAULT_CHARSET=utf8
       -DDEFAULT_COLLATION=utf8_general_ci
       -DSYSCONFDIR=#{etc}
