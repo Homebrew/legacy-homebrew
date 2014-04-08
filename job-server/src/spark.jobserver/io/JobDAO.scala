@@ -55,6 +55,13 @@ trait JobDAO {
   def saveJobInfo(jobInfo: JobInfo)
 
   /**
+   * Return all job ids to their job info.
+   *
+   * @return
+   */
+  def getJobInfos: Map[String, JobInfo]
+
+  /**
    * Persist a job configuration along with provided jobId.
    *
    * @param jobId
@@ -63,11 +70,11 @@ trait JobDAO {
   def saveJobConfig(jobId: String, jobConfig: Config)
 
   /**
-   * Return all job ids to their job info.
+   * Return all job ids to their job configuration.
    *
-   * @return
+   * @return map containing all job ids along with their configurations.
    */
-  def getJobInfos: Map[String, JobInfo]
+  def getJobConfigs: Map[String, Config]
 
   /**
    * Returns the last upload time for a given app name.
