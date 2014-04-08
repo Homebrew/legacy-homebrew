@@ -150,12 +150,12 @@ class JobFileDAO(config: Config) extends JobDAO {
 
   override def getJobInfos: Map[String, JobInfo] = jobs.toMap
 
-  override def saveJobConfig(jobConfig: Config, jobInfo: JobInfo) {
-    writeJobConfig(jobConfigsOutputStream, jobConfig, jobInfo)
+  override def saveJobConfig(jobId: String, jobConfig: Config) {
+    writeJobConfig(jobConfigsOutputStream, jobId, jobConfig)
   }
 
-  private def writeJobConfig(out: DataOutputStream, jobConfig: Config, jobInfo: JobInfo) {
-    out.writeUTF(jobInfo.jobId)
+  private def writeJobConfig(out: DataOutputStream, jobId: String, jobConfig: Config) {
+    out.writeUTF(jobId)
     out.writeUTF(jobConfig.root().render(ConfigRenderOptions.concise()))
   }
 }

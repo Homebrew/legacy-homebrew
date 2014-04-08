@@ -59,7 +59,7 @@ class JobStatusActor(jobDao: JobDAO) extends InstrumentedActor with YammerMetric
       // TODO (kelvinchu): Check if the jobId exists in the persistence store already
       if (!infos.contains(jobInfo.jobId)) {
         infos(jobInfo.jobId) = jobInfo
-        jobDao.saveJobConfig(jobConfig, jobInfo)
+        jobDao.saveJobConfig(jobInfo.jobId, jobConfig)
       } else {
         sender ! JobInitAlready
       }
