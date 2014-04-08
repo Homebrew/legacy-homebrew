@@ -25,6 +25,8 @@ class Elinks < Formula
     depends_on :libtool
   end
 
+  depends_on "openssl"
+
   def install
     ENV.deparallelize
     ENV.delete('LD')
