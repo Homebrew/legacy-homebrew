@@ -55,12 +55,12 @@ trait JobDAO {
   def saveJobInfo(jobInfo: JobInfo)
 
   /**
-   * Persist a job configuration.
+   * Persist a job configuration along with provided jobId.
    *
+   * @param jobId
    * @param jobConfig
-   * @param jobInfo
    */
-  def saveJobConfig(jobConfig: Config, jobInfo: JobInfo)
+  def saveJobConfig(jobId: String, jobConfig: Config)
 
   /**
    * Return all job ids to their job info.

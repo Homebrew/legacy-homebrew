@@ -43,5 +43,5 @@ class InMemoryDAO extends JobDAO {
 
   def getJobInfos(): Map[String, JobInfo] = jobInfos.toMap
 
-  def saveJobConfig(jobConfig: Config, jobInfo: JobInfo) {}
+  def saveJobConfig(jobId: String, jobConfig: Config) {}
 }
