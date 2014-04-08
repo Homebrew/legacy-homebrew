@@ -13,6 +13,9 @@ class Mysql < Formula
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on :autoconf
+  depends_on :automake
+  depends_on :libtool
 
   option :universal
   option 'with-tests', 'Build with unit tests'
@@ -38,6 +41,7 @@ class Mysql < Formula
 
   resource "handlersocket" do
     url "https://github.com/DeNA/HandlerSocket-Plugin-for-MySQL.git"
+
   end
 
   def install
@@ -124,11 +128,15 @@ class Mysql < Formula
     mv "#{bin}/mysqlaccess", libexec
     mv "#{bin}/mysqlaccess.conf", libexec
 
-    if build.include? "with-handlersocket"
+    if build.with? "handlersocket"
       resource("handlersocket").stage do
-        system "./autogen"
-        system "./configure", "--with-mysql-source=#{buildpath}", "--with-mysql-bindir=#{buildpath}/bin",
-          "--with-mysql-plugindir=#{prefix}/plugin"
+
+        ENV['LIBTOOLIZE'] = 'glibtoolize'
+        ENV['ACLOCAL'] = 'aclocal -I #{HOMEBREW_PREFIX}/share/aclocal'
+
+        system "./autogen.sh"
+        system "./configure", "--with-mysql-source=#{buildpath}", "--with-mysql-bindir=#{buildpath}/scripts",
+          "--with-mysql-plugindir=#{prefix}/lib/plugin"
         system "make"
         system "make", "install"
       end
