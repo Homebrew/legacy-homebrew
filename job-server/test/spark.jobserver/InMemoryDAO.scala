@@ -1,10 +1,10 @@
 package spark.jobserver
 
+import com.typesafe.config.Config
 import java.io.{BufferedOutputStream, FileOutputStream}
-import spark.jobserver.io.{JobDAO, JobInfo}
 import org.joda.time.DateTime
 import scala.collection.mutable
-import com.typesafe.config.Config
+import spark.jobserver.io.{JobDAO, JobInfo}
 
 /**
  * In-memory DAO for easy unit testing
