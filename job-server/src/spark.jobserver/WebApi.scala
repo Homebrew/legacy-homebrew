@@ -103,7 +103,7 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
          *    All options are merged into the defaults in spark.context-settings
          *
          * @optional @param num-cpu-cores Int - Number of cores the context will use
-         * @optional @param mem-per-node String - -Xmx style string (512m, 1g, etc) for max memory per worker node
+         * @optional @param mem-per-node String - -Xmx style string (512m, 1g, etc) for max memory per node
          * @return the string "OK", or error if context exists or could not be initialized
          */
         path(Segment) { (contextName) =>
@@ -326,10 +326,11 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
                                       classPath: String): Option[ActorRef] = {
     import ContextSupervisor._
     val msg =
-      if (context.isDefined)
+      if (context.isDefined) {
         GetContext(context.get)
-      else
+      } else {
         GetAdHocContext(classPath, contextConfig)
+      }
     Await.result(supervisor ? msg, contextTimeout.seconds) match {
       case (manager: ActorRef, resultActor: ActorRef) => Some(manager)
       case NoSuchContext                              => None

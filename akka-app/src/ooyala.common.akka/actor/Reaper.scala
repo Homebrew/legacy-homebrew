@@ -21,7 +21,7 @@ abstract class Reaper extends InstrumentedActor {
   def allSoulsReaped(): Unit
 
   // Watch and check for termination
-  override def wrappedReceive = {
+  override def wrappedReceive: Receive = {
     case Reaped =>
       watched.isEmpty
 
