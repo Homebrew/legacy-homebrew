@@ -7,6 +7,12 @@ class ChromeCli < Formula
 
   head "https://github.com/prasmussen/chrome-cli.git"
 
+  bottle do
+    cellar :any
+    sha1 "d17df1c6d002dbf1009ed604d7affaa6a7c5cfbe" => :mavericks
+    sha1 "4a657ecf95a174d57960538239f0920a285a7e39" => :mountain_lion
+  end
+
   depends_on :xcode
   depends_on :macos => :mountain_lion
 
