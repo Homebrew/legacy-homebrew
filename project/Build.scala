@@ -110,7 +110,15 @@ object JobServerBuild extends Build {
         <exclude module="jmxtools"/>
         <exclude module="jmxri"/>
       </dependencies>
-  ) ++ scalariformPrefs ++ ScalastylePlugin.Settings
+  ) ++ scalariformPrefs ++ ScalastylePlugin.Settings ++ scoverageSettings
+
+  lazy val scoverageSettings = {
+    import ScoverageSbtPlugin._
+    instrumentSettings ++ Seq(
+      // Semicolon-separated list of regexs matching classes to exclude
+      ScoverageKeys.excludedPackages in scoverage := ".+Benchmark.*"
+    )
+  }
 
   // change to scalariformSettings for auto format on compile; defaultScalariformSettings to disable
   // See https://github.com/mdr/scalariform for formatting options
