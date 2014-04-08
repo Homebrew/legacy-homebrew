@@ -9,7 +9,7 @@ class Ecl < Formula
 
   def install
     ENV.deparallelize
-    system "./configure", "--prefix=#{prefix}", "--enable-unicode=yes", "--enable-threads=yes", "--with-system-gmp=yes" 
+    system "./configure", "--prefix=#{prefix}", "--enable-unicode=yes", "--enable-threads=yes", "--with-system-gmp=yes"
     system "make"
     system "make install"
   end
