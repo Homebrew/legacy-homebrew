@@ -26,7 +26,7 @@ object JobManagerActor {
 
   // Akka 2.2.x style actor props for actor creation
   def props(dao: JobDAO, name: String, config: Config, isAdHoc: Boolean,
-            resultActorRef: Option[ActorRef] = None) =
+            resultActorRef: Option[ActorRef] = None): Props =
     Props(classOf[JobManagerActor], dao, name, config, isAdHoc, resultActorRef)
 }
 
@@ -40,7 +40,8 @@ object JobManagerActor {
  * {{{
  *  num-cpu-cores = 4         # Total # of CPU cores to allocate across the cluster
  *  memory-per-node = 512m    # -Xmx style memory string for total memory to use for executor on one node
- *  dependent-jar-uris = ["local://opt/foo/my-foo-lib.jar"]   # URIs for dependent jars to load for entire context
+ *  dependent-jar-uris = ["local://opt/foo/my-foo-lib.jar"]
+ *                            # URIs for dependent jars to load for entire context
  *  max-jobs-per-context = 4  # Max # of jobs to run at the same time
  *  spark.mesos.coarse = true  # per-context, rather than per-job, resource allocation
  *  rdd-ttl = 24 h            # time-to-live for RDDs in a SparkContext.  Don't specify = forever
@@ -253,8 +254,7 @@ class JobManagerActor(dao: JobDAO,
   // This method should be called after each job is succeeded or failed
   private def postEachJob() {
     // Delete the JobManagerActor after each adhoc job
-    if (isAdHoc)
-      context.parent ! StopContext(contextName) // its parent is LocalContextSupervisorActor
+    if (isAdHoc) context.parent ! StopContext(contextName) // its parent is LocalContextSupervisorActor
   }
 
   // "Side jars" are jars besides the main job jar that are needed for running the job.
