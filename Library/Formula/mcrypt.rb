@@ -5,6 +5,12 @@ class Mcrypt < Formula
   url "https://downloads.sourceforge.net/project/mcrypt/MCrypt/2.6.8/mcrypt-2.6.8.tar.gz"
   sha1 "8ae0e866714fbbb96a0a6fa9f099089dc93f1d86"
 
+  bottle do
+    sha1 "9afdc1c3fdbf8f9801301fb959c0192b99072fc7" => :mavericks
+    sha1 "71c4c177e18d8ee3be7a1f5556c40ec5d2ba5a4d" => :mountain_lion
+    sha1 "ac147e3524ce21a9d57c0fa84e3c8e2db26321e1" => :lion
+  end
+
   depends_on "mhash"
 
   resource "libmcrypt" do
