@@ -4,6 +4,7 @@ class Ejabberd < Formula
   homepage "http://www.ejabberd.im"
   url "http://www.process-one.net/downloads/ejabberd/13.12/ejabberd-13.12.tgz"
   sha1 "3aedb5012fab49181961ff24bad3af581f4b30ee"
+  revision 1
 
   bottle do
     sha1 "6483132bdf79af21c0d4e7fc84ec25b4698d0ec7" => :mavericks
