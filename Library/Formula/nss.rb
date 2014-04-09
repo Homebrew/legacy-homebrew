@@ -7,9 +7,10 @@ class Nss < Formula
 
   bottle do
     cellar :any
-    sha1 "08ea6d10ebe317330129e03c184a0aaa59b300b0" => :mavericks
-    sha1 "3fd67a639a8fcdb253f8fe982a5ecf6f1ea25c6b" => :mountain_lion
-    sha1 "a4153f7a673f3f4703a9e4142958039e7b24bc51" => :lion
+    revision 1
+    sha1 "56f38b3a781b03469802e9aea91190c0b970ffb9" => :mavericks
+    sha1 "36aeb7dbab99b900f4472514d5856057e21b91ac" => :mountain_lion
+    sha1 "44b9a3607a12d7d8e00d1f7d8f478d85b39bc3fa" => :lion
   end
 
   depends_on "nspr"
