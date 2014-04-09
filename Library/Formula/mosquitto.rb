@@ -4,6 +4,7 @@ class Mosquitto < Formula
   homepage "http://mosquitto.org/"
   url "http://mosquitto.org/files/source/mosquitto-1.3.1.tar.gz"
   sha1 "dcba02c12dffa27a0e76e68f88de21fb5f7de29d"
+  revision 1
 
   bottle do
     sha1 "2145cfe117359dddcdef529738790fe7728834ec" => :mavericks
