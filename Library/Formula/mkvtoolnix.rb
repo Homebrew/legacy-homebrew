@@ -32,12 +32,20 @@ class Mkvtoolnix < Formula
 
   depends_on 'pkg-config' => :build
   depends_on Ruby19
-  depends_on 'boost' => 'c++11'
   depends_on 'libvorbis'
-  depends_on 'libmatroska' => 'c++11'
-  depends_on 'libebml' => 'c++11'
   depends_on 'flac' => :optional
   depends_on 'lzo' => :optional
+  # On Mavericks, the bottle (without c++11) can be used
+  # because mkvtoolnix is linked against libstdc++ by default
+  if MacOS.version >= 10.9
+    depends_on 'boost'
+    depends_on 'libmatroska'
+    depends_on 'libebml'
+  else
+    depends_on 'boost' => 'c++11'
+    depends_on 'libmatroska' => 'c++11'
+    depends_on 'libebml' => 'c++11'
+  end
 
   fails_with :clang do
     build 425
