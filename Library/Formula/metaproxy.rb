@@ -2,8 +2,8 @@ require "formula"
 
 class Metaproxy < Formula
   homepage "http://www.indexdata.com/metaproxy"
-  url "http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.4.6.tar.gz"
-  sha1 "bb36efb7d2f2d16aec1ee9c62dda10e6e3c4b995"
+  url "http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.4.8.tar.gz"
+  sha1 "0f361a6b7e1a5eb666ac477dcaa47d82b5e5acbd"
 
   depends_on "pkg-config" => :build
   depends_on "yazpp"
