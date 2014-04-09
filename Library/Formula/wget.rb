@@ -8,6 +8,7 @@ class Wget < Formula
   url 'http://ftpmirror.gnu.org/wget/wget-1.15.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/wget/wget-1.15.tar.gz'
   sha1 'f3c925f19dfe5ed386daae4f339175c108c50574'
+  revision 1
 
   bottle do
     sha1 "f3dc7cadc6099443213ada31019c603818c46717" => :mavericks
