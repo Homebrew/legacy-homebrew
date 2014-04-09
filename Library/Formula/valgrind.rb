@@ -49,6 +49,12 @@ class Valgrind < Formula
     sha1 "22819a4a02140974e6330f3521b240b68f1619d7"
   end if MacOS.version == :mavericks
 
+  # Fix for Snow Leopard from MacPorts
+  patch :p0 do
+    url "https://trac.macports.org/export/118697/trunk/dports/devel/valgrind/files/patch-compat-snowleo.diff"
+    sha1 "ca22f4d49cfc9ea87469c2138b86c71f4b6b4d4d"
+  end
+
   def install
     args = %W[
       --disable-dependency-tracking
