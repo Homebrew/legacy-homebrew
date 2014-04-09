@@ -53,7 +53,6 @@ class Keg < Pathname
     TOP_LEVEL_DIRECTORIES.map{ |d| self/d }.each do |dir|
       next unless dir.exist?
       dir.find do |src|
-        next if src == self
         dst = HOMEBREW_PREFIX + src.relative_path_from(self)
         dst.extend(ObserverPathnameExtension)
 
@@ -87,7 +86,7 @@ class Keg < Pathname
   end
 
   def linked?
-    linked_keg_record.directory? and self == linked_keg_record.realpath
+    linked_keg_record.directory? && self == linked_keg_record.resolved_path
   end
 
   def completion_installed? shell
@@ -125,7 +124,7 @@ class Keg < Pathname
   end
 
   def link mode=OpenStruct.new
-    raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
+    raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.resolved_path}" if linked_keg_record.directory?
 
     ObserverPathnameExtension.reset_counts!
 
@@ -229,8 +228,8 @@ class Keg < Pathname
   end
 
   def make_relative_symlink dst, src, mode=OpenStruct.new
-    if dst.exist? and dst.realpath == src.realpath
-      puts "Skipping; already exists: #{dst}" if ARGV.verbose?
+    if dst.symlink? && dst.exist? && dst.resolved_path == src
+      puts "Skipping; link already exists: #{dst}" if ARGV.verbose?
       return
     end
 

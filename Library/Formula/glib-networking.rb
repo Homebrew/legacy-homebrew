@@ -2,7 +2,7 @@ require 'formula'
 
 class GlibNetworking < Formula
   homepage 'https://launchpad.net/glib-networking'
-  url 'http://download.gnome.org/sources/glib-networking/2.40/glib-networking-2.40.0.tar.xz'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/glib-networking/2.40/glib-networking-2.40.0.tar.xz'
   sha256 '54e9c2d81171353794d2d2113e1311dfafd889f10993099e447b431c4e800aa4'
 
   bottle do

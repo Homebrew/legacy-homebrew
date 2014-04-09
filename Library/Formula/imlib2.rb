@@ -10,7 +10,7 @@ class Imlib2 < Formula
 
   depends_on 'freetype'
   depends_on 'libpng' => :recommended
-  depends_on :x11 if MacOS::X11.installed? or build.with? "x"
+  depends_on :x11 if build.with? "x"
   depends_on 'pkg-config' => :build
   depends_on 'jpeg' => :recommended
 

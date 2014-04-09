@@ -21,6 +21,12 @@ class OpenBabel < Formula
     sha1 "e304c308b39a465b632b397aa669c26f4b375da1"
   end
 
+  # Patch to support Mavericks's libc++, a backport of upstream commit c3abbddae78e654df9322ad1020ff79dd6332946
+  patch do
+    url "https://gist.github.com/erlendurj/40689d57bea3b0b0c767/raw/f8c87557bcdbd79fb796e06088cdd77123c9260a/ob-mavericks.patch"
+    sha1 "3ea95b20fdbe50f656f3073ef8916974495b569a"
+  end
+
   def install
     args = %W[ -DCMAKE_INSTALL_PREFIX=#{prefix} ]
     args << "-DJAVA_BINDINGS=ON" if build.with? 'java'

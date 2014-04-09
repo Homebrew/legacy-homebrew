@@ -2,7 +2,7 @@ require 'formula'
 
 class Gnumeric < Formula
   homepage 'http://projects.gnome.org/gnumeric/'
-  url 'http://download.gnome.org/sources/gnumeric/1.10/gnumeric-1.10.17.tar.bz2'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gnumeric/1.10/gnumeric-1.10.17.tar.bz2'
   sha256 'bb2a13424811d132fe1be7a6e82d61157a18c630fc91b7409503dbd7ef600ea5'
 
   depends_on 'pkg-config' => :build

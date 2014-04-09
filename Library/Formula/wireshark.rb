@@ -26,7 +26,6 @@ class Wireshark < Formula
     sha1 'af2b03338819b300f621048398b49403675db49c'
   end
 
-  option 'with-x', 'Include X11 support'
   option 'with-qt', 'Use QT for GUI instead of GTK+'
   option 'with-headers', 'Install Wireshark library headers for plug-in developemnt'
 
@@ -43,11 +42,8 @@ class Wireshark < Formula
   depends_on 'pcre' => :optional
   depends_on 'portaudio' => :optional
   depends_on 'qt' => :optional
-
-  if build.with? 'x'
-    depends_on :x11
-    depends_on 'gtk+'
-  end
+  depends_on "gtk+" => :optional
+  depends_on :x11 if build.with? "gtk+"
 
   def install
     system "./autogen.sh" if build.head?
@@ -58,8 +54,8 @@ class Wireshark < Formula
             "--with-ssl"]
 
     args << "--disable-warnings-as-errors" if build.head?
-    args << "--disable-wireshark" if build.without?("x") && build.without?("qt")
-    args << "--disable-gtktest" if build.without? "x"
+    args << "--disable-wireshark" if build.without?("gtk+") && build.without?("qt")
+    args << "--disable-gtktest" if build.without? "gtk+"
     args << "--with-qt" if build.with? "qt"
 
     system "./configure", *args

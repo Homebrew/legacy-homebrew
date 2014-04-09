@@ -55,6 +55,14 @@ class FormulaInstaller
     return true if f.local_bottle_path
     return false unless f.bottle && f.pour_bottle?
 
+    f.requirements.each do |req|
+      next if req.optional? || req.pour_bottle?
+      if install_bottle_options[:warn]
+        ohai "Building source; bottle blocked by #{req} requirement"
+      end
+      return false
+    end
+
     unless f.bottle.compatible_cellar?
       if install_bottle_options[:warn]
         opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}"
@@ -139,7 +147,7 @@ class FormulaInstaller
     if f.linked_keg.directory?
       # some other version is already installed *and* linked
       raise CannotInstallFormulaError, <<-EOS.undent
-        #{f}-#{f.linked_keg.realpath.basename} already installed
+        #{f}-#{f.linked_keg.resolved_path.basename} already installed
         To install this version, first `brew unlink #{f}'
       EOS
     end
@@ -284,8 +292,11 @@ class FormulaInstaller
 
     expanded_deps = ARGV.filter_for_dependencies do
       Dependency.expand(f, deps) do |dependent, dep|
-        options = inherited_options[dep] = inherited_options_for(dep)
-        build = effective_build_options_for(dependent)
+        options = inherited_options[dep.name] = inherited_options_for(dep)
+        build = effective_build_options_for(
+          dependent,
+          inherited_options.fetch(dependent.name, [])
+        )
 
         if (dep.optional? || dep.recommended?) && build.without?(dep)
           Dependency.prune
@@ -295,31 +306,31 @@ class FormulaInstaller
           Dependency.prune
         elsif dep.satisfied?(options)
           Dependency.skip
-        elsif dep.installed?
-          raise UnsatisfiedDependencyError.new(f, dep, options)
         end
       end
     end
 
-    expanded_deps.map { |dep| [dep, inherited_options[dep]] }
+    expanded_deps.map { |dep| [dep, inherited_options[dep.name]] }
   end
 
-  def effective_build_options_for(dependent)
+  def effective_build_options_for(dependent, inherited_options=[])
     if dependent == f
       build = dependent.build.dup
       build.args |= options
       build
     else
-      dependent.build
+      build = dependent.build.dup
+      build.args |= inherited_options
+      build
     end
   end
 
   def inherited_options_for(dep)
-    options = Options.new
-    if f.build.universal? && !dep.build? && dep.to_formula.build.has_option?("universal")
-      options << Option.new("universal")
+    inherited_options = Options.new
+    if (options.include?("universal") || f.build.universal?) && !dep.build? && dep.to_formula.build.has_option?("universal")
+      inherited_options << Option.new("universal")
     end
-    options
+    inherited_options
   end
 
   def install_dependencies(deps)
@@ -349,11 +360,21 @@ class FormulaInstaller
 
   def install_dependency(dep, inherited_options)
     df = dep.to_formula
+    tab = Tab.for_formula(df)
 
-    outdated_keg = Keg.new(df.linked_keg.realpath) if df.linked_keg.directory?
+    if df.linked_keg.directory?
+      linked_keg = Keg.new(df.linked_keg.resolved_path)
+      linked_keg.unlink
+    end
+
+    if df.installed?
+      installed_keg = Keg.new(df.prefix)
+      tmp_keg = Pathname.new("#{installed_keg}.tmp")
+      installed_keg.rename(tmp_keg)
+    end
 
     fi = DependencyInstaller.new(df)
-    fi.options           |= Tab.for_formula(df).used_options
+    fi.options           |= tab.used_options
     fi.options           |= dep.options
     fi.options           |= inherited_options
     fi.build_from_source  = build_from_source?
@@ -361,13 +382,17 @@ class FormulaInstaller
     fi.debug              = debug?
     fi.prelude
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
-    outdated_keg.unlink if outdated_keg
     fi.install
     fi.caveats
     fi.finish
-  ensure
-    # restore previous installation state if build failed
-    outdated_keg.link if outdated_keg and not df.installed? rescue nil
+  rescue Exception
+    ignore_interrupts do
+      tmp_keg.rename(installed_keg) if tmp_keg && !installed_keg.directory?
+      linked_keg.link if linked_keg
+    end
+    raise
+  else
+    ignore_interrupts { tmp_keg.rmtree if tmp_keg && tmp_keg.directory? }
   end
 
   def caveats
@@ -523,7 +548,7 @@ class FormulaInstaller
   end
 
   def link
-    if f.linked_keg.directory? and f.linked_keg.realpath == f.prefix
+    if f.linked_keg.directory? and f.linked_keg.resolved_path == f.prefix
       opoo "This keg was marked linked already, continuing anyway"
       # otherwise Keg.link will bail
       f.linked_keg.unlink

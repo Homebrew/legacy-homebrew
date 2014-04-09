@@ -52,10 +52,6 @@ module OS
           if path != CLT::MAVERICKS_PKG_PATH and path.absolute? \
              and File.executable? "#{path}/usr/bin/make"
             path
-          elsif File.executable? '/Developer/usr/bin/make'
-            # we do this to support cowboys who insist on installing
-            # only a subset of Xcode
-            Pathname.new('/Developer')
           elsif File.executable? "#{V4_BUNDLE_PATH}/Contents/Developer/usr/bin/make"
             # fallback for broken Xcode 4.3 installs
             Pathname.new("#{V4_BUNDLE_PATH}/Contents/Developer")

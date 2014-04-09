@@ -6,6 +6,13 @@ class Python < Formula
   url 'http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz'
   sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
 
+  bottle do
+    revision 2
+    sha1 "b04bd18f40628d0c21ad32f6805f52088967edf2" => :mavericks
+    sha1 "dd88dba83a21817b60fa6f54c06735edb1d33d55" => :mountain_lion
+    sha1 "c178c396a1a6010d000f88ae54acd26ac08ad129" => :lion
+  end
+
   option :universal
   option 'quicktest', "Run `make quicktest` after the build (for devs; may fail)"
   option 'with-brewed-tk', "Use Homebrew's Tk (has optional Cocoa and threads support)"
@@ -24,8 +31,8 @@ class Python < Formula
   skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.2.tar.gz'
-    sha1 '547eff11ea46613e8a9ba5b12a89c1010ecc4e51'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-3.4.1.tar.gz'
+    sha1 '1a7bb4736d915ec140b4225245b585c14b39b8dd'
   end
 
   resource 'pip' do
@@ -118,13 +125,28 @@ class Python < Formula
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
     system "make", "quicktest" if build.include? 'quicktest'
 
-    # Post-install, fix up the site-packages so that user-installed Python
-    # software survives minor updates, such as going from 2.7.0 to 2.7.1:
+    # Fixes setting Python build flags for certain software
+    # See: https://github.com/Homebrew/homebrew/pull/20182
+    # http://bugs.python.org/issue3588
+    inreplace lib_cellar/"config/Makefile" do |s|
+      s.change_make_var! "LINKFORSHARED",
+        "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
+    end
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
+
+    (libexec/'setuptools').install resource('setuptools')
+    (libexec/'pip').install resource('pip')
+  end
+
+  def post_install
+    # Fix up the site-packages so that user-installed Python software survives
+    # minor updates, such as going from 2.7.0 to 2.7.1:
+
     # Create a site-packages in HOMEBREW_PREFIX/lib/python2.7/site-packages
     site_packages.mkpath
+
     # Symlink the prefix site-packages into the cellar.
     site_packages_cellar.parent.install_symlink site_packages
 
@@ -142,8 +164,14 @@ class Python < Formula
     setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
                    "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
 
-    resource('setuptools').stage { system "#{bin}/python", *setup_args }
-    resource('pip').stage { system "#{bin}/python", *setup_args }
+    (libexec/'setuptools').cd { system "#{bin}/python", *setup_args }
+    (libexec/'pip').cd { system "#{bin}/python", *setup_args }
+
+    # When building from source, these symlinks will not exist, since
+    # post_install happens after linking.
+    %w[pip pip2 pip2.7 easy_install easy_install-2.7].each do |e|
+      (HOMEBREW_PREFIX/"bin").install_symlink bin/e
+    end
 
     # And now we write the distutils.cfg
     cfg = lib_cellar/"distutils/distutils.cfg"
@@ -155,14 +183,6 @@ class Python < Formula
       force=1
       prefix=#{HOMEBREW_PREFIX}
     EOF
-
-    # Fixes setting Python build flags for certain software
-    # See: https://github.com/Homebrew/homebrew/pull/20182
-    # http://bugs.python.org/issue3588
-    inreplace lib_cellar/"config/Makefile" do |s|
-      s.change_make_var! "LINKFORSHARED",
-        "-u _PyMac_Error $(PYTHONFRAMEWORKINSTALLDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)"
-    end
   end
 
   def distutils_fix_superenv(args)

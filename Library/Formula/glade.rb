@@ -2,7 +2,7 @@ require 'formula'
 
 class Glade < Formula
   homepage 'http://glade.gnome.org/'
-  url 'http://download.gnome.org/sources/glade3/3.8/glade3-3.8.4.tar.xz'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/glade3/3.8/glade3-3.8.4.tar.xz'
   sha256 'c7ae0775b96a400cf43be738b2f836663a505b1458255df9ce83a340057e3d08'
 
   depends_on 'pkg-config' => :build

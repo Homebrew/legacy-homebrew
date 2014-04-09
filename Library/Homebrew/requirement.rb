@@ -33,6 +33,10 @@ class Requirement
     !!result
   end
 
+  # Can overridden to optionally prevent a formula with this requirement from
+  # pouring a bottle.
+  def pour_bottle?; true end
+
   # Overriding #fatal? is deprecated.
   # Pass a boolean to the fatal DSL method instead.
   def fatal?
