@@ -4,6 +4,7 @@ class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
   url "http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.17.tar.gz"
   sha1 "53773d619d7f7bc1743f92fd65885a0581c37ff8"
+  revision 1
 
   bottle do
     revision 1
