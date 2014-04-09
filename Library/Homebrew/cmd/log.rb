@@ -5,7 +5,7 @@ module Homebrew extend self
       exec "git", "log", *ARGV.options_only
     else
       begin
-        path = ARGV.formulae.first.path.realpath
+        path = ARGV.formulae.first.path
       rescue FormulaUnavailableError
         # Maybe the formula was deleted
         path = Formula.path(ARGV.named.first)

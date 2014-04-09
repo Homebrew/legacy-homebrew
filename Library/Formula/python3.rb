@@ -5,6 +5,12 @@ class Python3 < Formula
   url 'https://python.org/ftp/python/3.4.0/Python-3.4.0.tgz'
   sha1 'bb5125d1c437caa5a62e0a3d0fee298e91196d6f'
 
+  bottle do
+    sha1 "bb20c186917b11251be7c56a90b755add47eca38" => :mavericks
+    sha1 "13d450a6fc69566425327d6831827fae435767e0" => :mountain_lion
+    sha1 "cbf841f5d6dff6944535bae5c13da4c4abf2cd26" => :lion
+  end
+
   VER='3.4'  # The <major>.<minor> is used so often.
 
   head 'http://hg.python.org/cpython', :using => :hg, :branch => VER
@@ -109,13 +115,26 @@ class Python3 < Formula
       mv app, app.gsub(".app", " 3.app")
     end
 
-    # Post-install, fix up the site-packages so that user-installed Python
-    # software survives minor updates, such as going from 3.3.2 to 3.3.3:
+    # A fix, because python and python3 both want to install Python.framework
+    # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
+    # https://github.com/Homebrew/homebrew/issues/15943
+    ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
+    rm prefix/"Frameworks/Python.framework/Versions/Current"
+
+    # Remove 2to3 because python2 also installs it
+    rm bin/"2to3"
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
+  end
+
+  def post_install
+    # Fix up the site-packages so that user-installed Python software survives
+    # minor updates, such as going from 3.3.2 to 3.3.3:
+
     # Create a site-packages in HOMEBREW_PREFIX/lib/python#{VER}/site-packages
     site_packages.mkpath
+
     # Symlink the prefix site-packages into the cellar.
     site_packages_cellar.parent.install_symlink site_packages
 
@@ -142,15 +161,6 @@ class Python3 < Formula
       [install]
       prefix=#{HOMEBREW_PREFIX}
     EOF
-
-    # A fix, because python and python3 both want to install Python.framework
-    # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
-    # https://github.com/Homebrew/homebrew/issues/15943
-    ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
-    rm prefix/"Frameworks/Python.framework/Versions/Current"
-
-    # Remove 2to3 because python2 also installs it
-    rm bin/"2to3"
   end
 
   def distutils_fix_superenv(args)

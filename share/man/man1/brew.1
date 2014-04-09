@@ -91,8 +91,8 @@ If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the ca
 The options \fB\-\-set\-name\fR and \fB\-\-set\-version\fR each take an argument and allow you to explicitly set the name and version of the package you are creating\.
 .
 .TP
-\fBdeps [\-\-1] [\-n] [\-\-tree] [\-\-all] [\-\-installed]\fR \fIformula\fR
-Show \fIformula\fR\'s dependencies\.
+\fBdeps [\-\-1] [\-n] [\-\-tree] [\-\-all] [\-\-installed]\fR \fIformulae\fR
+Show dependencies for \fIformulae\fR\. When given multiple formula arguments, show the intersection of dependencies for \fIformulae\fR, except when passed \fB\-\-tree\fR, \fB\-\-all\fR, or \fB\-\-installed\fR\.
 .
 .IP
 If \fB\-\-1\fR is passed, only show dependencies one level down, instead of recursing\.
@@ -381,8 +381,8 @@ Options for the \fBinstall\fR command are also valid here\.
 If \fIformulae\fR are given, upgrade only the specified brews (but do so even if they are pinned; see \fBpin\fR, \fBunpin\fR)\.
 .
 .TP
-\fBuses [\-\-installed] [\-\-recursive] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
-Show the formulae that specify \fIformula\fR as a dependency\.
+\fBuses [\-\-installed] [\-\-recursive] [\-\-devel|\-\-HEAD]\fR \fIformulae\fR
+Show the formulae that specify \fIformulae\fR as a dependency\. When given multiple formula arguments, show the intersection of formulae that use \fIformulae\fR\.
 .
 .IP
 Use \fB\-\-recursive\fR to resolve more than one level of dependencies\.

@@ -2,14 +2,14 @@ require 'formula'
 
 class X265 < Formula
   homepage 'http://x265.org'
-  url 'https://bitbucket.org/multicoreware/x265/get/0.8.tar.bz2'
-  sha1 '79c60b3fe528e7b91b799b85e971885c1b040b6e'
+  url 'https://bitbucket.org/multicoreware/x265/get/0.9.tar.bz2'
+  sha1 'e387c4249571a9202b5a6c8f66aea37ee5106c48'
 
   bottle do
     cellar :any
-    sha1 "1d3a8f05eb2994290fd08b9a42a84c5db3561e42" => :mavericks
-    sha1 "810c333f3d71f73e69b6ac6e391464eb7259c601" => :mountain_lion
-    sha1 "518b8997f9f7707a3079f76d24b3e0075eaa8ea5" => :lion
+    sha1 "52dc440a26f98ab3e1376639bf0f9ab9839ca571" => :mavericks
+    sha1 "3279b91a78708542cc1f584feab4361675cb4473" => :mountain_lion
+    sha1 "54caf21ff2db0fb9eeed41f7487063b960c7d74d" => :lion
   end
 
   head 'https://bitbucket.org/multicoreware/x265', :using => :hg
@@ -38,7 +38,7 @@ class X265 < Formula
         (1..3200).each do f.write("\xCO\xFF\xEE") end
     end
     system "#{bin}/x265 --input-res 80x80 --fps 1 #{yuv_path} #{x265_path}"
-    header = 'AAAAAUABDAH//wFgAAADAIAAAAMAAAMAHpXA'
-    assert_equal header.unpack("m"), [x265_path.read(27)]
+    header = 'AAAAAUABDAH//w=='
+    assert_equal header.unpack("m"), [x265_path.read(10)]
     end
 end

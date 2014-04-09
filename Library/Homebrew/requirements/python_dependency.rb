@@ -13,6 +13,10 @@ class PythonDependency < Requirement
     version == Version.new("2.7")
   end
 
+  def pour_bottle?
+    tags.include?(:build) || system_python?
+  end
+
   def modify_build_environment
     if system_python?
       if python_binary == "python"
