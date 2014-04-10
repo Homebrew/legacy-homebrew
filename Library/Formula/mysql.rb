@@ -41,7 +41,6 @@ class Mysql < Formula
 
   resource "handlersocket" do
     url "https://github.com/DeNA/HandlerSocket-Plugin-for-MySQL.git"
-
   end
 
   def install
