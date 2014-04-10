@@ -144,9 +144,10 @@ Jobs submitted to the job server must implement a `SparkJob` trait.  It has a ma
 passed a SparkContext and a typesafe Config object.  Results returned by the method are made available through
 the REST API.
 
-    GET /jobs             - Lists the last N jobs
-    POST /jobs            - Starts a new job, use ?sync=true to wait for results
-    GET /jobs/<jobId>     - gets the result or status of a specific job
+    GET /jobs                - Lists the last N jobs
+    POST /jobs               - Starts a new job, use ?sync=true to wait for results
+    GET /jobs/<jobId>        - Gets the result or status of a specific job
+    GET /jobs/<jobId>/config - Gets the job configuration
 
 ### Context configuration
 

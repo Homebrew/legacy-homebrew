@@ -19,7 +19,7 @@ import spray.json.DefaultJsonProtocol._
 import spray.routing.{ HttpService, Route, RequestContext }
 
 class WebApi(system: ActorSystem, config: Config, port: Int,
-             jarManager: ActorRef, supervisor: ActorRef, jobInfo: ActorRef, jobConfigActor: ActorRef)
+             jarManager: ActorRef, supervisor: ActorRef, jobInfo: ActorRef)
     extends HttpService with CommonRoutes {
   import CommonMessages._
   import ContextSupervisor._
@@ -165,7 +165,7 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
    * Main routes for starting a job, listing existing jobs, getting job results
    */
   def jobRoutes: Route = pathPrefix("jobs") {
-    import JobConfigActor._
+    import JobInfoActor._
     import JobManagerActor._
 
     /**
@@ -176,7 +176,7 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
     (get & path(Segment / "config")) { jobId =>
       val renderOptions = ConfigRenderOptions.defaults().setComments(false).setOriginComments(false)
 
-      val future = jobConfigActor ? GetJobConfig(jobId)
+      val future = jobInfo ? GetJobConfig(jobId)
       respondWithMediaType(MediaTypes.`application/json`) { ctx =>
         future.map {
           case NoSuchJobId =>
@@ -195,9 +195,9 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
           future.map {
             case NoSuchJobId =>
               notFound(ctx, "No such job ID " + jobId.toString)
-            case JobInfo(_, _, _, _, _, None, _) =>
+            case JobInfo(_, _, _, _, _, None, _, _) =>
               ctx.complete(Map(StatusKey -> "RUNNING"))
-            case JobInfo(_, _, _, _, _, _, Some(ex)) =>
+            case JobInfo(_, _, _, _, _, _, _, Some(ex)) =>
               ctx.complete(Map(StatusKey -> "ERROR", "ERROR" -> formatException(ex)))
             case JobResult(_, result) =>
               ctx.complete(resultToTable(result))
@@ -214,7 +214,7 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
       get {
         parameters('limit.as[Int] ?) { (limitOpt) =>
           val limit = limitOpt.getOrElse(DefaultJobLimit)
-          val future = (jobInfo ? JobInfoActor.GetJobStatuses(Some(limit))).mapTo[Seq[JobInfo]]
+          val future = (jobInfo ? GetJobStatuses(Some(limit))).mapTo[Seq[JobInfo]]
           respondWithMediaType(MediaTypes.`application/json`) { ctx =>
             future.map { infos =>
               val jobReport = infos.map { info =>
@@ -223,10 +223,10 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
                   "classPath" -> info.classPath,
                   "context"   -> (if (info.contextName.isEmpty) "<<ad-hoc>>" else info.contextName),
                   "duration" -> getJobDurationString(info)) ++ (info match {
-                    case JobInfo(_, _, _, _, _, None, _)       => Map(StatusKey -> "RUNNING")
-                    case JobInfo(_, _, _, _, _, _, Some(ex))   => Map(StatusKey -> "ERROR",
+                    case JobInfo(_, _, _, _, _, None, _, _)       => Map(StatusKey -> "RUNNING")
+                    case JobInfo(_, _, _, _, _, _, _, Some(ex))   => Map(StatusKey -> "ERROR",
                                                                       ResultKey -> formatException(ex))
-                    case JobInfo(_, _, _, _, _, Some(e), None) => Map(StatusKey -> "FINISHED")
+                    case JobInfo(_, _, _, _, _, Some(e), _, None) => Map(StatusKey -> "FINISHED")
                   })
               }
               ctx.complete(jobReport)

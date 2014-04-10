@@ -23,8 +23,8 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
   private val appName = "appName"
   private val jarInfo = JarInfo(appName, DateTime.now)
   private val classPath = "classPath"
-  private val jobInfo = JobInfo(jobId, contextName, jarInfo, classPath, DateTime.now, None, None)
   private val jobConfig = ConfigFactory.empty()
+  private val jobInfo = JobInfo(jobId, contextName, jarInfo, classPath, DateTime.now, None, jobConfig, None)
 
   override def afterAll() {
     ooyala.common.akka.AkkaTestUtils.shutdownAndWait(JobStatusActorSpec.system)
@@ -56,13 +56,13 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
     }
 
     it("should not initialize a job more than two times") {
-      actor ! JobInit(jobInfo, jobConfig)
-      actor ! JobInit(jobInfo, jobConfig)
+      actor ! JobInit(jobInfo)
+      actor ! JobInit(jobInfo)
       expectMsg(JobInitAlready)
     }
 
     it("should be informed JobStarted until it is unsubscribed") {
-      actor ! JobInit(jobInfo, jobConfig)
+      actor ! JobInit(jobInfo)
       actor ! Subscribe(jobId, self, Set(classOf[JobStarted]))
       val msg = JobStarted(jobId, contextName, DateTime.now)
       actor ! msg
@@ -81,14 +81,14 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
 
     it("should be ok to subscribe beofore job init") {
       actor ! Subscribe(jobId, self, Set(classOf[JobStarted]))
-      actor ! JobInit(jobInfo, jobConfig)
+      actor ! JobInit(jobInfo)
       val msg = JobStarted(jobId, contextName, DateTime.now)
       actor ! msg
       expectMsg(msg)
     }
 
     it("should be informed JobValidationFailed once") {
-      actor ! JobInit(jobInfo, jobConfig)
+      actor ! JobInit(jobInfo)
       actor ! Subscribe(jobId, self, Set(classOf[JobValidationFailed]))
       val msg = JobValidationFailed(jobId, DateTime.now, new Throwable)
       actor ! msg
@@ -99,7 +99,7 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
     }
 
     it("should be informed JobFinished until it is unsubscribed") {
-      actor ! JobInit(jobInfo, jobConfig)
+      actor ! JobInit(jobInfo)
       actor ! JobStarted(jobId, contextName, DateTime.now)
       actor ! Subscribe(jobId, self, Set(classOf[JobFinished]))
       val msg = JobFinished(jobId, DateTime.now)
@@ -111,7 +111,7 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
     }
 
     it("should be informed JobErroredOut until it is unsubscribed") {
-      actor ! JobInit(jobInfo, jobConfig)
+      actor ! JobInit(jobInfo)
       actor ! JobStarted(jobId, contextName, DateTime.now)
       actor ! Subscribe(jobId, self, Set(classOf[JobErroredOut]))
       val msg = JobErroredOut(jobId, DateTime.now, new Throwable)
@@ -123,14 +123,14 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
     }
 
     it("should update status correctly") {
-      actor ! JobInit(jobInfo, jobConfig)
+      actor ! JobInit(jobInfo)
       actor ! GetRunningJobStatus
       expectMsg(Seq(jobInfo))
 
       val startTime = DateTime.now
       actor ! JobStarted(jobId, contextName, startTime)
       actor ! GetRunningJobStatus
-      expectMsg(Seq(JobInfo(jobId, contextName, jarInfo, classPath, startTime, None, None)))
+      expectMsg(Seq(JobInfo(jobId, contextName, jarInfo, classPath, startTime, None, jobConfig, None)))
 
       val finishTIme = DateTime.now
       actor ! JobFinished(jobId, finishTIme)
@@ -140,8 +140,8 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
 
     it("should update JobValidationFailed status correctly") {
       val initTime = DateTime.now
-      val jobInfo = JobInfo(jobId, contextName, jarInfo, classPath, initTime, None, None)
-      actor ! JobInit(jobInfo, jobConfig)
+      val jobInfo = JobInfo(jobId, contextName, jarInfo, classPath, initTime, None, jobConfig, None)
+      actor ! JobInit(jobInfo)
 
       val failedTime = DateTime.now
       val err = new Throwable
@@ -151,7 +151,7 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
     }
 
     it("should update JobErroredOut status correctly") {
-      actor ! JobInit(jobInfo, jobConfig)
+      actor ! JobInit(jobInfo)
 
       val startTime = DateTime.now
       actor ! JobStarted(jobId, contextName, startTime)

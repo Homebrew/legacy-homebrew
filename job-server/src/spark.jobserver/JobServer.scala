@@ -48,8 +48,7 @@ object JobServer extends App {
   val jarManager = system.actorOf(Props(classOf[JarManager], jobDAO), "jar-manager")
   val supervisor = system.actorOf(Props(classOf[LocalContextSupervisorActor], jobDAO), "context-supervisor")
   val jobInfo = system.actorOf(Props(classOf[JobInfoActor], jobDAO, supervisor), "job-info")
-  val jobConfigActor = system.actorOf(Props(classOf[JobConfigActor], jobDAO), "job-config-actor")
   // Create initial contexts
   supervisor ! ContextSupervisor.AddContextsFromConfig
-  new WebApi(system, config, port, jarManager, supervisor, jobInfo, jobConfigActor).start()
+  new WebApi(system, config, port, jarManager, supervisor, jobInfo).start()
 }
