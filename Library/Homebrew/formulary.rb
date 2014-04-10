@@ -132,7 +132,9 @@ class Formulary
 
     def initialize url
       @url = url
-      super File.basename(url, ".rb"), HOMEBREW_CACHE_FORMULA/File.basename(url)
+      uri = URI(url)
+      formula = File.basename(uri.path, ".rb")
+      super formula, HOMEBREW_CACHE_FORMULA/File.basename(uri.path)
     end
 
     # Downloads the formula's .rb file
