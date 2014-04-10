@@ -5,12 +5,12 @@ class Python < Formula
   head 'http://hg.python.org/cpython', :using => :hg, :branch => '2.7'
   url 'http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz'
   sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
+  revision 1
 
   bottle do
-    revision 2
-    sha1 "b04bd18f40628d0c21ad32f6805f52088967edf2" => :mavericks
-    sha1 "dd88dba83a21817b60fa6f54c06735edb1d33d55" => :mountain_lion
-    sha1 "c178c396a1a6010d000f88ae54acd26ac08ad129" => :lion
+    sha1 "bcf43a9f8f5f587a86bdc680dd735a853fa3a8a5" => :mavericks
+    sha1 "781310a1d8d0d6283c2c6c1a88674aad3ada6064" => :mountain_lion
+    sha1 "3a79b8d747f66fb000197cd9b9e0a4596f814d7e" => :lion
   end
 
   option :universal

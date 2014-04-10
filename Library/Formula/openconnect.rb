@@ -4,11 +4,12 @@ class Openconnect < Formula
   homepage 'http://www.infradead.org/openconnect.html'
   url "ftp://ftp.infradead.org/pub/openconnect/openconnect-5.99.tar.gz"
   sha1 "3ac20e50f2700ff58d1635f210fc263d29cf7768"
+  revision 1
 
   bottle do
-    sha1 "444194b062852c484490c9a3b4b0e08247731525" => :mavericks
-    sha1 "580e55016a4ff86300dc8fe2a24e353f9a7306cf" => :mountain_lion
-    sha1 "ee6d840bb43176e32aab3f31d93d43451f42bfad" => :lion
+    sha1 "71ff1c7e9f70a0a797d8774cc76261fb231c9e4b" => :mavericks
+    sha1 "a9a1b80896f27a630484ac82174e7c5a8fecf173" => :mountain_lion
+    sha1 "59e10238371deab8efa073bcfefa5dd0381e11f2" => :lion
   end
 
   head do
