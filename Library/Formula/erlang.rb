@@ -19,7 +19,6 @@ class Erlang < Formula
   devel do
     url 'https://github.com/erlang/otp/archive/OTP-17.0.tar.gz'
     sha1 'efa0dd17267ff41d47df94978b7573535c0da775'
-    version '17.0'
   end
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
