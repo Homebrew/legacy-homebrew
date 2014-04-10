@@ -86,7 +86,7 @@ object JobServerBuild extends Build {
 
   lazy val commonSettings210 = Defaults.defaultSettings ++ dirSettings ++ Seq(
     organization := "ooyala.cnd",
-    version      := "0.3.0",
+    version      := "0.3.1",
     description  := "Spark as a Service: a RESTful job server for Apache Spark",
     crossPaths   := false,
     scalaVersion := "2.10.4",
