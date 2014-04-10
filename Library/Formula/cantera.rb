@@ -6,6 +6,12 @@ class Cantera < Formula
   sha1 'c62666590c65c9a5a17c0867f0f6b6789984131f'
   head 'http://cantera.googlecode.com/svn/cantera18/trunk/'
 
+  bottle do
+    sha1 "d7e046823c3cae0d69cf6cff4db9d1ddd44d174c" => :mavericks
+    sha1 "b7d7ba71f9cf34b6302fdb50c2e198845206d078" => :mountain_lion
+    sha1 "4c73614bb39725ef6bdc85cbc97e148a3e49241d" => :lion
+  end
+
   depends_on :python
   depends_on :fortran => :build
   depends_on 'graphviz'
