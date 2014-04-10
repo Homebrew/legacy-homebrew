@@ -136,7 +136,7 @@ class Mysql < Formula
 
         system "./autogen.sh"
         system "./configure", "--with-mysql-source=#{buildpath}", "--with-mysql-bindir=#{buildpath}/scripts",
-          "--with-mysql-plugindir=#{prefix}/lib/plugin"
+          "--with-mysql-plugindir=#{lib}/plugin"
         system "make"
         system "make", "install"
 
