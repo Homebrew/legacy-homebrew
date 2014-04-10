@@ -7,6 +7,7 @@ class Yara < Formula
 
   depends_on 'pcre'
   depends_on 'libtool' => :build
+  depends_on 'autoconf' => :build
   depends_on 'automake' => :build
 
   def install
