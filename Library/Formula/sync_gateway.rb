@@ -2,7 +2,7 @@ require "formula"
 
 class SyncGateway < Formula
   homepage "http://docs.couchbase.com/sync-gateway"
-  url "https://github.com/couchbase/sync_gateway.git", :tag => "1.0-beta2"
+  url "https://github.com/couchbase/sync_gateway.git", :tag => "1.0-beta3"
   head "https://github.com/couchbase/sync_gateway.git", :branch => "master"
 
   depends_on "go" => :build
