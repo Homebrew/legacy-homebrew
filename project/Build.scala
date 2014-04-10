@@ -7,6 +7,7 @@ import spray.revolver.Actions
 import com.typesafe.sbt.SbtScalariform._
 import org.scalastyle.sbt.ScalastylePlugin
 import scalariform.formatter.preferences._
+import bintray.Plugin.bintrayPublishSettings
 
 // There are advantages to using real Scala build files with SBT:
 //  - Multi-JVM testing won't work without it, for now
@@ -86,6 +87,7 @@ object JobServerBuild extends Build {
   lazy val commonSettings210 = Defaults.defaultSettings ++ dirSettings ++ Seq(
     organization := "ooyala.cnd",
     version      := "0.3.0",
+    description  := "Spark as a Service: a RESTful job server for Apache Spark",
     crossPaths   := false,
     scalaVersion := "2.10.4",
     scalaBinaryVersion := "2.10",
@@ -110,7 +112,7 @@ object JobServerBuild extends Build {
         <exclude module="jmxtools"/>
         <exclude module="jmxri"/>
       </dependencies>
-  ) ++ scalariformPrefs ++ ScalastylePlugin.Settings ++ scoverageSettings
+  ) ++ scalariformPrefs ++ ScalastylePlugin.Settings ++ scoverageSettings ++ publishSettings
 
   lazy val scoverageSettings = {
     import ScoverageSbtPlugin._
@@ -119,6 +121,11 @@ object JobServerBuild extends Build {
       ScoverageKeys.excludedPackages in scoverage := ".+Benchmark.*"
     )
   }
+
+  lazy val publishSettings = bintrayPublishSettings ++ Seq(
+    licenses += ("Apache-2.0", url("http://choosealicense.com/licenses/apache/")),
+    bintray.Keys.bintrayOrganization in bintray.Keys.bintray := Some("ooyala")
+  )
 
   // change to scalariformSettings for auto format on compile; defaultScalariformSettings to disable
   // See https://github.com/mdr/scalariform for formatting options
