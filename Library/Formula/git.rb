@@ -2,8 +2,8 @@ require 'formula'
 
 class Git < Formula
   homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-1.9.1.tar.gz"
-  sha1 "804453dba489cae0d0f0402888b77e1aaa40bae8"
+  url "https://www.kernel.org/pub/software/scm/git/git-1.9.2.tar.gz"
+  sha1 "5181808d99ea959951ee55a083de3bce8603436b"
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
@@ -25,13 +25,13 @@ class Git < Formula
   depends_on 'go' => :build if build.with? 'persistent-https'
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-1.9.1.tar.gz"
-    sha1 "d8cef92bc11696009b64fb6d4936eaa8d7759e7a"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-1.9.2.tar.gz"
+    sha1 "6f0871d02dd9181f59d6c59c3a4d26e2b42fbc0b"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-1.9.1.tar.gz"
-    sha1 "68aa0c7749aa918e5e98eecd84e0538150613acd"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-1.9.2.tar.gz"
+    sha1 "2563dade9a5282f6211740a6327ed13f8ff2df83"
   end
 
   def install
