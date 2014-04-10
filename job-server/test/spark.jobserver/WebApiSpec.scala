@@ -30,11 +30,11 @@ with ScalatestRouteTest with HttpService {
   // for actors declared as inner classes we need to pass this as first arg
   val dummyActor = system.actorOf(Props(classOf[DummyActor], this))
   val statusActor = system.actorOf(Props(classOf[JobStatusActor], new InMemoryDAO))
-  val api = new WebApi(system, config, dummyPort, dummyActor, dummyActor, dummyActor, dummyActor)
+  val api = new WebApi(system, config, dummyPort, dummyActor, dummyActor, dummyActor)
   val routes = api.myRoutes
 
   val dt = DateTime.parse("2013-05-29T00Z")
-  val baseJobInfo = JobInfo("foo-1", "context", JarInfo("demo", dt), "com.abc.meme", dt, None, None)
+  val baseJobInfo = JobInfo("foo-1", "context", JarInfo("demo", dt), "com.abc.meme", dt, None, config, None)
   val StatusKey = "status"
   val ResultKey = "result"
 
@@ -42,7 +42,6 @@ with ScalatestRouteTest with HttpService {
 
     import CommonMessages._
     import ContextSupervisor._
-    import JobConfigActor._
     import JobInfoActor._
     import JobManagerActor._
 
@@ -62,6 +61,9 @@ with ScalatestRouteTest with HttpService {
       case GetJobStatuses(limitOpt) =>
         sender ! Seq(baseJobInfo,
                      baseJobInfo.copy(endTime = Some(dt.plusMinutes(5))))
+      case GetJobConfig("badjobid") => sender ! NoSuchJobId
+      case GetJobConfig(_)          => sender ! config
+
 
       case ListJars => sender ! Map("demo1" -> dt, "demo2" -> dt.plusHours(1))
       // Ok these really belong to a JarManager but what the heck, type unsafety!!
@@ -87,15 +89,11 @@ with ScalatestRouteTest with HttpService {
                                                           new IllegalArgumentException("foo")))
       case StartJob(_, _, config, events)     =>
         statusActor ! Subscribe("foo", sender, events)
-        statusActor ! JobStatusActor.JobInit(JobInfo("foo", "context", null, "", dt, None, None), config)
+        statusActor ! JobStatusActor.JobInit(JobInfo("foo", "context", null, "", dt, None, config, None))
         statusActor ! JobStarted("foo", "context1", dt)
         val map = config.entrySet().asScala.map { entry => (entry.getKey -> entry.getValue.unwrapped) }.toMap
         if (events.contains(classOf[JobResult])) sender ! JobResult("foo", map)
         statusActor ! Unsubscribe("foo", sender)
-
-      // These routes are part of JobConfigActor
-      case GetJobConfig("badjobid") => sender ! NoSuchJobId
-      case GetJobConfig(_)          => sender ! config
 
     }
   }
@@ -231,6 +229,7 @@ with ScalatestRouteTest with HttpService {
     it("should be able to query job config from /jobs/<id>/config route") {
       Get("/jobs/foobar/config") ~> sealRoute(routes) ~> check {
         status should be (OK)
+        ConfigFactory.parseString(responseAs[String]) should be (config)
       }
     }
 

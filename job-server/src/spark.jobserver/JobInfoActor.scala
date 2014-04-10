@@ -9,6 +9,7 @@ import spark.jobserver.ContextSupervisor.{GetContext, GetAdHocContext}
 import spark.jobserver.io.JobDAO
 
 object JobInfoActor {
+  case class GetJobConfig(jobId: String)
   case class GetJobStatuses(limit: Option[Int])
 }
 
@@ -56,5 +57,8 @@ class JobInfoActor(jobDao: JobDAO, contextSupervisor: ActorRef) extends Instrume
           receiver ! result // a JobResult(jobId, result) object is sent
         }
       }
+
+    case GetJobConfig(jobId) =>
+      sender ! jobDao.getJobInfos.get(jobId).map(_.jobConfig).getOrElse(NoSuchJobId)
   }
 }

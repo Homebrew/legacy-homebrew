@@ -1,6 +1,5 @@
 package spark.jobserver
 
-import com.typesafe.config.Config
 import java.io.{BufferedOutputStream, FileOutputStream}
 import org.joda.time.DateTime
 import scala.collection.mutable
@@ -42,10 +41,4 @@ class InMemoryDAO extends JobDAO {
   def saveJobInfo(jobInfo: JobInfo) { jobInfos(jobInfo.jobId) = jobInfo }
 
   def getJobInfos(): Map[String, JobInfo] = jobInfos.toMap
-
-  val jobConfigs = mutable.HashMap.empty[String, Config]
-
-  def saveJobConfig(jobId: String, jobConfig: Config) { jobConfigs(jobId) = jobConfig }
-
-  def getJobConfigs(): Map[String, Config] = jobConfigs.toMap
 }
