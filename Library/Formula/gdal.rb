@@ -25,7 +25,7 @@ class Gdal < Formula
 
   depends_on :python => :recommended
   if build.with? "python"
-    depends_on :fortran => :build
+    depends_on 'numpy'
   end
 
   depends_on 'libpng'
@@ -76,11 +76,6 @@ class Gdal < Formula
       url "https://gist.githubusercontent.com/dakcarto/6877854/raw/82ae81e558c0b6048336f0acb5d7577bd0a237d5/gdal-mdb-patch.diff"
       sha1 "ea6c753df9e35abd90d7078f8a727eaab7f7d996"
     end if build.include? "enable-mdb"
-  end
-
-  resource 'numpy' do
-    url 'http://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz'
-    sha1 '8fe1d5f36bab3f1669520b4c7d8ab59a21a984da'
   end
 
   def get_configure_args
@@ -212,13 +207,6 @@ class Gdal < Formula
   end
 
   def install
-    if build.with? 'python'
-      ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
-      numpy_args = [ "build", "--fcompiler=gnu95",
-                     "install", "--prefix=#{libexec}" ]
-      resource('numpy').stage { system "python", "setup.py", *numpy_args }
-    end
-
     # Linking flags for SQLite are not added at a critical moment when the GDAL
     # library is being assembled. This causes the build to fail due to missing
     # symbols. Also, ensure Homebrew SQLite is used so that Spatialite is

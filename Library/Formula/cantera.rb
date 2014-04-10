@@ -12,24 +12,13 @@ class Cantera < Formula
     sha1 "4c73614bb39725ef6bdc85cbc97e148a3e49241d" => :lion
   end
 
-  depends_on :python
-  depends_on :fortran => :build
+  depends_on 'numpy'
   depends_on 'graphviz'
 
   # fixes the Makefiles in Cantera/cxx/demos/ that have broken install commands
   patch :DATA
 
-  resource 'numpy' do
-    url 'http://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz'
-    sha1 '8fe1d5f36bab3f1669520b4c7d8ab59a21a984da'
-  end
-
   def install
-    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
-    numpy_args = [ "build", "--fcompiler=gnu95",
-                   "install", "--prefix=#{libexec}" ]
-    resource('numpy').stage { system "python", "setup.py", *numpy_args }
-
     if MacOS.prefer_64_bit?
       # There is probably a better way to do this, but this seems to work for my purposes:
       ENV['CFLAGS'] += " -arch #{Hardware::CPU.arch_64_bit}"
