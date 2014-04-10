@@ -16,11 +16,10 @@ class Yara < Formula
     # find Homebrew's libpcre
     ENV.append 'LDFLAGS', "-L#{Formula["pcre"].opt_lib} -lpcre"
 
-    system "bash build.sh"
+    system "bash bootstrap.sh"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make"
     system "make install"
   end
 end
