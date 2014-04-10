@@ -139,6 +139,9 @@ class Mysql < Formula
           "--with-mysql-plugindir=#{prefix}/lib/plugin"
         system "make"
         system "make", "install"
+
+        puts "To finish configuring and installing HandlerSocket, read:"
+        puts "https://github.com/DeNA/HandlerSocket-Plugin-for-MySQL/blob/master/docs-en/installation.en.txt#L32"
       end
     end
 
