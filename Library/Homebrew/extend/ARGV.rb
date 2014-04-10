@@ -99,6 +99,10 @@ module HomebrewArgvExtension
     include? '--only-dependencies'
   end
 
+  def wizard_deps?
+    include? '--wizard'
+  end
+
   def json
     value 'json'
   end
