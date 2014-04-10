@@ -10,7 +10,7 @@ class Yara < Formula
   depends_on 'automake'
 
   def install
-    # Use of 'inline' requires gnu89 semantis
+    # Use of 'inline' requires gnu89 semantics
     ENV.append 'CFLAGS', '-std=gnu89' if ENV.compiler == :clang
 
     # find Homebrew's libpcre
