@@ -17,9 +17,18 @@ class Erlang < Formula
   end
 
   devel do
-    url 'http://www.erlang.org/download/otp_src_17.0-rc2.tar.gz'
-    sha1 'bb223dddb59a56c2ec3dba5fe6abfbe3a1400d6e'
-    version '17.0-rc2'
+    url 'https://github.com/erlang/otp/archive/OTP-17.0.tar.gz'
+    sha1 'efa0dd17267ff41d47df94978b7573535c0da775'
+
+    resource 'man' do
+      url 'http://www.erlang.org/download/otp_doc_man_17.0.tar.gz'
+      sha1 '50106b77a527b9369793197c3d07a8abe4e0a62d'
+    end
+
+    resource 'html' do
+      url 'http://www.erlang.org/download/otp_doc_html_17.0.tar.gz'
+      sha1 '9a154d937c548f67f2c4e3691a6f36851a150be9'
+    end
   end
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
