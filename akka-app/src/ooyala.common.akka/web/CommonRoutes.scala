@@ -1,7 +1,5 @@
 package ooyala.common.akka.web
 
-import collection.JavaConversions._
-
 import spray.routing.HttpService
 import com.yammer.metrics.core._
 import com.yammer.metrics.Metrics
@@ -30,12 +28,13 @@ trait CommonRoutes extends HttpService {
  * Serializes all the Metrics objects into JSON string
  */
 object MetricsSerializer {
+  import collection.JavaConverters._
+
   def serialize(registry: MetricsRegistry = Metrics.defaultRegistry(),
                 classPrefix: String = null): String = {
     val map = asGroupedMap(registry, classPrefix)
     JsonUtils.mapToJson(map, compact = false)
   }
-
 
   /** Returns all the metrics, grouped by the class name
     *
@@ -45,10 +44,10 @@ object MetricsSerializer {
     */
   def asGroupedMap(registry: MetricsRegistry = Metrics.defaultRegistry(),
             classPrefix: String = null): Map[String, Map[String, Map[String, Any]]] = {
-    registry.groupedMetrics().flatMap {
+    registry.groupedMetrics().asScala.flatMap {
       case (metricsClass, metricsBlob) =>
         if (classPrefix == null || metricsClass.startsWith(classPrefix)) {
-          val innerMap = metricsBlob.flatMap {
+          val innerMap = metricsBlob.asScala.flatMap {
             case (metricName, metric) =>
               try {
                 Some(metricName.getName -> process(metric))
@@ -58,7 +57,7 @@ object MetricsSerializer {
               }
           }.toMap
           Some(metricsClass -> innerMap)
-        } else None
+        } else { None }
     }.toMap
   }
 
@@ -68,7 +67,7 @@ object MetricsSerializer {
                 classPrefix: String = null): Map[String, Map[String, Any]] = {
 
     // TODO: There is a fair amount of code duplication here
-    val metrics = registry.allMetrics()
+    val metrics = registry.allMetrics().asScala
     metrics.flatMap {
       case (metricName, metricsBlob) =>
         try {
