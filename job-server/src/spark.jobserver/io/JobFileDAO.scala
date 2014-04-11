@@ -81,7 +81,6 @@ class JobFileDAO(config: Config) extends JobDAO {
         }
       } catch {
         case eof: EOFException => // do nothing
-        
       } finally {
         in.close()
       }
