@@ -1,6 +1,6 @@
 package spark.jobserver.io
 
-import com.typesafe.config.ConfigException
+import com.typesafe.config._
 import org.joda.time.{ Duration, DateTime }
 
 // Uniquely identifies the jar used to run a job
@@ -60,6 +60,21 @@ trait JobDAO {
    * @return
    */
   def getJobInfos: Map[String, JobInfo]
+
+  /**
+   * Persist a job configuration along with provided jobId.
+   *
+   * @param jobId
+   * @param jobConfig
+   */
+  def saveJobConfig(jobId: String, jobConfig: Config)
+
+  /**
+   * Return all job ids to their job configuration.
+   *
+   * @return
+   */
+  def getJobConfigs: Map[String, Config]
 
   /**
    * Returns the last upload time for a given app name.
