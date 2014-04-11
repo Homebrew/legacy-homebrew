@@ -19,7 +19,7 @@ class Opencolorio < Formula
   # Fix build with libc++
   patch do
     url "https://github.com/imageworks/OpenColorIO/commit/ebd6efc036b6d0b17c869e3342f17f9c5ef8bbfc.diff"
-    sha1 "89d2cb42e634faab5b83d16fdc48a048b2ddb6f5"
+    sha1 "f4acc4028090ea8d438c6e0093e931afd836314c"
   end
 
   def install

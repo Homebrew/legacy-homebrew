@@ -7,7 +7,7 @@ class Clens < Formula
 
   patch do
     url "https://github.com/conformal/clens/commit/83648cc9027d9f76a1bc79ddddcbed1349b9d5cd.diff"
-    sha1 "e2c69cc4595d97cc0eb516e99d8e5edca5922027"
+    sha1 "52de3f7ea0f7a9857ec81a0f93c4e82cb9d762fd"
   end
 
   def install

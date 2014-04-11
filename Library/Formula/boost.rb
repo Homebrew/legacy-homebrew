@@ -60,12 +60,12 @@ class Boost < Formula
   # Patches boost::atomic for LLVM 3.4 as it is used on OS X 10.9 with Xcode 5.1
   patch :p2 do
     url "https://github.com/boostorg/atomic/commit/6bb71fdd.diff"
-    sha1 "9ab8e6c041b4ecc291b2dd1a3c93e9b342d5e0e4"
+    sha1 "ca8679011d5293a7fd02cb3b97dde3515b8b2b03"
   end
 
   patch :p2 do
     url "https://github.com/boostorg/atomic/commit/e4bde20f.diff"
-    sha1 "f206e7261d00503788ae8ec3a0635ced8a816293"
+    sha1 "b68f5536474c9f543879698299bd4975538a89eb"
   end
 
   fails_with :llvm do

@@ -9,7 +9,7 @@ class Libopkele < Formula
 
     patch do
       url "https://github.com/hacker/libopkele/commit/9ff6244998b0d41e71f7cc7351403ad590e990e4.diff"
-      sha1 "f799213b0e65d42b96ff78eb3b5be4f0ec06afa5"
+      sha1 "dd86d5a493a54f57ac3bc842878cba5c6608aa7e"
     end
   end
 

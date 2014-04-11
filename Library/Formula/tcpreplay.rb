@@ -11,12 +11,12 @@ class Tcpreplay < Formula
   # Use system strlcpy; fixed upstream
   patch do
     url "https://github.com/synfinatic/tcpreplay/commit/6f45329ba7e6300f07f253032e6feb8a650bea23.diff"
-    sha1 "06a8323b7dd8545ea1a629b193b2b1f04535a4a7"
+    sha1 "c9a3bd9da7b7039699bb5602bd200a6990e81126"
   end
 
   patch do
     url "https://github.com/synfinatic/tcpreplay/commit/0983f589a21bbd0d248e9b408bdf5aeacb61ce19.diff"
-    sha1 "1cb5080a6c032f78b3ac5be28a7e6ac9c4c821da"
+    sha1 "aec187c55bf7fcc1c64e65b03460970e517ec792"
   end
 
   def install

@@ -9,7 +9,7 @@ class Mtr < Formula
 
     patch do
       url "https://github.com/traviscross/mtr/commit/edd425.diff"
-      sha1 "84b7dcbf00ddac5ec5bd79ec4707c1ebbd9dedc2"
+      sha1 "c1ed669cdf65d607f75abc729a333b180ee42343"
     end
   end
 

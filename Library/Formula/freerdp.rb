@@ -9,12 +9,12 @@ class Freerdp < Formula
 
     patch do
       url "https://github.com/FreeRDP/FreeRDP/commit/1d3289.diff"
-      sha1 "d7f6cd98912b978f23e072c9d8cb68d054faea32"
+      sha1 "294acefbfba7452baaf7af1964769f0d8ac6e46c"
     end
 
     patch do
       url "https://github.com/FreeRDP/FreeRDP/commit/e32f9e.diff"
-      sha1 "2eef5f5e792e56bfbc01fa2e5528a2662b7c33c3"
+      sha1 "6453e232a2f0a652d85b11b7e05ba17beefec442"
     end
 
     # https://github.com/FreeRDP/FreeRDP/pull/1682/files
