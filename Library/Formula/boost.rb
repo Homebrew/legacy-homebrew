@@ -62,13 +62,13 @@ class Boost < Formula
     # https://github.com/Homebrew/homebrew/issues/27396
     # https://github.com/Homebrew/homebrew/pull/27436
     patch :p2 do
-      url "https://github.com/boostorg/atomic/commit/6bb71fdd.patch"
-      sha1 "8dfaf4d123f1161c83fff91d4ef70b8f95a4ef94"
+      url "https://github.com/boostorg/atomic/commit/6bb71fdd.diff"
+      sha1 "ca8679011d5293a7fd02cb3b97dde3515b8b2b03"
     end
 
     patch :p2 do
-      url "https://github.com/boostorg/atomic/commit/e4bde20f.patch"
-      sha1 "f206e7261d00503788ae8ec3a0635ced8a816293"
+      url "https://github.com/boostorg/atomic/commit/e4bde20f.diff"
+      sha1 "b68f5536474c9f543879698299bd4975538a89eb"
     end
   end
 
