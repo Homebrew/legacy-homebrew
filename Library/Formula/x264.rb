@@ -16,8 +16,8 @@ class X264 < Formula
   # Support building with Clang 3.4
   # The patch will be merged in the official repository soon.
   patch do
-    url "https://github.com/DarkShikari/x264-devel/commit/bc3b27.patch"
-    sha1 "3a156908998c6c8588e4f50d125fa1cfe8a1eba7"
+    url "https://github.com/DarkShikari/x264-devel/commit/bc3b27.diff"
+    sha1 "85145f2123ef4a881749b8524583a56ead8494ef"
   end
 
   bottle do

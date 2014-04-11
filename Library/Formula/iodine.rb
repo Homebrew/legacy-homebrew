@@ -7,8 +7,8 @@ class Iodine < Formula
 
   # 10.8 compatibility; see https://github.com/yarrick/iodine/pull/1
   patch do
-    url "https://github.com/zschoche/iodine/commit/e1e438497a83dbe6800212a0e5cb632907d1b3d9.patch"
-    sha1 "207140143903db61c78ca1dcdc807ac2314b5aff"
+    url "https://github.com/zschoche/iodine/commit/e1e438497a83dbe6800212a0e5cb632907d1b3d9.diff"
+    sha1 "b3581c211b772a83dc051bac4b3513e0f286279b"
   end
 
   def install
