@@ -18,10 +18,17 @@ class Vte < Formula
     # pygobject-codegen-2.0, but the vte Makefile does not detect this.
     ENV["PYGTK_CODEGEN"] = Formula["pygobject"].bin/'pygobject-codegen-2.0'
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-python",
-                          "--disable-Bsymbolic"
+    args = [
+      "--disable-dependency-tracking",
+      "--prefix=#{prefix}",
+      "--disable-Bsymbolic",
+    ]
+
+    if build.with? "python"
+      args << "--enable-python"
+    end
+
+    system "./configure", *args
     system "make install"
   end
 end
