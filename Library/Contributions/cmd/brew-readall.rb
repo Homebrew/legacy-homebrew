@@ -10,5 +10,6 @@ Formula.names.each do |n|
   rescue Exception => e
     onoe "problem in #{Formula.path(n)}"
     puts e
+    Homebrew.failed = true
   end
 end
