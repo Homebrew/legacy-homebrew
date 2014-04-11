@@ -7,7 +7,7 @@ class Libltc < Formula
 
 # This patch has been fixed in the master branch not released yet (https://github.com/x42/libltc/commit/b98e5d4094fbbc637fc83fe25d8348e41c325cf8)
   patch do
-    url: https://github.com/x42/libltc/compare/febc9138ed73e5e2ce9be701bfac3b53bb310c66...b98e5d4094fbbc637fc83fe25d8348e41c325cf8.diff
+    url https://github.com/x42/libltc/compare/febc9138ed73e5e2ce9be701bfac3b53bb310c66...b98e5d4094fbbc637fc83fe25d8348e41c325cf8.diff
   end
 
   def install
