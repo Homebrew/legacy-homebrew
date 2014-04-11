@@ -9,8 +9,8 @@ class Groovyserv < Formula
 
   # This fix is upstream and can be removed in the next released version.
   patch do
-    url "https://github.com/kobo/groovyserv/commit/53b77ab2b4a7bcf6e232bc54f4e50e8b78d3006a.patch"
-    sha1 "14ede107fe642e7a8c90ef789a235750821fbb77"
+    url "https://github.com/kobo/groovyserv/commit/53b77ab2b4a7bcf6e232bc54f4e50e8b78d3006a.diff"
+    sha1 "59bec0eb24c582670781af277cc64c6fe13b11db"
   end
 
   def install
