@@ -11,7 +11,7 @@ class Vte < Formula
   depends_on 'glib'
   depends_on 'gtk+'
   depends_on 'pygtk'
-  depends_on :python
+  depends_on :python => :recommended
 
   def install
     # pygtk-codegen-2.0 has been deprecated and replaced by
