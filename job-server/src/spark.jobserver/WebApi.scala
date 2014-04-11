@@ -257,7 +257,8 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
             (appName, classPath, contextOpt, syncOpt, timeoutOpt) =>
               try {
                 val async = !syncOpt.getOrElse(false)
-                val jobConfig = ConfigFactory.parseString(configString).withFallback(config)
+                val postedJobConfig = ConfigFactory.parseString(configString)
+                val jobConfig = postedJobConfig.withFallback(config)
                 val contextConfig = Try(jobConfig.getConfig("spark.context-settings")).
                                       getOrElse(ConfigFactory.empty)
                 val jobManager = getJobManagerForContext(contextOpt, contextConfig, classPath)
@@ -270,6 +271,7 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
                     case JobResult(_, res)       => ctx.complete(resultToTable(res))
                     case JobErroredOut(_, _, ex) => ctx.complete(errMap(ex, "ERROR"))
                     case JobStarted(jobId, context, _) =>
+                      jobInfo ! StoreJobConfig(jobId, postedJobConfig)
                       ctx.complete(202, Map[String, Any](
                                           StatusKey -> "STARTED",
                                           ResultKey -> Map("jobId" -> jobId, "context" -> context)))
