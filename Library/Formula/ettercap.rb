@@ -14,7 +14,7 @@ class Ettercap < Formula
   # fixes absence of strndup function on 10.6 and lower; merged upstream
   def patches
     if MacOS.version < :lion
-      "https://github.com/Ettercap/ettercap/commit/1692218693ed419465466299c8c76da41c37c945.patch"
+      "https://github.com/Ettercap/ettercap/commit/1692218693ed419465466299c8c76da41c37c945.diff"
     end
   end
 

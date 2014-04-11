@@ -9,7 +9,7 @@ class Cherokee < Formula
 
     # OSX 10.9 patch
     patch do
-      url "https://github.com/cherokee/webserver/commit/d0213768fdc6cf3aee61fe0be398d7825c01198f.patch"
+      url "https://github.com/cherokee/webserver/commit/d0213768fdc6cf3aee61fe0be398d7825c01198f.diff"
       sha1 "4befeead2466c6ade6f2de5c39653e251f7dc365"
     end
   end

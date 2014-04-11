@@ -40,7 +40,7 @@ class Povray < Formula
 
   # Fixes some compiler warnings; comes from the upstream repo, should be in next release.
   patch do
-    url "https://github.com/POV-Ray/povray/commit/b3846f5723745e6e7926883ec6bc404922a900e6.patch"
+    url "https://github.com/POV-Ray/povray/commit/b3846f5723745e6e7926883ec6bc404922a900e6.diff"
     sha1 "ccb75f8fd80020828d51451538d9079ff94f8a02"
   end
 

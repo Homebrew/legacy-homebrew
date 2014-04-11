@@ -13,7 +13,7 @@ class Phantomjs < Formula
   end
 
   patch do
-    url "https://github.com/ariya/phantomjs/commit/fe6a96.patch"
+    url "https://github.com/ariya/phantomjs/commit/fe6a96.diff"
     sha1 "c6899db754a7202fc4745d2bd64504432a6b606c"
   end
 

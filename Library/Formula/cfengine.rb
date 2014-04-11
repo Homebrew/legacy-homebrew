@@ -13,7 +13,7 @@ class Cfengine < Formula
 
   # Upstream patches for OS X compilation
   patch do
-    url "https://github.com/cfengine/core/commit/d03fcc2d38a4db0c79386aaef30597102bf45853.patch"
+    url "https://github.com/cfengine/core/commit/d03fcc2d38a4db0c79386aaef30597102bf45853.diff"
     sha1 "99c043fc158f790fa8cc327ffa1ebcc36deb6470"
   end
 
