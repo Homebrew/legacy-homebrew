@@ -13,7 +13,7 @@ object JsonUtils {
   // Note that this implicit conversion will only apply in this scope....
   // we have to be careful to make implicits that convert Any no wider in scope than needed
   implicit object AnyJsonFormat extends JsonFormat[Any] {
-    def write(x: Any) = x match {
+    def write(x: Any): JsValue = x match {
       case n: Int => JsNumber(n)
       case l: Long => JsNumber(l)
       case d: Double => JsNumber(d)
@@ -33,12 +33,12 @@ object JsonUtils {
           JsObject(pairs)
       }
       case a: Array[_] => seqFormat[Any].write(a.toSeq)
-      case b: Boolean if b == true => JsTrue
-      case b: Boolean if b == false => JsFalse
-      case p: Product =>  seqFormat[Any].write(p.productIterator.toSeq)
+      case true        => JsTrue
+      case false       => JsFalse
+      case p: Product  =>  seqFormat[Any].write(p.productIterator.toSeq)
       case x => JsString(x.toString)
     }
-    def read(value: JsValue) = value match {
+    def read(value: JsValue): Any = value match {
       case JsNumber(n) => n.intValue()
       case JsString(s) => s
       case a: JsArray => listFormat[Any].read(value)
@@ -59,7 +59,7 @@ object JsonUtils {
     if (compact) jsonAst.compactPrint else jsonAst.prettyPrint
   }
 
-  def mapFromJson(json: String) = json.asJson.convertTo[Map[String, Any]]
+  def mapFromJson(json: String): Map[String, Any] = json.asJson.convertTo[Map[String, Any]]
 
-  def listFromJson(json: String) = json.asJson.convertTo[Seq[Any]]
+  def listFromJson(json: String): Seq[Any] = json.asJson.convertTo[Seq[Any]]
 }

@@ -1,7 +1,5 @@
 package ooyala.common.akka.metrics
 
-import collection.JavaConversions._
-
 import com.yammer.metrics.core._
 import com.yammer.metrics.Metrics
 import org.slf4j.Logger
@@ -18,8 +16,10 @@ import com.yammer.metrics.stats.Snapshot
  */
 class CompactMetricsWriter(private val log: Logger) extends MetricProcessor[Logger] {
 
+  import collection.JavaConverters._
+
   def process(registry: MetricsRegistry = Metrics.defaultRegistry()) {
-    registry.allMetrics().foreach {
+    registry.allMetrics().asScala.foreach {
       case (metricName, metricsObject) => metricsObject.processWith(this, metricName, log)
     }
   }

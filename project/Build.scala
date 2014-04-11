@@ -7,6 +7,7 @@ import spray.revolver.Actions
 import com.typesafe.sbt.SbtScalariform._
 import org.scalastyle.sbt.ScalastylePlugin
 import scalariform.formatter.preferences._
+import bintray.Plugin.bintrayPublishSettings
 
 // There are advantages to using real Scala build files with SBT:
 //  - Multi-JVM testing won't work without it, for now
@@ -23,12 +24,14 @@ object JobServerBuild extends Build {
 
   lazy val akkaApp = Project(id = "akka-app", base = file("akka-app"),
     settings = commonSettings210 ++ Seq(
+      description := "Common Akka application stack: metrics, tracing, logging, and more.",
       libraryDependencies ++= coreTestDeps ++ akkaDeps
     )
   )
 
   lazy val jobServer = Project(id = "job-server", base = file("job-server"),
     settings = commonSettings210 ++ Assembly.settings ++ Revolver.settings ++ Seq(
+      description  := "Spark as a Service: a RESTful job server for Apache Spark",
       libraryDependencies ++= sparkDeps ++ coreTestDeps,
 
       // Automatically package the test jar when we run tests here
@@ -36,7 +39,7 @@ object JobServerBuild extends Build {
       test in Test <<= (test in Test).dependsOn(packageBin in Compile in jobServerTestJar)
                                      .dependsOn(clean in Compile in jobServerTestJar),
 
-      // Adds the path of extra jars to the front of the classpath  
+      // Adds the path of extra jars to the front of the classpath
       fullClasspath in Compile <<= (fullClasspath in Compile).map { classpath =>
         extraJarPaths ++ classpath
       },
@@ -44,20 +47,15 @@ object JobServerBuild extends Build {
       // Give job server a bit more PermGen since it does classloading
       javaOptions in Revolver.reStart += "-XX:MaxPermSize=256m",
       javaOptions in Revolver.reStart += "-Djava.security.krb5.realm= -Djava.security.krb5.kdc=",
-      // The only change from sbt-revolver task definition is the "fullClasspath in Compile" so that
-      // we can add Spark to the classpath without assembly barfing
-      Revolver.reStart <<= InputTask(Actions.startArgsParser) { args =>
-        (streams, state, Revolver.reForkOptions, mainClass in Revolver.reStart,
-         fullClasspath in Compile, Revolver.reStartArgs, args)
-          .map(Actions.restartApp)
-          .updateState(Actions.registerAppProcess)
-          .dependsOn(products in Compile)
-      } )
+      // This lets us add Spark back to the classpath without assembly barfing
+      fullClasspath in Revolver.reStart := (fullClasspath in Compile).value
+      )
   ) dependsOn(akkaApp)
 
   lazy val jobServerTestJar = Project(id = "job-server-tests", base = file("job-server-tests"),
     settings = commonSettings210 ++ Seq(libraryDependencies ++= sparkDeps,
                                         publish      := {},
+                                        description := "Test jar for Spark Job Server",
                                         exportJars := true)   // use the jar instead of target/classes
   )
 
@@ -86,12 +84,20 @@ object JobServerBuild extends Build {
                              .map(jarpath => Seq(Attributed.blank(file(jarpath))))
                              .getOrElse(Nil)
 
+  // Create a default Scala style task to run with compiles
+  lazy val runScalaStyle = taskKey[Unit]("testScalaStyle")
+
   lazy val commonSettings210 = Defaults.defaultSettings ++ dirSettings ++ Seq(
     organization := "ooyala.cnd",
-    version      := "0.3.0",
+    version      := "0.3.1",
     crossPaths   := false,
-    scalaVersion := "2.10.2",
+    scalaVersion := "2.10.4",
     scalaBinaryVersion := "2.10",
+
+    runScalaStyle := {
+      org.scalastyle.sbt.PluginKeys.scalastyle.toTask("").value
+    },
+    (compile in Compile) <<= (compile in Compile) dependsOn runScalaStyle,
 
     // In Scala 2.10, certain language features are disabled by default, such as implicit conversions.
     // Need to pass in language options or import scala.language.* to enable them.
@@ -108,7 +114,20 @@ object JobServerBuild extends Build {
         <exclude module="jmxtools"/>
         <exclude module="jmxri"/>
       </dependencies>
-  ) ++ scalariformPrefs ++ ScalastylePlugin.Settings
+  ) ++ scalariformPrefs ++ ScalastylePlugin.Settings ++ scoverageSettings ++ publishSettings
+
+  lazy val scoverageSettings = {
+    import ScoverageSbtPlugin._
+    instrumentSettings ++ Seq(
+      // Semicolon-separated list of regexs matching classes to exclude
+      ScoverageKeys.excludedPackages in scoverage := ".+Benchmark.*"
+    )
+  }
+
+  lazy val publishSettings = bintrayPublishSettings ++ Seq(
+    licenses += ("Apache-2.0", url("http://choosealicense.com/licenses/apache/")),
+    bintray.Keys.bintrayOrganization in bintray.Keys.bintray := Some("ooyala")
+  )
 
   // change to scalariformSettings for auto format on compile; defaultScalariformSettings to disable
   // See https://github.com/mdr/scalariform for formatting options
