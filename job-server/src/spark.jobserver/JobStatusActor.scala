@@ -1,15 +1,16 @@
 package spark.jobserver
 
 import akka.actor.ActorRef
+import com.typesafe.config.Config
 import com.yammer.metrics.core.Meter
 import ooyala.common.akka.InstrumentedActor
 import ooyala.common.akka.metrics.YammerMetrics
-import spark.jobserver.io.{ JobInfo, JobDAO }
 import scala.collection.mutable
 import scala.util.Try
+import spark.jobserver.io.{ JobInfo, JobDAO }
 
 object JobStatusActor {
-  case class JobInit(jobInfo: JobInfo)
+  case class JobInit(jobInfo: JobInfo, jobConfig: Config)
   case class GetRunningJobStatus()
 }
 
@@ -54,10 +55,11 @@ class JobStatusActor(jobDao: JobDAO) extends InstrumentedActor with YammerMetric
       val jobSubscribers = subscribers.getOrElseUpdate(jobId, newMultiMap())
       events.foreach { event => jobSubscribers.addBinding(event, receiver) }
 
-    case JobInit(jobInfo) =>
+    case JobInit(jobInfo, jobConfig) =>
       // TODO (kelvinchu): Check if the jobId exists in the persistence store already
       if (!infos.contains(jobInfo.jobId)) {
         infos(jobInfo.jobId) = jobInfo
+        jobDao.saveJobConfig(jobInfo.jobId, jobConfig)
       } else {
         sender ! JobInitAlready
       }

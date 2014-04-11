@@ -1,6 +1,6 @@
 package spark.jobserver.io
 
-import com.typesafe.config.Config
+import com.typesafe.config._
 import java.io._
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
@@ -13,6 +13,8 @@ class JobFileDAO(config: Config) extends JobDAO {
   private val apps = mutable.HashMap.empty[String, Seq[DateTime]]
   // jobId to its JobInfo
   private val jobs = mutable.HashMap.empty[String, JobInfo]
+  // jobId to its Config
+  private val configs = mutable.HashMap.empty[String, Config]
 
   private val rootDir = getOrElse(config.getString("spark.jobserver.filedao.rootdir"),
     "/tmp/spark-jobserver/filedao/data")
@@ -23,6 +25,8 @@ class JobFileDAO(config: Config) extends JobDAO {
   private var jarsOutputStream: DataOutputStream = null
   private val jobsFile = new File(rootDirFile, "jobs.data")
   private var jobsOutputStream: DataOutputStream = null
+  private val jobConfigsFile = new File(rootDirFile, "configs.data")
+  private var jobConfigsOutputStream: DataOutputStream = null
 
   init()
 
@@ -67,11 +71,26 @@ class JobFileDAO(config: Config) extends JobDAO {
       }
     }
 
+    // read back all job configs during startup
+    if (jobConfigsFile.exists()) {
+      val in = new DataInputStream(new BufferedInputStream(new FileInputStream(jobConfigsFile)))
+      try {
+        while (true) {
+          val (jobId, jobConfig) = readJobConfig(in)
+          configs(jobId) = jobConfig
+        }
+      } catch {
+        case eof: EOFException => // do nothing
+      } finally {
+        in.close()
+      }
+    }
+
     // Don't buffer the stream. I want the apps meta data log directly into the file.
     // Otherwise, server crash will lose the buffer data.
     jarsOutputStream = new DataOutputStream(new FileOutputStream(jarsFile, true))
     jobsOutputStream = new DataOutputStream(new FileOutputStream(jobsFile, true))
-
+    jobConfigsOutputStream = new DataOutputStream(new FileOutputStream(jobConfigsFile, true))
   }
 
   override def saveJar(appName: String, uploadTime: DateTime, jarBytes: Array[Byte]) {
@@ -147,4 +166,21 @@ class JobFileDAO(config: Config) extends JobDAO {
     readError(in))
 
   override def getJobInfos: Map[String, JobInfo] = jobs.toMap
+
+  override def saveJobConfig(jobId: String, jobConfig: Config) {
+    writeJobConfig(jobConfigsOutputStream, jobId, jobConfig)
+    configs(jobId) = jobConfig
+  }
+
+  override def getJobConfigs: Map[String, Config] = configs.toMap
+
+  private def writeJobConfig(out: DataOutputStream, jobId: String, jobConfig: Config) {
+    out.writeUTF(jobId)
+    out.writeUTF(jobConfig.root().render(ConfigRenderOptions.concise()))
+  }
+
+  private def readJobConfig(in: DataInputStream): (String, Config) = (
+    in.readUTF,
+    ConfigFactory.parseString(in.readUTF)
+  )
 }
