@@ -195,9 +195,9 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
           future.map {
             case NoSuchJobId =>
               notFound(ctx, "No such job ID " + jobId.toString)
-            case JobInfo(_, _, _, _, _, None, _, _) =>
+            case JobInfo(_, _, _, _, _, None, _) =>
               ctx.complete(Map(StatusKey -> "RUNNING"))
-            case JobInfo(_, _, _, _, _, _, _, Some(ex)) =>
+            case JobInfo(_, _, _, _, _, _, Some(ex)) =>
               ctx.complete(Map(StatusKey -> "ERROR", "ERROR" -> formatException(ex)))
             case JobResult(_, result) =>
               ctx.complete(resultToTable(result))
@@ -223,10 +223,10 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
                   "classPath" -> info.classPath,
                   "context"   -> (if (info.contextName.isEmpty) "<<ad-hoc>>" else info.contextName),
                   "duration" -> getJobDurationString(info)) ++ (info match {
-                    case JobInfo(_, _, _, _, _, None, _, _)       => Map(StatusKey -> "RUNNING")
-                    case JobInfo(_, _, _, _, _, _, _, Some(ex))   => Map(StatusKey -> "ERROR",
+                    case JobInfo(_, _, _, _, _, None, _)       => Map(StatusKey -> "RUNNING")
+                    case JobInfo(_, _, _, _, _, _, Some(ex))   => Map(StatusKey -> "ERROR",
                                                                       ResultKey -> formatException(ex))
-                    case JobInfo(_, _, _, _, _, Some(e), _, None) => Map(StatusKey -> "FINISHED")
+                    case JobInfo(_, _, _, _, _, Some(e), None) => Map(StatusKey -> "FINISHED")
                   })
               }
               ctx.complete(jobReport)

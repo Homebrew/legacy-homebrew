@@ -4,7 +4,7 @@ import akka.actor.{Props, ActorRef, ActorSystem}
 import akka.testkit.{TestKit, ImplicitSender}
 import org.scalatest.{FunSpec, BeforeAndAfter, BeforeAndAfterAll}
 import org.scalatest.matchers.ShouldMatchers
-import spark.jobserver.io.{JobDAO, JobInfo}
+import spark.jobserver.io.JobDAO
 
 object JobInfoActorSpec {
   val system = ActorSystem("test")
@@ -36,9 +36,9 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll {
     ooyala.common.akka.AkkaTestUtils.shutdownAndWait(actor)
   }
 
-  describe("JobInfoActorSpec") {
+  describe("JobInfoActor") {
     it("should return a job configuration when the jobId exists") {
-      dao.saveJobInfo(JobInfo(jobId, "", null, "", null, None, jobConfig, None))
+      dao.saveJobConfig(jobId, jobConfig)
       actor ! GetJobConfig(jobId)
       expectMsg(jobConfig)
     }
