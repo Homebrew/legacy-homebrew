@@ -3,14 +3,20 @@ package spark.jobserver
 import akka.actor.ActorRef
 import akka.pattern.ask
 import akka.util.Timeout
+import com.typesafe.config.Config
 import ooyala.common.akka.InstrumentedActor
 import scala.concurrent.Await
 import spark.jobserver.ContextSupervisor.{GetContext, GetAdHocContext}
 import spark.jobserver.io.JobDAO
 
 object JobInfoActor {
-  case class GetJobConfig(jobId: String)
+  // Requests
   case class GetJobStatuses(limit: Option[Int])
+  case class GetJobConfig(jobId: String)
+  case class StoreJobConfig(jobId: String, jobConfig: Config)
+
+  // Responses
+  case object JobConfigStored
 }
 
 class JobInfoActor(jobDao: JobDAO, contextSupervisor: ActorRef) extends InstrumentedActor {
@@ -57,8 +63,12 @@ class JobInfoActor(jobDao: JobDAO, contextSupervisor: ActorRef) extends Instrume
           receiver ! result // a JobResult(jobId, result) object is sent
         }
       }
-      
+
     case GetJobConfig(jobId) =>
       sender ! jobDao.getJobConfigs.get(jobId).getOrElse(NoSuchJobId)
+
+    case StoreJobConfig(jobId, jobConfig) =>
+      jobDao.saveJobConfig(jobId, jobConfig)
+      sender ! JobConfigStored
   }
 }
