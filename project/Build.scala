@@ -24,12 +24,14 @@ object JobServerBuild extends Build {
 
   lazy val akkaApp = Project(id = "akka-app", base = file("akka-app"),
     settings = commonSettings210 ++ Seq(
+      description := "Common Akka application stack: metrics, tracing, logging, and more.",
       libraryDependencies ++= coreTestDeps ++ akkaDeps
     )
   )
 
   lazy val jobServer = Project(id = "job-server", base = file("job-server"),
     settings = commonSettings210 ++ Assembly.settings ++ Revolver.settings ++ Seq(
+      description  := "Spark as a Service: a RESTful job server for Apache Spark",
       libraryDependencies ++= sparkDeps ++ coreTestDeps,
 
       // Automatically package the test jar when we run tests here
@@ -53,6 +55,7 @@ object JobServerBuild extends Build {
   lazy val jobServerTestJar = Project(id = "job-server-tests", base = file("job-server-tests"),
     settings = commonSettings210 ++ Seq(libraryDependencies ++= sparkDeps,
                                         publish      := {},
+                                        description := "Test jar for Spark Job Server",
                                         exportJars := true)   // use the jar instead of target/classes
   )
 
@@ -87,7 +90,6 @@ object JobServerBuild extends Build {
   lazy val commonSettings210 = Defaults.defaultSettings ++ dirSettings ++ Seq(
     organization := "ooyala.cnd",
     version      := "0.3.1",
-    description  := "Spark as a Service: a RESTful job server for Apache Spark",
     crossPaths   := false,
     scalaVersion := "2.10.4",
     scalaBinaryVersion := "2.10",
