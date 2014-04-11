@@ -57,8 +57,8 @@ class JobInfoActor(jobDao: JobDAO, contextSupervisor: ActorRef) extends Instrume
           receiver ! result // a JobResult(jobId, result) object is sent
         }
       }
-
+      
     case GetJobConfig(jobId) =>
-      sender ! jobDao.getJobInfos.get(jobId).map(_.jobConfig).getOrElse(NoSuchJobId)
+      sender ! jobDao.getJobConfigs.get(jobId).getOrElse(NoSuchJobId)
   }
 }

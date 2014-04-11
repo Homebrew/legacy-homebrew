@@ -153,9 +153,9 @@ class JobManagerActor(dao: JobDAO,
       resultActor ! Subscribe(jobId, sender, events)
       statusActor ! Subscribe(jobId, sender, events)
 
-      val jobInfo = JobInfo(jobId, contextName, jarInfo, classPath, DateTime.now(), None, jobConfig, None)
+      val jobInfo = JobInfo(jobId, contextName, jarInfo, classPath, DateTime.now(), None, None)
       future =
-        Option(getJobFuture(jobJarInfo, jobInfo, sender, sparkContext, sparkEnv,
+        Option(getJobFuture(jobJarInfo, jobInfo, jobConfig, sender, sparkContext, sparkEnv,
                             rddManagerActor))
     }
 
@@ -164,6 +164,7 @@ class JobManagerActor(dao: JobDAO,
 
   private def getJobFuture(jobJarInfo: JobJarInfo,
                            jobInfo: JobInfo,
+                           jobConfig: Config,
                            subscriber: ActorRef,
                            sparkContext: SparkContext,
                            sparkEnv: SparkEnv,
@@ -203,9 +204,9 @@ class JobManagerActor(dao: JobDAO,
       }
 
       try {
-        statusActor ! JobStatusActor.JobInit(jobInfo)
+        statusActor ! JobStatusActor.JobInit(jobInfo, jobConfig)
 
-        job.validate(sparkContext, jobInfo.jobConfig) match {
+        job.validate(sparkContext, jobConfig) match {
           case SparkJobInvalid(reason) => {
             val err = new Throwable(reason)
             statusActor ! JobValidationFailed(jobId, DateTime.now(), err)
@@ -213,7 +214,7 @@ class JobManagerActor(dao: JobDAO,
           }
           case SparkJobValid => {
             statusActor ! JobStarted(jobId: String, contextName, jobInfo.startTime)
-            job.runJob(sparkContext, jobInfo.jobConfig)
+            job.runJob(sparkContext, jobConfig)
           }
         }
       } finally {

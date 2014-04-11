@@ -11,7 +11,7 @@ case class JarInfo(appName: String, uploadTime: DateTime)
 case class JobInfo(jobId: String, contextName: String,
                    jarInfo: JarInfo, classPath: String,
                    startTime: DateTime, endTime: Option[DateTime],
-                   jobConfig: Config, error: Option[Throwable]) {
+                   error: Option[Throwable]) {
   def jobLengthMillis: Option[Long] = endTime.map { end => new Duration(startTime, end).getMillis() }
 
   def isRunning: Boolean = !endTime.isDefined
@@ -60,6 +60,21 @@ trait JobDAO {
    * @return
    */
   def getJobInfos: Map[String, JobInfo]
+
+  /**
+   * Persist a job configuration along with provided jobId.
+   *
+   * @param jobId
+   * @param jobConfig
+   */
+  def saveJobConfig(jobId: String, jobConfig: Config)
+
+  /**
+   * Return all job ids to their job configuration.
+   *
+   * @return
+   */
+  def getJobConfigs: Map[String, Config]
 
   /**
    * Returns the last upload time for a given app name.

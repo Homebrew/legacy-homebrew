@@ -34,7 +34,7 @@ with ScalatestRouteTest with HttpService {
   val routes = api.myRoutes
 
   val dt = DateTime.parse("2013-05-29T00Z")
-  val baseJobInfo = JobInfo("foo-1", "context", JarInfo("demo", dt), "com.abc.meme", dt, None, config, None)
+  val baseJobInfo = JobInfo("foo-1", "context", JarInfo("demo", dt), "com.abc.meme", dt, None, None)
   val StatusKey = "status"
   val ResultKey = "result"
 
@@ -61,9 +61,6 @@ with ScalatestRouteTest with HttpService {
       case GetJobStatuses(limitOpt) =>
         sender ! Seq(baseJobInfo,
                      baseJobInfo.copy(endTime = Some(dt.plusMinutes(5))))
-      case GetJobConfig("badjobid") => sender ! NoSuchJobId
-      case GetJobConfig(_)          => sender ! config
-
 
       case ListJars => sender ! Map("demo1" -> dt, "demo2" -> dt.plusHours(1))
       // Ok these really belong to a JarManager but what the heck, type unsafety!!
@@ -89,11 +86,14 @@ with ScalatestRouteTest with HttpService {
                                                           new IllegalArgumentException("foo")))
       case StartJob(_, _, config, events)     =>
         statusActor ! Subscribe("foo", sender, events)
-        statusActor ! JobStatusActor.JobInit(JobInfo("foo", "context", null, "", dt, None, config, None))
+        statusActor ! JobStatusActor.JobInit(JobInfo("foo", "context", null, "", dt, None, None), config)
         statusActor ! JobStarted("foo", "context1", dt)
         val map = config.entrySet().asScala.map { entry => (entry.getKey -> entry.getValue.unwrapped) }.toMap
         if (events.contains(classOf[JobResult])) sender ! JobResult("foo", map)
         statusActor ! Unsubscribe("foo", sender)
+
+      case GetJobConfig("badjobid") => sender ! NoSuchJobId
+      case GetJobConfig(_)          => sender ! config
 
     }
   }
