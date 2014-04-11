@@ -6,7 +6,7 @@ class Zbar < Formula
   sha1 '273b47c26788faba4325baecc34063e27a012963'
   revision 1
 
-  depends_on :x11 
+  depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'imagemagick'
