@@ -2,7 +2,7 @@ require 'formula'
 
 class Gtkx3 < Formula
   homepage 'http://gtk.org/'
-  url 'http://download.gnome.org/sources/gtk+/3.12/gtk+-3.12.0.tar.xz'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.12/gtk+-3.12.0.tar.xz'
   sha256 'eb69741cd4029b5a1ac9cf04d9de55dcf9e30777a63891750f5d20cc554b6e4b'
 
   bottle do

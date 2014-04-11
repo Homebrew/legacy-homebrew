@@ -24,11 +24,24 @@ class Dos2unix < Formula
   end
 
   test do
-    (testpath/'dosfile.txt').write("File with CRLFs\r\nThey will be converted")
-    system "#{bin}/dos2unix", 'dosfile.txt'
-    open('dosfile.txt') do |f|
-      converted = f.read(64)
-      fail if converted.include?("\r")
-    end
+    # write a file with lf
+    path = testpath/"test.txt"
+    path.write "foo\nbar\n"
+
+    # unix2mac: convert lf to cr
+    system "#{bin}/unix2mac", path
+    assert_equal "foo\rbar\r", path.read
+
+    # mac2unix: convert cr to lf
+    system "#{bin}/mac2unix", path
+    assert_equal "foo\nbar\n", path.read
+
+    # unix2dos: convert lf to cr+lf
+    system "#{bin}/unix2dos", path
+    assert_equal "foo\r\nbar\r\n", path.read
+
+    # dos2unix: convert cr+lf to lf
+    system "#{bin}/dos2unix", path
+    assert_equal "foo\nbar\n", path.read
   end
 end

@@ -4,15 +4,13 @@ class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
   url "http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.17.tar.gz"
   sha1 "53773d619d7f7bc1743f92fd65885a0581c37ff8"
+  revision 1
 
   bottle do
-    sha1 "14c5947971c0303348893fceb6c1edb5df5849ed" => :mavericks
-    sha1 "96f2e47df515590a20c14dfc9da15b483181bf07" => :mountain_lion
-    sha1 "f674566a77c3c950110df895f45cbe901b1c9ee2" => :lion
+    sha1 "a41817eea90f2150351f2862cec17c15acd45e07" => :mavericks
+    sha1 "f7a7fefcb7bf69dd3a5a5ec0de9c70e85ed7a4dc" => :mountain_lion
+    sha1 "6fb1710382c9cc1a67a5cde6dcd1951183cc007e" => :lion
   end
-
-  depends_on 'cmake' => :build
-  depends_on 'pidof' unless MacOS.version >= :mountain_lion
 
   option :universal
   option 'with-tests', 'Build with unit tests'
@@ -22,6 +20,10 @@ class Mysql < Formula
   option 'enable-local-infile', 'Build with local infile loading support'
   option 'enable-memcached', 'Enable innodb-memcached support'
   option 'enable-debug', 'Build with debug support'
+
+  depends_on 'cmake' => :build
+  depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on 'openssl'
 
   conflicts_with 'mysql-cluster', 'mariadb', 'percona-server',
     :because => "mysql, mariadb, and percona install the same binaries."
@@ -59,6 +61,7 @@ class Mysql < Formula
       -DINSTALL_INFODIR=share/info
       -DINSTALL_MYSQLSHAREDIR=share/mysql
       -DWITH_SSL=yes
+      -DWITH_SSL=system
       -DDEFAULT_CHARSET=utf8
       -DDEFAULT_COLLATION=utf8_general_ci
       -DSYSCONFDIR=#{etc}

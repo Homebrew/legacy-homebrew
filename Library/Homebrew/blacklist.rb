@@ -76,7 +76,7 @@ def blacklisted? name
   when 'rubinius' then <<-EOS.undent
     Rubinius requires an existing Ruby 2.0 to bootstrap.
     Doing this through Homebrew is error-prone. Instead, consider using
-    ruby-build` to build and install specific versions of Ruby:
+    `ruby-build` to build and install specific versions of Ruby:
         brew install ruby-build
     EOS
   when 'osmium' then <<-EOS.undent

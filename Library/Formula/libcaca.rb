@@ -8,7 +8,7 @@ class Libcaca < Formula
 
   option 'with-imlib2', 'Build with Imlib2 support'
 
-  depends_on :x11 if MacOS::X11.installed? or build.with? "imlib2"
+  depends_on :x11 if build.with? "imlib2"
 
   if build.with? "imlib2"
     depends_on 'pkg-config' => :build

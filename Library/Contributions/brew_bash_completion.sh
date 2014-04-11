@@ -265,6 +265,17 @@ _brew_link ()
     __brew_complete_installed
 }
 
+_brew_linkapps ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--local"
+        return
+        ;;
+    esac
+}
+
 _brew_list ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -493,6 +504,7 @@ _brew ()
     info|abv)                   _brew_info ;;
     install|instal|reinstall)   _brew_install ;;
     link|ln)                    _brew_link ;;
+    linkapps)                   _brew_linkapps ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
     missing)                    __brew_complete_formulae ;;

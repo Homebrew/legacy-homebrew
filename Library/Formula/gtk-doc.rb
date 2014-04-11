@@ -2,7 +2,7 @@ require 'formula'
 
 class GtkDoc < Formula
   homepage 'http://www.gtk.org/gtk-doc/'
-  url 'http://download.gnome.org/sources/gtk-doc/1.18/gtk-doc-1.18.tar.bz2'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gtk-doc/1.18/gtk-doc-1.18.tar.bz2'
   sha256 'a634d2e93d70468237033c06a17c97f29cf71a35ac5cc01c016324c965d42f73'
 
   depends_on 'pkg-config' => :build

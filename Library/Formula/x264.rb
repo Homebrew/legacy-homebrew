@@ -17,7 +17,7 @@ class X264 < Formula
   # The patch will be merged in the official repository soon.
   patch do
     url "https://github.com/DarkShikari/x264-devel/commit/bc3b27.patch"
-    sha1 "6c3d1bc241c64d8df64273df403d43e3116bd567"
+    sha1 "3a156908998c6c8588e4f50d125fa1cfe8a1eba7"
   end
 
   bottle do
