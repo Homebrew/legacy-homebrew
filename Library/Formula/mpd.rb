@@ -34,6 +34,8 @@ class Mpd < Formula
   depends_on "sqlite"
   depends_on "libsamplerate"
 
+  needs :cxx11
+
   depends_on "libmpdclient"
   depends_on "ffmpeg"                   # lots of codecs
   # mpd also supports mad, mpg123, libsndfile, and audiofile, but those are
