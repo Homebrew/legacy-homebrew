@@ -61,7 +61,7 @@ class CompilerFailure
     # Non-Apple compilers are in the format fails_with compiler => version
     if compiler.is_a? Hash
       # currently the only compiler for this case is GCC
-      _, @major_version = compiler.shift
+      _, @major_version = compiler.first
       @compiler = 'gcc-' + @major_version
     else
       @compiler = compiler
