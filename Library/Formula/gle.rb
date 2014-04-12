@@ -10,7 +10,7 @@ class Gle < Formula
   depends_on :x11
   depends_on 'jpeg' => :optional
   depends_on 'libtiff' => :optional
-  depends_on 'cairo' => :build
+  depends_on 'cairo'
 
   # fix namespace issues causing compilation errors
   # https://trac.macports.org/ticket/41760
