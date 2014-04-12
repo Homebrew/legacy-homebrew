@@ -109,7 +109,7 @@ begin
     end
     exec "brew-#{cmd}", *ARGV
   elsif require? which("brew-#{cmd}.rb").to_s
-    exit 0
+    exit Homebrew.failed? ? 1 : 0
   else
     onoe "Unknown command: #{cmd}"
     exit 1
