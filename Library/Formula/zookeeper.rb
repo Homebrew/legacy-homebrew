@@ -120,4 +120,11 @@ class Zookeeper < Formula
     cp 'conf/zoo_sample.cfg', 'conf/zoo.cfg'
     (etc/'zookeeper').install ['conf/zoo.cfg', 'conf/zoo_sample.cfg']
   end
+
+  def caveats; <<-EOS.undent
+    Zookeeper can be started with:
+
+        sudo zkServer start
+    EOS
+  end
 end
