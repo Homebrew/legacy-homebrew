@@ -13,15 +13,14 @@ class Fwknop < Formula
   depends_on 'gpgme'
 
   def install
-    system './autogen.sh' if build.head? || !File.exist?('configure')
-    system './configure',
-           '--disable-dependency-tracking',
-           "--prefix=#{prefix}",
-           '--with-gpgme'
-    system 'make install'
+    system './autogen.sh' if build.head? or !File.exist?('configure')
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-gpgme"
+    system "make install"
   end
 
   test do
-    system "#{bin}/fwknop", '--version'
+    system "#{bin}/fwknop", "--version"
   end
 end
