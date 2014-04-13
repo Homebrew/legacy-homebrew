@@ -2,8 +2,8 @@ require 'formula'
 
 class Pass < Formula
   homepage 'http://zx2c4.com/projects/password-store'
-  url 'http://git.zx2c4.com/password-store/snapshot/password-store-1.4.2.tar.xz'
-  sha256 'a10a8016a3d6bb32891a9a4086ac0a049587db1a55c1ac3b431c66189bc1a302'
+  url 'http://git.zx2c4.com/password-store/snapshot/password-store-1.5.tar.xz'
+  sha256 '6d3f327b039bb64157662d3d11af5ecebd3774b886ad6e52a684654d9914a8f3'
 
   head 'http://git.zx2c4.com/password-store', :using => :git
 
@@ -14,11 +14,8 @@ class Pass < Formula
 
   def install
     system "make DESTDIR=#{prefix} PREFIX=/ install"
-    if build.head?
-      zsh_completion.install "src/completion/pass.zsh-completion" => "_pass"
-    else
-      zsh_completion.install "contrib/pass.zsh-completion" => "_pass"
-    end
+    share.install "contrib"
+    zsh_completion.install "src/completion/pass.zsh-completion" => "_pass"
   end
 
   test do
