@@ -2,8 +2,8 @@ require 'formula'
 
 class Sdl2 < Formula
   homepage 'http://www.libsdl.org/'
-  url 'http://libsdl.org/release/SDL2-2.0.2.tar.gz'
-  sha1 '304c7cd3dddca98724a3e162f232a8a8f6e1ceb3'
+  url 'http://libsdl.org/release/SDL2-2.0.3.tar.gz'
+  sha1 '21c45586a4e94d7622e371340edec5da40d06ecc'
 
   bottle do
     cellar :any
