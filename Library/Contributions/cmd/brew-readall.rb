@@ -4,7 +4,23 @@
 # or to determine if any current formulae have Ruby issues
 
 require 'formula'
-Formula.names.each do |n|
+require 'cmd/tap'
+
+formulae = []
+if ARGV.empty?
+  formulae = Formula.names
+else
+  tap_name = ARGV.first
+  # Allow use of e.g. homebrew/versions or homebrew-versions
+  tap_dir = tap_name.reverse.sub('/', '-').reverse
+  tap = Pathname("#{HOMEBREW_LIBRARY}/Taps/#{tap_dir}")
+  raise "#{tap} does not exist!" unless tap.exist?
+  tap.find_formula do |f|
+    formulae << (tap/f).tap_ref
+  end
+end
+
+formulae.sort.each do |n|
   begin
     Formula.factory(n)
   rescue Exception => e
