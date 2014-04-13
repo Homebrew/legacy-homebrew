@@ -7,9 +7,9 @@ class Sdl2 < Formula
 
   bottle do
     cellar :any
-    sha1 "2b6f9e9534325cf8f5c558f11be96cf5b438001b" => :mavericks
-    sha1 "32697d2b975224d24232a12cae5976de70d735c1" => :mountain_lion
-    sha1 "7de4c31f1b527ecdaa9704b8e385b377f5285e6e" => :lion
+    sha1 "33749bf276e522b7a2c14c725d30905e880b3667" => :mavericks
+    sha1 "c03011f60cb6099fdeb5726fb39d7fee3d25b8a4" => :mountain_lion
+    sha1 "e952fdca85139ccab6f9bcffc90630088760029d" => :lion
   end
 
   head do
