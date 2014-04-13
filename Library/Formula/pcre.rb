@@ -2,9 +2,9 @@ require 'formula'
 
 class Pcre < Formula
   homepage 'http://www.pcre.org/'
-  url 'https://downloads.sourceforge.net/project/pcre/pcre/8.34/pcre-8.34.tar.bz2'
-  mirror 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.34.tar.bz2'
-  sha256 'b6043ae1ff2720be665ffa28dc22b7c637cdde96f389a116c0c3020caeae583f'
+  url 'https://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.bz2'
+  mirror 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.35.tar.bz2'
+  sha256 'a961c1c78befef263cc130756eeca7b674b4e73a81533293df44e4265236865b'
 
   bottle do
     cellar :any
