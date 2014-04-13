@@ -8,7 +8,14 @@ class Opam < Formula
   head 'https://github.com/ocaml/opam.git'
 
   depends_on "objective-caml"
-  depends_on "aspcud" => :recommended
+
+  if MacOS.version >= :mountain_lion
+    depends_on "aspcud" => :recommended
+
+    if build.with? "aspcud"
+      needs :cxx11
+    end
+  end
 
   def install
     ENV.deparallelize
