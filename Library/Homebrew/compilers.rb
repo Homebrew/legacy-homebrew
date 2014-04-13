@@ -28,11 +28,40 @@ class CompilerFailure
   attr_reader :compiler, :major_version
   attr_rw :cause, :version
 
+  MESSAGES = {
+    :cxx11 => 'This compiler does not support C++11'
+  }
+
+  COLLECTIONS = {
+    :cxx11 => [
+      [:gcc_4_0, proc { cause MESSAGES[:cxx11] }],
+      [:gcc, proc { cause MESSAGES[:cxx11] }],
+      [:clang, proc { build 425; cause MESSAGES[:cxx11] }],
+      [{:gcc => '4.3'}, proc { cause MESSAGES[:cxx11] }],
+      [{:gcc => '4.4'}, proc { cause MESSAGES[:cxx11] }],
+      [{:gcc => '4.5'}, proc { cause MESSAGES[:cxx11] }],
+      [{:gcc => '4.6'}, proc { cause MESSAGES[:cxx11] }]
+    ],
+    :openmp => [
+      [:clang, proc { cause 'clang does not support OpenMP' }]
+    ]
+  }
+
+  def self.for_standard standard
+    failures = COLLECTIONS.fetch(standard) do
+      raise ArgumentError, "\"#{standard}\" is not a recognized standard"
+    end
+
+    failures.map do |compiler, block|
+      CompilerFailure.new(compiler, &block)
+    end
+  end
+
   def initialize compiler, &block
     # Non-Apple compilers are in the format fails_with compiler => version
     if compiler.is_a? Hash
       # currently the only compiler for this case is GCC
-      _, @major_version = compiler.shift
+      _, @major_version = compiler.first
       @compiler = 'gcc-' + @major_version
     else
       @compiler = compiler

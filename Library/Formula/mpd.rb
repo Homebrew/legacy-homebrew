@@ -4,13 +4,8 @@ class Mpd < Formula
   homepage "http://www.musicpd.org/"
 
   stable do
-    url "http://www.musicpd.org/download/mpd/0.17/mpd-0.17.5.tar.bz2"
-    mirror "http://ftp.netbsd.org/pub/pkgsrc/distfiles/mpd-0.17.5.tar.bz2"
-    sha1 "91e4d8d364a3db02e6f92676dd938880e5bb200a"
-
-    # Removes usage of deprecated AVCODEC_MAX_AUDIO_FRAME_SIZE constant
-    # We're many versions behind; this bug has long since been fixed upstream
-    patch :DATA
+    url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.9.tar.xz"
+    sha1 "70e96857d68c0191bbf721aa08a8b5f4ec8120c7"
   end
 
   head do
@@ -26,6 +21,7 @@ class Mpd < Formula
   option "with-flac", "Build with flac support (for Flac encoding when streaming)"
   option "with-vorbis", "Build with vorbis support (for Ogg encoding)"
   option "with-yajl", "Build with yajl support (for playing from soundcloud)"
+
   if MacOS.version < :lion
     option "with-libwrap", "Build with libwrap (TCP Wrappers) support"
   elsif MacOS.version == :lion
@@ -38,6 +34,9 @@ class Mpd < Formula
   depends_on "sqlite"
   depends_on "libsamplerate"
 
+  needs :cxx11
+
+  depends_on "libmpdclient"
   depends_on "ffmpeg"                   # lots of codecs
   # mpd also supports mad, mpg123, libsndfile, and audiofile, but those are
   # redundant with ffmpeg
@@ -75,12 +74,12 @@ class Mpd < Formula
       --enable-bzip2
       --enable-ffmpeg
       --enable-fluidsynth
+      --enable-osx
     ]
 
     args << "--disable-mad"
     args << "--disable-curl" if MacOS.version <= :leopard
 
-    args << "--with-faad=#{Formula["faad2"].opt_prefix}"
     args << "--enable-zzip" if build.with? "libzzip"
     args << "--enable-lastfm" if build.with? "lastfm"
     args << "--disable-libwrap" if build.without? "libwrap"
@@ -94,8 +93,7 @@ class Mpd < Formula
     system "make install"
   end
 
-  def caveats
-    <<-EOS
+  def caveats; <<-EOS.undent
       As of mpd-0.17.4, this formula no longer enables support for streaming
       output by default. If you want streaming output, you must now specify
       the --with-libshout, --with-lame, --with-twolame, and/or --with-flac
@@ -109,23 +107,3 @@ class Mpd < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/src/decoder/ffmpeg_decoder_plugin.c b/src/decoder/ffmpeg_decoder_plugin.c
-index 58bd2f5..65aa37f 100644
---- a/src/decoder/ffmpeg_decoder_plugin.c
-+++ b/src/decoder/ffmpeg_decoder_plugin.c
-@@ -299,11 +299,11 @@ ffmpeg_send_packet(struct decoder *decoder, struct input_stream *is,
- #endif
- 
- #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53,25,0)
--	uint8_t aligned_buffer[(AVCODEC_MAX_AUDIO_FRAME_SIZE * 3) / 2 + 16];
-+	uint8_t aligned_buffer[(192000 * 3) / 2 + 16];
- 	const size_t buffer_size = sizeof(aligned_buffer);
- #else
- 	/* libavcodec < 0.8 needs an aligned buffer */
--	uint8_t audio_buf[(AVCODEC_MAX_AUDIO_FRAME_SIZE * 3) / 2 + 16];
-+	uint8_t audio_buf[(192000 * 3) / 2 + 16];
- 	size_t buffer_size = sizeof(audio_buf);
- 	int16_t *aligned_buffer = align16(audio_buf, &buffer_size);
- #endif

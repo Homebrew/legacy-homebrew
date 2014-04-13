@@ -47,28 +47,7 @@ class Mkvtoolnix < Formula
     depends_on 'libebml' => 'c++11'
   end
 
-  fails_with :clang do
-    build 425
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
-  end
-
-  fails_with :gcc do
-    build 5666
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
-  end
-
-  fails_with :gcc => '4.5.4' do
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
-  end
-
-  fails_with :gcc_4_0 do
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
-  end;
-
-  fails_with :llvm do
-    build 2336
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
-  end
+  needs :cxx11
 
   def install
     ENV.cxx11

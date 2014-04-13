@@ -15,16 +15,16 @@ class Opensc < Formula
 
   option 'with-man-pages', 'Build manual pages'
 
-  depends_on 'docbook' if build.with? "man-pages"
+  depends_on 'docbook-xsl' if build.with? "man-pages"
 
   def install
     extra_args = []
 
-    # If OpenSC's configure script detects docbook it will build manual
-    # pages. This extends the spirit of that logic to support homebrew
-    # installed docbook.
-    docbook = Formula["docbook"]
-    if docbook.installed?
+    if build.with? "man-pages"
+      # If OpenSC's configure script detects docbook it will build manual
+      # pages. This extends the spirit of that logic to support homebrew
+      # installed docbook.
+      docbook_xsl = Formula["docbook-xsl"]
       # OpenSC looks in a set of common paths for docbook's xsl files,
       # but not in /usr/local, and certainly not in homebrew's
       # cellar. This specifies the correct homebrew path.
@@ -33,7 +33,7 @@ class Opensc < Formula
       # will always refer to the latest version which is not
       # necessarily the installed version.
       extra_args << "--with-xsl-stylesheetsdir=" +
-        Dir[docbook.opt_prefix/'docbook/xsl/*'].first
+        "#{docbook_xsl.opt_prefix}/docbook-xsl/"
     end
 
     system "./bootstrap" if build.head?
@@ -45,10 +45,5 @@ class Opensc < Formula
                           *extra_args
 
     system "make install"
-  end
-
-  def caveats; <<-EOS.undent
-    Manual pages will be installed if docbook is installed.
-    EOS
   end
 end
