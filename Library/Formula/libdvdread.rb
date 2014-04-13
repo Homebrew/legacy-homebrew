@@ -12,6 +12,7 @@ class Libdvdread < Formula
   depends_on :autoconf
   depends_on :automake
   depends_on :libtool
+  depends_on :libksba
 
   def install
     ENV.append "CFLAGS", "-DHAVE_DVDCSS_DVDCSS_H"
