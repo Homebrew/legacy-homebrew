@@ -135,7 +135,7 @@ class Keg < Pathname
     shortpath = HOMEBREW_PREFIX.join(relative_path)
 
     if shortpath.exist? and not options[:keg_only]
-      shortpath
+      shortpath.to_s
     else
       "#{HOMEBREW_PREFIX}/opt/#{fname}/#{relative_path}"
     end
