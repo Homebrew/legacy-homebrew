@@ -1,10 +1,10 @@
 require 'formula'
 
 class Nmap < Formula
-  homepage 'http://nmap.org/'
-  head 'https://guest:@svn.nmap.org/nmap/', :using => :svn
-  url 'http://nmap.org/dist/nmap-6.40.tar.bz2'
-  sha1 'ee1bec1bb62045c7c1fc69ff183b2ae9b97bd0eb'
+  homepage "http://nmap.org/"
+  head "https://guest:@svn.nmap.org/nmap/", :using => :svn
+  url "http://nmap.org/dist/nmap-6.45.tar.bz2"
+  sha1 "3a634d319c57f6d93e5ccb69b45c133690d437e1"
 
   depends_on "openssl"
 
