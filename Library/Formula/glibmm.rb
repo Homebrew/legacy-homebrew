@@ -2,8 +2,8 @@ require 'formula'
 
 class Glibmm < Formula
   homepage 'http://www.gtkmm.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.38/glibmm-2.38.1.tar.xz'
-  sha256 '49c925ee1d3c4d0d6cd7492d7173bd6826db51d0b55f458a6496406ae267c4a2'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.40/glibmm-2.40.0.tar.xz'
+  sha256 '34f320fad7e0057c63863706caa802ae0051b21523bed91ec33baf8421ca484f'
 
   bottle do
     sha1 "b405d3bd887ab8268eafb7d01a7fcb32977a3f97" => :mavericks
