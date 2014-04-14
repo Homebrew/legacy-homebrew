@@ -26,6 +26,8 @@ class Gource < Formula
   depends_on 'sdl2'
   depends_on 'sdl2_image'
 
+  needs :cxx11
+
   def install
     # For non-/usr/local installs
     ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
