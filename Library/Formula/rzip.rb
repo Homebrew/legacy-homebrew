@@ -15,4 +15,18 @@ class Rzip < Formula
     bin.install_symlink "rzip" => "runzip"
     man1.install_symlink "rzip.1" => "runzip.1"
   end
+
+  test do
+    path = testpath/"data.txt"
+    original_contents = "." * 1000
+    path.write original_contents
+
+    # compress: data.txt -> data.txt.rz
+    system bin/"rzip", path
+    assert !path.exist?
+
+    # decompress: data.txt.rz -> data.txt
+    system bin/"rzip", "-d", "#{path}.rz"
+    assert_equal original_contents, path.read
+  end
 end

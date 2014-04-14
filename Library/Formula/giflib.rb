@@ -9,9 +9,10 @@ class Giflib < Formula
 
   bottle do
     cellar :any
-    sha1 "2209a7375d900a30fedb891bab76d083e2527bcd" => :mavericks
-    sha1 "ff9967bdafa5a99db65a62f314f6ea991a0c57d0" => :mountain_lion
-    sha1 "59942fcaeba8bb7a9ca20fc8a450b92cda28a1b4" => :lion
+    revision 1
+    sha1 "e99b2399840944556718eed7cb2d1cd6157c180c" => :mavericks
+    sha1 "d0fcd488bf297fa37308a871e4429461d9883a77" => :mountain_lion
+    sha1 "444a87614d92ffa84e0a033dd7275ff2b7c3ab50" => :lion
   end
 
   option :universal
