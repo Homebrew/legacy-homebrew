@@ -19,7 +19,12 @@ class Gource < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glm' => :build
 
-  depends_on 'boost'
+  if MacOS.version < :mavericks
+    depends_on 'boost' => 'c++11'
+  else
+    depends_on 'boost'
+  end
+
   depends_on 'glew'
   depends_on 'jpeg'
   depends_on 'pcre'
