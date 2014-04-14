@@ -2,9 +2,9 @@ require 'formula'
 
 class Icu4c < Formula
   homepage 'http://site.icu-project.org/'
-  url 'http://download.icu-project.org/files/icu4c/52.1/icu4c-52_1-src.tgz'
-  version '52.1'
-  sha1 '6de440b71668f1a65a9344cdaf7a437291416781'
+  url 'http://download.icu-project.org/files/icu4c/53.1/icu4c-53_1-src.tgz'
+  version '53.1'
+  sha1 '7eca017fdd101e676d425caaf28ef862d3655e0f'
   head 'http://source.icu-project.org/repos/icu/icu/trunk/', :using => :svn
 
   bottle do
