@@ -143,7 +143,7 @@ class Zookeeper < Formula
         <key>RunAtLoad</key>
         <true/>
         <key>WorkingDirectory</key>
-        <string>/usr/local/var/run/zookeeper</string>
+        <string>#{var}</string>
       </dict>
     </plist>
     EOS
