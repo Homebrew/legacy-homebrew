@@ -55,6 +55,11 @@ class Mpd < Formula
   depends_on "libvorbis" if build.with? "vorbis" # Vorbis support
 
   def install
+    # mpd specifies -std=gnu++0x, but clang appears to try to build
+    # that against libstdc++ anyway, which won't work.
+    # The build is fine with G++.
+    ENV.libcxx
+
     if build.include? "lastfm" or build.include? "libwrap" \
        or build.include? "enable-soundcloud"
       opoo "You are using an option that has been replaced."
