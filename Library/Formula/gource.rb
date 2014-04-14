@@ -29,6 +29,8 @@ class Gource < Formula
   needs :cxx11
 
   def install
+    ENV.libcxx
+
     # For non-/usr/local installs
     ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
 
