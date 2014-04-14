@@ -13,6 +13,7 @@ class Neon < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'curl-ca-bundle'
 
   # Configure switch unconditionally adds the -no-cpp-precomp switch
   # to CPPFLAGS, which is an obsolete Apple-only switch that breaks
@@ -28,7 +29,7 @@ class Neon < Formula
       "--prefix=#{prefix}",
       "--enable-shared",
       "--disable-static",
-      "--with-ca-bundle=/usr/share/curl/curl-ca-bundle.crt",
+      "--with-ca-bundle=#{Formula["curl-ca-bundle"].opt_prefix}/share/ca-bundle.crt",
       "--disable-nls",
       "--with-ssl",
     ]
