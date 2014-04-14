@@ -31,6 +31,7 @@ class Gnutls < Formula
       --disable-static
       --prefix=#{prefix}
       --sysconfdir=#{etc}
+      --with-default-trust-store-file=#{etc}/openssl/cert.pem
     ]
 
     if build.with? 'guile'
@@ -44,5 +45,9 @@ class Gnutls < Formula
     # certtool shadows the OS X certtool utility
     mv bin+'certtool', bin+'gnutls-certtool'
     mv man1+'certtool.1', man1+'gnutls-certtool.1'
+  end
+
+  def post_install
+    Formula["openssl"].post_install
   end
 end
