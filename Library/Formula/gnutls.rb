@@ -2,9 +2,9 @@ require 'formula'
 
 class Gnutls < Formula
   homepage 'http://gnutls.org'
-  url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2/gnutls-3.2.12.1.tar.xz'
-  mirror 'http://mirrors.dotsrc.org/gcrypt/gnutls/v3.2/gnutls-3.2.12.1.tar.xz'
-  sha1 '5ad26522ec18d6b54a17ff8d1d5b69bf2cd5c7ce'
+  url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2/gnutls-3.2.13.tar.xz'
+  mirror 'http://mirrors.dotsrc.org/gcrypt/gnutls/v3.2/gnutls-3.2.13.tar.xz'
+  sha1 'c4a95902bb67df46e9b2c08d4c10523db94e2736'
 
   bottle do
     cellar :any
