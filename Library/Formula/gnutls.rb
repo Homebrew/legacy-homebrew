@@ -30,6 +30,7 @@ class Gnutls < Formula
       --disable-dependency-tracking
       --disable-static
       --prefix=#{prefix}
+      --sysconfdir=#{etc}
     ]
 
     if build.with? 'guile'
