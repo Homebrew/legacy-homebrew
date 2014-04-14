@@ -36,6 +36,7 @@ class CompilerFailure
     :cxx11 => [
       [:gcc_4_0, proc { cause MESSAGES[:cxx11] }],
       [:gcc, proc { cause MESSAGES[:cxx11] }],
+      [:llvm, proc { cause MESSAGES[:cxx11] }],
       [:clang, proc { build 425; cause MESSAGES[:cxx11] }],
       [{:gcc => '4.3'}, proc { cause MESSAGES[:cxx11] }],
       [{:gcc => '4.4'}, proc { cause MESSAGES[:cxx11] }],
