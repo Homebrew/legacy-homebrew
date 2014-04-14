@@ -8,7 +8,6 @@ class Msmtp < Formula
   depends_on 'pkg-config' => :build
   depends_on 'curl-ca-bundle' => :optional
 
-  # msmtp enables OS X Keychain support by default, so no need to ask for it.
 
   def install
     # Msmtp will build against gnutls by default if it exists on the
@@ -17,6 +16,7 @@ class Msmtp < Formula
     # or not gnutls is present.
     args = %W[
       --disable-dependency-tracking
+      --with-macosx-keyring
       --prefix=#{prefix}
       --with-ssl=openssl
     ]
