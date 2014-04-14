@@ -6,14 +6,9 @@ class Msmtp < Formula
   sha1 '03186a70035dbbf7a31272a20676b96936599704'
 
   depends_on 'pkg-config' => :build
-  depends_on 'curl-ca-bundle' => :optional
-
+  depends_on 'openssl'
 
   def install
-    # Msmtp will build against gnutls by default if it exists on the
-    # system.  This sets up problems if the user later removes gnutls.
-    # So explicitly ask for openssl, and ye shall receive it whether
-    # or not gnutls is present.
     args = %W[
       --disable-dependency-tracking
       --with-macosx-keyring
