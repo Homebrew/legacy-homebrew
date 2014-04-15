@@ -81,23 +81,13 @@ module OS
 
         return "0" unless OS.mac?
 
-        # this shortcut makes version work for people who don't realise you
-        # need to install the CLI tools
-        # TODO investigate and update the above comment; what does this mean
-        # for modern installs (Xcode 5 on 10.8/9)?
-        xcode43build = Pathname.new("#{prefix}/usr/bin/xcodebuild")
-        if xcode43build.file?
-          `#{xcode43build} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
-          return $1 if $1
+        %W[#{prefix}/usr/bin/xcodebuild #{which("xcodebuild")}].uniq.each do |path|
+          if File.file? path
+            `#{path} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
+            return $1 if $1
+          end
         end
 
-        xcodebuild = which "xcodebuild"
-        raise unless xcodebuild && xcodebuild != xcode43build
-
-        `xcodebuild -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
-        raise if $1.nil? or not $?.success?
-        $1
-      rescue
         # For people who's xcode-select is unset, or who have installed
         # xcode-gcc-installer or whatever other combinations we can try and
         # supprt. See https://github.com/Homebrew/homebrew/wiki/Xcode
