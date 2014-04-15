@@ -6,7 +6,6 @@ module OS
       V4_BUNDLE_ID = "com.apple.dt.Xcode"
       V3_BUNDLE_ID = "com.apple.Xcode"
       V4_BUNDLE_PATH = Pathname.new("/Applications/Xcode.app")
-      V3_BUNDLE_PATH = Pathname.new("/Developer/Applications/Xcode.app")
 
       # Locate the "current Xcode folder" via xcode-select. See:
       # man xcode-select
