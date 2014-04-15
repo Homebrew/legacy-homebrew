@@ -63,10 +63,7 @@ module Homebrew extend self
           tapped += 1
         else
           to = to.realpath if to.exist?
-          # Whitelist gcc42 temporarily until Mavericks/Xcode 5.0 issues are resolved.
-          unless to.tap_ref == 'Homebrew/homebrew/apple-gcc42'
-            opoo "Could not tap #{Tty.white}#{from.tap_ref}#{Tty.reset} over #{Tty.white}#{to.tap_ref}#{Tty.reset}"
-          end
+          opoo "Could not tap #{Tty.white}#{from.tap_ref}#{Tty.reset} over #{Tty.white}#{to.tap_ref}#{Tty.reset}"
         end
       end
     end
