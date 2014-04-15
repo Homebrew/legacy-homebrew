@@ -20,9 +20,6 @@ class Ganglia < Formula
   end
 
   def install
-    # ENV var needed to confirm putting the config in the prefix until 3.2
-    ENV['GANGLIA_ACK_SYSCONFDIR'] = '1'
-
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
