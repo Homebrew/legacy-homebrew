@@ -96,11 +96,6 @@ module OS
           return $1 if $1
         end
 
-        # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
-        # FIXME Is this still true? On what versions? Will the above xcodebuild
-        # call hang also? Document this.
-        raise if bad_xcode_select_path?
-
         xcodebuild = which "xcodebuild"
         raise unless xcodebuild && xcodebuild != xcode43build
 
