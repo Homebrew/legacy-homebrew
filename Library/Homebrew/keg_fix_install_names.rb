@@ -45,10 +45,15 @@ class Keg < Pathname
       changed = s.gsub!(old_cellar, new_cellar)
       changed = s.gsub!(old_prefix, new_prefix) || changed
 
-      if changed
+      begin
         first.atomic_write(s)
+      rescue Errno::EACCES
+        first.ensure_writable do
+          first.open("wb") { |f| f.write(s) }
+        end
+      else
         rest.each { |file| FileUtils.ln(first, file, :force => true) }
-      end
+      end if changed
     end
   end
 
@@ -125,14 +130,16 @@ class Keg < Pathname
   end
 
   def dylib_id_for file, options={}
-    # the shortpath ensures that library upgrades don’t break installed tools
-    relative_path = file.relative_path_from(self)
-    shortpath = HOMEBREW_PREFIX.join(relative_path)
+    # The new dylib ID should have the same basename as the old dylib ID, not
+    # the basename of the file itself.
+    basename = File.basename(file.dylib_id)
+    relative_dirname = file.dirname.relative_path_from(self)
+    shortpath = HOMEBREW_PREFIX.join(relative_dirname, basename)
 
     if shortpath.exist? and not options[:keg_only]
-      shortpath
+      shortpath.to_s
     else
-      "#{HOMEBREW_PREFIX}/opt/#{fname}/#{relative_path}"
+      "#{HOMEBREW_PREFIX}/opt/#{fname}/#{relative_dirname}/#{basename}"
     end
   end
 
@@ -171,13 +178,13 @@ class Keg < Pathname
   def pkgconfig_files
     pkgconfig_files = []
 
-    # find .pc files, which are stored in lib/pkgconfig
-    pc_dir = self/'lib/pkgconfig'
-    if pc_dir.directory?
-      pc_dir.find do |pn|
+    %w[lib share].each do |dir|
+      pcdir = join(dir, "pkgconfig")
+
+      pcdir.find do |pn|
         next if pn.symlink? or pn.directory? or pn.extname != '.pc'
         pkgconfig_files << pn
-      end
+      end if pcdir.directory?
     end
 
     pkgconfig_files
@@ -190,7 +197,7 @@ class Keg < Pathname
     lib.find do |pn|
       next if pn.symlink? or pn.directory? or pn.extname != '.la'
       libtool_files << pn
-    end
+    end if lib.directory?
     libtool_files
   end
 end

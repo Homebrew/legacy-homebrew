@@ -2,8 +2,8 @@ require 'formula'
 
 class PyenvPipRehash < Formula
   homepage 'https://github.com/yyuu/pyenv-pip-rehash'
-  url 'https://github.com/yyuu/pyenv-pip-rehash/archive/v0.0.3.tar.gz'
-  sha1 'c0d354c7886aed142a46dfd8cf427a7000f40896'
+  url 'https://github.com/yyuu/pyenv-pip-rehash/archive/v0.0.4.tar.gz'
+  sha1 'afbce380b888c987138f28d33fe1ba5a38cdb41a'
 
   head 'https://github.com/yyuu/pyenv-pip-rehash.git'
 

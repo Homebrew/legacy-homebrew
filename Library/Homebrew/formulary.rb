@@ -5,12 +5,12 @@ class Formulary
     Object.send(:remove_const, class_s(formula_name))
   end
 
-  def self.formula_class_defined? formula_name
-    Object.const_defined?(class_s(formula_name))
+  def self.formula_class_defined? class_name
+    Object.const_defined?(class_name)
   end
 
-  def self.get_formula_class formula_name
-    Object.const_get(class_s(formula_name))
+  def self.get_formula_class class_name
+    Object.const_get(class_name)
   end
 
   def self.restore_formula formula_name, value
@@ -21,12 +21,10 @@ class Formulary
   end
 
   def self.class_s name
-    (@class_s ||= {}).fetch(name) do
-      class_name = name.capitalize
-      class_name.gsub!(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase }
-      class_name.gsub!('+', 'x')
-      @class_s[name] = class_name
-    end
+    class_name = name.capitalize
+    class_name.gsub!(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase }
+    class_name.gsub!('+', 'x')
+    class_name
   end
 
   # A FormulaLoader returns instances of formulae.
@@ -36,6 +34,14 @@ class Formulary
     attr_reader :name
     # The formula's ruby file's path or filename
     attr_reader :path
+    # The ruby constant name of the formula's class
+    attr_reader :class_name
+
+    def initialize(name, path)
+      @name = name
+      @path = path.resolved_path
+      @class_name = Formulary.class_s(name)
+    end
 
     # Gets the formula instance.
     def get_formula
@@ -46,7 +52,7 @@ class Formulary
     # it has not been parsed before.
     def klass
       begin
-        have_klass = Formulary.formula_class_defined? name
+        have_klass = Formulary.formula_class_defined? class_name
       rescue NameError
         raise FormulaUnavailableError.new(name)
       end
@@ -65,7 +71,7 @@ class Formulary
         end
       end
 
-      klass = Formulary.get_formula_class(name)
+      klass = Formulary.get_formula_class(class_name)
       if klass == Formula || !(klass < Formula)
         raise FormulaUnavailableError.new(name)
       end
@@ -82,11 +88,12 @@ class Formulary
         if ARGV.homebrew_developer?
           opoo "Add a new regex to bottle_version.rb to parse this filename."
         end
-        @name = bottle_name
+        name = bottle_name
       else
-        @name = name_without_version
+        name = name_without_version
       end
-      @path = Formula.path(@name)
+
+      super name, Formula.path(name)
     end
 
     def get_formula
@@ -98,21 +105,24 @@ class Formulary
 
   # Loads formulae from Homebrew's provided Library
   class StandardLoader < FormulaLoader
-    def initialize name
-      @name = name
-      @path = Formula.path(name)
+    def initialize name, path=Formula.path(name)
+      super
+    end
+  end
+
+  class AliasLoader < FormulaLoader
+    def initialize alias_path
+      path = alias_path.resolved_path
+      name = path.basename(".rb").to_s
+      super name, path
     end
   end
 
   # Loads formulae from disk using a path
   class FromPathLoader < FormulaLoader
     def initialize path
-      # require allows filenames to drop the .rb extension, but everything else
-      # in our codebase will require an exact and fullpath.
-      path = "#{path}.rb" unless path =~ /\.rb$/
-
-      @path = Pathname.new(path).expand_path
-      @name = @path.stem
+      path = Pathname.new(path).expand_path
+      super path.basename(".rb").to_s, path
     end
   end
 
@@ -122,13 +132,12 @@ class Formulary
 
     def initialize url
       @url = url
-      @path = HOMEBREW_CACHE_FORMULA/File.basename(url)
-      @name = File.basename(url, '.rb')
+      super File.basename(url, ".rb"), HOMEBREW_CACHE_FORMULA/File.basename(url)
     end
 
     # Downloads the formula's .rb file
     def fetch
-      unless Formulary.formula_class_defined? name
+      unless Formulary.formula_class_defined? class_name
         HOMEBREW_CACHE_FORMULA.mkpath
         FileUtils.rm path.to_s, :force => true
         curl url, '-o', path.to_s
@@ -143,15 +152,29 @@ class Formulary
 
   # Loads tapped formulae.
   class TapLoader < FormulaLoader
+    attr_reader :tapped_name
+
     def initialize tapped_name
-      @name = tapped_name
-      @path = Pathname.new(tapped_name)
+      @tapped_name = tapped_name
+      user, repo, name = tapped_name.split("/", 3).map(&:downcase)
+      tap = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}-#{repo}")
+      path = tap.join("#{name}.rb")
+
+      if tap.directory?
+        tap.find_formula do |child|
+          if child.basename(".rb").to_s == name
+            path = tap.join(child)
+          end
+        end
+      end
+
+      super name, path
     end
 
     def get_formula
       super
-    rescue FormulaUnavailableError => e
-      raise TapFormulaUnavailableError.new(e.name)
+    rescue FormulaUnavailableError
+      raise TapFormulaUnavailableError.new(tapped_name)
     end
   end
 
@@ -162,27 +185,42 @@ class Formulary
   # * a formula URL
   # * a local bottle reference
   def self.factory ref
-    # If a URL is passed, download to the cache and install
-    if ref =~ %r[(https?|ftp)://]
-      f = FromUrlLoader.new(ref)
-    elsif ref =~ Pathname::BOTTLE_EXTNAME_RX
-      f = BottleLoader.new(ref)
-    else
-      name_or_path = Formula.canonical_name(ref)
-      if name_or_path =~ HOMEBREW_TAP_FORMULA_REGEX
-        # name appears to be a tapped formula, so we don't munge it
-        # in order to provide a useful error message when require fails.
-        f = TapLoader.new(name_or_path)
-      elsif name_or_path.include? "/"
-        # If name was a path or mapped to a cached formula
-        f = FromPathLoader.new(name_or_path)
-      elsif name_or_path =~ /\.rb$/
-        f = FromPathLoader.new(File.expand_path(name_or_path))
-      else
-        f = StandardLoader.new(name_or_path)
-      end
+    loader_for(ref).get_formula
+  end
+
+  def self.canonical_name(ref)
+    loader_for(ref).name
+  end
+
+  def self.loader_for(ref)
+    case ref
+    when %r[(https?|ftp)://]
+      return FromUrlLoader.new(ref)
+    when Pathname::BOTTLE_EXTNAME_RX
+      return BottleLoader.new(ref)
+    when HOMEBREW_TAP_FORMULA_REGEX
+      return TapLoader.new(ref)
     end
 
-    f.get_formula
+    if File.extname(ref) == ".rb"
+      return FromPathLoader.new(ref)
+    end
+
+    formula_with_that_name = Formula.path(ref)
+    if formula_with_that_name.file?
+      return StandardLoader.new(ref, formula_with_that_name)
+    end
+
+    possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{ref}")
+    if possible_alias.file?
+      return AliasLoader.new(possible_alias)
+    end
+
+    possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{ref}.rb")
+    if possible_cached_formula.file?
+      return StandardLoader.new(ref, possible_cached_formula)
+    end
+
+    return StandardLoader.new(ref)
   end
 end

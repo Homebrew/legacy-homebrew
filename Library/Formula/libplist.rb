@@ -23,8 +23,8 @@ class Libplist < Formula
 
   # Upstream patch for compilation on 10.9
   patch do
-    url "https://github.com/libimobiledevice/libplist/commit/c56c8103f51c20c6fcf99e8bc9d83c380f503a1b.patch"
-    sha1 "c81bac3eb80fa3fe789bd2453883757ea591c2fd"
+    url "https://github.com/libimobiledevice/libplist/commit/c56c8103f51c20c6fcf99e8bc9d83c380f503a1b.diff"
+    sha1 "fd9d0f4c15ee81ea589f826fd603281954f01df5"
   end
 
   def install

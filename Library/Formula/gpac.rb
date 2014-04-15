@@ -15,7 +15,7 @@ class Gpac < Formula
 
   head 'https://gpac.svn.sourceforge.net/svnroot/gpac/trunk/gpac'
 
-  depends_on :x11 => MacOS::X11.installed? ? :recommended : :optional
+  depends_on :x11 => :recommended
 
   depends_on 'pkg-config' => :build
   depends_on 'a52dec' => :optional

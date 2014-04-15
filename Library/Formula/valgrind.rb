@@ -33,7 +33,7 @@ class Valgrind < Formula
   patch do
     url "https://gist.github.com/raw/3784836/f046191e72445a2fc8491cb6aeeabe84517687d9/patch1.diff"
     sha1 "a2252d977302a37873b0f2efe8aa4a4fed2eb2c2"
-  end unless MacOS::CLT.installed?
+  end
 
   # Fix for 10.7.4 w/XCode-4.5, duplicate symbols. Reported upstream in
   # https://bugs.kde.org/show_bug.cgi?id=307415
@@ -48,6 +48,12 @@ class Valgrind < Formula
     url "http://bugsfiles.kde.org/attachment.cgi?id=83590"
     sha1 "22819a4a02140974e6330f3521b240b68f1619d7"
   end if MacOS.version == :mavericks
+
+  # Fix for Snow Leopard from MacPorts
+  patch :p0 do
+    url "https://trac.macports.org/export/118697/trunk/dports/devel/valgrind/files/patch-compat-snowleo.diff"
+    sha1 "ca22f4d49cfc9ea87469c2138b86c71f4b6b4d4d"
+  end
 
   def install
     args = %W[

@@ -17,7 +17,7 @@ class H2 < Formula
     rm_f Dir["bin/*.bat"]
 
     # Fix the permissions on the script
-    chmod 0755, Dir["bin/h2.sh"]
+    chmod 0755, "bin/h2.sh"
 
     libexec.install Dir['*']
     (bin+'h2').write script

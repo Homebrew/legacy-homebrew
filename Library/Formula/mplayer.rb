@@ -14,6 +14,12 @@ class Mplayer < Formula
     end
   end
 
+  bottle do
+    sha1 "dc3e930bbb7bb49a551ea49f98c4b47df1478c95" => :mavericks
+    sha1 "844d8c4ffe1de77162164e51297b07fb5c9f3f0f" => :mountain_lion
+    sha1 "da65ccda4522dee86a8042621b848d7a11570058" => :lion
+  end
+
   head do
     url "svn://svn.mplayerhq.hu/mplayer/trunk", :using => StrictSubversionDownloadStrategy
 
@@ -61,6 +67,7 @@ class Mplayer < Formula
 
     args << "--enable-menu" if build.with? 'osd'
     args << "--disable-x11" if build.without? 'x'
+    args << "--enable-freetype" if build.with?('osd') || build.with?('x')
     args << "--enable-caca" if build.with? 'libcaca'
 
     system "./configure", *args
