@@ -5,6 +5,12 @@ class Varnish < Formula
   url 'https://repo.varnish-cache.org/source/varnish-4.0.0.tar.gz'
   sha1 '6ad4fcf42a505a748ae993cb6ed579159e023633'
 
+  bottle do
+    sha1 "190bba2cf0e521b489cbd64cc698ba769b18cccd" => :mavericks
+    sha1 "fd12d468c2328179bd402f1592b65ef69d6f1baa" => :mountain_lion
+    sha1 "0e9717e705541a34906947eb7e49ab800204e2ff" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
   depends_on :python
