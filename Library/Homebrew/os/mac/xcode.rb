@@ -14,11 +14,6 @@ module OS
         @folder ||= `xcode-select -print-path 2>/dev/null`.strip
       end
 
-      # Xcode 4.3 tools hang if "/" is set
-      def bad_xcode_select_path?
-        folder == "/"
-      end
-
       def latest_version
         case MacOS.version
         when "10.4"         then "2.5"
