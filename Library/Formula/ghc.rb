@@ -20,7 +20,7 @@ class Ghc < Formula
     url "http://www.haskell.org/ghc/dist/7.8.1-rc2/ghc-7.8.0.20140228-src.tar.bz2"
     sha1 "8bd8eb3410a7fccc322c0e23e8045fcb5793ea5a"
 
-    depends_on "apple-gcc42" if build.build_32_bit?
+    depends_on "gcc" if build.build_32_bit?
     depends_on :macos => :mountain_lion
 
     resource "binary" do
@@ -54,7 +54,7 @@ class Ghc < Formula
   stable do
     # http://hackage.haskell.org/trac/ghc/ticket/6009
     depends_on :macos => :snow_leopard
-    depends_on "apple-gcc42" if MacOS.version >= :mountain_lion
+    depends_on "gcc" if MacOS.version >= :mountain_lion
     depends_on "gmp"
 
     resource "binary" do

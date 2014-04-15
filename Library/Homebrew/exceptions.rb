@@ -224,7 +224,7 @@ class CompilerSelectionError < Homebrew::InstallationError
     super f, <<-EOS.undent
     #{f.name} cannot be built with any available compilers.
     To install this formula, you may need to:
-      brew install apple-gcc42
+      brew install gcc
     EOS
   end
 end
