@@ -21,7 +21,10 @@ class Libopkele < Formula
     depends_on :libtool
   end
 
-  depends_on 'pkg-config' => :build
+  option "with-docs", "Build and install documentation"
+
+  depends_on "pkg-config" => :build
+  depends_on "doxygen" => :build if build.with? "docs"
 
   def install
     system "./autogen.bash" if build.head?
@@ -29,6 +32,11 @@ class Libopkele < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+
+    if build.with? "docs"
+      system "make", "dox"
+      doc.install "doxydox/html"
+    end
   end
 end
