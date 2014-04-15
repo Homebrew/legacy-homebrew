@@ -5,8 +5,7 @@ class Neon < Formula
   url 'http://www.webdav.org/neon/neon-0.30.0.tar.gz'
   sha1 '9e6297945226f90d66258b7ee05f757ff5cea10a'
 
-  keg_only :provided_by_osx,
-            "Compiling newer versions of Subversion on 10.6 require this newer neon."
+  keg_only :provided_by_osx
 
   option :universal
   option 'with-brewed-openssl', 'Include OpenSSL support via Homebrew'
