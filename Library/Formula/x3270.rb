@@ -5,6 +5,12 @@ class X3270 < Formula
   url 'https://downloads.sourceforge.net/project/x3270/x3270/3.3.14ga9/suite3270-3.3.14ga9-src.tgz'
   sha1 '84ccfd84b451adf70e38903dd20850c87832b1da'
 
+  bottle do
+    sha1 "53572df34392b38370ef321337ce2741f8c7ca74" => :mavericks
+    sha1 "d188824a9400f7b551b1100fd9f43a1831d2aeb6" => :mountain_lion
+    sha1 "4d9dcfe825e75c093e0da6e00594d107d92c6086" => :lion
+  end
+
   depends_on :x11
 
   option 'with-c3270', 'Include c3270 (curses-based version)'
