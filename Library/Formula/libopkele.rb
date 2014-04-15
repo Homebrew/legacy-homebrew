@@ -13,6 +13,8 @@ class Libopkele < Formula
     end
   end
 
+  option 'with-docs', 'Also install library documentation'
+
   head do
     url 'https://github.com/hacker/libopkele.git'
 
@@ -20,6 +22,8 @@ class Libopkele < Formula
     depends_on :automake
     depends_on :libtool
   end
+
+  depends_on 'doxygen' => :build if build.with? 'docs'
 
   depends_on 'pkg-config' => :build
 
@@ -30,5 +34,10 @@ class Libopkele < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+
+    if build.with? 'docs'
+      system "make", "dox"
+      doc.install Dir['doxydox/html']
+    end
   end
 end
