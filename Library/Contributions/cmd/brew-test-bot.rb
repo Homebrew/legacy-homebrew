@@ -245,6 +245,10 @@ class Test
     end
   end
 
+  def skip formula
+    puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula}#{Tty.reset}"
+  end
+
   def setup
     @category = __method__
     return if ARGV.include? "--skip-setup"
@@ -264,15 +268,23 @@ class Test
     requirements = formula_object.recursive_requirements
     unsatisfied_requirements = requirements.reject {|r| r.satisfied? or r.default_formula?}
     unless unsatisfied_requirements.empty?
-      puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula}#{Tty.reset}"
+      skip formula
       unsatisfied_requirements.each {|r| puts r.message}
       return
     end
 
+    installed_gcc = false
     begin
       CompilerSelector.new(formula_object).compiler
-    rescue CompilerSelectionError
-      test "brew install apple-gcc42"
+    rescue CompilerSelectionError => e
+      unless installed_gcc
+        test "brew install apple-gcc42"
+        installed_gcc = true
+        retry
+      end
+      skip formula
+      puts e.message
+      return
     end
 
     test "brew fetch --retry #{dependencies}" unless dependencies.empty?
