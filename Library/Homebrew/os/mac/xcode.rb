@@ -88,9 +88,11 @@ module OS
           end
         end
 
-        # For people who's xcode-select is unset, or who have installed
-        # xcode-gcc-installer or whatever other combinations we can try and
-        # supprt. See https://github.com/Homebrew/homebrew/wiki/Xcode
+        # The remaining logic provides a fake Xcode version for CLT-only
+        # systems. This behavior only exists because Homebrew used to assume
+        # Xcode.version would always be non-nil. This is deprecated, and will
+        # be removed in a future version. To remain compatible, guard usage of
+        # Xcode.version with an Xcode.installed? check.
         case MacOS.llvm_build_version.to_i
         when 1..2063 then "3.1.0"
         when 2064..2065 then "3.1.4"
