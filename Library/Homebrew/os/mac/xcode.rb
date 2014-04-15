@@ -51,6 +51,7 @@ module OS
           if path != CLT::MAVERICKS_PKG_PATH and path.absolute? \
              and File.executable? "#{path}/usr/bin/make"
             path
+          # TODO remove this branch when 10.10 is released
           elsif File.executable? "#{V4_BUNDLE_PATH}/Contents/Developer/usr/bin/make"
             # fallback for broken Xcode 4.3 installs
             Pathname.new("#{V4_BUNDLE_PATH}/Contents/Developer")
@@ -87,6 +88,8 @@ module OS
 
         # this shortcut makes version work for people who don't realise you
         # need to install the CLI tools
+        # TODO investigate and update the above comment; what does this mean
+        # for modern installs (Xcode 5 on 10.8/9)?
         xcode43build = Pathname.new("#{prefix}/usr/bin/xcodebuild")
         if xcode43build.file?
           `#{xcode43build} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
@@ -94,6 +97,8 @@ module OS
         end
 
         # Xcode 4.3 xc* tools hang indefinately if xcode-select path is set thus
+        # FIXME Is this still true? On what versions? Will the above xcodebuild
+        # call hang also? Document this.
         raise if bad_xcode_select_path?
 
         xcodebuild = which "xcodebuild"
