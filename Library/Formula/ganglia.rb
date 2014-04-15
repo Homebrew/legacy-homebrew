@@ -15,8 +15,8 @@ class Ganglia < Formula
   # fixes build on Leopard and newer, which lack kvm.h, cpu_steal_func() and its corresponding /dev/ node
   # merged upstream: https://github.com/ganglia/monitor-core/issues/150
   patch do
-    url "https://github.com/ganglia/monitor-core/commit/ba942f.patch"
-    sha1 "3e8cc693ce3af2236ea02a1836954d5bebf294db"
+    url "https://github.com/ganglia/monitor-core/commit/ba942f.diff"
+    sha1 "f79c4973634d127052e262c22d11e1fec82b5677"
   end
 
   def install
