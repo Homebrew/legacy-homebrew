@@ -2,16 +2,15 @@ require 'formula'
 
 class Gnutls < Formula
   homepage 'http://gnutls.org'
-  url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2/gnutls-3.2.12.1.tar.xz'
-  mirror 'http://mirrors.dotsrc.org/gcrypt/gnutls/v3.2/gnutls-3.2.12.1.tar.xz'
-  sha1 '5ad26522ec18d6b54a17ff8d1d5b69bf2cd5c7ce'
+  url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2/gnutls-3.2.13.tar.xz'
+  mirror 'http://mirrors.dotsrc.org/gcrypt/gnutls/v3.2/gnutls-3.2.13.tar.xz'
+  sha1 'c4a95902bb67df46e9b2c08d4c10523db94e2736'
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "3d7a80b824958e69459ef94ecc32f70858ed09cd" => :mavericks
-    sha1 "24c1a126da595dd33b99ffe36b868f9cf01f4925" => :mountain_lion
-    sha1 "50cc44665107420f2ce5ca9e8ebf7d7ea04b046e" => :lion
+    sha1 "d47f9d4adc2ed860c351edef7729e206b493012d" => :mavericks
+    sha1 "67dc1e554a4af1b004d1fdb3ae0dad7261cfbbe0" => :mountain_lion
+    sha1 "75ec84c8ae2f519327e2230f18e7508c33da9add" => :lion
   end
 
   depends_on 'pkg-config' => :build
