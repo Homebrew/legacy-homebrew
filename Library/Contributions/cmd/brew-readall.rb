@@ -16,7 +16,7 @@ else
   tap = Pathname("#{HOMEBREW_LIBRARY}/Taps/#{tap_dir}")
   raise "#{tap} does not exist!" unless tap.exist?
   tap.find_formula do |f|
-    formulae << (tap/f).tap_ref
+    formulae << tap/f
   end
 end
 

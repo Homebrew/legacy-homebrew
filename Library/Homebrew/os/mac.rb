@@ -36,7 +36,7 @@ module OS
           # If it's not there, or xcode-select is misconfigured, we have to
           # look in dev_tools_path, and finally in xctoolchain_path, because the
           # tools were split over two locations beginning with Xcode 4.3+.
-          xcrun_path = unless Xcode.bad_xcode_select_path?
+          xcrun_path = begin
             path = `/usr/bin/xcrun -find #{tool} 2>/dev/null`.chomp
             # If xcrun finds a superenv tool then discard the result.
             path unless path.include?("Library/ENV")
@@ -60,10 +60,9 @@ module OS
       elsif tools_in_prefix? "/"
         # probably a safe enough assumption (the unix way)
         Pathname.new "/usr/bin"
-      elsif not Xcode.bad_xcode_select_path? and not `/usr/bin/xcrun -find make 2>/dev/null`.empty?
+      elsif not (make_path = `/usr/bin/xcrun -find make 2>/dev/null`).empty?
         # Note that the exit status of system "xcrun foo" isn't always accurate
-        # Wherever "make" is there are the dev tools.
-        Pathname.new(`/usr/bin/xcrun -find make`.chomp).dirname
+        Pathname.new(make_path.chomp).dirname
       elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
         # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
         Pathname.new "#{Xcode.prefix}/usr/bin"
@@ -88,7 +87,7 @@ module OS
       (@sdk_path ||= {}).fetch(v.to_s) do |key|
         opts = []
         # First query Xcode itself
-        opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp unless Xcode.bad_xcode_select_path?
+        opts << `#{locate('xcodebuild')} -version -sdk macosx#{v} Path 2>/dev/null`.chomp
         # Xcode.prefix is pretty smart, so lets look inside to find the sdk
         opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
         # Xcode < 4.3 style
