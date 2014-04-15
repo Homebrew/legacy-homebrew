@@ -23,7 +23,7 @@ class Grass < Formula
   option "without-gui", "Build without WxPython interface. Command line tools still available."
 
   depends_on :macos => :lion
-  depends_on 'apple-gcc42' if MacOS.version >= :mountain_lion
+  depends_on 'gcc' if MacOS.version >= :mountain_lion
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "readline"

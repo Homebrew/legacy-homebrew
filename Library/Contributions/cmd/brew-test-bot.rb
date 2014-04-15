@@ -278,7 +278,7 @@ class Test
       CompilerSelector.new(formula_object).compiler
     rescue CompilerSelectionError => e
       unless installed_gcc
-        test "brew install apple-gcc42"
+        test "brew install gcc"
         installed_gcc = true
         retry
       end
