@@ -62,7 +62,7 @@ __brew_complete_formulae ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     local lib=$(brew --repository)/Library
     local ff=$(\ls ${lib}/Formula 2>/dev/null | sed 's/\.rb//g')
-    local af=$(\ls ${lib}/Aliases 2>/dev/null | sed 's/\.rb//g')
+    local af=$(\ls ${lib}/Aliases 2>/dev/null)
     local tf tap
 
     for dir in $(\ls ${lib}/Taps 2>/dev/null); do
