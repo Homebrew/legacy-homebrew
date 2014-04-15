@@ -148,6 +148,7 @@ class Python < Formula
     site_packages.mkpath
 
     # Symlink the prefix site-packages into the cellar.
+    site_packages_cellar.unlink
     site_packages_cellar.parent.install_symlink site_packages
 
     # Write our sitecustomize.py
