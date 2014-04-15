@@ -123,7 +123,7 @@ class DependencyCollector
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     when :ant        then ant_dep(spec, tags)
     else
-      raise "Unsupported special dependency #{spec.inspect}"
+      raise ArgumentError, "Unsupported special dependency #{spec.inspect}"
     end
   end
 
@@ -136,8 +136,6 @@ class DependencyCollector
   end
 
   def autotools_dep(spec, tags)
-    return if MacOS::Xcode.provides_autotools?
-
     if spec == :libltdl
       spec = :libtool
       tags << :run
@@ -170,7 +168,7 @@ class DependencyCollector
     when strategy <= BazaarDownloadStrategy
       Dependency.new("bazaar", tags)
     when strategy <= CVSDownloadStrategy
-      Dependency.new("cvs", tags) unless MacOS::Xcode.provides_cvs?
+      Dependency.new("cvs", tags) if MacOS.version >= :mavericks || !MacOS::Xcode.provides_cvs?
     when strategy < AbstractDownloadStrategy
       # allow unknown strategies to pass through
     else

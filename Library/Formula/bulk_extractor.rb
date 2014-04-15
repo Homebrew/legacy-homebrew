@@ -34,4 +34,15 @@ class BulkExtractor < Formula
     libexec.install 'java_gui/BEViewer.jar'
     bin.write_jar_script libexec/"BEViewer.jar", "BEViewer", "-Xmx1g"
   end
+
+  test do
+    input_file = testpath/"data.txt"
+    input_file.write "http://brew.sh\n(201)555-1212\n"
+
+    output_dir = testpath/"output"
+    system "#{bin}/bulk_extractor", "-o", output_dir, input_file
+
+    assert (output_dir/"url.txt").read.include?("http://brew.sh")
+    assert (output_dir/"telephone.txt").read.include?("(201)555-1212")
+  end
 end

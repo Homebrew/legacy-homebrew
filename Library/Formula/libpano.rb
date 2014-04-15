@@ -5,8 +5,9 @@ class Libpano < Formula
   url 'https://downloads.sourceforge.net/project/panotools/libpano13/libpano13-2.9.18/libpano13-2.9.18.tar.gz'
   version '13-2.9.18'
   sha1 '23849bdbdfc9176a2b53d157e58bd24aa0e7276e'
+  revision 1
 
-  depends_on :libpng
+  depends_on 'libpng'
   depends_on 'jpeg'
   depends_on 'libtiff'
 

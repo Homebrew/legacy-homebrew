@@ -12,6 +12,7 @@ class Poppler < Formula
 
   depends_on 'pkg-config' => :build
 
+  depends_on 'libpng'
   depends_on 'fontconfig'
   depends_on 'openjpeg'
 

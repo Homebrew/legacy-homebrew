@@ -39,17 +39,17 @@ class Ksh < Formula
     system "/bin/ksh", "bin/package", "read"
 
     # Needed due to unusal build system.
-    ENV["HOMEBREW_CCCFG"] += "O"
+    ENV.refurbish_args
 
     # From Apple"s ksh makefile.
     kshcppdefines = "-DSHOPT_SPAWN=0 -D_ast_int8_t=int64_t -D_lib_memccpy"
     system "/bin/ksh", "bin/package", "make", "CCFLAGS=#{kshcppdefines}"
 
     bin.install "arch/darwin.i386-64/bin/ksh" => "ksh93"
-    ln_s "#{bin}/ksh93", "#{bin}/ksh"
+    bin.install_symlink "ksh93" => "ksh"
 
     man1.install "arch/darwin.i386-64/man/man1/sh.1" => "ksh93.1"
-    ln_s "#{man}/ksh93.1", "#{man}/ksh.1"
+    man1.install_symlink "ksh93.1" => "ksh.1"
   end
 
   def caveats; <<-EOS.undent

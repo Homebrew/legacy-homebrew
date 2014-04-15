@@ -13,9 +13,7 @@ class TinyFugue < Formula
 
   # pcre deprecated pcre_info. Switch to HB pcre-8.31 and pcre_fullinfo.
   # Not reported upstream; project is in stasis since 2007.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

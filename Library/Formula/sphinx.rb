@@ -8,8 +8,8 @@ class Sphinx < Formula
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
   devel do
-    url 'http://sphinxsearch.com/files/sphinx-2.2.1-beta.tar.gz'
-    sha1 'dccaa7d14f71cec8fe6dfdb059315856c0712885'
+    url 'http://sphinxsearch.com/files/sphinx-2.2.2-beta.tar.gz'
+    sha1 '6a63111c5f2fcd93915d114845f2375b031ff9da'
   end
 
   option 'mysql', 'Force compiling against MySQL'
@@ -22,7 +22,7 @@ class Sphinx < Formula
   # http://snowball.tartarus.org/
   resource 'stemmer' do
     url 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
-    sha1 '69056075b9fa1382e07cec6c32c8e82f3f35677b'
+    sha1 'bbe1ba5bbebb146575a575b8ca3342aa3b91bf93'
   end
 
   fails_with :llvm do

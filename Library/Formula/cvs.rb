@@ -10,7 +10,7 @@ class Cvs < Formula
   url 'http://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2'
   sha1 '93a8dacc6ff0e723a130835713235863f1f5ada9'
 
-  keg_only "Xcode (< 5.0) provides CVS" if MacOS::Xcode.provides_cvs?
+  keg_only :provided_until_xcode5
 
   {
     "PR5178707"         => "372385b34a346753249a7808e8d5db0a6cadd3ee",

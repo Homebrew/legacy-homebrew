@@ -27,6 +27,7 @@ class LinkTests < Test::Unit::TestCase
 
   def test_linking_keg
     assert_equal 3, @keg.link
+    (HOMEBREW_PREFIX/"bin").children.each { |c| assert c.readlink.relative? }
   end
 
   def test_unlinking_keg
@@ -58,6 +59,14 @@ class LinkTests < Test::Unit::TestCase
     assert_raise RuntimeError do
       shutup { @keg.link }
     end
+  end
+
+  def test_link_ignores_broken_symlinks_at_target
+    dst = HOMEBREW_PREFIX/"bin/helloworld"
+    src = @keg/"bin/helloworld"
+    ln_s "/some/nonexistent/path", dst
+    shutup { @keg.link }
+    assert_equal src.relative_path_from(dst.dirname), dst.readlink
   end
 
   def test_link_overwrite

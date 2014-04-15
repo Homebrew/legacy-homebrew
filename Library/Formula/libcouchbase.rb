@@ -2,8 +2,8 @@ require 'formula'
 
 class Libcouchbase < Formula
   homepage 'http://couchbase.com/communities/c'
-  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.2.0.tar.gz'
-  sha1 '0d267b90b1f772c5431d3408c4c61a4b8e9de383'
+  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.3.0.tar.gz'
+  sha1 'dbb97594582e5a9240fa8090bb756990f2d1b550'
 
   option :universal
   option 'with-libev-plugin', 'Build libev IO plugin (will pull libev dependency)'

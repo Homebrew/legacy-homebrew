@@ -2,8 +2,8 @@ require 'formula'
 
 class Pyenv < Formula
   homepage 'https://github.com/yyuu/pyenv'
-  url 'https://github.com/yyuu/pyenv/archive/v0.4.0-20140317.tar.gz'
-  sha1 '70ef9a1528ef497f4500ae3ab225ceec5322ebb6'
+  url 'https://github.com/yyuu/pyenv/archive/v0.4.0-20140404.tar.gz'
+  sha1 '7b9e2cd26ac195d9849b1311a94fbdd0c97c2dc2'
 
   head 'https://github.com/yyuu/pyenv.git'
 
@@ -22,6 +22,7 @@ class Pyenv < Formula
       ln_sf var_dir, "#{prefix}/#{dir}"
     end
 
+    rm_f "#{var_lib}/plugins/python-build"
     ln_sf "#{prefix}/default-plugins/python-build", "#{var_lib}/plugins/python-build"
     ["pyenv-install", "pyenv-uninstall", "python-build"].each do |cmd|
       bin.install_symlink "#{prefix}/default-plugins/python-build/bin/#{cmd}"

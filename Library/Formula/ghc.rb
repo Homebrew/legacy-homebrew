@@ -71,13 +71,9 @@ class Ghc < Formula
       url "https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz"
       sha1 "6a1973ae3cccdb2f720606032ae84ffee8680ca1"
     end
-  end
 
-  def patches
-    if build.stable?
-      # Fixes 7.6.3 compilation on 10.9
-      DATA if MacOS.version >= :mavericks
-    end
+    # Fixes 7.6.3 compilation on 10.9
+    patch :DATA if MacOS.version >= :mavericks
   end
 
   def install
@@ -132,11 +128,13 @@ class Ghc < Formula
 
       if build.include? "tests"
         resource("testsuite").stage do
-          (buildpath+"Ghcsource/config").install Dir["config/*"]
-          (buildpath+"Ghcsource/driver").install Dir["driver/*"]
-          (buildpath+"Ghcsource/mk").install Dir["mk/*"]
-          (buildpath+"Ghcsource/tests").install Dir["tests/*"]
-          (buildpath+"Ghcsource/timeout").install Dir["timeout/*"]
+          cd "testsuite" do
+            (buildpath+"Ghcsource/config").install Dir["config/*"]
+            (buildpath+"Ghcsource/driver").install Dir["driver/*"]
+            (buildpath+"Ghcsource/mk").install Dir["mk/*"]
+            (buildpath+"Ghcsource/tests").install Dir["tests/*"]
+            (buildpath+"Ghcsource/timeout").install Dir["timeout/*"]
+          end
           cd (buildpath+"Ghcsource/tests") do
             system "make", "CLEANUP=1", "THREADS=#{ENV.make_jobs}", "fast"
           end

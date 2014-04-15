@@ -17,13 +17,11 @@ class Htmlcompressor < Formula
 
     if build.include? 'yuicompressor'
       yui = Formula["yuicompressor"]
-      yui_jar = "yuicompressor-#{yui.version}.jar"
-      ln_s "#{yui.opt_libexec}/#{yui_jar}", "#{libexec}/#{yui_jar}"
+      libexec.install_symlink yui.opt_libexec/"yuicompressor-#{yui.version}.jar"
     end
 
     if build.include? 'closure-compiler'
-      closure = Formula["closure-compiler"]
-      ln_s "#{closure.opt_libexec}/build/compiler.jar", "#{libexec}/compiler.jar"
+      libexec.install_symlink Formula["closure-compiler"].opt_libexec/"build/compiler.jar"
     end
   end
 

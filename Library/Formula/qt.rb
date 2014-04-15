@@ -43,6 +43,7 @@ class Qt < Formula
 
     args = ["-prefix", prefix,
             "-system-zlib",
+            "-qt-libtiff", "-qt-libpng", "-qt-libjpeg",
             "-confirm-license", "-opensource",
             "-nomake", "demos", "-nomake", "examples",
             "-cocoa", "-fast", "-release"]
@@ -104,20 +105,16 @@ class Qt < Formula
     (prefix+'q3porting.xml').unlink if build.without? 'qt3support'
 
     # Some config scripts will only find Qt in a "Frameworks" folder
-    frameworks.mkpath
-    ln_s Dir["#{lib}/*.framework"], frameworks
+    frameworks.install_symlink Dir["#{lib}/*.framework"]
 
     # The pkg-config files installed suggest that headers can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to
     # the Frameworks' Headers folders.
-    Pathname.glob(lib + '*.framework/Headers').each do |path|
-      framework_name = File.basename(File.dirname(path), '.framework')
-      ln_s path.realpath, include+framework_name
+    Pathname.glob("#{lib}/*.framework/Headers") do |path|
+      include.install_symlink path => path.parent.basename(".framework")
     end
 
-    Pathname.glob(bin + '*.app').each do |path|
-      mv path, prefix
-    end
+    Pathname.glob("#{bin}/*.app") { |app| mv app, prefix }
   end
 
   test do

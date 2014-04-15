@@ -2,6 +2,7 @@ require 'formula'
 
 class Fontforge < Formula
   homepage 'http://fontforge.org/'
+  revision 1
 
   stable do
     url 'https://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
@@ -36,7 +37,7 @@ class Fontforge < Formula
   depends_on 'gettext'
   depends_on :python => :recommended
 
-  depends_on :libpng    => :recommended
+  depends_on 'libpng'   => :recommended
   depends_on 'jpeg'     => :recommended
   depends_on 'libtiff'  => :recommended
   depends_on :x11 if build.with? 'x'

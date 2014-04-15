@@ -267,7 +267,7 @@ class FormulaAuditor
     end
 
     # Use new-style archive downloads
-    urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
+    urls.select { |u| u =~ %r[https://.*github.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
     end
 
@@ -311,6 +311,8 @@ class FormulaAuditor
       end
     when %r[macports/trunk]
       problem "MacPorts patches should specify a revision instead of trunk:\n#{patch.url}"
+    when %r[^https?://github\.com/.*commit.*\.patch$]
+      problem "GitHub appends a git version to patches; use .diff instead."
     end
   end
 
@@ -332,7 +334,7 @@ class FormulaAuditor
     end
   end
 
-  def audit_line(line)
+  def audit_line(line, lineno)
     if line =~ /<(Formula|AmazonWebServicesFormula|ScriptFileFormula|GithubGistFormula)/
       problem "Use a space in class inheritance: class Foo < #{$1}"
     end
@@ -378,8 +380,8 @@ class FormulaAuditor
     end
 
     # Prefer formula path shortcuts in Pathname+
-    if line =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share)[/'"])}
-      problem "\"(#{$1}...#{$2})\" should be \"(#{$3}+...)\""
+    if line =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share|Frameworks)[/'"])}
+      problem "\"(#{$1}...#{$2})\" should be \"(#{$3.downcase}+...)\""
     end
 
     if line =~ %r[((man)\s*\+\s*(['"])(man[1-8])(['"]))]
@@ -387,8 +389,8 @@ class FormulaAuditor
     end
 
     # Prefer formula path shortcuts in strings
-    if line =~ %r[(\#\{prefix\}/(bin|include|libexec|lib|sbin|share))]
-      problem "\"#{$1}\" should be \"\#{#{$2}}\""
+    if line =~ %r[(\#\{prefix\}/(bin|include|libexec|lib|sbin|share|Frameworks))]
+      problem "\"#{$1}\" should be \"\#{#{$2.downcase}}\""
     end
 
     if line =~ %r[((\#\{prefix\}/share/man/|\#\{man\}/)(man[1-8]))]
@@ -410,7 +412,7 @@ class FormulaAuditor
 
     # No trailing whitespace, please
     if line =~ /[\t ]+$/
-      problem "Trailing whitespace was found"
+      problem "#{lineno}: Trailing whitespace was found"
     end
 
     if line =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
@@ -462,8 +464,12 @@ class FormulaAuditor
       problem "Don't duplicate 'without': Use `build.without? \"#{$1}\"` to check for \"--without-#{$1}\""
     end
 
-    if line =~ /unless build\.with(out)?\?/
-      problem "Don't use unless with 'build.with#{$1}': use 'if build.with#{$1}?'"
+    if line =~ /unless build\.with\?(.*)/
+      problem "Use if build.without?#{$1} instead of unless build.with?#{$1}"
+    end
+
+    if line =~ /unless build\.without\?(.*)/
+      problem "Use if build.with?#{$1} instead of unless build.without?#{$1}"
     end
 
     if line =~ /(not\s|!)\s*build\.with?\?/
@@ -517,6 +523,10 @@ class FormulaAuditor
     if line =~ /depends_on ['"](.+)['"] (if.+|unless.+)$/
       audit_conditional_dep($1, $2, $&)
     end
+
+    if line =~ /(Dir\[("[^\*{},]+")\])/
+      problem "#{$1} is unnecessary; just use #{$2}"
+    end
   end
 
   def audit_conditional_dep(dep, condition, line)
@@ -560,7 +570,7 @@ class FormulaAuditor
     audit_conflicts
     audit_patches
     audit_text
-    text.each_line { |line| audit_line(line) }
+    text.split("\n").each_with_index { |line, lineno| audit_line(line, lineno) }
     audit_installed
   end
 

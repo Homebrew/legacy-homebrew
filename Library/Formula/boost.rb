@@ -18,7 +18,7 @@ class Boost < Formula
   sha1 'cef9a0cc7084b1d639e06cd3bc34e4251524c840'
   revision 1
 
-  head 'http://svn.boost.org/svn/boost/trunk'
+  head 'https://github.com/boostorg/boost.git'
 
   bottle do
     cellar :any
@@ -57,15 +57,19 @@ class Boost < Formula
 
   odie 'boost: --with-c++11 has been renamed to --c++11' if build.with? 'c++11'
 
-  # Patches boost::atomic for LLVM 3.4 as it is used on OS X 10.9 with Xcode 5.1
-  patch :p2 do
-    url "https://github.com/boostorg/atomic/commit/6bb71fdd.patch"
-    sha1 "9ab8e6c041b4ecc291b2dd1a3c93e9b342d5e0e4"
-  end
+  stable do
+    # Patches boost::atomic for LLVM 3.4 as it is used on OS X 10.9 with Xcode 5.1
+    # https://github.com/Homebrew/homebrew/issues/27396
+    # https://github.com/Homebrew/homebrew/pull/27436
+    patch :p2 do
+      url "https://github.com/boostorg/atomic/commit/6bb71fdd.diff"
+      sha1 "ca8679011d5293a7fd02cb3b97dde3515b8b2b03"
+    end
 
-  patch :p2 do
-    url "https://github.com/boostorg/atomic/commit/e4bde20f.patch"
-    sha1 "f206e7261d00503788ae8ec3a0635ced8a816293"
+    patch :p2 do
+      url "https://github.com/boostorg/atomic/commit/e4bde20f.diff"
+      sha1 "b68f5536474c9f543879698299bd4975538a89eb"
+    end
   end
 
   fails_with :llvm do
@@ -92,31 +96,8 @@ class Boost < Formula
     end
 
     ENV.universal_binary if build.universal?
-    ENV.cxx11 if build.cxx11?
 
-    # Adjust the name the libs are installed under to include the path to the
-    # Homebrew lib directory so executables will work when installed to a
-    # non-/usr/local location.
-    #
-    # otool -L `which mkvmerge`
-    # /usr/local/bin/mkvmerge:
-    #   libboost_regex-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    #   libboost_filesystem-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    #   libboost_system-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    #
-    # becomes:
-    #
-    # /usr/local/bin/mkvmerge:
-    #   /usr/local/lib/libboost_regex-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    #   /usr/local/lib/libboost_filesystem-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    #   /usr/local/lib/libboost_system-mt.dylib (compatibility version 0.0.0, current version 0.0.0)
-    inreplace 'tools/build/v2/tools/darwin.jam', '-install_name "', "-install_name \"#{HOMEBREW_PREFIX}/lib/"
-
-    # boost will try to use cc, even if we'd rather it use, say, gcc-4.2
-    inreplace 'tools/build/v2/engine/build.sh', 'BOOST_JAM_CC=cc', "BOOST_JAM_CC=#{ENV.cc}"
-    inreplace 'tools/build/v2/engine/build.jam', 'toolset darwin cc', "toolset darwin #{ENV.cc}"
-
-    # Force boost to compile using the appropriate GCC version
+    # Force boost to compile using the appropriate GCC version.
     open("user-config.jam", "a") do |file|
       file.write "using darwin : : #{ENV.cxx} ;\n"
       file.write "using mpi ;\n" if build.with? 'mpi'
@@ -174,6 +155,15 @@ class Boost < Formula
     end
 
     args << "address-model=32_64" << "architecture=x86" << "pch=off" if build.universal?
+
+    # Trunk starts using "clang++ -x c" to select C compiler which breaks C++11
+    # handling using ENV.cxx11. Using "cxxflags" and "linkflags" still works.
+    if build.cxx11?
+      args << "cxxflags=-std=c++11"
+      if ENV.compiler == :clang
+        args << "cxxflags=-stdlib=libc++" << "linkflags=-stdlib=libc++"
+      end
+    end
 
     system "./bootstrap.sh", *bargs
     system "./b2", *args

@@ -11,6 +11,7 @@ require 'cleaner'
 require 'formula_cellar_checks'
 require 'install_renamed'
 require 'cmd/tap'
+require 'hooks/bottles'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -47,6 +48,8 @@ class FormulaInstaller
   end
 
   def pour_bottle? install_bottle_options={:warn=>false}
+    return true if Homebrew::Hooks::Bottles.formula_has_bottle?(f)
+
     return false if @pour_failed
     return true  if force_bottle? && f.bottle
     return false if build_from_source? || build_bottle? || interactive?
@@ -54,6 +57,14 @@ class FormulaInstaller
 
     return true if f.local_bottle_path
     return false unless f.bottle && f.pour_bottle?
+
+    f.requirements.each do |req|
+      next if req.optional? || req.pour_bottle?
+      if install_bottle_options[:warn]
+        ohai "Building source; bottle blocked by #{req} requirement"
+      end
+      return false
+    end
 
     unless f.bottle.compatible_cellar?
       if install_bottle_options[:warn]
@@ -139,7 +150,7 @@ class FormulaInstaller
     if f.linked_keg.directory?
       # some other version is already installed *and* linked
       raise CannotInstallFormulaError, <<-EOS.undent
-        #{f}-#{f.linked_keg.realpath.basename} already installed
+        #{f}-#{f.linked_keg.resolved_path.basename} already installed
         To install this version, first `brew unlink #{f}'
       EOS
     end
@@ -174,7 +185,6 @@ class FormulaInstaller
         stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs :skip_executables => true
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
-        tab.tabfile.delete if tab.tabfile
         tab.write
       end
     rescue => e
@@ -200,7 +210,7 @@ class FormulaInstaller
   # HACK: If readline is present in the dependency tree, it will clash
   # with the stdlib's Readline module when the debugger is loaded
   def perform_readline_hack
-    if f.recursive_dependencies.any? { |d| d.name == "readline" } && debug?
+    if (f.recursive_dependencies.any? { |d| d.name == "readline" } || f.name == "readline") && debug?
       ENV['HOMEBREW_NO_READLINE'] = '1'
     end
   end
@@ -285,8 +295,11 @@ class FormulaInstaller
 
     expanded_deps = ARGV.filter_for_dependencies do
       Dependency.expand(f, deps) do |dependent, dep|
-        options = inherited_options[dep] = inherited_options_for(dep)
-        build = effective_build_options_for(dependent)
+        options = inherited_options[dep.name] = inherited_options_for(dep)
+        build = effective_build_options_for(
+          dependent,
+          inherited_options.fetch(dependent.name, [])
+        )
 
         if (dep.optional? || dep.recommended?) && build.without?(dep)
           Dependency.prune
@@ -296,31 +309,31 @@ class FormulaInstaller
           Dependency.prune
         elsif dep.satisfied?(options)
           Dependency.skip
-        elsif dep.installed?
-          raise UnsatisfiedDependencyError.new(f, dep, options)
         end
       end
     end
 
-    expanded_deps.map { |dep| [dep, inherited_options[dep]] }
+    expanded_deps.map { |dep| [dep, inherited_options[dep.name]] }
   end
 
-  def effective_build_options_for(dependent)
+  def effective_build_options_for(dependent, inherited_options=[])
     if dependent == f
       build = dependent.build.dup
       build.args |= options
       build
     else
-      dependent.build
+      build = dependent.build.dup
+      build.args |= inherited_options
+      build
     end
   end
 
   def inherited_options_for(dep)
-    options = Options.new
-    if f.build.universal? && !dep.build? && dep.to_formula.build.has_option?("universal")
-      options << Option.new("universal")
+    inherited_options = Options.new
+    if (options.include?("universal") || f.build.universal?) && !dep.build? && dep.to_formula.build.has_option?("universal")
+      inherited_options << Option.new("universal")
     end
-    options
+    inherited_options
   end
 
   def install_dependencies(deps)
@@ -350,11 +363,21 @@ class FormulaInstaller
 
   def install_dependency(dep, inherited_options)
     df = dep.to_formula
+    tab = Tab.for_formula(df)
 
-    outdated_keg = Keg.new(df.linked_keg.realpath) rescue nil
+    if df.linked_keg.directory?
+      linked_keg = Keg.new(df.linked_keg.resolved_path)
+      linked_keg.unlink
+    end
+
+    if df.installed?
+      installed_keg = Keg.new(df.prefix)
+      tmp_keg = Pathname.new("#{installed_keg}.tmp")
+      installed_keg.rename(tmp_keg)
+    end
 
     fi = DependencyInstaller.new(df)
-    fi.options           |= Tab.for_formula(df).used_options
+    fi.options           |= tab.used_options
     fi.options           |= dep.options
     fi.options           |= inherited_options
     fi.build_from_source  = build_from_source?
@@ -362,13 +385,17 @@ class FormulaInstaller
     fi.debug              = debug?
     fi.prelude
     oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
-    outdated_keg.unlink if outdated_keg
     fi.install
     fi.caveats
     fi.finish
-  ensure
-    # restore previous installation state if build failed
-    outdated_keg.link if outdated_keg and not df.installed? rescue nil
+  rescue Exception
+    ignore_interrupts do
+      tmp_keg.rename(installed_keg) if tmp_keg && !installed_keg.directory?
+      linked_keg.link if linked_keg
+    end
+    raise
+  else
+    ignore_interrupts { tmp_keg.rmtree if tmp_keg && tmp_keg.directory? }
   end
 
   def caveats
@@ -491,7 +518,7 @@ class FormulaInstaller
     # to remain open in the child process.
     args << { write => write } if RUBY_VERSION >= "2.0"
 
-    fork do
+    pid = fork do
       begin
         read.close
         exec(*args)
@@ -502,9 +529,9 @@ class FormulaInstaller
       end
     end
 
-    ignore_interrupts(:quietly) do # the fork will receive the interrupt and marshall it back
+    ignore_interrupts(:quietly) do # the child will receive the interrupt and marshal it back
       write.close
-      Process.wait
+      Process.wait(pid)
       data = read.read
       read.close
       raise Marshal.load(data) unless data.nil? or data.empty?
@@ -524,7 +551,7 @@ class FormulaInstaller
   end
 
   def link
-    if f.linked_keg.directory? and f.linked_keg.realpath == f.prefix
+    if f.linked_keg.directory? and f.linked_keg.resolved_path == f.prefix
       opoo "This keg was marked linked already, continuing anyway"
       # otherwise Keg.link will bail
       f.linked_keg.unlink
@@ -551,10 +578,11 @@ class FormulaInstaller
 
   def install_plist
     return unless f.plist
-    # A plist may already exist if we are installing from a bottle
-    f.plist_path.unlink if f.plist_path.exist?
-    f.plist_path.write f.plist
+    f.plist_path.atomic_write(f.plist)
     f.plist_path.chmod 0644
+  rescue Exception => e
+    onoe "Failed to install plist file"
+    ohai e, e.backtrace if debug?
   end
 
   def fix_install_names
@@ -593,6 +621,10 @@ class FormulaInstaller
   end
 
   def pour
+    if Homebrew::Hooks::Bottles.formula_has_bottle?(f)
+      return if Homebrew::Hooks::Bottles.pour_formula_bottle(f)
+    end
+
     if f.local_bottle_path
       downloader = LocalBottleDownloadStrategy.new(f)
     else

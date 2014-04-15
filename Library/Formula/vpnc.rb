@@ -20,9 +20,7 @@ class Vpnc < Formula
   option "hybrid", "Use vpnc hybrid authentication"
 
   # Patch from user @Imagesafari to enable compilation on Lion
-  def patches
-    DATA if MacOS.version >= :lion
-  end
+  patch :DATA if MacOS.version >= :lion
 
   def install
     ENV.no_optimization

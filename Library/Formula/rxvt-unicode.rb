@@ -10,12 +10,10 @@ class RxvtUnicode < Formula
   depends_on 'pkg-config' => :build
   depends_on :x11
 
-  def patches
-    # Patch hunks 1 and 2 allow perl support to compile on Intel.
-    # Hunk 3 is taken from http://aur.archlinux.org/packages.php?ID=44649
-    # which removes an extra 10% font width that urxvt adds.
-    DATA
-  end
+  # Patch hunks 1 and 2 allow perl support to compile on Intel.
+  # Hunk 3 is taken from http://aur.archlinux.org/packages.php?ID=44649
+  # which removes an extra 10% font width that urxvt adds.
+  patch :DATA
 
   fails_with :llvm do
     build 2336

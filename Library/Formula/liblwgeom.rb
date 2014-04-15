@@ -16,6 +16,13 @@ class Liblwgeom < Formula
     end
   end
 
+  bottle do
+    cellar :any
+    sha1 "222c662b18e0f8682a545fd924b6f5446951a9c2" => :mavericks
+    sha1 "918ba2b824b202f0fb9eff14f3f4dae1c3b2b5d7" => :mountain_lion
+    sha1 "8c047d21560626ddd88e76923a0b38a69b204ee5" => :lion
+  end
+
   head do
     url 'http://svn.osgeo.org/postgis/trunk/'
     depends_on 'postgresql' => :build # don't maintain patches for HEAD
