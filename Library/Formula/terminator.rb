@@ -6,10 +6,10 @@ class Terminator < Formula
   sha1 'aa92a6cacd572f6a834ac1de88ae699c7b7dee69'
 
   depends_on 'pkg-config' => :build
+  depends_on 'intltool' => :build
   depends_on :python
   depends_on :x11
   depends_on 'vte'
-  depends_on 'intltool'
   depends_on 'pygtk'
   depends_on 'pygobject'
   depends_on 'pango'
