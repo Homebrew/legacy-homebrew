@@ -186,8 +186,6 @@ module SharedEnvExtension
   end
 
   def warn_about_non_apple_gcc(gcc)
-    opoo "Experimental support for non-Apple GCC enabled. Some builds may fail!"
-
     begin
       gcc_name = 'gcc' + gcc.delete('.')
       gcc = Formulary.factory(gcc_name)
