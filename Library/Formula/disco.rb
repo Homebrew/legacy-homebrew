@@ -2,10 +2,8 @@ require 'formula'
 
 class Disco < Formula
   homepage 'http://discoproject.org/'
-  url 'https://github.com/discoproject/disco/archive/0.5.tar.gz'
-  sha1 '2728d2cc9ea398ddf1e4420e5c75750aa74fe0e2'
-  # Periods in the install path cause disco-worker to complain so change to underscores.
-  version '0_5_0'
+  url 'https://github.com/discoproject/disco/archive/0.5.1.tar.gz'
+  sha1 'c158018409216d5c03368b773e54e1e5ea91ae38'
 
   depends_on :python
   depends_on 'erlang'
