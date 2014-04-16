@@ -15,10 +15,7 @@ class Doxymacs < Formula
     # https://sourceforge.net/tracker/?func=detail&aid=3577208&group_id=23584&atid=378985
     ENV.append 'CFLAGS', '-std=gnu89'
 
-    if build.head?
-      system "./bootstrap"
-    end
-
+    system "./bootstrap" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
