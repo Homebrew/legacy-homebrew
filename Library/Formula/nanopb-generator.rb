@@ -32,6 +32,13 @@ class NanopbGenerator < Formula
   end
 
   test do
-    system "nanopb_generator.py", "--help"
+    (testpath/"test.proto").write <<-PROTO.undent
+      message Test {
+        required string test_field = 1;
+      }
+    PROTO
+    system "protoc", "--nanopb_out=.", "test.proto"
+    system "grep", "test_field", "test.pb.c"
+    system "grep", "test_field", "test.pb.h"
   end
 end
