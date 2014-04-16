@@ -13,7 +13,7 @@ class Restli < Formula
 
   def caveats; <<-EOS.undent
     Depends on Giter8, which download the Scala runtime from scala-tools.org
-    and the rest of the giter8 binaries the first time you run it.  See giter8 
+    and the rest of the giter8 binaries the first time you run it.  See giter8
     for details.
 EOS
   end
