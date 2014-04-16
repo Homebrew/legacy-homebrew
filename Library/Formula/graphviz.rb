@@ -2,9 +2,8 @@ require 'formula'
 
 class Graphviz < Formula
   homepage 'http://graphviz.org/'
-  url 'http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.36.0.tar.gz'
-  sha1 'a41e9f1cbcc9a24651e14dd15a4cda3d912d7d19'
-  revision 1
+  url 'http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.38.0.tar.gz'
+  sha1 '053c771278909160916ca5464a0a98ebf034c6ef'
 
   bottle do
     sha1 "593be8aa485bde737036b6b66a274d7d52eb25b6" => :mavericks
