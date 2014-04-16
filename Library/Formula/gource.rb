@@ -2,6 +2,7 @@ require 'formula'
 
 class Gource < Formula
   homepage 'http://code.google.com/p/gource/'
+  head 'https://github.com/acaudwell/Gource.git'
   url 'https://github.com/acaudwell/Gource/releases/download/gource-0.41/gource-0.41.tar.gz'
   sha1 '75aa1e2c5afc2f91b54629d086f2a80bf3b553e5'
 
