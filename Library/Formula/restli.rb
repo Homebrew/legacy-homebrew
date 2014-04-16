@@ -11,8 +11,13 @@ class Restli < Formula
     bin.install 'restli'
   end
 
-  test do
-    (testpath/'input.txt').write('\norg.example\nfortunes\nfortunes\nFortune')
-    system "#{bin}/restli", 'new', '--name=Example'
+  def caveats; <<-EOS.undent
+    Depends on Giter8, which download the Scala runtime from scala-tools.org
+    and the rest of the giter8 binaries the first time you run it.  See giter8 
+    for details.
+EOS
   end
+
+  # tests removed.  Because this depends on giter8, which takes too long to download
+  # from scala-tools.org, any meaningful test would also call giter8 and would timeout.
 end
