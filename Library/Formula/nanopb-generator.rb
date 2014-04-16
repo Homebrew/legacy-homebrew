@@ -6,18 +6,29 @@ class NanopbGenerator < Formula
   sha1 "7dce0b9e1f9e5d0614697a8ea1678cee76f14858"
 
   depends_on :python
-  depends_on "protobuf" => [:python, "google.protobuf"]
   depends_on "protobuf"
 
-  def install
-    Dir.chdir 'generator'
+  resource "protobuf-python" do
+    url "https://pypi.python.org/packages/source/p/protobuf/protobuf-2.5.0.tar.gz"
+    sha1 "1a6028d113484089edbde95900b6d9467160cc41"
+  end
 
-    Dir.chdir 'proto' do
-      system 'make'
+  def install
+    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
+    resource("protobuf-python").stage do
+      system "python", "setup.py", "install", "--prefix=#{libexec}"
     end
 
-    libexec.install Dir['*']
-    bin.write_exec_script libexec/'protoc-gen-nanopb', libexec/'nanopb_generator.py'
+    Dir.chdir "generator"
+
+    Dir.chdir "proto" do
+      system "make"
+    end
+
+    libexec.install ["nanopb_generator.py", "protoc-gen-nanopb", "proto"]
+
+    (bin/"protoc-gen-nanopb").write_env_script libexec/"protoc-gen-nanopb", :PYTHONPATH => ENV["PYTHONPATH"]
+    (bin/"nanopb_generator.py").write_env_script libexec/"nanopb_generator.py", :PYTHONPATH => ENV["PYTHONPATH"]
   end
 
   test do
