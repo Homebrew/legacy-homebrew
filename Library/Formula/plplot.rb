@@ -2,8 +2,8 @@ require 'formula'
 
 class Plplot < Formula
   homepage 'http://plplot.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/plplot/plplot/5.9.11%20Source/plplot-5.9.11.tar.gz'
-  sha1 'cfe7e8085ca054d484b24598636d4a5dcbf357c6'
+  url 'https://downloads.sourceforge.net/project/plplot/plplot/5.10.0%20Source/plplot-5.10.0.tar.gz'
+  sha1 'ea962cb0138c9b4cbf97ecab1fac1919ea0f939f'
 
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
@@ -15,8 +15,8 @@ class Plplot < Formula
   def install
     args = std_cmake_args
     args << '-DPLD_wxwidgets=OFF' << '-DENABLE_wxwidgets=OFF'
-    args << '-DENABLE_java=OFF' unless build.with? 'java'
-    args << '-DPLD_xcairo=OFF' unless MacOS::X11.installed?
+    args << '-DENABLE_java=OFF' if build.without? 'java'
+    args << '-DPLD_xcairo=OFF' if build.without? 'x11'
     mkdir "plplot-build" do
       system "cmake", "..", *args
       system "make"

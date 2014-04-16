@@ -8,8 +8,8 @@ end
 
 class SigningParty < Formula
   homepage 'http://pgp-tools.alioth.debian.org/'
-  url 'http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.4.orig.tar.gz'
-  sha1 '092b7d644b7a8a8d2e82fd6ddb453ca58020ed31'
+  url 'http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.5.orig.tar.gz'
+  sha1 '79b4aae0b8c23adda8a6438138154f3fb8d348ea'
 
   option 'with-rename-pgpring', 'Install pgpring as pgppubring to avoid conflicting with mutt'
 
@@ -28,9 +28,7 @@ class SigningParty < Formula
 
   # gpgparticipants data on OS X behaves differently from linux version
   # https://github.com/Homebrew/homebrew/pull/21628
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # gpgdir and gpgwrap are not included as they have their own homepages

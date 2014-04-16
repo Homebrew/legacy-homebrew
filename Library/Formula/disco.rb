@@ -12,10 +12,8 @@ class Disco < Formula
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
   depends_on 'libcmph'
 
-  def patches
-    # Modifies config for single-node operation
-    DATA
-  end
+  # Modifies config for single-node operation
+  patch :DATA
 
   def install
     inreplace "Makefile" do |s|

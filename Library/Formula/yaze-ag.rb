@@ -9,9 +9,7 @@ class YazeAg < Formula
   # Fix omission of creating bin directory by custom Makefile
   # Upstream author is aware of this issue:
   # https://github.com/Homebrew/homebrew/pull/16817
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "make", "-f", "Makefile_solaris_gcc",

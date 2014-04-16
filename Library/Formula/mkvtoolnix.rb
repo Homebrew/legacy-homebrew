@@ -1,5 +1,28 @@
 require 'formula'
 
+class Ruby19 < Requirement
+  fatal true
+  default_formula "ruby"
+
+  satisfy :build_env => false do
+    next unless which "ruby"
+    version = /\d\.\d/.match `ruby --version 2>&1`
+    next unless version
+    Version.new(version.to_s) >= Version.new("1.9")
+  end
+
+  def modify_build_environment
+    ruby = which "ruby"
+    return unless ruby
+    ENV.prepend_path "PATH", ruby.dirname
+  end
+
+  def message; <<-EOS.undent
+    The mkvtoolnix buildsystem needs Ruby >=1.9
+    EOS
+  end
+end
+
 class Mkvtoolnix < Formula
   homepage 'http://www.bunkus.org/videotools/mkvtoolnix/'
   url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-6.8.0.tar.xz'
@@ -8,36 +31,23 @@ class Mkvtoolnix < Formula
   head 'https://github.com/mbunkus/mkvtoolnix.git'
 
   depends_on 'pkg-config' => :build
-  depends_on 'ruby' => :build if MacOS.version < :mavericks
-  depends_on 'boost' => 'c++11'
+  depends_on Ruby19
   depends_on 'libvorbis'
-  depends_on 'libmatroska' => 'c++11'
-  depends_on 'libebml' => 'c++11'
   depends_on 'flac' => :optional
   depends_on 'lzo' => :optional
-
-  fails_with :clang do
-    build 425
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
+  # On Mavericks, the bottle (without c++11) can be used
+  # because mkvtoolnix is linked against libstdc++ by default
+  if MacOS.version >= 10.9
+    depends_on 'boost'
+    depends_on 'libmatroska'
+    depends_on 'libebml'
+  else
+    depends_on 'boost' => 'c++11'
+    depends_on 'libmatroska' => 'c++11'
+    depends_on 'libebml' => 'c++11'
   end
 
-  fails_with :gcc do
-    build 5666
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
-  end
-
-  fails_with :gcc => '4.5.4' do
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
-  end
-
-  fails_with :gcc_4_0 do
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
-  end;
-
-  fails_with :llvm do
-    build 2336
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
-  end
+  needs :cxx11
 
   def install
     ENV.cxx11

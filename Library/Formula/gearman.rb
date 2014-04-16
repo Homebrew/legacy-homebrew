@@ -15,9 +15,14 @@ class Gearman < Formula
   depends_on :mysql => :optional
   depends_on :postgresql => :optional
 
+  # build fix for tr1 -> std
+  # Fixes have also been applied upstream
+  patch :DATA if MacOS.version >= :mavericks
+
+
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--without-mysql" unless build.with? 'mysql'
+    args << "--without-mysql" if build.without? 'mysql'
     if build.with? 'postgresql'
       pg_config = "#{Formula["postgresql"].opt_bin}/pg_config"
       args << "--with-postgresql=#{pg_config}"
@@ -25,13 +30,6 @@ class Gearman < Formula
     system "./configure", *args
     system "make install"
   end
-
-  def patches
-    # build fix for tr1 -> std
-    # Fixes have also been applied upstream
-    DATA if MacOS.version >= :mavericks
-  end
-
 
   plist_options :manual => "gearmand -d"
 

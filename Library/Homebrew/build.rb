@@ -81,8 +81,9 @@ class Build
 
   def pre_superenv_hacks
     # Allow a formula to opt-in to the std environment.
-    ARGV.unshift '--env=std' if (f.env.std? or deps.any? { |d| d.name == 'scons' }) and
-      not ARGV.include? '--env=super'
+    if (f.env.std? || deps.any? { |d| d.name == "scons" }) && ARGV.env != "super"
+      ARGV.unshift "--env=std"
+    end
   end
 
   def expand_reqs
@@ -167,6 +168,8 @@ class Build
       else
         f.prefix.mkpath
 
+        f.resources.each { |r| r.extend(ResourceDebugger) } if ARGV.debug?
+
         begin
           f.install
 
@@ -210,7 +213,7 @@ end
 
 def fixopt f
   path = if f.linked_keg.directory? and f.linked_keg.symlink?
-    f.linked_keg.realpath
+    f.linked_keg.resolved_path
   elsif f.prefix.directory?
     f.prefix
   elsif (kids = f.rack.children).size == 1 and kids.first.directory?

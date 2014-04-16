@@ -5,8 +5,8 @@ class Pngcrush < Formula
   # Stay at least one version behind and use the old-versions directory,
   # because tarballs are routinely removed and upstream won't change this
   # practice.
-  url 'https://downloads.sourceforge.net/project/pmt/pngcrush/old-versions/1.7/1.7.69/pngcrush-1.7.69.tar.gz'
-  sha1 'ccc2a4c678da44673087dd63c98fafca68b1670d'
+  url 'https://downloads.sourceforge.net/project/pmt/pngcrush/old-versions/1.7/1.7.70/pngcrush-1.7.70.tar.gz'
+  sha1 '77a6e092ba192b24f4d51014e7a67ecb50f842e9'
 
   def install
     # Required to successfully build the bundled zlib 1.2.6

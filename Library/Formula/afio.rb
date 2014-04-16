@@ -19,7 +19,7 @@ class Afio < Formula
     bin.install "afio"
     man1.install 'afio.1'
 
-    prefix.install "ANNOUNCE-2.5.1" => "ANNOUNCE"
+    prefix.install "ANNOUNCE-#{version}" => "ANNOUNCE"
     prefix.install %w(HISTORY INSTALLATION README SCRIPTS)
     share.install Dir["script*"]
   end

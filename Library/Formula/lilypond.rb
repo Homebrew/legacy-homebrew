@@ -2,12 +2,12 @@ require 'formula'
 
 class Lilypond < Formula
   homepage 'http://lilypond.org/'
-  url 'http://download.linuxaudio.org/lilypond/sources/v2.18/lilypond-2.18.1.tar.gz'
-  sha1 '2da4b9881c5263179e41370624e6c08cddf23511'
+  url 'http://download.linuxaudio.org/lilypond/sources/v2.18/lilypond-2.18.2.tar.gz'
+  sha1 '09d3a1e0e9fadeb8ef6e279227a2b30812c7ee9b'
 
   devel do
-    url 'http://download.linuxaudio.org/lilypond/source/v2.19/lilypond-2.19.3.tar.gz'
-    sha1 '313e64cd7971bf98d84e76dccf31e24cba0d1ab6'
+    url 'http://download.linuxaudio.org/lilypond/source/v2.19/lilypond-2.19.4.tar.gz'
+    sha1 '0dc8c449958571377729557dbe20e973a8a10e1d'
   end
 
   # LilyPond currently only builds with an older version of Guile (<1.9)
@@ -46,11 +46,11 @@ class Lilypond < Formula
   depends_on 'flex' => :build
 
   # Assert documentation dependencies if requested.
-  if build.include? 'with-doc'
+  if build.with? "doc"
     depends_on 'netpbm'
     depends_on 'imagemagick'
     depends_on 'docbook'
-    depends_on 'dbtexmf.dblatex' => :python
+    depends_on "dblatex" => [:python, "dbtexmf.dblatex"]
     depends_on :python
     depends_on 'texi2html'
   end
@@ -78,7 +78,7 @@ class Lilypond < Formula
             "--enable-rpath",
             "--with-ncsb-dir=#{gs.share}/ghostscript/fonts/"]
 
-    args << "--disable-documentation" unless build.include? 'with-doc'
+    args << "--disable-documentation" if build.without? "doc"
     system "./configure", *args
 
     # Separate steps to ensure that lilypond's custom fonts are created.
@@ -86,7 +86,7 @@ class Lilypond < Formula
     system "make install"
 
     # Build documentation if requested.
-    if build.include? 'with-doc'
+    if build.with? "doc"
       system "make doc"
       system "make install-doc"
     end

@@ -36,9 +36,9 @@ class Qt5 < Formula
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
 
-  odie 'qt5: --with-qtdbus has been renamed to --with-d-bus' if build.include? 'with-qtdbus'
-  odie 'qt5: --with-demos-examples is no longer supported' if build.include? 'with-demos-examples'
-  odie 'qt5: --with-debug-and-release is no longer supported' if build.include? 'with-debug-and-release'
+  odie 'qt5: --with-qtdbus has been renamed to --with-d-bus' if build.with? "qtdbus"
+  odie 'qt5: --with-demos-examples is no longer supported' if build.with? "demos-examples"
+  odie 'qt5: --with-debug-and-release is no longer supported' if build.with? "debug-and-release"
 
   def install
     # fixed hardcoded link to plugin dir: https://bugreports.qt-project.org/browse/QTBUG-29188
@@ -95,21 +95,16 @@ class Qt5 < Formula
     end
 
     # Some config scripts will only find Qt in a "Frameworks" folder
-    cd prefix do
-      ln_s lib, frameworks
-    end
+    frameworks.install_symlink Dir["#{lib}/*.framework"]
 
     # The pkg-config files installed suggest that headers can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to
     # the Frameworks' Headers folders.
-    Pathname.glob(lib + '*.framework/Headers').each do |path|
-      framework_name = File.basename(File.dirname(path), '.framework')
-      ln_s path.realpath, include+framework_name
+    Pathname.glob("#{lib}/*.framework/Headers") do |path|
+      include.install_symlink path => path.parent.basename(".framework")
     end
 
-    Pathname.glob(bin + '*.app').each do |path|
-      mv path, prefix
-    end
+    Pathname.glob("#{bin}/*.app") { |app| mv app, prefix }
   end
 
   test do

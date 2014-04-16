@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Phantomjs < Formula
-  homepage 'http://www.phantomjs.org/'
-  url 'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip'
-  sha1 '124b017d493d5ccabd22afaf078d0650ac048840'
+  homepage "http://www.phantomjs.org/"
+  url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip"
+  sha1 "124b017d493d5ccabd22afaf078d0650ac048840"
 
   bottle do
     cellar :any
@@ -12,10 +12,9 @@ class Phantomjs < Formula
     sha1 "575af708d7e5ef6e39e90766ffd2bf97b6c4b51b" => :lion
   end
 
-  def patches
-    [
-      'https://github.com/ariya/phantomjs/commit/fe6a96.patch'
-    ]
+  patch do
+    url "https://github.com/ariya/phantomjs/commit/fe6a96.diff"
+    sha1 "d3efd38e0f3f0da08530d0bf603ea72ebdf06b78"
   end
 
   def install

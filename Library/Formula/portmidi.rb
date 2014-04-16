@@ -11,11 +11,9 @@ class Portmidi < Formula
   depends_on :python => :optional
   depends_on 'Cython' => :python if build.with? 'python'
 
-  def patches
-    # Avoid that the Makefile.osx builds the java app and fails because: fatal error: 'jni.h' file not found
-    # Since 217 the Makefile.osx includes pm_common/CMakeLists.txt wich builds the Java app
-    DATA unless build.include? 'with-java'
-  end
+  # Avoid that the Makefile.osx builds the java app and fails because: fatal error: 'jni.h' file not found
+  # Since 217 the Makefile.osx includes pm_common/CMakeLists.txt wich builds the Java app
+  patch :DATA if build.without? "java"
 
   def install
     inreplace 'pm_mac/Makefile.osx', 'PF=/usr/local', "PF=#{prefix}"

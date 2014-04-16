@@ -7,16 +7,15 @@ class JohnJumbo < Formula
 
   conflicts_with 'john', :because => 'both install the same binaries'
 
-  def patches
-    [
-      "http://www.openwall.com/john/g/john-1.7.9-jumbo-7.diff.gz", # Jumbo
-      # First patch taken from MacPorts, tells john where to find runtime files
-      # Second patch protects against a redefinition of _mm_testz_si128 which
-      # tanked the build in clang;
-      # see https://github.com/Homebrew/homebrew/issues/26531
-      DATA
-    ]
+  # First patch taken from MacPorts, tells john where to find runtime files
+  # Second patch protects against a redefinition of _mm_testz_si128 which
+  # tanked the build in clang;
+  # see https://github.com/Homebrew/homebrew/issues/26531
+  patch do
+    url "http://www.openwall.com/john/g/john-1.7.9-jumbo-7.diff.gz"
+    sha1 "22fd8294e997f45a301cfeb65a8aa7083f25a55d"
   end
+  patch :DATA
 
   fails_with :llvm do
     build 2334

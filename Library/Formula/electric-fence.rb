@@ -6,16 +6,14 @@ class ElectricFence < Formula
   version '2.1.13-0.1'
   sha1 'e6765bcb1543272040b806eea706fc7ae9b60524'
 
+  # Patch based on this MacPorts port: https://trac.macports.org/ticket/23836
+  # Discussion on how to port it to OS X: http://lists.apple.com/archives/xcode-users/2005/Oct/msg00791.html
+  patch :DATA
+
   def install
     system "make"
     lib.install "libefence.a"
     man3.install "libefence.3"
-  end
-
-  def patches
-    # Patch based on this MacPorts port: https://trac.macports.org/ticket/23836
-    # Discussion on how to port it to OS X: http://lists.apple.com/archives/xcode-users/2005/Oct/msg00791.html
-    DATA
   end
 
   test do

@@ -2,8 +2,8 @@ require 'formula'
 
 class Abcl < Formula
   homepage 'http://abcl.org'
-  url 'http://abcl.org/releases/1.2.1/abcl-bin-1.2.1.tar.gz'
-  sha1 '7936d9f8deb3eb064a265b0b620f033ee4db6ed8'
+  url 'http://abcl.org/releases/1.3.0/abcl-bin-1.3.0.tar.gz'
+  sha1 '06704f96418b1a39ed0d774569c102af4c1606d8'
 
   depends_on 'rlwrap'
 

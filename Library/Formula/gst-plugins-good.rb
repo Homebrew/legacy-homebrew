@@ -25,6 +25,8 @@ class GstPluginsGood < Formula
   depends_on 'gst-plugins-base'
   depends_on 'libsoup'
 
+  depends_on :x11 => :optional
+
   # The set of optional dependencies is based on the intersection of
   # gst-plugins-good-0.10.30/REQUIREMENTS and Homebrew formulae
   depends_on 'orc' => :optional
@@ -45,13 +47,19 @@ class GstPluginsGood < Formula
   def install
     args = %W[
       --prefix=#{prefix}
-      --disable-schemas-install
       --disable-gtk-doc
       --disable-goom
       --with-default-videosink=ximagesink
       --disable-debug
       --disable-dependency-tracking
+      --disable-silent-rules
     ]
+
+    if build.with? "x11"
+      args << "--with-x"
+    else
+      args << "--without-x"
+    end
 
     if build.head?
       ENV.append "NOCONFIGURE", "yes"

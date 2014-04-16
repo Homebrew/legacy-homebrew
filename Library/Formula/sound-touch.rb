@@ -10,9 +10,7 @@ class SoundTouch < Formula
   depends_on :libtool
 
   # Fix autoreconf error
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # SoundTouch has a small amount of inline assembly. The assembly has two labeled

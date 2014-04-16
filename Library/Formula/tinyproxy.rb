@@ -9,12 +9,10 @@ class Tinyproxy < Formula
 
   depends_on "asciidoc" => :build
 
-  # Fix linking error, via MacPorts
-  # See: https://trac.macports.org/ticket/27762
-  def patches
-    {:p0 => [
-      "https://trac.macports.org/export/83413/trunk/dports/net/tinyproxy/files/patch-configure.diff"
-    ]}
+  # Fix linking error, via MacPorts: https://trac.macports.org/ticket/27762
+  patch :p0 do
+    url "https://trac.macports.org/export/83413/trunk/dports/net/tinyproxy/files/patch-configure.diff"
+    sha1 "e946269b681f3ffaa1acd120c93050cb63bfe743"
   end
 
   def install

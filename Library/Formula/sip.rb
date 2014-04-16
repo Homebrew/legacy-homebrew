@@ -2,8 +2,8 @@ require 'formula'
 
 class Sip < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
-  url 'http://download.sf.net/project/pyqt/sip/sip-4.15.4/sip-4.15.4.tar.gz'
-  sha1 'a5f6342dbb3cdc1fb61440ee8acb805f5fec3c41'
+  url 'http://download.sf.net/project/pyqt/sip/sip-4.15.5/sip-4.15.5.tar.gz'
+  sha1 '1e1c912981930754885ba47d708e2664d1c6ba9e'
 
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
 
@@ -12,16 +12,6 @@ class Sip < Formula
 
   if build.without?("python3") && build.without?("python")
     odie "sip: --with-python3 must be specified when using --without-python"
-  end
-
-  def pythons
-    pythons = []
-    ["python", "python3"].each do |python|
-      next if build.without? python
-      version = /\d\.\d/.match `#{python} --version 2>&1`
-      pythons << [python, version]
-    end
-    pythons
   end
 
   def install
@@ -33,7 +23,7 @@ class Sip < Formula
       system "python", "build.py", "prepare"
     end
 
-    pythons.each do |python, version|
+    Language::Python.each_python(build) do |python, version|
       # Note the binary `sip` is the same for python 2.x and 3.x
       system python, "configure.py",
                      "--deployment-target=#{MacOS.version}",
@@ -43,7 +33,7 @@ class Sip < Formula
                      "--sipdir=#{HOMEBREW_PREFIX}/share/sip"
       system "make"
       system "make", "install"
-      system "make", "clean" if pythons.length > 1
+      system "make", "clean"
     end
   end
 

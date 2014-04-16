@@ -7,11 +7,9 @@ class Wrangler < Formula
 
   depends_on 'erlang'
 
-  def patches
-    # Respect $CC during compilation. Merged upstream:
-    # https://github.com/RefactoringTools/wrangler/pull/41
-    DATA
-  end
+  # Respect $CC during compilation. Merged upstream:
+  # https://github.com/RefactoringTools/wrangler/pull/41
+  patch :DATA
 
   def install
     ENV.deparallelize

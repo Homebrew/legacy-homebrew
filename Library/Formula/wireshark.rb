@@ -2,10 +2,16 @@ require 'formula'
 
 class Wireshark < Formula
   homepage 'http://www.wireshark.org'
-  url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.5.tar.bz2'
-  mirror 'http://www.wireshark.org/download/src/wireshark-1.10.5.tar.bz2'
-  sha1 'ebbf4f8382fc8961c1fb7959727b3e6792e597c1'
-  revision 2
+
+  stable do
+    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.6.tar.bz2'
+    mirror 'http://www.wireshark.org/download/src/wireshark-1.10.6.tar.bz2'
+    sha1 '081a2daf85e3257d7a2699e84a330712e3e5b9bb'
+
+    # Removes SDK checks that prevent the build from working on CLT-only systems
+    # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
+    patch :DATA
+  end
 
   head do
     url 'https://code.wireshark.org/review/wireshark', :using => :git
@@ -20,7 +26,6 @@ class Wireshark < Formula
     sha1 'af2b03338819b300f621048398b49403675db49c'
   end
 
-  option 'with-x', 'Include X11 support'
   option 'with-qt', 'Use QT for GUI instead of GTK+'
   option 'with-headers', 'Install Wireshark library headers for plug-in developemnt'
 
@@ -37,19 +42,8 @@ class Wireshark < Formula
   depends_on 'pcre' => :optional
   depends_on 'portaudio' => :optional
   depends_on 'qt' => :optional
-
-  if build.with? 'x'
-    depends_on :x11
-    depends_on 'gtk+'
-  end
-
-  def patches
-    if build.stable?
-      # Removes SDK checks that prevent the build from working on CLT-only systems
-      # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
-      { :p1 => DATA }
-    end
-  end
+  depends_on "gtk+" => :optional
+  depends_on :x11 if build.with? "gtk+"
 
   def install
     system "./autogen.sh" if build.head?
@@ -60,8 +54,8 @@ class Wireshark < Formula
             "--with-ssl"]
 
     args << "--disable-warnings-as-errors" if build.head?
-    args << "--disable-wireshark" unless build.with? "x" or build.with? "qt"
-    args << "--disable-gtktest" unless build.with? "x"
+    args << "--disable-wireshark" if build.without?("gtk+") && build.without?("qt")
+    args << "--disable-gtktest" if build.without? "gtk+"
     args << "--with-qt" if build.with? "qt"
 
     system "./configure", *args
@@ -70,15 +64,15 @@ class Wireshark < Formula
     system "make install"
 
     if build.with? 'headers'
-        (include/"wireshark").install Dir["*.h"]
-        (include/"wireshark/epan").install Dir["epan/*.h"]
-        (include/"wireshark/epan/crypt").install Dir["epan/crypt/*.h"]
-        (include/"wireshark/epan/dfilter").install Dir["epan/dfilter/*.h"]
-        (include/"wireshark/epan/dissectors").install Dir["epan/dissectors/*.h"]
-        (include/"wireshark/epan/ftypes").install Dir["epan/ftypes/*.h"]
-        (include/"wireshark/epan/wmem").install Dir["epan/wmem/*.h"]
-        (include/"wireshark/wiretap").install Dir["wiretap/*.h"]
-        (include/"wireshark/wsutil").install Dir["wsutil/*.h"]
+      (include/"wireshark").install Dir["*.h"]
+      (include/"wireshark/epan").install Dir["epan/*.h"]
+      (include/"wireshark/epan/crypt").install Dir["epan/crypt/*.h"]
+      (include/"wireshark/epan/dfilter").install Dir["epan/dfilter/*.h"]
+      (include/"wireshark/epan/dissectors").install Dir["epan/dissectors/*.h"]
+      (include/"wireshark/epan/ftypes").install Dir["epan/ftypes/*.h"]
+      (include/"wireshark/epan/wmem").install Dir["epan/wmem/*.h"]
+      (include/"wireshark/wiretap").install Dir["wiretap/*.h"]
+      (include/"wireshark/wsutil").install Dir["wsutil/*.h"]
     end
   end
 
@@ -98,6 +92,12 @@ class Wireshark < Formula
     See bug report:
       https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=3760
     EOS
+  end
+
+  test do
+    system "#{bin}/randpkt", "-b", "100", "-c", "2", "capture.pcap"
+    output = `#{bin}/capinfos -Tmc capture.pcap`
+    assert_equal "File name,Number of packets\ncapture.pcap,2\n", output
   end
 end
 
@@ -120,7 +120,7 @@ index cd41b63..c473fe7 100755
  $as_echo "yes" >&6; }
  		;;
  	esac
- 
+
  	#
 -	# Add a -mmacosx-version-min flag to force tests that
 -	# use the compiler, as well as the build itself, not to,

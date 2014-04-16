@@ -1,33 +1,9 @@
 require 'formula'
 
-class PythonEnvironment < Requirement
-  fatal true
-
-  def error_message
-    if !Formula["python"].installed? && ARGV.include?("--with-python3")
-      error_message =  <<-EOS.undent
-        You cannot use system Python 2 and Homebrew's Python 3
-        simultaneously.
-        Either `brew install python` or use `--without-python3`.
-      EOS
-    elsif ARGV.include?("--without-python") && !ARGV.include?("--with-python3")
-      error_message =  " --with-python3 must be specified when using --without-python"
-    end
-  end
-
-  satisfy do
-    error_message == nil
-  end
-
-  def message
-    error_message
-  end
-end
-
 class Pygobject3 < Formula
   homepage 'http://live.gnome.org/PyGObject'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.10/pygobject-3.10.2.tar.xz'
-  sha256 '75608f2c4052f0277508fc79debef026d9e84cb9261de2b922387c093d32c326'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.12/pygobject-3.12.0.tar.xz'
+  sha256 '0d4485311fcfb073dc37432e36ad1d45bcf9f8796a1e8ff20a6494e0297dbd1a'
 
   option 'with-tests', 'run tests'
 
@@ -53,21 +29,10 @@ class Pygobject3 < Formula
 
   option :universal
 
-  depends_on PythonEnvironment
-
-  def pythons
-    pythons = []
-    ["python", "python3"].each do |python|
-      next if build.without? python
-      version = /\d\.\d/.match `#{python} --version 2>&1`
-      pythons << [python, version]
-    end
-    pythons
-  end
-
-  def patches
-    "https://gist.github.com/krrk/6439665/raw/a527e14cd3a77c19b089f27bea884ce46c988f55/pygobject-fix-module.patch" if build.with? 'tests'
-  end
+  patch do
+    url "https://gist.github.com/krrk/6439665/raw/a527e14cd3a77c19b089f27bea884ce46c988f55/pygobject-fix-module.patch"
+    sha1 "1d7aad99256d87d616a41b7026cd05267bd9f97f"
+  end if build.with? 'tests'
 
   def install
     ENV.universal_binary if build.universal?
@@ -79,12 +44,12 @@ class Pygobject3 < Formula
       system "./autogen.sh"
     end
 
-    pythons.each do |python, version|
+    Language::Python.each_python(build) do |python, version|
       ENV["PYTHON"] = "#{python}" if Formula[python].installed?
       system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
       system "make", "install"
       system "make", "check" if build.with? 'tests'
-      system "make", "clean" if pythons.length > 1
+      system "make", "clean"
     end
   end
 
@@ -93,11 +58,7 @@ class Pygobject3 < Formula
     import gi
     assert("__init__" in gi.__file__)
     EOS
-    pythons.each do |python, version|
-      unless Formula[python].installed?
-        ENV["PYTHONPATH"] = HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
-        ENV.append_path "PYTHONPATH", "#{opt_lib}/python#{version}/site-packages"
-      end
+    Language::Python.each_python(build) do |python, version|
       system python, "test.py"
     end
   end

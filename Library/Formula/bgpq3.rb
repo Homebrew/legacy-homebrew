@@ -6,15 +6,12 @@ class Bgpq3 < Formula
   sha1 '41a2afaeffb12e43048ca8771c6cc6e6392e0da5'
   head "https://github.com/snar/bgpq3.git"
 
-  def patches
-    # Makefile: upstream has been informed of the patch through email,
-    # but no plans yet to incorporate it
-    # https://github.com/snar/bgpq3/pull/2
-    #
-    # strlcpy.c patch: upstream accepted but has not yet created a release
-    # https://github.com/snar/bgpq3/commit/89d864
-    DATA
-  end
+  # Makefile: upstream has been informed of the patch through email,
+  # but no plans yet to incorporate it
+  # https://github.com/snar/bgpq3/pull/2
+  # strlcpy.c patch: upstream accepted but has not yet created a release
+  # https://github.com/snar/bgpq3/commit/89d864
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"

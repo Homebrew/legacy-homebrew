@@ -6,7 +6,7 @@ class Weechat < Formula
   sha1 'c9043ae4df8057c1410eeaf4c5c8818e97963e16'
   revision 2
 
-  head 'git://git.savannah.nongnu.org/weechat.git'
+  head 'https://github.com/weechat/weechat.git'
 
   depends_on 'cmake' => :build
   depends_on 'gnutls'
@@ -29,12 +29,12 @@ class Weechat < Formula
       -DPREFIX=#{prefix}
       -DENABLE_GTK=OFF
     ]
-    args << '-DENABLE_LUA=OFF'    unless build.with? 'lua'
-    args << '-DENABLE_PERL=OFF'   unless build.with? 'perl'
-    args << '-DENABLE_RUBY=OFF'   unless build.with? 'ruby'
-    args << '-DENABLE_ASPELL=OFF' unless build.with? 'aspell'
-    args << '-DENABLE_GUILE=OFF'  unless build.with? 'guile'
-    args << '-DENABLE_PYTHON=OFF' unless build.with? 'python'
+    args << '-DENABLE_LUA=OFF'    if build.without? 'lua'
+    args << '-DENABLE_PERL=OFF'   if build.without? 'perl'
+    args << '-DENABLE_RUBY=OFF'   if build.without? 'ruby'
+    args << '-DENABLE_ASPELL=OFF' if build.without? 'aspell'
+    args << '-DENABLE_GUILE=OFF'  if build.without? 'guile'
+    args << '-DENABLE_PYTHON=OFF' if build.without? 'python'
 
     # NLS/gettext support disabled for now since it doesn't work in stdenv
     # see https://github.com/Homebrew/homebrew/issues/18722

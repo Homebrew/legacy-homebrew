@@ -15,9 +15,7 @@ class Goffice < Formula
 
   # Fix for goffice trying to use a retired pcre api. Reported/source = Macports
   # https://github.com/Homebrew/homebrew/issues/15171
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",

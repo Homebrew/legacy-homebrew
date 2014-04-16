@@ -5,13 +5,10 @@ class Yafc < Formula
   url 'http://www.yafc-ftp.com/upload/yafc-1.3.2.tar.xz'
   sha1 'a4cd5518b84cd40c4503f2e022ba946a8bd5484a'
 
-  depends_on 'xz' => :build
   depends_on 'readline'
   depends_on 'libssh' => :recommended
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     readline = Formula["readline"].opt_prefix

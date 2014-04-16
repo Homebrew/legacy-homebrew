@@ -251,6 +251,11 @@ class FormulaAuditor
       end
     end
 
+    # Check for Google Code download urls, https:// is preferred
+    urls.grep(%r[^http://.*\.googlecode\.com/files.*]) do |u|
+      problem "Use https:// URLs for downloads from Google Code (url is #{u})."
+    end
+
     # Check for git:// GitHub repo urls, https:// is preferred.
     urls.grep(%r[^git://[^/]*github\.com/]) do |u|
       problem "Use https:// URLs for accessing GitHub repositories (url is #{u})."
@@ -262,8 +267,13 @@ class FormulaAuditor
     end
 
     # Use new-style archive downloads
-    urls.select { |u| u =~ %r[https://.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
+    urls.select { |u| u =~ %r[https://.*github.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
+    end
+
+    # Don't use GitHub .zip files
+    urls.select { |u| u =~ %r[https://.*github.*/(archive|releases)/.*\.zip$] && u !~ %r[releases/download] }.each do |u|
+      problem "Use GitHub tarballs rather than zipballs (url is #{u})."
     end
   end
 
@@ -282,19 +292,27 @@ class FormulaAuditor
           "#{name} resource #{resource.name.inspect}: #{problem}"
         }
       end
+
+      spec.patches.select(&:external?).each { |p| audit_patch(p) }
     end
   end
 
   def audit_patches
-    Patches.new(f.patches).select(&:external?).each do |p|
-      case p.url
-      when %r[raw\.github\.com], %r[gist\.github\.com/raw], %r[gist\.github\.com/.+/raw$]
-        unless p.url =~ /[a-fA-F0-9]{40}/
-          problem "GitHub/Gist patches should specify a revision:\n#{p.url}"
-        end
-      when %r[macports/trunk]
-        problem "MacPorts patches should specify a revision instead of trunk:\n#{p.url}"
+    patches = Patch.normalize_legacy_patches(f.patches)
+    patches.grep(LegacyPatch).each { |p| audit_patch(p) }
+  end
+
+  def audit_patch(patch)
+    case patch.url
+    when %r[raw\.github\.com], %r[gist\.github\.com/raw], %r[gist\.github\.com/.+/raw],
+      %r[gist\.githubusercontent\.com/.+/raw]
+      unless patch.url =~ /[a-fA-F0-9]{40}/
+        problem "GitHub/Gist patches should specify a revision:\n#{patch.url}"
       end
+    when %r[macports/trunk]
+      problem "MacPorts patches should specify a revision instead of trunk:\n#{patch.url}"
+    when %r[^https?://github\.com/.*commit.*\.patch$]
+      problem "GitHub appends a git version to patches; use .diff instead."
     end
   end
 
@@ -316,7 +334,7 @@ class FormulaAuditor
     end
   end
 
-  def audit_line(line)
+  def audit_line(line, lineno)
     if line =~ /<(Formula|AmazonWebServicesFormula|ScriptFileFormula|GithubGistFormula)/
       problem "Use a space in class inheritance: class Foo < #{$1}"
     end
@@ -362,8 +380,8 @@ class FormulaAuditor
     end
 
     # Prefer formula path shortcuts in Pathname+
-    if line =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share)[/'"])}
-      problem "\"(#{$1}...#{$2})\" should be \"(#{$3}+...)\""
+    if line =~ %r{\(\s*(prefix\s*\+\s*(['"])(bin|include|libexec|lib|sbin|share|Frameworks)[/'"])}
+      problem "\"(#{$1}...#{$2})\" should be \"(#{$3.downcase}+...)\""
     end
 
     if line =~ %r[((man)\s*\+\s*(['"])(man[1-8])(['"]))]
@@ -371,8 +389,8 @@ class FormulaAuditor
     end
 
     # Prefer formula path shortcuts in strings
-    if line =~ %r[(\#\{prefix\}/(bin|include|libexec|lib|sbin|share))]
-      problem "\"#{$1}\" should be \"\#{#{$2}}\""
+    if line =~ %r[(\#\{prefix\}/(bin|include|libexec|lib|sbin|share|Frameworks))]
+      problem "\"#{$1}\" should be \"\#{#{$2.downcase}}\""
     end
 
     if line =~ %r[((\#\{prefix\}/share/man/|\#\{man\}/)(man[1-8]))]
@@ -394,7 +412,7 @@ class FormulaAuditor
 
     # No trailing whitespace, please
     if line =~ /[\t ]+$/
-      problem "Trailing whitespace was found"
+      problem "#{lineno}: Trailing whitespace was found"
     end
 
     if line =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
@@ -414,10 +432,8 @@ class FormulaAuditor
     end
 
     # Avoid hard-coding compilers
-    unless f.name == 'go' # Go needs to set CC for cgo support.
-      if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
-        problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
-      end
+    if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?(gcc|llvm-gcc|clang)['" ]}
+      problem "Use \"\#{ENV.cc}\" instead of hard-coding \"#{$3}\""
     end
 
     if line =~ %r{(system|ENV\[.+\]\s?=)\s?['"](/usr/bin/)?((g|llvm-g|clang)\+\+)['" ]}
@@ -432,24 +448,42 @@ class FormulaAuditor
       problem "Use 'build.head?' instead of inspecting 'version'"
     end
 
-    if line =~ /build\.include\?\s+['"]\-\-(.*)['"]/
+    if line =~ /build\.include\?[\s\(]+['"]\-\-(.*)['"]/
       problem "Reference '#{$1}' without dashes"
     end
 
-    if line =~ /build\.with\?\s+['"]-?-?with-(.*)['"]/
-      problem "No double 'with': Use `build.with? '#{$1}'` to check for \"--with-#{$1}\""
+    if line =~ /build\.include\?[\s\(]+['"]with(out)?-(.*)['"]/
+      problem "Use build.with#{$1}? \"#{$2}\" instead of build.include? 'with#{$1}-#{$2}'"
     end
 
-    if line =~ /build\.without\?\s+['"]-?-?without-(.*)['"]/
-      problem "No double 'without': Use `build.without? '#{$1}'` to check for \"--without-#{$1}\""
+    if line =~ /build\.with\?[\s\(]+['"]-?-?with-(.*)['"]/
+      problem "Don't duplicate 'with': Use `build.with? \"#{$1}\"` to check for \"--with-#{$1}\""
     end
 
-    # Mongo writes out a Ruby script that uses ARGV
-    # Python formulae need ARGV for Requirements
-    unless f.name == 'mongodb' || f.name == "pyobject3"
-      if line =~ /ARGV\.(?!(debug\?|verbose\?|value[\(\s]))/
-        problem "Use build instead of ARGV to check options"
-      end
+    if line =~ /build\.without\?[\s\(]+['"]-?-?without-(.*)['"]/
+      problem "Don't duplicate 'without': Use `build.without? \"#{$1}\"` to check for \"--without-#{$1}\""
+    end
+
+    if line =~ /unless build\.with\?(.*)/
+      problem "Use if build.without?#{$1} instead of unless build.with?#{$1}"
+    end
+
+    if line =~ /unless build\.without\?(.*)/
+      problem "Use if build.with?#{$1} instead of unless build.without?#{$1}"
+    end
+
+    if line =~ /(not\s|!)\s*build\.with?\?/
+      problem "Don't negate 'build.without?': use 'build.with?'"
+    end
+
+    if line =~ /(not\s|!)\s*build\.without?\?/
+      problem "Don't negate 'build.with?': use 'build.without?'"
+    end
+
+    if line =~ /ARGV\.(?!(debug\?|verbose\?|value[\(\s]))/
+      # Python formulae need ARGV for Requirements
+      problem "Use build instead of ARGV to check options",
+              :whitelist => %w{pygobject3 qscintilla2}
     end
 
     if line =~ /def options/
@@ -488,6 +522,10 @@ class FormulaAuditor
 
     if line =~ /depends_on ['"](.+)['"] (if.+|unless.+)$/
       audit_conditional_dep($1, $2, $&)
+    end
+
+    if line =~ /(Dir\[("[^\*{},]+")\])/
+      problem "#{$1} is unnecessary; just use #{$2}"
     end
   end
 
@@ -532,13 +570,14 @@ class FormulaAuditor
     audit_conflicts
     audit_patches
     audit_text
-    text.each_line { |line| audit_line(line) }
+    text.split("\n").each_with_index { |line, lineno| audit_line(line, lineno) }
     audit_installed
   end
 
   private
 
-  def problem p
+  def problem p, options={}
+    return if options[:whitelist].to_a.include? f.name
     @problems << p
   end
 end

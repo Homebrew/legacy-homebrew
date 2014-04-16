@@ -14,7 +14,7 @@ class Libqalculate < Formula
   depends_on 'wget'
 
   # Patches against version 0.9.7, should not be needed in the future
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

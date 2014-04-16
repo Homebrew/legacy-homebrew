@@ -2,15 +2,15 @@ require 'formula'
 
 class Haxe < Formula
   homepage 'http://haxe.org'
-  url 'https://github.com/HaxeFoundation/haxe.git', :tag => 'v3.1.0'
+  url 'https://github.com/HaxeFoundation/haxe.git', :tag => '3.1.3'
 
   head 'https://github.com/HaxeFoundation/haxe.git', :branch => 'development'
 
   bottle do
     cellar :any
-    sha1 "2d0d03f2a3a1da2bf89473ce495d68d71922d380" => :mavericks
-    sha1 "39f8993c08e35b06a9b57f6ea997c57029898a76" => :mountain_lion
-    sha1 "4fd905adeeab662f5bb547053dce580dcd0936f3" => :lion
+    sha1 "83fe01c0ca2997328e88ef7763181ff40cc5082a" => :mavericks
+    sha1 "46c5911f3505c7e102c71dde16ed4ab2bdcc4cbc" => :mountain_lion
+    sha1 "408dbaf0110cb38ee52900bd4910c56913681bab" => :lion
   end
 
   depends_on 'neko'
@@ -22,6 +22,11 @@ class Haxe < Formula
     system "make"
     bin.mkpath
     system "make", "install", "INSTALL_BIN_DIR=#{bin}", "INSTALL_LIB_DIR=#{lib}/haxe"
+
+    # Replace the absolute symlink by a relative one,
+    # such that binary package created by homebrew will work in non-/usr/local locations.
+    rm bin/"haxe"
+    bin.install_symlink lib/"haxe/haxe"
   end
 
   test do

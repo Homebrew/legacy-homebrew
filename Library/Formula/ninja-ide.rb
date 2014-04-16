@@ -6,7 +6,7 @@ class NinjaIde < Formula
   sha1 '64ccbbf8521a8fbef43c3d57cf616b7f8b466460'
 
   depends_on :python
-  depends_on 'fsevents' => :python
+  depends_on "MacFSEvents" => [:python, "fsevents"]
   depends_on 'pyqt'
 
   def install

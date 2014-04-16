@@ -24,9 +24,7 @@ class PostgresXc < Formula
 
   # Fix PL/Python build: https://github.com/Homebrew/homebrew/issues/11162
   # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.libxml2 if MacOS.version >= :snow_leopard
@@ -46,13 +44,13 @@ class PostgresXc < Formula
             "--with-libxml",
             "--with-libxslt"]
 
-    args << "--with-ossp-uuid" unless build.without? 'ossp-uuid'
+    args << "--with-ossp-uuid" if build.with? 'ossp-uuid'
     args << "--with-python" if build.with? 'python'
     args << "--with-perl" unless build.include? 'no-perl'
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
     args << "ARCHFLAGS='-arch x86_64'"
 
-    unless build.without? 'ossp-uuid'
+    if build.with? 'ossp-uuid'
       ENV.append 'CFLAGS', `uuid-config --cflags`.strip
       ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
       ENV.append 'LIBS', `uuid-config --libs`.strip

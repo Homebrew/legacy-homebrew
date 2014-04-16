@@ -8,10 +8,8 @@ class Avfs < Formula
   depends_on 'pkg-config' => :build
   depends_on 'osxfuse'
 
-  def patches
-    # Fix scripts to work on Mac OS X.
-    DATA
-  end
+  # Fix scripts to work on Mac OS X.
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug",

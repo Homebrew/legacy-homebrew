@@ -8,7 +8,7 @@ class DyldHeaders < Formula
   keg_only :provided_by_osx
 
   # Use Tiger-style availability macros
-  def patches; DATA; end if MacOS.version < :leopard
+  patch :DATA if MacOS.version < :leopard
 
   def install
     include.install Dir['include/*']

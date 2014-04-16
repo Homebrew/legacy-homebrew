@@ -9,7 +9,6 @@ class Pulseaudio < Formula
   option :universal
 
   depends_on "pkg-config" => :build
-  depends_on "xz" => :build
   depends_on "libtool" => :build
   depends_on "intltool" => :build if build.with? "nls"
   depends_on "gettext" => :build if build.with? "nls"
@@ -42,7 +41,7 @@ class Pulseaudio < Formula
 
     args << "--with-mac-sysroot=#{MacOS.sdk_path}"
     args << "--with-mac-version-min=#{MacOS.version}"
-    args << "--disable-nls" unless build.with? "nls"
+    args << "--disable-nls" if build.without? "nls"
 
     if build.universal?
       args << "--enable-mac-universal"

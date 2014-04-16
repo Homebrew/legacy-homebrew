@@ -20,10 +20,8 @@ class Libmemcached < Formula
     depends_on "memcached"
   end
 
-  def patches
-    # https://bugs.launchpad.net/libmemcached/+bug/1284765
-    DATA
-  end
+  # https://bugs.launchpad.net/libmemcached/+bug/1284765
+  patch :DATA
 
   def install
     ENV.append_to_cflags "-undefined dynamic_lookup" if MacOS.version <= :leopard

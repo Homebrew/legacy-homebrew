@@ -54,13 +54,15 @@ module Homebrew extend self
   end
 
   def upgrade_formula f
-    outdated_keg = Keg.new(f.linked_keg.realpath) rescue nil
+    outdated_keg = Keg.new(f.linked_keg.resolved_path) if f.linked_keg.directory?
 
-    installer = FormulaInstaller.new(f)
-    installer.options |= Tab.for_formula(f).used_options
-    installer.show_header = false
-    installer.ignore_deps = false
-    installer.prelude
+    fi = FormulaInstaller.new(f)
+    fi.options             = Tab.for_formula(f).used_options
+    fi.build_from_source   = ARGV.build_from_source?
+    fi.verbose             = ARGV.verbose?
+    fi.verbose           &&= :quieter if ARGV.quieter?
+    fi.debug               = ARGV.debug?
+    fi.prelude
 
     oh1 "Upgrading #{f.name}"
 
@@ -69,9 +71,9 @@ module Homebrew extend self
     # do! Seriously, it happens!
     outdated_keg.unlink if outdated_keg
 
-    installer.install
-    installer.caveats
-    installer.finish
+    fi.install
+    fi.caveats
+    fi.finish
 
     # If the formula was pinned, and we were force-upgrading it, unpin and
     # pin it again to get a symlink pointing to the correct keg.

@@ -2,9 +2,23 @@ require 'formula'
 
 class Grass < Formula
   homepage 'http://grass.osgeo.org/'
-  head 'https://svn.osgeo.org/grass/grass/trunk'
-  url 'http://grass.osgeo.org/grass64/source/grass-6.4.3.tar.gz'
-  sha1 '925da985f3291c41c7a0411eaee596763f7ff26e'
+
+  stable do
+    url "http://grass.osgeo.org/grass64/source/grass-6.4.3.tar.gz"
+    sha1 "925da985f3291c41c7a0411eaee596763f7ff26e"
+
+    # Patches that files are not installed outside of the prefix.
+    patch :DATA
+  end
+
+  head do
+    url "https://svn.osgeo.org/grass/grass/trunk"
+
+    patch do
+      url "https://gist.github.com/jctull/0fe3db92a3e7c19fa6e0/raw/42e819f0a9b144de782c94f730dbc4da136e9227/grassPatchHead.diff"
+      sha1 "ffbe31682d8a7605d5548cdafd536f1c785d3a23"
+    end
+  end
 
   option "without-gui", "Build without WxPython interface. Command line tools still available."
 
@@ -23,15 +37,6 @@ class Grass < Formula
   depends_on "cairo"
   depends_on :x11  # needs to find at least X11/include/GL/gl.h
 
-  # Patches that files are not installed outside of the prefix.
-  def patches;
-    if build.head?
-      "https://gist.github.com/jctull/0fe3db92a3e7c19fa6e0/raw/42e819f0a9b144de782c94f730dbc4da136e9227/grassPatchHead.diff"
-    else
-      DATA
-    end
-  end
-
   fails_with :clang do
     cause "Multiple build failures while compiling GRASS tools."
   end
@@ -39,7 +44,7 @@ class Grass < Formula
   def headless?
     # The GRASS GUI is based on WxPython. Unfortunately, Lion does not include
     # this module so we have to drop it.
-    build.include? 'without-gui' or MacOS.version == :lion
+    build.without? "gui" or MacOS.version == :lion
   end
 
   def install
@@ -151,6 +156,6 @@ index f1edea6..be404b0 100644
  endif
 -	@# enable OSX Help Viewer
 -	@if [ "`cat include/Make/Platform.make | grep -i '^ARCH.*darwin'`" ] ; then /bin/ln -sfh "${INST_DIR}/docs/html" /Library/Documentation/Help/GRASS-${GRASS_VERSION_MAJOR}.${GRASS_VERSION_MINOR} ; fi
- 
- 
+
+
  install-strip: FORCE

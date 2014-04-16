@@ -23,10 +23,8 @@ class Sshfs < Formula
   depends_on 'glib'
   depends_on :xcode
 
-  def patches
-    # Fixes issue https://github.com/osxfuse/sshfs/pull/4
-    DATA
-  end
+  # Fixes issue https://github.com/osxfuse/sshfs/pull/4
+  patch :DATA
 
   def install
     args = %W[

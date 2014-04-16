@@ -45,9 +45,7 @@ class Subversion < Formula
 
   # 1. Prevent '-arch ppc' from being pulled in from Perl's $Config{ccflags}
   # 2. Fix #23993 by stripping flags swig can't handle from SWIG_CPPFLAGS
-  def patches
-    { :p0 => DATA }
-  end
+  patch :p0, :DATA
 
   # When building Perl or Ruby bindings, need to use a compiler that
   # recognizes GCC-style switches, since that's what the system languages

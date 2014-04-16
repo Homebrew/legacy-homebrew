@@ -2,15 +2,15 @@ require 'formula'
 
 class Scons < Formula
   homepage 'http://www.scons.org'
-  url 'https://downloads.sourceforge.net/scons/scons-2.3.0.tar.gz'
-  sha1 '728edf20047a9f8a537107dbff8d8f803fd2d5e3'
+  url 'https://downloads.sourceforge.net/scons/scons-2.3.1.tar.gz'
+  sha1 '775e715e49fe5fd8e1d29551a296fdc9267509e7'
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "839f2f8506ffeeab91acfe5f786ed97c41cc3c5a" => :mavericks
-    sha1 "74023d56d5ae0db3ab07bf18cd505b5c550cf4bd" => :mountain_lion
-    sha1 "7f4ebc6ec9252557b0684b798a81cc3b8b3a229c" => :lion
+    revision 3
+    sha1 "e95727216cded8197acd0cf2d77a078ba1a4ed05" => :mavericks
+    sha1 "b8ffa3da1b9378944a5b97c2783c1a8593331539" => :mountain_lion
+    sha1 "c4d0bd20be297fc6d3eb615abe22b78212a91655" => :lion
   end
 
   def install

@@ -2,13 +2,19 @@ require 'formula'
 
 class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
-  url 'http://downloads.ghostscript.com/public/ghostscript-9.10.tar.gz'
-  sha1 '29d6538ae77565c09f399b06455e94e7bcd83d01'
+  revision 1
+
+  stable do
+    url 'http://downloads.ghostscript.com/public/ghostscript-9.10.tar.gz'
+    sha1 '29d6538ae77565c09f399b06455e94e7bcd83d01'
+
+    patch :DATA # Uncomment OS X-specific make vars
+  end
 
   bottle do
-    sha1 "be9d9be82c03ac8409994fee0cc638d20ceb145c" => :mavericks
-    sha1 "667bbb27e64fee6d46da07c98205a6daf51a28ad" => :mountain_lion
-    sha1 "fb6e8756db2016f88eeb23ed392a9742096efef3" => :lion
+    sha1 "6c57df23147be016a8790cd4f831e3bfc060107a" => :mavericks
+    sha1 "1b172224cac0093d4264c874a4c5da7c8f13a217" => :mountain_lion
+    sha1 "a12d082b0e86e08cef11f5b59e27b827ed38367e" => :lion
   end
 
   head do
@@ -21,6 +27,12 @@ class Ghostscript < Formula
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
+
+    # Uncomment OS X-specific make vars
+    patch do
+      url "https://gist.githubusercontent.com/jacknagel/9559501/raw/9709b3234cc888d29f717838650d29e7062da917/gs.patch"
+      sha1 "65c99df4f0d57368a086154d34722f5c4b9c84cc"
+    end
   end
 
   option 'with-djvu', 'Build drivers for DjVU file format'
@@ -30,10 +42,10 @@ class Ghostscript < Formula
   depends_on 'libtiff'
   depends_on 'jbig2dec'
   depends_on 'little-cms2'
-  depends_on :libpng
+  depends_on 'libpng'
   depends_on :x11 => ['2.7.2', :optional]
   depends_on 'djvulibre' if build.with? 'djvu'
-  depends_on 'freetype' if MacOS.version == :snow_leopard
+  depends_on 'freetype'
 
   conflicts_with 'gambit-scheme', :because => 'both install `gsc` binaries'
 
@@ -47,11 +59,6 @@ class Ghostscript < Formula
   resource 'djvu' do
     url 'https://downloads.sourceforge.net/project/djvu/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
     sha1 'c7d0677dae5fe644cf3d714c04b3c2c343906342'
-  end
-
-  # Fix dylib names, per installation instructions
-  def patches
-    DATA
   end
 
   def move_included_source_copies
@@ -70,7 +77,7 @@ class Ghostscript < Formula
       (buildpath+'base').install 'gdevdjvu.c'
       (buildpath+'lib').install 'ps2utf8.ps'
       ENV['EXTRA_INIT_FILES'] = 'ps2utf8.ps'
-      (buildpath/'base/contrib.mak').open('a') { |f| f.write(File.read('gsdjvu.mak')) }
+      (buildpath/'devices/contrib.mak').open('a') { |f| f.write(File.read('gsdjvu.mak')) }
     end if build.with? 'djvu'
 
     cd src_dir do
@@ -82,7 +89,7 @@ class Ghostscript < Formula
         --disable-gtk
         --with-system-libtiff
       ]
-      args << '--without-x' unless build.with? 'x11'
+      args << '--without-x' if build.without? 'x11'
 
       if build.head?
         system './autogen.sh', *args
@@ -109,9 +116,11 @@ class Ghostscript < Formula
 end
 
 __END__
+diff --git a/base/unix-dll.mak b/base/unix-dll.mak
+index ae2d7d8..4f4daed 100644
 --- a/base/unix-dll.mak
 +++ b/base/unix-dll.mak
-@@ -64,12 +64,12 @@
+@@ -64,12 +64,12 @@ GS_SONAME_MAJOR_MINOR=$(GS_SONAME_BASE)$(GS_SOEXT)$(SO_LIB_VERSION_SEPARATOR)$(G
  
  
  # MacOS X
@@ -130,14 +139,3 @@ __END__
  
  GS_SO=$(BINDIR)/$(GS_SONAME)
 
-#--- a/base/stdpre.h
-#+++ b/base/stdpre.h
-#@@ -20,7 +20,7 @@
- ##  define stdpre_INCLUDED
-
- #/* Ghostscript uses transitional LFS functions. */
-#-#define _LARGEFILE64_SOURCE 1
-#+/* #define _LARGEFILE64_SOURCE 1 */
-
- ##ifndef _FILE_OFFSET_BITS
- ##define _FILE_OFFSET_BITS 64

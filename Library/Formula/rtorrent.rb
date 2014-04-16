@@ -6,7 +6,6 @@ class Rtorrent < Formula
   sha256 '9e93ca41beb1afe74ad7ad8013e0d53ae3586c9b0e97263d722f721535cc7310'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build # for libsigc++
   depends_on 'libtorrent'
   depends_on 'xmlrpc-c' => :optional
 

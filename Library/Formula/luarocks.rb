@@ -9,12 +9,12 @@ class Luarocks < Formula
   option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
   option 'with-lua52', 'Use Lua 5.2 instead of the stock Lua'
 
-  if build.include? 'with-luajit'
+  if build.with? "luajit"
     depends_on 'luajit'
     # luajit depends internally on lua being installed
     # and is only 5.1 compatible, see #25954
     depends_on 'lua'
-  elsif build.include? 'with-lua52'
+  elsif build.with? "lua52"
     depends_on 'lua52'
   else
     depends_on 'lua'
@@ -29,9 +29,7 @@ class Luarocks < Formula
   # appropriate messaging if not. The check that luarocks does has been
   # seen to have false positives, so remove it.
   # TODO: better document the false positive cases, or remove this patch.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # Install to the Cellar, but direct modules to HOMEBREW_PREFIX
@@ -39,7 +37,7 @@ class Luarocks < Formula
             "--rocks-tree=#{HOMEBREW_PREFIX}",
             "--sysconfdir=#{etc}/luarocks"]
 
-    if build.include? 'with-luajit'
+    if build.with? "luajit"
       args << "--with-lua-include=#{HOMEBREW_PREFIX}/include/luajit-2.0"
       args << "--lua-suffix=jit"
       args << "--with-lua=luajit"

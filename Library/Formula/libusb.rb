@@ -29,7 +29,7 @@ class Libusb < Formula
 
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
     args << "--disable-log" if build.include? 'no-runtime-logging'
-    args << "--enable-debug-log" if build.include? 'with-default-log-level-debug'
+    args << "--enable-debug-log" if build.with? "default-log-level-debug"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args

@@ -2,9 +2,9 @@ require 'formula'
 
 class Apollo < Formula
   homepage 'http://activemq.apache.org/apollo'
-  url 'http://archive.apache.org/dist/activemq/activemq-apollo/1.6/apache-apollo-1.6-unix-distro.tar.gz'
-  version '1.6'
-  sha1 'e3fdd8b1d7a41809237e42bd724a427552b67533'
+  url 'http://archive.apache.org/dist/activemq/activemq-apollo/1.7/apache-apollo-1.7-unix-distro.tar.gz'
+  version '1.7'
+  sha1 '3bf6dba6396fe3814e56163249de80d8a20230d0'
 
   option "no-bdb", "Install without bdb store support"
   option "no-mqtt", "Install without MQTT protocol support"

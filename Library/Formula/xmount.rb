@@ -11,9 +11,7 @@ class Xmount < Formula
   depends_on "osxfuse"
   depends_on "libewf"
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"

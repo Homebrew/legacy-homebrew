@@ -2,39 +2,20 @@ require 'formula'
 
 class Capstone < Formula
   homepage 'http://capstone-engine.org'
-  url 'http://capstone-engine.org/download/2.1/capstone-2.1.tgz'
-  sha1 '3e5fe91684cfc76d73caa857a268332ac9d40659'
+  url 'http://capstone-engine.org/download/2.1.2/capstone-2.1.2.tgz'
+  sha1 '235ceab369025fbad9887fe826b741ca84b1ab41'
 
-  def patches
-    # Fix pkgconfig path. Fixed upstream:
-    # https://github.com/aquynh/capstone/commit/ae603d
-    DATA
+  bottle do
+    cellar :any
+    sha1 "939e0cc64db9f03b5cbbe2240e02aa345367d3d8" => :mavericks
+    sha1 "9104b5cbe4edce547023b27e22043fe233e3802d" => :mountain_lion
+    sha1 "aad566084e5c4bf5923564cb29a46c983191df29" => :lion
   end
 
   def install
-    # Fixed upstream in next version:
-    # https://github.com/aquynh/capstone/commit/dc0d04
-    inreplace 'Makefile', 'lib64', 'lib'
-    system "./make.sh"
     ENV["PREFIX"] = prefix
+    ENV["HOMEBREW_CAPSTONE"] = "1"
+    system "./make.sh"
     system "./make.sh", "install"
   end
 end
-
-__END__
---- a/Makefile.org	2014-03-05 11:26:42.000000000 +0800
-+++ a/Makefile	2014-03-05 11:28:34.000000000 +0800
-@@ -144,13 +144,6 @@
- ifeq ($(UNAME_S),Darwin)
- EXT = dylib
- AR_EXT = a
--# By default, suppose that Brew is installed & use Brew path for pkgconfig file
--PKGCFCGDIR = /usr/local/lib/pkgconfig
--# is Macport installed instead?
--ifneq (,$(wildcard /opt/local/bin/port))
--# then correct the path for pkgconfig file
--PKGCFCGDIR = /opt/local/lib/pkgconfig
--endif
- else
- # Cygwin?
- IS_CYGWIN := $(shell $(CC) -dumpmachine | grep -i cygwin | wc -l)

@@ -9,8 +9,8 @@ class Pypy < Formula
   depends_on :arch => :x86_64
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.2.tar.gz'
-    sha1 '547eff11ea46613e8a9ba5b12a89c1010ecc4e51'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-3.4.1.tar.gz'
+    sha1 '1a7bb4736d915ec140b4225245b585c14b39b8dd'
   end
 
   resource 'pip' do
@@ -31,8 +31,7 @@ class Pypy < Formula
     # we want to avoid putting PyPy's Python.h somewhere that configure
     # scripts will find it.
     libexec.install Dir['*']
-    bin.mkpath
-    ln_s libexec/'bin/pypy', bin/'pypy'
+    bin.install_symlink libexec/"bin/pypy"
 
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
@@ -42,7 +41,7 @@ class Pypy < Formula
     prefix_site_packages.mkpath
 
     # Symlink the prefix site-packages into the cellar.
-    ln_s prefix_site_packages, libexec+'site-packages'
+    libexec.install_symlink prefix_site_packages
 
     # Tell distutils-based installers where to put scripts
     scripts_folder.mkpath
@@ -60,12 +59,12 @@ class Pypy < Formula
 
     # Symlink to easy_install_pypy.
     unless (scripts_folder+'easy_install_pypy').exist?
-      ln_s "#{scripts_folder}/easy_install", "#{scripts_folder}/easy_install_pypy"
+      scripts_folder.install_symlink "easy_install" => "easy_install_pypy"
     end
 
     # Symlink to pip_pypy.
     unless (scripts_folder+'pip_pypy').exist?
-      ln_s "#{scripts_folder}/pip", "#{scripts_folder}/pip_pypy"
+      scripts_folder.install_symlink "pip" => "pip_pypy"
     end
   end
 

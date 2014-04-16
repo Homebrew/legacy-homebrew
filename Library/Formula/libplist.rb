@@ -21,9 +21,10 @@ class Libplist < Formula
   depends_on :python => :optional
   depends_on 'Cython' => :python if build.with? 'python'
 
-  def patches
-    # Upstream patch for compilation on 10.9
-    "https://github.com/libimobiledevice/libplist/commit/c56c8103f51c20c6fcf99e8bc9d83c380f503a1b.patch"
+  # Upstream patch for compilation on 10.9
+  patch do
+    url "https://github.com/libimobiledevice/libplist/commit/c56c8103f51c20c6fcf99e8bc9d83c380f503a1b.diff"
+    sha1 "fd9d0f4c15ee81ea589f826fd603281954f01df5"
   end
 
   def install

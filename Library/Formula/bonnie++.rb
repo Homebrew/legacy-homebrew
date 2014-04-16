@@ -6,9 +6,7 @@ class Bonniexx < Formula
   sha1 '7b0ed205725a6526d34894412edb7e29bb9df7b4'
 
   # Fix use of min/max with clang
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug",

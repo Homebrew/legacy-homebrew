@@ -2,13 +2,14 @@ require 'formula'
 
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp.postgresql.org/pub/source/v9.3.3/postgresql-9.3.3.tar.bz2'
-  sha256 'e925d8abe7157bd8bece6b7c0dd0c343d87a2b4336f85f4681ce596af99c3879'
+  url 'http://ftp.postgresql.org/pub/source/v9.3.4/postgresql-9.3.4.tar.bz2'
+  sha256 '9ee819574dfc8798a448dc23a99510d2d8924c2f8b49f8228cd77e4efc8a6621'
 
   bottle do
-    sha1 "299a72eac118abd9847379f2a247ed663e97cc64" => :mavericks
-    sha1 "6799c9ae3ae1f954e1b6c8b06818e2168ca2efe2" => :mountain_lion
-    sha1 "f44a9cf2fe073a8cce40bc8c2a8618553d826ac8" => :lion
+    revision 1
+    sha1 "674f7d9b1f093a2cf67cc6c7d248b18cb24f244d" => :mavericks
+    sha1 "899043f968097e5b4ef82bd9eecff4fc56cf3546" => :mountain_lion
+    sha1 "5bded0469e05403d2e0a0ba4d3e344a0a76b6da1" => :lion
   end
 
   option '32-bit'
@@ -16,6 +17,7 @@ class Postgresql < Formula
   option 'no-tcl', 'Build without Tcl support'
   option 'enable-dtrace', 'Build with DTrace support'
 
+  depends_on 'openssl'
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' => :recommended
@@ -30,9 +32,7 @@ class Postgresql < Formula
   end
 
   # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.libxml2 if MacOS.version >= :snow_leopard
@@ -76,7 +76,7 @@ class Postgresql < Formula
 
   def post_install
     unless File.exist? "#{var}/postgres"
-      system "#{bin}/initdb", "#{var}/postgres", '-E', 'utf8'
+      system "#{bin}/initdb", "#{var}/postgres"
     end
   end
 
@@ -130,6 +130,10 @@ class Postgresql < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/initdb", testpath
   end
 end
 

@@ -2,24 +2,22 @@ require 'formula'
 
 class Libdnet < Formula
   homepage 'http://code.google.com/p/libdnet/'
-  url 'http://libdnet.googlecode.com/files/libdnet-1.12.tgz'
+  url 'https://libdnet.googlecode.com/files/libdnet-1.12.tgz'
   sha1 '71302be302e84fc19b559e811951b5d600d976f8'
 
-  depends_on :autoconf
-  depends_on :automake => :build
-  depends_on :libtool => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on :python => :optional
 
   # Fix use of deprecated macros
   # http://code.google.com/p/libdnet/issues/detail?id=27
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # autoreconf to get '.dylib' extension on shared lib
-    ENV['ACLOCAL'] = 'aclocal -I config'
-    system 'autoreconf', '-ivf'
+    ENV.append_path "ACLOCAL_PATH", "config"
+    system "autoreconf", "-ivf"
 
     args = %W[
       --disable-dependency-tracking

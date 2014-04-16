@@ -4,12 +4,11 @@ class Mapnik < Formula
   homepage 'http://www.mapnik.org/'
   url 'http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2'
   sha1 'e493ad87ca83471374a3b080f760df4b25f7060d'
+  revision 1
 
   # can be removed at Mapnik > 2.2.0
   # https://github.com/mapnik/mapnik/issues/1973
-  def patches
-    DATA
-  end
+  patch :DATA
   head 'https://github.com/mapnik/mapnik.git'
 
   depends_on 'pkg-config' => :build

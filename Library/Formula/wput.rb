@@ -7,9 +7,7 @@ class Wput < Formula
 
   # The patch is to skip inclusion of malloc.h only on OSX. Upstream:
   # https://sourceforge.net/tracker/?func=detail&aid=3481469&group_id=141519&atid=749615
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
