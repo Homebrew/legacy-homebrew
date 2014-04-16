@@ -2,8 +2,8 @@ require 'formula'
 
 class Polipo < Formula
   homepage 'http://www.pps.jussieu.fr/~jch/software/polipo/'
-  url 'http://freehaven.net/~chrisd/polipo/polipo-1.0.4.1.tar.gz'
-  sha1 'e755b585a9bba2b599a6bcc7c6f7035d3cb27bec'
+  url 'http://www.pps.univ-paris-diderot.fr/~jch/software/files/polipo/polipo-1.1.0.tar.gz'
+  sha1 '72fc8b9299235aca3d68b7e76a84119b91b12db5'
 
   head 'git://git.wifi.pps.jussieu.fr/polipo'
 
