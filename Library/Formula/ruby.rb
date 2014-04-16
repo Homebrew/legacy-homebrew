@@ -2,13 +2,20 @@ require 'formula'
 
 class Ruby < Formula
   homepage 'https://www.ruby-lang.org/'
-  url 'http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.1.tar.bz2'
-  sha256 '96aabab4dd4a2e57dd0d28052650e6fcdc8f133fa8980d9b936814b1e93f6cfc'
+  revision 1
+
+  stable do
+    url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.1.tar.bz2"
+    sha256 "96aabab4dd4a2e57dd0d28052650e6fcdc8f133fa8980d9b936814b1e93f6cfc"
+
+    # Combination of patches from trunk to fix build against readline 6.3
+    patch :DATA
+  end
 
   bottle do
-    sha1 "6663be7c87cdf15d1b8322a03d5b12c31313dfb2" => :mavericks
-    sha1 "7f160f4c936452fe3dbe754a3ca871aa3607286a" => :mountain_lion
-    sha1 "ac5e62cbfed2fa81a93f1d6ec1c43ab502b9c500" => :lion
+    sha1 "ca1a24ea84766ad60d736242fe9c09fa20bcb751" => :mavericks
+    sha1 "f00a62a246a3b391ac9f8a80d5b1b774ba54a324" => :mountain_lion
+    sha1 "037357e4b75e55425789a918179f719657bba340" => :lion
   end
 
   head do
@@ -88,3 +95,45 @@ class Ruby < Formula
     assert_equal 0, $?.exitstatus
   end
 end
+
+__END__
+diff --git a/ext/readline/extconf.rb b/ext/readline/extconf.rb
+index 0b121c1..3317e2f 100644
+--- a/ext/readline/extconf.rb
++++ b/ext/readline/extconf.rb
+@@ -19,6 +19,10 @@ def readline.have_func(func)
+   return super(func, headers)
+ end
+ 
++def readline.have_type(type)
++  return super(type, headers)
++end
++
+ dir_config('curses')
+ dir_config('ncurses')
+ dir_config('termcap')
+@@ -94,4 +98,11 @@ def readline.have_func(func)
+ readline.have_func("rl_redisplay")
+ readline.have_func("rl_insert_text")
+ readline.have_func("rl_delete_text")
++unless readline.have_type("rl_hook_func_t*")
++  # rl_hook_func_t is available since readline-4.2 (2001).
++  # Function is removed at readline-6.3 (2014).
++  # However, editline (NetBSD 6.1.3, 2014) doesn't have rl_hook_func_t.
++  $defs << "-Drl_hook_func_t=Function"
++end
++
+ create_makefile("readline")
+diff --git a/ext/readline/readline.c b/ext/readline/readline.c
+index 659adb9..7bc0eed 100644
+--- a/ext/readline/readline.c
++++ b/ext/readline/readline.c
+@@ -1974,7 +1974,7 @@ Init_readline()
+ 
+     rl_attempted_completion_function = readline_attempted_completion_function;
+ #if defined(HAVE_RL_PRE_INPUT_HOOK)
+-    rl_pre_input_hook = (Function *)readline_pre_input_hook;
++    rl_pre_input_hook = (rl_hook_func_t *)readline_pre_input_hook;
+ #endif
+ #ifdef HAVE_RL_CATCH_SIGNALS
+     rl_catch_signals = 0;

@@ -4,12 +4,12 @@ class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
   url "http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.17.tar.gz"
   sha1 "53773d619d7f7bc1743f92fd65885a0581c37ff8"
+  revision 1
 
   bottle do
-    revision 1
-    sha1 "ab3bbe13cb6ec2f0eb96ab25d3bda39fb0c01625" => :mavericks
-    sha1 "d53e0c1c5be61169f1f5a095d3ac766084140fc8" => :mountain_lion
-    sha1 "017b963ffa67bced0893bf6e68b8870e97d46346" => :lion
+    sha1 "a41817eea90f2150351f2862cec17c15acd45e07" => :mavericks
+    sha1 "f7a7fefcb7bf69dd3a5a5ec0de9c70e85ed7a4dc" => :mountain_lion
+    sha1 "6fb1710382c9cc1a67a5cde6dcd1951183cc007e" => :lion
   end
 
   option :universal

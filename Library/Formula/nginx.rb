@@ -4,6 +4,7 @@ class Nginx < Formula
   homepage 'http://nginx.org/'
   url 'http://nginx.org/download/nginx-1.4.7.tar.gz'
   sha1 'e13b5b23f9be908b69652b0c394a95e9029687e3'
+  revision 1
 
   devel do
     url 'http://nginx.org/download/nginx-1.5.13.tar.gz'
@@ -13,9 +14,9 @@ class Nginx < Formula
   head 'http://hg.nginx.org/nginx/', :using => :hg
 
   bottle do
-    sha1 "af8e6255e40b0f7739e9b688d4ed5b9f9b11b50e" => :mavericks
-    sha1 "1aefa2af8af3162bc575d9353e6b54364ea05401" => :mountain_lion
-    sha1 "6625bc9194bd656d6e0e925cf37c1cec672dbf97" => :lion
+    sha1 "82a7fae708d620b7d95ed68b5b99c0c8cc2fadb6" => :mavericks
+    sha1 "3319a4c1a839d7ebad454718cda95a93e9abc0dc" => :mountain_lion
+    sha1 "87b243bb95ab9ae2d1edfe1f19437963ed6e3728" => :lion
   end
 
   env :userpaths

@@ -4,11 +4,12 @@ class Ejabberd < Formula
   homepage "http://www.ejabberd.im"
   url "http://www.process-one.net/downloads/ejabberd/13.12/ejabberd-13.12.tgz"
   sha1 "3aedb5012fab49181961ff24bad3af581f4b30ee"
+  revision 1
 
   bottle do
-    sha1 "6483132bdf79af21c0d4e7fc84ec25b4698d0ec7" => :mavericks
-    sha1 "55f409c6d9a10a2b1c687050ff80d6247b8db06b" => :mountain_lion
-    sha1 "572ed4bc18a5ca6d316e71af3c8b138fc7ffdc8c" => :lion
+    sha1 "0951237f1710e8c3de1c8c68501f53532036d726" => :mavericks
+    sha1 "7f1ffe76d100b3a2d00d1578e38db8f5f944859a" => :mountain_lion
+    sha1 "582da64c98ce8be147cfd17f2d464e5806d849e3" => :lion
   end
 
   depends_on "openssl"

@@ -128,7 +128,7 @@ class Cmd
       when '-fopenmp', '-lgomp', '-mno-fused-madd', '-fforce-addr', '-fno-defer-pop',
            '-mno-dynamic-no-pic', '-fearly-inlining', '-finline-functions-called-once',
            /^-finline-limit/, /^-f(?:no-)?check-new/, '-fno-delete-null-pointer-checks',
-           '-fcaller-saves', '-fthread-jumps'
+           '-fcaller-saves', '-fthread-jumps', '-fno-reorder-blocks'
         # clang doesn't support these flags
         args << arg if not tool =~ /^clang/
       when /^-W.*/

@@ -9,8 +9,8 @@ class Geoipupdate < Formula
 
     # Fixes use of getline on pre-Lion; will be in next release
     patch do
-      url "https://github.com/maxmind/geoipupdate/commit/bdf11969f4c7c6b173466092287a2fdbd485b248.patch"
-      sha1 "845aed21e187cd1fe1a60b029ff8ac13284c7cea"
+      url "https://github.com/maxmind/geoipupdate/commit/bdf11969f4c7c6b173466092287a2fdbd485b248.diff"
+      sha1 "80a8dd08ccbcd1c1d73c1bff6b5ce62adc254b96"
     end
   end
 

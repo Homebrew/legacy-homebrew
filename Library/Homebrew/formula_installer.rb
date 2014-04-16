@@ -11,6 +11,7 @@ require 'cleaner'
 require 'formula_cellar_checks'
 require 'install_renamed'
 require 'cmd/tap'
+require 'hooks/bottles'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -47,6 +48,8 @@ class FormulaInstaller
   end
 
   def pour_bottle? install_bottle_options={:warn=>false}
+    return true if Homebrew::Hooks::Bottles.formula_has_bottle?(f)
+
     return false if @pour_failed
     return true  if force_bottle? && f.bottle
     return false if build_from_source? || build_bottle? || interactive?
@@ -618,6 +621,10 @@ class FormulaInstaller
   end
 
   def pour
+    if Homebrew::Hooks::Bottles.formula_has_bottle?(f)
+      return if Homebrew::Hooks::Bottles.pour_formula_bottle(f)
+    end
+
     if f.local_bottle_path
       downloader = LocalBottleDownloadStrategy.new(f)
     else

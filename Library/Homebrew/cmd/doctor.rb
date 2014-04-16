@@ -1072,14 +1072,14 @@ def check_for_unlinked_but_not_keg_only
 end
 
   def check_xcode_license_approved
-    return if MacOS::Xcode.bad_xcode_select_path?
     # If the user installs Xcode-only, they have to approve the
     # license or no "xc*" tool will work.
-    <<-EOS.undent if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success?
-    You have not agreed to the Xcode license.
-    Builds will fail! Agree to the license by opening Xcode.app or running:
-        xcodebuild -license
-    EOS
+    if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success? then <<-EOS.undent
+      You have not agreed to the Xcode license.
+      Builds will fail! Agree to the license by opening Xcode.app or running:
+          xcodebuild -license
+      EOS
+    end
   end
 
   def check_for_latest_xquartz

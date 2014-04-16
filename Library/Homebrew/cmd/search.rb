@@ -76,7 +76,6 @@ module Homebrew extend self
   end
 
   SEARCHABLE_TAPS = [
-    %w{josegonzalez php},
     %w{marcqualie nginx},
     %w{Homebrew apache},
     %w{Homebrew versions},
@@ -86,6 +85,7 @@ module Homebrew extend self
     %w{Homebrew completions},
     %w{Homebrew binary},
     %w{Homebrew python},
+    %w{Homebrew php},
   ]
 
   def query_regexp(query)

@@ -1,9 +1,9 @@
 require 'formula'
 
 class Jpegoptim < Formula
-  homepage 'http://www.kokkonen.net/tjko/projects.html'
-  url 'http://www.kokkonen.net/tjko/src/jpegoptim-1.3.0.tar.gz'
-  sha1 '5cf5945cbb2245fb7a2c7217947e43bcbd943b7d'
+  homepage 'https://github.com/tjko/jpegoptim'
+  url 'https://github.com/tjko/jpegoptim/archive/RELEASE.1.3.0.tar.gz'
+  sha1 '02bf879a6c2a960e51a9e2b45c6eb342b2363783'
   head 'https://github.com/tjko/jpegoptim.git'
 
   depends_on 'jpeg'
