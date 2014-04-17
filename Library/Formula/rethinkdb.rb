@@ -2,8 +2,8 @@ require 'formula'
 
 class Rethinkdb < Formula
   homepage 'http://www.rethinkdb.com/'
-  url 'http://download.rethinkdb.com/dist/rethinkdb-1.12.2.tgz'
-  sha1 '29ee5581f480c2c16abf3490c8e135aed7345190'
+  url 'http://download.rethinkdb.com/dist/rethinkdb-1.12.3.tgz'
+  sha1 'e1b4467c16a81d1cd1fc88296a648fa8c9f2067c'
 
   bottle do
     sha1 "40ecd63f0cbe6f3ee0787f55c0dc277fb5558509" => :mavericks
