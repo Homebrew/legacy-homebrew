@@ -2,8 +2,8 @@ require "formula"
 
 class Orthanc < Formula
   homepage "http://www.orthanc-server.com/"
-  url "https://github.com/jodogne/Orthanc/releases/download/0.7.3/Orthanc-0.7.3.tar.gz"
-  sha1 "30176fe2c4f9917a4f7230dbe5dda59572a4487e"
+  url "https://github.com/jodogne/Orthanc/releases/download/0.7.4/Orthanc-0.7.4.tar.gz"
+  sha1 "eca9892d73b9ef31519a755f31057046b7f70822"
 
   depends_on "cmake" => :build
   depends_on "glog"
@@ -23,6 +23,8 @@ class Orthanc < Formula
     end
     # This patch fixes build & code issues directly related to running on Mac OS X.
     # Until this is merged back into Orthanc this is required to build for Mac.
+    # The developer has stated that as he does not have a mac, he is unable to test/integrate
+    # these changes into the Orthanc mainline at this time.
     DATA
   end
 
@@ -44,20 +46,19 @@ class Orthanc < Formula
 
     system "cmake", ".",  "-DUSE_SYSTEM_MONGOOSE=OFF",
                           "-DUSE_SYSTEM_GOOGLE_TEST=NO",
-                          "-DCMAKE_INCLUDE_PATH=#{HOMEBREW_PREFIX}/include",
-                          "-DCMAKE_LIBRARY_PATH=#{HOMEBREW_PREFIX}/lib",
                           "-DDCMTK_DIR=#{HOMEBREW_PREFIX}/include/dcmtk",
                           "-DDCMTK_DICTIONARY_DIR=#{HOMEBREW_PREFIX}/share/dcmtk",
                           "-DDCMTK_LIBRARIES=oflog;iconv",
-                          "-DHAVE_JSONCPP_H=#{HOMEBREW_PREFIX}/json/reader.h",
+                          "-DHAVE_JSONCPP_H=#{HOMEBREW_PREFIX}/include/json/reader.h",
                           *std_cmake_args
 
     system "make", "install"
+    libexec.install "UnitTests"
 
   end
 
   test do
-    system "#{sbin}/Orthanc", "--version"
+    system "#{libexec}/UnitTests --gtest_filter=-SQLite.Configuration"
   end
 end
 
@@ -126,8 +127,8 @@ diff -ur Orthanc-0.7.3/OrthancServer/DicomProtocol/DicomUserConnection.cpp Ortha
  
  static const char* DEFAULT_PREFERRED_TRANSFER_SYNTAX = UID_LittleEndianImplicitTransferSyntax;
  
---- Orthanc-0.7.3/UnitTestsSources/main.cpp	2014-02-14 11:06:31.000000000 +0000
-+++ Orthanc-0.7.3-C/UnitTestsSources/main.cpp	2014-03-04 20:10:23.000000000 +0000
+--- Orthanc-0.7.3/UnitTestsSources/UnitTestsMain.cpp	2014-02-14 11:06:31.000000000 +0000
++++ Orthanc-0.7.3-C/UnitTestsSources/UnitTestsMain.cpp	2014-03-04 20:10:23.000000000 +0000
 @@ -621,7 +621,7 @@
    // Parts of this test come from Adam Conrad
    // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=728822#5
