@@ -63,6 +63,12 @@ class Ruby < Formula
 
     args << "--with-opt-dir=#{paths.join(":")}"
 
+    system "./configure", *args
+    system "make"
+    system "make install"
+  end
+
+  def post_install
     # Put gem, site and vendor folders in the HOMEBREW_PREFIX
     ruby_lib = HOMEBREW_PREFIX/"lib/ruby"
     (ruby_lib/'site_ruby').mkpath
@@ -72,10 +78,6 @@ class Ruby < Formula
     (lib/'ruby').install_symlink ruby_lib/'site_ruby',
                                  ruby_lib/'vendor_ruby',
                                  ruby_lib/'gems'
-
-    system "./configure", *args
-    system "make"
-    system "make install"
   end
 
   def caveats; <<-EOS.undent
