@@ -25,9 +25,6 @@ class Clasp < Formula
 
     bin.mkpath
     system "./configure.sh", *args
-
-    cd build_dir do
-      system "make install"
-    end
+    system "make", "-C", build_dir, "install"
   end
 end
