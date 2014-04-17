@@ -6,16 +6,17 @@ class Wxmac < Formula
   sha1 "756a9c54d1f411e262f03bacb78ccef085a9880a"
 
   bottle do
-    sha1 "6a5b2ff59a3f7b4c78658ed4f3cda543bfc7f325" => :mavericks
-    sha1 "fed5982d493eb7881a253c09d80f47a34fe06bb7" => :mountain_lion
-    sha1 "a1d9c9c5698d7459d2dce266647b04312dcc12e5" => :lion
+    revision 1
+    sha1 "b58b752e93d0bfda5743c191a8a4b7188a56d7b9" => :mavericks
+    sha1 "37c581aeb041fbc88464c325cb6a684930ce6279" => :mountain_lion
+    sha1 "b965780ae0167c92229a753e9a8c75007f23b4dd" => :lion
   end
 
   # Upstream patch for starting non-bundled apps like gnuplot, see:
   # http://trac.wxwidgets.org/ticket/15613
   patch :p2 do
     url "http://trac.wxwidgets.org/changeset/75142/wxWidgets/trunk/src/osx/cocoa/utils.mm?format=diff&new=75142"
-    sha1 "f8f09838a8ac8ca9c16b2ac1bd8f938a7974f5f1"
+    sha1 "de67a8f8da479a5ab553d1c5444fc093975ff818"
   end
 
   def install

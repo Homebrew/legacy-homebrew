@@ -33,13 +33,18 @@ class Libcaca < Formula
     #   ../.auto/py-compile: Missing argument to --destdir.
     inreplace 'python/Makefile.in', '$(am__py_compile) --destdir "$(DESTDIR)"', "$(am__py_compile) --destdir \"$(cacadir)\""
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-doc",
-                          "--disable-slang",
-                          "--disable-java",
-                          "--disable-csharp",
-                          "--disable-ruby"
+    args = ["--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--disable-doc",
+            "--disable-slang",
+            "--disable-java",
+            "--disable-csharp",
+            "--disable-ruby"]
+
+    # fix missing x11 header check: https://github.com/Homebrew/homebrew/issues/28291
+    args << "--disable-x11" if build.without? "imlib2"
+
+    system "./configure", *args
     system "make"
     ENV.j1 # Or install can fail making the same folder at the same time
     system "make install"

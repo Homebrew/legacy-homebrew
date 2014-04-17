@@ -2,14 +2,14 @@ require 'formula'
 
 class Sphinx < Formula
   homepage 'http://www.sphinxsearch.com'
-  url 'http://sphinxsearch.com/files/sphinx-2.1.6-release.tar.gz'
-  sha1 'fe4dfc605afe8f58d9e25fd0c58dfed1673ec4b1'
+  url 'http://sphinxsearch.com/files/sphinx-2.1.7-release.tar.gz'
+  sha1 'b9f2e963cfd0c58b3ab5f39669062a1ba4c7cf8a'
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
   devel do
-    url 'http://sphinxsearch.com/files/sphinx-2.2.1-beta.tar.gz'
-    sha1 'dccaa7d14f71cec8fe6dfdb059315856c0712885'
+    url 'http://sphinxsearch.com/files/sphinx-2.2.2-beta.tar.gz'
+    sha1 '6a63111c5f2fcd93915d114845f2375b031ff9da'
   end
 
   option 'mysql', 'Force compiling against MySQL'

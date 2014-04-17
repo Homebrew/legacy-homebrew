@@ -11,7 +11,7 @@ class Dict < Formula
                           "--sysconfdir=#{etc}",
                           "--mandir=#{man}"
     # install the client
-    system "make install.dict"
+    system "make install"
 
     # set up the conf file
     (prefix+'etc/dict.conf').write <<-EOS

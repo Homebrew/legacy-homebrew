@@ -16,7 +16,7 @@ class Libnfc < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}", "--enable-serial-autoprobe"
     system "make install"
     (prefix/'etc/nfc/libnfc.conf').write "allow_intrusive_scan=yes"
   end
@@ -52,7 +52,7 @@ index 7b687c1..686f9ed 100644
 
  #  if defined(__APPLE__)
 -const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial-", NULL };
-+const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial-", "tty.usbmodem", NULL };
++const char *serial_ports_device_radix[] = { "tty.SLAB_USBtoUART", "tty.usbserial-", "tty.usbmodem", "tty.usbserial", NULL };
  #  elif defined (__FreeBSD__) || defined (__OpenBSD__)
  const char *serial_ports_device_radix[] = { "cuaU", "cuau", NULL };
  #  elif defined (__linux__)

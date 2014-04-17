@@ -5,12 +5,12 @@ class Python < Formula
   head 'http://hg.python.org/cpython', :using => :hg, :branch => '2.7'
   url 'http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz'
   sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
+  revision 1
 
   bottle do
-    revision 1
-    sha1 "6edbb41862da07d75845c8ca156956629c069523" => :mavericks
-    sha1 "30ebdd9f448d766ff1783a2dc7c4a2b4a6deecc4" => :mountain_lion
-    sha1 "9d40b1ce6ef16e9bee5f2dc26bf1a396b4ccca03" => :lion
+    sha1 "bcf43a9f8f5f587a86bdc680dd735a853fa3a8a5" => :mavericks
+    sha1 "781310a1d8d0d6283c2c6c1a88674aad3ada6064" => :mountain_lion
+    sha1 "3a79b8d747f66fb000197cd9b9e0a4596f814d7e" => :lion
   end
 
   option :universal
@@ -31,8 +31,8 @@ class Python < Formula
   skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.2.tar.gz'
-    sha1 '547eff11ea46613e8a9ba5b12a89c1010ecc4e51'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-3.4.1.tar.gz'
+    sha1 '1a7bb4736d915ec140b4225245b585c14b39b8dd'
   end
 
   resource 'pip' do
@@ -148,7 +148,7 @@ class Python < Formula
     site_packages.mkpath
 
     # Symlink the prefix site-packages into the cellar.
-    site_packages_cellar.delete if site_packages_cellar.exist?
+    site_packages_cellar.unlink if site_packages_cellar.exist?
     site_packages_cellar.parent.install_symlink site_packages
 
     # Write our sitecustomize.py
@@ -168,10 +168,15 @@ class Python < Formula
     (libexec/'setuptools').cd { system "#{bin}/python", *setup_args }
     (libexec/'pip').cd { system "#{bin}/python", *setup_args }
 
+    # When building from source, these symlinks will not exist, since
+    # post_install happens after linking.
+    %w[pip pip2 pip2.7 easy_install easy_install-2.7].each do |e|
+      (HOMEBREW_PREFIX/"bin").install_symlink bin/e
+    end
+
     # And now we write the distutils.cfg
     cfg = lib_cellar/"distutils/distutils.cfg"
-    cfg.delete if cfg.exist?
-    cfg.write <<-EOF.undent
+    cfg.atomic_write <<-EOF.undent
       [global]
       verbose=1
       [install]

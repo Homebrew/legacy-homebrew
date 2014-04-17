@@ -61,14 +61,18 @@ __brew_complete_formulae ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
     local lib=$(brew --repository)/Library
+    local taps=${lib}/Taps
     local ff=$(\ls ${lib}/Formula 2>/dev/null | sed 's/\.rb//g')
-    local af=$(\ls ${lib}/Aliases 2>/dev/null | sed 's/\.rb//g')
-    local tf tap
+    local af=$(\ls ${lib}/Aliases 2>/dev/null)
+    local tf file
 
-    for dir in $(\ls ${lib}/Taps 2>/dev/null); do
-        tap="$(echo "$dir" | sed 's|-|/|g')"
-        tf="$tf $(\ls -1R "${lib}/Taps/${dir}" 2>/dev/null |
-                  grep '.\+.rb' | sed -E 's|(.+)\.rb|'"${tap}"'/\1|g')"
+    for file in ${taps}/*/*.rb ${taps}/*/Formula/*.rb ${taps}/*/HomebrewFormula/*.rb; do
+        file=${file/"Formula/"/}
+        file=${file/"HomebrewFormula/"/}
+        file=${file#${lib}/Taps/}
+        file=${file%.rb}
+        file=${file/-//}
+        tf="${tf} ${file}"
     done
 
     COMPREPLY=($(compgen -W "$ff $af $tf" -- "$cur"))
@@ -263,6 +267,17 @@ _brew_link ()
         ;;
     esac
     __brew_complete_installed
+}
+
+_brew_linkapps ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--local"
+        return
+        ;;
+    esac
 }
 
 _brew_list ()
@@ -493,6 +508,7 @@ _brew ()
     info|abv)                   _brew_info ;;
     install|instal|reinstall)   _brew_install ;;
     link|ln)                    _brew_link ;;
+    linkapps)                   _brew_linkapps ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
     missing)                    __brew_complete_formulae ;;

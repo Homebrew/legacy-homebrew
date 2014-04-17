@@ -11,6 +11,7 @@ require 'cleaner'
 require 'formula_cellar_checks'
 require 'install_renamed'
 require 'cmd/tap'
+require 'hooks/bottles'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -47,6 +48,8 @@ class FormulaInstaller
   end
 
   def pour_bottle? install_bottle_options={:warn=>false}
+    return true if Homebrew::Hooks::Bottles.formula_has_bottle?(f)
+
     return false if @pour_failed
     return true  if force_bottle? && f.bottle
     return false if build_from_source? || build_bottle? || interactive?
@@ -147,7 +150,7 @@ class FormulaInstaller
     if f.linked_keg.directory?
       # some other version is already installed *and* linked
       raise CannotInstallFormulaError, <<-EOS.undent
-        #{f}-#{f.linked_keg.realpath.basename} already installed
+        #{f}-#{f.linked_keg.resolved_path.basename} already installed
         To install this version, first `brew unlink #{f}'
       EOS
     end
@@ -293,7 +296,10 @@ class FormulaInstaller
     expanded_deps = ARGV.filter_for_dependencies do
       Dependency.expand(f, deps) do |dependent, dep|
         options = inherited_options[dep.name] = inherited_options_for(dep)
-        build = effective_build_options_for(dependent, inherited_options[dependent.name])
+        build = effective_build_options_for(
+          dependent,
+          inherited_options.fetch(dependent.name, [])
+        )
 
         if (dep.optional? || dep.recommended?) && build.without?(dep)
           Dependency.prune
@@ -360,7 +366,7 @@ class FormulaInstaller
     tab = Tab.for_formula(df)
 
     if df.linked_keg.directory?
-      linked_keg = Keg.new(df.linked_keg.realpath)
+      linked_keg = Keg.new(df.linked_keg.resolved_path)
       linked_keg.unlink
     end
 
@@ -545,7 +551,7 @@ class FormulaInstaller
   end
 
   def link
-    if f.linked_keg.directory? and f.linked_keg.realpath == f.prefix
+    if f.linked_keg.directory? and f.linked_keg.resolved_path == f.prefix
       opoo "This keg was marked linked already, continuing anyway"
       # otherwise Keg.link will bail
       f.linked_keg.unlink
@@ -615,6 +621,10 @@ class FormulaInstaller
   end
 
   def pour
+    if Homebrew::Hooks::Bottles.formula_has_bottle?(f)
+      return if Homebrew::Hooks::Bottles.pour_formula_bottle(f)
+    end
+
     if f.local_bottle_path
       downloader = LocalBottleDownloadStrategy.new(f)
     else

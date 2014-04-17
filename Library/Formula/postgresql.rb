@@ -6,9 +6,10 @@ class Postgresql < Formula
   sha256 '9ee819574dfc8798a448dc23a99510d2d8924c2f8b49f8228cd77e4efc8a6621'
 
   bottle do
-    sha1 "0817ae64b23fda47d5e5f6b8f866ab70f6c6436e" => :mavericks
-    sha1 "306a155c2f3280ac5761b5731f2262b1f969a449" => :mountain_lion
-    sha1 "cff0dc1b3c086489cbe86ee2ac2b60523a89e557" => :lion
+    revision 1
+    sha1 "674f7d9b1f093a2cf67cc6c7d248b18cb24f244d" => :mavericks
+    sha1 "899043f968097e5b4ef82bd9eecff4fc56cf3546" => :mountain_lion
+    sha1 "5bded0469e05403d2e0a0ba4d3e344a0a76b6da1" => :lion
   end
 
   option '32-bit'
@@ -16,6 +17,7 @@ class Postgresql < Formula
   option 'no-tcl', 'Build without Tcl support'
   option 'enable-dtrace', 'Build with DTrace support'
 
+  depends_on 'openssl'
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' => :recommended

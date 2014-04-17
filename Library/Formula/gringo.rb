@@ -13,11 +13,8 @@ class Gringo < Formula
   depends_on 're2c'  => :build
   depends_on 'scons' => :build
   depends_on 'bison' => :build
-  depends_on :macos => :lion
 
-  # Needs C++11
-  fails_with :gcc
-  fails_with :gcc_4_0
+  needs :cxx11
 
   # Fixes missing include; fixed upstream:
   # http://sourceforge.net/p/potassco/code/8274/tree//trunk/gringo/app/gringo/main.cc?diff=5083e8f9bfc09e133b25ad84:8273

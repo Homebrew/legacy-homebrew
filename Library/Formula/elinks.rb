@@ -4,11 +4,12 @@ class Elinks < Formula
   homepage 'http://elinks.or.cz/'
   url 'http://elinks.or.cz/download/elinks-0.11.7.tar.bz2'
   sha1 'd13edc1477d0ab32cafe7d3c1f3a23ae1c0a5c54'
+  revision 1
 
   bottle do
-    sha1 "39f17a4cf868e624e06f8ce47f721d8f285dfa93" => :mavericks
-    sha1 "be7964dc848562b50736eec0f91dc0047fd14bfd" => :mountain_lion
-    sha1 "0b32cf3d3836be61385e1598cae07a08bc39f5f4" => :lion
+    sha1 "583e1341f43122ae82e2f1432c2a836d33450fc5" => :mavericks
+    sha1 "326f4f9c079d42c11463b224d1a33e1b74705505" => :mountain_lion
+    sha1 "069240528115caa0885c2ead5f83515dbab6a3f8" => :lion
   end
 
   devel do
@@ -24,6 +25,8 @@ class Elinks < Formula
     depends_on :automake
     depends_on :libtool
   end
+
+  depends_on "openssl"
 
   def install
     ENV.deparallelize
