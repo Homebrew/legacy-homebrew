@@ -19,9 +19,7 @@ class Cadaver < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--with-neon=#{neon_prefix}",
                           "--with-ssl"
-    cd 'lib/intl' do
-      system "make"
-    end
+    system "make", "-C", "lib/intl"
     system "make install"
   end
 end
