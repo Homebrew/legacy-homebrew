@@ -355,17 +355,11 @@ class Pathname
   end
 
   def install_info
-    unless self.symlink?
-      raise "Cannot install info entry for unbrewed info file '#{self}'"
-    end
-    system '/usr/bin/install-info', '--quiet', self.to_s, (self.dirname+'dir').to_s
+    quiet_system "/usr/bin/install-info", "--quiet", to_s, "#{dirname}/dir"
   end
 
   def uninstall_info
-    unless self.symlink?
-      raise "Cannot uninstall info entry for unbrewed info file '#{self}'"
-    end
-    system '/usr/bin/install-info', '--delete', '--quiet', self.to_s, (self.dirname+'dir').to_s
+    quiet_system "/usr/bin/install-info", "--delete", "--quiet", to_s, "#{dirname}/dir"
   end
 
   def find_formula

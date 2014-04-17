@@ -2,14 +2,14 @@ require 'formula'
 
 class Gawk < Formula
   homepage 'http://www.gnu.org/software/gawk/'
-  url 'http://ftpmirror.gnu.org/gawk/gawk-4.1.0.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/gawk/gawk-4.1.0.tar.xz'
-  sha1 'caabca3c1a59d05807c826c45a4639b82cad612a'
+  url 'http://ftpmirror.gnu.org/gawk/gawk-4.1.1.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/gawk/gawk-4.1.1.tar.xz'
+  sha1 '547feb48d20e923aff58daccee97c94e047fdc18'
 
   bottle do
-    sha1 "c65a78da9b8bc8eceb24f1bbae2892c16aa0c202" => :mavericks
-    sha1 "db98589dfcbf0875e172b41bc4b08148737e46bd" => :mountain_lion
-    sha1 "a90fa8c6c4ce4ffec0a103f567db5eec319bb3bf" => :lion
+    sha1 "8fa017184dc02cdc122d5681b6824fd12be01def" => :mavericks
+    sha1 "141a930482411bf368444dc214b87bd97a44360a" => :mountain_lion
+    sha1 "a01d86d2749c9757c4e45e48154844f8fa5edce3" => :lion
   end
 
   fails_with :llvm do
