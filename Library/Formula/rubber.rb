@@ -21,8 +21,6 @@ class Rubber < Formula
     system "make install"
 
     # Don't need to peg to a specific Python version
-    Dir["#{bin}/*"].each do |f|
-      inreplace f, /^#!.*\/python.*$/, "#!/usr/bin/env python"
-    end
+    inreplace Dir["#{bin}/*"], /^#!.*\/python.*$/, "#!/usr/bin/env python"
   end
 end
