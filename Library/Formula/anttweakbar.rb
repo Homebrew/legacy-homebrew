@@ -11,9 +11,7 @@ class Anttweakbar < Formula
   patch :DATA
 
   def install
-    cd 'src' do
-      system 'make -f Makefile.osx'
-    end
+    system "make", "-C", "src", "-f", "Makefile.osx"
     lib.install 'lib/libAntTweakBar.dylib'
     include.install 'include/AntTweakBar.h'
   end

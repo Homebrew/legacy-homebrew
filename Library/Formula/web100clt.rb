@@ -20,13 +20,8 @@ class Web100clt < Formula
 
     # we only want to build the web100clt client so we need
     # to change to the src directory before installing.
-    cd 'src' do
-      system "make install"
-    end
-
-    cd 'doc' do
-      man1.install 'web100clt.man' => 'web100clt.1'
-    end
+    system "make", "-C", "src", "install"
+    man1.install 'doc/web100clt.man' => 'web100clt.1'
   end
 
   test do

@@ -17,9 +17,6 @@ class Libebml < Formula
 
   def install
     ENV.cxx11 if build.cxx11?
-
-    cd 'make/linux' do
-      system "make", "install", "prefix=#{prefix}", "CXX=#{ENV.cxx}"
-    end
+    system "make", "-C", "make/linux", "install", "prefix=#{prefix}", "CXX=#{ENV.cxx}"
   end
 end

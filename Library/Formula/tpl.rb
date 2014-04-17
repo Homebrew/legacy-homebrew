@@ -19,11 +19,6 @@ class Tpl < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
-
-    if build.with? "tests"
-      cd "tests" do
-        system "make"
-      end
-    end
+    system "make", "-C", "tests" if build.with? "tests"
   end
 end
