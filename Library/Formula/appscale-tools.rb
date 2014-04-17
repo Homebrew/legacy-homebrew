@@ -67,10 +67,8 @@ class AppscaleTools < Formula
     resource('httplib2').stage { system "python", *install_args }
     resource('python-gflags').stage { system "python", *install_args }
 
-    Dir['bin/appscale*'].each do |command_file|
-      inreplace command_file do |s|
-        s.gsub! /^lib = os.*/, "lib = '#{libexec}'"
-      end
+    inreplace Dir["bin/appscale*"] do |s|
+      s.gsub! /^lib = os.*/, "lib = '#{libexec}'"
     end
 
     prefix.install 'bin', 'templates', 'LICENSE', 'README.md'

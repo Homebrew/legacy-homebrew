@@ -5,14 +5,13 @@ class Lcov < Formula
   url 'https://downloads.sourceforge.net/ltp/lcov-1.10.tar.gz'
   sha1 '70fb361bcfd7dd81ea30731d6fe532ddea56f283'
 
+  patch :DATA
+
   def install
-    %w(bin/genhtml bin/geninfo bin/lcov).each do |file|
-      inreplace file, '/etc/lcovrc', "#{prefix}/etc/lcovrc"
-    end
+    inreplace %w[bin/genhtml bin/geninfo bin/lcov],
+      "/etc/lcovrc", "#{prefix}/etc/lcovrc"
     system "make", "PREFIX=#{prefix}", "install"
   end
-
-  patch :DATA
 end
 
 __END__
