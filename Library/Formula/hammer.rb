@@ -11,6 +11,10 @@ class Hammer < Formula
   depends_on "glib"
 
   def install
-  scons "PREFIX=#{prefix} install"
+  scons "PREFIX=#{prefix}", "install"
+  end
+
+  def test
+  scons "test"
   end
 end
