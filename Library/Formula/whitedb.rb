@@ -7,7 +7,6 @@ class Whitedb < Formula
 
   depends_on "python" => :optional
 
-  patch :DATA
   # Patch removing the inline attribute from functions that use it. The author
   # is aware of the issue and the patch was commited three months ago. However,
   # there are no plans yet for an upcoming 0.7.3 release that would include
@@ -17,11 +16,12 @@ class Whitedb < Formula
   # Link to patch: https://github.com/priitj/whitedb/compare/91bc516e312b292bd2fd46806c0214c2e49c64d6...ad30631c6c164505a4461929cb09efd6473b2542
   #
   # This patch can safely be removed once 0.7.3 is released.
+  patch :DATA
 
   def install
-    wargs = ["--prefix=#{prefix}"]
-    wargs << "--with-python" if build.with? "python"
-    system "./configure", *wargs
+    args = ["--prefix=#{prefix}"]
+    args << "--with-python" if build.with? "python"
+    system "./configure", *args
 
     system "make"
     system "make", "install"
