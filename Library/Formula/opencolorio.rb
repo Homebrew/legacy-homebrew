@@ -39,6 +39,16 @@ class Opencolorio < Formula
     args << "-DOCIO_BUILD_PYGLUE=OFF" if build.without? 'python'
 
     args << '..'
+    
+    # Fixes #24294
+    # See also https://github.com/imageworks/OpenColorIO/issues/338#issuecomment-36589039
+    inreplace "export/OpenColorIO/OpenColorIO.h" do |f|
+      f.gsub! "#define INCLUDED_OCIO_OPENCOLORIO_H", <<-EOF.undent
+        #define INCLUDED_OCIO_OPENCOLORIO_H
+        
+        #include <unistd.h>
+      EOF
+    end
 
     mkdir 'macbuild' do
       system "cmake", *args
