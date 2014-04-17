@@ -44,6 +44,7 @@ class Wine < Formula
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
   depends_on :x11 => :recommended
+  depends_on 'pkg-config' => :build
   depends_on 'freetype'
   depends_on 'jpeg'
   depends_on 'libgphoto2'
@@ -109,11 +110,6 @@ class Wine < Formula
           brew install wine --cc=gcc-4.2 # or 4.7, 4.8, etc.
       EOS
     end
-
-    # Workarounds for XCode not including pkg-config files
-    # FIXME we include pkg-config files for libxml2 and libxslt. Is this really necessary?
-    ENV.libxml2
-    ENV.append "LDFLAGS", "-lxslt"
 
     args = ["--prefix=#{prefix}"]
     args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang
