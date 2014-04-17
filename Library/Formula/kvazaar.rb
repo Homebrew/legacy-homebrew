@@ -8,9 +8,7 @@ class Kvazaar < Formula
   depends_on 'yasm' => :build
 
   def install
-    cd 'src' do
-      system 'make'
-    end
+    system "make", "-C", "src"
     bin.install 'src/kvazaar'
   end
 
