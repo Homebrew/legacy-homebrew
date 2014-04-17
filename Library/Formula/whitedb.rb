@@ -28,9 +28,11 @@ class Whitedb < Formula
   end
 
   test do
+    system "#{bin}/wgdb", "create", "512k"
     system "#{bin}/wgdb", "add", "42"
     system "#{bin}/wgdb", "select", "1"
     system "#{bin}/wgdb", "free"
+    system "#{bin}/wgdb", "test"
   end
 end
 
