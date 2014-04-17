@@ -3,7 +3,7 @@ require 'formula'
 class Libagg < Formula
   homepage 'http://www.antigrain.com'
   url 'http://www.antigrain.com/agg-2.5.tar.gz'
-  sha1 '08f23da64da40b90184a0414369f450115cdb328'
+  sha1 'e7e7d832440f0d1359269c1446f4c508d70a7251'
 
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
