@@ -2,7 +2,7 @@ require 'formula'
 
 class GobjectIntrospection < Formula
   homepage 'http://live.gnome.org/GObjectIntrospection'
-  url 'http://download.gnome.org/sources/gobject-introspection/1.40/gobject-introspection-1.40.0.tar.xz'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.40/gobject-introspection-1.40.0.tar.xz'
   sha256 '96ea75e9679083e7fe39a105e810e2ead2d708abf189a5ba420bfccfffa24e98'
 
   bottle do

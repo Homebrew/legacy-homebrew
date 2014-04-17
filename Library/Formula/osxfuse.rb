@@ -2,33 +2,28 @@ require 'formula'
 
 class Osxfuse < Formula
   homepage 'http://osxfuse.github.io'
-  url 'https://github.com/osxfuse/osxfuse.git', :tag => 'osxfuse-2.6.3'
+  url 'https://github.com/osxfuse/osxfuse.git', :tag => 'osxfuse-2.6.4'
 
   head 'https://github.com/osxfuse/osxfuse.git', :branch => 'osxfuse-2'
 
   bottle do
-    sha1 "e3433b2a5dbb7d72db1fb170635f735827a57335" => :mavericks
-    sha1 "6e4985fd096245ac35c60fcd54e31845a3f6dbaa" => :mountain_lion
-    sha1 "7284e1a0da8d85c40c35bf7a066a7a4bfb939d39" => :lion
+    sha1 "e661cd54c9dfa9efb383ad283456ae1afe210329" => :mavericks
+    sha1 "c3eb99baa45b45c69f25dc5361d4b16b69ec4eaa" => :mountain_lion
+    sha1 "adab3f073e734c2653a3ed9185e1fe9f689e1a6c" => :lion
   end
 
   depends_on :macos => :snow_leopard
   depends_on :xcode
-  depends_on :autoconf
-  depends_on :automake
-  depends_on 'gettext' => :build
-  depends_on 'libtool' => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "gettext" => :build
 
   conflicts_with 'fuse4x', :because => 'both install `fuse.pc`'
 
   def install
     # Do not override Xcode build settings
     ENV.remove_cc_etc
-
-    if MacOS::Xcode.provides_autotools?
-      # Xcode version of aclocal does not respect ACLOCAL_PATH
-      ENV['ACLOCAL'] = 'aclocal ' + ENV['ACLOCAL_PATH'].split(':').map {|p| '-I' + p}.join(' ')
-    end
 
     system "./build.sh", "-t", "homebrew", "-f", prefix
   end

@@ -216,10 +216,6 @@ class FormulaAuditor
     # the rest of the checks apply to mirrors as well
     urls.concat(@specs.map(&:mirrors).flatten)
 
-    urls.grep(%r[^(https?|ftp)://ftp\.gnome]) do |u|
-      problem %{download.gnome.org is preferred for GNOME software (url is #{u}).}
-    end
-
     # Check SourceForge urls
     urls.each do |p|
       # Skip if the URL looks like a SVN repo
@@ -315,6 +311,8 @@ class FormulaAuditor
       end
     when %r[macports/trunk]
       problem "MacPorts patches should specify a revision instead of trunk:\n#{patch.url}"
+    when %r[^https?://github\.com/.*commit.*\.patch$]
+      problem "GitHub appends a git version to patches; use .diff instead."
     end
   end
 
@@ -336,7 +334,7 @@ class FormulaAuditor
     end
   end
 
-  def audit_line(line)
+  def audit_line(line, lineno)
     if line =~ /<(Formula|AmazonWebServicesFormula|ScriptFileFormula|GithubGistFormula)/
       problem "Use a space in class inheritance: class Foo < #{$1}"
     end
@@ -414,7 +412,7 @@ class FormulaAuditor
 
     # No trailing whitespace, please
     if line =~ /[\t ]+$/
-      problem "Trailing whitespace was found"
+      problem "#{lineno}: Trailing whitespace was found"
     end
 
     if line =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
@@ -572,7 +570,7 @@ class FormulaAuditor
     audit_conflicts
     audit_patches
     audit_text
-    text.each_line { |line| audit_line(line) }
+    text.split("\n").each_with_index { |line, lineno| audit_line(line, lineno) }
     audit_installed
   end
 

@@ -2,14 +2,13 @@ require 'formula'
 
 class Graphviz < Formula
   homepage 'http://graphviz.org/'
-  url 'http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.36.0.tar.gz'
-  sha1 'a41e9f1cbcc9a24651e14dd15a4cda3d912d7d19'
-  revision 1
+  url 'http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.38.0.tar.gz'
+  sha1 '053c771278909160916ca5464a0a98ebf034c6ef'
 
   bottle do
-    sha1 "593be8aa485bde737036b6b66a274d7d52eb25b6" => :mavericks
-    sha1 "19572fd522a6de5ac612680a54b0cf46c19e596b" => :mountain_lion
-    sha1 "64f30bd5593af138ab5fb145ffa5048758e4622d" => :lion
+    sha1 "112471c5d0e25a953ae64c09db48f434e744f558" => :mavericks
+    sha1 "7dcc9f76ce2b8978a77d114354471c7c931a4b54" => :mountain_lion
+    sha1 "9effcb470b301098a54566f6d335f2eee6491d71" => :lion
   end
 
   # To find Ruby and Co.
@@ -18,7 +17,6 @@ class Graphviz < Formula
   option :universal
   option 'with-bindings', 'Build Perl/Python/Ruby/etc. bindings'
   option 'with-pangocairo', 'Build with Pango/Cairo for alternate PDF output'
-  option 'with-freetype', 'Build with FreeType support'
   option 'with-x', 'Build with X11 support'
   option 'with-app', 'Build GraphViz.app (requires full XCode install)'
   option 'with-gts', 'Build with GNU GTS support (required by prism)'
@@ -30,8 +28,8 @@ class Graphviz < Formula
   depends_on 'swig' if build.with? "bindings"
   depends_on 'gts' => :optional
   depends_on "librsvg" => :optional
-  depends_on "freetype" if build.with? "freetype" or MacOS::X11.installed?
-  depends_on :x11 if build.with? "x" or MacOS::X11.installed?
+  depends_on "freetype" => :optional
+  depends_on :x11 if build.with? "x"
   depends_on :xcode if build.with? "app"
 
   fails_with :clang do
@@ -53,8 +51,8 @@ class Graphviz < Formula
     args << "--with-gts" if build.with? 'gts'
     args << "--disable-swig" if build.without? "bindings"
     args << "--without-pangocairo" if build.without? "pangocairo"
-    args << "--without-freetype2" if build.without? "freetype" or MacOS::X11.installed?
-    args << "--without-x" if build.without? "x" or MacOS::X11.installed?
+    args << "--without-freetype2" if build.without? "freetype"
+    args << "--without-x" if build.without? "x"
     args << "--without-rsvg" if build.without? "librsvg"
 
     system "./configure", *args

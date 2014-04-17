@@ -128,11 +128,13 @@ class Ghc < Formula
 
       if build.include? "tests"
         resource("testsuite").stage do
-          (buildpath+"Ghcsource/config").install Dir["config/*"]
-          (buildpath+"Ghcsource/driver").install Dir["driver/*"]
-          (buildpath+"Ghcsource/mk").install Dir["mk/*"]
-          (buildpath+"Ghcsource/tests").install Dir["tests/*"]
-          (buildpath+"Ghcsource/timeout").install Dir["timeout/*"]
+          cd "testsuite" do
+            (buildpath+"Ghcsource/config").install Dir["config/*"]
+            (buildpath+"Ghcsource/driver").install Dir["driver/*"]
+            (buildpath+"Ghcsource/mk").install Dir["mk/*"]
+            (buildpath+"Ghcsource/tests").install Dir["tests/*"]
+            (buildpath+"Ghcsource/timeout").install Dir["timeout/*"]
+          end
           cd (buildpath+"Ghcsource/tests") do
             system "make", "CLEANUP=1", "THREADS=#{ENV.make_jobs}", "fast"
           end

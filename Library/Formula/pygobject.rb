@@ -2,7 +2,7 @@ require 'formula'
 
 class Pygobject < Formula
   homepage 'http://live.gnome.org/PyGObject'
-  url 'http://download.gnome.org/sources/pygobject/2.28/pygobject-2.28.6.tar.bz2'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pygobject/2.28/pygobject-2.28.6.tar.bz2'
   sha1 '4eda7d2b97f495a2ad7d4cdc234d08ca5408d9d5'
 
   depends_on 'pkg-config' => :build

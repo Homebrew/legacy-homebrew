@@ -11,15 +11,15 @@ class Ettercap < Formula
       # Fixes issue #326: redefinition of 'bpf_program', 'bpf_version',
       #  and 'bpf_insn' in ec_send.c on Mac OS X.
       # url: https://github.com/Ettercap/ettercap/issues/326
-      url "https://github.com/Ettercap/ettercap/commit/4aaaa2.patch"
-      sha1 "f76b6bea3972949697f2925194aec6a4faf4aa5e"
+      url "https://github.com/Ettercap/ettercap/commit/4aaaa2.diff"
+      sha1 "c1c78b38f3f1ffcdbb1d16a292c0fc6d96991ed0"
     end
 
     patch do
       # Fixes issue #344: undefined symbol safe_free_mem caused by the previous fix.
       # url: https://github.com/Ettercap/ettercap/issues/344
-      url "https://github.com/Ettercap/ettercap/commit/33ac95.patch"
-      sha1 "17dbef4b16c1447f91e65a56d7398d176800beee"
+      url "https://github.com/Ettercap/ettercap/commit/33ac95.diff"
+      sha1 "cdaff33bec2a73e2c44230c28f3727b8f36e45e2"
     end
   end
 

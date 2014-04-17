@@ -84,8 +84,10 @@ Note that these flags should only appear after a command.
     The options `--set-name` and `--set-version` each take an argument and allow
     you to explicitly set the name and version of the package you are creating.
 
-  * `deps [--1] [-n] [--tree] [--all] [--installed]` <formula>:
-    Show <formula>'s dependencies.
+  * `deps [--1] [-n] [--tree] [--all] [--installed]` <formulae>:
+    Show dependencies for <formulae>. When given multiple formula arguments,
+    show the intersection of dependencies for <formulae>, except when passed
+    `--tree`, `--all`, or `--installed`.
 
     If `--1` is passed, only show dependencies one level down, instead of
     recursing.
@@ -355,8 +357,10 @@ Note that these flags should only appear after a command.
     If <formulae> are given, upgrade only the specified brews (but do so even
     if they are pinned; see `pin`, `unpin`).
 
-  * `uses [--installed] [--recursive] [--devel|--HEAD]` <formula>:
-    Show the formulae that specify <formula> as a dependency.
+  * `uses [--installed] [--recursive] [--devel|--HEAD]` <formulae>:
+    Show the formulae that specify <formulae> as a dependency. When given
+    multiple formula arguments, show the intersection of formulae that use
+    <formulae>.
 
     Use `--recursive` to resolve more than one level of dependencies.
 

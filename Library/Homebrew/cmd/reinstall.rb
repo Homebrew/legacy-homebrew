@@ -13,8 +13,8 @@ module Homebrew extend self
     notice += " with #{options * ", "}" unless options.empty?
     oh1 notice
 
-    if (opt_link = f.opt_prefix).exist?
-      keg = Keg.new(opt_link.realpath)
+    if f.opt_prefix.directory?
+      keg = Keg.new(f.opt_prefix.resolved_path)
       backup keg
     end
 

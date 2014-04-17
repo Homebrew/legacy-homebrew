@@ -2,15 +2,15 @@ require 'formula'
 
 class Haxe < Formula
   homepage 'http://haxe.org'
-  url 'https://github.com/HaxeFoundation/haxe.git', :tag => '3.1.2'
+  url 'https://github.com/HaxeFoundation/haxe.git', :tag => '3.1.3'
 
   head 'https://github.com/HaxeFoundation/haxe.git', :branch => 'development'
 
   bottle do
     cellar :any
-    sha1 "b26c27ea86f207d838d039e7d18e6c61fdcc3354" => :mavericks
-    sha1 "203ad40ae2ca4b6d7747c4e69f316a99ae045e09" => :mountain_lion
-    sha1 "b8a047a98ed5d2f5cc8aedfd468a7ecbe027ca4e" => :lion
+    sha1 "83fe01c0ca2997328e88ef7763181ff40cc5082a" => :mavericks
+    sha1 "46c5911f3505c7e102c71dde16ed4ab2bdcc4cbc" => :mountain_lion
+    sha1 "408dbaf0110cb38ee52900bd4910c56913681bab" => :lion
   end
 
   depends_on 'neko'

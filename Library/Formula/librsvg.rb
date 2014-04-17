@@ -2,7 +2,7 @@ require 'formula'
 
 class Librsvg < Formula
   homepage 'https://live.gnome.org/LibRsvg'
-  url 'http://download.gnome.org/sources/librsvg/2.36/librsvg-2.36.3.tar.xz'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/librsvg/2.36/librsvg-2.36.3.tar.xz'
   sha256 '3d7d583271030e21acacc60cb6b81ee305713c9da5e98429cbd609312aea3632'
 
   depends_on :x11

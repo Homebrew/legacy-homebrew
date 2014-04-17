@@ -2,7 +2,7 @@ require 'formula'
 
 class JsonGlib < Formula
   homepage 'http://live.gnome.org/JsonGlib'
-  url 'http://download.gnome.org/sources/json-glib/1.0/json-glib-1.0.0.tar.xz'
+  url 'http://ftp.gnome.org/pub/gnome/sources/json-glib/1.0/json-glib-1.0.0.tar.xz'
   sha256 'dbf558d2da989ab84a27e4e13daa51ceaa97eb959c2c2f80976c9322a8f4cdde'
 
   bottle do
