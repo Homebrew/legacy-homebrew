@@ -1,7 +1,7 @@
 require "formula"
 
 # Consul has multiple components, but as a whole,
-# it is a tool for discovering and configuring services in your infrastructure
+# it is a tool for discovering and configuring services in your infrastructure.
 
 class Consul < Formula
   homepage "http://www.consul.io/"
@@ -11,9 +11,5 @@ class Consul < Formula
 
   def install
     bin.install "consul"
-  end
-
-  test do
-    system "#{bin}/consul", "version"
   end
 end
