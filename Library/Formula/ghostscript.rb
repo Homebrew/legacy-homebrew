@@ -5,8 +5,8 @@ class Ghostscript < Formula
   revision 1
 
   stable do
-    url 'http://downloads.ghostscript.com/public/ghostscript-9.10.tar.gz'
-    sha1 '29d6538ae77565c09f399b06455e94e7bcd83d01'
+    url 'http://downloads.ghostscript.com/public/ghostscript-9.14.tar.gz'
+    sha1 '85001be316ebc11a6060ae7e208fe08dcbfd70ae'
 
     patch :DATA # Uncomment OS X-specific make vars
   end
@@ -65,7 +65,7 @@ class Ghostscript < Formula
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
-    renames = %w{freetype jbig2dec jpeg libpng tiff zlib}
+    renames = %w{freetype jbig2dec jpeg libpng tiff}
     renames.each { |lib| mv lib, "#{lib}_local" }
   end
 
