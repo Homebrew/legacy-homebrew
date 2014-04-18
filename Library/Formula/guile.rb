@@ -2,9 +2,9 @@ require 'formula'
 
 class Guile < Formula
   homepage 'http://www.gnu.org/software/guile/'
-  url 'http://ftpmirror.gnu.org/guile/guile-2.0.9.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.9.tar.gz'
-  sha1 'fc5d770e8b1d364b2f222a8f8c96ccf740b2956f'
+  url 'http://ftpmirror.gnu.org/guile/guile-2.0.11.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.11.tar.gz'
+  sha1 '3cdd1c4956414bffadea13e5a1ca08949016a802'
 
   head do
     url 'http://git.sv.gnu.org/r/guile.git'
@@ -34,10 +34,6 @@ class Guile < Formula
     cause "Segfaults during compilation"
   end
 
-  # Only for 2.0.9: Fix shebang shell in build-aux/install-sh.
-  # http://debbugs.gnu.org/cgi/bugreport.cgi?bug=14201#19
-  def patches; DATA; end
-
   def install
     system './autogen.sh' if build.head?
 
@@ -48,7 +44,9 @@ class Guile < Formula
     system "make install"
 
     # A really messed up workaround required on OS X --mkhl
-    lib.cd { Dir["*.dylib"].each {|p| ln_sf p, File.basename(p, ".dylib")+".so" }}
+    Pathname.glob("#{lib}/*.dylib") do |dylib|
+      lib.install_symlink dylib.basename => "#{dylib.basename(".dylib")}.so"
+    end
   end
 
   test do
@@ -63,13 +61,3 @@ class Guile < Formula
     system bin/'guile', hello
   end
 end
-
-__END__
---- guile-2.0.9.orig/build-aux/install-sh  2013-01-28 12:35:24.000000000 -0800
-+++ guile-2.0.9/build-aux/install-sh	2013-04-21 08:41:10.000000000 -0700
-@@ -1,4 +1,4 @@
--#!/nix/store/ryk1ywzz31kp4biclxq3yq6hpjycalyy-bash-4.2/bin/sh
-+#!/bin/sh
- # install - install a program, script, or datafile
-
- scriptversion=2011-11-20.07; # UTC

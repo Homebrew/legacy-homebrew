@@ -88,7 +88,7 @@ class DependencyCollector
     if tags.empty?
       Dependency.new(spec, tags)
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
-      LanguageModuleDependency.new(tag, spec)
+      LanguageModuleDependency.new(tag, spec, tags[1])
     elsif HOMEBREW_TAP_FORMULA_REGEX === spec
       TapDependency.new(spec, tags)
     else
@@ -102,11 +102,9 @@ class DependencyCollector
       # Xcode no longer provides autotools or some other build tools
       autotools_dep(spec, tags)
     when :x11        then X11Dependency.new(spec.to_s, tags)
-    when *X11Dependency::Proxy::PACKAGES
-      x11_dep(spec, tags)
-    when :cairo, :pixman
-      # We no longer use X11 psuedo-deps for cairo or pixman,
-      # so just return a standard formula dependency.
+    when :cairo, :fontconfig, :freetype, :libpng, :pixman
+      # We no longer use X11 proxy deps, but we support the symbols
+      # for backwards compatibility.
       Dependency.new(spec.to_s, tags)
     when :xcode      then XcodeDependency.new(tags)
     when :macos      then MinimumMacOSRequirement.new(tags)
@@ -125,7 +123,7 @@ class DependencyCollector
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     when :ant        then ant_dep(spec, tags)
     else
-      raise "Unsupported special dependency #{spec.inspect}"
+      raise ArgumentError, "Unsupported special dependency #{spec.inspect}"
     end
   end
 
@@ -137,17 +135,7 @@ class DependencyCollector
     end
   end
 
-  def x11_dep(spec, tags)
-    if MacOS.version >= :mountain_lion
-      Dependency.new(spec.to_s, tags)
-    else
-      X11Dependency::Proxy.for(spec.to_s, tags)
-    end
-  end
-
   def autotools_dep(spec, tags)
-    return if MacOS::Xcode.provides_autotools?
-
     if spec == :libltdl
       spec = :libtool
       tags << :run
@@ -180,7 +168,7 @@ class DependencyCollector
     when strategy <= BazaarDownloadStrategy
       Dependency.new("bazaar", tags)
     when strategy <= CVSDownloadStrategy
-      Dependency.new("cvs", tags) unless MacOS::Xcode.provides_cvs?
+      Dependency.new("cvs", tags) if MacOS.version >= :mavericks || !MacOS::Xcode.provides_cvs?
     when strategy < AbstractDownloadStrategy
       # allow unknown strategies to pass through
     else

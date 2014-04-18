@@ -31,37 +31,38 @@ class Emacs < Formula
       depends_on :autoconf
       depends_on :automake
     end
+
+    # Fix default-directory on Cocoa and Mavericks.
+    # Fixed upstream in r114730 and r114882.
+    patch :p0, :DATA
+
+    # Make native fullscreen mode optional, mostly from upstream r111679
+    patch do
+      url "https://gist.github.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch"
+      sha1 "cb4cc4940efa1a43a5d36ec7b989b90834b7442b"
+    end
+
+    # Fix memory leaks in NS version from upstream r114945
+    patch do
+      url "https://gist.github.com/anonymous/8553178/raw/c0ddb67b6e92da35a815d3465c633e036df1a105/emacs.memory.leak.aka.distnoted.patch.diff"
+      sha1 "173ce253e0d8920e0aa7b1464d5635f6902c98e7"
+    end
+
+    # "--japanese" option:
+    # to apply a patch from MacEmacsJP for Japanese input methods
+    patch :p0 do
+      url "http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp&pathrev=583"
+      sha1 "61a6f41f3ddc9ecc3d7f57379b3dc195d7b9b5e2"
+    end if build.include? "cocoa" and build.include? "japanese"
   end
 
   depends_on 'pkg-config' => :build
-  depends_on :x11 if build.include? "with-x"
+  depends_on :x11 if build.with? "x"
   depends_on 'gnutls' => :optional
 
   fails_with :llvm do
     build 2334
     cause "Duplicate symbol errors while linking."
-  end
-
-  def patches
-    return if build.head?
-
-    p = {
-      # Fix default-directory on Cocoa and Mavericks.
-      # Fixed upstream in r114730 and r114882.
-      :p0 => [ DATA ],
-      :p1 => [
-        # Make native fullscreen mode optional, mostly from upstream r111679
-        'https://gist.github.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch',
-        # Fix memory leaks in NS version from upstream r114945
-        'https://gist.github.com/anonymous/8553178/raw/c0ddb67b6e92da35a815d3465c633e036df1a105/emacs.memory.leak.aka.distnoted.patch.diff',
-      ]
-    }
-    # "--japanese" option:
-    # to apply a patch from MacEmacsJP for Japanese input methods
-    if build.include? "cocoa" and build.include? "japanese"
-      p[:p0].push("http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp&pathrev=583")
-    end
-    p
   end
 
   # Follow MacPorts and don't install ctags from Emacs. This allows Vim
@@ -114,7 +115,7 @@ class Emacs < Formula
         #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
       EOS
     else
-      if build.include? "with-x"
+      if build.with? "x"
         # These libs are not specified in xft's .pc. See:
         # https://trac.macports.org/browser/trunk/dports/editors/emacs/Portfile#L74
         # https://github.com/Homebrew/homebrew/issues/8156
@@ -146,6 +147,12 @@ class Emacs < Formula
       end
     end
     return s
+  end
+
+  test do
+    output = `'#{bin}/emacs' --batch --eval="(print (+ 2 2))"`
+    assert $?.success?
+    assert_equal "4", output.strip
   end
 end
 

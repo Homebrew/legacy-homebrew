@@ -13,9 +13,7 @@ class Omniorb < Formula
   end
 
   # http://www.omniorb-support.com/pipermail/omniorb-list/2012-February/031202.html
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}"

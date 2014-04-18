@@ -4,6 +4,13 @@ class Gdal < Formula
   homepage 'http://www.gdal.org/'
   url 'http://download.osgeo.org/gdal/1.10.1/gdal-1.10.1.tar.gz'
   sha1 'b4df76e2c0854625d2bedce70cc1eaf4205594ae'
+  revision 1
+
+  bottle do
+    sha1 "01dee8d333f89ba82165c2eb72816bafc687a308" => :mavericks
+    sha1 "a57e4240a97c0f422c80d8e2b0e590ce6cb7ef62" => :mountain_lion
+    sha1 "f90ec187f9b1acf1a55227b6fd91a47904165ba1" => :lion
+  end
 
   head do
     url 'https://svn.osgeo.org/gdal/trunk/gdal'
@@ -17,7 +24,11 @@ class Gdal < Formula
   option 'enable-mdb', 'Build with Access MDB driver (requires Java 1.6+ JDK/JRE, from Apple or Oracle).'
 
   depends_on :python => :recommended
-  depends_on :libpng
+  if build.with? "python"
+    depends_on :fortran => :build
+  end
+
+  depends_on 'libpng'
   depends_on 'jpeg'
   depends_on 'giflib'
   depends_on 'libtiff'
@@ -31,9 +42,6 @@ class Gdal < Formula
 
   depends_on "postgresql" => :optional
   depends_on "mysql" => :optional
-
-  # Without Numpy, the Python bindings can't deal with raster data.
-  depends_on 'numpy' => :python if build.with? 'python'
 
   depends_on 'homebrew/science/armadillo' if build.include? 'enable-armadillo'
 
@@ -55,8 +63,24 @@ class Gdal < Formula
     depends_on "poppler"
   end
 
-  def png_prefix
-    MacOS.version >= :mountain_lion ? HOMEBREW_PREFIX/"opt/libpng" : MacOS::X11.prefix
+  # Prevent build failure on 10.6 / 10.7: http://trac.osgeo.org/gdal/ticket/5197
+  # Fix build against MySQL 5.6.x: http://trac.osgeo.org/gdal/ticket/5284
+  patch :DATA
+
+  stable do
+    # Patch of configure that finds Mac Java for MDB driver (uses Oracle or Mac default JDK)
+    # TODO: Remove when future GDAL release includes a fix
+    # http://trac.osgeo.org/gdal/ticket/5267  (patch applied to trunk, 2.0 release milestone)
+    # Must come before DATA
+    patch do
+      url "https://gist.githubusercontent.com/dakcarto/6877854/raw/82ae81e558c0b6048336f0acb5d7577bd0a237d5/gdal-mdb-patch.diff"
+      sha1 "ea6c753df9e35abd90d7078f8a727eaab7f7d996"
+    end if build.include? "enable-mdb"
+  end
+
+  resource 'numpy' do
+    url 'http://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz'
+    sha1 '8fe1d5f36bab3f1669520b4c7d8ab59a21a984da'
   end
 
   def get_configure_args
@@ -79,7 +103,7 @@ class Gdal < Formula
       # Backends supported by OS X.
       "--with-libiconv-prefix=/usr",
       "--with-libz=/usr",
-      "--with-png=#{png_prefix}",
+      "--with-png=#{Formula["libpng"].opt_prefix}",
       "--with-expat=/usr",
       "--with-curl=/usr/bin/curl-config",
 
@@ -187,25 +211,14 @@ class Gdal < Formula
     return args
   end
 
-  def patches
-    p = []
-
-    if build.stable?
-      # Patch of configure that finds Mac Java for MDB driver (uses Oracle or Mac default JDK)
-      # TODO: Remove when future GDAL release includes a fix
-      # http://trac.osgeo.org/gdal/ticket/5267  (patch applied to trunk, 2.0 release milestone)
-      # Must come before DATA
-      p << "https://gist.github.com/dakcarto/6877854/raw" if build.include? 'enable-mdb'
-
-      # Prevent build failure on 10.6 / 10.7: http://trac.osgeo.org/gdal/ticket/5197
-      # Fix build against MySQL 5.6.x: http://trac.osgeo.org/gdal/ticket/5284
-      p << DATA
+  def install
+    if build.with? 'python'
+      ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+      numpy_args = [ "build", "--fcompiler=gnu95",
+                     "install", "--prefix=#{libexec}" ]
+      resource('numpy').stage { system "python", "setup.py", *numpy_args }
     end
 
-    return p
-  end
-
-  def install
     # Linking flags for SQLite are not added at a critical moment when the GDAL
     # library is being assembled. This causes the build to fail due to missing
     # symbols. Also, ensure Homebrew SQLite is used so that Spatialite is
@@ -213,8 +226,8 @@ class Gdal < Formula
     #
     # Fortunately, this can be remedied using LDFLAGS.
     sqlite = Formula["sqlite"]
-    ENV.append 'LDFLAGS', "-L#{sqlite.opt_prefix}/lib -lsqlite3"
-    ENV.append 'CFLAGS', "-I#{sqlite.opt_prefix}/include"
+    ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib} -lsqlite3"
+    ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
     # Needed by libdap
     ENV.libxml2 if build.include? 'complete'
 

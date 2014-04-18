@@ -2,16 +2,15 @@ require 'formula'
 
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://sqlite.org/2014/sqlite-autoconf-3080300.tar.gz'
-  version '3.8.3'
-  sha1 'c2a21d71d0c7dc3af71cf90f04dfd22ecfb280c2'
+  url 'http://sqlite.org/2014/sqlite-autoconf-3080403.tar.gz'
+  version '3.8.4.3'
+  sha1 '70f3b100fa22e5bfebfe1b0a2102612e3c6c53fb'
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "30610abbf91be81648725fa8a6200ed1cfe74e39" => :mavericks
-    sha1 "85d6a700cc5f09d30aa6a4cc8037bb716637d9f9" => :mountain_lion
-    sha1 "1f1ce5e691ba769a68fbd489163f641d9c497a38" => :lion
+    sha1 "f8099e15c5ffd67f861ea09651cb7ae0c4dfa359" => :mavericks
+    sha1 "c25f37d9cd188465dd568e9f49c22b95a2320835" => :mountain_lion
+    sha1 "d40eacfc3df225d16dc0908bf450b47a27a27d44" => :lion
   end
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
@@ -31,13 +30,13 @@ class Sqlite < Formula
   end
 
   resource 'docs' do
-    url 'http://sqlite.org/2014/sqlite-doc-3080300.zip'
-    version '3.8.3'
-    sha1 '199c977b948d3e6b9b0b165cb661275e0856d38e'
+    url 'http://sqlite.org/2014/sqlite-doc-3080403.zip'
+    version '3.8.4.3'
+    sha1 'ce8615799a9da7fc9d2cbcd2774d77da4ba72417'
   end
 
   def install
-    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_RTREE" unless build.without? "rtree"
+    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_RTREE" if build.with? "rtree"
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if build.with? "fts"
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_COLUMN_METADATA"
 

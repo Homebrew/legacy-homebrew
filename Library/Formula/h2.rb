@@ -17,7 +17,7 @@ class H2 < Formula
     rm_f Dir["bin/*.bat"]
 
     # Fix the permissions on the script
-    chmod 0755, Dir["bin/h2.sh"]
+    chmod 0755, "bin/h2.sh"
 
     libexec.install Dir['*']
     (bin+'h2').write script
@@ -38,7 +38,7 @@ class H2 < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/h2</string>
+            <string>#{opt_bin}/h2</string>
             <string>-tcp</string>
             <string>-web</string>
             <string>-pg</string>

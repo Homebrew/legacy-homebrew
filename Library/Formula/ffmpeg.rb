@@ -2,14 +2,14 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-2.1.4.tar.bz2'
-  sha1 '99c2f7af3e6d5f4a962ae8bf627d3c53bc282fec'
+  url 'http://ffmpeg.org/releases/ffmpeg-2.2.1.tar.bz2'
+  sha1 'c5f8d103b20cd73d329401d85ced4a014757f8b9'
   head 'git://git.videolan.org/ffmpeg.git'
 
   bottle do
-    sha1 "ddd8f0cce3e64047cd9c77eccc5d23af48ef7814" => :mavericks
-    sha1 "57ed9eb6e22e0d8debf6e528399c643270569a04" => :mountain_lion
-    sha1 "5661800a746ba073b39ade6d5c608dce7a795594" => :lion
+    sha1 "376c79e413a637bb0a87ef7519cac26e318f0955" => :mavericks
+    sha1 "0ee1337b4a891aafa5bbbff961181d4794bc2e9a" => :mountain_lion
+    sha1 "0c578a27c857ea352e50d025ccefd9df06660b14" => :lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -25,6 +25,7 @@ class Ffmpeg < Formula
   option 'with-ffplay', 'Enable FFplay media player'
   option 'with-tools', 'Enable additional FFmpeg tools'
   option 'with-fdk-aac', 'Enable the Fraunhofer FDK AAC library'
+  option 'with-libvidstab', 'Enable vid.stab support for video stabilization'
 
   depends_on 'pkg-config' => :build
 
@@ -46,7 +47,7 @@ class Ffmpeg < Formula
   depends_on 'libvo-aacenc' => :optional
   depends_on 'libass' => :optional
   depends_on 'openjpeg' => :optional
-  depends_on 'sdl' if build.include? 'with-ffplay'
+  depends_on 'sdl' if build.with? "ffplay"
   depends_on 'speex' => :optional
   depends_on 'schroedinger' => :optional
   depends_on 'fdk-aac' => :optional
@@ -55,6 +56,7 @@ class Ffmpeg < Formula
   depends_on 'libcaca' => :optional
   depends_on 'libbluray' => :optional
   depends_on 'libquvi' => :optional
+  depends_on 'libvidstab' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -84,7 +86,7 @@ class Ffmpeg < Formula
     args << "--enable-libopencore-amrnb" << "--enable-libopencore-amrwb" if build.with? 'opencore-amr'
     args << "--enable-libvo-aacenc" if build.with? 'libvo-aacenc'
     args << "--enable-libass" if build.with? 'libass'
-    args << "--enable-ffplay" if build.include? 'with-ffplay'
+    args << "--enable-ffplay" if build.with? "ffplay"
     args << "--enable-libspeex" if build.with? 'speex'
     args << '--enable-libschroedinger' if build.with? 'schroedinger'
     args << "--enable-libfdk-aac" if build.with? 'fdk-aac'
@@ -93,6 +95,7 @@ class Ffmpeg < Formula
     args << "--enable-frei0r" if build.with? 'frei0r'
     args << "--enable-libcaca" if build.with? 'libcaca'
     args << "--enable-libquvi" if build.with? 'libquvi'
+    args << "--enable-libvidstab" if build.with? 'libvidstab'
 
     if build.with? 'openjpeg'
       args << '--enable-libopenjpeg'
@@ -116,7 +119,7 @@ class Ffmpeg < Formula
 
     system "make install"
 
-    if build.include? 'with-tools'
+    if build.with? "tools"
       system "make alltools"
       bin.install Dir['tools/*'].select {|f| File.executable? f}
     end

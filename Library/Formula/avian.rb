@@ -9,8 +9,9 @@ class Avian < Formula
   depends_on :macos => :lion
 
   # Fix build with clang; already upstream
-  def patches
-    "https://github.com/ReadyTalk/avian/commit/69ea1f57219e0ec1b113f1fcadaa3dae6b93f358.diff"
+  patch do
+    url "https://github.com/ReadyTalk/avian/commit/69ea1f57219e0ec1b113f1fcadaa3dae6b93f358.diff"
+    sha1 "f05e71680c5970cbf945d866f9aa000f02c56005"
   end
 
   def install

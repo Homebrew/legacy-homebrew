@@ -10,7 +10,7 @@ class Zabbix < Formula
 
   unless build.include? 'agent-only'
     depends_on :mysql => :optional
-    depends_on :postgresql unless build.with? 'mysql'
+    depends_on :postgresql if build.without? 'mysql'
     depends_on 'fping'
     depends_on 'libssh2'
   end

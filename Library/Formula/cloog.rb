@@ -3,6 +3,7 @@ require 'formula'
 class Cloog < Formula
   homepage 'http://www.cloog.org/'
   url 'http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.1.tar.gz'
+  mirror 'http://gcc.cybermirror.org/infrastructure/cloog-0.18.1.tar.gz'
   sha1 '2dc70313e8e2c6610b856d627bce9c9c3f848077'
 
   bottle do

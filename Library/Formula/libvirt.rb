@@ -2,13 +2,14 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/libvirt-1.2.1.tar.gz'
-  sha256 'bc29b5751bf36753c17e2fdbb75e70c7b07df3d9527586d3426e90f5f4abb898'
+  url 'http://libvirt.org/sources/libvirt-1.2.3.tar.gz'
+  sha256 'b489d1a29c6166643d34b72795a89b03c6ac775cdaeadb6aa86fc1a982c02e31'
+  revision 2
 
   bottle do
-    sha1 "e9a67d211ac1432daa71e5d06021cd21989f0bbf" => :mavericks
-    sha1 "a81c7363a5bd553b6b33551538b8a85cb0143122" => :mountain_lion
-    sha1 "5c1b88af908fec958a8bc1d5e20383e3f29de69d" => :lion
+    sha1 "ba671e23be86fd5f2844cc54250fa0eecfc0651e" => :mavericks
+    sha1 "661b7df5e3e3e7e86d2e9e537f5cf1d8e0984e3a" => :mountain_lion
+    sha1 "53ef7e4fcfe97acd5764477480c4652afef907ac" => :lion
   end
 
   option 'without-libvirtd', 'Build only the virsh client and development libraries'
@@ -58,7 +59,7 @@ class Libvirt < Formula
 
     # If the libvirt daemon is built, update its config file to reflect
     # the Homebrew prefix
-    unless build.include? 'without-libvirtd'
+    if build.with? "libvirtd"
       inreplace "#{etc}/libvirt/libvirtd.conf" do |s|
         s.gsub! "/etc/", "#{HOMEBREW_PREFIX}/etc/"
         s.gsub! "/var/", "#{HOMEBREW_PREFIX}/var/"

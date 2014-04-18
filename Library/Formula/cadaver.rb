@@ -11,9 +11,7 @@ class Cadaver < Formula
   depends_on 'neon'
 
   # enable build with the latest neon
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     neon_prefix = Formula['neon'].opt_prefix
@@ -21,9 +19,7 @@ class Cadaver < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--with-neon=#{neon_prefix}",
                           "--with-ssl"
-    cd 'lib/intl' do
-      system "make"
-    end
+    system "make", "-C", "lib/intl"
     system "make install"
   end
 end

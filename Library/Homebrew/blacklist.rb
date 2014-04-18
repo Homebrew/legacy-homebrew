@@ -11,10 +11,6 @@ def blacklisted? name
     Some build scripts fail to detect it correctly, please check existing
     formulae for solutions.
     EOS
-  when 'wxpython' then <<-EOS.undent
-    The Python bindings (import wx) for wxWidgets are installed by:
-        brew install wxwidgets
-    EOS
   when 'tex', 'tex-live', 'texlive', 'latex' then <<-EOS.undent
     Installing TeX from source is weird and gross, requires a lot of patches,
     and only builds 32-bit (and thus can't use Homebrew deps on Snow Leopard.)
@@ -80,7 +76,7 @@ def blacklisted? name
   when 'rubinius' then <<-EOS.undent
     Rubinius requires an existing Ruby 2.0 to bootstrap.
     Doing this through Homebrew is error-prone. Instead, consider using
-    ruby-build` to build and install specific versions of Ruby:
+    `ruby-build` to build and install specific versions of Ruby:
         brew install ruby-build
     EOS
   when 'osmium' then <<-EOS.undent

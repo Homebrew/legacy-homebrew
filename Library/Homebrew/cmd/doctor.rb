@@ -438,7 +438,7 @@ end
 
 def check_xcode_select_path
   if not MacOS::CLT.installed? and not File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild"
-    path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID) || MacOS.app_with_bundle_id(MacOS::Xcode::V3_BUNDLE_ID)
+    path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID, MacOS::Xcode::V3_BUNDLE_ID)
     path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent
       Your Xcode is configured with an invalid path.
@@ -809,12 +809,13 @@ end
 def __check_linked_brew f
   links_found = []
 
-  f.prefix.find do |src|
-    dst=HOMEBREW_PREFIX+src.relative_path_from(f.prefix)
-    next unless dst.symlink?
+  prefix = f.prefix
 
-    dst_points_to = dst.realpath()
-    next unless dst_points_to.to_s == src.to_s
+  prefix.find do |src|
+    next if src == prefix
+    dst = HOMEBREW_PREFIX + src.relative_path_from(prefix)
+
+    next if !dst.symlink? || !dst.exist? || src != dst.resolved_path
 
     if src.directory?
       Find.prune
@@ -950,7 +951,7 @@ end
 
 def check_for_library_python
   if File.exist?("/Library/Frameworks/Python.framework") then <<-EOS.undent
-    A Python is installed in /Library/Frameworks
+    Python is installed at /Library/Frameworks/Python.framework
 
     Homebrew only supports building against the System-provided Python or a
     brewed Python. In particular, Pythons installed to /Library can interfere
@@ -1071,14 +1072,14 @@ def check_for_unlinked_but_not_keg_only
 end
 
   def check_xcode_license_approved
-    return if MacOS::Xcode.bad_xcode_select_path?
     # If the user installs Xcode-only, they have to approve the
     # license or no "xc*" tool will work.
-    <<-EOS.undent if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success?
-    You have not agreed to the Xcode license.
-    Builds will fail! Agree to the license by opening Xcode.app or running:
-        xcodebuild -license
-    EOS
+    if `/usr/bin/xcrun clang 2>&1` =~ /license/ and not $?.success? then <<-EOS.undent
+      You have not agreed to the Xcode license.
+      Builds will fail! Agree to the license by opening Xcode.app or running:
+          xcodebuild -license
+      EOS
+    end
   end
 
   def check_for_latest_xquartz

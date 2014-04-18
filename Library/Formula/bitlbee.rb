@@ -4,6 +4,7 @@ class Bitlbee < Formula
   homepage 'http://www.bitlbee.org/'
   url 'http://get.bitlbee.org/src/bitlbee-3.2.1.tar.gz'
   sha1 '954471ab87206826c072f31b3def40a1be5a78f5'
+  revision 2
 
   option 'with-finch', "Use finch/libpurple for all communication with instant messaging networks"
   option 'with-libotr', "Build with otr (off the record) support"

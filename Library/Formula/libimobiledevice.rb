@@ -4,6 +4,7 @@ class Libimobiledevice < Formula
   homepage 'http://www.libimobiledevice.org/'
   url 'http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.5.tar.bz2'
   sha1 '1c2ce186787fe661d2ef5a1be170ddbe5f85db77'
+  revision 2
 
   head 'http://cgit.sukimashita.com/libimobiledevice.git'
 

@@ -33,6 +33,10 @@ class Requirement
     !!result
   end
 
+  # Can overridden to optionally prevent a formula with this requirement from
+  # pouring a bottle.
+  def pour_bottle?; true end
+
   # Overriding #fatal? is deprecated.
   # Pass a boolean to the fatal DSL method instead.
   def fatal?
@@ -150,21 +154,6 @@ class Requirement
         end
       end
 
-      # We special case handling of X11Dependency and its subclasses to
-      # ensure the correct dependencies are present in the final list.
-      # If an X11Dependency is present after filtering, we eliminate
-      # all X11Dependency::Proxy objects from the list. If there aren't
-      # any X11Dependency objects, then we eliminate all but one of the
-      # proxy objects.
-      proxy = unless reqs.any? { |r| r.instance_of?(X11Dependency) }
-                reqs.find { |r| r.kind_of?(X11Dependency::Proxy) }
-              end
-
-      reqs.reject! do |r|
-        r.kind_of?(X11Dependency::Proxy)
-      end
-
-      reqs << proxy unless proxy.nil?
       reqs
     end
 

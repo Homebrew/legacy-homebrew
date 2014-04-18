@@ -2,8 +2,8 @@ require 'formula'
 
 class Mdr < Formula
   homepage "https://github.com/halffullheart/mdr"
-  url "https://github.com/halffullheart/mdr/archive/v1.0.0.zip"
-  sha1 "46f9146e103b9ac8132f773ee6d7903dac066b65"
+  url "https://github.com/halffullheart/mdr/archive/v1.0.0.tar.gz"
+  sha1 "4e2424363aa72f7e94997c91594f1f1c7901587d"
 
   def install
     system "rake"

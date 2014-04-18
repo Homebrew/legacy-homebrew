@@ -5,9 +5,7 @@ class Autossh < Formula
   url 'http://www.harding.motd.ca/autossh/autossh-1.4c.tgz'
   sha1 'd9a1d5a2987e7e5a444b00e63d6590936da1e1f2'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

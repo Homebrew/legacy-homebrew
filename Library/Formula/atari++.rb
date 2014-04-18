@@ -12,8 +12,8 @@ class Atarixx < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--disable-CURSES" unless build.include? 'with-curses'
-    args << "--disable-SDL" unless build.include? 'with-sdl'
+    args << "--disable-CURSES" if build.without? "curses"
+    args << "--disable-SDL" if build.without? "sdl"
 
     system "./configure", *args
     system "make"

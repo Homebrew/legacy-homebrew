@@ -7,10 +7,10 @@ class Clasp < Formula
 
   option 'with-mt', 'Enable multi-thread support'
 
-  depends_on 'tbb' if build.include? 'with-mt'
+  depends_on 'tbb' if build.with? "mt"
 
   def install
-    if build.include? 'with-mt'
+    if build.with? "mt"
       ENV['TBB30_INSTALL_DIR'] = Formula["tbb"].opt_prefix
       build_dir = 'build/release_mt'
     else
@@ -21,13 +21,10 @@ class Clasp < Formula
       --config=release
       --prefix=#{prefix}
     ]
-    args << "--with-mt" if build.include? 'with-mt'
+    args << "--with-mt" if build.with? "mt"
 
     bin.mkpath
     system "./configure.sh", *args
-
-    cd build_dir do
-      system "make install"
-    end
+    system "make", "-C", build_dir, "install"
   end
 end

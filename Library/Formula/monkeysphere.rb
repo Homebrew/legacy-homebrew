@@ -9,7 +9,7 @@ class Monkeysphere < Formula
 
   depends_on 'Crypt::OpenSSL::Bignum' => :perl
 
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV['PREFIX']="#{prefix}"

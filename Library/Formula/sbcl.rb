@@ -2,15 +2,15 @@ require 'formula'
 
 class Sbcl < Formula
   homepage 'http://www.sbcl.org/'
-  url 'https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.16/sbcl-1.1.16-source.tar.bz2'
-  sha1 '27bad72be3eb4a078c362d1ec2a52cf9ec1d5ecb'
+  url 'https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.17/sbcl-1.1.17-source.tar.bz2'
+  sha1 '7d9bf7e6b1fda18f09d1a2576c83d2f4e6f52cb9'
 
   head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
 
   bottle do
-    sha1 "86a3582cfbb2789c438c6a174869861842df32be" => :mavericks
-    sha1 "95cd6954553cc4f98c62d18475c83e6ff7bb02b0" => :mountain_lion
-    sha1 "07f044546e8a15e802b82907bbb1c4805bf99a28" => :lion
+    sha1 "504c7a06ded0e37c64b85a8083e348ef6078d5ad" => :mavericks
+    sha1 "aa76f71ee0184fb1661a434cf80f4a5b9354f2e5" => :mountain_lion
+    sha1 "7c82d8a544ddc213550fefd5aeb971b5d01441bd" => :lion
   end
 
   fails_with :llvm do
@@ -20,6 +20,7 @@ class Sbcl < Formula
 
   option "32-bit"
   option "without-threads", "Build SBCL without support for native threads"
+  option "without-core-compression", "Build SBCL without support for compressed cores and without a dependency on zlib"
   option "with-ldb", "Include low-level debugger in the build"
   option "with-internal-xref", "Include XREF information for SBCL internals (increases core size by 5-6MB)"
 
@@ -35,20 +36,32 @@ class Sbcl < Formula
     sha1 '35a76b93f8714bc34ba127df4aaf69aacfc08164'
   end
 
-  def patches
-    { :p0 => [
-        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-base-target-features.diff",
-        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-make-doc.diff",
-        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-posix-tests.diff",
-        "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
-    ]}
+  patch :p0 do
+    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-base-target-features.diff"
+    sha1 "49cf79e8d687e0a90db0fdc022a5f73181629d6e"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-make-doc.diff"
+    sha1 "65d0beec43707ff5bf3262b8f12ca4514e58ce15"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-posix-tests.diff"
+    sha1 "cde8db247d153c6272cc96a6716721fd623010cb"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
+    sha1 "4d08e56e7e261db47ffdfef044149b001e6cd7c1"
   end
 
   def write_features
     features = []
-    features << ":sb-thread" unless build.include? "without-threads"
-    features << ":sb-ldb" if build.include? "with-ldb"
-    features << ":sb-xref-for-internals" if build.include? "with-internal-xref"
+    features << ":sb-thread" if build.with? "threads"
+    features << ":sb-core-compression" if build.with? "core-compression"
+    features << ":sb-ldb" if build.with? "ldb"
+    features << ":sb-xref-for-internals" if build.with? "internal-xref"
 
     File.open("customize-target-features.lisp", "w") do |file|
       file.puts "(lambda (list)"

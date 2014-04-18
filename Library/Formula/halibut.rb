@@ -10,9 +10,7 @@ class Halibut < Formula
     man1.mkpath
 
     system "make", "prefix=#{prefix}", "mandir=#{man}", "all"
-    cd "doc" do
-      system "make", "prefix=#{prefix}", "mandir=#{man}"
-    end
+    system "make", "-C", "doc", "prefix=#{prefix}", "mandir=#{man}"
     system "make", "prefix=#{prefix}", "mandir=#{man}", "install"
   end
 

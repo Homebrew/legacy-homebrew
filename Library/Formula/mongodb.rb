@@ -1,70 +1,37 @@
 require 'formula'
 
 class Mongodb < Formula
-  homepage 'http://www.mongodb.org/'
-  url 'http://downloads.mongodb.org/src/mongodb-src-r2.4.9.tar.gz'
-  sha1 '3aa495cf32769a09ee9532827391892d96337d6b'
+  homepage "http://www.mongodb.org/"
+  url "http://downloads.mongodb.org/src/mongodb-src-r2.6.0.tar.gz"
+  sha1 "35f8efe61d992f4b71c9205a9dbcab50e745c9a3"
+  revision 1
 
   bottle do
-    revision 2
-    sha1 "5447af6e8f6a2870306e03d318351f1d8efecb1f" => :mavericks
-    sha1 "8b40016996e9dd42bbef3657d3a3c9357bd5d5ea" => :mountain_lion
-    sha1 "e9686685cf1fdbd65109ea8e9979169f0ce728b6" => :lion
-  end
-
-  stable do
-    # When 2.6 is released this conditional can be removed.
-    if MacOS.version < :mavericks
-      option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
-      depends_on "boost" => :optional
-    end
-  end
-
-  devel do
-    url 'http://downloads.mongodb.org/src/mongodb-src-r2.5.5.tar.gz'
-    sha1 '4827f3da107174a3cbb1f5b969c7f597ca09b4f8'
-
-    option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
-    depends_on "boost" => :optional
+    sha1 "1c7b447ae2077b9efeaee2aa2c2474dc6b19ab6f" => :mavericks
+    sha1 "0004e3bfb60db586f6ced02769ccd1cf325e0929" => :mountain_lion
+    sha1 "7667f6cc36859fb9fced1885f382b76ae325583c" => :lion
   end
 
   head do
-    url 'https://github.com/mongodb/mongo.git'
-
-    option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
-    depends_on "boost" => :optional
+    url "https://github.com/mongodb/mongo.git"
   end
 
-  def patches
-    if build.stable?
-      [
-        # Fix Clang v8 build failure from build warnings and -Werror
-        'https://github.com/mongodb/mongo/commit/be4bc7.patch'
-      ]
-    end
-  end
+  option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+  depends_on "boost" => :optional
 
-  depends_on 'scons' => :build
-  depends_on 'openssl' => :optional
+  depends_on "scons" => :build
+  depends_on "openssl" => :optional
 
   def install
     args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
 
     cxx = ENV.cxx
     if ENV.compiler == :clang && MacOS.version >= :mavericks
-      if build.stable?
-        # When 2.6 is released this cxx hack can be removed
-        # ENV.append "CXXFLAGS", "-stdlib=libstdc++" does not work with scons
-        # so use this hack of appending the flag to the --cxx parameter of the sconscript.
-        # mongodb 2.4 can't build with libc++, but defaults to it on Mavericks
-        cxx += " -stdlib=libstdc++"
-      else
-        # build devel and HEAD version on Mavericks with libc++
-        # Use --osx-version-min=10.9 such that the compiler defaults to libc++.
-        # Upstream issue discussing the default flags:
-        # https://jira.mongodb.org/browse/SERVER-12682
-        args << "--osx-version-min=10.9"
-      end
+      # when building on Mavericks with libc++
+      # Use --osx-version-min=10.9 such that the compiler defaults to libc++.
+      # Upstream issue discussing the default flags:
+      # https://jira.mongodb.org/browse/SERVER-12682
+      args << "--osx-version-min=10.9"
     end
 
     args << '--64' if MacOS.prefer_64_bit?
@@ -113,7 +80,7 @@ class Mongodb < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/mongod</string>
+        <string>#{opt_bin}/mongod</string>
         <string>--config</string>
         <string>#{etc}/mongod.conf</string>
       </array>

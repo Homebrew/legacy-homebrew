@@ -5,19 +5,28 @@ class Bsdmake < Formula
   url 'http://opensource.apple.com/tarballs/bsdmake/bsdmake-24.tar.gz'
   sha1 '9ce3c3fc01e0eb47d82827b1eb227eb371fefd5c'
 
-  if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/bsdmake"
-    keg_only "Recent versions of OS X no longer provide this tool."
+  keg_only :provided_until_xcode43
+
+  # MacPorts patches to make bsdmake play nice with our prefix system
+  # Also a MacPorts patch to circumvent setrlimit error
+  patch :p0 do
+    url "https://trac.macports.org/export/90868/trunk/dports/devel/bsdmake/files/patch-Makefile.diff"
+    sha1 "d09ea3742fd2cff97bf28510b585751b47ecd067"
   end
 
-  def patches
-    # MacPorts patches to make bsdmake play nice with our prefix system
-    # Also a MacPorts patch to circumvent setrlimit error
-    { :p0 => %W[
-      https://trac.macports.org/export/90868/trunk/dports/devel/bsdmake/files/patch-Makefile.diff
-      https://trac.macports.org/export/90611/trunk/dports/devel/bsdmake/files/patch-mk.diff
-      https://trac.macports.org/export/90611/trunk/dports/devel/bsdmake/files/patch-pathnames.diff
-      https://trac.macports.org/export/105220/trunk/dports/devel/bsdmake/files/patch-setrlimit.diff
-    ]}
+  patch :p0 do
+    url "https://trac.macports.org/export/90611/trunk/dports/devel/bsdmake/files/patch-mk.diff"
+    sha1 "cf3ea9a27e225bdb28573222acf7f0db533cf8b7"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/90611/trunk/dports/devel/bsdmake/files/patch-pathnames.diff"
+    sha1 "0797e402973aeccae41a82f5a9e444739948edc8"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/105220/trunk/dports/devel/bsdmake/files/patch-setrlimit.diff"
+    sha1 "c3fb48eb24e01aef2bba7e528442330c1af4a2ce"
   end
 
   def install

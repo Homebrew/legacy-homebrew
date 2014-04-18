@@ -5,7 +5,14 @@ class Colordiff < Formula
   url 'http://www.colordiff.org/colordiff-1.0.13.tar.gz'
   sha1 '64e369aed2230f3aa5f1510b231fcac270793c09'
 
-  def patches; DATA; end
+  bottle do
+    cellar :any
+    sha1 "724512050ef11d4b0f99eb46b2fa98a44520e5a6" => :mavericks
+    sha1 "7cf723ad9a524e8b7159c57e7a7d97687c3df067" => :mountain_lion
+    sha1 "37447591b2cea0958f2f695ad9a56012cc4cba9b" => :lion
+  end
+
+  patch :DATA
 
   def install
     man1.mkpath

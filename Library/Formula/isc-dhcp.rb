@@ -104,7 +104,7 @@ class IscDhcp < Formula
     <key>Label</key><string>#{plist_name}</string>
     <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/dhcpd</string>
+        <string>#{opt_sbin}/dhcpd</string>
         <string>-f</string>
       </array>
     <key>Disabled</key><false/>
@@ -126,7 +126,7 @@ class IscDhcp < Formula
     <key>Label</key><string>#{plist_name}</string>
     <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/dhcpd</string>
+        <string>#{opt_sbin}/dhcpd</string>
         <string>-f</string>
         <string>-6</string>
         <string>-cf</string>

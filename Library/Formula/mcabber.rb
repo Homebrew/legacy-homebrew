@@ -4,13 +4,14 @@ class Mcabber < Formula
   homepage 'http://mcabber.com/'
   url 'http://mcabber.com/files/mcabber-0.10.2.tar.bz2'
   sha1 '7bff70dcf09e8a8a4cc7219e03b48bad382a6bda'
+  revision 1
 
   head do
     url 'http://mcabber.com/hg/', :using => :hg
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option 'enable-enchant', 'Enable spell checking support via enchant'
@@ -28,11 +29,8 @@ class Mcabber < Formula
 
   def install
     if build.head?
-      ENV['LIBTOOLIZE'] = 'glibtoolize'
-      ENV['ACLOCAL'] = "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
-      cd 'mcabber' # Not using block form on purpose
-      inreplace 'autogen.sh', 'libtoolize', '$LIBTOOLIZE'
-      inreplace 'autogen.sh', 'aclocal', '$ACLOCAL'
+      cd "mcabber"
+      inreplace "autogen.sh", "libtoolize", "glibtoolize"
       system "./autogen.sh"
     end
 

@@ -39,7 +39,7 @@ class Fail2ban < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/fail2ban-client</string>
+          <string>#{opt_bin}/fail2ban-client</string>
           <string>-x</string>
           <string>start</string>
         </array>

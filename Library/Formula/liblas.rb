@@ -21,7 +21,7 @@ class Liblas < Formula
       ENV['Boost_LIBRARY_DIRS'] = "#{HOMEBREW_PREFIX}/lib"
       system "cmake", "..", "-DWITH_GEOTIFF=ON", "-DWITH_GDAL=ON", *std_cmake_args
       system "make"
-      system "make test" if build.include? 'with-test'
+      system "make test" if build.with? "test"
       system "make install"
     end
   end

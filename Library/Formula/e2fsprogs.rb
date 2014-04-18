@@ -14,10 +14,9 @@ class E2fsprogs < Formula
 
   # MacPorts patch to compile libs correctly.
   # Fix a bare return for clang.
-  def patches
-    {:p0 => [
-      "https://trac.macports.org/export/92117/trunk/dports/sysutils/e2fsprogs/files/patch-lib__Makefile.darwin-lib"
-    ]}
+  patch :p0 do
+    url "https://trac.macports.org/export/92117/trunk/dports/sysutils/e2fsprogs/files/patch-lib__Makefile.darwin-lib"
+    sha1 "d6ebd54e504187a6f59e0e0f347aa373692b78d9"
   end
 
   def install

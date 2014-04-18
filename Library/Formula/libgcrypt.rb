@@ -2,14 +2,14 @@ require 'formula'
 
 class Libgcrypt < Formula
   homepage 'http://gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.5.3.tar.bz2'
-  sha1 '2c6553cc17f2a1616d512d6870fe95edf6b0e26e'
+  url 'ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.1.tar.bz2'
+  sha1 'f03d9b63ac3b17a6972fc11150d136925b702f02'
 
   bottle do
     cellar :any
-    sha1 "a33a63856c29913821deaa1c38d063bb49ce3e8d" => :mavericks
-    sha1 "3fb74c54503971bc5d1ab02027d8430dedf06b6f" => :mountain_lion
-    sha1 "6b7e4f8ee5c3e71a935bd1785121e84311679543" => :lion
+    sha1 "aeebdee7d9887b3bf6ec5df41cc41c28dca98ce9" => :mavericks
+    sha1 "24efe9c0ff37edb0e88f94714c3e10483614cd07" => :mountain_lion
+    sha1 "f0c2d69e6552d69fa59342613831b96085ebd85e" => :lion
   end
 
   depends_on 'libgpg-error'
@@ -25,12 +25,6 @@ class Libgcrypt < Formula
   fails_with :clang do
     build 77
     cause "basic test fails"
-  end
-
-  def patches
-    if ENV.compiler == :clang and (build.universal? or build.build_32_bit?)
-      { :p0 => "https://trac.macports.org/export/85232/trunk/dports/devel/libgcrypt/files/clang-asm.patch" }
-    end
   end
 
   def install

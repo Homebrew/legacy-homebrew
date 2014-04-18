@@ -8,7 +8,7 @@ class Libstfl < Formula
   depends_on :python => :recommended
   depends_on 'swig' => :build
 
-  def patches; DATA; end
+  patch :DATA
 
   def install
     args = ["CC=#{ENV.cc} -pthread", "prefix=#{prefix}"]

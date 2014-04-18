@@ -2,20 +2,21 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.4.5.tar.gz'
-  sha1 '96c1aecd314f73a3c30a0db8c39ad15ddacb074e'
+  url 'http://nginx.org/download/nginx-1.4.7.tar.gz'
+  sha1 'e13b5b23f9be908b69652b0c394a95e9029687e3'
+  revision 1
 
   devel do
-    url 'http://nginx.org/download/nginx-1.5.10.tar.gz'
-    sha1 '89e2317c0d27a7386f62c3ba9362ae10b05e3159'
+    url 'http://nginx.org/download/nginx-1.5.13.tar.gz'
+    sha1 'f0ee0d2545978c8cf5ca3a5e70fcd6b27c4f6191'
   end
 
   head 'http://hg.nginx.org/nginx/', :using => :hg
 
   bottle do
-    sha1 "b5964496b5365e51cc9b7eb838b0499795e71861" => :mavericks
-    sha1 "2757fecb0611a6dd6e22a8122f775b917fac476f" => :mountain_lion
-    sha1 "f64a845d905589c9ad580ab4d5e6fe27c0eb53f9" => :lion
+    sha1 "82a7fae708d620b7d95ed68b5b99c0c8cc2fadb6" => :mavericks
+    sha1 "3319a4c1a839d7ebad454718cda95a93e9abc0dc" => :mountain_lion
+    sha1 "87b243bb95ab9ae2d1edfe1f19437963ed6e3728" => :lion
   end
 
   env :userpaths
@@ -71,11 +72,11 @@ class Nginx < Formula
             "--with-http_gzip_static_module"
           ]
 
-    args << passenger_config_args if build.include? 'with-passenger'
-    args << "--with-http_dav_module" if build.include? 'with-webdav'
-    args << "--with-debug" if build.include? 'with-debug'
-    args << "--with-http_spdy_module" if build.include? 'with-spdy'
-    args << "--with-http_gunzip_module" if build.include? 'with-gunzip'
+    args << passenger_config_args if build.with? "passenger"
+    args << "--with-http_dav_module" if build.with? "webdav"
+    args << "--with-debug" if build.with? "debug"
+    args << "--with-http_spdy_module" if build.with? "spdy"
+    args << "--with-http_gunzip_module" if build.with? "gunzip"
 
     if build.head?
       system "./auto/configure", *args
@@ -86,31 +87,31 @@ class Nginx < Formula
     system "make install"
     man8.install "objs/nginx.8"
     (var/'run/nginx').mkpath
+  end
 
+  def post_install
     # nginx's docroot is #{prefix}/html, this isn't useful, so we symlink it
     # to #{HOMEBREW_PREFIX}/var/www. The reason we symlink instead of patching
     # is so the user can redirect it easily to something else if they choose.
-    prefix.cd do
-      dst = HOMEBREW_PREFIX/"var/www"
-      if not dst.exist?
-        dst.dirname.mkpath
-        mv "html", dst
-      else
-        rm_rf "html"
-        dst.mkpath
-      end
-      Pathname.new("#{prefix}/html").make_relative_symlink(dst)
+    html = prefix/"html"
+    dst  = var/"www"
+
+    if dst.exist?
+      html.rmtree
+      dst.mkpath
+    else
+      dst.dirname.mkpath
+      html.rename(dst)
     end
+
+    prefix.install_symlink dst => "html"
 
     # for most of this formula's life the binary has been placed in sbin
     # and Homebrew used to suggest the user copy the plist for nginx to their
     # ~/Library/LaunchAgents directory. So we need to have a symlink there
     # for such cases
-    if (HOMEBREW_CELLAR/'nginx').subdirs.any?{|d| (d/:sbin).directory? }
-      sbin.mkpath
-      sbin.cd do
-        (sbin/'nginx').make_relative_symlink(bin/'nginx')
-      end
+    if rack.subdirs.any? { |d| (d/:sbin).directory? }
+      sbin.install_symlink bin/"nginx"
     end
   end
 
@@ -152,7 +153,7 @@ class Nginx < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/nginx</string>
+            <string>#{opt_bin}/nginx</string>
             <string>-g</string>
             <string>daemon off;</string>
         </array>

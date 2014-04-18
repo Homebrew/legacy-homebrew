@@ -19,9 +19,7 @@ class Shocco < Formula
     sha1 '4fbd937fd5cebc79fa4b26d4cce0868c4eec5ec5'
   end
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     libexec.install resource('pygments').files('pygmentize', 'pygments')

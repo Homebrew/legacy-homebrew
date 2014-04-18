@@ -1,22 +1,18 @@
 require 'formula'
 
 class Tinyproxy < Formula
-  homepage 'https://www.banu.com/tinyproxy/'
-  url 'https://www.banu.com/pub/tinyproxy/1.8/tinyproxy-1.8.3.tar.bz2'
-  sha1 '2538fbd190d3dc357a2e7c2a07ea0fbefb768a13'
+  homepage "https://www.banu.com/tinyproxy/"
+  url "https://www.banu.com/pub/tinyproxy/1.8/tinyproxy-1.8.3.tar.bz2"
+  sha1 "2538fbd190d3dc357a2e7c2a07ea0fbefb768a13"
 
-  skip_clean 'var/run'
+  option "reverse", "Enable reverse proxying"
 
-  option 'reverse', "Enable reverse proxying"
+  depends_on "asciidoc" => :build
 
-  depends_on 'asciidoc' => :build
-
-  # Fix linking error, via MacPorts
-  # See: https://trac.macports.org/ticket/27762
-  def patches
-    {:p0 => [
-      "https://trac.macports.org/export/83413/trunk/dports/net/tinyproxy/files/patch-configure.diff"
-    ]}
+  # Fix linking error, via MacPorts: https://trac.macports.org/ticket/27762
+  patch :p0 do
+    url "https://trac.macports.org/export/83413/trunk/dports/net/tinyproxy/files/patch-configure.diff"
+    sha1 "e946269b681f3ffaa1acd120c93050cb63bfe743"
   end
 
   def install
@@ -27,7 +23,7 @@ class Tinyproxy < Formula
       --disable-regexcheck
     ]
 
-    args << '--enable-reverse' if build.include? 'reverse'
+    args << "--enable-reverse" if build.include? "reverse"
 
     system "./configure", *args
 

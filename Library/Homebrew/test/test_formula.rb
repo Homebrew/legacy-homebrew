@@ -24,6 +24,11 @@ class FormulaTests < Test::Unit::TestCase
     assert_kind_of Pathname, f.prefix
   end
 
+  def test_revised_prefix
+    f = Class.new(TestBall) { revision 1 }.new
+    assert_equal HOMEBREW_CELLAR/f.name/'0.1_1', f.prefix
+  end
+
   def test_installed?
     f = TestBall.new
     f.stubs(:installed_prefix).returns(stub(:directory? => false))
@@ -177,7 +182,6 @@ class FormulaTests < Test::Unit::TestCase
     assert_equal f.stable, f.active_spec
 
     assert_instance_of SoftwareSpec, f.stable
-    assert_instance_of Bottle, f.bottle
     assert_instance_of SoftwareSpec, f.devel
     assert_instance_of HeadSoftwareSpec, f.head
   end
@@ -197,7 +201,6 @@ class FormulaTests < Test::Unit::TestCase
         class #{Formulary.class_s(name)} < Formula
           url 'foo-1.0'
           def initialize(*args)
-            @homepage = 'http://example.com/'
             super
           end
         end
@@ -211,7 +214,7 @@ class FormulaTests < Test::Unit::TestCase
   def test_class_specs_are_always_initialized
     f = formula { url 'foo-1.0' }
 
-    %w{stable devel head bottle}.each do |spec|
+    %w{stable devel head}.each do |spec|
       assert_kind_of SoftwareSpec, f.class.send(spec)
     end
   end
@@ -219,7 +222,7 @@ class FormulaTests < Test::Unit::TestCase
   def test_incomplete_instance_specs_are_not_accessible
     f = formula { url 'foo-1.0' }
 
-    %w{devel head bottle}.each { |spec| assert_nil f.send(spec) }
+    %w{devel head}.each { |spec| assert_nil f.send(spec) }
   end
 
   def test_honors_attributes_declared_before_specs
@@ -229,8 +232,33 @@ class FormulaTests < Test::Unit::TestCase
       devel { url 'foo-1.1' }
     end
 
-    %w{stable devel head bottle}.each do |spec|
+    %w{stable devel head}.each do |spec|
       assert_equal 'foo', f.class.send(spec).deps.first.name
     end
+  end
+
+  def test_simple_version
+    assert_equal PkgVersion.parse('1.0'), formula { url 'foo-1.0.bar' }.pkg_version
+  end
+
+  def test_version_with_revision
+    f = formula do
+      url 'foo-1.0.bar'
+      revision 1
+    end
+
+    assert_equal PkgVersion.parse('1.0_1'), f.pkg_version
+  end
+
+  def test_head_ignores_revisions
+    ARGV.stubs(:build_head?).returns(true)
+
+    f = formula do
+      url 'foo-1.0.bar'
+      revision 1
+      head 'foo'
+    end
+
+    assert_equal PkgVersion.parse('HEAD'), f.pkg_version
   end
 end

@@ -6,9 +6,7 @@ class Ipmiutil < Formula
   sha1 'f23fabe8339842fea9b8c2a601717dc002e44a9d'
 
   # Make ipmiutil treat Darwin as BSD
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

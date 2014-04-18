@@ -7,9 +7,7 @@ class John < Formula
 
   conflicts_with 'john-jumbo', :because => 'both install the same binaries'
 
-  def patches
-    DATA # Taken from MacPorts, tells john where to find runtime files
-  end
+  patch :DATA # Taken from MacPorts, tells john where to find runtime files
 
   fails_with :llvm do
     build 2334

@@ -2,8 +2,8 @@ require 'formula'
 
 class AppEngineJavaSdk < Formula
   homepage 'https://developers.google.com/appengine/docs/java/gettingstarted/introduction'
-  url 'https://commondatastorage.googleapis.com/appengine-sdks/featured/appengine-java-sdk-1.9.0.zip'
-  sha1 '45fac6746c65641eeaf087c88bc755365c69ef71'
+  url 'https://commondatastorage.googleapis.com/appengine-sdks/featured/appengine-java-sdk-1.9.2.zip'
+  sha1 '119d9331321d8336611a65ccfa4af3ffb3a297c3'
 
   def install
     rm Dir['bin/*.cmd']

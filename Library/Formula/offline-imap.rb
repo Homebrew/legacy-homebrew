@@ -2,8 +2,8 @@ require 'formula'
 
 class OfflineImap < Formula
   homepage 'http://offlineimap.org/'
-  url 'https://github.com/OfflineIMAP/offlineimap/archive/v6.5.5.zip'
-  sha1 '90541e4f6d439edf0aa0afbff2b4bfc1c1f10d10'
+  url 'https://github.com/OfflineIMAP/offlineimap/archive/v6.5.5.tar.gz'
+  sha1 '8cf4b1dfe98f14d51d8e331dd7393accc9320ac7'
 
   head 'https://github.com/OfflineIMAP/offlineimap.git'
 
@@ -35,7 +35,7 @@ class OfflineImap < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/offlineimap</string>
+          <string>#{opt_bin}/offlineimap</string>
         </array>
         <key>StartInterval</key>
         <integer>300</integer>

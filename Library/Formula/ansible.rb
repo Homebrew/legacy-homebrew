@@ -1,9 +1,9 @@
 require 'formula'
 
 class Ansible < Formula
-  homepage 'http://www.ansibleworks.com/'
-  url 'https://github.com/ansible/ansible/archive/v1.5.0.tar.gz'
-  sha1 'b11b4e981a6c2af8a526139a67c8eda121910d48'
+  homepage 'http://www.ansible.com/home'
+  url 'https://github.com/ansible/ansible/archive/v1.5.4.tar.gz'
+  sha1 '83f87805082dd5759c28d9e536f5295f019db858'
 
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
@@ -47,6 +47,12 @@ class Ansible < Formula
   def install
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
+
+    # pycrypto's C bindings use flags unrecognized by clang,
+    # but since it doesn't use a makefile arg refurbishment
+    # is normally not enabled.
+    # See https://github.com/Homebrew/homebrew/issues/27639
+    ENV.append 'HOMEBREW_CCCFG', 'O'
 
     resource('pycrypto').stage { system "python", *install_args }
     resource('pyyaml').stage { system "python", *install_args }

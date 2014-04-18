@@ -2,9 +2,9 @@ require 'formula'
 
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-2.9.tar.gz'
-  mirror 'http://fossies.org/linux/misc/mercurial-2.9.tar.gz'
-  sha1 '9b7d8259434f6aae29f6eee3dd5665b516857cf3'
+  url 'http://mercurial.selenic.com/release/mercurial-2.9.2.tar.gz'
+  mirror 'http://fossies.org/linux/misc/mercurial-2.9.2.tar.gz'
+  sha1 '35668f2d88afe55d10aa7dbce821021bf0be4f73'
 
   head 'http://selenic.com/repo/hg', :using => :hg
 

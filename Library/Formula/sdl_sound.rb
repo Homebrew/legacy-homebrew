@@ -8,9 +8,9 @@ class SdlSound < Formula
   head do
     url 'http://hg.icculus.org/icculus/SDL_sound', :using => :hg
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on 'pkg-config' => :build
@@ -24,12 +24,9 @@ class SdlSound < Formula
 
   def install
     if build.head?
-      # Set the environment and call autoreconf, because boostrap.sh
-      # uses /usr/bin/glibtoolize and a non-standard flag to automake.
-      ENV['LIBTOOLIZE'] = 'glibtoolize'
-      ENV['ACLOCAL'] = "aclocal -I #{HOMEBREW_PREFIX}/share/aclocal"
-      ENV['AUTOMAKE'] = 'automake --foreign'
-      system "autoreconf -ivf"
+      inreplace "bootstrap", "/usr/bin/glibtoolize",
+        "#{Formula["libtool"].opt_bin}/glibtoolize"
+      system "./bootstrap"
     end
 
     system "./configure", "--disable-dependency-tracking",

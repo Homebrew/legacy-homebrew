@@ -10,9 +10,7 @@ class Libodbcxx < Formula
   # http://sourceforge.net/tracker/?func=detail&aid=3590196&group_id=19075&atid=319075
   # The second: Fixes a memory corruption error on 64bit systems:
   # https://sourceforge.net/tracker/?func=detail&aid=3601361&group_id=19075&atid=319075
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

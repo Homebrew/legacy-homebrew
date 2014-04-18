@@ -4,6 +4,7 @@ class Libinfinity < Formula
   homepage 'http://gobby.0x539.de/trac/wiki/Infinote/Libinfinity'
   url 'http://releases.0x539.de/libinfinity/libinfinity-0.5.4.tar.gz'
   sha1 '75e3349452bdd182a385f62100c09f47b277b145'
+  revision 1
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -12,16 +13,14 @@ class Libinfinity < Formula
   depends_on 'gsasl'
   depends_on :x11
 
+  # Reported and closed upstream, but not seeing the fix:
+  # http://gobby.0x539.de/trac/ticket/595
+  patch :DATA
 
-  def patches;
-    # MacPorts patch to fix pam include
-    { :p0 => [
-      "https://trac.macports.org/export/92297/trunk/dports/comms/libinfinity/files/patch-infinoted-infinoted-pam.c.diff"
-      ],
-      # Reported and closed upstream, but not seeing the fix:
-      # http://gobby.0x539.de/trac/ticket/595
-      :p1 => [ DATA ]
-    }
+  # MacPorts patch to fix pam include
+  patch :p0 do
+    url "https://trac.macports.org/export/92297/trunk/dports/comms/libinfinity/files/patch-infinoted-infinoted-pam.c.diff"
+    sha1 "30bdd7dc80bf50fc1e0d9747fc67d84b229c01ef"
   end
 
   def install

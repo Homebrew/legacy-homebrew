@@ -6,7 +6,6 @@ class Libdmtx < Formula
   sha1 '016282df12c4046338b9ff73f3d8b39f023bae16'
 
   depends_on 'pkg-config' => :build
-  depends_on 'imagemagick'
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

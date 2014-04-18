@@ -1,6 +1,5 @@
 require 'testing_env'
 require 'download_strategy'
-require 'bottles' # XXX: hoist these regexps into constants in Pathname?
 
 class ResourceDouble
   attr_reader :url, :specs

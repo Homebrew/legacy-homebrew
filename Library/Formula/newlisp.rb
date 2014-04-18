@@ -2,19 +2,12 @@ require 'formula'
 
 class Newlisp < Formula
   homepage 'http://www.newlisp.org/'
-  url 'http://www.newlisp.org/downloads/newlisp-10.5.4.tgz'
-  sha1 'a1fa37eb21f8045858a30493429d243ababc2488'
-
-  devel do
-    url 'http://www.newlisp.org/downloads/development/newlisp-10.5.7.tgz'
-    sha1 '92e1d10dcf5d36bf774b706d3483294b3cc97017'
-  end
+  url 'http://www.newlisp.org/downloads/newlisp-10.6.0.tgz'
+  sha1 '0f5ce581d070ff171cbef504308e578885aa5e72'
 
   depends_on 'readline'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # Required to use our configuration

@@ -2,8 +2,8 @@ require 'formula'
 
 class Ume < Formula
   homepage 'http://mamedev.org/'
-  url 'svn://dspnet.fr/mame/trunk', :revision => '26743'
-  version '0.152'
+  url 'svn://dspnet.fr/mame/trunk', :revision => '29406'
+  version '0.153'
 
   head 'svn://dspnet.fr/mame/trunk'
 
@@ -14,11 +14,6 @@ class Ume < Formula
     ENV['MACOSX_USE_LIBSDL'] = '1'
     ENV['INCPATH'] = "-I#{MacOS::X11.include}"
     ENV['PTR64'] = (MacOS.prefer_64_bit? ? '1' : '0')
-
-    # Avoid memory allocation runtime error:
-    #   Error: attempt to free untracked memory in (null)(0)!
-    #   Ignoring MAME exception: Error: attempt to free untracked memory
-    ENV.O2 if ENV.compiler == :clang
 
     system "make", "CC=#{ENV.cc}", "LD=#{ENV.cxx}", "TARGET=ume"
 

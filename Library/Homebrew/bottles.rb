@@ -3,39 +3,15 @@ require 'os/mac'
 require 'extend/ARGV'
 require 'bottle_version'
 
-def bottle_filename f, options={}
+def bottle_filename options={}
   options = { :tag => bottle_tag }.merge(options)
-  name = f.name.downcase
-  version = f.stable.version
-  options[:revision] ||= f.bottle.revision.to_i if f.bottle
-  "#{name}-#{version}#{bottle_native_suffix(options)}"
-end
-
-def install_bottle? f, options={:warn=>false}
-  return true if f.local_bottle_path
-  return false if ARGV.build_from_source?
-  return true if ARGV.force_bottle?
-  return false unless f.pour_bottle?
-  return false unless f.default_build?
-  return false unless bottle_current?(f)
-  if f.bottle.cellar != :any && f.bottle.cellar != HOMEBREW_CELLAR.to_s
-    if options[:warn]
-      opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}"
-    end
-    return false
-  end
-
-  true
+  "#{options[:name]}-#{options[:version]}#{bottle_native_suffix(options)}"
 end
 
 def built_as_bottle? f
   return false unless f.installed?
   tab = Tab.for_keg(f.installed_prefix)
   tab.built_as_bottle
-end
-
-def bottle_current? f
-  f.bottle and f.bottle.url and not f.bottle.checksum.empty?
 end
 
 def bottle_file_outdated? f, file
@@ -67,13 +43,8 @@ def bottle_regex
   Pathname::BOTTLE_EXTNAME_RX
 end
 
-def bottle_root_url f
-  root_url = f.bottle.root_url
-  root_url ||= 'https://downloads.sf.net/project/machomebrew/Bottles'
-end
-
-def bottle_url f, tag=bottle_tag
-  "#{bottle_root_url(f)}/#{bottle_filename(f, {:tag => tag})}"
+def bottle_url(root_url, filename_options={})
+  "#{root_url}/#{bottle_filename(filename_options)}"
 end
 
 def bottle_tag
@@ -104,7 +75,7 @@ class BottleCollector
     @bottles = {}
   end
 
-  def add(checksum, tag, url=nil)
+  def add(checksum, tag)
     @bottles[tag] = checksum
   end
 

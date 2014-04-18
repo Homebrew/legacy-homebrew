@@ -2,17 +2,15 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url 'http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.16.tar.gz'
-  sha1 '64a3b4058e2039d2b812d23c8793f74b4f168cc0'
+  url "http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.17.tar.gz"
+  sha1 "53773d619d7f7bc1743f92fd65885a0581c37ff8"
+  revision 1
 
   bottle do
-    sha1 "d3a5e4520a7ca88bc78977d7d2276e7f35e4a456" => :mavericks
-    sha1 "edf5bde3e4c2e96a45231c1feee7b2cfd6cc1cba" => :mountain_lion
-    sha1 "5ac5f5db4ea3f00ed276c303523870afcecd68c2" => :lion
+    sha1 "a41817eea90f2150351f2862cec17c15acd45e07" => :mavericks
+    sha1 "f7a7fefcb7bf69dd3a5a5ec0de9c70e85ed7a4dc" => :mountain_lion
+    sha1 "6fb1710382c9cc1a67a5cde6dcd1951183cc007e" => :lion
   end
-
-  depends_on 'cmake' => :build
-  depends_on 'pidof' unless MacOS.version >= :mountain_lion
 
   option :universal
   option 'with-tests', 'Build with unit tests'
@@ -22,6 +20,10 @@ class Mysql < Formula
   option 'enable-local-infile', 'Build with local infile loading support'
   option 'enable-memcached', 'Enable innodb-memcached support'
   option 'enable-debug', 'Build with debug support'
+
+  depends_on 'cmake' => :build
+  depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on 'openssl'
 
   conflicts_with 'mysql-cluster', 'mariadb', 'percona-server',
     :because => "mysql, mariadb, and percona install the same binaries."
@@ -59,6 +61,7 @@ class Mysql < Formula
       -DINSTALL_INFODIR=share/info
       -DINSTALL_MYSQLSHAREDIR=share/mysql
       -DWITH_SSL=yes
+      -DWITH_SSL=system
       -DDEFAULT_CHARSET=utf8
       -DDEFAULT_COLLATION=utf8_general_ci
       -DSYSCONFDIR=#{etc}
@@ -103,7 +106,7 @@ class Mysql < Formula
     rm_rf prefix+'data'
 
     # Link the setup script into bin
-    ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+    bin.install_symlink prefix/"scripts/mysql_install_db"
 
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
@@ -112,7 +115,7 @@ class Mysql < Formula
       s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
 
-    ln_s "#{prefix}/support-files/mysql.server", bin
+    bin.install_symlink prefix/"support-files/mysql.server"
 
     # Move mysqlaccess to libexec
     libexec.mkpath
@@ -152,7 +155,7 @@ class Mysql < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/mysqld_safe</string>
+        <string>#{opt_bin}/mysqld_safe</string>
         <string>--bind-address=127.0.0.1</string>
       </array>
       <key>RunAtLoad</key>

@@ -1,15 +1,15 @@
 require 'formula'
 
 class Git < Formula
-  homepage 'http://git-scm.com'
-  url 'https://git-core.googlecode.com/files/git-1.9.0.tar.gz'
-  sha1 'e60667fc16e5a5f1cde46616b0458cc802707743'
-  head 'https://github.com/git/git.git'
+  homepage "http://git-scm.com"
+  url "https://www.kernel.org/pub/software/scm/git/git-1.9.2.tar.gz"
+  sha1 "5181808d99ea959951ee55a083de3bce8603436b"
+  head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha1 "78bb720052e624b889b7c39e47ec40e463fa13b0" => :mavericks
-    sha1 "95b604ef6dff8a8abbc6819b1769c6df6ac45b03" => :mountain_lion
-    sha1 "10d46b289e9877f866e953dfc65fde260c80acb8" => :lion
+    sha1 "ff18e0627a084d5f26052e9a2ffc186e3021f283" => :mavericks
+    sha1 "e7b9e452a60ea46d6f32d90b0b9e2801b4675cdb" => :mountain_lion
+    sha1 "58aa489119bb688648561305fec0f5bee4e55866" => :lion
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -24,14 +24,14 @@ class Git < Formula
   depends_on 'curl' if build.with? 'brewed-curl'
   depends_on 'go' => :build if build.with? 'persistent-https'
 
-  resource 'man' do
-    url 'http://git-core.googlecode.com/files/git-manpages-1.9.0.tar.gz'
-    sha1 'cff590c92b4d1c8a143c078473140b653cc5d56a'
+  resource "man" do
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-1.9.2.tar.gz"
+    sha1 "6f0871d02dd9181f59d6c59c3a4d26e2b42fbc0b"
   end
 
-  resource 'html' do
-    url 'http://git-core.googlecode.com/files/git-htmldocs-1.9.0.tar.gz'
-    sha1 '65eb3f411f4699695c7081a7c716cabb9ce23d75'
+  resource "html" do
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-1.9.2.tar.gz"
+    sha1 "2563dade9a5282f6211740a6327ed13f8ff2df83"
   end
 
   def install
@@ -58,7 +58,9 @@ class Git < Formula
       ENV['LIBPCREDIR'] = Formula['pcre'].opt_prefix
     end
 
-    ENV['NO_GETTEXT'] = '1' unless build.with? 'gettext'
+    ENV['NO_GETTEXT'] = '1' if build.without? 'gettext'
+
+    ENV['GIT_DIR'] = cached_download/".git" if build.head?
 
     system "make", "prefix=#{prefix}",
                    "sysconfdir=#{etc}",
@@ -95,7 +97,7 @@ class Git < Formula
       end
     end
 
-    unless build.without? 'completions'
+    if build.with? 'completions'
       # install the completion script first because it is inside 'contrib'
       bash_completion.install 'contrib/completion/git-completion.bash'
       bash_completion.install 'contrib/completion/git-prompt.sh'

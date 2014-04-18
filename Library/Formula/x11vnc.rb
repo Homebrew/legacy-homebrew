@@ -9,9 +9,7 @@ class X11vnc < Formula
 
   # Patch solid.c so a non-void function returns a NULL instead of a void.
   # An email has been sent to the maintainers about this issue.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug",

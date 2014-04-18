@@ -2,19 +2,24 @@ require 'formula'
 
 class Tor < Formula
   homepage 'https://www.torproject.org/'
-  url 'https://www.torproject.org/dist/tor-0.2.4.20.tar.gz'
-  sha1 '09ba4eda9a73c46852a277b721ed74c8263e8dba'
+  url 'https://www.torproject.org/dist/tor-0.2.4.21.tar.gz'
+  sha1 'b93b66e4d5162cefc711cb44f9167ed4799ef990'
+  revision 1
 
-  devel do
-    url 'https://www.torproject.org/dist/tor-0.2.5.1-alpha.tar.gz'
-    version '0.2.5.1-alpha'
-    sha1 'd10cb78e6a41657d970a1ce42105142bcfc315fb'
+  bottle do
+    sha1 "f03d0bf2f97e9520b4ea33c9a15112bdcec49768" => :mavericks
+    sha1 "cc64556bfb03006f029472c2b4541065a174929e" => :mountain_lion
+    sha1 "c612ec254314cf046c292df8416ddf0d8281c4ef" => :lion
   end
 
-  option "with-brewed-openssl", "Build with Homebrew's OpenSSL instead of the system version" if MacOS.version > :leopard
+  devel do
+    url 'https://www.torproject.org/dist/tor-0.2.5.3-alpha.tar.gz'
+    version '0.2.5.3-alpha'
+    sha1 '29784b3f711780cd60fff076f6deb9b1f633fe5c'
+  end
 
   depends_on 'libevent'
-  depends_on 'openssl' if build.with?('brewed-openssl') || MacOS.version < :snow_leopard
+  depends_on 'openssl'
 
   def install
     # Fix the path to the control cookie.
@@ -23,14 +28,9 @@ class Tor < Formula
       'TOR_COOKIE="/var/lib/tor/data/control_auth_cookie"',
       'TOR_COOKIE="$HOME/.tor/control_auth_cookie"'
 
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-    ]
-
-    args << "-with-ssl=#{Formula["openssl"].opt_prefix}" if build.with?("brewed-openssl") || MacOS.version < :snow_leopard
-
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"
     system "make install"
 
     bin.install "contrib/tor-ctrl.sh" => "tor-ctrl"
@@ -53,7 +53,7 @@ class Tor < Formula
         <true/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/tor</string>
+            <string>#{opt_bin}/tor</string>
         </array>
         <key>WorkingDirectory</key>
         <string>#{HOMEBREW_PREFIX}</string>

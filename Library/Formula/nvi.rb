@@ -9,12 +9,19 @@ class Nvi < Formula
 
   # Patches per MacPorts
   # The first corrects usage of BDB flags.
-  def patches
-    {:p0 => [
-      "https://trac.macports.org/export/108622/trunk/dports/editors/nvi/files/patch-common__db.h",
-      "https://trac.macports.org/export/108622/trunk/dports/editors/nvi/files/patch-dist__port.h.in",
-      "https://trac.macports.org/export/108622/trunk/dports/editors/nvi/files/patch-ex_script.c.diff"
-    ]}
+  patch :p0 do
+    url "https://trac.macports.org/export/108622/trunk/dports/editors/nvi/files/patch-common__db.h"
+    sha1 "8c350d51a970b31890ed2b756f7594dc54af3636"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/108622/trunk/dports/editors/nvi/files/patch-dist__port.h.in"
+    sha1 "c710836415f999255e3617256380a4881c2281a8"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/108622/trunk/dports/editors/nvi/files/patch-ex_script.c.diff"
+    sha1 "c70eec15f8e0dbd66777953506ab78dc77150505"
   end
 
   def install

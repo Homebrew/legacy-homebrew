@@ -6,9 +6,7 @@ class Ptex < Formula
   sha1 '0dc69452c42ccd4a2e24d931f7a9f2d24b7e60da'
 
   # fix utils/Makefile not to expect a git repo for version info
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.deparallelize # not parallel safe due to weird dep without rules for ../ptex/libPtex.a in utils/Makefile

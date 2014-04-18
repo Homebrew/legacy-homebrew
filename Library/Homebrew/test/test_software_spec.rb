@@ -1,6 +1,5 @@
 require 'testing_env'
 require 'software_spec'
-require 'bottles'
 
 class SoftwareSpecTests < Test::Unit::TestCase
   include VersionAssertions
@@ -80,6 +79,12 @@ class SoftwareSpecTests < Test::Unit::TestCase
     @spec.depends_on('foo' => :optional)
     assert_equal 'blah', @spec.build.first.description
   end
+
+  def test_patch
+    @spec.patch :p1, :DATA
+    assert_equal 1, @spec.patches.length
+    assert_equal :p1, @spec.patches.first.strip
+  end
 end
 
 class HeadSoftwareSpecTests < Test::Unit::TestCase
@@ -98,9 +103,9 @@ class HeadSoftwareSpecTests < Test::Unit::TestCase
   end
 end
 
-class BottleTests < Test::Unit::TestCase
+class BottleSpecificationTests < Test::Unit::TestCase
   def setup
-    @spec = Bottle.new
+    @spec = BottleSpecification.new
   end
 
   def test_checksum_setters
@@ -116,7 +121,7 @@ class BottleTests < Test::Unit::TestCase
     end
 
     checksums.each_pair do |cat, sha1|
-      hsh, _ = @spec.instance_variable_get(:@sha1).fetch_bottle_for(cat)
+      hsh, _ = @spec.collector.fetch_bottle_for(cat)
       assert_equal Checksum.new(:sha1, sha1), hsh
     end
   end

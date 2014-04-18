@@ -1,14 +1,9 @@
-require 'extend/pathname'
-require 'formula_lock'
-require 'ostruct'
+require "extend/pathname"
+require "keg_fix_install_names"
+require "formula_lock"
+require "ostruct"
 
 class Keg < Pathname
-  def initialize path
-    super path
-    raise "#{to_s} is not a valid keg" unless parent.parent.realpath == HOMEBREW_CELLAR.realpath
-    raise "#{to_s} is not a directory" unless directory?
-  end
-
   # locale-specific directories have the form language[_territory][.codeset][@modifier]
   LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
   INFOFILE_RX = %r[info/([^.].*?\.info|dir)$]
@@ -16,6 +11,18 @@ class Keg < Pathname
   PRUNEABLE_DIRECTORIES = %w[bin etc include lib sbin share Frameworks LinkedKegs].map do |d|
     case d when 'LinkedKegs' then HOMEBREW_LIBRARY/d else HOMEBREW_PREFIX/d end
   end
+
+  # These paths relative to the keg's share directory should always be real
+  # directories in the prefix, never symlinks.
+  SHARE_PATHS = %w[
+    aclocal doc info locale man
+    man/man1 man/man2 man/man3 man/man4
+    man/man5 man/man6 man/man7 man/man8
+    man/cat1 man/cat2 man/cat3 man/cat4
+    man/cat5 man/cat6 man/cat7 man/cat8
+    applications gnome gnome/help icons
+    mime-info pixmaps sounds
+  ]
 
   # if path is a file in a keg then this will return the containing Keg object
   def self.for path
@@ -25,6 +32,12 @@ class Keg < Pathname
       path = path.parent.realpath # realpath() prevents root? failing
     end
     raise NotAKegError, "#{path} is not inside a keg"
+  end
+
+  def initialize path
+    super path
+    raise "#{to_s} is not a valid keg" unless parent.parent.realpath == HOMEBREW_CELLAR.realpath
+    raise "#{to_s} is not a directory" unless directory?
   end
 
   def uninstall
@@ -40,7 +53,6 @@ class Keg < Pathname
     TOP_LEVEL_DIRECTORIES.map{ |d| self/d }.each do |dir|
       next unless dir.exist?
       dir.find do |src|
-        next if src == self
         dst = HOMEBREW_PREFIX + src.relative_path_from(self)
         dst.extend(ObserverPathnameExtension)
 
@@ -74,7 +86,7 @@ class Keg < Pathname
   end
 
   def linked?
-    linked_keg_record.directory? and self == linked_keg_record.realpath
+    linked_keg_record.directory? && self == linked_keg_record.resolved_path
   end
 
   def completion_installed? shell
@@ -87,9 +99,7 @@ class Keg < Pathname
   end
 
   def plist_installed?
-    Dir.chdir self do
-      not Dir.glob("*.plist").empty?
-    end
+    not Dir.glob("#{self}/*.plist").empty?
   end
 
   def python_site_packages_installed?
@@ -101,24 +111,22 @@ class Keg < Pathname
   end
 
   def version
-    require 'version'
-    Version.new(basename.to_s)
+    require 'pkg_version'
+    PkgVersion.parse(basename.to_s)
   end
 
   def basename
-    Pathname.new(self.to_s).basename
+    Pathname.new(self).basename
+  end
+
+  def find(*args, &block)
+    Pathname.new(self).find(*args, &block)
   end
 
   def link mode=OpenStruct.new
-    raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.realpath}" if linked_keg_record.directory?
+    raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.resolved_path}" if linked_keg_record.directory?
 
     ObserverPathnameExtension.reset_counts!
-
-    share_mkpaths = %w[aclocal doc info locale man]
-    share_mkpaths.concat((1..8).map { |i| "man/man#{i}" })
-    share_mkpaths.concat((1..8).map { |i| "man/cat#{i}" })
-    # Paths used by Gnome Desktop support
-    share_mkpaths.concat %w[applications gnome gnome/help icons mime-info pixmaps sounds]
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
@@ -132,7 +140,7 @@ class Keg < Pathname
       when 'locale/locale.alias' then :skip_file
       when INFOFILE_RX then :info
       when LOCALEDIR_RX then :mkpath
-      when *share_mkpaths then :mkpath
+      when *SHARE_PATHS then :mkpath
       when /^icons\/.*\/icon-theme\.cache$/ then :skip_file
       # all icons subfolders should also mkpath
       when /^icons\// then :mkpath
@@ -198,17 +206,21 @@ class Keg < Pathname
     from.make_relative_symlink(self)
   end
 
+  def delete_pyc_files!
+    find { |pn| pn.delete if pn.extname == ".pyc" }
+  end
+
   protected
 
-  def resolve_any_conflicts dst
+  def resolve_any_conflicts dst, mode
     # if it isn't a directory then a severe conflict is about to happen. Let
     # it, and the exception that is generated will message to the user about
     # the situation
     if dst.symlink? and dst.directory?
-      src = (dst.parent+dst.readlink).cleanpath
+      src = dst.resolved_path
       keg = Keg.for(src)
-      dst.unlink
-      keg.link_dir(src) { :mkpath }
+      dst.unlink unless mode.dry_run
+      keg.link_dir(src, mode) { :mkpath }
       return true
     end
   rescue NotAKegError
@@ -216,8 +228,8 @@ class Keg < Pathname
   end
 
   def make_relative_symlink dst, src, mode=OpenStruct.new
-    if dst.exist? and dst.realpath == src.realpath
-      puts "Skipping; already exists: #{dst}" if ARGV.verbose?
+    if dst.symlink? && dst.exist? && dst.resolved_path == src
+      puts "Skipping; link already exists: #{dst}" if ARGV.verbose?
       return
     end
 
@@ -237,12 +249,12 @@ class Keg < Pathname
       return
     end
 
-    dst.delete if mode.overwrite && (dst.exist? or dst.symlink?)
+    dst.delete if mode.overwrite && (dst.exist? || dst.symlink?)
     dst.make_relative_symlink src
   end
 
   # symlinks the contents of self+foo recursively into #{HOMEBREW_PREFIX}/foo
-  def link_dir foo, mode=OpenStruct.new
+  def link_dir foo, mode
     root = self+foo
     return unless root.exist?
     root.find do |src|
@@ -288,9 +300,9 @@ class Keg < Pathname
         when :skip_dir
           Find.prune
         when :mkpath
-          dst.mkpath unless resolve_any_conflicts(dst)
+          dst.mkpath unless resolve_any_conflicts(dst, mode)
         else
-          unless resolve_any_conflicts(dst)
+          unless resolve_any_conflicts(dst, mode)
             make_relative_symlink dst, src, mode
             Find.prune
           end
@@ -299,5 +311,3 @@ class Keg < Pathname
     end
   end
 end
-
-require 'keg_fix_install_names'

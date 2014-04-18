@@ -4,15 +4,14 @@ class Srecord < Formula
   homepage 'http://srecord.sourceforge.net/'
   url 'http://srecord.sourceforge.net/srecord-1.62.tar.gz'
   sha1 '144a5b802c86fe6408ccbe47b75867722034eb67'
+  revision 1
 
   depends_on :libtool
   depends_on 'boost'
   depends_on 'libgcrypt'
 
   # Use OS X's pstopdf
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}", "LIBTOOL=glibtool"

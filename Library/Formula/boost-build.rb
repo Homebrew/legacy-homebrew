@@ -2,7 +2,7 @@ require 'formula'
 
 class BoostBuild < Formula
   homepage 'http://boost.org/boost-build2/'
-  url 'http://github.com/boostorg/build/archive/boost-1.55.0.tar.gz'
+  url 'https://github.com/boostorg/build/archive/boost-1.55.0.tar.gz'
   sha1 '9daf7587b017716ffd164bcf11d82c4ac00c8ca0'
 
   head 'https://github.com/boostorg/build.git'

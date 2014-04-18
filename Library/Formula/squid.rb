@@ -22,7 +22,7 @@ class Squid < Formula
 
   # fix building on mavericks
   # http://bugs.squid-cache.org/show_bug.cgi?id=3954
-  def patches; DATA; end if MacOS.version >= :mavericks
+  patch :DATA if MacOS.version >= :mavericks
 
   def install
     # For --disable-eui, see:
@@ -53,7 +53,7 @@ class Squid < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/squid</string>
+        <string>#{opt_sbin}/squid</string>
         <string>-N</string>
         <string>-d 1</string>
       </array>

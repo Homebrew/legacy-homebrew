@@ -2,10 +2,18 @@ require 'formula'
 
 class Re2 < Formula
   homepage 'https://code.google.com/p/re2/'
-  url 'https://re2.googlecode.com/files/re2-20140111.tgz'
-  sha1 'd51b3c2e870291070a1bcad8e5b471ae83e1f8df'
+  url 'https://re2.googlecode.com/files/re2-20140304.tgz'
+  sha1 'f30dda8e530921b623c32aa58a5dabbe9157f6ca'
 
   head 'https://re2.googlecode.com/hg'
+
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "c502279673f7a522964161813c1d284d3dd12115" => :mavericks
+    sha1 "ed4e24ef60a2c44af9ed67b22d6f983f3177f0fc" => :mountain_lion
+    sha1 "50250f3de155321a6b93276f0df967e868fc4ca8" => :lion
+  end
 
   def install
     # https://code.google.com/p/re2/issues/detail?id=99
@@ -18,7 +26,7 @@ class Re2 < Formula
     end
     system "make", "install", "prefix=#{prefix}"
     mv lib/"libre2.so.0.0.0", lib/"libre2.0.0.0.dylib"
-    ln_s "libre2.0.0.0.dylib", lib/"libre2.0.dylib"
-    ln_s "libre2.0.0.0.dylib", lib/"libre2.dylib"
+    lib.install_symlink "libre2.0.0.0.dylib" => "libre2.0.dylib"
+    lib.install_symlink "libre2.0.0.0.dylib" => "libre2.dylib"
   end
 end
