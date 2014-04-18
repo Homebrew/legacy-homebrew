@@ -4,6 +4,15 @@ class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
   url 'http://ffmpeg.org/releases/ffmpeg-2.2.1.tar.bz2'
   sha1 'c5f8d103b20cd73d329401d85ced4a014757f8b9'
+
+  stable do
+    patch do
+      # fixes an api incompability with latest x265 0.9, to be removed with next ffmpeg 2.2.x+ release
+      url "http://git.videolan.org/?p=ffmpeg.git;a=patch;h=d67dbfa7c195fabce706ca03c439419450f9bd8a"
+      sha1 'f9481393869a8f38912faf935fb584c8e41d5c50'
+    end
+  end
+
   head 'git://git.videolan.org/ffmpeg.git'
 
   bottle do
