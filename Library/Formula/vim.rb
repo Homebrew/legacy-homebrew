@@ -3,9 +3,8 @@ require 'formula'
 class Vim < Formula
   homepage 'http://www.vim.org/'
   head 'https://vim.googlecode.com/hg/'
-  # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
-  url 'http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.253.orig.tar.gz'
-  sha1 'ea439da6bf03859dc2d930a5690a960432fc2dad'
+  version '7.4.258'
+  url 'https://code.google.com/p/vim/', :using => :hg, :branch => "v#{version.to_str.gsub(/\./, "-")}"
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
