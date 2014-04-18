@@ -11,6 +11,7 @@ class Tesseract < Formula
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
+    depends_on 'pkg-config' => :build
   end
 
   option "all-languages", "Install recognition data for all languages"
