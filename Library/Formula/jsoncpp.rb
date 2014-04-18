@@ -20,15 +20,15 @@ class Jsoncpp < Formula
 
   def install
     scons "platform=darwin-llvm"
-    platformName = "darwin-llvm-" + `#{ENV.cc} -dumpversion`.chomp
+    platform_name = "darwin-llvm-" + `#{ENV.cc} -dumpversion`.chomp
 
-    lib.install "libs/#{platformName}/libjson_#{platformName}_libmt.dylib"
-    lib.install "libs/#{platformName}/libjson_#{platformName}_libmt.a"
-    lib.install_symlink "libjson_#{platformName}_libmt.dylib" => "libjsoncpp.dylib"
-    lib.install_symlink "libjson_#{platformName}_libmt.a" => "libjsoncpp.a"
+    lib.install "libs/#{platform_name}/libjson_#{platform_name}_libmt.dylib"
+    lib.install "libs/#{platform_name}/libjson_#{platform_name}_libmt.a"
+    lib.install_symlink "libjson_#{platform_name}_libmt.dylib" => "libjsoncpp.dylib"
+    lib.install_symlink "libjson_#{platform_name}_libmt.a" => "libjsoncpp.a"
     prefix.install "include"
 
-    libexec.install "bin/#{platformName}/test_lib_json" => "test_lib_json"
+    libexec.install "bin/#{platform_name}/test_lib_json" => "test_lib_json"
   end
 
   test do
