@@ -17,7 +17,7 @@ class Jsoncpp < Formula
     end
     DATA
   end
-  
+
   def install
     scons "platform=darwin-llvm"
     platformName = "darwin-llvm-" + `#{ENV.cc} -dumpversion`.chomp
