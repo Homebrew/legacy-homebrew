@@ -26,6 +26,7 @@ class Ffmpeg < Formula
   option 'with-tools', 'Enable additional FFmpeg tools'
   option 'with-fdk-aac', 'Enable the Fraunhofer FDK AAC library'
   option 'with-libvidstab', 'Enable vid.stab support for video stabilization'
+  option 'with-x265', "Enable x265 encoder"
 
   depends_on 'pkg-config' => :build
 
@@ -57,6 +58,7 @@ class Ffmpeg < Formula
   depends_on 'libbluray' => :optional
   depends_on 'libquvi' => :optional
   depends_on 'libvidstab' => :optional
+  depends_on 'x265' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -96,6 +98,7 @@ class Ffmpeg < Formula
     args << "--enable-libcaca" if build.with? 'libcaca'
     args << "--enable-libquvi" if build.with? 'libquvi'
     args << "--enable-libvidstab" if build.with? 'libvidstab'
+    args << "--enable-libx265" if build.with? 'x265'
 
     if build.with? 'openjpeg'
       args << '--enable-libopenjpeg'
