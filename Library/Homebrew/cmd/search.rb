@@ -76,7 +76,7 @@ module Homebrew extend self
   end
 
   SEARCHABLE_TAPS = [
-    %w{marcqualie nginx},
+    %w{Homebrew nginx},
     %w{Homebrew apache},
     %w{Homebrew versions},
     %w{Homebrew dupes},
