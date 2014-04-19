@@ -135,9 +135,8 @@ module Superenv
     end
 
     if self['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
-      gcc_name = 'gcc' + $1.delete('.')
-      gcc = Formulary.factory(gcc_name)
-      paths << gcc.opt_prefix/'bin'
+      gcc_formula = gcc_version_formula($1)
+      paths << gcc_formula.opt_prefix/'bin'
     end
 
     paths.to_path_s
