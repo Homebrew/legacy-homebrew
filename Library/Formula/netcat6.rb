@@ -5,7 +5,11 @@ class Netcat6 < Formula
   url "http://ftp.debian.org/debian/pool/main/n/nc6/nc6_1.0.orig.tar.gz"
   sha1 "50b1a3f7bfa610a2016727e5741791ad3a88bd07"
 
-  patch :p0, :DATA
+  option "silence-patch", "Use silence patch from Debian"
+
+  if build.include? "silence-patch"
+    patch :p0, :DATA
+  end
 
   def install
     system "./configure", "--disable-dependency-tracking",
@@ -15,7 +19,6 @@ class Netcat6 < Formula
   end
 
   test do
-    # before we do anything too serious, let's just make sure that --version works
     IO.popen("#{bin}/nc6 --version") { |subp|
       assert subp.readline.strip == "nc6 version #{version}"
     }
