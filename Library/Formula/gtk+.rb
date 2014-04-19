@@ -21,6 +21,7 @@ class Gtkx < Formula
   depends_on 'atk'
   depends_on 'cairo'
   depends_on :x11 => '2.3.6'
+  depends_on 'gobject-introspection'
 
   fails_with :llvm do
     build 2326
@@ -31,7 +32,7 @@ class Gtkx < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-glibtest",
-                          "--disable-introspection",
+                          "--enable-introspection=yes",
                           "--disable-visibility"
     system "make install"
   end
