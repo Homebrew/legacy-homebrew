@@ -11,9 +11,9 @@ class Ghostscript < Formula
   end
 
   bottle do
-    sha1 "6c57df23147be016a8790cd4f831e3bfc060107a" => :mavericks
-    sha1 "1b172224cac0093d4264c874a4c5da7c8f13a217" => :mountain_lion
-    sha1 "a12d082b0e86e08cef11f5b59e27b827ed38367e" => :lion
+    sha1 "bf009ba5ba4924acc2fe882b7f49398bd12da98b" => :mavericks
+    sha1 "21de34bff76e4d0703d492c08c9fa15d3ff1c629" => :mountain_lion
+    sha1 "5281dfddb3a9141d1a793d7c1dd1608a08230924" => :lion
   end
 
   head do
