@@ -24,4 +24,18 @@ class Xz < Formula
                           "--prefix=#{prefix}"
     system "make install"
   end
+
+  test do
+    path = testpath/"data.txt"
+    original_contents = "." * 1000
+    path.write original_contents
+
+    # compress: data.txt -> data.txt.xz
+    system bin/"xz", path
+    assert !path.exist?
+
+    # decompress: data.txt.xz -> data.txt
+    system bin/"xz", "-d", "#{path}.xz"
+    assert_equal original_contents, path.read
+  end
 end
