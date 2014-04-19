@@ -2,7 +2,7 @@ require "formula"
 
 class Libopendkim < Formula
   homepage "http://opendkim.org"
-  url "http://downloads.sourceforge.net/project/opendkim/opendkim-2.9.2.tar.gz"
+  url "https://downloads.sourceforge.net/project/opendkim/opendkim-2.9.2.tar.gz"
   sha1 "6d6720e60ffe44a689de6732d10e7aba26e24b06"
 
   depends_on "unbound"
