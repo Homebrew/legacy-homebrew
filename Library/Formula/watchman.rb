@@ -3,8 +3,8 @@ require 'formula'
 class Watchman < Formula
   homepage 'https://github.com/facebook/watchman'
   head 'https://github.com/facebook/watchman.git'
-  url 'https://github.com/facebook/watchman/archive/v2.9.5.tar.gz'
-  sha1 'e8dd863c6239caf1ef2742c0ecbba2b3b9febaaa'
+  url 'https://github.com/facebook/watchman/archive/v2.9.6.tar.gz'
+  sha1 '415e0f2547205c7507e520bc40dc8cca3e06a40a'
 
   depends_on :autoconf
   depends_on :automake
