@@ -19,6 +19,7 @@ TAP_MIGRATIONS = {
   "lmutil" => "homebrew/binary",
   "mlkit" => "homebrew/boneyard",
   "mlton" => "homebrew/boneyard",
+  "mydumper" => "homebrew/boneyard",
   "nlopt" => "homebrew/science",
   "octave" => "homebrew/science",
   "opencv" => "homebrew/science",
