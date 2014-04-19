@@ -12,8 +12,8 @@ end
 
 class Gpm < Formula
   homepage "https://github.com/pote/gpm"
-  url "https://github.com/pote/gpm/archive/v1.2.0.tar.gz"
-  sha1 "9d676d76c7ee9c21a404286b528323db12adb1c8"
+  url "https://github.com/pote/gpm/archive/v1.2.1.tar.gz"
+  sha1 "225eabbf7f2ec01e4c6e2cce57950ad3a1034c39"
 
   bottle do
     cellar :any
