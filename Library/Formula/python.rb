@@ -148,6 +148,7 @@ class Python < Formula
     site_packages.mkpath
 
     # Symlink the prefix site-packages into the cellar.
+    site_packages_cellar.unlink if site_packages_cellar.exist?
     site_packages_cellar.parent.install_symlink site_packages
 
     # Write our sitecustomize.py
@@ -175,8 +176,7 @@ class Python < Formula
 
     # And now we write the distutils.cfg
     cfg = lib_cellar/"distutils/distutils.cfg"
-    cfg.delete if cfg.exist?
-    cfg.write <<-EOF.undent
+    cfg.atomic_write <<-EOF.undent
       [global]
       verbose=1
       [install]

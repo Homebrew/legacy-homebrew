@@ -2,10 +2,10 @@ require 'formula'
 
 class Libmongoclient < Formula
   homepage 'http://www.mongodb.org'
-  url 'http://fastdl.mongodb.org/src/mongodb-src-r2.5.4.tar.gz'
-  sha1 'ad40b93c9638178cd487c80502084ac3a9472270'
+  url 'https://github.com/mongodb/mongo-cxx-driver/archive/legacy-0.0-26compat-2.6.0.tar.gz'
+  sha1 '16489b9afb506bf30e514152af7b5a49bbdb2486'
 
-  head 'https://github.com/mongodb/mongo.git'
+  head 'https://github.com/mongodb/mongo-cxx-driver.git', :branch => "26compat"
 
   depends_on 'scons' => :build
   depends_on 'boost' => :build
@@ -29,6 +29,6 @@ class Libmongoclient < Formula
       args << "--libc++"
     end
 
-    scons "install-mongoclient", *args
+    scons *args
   end
 end
