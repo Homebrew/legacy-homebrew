@@ -24,34 +24,4 @@ class Neo4j < Formula
       f.puts "wrapper.java.additional=-Djava.awt.headless=true"
     }
   end
-
-  def caveats; <<-EOS.undent
-    Quick-start guide:
-
-        1. Start the server manually:
-            neo4j start
-
-        2. Open the neo4j browser:
-            open http://localhost:7474/browser/
-
-        3. Start exploring the REST API:
-            curl -v http://localhost:7474/db/data/
-
-        4. Stop:
-            neo4j stop
-
-    To launch on startup, install launchd-agent to ~/Library/LaunchAgents/ with:
-        neo4j install
-
-    If this is an upgrade, see:
-        #{libexec}/UPGRADE.txt
-
-    The manual can be found in:
-        #{libexec}/doc/
-
-    You may need to set JAVA_HOME for Java 7 in your shell profile:
-        export JAVA_HOME="$(/usr/libexec/java_home -v 1.7)"
-
-    EOS
-  end
 end
