@@ -16,13 +16,14 @@ class Clutter < Formula
   depends_on 'pango'
   depends_on 'json-glib'
   depends_on :x11 => '2.5.1' if build.with? 'x'
+  depends_on 'gobject-introspection'
 
   def install
     args = %W[
       --disable-dependency-tracking
       --disable-debug
       --prefix=#{prefix}
-      --disable-introspection
+      --enable-introspection=yes
       --disable-silent-rules
       --disable-Bsymbolic
       --disable-tests
