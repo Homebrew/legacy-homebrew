@@ -12,8 +12,8 @@ end
 
 class Saltstack < Formula
   homepage 'http://www.saltstack.org'
-  url 'https://github.com/saltstack/salt/archive/v2014.1.1.tar.gz'
-  sha1 '7bccfe266aa319646edacaff003a6df5a3863611'
+  url 'https://github.com/saltstack/salt/archive/v2014.1.3.tar.gz'
+  sha256 'cc3e21c6cd333f2058a4f0c78db5103a07a7301f6237644b5eee6a55f9793e24'
 
   head 'https://github.com/saltstack/salt.git', :branch => 'develop',
     :using => SaltHeadDownloadStrategy, :shallow => false
