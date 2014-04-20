@@ -2,8 +2,8 @@ require 'formula'
 
 class Dnsmasq < Formula
   homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.68.tar.gz'
-  sha1 'c78f5992539ff29924ca6aa1ba06ecb81710e743'
+  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.69.tar.gz'
+  sha1 'a4c68afd0214abd45d983540c297f386882a3516'
 
   bottle do
     sha1 "604566d789db22d8c25b7bc28d255d5957c8d28a" => :mavericks
