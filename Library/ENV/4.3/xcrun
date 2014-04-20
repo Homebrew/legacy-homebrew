@@ -4,9 +4,14 @@
 # But many build-systems expect it to work. This fixes that.
 # NOTE only works if the build-tool calls xcrun without a path prefixed!
 
-dirname = File.dirname(__FILE__)
-require File.expand_path("../libsuperenv", dirname)
-SUPERBIN = dirname.cleanpath.freeze
+$:.unshift "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8"
+require "pathname"
+
+def canonical_dirname path
+  Pathname.new(path).dirname.realpath.to_s
+end
+
+SUPERBIN = canonical_dirname(__FILE__)
 
 # Some build tools are stupid and still set DEVELOPER_DIR to old /Developer
 ENV.delete "DEVELOPER_DIR"
@@ -18,7 +23,7 @@ if File.exist?("/usr/bin/#{ARGV.first}")
 end
 
 def try path
-  exec path, *ARGV if File.executable?(path) and File.dirname(path.cleanpath) != SUPERBIN
+  exec path, *ARGV if File.executable?(path) && canonical_dirname(path) != SUPERBIN
 end
 
 arg0 = ARGV.shift
