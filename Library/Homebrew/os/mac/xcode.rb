@@ -46,9 +46,12 @@ module OS
           if path != CLT::MAVERICKS_PKG_PATH and path.absolute? \
              and File.executable? "#{path}/usr/bin/make"
             path
-          # TODO remove this branch when 10.10 is released
           elsif File.executable? "#{V4_BUNDLE_PATH}/Contents/Developer/usr/bin/make"
-            # fallback for broken Xcode 4.3 installs
+            # TODO Remove this branch when 10.10 is released
+            # This is a fallback for broken installations of Xcode 4.3+. Correct
+            # installations will be handled by the first branch. Pretending that
+            # broken installations are OK just leads to hard to diagnose problems
+            # later.
             Pathname.new("#{V4_BUNDLE_PATH}/Contents/Developer")
           elsif (path = bundle_path)
             path += "Contents/Developer"
