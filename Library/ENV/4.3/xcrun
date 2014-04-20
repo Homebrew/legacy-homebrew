@@ -16,7 +16,10 @@ SUPERBIN = canonical_dirname(__FILE__)
 # Some build tools are stupid and still set DEVELOPER_DIR to old /Developer
 ENV.delete "DEVELOPER_DIR"
 
-exec "/usr/bin/xcrun", *ARGV if ARGV.empty? or ARGV[0][0..0] == '-'
+if ARGV.empty? || ARGV[0][0..0] == "-"
+  exec "/usr/bin/xcrun", *ARGV
+end
+
 if File.exist?("/usr/bin/#{ARGV.first}")
   sdkroot = ENV['HOMEBREW_SDKROOT']
   exec "/usr/bin/#{ARGV.shift}", *ARGV unless sdkroot and File.directory? sdkroot
