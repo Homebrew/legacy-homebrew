@@ -12,5 +12,13 @@ class Libre < Formula
     system "make", "install", "PREFIX=#{prefix}"
   end
 
+  test do
+    (testpath/'test.c').write <<-EOS.undent
+      #include <re/re.h>
+      int main() {
+        return libre_init();
+      }
+    EOS
+    system ENV.cc, "test.c", "-lre"
+  end
 end
-
