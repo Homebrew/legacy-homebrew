@@ -6,9 +6,9 @@ class Dnsmasq < Formula
   sha1 'a4c68afd0214abd45d983540c297f386882a3516'
 
   bottle do
-    sha1 "604566d789db22d8c25b7bc28d255d5957c8d28a" => :mavericks
-    sha1 "cb1e603aa85cbbd86d871d4530c6a741e4b1968f" => :mountain_lion
-    sha1 "b3746e517c4ba585e595b9ff2ae36d2055a65037" => :lion
+    sha1 "060ec20cbe40d411029c0ce5dc697f0dbf097a3e" => :mavericks
+    sha1 "507156c3b20de7cf37ae639c4ffee79d2a9bee51" => :mountain_lion
+    sha1 "7c64e615a820f2c34badda58005af67ff2a3b90c" => :lion
   end
 
   option 'with-idn', 'Compile with IDN support'
