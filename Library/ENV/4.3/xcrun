@@ -5,7 +5,7 @@
 # NOTE only works if the build-tool calls xcrun without a path prefixed!
 
 dirname = File.dirname(__FILE__)
-require "#{dirname}/../libsuperenv"
+require File.expand_path("../libsuperenv", dirname)
 SUPERBIN = dirname.cleanpath.freeze
 
 # Some build tools are stupid and still set DEVELOPER_DIR to old /Developer
