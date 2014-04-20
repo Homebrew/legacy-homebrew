@@ -14,12 +14,7 @@ class Openjpeg < Formula
   depends_on 'libpng'
 
   def install
-    cmake_args = std_cmake_args
-    cmake_args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"
-
-    cmake_args << "."
-
-    system "cmake", *cmake_args
+    system "cmake", ".", *std_cmake_args
     system "make install"
   end
 end
