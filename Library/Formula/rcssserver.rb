@@ -12,12 +12,32 @@ class Rcssserver < Formula
     sha1 "ab94f23eae47b48ce2f9ed3d94e727f2d7387289" => :lion
   end
 
+  head do
+    url "svn://svn.code.sf.net/p/sserver/code/rcss/trunk/rcssserver"
+
+    depends_on :autoconf => :build
+    depends_on :automake => :build
+    depends_on :libtool => :build
+  end
+
   depends_on "flex" => :build
   depends_on "pkg-config" => :build
   depends_on "boost"
 
   def install
     ENV.j1
+
+    if build.head?
+      inreplace "#{buildpath}/src/Makefile.am" do |s|
+        s.gsub! "coach_lang_parser.h", "coach_lang_parser.hpp"
+        s.gsub! "player_command_parser.h", "player_command_parser.hpp"
+      end
+
+      inreplace "#{buildpath}/src/coach_lang_tok.lpp", "coach_lang_parser.h", "coach_lang_parser.hpp"
+      inreplace "#{buildpath}/src/player_command_tok.lpp", "player_command_parser.h", "player_command_parser.hpp"
+
+      system "./bootstrap"
+    end
 
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
