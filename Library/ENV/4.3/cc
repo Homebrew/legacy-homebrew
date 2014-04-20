@@ -1,6 +1,6 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 
-require "#{File.dirname __FILE__}/../libsuperenv"
+require File.expand_path("../libsuperenv", File.dirname(__FILE__))
 require 'set'
 require 'stringio'
 
