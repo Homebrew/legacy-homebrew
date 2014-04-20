@@ -9,7 +9,8 @@ module OS
 
       # Locate the "current Xcode folder" via xcode-select. See:
       # man xcode-select
-      # NOTE!! use Xcode.prefix rather than this generally!
+      # TODO Should this be moved to OS::Mac? As of 10.9 this is referred to
+      # as the "developer directory", and be either a CLT or Xcode instance.
       def folder
         @folder ||= `xcode-select -print-path 2>/dev/null`.strip
       end
