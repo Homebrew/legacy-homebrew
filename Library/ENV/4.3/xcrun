@@ -9,7 +9,7 @@ require "#{dirname}/../libsuperenv"
 SUPERBIN = dirname.cleanpath.freeze
 
 # Some build tools are stupid and still set DEVELOPER_DIR to old /Developer
-ENV['DEVELOPER_DIR'] = ENV['HOMEBREW_DEVELOPER_DIR']
+ENV.delete "DEVELOPER_DIR"
 
 exec "/usr/bin/xcrun", *ARGV if ARGV.empty? or ARGV[0][0..0] == '-'
 if File.exist?("/usr/bin/#{ARGV.first}")
@@ -23,9 +23,7 @@ end
 
 arg0 = ARGV.shift
 try `/usr/bin/xcrun --find #{arg0} 2>/dev/null`.chomp
-# Nuts, Xcode is not setup properly or something. Try to find the tools anyway!
-try "#{ENV['HOMEBREW_DEVELOPER_DIR']}/usr/bin/#{arg0}"
-try "#{ENV['HOMEBREW_DEVELOPER_DIR']}/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{arg0}"
+
 # xcrun won't always be able to find Homebrew's apple-gcc42,
 # even when it's in the PATH
 ENV['PATH'].split(':').each do |p|
