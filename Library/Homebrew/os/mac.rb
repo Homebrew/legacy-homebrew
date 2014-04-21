@@ -58,13 +58,10 @@ module OS
       @dev_tools_path ||= if tools_in_prefix? CLT::MAVERICKS_PKG_PATH
         Pathname.new "#{CLT::MAVERICKS_PKG_PATH}/usr/bin"
       elsif tools_in_prefix? "/"
-        # probably a safe enough assumption (the unix way)
         Pathname.new "/usr/bin"
       elsif not (make_path = `/usr/bin/xcrun -find make 2>/dev/null`).empty?
-        # Note that the exit status of system "xcrun foo" isn't always accurate
         Pathname.new(make_path.chomp).dirname
       elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
-        # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
         Pathname.new "#{Xcode.prefix}/usr/bin"
       end
     end
