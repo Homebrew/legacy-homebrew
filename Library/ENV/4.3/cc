@@ -1,6 +1,6 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 
-require File.expand_path("../libsuperenv", File.dirname(__FILE__))
+$:.unshift "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8"
 require 'pathname'
 require 'set'
 require 'stringio'
@@ -147,11 +147,11 @@ class Cmd
         args << "-Wl,#{arg}"
       when /^-I(.+)?/
         # Support both "-Ifoo" (one argument) and "-I foo" (two arguments)
-        val  = $1.chuzzle || whittler.next
+        val  = chuzzle($1) || whittler.next
         path = canonical_path(val)
         args << "-I#{val}" if keep?(path) and iset.add?(path)
       when /^-L(.+)?/
-        val  = $1.chuzzle || whittler.next
+        val  = chuzzle($1) || whittler.next
         path = canonical_path(val)
         args << "-L#{val}" if keep?(path) and lset.add?(path)
       else
@@ -283,13 +283,18 @@ class Cmd
   def path_split(key)
     ENV.fetch(key) { "" }.split(File::PATH_SEPARATOR)
   end
+  def chuzzle(val)
+    return val if val.nil?
+    val = val.chomp
+    return val unless val.empty?
+  end
 end
 
 if __FILE__ == $PROGRAM_NAME
   ##################################################################### sanity
   abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
 
-  case ENV['HOMEBREW_CC'].chuzzle when 'cc', nil
+  if (cc = ENV["HOMEBREW_CC"]).nil? || cc.empty? || cc == "cc"
     # those values are not allowed
     ENV['HOMEBREW_CC'] = 'clang'
   end
