@@ -85,11 +85,15 @@ class Cmd
     else
       args = refurbished_args
     end
-    if tool != 'ld'
-      args << "--sysroot=#{sdkroot}"
-    else
-      args << "-syslibroot" << sdkroot
-    end if nclt?
+
+    if nclt?
+      if tool != 'ld'
+        args << "--sysroot=#{sdkroot}"
+      else
+        args << "-syslibroot" << sdkroot
+      end
+    end
+
     allflags = case mode
     when :ccld
       cflags + args + cppflags + ldflags
