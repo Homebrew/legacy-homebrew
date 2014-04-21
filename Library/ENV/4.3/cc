@@ -35,6 +35,7 @@ class Cmd
     @brewtmp = ENV['HOMEBREW_TEMP']
     @sdkroot = ENV['HOMEBREW_SDKROOT']
   end
+
   def mode
     if @arg0 == 'cpp' or @arg0 == 'ld'
       @arg0.to_sym
@@ -54,6 +55,7 @@ class Cmd
       end
     end
   end
+
   def tool
     @tool ||= case @arg0
     when 'ld' then 'ld'
@@ -73,6 +75,7 @@ class Cmd
       ENV['HOMEBREW_CC']
     end
   end
+
   def args
     if @args.length == 1 and @args[0] == '-v'
       # Don't add linker arguments if -v passed as sole option. This stops gcc
@@ -113,6 +116,7 @@ class Cmd
     make_fuss(allflags)
     allflags
   end
+
   def refurbished_args
     lset = Set.new(libpath + syslibpath)
     iset = Set.new(cpath.flatten)
@@ -189,6 +193,7 @@ class Cmd
     args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
     args
   end
+
   def cxxflags
     args = cflags
     args << '-std=c++11' if cccfg? 'x'
@@ -196,17 +201,20 @@ class Cmd
     args << '-stdlib=libstdc++' if cccfg? 'h'
     args
   end
+
   def optflags
     args = []
     args << "-#{ENV['HOMEBREW_OPTIMIZATION_LEVEL']}"
     args.concat ENV['HOMEBREW_OPTFLAGS'].split(' ') if ENV['HOMEBREW_OPTFLAGS']
     args
   end
+
   def archflags
     args = []
     args.concat ENV['HOMEBREW_ARCHFLAGS'].split(' ') if cccfg? 'u'
     args
   end
+
   def syspath
     if sdkroot
       %W{#{sdkroot}/usr #{sdkroot}/usr/local}
@@ -214,12 +222,14 @@ class Cmd
       %W{/usr /usr/local}
     end
   end
+
   def syslibpath
     # We reject brew's lib as we explicitly add this as a -L flag, thus it
     # is given higher priority by cc, so it surpasses the system libpath.
     # NOTE this only counts if Homebrew is installed at /usr/local
     syspath.reject { |d| d == brewfix }.map! { |d| File.join(d, "lib") }
   end
+
   def cpath
     cpath  = path_split("CMAKE_PREFIX_PATH").map! { |d| File.join(d, "include") }
     cpath += path_split("CMAKE_INCLUDE_PATH")
@@ -227,12 +237,14 @@ class Cmd
     sys = cpath - opt
     [sys, opt]
   end
+
   def libpath
     libpath  = path_split("CMAKE_PREFIX_PATH").map! { |d| File.join(d, "lib") }
     libpath += path_split("CMAKE_LIBRARY_PATH")
     libpath -= syslibpath
     libpath
   end
+
   def ldflags
     args = path_flags("-L", libpath)
     case mode
@@ -245,12 +257,14 @@ class Cmd
     end
     args
   end
+
   def cppflags
     sys, opt = cpath
     # we want our keg-only includes to be found before system includes *and*
     # before any other includes the build-system adds
     path_flags("-isystem", sys) + path_flags("-I", opt)
   end
+
   def make_fuss args
     return unless make_fuss?
 
@@ -262,28 +276,35 @@ class Cmd
     LOGGER.puts "superenv deduped:  #{dups}" unless dups.empty?
     LOGGER.puts "superenv added:    #{adds*' '}" unless adds.empty?
   end
+
   def make_fuss?
     cccfg? 'O' and not configure?
   end
+
   def configure?
     # configure scripts generated with autoconf 2.61 or later export as_nl
     ENV.key? 'as_nl'
   end
+
   def cccfg? flags
     flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
   end
+
   def canonical_path(path)
     path = Pathname.new(path)
     path = path.realpath if path.exist?
     path.to_s
   end
+
   def path_flags(prefix, paths)
     paths = paths.uniq.select { |path| File.directory?(path) }
     paths.map! { |path| prefix + path }
   end
+
   def path_split(key)
     ENV.fetch(key) { "" }.split(File::PATH_SEPARATOR)
   end
+
   def chuzzle(val)
     return val if val.nil?
     val = val.chomp
