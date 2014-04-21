@@ -469,11 +469,12 @@ class Formula
     }
 
     if rack.directory?
-      rack.subdirs.each do |keg|
-        tab = Tab.for_keg keg
+      rack.subdirs.each do |keg_path|
+        keg = Keg.new keg_path
+        tab = Tab.for_keg keg_path
 
         hsh["installed"] << {
-          "version" => keg.basename.to_s,
+          "version" => keg.version.to_s,
           "used_options" => tab.used_options.map(&:flag),
           "built_as_bottle" => tab.built_bottle,
           "poured_from_bottle" => tab.poured_from_bottle
