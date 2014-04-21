@@ -147,13 +147,13 @@ class Cmd
         args << "-Wl,#{arg}"
       when /^-I(.+)?/
         # Support both "-Ifoo" (one argument) and "-I foo" (two arguments)
-        path = $1.chuzzle || whittler.next
-        path = canonical_path(path)
-        args << "-I#{path}" if keep?(path) and iset.add?(path)
+        val  = $1.chuzzle || whittler.next
+        path = canonical_path(val)
+        args << "-I#{val}" if keep?(path) and iset.add?(path)
       when /^-L(.+)?/
-        path = $1.chuzzle || whittler.next
-        path = canonical_path(path)
-        args << "-L#{path}" if keep?(path) and lset.add?(path)
+        val  = $1.chuzzle || whittler.next
+        path = canonical_path(val)
+        args << "-L#{val}" if keep?(path) and lset.add?(path)
       else
         args << arg
       end
