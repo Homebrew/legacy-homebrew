@@ -183,7 +183,7 @@ class Keg < Pathname
     end
 
     unless mode.dry_run
-      linked_keg_record.make_relative_symlink(self)
+      make_relative_symlink(linked_keg_record, self, mode)
       optlink
     end
 
@@ -203,7 +203,7 @@ class Keg < Pathname
     elsif from.exist?
       from.delete
     end
-    from.make_relative_symlink(self)
+    make_relative_symlink(from, self)
   end
 
   def delete_pyc_files!
@@ -250,7 +250,45 @@ class Keg < Pathname
     end
 
     dst.delete if mode.overwrite && (dst.exist? || dst.symlink?)
-    dst.make_relative_symlink src
+    dst.make_relative_symlink(src)
+  rescue Errno::EEXIST
+    if dst.symlink? && dst.exist?
+      raise <<-EOS.undent
+        Could not symlink file: #{src}
+        Target #{dst} already exists as a symlink to #{dst.readlink}.
+        If this file is from another formula, you may need to
+        `brew unlink` it. Otherwise, you may want to delete it.
+        To force the link and overwrite all other conflicting files, do:
+          brew link --overwrite formula_name
+
+        To list all files that would be deleted:
+          brew link --overwrite --dry-run formula_name
+        EOS
+    elsif dst.exist?
+      raise <<-EOS.undent
+        Could not symlink file: #{src}
+        Target #{dst} already exists. You may need to delete it.
+        To force the link and overwrite all other conflicting files, do:
+          brew link --overwrite formula_name
+
+        To list all files that would be deleted:
+          brew link --overwrite --dry-run formula_name
+        EOS
+    elsif dst.symlink?
+      dst.unlink
+      retry
+    end
+  rescue Errno::EACCES
+    raise <<-EOS.undent
+      Could not symlink file: #{src}
+      #{dst.dirname} is not writable. You should change its permissions.
+      EOS
+  rescue SystemCallError
+    raise <<-EOS.undent
+      Could not symlink file: #{src}
+      #{dst} may already exist.
+      #{dst.dirname} may not be writable.
+      EOS
   end
 
   # symlinks the contents of self+foo recursively into #{HOMEBREW_PREFIX}/foo
