@@ -61,7 +61,7 @@ module OS
         Pathname.new "/usr/bin"
       elsif not (make_path = `/usr/bin/xcrun -find make 2>/dev/null`).empty?
         Pathname.new(make_path.chomp).dirname
-      elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
+      elsif Xcode.prefix && File.exist?("#{Xcode.prefix}/usr/bin/make")
         Pathname.new "#{Xcode.prefix}/usr/bin"
       end
     end
