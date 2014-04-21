@@ -217,15 +217,17 @@ class Cmd
     syspath.map{|d| "#{d}/lib" }.reject{|d| d == "#{brewfix}/lib" }
   end
   def cpath
-    cpath = ENV['CMAKE_PREFIX_PATH'].split(':').map{|d| "#{d}/include" } + ENV['CMAKE_INCLUDE_PATH'].split(':')
+    cpath  = path_split("CMAKE_PREFIX_PATH").map! { |d| File.join(d, "include") }
+    cpath += path_split("CMAKE_INCLUDE_PATH")
     opt = cpath.grep(%r{^#{Regexp.escape(brewfix)}/opt})
     sys = cpath - opt
     [sys, opt]
   end
   def libpath
-    ENV['CMAKE_PREFIX_PATH'].split(':').map{|d| "#{d}/lib" } +
-    ENV['CMAKE_LIBRARY_PATH'].split(':') -
-    syslibpath
+    libpath  = path_split("CMAKE_PREFIX_PATH").map! { |d| File.join(d, "lib") }
+    libpath += path_split("CMAKE_LIBRARY_PATH")
+    libpath -= syslibpath
+    libpath
   end
   def ldflags
     args = path_flags("-L", libpath)
@@ -277,6 +279,9 @@ class Cmd
   def path_flags(prefix, paths)
     paths = paths.uniq.select { |path| File.directory?(path) }
     paths.map! { |path| prefix + path }
+  end
+  def path_split(key)
+    ENV.fetch(key) { "" }.split(File::PATH_SEPARATOR)
   end
 end
 
