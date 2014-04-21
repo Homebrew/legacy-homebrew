@@ -56,7 +56,7 @@ class LinkTests < Test::Unit::TestCase
 
   def test_linking_fails_when_files_exist
     touch HOMEBREW_PREFIX/"bin/helloworld"
-    assert_raise RuntimeError do
+    assert_raise Keg::ConflictError do
       shutup { @keg.link }
     end
   end
