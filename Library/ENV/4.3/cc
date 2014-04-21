@@ -171,7 +171,7 @@ class Cmd
 
   def keep? path
     case path
-    when %r{^#{Regexp.escape(brewfix)}}, %r{^#{Regexp.escape(brewtmp)}}
+    when %r{^#{Regexp.escape(brewfix)}}o, %r{^#{Regexp.escape(brewtmp)}}o
       # maybe homebrew is installed to /sw or /opt/brew
       true
     when %r{^/opt}, %r{^/sw}, %r{/usr/X11}
@@ -233,7 +233,7 @@ class Cmd
   def cpath
     cpath  = path_split("CMAKE_PREFIX_PATH").map! { |d| File.join(d, "include") }
     cpath += path_split("CMAKE_INCLUDE_PATH")
-    opt = cpath.grep(%r{^#{Regexp.escape(brewfix)}/opt})
+    opt = cpath.grep(%r{^#{Regexp.escape(brewfix)}/opt}o)
     sys = cpath - opt
     [sys, opt]
   end
