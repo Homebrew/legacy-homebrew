@@ -4,6 +4,15 @@ require "formula_lock"
 require "ostruct"
 
 class Keg < Pathname
+  class AlreadyLinkedError < RuntimeError
+    def initialize(keg)
+      super <<-EOS.undent
+        Cannot link #{keg.fname}
+        Another version is already linked: #{keg.linked_keg_record.resolved_path}
+        EOS
+    end
+  end
+
   class LinkError < RuntimeError
     attr_reader :keg, :src, :dst
 
@@ -169,7 +178,7 @@ class Keg < Pathname
   end
 
   def link mode=OpenStruct.new
-    raise "Cannot link #{fname}\nAnother version is already linked: #{linked_keg_record.resolved_path}" if linked_keg_record.directory?
+    raise AlreadyLinkedError.new(self) if linked_keg_record.directory?
 
     ObserverPathnameExtension.reset_counts!
 
