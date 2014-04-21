@@ -260,7 +260,7 @@ class Cmd
     args
   end
 
-  # Keg-only opt paths get the "-I" treatment since it has higher priority that
+  # Keg-only opt paths get the "-I" treatment since it has higher priority than
   # "-isystem", and we want them to be searched before system directories as
   # well as any directories added by the build system.
   def cppflags
