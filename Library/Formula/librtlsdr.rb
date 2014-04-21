@@ -17,7 +17,7 @@ class Librtlsdr < Formula
       ENV.universal_binary
       ENV['CMAKE_OSX_ARCHITECTURES'] = Hardware::CPU.universal_archs.as_cmake_arch_flags
     end
-    
+
     system "cmake", ".", *std_cmake_args
     system "make", "install"
   end
