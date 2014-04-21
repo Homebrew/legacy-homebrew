@@ -23,6 +23,7 @@ class Pass < Formula
     system "make DESTDIR=#{prefix} PREFIX=/ install"
     share.install "contrib"
     zsh_completion.install "src/completion/pass.zsh-completion" => "_pass"
+    bash_completion.install "src/completion/pass.bash-completion" => "password-store"
   end
 
   test do
