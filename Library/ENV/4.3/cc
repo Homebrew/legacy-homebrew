@@ -216,10 +216,6 @@ class Cmd
     # NOTE this only counts if Homebrew is installed at /usr/local
     syspath.map{|d| "#{d}/lib" }.reject{|d| d == "#{brewfix}/lib" }
   end
-  def syscpath
-    isystem, _ = cpath
-    isystem + syspath.map{|d| "#{d}/include" }
-  end
   def cpath
     cpath = ENV['CMAKE_PREFIX_PATH'].split(':').map{|d| "#{d}/include" } + ENV['CMAKE_INCLUDE_PATH'].split(':')
     opt = cpath.grep(%r{^#{Regexp.escape(brewfix)}/opt})
