@@ -37,7 +37,9 @@ try `/usr/bin/xcrun --find #{arg0} 2>/dev/null`.chomp
 ENV["PATH"].split(File::PATH_SEPARATOR).each { |p| try File.join(p, arg0) }
 
 abort <<-EOS
-Your Xcode and or CLT are mis-configured. Try some or all of the following:
-    xcodebuild -license
-    sudo xcode-select -switch /path/to/Xcode.app
+Failed to execute: #{arg0} #{ARGV.join(" ")}
+
+Xcode and/or the CLT appear to be misconfigured. Try one or both of the following:
+  xcodebuild -license
+  sudo xcode-select -switch /path/to/Xcode.app
 EOS
