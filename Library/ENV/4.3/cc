@@ -86,7 +86,7 @@ class Cmd
       args = refurbished_args
     end
 
-    if nclt?
+    if sdkroot
       if tool != 'ld'
         args << "--sysroot=#{sdkroot}"
       else
@@ -208,7 +208,7 @@ class Cmd
     args
   end
   def syspath
-    if nclt?
+    if sdkroot
       %W{#{sdkroot}/usr #{sdkroot}/usr/local}
     else
       %W{/usr /usr/local}
@@ -268,9 +268,6 @@ class Cmd
   def configure?
     # configure scripts generated with autoconf 2.61 or later export as_nl
     ENV.key? 'as_nl'
-  end
-  def nclt?
-    sdkroot != nil
   end
   def cccfg? flags
     flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
