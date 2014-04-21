@@ -11,5 +11,4 @@ end
 
 class NilClass
   def chuzzle; end
-  def split(x); [] end
 end
