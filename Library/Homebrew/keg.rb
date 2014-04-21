@@ -4,6 +4,51 @@ require "formula_lock"
 require "ostruct"
 
 class Keg < Pathname
+  class LinkError < RuntimeError
+    attr_reader :keg, :src, :dst
+
+    def initialize(keg, src, dst)
+      @src = src
+      @dst = dst
+      @keg = keg
+    end
+  end
+
+  class ConflictError < LinkError
+    def suggestion
+      conflict = Keg.for(dst)
+    rescue NotAKegError
+      "already exists. You may want to remove it:\n  rm #{dst}\n"
+    else
+      <<-EOS.undent
+      is a symlink belonging to #{conflict.fname}. You can unlink it:
+        brew unlink #{conflict.fname}
+      EOS
+    end
+
+    def to_s
+      s = []
+      s << "Could not symlink #{src.relative_path_from(keg)}"
+      s << "Target #{dst}" << suggestion
+      s << <<-EOS.undent
+        To force the link and overwrite all conflicting files:
+          brew link --overwrite #{keg.fname}
+
+        To list all files that would be deleted:
+          brew link --overwrite --dry-run #{keg.fname}
+        EOS
+      s.join("\n")
+    end
+  end
+
+  class DirectoryNotWritableError < LinkError
+    def to_s; <<-EOS.undent
+      Could not symlink #{src.relative_path_from(keg)}
+      #{dst.dirname} is not writable.
+      EOS
+    end
+  end
+
   # locale-specific directories have the form language[_territory][.codeset][@modifier]
   LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
   INFOFILE_RX = %r[info/([^.].*?\.info|dir)$]
@@ -252,43 +297,16 @@ class Keg < Pathname
     dst.delete if mode.overwrite && (dst.exist? || dst.symlink?)
     dst.make_relative_symlink(src)
   rescue Errno::EEXIST
-    if dst.symlink? && dst.exist?
-      raise <<-EOS.undent
-        Could not symlink file: #{src}
-        Target #{dst} already exists as a symlink to #{dst.readlink}.
-        If this file is from another formula, you may need to
-        `brew unlink` it. Otherwise, you may want to delete it.
-        To force the link and overwrite all other conflicting files, do:
-          brew link --overwrite formula_name
-
-        To list all files that would be deleted:
-          brew link --overwrite --dry-run formula_name
-        EOS
-    elsif dst.exist?
-      raise <<-EOS.undent
-        Could not symlink file: #{src}
-        Target #{dst} already exists. You may need to delete it.
-        To force the link and overwrite all other conflicting files, do:
-          brew link --overwrite formula_name
-
-        To list all files that would be deleted:
-          brew link --overwrite --dry-run formula_name
-        EOS
+    if dst.exist?
+      raise ConflictError.new(self, src, dst)
     elsif dst.symlink?
       dst.unlink
       retry
     end
   rescue Errno::EACCES
-    raise <<-EOS.undent
-      Could not symlink file: #{src}
-      #{dst.dirname} is not writable. You should change its permissions.
-      EOS
+    raise DirectoryNotWritableError.new(self, src, dst)
   rescue SystemCallError
-    raise <<-EOS.undent
-      Could not symlink file: #{src}
-      #{dst} may already exist.
-      #{dst.dirname} may not be writable.
-      EOS
+    raise LinkError.new(self, src, dst)
   end
 
   # symlinks the contents of self+foo recursively into #{HOMEBREW_PREFIX}/foo
