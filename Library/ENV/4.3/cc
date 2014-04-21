@@ -1,6 +1,7 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 
 require File.expand_path("../libsuperenv", File.dirname(__FILE__))
+require 'pathname'
 require 'set'
 require 'stringio'
 
@@ -147,10 +148,12 @@ class Cmd
       when /^-I(.+)?/
         # Support both "-Ifoo" (one argument) and "-I foo" (two arguments)
         path = $1.chuzzle || whittler.next
-        args << "-I#{path}" if keep?(path) and iset.add?(path.cleanpath)
+        path = canonical_path(path)
+        args << "-I#{path}" if keep?(path) and iset.add?(path)
       when /^-L(.+)?/
         path = $1.chuzzle || whittler.next
-        args << "-L#{path}" if keep?(path) and lset.add?(path.cleanpath)
+        path = canonical_path(path)
+        args << "-L#{path}" if keep?(path) and lset.add?(path)
       else
         args << arg
       end
@@ -159,7 +162,7 @@ class Cmd
   end
 
   def keep? path
-    case path.cleanpath
+    case path
     when %r{^#{Regexp.escape(brewfix)}}, %r{^#{Regexp.escape(brewtmp)}}
       # maybe homebrew is installed to /sw or /opt/brew
       true
@@ -269,6 +272,11 @@ class Cmd
   end
   def cccfg? flags
     flags.split('').all?{|c| ENV['HOMEBREW_CCCFG'].include? c } if ENV['HOMEBREW_CCCFG']
+  end
+  def canonical_path(path)
+    path = Pathname.new(path)
+    path = path.realpath if path.exist?
+    path.to_s
   end
 end
 
