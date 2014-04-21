@@ -13,9 +13,3 @@ class NilClass
   def chuzzle; end
   def split(x); [] end
 end
-
-class Array
-  def to_flags prefix
-    select { |path| File.directory? path }.uniq.map { |path| prefix + path }
-  end
-end

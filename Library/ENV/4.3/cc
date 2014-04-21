@@ -232,7 +232,7 @@ class Cmd
     syslibpath
   end
   def ldflags
-    args = libpath.to_flags('-L')
+    args = path_flags("-L", libpath)
     case mode
     when :ld   then args << '-headerpad_max_install_names'
     when :ccld then args << '-Wl,-headerpad_max_install_names'
@@ -247,7 +247,7 @@ class Cmd
     sys, opt = cpath
     # we want our keg-only includes to be found before system includes *and*
     # before any other includes the build-system adds
-    sys.to_flags('-isystem') + opt.to_flags('-I')
+    path_flags("-isystem", sys) + path_flags("-I", opt)
   end
   def make_fuss args
     return unless make_fuss?
@@ -277,6 +277,10 @@ class Cmd
     path = Pathname.new(path)
     path = path.realpath if path.exist?
     path.to_s
+  end
+  def path_flags(prefix, paths)
+    paths = paths.uniq.select { |path| File.directory?(path) }
+    paths.map! { |path| prefix + path }
   end
 end
 
