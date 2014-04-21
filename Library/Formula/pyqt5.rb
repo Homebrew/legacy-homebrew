@@ -43,6 +43,7 @@ class Pyqt5 < Formula
       system "make", "install"
       system "make", "clean"
     end
+    doc.install Dir['doc/html'], 'examples' 
   end
 
   test do
