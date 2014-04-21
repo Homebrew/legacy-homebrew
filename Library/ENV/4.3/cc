@@ -87,10 +87,10 @@ class Cmd
     end
 
     if sdkroot
-      if tool != 'ld'
-        args << "--sysroot=#{sdkroot}"
-      else
+      if tool == "ld"
         args << "-syslibroot" << sdkroot
+      else
+        args << "--sysroot=#{sdkroot}"
       end
     end
 
