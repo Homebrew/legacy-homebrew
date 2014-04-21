@@ -49,7 +49,7 @@ class LinkTests < Test::Unit::TestCase
 
   def test_linking_fails_when_already_linked
     @keg.link
-    assert_raise RuntimeError do
+    assert_raise Keg::AlreadyLinkedError do
       shutup { @keg.link }
     end
   end
