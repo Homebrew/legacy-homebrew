@@ -6,7 +6,6 @@
 $:.unshift "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8"
 
 class String
-  def cleanpath; require 'pathname'; Pathname.new(self).realpath.to_s rescue self end
   def chuzzle; s = chomp; s unless s.empty? end
 end
 
