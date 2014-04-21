@@ -270,10 +270,8 @@ class Cmd
 
     dels = @args - args
     adds = args - @args
-    dups = dels & args
 
     LOGGER.puts "superenv removed:  #{dels*' '}" unless dels.empty?
-    LOGGER.puts "superenv deduped:  #{dups}" unless dups.empty?
     LOGGER.puts "superenv added:    #{adds*' '}" unless adds.empty?
   end
 
