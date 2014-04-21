@@ -231,12 +231,11 @@ class Keg < Pathname
       make_relative_symlink(linked_keg_record, self, mode)
       optlink
     end
-
-    ObserverPathnameExtension.total
-  rescue Exception
-    opoo "Could not link #{fname}. Unlinking..."
+  rescue LinkError
     unlink
     raise
+  else
+    ObserverPathnameExtension.total
   end
 
   def optlink
