@@ -290,53 +290,9 @@ class Pathname
     (dirname+link).exist?
   end
 
-  # perhaps confusingly, this Pathname object becomes the symlink pointing to
-  # the src paramter.
-  def make_relative_symlink src
+  def make_relative_symlink(src)
     dirname.mkpath
-
-    dirname.cd do
-      # NOTE only system ln -s will create RELATIVE symlinks
-      return if quiet_system("ln", "-s", src.relative_path_from(dirname), basename)
-    end
-
-    if symlink? && exist?
-      raise <<-EOS.undent
-        Could not symlink file: #{src}
-        Target #{self} already exists as a symlink to #{readlink}.
-        If this file is from another formula, you may need to
-        `brew unlink` it. Otherwise, you may want to delete it.
-        To force the link and overwrite all other conflicting files, do:
-          brew link --overwrite formula_name
-
-        To list all files that would be deleted:
-          brew link --overwrite --dry-run formula_name
-        EOS
-    elsif exist?
-      raise <<-EOS.undent
-        Could not symlink file: #{src}
-        Target #{self} already exists. You may need to delete it.
-        To force the link and overwrite all other conflicting files, do:
-          brew link --overwrite formula_name
-
-        To list all files that would be deleted:
-          brew link --overwrite --dry-run formula_name
-        EOS
-    elsif symlink?
-      unlink
-      make_relative_symlink(src)
-    elsif !dirname.writable_real?
-      raise <<-EOS.undent
-        Could not symlink file: #{src}
-        #{dirname} is not writable. You should change its permissions.
-        EOS
-    else
-      raise <<-EOS.undent
-        Could not symlink file: #{src}
-        #{self} may already exist.
-        #{dirname} may not be writable.
-        EOS
-    end
+    File.symlink(src.relative_path_from(dirname), self)
   end
 
   def / that
@@ -503,6 +459,7 @@ module ObserverPathnameExtension
   end
   def make_relative_symlink src
     super
+    puts "ln -s #{src.relative_path_from(dirname)} #{basename}" if ARGV.verbose?
     ObserverPathnameExtension.n += 1
   end
   def install_info
