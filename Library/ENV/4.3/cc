@@ -230,6 +230,7 @@ class Cmd
     syspath.reject { |d| d == brewfix }.map! { |d| File.join(d, "lib") }
   end
 
+  # Paths added as "-isystem<path>" and "-I<path>" flags
   def cpath
     cpath  = path_split("CMAKE_PREFIX_PATH").map! { |d| File.join(d, "include") }
     cpath += path_split("CMAKE_INCLUDE_PATH")
@@ -238,6 +239,7 @@ class Cmd
     [sys, opt]
   end
 
+  # Paths added as "-L<path>" flags
   def libpath
     libpath  = path_split("CMAKE_PREFIX_PATH").map! { |d| File.join(d, "lib") }
     libpath += path_split("CMAKE_LIBRARY_PATH")
@@ -258,10 +260,11 @@ class Cmd
     args
   end
 
+  # Keg-only opt paths get the "-I" treatment since it has higher priority that
+  # "-isystem", and we want them to be searched before system directories as
+  # well as any directories added by the build system.
   def cppflags
     sys, opt = cpath
-    # we want our keg-only includes to be found before system includes *and*
-    # before any other includes the build-system adds
     path_flags("-isystem", sys) + path_flags("-I", opt)
   end
 
