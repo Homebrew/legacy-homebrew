@@ -20,4 +20,11 @@ class Cc65 < Formula
       #{share}/cc65
     EOS
   end
+
+  test do
+    (testpath/"foo.c").write "int main (void) { return 0; }"
+
+    system bin/"cl65", "foo.c" # compile and link
+    assert File.exist?("foo")  # binary
+  end
 end

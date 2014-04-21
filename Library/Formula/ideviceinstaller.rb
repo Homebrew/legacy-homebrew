@@ -24,7 +24,7 @@ class Ideviceinstaller < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/ideviceinstaller --help |grep -q ^Usage"
   end
 end

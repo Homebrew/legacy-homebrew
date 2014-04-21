@@ -11,13 +11,13 @@ class Fakeroot < Formula
 
   def install
     system "./bootstrap"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--disable-static",
                           "--prefix=#{prefix}"
     system "make install"
   end
 
   test do
-    system "#{bin}/fakeroot", "-v"
+    assert_equal `fakeroot whoami`, "root\n"
   end
 end

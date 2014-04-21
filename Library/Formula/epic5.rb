@@ -13,7 +13,7 @@ class Epic5 < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/epic5", "-v"
   end
 end

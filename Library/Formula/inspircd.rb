@@ -2,8 +2,8 @@ require 'formula'
 
 class Inspircd < Formula
   homepage 'http://www.inspircd.org'
-  url 'https://github.com/inspircd/inspircd/archive/v2.0.14.tar.gz'
-  sha1 'b8b29fef06579ca624027a26a989cdea90a290a8'
+  url 'https://github.com/inspircd/inspircd/archive/v2.0.16.tar.gz'
+  sha1 '6206e5dd61717a24f499e58996d2c7f4c8e4512d'
 
   head 'https://github.com/inspircd/inspircd.git'
 
@@ -28,9 +28,9 @@ class Inspircd < Formula
     modules << 'm_geoip.cpp' if build.with? 'geoip'
     modules << 'm_ssl_gnutls.cpp' if build.with? 'gnutls'
     modules << 'm_mysql.cpp' if build.with? 'mysql'
-    modules << 'm_ssl_openssl.cpp' unless build.without? 'openssl'
-    modules << 'm_ldapauth.cpp' unless build.without? 'ldap'
-    modules << 'm_ldapoper.cpp' unless build.without? 'ldap'
+    modules << 'm_ssl_openssl.cpp' if build.with? 'openssl'
+    modules << 'm_ldapauth.cpp' if build.with? 'ldap'
+    modules << 'm_ldapoper.cpp' if build.with? 'ldap'
     modules << 'm_regex_pcre.cpp' if build.with? 'pcre'
     modules << 'm_pgsql.cpp' if build.with? 'postgresql'
     modules << 'm_sqlite3.cpp' if build.with? 'sqlite'

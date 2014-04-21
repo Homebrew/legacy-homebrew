@@ -13,7 +13,7 @@ class Rc < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/rc", "-c", "echo Hello!"
   end
 end

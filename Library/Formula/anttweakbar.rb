@@ -2,20 +2,16 @@ require 'formula'
 
 class Anttweakbar < Formula
   homepage 'http://www.antisphere.com/Wiki/tools:anttweakbar'
-  url 'http://downloads.sourceforge.net/project/anttweakbar/AntTweakBar_116.zip'
+  url 'https://downloads.sourceforge.net/project/anttweakbar/AntTweakBar_116.zip'
   version '1.16'
   sha1 '5743321df3b074f9a82b5ef3e6b54830a715b938'
 
   # See
   # http://sourceforge.net/p/anttweakbar/code/ci/5a076d13f143175a6bda3c668e29a33406479339/tree/src/LoadOGLCore.h?diff=5528b167ed12395a60949d7c643262b6668f15d5&diformat=regular
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
-    cd 'src' do
-      system 'make -f Makefile.osx'
-    end
+    system "make", "-C", "src", "-f", "Makefile.osx"
     lib.install 'lib/libAntTweakBar.dylib'
     include.install 'include/AntTweakBar.h'
   end

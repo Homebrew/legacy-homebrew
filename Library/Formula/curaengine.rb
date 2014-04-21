@@ -3,8 +3,8 @@ require 'formula'
 class Curaengine < Formula
   homepage 'https://github.com/Ultimaker/CuraEngine'
   head 'https://github.com/Ultimaker/CuraEngine.git'
-  url 'https://github.com/Ultimaker/CuraEngine/archive/13.11.2.tar.gz'
-  sha1 '1a3e3933153421ac22c368ffca9b7ae192a2fc6a'
+  url 'https://github.com/Ultimaker/CuraEngine/archive/14.01.tar.gz'
+  sha1 '015096620c885eb25da6fd7be672de25717d45c1'
 
   def install
     ENV.deparallelize

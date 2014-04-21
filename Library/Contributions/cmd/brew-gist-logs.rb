@@ -20,8 +20,10 @@ def gist_logs f
   url = create_gist(files)
 
   if ARGV.include? '--new-issue'
-    new_issue(repo, "#{f.name} failed to build on #{MACOS_FULL_VERSION}", url)
+    url = new_issue(repo, "#{f.name} failed to build on #{MACOS_FULL_VERSION}", url)
   end
+
+  ensure puts url if url
 end
 
 def load_logs name
@@ -43,12 +45,11 @@ def append_doctor files
 end
 
 def create_gist files
-  puts (url = post('gists', {'public' => true, 'files' => files})['html_url'])
-  url
+  post('gists', {'public' => true, 'files' => files})['html_url']
 end
 
 def new_issue repo, title, body
-  puts post("repos/#{repo}/issues", {'title' => title, 'body' => body})['html_url']
+  post("repos/#{repo}/issues", {'title' => title, 'body' => body})['html_url']
 end
 
 def http
@@ -80,7 +81,7 @@ end
 
 class HTTP_Error < RuntimeError
   def initialize response
-    super "Error: HTTP #{response.code} #{response.message}"
+    super "HTTP #{response.code} #{response.message}"
   end
 end
 

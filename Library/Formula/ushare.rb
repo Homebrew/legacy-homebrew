@@ -11,13 +11,13 @@ class Ushare < Formula
   depends_on 'libdlna'
 
   # Fix compilation with newer libupnp
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.append 'CFLAGS', '-std=gnu89'
 
     # Need to explicitly add intl and gettext here.
-    gettext = Formula.factory("gettext")
+    gettext = Formula["gettext"]
     ENV.append 'CFLAGS', "-I#{gettext.include}"
     ENV.append 'LDFLAGS', "-lintl"
 

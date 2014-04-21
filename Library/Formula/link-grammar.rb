@@ -13,7 +13,7 @@ class LinkGrammar < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/link-parser", "--version"
   end
 end

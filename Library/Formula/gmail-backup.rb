@@ -14,7 +14,7 @@ class GmailBackup < Formula
     bin.env_script_all_files(libexec, :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
-  def test
+  test do
     system "#{bin}/gmail-backup", "--help"
   end
 end

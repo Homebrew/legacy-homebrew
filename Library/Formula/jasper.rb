@@ -19,7 +19,7 @@ class Jasper < Formula
   # where an assertion fails when Jasper is fed certain JPEG-2000 files with
   # an alpha channel. See:
   # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=469786
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?

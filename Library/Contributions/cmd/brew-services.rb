@@ -94,7 +94,7 @@ module ServicesCli
     def bin; "brew services" end
 
     # Path to launchctl binary.
-    def launchctl; "/bin/launchctl" end
+    def launchctl; which("launchctl") end
 
     # Wohoo, we are root dude!
     def root?; Process.uid == 0 end
@@ -123,7 +123,7 @@ module ServicesCli
     end
 
     # Access current service
-    def service; @service ||= Service.new(Formula.factory(Formula.canonical_name(@formula))) if @formula end
+    def service; @service ||= Service.new(Formula.factory(@formula)) if @formula end
 
     # Print usage and `exit(...)` with supplied exit code, if code
     # is set to `false`, then exit is ignored.
@@ -302,7 +302,7 @@ class Service
   # Create a new `Service` instance from either a path or label.
   def self.from(path_or_label)
     return nil unless path_or_label =~ /homebrew\.mxcl\.([^\.]+)(\.plist)?\z/
-    new(Formula.factory(Formula.canonical_name($1))) rescue nil
+    new(Formula.factory($1)) rescue nil
   end
 
   # Initialize new `Service` instance with supplied formula.

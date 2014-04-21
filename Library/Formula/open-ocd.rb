@@ -2,15 +2,20 @@ require 'formula'
 
 class OpenOcd < Formula
   homepage 'http://sourceforge.net/projects/openocd/'
-  url 'http://downloads.sourceforge.net/project/openocd/openocd/0.7.0/openocd-0.7.0.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/openocd/openocd/0.7.0/openocd-0.7.0.tar.bz2'
   sha1 '40fa518af4fae273f24478249fc03aa6fcce9176'
 
   head do
     url 'git://git.code.sf.net/p/openocd/code'
 
+    option 'enable-cmsis-dap', 'Enable building support for devices using CMSIS-DAP'
+
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
+    depends_on 'pkg-config' => :build
+
+    depends_on 'hidapi' if build.include? 'enable-cmsis-dap'
   end
 
   option 'enable-ft2232_libftdi', 'Enable building support for FT2232 based devices with libftdi driver'
@@ -48,6 +53,10 @@ class OpenOcd < Formula
     if build.include? "enable-ft2232_ftd2xx"
       args << "--enable-ft2232_ftd2xx"
       args << "--enable-presto_ftd2xx"
+    end
+
+    if build.head? && build.include?("enable-cmsis-dap")
+      args << "--enable-cmsis-dap"
     end
 
     ENV['CCACHE'] = 'none'

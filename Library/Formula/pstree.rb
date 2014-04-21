@@ -9,4 +9,11 @@ class Pstree < Formula
     system "make pstree"
     bin.install "pstree"
   end
+
+  test do
+    lines = `#{bin}/pstree #{Process.pid}`.strip.split("\n")
+    assert lines[0].include?($0)
+    assert lines[1].include?("#{bin}/pstree")
+    assert_equal 0, $?.exitstatus
+  end
 end

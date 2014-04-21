@@ -15,7 +15,7 @@ class Cgdb < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-readline=#{Formula.factory('readline').opt_prefix}"
+                          "--with-readline=#{Formula['readline'].opt_prefix}"
     system "make install"
   end
 end

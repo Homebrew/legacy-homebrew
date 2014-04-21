@@ -2,8 +2,15 @@ require 'formula'
 
 class Protobuf < Formula
   homepage 'http://code.google.com/p/protobuf/'
-  url 'http://protobuf.googlecode.com/files/protobuf-2.5.0.tar.bz2'
+  url 'https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.bz2'
   sha1 '62c10dcdac4b69cc8c6bb19f73db40c264cb2726'
+
+  bottle do
+    cellar :any
+    sha1 "72e17ffad4e40e1e9b15aa116238110d3a68f753" => :mavericks
+    sha1 "bcc4795d8f01a0682d968e195917f79618711126" => :mountain_lion
+    sha1 "51b7b27f7d5e5ffcf9b8a4d49882c2217653e5e6" => :lion
+  end
 
   option :universal
   option :cxx11

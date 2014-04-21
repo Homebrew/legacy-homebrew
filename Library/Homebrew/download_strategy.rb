@@ -39,14 +39,17 @@ class AbstractDownloadStrategy
 end
 
 class VCSDownloadStrategy < AbstractDownloadStrategy
+  REF_TYPES = [:branch, :revision, :revisions, :tag].freeze
+
   def initialize name, resource
     super
-    @ref_type, @ref = destructure_spec_hash(resource.specs)
+    @ref_type, @ref = extract_ref(resource.specs)
     @clone = HOMEBREW_CACHE/cache_filename
   end
 
-  def destructure_spec_hash(spec)
-    spec.each { |o| return o }
+  def extract_ref(specs)
+    key = REF_TYPES.find { |type| specs.key?(type) }
+    return key, specs[key]
   end
 
   def cache_filename(tag=cache_tag)
@@ -135,25 +138,29 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     tarball_path
   end
 
+  # gunzip and bunzip2 write the output file in the same directory as the input
+  # file regardless of the current working directory, so we need to write it to
+  # the correct location ourselves.
+  def buffered_write(tool)
+    target = File.basename(basename_without_params, tarball_path.extname)
+
+    IO.popen("#{tool} -f '#{tarball_path}' -c") do |pipe|
+      File.open(target, "wb") do |f|
+        buf = ""
+        f.write(buf) while pipe.read(1024, buf)
+      end
+    end
+  end
+
   def stage
     case tarball_path.compression_type
     when :zip
       with_system_path { quiet_safe_system 'unzip', {:quiet_flag => '-qq'}, tarball_path }
       chdir
     when :gzip_only
-      # gunzip writes the compressed data in the location of the original,
-      # regardless of the current working directory; the only way to
-      # write elsewhere is to use the stdout
-      with_system_path do
-        target = File.basename(basename_without_params, ".gz")
-
-        IO.popen("gunzip -f '#{tarball_path}' -c") do |pipe|
-          File.open(target, "wb") do |f|
-            buf = ""
-            f.write(buf) while pipe.read(1024, buf)
-          end
-        end
-      end
+      with_system_path { buffered_write("gunzip") }
+    when :bzip2_only
+      with_system_path { buffered_write("bunzip2") }
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
       # TODO check if it's really a tar archive
@@ -165,9 +172,8 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
     when :lzip
       with_system_path { safe_system "#{lzippath} -dc \"#{tarball_path}\" | tar xf -" }
       chdir
-    when :pkg
-      safe_system '/usr/sbin/pkgutil', '--expand', tarball_path, basename_without_params
-      chdir
+    when :xar
+      safe_system "/usr/bin/xar", "-xf", tarball_path
     when :rar
       quiet_safe_system 'unrar', 'x', {:quiet_flag => '-inul'}, tarball_path
     when :p7zip
@@ -464,6 +470,18 @@ class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
 end
 
 class GitDownloadStrategy < VCSDownloadStrategy
+  SHALLOW_CLONE_WHITELIST = [
+    %r{git://},
+    %r{https://github\.com},
+    %r{http://git\.sv\.gnu\.org},
+    %r{http://llvm\.org},
+  ]
+
+  def initialize name, resource
+    super
+    @shallow = resource.specs.fetch(:shallow) { true }
+  end
+
   def cache_tag; "git" end
 
   def fetch
@@ -503,27 +521,20 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   private
 
+  def shallow_clone?
+    @shallow && support_depth?
+  end
+
+  def support_depth?
+    @ref_type != :revision && SHALLOW_CLONE_WHITELIST.any? { |rx| rx === @url }
+  end
+
   def git_dir
     @clone.join(".git")
   end
 
   def has_ref?
     quiet_system 'git', '--git-dir', git_dir, 'rev-parse', '-q', '--verify', @ref
-  end
-
-  def support_depth?
-    @ref_type != :revision and host_supports_depth?
-  end
-
-  SHALLOW_CLONE_WHITELIST = [
-    %r{git://},
-    %r{https://github\.com},
-    %r{http://git\.sv\.gnu\.org},
-    %r{http://llvm\.org},
-  ]
-
-  def host_supports_depth?
-    SHALLOW_CLONE_WHITELIST.any? { |rx| rx === @url }
   end
 
   def repo_valid?
@@ -536,7 +547,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def clone_args
     args = %w{clone}
-    args << '--depth' << '1' if support_depth?
+    args << '--depth' << '1' if shallow_clone?
 
     case @ref_type
     when :branch, :tag then args << '--branch' << @ref
@@ -601,8 +612,8 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def checkout_submodules(dst)
-    sub_cmd = %W{git checkout-index -a -f --prefix=#{dst}/$path/}
-    safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', *sub_cmd
+    sub_cmd = "git checkout-index -a -f --prefix=#{dst}/$path/"
+    safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
   end
 end
 
@@ -800,43 +811,42 @@ class DownloadStrategyDetector
 
   def self.detect_from_url(url)
     case url
-      # We use a special URL pattern for cvs
-    when %r[^cvs://] then CVSDownloadStrategy
-      # Standard URLs
-    when %r[^bzr://] then BazaarDownloadStrategy
-    when %r[^git://] then GitDownloadStrategy
-    when %r[^https?://.+\.git$] then GitDownloadStrategy
-    when %r[^hg://] then MercurialDownloadStrategy
-    when %r[^svn://] then SubversionDownloadStrategy
-    when %r[^svn\+http://] then SubversionDownloadStrategy
-    when %r[^fossil://] then FossilDownloadStrategy
-      # Some well-known source hosts
-    when %r[^https?://(.+?\.)?googlecode\.com/hg] then MercurialDownloadStrategy
-    when %r[^https?://(.+?\.)?googlecode\.com/svn] then SubversionDownloadStrategy
-    when %r[^https?://(.+?\.)?sourceforge\.net/svnroot/] then SubversionDownloadStrategy
-    when %r[^https?://(.+?\.)?sourceforge\.net/hgweb/] then MercurialDownloadStrategy
-    when %r[^http://svn.apache.org/repos/] then SubversionDownloadStrategy
-    when %r[^http://www.apache.org/dyn/closer.cgi] then CurlApacheMirrorDownloadStrategy
-      # Common URL patterns
-    when %r[^https?://svn\.] then SubversionDownloadStrategy
-    when bottle_native_regex, bottle_regex
-      CurlBottleDownloadStrategy
-      # Otherwise just try to download
-    else CurlDownloadStrategy
+    when %r[^https?://.+\.git$], %r[^git://]
+      GitDownloadStrategy
+    when %r[^http://www\.apache\.org/dyn/closer\.cgi]
+      CurlApacheMirrorDownloadStrategy
+    when %r[^https?://(.+?\.)?googlecode\.com/svn], %r[^https?://svn\.], %r[^svn://], %r[^https?://(.+?\.)?sourceforge\.net/svnroot/]
+      SubversionDownloadStrategy
+    when %r[^cvs://]
+      CVSDownloadStrategy
+    when %r[^https?://(.+?\.)?googlecode\.com/hg]
+      MercurialDownloadStrategy
+    when %r[^hg://]
+      MercurialDownloadStrategy
+    when %r[^bzr://]
+      BazaarDownloadStrategy
+    when %r[^fossil://]
+      FossilDownloadStrategy
+    when %r[^http://svn\.apache\.org/repos/], %r[^svn\+http://]
+      SubversionDownloadStrategy
+    when %r[^https?://(.+?\.)?sourceforge\.net/hgweb/]
+      MercurialDownloadStrategy
+    else
+      CurlDownloadStrategy
     end
   end
 
   def self.detect_from_symbol(symbol)
     case symbol
-    when :bzr then BazaarDownloadStrategy
-    when :curl then CurlDownloadStrategy
-    when :cvs then CVSDownloadStrategy
-    when :git then GitDownloadStrategy
-    when :hg then MercurialDownloadStrategy
+    when :hg      then MercurialDownloadStrategy
     when :nounzip then NoUnzipCurlDownloadStrategy
-    when :post then CurlPostDownloadStrategy
-    when :ssl3 then CurlSSL3DownloadStrategy
-    when :svn then SubversionDownloadStrategy
+    when :git     then GitDownloadStrategy
+    when :bzr     then BazaarDownloadStrategy
+    when :svn     then SubversionDownloadStrategy
+    when :curl    then CurlDownloadStrategy
+    when :ssl3    then CurlSSL3DownloadStrategy
+    when :cvs     then CVSDownloadStrategy
+    when :post    then CurlPostDownloadStrategy
     else
       raise "Unknown download strategy #{strategy} was requested."
     end

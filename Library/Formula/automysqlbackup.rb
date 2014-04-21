@@ -2,7 +2,7 @@ require 'formula'
 
 class Automysqlbackup < Formula
   homepage 'http://sourceforge.net/projects/automysqlbackup/'
-  url 'http://downloads.sourceforge.net/project/automysqlbackup/AutoMySQLBackup/AutoMySQLBackup%20VER%203.0/automysqlbackup-v3.0_rc6.tar.gz'
+  url 'https://downloads.sourceforge.net/project/automysqlbackup/AutoMySQLBackup/AutoMySQLBackup%20VER%203.0/automysqlbackup-v3.0_rc6.tar.gz'
   version '3.0-rc6'
   sha1 'a21123a2c5fbf568a7fe167698a82697ae1cbb21'
 

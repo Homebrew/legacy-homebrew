@@ -2,7 +2,7 @@ require 'formula'
 
 class Luciddb < Formula
   homepage 'http://www.luciddb.org/'
-  url 'http://downloads.sourceforge.net/project/luciddb/luciddb/luciddb-0.9.4/luciddb-bin-macos32-0.9.4.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/luciddb/luciddb/luciddb-0.9.4/luciddb-bin-macos32-0.9.4.tar.bz2'
   sha1 'b0a7b9dbe997a1754d48856c866ffedf4d276eae'
 
   def shim_script target
@@ -24,7 +24,7 @@ class Luciddb < Formula
     end
     Dir["#{libexec}/bin/*"].each do |b|
       next if b =~ /classpath.gen/ or b =~ /defineFarragoRuntime/
-      n = Pathname.new(b).basename
+      n = File.basename(b)
       (bin+n).write shim_script(n)
     end
   end

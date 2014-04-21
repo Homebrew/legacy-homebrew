@@ -5,9 +5,7 @@ class Opendetex < Formula
   url 'https://opendetex.googlecode.com/files/opendetex-2.8.1.tar.bz2'
   sha1 'a811635519dc6573735ca9d406f7032eccacd7e0'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system 'make'

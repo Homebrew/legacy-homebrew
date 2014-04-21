@@ -2,7 +2,7 @@ require 'formula'
 
 class Squashfs < Formula
   homepage 'http://squashfs.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/squashfs/squashfs/squashfs4.2/squashfs4.2.tar.gz'
+  url 'https://downloads.sourceforge.net/project/squashfs/squashfs/squashfs4.2/squashfs4.2.tar.gz'
   sha256 'd9e0195aa922dbb665ed322b9aaa96e04a476ee650f39bbeadb0d00b24022e96'
 
   depends_on 'lzo'
@@ -13,9 +13,7 @@ class Squashfs < Formula
   end
 
   # The instructions for this software say to do this on OS X
-  def patches
-    { :p0 => DATA }
-  end
+  patch :p0, :DATA
 
   def install
     cd 'squashfs-tools' do

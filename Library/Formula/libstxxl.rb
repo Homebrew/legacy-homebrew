@@ -2,11 +2,11 @@ require 'formula'
 
 class Libstxxl < Formula
   homepage 'http://stxxl.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/stxxl/stxxl/1.3.1/stxxl-1.3.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/stxxl/stxxl/1.3.1/stxxl-1.3.1.tar.gz'
   sha1 '5fba2bb26b919a07e966b2f69ae29aa671892a7d'
 
   # issue has been rectified in upstream and future 1.4.0 release
-  def patches; DATA; end if MacOS.version >= :mavericks
+  patch :DATA if MacOS.version >= :mavericks
 
   def install
     ENV['COMPILER'] = ENV.cxx

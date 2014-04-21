@@ -8,9 +8,9 @@ class Libcaca < Formula
 
   option 'with-imlib2', 'Build with Imlib2 support'
 
-  depends_on :x11 if MacOS::X11.installed? or build.include? "with-imlib2"
+  depends_on :x11 if build.with? "imlib2"
 
-  if build.include? "with-imlib2"
+  if build.with? "imlib2"
     depends_on 'pkg-config' => :build
     depends_on 'imlib2' => :optional
   end
@@ -20,7 +20,7 @@ class Libcaca < Formula
   end
 
   # Make libcaca build with clang; see http://caca.zoy.org/ticket/90
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # Some people can't compile when Java is enabled. See:
@@ -33,19 +33,24 @@ class Libcaca < Formula
     #   ../.auto/py-compile: Missing argument to --destdir.
     inreplace 'python/Makefile.in', '$(am__py_compile) --destdir "$(DESTDIR)"', "$(am__py_compile) --destdir \"$(cacadir)\""
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-doc",
-                          "--disable-slang",
-                          "--disable-java",
-                          "--disable-csharp",
-                          "--disable-ruby"
+    args = ["--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--disable-doc",
+            "--disable-slang",
+            "--disable-java",
+            "--disable-csharp",
+            "--disable-ruby"]
+
+    # fix missing x11 header check: https://github.com/Homebrew/homebrew/issues/28291
+    args << "--disable-x11" if build.without? "imlib2"
+
+    system "./configure", *args
     system "make"
     ENV.j1 # Or install can fail making the same folder at the same time
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/img2txt", "--version"
   end
 end
@@ -56,7 +61,7 @@ __END__
 @@ -645,7 +645,7 @@ typedef struct cucul_buffer cucul_buffer
  #       define CACA_DEPRECATED
  #   endif
- 
+
 -#   if defined __GNUC__ && __GNUC__ > 3
 +#   if !defined __APPLE__ && defined __GNUC__ && __GNUC__ > 3
  #       define CACA_ALIAS(x) __attribute__ ((weak, alias(#x)))

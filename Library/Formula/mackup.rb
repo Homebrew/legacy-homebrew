@@ -2,11 +2,18 @@ require 'formula'
 
 class Mackup < Formula
   homepage 'https://github.com/lra/mackup'
-  url 'https://github.com/lra/mackup/archive/0.5.4.tar.gz'
-  sha1 'd194fd76f2ecfab5628104952fbca0f39ee66766'
+  url 'https://github.com/lra/mackup/archive/0.7.2.tar.gz'
+  sha1 '316417a29b2e8d44111f2bc63c6503ed08bddf9c'
+
+  head 'https://github.com/lra/mackup.git'
+
+  depends_on :python
 
   def install
-    bin.install "mackup.py" => "mackup"
-    (share/'mackup').install ".mackup.cfg" => "mackup.cfg.example"
+    system 'python', 'setup.py', 'install', "--prefix=#{prefix}"
+  end
+
+  test do
+    system "#{bin}/mackup", '--help'
   end
 end

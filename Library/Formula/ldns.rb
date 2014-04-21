@@ -2,8 +2,14 @@ require 'formula'
 
 class Ldns < Formula
   homepage 'http://nlnetlabs.nl/projects/ldns/'
-  url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.16.tar.gz'
-  sha1 '5b4fc6c5c3078cd061905c47178478cb1015c62a'
+  url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.17.tar.gz'
+  sha1 '4218897b3c002aadfc7280b3f40cda829e05c9a4'
+
+  bottle do
+    sha1 "025aea212822c6ef1a8a05bab67e7e410afe6a6b" => :mavericks
+    sha1 "b9e48675dfde15036d3150b0f17c7fd1122f4f13" => :mountain_lion
+    sha1 "810d64ac6ae45557d66fe9b2792344fea742fa15" => :lion
+  end
 
   option 'with-gost', 'Compile ldns with support for GOST algorithms in DNSSEC'
 

@@ -6,12 +6,11 @@ class Wordplay < Formula
   version '7.22'
   sha1 '629b4a876b6be966be7ddde7ccdfaa89fc226942'
 
-  def patches
-    # Fixes compiler warnings on Darwin
-    # Point to words file in share
-    { :p0 => [
-      "https://trac.macports.org/export/101903/trunk/dports/games/wordplay/files/patch-wordplay.c"
-    ]}
+  # Fixes compiler warnings on Darwin
+  # Point to words file in share
+  patch :p0 do
+    url "https://trac.macports.org/export/101903/trunk/dports/games/wordplay/files/patch-wordplay.c"
+    sha1 "fe330ca634826cf0dedb7a106945efdee260ac2d"
   end
 
   def install

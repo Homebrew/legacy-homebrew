@@ -2,17 +2,15 @@ require 'formula'
 
 class Gammu < Formula
   homepage 'http://wammu.eu/gammu/'
-  url 'http://downloads.sourceforge.net/project/gammu/gammu/1.33.0/gammu-1.33.0.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/gammu/gammu/1.33.0/gammu-1.33.0.tar.bz2'
   sha1 'b7ee28e7398ea578290588d94d69c295491ff86a'
 
   depends_on 'cmake' => :build
   depends_on 'glib' => :recommended
   depends_on 'gettext' => :optional
 
-  def patches
-    # Fixes issue https://github.com/gammu/gammu/issues/13
-    DATA
-  end
+  # Fixes issue https://github.com/gammu/gammu/issues/13
+  patch :DATA
 
   def install
     args = std_cmake_args

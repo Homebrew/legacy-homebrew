@@ -40,7 +40,7 @@ class Redland < Formula
     end
 
     if build.with? 'berkeley-db'
-      args << "--with-bdb=#{Formula.factory('berkeley-db').opt_prefix}"
+      args << "--with-bdb=#{Formula["berkeley-db"].opt_prefix}"
     else
       args << "--with-bdb=no"
     end

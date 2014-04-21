@@ -12,7 +12,7 @@ class Xorriso < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/xorriso", "--help"
   end
 end

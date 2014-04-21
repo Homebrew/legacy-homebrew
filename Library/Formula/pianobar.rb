@@ -4,6 +4,7 @@ class Pianobar < Formula
   homepage 'https://github.com/PromyLOPh/pianobar/'
   url 'https://github.com/PromyLOPh/pianobar/archive/2013.09.15.tar.gz'
   sha256 '4b18582eb794def5bf4e7d5de211d1f6c79295edac344928e09072aa9386796c'
+  revision 2
 
   head 'https://github.com/PromyLOPh/pianobar.git'
 

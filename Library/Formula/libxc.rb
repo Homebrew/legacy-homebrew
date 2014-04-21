@@ -2,8 +2,8 @@ require 'formula'
 
 class Libxc < Formula
   homepage 'http://www.tddft.org/programs/octopus/wiki/index.php/Libxc'
-  url 'http://www.tddft.org/programs/octopus/down.php?file=libxc/libxc-2.0.2.tar.gz'
-  sha1 '471de56191114f4fb4d557ec366d6978c2c1312d'
+  url 'http://www.tddft.org/programs/octopus/down.php?file=libxc/libxc-2.0.3.tar.gz'
+  sha1 '83797998a42ea3062e8b7b82207577b8063b6e42'
 
   depends_on :fortran
 

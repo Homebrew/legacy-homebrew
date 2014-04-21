@@ -46,4 +46,12 @@ class Dependencies
   def default
     build + required + recommended
   end
+
+  attr_reader :deps
+  protected :deps
+
+  def ==(other)
+    deps == other.deps
+  end
+  alias_method :eql?, :==
 end

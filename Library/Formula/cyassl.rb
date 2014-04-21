@@ -2,8 +2,8 @@ require 'formula'
 
 class Cyassl < Formula
   homepage 'http://yassl.com/yaSSL/Products-cyassl.html'
-  url 'https://github.com/cyassl/cyassl/archive/v2.8.3.tar.gz'
-  sha256 '4b61aa59fbd87cdee14b5d45e94efc0a431b802db12973e97f09a8921ac78963'
+  url 'https://github.com/cyassl/cyassl/archive/v2.9.4.tar.gz'
+  sha256 '82095a39977f4bc709b0bf567d515289b20bd63dc702ceff4c461411a1af1cfe'
 
   head 'https://github.com/cyassl/cyassl.git'
 

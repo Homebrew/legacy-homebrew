@@ -67,7 +67,7 @@ class Couchdb < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/couchdb</string>
+        <string>#{opt_bin}/couchdb</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
@@ -76,7 +76,7 @@ class Couchdb < Formula
     EOS
   end
 
-  def test
+  test do
     # ensure couchdb embedded spidermonkey vm works
     system "#{bin}/couchjs", "-h"
   end

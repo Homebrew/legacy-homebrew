@@ -2,8 +2,8 @@ require 'formula'
 
 class Xmp < Formula
   homepage 'http://xmp.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/xmp/xmp/4.0.6/xmp-4.0.6.tar.gz'
-  sha1 '61a7d68e4c37e7407bd35c783821bfbc2b639c87'
+  url 'https://downloads.sourceforge.net/project/xmp/xmp/4.0.7/xmp-4.0.7.tar.gz'
+  sha1 '0817146ff66ba3557963b8857aa80b4f63a56fc8'
 
   head do
     url 'git://git.code.sf.net/p/xmp/xmp-cli'
@@ -26,12 +26,5 @@ class Xmp < Formula
 
     system "./configure", "--prefix=#{prefix}"
     system "make install"
-
-    # install the included demo song
-    share.install "ub-name.it" unless build.head?
-  end
-
-  def test
-    system "#{bin}/xmp", "--load-only", share/"ub-name.it"
   end
 end

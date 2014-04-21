@@ -2,7 +2,7 @@ require 'formula'
 
 class Opencc < Formula
   homepage 'https://github.com/BYVoid/OpenCC'
-  url 'http://opencc.googlecode.com/files/opencc-0.4.3.tar.gz'
+  url 'https://opencc.googlecode.com/files/opencc-0.4.3.tar.gz'
   sha1 '4677e63fa36fb2b92a52c01df2acc83664aaf882'
 
   depends_on 'cmake' => :build

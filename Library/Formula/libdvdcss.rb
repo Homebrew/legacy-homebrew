@@ -9,7 +9,7 @@ class Libdvdcss < Formula
 
   def install
     system "./bootstrap" if build.head?
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make install"
   end
 end

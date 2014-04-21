@@ -45,9 +45,9 @@ class Formula
     map = Hash.new { |h, k| h[k] = [] }
     rev_list(branch) do |rev|
       formula_for_sha(rev) do |f|
-        bottle = f.class.bottle
+        bottle = f.stable.bottle_specification
         unless bottle.checksums.empty?
-          map[bottle.version] << bottle.revision
+          map[f.pkg_version] << bottle.revision
         end
       end
     end
@@ -65,7 +65,7 @@ class Formula
   private
     def repository
       @repository ||= begin
-        if path.realpath.to_s =~ HOMEBREW_TAP_DIR_REGEX
+        if path.to_s =~ HOMEBREW_TAP_DIR_REGEX
           HOMEBREW_REPOSITORY/"Library/Taps/#$1-#$2"
         else
           HOMEBREW_REPOSITORY
@@ -94,7 +94,8 @@ class Formula
     end
 
     IGNORED_EXCEPTIONS = [SyntaxError, TypeError, NameError,
-                          ArgumentError, FormulaSpecificationError]
+                          ArgumentError, FormulaSpecificationError,
+                          FormulaValidationError,]
 
     def version_for_sha sha
       formula_for_sha(sha) {|f| f.version }

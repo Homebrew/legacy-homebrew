@@ -161,11 +161,17 @@ module SharedEnvExtension
         EOS
       end
 
-    elsif (gfortran = which('gfortran', ORIGINAL_PATHS.join(File::PATH_SEPARATOR)))
-      ohai "Using Homebrew-provided fortran compiler."
-      puts "This may be changed by setting the FC environment variable."
-      self['FC'] = self['F77'] = gfortran
-      flags = FC_FLAG_VARS
+    else
+      if (gfortran = which('gfortran', (HOMEBREW_PREFIX/'bin').to_s))
+        ohai "Using Homebrew-provided fortran compiler."
+      elsif (gfortran = which('gfortran', ORIGINAL_PATHS.join(File::PATH_SEPARATOR)))
+        ohai "Using a fortran compiler found at #{gfortran}."
+      end
+      if gfortran
+        puts "This may be changed by setting the FC environment variable."
+        self['FC'] = self['F77'] = gfortran
+        flags = FC_FLAG_VARS
+      end
     end
 
     flags.each { |key| self[key] = cflags }
@@ -176,7 +182,7 @@ module SharedEnvExtension
   def ld64
     ld64 = Formula.factory('ld64')
     self['LD'] = ld64.bin/'ld'
-    append "LDFLAGS", "-B#{ld64.bin.to_s+"/"}"
+    append "LDFLAGS", "-B#{ld64.bin}/"
   end
 
   def warn_about_non_apple_gcc(gcc)

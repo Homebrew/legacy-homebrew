@@ -2,9 +2,9 @@ require 'formula'
 
 class Agedu < Formula
   homepage 'http://www.chiark.greenend.org.uk/~sgtatham/agedu/'
-  url 'http://www.chiark.greenend.org.uk/~sgtatham/agedu/agedu-r9723.tar.gz'
-  version 'r9723'
-  sha1 '3b6a7c73a033c86a142f6d2bfa9d5d481d96adc5'
+  url 'http://www.chiark.greenend.org.uk/~sgtatham/agedu/agedu-r10126.tar.gz'
+  version 'r10126'
+  sha1 '4438ae698b626cba5ce061ed3ae5eefa5bfb1c50'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

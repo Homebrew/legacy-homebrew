@@ -17,13 +17,4 @@ class Qcachegrind < Formula
     # Symlink in the command-line version
     bin.install_symlink prefix/'qcachegrind.app/Contents/MacOS/qcachegrind'
   end
-
-  def caveats; <<-EOS
-    qcachegrind.app was installed in:
-      #{prefix}
-
-    To symlink into ~/Applications, you can do:
-      brew linkapps
-    EOS
-  end
 end

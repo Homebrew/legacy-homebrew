@@ -11,19 +11,19 @@ class Freeling < Formula
   depends_on 'libtool' => :build
 
   def install
-    icu4c_prefix = Formula.factory('icu4c').prefix
-    libtool_prefix = Formula.factory('libtool').prefix
-    ENV.append 'LDFLAGS', "-L#{libtool_prefix}/lib"
-    ENV.append 'LDFLAGS', "-L#{icu4c_prefix}/lib"
-    ENV.append 'CPPFLAGS', "-I#{libtool_prefix}/include"
-    ENV.append 'CPPFLAGS', "-I#{icu4c_prefix}/include"
+    icu4c = Formula['icu4c']
+    libtool = Formula['libtool']
+    ENV.append 'LDFLAGS', "-L#{libtool.lib}"
+    ENV.append 'LDFLAGS', "-L#{icu4c.lib}"
+    ENV.append 'CPPFLAGS', "-I#{libtool.include}"
+    ENV.append 'CPPFLAGS', "-I#{icu4c.include}"
 
     system "./configure", "--prefix=#{prefix}", "--enable-boost-locale"
 
     system "make install"
   end
 
-  def test
+  test do
     system "echo 'Hello world' | #{bin}/analyze -f #{share}/freeling/config/en.cfg | grep -c 'world world NN 1'"
   end
 end

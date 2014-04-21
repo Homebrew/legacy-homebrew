@@ -2,11 +2,12 @@ require 'formula'
 
 class Pcb < Formula
   homepage 'http://pcb.geda-project.org/'
-  url 'http://downloads.sourceforge.net/project/pcb/pcb/pcb-20110918/pcb-20110918.tar.gz'
-  version '20110908'
-  sha1 '53ca27797d4db65a068b56f157e3ea6c5c29051f'
+  url 'https://downloads.sourceforge.net/project/pcb/pcb/pcb-20140316/pcb-20140316.tar.gz'
+  sha1 'ec714ff136d1817e500e1a9e654e786883b9501e'
 
   head 'git://git.geda-project.org/pcb.git'
+
+  option 'with-doc', "Build the documentation (requires LaTeX)."
 
   depends_on :autoconf
   depends_on :automake
@@ -19,23 +20,24 @@ class Pcb < Formula
   depends_on 'glib'
   depends_on 'gtkglext'
   depends_on :x11
+  depends_on :tex if build.with? 'doc'
 
   # See comments in intltool formula
   depends_on 'XML::Parser' => :perl
 
   conflicts_with 'gts', :because => 'both install `include/gts.h`'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./autogen.sh" if build.head?
+    args = ["--disable-debug", "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--disable-update-desktop-database",
+            "--disable-update-mime-database"]
+    args << "--disable-doc" if build.without? 'doc'
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-update-desktop-database",
-                          "--disable-update-mime-database"
+    system "./configure", *args
 
     system "make"
     system "make install"
@@ -51,9 +53,9 @@ index 15273a6..ff73ca7 100644
 @@ -66,6 +66,7 @@
  #include <dmalloc.h>
  #endif
- 
+
 +typedef GLvoid (*_GLUfuncptr)(GLvoid);
- 
+
  triangle_buffer buffer;
  float global_depth = 0;
 

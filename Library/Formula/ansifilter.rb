@@ -10,4 +10,13 @@ class Ansifilter < Formula
     system "make", "PREFIX=#{prefix}"
     system "make", "PREFIX=#{prefix}", "install"
   end
+
+  test do
+    path = testpath/"ansi.txt"
+    path.write "f\x1b[31moo"
+
+    output = `#{bin}/ansifilter #{path}`.strip
+    assert_equal "foo", output
+    assert_equal 0, $?.exitstatus
+  end
 end

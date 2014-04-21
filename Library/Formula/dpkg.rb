@@ -2,16 +2,15 @@ require 'formula'
 
 class Dpkg < Formula
   homepage 'https://wiki.debian.org/Teams/Dpkg'
-  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.5.tar.xz'
-  sha1 '30656d70795c463d67e3507dfad9351e92fe3354'
+  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.6.tar.xz'
+  sha1 '93d1d55fa82a9bcebfa4f7fdc50f1cb7d1d734e1'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gnu-tar'
 
   # Fixes the PERL_LIBDIR.
   # Uses Homebrew-install gnu-tar instead of bsd tar.
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",

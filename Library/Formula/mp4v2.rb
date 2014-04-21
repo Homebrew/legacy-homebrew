@@ -2,20 +2,21 @@ require 'formula'
 
 class Mp4v2 < Formula
   homepage 'http://code.google.com/p/mp4v2/'
-  url 'http://mp4v2.googlecode.com/files/mp4v2-1.9.1.tar.bz2'
-  sha1 'c62d00e99b65efce16accd83c501fb8a57206aa8'
 
-  devel do
-    url 'http://mp4v2.googlecode.com/files/mp4v2-trunk-r479.tar.bz2'
-    sha1 '1999b805d5e66dffbd95ec3a563758650e23bf60'
-    version 'r479'
-  end
+  stable do
+    url "https://mp4v2.googlecode.com/files/mp4v2-1.9.1.tar.bz2"
+    sha1 "c62d00e99b65efce16accd83c501fb8a57206aa8"
 
-  def patches
     # Fixes compile error on Lion w/Clang using a patch from svn:
     # http://code.google.com/p/mp4v2/source/detail?r=442
     # It is inline because there's no direct link to the raw patch.
-    DATA unless build.devel?
+    patch :DATA
+  end
+
+  devel do
+    url 'https://mp4v2.googlecode.com/files/mp4v2-trunk-r479.tar.bz2'
+    sha1 '1999b805d5e66dffbd95ec3a563758650e23bf60'
+    version 'r479'
   end
 
   def install

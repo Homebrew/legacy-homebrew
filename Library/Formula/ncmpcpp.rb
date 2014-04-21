@@ -12,6 +12,7 @@ class Ncmpcpp < Formula
     depends_on :automake
     depends_on :libtool
     depends_on 'boost' # not needed by stable
+    depends_on 'readline'
   end
 
   depends_on 'pkg-config' => :build

@@ -4,20 +4,17 @@ require 'formula'
 # https://github.com/Homebrew/homebrew/issues/20339
 class Cfengine < Formula
   homepage 'http://cfengine.com/'
-  url 'http://cfengine.com/source-code/download?file=cfengine-3.5.2.tar.gz'
-  sha1 '57ffeee2a2a6acb1764a8a0d7979538d683ccf5a'
+  url 'http://cfengine.com/source-code/download?file=cfengine-3.5.3.tar.gz'
+  sha1 '95a03e7bc9e31704d6aac4b3023b9c5037fc33f6'
 
   depends_on 'pcre'
   depends_on 'tokyo-cabinet'
   depends_on 'libxml2' if MacOS.version < :mountain_lion
 
-  def patches
-    # Upstream patches for OS X compilation
-    %w{
-      https://github.com/cfengine/core/commit/f748a005b39a7aafd554e41a528b2216e28dce92.patch
-      https://github.com/cfengine/core/commit/d03fcc2d38a4db0c79386aaef30597102bf45853.patch
-      https://github.com/cfengine/core/commit/228f27002018a82b339ddfe6a5510a24128ce0ab.patch
-    }
+  # Upstream patches for OS X compilation
+  patch do
+    url "https://github.com/cfengine/core/commit/d03fcc2d38a4db0c79386aaef30597102bf45853.diff"
+    sha1 "1050a7f1719b8ad0e04868319324cc38637a3725"
   end
 
   def install
@@ -25,13 +22,13 @@ class Cfengine < Formula
                           "--prefix=#{prefix}",
                           "--with-workdir=#{var}/cfengine",
                           "--with-tokyocabinet",
-                          "--with-pcre=#{Formula.factory('pcre').opt_prefix}",
+                          "--with-pcre=#{Formula['pcre'].opt_prefix}",
                           "--without-mysql",
                           "--without-postgresql"
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/cf-agent", "-V"
   end
 end

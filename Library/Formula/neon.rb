@@ -5,8 +5,7 @@ class Neon < Formula
   url 'http://www.webdav.org/neon/neon-0.30.0.tar.gz'
   sha1 '9e6297945226f90d66258b7ee05f757ff5cea10a'
 
-  keg_only :provided_by_osx,
-            "Compiling newer versions of Subversion on 10.6 require this newer neon."
+  keg_only :provided_by_osx
 
   option :universal
   option 'with-brewed-openssl', 'Include OpenSSL support via Homebrew'
@@ -18,7 +17,7 @@ class Neon < Formula
   # to CPPFLAGS, which is an obsolete Apple-only switch that breaks
   # builds under non-Apple compilers and which may or may not do anything
   # anymore.
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?
@@ -28,11 +27,12 @@ class Neon < Formula
       "--prefix=#{prefix}",
       "--enable-shared",
       "--disable-static",
+      "--with-ca-bundle=/usr/share/curl/curl-ca-bundle.crt",
       "--disable-nls",
       "--with-ssl",
     ]
     if build.with? 'brewed-openssl'
-      args << "--with-libs=" + Formula.factory('openssl').opt_prefix.to_s
+      args << "--with-libs=#{Formula['openssl'].opt_prefix}"
     end
     system "./configure", *args
     system "make install"

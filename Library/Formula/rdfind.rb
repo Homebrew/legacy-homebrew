@@ -4,6 +4,7 @@ class Rdfind < Formula
   homepage 'http://rdfind.pauldreik.se'
   url 'http://rdfind.pauldreik.se/rdfind-1.3.4.tar.gz'
   sha1 'c01bd2910cdec885b6c24164a389457e4f01ef61'
+  revision 1
 
   depends_on 'nettle'
 
@@ -19,7 +20,7 @@ class Rdfind < Formula
     touch 'folder/file1'
     touch 'folder/file2'
     system "#{bin}/rdfind -deleteduplicates true -ignoreempty false folder"
-    File.exist?('folder/file1')==true
-    File.exist?('folder/file2')==false
+    assert File.exist?('folder/file1')
+    assert !File.exist?('folder/file2')
   end
 end

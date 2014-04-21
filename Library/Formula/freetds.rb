@@ -16,6 +16,7 @@ class Freetds < Formula
   option :universal
   option "enable-msdblib", "Enable Microsoft behavior in the DB-Library API where it diverges from Sybase's"
   option "enable-sybase-compat", "Enable close compatibility with Sybase's ABI, at the expense of other features"
+  option "enable-odbc-wide", "Enable odbc wide, prevent unicode - MemoryError's"
 
   depends_on "pkg-config" => :build
   depends_on "unixodbc" => :optional
@@ -29,8 +30,8 @@ class Freetds < Formula
               --mandir=#{man}
             ]
 
-    if build.include? "with-unixodbc"
-      args << "--with-unixodbc=#{Formula.factory('unixodbc').prefix}"
+    if build.with? "unixodbc"
+      args << "--with-unixodbc=#{Formula['unixodbc'].prefix}"
     end
 
     if build.include? "enable-msdblib"
@@ -41,6 +42,10 @@ class Freetds < Formula
       args << "--enable-sybase-compat"
     end
 
+    if build.include? "enable-odbc-wide"
+      args << "--enable-odbc-wide"
+    end
+
     ENV.universal_binary if build.universal?
     system "./configure", *args
     system 'make'
@@ -48,7 +53,7 @@ class Freetds < Formula
     system 'make install'
   end
 
-  def test
+  test do
     system "#{bin}/tsql", "-C"
   end
 end

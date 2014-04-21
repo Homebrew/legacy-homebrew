@@ -2,8 +2,8 @@ require 'formula'
 
 class Pdf2htmlex < Formula
   homepage 'http://coolwanglu.github.io/pdf2htmlEX/'
-  url 'https://github.com/coolwanglu/pdf2htmlEX/archive/v0.10.tar.gz'
-  sha256 '154de15aa84b4f543b130a48bb229477b80168ac9ba8747981f544d645ec3f26'
+  url 'https://github.com/coolwanglu/pdf2htmlEX/archive/v0.11.tar.gz'
+  sha256 'eca83144daf298b25c5b9bedb59d8e21ba65eb5e246d61f897447bc917ec0cba'
 
   head 'https://github.com/coolwanglu/pdf2htmlEX.git'
 

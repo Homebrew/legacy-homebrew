@@ -2,10 +2,13 @@ require 'formula'
 
 class Botan < Formula
   homepage 'http://botan.randombit.net/'
-  url 'http://botan.randombit.net/files/Botan-1.10.6.tbz'
-  sha1 '762decd775a4267d3b343ff14729cd9b96a1e4a0'
+  url 'http://botan.randombit.net/files/Botan-1.10.8.tbz'
+  sha1 'a7ba0be11629143043da078a4c044eac3369b4ec'
 
   option 'enable-debug', 'Enable debug build of Botan'
+
+  # upstream ticket: https://bugs.randombit.net/show_bug.cgi?id=267
+  patch :DATA
 
   def install
     args = %W[
@@ -27,3 +30,17 @@ class Botan < Formula
     system "make", "install", "MACH_OPT=#{ENV.cflags}"
   end
 end
+
+__END__
+--- a/src/build-data/makefile/unix_shr.in
++++ b/src/build-data/makefile/unix_shr.in
+@@ -57,8 +57,8 @@
+ LIBNAME       = %{lib_prefix}libbotan
+ STATIC_LIB    = $(LIBNAME)-$(SERIES).a
+
+-SONAME        = $(LIBNAME)-$(SERIES).%{so_suffix}.%{so_abi_rev}
+-SHARED_LIB    = $(SONAME).%{version_patch}
++SONAME        = $(LIBNAME)-$(SERIES).%{so_abi_rev}.%{so_suffix}
++SHARED_LIB    = $(LIBNAME)-$(SERIES).%{so_abi_rev}.%{version_patch}.%{so_suffix}
+
+ SYMLINK       = $(LIBNAME)-$(SERIES).%{so_suffix}

@@ -2,8 +2,8 @@ require 'formula'
 
 class Sickbeard < Formula
   homepage 'http://www.sickbeard.com/'
-  url 'https://github.com/midgetspy/Sick-Beard/archive/build-502.tar.gz'
-  sha1 '7154af062450f632f7fd0ab28241054088d0ac1e'
+  url 'https://github.com/midgetspy/Sick-Beard/archive/build-504.tar.gz'
+  sha1 '0785a590a5028f10b3cbbee905e0834c52ac66c9'
 
   head 'https://github.com/midgetspy/Sick-Beard.git'
 
@@ -25,7 +25,7 @@ class Sickbeard < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/sickbeard</string>
+        <string>#{opt_bin}/sickbeard</string>
         <string>-q</string>
         <string>--nolaunch</string>
         <string>-p</string>

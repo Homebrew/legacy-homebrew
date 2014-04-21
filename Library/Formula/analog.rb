@@ -4,10 +4,11 @@ class Analog < Formula
   homepage 'http://analog.cx'
   url 'http://analog.cx/analog-6.0.tar.gz'
   sha1 '17ad601f84e73c940883fb9b9e805879aac37493'
+  revision 1
 
   depends_on 'gd'
   depends_on 'jpeg'
-  depends_on :libpng
+  depends_on 'libpng'
 
   def install
     system "make", "CC=#{ENV.cc}",
@@ -21,7 +22,7 @@ class Analog < Formula
     man1.install "analog.man" => "analog.1"
   end
 
-  def test
+  test do
     system "\"#{bin}/analog\" > /dev/null"
   end
 end

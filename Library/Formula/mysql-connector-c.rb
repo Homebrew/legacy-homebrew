@@ -1,9 +1,9 @@
 require 'formula'
 
 class MysqlConnectorC < Formula
-  homepage 'http://dev.mysql.com/downloads/connector/c/6.0.html'
-  url 'http://mysql.llarian.net/Downloads/Connector-C/mysql-connector-c-6.0.2.tar.gz'
-  sha1 '4c1369953258d040d27ec3a0c29ef0b71c357a17'
+  homepage 'http://dev.mysql.com/downloads/connector/c/'
+  url 'http://dev.mysql.com/get/Downloads/Connector-C/mysql-connector-c-6.1.3-src.tar.gz'
+  sha1 'd70392aafb9ddeddd797c8131898e8727f904898'
 
   depends_on 'cmake' => :build
 

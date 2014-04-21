@@ -10,10 +10,8 @@ class Ragel < Formula
     sha1 'e57ee7f740dd395d4d5330949594a02c91ad0308'
   end
 
-  def patches
-    # Fix compilation with recent clang, patch from upstream git repo
-    DATA
-  end
+  # Fix compilation with recent clang, patch from upstream git repo
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

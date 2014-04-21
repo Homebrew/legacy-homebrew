@@ -8,9 +8,7 @@ class Libdlna < Formula
   depends_on 'ffmpeg'
 
   # Use dylib instead of soname
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug",

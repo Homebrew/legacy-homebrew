@@ -2,14 +2,15 @@ require 'formula'
 
 class Sshguard < Formula
   homepage 'http://www.sshguard.net/'
-  url 'http://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
   sha1 'f8f713bfb3f5c9877b34f6821426a22a7eec8df3'
 
-  def patches
-    # Fix blacklist flag (-b) so that it doesn't abort on first usage.
-    # Upstream bug report:
-    # http://sourceforge.net/tracker/?func=detail&aid=3252151&group_id=188282&atid=924685
-    "https://sourceforge.net/tracker/download.php?group_id=188282&atid=924685&file_id=405677&aid=3252151"
+  # Fix blacklist flag (-b) so that it doesn't abort on first usage.
+  # Upstream bug report:
+  # http://sourceforge.net/tracker/?func=detail&aid=3252151&group_id=188282&atid=924685
+  patch do
+    url "https://sourceforge.net/tracker/download.php?group_id=188282&atid=924685&file_id=405677&aid=3252151"
+    sha1 "68cd0910d310e4d23e7752dee1b077ccfe715c0b"
   end
 
   def install
@@ -34,7 +35,7 @@ class Sshguard < Formula
       table (replace $ext_if with your WAN interface):
 
         table <sshguard> persist
-        block in quick on $ext_if proto tcp from any to any port 22 label "ssh bruteforce"
+        block in quick on $ext_if proto tcp from <sshguard> to any port 22 label "ssh bruteforce"
 
       Then run sudo pfctl -f /etc/pf.conf to reload the rules.
       EOS
@@ -54,7 +55,7 @@ class Sshguard < Formula
       <true/>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/sshguard</string>
+        <string>#{opt_sbin}/sshguard</string>
         <string>-l</string>
         <string>#{log_path}</string>
       </array>

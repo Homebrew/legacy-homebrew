@@ -10,10 +10,12 @@ class KyotoTycoon < Formula
   depends_on 'lua' unless build.include? "no-lua"
   depends_on 'kyoto-cabinet'
 
+  patch :DATA if MacOS.version >= :mavericks
+
   def install
     # Locate kyoto-cabinet for non-/usr/local builds
-    cabinet = Formula.factory("kyoto-cabinet")
-    args = ["--prefix=#{prefix}", "--with-kc=#{cabinet.opt_prefix}"]
+    cabinet = Formula["kyoto-cabinet"].opt_prefix
+    args = ["--prefix=#{prefix}", "--with-kc=#{cabinet}"]
     args << "--enable-lua" unless build.include? "no-lua"
 
     system "./configure", *args
@@ -21,3 +23,17 @@ class KyotoTycoon < Formula
     system "make install"
   end
 end
+
+
+__END__
+--- a/ktdbext.h  2013-11-08 09:34:53.000000000 -0500
++++ b/ktdbext.h  2013-11-08 09:35:00.000000000 -0500
+@@ -271,7 +271,7 @@
+       if (!logf("prepare", "started to open temporary databases under %s", tmppath.c_str()))
+         err = true;
+       stime = kc::time();
+-      uint32_t pid = getpid() & kc::UINT16MAX;
++      uint32_t pid = kc::getpid() & kc::UINT16MAX;
+       uint32_t tid = kc::Thread::hash() & kc::UINT16MAX;
+       uint32_t ts = kc::time() * 1000;
+       for (size_t i = 0; i < dbnum_; i++) {

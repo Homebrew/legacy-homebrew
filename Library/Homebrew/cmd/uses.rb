@@ -8,29 +8,22 @@ module Homebrew extend self
   def uses
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
-    formulae = ARGV.formulae
+    used_formulae = ARGV.formulae
+    formulae = (ARGV.include? "--installed") ? Formula.installed : Formula
+    recursive = ARGV.flag? "--recursive"
 
-    uses = []
-    Formula.each do |f|
-      next if ARGV.include? "--installed" and not f.installed?
-
-      formulae.all? do |ff|
-        if ARGV.flag? '--recursive'
-          if f.recursive_dependencies.any? { |dep| dep.name == ff.name }
-            uses << f.to_s
-          elsif f.recursive_requirements.any? { |req| req.name == ff.name }
-            uses << f.to_s
-          end
+    uses = formulae.select do |f|
+      used_formulae.all? do |ff|
+        if recursive
+          f.recursive_dependencies.any? { |dep| dep.name == ff.name } ||
+            f.recursive_requirements.any? { |req| req.name == ff.name }
         else
-          if f.deps.any? { |dep| dep.name == ff.name }
-            uses << f.to_s
-          elsif f.requirements.any? { |req| req.name == ff.name }
-            uses << f.to_s
-          end
+          f.deps.any? { |dep| dep.name == ff.name } ||
+            f.requirements.any? { |req| req.name == ff.name }
         end
       end
     end
 
-    puts_columns uses
+    puts_columns uses.map(&:name)
   end
 end

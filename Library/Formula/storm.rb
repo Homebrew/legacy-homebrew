@@ -1,9 +1,11 @@
 require 'formula'
 
 class Storm < Formula
-  homepage 'https://github.com/nathanmarz/storm/wiki'
-  url 'https://dl.dropboxusercontent.com/s/dj86w8ojecgsam7/storm-0.9.0.1.zip'
-  sha1 '230abcc15a9e1358442429fd1c856dc12a3be920'
+  homepage 'https://storm.incubator.apache.org'
+  url 'http://mirror.csclub.uwaterloo.ca/apache/incubator/storm/apache-storm-0.9.1-incubating/apache-storm-0.9.1-incubating.zip'
+  version '0.9.1'
+  sha1 '75f28e07fae2d21e427ba998b93069ef7dd3e184'
+  head 'https://github.com/apache/incubator-storm.git'
 
   def install
     libexec.install Dir['*']

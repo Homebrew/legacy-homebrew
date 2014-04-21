@@ -10,7 +10,7 @@ class GitCrypt < Formula
     bin.install "git-crypt"
   end
 
-  def test
+  test do
     system "#{bin}/git-crypt"
   end
 end

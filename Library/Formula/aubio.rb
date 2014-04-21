@@ -18,9 +18,7 @@ class Aubio < Formula
 
   # get rid of -Wno-long-double in configure.  otherwise, breaks with modern xcode.
   # updates for py2.6+ compatibility (with is now a keyword)
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.deparallelize
@@ -31,7 +29,7 @@ class Aubio < Formula
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
-  def test
+  test do
     system "#{bin}/aubiocut", "--help"
   end
 end

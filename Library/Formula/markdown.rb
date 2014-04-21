@@ -11,4 +11,12 @@ class Markdown < Formula
   def install
     bin.install 'Markdown.pl' => 'markdown'
   end
+
+  test do
+    IO.popen("#{bin}/markdown", "w+") do |pipe|
+      pipe.write "foo *bar*\n"
+      pipe.close_write
+      assert_equal "<p>foo <em>bar</em></p>\n", pipe.read
+    end
+  end
 end

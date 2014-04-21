@@ -40,7 +40,7 @@ class Tmap < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/tmap", "-v"
   end
 end

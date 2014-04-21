@@ -2,8 +2,14 @@ require 'formula'
 
 class Rethinkdb < Formula
   homepage 'http://www.rethinkdb.com/'
-  url 'http://download.rethinkdb.com/dist/rethinkdb-1.11.2.tgz'
-  sha1 '06edac5fa1daa5e611faabfac2b77edbe82d9934'
+  url 'http://download.rethinkdb.com/dist/rethinkdb-1.12.3.tgz'
+  sha1 'e1b4467c16a81d1cd1fc88296a648fa8c9f2067c'
+
+  bottle do
+    sha1 "e378abadc054caa9674684441f0e3a0d0eb0bf44" => :mavericks
+    sha1 "7de46f7583560c74c7418604a4be0a9cc214ed97" => :mountain_lion
+    sha1 "84ce1716cdece8cdbb65fa6b986e5c348f8042f7" => :lion
+  end
 
   depends_on :macos => :lion
   depends_on 'boost' => :build
@@ -37,7 +43,7 @@ class Rethinkdb < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-          <string>#{opt_prefix}/bin/rethinkdb</string>
+          <string>#{opt_bin}/rethinkdb</string>
           <string>-d</string>
           <string>#{var}/rethinkdb</string>
       </array>

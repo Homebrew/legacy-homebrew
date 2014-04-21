@@ -7,12 +7,10 @@ class Libsvm < Formula
 
   def install
     system "make", "CFLAGS=#{ENV.cflags}"
-    system "make lib"
-    mv 'libsvm.so.2', 'libsvm.2.dylib'
-    ln_s 'libsvm.2.dylib', 'libsvm.dylib'
-
-    bin.install 'svm-scale', 'svm-train', 'svm-predict'
-    lib.install 'libsvm.2.dylib', 'libsvm.dylib'
-    include.install 'svm.h'
+    system "make", "lib"
+    bin.install "svm-scale", "svm-train", "svm-predict"
+    lib.install "libsvm.so.2" => "libsvm.2.dylib"
+    lib.install_symlink "libsvm.2.dylib" => "libsvm.dylib"
+    include.install "svm.h"
   end
 end

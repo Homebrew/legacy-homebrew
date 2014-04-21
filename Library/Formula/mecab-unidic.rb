@@ -15,7 +15,7 @@ class MecabUnidic < Formula
 
   def caveats; <<-EOS.undent
     If you want to use UniDic, please rewrite "dicdir".
-       #{Formula.factory('mecab').opt_prefix}/etc/mecabrc
+       #{Formula["mecab"].opt_prefix}/etc/mecabrc
     EOS
   end
 end

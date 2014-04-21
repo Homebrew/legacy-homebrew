@@ -2,11 +2,15 @@ require 'formula'
 
 class Gawk < Formula
   homepage 'http://www.gnu.org/software/gawk/'
-  url 'http://ftpmirror.gnu.org/gawk/gawk-4.1.0.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/gawk/gawk-4.1.0.tar.xz'
-  sha1 'caabca3c1a59d05807c826c45a4639b82cad612a'
+  url 'http://ftpmirror.gnu.org/gawk/gawk-4.1.1.tar.xz'
+  mirror 'http://ftp.gnu.org/gnu/gawk/gawk-4.1.1.tar.xz'
+  sha1 '547feb48d20e923aff58daccee97c94e047fdc18'
 
-  depends_on 'xz' => :build
+  bottle do
+    sha1 "8fa017184dc02cdc122d5681b6824fd12be01def" => :mavericks
+    sha1 "141a930482411bf368444dc214b87bd97a44360a" => :mountain_lion
+    sha1 "a01d86d2749c9757c4e45e48154844f8fa5edce3" => :lion
+  end
 
   fails_with :llvm do
     build 2326
@@ -23,5 +27,11 @@ class Gawk < Formula
     system "make"
     system "make check"
     system "make install"
+  end
+
+  test do
+    output = `echo "Macrobrew" | '#{bin}/gawk'  '{ gsub(/Macro/, "Home"); print }' -`
+    assert_equal 'Homebrew', output.strip
+    assert_equal 0, $?.exitstatus
   end
 end

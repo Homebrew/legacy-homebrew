@@ -2,24 +2,31 @@ require 'formula'
 
 class Pyqt < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  url 'http://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.3/PyQt-mac-gpl-4.10.3.tar.gz'
-  sha1 'ba5465f92fb43c9f0a5b948fa25df5045f160bf0'
+  url 'https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.4/PyQt-mac-gpl-4.10.4.tar.gz'
+  sha1 'ef3bb2a05a5c8c3ab7578a0991ef5a4e17c314c0'
 
   depends_on :python => :recommended
+  depends_on :python3 => :optional
+
+  if build.without?("python3") && build.without?("python")
+    odie "pyqt: --with-python3 must be specified when using --without-python"
+  end
 
   depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
 
-  depends_on 'sip'
-
-  def patches
-    # On Mavericks we want to target libc++, but this requires a user specified
-    # qmake makespec. Unfortunately user specified makespecs are broken in the
-    # configure.py script, so we have to fix the makespec path handling logic.
-    # Also qmake spec macro parsing does not properly handle inline comments,
-    # which can result in ignored build flags when they are concatenated together.
-    # Changes proposed upstream: http://www.riverbankcomputing.com/pipermail/pyqt/2013-December/033537.html
-    DATA
+  if build.with? "python3"
+    depends_on "sip" => "with-python3"
+  else
+    depends_on "sip"
   end
+
+  # On Mavericks we want to target libc++, but this requires a user specified
+  # qmake makespec. Unfortunately user specified makespecs are broken in the
+  # configure.py script, so we have to fix the makespec path handling logic.
+  # Also qmake spec macro parsing does not properly handle inline comments,
+  # which can result in ignored build flags when they are concatenated together.
+  # Changes proposed upstream: http://www.riverbankcomputing.com/pipermail/pyqt/2013-December/033537.html
+  patch :DATA
 
   def install
     # On Mavericks we want to target libc++, this requires a non default qt makespec
@@ -27,27 +34,39 @@ class Pyqt < Formula
       ENV.append "QMAKESPEC", "unsupported/macx-clang-libc++"
     end
 
-    args = [ "--confirm-license",
-             "--bindir=#{bin}",
-             "--destdir=#{lib}/python2.7/site-packages",
-             "--sipdir=#{share}/sip" ]
-    # We need to run "configure.py" so that pyqtconfig.py is generated, which
-    # is needed by PyQWT (and many other PyQt interoperable implementations such
-    # as the ROS GUI libs). This file is currently needed for generating build
-    # files appropriate for the qmake spec that was used to build Qt. This method
-    # is deprecated and will be removed with SIP v5, so we do the actual compile
-    # using the newer configure-ng.py as recommended.
-    system "python", "configure.py", *args
-    (lib/'python2.7/site-packages/PyQt4').install 'pyqtconfig.py'
+    Language::Python.each_python(build) do |python, version|
+      ENV.append_path 'PYTHONPATH', HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
 
-    # On Mavericks we want to target libc++, this requires a non default qt makespec
-    if ENV.compiler == :clang and MacOS.version >= :mavericks
-      args << "--spec" << "unsupported/macx-clang-libc++"
+      args = ["--confirm-license",
+              "--bindir=#{bin}",
+              "--destdir=#{lib}/python#{version}/site-packages",
+              "--sipdir=#{HOMEBREW_PREFIX}/share/sip"]
+
+      # We need to run "configure.py" so that pyqtconfig.py is generated, which
+      # is needed by PyQWT (and many other PyQt interoperable implementations such
+      # as the ROS GUI libs). This file is currently needed for generating build
+      # files appropriate for the qmake spec that was used to build Qt. This method
+      # is deprecated and will be removed with SIP v5, so we do the actual compile
+      # using the newer configure-ng.py as recommended.
+
+      inreplace "configure.py", "iteritems", "items" if python == "python3"
+      system python, "configure.py", *args
+      (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
+
+      # On Mavericks we want to target libc++, this requires a non default qt makespec
+      if ENV.compiler == :clang and MacOS.version >= :mavericks
+        args << "--spec" << "unsupported/macx-clang-libc++"
+      end
+
+      system python, "./configure-ng.py", *args
+      system "make"
+      system "make", "install"
+      system "make", "clean"
     end
+  end
 
-    system "python", "./configure-ng.py", *args
-    system "make"
-    system "make", "install"
+  def caveats
+    "Phonon support is broken."
   end
 
   test do
@@ -69,7 +88,10 @@ class Pyqt < Formula
       window.show()
       sys.exit(app.exec_())
     EOS
-    system "python", "test.py"
+
+    Language::Python.each_python(build) do |python, version|
+      system python, "test.py"
+    end
   end
 end
 __END__
@@ -80,7 +102,7 @@ index a8e5dcd..a5f1474 100644
 @@ -1886,7 +1886,7 @@ def get_build_macros(overrides):
      if "QMAKESPEC" in list(os.environ.keys()):
          fname = os.environ["QMAKESPEC"]
- 
+
 -        if not os.path.dirname(fname):
 +        if not os.path.dirname(fname) or fname.startswith('unsupported'):
              qt_macx_spec = fname

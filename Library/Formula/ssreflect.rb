@@ -12,16 +12,14 @@ class Ssreflect < Formula
   option 'with-doc', 'Install HTML documents'
   option 'with-static', 'Build with static linking'
 
-  def patches
-    # Fix an ill-formatted ocamldoc comment.
-    DATA
-  end
+  # Fix an ill-formatted ocamldoc comment.
+  patch :DATA
 
   def install
     ENV.j1
 
     # Enable static linking.
-    if build.include? 'with-static'
+    if build.with? "static"
       inreplace 'Make' do |s|
         s.gsub! /#\-custom/, '-custom'
         s.gsub! /#SSRCOQ/, 'SSRCOQ'
@@ -34,12 +32,12 @@ class Ssreflect < Formula
             "DSTROOT=#{prefix}/"]
     system "make", *args
     system "make", "install", *args
-    if build.include? 'with-doc'
+    if build.with? "doc"
       system "make", "-f", "Makefile.coq", "html", *args
       system "make", "-f", "Makefile.coq", "mlihtml", *args
       system "make", "-f", "Makefile.coq", "install-doc", *args
     end
-    bin.install 'bin/ssrcoq.byte', 'bin/ssrcoq' if build.include? 'with-static'
+    bin.install 'bin/ssrcoq.byte', 'bin/ssrcoq' if build.with? "static"
     (share/'ssreflect').install "pg-ssr.el"
   end
 

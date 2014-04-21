@@ -2,7 +2,7 @@ require 'formula'
 
 class MecabIpadic < Formula
   homepage 'http://mecab.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/mecab/mecab-ipadic/2.7.0-20070801/mecab-ipadic-2.7.0-20070801.tar.gz'
+  url 'https://downloads.sourceforge.net/project/mecab/mecab-ipadic/2.7.0-20070801/mecab-ipadic-2.7.0-20070801.tar.gz'
   sha1 '0d9d021853ba4bb4adfa782ea450e55bfe1a229b'
 
   # Via ./configure --help, valid choices are utf8 (default), euc-jp, sjis

@@ -2,7 +2,7 @@ require 'formula'
 
 class Ipe < Formula
   homepage 'http://ipe7.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/ipe7/ipe/7.1/ipe-7.1.3-src.tar.gz'
+  url 'https://downloads.sourceforge.net/project/ipe7/ipe/7.1/ipe-7.1.3-src.tar.gz'
   sha1 '7999a85d902fbe3952664dea86c2c0a1aaed40d6'
 
   depends_on 'pkg-config' => :build
@@ -23,7 +23,7 @@ class Ipe < Formula
   # Recommend we take upstream's recommendation and set ENV vars for
   # the paths to override those in configure.
   # @adamv
-  def patches; DATA; end
+  patch :DATA
 
   fails_with :clang do
     build 318

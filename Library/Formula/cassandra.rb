@@ -2,8 +2,8 @@ require 'formula'
 
 class Cassandra < Formula
   homepage 'http://cassandra.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/2.0.3/apache-cassandra-2.0.3-bin.tar.gz'
-  sha1 '0d77b92172e45ef879a7decc00ca4dbe48ef1e1d'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/cassandra/2.0.6/apache-cassandra-2.0.6-bin.tar.gz'
+  sha1 'dd12c44f749b808b79419a166626b3adb6d1d141'
 
   def install
     (var+"lib/cassandra").mkpath
@@ -20,6 +20,8 @@ class Cassandra < Formula
       s.gsub! "CASSANDRA_CONF=\"$CASSANDRA_HOME/conf\"", "CASSANDRA_CONF=\"#{etc}/cassandra\""
       # Jars installed to prefix, no longer in a lib folder
       s.gsub! "\"$CASSANDRA_HOME\"/lib/*.jar", "\"$CASSANDRA_HOME\"/*.jar"
+      # The jammm Java agent is not in a lib/ subdir either:
+      s.gsub! "JAVA_AGENT=\"$JAVA_AGENT -javaagent:$CASSANDRA_HOME/lib/jamm-", "JAVA_AGENT=\"$JAVA_AGENT -javaagent:$CASSANDRA_HOME/jamm-"
     end
 
     rm Dir["bin/*.bat"]
@@ -58,7 +60,7 @@ class Cassandra < Formula
 
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/cassandra</string>
+            <string>#{opt_bin}/cassandra</string>
             <string>-f</string>
         </array>
 

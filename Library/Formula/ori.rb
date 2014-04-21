@@ -2,22 +2,22 @@ require 'formula'
 
 class Ori < Formula
   homepage 'http://ori.scs.stanford.edu/'
-  url 'https://bitbucket.org/orifs/ori/downloads/ori-0.8.0.tgz'
-  sha1 'd8443b5792862c5250e60856702e1c7073047b7e'
+  url 'https://bitbucket.org/orifs/ori/downloads/ori-0.8.1.tgz'
+  sha1 '3ad31ab14bdb9305423f66cb919fdc445215f3c9'
 
   depends_on 'pkg-config' => :build
   depends_on 'scons' => :build
   depends_on 'boost'
-  depends_on 'fuse4x'
+  depends_on 'osxfuse'
   depends_on 'libevent'
   depends_on 'openssl'
 
   def install
-    system "scons", "BUILDTYPE=RELEASE"
-    system "scons", "install", "PREFIX=#{prefix}"
+    scons "BUILDTYPE=RELEASE"
+    scons "install", "PREFIX=#{prefix}"
   end
 
-  def test
+  test do
     system "#{bin}/ori"
   end
 end

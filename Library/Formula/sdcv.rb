@@ -12,6 +12,9 @@ class Sdcv < Formula
   depends_on 'glib'
   depends_on 'readline'
 
+  # see: https://github.com/Homebrew/homebrew/issues/26321
+  needs :cxx11
+
   def install
     mkdir 'build' do
       system "cmake", "..", *std_cmake_args

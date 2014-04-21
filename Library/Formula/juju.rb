@@ -2,8 +2,14 @@ require 'formula'
 
 class Juju < Formula
   homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.16/1.16.5/+download/juju-core_1.16.5.tar.gz'
-  sha1 '2202805d09dffe64d1e07988b9d1b16e02c7bd52'
+  url 'https://launchpad.net/juju-core/1.18/1.18.1/+download/juju-core_1.18.1.tar.gz'
+  sha1 '9109ad3fde28cca4e8056b5c3ebb0ef0a26b7275'
+
+  bottle do
+    sha1 "5e2c7004214bd1bb09f356f4bc18c86dd729cdee" => :mavericks
+    sha1 "4725f55dd9345ece43202538c56d7afcd29f3a3e" => :mountain_lion
+    sha1 "62f01417603e907838d423d39bb8fc01ed5b564b" => :lion
+  end
 
   depends_on 'go' => :build
 
@@ -13,22 +19,10 @@ class Juju < Formula
     args.insert(1, "-v") if ARGV.verbose?
     system "go", *args
     bin.install 'bin/juju'
-    (bash_completion/'juju-completion.bash').write <<-EOS.undent
-    _juju()
-    {
-        local cur prev options files targets
-        COMPREPLY=()
-        cur="${COMP_WORDS[COMP_CWORD]}"
-        prev="${COMP_WORDS[COMP_CWORD-1]}"
-        actions=$(juju help commands 2>/dev/null | awk '{print $1}')
-        COMPREPLY=( $( compgen -W "${actions}" -- ${cur} ) )
-        return 0
-    }
-    complete -F _juju juju
-    EOS
+    bash_completion.install "src/launchpad.net/juju-core/etc/bash_completion.d/juju-core"
   end
 
-  def test
+  test do
     system "#{bin}/juju", "version"
   end
 end

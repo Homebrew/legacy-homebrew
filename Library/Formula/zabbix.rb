@@ -2,15 +2,15 @@ require 'formula'
 
 class Zabbix < Formula
   homepage 'http://www.zabbix.com/'
-  url 'http://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.2.1/zabbix-2.2.1.tar.gz'
-  sha1 '2f07bfa08123f341ff16df88590d154282ce704f'
+  url 'https://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.2.3/zabbix-2.2.3.tar.gz'
+  sha1 '23a7363e3af1d44cd74f22cdd90d16f7f235b14d'
 
   option 'with-mysql', 'Use Zabbix Server with MySQL library instead PostgreSQL.'
   option 'agent-only', 'Install only the Zabbix Agent without Server and Proxy.'
 
   unless build.include? 'agent-only'
     depends_on :mysql => :optional
-    depends_on :postgresql unless build.with? 'mysql'
+    depends_on :postgresql if build.without? 'mysql'
     depends_on 'fping'
     depends_on 'libssh2'
   end
@@ -52,7 +52,7 @@ class Zabbix < Formula
     end
   end
 
-  def test
+  test do
     system "#{sbin}/zabbix_agentd", "--print"
   end
 end

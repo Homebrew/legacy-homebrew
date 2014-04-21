@@ -159,9 +159,17 @@ class Cluster(NodeContainer, ClusterContainer):
     def to_dot(self, out):
         out.outln("subgraph %s {" % self.cluster_id())
         with out.indented():
-            out.outln('label = "%s"' % self.label)
+            # If the label is an HTML-like string (starts and end with '<' and '>', respectively),
+            # don't put quotes around it (or GraphViz won't recognize it.)
+            if self.label[0] == '<' and self.label[-1] == '>':
+                out.outln('label = %s;' % self.label)
+            else:
+                out.outln('label = "%s"' % self.label)
             for k in self.attrib:
-                out.outln('%s = "%s"' % (k, self.attrib[k]))
+                if isinstance(self.attrib[k], dict):
+                    out.outln('%s %s;' % (k, format_attribs(self.attrib[k])))
+                else:
+                    out.outln('%s = "%s";' % (k, self.attrib[k]))
 
             for cluster in self.clusters:
                 cluster.to_dot(out)
@@ -258,7 +266,11 @@ class Graph(NodeContainer, EdgeContainer, ClusterContainer):
         with self.o.indented():
             self.o.outln('label = "%s"' % self.label)
             for k in self.attrib:
-                self.o.outln('%s = "%s"' % (k, self.attrib[k]))
+                # If the value of the attrib is a dictionary, write it out in special array form
+                if isinstance(self.attrib[k], dict):
+                    self.o.outln('%s %s;' % (k, format_attribs(self.attrib[k])))
+                else:
+                    self.o.outln('%s = "%s";' % (k, self.attrib[k]))
 
             self.nodes_to_dot(self.o)
 
@@ -302,11 +314,20 @@ def main():
             deps = deps.split(" ")
         depgraph.append((name, deps))
 
-    hb = Graph("Homebrew Dependencies", attrib={'labelloc':'t', 'rankdir':'LR', 'ranksep':'5'})
+    # We need newrank = True to make sure clusters respect rank = "source". Otherwise, we may get
+    # random nodes next to "Safe to Remove" cluster, despite them not being a part of that cluster.
+    hb = Graph("Homebrew Dependencies", attrib={
+        'labelloc':'t', 'rankdir': 'TB' , 'ranksep':'3', 'newrank': True,
+        'graph': {'fontname': 'Futura-Medium', 'fontsize': 48},
+        'node': {'fontname': 'HelveticaNeue', 'fontsize': 14}
+        })
     # Independent formulas (those that are not dependended on by any other formula) get placed in
     # their own subgraph so we can align them together on the left.
     if show == 'installed':
-        sub = hb.cluster("independent", "Safe to Remove", attrib={'rank': 'min', 'style': 'filled', 'fillcolor': '#F0F0F0', 'color': 'invis'})
+        # We use a HTML-like label to give the label a little bit of padding at the top
+        sub = hb.cluster("independent", "<<font point-size=\"15\"><br/></font>Safe to Remove>",
+                attrib={'rank': 'source', 'style': 'filled', 'fillcolor': '#F0F0F0', 'color': 'invis',
+                    'margin': '25,1', 'graph': {'fontname': 'Helvetica-LightOblique', 'fontsize': 24}})
     else:
         sub = hb
 

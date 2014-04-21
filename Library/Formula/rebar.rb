@@ -2,10 +2,10 @@ require 'formula'
 
 class Rebar < Formula
   homepage 'https://github.com/rebar/rebar'
-  url 'https://github.com/rebar/rebar/archive/2.0.0.zip'
-  sha1 '4775839097324107c730e094e42ce87b456b655c'
+  url 'https://github.com/rebar/rebar/archive/2.2.0.tar.gz'
+  sha1 '8b246586383d8809c7681f3e56bfc8d8c3b3757e'
 
-  head "https://github.com/basho/rebar.git", :branch => "master"
+  head "https://github.com/rebar/rebar.git", :branch => "master"
 
   depends_on 'erlang'
 

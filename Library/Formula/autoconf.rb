@@ -7,14 +7,13 @@ class Autoconf < Formula
   sha1 '562471cbcb0dd0fa42a76665acf0dbb68479b78a'
 
   bottle do
-    sha1 '2b69898b2827740e5983e25c7f20c0328201b256' => :mavericks
-    sha1 'ec30045d8fe4be10858b66d59f029fb19fe63b5e' => :mountain_lion
-    sha1 'e7d6d88e762996c2fb96238f7d9e48e6d0feaeba' => :lion
+    revision 1
+    sha1 "319a4ac05d83b5b3db37dcc629a46a412ec1989b" => :mavericks
+    sha1 "83184a596d69f3a868e6780c1c8fba309ea28fb2" => :mountain_lion
+    sha1 "7d31f63e5ddd1bbbf0397b0b70df1ff9e70f998b" => :lion
   end
 
-  if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/autoconf"
-    keg_only "Xcode (up to and including 4.2) provides (a rather old) Autoconf."
-  end
+  keg_only :provided_until_xcode43
 
   def install
     ENV['PERL'] = '/usr/bin/perl'
@@ -25,6 +24,7 @@ class Autoconf < Formula
     inreplace 'man/autoreconf.1', 'libtoolize', 'glibtoolize'
     system "./configure", "--prefix=#{prefix}"
     system "make install"
+    rm_f info/'standards.info'
   end
 
   test do

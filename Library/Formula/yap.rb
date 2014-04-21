@@ -23,12 +23,10 @@ class Yap < Formula
                           "--enable-coroutining",
                           "--enable-threads",
                           "--enable-pthread-locking",
-                          "--with-gmp=#{Formula.factory('gmp').opt_prefix}",
-                          "--with-readline=#{Formula.factory('readline').opt_prefix}",
+                          "--with-gmp=#{Formula['gmp'].opt_prefix}",
+                          "--with-readline=#{Formula['readline'].opt_prefix}",
                           "--with-java=/Library/Java/Home",
                           "--prefix=#{prefix}"
-
-    inreplace 'Makefile', '-DMYDDAS_ODBC', ''
 
     system "make"
     system "make install"

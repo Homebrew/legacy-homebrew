@@ -2,8 +2,8 @@ require 'formula'
 
 class Tlassemble < Formula
   homepage 'http://www.dayofthenewdan.com/projects/tlassemble/'
-  url 'https://github.com/dbridges/cocoa-tlassemble/archive/v1.0.zip'
-  sha1 'b19dd3cef88b1bb7483344e745f6bb317a17b59b'
+  url 'https://github.com/dbridges/cocoa-tlassemble/archive/v1.0.tar.gz'
+  sha1 'a261e39acc38996ebe24df2c37f935d9db1033ca'
 
   def install
     system 'make'

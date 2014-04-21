@@ -29,9 +29,20 @@ class Hexchat < Formula
     # Fails on 32-bit core solo without this
     args << "--disable-mmx" unless MacOS.prefer_64_bit?
 
-    args << "--disable-python" unless build.with? "python"
-    args << "--disable-perl" if build.include? "without-perl"
-    args << "--disable-plugin" if build.include? "without-plugins"
+    if build.with? "python"
+      python = Formula["python"]
+      if python.installed?
+        ENV.append_path "PKG_CONFIG_PATH", python.frameworks/"Python.framework/Versions/2.7/lib/pkgconfig/"
+      else
+        ENV["PY_CFLAGS"] = `/usr/bin/python-config --cflags`
+        ENV["PY_LIBS"] = `/usr/bin/python-config --libs`
+      end
+    else
+      args << "--disable-python"
+    end
+
+    args << "--disable-perl" if build.without? "perl"
+    args << "--disable-plugin" if build.without? "plugins"
 
     # Build fails because of a conflict with the system 'strptime',
     # so rename the function
@@ -40,7 +51,7 @@ class Hexchat < Formula
     end
 
     # The locations of the gettext dependencies are hardcoded, so copy them
-    gettext = Formula.factory('gettext').opt_prefix/'share/gettext'
+    gettext = Formula["gettext"].opt_prefix/"share/gettext"
     cp_r ["#{gettext}/intl", "#{gettext}/po"], "."
 
     system "autoreconf -vi"

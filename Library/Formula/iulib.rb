@@ -2,20 +2,18 @@ require 'formula'
 
 class Iulib < Formula
   homepage 'http://code.google.com/p/iulib/'
-  url 'http://iulib.googlecode.com/files/iulib-0.4.tgz'
+  url 'https://iulib.googlecode.com/files/iulib-0.4.tgz'
   sha1 '96a006f806a650886fdd59b1239f6e56d1a864c1'
+  revision 1
 
   depends_on :autoconf
   depends_on :automake
   depends_on :libtool
-  depends_on :libpng
+  depends_on "libpng"
   depends_on "jpeg"
   depends_on "libtiff"
 
-  def patches
-    # fixes errors in header calls
-    DATA
-  end
+  patch :DATA # fixes errors in header calls
 
   def install
     system "aclocal"

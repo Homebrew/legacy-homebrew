@@ -10,4 +10,15 @@ class Asm6 < Formula
     system "#{ENV.cc} -o asm6 asm6.c"
     bin.install "asm6"
   end
+
+  test do
+    (testpath/"a.asm").write <<-EOS
+      org $c000
+      jmp $fce2
+    EOS
+
+    system bin/"asm6", "a.asm"
+    code = File.open("a.bin", "rb") { |f| f.read.unpack("C*") }
+    assert_equal [0x4c, 0xe2, 0xfc], code
+  end
 end

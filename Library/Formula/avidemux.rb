@@ -4,9 +4,16 @@ require 'formula'
 
 class Avidemux < Formula
   homepage 'http://avidemux.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/avidemux/avidemux_2.6.4.tar.gz'
+  url 'https://downloads.sourceforge.net/avidemux/avidemux_2.6.4.tar.gz'
   sha1 '7ed55fd5cfb6cfa73ebb9058af72fa2e3c9717c3'
   head 'git://gitorious.org/avidemux2-6/avidemux2-6.git'
+  revision 1
+
+  bottle do
+    sha1 "0f2b3d5a4a496458809204a3c126505f6473394e" => :mavericks
+    sha1 "6bc4a7c54fb50b836d653c4c076467c579123e94" => :mountain_lion
+    sha1 "5a39c8fff4e620975d2d70d7fd51e85e8dec24e6" => :lion
+  end
 
   option 'with-debug', 'Enable debug build.'
 
@@ -53,7 +60,7 @@ class Avidemux < Formula
     mkdir 'buildCore' do
       args = std_cmake_args
       args << "-DAVIDEMUX_SOURCE_DIR=#{buildpath}"
-      args << "-DGETTEXT_INCLUDE_DIR=#{Formula.factory('gettext').opt_prefix}/include"
+      args << "-DGETTEXT_INCLUDE_DIR=#{Formula["gettext"].opt_include}"
       # Todo: We could depend on SDL and then remove the `-DSDL=OFF` arguments
       # but I got build errors about NSview.
       args << "-DSDL=OFF"
@@ -87,8 +94,6 @@ class Avidemux < Formula
         args = std_cmake_args
         args << "-DAVIDEMUX_SOURCE_DIR=#{buildpath}"
         args << "-DAVIDEMUX_LIB_DIR=#{lib}"
-        # If you get SDL to work with avidemux, you might still need to add -I like so:
-        # args << "-DCMAKE_CXX_FLAGS=-I#{Formula.factory('sdl').opt_prefix}/include/SDL"
         args << "-DSDL=OFF"
         args << "../avidemux/#{interface}"
         system "cmake", *args
@@ -130,18 +135,14 @@ class Avidemux < Formula
     mkdir_p app/"MacOS"
     cp_r "./cmake/osx/Avidemux2.6", app/"MacOS/Avidemux2.6.app"
     chmod 0755, app/"MacOS/Avidemux2.6.app"
-    cp_r Formula.factory('qt').opt_prefix/"lib/QtGui.framework/Resources/qt_menu.nib", app/"MacOS/" if build.with? 'qt'
+    cp_r Formula['qt'].opt_prefix/"lib/QtGui.framework/Resources/qt_menu.nib", app/"MacOS/" if build.with? 'qt'
     cp "./cmake/osx/Info.plist", app
-    ln_s lib, app/"Resources/"
-    ln_s bin, app/"Resources/"
+    (app/"Resources").install_symlink bin, lib
     cp Dir["./cmake/osx/*.icns"], app/"Resources/"
   end
 
   def caveats
     if build.with? 'qt' then <<-EOS.undent
-      You may want to `brew linkapps` to link the Qt GUI app
-      #{opt_prefix}/Avidemux2.6.app it to `~/Applications`.
-
       To enable sound: In preferences, set the audio to CoreAudio instead of Dummy.
       EOS
     end

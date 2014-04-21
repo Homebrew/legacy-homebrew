@@ -9,7 +9,7 @@ class Uberftp < Formula
 
   def install
     # get the flavor
-    globus = Formula.factory('globus-toolkit').opt_prefix
+    globus = Formula["globus-toolkit"].opt_prefix
 
     core = `"#{globus}/sbin/gpt-query" globus_core`
     flavor = case core

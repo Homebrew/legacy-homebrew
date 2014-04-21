@@ -3,8 +3,8 @@ require 'formula'
 class Headphones < Formula
   homepage 'https://github.com/rembo10/headphones'
   head 'https://github.com/rembo10/headphones.git'
-  url 'https://github.com/rembo10/headphones/archive/v0.1.2.zip'
-  sha1 'd02b4ba4b513e318abf08d72c5b8b9ed4e35de3a'
+  url 'https://github.com/rembo10/headphones/archive/v0.3.2.tar.gz'
+  sha1 '61653a41af9d4aed61d1cd0efb9e4a56ae32451a'
 
   depends_on 'Cheetah' => :python
 
@@ -30,7 +30,7 @@ class Headphones < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/headphones</string>
+        <string>#{opt_bin}/headphones</string>
         <string>-q</string>
         <string>-d</string>
         <string>--nolaunch</string>

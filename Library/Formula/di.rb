@@ -10,7 +10,7 @@ class Di < Formula
     system "make", "install", "prefix=#{prefix}", "DI_MANDIR=#{man1}"
   end
 
-  def test
+  test do
     system "#{bin}/di"
   end
 end

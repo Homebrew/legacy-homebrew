@@ -34,11 +34,11 @@ class Monotone < Formula
     ENV['botan_CFLAGS'] = "-I#{botan18_prefix}/include"
     ENV['botan_LIBS'] = "-L#{botan18_prefix}/lib -lbotan"
 
-    # Monotone only needs headers from Boost, so let's avoid building the libraries.
+    # Monotone only needs headers from Boost, so avoid building the libraries.
     # This is suggested in the Monotone installation instructions.
 
     boost_prefix = buildpath/'boost'
-    boost = Formula.factory('boost149')
+    boost = Formula['boost149']
     boost.brew do
       boost_prefix.install Dir['*']
       # Add header location to CPPFLAGS

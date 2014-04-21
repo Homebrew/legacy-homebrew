@@ -2,7 +2,7 @@ require 'formula'
 
 class Pdftoipe < Formula
   homepage 'http://ipe7.sourceforge.net/'
-  url 'http://sourceforge.net/projects/ipe7/files/tools/pdftoipe-20130124-src.tar.gz'
+  url 'https://downloads.sourceforge.net/project/ipe7/tools/pdftoipe-20130124-src.tar.gz'
   sha1 '081141129f9a2c55e6732e597fd8e94cc96f69e3'
 
   depends_on 'pkg-config' => :build
