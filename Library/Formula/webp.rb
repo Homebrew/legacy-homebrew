@@ -10,6 +10,8 @@ class Webp < Formula
 
   depends_on 'libpng'
   depends_on 'jpeg' => :recommended
+  depends_on 'libtiff' => :recommended
+  depends_on 'giflib' => :recommended
 
   def install
     ENV.universal_binary if build.universal?
