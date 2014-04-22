@@ -916,7 +916,7 @@ def check_git_status
       If this a surprise to you, then you should stash these modifications.
       Stashing returns Homebrew to a pristine state but can be undone
       should you later need to do so for some reason.
-          cd #{HOMEBREW_LIBRARY} && git stash && git clean -d -f
+          cd #{HOMEBREW_LIBRARY} && git stash && git clean -d -f && cd -
       EOS
     end
   end
