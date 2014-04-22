@@ -19,12 +19,7 @@ class Jruby < Formula
     end
 
     # Only keep the OS X native libraries
-    cd 'lib/jni' do
-      Dir['*'].each do |file|
-        rm_rf file unless file.downcase == 'darwin'
-      end
-    end
-
+    rm_rf Dir["lib/jni/*"] - ["lib/jni/Darwin"]
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end

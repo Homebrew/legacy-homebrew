@@ -2,8 +2,8 @@ require 'formula'
 
 class Rdesktop < Formula
   homepage 'http://www.rdesktop.org/'
-  url 'https://downloads.sourceforge.net/project/rdesktop/rdesktop/1.7.1/rdesktop-1.7.1.tar.gz'
-  sha1 'c718d0f49948a964c7ef8424b8ade73ecce3aba3'
+  url 'https://downloads.sourceforge.net/project/rdesktop/rdesktop/1.8.1/rdesktop-1.8.1.tar.gz'
+  sha1 '57bb41f98ddf9eeef875c613d790fee37971d0f8'
 
   depends_on :x11
 
