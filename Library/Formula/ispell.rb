@@ -25,7 +25,7 @@ class Ispell < Formula
     chmod 0644, "config.sh"
     inreplace "config.sh" do |s|
       s.gsub! '/usr/share/dict', "#{share}/dict"
-      s.gsub! /yacc/, MacOS.locate('yacc')
+      s.gsub! /yacc/, "yacc"
     end
 
     (lib/'ispell').mkpath
