@@ -263,7 +263,8 @@ class Python < Formula
       else:
           # Only do this for a brewed python:
           opt_executable = '#{opt_bin}/python2.7'
-          if os.path.commonprefix([os.path.realpath(e) for e in [opt_executable, sys.executable]]).startswith('#{rack}'):
+          hb_python = os.path.commonprefix([os.path.realpath(e) for e in [opt_executable, sys.executable]]).startswith('#{rack}')
+          if hb_python:
               # Remove /System site-packages, and the Cellar site-packages
               # which we moved to lib/pythonX.Y/site-packages. Further, remove
               # HOMEBREW_PREFIX/lib/python because we later addsitedir(...).
@@ -290,6 +291,19 @@ class Python < Formula
           # This is needed for Python to parse *.pth.
           import site
           site.addsitedir('#{site_packages}')
+
+          # Only do this for a brewed python: rearrange sys.path so all Homebrew paths are first,
+          # but maintain order of any PYTHONPATHs or .pth manipulations
+          if hb_python:
+              py_paths = os.environ['PYTHONPATH'].split(os.pathsep) if 'PYTHONPATH' in os.environ else []
+              sys.path = [p for p in sys.path
+                          if p.startswith('#{site_packages}') or
+                             p.startswith('#{rack}') or
+                             p in py_paths] + \\
+                         [p for p in sys.path
+                          if not p.startswith('#{site_packages}') and
+                             not p.startswith('#{rack}') and
+                             p not in py_paths]
     EOF
   end
 
