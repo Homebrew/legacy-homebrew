@@ -14,7 +14,7 @@ class Libmxml < Formula
                           "--prefix=#{prefix}"
 
     # Makefile hard-codes the path to /Developer
-    inreplace "Makefile", "/Developer/usr/bin/docsetutil", MacOS.locate('docsetutil')
+    inreplace "Makefile", "/Developer/usr/bin/docsetutil", "docsetutil"
 
     system "make"
     system "make install"
