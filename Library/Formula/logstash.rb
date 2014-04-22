@@ -2,11 +2,17 @@ require 'formula'
 
 class Logstash < Formula
   homepage 'http://logstash.net/'
-  url 'https://download.elasticsearch.org/logstash/logstash/logstash-1.3.3-flatjar.jar'
-  sha1 '8effc7027093188b968fed37513ca647f96d6d8c'
+  url 'https://download.elasticsearch.org/logstash/logstash/logstash-1.4.0.tar.gz'
+  sha1 '009c9d3d17b781b6ad2cceb776064cda6c6b3957'
+  head 'https://github.com/elasticsearch/logstash.git', :using => :git
 
   def install
-    libexec.install "logstash-#{version}-flatjar.jar"
-    bin.write_jar_script libexec/"logstash-#{version}-flatjar.jar", "logstash"
+    inreplace "bin/logstash", /^basedir=.*$/, "basedir=#{prefix}"
+    inreplace "bin/logstash.lib.sh", /^basedir=.*$/, "basedir=#{prefix}"
+    prefix.install Dir["*"]
+  end
+
+  test do
+    system "#{bin}/logstash", "--version"
   end
 end
