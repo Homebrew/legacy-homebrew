@@ -3,7 +3,7 @@ require 'formula'
 class Ansible < Formula
   homepage 'http://www.ansible.com/home'
   url 'http://releases.ansible.com/ansible/ansible-1.5.5.tar.gz'
-  sha1 '74301e3146486cf83f9898b57f4b6db5fea6e652'
+  sha1 '9a065eac0d15413284c8c7f9f5047d7b1249f16c'
 
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
