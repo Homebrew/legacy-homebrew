@@ -7,8 +7,11 @@ class Libmowgli < Formula
 
   head 'https://github.com/atheme/libmowgli-2.git'
 
+  depends_on "openssl"
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-openssl=/usr"
+    system "./configure", "--prefix=#{prefix}",
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
     system "make"
     system "make", "install"
   end
