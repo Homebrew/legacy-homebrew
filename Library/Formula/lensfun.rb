@@ -3,7 +3,7 @@ require 'formula'
 class Lensfun < Formula
   homepage 'http://lensfun.berlios.de'
   head 'svn://svn.berlios.de/lensfun/trunk'
-  url 'https://downloads.sourceforge.net/project/lensfun.berlios/lensfun-0.2.8.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/lensfun/0.2.8/lensfun-0.2.8.tar.bz2'
   sha1 '0e85eb7692620668d27e2303687492ad68c90eb4'
   revision 1
 
