@@ -8,10 +8,9 @@ class Neon < Formula
   keg_only :provided_by_osx
 
   option :universal
-  option 'with-brewed-openssl', 'Include OpenSSL support via Homebrew'
 
   depends_on 'pkg-config' => :build
-  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'openssl'
 
   # Configure switch unconditionally adds the -no-cpp-precomp switch
   # to CPPFLAGS, which is an obsolete Apple-only switch that breaks
@@ -22,19 +21,13 @@ class Neon < Formula
   def install
     ENV.universal_binary if build.universal?
     ENV.enable_warnings
-    args = [
-      "--disable-debug",
-      "--prefix=#{prefix}",
-      "--enable-shared",
-      "--disable-static",
-      "--with-ca-bundle=/usr/share/curl/curl-ca-bundle.crt",
-      "--disable-nls",
-      "--with-ssl",
-    ]
-    if build.with? 'brewed-openssl'
-      args << "--with-libs=#{Formula['openssl'].opt_prefix}"
-    end
-    system "./configure", *args
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--enable-shared",
+                          "--disable-static",
+                          "--disable-nls",
+                          "--with-ssl=openssl",
+                          "--with-libs=#{Formula["openssl"].opt_prefix}"
     system "make install"
   end
 end
