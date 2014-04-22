@@ -7,9 +7,10 @@ class Pass < Formula
 
   bottle do
     cellar :any
-    sha1 "3a1324080921276695ec14b88a6e8eef9f56d9de" => :mavericks
-    sha1 "aa91ce2e9c6ff7a0aea9b9b661f5879147c49491" => :mountain_lion
-    sha1 "8d04739353034e7722aa90dcc14f790e3c25c2a3" => :lion
+    revision 1
+    sha1 "b08dd30932ce30c4a64a4886f3a7c6c1f1ab847f" => :mavericks
+    sha1 "1b127403b8f6e4cb09275ba51fa2a8e4f0e7dd34" => :mountain_lion
+    sha1 "16b60f64f369aa2b0a2d7e7c6403beaa6a3eacba" => :lion
   end
 
   head 'http://git.zx2c4.com/password-store', :using => :git
@@ -23,6 +24,7 @@ class Pass < Formula
     system "make DESTDIR=#{prefix} PREFIX=/ install"
     share.install "contrib"
     zsh_completion.install "src/completion/pass.zsh-completion" => "_pass"
+    bash_completion.install "src/completion/pass.bash-completion" => "password-store"
   end
 
   test do
