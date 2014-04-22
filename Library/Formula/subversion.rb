@@ -13,7 +13,6 @@ class Subversion < Formula
   end
 
   option :universal
-  option 'with-brewed-openssl', 'Include OpenSSL support to Serf via Homebrew'
   option 'java', 'Build Java bindings'
   option 'perl', 'Build Perl bindings'
   option 'ruby', 'Build Ruby bindings'
@@ -38,7 +37,7 @@ class Subversion < Formula
 
   # For Serf
   depends_on 'scons' => :build
-  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'openssl'
 
   # If building bindings, allow non-system interpreters
   env :userpaths if build.include? 'perl' or build.include? 'ruby'
@@ -72,8 +71,8 @@ class Subversion < Formula
       ENV.universal_binary if build.universal?
       # scons ignores our compiler and flags unless explicitly passed
       args = %W[PREFIX=#{serf_prefix} GSSAPI=/usr CC=#{ENV.cc}
-                CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}]
-      args << "OPENSSL=#{Formula["openssl"].opt_prefix}" if build.with? 'brewed-openssl'
+                CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}
+                OPENSSL=#{Formula["openssl"].opt_prefix}]
       scons *args
       scons "install"
     end
