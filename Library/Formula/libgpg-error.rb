@@ -2,9 +2,9 @@ require 'formula'
 
 class LibgpgError < Formula
   homepage 'http://www.gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.12.tar.bz2'
-  mirror 'http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.12.tar.bz2'
-  sha1 '259f359cd1440b21840c3a78e852afd549c709b8'
+  url 'ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.13.tar.bz2'
+  mirror 'http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.13.tar.bz2'
+  sha1 '50fbff11446a7b0decbf65a6e6b0eda17b5139fb'
 
   bottle do
     cellar :any
