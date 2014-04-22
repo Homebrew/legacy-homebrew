@@ -13,6 +13,7 @@ class Ggobi < Formula
   depends_on 'fontconfig'
   depends_on 'pango'
   depends_on 'gettext'
+  depends_on 'libtool' => :run
   depends_on :x11
 
   # Several files reference "line 0", which gcc accepts but clang doesn't
