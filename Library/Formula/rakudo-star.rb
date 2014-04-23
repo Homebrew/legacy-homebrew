@@ -11,6 +11,8 @@ class RakudoStar < Formula
     sha1 "ad7b50e1e85f2552f89f1e5fbdf2741659b8763b" => :lion
   end
 
+  option 'with-jvm', 'Build also for jvm as an alternate backend.'
+
   conflicts_with 'parrot'
 
   depends_on 'gmp' => :optional
@@ -24,7 +26,11 @@ class RakudoStar < Formula
     ENV.prepend 'CPPFLAGS', "-I#{libffi.lib}/libffi-#{libffi.version}/include"
 
     ENV.j1  # An intermittent race condition causes random build failures.
-    system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=parrot", "--gen-parrot"
+    if build.with? "jvm"
+      system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=parrot,jvm", "--gen-parrot"
+    else
+      system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=parrot", "--gen-parrot"
+    end
     system "make"
     system "make install"
     # move the man pages out of the top level into share.
