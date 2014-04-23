@@ -7,6 +7,7 @@ class Dovecot < Formula
   sha256 'f3de1cae5665ff202713c1489bc96b4d029760808bf3311d76c173d7f3e38c56'
 
   depends_on 'clucene' => :optional
+  depends_on 'openssl'
 
   def install
     args = %W[--prefix=#{prefix}

@@ -3,15 +3,15 @@ require 'formula'
 class Avian < Formula
   homepage 'http://oss.readytalk.com/avian/'
   head 'https://github.com/ReadyTalk/avian.git'
-  url 'https://github.com/ReadyTalk/avian/archive/v0.7.1.tar.gz'
-  sha1 '7465b27f11de9b85f4d750e8f4f57a9b3477b87d'
+  url 'https://github.com/ReadyTalk/avian/archive/v0.7.1.1.tar.gz'
+  sha1 '326f127f146f46a5b35567b1717ea4a5b13833fd'
 
   depends_on :macos => :lion
 
   # Fix build with clang; already upstream
   patch do
     url "https://github.com/ReadyTalk/avian/commit/69ea1f57219e0ec1b113f1fcadaa3dae6b93f358.diff"
-    sha1 "f05e71680c5970cbf945d866f9aa000f02c56005"
+    sha1 "fc357efdd179c2511e76181dbf735e4a9e19e8b5"
   end
 
   def install

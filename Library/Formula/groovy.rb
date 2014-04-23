@@ -7,6 +7,12 @@ class Groovy < Formula
 
   option 'invokedynamic', "Install the InvokeDynamic version of Groovy (only works with Java 1.7+)"
 
+  devel do
+    url 'http://dl.bintray.com/groovy/maven/groovy-binary-2.3.0-beta-2.zip'
+    sha1 '30c70cb68e3418c641c3b3ac8556aee5a1fe3f49'
+    version '2.3.0-beta-2'
+  end
+
   def install
     # Don't need Windows files.
     rm_f Dir["bin/*.bat"]

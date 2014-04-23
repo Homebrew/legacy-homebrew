@@ -48,16 +48,21 @@ class TeXDependency < Requirement
 
   satisfy { which('tex') || which('latex') }
 
-  def message; <<-EOS.undent
+  def message;
+    if File.exist?("/usr/texbin")
+      texbin_path = "/usr/texbin"
+    else
+      texbin_path = "its bin directory"
+    end
+
+    <<-EOS.undent
     A LaTeX distribution is required to install.
 
     You can install MacTeX distribution from:
       http://www.tug.org/mactex/
 
-    Make sure that its bin directory is in your PATH before proceeding.
-
-    You may also need to restore the ownership of Homebrew install:
-      sudo chown -R $USER `brew --prefix`
+    Make sure that "/usr/texbin", or the location you installed it to, is in
+    your PATH before proceeding.
     EOS
   end
 end
