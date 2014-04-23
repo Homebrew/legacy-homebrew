@@ -4,6 +4,7 @@ class Webp < Formula
   homepage 'http://code.google.com/speed/webp/'
   url 'https://webp.googlecode.com/files/libwebp-0.4.0.tar.gz'
   sha1 '326c4b6787a01e5e32a9b30bae76442d18d2d1b6'
+  head 'https://chromium.googlesource.com/webm/libwebp', :branch => 'master'
   revision 1
 
   option :universal

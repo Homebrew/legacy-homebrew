@@ -2,8 +2,8 @@ require "formula"
 
 class DuoUnix < Formula
   homepage "https://www.duosecurity.com/docs/duounix"
-  url "https://dl.duosecurity.com/duo_unix-1.9.8.tar.gz"
-  sha1 "0f7d039c0768e872c56429758ff997c33f5aa030"
+  url "https://dl.duosecurity.com/duo_unix-1.9.10.tar.gz"
+  sha1 "13977071bdcb24b5d9de13e4fe1a973d60885b37"
 
   def install
     system "./configure", "--prefix=#{prefix}",

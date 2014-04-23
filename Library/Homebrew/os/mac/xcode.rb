@@ -9,7 +9,8 @@ module OS
 
       # Locate the "current Xcode folder" via xcode-select. See:
       # man xcode-select
-      # NOTE!! use Xcode.prefix rather than this generally!
+      # TODO Should this be moved to OS::Mac? As of 10.9 this is referred to
+      # as the "developer directory", and be either a CLT or Xcode instance.
       def folder
         @folder ||= `xcode-select -print-path 2>/dev/null`.strip
       end
@@ -46,9 +47,12 @@ module OS
           if path != CLT::MAVERICKS_PKG_PATH and path.absolute? \
              and File.executable? "#{path}/usr/bin/make"
             path
-          # TODO remove this branch when 10.10 is released
           elsif File.executable? "#{V4_BUNDLE_PATH}/Contents/Developer/usr/bin/make"
-            # fallback for broken Xcode 4.3 installs
+            # TODO Remove this branch when 10.10 is released
+            # This is a fallback for broken installations of Xcode 4.3+. Correct
+            # installations will be handled by the first branch. Pretending that
+            # broken installations are OK just leads to hard to diagnose problems
+            # later.
             Pathname.new("#{V4_BUNDLE_PATH}/Contents/Developer")
           elsif (path = bundle_path)
             path += "Contents/Developer"

@@ -25,8 +25,8 @@ end
 
 class Mkvtoolnix < Formula
   homepage 'http://www.bunkus.org/videotools/mkvtoolnix/'
-  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-6.8.0.tar.xz'
-  sha1 'd742eb0c38de48d0f12363252115c0d966e8abc3'
+  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-6.9.1.tar.xz'
+  sha1 '6c62d91663fd382b0b66da6548eea5a5c37f8128'
 
   head 'https://github.com/mbunkus/mkvtoolnix.git'
 

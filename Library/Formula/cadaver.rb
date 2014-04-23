@@ -9,19 +9,17 @@ class Cadaver < Formula
   depends_on 'gettext'
   depends_on 'readline'
   depends_on 'neon'
+  depends_on 'openssl'
 
   # enable build with the latest neon
   patch :DATA
 
   def install
-    neon_prefix = Formula['neon'].opt_prefix
-
     system "./configure", "--prefix=#{prefix}",
-                          "--with-neon=#{neon_prefix}",
-                          "--with-ssl"
-    cd 'lib/intl' do
-      system "make"
-    end
+                          "--with-ssl=openssl",
+                          "--with-libs=#{Formula["openssl"].opt_prefix}",
+                          "--with-neon=#{Formula["neon"].opt_prefix}"
+    system "make", "-C", "lib/intl"
     system "make install"
   end
 end

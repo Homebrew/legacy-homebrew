@@ -29,8 +29,6 @@ class Lmdb < Formula
     lib.mkpath
     include.mkpath
 
-    cd 'libraries/liblmdb' do
-      system "make", "install", "prefix=#{prefix}"
-    end
+    system "make", "-C", "libraries/liblmdb", "install", "prefix=#{prefix}"
   end
 end
