@@ -8,7 +8,7 @@ class Tpp < Formula
   depends_on 'figlet' => :optional
 
   resource 'ncurses-ruby' do
-    url 'https://downloads.sf.net/project/ncurses-ruby.berlios/ncurses-ruby-1.3.1.tar.bz2'
+    url 'https://downloads.sourceforge.net/project/ncurses-ruby.berlios/ncurses-ruby-1.3.1.tar.bz2'
     sha1 'e50018fc906e5048403b277a898117e782e267c4'
   end
 

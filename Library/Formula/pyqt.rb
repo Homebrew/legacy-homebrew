@@ -2,7 +2,7 @@ require 'formula'
 
 class Pyqt < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  url 'https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.4/PyQt-mac-gpl-4.10.4.tar.gz'
+  url 'https://downloads.sourceforge.net/project/pyqt/PyQt4/PyQt-4.10.4/PyQt-mac-gpl-4.10.4.tar.gz'
   sha1 'ef3bb2a05a5c8c3ab7578a0991ef5a4e17c314c0'
 
   depends_on :python => :recommended

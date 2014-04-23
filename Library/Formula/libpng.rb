@@ -2,7 +2,7 @@ require "formula"
 
 class Libpng < Formula
   homepage "http://www.libpng.org/pub/png/libpng.html"
-  url "https://downloads.sf.net/project/libpng/libpng16/1.6.10/libpng-1.6.10.tar.gz"
+  url "https://downloads.sourceforge.net/project/libpng/libpng16/1.6.10/libpng-1.6.10.tar.gz"
   sha1 "cf81cf7df631bbfa649600b9a45d966b6bccac25"
 
   bottle do
