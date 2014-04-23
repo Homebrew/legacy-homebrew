@@ -28,6 +28,12 @@ class Gcc < Formula
 
   head "svn://gcc.gnu.org/svn/gcc/branches/gcc-4_8-branch"
 
+  bottle do
+    sha1 "9c206ad0d249665e1edb8c870c442ee836646cbb" => :mavericks
+    sha1 "bc37c90383363baa2121a6b22fa8826c0c63acc5" => :mountain_lion
+    sha1 "da1bc22b6b75464cbf2a8b29f1e79a15e531b1e6" => :lion
+  end
+
   option "with-fortran", "Build the gfortran compiler"
   option "with-java", "Build the gcj compiler"
   option "with-all-languages", "Enable all compilers and languages, except Ada"
