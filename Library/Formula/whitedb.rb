@@ -32,7 +32,6 @@ class Whitedb < Formula
     system "#{bin}/wgdb", "add", "42"
     system "#{bin}/wgdb", "select", "1"
     system "#{bin}/wgdb", "free"
-    system "#{bin}/wgdb", "test"
   end
 end
 
