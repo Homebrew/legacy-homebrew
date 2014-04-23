@@ -5,27 +5,30 @@ class Ghc < Formula
   url "https://www.haskell.org/ghc/dist/7.8.2/ghc-7.8.2-src.tar.xz"
   sha1 "fe86ae790b7e8e5b4c78db7a914ee375bc6d9fc3"
 
-  bottle do
-  end
-
   option "32-bit"
   option "tests", "Verify the build using the testsuite."
 
   # http://hackage.haskell.org/trac/ghc/ticket/6009
   depends_on :macos => :snow_leopard
-  depends_on "apple-gcc42" => :build if (build.build_32_bit? or
-                                         Hardware.is_32_bit? or
-                                         MacOS::Xcode.version < "5.1")
 
-  resource "binary" do
+  # GHC 7.6 —which we might use for bootstrapping— still needs GCC
+  depends_on "gcc" => :build if (build.build_32_bit? or
+                                 Hardware.is_32_bit? or
+                                 MacOS::Xcode.version < "5.1")
+
+  resource "7.8.2-x86_64-binary" do
     url "https://www.haskell.org/ghc/dist/7.8.2/ghc-7.8.2-x86_64-apple-darwin-mavericks.tar.bz2"
     sha1 "efe602841300bcd887c46555fbc66fb67de34ebd"
   end
 
-  resource "binary-32" do
-    # GHC 7.6 requires GCC.
+  resource "7.6.3-i386-binary" do
     url "https://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-i386-apple-darwin.tar.bz2"
     sha1 "6a312263fef41e06003f0676b879f2d2d5a1f30c"
+  end
+
+  resource "7.6.3-x86_64-binary" do
+    url "https://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-x86_64-apple-darwin.tar.bz2"
+    sha1 "fb9f18197852181a9472221e1944081985b75992"
   end
 
   resource "testsuite" do
@@ -37,11 +40,15 @@ class Ghc < Formula
     # Move the main tarball contents into a subdirectory
     (buildpath+"Ghcsource").install Dir["*"]
 
-    if (build.build_32_bit? or Hardware.is_32_bit? or
-        MacOS::Xcode.version < "5.1")
-      binary_resource = "binary-32"
+    if (build.build_32_bit? or Hardware.is_32_bit?)
+      binary_resource = "7.6.3-i386-binary"
+      arch = "i386"
+    elsif MacOS::Xcode.version < "5.1"
+      binary_resource = "7.6.3-x86_64-binary"
+      arch = "x86_64"
     else
-      binary_resource = "binary"
+      binary_resource = "7.8.2-x86_64-binary"
+      arch = "x86_64"
     end
 
     resource(binary_resource).stage do
@@ -50,23 +57,17 @@ class Ghc < Formula
 
       args = ["--prefix=#{subprefix}"]
       system "./configure", *args
-      # -j1 fixes an intermittent race condition
-      system "make", "-j1", "install"
+      ENV.deparallelize
+      system "make", "install"
       ENV.prepend_path "PATH", subprefix/"bin"
     end
 
     cd "Ghcsource" do
-      if (build.build_32_bit? or Hardware.is_32_bit? or
-          MacOS::Xcode.version < "5.1")
-        arch = "x86_64"
-      else
-        ENV.m32 # Need to force this to fix build error on internal libgmp_ar.
-        arch = "i386"
-      end
+      # ENV.m32 if arch = "i386" # Need to force this to fix build error on internal libgmp_ar.
+      # (commented out to see if the 32-bit builds still fail)
 
       args = ["--prefix=#{prefix}",
-              "--build=#{arch}-apple-darwin",
-              "--with-gcc=#{ENV.cc}"]
+              "--build=#{arch}-apple-darwin"]
 
       system "./configure", *args
       system "make"
@@ -87,8 +88,8 @@ class Ghc < Formula
       end
 
       system "make"
-      # -j1 fixes an intermittent race condition
-      system "make", "-j1", "install"
+      ENV.deparallelize
+      system "make", "install"
     end
   end
 
