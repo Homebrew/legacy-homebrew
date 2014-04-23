@@ -62,6 +62,14 @@ class Llvm < Formula
 
     (share/'llvm/cmake').install buildpath/'cmake/modules'
 
+    if build.with? 'clang'
+      (share/'clang/tools').install buildpath/'tools/clang/tools/scan-build', buildpath/'tools/clang/tools/scan-view'
+      inreplace share/'clang/tools/scan-build/scan-build', '$RealBin/bin/clang', bin/'clang'
+      ln_s share/'clang/tools/scan-build/scan-build', bin
+      ln_s share/'clang/tools/scan-view/scan-view', bin
+      ln_s share/'clang/tools/scan-build/scan-build.1', man1
+    end
+
     # install llvm python bindings
     if build.with? "python"
       (lib+'python2.7/site-packages').install buildpath/'bindings/python/llvm'
