@@ -13,7 +13,6 @@ class OpenOcd < Formula
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
-    depends_on 'pkg-config' => :build
 
     depends_on 'hidapi' if build.include? 'enable-cmsis-dap'
   end
@@ -26,6 +25,7 @@ class OpenOcd < Formula
   option 'enable-ft2232_libftdi', 'Enable building support for FT2232 based devices with libftdi driver'
   option 'enable-ft2232_ftd2xx',  'Enable building support for FT2232 based devices with FTD2XX driver'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libusb-compat'
   depends_on 'libftdi0' if build.include? 'enable-ft2232_libftdi'
 
