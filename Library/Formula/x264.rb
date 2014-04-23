@@ -3,21 +3,14 @@ require 'formula'
 class X264 < Formula
   homepage "http://www.videolan.org/developers/x264.html"
   # the latest commit on the stable branch
-  url "http://git.videolan.org/git/x264.git", :revision => "aff928d2a2f601072cebecfd1ac5ff768880cf88"
-  version "r2397"
+  url "http://git.videolan.org/git/x264.git", :revision => "e260ea549226ae29832d8bc0dcfd20cffc8cf248"
+  version "r2412"
   head "http://git.videolan.org/git/x264.git"
 
   devel do
     # the latest commit on the master branch
-    url "http://git.videolan.org/git/x264.git", :revision => "d6b4e63d2ed8d444b77c11b36c1d646ee5549276"
-    version "r2409"
-  end
-
-  # Support building with Clang 3.4
-  # The patch will be merged in the official repository soon.
-  patch do
-    url "https://github.com/DarkShikari/x264-devel/commit/bc3b27.diff"
-    sha1 "85145f2123ef4a881749b8524583a56ead8494ef"
+    url "http://git.videolan.org/git/x264.git", :revision => "ac7644073ac28d19c9cf048849bbcd515713e426"
+    version "r2431"
   end
 
   bottle do
