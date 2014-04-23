@@ -2,9 +2,9 @@ require 'formula'
 
 class GstPluginsBase < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.2.3.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-base-1.2.3.tar.xz'
-  sha256 '61edec35c270f86928bad434bd059da4efff865d1ef01bcc64ecbd903625dae1'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.2.4.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-base-1.2.4.tar.xz'
+  sha256 '4d6273dc3f5a94bcc53ccfe0711cfddd49e31371d1136bf62fa1ecc604fc6550'
 
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-base'
