@@ -5,6 +5,7 @@ class Openssl < Formula
   url 'https://www.openssl.org/source/openssl-1.0.1g.tar.gz'
   mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1g.tar.gz'
   sha256 '53cb818c3b90e507a8348f4f5eaedb05d8bfe5358aabb508b7263cc670c3e028'
+  revision 1
 
   bottle do
     sha1 "d8c38bb2fe4dfd8930ea02f87d4b958a2a33b051" => :mavericks
@@ -16,6 +17,14 @@ class Openssl < Formula
 
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."
+
+  # OpenBSD 5.4 errata 8, Apr 12, 2014:  A use-after-free race condition
+  # in OpenSSL's read buffer may permit an attacker to inject data from
+  # one connection into another.
+  patch do
+    url "https://gist.githubusercontent.com/anonymous/6c2c038ffabff4ff8bba/raw/ssl-s3_pkt.patch"
+    sha1 "c346d793dd0ec8225dea9bcbebfc04a9324e9b17"
+  end
 
   def install
     args = %W[./Configure
