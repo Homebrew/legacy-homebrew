@@ -2,8 +2,9 @@ require "formula"
 
 class Mpdviz < Formula
   homepage "https://github.com/neeee/mpdviz"
-  url "https://github.com/neeee/mpdviz.git"
-  version "0.4.3-1"
+  url "http://github.com/neeee/mpdviz/archive/0.4.3.tar.gz"
+  version "0.4.3"
+  sha1 "7923a818155c9fc413e483dcb1b3964ab00e5ded"
 
   depends_on "fftw"
   depends_on "pkg-config" => :build
