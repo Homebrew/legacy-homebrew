@@ -10,6 +10,7 @@ class Httping < Formula
 
   def install
     inreplace "configure", "ncursesw", "ncurses"
+    inreplace "Makefile", "ncursesw", "ncurses"
     system "./configure", "--with-ncurses"
     ENV.append "LDFLAGS", "-lintl"
     inreplace "Makefile", "cp nl.mo $(DESTDIR)/$(PREFIX)/share/locale/nl/LC_MESSAGES/httping.mo", ""
