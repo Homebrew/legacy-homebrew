@@ -9,9 +9,7 @@ class Httping < Formula
   depends_on 'fftw' => :optional
 
   def install
-    inreplace "configure", "ncursesw", "ncurses"
-    inreplace "Makefile", "ncursesw", "ncurses"
-    system "./configure", "--with-ncurses"
+    inreplace %w{configure Makefile}, "ncursesw", "ncurses"
     ENV.append "LDFLAGS", "-lintl"
     inreplace "Makefile", "cp nl.mo $(DESTDIR)/$(PREFIX)/share/locale/nl/LC_MESSAGES/httping.mo", ""
     system "make", "install", "PREFIX=#{prefix}"
