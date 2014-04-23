@@ -8,9 +8,9 @@ class Tinyxml2 < Formula
 
   bottle do
     cellar :any
-    sha1 "" => :mavericks
-    sha1 "" => :mountain_lion
-    sha1 "" => :lion
+    sha1 "82860d4195cb6c1230770cb35899a26480d608b3" => :mavericks
+    sha1 "bebfd80f824aeccc679c3efd719457f353d8132e" => :mountain_lion
+    sha1 "4fba761a6b118583a2ef064c43b7a839fe210cd3" => :lion
   end
 
   depends_on "cmake" => :build
