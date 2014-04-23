@@ -2,9 +2,9 @@ require 'formula'
 
 class Gstreamer < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.2.3.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.2.3.tar.xz'
-  sha256 '0f9a9817a384b3448c368c23345e5122435caef9c00f1c40d7b1953827b0d8eb'
+  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.2.4.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.2.4.tar.xz'
+  sha256 '1e7ca67a7870a82c9ed51d51d0008cdbc550c41d64cc3ff3f9a1c2fc311b4929'
 
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gstreamer'
