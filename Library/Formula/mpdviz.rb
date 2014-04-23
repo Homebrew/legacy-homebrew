@@ -19,8 +19,4 @@ class Mpdviz < Formula
     bin.install 'mpdviz'
   end
 
-  test do
-    system bin/"mpdviz", "--help"
-  end
-
 end
