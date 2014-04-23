@@ -22,8 +22,8 @@ class Openssl < Formula
   # in OpenSSL's read buffer may permit an attacker to inject data from
   # one connection into another.
   patch do
-    url "http://ftp.openbsd.org/pub/OpenBSD/patches/5.4/common/008_openssl.patch"
-    sha1 "ede490c6f3eb76f0b085bce76506c2661ab2707e"
+    url "https://gist.githubusercontent.com/anonymous/6c2c038ffabff4ff8bba/raw/ssl-s3_pkt.patch"
+    sha1 "c346d793dd0ec8225dea9bcbebfc04a9324e9b17"
   end
 
   def install
