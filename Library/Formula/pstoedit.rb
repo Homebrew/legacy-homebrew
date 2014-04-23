@@ -10,6 +10,7 @@ class Pstoedit < Formula
   depends_on 'plotutils'
   depends_on 'ghostscript'
   depends_on 'imagemagick'
+  depends_on :x11 => :optional
 
   def install
     ENV.deparallelize
