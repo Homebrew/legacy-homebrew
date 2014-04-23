@@ -44,7 +44,7 @@ class Pyqt5 < Formula
       system "make", "install"
       system "make", "clean"
     end
-    doc.install Dir['doc/html'], 'examples' if build.with? "docs"
+    doc.install 'doc/html', 'examples' if build.with? "docs"
   end
 
   test do
