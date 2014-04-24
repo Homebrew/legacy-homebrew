@@ -6,8 +6,7 @@ class Logstash < Formula
   sha1 '009c9d3d17b781b6ad2cceb776064cda6c6b3957'
 
   def install
-    inreplace "bin/logstash", /^basedir=.*$/, "basedir=#{libexec}"
-    inreplace "bin/logstash.lib.sh", /^basedir=.*$/, "basedir=#{libexec}"
+    inreplace %w{bin/logstash bin/logstash.lib.sh}, /^basedir=.*$/, "basedir=#{libexec}"
     libexec.install Dir["*"]
     bin.install_symlink libexec/"bin/logstash"
   end
@@ -21,6 +20,6 @@ class Logstash < Formula
 
   test do
     system "#{bin}/logstash", "--version"
-    system "/bin/echo -n 'hello world' | #{bin}/logstash agent -e 'input { stdin { type => stdin } } output { stdout { codec => rubydebug } }'"
+    system "/bin/echo 'hello world' | #{bin}/logstash agent -e 'input { stdin { type => stdin } } output { stdout { codec => rubydebug } }'"
   end
 end
