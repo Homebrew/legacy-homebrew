@@ -55,6 +55,16 @@ class Openssl < Formula
     (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
   end
 
+  def caveats; <<-EOS.undent
+    A CA file has been bootstrapped using certificates from the system
+    keychain. To add additional certificates, place .pem files in
+      #{openssldir}/certs
+
+    and run
+      #{opt_bin}/c_rehash
+    EOS
+  end
+
   test do
     (testpath/'testfile.txt').write("This is a test file")
     expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32"
