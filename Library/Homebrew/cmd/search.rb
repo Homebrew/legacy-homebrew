@@ -7,11 +7,6 @@ module Homebrew extend self
 
   SEARCH_ERROR_QUEUE = Queue.new
 
-  # A regular expession to capture the username (one or more char but no `/`,
-  # which has to be escaped like `\/`), repository, followed by an optional `/`
-  # and an optional query.
-  TAP_QUERY_REGEX = /^([^\/]+)\/([^\/]+)\/?(.+)?$/
-
   def search
     if ARGV.include? '--macports'
       exec_browser "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
@@ -27,17 +22,21 @@ module Homebrew extend self
       exec_browser "http://packages.ubuntu.com/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     elsif (query = ARGV.first).nil?
       puts_columns Formula.names
-    elsif ARGV.first =~ TAP_QUERY_REGEX
+    elsif ARGV.first =~ HOMEBREW_TAP_FORMULA_REGEX
       # So look for user/repo/query or list all formulae by the tap
       # we downcase to avoid case-insensitive filesystem issues.
       user, repo, query = $1.downcase, $2.downcase, $3
-      tap_dir = HOMEBREW_LIBRARY/"Taps/#{user}-#{repo}"
+      tap_dir = HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
       # If, instead of `user/repo/query` the user wrote `user/repo query`:
       query = ARGV[1] if query.nil?
       if tap_dir.directory?
-        # There is a local tap already:
-        result = Dir["#{tap_dir}/*.rb"].map{ |f| File.basename(f).chomp('.rb') }
-        result = result.grep(query_regexp(query)) unless query.nil?
+        result = ""
+        if query
+          tap_dir.find_formula do |child|
+            basename = child.basename(".rb").to_s
+            result = basename if basename == query
+          end
+        end
       else
         # Search online:
         query = '' if query.nil?
@@ -104,7 +103,7 @@ module Homebrew extend self
   end
 
   def search_tap user, repo, rx
-    return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}-#{repo.downcase}").directory?
+    return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}").directory?
 
     results = []
     GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
