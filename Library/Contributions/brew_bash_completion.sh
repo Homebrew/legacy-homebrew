@@ -66,12 +66,12 @@ __brew_complete_formulae ()
     local af=$(\ls ${lib}/Aliases 2>/dev/null)
     local tf file
 
-    for file in ${taps}/*/*.rb ${taps}/*/Formula/*.rb ${taps}/*/HomebrewFormula/*.rb; do
+    for file in ${taps}/*/*/*.rb ${taps}/*/*/Formula/*.rb ${taps}/*/*/HomebrewFormula/*.rb; do
         file=${file/"Formula/"/}
         file=${file/"HomebrewFormula/"/}
         file=${file#${lib}/Taps/}
         file=${file%.rb}
-        file=${file/-//}
+        file=${file/homebrew-/}
         tf="${tf} ${file}"
     done
 
@@ -111,7 +111,15 @@ _brew_switch ()
 
 __brew_complete_tapped ()
 {
-    __brewcomp "$(\ls $(brew --repository)/Library/Taps 2>/dev/null | sed 's/-/\//g')"
+    local taplib=$(brew --repository)/Library/Taps
+    local dir taps
+
+    for dir in ${taplib}/*/*; do
+        dir=${dir#${taplib}/}
+        dir=${dir/homebrew-/}
+        taps="$taps $dir"
+    done
+    __brewcomp "$taps"
 }
 
 _brew_complete_tap ()
