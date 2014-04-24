@@ -82,7 +82,7 @@ class FormulaInstaller
   def check_install_sanity
     raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
 
-    if f.installed? and (f.linked_keg.symlink? or f.keg_only?)
+    if f.installed? && (f.linked_keg.symlink? || f.keg_only?)
       msg = "#{f}-#{f.installed_version} already installed"
       raise FormulaAlreadyInstalledError, msg
     end
