@@ -50,23 +50,21 @@ module Homebrew extend self
     ignores = (HOMEBREW_LIBRARY/"Formula/.gitignore").read.split rescue []
     tapped = 0
 
-    cd HOMEBREW_LIBRARY/"Formula" do
-      formulae.each do |formula|
-        from = HOMEBREW_LIBRARY.join("Taps/#{formula}")
-        to = HOMEBREW_LIBRARY.join("Formula/#{formula.basename}")
+    formulae.each do |formula|
+      from = HOMEBREW_LIBRARY.join("Taps/#{formula}")
+      to = HOMEBREW_LIBRARY.join("Formula/#{formula.basename}")
 
-        # Unexpected, but possible, lets proceed as if nothing happened
-        to.delete if to.symlink? and to.realpath == from
+      # Unexpected, but possible, lets proceed as if nothing happened
+      to.delete if to.symlink? and to.realpath == from
 
-        # using the system ln is the only way to get relative symlinks
-        system "ln -s ../Taps/#{formula} 2>/dev/null"
-        if $?.success?
-          ignores << formula.basename.to_s
-          tapped += 1
-        else
-          to = to.realpath if to.exist?
-          opoo "Could not tap #{Tty.white}#{from.tap_ref}#{Tty.reset} over #{Tty.white}#{to.tap_ref}#{Tty.reset}"
-        end
+      begin
+        to.make_relative_symlink(from)
+      rescue SystemCallError
+        to = to.realpath if to.exist?
+        opoo "Could not tap #{Tty.white}#{from.tap_ref}#{Tty.reset} over #{Tty.white}#{to.tap_ref}#{Tty.reset}"
+      else
+        ignores << formula.basename.to_s
+        tapped += 1
       end
     end
 
