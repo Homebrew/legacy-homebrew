@@ -8,6 +8,11 @@ class Mg < Formula
   depends_on 'clens'
 
   def install
+    # makefile hardcodes include path to clens; since it's a
+    # nonstandard path, Homebrew's standard include paths won't
+    # fix this for people with nonstandard prefixes.
+    inreplace 'Makefile', '/usr/local', prefix
+
     system "make"
     bin.install "mg"
     doc.install "tutorial"

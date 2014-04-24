@@ -13,14 +13,19 @@ class OpenOcd < Formula
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
-    depends_on 'pkg-config' => :build
 
     depends_on 'hidapi' if build.include? 'enable-cmsis-dap'
+  end
+
+  devel do
+    url 'https://downloads.sourceforge.net/project/openocd/openocd/0.8.0-rc2/openocd-0.8.0-rc2.tar.bz2'
+    sha1 '59c3d4ef74d268f6534da040b8cf2470e980e413'
   end
 
   option 'enable-ft2232_libftdi', 'Enable building support for FT2232 based devices with libftdi driver'
   option 'enable-ft2232_ftd2xx',  'Enable building support for FT2232 based devices with FTD2XX driver'
 
+  depends_on 'pkg-config' => :build
   depends_on 'libusb-compat'
   depends_on 'libftdi0' if build.include? 'enable-ft2232_libftdi'
 

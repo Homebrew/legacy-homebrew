@@ -46,5 +46,5 @@ We accept tips through [Gittip][tip].
 [mxcl]:https://github.com/mxcl
 [formula]:https://github.com/Homebrew/homebrew/tree/master/Library/Formula/
 [braumeister]:http://braumeister.org
-[license]:https://github.com/Homebrew/homebrew/tree/master/Library/Homebrew/LICENSE
+[license]:https://github.com/Homebrew/homebrew/tree/master/LICENSE.txt
 [tip]:https://www.gittip.com/Homebrew/

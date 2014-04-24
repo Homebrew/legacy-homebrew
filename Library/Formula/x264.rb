@@ -3,28 +3,21 @@ require 'formula'
 class X264 < Formula
   homepage "http://www.videolan.org/developers/x264.html"
   # the latest commit on the stable branch
-  url "http://git.videolan.org/git/x264.git", :revision => "aff928d2a2f601072cebecfd1ac5ff768880cf88"
-  version "r2397"
+  url "http://git.videolan.org/git/x264.git", :revision => "e260ea549226ae29832d8bc0dcfd20cffc8cf248"
+  version "r2412"
   head "http://git.videolan.org/git/x264.git"
 
   devel do
     # the latest commit on the master branch
-    url "http://git.videolan.org/git/x264.git", :revision => "d6b4e63d2ed8d444b77c11b36c1d646ee5549276"
-    version "r2409"
-  end
-
-  # Support building with Clang 3.4
-  # The patch will be merged in the official repository soon.
-  patch do
-    url "https://github.com/DarkShikari/x264-devel/commit/bc3b27.diff"
-    sha1 "85145f2123ef4a881749b8524583a56ead8494ef"
+    url "http://git.videolan.org/git/x264.git", :revision => "ac7644073ac28d19c9cf048849bbcd515713e426"
+    version "r2431"
   end
 
   bottle do
     cellar :any
-    sha1 "7a35f1da2e78eedb2be6d8f44d4bd1bc2a62339d" => :mavericks
-    sha1 "1b55c37b83f95a589b1832ccab7d8dae3700f5dc" => :mountain_lion
-    sha1 "19c9d9a6df12cbc4a6201c044215d2be609e6844" => :lion
+    sha1 "28d8418f2a774f057106ba67076060a45bfead9a" => :mavericks
+    sha1 "001bb62c41554f3a6479ffc6dcd6625da17f2ea4" => :mountain_lion
+    sha1 "326cb8fc003ed0c17f07e2f5a31d2a72f1d399cf" => :lion
   end
 
   depends_on 'yasm' => :build

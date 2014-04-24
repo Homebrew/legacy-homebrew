@@ -1,5 +1,6 @@
 TAP_MIGRATIONS = {
   "aimage" => "homebrew/boneyard",
+  "apple-gcc42" => "homebrew/versions",
   "blackbox" => "homebrew/boneyard",
   "boost149" => "homebrew/versions",
   "cmucl" => "homebrew/binary",
