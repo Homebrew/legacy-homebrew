@@ -13,13 +13,15 @@ class Tree < Formula
   end
 
   def install
-    ENV.append 'CFLAGS', '-fomit-frame-pointer', '-no-cpp-precomp'
-    inreplace 'Makefile' do |s|
-      s.change_make_var! "OBJS", "\\1 strverscmp.o"
-      s.change_make_var! "MANDIR", man1
-    end
+    ENV.append 'CFLAGS', '-fomit-frame-pointer'
+    objs = 'tree.o unix.o html.o xml.o hash.o color.o strverscmp.o json.o'
 
     system "make", "prefix=#{prefix}",
+                   "MANDIR=#{man1}",
+                   "CC=#{ENV.cc}",
+                   "CFLAGS=#{ENV.cflags}",
+                   "LDFLAGS=#{ENV.ldflags}",
+                   "OBJS=#{objs}",
                    "install"
   end
 
