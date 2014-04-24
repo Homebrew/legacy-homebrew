@@ -102,9 +102,10 @@ class BuildOptions
     universal || args.include?('--universal') && has_option?('universal')
   end
 
-  # True if the user requested to enable C++11 mode.
+  # True if C++11 mode was enabled or always available.
   def cxx11?
-    cxx11 || args.include?('--c++11') && has_option?('c++11')
+    cxx11 || MacOS.version >= :mavericks \
+          || args.include?('--c++11') && has_option?('c++11')
   end
 
   # Request a 32-bit only build.
