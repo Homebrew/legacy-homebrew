@@ -159,7 +159,7 @@ class Formulary
     def initialize tapped_name
       @tapped_name = tapped_name
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
-      tap = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}-#{repo}")
+      tap = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}/homebrew-#{repo}")
       path = tap.join("#{name}.rb")
 
       if tap.directory?

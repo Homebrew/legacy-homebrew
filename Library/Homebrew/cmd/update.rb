@@ -34,19 +34,23 @@ module Homebrew extend self
     end
     report.merge!(master_updater.report)
 
-    Dir["Library/Taps/*"].each do |tapd|
-      next unless File.directory?(tapd)
+    # rename Taps directories
+    # this procedure will be removed in the future if it seems unnecessasry
+    rename_taps_dir_if_necessary
 
-      cd tapd do
-        begin
-          updater = Updater.new
-          updater.pull!
-          report.merge!(updater.report) do |key, oldval, newval|
-            oldval.concat(newval)
+    Dir["Library/Taps/*/"].each do |user|
+      Dir["#{user}*/"].each do |repo|
+        cd repo do
+          begin
+            updater = Updater.new
+            updater.pull!
+            report.merge!(updater.report) do |key, oldval, newval|
+              oldval.concat(newval)
+            end
+          rescue
+            repo =~ %r{^Library/Taps/([\w_-]+)/(homebrew-)?([\w_-]+)}
+            onoe "Failed to update tap: #$1/#$3"
           end
-        rescue
-          tapd =~ %r{^Library/Taps/(\w+)-(\w+)}
-          onoe "Failed to update tap: #$1/#$2"
         end
       end
     end
@@ -90,6 +94,39 @@ module Homebrew extend self
   rescue Exception
     FileUtils.rm_rf ".git"
     raise
+  end
+
+  def rename_taps_dir_if_necessary
+    need_repair_taps = false
+    Dir["#{HOMEBREW_LIBRARY}/Taps/*/"].each do |tapd|
+      begin
+        tapd_basename = File.basename(tapd)
+
+        if File.directory?(tapd + "/.git")
+          if tapd_basename.include?("-")
+            # only replace the *last* dash: yes, tap filenames suck
+            user, repo = tapd_basename.reverse.sub("-", "/").reverse.split("/")
+
+            FileUtils.mkdir_p("#{HOMEBREW_LIBRARY}/Taps/#{user.downcase}")
+            FileUtils.mv(tapd, "#{HOMEBREW_LIBRARY}/Taps/#{user.downcase}/homebrew-#{repo.downcase}")
+            need_repair_taps = true
+
+            if tapd_basename.count("-") >= 2
+              opoo "Homebrew changed the structure of Taps like <someuser>/<sometap>. "\
+                + "So you may need to rename #{HOMEBREW_LIBRARY}/Taps/#{user.downcase}/homebrew-#{repo.downcase} manually."
+            end
+          else
+            opoo "Homebrew changed the structure of Taps like <someuser>/<sometap>. "\
+              "#{tapd} is incorrect name format. You may need to rename it like <someuser>/<sometap> manually."
+          end
+        end
+      rescue => ex
+        onoe ex.message
+        next # next tap directory
+      end
+    end
+
+    repair_taps if need_repair_taps
   end
 
   def load_tap_migrations
@@ -184,7 +221,7 @@ class Report < Hash
 
   def tapped_formula_for key
     fetch(key, []).map do |path|
-      case path when %r{^Library/Taps/(\w+-\w+/.*)}
+      case path when %r{^Library/Taps/([\w_-]+/[\w_-]+/.*)}
         relative_path = $1
         if valid_formula_location?(relative_path)
           Pathname.new(relative_path)
@@ -195,7 +232,7 @@ class Report < Hash
 
   def valid_formula_location?(relative_path)
     ruby_file = /\A.*\.rb\Z/
-    parts = relative_path.split('/')[1..-1]
+    parts = relative_path.split('/')[2..-1]
     [
       parts.length == 1 && parts.first =~ ruby_file,
       parts.length == 2 && parts.first == 'Formula' && parts.last =~ ruby_file,
@@ -215,8 +252,8 @@ class Report < Hash
     fetch(key, []).map do |path|
       case path when %r{^Library/Formula}
         File.basename(path, ".rb")
-      when %r{^Library/Taps/(\w+)-(\w+)/(.*)\.rb}
-        "#$1/#$2/#{File.basename(path, '.rb')}"
+      when %r{^Library/Taps/([\w_-]+)/(homebrew-)?([\w_-]+)/(.*)\.rb}
+        "#$1/#$3/#{File.basename(path, '.rb')}"
       end
     end.compact.sort
   end
