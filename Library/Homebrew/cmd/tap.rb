@@ -61,7 +61,7 @@ module Homebrew extend self
         to.make_relative_symlink(from)
       rescue SystemCallError
         to = to.realpath if to.exist?
-        opoo "Could not tap #{Tty.white}#{from.tap_ref}#{Tty.reset} over #{Tty.white}#{to.tap_ref}#{Tty.reset}"
+        opoo "Could not tap #{Tty.white}#{tap_ref(from)}#{Tty.reset} over #{Tty.white}#{tap_ref(to)}#{Tty.reset}"
       else
         ignores << formula.basename.to_s
         tapped += 1
@@ -115,12 +115,9 @@ module Homebrew extend self
   rescue GitHub::Error
     false
   end
-end
 
-
-class Pathname
-  def tap_ref
-    case self.to_s
+  def tap_ref(path)
+    case path.to_s
     when %r{^#{HOMEBREW_LIBRARY}/Taps/([\w_-]+)/([\w_-]+)/(.+)}
       "#$1/#$2/#{File.basename($3, '.rb')}"
     when %r{^#{HOMEBREW_LIBRARY}/Formula/(.+)}
