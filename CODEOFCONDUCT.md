@@ -4,7 +4,7 @@ The Homebrew community is made up of members from around the globe with a divers
 A member of the Homebrew community is:
 
 ## Open
-Members of the community are open to collaboration, whether it's on GitHub, email, IRC or otherwise. We're receptive to constructive comment and criticism, as the experiences and skill sets of other members contribute to the whole of our efforts. We're accepting of all who wish to take part in our activities, fostering an environment where anyone can participate and everyone can make a difference.
+Members of the community are open to collaboration, whether it's on GitHub, email, IRC or otherwise. We're receptive to constructive comments and criticism, as the experiences and skill sets of other members contribute to the whole of our efforts. We're accepting of all who wish to take part in our activities, fostering an environment where anyone can participate and everyone can make a difference.
 
 ## Considerate
 Members of the community are considerate of their peers - other Homebrew users. We're thoughtful when addressing the efforts of others, keeping in mind that often times the labor was completed simply for the good of the community. We're attentive in our communications, whether in person or online, and we're tactful when approaching differing views.
@@ -15,7 +15,7 @@ Members of the community are respectful. We're respectful of others, their posit
 Overall, we're good to each other. We contribute to this community not because we have to, but because we want to. If we remember that, these guidelines will come naturally.
 
 # Diversity
-The Homebrew community welcomes and encourages participation by everyone. Our community is based on mutual respect, tolerance, and encouragement, and we are working to help each other live up to these principles. We want our community to be more diverse: whoever you are, and whatever your background, we welcome you.
+The Homebrew community welcomes and encourages participation by everyone. Our community is based on mutual respect, tolerance, and encouragement, and we are working to help each other live up to these principles. We want our community to be more diverse; whoever you are, and whatever your background, we welcome you.
 
 We have created this diversity statement because we believe that a diverse Homebrew community is stronger and more vibrant. A diverse community where people treat each other with respect has more potential contributors and more sources for ideas.
 
