@@ -13,7 +13,7 @@ class Ghc < Formula
 
   # GHC 7.6 —which we might use for bootstrapping— still needs GCC
   depends_on "gcc" => :build if (build.build_32_bit? or
-                                 Hardware.is_32_bit? or
+                                 not MacOS.prefer_64_bit? or
                                  MacOS::Xcode.version < "5.1")
 
   resource "7.8.2-x86_64-binary" do
@@ -40,7 +40,7 @@ class Ghc < Formula
     # Move the main tarball contents into a subdirectory
     (buildpath+"Ghcsource").install Dir["*"]
 
-    if (build.build_32_bit? or Hardware.is_32_bit?)
+    if (build.build_32_bit? or not MacOS.prefer_64_bit?)
       binary_resource = "7.6.3-i386-binary"
       arch = "i386"
     elsif MacOS::Xcode.version < "5.1"
