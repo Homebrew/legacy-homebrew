@@ -2,8 +2,8 @@ require 'formula'
 
 class Tree < Formula
   homepage 'http://mama.indstate.edu/users/ice/tree/'
-  url 'http://mama.indstate.edu/users/ice/tree/src/tree-1.6.0.tgz'
-  sha1 '350f851f68859a011668362dd0e7ee81fd1b713a'
+  url 'http://mama.indstate.edu/users/ice/tree/src/tree-1.7.0.tgz'
+  sha1 '35bd212606e6c5d60f4d5062f4a59bb7b7b25949'
 
   bottle do
     cellar :any
@@ -13,15 +13,13 @@ class Tree < Formula
   end
 
   def install
-    ENV.append 'CFLAGS', '-fomit-frame-pointer'
-    objs = 'tree.o unix.o html.o xml.o hash.o color.o strverscmp.o'
+    ENV.append 'CFLAGS', '-fomit-frame-pointer', '-no-cpp-precomp'
+    inreplace 'Makefile' do |s|
+      s.change_make_var! "OBJS", "\\1 strverscmp.o"
+      s.change_make_var! "MANDIR", man1
+    end
 
     system "make", "prefix=#{prefix}",
-                   "MANDIR=#{man1}",
-                   "CC=#{ENV.cc}",
-                   "CFLAGS=#{ENV.cflags}",
-                   "LDFLAGS=#{ENV.ldflags}",
-                   "OBJS=#{objs}",
                    "install"
   end
 
