@@ -2,23 +2,26 @@ require 'formula'
 
 class Uru < Formula
   homepage 'https://bitbucket.org/jonforums/uru'
-  url 'https://bitbucket.org/jonforums/uru/downloads/uru-0.6.4-darwin-x86.tar.gz'
-  version '0.6.4'
-  sha1 'fc99fc0867c1d236155c624b4d88636f4c1e6bbe'
+  url 'https://bitbucket.org/jonforums/uru/get/v0.7.4.tar.gz'
+  version '0.7.4'
+  sha1 '24b91db240e324d2738ad1f19079aed41b9cfdbf'
+  depends_on 'go' => :build
 
   def install
-    bin.install Dir['*']
+    ENV['GOPATH'] = buildpath
+    system 'go', 'get', '-ldflags', '-s', 'bitbucket.org/jonforums/uru'
+    bin.install 'bin/uru' => 'uru_rt'
   end
 
   def caveats; <<-EOS.undent
-    # append to ~/.profile on Ubuntu, or to ~/.zshrc on Zsh
+    # Append to ~/.profile on Ubuntu, or to ~/.zshrc on Zsh
     $ echo 'eval "$(uru_rt admin install)"' >> ~/.bash_profile
 
-    # register a pre-existing "system" ruby already placed on PATH from bash/Zsh
+    # Register a pre-existing "system" ruby already placed on PATH from bash/Zsh
     # startup configuration files
     $ uru_rt admin add system
 
-    # restart shell
+    # Restart shell
     $ exec $SHELL -l
     EOS
   end
