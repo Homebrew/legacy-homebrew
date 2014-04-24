@@ -2,16 +2,16 @@ require 'formula'
 
 class Gfortran < Formula
   homepage 'http://gcc.gnu.org/wiki/GFortran'
-  url 'http://ftpmirror.gnu.org/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2'
-  sha1 '810fb70bd721e1d9f446b6503afe0a9088b62986'
+  url 'http://ftpmirror.gnu.org/gcc/gcc-4.9.0/gcc-4.9.0.tar.bz2'
+  mirror 'http://ftp.gnu.org/gnu/gcc/gcc-4.9.0/gcc-4.9.0.tar.bz2'
+  sha1 'fbde8eb49f2b9e6961a870887cf7337d31cd4917'
 
-  bottle do
-    revision 1
-    sha1 'b0e7a0c7b6b0472b6cea9e73b2312df48f7c6c82' => :mavericks
-    sha1 '45d4f1b8c492a7c5abd67685a9bbfc408e474458' => :mountain_lion
-    sha1 '2d09223b679cdaa28fe3d9c192b65cec56353db9' => :lion
-  end
+  # bottle do
+  #   revision 1
+  #   sha1 'b0e7a0c7b6b0472b6cea9e73b2312df48f7c6c82' => :mavericks
+  #   sha1 '45d4f1b8c492a7c5abd67685a9bbfc408e474458' => :mountain_lion
+  #   sha1 '2d09223b679cdaa28fe3d9c192b65cec56353db9' => :lion
+  # end
 
   option 'enable-profiled-build', 'Make use of profile guided optimization when bootstrapping GCC'
   option 'check', 'Run the make check fortran. This is for maintainers.'
