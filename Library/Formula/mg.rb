@@ -11,7 +11,8 @@ class Mg < Formula
     # makefile hardcodes include path to clens; since it's a
     # nonstandard path, Homebrew's standard include paths won't
     # fix this for people with nonstandard prefixes.
-    inreplace 'Makefile', '/usr/local', prefix
+    inreplace 'Makefile', '/usr/local', HOMEBREW_PREFIX
+    inreplace 'GNUmakefile', '/usr/local', HOMEBREW_PREFIX
 
     system "make"
     bin.install "mg"
