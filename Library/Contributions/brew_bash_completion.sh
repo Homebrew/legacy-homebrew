@@ -67,6 +67,7 @@ __brew_complete_formulae ()
     local tf file
 
     for file in ${taps}/*/*/*.rb ${taps}/*/*/Formula/*.rb ${taps}/*/*/HomebrewFormula/*.rb; do
+        [ -f "$file" ] || continue
         file=${file/"Formula/"/}
         file=${file/"HomebrewFormula/"/}
         file=${file#${lib}/Taps/}
@@ -115,6 +116,7 @@ __brew_complete_tapped ()
     local dir taps
 
     for dir in ${taplib}/*/*; do
+        [ -d "$dir" ] || continue
         dir=${dir#${taplib}/}
         dir=${dir/homebrew-/}
         taps="$taps $dir"
