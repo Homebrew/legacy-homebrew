@@ -133,16 +133,6 @@ _brew_complete_tap ()
         return
         ;;
     esac
-    __brew_complete_taps
-}
-
-__brew_complete_taps ()
-{
-    if [[ -z "$__brew_cached_taps" ]]; then
-        __brew_cached_taps="$(brew ls-taps)"
-    fi
-
-    __brewcomp "$__brew_cached_taps"
 }
 
 _brew_bottle ()
