@@ -2,8 +2,8 @@ require 'formula'
 
 class Cairomm < Formula
   homepage 'http://cairographics.org/cairomm/'
-  url 'http://cairographics.org/releases/cairomm-1.10.0.tar.gz'
-  sha256 '068d96c43eae7b0a3d98648cbfc6fbd16acc385858e9ba6d37b5a47e4dba398f'
+  url 'http://cairographics.org/releases/cairomm-1.11.2.tar.gz'
+  sha1 '35e190a03f760924bece5dc1204cc36b3583c806'
   revision 1
 
   bottle do
