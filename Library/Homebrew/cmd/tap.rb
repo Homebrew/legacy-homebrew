@@ -2,13 +2,9 @@ module Homebrew extend self
 
   def tap
     if ARGV.empty?
-      tapd = HOMEBREW_LIBRARY/"Taps"
-      tapd.children.each do |user|
-        next unless user.directory?
-        user.children.each do |repo|
-          puts "#{user.basename}/#{repo.basename.sub("homebrew-", "")}" if (repo/".git").directory?
-        end
-      end if tapd.directory?
+      each_tap do |user, repo|
+        puts "#{user.basename}/#{repo.basename.sub("homebrew-", "")}" if (repo/".git").directory?
+      end
     elsif ARGV.first == "--repair"
       repair_taps
     else
@@ -88,19 +84,28 @@ module Homebrew extend self
 
     count = 0
     # check symlinks are all set in each tap
-    HOMEBREW_REPOSITORY.join("Library/Taps").children.each do |user|
-      next unless user.directory?
-      user.children.each do |repo|
-        files = []
-        repo.find_formula{ |file| files << user.basename.join(repo.basename, file) } if repo.directory?
-        count += link_tap_formula(files)
-      end
+    each_tap do |user, repo|
+      files = []
+      repo.find_formula { |file| files << user.basename.join(repo.basename, file) }
+      count += link_tap_formula(files)
     end
 
     puts "Tapped #{count} formula"
   end
 
   private
+
+  def each_tap
+    taps = HOMEBREW_LIBRARY.join("Taps")
+
+    if taps.directory?
+      taps.subdirs.each do |user|
+        user.subdirs.each do |repo|
+          yield user, repo
+        end
+      end
+    end
+  end
 
   def tap_args
     ARGV.first =~ %r{^([\w_-]+)/(homebrew-)?([\w_-]+)$}
