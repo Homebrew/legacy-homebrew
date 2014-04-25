@@ -30,13 +30,12 @@ module Homebrew extend self
     gitignores = (HOMEBREW_LIBRARY/"Formula/.gitignore").read.split rescue []
 
     formulae.each do |formula|
-      tapd = (HOMEBREW_LIBRARY/"Taps/#{formula}").dirname
-      bn = formula.basename.to_s
-      pn = HOMEBREW_LIBRARY/"Formula/#{bn}"
+      file = HOMEBREW_LIBRARY.join("Taps", formula)
+      link = HOMEBREW_LIBRARY.join("Formula", formula.basename)
 
-      if pn.symlink? and (!pn.exist? or pn.realpath.to_s =~ %r[^#{tapd}])
-        pn.delete
-        gitignores.delete(bn)
+      if link.symlink? && (!link.exist? || link.resolved_path == file)
+        link.delete
+        gitignores.delete(file.basename.to_s)
         untapped += 1
       end
     end
