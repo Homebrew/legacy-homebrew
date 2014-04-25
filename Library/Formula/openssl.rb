@@ -45,33 +45,24 @@ class Openssl < Formula
     etc/"openssl"
   end
 
-  def cert_pem
-    openssldir/"cert.pem"
-  end
-
-  def osx_cert_pem
-    openssldir/"osx_cert.pem"
-  end
-
-  def write_pem_file
+  def post_install
     keychains = %w[
       /Library/Keychains/System.keychain
       /System/Library/Keychains/SystemRootCertificates.keychain
     ]
 
-    osx_cert_pem.atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
+    openssldir.mkpath
+    (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
   end
 
-  def post_install
-    openssldir.mkpath
+  def caveats; <<-EOS.undent
+    A CA file has been bootstrapped using certificates from the system
+    keychain. To add additional certificates, place .pem files in
+      #{openssldir}/certs
 
-    if cert_pem.exist?
-      write_pem_file
-    else
-      cert_pem.unlink if cert_pem.symlink?
-      write_pem_file
-      openssldir.install_symlink 'osx_cert.pem' => 'cert.pem'
-    end
+    and run
+      #{opt_bin}/c_rehash
+    EOS
   end
 
   test do

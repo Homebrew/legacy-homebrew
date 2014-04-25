@@ -22,6 +22,7 @@ class SwiProlog < Formula
 
   depends_on 'readline'
   depends_on 'gmp'
+  depends_on 'libarchive' => :optional
 
   if build.with? "xpce"
     depends_on 'pkg-config' => :build
@@ -41,6 +42,15 @@ class SwiProlog < Formula
   end
 
   def install
+    # The archive package hard-codes a check for MacPort libarchive
+    # Replace this with a check for Homebrew's libarchive, or nowhere
+    if build.with? "libarchive"
+      inreplace "packages/archive/configure.in", "/opt/local",
+                                                 Formula['libarchive'].opt_prefix
+    else
+      ENV.append "DISABLE_PKGS", "archive"
+    end
+
     args = ["--prefix=#{libexec}", "--mandir=#{man}"]
     ENV.append 'DISABLE_PKGS', "jpl" if build.without? "jpl"
     ENV.append 'DISABLE_PKGS', "xpce" if build.without? "xpce"
