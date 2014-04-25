@@ -51,6 +51,12 @@ class Mplayer < Formula
     # It turns out that ENV.O1 fixes link errors with llvm.
     ENV.O1 if ENV.compiler == :llvm
 
+    if build.with? 'osd' or build.with? 'x'
+      # otherwise configure is not picking up freetype's location correctly.
+      ENV.append 'CFLAGS', `freetype-config --cflags`.strip
+      ENV.append 'LDFLAGS', `freetype-config --libs`.strip
+    end
+
     # we disable cdparanoia because homebrew's version is hacked to work on OS X
     # and mplayer doesn't expect the hacks we apply. So it chokes.
     # Specify our compiler to stop ffmpeg from defaulting to gcc.
