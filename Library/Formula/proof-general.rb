@@ -7,17 +7,17 @@ class ProofGeneral < Formula
   sha1 'c8d2e4457478b9dbf4080d3cf8255325fcffe619'
 
   option 'with-doc', 'Install HTML documentation'
-  option 'with-emacs=', 'Re-compile lisp files with specified emacs'
+  option 'with-emacs', 'Re-compile lisp files with installed emacs'
 
   def which_emacs
-    emacs_binary = ARGV.value('with-emacs')
-    if emacs_binary.nil?
+    if build.without? "emacs"
       return OpenStruct.new(
         :binary => "",
         :major  => 0,
         :empty? => true)
     end
 
+    emacs_binary = `which emacs`.strip()
     raise "#{emacs_binary} not found" if not File.exist? "#{emacs_binary}"
 
     version_info = `#{emacs_binary} --version`
