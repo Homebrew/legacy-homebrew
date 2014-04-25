@@ -17,11 +17,10 @@ module Homebrew extend self
     cd HOMEBREW_REPOSITORY
     git_init_if_necessary
 
-    taps = HOMEBREW_LIBRARY.join("Taps")
     tapped_formulae = []
     HOMEBREW_LIBRARY.join("Formula").children.each do |path|
       next unless path.symlink?
-      tapped_formulae << path.resolved_path.relative_path_from(taps)
+      tapped_formulae << path.resolved_path
     end
     unlink_tap_formula(tapped_formulae)
 
@@ -179,8 +178,7 @@ class Updater
           when :R then $3
           else $2
           end
-        path = Pathname.pwd.join(path).relative_path_from(HOMEBREW_REPOSITORY)
-        map[status] << path.to_s
+        map[status] << Pathname.pwd.join(path)
       end
     end
 
@@ -219,12 +217,12 @@ class Report < Hash
   end
 
   def tapped_formula_for key
-    fetch(key, []).map do |path|
-      case path when %r{^Library/Taps/([\w_-]+/[\w_-]+/.*)}
-        relative_path = $1
-        if valid_formula_location?(relative_path)
-          Pathname.new(relative_path)
-        end
+    fetch(key, []).select do |path|
+      case path.relative_path_from(HOMEBREW_REPOSITORY).to_s
+      when %r{^Library/Taps/([\w_-]+/[\w_-]+/.*)}
+        valid_formula_location?($1)
+      else
+        false
       end
     end.compact
   end
@@ -249,10 +247,11 @@ class Report < Hash
 
   def select_formula key
     fetch(key, []).map do |path|
-      case path when %r{^Library/Formula}
-        File.basename(path, ".rb")
+      case path.relative_path_from(HOMEBREW_REPOSITORY).to_s
+      when %r{^Library/Formula}
+        path.basename(".rb").to_s
       when %r{^Library/Taps/([\w_-]+)/(homebrew-)?([\w_-]+)/(.*)\.rb}
-        "#$1/#$3/#{File.basename(path, '.rb')}"
+        "#$1/#$3/#{path.basename(".rb")}"
       end
     end.compact.sort
   end
