@@ -38,19 +38,16 @@ module Homebrew extend self
     # this procedure will be removed in the future if it seems unnecessasry
     rename_taps_dir_if_necessary
 
-    Dir["Library/Taps/*/"].each do |user|
-      Dir["#{user}*/"].each do |repo|
-        cd repo do
-          begin
-            updater = Updater.new
-            updater.pull!
-            report.merge!(updater.report) do |key, oldval, newval|
-              oldval.concat(newval)
-            end
-          rescue
-            repo =~ %r{^Library/Taps/([\w_-]+)/(homebrew-)?([\w_-]+)}
-            onoe "Failed to update tap: #$1/#$3"
+    each_tap do |user, repo|
+      repo.cd do
+        begin
+          updater = Updater.new
+          updater.pull!
+          report.merge!(updater.report) do |key, oldval, newval|
+            oldval.concat(newval)
           end
+        rescue
+          onoe "Failed to update tap: #{user.basename}/#{repo.basename.sub("homebrew-", "")}"
         end
       end
     end
