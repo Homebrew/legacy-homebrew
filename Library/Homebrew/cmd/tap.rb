@@ -25,7 +25,7 @@ module Homebrew extend self
     abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
 
     files = []
-    tapd.find_formula { |file| files << tapd.join(file) }
+    tapd.find_formula { |file| files << file }
     link_tap_formula(files)
     puts "Tapped #{files.length} formula"
 
@@ -85,7 +85,7 @@ module Homebrew extend self
     # check symlinks are all set in each tap
     each_tap do |user, repo|
       files = []
-      repo.find_formula { |file| files << repo.join(file) }
+      repo.find_formula { |file| files << file }
       count += link_tap_formula(files)
     end
 
