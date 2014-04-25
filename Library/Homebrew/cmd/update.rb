@@ -40,14 +40,16 @@ module Homebrew extend self
 
     each_tap do |user, repo|
       repo.cd do
+        updater = Updater.new
+
         begin
-          updater = Updater.new
           updater.pull!
+        rescue
+          onoe "Failed to update tap: #{user.basename}/#{repo.basename.sub("homebrew-", "")}"
+        else
           report.merge!(updater.report) do |key, oldval, newval|
             oldval.concat(newval)
           end
-        rescue
-          onoe "Failed to update tap: #{user.basename}/#{repo.basename.sub("homebrew-", "")}"
         end
       end
     end
