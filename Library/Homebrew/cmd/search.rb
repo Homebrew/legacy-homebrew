@@ -32,8 +32,8 @@ module Homebrew extend self
       if tap_dir.directory?
         result = ""
         if query
-          tap_dir.find_formula do |child|
-            basename = child.basename(".rb").to_s
+          tap_dir.find_formula do |file|
+            basename = file.basename(".rb").to_s
             result = basename if basename == query
           end
         end

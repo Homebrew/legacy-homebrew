@@ -163,9 +163,9 @@ class Formulary
       path = tap.join("#{name}.rb")
 
       if tap.directory?
-        tap.find_formula do |child|
-          if child.basename(".rb").to_s == name
-            path = tap.join(child)
+        tap.find_formula do |file|
+          if file.basename(".rb").to_s == name
+            path = file
           end
         end
       end

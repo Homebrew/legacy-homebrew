@@ -18,7 +18,7 @@ module Homebrew extend self
     raise "No such tap!" unless tapd.directory?
 
     files = []
-    tapd.find_formula { |file| files << tapd.join(file) }
+    tapd.find_formula { |file| files << file }
     unlink_tap_formula(files)
     tapd.rmtree
     tapd.dirname.rmdir_if_possible
