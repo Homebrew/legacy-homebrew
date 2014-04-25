@@ -2,13 +2,14 @@ require 'formula'
 
 class Orientdb < Formula
   homepage 'http://www.orientdb.org/index.htm'
-  url 'https://orient.googlecode.com/files/orientdb-graphed-1.3.0.tar.gz'
-  sha1 '124e37d2994d2908cc36fd036841b53caeed046c'
+  url 'http://www.orientdb.org/portal/function/portal/download/unknown@unknown.com/-/-/-/-/-/orientdb-community-1.6.4.zip/false/false'
+  sha1 'c2b0056983c8b8f193139eb898ebee0f32efa1c4'
+  version '1.6.4'
 
   # Fixing OrientDB init scripts
   patch do
-    url "https://gist.github.com/leppert/5468357/raw/f4c926df7c31fe96425f2bf5feb68b52df31ebaf/homebrew.patch"
-    sha1 "1ba6c004d0695fde81053ff010f9d78f757f959b"
+    url "https://gist.githubusercontent.com/jjl/11273906/raw/0d12bbb036c795267961965789c6bdfa8c568754/homebrew-orientdb.patch"
+    sha1 "f4063fe596ab0319b1a7e8af4077926cf3640d88"
   end
 
   def install
