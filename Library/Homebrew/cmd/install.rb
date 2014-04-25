@@ -73,7 +73,7 @@ module Homebrew extend self
   end
 
   def check_macports
-    unless MacOS.macports_or_fink.empty? || ENV['BREW_IGNORE_MACPORTS_FINK']
+    unless MacOS.macports_or_fink.empty?
       opoo "It appears you have MacPorts or Fink installed."
       puts "Software installed with other package managers causes known problems for"
       puts "Homebrew. If a formula fails to build, uninstall MacPorts/Fink and try again."
@@ -93,7 +93,6 @@ module Homebrew extend self
     check_ppc
     check_writable_install_location
     check_xcode
-    check_macports
     check_cellar
   end
 
@@ -121,5 +120,6 @@ module Homebrew extend self
     opoo e.message
   rescue CannotInstallFormulaError => e
     ofail e.message
+    check_macports
   end
 end
