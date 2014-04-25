@@ -21,7 +21,7 @@ class Sdcc < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", '--disable-sdcdb']
+    args = ["--prefix=#{prefix}"]
 
     args << '--enable-avr-port' if build.include? 'enable-avr-port'
     args << '--enable-xa51-port' if build.include? 'enable-xa51-port'
