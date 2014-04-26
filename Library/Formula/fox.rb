@@ -12,16 +12,17 @@ class Fox < Formula
   end
 
   depends_on :x11
+  depends_on "freetype"
+  depends_on "libpng"
+  depends_on "jpeg"
+  depends_on "libtiff"
 
   def install
-    # Yep, won't find freetype unless this is all set.
-    ENV.append "CFLAGS", "-I#{MacOS::X11.include}/freetype2"
-    ENV.append "CPPFLAGS", "-I#{MacOS::X11.include}/freetype2"
-    ENV.append "CXXFLAGS", "-I#{MacOS::X11.include}/freetype2"
-
-    system "./configure", "--enable-release",
+    system "./configure", "--disable-dependency-tracking",
+                          "--enable-release",
                           "--prefix=#{prefix}",
-                          "--with-x", "--with-opengl"
+                          "--with-x",
+                          "--with-opengl"
     system "make install"
   end
 end
