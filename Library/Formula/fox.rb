@@ -23,6 +23,7 @@ class Fox < Formula
                           "--prefix=#{prefix}",
                           "--with-x",
                           "--with-opengl"
-    system "make install"
+    # Unset LDFLAGS, "-s" causes the linker to crash
+    system "make", "install", "LDFLAGS="
   end
 end
