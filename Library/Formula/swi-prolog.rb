@@ -6,8 +6,8 @@ class SwiProlog < Formula
   sha1 '55dc574d7d928a15366bf2f2f0b84f7273edecd5'
 
   devel do
-    url 'http://www.swi-prolog.org/download/devel/src/pl-7.1.10.tar.gz'
-    sha1 '29c3e645970331745b2774f999ec5f70d2a8e061'
+    url 'http://www.swi-prolog.org/download/devel/src/pl-7.1.13.tar.gz'
+    sha1 '99dba7a3a625f33942818b7f1e27f463765ef2ac'
   end
 
   head do
@@ -22,6 +22,7 @@ class SwiProlog < Formula
 
   depends_on 'readline'
   depends_on 'gmp'
+  depends_on 'libarchive' => :optional
 
   if build.with? "xpce"
     depends_on 'pkg-config' => :build
@@ -41,6 +42,15 @@ class SwiProlog < Formula
   end
 
   def install
+    # The archive package hard-codes a check for MacPort libarchive
+    # Replace this with a check for Homebrew's libarchive, or nowhere
+    if build.with? "libarchive"
+      inreplace "packages/archive/configure.in", "/opt/local",
+                                                 Formula['libarchive'].opt_prefix
+    else
+      ENV.append "DISABLE_PKGS", "archive"
+    end
+
     args = ["--prefix=#{libexec}", "--mandir=#{man}"]
     ENV.append 'DISABLE_PKGS', "jpl" if build.without? "jpl"
     ENV.append 'DISABLE_PKGS', "xpce" if build.without? "xpce"

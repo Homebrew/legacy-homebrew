@@ -185,13 +185,29 @@ module SharedEnvExtension
     append "LDFLAGS", "-B#{ld64.bin}/"
   end
 
+  def gcc_version_formula(version)
+    gcc_formula = Formulary.factory("gcc")
+    return gcc_formula if gcc_formula.version.to_s.include?(version)
+
+    gcc_name = 'gcc' + version.delete('.')
+    Formulary.factory(gcc_name)
+  end
+
   def warn_about_non_apple_gcc(gcc)
-    opoo "Experimental support for non-Apple GCC enabled. Some builds may fail!"
+    gcc_name = 'gcc' + gcc.delete('.')
 
     begin
-      gcc_name = 'gcc' + gcc.delete('.')
-      gcc = Formulary.factory(gcc_name)
-      if !gcc.opt_prefix.exist?
+      gcc_formula = gcc_version_formula(gcc)
+      if gcc_formula.name == "gcc"
+        return if gcc_formula.opt_prefix.exist?
+        raise <<-EOS.undent
+        The Homebrew GCC was not installed.
+        You must:
+          brew install gcc
+        EOS
+      end
+
+      if !gcc_formula.opt_prefix.exist?
         raise <<-EOS.undent
         The requested Homebrew GCC, #{gcc_name}, was not installed.
         You must:

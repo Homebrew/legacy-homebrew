@@ -2,13 +2,13 @@ require 'formula'
 
 class Strongswan < Formula
   homepage 'http://www.strongswan.org'
-  url 'http://download.strongswan.org/strongswan-5.1.2.tar.bz2'
-  sha1 '414569a95faeddacd99d23562be6f5a57b63f700'
+  url 'http://download.strongswan.org/strongswan-5.1.3.tar.bz2'
+  sha1 '6f8898308999b8fc293812ea5812a12c9ddbedc7'
 
   bottle do
-    sha1 "2ab86079317c1639a765917d20fb6fa1666f1e2f" => :mavericks
-    sha1 "13d46f9a95708fead99868b7c4cb4379011710ba" => :mountain_lion
-    sha1 "c3cff0ddf082c012a6f77cfde3742a8eaf4994ac" => :lion
+    sha1 "7a63c925dde5195c98e3e63dc3fb6eb963eac106" => :mavericks
+    sha1 "f4e35b174358d712e8fab4bee12a7a864860b05c" => :mountain_lion
+    sha1 "a6006954a5d396d2822212bec774f7a4b863e19f" => :lion
   end
 
   option 'with-curl', 'Build with libcurl based fetcher'
@@ -54,6 +54,12 @@ class Strongswan < Formula
     args << "--enable-curl" if build.with? 'curl'
     args << "--enable-kernel-pfkey" if build.without? 'suite-b'
     args << "--enable-kernel-libipsec" if build.with? 'suite-b'
+
+    # problem with weak reference, will be fixed in the next release
+    inreplace "src/libstrongswan/utils/test.c" do |s|
+      s.gsub! /__attribute__.+$/, "{}"
+      s.gsub! /!testable_functions_create/, "TRUE"
+    end
 
     system "./configure", *args
     system "make", "install"

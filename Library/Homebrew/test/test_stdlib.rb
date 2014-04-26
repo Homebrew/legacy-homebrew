@@ -23,6 +23,7 @@ class CxxStdlibTests < Test::Unit::TestCase
   end
 
   def test_compatibility_same_compilers_and_type
+    assert @gcc.compatible_with?(@gcc)
     assert @gcc48.compatible_with?(@gcc48)
     assert @clang.compatible_with?(@clang)
   end
@@ -33,8 +34,8 @@ class CxxStdlibTests < Test::Unit::TestCase
   end
 
   def test_gnu_cross_version_incompatibility
-    assert !@clang.compatible_with?(@gcc48)
-    assert !@gcc48.compatible_with?(@clang)
+    assert !@gcc48.compatible_with?(@gcc49)
+    assert !@gcc49.compatible_with?(@gcc48)
   end
 
   def test_libstdcxx_libcxx_incompatibility

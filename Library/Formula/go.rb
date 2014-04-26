@@ -14,6 +14,12 @@ class Go < Formula
     sha1 "1c09d8aaac7d78b54405c39e5ede0ee9d927860f" => :lion
   end
 
+  devel do
+    url 'https://storage.googleapis.com/golang/go1.3beta1.src.tar.gz'
+    version '1.3beta1'
+    sha1 'e4df4e99115aba2f1ae5ccd56e682669d00c2a9d'
+  end
+
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
   option 'cross-compile-common', "Build the cross-compilers and runtime support for darwin, linux and windows"
   option 'without-cgo', "Build without cgo"

@@ -20,15 +20,17 @@ class Freetds < Formula
 
   depends_on "pkg-config" => :build
   depends_on "unixodbc" => :optional
+  depends_on "openssl"
 
   def install
     system "autoreconf -i" if build.head?
 
-    args = %W[--prefix=#{prefix}
-              --with-openssl=#{MacOS.sdk_path}/usr
-              --with-tdsver=7.1
-              --mandir=#{man}
-            ]
+    args = %W[
+      --prefix=#{prefix}
+      --with-openssl=#{Formula["openssl"].opt_prefix}"
+      --with-tdsver=7.1
+      --mandir=#{man}
+    ]
 
     if build.with? "unixodbc"
       args << "--with-unixodbc=#{Formula['unixodbc'].prefix}"

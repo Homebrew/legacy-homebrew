@@ -14,6 +14,16 @@ class Plan9port < Formula
     prefix.install Dir["#{libexec}/mac/*.app"]
   end
 
+  def caveats; <<-EOS.undent
+    In order not to collide with OSX system binaries, the Plan 9 binaries have
+    been installed to #{libexec}/bin.
+    To run the Plan 9 version of a command simply call it through the command
+    "9", which has been installed into the Homebrew prefix bin.  For example,
+    to run Plan 9's ls run:
+        # 9 ls
+    EOS
+  end
+
   test do
     (testpath/"test.c").write <<-EOS.undent
       #include <u.h>

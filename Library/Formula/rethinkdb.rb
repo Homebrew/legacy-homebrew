@@ -2,13 +2,13 @@ require 'formula'
 
 class Rethinkdb < Formula
   homepage 'http://www.rethinkdb.com/'
-  url 'http://download.rethinkdb.com/dist/rethinkdb-1.12.2.tgz'
-  sha1 '29ee5581f480c2c16abf3490c8e135aed7345190'
+  url 'http://download.rethinkdb.com/dist/rethinkdb-1.12.4.tgz'
+  sha1 '2333f46d5164512ac13778075e082f660c0f2681'
 
   bottle do
-    sha1 "40ecd63f0cbe6f3ee0787f55c0dc277fb5558509" => :mavericks
-    sha1 "6664bdca7979f0cda9f8bb0e087e20e1ed59e671" => :mountain_lion
-    sha1 "fca30dce4e0d3722320c71064349cc4020f42f14" => :lion
+    sha1 "82a8e16ca2f0485b5c91cd79b912482ecf904628" => :mavericks
+    sha1 "d2897c77e2f2aafe51ddbe64372b245e6fd8ac2a" => :mountain_lion
+    sha1 "d9de30e12059296ba6af087466f0e028fb73567c" => :lion
   end
 
   depends_on :macos => :lion

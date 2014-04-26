@@ -2,8 +2,8 @@ require 'formula'
 
 class Gitbucket < Formula
   homepage 'https://github.com/takezoe/gitbucket'
-  url 'https://github.com/takezoe/gitbucket/releases/download/1.10/gitbucket.war'
-  sha1 '85b89b834409ff326d6e7377fa5f2ffa54aa8cb4'
+  url 'https://github.com/takezoe/gitbucket/releases/download/1.12/gitbucket.war'
+  sha1 'aee08693cabd18ab23d0060d52b204cc71ccc626'
 
   head do
     url 'https://github.com/takezoe/gitbucket.git'

@@ -2,8 +2,8 @@ require 'formula'
 
 class Sdcc < Formula
   homepage 'http://sdcc.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/sdcc/sdcc/3.3.0/sdcc-src-3.3.0.tar.bz2'
-  sha1 'beed1b8c73f13344e018f48b1563ff2a948b70cf'
+  url 'https://downloads.sourceforge.net/project/sdcc/sdcc/3.4.0/sdcc-src-3.4.0.tar.bz2'
+  sha1 '469649acbd22376933154ab1e16d0a59806594c4'
 
   head 'https://sdcc.svn.sourceforge.net/svnroot/sdcc/trunk/sdcc/'
 
@@ -21,7 +21,7 @@ class Sdcc < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", '--disable-sdcdb']
+    args = ["--prefix=#{prefix}"]
 
     args << '--enable-avr-port' if build.include? 'enable-avr-port'
     args << '--enable-xa51-port' if build.include? 'enable-xa51-port'
@@ -29,6 +29,7 @@ class Sdcc < Formula
     system "./configure", *args
     system "make all"
     system "make install"
+    rm Dir["#{bin}/*.el"]
   end
 
   test do

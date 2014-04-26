@@ -2,8 +2,8 @@ require 'formula'
 
 class IsoCodes < Formula
   homepage 'http://pkg-isocodes.alioth.debian.org/'
-  url 'http://pkg-isocodes.alioth.debian.org/downloads/iso-codes-3.51.tar.xz'
-  sha1 '2616a3f3420fab69b800675df7456175f87e0cdf'
+  url 'http://pkg-isocodes.alioth.debian.org/downloads/iso-codes-3.52.tar.xz'
+  sha1 '2b023294a0c68583032d34290c9f58187d2e26a4'
 
   depends_on 'gettext' => :build
 

@@ -40,13 +40,13 @@ module Superenv
   end
 
   def self.bin
-    @bin ||= (HOMEBREW_REPOSITORY/"Library/ENV").children.reject{|d| d.basename.to_s > MacOS::Xcode.version }.max
+    @bin ||= (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
   end
 
   def reset
     %w{CC CXX OBJC OBJCXX CPP MAKE LD LDSHARED
       CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
-      MACOSX_DEPLOYMENT_TARGET SDKROOT
+      MACOSX_DEPLOYMENT_TARGET SDKROOT DEVELOPER_DIR
       CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH
       CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH}.
       each{ |x| delete(x) }
@@ -65,7 +65,6 @@ module Superenv
     self.cc  = self['HOMEBREW_CC']  = determine_cc
     self.cxx = self['HOMEBREW_CXX'] = determine_cxx
     validate_cc!(formula) unless formula.nil?
-    self['DEVELOPER_DIR'] = determine_developer_dir
     self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     self['PATH'] = determine_path
     self['PKG_CONFIG_PATH'] = determine_pkg_config_path
@@ -76,7 +75,6 @@ module Superenv
     self['HOMEBREW_PREFIX'] = HOMEBREW_PREFIX
     self['HOMEBREW_TEMP'] = HOMEBREW_TEMP
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
-    self['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
     self['HOMEBREW_OPTFLAGS'] = determine_optflags
     self['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
     self['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
@@ -137,9 +135,8 @@ module Superenv
     end
 
     if self['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
-      gcc_name = 'gcc' + $1.delete('.')
-      gcc = Formulary.factory(gcc_name)
-      paths << gcc.opt_prefix/'bin'
+      gcc_formula = gcc_version_formula($1)
+      paths << gcc_formula.opt_prefix/'bin'
     end
 
     paths.to_path_s
@@ -222,13 +219,6 @@ module Superenv
     # Fix issue with >= 10.8 apr-1-config having broken paths
     s << 'a' if MacOS.version >= :mountain_lion
     s
-  end
-
-  def determine_developer_dir
-    # If Xcode path is broken then this is basically a fix. In the case where
-    # nothing is valid, it still fixes most usage to supply a valid path that
-    # is not "/".
-    MacOS::Xcode.prefix || self['DEVELOPER_DIR']
   end
 
   public

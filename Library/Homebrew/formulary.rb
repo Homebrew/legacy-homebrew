@@ -132,7 +132,9 @@ class Formulary
 
     def initialize url
       @url = url
-      super File.basename(url, ".rb"), HOMEBREW_CACHE_FORMULA/File.basename(url)
+      uri = URI(url)
+      formula = File.basename(uri.path, ".rb")
+      super formula, HOMEBREW_CACHE_FORMULA/File.basename(uri.path)
     end
 
     # Downloads the formula's .rb file
@@ -157,13 +159,13 @@ class Formulary
     def initialize tapped_name
       @tapped_name = tapped_name
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
-      tap = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}-#{repo}")
+      tap = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}/homebrew-#{repo}")
       path = tap.join("#{name}.rb")
 
       if tap.directory?
-        tap.find_formula do |child|
-          if child.basename(".rb").to_s == name
-            path = tap.join(child)
+        tap.find_formula do |file|
+          if file.basename(".rb").to_s == name
+            path = file
           end
         end
       end
