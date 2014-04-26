@@ -2,13 +2,13 @@ require 'formula'
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.24.5.tar.xz'
-  sha1 '7b7cabee85bd81a7e55c939740d5d7ccd7c0dda5'
-  revision 1
+  url 'http://poppler.freedesktop.org/poppler-0.26.0.tar.xz'
+  sha1 '1f5d08ee01683c309688f17116d18bf47b13f001'
 
   option 'with-qt4', 'Build Qt backend'
   option 'with-glib', 'Build Glib backend' # requires cairo
   option 'with-lcms2', 'Use color management system'
+  option 'without-splash-output', 'Build without Splash output backend'
 
   depends_on 'pkg-config' => :build
 
@@ -48,6 +48,7 @@ class Poppler < Formula
     args << ( build.with?('glib') ? '--enable-poppler-glib' : '--disable-poppler-glib' )
     args << ( build.with?('glib') ? '' : '--disable-cairo-output' )
     args << ( build.with?('lcms2') ? '--enable-cms=lcms2' : '' )
+    args << ( build.without?('splash-output') ? '--disable-splash-output' : '' )
 
     system "./configure", *args
     system "make install"
