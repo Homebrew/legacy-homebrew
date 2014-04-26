@@ -42,7 +42,7 @@ class Scantailor < Formula
   # Approved by maintainer and included in official repository.
   # See: http://sourceforge.net/p/scantailor/mailman/message/31884956/
   patch :p1 do
-    url "https://gist.github.com/muellermartin/8569243/raw/b09215037b346787e0f501ae60966002fd79602e/scantailor-0.9.11.1-clang.patch"
+    url "https://gist.githubusercontent.com/muellermartin/8569243/raw/b09215037b346787e0f501ae60966002fd79602e/scantailor-0.9.11.1-clang.patch"
     sha1 "4594b28bcf9409ef252638830c633dd42c63bc40"
   end
 

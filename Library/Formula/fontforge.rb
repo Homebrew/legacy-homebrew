@@ -13,7 +13,7 @@ class Fontforge < Formula
 
     # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
     patch do
-      url "https://gist.github.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
+      url "https://gist.githubusercontent.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
       sha1 "baa7d60f4c6e672180e66438ee675b4ee0fda5ce"
     end
   end

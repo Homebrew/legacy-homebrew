@@ -9,7 +9,7 @@ class Mplayer < Formula
 
     # Fix compilation on 10.9, adapted from upstream revision r36500
     patch do
-      url "https://gist.github.com/jacknagel/7441175/raw/37657c264a6a3bb4d30dee14538c367f7ffccba9/vo_corevideo.h.patch"
+      url "https://gist.githubusercontent.com/jacknagel/7441175/raw/37657c264a6a3bb4d30dee14538c367f7ffccba9/vo_corevideo.h.patch"
       sha1 "92717335aed9ec5d01fcf62f9787c6d50cf5d911"
     end
   end
