@@ -14,7 +14,7 @@ class Aqbanking < Formula
   depends_on 'gettext'
   depends_on 'gmp'
   depends_on 'gwenhywfar'
-  depends_on 'ktoblzcheck' => :optional
+  depends_on 'ktoblzcheck' => :recommended
 
   def install
     ENV.j1
