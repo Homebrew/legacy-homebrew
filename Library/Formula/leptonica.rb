@@ -6,9 +6,9 @@ class Leptonica < Formula
   sha1 '91199f99d2e78b15b76ffa6fc4e86ee458a330e8'
   revision 1
 
-  depends_on 'libpng' => :recommended
-  depends_on 'jpeg' => :recommended
-  depends_on 'libtiff' => :optional
+  depends_on 'libpng'
+  depends_on 'jpeg'
+  depends_on 'libtiff'
 
   conflicts_with 'osxutils',
     :because => "both leptonica and osxutils ship a `fileinfo` executable."
