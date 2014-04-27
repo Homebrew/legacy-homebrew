@@ -85,7 +85,7 @@ begin
              'dr' => 'doctor',
              '--repo' => '--repository',
              'environment' => '--env',
-             '-c1' => '--config',
+             '--config' => 'config',
              }
 
   cmd = ARGV.shift

@@ -67,6 +67,11 @@ Note that these flags should only appear after a command.
   * `commands`:
     Show a list of built-in and external commands.
 
+  * `config`:
+    Show Homebrew and system configuration useful for debugging. If you file
+    a bug report, you will likely be asked for this information if you do not
+    provide it.
+
   * `create <URL> [--autotools|--cmake] [--no-fetch] [--set-name <name>] [--set-version <version>]`:
     Generate a formula for the downloadable file at <URL> and open it in the editor.
     Homebrew will attempt to automatically derive the formula name
@@ -390,11 +395,6 @@ Note that these flags should only appear after a command.
   * `--cellar` <formula>:
     Display the location in the cellar where <formula> would be installed,
     without any sort of versioned directory as the last path.
-
-  * `--config`:
-    Show Homebrew and system configuration useful for debugging. If you file
-    a bug report, you will likely be asked for this information if you do not
-    provide it.
 
   * `--env`:
     Show a summary of the Homebrew build environment.
