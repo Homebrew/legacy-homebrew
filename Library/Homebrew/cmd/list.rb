@@ -63,6 +63,7 @@ module Homebrew extend self
       ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
     end.each do |d|
       versions = d.children.select{ |pn| pn.directory? }.map{ |pn| pn.basename.to_s }
+      next if ARGV.include?('--multiple') && versions.count < 2
       puts "#{d.basename} #{versions*' '}"
     end
   end
