@@ -12,6 +12,7 @@ class ZeroInstall < Formula
   depends_on 'gnupg'
   depends_on 'glib' if build.without? 'gui'
   depends_on 'gtk+' if build.with? 'gui'
+  depends_on :x11 if build.with? 'gui'
   depends_on 'gettext' => :build if build.head?
   depends_on 'pkg-config' => :build
   depends_on 'objective-caml' => :build
