@@ -2,10 +2,8 @@ require 'formula'
 
 class Clutter < Formula
   homepage 'https://wiki.gnome.org/Clutter'
-  url 'http://ftp.gnome.org/pub/gnome/sources/clutter/1.14/clutter-1.14.4.tar.xz'
-  sha256 'c996d91fff6fff24d9e23dcd545439ebc6b999fb1cf9ee44c28ca54c49c0ee1c'
-
-  option 'without-x', 'Build without X11 support'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/clutter/1.18/clutter-1.18.0.tar.xz'
+  sha256 '937ac94d10d4562c67554dd3d087bf0859a3bf254922a226fc0c13a39a457869'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -15,7 +13,6 @@ class Clutter < Formula
   depends_on 'atk'
   depends_on 'pango'
   depends_on 'json-glib'
-  depends_on :x11 => '2.5.1' if build.with? 'x'
 
   def install
     args = %W[
@@ -28,21 +25,10 @@ class Clutter < Formula
       --disable-tests
       --disable-examples
       --disable-gtk-doc-html
+      --without-x --enable-x11-backend=no
+      --enable-gdk-pixbuf=no
+      --enable-quartz-backend=yes
     ]
-
-    if build.with? 'x'
-      args.concat %w{
-        --with-x --enable-x11-backend=yes
-        --enable-gdk-pixbuf=yes
-        --enable-quartz-backend=no
-      }
-    else
-      args.concat %w{
-        --without-x --enable-x11-backend=no
-        --enable-gdk-pixbuf=no
-        --enable-quartz-backend=yes
-      }
-    end
 
     system './configure', *args
     system 'make install'
