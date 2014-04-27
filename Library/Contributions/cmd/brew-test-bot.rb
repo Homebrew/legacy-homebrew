@@ -276,7 +276,7 @@ class Test
     return if ARGV.include? "--skip-setup"
     test "brew doctor"
     test "brew --env"
-    test "brew --config"
+    test "brew config"
   end
 
   def formula formula
