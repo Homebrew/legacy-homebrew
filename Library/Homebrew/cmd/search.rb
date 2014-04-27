@@ -97,18 +97,26 @@ module Homebrew extend self
     return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}").directory?
 
     results = []
+    tree = {}
+
     GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
       user = user.downcase if user == "Homebrew" # special handling for the Homebrew organization
       json["tree"].each do |object|
         next unless object["type"] == "blob"
 
-        path = object["path"]
-        name = File.basename(path, ".rb")
+        subtree, file = File.split(object["path"])
 
-        if path.end_with?(".rb") && rx === name
-          results << "#{user}/#{repo}/#{name}"
+        if File.extname(file) == ".rb"
+          tree[subtree] ||= []
+          tree[subtree] << file
         end
       end
+    end
+
+    paths = tree["Formula"] || tree["HomebrewFormula"] || tree["."] || []
+    paths.each do |path|
+      name = File.basename(path, ".rb")
+      results << "#{user}/#{repo}/#{name}" if rx === name
     end
   rescue GitHub::HTTPNotFoundError => e
     opoo "Failed to search tap: #{user}/#{repo}. Please run `brew update`"
