@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "March 2014" "Homebrew" "brew"
+.TH "BREW" "1" "April 2014" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -242,7 +242,7 @@ Find all installed formulae that have compiled \fB\.app\fR\-style "application" 
 If provided, \fB\-\-local\fR will move them into the user\'s \fB~/Applications\fR folder instead of the system folder\. It may need to be created, first\.
 .
 .TP
-\fBls, list [\-\-unbrewed] [\-\-versions] [\-\-pinned]\fR [\fIformulae\fR]
+\fBls, list [\-\-unbrewed] [\-\-versions [\-\-multiple]] [\-\-pinned]\fR [\fIformulae\fR]
 Without any arguments, list all installed formulae\.
 .
 .IP
@@ -252,7 +252,7 @@ If \fIformulae\fR are given, list the installed files for \fIformulae\fR\. Combi
 If \fB\-\-unbrewed\fR is passed, list all files in the Homebrew prefix not installed by Homebrew\.
 .
 .IP
-If \fB\-\-versions\fR is passed, show the version number for installed formulae, or only the specified formulae if \fIformulae\fR are given\.
+If \fB\-\-versions\fR is passed, show the version number for installed formulae, or only the specified formulae if \fIformulae\fR are given\. With \fB\-\-multiple\fR, only show formulae with multiple versions installed\.
 .
 .IP
 If \fB\-\-pinned\fR is passed, show the versions of pinned formulae, or only the specified (pinned) formulae if \fIformulae\fR are given\. See also \fBpin\fR, \fBunpin\fR\.

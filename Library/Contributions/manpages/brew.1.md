@@ -227,7 +227,7 @@ Note that these flags should only appear after a command.
     If provided, `--local` will move them into the user's `~/Applications`
     folder instead of the system folder. It may need to be created, first.
 
-  * `ls, list [--unbrewed] [--versions] [--pinned]` [<formulae>]:
+  * `ls, list [--unbrewed] [--versions [--multiple]] [--pinned]` [<formulae>]:
     Without any arguments, list all installed formulae.
 
     If <formulae> are given, list the installed files for <formulae>.
@@ -238,7 +238,8 @@ Note that these flags should only appear after a command.
     by Homebrew.
 
     If `--versions` is passed, show the version number for installed formulae,
-    or only the specified formulae if <formulae> are given.
+    or only the specified formulae if <formulae> are given. With `--multiple`,
+    only show formulae with multiple versions installed.
 
     If `--pinned` is passed, show the versions of pinned formulae, or only the
     specified (pinned) formulae if <formulae> are given.
