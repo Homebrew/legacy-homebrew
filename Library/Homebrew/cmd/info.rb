@@ -61,7 +61,7 @@ module Homebrew extend self
   def github_info f
     if f.path.to_s =~ HOMEBREW_TAP_PATH_REGEX
       user = $1
-      repo = "homebrew-#$2"
+      repo = $2
       path = $3
     else
       user = f.path.parent.cd { github_fork }

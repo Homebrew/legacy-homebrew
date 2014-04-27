@@ -3,12 +3,12 @@ require 'formula'
 class CloudfoundryCli < Formula
   homepage 'https://github.com/cloudfoundry/cli'
   head 'https://github.com/cloudfoundry/cli.git', :branch => 'master'
-  url 'https://github.com/cloudfoundry/cli.git', :tag => 'v6.1.0'
+  url 'https://github.com/cloudfoundry/cli.git', :tag => 'v6.1.1'
 
   bottle do
-    sha1 "5ce0c33f8057cfa5ba85a17fd6683b24158a0571" => :mavericks
-    sha1 "c63fe614f058781e8523b5c1905a2ec0045dc89d" => :mountain_lion
-    sha1 "11aede84b5e4f4656688f587d819e0b8b8cfd19e" => :lion
+    sha1 "f72539292f35aa0c7e66536494b895253cd3a667" => :mavericks
+    sha1 "c43cb7af262a83f0aaf330fafd6c6be61afb01e9" => :mountain_lion
+    sha1 "1d2942622b9571874910314c8d89fb0c837eaf47" => :lion
   end
 
   depends_on 'go' => :build
