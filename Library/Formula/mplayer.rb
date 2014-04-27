@@ -15,9 +15,10 @@ class Mplayer < Formula
   end
 
   bottle do
-    sha1 "dc3e930bbb7bb49a551ea49f98c4b47df1478c95" => :mavericks
-    sha1 "844d8c4ffe1de77162164e51297b07fb5c9f3f0f" => :mountain_lion
-    sha1 "da65ccda4522dee86a8042621b848d7a11570058" => :lion
+    revision 1
+    sha1 "2c9bfd124fdd729bc8addd2ddfd45ed718c80e20" => :mavericks
+    sha1 "ba213d5c1aadad6869cbb57f17f56971af8acffd" => :mountain_lion
+    sha1 "7efc5960bc15c904a2893f23190d783b3d57d27a" => :lion
   end
 
   head do
