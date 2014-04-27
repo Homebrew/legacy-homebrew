@@ -24,6 +24,12 @@ class Clamav < Formula
               --sysconfdir=#{etc}}
     args << "--with-zlib=#{MacOS.sdk_path}/usr" unless MacOS::CLT.installed?
 
+    # MacOSX 10.9 (Mavericks) needs specific C++ stdlib to build.
+    if ENV.compiler == :clang && MacOS.version >= :mavericks
+      ENV.libstdcxx
+      ENV.append 'LDFLAGS', '-Wl,-lstdc++'
+    end
+
     system "./configure", *args
     system "make", "install"
   end
