@@ -12,6 +12,10 @@ class Wxmac < Formula
     sha1 "b965780ae0167c92229a753e9a8c75007f23b4dd" => :lion
   end
 
+  depends_on "jpeg"
+  depends_on "libpng"
+  depends_on "libtiff"
+
   # Upstream patch for starting non-bundled apps like gnuplot, see:
   # http://trac.wxwidgets.org/ticket/15613
   patch :p2 do
