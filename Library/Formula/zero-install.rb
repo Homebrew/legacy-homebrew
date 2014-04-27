@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class ZeroInstall < Formula
   homepage 'http://0install.net/injector.html'
@@ -40,10 +40,10 @@ class ZeroInstall < Formula
   end
 
   test do
-    (testpath/"hello.py").write <<-EOPY.undent
+    (testpath/"hello.py").write <<-EOS.undent
       print('hello world')
-    EOPY
-    (testpath/"hello.xml").write <<-EOXML.undent
+    EOS
+    (testpath/"hello.xml").write <<-EOS.undent
       <?xml version="1.0" ?>
       <interface xmlns="http://zero-install.sourceforge.net/2004/injector/interface">
         <name>Hello</name>
@@ -55,7 +55,7 @@ class ZeroInstall < Formula
           </command>
         </implementation>
       </interface>
-    EOXML
-    assert_equal 'hello world', `#{bin}/0launch --console hello.xml`
+    EOS
+    assert_equal "hello world\n", `#{bin}/0launch --console hello.xml`
   end
 end
