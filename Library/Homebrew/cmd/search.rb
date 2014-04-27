@@ -125,11 +125,9 @@ module Homebrew extend self
     results = (Formula.names+aliases).grep(rx).sort
 
     # Filter out aliases when the full name was also found
-    results.reject do |alias_name|
-      if aliases.include? alias_name
-        resolved_name = (HOMEBREW_REPOSITORY+"Library/Aliases"+alias_name).readlink.basename('.rb').to_s
-        results.include? resolved_name
-      end
+    results.reject do |name|
+      canonical_name = Formulary.canonical_name(name)
+      aliases.include?(name) && results.include?(canonical_name)
     end
   end
 end
