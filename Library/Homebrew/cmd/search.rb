@@ -20,30 +20,21 @@ module Homebrew extend self
       exec_browser "https://admin.fedoraproject.org/pkgdb/acls/list/*#{ARGV.next}*"
     elsif ARGV.include? '--ubuntu'
       exec_browser "http://packages.ubuntu.com/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
-    elsif (query = ARGV.first).nil?
+    elsif ARGV.empty?
       puts_columns Formula.names
     elsif ARGV.first =~ HOMEBREW_TAP_FORMULA_REGEX
-      # So look for user/repo/query or list all formulae by the tap
-      # we downcase to avoid case-insensitive filesystem issues.
-      user, repo, query = $1.downcase, $2.downcase, $3
-      tap_dir = HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
-      # If, instead of `user/repo/query` the user wrote `user/repo query`:
-      query = ARGV[1] if query.nil?
-      if tap_dir.directory?
-        result = ""
-        if query
-          tap_dir.find_formula do |file|
-            basename = file.basename(".rb").to_s
-            result = basename if basename == query
-          end
-        end
-      else
-        # Search online:
-        query = '' if query.nil?
-        result = search_tap(user, repo, query_regexp(query))
+      query = ARGV.first
+      user, repo, name = query.split("/", 3)
+
+      begin
+        result = Formulary.factory(query).name
+      rescue FormulaUnavailableError
+        result = search_tap(user, repo, name)
       end
-      puts_columns result
+
+      puts_columns Array(result)
     else
+      query = ARGV.first
       rx = query_regexp(query)
       local_results = search_formulae(rx)
       puts_columns(local_results)
