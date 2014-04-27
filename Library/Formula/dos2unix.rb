@@ -5,11 +5,6 @@ class Dos2unix < Formula
   url 'http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.0.5.tar.gz'
   sha1 'b43d138e1713791ea5067c32afbcd7a32655d2fa'
 
-  patch do
-    url 'http://waterlan.home.xs4all.nl/dos2unix/dos2unix-pod-encoding.patch'
-    sha1 '01601899597dcb361ba0b499f537588145ec08a9'
-  end
-
   depends_on 'gettext'
 
   def install
