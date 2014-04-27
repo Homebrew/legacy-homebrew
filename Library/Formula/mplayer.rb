@@ -38,8 +38,9 @@ class Mplayer < Formula
   if build.with? 'osd' or build.with? 'x'
     # These are required for the OSD. We can get them from X11, or we can
     # build our own.
-    depends_on :fontconfig
-    depends_on :freetype
+    depends_on "fontconfig"
+    depends_on "freetype"
+    depends_on "libpng"
   end
 
   fails_with :clang do
