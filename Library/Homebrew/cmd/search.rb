@@ -122,7 +122,7 @@ module Homebrew extend self
 
   def search_formulae rx
     aliases = Formula.aliases
-    results = (Formula.names+aliases).grep(rx)
+    results = (Formula.names+aliases).grep(rx).sort
 
     # Filter out aliases when the full name was also found
     results.reject do |alias_name|
