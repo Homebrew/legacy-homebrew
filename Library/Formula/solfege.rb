@@ -12,23 +12,32 @@ class Solfege < Formula
   depends_on 'qtplay'       => :recommended
   depends_on 'librsvg'      => :recommended
   depends_on 'vorbis-tools' => :recommended
+  depends_on :python
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system 'make install'
+    system "make install"
+    
+    ENV.prepend_create_path "PYTHONPATH", "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages/gtk-2.0"
+    ENV.prepend_create_path "GDK_PIXBUF_MODULEDIR", "#{Dir.glob(File.join ("#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/**", "loaders"))}"
+    sUpdate_Loader="#{Formula["gdk-pixbuf"].bin}/gdk-pixbuf-query-loaders --update-cache"
+
+    inreplace "#{bin}/solfege", "os.path.split(os.path.dirname(os.path.abspath(sys.argv[0])))[0]", "\"#{prefix}\""
+
+    libexec.install "#{bin}"
+    (bin/"solfege").write <<-EOS.undent
+      #!/bin/bash
+      export PYTHONPATH="#{ENV["PYTHONPATH"]}"
+      export GDK_PIXBUF_MODULEDIR="#{ENV["GDK_PIXBUF_MODULEDIR"]}"
+      #{sUpdate_Loader}
+      exec "#{libexec}/bin/solfege" "$@"
+    EOS
   end
 
   def caveats
     <<-EOS.undent
-      After installing Solfege, one of your programs, gdk-pixbuf, needs to be
-      told to update its loader cache so it can read svg files. Run this once:
-
-          export GDK_PIXBUF_MODULEDIR=#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders
-          gdk-pixbuf-query-loaders --update-cache
-
-      After doing that, you will be able to run solfege normally. You can go
-      into Solfege Preferences and set your external programs to qtplay and
-      ogg123 which get installed as dependencies, or you can use your own apps.
+      You can go into Solfege Preferences and set your external programs to qtplay
+      and ogg123 which get installed as dependencies, or you can use your own apps.
     EOS
   end
 end
