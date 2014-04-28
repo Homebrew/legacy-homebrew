@@ -54,9 +54,6 @@ class Zeroinstall < Formula
     # Parellel builds fail for some of these opam libs.
     ENV.deparallelize
 
-    # Required for lablgtk2 to find Quartz X11 libs.
-    ENV.append_path "PKG_CONFIG_PATH", "/opt/X11/lib/pkgconfig" if build.with? "x11"
-
     # Set up a temp opam dir for building. Since ocaml statically links against ocaml libs, it won't be needed later.
     # TODO: Use $OPAMCURL to store a cache outside the build directory
     ENV["OPAMCURL"] = "curl"
