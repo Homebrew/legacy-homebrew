@@ -51,14 +51,14 @@ class Gcc < Formula
 
   # The as that comes with Tiger isn't capable of dealing with the
   # PPC asm that comes in libitm
-  depends_on "cctools" => :build if MacOS.version < :leopard
+  depends_on "cctools" => :build if OS.mac? && MacOS.version < :leopard
 
   fails_with :gcc_4_0
 
   # GCC 4.8.1 incorrectly determines that _Unwind_GetIPInfo is available on
   # Tiger, resulting in a failed build
   # Fixed upstream: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=58710
-  def patches; DATA; end if MacOS.version < :leopard
+  def patches; DATA; end if OS.mac? && MacOS.version < :leopard
 
   # GCC bootstraps itself, so it is OK to have an incompatible C++ stdlib
   cxxstdlib_check :skip
@@ -67,7 +67,7 @@ class Gcc < Formula
     # GCC will suffer build errors if forced to use a particular linker.
     ENV.delete "LD"
 
-    if MacOS.version < :leopard
+    if OS.mac? && MacOS.version < :leopard
       ENV["AS"] = ENV["AS_FOR_TARGET"] = "#{Formula["cctools"].bin}/as"
     end
 
@@ -86,8 +86,9 @@ class Gcc < Formula
 
     version_suffix = version.to_s.slice(/\d\.\d/)
 
-    args = [
-      "--build=#{arch}-apple-darwin#{osmajor}",
+    args = []
+    args << "--build=#{arch}-apple-darwin#{osmajor}" if OS.mac?
+    args += [
       "--prefix=#{prefix}",
       "--enable-languages=#{languages.join(",")}",
       # Make most executables versioned to avoid conflicts.
@@ -98,10 +99,12 @@ class Gcc < Formula
       "--with-cloog=#{Formula["cloog"].opt_prefix}",
       "--with-isl=#{Formula["isl"].opt_prefix}",
       "--with-system-zlib",
+    ]
       # This ensures lib, libexec, include are sandboxed so that they
       # don't wander around telling little children there is no Santa
       # Claus.
-      "--enable-version-specific-runtime-libs",
+    args << "--enable-version-specific-runtime-libs" if OS.mac?
+    args += [
       "--enable-libstdcxx-time=yes",
       "--enable-stage1-checking",
       "--enable-checking=release",
@@ -113,11 +116,11 @@ class Gcc < Formula
 
     # "Building GCC with plugin support requires a host that supports
     # -fPIC, -shared, -ldl and -rdynamic."
-    args << "--enable-plugin" if MacOS.version > :tiger
+    args << "--enable-plugin" if !OS.mac? || MacOS.version > :tiger
 
     # Otherwise make fails during comparison at stage 3
     # See: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=45248
-    args << "--with-dwarf2" if MacOS.version < :leopard
+    args << "--with-dwarf2" if OS.mac? && MacOS.version < :leopard
 
     args << "--disable-nls" if build.without? "nls"
 
@@ -132,7 +135,7 @@ class Gcc < Formula
     end
 
     mkdir "build" do
-      unless MacOS::CLT.installed?
+      if OS.mac? && !MacOS::CLT.installed?
         # For Xcode-only systems, we need to tell the sysroot path.
         # "native-system-header's will be appended
         args << "--with-native-system-header-dir=/usr/include"
