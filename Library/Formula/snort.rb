@@ -11,6 +11,8 @@ class Snort < Formula
 
   option 'enable-debug', "Compile Snort with --enable-debug and --enable-debug-msgs"
 
+  fails_with :clang
+
   def install
     args = %W[--prefix=#{prefix}
               --disable-dependency-tracking
