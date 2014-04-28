@@ -513,8 +513,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
       else
         reset
       end
-      # http://stackoverflow.com/questions/160608/how-to-do-a-git-export-like-svn-export
-      safe_system 'git', 'checkout-index', '-a', '-f', "--prefix=#{dst}/"
+      safe_system 'git', 'clone', '.', "#{dst}"
       checkout_submodules(dst) if submodules?
     end
   end
@@ -612,7 +611,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def checkout_submodules(dst)
-    sub_cmd = "git checkout-index -a -f --prefix=#{dst}/$path/"
+    sub_cmd = "git clone . #{dst}/$path"
     safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
   end
 end
