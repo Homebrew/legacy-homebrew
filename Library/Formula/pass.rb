@@ -2,15 +2,14 @@ require 'formula'
 
 class Pass < Formula
   homepage 'http://zx2c4.com/projects/password-store'
-  url 'http://git.zx2c4.com/password-store/snapshot/password-store-1.5.tar.xz'
-  sha256 '6d3f327b039bb64157662d3d11af5ecebd3774b886ad6e52a684654d9914a8f3'
+  url 'http://git.zx2c4.com/password-store/snapshot/password-store-1.6.1.tar.xz'
+  sha256 '3c154d556c53c76b1a0ccacdc108c34f1fdb4a36fab28a6d2f42f02184290881'
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "b08dd30932ce30c4a64a4886f3a7c6c1f1ab847f" => :mavericks
-    sha1 "1b127403b8f6e4cb09275ba51fa2a8e4f0e7dd34" => :mountain_lion
-    sha1 "16b60f64f369aa2b0a2d7e7c6403beaa6a3eacba" => :lion
+    sha1 "37c05776bfbb04a4fbfbed65e45a4fe62998f110" => :mavericks
+    sha1 "1af25c7c875801b174fb3f81ee8fdb6a2f07b0f8" => :mountain_lion
+    sha1 "a76cff03da8c62cd4cbabe35f62ad4fd97054d29" => :lion
   end
 
   head 'http://git.zx2c4.com/password-store', :using => :git

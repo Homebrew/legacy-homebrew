@@ -25,7 +25,7 @@ class Nzbget < Formula
 
   # Bugfixes and ability to cancel par2 repair
   resource "libpar2_patch" do
-    url "https://gist.github.com/raw/4576230/e722f2113195ee9b8ee67c1c424aa3f2085b1066/libpar2-0.2-nzbget.patch"
+    url "https://gist.githubusercontent.com/Smenus/4576230/raw/e722f2113195ee9b8ee67c1c424aa3f2085b1066/libpar2-0.2-nzbget.patch"
     sha1 "0dca03f42c0997fd6b537a7dc539d705afb76157"
   end
 

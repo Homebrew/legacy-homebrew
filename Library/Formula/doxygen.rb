@@ -3,7 +3,7 @@ require 'formula'
 class Doxygen < Formula
   homepage 'http://www.doxygen.org/'
   url 'http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.6.src.tar.gz'
-  mirror 'https://downloads.sourceforge.net/project/doxygen/rel-1.8.6/doxygen-1.8.5.src.tar.gz'
+  mirror 'https://downloads.sourceforge.net/project/doxygen/rel-1.8.6/doxygen-1.8.6.src.tar.gz'
   sha1 '204f1b3695c73efac44a521609c5360241d64045'
 
   head 'https://doxygen.svn.sourceforge.net/svnroot/doxygen/trunk'

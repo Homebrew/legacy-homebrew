@@ -9,7 +9,7 @@ class Moc < Formula
 
     # Patches up to r2544 (HEAD at 2013-08-13)
     patch :p0 do
-      url "https://gist.github.com/toroidal-code/6310844/raw/23c460144b64040eb6c3117693fd7e129a462b26/ffmpeg-patch.diff"
+      url "https://gist.githubusercontent.com/toroidal-code/6310844/raw/23c460144b64040eb6c3117693fd7e129a462b26/ffmpeg-patch.diff"
       sha1 "55d64d17b320b391a5c11f502417fa8353498b37"
     end
   end

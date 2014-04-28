@@ -8,7 +8,7 @@ class Cabocha < Formula
   depends_on 'crf++'
   depends_on 'mecab'
 
-  option 'posset', 'choose default posset: IPA, JUMAN, UNIDIC'
+  option 'posset=', 'choose default posset: IPA, JUMAN, UNIDIC'
 
   def install
     ENV["LIBS"] = '-liconv'

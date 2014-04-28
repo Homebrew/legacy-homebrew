@@ -2,13 +2,9 @@ module Homebrew extend self
 
   def tap
     if ARGV.empty?
-      tapd = HOMEBREW_LIBRARY/"Taps"
-      tapd.children.each do |user|
-        next unless user.directory?
-        user.children.each do |repo|
-          puts "#{user.basename}/#{repo.basename.sub("homebrew-", "")}" if (repo/".git").directory?
-        end
-      end if tapd.directory?
+      each_tap do |user, repo|
+        puts "#{user.basename}/#{repo.basename.sub("homebrew-", "")}" if (repo/".git").directory?
+      end
     elsif ARGV.first == "--repair"
       repair_taps
     else
@@ -29,7 +25,7 @@ module Homebrew extend self
     abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
 
     files = []
-    tapd.find_formula{ |file| files << tapd.dirname.basename.join(tapd.basename, file) }
+    tapd.find_formula { |file| files << file }
     link_tap_formula(files)
     puts "Tapped #{files.length} formula"
 
@@ -46,24 +42,23 @@ module Homebrew extend self
     true
   end
 
-  def link_tap_formula formulae
+  def link_tap_formula paths
     ignores = (HOMEBREW_LIBRARY/"Formula/.gitignore").read.split rescue []
     tapped = 0
 
-    formulae.each do |formula|
-      from = HOMEBREW_LIBRARY.join("Taps/#{formula}")
-      to = HOMEBREW_LIBRARY.join("Formula/#{formula.basename}")
+    paths.each do |path|
+      to = HOMEBREW_LIBRARY.join("Formula", path.basename)
 
       # Unexpected, but possible, lets proceed as if nothing happened
-      to.delete if to.symlink? and to.realpath == from
+      to.delete if to.symlink? && to.resolved_path == path
 
       begin
-        to.make_relative_symlink(from)
+        to.make_relative_symlink(path)
       rescue SystemCallError
-        to = to.realpath if to.exist?
-        opoo "Could not tap #{Tty.white}#{tap_ref(from)}#{Tty.reset} over #{Tty.white}#{tap_ref(to)}#{Tty.reset}"
+        to = to.resolved_path if to.symlink?
+        opoo "Could not tap #{Tty.white}#{tap_ref(path)}#{Tty.reset} over #{Tty.white}#{tap_ref(to)}#{Tty.reset}"
       else
-        ignores << formula.basename.to_s
+        ignores << path.basename.to_s
         tapped += 1
       end
     end
@@ -88,19 +83,28 @@ module Homebrew extend self
 
     count = 0
     # check symlinks are all set in each tap
-    HOMEBREW_REPOSITORY.join("Library/Taps").children.each do |user|
-      next unless user.directory?
-      user.children.each do |repo|
-        files = []
-        repo.find_formula{ |file| files << user.basename.join(repo.basename, file) } if repo.directory?
-        count += link_tap_formula(files)
-      end
+    each_tap do |user, repo|
+      files = []
+      repo.find_formula { |file| files << file }
+      count += link_tap_formula(files)
     end
 
     puts "Tapped #{count} formula"
   end
 
   private
+
+  def each_tap
+    taps = HOMEBREW_LIBRARY.join("Taps")
+
+    if taps.directory?
+      taps.subdirs.each do |user|
+        user.subdirs.each do |repo|
+          yield user, repo
+        end
+      end
+    end
+  end
 
   def tap_args
     ARGV.first =~ %r{^([\w_-]+)/(homebrew-)?([\w_-]+)$}
