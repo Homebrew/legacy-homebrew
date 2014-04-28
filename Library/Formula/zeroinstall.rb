@@ -1,5 +1,27 @@
 require "formula"
 
+class Gnupg < Requirement
+  def message; <<-EOS.undent
+    Gnupg is required to use these tools.
+
+    You can install Gnupg or Gnupg2 with Homebrew:
+      brew install gnupg
+      brew install gnupg2
+
+    Or you can use one of several different
+    prepackaged installers that are available.
+    EOS
+  end
+
+  def satisfied?
+    which 'gpg' or which 'gpg2'
+  end
+
+  def fatal?
+    false
+  end
+end
+
 class Zeroinstall < Formula
   homepage "http://0install.net/injector.html"
   url "https://downloads.sf.net/project/zero-install/0install/2.6.2/0install-2.6.2.tar.bz2"
@@ -7,7 +29,7 @@ class Zeroinstall < Formula
 
   head "https://github.com/0install/0install"
 
-  depends_on "gnupg"
+  depends_on Gnupg
   depends_on :x11 => :optional
   depends_on "glib" if build.without? "x11"
   depends_on "gtk+" if build.with? "x11"
