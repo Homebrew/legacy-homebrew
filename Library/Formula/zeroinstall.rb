@@ -27,16 +27,18 @@ class Zeroinstall < Formula
   url "https://downloads.sf.net/project/zero-install/0install/2.6.2/0install-2.6.2.tar.bz2"
   sha1 "93c6b61390b383e5fc103c64ca4419d1fbd17af4"
 
-  head "https://github.com/0install/0install"
-
   depends_on Gnupg
   depends_on :x11 => :optional
   depends_on "glib" if build.without? "x11"
   depends_on "gtk+" if build.with? "x11"
-  depends_on "gettext" => :build if build.head?
   depends_on "pkg-config" => :build
   depends_on "objective-caml" => :build
   depends_on "opam" => :build
+
+  head do
+    url "https://github.com/0install/0install"
+    depends_on "gettext" => :build
+  end
 
   # Fixes installation if /var is a symlink.
   # Cherry picked from upstream commit.
