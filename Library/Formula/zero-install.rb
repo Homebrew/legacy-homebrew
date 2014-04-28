@@ -3,7 +3,7 @@ require "formula"
 class ZeroInstall < Formula
   homepage "http://0install.net/injector.html"
   url "https://downloads.sf.net/project/zero-install/0install/2.6.2/0install-2.6.2.tar.bz2"
-  sha256 "5755226ef4b32f04723bcbe551f4694ddf78dffbb0f589c3140c2d7056370961"
+  sha1 "93c6b61390b383e5fc103c64ca4419d1fbd17af4"
 
   head "https://github.com/0install/0install"
 
