@@ -16,6 +16,13 @@ class Zeroinstall < Formula
   depends_on "objective-caml" => :build
   depends_on "opam" => :build
 
+  # Fixes installation if /var is a symlink.
+  # Cherry picked from upstream commit.
+  patch do
+    url "https://github.com/0install/0install/commit/8da5a1f82c108903dfea74553df0779f9f9e6d14.diff"
+    sha1 "4ccabd1b18ce07a869ce314c00452ffba070cd86"
+  end
+
   def install
     modules = "yojson xmlm ounit react lwt extlib ssl ocurl"
     modules += " lablgtk" if build.with? "x11"
