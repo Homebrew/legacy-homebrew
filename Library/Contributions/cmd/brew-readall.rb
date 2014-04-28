@@ -6,26 +6,30 @@
 require 'formula'
 require 'cmd/tap'
 
-formulae = []
-if ARGV.empty?
-  formulae = Formula.names
-else
-  tap_name = ARGV.first
-  # Allow use of e.g. homebrew/versions or homebrew-versions
-  tap_dir = tap_name.reverse.sub('/', '-').reverse
-  tap = Pathname("#{HOMEBREW_LIBRARY}/Taps/#{tap_dir}")
-  raise "#{tap} does not exist!" unless tap.exist?
-  tap.find_formula do |f|
-    formulae << tap/f
+module Homebrew
+  def readall
+    formulae = []
+    if ARGV.empty?
+      formulae = Formula.names
+    else
+      user, repo = tap_args
+      user.downcase!
+      repo.downcase!
+      tap = HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
+      raise "#{tap} does not exist!" unless tap.directory?
+      tap.find_formula { |f| formulae << f }
+    end
+
+    formulae.sort.each do |n|
+      begin
+        Formula.factory(n)
+      rescue Exception => e
+        onoe "problem in #{Formula.path(n)}"
+        puts e
+        Homebrew.failed = true
+      end
+    end
   end
 end
 
-formulae.sort.each do |n|
-  begin
-    Formula.factory(n)
-  rescue Exception => e
-    onoe "problem in #{Formula.path(n)}"
-    puts e
-    Homebrew.failed = true
-  end
-end
+Homebrew.readall
