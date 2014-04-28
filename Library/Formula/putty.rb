@@ -8,26 +8,26 @@ class Putty < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gtk+' => :optional
-  
+
   if build.head?
     depends_on "halibut" => :build
     depends_on :automake
     depends_on :autoconf
   end
-  
+
   def install
-    
+
     if build.head?
       system "./mkfiles.pl"
-      system "./mkauto.sh"    
-      
+      system "./mkauto.sh"
+
       cd "doc" do
         system "make"
       end
     end
-      
+
     system "./configure", "--prefix=#{prefix}", "--disable-gtktest"
-      
+
     build_version = build.head? ? "svn-#{version}" : version
     system "make", "VER=-DRELEASE=#{build_version}"
 
