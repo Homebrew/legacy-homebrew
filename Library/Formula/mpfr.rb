@@ -33,10 +33,10 @@ class Mpfr < Formula
     # Build 32-bit where appropriate, and help configure find 64-bit CPUs
     if MacOS.prefer_64_bit? and not build.build_32_bit?
       ENV.m64
-      args << "--build=x86_64-apple-darwin"
+      args << "--build=x86_64-apple-darwin" if OS.mac?
     else
       ENV.m32
-      args << "--build=none-apple-darwin"
+      args << "--build=none-apple-darwin" if OS.mac?
     end
 
     system "./configure", *args
