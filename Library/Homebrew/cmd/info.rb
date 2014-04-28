@@ -24,7 +24,8 @@ module Homebrew extend self
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
       end
     else
-      ARGV.named.each do |f|
+      ARGV.named.each_with_index do |f,i|
+        puts unless i == 0
         begin
           info_formula Formula.factory(f)
         rescue FormulaUnavailableError
@@ -60,7 +61,7 @@ module Homebrew extend self
   def github_info f
     if f.path.to_s =~ HOMEBREW_TAP_PATH_REGEX
       user = $1
-      repo = "homebrew-#$2"
+      repo = $2
       path = $3
     else
       user = f.path.parent.cd { github_fork }

@@ -131,8 +131,9 @@ module OS
     def gcc_42_build_version
       @gcc_42_build_version ||=
         begin
-          gcc = MacOS.locate('gcc-4.2') || Formula.factory('apple-gcc42').opt_prefix/'bin/gcc-4.2'
-          raise unless gcc.exist?
+          gcc = MacOS.locate('gcc-4.2')
+          gcc ||= Formula.factory('apple-gcc42').opt_prefix/'bin/gcc-4.2' rescue nil
+          raise if gcc.nil? || !gcc.exist?
         rescue
           gcc = nil
         end
@@ -167,13 +168,16 @@ module OS
     end
 
     def non_apple_gcc_version(cc)
-      return unless path = locate(cc)
+      path = Formula.factory("gcc").opt_prefix/"bin/#{cc}"
+      path = nil unless path.exist?
+
+      return unless path ||= locate(cc)
 
       ivar = "@#{cc.gsub(/(-|\.)/, '')}_version"
       return instance_variable_get(ivar) if instance_variable_defined?(ivar)
 
-      `#{path} --version` =~ /gcc-\d.\d \(GCC\) (\d\.\d\.\d)/
-      instance_variable_set(ivar, $1)
+      `#{path} --version` =~ /gcc(-\d\.\d \(GCC\))? (\d\.\d\.\d)/
+      instance_variable_set(ivar, $2)
     end
 
     # See these issues for some history:

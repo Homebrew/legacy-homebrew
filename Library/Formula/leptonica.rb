@@ -14,8 +14,16 @@ class Leptonica < Formula
     :because => "both leptonica and osxutils ship a `fileinfo` executable."
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+
+    %w[libpng jpeg libtiff].each do |dep|
+      args << "--without-#{dep}" if build.without?(dep)
+    end
+
+    system "./configure", *args
     system "make install"
   end
 
