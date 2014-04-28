@@ -16,6 +16,7 @@ class Perlmagick < Formula
 
   def install
     inreplace "Makefile.PL" do |s|
+      s.gsub! "INC_magick = '-I/usr/local/include/ImageMagick-6", "INC_magick = '-I#{Formula["imagemagick"].include}/ImageMagick-6"
       s.gsub! "-I/usr/include/freetype2", "-I#{Formula["freetype"].include}/freetype2"
       s.gsub! "'INSTALLBIN'	=> '/usr/local/bin'", "'INSTALLBIN'	=> '#{bin}'"
       s.gsub! "# 'PREFIX'	=> '/usr/local'", "'PREFIX'	=> '#{prefix}'"
