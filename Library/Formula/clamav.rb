@@ -39,5 +39,4 @@ class Clamav < Formula
     </plist>
     EOS
   end
-
 end
