@@ -14,8 +14,8 @@ Features
 Installation
 ------------
 
-* Debian or Ubuntu: `sudo apt-get install build-essential curl git ruby libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev`
-* Fedora: `sudo yum groupinstall 'Development Tools' && sudo yum install curl git ruby bzip2-devel curl-devel expat-devel ncurses-devel zlib-devel`
+* Debian or Ubuntu: `sudo apt-get install build-essential curl git ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev`
+* Fedora: `sudo yum groupinstall 'Development Tools' && sudo yum install curl git ruby texinfo bzip2-devel curl-devel expat-devel ncurses-devel zlib-devel`
 * `git clone https://github.com/Homebrew/linuxbrew.git ~/.linuxbrew`
 * Add to your `.bashrc` or `.zshrc`:
 
