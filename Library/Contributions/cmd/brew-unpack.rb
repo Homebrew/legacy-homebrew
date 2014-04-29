@@ -28,20 +28,11 @@ module UnpackPatch
     return unless ARGV.flag? "--patch"
 
     begin
-      # Silence complaints about re-setting constants.
       old_verbose = $VERBOSE
       $VERBOSE = nil
-      Formula.const_set "DATA", ScriptDataReader.load(path)
+      Object.const_set "DATA", ScriptDataReader.load(path)
     ensure
       $VERBOSE = old_verbose
-    end
-
-    # Legacy patches are fixed by setting Formula::DATA.
-    # Now, handle instances of IOPatch.
-    patchlist.select{|p| p.is_a? IOPatch}.each do |patch|
-      if patch.instance_variable_get(:@io) == :DATA
-        patch.instance_variable_set :@io, ScriptDataReader.load(path)
-      end
     end
 
     super
