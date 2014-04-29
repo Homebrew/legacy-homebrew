@@ -239,7 +239,6 @@ class Python < Formula
       # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
       ENV.append_to_cflags '-Wno-unused-value'
       ENV.append_to_cflags '-Wno-empty-body'
-      ENV.append_to_cflags '-Qunused-arguments'
     end
   end
 

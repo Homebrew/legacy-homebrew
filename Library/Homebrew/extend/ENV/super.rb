@@ -294,7 +294,7 @@ module Superenv
     append 'HOMEBREW_CCCFG', "3", ''
   end
 
-  %w{O4 O3 O2 O1 O0 Os}.each do |opt|
+  %w{O3 O2 O1 O0 Os}.each do |opt|
     define_method opt do
       self['HOMEBREW_OPTIMIZATION_LEVEL'] = opt
     end
@@ -305,7 +305,7 @@ module Superenv
 
   # These methods are no longer necessary under superenv, but are needed to
   # maintain an interface compatible with stdenv.
-  noops.concat %w{fast Og libxml2 x11 set_cpu_flags macosxsdk remove_macosxsdk}
+  noops.concat %w{fast O4 Og libxml2 x11 set_cpu_flags macosxsdk remove_macosxsdk}
 
   # These methods provide functionality that has not yet been ported to
   # superenv.

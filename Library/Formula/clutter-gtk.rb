@@ -1,9 +1,9 @@
 require "formula"
 
-class Clutter < Formula
+class ClutterGtk < Formula
   homepage "https://wiki.gnome.org/Clutter"
-  url "http://ftp.gnome.org/pub/gnome/sources/clutter/1.14/clutter-1.14.4.tar.xz"
-  sha256 "c996d91fff6fff24d9e23dcd545439ebc6b999fb1cf9ee44c28ca54c49c0ee1c"
+  url "http://ftp.gnome.org/pub/gnome/sources/clutter-gtk/1.2/clutter-gtk-1.2.2.tar.xz"
+  sha256 "743702bb230519553ca597b585b25af0b8783575fcd09c7fe5bed7dde292893c"
 
   option "without-x", "Build without X11 support"
 
@@ -11,11 +11,12 @@ class Clutter < Formula
   depends_on "glib"
   depends_on "gdk-pixbuf"
   depends_on "cogl"
-  depends_on "cairo" # for cairo-gobject
   depends_on "atk"
   depends_on "pango"
   depends_on "json-glib"
   depends_on :x11 => "2.5.1" if build.with? "x"
+  depends_on "gtk+3"
+  depends_on "clutter"
   depends_on "gobject-introspection"
 
   def install
