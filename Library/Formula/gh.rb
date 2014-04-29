@@ -34,13 +34,6 @@ class Gh < Formula
     system "git config --global gh.autoUpdate never"
   end
 
-  def caveats; <<-EOS.undent
-  To upgrade gh, run `brew update` and `brew upgrade gh`
-
-  More information here: https://github.com/jingweno/gh/blob/master/README.md
-    EOS
-  end
-
   test do
     assert_equal VERSION, `#{bin}/gh version`.split.last
   end
