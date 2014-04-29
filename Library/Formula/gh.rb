@@ -14,16 +14,13 @@ class Gh < Formula
   option "without-completions", "Disable bash/zsh completions"
 
   def install
-    system "script/make"
+    system "script/make", "--no-update"
     bin.install "gh"
 
     if build.with? "completions"
       bash_completion.install "etc/gh.bash_completion.sh"
       zsh_completion.install "etc/gh.zsh_completion" => "_gh"
     end
-
-    # Disable autoupdate when installing through homebrew
-    system "git config --global gh.autoUpdate never"
   end
 
   test do
