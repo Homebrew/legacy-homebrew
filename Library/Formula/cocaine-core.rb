@@ -19,6 +19,50 @@ class CocaineCore < Formula
   end
 
   test do
+    config = %Q(
+    {
+      "version": 2,
+      "paths": {
+        "plugins": "#{testpath}/usr/lib/cocaine",
+        "runtime": "#{testpath}/var/run/cocaine"
+      },
+      "storages": {
+        "core": {
+          "type": "files",
+          "args": {
+              "path": "#{testpath}/var/lib/cocaine"
+          }
+        }
+      },
+      "loggers": {
+        "core": {
+          "type": "files",
+          "args": {
+            "path": "/dev/stdout",
+            "verbosity": "debug",
+            "port": 50030
+          }
+        }
+      }
+    })
+    (testpath/'default.json').write(config)
+    system "mkdir -p #{testpath}/usr/lib/cocaine"
+    system "mkdir -p #{testpath}/var/run/cocaine"
+    system "mkdir -p #{testpath}/var/lib/cocaine"
+
+    system "cat #{testpath}/default.json"
     system "#{bin}/cocaine-runtime --version"
+
+    pid = Process.fork
+    if pid.nil?
+      puts 'Starting cocaine-runtime (timeout: 1s) ...'
+      exec "#{bin}/cocaine-runtime --configuration #{testpath}/default.json"
+    else
+      Process.detach pid
+      sleep 1
+      puts "Terminating cocaine-runtime (pid: #{pid}) ..."
+      Process.kill 'TERM', pid
+      Process.wait
+    end
   end
 end
