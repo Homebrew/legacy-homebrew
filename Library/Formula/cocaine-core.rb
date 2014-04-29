@@ -10,11 +10,10 @@ class CocaineCore < Formula
   depends_on 'boost' => 'c++11'
   depends_on 'libarchive'
   depends_on 'libev'
-  depends_on 'libtool' => [:build, '--universal']
+  depends_on 'libtool' => :build
   depends_on 'msgpack'
 
   def install
-    # ENV.deparallelize
     system 'cmake', '.', *std_cmake_args
     system 'make', 'install'
   end
