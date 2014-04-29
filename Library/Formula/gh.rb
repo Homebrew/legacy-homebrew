@@ -1,10 +1,8 @@
 require "formula"
 
 class Gh < Formula
-  VERSION = "2.0.0"
-
   homepage "https://github.com/jingweno/gh"
-  url "https://github.com/jingweno/gh/archive/v#{VERSION}.zip"
+  url "https://github.com/jingweno/gh/archive/v2.0.0.zip"
   sha1 "ae44a538ca648efe1914d9ffb1af5ab23e2d879e"
   head "https://github.com/jingweno/gh.git"
 
@@ -24,11 +22,13 @@ class Gh < Formula
       zsh_completion.install "etc/gh.zsh_completion" => "_gh"
     end
 
-    # disable autoupdate when installing through homebrew
+    # Disable autoupdate when installing through homebrew
     system "git config --global gh.autoUpdate never"
   end
 
   test do
-    assert_equal VERSION, `#{bin}/gh version`.split.last
+    HOMEBREW_REPOSITORY.cd do
+      assert_equal 'bin/brew', `#{bin}/gh ls-files -- bin`.strip
+    end
   end
 end
