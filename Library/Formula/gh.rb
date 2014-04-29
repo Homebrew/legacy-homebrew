@@ -9,10 +9,6 @@ class Gh < Formula
   head "https://github.com/jingweno/gh.git"
 
   bottle do
-    root_url "https://github.com/jingweno/gh/releases/download/v#{VERSION}"
-    prefix :any
-    cellar :any
-    sha1 "ba504c443f5fd289895e669dffa0eb67cd257add" => :mavericks
   end
 
   depends_on "go" => :build
