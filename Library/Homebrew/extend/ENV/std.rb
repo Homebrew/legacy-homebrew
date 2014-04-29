@@ -122,13 +122,8 @@ module Stdenv
   alias_method :gcc_4_0, :gcc_4_0_1
 
   def gcc
-    # Apple stopped shipping gcc-4.2 with Xcode 4.2
-    # However they still provide a gcc symlink to llvm
-    # But we don't want LLVM of course.
-
     self.cc  = MacOS.locate("gcc-4.2")
     self.cxx = MacOS.locate("g++-4.2")
-
     set_cpu_cflags
     @compiler = :gcc
   end
