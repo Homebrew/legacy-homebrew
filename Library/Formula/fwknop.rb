@@ -3,8 +3,8 @@ require 'formula'
 class Fwknop < Formula
   homepage 'http://www.cipherdyne.org/fwknop/'
   head 'https://github.com/mrash/fwknop.git'
-  url 'https://github.com/mrash/fwknop/archive/2.6.1.tar.gz'
-  sha1 'f0bb89358262431cc4319223d582a24277a12dad'
+  url 'https://github.com/mrash/fwknop/archive/2.6.2.tar.gz'
+  sha1 'e72109e3712a703e7410d1c1d96fd4d5fc274494'
 
   depends_on :automake
   depends_on :autoconf
