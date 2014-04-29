@@ -113,9 +113,8 @@ module Stdenv
   end
 
   def gcc_4_0_1
-    # we don't use locate because gcc 4.0 has not been provided since Xcode 4
-    self.cc  = "#{MacOS.dev_tools_path}/gcc-4.0"
-    self.cxx = "#{MacOS.dev_tools_path}/g++-4.0"
+    self.cc  = MacOS.locate("gcc-4.0")
+    self.cxx = MacOS.locate("g++-4.0")
     set_cpu_cflags '-march=nocona -mssse3'
     @compiler = :gcc_4_0
   end
