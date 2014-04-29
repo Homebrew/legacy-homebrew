@@ -260,7 +260,6 @@ module Stdenv
   # we've seen some packages fail to build when warnings are disabled!
   def enable_warnings
     remove_from_cflags '-w'
-    remove_from_cflags '-Qunused-arguments'
   end
 
   def m64
@@ -338,9 +337,6 @@ module Stdenv
     else
       append flags, map.fetch(Hardware::CPU.family, default)
     end
-
-    # not really a 'CPU' cflag, but is only used with clang
-    remove flags, '-Qunused-arguments'
   end
 
   def set_cpu_cflags default=DEFAULT_FLAGS, map=Hardware::CPU.optimization_flags
