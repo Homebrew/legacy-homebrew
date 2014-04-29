@@ -19,13 +19,13 @@ class Gh < Formula
 
   depends_on "go" => :build
 
-  option 'without-completions', 'Disable bash/zsh completions'
+  option "without-completions", "Disable bash/zsh completions"
 
   def install
     system "script/make"
     bin.install "gh"
 
-    if build.with? 'completions'
+    if build.with? "completions"
       bash_completion.install "etc/gh.bash_completion.sh"
       zsh_completion.install "etc/gh.zsh_completion" => "_gh"
     end
