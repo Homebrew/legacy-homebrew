@@ -1,7 +1,7 @@
 require "formula"
 
 class ClutterGtk < Formula
-  homepage "https://wiki.gnome.org/Clutter"
+  homepage "https://wiki.gnome.org/Projects/Clutter"
   url "http://ftp.gnome.org/pub/gnome/sources/clutter-gtk/1.2/clutter-gtk-1.2.2.tar.xz"
   sha256 "743702bb230519553ca597b585b25af0b8783575fcd09c7fe5bed7dde292893c"
 
