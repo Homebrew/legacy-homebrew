@@ -1,6 +1,6 @@
 require "formula"
 
-class Gnupg < Requirement
+class GnupgRequirement < Requirement
   def message; <<-EOS.undent
     Gnupg is required to use these tools.
 
@@ -27,7 +27,7 @@ class Zeroinstall < Formula
   url "https://downloads.sf.net/project/zero-install/0install/2.6.2/0install-2.6.2.tar.bz2"
   sha1 "93c6b61390b383e5fc103c64ca4419d1fbd17af4"
 
-  depends_on Gnupg
+  depends_on GnupgRequirement
   depends_on :x11 => :optional
   depends_on "glib" if build.without? "x11"
   depends_on "gtk+" if build.with? "x11"
