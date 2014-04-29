@@ -15,7 +15,7 @@ class Gstreamer < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'gobject-introspection' => :optional
+  depends_on 'gobject-introspection'
   depends_on 'gettext'
   depends_on 'glib'
 
@@ -27,6 +27,7 @@ class Gstreamer < Formula
       --disable-debug
       --disable-dependency-tracking
       --disable-gtk-doc
+      --enable-introspection=yes
     ]
 
     if build.head?
