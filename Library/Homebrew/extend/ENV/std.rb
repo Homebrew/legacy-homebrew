@@ -103,9 +103,9 @@ module Stdenv
   alias_method :j1, :deparallelize
 
   # These methods are no-ops for compatibility.
-  %w{fast Og}.each { |opt| define_method(opt) {} }
+  %w{fast O4 Og}.each { |opt| define_method(opt) {} }
 
-  %w{O4 O3 O2 O1 O0 Os}.each do |opt|
+  %w{O3 O2 O1 O0 Os}.each do |opt|
     define_method opt do
       remove_from_cflags(/-O./)
       append_to_cflags "-#{opt}"
@@ -116,7 +116,6 @@ module Stdenv
     # we don't use locate because gcc 4.0 has not been provided since Xcode 4
     self.cc  = "#{MacOS.dev_tools_path}/gcc-4.0"
     self.cxx = "#{MacOS.dev_tools_path}/g++-4.0"
-    replace_in_cflags '-O4', '-O3'
     set_cpu_cflags '-march=nocona -mssse3'
     @compiler = :gcc_4_0
   end
@@ -130,7 +129,6 @@ module Stdenv
     self.cc  = MacOS.locate("gcc-4.2")
     self.cxx = MacOS.locate("g++-4.2")
 
-    replace_in_cflags '-O4', '-O3'
     set_cpu_cflags
     @compiler = :gcc
   end
@@ -276,7 +274,6 @@ module Stdenv
 
   def universal_binary
     append_to_cflags Hardware::CPU.universal_archs.as_arch_flags
-    replace_in_cflags '-O4', '-O3' # O4 seems to cause the build to fail
     append 'LDFLAGS', Hardware::CPU.universal_archs.as_arch_flags
 
     if compiler != :clang && Hardware.is_32_bit?
