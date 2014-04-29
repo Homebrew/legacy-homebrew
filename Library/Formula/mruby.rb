@@ -23,6 +23,8 @@ class Mruby < Formula
       lib.install Dir["lib/*.a"]
       prefix.install %w{bin mrbgems mrblib tools}
     end
+
+    prefix.install "include"
   end
 
   test do
