@@ -8,7 +8,7 @@ class Nodenv < Formula
   head "https://github.com/wfarr/nodenv.git"
 
   def install
-    prefix.install Dir['*']
+    prefix.install 'bin', 'libexec'
   end
 
   def caveats; <<-EOS.undent
