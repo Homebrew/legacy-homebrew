@@ -205,7 +205,7 @@ class JobManagerActor(dao: JobDAO,
       }
 
       try {
-        statusActor ! JobStatusActor.JobInit(jobInfo, jobConfig)
+        statusActor ! JobStatusActor.JobInit(jobInfo)
 
         job.validate(sparkContext, jobConfig) match {
           case SparkJobInvalid(reason) => {
