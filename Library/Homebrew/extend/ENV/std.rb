@@ -137,8 +137,8 @@ module Stdenv
   GNU_GCC_VERSIONS.each do |n|
     define_method(:"gcc-4.#{n}") do
       gcc = "gcc-4.#{n}"
-      self.cc = self['OBJC'] = gcc
-      self.cxx = self['OBJCXX'] = gcc.gsub('c', '+')
+      self.cc = gcc
+      self.cxx = gcc.gsub('c', '+')
       set_cpu_cflags
       @compiler = gcc
     end
