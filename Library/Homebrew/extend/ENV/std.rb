@@ -58,17 +58,7 @@ module Stdenv
 
     append 'LDFLAGS', '-Wl,-headerpad_max_install_names'
 
-    # set us up for the user's compiler choice
-    self.send self.compiler
-
-    # we must have a working compiler!
-    unless cc
-      @compiler = MacOS.default_compiler
-      self.send @compiler
-      self.cc  = MacOS.locate("cc")
-      self.cxx = MacOS.locate("c++")
-    end
-
+    send(compiler)
     validate_cc!(formula) unless formula.nil?
 
     if cc =~ GNU_GCC_REGEXP
