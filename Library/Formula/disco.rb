@@ -42,6 +42,10 @@ class Disco < Formula
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
+  test do
+    system "#{bin}/disco"
+  end
+
   def caveats
     <<-EOS.undent
       Please copy #{etc}/disco/settings.py to ~/.disco and edit it if necessary.
