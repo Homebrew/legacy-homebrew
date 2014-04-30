@@ -2,20 +2,8 @@ require 'formula'
 
 class Qt < Formula
   homepage 'http://qt-project.org/'
-  if MacOS.version < :mavericks
-    url 'http://download.qt-project.org/official_releases/qt/4.8/4.8.5/qt-everywhere-opensource-src-4.8.5.tar.gz'
-    sha1 '745f9ebf091696c0d5403ce691dc28c039d77b9e'
-  else
-    # This is a snapshot of the current qt-4.8 branch. It's been used by a
-    # bunch of people to get Qt working on Mavericks and 4.8.5 needs too many
-    # patches to compile any time soon (January-ish):
-    # http://permalink.gmane.org/gmane.comp.lib.qt.devel/13812
-    url 'https://github.com/qtproject/qt/archive/f44310c25b372f494586dbb5b305f7e81ca63000.tar.gz'
-    sha1 '51548326463068912fb4d9de04b0f6b2e267d064'
-    # It would be nice if this was a real version number but unfortunately
-    # that will mess with the bottles.
-    version '4.8.5'
-  end
+  url "http://download.qt-project.org/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
+  sha1 "ddf9c20ca8309a116e0466c42984238009525da6"
 
   head 'git://gitorious.org/qt/qt.git', :branch => '4.8'
 
@@ -50,7 +38,7 @@ class Qt < Formula
 
     # we have to disable these to avoid triggering optimization code
     # that will fail in superenv (in --env=std, Qt seems aware of this)
-    args << '-no-3dnow' << '-no-ssse3' if superenv?
+    args << "-no-3dnow" if superenv?
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
