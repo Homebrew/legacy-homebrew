@@ -16,7 +16,7 @@ class GstPluginsBase < Formula
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
-  depends_on "gstreamer" => "with-gobject-introspection"
+  depends_on "gstreamer"
 
   # The set of optional dependencies is based on the intersection of
   # gst-plugins-base-0.10.35/REQUIREMENTS and Homebrew formulae
