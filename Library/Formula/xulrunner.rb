@@ -34,8 +34,8 @@ end
 
 class Xulrunner < Formula
   homepage "https://developer.mozilla.org/docs/XULRunner"
-  url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/28.0/source/xulrunner-28.0.source.tar.bz2"
-  sha1 "7965105b34441ebfab650930dffa4648c85ac6c6"
+  url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/29.0/source/xulrunner-29.0.source.tar.bz2"
+  sha1 "8ebf863a2bb81f5c9ca5bd70ff77997084c97972"
 
   bottle do
     cellar :any
@@ -45,9 +45,9 @@ class Xulrunner < Formula
   end
 
   devel do
-    url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/29.0b1/source/xulrunner-29.0b1.source.tar.bz2"
-    sha1 "80ea2209c0ea9316b5c8dc16208514d14c410c22"
-    version "29.0b1"
+    url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/30.0b1/source/xulrunner-30.0b1.source.tar.bz2"
+    sha1 "a3129b91738be992180436750828f6d43e7c5a21"
+    version "30.0b1"
   end
 
   head do
@@ -109,7 +109,7 @@ class Xulrunner < Formula
     frameworks.mkpath
     if build.head?
       # update HEAD version here with every version bump
-      tar_path = "objdir/dist/xulrunner-31.0a1.en-US.mac64.tar.bz2"
+      tar_path = "objdir/dist/xulrunner-32.0a1.en-US.mac64.tar.bz2"
     else
       tar_path = "objdir/dist/xulrunner-#{version.to_s[/\d+\.\d+(\.\d+)?/]}.en-US.mac64.tar.bz2"
     end
