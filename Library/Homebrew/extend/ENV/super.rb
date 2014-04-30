@@ -207,8 +207,11 @@ module Superenv
       Hardware::CPU.optimization_flags.fetch(arch)
     elsif Hardware::CPU.intel? && !Hardware::CPU.sse4?
       Hardware::CPU.optimization_flags.fetch(Hardware.oldest_cpu)
+    elsif compiler == :clang
+      "-march=native"
+    # This is mutated elsewhere, so return an empty string in this case
     else
-      "-march=native" if compiler == :clang
+      ""
     end
   end
 
