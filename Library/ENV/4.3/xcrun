@@ -11,9 +11,12 @@ if ARGV.empty? || ARGV[0][0..0] == "-"
   exec "/usr/bin/xcrun", *ARGV
 end
 
-if File.exist?("/usr/bin/#{ARGV.first}")
-  sdkroot = ENV['HOMEBREW_SDKROOT']
-  exec "/usr/bin/#{ARGV.shift}", *ARGV unless sdkroot and File.directory? sdkroot
+arg0 = ARGV.shift
+
+exe = "/usr/bin/#{arg0}"
+if File.executable?(exe)
+  sdkroot = ENV["HOMEBREW_SDKROOT"]
+  exec(exe, *ARGV) unless sdkroot && File.directory?(sdkroot)
 end
 
 $:.unshift "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8"
@@ -25,7 +28,6 @@ end
 
 SUPERBIN = canonical_dirname(__FILE__)
 
-arg0 = ARGV.shift
 exe = `/usr/bin/xcrun --find #{arg0} 2>/dev/null`.chomp
 if File.executable?(exe) && canonical_dirname(exe) != SUPERBIN
   exec(exe, *ARGV)
