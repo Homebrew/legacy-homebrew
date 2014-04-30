@@ -34,11 +34,11 @@ class Gcc < Formula
     sha1 "da1bc22b6b75464cbf2a8b29f1e79a15e531b1e6" => :lion
   end
 
-  option "with-fortran", "Build the gfortran compiler"
   option "with-java", "Build the gcj compiler"
   option "with-all-languages", "Enable all compilers and languages, except Ada"
   option "with-nls", "Build with native language support (localization)"
   option "with-profiled-build", "Make use of profile guided optimization when bootstrapping GCC"
+  option "without-fortran", "Build without the gfortran compiler"
   # enabling multilib on a host that can't run 64-bit results in build failures
   option "without-multilib", "Build without multilib support" if MacOS.prefer_64_bit?
 
@@ -71,18 +71,14 @@ class Gcc < Formula
       ENV["AS"] = ENV["AS_FOR_TARGET"] = "#{Formula["cctools"].bin}/as"
     end
 
-    if build.with? "all-languages"
-      # Everything but Ada, which requires a pre-existing GCC Ada compiler
-      # (gnat) to bootstrap. GCC 4.6.0 add go as a language option, but it is
-      # currently only compilable on Linux.
-      languages = %w[c c++ fortran java objc obj-c++]
-    else
-      # C, C++, ObjC compilers are always built
-      languages = %w[c c++ objc obj-c++]
+    # C, C++, ObjC compilers are always built
+    languages = %w[c c++ objc obj-c++]
 
-      languages << "fortran" if build.with? "fortran"
-      languages << "java" if build.with? "java"
-    end
+    # Everything but Ada, which requires a pre-existing GCC Ada compiler
+    # (gnat) to bootstrap. GCC 4.6.0 add go as a language option, but it is
+    # currently only compilable on Linux.
+    languages << "fortran" if build.with?("fortran") || build.with?("all-languages")
+    languages << "java" if build.with?("java") || build.with?("all-languages")
 
     args = [
       "--build=#{arch}-apple-darwin#{osmajor}",
@@ -155,6 +151,26 @@ class Gcc < Formula
     version_suffix = version.to_s.slice(/\d\.\d/)
     bin.install_symlink bin/"gcc" => "gcc-#{version_suffix}"
     bin.install_symlink bin/"g++" => "g++-#{version_suffix}"
+  end
+
+  test do
+    if build.with?("fortran")
+      fixture = <<-EOS.undent
+        integer,parameter::m=10000
+        real::a(m), b(m)
+        real::fact=0.5
+
+        do concurrent (i=1:m)
+          a(i) = a(i) + fact*b(i)
+        end do
+        print *, "done"
+        end
+      EOS
+      (testpath/"in.f90").write(fixture)
+      system "#{bin}/gfortran", "-c", "in.f90"
+      system "#{bin}/gfortran", "-o", "test", "in.o"
+      assert_equal "done", `./test`.strip
+    end
   end
 end
 
