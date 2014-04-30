@@ -2,28 +2,15 @@ require 'formula'
 
 class Qt < Formula
   homepage 'http://qt-project.org/'
-  if MacOS.version < :mavericks
-    url 'http://download.qt-project.org/official_releases/qt/4.8/4.8.5/qt-everywhere-opensource-src-4.8.5.tar.gz'
-    sha1 '745f9ebf091696c0d5403ce691dc28c039d77b9e'
-  else
-    # This is a snapshot of the current qt-4.8 branch. It's been used by a
-    # bunch of people to get Qt working on Mavericks and 4.8.5 needs too many
-    # patches to compile any time soon (January-ish):
-    # http://permalink.gmane.org/gmane.comp.lib.qt.devel/13812
-    url 'https://github.com/qtproject/qt/archive/f44310c25b372f494586dbb5b305f7e81ca63000.tar.gz'
-    sha1 '51548326463068912fb4d9de04b0f6b2e267d064'
-    # It would be nice if this was a real version number but unfortunately
-    # that will mess with the bottles.
-    version '4.8.5'
-  end
+  url "http://download.qt-project.org/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
+  sha1 "ddf9c20ca8309a116e0466c42984238009525da6"
 
   head 'git://gitorious.org/qt/qt.git', :branch => '4.8'
 
   bottle do
-    revision 4
-    sha1 '446f9ee06721c227b7b86f7c82bb84ffeca00379' => :mavericks
-    sha1 '9014726e304c037401b788499fbc0e9bc1d332f8' => :mountain_lion
-    sha1 'bfd7b572a3889cf2e20491af82186d5d42740315' => :lion
+    sha1 "114242a849d7ade7d55d46097b1f7790b871df8f" => :mavericks
+    sha1 "5e022a402437b0a1bf5bf2d2d67491280f73a7a8" => :mountain_lion
+    sha1 "212fce47b1f2f2d3bf4397db7d5967fb59223cec" => :lion
   end
 
   option :universal
@@ -50,7 +37,7 @@ class Qt < Formula
 
     # we have to disable these to avoid triggering optimization code
     # that will fail in superenv (in --env=std, Qt seems aware of this)
-    args << '-no-3dnow' << '-no-ssse3' if superenv?
+    args << "-no-3dnow" if superenv?
 
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
