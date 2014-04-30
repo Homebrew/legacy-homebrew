@@ -3,7 +3,7 @@ require "formula"
 class OpengrmThrax < Formula
   homepage "http://openfst.cs.nyu.edu/twiki/bin/view/GRM/Thrax"
   url "http://openfst.cs.nyu.edu/twiki/pub/GRM/ThraxDownload/thrax-1.1.0.tar.gz"
-  sha1 "b2e0bee89e40098bbb94d119aac8bf518339b7d3"
+  sha1 "99df95caff32b9b86460e0ab7b790457255f7ae3"
 
   depends_on "openfst"
 
