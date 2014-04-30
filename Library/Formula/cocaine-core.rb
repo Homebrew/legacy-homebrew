@@ -14,7 +14,10 @@ class CocaineCore < Formula
   depends_on 'msgpack'
 
   def install
-    system 'cmake', '.', *std_cmake_args
+    cmake_args = std_cmake_args
+    cmake_args << '-DCMAKE_CXX_FLAGS=-std=c++11'
+    cmake_args << '-DCMAKE_CXX_FLAGS=-stdlib=libc++'
+    system 'cmake', '.', *cmake_args
     system 'make', 'install'
   end
 
