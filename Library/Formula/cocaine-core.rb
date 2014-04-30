@@ -4,7 +4,6 @@ class CocaineCore < Formula
   homepage 'https://github.com/cocaine/cocaine-core'
   url 'https://github.com/cocaine/cocaine-core', :using => :git, :tag => '0.11.2.0'
   sha1 'd045c8586a435e1bb29a3405f43cddc0e651a119'
-  version '0.11.2.0'
 
   depends_on 'cmake' => :build
   depends_on 'boost' => 'c++11'
