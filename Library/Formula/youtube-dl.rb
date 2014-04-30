@@ -5,8 +5,8 @@ require "formula"
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
   homepage "http://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2014.04.21.6/youtube-dl-2014.04.21.6.tar.gz"
-  sha1 "a78288e990b4d9f3708313ba6c53ebc323868527"
+  url "https://yt-dl.org/downloads/2014.04.30/youtube-dl-2014.04.30.tar.gz"
+  sha1 "39ef1f38adeefaea3af17957c66a2aca05b4c747"
 
   depends_on "rtmpdump" => :optional
 
