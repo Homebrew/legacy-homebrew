@@ -32,9 +32,12 @@ end
 arg0 = ARGV.shift
 try `/usr/bin/xcrun --find #{arg0} 2>/dev/null`.chomp
 
-# xcrun won't always be able to find Homebrew's apple-gcc42,
-# even when it's in the PATH
-ENV["PATH"].split(File::PATH_SEPARATOR).each { |p| try File.join(p, arg0) }
+paths = ENV["PATH"].split(File::PATH_SEPARATOR)
+paths.delete(SUPERBIN)
+paths.each do |path|
+  exe = File.join(path, arg0)
+  exec(exe, *ARGV) if File.executable?(exe)
+end
 
 abort <<-EOS
 Failed to execute: #{arg0} #{ARGV.join(" ")}
