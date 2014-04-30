@@ -1,56 +1,36 @@
-require 'formula'
+require "formula"
 
 class Bigdata < Formula
-  homepage 'http://bigdata.com/blog/'
-  url 'http://bigdata.com/deploy/bigdata-1.3.0.tgz'
-  sha1 '5bfec0cfe47139dc0ab3ead7f61d5fc156b57bb9'
+  homepage "http://bigdata.com/blog/"
+  url "http://bigdata.com/deploy/bigdata-1.3.0.tgz"
+  sha1 "c22fa05df965019b3132161507ce0e77a4a1f6e2"
 
   def install
-    prefix.install Dir['*']
-
-    # make brew happy and rename the "lib" directory:
-    system "mv #{lib} #{libexec}"
+    prefix.install Dir["doc"]
+    prefix.install Dir["var"]
+    bin.install Dir["bin/*"]
+    libexec.install Dir["lib/*"]
 
     # Set the installation path as the root for the bin scripts:
-    system "sed -i .bak 's|<%= BD_HOME %>|#{prefix}|' #{bin}/bigdata"
-    system "sed -i .bak 's|<%= INSTALL_TYPE %>|BREW|' #{bin}/bigdata ; rm #{bin}/bigdata.bak"
-
+    inreplace "#{bin}/bigdata", "<%= BD_HOME %>", prefix
+    inreplace "#{bin}/bigdata", "<%= INSTALL_TYPE %>", "BREW"
 
     # Set the Jetty root as the resourceBase in the jetty.xml file:
-    system "sed -i .bak 's|<%= JETTY_DIR %>|#{prefix}/var/jetty|' #{prefix}/var/jetty/etc/jetty.xml ; rm #{prefix}/var/jetty/etc/jetty.xml.bak"
+    inreplace "#{prefix}/var/jetty/etc/jetty.xml", "<%= JETTY_DIR %>", "#{prefix}/var/jetty"
 
     # Set the installation path as the root for bigdata.jnl file location (<bigdata_home>/data):
-    system "sed -i .bak 's|<%= BD_HOME %>|#{prefix}|' #{prefix}/var/jetty/WEB-INF/RWStore.properties ; rm #{prefix}/var/jetty/WEB-INF/RWStore.properties.bak"
+    inreplace "#{prefix}/var/jetty/WEB-INF/RWStore.properties", "<%= BD_HOME %>", prefix
 
     # Set the installation path as the root for log files (<bigdata_home>/log):
-    system "sed -i .bak 's|<%= BD_HOME %>|#{prefix}|' #{prefix}/var/jetty/WEB-INF/classes/log4j.properties; rm #{prefix}/var/jetty/WEB-INF/classes/log4j.properties.bak "
+    inreplace "#{prefix}/var/jetty/WEB-INF/classes/log4j.properties", "<%= BD_HOME %>", prefix
   end
 
-  def caveats; <<-EOS.undent
-     After launching, visit the Bigdata Workbench at:
+  def caveats; <<-EOS
+     Congratulations! You have installed Bigdata!
 
-       http://localhost:8080/bigdata
+     Usage: bigdata {start|stop|status|restart}
 
-     "bigdata" command synopis:
-     -------------------------
-
-     Start the server:
-
-          % bigdata start
-
-     Stop the server:
-
-          % bigdata stop
-
-     Restart the server:
-
-          % bigdata restart
-
-     To tune the server configuration, edit the "#{prefix}/var/jetty/WEB-INF/RWStore.properties" file.
-
-     Further documentation:
-
-          #{prefix}/doc
+     After starting, visit: http://localhost:8080
     EOS
   end
 
