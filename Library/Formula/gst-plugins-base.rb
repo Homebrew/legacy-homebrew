@@ -16,14 +16,11 @@ class GstPluginsBase < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
-  if build.with? 'gobject-introspection'
-    depends_on 'gstreamer' => 'with-gobject-introspection'
-  else
-    depends_on 'gstreamer'
-  end
+  depends_on 'gstreamer' => 'with-gobject-introspection'
+
   # The set of optional dependencies is based on the intersection of
   # gst-plugins-base-0.10.35/REQUIREMENTS and Homebrew formulae
-  depends_on 'gobject-introspection' => :optional
+  depends_on 'gobject-introspection'
   depends_on 'orc' => :optional
   depends_on 'gtk+' => :optional
   depends_on 'libogg' => :optional
@@ -46,6 +43,7 @@ class GstPluginsBase < Formula
       --disable-xshm
       --disable-debug
       --disable-dependency-tracking
+      --enable-introspection=yes
     ]
 
     if build.head?
