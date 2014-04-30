@@ -6,7 +6,6 @@ class Liboil < Formula
   sha1 'f9d7103a3a4a4089f56197f81871ae9129d229ed'
 
   depends_on 'pkg-config' => :build
-  depends_on 'glib'
 
   patch :p0 do
     url "https://trac.macports.org/export/89276/trunk/dports/devel/liboil/files/patch-liboil_liboilcpu-x86.c.diff"
