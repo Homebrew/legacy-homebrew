@@ -36,13 +36,8 @@ def system *args
 end
 
 def sudo *args
-  args = if args.length > 1
-    args.unshift "/usr/bin/sudo"
-  else
-    "/usr/bin/sudo #{args.first}"
-  end
-  ohai *args
-  system *args
+  ohai "/usr/bin/sudo", *args
+  system "/usr/bin/sudo", *args
 end
 
 def getc  # NOTE only tested on OS X
@@ -149,14 +144,14 @@ if File.directory? HOMEBREW_PREFIX
   sudo "/bin/chmod", "g+rwx", *chmods unless chmods.empty?
   sudo "/usr/bin/chgrp", "admin", *chgrps unless chgrps.empty?
 else
-  sudo "/bin/mkdir #{HOMEBREW_PREFIX}"
-  sudo "/bin/chmod g+rwx #{HOMEBREW_PREFIX}"
+  sudo "/bin/mkdir", HOMEBREW_PREFIX
+  sudo "/bin/chmod", "g+rwx", HOMEBREW_PREFIX
   # the group is set to wheel by default for some reason
-  sudo "/usr/bin/chgrp admin #{HOMEBREW_PREFIX}"
+  sudo "/usr/bin/chgrp", "admin", HOMEBREW_PREFIX
 end
 
-sudo "/bin/mkdir #{HOMEBREW_CACHE}" unless File.directory? HOMEBREW_CACHE
-sudo "/bin/chmod g+rwx #{HOMEBREW_CACHE}"
+sudo "/bin/mkdir", HOMEBREW_CACHE unless File.directory? HOMEBREW_CACHE
+sudo "/bin/chmod", "g+rwx", HOMEBREW_CACHE
 
 if macos_version > "10.8"
   unless File.exist? "/Library/Developer/CommandLineTools/usr/bin/clang"
