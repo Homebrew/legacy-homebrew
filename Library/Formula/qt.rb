@@ -8,10 +8,9 @@ class Qt < Formula
   head 'git://gitorious.org/qt/qt.git', :branch => '4.8'
 
   bottle do
-    revision 4
-    sha1 '446f9ee06721c227b7b86f7c82bb84ffeca00379' => :mavericks
-    sha1 '9014726e304c037401b788499fbc0e9bc1d332f8' => :mountain_lion
-    sha1 'bfd7b572a3889cf2e20491af82186d5d42740315' => :lion
+    sha1 "114242a849d7ade7d55d46097b1f7790b871df8f" => :mavericks
+    sha1 "5e022a402437b0a1bf5bf2d2d67491280f73a7a8" => :mountain_lion
+    sha1 "212fce47b1f2f2d3bf4397db7d5967fb59223cec" => :lion
   end
 
   option :universal
