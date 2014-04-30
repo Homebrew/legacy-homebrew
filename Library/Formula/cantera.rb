@@ -12,7 +12,7 @@ class Cantera < Formula
     sha1 "4c73614bb39725ef6bdc85cbc97e148a3e49241d" => :lion
   end
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on :fortran => :build
   depends_on 'graphviz'
 
