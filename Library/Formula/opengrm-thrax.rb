@@ -13,8 +13,8 @@ class OpengrmThrax < Formula
   end
 
   def patches
-    # bug has been reported upstream and will be fixed in the next release;
-    # see http://openfst.cs.nyu.edu/twiki/bin/view/Forum/GrmThraxForum
+    # bug has been reported upstream and will be fixed in the next release:
+    # http://openfst.cs.nyu.edu/twiki/bin/view/Forum/GrmThraxForum#compilation_fails
     DATA
   end
 
