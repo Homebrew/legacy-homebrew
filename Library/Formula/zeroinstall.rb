@@ -44,7 +44,7 @@ class Zeroinstall < Formula
   # Cherry picked from upstream commit.
   patch do
     url "https://github.com/0install/0install/commit/8da5a1f82c108903dfea74553df0779f9f9e6d14.diff"
-    sha1 "4ccabd1b18ce07a869ce314c00452ffba070cd86"
+    sha1 "5ab8956086b765fe4e07d27cb69628c319a9c2b9"
   end
 
   def install
