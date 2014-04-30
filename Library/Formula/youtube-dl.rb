@@ -8,6 +8,13 @@ class YoutubeDl < Formula
   url "https://yt-dl.org/downloads/2014.04.30/youtube-dl-2014.04.30.tar.gz"
   sha1 "39ef1f38adeefaea3af17957c66a2aca05b4c747"
 
+  bottle do
+    cellar :any
+    sha1 "283d43da7c2cc0d574dba9d9898862f0f8ebd2d1" => :mavericks
+    sha1 "f0a0a24fd014766898cda0bfde2621ba86b56980" => :mountain_lion
+    sha1 "123e323857f033584408dec4f39babaaff273f5e" => :lion
+  end
+
   depends_on "rtmpdump" => :optional
 
   def install
