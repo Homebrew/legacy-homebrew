@@ -39,9 +39,9 @@ class Xulrunner < Formula
 
   bottle do
     cellar :any
-    sha1 "74b0f65bedb9e93f02a8dd52dba5d18a8796cd72" => :mavericks
-    sha1 "7381000fb344c775bad16a65ddd213a5fd163bf1" => :mountain_lion
-    sha1 "d336479051b4079582036e017253f37f99b5af63" => :lion
+    sha1 "d3fc3ea698a98ed6e1c1392fbe0a6302e9f9559e" => :mavericks
+    sha1 "b7559789badd44d8c890a64ca4fced4d1d1e6cb9" => :mountain_lion
+    sha1 "cac59a0b84adb0a44369d9ef1513c2ffe35e4f43" => :lion
   end
 
   devel do
