@@ -1,10 +1,10 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 
-# This wrapper because 4.3 xcrun doesn't work with CLT-only configurations
-# But many build-systems expect it to work. This fixes that.
-# NOTE only works if the build-tool calls xcrun without a path prefixed!
+# Historically, xcrun has had various bugs, and in some cases it didn't
+# work at all (e.g. CLT-only in the Xcode 4.3 era). This script emulates
+# it and attempts to avoid these issues.
 
-# Some build tools are stupid and still set DEVELOPER_DIR to old /Developer
+# Some build tools set DEVELOPER_DIR, so discard it
 ENV.delete "DEVELOPER_DIR"
 
 if ARGV.empty? || ARGV[0][0..0] == "-"
