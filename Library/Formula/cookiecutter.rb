@@ -14,4 +14,8 @@ class Cookiecutter < Formula
     bin.install Dir[libexec/'bin/*']
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
+
+  test do
+    system "#{bin}/cookiecutter", "--help"
+  end
 end
