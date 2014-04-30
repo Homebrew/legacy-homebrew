@@ -6,10 +6,10 @@ class Bigdata < Formula
   sha1 "c22fa05df965019b3132161507ce0e77a4a1f6e2"
 
   def install
-    prefix.install Dir["doc"]
-    prefix.install Dir["var"]
-    bin.install Dir["bin/*"]
-    libexec.install Dir["lib/*"]
+    prefix.install "doc"
+    prefix.install "var"
+    prefix.install "bin"
+    libexec.install "lib"
 
     # Set the installation path as the root for the bin scripts:
     inreplace "#{bin}/bigdata", "<%= BD_HOME %>", prefix
@@ -23,15 +23,6 @@ class Bigdata < Formula
 
     # Set the installation path as the root for log files (<bigdata_home>/log):
     inreplace "#{prefix}/var/jetty/WEB-INF/classes/log4j.properties", "<%= BD_HOME %>", prefix
-  end
-
-  def caveats; <<-EOS
-     Congratulations! You have installed Bigdata!
-
-     Usage: bigdata {start|stop|status|restart}
-
-     After starting, visit: http://localhost:8080
-    EOS
   end
 
   plist_options :startup => 'true', :manual => 'bigdata start'
