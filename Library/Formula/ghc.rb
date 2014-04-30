@@ -4,6 +4,7 @@ class Ghc < Formula
   homepage "http://haskell.org/ghc/"
   url "http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-src.tar.bz2"
   sha1 "8938e1ef08b37a4caa071fa169e79a3001d065ff"
+  revision 1
 
   bottle do
     revision 3
