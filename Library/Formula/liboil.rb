@@ -24,4 +24,18 @@ class Liboil < Formula
     system "make"
     system "make install"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <liboil/liboil.h>
+      int main(int argc, char** argv) {
+        oil_init();
+        return 0;
+      }
+    EOS
+    flags = `#{HOMEBREW_PREFIX}/bin/pkg-config --cflags --libs liboil-0.3`.split + ENV.cflags.split
+    system ENV.cc, "test.c", "-o", "test", *flags
+    system "./test"
+  end
+
 end
