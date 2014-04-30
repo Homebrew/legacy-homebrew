@@ -80,8 +80,8 @@ def git
   elsif Kernel.system '/usr/bin/which -s git'
     'git'
   else
-    s = `xcrun -find git 2>/dev/null`.chomp
-    s if $? and not s.empty?
+    exe = `xcrun -find git 2>/dev/null`.chomp
+    exe if $? && $?.success? && !exe.empty? && File.executable?(exe)
   end
 
   return unless @git
