@@ -36,6 +36,10 @@ module OS
       end
     end
 
+    def active_developer_dir
+      @active_developer_dir ||= `xcode-select -print-path 2>/dev/null`.strip
+    end
+
     def dev_tools_prefix
       dev_tools_path.parent.parent
     end
