@@ -61,6 +61,10 @@ module OS
         end
       end
 
+      def toolchain_path
+        Pathname.new("#{prefix}/Toolchains/XcodeDefault.xctoolchain") if installed? && version >= "4.3"
+      end
+
       # Ask Spotlight where Xcode is. If the user didn't install the
       # helper tools and installed Xcode in a non-conventional place, this
       # is our only option. See: http://superuser.com/questions/390757

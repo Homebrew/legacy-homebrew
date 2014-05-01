@@ -117,7 +117,7 @@ module Superenv
     paths = [Superenv.bin]
     if MacOS::Xcode.without_clt?
       paths << "#{MacOS::Xcode.prefix}/usr/bin"
-      paths << "#{MacOS::Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+      paths << "#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << MacOS::X11.bin if x11?
