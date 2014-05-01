@@ -10,6 +10,8 @@ class Nutcracker < Formula
                           "--prefix=#{prefix}"
     system "make"
     system "make install"
+
+    (share+"nutcracker").install "conf",  "notes", "scripts"
   end
 
   test do
