@@ -7,7 +7,7 @@ class Orientdb < Formula
 
   # Fixing OrientDB init scripts
   patch do
-    url "https://gist.github.com/leppert/5468357/raw/f4c926df7c31fe96425f2bf5feb68b52df31ebaf/homebrew.patch"
+    url "https://gist.githubusercontent.com/leppert/5468357/raw/f4c926df7c31fe96425f2bf5feb68b52df31ebaf/homebrew.patch"
     sha1 "1ba6c004d0695fde81053ff010f9d78f757f959b"
   end
 

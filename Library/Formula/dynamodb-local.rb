@@ -2,9 +2,9 @@ require 'formula'
 
 class DynamodbLocal < Formula
   homepage 'https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.DynamoDBLocal.html'
-  url 'https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_2013-12-12.tar.gz'
-  version '2013-12-12'
-  sha1 '66e39e57297a394e7ca7b30d3072c615fd413310'
+  url 'http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_2014-04-24.tar.gz'
+  version '2014-04-24'
+  sha1 '16e7fcf5b71498d72e093b1fbd6cf17e989bea84'
 
   def data_path
     var/'data/dynamodb-local'
@@ -16,7 +16,7 @@ class DynamodbLocal < Formula
 
   def bin_wrapper; <<-EOS.undent
     #!/bin/sh
-    cd #{data_path} && java -Djava.library.path=#{libexec}/DynamodbLocal_lib -jar #{libexec}/DynamoDBLocal.jar
+    cd #{data_path} && java -Djava.library.path=#{libexec}/DynamodbLocal_lib -jar #{libexec}/DynamoDBLocal.jar "$@"
     EOS
   end
 

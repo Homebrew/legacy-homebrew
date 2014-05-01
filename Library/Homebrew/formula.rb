@@ -439,12 +439,6 @@ class Formula
     Requirement.expand(self, &block)
   end
 
-  # Flag for marking whether this formula needs C++ standard library
-  # compatibility check
-  def cxxstdlib
-    @cxxstdlib ||= Set.new
-  end
-
   def to_hash
     hsh = {
       "name" => name,
@@ -469,8 +463,9 @@ class Formula
     }
 
     if rack.directory?
-      rack.subdirs.each do |keg|
-        tab = Tab.for_keg keg
+      rack.subdirs.each do |keg_path|
+        keg = Keg.new keg_path
+        tab = Tab.for_keg keg_path
 
         hsh["installed"] << {
           "version" => keg.version.to_s,
@@ -606,12 +601,6 @@ class Formula
     active_spec.patches.each(&:apply)
   end
 
-  # Explicitly request changing C++ standard library compatibility check
-  # settings. Use with caution!
-  def cxxstdlib_check check_type
-    cxxstdlib << check_type
-  end
-
   def self.method_added method
     case method
     when :brew
@@ -727,6 +716,18 @@ class Formula
 
     def keg_only reason, explanation=nil
       @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
+    end
+
+    # Flag for marking whether this formula needs C++ standard library
+    # compatibility check
+    def cxxstdlib
+      @cxxstdlib ||= Set.new
+    end
+
+    # Explicitly request changing C++ standard library compatibility check
+    # settings. Use with caution!
+    def cxxstdlib_check check_type
+      cxxstdlib << check_type
     end
 
     # For Apple compilers, this should be in the format:

@@ -2,21 +2,21 @@ require 'formula'
 
 class Nginx < Formula
   homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.4.7.tar.gz'
-  sha1 'e13b5b23f9be908b69652b0c394a95e9029687e3'
+  url 'http://nginx.org/download/nginx-1.6.0.tar.gz'
+  sha1 '00eed38652d2cee36cc91a395f6703584658bb23'
   revision 1
 
   devel do
-    url 'http://nginx.org/download/nginx-1.5.13.tar.gz'
-    sha1 'f0ee0d2545978c8cf5ca3a5e70fcd6b27c4f6191'
+    url 'http://nginx.org/download/nginx-1.7.0.tar.gz'
+    sha1 'e406cb9f1c17a0d9ff5df926412fce948bfea7de'
   end
 
   head 'http://hg.nginx.org/nginx/', :using => :hg
 
   bottle do
-    sha1 "82a7fae708d620b7d95ed68b5b99c0c8cc2fadb6" => :mavericks
-    sha1 "3319a4c1a839d7ebad454718cda95a93e9abc0dc" => :mountain_lion
-    sha1 "87b243bb95ab9ae2d1edfe1f19437963ed6e3728" => :lion
+    sha1 "0b2a83221a85da1595e52ba61f0bc39a8905db71" => :mavericks
+    sha1 "51e55866a2810d4544ad4004cdd1e2cf2dd4d6f6" => :mountain_lion
+    sha1 "4bb95425d1bca66163b4d212084ae564c13b49d7" => :lion
   end
 
   env :userpaths

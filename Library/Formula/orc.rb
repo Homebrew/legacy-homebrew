@@ -1,9 +1,9 @@
 require 'formula'
 
 class Orc < Formula
-  homepage 'http://code.entropywave.com/projects/orc/'
-  url 'http://code.entropywave.com/download/orc/orc-0.4.18.tar.gz'
-  sha1 '0119bec2291c878a7953cb041dd080856c986ccf'
+  homepage 'http://cgit.freedesktop.org/gstreamer/orc/'
+  url 'http://gstreamer.freedesktop.org/src/orc/orc-0.4.19.tar.gz'
+  sha1 '6186a6a5faefe6b61d55e5406c7365d69b91c982'
 
   def install
     system "./configure", "--disable-dependency-tracking",

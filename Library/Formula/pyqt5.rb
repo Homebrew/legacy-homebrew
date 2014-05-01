@@ -6,6 +6,7 @@ class Pyqt5 < Formula
   sha1 '7d72ec27bfe547223b4b11db8a90603fe4796530'
 
   option 'enable-debug', "Build with debug symbols"
+  option 'with-docs', "Install HTML documentation and python examples"
 
   depends_on :python3 => :recommended
   depends_on :python => :optional
@@ -43,6 +44,7 @@ class Pyqt5 < Formula
       system "make", "install"
       system "make", "clean"
     end
+    doc.install 'doc/html', 'examples' if build.with? "docs"
   end
 
   test do

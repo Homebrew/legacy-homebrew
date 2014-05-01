@@ -481,6 +481,13 @@ class FormulaInstaller
     args << "--env=#{ARGV.env}" if ARGV.env
     args << "--HEAD" if ARGV.build_head?
     args << "--devel" if ARGV.build_devel?
+
+    f.build.each do |opt, _|
+      name  = opt.name[/\A(.+)=\z$/, 1]
+      value = ARGV.value(name)
+      args << "--#{name}=#{value}" if name && value
+    end
+
     args
   end
 
@@ -561,18 +568,24 @@ class FormulaInstaller
 
     begin
       keg.link
-    rescue Exception => e
+    rescue Keg::LinkError => e
       onoe "The `brew link` step did not complete successfully"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
-      puts "You can try again using `brew link #{f.name}'"
+      puts "You can try again using:"
+      puts "  brew link #{f.name}"
       puts
       puts "Possible conflicting files are:"
       mode = OpenStruct.new(:dry_run => true, :overwrite => true)
       keg.link(mode)
-      ohai e, e.backtrace if debug?
       @show_summary_heading = true
-      ignore_interrupts{ keg.unlink }
-      raise unless e.kind_of? RuntimeError
+    rescue Exception => e
+      onoe "An unexpected error occurred during the `brew link` step"
+      puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
+      puts e
+      puts e.backtrace if debug?
+      @show_summary_heading = true
+      ignore_interrupts { keg.unlink }
+      raise
     end
   end
 

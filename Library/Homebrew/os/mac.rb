@@ -23,7 +23,7 @@ module OS
       # Don't call tools (cc, make, strip, etc.) directly!
       # Give the name of the binary you look for as a string to this method
       # in order to get the full path back as a Pathname.
-      (@locate ||= {}).fetch(tool.to_s) do |key|
+      (@locate ||= {}).fetch(tool) do |key|
         @locate[key] = if File.executable?(path = "/usr/bin/#{tool}")
           Pathname.new path
         # Homebrew GCCs most frequently; much faster to check this before xcrun
@@ -58,13 +58,10 @@ module OS
       @dev_tools_path ||= if tools_in_prefix? CLT::MAVERICKS_PKG_PATH
         Pathname.new "#{CLT::MAVERICKS_PKG_PATH}/usr/bin"
       elsif tools_in_prefix? "/"
-        # probably a safe enough assumption (the unix way)
         Pathname.new "/usr/bin"
       elsif not (make_path = `/usr/bin/xcrun -find make 2>/dev/null`).empty?
-        # Note that the exit status of system "xcrun foo" isn't always accurate
         Pathname.new(make_path.chomp).dirname
-      elsif File.exist? "#{Xcode.prefix}/usr/bin/make"
-        # cc stopped existing with Xcode 4.3, there are c89 and c99 options though
+      elsif Xcode.prefix && File.exist?("#{Xcode.prefix}/usr/bin/make")
         Pathname.new "#{Xcode.prefix}/usr/bin"
       end
     end
@@ -134,8 +131,9 @@ module OS
     def gcc_42_build_version
       @gcc_42_build_version ||=
         begin
-          gcc = MacOS.locate('gcc-4.2') || Formula.factory('apple-gcc42').opt_prefix/'bin/gcc-4.2'
-          raise unless gcc.exist?
+          gcc = MacOS.locate('gcc-4.2')
+          gcc ||= Formula.factory('apple-gcc42').opt_prefix/'bin/gcc-4.2' rescue nil
+          raise if gcc.nil? || !gcc.exist?
         rescue
           gcc = nil
         end
@@ -170,13 +168,16 @@ module OS
     end
 
     def non_apple_gcc_version(cc)
-      return unless path = locate(cc)
+      path = Formula.factory("gcc").opt_prefix/"bin/#{cc}"
+      path = nil unless path.exist?
+
+      return unless path ||= locate(cc)
 
       ivar = "@#{cc.gsub(/(-|\.)/, '')}_version"
       return instance_variable_get(ivar) if instance_variable_defined?(ivar)
 
-      `#{path} --version` =~ /gcc-\d.\d \(GCC\) (\d\.\d\.\d)/
-      instance_variable_set(ivar, $1)
+      `#{path} --version` =~ /gcc(-\d\.\d \(GCC\))? (\d\.\d\.\d)/
+      instance_variable_set(ivar, $2)
     end
 
     # See these issues for some history:

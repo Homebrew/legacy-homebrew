@@ -39,6 +39,10 @@ class Kafka < Formula
   def caveats; <<-EOS.undent
     To start Kafka, ensure that ZooKeeper is running and then execute:
       kafka-server-start.sh #{etc}/kafka/server.properties
+
+    Gradle's Scala plugin is not Java 8 compatible, so you may have to
+    use an older version of Java, see:
+      http://issues.gradle.org/browse/GRADLE-3023
     EOS
   end
 end
