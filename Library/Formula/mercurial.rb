@@ -32,6 +32,6 @@ class Mercurial < Formula
   end
 
   test do
-    system "#{bin}/hg", "debuginstall"
+    system "#{bin}/hg", "init"
   end
 end
