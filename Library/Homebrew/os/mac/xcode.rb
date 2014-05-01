@@ -7,14 +7,6 @@ module OS
       V3_BUNDLE_ID = "com.apple.Xcode"
       V4_BUNDLE_PATH = Pathname.new("/Applications/Xcode.app")
 
-      # Locate the "current Xcode folder" via xcode-select. See:
-      # man xcode-select
-      # TODO Should this be moved to OS::Mac? As of 10.9 this is referred to
-      # as the "developer directory", and be either a CLT or Xcode instance.
-      def folder
-        @folder ||= `xcode-select -print-path 2>/dev/null`.strip
-      end
-
       def latest_version
         case MacOS.version
         when "10.4"         then "2.5"
@@ -43,7 +35,7 @@ module OS
 
       def prefix
         @prefix ||= begin
-          path = Pathname.new(folder)
+          path = Pathname.new(MacOS.active_developer_dir)
           if path != CLT::MAVERICKS_PKG_PATH and path.absolute? \
              and File.executable? "#{path}/usr/bin/make"
             path
