@@ -6,8 +6,10 @@ class Nutcracker < Formula
   sha1 "b17f973ff2de9bd5e21417786a1449bea1557fba"
 
   def install
-    system "./configure"
-    system "make", "install"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make"
+    system "make install"
   end
 
   test do
