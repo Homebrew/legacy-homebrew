@@ -40,26 +40,6 @@ module OS
       @active_developer_dir ||= `xcode-select -print-path 2>/dev/null`.strip
     end
 
-    def dev_tools_prefix
-      dev_tools_path.parent.parent
-    end
-
-    def dev_tools_path
-      @dev_tools_path ||= if tools_in_prefix? CLT::MAVERICKS_PKG_PATH
-        Pathname.new "#{CLT::MAVERICKS_PKG_PATH}/usr/bin"
-      elsif tools_in_prefix? "/"
-        Pathname.new "/usr/bin"
-      elsif not (make_path = `/usr/bin/xcrun -find make 2>/dev/null`).empty?
-        Pathname.new(make_path.chomp).dirname
-      elsif Xcode.prefix && File.exist?("#{Xcode.prefix}/usr/bin/make")
-        Pathname.new "#{Xcode.prefix}/usr/bin"
-      end
-    end
-
-    def tools_in_prefix?(prefix)
-      %w{cc make}.all? { |tool| File.executable? "#{prefix}/usr/bin/#{tool}" }
-    end
-
     def sdk_path(v = version)
       (@sdk_path ||= {}).fetch(v.to_s) do |key|
         opts = []
