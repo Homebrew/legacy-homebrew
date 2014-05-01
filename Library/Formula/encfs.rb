@@ -21,15 +21,6 @@ class Encfs < Formula
     # Fixes link times and xattr on links for OSX
     patch :DATA
   end
-  devel do
-    url 'https://encfs.googlecode.com/svn/branches/1.x', :revision => '135', :using => :svn
-    sha1 '2038fc1e2d6a866e61037e55ddbb2357106c6bd3'
-    version '1.7.5-135'
-
-    depends_on 'autoconf' => :build
-    depends_on 'automake' => :build
-    depends_on 'libtool' => :build
-  end
   head do
     depends_on 'autoconf' => :build
     depends_on 'automake' => :build
