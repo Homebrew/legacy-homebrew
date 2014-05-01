@@ -10,7 +10,7 @@ class Sqlmap < Formula
   option "with-impacket", "Install with support for ICMP tunneling out-of-band takeover"
   option "with-ntlm", "Install with support for NTLM authentication"
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
 
   resource "psycopg" do
     url "http://initd.org/psycopg/tarballs/PSYCOPG-2-5/psycopg2-2.5.2.tar.gz"
@@ -53,6 +53,7 @@ class Sqlmap < Formula
   end
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
