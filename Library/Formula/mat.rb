@@ -1,13 +1,13 @@
 require "formula"
 
 # OSX has case-insensitive file names, and the Mat archive contains a 'MAT'
-# directory *and* a 'mat' file. `tar xf` will fail on it, so we rename 'MAT'
-# as '_MAT' here.
+# directory *and* a 'mat' file. `tar xf` will fail on it, so we rename 'mat'
+# into 'mat-cli' here.
 class MatDownloadStrategy < CurlDownloadStrategy
   def stage
     if tarball_path.compression_type == :xz
       with_system_path do
-        safe_system "#{xzpath} -dc \"#{tarball_path}\" | tar xf - -s /MAT/_MAT/"
+        safe_system "#{xzpath} -dc \"#{tarball_path}\" | tar xf - -s ',/mat$,/mat-cli,'"
       end
       chdir
     else
@@ -31,7 +31,8 @@ class Mat < Formula
 
   option 'with-massive-audio', 'Enable massive audio format support'
 
-  # mat relies on `shred`, which is called `gshred` on OSX with coreutils
+  # mat relies on `shred`, which is called `gshred` on OSX with coreutils, and
+  # import the 'gi' python module which is not available here.
   patch :DATA
 
   resource 'hachoir-core' do
@@ -73,20 +74,13 @@ class Mat < Formula
       resource('mutagen').stage { system "python", *install_args }
     end
 
-    # move files around to avoid a name conflict between 'MAT/' and 'mat'
-    mv 'mat', 'mat-cli'
-    mv '_MAT', 'MAT'
-
     inreplace 'setup.py' do |s|
       s.gsub!("'mat'", "'mat-cli'")
     end
 
-    # typo in the archive
-    mv 'data/FOR_MATS', 'data/FORMATS'
-
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 
-    # move files back to their real name
+    # move executable back to its real name
     mv bin/'mat-cli', bin/'mat'
 
     man1.install Dir['*.1']
@@ -109,8 +103,8 @@ end
 __END__
 diff --git a/mat-0.5.2/_MAT/mat.py b/mat-0.5.2/_MAT/mat.py
 index 5b1fbda..5ea2b22 100644
---- a/_MAT/mat.py
-+++ b/_MAT/mat.py
+--- a/MAT/mat.py
++++ b/MAT/mat.py
 @@ -120,7 +120,7 @@ def secure_remove(filename):
          raise MAT.exceptions.UnableToWriteFile
  
@@ -122,8 +116,8 @@ index 5b1fbda..5ea2b22 100644
              raise OSError
 diff --git a/mat-0.5.2/_MAT/strippers.py b/mat-0.5.2/_MAT/strippers.py
 index aea98da..42ea8fc 100644
---- a/_MAT/strippers.py
-+++ b/_MAT/strippers.py
+--- a/MAT/strippers.py
++++ b/MAT/strippers.py
 @@ -3,7 +3,6 @@
  
  import archive
