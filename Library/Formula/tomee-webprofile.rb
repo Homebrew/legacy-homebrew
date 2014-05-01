@@ -16,6 +16,6 @@ class TomeeWebprofile < Formula
     # Install files
     prefix.install %w{ NOTICE LICENSE RELEASE-NOTES RUNNING.txt }
     libexec.install Dir['*']
-    bin.install_symlink "#{libexec}/bin/tomee.sh" => "tomee-webprofile"
+    bin.install_symlink "#{libexec}/bin/startup.sh" => "tomee-webprofile-startup"
   end
 end
