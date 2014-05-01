@@ -9,7 +9,8 @@ class PltRacket < Formula
     cd 'racket/src' do
       args = ["--disable-debug", "--disable-dependency-tracking",
               "--enable-macprefix",
-              "--prefix=#{prefix}" ]
+              "--prefix=#{prefix}",
+              "--man=#{man}"]
 
       args << "--disable-mac64" if not MacOS.prefer_64_bit?
 
