@@ -83,7 +83,7 @@ def git
   # Github only supports HTTPS fetches on 1.7.10 or later:
   # https://help.github.com/articles/https-cloning-errors
   `#{@git} --version` =~ /git version (\d\.\d+\.\d+)/
-  return if $1.nil? or $1 < "1.7.10"
+  return if $1.nil? or $1.extend(Version) < "1.7.10"
 
   @git
 end
