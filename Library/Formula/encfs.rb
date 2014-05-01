@@ -4,7 +4,7 @@ class Encfs < Formula
   homepage 'http://www.arg0.net/encfs'
   url 'https://encfs.googlecode.com/files/encfs-1.7.4.tgz'
   sha1 '3d824ba188dbaabdc9e36621afb72c651e6e2945'
-  head 'https://encfs.googlecode.com/svn/branches/1.x', :using => :svn
+  head 'https://encfs.googlecode.com/svn/branches/1.x'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -21,6 +21,7 @@ class Encfs < Formula
     # Fixes link times and xattr on links for OSX
     patch :DATA
   end
+
   head do
     depends_on 'autoconf' => :build
     depends_on 'automake' => :build
