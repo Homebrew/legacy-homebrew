@@ -8,9 +8,10 @@ class Mutt < Formula
   revision 1
 
   bottle do
-    sha1 "0b5b7346ec5450821d9416151426917aba099c5e" => :mavericks
-    sha1 "13e20a8a78933a64ba857ad3734ac45d421bd7e2" => :mountain_lion
-    sha1 "2772138cb1e6b63d0e0095790261fa6c2bad1068" => :lion
+    revision 1
+    sha1 "5aa656ffd793e57b26642b82c514e0195e32dd1e" => :mavericks
+    sha1 "56302c5553e7bf5b31db3720ab22c6343c11c428" => :mountain_lion
+    sha1 "8b7dad42c73723e25cb874e2654c8754218f580a" => :lion
   end
 
   head do
@@ -19,9 +20,6 @@ class Mutt < Formula
     resource 'html' do
       url 'http://dev.mutt.org/doc/manual.html', :using => :nounzip
     end
-
-    depends_on :autoconf
-    depends_on :automake
   end
 
   unless Tab.for_name('signing-party').used_options.include? 'with-rename-pgpring'
@@ -39,14 +37,17 @@ class Mutt < Formula
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
 
+  depends_on :autoconf
+  depends_on :automake
+
   depends_on 'openssl'
   depends_on 'tokyo-cabinet'
   depends_on 's-lang' => :optional
   depends_on 'gpgme' => :optional
 
   patch do
-    url "http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2+deb7u1/features/trash-folder"
-    sha1 "6c8ce66021d89a063e67975a3730215c20cf2859"
+    url "ftp://ftp.openbsd.org/pub/OpenBSD/distfiles/mutt/trashfolder-1.5.22.diff0.gz"
+    sha1 "c597566c26e270b99c6f57e046512a663d2f415e"
   end if build.with? "trash-patch"
 
   # original source for this went missing, patch sourced from Arch at
@@ -57,7 +58,7 @@ class Mutt < Formula
   end if build.with? "ignore-thread-patch"
 
   patch do
-    url "http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2+deb7u1/features-old/patch-1.5.4.vk.pgp_verbose_mime"
+    url "https://raw.githubusercontent.com/psych0tik/mutt/73c09bc56e79605cf421a31c7e36958422055a20/debian/patches/features-old/patch-1.5.4.vk.pgp_verbose_mime"
     sha1 "a436f967aa46663cfc9b8933a6499ca165ec0a21"
   end if build.with? "pgp-verbose-mime-patch"
 
@@ -91,11 +92,7 @@ class Mutt < Formula
       args << "--disable-debug"
     end
 
-    if build.head?
-      system "./prepare", *args
-    else
-      system "./configure", *args
-    end
+    system "./prepare", *args
     system "make"
     system "make", "install"
 

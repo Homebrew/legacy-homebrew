@@ -9,9 +9,10 @@ class Mruby < Formula
 
   bottle do
     cellar :any
-    sha1 "22bbdac4d6f903b24b1d79d64b311464fdd42161" => :mavericks
-    sha1 "5076d06d254730a052d88b4a9b4b2d1f630a0449" => :mountain_lion
-    sha1 "a88b7302f383dae1f9ca67a3fcbbd603841eec86" => :lion
+    revision 1
+    sha1 "0c35394977329935628dbc4c104f2bb435ca6501" => :mavericks
+    sha1 "1205fd6c0d6ea2caff16e276e86b9b876ae354f6" => :mountain_lion
+    sha1 "d7c75455a7d02d97eaf0926ed70c5520848e13b4" => :lion
   end
 
   depends_on "bison" => :build
@@ -23,6 +24,8 @@ class Mruby < Formula
       lib.install Dir["lib/*.a"]
       prefix.install %w{bin mrbgems mrblib tools}
     end
+
+    prefix.install "include"
   end
 
   test do

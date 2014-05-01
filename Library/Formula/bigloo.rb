@@ -11,11 +11,10 @@ class Bigloo < Formula
   option 'with-jvm', 'Enable JVM support'
 
   fails_with :clang do
-    build 500
     cause <<-EOS.undent
       objs/obj_u/Ieee/dtoa.c:262:79504: fatal error: parser
       recursion limit reached, program too complex
-      EOS
+    EOS
   end
 
   def install

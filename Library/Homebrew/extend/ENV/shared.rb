@@ -187,10 +187,23 @@ module SharedEnvExtension
 
   def gcc_version_formula(version)
     gcc_formula = Formulary.factory("gcc")
-    return gcc_formula if gcc_formula.version.to_s.include?(version)
-
     gcc_name = 'gcc' + version.delete('.')
-    Formulary.factory(gcc_name)
+
+    if gcc_formula.opt_prefix.exist?
+      return gcc_formula
+    end
+
+    gcc_versions_formula = Formulary.factory(gcc_name) rescue nil
+
+    if gcc_versions_formula && gcc_versions_formula.opt_prefix.exist?
+      gcc_versions_formula
+    elsif gcc_formula.version.to_s.include?(version)
+      gcc_formula
+    elsif gcc_versions_formula
+      gcc_versions_formula
+    else
+      Formulary.factory(gcc_name)
+    end
   end
 
   def warn_about_non_apple_gcc(gcc)

@@ -1,5 +1,6 @@
 TAP_MIGRATIONS = {
   "aimage" => "homebrew/boneyard",
+  "aws-iam-tools" => "homebrew/boneyard",
   "apple-gcc42" => "homebrew/versions",
   "blackbox" => "homebrew/boneyard",
   "boost149" => "homebrew/versions",
@@ -10,8 +11,10 @@ TAP_MIGRATIONS = {
   "drizzle" => "homebrew/boneyard",
   "dsniff" => "homebrew/boneyard",
   "grads" => "homebrew/binary",
+  "hugs98" => "homebrew/boneyard",
   "hwloc" => "homebrew/science",
   "ipopt" => "homebrew/science",
+  "iulib" => "homebrew/boneyard",
   "jscoverage" => "homebrew/boneyard",
   "jsl" => "homebrew/binary",
   "kerl" => "homebrew/headonly",

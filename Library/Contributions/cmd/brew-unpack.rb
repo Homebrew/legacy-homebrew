@@ -30,7 +30,7 @@ module UnpackPatch
     begin
       old_verbose = $VERBOSE
       $VERBOSE = nil
-      Formula.const_set "DATA", ScriptDataReader.load(path)
+      Object.const_set "DATA", ScriptDataReader.load(path)
     ensure
       $VERBOSE = old_verbose
     end

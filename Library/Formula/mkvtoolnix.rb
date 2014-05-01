@@ -36,7 +36,7 @@ class Mkvtoolnix < Formula
   depends_on 'flac' => :optional
   depends_on 'lzo' => :optional
   # On Mavericks, the bottle (without c++11) can be used
-  # because mkvtoolnix is linked against libstdc++ by default
+  # because mkvtoolnix is linked against libc++ by default
   if MacOS.version >= 10.9
     depends_on 'boost'
     depends_on 'libmatroska'

@@ -2,14 +2,25 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-  url 'http://ffmpeg.org/releases/ffmpeg-2.2.1.tar.bz2'
-  sha1 'c5f8d103b20cd73d329401d85ced4a014757f8b9'
+
+  stable do
+    url 'http://ffmpeg.org/releases/ffmpeg-2.2.1.tar.bz2'
+    sha1 'c5f8d103b20cd73d329401d85ced4a014757f8b9'
+
+    patch do
+      # fixes an api incompability with latest x265 1.0, to be removed with next ffmpeg 2.2.x+ release
+      url "http://git.videolan.org/?p=ffmpeg.git;a=patch;h=96e13c9897501d91f1e2d493eee93a4f897ea462"
+      sha1 'a869377c45692220f7f4c96b3b7b159b14e5047b'
+    end
+  end
+
   head 'git://git.videolan.org/ffmpeg.git'
 
   bottle do
-    sha1 "376c79e413a637bb0a87ef7519cac26e318f0955" => :mavericks
-    sha1 "0ee1337b4a891aafa5bbbff961181d4794bc2e9a" => :mountain_lion
-    sha1 "0c578a27c857ea352e50d025ccefd9df06660b14" => :lion
+    revision 2
+    sha1 "1e87dc5a5f48481f5fcb864262b4f4291d15596c" => :mavericks
+    sha1 "15bd444bcd5e1d6441e9d44a15698d88654875b7" => :mountain_lion
+    sha1 "77ca50cf51b78efa6f5b6f2993ff147b1e360c51" => :lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -26,6 +37,7 @@ class Ffmpeg < Formula
   option 'with-tools', 'Enable additional FFmpeg tools'
   option 'with-fdk-aac', 'Enable the Fraunhofer FDK AAC library'
   option 'with-libvidstab', 'Enable vid.stab support for video stabilization'
+  option 'with-x265', "Enable x265 encoder"
 
   depends_on 'pkg-config' => :build
 
@@ -57,6 +69,7 @@ class Ffmpeg < Formula
   depends_on 'libbluray' => :optional
   depends_on 'libquvi' => :optional
   depends_on 'libvidstab' => :optional
+  depends_on 'x265' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -96,6 +109,7 @@ class Ffmpeg < Formula
     args << "--enable-libcaca" if build.with? 'libcaca'
     args << "--enable-libquvi" if build.with? 'libquvi'
     args << "--enable-libvidstab" if build.with? 'libvidstab'
+    args << "--enable-libx265" if build.with? 'x265'
 
     if build.with? 'openjpeg'
       args << '--enable-libopenjpeg'

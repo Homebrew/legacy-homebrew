@@ -249,12 +249,34 @@ class Test
     puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula}#{Tty.reset}"
   end
 
+  def satisfied_requirements? formula_object, spec=:stable
+    requirements = if spec == :stable
+      formula_object.recursive_requirements
+    else
+      formula_object.send(spec).requirements
+    end
+
+    unsatisfied_requirements = requirements.reject do |requirement|
+      requirement.satisfied? || requirement.default_formula?
+    end
+
+    if unsatisfied_requirements.empty?
+      true
+    else
+      formula = formula_object.name
+      formula += " (#{spec})" unless spec == :stable
+      skip formula
+      unsatisfied_requirements.each {|r| puts r.message}
+      false
+    end
+  end
+
   def setup
     @category = __method__
     return if ARGV.include? "--skip-setup"
     test "brew doctor"
     test "brew --env"
-    test "brew --config"
+    test "brew config"
   end
 
   def formula formula
@@ -265,13 +287,7 @@ class Test
     dependencies -= `brew list`.split("\n")
     dependencies = dependencies.join(' ')
     formula_object = Formula.factory(formula)
-    requirements = formula_object.recursive_requirements
-    unsatisfied_requirements = requirements.reject {|r| r.satisfied? or r.default_formula?}
-    unless unsatisfied_requirements.empty?
-      skip formula
-      unsatisfied_requirements.each {|r| puts r.message}
-      return
-    end
+    return unless satisfied_requirements? formula_object
 
     installed_gcc = false
     begin
@@ -314,7 +330,9 @@ class Test
       test "brew test --verbose #{formula}" if formula_object.test_defined?
       test "brew uninstall --force #{formula}"
     end
-    if formula_object.devel and not ARGV.include? '--HEAD'
+
+    if formula_object.devel && !ARGV.include?('--HEAD') \
+       && satisfied_requirements?(formula_object, :devel)
       test "brew fetch --retry --devel#{formula_fetch_options} #{formula}"
       test "brew install --devel --verbose #{formula}"
       devel_install_passed = steps.last.passed?

@@ -17,6 +17,12 @@ class Par2 < Formula
     sha1 "e91540f729115c5ddc210c93bdda34090e2a2cf1"
   end
 
+  # http://parchive.cvs.sourceforge.net/viewvc/parchive/par2-cmdline/par2creatorsourcefile.cpp?r1=1.4&r2=1.5
+  patch :p0 do
+    url "http://patch-tracker.debian.org/patch/series/dl/par2cmdline/0.4-11/003_fix_crash_in_quiet_mode.patch"
+    sha1 "cafac7c84bb675ec6b6b2c348811e0e579bcb637"
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

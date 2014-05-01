@@ -27,7 +27,7 @@ HOMEBREW_WWW           = 'http://example.com'
 HOMEBREW_CURL_ARGS     = '-fsLA'
 HOMEBREW_VERSION       = '0.9-test'
 
-HOMEBREW_TAP_FORMULA_REGEX = %r{^([\w_-]+)/([\w_-]+)/([\w_-]+)$}
+HOMEBREW_TAP_FORMULA_REGEX = %r{^([\w-]+)/([\w-]+)/([\w-]+)$}
 
 RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
 RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
