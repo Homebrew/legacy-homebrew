@@ -21,6 +21,10 @@ class BottleVersion < Version
     m = /-(\d+\.(\d)+(p(\d)+)?)/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. 0_5_0 from disco-0_5_0.mavericks.bottle.tar.gz
+    m = /-(\d+_\d+(_\d+)+)/.match(stem)
+    return m.captures.first unless m.nil?
+
     super
   end
 end
