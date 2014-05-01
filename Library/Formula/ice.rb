@@ -57,6 +57,10 @@ class Ice < Formula
     end
   end
 
+  test do
+    system "#{bin}/icebox", "--version"
+  end
+
   def caveats
     <<-EOS.undent
       To enable IcePHP, you will need to change your php.ini
