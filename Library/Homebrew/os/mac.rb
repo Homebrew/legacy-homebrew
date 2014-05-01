@@ -131,15 +131,10 @@ module OS
     def gcc_42_build_version
       @gcc_42_build_version ||=
         begin
-          gcc = MacOS.locate('gcc-4.2')
-          gcc ||= Formula.factory('apple-gcc42').opt_prefix/'bin/gcc-4.2' rescue nil
-          raise if gcc.nil? || !gcc.exist?
-        rescue
-          gcc = nil
-        end
-
-        if gcc && gcc.realpath.basename.to_s !~ /^llvm/
-          %x{#{gcc} --version}[/build (\d{4,})/, 1].to_i
+          gcc = MacOS.locate("gcc-4.2") || HOMEBREW_PREFIX.join("opt/apple-gcc42/bin/gcc-4.2")
+          if gcc && gcc.exist? && gcc.realpath.basename.to_s !~ /^llvm/
+            %x{#{gcc} --version}[/build (\d{4,})/, 1].to_i
+          end
         end
     end
     alias_method :gcc_build_version, :gcc_42_build_version
