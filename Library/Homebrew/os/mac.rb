@@ -56,16 +56,6 @@ module OS
       %w{cc make}.all? { |tool| File.executable? "#{prefix}/usr/bin/#{tool}" }
     end
 
-    def xctoolchain_path
-      # As of Xcode 4.3, some tools are located in the "xctoolchain" directory
-      @xctoolchain_path ||= begin
-        path = Pathname.new("#{Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain")
-        # If only the CLT are installed, all tools will be under dev_tools_path,
-        # this path won't exist, and xctoolchain_path will be nil.
-        path if path.exist?
-      end
-    end
-
     def sdk_path(v = version)
       (@sdk_path ||= {}).fetch(v.to_s) do |key|
         opts = []
