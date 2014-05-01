@@ -10,7 +10,6 @@ class Ice < Formula
 
   depends_on 'berkeley-db'
   depends_on 'mcpp'
-  depends_on :python
 
   # 1. TODO: document the first patch
   # 2. Patch to fix build with libc++, reported upstream:
