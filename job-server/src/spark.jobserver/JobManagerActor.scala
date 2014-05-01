@@ -2,7 +2,7 @@ package spark.jobserver
 
 import akka.actor.{ActorRef, Props, PoisonPill}
 import com.typesafe.config.Config
-import java.net.URL
+import java.net.{URI, URL}
 import java.util.concurrent.atomic.AtomicInteger
 import ooyala.common.akka.InstrumentedActor
 import org.apache.spark.{ SparkEnv, SparkContext }
@@ -99,7 +99,7 @@ class JobManagerActor(dao: JobDAO,
     case Initialize =>
       try {
         // Load side jars first in case the ContextFactory comes from it
-        getSideJars(contextConfig).foreach { jarUri => jarLoader.addURL(new URL(jarUri)) }
+        getSideJars(contextConfig).foreach { jarUri => jarLoader.addURL(new URL(convertJarUriSparkToJava(jarUri))) }
         sparkContext = createContextFromConfig()
         sparkEnv = SparkEnv.get
         rddManagerActor = context.actorOf(Props(classOf[RddManagerActor], sparkContext), "rdd-manager-actor")
@@ -255,6 +255,16 @@ class JobManagerActor(dao: JobDAO,
   private def postEachJob() {
     // Delete the JobManagerActor after each adhoc job
     if (isAdHoc) context.parent ! StopContext(contextName) // its parent is LocalContextSupervisorActor
+  }
+
+  // Protocol like "local" is supported in Spark for Jar loading, but not supported in Java.
+  // This method helps convert those Spark URI to those supported by Java.
+  private def convertJarUriSparkToJava(jarUri: String): String = {
+    val uri = new URI(jarUri)
+    if (uri.getScheme == "local")
+      "file://" + uri.getPath
+    else
+      jarUri
   }
 
   // "Side jars" are jars besides the main job jar that are needed for running the job.
