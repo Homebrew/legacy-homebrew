@@ -17,4 +17,8 @@ class Namebench < Formula
     bin.install "namebench.py" => "namebench"
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
+
+  test do
+    system "#{bin}/namebench", "--query_count", "1", "--only", "8.8.8.8"
+  end
 end
