@@ -9,8 +9,13 @@ class Uru < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    system "go", "get", "-ldflags", "-s", "bitbucket.org/jonforums/uru"
-    bin.install "bin/uru" => "uru_rt"
+    originals = Dir[buildpath + "**/*"]
+    mkdir_p "src/bitbucket.org/jonforums/uru"
+    mv originals, "src/bitbucket.org/jonforums/uru", :force => true
+
+    system "go", "build", "-ldflags", "-s", "bitbucket.org/jonforums/uru"
+
+    bin.install "uru" => "uru_rt"
   end
 
   def caveats; <<-EOS.undent
