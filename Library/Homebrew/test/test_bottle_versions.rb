@@ -35,4 +35,9 @@ class BottleVersionParsingTests < Test::Unit::TestCase
     assert_version_detected '1.6.39',
       '/usr/local/pazpar2-1.6.39.mavericks.bottle.tar.gz'
   end
+
+  def test_disco_style
+    assert_version_detected '0_5_0',
+      '/usr/local/disco-0_5_0.mavericks.bottle.tar.gz'
+  end
 end
