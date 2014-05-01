@@ -11,6 +11,8 @@ class ClutterGst < Formula
   depends_on "clutter"
   depends_on "gobject-introspection"
 
+  # Bug 729338 - got error: use of undeclared identifier 'GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS'
+  # see: https://bugzilla.gnome.org/show_bug.cgi?id=729338
   patch :DATA
 
   def install
