@@ -261,10 +261,12 @@ class JobManagerActor(dao: JobDAO,
   // This method helps convert those Spark URI to those supported by Java.
   private def convertJarUriSparkToJava(jarUri: String): String = {
     val uri = new URI(jarUri)
-    if (uri.getScheme == "local")
-      "file://" + uri.getPath
-    else
-      jarUri
+    uri.getScheme match {
+      case "local" =>
+        "file://" + uri.getPath
+      case _ =>
+        jarUri
+    }
   }
 
   // "Side jars" are jars besides the main job jar that are needed for running the job.
