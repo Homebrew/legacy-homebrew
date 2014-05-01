@@ -450,7 +450,7 @@ _brew ()
                 2>/dev/null | sed -e "s/\.rb//g" -e "s/brew-//g" \
                 -e "s/.*\///g")
         __brewcomp "
-            --cache --cellar --config
+            --cache --cellar config
             --env --prefix --repository
             audit
             cat
