@@ -132,7 +132,7 @@ module OS
       @gcc_42_build_version ||=
         begin
           gcc = MacOS.locate("gcc-4.2") || HOMEBREW_PREFIX.join("opt/apple-gcc42/bin/gcc-4.2")
-          if gcc && gcc.exist? && gcc.realpath.basename.to_s !~ /^llvm/
+          if gcc.exist? && gcc.realpath.basename.to_s !~ /^llvm/
             %x{#{gcc} --version}[/build (\d{4,})/, 1].to_i
           end
         end
