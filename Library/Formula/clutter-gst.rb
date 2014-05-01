@@ -10,6 +10,7 @@ class ClutterGst < Formula
   depends_on "gst-plugins-base"
   depends_on "clutter"
   depends_on "gobject-introspection"
+
   patch :DATA
 
   def install
@@ -28,6 +29,7 @@ class ClutterGst < Formula
     system "make install"
   end
 end
+
 __END__
 diff --git a/clutter-gst/clutter-gst-video-sink.c b/clutter-gst/clutter-gst-vide
 o-sink.c
