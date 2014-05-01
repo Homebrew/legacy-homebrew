@@ -2,8 +2,8 @@ require "formula"
 
 class Gh < Formula
   homepage "https://github.com/jingweno/gh"
-  url "https://github.com/jingweno/gh/archive/v2.1.0.zip"
-  sha1 "42416b96029afdc9bbaaddc730321466087ce2ed"
+  url "https://github.com/jingweno/gh/archive/v2.1.0.tar.gz"
+  sha1 "0673343542fedd6780bdb1d5a773c45f35a9ab28"
   head "https://github.com/jingweno/gh.git"
 
   bottle do
