@@ -46,6 +46,9 @@ class Ansible < Formula
 
   def install
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    # HEAD additionally requires this to be present in PYTHONPATH, or else
+    # ansible's own setup.py will fail.
+    ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
     # pycrypto's C bindings use flags unrecognized by clang,
@@ -69,6 +72,13 @@ class Ansible < Formula
     end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    # HEAD version installs some conflicting extra cruft
+    if build.head?
+      rm Dir["#{bin}/easy_install*"]
+      rm "#{lib}/python2.7/site-packages/site.py"
+      rm Dir["#{lib}/python2.7/site-packages/*.pth"]
+    end
 
     man1.install Dir['docs/man/man1/*.1']
 
