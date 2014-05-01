@@ -42,7 +42,7 @@ end
 
 def getc  # NOTE only tested on OS X
   system "/bin/stty raw -echo"
-  if RUBY_VERSION >= '1.8.7'
+  if STDIN.respond_to?(:getbyte)
     STDIN.getbyte
   else
     STDIN.getc
