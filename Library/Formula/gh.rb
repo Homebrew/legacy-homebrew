@@ -7,6 +7,9 @@ class Gh < Formula
   head "https://github.com/jingweno/gh.git"
 
   bottle do
+    sha1 "8f4434cfa3a015ac92f22dd5b043d7c7ed5bd094" => :mavericks
+    sha1 "c6fdfd0562cd00fd2c30aaeb9926e0372a5c31cf" => :mountain_lion
+    sha1 "c910b882aec49ae1057c1510d79bf84acab8d447" => :lion
   end
 
   depends_on "go" => :build
