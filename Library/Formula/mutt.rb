@@ -19,9 +19,6 @@ class Mutt < Formula
     resource 'html' do
       url 'http://dev.mutt.org/doc/manual.html', :using => :nounzip
     end
-
-    depends_on :autoconf
-    depends_on :automake
   end
 
   unless Tab.for_name('signing-party').used_options.include? 'with-rename-pgpring'
@@ -39,14 +36,17 @@ class Mutt < Formula
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
 
+  depends_on :autoconf
+  depends_on :automake
+
   depends_on 'openssl'
   depends_on 'tokyo-cabinet'
   depends_on 's-lang' => :optional
   depends_on 'gpgme' => :optional
 
   patch do
-    url "http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2+deb7u1/features/trash-folder"
-    sha1 "6c8ce66021d89a063e67975a3730215c20cf2859"
+    url "ftp://ftp.openbsd.org/pub/OpenBSD/distfiles/mutt/trashfolder-1.5.22.diff0.gz"
+    sha1 "c597566c26e270b99c6f57e046512a663d2f415e"
   end if build.with? "trash-patch"
 
   # original source for this went missing, patch sourced from Arch at
@@ -57,7 +57,7 @@ class Mutt < Formula
   end if build.with? "ignore-thread-patch"
 
   patch do
-    url "http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2+deb7u1/features-old/patch-1.5.4.vk.pgp_verbose_mime"
+    url "https://raw.githubusercontent.com/psych0tik/mutt/73c09bc56e79605cf421a31c7e36958422055a20/debian/patches/features-old/patch-1.5.4.vk.pgp_verbose_mime"
     sha1 "a436f967aa46663cfc9b8933a6499ca165ec0a21"
   end if build.with? "pgp-verbose-mime-patch"
 
@@ -91,11 +91,7 @@ class Mutt < Formula
       args << "--disable-debug"
     end
 
-    if build.head?
-      system "./prepare", *args
-    else
-      system "./configure", *args
-    end
+    system "./prepare", *args
     system "make"
     system "make", "install"
 
