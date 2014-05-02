@@ -38,5 +38,6 @@ class Ldns < Formula
     system "make"
     system "make install"
     system "make", "install-pyldns" if build.with? 'python'
+    (lib/"pkgconfig").install "packaging/libldns.pc"
   end
 end
