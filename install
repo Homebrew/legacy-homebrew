@@ -32,7 +32,7 @@ def warn warning
 end
 
 def system *args
-  abort "Failed during: #{args.shell_s}" unless Kernel.system *args
+  abort "Failed during: #{args.shell_s}" unless Kernel.system(*args)
 end
 
 def sudo *args
@@ -134,11 +134,11 @@ chgrps = chmods.reject{ |d| File.stat(d).grpowned? }
 
 unless chmods.empty?
   ohai "The following directories will be made group writable:"
-  puts *chmods
+  puts(*chmods)
 end
 unless chgrps.empty?
   ohai "The following directories will have their group set to #{Tty.underline 39}admin#{Tty.reset}:"
-  puts *chgrps
+  puts(*chgrps)
 end
 
 wait_for_user if STDIN.tty?
@@ -174,7 +174,7 @@ Dir.chdir HOMEBREW_PREFIX do
 
     args = git, "fetch", "origin", "master:refs/remotes/origin/master", "-n"
     args << "--depth=1" if ARGV.include? "--fast"
-    system *args
+    system(*args)
 
     system git, "reset", "--hard", "origin/master"
   else
