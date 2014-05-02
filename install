@@ -189,14 +189,16 @@ end
 
 warn "#{HOMEBREW_PREFIX}/bin is not in your PATH." unless ENV['PATH'].split(':').include? "#{HOMEBREW_PREFIX}/bin"
 
+ohai "Installation successful!"
+ohai "Next steps"
+
 if macos_version < "10.9" and macos_version > "10.6"
   `/usr/bin/cc --version 2> /dev/null` =~ %r[clang-(\d{2,})]
   version = $1.to_i
-  warn %{Install the "Command Line Tools for Xcode": https://developer.apple.com/downloads/} if version < 425
+  puts "Install the #{Tty.white}Command Line Tools for Xcode#{Tty.reset}: https://developer.apple.com/downloads" if version < 425
 else
-  warn "Now install Xcode: https://developer.apple.com/xcode/" unless File.exist? "/usr/bin/cc"
+  puts "Install #{Tty.white}Xcode#{Tty.reset}: https://developer.apple.com/xcode" unless File.exist? "/usr/bin/cc"
 end
 
-ohai "Installation successful!"
 puts "Run `brew doctor` #{Tty.white}before#{Tty.reset} you install anything"
 puts "Run `brew help` to get started"
