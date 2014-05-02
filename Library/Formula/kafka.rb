@@ -3,9 +3,9 @@ require "formula"
 class Kafka < Formula
   homepage "http://kafka.apache.org"
   head "http://git-wip-us.apache.org/repos/asf/kafka.git"
-  url "http://mirrors.ibiblio.org/apache/kafka/0.8.1/kafka-0.8.1-src.tgz"
-  mirror "http://mirror.sdunix.com/apache/kafka/0.8.1/kafka-0.8.1-src.tgz"
-  sha1 "af88a986ef711f5fd30063a9cb3395e63884bf0b"
+  url "http://mirrors.ibiblio.org/apache/kafka/0.8.1.1/kafka-0.8.1.1-src.tgz"
+  mirror "http://mirror.sdunix.com/apache/kafka/0.8.1.1/kafka-0.8.1.1-src.tgz"
+  sha1 "104c15d22da36216a678e6a0c3243c552e47af87"
 
   depends_on "zookeeper"
 

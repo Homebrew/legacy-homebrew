@@ -40,7 +40,7 @@ module Superenv
   end
 
   def self.bin
-    @bin ||= (HOMEBREW_REPOSITORY/"Library/ENV").children.reject{|d| d.basename.to_s > MacOS::Xcode.version }.max
+    @bin ||= (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
   end
 
   def reset
@@ -117,7 +117,7 @@ module Superenv
     paths = [Superenv.bin]
     if MacOS::Xcode.without_clt?
       paths << "#{MacOS::Xcode.prefix}/usr/bin"
-      paths << "#{MacOS::Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+      paths << "#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << MacOS::X11.bin if x11?
@@ -135,9 +135,8 @@ module Superenv
     end
 
     if self['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
-      gcc_name = 'gcc' + $1.delete('.')
-      gcc = Formulary.factory(gcc_name)
-      paths << gcc.opt_prefix/'bin'
+      gcc_formula = gcc_version_formula($1)
+      paths << gcc_formula.opt_prefix/'bin'
     end
 
     paths.to_path_s
@@ -208,8 +207,11 @@ module Superenv
       Hardware::CPU.optimization_flags.fetch(arch)
     elsif Hardware::CPU.intel? && !Hardware::CPU.sse4?
       Hardware::CPU.optimization_flags.fetch(Hardware.oldest_cpu)
+    elsif compiler == :clang
+      "-march=native"
+    # This is mutated elsewhere, so return an empty string in this case
     else
-      "-march=native" if compiler == :clang
+      ""
     end
   end
 
@@ -295,7 +297,7 @@ module Superenv
     append 'HOMEBREW_CCCFG', "3", ''
   end
 
-  %w{O4 O3 O2 O1 O0 Os}.each do |opt|
+  %w{O3 O2 O1 O0 Os}.each do |opt|
     define_method opt do
       self['HOMEBREW_OPTIMIZATION_LEVEL'] = opt
     end
@@ -306,7 +308,7 @@ module Superenv
 
   # These methods are no longer necessary under superenv, but are needed to
   # maintain an interface compatible with stdenv.
-  noops.concat %w{fast Og libxml2 x11 set_cpu_flags macosxsdk remove_macosxsdk}
+  noops.concat %w{fast O4 Og libxml2 x11 set_cpu_flags macosxsdk remove_macosxsdk}
 
   # These methods provide functionality that has not yet been ported to
   # superenv.

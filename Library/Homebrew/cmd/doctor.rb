@@ -296,12 +296,6 @@ def check_for_stray_developer_directory
   end
 end
 
-def check_cc
-  if !MacOS::CLT.installed? && MacOS::Xcode.version < "4.3"
-    'No compiler found in /usr/bin!'
-  end
-end
-
 def check_standard_compilers
   return if check_xcode_clt # only check if Xcode is up to date
   compiler_status = MacOS.compilers_standard?
@@ -437,7 +431,7 @@ def check_xcode_prefix_exists
 end
 
 def check_xcode_select_path
-  if not MacOS::CLT.installed? and not File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild"
+  if not MacOS::CLT.installed? and not File.file? "#{MacOS.active_developer_dir}/usr/bin/xcodebuild"
     path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID, MacOS::Xcode::V3_BUNDLE_ID)
     path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent

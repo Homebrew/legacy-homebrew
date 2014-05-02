@@ -24,7 +24,7 @@ class Sbt < Formula
 
   def caveats;  <<-EOS.undent
     You can use $SBT_OPTS to pass additional JVM options to SBT.
-    For convenience, this can specified in `~/.sbtconfig`.
+    For convenience, this can be specified in `~/.sbtconfig`.
 
     For example:
         SBT_OPTS="-XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M"

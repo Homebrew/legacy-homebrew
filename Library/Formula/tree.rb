@@ -2,19 +2,19 @@ require 'formula'
 
 class Tree < Formula
   homepage 'http://mama.indstate.edu/users/ice/tree/'
-  url 'http://mama.indstate.edu/users/ice/tree/src/tree-1.6.0.tgz'
-  sha1 '350f851f68859a011668362dd0e7ee81fd1b713a'
+  url 'http://mama.indstate.edu/users/ice/tree/src/tree-1.7.0.tgz'
+  sha1 '35bd212606e6c5d60f4d5062f4a59bb7b7b25949'
 
   bottle do
     cellar :any
-    sha1 "de86a6212934b258c2f64f6ae3460e8b729fc357" => :mavericks
-    sha1 "59991b24b9b236236bd2aa3eaa6050be48ee106f" => :mountain_lion
-    sha1 "3e30b09d1e08c017bb7f7e07150f9c9a7b009d2a" => :lion
+    sha1 "d2e9699fce73145917f2b15f7f932765a47e1be6" => :mavericks
+    sha1 "7bdbb4ca0cc98d12c7fae1926c654786600beb0d" => :mountain_lion
+    sha1 "c92ed70a7a7d15f7ce5ee75a6851b59de11cf431" => :lion
   end
 
   def install
     ENV.append 'CFLAGS', '-fomit-frame-pointer'
-    objs = 'tree.o unix.o html.o xml.o hash.o color.o strverscmp.o'
+    objs = 'tree.o unix.o html.o xml.o hash.o color.o strverscmp.o json.o'
 
     system "make", "prefix=#{prefix}",
                    "MANDIR=#{man1}",

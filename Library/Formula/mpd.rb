@@ -4,8 +4,8 @@ class Mpd < Formula
   homepage "http://www.musicpd.org/"
 
   stable do
-    url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.9.tar.xz"
-    sha1 "70e96857d68c0191bbf721aa08a8b5f4ec8120c7"
+    url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.10.tar.xz"
+    sha1 "0923318cfda033bb4f89c219e6effa9d5b330c1d"
   end
 
   head do

@@ -1,4 +1,6 @@
 # The Formulary is responsible for creating instances of Formula.
+# It is not meant to be used directy from formulae.
+
 class Formulary
 
   def self.unload_formula formula_name
@@ -159,13 +161,13 @@ class Formulary
     def initialize tapped_name
       @tapped_name = tapped_name
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
-      tap = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}-#{repo}")
+      tap = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}/homebrew-#{repo}")
       path = tap.join("#{name}.rb")
 
       if tap.directory?
-        tap.find_formula do |child|
-          if child.basename(".rb").to_s == name
-            path = tap.join(child)
+        tap.find_formula do |file|
+          if file.basename(".rb").to_s == name
+            path = file
           end
         end
       end

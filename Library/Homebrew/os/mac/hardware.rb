@@ -58,7 +58,7 @@ module MacCPUs
         :g4e # PowerPC 7450
       when 100
         # This is the only 64-bit PPC CPU type, so it's useful
-        # to distinguish in `brew --config` output and in bottle tags
+        # to distinguish in `brew config` output and in bottle tags
         MacOS.prefer_64_bit? ? :g5_64 : :g5  # PowerPC 970
       else
         :dunno

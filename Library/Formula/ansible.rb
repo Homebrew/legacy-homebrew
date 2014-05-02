@@ -2,8 +2,8 @@ require 'formula'
 
 class Ansible < Formula
   homepage 'http://www.ansible.com/home'
-  url 'https://github.com/ansible/ansible/archive/v1.5.4.tar.gz'
-  sha1 '83f87805082dd5759c28d9e536f5295f019db858'
+  url 'http://releases.ansible.com/ansible/ansible-1.5.5.tar.gz'
+  sha1 '9a065eac0d15413284c8c7f9f5047d7b1249f16c'
 
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
@@ -46,6 +46,9 @@ class Ansible < Formula
 
   def install
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    # HEAD additionally requires this to be present in PYTHONPATH, or else
+    # ansible's own setup.py will fail.
+    ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
     # pycrypto's C bindings use flags unrecognized by clang,
@@ -69,6 +72,13 @@ class Ansible < Formula
     end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    # HEAD version installs some conflicting extra cruft
+    if build.head?
+      rm Dir["#{bin}/easy_install*"]
+      rm "#{lib}/python2.7/site-packages/site.py"
+      rm Dir["#{lib}/python2.7/site-packages/*.pth"]
+    end
 
     man1.install Dir['docs/man/man1/*.1']
 

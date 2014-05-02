@@ -1,19 +1,22 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
 
-# This wrapper because 4.3 xcrun doesn't work with CLT-only configurations
-# But many build-systems expect it to work. This fixes that.
-# NOTE only works if the build-tool calls xcrun without a path prefixed!
+# Historically, xcrun has had various bugs, and in some cases it didn't
+# work at all (e.g. CLT-only in the Xcode 4.3 era). This script emulates
+# it and attempts to avoid these issues.
 
-# Some build tools are stupid and still set DEVELOPER_DIR to old /Developer
+# Some build tools set DEVELOPER_DIR, so discard it
 ENV.delete "DEVELOPER_DIR"
 
 if ARGV.empty? || ARGV[0][0..0] == "-"
   exec "/usr/bin/xcrun", *ARGV
 end
 
-if File.exist?("/usr/bin/#{ARGV.first}")
-  sdkroot = ENV['HOMEBREW_SDKROOT']
-  exec "/usr/bin/#{ARGV.shift}", *ARGV unless sdkroot and File.directory? sdkroot
+arg0 = ARGV.shift
+
+exe = "/usr/bin/#{arg0}"
+if File.executable?(exe)
+  sdkroot = ENV["HOMEBREW_SDKROOT"]
+  exec(exe, *ARGV) unless sdkroot && File.directory?(sdkroot)
 end
 
 $:.unshift "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8"
@@ -25,16 +28,17 @@ end
 
 SUPERBIN = canonical_dirname(__FILE__)
 
-def try path
-  exec path, *ARGV if File.executable?(path) && canonical_dirname(path) != SUPERBIN
+exe = `/usr/bin/xcrun --find #{arg0} 2>/dev/null`.chomp
+if File.executable?(exe) && canonical_dirname(exe) != SUPERBIN
+  exec(exe, *ARGV)
 end
 
-arg0 = ARGV.shift
-try `/usr/bin/xcrun --find #{arg0} 2>/dev/null`.chomp
-
-# xcrun won't always be able to find Homebrew's apple-gcc42,
-# even when it's in the PATH
-ENV["PATH"].split(File::PATH_SEPARATOR).each { |p| try File.join(p, arg0) }
+paths = ENV["PATH"].split(File::PATH_SEPARATOR)
+paths.delete(SUPERBIN)
+paths.each do |path|
+  exe = File.join(path, arg0)
+  exec(exe, *ARGV) if File.executable?(exe)
+end
 
 abort <<-EOS
 Failed to execute: #{arg0} #{ARGV.join(" ")}
