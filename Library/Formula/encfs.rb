@@ -2,8 +2,6 @@ require 'formula'
 
 class Encfs < Formula
   homepage 'http://www.arg0.net/encfs'
-  url 'https://encfs.googlecode.com/files/encfs-1.7.4.tgz'
-  sha1 '3d824ba188dbaabdc9e36621afb72c651e6e2945'
   head 'https://encfs.googlecode.com/svn/branches/1.x'
 
   depends_on 'pkg-config' => :build
@@ -13,6 +11,9 @@ class Encfs < Formula
   depends_on 'osxfuse'
 
   stable do
+    url 'https://encfs.googlecode.com/files/encfs-1.7.4.tgz'
+    sha1 '3d824ba188dbaabdc9e36621afb72c651e6e2945'
+
     # Following patch and changes in install section,
     # required for better compatibility with OSX, especially OSX 10.9.
     # Changes are already in usptream and planned to be included in next stable release 1.75.
