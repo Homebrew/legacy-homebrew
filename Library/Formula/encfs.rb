@@ -23,7 +23,7 @@ class Encfs < Formula
   end
 
   head do
-    head 'https://encfs.googlecode.com/svn/branches/1.x'
+    url 'https://encfs.googlecode.com/svn/branches/1.x'
 
     depends_on 'autoconf' => :build
     depends_on 'automake' => :build
