@@ -4,6 +4,7 @@ class Mariadb < Formula
   homepage 'http://mariadb.org/'
   url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.10/kvm-tarbake-jaunty-x86/mariadb-10.0.10.tar.gz'
   sha1 '59e222bd261128aff89c216dc100d5bcc8c5acc4'
+  revision 1
 
   bottle do
     sha1 "8cdd6ee44b7235a1ccccbdcc76a085c9f750463f" => :mavericks
