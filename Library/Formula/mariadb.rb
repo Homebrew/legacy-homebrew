@@ -22,7 +22,6 @@ class Mariadb < Formula
   option 'with-embedded', 'Build the embedded server'
   option 'with-libedit', 'Compile with editline wrapper instead of readline'
   option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
-  option 'with-oqgraph-storage-engine', 'Compile with the OQGRAPH storage engine enabled'
   option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
   option 'enable-local-infile', 'Build with local infile loading support'
   option 'with-fast-mutex', 'Replace mutexes with spinlocks (experimental)'
@@ -76,6 +75,10 @@ class Mariadb < Formula
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? 'tests'
 
+    # oqgraph requires boost, but fails to compile against boost 1.54
+    # Upstream bug: https://mariadb.atlassian.net/browse/MDEV-4795
+    args << "-DWITHOUT_OQGRAPH_STORAGE_ENGINE=1"
+
     # Build the embedded server
     args << "-DWITH_EMBEDDED_SERVER=ON" if build.with? 'embedded'
 
@@ -84,9 +87,6 @@ class Mariadb < Formula
 
     # Compile with ARCHIVE engine enabled if chosen
     args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.with? 'archive-storage-engine'
-
-    # Compile with the OQGRAPH storage engine enabled
-    args << "-DWITH_OQGRAPH_STORAGE_ENGINE=1" if build.with? 'oqgraph-storage-engine'
 
     # Compile with BLACKHOLE engine enabled if chosen
     args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? 'blackhole-storage-engine'
