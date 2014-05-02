@@ -62,7 +62,7 @@ Dir.getwd rescue abort "The current working directory doesn't exist, cannot proc
 
 
 def require? path
-  require path.to_s.chomp
+  require path
 rescue LoadError => e
   # HACK :( because we should raise on syntax errors but
   # not if the file doesn't exist. TODO make robust!
@@ -109,7 +109,7 @@ begin
       ENV["HOMEBREW_#{e}"] = Object.const_get("HOMEBREW_#{e}").to_s
     end
     exec "brew-#{cmd}", *ARGV
-  elsif require? which("brew-#{cmd}.rb").to_s
+  elsif require? which("brew-#{cmd}.rb")
     exit Homebrew.failed? ? 1 : 0
   else
     onoe "Unknown command: #{cmd}"
