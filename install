@@ -88,6 +88,9 @@ def git
   @git
 end
 
+# Invalidate sudo timestamp before exiting
+at_exit { sudo "-k" }
+
 # The block form of Dir.chdir fails later if Dir.CWD doesn't exist which I
 # guess is fair enough. Also sudo prints a warning message for no good reason
 Dir.chdir "/usr"
