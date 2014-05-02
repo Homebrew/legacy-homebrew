@@ -12,7 +12,6 @@ end
 
 require 'pathname'
 HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Library/Homebrew").to_s
-$:.unshift(HOMEBREW_LIBRARY_PATH + '/vendor')
 $:.unshift(HOMEBREW_LIBRARY_PATH)
 require 'global'
 
