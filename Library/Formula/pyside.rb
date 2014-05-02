@@ -27,8 +27,6 @@ class Pyside < Formula
     sha1 '9e424b03fe1f68e0326f3905738adcf27782f677'
   end
 
-  patch :DATA # Fix moc_qpytextobject.cxx not found (https://codereview.qt-project.org/62479)
-
   def install
     if build.with? "docs"
       (buildpath/"sphinx").mkpath
