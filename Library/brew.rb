@@ -106,7 +106,7 @@ begin
     Homebrew.send cmd.to_s.gsub('-', '_').downcase
   elsif which "brew-#{cmd}"
     %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
-      ENV["HOMEBREW_#{e}"] = Object.const_get "HOMEBREW_#{e}"
+      ENV["HOMEBREW_#{e}"] = Object.const_get("HOMEBREW_#{e}").to_s
     end
     exec "brew-#{cmd}", *ARGV
   elsif require? which("brew-#{cmd}.rb").to_s
