@@ -8,7 +8,7 @@ class Termshare < Formula
   head "https://github.com/progrium/termshare.git"
 
   depends_on "go" => :build
-  depends_on "hg" => :build # Websocket dependency is a mercurial repo
+  depends_on :hg # Websocket dependency is a mercurial repo
 
   def install
     ENV["GOPATH"] = buildpath
