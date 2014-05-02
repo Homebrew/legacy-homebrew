@@ -2,12 +2,13 @@ require "formula"
 
 class Termshare < Formula
   homepage "https://termsha.re"
-  url "https://github.com/progrium/termshare.git", :tag => "v0.2.0"
+  url "https://github.com/progrium/termshare/archive/v0.2.0.tar.gz"
+  sha1 "8da6f60cbcab9eee68fe9483f23338a0ca1ec196"
 
   head "https://github.com/progrium/termshare.git"
 
   depends_on "go" => :build
-  depends_on :hg # Websocket dependency is a mercurial repo
+  depends_on "hg" => :build # Websocket dependency is a mercurial repo
 
   def install
     ENV["GOPATH"] = buildpath
