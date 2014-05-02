@@ -10,7 +10,7 @@ class DubHeadDownloadStrategy < GitDownloadStrategy
 end
 
 class Dub < Formula
-  homepage 'http://registry.vibed.org/'
+  homepage 'http://code.dlang.org/'
   url  'https://github.com/rejectedsoftware/dub/archive/v0.9.21.tar.gz'
   sha1 '7752e14f3f5add50b1c7d9138739d72b276e6abe'
 
