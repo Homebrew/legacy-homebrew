@@ -2,8 +2,8 @@ require 'formula'
 
 class OpenOcd < Formula
   homepage 'http://sourceforge.net/projects/openocd/'
-  url 'https://downloads.sourceforge.net/project/openocd/openocd/0.7.0/openocd-0.7.0.tar.bz2'
-  sha1 '40fa518af4fae273f24478249fc03aa6fcce9176'
+  url 'https://downloads.sourceforge.net/project/openocd/openocd/0.8.0/openocd-0.8.0.tar.bz2'
+  sha1 '10bf9eeb54e03083cb1a101785b2d69fbdf18f31'
 
   head do
     url 'git://git.code.sf.net/p/openocd/code'
