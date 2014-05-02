@@ -59,7 +59,7 @@ class Checks
   # git here to avoid multiple warnings.
   def git?
     return @git if instance_variable_defined?(:@git)
-    @git = which("git") && quiet_system("git", "--version")
+    @git = system "git --version >/dev/null 2>&1"
   end
 ############# END HELPERS
 
