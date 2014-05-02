@@ -82,7 +82,7 @@ class BottleCollector
   def fetch_bottle_for(tag)
     return [@bottles[tag], tag] if @bottles[tag]
 
-    find_altivec_tag(tag) || find_or_later_tag(tag)
+    find_altivec_tag(tag) || find_or_later_tag(tag) || find_any_tag(tag)
   end
 
   def keys; @bottles.keys; end
@@ -108,6 +108,19 @@ class BottleCollector
       later_tag = key.to_s[/(\w+)_or_later$/, 1].to_sym
       bottle_version = MacOS::Version.from_symbol(later_tag)
       return [hsh, key] if bottle_version <= MacOS::Version.from_symbol(tag)
+    end
+
+    nil
+  end
+
+  # Allows ":any" bottle tag to not specify OSes.
+  # This tag is for target independent bottles like documents, pictures,
+  # libraries for cross compilers, and so on.
+  # Not used in core, used in taps.
+  def find_any_tag(tag)
+    results = @bottles.find_all {|k,v| k == :any}
+    results.each do |key, hsh|
+      return [hsh, key]
     end
 
     nil
