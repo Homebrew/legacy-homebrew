@@ -5,7 +5,6 @@ module OS
 
       V4_BUNDLE_ID = "com.apple.dt.Xcode"
       V3_BUNDLE_ID = "com.apple.Xcode"
-      V4_BUNDLE_PATH = Pathname.new("/Applications/Xcode.app")
 
       def latest_version
         case MacOS.version
@@ -39,13 +38,6 @@ module OS
           if path != CLT::MAVERICKS_PKG_PATH and path.absolute? \
              and File.executable? "#{path}/usr/bin/make"
             path
-          elsif File.executable? "#{V4_BUNDLE_PATH}/Contents/Developer/usr/bin/make"
-            # TODO Remove this branch when 10.10 is released
-            # This is a fallback for broken installations of Xcode 4.3+. Correct
-            # installations will be handled by the first branch. Pretending that
-            # broken installations are OK just leads to hard to diagnose problems
-            # later.
-            Pathname.new("#{V4_BUNDLE_PATH}/Contents/Developer")
           elsif (path = bundle_path)
             path += "Contents/Developer"
             path if File.executable? "#{path}/usr/bin/make"
