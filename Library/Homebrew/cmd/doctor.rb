@@ -440,7 +440,7 @@ end
 
 def check_xcode_select_path
   if not MacOS::CLT.installed? and not File.file? "#{MacOS.active_developer_dir}/usr/bin/xcodebuild"
-    path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID, MacOS::Xcode::V3_BUNDLE_ID)
+    path = MacOS::Xcode.bundle_path
     path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent
       Your Xcode is configured with an invalid path.
