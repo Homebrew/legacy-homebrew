@@ -2,8 +2,8 @@ require 'formula'
 
 class Pulseaudio < Formula
   homepage "http://pulseaudio.org"
-  url "http://freedesktop.org/software/pulseaudio/releases/pulseaudio-4.0.tar.xz"
-  sha1 "9f0769dcb25318ba3faaa453fd2ed0c509fa9c5c"
+  url "http://freedesktop.org/software/pulseaudio/releases/pulseaudio-5.0.tar.xz"
+  sha1 "e420931a0b9cf37331cd06e30ba415046317ab85"
 
   option "with-nls", "Build with native language support"
   option :universal
