@@ -117,7 +117,7 @@ module Superenv
     paths = [Superenv.bin]
     if MacOS::Xcode.without_clt?
       paths << "#{MacOS::Xcode.prefix}/usr/bin"
-      paths << "#{MacOS::Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+      paths << "#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << MacOS::X11.bin if x11?
@@ -207,8 +207,11 @@ module Superenv
       Hardware::CPU.optimization_flags.fetch(arch)
     elsif Hardware::CPU.intel? && !Hardware::CPU.sse4?
       Hardware::CPU.optimization_flags.fetch(Hardware.oldest_cpu)
+    elsif compiler == :clang
+      "-march=native"
+    # This is mutated elsewhere, so return an empty string in this case
     else
-      "-march=native" if compiler == :clang
+      ""
     end
   end
 

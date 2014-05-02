@@ -450,12 +450,13 @@ _brew ()
                 2>/dev/null | sed -e "s/\.rb//g" -e "s/brew-//g" \
                 -e "s/.*\///g")
         __brewcomp "
-            --cache --cellar --config
+            --cache --cellar
             --env --prefix --repository
             audit
             cat
             cleanup
             commands
+            config --config
             create
             deps
             diy configure

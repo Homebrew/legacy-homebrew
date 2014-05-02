@@ -71,10 +71,8 @@ module Stdenv
     macosxsdk MacOS.version
 
     if MacOS::Xcode.without_clt?
-      # Some tools (clang, etc.) are in the xctoolchain dir of Xcode
-      append_path 'PATH', "#{MacOS.xctoolchain_path}/usr/bin" if MacOS.xctoolchain_path
-      # Others are now at /Applications/Xcode.app/Contents/Developer/usr/bin
-      append_path 'PATH', MacOS.dev_tools_path
+      append_path "PATH", "#{MacOS::Xcode.prefix}/usr/bin"
+      append_path "PATH", "#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
   end
 
