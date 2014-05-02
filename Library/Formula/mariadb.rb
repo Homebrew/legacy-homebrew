@@ -102,16 +102,16 @@ class Mariadb < Formula
 
     # SSL support
     if build.without? 'ssl'
-        # Build disable SSL protocol support (default bundled yassl)
-        args << "-DWITH_SSL=no"
+      # Build disable SSL protocol support (default bundled yassl)
+      args << "-DWITH_SSL=no"
     else
-        if build.with? 'brewed-openssl'
-            # Build with Homebrew OpenSSL instead of bundled yassl
-            args << "-DWITH_SSL=yes"
-        else
-            # Build with instead of bundled yassl
-            args << "-DWITH_SSL=bundled"
-        end
+      if build.with? 'brewed-openssl'
+        # Build with Homebrew OpenSSL instead of bundled yassl
+        args << "-DWITH_SSL=yes"
+      else
+        # Build with instead of bundled yassl
+        args << "-DWITH_SSL=bundled"
+      end
     end
 
     system "cmake", *args
