@@ -102,8 +102,8 @@ class Mariadb < Formula
     args << "-DWITH_FAST_MUTEXES=1" if build.with? 'fast-mutex'
 
     # SSL support
-    if !build.include? 'without-ssl'
-        if build.include? 'with-brewed-openssl'
+    if !build.without? 'ssl'
+        if build.with? 'brewed-openssl'
             # Build with Homebrew OpenSSL instead of bundled yassl
             args << "-DWITH_SSL=yes"
         else
