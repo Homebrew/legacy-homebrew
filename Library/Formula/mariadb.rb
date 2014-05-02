@@ -102,7 +102,10 @@ class Mariadb < Formula
     args << "-DWITH_FAST_MUTEXES=1" if build.with? 'fast-mutex'
 
     # SSL support
-    if !build.without? 'ssl'
+    if build.without? 'ssl'
+        # Build disable SSL protocol support (default bundled yassl)
+        args << "-DWITH_SSL=no"
+    else
         if build.with? 'brewed-openssl'
             # Build with Homebrew OpenSSL instead of bundled yassl
             args << "-DWITH_SSL=yes"
@@ -110,9 +113,6 @@ class Mariadb < Formula
             # Build with instead of bundled yassl
             args << "-DWITH_SSL=bundled"
         end
-    else
-        # Build disable SSL protocol support (default bundled yassl)
-        args << "-DWITH_SSL=no"
     end
 
     system "cmake", *args
