@@ -29,6 +29,7 @@ module OS
       end
 
       def to_sym
+        return :linux if OS.linux?
         case @version
         when '10.9' then :mavericks
         when '10.8' then :mountain_lion
