@@ -13,6 +13,7 @@ class Mariadb < Formula
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on 'openssl' if build.with? 'brewed-openssl'
 
   option :universal
   option 'with-tests', 'Keep test when installing'
@@ -22,6 +23,18 @@ class Mariadb < Formula
   option 'with-archive-storage-engine', 'Compile with the ARCHIVE storage engine enabled'
   option 'with-blackhole-storage-engine', 'Compile with the BLACKHOLE storage engine enabled'
   option 'enable-local-infile', 'Build with local infile loading support'
+  option 'with-fast-mutex', 'Replace mutexes with spinlocks (experimental)'
+  option 'with-brewed-openssl', "Build with Homebrew OpenSSL instead of bundled yassl"
+  option 'without-ssl', "Build disable SSL protocol support (default bundled yassl)"
+  option 'with-maxkey', "Change max key length from 1000 to 4000"
+
+  # Change max key length from 1000 to 4000
+  if build.with? 'maxkey'
+    patch do
+      url "https://gist.githubusercontent.com/anonymous/e5b2c223590075d17043/raw/mariadb-maxkey.diff"
+      sha1 "891865a77f53019afd3433eb8150321d025b0282"
+    end
+  end
 
   conflicts_with 'mysql', 'mysql-cluster', 'percona-server',
     :because => "mariadb, mysql, and percona install the same binaries."
@@ -83,6 +96,23 @@ class Mariadb < Formula
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
+
+    # Replace mutexes with spinlocks (experimental)
+    args << "-DWITH_FAST_MUTEXES=1" if build.with? 'fast-mutex'
+
+    # SSL support
+    if !build.include? 'without-ssl'
+        if build.include? 'with-brewed-openssl'
+            # Build with Homebrew OpenSSL instead of bundled yassl
+            args << "-DWITH_SSL=yes"
+        else
+            # Build with instead of bundled yassl
+            args << "--DWITH_SSL=bundled"
+        end
+    else
+        # Build disable SSL protocol support (default bundled yassl)
+        args << "-DWITH_SSL=no"
+    end
 
     system "cmake", *args
     system "make"
