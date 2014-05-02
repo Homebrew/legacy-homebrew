@@ -2,7 +2,6 @@ require 'formula'
 
 class Encfs < Formula
   homepage 'http://www.arg0.net/encfs'
-  head 'https://encfs.googlecode.com/svn/branches/1.x'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -24,6 +23,8 @@ class Encfs < Formula
   end
 
   head do
+    head 'https://encfs.googlecode.com/svn/branches/1.x'
+
     depends_on 'autoconf' => :build
     depends_on 'automake' => :build
     depends_on 'libtool' => :build
