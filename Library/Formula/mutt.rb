@@ -8,9 +8,10 @@ class Mutt < Formula
   revision 1
 
   bottle do
-    sha1 "0b5b7346ec5450821d9416151426917aba099c5e" => :mavericks
-    sha1 "13e20a8a78933a64ba857ad3734ac45d421bd7e2" => :mountain_lion
-    sha1 "2772138cb1e6b63d0e0095790261fa6c2bad1068" => :lion
+    revision 1
+    sha1 "5aa656ffd793e57b26642b82c514e0195e32dd1e" => :mavericks
+    sha1 "56302c5553e7bf5b31db3720ab22c6343c11c428" => :mountain_lion
+    sha1 "8b7dad42c73723e25cb874e2654c8754218f580a" => :lion
   end
 
   head do
