@@ -7,6 +7,12 @@ class Termshare < Formula
 
   head "https://github.com/progrium/termshare.git"
 
+  bottle do
+    sha1 "1189a998e33951ea6c5a4577b92d5b9090c1d2fe" => :mavericks
+    sha1 "765981eef07f07a947cb31a4eaa17962ae945b21" => :mountain_lion
+    sha1 "a7f5387d0e3595912dc45bd6f74811b2c4431d45" => :lion
+  end
+
   depends_on "go" => :build
   depends_on :hg => :build
 
