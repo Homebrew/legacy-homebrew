@@ -24,6 +24,12 @@ class Pulseaudio < Formula
   depends_on "gtk+3" => :optional
   depends_on "jack" => :optional
 
+  # i386 patch per MacPorts
+  patch :p0 do
+    url "https://trac.macports.org/export/119615/trunk/dports/audio/pulseaudio/files/i386.patch"
+    sha1 "4193a6112f90d103875d2ca91462c26d811a9386"
+  end
+
   fails_with :clang do
     build 421
     cause "error: thread-local storage is unsupported for the current target"
