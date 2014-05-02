@@ -296,12 +296,6 @@ def check_for_stray_developer_directory
   end
 end
 
-def check_cc
-  if !MacOS::CLT.installed? && MacOS::Xcode.version < "4.3"
-    'No compiler found in /usr/bin!'
-  end
-end
-
 def check_standard_compilers
   return if check_xcode_clt # only check if Xcode is up to date
   compiler_status = MacOS.compilers_standard?
