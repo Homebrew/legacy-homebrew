@@ -1,4 +1,6 @@
 # The Formulary is responsible for creating instances of Formula.
+# It is not meant to be used directy from formulae.
+
 class Formulary
 
   def self.unload_formula formula_name
