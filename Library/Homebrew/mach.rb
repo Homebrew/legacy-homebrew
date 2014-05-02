@@ -172,7 +172,7 @@ module MachO
     def parse_ldd_output
       libs = `#{MacOS.locate('ldd')} "#{path.expand_path}"`.chomp.split("\n").map do |line|
         line[/^\t(.+) => /, 1]
-      end
+      end.compact
       id = nil
       return id, libs
     end
