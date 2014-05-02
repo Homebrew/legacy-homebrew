@@ -11,8 +11,8 @@ if ARGV == %w{--prefix}
 end
 
 require 'pathname'
-HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Library/Homebrew").to_s
-$:.unshift(HOMEBREW_LIBRARY_PATH)
+HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Library", "Homebrew")
+$:.unshift(HOMEBREW_LIBRARY_PATH.to_s)
 require 'global'
 
 if ARGV.help?
@@ -101,7 +101,7 @@ begin
   # Add contributed commands to PATH before checking.
   ENV['PATH'] += "#{File::PATH_SEPARATOR}#{HOMEBREW_CONTRIB}/cmd"
 
-  if require? HOMEBREW_REPOSITORY/"Library/Homebrew/cmd"/cmd
+  if require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd)
     Homebrew.send cmd.to_s.gsub('-', '_').downcase
   elsif which "brew-#{cmd}"
     %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
