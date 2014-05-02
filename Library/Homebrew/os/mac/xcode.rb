@@ -33,16 +33,17 @@ module OS
       end
 
       def prefix
-        @prefix ||= begin
-          path = Pathname.new(MacOS.active_developer_dir)
-          if path != CLT::MAVERICKS_PKG_PATH and path.absolute? \
-             and File.executable? "#{path}/usr/bin/make"
-            path
-          elsif (path = bundle_path)
-            path += "Contents/Developer"
-            path if File.executable? "#{path}/usr/bin/make"
+        @prefix ||=
+          begin
+            dir = MacOS.active_developer_dir
+
+            if dir.empty? || dir == CLT::MAVERICKS_PKG_PATH || !File.directory?(dir)
+              path = bundle_path
+              path.join("Contents", "Developer") if path
+            else
+              Pathname.new(dir)
+            end
           end
-        end
       end
 
       def toolchain_path
@@ -146,7 +147,7 @@ module OS
       STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
       FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
       MAVERICKS_PKG_ID = "com.apple.pkg.CLTools_Executables"
-      MAVERICKS_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
+      MAVERICKS_PKG_PATH = "/Library/Developer/CommandLineTools"
 
       # Returns true even if outdated tools are installed, e.g.
       # tools from Xcode 4.x on 10.9
