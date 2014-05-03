@@ -2,8 +2,8 @@ require "formula"
 
 class ShadowsocksLibev < Formula
   homepage "https://github.com/madeye/shadowsocks-libev"
-  url "https://github.com/madeye/shadowsocks-libev/archive/v1.4.4.tar.gz"
-  sha1 "97f3a51653891485bb6705b635599a52aebc0782"
+  url "https://github.com/madeye/shadowsocks-libev/archive/v1.4.5.tar.gz"
+  sha1 "d5333f6a749c521826f8e6b866e04d20fbe842fe"
   head "https://github.com/madeye/shadowsocks-libev.git"
 
   option "with-polarssl", "Use PolarSSL instead of OpenSSL"
@@ -14,6 +14,8 @@ class ShadowsocksLibev < Formula
   else
     depends_on "openssl"
   end
+
+  patch :DATA
 
   def install
     args = ["--prefix=#{prefix}"]
@@ -78,3 +80,17 @@ class ShadowsocksLibev < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/src/server.c b/src/server.c
+index 0ef3e92..4dec325 100644
+--- a/src/server.c
++++ b/src/server.c
+@@ -100,7 +100,7 @@ int create_and_bind(const char *host, const char *port)
+         if (fast_open)
+         {
+             opt = 5;
+-            setsockopt(listen_sock, SOL_TCP, TCP_FASTOPEN, &opt, sizeof(opt));
++            setsockopt(listen_sock, IPPROTO_TCP, TCP_FASTOPEN, &opt, sizeof(opt));
+         }
+ #endif
