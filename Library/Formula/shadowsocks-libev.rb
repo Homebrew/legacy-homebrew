@@ -15,7 +15,9 @@ class ShadowsocksLibev < Formula
     depends_on "openssl"
   end
 
-  patch :DATA
+  stable do
+    patch :DATA
+  end
 
   def install
     args = ["--prefix=#{prefix}"]
