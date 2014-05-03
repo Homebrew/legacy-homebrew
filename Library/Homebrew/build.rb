@@ -1,6 +1,4 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
-
-# This script is called by formula_installer as a separate instance.
+# This script is loaded by formula_installer as a separate instance.
 # Rationale: Formula can use __END__, Formula can change ENV
 # Thrown exceptions are propogated back to the parent process over a pipe
 
