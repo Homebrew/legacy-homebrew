@@ -4,6 +4,15 @@ class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
   url 'http://ffmpeg.org/releases/ffmpeg-2.2.1.tar.bz2'
   sha1 'c5f8d103b20cd73d329401d85ced4a014757f8b9'
+
+  stable do
+    patch do
+      # fixes an api incompability with latest x265 0.9, to be removed with next ffmpeg 2.2.x+ release
+      url "http://git.videolan.org/?p=ffmpeg.git;a=patch;h=d67dbfa7c195fabce706ca03c439419450f9bd8a"
+      sha1 'f9481393869a8f38912faf935fb584c8e41d5c50'
+    end
+  end
+
   head 'git://git.videolan.org/ffmpeg.git'
 
   bottle do
@@ -26,6 +35,7 @@ class Ffmpeg < Formula
   option 'with-tools', 'Enable additional FFmpeg tools'
   option 'with-fdk-aac', 'Enable the Fraunhofer FDK AAC library'
   option 'with-libvidstab', 'Enable vid.stab support for video stabilization'
+  option 'with-x265', "Enable x265 encoder"
 
   depends_on 'pkg-config' => :build
 
@@ -57,6 +67,7 @@ class Ffmpeg < Formula
   depends_on 'libbluray' => :optional
   depends_on 'libquvi' => :optional
   depends_on 'libvidstab' => :optional
+  depends_on 'x265' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -96,6 +107,7 @@ class Ffmpeg < Formula
     args << "--enable-libcaca" if build.with? 'libcaca'
     args << "--enable-libquvi" if build.with? 'libquvi'
     args << "--enable-libvidstab" if build.with? 'libvidstab'
+    args << "--enable-libx265" if build.with? 'x265'
 
     if build.with? 'openjpeg'
       args << '--enable-libopenjpeg'
