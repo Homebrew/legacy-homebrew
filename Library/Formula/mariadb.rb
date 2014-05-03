@@ -26,7 +26,6 @@ class Mariadb < Formula
   option 'enable-local-infile', 'Build with local infile loading support'
   option 'with-fast-mutex', 'Replace mutexes with spinlocks (experimental)'
   option 'with-brewed-openssl', "Build with Homebrew OpenSSL instead of bundled yassl"
-  option 'without-ssl', "Build disable SSL protocol support (default bundled yassl)"
   option 'with-maxkey', "Change max key length from 1000 to 4000"
 
   # Change max key length from 1000 to 4000
@@ -101,17 +100,12 @@ class Mariadb < Formula
     args << "-DWITH_FAST_MUTEXES=1" if build.with? 'fast-mutex'
 
     # SSL support
-    if build.without? 'ssl'
-      # Build disable SSL protocol support (default bundled yassl)
-      args << "-DWITH_SSL=no"
+    if build.with? 'brewed-openssl'
+      # Build with Homebrew OpenSSL instead of bundled yassl
+      args << "-DWITH_SSL=yes"
     else
-      if build.with? 'brewed-openssl'
-        # Build with Homebrew OpenSSL instead of bundled yassl
-        args << "-DWITH_SSL=yes"
-      else
-        # Build with instead of bundled yassl
-        args << "-DWITH_SSL=bundled"
-      end
+      # Build with instead of bundled yassl
+      args << "-DWITH_SSL=bundled"
     end
 
     system "cmake", *args
