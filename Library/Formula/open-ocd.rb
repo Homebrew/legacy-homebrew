@@ -8,21 +8,20 @@ class OpenOcd < Formula
   head do
     url 'git://git.code.sf.net/p/openocd/code'
 
-    option 'enable-cmsis-dap', 'Enable building support for devices using CMSIS-DAP'
-
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
-
-    depends_on 'hidapi' if build.include? 'enable-cmsis-dap'
   end
 
+
+  option 'enable-cmsis-dap', 'Enable building support for devices using CMSIS-DAP'
   option 'enable-ft2232_libftdi', 'Enable building support for FT2232 based devices with libftdi driver'
   option 'enable-ft2232_ftd2xx',  'Enable building support for FT2232 based devices with FTD2XX driver'
 
   depends_on 'pkg-config' => :build
   depends_on 'libusb-compat'
   depends_on 'libftdi0' if build.include? 'enable-ft2232_libftdi'
+  depends_on 'hidapi' if build.include? 'enable-cmsis-dap'
 
   def install
     args = %W[
@@ -55,7 +54,7 @@ class OpenOcd < Formula
       args << "--enable-presto_ftd2xx"
     end
 
-    if build.head? && build.include?("enable-cmsis-dap")
+    if build.include? "enable-cmsis-dap"
       args << "--enable-cmsis-dap"
     end
 
