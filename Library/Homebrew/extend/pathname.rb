@@ -88,6 +88,7 @@ class Pathname
   protected :install_symlink_p
 
   # we assume this pathname object is a file obviously
+  alias_method :old_write, :write if method_defined?(:write)
   def write content
     raise "Will not overwrite #{to_s}" if exist?
     dirname.mkpath
