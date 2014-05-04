@@ -14,6 +14,7 @@ TAP_MIGRATIONS = {
   "hugs98" => "homebrew/boneyard",
   "hwloc" => "homebrew/science",
   "ipopt" => "homebrew/science",
+  "iulib" => "homebrew/boneyard",
   "jscoverage" => "homebrew/boneyard",
   "jsl" => "homebrew/binary",
   "kerl" => "homebrew/headonly",
