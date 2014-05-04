@@ -169,6 +169,12 @@ def puts_columns items, star_items=[]
   end
 end
 
+def require_brew_command? cmd, path=ENV['PATH']
+  file = which cmd, path
+  return if file.nil?
+  require? file
+end
+
 def which cmd, path=ENV['PATH']
   path.split(File::PATH_SEPARATOR).find do |p|
     pcmd = File.join(p, cmd)

@@ -108,7 +108,7 @@ begin
       ENV["HOMEBREW_#{e}"] = Object.const_get("HOMEBREW_#{e}").to_s
     end
     exec "brew-#{cmd}", *ARGV
-  elsif require? which("brew-#{cmd}.rb")
+  elsif require_brew_command? "brew-#{cmd}.rb"
     exit Homebrew.failed? ? 1 : 0
   else
     onoe "Unknown command: #{cmd}"
