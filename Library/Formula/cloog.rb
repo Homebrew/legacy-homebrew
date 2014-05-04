@@ -61,11 +61,7 @@ class Cloog < Formula
       0
     EOS
 
-    require 'open3'
-    Open3.popen3("#{bin}/cloog", "/dev/stdin") do |stdin, stdout, _|
-      stdin.write(cloog_source)
-      stdin.close
-      assert_match /Generated from \/dev\/stdin by CLooG/, stdout.read
-    end
+    output = pipe_output("#{bin}/cloog /dev/stdin", cloog_source)
+    assert_match /Generated from \/dev\/stdin by CLooG/, output
   end
 end

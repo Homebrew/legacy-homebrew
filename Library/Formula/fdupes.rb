@@ -16,8 +16,7 @@ class Fdupes < Formula
     touch "a"
     touch "b"
 
-    dupes = `#{bin}/fdupes .`.strip.split("\n").sort
+    dupes = shell_output("#{bin}/fdupes .").strip.split("\n").sort
     assert_equal ["./a", "./b"], dupes
-    assert_equal 0, $?.exitstatus
   end
 end

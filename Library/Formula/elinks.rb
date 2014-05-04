@@ -44,6 +44,7 @@ class Elinks < Formula
       Hello world!
       <ol><li>one</li><li>two</li></ol>
     EOS
-    assert_match /^\s*Hello world!\n+ *1. one\n *2. two\s*$/, `elinks test.html`
+    assert_match /^\s*Hello world!\n+ *1. one\n *2. two\s*$/,
+                 shell_output("elinks test.html")
   end
 end

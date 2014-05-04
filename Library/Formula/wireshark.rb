@@ -107,7 +107,7 @@ class Wireshark < Formula
 
   test do
     system "#{bin}/randpkt", "-b", "100", "-c", "2", "capture.pcap"
-    output = `#{bin}/capinfos -Tmc capture.pcap`
+    output = shell_output("#{bin}/capinfos -Tmc capture.pcap")
     assert_equal "File name,Number of packets\ncapture.pcap,2\n", output
   end
 end

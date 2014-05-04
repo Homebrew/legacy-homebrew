@@ -23,8 +23,7 @@ class Cdecl < Formula
   end
 
   test do
-    output = `#{bin}/cdecl explain int *a`.strip
-    assert_equal "declare a as pointer to int", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "declare a as pointer to int",
+                 shell_output("#{bin}/cdecl explain int *a").strip
   end
 end
