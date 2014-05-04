@@ -2,7 +2,7 @@ require 'formula'
 
 class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
-  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.5.0/apache-couchdb-1.5.0.tar.gz'
+  url 'http://www.apache.org/dist/couchdb/source/1.5.0/apache-couchdb-1.5.0.tar.gz'
   sha1 '283e4bbd4f1727bb334a67d2f988a7d412523bef'
 
   head do

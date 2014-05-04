@@ -2,7 +2,7 @@ require 'formula'
 
 class Trafficserver < Formula
   homepage 'http://trafficserver.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-4.2.0.tar.bz2'
+  url 'http://www.apache.org/dist/trafficserver/trafficserver-4.2.0.tar.bz2'
   mirror 'http://archive.apache.org/dist/trafficserver/trafficserver-4.2.0.tar.bz2'
   sha1 'feb1d45fecccbc00fa988e768909a6664a43a354'
 

@@ -2,7 +2,7 @@ require 'formula'
 
 class Tika < Formula
   homepage 'http://tika.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tika/tika-app-1.5.jar'
+  url 'http://www.apache.org/dist/tika/tika-app-1.5.jar'
   sha1 '7f3657da1075bf95ac8faa2bafcba24228e6c714'
 
   resource 'server' do
