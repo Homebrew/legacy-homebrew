@@ -13,13 +13,10 @@ class Snap7 < Formula
   end
 
   def install
-    archstr = MacOS.prefer_64_bit? ? "x86_64" : "i386"
     lib.mkpath
-
-    Dir.chdir "build/osx" do
-      system "make", "-f", "#{archstr}_osx.mk", "install", "LibInstall=#{lib}"
-    end
-
+    system "make", "-C", "build/osx",
+                   "-f", "#{MacOS.preferred_arch}_osx.mk",
+                   "install", "LibInstall=#{lib}"
     include.install "release/Wrappers/c-cpp/snap7.h"
   end
 
