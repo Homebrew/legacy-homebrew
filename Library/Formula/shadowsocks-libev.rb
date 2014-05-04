@@ -6,7 +6,10 @@ class ShadowsocksLibev < Formula
   stable do
     url "https://github.com/madeye/shadowsocks-libev/archive/v1.4.5.tar.gz"
     sha1 "d5333f6a749c521826f8e6b866e04d20fbe842fe"
-    patch :DATA
+    patch do
+      url "https://github.com/madeye/shadowsocks-libev/commit/5d0696.diff"
+      sha1 "8b4c8912ad2f56c0ebe63512ee62185ba4c93873"
+    end
   end
 
   head "https://github.com/madeye/shadowsocks-libev.git"
@@ -83,17 +86,3 @@ class ShadowsocksLibev < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/src/server.c b/src/server.c
-index 0ef3e92..4dec325 100644
---- a/src/server.c
-+++ b/src/server.c
-@@ -100,7 +100,7 @@ int create_and_bind(const char *host, const char *port)
-         if (fast_open)
-         {
-             opt = 5;
--            setsockopt(listen_sock, SOL_TCP, TCP_FASTOPEN, &opt, sizeof(opt));
-+            setsockopt(listen_sock, IPPROTO_TCP, TCP_FASTOPEN, &opt, sizeof(opt));
-         }
- #endif
