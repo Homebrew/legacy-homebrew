@@ -161,9 +161,7 @@ class Emacs < Formula
   end
 
   test do
-    output = `'#{bin}/emacs' --batch --eval="(print (+ 2 2))"`
-    assert $?.success?
-    assert_equal "4", output.strip
+    assert_equal "4", shell_output("#{bin}/emacs --batch --eval=\"(print (+ 2 2))\"").strip
   end
 end
 

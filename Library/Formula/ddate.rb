@@ -19,8 +19,7 @@ class Ddate < Formula
   end
 
   test do
-    out = `#{bin}/ddate 20 6 2014`
-    assert_equal "Sweetmorn, Confusion 25, 3180 YOLD\n", out
-    assert_equal 0, $?.exitstatus
+    output = shell_output("#{bin}/ddate 20 6 2014").strip
+    assert_equal "Sweetmorn, Confusion 25, 3180 YOLD", output
   end
 end

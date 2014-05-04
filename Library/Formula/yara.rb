@@ -41,8 +41,6 @@ class Yara < Formula
     program = testpath/"zero.prg"
     program.binwrite [0x00, 0xc0, 0xa9, 0x30, 0x4c, 0xd2, 0xff].pack("C*")
 
-    out = `#{bin}/yara #{rules} #{program}`
-    assert_equal "chrout #{program}\n", out
-    assert_equal 0, $?.exitstatus
+    assert_equal "chrout #{program}", shell_output("#{bin}/yara #{rules} #{program}").strip
   end
 end

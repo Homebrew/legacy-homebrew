@@ -32,6 +32,6 @@ class Dart < Formula
       }
     EOS
 
-    assert_equal "test message\n", `#{bin}/dart sample.dart`
+    assert_equal "test message\n", shell_output("#{bin}/dart sample.dart")
   end
 end
