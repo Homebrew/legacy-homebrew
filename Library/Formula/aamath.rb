@@ -19,11 +19,8 @@ class Aamath < Formula
   end
 
   test do
-    IO.popen("#{bin}/aamath", "w+") do |pipe|
-      pipe.write((prefix/"testcases").read)
-      pipe.close_write
-      assert_match /#{Regexp.escape("f(x + h) = f(x) + h f'(x)")}/, pipe.read
-    end
+    s = pipe_output("#{bin}/aamath", (prefix/"testcases").read)
+    assert_match /#{Regexp.escape("f(x + h) = f(x) + h f'(x)")}/, s
   end
 end
 

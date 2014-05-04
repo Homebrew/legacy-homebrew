@@ -12,8 +12,6 @@ class Ascii < Formula
   end
 
   test do
-    output = `#{bin}/ascii 0x0a`
-    assert output.include?("Official name: Line Feed")
-    assert_equal 0, $?.exitstatus
+    assert shell_output(bin/"ascii 0x0a").include?("Official name: Line Feed")
   end
 end
