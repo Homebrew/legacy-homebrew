@@ -2,8 +2,13 @@ require "formula"
 
 class ShadowsocksLibev < Formula
   homepage "https://github.com/madeye/shadowsocks-libev"
-  url "https://github.com/madeye/shadowsocks-libev/archive/v1.4.5.tar.gz"
-  sha1 "d5333f6a749c521826f8e6b866e04d20fbe842fe"
+
+  stable do
+    url "https://github.com/madeye/shadowsocks-libev/archive/v1.4.5.tar.gz"
+    sha1 "d5333f6a749c521826f8e6b866e04d20fbe842fe"
+    patch :DATA
+  end
+
   head "https://github.com/madeye/shadowsocks-libev.git"
 
   option "with-polarssl", "Use PolarSSL instead of OpenSSL"
@@ -13,10 +18,6 @@ class ShadowsocksLibev < Formula
     depends_on "polarssl"
   else
     depends_on "openssl"
-  end
-
-  stable do
-    patch :DATA
   end
 
   def install
