@@ -15,7 +15,10 @@ class Clam < Formula
   depends_on 'portaudio'
   depends_on 'id3lib'
 
+  fails_with :clang
+
   def install
+    # Note, does not find libsndfile on non-/usr/local installs
     scons "configure", "prefix=#{prefix}", "with_ladspa=no", "xmlbackend=none"
     scons
     scons "install"
