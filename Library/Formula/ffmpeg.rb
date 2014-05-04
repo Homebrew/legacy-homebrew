@@ -8,9 +8,9 @@ class Ffmpeg < Formula
     sha1 'c5f8d103b20cd73d329401d85ced4a014757f8b9'
 
     patch do
-      # fixes an api incompability with latest x265 0.9, to be removed with next ffmpeg 2.2.x+ release
-      url "http://git.videolan.org/?p=ffmpeg.git;a=patch;h=d67dbfa7c195fabce706ca03c439419450f9bd8a"
-      sha1 'f9481393869a8f38912faf935fb584c8e41d5c50'
+      # fixes an api incompability with latest x265 1.0, to be removed with next ffmpeg 2.2.x+ release
+      url "http://git.videolan.org/?p=ffmpeg.git;a=patch;h=96e13c9897501d91f1e2d493eee93a4f897ea462"
+      sha1 'a869377c45692220f7f4c96b3b7b159b14e5047b'
     end
   end
 
