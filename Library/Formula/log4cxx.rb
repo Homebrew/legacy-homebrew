@@ -2,7 +2,7 @@ require 'formula'
 
 class Log4cxx < Formula
   homepage 'http://logging.apache.org/log4cxx/index.html'
-  url 'http://www.apache.org/dyn/closer.cgi?path=logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz'
+  url 'http://www.apache.org/dist/logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz'
   sha1 'd79c053e8ac90f66c5e873b712bb359fd42b648d'
 
   depends_on :autoconf

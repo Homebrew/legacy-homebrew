@@ -2,7 +2,7 @@ require 'formula'
 
 class TomeeWebprofile < Formula
   homepage 'http://tomee.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.6.0.1/apache-tomee-1.6.0.1-webprofile.tar.gz'
+  url 'http://www.apache.org/dist/tomee/tomee-1.6.0.1/apache-tomee-1.6.0.1-webprofile.tar.gz'
   version '1.6.0.1'
   sha1 'e9dc8d814ccee49c48bd2f077474ed312cac226d'
 

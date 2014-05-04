@@ -2,7 +2,7 @@ require 'formula'
 
 class Pig < Formula
   homepage 'http://pig.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.12.0/pig-0.12.0.tar.gz'
+  url 'http://www.apache.org/dist/pig/pig-0.12.0/pig-0.12.0.tar.gz'
   sha1 'b641a932d45003d2e6350007558d63e69a1bf7c6'
 
   patch :DATA

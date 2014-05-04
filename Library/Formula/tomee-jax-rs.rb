@@ -2,7 +2,7 @@ require 'formula'
 
 class TomeeJaxRs < Formula
   homepage 'http://tomee.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.6.0.1/apache-tomee-1.6.0.1-jaxrs.tar.gz'
+  url 'http://www.apache.org/dist/tomee/tomee-1.6.0.1/apache-tomee-1.6.0.1-jaxrs.tar.gz'
   version '1.6.0.1'
   sha1 '4b4f11a12f8f9b23ea7dfd2a8a90c861bf65fb1d'
 

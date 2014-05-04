@@ -2,7 +2,7 @@ require 'formula'
 
 class Zookeeper < Formula
   homepage 'http://zookeeper.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz'
+  url 'http://www.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz'
   sha1 '2a9e53f5990dfe0965834a525fbcad226bf93474'
 
   bottle do

@@ -2,7 +2,7 @@ require 'formula'
 
 class TomeePlus < Formula
   homepage 'http://tomee.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.6.0.1/apache-tomee-1.6.0.1-plus.tar.gz'
+  url 'http://www.apache.org/dist/tomee/tomee-1.6.0.1/apache-tomee-1.6.0.1-plus.tar.gz'
   version '1.6.0.1'
   sha1 'a9d47bb3eff81440586ec26613c11a2e164c6d04'
 

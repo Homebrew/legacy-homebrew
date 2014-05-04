@@ -2,7 +2,7 @@ require 'formula'
 
 class XercesC < Formula
   homepage 'http://xerces.apache.org/xerces-c/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=xerces/c/3/sources/xerces-c-3.1.1.tar.gz'
+  url 'http://www.apache.org/dist/xerces/c/3/sources/xerces-c-3.1.1.tar.gz'
   sha1 '177ec838c5119df57ec77eddec9a29f7e754c8b2'
 
   bottle do
