@@ -98,9 +98,7 @@ module SharedEnvExtension
         end
       end
     elsif ARGV.include? '--use-gcc'
-      gcc_installed = Formula.factory('apple-gcc42').installed? rescue false
-      # fall back to something else on systems without Apple gcc
-      if MacOS.locate('gcc-4.2') || gcc_installed
+      if MacOS.locate("gcc-4.2") || HOMEBREW_PREFIX.join("opt/apple-gcc42/bin/gcc-4.2").exist?
         :gcc
       else
         raise "gcc-4.2 not found!"
