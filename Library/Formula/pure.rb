@@ -2,8 +2,8 @@ require 'formula'
 
 class Pure < Formula
   homepage 'http://purelang.bitbucket.org/'
-  url 'https://bitbucket.org/purelang/pure-lang/downloads/pure-0.59.tar.gz'
-  sha1 '22614d77fff9937a53cf513767fdc5e8eeb4aae1'
+  url 'https://bitbucket.org/purelang/pure-lang/downloads/pure-0.60.tar.gz'
+  sha1 'ef930868e8ba2b8e1a65c782d8b04828c3d0d255'
 
   depends_on :automake
   depends_on :libtool
@@ -14,8 +14,8 @@ class Pure < Formula
   depends_on 'mpfr'
 
   resource 'docs' do
-    url 'https://bitbucket.org/purelang/pure-lang/downloads/pure-docs-0.59.tar.gz'
-    sha1 '55794cea62dcdec093c37bbf68dba6f2dc2e9f9f'
+    url 'https://bitbucket.org/purelang/pure-lang/downloads/pure-docs-0.60.tar.gz'
+    sha1 '6a5644bc674db8a481c7db5181cf44d6be590645'
   end
 
   def install
