@@ -3,18 +3,18 @@ require 'formula'
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.26/node-v0.10.26.tar.gz'
-  sha1 '2340ec2dce1794f1ca1c685b56840dd515a271b2'
+  url 'http://nodejs.org/dist/v0.10.28/node-v0.10.28.tar.gz'
+  sha1 'ef08a75f6359a16e672cae684e0804ca7f4554b7'
 
   bottle do
-    sha1 "0db92b18d10cb7505d7c885058e337aeb5e9741c" => :mavericks
-    sha1 "b48b83e92cdb8b064620c7fef409b37a2ae90e67" => :mountain_lion
-    sha1 "ecd7b384658ad1a54a74174d07dcffc3aa5ddc92" => :lion
+    sha1 "248f60f9e93ad5930f6d3ad7e9ac45e5d029fefc" => :mavericks
+    sha1 "7583942e6201959545d16911ba2205c205e5b2fd" => :mountain_lion
+    sha1 "507fe9d29c2ab363303fb6c937c07c4de8937627" => :lion
   end
 
   devel do
-    url 'http://nodejs.org/dist/v0.11.12/node-v0.11.12.tar.gz'
-    sha1 'd991057af05dd70feb2126469ce279a2fe869e86'
+    url 'http://nodejs.org/dist/v0.11.13/node-v0.11.13.tar.gz'
+    sha1 'da4a9adb73978710566f643241b2c05fb8a97574'
   end
 
   head 'https://github.com/joyent/node.git'
@@ -30,8 +30,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "http://registry.npmjs.org/npm/-/npm-1.4.6.tgz"
-    sha1 "0e151bce38e72cf2206a6299fa5164123f04256e"
+    url "http://registry.npmjs.org/npm/-/npm-1.4.9.tgz"
+    sha1 "29094f675dad69fc5ea24960a81c7abbfca5ce01"
   end
 
   def install
