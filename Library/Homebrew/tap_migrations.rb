@@ -4,6 +4,7 @@ TAP_MIGRATIONS = {
   "apple-gcc42" => "homebrew/versions",
   "blackbox" => "homebrew/boneyard",
   "boost149" => "homebrew/versions",
+  "clam" => "homebrew/boneyard",
   "cmucl" => "homebrew/binary",
   "comparepdf" => "homebrew/boneyard",
   "denyhosts" => "homebrew/boneyard",
