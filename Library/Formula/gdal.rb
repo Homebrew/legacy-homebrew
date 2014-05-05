@@ -6,9 +6,9 @@ class Gdal < Formula
   sha1 '25efd2bffdea2e841377ca8c1fd49d89d02ac87e'
 
   bottle do
-    sha1 "01dee8d333f89ba82165c2eb72816bafc687a308" => :mavericks
-    sha1 "a57e4240a97c0f422c80d8e2b0e590ce6cb7ef62" => :mountain_lion
-    sha1 "f90ec187f9b1acf1a55227b6fd91a47904165ba1" => :lion
+    sha1 "e6f7fd48a09a28796d3f721d0c208dd15a1310bb" => :mavericks
+    sha1 "2e9f478b59008df1b96461a55a031522ab0ba7ad" => :mountain_lion
+    sha1 "319300ab6951e4b25feb8475e28ac66deb16811a" => :lion
   end
 
   head do
