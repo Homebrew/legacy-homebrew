@@ -121,7 +121,7 @@ module OS
     end
 
     def non_apple_gcc_version(cc)
-      path = Formula.factory("gcc").opt_prefix/"bin/#{cc}"
+      path = HOMEBREW_PREFIX.join("opt/gcc/bin/#{cc}")
       path = nil unless path.exist?
 
       return unless path ||= locate(cc)
