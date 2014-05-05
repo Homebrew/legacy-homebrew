@@ -162,7 +162,7 @@ class FormulaAuditor
       when *BUILD_TIME_DEPS
         next if dep.build? or dep.run?
         problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
-      when "git", "ruby", "emacs", "mercurial"
+      when "git", "ruby", "mercurial"
         problem <<-EOS.undent
           Don't use #{dep} as a dependency. We allow non-Homebrew
           #{dep} installations.
