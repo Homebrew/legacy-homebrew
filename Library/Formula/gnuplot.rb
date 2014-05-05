@@ -108,7 +108,12 @@ class Gnuplot < Formula
   end
 
   test do
-    system "#{bin}/gnuplot", "--version"
+    system "#{bin}/gnuplot", "-e", <<-EOS.undent
+        set terminal png;
+        set output "#{testpath}/image.png";
+        plot sin(x);
+    EOS
+    assert (testpath/"image.png").exist?
   end
 
   def caveats
