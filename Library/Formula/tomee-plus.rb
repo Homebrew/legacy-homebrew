@@ -16,6 +16,6 @@ class TomeePlus < Formula
     # Install files
     prefix.install %w{ NOTICE LICENSE RELEASE-NOTES RUNNING.txt }
     libexec.install Dir['*']
-    bin.install_symlink "#{libexec}/bin/tomee.sh" => "tomee-plus"
+    bin.install_symlink "#{libexec}/bin/startup.sh" => "tomee-plus-startup"
   end
 end
