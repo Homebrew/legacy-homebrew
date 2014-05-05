@@ -298,7 +298,7 @@ class Pathname
 
   def / that
     self + that.to_s
-  end
+  end unless method_defined?(:/)
 
   def ensure_writable
     saved_perms = nil
