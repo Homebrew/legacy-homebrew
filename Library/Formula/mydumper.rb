@@ -4,6 +4,9 @@ class MysqlDeps < Requirement
   fatal true
   default_formula 'mariadb'
 
+  conflicts_with 'mysql-cluster', 'mysql', 'percona-server',
+    :because => "MySQL 5.6+ broken hash.h, see: http://bugs.mysql.com/bug.php?id=70672"
+
   satisfy { which 'mysql_config' }
 end
 
@@ -17,9 +20,6 @@ class Mydumper < Formula
   depends_on MysqlDeps
   depends_on 'glib'
   depends_on 'pcre'
-
-  conflicts_with 'mysql-cluster', 'mysql', 'percona-server',
-    :because => "MySQL 5.6+ broken hash.h, see: http://bugs.mysql.com/bug.php?id=70672"
 
   # https://bugs.launchpad.net/mydumper/+bug/1316001
   patch :DATA
