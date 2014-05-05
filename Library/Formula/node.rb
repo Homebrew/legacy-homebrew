@@ -22,6 +22,7 @@ class Node < Formula
   option 'enable-debug', 'Build with debugger hooks'
   option 'without-npm', 'npm will not be installed'
   option 'without-completion', 'npm bash completion will not be installed'
+  option 'with-man-pages', 'man pages will be installed'
 
   depends_on :python => :build
 
@@ -58,10 +59,12 @@ class Node < Formula
     npm_root.cd { system "make", "install" }
     system "#{HOMEBREW_PREFIX}/bin/npm", "update", "npm", "-g"
 
-    Pathname.glob(npm_root/"man/*") do |man|
-      dir = send(man.basename)
-      man.children.each do |file|
-        dir.install_symlink(file)
+    if build.with? "man-pages"
+      Pathname.glob(npm_root/"man/*") do |man|
+        dir = send(man.basename)
+        man.children.each do |file|
+          dir.install_symlink(file)
+        end
       end
     end
 
@@ -76,6 +79,11 @@ class Node < Formula
       Homebrew has NOT installed npm. If you later install it, you should supplement
       your NODE_PATH with the npm module folder:
         #{HOMEBREW_PREFIX}/lib/node_modules
+      end
+    end
+    if not build.with? "man-pages"; <<-end.undent
+      Homebrew has NOT install manpages.
+      please install with the "--with-man-pages" flag if you would like them
       end
     end
   end
