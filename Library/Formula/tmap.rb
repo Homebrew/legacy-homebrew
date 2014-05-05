@@ -2,7 +2,7 @@ require 'formula'
 
 class Tmap < Formula
   homepage 'https://github.com/iontorrent/TMAP'
-  url 'https://github.com/iontorrent/TMAP.git', :tag => 'tmap.3.2.0'
+  url 'https://github.com/iontorrent/TMAP.git', :tag => 'tmap.3.2.1'
 
   head 'https://github.com/iontorrent/TMAP.git'
 
