@@ -4,6 +4,7 @@ class Libav < Formula
   homepage 'https://libav.org/'
   url 'http://libav.org/releases/libav-10.tar.xz'
   sha1 '74effded58ec3c63de6c8c20b5a382dc3a864d5b'
+  revision 1
   head 'git://git.libav.org/libav.git'
 
   bottle do
@@ -49,7 +50,6 @@ class Libav < Formula
   depends_on 'libvorbis' => :optional
   depends_on 'libvpx' => :optional
   depends_on 'opencore-amr' => :optional
-  depends_on 'openjpeg' => :optional
   depends_on 'opus' => :optional
   depends_on 'rtmpdump' => :optional
   depends_on 'schroedinger' => :optional
@@ -57,7 +57,28 @@ class Libav < Formula
   depends_on 'speex' => :optional
   depends_on 'theora' => :optional
 
+  if build.with? "openjpeg"
+    depends_on "little-cms2" => :build
+    depends_on "libtiff" => :build
+    depends_on "libpng" => :build
+  end
+
+  resource "openjpeg" do
+    url 'https://openjpeg.googlecode.com/files/openjpeg-1.5.1.tar.gz'
+    sha1 '1b0b74d1af4c297fd82806a9325bb544caf9bb8b'
+  end
+
   def install
+    if build.with? "openjpeg"
+      resource("openjpeg").stage do
+        # vendor v.1.5.x, since 2.0 is unsupported
+        # see: https://github.com/Homebrew/homebrew/pull/28526
+        system "./configure", "--disable-dependency-tracking", "--prefix=#{libexec}"
+        system "make", "install"
+      end
+      ENV.append_path "PKG_CONFIG_PATH", "#{libexec}/lib/pkgconfig"
+    end
+
     args = [
       "--disable-debug",
       "--disable-shared",
