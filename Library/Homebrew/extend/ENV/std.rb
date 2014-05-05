@@ -119,8 +119,9 @@ module Stdenv
   GNU_GCC_VERSIONS.each do |n|
     define_method(:"gcc-4.#{n}") do
       gcc = "gcc-4.#{n}"
-      self.cc = gcc
-      self.cxx = gcc.gsub('c', '+')
+      gxx = gcc.gsub('c', '+')
+      self.cc = MacOS.locate(gcc)
+      self.cxx = MacOS.locate(gxx)
       set_cpu_cflags
       @compiler = gcc
     end
