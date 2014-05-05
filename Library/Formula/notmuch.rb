@@ -5,6 +5,8 @@ class Notmuch < Formula
   url "http://notmuchmail.org/releases/notmuch-0.17.tar.gz"
   sha1 "0fe14140126a0da04754f548edf7e7b135eeec86"
 
+  option "with-emacs", "Build with Emacs support"
+
   depends_on "pkg-config" => :build
   depends_on "emacs" => :optional
   depends_on "xapian"
@@ -16,8 +18,11 @@ class Notmuch < Formula
   patch :DATA
 
   def install
+    # Emacs and parallel builds aren't friends
+    ENV.j1 if build.with? "emacs"
+
     args = ["--prefix=#{prefix}"]
-    if build.include? "emacs"
+    if build.with? "emacs"
       args << "--with-emacs"
     else
       args << "--without-emacs"
@@ -35,17 +40,17 @@ index 72524eb..c85e09c 100644
 +++ b/Makefile.local
 @@ -236,11 +236,11 @@ endif
  quiet ?= $($(shell echo $1 | sed -e s'/ .*//'))
- 
+
  %.o: %.cc $(global_deps)
 -	@mkdir -p .deps/$(@D)
 +	@mkdir -p $(patsubst %/.,%,.deps/$(@D))
  	$(call quiet,CXX $(CPPFLAGS) $(CXXFLAGS)) -c $(FINAL_CXXFLAGS) $< -o $@ -MD -MP -MF .deps/$*.d
- 
+
  %.o: %.c $(global_deps)
 -	@mkdir -p .deps/$(@D)
 +	@mkdir -p $(patsubst %/.,%,.deps/$(@D))
  	$(call quiet,CC $(CPPFLAGS) $(CFLAGS)) -c $(FINAL_CFLAGS) $< -o $@ -MD -MP -MF .deps/$*.d
- 
+
  .PHONY : clean
--- 
+--
 1.8.4.2
