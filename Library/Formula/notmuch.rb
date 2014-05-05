@@ -18,9 +18,11 @@ class Notmuch < Formula
   patch :DATA
 
   def install
+    # Emacs and parallel builds aren't friends
+    ENV.j1 if build.with? "emacs"
+
     args = ["--prefix=#{prefix}"]
-    if build.include? "with-emacs"
-      depends_on "emacs"
+    if build.with? "emacs"
       args << "--with-emacs"
     else
       args << "--without-emacs"
