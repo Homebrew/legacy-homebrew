@@ -6,6 +6,13 @@ class Xplanetfx < Formula
   sha1 "a46a39cd73af2028cfb546db3e8096b52b19b61c"
   version "2.5.26"
 
+  bottle do
+    cellar :any
+    sha1 "d0a3e4ec286822fbc1bb142806a2066df2552b7a" => :mavericks
+    sha1 "b6d091bd690aedfd01deaaf6da13dc274b69392d" => :mountain_lion
+    sha1 "46ff2e079742620e5ef75b7f62ee06b920dda2ba" => :lion
+  end
+
   option "without-perlmagick", "Build without PerlMagick support - used to check cloud map downloads"
   option "with-gui", "Build to use xplanetFX's GUI... recommended"
   option "with-gnu-sed", "Build to use GNU sed instead of OS X sed"
