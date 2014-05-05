@@ -297,7 +297,7 @@ class Pathname
   end
 
   def / that
-    join that.to_s
+    self + that.to_s
   end
 
   def ensure_writable
