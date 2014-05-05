@@ -76,7 +76,7 @@ class Emacs < Formula
 
   def install
     # HEAD builds blow up when built in parallel as of April 20 2012
-    ENV.j1 if build.head?
+    ENV.deparallelize if build.head?
 
     args = ["--prefix=#{prefix}",
             "--without-dbus",
