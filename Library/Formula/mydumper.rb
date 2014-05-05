@@ -1,5 +1,12 @@
 require 'formula'
 
+class MysqlDeps < Requirement
+  fatal true
+  default_formula 'percona-server'
+
+  satisfy { which 'mysql_config' }
+end
+
 class Mydumper < Formula
   homepage 'https://launchpad.net/mydumper'
   url 'https://launchpad.net/mydumper/0.6/0.6.1/+download/mydumper-0.6.1.tar.gz'
@@ -7,7 +14,7 @@ class Mydumper < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
-  depends_on :mysql
+  depends_on MysqlDeps
   depends_on 'glib'
   depends_on 'pcre'
 
