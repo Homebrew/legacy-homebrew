@@ -62,6 +62,22 @@ class JobSqlDAO(config: Config) extends JobDAO {
     insertJarInfo(JarInfo(appName, uploadTime), jarBytes)
   }
 
+  override def getApps: Map[String, DateTime] = {
+    db withSession {
+      implicit session =>
+
+      // It's "select appName, max(uploadTime) from jars group by appName
+      // max(uploadTime) is the latest upload time of the jar.
+        val query = jars.groupBy { _.appName }.map {
+          case (appName, jar) => (appName -> jar.map(_.uploadTime).max.get)
+        }
+
+        query.list.map {
+          case (appName: String, timestamp: Timestamp) => (appName, convertDateSqlToJoda(timestamp))
+        }.toMap
+    }
+  }
+
   // Insert JarInfo and its jar into db
   private def insertJarInfo(jarInfo: JarInfo, jarBytes: Array[Byte]) {
     // Insert JarInfo and its jar
