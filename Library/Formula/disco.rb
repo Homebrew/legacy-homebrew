@@ -7,7 +7,7 @@ class Disco < Formula
   # Periods in the install path cause disco-worker to complain so change to underscores.
   version '0_5_0'
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
   depends_on 'libcmph'
@@ -16,6 +16,8 @@ class Disco < Formula
   patch :DATA
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
+
     inreplace "Makefile" do |s|
       s.change_make_var! "prefix", prefix
       s.change_make_var! "sysconfdir", etc
@@ -36,6 +38,12 @@ class Disco < Formula
     inreplace "#{etc}/disco/settings.py" do |s|
       s.gsub!("Cellar/disco/"+version+"/", "")
     end
+
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+  end
+
+  test do
+    system "#{bin}/disco"
   end
 
   def caveats

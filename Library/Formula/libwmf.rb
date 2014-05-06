@@ -10,6 +10,7 @@ class Libwmf < Formula
   depends_on 'gd'
   depends_on 'freetype'
   depends_on 'libpng'
+  depends_on 'jpeg'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -2,7 +2,6 @@ require 'formula'
 
 class ErlangInstalled < Requirement
   fatal true
-  default_formula 'erlang'
   env :userpaths
 
   satisfy {

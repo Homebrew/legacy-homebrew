@@ -18,7 +18,7 @@ class Saltstack < Formula
   head 'https://github.com/saltstack/salt.git', :branch => 'develop',
     :using => SaltHeadDownloadStrategy, :shallow => false
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'swig' => :build
   depends_on 'zeromq'
   depends_on 'libyaml'
@@ -64,6 +64,7 @@ class Saltstack < Formula
   end
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 

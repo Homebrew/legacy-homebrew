@@ -2,12 +2,13 @@ require 'formula'
 
 class Ansible < Formula
   homepage 'http://www.ansible.com/home'
-  url 'http://releases.ansible.com/ansible/ansible-1.5.5.tar.gz'
-  sha1 '9a065eac0d15413284c8c7f9f5047d7b1249f16c'
+  url 'http://releases.ansible.com/ansible/ansible-1.6.tar.gz'
+  sha1 '207404b37cc5c2d74992e6b7165bbc7c93781202'
+  revision 1
 
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'libyaml'
 
   option 'with-accelerate', "Enable accelerated mode"
@@ -45,7 +46,11 @@ class Ansible < Formula
   end
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    # HEAD additionally requires this to be present in PYTHONPATH, or else
+    # ansible's own setup.py will fail.
+    ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
     # pycrypto's C bindings use flags unrecognized by clang,
@@ -69,6 +74,11 @@ class Ansible < Formula
     end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    # These are now rolled into 1.6 and cause linking conflicts
+    rm Dir["#{bin}/easy_install*"]
+    rm "#{lib}/python2.7/site-packages/site.py"
+    rm Dir["#{lib}/python2.7/site-packages/*.pth"]
 
     man1.install Dir['docs/man/man1/*.1']
 

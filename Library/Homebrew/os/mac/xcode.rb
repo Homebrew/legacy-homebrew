@@ -5,15 +5,6 @@ module OS
 
       V4_BUNDLE_ID = "com.apple.dt.Xcode"
       V3_BUNDLE_ID = "com.apple.Xcode"
-      V4_BUNDLE_PATH = Pathname.new("/Applications/Xcode.app")
-
-      # Locate the "current Xcode folder" via xcode-select. See:
-      # man xcode-select
-      # TODO Should this be moved to OS::Mac? As of 10.9 this is referred to
-      # as the "developer directory", and be either a CLT or Xcode instance.
-      def folder
-        @folder ||= `xcode-select -print-path 2>/dev/null`.strip
-      end
 
       def latest_version
         case MacOS.version
@@ -42,23 +33,21 @@ module OS
       end
 
       def prefix
-        @prefix ||= begin
-          path = Pathname.new(folder)
-          if path != CLT::MAVERICKS_PKG_PATH and path.absolute? \
-             and File.executable? "#{path}/usr/bin/make"
-            path
-          elsif File.executable? "#{V4_BUNDLE_PATH}/Contents/Developer/usr/bin/make"
-            # TODO Remove this branch when 10.10 is released
-            # This is a fallback for broken installations of Xcode 4.3+. Correct
-            # installations will be handled by the first branch. Pretending that
-            # broken installations are OK just leads to hard to diagnose problems
-            # later.
-            Pathname.new("#{V4_BUNDLE_PATH}/Contents/Developer")
-          elsif (path = bundle_path)
-            path += "Contents/Developer"
-            path if File.executable? "#{path}/usr/bin/make"
+        @prefix ||=
+          begin
+            dir = MacOS.active_developer_dir
+
+            if dir.empty? || dir == CLT::MAVERICKS_PKG_PATH || !File.directory?(dir)
+              path = bundle_path
+              path.join("Contents", "Developer") if path
+            else
+              Pathname.new(dir)
+            end
           end
-        end
+      end
+
+      def toolchain_path
+        Pathname.new("#{prefix}/Toolchains/XcodeDefault.xctoolchain") if installed? && version >= "4.3"
       end
 
       # Ask Spotlight where Xcode is. If the user didn't install the
@@ -158,7 +147,7 @@ module OS
       STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
       FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
       MAVERICKS_PKG_ID = "com.apple.pkg.CLTools_Executables"
-      MAVERICKS_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
+      MAVERICKS_PKG_PATH = "/Library/Developer/CommandLineTools"
 
       # Returns true even if outdated tools are installed, e.g.
       # tools from Xcode 4.x on 10.9

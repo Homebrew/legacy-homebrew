@@ -190,7 +190,7 @@ class BuildError < Homebrew::InstallationError
         puts "  #{tap_issues_url}"
       end
     else
-      require 'cmd/--config'
+      require 'cmd/config'
       require 'cmd/--env'
 
       unless formula.core_formula?

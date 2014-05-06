@@ -219,7 +219,7 @@ class Report < Hash
   def tapped_formula_for key
     fetch(key, []).select do |path|
       case path.relative_path_from(HOMEBREW_REPOSITORY).to_s
-      when %r{^Library/Taps/([\w_-]+/[\w_-]+/.*)}
+      when %r{^Library/Taps/([\w-]+/[\w-]+/.*)}
         valid_formula_location?($1)
       else
         false
@@ -250,7 +250,7 @@ class Report < Hash
       case path.relative_path_from(HOMEBREW_REPOSITORY).to_s
       when %r{^Library/Formula}
         path.basename(".rb").to_s
-      when %r{^Library/Taps/([\w_-]+)/(homebrew-)?([\w_-]+)/(.*)\.rb}
+      when %r{^Library/Taps/([\w-]+)/(homebrew-)?([\w-]+)/(.*)\.rb}
         "#$1/#$3/#{path.basename(".rb")}"
       end
     end.compact.sort

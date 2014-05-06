@@ -12,7 +12,6 @@ class PebbleSdk < Formula
   end
 
   depends_on :macos => :mountain_lion
-  depends_on :python
   depends_on 'freetype' => :recommended
   depends_on 'mpfr' => :build
   depends_on 'gmp' => :build
@@ -74,10 +73,10 @@ class PebbleSdk < Formula
       s.gsub! /^process = subprocess\.Popen\(args, shell=False, env=local_python_env\)/, "process = subprocess.Popen(args, shell=False)"
     end
 
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    ENV.append_to_cflags '-Qunused-arguments'
     resource('freetype-py').stage { system "python", *install_args }
     resource('sh').stage { system "python", *install_args }
     resource('twisted').stage { system "python", *install_args }
@@ -85,7 +84,6 @@ class PebbleSdk < Formula
     resource('websocket-client').stage { system "python", *install_args }
     resource('pyserial').stage { system "python", *install_args }
     resource('pypng').stage { system "python", *install_args }
-    ENV.remove_from_cflags '-Qunused-arguments'
 
     prefix.install %w[Documentation Examples Pebble PebbleKit-Android
         PebbleKit-iOS bin tools requirements.txt version.txt]

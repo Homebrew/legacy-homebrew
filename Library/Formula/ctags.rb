@@ -6,7 +6,7 @@ class Ctags < Formula
   sha1 '482da1ecd182ab39bbdc09f2f02c9fba8cd20030'
 
   head do
-    url 'https://ctags.svn.sourceforge.net/svnroot/ctags/trunk'
+    url 'https://svn.code.sf.net/p/ctags/code/trunk'
     depends_on :autoconf
   end
 
