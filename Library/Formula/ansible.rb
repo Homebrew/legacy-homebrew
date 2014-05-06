@@ -4,6 +4,7 @@ class Ansible < Formula
   homepage 'http://www.ansible.com/home'
   url 'http://releases.ansible.com/ansible/ansible-1.6.tar.gz'
   sha1 '207404b37cc5c2d74992e6b7165bbc7c93781202'
+  revision 1
 
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
@@ -74,12 +75,10 @@ class Ansible < Formula
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 
-    # HEAD version installs some conflicting extra cruft
-    if build.head?
-      rm Dir["#{bin}/easy_install*"]
-      rm "#{lib}/python2.7/site-packages/site.py"
-      rm Dir["#{lib}/python2.7/site-packages/*.pth"]
-    end
+    # These are now rolled into 1.6 and cause linking conflicts
+    rm Dir["#{bin}/easy_install*"]
+    rm "#{lib}/python2.7/site-packages/site.py"
+    rm Dir["#{lib}/python2.7/site-packages/*.pth"]
 
     man1.install Dir['docs/man/man1/*.1']
 
