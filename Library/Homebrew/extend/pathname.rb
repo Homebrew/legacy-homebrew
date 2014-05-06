@@ -297,8 +297,8 @@ class Pathname
   end
 
   def / that
-    join that.to_s
-  end
+    self + that.to_s
+  end unless method_defined?(:/)
 
   def ensure_writable
     saved_perms = nil
