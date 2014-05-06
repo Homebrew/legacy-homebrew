@@ -5,6 +5,13 @@ class Ant < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=ant/binaries/apache-ant-1.9.4-bin.tar.gz'
   sha1 '6c41481e8201f6b3f7e216146b95bb6de70208bb'
 
+  bottle do
+    cellar :any
+    sha1 "56eee6f32ab55854b1ccbaa3e106129517e94f7f" => :mavericks
+    sha1 "f09cd5546459a6172a60ed010444dde9cc94bac1" => :mountain_lion
+    sha1 "5e90ad64f1bd68024f4fec659a6734629f349ea1" => :lion
+  end
+
   keg_only :provided_by_osx if MacOS.version < :mavericks
 
   def install
