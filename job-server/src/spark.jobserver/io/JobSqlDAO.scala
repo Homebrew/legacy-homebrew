@@ -1,10 +1,12 @@
 package spark.jobserver.io
 
 import com.typesafe.config.Config
+import java.io.{FileOutputStream, BufferedOutputStream, File}
 import java.sql.Timestamp
+import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import scala.slick.driver.H2Driver.simple._
-import java.io.File
+import scala.slick.jdbc.meta.MTable
 
 
 class JobSqlDAO(config: Config) extends JobDAO {
@@ -51,5 +53,20 @@ class JobSqlDAO(config: Config) extends JobDAO {
         }
     }
   }
+
+  // Cache the jar file into local file system.
+  private def cacheJar(appName: String, uploadTime: DateTime, jarBytes: Array[Byte]) {
+    val outFile = new File(rootDir, createJarName(appName, uploadTime) + ".jar")
+    val bos = new BufferedOutputStream(new FileOutputStream(outFile))
+    try {
+      logger.debug("Writing {} bytes to file {}", jarBytes.size, outFile.getPath)
+      bos.write(jarBytes)
+      bos.flush()
+    } finally {
+      bos.close()
+    }
+  }
+
+  private def createJarName(appName: String, uploadTime: DateTime): String = appName + "-" + uploadTime
 
 }
