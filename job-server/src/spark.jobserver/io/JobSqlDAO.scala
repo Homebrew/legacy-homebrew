@@ -33,11 +33,22 @@ class JobSqlDAO(config: Config) extends JobDAO {
   init()
 
   private def init() {
-    // create the date directory if it doesn't exist
+    // Create the data directory if it doesn't exist
     if (!rootDirFile.exists()) {
       if (!rootDirFile.mkdirs()) {
         throw new RuntimeException("Could not create directory " + rootDir)
       }
+    }
+
+    // Create the tables if they don't exist
+    db withSession {
+      implicit session =>
+
+        if (MTable.getTables("JARS").list().isEmpty) {
+          logger.info("Table JARS doesn't exist. Create all tables.")
+          jars.ddl.create
+          // TODO: Later, other tables should be created here too.
+        }
     }
   }
 
