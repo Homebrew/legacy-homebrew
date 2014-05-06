@@ -88,6 +88,21 @@ class JobSqlDAO(config: Config) extends JobDAO {
     }
   }
 
+  // Fetch the jar from the database
+  private def fetchJar(appName: String, uploadTime: DateTime): Array[Byte] = {
+    db withSession {
+      implicit session =>
+
+        val dateTime = convertDateJodaToSql(uploadTime)
+        val query = jars.filter { jar =>
+          jar.appName === appName && jar.uploadTime === dateTime
+        }.map( _.jar )
+
+        // TODO: check if this list is empty?
+        query.list.head
+    }
+  }
+
   // Cache the jar file into local file system.
   private def cacheJar(appName: String, uploadTime: DateTime, jarBytes: Array[Byte]) {
     val outFile = new File(rootDir, createJarName(appName, uploadTime) + ".jar")
