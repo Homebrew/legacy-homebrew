@@ -73,12 +73,10 @@ class Ansible < Formula
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 
-    # HEAD version installs some conflicting extra cruft
-    if build.head?
-      rm Dir["#{bin}/easy_install*"]
-      rm "#{lib}/python2.7/site-packages/site.py"
-      rm Dir["#{lib}/python2.7/site-packages/*.pth"]
-    end
+    # These are now rolled into 1.6 and cause linking conflicts
+    rm Dir["#{bin}/easy_install*"]
+    rm "#{lib}/python2.7/site-packages/site.py"
+    rm Dir["#{lib}/python2.7/site-packages/*.pth"]
 
     man1.install Dir['docs/man/man1/*.1']
 
