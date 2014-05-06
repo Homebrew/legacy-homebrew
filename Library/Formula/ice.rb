@@ -55,6 +55,8 @@ class Ice < Formula
       system "make", *args
       system "make", "install", *args
     end
+
+    libexec.install "#{lib}/ImportKey.class"
   end
 
   test do
