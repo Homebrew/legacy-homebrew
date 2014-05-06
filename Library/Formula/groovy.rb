@@ -26,8 +26,8 @@ class Groovy < Formula
 
   def caveats
     <<-EOS.undent
-      You should set the environment variable GROOVY_HOME to
-        #{opt_libexec}
+      You should set GROOVY_HOME:
+        export GROOVY_HOME=#{opt_libexec}
     EOS
   end
 end
