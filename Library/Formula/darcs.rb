@@ -8,6 +8,13 @@ class Darcs < Formula
   url "http://darcs.net/releases/darcs-2.8.4.tar.gz"
   sha1 "36dde7548a9d73f4688296cac72bcda672542e53"
 
+  bottle do
+    cellar :any
+    sha1 "c11fb41e7e90e6cb524a09134e6a50acc26695f4" => :mavericks
+    sha1 "ddb7948bddf9dca7875ccfb039d93e4a60f03f81" => :mountain_lion
+    sha1 "40c45ff6023aba8d0b936004c13d1d2fa20078f1" => :lion
+  end
+
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "gmp"
