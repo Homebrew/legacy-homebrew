@@ -35,10 +35,6 @@ class Qt < Formula
             "-nomake", "demos", "-nomake", "examples",
             "-cocoa", "-fast", "-release"]
 
-    # we have to disable these to avoid triggering optimization code
-    # that will fail in superenv (in --env=std, Qt seems aware of this)
-    args << "-no-3dnow" << "-no-ssse3" if superenv?
-
     args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
     if ENV.compiler == :clang
