@@ -19,6 +19,7 @@ TAP_MIGRATIONS = {
   "jscoverage" => "homebrew/boneyard",
   "jsl" => "homebrew/binary",
   "kerl" => "homebrew/headonly",
+  "kismet" => "homebrew/boneyard",
   "libgtextutils" => "homebrew/science",
   "librets" => "homebrew/boneyard",
   "lmutil" => "homebrew/binary",
