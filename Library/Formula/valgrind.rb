@@ -38,7 +38,7 @@ class Valgrind < Formula
   # Fix for 10.7.4 w/XCode-4.5, duplicate symbols. Reported upstream in
   # https://bugs.kde.org/show_bug.cgi?id=307415
   patch do
-    url "https://gist.githubusercontent.com/2bits/3784836/raw/f046191e72445a2fc8491cb6aeeabe84517687d9/patch1.diff"
+    url "https://gist.githubusercontent.com/2bits/3784930/raw/dc8473c0ac5274f6b7d2eb23ce53d16bd0e2993a/patch2.diff"
     sha1 "6e57aa087fafd178b594e22fd0e00ea7c0eed438"
   end if MacOS.version == :lion
 
