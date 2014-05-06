@@ -1,6 +1,6 @@
 package spark.jobserver.io
 
-import com.typesafe.config.Config
+import com.typesafe.config.{ConfigRenderOptions, Config, ConfigFactory}
 import java.io.{FileOutputStream, BufferedOutputStream, File}
 import java.sql.Timestamp
 import org.joda.time.DateTime
@@ -27,6 +27,13 @@ class JobSqlDAO(config: Config) extends JobDAO {
   }
   val jars = TableQuery[Jars]
 
+  class Configs(tag: Tag) extends Table[(String, String)](tag, "CONFIGS") {
+    def jobId = column[String]("JOB_ID")
+    def jobConfig = column[String]("JOB_CONFIG")
+    def * = (jobId, jobConfig)
+  }
+  val configs = TableQuery[Configs]
+
   // DB initialization
   val jdbcUrl = "jdbc:h2:file:" + rootDir + "/h2-db"
   val db = Database.forURL(jdbcUrl, driver = "org.h2.Driver")
@@ -47,10 +54,16 @@ class JobSqlDAO(config: Config) extends JobDAO {
       implicit session =>
 
         if (MTable.getTables("JARS").list().isEmpty) {
-          logger.info("Table JARS doesn't exist. Create all tables.")
+          logger.info("Table JARS doesn't exist. Creating JARS table...")
           jars.ddl.create
-          // TODO: Later, other tables should be created here too.
         }
+
+        if (MTable.getTables("CONFIGS").list().isEmpty) {
+          logger.info("Table CONFIGS doesn't exist. Creating CONFIGS table...")
+          jars.ddl.create
+        }
+
+      // TODO: Later, create JOBS table here
     }
   }
 
@@ -140,4 +153,21 @@ class JobSqlDAO(config: Config) extends JobDAO {
   private def convertDateSqlToJoda(timestamp: Timestamp): DateTime =
     new DateTime(timestamp.getTime())
 
+  override def getJobConfigs: Map[String, Config] = {
+    db withSession {
+      implicit sessions =>
+
+        configs.list.map { case (jobId, jobConfig) =>
+          (jobId -> ConfigFactory.parseString(jobConfig))
+        }.toMap
+    }
+  }
+
+  override def saveJobConfig(jobId: String, jobConfig: Config) {
+    db withSession {
+      implicit sessions =>
+
+        configs += (jobId, jobConfig.root().render(ConfigRenderOptions.concise()))
+    }
+  }
 }
