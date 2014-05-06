@@ -12,6 +12,11 @@ class Mongodb < Formula
     sha1 "7667f6cc36859fb9fced1885f382b76ae325583c" => :lion
   end
 
+  devel do
+     url "http://downloads.mongodb.org/src/mongodb-src-r2.7.0.tar.gz"
+     sha1 "43449a69c3386e13fdb6abb2b13933f3ba607cc5"
+  end 
+
   head do
     url "https://github.com/mongodb/mongo.git"
   end
@@ -39,7 +44,10 @@ class Mongodb < Formula
     args << "--cxx=#{cxx}"
 
     # --full installs development headers and client library, not just binaries
-    args << "--full"
+    # (only supported pre-2.7)
+    stable do
+      args << "--full"
+    end
     args << "--use-system-boost" if build.with? "boost"
 
     if build.with? 'openssl'
