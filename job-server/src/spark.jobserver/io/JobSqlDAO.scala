@@ -54,6 +54,16 @@ class JobSqlDAO(config: Config) extends JobDAO {
     }
   }
 
+  // Insert JarInfo and its jar into db
+  private def insertJarInfo(jarInfo: JarInfo, jarBytes: Array[Byte]) {
+    // Insert JarInfo and its jar
+    db withSession {
+      implicit session =>
+
+        jars += (jarInfo.appName, convertDateJodaToSql(jarInfo.uploadTime), jarBytes)
+    }
+  }
+
   // Cache the jar file into local file system.
   private def cacheJar(appName: String, uploadTime: DateTime, jarBytes: Array[Byte]) {
     val outFile = new File(rootDir, createJarName(appName, uploadTime) + ".jar")
@@ -68,5 +78,13 @@ class JobSqlDAO(config: Config) extends JobDAO {
   }
 
   private def createJarName(appName: String, uploadTime: DateTime): String = appName + "-" + uploadTime
+
+  // Convert from joda DateTime to java.sql.Timestamp
+  private def convertDateJodaToSql(dateTime: DateTime): Timestamp =
+    new Timestamp(dateTime.getMillis())
+
+  // Convert from java.sql.Timestamp to joda DateTime
+  private def convertDateSqlToJoda(timestamp: Timestamp): DateTime =
+    new DateTime(timestamp.getTime())
 
 }
