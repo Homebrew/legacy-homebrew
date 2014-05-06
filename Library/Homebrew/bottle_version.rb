@@ -12,6 +12,10 @@ class BottleVersion < Version
     m = /-(r\d+\.?\d*)/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. 00-5.0.5 from zpython-00-5.0.5.mavericks.bottle.tar.gz
+    m = /(00-\d+\.\d+(\.\d+)+)/.match(stem)
+    return m.captures.first unless m.nil?
+
     # e.g. 1.6.39 from pazpar2-1.6.39.mavericks.bottle.tar.gz
     m = /-(\d+\.\d+(\.\d+)+)/.match(stem)
     return m.captures.first unless m.nil?
