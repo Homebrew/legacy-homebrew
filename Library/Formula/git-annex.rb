@@ -8,6 +8,13 @@ class GitAnnex < Formula
   url "http://hackage.haskell.org/package/git-annex-5.20140421/git-annex-5.20140421.tar.gz"
   sha1 "f818164eaddf2887a15c0c4c745a1cb8174152dc"
 
+  bottle do
+    cellar :any
+    sha1 "e5c3a794a3f7dab64af2cab5f098cf01e945f95b" => :mavericks
+    sha1 "3600a0a622e9d76bd99d4f50a14e41fb8c77df85" => :mountain_lion
+    sha1 "7e73036ef978314ccc28cd25f0e101d728f2e2c1" => :lion
+  end
+
   depends_on "gcc" => :build
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
