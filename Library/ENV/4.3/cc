@@ -125,7 +125,18 @@ class Cmd
     enum = @args.each
 
     loop do
-      args += refurbish_arg(enum.next, enum)
+      case arg = enum.next
+      when "-arch"
+        enum.next
+      when /^-Xarch_/
+        refurbished = refurbish_arg(enum.next, enum)
+        unless refurbished.empty?
+          args << arg
+          args += refurbished
+        end
+      else
+        args += refurbish_arg(arg, enum)
+      end
     end
 
     args
@@ -135,8 +146,6 @@ class Cmd
     args = []
 
     case arg
-    when '-arch', /^-Xarch_/
-      enum.next
     when '-m32'
       # If ENV.m32 was set, we allow the "-m32" flag, but we don't add anything
       args << '-m32' if cccfg? '3'
