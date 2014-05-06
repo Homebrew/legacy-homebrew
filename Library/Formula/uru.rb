@@ -9,12 +9,8 @@ class Uru < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    originals = Dir[buildpath + "**/*"]
-    mkdir_p "src/bitbucket.org/jonforums/uru"
-    mv originals, "src/bitbucket.org/jonforums/uru", :force => true
-
+    (buildpath/"src/bitbucket.org/jonforums/uru").install Dir[buildpath/"*"]
     system "go", "build", "-ldflags", "-s", "bitbucket.org/jonforums/uru"
-
     bin.install "uru" => "uru_rt"
   end
 
