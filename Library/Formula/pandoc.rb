@@ -8,6 +8,12 @@ class Pandoc < Formula
   url "https://pandoc.googlecode.com/files/pandoc-1.12.3.tar.gz"
   sha1 "f519b5fb8c88ff4374432477dc12f68bbe238510"
 
+  bottle do
+    sha1 "216b78973a1c26c7091839dd7cfa8a50e2cd6fcb" => :mavericks
+    sha1 "58d063c1bb5c02dc454de94dde147003998a4e1d" => :mountain_lion
+    sha1 "17ebadac09f6c65fe450751e7c1bdae2efdeba2d" => :lion
+  end
+
   resource "completion" do
     url "https://github.com/dsanson/pandoc-completion.git", :branch => "master"
   end
