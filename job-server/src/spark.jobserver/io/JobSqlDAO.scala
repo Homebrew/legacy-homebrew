@@ -54,6 +54,14 @@ class JobSqlDAO(config: Config) extends JobDAO {
     }
   }
 
+  override def saveJar(appName: String, uploadTime: DateTime, jarBytes: Array[Byte]) {
+    // The order is important. Save the jar file first and then log it into database.
+    cacheJar(appName, uploadTime, jarBytes)
+
+    // log it into database
+    insertJarInfo(JarInfo(appName, uploadTime), jarBytes)
+  }
+
   // Insert JarInfo and its jar into db
   private def insertJarInfo(jarInfo: JarInfo, jarBytes: Array[Byte]) {
     // Insert JarInfo and its jar
