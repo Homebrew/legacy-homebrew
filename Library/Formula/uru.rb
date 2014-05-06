@@ -15,14 +15,14 @@ class Uru < Formula
   end
 
   def caveats; <<-EOS.undent
-    # Append to ~/.profile on Ubuntu, or to ~/.zshrc on Zsh
+    Append to ~/.profile on Ubuntu, or to ~/.zshrc on Zsh
     $ echo 'eval "$(uru_rt admin install)"' >> ~/.bash_profile
 
-    # Register a pre-existing "system" ruby already placed on PATH from bash/Zsh
-    # startup configuration files
+    Register a pre-existing "system" ruby already placed on PATH from bash/Zsh
+    startup configuration files
     $ uru_rt admin add system
 
-    # Restart shell
+    Restart shell
     $ exec $SHELL -l
     EOS
   end
