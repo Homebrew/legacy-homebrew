@@ -25,7 +25,11 @@ class JobSqlDAO(config: Config) extends JobDAO {
   }
   val jars = TableQuery[Jars]
 
-  // server initialization
+  // DB initialization
+  val jdbcUrl = "jdbc:h2:file:" + rootDir + "/h2-db"
+  val db = Database.forURL(jdbcUrl, driver = "org.h2.Driver")
+
+  // Server initialization
   init()
 
   private def init() {
