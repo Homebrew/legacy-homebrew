@@ -4,10 +4,16 @@ import com.typesafe.config.Config
 import java.sql.Timestamp
 import org.slf4j.LoggerFactory
 import scala.slick.driver.H2Driver.simple._
+import java.io.File
 
 
 class JobSqlDAO(config: Config) extends JobDAO {
   private val logger = LoggerFactory.getLogger(getClass)
+
+  private val rootDir = getOrElse(config.getString("spark.jobserver.sqldao.rootdir"),
+    "/tmp/spark-jobserver/sqldao/data")
+  private val rootDirFile = new File(rootDir)
+  logger.info("rootDir is " + rootDirFile.getAbsolutePath)
 
   // Definition of the tables
   class Jars(tag: Tag) extends Table[(String, Timestamp, Array[Byte])](tag, "JARS") {
@@ -18,5 +24,17 @@ class JobSqlDAO(config: Config) extends JobDAO {
     def * = (appName, uploadTime, jar)
   }
   val jars = TableQuery[Jars]
+
+  // server initialization
+  init()
+
+  private def init() {
+    // create the date directory if it doesn't exist
+    if (!rootDirFile.exists()) {
+      if (!rootDirFile.mkdirs()) {
+        throw new RuntimeException("Could not create directory " + rootDir)
+      }
+    }
+  }
 
 }
