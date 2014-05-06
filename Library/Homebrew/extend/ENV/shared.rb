@@ -198,7 +198,7 @@ module SharedEnvExtension
     formula = if gcc_path.exist?
       gcc_formula
     elsif gcc_versions_path.exist?
-      Formulary.factory gcc_versions_formula
+      Formulary.factory gcc_version_name
     elsif gcc_formula.version.to_s.include?(version)
       gcc_formula
     elsif (gcc_versions_formula = Formulary.factory(gcc_version_name) rescue nil)
