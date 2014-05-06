@@ -34,29 +34,22 @@ class ShadowsocksLibev < Formula
     end
 
     system "./configure", *args
-    system "make"
-    system "make install"
+    system "make", "install"
 
-    conf_path = etc/"shadowsocks-libev.json"
-    unless conf_path.exist?
-      conf_path.write <<-EOS.undent
-        {
-            "server":"localhost",
-            "server_port":8388,
-            "local_port":1080,
-            "password":"barfoo!",
-            "timeout":600,
-            "method":null
-        }
-      EOS
-    end
+    (buildpath/"shadowsocks-libev.json").write <<-EOS.undent
+      {
+          "server":"localhost",
+          "server_port":8388,
+          "local_port":1080,
+          "password":"barfoo!",
+          "timeout":600,
+          "method":null
+      }
+    EOS
+    etc.install "shadowsocks-libev.json"
 
-    inreplace "shadowsocks.8", "/etc/shadowsocks/config.json", conf_path
+    inreplace "shadowsocks.8", "/etc/shadowsocks/config.json", "#{etc}/shadowsocks-libev.json"
     man8.install "shadowsocks.8"
-  end
-
-  def caveats
-    "Edit #{etc}/shadowsocks-libev.json to configure shadowsocks-libev"
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/shadowsocks-libev/bin/ss-local -c #{HOMEBREW_PREFIX}/etc/shadowsocks-libev.json"
