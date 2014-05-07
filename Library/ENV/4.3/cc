@@ -160,8 +160,10 @@ class Cmd
       '-frerun-cse-after-loop', '-frerun-loop-opt', '-fcse-follow-jumps'
       # clang doesn't support these flags
       args << arg if not tool =~ /^clang/
+    when /^-W[alp],/, /^-Wno-/
+      args << arg
     when /^-W.*/
-      args << arg if arg =~ /^-W[alp],/ or arg =~ /^-Wno-/
+      # prune warnings
     when '-macosx_version_min', '-dylib_install_name'
       args << "-Wl,#{arg},#{enum.next}"
     when '-multiply_definedsuppress'
