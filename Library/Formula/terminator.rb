@@ -14,6 +14,8 @@ class Terminator < Formula
   depends_on 'pygobject'
   depends_on 'pango'
 
+  # Patch to fix cwd resolve issue for OS X / Darwin
+  # See: https://bugs.launchpad.net/terminator/+bug/1261293
   patch :DATA
 
   def install
