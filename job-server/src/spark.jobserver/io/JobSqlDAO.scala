@@ -28,7 +28,8 @@ class JobSqlDAO(config: Config) extends JobDAO {
   val jars = TableQuery[Jars]
 
   // DB initialization
-  val jdbcUrl = "jdbc:h2:file:" + rootDir + "/h2-db"
+  val defaultJdbcUrl = "jdbc:h2:file:" + rootDir + "/h2-db"
+  val jdbcUrl = getOrElse(config.getString("spark.jobserver.sqldao.jdbc.url"), defaultJdbcUrl)
   val db = Database.forURL(jdbcUrl, driver = "org.h2.Driver")
 
   // Server initialization
