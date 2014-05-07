@@ -14,8 +14,8 @@ class Pypy < Formula
   end
 
   resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.4.tar.gz'
-    sha1 '35ccb7430356186cf253615b70f8ee580610f734'
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.5.tar.gz'
+    sha1 'ce15871b65e412589044ee8a4029fe65bc26b894'
   end
 
   def install
