@@ -141,4 +141,9 @@ class JobSqlDAO(config: Config) extends JobDAO {
   private def convertDateSqlToJoda(timestamp: Timestamp): DateTime =
     new DateTime(timestamp.getTime())
 
+  def getJobConfigs: Map[String,com.typesafe.config.Config] = ???
+  def getJobInfos: Map[String,spark.jobserver.io.JobInfo] = ???
+  def saveJobConfig(jobId: String,jobConfig: com.typesafe.config.Config): Unit = ???
+  def saveJobInfo(jobInfo: spark.jobserver.io.JobInfo): Unit = ???
+
 }
