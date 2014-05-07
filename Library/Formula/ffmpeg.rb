@@ -2,17 +2,8 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-
-  stable do
-    url 'http://ffmpeg.org/releases/ffmpeg-2.2.1.tar.bz2'
-    sha1 'c5f8d103b20cd73d329401d85ced4a014757f8b9'
-
-    patch do
-      # fixes an api incompability with latest x265 1.0, to be removed with next ffmpeg 2.2.x+ release
-      url "http://git.videolan.org/?p=ffmpeg.git;a=patch;h=96e13c9897501d91f1e2d493eee93a4f897ea462"
-      sha1 'a869377c45692220f7f4c96b3b7b159b14e5047b'
-    end
-  end
+  url 'http://ffmpeg.org/releases/ffmpeg-2.2.2.tar.bz2'
+  sha1 '8a4f282ccb5efbec31a9747d12c8d7b07c481f2e'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
