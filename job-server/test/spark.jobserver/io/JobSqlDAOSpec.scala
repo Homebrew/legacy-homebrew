@@ -40,6 +40,18 @@ class JobSqlDAOSpec extends TestJarFinder with FunSpec with ShouldMatchers with 
       apps.keySet should equal (Set(appName))
       apps(appName) should equal (uploadTime)
     }
+
+    it("should be able to retrieve the jar file") {
+      // check the pre-condition
+      jarFile.exists() should equal (false)
+
+      // retrieve the jar file
+      val jarFilePath: String = dao.retrieveJarFile(appName, uploadTime)
+
+      // test
+      jarFile.exists() should equal (true)
+      jarFilePath should equal (jarFile.getAbsolutePath)
+    }
   }
 
 }
