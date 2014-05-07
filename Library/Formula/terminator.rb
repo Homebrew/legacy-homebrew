@@ -14,9 +14,7 @@ class Terminator < Formula
   depends_on 'pygobject'
   depends_on 'pango'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "python", "setup.py", "install", "--prefix=#{prefix}"
