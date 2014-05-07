@@ -4,6 +4,7 @@ class Ant < Formula
   homepage 'http://ant.apache.org/'
   url 'http://www.apache.org/dyn/closer.cgi?path=ant/binaries/apache-ant-1.9.4-bin.tar.gz'
   sha1 '6c41481e8201f6b3f7e216146b95bb6de70208bb'
+  version '1.9.4'
 
   bottle do
     cellar :any
