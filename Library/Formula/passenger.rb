@@ -7,9 +7,9 @@ class Passenger < Formula
   head 'https://github.com/phusion/passenger.git'
 
   bottle do
-    sha1 "6ffb4d060608e3d2321f92f0fabba769bfa1bfb0" => :mavericks
-    sha1 "5f0460950f359f3d66abd06cb150768db403813d" => :mountain_lion
-    sha1 "9dc0c27914e6b3a2f43f5337b85d915095799848" => :lion
+    sha1 "7d5a41e0df41c3e5e9637b251c6870cc097b0f4c" => :mavericks
+    sha1 "fae85438a1297a0ab189c158297fc4d2403bf469" => :mountain_lion
+    sha1 "2ef483097daa6ac6d20e94fed64a942070d90e57" => :lion
   end
 
   depends_on 'pcre'
