@@ -36,8 +36,6 @@ class Qt < Formula
             "-nomake", "demos", "-nomake", "examples",
             "-cocoa", "-fast", "-release"]
 
-    args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
-
     if ENV.compiler == :clang
         args << "-platform"
 
