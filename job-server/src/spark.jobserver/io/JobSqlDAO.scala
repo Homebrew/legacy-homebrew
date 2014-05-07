@@ -18,17 +18,34 @@ class JobSqlDAO(config: Config) extends JobDAO {
   logger.info("rootDir is " + rootDirFile.getAbsolutePath)
 
   // Definition of the tables
-  class Jars(tag: Tag) extends Table[(String, Timestamp, Array[Byte])](tag, "JARS") {
+  class Jars(tag: Tag) extends Table[(Int, String, Timestamp, Array[Byte])](tag, "JARS") {
+    // TODO: Does the default value 0 (start value) need to be set? i.e. => O.Default(0)
+    def jarId = column[Int]("JAR_ID", O.PrimaryKey, O.AutoInc)
     def appName = column[String]("APP_NAME")
     def uploadTime = column[Timestamp]("UPLOAD_TIME")
     def jar = column[Array[Byte]]("JAR")
     // Every table needs a * projection with the same type as the table's type parameter
-    def * = (appName, uploadTime, jar)
+    def * = (jarId, appName, uploadTime, jar)
   }
   val jars = TableQuery[Jars]
 
+  // Explicitly avoiding to label 'jarId' as a foreign key to avoid dealing with
+  // referential integrity constraint violations.
+  class Jobs(tag: Tag) extends Table[(String, String, Int, String, Timestamp,
+                                      Option[Timestamp], Option[String])] (tag, "JOBS") {
+    def jobId = column[String]("JOB_ID", O.PrimaryKey)
+    def contextName = column[String]("CONTEXT_NAME")
+    def jarId = column[Int]("JAR_ID") // FK to JARS table
+    def classPath = column[String]("CLASSPATH")
+    def startTime = column[Timestamp]("START_TIME")
+    def endTime = column[Option[Timestamp]]("END_TIME")
+    def error = column[Option[String]]("ERROR")
+    def * = (jobId, contextName, jarId, classPath, startTime, endTime, error)
+  }
+  val jobs = TableQuery[Jobs]
+
   class Configs(tag: Tag) extends Table[(String, String)](tag, "CONFIGS") {
-    def jobId = column[String]("JOB_ID")
+    def jobId = column[String]("JOB_ID", O.PrimaryKey)
     def jobConfig = column[String]("JOB_CONFIG")
     def * = (jobId, jobConfig)
   }
@@ -60,10 +77,13 @@ class JobSqlDAO(config: Config) extends JobDAO {
 
         if (MTable.getTables("CONFIGS").list().isEmpty) {
           logger.info("Table CONFIGS doesn't exist. Creating CONFIGS table...")
-          jars.ddl.create
+          configs.ddl.create
         }
 
-      // TODO: Later, create JOBS table here
+        if (MTable.getTables("JOBS").list().isEmpty) {
+          logger.info("Table JOBS doesn't exist. Creating JOBS table...")
+          jobs.ddl.create
+        }
     }
   }
 
@@ -72,7 +92,8 @@ class JobSqlDAO(config: Config) extends JobDAO {
     cacheJar(appName, uploadTime, jarBytes)
 
     // log it into database
-    insertJarInfo(JarInfo(appName, uploadTime), jarBytes)
+    val jarId = insertJarInfo(JarInfo(appName, uploadTime), jarBytes)
+    println("jarId created: " + jarId)
   }
 
   override def getApps: Map[String, DateTime] = {
@@ -86,18 +107,23 @@ class JobSqlDAO(config: Config) extends JobDAO {
         }
 
         query.list.map {
-          case (appName: String, timestamp: Timestamp) => (appName, convertDateSqlToJoda(timestamp))
+          case (_, appName: String, timestamp: Timestamp) =>
+            (appName, convertDateSqlToJoda(timestamp))
         }.toMap
     }
   }
 
-  // Insert JarInfo and its jar into db
-  private def insertJarInfo(jarInfo: JarInfo, jarBytes: Array[Byte]) {
-    // Insert JarInfo and its jar
+  // Insert JarInfo and its jar into db and return the primary key associated with that row
+  private def insertJarInfo(jarInfo: JarInfo, jarBytes: Array[Byte]): Int = {
+    // Must provide a value that will be ignored because the JARS jobId column
+    // is tagged with O.AutoInc
+    val IGNORED_VAL = -1
+
     db withSession {
       implicit session =>
 
-        jars += (jarInfo.appName, convertDateJodaToSql(jarInfo.uploadTime), jarBytes)
+        (jars returning jars.map(_.jarId)) +=
+          (IGNORED_VAL, jarInfo.appName, convertDateJodaToSql(jarInfo.uploadTime), jarBytes)
     }
   }
 
@@ -130,6 +156,21 @@ class JobSqlDAO(config: Config) extends JobDAO {
     }
   }
 
+  // Fetch the primary key for a particular jar from the database
+  // TODO: Might not be needed but was very quick to implement
+  private def fetchJarId(appName: String, uploadTime: DateTime): Int = {
+    db withSession {
+      implicit session =>
+
+        val dateTime = convertDateJodaToSql(uploadTime)
+        val query = jars.filter { jar =>
+          jar.appName === appName && jar.uploadTime === dateTime
+        }.map( _.jarId )
+
+        query.list.head
+    }
+  }
+
   // Cache the jar file into local file system.
   private def cacheJar(appName: String, uploadTime: DateTime, jarBytes: Array[Byte]) {
     val outFile = new File(rootDir, createJarName(appName, uploadTime) + ".jar")
@@ -152,6 +193,8 @@ class JobSqlDAO(config: Config) extends JobDAO {
   // Convert from java.sql.Timestamp to joda DateTime
   private def convertDateSqlToJoda(timestamp: Timestamp): DateTime =
     new DateTime(timestamp.getTime())
+
+  // TODO: Implement JobDAO.saveJobInfo() and JobDAO.getJobInfos()
 
   override def getJobConfigs: Map[String, Config] = {
     db withSession {
