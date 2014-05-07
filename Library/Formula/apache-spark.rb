@@ -2,9 +2,8 @@ require "formula"
 
 class ApacheSpark < Formula
   homepage "https://spark.incubator.apache.org/"
-  url "http://d3kbcqa49mib13.cloudfront.net/spark-0.9.0-incubating.tgz"
-  version "0.9"
-  sha1 "87c7dcb52847de78085881d9192a61fcab58272c"
+  head "https://github.com/apache/spark.git", :tag => "v1.0.0-rc3" 
+  version "1.0.0rc3"
 
   def install
     # build using internal sbt setup
