@@ -20,7 +20,7 @@ class Scantailor < Formula
     end
   end
 
-  homepage 'http://scantailor.sourceforge.net/'
+  homepage 'http://scantailor.org/'
   url 'https://downloads.sourceforge.net/project/scantailor/scantailor/0.9.11.1/scantailor-0.9.11.1.tar.gz'
   version '0.9.11.1' => Version
   sha1 '80970bbcd65fbf8bc62c0ff0cb7bcb78c86961c3'
