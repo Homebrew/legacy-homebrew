@@ -84,7 +84,7 @@ class PebbleSdk < Formula
     resource('pyserial').stage { system "python", *install_args }
     resource('pypng').stage { system "python", *install_args }
 
-    prefix.install %w[Documentation Examples Pebble PebbleKit-Android
+    share.install %w[Documentation Examples Pebble PebbleKit-Android
         PebbleKit-iOS bin tools requirements.txt version.txt]
 
     resource('pebble-arm-toolchain').stage do
