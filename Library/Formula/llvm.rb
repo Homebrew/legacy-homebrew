@@ -17,7 +17,7 @@ class Llvm < Formula
   option 'rtti', 'Build with C++ RTTI'
   option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
 
-  depends_on :python => :recommended
+  depends_on :python => :optional
 
   keg_only :provided_by_osx
 
