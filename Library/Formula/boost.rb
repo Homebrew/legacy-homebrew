@@ -36,7 +36,7 @@ class Boost < Formula
   option 'with-mpi', 'Build with MPI support'
   option :cxx11
 
-  depends_on :python => :recommended
+  depends_on :python => :optional
   depends_on UniversalPython if build.universal? and build.with? "python"
 
   if build.with? 'icu'
