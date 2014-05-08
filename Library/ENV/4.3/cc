@@ -157,7 +157,8 @@ class Cmd
       '-mno-dynamic-no-pic', '-fearly-inlining', '-finline-functions-called-once',
       /^-finline-limit/, /^-f(?:no-)?check-new/, '-fno-delete-null-pointer-checks',
       '-fcaller-saves', '-fthread-jumps', '-fno-reorder-blocks', '-fcse-skip-blocks',
-      '-frerun-cse-after-loop', '-frerun-loop-opt', '-fcse-follow-jumps'
+      '-frerun-cse-after-loop', '-frerun-loop-opt', '-fcse-follow-jumps',
+      '-fno-regmove'
       # clang doesn't support these flags
       args << arg if not tool =~ /^clang/
     when /^-W[alp],/, /^-Wno-/
