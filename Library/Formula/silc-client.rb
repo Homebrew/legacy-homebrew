@@ -2,8 +2,8 @@ require 'formula'
 
 class SilcClient < Formula
   homepage 'http://silcnet.org/software/users/client/'
-  url 'http://silcnet.org/download/client/sources/silc-client-1.1.8.tar.gz'
-  sha1 '51fd1f22dbc1ceb15c6fb1a034eb9a09b72ee708'
+  url 'https://downloads.sourceforge.net/project/silc/silc/client/sources/silc-client-1.1.10.tar.gz'
+  sha1 '78c5ed2977c2dd4f3d9852e1ab09ba06a433feba'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
