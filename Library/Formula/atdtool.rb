@@ -5,7 +5,6 @@ class Atdtool < Formula
   url 'https://github.com/lpenz/atdtool/archive/upstream/1.3.tar.gz'
   sha1 '0e6ac49a106912f010f3cb71dec59ef5c29ad108'
 
-  depends_on :python
   depends_on 'txt2tags' => :build
 
   def install

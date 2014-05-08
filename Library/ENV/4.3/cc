@@ -118,55 +118,76 @@ class Cmd
   end
 
   def refurbished_args
-    lset = Set.new(libpath + syslibpath)
-    iset = Set.new(cpath.flatten)
+    @lset = Set.new(libpath + syslibpath)
+    @iset = Set.new(cpath.flatten)
 
     args = []
-    whittler = @args.each
+    enum = @args.each
+
     loop do
-      case arg = whittler.next
-      when '-arch', /^-Xarch_/
-        whittler.next
-      when '-m32'
-        # If ENV.m32 was set, we allow the "-m32" flag, but we don't add anything
-        args << '-m32' if cccfg? '3'
-      when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
-           /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/, '-m64',
-           /^-O[0-9zs]?$/, '-fast', '-no-cpp-precomp',
-           '-pedantic', '-pedantic-errors'
-      when '-fopenmp', '-lgomp', '-mno-fused-madd', '-fforce-addr', '-fno-defer-pop',
-           '-mno-dynamic-no-pic', '-fearly-inlining', '-finline-functions-called-once',
-           /^-finline-limit/, /^-f(?:no-)?check-new/, '-fno-delete-null-pointer-checks',
-           '-fcaller-saves', '-fthread-jumps', '-fno-reorder-blocks', '-fcse-skip-blocks',
-           '-frerun-cse-after-loop', '-frerun-loop-opt', '-fcse-follow-jumps'
-        # clang doesn't support these flags
-        args << arg if not tool =~ /^clang/
-      when /^-W.*/
-        args << arg if arg =~ /^-W[alp],/ or arg =~ /^-Wno-/
-      when '-macosx_version_min', '-dylib_install_name'
-        args << "-Wl,#{arg},#{whittler.next}"
-      when '-multiply_definedsuppress'
-        args << "-Wl,-multiply_defined,suppress"
-      when '-undefineddynamic_lookup'
-        args << "-Wl,-undefined,dynamic_lookup"
-      when /^-isysroot/
-        # We set the sysroot
-        whittler.next
-      when '-dylib'
-        args << "-Wl,#{arg}"
-      when /^-I(.+)?/
-        # Support both "-Ifoo" (one argument) and "-I foo" (two arguments)
-        val  = chuzzle($1) || whittler.next
-        path = canonical_path(val)
-        args << "-I#{val}" if keep?(path) and iset.add?(path)
-      when /^-L(.+)?/
-        val  = chuzzle($1) || whittler.next
-        path = canonical_path(val)
-        args << "-L#{val}" if keep?(path) and lset.add?(path)
+      case arg = enum.next
+      when "-arch"
+        enum.next
+      when /^-Xarch_/
+        refurbished = refurbish_arg(enum.next, enum)
+        unless refurbished.empty?
+          args << arg
+          args += refurbished
+        end
       else
-        args << arg
+        args += refurbish_arg(arg, enum)
       end
     end
+
+    args
+  end
+
+  def refurbish_arg(arg, enum)
+    args = []
+
+    case arg
+    when '-m32'
+      # If ENV.m32 was set, we allow the "-m32" flag, but we don't add anything
+      args << '-m32' if cccfg? '3'
+    when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
+      /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/, '-m64',
+      /^-O[0-9zs]?$/, '-fast', '-no-cpp-precomp',
+      '-pedantic', '-pedantic-errors'
+    when '-fopenmp', '-lgomp', '-mno-fused-madd', '-fforce-addr', '-fno-defer-pop',
+      '-mno-dynamic-no-pic', '-fearly-inlining', '-finline-functions-called-once',
+      /^-finline-limit/, /^-f(?:no-)?check-new/, '-fno-delete-null-pointer-checks',
+      '-fcaller-saves', '-fthread-jumps', '-fno-reorder-blocks', '-fcse-skip-blocks',
+      '-frerun-cse-after-loop', '-frerun-loop-opt', '-fcse-follow-jumps'
+      # clang doesn't support these flags
+      args << arg if not tool =~ /^clang/
+    when /^-W[alp],/, /^-Wno-/
+      args << arg
+    when /^-W.*/
+      # prune warnings
+    when '-macosx_version_min', '-dylib_install_name'
+      args << "-Wl,#{arg},#{enum.next}"
+    when '-multiply_definedsuppress'
+      args << "-Wl,-multiply_defined,suppress"
+    when '-undefineddynamic_lookup'
+      args << "-Wl,-undefined,dynamic_lookup"
+    when /^-isysroot/
+      # We set the sysroot
+      enum.next
+    when '-dylib'
+      args << "-Wl,#{arg}"
+    when /^-I(.+)?/
+      # Support both "-Ifoo" (one argument) and "-I foo" (two arguments)
+      val  = chuzzle($1) || enum.next
+      path = canonical_path(val)
+      args << "-I#{val}" if keep?(path) && @iset.add?(path)
+    when /^-L(.+)?/
+      val  = chuzzle($1) || enum.next
+      path = canonical_path(val)
+      args << "-L#{val}" if keep?(path) && @lset.add?(path)
+    else
+      args << arg
+    end
+
     args
   end
 

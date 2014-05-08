@@ -2,25 +2,15 @@ require 'formula'
 
 class Ffmpeg < Formula
   homepage 'http://ffmpeg.org/'
-
-  stable do
-    url 'http://ffmpeg.org/releases/ffmpeg-2.2.1.tar.bz2'
-    sha1 'c5f8d103b20cd73d329401d85ced4a014757f8b9'
-
-    patch do
-      # fixes an api incompability with latest x265 1.0, to be removed with next ffmpeg 2.2.x+ release
-      url "http://git.videolan.org/?p=ffmpeg.git;a=patch;h=96e13c9897501d91f1e2d493eee93a4f897ea462"
-      sha1 'a869377c45692220f7f4c96b3b7b159b14e5047b'
-    end
-  end
+  url 'http://ffmpeg.org/releases/ffmpeg-2.2.2.tar.bz2'
+  sha1 '8a4f282ccb5efbec31a9747d12c8d7b07c481f2e'
 
   head 'git://git.videolan.org/ffmpeg.git'
 
   bottle do
-    revision 2
-    sha1 "1e87dc5a5f48481f5fcb864262b4f4291d15596c" => :mavericks
-    sha1 "15bd444bcd5e1d6441e9d44a15698d88654875b7" => :mountain_lion
-    sha1 "77ca50cf51b78efa6f5b6f2993ff147b1e360c51" => :lion
+    sha1 "3d92cc6e39cb4a931ba0ef6086a3facccc2a4fb6" => :mavericks
+    sha1 "abdf840749997229d507bb21096b4950430b2664" => :mountain_lion
+    sha1 "65b6fee763e85df649addbe2232e0dec810c7365" => :lion
   end
 
   option "without-x264", "Disable H.264 encoder"

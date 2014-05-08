@@ -89,7 +89,7 @@ Note that these flags should only appear after a command.
     The options `--set-name` and `--set-version` each take an argument and allow
     you to explicitly set the name and version of the package you are creating.
 
-  * `deps [--1] [-n] [--tree] [--all] [--installed]` <formulae>:
+  * `deps [--1] [-n] [--union] [--tree] [--all] [--installed]` <formulae>:
     Show dependencies for <formulae>. When given multiple formula arguments,
     show the intersection of dependencies for <formulae>, except when passed
     `--tree`, `--all`, or `--installed`.
@@ -98,6 +98,9 @@ Note that these flags should only appear after a command.
     recursing.
 
     If `-n` is passed, show dependencies in topological order.
+
+    If `--union` is passed, show the union of dependencies for <formulae>,
+    instead of the intersection.
 
     If `--tree` is passed, show dependencies as a tree.
 

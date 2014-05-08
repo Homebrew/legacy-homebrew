@@ -21,7 +21,7 @@ class Awscli < Formula
     end
   end
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
 
   resource "botocore" do
     url "https://pypi.python.org/packages/source/b/botocore/botocore-0.42.0.tar.gz"
@@ -54,6 +54,7 @@ class Awscli < Formula
   end
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
