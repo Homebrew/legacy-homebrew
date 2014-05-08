@@ -93,7 +93,7 @@ class JobSqlDAO(config: Config) extends JobDAO {
 
     // log it into database
     val jarId = insertJarInfo(JarInfo(appName, uploadTime), jarBytes)
-    println("jarId created: " + jarId)
+    println("jarId created in JARS table via auto inc: " + jarId)
   }
 
   override def getApps: Map[String, DateTime] = {
@@ -194,8 +194,6 @@ class JobSqlDAO(config: Config) extends JobDAO {
   private def convertDateSqlToJoda(timestamp: Timestamp): DateTime =
     new DateTime(timestamp.getTime())
 
-  // TODO: Implement JobDAO.saveJobInfo() and JobDAO.getJobInfos()
-
   override def getJobConfigs: Map[String, Config] = {
     db withSession {
       implicit sessions =>
@@ -214,6 +212,58 @@ class JobSqlDAO(config: Config) extends JobDAO {
     }
   }
 
-  def getJobInfos: Map[String,spark.jobserver.io.JobInfo] = ???
-  def saveJobInfo(jobInfo: JobInfo): Unit = ???
+  override def saveJobInfo(jobInfo: JobInfo) {
+    db withSession {
+      implicit sessions =>
+
+        // First, query JARS table for a jarId
+        val upload = convertDateJodaToSql(jobInfo.jarInfo.uploadTime)
+        val query = jars.filter { jar =>
+          jar.appName === jobInfo.jarInfo.appName && jar.uploadTime === upload
+        }.map( _.jarId )
+
+        val jarId = query.list.head
+
+        // Extract out the the JobInfo members and convert any members to appropriate SQL types
+        val JobInfo(jobId, contextName, _, classPath, startTime, endTime, error) = jobInfo
+        val (start, endOpt, errOpt) = (convertDateJodaToSql(startTime),
+          endTime.map(convertDateJodaToSql(_)),
+          error.map(_.getMessage))
+
+
+        // When you run a job asynchronously, the same data is written twice with a different
+        // endTime and error value. When the row does not exists we write the data as new, otherwise,
+        // we want to update the row.
+        val updateQuery = jobs.filter(_.jobId === jobId).map(job => (job.endTime, job.error))
+
+        updateQuery.list.size match {
+          case 0 => jobs += (jobId, contextName, jarId, classPath, start, endOpt, errOpt)
+          case _ => updateQuery.update(endOpt, errOpt)
+        }
+    }
+  }
+
+  override def getJobInfos: Map[String, JobInfo] = {
+    db withSession {
+      implicit sessions =>
+
+        // Join the JARS and JOBS tables without unnecessary columns
+        val joinQuery = for {
+          jar <- jars
+          j <- jobs if j.jarId === jar.jarId
+        } yield
+          (j.jobId, j.contextName, jar.appName, jar.uploadTime, j.classPath, j.startTime, j.endTime, j.error)
+
+        // Transform the each row of the table into a map of JobInfo values
+        joinQuery.list.map { case (id, context, app, upload, classpath, start, end, err) =>
+          id -> JobInfo(id,
+            context,
+            JarInfo(app, convertDateSqlToJoda(upload)),
+            classpath,
+            convertDateSqlToJoda(start),
+            end.map(convertDateSqlToJoda(_)),
+            err.map(new Throwable(_)))
+        }.toMap
+    }
+  }
 }
