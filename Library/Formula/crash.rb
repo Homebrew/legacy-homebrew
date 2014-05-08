@@ -2,8 +2,8 @@ require 'formula'
 
 class Crash < Formula
   homepage 'http://www.crashub.org/'
-  url 'https://crsh.googlecode.com/files/crash-1.2.8.tar.gz'
-  sha1 '12290cd227b20eae07674f8cf0d43ee58732e34b'
+  url 'http://search.maven.org/remotecontent?filepath=org/crsh/crsh.distrib/1.2.9/crsh.distrib-1.2.9.tar.gz'
+  sha1 '7e0f066ea398e76bdabe0ed715a4ac188597c4f4'
 
   devel do
     url 'http://search.maven.org/remotecontent?filepath=org/crashub/crash.distrib/1.3.0-beta17/crash.distrib-1.3.0-beta17.tar.gz'
@@ -17,8 +17,8 @@ class Crash < Formula
   end
 
   resource 'docs' do
-    url 'https://crsh.googlecode.com/files/crash-1.2.8-docs.tar.gz'
-    sha1 'ea385cf28c9c8fc0512d8809bf511c37a5be8e1a'
+    url 'http://search.maven.org/remotecontent?filepath=org/crsh/crsh.distrib/1.2.9/crsh.distrib-1.2.9-docs.tar.gz'
+    sha1 '134ebdb9b77f0916f73101154ea475e49ca57fe3'
   end
 
   def install
