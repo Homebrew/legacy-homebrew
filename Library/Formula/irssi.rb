@@ -21,7 +21,8 @@ class Irssi < Formula
   patch :DATA
 
   def install
-    args =%W[
+    args = %W[
+      --disable-dependency-tracking
       --prefix=#{prefix}
       --sysconfdir=#{etc}
       --with-bot
