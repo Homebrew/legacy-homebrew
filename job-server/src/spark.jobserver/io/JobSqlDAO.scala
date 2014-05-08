@@ -19,7 +19,6 @@ class JobSqlDAO(config: Config) extends JobDAO {
 
   // Definition of the tables
   class Jars(tag: Tag) extends Table[(Int, String, Timestamp, Array[Byte])](tag, "JARS") {
-    // TODO: Does the default value 0 (start value) need to be set? i.e. => O.Default(0)
     def jarId = column[Int]("JAR_ID", O.PrimaryKey, O.AutoInc)
     def appName = column[String]("APP_NAME")
     def uploadTime = column[Timestamp]("UPLOAD_TIME")
@@ -52,7 +51,8 @@ class JobSqlDAO(config: Config) extends JobDAO {
   val configs = TableQuery[Configs]
 
   // DB initialization
-  val jdbcUrl = "jdbc:h2:file:" + rootDir + "/h2-db"
+  val defaultJdbcUrl = "jdbc:h2:file:" + rootDir + "/h2-db"
+  val jdbcUrl = getOrElse(config.getString("spark.jobserver.sqldao.jdbc.url"), defaultJdbcUrl)
   val db = Database.forURL(jdbcUrl, driver = "org.h2.Driver")
 
   // Server initialization
@@ -107,7 +107,7 @@ class JobSqlDAO(config: Config) extends JobDAO {
         }
 
         query.list.map {
-          case (_, appName: String, timestamp: Timestamp) =>
+          case (appName: String, timestamp: Timestamp) =>
             (appName, convertDateSqlToJoda(timestamp))
         }.toMap
     }
@@ -213,4 +213,7 @@ class JobSqlDAO(config: Config) extends JobDAO {
         configs += (jobId, jobConfig.root().render(ConfigRenderOptions.concise()))
     }
   }
+
+  def getJobInfos: Map[String,spark.jobserver.io.JobInfo] = ???
+  def saveJobInfo(jobInfo: JobInfo): Unit = ???
 }
