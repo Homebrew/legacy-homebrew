@@ -83,6 +83,10 @@ module Superenv
     self['ACLOCAL_PATH'] = determine_aclocal_path
     self['M4'] = MacOS.locate("m4") if deps.include? "autoconf"
 
+    # On 10.9, the tools in /usr/bin proxy to the active developer directory.
+    # This means we can use them for any combination of CLT and Xcode.
+    self["HOMEBREW_PREFER_CLT_PROXIES"] = "1" if MacOS.version == "10.9"
+
     # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
     # compiler flag stripping. It consists of a string of characters which act
     # as flags. Some of these flags are mutually exclusive.
