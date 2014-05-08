@@ -7,7 +7,7 @@ class Pgformatter < Formula
 
   def install
     system "perl", "Makefile.PL", "DESTDIR=."
-    system "make"
+    system "make", "install"
     bin.install "blib/script/pg_format"
     man1.install "blib/man1/pg_format.1"
   end
