@@ -35,7 +35,7 @@ class Fontforge < Formula
   option 'with-x', 'Build with X11 support, including FontForge.app'
 
   depends_on 'gettext'
-  depends_on :python => :recommended
+  depends_on :python => :optional
 
   depends_on 'libpng'   => :recommended
   depends_on 'jpeg'     => :recommended
