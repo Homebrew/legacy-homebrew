@@ -2,7 +2,7 @@ require "formula"
 
 class Docker < Formula
   homepage "http://docker.io"
-  url "https://github.com/dotcloud/docker.git", :tag => "v0.11.0"
+  url "https://github.com/dotcloud/docker.git", :tag => "v0.11.1"
 
   bottle do
     sha1 "518c3618d64d15fe6efff6dd65d736a8ccf7b1ea" => :mavericks
