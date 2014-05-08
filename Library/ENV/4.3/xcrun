@@ -15,6 +15,7 @@ arg0 = ARGV.shift
 
 exe = "/usr/bin/#{arg0}"
 if File.executable?(exe)
+  exec(exe, *ARGV) if ENV["HOMEBREW_PREFER_CLT_PROXIES"]
   sdkroot = ENV["HOMEBREW_SDKROOT"]
   exec(exe, *ARGV) unless sdkroot && File.directory?(sdkroot)
 end
