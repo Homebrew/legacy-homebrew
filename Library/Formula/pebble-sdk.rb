@@ -2,8 +2,8 @@ require 'formula'
 
 class PebbleSdk < Formula
   homepage 'https://developer.getpebble.com/2/'
-  url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.0.2.tar.gz'
-  sha1 'c6e2cefb638ebcfffae31c6cc3b175d3e62b3c44'
+  url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.1.tar.gz'
+  sha1 '1429d489acdad3244b5a974b50e54d3afbe54464'
 
   bottle do
     revision 1
