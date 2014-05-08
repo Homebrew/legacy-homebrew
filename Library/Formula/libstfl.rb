@@ -5,7 +5,7 @@ class Libstfl < Formula
   url 'http://www.clifford.at/stfl/stfl-0.22.tar.gz'
   sha1 '226488be2b33867dfb233f0fa2dde2d066e494bd'
 
-  depends_on :python => :recommended
+  depends_on :python => :optional
   depends_on 'swig' => :build
 
   patch :DATA
