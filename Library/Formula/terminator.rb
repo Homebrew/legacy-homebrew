@@ -1,18 +1,18 @@
-require 'formula'
+require "formula"
 
 class Terminator < Formula
-  homepage 'https://launchpad.net/terminator'
-  url 'http://launchpad.net/terminator/trunk/0.97/+download/terminator-0.97.tar.gz'
-  sha1 'aa92a6cacd572f6a834ac1de88ae699c7b7dee69'
+  homepage "https://launchpad.net/terminator"
+  url "http://launchpad.net/terminator/trunk/0.97/+download/terminator-0.97.tar.gz"
+  sha1 "aa92a6cacd572f6a834ac1de88ae699c7b7dee69"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'intltool' => :build
+  depends_on "pkg-config" => :build
+  depends_on "intltool" => :build
   depends_on :python
   depends_on :x11
-  depends_on 'vte'
-  depends_on 'pygtk'
-  depends_on 'pygobject'
-  depends_on 'pango'
+  depends_on "vte"
+  depends_on "pygtk"
+  depends_on "pygobject"
+  depends_on "pango"
 
   # Patch to fix cwd resolve issue for OS X / Darwin
   # See: https://bugs.launchpad.net/terminator/+bug/1261293
