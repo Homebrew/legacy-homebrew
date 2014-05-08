@@ -2,9 +2,9 @@ require "formula"
 
 class Xplanetfx < Formula
   homepage "http://mein-neues-blog.de/xplanetFX/"
-  url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.5.26_all.tar.gz"
-  sha1 "a46a39cd73af2028cfb546db3e8096b52b19b61c"
-  version "2.5.26"
+  url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.5.27_all.tar.gz"
+  sha1 "df1b7e7b8d3dbe890284b598076da2424c94260e"
+  version "2.5.27"
 
   bottle do
     cellar :any
