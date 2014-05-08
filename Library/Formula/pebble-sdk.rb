@@ -84,8 +84,9 @@ class PebbleSdk < Formula
     resource('pyserial').stage { system "python", *install_args }
     resource('pypng').stage { system "python", *install_args }
 
-    share.install %w[Documentation Examples Pebble PebbleKit-Android
-        PebbleKit-iOS bin tools requirements.txt version.txt]
+    share.install %w[Documentation Examples PebbleKit-Android
+        PebbleKit-iOS README.txt]
+    prefix.install %w[Pebble bin tools requirements.txt version.txt]
 
     resource('pebble-arm-toolchain').stage do
       system "make", "PREFIX=#{prefix}/arm-cs-tools", "install-cross"
