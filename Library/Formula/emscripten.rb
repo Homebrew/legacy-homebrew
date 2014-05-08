@@ -7,6 +7,12 @@ class Emscripten < Formula
 
   head "https://github.com/kripken/emscripten.git", :branch => "incoming"
 
+  bottle do
+    sha1 "de4ec1922382233ae5162ebc722e41b5f70ebafd" => :mavericks
+    sha1 "49600712bee90639efc17eafb4be8d5c454aa073" => :mountain_lion
+    sha1 "ace690ca25a73913df158c5c5d94cb9df8aa9f32" => :lion
+  end
+
   head do
     resource "fastcomp" do
       url "https://github.com/kripken/emscripten-fastcomp.git", :branch => "incoming"
