@@ -9,6 +9,9 @@ require 'extend/pathname'
 
 BOTTLE_ERB = <<-EOS
   bottle do
+    <% if root_url != BottleSpecification.new.root_url %>
+    root_url "<%= root_url %>"
+    <% end %>
     <% if prefix.to_s != "/usr/local" %>
     prefix "<%= prefix %>"
     <% end %>
@@ -181,7 +184,10 @@ module Homebrew extend self
       end
     end
 
+    root_url = ARGV.value("root_url")
+
     bottle = BottleSpecification.new
+    bottle.root_url(root_url) if root_url
     bottle.prefix HOMEBREW_PREFIX
     bottle.cellar relocatable ? :any : HOMEBREW_CELLAR
     bottle.revision bottle_revision
