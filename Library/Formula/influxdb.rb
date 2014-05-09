@@ -2,8 +2,8 @@ require "formula"
 
 class Influxdb < Formula
   homepage "http://influxdb.org"
-  url "http://get.influxdb.org/influxdb-0.6.1.src.tar.gz"
-  sha1 "4cc0f075fcd5437858d40169373555ce4f12339a"
+  url "http://get.influxdb.org/influxdb-0.6.2.src.tar.gz"
+  sha1 "6a16d2e61a8116fed0ea82a53db96d27b6b0103f"
 
   bottle do
     sha1 "36a5a5d835e42b4122bab09519706cfc2a626a45" => :mavericks
