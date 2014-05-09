@@ -10,11 +10,9 @@ class Contacts < Formula
   sha1 '79526dd96e5b5297daaae6327c79de9366f94c87'
 
   depends_on :xcode
-  # CLT is required with Xcode 4.6, but not Xcode 5
-  depends_on :clt if MacOS.version == :lion
 
   def install
-    system "make"
+    system "make", "SDKROOT=#{MacOS.sdk_path}"
     bin.install "build/Deployment/contacts"
     man1.install gzip("contacts.1")
   end
