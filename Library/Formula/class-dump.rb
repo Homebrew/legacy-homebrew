@@ -6,6 +6,7 @@ class ClassDump < Formula
   url 'https://github.com/nygard/class-dump/archive/3.5.tar.gz'
   sha1 'c343bec63878161b02c956f49c9c1c8d989b4b5a'
 
+  depends_on :xcode
   depends_on :macos => :mavericks
 
   def install
