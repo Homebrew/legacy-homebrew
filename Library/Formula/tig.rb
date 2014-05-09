@@ -4,8 +4,8 @@ class Tig < Formula
   homepage 'http://jonas.nitro.dk/tig/'
 
   stable do
-    url "http://jonas.nitro.dk/tig/releases/tig-2.0.1.tar.gz"
-    sha1 "db3c740e4fbd198cb9d9c47ddb720739139e69e3"
+    url "http://jonas.nitro.dk/tig/releases/tig-2.0.2.tar.gz"
+    sha1 "de01c3a52952172e42ae642d97a55505d7e09efd"
   end
 
   head do
