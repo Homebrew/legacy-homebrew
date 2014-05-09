@@ -22,6 +22,11 @@ object Dependencies {
     "io.netty" % "netty" % "3.6.6.Final"
   )
 
+  lazy val slickDeps = Seq(
+    "com.typesafe.slick" %% "slick" % "2.0.2-RC1",
+    "com.h2database" % "h2" % "1.3.170"
+  )
+
   lazy val logbackDeps = Seq(
     "ch.qos.logback" % "logback-classic" % "1.0.7"
   )

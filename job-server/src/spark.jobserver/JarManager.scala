@@ -31,8 +31,5 @@ class JarManager(jobDao: JobDAO) extends InstrumentedActor {
       }
   }
 
-  private def createJarsList() = jobDao.getApps.map {
-    case (appName, uploadTimes) =>
-      appName -> uploadTimes.head
-  }.toMap
+  private def createJarsList() = jobDao.getApps
 }
