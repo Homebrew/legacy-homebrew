@@ -29,6 +29,7 @@ TAP_MIGRATIONS = {
   "nlopt" => "homebrew/science",
   "octave" => "homebrew/science",
   "opencv" => "homebrew/science",
+  "pan" => "homebrew/boneyard",
   "pocl" => "homebrew/science",
   "qfits" => "homebrew/boneyard",
   "qrupdate" => "homebrew/science",
