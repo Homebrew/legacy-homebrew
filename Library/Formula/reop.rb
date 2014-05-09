@@ -2,9 +2,9 @@ require "formula"
 
 class Reop < Formula
   homepage "http://www.tedunangst.com/flak/post/reop"
-  head 'https://github.com/tedu/reop.git', :using => :git
+  head 'https://github.com/tedu/reop.git'
   url 'https://github.com/tedu/reop/archive/1.0.0.tar.gz'
-  sha256 '8c2bf9a0b66e9a43cbcf3291858a97ccdc62736a378cd98aa3d3fc47f5db3798' 
+  sha256 '8c2bf9a0b66e9a43cbcf3291858a97ccdc62736a378cd98aa3d3fc47f5db3798'
   depends_on "libsodium"
 
   def install
@@ -20,11 +20,11 @@ class Reop < Formula
       +lxZaqFZR6Kc4uVJnvirIK97IQ==
       -----END REOP PUBLIC KEY-----
     EOS
-    
+
     (testpath/"msg").write <<-EOS.undent
       testing one two three four
     EOS
-    
+
     (testpath/"sig").write <<-EOS.undent
       -----BEGIN REOP SIGNATURE-----
       ident:root
