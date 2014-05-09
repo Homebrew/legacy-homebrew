@@ -5,11 +5,12 @@ import java.io.{FileOutputStream, BufferedOutputStream, File}
 import java.sql.Timestamp
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
-import scala.slick.driver.H2Driver.simple._
 import scala.slick.jdbc.meta.MTable
 
 
 class JobSqlDAO(config: Config) extends JobDAO {
+  import scala.slick.driver.H2Driver.simple._
+
   private val logger = LoggerFactory.getLogger(getClass)
 
   private val rootDir = getOrElse(config.getString("spark.jobserver.sqldao.rootdir"),
@@ -93,7 +94,6 @@ class JobSqlDAO(config: Config) extends JobDAO {
 
     // log it into database
     val jarId = insertJarInfo(JarInfo(appName, uploadTime), jarBytes)
-    println("jarId created in JARS table via auto inc: " + jarId)
   }
 
   override def getApps: Map[String, DateTime] = {
@@ -229,7 +229,6 @@ class JobSqlDAO(config: Config) extends JobDAO {
         val (start, endOpt, errOpt) = (convertDateJodaToSql(startTime),
           endTime.map(convertDateJodaToSql(_)),
           error.map(_.getMessage))
-
 
         // When you run a job asynchronously, the same data is written twice with a different
         // endTime and error value. When the row does not exists we write the data as new, otherwise,

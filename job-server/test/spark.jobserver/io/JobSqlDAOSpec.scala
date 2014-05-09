@@ -14,19 +14,20 @@ class JobSqlDAOSpec extends TestJarFinder with FunSpec with ShouldMatchers with 
   var dao: JobSqlDAO = _
 
   // *** TEST DATA ***
+  val time: DateTime = new DateTime()
+  val throwable: Throwable = new Throwable("test-error")
   // jar test data
-  val jarInfo: JarInfo = genJarInfo(newAppName = false, newTime = false)
+  val jarInfo: JarInfo = genJarInfo(false, false)
   val jarBytes: Array[Byte] = Files.toByteArray(testJar)
   var jarFile: File = new File(config.getString("spark.jobserver.sqldao.rootdir"),
                                jarInfo.appName + "-" + jarInfo.uploadTime + ".jar")
 
   // jobInfo test data
-  val jobInfoNoEndNoErr:JobInfo = genJobInfo(jarInfo, hasEndTime = false, hasError = false)
+  val jobInfoNoEndNoErr:JobInfo = genJobInfo(jarInfo, false, false, false)
   val expectedJobInfo = jobInfoNoEndNoErr
-  // TODO: Moar testz 2 come!!! You-z deez!!!
-  val jobInfoSomeEndNoErr: JobInfo = genJobInfo(jarInfo, hasEndTime = true, hasError = false)
-  val jobInfoNoEndSomeErr: JobInfo = genJobInfo(jarInfo, hasEndTime = false, hasError = true)
-  val jobInfoSomeEndSomeErr: JobInfo = genJobInfo(jarInfo, hasEndTime = true, hasError = true)
+  val jobInfoSomeEndNoErr: JobInfo = genJobInfo(jarInfo, true, false, false)
+  val jobInfoNoEndSomeErr: JobInfo = genJobInfo(jarInfo, false, true, false)
+  val jobInfoSomeEndSomeErr: JobInfo = genJobInfo(jarInfo, true, true, false)
 
   // job config test data
   val jobId: String = jobInfoNoEndNoErr.jobId
@@ -34,25 +35,24 @@ class JobSqlDAOSpec extends TestJarFinder with FunSpec with ShouldMatchers with 
   val expectedConfig: Config = ConfigFactory.empty().withValue("marco", ConfigValueFactory.fromAnyRef("pollo"))
 
   // Helper functions and closures!!
-  private def genJarInfo(newAppName: Boolean, newTime: Boolean): JarInfo = {
+  private def genJarInfoClosure = {
     var appCount: Int = 0
     var timeCount: Int = 0
-    val time: DateTime = new DateTime()
 
     def genTestJarInfo(newAppName: Boolean, newTime: Boolean): JarInfo = {
       appCount = appCount + (if (newAppName) 1 else 0)
       timeCount = timeCount + (if (newTime) 1 else 0)
 
       val app = "test-appName" + appCount
-      val upload = time.plusMinutes(timeCount)
+      val upload = if (newTime) time.plusMinutes(timeCount) else time
 
       JarInfo(app, upload)
     }
 
-    genTestJarInfo(newAppName, newTime)
+    genTestJarInfo _
   }
 
-  private def genJobInfo(jarInfo: JarInfo, hasEndTime: Boolean, hasError: Boolean, isNew: Boolean = false): JobInfo = {
+  private def genJobInfoClosure = {
     var count: Int = 0
 
     def genTestJobInfo(jarInfo: JarInfo, hasEndTime: Boolean, hasError: Boolean, isNew:Boolean): JobInfo = {
@@ -61,13 +61,12 @@ class JobSqlDAOSpec extends TestJarFinder with FunSpec with ShouldMatchers with 
       val id: String = "test-id" + count
       val contextName: String = "test-context"
       val classPath: String = "test-classpath"
-      val nowTime: DateTime = DateTime.now()
-      val startTime: DateTime = nowTime.plusMinutes(5)
+      val startTime: DateTime = time
 
       val noEndTime: Option[DateTime] = None
-      val someEndTime: Option[DateTime] = Some(nowTime.minusMinutes(5)) // Any DateTime Option is fine
+      val someEndTime: Option[DateTime] = Some(time) // Any DateTime Option is fine
       val noError: Option[Throwable] = None
-      val someError: Option[Throwable] = Some(new Throwable("test-error"))
+      val someError: Option[Throwable] = Some(throwable)
 
       val endTime: Option[DateTime] = if (hasEndTime) someEndTime else noEndTime
       val error: Option[Throwable] = if (hasError) someError else noError
@@ -75,8 +74,11 @@ class JobSqlDAOSpec extends TestJarFinder with FunSpec with ShouldMatchers with 
       JobInfo(id, contextName, jarInfo, classPath, startTime, endTime, error)
     }
 
-    genTestJobInfo(jarInfo, hasEndTime, hasError, isNew)
+    genTestJobInfo _
   }
+
+  def genJarInfo = genJarInfoClosure
+  def genJobInfo = genJobInfoClosure
   //**********************************
 
   before {
@@ -84,8 +86,6 @@ class JobSqlDAOSpec extends TestJarFinder with FunSpec with ShouldMatchers with 
     jarFile.delete()
   }
 
-  // NOTE: Take note that all saves to the DB are obviously persisted
-  // test after test.
   describe("save and get the jars") {
     it("should be able to save one jar and get it back") {
       // check the pre-condition
@@ -145,7 +145,7 @@ class JobSqlDAOSpec extends TestJarFinder with FunSpec with ShouldMatchers with 
     }
 
     it("Save a new config, bring down DB, bring up DB, should get configs from DB") {
-      val jobId2: String = genJobInfo(genJarInfo(false, false), false, false, isNew = true).jobId
+      val jobId2: String = genJobInfo(genJarInfo(false, false), false, false, true).jobId
       val jobConfig2: Config = ConfigFactory.parseString("{merry=xmas}")
       val expectedConfig2 = ConfigFactory.empty().withValue("merry", ConfigValueFactory.fromAnyRef("xmas"))
       // config previously saved
@@ -195,7 +195,7 @@ class JobSqlDAOSpec extends TestJarFinder with FunSpec with ShouldMatchers with 
     }
 
     it("Save another new jobInfo, bring down DB, bring up DB, should JobInfos from DB") {
-      val jobInfo2 = genJobInfo(jarInfo, hasEndTime = false, hasError = false, isNew = true)
+      val jobInfo2 = genJobInfo(jarInfo, false, false, true)
       val jobId2 = jobInfo2.jobId
       val expectedJobInfo2 = jobInfo2
       // jobInfo previously saved
@@ -208,15 +208,57 @@ class JobSqlDAOSpec extends TestJarFinder with FunSpec with ShouldMatchers with 
       dao = new JobSqlDAO(config)
 
       // Get all jobInfos
-      val jars = dao.getJobInfos
+      val jobs = dao.getJobInfos
 
       // test
-      jars.keySet should equal (Set(jobId, jobId2))
-      jars.values.toSeq should equal (Seq(expectedJobInfo, expectedJobInfo2))
+      jobs.keySet should equal (Set(jobId, jobId2))
+      jobs.values.toSeq should equal (Seq(expectedJobInfo, expectedJobInfo2))
     }
-  }
 
-  describe("TODO: Moar testz 2 come!!!") {
-    // TODO: Change describe string above =P
+    it("saving a JobInfo with the same jobId should update the JOBS table") {
+      val expectedNoEndSomeErr = jobInfoNoEndSomeErr
+      val expectedSomeEndNoErr = jobInfoSomeEndNoErr
+      val expectedSomeEndSomeErr = jobInfoSomeEndSomeErr
+      val exJobId = jobInfoNoEndNoErr.jobId
+
+      val info = genJarInfo(true, false)
+      info.uploadTime should equal (jarInfo.uploadTime)
+
+      // Get all jobInfos
+      val jobs: Map[String, JobInfo] = dao.getJobInfos
+
+      // First Test
+      jobs.size should equal (2)
+      jobs(exJobId) should equal (expectedJobInfo)
+
+      // Second Test
+      // Cannot compare JobInfos directly if error is a Some(Throwable) because
+      // Throwable uses referential equality
+      dao.saveJobInfo(jobInfoNoEndSomeErr)
+      val jobs2 = dao.getJobInfos
+      jobs2.size should equal (2)
+      jobs2(exJobId).endTime should equal (None)
+      jobs2(exJobId).error.isDefined should equal (true)
+      intercept[Throwable] { jobs2(exJobId).error.map(throw _) }
+      jobs2(exJobId).error.get.getMessage should equal (throwable.getMessage)
+
+      // Third Test
+      dao.saveJobInfo(jobInfoSomeEndNoErr)
+      val jobs3 = dao.getJobInfos
+      jobs3.size should equal (2)
+      jobs3(exJobId).error.isDefined should equal (false)
+      jobs3(exJobId) should equal (expectedSomeEndNoErr)
+
+      // Fourth Test
+      // Cannot compare JobInfos directly if error is a Some(Throwable) because
+      // Throwable uses referential equality
+      dao.saveJobInfo(jobInfoSomeEndSomeErr)
+      val jobs4 = dao.getJobInfos
+      jobs4.size should equal (2)
+      jobs4(exJobId).endTime should equal (expectedSomeEndSomeErr.endTime)
+      jobs4(exJobId).error.isDefined should equal (true)
+      intercept[Throwable] { jobs4(exJobId).error.map(throw _) }
+      jobs4(exJobId).error.get.getMessage should equal (throwable.getMessage)
+    }
   }
 }
