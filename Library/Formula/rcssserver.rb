@@ -28,6 +28,8 @@ class Rcssserver < Formula
     ENV.j1
 
     if build.head?
+      # These inreplaces are artifacts of the upstream packaging process:
+      # http://sourceforge.net/p/sserver/discussion/76439/thread/bd3ad6e4
       inreplace "src/Makefile.am" do |s|
         s.gsub! "coach_lang_parser.h", "coach_lang_parser.hpp"
         s.gsub! "player_command_parser.h", "player_command_parser.hpp"
