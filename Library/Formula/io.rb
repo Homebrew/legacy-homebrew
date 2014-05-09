@@ -10,7 +10,6 @@ class Io < Formula
   option "without-addons", "Build without addons"
 
   depends_on "cmake" => :build
-  depends_on :python => :recommended
 
   if build.with? "addons"
     depends_on "glib"
@@ -28,6 +27,7 @@ class Io < Formula
     depends_on "pcre"
     depends_on "yajl"
     depends_on "xz"
+    depends_on :python => :optional
   end
 
   fails_with :clang do
@@ -40,24 +40,24 @@ class Io < Formula
 
   def install
     ENV.j1
+
     if build.without? "addons"
       # Turn off all add-ons in main cmake file
-      inreplace "CMakeLists.txt",
-        "add_subdirectory(addons)", '#add_subdirectory(addons)'
+      inreplace "CMakeLists.txt", "add_subdirectory(addons)",
+                                  '#add_subdirectory(addons)'
     else
-      # Turn off specific add-ons that are not currently working
       inreplace "addons/CMakeLists.txt" do |s|
+        if build.without? "python"
+          s.gsub! "add_subdirectory(Python)", '#add_subdirectory(Python)'
+        end
+
+        # Turn off specific add-ons that are not currently working
+
         # Looks for deprecated Freetype header
         s.gsub! /(add_subdirectory\(Font\))/, '#\1'
         # Builds against older version of memcached library
         s.gsub! /(add_subdirectory\(Memcached\))/, '#\1'
       end
-    end
-
-    # Note, Python requires addons to be built
-    if build.without? "python"
-      inreplace "addons/CMakeLists.txt",
-        "add_subdirectory(Python)", '#add_subdirectory(Python)'
     end
 
     mkdir "buildroot" do
