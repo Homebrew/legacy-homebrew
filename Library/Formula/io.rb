@@ -46,11 +46,11 @@ class Io < Formula
         "add_subdirectory(addons)", '#add_subdirectory(addons)'
     else
       # Turn off specific add-ons that are not currently working
-      inreplace "addons/CMakeLists.txt" do |addons|
+      inreplace "addons/CMakeLists.txt" do |s|
         # Looks for deprecated Freetype header
-        addons.gsub! /(add_subdirectory\(Font\))/, '#\1'
+        s.gsub! /(add_subdirectory\(Font\))/, '#\1'
         # Builds against older version of memcached library
-        addons.gsub! /(add_subdirectory\(Memcached\))/, '#\1'
+        s.gsub! /(add_subdirectory\(Memcached\))/, '#\1'
       end
     end
 
