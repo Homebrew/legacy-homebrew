@@ -55,8 +55,9 @@ class ExampleFormula < Formula
   head do
     url "https://example.com/repo.git"
 
-    depends_on :autoconf
-    depends_on :automake
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   # The optional devel block is only executed if the user passes `--devel`.
@@ -155,9 +156,6 @@ class ExampleFormula < Formula
   depends_on :arch => :ppc # Only builds on PowerPC?
   depends_on :ld64 # Sometimes ld fails on `MacOS.version < :leopard`. Then use this.
   depends_on :x11 # X11/XQuartz components.
-  # autoconf/automake is sometimes needed for --HEAD checkouts:
-  depends_on :bsdmake
-  depends_on :libtool
   depends_on :mysql => :recommended
   # It is possible to only depend on something if
   # `build.with?` or `build.without? "another_formula"`:
