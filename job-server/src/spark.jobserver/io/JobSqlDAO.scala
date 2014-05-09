@@ -71,22 +71,33 @@ class JobSqlDAO(config: Config) extends JobDAO {
     db withSession {
       implicit session =>
 
-        if (MTable.getTables("JARS").list().isEmpty) {
-          logger.info("Table JARS doesn't exist. Creating JARS table...")
+        if (isAllTablesNotExist()) {
+          // All tables don't exist. It's the first time the Job Server runs. So, create all tables.
+          logger.info("Creating JARS, CONFIGS and JOBS tables ...")
           jars.ddl.create
-        }
-
-        if (MTable.getTables("CONFIGS").list().isEmpty) {
-          logger.info("Table CONFIGS doesn't exist. Creating CONFIGS table...")
           configs.ddl.create
+          jobs.ddl.create
+        } else if (isSomeTablesNotExist()) {
+          // Only some tables exist, not all. It means there is data corruption in the metadata-store.
+          // Exit the Job Server now.
+          throw new RuntimeException("Some tables in metadata-store are missing. Please recover it first.")
         }
 
-        if (MTable.getTables("JOBS").list().isEmpty) {
-          logger.info("Table JOBS doesn't exist. Creating JOBS table...")
-          jobs.ddl.create
-        }
+        // If the cases above are not true, it means all tables exit. No need to initialize the database.
     }
   }
+
+  // Check if a single exist
+  private def isTableExist(tableName: String)(implicit session: Session): Boolean =
+    !MTable.getTables(tableName).list().isEmpty
+
+  // Check if "all tables don't exist" is true
+  private def isAllTablesNotExist()(implicit session: Session): Boolean =
+    !isTableExist("JARS") && !isTableExist("CONFIGS") && !isTableExist("JOBS")
+
+  // Check if "some tables don't exist" is true
+  private def isSomeTablesNotExist()(implicit session: Session): Boolean =
+    !isTableExist("JARS") || !isTableExist("CONFIGS") || !isTableExist("JOBS")
 
   override def saveJar(appName: String, uploadTime: DateTime, jarBytes: Array[Byte]) {
     // The order is important. Save the jar file first and then log it into database.
