@@ -127,7 +127,10 @@ class JobFileDAO(config: Config) extends JobDAO {
     }
   }
 
-  def getApps: Map[String, Seq[DateTime]] = apps.toMap
+  def getApps: Map[String, DateTime] = apps.map {
+    case (appName, uploadTimes) =>
+      appName -> uploadTimes.head
+    }.toMap
 
   override def retrieveJarFile(appName: String, uploadTime: DateTime): String =
     new File(rootDir, createJarName(appName, uploadTime) + ".jar").getAbsolutePath

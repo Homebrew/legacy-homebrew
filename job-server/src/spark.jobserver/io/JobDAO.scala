@@ -32,11 +32,11 @@ trait JobDAO {
   def saveJar(appName: String, uploadTime: DateTime, jarBytes: Array[Byte])
 
   /**
-   * Return all applications name and their upload times.
+   * Return all applications name and their last upload times.
    *
    * @return
    */
-  def getApps: Map[String, Seq[DateTime]]
+  def getApps: Map[String, DateTime]
 
   /**
    * TODO(kelvinchu): Remove this method later when JarManager doesn't use it anymore.
@@ -81,7 +81,7 @@ trait JobDAO {
    * @return Some(lastUploadedTime) if the app exists and the list of times is nonempty, None otherwise
    */
   def getLastUploadTime(appName: String): Option[DateTime] =
-    getApps.get(appName).flatMap { uploadTimes => uploadTimes.headOption }
+    getApps.get(appName)
 
   /**
    * A safe API for getting values from Typesafe Config, will return a default if the
