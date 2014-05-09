@@ -9,7 +9,7 @@ class Ruby19Dependency < Requirement
   end
 
   def message
-    "Selecta requires Ruby 1.9 or better."
+    "Betty requires Ruby 1.9 or better."
   end
 end
 
