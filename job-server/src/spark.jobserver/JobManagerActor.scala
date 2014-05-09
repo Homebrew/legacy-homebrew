@@ -259,13 +259,14 @@ class JobManagerActor(dao: JobDAO,
 
   // Protocol like "local" is supported in Spark for Jar loading, but not supported in Java.
   // This method helps convert those Spark URI to those supported by Java.
+  // "local" URIs means that the jar must be present on each job server node at the path,
+  // as well as on every Spark worker node at the path.
+  // For the job server, convert the local to a local file: URI since Java URI doesn't understand local:
   private def convertJarUriSparkToJava(jarUri: String): String = {
     val uri = new URI(jarUri)
     uri.getScheme match {
-      case "local" =>
-        "file://" + uri.getPath
-      case _ =>
-        jarUri
+      case "local" => "file://" + uri.getPath
+      case _ => jarUri
     }
   }
 
