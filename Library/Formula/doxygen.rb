@@ -7,6 +7,13 @@ class Doxygen < Formula
   mirror "https://downloads.sourceforge.net/project/doxygen/rel-1.8.7/doxygen-1.8.7.src.tar.gz"
   sha1 "3728f183f390f96b4ec39d02782a7c2d91f7bfca"
 
+  bottle do
+    cellar :any
+    sha1 "2375c33e14d0b084a1838ba0540dd55554c4829d" => :mavericks
+    sha1 "e9cd831b98b059603a8b7f549e87971ccbfbca24" => :mountain_lion
+    sha1 "fb60760aa4228ad4a54800c92de39a4310169359" => :lion
+  end
+
   option "with-dot", "Build with dot command support from Graphviz."
   option "with-doxywizard", "Build GUI frontend with qt support."
   option "with-libclang", "Build with libclang support."
