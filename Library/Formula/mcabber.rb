@@ -2,9 +2,8 @@ require 'formula'
 
 class Mcabber < Formula
   homepage 'http://mcabber.com/'
-  url 'http://mcabber.com/files/mcabber-0.10.2.tar.bz2'
-  sha1 '7bff70dcf09e8a8a4cc7219e03b48bad382a6bda'
-  revision 1
+  url 'http://mcabber.com/files/mcabber-0.10.3.tar.bz2'
+  sha1 '9254f520cb37e691fb55d4fc46df4440e4a17f14'
 
   head do
     url 'http://mcabber.com/hg/', :using => :hg

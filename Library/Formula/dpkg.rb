@@ -12,6 +12,9 @@ class Dpkg < Formula
   patch :DATA
 
   def install
+    # We need to specify a recent gnutar, otherwise various dpkg C programs will
+    # use the system 'tar', which will fail because it lacks certain switches.
+    ENV["TAR"] = Formula["gnu-tar"].opt_bin/"gtar"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-dselect",
