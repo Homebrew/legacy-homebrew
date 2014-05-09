@@ -147,7 +147,6 @@ class ExampleFormula < Formula
   # If a dependency is only needed in certain cases:
   depends_on "sqlite" if MacOS.version == :leopard
   depends_on :xcode # If the formula really needs full Xcode.
-  depends_on :clt # If the formula really needs the CLTs for Xcode.
   depends_on :tex # Homebrew does not provide a Tex Distribution.
   depends_on :fortran # Checks that `gfortran` is available or `FC` is set.
   depends_on :mpi => :cc # Needs MPI with `cc`
