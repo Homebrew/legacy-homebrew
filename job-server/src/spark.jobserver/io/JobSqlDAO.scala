@@ -162,13 +162,17 @@ class JobSqlDAO(config: Config) extends JobDAO {
     db withSession {
       implicit session =>
 
-        val dateTime = convertDateJodaToSql(uploadTime)
-        val query = jars.filter { jar =>
-          jar.appName === appName && jar.uploadTime === dateTime
-        }.map( _.jarId )
-
-        query.list.head
+        queryJarId(appName, uploadTime)
     }
+  }
+
+  private def queryJarId(appName: String, uploadTime: DateTime)(implicit session: Session): Int = {
+    val dateTime = convertDateJodaToSql(uploadTime)
+    val query = jars.filter { jar =>
+      jar.appName === appName && jar.uploadTime === dateTime
+    }.map( _.jarId )
+
+    query.list.head
   }
 
   // Cache the jar file into local file system.
@@ -217,12 +221,7 @@ class JobSqlDAO(config: Config) extends JobDAO {
       implicit sessions =>
 
         // First, query JARS table for a jarId
-        val upload = convertDateJodaToSql(jobInfo.jarInfo.uploadTime)
-        val query = jars.filter { jar =>
-          jar.appName === jobInfo.jarInfo.appName && jar.uploadTime === upload
-        }.map( _.jarId )
-
-        val jarId = query.list.head
+        val jarId = queryJarId(jobInfo.jarInfo.appName, jobInfo.jarInfo.uploadTime)
 
         // Extract out the the JobInfo members and convert any members to appropriate SQL types
         val JobInfo(jobId, contextName, _, classPath, startTime, endTime, error) = jobInfo
