@@ -15,19 +15,15 @@ end
 
 class Betty < Formula
   homepage "https://github.com/pickhardt/betty"
-  url "https://github.com/pickhardt/betty/archive/fed0e108d9a9ceb059428a3601c163d939c80bbc.zip"
-  sha1 "478b5a41563a0a6fe7e006c9c79f8d156d14e04b"
-  version "0.1.3"
+  url "https://github.com/pickhardt/betty/archive/v0.1.4.tar.gz"
+  sha1 "f31c4ab02036e82b07116b821193e32287029908"
+  version "0.1.4"
 
   depends_on Ruby19Dependency
 
   def install
-    libexec.install 'lib', 'main.rb'
-    (libexec/'betty').write <<-EOS.undent
-      #!/usr/bin/env bash
-      #{libexec/'main.rb'} $@
-    EOS
-    (libexec/'betty').chmod 0755
+    libexec.install 'lib', 'main.rb' => 'betty'
+    (libexec/'betty').chmod 0555
     bin.write_exec_script libexec/'betty'
   end
 
