@@ -2,7 +2,7 @@ require "formula"
 
 class LSmash < Formula
   homepage "http://up-cat.net/L%252DSMASH.html"
-  url "https://github.com/l-smash/l-smash.git", :tag => "v1.5.2", :shallow => false
+  url "https://github.com/l-smash/l-smash.git", :tag => "v1.9.1", :shallow => false
   head "https://github.com/l-smash/l-smash.git"
 
   bottle do
