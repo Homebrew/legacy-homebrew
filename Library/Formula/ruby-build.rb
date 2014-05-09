@@ -17,6 +17,6 @@ class RubyBuild < Formula
   end
 
   test do
-    system "#{bin}/ruby-build --version | grep #{version}"
+    system "#{bin}/ruby-build", "--version"
   end
 end
