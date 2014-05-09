@@ -62,7 +62,7 @@ module Stdenv
 
     append 'LDFLAGS', '-Wl,-headerpad_max_install_names'
 
-    send(compiler)
+    send(compiler) unless inherit?
     validate_cc!(formula) unless formula.nil?
 
     if !inherit? && cc =~ GNU_GCC_REGEXP
