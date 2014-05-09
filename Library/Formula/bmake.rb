@@ -19,15 +19,14 @@ class Bmake < Formula
   end
 
   test do
-    # Note, literal tabs in this makefile
     (testpath/"Makefile").write <<-EOS
 all: hello
 
 hello:
-	@echo 'Test successful.'
+\t@echo 'Test successful.'
 
 clean:
-	rm -rf Makefile
+\trm -rf Makefile
 EOS
 
     system bin/"bmake"
