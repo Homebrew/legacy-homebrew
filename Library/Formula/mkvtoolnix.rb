@@ -52,6 +52,9 @@ class Mkvtoolnix < Formula
 
   def install
     ENV.cxx11
+    
+    ENV['CPPFLAGS'] = "-I#{HOMEBREW_PREFIX}/include"
+    ENV['LDFLAGS'] = "-L#{HOMEBREW_PREFIX}/lib"
 
     ENV['ZLIB_CFLAGS'] = '-I/usr/include'
     ENV['ZLIB_LIBS'] = '-L/usr/lib -lz'
