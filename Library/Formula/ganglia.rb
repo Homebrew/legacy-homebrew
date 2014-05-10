@@ -25,15 +25,13 @@ class Ganglia < Formula
                           "--prefix=#{prefix}",
                           "--sbindir=#{bin}",
                           "--sysconfdir=#{etc}",
+                          "--mandir=#{man}",
                           "--with-gmetad",
                           "--with-libpcre=#{HOMEBREW_PREFIX}"
     system "make install"
 
     # Generate the default config file
     system "#{bin}/gmond -t > #{etc}/gmond.conf" unless File.exist? "#{etc}/gmond.conf"
-
-    # Install man pages
-    man1.install Dir['mans/*']
   end
 
   def caveats; <<-EOS.undent
