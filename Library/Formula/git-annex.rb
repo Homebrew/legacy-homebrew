@@ -50,7 +50,7 @@ class GitAnnex < Formula
     # and propagate its content to another
     system "git", "clone", "my_annex", "my_annex_clone"
     Dir.chdir "my_annex_clone" do
-      assert (not File.file? "bigfile")
+      assert !File.file?("bigfile")
       system "git", "annex", "get", "bigfile"
       assert File.file? "bigfile"
     end
