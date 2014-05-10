@@ -99,16 +99,4 @@ class Vim < Formula
     system "make", "install", "prefix=#{prefix}", "STRIP=true"
     bin.install_symlink "vim" => "vi" if build.include? "override-system-vi"
   end
-
-  def caveats
-    if build.with? "python" and build.with? "python3"
-      <<-EOS.undent
-        Vim has been built with dynamic loading of Python 2 and Python 3.
-
-        Note: For more information about Vim dynamically loads both
-        Python 2 and Python 3, see:
-            http://vimdoc.sourceforge.net/htmldoc/if_pyth.html#python3
-      EOS
-    end
-  end
 end
