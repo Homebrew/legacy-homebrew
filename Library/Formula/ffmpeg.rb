@@ -110,6 +110,8 @@ class Ffmpeg < Formula
     # http://trac.macports.org/ticket/20938#comment:22
     ENV.append_to_cflags "-mdynamic-no-pic" if Hardware.is_32_bit? && Hardware::CPU.intel? && ENV.compiler == :clang
 
+    ENV["GIT_DIR"] = cached_download/".git" if build.head?
+
     system "./configure", *args
 
     if MacOS.prefer_64_bit?
