@@ -55,21 +55,13 @@ class Sqlmap < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    resource("ibm-db").stage { system "python", *install_args }
-    resource("impacket").stage { system "python", *install_args }
-    resource("ntlm").stage { system "python", *install_args }
-    resource("pysqlite").stage { system "python", *install_args }
+    res = %w{ibm-db impacket ntlm pysqlite}
+    res << "mysql-python" if build.with? "mysql"
+    res << "psycopg2" if build.with? "postgresql"
+    res << "pyodbc" if build.with? "unixodbc"
 
-    if build.with? "mysql"
-      resource("mysql-python").stage { system "python", *install_args }
-    end
-
-    if build.with? "postgresql"
-      resource("psycopg2").stage { system "python", *install_args }
-    end
-
-    if build.with? "unixodbc"
-      resource("pyodbc").stage { system "python", *install_args }
+    res.each do |r|
+      resource(r).stage { system "python", *install_args }
     end
 
     prefix.install "doc", "extra", "plugins", "shell", "tamper", "txt", "udf", "xml", "sqlmap.conf"
