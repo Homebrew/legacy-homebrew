@@ -128,6 +128,9 @@ class Cmd
       case arg = enum.next
       when "-arch"
         enum.next
+      when "-m32"
+        args << arg if cccfg?("3")
+      when "-m64"
       when /^-Xarch_/
         refurbished = refurbish_arg(enum.next, enum)
         unless refurbished.empty?
@@ -146,11 +149,8 @@ class Cmd
     args = []
 
     case arg
-    when '-m32'
-      # If ENV.m32 was set, we allow the "-m32" flag, but we don't add anything
-      args << '-m32' if cccfg? '3'
     when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
-      /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/, '-m64',
+      /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/,
       /^-O[0-9zs]?$/, '-fast', '-no-cpp-precomp',
       '-pedantic', '-pedantic-errors'
     when '-fopenmp', '-lgomp', '-mno-fused-madd', '-fforce-addr', '-fno-defer-pop',
