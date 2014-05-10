@@ -86,10 +86,10 @@ class Vim < Formula
       py_prefix = `python -c "import sys; print(sys.prefix)"`.chomp
       py3_prefix = `python3 -c "import sys; print(sys.prefix)"`.chomp
       # Help vim find Python's dynamic library as absolute path.
-      inreplace "src/auto/config.mk", /-DDYNAMIC_PYTHON_DLL=\\".*\\"/,
-                   %(-DDYNAMIC_PYTHON_DLL=\'\"#{py_prefix}/Python\"\')
-      inreplace "src/auto/config.mk", /-DDYNAMIC_PYTHON3_DLL=\\".*\\"/,
-                  %(-DDYNAMIC_PYTHON3_DLL=\'\"#{py3_prefix}/Python\"\')
+      inreplace "src/auto/config.mk" do |s|
+        s.gsub! /-DDYNAMIC_PYTHON_DLL=\\".*\\"/, %(-DDYNAMIC_PYTHON_DLL=\'\"#{py_prefix}/Python\"\')
+        s.gsub! /-DDYNAMIC_PYTHON3_DLL=\\".*\\"/, %(-DDYNAMIC_PYTHON3_DLL=\'\"#{py3_prefix}/Python\"\')
+      end
     end
 
     system "make"
