@@ -66,7 +66,12 @@ class Mitmproxy < Formula
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    res = %w(pyopenssl pillow flask lxml netlib pyasn1 urwid)
+    resource("pillow").stage do
+      inreplace "setup.py", "'brew', '--prefix'", "'#{HOMEBREW_PREFIX}/bin/brew', '--prefix'"
+      system "python", *install_args
+    end
+
+    res = %w(pyopenssl flask lxml netlib pyasn1 urwid)
     res << 'pyamf' if build.with? 'pyamf'
     res << 'cssutils' if build.with? 'cssutils'
 
