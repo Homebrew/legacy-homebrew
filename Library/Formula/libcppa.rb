@@ -13,6 +13,8 @@ class Libcppa < Formula
   option 'with-examples', 'Build examples'
 
   def install
+    ENV.cxx11
+
     args = %W[
       --prefix=#{prefix}
       --build-static
