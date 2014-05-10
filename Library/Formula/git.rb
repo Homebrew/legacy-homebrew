@@ -4,12 +4,6 @@ class Git < Formula
   homepage "http://git-scm.com"
   head "https://github.com/git/git.git", :shallow => false
 
-  bottle do
-    sha1 "19c79f9eeb8d8a0a696ab650bb4a61563446801c" => :mavericks
-    sha1 "21edec86505cf7140ed49e09ccd32b55abde7dc1" => :mountain_lion
-    sha1 "e93a2bd8037f4718f01e65cfa4bad0833dec717d" => :lion
-  end
-
   stable do
     url "https://www.kernel.org/pub/software/scm/git/git-1.9.3.tar.gz"
     sha1 "8306305c4d39ac4fc07c9cf343241f12f7b69df2"
@@ -23,6 +17,12 @@ class Git < Formula
       url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-1.9.3.tar.gz"
       sha1 "ee7c4dbdeef99b048a4c314ce3186c94ff80a928"
     end
+  end
+
+  bottle do
+    sha1 "1c075f1e75fa59b481f2ba46218dc14665e292f9" => :mavericks
+    sha1 "2e1de01d0361f1f515def52dfce54d9ca26d6ef2" => :mountain_lion
+    sha1 "f81fd6523266fb64c90ce39748461c1a856feca2" => :lion
   end
 
   devel do
