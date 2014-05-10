@@ -30,7 +30,7 @@ class Ettercap < Formula
   option "with-ipv6", "Install with IPv6 support"
 
   depends_on 'cmake' => :build
-  depends_on 'ghostscript' => :build
+  depends_on 'ghostscript' => [:build, :optional]
   depends_on 'pcre'
   depends_on 'libnet'
   depends_on 'curl' # require libcurl >= 7.26.0
@@ -47,6 +47,7 @@ class Ettercap < Formula
     args << "-DENABLE_CURSES=OFF" if build.without? "curses"
     args << "-DENABLE_PLUGINS=OFF" if build.without? "plugins"
     args << "-DENABLE_IPV6=ON" if build.with? "ipv6"
+    args << "-DENABLE_PDF_DOCS=ON" if build.with? "ghostscript"
     args << "-DENABLE_GTK=OFF" if build.without? "gtk+"
     args << "-DENABLE_LUA=ON" if build.with? "luajit"
     args << ".."

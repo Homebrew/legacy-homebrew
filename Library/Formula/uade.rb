@@ -16,7 +16,17 @@ class Uade < Formula
   depends_on 'pkg-config' => :build
   depends_on 'libao'
 
+  resource "bencode-tools" do
+     url "https://github.com/heikkiorsila/bencode-tools.git"
+  end
+
   def install
+    resource("bencode-tools").stage do
+      system "./configure", "--prefix=#{prefix}", "--without-python"
+      system "make"
+      system "make install"
+    end if build.head?
+
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end

@@ -37,7 +37,7 @@ def load_logs name
 end
 
 def append_config files
-  files['config.out'] = {:content => `brew --config 2>&1`}
+  files['config.out'] = {:content => `brew config 2>&1`}
 end
 
 def append_doctor files

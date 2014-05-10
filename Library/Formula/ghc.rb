@@ -4,12 +4,12 @@ class Ghc < Formula
   homepage "http://haskell.org/ghc/"
   url "http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-src.tar.bz2"
   sha1 "8938e1ef08b37a4caa071fa169e79a3001d065ff"
+  revision 2
 
   bottle do
-    revision 2
-    sha1 "a6ceeb3f1f9ba2cf0454dc9d45dce69f8a5ae736" => :mavericks
-    sha1 "d91ee56c8066bae5173f705e83e15dbb8842f67f" => :mountain_lion
-    sha1 "1569f19cdad2675cbff328c0e259d6b8573e9d11" => :lion
+    sha1 "4f06ef60e2b861f990199cd33c09a3441297b891" => :mavericks
+    sha1 "f64a9492c0294dec39110e947dc344a53465c1fd" => :mountain_lion
+    sha1 "9a0055ba5bdc9a78a8131618a9fd02404ad053d3" => :lion
   end
 
   option "32-bit"
@@ -20,7 +20,7 @@ class Ghc < Formula
     url "http://www.haskell.org/ghc/dist/7.8.1-rc2/ghc-7.8.0.20140228-src.tar.bz2"
     sha1 "8bd8eb3410a7fccc322c0e23e8045fcb5793ea5a"
 
-    depends_on "apple-gcc42" if build.build_32_bit?
+    depends_on "gcc" if build.build_32_bit?
     depends_on :macos => :mountain_lion
 
     resource "binary" do
@@ -54,7 +54,7 @@ class Ghc < Formula
   stable do
     # http://hackage.haskell.org/trac/ghc/ticket/6009
     depends_on :macos => :snow_leopard
-    depends_on "apple-gcc42" if MacOS.version >= :mountain_lion
+    depends_on "gcc" if MacOS.version >= :mountain_lion
     depends_on "gmp"
 
     resource "binary" do

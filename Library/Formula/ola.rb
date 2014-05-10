@@ -1,7 +1,7 @@
 require "formula"
 
 class Ola < Formula
-  homepage "http://www.openlighting.org"
+  homepage "http://www.openlighting.org/ola/"
   url "https://github.com/OpenLightingProject/ola/releases/download/0.9.0/ola-0.9.0.tar.gz"
   sha1 "aff9bf0802d4e6fcbdc5a2ffcdb7ba25d67fd209"
 
@@ -19,15 +19,21 @@ class Ola < Formula
   depends_on "libmicrohttpd"
   depends_on "libusb"
   depends_on "liblo"
+  depends_on :python => :optional
 
   def install
     ENV.universal_binary if build.universal?
 
-    system "./configure", "--disable-debug",
-                          "--disable-fatal-warnings",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    args = %W[
+      --disable-debug
+      --disable-fatal-warnings
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+    ]
+    args << "--enable-python-libs" if build.with? "python"
+
+    system "./configure", *args
 
     system "make", "install"
   end

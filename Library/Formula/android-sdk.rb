@@ -10,7 +10,7 @@ class AndroidSdk < Formula
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
 
   resource 'completion' do
-    url 'https://raw.github.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash'
+    url 'https://raw.githubusercontent.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash'
     sha1 '6dfead9b1350dbe1c16a1c80ed70beedebfa39eb'
   end
 

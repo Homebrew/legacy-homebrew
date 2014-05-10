@@ -98,9 +98,7 @@ module SharedEnvExtension
         end
       end
     elsif ARGV.include? '--use-gcc'
-      gcc_installed = Formula.factory('apple-gcc42').installed? rescue false
-      # fall back to something else on systems without Apple gcc
-      if MacOS.locate('gcc-4.2') || gcc_installed
+      if MacOS.locate("gcc-4.2") || HOMEBREW_PREFIX.join("opt/apple-gcc42/bin/gcc-4.2").exist?
         :gcc
       else
         raise "gcc-4.2 not found!"
@@ -185,13 +183,48 @@ module SharedEnvExtension
     append "LDFLAGS", "-B#{ld64.bin}/"
   end
 
+  def gcc_version_formula(version)
+    gcc_name = "gcc-#{version}"
+    gcc_version_name = "gcc#{version.delete('.')}"
+
+    ivar = "@#{gcc_version_name}_version"
+    return instance_variable_get(ivar) if instance_variable_defined?(ivar)
+
+    gcc_path = HOMEBREW_PREFIX.join "opt/gcc/bin/#{gcc_name}"
+    gcc_formula = Formulary.factory "gcc"
+    gcc_versions_path = \
+      HOMEBREW_PREFIX.join "opt/#{gcc_version_name}/bin/#{gcc_name}"
+
+    formula = if gcc_path.exist?
+      gcc_formula
+    elsif gcc_versions_path.exist?
+      Formulary.factory gcc_version_name
+    elsif gcc_formula.version.to_s.include?(version)
+      gcc_formula
+    elsif (gcc_versions_formula = Formulary.factory(gcc_version_name) rescue nil)
+      gcc_versions_formula
+    else
+      gcc_formula
+    end
+
+    instance_variable_set(ivar, formula)
+  end
+
   def warn_about_non_apple_gcc(gcc)
-    opoo "Experimental support for non-Apple GCC enabled. Some builds may fail!"
+    gcc_name = 'gcc' + gcc.delete('.')
 
     begin
-      gcc_name = 'gcc' + gcc.delete('.')
-      gcc = Formulary.factory(gcc_name)
-      if !gcc.opt_prefix.exist?
+      gcc_formula = gcc_version_formula(gcc)
+      if gcc_formula.name == "gcc"
+        return if gcc_formula.opt_prefix.exist?
+        raise <<-EOS.undent
+        The Homebrew GCC was not installed.
+        You must:
+          brew install gcc
+        EOS
+      end
+
+      if !gcc_formula.opt_prefix.exist?
         raise <<-EOS.undent
         The requested Homebrew GCC, #{gcc_name}, was not installed.
         You must:

@@ -12,7 +12,7 @@ class Cantera < Formula
     sha1 "4c73614bb39725ef6bdc85cbc97e148a3e49241d" => :lion
   end
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on :fortran => :build
   depends_on 'graphviz'
 
@@ -32,7 +32,7 @@ class Cantera < Formula
 
     if MacOS.prefer_64_bit?
       # There is probably a better way to do this, but this seems to work for my purposes:
-      ENV['CFLAGS'] += " -arch #{Hardware::CPU.arch_64_bit}"
+      ENV.append "CFLAGS", "-arch #{Hardware::CPU.arch_64_bit}"
       ENV['CXX_OPT'] = "-arch #{Hardware::CPU.arch_64_bit}"
       ENV['ARCHFLAGS'] = "-arch #{Hardware::CPU.arch_64_bit}"
       # Maybe this does all that's needed?

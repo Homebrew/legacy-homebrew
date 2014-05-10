@@ -13,7 +13,6 @@ class Varnish < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
-  depends_on :python
 
   resource "docutils" do
     url "https://pypi.python.org/packages/source/d/docutils/docutils-0.11.tar.gz"

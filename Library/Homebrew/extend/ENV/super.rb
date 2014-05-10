@@ -40,13 +40,13 @@ module Superenv
   end
 
   def self.bin
-    @bin ||= (HOMEBREW_REPOSITORY/"Library/ENV").children.reject{|d| d.basename.to_s > MacOS::Xcode.version }.max
+    @bin ||= (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
   end
 
   def reset
     %w{CC CXX OBJC OBJCXX CPP MAKE LD LDSHARED
       CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
-      MACOSX_DEPLOYMENT_TARGET SDKROOT
+      MACOSX_DEPLOYMENT_TARGET SDKROOT DEVELOPER_DIR
       CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH
       CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH}.
       each{ |x| delete(x) }
@@ -65,7 +65,6 @@ module Superenv
     self.cc  = self['HOMEBREW_CC']  = determine_cc
     self.cxx = self['HOMEBREW_CXX'] = determine_cxx
     validate_cc!(formula) unless formula.nil?
-    self['DEVELOPER_DIR'] = determine_developer_dir
     self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     self['PATH'] = determine_path
     self['PKG_CONFIG_PATH'] = determine_pkg_config_path
@@ -76,7 +75,6 @@ module Superenv
     self['HOMEBREW_PREFIX'] = HOMEBREW_PREFIX
     self['HOMEBREW_TEMP'] = HOMEBREW_TEMP
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
-    self['HOMEBREW_DEVELOPER_DIR'] = determine_developer_dir # used by our xcrun shim
     self['HOMEBREW_OPTFLAGS'] = determine_optflags
     self['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
     self['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
@@ -84,6 +82,10 @@ module Superenv
     self['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     self['ACLOCAL_PATH'] = determine_aclocal_path
     self['M4'] = MacOS.locate("m4") if deps.include? "autoconf"
+
+    # On 10.9, the tools in /usr/bin proxy to the active developer directory.
+    # This means we can use them for any combination of CLT and Xcode.
+    self["HOMEBREW_PREFER_CLT_PROXIES"] = "1" if MacOS.version == "10.9"
 
     # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
     # compiler flag stripping. It consists of a string of characters which act
@@ -119,7 +121,7 @@ module Superenv
     paths = [Superenv.bin]
     if MacOS::Xcode.without_clt?
       paths << "#{MacOS::Xcode.prefix}/usr/bin"
-      paths << "#{MacOS::Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+      paths << "#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << MacOS::X11.bin if x11?
@@ -137,9 +139,8 @@ module Superenv
     end
 
     if self['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
-      gcc_name = 'gcc' + $1.delete('.')
-      gcc = Formulary.factory(gcc_name)
-      paths << gcc.opt_prefix/'bin'
+      gcc_formula = gcc_version_formula($1)
+      paths << gcc_formula.opt_prefix/'bin'
     end
 
     paths.to_path_s
@@ -210,8 +211,11 @@ module Superenv
       Hardware::CPU.optimization_flags.fetch(arch)
     elsif Hardware::CPU.intel? && !Hardware::CPU.sse4?
       Hardware::CPU.optimization_flags.fetch(Hardware.oldest_cpu)
+    elsif compiler == :clang
+      "-march=native"
+    # This is mutated elsewhere, so return an empty string in this case
     else
-      "-march=native" if compiler == :clang
+      ""
     end
   end
 
@@ -222,13 +226,6 @@ module Superenv
     # Fix issue with >= 10.8 apr-1-config having broken paths
     s << 'a' if MacOS.version >= :mountain_lion
     s
-  end
-
-  def determine_developer_dir
-    # If Xcode path is broken then this is basically a fix. In the case where
-    # nothing is valid, it still fixes most usage to supply a valid path that
-    # is not "/".
-    MacOS::Xcode.prefix || self['DEVELOPER_DIR']
   end
 
   public
@@ -304,7 +301,7 @@ module Superenv
     append 'HOMEBREW_CCCFG', "3", ''
   end
 
-  %w{O4 O3 O2 O1 O0 Os}.each do |opt|
+  %w{O3 O2 O1 O0 Os}.each do |opt|
     define_method opt do
       self['HOMEBREW_OPTIMIZATION_LEVEL'] = opt
     end
@@ -315,7 +312,7 @@ module Superenv
 
   # These methods are no longer necessary under superenv, but are needed to
   # maintain an interface compatible with stdenv.
-  noops.concat %w{fast Og libxml2 x11 set_cpu_flags macosxsdk remove_macosxsdk}
+  noops.concat %w{fast O4 Og libxml2 x11 set_cpu_flags macosxsdk remove_macosxsdk}
 
   # These methods provide functionality that has not yet been ported to
   # superenv.

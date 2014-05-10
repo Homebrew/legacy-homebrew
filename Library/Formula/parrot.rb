@@ -31,4 +31,22 @@ class Parrot < Formula
     # Don't install this file in HOMEBREW_PREFIX/lib
     rm_rf lib/'VERSION'
   end
+
+  test do
+    path = testpath/"test.pir"
+    path.write <<-EOS.undent
+      .sub _main
+        .local int i
+        i = 0
+      loop:
+        print i
+        inc i
+        if i < 10 goto loop
+      .end
+    EOS
+
+    out = `#{bin}/parrot #{path}`
+    assert_equal "0123456789", out
+    assert_equal 0, $?.exitstatus
+  end
 end

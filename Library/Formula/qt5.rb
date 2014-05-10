@@ -16,6 +16,7 @@ class Qt5 < Formula
   homepage 'http://qt-project.org/'
   url 'http://download.qt-project.org/official_releases/qt/5.2/5.2.1/single/qt-everywhere-opensource-src-5.2.1.tar.gz'
   sha1 '31a5cf175bb94dbde3b52780d3be802cbeb19d65'
+
   bottle do
     revision 2
     sha1 "6a514fbf56491a64316ef05acdf07ca6526ba458" => :mavericks
@@ -61,8 +62,6 @@ class Qt5 < Formula
 
     # https://bugreports.qt-project.org/browse/QTBUG-34382
     args << "-no-xcb"
-
-    args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 

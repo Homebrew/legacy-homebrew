@@ -3,7 +3,6 @@ require 'formula'
 class LuaRequirement < Requirement
   fatal true
   default_formula 'lua'
-
   satisfy { which 'lua' }
 end
 
@@ -35,6 +34,10 @@ class Gnuplot < Formula
   depends_on 'pkg-config' => :build
   depends_on LuaRequirement unless build.include? 'nolua'
   depends_on 'readline'
+  depends_on "libpng"
+  depends_on "jpeg"
+  depends_on "libtiff"
+  depends_on "fontconfig"
   depends_on 'pango'       if build.include? 'cairo' or build.include? 'wx'
   depends_on :x11          if build.with? "x"
   depends_on 'pdflib-lite' if build.include? 'pdf'
@@ -108,7 +111,12 @@ class Gnuplot < Formula
   end
 
   test do
-    system "#{bin}/gnuplot", "--version"
+    system "#{bin}/gnuplot", "-e", <<-EOS.undent
+        set terminal png;
+        set output "#{testpath}/image.png";
+        plot sin(x);
+    EOS
+    assert (testpath/"image.png").exist?
   end
 
   def caveats

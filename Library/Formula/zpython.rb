@@ -23,7 +23,7 @@ class Zpython < Formula
     # Note, non-head version is completly implemented in this lengthy patch
     # later on, we hope to use https://bitbucket.org/ZyX_I/zsh.git to download a tagged release.
     patch do
-      url "https://gist.github.com/felixbuenemann/5790777/raw/cb5ea3b34617174e50fd3972792ec0944959de3c/zpython.patch"
+      url "https://gist.githubusercontent.com/felixbuenemann/5790777/raw/cb5ea3b34617174e50fd3972792ec0944959de3c/zpython.patch"
       sha1 "b6ebdaf5f18da9c152f17f9a93987596a37fbf14"
     end
   end
@@ -40,7 +40,6 @@ class Zpython < Formula
   head 'https://bitbucket.org/ZyX_I/zsh.git', :branch => 'zpython'
 
   depends_on Zsh5Installed
-  depends_on :python
   depends_on :autoconf => :build
 
   def install
