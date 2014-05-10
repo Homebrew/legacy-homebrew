@@ -91,7 +91,7 @@ class Macvim < Formula
       # it is returned by `xcode-select -print-path` and already set by
       # Homebrew (in superenv). Instead Macvim needs the deeper dir to directly
       # append "SDKs/...".
-      args << "--with-developer-dir=#{MacOS::Xcode.prefix}/Platforms/MacOSX.platform/Developer/"
+      args << "--with-developer-dir=#{MacOS::Xcode.prefix}/Platforms/MacOSX.platform/Developer"
     end
 
     system "./configure", *args
