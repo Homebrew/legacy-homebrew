@@ -27,7 +27,7 @@ class Ganglia < Formula
                           "--sysconfdir=#{etc}",
                           "--mandir=#{man}",
                           "--with-gmetad",
-                          "--with-libpcre=#{HOMEBREW_PREFIX}"
+                          "--with-libpcre=#{Formula["pcre"].opt_prefix}"
     system "make install"
 
     # Generate the default config file
