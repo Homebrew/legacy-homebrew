@@ -233,9 +233,7 @@ class Cmd
   end
 
   def archflags
-    args = []
-    args.concat ENV['HOMEBREW_ARCHFLAGS'].split(' ') if cccfg? 'u'
-    args
+    ENV["HOMEBREW_ARCHFLAGS"].split(" ")
   end
 
   def syspath
