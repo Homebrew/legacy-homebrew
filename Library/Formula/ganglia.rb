@@ -20,6 +20,7 @@ class Ganglia < Formula
   end
 
   def install
+    inreplace "configure", %{varstatedir="/var/lib"}, %{varstatedir="#{var}/lib"}
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -32,6 +33,10 @@ class Ganglia < Formula
 
     # Generate the default config file
     system "#{bin}/gmond -t > #{etc}/gmond.conf" unless File.exist? "#{etc}/gmond.conf"
+  end
+
+  def post_install
+    (var/"lib/ganglia/rrds").mkpath
   end
 
   def caveats; <<-EOS.undent
