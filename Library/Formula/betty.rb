@@ -22,7 +22,6 @@ class Betty < Formula
 
   def install
     libexec.install 'lib', 'main.rb' => 'betty'
-    (libexec/'betty').chmod 0555
     bin.write_exec_script libexec/'betty'
   end
 
