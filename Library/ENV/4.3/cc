@@ -271,12 +271,10 @@ class Cmd
   def ldflags
     args = path_flags("-L", libpath)
     case mode
-    when :ld   then args << '-headerpad_max_install_names'
-    when :ccld then args << '-Wl,-headerpad_max_install_names'
-    when :cxxld
-      args << '-Wl,-headerpad_max_install_names'
-      args << '-stdlib=libc++' if cccfg? 'g'
-      args << '-stdlib=libstdc++' if cccfg? 'h'
+    when :ld
+      args << "-headerpad_max_install_names"
+    when :ccld, :cxxld
+      args << "-Wl,-headerpad_max_install_names"
     end
     args
   end
