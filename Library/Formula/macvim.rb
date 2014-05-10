@@ -117,9 +117,7 @@ class Macvim < Formula
 
     if build.include? "custom-icons"
       # Get the custom font used by the icons
-      cd 'src/MacVim/icons' do
-        system "make getenvy"
-      end
+      system "make", "-C", "src/MacVim/icons", "getenvy"
     else
       # Building custom icons fails for many users, so off by default.
       inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
