@@ -375,7 +375,7 @@ class Formula
     HOMEBREW_CELLAR.subdirs.map do |rack|
       begin
         Formulary.factory(rack.basename.to_s)
-      rescue FormulaUnavailableError
+      rescue FormulaUnavailableError, FormulaNotFound
       end
     end.compact
   end
