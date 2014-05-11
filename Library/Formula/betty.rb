@@ -2,6 +2,7 @@ require "formula"
 
 class Ruby19Dependency < Requirement
   fatal true
+  default_formula "ruby"
 
   satisfy do
     `ruby --version` =~ /ruby (\d\.\d).\d/
@@ -21,14 +22,14 @@ class Betty < Formula
   depends_on Ruby19Dependency
 
   def install
-    libexec.install 'lib', 'main.rb' => 'betty'
-    bin.write_exec_script libexec/'betty'
+    libexec.install "lib", "main.rb" => "betty"
+    bin.write_exec_script libexec/"betty"
   end
 
   test do
-    system bin/'betty', 'speech on'
-    system bin/'betty', 'what is your name'
-    system bin/'betty', 'version'
-    system bin/'betty', 'speech off'
+    system bin/"betty", "speech on"
+    system bin/"betty", "what is your name"
+    system bin/"betty", "version"
+    system bin/"betty", "speech off"
   end
 end
