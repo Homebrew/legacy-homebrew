@@ -17,6 +17,10 @@ class Nvm < Formula
 
         source $(brew --prefix nvm)/nvm.sh
 
+      Node installs will be lost upon upgrading nvm. Add the following above the source line to move install location and prevent this:
+
+        export NVM_DIR=~/.nvm
+
       Type `nvm help` for further information.
     EOS
   end
