@@ -35,10 +35,21 @@ class GobjectIntrospection < Formula
       s.change_make_var! 'GOBJECT_INTROSPECTION_LIBDIR', HOMEBREW_PREFIX/'lib'
     end
 
-    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args = %W{
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+    }
     args << "--with-cairo" if build.with? "tests"
 
     system "./configure", *args
+
+    # Point to the same gir repository as transformer.py above. See:
+    # https://github.com/Homebrew/homebrew/issues/29014
+    inreplace "config.h",
+      "#define GIR_DIR \"#{share}/gir-1.0\"",
+      "#define GIR_DIR \"#{HOMEBREW_PREFIX}/share/gir-1.0\""
+
     system "make"
     system "make", "check" if build.with? "tests"
     system "make", "install"
