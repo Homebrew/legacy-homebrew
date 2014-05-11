@@ -8,10 +8,9 @@ class Go < Formula
   sha1 '3ce0ac4db434fc1546fec074841ff40dc48c1167'
 
   bottle do
-    revision 1
-    sha1 "c9d4efb3c0597bcea12a5556c85199bc468cdffb" => :mavericks
-    sha1 "bff65b108ec15cb11c7a41afd2f57ce6a6f6029e" => :mountain_lion
-    sha1 "1c09d8aaac7d78b54405c39e5ede0ee9d927860f" => :lion
+    sha1 "cc2867d5043bbd5af3b9637b8ac62d564eeee334" => :mavericks
+    sha1 "daeab2ff21cd4a5682ea687a4a28f1f1c6f3b38e" => :mountain_lion
+    sha1 "73020a28cfddd1c63d3f4efba4e7a81d91b926ff" => :lion
   end
 
   devel do
