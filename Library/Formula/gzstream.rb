@@ -10,7 +10,13 @@ class Gzstream < Formula
     system "make", "clean" # remove precompiled files
     system "make"
     prefix.install "README",  "version", "index.html", "COPYING.LIB", "logo.gif"
+    (prefix/"examples").install "test_gunzip.C", "test_gzip.C"
     include.install "gzstream.h"
     lib.install "libgzstream.a"
+  end
+
+  test do
+    system "g++", "#{prefix}/examples/test_gunzip.C", "-lgzstream", "-lz"
+    system "g++", "#{prefix}/examples/test_gzip.C", "-lgzstream", "-lz"
   end
 end
