@@ -4,6 +4,7 @@ class Glib < Formula
   homepage "http://developer.gnome.org/glib/"
   url "http://ftp.gnome.org/pub/gnome/sources/glib/2.40/glib-2.40.0.tar.xz"
   sha256 "0d27f195966ecb1995dcce0754129fd66ebe820c7cd29200d264b02af1aa28b5"
+  revision 1
 
   bottle do
     sha1 "85f199d88dd10459de8752a42bd25a6092046d14" => :mavericks
@@ -53,6 +54,12 @@ class Glib < Formula
 
   def install
     ENV.universal_binary if build.universal?
+
+    # Fix gir repository used by gobject-introspection. Do it this way instead
+    # of passing a datadir, because we want other stuff to stay in the Cellar.
+    inreplace "glib/gutils.c",
+      "data_dirs = \"/usr/local/share/:/usr/share/\";",
+      "data_dirs = \"#{HOMEBREW_PREFIX}/share\";"
 
     # Disable dtrace; see https://trac.macports.org/ticket/30413
     args = %W[
