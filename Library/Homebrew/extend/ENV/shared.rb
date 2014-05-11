@@ -239,4 +239,6 @@ module SharedEnvExtension
       EOS
     end
   end
+
+  def preserve_arch_flags; end
 end

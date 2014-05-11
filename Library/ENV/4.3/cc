@@ -127,10 +127,15 @@ class Cmd
     loop do
       case arg = enum.next
       when "-arch"
-        enum.next
+        if cccfg?("K")
+          args << arg << enum.next
+        else
+          enum.next
+        end
       when "-m32"
-        args << arg if cccfg?("3")
+        args << arg if cccfg?("3") || cccfg?("K")
       when "-m64"
+        args << arg if cccfg?("K")
       when /^-Xarch_/
         refurbished = refurbish_arg(enum.next, enum)
         unless refurbished.empty?
