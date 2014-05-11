@@ -16,7 +16,7 @@ class Gzstream < Formula
   end
 
   test do
-    system "g++", "#{prefix}/examples/test_gunzip.C", "-lgzstream", "-lz"
-    system "g++", "#{prefix}/examples/test_gzip.C", "-lgzstream", "-lz"
+    system ENV.cxx, "#{prefix}/examples/test_gunzip.C", "-lgzstream", "-lz"
+    system ENV.cxx, "#{prefix}/examples/test_gzip.C", "-lgzstream", "-lz"
   end
 end
