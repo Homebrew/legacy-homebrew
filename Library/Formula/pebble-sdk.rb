@@ -84,7 +84,7 @@ class PebbleSdk < Formula
     resource('pyserial').stage { system "python", *install_args }
     resource('pypng').stage { system "python", *install_args }
 
-    share.install %w[Documentation Examples PebbleKit-Android
+    doc.install %w[Documentation Examples PebbleKit-Android
         PebbleKit-iOS README.txt]
     prefix.install %w[Pebble bin tools requirements.txt version.txt]
 
@@ -103,6 +103,12 @@ class PebbleSdk < Formula
       ENV['CPATH'] = ''
       system 'pebble', 'build'
     end
+  end
+
+  def caveats; <<-EOS.undent
+    Documentation, examples and Android/iOS kits can be found in
+      #{doc}
+    EOS
   end
 end
 
