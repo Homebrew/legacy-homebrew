@@ -1,16 +1,15 @@
 require 'formula'
 
-class Gupnp < Formula
+class GupnpAv < Formula
   homepage 'https://wiki.gnome.org/GUPnP/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gupnp/0.20/gupnp-0.20.8.tar.xz'
-  sha256 'f70da127e0d35a7b8aecaf6f58b740bbb56836451be33d7aeb7979a5c131eac8'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gupnp-av/0.12/gupnp-av-0.12.4.tar.xz'
+  sha256 '548a9cef8ab3007734e20a4ce284c422ae299b7e024a4824299f6ae7e3dd7a5b'
 
+  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
   depends_on 'gettext'
-  depends_on 'glib'
-  depends_on 'libsoup'
-  depends_on 'gssdp'
+  depends_on 'gupnp'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
