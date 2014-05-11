@@ -76,6 +76,7 @@ module Superenv
     self['HOMEBREW_TEMP'] = HOMEBREW_TEMP
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
     self['HOMEBREW_OPTFLAGS'] = determine_optflags
+    self['HOMEBREW_ARCHFLAGS'] = ''
     self['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
     self['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
     self['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
@@ -91,7 +92,6 @@ module Superenv
     # compiler flag stripping. It consists of a string of characters which act
     # as flags. Some of these flags are mutually exclusive.
     #
-    # u - A universal build was requested
     # 3 - A 32-bit build was requested
     # O - Enables argument refurbishing. Only active under the
     #     make/bsdmake wrappers currently.
@@ -258,7 +258,6 @@ module Superenv
 
   def universal_binary
     self['HOMEBREW_ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
-    append 'HOMEBREW_CCCFG', "u", ''
 
     # GCC doesn't accept "-march" for a 32-bit CPU with "-arch x86_64"
     if compiler != :clang && Hardware.is_32_bit?

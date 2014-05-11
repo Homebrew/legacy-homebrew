@@ -32,6 +32,7 @@ class Mkvtoolnix < Formula
 
   depends_on 'pkg-config' => :build
   depends_on Ruby19
+  depends_on 'libogg'
   depends_on 'libvorbis'
   depends_on 'flac' => :optional
   depends_on 'lzo' => :optional
@@ -56,13 +57,17 @@ class Mkvtoolnix < Formula
     ENV['ZLIB_LIBS'] = '-L/usr/lib -lz'
 
     boost = Formula["boost"].opt_prefix
+    ogg = Formula["libogg"]
+    vorbis = Formula["libvorbis"]
 
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--disable-gui",
                           "--disable-wxwidgets",
                           "--without-curl",
-                          "--with-boost=#{boost}"
+                          "--with-boost=#{boost}",
+                          "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include}",
+                          "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib}"
     system "./drake", "-j#{ENV.make_jobs}"
     system "./drake install"
   end
