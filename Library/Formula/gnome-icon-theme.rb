@@ -11,6 +11,9 @@ class GnomeIconTheme < Formula
   depends_on "icon-naming-utils" => :build
   depends_on "intltool" => :build
 
+  bottle do
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
