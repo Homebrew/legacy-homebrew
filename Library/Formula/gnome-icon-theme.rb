@@ -11,6 +11,13 @@ class GnomeIconTheme < Formula
   depends_on "icon-naming-utils" => :build
   depends_on "intltool" => :build
 
+  bottle do
+    cellar :any
+    sha1 "d0540a403786f3b7a64e9d29f41fc1ea691179c5" => :mavericks
+    sha1 "1ad3bcd28fa71c198154030bb1d8e8bff8d3f868" => :mountain_lion
+    sha1 "43f0035b70fd722ffefb79b7356e0f34a5ba4abf" => :lion
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
