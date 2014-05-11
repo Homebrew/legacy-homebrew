@@ -481,6 +481,13 @@ class FormulaInstaller
     args << "--env=#{ARGV.env}" if ARGV.env
     args << "--HEAD" if ARGV.build_head?
     args << "--devel" if ARGV.build_devel?
+
+    f.build.each do |opt, _|
+      name  = opt.name[/\A(.+)=\z$/, 1]
+      value = ARGV.value(name)
+      args << "--#{name}=#{value}" if name && value
+    end
+
     args
   end
 

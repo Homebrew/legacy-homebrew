@@ -2,13 +2,13 @@ require 'formula'
 
 class Hevea < Formula
   homepage 'http://hevea.inria.fr/'
-  url 'http://hevea.inria.fr/distri/hevea-2.13.tar.gz'
-  sha1 '03b35732f880591743ba750948b14efc0a46578b'
+  url "http://hevea.inria.fr/distri/hevea-2.14.tar.gz"
+  sha1 "78152c83802e34881ce3414072d75bff66facb15"
 
   bottle do
-    sha1 "35761f7de7166b14412443c701386581209ac61b" => :mavericks
-    sha1 "ac0e2b98c81f462a7df9a07e2fb38754f922d573" => :mountain_lion
-    sha1 "a86c833a0ffeb1f46917f529895546fdda604261" => :lion
+    sha1 "657486337d169647d9c10afb61516e38ae1bf772" => :mavericks
+    sha1 "0e1fe3dd6b1b21fbf435738f329473c1e6130e38" => :mountain_lion
+    sha1 "4766e826da52e595f679c699c836bcfb141dfdbd" => :lion
   end
 
   depends_on 'objective-caml'

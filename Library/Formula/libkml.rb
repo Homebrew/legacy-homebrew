@@ -14,7 +14,7 @@ class Libkml < Formula
     # Fix just forces internal libs to be linked statically until the following
     # is addressed upstream: https://code.google.com/p/libkml/issues/detail?id=50
     patch do
-      url "https://gist.github.com/dakcarto/7419882/raw/10ae08af224b3fee0617fa6288d806d3ccf37c0f/libkml-1.2-static-deps"
+      url "https://gist.githubusercontent.com/dakcarto/7419882/raw/10ae08af224b3fee0617fa6288d806d3ccf37c0f/libkml-1.2-static-deps"
       sha1 "eba47421e64e75bcf68026bbbe7c985b3bebcde5"
     end
   end
@@ -29,7 +29,8 @@ class Libkml < Formula
 
     # see stable patch
     patch do
-      url "https://gist.github.com/dakcarto/7420023/raw/65cdb088c91a7da844251e348eeda8df1d903f1d/libkml-svn-static-deps"
+      url "https://gist.githubusercontent.com/dakcarto/7420023/raw/65cdb088c91a7da844251e348eeda8df1d903f1d/libkml-svn-static-deps"
+      sha1 "9ef82d73199325e63596c28c6965ec8c151bf7c5"
     end
   end
 

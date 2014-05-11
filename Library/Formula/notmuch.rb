@@ -17,7 +17,8 @@ class Notmuch < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
-    if build.include? "emacs"
+    if build.with? "emacs"
+      ENV.deparallelize # Emacs and parallel builds aren't friends
       args << "--with-emacs"
     else
       args << "--without-emacs"

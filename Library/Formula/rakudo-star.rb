@@ -36,4 +36,10 @@ class RakudoStar < Formula
     # move the man pages out of the top level into share.
     mv "#{prefix}/man", share
   end
+
+  test do
+    out = `#{bin}/perl6 -e 'loop (my $i = 0; $i < 10; $i++) { print $i }'`
+    assert_equal "0123456789", out
+    assert_equal 0, $?.exitstatus
+  end
 end

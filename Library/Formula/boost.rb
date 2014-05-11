@@ -22,9 +22,10 @@ class Boost < Formula
 
   bottle do
     cellar :any
-    sha1 "8febaa2cf64152663551ae34a30f3030a1c1c023" => :mavericks
-    sha1 "1567fbf688e212f0e5a24d246fa386ea99cab5ae" => :mountain_lion
-    sha1 "2ed8000a0abb993fdd2985383eae9126c4170f5e" => :lion
+    revision 3
+    sha1 "c5b6b0cad1f8ac1ce69aa6c72facfc650b0cc38a" => :mavericks
+    sha1 "682f32c155bc0b17671bf7ff4323bde489ba44b0" => :mountain_lion
+    sha1 "b62fa644ab17bbce8e5bbc20e72ee0af605e7fc8" => :lion
   end
 
   env :userpaths
@@ -36,7 +37,7 @@ class Boost < Formula
   option 'with-mpi', 'Build with MPI support'
   option :cxx11
 
-  depends_on :python => :recommended
+  depends_on :python => :optional
   depends_on UniversalPython if build.universal? and build.with? "python"
 
   if build.with? 'icu'

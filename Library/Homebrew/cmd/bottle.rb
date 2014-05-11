@@ -240,8 +240,11 @@ module Homebrew extend self
           end
         end
 
+        version = f.version.to_s
+        version += "_#{f.revision}" if f.revision.to_i > 0
+
         safe_system 'git', 'commit', '--no-edit', '--verbose',
-          "--message=#{f.name}: #{update_or_add} #{f.version} bottle.",
+          "--message=#{f.name}: #{update_or_add} #{version} bottle.",
           '--', f.path
       end
     end

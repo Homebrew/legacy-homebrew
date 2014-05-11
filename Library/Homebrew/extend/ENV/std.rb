@@ -58,17 +58,7 @@ module Stdenv
 
     append 'LDFLAGS', '-Wl,-headerpad_max_install_names'
 
-    # set us up for the user's compiler choice
-    self.send self.compiler
-
-    # we must have a working compiler!
-    unless cc
-      @compiler = MacOS.default_compiler
-      self.send @compiler
-      self.cc  = MacOS.locate("cc")
-      self.cxx = MacOS.locate("c++")
-    end
-
+    send(compiler)
     validate_cc!(formula) unless formula.nil?
 
     if cc =~ GNU_GCC_REGEXP
@@ -81,10 +71,8 @@ module Stdenv
     macosxsdk MacOS.version
 
     if MacOS::Xcode.without_clt?
-      # Some tools (clang, etc.) are in the xctoolchain dir of Xcode
-      append_path 'PATH', "#{MacOS.xctoolchain_path}/usr/bin" if MacOS.xctoolchain_path
-      # Others are now at /Applications/Xcode.app/Contents/Developer/usr/bin
-      append_path 'PATH', MacOS.dev_tools_path
+      append_path "PATH", "#{MacOS::Xcode.prefix}/usr/bin"
+      append_path "PATH", "#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
   end
 
@@ -103,9 +91,9 @@ module Stdenv
   alias_method :j1, :deparallelize
 
   # These methods are no-ops for compatibility.
-  %w{fast Og}.each { |opt| define_method(opt) {} }
+  %w{fast O4 Og}.each { |opt| define_method(opt) {} }
 
-  %w{O4 O3 O2 O1 O0 Os}.each do |opt|
+  %w{O3 O2 O1 O0 Os}.each do |opt|
     define_method opt do
       remove_from_cflags(/-O./)
       append_to_cflags "-#{opt}"
@@ -113,24 +101,16 @@ module Stdenv
   end
 
   def gcc_4_0_1
-    # we don't use locate because gcc 4.0 has not been provided since Xcode 4
-    self.cc  = "#{MacOS.dev_tools_path}/gcc-4.0"
-    self.cxx = "#{MacOS.dev_tools_path}/g++-4.0"
-    replace_in_cflags '-O4', '-O3'
+    self.cc  = MacOS.locate("gcc-4.0")
+    self.cxx = MacOS.locate("g++-4.0")
     set_cpu_cflags '-march=nocona -mssse3'
     @compiler = :gcc_4_0
   end
   alias_method :gcc_4_0, :gcc_4_0_1
 
   def gcc
-    # Apple stopped shipping gcc-4.2 with Xcode 4.2
-    # However they still provide a gcc symlink to llvm
-    # But we don't want LLVM of course.
-
     self.cc  = MacOS.locate("gcc-4.2")
     self.cxx = MacOS.locate("g++-4.2")
-
-    replace_in_cflags '-O4', '-O3'
     set_cpu_cflags
     @compiler = :gcc
   end
@@ -139,8 +119,9 @@ module Stdenv
   GNU_GCC_VERSIONS.each do |n|
     define_method(:"gcc-4.#{n}") do
       gcc = "gcc-4.#{n}"
-      self.cc = self['OBJC'] = gcc
-      self.cxx = self['OBJCXX'] = gcc.gsub('c', '+')
+      gxx = gcc.gsub('c', '+')
+      self.cc = MacOS.locate(gcc)
+      self.cxx = MacOS.locate(gxx)
       set_cpu_cflags
       @compiler = gcc
     end
@@ -262,7 +243,6 @@ module Stdenv
   # we've seen some packages fail to build when warnings are disabled!
   def enable_warnings
     remove_from_cflags '-w'
-    remove_from_cflags '-Qunused-arguments'
   end
 
   def m64
@@ -276,7 +256,6 @@ module Stdenv
 
   def universal_binary
     append_to_cflags Hardware::CPU.universal_archs.as_arch_flags
-    replace_in_cflags '-O4', '-O3' # O4 seems to cause the build to fail
     append 'LDFLAGS', Hardware::CPU.universal_archs.as_arch_flags
 
     if compiler != :clang && Hardware.is_32_bit?
@@ -341,9 +320,6 @@ module Stdenv
     else
       append flags, map.fetch(Hardware::CPU.family, default)
     end
-
-    # not really a 'CPU' cflag, but is only used with clang
-    remove flags, '-Qunused-arguments'
   end
 
   def set_cpu_cflags default=DEFAULT_FLAGS, map=Hardware::CPU.optimization_flags

@@ -15,7 +15,7 @@ class Grass < Formula
     url "https://svn.osgeo.org/grass/grass/trunk"
 
     patch do
-      url "https://gist.github.com/jctull/0fe3db92a3e7c19fa6e0/raw/42e819f0a9b144de782c94f730dbc4da136e9227/grassPatchHead.diff"
+      url "https://gist.githubusercontent.com/jctull/0fe3db92a3e7c19fa6e0/raw/42e819f0a9b144de782c94f730dbc4da136e9227/grassPatchHead.diff"
       sha1 "ffbe31682d8a7605d5548cdafd536f1c785d3a23"
     end
   end

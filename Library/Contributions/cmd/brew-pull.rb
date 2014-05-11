@@ -32,7 +32,7 @@ ARGV.named.each do |arg|
 
   if tap_name = tap(url)
     user = url_match[1].downcase
-    tap_dir = HOMEBREW_REPOSITORY/"Library/Taps/#{user}-#{tap_name}"
+    tap_dir = HOMEBREW_REPOSITORY/"Library/Taps/#{user}/homebrew-#{tap_name}"
     safe_system "brew", "tap", "#{user}/#{tap_name}" unless tap_dir.exist?
     Dir.chdir tap_dir
   else
