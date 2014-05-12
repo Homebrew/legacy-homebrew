@@ -6,6 +6,12 @@ class GnuTar < Formula
   mirror 'http://ftp.gnu.org/gnu/tar/tar-1.27.1.tar.gz'
   sha1 '192f480cac95b1fbaff11c87a64f7092045b411b'
 
+  bottle do
+    sha1 "0145c9b2b1b4d54b03afa85514c44dc9755b5afe" => :mavericks
+    sha1 "3816d5a949aada9ed280d524187ab05a4ab28447" => :mountain_lion
+    sha1 "4d9843926d6dc0bb2f19c6e94d537a1f1618986b" => :lion
+  end
+
   def install
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     args << "--program-prefix=g"
