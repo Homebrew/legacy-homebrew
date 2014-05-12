@@ -2,8 +2,8 @@ require 'formula'
 
 class Fribidi < Formula
   homepage 'http://fribidi.org/'
-  url 'http://fribidi.org/download/fribidi-0.19.5.tar.bz2'
-  sha1 '58445266df185f7e5109f356c0261d41db39182a'
+  url 'http://fribidi.org/download/fribidi-0.19.6.tar.bz2'
+  sha1 '5a6ff82fdee31d27053c39e03223666ac1cb7a6a'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
