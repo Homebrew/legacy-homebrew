@@ -3,11 +3,10 @@ require 'formula'
 # Help! Wanted: someone who can get Avidemux working with SDL.
 
 class Avidemux < Formula
-  homepage 'http://avidemux.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/avidemux/avidemux_2.6.4.tar.gz'
-  sha1 '7ed55fd5cfb6cfa73ebb9058af72fa2e3c9717c3'
+  homepage 'http://fixounet.free.fr/avidemux/'
+  url 'https://downloads.sourceforge.net/avidemux/avidemux_2.6.8.tar.gz'
+  sha1 '50f3dfe270e6272fce46d725b198b9d0dd95664b'
   head 'git://gitorious.org/avidemux2-6/avidemux2-6.git'
-  revision 1
 
   bottle do
     sha1 "0f2b3d5a4a496458809204a3c126505f6473394e" => :mavericks
@@ -43,7 +42,6 @@ class Avidemux < Formula
   depends_on 'frei0r' => :recommended
   depends_on 'libcaca' => :recommended
   depends_on 'qt' => :recommended
-
 
   def install
     ENV['REV'] = version.to_s
