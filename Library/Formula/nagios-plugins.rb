@@ -2,8 +2,8 @@ require 'formula'
 
 class NagiosPlugins < Formula
   homepage 'https://www.nagios-plugins.org/'
-  url 'https://www.nagios-plugins.org/download/nagios-plugins-2.0.1.tar.gz'
-  sha1 'b895cd3758902582230d8a4eb0ce18318b4189c6'
+  url 'https://www.nagios-plugins.org/download/nagios-plugins-2.0.tar.gz'
+  sha1 '9b9be0dfb7026d30da0e3a5bbf4040211648ee39'
 
   def install
     system "./configure", "--disable-debug",
