@@ -7,7 +7,6 @@ class Irssi < Formula
 
   option "without-perl", "Build without perl support"
 
-  depends_on :clt # See https://github.com/Homebrew/homebrew/issues/20952
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'openssl' => :optional
@@ -29,6 +28,7 @@ class Irssi < Formula
       --with-proxy
       --enable-ipv6
       --with-socks
+      --with-ncurses=#{MacOS.sdk_path}/usr
     ]
 
     if build.with? "perl"

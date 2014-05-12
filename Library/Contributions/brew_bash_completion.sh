@@ -140,7 +140,7 @@ _brew_bottle ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--merge --rb --write"
+        __brewcomp "--merge --rb --write --root_url="
         return
         ;;
     esac

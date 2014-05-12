@@ -38,8 +38,18 @@ class Io < Formula
     EOS
   end
 
+  # Fixes build on GCC with recursive inline functions;
+  # committed upstream, will be in the next release.
+  patch do
+    url "https://github.com/stevedekorte/io/commit/f21a10ca0e8959e2a0774962c36392cf166be6a6.diff"
+    sha1 "f8756e85268211e93dfd06a0eeade63bfb9bcc9c"
+  end
+
   def install
     ENV.j1
+
+    # FSF GCC needs this to build the ObjC bridge
+    ENV.append_to_cflags '-fobjc-exceptions'
 
     if build.without? "addons"
       # Turn off all add-ons in main cmake file
