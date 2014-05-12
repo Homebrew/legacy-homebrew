@@ -17,6 +17,10 @@ BREW_LIBRARY_DIRECTORY=$(cd "$BREW_FILE_DIRECTORY"/../Library && pwd -P)
 unset GEM_HOME
 unset GEM_PATH
 
+# Users may have this set when shelling out from
+# another ruby process (e.g. via bundle exec)
+unset RUBYOPT
+
 BREW_SYSTEM=$(uname -s | tr "[:upper:]" "[:lower:]")
 if [ "$BREW_SYSTEM" = "darwin" ]
 then
