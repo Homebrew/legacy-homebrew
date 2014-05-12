@@ -7,6 +7,12 @@ class Libav < Formula
 
   head 'git://git.libav.org/libav.git'
 
+  bottle do
+    sha1 "f1e817f3e59111eabe18e54a43c4ee0cf38d651f" => :mavericks
+    sha1 "7da7ccfb7a07d8e3b47145183cdd50f6861d91a1" => :mountain_lion
+    sha1 "06c8d73e1afd93f7487ff1da6a82bbbf1e4330a3" => :lion
+  end
+
   option "without-faac", "Disable AAC encoder via faac"
   option "without-lame", "Disable MP3 encoder via libmp3lame"
   option "without-x264", "Disable H.264 encoder via x264"
