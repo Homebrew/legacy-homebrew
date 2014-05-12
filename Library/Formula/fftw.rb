@@ -2,8 +2,8 @@ require 'formula'
 
 class Fftw < Formula
   homepage 'http://www.fftw.org'
-  url 'http://www.fftw.org/fftw-3.3.3.tar.gz'
-  sha1 '11487180928d05746d431ebe7a176b52fe205cf9'
+  url 'http://www.fftw.org/fftw-3.3.4.tar.gz'
+  sha1 'fd508bac8ac13b3a46152c54b7ac885b69734262'
 
   bottle do
     cellar :any
