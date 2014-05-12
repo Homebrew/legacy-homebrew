@@ -75,7 +75,7 @@ index c63ed1b..556519e 100644
  LIBS	=	`./vsf_findlibs.sh`
  LINK	=	-Wl,-s
 -LDFLAGS	=	-fPIE -pie -Wl,-z,relro -Wl,-z,now
-+LDFLAGS	=	-fPIE -pie -Wl
++LDFLAGS	=	-fPIE -pie
  
  OBJS	=	main.o utility.o prelogin.o ftpcmdio.o postlogin.o privsock.o \
  		tunables.o ftpdataio.o secbuf.o ls.o \
