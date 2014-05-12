@@ -37,6 +37,7 @@ TAP_MIGRATIONS = {
   "qrupdate" => "homebrew/science",
   "slicot" => "homebrew/science",
   "shark" => "homebrew/boneyard",
+  "solfege" => "homebrew/boneyard",
   "syslog-ng" => "homebrew/boneyard",
   "urweb" => "homebrew/boneyard",
   "wkhtmltopdf" => "homebrew/boneyard",
