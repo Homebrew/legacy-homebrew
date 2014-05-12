@@ -2,8 +2,9 @@ require 'formula'
 
 class Libmpc < Formula
   homepage 'http://multiprecision.org'
-  url 'http://multiprecision.org/mpc/download/mpc-1.0.1.tar.gz'
-  sha1 '8c7e19ad0dd9b3b5cc652273403423d6cf0c5edf'
+  url 'http://ftpmirror.gnu.org/mpc/mpc-1.0.2.tar.gz'
+  mirror 'http://multiprecision.org/mpc/download/mpc-1.0.2.tar.gz'
+  sha1 '5072d82ab50ec36cc8c0e320b5c377adb48abe70'
 
   bottle do
     cellar :any
