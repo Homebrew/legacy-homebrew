@@ -5,8 +5,7 @@ class Vsftpd < Formula
   url 'https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz'
   sha1 'f36976bb1c5df25ac236d8a29e965ba2b825ccd0'
 
-  option "with-openssl", "Build with OpenSSL"
-  depends_on "openssl" if build.with? "openssl"
+  depends_on 'openssl' => :optional
 
   # Patch so vsftpd doesn't depend on UTMPX, can find OS X's PAM library, and doesn't use incompatible linker flags.
   patch :DATA
