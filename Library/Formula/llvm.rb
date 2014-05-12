@@ -28,9 +28,7 @@ class Llvm < Formula
       raise 'The Python bindings need the shared library.'
     end
 
-    resource('clang').stage do
-      (buildpath/'tools/clang').install Dir['*']
-    end if build.with? 'clang'
+    (buildpath/"tools/clang").install resource("clang") if build.with? "clang"
 
     if build.universal?
       ENV['UNIVERSAL'] = '1'
