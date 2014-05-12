@@ -11,6 +11,7 @@ class Ansible < Formula
   depends_on 'libyaml'
 
   option 'with-accelerate', "Enable accelerated mode"
+  option 'with-rackspace', "Enable rackspace cloud module support (pyrax)"
 
   resource 'pycrypto' do
     url 'https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz'
@@ -44,6 +45,13 @@ class Ansible < Formula
     end
   end
 
+  if build.with? 'rackspace'
+    resource 'pyrax' do
+      url 'https://pypi.python.org/packages/source/p/pyrax/pyrax-1.8.0.tar.gz'
+      sha1 '80f1e5fcc57406b4cc9af256963b1ced6d93470a'
+    end
+  end
+
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
@@ -65,6 +73,9 @@ class Ansible < Formula
     resource('jinja2').stage { system "python", *install_args }
     if build.with? 'accelerate'
       resource('python-keyczar').stage { system "python", *install_args }
+    end
+    if build.with? 'rackspace'
+      resource('pyrax').stage { system "python", *install_args }
     end
 
     inreplace 'lib/ansible/constants.py' do |s|
