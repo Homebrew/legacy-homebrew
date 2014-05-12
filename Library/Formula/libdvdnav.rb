@@ -7,15 +7,14 @@ class Libdvdnav < Formula
 
   head 'git://git.videolan.org/libdvdnav.git'
 
-  depends_on 'libdvdread'
-
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "libdvdread"
 
   def install
-    system "./autogen.sh", "--disable-debug", "--disable-dependency-tracking",
-                           "--prefix=#{prefix}"
+    system "./autogen.sh", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end
