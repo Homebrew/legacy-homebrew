@@ -238,7 +238,7 @@ class Cmd
 
   def syspath
     if sdkroot
-      %W{#{sdkroot}/usr #{sdkroot}/usr/local}
+      %W{#{sdkroot}/usr /usr/local}
     else
       %W{/usr /usr/local}
     end
