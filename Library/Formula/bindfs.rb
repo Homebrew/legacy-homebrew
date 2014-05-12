@@ -2,8 +2,13 @@ require 'formula'
 
 class Bindfs < Formula
   homepage 'http://bindfs.org/'
-  url 'http://bindfs.org/downloads/bindfs-1.12.3.tar.gz'
-  sha1 'fafdf47d9461dcad385d091b2732f97ffac67079'
+  stable do
+    url 'http://bindfs.org/downloads/bindfs-1.12.3.tar.gz'
+    sha1 'fafdf47d9461dcad385d091b2732f97ffac67079'
+
+    # Use lutimes() instead of ultimensat() to fix OS X compilation. Fixed upstream.
+    patch :DATA
+  end
 
   head 'https://github.com/mpartel/bindfs.git'
 
@@ -12,9 +17,6 @@ class Bindfs < Formula
   depends_on 'libtool' => :build
   depends_on 'pkg-config' => :build
   depends_on 'osxfuse'
-
-  # Use lutimes() instead of ultimensat() to fix OS X compilation. Fixed upstream.
-  patch :DATA unless build.head?
 
   def install
     system "./autogen.sh", "--disable-debug", "--disable-dependency-tracking",
