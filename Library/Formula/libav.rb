@@ -8,9 +8,9 @@ class Libav < Formula
   head 'git://git.libav.org/libav.git'
 
   bottle do
-    sha1 "f1e817f3e59111eabe18e54a43c4ee0cf38d651f" => :mavericks
-    sha1 "7da7ccfb7a07d8e3b47145183cdd50f6861d91a1" => :mountain_lion
-    sha1 "06c8d73e1afd93f7487ff1da6a82bbbf1e4330a3" => :lion
+    sha1 "7d0726f20807795bea2751d1cf5819574b4216ef" => :mavericks
+    sha1 "6dab153fa7f47bad485084fb1d99ed78474ee41b" => :mountain_lion
+    sha1 "af1e80266ca266455031390bf45ecbc23ef94e0e" => :lion
   end
 
   option "without-faac", "Disable AAC encoder via faac"
