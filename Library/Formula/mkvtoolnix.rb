@@ -28,7 +28,12 @@ class Mkvtoolnix < Formula
   url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-6.9.1.tar.xz'
   sha1 '6c62d91663fd382b0b66da6548eea5a5c37f8128'
 
-  head 'https://github.com/mbunkus/mkvtoolnix.git'
+  head do
+    url 'https://github.com/mbunkus/mkvtoolnix.git'
+    depends_on :automake => :build
+    depends_on :autoconf => :build
+    depends_on :libtool => :build
+  end
 
   depends_on 'pkg-config' => :build
   depends_on Ruby19
@@ -36,6 +41,10 @@ class Mkvtoolnix < Formula
   depends_on 'libvorbis'
   depends_on 'flac' => :optional
   depends_on 'lzo' => :optional
+  depends_on 'expat'
+  depends_on 'gettext'
+  depends_on 'pcre'
+  depends_on 'wxmac'
   # On Mavericks, the bottle (without c++11) can be used
   # because mkvtoolnix is linked against libc++ by default
   if MacOS.version >= 10.9
@@ -59,15 +68,18 @@ class Mkvtoolnix < Formula
     boost = Formula["boost"].opt_prefix
     ogg = Formula["libogg"]
     vorbis = Formula["libvorbis"]
+    wxmac = Formula["wxmac"]
+
+    system "./autogen.sh" if build.head?
 
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--disable-gui",
-                          "--disable-wxwidgets",
+                          "--enable-gui",
+                          "--enable-wxwidgets",
                           "--without-curl",
                           "--with-boost=#{boost}",
-                          "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include}",
-                          "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib}"
+                          "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include};#{wxmac.opt_include}",
+                          "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib};#{wxmac.opt_lib}"
     system "./drake", "-j#{ENV.make_jobs}"
     system "./drake install"
   end
