@@ -2,8 +2,8 @@ require 'formula'
 
 class DBus < Formula
   homepage 'http://www.freedesktop.org/wiki/Software/dbus'
-  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.8.0.tar.gz'
-  sha256 '769f8c7282b535ccbe610f63a5f14137a5549834b0b0c8a783e90891b8d70b13'
+  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.8.2.tar.gz'
+  sha256 '5689f7411165adc953f37974e276a3028db94447c76e8dd92efe910c6d3bae08'
 
   bottle do
     revision 1
