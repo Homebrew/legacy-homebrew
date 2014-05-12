@@ -2,15 +2,10 @@ require 'formula'
 
 class Libav < Formula
   homepage 'https://libav.org/'
-  url 'http://libav.org/releases/libav-10.tar.xz'
-  sha1 '74effded58ec3c63de6c8c20b5a382dc3a864d5b'
-  head 'git://git.libav.org/libav.git'
+  url 'https://libav.org/releases/libav-10.1.tar.xz'
+  sha1 'e73596a99c228714d28956668a298a05948da4a7'
 
-  bottle do
-    sha1 "f1e817f3e59111eabe18e54a43c4ee0cf38d651f" => :mavericks
-    sha1 "7da7ccfb7a07d8e3b47145183cdd50f6861d91a1" => :mountain_lion
-    sha1 "06c8d73e1afd93f7487ff1da6a82bbbf1e4330a3" => :lion
-  end
+  head 'git://git.libav.org/libav.git'
 
   option "without-faac", "Disable AAC encoder via faac"
   option "without-lame", "Disable MP3 encoder via libmp3lame"
