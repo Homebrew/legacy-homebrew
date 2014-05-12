@@ -6,9 +6,9 @@ class Pv < Formula
   sha1 '8cb04ca5c2318e4da0dc88f87f16cea6e1901bef'
 
   bottle do
-    sha1 "13db5f53546f554a1a1cef88f763022e0ba08974" => :mavericks
-    sha1 "96bedf90d0688c722e7fe1743230e74713089ef9" => :mountain_lion
-    sha1 "cea67d8b62b936e80dfa80fe7d84706bbd258e29" => :lion
+    sha1 "e990208b2865d65af9036ba5733f4e6be9ce040a" => :mavericks
+    sha1 "ca81f3114ba63c60a4227caece426a0f433a85f6" => :mountain_lion
+    sha1 "b6c2ac9694c5511ea01be56570ded954aca4d645" => :lion
   end
 
   depends_on 'gettext'
