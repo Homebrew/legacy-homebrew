@@ -2,9 +2,10 @@ require 'formula'
 
 class Libdvdnav < Formula
   homepage 'http://dvdnav.mplayerhq.hu/'
-  url 'http://dvdnav.mplayerhq.hu/releases/libdvdnav-4.2.0.tar.bz2'
-  head 'svn://svn.mplayerhq.hu/dvdnav/trunk/libdvdnav'
-  sha1 'ded45d985576169ae3630d8be7179a2323bc0f6f'
+  url 'http://dvdnav.mplayerhq.hu/releases/libdvdnav-4.2.1.tar.xz'
+  sha256 '7fca272ecc3241b6de41bbbf7ac9a303ba25cb9e0c82aa23901d3104887f2372'
+
+  head 'git://git.videolan.org/libdvdnav.git'
 
   depends_on 'libdvdread'
 
