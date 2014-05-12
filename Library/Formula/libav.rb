@@ -2,8 +2,9 @@ require 'formula'
 
 class Libav < Formula
   homepage 'https://libav.org/'
-  url 'http://libav.org/releases/libav-10.tar.xz'
-  sha1 '74effded58ec3c63de6c8c20b5a382dc3a864d5b'
+  url 'https://libav.org/releases/libav-10.1.tar.xz'
+  sha1 'e73596a99c228714d28956668a298a05948da4a7'
+
   head 'git://git.libav.org/libav.git'
 
   bottle do
