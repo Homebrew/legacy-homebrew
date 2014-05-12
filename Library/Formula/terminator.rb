@@ -21,6 +21,10 @@ class Terminator < Formula
   def install
     system "python", "setup.py", "install", "--prefix=#{prefix}"
   end
+
+  test do
+    system "#{bin}/terminator", "-e", "'echo hello'"
+  end
 end
 
 __END__
