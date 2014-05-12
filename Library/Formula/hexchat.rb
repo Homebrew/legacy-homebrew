@@ -18,6 +18,7 @@ class Hexchat < Formula
   depends_on 'autoconf' => :build
   depends_on 'libtool' => :build
   depends_on :python => :optional
+  depends_on :python3 => :optional
   depends_on 'gettext'
   depends_on 'gtk+'
   depends_on :x11
@@ -30,14 +31,14 @@ class Hexchat < Formula
               --disable-dependency-tracking
               --enable-openssl]
 
-    if build.with? "python"
-      python = Formula["python"]
-      if python.installed?
-        ENV.append_path "PKG_CONFIG_PATH", python.frameworks/"Python.framework/Versions/2.7/lib/pkgconfig/"
-      else
-        ENV["PY_CFLAGS"] = `/usr/bin/python-config --cflags`
-        ENV["PY_LIBS"] = `/usr/bin/python-config --libs`
-      end
+    if build.with? "python3"
+      py_ver = Formula["python3"].pkg_version.to_s[0..2] # e.g "3.4"
+      ENV.append_path "PKG_CONFIG_PATH", "#{HOMEBREW_PREFIX}/Frameworks/Python.framework/Versions/#{py_ver}/lib/pkgconfig/"
+      args << "--enable-python=python#{py_ver}"
+    elsif build.with? "python"
+      ENV.append_path "PKG_CONFIG_PATH", "#{HOMEBREW_PREFIX}/Frameworks/Python.framework/Versions/2.7/lib/pkgconfig/"
+      ENV.append_path "PKG_CONFIG_PATH", "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/pkgconfig/"
+      args << "--enable-python=python2.7"
     else
       args << "--disable-python"
     end
@@ -73,5 +74,6 @@ class Hexchat < Formula
     system "make install"
 
     rm_rf share/"applications"
+    rm_rf share/"appdata"
   end
 end
