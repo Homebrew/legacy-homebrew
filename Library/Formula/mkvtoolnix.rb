@@ -44,13 +44,13 @@ class Mkvtoolnix < Formula
   depends_on "expat"
   depends_on "gettext"
   depends_on "pcre"
+  depends_on "wxmac" => :optional
   # On Mavericks, the bottle (without c++11) can be used
   # because mkvtoolnix is linked against libc++ by default
   if MacOS.version >= 10.9
     depends_on "boost"
     depends_on "libmatroska"
     depends_on "libebml"
-    depends_on "wxmac" => :optional
   else
     depends_on "boost" => "c++11"
     depends_on "libmatroska" => "c++11"
@@ -65,7 +65,7 @@ class Mkvtoolnix < Formula
     ENV["ZLIB_CFLAGS"] = "-I/usr/include"
     ENV["ZLIB_LIBS"] = "-L/usr/lib -lz"
 
-    boost = Formula["boost"].opt_prefix
+    boost = Formula["boost"]
     ogg = Formula["libogg"]
     vorbis = Formula["libvorbis"]
 
@@ -73,10 +73,10 @@ class Mkvtoolnix < Formula
       --disable-debug
       --prefix=#{prefix}
       --without-curl
-      --with-boost=#{boost}
+      --with-boost=#{boost.opt_include}
     ]
 
-    if build.with? "wxmac" && MacOS.version >= 10.9
+    if build.with? "wxmac"
       wxmac = Formula["wxmac"]
 
       args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include};#{wxmac.opt_include}"
