@@ -5,15 +5,13 @@ class Vsftpd < Formula
   url 'https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz'
   sha1 'f36976bb1c5df25ac236d8a29e965ba2b825ccd0'
 
-  depends_on 'openssl' => :optional
+  depends_on 'openssl'
 
   # Patch so vsftpd doesn't depend on UTMPX, can find OS X's PAM library, and doesn't use incompatible linker flags.
   patch :DATA
 
   def install
-    if build.with? "openssl"
-      inreplace "builddefs.h", "#undef VSF_BUILD_SSL", "#define VSF_BUILD_SSL"
-    end
+    inreplace "builddefs.h", "#undef VSF_BUILD_SSL", "#define VSF_BUILD_SSL"
 
     inreplace "defs.h", "/etc/vsftpd.conf", "#{etc}/vsftpd.conf"
     inreplace "tunables.c", "/etc", etc
@@ -28,12 +26,10 @@ class Vsftpd < Formula
   end
 
   def caveats
-    if build.include? "openssl"
-      return <<-EOD.undent
-        vsftpd was compiled with SSL support. To use it you must generate a SSL
-        certificate and set 'enable_ssl=YES' in your config file.
-      EOD
-    end
+    return <<-EOD.undent
+      vsftpd was compiled with SSL support. To use it you must generate a SSL
+      certificate and set 'enable_ssl=YES' in your config file.
+    EOD
   end
 end
 
