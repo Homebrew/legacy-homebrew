@@ -38,12 +38,6 @@ class Euca2ools < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
     install_args = ["setup.py", "install", "--prefix=#{libexec}"]
 
-    # lxml's C bindings use flags unrecognized by clang,
-    # but since it doesn't use a makefile arg refurbishment
-    # is normally not enabled.
-    # See https://github.com/Homebrew/homebrew/issues/27639
-    ENV.append "HOMEBREW_CCCFG", "O"
-
     resource("requestbuilder").stage { system "python", *install_args }
     resource("requests").stage { system "python", *install_args }
     resource("setuptools").stage { system "python", *install_args }
