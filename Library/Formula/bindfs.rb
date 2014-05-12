@@ -6,7 +6,7 @@ class Bindfs < Formula
   sha1 'fafdf47d9461dcad385d091b2732f97ffac67079'
 
   head 'https://github.com/mpartel/bindfs.git'
-  
+
   depends_on :autoconf => :build
   depends_on :automake => :build
   depends_on :libtool => :build
