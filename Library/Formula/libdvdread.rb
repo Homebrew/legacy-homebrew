@@ -2,10 +2,10 @@ require 'formula'
 
 class Libdvdread < Formula
   homepage 'http://dvdnav.mplayerhq.hu/'
-  url 'http://dvdnav.mplayerhq.hu/releases/libdvdread-4.2.0.tar.bz2'
-  sha1 '431bc92195f27673bfdd2be67ce0f58338da8d3b'
+  url 'http://download.videolan.org/pub/videolan/libdvdread/4.9.9/libdvdread-4.9.9.tar.bz2'
+  sha256 'ffcf51c8596f5b052e95c50f2555d15f645d652b153afde2ab4c0733dde69fbb'
 
-  head 'svn://svn.mplayerhq.hu/dvdnav/trunk/libdvdread'
+  head 'git://git.videolan.org/libdvdread.git'
 
   bottle do
     cellar :any
@@ -16,16 +16,12 @@ class Libdvdread < Formula
 
   depends_on 'libdvdcss'
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
-
   def install
     ENV.append "CFLAGS", "-DHAVE_DVDCSS_DVDCSS_H"
     ENV.append "LDFLAGS", "-ldvdcss"
 
-    system "./autogen.sh", "--disable-dependency-tracking",
-                           "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make install"
   end
 end
