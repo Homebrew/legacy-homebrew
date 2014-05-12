@@ -30,9 +30,9 @@ class Mkvtoolnix < Formula
 
   head do
     url 'https://github.com/mbunkus/mkvtoolnix.git'
-    depends_on :automake => :build
-    depends_on :autoconf => :build
-    depends_on :libtool => :build
+    depends_on 'automake' => :build
+    depends_on 'autoconf' => :build
+    depends_on 'libtool' => :build
   end
 
   depends_on 'pkg-config' => :build
