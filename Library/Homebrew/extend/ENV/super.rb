@@ -176,17 +176,22 @@ module Superenv
     paths = []
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     paths << "#{sdk}/usr/include/apache2" if MacOS::Xcode.without_clt?
-    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers" unless x11?
-    paths << MacOS::X11.include << "#{MacOS::X11.include}/freetype2" if x11?
+    if x11?
+      paths << MacOS::X11.include << "#{MacOS::X11.include}/freetype2"
+    else
+      paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers"
+    end
     paths.to_path_s
   end
 
   def determine_cmake_library_path
     sdk = MacOS.sdk_path if MacOS::Xcode.without_clt?
     paths = []
-    # things expect to find GL headers since X11 used to be a default, so we add them
-    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries" unless x11?
-    paths << MacOS::X11.lib if x11?
+    if x11?
+      paths << MacOS::X11.lib
+    else
+      paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries"
+    end
     paths.to_path_s
   end
 
