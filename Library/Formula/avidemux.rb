@@ -3,17 +3,10 @@ require 'formula'
 # Help! Wanted: someone who can get Avidemux working with SDL.
 
 class Avidemux < Formula
-  homepage 'http://avidemux.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/avidemux/avidemux_2.6.4.tar.gz'
-  sha1 '7ed55fd5cfb6cfa73ebb9058af72fa2e3c9717c3'
+  homepage 'http://fixounet.free.fr/avidemux/'
+  url 'https://downloads.sourceforge.net/avidemux/avidemux_2.6.8.tar.gz'
+  sha256 '02998c235a89894d184d745c94cac37b78bc20e9eb44b318ee2bb83f2507e682'
   head 'git://gitorious.org/avidemux2-6/avidemux2-6.git'
-  revision 1
-
-  bottle do
-    sha1 "0f2b3d5a4a496458809204a3c126505f6473394e" => :mavericks
-    sha1 "6bc4a7c54fb50b836d653c4c076467c579123e94" => :mountain_lion
-    sha1 "5a39c8fff4e620975d2d70d7fd51e85e8dec24e6" => :lion
-  end
 
   option 'with-debug', 'Enable debug build.'
 
