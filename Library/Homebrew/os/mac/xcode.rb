@@ -164,8 +164,12 @@ module OS
       end
 
       def outdated?
-        version = `/usr/bin/clang --version`[%r{clang-(\d+\.\d+\.\d+)}, 1]
-        return true unless version
+        if MacOS.version >= :mavericks
+          version = `#{MAVERICKS_PKG_PATH}/usr/bin/clang --version`
+        else
+          version = `/usr/bin/clang --version`
+        end
+        version = version[%r{clang-(\d+\.\d+\.\d+)}, 1] || "0"
         version < latest_version
       end
 
