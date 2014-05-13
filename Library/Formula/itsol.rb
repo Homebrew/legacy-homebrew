@@ -9,10 +9,7 @@ class Itsol < Formula
 
   def install
     system "make"
-
     lib.install("LIB/libitsol.a")
-
     (include/"itsol").install Dir["INC/*.h"]
   end
-
 end
