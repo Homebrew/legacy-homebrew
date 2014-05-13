@@ -171,7 +171,7 @@ class Cmd
       args << "-Wl,-multiply_defined,suppress"
     when '-undefineddynamic_lookup'
       args << "-Wl,-undefined,dynamic_lookup"
-    when /^-isysroot/
+    when /^-isysroot/, /^--sysroot/
       # We set the sysroot
       enum.next
     when '-dylib'
