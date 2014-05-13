@@ -101,6 +101,15 @@ Now let's run the job in the context and get the results back right away:
 
 Note the addition of `context=` and `sync=true`.
 
+## Create a Job Server Project
+In your `build.sbt`, add this to use the job server jar:
+
+	resolvers += "Ooyala Bintray" at "http://dl.bintray.com/ooyala/maven"
+
+	libraryDependencies += "ooyala.cnd" % "job-server" % "0.3.1" % "provided"                                                                                                                                                                                                             
+
+For most use cases it's better to have the dependencies be "provided" because you don't want SBT assembly to include the whole job server jar.
+
 ## Deployment
 
 1. Copy `config/local.sh.template` to `<environment>.sh` and edit as appropriate.
@@ -212,13 +221,6 @@ Contributions via Github Pull Request are welcome.  See the TODO for some ideas.
 - Be sure you are in the master project
 - Run `test` to ensure all tests pass
 - Now just run `publish` and package will be published to bintray
-
-### Use Job Server Jar
-
-- In your project, add below to your resolvers
-	- "Ooyala Bintray" at "http://dl.bintray.com/ooyala/maven/"
-- Add below to your libraryDependencies
-	- "ooyala.cnd" % "job-server" % "0.3.1"
   
 ## License
 Apache 2.0, see LICENSE.md
