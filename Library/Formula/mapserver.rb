@@ -17,7 +17,7 @@ class Mapserver < Formula
   depends_on 'libpng'
   depends_on 'swig' => :build
   depends_on 'giflib'
-  depends_on 'gd' => %w{with-freetype}
+  depends_on 'gd'
   depends_on 'proj'
   depends_on 'gdal'
   depends_on 'geos' => :optional

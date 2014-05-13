@@ -2,14 +2,14 @@ require 'formula'
 
 class GnuTar < Formula
   homepage 'http://www.gnu.org/software/tar/'
-  url 'http://ftpmirror.gnu.org/tar/tar-1.27.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/tar/tar-1.27.tar.gz'
-  sha1 '790cf784589a9fcc1ced33517e71051e3642642f'
+  url 'http://ftpmirror.gnu.org/tar/tar-1.27.1.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/tar/tar-1.27.1.tar.gz'
+  sha1 '192f480cac95b1fbaff11c87a64f7092045b411b'
 
   bottle do
-    sha1 "0145c9b2b1b4d54b03afa85514c44dc9755b5afe" => :mavericks
-    sha1 "3816d5a949aada9ed280d524187ab05a4ab28447" => :mountain_lion
-    sha1 "4d9843926d6dc0bb2f19c6e94d537a1f1618986b" => :lion
+    sha1 "ecc6fc62b93bee896a2bd6e604c934bdb9bdc2dd" => :mavericks
+    sha1 "ac457284fa432dc49d5f8166c050421cb6561102" => :mountain_lion
+    sha1 "33c07152ade47e3b3c7bfa2d66346a0acc5ff3ef" => :lion
   end
 
   def install

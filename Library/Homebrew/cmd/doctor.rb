@@ -53,6 +53,14 @@ class Checks
   def inject_file_list(list, str)
     list.inject(str) { |s, f| s << "    #{f}\n" }
   end
+
+  # Git will always be on PATH because of the wrapper script in
+  # Library/Contributions/cmd, so we check if there is a *real*
+  # git here to avoid multiple warnings.
+  def git?
+    return @git if instance_variable_defined?(:@git)
+    @git = system "git --version >/dev/null 2>&1"
+  end
 ############# END HELPERS
 
 # Sorry for the lack of an indent here, the diff would have been unreadable.
@@ -190,71 +198,79 @@ def check_for_broken_symlinks
   end
 end
 
-def check_xcode_clt
-  if MacOS.version >= :mavericks
-    __check_clt_up_to_date
-  elsif MacOS::Xcode.installed?
-    __check_xcode_up_to_date
-  elsif MacOS.version >= :lion
-    __check_clt_up_to_date
-  else <<-EOS.undent
-      Xcode is not installed
-      Most formulae need Xcode to build.
-      It can be installed from https://developer.apple.com/downloads/
-    EOS
+if MacOS.version >= "10.9"
+  def check_for_installed_developer_tools
+    unless MacOS::CLT.installed? then <<-EOS.undent
+      No developer tools installed.
+      Install the Command Line Tools:
+        xcode-select --install
+      EOS
+    end
   end
-end
 
-def __check_xcode_up_to_date
-  if MacOS::Xcode.outdated?
-    message = <<-EOS.undent
+  def check_xcode_up_to_date
+    if MacOS::Xcode.installed? && MacOS::Xcode.outdated? then <<-EOS.undent
       Your Xcode (#{MacOS::Xcode.version}) is outdated
       Please update to Xcode #{MacOS::Xcode.latest_version}.
-    EOS
-    if MacOS.version >= :lion
-      message += <<-EOS.undent
       Xcode can be updated from the App Store.
       EOS
-    else
-      message += <<-EOS.undent
-      Xcode can be updated from https://developer.apple.com/downloads/
+    end
+  end
+
+  def check_clt_up_to_date
+    if MacOS::CLT.installed? && MacOS::CLT.outdated? then <<-EOS.undent
+      A newer Command Line Tools release is available.
+      Update them from Software Update in the App Store.
       EOS
     end
-    message
   end
-end
-
-def __check_clt_up_to_date
-  if not MacOS::CLT.installed?
-    message = <<-EOS.undent
+elsif MacOS.version == "10.8" || MacOS.version == "10.7"
+  def check_for_installed_developer_tools
+    unless MacOS::Xcode.installed? || MacOS::CLT.installed? then <<-EOS.undent
       No developer tools installed.
       You should install the Command Line Tools.
-    EOS
-    if MacOS.version >= :mavericks
-      message += <<-EOS.undent
-        Run `xcode-select --install` to install them.
-      EOS
-    else
-      message += <<-EOS.undent
-        The standalone package can be obtained from
-        https://developer.apple.com/downloads/,
-        or it can be installed via Xcode's preferences.
+      The standalone package can be obtained from
+        https://developer.apple.com/downloads
+      or it can be installed via Xcode's preferences.
       EOS
     end
-    message
-  elsif MacOS::CLT.outdated?
-    message = <<-EOS.undent
-      A newer Command Line Tools release is available
-    EOS
-    if MacOS.version >= :mavericks
-      message += <<-EOS.undent
-        Update them from Software Update in the App Store.
+  end
+
+  def check_xcode_up_to_date
+    if MacOS::Xcode.installed? && MacOS::Xcode.outdated? then <<-EOS.undent
+      Your Xcode (#{MacOS::Xcode.version}) is outdated
+      Please update to Xcode #{MacOS::Xcode.latest_version}.
+      Xcode can be updated from
+        https://developer.apple.com/downloads
       EOS
-    else
-      message += <<-EOS.undent
-        The standalone package can be obtained from
-        https://developer.apple.com/downloads/,
-        or it can be installed via Xcode's preferences.
+    end
+  end
+
+  def check_clt_up_to_date
+    if MacOS::CLT.installed? && MacOS::CLT.outdated? then <<-EOS.undent
+      A newer Command Line Tools release is available.
+      The standalone package can be obtained from
+        https://developer.apple.com/downloads
+      or it can be installed via Xcode's preferences.
+      EOS
+    end
+  end
+else
+  def check_for_installed_developer_tools
+    unless MacOS::Xcode.installed? then <<-EOS.undent
+      Xcode is not installed. Most formulae need Xcode to build.
+      It can be installed from
+        https://developer.apple.com/downloads
+      EOS
+    end
+  end
+
+  def check_xcode_up_to_date
+    if MacOS::Xcode.installed? && MacOS::Xcode.outdated? then <<-EOS.undent
+      Your Xcode (#{MacOS::Xcode.version}) is outdated
+      Please update to Xcode #{MacOS::Xcode.latest_version}.
+      Xcode can be updated from
+        https://developer.apple.com/downloads
       EOS
     end
   end
@@ -292,24 +308,6 @@ def check_for_stray_developer_directory
     You have leftover files from an older version of Xcode.
     You should delete them using:
       #{uninstaller}
-    EOS
-  end
-end
-
-def check_cc
-  if !MacOS::CLT.installed? && MacOS::Xcode.version < "4.3"
-    'No compiler found in /usr/bin!'
-  end
-end
-
-def check_standard_compilers
-  return if check_xcode_clt # only check if Xcode is up to date
-  compiler_status = MacOS.compilers_standard?
-  if not compiler_status and not compiler_status.nil? then <<-EOS.undent
-    Your compilers are different from the standard versions for your Xcode.
-    If you have Xcode 4.3 or newer, you should install the Command Line Tools for
-    Xcode from within Xcode's Download preferences.
-    Otherwise, you should reinstall Xcode.
     EOS
   end
 end
@@ -437,8 +435,8 @@ def check_xcode_prefix_exists
 end
 
 def check_xcode_select_path
-  if not MacOS::CLT.installed? and not File.file? "#{MacOS::Xcode.folder}/usr/bin/xcodebuild"
-    path = MacOS.app_with_bundle_id(MacOS::Xcode::V4_BUNDLE_ID, MacOS::Xcode::V3_BUNDLE_ID)
+  if not MacOS::CLT.installed? and not File.file? "#{MacOS.active_developer_dir}/usr/bin/xcodebuild"
+    path = MacOS::Xcode.bundle_path
     path = '/Developer' if path.nil? or not path.directory?
     <<-EOS.undent
       Your Xcode is configured with an invalid path.
@@ -734,7 +732,7 @@ def __check_git_version
 end
 
 def check_for_git
-  if which "git"
+  if git?
     __check_git_version
   else <<-EOS.undent
     Git could not be found in your PATH.
@@ -746,7 +744,7 @@ def check_for_git
 end
 
 def check_git_newline_settings
-  return unless which "git"
+  return unless git?
 
   autocrlf = `git config --get core.autocrlf`.chomp
 
@@ -764,7 +762,7 @@ def check_git_newline_settings
 end
 
 def check_git_origin
-  return unless which('git') && (HOMEBREW_REPOSITORY/'.git').exist?
+  return unless git? && (HOMEBREW_REPOSITORY/'.git').exist?
 
   HOMEBREW_REPOSITORY.cd do
     origin = `git config --get remote.origin.url`.strip
@@ -908,7 +906,7 @@ def check_missing_deps
 end
 
 def check_git_status
-  return unless which "git"
+  return unless git?
   HOMEBREW_REPOSITORY.cd do
     unless `git status --untracked-files=all --porcelain -- Library/Homebrew/ 2>/dev/null`.chomp.empty?
       <<-EOS.undent_________________________________________________________72
@@ -1020,7 +1018,7 @@ def check_for_pydistutils_cfg_in_home
 end
 
 def check_for_outdated_homebrew
-  return unless which 'git'
+  return unless git?
   HOMEBREW_REPOSITORY.cd do
     if File.directory? ".git"
       local = `git rev-parse -q --verify refs/remotes/origin/master`.chomp

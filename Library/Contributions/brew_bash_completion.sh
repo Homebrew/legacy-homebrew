@@ -140,7 +140,7 @@ _brew_bottle ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--merge --rb --write"
+        __brewcomp "--merge --rb --write --root_url="
         return
         ;;
     esac
@@ -450,12 +450,13 @@ _brew ()
                 2>/dev/null | sed -e "s/\.rb//g" -e "s/brew-//g" \
                 -e "s/.*\///g")
         __brewcomp "
-            --cache --cellar --config
+            --cache --cellar
             --env --prefix --repository
             audit
             cat
             cleanup
             commands
+            config --config
             create
             deps
             diy configure

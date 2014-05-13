@@ -2,12 +2,10 @@ require 'formula'
 
 class Disco < Formula
   homepage 'http://discoproject.org/'
-  url 'https://github.com/discoproject/disco/archive/0.5.tar.gz'
-  sha1 '2728d2cc9ea398ddf1e4420e5c75750aa74fe0e2'
-  # Periods in the install path cause disco-worker to complain so change to underscores.
-  version '0_5_0'
+  url 'https://github.com/discoproject/disco/archive/0.5.1.tar.gz'
+  sha1 'c158018409216d5c03368b773e54e1e5ea91ae38'
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'erlang'
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
   depends_on 'libcmph'
@@ -16,6 +14,8 @@ class Disco < Formula
   patch :DATA
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
+
     inreplace "Makefile" do |s|
       s.change_make_var! "prefix", prefix
       s.change_make_var! "sysconfdir", etc
@@ -36,6 +36,12 @@ class Disco < Formula
     inreplace "#{etc}/disco/settings.py" do |s|
       s.gsub!("Cellar/disco/"+version+"/", "")
     end
+
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+  end
+
+  test do
+    system "#{bin}/disco"
   end
 
   def caveats

@@ -2,9 +2,9 @@ require 'formula'
 
 class Putty < Formula
   homepage 'http://www.chiark.greenend.org.uk/~sgtatham/putty/'
+  head 'svn://svn.tartarus.org/sgt/putty'
   url 'http://the.earth.li/~sgtatham/putty/0.63/putty-0.63.tar.gz'
   sha1 '195c0603ef61082b91276faa8d4246ea472bba3b'
-  head 'svn://svn.tartarus.org/sgt/putty', :using => :svn
 
   depends_on 'pkg-config' => :build
   depends_on 'gtk+' => :optional

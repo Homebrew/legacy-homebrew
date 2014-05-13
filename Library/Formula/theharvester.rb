@@ -5,8 +5,6 @@ class Theharvester < Formula
   url 'https://theharvester.googlecode.com/files/theHarvester-2.2a.tar.gz'
   sha1 'e02661ed6dd8d9d48d476ccee99878e15f67842a'
 
-  depends_on :python
-
   def install
     libexec.install Dir['*']
     (libexec/'theHarvester.py').chmod 0755

@@ -91,7 +91,7 @@ class Macvim < Formula
       # it is returned by `xcode-select -print-path` and already set by
       # Homebrew (in superenv). Instead Macvim needs the deeper dir to directly
       # append "SDKs/...".
-      args << "--with-developer-dir=#{MacOS::Xcode.prefix}/Platforms/MacOSX.platform/Developer/"
+      args << "--with-developer-dir=#{MacOS::Xcode.prefix}/Platforms/MacOSX.platform/Developer"
     end
 
     system "./configure", *args
@@ -117,9 +117,7 @@ class Macvim < Formula
 
     if build.include? "custom-icons"
       # Get the custom font used by the icons
-      cd 'src/MacVim/icons' do
-        system "make getenvy"
-      end
+      system "make", "-C", "src/MacVim/icons", "getenvy"
     else
       # Building custom icons fails for many users, so off by default.
       inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""

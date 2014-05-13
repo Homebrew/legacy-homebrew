@@ -2,14 +2,18 @@ require 'formula'
 
 class Mongodb < Formula
   homepage "http://www.mongodb.org/"
-  url "http://downloads.mongodb.org/src/mongodb-src-r2.6.0.tar.gz"
-  sha1 "35f8efe61d992f4b71c9205a9dbcab50e745c9a3"
-  revision 1
+  url "http://downloads.mongodb.org/src/mongodb-src-r2.6.1.tar.gz"
+  sha1 "3e069329e93a45f14bb86618eceea08d376dbc82"
 
   bottle do
-    sha1 "1c7b447ae2077b9efeaee2aa2c2474dc6b19ab6f" => :mavericks
-    sha1 "0004e3bfb60db586f6ced02769ccd1cf325e0929" => :mountain_lion
-    sha1 "7667f6cc36859fb9fced1885f382b76ae325583c" => :lion
+    sha1 "091cafed1db9c96b4487a806f61df8ba0c3523b4" => :mavericks
+    sha1 "3a91d1ed6e1e75f48e6fc241a0cc3fba9d8aa810" => :mountain_lion
+    sha1 "3ffe58f9e71dfd0700e08651f272f7a511dbb8d2" => :lion
+  end
+
+  devel do
+     url "http://downloads.mongodb.org/src/mongodb-src-r2.7.0.tar.gz"
+     sha1 "43449a69c3386e13fdb6abb2b13933f3ba607cc5"
   end
 
   head do
@@ -39,7 +43,8 @@ class Mongodb < Formula
     args << "--cxx=#{cxx}"
 
     # --full installs development headers and client library, not just binaries
-    args << "--full"
+    # (only supported pre-2.7)
+    args << "--full" if build.stable?
     args << "--use-system-boost" if build.with? "boost"
 
     if build.with? 'openssl'

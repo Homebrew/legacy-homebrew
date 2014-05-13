@@ -30,8 +30,6 @@ class Mysql < Formula
   conflicts_with 'mysql-connector-c',
     :because => 'both install MySQL client libraries'
 
-  env :std if build.universal?
-
   fails_with :llvm do
     build 2326
     cause "https://github.com/Homebrew/homebrew/issues/issue/144"
@@ -86,7 +84,10 @@ class Mysql < Formula
     args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? 'blackhole-storage-engine'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
+    if build.universal?
+      ENV.universal_binary
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
@@ -157,6 +158,7 @@ class Mysql < Formula
       <array>
         <string>#{opt_bin}/mysqld_safe</string>
         <string>--bind-address=127.0.0.1</string>
+        <string>--datadir=#{var}/mysql</string>
       </array>
       <key>RunAtLoad</key>
       <true/>

@@ -2,8 +2,8 @@ require 'formula'
 
 class Libmongoclient < Formula
   homepage 'http://www.mongodb.org'
-  url 'https://github.com/mongodb/mongo-cxx-driver/archive/legacy-0.0-26compat-2.6.0.tar.gz'
-  sha1 '16489b9afb506bf30e514152af7b5a49bbdb2486'
+  url 'https://github.com/mongodb/mongo-cxx-driver/archive/legacy-0.0-26compat-2.6.1.tar.gz'
+  sha1 'a45e66d5182ede6b3a0f5bd5e020ebeb48dbddbe'
 
   head 'https://github.com/mongodb/mongo-cxx-driver.git', :branch => "26compat"
 

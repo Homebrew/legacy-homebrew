@@ -27,8 +27,7 @@ class Minidlna < Formula
     sample_config_path.write sample_config
   end
 
-  def caveats
-    s = <<-EOS.undent
+  def caveats; <<-EOS.undent
       Simple single-user configuration:
 
       mkdir -p ~/.config/minidlna

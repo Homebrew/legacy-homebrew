@@ -10,6 +10,7 @@ class GlobusToolkit < Formula
 
   def install
     ENV.deparallelize
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"

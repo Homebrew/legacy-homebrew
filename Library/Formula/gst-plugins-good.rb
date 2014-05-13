@@ -58,7 +58,7 @@ class GstPluginsGood < Formula
     if build.with? "x11"
       args << "--with-x"
     else
-      args << "--without-x"
+      args << "--disable-x"
     end
 
     if build.head?

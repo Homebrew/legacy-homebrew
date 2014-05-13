@@ -2,20 +2,20 @@ require 'formula'
 
 class Pypy < Formula
   homepage 'http://pypy.org/'
-  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.2.1-osx64.tar.bz2'
-  version '2.2.1'
-  sha1 'caf13d377fcdced4bfadd4158ba3d18d520396f3'
+  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.3-osx64.tar.bz2'
+  version '2.3.0'
+  sha1 'b40c3c56138725757ef0f97ffb67dce89b7665f0'
 
   depends_on :arch => :x86_64
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-3.4.1.tar.gz'
-    sha1 '1a7bb4736d915ec140b4225245b585c14b39b8dd'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-3.6.tar.gz'
+    sha1 '745cbb942f8015dbcbfd9df5cb815adb63c7b0e9'
   end
 
   resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.4.tar.gz'
-    sha1 '35ccb7430356186cf253615b70f8ee580610f734'
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.5.tar.gz'
+    sha1 'ce15871b65e412589044ee8a4029fe65bc26b894'
   end
 
   def install
@@ -57,15 +57,9 @@ class Pypy < Formula
     resource('setuptools').stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
     resource('pip').stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
 
-    # Symlink to easy_install_pypy.
-    unless (scripts_folder+'easy_install_pypy').exist?
-      scripts_folder.install_symlink "easy_install" => "easy_install_pypy"
-    end
-
-    # Symlink to pip_pypy.
-    unless (scripts_folder+'pip_pypy').exist?
-      scripts_folder.install_symlink "pip" => "pip_pypy"
-    end
+    # Symlinks to easy_install_pypy and pip_pypy
+    bin.install_symlink scripts_folder/'easy_install' => "easy_install_pypy"
+    bin.install_symlink scripts_folder/'pip' => "pip_pypy"
   end
 
   def caveats; <<-EOS.undent

@@ -76,6 +76,7 @@ module Superenv
     self['HOMEBREW_TEMP'] = HOMEBREW_TEMP
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
     self['HOMEBREW_OPTFLAGS'] = determine_optflags
+    self['HOMEBREW_ARCHFLAGS'] = ''
     self['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
     self['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
     self['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
@@ -83,11 +84,14 @@ module Superenv
     self['ACLOCAL_PATH'] = determine_aclocal_path
     self['M4'] = MacOS.locate("m4") if deps.include? "autoconf"
 
+    # On 10.9, the tools in /usr/bin proxy to the active developer directory.
+    # This means we can use them for any combination of CLT and Xcode.
+    self["HOMEBREW_PREFER_CLT_PROXIES"] = "1" if MacOS.version == "10.9"
+
     # The HOMEBREW_CCCFG ENV variable is used by the ENV/cc tool to control
     # compiler flag stripping. It consists of a string of characters which act
     # as flags. Some of these flags are mutually exclusive.
     #
-    # u - A universal build was requested
     # 3 - A 32-bit build was requested
     # O - Enables argument refurbishing. Only active under the
     #     make/bsdmake wrappers currently.
@@ -117,7 +121,7 @@ module Superenv
     paths = [Superenv.bin]
     if MacOS::Xcode.without_clt?
       paths << "#{MacOS::Xcode.prefix}/usr/bin"
-      paths << "#{MacOS::Xcode.prefix}/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+      paths << "#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
     paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << MacOS::X11.bin if x11?
@@ -172,17 +176,22 @@ module Superenv
     paths = []
     paths << "#{sdk}/usr/include/libxml2" unless deps.include? 'libxml2'
     paths << "#{sdk}/usr/include/apache2" if MacOS::Xcode.without_clt?
-    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers" unless x11?
-    paths << MacOS::X11.include << "#{MacOS::X11.include}/freetype2" if x11?
+    if x11?
+      paths << MacOS::X11.include << "#{MacOS::X11.include}/freetype2"
+    else
+      paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers"
+    end
     paths.to_path_s
   end
 
   def determine_cmake_library_path
     sdk = MacOS.sdk_path if MacOS::Xcode.without_clt?
     paths = []
-    # things expect to find GL headers since X11 used to be a default, so we add them
-    paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries" unless x11?
-    paths << MacOS::X11.lib if x11?
+    if x11?
+      paths << MacOS::X11.lib
+    else
+      paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries"
+    end
     paths.to_path_s
   end
 
@@ -254,7 +263,6 @@ module Superenv
 
   def universal_binary
     self['HOMEBREW_ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
-    append 'HOMEBREW_CCCFG', "u", ''
 
     # GCC doesn't accept "-march" for a 32-bit CPU with "-arch x86_64"
     if compiler != :clang && Hardware.is_32_bit?

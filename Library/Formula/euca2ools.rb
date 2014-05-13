@@ -6,7 +6,7 @@ class Euca2ools < Formula
   sha1 "73e235e7e6b17c8d1fb064c14aa24a3de36640e7"
   head "https://github.com/eucalyptus/euca2ools.git", :branch => "master"
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
 
   resource "requestbuilder" do
     url "https://github.com/boto/requestbuilder/archive/0.1.0.tar.gz"
@@ -34,14 +34,9 @@ class Euca2ools < Formula
   end
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
     install_args = ["setup.py", "install", "--prefix=#{libexec}"]
-
-    # lxml's C bindings use flags unrecognized by clang,
-    # but since it doesn't use a makefile arg refurbishment
-    # is normally not enabled.
-    # See https://github.com/Homebrew/homebrew/issues/27639
-    ENV.append "HOMEBREW_CCCFG", "O"
 
     resource("requestbuilder").stage { system "python", *install_args }
     resource("requests").stage { system "python", *install_args }
