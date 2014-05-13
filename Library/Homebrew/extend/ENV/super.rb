@@ -158,6 +158,13 @@ module Superenv
     paths.to_path_s
   end
 
+  def determine_aclocal_path
+    paths = keg_only_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/aclocal" }
+    paths << "#{HOMEBREW_PREFIX}/share/aclocal"
+    paths << "#{MacOS::X11.share}/aclocal" if x11?
+    paths.to_path_s
+  end
+
   def determine_cmake_prefix_path
     paths = keg_only_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}" }
     paths << HOMEBREW_PREFIX.to_s # put ourselves ahead of everything else
@@ -192,13 +199,6 @@ module Superenv
     else
       paths << "#{sdk}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries"
     end
-    paths.to_path_s
-  end
-
-  def determine_aclocal_path
-    paths = keg_only_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/aclocal" }
-    paths << "#{HOMEBREW_PREFIX}/share/aclocal"
-    paths << "#{MacOS::X11.share}/aclocal" if x11?
     paths.to_path_s
   end
 
