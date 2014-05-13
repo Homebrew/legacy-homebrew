@@ -198,71 +198,79 @@ def check_for_broken_symlinks
   end
 end
 
-def check_xcode_clt
-  if MacOS.version >= :mavericks
-    __check_clt_up_to_date
-  elsif MacOS::Xcode.installed?
-    __check_xcode_up_to_date
-  elsif MacOS.version >= :lion
-    __check_clt_up_to_date
-  else <<-EOS.undent
-      Xcode is not installed
-      Most formulae need Xcode to build.
-      It can be installed from https://developer.apple.com/downloads/
-    EOS
+if MacOS.version >= "10.9"
+  def check_for_installed_developer_tools
+    unless MacOS::CLT.installed? then <<-EOS.undent
+      No developer tools installed.
+      Install the Command Line Tools:
+        xcode-select --install
+      EOS
+    end
   end
-end
 
-def __check_xcode_up_to_date
-  if MacOS::Xcode.outdated?
-    message = <<-EOS.undent
+  def check_xcode_up_to_date
+    if MacOS::Xcode.installed? && MacOS::Xcode.outdated? then <<-EOS.undent
       Your Xcode (#{MacOS::Xcode.version}) is outdated
       Please update to Xcode #{MacOS::Xcode.latest_version}.
-    EOS
-    if MacOS.version >= :lion
-      message += <<-EOS.undent
       Xcode can be updated from the App Store.
       EOS
-    else
-      message += <<-EOS.undent
-      Xcode can be updated from https://developer.apple.com/downloads/
+    end
+  end
+
+  def check_clt_up_to_date
+    if MacOS::CLT.installed? && MacOS::CLT.outdated? then <<-EOS.undent
+      A newer Command Line Tools release is available.
+      Update them from Software Update in the App Store.
       EOS
     end
-    message
   end
-end
-
-def __check_clt_up_to_date
-  if not MacOS::CLT.installed?
-    message = <<-EOS.undent
+elsif MacOS.version == "10.8" || MacOS.version == "10.7"
+  def check_for_installed_developer_tools
+    unless MacOS::Xcode.installed? || MacOS::CLT.installed? then <<-EOS.undent
       No developer tools installed.
       You should install the Command Line Tools.
-    EOS
-    if MacOS.version >= :mavericks
-      message += <<-EOS.undent
-        Run `xcode-select --install` to install them.
-      EOS
-    else
-      message += <<-EOS.undent
-        The standalone package can be obtained from
-        https://developer.apple.com/downloads/,
-        or it can be installed via Xcode's preferences.
+      The standalone package can be obtained from
+        https://developer.apple.com/downloads
+      or it can be installed via Xcode's preferences.
       EOS
     end
-    message
-  elsif MacOS::CLT.outdated?
-    message = <<-EOS.undent
-      A newer Command Line Tools release is available
-    EOS
-    if MacOS.version >= :mavericks
-      message += <<-EOS.undent
-        Update them from Software Update in the App Store.
+  end
+
+  def check_xcode_up_to_date
+    if MacOS::Xcode.installed? && MacOS::Xcode.outdated? then <<-EOS.undent
+      Your Xcode (#{MacOS::Xcode.version}) is outdated
+      Please update to Xcode #{MacOS::Xcode.latest_version}.
+      Xcode can be updated from
+        https://developer.apple.com/downloads
       EOS
-    else
-      message += <<-EOS.undent
-        The standalone package can be obtained from
-        https://developer.apple.com/downloads/,
-        or it can be installed via Xcode's preferences.
+    end
+  end
+
+  def check_clt_up_to_date
+    if MacOS::CLT.installed? && MacOS::CLT.outdated? then <<-EOS.undent
+      A newer Command Line Tools release is available.
+      The standalone package can be obtained from
+        https://developer.apple.com/downloads
+      or it can be installed via Xcode's preferences.
+      EOS
+    end
+  end
+else
+  def check_for_installed_developer_tools
+    unless MacOS::Xcode.installed? then <<-EOS.undent
+      Xcode is not installed. Most formulae need Xcode to build.
+      It can be installed from
+        https://developer.apple.com/downloads
+      EOS
+    end
+  end
+
+  def check_xcode_up_to_date
+    if MacOS::Xcode.installed? && MacOS::Xcode.outdated? then <<-EOS.undent
+      Your Xcode (#{MacOS::Xcode.version}) is outdated
+      Please update to Xcode #{MacOS::Xcode.latest_version}.
+      Xcode can be updated from
+        https://developer.apple.com/downloads
       EOS
     end
   end
@@ -300,18 +308,6 @@ def check_for_stray_developer_directory
     You have leftover files from an older version of Xcode.
     You should delete them using:
       #{uninstaller}
-    EOS
-  end
-end
-
-def check_standard_compilers
-  return if check_xcode_clt # only check if Xcode is up to date
-  compiler_status = MacOS.compilers_standard?
-  if not compiler_status and not compiler_status.nil? then <<-EOS.undent
-    Your compilers are different from the standard versions for your Xcode.
-    If you have Xcode 4.3 or newer, you should install the Command Line Tools for
-    Xcode from within Xcode's Download preferences.
-    Otherwise, you should reinstall Xcode.
     EOS
   end
 end
