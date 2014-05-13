@@ -127,8 +127,8 @@ module Superenv
       paths << "#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
 
-    paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
-    paths << MacOS::X11.bin if x11?
+    paths += deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
+    paths << MacOS::X11.bin.to_s if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
 
     # Homebrew's apple-gcc42 will be outside the PATH in superenv,
@@ -139,12 +139,12 @@ module Superenv
       rescue Exception # in --debug, catch bare exceptions too
         nil
       end
-      paths << apple_gcc42.opt_prefix/'bin' if apple_gcc42
+      paths << apple_gcc42.opt_bin.to_s if apple_gcc42
     end
 
     if self['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
       gcc_formula = gcc_version_formula($1)
-      paths << gcc_formula.opt_prefix/'bin'
+      paths << gcc_formula.opt_bin.to_s
     end
 
     paths.to_path_s
