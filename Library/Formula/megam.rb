@@ -8,33 +8,28 @@ class Megam < Formula
   depends_on "objective-caml"
 
   def install
-    ENV['WITHCLIBS'] = '-I /usr/local/lib/ocaml/caml'
-    ENV['WITHSTR']   = 'str.cma -cclib -lcamlstr'
+    # Environment settings for Makefile to compile on MacOS
+    ENV['WITHCLIBS'] = "-I #{Formula['objective-caml'].lib}/ocaml/caml"
+    ENV['WITHSTR']   = "str.cma -cclib -lcamlstr"
     # Build the non-optimized version
-    system "make -e"
+    system "make", "-e"
     bin.install "megam"
-    system "make clean"
+    system "make", "clean"
     # Build the optimized version
-    system "make -e opt"
+    system "make", "-e", "opt"
     bin.install "megam.opt"
   end
 
   test do
-    # `test do` will create, run in and delete a temporary directory.
-    #
-    # This test will fail and we won't accept that! It's enough to just replace
-    # "false" with the main program this formula installs, but it'd be nice if you
-    # were more thorough. Run the test with `brew test megam`.
-    #
-    # The installed folder is not in the path, so use the entire path to any
-    # executables being tested: `system "#{bin}/program", "do", "something"`.
-    File.open("tiny.megam", 'w') do |input|
-      input.puts "0    F1 F2 F3"
-      input.puts "1    F2 F3 F8"
-      input.puts "0    F1 F2"
-      input.puts "1    F8 F9 F10"
+    open("tiny.megam", 'w') do |file|
+      file.write  <<-EOS.undent
+        0    F1 F2 F3
+        1    F2 F3 F8
+        0    F1 F2
+        1    F8 F9 F10
+      EOS
     end
-    system "megam binary tiny.megam"
-    system "megam.opt binary tiny.megam"
+    system "megam", "binary", "tiny.megam"
+    system "megam.opt", "binary", "tiny.megam"
   end
 end
