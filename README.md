@@ -213,6 +213,13 @@ Contributions via Github Pull Request are welcome.  See the TODO for some ideas.
 - Run `test` to ensure all tests pass
 - Now just run `publish` and package will be published to bintray
 
+### Use Job Server Jar
+
+- In your project, add below to your resolvers
+	- "Ooyala Bintray" at "http://dl.bintray.com/ooyala/maven/"
+- Add below to your libraryDependencies
+	- "ooyala.cnd" % "job-server" % "0.3.1"
+  
 ## License
 Apache 2.0, see LICENSE.md
 
