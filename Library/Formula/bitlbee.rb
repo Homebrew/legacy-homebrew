@@ -16,6 +16,14 @@ class Bitlbee < Formula
   depends_on 'finch' => :optional
   depends_on 'libotr' => :optional
 
+  if build.with? "libotr"
+    # Head versions of bitlbee support otr4, but there is no release yet.
+    patch do
+      url "http://patch-tracker.debian.org/patch/nondebian/dl/bitlbee/3.2.1+otr4-1"
+      sha1 "04d0f58faa58d1702994e84a3d8177451b0d1ad8"
+    end
+  end
+
   def install
     args = ["--prefix=#{prefix}",
             "--debug=0",
