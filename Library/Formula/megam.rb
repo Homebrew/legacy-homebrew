@@ -2,7 +2,7 @@ require "formula"
 
 class Megam < Formula
   homepage "http://www.umiacs.umd.edu/~hal/megam/"
-  url "http://hal3.name/megam/megam_src.tgz"
+  url "http://eightnine.de/megam/megam-0.9.2.tgz"
   sha1 "c9936d0504da70b774ba574c00fcfac48dcc366c"
 
   depends_on "objective-caml"
