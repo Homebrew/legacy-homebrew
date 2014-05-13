@@ -103,7 +103,7 @@ module Superenv
     # s - apply fix for sed's Unicode support
     # a - apply fix for apr-1-config path
 
-    warn_about_non_apple_gcc($1) if ENV['HOMEBREW_CC'] =~ GNU_GCC_REGEXP
+    warn_about_non_apple_gcc($1) if self["HOMEBREW_CC"] =~ GNU_GCC_REGEXP
   end
 
   private
