@@ -45,8 +45,8 @@ module Superenv
   def setup_build_environment(formula=nil)
     reset
 
-    self.cc  = self['HOMEBREW_CC']  = determine_cc
-    self.cxx = self['HOMEBREW_CXX'] = determine_cxx
+    self.cc  = determine_cc
+    self.cxx = determine_cxx
     validate_cc!(formula) unless formula.nil?
     self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     self['PATH'] = determine_path
@@ -90,6 +90,14 @@ module Superenv
   end
 
   private
+
+  def cc= val
+    self["HOMEBREW_CC"] = super
+  end
+
+  def cxx= val
+    self["HOMEBREW_CXX"] = super
+  end
 
   def determine_cc
     cc = compiler
@@ -228,16 +236,16 @@ module Superenv
   COMPILER_SYMBOL_MAP.values.each do |compiler|
     define_method compiler do
       @compiler = compiler
-      self.cc  = self['HOMEBREW_CC']  = determine_cc
-      self.cxx = self['HOMEBREW_CXX'] = determine_cxx
+      self.cc  = determine_cc
+      self.cxx = determine_cxx
     end
   end
 
   GNU_GCC_VERSIONS.each do |n|
     define_method(:"gcc-4.#{n}") do
       @compiler = "gcc-4.#{n}"
-      self.cc  = self['HOMEBREW_CC']  = determine_cc
-      self.cxx = self['HOMEBREW_CXX'] = determine_cxx
+      self.cc  = determine_cc
+      self.cxx = determine_cxx
     end
   end
 
