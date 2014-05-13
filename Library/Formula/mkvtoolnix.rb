@@ -73,7 +73,7 @@ class Mkvtoolnix < Formula
       --disable-debug
       --prefix=#{prefix}
       --without-curl
-      --with-boost=#{boost.opt_include}
+      --with-boost=#{boost.opt_prefix}
     ]
 
     if build.with? "wxmac"
