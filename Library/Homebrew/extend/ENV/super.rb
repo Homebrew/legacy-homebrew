@@ -267,10 +267,11 @@ module Superenv
   end
 
   def cxx11
-    if self['HOMEBREW_CC'] == 'clang'
+    case self["HOMEBREW_CC"]
+    when "clang"
       append 'HOMEBREW_CCCFG', "x", ''
       append 'HOMEBREW_CCCFG', "g", ''
-    elsif self['HOMEBREW_CC'] =~ /gcc-4\.(8|9)/
+    when /gcc-4\.(8|9)/
       append 'HOMEBREW_CCCFG', "x", ''
     else
       raise "The selected compiler doesn't support C++11: #{self['HOMEBREW_CC']}"
