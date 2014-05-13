@@ -19,17 +19,16 @@ class Phantomjs < Formula
   end
 
   def install
-    inreplace 'src/qt/preconfig.sh', '-arch x86', '-arch x86_64' if MacOS.prefer_64_bit?
-    args = ['--confirm', '--qt-config']
-    system './build.sh', *args
-    bin.install 'bin/phantomjs'
-    (share+'phantomjs').install 'examples'
+    inreplace "src/qt/preconfig.sh", "-arch x86", "-arch x86_64" if MacOS.prefer_64_bit?
+    system "./build.sh", "--confirm", "--jobs", ENV.make_jobs
+    bin.install "bin/phantomjs"
+    (share+"phantomjs").install "examples"
   end
 
   test do
     path = testpath/"test.js"
     path.write <<-EOS
-      console.log('hello');
+      console.log("hello");
       phantom.exit();
     EOS
 
