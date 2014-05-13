@@ -20,23 +20,6 @@ module Superenv
   def self.extended(base)
     base.keg_only_deps = []
     base.deps = []
-
-    # Many formula assume that CFLAGS etc. will not be nil. This should be
-    # a safe hack to prevent that exception cropping up. Main consequence of
-    # this is that self['CFLAGS'] is never nil even when it is which can break
-    # if checks, but we don't do such a check in our code. Redefinition must be
-    # done on the singleton class, because in MRI all ENV methods are defined
-    # on its singleton class, precluding the use of extend.
-    class << base
-      alias_method :"old_[]", :[]
-      def [] key
-        if has_key? key
-          fetch(key)
-        elsif %w{CPPFLAGS CFLAGS LDFLAGS}.include? key
-          self[key] = ""
-        end
-      end
-    end
   end
 
   def self.bin
