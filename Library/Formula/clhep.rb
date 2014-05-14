@@ -12,9 +12,7 @@ class Clhep < Formula
 
   def install
     mkdir "clhep-build" do
-      system "cmake", "../CLHEP",
-                      "-DCMAKE_PREFIX_PATH=#{prefix}",
-                      *std_cmake_args
+      system "cmake", "../CLHEP", *std_cmake_args
       system "make install"
     end
   end
