@@ -14,8 +14,4 @@ class Geomview < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
-
-  test do
-    system "geomview"
-  end
 end
