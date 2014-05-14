@@ -24,5 +24,6 @@ class Leveldb < Formula
     lib.install 'libleveldb.dylib.1.15' => 'libleveldb.1.15.dylib'
     lib.install_symlink lib/'libleveldb.1.15.dylib' => 'libleveldb.dylib'
     lib.install_symlink lib/'libleveldb.1.15.dylib' => 'libleveldb.1.dylib'
+    lib.install_symlink lib/'libleveldb.1.15.dylib' => 'libleveldb.dylib.1'
   end
 end
