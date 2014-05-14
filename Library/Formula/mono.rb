@@ -3,25 +3,25 @@ require "formula"
 class Mono < Formula
   homepage "http://www.mono-project.com/"
   url "http://download.mono-project.com/sources/mono/mono-3.4.0.tar.bz2"
-  sha256 "fd4cadc6a849896c6a4382321f06ce9f224326affd2c8aaa47ba7218c0d951d4"
+  sha1 "bae86f50f9a29d68d4e1917358996e7186e7f89e"
 
   resource "monolite" do
     url "http://storage.bos.xamarin.com/mono-dist-master/latest/monolite-111-latest.tar.gz"
-    sha256 "d618a807444216a3ed5462d345df726f58b2c2a044c0c2f8faa9800efe03cc27"
+    sha1 "fe00933bdbee2bea2b52f8ed7e6ff27d1f7f3aa7"
   end
 
   # This file is missing in the 3.4.0 tarball as of 2014-05-14...
   # See https://bugzilla.xamarin.com/show_bug.cgi?id=18690
   resource "Microsoft.Portable.Common.targets" do
     url "https://raw.githubusercontent.com/mono/mono/master/mcs/tools/xbuild/targets/Microsoft.Portable.Common.targets"
-    sha256 "dcdf6001cf01169df0f681f946d20d10cd6fa38a5a91f4f38ee4970b2923d09f"
+    sha1 "7624c3f6d1e4867da2e217ba0d1595a224971e27"
   end
 
   # help mono find its MonoPosixHelper lib when it is not in a system path
   # see https://bugzilla.xamarin.com/show_bug.cgi?id=18555
   patch do
     url "https://bugzilla.xamarin.com/attachment.cgi?id=6399"
-    sha256 "aea44d6cad3ac4fa1e64af2720d22badef1dc8e0accbc2e1329da270ba4e8dfa"
+    sha1 "d011dc55f341feea0bdb8aa645688b815910b734"
   end
 
   def install
