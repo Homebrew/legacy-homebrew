@@ -71,8 +71,8 @@ __END__
 -	 -I/usr/X11/include/freetype2 -I/usr/X11/include \
 -	 -I/usr/X11/include/libpng12
 -CAIRO_LIBS ?= -L/usr/X11/lib -lcairo
--LUA_CFLAGS ?=
--LUA_LIBS   ?= -llua -lm
+-LUA_CFLAGS ?= -I/usr/local/include
+-LUA_LIBS   ?= -L/usr/local/lib -llua52 -lm
 -QT_CFLAGS  ?= -I/Library/Frameworks/QtCore.framework/Versions/4/Headers \
 -	      -I/Library/Frameworks/QtGui.framework/Versions/4/Headers
 -QT_LIBS    ?= -F/Library/Frameworks -L/Library/Frameworks \
@@ -84,12 +84,12 @@ __END__
 +ifeq "$(HAVE_PKG_CONFIG)" "1"
 +  FREETYPE_CFLAGS ?= $(shell pkg-config --cflags freetype2)
 +  FREETYPE_LIBS   ?= $(shell pkg-config --libs freetype2)
-+  CAIRO_CFLAGS    ?= $(shell pkg-config --cflags cairo)
-+  CAIRO_LIBS      ?= $(shell pkg-config --libs cairo)
-+  GTK_CFLAGS      ?= $(shell pkg-config --cflags gtk+-2.0)
-+  GTK_LIBS        ?= $(shell pkg-config --libs gtk+-2.0)
-+  QT_CFLAGS       ?= $(shell pkg-config --cflags QtGui QtCore)
-+  QT_LIBS	      ?= $(shell pkg-config --libs QtGui QtCore)
++  CAIRO_CFLAGS ?= $(shell pkg-config --cflags cairo)
++  CAIRO_LIBS   ?= $(shell pkg-config --libs cairo)
++  GTK_CFLAGS ?= $(shell pkg-config --cflags gtk+-2.0)
++  GTK_LIBS   ?= $(shell pkg-config --libs gtk+-2.0)
++  QT_CFLAGS ?= $(shell pkg-config --cflags QtGui QtCore)
++  QT_LIBS	?= $(shell pkg-config --libs QtGui QtCore)
 +else
 +  FREETYPE_CFLAGS ?= -I/usr/X11/include/freetype2 -I/usr/X11/include
 +  FREETYPE_LIBS ?= -L/usr/X11/lib -lfreetype
