@@ -36,7 +36,6 @@ class Imagemagick < Formula
   depends_on 'libtiff' => :optional
   depends_on 'little-cms' => :optional
   depends_on 'little-cms2' => :optional
-  depends_on 'jasper' => :optional
   depends_on 'libwmf' => :optional
   depends_on 'librsvg' => :optional
   depends_on 'liblqr' => :optional
@@ -84,7 +83,7 @@ class Imagemagick < Formula
     args << "--without-x" if build.without? 'x11'
     args << "--with-fontconfig=yes" if build.with? 'fontconfig'
     args << "--with-freetype=yes" if build.with? 'freetype'
-    args << "--with-webp=yes" if build.include? 'webp'
+    args << "--with-webp=yes" if build.with? 'webp'
 
     # versioned stuff in main tree is pointless for us
     inreplace 'configure', '${PACKAGE_NAME}-${PACKAGE_VERSION}', '${PACKAGE_NAME}'

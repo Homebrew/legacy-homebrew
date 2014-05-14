@@ -19,8 +19,6 @@ class Llvm < Formula
 
   depends_on :python => :recommended
 
-  env :std if build.universal?
-
   keg_only :provided_by_osx
 
   def install
@@ -31,6 +29,7 @@ class Llvm < Formula
     (buildpath/"tools/clang").install resource("clang") if build.with? "clang"
 
     if build.universal?
+      ENV.permit_arch_flags
       ENV['UNIVERSAL'] = '1'
       ENV['UNIVERSAL_ARCH'] = Hardware::CPU.universal_archs.join(' ')
     end
