@@ -79,8 +79,8 @@ __END__
 -	      -framework QtCore -framework ApplicationServices \
 -	      -framework QtGui -framework AppKit -framework Cocoa -lz -lm
 -MOC	   ?= moc
-+LUA_CFLAGS ?= -I/usr/local/Cellar/lua52/5.2.3/include
-+LUA_LIBS   ?= -L/usr/local/Cellar/lua52/5.2.3/lib -llua -lm
++LUA_CFLAGS ?=
++LUA_LIBS   ?= -llua -lm
 +ifeq "$(HAVE_PKG_CONFIG)" "1"
 +  FREETYPE_CFLAGS ?= $(shell pkg-config --cflags freetype2)
 +  FREETYPE_LIBS   ?= $(shell pkg-config --libs freetype2)
