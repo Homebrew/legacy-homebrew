@@ -13,7 +13,7 @@ class Mono < Formula
   # This file is missing in the 3.4.0 tarball as of 2014-05-14...
   # See https://bugzilla.xamarin.com/show_bug.cgi?id=18690
   resource "Microsoft.Portable.Common.targets" do
-    url "https://raw.githubusercontent.com/mono/mono/master/mcs/tools/xbuild/targets/Microsoft.Portable.Common.targets"
+    url "https://raw.githubusercontent.com/mono/mono/mono-3.4.0/mcs/tools/xbuild/targets/Microsoft.Portable.Common.targets"
     sha1 "7624c3f6d1e4867da2e217ba0d1595a224971e27"
   end
 
