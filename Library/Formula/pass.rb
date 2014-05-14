@@ -7,9 +7,9 @@ class Pass < Formula
 
   bottle do
     cellar :any
-    sha1 "37c05776bfbb04a4fbfbed65e45a4fe62998f110" => :mavericks
-    sha1 "1af25c7c875801b174fb3f81ee8fdb6a2f07b0f8" => :mountain_lion
-    sha1 "a76cff03da8c62cd4cbabe35f62ad4fd97054d29" => :lion
+    sha1 "d6d4b6ddac09e4a6ff3d7f65de71e61563844a00" => :mavericks
+    sha1 "fa6cee4d76760ff1c714b6936217074cc12be230" => :mountain_lion
+    sha1 "c3288d0571d2b82244171917a9a808dca7098e3c" => :lion
   end
 
   head 'http://git.zx2c4.com/password-store', :using => :git
