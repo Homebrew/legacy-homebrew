@@ -5,6 +5,9 @@ class Mono < Formula
   url "http://download.mono-project.com/sources/mono/mono-3.4.0.tar.bz2"
   sha1 "bae86f50f9a29d68d4e1917358996e7186e7f89e"
 
+  bottle do
+  end
+
   resource "monolite" do
     url "http://storage.bos.xamarin.com/mono-dist-master/latest/monolite-111-latest.tar.gz"
     sha1 "fe00933bdbee2bea2b52f8ed7e6ff27d1f7f3aa7"
