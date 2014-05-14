@@ -10,7 +10,7 @@ class Mono < Formula
 
   resource "monolite" do
     url "http://storage.bos.xamarin.com/mono-dist-master/latest/monolite-111-latest.tar.gz"
-    sha1 "fe00933bdbee2bea2b52f8ed7e6ff27d1f7f3aa7"
+    sha1 "827865b61f310b12f33b38ff94d8f781a6a52427"
   end
 
   # This file is missing in the 3.4.0 tarball as of 2014-05-14...
