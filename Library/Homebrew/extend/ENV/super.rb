@@ -81,6 +81,7 @@ module Superenv
     # x - Enable C++11 mode.
     # g - Enable "-stdlib=libc++" for clang.
     # h - Enable "-stdlib=libstdc++" for clang.
+    # K - Don't strip -arch <arch>, -m32, or -m64
     #
     # On 10.8 and newer, these flags will also be present:
     # s - apply fix for sed's Unicode support
@@ -264,6 +265,10 @@ module Superenv
         "-Xarch_#{Hardware::CPU.arch_32_bit} \\0"
       )
     end
+  end
+
+  def permit_arch_flags
+    append "HOMEBREW_CCCFG", "K"
   end
 
   def cxx11

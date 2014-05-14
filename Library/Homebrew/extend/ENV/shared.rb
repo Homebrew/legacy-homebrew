@@ -239,4 +239,6 @@ module SharedEnvExtension
       EOS
     end
   end
+
+  def permit_arch_flags; end
 end
