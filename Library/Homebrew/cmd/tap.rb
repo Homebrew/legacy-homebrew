@@ -107,7 +107,7 @@ module Homebrew extend self
   end
 
   def tap_args
-    ARGV.first =~ %r{^([\w-]+)/(homebrew-)?([\w-]+)$}
+    ARGV.first =~ HOMEBREW_TAP_ARGS_REGEX
     raise "Invalid tap name" unless $1 && $3
     [$1, $3]
   end
@@ -122,7 +122,7 @@ module Homebrew extend self
 
   def tap_ref(path)
     case path.to_s
-    when %r{^#{HOMEBREW_LIBRARY}/Taps/([\w-]+)/([\w-]+)/(.+)}
+    when HOMEBREW_TAP_PATH_REGEX
       "#$1/#$2/#{File.basename($3, '.rb')}"
     when %r{^#{HOMEBREW_LIBRARY}/Formula/(.+)}
       "Homebrew/homebrew/#{File.basename($1, '.rb')}"
