@@ -63,7 +63,13 @@ class Git < Formula
     ENV['PERL_PATH'] = which 'perl'
 
     if MacOS.version >= :mavericks
-      ENV['PERLLIB_EXTRA'] = "#{MacOS.active_developer_dir}/Library/Perl/5.16/darwin-thread-multi-2level"
+      ENV["PERLLIB_EXTRA"] = %W{
+        #{MacOS.active_developer_dir}
+        /Library/Developer/CommandLineTools
+        /Applications/Xcode.app/Contents/Developer
+      }.uniq.map { |p|
+        "#{p}/Library/Perl/5.16/darwin-thread-multi-2level"
+      }.join(":")
     end
 
     unless quiet_system ENV['PERL_PATH'], '-e', 'use ExtUtils::MakeMaker'
