@@ -13,4 +13,19 @@ class Bmon < Formula
     system "make" # two steps to prevent blowing up
     system "make install"
   end
+  patch :DATA
 end
+__END__
+diff --git a/src/in_sysctl.c b/src/in_sysctl.c
+index 79c03fa..e06e6fa 100644
+--- a/src/in_sysctl.c
++++ b/src/in_sysctl.c
+@@ -83,6 +83,7 @@ sysctl_read(void)
+ 		}
+ 
+ 		sdl = (struct sockaddr_dl *) (ifm + 1);
++		sdl->sdl_data[sdl->sdl_nlen] = '\0';
+ 
+ 		if (get_show_only_running() && !(ifm->ifm_flags & IFF_UP))
+ 			continue;
+
