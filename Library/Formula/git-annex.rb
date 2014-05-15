@@ -28,7 +28,7 @@ class GitAnnex < Formula
     cabal_sandbox do
       cabal_install_tools "alex", "happy", "c2hs"
       # gcc required to build gnuidn
-      cabal_install "--with-gcc=#{Formula["gcc"].bin}/gcc-4.8", "--only-dependencies"
+      cabal_install "--with-gcc=#{Formula["gcc"].bin}/gcc", "--only-dependencies"
       cabal_install "--prefix=#{prefix}"
     end
     system "make", "git-annex.1", "git-annex-shell.1"
