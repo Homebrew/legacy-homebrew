@@ -5,6 +5,8 @@ class Liblas < Formula
   url 'http://download.osgeo.org/liblas/libLAS-1.7.0.tar.gz'
   sha1 'f31070efdf7bb7d6675c23c6c6c84584e3a10869'
 
+  head 'https://github.com/libLAS/libLAS.git'
+
   depends_on 'cmake' => :build
   depends_on 'libgeotiff'
   depends_on 'gdal'

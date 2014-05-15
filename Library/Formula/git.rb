@@ -20,9 +20,10 @@ class Git < Formula
   end
 
   bottle do
-    sha1 "1c075f1e75fa59b481f2ba46218dc14665e292f9" => :mavericks
-    sha1 "2e1de01d0361f1f515def52dfce54d9ca26d6ef2" => :mountain_lion
-    sha1 "f81fd6523266fb64c90ce39748461c1a856feca2" => :lion
+    revision 1
+    sha1 "1dc48e195c5ba69da02f2852745c491f29798f2e" => :mavericks
+    sha1 "f5b7f25814befcfdfb27a3aa70d71877ff9c38f4" => :mountain_lion
+    sha1 "da54997466f4d49b1448160ef3cabe52c1c6bf71" => :lion
   end
 
   devel do
@@ -63,7 +64,13 @@ class Git < Formula
     ENV['PERL_PATH'] = which 'perl'
 
     if MacOS.version >= :mavericks
-      ENV['PERLLIB_EXTRA'] = "#{MacOS.active_developer_dir}/Library/Perl/5.16/darwin-thread-multi-2level"
+      ENV["PERLLIB_EXTRA"] = %W{
+        #{MacOS.active_developer_dir}
+        /Library/Developer/CommandLineTools
+        /Applications/Xcode.app/Contents/Developer
+      }.uniq.map { |p|
+        "#{p}/Library/Perl/5.16/darwin-thread-multi-2level"
+      }.join(":")
     end
 
     unless quiet_system ENV['PERL_PATH'], '-e', 'use ExtUtils::MakeMaker'
