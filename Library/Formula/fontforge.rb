@@ -18,6 +18,12 @@ class Fontforge < Formula
     end
   end
 
+  bottle do
+    sha1 "62e19f688ec4fbd4a6263c6187980c35521a7b40" => :mavericks
+    sha1 "5edf50ab049d44ff399defe673faa58d136c54d3" => :mountain_lion
+    sha1 "8b38be9b20ce239e63f3f3009482ab8f130c0a33" => :lion
+  end
+
   head do
     url 'https://github.com/fontforge/fontforge.git'
 
