@@ -7,14 +7,11 @@ class LaravelCraft < Formula
   version "1.0.0"
 
   def install
-    system "mv", "laravel.phar", "/usr/local/bin/laravel"
-    system "chmod", "u+x", "/usr/local/bin/laravel"
+    bin.install "laravel.phar" => "laravel"
   end
 
   test do
-    HOMEBREW_REPOSITORY.cd do
-      assert_equal 'Laravel Craft version 1.0.0', `#{bin}/laravel --version`.strip
-    end
+    assert_equal 'Laravel Craft version 1.0.0', `#{bin}/laravel --version`.strip
   end
 
 end
