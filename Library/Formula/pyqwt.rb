@@ -28,6 +28,7 @@ class Pyqwt < Formula
   end
 
   test do
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     system "python", "-c", "from PyQt4 import Qwt5 as Qwt"
   end
 end
