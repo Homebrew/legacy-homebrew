@@ -8,7 +8,7 @@ class LibtorrentRasterbar < Formula
   depends_on 'pkg-config' => :build
   depends_on 'boost'
   depends_on 'openssl' if MacOS.version <= :snow_leopard # Needs a newer version of OpenSSL on Snow Leopard
-  depends_on :python => :recommended
+  depends_on :python => :optional
 
   def install
     boost = Formula["boost"]

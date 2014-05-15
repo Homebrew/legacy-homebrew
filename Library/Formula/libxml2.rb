@@ -23,7 +23,7 @@ class Libxml2 < Formula
     depends_on :libtool
   end
 
-  depends_on :python => :recommended
+  depends_on :python => :optional
 
   keg_only :provided_by_osx
 
