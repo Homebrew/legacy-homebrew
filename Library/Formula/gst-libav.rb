@@ -26,7 +26,7 @@ class GstLibav < Formula
     ]
 
     if build.head?
-      ENV["NOCONFIGURE"]="yes"
+      ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
     end
 
