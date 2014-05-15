@@ -2,8 +2,8 @@ require 'formula'
 
 class Libsodium < Formula
   homepage 'https://github.com/jedisct1/libsodium/'
-  url 'https://github.com/jedisct1/libsodium/archive/0.5.0.tar.gz'
-  sha256 'f18e556447f9baebad6a90cbf23c426fc6211a186cb5ccd721cdf862da5e735e'
+  url 'https://github.com/jedisct1/libsodium/releases/download/0.5.0/libsodium-0.5.0.tar.gz'
+  sha256 '3ca0a0619199a2adb3449eb7f1bf6e1f4fb2ef8514da9133f7f043b8b5cdf9f0'
 
   head do
     url 'https://github.com/jedisct1/libsodium.git'
