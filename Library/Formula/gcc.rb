@@ -144,15 +144,15 @@ class Gcc < Formula
       if build.with? "profiled-build"
         # Takes longer to build, may bug out. Provided for those who want to
         # optimise all the way to 11.
-        system "make profiledbootstrap"
+        system "make", "profiledbootstrap"
       else
-        system "make bootstrap"
+        system "make", "bootstrap"
       end
 
       # At this point `make check` could be invoked to run the testsuite. The
       # deja-gnu and autogen formulae must be installed in order to do this.
 
-      system "make install"
+      system "make", "install"
     end
 
     # Handle conflicts between GCC formulae
