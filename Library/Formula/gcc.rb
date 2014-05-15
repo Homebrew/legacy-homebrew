@@ -25,13 +25,11 @@ class Gcc < Formula
   url "http://ftpmirror.gnu.org/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2"
   mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.8.2/gcc-4.8.2.tar.bz2"
   sha1 "810fb70bd721e1d9f446b6503afe0a9088b62986"
+  revision 1
 
   head "svn://gcc.gnu.org/svn/gcc/branches/gcc-4_8-branch"
 
   bottle do
-    sha1 "9c206ad0d249665e1edb8c870c442ee836646cbb" => :mavericks
-    sha1 "bc37c90383363baa2121a6b22fa8826c0c63acc5" => :mountain_lion
-    sha1 "da1bc22b6b75464cbf2a8b29f1e79a15e531b1e6" => :lion
   end
 
   option "with-java", "Build the gcj compiler"
