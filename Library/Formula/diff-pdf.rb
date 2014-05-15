@@ -6,7 +6,8 @@ class DiffPdf < Formula
   sha1 '308ea8e92ac609ca88303dce6a6e8403c6b9f11f'
 
   depends_on 'pkg-config' => :build
-  depends_on 'automake'
+  depends_on 'automake' => :build
+  depends_on 'autoconf' => :build
   depends_on :x11
   depends_on 'wxmac'
   depends_on 'cairo'
