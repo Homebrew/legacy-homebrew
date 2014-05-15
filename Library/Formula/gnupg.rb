@@ -16,7 +16,6 @@ class Gnupg < Formula
 
   def install
     inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if build.include? '8192'
-    ENV.append "CFLAGS", "-std=gnu89 -fheinous-gnu-extensions" if ENV.compiler == :clang
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
