@@ -84,14 +84,10 @@ class Gcc < Formula
       languages << "java" if build.with? "java"
     end
 
-    version_suffix = version.to_s.slice(/\d\.\d/)
-
     args = [
       "--build=#{arch}-apple-darwin#{osmajor}",
       "--prefix=#{prefix}",
       "--enable-languages=#{languages.join(",")}",
-      # Make most executables versioned to avoid conflicts.
-      "--program-suffix=-#{version_suffix}",
       "--with-gmp=#{Formula["gmp"].opt_prefix}",
       "--with-mpfr=#{Formula["mpfr"].opt_prefix}",
       "--with-mpc=#{Formula["libmpc"].opt_prefix}",
@@ -155,35 +151,10 @@ class Gcc < Formula
       system "make", "install"
     end
 
-    # Handle conflicts between GCC formulae
-    # Since GCC 4.8 libffi stuff are no longer shipped.
-    # Rename libiberty.a.
-    Dir.glob(prefix/"**/libiberty.*") { |file| add_suffix file, version_suffix }
-    # Rename man7.
-    Dir.glob(man7/"*.7") { |file| add_suffix file, version_suffix }
-    # Even when suffixes are appended, the info pages conflict when
-    # install-info is run. TODO fix this.
-    info.rmtree
-
-    # Rename java properties
-    if build.with?("java") || build.with?("all-languages")
-      config_files = [
-        "#{lib}/logging.properties",
-        "#{lib}/security/classpath.security",
-        "#{lib}/i386/logging.properties",
-        "#{lib}/i386/security/classpath.security"
-      ]
-      config_files.each do |file|
-        add_suffix file, version_suffix if File.exists? file
-      end
-    end
-  end
-
-  def add_suffix file, suffix
-    dir = File.dirname(file)
-    ext = File.extname(file)
-    base = File.basename(file, ext)
-    File.rename file, "#{dir}/#{base}-#{suffix}#{ext}"
+    # Add a version suffix for backwards compatability.
+    version_suffix = version.to_s.slice(/\d\.\d/)
+    bin.install_symlink bin/"gcc" => "gcc-#{version_suffix}"
+    bin.install_symlink bin/"g++" => "g++-#{version_suffix}"
   end
 end
 
