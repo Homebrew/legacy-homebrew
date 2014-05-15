@@ -51,7 +51,7 @@ class Sqlite < Formula
                      "-dynamiclib",
                      "extension-functions.c",
                      "-o", "libsqlitefunctions.dylib",
-                     *ENV.cflags.split
+                     *ENV.cflags.to_s.split
       lib.install "libsqlitefunctions.dylib"
     end
     doc.install resource('docs') if build.with? "docs"
