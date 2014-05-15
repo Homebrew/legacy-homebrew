@@ -20,8 +20,6 @@ class Gstreamer < Formula
   depends_on "glib"
 
   def install
-    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing -fno-common"
-
     args = %W[
       --prefix=#{prefix}
       --disable-debug

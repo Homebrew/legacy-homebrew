@@ -29,8 +29,6 @@ class GstPluginsBad < Formula
   depends_on 'schroedinger' => :optional
 
   def install
-    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing"
-
     args = %W[
       --prefix=#{prefix}
       --disable-apple_media
