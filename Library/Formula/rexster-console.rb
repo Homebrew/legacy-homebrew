@@ -4,7 +4,6 @@ class RexsterConsole < Formula
   homepage "https://github.com/tinkerpop/rexster/wiki"
   url "http://tinkerpop.com/downloads/rexster/rexster-console-2.5.0.zip"
   sha1 "0243908c0ab65baea4b8092bb2b818c597622187"
-  version "2.5.0"
 
   def install
     libexec.install %w[lib doc]
@@ -12,7 +11,7 @@ class RexsterConsole < Formula
     (libexec/"bin").mkpath
     (libexec/"bin").install "bin/rexster-console.sh" => "rexster-console"
     bin.install_symlink libexec/"bin/rexster-console"
- 
+
     inreplace "#{libexec}/bin/rexster-console",
       "CP=\$( echo `dirname \$0`/../lib/*.jar . | sed 's/ /:/g')
 CP=$CP:$( echo `dirname $0`/../ext/*.jar . | sed 's/ /:/g')
