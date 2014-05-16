@@ -13,8 +13,6 @@ class Ejabberd < Formula
     sha1 "582da64c98ce8be147cfd17f2d464e5806d849e3" => :lion
   end
 
-  option "brewed-zlib", "Use Homebrew's zlib for stream compression"
-  option "brewed-libiconv", "Use Homebrew's iconv for IRC transport."
   option "32-bit"
 
   depends_on "openssl"
