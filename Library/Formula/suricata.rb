@@ -5,6 +5,12 @@ class Suricata < Formula
   url "http://www.openinfosecfoundation.org/download/suricata-2.0.tar.gz"
   sha1 "37819a0d6ecb7ebd4201bc32dec40824c145da98"
 
+  bottle do
+    sha1 "e696fc00b003d1ea19631e385f4dc84631eb2c64" => :mavericks
+    sha1 "02691341316ab28d7bf1729f3ed5008170355f89" => :mountain_lion
+    sha1 "3fcae2900b1f4070c48bb8d0720869b8364a9202" => :lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libmagic"
   depends_on "libnet"
