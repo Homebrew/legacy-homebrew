@@ -45,4 +45,9 @@ class BottleVersionParsingTests < Test::Unit::TestCase
     assert_version_detected '00-5.0.5',
       '/usr/local/zpython-00-5.0.5.mavericks.bottle.tar.gz'
   end
+
+  def test_fontforge_style
+    assert_version_detected '20120731',
+      '/usr/local/fontforge-20120731.mavericks.bottle.tar.gz'
+  end
 end

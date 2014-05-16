@@ -45,8 +45,6 @@ class GstPluginsUgly < Formula
   # Does not work with libcdio 0.9
 
   def install
-    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing"
-
     args = %W[
       --prefix=#{prefix}
       --mandir=#{man}
@@ -55,7 +53,7 @@ class GstPluginsUgly < Formula
     ]
 
     if build.head?
-      ENV.append "NOCONFIGURE", "yes"
+      ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
     end
 
