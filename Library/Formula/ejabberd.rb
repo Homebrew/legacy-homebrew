@@ -5,6 +5,8 @@ class Ejabberd < Formula
   url "https://www.process-one.net/downloads/ejabberd/14.05/ejabberd-14.05.tgz"
   sha1 "bad6b91ca6b9ac30ffe8b2eb0c5bb759d7742fab"
 
+  head 'https://github.com/processone/ejabberd.git'
+
   bottle do
     sha1 "0951237f1710e8c3de1c8c68501f53532036d726" => :mavericks
     sha1 "7f1ffe76d100b3a2d00d1578e38db8f5f944859a" => :mountain_lion
