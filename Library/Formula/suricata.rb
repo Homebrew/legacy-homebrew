@@ -19,8 +19,13 @@ class Suricata < Formula
   patch :DATA
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    libnet = Formula["libnet"]
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}",
+                          "--with-libnet-includes=#{libnet.opt_include}",
+                          "--with-libnet-libs=#{libnet.opt_lib}"
     system "make", "install"
   end
 end
