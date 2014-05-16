@@ -60,7 +60,7 @@ class Formulary
       end
 
       unless have_klass
-        puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
+        $stderr.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
         begin
           require path
         rescue NoMethodError
