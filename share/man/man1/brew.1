@@ -183,6 +183,9 @@ Print a JSON representation of \fIformula\fR\. Currently the only accepted value
 .IP
 Pass \fB\-\-all\fR to get information on all formulae, or \fB\-\-installed\fR to get information on all installed formulae\.
 .
+.IP
+If a single formula is specified, a single JSON object is displayed\. If multiple formulae are specified, or \fB\-\-installed\fR or \fB\-\-all\fR are used, a JSON array is displayed, even if the array would only contain one object\.
+.
 .TP
 \fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-only\-dependencies] [\-\-cc=<compiler>] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
 Install \fIformula\fR\.

@@ -167,6 +167,10 @@ Note that these flags should only appear after a command.
     Pass `--all` to get information on all formulae, or `--installed` to get
     information on all installed formulae.
 
+    If a single formula is specified, a single JSON object is displayed.
+    If multiple formulae are specified, or `--installed` or `--all` are used,
+    a JSON array is displayed, even if the array would only contain one object.
+
   * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
 
