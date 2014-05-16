@@ -37,13 +37,11 @@ class Flac < Formula
 
     system "./autogen.sh" if build.head?
 
-    # sadly the asm optimisations won't compile since Leopard
     args = %W[
       --disable-dependency-tracking
       --disable-debug
       --prefix=#{prefix}
       --mandir=#{man}
-      --disable-asm-optimizations
       --enable-sse
       --enable-static
     ]
