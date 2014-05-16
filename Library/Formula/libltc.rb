@@ -8,7 +8,7 @@ class Libltc < Formula
   # This patch has been fixed in the master branch not released yet 
   patch do
     url "https://github.com/x42/libltc/compare/febc9138ed73e5e2ce9be701bfac3b53bb310c66...b98e5d4094fbbc637fc83fe25d8348e41c325cf8.diff"
-    sha1 "b490f3b6fb0d61db8628a38ca8946e71b82807b2"
+    sha1 "a72fb3417bfbc0a8164ff922038447e03a0b5149"
   end
 
   def install
