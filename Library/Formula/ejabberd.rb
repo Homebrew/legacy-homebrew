@@ -18,12 +18,9 @@ class Ejabberd < Formula
   depends_on "openssl"
   depends_on "erlang"
   depends_on "libyaml"
-  depends_on "expat"
   depends_on "unixodbc" => :optional
   depends_on "postgresql" => :optional
   depends_on "mysql" => :optional
-  depends_on "zlib" if build.with? "brewed-zlib"
-  depends_on "libiconv" if build.with? "brewed-libiconv"
   # for CAPTCHA challenges
   depends_on "imagemagick" => :optional
 
