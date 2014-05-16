@@ -32,9 +32,6 @@ class Ejabberd < Formula
     ENV["MAN_DIR"] = man
     ENV["SBIN_DIR"] = sbin
 
-    # Homebrew's ENV cc fails to build
-    ENV["CC"] = "/usr/bin/clang"
-
     if build.build_32_bit?
       %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
         ENV.remove compiler_flag, "-arch #{Hardware::CPU.arch_64_bit}"
