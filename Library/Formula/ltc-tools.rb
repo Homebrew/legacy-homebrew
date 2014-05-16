@@ -13,11 +13,11 @@ class LtcTools < Formula
   depends_on "jack"
 
   def install
-    system "make", "install", "prefix=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
-    system "ltcgen", "test.wav"
-    system "ltcdump", "test.wav"
+    system bin/"ltcgen", "test.wav"
+    system bin/"ltcdump", "test.wav"
   end
 end
