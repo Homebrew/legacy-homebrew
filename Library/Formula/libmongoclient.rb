@@ -7,10 +7,18 @@ class Libmongoclient < Formula
 
   head 'https://github.com/mongodb/mongo-cxx-driver.git', :branch => "26compat"
 
+  option :cxx11
+
   depends_on 'scons' => :build
-  depends_on 'boost' => :build
+  if build.cxx11?
+    depends_on 'boost' => 'c++11'
+  else
+    depends_on 'boost'
+  end
 
   def install
+    ENV.cxx11 if build.cxx11?
+
     boost = Formula["boost"].opt_prefix
 
     args = [
@@ -24,8 +32,13 @@ class Libmongoclient < Formula
       "--sharedclient"
     ]
 
+    # --osx-version-min is required to override --osx-version-min=10.6 added
+    # by SConstruct which causes "invalid deployment target for -stdlib=libc++"
+    # when using libc++
+    # Add this argument in all cases at @jacknagel's request
+    args << "--osx-version-min=#{MacOS.version}"
+
     if MacOS.version >= :mavericks
-      args << "--osx-version-min=10.8"
       args << "--libc++"
     end
 
