@@ -31,7 +31,7 @@ class Xplanet < Formula
   depends_on "cspice" if build.with?("cspice") || build.with?("all")
 
   depends_on :freetype
-  depends_on :x11
+  depends_on :x11 => :optional
 
   def install
     args = %W[
