@@ -10,6 +10,7 @@ class Suricata < Formula
   depends_on "libnet"
   depends_on "libyaml"
   depends_on "pcre"
+  depends_on "geoip" => :optional
 
   # Use clang provided strl* functions. Reported upstream:
   # https://redmine.openinfosecfoundation.org/issues/1192
@@ -17,12 +18,21 @@ class Suricata < Formula
 
   def install
     libnet = Formula["libnet"]
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--with-libnet-includes=#{libnet.opt_include}",
-                          "--with-libnet-libs=#{libnet.opt_lib}"
+    args = ["--disable-debug",
+            "--disable-dependency-tracking",
+            "--disable-silent-rules",
+            "--prefix=#{prefix}",
+            "--with-libnet-includes=#{libnet.opt_include}",
+            "--with-libnet-libs=#{libnet.opt_lib}"]
+
+    if build.with? "geoip"
+      geoip = Formula["geoip"]
+      args << "--enable-geoip"
+      args << "--with-libgeoip-includes=#{geoip.opt_include}"
+      args << "--with-libgeoip-libs=#{geoip.opt_lib}"
+    end
+
+    system "./configure", *args
     system "make", "install"
   end
 end
