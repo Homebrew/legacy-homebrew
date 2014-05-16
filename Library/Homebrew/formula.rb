@@ -369,6 +369,7 @@ class Formula
     include Enumerable
   end
 
+  # An array of all installed formulae
   def self.installed
     return [] unless HOMEBREW_CELLAR.directory?
 
