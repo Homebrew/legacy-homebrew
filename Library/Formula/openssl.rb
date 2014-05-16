@@ -36,6 +36,8 @@ class Openssl < Formula
   end
 
   def install
+    def build.universal?; true; end
+
     if build.universal?
       ENV.permit_arch_flags
       archs = Hardware::CPU.universal_archs
