@@ -40,3 +40,28 @@ __END__
  TMP_DIR := /tmp/lcov-tmp.$(shell echo $$$$)
  FILES   := $(wildcard bin/*) $(wildcard man/*) README CHANGES Makefile \
  	   $(wildcard rpm/*) lcovrc
+
+
+--- lcov-1.8/bin/geninfo~       2010-01-29 19:14:46.000000000 +0900
++++ lcov-1.8/bin/geninfo        2010-04-16 21:42:26.000000000 +0900
+@@ -1865,13 +1865,18 @@
+        my $version_string;
+        my $result;
+
+-       open(GCOV_PIPE, "-|", "$gcov_tool -v")
++       open(GCOV_PIPE, "-|", "$gcov_tool --version")
+                or die("ERROR: cannot retrieve gcov version!\n");
+        $version_string = <GCOV_PIPE>;
+        close(GCOV_PIPE);
+
+        $result = 0;
+-       if ($version_string =~ /(\d+)\.(\d+)(\.(\d+))?/)
++       if ($version_string =~ m/LLVM/)
++       {
++               info("Found llvm-cov\n");
++               $result = 0x40201;
++       }
++       elsif ($version_string =~ /(\d+)\.(\d+)(\.(\d+))?/)
+        {
+                if (defined($4))
+                {
