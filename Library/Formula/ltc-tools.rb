@@ -13,7 +13,7 @@ class LtcTools < Formula
   depends_on "jack"
 
   def install
-    system "make", "install"
+    system "make", "install", "prefix=#{prefix}"
   end
 
   test do
