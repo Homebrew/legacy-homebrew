@@ -64,8 +64,7 @@ end
 
 __END__
 #!/usr/bin/env ruby
-# http://gist.github.com/gists/2998853/
-# Forked from http://gist.github.com/gists/124242
+# https://github.com/rmndk/flac2mp3
 
 filename, quality = ARGV[0], ARGV[1]
 abort "Usage: flac2mp3 FLACFILE [V2|V1|V0|320]\nDefault (and recommended) quality is V0." if filename.nil?
