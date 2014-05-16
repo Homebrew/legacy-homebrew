@@ -2,9 +2,8 @@ require "formula"
 
 class Ejabberd < Formula
   homepage "http://www.ejabberd.im"
-  url "http://www.process-one.net/downloads/ejabberd/13.12/ejabberd-13.12.tgz"
-  sha1 "3aedb5012fab49181961ff24bad3af581f4b30ee"
-  revision 1
+  url "https://www.process-one.net/downloads/ejabberd/14.05/ejabberd-14.05.tgz"
+  sha1 "bad6b91ca6b9ac30ffe8b2eb0c5bb759d7742fab"
 
   bottle do
     sha1 "0951237f1710e8c3de1c8c68501f53532036d726" => :mavericks
@@ -12,19 +11,29 @@ class Ejabberd < Formula
     sha1 "582da64c98ce8be147cfd17f2d464e5806d849e3" => :lion
   end
 
+  option "brewed-zlib", "Use Homebrew's zlib for stream compression"
+  option "brewed-libiconv", "Use Homebrew's iconv for IRC transport."
+  option "32-bit"
+
   depends_on "openssl"
   depends_on "erlang"
   depends_on "libyaml"
-
-  option "32-bit"
-  option "with-odbc", "Build with ODBC support"
-  option "with-pgsql", "Build with PostgreSQL support"
-  option "with-mysql", "Build with MySQL support"
+  depends_on "expat"
+  depends_on "unixodbc" => :optional
+  depends_on "postgresql" => :optional
+  depends_on "mysql" => :optional
+  depends_on "zlib" if build.with? "brewed-zlib"
+  depends_on "libiconv" if build.with? "brewed-libiconv"
+  # for CAPTCHA challenges
+  depends_on "imagemagick" => :optional
 
   def install
     ENV["TARGET_DIR"] = ENV["DESTDIR"] = "#{lib}/ejabberd/erlang/lib/ejabberd-#{version}"
     ENV["MAN_DIR"] = man
     ENV["SBIN_DIR"] = sbin
+
+    # Homebrew's ENV cc fails to build
+    ENV["CC"] = "/usr/bin/clang"
 
     if build.build_32_bit?
       %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
@@ -37,8 +46,8 @@ class Ejabberd < Formula
             "--sysconfdir=#{etc}",
             "--localstatedir=#{var}"]
 
-    args << "--enable-odbc" if build.with? "odbc"
-    args << "--enable-pgsql" if build.with? "pgsql"
+    args << "--enable-odbc" if build.with? "unixodbc"
+    args << "--enable-pgsql" if build.with? "postgresql"
     args << "--enable-mysql" if build.with? "mysql"
 
     system "./configure", *args
