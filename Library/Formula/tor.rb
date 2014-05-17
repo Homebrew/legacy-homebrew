@@ -4,12 +4,8 @@ class Tor < Formula
   homepage 'https://www.torproject.org/'
   url 'https://www.torproject.org/dist/tor-0.2.4.22.tar.gz'
   sha1 '42349e02c3f6db4e6f2cc52b8a61ea91761ac4d6'
-  revision 1
 
   bottle do
-    sha1 "f03d0bf2f97e9520b4ea33c9a15112bdcec49768" => :mavericks
-    sha1 "cc64556bfb03006f029472c2b4541065a174929e" => :mountain_lion
-    sha1 "c612ec254314cf046c292df8416ddf0d8281c4ef" => :lion
   end
 
   devel do
