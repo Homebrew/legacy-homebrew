@@ -22,3 +22,4 @@ class MecabKoDic < Formula
     EOS
   end
 end
+
