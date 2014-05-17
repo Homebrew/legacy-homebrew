@@ -42,4 +42,10 @@ class Gant < Formula
     output = `#{bin}/gant`.strip
     assert_match /BUILD SUCCESSFUL/, output
   end
+
+  def caveats; <<-EOS.undent
+    NOTE: You will recieve errors upon trying to use Gant unless you enter Gant's home directory into your .zshrc/.bashrc
+    To do this paste in: export GANT_HOME="/usr/local/opt/gant/libexec"
+    EOS
+  end
 end
