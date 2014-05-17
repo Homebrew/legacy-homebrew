@@ -2,8 +2,8 @@ require 'formula'
 
 class Pow < Formula
   homepage 'http://pow.cx/'
-  url 'http://get.pow.cx/versions/0.4.1.tar.gz'
-  sha1 '46976c6eea914ec78ba424b919e8928e4fc9a6bf'
+  url 'http://get.pow.cx/versions/0.4.3.tar.gz'
+  sha1 '7e1faf3c33588bc3e73fb3583265e050a48718b0'
 
   depends_on 'node'
 

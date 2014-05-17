@@ -2,12 +2,13 @@ require 'formula'
 
 class Postgis < Formula
   homepage 'http://postgis.net'
-  url 'http://download.osgeo.org/postgis/source/postgis-2.1.1.tar.gz'
-  sha1 'eaff009fb22b8824f89e5aa581e8b900c5d8f65b'
+  url 'http://download.osgeo.org/postgis/source/postgis-2.1.2.tar.gz'
+  sha1 '4ab1e344aec70c0a475dadd48a3e8377d22d27ad'
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
   option 'with-gui', 'Build shp2pgsql-gui in addition to command line tools'
+  option 'without-gdal', 'Disable postgis raster support'
 
   depends_on :autoconf
   depends_on :automake
@@ -22,7 +23,7 @@ class Postgis < Formula
 
   # For GeoJSON and raster handling
   depends_on 'json-c'
-  depends_on 'gdal'
+  depends_on 'gdal' => :recommended
 
   def install
     # Follow the PostgreSQL linked keg back to the active Postgres installation
@@ -48,6 +49,8 @@ class Postgis < Formula
       "--disable-nls"
     ]
     args << '--with-gui' if build.with? "gui"
+
+    args << '--without-raster' if build.without? "gdal"
 
     system './autogen.sh'
     system './configure', *args
@@ -98,7 +101,7 @@ class Postgis < Formula
       To create a spatially-enabled database, see the documentation:
         http://postgis.net/docs/manual-2.1/postgis_installation.html#create_new_db_extensions
       If you are currently using PostGIS 2.0+, you can go the soft upgrade path:
-        ALTER EXTENSION postgis UPDATE TO "2.1.0";
+        ALTER EXTENSION postgis UPDATE TO "2.1.2";
       Users of 1.5 and below will need to go the hard-upgrade path, see here:
         http://postgis.net/docs/manual-2.1/postgis_installation.html#upgrading
 

@@ -21,9 +21,9 @@ class Jena < Formula
     prefix.install %w{ LICENSE ReleaseNotes-Jena.txt NOTICE ReleaseNotes-TDB.txt README ReleaseNotes-ARQ.txt }
     doc.install ['javadoc-arq', 'javadoc-core', 'javadoc-sdb', 'javadoc-tdb', 'src-examples']
     libexec.install Dir['*']
-    Dir["#{libexec}/bin/*"].map { |p| Pathname.new p }.each { |path|
-      bin_name = path.basename
+    Dir["#{libexec}/bin/*"].each do |path|
+      bin_name = File.basename(path)
       (bin+bin_name).write shim_script(bin_name)
-    }
+    end
   end
 end

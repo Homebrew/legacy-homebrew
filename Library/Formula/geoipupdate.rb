@@ -4,14 +4,8 @@ class Geoipupdate < Formula
   homepage 'https://github.com/maxmind/geoipupdate'
 
   stable do
-    url "https://github.com/maxmind/geoipupdate/releases/download/v2.0.0/geoipupdate-2.0.0.tar.gz"
-    sha1 "d3c90ad9c9ad5974e8a5a30c504e7827978ddea7"
-
-    # Fixes use of getline on pre-Lion; will be in next release
-    patch do
-      url "https://github.com/maxmind/geoipupdate/commit/bdf11969f4c7c6b173466092287a2fdbd485b248.patch"
-      sha1 "845aed21e187cd1fe1a60b029ff8ac13284c7cea"
-    end
+    url "https://github.com/maxmind/geoipupdate/releases/download/v2.0.1/geoipupdate-2.0.1.tar.gz"
+    sha1 "11048de992e21bc99b22caa781ae27625e6a62dc"
   end
 
   head 'https://github.com/maxmind/geoipupdate.git'

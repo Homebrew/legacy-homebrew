@@ -53,7 +53,7 @@ class LibreadlineJava < Formula
     system "make build-native"
     system "make install"
 
-    doc.install Dir["api"]
+    doc.install "api"
   end
 
   def caveats; <<-EOS.undent

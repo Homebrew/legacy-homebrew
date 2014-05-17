@@ -9,10 +9,8 @@ class Chipmunk < Formula
 
   def install
     system "cmake", "-DCMAKE_INSTALL_PREFIX=#{prefix}",
-                    "-DCMAKE_PREFIX_PATH=#{prefix}",
                     "-DCMAKE_BUILD_TYPE=Release",
                     "-DBUILD_DEMOS=OFF",
-                    "-DPREFIX=#{prefix}",
                     "."
     system "make install"
   end

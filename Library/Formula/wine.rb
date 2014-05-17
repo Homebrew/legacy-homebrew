@@ -1,8 +1,9 @@
 require 'formula'
 
-# NOTE: When updating Wine, please check Wine-Gecko and Wine-Mono for updates too:
-# http://wiki.winehq.org/Gecko
-# http://wiki.winehq.org/Mono
+# NOTE: When updating Wine, please check Wine-Gecko and Wine-Mono for updates
+# too:
+#  - http://wiki.winehq.org/Gecko
+#  - http://wiki.winehq.org/Mono
 class Wine < Formula
   homepage 'http://winehq.org/'
 
@@ -23,8 +24,8 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.15.tar.bz2"
-    sha256 "519137adc562d32035fcf7b110d6e65fdd7721af0b176567a2187397c63f1380"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.18.tar.bz2"
+    sha256 "dab6d12e620e2097a6838a3f6928f3b2ca3aab0b70521b53107ee1998303d378"
 
     # http://bugs.winehq.org/show_bug.cgi?id=34166
     patch do
@@ -44,6 +45,7 @@ class Wine < Formula
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
   depends_on :x11 => :recommended
+  depends_on 'pkg-config' => :build
   depends_on 'freetype'
   depends_on 'jpeg'
   depends_on 'libgphoto2'
@@ -109,11 +111,6 @@ class Wine < Formula
           brew install wine --cc=gcc-4.2 # or 4.7, 4.8, etc.
       EOS
     end
-
-    # Workarounds for XCode not including pkg-config files
-    # FIXME we include pkg-config files for libxml2 and libxslt. Is this really necessary?
-    ENV.libxml2
-    ENV.append "LDFLAGS", "-lxslt"
 
     args = ["--prefix=#{prefix}"]
     args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang

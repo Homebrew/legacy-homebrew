@@ -10,6 +10,10 @@ class Opam < Formula
   depends_on "objective-caml"
   depends_on "aspcud" => :recommended
 
+  if build.with? "aspcud"
+    needs :cxx11
+  end
+
   def install
     ENV.deparallelize
     # Set TERM to workaround bug in ocp-build (ocaml/opam#1038)

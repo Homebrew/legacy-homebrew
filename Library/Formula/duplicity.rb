@@ -5,7 +5,7 @@ class Duplicity < Formula
   url 'http://code.launchpad.net/duplicity/0.6-series/0.6.23/+download/duplicity-0.6.23.tar.gz'
   sha1 '0b8664d55c24957b3b19e903c0d69673f2bfa166'
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'librsync'
   depends_on 'gnupg'
 
@@ -22,6 +22,8 @@ class Duplicity < Formula
   end
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
+
     ENV.universal_binary if build.universal?
 
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'

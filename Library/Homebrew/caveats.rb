@@ -25,7 +25,7 @@ class Caveats
 
   def keg
     @keg ||= [f.prefix, f.opt_prefix, f.linked_keg].map do |d|
-      Keg.new(d.realpath) rescue nil
+      Keg.new(d.resolved_path) rescue nil
     end.compact.first
   end
 
@@ -61,7 +61,7 @@ class Caveats
     if !file_path.readable? || !file_path.read.include?(site_packages)
       s = "If you need Python to find the installed site-packages:\n"
       s += "  mkdir -p #{dir}\n" unless dir_path.exist?
-      s += "  echo '#{site_packages}' >> #{file}"
+      s += "  echo '#{site_packages}' > #{file}"
     end
   end
 

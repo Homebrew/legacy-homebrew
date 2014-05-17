@@ -5,11 +5,13 @@ class Mutt < Formula
   url 'ftp://ftp.mutt.org/mutt/mutt-1.5.23.tar.gz'
   mirror 'http://fossies.org/linux/misc/mutt-1.5.23.tar.gz'
   sha1 '8ac821d8b1e25504a31bf5fda9c08d93a4acc862'
+  revision 1
 
   bottle do
-    sha1 "18da37536ab216267e5240e79acab0eb550076d9" => :mavericks
-    sha1 "dabafeb01c0ad9669c13302c2898f4fee85a7cd4" => :mountain_lion
-    sha1 "0808c458478a316031e71ecb6c3d54e99b41781a" => :lion
+    revision 1
+    sha1 "5aa656ffd793e57b26642b82c514e0195e32dd1e" => :mavericks
+    sha1 "56302c5553e7bf5b31db3720ab22c6343c11c428" => :mountain_lion
+    sha1 "8b7dad42c73723e25cb874e2654c8754218f580a" => :lion
   end
 
   head do
@@ -18,9 +20,6 @@ class Mutt < Formula
     resource 'html' do
       url 'http://dev.mutt.org/doc/manual.html', :using => :nounzip
     end
-
-    depends_on :autoconf
-    depends_on :automake
   end
 
   unless Tab.for_name('signing-party').used_options.include? 'with-rename-pgpring'
@@ -38,30 +37,33 @@ class Mutt < Formula
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
 
+  depends_on :autoconf
+  depends_on :automake
+
   depends_on 'openssl'
   depends_on 'tokyo-cabinet'
   depends_on 's-lang' => :optional
   depends_on 'gpgme' => :optional
 
   patch do
-    url "http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2+deb7u1/features/trash-folder"
-    sha1 "6c8ce66021d89a063e67975a3730215c20cf2859"
+    url "ftp://ftp.openbsd.org/pub/OpenBSD/distfiles/mutt/trashfolder-1.5.22.diff0.gz"
+    sha1 "c597566c26e270b99c6f57e046512a663d2f415e"
   end if build.with? "trash-patch"
 
   # original source for this went missing, patch sourced from Arch at
   # https://aur.archlinux.org/packages/mutt-ignore-thread/
   patch do
-    url "https://gist.github.com/mistydemeo/5522742/raw/1439cc157ab673dc8061784829eea267cd736624/ignore-thread-1.5.21.patch"
+    url "https://gist.githubusercontent.com/mistydemeo/5522742/raw/1439cc157ab673dc8061784829eea267cd736624/ignore-thread-1.5.21.patch"
     sha1 "dbcf5de46a559bca425028a18da0a63d34f722d3"
   end if build.with? "ignore-thread-patch"
 
   patch do
-    url "http://patch-tracker.debian.org/patch/series/dl/mutt/1.5.21-6.2+deb7u1/features-old/patch-1.5.4.vk.pgp_verbose_mime"
+    url "https://raw.githubusercontent.com/psych0tik/mutt/73c09bc56e79605cf421a31c7e36958422055a20/debian/patches/features-old/patch-1.5.4.vk.pgp_verbose_mime"
     sha1 "a436f967aa46663cfc9b8933a6499ca165ec0a21"
   end if build.with? "pgp-verbose-mime-patch"
 
   patch do
-    url "https://gist.github.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch"
+    url "https://gist.githubusercontent.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch"
     sha1 "94da52d50508d8951aa78ca4b073023414866be1"
   end if build.with? "confirm-attachment-patch"
 
@@ -90,11 +92,7 @@ class Mutt < Formula
       args << "--disable-debug"
     end
 
-    if build.head?
-      system "./prepare", *args
-    else
-      system "./configure", *args
-    end
+    system "./prepare", *args
     system "make"
     system "make", "install"
 

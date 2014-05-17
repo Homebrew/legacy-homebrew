@@ -13,9 +13,15 @@ class Fontforge < Formula
 
     # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
     patch do
-      url "https://gist.github.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
+      url "https://gist.githubusercontent.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
       sha1 "baa7d60f4c6e672180e66438ee675b4ee0fda5ce"
     end
+  end
+
+  bottle do
+    sha1 "62e19f688ec4fbd4a6263c6187980c35521a7b40" => :mavericks
+    sha1 "5edf50ab049d44ff399defe673faa58d136c54d3" => :mountain_lion
+    sha1 "8b38be9b20ce239e63f3f3009482ab8f130c0a33" => :lion
   end
 
   head do
@@ -35,7 +41,7 @@ class Fontforge < Formula
   option 'with-x', 'Build with X11 support, including FontForge.app'
 
   depends_on 'gettext'
-  depends_on :python => :recommended
+  depends_on :python => :optional
 
   depends_on 'libpng'   => :recommended
   depends_on 'jpeg'     => :recommended

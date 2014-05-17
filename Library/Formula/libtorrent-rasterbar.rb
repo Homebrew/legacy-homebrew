@@ -2,13 +2,20 @@ require 'formula'
 
 class LibtorrentRasterbar < Formula
   homepage 'http://www.rasterbar.com/products/libtorrent/'
-  url 'https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-0.16.15.tar.gz'
-  sha1 '8657a493fb2ee4e6bf55e484deb922d23b65818d'
+  url 'https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-0.16.16.tar.gz'
+  sha1 'de8faed5cbc09baddb2748cb7b75edd07ab0addc'
+
+  bottle do
+    cellar :any
+    sha1 "ccfa9b86a5a20f6da9e72918d33b4ecca846e313" => :mavericks
+    sha1 "2ed7bef9d8089695338a3780395da8813d95435f" => :mountain_lion
+    sha1 "73888143ab640425dae0e8826f809369e55f06dd" => :lion
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'
   depends_on 'openssl' if MacOS.version <= :snow_leopard # Needs a newer version of OpenSSL on Snow Leopard
-  depends_on :python => :recommended
+  depends_on :python => :optional
 
   def install
     boost = Formula["boost"]

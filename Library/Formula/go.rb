@@ -3,15 +3,20 @@ require 'formula'
 class Go < Formula
   homepage 'http://golang.org'
   head 'https://go.googlecode.com/hg/'
-  url 'https://go.googlecode.com/files/go1.2.1.src.tar.gz'
-  version '1.2.1'
-  sha1 '6a4b9991eddd8039438438d6aa25126ab7e07f2f'
+  url 'https://storage.googleapis.com/golang/go1.2.2.src.tar.gz'
+  version '1.2.2'
+  sha1 '3ce0ac4db434fc1546fec074841ff40dc48c1167'
 
   bottle do
-    revision 1
-    sha1 "c9d4efb3c0597bcea12a5556c85199bc468cdffb" => :mavericks
-    sha1 "bff65b108ec15cb11c7a41afd2f57ce6a6f6029e" => :mountain_lion
-    sha1 "1c09d8aaac7d78b54405c39e5ede0ee9d927860f" => :lion
+    sha1 "cc2867d5043bbd5af3b9637b8ac62d564eeee334" => :mavericks
+    sha1 "daeab2ff21cd4a5682ea687a4a28f1f1c6f3b38e" => :mountain_lion
+    sha1 "73020a28cfddd1c63d3f4efba4e7a81d91b926ff" => :lion
+  end
+
+  devel do
+    url 'https://storage.googleapis.com/golang/go1.3beta1.src.tar.gz'
+    version '1.3beta1'
+    sha1 'e4df4e99115aba2f1ae5ccd56e682669d00c2a9d'
   end
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
@@ -78,7 +83,7 @@ class Go < Formula
       go get code.google.com/p/go.tools/cmd/vet
 
     You may wish to add the GOROOT-based install location to your PATH:
-      export PATH=$PATH:#{libexec}/bin
+      export PATH=$PATH:#{opt_libexec}/bin
     EOS
   end
 

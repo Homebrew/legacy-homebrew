@@ -12,13 +12,13 @@ end
 
 class Saltstack < Formula
   homepage 'http://www.saltstack.org'
-  url 'https://github.com/saltstack/salt/archive/v2014.1.1.tar.gz'
-  sha1 '7bccfe266aa319646edacaff003a6df5a3863611'
+  url 'https://github.com/saltstack/salt/archive/v2014.1.4.tar.gz'
+  sha256 '737686df6d28244af95eea2203badd2104df6421d61c054c1f7dcf942e1f1823'
 
   head 'https://github.com/saltstack/salt.git', :branch => 'develop',
     :using => SaltHeadDownloadStrategy, :shallow => false
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'swig' => :build
   depends_on 'zeromq'
   depends_on 'libyaml'
@@ -64,6 +64,7 @@ class Saltstack < Formula
   end
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 

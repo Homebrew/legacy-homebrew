@@ -13,4 +13,18 @@ class Lzip < Formula
     ENV.j1
     system "make install"
   end
+
+  test do
+    path = testpath/"data.txt"
+    original_contents = "." * 1000
+    path.write original_contents
+
+    # compress: data.txt -> data.txt.lz
+    system "#{bin}/lzip", path
+    assert !path.exist?
+
+    # decompress: data.txt.lz -> data.txt
+    system "#{bin}/lzip", "-d", "#{path}.lz"
+    assert_equal original_contents, path.read
+  end
 end

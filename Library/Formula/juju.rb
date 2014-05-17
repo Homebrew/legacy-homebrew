@@ -2,18 +2,18 @@ require 'formula'
 
 class Juju < Formula
   homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.16/1.16.6/+download/juju-core_1.16.6.tar.gz'
-  sha1 '0483d7a4d3fda0981f822d540cded855eb5afbda'
-
-  bottle do
-    sha1 "06dec5a1342231cc7721cb6afcb51ea0604ffa8c" => :mavericks
-    sha1 "04c65a325c275c66b490684daca7342ef5f7220a" => :mountain_lion
-    sha1 "80c65027bcb4ac3b11d39232d27171816236856a" => :lion
-  end
+  url 'https://launchpad.net/juju-core/1.18/1.18.3/+download/juju-core_1.18.3.tar.gz'
+  sha1 '9290acb390d7bcefd56212de1a8a36c008f5db89'
 
   devel do
-    url  'https://launchpad.net/juju-core/trunk/1.17.7/+download/juju-core_1.17.7.tar.gz'
-    sha1 '7dc39b3e9291cc62f78065af19bce68a81f25421'
+    url "https://launchpad.net/juju-core/trunk/1.19.1/+download/juju-core_1.19.1.tar.gz"
+    sha1 "0bf1f8fcf5788907b960c1581007f9fd45126d21"
+  end
+
+  bottle do
+    sha1 "08b825b39bf16375b17cd4b4d73a95093936d41c" => :mavericks
+    sha1 "1f5775826a2414f9741b90ce2c27a1c4e3a1cfe1" => :mountain_lion
+    sha1 "fd95734a178d909409670ca74cb29d06e384f3db" => :lion
   end
 
   depends_on 'go' => :build
@@ -24,19 +24,7 @@ class Juju < Formula
     args.insert(1, "-v") if ARGV.verbose?
     system "go", *args
     bin.install 'bin/juju'
-    (bash_completion/'juju-completion.bash').write <<-EOS.undent
-    _juju()
-    {
-        local cur prev options files targets
-        COMPREPLY=()
-        cur="${COMP_WORDS[COMP_CWORD]}"
-        prev="${COMP_WORDS[COMP_CWORD-1]}"
-        actions=$(juju help commands 2>/dev/null | awk '{print $1}')
-        COMPREPLY=( $( compgen -W "${actions}" -- ${cur} ) )
-        return 0
-    }
-    complete -F _juju juju
-    EOS
+    bash_completion.install "src/launchpad.net/juju-core/etc/bash_completion.d/juju-core"
   end
 
   test do

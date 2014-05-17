@@ -64,9 +64,11 @@ module Homebrew extend self
   def check_xcode
     require 'cmd/doctor'
     checks = Checks.new
-    doctor_methods = ['check_xcode_clt', 'check_xcode_license_approved',
-                      'check_for_osx_gcc_installer']
-    doctor_methods.each do |check|
+    %w[
+      check_for_installed_developer_tools
+      check_xcode_license_approved
+      check_for_osx_gcc_installer
+    ].each do |check|
       out = checks.send(check)
       opoo out unless out.nil?
     end
@@ -93,7 +95,6 @@ module Homebrew extend self
     check_ppc
     check_writable_install_location
     check_xcode
-    check_macports
     check_cellar
   end
 
@@ -121,5 +122,6 @@ module Homebrew extend self
     opoo e.message
   rescue CannotInstallFormulaError => e
     ofail e.message
+    check_macports
   end
 end

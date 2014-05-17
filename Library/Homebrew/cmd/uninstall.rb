@@ -18,10 +18,6 @@ module Homebrew extend self
     else
       ARGV.named.each do |name|
         name = Formula.canonical_name(name)
-
-        # FIXME canonical_name is insane
-        raise "Invalid usage" if name.include? '/'
-
         rack = HOMEBREW_CELLAR/name
 
         if rack.directory?

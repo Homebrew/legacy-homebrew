@@ -22,9 +22,10 @@ class Boost < Formula
 
   bottle do
     cellar :any
-    sha1 "8febaa2cf64152663551ae34a30f3030a1c1c023" => :mavericks
-    sha1 "1567fbf688e212f0e5a24d246fa386ea99cab5ae" => :mountain_lion
-    sha1 "2ed8000a0abb993fdd2985383eae9126c4170f5e" => :lion
+    revision 3
+    sha1 "c5b6b0cad1f8ac1ce69aa6c72facfc650b0cc38a" => :mavericks
+    sha1 "682f32c155bc0b17671bf7ff4323bde489ba44b0" => :mountain_lion
+    sha1 "b62fa644ab17bbce8e5bbc20e72ee0af605e7fc8" => :lion
   end
 
   env :userpaths
@@ -36,7 +37,7 @@ class Boost < Formula
   option 'with-mpi', 'Build with MPI support'
   option :cxx11
 
-  depends_on :python => :recommended
+  depends_on :python => :optional
   depends_on UniversalPython if build.universal? and build.with? "python"
 
   if build.with? 'icu'
@@ -62,13 +63,13 @@ class Boost < Formula
     # https://github.com/Homebrew/homebrew/issues/27396
     # https://github.com/Homebrew/homebrew/pull/27436
     patch :p2 do
-      url "https://github.com/boostorg/atomic/commit/6bb71fdd.patch"
-      sha1 "9ab8e6c041b4ecc291b2dd1a3c93e9b342d5e0e4"
+      url "https://github.com/boostorg/atomic/commit/6bb71fdd.diff"
+      sha1 "ca8679011d5293a7fd02cb3b97dde3515b8b2b03"
     end
 
     patch :p2 do
-      url "https://github.com/boostorg/atomic/commit/e4bde20f.patch"
-      sha1 "f206e7261d00503788ae8ec3a0635ced8a816293"
+      url "https://github.com/boostorg/atomic/commit/e4bde20f.diff"
+      sha1 "b68f5536474c9f543879698299bd4975538a89eb"
     end
   end
 

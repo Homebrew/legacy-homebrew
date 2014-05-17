@@ -100,15 +100,6 @@ class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
   end
 end
 
-class UnsatisfiedDependencyError < Homebrew::InstallationError
-  def initialize(f, dep, inherited_options)
-    super f, <<-EOS.undent
-    #{f} dependency #{dep} not installed with:
-      #{dep.missing_options(inherited_options) * ', '}
-    EOS
-  end
-end
-
 class UnsatisfiedRequirements < Homebrew::InstallationError
   attr_reader :reqs
 
@@ -194,25 +185,25 @@ class BuildError < Homebrew::InstallationError
       puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
       if formula.tap?
         user, repo = formula.tap.split '/'
-        tap_issues_url = "https://github.com/#{user}/homebrew-#{repo}/issues"
+        tap_issues_url = "https://github.com/#{user}/#{repo}/issues"
         puts "If reporting this issue please do so at (not Homebrew/homebrew):"
         puts "  #{tap_issues_url}"
       end
     else
-      require 'cmd/--config'
+      require 'cmd/config'
       require 'cmd/--env'
 
       unless formula.core_formula?
         ohai "Formula"
         puts "Tap: #{formula.tap}"
-        puts "Path: #{formula.path.realpath}"
+        puts "Path: #{formula.path}"
       end
       ohai "Configuration"
       Homebrew.dump_build_config
       ohai "ENV"
       Homebrew.dump_build_env(env)
       puts
-      onoe "#{formula.name} did not build"
+      onoe "#{formula.name} #{formula.version} did not build"
       unless (logs = Dir["#{HOMEBREW_LOGS}/#{formula}/*"]).empty?
         puts "Logs:"
         puts logs.map{|fn| "     #{fn}"}.join("\n")
@@ -233,7 +224,7 @@ class CompilerSelectionError < Homebrew::InstallationError
     super f, <<-EOS.undent
     #{f.name} cannot be built with any available compilers.
     To install this formula, you may need to:
-      brew install apple-gcc42
+      brew install gcc
     EOS
   end
 end

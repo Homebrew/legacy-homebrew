@@ -5,7 +5,7 @@ class Trafshow < Formula
   url 'ftp://ftp.FreeBSD.org/pub/FreeBSD/ports/distfiles/trafshow-5.2.3.tgz'
   sha1 '1c68f603f12357e932c83de850366c9b46e53d89'
 
-  depends_on :libtool
+  depends_on "libtool" => :build
 
   {
     "domain_resolver.c" => "1e7b470e65ed5df0a5ab2b8c52309d19430a6b9b",
@@ -20,20 +20,9 @@ class Trafshow < Formula
     end
   end
 
-  def copy_libtool_files!
-    if not MacOS::Xcode.provides_autotools?
-      s = Formula['libtool'].share
-      d = "#{s}/libtool/config"
-      cp ["#{d}/config.guess", "#{d}/config.sub"], "."
-    elsif MacOS.version <= :leopard
-      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config.*"], "."
-    else
-      cp Dir["#{MacOS::Xcode.prefix}/usr/share/libtool/config/config.*"], "."
-    end
-  end
-
   def install
-    copy_libtool_files!
+    cp Dir["#{Formula["libtool"].opt_share}/libtool/config/config.*"], buildpath
+
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

@@ -6,7 +6,6 @@ class Liboil < Formula
   sha1 'f9d7103a3a4a4089f56197f81871ae9129d229ed'
 
   depends_on 'pkg-config' => :build
-  depends_on 'glib'
 
   patch :p0 do
     url "https://trac.macports.org/export/89276/trunk/dports/devel/liboil/files/patch-liboil_liboilcpu-x86.c.diff"
@@ -25,4 +24,18 @@ class Liboil < Formula
     system "make"
     system "make install"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <liboil/liboil.h>
+      int main(int argc, char** argv) {
+        oil_init();
+        return 0;
+      }
+    EOS
+    flags = `#{HOMEBREW_PREFIX}/bin/pkg-config --cflags --libs liboil-0.3`.split + ENV.cflags.to_s.split
+    system ENV.cc, "test.c", "-o", "test", *flags
+    system "./test"
+  end
+
 end

@@ -2,13 +2,13 @@ require 'formula'
 
 class Libssh < Formula
   homepage 'http://www.libssh.org/'
-  url 'http://git.libssh.org/projects/libssh.git/snapshot/libssh-0.6.1.tar.gz'
-  sha1 '2ad5f0afc9983291d3639812212f0f8babc1ba81'
+  url 'https://red.libssh.org/attachments/download/87/libssh-0.6.3.tar.xz'
+  sha1 '8189255e0f684d36b7ca62739fa0cd5f1030a467'
 
   depends_on 'cmake' => :build
 
   def install
-    cd 'build' do
+    mkdir 'build' do
       system "cmake", "..", *std_cmake_args
       system "make install"
     end

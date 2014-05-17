@@ -30,11 +30,13 @@ class DocbookXsl < Formula
       (prefix/'docbook-xsl-ns').install xsl_files + doc_files + ['README.ns']
     end
 
+    bin.write_exec_script "#{prefix}/docbook-xsl/epub/bin/dbtoepub"
+  end
+
+  def post_install
     [prefix/'docbook-xsl/catalog.xml', prefix/'docbook-xsl-ns/catalog.xml'].each do |catalog|
       system "xmlcatalog", "--noout", "--del", "file://#{catalog}", "#{etc}/xml/catalog"
       system "xmlcatalog", "--noout", "--add", "nextCatalog", "", "file://#{catalog}", "#{etc}/xml/catalog"
     end
-
-    bin.write_exec_script "#{prefix}/docbook-xsl/epub/bin/dbtoepub"
   end
 end

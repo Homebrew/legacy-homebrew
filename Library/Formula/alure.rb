@@ -5,6 +5,7 @@ class Alure < Formula
   url 'http://kcat.strangesoft.net/alure-releases/alure-1.2.tar.bz2'
   sha1 'f033f0820c449ebff7b4b0254a7b1f26c0ba485b'
 
+  depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
   depends_on 'flac'       => :optional
   depends_on 'fluid-synth' => :optional

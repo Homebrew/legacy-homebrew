@@ -86,25 +86,6 @@ class DependencyCollectorTests < Test::Unit::TestCase
     assert dep.optional?
   end
 
-  def test_libltdl_not_build_dep
-    MacOS::Xcode.stubs(:provides_autotools?).returns(false)
-    dep = @d.build(:libltdl)
-    assert_equal Dependency.new("libtool"), dep
-    assert !dep.build?
-  end
-
-  def test_autotools_dep_no_system_autotools
-    MacOS::Xcode.stubs(:provides_autotools?).returns(false)
-    dep = @d.build(:libtool)
-    assert_equal Dependency.new("libtool"), dep
-    assert dep.build?
-  end
-
-  def test_autotools_dep_system_autotools
-    MacOS::Xcode.stubs(:provides_autotools?).returns(true)
-    assert_nil @d.build(:libtool)
-  end
-
   def test_ld64_dep_pre_leopard
     MacOS.stubs(:version).returns(MacOS::Version.new("10.4"))
     assert_equal LD64Dependency.new, @d.build(:ld64)

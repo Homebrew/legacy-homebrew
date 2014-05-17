@@ -3,14 +3,14 @@ require "formula"
 
 class Yaz < Formula
   homepage "http://www.indexdata.com/yaz"
-  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.0.21.tar.gz"
-  sha1 "cfa3c49060c15f849a04e73227b4e976370bdbd1"
+  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.1.1.tar.gz"
+  sha1 "c2ba83d7488278d214fd31a5cbac188d947a800e"
 
   bottle do
     cellar :any
-    sha1 "92aa501708051edb6d451a4fcd8c2a5cf29f72bc" => :mavericks
-    sha1 "43755b4e06af9c754efe2fe68d271f1d6d23902c" => :mountain_lion
-    sha1 "a477c390a7c6c06c02315bb5acdec78251e4c4f8" => :lion
+    sha1 "1045b83e175a62d5590d2a4268f17baa69c63c1c" => :mavericks
+    sha1 "378e0566d8193d58fd6a5cec2d4589a9f0f37bfa" => :mountain_lion
+    sha1 "187e9601be7a20cd54b23b4d9c17dff2fdfe82b1" => :lion
   end
 
   depends_on "pkg-config" => :build
@@ -26,7 +26,7 @@ class Yaz < Formula
   # This test converts between MARC8, an obscure mostly-obsolete library
   # text encoding supported by yaz-iconv, and UTF8.
   test do
-    marc8 = File.open("marc8.txt", "w") do |f|
+    File.open("marc8.txt", "w") do |f|
       f.write "$1!0-!L,i$3i$si$Ki$Ai$O!+=(B"
     end
 

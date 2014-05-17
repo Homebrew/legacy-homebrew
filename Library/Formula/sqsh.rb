@@ -18,8 +18,9 @@ class Sqsh < Formula
       --with-readline
     ]
 
-    ENV['LIBDIRS'] = Readline.new('readline').lib
-    ENV['INCDIRS'] = Readline.new('readline').include
+    readline = Formula["readline"]
+    ENV['LIBDIRS'] = readline.opt_lib
+    ENV['INCDIRS'] = readline.opt_include
 
     if build.include? "enable-x"
       args << "--with-x"
@@ -27,7 +28,7 @@ class Sqsh < Formula
       args << "--x-includes=#{MacOS::X11.include}"
     end
 
-    ENV['SYBASE'] = Freetds.new("freetds").prefix
+    ENV['SYBASE'] = Formula["freetds"].opt_prefix
     system "./configure", *args
     system "make", "install"
     system "make", "install.man"

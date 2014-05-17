@@ -7,7 +7,6 @@ class Mal4s < Formula
 
   head 'https://github.com/secure411dotorg/mal4s.git'
 
-  depends_on :macos => :mavericks
   depends_on :automake
   depends_on :autoconf
   depends_on :libtool
@@ -22,6 +21,8 @@ class Mal4s < Formula
   depends_on 'sdl2'
   depends_on 'sdl2_image'
   depends_on 'sdl2_mixer'
+
+  needs :cxx11
 
   def install
     args = ["--disable-dependency-tracking",

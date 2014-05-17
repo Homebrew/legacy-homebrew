@@ -1,30 +1,30 @@
-require 'formula'
+require "formula"
 
 class Freerdp < Formula
-  homepage 'http://www.freerdp.com/'
+  homepage "http://www.freerdp.com/"
 
   stable do
     url "https://github.com/FreeRDP/FreeRDP/archive/1.0.2.tar.gz"
     sha1 "aa521fc9b0610df6c03c2297c1230348805b0010"
 
     patch do
-      url "https://github.com/FreeRDP/FreeRDP/commit/1d3289.patch"
-      sha1 "d7f6cd98912b978f23e072c9d8cb68d054faea32"
+      url "https://github.com/FreeRDP/FreeRDP/commit/1d3289.diff"
+      sha1 "294acefbfba7452baaf7af1964769f0d8ac6e46c"
     end
 
     patch do
-      url "https://github.com/FreeRDP/FreeRDP/commit/e32f9e.patch"
-      sha1 "2eef5f5e792e56bfbc01fa2e5528a2662b7c33c3"
+      url "https://github.com/FreeRDP/FreeRDP/commit/e32f9e.diff"
+      sha1 "6453e232a2f0a652d85b11b7e05ba17beefec442"
     end
 
     # https://github.com/FreeRDP/FreeRDP/pull/1682/files
     patch do
-      url "https://gist.github.com/bmiklautz/8832375/raw/ac77b61185d11aa69e5f6b5e88c0fa597c04d964/freerdp-1.0.2-osxversion-patch.diff"
+      url "https://gist.githubusercontent.com/bmiklautz/8832375/raw/ac77b61185d11aa69e5f6b5e88c0fa597c04d964/freerdp-1.0.2-osxversion-patch.diff"
       sha1 "2793c0251396778b763b627e68dae1e0a5d41eab"
     end
   end
 
-  head 'https://github.com/FreeRDP/FreeRDP.git'
+  head "https://github.com/FreeRDP/FreeRDP.git"
 
   depends_on :x11
   depends_on 'cmake' => :build

@@ -1,38 +1,24 @@
 require 'formula'
 
-class NewEnoughEmacs < Requirement
-  fatal true
-
-  def satisfied?
-    `emacs --version`.split("\n")[0] =~ /GNU Emacs (\d+)\./
-    major_version = ($1 || 0).to_i
-    major_version >= 23
-  end
-
-  def message
-    "Emacs support requires at least Emacs 23."
-  end
-end
-
 class Notmuch < Formula
-  homepage 'http://notmuchmail.org'
-  url 'http://notmuchmail.org/releases/notmuch-0.17.tar.gz'
-  sha1 '0fe14140126a0da04754f548edf7e7b135eeec86'
+  homepage "http://notmuchmail.org"
+  url "http://notmuchmail.org/releases/notmuch-0.17.tar.gz"
+  sha1 "0fe14140126a0da04754f548edf7e7b135eeec86"
 
-  option "emacs", "Install emacs support."
+  depends_on "pkg-config" => :build
+  depends_on "emacs" => :optional
+  depends_on "xapian"
+  depends_on "talloc"
+  depends_on "gmime"
 
-  depends_on NewEnoughEmacs if build.include? "emacs"
-  depends_on 'pkg-config' => :build
-  depends_on 'xapian'
-  depends_on 'talloc'
-  depends_on 'gmime'
-
-  # Fix for mkdir behavior change in 10.9: http://notmuchmail.org/pipermail/notmuch/2013/016388.html
+  # Fix for mkdir behavior change in 10.9:
+  # http://notmuchmail.org/pipermail/notmuch/2013/016388.html
   patch :DATA
 
   def install
     args = ["--prefix=#{prefix}"]
-    if build.include? "emacs"
+    if build.with? "emacs"
+      ENV.deparallelize # Emacs and parallel builds aren't friends
       args << "--with-emacs"
     else
       args << "--without-emacs"

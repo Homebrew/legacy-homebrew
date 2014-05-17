@@ -2,9 +2,15 @@ require 'formula'
 
 class MidnightCommander < Formula
   homepage 'http://www.midnight-commander.org/'
-  url 'http://ftp.midnight-commander.org/mc-4.8.11.tar.xz'
-  mirror 'ftp://ftp.osuosl.org/pub/midnightcommander/mc-4.8.11.tar.xz'
-  sha256 '1877ea844f9d71e133b9e03ca3bebcd7b10b9ba5b419b8d268e255816fe1993a'
+  url 'http://ftp.midnight-commander.org/mc-4.8.12.tar.xz'
+  mirror 'ftp://ftp.osuosl.org/pub/midnightcommander/mc-4.8.12.tar.xz'
+  sha256 '5f2fd570a798dc0cc06374adffef8ca403588c4e73dfdf908e9a4311718153fe'
+
+  bottle do
+    sha1 "7b5b58bbf0cbb0dbb5466e9389549de7de7b7e02" => :mavericks
+    sha1 "1c2f103e0e920a41af53fcacc315dc28e5089560" => :mountain_lion
+    sha1 "97a5c81e713a32966a62292252cfba29c4044e76" => :lion
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'

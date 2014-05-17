@@ -3,7 +3,6 @@ require 'formula'
 class LuaRequirement < Requirement
   fatal true
   default_formula 'lua'
-
   satisfy { which 'lua' }
 end
 
@@ -35,8 +34,12 @@ class Gnuplot < Formula
   depends_on 'pkg-config' => :build
   depends_on LuaRequirement unless build.include? 'nolua'
   depends_on 'readline'
+  depends_on "libpng"
+  depends_on "jpeg"
+  depends_on "libtiff"
+  depends_on "fontconfig"
   depends_on 'pango'       if build.include? 'cairo' or build.include? 'wx'
-  depends_on :x11          if build.with? "x" or MacOS::X11.installed?
+  depends_on :x11          if build.with? "x"
   depends_on 'pdflib-lite' if build.include? 'pdf'
   depends_on 'gd'          unless build.include? 'nogd'
   depends_on 'wxmac'       if build.include? 'wx'
@@ -71,6 +74,7 @@ class Gnuplot < Formula
 
     args = %W[
       --disable-dependency-tracking
+      --disable-silent-rules
       --prefix=#{prefix}
       --with-readline=#{readline}
     ]
@@ -83,6 +87,12 @@ class Gnuplot < Formula
     args << '--without-lua'           if build.include? 'nolua'
     args << '--without-lisp-files'    if build.without? "emacs"
     args << (build.with?('aquaterm') ? '--with-aquaterm' : '--without-aquaterm')
+
+    if build.with? "x"
+      args << "--with-x"
+    else
+      args << "--without-x"
+    end
 
     if build.include? 'latex'
       args << '--with-latex'
@@ -101,7 +111,12 @@ class Gnuplot < Formula
   end
 
   test do
-    system "#{bin}/gnuplot", "--version"
+    system "#{bin}/gnuplot", "-e", <<-EOS.undent
+        set terminal png;
+        set output "#{testpath}/image.png";
+        plot sin(x);
+    EOS
+    assert (testpath/"image.png").exist?
   end
 
   def caveats

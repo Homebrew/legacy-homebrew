@@ -11,13 +11,8 @@ class Bbcp < Formula
   patch :DATA
 
   def install
-    mkdir "bin"
-    mkdir "obj"
-
-    cd "src" do
-      system "make", "Darwin"
-    end
-
+    mkdir %w{bin obj}
+    system "make", "-C", "src", "Darwin"
     bin.install "bin/bbcp"
   end
 

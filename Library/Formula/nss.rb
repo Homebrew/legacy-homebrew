@@ -2,20 +2,18 @@ require 'formula'
 
 class Nss < Formula
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_16_RTM/src/nss-3.16-with-nspr-4.10.4.tar.gz"
-  sha1 "8ae6ddec43556b4deb949dc889123ff1d09ab737"
-  version "3.16"
+  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_16_RTM/src/nss-3.16.tar.gz"
+  sha1 "981dc6ef2f1e69ec7e2b277ce27c7005e9837f95"
 
   bottle do
     cellar :any
-    sha1 "08ea6d10ebe317330129e03c184a0aaa59b300b0" => :mavericks
-    sha1 "3fd67a639a8fcdb253f8fe982a5ecf6f1ea25c6b" => :mountain_lion
-    sha1 "a4153f7a673f3f4703a9e4142958039e7b24bc51" => :lion
+    revision 2
+    sha1 "1a20609183ecbbf461d8aacf468e47574005f99a" => :mavericks
+    sha1 "7fcd7c8a6aea9ec3f451f2e5da5d5c263cd9718b" => :mountain_lion
+    sha1 "ec22f8d3125ef7c10e1711c3f04a26fcb45f1a11" => :lion
   end
 
   depends_on "nspr"
-
-  keg_only "NSS installs a libssl which conflicts with OpenSSL."
 
   def install
     ENV.deparallelize
@@ -33,7 +31,7 @@ class Nss < Formula
     inreplace "coreconf/Darwin.mk", "-install_name @executable_path", "-install_name #{lib}"
     inreplace "lib/freebl/config.mk", "@executable_path", lib
 
-    system "make", "nss_build_all", *args
+    system "make", "all", *args
 
     # We need to use cp here because all files get cross-linked into the dist
     # hierarchy, and Homebrew's Pathname.install moves the symlink into the keg
@@ -59,6 +57,8 @@ class Nss < Formula
       cp file, lib unless file.include? ".chk"
       cp file, libexec if file.include? ".chk"
     end
+    # resolves conflict with openssl, see #28258
+    rm lib/"libssl.a"
 
     (lib+"pkgconfig/nss.pc").write pc_file
   end

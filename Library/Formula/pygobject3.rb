@@ -2,8 +2,8 @@ require 'formula'
 
 class Pygobject3 < Formula
   homepage 'http://live.gnome.org/PyGObject'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.10/pygobject-3.10.2.tar.xz'
-  sha256 '75608f2c4052f0277508fc79debef026d9e84cb9261de2b922387c093d32c326'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.12/pygobject-3.12.0.tar.xz'
+  sha256 '0d4485311fcfb073dc37432e36ad1d45bcf9f8796a1e8ff20a6494e0297dbd1a'
 
   option 'with-tests', 'run tests'
 
@@ -30,7 +30,7 @@ class Pygobject3 < Formula
   option :universal
 
   patch do
-    url "https://gist.github.com/krrk/6439665/raw/a527e14cd3a77c19b089f27bea884ce46c988f55/pygobject-fix-module.patch"
+    url "https://gist.githubusercontent.com/krrk/6439665/raw/a527e14cd3a77c19b089f27bea884ce46c988f55/pygobject-fix-module.patch"
     sha1 "1d7aad99256d87d616a41b7026cd05267bd9f97f"
   end if build.with? 'tests'
 

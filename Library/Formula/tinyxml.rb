@@ -26,7 +26,7 @@ class Tinyxml < Formula
   end
 
   patch do
-    url "https://gist.github.com/scpeters/6325123/raw/cfb079be67997cb19a1aee60449714a1dedefed5/tinyxml_CMakeLists.patch"
+    url "https://gist.githubusercontent.com/scpeters/6325123/raw/cfb079be67997cb19a1aee60449714a1dedefed5/tinyxml_CMakeLists.patch"
     sha1 "90c69322296a4144795aa66a94233a9409ff7ea5"
   end
 
@@ -34,5 +34,20 @@ class Tinyxml < Formula
     ENV.universal_binary if build.universal?
     system "cmake", ".", *std_cmake_args
     system "make", "install"
+    (lib+"pkgconfig/tinyxml.pc").write pc_file
+  end
+
+  def pc_file; <<-EOS.undent
+    prefix=#{opt_prefix}
+    exec_prefix=${prefix}
+    libdir=${exec_prefix}/lib
+    includedir=${prefix}/include
+
+    Name: TinyXml
+    Description: Simple, small, C++ XML parser
+    Version: #{version}
+    Libs: -L${libdir} -ltinyxml
+    Cflags: -I${includedir}
+    EOS
   end
 end

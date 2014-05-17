@@ -49,7 +49,7 @@ class FormulaValidationTests < Test::Unit::TestCase
   def test_validates_when_initialize_overridden
     assert_invalid :name do
       formula do
-        def initialize; end
+        def initialize(*); end
       end.brew {}
     end
   end

@@ -98,4 +98,18 @@ class Pike < Formula
    bin.install_symlink "#{libexec}/bin/pike"
    share.install_symlink "#{libexec}/share/man"
   end
+
+  test do
+    path = testpath/"test.pike"
+    path.write <<-EOS.undent
+      int main() {
+        for (int i=0; i<10; i++) { write("%d", i); }
+        return 0;
+      }
+    EOS
+
+    out = `#{bin}/pike #{path}`
+    assert_equal "0123456789", out
+    assert_equal 0, $?.exitstatus
+  end
 end

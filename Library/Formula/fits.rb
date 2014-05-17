@@ -20,7 +20,7 @@ class Fits < Formula
     libexec.install 'fits-env.sh'
     %w[fits.sh fits-ngserver.sh].each do |file|
       inreplace file, '"$(dirname $BASH_SOURCE)/fits-env.sh"',
-        "'#{libexec/'fits-env.sh'}'"
+        "'#{libexec}/fits-env.sh'"
     end
 
     bin.install 'fits.sh' => 'fits'

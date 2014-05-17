@@ -33,6 +33,7 @@ class Lighttpd < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --sbindir=#{bin}
       --with-openssl
       --with-ldap
       --with-zlib
@@ -52,11 +53,8 @@ class Lighttpd < Formula
     system "./configure", *args
     system "make install"
 
-    mv sbin, bin
-
     unless File.exist? config_path
-      config_path.install Dir["doc/config/lighttpd.conf"]
-      config_path.install Dir["doc/config/modules.conf"]
+      config_path.install "doc/config/lighttpd.conf", "doc/config/modules.conf"
       (config_path/"conf.d/").install Dir["doc/config/conf.d/*.conf"]
       inreplace config_path+"lighttpd.conf" do |s|
         s.sub!(/^var\.log_root\s*=\s*".+"$/,"var.log_root    = \"#{log_path}\"")

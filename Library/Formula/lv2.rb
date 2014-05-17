@@ -2,8 +2,8 @@ require 'formula'
 
 class Lv2 < Formula
   homepage 'http://lv2plug.in'
-  url 'http://lv2plug.in/spec/lv2-1.4.0.tar.bz2'
-  sha1 'df78eb0983981a510806b6765d7ad72c0204be18'
+  url 'http://lv2plug.in/spec/lv2-1.8.0.tar.bz2'
+  sha1 '2c2d0e5cb0586adb835b842194583bf4fb7f3d0f'
 
   def install
     system "./waf", "configure", "--prefix=#{prefix}", "--lv2dir=#{share}/lv2"

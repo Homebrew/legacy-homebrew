@@ -1,20 +1,27 @@
-require 'formula'
+require "formula"
 
+# Please only update to versions that are published on PyPi as there are too
+# many releases for us to update to every single one:
+# https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
-  homepage 'http://rg3.github.io/youtube-dl/'
-  # Please only update to versions that are published on PyPi as there are too
-  # many releases for us to update to every single one:
-  # https://pypi.python.org/pypi/youtube_dl
-  url 'https://yt-dl.org/downloads/2014.03.17/youtube-dl-2014.03.17.tar.gz'
-  sha1 '00869bbc52fc1ee7477abfff4e40e7b05d0671ec'
+  homepage "http://rg3.github.io/youtube-dl/"
+  url "https://yt-dl.org/downloads/2014.05.16.1/youtube-dl-2014.05.16.1.tar.gz"
+  sha1 "23e8c9cd63705adad9788100b71a5f94cc8a838d"
 
-  depends_on 'rtmpdump' => :optional
+  bottle do
+    cellar :any
+    sha1 "b4d46cb35e1def5b1d1387546e0e0b0613ef4e07" => :mavericks
+    sha1 "3cf40ba1ff6619cdea4e062992e5edccd3f7eaa2" => :mountain_lion
+    sha1 "dd26274166e03a674fc96b1cb37fb7023d119cda" => :lion
+  end
+
+  depends_on "rtmpdump" => :optional
 
   def install
     system "make", "youtube-dl", "PREFIX=#{prefix}"
-    bin.install 'youtube-dl'
-    man1.install 'youtube-dl.1'
-    bash_completion.install 'youtube-dl.bash-completion'
+    bin.install "youtube-dl"
+    man1.install "youtube-dl.1"
+    bash_completion.install "youtube-dl.bash-completion"
   end
 
   def caveats
@@ -22,6 +29,6 @@ class YoutubeDl < Formula
   end
 
   test do
-    system "#{bin}/youtube-dl", '--simulate', 'http://www.youtube.com/watch?v=he2a4xK8ctk'
+    system "#{bin}/youtube-dl", "--simulate", "http://www.youtube.com/watch?v=he2a4xK8ctk"
   end
 end

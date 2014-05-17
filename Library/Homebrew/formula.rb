@@ -26,10 +26,6 @@ class Formula
 
   attr_accessor :local_bottle_path
 
-  # Flag for marking whether this formula needs C++ standard library
-  # compatibility check
-  attr_reader :cxxstdlib
-
   # Homebrew determines the name
   def initialize name='__UNKNOWN__', path=self.class.path(name)
     @name = name
@@ -47,8 +43,6 @@ class Formula
     @pkg_version = PkgVersion.new(version, revision)
 
     @pin = FormulaPin.new(self)
-
-    @cxxstdlib = Set.new
   end
 
   def set_spec(name)
@@ -61,11 +55,11 @@ class Formula
 
   def determine_active_spec
     case
-    when head && ARGV.build_head?        then head    # --HEAD
-    when devel && ARGV.build_devel?      then devel   # --devel
-    when stable                          then stable
-    when devel && stable.nil?            then devel   # devel-only
-    when head && stable.nil?             then head    # head-only
+    when head && ARGV.build_head?   then head    # --HEAD
+    when devel && ARGV.build_devel? then devel   # --devel
+    when stable                     then stable
+    when devel                      then devel
+    when head                       then head    # head-only
     else
       raise FormulaSpecificationError, "formulae require at least a URL"
     end
@@ -375,6 +369,7 @@ class Formula
     include Enumerable
   end
 
+  # An array of all installed formulae
   def self.installed
     return [] unless HOMEBREW_CELLAR.directory?
 
@@ -390,44 +385,8 @@ class Formula
     Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
-  # TODO - document what this returns and why
   def self.canonical_name name
-    # if name includes a '/', it may be a tap reference, path, or URL
-    if name.include? "/"
-      if name =~ %r{(.+)/(.+)/(.+)}
-        tap_name = "#$1-#$2".downcase
-        tapd = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{tap_name}")
-
-        if tapd.directory?
-          tapd.find_formula do |relative_pathname|
-            return "#{tapd}/#{relative_pathname}" if relative_pathname.stem.to_s == $3
-          end
-        end
-      end
-      # Otherwise don't resolve paths or URLs
-      return name
-    end
-
-    # test if the name is a core formula
-    formula_with_that_name = Formula.path(name)
-    if formula_with_that_name.file? and formula_with_that_name.readable?
-      return name
-    end
-
-    # test if the name is a formula alias
-    possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{name}")
-    if possible_alias.file?
-      return possible_alias.realpath.basename('.rb').to_s
-    end
-
-    # test if the name is a cached downloaded formula
-    possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{name}.rb")
-    if possible_cached_formula.file?
-      return possible_cached_formula.to_s
-    end
-
-    # dunno, pass through the name
-    return name
+    Formulary.canonical_name(name)
   end
 
   def self.[](name)
@@ -440,11 +399,11 @@ class Formula
   end
 
   def tap?
-    !!path.realpath.to_s.match(HOMEBREW_TAP_DIR_REGEX)
+    HOMEBREW_TAP_DIR_REGEX === path
   end
 
   def tap
-    if path.realpath.to_s =~ HOMEBREW_TAP_DIR_REGEX
+    if path.to_s =~ HOMEBREW_TAP_DIR_REGEX
       "#$1/#$2"
     elsif core_formula?
       "Homebrew/homebrew"
@@ -455,7 +414,7 @@ class Formula
 
   # True if this formula is provided by Homebrew itself
   def core_formula?
-    path.realpath == Formula.path(name)
+    path == Formula.path(name)
   end
 
   def self.path name
@@ -493,7 +452,7 @@ class Formula
       },
       "revision" => revision,
       "installed" => [],
-      "linked_keg" => (linked_keg.realpath.basename.to_s if linked_keg.exist?),
+      "linked_keg" => (linked_keg.resolved_path.basename.to_s if linked_keg.exist?),
       "keg_only" => keg_only?,
       "dependencies" => deps.map(&:name),
       "conflicts_with" => conflicts.map(&:name),
@@ -505,8 +464,9 @@ class Formula
     }
 
     if rack.directory?
-      rack.subdirs.each do |keg|
-        tab = Tab.for_keg keg
+      rack.subdirs.each do |keg_path|
+        keg = Keg.new keg_path
+        tab = Tab.for_keg keg_path
 
         hsh["installed"] << {
           "version" => keg.version.to_s,
@@ -611,7 +571,7 @@ class Formula
         f.flush
         Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
         f.puts
-        require 'cmd/--config'
+        require 'cmd/config'
         Homebrew.write_build_config(f)
         raise BuildError.new(self, cmd, args, $?)
       end
@@ -640,12 +600,6 @@ class Formula
 
     ohai "Patching"
     active_spec.patches.each(&:apply)
-  end
-
-  # Explicitly request changing C++ standard library compatibility check
-  # settings. Use with caution!
-  def cxxstdlib_check check_type
-    cxxstdlib << check_type
   end
 
   def self.method_added method
@@ -765,6 +719,18 @@ class Formula
       @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
     end
 
+    # Flag for marking whether this formula needs C++ standard library
+    # compatibility check
+    def cxxstdlib
+      @cxxstdlib ||= Set.new
+    end
+
+    # Explicitly request changing C++ standard library compatibility check
+    # settings. Use with caution!
+    def cxxstdlib_check check_type
+      cxxstdlib << check_type
+    end
+
     # For Apple compilers, this should be in the format:
     # fails_with compiler do
     #   cause "An explanation for why the build doesn't work."
@@ -795,6 +761,13 @@ class Formula
     def fails_with compiler, &block
       @cc_failures ||= Set.new
       @cc_failures << CompilerFailure.new(compiler, &block)
+    end
+
+    def needs *standards
+      @cc_failures ||= Set.new
+      standards.each do |standard|
+        @cc_failures.merge CompilerFailure.for_standard standard
+      end
     end
 
     def require_universal_deps

@@ -2,14 +2,14 @@ require 'formula'
 
 class Fftw < Formula
   homepage 'http://www.fftw.org'
-  url 'http://www.fftw.org/fftw-3.3.3.tar.gz'
-  sha1 '11487180928d05746d431ebe7a176b52fe205cf9'
+  url 'http://www.fftw.org/fftw-3.3.4.tar.gz'
+  sha1 'fd508bac8ac13b3a46152c54b7ac885b69734262'
 
   bottle do
     cellar :any
-    sha1 "9aeaea9d8cfacda9b6b4a2be377e5cff1c639de6" => :mavericks
-    sha1 "d59acf1f5bd1ac955ab930fbbef2a2efc8ee3a55" => :mountain_lion
-    sha1 "272dc2ed950d7ddf59dee0eaf00499c7fd965f95" => :lion
+    sha1 "61a72898867a9873ccf86e9ee9b1c397ec49a78a" => :mavericks
+    sha1 "90bb389f4f7b560e174cd7c5079dfc07feb30821" => :mountain_lion
+    sha1 "7ebd6f3498b6b32e19f83627d30780efc3c25a88" => :lion
   end
 
   option "with-fortran", "Enable Fortran bindings"
@@ -73,7 +73,7 @@ class Fftw < Formula
       }
     TEST_SCRIPT
 
-    system ENV.cc, '-o', 'fftw', 'fftw.c', '-lfftw3', *ENV.cflags.split
+    system ENV.cc, '-o', 'fftw', 'fftw.c', '-lfftw3', *ENV.cflags.to_s.split
     system './fftw'
   end
 end

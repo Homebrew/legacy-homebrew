@@ -65,8 +65,8 @@ class Formula
   private
     def repository
       @repository ||= begin
-        if path.realpath.to_s =~ HOMEBREW_TAP_DIR_REGEX
-          HOMEBREW_REPOSITORY/"Library/Taps/#$1-#$2"
+        if path.to_s =~ HOMEBREW_TAP_DIR_REGEX
+          HOMEBREW_REPOSITORY/"Library/Taps/#$1/#$2"
         else
           HOMEBREW_REPOSITORY
         end

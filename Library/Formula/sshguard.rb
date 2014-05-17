@@ -35,7 +35,7 @@ class Sshguard < Formula
       table (replace $ext_if with your WAN interface):
 
         table <sshguard> persist
-        block in quick on $ext_if proto tcp from any to any port 22 label "ssh bruteforce"
+        block in quick on $ext_if proto tcp from <sshguard> to any port 22 label "ssh bruteforce"
 
       Then run sudo pfctl -f /etc/pf.conf to reload the rules.
       EOS

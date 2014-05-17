@@ -4,9 +4,9 @@ class Wireshark < Formula
   homepage 'http://www.wireshark.org'
 
   stable do
-    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.6.tar.bz2'
-    mirror 'http://www.wireshark.org/download/src/wireshark-1.10.6.tar.bz2'
-    sha1 '081a2daf85e3257d7a2699e84a330712e3e5b9bb'
+    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.7.tar.bz2'
+    mirror 'http://www.wireshark.org/download/src/wireshark-1.10.7.tar.bz2'
+    sha1 '5e5ce4fdc9aa53e545fc0fbd22eea6adcf7dfc0b'
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
@@ -22,11 +22,10 @@ class Wireshark < Formula
   end
 
   devel do
-    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.11.2.tar.bz2'
-    sha1 'af2b03338819b300f621048398b49403675db49c'
+    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.11.3.tar.bz2'
+    sha1 '7e1c6b107c178016d51c9061ef3f40efbc47a040'
   end
 
-  option 'with-x', 'Include X11 support'
   option 'with-qt', 'Use QT for GUI instead of GTK+'
   option 'with-headers', 'Install Wireshark library headers for plug-in developemnt'
 
@@ -43,11 +42,8 @@ class Wireshark < Formula
   depends_on 'pcre' => :optional
   depends_on 'portaudio' => :optional
   depends_on 'qt' => :optional
-
-  if build.with? 'x'
-    depends_on :x11
-    depends_on 'gtk+'
-  end
+  depends_on "gtk+" => :optional
+  depends_on :x11 if build.with? "gtk+"
 
   def install
     system "./autogen.sh" if build.head?
@@ -58,8 +54,8 @@ class Wireshark < Formula
             "--with-ssl"]
 
     args << "--disable-warnings-as-errors" if build.head?
-    args << "--disable-wireshark" if build.without?("x") && build.without?("qt")
-    args << "--disable-gtktest" if build.without? "x"
+    args << "--disable-wireshark" if build.without?("gtk+") && build.without?("qt")
+    args << "--disable-gtktest" if build.without? "gtk+"
     args << "--with-qt" if build.with? "qt"
 
     system "./configure", *args

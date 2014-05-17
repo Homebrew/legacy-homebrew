@@ -15,7 +15,7 @@ class Nbimg < Formula
   end
 
   test do
-    curl "https://gist.github.com/staticfloat/8253400/raw/41aa4aca5f1aa0a82c85c126967677f830fe98ee/tiny.bmp", "-O"
+    curl "https://gist.githubusercontent.com/staticfloat/8253400/raw/41aa4aca5f1aa0a82c85c126967677f830fe98ee/tiny.bmp", "-O"
     system "#{bin}/nbimg", "-Ftiny.bmp"
   end
 end

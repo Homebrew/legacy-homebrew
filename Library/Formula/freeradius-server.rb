@@ -5,7 +5,6 @@ class FreeradiusServer < Formula
   url 'ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.2.tar.gz'
   sha1 '6aaa14169c20f257dcd5dcc61da0d0f985e9b5cc'
 
-  # Requires newer autotools on all platforms
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'libtool' => :build

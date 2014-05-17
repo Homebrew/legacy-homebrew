@@ -4,43 +4,49 @@ class Ghc < Formula
   homepage "http://haskell.org/ghc/"
   url "http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-src.tar.bz2"
   sha1 "8938e1ef08b37a4caa071fa169e79a3001d065ff"
+  revision 2
 
   bottle do
-    revision 2
-    sha1 "a6ceeb3f1f9ba2cf0454dc9d45dce69f8a5ae736" => :mavericks
-    sha1 "d91ee56c8066bae5173f705e83e15dbb8842f67f" => :mountain_lion
-    sha1 "1569f19cdad2675cbff328c0e259d6b8573e9d11" => :lion
+    sha1 "4f06ef60e2b861f990199cd33c09a3441297b891" => :mavericks
+    sha1 "f64a9492c0294dec39110e947dc344a53465c1fd" => :mountain_lion
+    sha1 "9a0055ba5bdc9a78a8131618a9fd02404ad053d3" => :lion
   end
 
   option "32-bit"
   option "tests", "Verify the build using the testsuite."
 
+  # http://hackage.haskell.org/trac/ghc/ticket/6009
+  depends_on :macos => :snow_leopard
+  depends_on "gmp"
+
   devel do
-    # This block should largely translate over for 7.8.1 when GM.
-    url "http://www.haskell.org/ghc/dist/7.8.1-rc2/ghc-7.8.0.20140228-src.tar.bz2"
-    sha1 "8bd8eb3410a7fccc322c0e23e8045fcb5793ea5a"
-
-    depends_on "apple-gcc42" if build.build_32_bit?
-    depends_on :macos => :mountain_lion
-
-    resource "binary" do
-      url "https://www.haskell.org/ghc/dist/7.8.1-rc2/ghc-7.8.0.20140228-x86_64-apple-darwin-lion.tar.bz2"
-      sha1 "0b5d9a25afc516682dcae62e9955552ce857e715"
-    end
-
-    resource "binary-32" do
-      url "http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-i386-apple-darwin.tar.bz2"
-      sha1 "6a312263fef41e06003f0676b879f2d2d5a1f30c"
-    end
+    url "https://www.haskell.org/ghc/dist/7.8.2/ghc-7.8.2-src.tar.xz"
+    sha1 "fe86ae790b7e8e5b4c78db7a914ee375bc6d9fc3"
 
     resource "testsuite" do
-      url "http://www.haskell.org/ghc/dist/7.8.1-rc2/ghc-7.8.0.20140228-testsuite.tar.bz2"
-      sha1 "0c52e15c699b1c624fbc218b98ddfb44bc43cec8"
+      url "https://www.haskell.org/ghc/dist/7.8.2/ghc-7.8.2-testsuite.tar.xz"
+      sha1 "3abe4e0ebbed17e825573f0f34be0eca9179f9e4"
     end
   end
 
+  resource "binary_7.8" do
+    url "https://www.haskell.org/ghc/dist/7.8.2/ghc-7.8.2-x86_64-apple-darwin-mavericks.tar.xz"
+    sha1 "5219737fb38f882532712047f6af32fc73a91f0f"
+  end
+
+  resource "binary" do
+    url "http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2"
+    sha1 "7c655701672f4b223980c3a1068a59b9fbd08825"
+  end
+
+  resource "binary32" do
+    url "http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2"
+    sha1 "60f749893332d7c22bb4905004a67510992d8ef6"
+  end
+
   # These don't work inside of a `stable do` block
-  if build.stable?
+  if build.stable? || build.build_32_bit? || !MacOS.prefer_64_bit? || MacOS.version < :mavericks
+    depends_on "gcc" if MacOS.version >= :mountain_lion
     env :std
 
     fails_with :clang do
@@ -52,21 +58,6 @@ class Ghc < Formula
   end
 
   stable do
-    # http://hackage.haskell.org/trac/ghc/ticket/6009
-    depends_on :macos => :snow_leopard
-    depends_on "apple-gcc42" if MacOS.version >= :mountain_lion
-    depends_on "gmp"
-
-    resource "binary" do
-      url "http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2"
-      sha1 "7c655701672f4b223980c3a1068a59b9fbd08825"
-    end
-
-    resource "binary32" do
-      url "http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2"
-      sha1 "60f749893332d7c22bb4905004a67510992d8ef6"
-    end
-
     resource "testsuite" do
       url "https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz"
       sha1 "6a1973ae3cccdb2f720606032ae84ffee8680ca1"
@@ -80,10 +71,12 @@ class Ghc < Formula
     # Move the main tarball contents into a subdirectory
     (buildpath+"Ghcsource").install Dir["*"]
 
-    if (Hardware.is_64_bit? and not build.build_32_bit?)
-      binary_resource = "binary"
-    else
+    if build.build_32_bit? || !MacOS.prefer_64_bit?
       binary_resource = "binary32"
+    elsif MacOS.version >= :mavericks && build.devel?
+      binary_resource = "binary_7.8"
+    else
+      binary_resource = "binary"
     end
 
     resource(binary_resource).stage do
@@ -112,11 +105,11 @@ class Ghc < Formula
       # https://github.com/Homebrew/homebrew/issues/13650
       ENV["LD"] = "ld"
 
-      if Hardware.is_64_bit? and not build.build_32_bit?
-        arch = "x86_64"
-      else
+      if build.build_32_bit? || !MacOS.prefer_64_bit?
         ENV.m32 # Need to force this to fix build error on internal libgmp_ar.
         arch = "i386"
+      else
+        arch = "x86_64"
       end
 
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
@@ -128,11 +121,13 @@ class Ghc < Formula
 
       if build.include? "tests"
         resource("testsuite").stage do
-          (buildpath+"Ghcsource/config").install Dir["config/*"]
-          (buildpath+"Ghcsource/driver").install Dir["driver/*"]
-          (buildpath+"Ghcsource/mk").install Dir["mk/*"]
-          (buildpath+"Ghcsource/tests").install Dir["tests/*"]
-          (buildpath+"Ghcsource/timeout").install Dir["timeout/*"]
+          cd "testsuite" do
+            (buildpath+"Ghcsource/config").install Dir["config/*"]
+            (buildpath+"Ghcsource/driver").install Dir["driver/*"]
+            (buildpath+"Ghcsource/mk").install Dir["mk/*"]
+            (buildpath+"Ghcsource/tests").install Dir["tests/*"]
+            (buildpath+"Ghcsource/timeout").install Dir["timeout/*"]
+          end
           cd (buildpath+"Ghcsource/tests") do
             system "make", "CLEANUP=1", "THREADS=#{ENV.make_jobs}", "fast"
           end
@@ -142,11 +137,17 @@ class Ghc < Formula
       system "make"
       # -j1 fixes an intermittent race condition
       system "make", "-j1", "install"
+      if build.devel?
+        # use clang, even when gcc was used to build ghc
+        settings = Dir[lib/"ghc-*/settings"][0]
+        inreplace settings, "\"#{ENV.cc}\"", "\"clang\""
+      end
     end
   end
 
   def caveats; <<-EOS.undent
-    This brew is for GHC only; you might also be interested in haskell-platform.
+    This brew is for GHC only; you might also be interested in cabal-install
+    or haskell-platform.
     EOS
   end
 

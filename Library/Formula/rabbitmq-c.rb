@@ -10,15 +10,15 @@ class RabbitmqC < Formula
   option :universal
 
   depends_on 'pkg-config' => :build
-  depends_on 'autoconf' => :build # Use a newer version on Snow Leopard too
+  depends_on 'autoconf' => :build
   depends_on 'automake' => :build
-  depends_on :libtool
+  depends_on 'libtool' => :build
   depends_on 'rabbitmq'
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
 
   resource 'codegen' do
-    url 'https://github.com/rabbitmq/rabbitmq-codegen/archive/rabbitmq_v3_2_4.tar.gz'
-    sha1 '936d66a98e00cb1c2921fa13c5ec1bc8f83d33ad'
+    url 'https://github.com/rabbitmq/rabbitmq-codegen/archive/rabbitmq_v3_3_0.tar.gz'
+    sha1 '8a5fd687faae669f3715ea44aaeaf53b8743a340'
   end
 
   def install

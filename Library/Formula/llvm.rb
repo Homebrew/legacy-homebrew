@@ -5,6 +5,12 @@ class Llvm < Formula
   url 'http://llvm.org/releases/3.4/llvm-3.4.src.tar.gz'
   sha1 '10b1fd085b45d8b19adb9a628353ce347bc136b8'
 
+  bottle do
+    sha1 "3f633f71f4ff0e9282e2b68aa45ba51b5179f243" => :mavericks
+    sha1 "3dc85e1b34e1671d9c016e50490da061156c6b43" => :mountain_lion
+    sha1 "4d49c424a7b0e682eba6e84e92292a4055a3a003" => :lion
+  end
+
   resource 'clang' do
     url 'http://llvm.org/releases/3.4/clang-3.4.src.tar.gz'
     sha1 'a6a3c815dd045e9c13c7ae37d2cfefe65607860d'
@@ -17,9 +23,7 @@ class Llvm < Formula
   option 'rtti', 'Build with C++ RTTI'
   option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
 
-  depends_on :python => :recommended
-
-  env :std if build.universal?
+  depends_on :python => :optional
 
   keg_only :provided_by_osx
 
@@ -28,11 +32,10 @@ class Llvm < Formula
       raise 'The Python bindings need the shared library.'
     end
 
-    resource('clang').stage do
-      (buildpath/'tools/clang').install Dir['*']
-    end if build.with? 'clang'
+    (buildpath/"tools/clang").install resource("clang") if build.with? "clang"
 
     if build.universal?
+      ENV.permit_arch_flags
       ENV['UNIVERSAL'] = '1'
       ENV['UNIVERSAL_ARCH'] = Hardware::CPU.universal_archs.join(' ')
     end

@@ -6,8 +6,8 @@ class Lilypond < Formula
   sha1 '09d3a1e0e9fadeb8ef6e279227a2b30812c7ee9b'
 
   devel do
-    url 'http://download.linuxaudio.org/lilypond/source/v2.19/lilypond-2.19.3.tar.gz'
-    sha1 '313e64cd7971bf98d84e76dccf31e24cba0d1ab6'
+    url 'http://download.linuxaudio.org/lilypond/source/v2.19/lilypond-2.19.6.tar.gz'
+    sha1 '42fcb72f948a62bfbac754eb1f088444dac6ab28'
   end
 
   # LilyPond currently only builds with an older version of Guile (<1.9)

@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class Ruby19 < Requirement
   fatal true
@@ -24,58 +24,76 @@ class Ruby19 < Requirement
 end
 
 class Mkvtoolnix < Formula
-  homepage 'http://www.bunkus.org/videotools/mkvtoolnix/'
-  url 'http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-6.8.0.tar.xz'
-  sha1 'd742eb0c38de48d0f12363252115c0d966e8abc3'
+  homepage "http://www.bunkus.org/videotools/mkvtoolnix/"
+  url "http://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-6.9.1.tar.xz"
+  sha1 "6c62d91663fd382b0b66da6548eea5a5c37f8128"
 
-  head 'https://github.com/mbunkus/mkvtoolnix.git'
+  head do
+    url "https://github.com/mbunkus/mkvtoolnix.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   depends_on Ruby19
-  depends_on 'boost' => 'c++11'
-  depends_on 'libvorbis'
-  depends_on 'libmatroska' => 'c++11'
-  depends_on 'libebml' => 'c++11'
-  depends_on 'flac' => :optional
-  depends_on 'lzo' => :optional
-
-  fails_with :clang do
-    build 425
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
+  depends_on "libogg"
+  depends_on "libvorbis"
+  depends_on "flac" => :optional
+  depends_on "lzo" => :optional
+  depends_on "expat"
+  depends_on "gettext"
+  depends_on "pcre"
+  depends_on "wxmac" => :optional
+  # On Mavericks, the bottle (without c++11) can be used
+  # because mkvtoolnix is linked against libc++ by default
+  if MacOS.version >= 10.9
+    depends_on "boost"
+    depends_on "libmatroska"
+    depends_on "libebml"
+  else
+    depends_on "boost" => "c++11"
+    depends_on "libmatroska" => "c++11"
+    depends_on "libebml" => "c++11"
   end
 
-  fails_with :gcc do
-    build 5666
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
-  end
-
-  fails_with :gcc => '4.5.4' do
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
-  end
-
-  fails_with :gcc_4_0 do
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
-  end;
-
-  fails_with :llvm do
-    build 2336
-    cause 'Mkvtoolnix requires a C++11 compliant compiler.'
-  end
+  needs :cxx11
 
   def install
     ENV.cxx11
 
-    ENV['ZLIB_CFLAGS'] = '-I/usr/include'
-    ENV['ZLIB_LIBS'] = '-L/usr/lib -lz'
+    ENV["ZLIB_CFLAGS"] = "-I/usr/include"
+    ENV["ZLIB_LIBS"] = "-L/usr/lib -lz"
 
-    boost = Formula["boost"].opt_prefix
+    boost = Formula["boost"]
+    ogg = Formula["libogg"]
+    vorbis = Formula["libvorbis"]
 
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--disable-gui",
-                          "--disable-wxwidgets",
-                          "--without-curl",
-                          "--with-boost=#{boost}"
+    args = %W[
+      --disable-debug
+      --prefix=#{prefix}
+      --without-curl
+      --with-boost=#{boost.opt_prefix}
+    ]
+
+    if build.with? "wxmac"
+      wxmac = Formula["wxmac"]
+
+      args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include};#{wxmac.opt_include}"
+      args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib};#{wxmac.opt_lib}"
+      args << "--enable-gui"
+      args << "--enable-wxwidgets"
+    else
+      args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include}"
+      args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib}"
+      args << "--disable-gui"
+      args << "--disable-wxwidgets"
+    end
+
+    system "./autogen.sh" if build.head?
+
+    system "./configure", *args
+
     system "./drake", "-j#{ENV.make_jobs}"
     system "./drake install"
   end

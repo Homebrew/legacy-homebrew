@@ -18,6 +18,6 @@ class Fakeroot < Formula
   end
 
   test do
-    system "#{bin}/fakeroot", "-v"
+    assert_equal `fakeroot whoami`, "root\n"
   end
 end

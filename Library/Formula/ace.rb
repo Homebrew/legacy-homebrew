@@ -22,16 +22,14 @@ class Ace < Formula
     ENV['DYLD_LIBRARY_PATH'] = "#{buildpath}/ace:#{buildpath}/lib"
 
     # Done! We go ahead and build.
-    cd "ace" do
-      system "make", "-f", "GNUmakefile.ACE",
-                           "INSTALL_PREFIX=#{prefix}",
-                           "LDFLAGS=",
-                           "DESTDIR=",
-                           "INST_DIR=/ace",
-                           "debug=0",
-                           "shared_libs=1",
-                           "static_libs=0",
-                           "install"
-    end
+    system "make", "-C", "ace", "-f", "GNUmakefile.ACE",
+                   "INSTALL_PREFIX=#{prefix}",
+                   "LDFLAGS=",
+                   "DESTDIR=",
+                   "INST_DIR=/ace",
+                   "debug=0",
+                   "shared_libs=1",
+                   "static_libs=0",
+                   "install"
   end
 end

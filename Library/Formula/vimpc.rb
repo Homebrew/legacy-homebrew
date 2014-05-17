@@ -8,9 +8,9 @@ class Vimpc < Formula
   head do
     url 'https://github.com/boysetsfrog/vimpc.git'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on 'pkg-config' => :build
@@ -18,11 +18,7 @@ class Vimpc < Formula
   depends_on 'pcre'
 
   def install
-    if build.head?
-      ENV['ACLOCAL_FLAGS'] = "-I #{HOMEBREW_PREFIX}/share/aclocal"
-      system "./autogen.sh"
-    end
-
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
