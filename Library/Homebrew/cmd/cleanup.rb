@@ -5,6 +5,8 @@ require 'bottles'
 module Homebrew extend self
 
   def cleanup
+    # individual cleanup_ methods should also check for the existence of the
+    # appropriate directories before assuming they exist
     return unless HOMEBREW_CELLAR.directory?
 
     if ARGV.named.empty?
@@ -21,6 +23,7 @@ module Homebrew extend self
   end
 
   def cleanup_logs
+    return unless HOMEBREW_LOGS.directory?
     time = Time.now - 2 * 7 * 24 * 60 * 60 # two weeks
     HOMEBREW_LOGS.subdirs.each do |dir|
       if dir.mtime < time
