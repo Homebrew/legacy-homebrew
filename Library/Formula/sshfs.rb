@@ -20,7 +20,6 @@ class Sshfs < Formula
   depends_on "libtool" => :build
   depends_on "osxfuse"
   depends_on "glib"
-  depends_on :xcode
 
   # Fixes issue https://github.com/osxfuse/sshfs/pull/4
   patch :DATA
