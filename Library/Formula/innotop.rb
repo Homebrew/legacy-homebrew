@@ -6,7 +6,6 @@ class Innotop < Formula
   sha1 '6b0b5f492e7188152727f6c157043be180ba516a'
 
   depends_on 'DBD::mysql' => :perl
-  depends_on 'Term::ReadKey' => :perl
 
   def install
     system "perl", "Makefile.PL", "PREFIX=#{prefix}"
