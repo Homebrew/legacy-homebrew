@@ -3,8 +3,8 @@ require "formula"
 class Headphones < Formula
   homepage "https://github.com/rembo10/headphones"
   head "https://github.com/rembo10/headphones.git"
-  url "https://github.com/rembo10/headphones/archive/v0.3.2.tar.gz"
-  sha1 "61653a41af9d4aed61d1cd0efb9e4a56ae32451a"
+  url "https://github.com/rembo10/headphones/archive/v0.3.4.tar.gz"
+  sha1 "cb3ad48720e79ac1f6e00017e984c190812fb5ee"
 
   resource "Markdown" do
     url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.4.tar.gz"
