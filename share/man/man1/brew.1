@@ -369,6 +369,18 @@ Remove symlinks for \fIformula\fR from the Homebrew prefix\. This can be useful 
 Removes links created by \fBbrew linkapps\fR\.
 .
 .TP
+\fBunpack [\-\-git|\-\-patch] [\-\-destdir=<path>]\fR \fIformulae\fR:
+.
+.IP
+Unpack the source files for \fIformulae\fR into subdirectories of the current working directory\. If \fB\-\-destdir=<path>\fR is given, the subdirectories will be created in the directory named by \fB<path>\fR instead\.
+.
+.IP
+If \fB\-\-patch\fR is passed, patches for \fIformulae\fR will be applied to the unpacked source\.
+.
+.IP
+If \fB\-\-git\fR is passed, a Git repository will be initalized in the unpacked source\. This is useful for creating patches for the software\.
+.
+.TP
 \fBunpin\fR \fIformulae\fR
 Unpin \fIformulae\fR, allowing them to be upgraded by \fBbrew upgrade\fR\. See also \fBpin\fR\.
 .
