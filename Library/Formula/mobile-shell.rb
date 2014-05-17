@@ -8,8 +8,6 @@ class MobileShell < Formula
   head do
     url 'https://github.com/keithw/mosh.git'
 
-    # Needs new autoconf for correct AC_C_RESTRICT macro
-    # See: https://github.com/keithw/mosh/issues/241
     depends_on 'autoconf' => :build
     depends_on 'automake' => :build
   end
