@@ -15,9 +15,9 @@ end
 
 class Gdb < Formula
   homepage 'http://www.gnu.org/software/gdb/'
-  url 'http://ftpmirror.gnu.org/gdb/gdb-7.7.tar.bz2'
-  mirror 'http://ftp.gnu.org/gnu/gdb/gdb-7.7.tar.bz2'
-  sha1 'eefda18270b2efc8d8051ed992d91ba4e0d7207f'
+  url 'http://ftpmirror.gnu.org/gdb/gdb-7.7.1.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/gdb/gdb-7.7.1.tar.gz'
+  sha1 'bb49bdb5781ea62ccdc2ec6869872e1b43168572'
 
   depends_on 'readline'
   if build.include? 'with-brewed-python'
