@@ -32,7 +32,7 @@ class Mpich2 < Formula
     if build.head?
       # ensure that the consistent set of autotools built by homebrew is used to
       # build MPICH, otherwise very bizarre build errors can occur
-      ENV['MPICH_AUTOTOOLS_DIR'] = (HOMEBREW_PREFIX+'bin')
+      ENV['MPICH_AUTOTOOLS_DIR'] = HOMEBREW_PREFIX+'bin'
       system "./autogen.sh"
     end
 
