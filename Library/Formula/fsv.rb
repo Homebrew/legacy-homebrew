@@ -2,7 +2,8 @@ require "formula"
 
 class Fsv < Formula
   homepage "http://fsv.sourceforge.net/"
-  url "https://github.com/mcuelenaere/fsv.git", :tag => "v0.9.1"
+  url "https://github.com/mcuelenaere/fsv.git", :tag => "fsv-0.9-1"
+  version "0.9.1"
 
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
