@@ -5,12 +5,10 @@ class Fuse4x < Formula
   url 'https://github.com/fuse4x/fuse/archive/fuse4x_0_9_2.tar.gz'
   sha1 '3a9700f716eff930dcd2426772c642a09adcc73a'
 
-  # Always use newer versions of these tools
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
-
-  depends_on 'gettext'
+  depends_on 'gettext' => :build
   depends_on 'fuse4x-kext'
 
   conflicts_with 'osxfuse', :because => 'both install `fuse.pc`'
@@ -19,7 +17,6 @@ class Fuse4x < Formula
     # Build universal if the hardware can handle it---otherwise 32 bit only
     MacOS.prefer_64_bit? ? ENV.universal_binary : ENV.m32
 
-    inreplace 'configure.in', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
     inreplace 'makeconf.sh', 'libtoolize', 'glibtoolize'
     system './makeconf.sh'
 
