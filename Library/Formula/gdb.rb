@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class UniversalBrewedPython < Requirement
   satisfy { archs_for_command("python").universal? }
@@ -14,18 +14,19 @@ class UniversalBrewedPython < Requirement
 end
 
 class Gdb < Formula
-  homepage 'http://www.gnu.org/software/gdb/'
-  url 'http://ftpmirror.gnu.org/gdb/gdb-7.7.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/gdb/gdb-7.7.1.tar.gz'
-  sha1 'bb49bdb5781ea62ccdc2ec6869872e1b43168572'
+  homepage "http://www.gnu.org/software/gdb/"
+  url "http://ftpmirror.gnu.org/gdb/gdb-7.7.1.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/gdb/gdb-7.7.1.tar.gz"
+  sha1 "bb49bdb5781ea62ccdc2ec6869872e1b43168572"
 
-  depends_on 'readline'
-  if build.include? 'with-brewed-python'
+  depends_on "readline"
+
+  if build.with? "brewed-python"
     depends_on UniversalBrewedPython
   end
 
-  option 'with-brewed-python', 'Use the Homebrew version of Python'
-  option 'with-version-suffix', 'Add a version suffix to program'
+  option "with-brewed-python", "Use the Homebrew version of Python"
+  option "with-version-suffix", "Add a version suffix to program"
 
   def install
     args = [
@@ -35,13 +36,13 @@ class Gdb < Formula
       "--with-system-readline"
     ]
 
-    if build.include? 'with-brewed-python'
+    if build.with? "brewed-python"
       args << "--with-python=#{HOMEBREW_PREFIX}"
     else
       args << "--with-python=/usr"
     end
 
-    if build.include? 'with-version-suffix'
+    if build.with? "version-suffix"
       args << "--program-suffix=-#{version.to_s.slice(/^\d/)}"
     end
 
@@ -52,10 +53,10 @@ class Gdb < Formula
     # Remove conflicting items with binutils
     rm_rf include
     rm_rf lib
-    rm_rf share/'locale'
+    rm_rf share/"locale"
 
     # Conflicts with other GNU packages
-    rm_f info/'standards.info'
+    rm_f info/"standards.info"
   end
 
   def caveats; <<-EOS.undent
