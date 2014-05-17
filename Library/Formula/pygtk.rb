@@ -27,5 +27,6 @@ class Pygtk < Formula
     # pygtk to pygobject. But our pkgfiles point into the cellar and in the
     # pygtk-cellar there is no pygobject.
     inreplace lib/'pkgconfig/pygtk-2.0.pc', 'codegendir=${datadir}/pygobject/2.0/codegen', "codegendir=#{HOMEBREW_PREFIX}/share/pygobject/2.0/codegen"
+    inreplace bin/"pygtk-codegen-2.0", "exec_prefix=${prefix}", "exec_prefix=#{HOMEBREW_PREFIX}"
   end
 end
