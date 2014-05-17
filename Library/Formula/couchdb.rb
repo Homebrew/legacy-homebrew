@@ -8,13 +8,12 @@ class Couchdb < Formula
   head do
     url 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 
-    depends_on :automake => :build
-    depends_on :libtool => :build
-    # CouchDB >=1.3.0 requires autoconf 2.63 or higher
-    depends_on 'autoconf' => :build
-    depends_on 'autoconf-archive' => :build
-    depends_on 'pkg-config' => :build
-    depends_on 'help2man' => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "autoconf-archive" => :build
+    depends_on "pkg-config" => :build
+    depends_on "help2man" => :build
   end
 
   depends_on 'spidermonkey'

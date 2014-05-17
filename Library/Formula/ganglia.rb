@@ -7,7 +7,7 @@ class Ganglia < Formula
 
   conflicts_with 'coreutils', :because => 'both install `gstat` binaries'
 
-  depends_on 'pkg-config' => :build # to find APR
+  depends_on 'pkg-config' => :build
   depends_on 'confuse'
   depends_on 'pcre'
   depends_on 'rrdtool'

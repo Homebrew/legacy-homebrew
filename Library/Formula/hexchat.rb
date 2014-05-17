@@ -17,7 +17,7 @@ class Hexchat < Formula
   depends_on 'automake' => :build
   depends_on 'autoconf' => :build
   depends_on 'libtool' => :build
-  depends_on :python => :recommended
+  depends_on :python => :optional
   depends_on 'gettext'
   depends_on 'gtk+'
   depends_on :x11

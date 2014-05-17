@@ -12,7 +12,6 @@ class Automake < Formula
     sha1 '12d0d7d3b6d31ea4faf9551076225343e9a5af1f' => :lion
   end
 
-  # Always needs a newer autoconf, even on Snow Leopard.
   depends_on 'autoconf' => :run
 
   keg_only :provided_until_xcode43

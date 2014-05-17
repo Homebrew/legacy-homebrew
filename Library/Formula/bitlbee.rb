@@ -19,8 +19,8 @@ class Bitlbee < Formula
   if build.with? "libotr"
     # Head versions of bitlbee support otr4, but there is no release yet.
     patch do
-      url "http://patch-tracker.debian.org/patch/nondebian/dl/bitlbee/3.2.1+otr4-1"
-      sha1 "04d0f58faa58d1702994e84a3d8177451b0d1ad8"
+      url "http://ftp.de.debian.org/debian/pool/main/b/bitlbee/bitlbee_3.2.1+otr4-1.diff.gz"
+      sha1 "a05af5ec8912f85b876f90e75a78dc4f98917ead"
     end
   end
 

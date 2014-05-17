@@ -73,7 +73,7 @@ class Fftw < Formula
       }
     TEST_SCRIPT
 
-    system ENV.cc, '-o', 'fftw', 'fftw.c', '-lfftw3', *ENV.cflags.split
+    system ENV.cc, '-o', 'fftw', 'fftw.c', '-lfftw3', *ENV.cflags.to_s.split
     system './fftw'
   end
 end

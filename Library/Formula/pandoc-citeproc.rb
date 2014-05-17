@@ -5,18 +5,19 @@ class PandocCiteproc < Formula
   include Language::Haskell::Cabal
 
   homepage "https://github.com/jgm/pandoc-citeproc"
-  url "http://hackage.haskell.org/package/pandoc-citeproc-0.3.0.1/pandoc-citeproc-0.3.0.1.tar.gz"
-  sha1 "958309f9996d563ffba0bd4870bb7f201aac08e8"
+  url "http://hackage.haskell.org/package/pandoc-citeproc-0.3.1/pandoc-citeproc-0.3.1.tar.gz"
+  sha1 "b972020fd6fa8447854b14d786c289062989b722"
 
   bottle do
-    sha1 "e94a82ea226531abb6be5da81305f6f71e55a92e" => :mavericks
-    sha1 "123132215cb70fb6b7253d6cf26d43e463385a79" => :mountain_lion
-    sha1 "58092e747a0ce49b2975efcae3ec7b643225863a" => :lion
+    sha1 "c0beedd544aec204c40dcfcba0dec84751d433c8" => :mavericks
+    sha1 "a11a9d0582ec890c1180e70b66e8813af43e178d" => :mountain_lion
+    sha1 "7f146210e98d3bbc425bba71e7d09787fb640328" => :lion
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "gmp"
+  depends_on "pandoc" => :recommended
 
   def install
     cabal_sandbox do
