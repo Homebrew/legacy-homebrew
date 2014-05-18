@@ -71,14 +71,6 @@ module SharedEnvExtension
     end if value
   end
 
-  def cc= val
-    self['CC'] = self['OBJC'] = val.to_s
-  end
-
-  def cxx= val
-    self['CXX'] = self['OBJCXX'] = val.to_s
-  end
-
   def cc;       self['CC'];           end
   def cxx;      self['CXX'];          end
   def cflags;   self['CFLAGS'];       end
@@ -243,4 +235,14 @@ module SharedEnvExtension
   end
 
   def permit_arch_flags; end
+
+  private
+
+  def cc= val
+    self["CC"] = self["OBJC"] = val.to_s
+  end
+
+  def cxx= val
+    self["CXX"] = self["OBJCXX"] = val.to_s
+  end
 end
