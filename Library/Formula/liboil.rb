@@ -11,6 +11,7 @@ class Liboil < Formula
   depends_on "libtool" => :build
 
   def install
+    ENV.append "CFLAGS", "-fheinous-gnu-extensions" if ENV.compiler == :clang
     system "autoreconf", "-fvi"
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
