@@ -200,7 +200,7 @@ end
 
 if MacOS.version >= "10.9"
   def check_for_installed_developer_tools
-    unless MacOS::CLT.installed? then <<-EOS.undent
+    unless MacOS::Xcode.installed? || MacOS::CLT.installed? then <<-EOS.undent
       No developer tools installed.
       Install the Command Line Tools:
         xcode-select --install
