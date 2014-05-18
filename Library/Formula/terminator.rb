@@ -26,7 +26,7 @@ class Terminator < Formula
   end
 
   test do
-    system "#{bin}/terminator", "-e", "'echo hello'"
+    system "#{bin}/terminator", "-e", "'echo hello world'"
   end
 end
 
