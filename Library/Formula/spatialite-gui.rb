@@ -5,6 +5,13 @@ class SpatialiteGui < Formula
   url "http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.7.1.tar.gz"
   sha1 "3b9d88e84ffa5a4f913cf74b098532c2cd15398f"
 
+  bottle do
+    cellar :any
+    sha1 "1f019ce79d57046a567afd1484e8fdbe7001cca3" => :mavericks
+    sha1 "d52e624032235d6ce031d8152208c9c6c87a6130" => :mountain_lion
+    sha1 "9c31c7bf545be963975e729420b6706c4f5b8a88" => :lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "freexl"
   depends_on "geos"
