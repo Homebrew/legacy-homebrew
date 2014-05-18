@@ -49,11 +49,7 @@ module Homebrew extend self
            ARGV.formulae
          end
     json = ff.map {|f| f.to_hash}
-    if json.size == 1
-      puts Utils::JSON.dump(json.pop)
-    else
-      puts Utils::JSON.dump(json)
-    end
+    puts Utils::JSON.dump(json)
   end
 
   def github_fork

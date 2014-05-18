@@ -160,16 +160,15 @@ Note that these flags should only appear after a command.
 
     To view formula history locally: `brew log -p <formula>`.
 
-  * `info --json=<version>` (--all|--installed|<formula>):
-    Print a JSON representation of <formula>. Currently the only accepted value
+  * `info --json=<version>` (--all|--installed|<formulae>):
+    Print a JSON representation of <formulae>. Currently the only accepted value
     for <version> is `v1`.
 
     Pass `--all` to get information on all formulae, or `--installed` to get
     information on all installed formulae.
 
-    If a single formula is specified, a single JSON object is displayed.
-    If multiple formulae are specified, or `--installed` or `--all` are used,
-    a JSON array is displayed, even if the array would only contain one object.
+    See the wiki for examples of using the JSON:
+    <https://github.com/Homebrew/homebrew/wiki/Querying-Brew>
 
   * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
