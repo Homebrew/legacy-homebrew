@@ -10,7 +10,7 @@ class SpatialiteGui < Formula
     # Compatibility fix for wxWidgets 2.9.x. Remove on next release.
     patch :p0 do
       url "https://www.gaia-gis.it/fossil/spatialite_gui/vpatch?from=d8416d26358a24dc&to=b5b920d8d654dd0e"
-      sha1 "09d2cd521370e00ab21133902db7a44f1eef30e4"
+      sha1 "77a1237b96aca4fd10607d6956dc56261a6d9bc6"
     end
   end
 
