@@ -26,14 +26,14 @@ end
 LOGGER = Logger.new
 
 class Cmd
-  attr_reader :brewfix, :brewtmp, :sdkroot
+  attr_reader :brewfix, :brewtmp, :sysroot
 
   def initialize path, args
     @arg0 = File.basename(path).freeze
     @args = args.freeze
     @brewfix = ENV['HOMEBREW_PREFIX']
     @brewtmp = ENV['HOMEBREW_TEMP']
-    @sdkroot = ENV['HOMEBREW_SDKROOT']
+    @sysroot = ENV['HOMEBREW_SYSROOT']
   end
 
   def mode
@@ -89,11 +89,11 @@ class Cmd
       args = refurbished_args
     end
 
-    if sdkroot
+    if sysroot
       if tool == "ld"
-        args << "-syslibroot" << sdkroot
+        args << "-syslibroot" << sysroot
       else
-        args << "--sysroot=#{sdkroot}"
+        args << "--sysroot=#{sysroot}"
       end
     end
 
@@ -118,8 +118,8 @@ class Cmd
   end
 
   def refurbished_args
-    @lset = Set.new(libpath + syslibpath)
-    @iset = Set.new(cpath.flatten)
+    @lset = Set.new(library_paths + system_library_paths)
+    @iset = Set.new(isystem_paths + include_paths)
 
     args = []
     enum = @args.each
@@ -241,40 +241,12 @@ class Cmd
     ENV["HOMEBREW_ARCHFLAGS"].split(" ")
   end
 
-  def syspath
-    if sdkroot
-      %W{#{sdkroot}/usr /usr/local}
-    else
-      %W{/usr /usr/local}
-    end
-  end
-
-  def syslibpath
-    # We reject brew's lib as we explicitly add this as a -L flag, thus it
-    # is given higher priority by cc, so it surpasses the system libpath.
-    # NOTE this only counts if Homebrew is installed at /usr/local
-    syspath.reject { |d| d == brewfix }.map! { |d| File.join(d, "lib") }
-  end
-
-  # Paths added as "-isystem<path>" and "-I<path>" flags
-  def cpath
-    cpath  = path_split("CMAKE_PREFIX_PATH").map! { |d| File.join(d, "include") }
-    cpath += path_split("CMAKE_INCLUDE_PATH")
-    opt = cpath.grep(%r{^#{Regexp.escape(brewfix)}/opt}o)
-    sys = cpath - opt
-    [sys, opt]
-  end
-
-  # Paths added as "-L<path>" flags
-  def libpath
-    libpath  = path_split("CMAKE_PREFIX_PATH").map! { |d| File.join(d, "lib") }
-    libpath += path_split("CMAKE_LIBRARY_PATH")
-    libpath -= syslibpath
-    libpath
+  def cppflags
+    path_flags("-isystem", isystem_paths) + path_flags("-I", include_paths)
   end
 
   def ldflags
-    args = path_flags("-L", libpath)
+    args = path_flags("-L", library_paths)
     case mode
     when :ld
       args << "-headerpad_max_install_names"
@@ -284,12 +256,20 @@ class Cmd
     args
   end
 
-  # Keg-only opt paths get the "-I" treatment since it has higher priority than
-  # "-isystem", and we want them to be searched before system directories as
-  # well as any directories added by the build system.
-  def cppflags
-    sys, opt = cpath
-    path_flags("-isystem", sys) + path_flags("-I", opt)
+  def isystem_paths
+    path_split("HOMEBREW_ISYSTEM_PATHS")
+  end
+
+  def include_paths
+    path_split("HOMEBREW_INCLUDE_PATHS")
+  end
+
+  def library_paths
+    path_split("HOMEBREW_LIBRARY_PATHS")
+  end
+
+  def system_library_paths
+    %W{#{sysroot}/usr/lib /usr/local/lib}
   end
 
   def make_fuss args
