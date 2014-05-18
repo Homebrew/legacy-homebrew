@@ -92,7 +92,9 @@ module SharedEnvExtension
   def compiler
     @compiler ||= if (cc = ARGV.cc)
       COMPILER_SYMBOL_MAP.fetch(cc) do |other|
-        if other =~ GNU_GCC_REGEXP then other
+        case other
+        when GNU_GCC_REGEXP
+          other
         else
           raise "Invalid value for --cc: #{other}"
         end
