@@ -28,6 +28,7 @@ class Tor < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
                           "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"
     system "make install"
 
