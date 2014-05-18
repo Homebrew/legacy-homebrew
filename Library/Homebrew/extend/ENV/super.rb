@@ -72,7 +72,7 @@ module Superenv
 
     # On 10.9 the developer tools honor the correct sysroot by default.
     # On 10.7 and 10.8 we need to set it ourselves.
-    if MacOS::Xcode.without_clt? && MacOS.version <= "10.8"
+    if MacOS::Xcode.without_clt? && (MacOS.version <= "10.8" || compiler != :clang)
       self["HOMEBREW_SYSROOT"] = effective_sysroot
     end
 
