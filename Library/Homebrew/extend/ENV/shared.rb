@@ -113,7 +113,7 @@ module SharedEnvExtension
   # an alternate compiler, altering the value of environment variables.
   # If no valid compiler is found, raises an exception.
   def validate_cc!(formula)
-    if formula.fails_with? ENV.compiler
+    if formula.fails_with? compiler
       send CompilerSelector.new(formula).compiler
     end
   end
