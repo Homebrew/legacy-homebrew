@@ -5,6 +5,9 @@ class SpatialiteGui < Formula
   url "http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.7.1.tar.gz"
   sha1 "3b9d88e84ffa5a4f913cf74b098532c2cd15398f"
 
+  bottle
+  do
+
   depends_on "pkg-config" => :build
   depends_on "freexl"
   depends_on "geos"
