@@ -370,6 +370,17 @@ _brew_uninstall ()
     __brew_complete_installed
 }
 
+_brew_unpack ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--git --patch --destdir="
+        return
+        ;;
+    esac
+    __brew_complete_formulae
+}
 _brew_update ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -520,6 +531,7 @@ _brew ()
     switch)                     _brew_switch ;;
     tap)                        _brew_complete_tap ;;
     uninstall|remove|rm)        _brew_uninstall ;;
+    unpack)                     _brew_unpack ;;
     unpin)                      __brew_complete_formulae ;;
     untap)                      __brew_complete_tapped ;;
     update)                     _brew_update ;;

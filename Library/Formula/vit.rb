@@ -2,9 +2,9 @@ require "formula"
 
 class Vit < Formula
   homepage "http://taskwarrior.org/news/news.20140406.html"
+  head "https://git.tasktools.org/scm/ex/vit.git"
   url "http://taskwarrior.org/download/vit-1.2.tar.gz"
   sha1 "46ed3f9ff81112a2e28675720616568098a69cfa"
-  head "https://git.tasktools.org/scm/ex/vit.git"
 
   depends_on "task"
 
@@ -30,6 +30,5 @@ class Vit < Formula
     man5.install "vitrc.5"
     etc.install "commands" => "vit-commands"
     bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
-
   end
 end
