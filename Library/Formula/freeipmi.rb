@@ -6,9 +6,9 @@ class Freeipmi < Formula
   sha1 "83d5f54ba98874e3e26c3b4d9ceaf48894667eef"
 
   bottle do
-    sha1 "b98405e8318c8dd990f598b769d1e6a155e3c2a3" => :mavericks
-    sha1 "15d32bf5d1f7f54240fba3012b2222ae1e70e209" => :mountain_lion
-    sha1 "695a73d4e94af49e9a02bf103d16a3e5aa194a51" => :lion
+    sha1 "1ac5427faba16ce4beafbc447c068d37cf9c3493" => :mavericks
+    sha1 "0503402e0b8ed546db82808852396afbbd29e37b" => :mountain_lion
+    sha1 "94f888c548f17d7a3e06397353a4e768f1b20b8a" => :lion
   end
 
   depends_on "argp-standalone"
