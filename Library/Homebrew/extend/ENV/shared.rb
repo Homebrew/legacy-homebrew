@@ -101,8 +101,8 @@ module SharedEnvExtension
       :llvm
     elsif ARGV.include? '--use-clang'
       :clang
-    elsif self['HOMEBREW_CC']
-      cc = COMPILER_ALIASES.fetch(self['HOMEBREW_CC'], self['HOMEBREW_CC'])
+    elsif homebrew_cc
+      cc = COMPILER_ALIASES.fetch(homebrew_cc, homebrew_cc)
       COMPILER_SYMBOL_MAP.fetch(cc) { MacOS.default_compiler }
     else
       MacOS.default_compiler
@@ -244,5 +244,9 @@ module SharedEnvExtension
 
   def cxx= val
     self["CXX"] = self["OBJCXX"] = val.to_s
+  end
+
+  def homebrew_cc
+    self["HOMEBREW_CC"]
   end
 end
