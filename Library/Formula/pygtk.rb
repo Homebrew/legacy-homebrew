@@ -35,3 +35,4 @@ class Pygtk < Formula
     system "#{bin}/pygtk-codegen-2.0", "codegen.def"
   end
 end
+
