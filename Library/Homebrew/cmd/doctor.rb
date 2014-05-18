@@ -980,7 +980,6 @@ end
 
 def check_for_bad_python_symlink
   return unless which "python"
-  # Indeed Python -V outputs to stderr (WTF?)
   `python -V 2>&1` =~ /Python (\d+)\./
   # This won't be the right warning if we matched nothing at all
   return if $1.nil?
