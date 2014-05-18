@@ -15,10 +15,17 @@ class YoutubeDl < Formula
     sha1 "dd26274166e03a674fc96b1cb37fb7023d119cda" => :lion
   end
 
+  head do
+    url "https://github.com/rg3/youtube-dl.git"
+    depends_on "pandoc" => :build
+  end
+
   depends_on "rtmpdump" => :optional
 
   def install
-    system "make", "youtube-dl", "PREFIX=#{prefix}"
+    # Remove the legacy executable from the git repo
+    rm "youtube-dl" if build.head?
+    system "make", "PREFIX=#{prefix}"
     bin.install "youtube-dl"
     man1.install "youtube-dl.1"
     bash_completion.install "youtube-dl.bash-completion"
