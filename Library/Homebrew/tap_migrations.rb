@@ -43,6 +43,7 @@ TAP_MIGRATIONS = {
   "solfege" => "homebrew/boneyard",
   "storm" => "homebrew/boneyard",
   "syslog-ng" => "homebrew/boneyard",
+  "tetgen" => "homebrew/science",
   "urweb" => "homebrew/boneyard",
   "wkhtmltopdf" => "homebrew/boneyard",
 }
