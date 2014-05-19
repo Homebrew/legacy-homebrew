@@ -5,6 +5,12 @@ class Poppler < Formula
   url 'http://poppler.freedesktop.org/poppler-0.26.0.tar.xz'
   sha1 '1f5d08ee01683c309688f17116d18bf47b13f001'
 
+  bottle do
+    sha1 "266855dfb3dbaf1ecd50a28ce000c2719af9d2b1" => :mavericks
+    sha1 "b3cef792ec68318ab72efdd164c3ac15b6bddad2" => :mountain_lion
+    sha1 "81086aef4e55bf603c77c161e1016ea7e859a457" => :lion
+  end
+
   option 'with-qt4', 'Build Qt backend'
   option 'with-lcms2', 'Use color management system'
 
