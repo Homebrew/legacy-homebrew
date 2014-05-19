@@ -29,7 +29,6 @@ class Mongodb < Formula
   def install
     args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
 
-    cxx = ENV.cxx
     if ENV.compiler == :clang && MacOS.version >= :mavericks
       # when building on Mavericks with libc++
       # Use --osx-version-min=10.9 such that the compiler defaults to libc++.
@@ -40,7 +39,7 @@ class Mongodb < Formula
 
     args << '--64' if MacOS.prefer_64_bit?
     args << "--cc=#{ENV.cc}"
-    args << "--cxx=#{cxx}"
+    args << "--cxx=#{ENV.cxx}"
 
     # --full installs development headers and client library, not just binaries
     # (only supported pre-2.7)
