@@ -18,7 +18,7 @@ class PdfTools < Formula
   depends_on :libtool
 
   depends_on "cairo"
-  depends_on "poppler" => "with-glib"
+  depends_on "poppler"
 
   def install
     ENV['zlib_CFLAGS'] = '-I/usr/include'

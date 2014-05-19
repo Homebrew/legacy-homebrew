@@ -5,24 +5,19 @@ class Liboil < Formula
   url 'http://liboil.freedesktop.org/download/liboil-0.3.17.tar.gz'
   sha1 'f9d7103a3a4a4089f56197f81871ae9129d229ed'
 
-  depends_on 'pkg-config' => :build
-
-  patch :p0 do
-    url "https://trac.macports.org/export/89276/trunk/dports/devel/liboil/files/patch-liboil_liboilcpu-x86.c.diff"
-    sha1 "6e5043b0f493533a824ea251296e8a8d390a3eb5"
-  end
-
-  patch :p0 do
-    url "https://trac.macports.org/export/89276/trunk/dports/devel/liboil/files/host_cpu.diff"
-    sha1 "08a0021cca90be8394d7ed5fe0e61d6f25618193"
-  end
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
-    arch = Hardware.is_64_bit? ? 'x64_64' : 'i386'
-    inreplace "configure", "__HOST_CPU__", arch
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
+    ENV.append "CFLAGS", "-fheinous-gnu-extensions" if ENV.compiler == :clang
+    system "autoreconf", "-fvi"
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do
@@ -37,5 +32,4 @@ class Liboil < Formula
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
-
 end
