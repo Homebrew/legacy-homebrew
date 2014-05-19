@@ -27,4 +27,8 @@ class Liblas < Formula
       system "make install"
     end
   end
+
+  def test
+    system bin/"liblas-config", "--version"
+  end
 end
