@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Iperf3 < Formula
-  homepage 'https://github.com/esnet/iperf'
-  url 'https://github.com/esnet/iperf/archive/3.0.2.tar.gz'
-  sha1 '3dacb887d4ba1b90c9fbb3ec2ae69389d40c01c8'
-  head 'https://code.google.com/p/iperf/', :using => :hg
+  homepage "https://github.com/esnet/iperf"
+  url "https://github.com/esnet/iperf/archive/3.0.3.tar.gz"
+  sha1 "1461028a6827ed1557cd60f15e11f9b817ea590f"
+  head "https://code.google.com/p/iperf/", :using => :hg
 
   bottle do
     cellar :any
