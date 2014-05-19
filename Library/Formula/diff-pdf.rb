@@ -11,7 +11,7 @@ class DiffPdf < Formula
   depends_on :x11
   depends_on "wxmac"
   depends_on "cairo"
-  depends_on "poppler" => "with-glib"
+  depends_on "poppler"
 
   def install
     system "./bootstrap"
