@@ -14,6 +14,7 @@ class Poppler < Formula
   depends_on 'freetype'
   depends_on 'gettext'
   depends_on 'glib'
+  depends_on 'gobject-introspection'
   depends_on 'jpeg'
   depends_on 'libpng'
   depends_on 'libtiff'
@@ -39,6 +40,7 @@ class Poppler < Formula
       --enable-xpdf-headers
       --enable-poppler-glib
       --disable-gtk-test
+      --enable-introspection=yes
     ]
 
     if build.with? "qt4"
