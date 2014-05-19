@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class JsonC < Formula
-  homepage 'https://github.com/json-c/json-c/wiki'
-  url 'https://github.com/json-c/json-c/archive/json-c-0.11-20130402.tar.gz'
-  version '0.11'
-  sha1 '1910e10ea57a743ec576688700df4a0cabbe64ba'
+  homepage "https://github.com/json-c/json-c/wiki"
+  url "https://github.com/json-c/json-c/archive/json-c-0.12-20140410.tar.gz"
+  version "0.12"
+  sha1 "b33872f8b2837c7909e9bd8734855669c57a67ce"
 
   bottle do
     cellar :any
