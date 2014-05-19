@@ -33,17 +33,21 @@ class Poppler < Formula
   end
 
   def install
-    if build.with? 'qt4'
-      ENV['POPPLER_QT4_CFLAGS'] = `#{HOMEBREW_PREFIX}/bin/pkg-config QtCore QtGui --libs`.chomp
-      ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-xpdf-headers
+      --enable-poppler-glib
+      --disable-gtk-test
+    ]
+
+    if build.with? "qt4"
+      args << "--enable-poppler-qt4"
+    else
+      args << "--disable-poppler-qt4"
     end
 
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-xpdf-headers",
-            "--enable-poppler-glib"]
-    # Explicitly disable Qt if not requested because `POPPLER_QT4_CFLAGS` won't
-    # be set and the build will fail.
-    args << ( build.with?('qt4') ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
-    args << ( build.with?('lcms2') ? '--enable-cms=lcms2' : '' )
+    args << "--enable-cms=lcms2" if build.with? "lcms2"
 
     system "./configure", *args
     system "make install"
