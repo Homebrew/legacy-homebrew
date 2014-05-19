@@ -24,20 +24,23 @@ class JohnJumbo < Formula
 
   def install
     ENV.deparallelize
-    arch = MacOS.prefer_64_bit? ? '64' : 'sse2'
-    arch += '-opencl'
-
+    arch = MacOS.prefer_64_bit? ? "64-opencl" : "sse2-opencl"
     target = "macosx-x86-#{arch}"
 
-    cd 'src' do
-      inreplace 'Makefile' do |s|
-        s.change_make_var! "CC", ENV.cc
-        if MacOS.version > :leopard && ENV.compiler != :clang
-          s.change_make_var! "OMPFLAGS", "-fopenmp -msse2 -D_FORTIFY_SOURCE=0"
-        end
+    args = %W[-C src clean CC=#{ENV.cc} #{target}]
+
+    if MacOS.version >= :snow_leopard
+      case ENV.compiler
+      when :clang
+        # no openmp support
+      when :gcc, :llvm
+        args << "OMPFLAGS=-fopenmp -msse2 -D_FORTIFY_SOURCE=0"
+      else
+        args << "OMPFLAGS=-fopenmp -msse2"
       end
-      system "make", "clean", target
     end
+
+    system "make", *args
 
     # Remove the README symlink and install the real file
     rm 'README'
