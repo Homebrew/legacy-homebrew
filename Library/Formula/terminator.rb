@@ -24,10 +24,6 @@ class Terminator < Formula
     system "python", "setup.py", "install", "--prefix=#{prefix}"
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
-
-  test do
-    system "#{bin}/terminator", "-e", "'echo hello world'"
-  end
 end
 
 __END__
