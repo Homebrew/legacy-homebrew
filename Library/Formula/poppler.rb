@@ -9,12 +9,15 @@ class Poppler < Formula
   option 'with-lcms2', 'Use color management system'
 
   depends_on 'pkg-config' => :build
-
-  depends_on 'libpng'
-  depends_on 'fontconfig'
-  depends_on 'openjpeg'
-  depends_on 'glib'
   depends_on 'cairo'
+  depends_on 'fontconfig'
+  depends_on 'freetype'
+  depends_on 'gettext'
+  depends_on 'glib'
+  depends_on 'jpeg'
+  depends_on 'libpng'
+  depends_on 'libtiff'
+  depends_on 'openjpeg'
 
   depends_on 'qt' if build.with? 'qt4'
   depends_on 'little-cms2' if build.with? 'lcms2'
