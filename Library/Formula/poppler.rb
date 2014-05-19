@@ -6,7 +6,6 @@ class Poppler < Formula
   sha1 '1f5d08ee01683c309688f17116d18bf47b13f001'
 
   option 'with-qt4', 'Build Qt backend'
-  option 'with-glib', 'Build Glib backend' # requires cairo
   option 'with-lcms2', 'Use color management system'
 
   depends_on 'pkg-config' => :build
@@ -14,11 +13,11 @@ class Poppler < Formula
   depends_on 'libpng'
   depends_on 'fontconfig'
   depends_on 'openjpeg'
+  depends_on 'glib'
+  depends_on 'cairo'
 
   depends_on 'qt' if build.with? 'qt4'
-  depends_on 'glib' => :optional
   depends_on 'little-cms2' if build.with? 'lcms2'
-  depends_on 'cairo' if build.with? 'glib'
 
   conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
 
@@ -36,16 +35,11 @@ class Poppler < Formula
       ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
     end
 
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-xpdf-headers"]
+    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-xpdf-headers",
+            "--enable-poppler-glib"]
     # Explicitly disable Qt if not requested because `POPPLER_QT4_CFLAGS` won't
     # be set and the build will fail.
-    #
-    # Also, explicitly disable Glib as Poppler will find it and set up to
-    # build, but Superenv will have stripped the Glib utilities out of the
-    # PATH.
     args << ( build.with?('qt4') ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
-    args << ( build.with?('glib') ? '--enable-poppler-glib' : '--disable-poppler-glib' )
-    args << ( build.with?('glib') ? '' : '--disable-cairo-output' )
     args << ( build.with?('lcms2') ? '--enable-cms=lcms2' : '' )
 
     system "./configure", *args
