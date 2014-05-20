@@ -49,14 +49,6 @@ def blacklisted? name
     Installing gmock system-wide is not recommended; it should be vendored
     in your projects that use it.
     EOS
-  when 'gcc' then <<-EOS.undent
-    GCC is now maintained in homebrew-versions, with major version
-    number in formula name as suffix. Please tap using:
-
-        brew tap homebrew/versions
-
-    and then install GCC based on its version, e.g., 'brew install gcc47'.
-    EOS
   when 'sshpass' then <<-EOS.undent
     We won't add sshpass because it makes it too easy for novice SSH users to
     ruin SSH's security.
@@ -82,6 +74,10 @@ def blacklisted? name
   when 'osmium' then <<-EOS.undent
     The creator of Osmium requests that it not be packaged and that people
     use the GitHub master branch instead.
+    EOS
+  when 'gfortran' then <<-EOS.undent
+    GNU Fortran is now provided as part of GCC, and can be installed with:
+      brew install gcc
     EOS
   end
 end

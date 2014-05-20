@@ -42,9 +42,24 @@ class Mediatomb < Formula
     sha1 "7f4f9ef10fcbb05de95780f43bf4df9bd6563918"
   end
 
+  # Upstream patch: http://sourceforge.net/p/mediatomb/patches/35/
+  patch do
+    url "http://patch-tracker.debian.org/patch/series/dl/mediatomb/0.12.1-5/0010_fix_libmp4v2_build.patch"
+    sha1 "5b879fc1640e2283941075e555212d4b81dd8e48"
+  end
+
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+
+    if build.without? "mp4v2"
+      args << "--disable-libmp4v2"
+    end
+
+    system "./configure", *args
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent

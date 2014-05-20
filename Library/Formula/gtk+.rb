@@ -31,6 +31,7 @@ class Gtkx < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--disable-glibtest",
                           "--enable-introspection=yes",

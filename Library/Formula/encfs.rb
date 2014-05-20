@@ -40,8 +40,8 @@ class Encfs < Formula
     end
 
     # Adapt to changes in recent Xcode by making local copy of endian-ness definitions
-    system "mkdir encfs/sys"
-    system "cp \"$HOMEBREW_SDKROOT/usr/include/sys/_endian.h\" encfs/sys/endian.h"
+    mkdir "encfs/sys"
+    cp "#{MacOS.sdk_path}/usr/include/sys/_endian.h", "encfs/sys/endian.h"
 
     if build.stable?
       # Fix runtime "dyld: Symbol not found" errors

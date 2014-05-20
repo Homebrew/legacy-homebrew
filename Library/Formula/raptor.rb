@@ -2,8 +2,8 @@ require 'formula'
 
 class Raptor < Formula
   homepage 'http://librdf.org/raptor/'
-  url 'http://download.librdf.org/source/raptor2-2.0.13.tar.gz'
-  sha1 '6e9b7db17ab1b6b030e257eb2a25dee7ee2b9838'
+  url 'http://download.librdf.org/source/raptor2-2.0.14.tar.gz'
+  sha1 'f0dc155ee616aac0e5397dd659519c9d0a262f21'
 
   def install
     system "./configure", "--disable-debug",

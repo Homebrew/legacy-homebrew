@@ -113,7 +113,6 @@ class DependencyCollector
     when :fortran    then FortranDependency.new(tags)
     when :mpi        then MPIDependency.new(*tags)
     when :tex        then TeXDependency.new(tags)
-    when :clt        then CLTDependency.new(tags)
     when :arch       then ArchRequirement.new(tags)
     when :hg         then MercurialDependency.new(tags)
     # python2 is deprecated
@@ -122,6 +121,7 @@ class DependencyCollector
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     when :ant        then ant_dep(spec, tags)
+    when :clt # deprecated
     else
       raise ArgumentError, "Unsupported special dependency #{spec.inspect}"
     end

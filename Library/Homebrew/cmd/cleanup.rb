@@ -5,17 +5,35 @@ require 'bottles'
 module Homebrew extend self
 
   def cleanup
+    # individual cleanup_ methods should also check for the existence of the
+    # appropriate directories before assuming they exist
     return unless HOMEBREW_CELLAR.directory?
 
     if ARGV.named.empty?
       cleanup_cellar
       cleanup_cache
+      cleanup_logs
       unless ARGV.dry_run?
         cleanup_lockfiles
         rm_DS_Store
       end
     else
       ARGV.formulae.each { |f| cleanup_formula(f) }
+    end
+  end
+
+  def cleanup_logs
+    return unless HOMEBREW_LOGS.directory?
+    time = Time.now - 2 * 7 * 24 * 60 * 60 # two weeks
+    HOMEBREW_LOGS.subdirs.each do |dir|
+      if dir.mtime < time
+        if ARGV.dry_run?
+          puts "Would remove: #{dir}"
+        else
+          puts "Removing: #{dir}..."
+          dir.rmtree
+        end
+      end
     end
   end
 

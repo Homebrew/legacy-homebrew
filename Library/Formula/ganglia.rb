@@ -7,7 +7,7 @@ class Ganglia < Formula
 
   conflicts_with 'coreutils', :because => 'both install `gstat` binaries'
 
-  depends_on 'pkg-config' => :build # to find APR
+  depends_on 'pkg-config' => :build
   depends_on 'confuse'
   depends_on 'pcre'
   depends_on 'rrdtool'
@@ -20,20 +20,23 @@ class Ganglia < Formula
   end
 
   def install
+    inreplace "configure", %{varstatedir="/var/lib"}, %{varstatedir="#{var}/lib"}
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--sbindir=#{bin}",
                           "--sysconfdir=#{etc}",
+                          "--mandir=#{man}",
                           "--with-gmetad",
-                          "--with-libpcre=#{HOMEBREW_PREFIX}"
+                          "--with-libpcre=#{Formula["pcre"].opt_prefix}"
     system "make install"
 
     # Generate the default config file
     system "#{bin}/gmond -t > #{etc}/gmond.conf" unless File.exist? "#{etc}/gmond.conf"
+  end
 
-    # Install man pages
-    man1.install Dir['mans/*']
+  def post_install
+    (var/"lib/ganglia/rrds").mkpath
   end
 
   def caveats; <<-EOS.undent

@@ -29,8 +29,6 @@ class GstPluginsBad < Formula
   depends_on 'schroedinger' => :optional
 
   def install
-    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing"
-
     args = %W[
       --prefix=#{prefix}
       --disable-apple_media
@@ -41,7 +39,7 @@ class GstPluginsBad < Formula
     ]
 
     if build.head?
-      ENV.append "NOCONFIGURE", "yes"
+      ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
     end
 

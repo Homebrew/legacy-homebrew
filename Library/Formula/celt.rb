@@ -12,7 +12,10 @@ class Celt < Formula
     cause "'make check' fails"
   end
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make check"

@@ -2,8 +2,8 @@ require 'formula'
 
 class Sipp < Formula
   homepage 'http://sipp.sourceforge.net/'
-  url "https://downloads.sourceforge.net/project/sipp/sipp/3.4/sipp-3.3.990.tar.gz"
-  sha1 "b2637cb72556595253bbdd4a68cc974c9ac1d92e"
+  url "https://github.com/SIPp/sipp/archive/v3.4.1.tar.gz"
+  sha1 "40a3a7b7549e578997a8f181e557c3cdae39474f"
 
   depends_on "openssl" => :optional
 

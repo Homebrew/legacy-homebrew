@@ -1,22 +1,29 @@
-require 'formula'
+require "formula"
 
 class Flac < Formula
-  homepage 'http://xiph.org/flac/'
-  url 'http://downloads.xiph.org/releases/flac/flac-1.3.0.tar.xz'
-  sha1 'a136e5748f8fb1e6c524c75000a765fc63bb7b1b'
+  homepage "http://xiph.org/flac/"
+  url "http://downloads.xiph.org/releases/flac/flac-1.3.0.tar.xz"
+  sha1 "a136e5748f8fb1e6c524c75000a765fc63bb7b1b"
+
+  head do
+    url "git://git.xiph.org/flac.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
-    sha1 "c317706ce41258cf009152e7cba2cd37e209c2f0" => :mavericks
-    sha1 "df67e225d0db9999de767ee4478273f5f7c1ba4a" => :mountain_lion
-    sha1 "41bca30e9f6e3a54db1af6cf510e1fd37902039c" => :lion
+    revision 2
+    sha1 "727da2e469235bc5e62a2daf6083a12672833762" => :mountain_lion
+    sha1 "085ed13b395fff327ee104ed7771ab1afdc33960" => :lion
   end
 
   option :universal
 
-  depends_on 'pkg-config' => :build
-  depends_on 'lame'
-  depends_on 'libogg' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "lame"
+  depends_on "libogg" => :optional
 
   fails_with :llvm do
     build 2326
@@ -26,15 +33,15 @@ class Flac < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    ENV.append 'CFLAGS', '-std=gnu89'
+    ENV.append "CFLAGS", "-std=gnu89"
 
-    # sadly the asm optimisations won't compile since Leopard
+    system "./autogen.sh" if build.head?
+
     args = %W[
       --disable-dependency-tracking
       --disable-debug
       --prefix=#{prefix}
       --mandir=#{man}
-      --disable-asm-optimizations
       --enable-sse
       --enable-static
     ]
@@ -43,7 +50,7 @@ class Flac < Formula
 
     system "./configure", *args
 
-    ENV['OBJ_FORMAT']='macho'
+    ENV["OBJ_FORMAT"]="macho"
 
     # adds universal flags to the generated libtool script
     inreplace "libtool" do |s|
@@ -51,14 +58,13 @@ class Flac < Formula
     end
 
     system "make install"
-    (bin/'flac2mp3').write DATA.read
+    (bin/"flac2mp3").write DATA.read
   end
 end
 
 __END__
 #!/usr/bin/env ruby
-# http://gist.github.com/gists/2998853/
-# Forked from http://gist.github.com/gists/124242
+# https://github.com/rmndk/flac2mp3
 
 filename, quality = ARGV[0], ARGV[1]
 abort "Usage: flac2mp3 FLACFILE [V2|V1|V0|320]\nDefault (and recommended) quality is V0." if filename.nil?

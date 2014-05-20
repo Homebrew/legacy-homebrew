@@ -570,7 +570,9 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def update_repo
-    unless @ref_type == :tag && has_ref?
+    # Branches always need updated. The has_ref? check will only work if a ref
+    # has been specified; if there isn't one we always want an update.
+    if @ref_type == :branch || !@ref || !has_ref?
       quiet_safe_system 'git', 'fetch', 'origin'
     end
   end

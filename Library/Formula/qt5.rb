@@ -63,8 +63,6 @@ class Qt5 < Formula
     # https://bugreports.qt-project.org/browse/QTBUG-34382
     args << "-no-xcb"
 
-    args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
-
     args << "-plugin-sql-mysql" if build.with? 'mysql'
 
     if build.with? 'd-bus'

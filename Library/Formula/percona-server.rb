@@ -2,14 +2,14 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/Percona-Server-5.6.16-64.2/source/tarball/percona-server-5.6.16-64.2.tar.gz'
-  version '5.6.16-64.2'
-  sha1 'b1b5380fe291c25b89377a8f110cf0031fce6897'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/Percona-Server-5.6.17-65.0/source/tarball/percona-server-5.6.17-65.0.tar.gz'
+  version '5.6.17-65.0'
+  sha1 '48e8a7738c5878951345df378d37712066744028'
 
   bottle do
-    sha1 "f33e6652b8c642e7bdcc187b8f21a5aa26a36e55" => :mavericks
-    sha1 "e114d13bc2a1581e280655234f617d4eca4d107c" => :mountain_lion
-    sha1 "b7a6396aa62d5f4dd51b6ef364a561931a34f3c7" => :lion
+    sha1 "54289ae378b282d66235f2af34ae6b9e4d8bb393" => :mavericks
+    sha1 "13035386e8f3560a4c9fc7893b7fb43bee14a208" => :mountain_lion
+    sha1 "1d2a2c658318a71e1bcdda451c919ba130bc5744" => :lion
   end
 
   depends_on 'cmake' => :build
@@ -28,8 +28,6 @@ class PerconaServer < Formula
     :because => "percona, mariadb, and mysql install the same binaries."
   conflicts_with 'mysql-connector-c',
     :because => 'both install MySQL client libraries'
-
-  env :std if build.universal?
 
   fails_with :llvm do
     build 2334
@@ -98,7 +96,10 @@ class PerconaServer < Formula
     args << "-DWITH_INNODB_MEMCACHED=ON" if build.with? 'memcached'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
+    if build.universal?
+      ENV.universal_binary
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'

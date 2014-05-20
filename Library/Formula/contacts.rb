@@ -9,13 +9,10 @@ class Contacts < Formula
   version '1.1a-3'
   sha1 '79526dd96e5b5297daaae6327c79de9366f94c87'
 
-  # Yes, it requires both Xcode *and* the CLT to build on 10.8 and newer;
-  # see https://github.com/Homebrew/homebrew/issues/21408
   depends_on :xcode
-  depends_on :clt if MacOS.version > :lion
 
   def install
-    system "make"
+    system "make", "SDKROOT=#{MacOS.sdk_path}"
     bin.install "build/Deployment/contacts"
     man1.install gzip("contacts.1")
   end

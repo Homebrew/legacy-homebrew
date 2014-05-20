@@ -5,20 +5,29 @@ class Poppler < Formula
   url 'http://poppler.freedesktop.org/poppler-0.26.0.tar.xz'
   sha1 '1f5d08ee01683c309688f17116d18bf47b13f001'
 
+  bottle do
+    sha1 "266855dfb3dbaf1ecd50a28ce000c2719af9d2b1" => :mavericks
+    sha1 "b3cef792ec68318ab72efdd164c3ac15b6bddad2" => :mountain_lion
+    sha1 "81086aef4e55bf603c77c161e1016ea7e859a457" => :lion
+  end
+
   option 'with-qt4', 'Build Qt backend'
-  option 'with-glib', 'Build Glib backend' # requires cairo
   option 'with-lcms2', 'Use color management system'
 
   depends_on 'pkg-config' => :build
-
-  depends_on 'libpng'
+  depends_on 'cairo'
   depends_on 'fontconfig'
+  depends_on 'freetype'
+  depends_on 'gettext'
+  depends_on 'glib'
+  depends_on 'gobject-introspection'
+  depends_on 'jpeg'
+  depends_on 'libpng'
+  depends_on 'libtiff'
   depends_on 'openjpeg'
 
   depends_on 'qt' if build.with? 'qt4'
-  depends_on 'glib' => :optional
   depends_on 'little-cms2' if build.with? 'lcms2'
-  depends_on 'cairo' if build.with? 'glib'
 
   conflicts_with 'pdftohtml', :because => 'both install `pdftohtml` binaries'
 
@@ -31,22 +40,22 @@ class Poppler < Formula
   end
 
   def install
-    if build.with? 'qt4'
-      ENV['POPPLER_QT4_CFLAGS'] = `#{HOMEBREW_PREFIX}/bin/pkg-config QtCore QtGui --libs`.chomp
-      ENV.append 'LDFLAGS', "-Wl,-F#{HOMEBREW_PREFIX}/lib"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-xpdf-headers
+      --enable-poppler-glib
+      --disable-gtk-test
+      --enable-introspection=yes
+    ]
+
+    if build.with? "qt4"
+      args << "--enable-poppler-qt4"
+    else
+      args << "--disable-poppler-qt4"
     end
 
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}", "--enable-xpdf-headers"]
-    # Explicitly disable Qt if not requested because `POPPLER_QT4_CFLAGS` won't
-    # be set and the build will fail.
-    #
-    # Also, explicitly disable Glib as Poppler will find it and set up to
-    # build, but Superenv will have stripped the Glib utilities out of the
-    # PATH.
-    args << ( build.with?('qt4') ? '--enable-poppler-qt4' : '--disable-poppler-qt4' )
-    args << ( build.with?('glib') ? '--enable-poppler-glib' : '--disable-poppler-glib' )
-    args << ( build.with?('glib') ? '' : '--disable-cairo-output' )
-    args << ( build.with?('lcms2') ? '--enable-cms=lcms2' : '' )
+    args << "--enable-cms=lcms2" if build.with? "lcms2"
 
     system "./configure", *args
     system "make install"

@@ -58,11 +58,11 @@ class GstPluginsGood < Formula
     if build.with? "x11"
       args << "--with-x"
     else
-      args << "--without-x"
+      args << "--disable-x"
     end
 
     if build.head?
-      ENV.append "NOCONFIGURE", "yes"
+      ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
     end
 
