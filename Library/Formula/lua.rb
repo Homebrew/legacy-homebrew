@@ -25,7 +25,7 @@ class Lua < Formula
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
   # See: https://github.com/Homebrew/homebrew/pull/5043
-  patch :DATA
+  patch :DATA if OS.mac?
 
   # sigaction provided by posix signalling power patch from
   # http://lua-users.org/wiki/LuaPowerPatches
@@ -65,7 +65,8 @@ class Lua < Formula
     # below that, thus making luarocks work
     (HOMEBREW_PREFIX/"lib/lua"/version.to_s.split('.')[0..1].join('.')).mkpath
 
-    system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
+    arch = if OS.mac? then "macosx" elsif OS.linux? then "linux" else "posix" end
+    system "make", arch, "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
 
     (lib+"pkgconfig").install 'etc/lua.pc'
