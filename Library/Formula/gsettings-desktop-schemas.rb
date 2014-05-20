@@ -22,8 +22,8 @@ class GsettingsDesktopSchemas < Formula
   end
 
   def post_install
-    # manual schema compile step
-    system Formula["glib"].opt_bin/"glib-compile-schemas", share/"glib-2.0/schemas"
+    # manual schema compile step; put them in HOMEBREW_PREFIX, not the cellar
+    system Formula["glib"].opt_bin/"glib-compile-schemas", HOMEBREW_PREFIX/"share/glib-2.0/schemas"
   end
 
   # Should (obviously) not segfault. See:
