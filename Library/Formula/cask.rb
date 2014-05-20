@@ -16,8 +16,8 @@ end
 
 class Cask < Formula
   homepage "http://cask.github.io/"
-  url "https://github.com/cask/cask/archive/v0.6.0.tar.gz"
-  sha1 "6f836bb41f034d6be9611ee09c78eb8cc52b53ca"
+  url "https://github.com/cask/cask/archive/v0.7.0.tar.gz"
+  sha1 "0f84c4a824bf93c0f1b207b21db820dbb4d41599"
   head "https://github.com/cask/cask.git"
 
   depends_on NewEnoughEmacs
