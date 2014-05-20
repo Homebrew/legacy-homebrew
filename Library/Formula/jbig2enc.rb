@@ -7,7 +7,7 @@ class Jbig2enc < Formula
   version '0.28'
 
   depends_on 'leptonica'
-  
+
   head do
     url 'https://github.com/agl/jbig2enc.git'
 
@@ -15,7 +15,7 @@ class Jbig2enc < Formula
     depends_on :automake
     depends_on :libtool
   end
-  
+
   stable do
       # Patch data from https://github.com/agl/jbig2enc/commit/53ce5fe7e73d7ed95c9e12b52dd4984723f865fa
       patch :DATA
