@@ -1,19 +1,19 @@
 require "formula"
 
 class Bigdata < Formula
-  homepage "http://bigdata.com/blog/"
+  homepage "http://bigdata.com/"
   url "http://bigdata.com/deploy/bigdata-1.3.0.tgz"
   sha1 "c22fa05df965019b3132161507ce0e77a4a1f6e2"
 
   def install
-    prefix.install "doc"
-    prefix.install "var"
-    prefix.install "bin"
+    prefix.install "doc", "var", "bin"
     libexec.install "lib"
 
     # Set the installation path as the root for the bin scripts:
-    inreplace "#{bin}/bigdata", "<%= BD_HOME %>", prefix
-    inreplace "#{bin}/bigdata", "<%= INSTALL_TYPE %>", "BREW"
+    inreplace "#{bin}/bigdata" do |s|
+      s.sub! "<%= BD_HOME %>", prefix
+      s.sub! "<%= INSTALL_TYPE %>", "BREW"
+    end
 
     # Set the Jetty root as the resourceBase in the jetty.xml file:
     inreplace "#{prefix}/var/jetty/etc/jetty.xml", "<%= JETTY_DIR %>", "#{prefix}/var/jetty"
