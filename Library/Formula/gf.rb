@@ -1,6 +1,7 @@
 require "formula"
+require "language/haskell"
+
 class Gf < Formula
-    homepage "http://www.grammaticalframework.org/"
 
     depends_on "haskell-platform"
 
