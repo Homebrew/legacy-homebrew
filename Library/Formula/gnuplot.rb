@@ -19,32 +19,32 @@ class Gnuplot < Formula
     depends_on :libtool
   end
 
-  option 'pdf',    'Build the PDF terminal using pdflib-lite'
-  option 'wx',     'Build the wxWidgets terminal using pango'
+  option 'with-pdf',    'Build the PDF terminal using pdflib-lite'
+  option 'with-wx',     'Build the wxWidgets terminal using pango'
   option 'with-x', 'Build the X11 terminal'
-  option 'qt',     'Build the Qt4 terminal'
-  option 'cairo',  'Build the Cairo based terminals'
-  option 'nolua',  'Build without the lua/TikZ terminal'
-  option 'nogd',   'Build without gd support'
-  option 'tests',  'Verify the build with make check (1 min)'
+  option 'with-qt',     'Build the Qt4 terminal'
+  option 'with-cairo',  'Build the Cairo based terminals'
+  option 'without-lua',  'Build without the lua/TikZ terminal'
+  option 'without-gd',   'Build without gd support'
+  option 'with-tests',  'Verify the build with make check (1 min)'
   option 'without-emacs', 'Do not build Emacs lisp files'
-  option 'latex',  'Build with LaTeX support'
+  option 'with-latex',  'Build with LaTeX support'
   option 'without-aquaterm', 'Do not build AquaTerm support'
 
   depends_on 'pkg-config' => :build
-  depends_on LuaRequirement unless build.include? 'nolua'
+  depends_on LuaRequirement if build.with? 'lua'
   depends_on 'readline'
   depends_on "libpng"
   depends_on "jpeg"
   depends_on "libtiff"
   depends_on "fontconfig"
-  depends_on 'pango'       if build.include? 'cairo' or build.include? 'wx'
+  depends_on 'pango'       if build.with? 'cairo' or build.with? 'wx'
   depends_on :x11          if build.with? "x"
-  depends_on 'pdflib-lite' if build.include? 'pdf'
-  depends_on 'gd'          unless build.include? 'nogd'
-  depends_on 'wxmac'       if build.include? 'wx'
-  depends_on 'qt'          if build.include? 'qt'
-  depends_on :tex          if build.include? 'latex'
+  depends_on 'pdflib-lite' if build.with? 'pdf'
+  depends_on 'gd'          if build.without? 'gd'
+  depends_on 'wxmac'       if build.with? 'wx'
+  depends_on 'qt'          if build.with? 'qt'
+  depends_on :tex          if build.with? 'latex'
 
   def install
     if build.with? "aquaterm"
@@ -79,12 +79,12 @@ class Gnuplot < Formula
       --with-readline=#{readline}
     ]
 
-    args << "--with-pdf=#{pdflib}" if build.include? 'pdf'
-    args << '--with' + ((build.include? 'nogd') ? 'out-gd' : "-gd=#{gd}")
-    args << '--disable-wxwidgets' unless build.include? 'wx'
-    args << '--without-cairo'     unless build.include? 'cairo'
-    args << '--enable-qt'             if build.include? 'qt'
-    args << '--without-lua'           if build.include? 'nolua'
+    args << "--with-pdf=#{pdflib}" if build.with? 'pdf'
+    args << '--with' + ((build.without? 'gd') ? 'out-gd' : "-gd=#{gd}")
+    args << '--disable-wxwidgets' if build.without? 'wx'
+    args << '--without-cairo'     if build.without? 'cairo'
+    args << '--enable-qt'             if build.with? 'qt'
+    args << '--without-lua'           if build.without? 'lua'
     args << '--without-lisp-files'    if build.without? "emacs"
     args << (build.with?('aquaterm') ? '--with-aquaterm' : '--without-aquaterm')
 
@@ -94,7 +94,7 @@ class Gnuplot < Formula
       args << "--without-x"
     end
 
-    if build.include? 'latex'
+    if build.with? 'latex'
       args << '--with-latex'
       args << '--with-tutorial'
     else
@@ -106,7 +106,7 @@ class Gnuplot < Formula
     system "./configure", *args
     ENV.j1 # or else emacs tries to edit the same file with two threads
     system 'make'
-    system 'make check' if build.include? 'tests' # Awesome testsuite
+    system 'make check' if build.with? 'tests' # Awesome testsuite
     system "make install"
   end
 
