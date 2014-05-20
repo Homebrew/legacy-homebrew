@@ -37,6 +37,6 @@ class Duplicity < Formula
   end
 
   test do
-    system "duplicity", "--version"
+    system bin/"duplicity", "--version"
   end
 end
