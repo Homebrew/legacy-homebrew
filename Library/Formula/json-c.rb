@@ -8,9 +8,10 @@ class JsonC < Formula
 
   bottle do
     cellar :any
-    sha1 "31aab221bbee3c5fb73739a80befc373576ed382" => :mavericks
-    sha1 "b37a76d7912266e957d88e3a1fc78a65b852efcd" => :mountain_lion
-    sha1 "ee13acb15b713bd2dff8d8c9424e90f7c0a78d6f" => :lion
+    revision 1
+    sha1 "937cec063a3ad30b7c806c59b2c605c21b47fbb4" => :mavericks
+    sha1 "e1a3bdda78ce63c746582f58548da7a04a6baff1" => :mountain_lion
+    sha1 "789f81ff4f5b7f5a1bbb971841496af8cd61c449" => :lion
   end
 
   option :universal
