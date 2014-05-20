@@ -3,7 +3,6 @@ require "formula"
 class MecabKoDic < Formula
   homepage "https://bitbucket.org/eunjeon/mecab-ko-dic"
   url "https://bitbucket.org/eunjeon/mecab-ko-dic/downloads/mecab-ko-dic-1.6.0-20140515.tar.gz"
-  version "1.6.0-20140515"
   sha1 "c75a5cf38e48b62133423a8a06c12710b7874f9f"
 
   depends_on :autoconf
@@ -19,7 +18,7 @@ class MecabKoDic < Formula
 
   def caveats; <<-EOS.undent
     To enable dictionary:
-      rewrite /usr/local/etc/mecabrc as "dicdir = /usr/local/lib/mecab/dic/mecab-ko-dic"
+      rewrite #{HOMEBREW_PREFIX}/etc/mecabrc as "dicdir = #{HOMEBREW_PREFIX}/lib/mecab/dic/mecab-ko-dic"
     EOS
   end
 end
