@@ -25,4 +25,10 @@ class GsettingsDesktopSchemas < Formula
     # manual schema compile step
     system Formula["glib"].opt_bin/"glib-compile-schemas", share/"glib-2.0/schemas"
   end
+
+  # Should (obviously) not segfault. See:
+  # https://github.com/Homebrew/homebrew/issues/26455
+  test do
+    system bin/"gsettings", "list-schemas"
+  end
 end
