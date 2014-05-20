@@ -20,7 +20,7 @@ class Libstfl < Formula
   def install
     args = ["CC=#{ENV.cc} -pthread", "prefix=#{prefix}"]
 
-    args << "FOUND_RUBY = 0" unless MacOS::CLT.installed? # Ruby does not build on Xcode only. Help us fix this!
+    args << "FOUND_RUBY = 0" unless MacOS::CLT.installed? || MacOS.version >= :mavericks
 
     if build.with? 'python'
       # Install into the site-packages in the Cellar (so uninstall works)
