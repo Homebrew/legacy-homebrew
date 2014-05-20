@@ -10,6 +10,7 @@ class Leptonica < Formula
   depends_on 'libpng' => :recommended
   depends_on 'jpeg' => :recommended
   depends_on 'libtiff' => :optional
+  depends_on 'pkg-config' => :build
 
   conflicts_with 'osxutils',
     :because => "both leptonica and osxutils ship a `fileinfo` executable."
