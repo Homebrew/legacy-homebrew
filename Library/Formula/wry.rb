@@ -1,17 +1,17 @@
-require 'formula'
+require "formula"
 
 class Wry < Formula
-  homepage 'http://grailbox.com/wry/'
-  url 'https://github.com/hoop33/wry/archive/v1.7.2.tar.gz'
-  sha1 '22ac510f0f83bcdc7432ec4fac8aabdf91685ec5'
+  homepage "http://grailbox.com/wry/"
+  url "https://github.com/hoop33/wry/archive/v1.7.3.tar.gz"
+  sha1 "e4fdde7ffcaa2bdaf35a9b9147f8c2da24c65e71"
 
-  head 'https://github.com/hoop33/wry.git'
+  head "https://github.com/hoop33/wry.git"
 
   depends_on :macos => :lion
   depends_on :xcode
 
   def install
     xcodebuild "-target", "wry", "-configuration", "Release", "SYMROOT=build", "OBJROOT=objroot"
-    bin.install 'build/Release/wry'
+    bin.install "build/Release/wry"
   end
 end
