@@ -14,6 +14,7 @@ class Udptunnel < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
+    doc.install "udptunnel.html"
   end
 
   test do
