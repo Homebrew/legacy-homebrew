@@ -13,7 +13,7 @@ class TomcatNative < Formula
     cd "jni/native" do
       system "./configure", "--prefix=#{prefix}",
                             "--with-apr=#{MacOS.sdk_path}/usr",
-                            "--with-java-home=#{`/usr/libexec/java_home`}",
+                            "--with-java-home=#{`/usr/libexec/java_home`.chomp}",
                             "--with-ssl=#{Formula["openssl"].prefix}"
 
       # fixes occasional compiling issue: glibtool: compile: specify a tag with `--tag'

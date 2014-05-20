@@ -12,7 +12,7 @@ class LibreadlineJava < Formula
   patch :DATA
 
   def install
-    ENV['JAVA_HOME'] = `/usr/libexec/java_home`.chomp!
+    ENV['JAVA_HOME'] = `/usr/libexec/java_home`.chomp
 
     # Current Oracle JDKs put the jni.h and jni_md.h in a different place than the
     # original Apple/Sun JDK used to.
