@@ -2,14 +2,13 @@ require 'formula'
 
 class Python3 < Formula
   homepage 'https://www.python.org/'
-  url 'https://python.org/ftp/python/3.4.0/Python-3.4.0.tgz'
-  sha1 'bb5125d1c437caa5a62e0a3d0fee298e91196d6f'
-  revision 1
+  url 'https://python.org/ftp/python/3.4.1/Python-3.4.1.tgz'
+  sha1 'e8c1bd575a6ccc2a75f79d9d094a6a29d3802f5d'
 
   bottle do
-    sha1 "0b1ac4c596a2feeea3869e7d332d5e94fec56074" => :mavericks
-    sha1 "be6e2eb4f99c04ec2533449033faa09dd11d0e51" => :mountain_lion
-    sha1 "70af6aeb01ec8fbeb0e029677b1fa8bb2d1b5a7e" => :lion
+    sha1 "e86f7aede6e519a426e326f5020dc780ee39f05e" => :mavericks
+    sha1 "ad0bdc7fbf3f5079d134405fc83465634e07c40d" => :mountain_lion
+    sha1 "942f16fe68c47b267c958eca67f3754b412bd10d" => :lion
   end
 
   VER='3.4'  # The <major>.<minor> is used so often.

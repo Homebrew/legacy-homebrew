@@ -52,13 +52,10 @@ class Ansible < Formula
     ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    resource('pycrypto').stage { system "python", *install_args }
-    resource('pyyaml').stage { system "python", *install_args }
-    resource('paramiko').stage { system "python", *install_args }
-    resource('markupsafe').stage { system "python", *install_args }
-    resource('jinja2').stage { system "python", *install_args }
-    if build.with? 'accelerate'
-      resource('python-keyczar').stage { system "python", *install_args }
+    res = %w[pycrypto pyyaml paramiko markupsafe jinja2]
+    res << "python-keyczar" if build.with? "accelerate"
+    res.each do |r|
+      resource(r).stage { system "python", *install_args }
     end
 
     inreplace 'lib/ansible/constants.py' do |s|

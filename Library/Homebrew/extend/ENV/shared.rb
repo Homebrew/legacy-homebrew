@@ -91,16 +91,6 @@ module SharedEnvExtension
           raise "Invalid value for --cc: #{other}"
         end
       end
-    elsif ARGV.include? '--use-gcc'
-      if MacOS.locate("gcc-4.2") || HOMEBREW_PREFIX.join("opt/apple-gcc42/bin/gcc-4.2").exist?
-        :gcc
-      else
-        raise "gcc-4.2 not found!"
-      end
-    elsif ARGV.include? '--use-llvm'
-      :llvm
-    elsif ARGV.include? '--use-clang'
-      :clang
     elsif homebrew_cc
       cc = COMPILER_ALIASES.fetch(homebrew_cc, homebrew_cc)
       COMPILER_SYMBOL_MAP.fetch(cc) { MacOS.default_compiler }

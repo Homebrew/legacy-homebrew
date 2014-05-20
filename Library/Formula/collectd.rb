@@ -1,15 +1,15 @@
-require 'formula'
+require "formula"
 
 class Collectd < Formula
-  homepage 'http://collectd.org/'
-  url 'http://collectd.org/files/collectd-5.4.0.tar.gz'
-  sha1 'a90fe6cc53b76b7bdd56dc57950d90787cb9c96e'
+  homepage "http://collectd.org/"
+  url "http://collectd.org/files/collectd-5.4.1.tar.bz2"
+  sha1 "cea47e3936ed081bd71efacf7ba825fc837dc347"
 
   # Will fail against Java 1.7
   option "java", "Enable Java 1.6 support"
   option "debug", "Enable debug support"
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
 
   fails_with :clang do
     build 318
