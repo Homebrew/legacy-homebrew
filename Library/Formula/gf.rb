@@ -10,12 +10,14 @@ class Gf < Formula
     end
 
     def install
+      bindir = "--bindir=#{bin}"
+      datadir = "--datadir=#{share}"
+      libdir = "--libdir=#{lib}"
       system "cabal", "update"
-      system "cabal", "install"
+      system "cabal", "install", bindir, libdir, datadir
     end
 
     test  do
-      system "gf", "-version"
         (testpath/"Hello.gf").write <<-EOS.undent
         abstract Hello = {
         flags startcat = Greeting ;
