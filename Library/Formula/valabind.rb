@@ -14,6 +14,10 @@ class Valabind < Formula
   # https://github.com/radare/valabind/pull/24
   patch :DATA
 
+  # Fixes an issue in the vala version detection script.
+  #  * https://github.com/radare/valabind/pull/24
+  patch :DATA
+
   def install
     system "make"
     system "make", "install", "PREFIX=#{prefix}"
