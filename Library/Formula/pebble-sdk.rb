@@ -96,12 +96,12 @@ class PebbleSdk < Formula
   end
 
   test do
-    system 'pebble', 'new-project', 'test'
+    system bin/'pebble', 'new-project', 'test'
     cd 'test' do
       # We have to remove the default /usr/local/include from the CPATH
       # because the toolchain has -Werror=poison-system-directories set
       ENV['CPATH'] = ''
-      system 'pebble', 'build'
+      system bin/'pebble', 'build'
     end
   end
 
