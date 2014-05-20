@@ -302,10 +302,6 @@ class ExampleFormula < Formula
       ENV.append_to_cflags "-I ./missing/includes"
     end
 
-    # This is in general not necessary, but to show how to find the path to
-    # the Mac OS X SDK:
-    ENV.append "CPPFLAGS", "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
-
     # Overwriting any env var:
     ENV["LDFLAGS"] = "--tag CC"
 

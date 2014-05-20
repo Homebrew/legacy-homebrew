@@ -177,14 +177,14 @@ Open a browser to the GitHub History page for formula \fIformula\fR\.
 To view formula history locally: \fBbrew log \-p <formula>\fR\.
 .
 .TP
-\fBinfo \-\-json=<version>\fR (\-\-all|\-\-installed|\fIformula\fR)
-Print a JSON representation of \fIformula\fR\. Currently the only accepted value for \fIversion\fR is \fBv1\fR\.
+\fBinfo \-\-json=<version>\fR (\-\-all|\-\-installed|\fIformulae\fR)
+Print a JSON representation of \fIformulae\fR\. Currently the only accepted value for \fIversion\fR is \fBv1\fR\.
 .
 .IP
 Pass \fB\-\-all\fR to get information on all formulae, or \fB\-\-installed\fR to get information on all installed formulae\.
 .
 .IP
-If a single formula is specified, a single JSON object is displayed\. If multiple formulae are specified, or \fB\-\-installed\fR or \fB\-\-all\fR are used, a JSON array is displayed, even if the array would only contain one object\.
+See the wiki for examples of using the JSON: \fIhttps://github\.com/Homebrew/homebrew/wiki/Querying\-Brew\fR
 .
 .TP
 \fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-only\-dependencies] [\-\-cc=<compiler>] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR

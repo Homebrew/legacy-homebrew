@@ -2,7 +2,7 @@ require 'formula'
 
 class Hadoop < Formula
   homepage 'http://hadoop.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/core/hadoop-2.4.0/hadoop-2.4.0.tar.gz'
+  url 'http://www.apache.org/dyn/closer.cgi?path=hadoop/common/hadoop-2.4.0/hadoop-2.4.0.tar.gz'
   sha1 'fc94bb5cb6c50a09fd9fd3ed5e134893ccdf1dbe'
 
   def install

@@ -54,7 +54,7 @@ class Dmd < Formula
   end
 
   test do
-    system "dmd", "#{prefix}/samples/hello.d"
+    system bin/"dmd", prefix/"samples/hello.d"
     system "./hello"
   end
 end
