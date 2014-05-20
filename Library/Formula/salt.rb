@@ -36,9 +36,8 @@ class Salt < Formula
   test do
     ENV['SALTPATH'] = "#{prefix}/data"
     cp_r Dir[prefix + '03d4ag' + '*'], '.'
-    # I don't know why I need to redo the cd on the shell, but it doesn't work otherwise
-    system "cd #{Dir.pwd}; #{bin}/snfit lc-03D4ag.list"
-    system "cat result_salt2.dat"
+    system bin/"snfit", testpath/"lc-03D4ag.list"
+    assert File.exist?("result_salt2.dat")
   end
 
   def caveats
