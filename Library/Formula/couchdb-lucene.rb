@@ -39,8 +39,6 @@ class CouchdbLucene < Formula
         <dict>
           <key>HOME</key>
           <string>~</string>
-          <key>DYLD_LIBRARY_PATH</key>
-          <string>/opt/local/lib:$DYLD_LIBRARY_PATH</string>
         </dict>
         <key>ProgramArguments</key>
         <array>
