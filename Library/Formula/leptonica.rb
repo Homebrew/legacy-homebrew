@@ -31,6 +31,20 @@ class Leptonica < Formula
     system "make check" if build.include? 'check'
     system "make install"
   end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS
+    #include <iostream>
+    #include <leptonica/allheaders.h>
+
+    int main(int argc, char **argv) {
+        std::fprintf(stdout, "%d.%d", LIBLEPT_MAJOR_VERSION, LIBLEPT_MINOR_VERSION);
+        return 0;
+    }
+    EOS
+    system ENV.cxx, "test.cpp", `pkg-config --cflags lept`
+    assert_equal "1.70", `./a.out`
+  end
 end
 
 __END__
