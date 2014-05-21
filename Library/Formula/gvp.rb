@@ -18,10 +18,10 @@ class Gvp < Formula
   end
 
   test do
-    assert Kernel.system("gvp init"), "`gvp init` exited with a non-zero status"
+    assert Kernel.system("#{bin}/gvp init"), "`gvp init` exited with a non-zero status"
     assert File.directory?(".godeps"), "`gvp init` did not create the .godeps directory"
-    assert_equal `gvp in 'echo $GOPATH' | grep -v '>> Local GOPATH set.'`.chomp, "#{testpath}/.godeps:#{testpath}", "`gvp in` did not change the GOPATH"
-    assert_equal `gvp in 'echo $GOBIN' | grep -v '>> Local GOPATH set.'`.chomp, "#{testpath}/.godeps/bin:#{ENV["GOBIN"]}", "`gvp in` did not change the GOBIN"
-    assert_equal `gvp in 'echo $PATH' | grep -v '>> Local GOPATH set.'`.chomp, "#{testpath}/.godeps/bin:#{ENV["PATH"]}", "`gvp in` did not change the PATH"
+    assert_equal `#{bin}/gvp in 'echo $GOPATH' | grep -v '>> Local GOPATH set.'`.chomp, "#{testpath}/.godeps:#{testpath}", "`gvp in` did not change the GOPATH"
+    assert_equal `#{bin}/gvp in 'echo $GOBIN' | grep -v '>> Local GOPATH set.'`.chomp, "#{testpath}/.godeps/bin:#{ENV["GOBIN"]}", "`gvp in` did not change the GOBIN"
+    assert_equal `#{bin}/gvp in 'echo $PATH' | grep -v '>> Local GOPATH set.'`.chomp, "#{testpath}/.godeps/bin:#{ENV["PATH"]}", "`gvp in` did not change the PATH"
   end
 end
