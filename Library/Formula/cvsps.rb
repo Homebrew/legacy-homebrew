@@ -2,8 +2,8 @@ require 'formula'
 
 class Cvsps < Formula
   homepage 'http://www.catb.org/~esr/cvsps/'
-  url 'http://www.catb.org/~esr/cvsps/cvsps-3.10.tar.gz'
-  sha1 '8e0b2c66abd521eef2851da2fa5175f14215e9bf'
+  url 'http://www.catb.org/~esr/cvsps/cvsps-3.13.tar.gz'
+  sha1 '29d814f9083e3c51bba1b1fadf6c94ed9c2caa1e'
 
   depends_on 'asciidoc'
   depends_on 'docbook'
