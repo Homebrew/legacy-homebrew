@@ -163,7 +163,7 @@ class Cmd
       /^-finline-limit/, /^-f(?:no-)?check-new/, '-fno-delete-null-pointer-checks',
       '-fcaller-saves', '-fthread-jumps', '-fno-reorder-blocks', '-fcse-skip-blocks',
       '-frerun-cse-after-loop', '-frerun-loop-opt', '-fcse-follow-jumps',
-      '-fno-regmove', '-fno-for-scope'
+      '-fno-regmove', '-fno-for-scope', '-fno-tree-pre', '-fno-tree-dominator-opts'
       # clang doesn't support these flags
       args << arg if not tool =~ /^clang/
     when /^-W[alp],/, /^-Wno-/
