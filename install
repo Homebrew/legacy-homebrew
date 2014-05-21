@@ -156,8 +156,9 @@ end
 sudo "/bin/mkdir", HOMEBREW_CACHE unless File.directory? HOMEBREW_CACHE
 sudo "/bin/chmod", "g+rwx", HOMEBREW_CACHE
 
-if macos_version > "10.8"
-  unless File.exist? "/Library/Developer/CommandLineTools/usr/bin/clang"
+if macos_version >= "10.9"
+  developer_dir = `/usr/bin/xcode-select -print-path 2>/dev/null`.chomp
+  if developer_dir.empty? || !File.exist?("#{developer_dir}/usr/bin/clang")
     ohai "Installing the Command Line Tools (expect a GUI popup):"
     sudo "/usr/bin/xcode-select", "--install"
     puts "Press any key when the installation has completed."
