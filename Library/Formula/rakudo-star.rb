@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class RakudoStar < Formula
-  homepage 'http://rakudo.org/'
-  url 'http://rakudo.org/downloads/star/rakudo-star-2014.03.tar.gz'
-  sha256 '6b285fb3fbbfa22f5986a2890cd0ca29de8efb3a60b2d60e948140c24320a994'
+  homepage "http://rakudo.org/"
+  url "http://rakudo.org/downloads/star/rakudo-star-2014.04.tar.gz"
+  sha256 "f4fc1e3193db0fa876978527011034a711fdf20a87ee10edbb2dc62958cfed6a"
 
   bottle do
     sha1 "8713766c33d97f16eba1764e3a89137d58fa4ee3" => :mavericks
@@ -11,19 +11,19 @@ class RakudoStar < Formula
     sha1 "ad7b50e1e85f2552f89f1e5fbdf2741659b8763b" => :lion
   end
 
-  option 'with-jvm', 'Build also for jvm as an alternate backend.'
+  option "with-jvm", "Build also for jvm as an alternate backend."
 
-  conflicts_with 'parrot'
+  conflicts_with "parrot"
 
-  depends_on 'gmp' => :optional
-  depends_on 'icu4c' => :optional
-  depends_on 'pcre' => :optional
-  depends_on 'libffi'
+  depends_on "gmp" => :optional
+  depends_on "icu4c" => :optional
+  depends_on "pcre" => :optional
+  depends_on "libffi"
 
   def install
     libffi = Formula["libffi"]
-    ENV.remove 'CPPFLAGS', "-I#{libffi.include}"
-    ENV.prepend 'CPPFLAGS', "-I#{libffi.lib}/libffi-#{libffi.version}/include"
+    ENV.remove "CPPFLAGS", "-I#{libffi.include}"
+    ENV.prepend "CPPFLAGS", "-I#{libffi.lib}/libffi-#{libffi.version}/include"
 
     ENV.j1  # An intermittent race condition causes random build failures.
     if build.with? "jvm"
