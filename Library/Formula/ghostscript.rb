@@ -57,8 +57,8 @@ class Ghostscript < Formula
 
   # http://djvu.sourceforge.net/gsdjvu.html
   resource 'djvu' do
-    url 'https://downloads.sourceforge.net/project/djvu/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
-    sha1 'c7d0677dae5fe644cf3d714c04b3c2c343906342'
+    url 'https://downloads.sourceforge.net/project/djvu/GSDjVu/1.6/gsdjvu-1.6.tar.gz'
+    sha1 'a8c5520d698d8be558a1957b4e5108cba68822ef'
   end
 
   def move_included_source_copies
@@ -73,8 +73,8 @@ class Ghostscript < Formula
     src_dir = build.head? ? "gs" : "."
 
     resource('djvu').stage do
-      inreplace 'gdevdjvu.c', /#include "gserror.h"/, ''
-      (buildpath+'base').install 'gdevdjvu.c'
+      inreplace 'gsdjvu.mak', '$(GL', '$(DEV'
+      (buildpath+'devices').install 'gdevdjvu.c'
       (buildpath+'lib').install 'ps2utf8.ps'
       ENV['EXTRA_INIT_FILES'] = 'ps2utf8.ps'
       (buildpath/'devices/contrib.mak').open('a') { |f| f.write(File.read('gsdjvu.mak')) }
