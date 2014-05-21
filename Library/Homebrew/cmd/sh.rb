@@ -16,7 +16,6 @@ module Homebrew extend self
     end
     ENV['PS1'] = 'brew \[\033[1;32m\]\w\[\033[0m\]$ '
     ENV['VERBOSE'] = '1'
-    ENV['HOMEBREW_LOG'] = '1'
     puts <<-EOS.undent_________________________________________________________72
          Your shell has been configured to use Homebrew's build environment:
          this should help you build stuff. Notably though, the system versions of
