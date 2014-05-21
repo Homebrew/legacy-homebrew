@@ -7,6 +7,8 @@ class Sptk < Formula
 
   depends_on :x11
 
+  conflicts_with "libextractor", :because => "both install `extract`"
+
   fails_with :gcc do
     cause "Segmentation fault during linking."
   end
