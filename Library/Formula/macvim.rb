@@ -50,7 +50,6 @@ class Macvim < Formula
       --with-local-dir=#{HOMEBREW_PREFIX}
     ]
 
-    args << "--with-macsdk=#{MacOS.version}" unless MacOS::CLT.installed?
     args << "--enable-cscope" if build.with? "cscope"
 
     if build.with? "lua"
@@ -85,13 +84,12 @@ class Macvim < Formula
       args << "--enable-python3interp"
     end
 
+    # configure appends "SDKS/..." to the value of `xcode-select -print-path`,
+    # but this isn't correct on recent Xcode, so we need to set it manually.
+    # FIXME this is a bug, and it should be fixed upstream.
     unless MacOS::CLT.installed?
-      # On Xcode-only systems:
-      # Macvim cannot deal with "/Applications/Xcode.app/Contents/Developer" as
-      # it is returned by `xcode-select -print-path` and already set by
-      # Homebrew (in superenv). Instead Macvim needs the deeper dir to directly
-      # append "SDKs/...".
       args << "--with-developer-dir=#{MacOS::Xcode.prefix}/Platforms/MacOSX.platform/Developer"
+      args << "--with-macsdk=#{MacOS.version}"
     end
 
     system "./configure", *args
