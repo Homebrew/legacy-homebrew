@@ -6,9 +6,9 @@ class Memcached < Formula
   sha1 "282a1e701eeb3f07159d95318f09da5ea3fcb39d"
 
   bottle do
-    sha1 "6e7ae41fbb731ce947c5cdc5fb37975d1d84118b" => :mavericks
-    sha1 "66df16bf96afb660efd3216773022cbac8475f1f" => :mountain_lion
-    sha1 "a5d3152d2dd647bca8faf7df46b7a3638651f65a" => :lion
+    sha1 "d3075e31fbf68520bb615cad869e6b75295f566d" => :mavericks
+    sha1 "75b9349df6c29f0535452422575b4aa342275bd1" => :mountain_lion
+    sha1 "4cb8fd167de0c72822f0958845dfdc53310282d4" => :lion
   end
 
   depends_on "libevent"
