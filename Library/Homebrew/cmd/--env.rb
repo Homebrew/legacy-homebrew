@@ -14,8 +14,7 @@ module Homebrew extend self
     if $stdout.tty?
       dump_build_env ENV
     else
-      keys = build_env_keys(ENV) << 'HOMEBREW_BREW_FILE' << 'HOMEBREW_SDKROOT'
-      keys.each do |key|
+      build_env_keys(ENV).each do |key|
         puts "export #{key}=\"#{ENV[key]}\""
       end
     end
@@ -41,13 +40,9 @@ module Homebrew extend self
 
       value = env[key]
       print "#{key}: #{value}"
-      case key when 'CC', 'CXX', 'LD'
-        if value =~ %r{/usr/bin/xcrun (.*)}
-          path = `/usr/bin/xcrun -find #{$1}`
-          print " => #{path}"
-        elsif File.symlink? value
-          print " => #{Pathname.new(value).realpath}"
-        end
+      case key
+      when "CC", "CXX", "LD"
+        print " => #{Pathname.new(value).realpath}" if File.symlink?(value)
       end
       puts
     end
