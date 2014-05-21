@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Memcached < Formula
-  homepage 'http://memcached.org/'
-  url 'http://www.memcached.org/files/memcached-1.4.18.tar.gz'
-  sha1 'e550ac63f1accb2c4b8384fd200a79a7e574b364'
+  homepage "http://memcached.org/"
+  url "http://www.memcached.org/files/memcached-1.4.20.tar.gz"
+  sha1 "282a1e701eeb3f07159d95318f09da5ea3fcb39d"
 
   bottle do
     sha1 "6e7ae41fbb731ce947c5cdc5fb37975d1d84118b" => :mavericks
@@ -11,12 +11,12 @@ class Memcached < Formula
     sha1 "a5d3152d2dd647bca8faf7df46b7a3638651f65a" => :lion
   end
 
-  depends_on 'libevent'
+  depends_on "libevent"
 
   option "enable-sasl", "Enable SASL support -- disables ASCII protocol!"
   option "enable-sasl-pwdb", "Enable SASL with memcached's own plain text password db support -- disables ASCII protocol!"
 
-  conflicts_with 'mysql-cluster', :because => 'both install `bin/memcached`'
+  conflicts_with "mysql-cluster", :because => "both install `bin/memcached`"
 
   def install
     args = ["--prefix=#{prefix}", "--disable-coverage"]
