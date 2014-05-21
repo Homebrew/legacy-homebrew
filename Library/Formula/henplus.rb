@@ -9,7 +9,7 @@ class Henplus < Formula
   depends_on 'libreadline-java'
 
   def install
-    ENV['JAVA_HOME'] = `/usr/libexec/java_home`.chomp!
+    ENV['JAVA_HOME'] = `/usr/libexec/java_home`.chomp
 
     inreplace 'bin/henplus' do |s|
       s.gsub! "LD_LIBRARY_PATH", "DYLD_LIBRARY_PATH"
