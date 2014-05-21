@@ -55,11 +55,6 @@ class Qt5 < Formula
             "-nomake", "tests",
             "-release"]
 
-    unless MacOS::CLT.installed?
-      # ... too stupid to find CFNumber.h, so we give a hint:
-      ENV.append 'CXXFLAGS', "-I#{MacOS.sdk_path}/System/Library/Frameworks/CoreFoundation.framework/Headers"
-    end
-
     # https://bugreports.qt-project.org/browse/QTBUG-34382
     args << "-no-xcb"
 
