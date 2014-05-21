@@ -9,14 +9,6 @@ class Sptk < Formula
 
   conflicts_with "libextractor", :because => "both install `extract`"
 
-  fails_with :gcc do
-    cause "Segmentation fault during linking."
-  end
-
-  fails_with :llvm do
-    cause "Segmentation fault during linking."
-  end
-
   def install
     system "./configure", "CC=#{ENV.cc}", "--prefix=#{prefix}"
     system "make", "install"
