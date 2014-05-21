@@ -22,7 +22,6 @@ module Homebrew extend self
          gem and pip will ignore our configuration and insist on using the
          environment they were built under (mostly). Sadly, scons will also
          ignore our configuration.
-         All toolchain use will be logged to: ~/Library/Homebrew/Logs/cc.log
          When done, type `exit'.
          EOS
     exec ENV['SHELL']
