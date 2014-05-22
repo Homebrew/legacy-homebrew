@@ -2,9 +2,9 @@ require "formula"
 
 class Rgbds < Formula
   homepage "http://anthony.bentley.name/rgbds/"
-  url "https://codeload.github.com/bentley/rgbds/zip/3ecd169cd6f9d53e341efdbecb906357443b6bcf"
-  sha1 "812c2f0a6a0293d78b462620cffbfbf4f2b7fbda"
-  version "2014.2.21-3ecd169cd6"
+  url "https://github.com/pbjchang/rgbds/archive/v0.0.3.zip"
+  sha1 "d7c497465911c80c96eba05149499f7193a927cd"
+  version "0.0.3"
 
   head "https://github.com/bentley/rgbds.git"
 
@@ -20,9 +20,5 @@ class Rgbds < Formula
   end
 
   test do
-    system bin/"rgblink"
-    system bin/"rgblib"
-    system bin/"rgbfix"
-    system bin/"rgbasm"
   end
 end
