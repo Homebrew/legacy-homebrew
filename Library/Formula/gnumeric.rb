@@ -9,6 +9,7 @@ class Gnumeric < Formula
   depends_on 'intltool' => :build
   depends_on 'gettext'
   depends_on 'goffice'
+  depends_on 'pygobject' => :optional
   depends_on 'rarian'
   depends_on :x11
 
