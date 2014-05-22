@@ -300,6 +300,10 @@ module Superenv
     append "HOMEBREW_ARCHFLAGS", "-m32"
   end
 
+  def m64
+    append "HOMEBREW_ARCHFLAGS", "-m64"
+  end
+
   def cxx11
     case homebrew_cc
     when "clang"
@@ -339,7 +343,7 @@ module Superenv
 
   # These methods provide functionality that has not yet been ported to
   # superenv.
-  noops.concat %w{m64 gcc_4_0_1 minimal_optimization no_optimization enable_warnings}
+  noops.concat %w{gcc_4_0_1 minimal_optimization no_optimization enable_warnings}
 
   noops.each { |m| alias_method m, :noop }
 end
