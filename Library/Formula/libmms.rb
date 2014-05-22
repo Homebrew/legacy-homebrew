@@ -1,12 +1,12 @@
-require 'formula'
+require "formula"
 
 class Libmms < Formula
-  homepage 'http://sourceforge.net/projects/libmms/'
-  url 'https://downloads.sourceforge.net/project/libmms/libmms/0.6.2/libmms-0.6.2.tar.gz'
-  sha1 'cdef62fd1a0e2585dd2111fc94b032f84290e351'
+  homepage "http://sourceforge.net/projects/libmms/"
+  url "https://downloads.sourceforge.net/project/libmms/libmms/0.6.4/libmms-0.6.4.tar.gz"
+  sha1 "b03ef84a9eedc68fdf2866265b667b75e1a33bee"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
+  depends_on "pkg-config" => :build
+  depends_on "glib"
 
   # https://trac.macports.org/ticket/27988
   patch :p0 do
@@ -15,7 +15,7 @@ class Libmms < Formula
   end if MacOS.version <= :leopard
 
   def install
-    ENV.append 'LDFLAGS', '-liconv'
+    ENV.append "LDFLAGS", "-liconv"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

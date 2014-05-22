@@ -22,9 +22,7 @@ class Mcrypt < Formula
 
   # Patch to correct inclusion of malloc function on OSX.
   # Upstream: https://sourceforge.net/p/mcrypt/patches/14/
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?

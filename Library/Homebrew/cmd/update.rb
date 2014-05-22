@@ -17,12 +17,11 @@ module Homebrew extend self
     cd HOMEBREW_REPOSITORY
     git_init_if_necessary
 
-    tapped_formulae = Dir['Library/Formula/*'].map do |formula|
-      path = Pathname.new formula
+    tapped_formulae = []
+    HOMEBREW_LIBRARY.join("Formula").children.each do |path|
       next unless path.symlink?
-      Pathname.new(path.realpath.to_s.gsub(/.*Taps\//, '')) rescue nil
+      tapped_formulae << path.resolved_path
     end
-    tapped_formulae.compact!
     unlink_tap_formula(tapped_formulae)
 
     report = Report.new
@@ -34,19 +33,22 @@ module Homebrew extend self
     end
     report.merge!(master_updater.report)
 
-    Dir["Library/Taps/*"].each do |tapd|
-      next unless File.directory?(tapd)
+    # rename Taps directories
+    # this procedure will be removed in the future if it seems unnecessasry
+    rename_taps_dir_if_necessary
 
-      cd tapd do
+    each_tap do |user, repo|
+      repo.cd do
+        updater = Updater.new
+
         begin
-          updater = Updater.new
           updater.pull!
+        rescue
+          onoe "Failed to update tap: #{user.basename}/#{repo.basename.sub("homebrew-", "")}"
+        else
           report.merge!(updater.report) do |key, oldval, newval|
             oldval.concat(newval)
           end
-        rescue
-          tapd =~ %r{^Library/Taps/(\w+)-(\w+)}
-          onoe "Failed to update tap: #$1/#$2"
         end
       end
     end
@@ -90,6 +92,39 @@ module Homebrew extend self
   rescue Exception
     FileUtils.rm_rf ".git"
     raise
+  end
+
+  def rename_taps_dir_if_necessary
+    need_repair_taps = false
+    Dir["#{HOMEBREW_LIBRARY}/Taps/*/"].each do |tapd|
+      begin
+        tapd_basename = File.basename(tapd)
+
+        if File.directory?(tapd + "/.git")
+          if tapd_basename.include?("-")
+            # only replace the *last* dash: yes, tap filenames suck
+            user, repo = tapd_basename.reverse.sub("-", "/").reverse.split("/")
+
+            FileUtils.mkdir_p("#{HOMEBREW_LIBRARY}/Taps/#{user.downcase}")
+            FileUtils.mv(tapd, "#{HOMEBREW_LIBRARY}/Taps/#{user.downcase}/homebrew-#{repo.downcase}")
+            need_repair_taps = true
+
+            if tapd_basename.count("-") >= 2
+              opoo "Homebrew changed the structure of Taps like <someuser>/<sometap>. "\
+                + "So you may need to rename #{HOMEBREW_LIBRARY}/Taps/#{user.downcase}/homebrew-#{repo.downcase} manually."
+            end
+          else
+            opoo "Homebrew changed the structure of Taps like <someuser>/<sometap>. "\
+              "#{tapd} is incorrect name format. You may need to rename it like <someuser>/<sometap> manually."
+          end
+        end
+      rescue => ex
+        onoe ex.message
+        next # next tap directory
+      end
+    end
+
+    repair_taps if need_repair_taps
   end
 
   def load_tap_migrations
@@ -143,8 +178,7 @@ class Updater
           when :R then $3
           else $2
           end
-        path = Pathname.pwd.join(path).relative_path_from(HOMEBREW_REPOSITORY)
-        map[status] << path.to_s
+        map[status] << Pathname.pwd.join(path)
       end
     end
 
@@ -183,19 +217,19 @@ class Report < Hash
   end
 
   def tapped_formula_for key
-    fetch(key, []).map do |path|
-      case path when %r{^Library/Taps/(\w+-\w+/.*)}
-        relative_path = $1
-        if valid_formula_location?(relative_path)
-          Pathname.new(relative_path)
-        end
+    fetch(key, []).select do |path|
+      case path.to_s
+      when HOMEBREW_TAP_PATH_REGEX
+        valid_formula_location?("#{$1}/#{$2}/#{$3}")
+      else
+        false
       end
     end.compact
   end
 
   def valid_formula_location?(relative_path)
     ruby_file = /\A.*\.rb\Z/
-    parts = relative_path.split('/')[1..-1]
+    parts = relative_path.split('/')[2..-1]
     [
       parts.length == 1 && parts.first =~ ruby_file,
       parts.length == 2 && parts.first == 'Formula' && parts.last =~ ruby_file,
@@ -213,10 +247,11 @@ class Report < Hash
 
   def select_formula key
     fetch(key, []).map do |path|
-      case path when %r{^Library/Formula}
-        File.basename(path, ".rb")
-      when %r{^Library/Taps/(\w+)-(\w+)/(.*)\.rb}
-        "#$1/#$2/#{File.basename(path, '.rb')}"
+      case path.to_s
+      when Regexp.new(HOMEBREW_LIBRARY + "/Formula")
+        path.basename(".rb").to_s
+      when HOMEBREW_TAP_PATH_REGEX
+        "#$1/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
       end
     end.compact.sort
   end

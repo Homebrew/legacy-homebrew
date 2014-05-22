@@ -2,13 +2,13 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.10/kvm-tarbake-jaunty-x86/mariadb-10.0.10.tar.gz'
-  sha1 '59e222bd261128aff89c216dc100d5bcc8c5acc4'
+  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.11/source/mariadb-10.0.11.tar.gz'
+  sha1 'd596a2af184a125d833d507f411a3f8cf4cd3134'
 
   bottle do
-    sha1 "8cdd6ee44b7235a1ccccbdcc76a085c9f750463f" => :mavericks
-    sha1 "c4b2a4f8ab597565b23e0cff789db59bb693343c" => :mountain_lion
-    sha1 "2d1d225ed84b1b9096edc83380c178f3cf2e4c42" => :lion
+    sha1 "c82fbe012156d56a5accdb9612d2e058b79ef1db" => :mavericks
+    sha1 "358893e24183fab22a6637d68a2e2c8d14b51351" => :mountain_lion
+    sha1 "9297a50dc9e3ffa8cc405312120d12a6d902799a" => :lion
   end
 
   depends_on 'cmake' => :build
@@ -27,8 +27,6 @@ class Mariadb < Formula
     :because => "mariadb, mysql, and percona install the same binaries."
   conflicts_with 'mysql-connector-c',
     :because => 'both install MySQL client libraries'
-
-  env :std if build.universal?
 
   def install
     # Don't hard-code the libtool path. See:
@@ -79,7 +77,10 @@ class Mariadb < Formula
     args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? 'blackhole-storage-engine'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
+    if build.universal?
+      ENV.universal_binary
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
@@ -150,6 +151,7 @@ class Mariadb < Formula
       <array>
         <string>#{opt_bin}/mysqld_safe</string>
         <string>--bind-address=127.0.0.1</string>
+        <string>--datadir=#{var}/mysql</string>
       </array>
       <key>RunAtLoad</key>
       <true/>

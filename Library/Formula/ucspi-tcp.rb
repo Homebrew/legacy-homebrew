@@ -20,6 +20,8 @@ class UcspiTcp < Formula
   end
 
   test do
-    system "tcpserver"
+    out = `#{bin}/tcpserver 2>&1`
+    assert out.include?("usage: tcpserver")
+    assert_equal 100, $?.exitstatus
   end
 end

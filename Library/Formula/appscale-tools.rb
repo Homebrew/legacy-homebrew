@@ -5,7 +5,7 @@ class AppscaleTools < Formula
   url "https://github.com/AppScale/appscale-tools/archive/1.14.0.tar.gz"
   sha1 "ee2363bf6b8f464f0a7847d965e5fce2e143acd2"
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'libyaml'
 
   resource 'termcolor' do
@@ -67,10 +67,8 @@ class AppscaleTools < Formula
     resource('httplib2').stage { system "python", *install_args }
     resource('python-gflags').stage { system "python", *install_args }
 
-    Dir['bin/appscale*'].each do |command_file|
-      inreplace command_file do |s|
-        s.gsub! /^lib = os.*/, "lib = '#{libexec}'"
-      end
+    inreplace Dir["bin/appscale*"] do |s|
+      s.gsub! /^lib = os.*/, "lib = '#{libexec}'"
     end
 
     prefix.install 'bin', 'templates', 'LICENSE', 'README.md'

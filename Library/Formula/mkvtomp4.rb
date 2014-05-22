@@ -8,15 +8,16 @@ class Mkvtomp4 < Formula
   depends_on 'gpac'
   depends_on 'ffmpeg' => :recommended
   depends_on 'mkvtoolnix'
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', lib+'python2.7/site-packages'
 
     system "make"
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 
-    mv bin/'mkvtomp4.py', bin/'mkvtomp4'
+    bin.install "mkvtomp4.py" => "mkvtomp4"
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 

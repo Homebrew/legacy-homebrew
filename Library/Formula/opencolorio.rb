@@ -22,6 +22,10 @@ class Opencolorio < Formula
     sha1 "f4acc4028090ea8d438c6e0093e931afd836314c"
   end
 
+  # Fix includes on recent Clang; reported upstream:
+  # https://github.com/imageworks/OpenColorIO/issues/338#issuecomment-36589039
+  patch :DATA
+
   def install
     args = std_cmake_args
     args << "-DOCIO_BUILD_JNIGLUE=ON" if build.with? 'java'
@@ -62,3 +66,17 @@ class Opencolorio < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/export/OpenColorIO/OpenColorIO.h b/export/OpenColorIO/OpenColorIO.h
+index 561ce50..796ca84 100644
+--- a/export/OpenColorIO/OpenColorIO.h
++++ b/export/OpenColorIO/OpenColorIO.h
+@@ -34,6 +34,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ #include <iosfwd>
+ #include <string>
+ #include <cstddef>
++#include <unistd.h>
+ 
+ #include "OpenColorABI.h"
+ #include "OpenColorTypes.h"

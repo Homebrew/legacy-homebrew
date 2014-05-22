@@ -19,7 +19,7 @@ class Fsh < Formula
       if Formula['python'].installed?
         inreplace ["fsh", "fshd", "in.fshd"],
             "#! /usr/local/bin/python", "#!/usr/bin/env python"
-        end
+      end
     end
   end
 end

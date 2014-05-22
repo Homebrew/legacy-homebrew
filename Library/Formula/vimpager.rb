@@ -2,8 +2,8 @@ require 'formula'
 
 class Vimpager < Formula
   homepage 'https://github.com/rkitover/vimpager'
-  url 'https://github.com/rkitover/vimpager/archive/1.8.7.tar.gz'
-  sha1 '796bb69e30a0b87ee65bf29c5ae800a16033f85f'
+  url 'https://github.com/rkitover/vimpager/archive/1.8.8.tar.gz'
+  sha1 '69f32e77a64dcd8abea873a7eb05d80b9b6f76b2'
   head 'https://github.com/rkitover/vimpager.git'
 
   def install

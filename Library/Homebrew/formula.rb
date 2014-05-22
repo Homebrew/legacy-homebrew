@@ -369,6 +369,7 @@ class Formula
     include Enumerable
   end
 
+  # An array of all installed formulae
   def self.installed
     return [] unless HOMEBREW_CELLAR.directory?
 
@@ -439,12 +440,6 @@ class Formula
     Requirement.expand(self, &block)
   end
 
-  # Flag for marking whether this formula needs C++ standard library
-  # compatibility check
-  def cxxstdlib
-    @cxxstdlib ||= Set.new
-  end
-
   def to_hash
     hsh = {
       "name" => name,
@@ -469,8 +464,9 @@ class Formula
     }
 
     if rack.directory?
-      rack.subdirs.each do |keg|
-        tab = Tab.for_keg keg
+      rack.subdirs.each do |keg_path|
+        keg = Keg.new keg_path
+        tab = Tab.for_keg keg_path
 
         hsh["installed"] << {
           "version" => keg.version.to_s,
@@ -575,7 +571,7 @@ class Formula
         f.flush
         Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
         f.puts
-        require 'cmd/--config'
+        require 'cmd/config'
         Homebrew.write_build_config(f)
         raise BuildError.new(self, cmd, args, $?)
       end
@@ -604,12 +600,6 @@ class Formula
 
     ohai "Patching"
     active_spec.patches.each(&:apply)
-  end
-
-  # Explicitly request changing C++ standard library compatibility check
-  # settings. Use with caution!
-  def cxxstdlib_check check_type
-    cxxstdlib << check_type
   end
 
   def self.method_added method
@@ -727,6 +717,18 @@ class Formula
 
     def keg_only reason, explanation=nil
       @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
+    end
+
+    # Flag for marking whether this formula needs C++ standard library
+    # compatibility check
+    def cxxstdlib
+      @cxxstdlib ||= Set.new
+    end
+
+    # Explicitly request changing C++ standard library compatibility check
+    # settings. Use with caution!
+    def cxxstdlib_check check_type
+      cxxstdlib << check_type
     end
 
     # For Apple compilers, this should be in the format:

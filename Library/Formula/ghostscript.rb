@@ -2,19 +2,19 @@ require 'formula'
 
 class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
-  revision 1
 
   stable do
-    url 'http://downloads.ghostscript.com/public/ghostscript-9.10.tar.gz'
-    sha1 '29d6538ae77565c09f399b06455e94e7bcd83d01'
+    url 'http://downloads.ghostscript.com/public/ghostscript-9.14.tar.gz'
+    sha1 '85001be316ebc11a6060ae7e208fe08dcbfd70ae'
 
     patch :DATA # Uncomment OS X-specific make vars
   end
 
   bottle do
-    sha1 "6c57df23147be016a8790cd4f831e3bfc060107a" => :mavericks
-    sha1 "1b172224cac0093d4264c874a4c5da7c8f13a217" => :mountain_lion
-    sha1 "a12d082b0e86e08cef11f5b59e27b827ed38367e" => :lion
+    revision 1
+    sha1 "308a8f34a919cf8b7aaa919b74aa3bc7606cf24f" => :mavericks
+    sha1 "db1b4c91a40cedba2386ced95bd63f9bcb832efa" => :mountain_lion
+    sha1 "b63f8d414e7e07ac554c5869385e7cb657c3a26a" => :lion
   end
 
   head do
@@ -65,7 +65,7 @@ class Ghostscript < Formula
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
-    renames = %w{freetype jbig2dec jpeg libpng tiff zlib}
+    renames = %w{freetype jbig2dec jpeg libpng tiff}
     renames.each { |lib| mv lib, "#{lib}_local" }
   end
 

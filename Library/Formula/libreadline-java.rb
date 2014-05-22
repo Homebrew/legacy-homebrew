@@ -12,16 +12,16 @@ class LibreadlineJava < Formula
   patch :DATA
 
   def install
-    ENV['JAVA_HOME'] = `/usr/libexec/java_home`.chomp!
+    java_home = ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
 
     # Current Oracle JDKs put the jni.h and jni_md.h in a different place than the
     # original Apple/Sun JDK used to.
-    if File.exist? ENV['JAVA_HOME'] + "/include/jni.h" then
-      ENV['JAVAINCLUDE'] = ENV['JAVA_HOME'] + "/include"
-      ENV['JAVANATINC'] = ENV['JAVA_HOME'] + "/include/darwin"
+    if File.exist? "#{java_home}/include/jni.h"
+      ENV["JAVAINCLUDE"] = "#{java_home}/include"
+      ENV["JAVANATINC"]  = "#{java_home}/include/darwin"
     elsif File.exist? "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/jni.h"
-      ENV['JAVAINCLUDE'] = "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/"
-      ENV['JAVANATINC'] = "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/"
+      ENV["JAVAINCLUDE"] = "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/"
+      ENV["JAVANATINC"]  = "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/"
     end
 
     # Take care of some hard-coded paths,
@@ -40,14 +40,15 @@ class LibreadlineJava < Formula
     # adjust CC variable,
     # adjust postfix of jni libraries
     inreplace 'src/native/Makefile' do |s|
-      s.change_make_var! "INCLUDES", "-I $(JAVAINCLUDE) -I $(JAVANATINC) -I #{HOMEBREW_PREFIX}/opt/readline/include"
-      s.change_make_var! "LIBPATH", "-L#{HOMEBREW_PREFIX}/opt/readline/lib"
+      readline = Formula["readline"]
+      s.change_make_var! "INCLUDES", "-I $(JAVAINCLUDE) -I $(JAVANATINC) -I #{readline.opt_include}"
+      s.change_make_var! "LIBPATH", "-L#{readline.opt_lib}"
       s.change_make_var! "CC", "cc"
       s.gsub! "LIB_EXT := so", "LIB_EXT := jnilib"
       s.gsub! "$(CC) -shared $(OBJECTS) $(LIBPATH) $($(TG)_LIBS) -o $@", "$(CC) -install_name #{HOMEBREW_PREFIX}/lib/$(LIB_PRE)$(TG).$(LIB_EXT) -dynamiclib $(OBJECTS) $(LIBPATH) $($(TG)_LIBS) -o $@"
     end
 
-    mkdir_p prefix + "share/libreadline-java"
+    (share/"libreadline-java").mkpath
 
     system "make jar"
     system "make build-native"

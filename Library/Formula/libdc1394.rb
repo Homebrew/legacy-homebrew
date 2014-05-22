@@ -17,7 +17,7 @@ class Libdc1394 < Formula
 
   # Backport of upstream fixes for building on OS X
   patch do
-    url "https://gist.github.com/jacknagel/7395159/raw/3ba722636fb898d210170f5d8a494977c89626b7/libdc1394.patch"
+    url "https://gist.githubusercontent.com/jacknagel/7395159/raw/3ba722636fb898d210170f5d8a494977c89626b7/libdc1394.patch"
     sha1 "832869d05dabf8d62c1a5ac1b10a94fb7b7755c5"
   end
 

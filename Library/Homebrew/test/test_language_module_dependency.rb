@@ -52,16 +52,6 @@ class LanguageModuleDependencyTests < Test::Unit::TestCase
     assert_deps_pass "date" => :ruby
   end
 
-  if which("jruby")
-    def test_bad_jruby_deps
-      assert_deps_fail "notapackage" => :jruby
-    end
-
-    def test_good_jruby_deps
-      assert_deps_pass "date" => :jruby
-    end
-  end
-
   if which("rbx")
     def test_bad_rubinius_deps
       assert_deps_fail "notapackage" => :rbx

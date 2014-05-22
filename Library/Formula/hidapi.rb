@@ -25,7 +25,7 @@ class Hidapi < Formula
       }
     EOS
 
-    flags = `pkg-config --cflags --libs hidapi`.split + ENV.cflags.split
+    flags = `pkg-config --cflags --libs hidapi`.split + ENV.cflags.to_s.split
     system ENV.cc, "-o", "test", "test.c", *flags
     system './test'
   end

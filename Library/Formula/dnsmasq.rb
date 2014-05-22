@@ -2,13 +2,13 @@ require 'formula'
 
 class Dnsmasq < Formula
   homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.68.tar.gz'
-  sha1 'c78f5992539ff29924ca6aa1ba06ecb81710e743'
+  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.71.tar.gz'
+  sha1 'b0a39f66557c966629a0ed9282cd87df8f409004'
 
   bottle do
-    sha1 "604566d789db22d8c25b7bc28d255d5957c8d28a" => :mavericks
-    sha1 "cb1e603aa85cbbd86d871d4530c6a741e4b1968f" => :mountain_lion
-    sha1 "b3746e517c4ba585e595b9ff2ae36d2055a65037" => :lion
+    sha1 "96d2784aa36024ce06c727c323c211b0f278950f" => :mavericks
+    sha1 "ede61cf944079d566a059bd4638c75df22bc7057" => :mountain_lion
+    sha1 "a65ee0871fb0dd2d037d1742ca51d38f56005bb4" => :lion
   end
 
   option 'with-idn', 'Compile with IDN support'

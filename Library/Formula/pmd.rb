@@ -2,8 +2,8 @@ require "formula"
 
 class Pmd < Formula
   homepage "http://pmd.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/pmd/pmd/5.1.0/pmd-src-5.1.0.zip"
-  sha1 "5dff0c4ca2853c464ce4634079809bdf54918923"
+  url "https://downloads.sourceforge.net/project/pmd/pmd/5.1.1/pmd-src-5.1.1.zip"
+  sha1 "5c2149361f69bcfe48b88dbeaa8022be7c5bcfa4"
 
   def install
     rm Dir["bin/*.{bat,cmd,dll,exe}"]

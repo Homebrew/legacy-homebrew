@@ -2,9 +2,14 @@ require 'formula'
 
 class Rdesktop < Formula
   homepage 'http://www.rdesktop.org/'
+
+  # Note: please do not upgrade to version 1.8.x, as the keyboard and mouse
+  # do not work well in OSX. We should wait for this issue to be fixed first:
+  # http://sourceforge.net/p/rdesktop/bugs/376/
   url 'https://downloads.sourceforge.net/project/rdesktop/rdesktop/1.7.1/rdesktop-1.7.1.tar.gz'
   sha1 'c718d0f49948a964c7ef8424b8ade73ecce3aba3'
 
+  depends_on "openssl"
   depends_on :x11
 
   patch :DATA
@@ -13,7 +18,7 @@ class Rdesktop < Formula
     args = ["--prefix=#{prefix}",
             "--disable-credssp",
             "--disable-smartcard", # disable temporally before upstream fix
-            "--with-openssl=#{MacOS.sdk_path}/usr",
+            "--with-openssl=#{Formula["openssl"].opt_prefix}",
             "--x-includes=#{MacOS::X11.include}",
             "--x-libraries=#{MacOS::X11.lib}"]
     system "./configure", *args

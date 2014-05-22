@@ -10,4 +10,12 @@ class StringTest < Test::Unit::TestCase
     EOS
     assert undented == "hi\nmy friend over\nthere\n"
   end
+
+  def test_undent_not_indented
+    undented = <<-EOS.undent
+hi
+I'm not indented
+    EOS
+    assert undented == "hi\nI'm not indented\n"
+  end
 end

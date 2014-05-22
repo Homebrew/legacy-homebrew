@@ -2,14 +2,44 @@ require 'formula'
 
 class Git < Formula
   homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-1.9.2.tar.gz"
-  sha1 "5181808d99ea959951ee55a083de3bce8603436b"
   head "https://github.com/git/git.git", :shallow => false
 
+  stable do
+    url "https://www.kernel.org/pub/software/scm/git/git-1.9.3.tar.gz"
+    sha1 "8306305c4d39ac4fc07c9cf343241f12f7b69df2"
+
+    resource "man" do
+      url "https://www.kernel.org/pub/software/scm/git/git-manpages-1.9.3.tar.gz"
+      sha1 "88f4ef546eddad6a78496426c46a7e63fb53349a"
+    end
+
+    resource "html" do
+      url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-1.9.3.tar.gz"
+      sha1 "ee7c4dbdeef99b048a4c314ce3186c94ff80a928"
+    end
+  end
+
   bottle do
-    sha1 "ff18e0627a084d5f26052e9a2ffc186e3021f283" => :mavericks
-    sha1 "e7b9e452a60ea46d6f32d90b0b9e2801b4675cdb" => :mountain_lion
-    sha1 "58aa489119bb688648561305fec0f5bee4e55866" => :lion
+    revision 1
+    sha1 "1dc48e195c5ba69da02f2852745c491f29798f2e" => :mavericks
+    sha1 "f5b7f25814befcfdfb27a3aa70d71877ff9c38f4" => :mountain_lion
+    sha1 "da54997466f4d49b1448160ef3cabe52c1c6bf71" => :lion
+  end
+
+  devel do
+    version "2.0.0.rc3"
+    url "https://www.kernel.org/pub/software/scm/git/testing/git-2.0.0.rc3.tar.gz"
+    sha1 "ec5ad54c1461ad1b59d4093f7eeb43ad1c041bb1"
+
+    resource "man" do
+      url "https://www.kernel.org/pub/software/scm/git/testing/git-manpages-2.0.0.rc3.tar.gz"
+      sha1 "c1ed66e64c907a389e743f16200ccc0d53051ca8"
+    end
+
+    resource "html" do
+      url "https://www.kernel.org/pub/software/scm/git/testing/git-htmldocs-2.0.0.rc3.tar.gz"
+      sha1 "5e5a8374b36d2b794ecd5bfb648e0f16c0236ca5"
+    end
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -24,16 +54,6 @@ class Git < Formula
   depends_on 'curl' if build.with? 'brewed-curl'
   depends_on 'go' => :build if build.with? 'persistent-https'
 
-  resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-1.9.2.tar.gz"
-    sha1 "6f0871d02dd9181f59d6c59c3a4d26e2b42fbc0b"
-  end
-
-  resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-1.9.2.tar.gz"
-    sha1 "2563dade9a5282f6211740a6327ed13f8ff2df83"
-  end
-
   def install
     # If these things are installed, tell Git build system to not use them
     ENV['NO_FINK'] = '1'
@@ -43,8 +63,14 @@ class Git < Formula
     ENV['PYTHON_PATH'] = which 'python'
     ENV['PERL_PATH'] = which 'perl'
 
-    if MacOS.version >= :mavericks and MacOS.dev_tools_prefix
-      ENV['PERLLIB_EXTRA'] = "#{MacOS.dev_tools_prefix}/Library/Perl/5.16/darwin-thread-multi-2level"
+    if MacOS.version >= :mavericks
+      ENV["PERLLIB_EXTRA"] = %W{
+        #{MacOS.active_developer_dir}
+        /Library/Developer/CommandLineTools
+        /Applications/Xcode.app/Contents/Developer
+      }.uniq.map { |p|
+        "#{p}/Library/Perl/5.16/darwin-thread-multi-2level"
+      }.join(":")
     end
 
     unless quiet_system ENV['PERL_PATH'], '-e', 'use ExtUtils::MakeMaker'

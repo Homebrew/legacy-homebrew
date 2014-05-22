@@ -38,13 +38,13 @@ class Emacs < Formula
 
     # Make native fullscreen mode optional, mostly from upstream r111679
     patch do
-      url "https://gist.github.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch"
+      url "https://gist.githubusercontent.com/scotchi/7209145/raw/a571acda1c85e13ed8fe8ab7429dcb6cab52344f/ns-use-native-fullscreen-and-toggle-frame-fullscreen.patch"
       sha1 "cb4cc4940efa1a43a5d36ec7b989b90834b7442b"
     end
 
     # Fix memory leaks in NS version from upstream r114945
     patch do
-      url "https://gist.github.com/anonymous/8553178/raw/c0ddb67b6e92da35a815d3465c633e036df1a105/emacs.memory.leak.aka.distnoted.patch.diff"
+      url "https://gist.githubusercontent.com/anonymous/8553178/raw/c0ddb67b6e92da35a815d3465c633e036df1a105/emacs.memory.leak.aka.distnoted.patch.diff"
       sha1 "173ce253e0d8920e0aa7b1464d5635f6902c98e7"
     end
 
@@ -76,7 +76,7 @@ class Emacs < Formula
 
   def install
     # HEAD builds blow up when built in parallel as of April 20 2012
-    ENV.j1 if build.head?
+    ENV.deparallelize if build.head?
 
     args = ["--prefix=#{prefix}",
             "--without-dbus",

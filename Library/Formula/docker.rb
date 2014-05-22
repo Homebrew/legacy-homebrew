@@ -2,12 +2,12 @@ require "formula"
 
 class Docker < Formula
   homepage "http://docker.io"
-  url "https://github.com/dotcloud/docker.git", :tag => "v0.10.0"
+  url "https://github.com/dotcloud/docker.git", :tag => "v0.11.1"
 
   bottle do
-    sha1 "57c927d65003ffa8c399a60fabaf29210ec4850d" => :mavericks
-    sha1 "df39b81c702fd14a4d0715b30245dc43e0090ffe" => :mountain_lion
-    sha1 "7e792f28fbf1b18b6e758ffff81b4b3754533553" => :lion
+    sha1 "2a97dab4bb3109c57ed99144feb3d2bad6588b2c" => :mavericks
+    sha1 "0013849c9ab2b85374a944e25c42f974ee986911" => :mountain_lion
+    sha1 "a9a6021d388f1b004f262977968ed727c4aea022" => :lion
   end
 
   option "without-completions", "Disable bash/zsh completions"

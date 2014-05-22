@@ -20,4 +20,12 @@ class Multimarkdown < Formula
       #{opt_prefix}/Support
     EOS
   end
+
+  test do
+    IO.popen(bin/"mmd", "w+") do |pipe|
+      pipe.write "foo *bar*\n"
+      pipe.close_write
+      assert_equal "<p>foo <em>bar</em></p>\n", pipe.read
+    end
+  end
 end

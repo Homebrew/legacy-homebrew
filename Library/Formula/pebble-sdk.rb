@@ -2,17 +2,15 @@ require 'formula'
 
 class PebbleSdk < Formula
   homepage 'https://developer.getpebble.com/2/'
-  url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.0.2.tar.gz'
-  sha1 'c6e2cefb638ebcfffae31c6cc3b175d3e62b3c44'
+  url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.1.1.tar.gz'
+  sha1 'd22f1e62c1135fa6de6a42ce0c7b135d6dd66ce4'
 
   bottle do
-    revision 1
-    sha1 "ff81876666e670b59a681104bfcfc109315fa14d" => :mavericks
-    sha1 "85141cdbcdbbbf71b9e776971dac15861ea9db91" => :mountain_lion
+    sha1 "16e61316df5fe371425708f8ef169668f892aad6" => :mavericks
+    sha1 "a243cbd4db98b7320bcaa42d8d0aa8d759925256" => :mountain_lion
   end
 
   depends_on :macos => :mountain_lion
-  depends_on :python
   depends_on 'freetype' => :recommended
   depends_on 'mpfr' => :build
   depends_on 'gmp' => :build
@@ -74,10 +72,10 @@ class PebbleSdk < Formula
       s.gsub! /^process = subprocess\.Popen\(args, shell=False, env=local_python_env\)/, "process = subprocess.Popen(args, shell=False)"
     end
 
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    ENV.append_to_cflags '-Qunused-arguments'
     resource('freetype-py').stage { system "python", *install_args }
     resource('sh').stage { system "python", *install_args }
     resource('twisted').stage { system "python", *install_args }
@@ -85,10 +83,10 @@ class PebbleSdk < Formula
     resource('websocket-client').stage { system "python", *install_args }
     resource('pyserial').stage { system "python", *install_args }
     resource('pypng').stage { system "python", *install_args }
-    ENV.remove_from_cflags '-Qunused-arguments'
 
-    prefix.install %w[Documentation Examples Pebble PebbleKit-Android
-        PebbleKit-iOS bin tools requirements.txt version.txt]
+    doc.install %w[Documentation Examples PebbleKit-Android
+        PebbleKit-iOS README.txt]
+    prefix.install %w[Pebble bin tools requirements.txt version.txt]
 
     resource('pebble-arm-toolchain').stage do
       system "make", "PREFIX=#{prefix}/arm-cs-tools", "install-cross"
@@ -98,13 +96,19 @@ class PebbleSdk < Formula
   end
 
   test do
-    system 'pebble', 'new-project', 'test'
+    system bin/'pebble', 'new-project', 'test'
     cd 'test' do
       # We have to remove the default /usr/local/include from the CPATH
       # because the toolchain has -Werror=poison-system-directories set
       ENV['CPATH'] = ''
-      system 'pebble', 'build'
+      system bin/'pebble', 'build'
     end
+  end
+
+  def caveats; <<-EOS.undent
+    Documentation, examples and Android/iOS kits can be found in
+      #{doc}
+    EOS
   end
 end
 

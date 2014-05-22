@@ -18,22 +18,10 @@ class Opensc < Formula
   depends_on 'docbook-xsl' if build.with? "man-pages"
 
   def install
-    extra_args = []
+    args = []
 
     if build.with? "man-pages"
-      # If OpenSC's configure script detects docbook it will build manual
-      # pages. This extends the spirit of that logic to support homebrew
-      # installed docbook.
-      docbook_xsl = Formula["docbook-xsl"]
-      # OpenSC looks in a set of common paths for docbook's xsl files,
-      # but not in /usr/local, and certainly not in homebrew's
-      # cellar. This specifies the correct homebrew path.
-
-      # Avoid using information from the docbook formula here, as it
-      # will always refer to the latest version which is not
-      # necessarily the installed version.
-      extra_args << "--with-xsl-stylesheetsdir=" +
-        "#{docbook_xsl.opt_prefix}/docbook-xsl/"
+      args << "--with-xsl-stylesheetsdir=#{Formula["docbook-xsl"].opt_prefix}/docbook-xsl"
     end
 
     system "./bootstrap" if build.head?
@@ -42,7 +30,7 @@ class Opensc < Formula
                           "--enable-sm",
                           "--enable-openssl",
                           "--enable-pcsc",
-                          *extra_args
+                          *args
 
     system "make install"
   end

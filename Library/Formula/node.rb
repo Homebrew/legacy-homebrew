@@ -1,27 +1,27 @@
-require 'formula'
+require "formula"
 
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
-  homepage 'http://nodejs.org/'
-  url 'http://nodejs.org/dist/v0.10.26/node-v0.10.26.tar.gz'
-  sha1 '2340ec2dce1794f1ca1c685b56840dd515a271b2'
+  homepage "http://nodejs.org/"
+  url "http://nodejs.org/dist/v0.10.28/node-v0.10.28.tar.gz"
+  sha1 "ef08a75f6359a16e672cae684e0804ca7f4554b7"
 
   bottle do
-    sha1 "0db92b18d10cb7505d7c885058e337aeb5e9741c" => :mavericks
-    sha1 "b48b83e92cdb8b064620c7fef409b37a2ae90e67" => :mountain_lion
-    sha1 "ecd7b384658ad1a54a74174d07dcffc3aa5ddc92" => :lion
+    sha1 "22ea2a8408d8dacfa486b1badd42a70506f3aecc" => :mavericks
+    sha1 "943f78e9337ecb8158e579b12148db541beedaea" => :mountain_lion
+    sha1 "3548317dae53ecf767e530e4c27c9d2373cfb70b" => :lion
   end
 
   devel do
-    url 'http://nodejs.org/dist/v0.11.12/node-v0.11.12.tar.gz'
-    sha1 'd991057af05dd70feb2126469ce279a2fe869e86'
+    url "http://nodejs.org/dist/v0.11.13/node-v0.11.13.tar.gz"
+    sha1 "da4a9adb73978710566f643241b2c05fb8a97574"
   end
 
-  head 'https://github.com/joyent/node.git'
+  head "https://github.com/joyent/node.git"
 
-  option 'enable-debug', 'Build with debugger hooks'
-  option 'without-npm', 'npm will not be installed'
-  option 'without-completion', 'npm bash completion will not be installed'
+  option "enable-debug", "Build with debugger hooks"
+  option "without-npm", "npm will not be installed"
+  option "without-completion", "npm bash completion will not be installed"
 
   depends_on :python => :build
 
@@ -30,13 +30,13 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "http://registry.npmjs.org/npm/-/npm-1.4.6.tgz"
-    sha1 "0e151bce38e72cf2206a6299fa5164123f04256e"
+    url "http://registry.npmjs.org/npm/-/npm-1.4.9.tgz"
+    sha1 "29094f675dad69fc5ea24960a81c7abbfca5ce01"
   end
 
   def install
     args = %W{--prefix=#{prefix} --without-npm}
-    args << "--debug" if build.include? 'enable-debug'
+    args << "--debug" if build.include? "enable-debug"
 
     system "./configure", *args
     system "make", "install"
@@ -59,9 +59,8 @@ class Node < Formula
     system "#{HOMEBREW_PREFIX}/bin/npm", "update", "npm", "-g"
 
     Pathname.glob(npm_root/"man/*") do |man|
-      dir = send(man.basename)
       man.children.each do |file|
-        dir.install_symlink(file)
+        ln_sf file, "#{HOMEBREW_PREFIX}/share/man/#{man.basename}"
       end
     end
 

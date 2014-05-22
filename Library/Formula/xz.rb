@@ -10,10 +10,10 @@ class Xz < Formula
 
   bottle do
     cellar :any
-    revision 2
-    sha1 'ed851938129e0173354a4e0a7058037dac8e0104' => :mavericks
-    sha1 'e73944a34e81f7e4f097c24203bd935a140965ca' => :mountain_lion
-    sha1 'aff7ceb3547130722b9928a6f1e72c9d44b92a21' => :lion
+    revision 3
+    sha1 "d42b938770762ca46351f73f247b4b092d91c2ae" => :mavericks
+    sha1 "16eb170fe01074ed3f49eb14c37f0608f208f555" => :mountain_lion
+    sha1 "3052beb5c60568455182ee28129ca47648fd0659" => :lion
   end
 
   option :universal
@@ -23,5 +23,19 @@ class Xz < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+  end
+
+  test do
+    path = testpath/"data.txt"
+    original_contents = "." * 1000
+    path.write original_contents
+
+    # compress: data.txt -> data.txt.xz
+    system bin/"xz", path
+    assert !path.exist?
+
+    # decompress: data.txt.xz -> data.txt
+    system bin/"xz", "-d", "#{path}.xz"
+    assert_equal original_contents, path.read
   end
 end

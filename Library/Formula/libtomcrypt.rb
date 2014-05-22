@@ -9,7 +9,7 @@ class Libtomcrypt < Formula
 
   def install
     ENV['DESTDIR'] = prefix
-    ENV['CFLAGS'] += "-DLTM_DESC -DUSE_LTM"
+    ENV.append "CFLAGS", "-DLTM_DESC -DUSE_LTM"
     ENV['EXTRALIBS'] = "-ltommath"
 
     system "make", "library"

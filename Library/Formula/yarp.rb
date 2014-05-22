@@ -2,8 +2,8 @@ require 'formula'
 
 class Yarp < Formula
   homepage 'http://yarp.it'
-  url 'https://downloads.sourceforge.net/yarp0/yarp-2.3.22.tar.gz'
-  sha1 '86a075d1fbaa21b846e32c6c1a58bf409983d971'
+  url 'https://downloads.sourceforge.net/yarp0/yarp-2.3.62.tar.gz'
+  sha1 '96e35fe64365d6b85d24e11d37f31a974f026df8'
 
   head 'https://yarp0.svn.sourceforge.net/svnroot/yarp0/trunk/yarp2'
 

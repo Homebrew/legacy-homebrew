@@ -18,15 +18,12 @@ class GnupgPkcs11Scd < Formula
    depends_on 'pkcs11-helper'
 
    def install
-      # Compatibility with Automake 1.13+
-      inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
-
-      system "autoreconf", "--verbose", "--install", "--force"
-      system "./configure", "--disable-dependency-tracking",
-                            "--with-libgpg-error-prefix=#{HOMEBREW_PREFIX}",
-                            "--with-libassuan-prefix=#{HOMEBREW_PREFIX}",
-                            "--with-libgcrypt-prefix=#{HOMEBREW_PREFIX}",
-                            "--prefix=#{prefix}"
+     system "autoreconf", "-fvi"
+     system "./configure", "--disable-dependency-tracking",
+                           "--with-libgpg-error-prefix=#{Formula["libgpg-error"].opt_prefix}",
+                           "--with-libassuan-prefix=#{Formula["libassuan"].opt_prefix}",
+                           "--with-libgcrypt-prefix=#{Formula["libgcrypt"].opt_prefix}",
+                           "--prefix=#{prefix}"
       system "make install"
    end
 
