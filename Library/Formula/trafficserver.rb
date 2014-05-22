@@ -1,12 +1,12 @@
-require 'formula'
+require "formula"
 
 class Trafficserver < Formula
-  homepage 'http://trafficserver.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-4.2.0.tar.bz2'
-  mirror 'http://archive.apache.org/dist/trafficserver/trafficserver-4.2.0.tar.bz2'
-  sha1 'feb1d45fecccbc00fa988e768909a6664a43a354'
+  homepage "http://trafficserver.apache.org/"
+  url "http://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-4.2.1.tar.bz2"
+  mirror "http://archive.apache.org/dist/trafficserver/trafficserver-4.2.1.tar.bz2"
+  sha1 "0d963dd9e65a7aa0415e06dd0f8a987c3430a6b3"
 
-  depends_on 'pcre'
+  depends_on "pcre"
 
   #remove some amd64 compiler options that fail on Snow Leopard
   patch :DATA if MacOS.version == :snow_leopard

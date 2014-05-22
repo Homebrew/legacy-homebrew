@@ -11,6 +11,7 @@ class Libsvm < Formula
     bin.install "svm-scale", "svm-train", "svm-predict"
     lib.install "libsvm.so.2" => "libsvm.2.dylib"
     lib.install_symlink "libsvm.2.dylib" => "libsvm.dylib"
+    system "install_name_tool", "-id", "#{lib}/libsvm.2.dylib", "#{lib}/libsvm.2.dylib"
     include.install "svm.h"
   end
 end

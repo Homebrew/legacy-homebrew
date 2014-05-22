@@ -15,6 +15,6 @@ class Rebar < Formula
   end
 
   test do
-    system "rebar", "--version"
+    system bin/"rebar", "--version"
   end
 end

@@ -28,6 +28,6 @@ class Henplus < Formula
   end
 
   test do
-    system "echo exit | henplus | grep -v Exception"
+    system bin/"henplus", "--help"
   end
 end

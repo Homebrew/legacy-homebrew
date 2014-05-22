@@ -21,4 +21,10 @@ class AdobeAirSdk < Formula
     libexec.install Dir["*"]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
+
+  def caveats; <<-EOS.undent
+    To set AIR_HOME:
+      export AIR_HOME=#{libexec}
+    EOS
+  end
 end
