@@ -84,7 +84,6 @@ module Superenv
     # compiler flag stripping. It consists of a string of characters which act
     # as flags. Some of these flags are mutually exclusive.
     #
-    # 3 - A 32-bit build was requested
     # O - Enables argument refurbishing. Only active under the
     #     make/bsdmake wrappers currently.
     # x - Enable C++11 mode.
@@ -297,6 +296,10 @@ module Superenv
     append "HOMEBREW_CCCFG", "K"
   end
 
+  def m32
+    append "HOMEBREW_ARCHFLAGS", "-m32"
+  end
+
   def cxx11
     case homebrew_cc
     when "clang"
@@ -319,11 +322,6 @@ module Superenv
 
   def refurbish_args
     append 'HOMEBREW_CCCFG', "O", ''
-  end
-
-  # m32 on superenv does not add any CC flags. It prevents "-m32" from being erased.
-  def m32
-    append 'HOMEBREW_CCCFG', "3", ''
   end
 
   %w{O3 O2 O1 O0 Os}.each do |opt|
