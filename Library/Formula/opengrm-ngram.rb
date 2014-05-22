@@ -21,18 +21,18 @@ class OpengrmNgram < Formula
 
   test do
     resource("earnest").stage do
-        fname = "earnest.txt"
-        # tests using normalized The Importance of Being Earnest, based on
-        # examples from the OpenGRM "NGram quick tour" page...
-        system "ngramsymbols", fname, "e.syms"
-        system "farcompilestrings", "-symbols=e.syms",
-                                    "-keep_symbols=1",
-                                    fname, "e.far"
-        system "ngramcount", "-order=5", "e.far", "e.cnts"
-        system "ngrammake", "e.cnts", "e.mod"
-        system "ngramshrink", "-method=relative_entropy", "e.mod", "e.pru"
-        system "ngramprint", "--ARPA", "e.mod"
-        system "ngraminfo", "e.mod"
+      fname = "earnest.txt"
+      # tests using normalized The Importance of Being Earnest, based on
+      # examples from the OpenGRM "NGram quick tour" page...
+      system bin/"ngramsymbols", fname, "e.syms"
+      system bin/"farcompilestrings", "-symbols=e.syms",
+                                      "-keep_symbols=1",
+                                      fname, "e.far"
+      system bin/"ngramcount", "-order=5", "e.far", "e.cnts"
+      system bin/"ngrammake", "e.cnts", "e.mod"
+      system bin/"ngramshrink", "-method=relative_entropy", "e.mod", "e.pru"
+      system bin/"ngramprint", "--ARPA", "e.mod"
+      system bin/"ngraminfo", "e.mod"
     end
   end
 end
