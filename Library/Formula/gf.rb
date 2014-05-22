@@ -3,19 +3,18 @@ require "language/haskell"
 
 class Gf < Formula
 
-    depends_on "haskell-platform"
+    homepage "http://www.grammaticalframework.org/"
 
     stable do
+        depends_on "haskell-platform"
         url "http://www.grammaticalframework.org/download/gf-3.5.tar.gz"
         sha1 "9c3d156df73b79c2121a46c6c29c571bfdd619c2"
     end
 
     def install
-      bindir = "--bindir=#{bin}"
-      datadir = "--datadir=#{share}"
-      libdir = "--libdir=#{lib}"
       system "cabal", "update"
-      system "cabal", "install", bindir, libdir, datadir
+      system "cabal", "install",
+        "--bindir=#{bin}", "--libdir=#{lib}", "--datadir=#{share}"
     end
 
     test  do
