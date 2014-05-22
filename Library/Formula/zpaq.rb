@@ -21,6 +21,6 @@ class Zpaq < Formula
     zpaq = bin/"zpaq"
     system zpaq, "a", archive, "#{include}/libzpaq.h"
     system zpaq, "t", archive
-    archive.read(4) == "7kSt"
+    assert_equal "7kSt", archive.read(4)
   end
 end
