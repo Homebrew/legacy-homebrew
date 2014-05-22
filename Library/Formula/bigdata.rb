@@ -17,9 +17,6 @@ class Bigdata < Formula
       s.sub! "<%= INSTALL_TYPE %>", "BREW"
     end
 
-    # Set the Jetty root as the resourceBase in the jetty.xml file:
-    inreplace "#{prefix}/var/jetty/jetty.xml", "<%= JETTY_DIR %>", "#{prefix}/var/jetty"
-
     # Set the installation path as the root for bigdata.jnl file location (<bigdata_home>/data):
     inreplace "#{prefix}/var/jetty/WEB-INF/RWStore.properties", "<%= BD_HOME %>", prefix
 
