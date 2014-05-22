@@ -11,7 +11,7 @@ class Gnumeric < Formula
   depends_on "intltool" => :build
   depends_on "gettext"
   depends_on "goffice"
-  depends_on "pygobject" => if build.include? "python-scripting"
+  depends_on "pygobject" if build.include? "python-scripting"
   depends_on "rarian"
   depends_on :x11
 
