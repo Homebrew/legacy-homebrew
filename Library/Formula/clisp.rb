@@ -36,7 +36,7 @@ class Clisp < Formula
       # make Homebrew's the last such option so it's effective.
       inreplace "Makefile" do |s|
         s.change_make_var! 'CFLAGS', "#{s.get_make_var('CFLAGS')} #{ENV['CFLAGS']}"
-      end unless superenv?
+      end
 
       # The ulimit must be set, otherwise `make` will fail and tell you to do so
       system "ulimit -s 16384 && make"

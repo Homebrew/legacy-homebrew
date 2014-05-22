@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class Gource < Formula
-  homepage 'http://code.google.com/p/gource/'
-  head 'https://github.com/acaudwell/Gource.git'
-  url 'https://github.com/acaudwell/Gource/releases/download/gource-0.41/gource-0.41.tar.gz'
-  sha1 '75aa1e2c5afc2f91b54629d086f2a80bf3b553e5'
+  homepage "http://code.google.com/p/gource/"
+  head "https://github.com/acaudwell/Gource.git"
+  url "https://github.com/acaudwell/Gource/releases/download/gource-0.42/gource-0.42.tar.gz"
+  sha1 "97ebaa5c9dd73698f578c0afd1c6e8d514d7452c"
 
   head do
-    url 'https://github.com/acaudwell/Gource.git'
+    url "https://github.com/acaudwell/Gource.git"
 
     depends_on :autoconf
     depends_on :automake
@@ -17,20 +17,23 @@ class Gource < Formula
   depends_on :x11 => :optional
   depends_on :freetype
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glm' => :build
+  depends_on "pkg-config" => :build
+  depends_on "glm" => :build
+
+  # boost failing on lion
+  depends_on :macos => :mountain_lion
 
   if MacOS.version < :mavericks
-    depends_on 'boost' => 'c++11'
+    depends_on "boost" => "c++11"
   else
-    depends_on 'boost'
+    depends_on "boost"
   end
 
-  depends_on 'glew'
-  depends_on 'jpeg'
-  depends_on 'pcre'
-  depends_on 'sdl2'
-  depends_on 'sdl2_image'
+  depends_on "glew"
+  depends_on "jpeg"
+  depends_on "pcre"
+  depends_on "sdl2"
+  depends_on "sdl2_image"
 
   needs :cxx11
 
