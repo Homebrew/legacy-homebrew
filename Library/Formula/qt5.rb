@@ -18,10 +18,9 @@ class Qt5 < Formula
   sha1 "edb6a71b9c45c39251f59a999a48a5f552ff07d3"
 
   bottle do
-    revision 2
-    sha1 "6a514fbf56491a64316ef05acdf07ca6526ba458" => :mavericks
-    sha1 "2518707b0ad69462a620fcd5c2e482053a239914" => :mountain_lion
-    sha1 "b2362eb20666b961d1d2acec629e4a581aa2b87a" => :lion
+    sha1 "5d3c6e5d3409d9ea1cc06f1f4a108e533b32adef" => :mavericks
+    sha1 "fc8865525ef5fe797eff4e4b7825885725860941" => :mountain_lion
+    sha1 "13b788c9e3a5a2914d4614f32988a0a9c0061402" => :lion
   end
 
   head "git://gitorious.org/qt/qt5.git", :branch => "stable",
