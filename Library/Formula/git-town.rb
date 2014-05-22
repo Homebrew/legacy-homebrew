@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class GitTown < Formula
   homepage 'https://github.com/Originate/git-town'
@@ -9,6 +9,6 @@ class GitTown < Formula
   def install
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/git-*"]
-    bin.install_symlink Dir["#{libexec}/helpers"]
+    bin.install_symlink "#{libexec}/helpers"
   end
 end
