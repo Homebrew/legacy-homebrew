@@ -8,6 +8,7 @@ class MysqlHandlersocket < Formula
 
   depends_on 'mysql'
   depends_on 'libtool' => :build
+  depends_on 'automake'
 
   def install
     hs_dir = Dir.pwd
