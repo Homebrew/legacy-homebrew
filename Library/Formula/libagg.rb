@@ -10,7 +10,7 @@ class Libagg < Formula
   depends_on 'libtool' => :build
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
-  depends_on :freetype => :optional
+  depends_on 'freetype' => :optional
 
   # Fix build with clang; last release was in 2006
   patch :DATA
