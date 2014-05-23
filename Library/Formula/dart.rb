@@ -4,10 +4,10 @@ class Dart < Formula
   homepage 'http://www.dartlang.org/'
 
   if MacOS.prefer_64_bit?
-    url 'http://storage.googleapis.com/dart-archive/channels/stable/release/latest/sdk/dartsdk-macos-x64-release.zip'
+    url 'http://storage.googleapis.com/dart-archive/channels/stable/release/36345/sdk/dartsdk-macos-x64-release.zip'
     sha1 '8ed175ea11d41298f5fcbea569f16d349fa798f0'
   else
-    url 'http://storage.googleapis.com/dart-archive/channels/stable/release/latest/sdk/dartsdk-macos-ia32-release.zip'
+    url 'http://storage.googleapis.com/dart-archive/channels/stable/release/36345/sdk/dartsdk-macos-ia32-release.zip'
     sha1 '4562f8ca166b50b2be882130a6a666de1b58f887'
   end
 
