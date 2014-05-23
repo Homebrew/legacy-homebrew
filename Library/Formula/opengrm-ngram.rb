@@ -2,8 +2,8 @@ require "formula"
 
 class OpengrmNgram < Formula
   homepage "http://www.openfst.org/twiki/bin/view/GRM/NGramLibrary"
-  url "http://openfst.cs.nyu.edu/twiki/pub/GRM/NGramDownload/opengrm-ngram-1.1.0.tar.gz"
-  sha1 "a2ceeaf6ac129b66d2682d76a20388cf1d4b8c31"
+  url "http://openfst.cs.nyu.edu/twiki/pub/GRM/NGramDownload/opengrm-ngram-1.2.1.tar.gz"
+  sha1 "827286a36b2cbac5bfeecebbf946e2cc0804c1e1"
 
   depends_on "openfst"
 
@@ -12,10 +12,11 @@ class OpengrmNgram < Formula
     sha1 "122c72f34a41ecb5e21102724938756fdfe349ec"
   end
 
+  needs :cxx11
+
   def install
-    ENV.libstdcxx if ENV.compiler == :clang && MacOS.version >= :mavericks
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking"
+    ENV.cxx11
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 
