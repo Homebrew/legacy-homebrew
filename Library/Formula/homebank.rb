@@ -16,8 +16,8 @@ class Homebank < Formula
   depends_on 'gettext'
   depends_on 'gtk+'
   depends_on 'hicolor-icon-theme'
-  depends_on :freetype
-  depends_on :fontconfig
+  depends_on 'freetype'
+  depends_on 'fontconfig'
   depends_on 'libofx' => :optional
 
   def install
