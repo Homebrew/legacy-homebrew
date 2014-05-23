@@ -29,9 +29,9 @@ class Gcc < Formula
   head "svn://gcc.gnu.org/svn/gcc/branches/gcc-4_8-branch"
 
   bottle do
-    sha1 "aacd8626960670beedf85ad13f96784f08e122a6" => :mavericks
-    sha1 "fa80b7165d621fed7df413a676025aecf7faaff1" => :mountain_lion
-    sha1 "5e0b1fd8dabc07f77eb2b5a1c61e0257e98c3918" => :lion
+    sha1 "628c34336de1f0c20d39b39714d45ff9b9b20314" => :mavericks
+    sha1 "9f8a125ad66239d0fa27da750205feb769d03014" => :mountain_lion
+    sha1 "dd5aba103305a572c5c4707802db1df7b7103959" => :lion
   end
 
   option "with-java", "Build the gcj compiler"
