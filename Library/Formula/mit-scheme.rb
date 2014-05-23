@@ -3,14 +3,14 @@ require 'formula'
 class MitScheme < Formula
   homepage 'http://www.gnu.org/software/mit-scheme/'
   url 'http://ftpmirror.gnu.org/mit-scheme/stable.pkg/9.2/mit-scheme-c-9.2.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/mit-scheme/stable.pkg/9.2/mit-scheme-c-9.2.tar.gz'
+  sha1 'd2820ee76da109d370535fec6e19910a673aa7ee'
+
   bottle do
     sha1 "dadd99b6228b6950c91e57a0e5197a5f61f80cd1" => :mavericks
     sha1 "d91e6fdd907d7747fa56cced88926242888d50d5" => :mountain_lion
     sha1 "e02e2cf5cc62c24159ef5690172c9bcb4e09645d" => :lion
   end
-
-  mirror 'http://ftp.gnu.org/gnu/mit-scheme/stable.pkg/9.2/mit-scheme-c-9.2.tar.gz'
-  sha1 'd2820ee76da109d370535fec6e19910a673aa7ee'
 
   conflicts_with 'tinyscheme', :because => 'both install a `scheme` binary'
 
