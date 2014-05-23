@@ -98,7 +98,7 @@ class Subversion < Formula
         puts "  brew install subversion --universal --java"
       end
 
-      ENV.fetch('JAVA_HOME') do
+      if ENV["JAVA_HOME"]
         opoo "JAVA_HOME is set. Try unsetting it if JNI headers cannot be found."
       end
     end
