@@ -7,7 +7,7 @@ class Libextractor < Formula
   sha1 "613d0b80e83c79c3e05e073bcda0d0d0bd1f3336"
 
   depends_on "pkg-config" => :build
-  depends_on :libtool => :run
+  depends_on "libtool" => :run
   depends_on "iso-codes" => :optional
 
   conflicts_with "sptk", :because => "both install `extract`"
