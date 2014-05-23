@@ -18,7 +18,6 @@ class Libpst < Formula
     ]
     args << '--disable-dii' unless build.include? 'pst2dii'
     if build.with? 'python'
-      # ENV['PYTHON_EXTRA_LDFLAGS'] = '-u _PyMac_Error'
       args << '--enable-python' << '--with-boost-python=mt'
     else
       args << '--disable-python'
