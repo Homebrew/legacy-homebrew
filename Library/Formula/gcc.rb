@@ -22,10 +22,9 @@ class Gcc < Formula
   end
 
   homepage "http://gcc.gnu.org"
-  url "http://ftpmirror.gnu.org/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2"
-  mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.8.2/gcc-4.8.2.tar.bz2"
-  sha1 "810fb70bd721e1d9f446b6503afe0a9088b62986"
-  revision 1
+  url "http://ftpmirror.gnu.org/gcc/gcc-4.8.3/gcc-4.8.3.tar.bz2"
+  mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.8.3/gcc-4.8.3.tar.bz2"
+  sha1 "da0a2b9ec074f2bf624a34f3507f812ebb6e4dce"
 
   head "svn://gcc.gnu.org/svn/gcc/branches/gcc-4_8-branch"
 
