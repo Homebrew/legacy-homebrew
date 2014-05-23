@@ -50,3 +50,16 @@ index 8aaab1e..b606d2b 100644
  ANT_GL_CORE_DECL(void, glUseProgram, (GLuint program))
  ANT_GL_CORE_DECL(void, glUniform1f, (GLint location, GLfloat v0))
  ANT_GL_CORE_DECL(void, glUniform2f, (GLint location, GLfloat v0, GLfloat v1))
+diff --git a/src/LoadOGLCore.cpp b/src/LoadOGLCore.cpp
+index 2daa573..b8b9151 100644
+--- a/src/LoadOGLCore.cpp
++++ b/src/LoadOGLCore.cpp
+@@ -484,7 +484,7 @@ namespace GLCore { PFNGLGetProcAddress _glGetProcAddress = NULL; }
+         void *proc=NULL;
+         if (gl_dyld == NULL)
+         {
+-            gl_dyld = dlopen("OpenGL",RTLD_LAZY);
++            gl_dyld = dlopen("/System/Library/Frameworks/OpenGL.framework/OpenGL",RTLD_LAZY);
+         }
+         if (gl_dyld)
+         {
