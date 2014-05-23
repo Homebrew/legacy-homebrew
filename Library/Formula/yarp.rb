@@ -2,10 +2,10 @@ require 'formula'
 
 class Yarp < Formula
   homepage 'http://yarp.it'
-  url 'https://downloads.sourceforge.net/yarp0/yarp-2.3.62.tar.gz'
-  sha1 '96e35fe64365d6b85d24e11d37f31a974f026df8'
+  url 'https://github.com/robotology/yarp/archive/v2.3.62.tar.gz'
+  sha1 '148fc9d77cc4b68119c31066b452e9607de0f066'
 
-  head 'https://yarp0.svn.sourceforge.net/svnroot/yarp0/trunk/yarp2'
+  head 'https://github.com/robotology/yarp.git'
 
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
