@@ -28,18 +28,8 @@ class Mpfr < Formula
   end
 
   def install
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-
-    # Build 32-bit where appropriate, and help configure find 64-bit CPUs
-    if MacOS.prefer_64_bit? and not build.build_32_bit?
-      ENV.m64
-      args << "--build=x86_64-apple-darwin"
-    else
-      ENV.m32
-      args << "--build=none-apple-darwin"
-    end
-
-    system "./configure", *args
+    ENV.m32 if build.build_32_bit?
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
     system "make check"
     system "make install"
