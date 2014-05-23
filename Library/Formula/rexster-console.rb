@@ -5,6 +5,8 @@ class RexsterConsole < Formula
   url "http://tinkerpop.com/downloads/rexster/rexster-console-2.5.0.zip"
   sha1 "0243908c0ab65baea4b8092bb2b818c597622187"
 
+  # Upstream in next release:
+  # https://github.com/tinkerpop/rexster/commit/ac1d51c37b0bd7ccebd96e5605969b74a4ca1288
   patch :DATA
 
   def install
