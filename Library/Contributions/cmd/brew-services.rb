@@ -348,9 +348,9 @@ class Service
               gsub(%r{(<key>Label</key>\s*<string>)[^<]*(</string>)}, '\1' + label + '\2')
 
     # and force fix UserName, if necessary
-    if formula.startup_user != "root" && data =~ %r{<key>UserName</key>\s*<string>root</string>}
+    if !ServicesCli.root? && formula.startup_user != "root" && data =~ %r{<key>UserName</key>\s*<string>root</string>}
       data = data.gsub(%r{(<key>UserName</key>\s*<string>)[^<]*(</string>)}, '\1' + formula.startup_user + '\2')
-    elsif ServicesCli.root? && formula.startup_user != "root" && data !~ %r{<key>UserName</key>}
+    elsif !ServicesCli.root? && formula.startup_user != "root" && data !~ %r{<key>UserName</key>}
       data = data.gsub(%r{(</dict>\s*</plist>)}, "  <key>UserName</key><string>#{formula.startup_user}</string>\n\\1")
     end
 
