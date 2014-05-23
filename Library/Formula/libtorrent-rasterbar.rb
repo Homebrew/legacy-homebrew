@@ -12,8 +12,8 @@ class LibtorrentRasterbar < Formula
     sha1 "73888143ab640425dae0e8826f809369e55f06dd" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'openssl' if MacOS.version <= :snow_leopard # Needs a newer version of OpenSSL on Snow Leopard
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
   depends_on :python => :optional
 
   if build.with? "python"
