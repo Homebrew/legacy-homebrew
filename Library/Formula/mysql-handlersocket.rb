@@ -6,7 +6,8 @@ class MysqlHandlersocket < Formula
   url 'https://github.com/DeNA/HandlerSocket-Plugin-for-MySQL/archive/mysql56.zip'
   sha1 'e809e3b1927264d2245c18a7b23875d7fd748ea2'
 
-  depends_on :mysql
+  depends_on 'mysql'
+  depends_on 'libtool'
 
   def install
     hs_dir = Dir.pwd
