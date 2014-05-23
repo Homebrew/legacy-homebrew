@@ -12,26 +12,16 @@ class Ldns < Formula
     sha1 "99a0c73caa2ef8289e06730b39d56da5fa886cc5" => :lion
   end
 
-  option 'with-gost', 'Compile ldns with support for GOST algorithms in DNSSEC'
-
   depends_on :python => :optional
-  depends_on 'swig' if build.with? 'python'
-
-  # gost requires OpenSSL >= 1.0.0
-  depends_on 'openssl' if build.with? 'gost'
+  depends_on 'openssl'
+  depends_on 'swig' => :build if build.with? 'python'
 
   def install
     args = %W[
       --prefix=#{prefix}
       --with-drill
+      --with-ssl=#{Formula["openssl"].opt_prefix}
     ]
-
-    if build.with? 'gost'
-      args << "--with-ssl=#{HOMEBREW_PREFIX}/opt/openssl"
-    else
-      args << "--disable-gost"
-      args << "--with-ssl=#{MacOS.sdk_path}/usr"
-    end
 
     args << "--with-pyldns" if build.with? 'python'
 
