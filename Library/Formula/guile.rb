@@ -21,13 +21,11 @@ class Guile < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on :libtool
+  depends_on 'libtool' => :run
   depends_on 'libffi'
   depends_on 'libunistring'
   depends_on 'bdw-gc'
   depends_on 'gmp'
-
-  # GNU Readline is required; libedit won't work.
   depends_on 'readline'
 
   fails_with :llvm do
