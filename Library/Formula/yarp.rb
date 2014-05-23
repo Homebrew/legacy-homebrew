@@ -1,22 +1,21 @@
-require 'formula'
+require "formula"
 
 class Yarp < Formula
-  homepage 'http://yarp.it'
-  url 'https://github.com/robotology/yarp/archive/v2.3.62.tar.gz'
-  sha1 '148fc9d77cc4b68119c31066b452e9607de0f066'
+  homepage "http://yarp.it"
+  head "https://github.com/robotology/yarp.git"
+  url "https://github.com/robotology/yarp/archive/v2.3.62.tar.gz"
+  sha1 "148fc9d77cc4b68119c31066b452e9607de0f066"
 
-  head 'https://github.com/robotology/yarp.git'
-
-  depends_on 'pkg-config' => :build
-  depends_on 'cmake' => :build
-  depends_on 'ace'
-  depends_on 'gsl'
-  depends_on 'gtk+'
-  depends_on 'gtkmm'
-  depends_on 'libglademm'
-  depends_on 'sqlite'
-  depends_on 'readline'
-  depends_on 'jpeg'
+  depends_on "pkg-config" => :build
+  depends_on "cmake" => :build
+  depends_on "ace"
+  depends_on "gsl"
+  depends_on "gtk+"
+  depends_on "gtkmm"
+  depends_on "libglademm"
+  depends_on "sqlite"
+  depends_on "readline"
+  depends_on "jpeg"
   depends_on :x11
 
   def install
@@ -41,7 +40,7 @@ class Yarp < Formula
       .]
 
     system "cmake", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do
