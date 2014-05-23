@@ -6,10 +6,10 @@ class Ldns < Formula
   sha1 '4218897b3c002aadfc7280b3f40cda829e05c9a4'
 
   bottle do
-    revision 1
-    sha1 "e7c38081f1bfef2b0cc38284bc735f7021ea415c" => :mavericks
-    sha1 "6ebe8d12f028f61d06b65435741c948f3b5cdc6e" => :mountain_lion
-    sha1 "99a0c73caa2ef8289e06730b39d56da5fa886cc5" => :lion
+    revision 2
+    sha1 "0730f244c3191ccc105e681d0a046dd0a03f582d" => :mavericks
+    sha1 "d1d014414e72ff7635bea795b2b140d9f33898f3" => :mountain_lion
+    sha1 "1cfa7037a76eac035e4e1089514a044eff2e6b8b" => :lion
   end
 
   depends_on :python => :optional
