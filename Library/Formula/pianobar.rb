@@ -15,6 +15,7 @@ class Pianobar < Formula
   depends_on 'gnutls'
   depends_on 'libgcrypt'
   depends_on 'json-c'
+  depends_on 'ffmpeg' if build.head?
 
   fails_with :llvm do
     build 2334
@@ -29,6 +30,9 @@ class Pianobar < Formula
                     # build if we aren't /usr/local'
                     "#{ENV.cppflags} #{ENV.ldflags}"
 
+    if build.head?
+      inreplace "Makefile", "#LIBAV:=ffmpeg2.2", "LIBAV:=ffmpeg2.2"
+    end
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
 
