@@ -3,11 +3,11 @@ require "resource"
 
 class MysqlHandlersocket < Formula
   homepage 'https://github.com/ahiguti/HandlerSocket-Plugin-for-MySQL'
-  url 'https://github.com/DeNA/HandlerSocket-Plugin-for-MySQL/archive/mysql56.zip'
-  sha1 'e809e3b1927264d2245c18a7b23875d7fd748ea2'
+  url 'https://github.com/DeNA/HandlerSocket-Plugin-for-MySQL/archive/mysql56.tar.gz'
+  sha1 '52c145c35ca4cf36f49add6a2f27d92e28e92d38'
 
   depends_on 'mysql'
-  depends_on 'libtool'
+  depends_on 'libtool' => :build
 
   def install
     hs_dir = Dir.pwd
