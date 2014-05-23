@@ -35,6 +35,7 @@ class Qt5 < Formula
   depends_on "pkg-config" => :build
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
+  depends_on :xcode
 
   odie "qt5: --with-qtdbus has been renamed to --with-d-bus" if build.with? "qtdbus"
   odie "qt5: --with-demos-examples is no longer supported" if build.with? "demos-examples"
