@@ -7,6 +7,8 @@ class JohnJumbo < Formula
 
   conflicts_with 'john', :because => 'both install the same binaries'
 
+  depends_on "openssl"
+
   # First patch taken from MacPorts, tells john where to find runtime files
   # Second patch protects against a redefinition of _mm_testz_si128 which
   # tanked the build in clang;
