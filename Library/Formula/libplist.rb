@@ -7,6 +7,13 @@ class Libplist < Formula
 
   head "http://git.sukimashita.com/libplist.git"
 
+  bottle do
+    cellar :any
+    sha1 "704dc72fd28c670551533f438ab642e80d269ce2" => :mavericks
+    sha1 "0393087a627ed94d2755717360ad110aef1276f3" => :mountain_lion
+    sha1 "b7e92b4a4b92e46fe9e57dcfdd382a558d04832f" => :lion
+  end
+
   option "with-python", "Enable Cython Python bindings"
 
   depends_on "pkg-config" => :build
