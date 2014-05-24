@@ -52,7 +52,7 @@ class LibtorrentRasterbar < Formula
     if build.head?
       system "./bootstrap.sh", *args
     else
-      system "./configure.sh", *args
+      system "./configure", *args
     end
 
     system "make install"
