@@ -2,8 +2,8 @@ require "formula"
 
 class Rgbds < Formula
   homepage "http://anthony.bentley.name/rgbds/"
-  url "https://github.com/pbjchang/rgbds/archive/v0.0.3.zip"
-  sha1 "d7c497465911c80c96eba05149499f7193a927cd"
+  url "https://github.com/pbjchang/rgbds/archive/v0.0.3.tar.gz"
+  sha1 "856b2d1532e5561d8a17c703f1610eb99e53f005"
 
   head "https://github.com/bentley/rgbds.git"
 
