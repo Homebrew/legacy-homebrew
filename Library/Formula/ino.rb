@@ -18,6 +18,6 @@ class Ino < Formula
   end
 
   test do
-    system "#{bin}/ino"
+    system "#{bin}/ino", "--help"
   end
 end
