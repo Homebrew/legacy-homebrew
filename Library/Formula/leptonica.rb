@@ -5,8 +5,6 @@ class Leptonica < Formula
   url 'http://www.leptonica.org/source/leptonica-1.70.tar.gz'
   sha1 '476edd5cc3f627f5ad988fcca6b62721188fce13'
 
-  option 'check', 'Run the build checks'
-
   depends_on 'libpng' => :recommended
   depends_on 'jpeg' => :recommended
   depends_on 'libtiff' => :optional
@@ -29,7 +27,6 @@ class Leptonica < Formula
     end
 
     system "./configure", *args
-    system "make check" if build.include? 'check'
     system "make install"
   end
 
