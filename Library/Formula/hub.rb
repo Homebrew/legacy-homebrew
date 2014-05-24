@@ -19,6 +19,12 @@ class Hub < Formula
     end
   end
 
+  def caveats; <<-EOS.undent
+    To alias hub as git add to your profile:
+      if which hub > /dev/null; then eval "$(hub alias -s)"; fi
+    EOS
+  end
+
   test do
     HOMEBREW_REPOSITORY.cd do
       assert_equal 'bin/brew', `#{bin}/hub ls-files -- bin`.strip
