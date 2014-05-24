@@ -1,9 +1,16 @@
-require 'formula'
+require "formula"
 
 class LibtorrentRasterbar < Formula
-  homepage 'http://www.rasterbar.com/products/libtorrent/'
-  url 'https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-0.16.16.tar.gz'
-  sha1 'de8faed5cbc09baddb2748cb7b75edd07ab0addc'
+  homepage "http://www.rasterbar.com/products/libtorrent/"
+  url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-0.16.16.tar.gz"
+  sha1 "de8faed5cbc09baddb2748cb7b75edd07ab0addc"
+
+  head do
+    url "http://libtorrent.googlecode.com/svn/trunk"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
@@ -15,6 +22,7 @@ class LibtorrentRasterbar < Formula
   depends_on "pkg-config" => :build
   depends_on "openssl"
   depends_on :python => :optional
+  depends_on "geoip" => :optional
 
   if build.with? "python"
     depends_on "boost" => "with-python"
@@ -36,7 +44,17 @@ class LibtorrentRasterbar < Formula
       args << "--with-boost-python=boost_python-mt"
     end
 
-    system "./configure", *args
+    if build.with? "geoip"
+      args << "--enable-geoip"
+      args << "--with-libgeoip"
+    end
+
+    if build.head?
+      system "./bootstrap.sh", *args
+    else
+      system "./configure", *args
+    end
+
     system "make install"
   end
 end
