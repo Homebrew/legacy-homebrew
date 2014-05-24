@@ -7,6 +7,13 @@ class Libimobiledevice < Formula
 
   head "http://cgit.sukimashita.com/libimobiledevice.git"
 
+  bottle do
+    cellar :any
+    sha1 "f34c0c45c2be50b1fed8eb40760462a7339fffcd" => :mavericks
+    sha1 "b1abcc6f7bdc142d8f3da012cd94eddef42ef4a1" => :mountain_lion
+    sha1 "0bcc31e491474f923c145b702dc7870ddf003fff" => :lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libtasn1"
   depends_on "libplist"
