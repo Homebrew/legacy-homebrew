@@ -8,7 +8,11 @@ class Librem < Formula
   depends_on "libre"
 
   def install
-    system "make", "install", "PREFIX=#{prefix}"
+    libre = Formula["libre"]
+    system "make", "install", "PREFIX=#{prefix}",
+                              "LIBRE_MK=#{libre.opt_share}/re/re.mk",
+                              "LIBRE_INC=#{libre.opt_include}/re",
+                              "LIBRE_SO=#{libre.opt_lib}"
   end
 
   test do
@@ -16,9 +20,10 @@ class Librem < Formula
       #include <re/re.h>
       #include <rem/rem.h>
       int main() {
-        return NULL != vidfmt_name(VID_FMT_YUV420P);
+        return (NULL != vidfmt_name(VID_FMT_YUV420P)) ? 0 : 1;
       }
     EOS
-    system ENV.cc, "test.c", "-lrem"
+    system ENV.cc, "test.c", "-L#{opt_lib}", "-lrem", "-o", "test"
+    system "./test"
   end
 end
