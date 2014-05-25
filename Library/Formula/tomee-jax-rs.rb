@@ -2,9 +2,9 @@ require 'formula'
 
 class TomeeJaxRs < Formula
   homepage 'http://tomee.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.6.0.1/apache-tomee-1.6.0.1-jaxrs.tar.gz'
-  version '1.6.0.1'
-  sha1 '4b4f11a12f8f9b23ea7dfd2a8a90c861bf65fb1d'
+  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.6.0.2/apache-tomee-1.6.0.2-jaxrs.tar.gz'
+  version '1.6.0.2'
+  sha1 '53e438f72edb455f4d01464d2e00855fa055ad6b'
 
   # Keep log folders
   skip_clean 'libexec'

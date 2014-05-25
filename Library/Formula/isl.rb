@@ -21,9 +21,9 @@ class Isl < Formula
   head do
     url 'http://repo.or.cz/r/isl.git'
 
-    depends_on :autoconf => :build
-    depends_on :automake => :build
-    depends_on :libtool => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on 'gmp'

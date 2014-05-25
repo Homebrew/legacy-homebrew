@@ -5,9 +5,9 @@ class TomcatNative < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.30/source/tomcat-native-1.1.30-src.tar.gz'
   sha1 '07fca7c3e7b8301fc80b0e3c317e642a3616142a'
 
-  depends_on :libtool => :build
-  depends_on 'tomcat' => :recommended
-  depends_on 'openssl'
+  depends_on "libtool" => :build
+  depends_on "tomcat" => :recommended
+  depends_on "openssl"
 
   def install
     cd "jni/native" do
