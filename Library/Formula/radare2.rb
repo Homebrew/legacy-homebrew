@@ -16,13 +16,14 @@ class Radare2 < Formula
   depends_on "gmp"
   depends_on "lua"
 
-  def patches
-    # Fixes file name of dynamic libraries so that version goes before .dylib.
-    #  * radare2 pull request #693
-    "https://github.com/radare/radare2/commit/f0dbeb9950c55cdb75a2515b1cf6add4e0f4a591.diff"
+  # Fixes file name of dynamic libraries so that version goes before .dylib.
+  #  * radare2 pull request #693
+  patch do
+    url "https://github.com/radare/radare2/commit/f0dbeb9950c55cdb75a2515b1cf6add4e0f4a591.diff"
+    sha1 "1b02e071728c2ef9b328e25ae46eac15eed391be"
   end
 
-  resource("bindings") do
+  resource "bindings" do
     url "http://radare.org/get/radare2-bindings-0.9.7.tar.xz"
     sha1 "b425e3faeebd3f212e6542a64dafa3b629535e7a"
   end
