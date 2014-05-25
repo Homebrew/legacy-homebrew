@@ -9,6 +9,10 @@ class Paps < Formula
 
   depends_on "pkg-config" => :build
   depends_on "pango"
+  depends_on "freetype"
+  depends_on "fontconfig"
+  depends_on "glib"
+  depends_on "gettext"
 
   # Find freetype headers
   patch :DATA
