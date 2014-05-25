@@ -2,6 +2,7 @@ require 'formula'
 
 class Jbig2enc < Formula
   homepage 'https://github.com/agl/jbig2enc'
+  revision 1
 
   stable do
     url 'https://github.com/agl/jbig2enc/archive/0.28-dist.tar.gz'
