@@ -2,11 +2,15 @@ require 'formula'
 
 class Jbig2enc < Formula
   homepage 'https://github.com/agl/jbig2enc'
-  url 'https://github.com/agl/jbig2enc/archive/0.28-dist.tar.gz'
-  sha1 'd2d73f732168eeb6fa18962dbe7743337363c3b6'
-  version '0.28'
 
-  depends_on 'leptonica'
+  stable do
+    url 'https://github.com/agl/jbig2enc/archive/0.28-dist.tar.gz'
+    sha1 'd2d73f732168eeb6fa18962dbe7743337363c3b6'
+    version '0.28'
+
+    # Patch data from https://github.com/agl/jbig2enc/commit/53ce5fe7e73d7ed95c9e12b52dd4984723f865fa
+    patch :DATA
+  end
 
   head do
     url 'https://github.com/agl/jbig2enc.git'
@@ -16,10 +20,7 @@ class Jbig2enc < Formula
     depends_on "libtool" => :build
   end
 
-  stable do
-    # Patch data from https://github.com/agl/jbig2enc/commit/53ce5fe7e73d7ed95c9e12b52dd4984723f865fa
-    patch :DATA
-  end
+  depends_on 'leptonica'
 
   def install
     system "./autogen.sh" if build.head?
