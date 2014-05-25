@@ -6,6 +6,7 @@ class Snd < Formula
   sha1 "da33ba868f74cff9042ddc42acbceffbed017747"
 
   depends_on :x11
+  depends_on "pkg-config" => :build
   depends_on "portaudio"
   depends_on "gtk+"
   depends_on "fftw"
@@ -15,6 +16,8 @@ class Snd < Formula
   def install
     system "ruby tools/make-config-pc.rb > ./ruby.pc"
     ENV["PKG_CONFIG_PATH"] += ":."
+    system "pkg-config", "gtk+-2.0", "--cflags"
+    system "pkg-config", "ruby", "--cflags"
     system "./configure", "--with-gtk",
                           "--with-ruby",
                           "--with-portaudio"
