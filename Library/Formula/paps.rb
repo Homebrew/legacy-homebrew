@@ -1,21 +1,23 @@
 # encoding: UTF-8
 
-require 'formula'
+require "formula"
 
 class Paps < Formula
-  homepage 'http://paps.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/paps/paps-0.6.8.tar.gz'
-  sha1 '83646b0de89deb8321f260c2c5a665bc7c8f5928'
+  homepage "http://paps.sourceforge.net/"
+  url "https://downloads.sourceforge.net/paps/paps-0.6.8.tar.gz"
+  sha1 "83646b0de89deb8321f260c2c5a665bc7c8f5928"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'pango'
+  depends_on "pkg-config" => :build
+  depends_on "pango"
 
+  # Find freetype headers
   patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    system "make install"
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
+    system "make", "install"
   end
 
   test do
