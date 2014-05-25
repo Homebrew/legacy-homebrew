@@ -5,9 +5,14 @@ class Ivy < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=ant/ivy/2.3.0/apache-ivy-2.3.0-bin.tar.gz'
   sha1 '878fab43ee9c70486a9ecec1ec44a2f034401687'
 
+  depends_on 'ant' => :optional
+
   def install
     libexec.install Dir['ivy*']
     doc.install Dir['doc/*']
     bin.write_jar_script libexec/"ivy-#{version}.jar", "ivy", "$JAVA_OPTS"
+    if build.with? 'ant'
+      cp "#{libexec}/ivy-#{version}.jar", "#{Formula["ant"].libexec}/lib/ivy.jar"
+    end
   end
 end
