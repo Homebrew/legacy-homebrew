@@ -10,6 +10,8 @@ class Paps < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pango'
 
+  patch :DATA
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
@@ -33,3 +35,19 @@ Vietnamese  (Tiếng Việt)  Xin Chào
     safe_system "echo '#{utf8}' |  #{bin}/paps > paps.ps"
   end
 end
+
+__END__
+diff -ru a/src/libpaps.c b/src/libpaps.c
+--- a/src/libpaps.c	2014-05-25 14:16:27.000000000 +0200
++++ b/src/libpaps.c	2014-05-25 14:17:25.000000000 +0200
+@@ -25,8 +25,8 @@
+
+ #include <pango/pango.h>
+ #include <pango/pangoft2.h>
+-#include <freetype/ftglyph.h>
+-#include <freetype/ftoutln.h>
++#include <freetype2/ftglyph.h>
++#include <freetype2/ftoutln.h>
+ #include <errno.h>
+ #include <stdlib.h>
+ #include <stdio.h>
