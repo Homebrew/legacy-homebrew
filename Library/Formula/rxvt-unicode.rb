@@ -37,10 +37,6 @@ class RxvtUnicode < Formula
     system "mv INSTALL README.install"
     system "make install"
   end
-
-  def caveats
-    "This software runs under X11."
-  end
 end
 
 __END__
