@@ -90,22 +90,14 @@ class Macvim < Formula
 
     system "./configure", *args
 
-    if build.with? "python"
-      if build.with? "python3"
-        py_prefix = `python-config --prefix`.chomp
-        inreplace "src/auto/config.mk", /-DDYNAMIC_PYTHON_DLL=\\".*\\"/,
-                    %Q[-DDYNAMIC_PYTHON_DLL=\'\"#{py_prefix}/Python\"\']
-        py3_version = /\d\.\d/.match `python3 --version 2>&1`
-        py3_prefix = `python#{py3_version}-config --prefix`.chomp
-        inreplace 'src/auto/config.mk', /-DDYNAMIC_PYTHON3_DLL=\\".*\\"/,
-                  %Q[-DDYNAMIC_PYTHON3_DLL=\'\"#{py3_prefix}/Python\"\']
-      end
-
-      unless Formula["python"].installed?
-        inreplace "src/auto/config.h", "/* #undef PY_NO_RTLD_GLOBAL */",
-                                        "#define PY_NO_RTLD_GLOBAL 1"
-        inreplace "src/auto/config.h", "/* #undef PY3_NO_RTLD_GLOBAL */",
-                                       "#define PY3_NO_RTLD_GLOBAL 1"
+    # Require Python's dynamic library, and needs to be built as a framework.
+    if build.with? "python" and build.with? "python3"
+      py_prefix = `python-config --prefix`.chomp
+      py3_prefix = `python3-config --prefix`.chomp
+      # Help vim find Python's dynamic library as absolute path.
+      inreplace "src/auto/config.mk" do |s|
+        s.gsub! /-DDYNAMIC_PYTHON_DLL=\\".*\\"/, %(-DDYNAMIC_PYTHON_DLL=\'\"#{py_prefix}/Python\"\')
+        s.gsub! /-DDYNAMIC_PYTHON3_DLL=\\".*\\"/, %(-DDYNAMIC_PYTHON3_DLL=\'\"#{py3_prefix}/Python\"\')
       end
     end
 
