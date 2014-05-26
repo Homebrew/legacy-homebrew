@@ -6,7 +6,7 @@ class CppNetlib < Formula
   sha1 "1879224d50681b1398eb8ca6f34f49d679f40b34"
 
   depends_on "cmake" => :build
-  depends_on "boost" => "with-c++11"
+  depends_on "boost" => "c++11"
   depends_on "openssl"
 
   def install
