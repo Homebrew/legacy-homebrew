@@ -16,12 +16,7 @@ module Stdenv
   end
 
   def setup_build_environment(formula=nil)
-    # Clear CDPATH to avoid make issues that depend on changing directories
-    delete('CDPATH')
-    delete('GREP_OPTIONS') # can break CMake (lol)
-    delete('CLICOLOR_FORCE') # autotools doesn't like this
-    %w{CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH}.each { |k| delete(k) }
-    remove_cc_etc
+    reset
 
     if MacOS.version >= :mountain_lion
       # Mountain Lion's sed is stricter, and errors out when
