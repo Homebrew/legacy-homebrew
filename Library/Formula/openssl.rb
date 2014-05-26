@@ -13,11 +13,17 @@ class Openssl < Formula
   end
 
   option :universal
+  option 'with-chacha20poly1305', 'ChaCha20-Poly1305 build-in support to openssl'
 
   depends_on "makedepend" => :build
 
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."
+
+  patch do
+    url "https://gist.githubusercontent.com/denji/f98d935ff9fcc4448bc6/raw/openssl-1.0.1g-chacha20poly1305.patch"
+    sha1 "d8fcd7841f3763a3ae6cfd67a0012d8fe591ee1f"
+  end if build.with? "chacha20poly1305"
 
   def arch_args
     {
