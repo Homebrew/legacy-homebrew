@@ -28,7 +28,7 @@ class Compcert < Formula
     (testpath/"test.c").write <<-EOS.undent
       #include <stdio.h>
       int main(int argc, char** argv) {
-        printf("Hello, world!\n");
+        printf("Hello, world!\\n");
         return 0;
       }
     EOS
