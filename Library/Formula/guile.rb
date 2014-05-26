@@ -6,6 +6,12 @@ class Guile < Formula
   mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.11.tar.gz'
   sha1 '3cdd1c4956414bffadea13e5a1ca08949016a802'
 
+  bottle do
+    sha1 "3a75eeaa7a1637dd9876636963d8f02a6ffb23bf" => :mavericks
+    sha1 "6828352dd9205c9fa42701f14d7808604b7b23e1" => :mountain_lion
+    sha1 "e223036d6e1e238802a421d266881ad5ddf14c16" => :lion
+  end
+
   head do
     url 'http://git.sv.gnu.org/r/guile.git'
 
@@ -15,13 +21,11 @@ class Guile < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on :libtool
+  depends_on 'libtool' => :run
   depends_on 'libffi'
   depends_on 'libunistring'
   depends_on 'bdw-gc'
   depends_on 'gmp'
-
-  # GNU Readline is required; libedit won't work.
   depends_on 'readline'
 
   fails_with :llvm do

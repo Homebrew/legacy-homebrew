@@ -7,6 +7,11 @@ class Libtorrent < Formula
 
   depends_on "pkg-config" => :build
 
+  # https://github.com/Homebrew/homebrew/issues/24132
+  fails_with :clang do
+    cause "Causes segfaults at startup/at random."
+  end
+
   def install
     # Currently can't build against libc++; see:
     # https://github.com/mxcl/homebrew/issues/23483

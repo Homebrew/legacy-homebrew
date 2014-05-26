@@ -1,18 +1,19 @@
-require 'formula'
+require "formula"
 
 class RxvtUnicode < Formula
-  homepage 'http://software.schmorp.de/pkg/rxvt-unicode.html'
-  url 'http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.19.tar.bz2'
-  sha1 '979f990b73cf057d81f25884668f362b5a748154'
+  homepage "http://software.schmorp.de/pkg/rxvt-unicode.html"
+  url "http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.20.tar.bz2"
+  sha1 "6214c7893a8c968936103e255a1d3d1e9868abf9"
 
   option "disable-iso14755", "Disable ISO 14775 Shift+Ctrl hotkey"
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   depends_on :x11
 
   # Patch hunks 1 and 2 allow perl support to compile on Intel.
   # Hunk 3 is taken from http://aur.archlinux.org/packages.php?ID=44649
   # which removes an extra 10% font width that urxvt adds.
+  # Last patch fixes `make install` target on case-insensitive filesystems
   patch :DATA
 
   fails_with :llvm do
@@ -21,25 +22,19 @@ class RxvtUnicode < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}",
-            "--mandir=#{man}",
-            "--enable-perl",
-            "--enable-256-color",
-            "--with-term=rxvt-unicode-256color",
-            "--with-terminfo=/usr/share/terminfo",
-            "--enable-smart-resize"]
+    args = %W[
+      --prefix=#{prefix}
+      --enable-256-color
+      --with-term=rxvt-unicode-256color
+      --with-terminfo=/usr/share/terminfo
+      --enable-smart-resize
+    ]
 
+    args << "--disable-perl" if ENV.compiler == :clang
     args << "--disable-iso14755" if build.include? "disable-iso14755"
 
     system "./configure", *args
-    system "make"
-    # `make` won't work unless we rename this because of HFS's default case-insensitivity
-    system "mv INSTALL README.install"
-    system "make install"
-  end
-
-  def caveats
-    "This software runs under X11."
+    system "make", "install"
   end
 end
 
@@ -94,3 +89,15 @@ __END__
            if (glheight < g.height - g.y) glheight = g.height - g.y;
          }
 
+diff --git a/Makefile.in b/Makefile.in
+index eee5969..c230930 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -31,6 +31,7 @@ subdirs = src doc
+ 
+ RECURSIVE_TARGETS = all allbin alldoc tags clean distclean realclean install
+ 
++.PHONY: install
+ #-------------------------------------------------------------------------
+ 
+ $(RECURSIVE_TARGETS):

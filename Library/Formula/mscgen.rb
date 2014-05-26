@@ -8,7 +8,7 @@ class Mscgen < Formula
   depends_on :x11
   depends_on 'pkg-config' => :build
   depends_on 'gd' => :recommended
-  depends_on :freetype => :optional
+  depends_on 'freetype' => :optional
 
   def install
     args = ["--prefix=#{prefix}",
