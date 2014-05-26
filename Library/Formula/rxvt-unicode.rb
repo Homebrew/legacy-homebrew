@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class RxvtUnicode < Formula
-  homepage 'http://software.schmorp.de/pkg/rxvt-unicode.html'
-  url 'http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.19.tar.bz2'
-  sha1 '979f990b73cf057d81f25884668f362b5a748154'
+  homepage "http://software.schmorp.de/pkg/rxvt-unicode.html"
+  url "http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-9.20.tar.bz2"
+  sha1 "6214c7893a8c968936103e255a1d3d1e9868abf9"
 
   option "disable-iso14755", "Disable ISO 14775 Shift+Ctrl hotkey"
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   depends_on :x11
 
   # Patch hunks 1 and 2 allow perl support to compile on Intel.
