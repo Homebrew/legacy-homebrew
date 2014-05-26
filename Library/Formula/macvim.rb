@@ -130,16 +130,4 @@ class Macvim < Formula
     executables += %w[vi vim vimdiff view vimex] if build.include? "override-system-vim"
     executables.each { |e| bin.install_symlink "mvim" => e }
   end
-
-  def caveats
-    if build.with? "python" and build.with? "python3"
-      <<-EOS.undent
-        MacVim has been built with dynamic loading of Python 2 and Python 3.
-
-        Note: if MacVim dynamically loads both Python 2 and Python 3, it may
-        crash. For more information, see:
-            http://vimdoc.sourceforge.net/htmldoc/if_pyth.html#python3
-      EOS
-    end
-  end
 end
