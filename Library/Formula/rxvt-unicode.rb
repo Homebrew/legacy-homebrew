@@ -13,6 +13,7 @@ class RxvtUnicode < Formula
   # Patch hunks 1 and 2 allow perl support to compile on Intel.
   # Hunk 3 is taken from http://aur.archlinux.org/packages.php?ID=44649
   # which removes an extra 10% font width that urxvt adds.
+  # Last patch fixes `make install` target on case-insensitive filesystems
   patch :DATA
 
   fails_with :llvm do
@@ -32,10 +33,7 @@ class RxvtUnicode < Formula
     args << "--disable-iso14755" if build.include? "disable-iso14755"
 
     system "./configure", *args
-    system "make"
-    # `make` won't work unless we rename this because of HFS's default case-insensitivity
-    system "mv INSTALL README.install"
-    system "make install"
+    system "make", "install"
   end
 end
 
@@ -90,3 +88,15 @@ __END__
            if (glheight < g.height - g.y) glheight = g.height - g.y;
          }
 
+diff --git a/Makefile.in b/Makefile.in
+index eee5969..c230930 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -31,6 +31,7 @@ subdirs = src doc
+ 
+ RECURSIVE_TARGETS = all allbin alldoc tags clean distclean realclean install
+ 
++.PHONY: install
+ #-------------------------------------------------------------------------
+ 
+ $(RECURSIVE_TARGETS):
