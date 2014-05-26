@@ -21,9 +21,7 @@ class NanopbGenerator < Formula
 
     Dir.chdir "generator"
 
-    Dir.chdir "proto" do
-      system "make"
-    end
+    system "make", "-C", "proto"
 
     libexec.install "nanopb_generator.py", "protoc-gen-nanopb", "proto"
 
