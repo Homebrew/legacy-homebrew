@@ -10,6 +10,8 @@ class Compcert < Formula
   depends_on "camlp5" => :build
 
   def install
+    ENV.permit_arch_flags
+
     # Compcert's configure script hard-codes gcc. On Lion and under, this
     # creates problems since XCode's gcc does not support CFI,
     # but superenv will trick it into using clang which does. This
