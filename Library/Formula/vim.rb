@@ -83,8 +83,8 @@ class Vim < Formula
 
     # Require Python's dynamic library, and needs to be built as a framework.
     if build.with? "python" and build.with? "python3"
-      py_prefix = `python -c "import sys; print(sys.prefix)"`.chomp
-      py3_prefix = `python3 -c "import sys; print(sys.prefix)"`.chomp
+      py_prefix = `python-config --prefix`.chomp
+      py3_prefix = `python3-config --prefix`.chomp
       # Help vim find Python's dynamic library as absolute path.
       inreplace "src/auto/config.mk" do |s|
         s.gsub! /-DDYNAMIC_PYTHON_DLL=\\".*\\"/, %(-DDYNAMIC_PYTHON_DLL=\'\"#{py_prefix}/Python\"\')
