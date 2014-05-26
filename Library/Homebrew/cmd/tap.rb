@@ -1,3 +1,9 @@
+class Fixnum
+  def plural suffix="s"
+    if self != 1 then suffix else "" end
+  end
+end
+
 module Homebrew extend self
 
   def tap
@@ -27,7 +33,7 @@ module Homebrew extend self
     files = []
     tapd.find_formula { |file| files << file }
     link_tap_formula(files)
-    puts "Tapped #{files.length} formula"
+    puts "Tapped #{files.length} formula#{files.length.plural('e')}"
 
     if private_tap?(repouser, repo) then puts <<-EOS.undent
       It looks like you tapped a private repository. To avoid entering your
@@ -77,7 +83,7 @@ module Homebrew extend self
         count += 1
       end
     end
-    puts "Pruned #{count} dead formula"
+    puts "Pruned #{count} dead formula#{count.plural('e')}"
 
     return unless HOMEBREW_REPOSITORY.join("Library/Taps").exist?
 
@@ -89,7 +95,7 @@ module Homebrew extend self
       count += link_tap_formula(files)
     end
 
-    puts "Tapped #{count} formula"
+    puts "Tapped #{count} formula#{count.plural('e')}"
   end
 
   private
