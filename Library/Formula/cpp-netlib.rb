@@ -10,7 +10,7 @@ class CppNetlib < Formula
   depends_on "openssl"
 
   def install
-    system "export", "CXXFLAGS=\"-stdlib=libc++\""
+    ENV['CXXFLAGS'] = '-stdlib=libc++'
     system "cmake", ".", *std_cmake_args
     system "make"
     system "make", "install"
