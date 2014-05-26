@@ -52,16 +52,12 @@ class Macvim < Formula
 
     args << "--enable-cscope" if build.with? "cscope"
 
-    if build.with? "lua"
+    if build.with? "lua" or build.with? "luajit"
       args << "--enable-luainterp"
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
     end
 
-    if build.with? "luajit"
-      args << "--enable-luainterp"
-      args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
-      args << "--with-luajit"
-    end
+    args << "--with-luajit" if build.with? "luajit"
 
     if build.with? "python"
       if build.without? "python3"
