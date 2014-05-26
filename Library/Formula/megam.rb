@@ -21,15 +21,13 @@ class Megam < Formula
   end
 
   test do
-    open("tiny.megam", 'w') do |file|
-      file.write  <<-EOS.undent
-        0    F1 F2 F3
-        1    F2 F3 F8
-        0    F1 F2
-        1    F8 F9 F10
-      EOS
-    end
-    system "megam", "binary", "tiny.megam"
-    system "megam.opt", "binary", "tiny.megam"
+    (testpath/"tiny.megam").write <<-EOS.undent
+      0    F1 F2 F3
+      1    F2 F3 F8
+      0    F1 F2
+      1    F8 F9 F10
+    EOS
+    system bin/"megam", "binary", "tiny.megam"
+    system bin/"megam.opt", "binary", "tiny.megam"
   end
 end
