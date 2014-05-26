@@ -150,11 +150,11 @@ module HomebrewArgvExtension
   end
 
   def help?
-    empty? || grep(/(-h$|--help$|--usage$|-\?$|help$)/).any?
+    empty? || self[0] =~ /(-h$|--help$|--usage$|-\?$|help$)/
   end
 
   def version?
-    include? '--version'
+    self[0] == "--version"
   end
 
   # eg. `foo -ns -i --bar` has three switches, n, s and i
