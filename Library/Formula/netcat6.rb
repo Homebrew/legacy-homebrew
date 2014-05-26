@@ -19,9 +19,9 @@ class Netcat6 < Formula
   end
 
   test do
-    IO.popen("#{bin}/nc6 --version") { |subp|
-      assert subp.readline.strip == "nc6 version #{version}"
-    }
+    lines = `#{bin}/nc6 --version`.split("\n")
+    assert_equal "nc6 version #{version}", lines[0]
+    assert_equal 0, $?.exitstatus
   end
 end
 
