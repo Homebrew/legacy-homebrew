@@ -1,21 +1,21 @@
-require 'formula'
+require "formula"
 
 # Reference: https://github.com/b4winckler/macvim/wiki/building
 class Macvim < Formula
-  homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/archive/snapshot-73.tar.gz'
-  version '7.4-73'
-  sha1 'b87e37fecb305a99bc268becca39f8854e3ff9f0'
+  homepage "http://code.google.com/p/macvim/"
+  url "https://github.com/b4winckler/macvim/archive/snapshot-73.tar.gz"
+  version "7.4-73"
+  sha1 "b87e37fecb305a99bc268becca39f8854e3ff9f0"
 
-  head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
+  head "https://github.com/b4winckler/macvim.git", :branch => "master"
 
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"
 
   depends_on :xcode
-  depends_on 'cscope' => :recommended
-  depends_on 'lua' => :optional
-  depends_on 'luajit' => :optional
+  depends_on "cscope" => :recommended
+  depends_on "lua" => :optional
+  depends_on "luajit" => :optional
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
@@ -29,7 +29,7 @@ class Macvim < Formula
     # Set ARCHFLAGS so the Python app (with C extension) that is
     # used to create the custom icons will not try to compile in
     # PPC support (which isn't needed in Homebrew-supported systems.)
-    ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}"
+    ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
     # If building for 10.7 or up, make sure that CC is set to "clang".
     ENV.clang if MacOS.version >= :lion
