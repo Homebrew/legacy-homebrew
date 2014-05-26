@@ -13,17 +13,26 @@ class Openssl < Formula
   end
 
   option :universal
-  option 'with-chacha20poly1305', 'ChaCha20-Poly1305 build-in support to openssl'
+  option 'with-chacha20poly1305', 'Support ChaCha20-Poly1305 build-in'
 
   depends_on "makedepend" => :build
 
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."
 
+  # Support ChaCha20 and Poly1305 based Cipher Suites for TLS
   patch do
     url "https://gist.githubusercontent.com/denji/f98d935ff9fcc4448bc6/raw/openssl-1.0.1g-chacha20poly1305.patch"
     sha1 "d8fcd7841f3763a3ae6cfd67a0012d8fe591ee1f"
   end if build.with? "chacha20poly1305"
+
+  # OpenBSD 5.4 errata 8, Apr 12, 2014:  A use-after-free race condition
+  # in OpenSSL's read buffer may permit an attacker to inject data from
+  # one connection into another.
+  patch do
+    url "https://gist.githubusercontent.com/denji/71f5bdac1df574e29973/raw/ssl-s3_pkt.patch"
+    sha1 "37341c535892c9f9894c52edf84b3e7f9b35152d"
+  end
 
   def arch_args
     {
