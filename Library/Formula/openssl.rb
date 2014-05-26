@@ -5,6 +5,7 @@ class Openssl < Formula
   url 'https://www.openssl.org/source/openssl-1.0.1g.tar.gz'
   mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1g.tar.gz'
   sha256 '53cb818c3b90e507a8348f4f5eaedb05d8bfe5358aabb508b7263cc670c3e028'
+  revision 1
 
   bottle do
     sha1 "d8c38bb2fe4dfd8930ea02f87d4b958a2a33b051" => :mavericks
