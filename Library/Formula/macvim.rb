@@ -24,7 +24,7 @@ class Macvim < Formula
 
   def install
     # MacVim doesn't have and required any Python package, unset PYTHONPATH.
-    ENV.delete('PYTHONPATH')
+    ENV.delete "PYTHONPATH"
 
     # Set ARCHFLAGS so the Python app (with C extension) that is
     # used to create the custom icons will not try to compile in
