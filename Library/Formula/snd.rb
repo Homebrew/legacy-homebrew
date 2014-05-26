@@ -25,7 +25,7 @@ class Snd < Formula
   end
 
   test do
-    system "/usr/local/bin/snd /System/Library/Sounds/Glass.aiff"
+    system "/usr/local/bin/snd --help"
   end
 
 end
