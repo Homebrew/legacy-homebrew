@@ -23,7 +23,7 @@ class Imagemagick < Formula
   option 'with-perl', 'enable build/install of PerlMagick'
   option 'without-magick-plus-plus', 'disable build/install of Magick++'
 
-  depends_on :libtool => :run
+  depends_on "libtool" => :run
 
   depends_on 'pkg-config' => :build
 

@@ -2,7 +2,7 @@ require 'formula'
 
 class Yara < Formula
   homepage 'https://github.com/plusvic/yara/'
-  url 'https://github.com/plusvic/yara/archive/2.1.0.tar.gz'
+  url 'https://github.com/plusvic/yara/archive/v2.1.0.tar.gz'
   sha1 '8289c281a44c933e11de25953f3910fe9f8ee82e'
 
   depends_on 'pcre'

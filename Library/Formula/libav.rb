@@ -42,7 +42,7 @@ class Libav < Formula
   depends_on 'x264' => :recommended
   depends_on 'xvid' => :recommended
 
-  depends_on :freetype => :optional
+  depends_on 'freetype' => :optional
   depends_on 'fdk-aac' => :optional
   depends_on 'frei0r' => :optional
   depends_on 'gnutls' => :optional

@@ -19,14 +19,14 @@ class Avidemux < Formula
   depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
   depends_on 'yasm' => :build
-  depends_on :fontconfig
+  depends_on 'fontconfig'
   depends_on 'gettext'
   depends_on 'x264' => :recommended
   depends_on 'faac' => :recommended
   depends_on 'faad2' => :recommended
   depends_on 'lame' => :recommended
   depends_on 'xvid' => :recommended
-  depends_on :freetype => :recommended
+  depends_on 'freetype' => :recommended
   depends_on 'theora' => :recommended
   depends_on 'libvorbis' => :recommended
   depends_on 'libvpx' => :recommended

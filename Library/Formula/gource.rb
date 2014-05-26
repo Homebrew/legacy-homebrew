@@ -9,16 +9,16 @@ class Gource < Formula
   head do
     url "https://github.com/acaudwell/Gource.git"
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on :x11 => :optional
-  depends_on :freetype
 
   depends_on "pkg-config" => :build
   depends_on "glm" => :build
+  depends_on "freetype"
 
   # boost failing on lion
   depends_on :macos => :mountain_lion
