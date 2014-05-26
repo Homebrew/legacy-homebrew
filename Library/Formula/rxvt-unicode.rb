@@ -22,14 +22,15 @@ class RxvtUnicode < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}",
-            "--mandir=#{man}",
-            "--enable-perl",
-            "--enable-256-color",
-            "--with-term=rxvt-unicode-256color",
-            "--with-terminfo=/usr/share/terminfo",
-            "--enable-smart-resize"]
+    args = %W[
+      --prefix=#{prefix}
+      --enable-256-color
+      --with-term=rxvt-unicode-256color
+      --with-terminfo=/usr/share/terminfo
+      --enable-smart-resize
+    ]
 
+    args << "--disable-perl" if ENV.compiler == :clang
     args << "--disable-iso14755" if build.include? "disable-iso14755"
 
     system "./configure", *args
