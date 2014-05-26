@@ -6,9 +6,10 @@ class CppNetlib < Formula
   sha1 "1879224d50681b1398eb8ca6f34f49d679f40b34"
 
   depends_on "cmake" => :build
+  depends_on "boost"
 
   def install
-    system "cmake", ".", "-DCMAKE_C_COMPILER=clang", "-DCMAKE_CXX_COMPILER=clang++", *std_cmake_args
+    system "cmake", ".", *std_cmake_args
     system "make"
     system "make", "install"
   end
