@@ -13,10 +13,10 @@ class Lmdb < Formula
 
     # fix the /share/man/man path
     inreplace 'libraries/liblmdb/Makefile' do |s|
-      s.gsub! '$(DESTDIR)$(prefix)/man/man1', '$(DESTDIR)$(prefix)/share/man'
+      s.gsub! '$(DESTDIR)$(prefix)/man/man1', '$(DESTDIR)$(prefix)/share/man/man1'
     end
 
-    man.mkpath
+    man1.mkpath
     bin.mkpath
     lib.mkpath
     include.mkpath
