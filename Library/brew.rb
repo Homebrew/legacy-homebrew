@@ -16,10 +16,11 @@ $:.unshift(HOMEBREW_LIBRARY_PATH.to_s)
 require 'global'
 
 if ARGV.help?
+  # TODO - `brew help cmd` should display subcommand help
   require 'cmd/help'
   puts ARGV.usage
   exit ARGV.any? ? 0 : 1
-elsif ARGV.version?
+elsif ARGV.first == '--version'
   puts HOMEBREW_VERSION
   exit 0
 elsif ARGV.first == '-v'
