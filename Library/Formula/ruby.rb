@@ -62,16 +62,21 @@ class Ruby < Formula
   end
 
   def post_install
-    # Put gem, site and vendor folders in the HOMEBREW_PREFIX
+    # Preserve gem, site, and vendor folders on upgrade/reinstall
+    # by placing them in HOMEBREW_PREFIX and sym-linking
     ruby_lib = HOMEBREW_PREFIX/"lib/ruby"
-    (ruby_lib/'site_ruby').mkpath
-    (ruby_lib/'vendor_ruby').mkpath
-    (ruby_lib/'gems').mkpath
 
-    rm_rf Dir["#{lib}/ruby/{site_ruby,vendor_ruby,gems}"]
-    (lib/'ruby').install_symlink ruby_lib/'site_ruby',
-                                 ruby_lib/'vendor_ruby',
-                                 ruby_lib/'gems'
+    ["gems", "site_ruby", "vendor_ruby"].each do |name|
+      link = lib/"ruby"/name
+      real = ruby_lib/name
+
+      # only overwrite invalid (mutually dependent) links
+      real.unlink if real.symlink? && real.readlink == link
+      real.mkpath
+
+      link.unlink if link.exist?
+      link.symlink real
+    end
   end
 
   def caveats; <<-EOS.undent
