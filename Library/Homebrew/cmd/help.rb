@@ -5,6 +5,7 @@ Example usage:
   brew uninstall FORMULA...
   brew search [foo]
   brew list [FORMULA...]
+  brew outdated
   brew update
   brew upgrade [FORMULA...]
   brew pin/unpin [FORMULA...]
