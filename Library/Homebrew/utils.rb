@@ -78,6 +78,10 @@ def pretty_duration s
   return "%.1f minutes" % (s/60)
 end
 
+def plural n, s="s"
+  (n == 1) ? "" : s
+end
+
 def interactive_shell f=nil
   unless f.nil?
     ENV['HOMEBREW_DEBUG_PREFIX'] = f.prefix

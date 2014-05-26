@@ -1,12 +1,6 @@
 require 'cmd/install'
 require 'cmd/outdated'
 
-class Fixnum
-  def plural_s
-    if self != 1 then "s" else "" end
-  end
-end
-
 module Homebrew extend self
   def upgrade
     Homebrew.perform_preinstall_checks
@@ -35,14 +29,14 @@ module Homebrew extend self
     end
 
     unless outdated.empty?
-      oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
+      oh1 "Upgrading #{outdated.length} outdated package#{plural(outdated.length)}, with result:"
       puts outdated.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
     else
       oh1 "No packages to upgrade"
     end
 
     unless upgrade_pinned? || pinned.empty?
-      oh1 "Not upgrading #{pinned.length} pinned package#{pinned.length.plural_s}:"
+      oh1 "Not upgrading #{pinned.length} pinned package#{plural(pinned.length)}:"
       puts pinned.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
     end
 
