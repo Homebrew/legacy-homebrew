@@ -149,10 +149,6 @@ module HomebrewArgvExtension
     include? '--force-bottle'
   end
 
-  def help?
-    empty? || self[0] =~ /(-h$|--help$|--usage$|-\?$|help$)/
-  end
-
   # eg. `foo -ns -i --bar` has three switches, n, s and i
   def switch? switch_character
     return false if switch_character.length > 1

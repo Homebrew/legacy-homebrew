@@ -15,7 +15,7 @@ HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Lib
 $:.unshift(HOMEBREW_LIBRARY_PATH.to_s)
 require 'global'
 
-if ARGV.help?
+if ARGV.empty? || ARGV[0] =~ /(-h$|--help$|--usage$|-\?$|help$)/
   # TODO - `brew help cmd` should display subcommand help
   require 'cmd/help'
   puts ARGV.usage
