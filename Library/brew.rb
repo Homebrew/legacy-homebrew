@@ -107,8 +107,10 @@ begin
     end
   end
 
-  # Add contributed commands to PATH before checking.
-  ENV['PATH'] += "#{File::PATH_SEPARATOR}#{HOMEBREW_CONTRIB}/cmd"
+  # Add the wrapper directory to PATH
+  ENV["PATH"] += "#{File::PATH_SEPARATOR}#{HOMEBREW_REPOSITORY}/Library/ENV/wrapper"
+  # Add contributed commands to PATH
+  ENV["PATH"] += "#{File::PATH_SEPARATOR}#{HOMEBREW_CONTRIB}/cmd"
 
   internal_cmd = require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd) if cmd
 
