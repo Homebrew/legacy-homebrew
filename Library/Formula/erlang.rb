@@ -34,10 +34,10 @@ class Erlang < Formula
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
   bottle do
-    revision 1
-    sha1 "0cdd23c933f35c157a3e3e9b85d52478bf496378" => :mavericks
-    sha1 "8855a52088beae576914dbcae6b4472c25ecaba1" => :mountain_lion
-    sha1 "e60c262a7f007c8cac3312e58aed2000a078e4ec" => :lion
+    revision 2
+    sha1 "e6d091df7bed464912c40132c680043073d9eab8" => :mavericks
+    sha1 "6bd13a787f19afce93f48bde87b6b0b97fa66701" => :mountain_lion
+    sha1 "ec77b491b93c06e7b6e252b50db480294ec9d774" => :lion
   end
 
   resource 'man' do
