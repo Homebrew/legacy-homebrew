@@ -57,12 +57,13 @@ class Wxmac < Formula
       "--enable-dataviewctrl",
       "--with-expat",
       "--with-macosx-version-min=#{MacOS.version}",
-      "--with-macosx-sdk=#{MacOS.sdk_path}",
       "--enable-universal_binary=#{Hardware::CPU.universal_archs.join(',')}",
       "--disable-precomp-headers",
       # This is the default option, but be explicit
       "--disable-monolithic"
     ]
+
+    args << "--with-macosx-sdk=#{MacOS.sdk_path}" unless MacOS.version >= "10.9"
 
     system "./configure", *args
     system "make install"
