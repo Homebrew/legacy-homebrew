@@ -6,8 +6,7 @@ class Litmus < Formula
   sha1 '42ad603035d15798facb3be79b1c51376820cb19'
 
   def install
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
 end
