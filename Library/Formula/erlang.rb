@@ -70,12 +70,9 @@ class Erlang < Formula
 
     # Unset these so that building wx, kernel, compiler and
     # other modules doesn't fail with an unintelligable error.
-    ENV['ERL_LIBS']   = nil
-    ENV['ERL_FLAGS']  = nil
-    ENV['ERL_AFLAGS'] = nil
-    ENV['ERL_ZFLAGS'] = nil
+    %w[LIBS FLAGS AFLAGS ZFLAGS].each { |k| ENV.delete("ERL_#{k}") }
 
-    ENV.append "FOP", "#{HOMEBREW_PREFIX}/bin/fop" if build.with? 'fop'
+    ENV["FOP"] = "#{HOMEBREW_PREFIX}/bin/fop" if build.with? 'fop'
 
     # Do this if building from a checkout to generate configure
     system "./otp_build autoconf" if File.exist? "otp_build"
