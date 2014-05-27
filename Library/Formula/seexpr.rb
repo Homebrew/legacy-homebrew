@@ -36,7 +36,7 @@ index feb6b45..8269b39 100644
  #ifndef SEEXPR_WIN32
  
 -#ifdef __APPLE__
-+#if defined(__APPLE__) && !defined(__MAC_10_9)
++#if defined(__APPLE__) && __MAC_OS_X_VERSION_MIN_REQUIRED <= __MAC_10_7
  static int MatchPluginName(struct dirent* dir)
  #else
  static int MatchPluginName(const struct dirent* dir)
