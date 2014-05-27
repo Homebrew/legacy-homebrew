@@ -35,7 +35,7 @@ class NanopbGenerator < Formula
         required string test_field = 1;
       }
     PROTO
-    system Formula["protobuf"].bin/"protoc", 
+    system Formula["protobuf"].bin/"protoc",
       "--proto_path=#{testpath}", "--plugin=#{bin/"protoc-gen-nanopb"}",
       "--nanopb_out=#{testpath}", testpath/"test.proto"
     system "grep", "test_field", testpath/"test.pb.c"
