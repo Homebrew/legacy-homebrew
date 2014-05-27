@@ -96,8 +96,12 @@ class Fontforge < Formula
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/CoreServices.framework/Frameworks"
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/Carbon.framework/Frameworks"
 
-    system "./autogen.sh" if build.head?
-    system "./configure", *args
+    if build.head?
+system "./bootstrap"
+else
+system "./autogen.sh"
+end
+system "./configure", *args
 
     # Fix hard-coded install locations that don't respect the target bindir
     inreplace "Makefile" do |s|
