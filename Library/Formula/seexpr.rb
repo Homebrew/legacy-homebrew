@@ -6,6 +6,7 @@ class Seexpr < Formula
   sha1 "80890cedd684a93b012b0964dc3b59910aaf5a10"
 
   depends_on "cmake" => :build
+  depends_on "libpng"
   depends_on "doxygen"
 
   patch do
