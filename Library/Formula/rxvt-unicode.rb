@@ -10,10 +10,10 @@ class RxvtUnicode < Formula
   depends_on "pkg-config" => :build
   depends_on :x11
 
-  # Patch hunks 1 and 2 allow perl support to compile on Intel.
-  # Hunk 3 is taken from http://aur.archlinux.org/packages.php?ID=44649
-  # which removes an extra 10% font width that urxvt adds.
-  # Last patch fixes `make install` target on case-insensitive filesystems
+  # Patches 1 and 2 remove -arch flags for compiling perl support
+  # Patch 3 removes an extra 10% font width that urxvt adds.
+  #   http://aur.archlinux.org/packages.php?ID=44649
+  # Patch 4 fixes `make install` target on case-insensitive filesystems
   patch :DATA
 
   fails_with :llvm do
@@ -39,10 +39,12 @@ class RxvtUnicode < Formula
 end
 
 __END__
---- a/configure   2010-12-13 11:48:00.000000000 -0500
-+++ b/configure   2011-04-13 13:15:00.000000000 -0400
-@@ -8255,8 +8255,8 @@
-
+diff --git a/configure b/configure
+index c756724..5e94907 100755
+--- a/configure
++++ b/configure
+@@ -7847,8 +7847,8 @@ $as_echo_n "checking for $PERL suitability... " >&6; }
+ 
       save_CXXFLAGS="$CXXFLAGS"
       save_LIBS="$LIBS"
 -     CXXFLAGS="$CXXFLAGS `$PERL -MExtUtils::Embed -e ccopts`"
@@ -51,9 +53,9 @@ __END__
 +     LIBS="$LIBS `$PERL -MExtUtils::Embed -e ldopts|sed -E 's/ -arch [^ ]+//g'`"
       cat confdefs.h - <<_ACEOF >conftest.$ac_ext
  /* end confdefs.h.  */
-
-@@ -8292,8 +8292,8 @@
-
+ 
+@@ -7884,8 +7884,8 @@ $as_echo "#define ENABLE_PERL 1" >>confdefs.h
+ 
          IF_PERL=
          PERL_O=rxvtperl.o
 -        PERLFLAGS="`$PERL -MExtUtils::Embed -e ccopts`"
@@ -63,10 +65,11 @@ __END__
          PERLPRIVLIBEXP="`$PERL -MConfig -e 'print $Config{privlibexp}'`"
       else
          as_fn_error $? "no, unable to link" "$LINENO" 5
-
---- a/src/rxvtfont.C.bukind 2007-11-30 14:36:33.000000000 +0600
-+++ b/src/rxvtfont.C  2007-11-30 14:39:29.000000000 +0600
-@@ -1262,12 +1262,21 @@
+diff --git a/src/rxvtfont.C b/src/rxvtfont.C
+index 3ff0b04..ecf8196 100644
+--- a/src/rxvtfont.C
++++ b/src/rxvtfont.C
+@@ -1265,12 +1265,21 @@ rxvt_font_xft::load (const rxvt_fontprop &prop, bool force_prop)
            XGlyphInfo g;
            XftTextExtents16 (disp, f, &ch, 1, &g);
  
@@ -88,7 +91,6 @@ __END__
            if (height   < g.height      ) height   = g.height;
            if (glheight < g.height - g.y) glheight = g.height - g.y;
          }
-
 diff --git a/Makefile.in b/Makefile.in
 index eee5969..c230930 100644
 --- a/Makefile.in

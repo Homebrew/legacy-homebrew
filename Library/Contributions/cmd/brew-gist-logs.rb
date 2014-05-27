@@ -86,7 +86,7 @@ class HTTP_Error < RuntimeError
 end
 
 def repo_name f
-  dir = (f.path.symlink? ? f.path.realpath.dirname : HOMEBREW_REPOSITORY)
+  dir = f.path.dirname
   url = dir.cd { `git config --get remote.origin.url` }
   unless url =~ %r{github.com(?:/|:)([\w\d]+)/([\-\w\d]+)}
     raise 'Unable to determine formula repository.'

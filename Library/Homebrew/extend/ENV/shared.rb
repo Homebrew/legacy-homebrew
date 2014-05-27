@@ -14,6 +14,19 @@ module SharedEnvExtension
                           'llvm-gcc' => :llvm,
                           'clang'    => :clang }
 
+  SANITIZED_VARS = %w[
+    CDPATH GREP_OPTIONS CLICOLOR_FORCE
+    CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH
+    CC CXX OBJC OBJCXX CPP MAKE LD LDSHARED
+    CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
+    MACOSX_DEPLOYMENT_TARGET SDKROOT DEVELOPER_DIR
+    CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH
+  ]
+
+  def reset
+    SANITIZED_VARS.each { |k| delete(k) }
+  end
+
   def remove_cc_etc
     keys = %w{CC CXX OBJC OBJCXX LD CPP CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS}
     removed = Hash[*keys.map{ |key| [key, self[key]] }.flatten]
