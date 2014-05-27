@@ -8,9 +8,8 @@ class AcesContainer < Formula
   depends_on "cmake" => :build
 
   def install
-    cmake_args = std_cmake_args
     mkdir "build" do
-      system "cmake", "..", *cmake_args
+      system "cmake", "..", *std_cmake_args
       system "make", "install"
     end
   end
