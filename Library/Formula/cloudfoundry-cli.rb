@@ -3,7 +3,7 @@ require 'formula'
 class CloudfoundryCli < Formula
   homepage 'https://github.com/cloudfoundry/cli'
   head 'https://github.com/cloudfoundry/cli.git', :branch => 'master'
-  url 'https://github.com/cloudfoundry/cli.git', :tag => 'v6.1.1'
+  url 'https://github.com/cloudfoundry/cli.git', :tag => 'v6.1.2'
 
   bottle do
     sha1 "f72539292f35aa0c7e66536494b895253cd3a667" => :mavericks
