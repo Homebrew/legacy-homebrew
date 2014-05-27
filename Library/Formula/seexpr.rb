@@ -16,9 +16,8 @@ class Seexpr < Formula
   end
 
   def install
-    cmake_args = std_cmake_args
     mkdir "build" do
-      system "cmake", "..", *cmake_args
+      system "cmake", "..", *std_cmake_args
       system "make", "doc"
       system "make", "install"
     end
