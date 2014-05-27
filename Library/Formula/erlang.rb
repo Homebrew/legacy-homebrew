@@ -51,7 +51,6 @@ class Erlang < Formula
   end
 
   option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
-  option 'time', '`brew test --time` to include a time-consuming test'
   option 'with-native-libs', 'Enable native library compilation'
   option 'with-dirty-schedulers', 'Enable experimental dirty schedulers'
   option 'no-docs', 'Do not install documentation'
@@ -131,13 +130,7 @@ class Erlang < Formula
   end
 
   test do
-    `#{bin}/erl -noshell -eval 'crypto:start().' -s init stop`
-
-    # This test takes some time to run, but per bug #120 should finish in
-    # "less than 20 minutes". It takes about 20 seconds on a Mac Pro (2009).
-    if build.include?("time") && !build.head?
-      `#{bin}/dialyzer --build_plt -r #{lib}/erlang/lib/kernel-2.16.4/ebin/`
-    end
+    system "#{bin}/erl", "-noshell", "-eval", "crypto:start().", "-s", "init", "stop"
   end
 end
 
