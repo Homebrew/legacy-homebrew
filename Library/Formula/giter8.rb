@@ -1,10 +1,12 @@
 require 'formula'
 
 class Giter8 < Formula
+  GITER8_VERSION = '0.6.2'
+
   homepage 'https://github.com/n8han/giter8'
   url "http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.0/sbt-launch.jar"
   sha1 'b78a29b8db7ae0fc90a7890a84a4617975e1d450'
-  version '0.6.0'
+  version GITER8_VERSION
 
   def exec_script
      <<-EOS
@@ -16,7 +18,7 @@ exec java -Xmx512M -jar #{prefix}/sbt-launch.jar @giter8.launchconfig "$@"
   def config_script
     <<-EOS
 [app]
-  version: 0.6.0
+  version: #{GITER8_VERSION}
   org: net.databinder.giter8
   name: giter8
   class: giter8.Giter8
