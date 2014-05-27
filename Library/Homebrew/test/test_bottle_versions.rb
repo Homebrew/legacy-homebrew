@@ -50,4 +50,9 @@ class BottleVersionParsingTests < Test::Unit::TestCase
     assert_version_detected '20120731',
       '/usr/local/fontforge-20120731.mavericks.bottle.tar.gz'
   end
+
+  def test_erlang_style
+    assert_version_detected 'R16B03-1',
+      'erlang-R16B03-1.mavericks.bottle.2.tar.gz'
+  end
 end
