@@ -10,4 +10,13 @@ class Picolisp < Formula
     system "make", "-C", src_dir
     bin.install "bin/picolisp"
   end
+
+  test do
+    path = testpath/"hello.lisp"
+    path.write '(prinl "Hello world") (bye)'
+
+    out = `#{bin}/picolisp #{path}`
+    assert_equal "Hello world\n", out
+    assert_equal 0, $?.exitstatus
+  end
 end
