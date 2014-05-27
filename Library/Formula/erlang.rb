@@ -51,7 +51,6 @@ class Erlang < Formula
   end
 
   option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
-  option 'halfword', 'Enable halfword emulator (64-bit builds only)'
   option 'time', '`brew test --time` to include a time-consuming test'
   option 'with-native-libs', 'Enable native library compilation'
   option 'with-dirty-schedulers', 'Enable experimental dirty schedulers'
@@ -93,6 +92,8 @@ class Erlang < Formula
       --enable-smp-support
     ]
 
+    args << "--enable-darwin-64bit" if MacOS.prefer_64_bit?
+
     unless build.stable?
       args << '--enable-native-libs' if build.with? 'native-libs'
       args << '--enable-dirty-schedulers' if build.with? 'dirty-schedulers'
@@ -111,11 +112,6 @@ class Erlang < Formula
       args << '--disable-hipe'
     else
       args << '--enable-hipe'
-    end
-
-    if MacOS.prefer_64_bit?
-      args << "--enable-darwin-64bit"
-      args << "--enable-halfword-emulator" if build.include? 'halfword' # Does not work with HIPE yet. Added for testing only
     end
 
     system "./configure", *args
