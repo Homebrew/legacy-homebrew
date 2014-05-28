@@ -95,12 +95,8 @@ class Resource
     puts "For your reference the SHA1 is: #{fn.sha1}"
   end
 
-  Checksum::TYPES.each do |cksum|
-    class_eval <<-EOS, __FILE__, __LINE__ + 1
-      def #{cksum}(val)
-        @checksum = Checksum.new(:#{cksum}, val)
-      end
-    EOS
+  Checksum::TYPES.each do |type|
+    define_method(type) { |val| @checksum = Checksum.new(type, val) }
   end
 
   def url val=nil, specs={}
