@@ -74,9 +74,7 @@ class Formula
     end
 
     def entry_name
-      @entry_name ||= begin
-        repository == HOMEBREW_REPOSITORY ? "Library/Formula/#{name}.rb" : "#{name}.rb"
-      end
+      @entry_name ||= path.relative_path_from(repository).to_s
     end
 
     def rev_list branch='HEAD'
