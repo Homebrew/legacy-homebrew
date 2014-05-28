@@ -58,7 +58,7 @@ class Formula
     if Pathname.pwd == repository
       entry_name
     else
-      repository/"#{entry_name}"
+      path
     end
   end
 
