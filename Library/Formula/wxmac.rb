@@ -26,6 +26,8 @@ class Wxmac < Formula
   def install
     # need to set with-macosx-version-min to avoid configure defaulting to 10.5
     # need to enable universal binary build in order to build all x86_64
+    # FIXME I don't believe this is the whole story, surely this can be fixed
+    # without building universal for users who don't need it. - Jack
     # headers need to specify x86_64 and i386 or will try to build for ppc arch
     # and fail on newer OSes
     # https://trac.macports.org/browser/trunk/dports/graphics/wxWidgets30/Portfile#L80
