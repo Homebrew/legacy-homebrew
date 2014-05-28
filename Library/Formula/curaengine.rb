@@ -10,6 +10,6 @@ class Curaengine < Formula
     ENV.deparallelize
     system "make"
     # Newer version compile to build, older versions compile to bin
-    bin.install Dir["build/CuraEngine", "bin/CuraEngine"]
+    bin.install(build.head? ? "build/CuraEngine" : "CuraEngine")
   end
 end
