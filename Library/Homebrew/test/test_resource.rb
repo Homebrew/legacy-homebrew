@@ -61,10 +61,10 @@ class ResourceTests < Test::Unit::TestCase
   end
 
   def test_version_with_scheme
-    scheme = Class.new(Version)
-    @resource.version('1.0' => scheme)
+    klass = Class.new(Version)
+    @resource.version klass.new("1.0")
     assert_version_equal '1.0', @resource.version
-    assert_instance_of scheme, @resource.version
+    assert_instance_of klass, @resource.version
   end
 
   def test_version_from_tag
