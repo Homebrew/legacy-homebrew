@@ -5,8 +5,6 @@ class Ctl < Formula
   url "https://github.com/ampas/CTL/archive/ctl-1.5.1.tar.gz"
   sha1 "f0e611ffe8a5c36e5ef89cc7eab1ff4ab7f97875"
 
-  option "with-check", "run unittests"
-
   depends_on "cmake" => :build
   depends_on "libtiff"
   depends_on "ilmbase"
@@ -17,7 +15,7 @@ class Ctl < Formula
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
       system "make"
-      system "make", "check" if build.with? "check"
+      system "make", "check"
       system "make", "install"
     end
   end
