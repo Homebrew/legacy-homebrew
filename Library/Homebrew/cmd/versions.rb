@@ -13,15 +13,12 @@ module Homebrew extend self
         https://github.com/Homebrew/homebrew-versions
     EOS
     ARGV.formulae.all? do |f|
-      if ARGV.include? '--compact'
-        puts f.versions * " "
-      else
-        f.versions do |version, sha|
-          print Tty.white.to_s
-          print "#{version.to_s.ljust(8)} "
-          print Tty.reset.to_s
-          puts "git checkout #{sha} #{f.pretty_relative_path}"
-        end
+      relative_path = f.pretty_relative_path
+      f.versions do |version, sha|
+        print Tty.white.to_s
+        print "#{version.to_s.ljust(8)} "
+        print Tty.reset.to_s
+        puts "git checkout #{sha} #{relative_path}"
       end
     end
   end
@@ -58,7 +55,7 @@ class Formula
     if Pathname.pwd == repository
       entry_name
     else
-      repository/"#{entry_name}"
+      path
     end
   end
 
@@ -74,9 +71,7 @@ class Formula
     end
 
     def entry_name
-      @entry_name ||= begin
-        repository == HOMEBREW_REPOSITORY ? "Library/Formula/#{name}.rb" : "#{name}.rb"
-      end
+      @entry_name ||= path.relative_path_from(repository).to_s
     end
 
     def rev_list branch='HEAD'
@@ -103,7 +98,7 @@ class Formula
 
     def formula_for_sha sha, &block
       mktemp do
-        path = Pathname.new(Pathname.pwd+"#{name}.rb")
+        path = Pathname.pwd.join("#{name}.rb")
         path.write text_from_sha(sha)
 
         # Unload the class so Formula#version returns the correct value

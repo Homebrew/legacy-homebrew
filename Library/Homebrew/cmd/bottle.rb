@@ -9,7 +9,7 @@ require 'extend/pathname'
 
 BOTTLE_ERB = <<-EOS
   bottle do
-    <% if root_url != BottleSpecification.new.root_url %>
+    <% if root_url != BottleSpecification::DEFAULT_ROOT_URL %>
     root_url "<%= root_url %>"
     <% end %>
     <% if prefix.to_s != "/usr/local" %>
