@@ -164,10 +164,6 @@ class BuildError < Homebrew::InstallationError
     super formula, "Failed executing: #{command} #{args}"
   end
 
-  def was_running_configure?
-    @command == './configure'
-  end
-
   def issues
     @issues ||= fetch_issues
   end

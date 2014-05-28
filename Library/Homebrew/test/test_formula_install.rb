@@ -14,20 +14,6 @@ class TestScriptFileFormula < ScriptFileFormula
 end
 
 
-class ConfigureTests < Test::Unit::TestCase
-  def teardown
-    HOMEBREW_CACHE.rmtree
-  end
-
-  def test_detect_failed_configure
-    f = ConfigureFails.new
-    shutup { f.brew { f.install } }
-  rescue BuildError => e
-    assert e.was_running_configure?
-  end
-end
-
-
 class InstallTests < Test::Unit::TestCase
   def teardown
     HOMEBREW_CACHE.rmtree
