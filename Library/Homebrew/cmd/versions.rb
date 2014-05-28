@@ -101,7 +101,7 @@ class Formula
 
     def formula_for_sha sha, &block
       mktemp do
-        path = Pathname.new(Pathname.pwd+"#{name}.rb")
+        path = Pathname.pwd.join("#{name}.rb")
         path.write text_from_sha(sha)
 
         # Unload the class so Formula#version returns the correct value
