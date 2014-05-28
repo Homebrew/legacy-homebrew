@@ -19,5 +19,5 @@ class Midicsv < Formula
 
   test do
     system "#{bin}/midicsv", "-u"
-   end
+  end
 end
