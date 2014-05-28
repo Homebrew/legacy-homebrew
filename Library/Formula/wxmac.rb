@@ -63,8 +63,6 @@ class Wxmac < Formula
       "--disable-monolithic"
     ]
 
-    args << "--with-macosx-sdk=#{MacOS.sdk_path}" unless MacOS.version >= "10.9"
-
     system "./configure", *args
     system "make install"
   end
