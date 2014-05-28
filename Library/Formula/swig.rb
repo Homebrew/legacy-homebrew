@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Swig < Formula
-  homepage 'http://www.swig.org/'
-  url 'https://downloads.sourceforge.net/project/swig/swig/swig-3.0.0/swig-3.0.0.tar.gz'
-  sha1 '10a1cc5ba6abbc7282b8146ccc0d8eefe233bfab'
+  homepage "http://www.swig.org/"
+  url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.1/swig-3.0.1.tar.gz"
+  sha1 "68a70cc80a75bc8e08a5d7a9ec22cb6d7b034c2c"
 
   bottle do
     sha1 "24b5a7ea2ceb3671b471f637acf9c4e200786daf" => :mavericks
@@ -13,7 +13,7 @@ class Swig < Formula
 
   option :universal
 
-  depends_on 'pcre'
+  depends_on "pcre"
 
   def install
     ENV.universal_binary if build.universal?
