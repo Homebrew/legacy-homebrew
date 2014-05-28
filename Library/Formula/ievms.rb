@@ -8,8 +8,4 @@ class Ievms < Formula
   def install
     bin.install "ievms.sh" => "ievms"
   end
-
-  test do
-    system "#{bin}/ievms"
-  end
 end
