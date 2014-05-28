@@ -13,16 +13,12 @@ module Homebrew extend self
         https://github.com/Homebrew/homebrew-versions
     EOS
     ARGV.formulae.all? do |f|
-      if ARGV.include? '--compact'
-        puts f.versions * " "
-      else
-        relative_path = f.pretty_relative_path
-        f.versions do |version, sha|
-          print Tty.white.to_s
-          print "#{version.to_s.ljust(8)} "
-          print Tty.reset.to_s
-          puts "git checkout #{sha} #{relative_path}"
-        end
+      relative_path = f.pretty_relative_path
+      f.versions do |version, sha|
+        print Tty.white.to_s
+        print "#{version.to_s.ljust(8)} "
+        print Tty.reset.to_s
+        puts "git checkout #{sha} #{relative_path}"
       end
     end
   end
