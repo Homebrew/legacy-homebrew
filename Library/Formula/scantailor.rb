@@ -3,7 +3,7 @@ require 'formula'
 class Scantailor < Formula
   class Version < ::Version
     def enhanced?
-      to_a[0].to_s == "enhanced"
+      tokens[0].to_s == "enhanced"
     end
 
     def <=>(other)
