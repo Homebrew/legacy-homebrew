@@ -13,10 +13,10 @@ class Burp < Formula
   patch :DATA
 
   def install
-   system "./configure", "--prefix=#{prefix}",
-                         "--sysconfdir=#{etc}/burp",
-                         "--sbindir=#{bin}",
-                         "--localstatedir=#{var}/burp"
+    system "./configure", "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}/burp",
+                          "--sbindir=#{bin}",
+                          "--localstatedir=#{var}/burp"
     system "make", "install"
   end
 
