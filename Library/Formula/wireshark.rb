@@ -26,7 +26,7 @@ class Wireshark < Formula
     sha1 '7e1c6b107c178016d51c9061ef3f40efbc47a040'
   end
 
-  option 'with-qt', 'Use QT for GUI instead of GTK+'
+  option 'with-qt', 'Use QT for GUI instead of GTK+3'
   option 'with-headers', 'Install Wireshark library headers for plug-in developemnt'
 
   depends_on 'pkg-config' => :build
@@ -42,8 +42,8 @@ class Wireshark < Formula
   depends_on 'pcre' => :optional
   depends_on 'portaudio' => :optional
   depends_on 'qt' => :optional
+  depends_on "gtk+3" => :optional
   depends_on "gtk+" => :optional
-  depends_on :x11 if build.with? "gtk+"
 
   def install
     args = ["--disable-dependency-tracking",
@@ -51,9 +51,11 @@ class Wireshark < Formula
             "--with-gnutls",
             "--with-ssl"]
 
-    args << "--disable-wireshark" if build.without?("gtk+") && build.without?("qt")
-    args << "--disable-gtktest" if build.without? "gtk+"
+    args << "--disable-wireshark" if build.without?("gtk+3") && build.without?("qt") && build.without?("gtk+")
+    args << "--disable-gtktest" if build.without?("gtk+3") && build.without?("gtk+")
     args << "--with-qt" if build.with? "qt"
+    args << "--with-gtk3" if build.with? "gtk+3"
+    args << "--with-gtk2" if build.with? "gtk+"
 
     if build.head?
       args << "--disable-warnings-as-errors"
