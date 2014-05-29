@@ -10,7 +10,7 @@ class Genders < Formula
   def install
     args = ["--prefix=#{prefix}"]
 
-    args << ((build.with? "non-shortened-hostnames") ? '--with-non-shortened-hostnames' : '')
+    args << "--with-non-shortened-hostnames" if build.with? "non-shortened-hostnames"
 
     system "./configure", *args
     system "make install"
