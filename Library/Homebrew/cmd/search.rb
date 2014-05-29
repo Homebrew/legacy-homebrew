@@ -25,42 +25,22 @@ module Homebrew extend self
     elsif ARGV.first =~ HOMEBREW_TAP_ARGS_REGEX
       # Argument matches user/repo
 
+      query = ARGV.first
+      user, repo = query.split("/", 2)
+
       if ARGV.count > 1
         # Argument matches user/repo query
 
-        query = ARGV.first
-        user, repo = query.split("/", 2)
         name = ARGV[1]
 
-        begin
-          tap_query = query + '/' + name
-          result = Formulary.factory(tap_query).name
-        rescue FormulaUnavailableError
-          rx = query_regexp(name)
-          result = search_tap(user, repo, rx)
-        end
-
-        puts_columns Array(result)
+        rx = query_regexp(name)
       else
         # Argument matches just user/repo, no query
 
-        query = ARGV.first
-        user, repo = query.split("/", 2)
-
-        tap_path = "#{HOMEBREW_LIBRARY}/Taps/#{user}/homebrew-#{repo}"
-        tap = Pathname.new(tap_path)
-        if tap.directory?
-          # This repo is tapped, search locally
-          result = Dir[tap_path + "/*.rb"].map{ |f| File.basename f, '.rb'}.sort
-          result = result.map{ |r| query + '/' + r }
-          puts_columns(result)
-        else
-          # This repo is untapped, search on GitHub
-          rx = query_regexp('')
-          result = search_tap(user, repo, rx)
-          puts_columns(result)
-        end
+        rx = query_regexp('')
       end
+      result = search_tap(user, repo, rx)
+      puts_columns(result)
     else
       query = ARGV.first
       rx = query_regexp(query)
@@ -122,26 +102,31 @@ module Homebrew extend self
   end
 
   def search_tap user, repo, rx
-    return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}").directory?
+    tap_path = HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}"
+    if tap_path.directory?
+      paths = Dir[tap_path.to_s + "/*.rb"].sort
+    else
+      tree = {}
 
-    results = []
-    tree = {}
+      GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
+        user = user.downcase if user == "Homebrew" # special handling for the Homebrew organization
+        json["tree"].each do |object|
+          next unless object["type"] == "blob"
 
-    GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
-      user = user.downcase if user == "Homebrew" # special handling for the Homebrew organization
-      json["tree"].each do |object|
-        next unless object["type"] == "blob"
+          subtree, file = File.split(object["path"])
 
-        subtree, file = File.split(object["path"])
-
-        if File.extname(file) == ".rb"
-          tree[subtree] ||= []
-          tree[subtree] << file
+          if File.extname(file) == ".rb"
+            tree[subtree] ||= []
+            tree[subtree] << file
+          end
         end
       end
+
+      paths = tree["Formula"] || tree["HomebrewFormula"] || tree["."] || []
     end
 
-    paths = tree["Formula"] || tree["HomebrewFormula"] || tree["."] || []
+    results = []
+
     paths.each do |path|
       name = File.basename(path, ".rb")
       results << "#{user}/#{repo}/#{name}" if rx === name
