@@ -2,8 +2,8 @@ require 'formula'
 
 class FreeradiusServer < Formula
   homepage 'http://freeradius.org/'
-  url 'ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.2.tar.gz'
-  sha1 '6aaa14169c20f257dcd5dcc61da0d0f985e9b5cc'
+  url 'ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.5.tar.gz'
+  sha1 '4d18ed8ff3fde4a29112ecc07f175b774ed5f702'
 
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
