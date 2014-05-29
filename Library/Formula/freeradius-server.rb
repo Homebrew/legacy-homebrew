@@ -20,12 +20,18 @@ class FreeradiusServer < Formula
     inreplace "autogen.sh", "libtool", "glibtool"
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}",
+                          "--sbindir=#{bin}",
+                          "--localstatedir=#{var}",
                           "--with-system-libtool",
                           "--with-system-libltdl",
                           "--with-openssl-includes=#{openssl.opt_include}",
                           "--with-openssl-libraries=#{openssl.opt_lib}"
     system "make"
     system "make install"
+  end
+
+  def post_install
+    (var/"log/radius").mkpath
   end
 end
 
