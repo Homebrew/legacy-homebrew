@@ -6,6 +6,7 @@ class SpeedtestCli < Formula
   sha1 'd4e48594aa9eb4ab5c00a93584c02af0371d3f79'
 
   def install
-    bin.install 'speedtest_cli.py' => 'speedtest_cli'
+    bin.install "speedtest_cli.py" => "speedtest-cli"
+    man1.install "speedtest-cli.1"
   end
 end
