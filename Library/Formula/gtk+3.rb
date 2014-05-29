@@ -41,13 +41,13 @@ class Gtkx3 < Formula
       --prefix=#{prefix}
       --disable-glibtest
       --enable-introspection=yes
-      --enable-x11-backend
       --disable-schemas-compile
     ]
 
     if build.without? "x"
-      args.delete "--enable-x11-backend"
       args << "--enable-quartz-backend" << "--enable-quartz-relocation"
+    else
+      args << "--enable-x11-backend"
     end
 
 
