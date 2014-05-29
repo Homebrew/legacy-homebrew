@@ -2,8 +2,8 @@ require "formula"
 
 class Fswatch < Formula
   homepage "https://github.com/alandipert/fswatch"
-  url "https://github.com/alandipert/fswatch/archive/v1.3.2.tar.gz"
-  sha1 "af52fd305b80bc5e05217edb1d8cdce02fdb4e91"
+  url "https://github.com/alandipert/fswatch/archive/1.3.3.tar.gz"
+  sha1 "b14632eca9618de58f5eadad82342672219902bf"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
