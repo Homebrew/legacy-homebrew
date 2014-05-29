@@ -25,36 +25,42 @@ module Homebrew extend self
     elsif ARGV.first =~ HOMEBREW_TAP_ARGS_REGEX
       # Argument matches user/repo
 
-      query = ARGV.first
-      user, repo = query.split("/", 2)
+      if ARGV.count > 1
+        # Argument matches user/repo query
 
-      tap_path = "#{HOMEBREW_LIBRARY}/Taps/#{user}/homebrew-#{repo}"
-      tap = Pathname.new(tap_path)
-      if tap.directory?
-        # This repo is tapped, search locally
-        result = Dir[tap_path + "/*.rb"].map{ |f| File.basename f, '.rb'}.sort
-        result = result.map{ |r| query + '/' + r }
-        puts_columns(result)
+        query = ARGV.first
+        user, repo = query.split("/", 2)
+        name = ARGV[1]
+
+        begin
+          tap_query = query + '/' + name
+          result = Formulary.factory(tap_query).name
+        rescue FormulaUnavailableError
+          rx = query_regexp(name)
+          result = search_tap(user, repo, rx)
+        end
+
+        puts_columns Array(result)
       else
-        # This repo is untapped, search on GitHub
-        rx = query_regexp('')
-        result = search_tap(user, repo, rx)
-        puts_columns(result)
+        # Argument matches just user/repo, no query
+
+        query = ARGV.first
+        user, repo = query.split("/", 2)
+
+        tap_path = "#{HOMEBREW_LIBRARY}/Taps/#{user}/homebrew-#{repo}"
+        tap = Pathname.new(tap_path)
+        if tap.directory?
+          # This repo is tapped, search locally
+          result = Dir[tap_path + "/*.rb"].map{ |f| File.basename f, '.rb'}.sort
+          result = result.map{ |r| query + '/' + r }
+          puts_columns(result)
+        else
+          # This repo is untapped, search on GitHub
+          rx = query_regexp('')
+          result = search_tap(user, repo, rx)
+          puts_columns(result)
+        end
       end
-    elsif ARGV.first =~ HOMEBREW_TAP_FORMULA_REGEX
-      # Argument matches user/repo/query
-
-      query = ARGV.first
-      user, repo, name = query.split("/", 3)
-
-      begin
-        result = Formulary.factory(query).name
-      rescue FormulaUnavailableError
-        rx = query_regexp(name)
-        result = search_tap(user, repo, rx)
-      end
-
-      puts_columns Array(result)
     else
       query = ARGV.first
       rx = query_regexp(query)
