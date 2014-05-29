@@ -29,7 +29,8 @@ module Homebrew extend self
       begin
         result = Formulary.factory(query).name
       rescue FormulaUnavailableError
-        result = search_tap(user, repo, name)
+        rx = query_regexp(name)
+        result = search_tap(user, repo, rx)
       end
 
       puts_columns Array(result)
