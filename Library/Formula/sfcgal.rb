@@ -14,6 +14,8 @@ class Sfcgal < Formula
 
   depends_on "cmake" => :build
   depends_on "cgal"
+  depends_on "gmp"
+  depends_on "mpfr"
 
   def install
     system "cmake", ".", *std_cmake_args
