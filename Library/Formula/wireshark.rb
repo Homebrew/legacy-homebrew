@@ -42,8 +42,7 @@ class Wireshark < Formula
   depends_on 'pcre' => :optional
   depends_on 'portaudio' => :optional
   depends_on 'qt' => :optional
-  depends_on "gtk+" => :optional
-  depends_on :x11 if build.with? "gtk+"
+  depends_on "gtk+3" => :optional
 
   def install
     system "./autogen.sh" if build.head?
@@ -54,9 +53,10 @@ class Wireshark < Formula
             "--with-ssl"]
 
     args << "--disable-warnings-as-errors" if build.head?
-    args << "--disable-wireshark" if build.without?("gtk+") && build.without?("qt")
-    args << "--disable-gtktest" if build.without? "gtk+"
+    args << "--disable-wireshark" if build.without?("gtk+3") && build.without?("qt")
+    args << "--disable-gtktest" if build.without? "gtk+3"
     args << "--with-qt" if build.with? "qt"
+    args << "--with-gtk3" if build.with? "gtk+3"
 
     system "./configure", *args
     system "make"
