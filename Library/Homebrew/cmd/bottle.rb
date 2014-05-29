@@ -2,7 +2,7 @@ require 'formula'
 require 'bottles'
 require 'tab'
 require 'keg'
-require 'cmd/versions'
+require 'formula_versions'
 require 'utils/inreplace'
 require 'erb'
 require 'extend/pathname'
@@ -123,7 +123,9 @@ module Homebrew extend self
     if ARGV.include? '--no-revision'
       bottle_revision = 0
     else
-      max = f.bottle_version_map('origin/master')[f.pkg_version].max
+      ohai "Determining #{f.name} bottle revision..."
+      versions = FormulaVersions.new(f)
+      max = versions.bottle_version_map("origin/master")[f.pkg_version].max
       bottle_revision = max ? max + 1 : 0
     end
 

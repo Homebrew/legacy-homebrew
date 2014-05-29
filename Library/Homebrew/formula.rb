@@ -573,7 +573,7 @@ class Formula
         f.puts
         require 'cmd/config'
         Homebrew.write_build_config(f)
-        raise BuildError.new(self, cmd, args, $?)
+        raise BuildError.new(self, cmd, args)
       end
     end
   ensure

@@ -40,5 +40,5 @@ class Metaproxy < Formula
     EOS
 
     system "#{bin}/metaproxy", "-t", "--config", "#{testpath}/test-config.xml"
-   end
+  end
 end

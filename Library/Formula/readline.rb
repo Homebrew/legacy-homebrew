@@ -1,17 +1,17 @@
-require 'formula'
+require "formula"
 
 class Readline < Formula
-  homepage 'http://tiswww.case.edu/php/chet/readline/rltop.html'
-  url 'http://ftpmirror.gnu.org/readline/readline-6.3.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/readline/readline-6.3.tar.gz'
-  sha256 '56ba6071b9462f980c5a72ab0023893b65ba6debb4eeb475d7a563dc65cafd43'
-  version '6.3.5'
+  homepage "http://tiswww.case.edu/php/chet/readline/rltop.html"
+  url "http://ftpmirror.gnu.org/readline/readline-6.3.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/readline/readline-6.3.tar.gz"
+  sha256 "56ba6071b9462f980c5a72ab0023893b65ba6debb4eeb475d7a563dc65cafd43"
+  version "6.3.6"
 
   bottle do
     cellar :any
-    sha1 "f18f34972c5164ea4cb94b3311e52fc04ea4b9a9" => :mavericks
-    sha1 "131d59e8bb99e5a9d0270a04e63c07d794750695" => :mountain_lion
-    sha1 "b119b5a05f21f9818b6c99e173597fba62d89b58" => :lion
+    sha1 "63bfa23f0b192827b7b021707f391b34346ec4e3" => :mavericks
+    sha1 "968e8b5a125aff9c78b585c0fadefaf6cc5bc7b9" => :mountain_lion
+    sha1 "56a126196db602b61f73cb1152a257bb04148fcf" => :lion
   end
 
   keg_only <<-EOS
@@ -27,8 +27,8 @@ EOS
   # Upstream patches can be found in:
   # http://git.savannah.gnu.org/cgit/readline.git
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/8df5735ae9273bf5ebb2/raw/827805aa2927211e7c3d9bb871e75843da686671/readline.diff"
-    sha1 "2d55658a2f01fa14a029b16fea29d20ce7d03b78"
+    url "https://gist.githubusercontent.com/jacknagel/d886531fb6623b60b2af/raw/d6aec221e7369ea152e64c8af83f6b048433dd82/readline-6.3.6.diff"
+    sha1 "774e4d3fe8c22dc715b430343d68beecf6f4e673"
   end
 
   def install

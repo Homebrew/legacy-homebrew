@@ -435,18 +435,6 @@ _brew_uses ()
     __brew_complete_formulae
 }
 
-_brew_versions ()
-{
-    local cur="${COMP_WORDS[COMP_CWORD]}"
-    case "$cur" in
-    --*)
-        __brewcomp "--compact"
-        return
-        ;;
-    esac
-    __brew_complete_formulae
-}
-
 _brew ()
 {
     local i=1 cmd
@@ -550,7 +538,7 @@ _brew ()
     update)                     _brew_update ;;
     upgrade)                    _brew_upgrade ;;
     uses)                       _brew_uses ;;
-    versions)                   _brew_versions ;;
+    versions)                   __brew_complete_formulae ;;
     *)                          ;;
     esac
 }
