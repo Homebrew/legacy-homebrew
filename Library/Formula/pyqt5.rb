@@ -2,7 +2,7 @@ require 'formula'
 
 class Pyqt5 < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt/download5'
-  url 'http://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-5.3/PyQt-gpl-5.3.tar.gz'
+  url 'https://downloads.sf.net/project/pyqt/PyQt5/PyQt-5.3/PyQt-gpl-5.3.tar.gz'
   sha1 '087d75be63351cfb7965075f448df218f688fa75'
 
   option 'enable-debug', "Build with debug symbols"
