@@ -22,7 +22,28 @@ module Homebrew extend self
       exec_browser "http://packages.ubuntu.com/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     elsif ARGV.empty?
       puts_columns Formula.names
+    elsif ARGV.first =~ HOMEBREW_TAP_ARGS_REGEX
+      # Argument matches user/repo
+
+      query = ARGV.first
+      user, repo = query.split("/", 2)
+
+      tap_path = "#{HOMEBREW_LIBRARY}/Taps/#{user}/homebrew-#{repo}"
+      tap = Pathname.new(tap_path)
+      if tap.directory?
+        # This repo is tapped, search locally
+        result = Dir[tap_path + "/*.rb"].map{ |f| File.basename f, '.rb'}.sort
+        result = result.map{ |r| query + '/' + r }
+        puts_columns(result)
+      else
+        # This repo is untapped, search on GitHub
+        rx = query_regexp('')
+        result = search_tap(user, repo, rx)
+        puts_columns(result)
+      end
     elsif ARGV.first =~ HOMEBREW_TAP_FORMULA_REGEX
+      # Argument matches user/repo/query
+
       query = ARGV.first
       user, repo, name = query.split("/", 3)
 
