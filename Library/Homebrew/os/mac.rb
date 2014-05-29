@@ -129,7 +129,7 @@ module OS
       ivar = "@#{cc.gsub(/(-|\.)/, '')}_version"
       return instance_variable_get(ivar) if instance_variable_defined?(ivar)
 
-      `#{path} --version` =~ /gcc(-\d\.\d \(GCC\))? (\d\.\d\.\d)/
+      `#{path} --version` =~ /gcc(-\d\.\d \(.+\))? (\d\.\d\.\d)/
       instance_variable_set(ivar, $2)
     end
 
