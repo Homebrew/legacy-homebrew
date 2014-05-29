@@ -12,6 +12,12 @@ class Postgresql < Formula
     sha1 "7da81a9d1dd086d6b1403d9a508d5871c85d2892" => :lion
   end
 
+  devel do
+    url 'http://ftp.postgresql.org/pub/source/v9.4beta1/postgresql-9.4beta1.tar.bz2'
+    version '9.4beta1'
+    sha256 '0e088eff79bb5171b2233222a25d7a2906eaf62aa86266daf6ec5217b1797f47'
+  end
+
   option '32-bit'
   option 'no-perl', 'Build without Perl support'
   option 'no-tcl', 'Build without Tcl support'
