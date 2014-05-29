@@ -2,8 +2,8 @@ require 'formula'
 
 class Sip < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/sip'
-  url 'http://download.sf.net/project/pyqt/sip/sip-4.15.5/sip-4.15.5.tar.gz'
-  sha1 '1e1c912981930754885ba47d708e2664d1c6ba9e'
+  url 'https://downloads.sf.net/project/pyqt/sip/sip-4.16/sip-4.16.tar.gz'
+  sha1 '0b404a6cc4e29fc7be45229e363473f40e942a8d'
 
   head 'http://www.riverbankcomputing.co.uk/hg/sip', :using => :hg
 
