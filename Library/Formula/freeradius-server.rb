@@ -31,6 +31,7 @@ class FreeradiusServer < Formula
   end
 
   def post_install
+    (var/"run/radiusd").mkpath
     (var/"log/radius").mkpath
   end
 end
