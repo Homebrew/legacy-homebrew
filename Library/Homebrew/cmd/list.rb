@@ -1,3 +1,5 @@
+require 'formula'
+
 module Homebrew extend self
   def list
 
@@ -13,6 +15,8 @@ module Homebrew extend self
       list_pinned
     elsif ARGV.include? '--versions'
       list_versions
+    elsif ARGV.include? '--removed'
+      list_removed
     elsif ARGV.named.empty?
       ENV['CLICOLOR'] = nil
       exec 'ls', *ARGV.options_only << HOMEBREW_CELLAR
@@ -79,6 +83,12 @@ module Homebrew extend self
     end.each do |d|
       puts d.basename
     end
+  end
+
+  def list_removed
+    # List formulae which are no longer include in Homebrew
+    formulae = Dir["#{HOMEBREW_CELLAR}/*"].map{ |d| File.basename d }
+    puts_columns formulae.reject{ |f| Formula.names.include? f }
   end
 end
 
