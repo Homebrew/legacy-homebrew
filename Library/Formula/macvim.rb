@@ -1,21 +1,21 @@
-require 'formula'
+require "formula"
 
 # Reference: https://github.com/b4winckler/macvim/wiki/building
 class Macvim < Formula
-  homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/archive/snapshot-73.tar.gz'
-  version '7.4-73'
-  sha1 'b87e37fecb305a99bc268becca39f8854e3ff9f0'
+  homepage "http://code.google.com/p/macvim/"
+  url "https://github.com/b4winckler/macvim/archive/snapshot-73.tar.gz"
+  version "7.4-73"
+  sha1 "b87e37fecb305a99bc268becca39f8854e3ff9f0"
 
-  head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
+  head "https://github.com/b4winckler/macvim.git", :branch => "master"
 
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"
 
   depends_on :xcode
-  depends_on 'cscope' => :recommended
-  depends_on 'lua' => :optional
-  depends_on 'luajit' => :optional
+  depends_on "cscope" => :recommended
+  depends_on "lua" => :optional
+  depends_on "luajit" => :optional
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
@@ -24,12 +24,12 @@ class Macvim < Formula
 
   def install
     # MacVim doesn't have and required any Python package, unset PYTHONPATH.
-    ENV.delete('PYTHONPATH')
+    ENV.delete "PYTHONPATH"
 
     # Set ARCHFLAGS so the Python app (with C extension) that is
     # used to create the custom icons will not try to compile in
     # PPC support (which isn't needed in Homebrew-supported systems.)
-    ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}"
+    ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
     # If building for 10.7 or up, make sure that CC is set to "clang".
     ENV.clang if MacOS.version >= :lion
@@ -52,16 +52,12 @@ class Macvim < Formula
 
     args << "--enable-cscope" if build.with? "cscope"
 
-    if build.with? "lua"
+    if build.with? "lua" or build.with? "luajit"
       args << "--enable-luainterp"
       args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
     end
 
-    if build.with? "luajit"
-      args << "--enable-luainterp"
-      args << "--with-lua-prefix=#{HOMEBREW_PREFIX}"
-      args << "--with-luajit"
-    end
+    args << "--with-luajit" if build.with? "luajit"
 
     if build.with? "python"
       if build.without? "python3"
@@ -94,22 +90,14 @@ class Macvim < Formula
 
     system "./configure", *args
 
-    if build.with? "python"
-      if build.with? "python3"
-        py_prefix = `python-config --prefix`.chomp
-        inreplace "src/auto/config.mk", /-DDYNAMIC_PYTHON_DLL=\\".*\\"/,
-                    %Q[-DDYNAMIC_PYTHON_DLL=\'\"#{py_prefix}/Python\"\']
-        py3_version = /\d\.\d/.match `python3 --version 2>&1`
-        py3_prefix = `python#{py3_version}-config --prefix`.chomp
-        inreplace 'src/auto/config.mk', /-DDYNAMIC_PYTHON3_DLL=\\".*\\"/,
-                  %Q[-DDYNAMIC_PYTHON3_DLL=\'\"#{py3_prefix}/Python\"\']
-      end
-
-      unless Formula["python"].installed?
-        inreplace "src/auto/config.h", "/* #undef PY_NO_RTLD_GLOBAL */",
-                                        "#define PY_NO_RTLD_GLOBAL 1"
-        inreplace "src/auto/config.h", "/* #undef PY3_NO_RTLD_GLOBAL */",
-                                       "#define PY3_NO_RTLD_GLOBAL 1"
+    # Require Python's dynamic library, and needs to be built as a framework.
+    if build.with? "python" and build.with? "python3"
+      py_prefix = `python-config --prefix`.chomp
+      py3_prefix = `python3-config --prefix`.chomp
+      # Help vim find Python's dynamic library as absolute path.
+      inreplace "src/auto/config.mk" do |s|
+        s.gsub! /-DDYNAMIC_PYTHON_DLL=\\".*\\"/, %(-DDYNAMIC_PYTHON_DLL=\'\"#{py_prefix}/Python\"\')
+        s.gsub! /-DDYNAMIC_PYTHON3_DLL=\\".*\\"/, %(-DDYNAMIC_PYTHON3_DLL=\'\"#{py3_prefix}/Python\"\')
       end
     end
 
@@ -133,17 +121,5 @@ class Macvim < Formula
     executables = %w[mvimdiff mview mvimex gvim gvimdiff gview gvimex]
     executables += %w[vi vim vimdiff view vimex] if build.include? "override-system-vim"
     executables.each { |e| bin.install_symlink "mvim" => e }
-  end
-
-  def caveats
-    if build.with? "python" and build.with? "python3"
-      <<-EOS.undent
-        MacVim has been built with dynamic loading of Python 2 and Python 3.
-
-        Note: if MacVim dynamically loads both Python 2 and Python 3, it may
-        crash. For more information, see:
-            http://vimdoc.sourceforge.net/htmldoc/if_pyth.html#python3
-      EOS
-    end
   end
 end

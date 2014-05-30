@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class Vim < Formula
-  homepage 'http://www.vim.org/'
-  head 'https://vim.googlecode.com/hg/'
+  homepage "http://www.vim.org/"
+  head "https://vim.googlecode.com/hg/"
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
-  url 'http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.273.orig.tar.gz'
-  sha1 '87da49006fbea912b5bf5f99cc91030581b43269'
+  url "http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.273.orig.tar.gz"
+  sha1 "87da49006fbea912b5bf5f99cc91030581b43269"
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
@@ -28,18 +28,18 @@ class Vim < Formula
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
-  depends_on 'lua' => :optional
-  depends_on 'luajit' => :optional
-  depends_on 'gtk+' if build.with? 'client-server'
+  depends_on "lua" => :optional
+  depends_on "luajit" => :optional
+  depends_on "gtk+" if build.with? "client-server"
 
-  conflicts_with 'ex-vi',
-    :because => 'vim and ex-vi both install bin/ex and bin/view'
+  conflicts_with "ex-vi",
+    :because => "vim and ex-vi both install bin/ex and bin/view"
 
   def install
-    ENV['LUA_PREFIX'] = HOMEBREW_PREFIX if build.with?('lua')
+    ENV["LUA_PREFIX"] = HOMEBREW_PREFIX if build.with? "lua" or build.with? "luajit"
 
     # vim doesn't require any Python package, unset PYTHONPATH.
-    ENV.delete('PYTHONPATH')
+    ENV.delete "PYTHONPATH"
 
     opts = []
     opts += LANGUAGES_OPTIONAL.map do |language|
@@ -54,14 +54,14 @@ class Vim < Formula
 
     opts << "--disable-nls" if build.include? "disable-nls"
 
-    if build.with? 'client-server'
-      opts << '--enable-gui=gtk2'
+    if build.with? "client-server"
+      opts << "--enable-gui=gtk2"
     else
       opts << "--enable-gui=no"
       opts << "--without-x"
     end
 
-    opts << "--with-luajit" if build.with? 'luajit'
+    opts << "--enable-luainterp" << "--with-luajit" if build.with? "luajit"
 
     # XXX: Please do not submit a pull request that hardcodes the path
     # to ruby: vim can be compiled against 1.8.x or 1.9.3-p385 and up.
@@ -83,8 +83,8 @@ class Vim < Formula
 
     # Require Python's dynamic library, and needs to be built as a framework.
     if build.with? "python" and build.with? "python3"
-      py_prefix = `python -c "import sys; print(sys.prefix)"`.chomp
-      py3_prefix = `python3 -c "import sys; print(sys.prefix)"`.chomp
+      py_prefix = `python-config --prefix`.chomp
+      py3_prefix = `python3-config --prefix`.chomp
       # Help vim find Python's dynamic library as absolute path.
       inreplace "src/auto/config.mk" do |s|
         s.gsub! /-DDYNAMIC_PYTHON_DLL=\\".*\\"/, %(-DDYNAMIC_PYTHON_DLL=\'\"#{py_prefix}/Python\"\')
