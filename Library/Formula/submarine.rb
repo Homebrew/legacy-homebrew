@@ -24,8 +24,7 @@ class Submarine < Formula
     # See https://github.com/rastersoft/submarine/pull/1
     inreplace 'configure.ac', 'gee-1.0', 'gee-0.8'
     system "./autogen.sh"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"

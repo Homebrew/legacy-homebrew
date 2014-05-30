@@ -12,7 +12,7 @@ Example usage:
 Troubleshooting:
   brew doctor
   brew install -vd FORMULA
-  brew [--env | --config]
+  brew [--env | config]
 
 Brewing:
   brew create [URL [--no-fetch]]

@@ -2,8 +2,8 @@ require 'formula'
 
 class Libcppa < Formula
   homepage 'http://libcppa.blogspot.it'
-  url 'https://github.com/Neverlord/libcppa/archive/V0.8.1.tar.gz'
-  sha1 'd4f096aae2bb72e254ad6df45edf3fb62370acaa'
+  url 'http://github.com/Neverlord/libcppa/archive/V0.9.1.tar.gz'
+  sha1 '70ea94e25b508d85ee4899f9632eb71b79f17480'
 
   depends_on 'cmake' => :build
 
@@ -13,6 +13,8 @@ class Libcppa < Formula
   option 'with-examples', 'Build examples'
 
   def install
+    ENV.cxx11
+
     args = %W[
       --prefix=#{prefix}
       --build-static

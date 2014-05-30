@@ -12,66 +12,109 @@ class Openssl < Formula
     sha1 "f12f352e67e5b131c1935040f8d2ca24107ebfca" => :lion
   end
 
-  depends_on "makedepend" => :build if MacOS.prefer_64_bit?
+  option :universal
+
+  depends_on "makedepend" => :build
 
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."
 
-  def install
-    args = %W[./Configure
-               --prefix=#{prefix}
-               --openssldir=#{openssldir}
-               zlib-dynamic
-               shared
-               enable-cms
-             ]
+  def arch_args
+    {
+      :x86_64 => %w[darwin64-x86_64-cc enable-ec_nistp-64_gcc_128],
+      :i386   => %w[darwin-i386-cc],
+    }
+  end
 
-    if MacOS.prefer_64_bit?
-      args << "darwin64-x86_64-cc" << "enable-ec_nistp_64_gcc_128"
+  def configure_args; %W[
+      --prefix=#{prefix}
+      --openssldir=#{openssldir}
+      zlib-dynamic
+      shared
+      enable-cms
+    ]
+  end
+
+  def install
+    if build.universal?
+      ENV.permit_arch_flags
+      archs = Hardware::CPU.universal_archs
+    elsif MacOS.prefer_64_bit?
+      archs = [Hardware::CPU.arch_64_bit]
     else
-      args << "darwin-i386-cc"
+      archs = [Hardware::CPU.arch_32_bit]
     end
 
-    system "perl", *args
+    dirs = []
 
-    ENV.deparallelize
-    system "make", "depend" if MacOS.prefer_64_bit?
-    system "make"
-    system "make", "test"
+    archs.each do |arch|
+      if build.universal?
+        dir = "build-#{arch}"
+        dirs << dir
+        mkdir dir
+        mkdir "#{dir}/engines"
+        system "make", "clean"
+      end
+
+      ENV.deparallelize
+      system "perl", "./Configure", *(configure_args + arch_args[arch])
+      system "make", "depend"
+      system "make"
+      system "make", "test"
+
+      if build.universal?
+        cp Dir["*.?.?.?.dylib", "*.a", "apps/openssl"], dir
+        cp Dir["engines/**/*.dylib"], "#{dir}/engines"
+      end
+    end
+
     system "make", "install", "MANDIR=#{man}", "MANSUFFIX=ssl"
+
+    if build.universal?
+      %w[libcrypto libssl].each do |libname|
+        system "lipo", "-create", "#{dirs.first}/#{libname}.1.0.0.dylib",
+                                  "#{dirs.last}/#{libname}.1.0.0.dylib",
+                       "-output", "#{lib}/#{libname}.1.0.0.dylib"
+        system "lipo", "-create", "#{dirs.first}/#{libname}.a",
+                                  "#{dirs.last}/#{libname}.a",
+                       "-output", "#{lib}/#{libname}.a"
+      end
+
+      Dir.glob("#{dirs.first}/engines/*.dylib") do |engine|
+        libname = File.basename(engine)
+        system "lipo", "-create", "#{dirs.first}/engines/#{libname}",
+                                  "#{dirs.last}/engines/#{libname}",
+                       "-output", "#{lib}/engines/#{libname}"
+      end
+
+      system "lipo", "-create", "#{dirs.first}/openssl",
+                                "#{dirs.last}/openssl",
+                     "-output", "#{bin}/openssl"
+    end
   end
 
   def openssldir
     etc/"openssl"
   end
 
-  def cert_pem
-    openssldir/"cert.pem"
-  end
-
-  def osx_cert_pem
-    openssldir/"osx_cert.pem"
-  end
-
-  def write_pem_file
+  def post_install
     keychains = %w[
       /Library/Keychains/System.keychain
       /System/Library/Keychains/SystemRootCertificates.keychain
     ]
 
-    osx_cert_pem.atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
+    openssldir.mkpath
+    (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
   end
 
-  def post_install
-    openssldir.mkpath
+  def caveats; <<-EOS.undent
+    A CA file has been bootstrapped using certificates from the system
+    keychain. To add additional certificates, place .pem files in
+      #{openssldir}/certs
 
-    if cert_pem.exist?
-      write_pem_file
-    else
-      cert_pem.unlink if cert_pem.symlink?
-      write_pem_file
-      openssldir.install_symlink 'osx_cert.pem' => 'cert.pem'
-    end
+    and run
+      #{opt_bin}/c_rehash
+    EOS
   end
 
   test do

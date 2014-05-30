@@ -4,11 +4,12 @@ class Glib < Formula
   homepage "http://developer.gnome.org/glib/"
   url "http://ftp.gnome.org/pub/gnome/sources/glib/2.40/glib-2.40.0.tar.xz"
   sha256 "0d27f195966ecb1995dcce0754129fd66ebe820c7cd29200d264b02af1aa28b5"
+  revision 1
 
   bottle do
-    sha1 "85f199d88dd10459de8752a42bd25a6092046d14" => :mavericks
-    sha1 "6c7aada5d49452943a59949ae71a51a8dce627b3" => :mountain_lion
-    sha1 "ab9fe14888599a51f45afc91a4af007f1311a67c" => :lion
+    sha1 "744e1082ceb6840c320e2df02d7aed1c9cd1ae7c" => :mavericks
+    sha1 "ab53e313c471f4112dc3966b543756b40e8c3a2b" => :mountain_lion
+    sha1 "0ff3d77f6205d79189d84e1ec2500dbce2528acc" => :lion
   end
 
   option :universal
@@ -34,8 +35,8 @@ class Glib < Formula
   # but needed to fix an assumption about the location of the d-bus machine
   # id file.
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/6700436/raw/2d790a8bd0c59ef66835866523988fbf9f680443/glib-configurable-paths.patch"
-    sha1 "7b89ce26c256e43cfdc11bae0c4498ec8529bcd4"
+    url "https://gist.githubusercontent.com/jacknagel/af332f42fae80c570a77/raw/a738786e0f7ea46c4a93a36a3d9d569017cca7f2/glib-hardcoded-paths.diff"
+    sha1 "ce54abdbb4386902a33dbad7cb6c8f1b0cbdab0d"
   end
 
   # Fixes compilation with FSF GCC. Doesn't fix it on every platform, due
@@ -53,6 +54,9 @@ class Glib < Formula
 
   def install
     ENV.universal_binary if build.universal?
+
+    inreplace %w[gio/gdbusprivate.c gio/xdgmime/xdgmime.c glib/gutils.c],
+      "@@HOMEBREW_PREFIX@@", HOMEBREW_PREFIX
 
     # Disable dtrace; see https://trac.macports.org/ticket/30413
     args = %W[
@@ -110,7 +114,7 @@ class Glib < Formula
       }
       EOS
     flags = ["-I#{include}/glib-2.0", "-I#{lib}/glib-2.0/include", "-lglib-2.0"]
-    system ENV.cc, "-o", "test", "test.c", *(flags + ENV.cflags.split)
+    system ENV.cc, "-o", "test", "test.c", *(flags + ENV.cflags.to_s.split)
     system "./test"
   end
 end

@@ -7,15 +7,13 @@ class Nss < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "56f38b3a781b03469802e9aea91190c0b970ffb9" => :mavericks
-    sha1 "36aeb7dbab99b900f4472514d5856057e21b91ac" => :mountain_lion
-    sha1 "44b9a3607a12d7d8e00d1f7d8f478d85b39bc3fa" => :lion
+    revision 2
+    sha1 "1a20609183ecbbf461d8aacf468e47574005f99a" => :mavericks
+    sha1 "7fcd7c8a6aea9ec3f451f2e5da5d5c263cd9718b" => :mountain_lion
+    sha1 "ec22f8d3125ef7c10e1711c3f04a26fcb45f1a11" => :lion
   end
 
   depends_on "nspr"
-
-  keg_only "NSS installs a libssl which conflicts with OpenSSL."
 
   def install
     ENV.deparallelize
@@ -59,6 +57,8 @@ class Nss < Formula
       cp file, lib unless file.include? ".chk"
       cp file, libexec if file.include? ".chk"
     end
+    # resolves conflict with openssl, see #28258
+    rm lib/"libssl.a"
 
     (lib+"pkgconfig/nss.pc").write pc_file
   end

@@ -30,7 +30,7 @@ class Xplanet < Formula
   depends_on "pango" if build.with?("pango") || build.with?("all")
   depends_on "cspice" if build.with?("cspice") || build.with?("all")
 
-  depends_on :freetype
+  depends_on 'freetype'
   depends_on :x11
 
   def install

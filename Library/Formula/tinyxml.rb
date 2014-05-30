@@ -16,17 +16,17 @@ class Tinyxml < Formula
   # The third patch adds a CMakeLists.txt file to build a shared library and provide an install target
   #   submitted upstream as https://sourceforge.net/p/tinyxml/patches/66/
   patch do
-    url "http://patch-tracker.debian.org/patch/series/dl/tinyxml/2.6.2-2/enforce-use-stl.patch"
+    url "https://raw.githubusercontent.com/robotology/yarp/master/extern/tinyxml/patches/enforce-use-stl.patch"
     sha1 "a1e243c0fb2fe3ba0f1138861d781284409116e2"
   end
 
   patch do
-    url "http://patch-tracker.debian.org/patch/series/dl/tinyxml/2.6.2-2/entity-encoding.patch"
+    url "https://raw.githubusercontent.com/robotology/yarp/master/extern/tinyxml/patches/entity-encoding.patch"
     sha1 "a64b7ace370419d36d95452befd82935ef8b0221"
   end
 
   patch do
-    url "https://gist.github.com/scpeters/6325123/raw/cfb079be67997cb19a1aee60449714a1dedefed5/tinyxml_CMakeLists.patch"
+    url "https://gist.githubusercontent.com/scpeters/6325123/raw/cfb079be67997cb19a1aee60449714a1dedefed5/tinyxml_CMakeLists.patch"
     sha1 "90c69322296a4144795aa66a94233a9409ff7ea5"
   end
 

@@ -11,7 +11,7 @@ class Liblwgeom < Formula
       # building liblwgeom.dylib without needing PostgreSQL
       # NOTE: this will need to be maintained per postgis version
     patch do
-      url "https://gist.github.com/dakcarto/7458788/raw/8df39204eef5a1e5671828ded7f377ad0f61d4e1/postgis-config_strip-pgsql.diff"
+      url "https://gist.githubusercontent.com/dakcarto/7458788/raw/8df39204eef5a1e5671828ded7f377ad0f61d4e1/postgis-config_strip-pgsql.diff"
       sha1 "3d93c9ede79439f1c683a604f9d906f5c788c690"
     end
   end
@@ -30,9 +30,9 @@ class Liblwgeom < Formula
 
   keg_only "Conflicts with PostGIS, which also installs liblwgeom.dylib"
 
-  depends_on :autoconf => :build
-  depends_on :automake => :build
-  depends_on :libtool => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on 'gpp' => :build
 
   depends_on 'proj'

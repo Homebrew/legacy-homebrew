@@ -10,7 +10,7 @@ class Xournal < Formula
   depends_on 'pkg-config' => :build
   depends_on :x11
   depends_on 'gtk+'
-  depends_on 'poppler' => 'with-glib'
+  depends_on 'poppler'
   depends_on 'libgnomecanvas'
 
   def install

@@ -14,7 +14,7 @@ class Graphicsmagick < Formula
   option 'without-svg', 'Compile without svg support'
   option 'with-perl', 'Build PerlMagick; provides the Graphics::Magick module'
 
-  depends_on :libtool => :run
+  depends_on "libtool" => :run
 
   depends_on 'pkg-config' => :build
 

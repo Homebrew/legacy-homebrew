@@ -3,9 +3,9 @@ require 'formula'
 # Reference: https://github.com/b4winckler/macvim/wiki/building
 class Macvim < Formula
   homepage 'http://code.google.com/p/macvim/'
-  url 'https://github.com/b4winckler/macvim/archive/snapshot-72.tar.gz'
-  version '7.4-72'
-  sha1 '3fb5b09d7496c8031a40e7a73374424ef6c81166'
+  url 'https://github.com/b4winckler/macvim/archive/snapshot-73.tar.gz'
+  version '7.4-73'
+  sha1 'b87e37fecb305a99bc268becca39f8854e3ff9f0'
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
@@ -50,7 +50,6 @@ class Macvim < Formula
       --with-local-dir=#{HOMEBREW_PREFIX}
     ]
 
-    args << "--with-macsdk=#{MacOS.version}" unless MacOS::CLT.installed?
     args << "--enable-cscope" if build.with? "cscope"
 
     if build.with? "lua"
@@ -85,13 +84,12 @@ class Macvim < Formula
       args << "--enable-python3interp"
     end
 
+    # configure appends "SDKS/..." to the value of `xcode-select -print-path`,
+    # but this isn't correct on recent Xcode, so we need to set it manually.
+    # FIXME this is a bug, and it should be fixed upstream.
     unless MacOS::CLT.installed?
-      # On Xcode-only systems:
-      # Macvim cannot deal with "/Applications/Xcode.app/Contents/Developer" as
-      # it is returned by `xcode-select -print-path` and already set by
-      # Homebrew (in superenv). Instead Macvim needs the deeper dir to directly
-      # append "SDKs/...".
-      args << "--with-developer-dir=#{MacOS::Xcode.prefix}/Platforms/MacOSX.platform/Developer/"
+      args << "--with-developer-dir=#{MacOS::Xcode.prefix}/Platforms/MacOSX.platform/Developer"
+      args << "--with-macsdk=#{MacOS.version}"
     end
 
     system "./configure", *args
@@ -117,9 +115,7 @@ class Macvim < Formula
 
     if build.include? "custom-icons"
       # Get the custom font used by the icons
-      cd 'src/MacVim/icons' do
-        system "make getenvy"
-      end
+      system "make", "-C", "src/MacVim/icons", "getenvy"
     else
       # Building custom icons fails for many users, so off by default.
       inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""

@@ -1,21 +1,21 @@
-require 'formula'
+require "formula"
 
 class Bigloo < Formula
-  homepage 'http://www-sop.inria.fr/indes/fp/Bigloo/'
-  url 'ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo4.0b.tar.gz'
-  version '4.0b'
-  sha1 '2c70863de59d1d92b63aee3f1ee2f39c6672e732'
+  homepage "http://www-sop.inria.fr/indes/fp/Bigloo/"
+  url "ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo4.1a-2.tar.gz"
+  version "4.1a-2"
+  sha1 "4010a2c8f71d2caf10c215ed9c6edc28fc7290ef"
 
-  depends_on 'gmp' => :recommended
+  depends_on "gmp" => :recommended
 
-  option 'with-jvm', 'Enable JVM support'
+  option "with-jvm", "Enable JVM support"
 
   fails_with :clang do
     build 500
     cause <<-EOS.undent
       objs/obj_u/Ieee/dtoa.c:262:79504: fatal error: parser
       recursion limit reached, program too complex
-      EOS
+    EOS
   end
 
   def install
@@ -31,7 +31,7 @@ class Bigloo < Formula
             "--disable-mpg123",
             "--disable-flac"]
 
-    args << "--jvm=yes" if build.with? 'jvm'
+    args << "--jvm=yes" if build.with? "jvm"
     args << "--no-gmp" if build.without? "gmp"
 
     # SRFI 27 is 32-bit only

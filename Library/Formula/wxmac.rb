@@ -6,11 +6,15 @@ class Wxmac < Formula
   sha1 "756a9c54d1f411e262f03bacb78ccef085a9880a"
 
   bottle do
-    revision 1
-    sha1 "b58b752e93d0bfda5743c191a8a4b7188a56d7b9" => :mavericks
-    sha1 "37c581aeb041fbc88464c325cb6a684930ce6279" => :mountain_lion
-    sha1 "b965780ae0167c92229a753e9a8c75007f23b4dd" => :lion
+    revision 4
+    sha1 "509441d49e87c95cc9f7cef700b4426f3264ae0d" => :mavericks
+    sha1 "70fca93b8c3e80a726ac700e7fcf155d89bc2172" => :mountain_lion
+    sha1 "75f29a1fbbabced2f2fa1d0c83b85dc51bf71583" => :lion
   end
+
+  depends_on "jpeg"
+  depends_on "libpng"
+  depends_on "libtiff"
 
   # Upstream patch for starting non-bundled apps like gnuplot, see:
   # http://trac.wxwidgets.org/ticket/15613
@@ -22,6 +26,8 @@ class Wxmac < Formula
   def install
     # need to set with-macosx-version-min to avoid configure defaulting to 10.5
     # need to enable universal binary build in order to build all x86_64
+    # FIXME I don't believe this is the whole story, surely this can be fixed
+    # without building universal for users who don't need it. - Jack
     # headers need to specify x86_64 and i386 or will try to build for ppc arch
     # and fail on newer OSes
     # https://trac.macports.org/browser/trunk/dports/graphics/wxWidgets30/Portfile#L80
@@ -53,7 +59,6 @@ class Wxmac < Formula
       "--enable-dataviewctrl",
       "--with-expat",
       "--with-macosx-version-min=#{MacOS.version}",
-      "--with-macosx-sdk=#{MacOS.sdk_path}",
       "--enable-universal_binary=#{Hardware::CPU.universal_archs.join(',')}",
       "--disable-precomp-headers",
       # This is the default option, but be explicit

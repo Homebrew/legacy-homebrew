@@ -2,12 +2,12 @@ require 'formula'
 
 class Ansible < Formula
   homepage 'http://www.ansible.com/home'
-  url 'http://releases.ansible.com/ansible/ansible-1.5.5.tar.gz'
-  sha1 '9a065eac0d15413284c8c7f9f5047d7b1249f16c'
+  url 'http://releases.ansible.com/ansible/ansible-1.6.2.tar.gz'
+  sha1 '41eb1c0de7304dea11a6f1d86eff69f3049a438d'
 
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'libyaml'
 
   option 'with-accelerate', "Enable accelerated mode"
@@ -45,22 +45,17 @@ class Ansible < Formula
   end
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    # HEAD additionally requires this to be present in PYTHONPATH, or else
+    # ansible's own setup.py will fail.
+    ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    # pycrypto's C bindings use flags unrecognized by clang,
-    # but since it doesn't use a makefile arg refurbishment
-    # is normally not enabled.
-    # See https://github.com/Homebrew/homebrew/issues/27639
-    ENV.append 'HOMEBREW_CCCFG', 'O'
-
-    resource('pycrypto').stage { system "python", *install_args }
-    resource('pyyaml').stage { system "python", *install_args }
-    resource('paramiko').stage { system "python", *install_args }
-    resource('markupsafe').stage { system "python", *install_args }
-    resource('jinja2').stage { system "python", *install_args }
-    if build.with? 'accelerate'
-      resource('python-keyczar').stage { system "python", *install_args }
+    res = %w[pycrypto pyyaml paramiko markupsafe jinja2]
+    res << "python-keyczar" if build.with? "accelerate"
+    res.each do |r|
+      resource(r).stage { system "python", *install_args }
     end
 
     inreplace 'lib/ansible/constants.py' do |s|
@@ -69,6 +64,11 @@ class Ansible < Formula
     end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    # These are now rolled into 1.6 and cause linking conflicts
+    rm Dir["#{bin}/easy_install*"]
+    rm "#{lib}/python2.7/site-packages/site.py"
+    rm Dir["#{lib}/python2.7/site-packages/*.pth"]
 
     man1.install Dir['docs/man/man1/*.1']
 

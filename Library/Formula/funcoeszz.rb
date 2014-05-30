@@ -6,12 +6,12 @@ class Funcoeszz < Formula
   sha1 '33d6950dc83fd2118bc45a752c4a77be3b112573'
 
   def install
-    prefix.install "funcoeszz-#{version}.sh"
+    prefix.install "funcoeszz-#{version}.sh" => "funcoeszz.sh"
   end
 
   def caveats; <<-EOS.undent
     To use this software add to your profile:
-      source #{opt_prefix}/funcoeszz-#{version}.sh
+      source #{opt_prefix}/funcoeszz.sh
     EOS
   end
 end

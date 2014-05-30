@@ -9,10 +9,11 @@ class Irrlicht < Formula
   depends_on :xcode
 
   def install
-    args = %W(-project source/Irrlicht/MacOSX/MacOSX.xcodeproj -configuration Release -target libIrrlicht.a)
-    args << 'SYMROOT=build'
-    args << '-sdk' << "macosx#{MacOS.version}"
-    xcodebuild *args
+    xcodebuild "-project", "source/Irrlicht/MacOSX/MacOSX.xcodeproj",
+               "-configuration", "Release",
+               "-target", "libIrrlicht.a",
+               "SYMROOT=build",
+               "-sdk", "macosx#{MacOS.version}"
     lib.install "source/Irrlicht/MacOSX/build/Release/libIrrlicht.a"
     include.install "include" => "irrlicht"
   end

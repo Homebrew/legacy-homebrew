@@ -24,7 +24,8 @@ module Homebrew extend self
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
       end
     else
-      ARGV.named.each do |f|
+      ARGV.named.each_with_index do |f,i|
+        puts unless i == 0
         begin
           info_formula Formula.factory(f)
         rescue FormulaUnavailableError
@@ -40,13 +41,15 @@ module Homebrew extend self
   end
 
   def print_json
-    formulae = ARGV.include?("--all") ? Formula : ARGV.formulae
-    json = formulae.map {|f| f.to_hash}
-    if json.size == 1
-      puts Utils::JSON.dump(json.pop)
-    else
-      puts Utils::JSON.dump(json)
-    end
+    ff = if ARGV.include? "--all"
+           Formula
+         elsif ARGV.include? "--installed"
+           Formula.installed
+         else
+           ARGV.formulae
+         end
+    json = ff.map {|f| f.to_hash}
+    puts Utils::JSON.dump(json)
   end
 
   def github_fork
@@ -60,7 +63,7 @@ module Homebrew extend self
   def github_info f
     if f.path.to_s =~ HOMEBREW_TAP_PATH_REGEX
       user = $1
-      repo = "homebrew-#$2"
+      repo = $2
       path = $3
     else
       user = f.path.parent.cd { github_fork }

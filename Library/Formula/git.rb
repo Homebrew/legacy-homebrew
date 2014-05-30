@@ -2,14 +2,25 @@ require 'formula'
 
 class Git < Formula
   homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-1.9.2.tar.gz"
-  sha1 "5181808d99ea959951ee55a083de3bce8603436b"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.0.0.tar.gz"
+  sha1 "d0a7da8b46bc5c63ca68b0eba189dd31f615437c"
+
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha1 "ff18e0627a084d5f26052e9a2ffc186e3021f283" => :mavericks
-    sha1 "e7b9e452a60ea46d6f32d90b0b9e2801b4675cdb" => :mountain_lion
-    sha1 "58aa489119bb688648561305fec0f5bee4e55866" => :lion
+    sha1 "fd9e260685da9033ab3df7d17fbd247ca0735a5f" => :mavericks
+    sha1 "4ca39e18a7e0353d95ac96fad95a8722ada85652" => :mountain_lion
+    sha1 "2daba8156c876d19cf5a766ff6ff2b03b10802f2" => :lion
+  end
+
+  resource "man" do
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.0.0.tar.gz"
+    sha1 "0cac84ebb05cf063bafad8cefd8a1ef786eeeb9c"
+  end
+
+  resource "html" do
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.0.0.tar.gz"
+    sha1 "3bfc01de98e3d795c02a1bb639a5e65449b4d7cb"
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -24,16 +35,6 @@ class Git < Formula
   depends_on 'curl' if build.with? 'brewed-curl'
   depends_on 'go' => :build if build.with? 'persistent-https'
 
-  resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-1.9.2.tar.gz"
-    sha1 "6f0871d02dd9181f59d6c59c3a4d26e2b42fbc0b"
-  end
-
-  resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-1.9.2.tar.gz"
-    sha1 "2563dade9a5282f6211740a6327ed13f8ff2df83"
-  end
-
   def install
     # If these things are installed, tell Git build system to not use them
     ENV['NO_FINK'] = '1'
@@ -43,8 +44,14 @@ class Git < Formula
     ENV['PYTHON_PATH'] = which 'python'
     ENV['PERL_PATH'] = which 'perl'
 
-    if MacOS.version >= :mavericks and MacOS.dev_tools_prefix
-      ENV['PERLLIB_EXTRA'] = "#{MacOS.dev_tools_prefix}/Library/Perl/5.16/darwin-thread-multi-2level"
+    if MacOS.version >= :mavericks
+      ENV["PERLLIB_EXTRA"] = %W{
+        #{MacOS.active_developer_dir}
+        /Library/Developer/CommandLineTools
+        /Applications/Xcode.app/Contents/Developer
+      }.uniq.map { |p|
+        "#{p}/Library/Perl/5.16/darwin-thread-multi-2level"
+      }.join(":")
     end
 
     unless quiet_system ENV['PERL_PATH'], '-e', 'use ExtUtils::MakeMaker'

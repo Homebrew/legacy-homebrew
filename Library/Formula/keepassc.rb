@@ -2,8 +2,9 @@ require "formula"
 
 class Keepassc < Formula
   homepage "http://raymontag.github.com/keepassc/"
-  url "https://github.com/raymontag/keepassc/archive/1.6.0.tar.gz"
-  sha1 "a8d7d1456149bf798f4e5a5087c250883425bb9d"
+  url "https://github.com/raymontag/keepassc/archive/1.6.2.tar.gz"
+  sha1 "3366fc811b312ef2e64eb48a8b84380bc1a962b1"
+  head "https://github.com/raymontag/keepassc.git", :branch => "development"
 
   depends_on :python3
 

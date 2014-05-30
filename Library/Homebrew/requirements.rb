@@ -67,30 +67,6 @@ class TeXDependency < Requirement
   end
 end
 
-class CLTDependency < Requirement
-  fatal true
-  build true
-
-  satisfy(:build_env => false) { MacOS::CLT.installed? }
-
-  def message
-    message = <<-EOS.undent
-      The Command Line Tools are required to compile this software.
-    EOS
-    if MacOS.version >= :mavericks
-      message += <<-EOS.undent
-        Run `xcode-select --install` to install them.
-      EOS
-    else
-      message += <<-EOS.undent
-        The standalone package can be obtained from
-        https://developer.apple.com/downloads/,
-        or it can be installed via Xcode's preferences.
-      EOS
-    end
-  end
-end
-
 class ArchRequirement < Requirement
   fatal true
 

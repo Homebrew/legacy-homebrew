@@ -369,6 +369,7 @@ class Formula
     include Enumerable
   end
 
+  # An array of all installed formulae
   def self.installed
     return [] unless HOMEBREW_CELLAR.directory?
 
@@ -437,12 +438,6 @@ class Formula
   # The full set of Requirements for this formula's dependency tree.
   def recursive_requirements(&block)
     Requirement.expand(self, &block)
-  end
-
-  # Flag for marking whether this formula needs C++ standard library
-  # compatibility check
-  def cxxstdlib
-    @cxxstdlib ||= Set.new
   end
 
   def to_hash
@@ -576,9 +571,9 @@ class Formula
         f.flush
         Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
         f.puts
-        require 'cmd/--config'
+        require 'cmd/config'
         Homebrew.write_build_config(f)
-        raise BuildError.new(self, cmd, args, $?)
+        raise BuildError.new(self, cmd, args)
       end
     end
   ensure
@@ -605,12 +600,6 @@ class Formula
 
     ohai "Patching"
     active_spec.patches.each(&:apply)
-  end
-
-  # Explicitly request changing C++ standard library compatibility check
-  # settings. Use with caution!
-  def cxxstdlib_check check_type
-    cxxstdlib << check_type
   end
 
   def self.method_added method
@@ -644,12 +633,8 @@ class Formula
       stable.mirror(val)
     end
 
-    Checksum::TYPES.each do |cksum|
-      class_eval <<-EOS, __FILE__, __LINE__ + 1
-        def #{cksum}(val)
-          stable.#{cksum}(val)
-        end
-      EOS
+    Checksum::TYPES.each do |type|
+      define_method(type) { |val| stable.send(type, val) }
     end
 
     def bottle *, &block
@@ -728,6 +713,18 @@ class Formula
 
     def keg_only reason, explanation=nil
       @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
+    end
+
+    # Flag for marking whether this formula needs C++ standard library
+    # compatibility check
+    def cxxstdlib
+      @cxxstdlib ||= Set.new
+    end
+
+    # Explicitly request changing C++ standard library compatibility check
+    # settings. Use with caution!
+    def cxxstdlib_check check_type
+      cxxstdlib << check_type
     end
 
     # For Apple compilers, this should be in the format:

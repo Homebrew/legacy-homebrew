@@ -24,14 +24,7 @@ class Libnet < Formula
   end
 
   def install
-    # Compatibility with Automake 1.13 and newer.
-    # Reported upstream:
-    # https://github.com/sam-github/libnet/issues/28
-    mv 'configure.in', 'configure.ac'
-    inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
-    (buildpath/'m4').mkpath
-
-    system "autoreconf --force --install"
+    system "autoreconf", "-fvi"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     inreplace "src/libnet_link_bpf.c", "#include <net/bpf.h>", "" # Per MacPorts

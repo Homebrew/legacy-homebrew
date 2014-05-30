@@ -67,6 +67,11 @@ Note that these flags should only appear after a command.
   * `commands`:
     Show a list of built-in and external commands.
 
+  * `config`:
+    Show Homebrew and system configuration useful for debugging. If you file
+    a bug report, you will likely be asked for this information if you do not
+    provide it.
+
   * `create <URL> [--autotools|--cmake] [--no-fetch] [--set-name <name>] [--set-version <version>]`:
     Generate a formula for the downloadable file at <URL> and open it in the editor.
     Homebrew will attempt to automatically derive the formula name
@@ -84,7 +89,7 @@ Note that these flags should only appear after a command.
     The options `--set-name` and `--set-version` each take an argument and allow
     you to explicitly set the name and version of the package you are creating.
 
-  * `deps [--1] [-n] [--tree] [--all] [--installed]` <formulae>:
+  * `deps [--1] [-n] [--union] [--tree] [--all] [--installed]` <formulae>:
     Show dependencies for <formulae>. When given multiple formula arguments,
     show the intersection of dependencies for <formulae>, except when passed
     `--tree`, `--all`, or `--installed`.
@@ -93,6 +98,9 @@ Note that these flags should only appear after a command.
     recursing.
 
     If `-n` is passed, show dependencies in topological order.
+
+    If `--union` is passed, show the union of dependencies for <formulae>,
+    instead of the intersection.
 
     If `--tree` is passed, show dependencies as a tree.
 
@@ -152,9 +160,15 @@ Note that these flags should only appear after a command.
 
     To view formula history locally: `brew log -p <formula>`.
 
-  * `info --json=<version>` <formula>:
-    Print a JSON representation of <formula>. Currently the only accepted value
+  * `info --json=<version>` (--all|--installed|<formulae>):
+    Print a JSON representation of <formulae>. Currently the only accepted value
     for <version> is `v1`.
+
+    Pass `--all` to get information on all formulae, or `--installed` to get
+    information on all installed formulae.
+
+    See the wiki for examples of using the JSON:
+    <https://github.com/Homebrew/homebrew/wiki/Querying-Brew>
 
   * `install [--debug] [--env=<std|super>] [--ignore-dependencies] [--only-dependencies] [--cc=<compiler>] [--build-from-source] [--devel|--HEAD]` <formula>:
     Install <formula>.
@@ -227,7 +241,7 @@ Note that these flags should only appear after a command.
     If provided, `--local` will move them into the user's `~/Applications`
     folder instead of the system folder. It may need to be created, first.
 
-  * `ls, list [--unbrewed] [--versions] [--pinned]` [<formulae>]:
+  * `ls, list [--unbrewed] [--versions [--multiple]] [--pinned]` [<formulae>]:
     Without any arguments, list all installed formulae.
 
     If <formulae> are given, list the installed files for <formulae>.
@@ -238,7 +252,8 @@ Note that these flags should only appear after a command.
     by Homebrew.
 
     If `--versions` is passed, show the version number for installed formulae,
-    or only the specified formulae if <formulae> are given.
+    or only the specified formulae if <formulae> are given. With `--multiple`,
+    only show formulae with multiple versions installed.
 
     If `--pinned` is passed, show the versions of pinned formulae, or only the
     specified (pinned) formulae if <formulae> are given.
@@ -290,15 +305,10 @@ Note that these flags should only appear after a command.
     Display all locally available formulae for brewing (including tapped ones).
     No online search is performed if called without arguments.
 
-  * `search`, `-S` <tap>:
-    Display all formulae in a <tap>, even if not yet tapped.
-    <tap> is of the form <user>/<repo>, e.g. `brew search homebrew/dupes`.
-
-  * `search`, `-S` [<tap>] <text>|/<text>/:
+  * `search`, `-S` <text>|/<text>/:
     Perform a substring search of formula names for <text>. If <text> is
     surrounded with slashes, then it is interpreted as a regular expression.
     The search for <text> is extended online to some popular taps.
-    If a <tap> is specified, the search is restricted to it.
 
   * `search --debian`|`--fedora`|`--fink`|`--macports`|`--opensuse`|`--ubuntu` <text>:
     Search for <text> in the given package manager's list.
@@ -335,6 +345,18 @@ Note that these flags should only appear after a command.
 
   * `unlinkapps [--local]`:
     Removes links created by `brew linkapps`.
+
+  * `unpack [--git|--patch] [--destdir=<path>]` <formulae>:
+
+    Unpack the source files for <formulae> into subdirectories of the current
+    working directory. If `--destdir=<path>` is given, the subdirectories will
+    be created in the directory named by `<path>` instead.
+
+    If `--patch` is passed, patches for <formulae> will be applied to the
+    unpacked source.
+
+    If `--git` is passed, a Git repository will be initalized in the unpacked
+    source. This is useful for creating patches for the software.
 
   * `unpin` <formulae>:
     Unpin <formulae>, allowing them to be upgraded by `brew upgrade`. See also
@@ -389,11 +411,6 @@ Note that these flags should only appear after a command.
   * `--cellar` <formula>:
     Display the location in the cellar where <formula> would be installed,
     without any sort of versioned directory as the last path.
-
-  * `--config`:
-    Show Homebrew and system configuration useful for debugging. If you file
-    a bug report, you will likely be asked for this information if you do not
-    provide it.
 
   * `--env`:
     Show a summary of the Homebrew build environment.

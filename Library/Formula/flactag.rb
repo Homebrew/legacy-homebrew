@@ -19,7 +19,8 @@ class Flactag < Formula
   patch :DATA
 
   def install
-    ENV.append 'LDFLAGS', '-liconv'
+    ENV.append "LDFLAGS", "-liconv"
+    ENV.append "LDFLAGS", "-lFLAC"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

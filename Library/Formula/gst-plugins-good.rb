@@ -4,9 +4,9 @@ class GstPluginsGood < Formula
   homepage 'http://gstreamer.freedesktop.org/'
 
   stable do
-    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.2.3.tar.xz'
-    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.2.3.tar.xz'
-    sha256 'bfb33536a515bdcc34482f64b8d9cc3e47c753878b254923b419bc2f7485e470'
+    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.2.4.tar.xz'
+    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.2.4.tar.xz'
+    sha256 'c9c90368393c2e5e78387e95c02ce7b19f48e793bba6d8547f2c4b51c6f420d3'
 
     depends_on 'check' => :optional
   end
@@ -58,11 +58,11 @@ class GstPluginsGood < Formula
     if build.with? "x11"
       args << "--with-x"
     else
-      args << "--without-x"
+      args << "--disable-x"
     end
 
     if build.head?
-      ENV.append "NOCONFIGURE", "yes"
+      ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
     end
 
