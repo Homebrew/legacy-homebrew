@@ -13,6 +13,7 @@ class Flactag < Formula
   depends_on 'libdiscid'
   depends_on 's-lang'
   depends_on 'unac'
+  depends_on 'jpeg'
 
   # Don't have a2x run xmllint on the a2x-generated DocBook - it
   # fails its own validation.
