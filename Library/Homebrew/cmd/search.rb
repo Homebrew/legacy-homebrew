@@ -116,7 +116,8 @@ module Homebrew extend self
     repo = repo.downcase
     tap_path = HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
     if tap_path.directory?
-      paths = Dir[tap_path.to_s + "/*.rb"].sort
+      paths = []
+      tap_path.find_formula { |f| paths << f }
     else
       tree = {}
 
