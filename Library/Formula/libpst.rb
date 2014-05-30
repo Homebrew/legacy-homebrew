@@ -7,9 +7,14 @@ class Libpst < Formula
 
   option 'pst2dii', 'Build pst2dii using gd'
 
-  depends_on 'boost'
   depends_on :python => :optional
   depends_on 'gd' if build.include? 'pst2dii'
+
+  if build.with? "python"
+    depends_on "boost" => "with-python"
+  else
+    depends_on "boost"
+  end
 
   def install
     args = %W[
@@ -18,7 +23,6 @@ class Libpst < Formula
     ]
     args << '--disable-dii' unless build.include? 'pst2dii'
     if build.with? 'python'
-      # ENV['PYTHON_EXTRA_LDFLAGS'] = '-u _PyMac_Error'
       args << '--enable-python' << '--with-boost-python=mt'
     else
       args << '--disable-python'

@@ -47,7 +47,7 @@ class Mkvtoolnix < Formula
   depends_on "wxmac" => :optional
   # On Mavericks, the bottle (without c++11) can be used
   # because mkvtoolnix is linked against libc++ by default
-  if MacOS.version >= 10.9
+  if MacOS.version >= "10.9"
     depends_on "boost"
     depends_on "libmatroska"
     depends_on "libebml"

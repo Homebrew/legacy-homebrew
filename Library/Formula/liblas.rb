@@ -31,7 +31,7 @@ class Liblas < Formula
     end
   end
 
-  def test
+  test do
     system bin/"liblas-config", "--version"
   end
 end

@@ -9,6 +9,10 @@ class Curaengine < Formula
   def install
     ENV.deparallelize
     system "make"
-    bin.install "CuraEngine"
+    if build.head?
+      bin.install "build/CuraEngine"
+    else
+      bin.install "CuraEngine"
+    end
   end
 end

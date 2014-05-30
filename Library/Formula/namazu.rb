@@ -43,12 +43,11 @@ class Namazu < Formula
 
   test do
     data_file = testpath/"data.txt"
-    data_file.write <<-EOS.undent
-      This is a Namazu test case for Homebrew.
-    EOS
+    data_file.write "This is a Namazu test case for Homebrew."
     mkpath "idx"
-    system "mknmz", "-O", "idx", data_file
-    search_result = `namazu -a Homebrew idx`
-    assert search_result.include?("data.txt")
+    system bin/"mknmz", "-O", "idx", data_file
+    search_result = `#{bin}/namazu -a Homebrew idx`
+    assert search_result.include?(data_file)
+    assert_equal 0, $?.exitstatus
   end
 end

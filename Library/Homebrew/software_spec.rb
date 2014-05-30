@@ -148,14 +148,18 @@ class Bottle
 end
 
 class BottleSpecification
+  DEFAULT_PREFIX = "/usr/local".freeze
+  DEFAULT_CELLAR = "/usr/local/Cellar".freeze
+  DEFAULT_ROOT_URL = "https://downloads.sf.net/project/machomebrew/Bottles".freeze
+
   attr_rw :root_url, :prefix, :cellar, :revision
   attr_reader :checksum, :collector
 
   def initialize
     @revision = 0
-    @prefix = '/usr/local'
-    @cellar = '/usr/local/Cellar'
-    @root_url = 'https://downloads.sf.net/project/machomebrew/Bottles'
+    @prefix = DEFAULT_PREFIX
+    @cellar = DEFAULT_CELLAR
+    @root_url = DEFAULT_ROOT_URL
     @collector = BottleCollector.new
   end
 

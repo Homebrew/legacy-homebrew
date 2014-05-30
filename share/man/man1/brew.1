@@ -325,12 +325,8 @@ If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR i
 Display all locally available formulae for brewing (including tapped ones)\. No online search is performed if called without arguments\.
 .
 .TP
-\fBsearch\fR, \fB\-S\fR \fItap\fR
-Display all formulae in a \fItap\fR, even if not yet tapped\. \fItap\fR is of the form \fIuser\fR/\fIrepo\fR, e\.g\. \fBbrew search homebrew/dupes\fR\.
-.
-.TP
-\fBsearch\fR, \fB\-S\fR [\fItap\fR] \fItext\fR|/\fItext\fR/
-Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. The search for \fItext\fR is extended online to some popular taps\. If a \fItap\fR is specified, the search is restricted to it\.
+\fBsearch\fR, \fB\-S\fR \fItext\fR|/\fItext\fR/
+Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. The search for \fItext\fR is extended online to some popular taps\.
 .
 .TP
 \fBsearch \-\-debian\fR|\fB\-\-fedora\fR|\fB\-\-fink\fR|\fB\-\-macports\fR|\fB\-\-opensuse\fR|\fB\-\-ubuntu\fR \fItext\fR
