@@ -16,7 +16,7 @@ class Boost < Formula
   homepage 'http://www.boost.org'
   url 'https://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2'
   sha1 'cef9a0cc7084b1d639e06cd3bc34e4251524c840'
-  revision 1
+  revision 2
 
   head 'https://github.com/boostorg/boost.git'
 
@@ -68,6 +68,13 @@ class Boost < Formula
     patch :p2 do
       url "https://github.com/boostorg/atomic/commit/e4bde20f.diff"
       sha1 "b68f5536474c9f543879698299bd4975538a89eb"
+    end
+
+    # Patch boost::serialization for Clang
+    # https://svn.boost.org/trac/boost/ticket/8757
+    patch :p1 do
+      url "https://gist.githubusercontent.com/philacs/375303205d5f8918e700/raw/d6ded52c3a927b6558984d22efe0a5cf9e59cd8c/0005-Boost.S11n-include-missing-algorithm.patch"
+      sha1 "a37552d48e5c1c0507ee9d48fb82a3fa5e3bc9fa"
     end
   end
 
