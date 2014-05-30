@@ -41,6 +41,17 @@ module Homebrew extend self
       end
       result = search_tap(user, repo, rx)
       puts_columns(result)
+    elsif ARGV.first =~ HOMEBREW_TAP_FORMULA_REGEX
+      query = ARGV.first
+      user, repo, name = query.split("/", 3)
+
+      begin
+        result = Formulary.factory(query).name
+      rescue FormulaUnavailableError
+        result = search_tap(user, repo, name)
+      end
+
+      puts_columns Array(result)
     else
       query = ARGV.first
       rx = query_regexp(query)
