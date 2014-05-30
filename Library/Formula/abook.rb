@@ -8,6 +8,7 @@ class Abook < Formula
   devel do
     url 'http://abook.sourceforge.net/devel/abook-0.6.0pre2.tar.gz'
     sha1 '42a939fba43e51aa011fa185113c12ec4bc1e1ec'
+    version '0.6.0pre2'
 
     # Remove `inline` from function implementation for clang compatibility
     patch :DATA
