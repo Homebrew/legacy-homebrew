@@ -5,7 +5,7 @@ class Horndis < Formula
   url "https://github.com/jwise/HoRNDIS/archive/rel5.tar.gz"
   sha1 "5f01c62ae61554252c0fe727e414edcb8e060106"
 
-  depends_on :xcode
+  depends_on :xcode => :build
 
   def install
     xcodebuild "-configuration", "Release", "SDKROOT=", "MACOSX_DEPLOYMENT_TARGET=", "GCC_VERSION=", "ONLY_ACTIVE_ARCH=YES", "SYMROOT=build"
