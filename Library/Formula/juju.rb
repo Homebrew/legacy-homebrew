@@ -6,8 +6,8 @@ class Juju < Formula
   sha1 '9290acb390d7bcefd56212de1a8a36c008f5db89'
 
   devel do
-    url "https://launchpad.net/juju-core/trunk/1.19.1/+download/juju-core_1.19.1.tar.gz"
-    sha1 "0bf1f8fcf5788907b960c1581007f9fd45126d21"
+    url 'https://launchpad.net/juju-core/trunk/1.19.3/+download/juju-core_1.19.3.tar.gz'
+    sha1 '9ef0ce0d8398e4f0a1ef3888d1204bc54381b16f'
   end
 
   bottle do
