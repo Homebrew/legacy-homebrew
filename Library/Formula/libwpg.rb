@@ -2,11 +2,12 @@ require 'formula'
 
 class Libwpg < Formula
   homepage 'http://libwpg.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/libwpg/libwpg/libwpg-0.2.2/libwpg-0.2.2.tar.bz2'
-  sha1 'e9484e795259485ece9a984f60776704d55afeeb'
+  url 'https://downloads.sourceforge.net/libwpg/libwpg-0.3.0.tar.bz2'
+  sha1 'c8422f9a01e98ff3cb5d64d518e61f6a0bb77551'
 
   depends_on 'pkg-config' => :build
   depends_on 'libwpd'
+  depends_on 'librevenge'
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
