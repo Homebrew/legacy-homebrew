@@ -172,7 +172,7 @@ class Boost < Formula
     s = ''
     # ENV.compiler doesn't exist in caveats. Check library availability
     # instead.
-    if Dir.glob("#{lib}/libboost_log*").empty?
+    if Dir["#{lib}/libboost_log*"].empty?
       s += <<-EOS.undent
 
       Building of Boost.Log is disabled because it requires newer GCC or Clang.
