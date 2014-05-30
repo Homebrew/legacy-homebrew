@@ -7,7 +7,7 @@ class Blueutil < Formula
 
   head 'https://github.com/toy/blueutil.git'
 
-  depends_on :xcode
+  depends_on :xcode => :build
 
   def install
     # Set to build with SDK=macosx10.6, but it doesn't actually need 10.6

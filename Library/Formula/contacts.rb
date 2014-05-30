@@ -9,7 +9,7 @@ class Contacts < Formula
   version '1.1a-3'
   sha1 '79526dd96e5b5297daaae6327c79de9366f94c87'
 
-  depends_on :xcode
+  depends_on :xcode => :build
 
   def install
     system "make", "SDKROOT=#{MacOS.sdk_path}"

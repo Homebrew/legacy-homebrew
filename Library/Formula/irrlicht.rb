@@ -6,7 +6,7 @@ class Irrlicht < Formula
   url 'https://downloads.sourceforge.net/irrlicht/irrlicht-1.8.1.zip'
   sha1 '231cd2cf2eefe43bde7c40537ece055a3d6e09cb'
 
-  depends_on :xcode
+  depends_on :xcode => :build
 
   def install
     xcodebuild "-project", "source/Irrlicht/MacOSX/MacOSX.xcodeproj",

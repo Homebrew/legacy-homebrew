@@ -6,7 +6,7 @@ class Platypus < Formula
   sha1 "39d165b9579600cef637b45c70c82307697bb7be"
   head "https://github.com/sveinbjornt/Platypus.git", :branch => "master"
 
-  depends_on :xcode
+  depends_on :xcode => :build
 
   def install
     # 4.8 tarball has extra __MACOSX folder, so go to the right one

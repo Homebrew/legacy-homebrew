@@ -26,7 +26,7 @@ class Freerdp < Formula
 
   head do
     url "https://github.com/FreeRDP/FreeRDP.git"
-    depends_on :xcode # for "ibtool"
+    depends_on :xcode => :build # for "ibtool"
   end
 
   depends_on :x11

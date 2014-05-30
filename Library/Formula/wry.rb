@@ -8,7 +8,7 @@ class Wry < Formula
   head "https://github.com/hoop33/wry.git"
 
   depends_on :macos => :lion
-  depends_on :xcode
+  depends_on :xcode => :build
 
   def install
     xcodebuild "-target", "wry", "-configuration", "Release", "SYMROOT=build", "OBJROOT=objroot"

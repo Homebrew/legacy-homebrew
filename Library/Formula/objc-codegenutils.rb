@@ -5,8 +5,8 @@ class ObjcCodegenutils < Formula
   url "https://github.com/square/objc-codegenutils/archive/v1.0.tar.gz"
   sha1 "ed22e553e3b0f5aaa445d912af287714aeb09f7b"
 
-  depends_on :xcode
   depends_on :macos => :mountain_lion
+  depends_on :xcode => :build
 
   def install
     xcodebuild "-project", "codegenutils.xcodeproj", "-target", "assetgen", "-configuration", "Release","SYMROOT=build", "OBJROOT=build"
