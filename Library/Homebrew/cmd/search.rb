@@ -2,6 +2,7 @@ require 'formula'
 require 'blacklist'
 require 'utils'
 require 'thread'
+require 'cmd/tap'
 
 module Homebrew extend self
 
@@ -21,7 +22,11 @@ module Homebrew extend self
     elsif ARGV.include? '--ubuntu'
       exec_browser "http://packages.ubuntu.com/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
     elsif ARGV.empty?
-      puts_columns Formula.names
+      puts_columns Formula.core_names
+      rx = query_regexp('')
+      each_tap do |user, repo|
+        puts_columns search_tap(user.basename.to_s, repo.basename.sub("homebrew-", "").to_s, rx)
+      end
     elsif ARGV.first =~ HOMEBREW_TAP_ARGS_REGEX
       # Argument matches user/repo
 
