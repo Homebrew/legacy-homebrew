@@ -113,7 +113,9 @@ module Homebrew extend self
   end
 
   def search_tap user, repo, rx
-    tap_path = HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}"
+    user = user.downcase
+    repo = repo.downcase
+    tap_path = HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
     if tap_path.directory?
       paths = Dir[tap_path.to_s + "/*.rb"].sort
     else
