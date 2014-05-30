@@ -19,7 +19,7 @@ class Eric5 < Formula
   end
 
   def install
-    system "python3", "install.py", "-n #{prefix}", "-b #{prefix}/bin"
+    system "python3", "install.py", "-n #{prefix}", "-b #{bin}",
 
     if build.with? 'i18n-de'
       resource('i18n-de').stage { system "python3", "install-i18n.py", "install", "--prefix=#{prefix}" }
