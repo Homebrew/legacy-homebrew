@@ -2,8 +2,8 @@ require 'formula'
 
 class Libwpd < Formula
   homepage 'http://libwpd.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/libwpd/libwpd-0.9.9.tar.bz2'
-  sha1 '74d13c4e5137edc78660059257671b5a1f40224d'
+  url 'https://downloads.sourceforge.net/libwpd/libwpd-0.10.0.tar.bz2'
+  sha1 'bbcc6e528a69492fb2b4bbb9a56d385a29efc4c4'
 
   bottle do
     cellar :any
@@ -14,6 +14,7 @@ class Libwpd < Formula
 
   depends_on 'pkg-config' => :build
   depends_on "glib"
+  depends_on "librevenge"
   depends_on "libgsf"
 
   def install
