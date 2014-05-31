@@ -6,12 +6,8 @@ class TypesafeActivator < Formula
   sha1 '01accd921068a4f8dae4a6304aa98f837b110602'
 
   def install
-    # remove Windows .bat files
-    rm Dir['*.bat']
-    rm Dir["#{buildpath}/**/*.bat"]
-
+    rm Dir["*.bat"] # Remove Windows .bat files
     prefix.install_metafiles
-
     libexec.install Dir['*']
     bin.write_exec_script libexec/'activator'
   end
