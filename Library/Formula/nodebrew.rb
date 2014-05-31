@@ -4,7 +4,6 @@ class Nodebrew < Formula
   homepage "https://github.com/hokaccha/nodebrew"
   url "https://github.com/hokaccha/nodebrew/archive/v0.7.3.tar.gz"
   sha1 "df5563d511ddcf662d982346d88eb68334184939"
-  version "0.7.3"
 
   def install
     bin.install "nodebrew" => "nodebrew"
