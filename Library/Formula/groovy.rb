@@ -12,7 +12,7 @@ class Groovy < Formula
     rm_f Dir["bin/*.bat"]
 
     if build.include? 'invokedynamic'
-      Dir['indy/*.jar'].each do |src_path|
+      Dir.glob("indy/*.jar") do |src_path|
         dst_file = File.basename(src_path, '-indy.jar') + '.jar'
         dst_path = File.join('lib', dst_file)
         mv src_path, dst_path
