@@ -25,4 +25,9 @@ class Nodebrew < Formula
       export NODEBREW_ROOT=/usr/local/var/nodebrew
     EOS
   end
+
+  test do
+    system "#{bin}/nodebrew", 'help'
+  end
+
 end
