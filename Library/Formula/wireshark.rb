@@ -16,9 +16,9 @@ class Wireshark < Formula
   head do
     url 'https://code.wireshark.org/review/wireshark', :using => :git
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   devel do
@@ -46,17 +46,19 @@ class Wireshark < Formula
   depends_on :x11 if build.with? "gtk+"
 
   def install
-    system "./autogen.sh" if build.head?
-
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--with-gnutls",
             "--with-ssl"]
 
-    args << "--disable-warnings-as-errors" if build.head?
     args << "--disable-wireshark" if build.without?("gtk+") && build.without?("qt")
     args << "--disable-gtktest" if build.without? "gtk+"
     args << "--with-qt" if build.with? "qt"
+
+    if build.head?
+      args << "--disable-warnings-as-errors"
+      system "./autogen.sh"
+    end
 
     system "./configure", *args
     system "make"
