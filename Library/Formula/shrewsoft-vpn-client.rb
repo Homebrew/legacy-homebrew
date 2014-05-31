@@ -20,8 +20,7 @@ class ShrewsoftVpnClient < Formula
     # https://lists.shrew.net/pipermail/vpn-devel/2014-January/000636.html
 
     # there is no suport for an alternate Frameworks folder, must change hard-coded paths
-    ["package/macosx/vpn-client-install.packproj"] +
-    Dir["source/*/CMakeLists.txt"].each do |path|
+    Dir.glob(%w[source/*/CMakeLists.txt package/macosx/vpn-client-install.packproj]) do |path|
       next unless File.read(path).include? "/Library/Frameworks"
       inreplace path, "/Library/Frameworks", frameworks
     end
@@ -51,7 +50,7 @@ class ShrewsoftVpnClient < Formula
     system "cmake", *cmake_args
 
     # change relative framework paths to absolute ones (otherwise /Library/Frameworks is assumed)
-    Dir["source/*/cmake_install.cmake"].each do |path|
+    Dir.glob("source/*/cmake_install.cmake") do |path|
       inreplace path, /"(ShrewSoft.+?\.framework)/, "\"#{frameworks}/\\1"
     end
 
