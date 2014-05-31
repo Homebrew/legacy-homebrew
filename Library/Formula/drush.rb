@@ -8,7 +8,7 @@ class Drush < Formula
 
   def install
     prefix.install_metafiles
-    libexec.install Dir['*'] -['drush.bat']
+    libexec.install Dir['*'] - ['drush.bat']
     (bin+'drush').write <<-EOS.undent
       #!/bin/sh
 
