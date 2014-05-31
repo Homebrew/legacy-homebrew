@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class Nss < Formula
   homepage "https://developer.mozilla.org/docs/NSS"
@@ -37,18 +37,17 @@ class Nss < Formula
     # hierarchy, and Homebrew's Pathname.install moves the symlink into the keg
     # rather than copying the referenced file.
     cd "../dist"
-    bin.mkdir
+    bin.mkpath
     Dir.glob("Darwin*/bin/*") do |file|
       cp file, bin unless file.include? ".dylib"
     end
 
-    include.mkdir
     include_target = include + "nss"
-    include_target.mkdir
+    include_target.mkpath
     Dir.glob("public/{dbm,nss}/*") { |file| cp file, include_target }
 
-    lib.mkdir
-    libexec.mkdir
+    lib.mkpath
+    libexec.mkpath
     Dir.glob("Darwin*/lib/*") do |file|
       cp file, lib unless file.include? ".chk"
       cp file, libexec if file.include? ".chk"
