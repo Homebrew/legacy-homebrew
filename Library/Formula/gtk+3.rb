@@ -11,9 +11,7 @@ class Gtkx3 < Formula
     sha1 "579061b56ed5f3fb1efe0cb9cea03ef3d2ecc62e" => :lion
   end
 
-  option "without-x", "Build without X11 support"
-
-  depends_on :x11 => '2.5' # needs XInput2, introduced in libXi 1.3
+  depends_on :x11 => :recommended # (2.5) needs XInput2, introduced in libXi 1.3
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'jpeg'
@@ -38,7 +36,7 @@ class Gtkx3 < Formula
       --disable-schemas-compile
     ]
 
-    if build.without? "x"
+    if build.without? "x11"
       args << "--enable-quartz-backend" << "--enable-quartz-relocation"
     else
       args << "--enable-x11-backend"
