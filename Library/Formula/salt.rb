@@ -35,7 +35,7 @@ class Salt < Formula
 
   test do
     ENV['SALTPATH'] = "#{prefix}/data"
-    cp_r Dir["#{prefix}/03d4ag*"], '.'
+    cp_r Dir["#{prefix}/03d4ag/*"], '.'
     system bin/"snfit", testpath/"lc-03D4ag.list"
     assert File.exist?("result_salt2.dat")
   end
