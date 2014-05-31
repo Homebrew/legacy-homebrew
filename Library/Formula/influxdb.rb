@@ -6,10 +6,9 @@ class Influxdb < Formula
   sha1 "60617e5847f853fca5e11172bcd0c198ff50c1b8"
 
   bottle do
-    revision 1
-    sha1 "04c1168d7c78c3a0ad9742130a89fe0bdc5366a7" => :mavericks
-    sha1 "6780c46f9a70625cfa25dc968df6edb9c3521a8b" => :mountain_lion
-    sha1 "884c8436e283ff1f8d0f4628b8982df51904d2cd" => :lion
+    sha1 "09fc11a412fb83540d3b4bf47ce6e8af780c691d" => :mavericks
+    sha1 "4060103fa777f6d580285eae7aa2343be225e533" => :mountain_lion
+    sha1 "73d68cd4a902921ef3db750e52ef0aa67a86aa6c" => :lion
   end
 
   depends_on "leveldb"
