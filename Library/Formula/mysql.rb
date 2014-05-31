@@ -2,9 +2,8 @@ require 'formula'
 
 class Mysql < Formula
   homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url "http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.17.tar.gz"
-  sha1 "53773d619d7f7bc1743f92fd65885a0581c37ff8"
-  revision 1
+  url "http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.19.tar.gz"
+  sha1 "4b59d96642c62c26648826ea4f9c30dbf123dbed"
 
   bottle do
     sha1 "a41817eea90f2150351f2862cec17c15acd45e07" => :mavericks
