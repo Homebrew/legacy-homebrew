@@ -10,7 +10,7 @@ class Monetdb < Formula
   option 'with-java'
 
   depends_on 'pkg-config' => :build
-  depends_on :ant
+  depends_on :ant => :build
   depends_on 'pcre'
   depends_on 'readline' # Compilation fails with libedit.
 
