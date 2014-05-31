@@ -13,7 +13,7 @@ class TeeClc < Formula
     else
       system 'mvn', 'assembly:assembly'
       system 'unzip', Dir['target/tf-*.zip'], "-dtarget"
-      install_prefix = Dir['target/tf-*/'].to_s
+      install_prefix = Dir['target/tf-*/'].first.to_s
     end
 
     libexec.install install_prefix/'tf'
