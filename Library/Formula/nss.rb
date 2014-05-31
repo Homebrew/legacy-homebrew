@@ -49,8 +49,11 @@ class Nss < Formula
     lib.mkpath
     libexec.mkpath
     Dir.glob("Darwin*/lib/*") do |file|
-      cp file, lib unless file.include? ".chk"
-      cp file, libexec if file.include? ".chk"
+      if file.include? ".chk"
+        cp file, libexec
+      else
+        cp file, lib
+      end
     end
     # resolves conflict with openssl, see #28258
     rm lib/"libssl.a"
