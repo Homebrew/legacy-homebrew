@@ -23,7 +23,8 @@ class VowpalWabbit < Formula
       system "./autogen.sh"
     end
 
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--with-boost=#{Formula['boost'].opt_prefix}"
     system "make"
     system "make install"
   end
