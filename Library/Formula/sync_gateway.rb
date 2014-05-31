@@ -2,19 +2,14 @@ require "formula"
 
 class SyncGateway < Formula
   homepage "http://docs.couchbase.com/sync-gateway"
-  url "https://github.com/couchbase/sync_gateway.git", :tag => "1.0-beta3"
+  url "https://github.com/couchbase/sync_gateway.git", :branch => "release/1.0.0"
   head "https://github.com/couchbase/sync_gateway.git", :branch => "master"
 
   depends_on "go" => :build
 
   def install
-    if build.head?
-      system "make", "buildit"
-    else
-      ENV["GOBIN"] = "#{Dir.pwd}/bin"
-      system "./go.sh", "install", "-v", "github.com/couchbaselabs/sync_gateway"
-      bin.install "bin/sync_gateway"
-    end
+    system "make", "buildit"
+    bin.install "bin/sync_gateway"
   end
 
   test do
