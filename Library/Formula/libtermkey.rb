@@ -1,14 +1,15 @@
-require 'formula'
+require "formula"
 
 class Libtermkey < Formula
-  homepage 'http://www.leonerd.org.uk/code/libtermkey/'
-  url 'http://www.leonerd.org.uk/code/libtermkey/libtermkey-0.16.tar.gz'
-  sha1 'd89557f8ba37f4710cdb7e35d294a5965149eda4'
+  homepage "http://www.leonerd.org.uk/code/libtermkey/"
+  url "http://www.leonerd.org.uk/code/libtermkey/libtermkey-0.17.tar.gz"
+  sha1 "2f9f0724cabd81f0ae3ba7b2837ee15dd40130f9"
 
-  depends_on :libtool
+  depends_on "pkg-config" => :build
+  depends_on "libtool" => :build
 
   def install
-    system "make", "PREFIX=#{prefix}", "LIBTOOL=glibtool"
-    system "make", "install", "PREFIX=#{prefix}", "LIBTOOL=glibtool"
+    system "make", "PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 end
