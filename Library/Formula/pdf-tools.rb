@@ -12,17 +12,15 @@ class PdfTools < Formula
   end
 
   depends_on "pkg-config" => :build
-
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
-
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "cairo"
   depends_on "poppler"
 
   def install
-    ENV['zlib_CFLAGS'] = '-I/usr/include'
-    ENV['zlib_LIBS'] = '-L/usr/lib -lz'
+    ENV["zlib_CFLAGS"] = "-I/usr/include"
+    ENV["zlib_LIBS"] = "-L/usr/lib -lz"
 
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}"
