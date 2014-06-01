@@ -3,9 +3,8 @@ require 'formula'
 class Python < Formula
   homepage 'http://www.python.org'
   head 'http://hg.python.org/cpython', :using => :hg, :branch => '2.7'
-  url 'http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz'
-  sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
-  revision 1
+  url 'http://www.python.org/ftp/python/2.7.7/Python-2.7.7.tgz'
+  sha1 '1db01d7f325d8ceaf986976800106018b82ae45a'
 
   bottle do
     sha1 "bcf43a9f8f5f587a86bdc680dd735a853fa3a8a5" => :mavericks
@@ -31,19 +30,13 @@ class Python < Formula
   skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-3.6.tar.gz'
-    sha1 '745cbb942f8015dbcbfd9df5cb815adb63c7b0e9'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-4.0.tar.gz'
+    sha1 'ff9212d50573ea9983d81d53bd11e834cf863b25'
   end
 
   resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.5.tar.gz'
-    sha1 'ce15871b65e412589044ee8a4029fe65bc26b894'
-  end
-
-  # Backported security fix for CVE-2014-1912: http://bugs.python.org/issue20246
-  patch :p0 do
-    url "https://gist.githubusercontent.com/leepa/9351856/raw/7f9130077fd760fcf9a25f50b69d9c77b155fbc5/CVE-2014-1912.patch"
-    sha1 "db25abc381f62e9f501ad56aaa2537e48e1b0889"
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz'
+    sha1 'e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e'
   end
 
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
