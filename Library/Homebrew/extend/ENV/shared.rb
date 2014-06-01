@@ -94,7 +94,7 @@ module SharedEnvExtension
   def fcflags;  self['FCFLAGS'];      end
 
   def compiler
-    @compiler ||= if (cc = ARGV.cc)
+    @compiler ||= if (cc = [ARGV.cc, homebrew_cc].compact.first)
       COMPILER_SYMBOL_MAP.fetch(cc) do |other|
         case other
         when GNU_GCC_REGEXP
@@ -103,8 +103,6 @@ module SharedEnvExtension
           raise "Invalid value for --cc: #{other}"
         end
       end
-    elsif homebrew_cc
-      COMPILER_SYMBOL_MAP.fetch(homebrew_cc) { MacOS.default_compiler }
     else
       MacOS.default_compiler
     end
