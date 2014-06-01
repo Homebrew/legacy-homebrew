@@ -6,9 +6,9 @@ class Osm2pgsql < Formula
   sha1 '42145c39596580680f120a07a4f30f97a86a3698'
 
   depends_on :postgresql
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "geos"
   depends_on "proj"
   depends_on "protobuf-c" => :optional
