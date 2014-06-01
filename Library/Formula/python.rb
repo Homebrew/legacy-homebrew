@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Python < Formula
-  homepage 'http://www.python.org'
-  head 'http://hg.python.org/cpython', :using => :hg, :branch => '2.7'
-  url 'http://www.python.org/ftp/python/2.7.7/Python-2.7.7.tgz'
-  sha1 '1db01d7f325d8ceaf986976800106018b82ae45a'
+  homepage "http://www.python.org"
+  head "http://hg.python.org/cpython", :using => :hg, :branch => "2.7"
+  url "http://www.python.org/ftp/python/2.7.7/Python-2.7.7.tgz"
+  sha1 "1db01d7f325d8ceaf986976800106018b82ae45a"
 
   bottle do
     sha1 "bcf43a9f8f5f587a86bdc680dd735a853fa3a8a5" => :mavericks
@@ -13,30 +13,30 @@ class Python < Formula
   end
 
   option :universal
-  option 'quicktest', "Run `make quicktest` after the build (for devs; may fail)"
-  option 'with-brewed-tk', "Use Homebrew's Tk (has optional Cocoa and threads support)"
-  option 'with-poll', "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
-  option 'with-dtrace', "Experimental DTrace support (http://bugs.python.org/issue13405)"
+  option "quicktest", "Run `make quicktest` after the build (for devs; may fail)"
+  option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
+  option "with-poll", "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
+  option "with-dtrace", "Experimental DTrace support (http://bugs.python.org/issue13405)"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'readline' => :recommended
-  depends_on 'sqlite' => :recommended
-  depends_on 'gdbm' => :recommended
-  depends_on 'openssl'
-  depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
-  depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
+  depends_on "pkg-config" => :build
+  depends_on "readline" => :recommended
+  depends_on "sqlite" => :recommended
+  depends_on "gdbm" => :recommended
+  depends_on "openssl"
+  depends_on "homebrew/dupes/tcl-tk" if build.with? "brewed-tk"
+  depends_on :x11 if build.with? "brewed-tk" and Tab.for_name("tcl-tk").used_options.include?("with-x11")
 
-  skip_clean 'bin/pip', 'bin/pip-2.7'
-  skip_clean 'bin/easy_install', 'bin/easy_install-2.7'
+  skip_clean "bin/pip", "bin/pip-2.7"
+  skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
-  resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-4.0.tar.gz'
-    sha1 'ff9212d50573ea9983d81d53bd11e834cf863b25'
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-4.0.tar.gz"
+    sha1 "ff9212d50573ea9983d81d53bd11e834cf863b25"
   end
 
-  resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz'
-    sha1 'e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e'
+  resource "pip" do
+    url "https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz"
+    sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
   end
 
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
@@ -57,12 +57,14 @@ class Python < Formula
   end
 
   def install
-    opoo 'The given option --with-poll enables a somewhat broken poll() on OS X (http://bugs.python.org/issue5154).' if build.with? 'poll'
+    if build.with? "poll"
+      opoo "The given option --with-poll enables a somewhat broken poll() on OS X (http://bugs.python.org/issue5154)."
+    end
 
     # Unset these so that installing pip and setuptools puts them where we want
     # and not into some other Python the user has installed.
-    ENV['PYTHONHOME'] = nil
-    ENV['PYTHONPATH'] = nil
+    ENV["PYTHONHOME"] = nil
+    ENV["PYTHONPATH"] = nil
 
     args = %W[
              --prefix=#{prefix}
@@ -72,8 +74,8 @@ class Python < Formula
              --enable-framework=#{frameworks}
            ]
 
-    args << '--without-gcc' if ENV.compiler == :clang
-    args << '--with-dtrace' if build.with? 'dtrace'
+    args << "--without-gcc" if ENV.compiler == :clang
+    args << "--with-dtrace" if build.with? "dtrace"
 
     if superenv?
       distutils_fix_superenv(args)
@@ -86,8 +88,11 @@ class Python < Formula
       args << "--enable-universalsdk=/" << "--with-universal-archs=intel"
     end
 
-    # Allow sqlite3 module to load extensions: http://docs.python.org/library/sqlite3.html#f1
-    inreplace("setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', '') if build.with? 'sqlite'
+    # Allow sqlite3 module to load extensions:
+    # http://docs.python.org/library/sqlite3.html#f1
+    if build.with? "sqlite"
+      inreplace("setup.py", 'sqlite_defines.append(("SQLITE_OMIT_LOAD_EXTENSION", "1"))', '')
+    end
 
     # Allow python modules to use ctypes.find_library to find homebrew's stuff
     # even if homebrew is not a /usr/local/lib. Try this with:
@@ -97,22 +102,25 @@ class Python < Formula
       f.gsub! 'DEFAULT_FRAMEWORK_FALLBACK = [', "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
     end
 
-    if build.with? 'brewed-tk'
+    if build.with? "brewed-tk"
       tcl_tk = Formula["tcl-tk"].opt_prefix
-      ENV.append 'CPPFLAGS', "-I#{tcl_tk}/include"
-      ENV.append 'LDFLAGS', "-L#{tcl_tk}/lib"
+      ENV.append "CPPFLAGS", "-I#{tcl_tk}/include"
+      ENV.append "LDFLAGS", "-L#{tcl_tk}/lib"
     end
 
     system "./configure", *args
 
-    # HAVE_POLL is "broken" on OS X
-    # See: http://trac.macports.org/ticket/18376 and http://bugs.python.org/issue5154
-    inreplace 'pyconfig.h', /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1' if build.without? "poll"
+    # HAVE_POLL is "broken" on OS X. See:
+    # http://trac.macports.org/ticket/18376
+    # http://bugs.python.org/issue5154
+    if build.without? "poll"
+      inreplace "pyconfig.h", /.*?(HAVE_POLL[_A-Z]*).*/, '#undef \1'
+    end
 
     system "make"
 
-    ENV.deparallelize # Installs must be serialized
-    # Tell Python not to install into /Applications (default for framework builds)
+    ENV.deparallelize # installs must be serialized
+    # Tell Python not to install into /Applications
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
@@ -155,11 +163,13 @@ class Python < Formula
     rm_rf Dir["#{site_packages}/setuptools*"]
     rm_rf Dir["#{site_packages}/distribute*"]
 
-    setup_args = [ "-s", "setup.py", "--no-user-cfg", "install", "--force", "--verbose",
-                   "--install-scripts=#{bin}", "--install-lib=#{site_packages}" ]
+    setup_args = ["-s", "setup.py", "--no-user-cfg", "install", "--force",
+                  "--verbose",
+                  "--install-scripts=#{bin}",
+                  "--install-lib=#{site_packages}"]
 
-    (libexec/'setuptools').cd { system "#{bin}/python", *setup_args }
-    (libexec/'pip').cd { system "#{bin}/python", *setup_args }
+    (libexec/"setuptools").cd { system "#{bin}/python", *setup_args }
+    (libexec/"pip").cd { system "#{bin}/python", *setup_args }
 
     # When building from source, these symlinks will not exist, since
     # post_install happens after linking.
@@ -184,7 +194,7 @@ class Python < Formula
     sqlite = Formula["sqlite"].opt_prefix
     cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{sqlite}/include"
     ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{sqlite}/lib"
-    if build.with? 'brewed-tk'
+    if build.with? "brewed-tk"
       tcl_tk = Formula["tcl-tk"].opt_prefix
       cflags += " -I#{tcl_tk}/include"
       ldflags += " -L#{tcl_tk}/lib"
@@ -197,7 +207,7 @@ class Python < Formula
       # Same zlib.h-not-found-bug as in env :std (see below)
       args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include"
       # For the Xlib.h, Python needs this header dir with the system Tk
-      if build.without? 'brewed-tk'
+      if build.without? "brewed-tk"
         cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
       end
     end
@@ -217,7 +227,7 @@ class Python < Formula
     # the needed includes with "-I" here to avoid this err:
     #     building dbm using ndbm
     #     error: /usr/include/zlib.h: No such file or directory
-    ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
+    ENV.append "CPPFLAGS", "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
 
     # Don't use optimizations other than "-Os" here, because Python's distutils
     # remembers (hint: `python-config --cflags`) and reuses them for C
@@ -230,8 +240,8 @@ class Python < Formula
     ENV.enable_warnings
     if ENV.compiler == :clang
       # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
-      ENV.append_to_cflags '-Wno-unused-value'
-      ENV.append_to_cflags '-Wno-empty-body'
+      ENV.append_to_cflags "-Wno-unused-value"
+      ENV.append_to_cflags "-Wno-empty-body"
     end
   end
 
