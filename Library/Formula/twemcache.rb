@@ -8,9 +8,9 @@ class Twemcache < Formula
 
   option "enable-debug", "Debug mode with assertion panics enabled"
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on 'libevent'
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libevent"
 
   def install
     # After the deprecation of GitHub Downloads, we don't have distribution
