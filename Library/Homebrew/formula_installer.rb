@@ -649,8 +649,7 @@ class FormulaInstaller
       downloader.stage
     end
 
-    Dir["#{f.bottle_prefix}/{etc,var}/**/*"].each do |file|
-      path = Pathname.new(file)
+    Pathname.glob("#{f.bottle_prefix}/{etc,var}/**/*") do |path|
       path.extend(InstallRenamed)
       path.cp_path_sub(f.bottle_prefix, HOMEBREW_PREFIX)
     end
