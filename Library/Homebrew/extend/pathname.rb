@@ -359,8 +359,7 @@ class Pathname
   # Writes a wrapper env script and moves all files to the dst
   def env_script_all_files dst, env
     dst.mkpath
-    Dir["#{self}/*"].each do |file|
-      file = Pathname.new(file)
+    Pathname.glob("#{self}/*") do |file|
       dst.install_p file
       new_file = dst+file.basename
       file.write_env_script(new_file, env)
