@@ -7,9 +7,9 @@ class Python < Formula
   sha1 "1db01d7f325d8ceaf986976800106018b82ae45a"
 
   bottle do
-    sha1 "bcf43a9f8f5f587a86bdc680dd735a853fa3a8a5" => :mavericks
-    sha1 "781310a1d8d0d6283c2c6c1a88674aad3ada6064" => :mountain_lion
-    sha1 "3a79b8d747f66fb000197cd9b9e0a4596f814d7e" => :lion
+    sha1 "4a9f0e366ec4fd69aa36cd7fa156a26b16ebfaf2" => :mavericks
+    sha1 "542b53cdf6c756d740d8b87b0ca329b35c912755" => :mountain_lion
+    sha1 "7b7d5cc528403151bb6d84042f2b16b1c22e05e2" => :lion
   end
 
   option :universal
