@@ -754,7 +754,7 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
     # FIXME: The export command doesn't work on checkouts
     # See https://bugs.launchpad.net/bzr/+bug/897511
     FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
-    FileUtils.rm_r Dir[Dir.pwd+"/.bzr"]
+    FileUtils.rm_r ".bzr"
   end
 end
 
