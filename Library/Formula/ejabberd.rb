@@ -28,6 +28,8 @@ class Ejabberd < Formula
     ENV["TARGET_DIR"] = ENV["DESTDIR"] = "#{lib}/ejabberd/erlang/lib/ejabberd-#{version}"
     ENV["MAN_DIR"] = man
     ENV["SBIN_DIR"] = sbin
+    # Homebrew's 'C compiler cannot create executables' bug workaround
+    ENV["HOMEBREW_ARCHFLAGS"]=" "
 
     if build.build_32_bit?
       %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
