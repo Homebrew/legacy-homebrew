@@ -2,8 +2,8 @@ require 'formula'
 
 class Unifdef < Formula
   homepage 'http://dotat.at/prog/unifdef/'
-  url 'https://github.com/fanf2/unifdef/archive/unifdef-2.10.tar.gz'
-  sha1 'e732705d5c84e8b4f704369a9d3e387494ff6f19'
+  url 'http://dotat.at/prog/unifdef/unifdef-2.10.tar.gz'
+  sha1 '8bc4e4feb914ff4aa164b23230b51d3f526559ac'
   head 'https://github.com/fanf2/unifdef.git'
 
   keg_only :provided_by_osx,
