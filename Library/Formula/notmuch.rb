@@ -11,7 +11,19 @@ class Notmuch < Formula
   depends_on "talloc"
   depends_on "gmime"
 
+  # Requires zlib >= 1.2.5.2
+  resource "zlib" do
+    url "http://zlib.net/zlib-1.2.8.tar.gz"
+    sha1 "a4d316c404ff54ca545ea71a27af7dbc29817088"
+  end
+
   def install
+    resource("zlib").stage do
+      system "./configure", "--prefix=#{buildpath}/zlib", "--static"
+      system "make", "install"
+      ENV.append_path "PKG_CONFIG_PATH", "#{buildpath}/zlib/lib/pkgconfig"
+    end
+
     args = ["--prefix=#{prefix}"]
     if build.with? "emacs"
       ENV.deparallelize # Emacs and parallel builds aren't friends
