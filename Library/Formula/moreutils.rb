@@ -21,12 +21,35 @@ class Moreutils < Formula
   conflicts_with 'task-spooler',
     :because => "both install a 'ts' executable."
 
+  resource "Time::Duration" do
+    url "http://search.cpan.org/CPAN/authors/id/A/AV/AVIF/Time-Duration-1.1.tar.gz"
+    sha1 "5acc5013d8b4ab52416555e1f08546a8d8a3fb41"
+  end
+
+  resource "IPC::Run" do
+    url "http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/IPC-Run-0.92.tar.gz"
+    sha1 "87e0c796722a85e0908bb0224326af1436d35809"
+  end
+
   def install
+    ENV.prepend_create_path "PERL5LIB", libexec+"lib/perl5"
+
+    resource("Time::Duration").stage do
+      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}", "--skipdeps"
+      system "make", "install"
+    end
+
+    resource("IPC::Run").stage do
+      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
+      system "make", "install"
+    end
+
     inreplace "Makefile",
               "/usr/share/xml/docbook/stylesheet/docbook-xsl",
-              Formula["docbook-xsl"].opt_prefix/"docbook-xsl"
+              "#{Formula["docbook-xsl"].opt_prefix}/docbook-xsl"
     system "make", "all"
     system "make", "check"
     system "make", "install", "PREFIX=#{prefix}"
+    bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
   end
 end
