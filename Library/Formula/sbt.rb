@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class Sbt < Formula
-  homepage 'http://www.scala-sbt.org'
-  url 'http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.5/sbt-launch.jar'
-  version '0.13.5'
-  sha1 'f6308bd94bebdd37eb5e2fda732694ce0f34be74'
+  homepage "http://www.scala-sbt.org"
+  url "http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.5/sbt-launch.jar"
+  version "0.13.5"
+  sha1 "f6308bd94bebdd37eb5e2fda732694ce0f34be74"
 
   def install
-    (bin+'sbt').write <<-EOS.undent
+    (bin/"sbt").write <<-EOS.undent
       #!/bin/sh
       test -f ~/.sbtconfig && . ~/.sbtconfig
       exec java -Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M ${SBT_OPTS} -jar #{libexec}/sbt-launch.jar "$@"
