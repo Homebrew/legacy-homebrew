@@ -653,14 +653,6 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 
   def stage
     FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
-
-    require 'find'
-    Find.find(Dir.pwd) do |path|
-      if FileTest.directory?(path) && File.basename(path) == "CVS"
-        Find.prune
-        FileUtil.rm_r path, :force => true
-      end
-    end
   end
 
   private
