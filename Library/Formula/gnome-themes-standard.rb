@@ -9,13 +9,12 @@ class GnomeThemesStandard < Formula
   depends_on 'intltool' => :build
   depends_on 'libsvg-cairo' => :build
   depends_on 'pkg-config' => :build
-  depends_on 'gtk+' => :optional
+  depends_on 'gtk+'
   depends_on 'gtk+3' => :recommended
   depends_on 'gdk-pixbuf'
 
   def install
     args = []
-    args << "--disable-gtk2-engine" if build.without? 'gtk+'
     args << "--disable-gtk3-engine" if build.without? 'gtk+3'
 
     system "./configure", *args
