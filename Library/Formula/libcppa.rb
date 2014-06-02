@@ -2,8 +2,8 @@ require 'formula'
 
 class Libcppa < Formula
   homepage 'http://libcppa.blogspot.it'
-  url 'http://github.com/Neverlord/libcppa/archive/V0.9.1.tar.gz'
-  sha1 '70ea94e25b508d85ee4899f9632eb71b79f17480'
+  url 'http://github.com/Neverlord/libcppa/archive/V0.9.3.tar.gz'
+  sha1 'b9fce68bc4e5688cc75cfc9add5ec1feb105ab7d'
 
   depends_on 'cmake' => :build
 
