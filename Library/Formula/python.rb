@@ -30,8 +30,8 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-4.0.tar.gz"
-    sha1 "ff9212d50573ea9983d81d53bd11e834cf863b25"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-4.0.1.tar.gz"
+    sha1 "a43549f4a01f314bf54567628f8de7d1c03d5930"
   end
 
   resource "pip" do
