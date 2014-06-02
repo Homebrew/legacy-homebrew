@@ -236,7 +236,7 @@ class Cmd
   end
 
   def archflags
-    ENV["HOMEBREW_ARCHFLAGS"].split(" ")
+    ENV["HOMEBREW_ARCHFLAGS"].nil? ? [] : ENV["HOMEBREW_ARCHFLAGS"].split(" ")
   end
 
   def cppflags
