@@ -11,7 +11,7 @@ class Gtkx3 < Formula
     sha1 "a024c7978ddc23887ad740d1302cc94ce1d95f03" => :lion
   end
 
-  depends_on :x11 => '2.5' # needs XInput2, introduced in libXi 1.3
+  depends_on :x11 => :recommended # (2.5) needs XInput2, introduced in libXi 1.3
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'jpeg'
@@ -33,13 +33,23 @@ class Gtkx3 < Formula
                   /gtk-update-icon-cache --(force|ignore-theme-index)/,
                   "#{buildpath}/gtk/\\0"
 
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-glibtest",
-                          "--enable-introspection=yes",
-                          "--enable-x11-backend",
-                          "--disable-schemas-compile"
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-glibtest
+      --enable-introspection=yes
+      --disable-schemas-compile
+    ]
+
+    if build.without? "x11"
+      args << "--enable-quartz-backend" << "--enable-quartz-relocation"
+    else
+      args << "--enable-x11-backend"
+    end
+
+
+    system "./configure", *args
     system "make install"
     # Prevent a conflict between this and Gtk+2
     mv bin/'gtk-update-icon-cache', bin/'gtk3-update-icon-cache'
