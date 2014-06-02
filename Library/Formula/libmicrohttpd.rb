@@ -2,9 +2,9 @@ require "formula"
 
 class Libmicrohttpd < Formula
   homepage "http://www.gnu.org/software/libmicrohttpd/"
-  url "http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.35.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-0.9.35.tar.gz"
-  sha1 "851aacbf46b3145192b07c419c146dd0555fc64f"
+  url "http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.37.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-0.9.37.tar.gz"
+  sha1 "20af66ef99ecdbf426828df6256cb9742a5bce59"
 
   bottle do
     cellar :any
