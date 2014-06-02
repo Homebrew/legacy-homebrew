@@ -8,9 +8,9 @@ class Ejabberd < Formula
   head 'https://github.com/processone/ejabberd.git'
 
   bottle do
-    sha1 "0951237f1710e8c3de1c8c68501f53532036d726" => :mavericks
-    sha1 "7f1ffe76d100b3a2d00d1578e38db8f5f944859a" => :mountain_lion
-    sha1 "582da64c98ce8be147cfd17f2d464e5806d849e3" => :lion
+    sha1 "deabd8e0139e5d1d7468a638f81324ad5d9e7800" => :mavericks
+    sha1 "02cf33e5c0d20403fd78c05d71a647041801e48c" => :mountain_lion
+    sha1 "f8cf33f1dea0a9b8edd9bc8015a0dbf4212dd5ae" => :lion
   end
 
   option "32-bit"
