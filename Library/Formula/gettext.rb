@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Gettext < Formula
-  homepage 'http://www.gnu.org/software/gettext/'
-  url 'http://ftpmirror.gnu.org/gettext/gettext-0.18.3.2.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/gettext/gettext-0.18.3.2.tar.gz'
-  sha256 'd1a4e452d60eb407ab0305976529a45c18124bd518d976971ac6dc7aa8b4c5d7'
+  homepage "http://www.gnu.org/software/gettext/"
+  url "http://ftpmirror.gnu.org/gettext/gettext-0.19.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/gettext/gettext-0.19.tar.gz"
+  sha256 "a9f9c7764bc68782aca57687a1f16c228bc321069c538325923513b841bd847c"
 
   bottle do
     sha1 "b051e525a42aa11242dc80afd19aa914d38b1e4b" => :mavericks
