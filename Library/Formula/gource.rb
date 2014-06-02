@@ -14,14 +14,14 @@ class Gource < Formula
     depends_on "libtool" => :build
   end
 
+  option :cxx11
   depends_on :x11 => :optional
 
   depends_on "pkg-config" => :build
   depends_on "glm" => :build
   depends_on "freetype"
 
-  # boost failing on lion
-  depends_on :macos => :mountain_lion
+  depends_on :macos => :lion
 
   if MacOS.version < :mavericks
     depends_on "boost" => "c++11"
@@ -34,8 +34,6 @@ class Gource < Formula
   depends_on "pcre"
   depends_on "sdl2"
   depends_on "sdl2_image"
-
-  needs :cxx11
 
   def install
     # clang on Mt. Lion will try to build against libstdc++,
