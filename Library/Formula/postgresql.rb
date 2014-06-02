@@ -51,7 +51,6 @@ class Postgresql < Formula
       --enable-thread-safety
       --with-bonjour
       --with-gssapi
-      --with-krb5
       --with-ldap
       --with-openssl
       --with-pam
