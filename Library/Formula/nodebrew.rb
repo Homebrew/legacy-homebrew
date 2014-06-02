@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class Nodebrew < Formula
   homepage "https://github.com/hokaccha/nodebrew"
@@ -7,10 +7,10 @@ class Nodebrew < Formula
   head "https://github.com/hokaccha/nodebrew.git"
 
   def install
-    bin.install "nodebrew" => "nodebrew"
-    system "#{bin}/nodebrew setup_dirs"
+    bin.install "nodebrew"
+    system "#{bin}/nodebrew", "setup_dirs"
     bash_completion.install "completions/bash/nodebrew-completion" => "nodebrew"
-    zsh_completion.install "completions/zsh/_nodebrew" => "_nodebrew"
+    zsh_completion.install "completions/zsh/_nodebrew"
   end
 
   def caveats; <<-EOS.undent
@@ -23,7 +23,9 @@ class Nodebrew < Formula
   end
 
   test do
-    system "#{bin}/nodebrew", 'help'
+    IO.popen("nodebrew ls-remote") do |pipe|
+      assert pipe.read.include?("v0.10.0")
+    end
   end
 
 end
