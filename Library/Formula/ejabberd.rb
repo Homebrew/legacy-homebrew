@@ -18,7 +18,6 @@ class Ejabberd < Formula
   depends_on "openssl"
   depends_on "erlang"
   depends_on "libyaml"
-  depends_on "unixodbc" => :optional
   depends_on "postgresql" => :optional
   depends_on "mysql" => :optional
   # for CAPTCHA challenges
@@ -42,7 +41,6 @@ class Ejabberd < Formula
             "--sysconfdir=#{etc}",
             "--localstatedir=#{var}"]
 
-    args << "--enable-odbc" if build.with? "unixodbc"
     args << "--enable-pgsql" if build.with? "postgresql"
     args << "--enable-mysql" if build.with? "mysql"
 
