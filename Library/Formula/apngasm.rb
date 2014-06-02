@@ -13,9 +13,10 @@ class Apngasm < Formula
   def install
     system "cmake", ".", *std_cmake_args
     system "make", "install"
+    (share/'test').install "test/samples"
   end
 
   test do
-    system "apngasm", "--version | grep -q 3.1.3"
+    system "apngasm", "#{share}/test/samples/clock*.png"
   end
 end
