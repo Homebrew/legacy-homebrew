@@ -14,6 +14,7 @@ class Ejabberd < Formula
   end
 
   option "32-bit"
+  option "with-odbc", "Build with ODBC support"
 
   depends_on "openssl"
   depends_on "erlang"
@@ -41,6 +42,7 @@ class Ejabberd < Formula
             "--sysconfdir=#{etc}",
             "--localstatedir=#{var}"]
 
+    args << "--enable-odbc" if build.with? "odbc"
     args << "--enable-pgsql" if build.with? "postgresql"
     args << "--enable-mysql" if build.with? "mysql"
 
