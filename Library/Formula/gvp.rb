@@ -1,16 +1,9 @@
 require "formula"
 
 class Gvp < Formula
-  homepage "https://github.com/pote/gvp"
-  url "https://github.com/pote/gvp/archive/v0.0.3.tar.gz"
-  sha1 "46826b8f3b83ba52d629549a5d486525cf633d6e"
-
-  bottle do
-    cellar :any
-    sha1 "0bb06a3261651d7c83fc286c41e5ab8820c3386f" => :mavericks
-    sha1 "904d0191574425f9212f93d1c8c1853ea4644af3" => :mountain_lion
-    sha1 "fe9f9330db468ecac8472053290d1447d3f7c665" => :lion
-  end
+  homepage  "https://github.com/pote/gvp"
+  url       "https://github.com/pote/gvp/archive/0.0.4.tar.gz"
+  sha1      "39676c4dd1df4d099cf938122733fb5e2e24c0a0"
 
   def install
     system "./configure", "--prefix=#{prefix}"
