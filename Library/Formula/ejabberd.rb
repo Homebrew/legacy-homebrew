@@ -26,7 +26,7 @@ class Ejabberd < Formula
     ENV["MAN_DIR"] = man
     ENV["SBIN_DIR"] = sbin
     # Homebrew's 'C compiler cannot create executables' bug workaround
-    ENV["HOMEBREW_ARCHFLAGS"]=" "
+    ENV["HOMEBREW_ARCHFLAGS"] = " "
 
     if build.build_32_bit?
       %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
@@ -59,7 +59,7 @@ class Ejabberd < Formula
     EOS
   end
 
-  plist_options :manual => "ejabberdctl"
+  plist_options :manual => "#{HOMEBREW_PREFIX}/sbin/ejabberdctl start"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
