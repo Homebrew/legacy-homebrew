@@ -11,11 +11,6 @@ class Nodebrew < Formula
     system "#{bin}/nodebrew setup_dirs"
     bash_completion.install "completions/bash/nodebrew-completion" => "nodebrew"
     zsh_completion.install "completions/zsh/_nodebrew" => "_nodebrew"
-    # root = ENV['NODEBREW_ROOT'] || "#{ENV['HOME']}/.nodebrew"
-    # %w[ default/bin node src ].each do |dir|
-    #   mkdir_p "#{root}/#{dir}"
-    # end
-    # ln_sf "#{root}/default", "#{root}/current"
   end
 
   def caveats; <<-EOS.undent
