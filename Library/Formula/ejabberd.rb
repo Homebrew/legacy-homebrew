@@ -60,7 +60,7 @@ class Ejabberd < Formula
     EOS
   end
 
-  plist_options :manual => "ejabberd"
+  plist_options :manual => "ejabberdctl"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
