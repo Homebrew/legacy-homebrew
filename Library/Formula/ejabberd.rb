@@ -19,8 +19,6 @@ class Ejabberd < Formula
   depends_on "openssl"
   depends_on "erlang"
   depends_on "libyaml"
-  depends_on "postgresql" => :optional
-  depends_on "mysql" => :optional
   # for CAPTCHA challenges
   depends_on "imagemagick" => :optional
 
@@ -40,11 +38,11 @@ class Ejabberd < Formula
 
     args = ["--prefix=#{prefix}",
             "--sysconfdir=#{etc}",
-            "--localstatedir=#{var}"]
+            "--localstatedir=#{var}",
+            "--enable-pgsql",
+            "--enable-mysql"]
 
     args << "--enable-odbc" if build.with? "odbc"
-    args << "--enable-pgsql" if build.with? "postgresql"
-    args << "--enable-mysql" if build.with? "mysql"
 
     system "./configure", *args
     system "make"
