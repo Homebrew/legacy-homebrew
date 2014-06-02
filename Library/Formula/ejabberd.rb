@@ -2,9 +2,8 @@ require "formula"
 
 class Ejabberd < Formula
   homepage "http://www.ejabberd.im"
-  url "http://www.process-one.net/downloads/ejabberd/13.12/ejabberd-13.12.tgz"
-  sha1 "3aedb5012fab49181961ff24bad3af581f4b30ee"
-  revision 1
+  url "http://www.process-one.net/downloads/ejabberd/14.05/ejabberd-14.05.tgz"
+  sha1 "bad6b91ca6b9ac30ffe8b2eb0c5bb759d7742fab"
 
   bottle do
     sha1 "0951237f1710e8c3de1c8c68501f53532036d726" => :mavericks
@@ -25,6 +24,8 @@ class Ejabberd < Formula
     ENV["TARGET_DIR"] = ENV["DESTDIR"] = "#{lib}/ejabberd/erlang/lib/ejabberd-#{version}"
     ENV["MAN_DIR"] = man
     ENV["SBIN_DIR"] = sbin
+    # Homebrew's 'C compiler cannot create executables' bug workaround
+    ENV["HOMEBREW_ARCHFLAGS"]=" "
 
     if build.build_32_bit?
       %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
@@ -54,6 +55,27 @@ class Ejabberd < Formula
     If you face nodedown problems, concat your machine name to:
       /private/etc/hosts
     after 'localhost'.
+    EOS
+  end
+
+  plist_options :manual => "ejabberd"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+      <key>Label</key>
+      <string>#{plist_name}</string>
+      <key>ProgramArguments</key>
+      <array>
+        <string>#{opt_sbin}/ejabberdctl</string>
+        <string>start</string>
+      </array>
+      <key>RunAtLoad</key>
+      <true/>
+    </dict>
+    </plist>
     EOS
   end
 end
