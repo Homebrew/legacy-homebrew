@@ -8,7 +8,6 @@ require 'requirements/x11_dependency'
 
 class XcodeDependency < Requirement
   fatal true
-  build true
 
   satisfy(:build_env => false) { MacOS::Xcode.installed? }
 

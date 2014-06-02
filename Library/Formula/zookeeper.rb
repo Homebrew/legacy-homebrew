@@ -14,15 +14,15 @@ class Zookeeper < Formula
   head do
     url 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option "c", "Build C bindings"
   option "perl", "Build Perl bindings"
 
-  depends_on :ant
+  depends_on :ant => :build
   depends_on :python => :optional
 
   def shim_script target

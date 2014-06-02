@@ -26,7 +26,7 @@ class Cfitsio < Formula
 
       resource('examples').stage do
         # compressed_fits.c does not work (obsolete function call)
-        Dir['*.c'].reject{|f| f == 'compress_fits.c'}.each do |f|
+        (Dir["*.c"] - ["compress_fits.c"]).each do |f|
           system ENV.cc, f, "-I#{include}", "-L#{lib}", "-lcfitsio", "-lm", "-o", "#{bin}/#{f.sub('.c', '')}"
         end
       end

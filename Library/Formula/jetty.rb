@@ -11,12 +11,12 @@ class Jetty < Formula
     (libexec+'logs').mkpath
 
     bin.mkpath
-    Dir["#{libexec}/bin/*.sh"].each do |f|
+    Dir.glob("#{libexec}/bin/*.sh") do |f|
       scriptname = File.basename(f, '.sh')
       (bin+scriptname).write <<-EOS.undent
         #!/bin/bash
         JETTY_HOME=#{libexec}
-        #{f} $@
+        #{f} "$@"
       EOS
       chmod 0755, bin+scriptname
     end

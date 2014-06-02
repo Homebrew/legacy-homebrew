@@ -19,6 +19,10 @@ class Mercurial < Formula
     # install the completion scripts
     bash_completion.install 'contrib/bash_completion' => 'hg-completion.bash'
     zsh_completion.install 'contrib/zsh_completion' => '_hg'
+
+    # install the merge tool default configs
+    # http://mercurial.selenic.com/wiki/Packaging#Things_to_note
+    (etc/"mercurial"/"hgrc.d").install "contrib/mergetools.hgrc" => "mergetools.rc"
   end
 
   test do

@@ -13,10 +13,10 @@ class Tmap < Formula
   option 'perf',    'Enable google performance tools for profiling and heap checking'
   option 'nocolor', 'Disable terminal coloring'
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
-  depends_on 'google-perftools' if build.include? 'perf'
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "google-perftools" if build.include? "perf"
 
   fails_with :clang do
     build 425
