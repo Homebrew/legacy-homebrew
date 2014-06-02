@@ -334,7 +334,8 @@ Note that these flags should only appear after a command.
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
     generally indicate to the user if something is wrong with the installed
-    formula.
+    formula. Options passed to `brew install` such as `--HEAD` also need to
+    be provided to `brew test`.
 
     Example: `brew install jruby && brew test jruby`
 
