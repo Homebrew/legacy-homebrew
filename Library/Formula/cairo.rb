@@ -36,6 +36,7 @@ class Cairo < Formula
       --prefix=#{prefix}
       --enable-gobject=yes
       --with-x
+      --enable-quartz-image
     ]
 
     if build.without? "x11"
