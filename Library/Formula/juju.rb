@@ -11,9 +11,9 @@ class Juju < Formula
   end
 
   bottle do
-    sha1 "08b825b39bf16375b17cd4b4d73a95093936d41c" => :mavericks
-    sha1 "1f5775826a2414f9741b90ce2c27a1c4e3a1cfe1" => :mountain_lion
-    sha1 "fd95734a178d909409670ca74cb29d06e384f3db" => :lion
+    sha1 "426a5dadbd72c7d700e35b31103aaa431a226ef7" => :mavericks
+    sha1 "de572c1e63a7d2093761be983571e9f7ded6d761" => :mountain_lion
+    sha1 "e238eb414e934330fb54aa7793c37cfa22ca2c5f" => :lion
   end
 
   depends_on 'go' => :build
