@@ -11,8 +11,11 @@ class Docker < Formula
   end
 
   option "without-completions", "Disable bash/zsh completions"
+  option "without-netgo", "Disable netgo tag (required for mDNS)"
 
   depends_on "go" => :build
+
+  patch :DATA if build.without? "netgo"
 
   def install
     ENV["GIT_DIR"] = cached_download/".git"
@@ -32,3 +35,19 @@ class Docker < Formula
     system "#{bin}/docker", "--version"
   end
 end
+
+__END__
+diff --git a/hack/make.sh b/hack/make.sh
+index 8636756..3f379ca 100755
+--- a/hack/make.sh
++++ b/hack/make.sh
+@@ -96,7 +96,7 @@ LDFLAGS='
+ '
+ LDFLAGS_STATIC='-linkmode external'
+ EXTLDFLAGS_STATIC='-static'
+-BUILDFLAGS=( -a -tags "netgo static_build $DOCKER_BUILDTAGS" )
++BUILDFLAGS=( -a -tags "static_build $DOCKER_BUILDTAGS" )
+ 
+ # A few more flags that are specific just to building a completely-static binary (see hack/make/binary)
+ # PLEASE do not use these anywhere else.
+
