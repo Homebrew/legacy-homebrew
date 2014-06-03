@@ -1,13 +1,12 @@
 Linuxbrew
 =========
 
-A fork of Homebrew for Linux.
+A fork of Homebrew for Linux
 
 Install Linuxbrew (tl;dr)
 -------------------------
 
 Paste at a Terminal prompt:
-
 
 ``` sh
 ruby -e "$(wget -O- https://raw.github.com/Homebrew/linuxbrew/go/install)"
