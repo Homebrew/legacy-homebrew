@@ -660,10 +660,14 @@ class Formula
     end
 
     # Define a named resource using a SoftwareSpec style block
-    def resource name, &block
+    def resource name, klass=Resource, &block
       specs.each do |spec|
-        spec.resource(name, &block) unless spec.resource_defined?(name)
+        spec.resource(name, klass, &block) unless spec.resource_defined?(name)
       end
+    end
+
+    def go_resource name, &block
+      resource name, Resource::Go, &block
     end
 
     def depends_on dep

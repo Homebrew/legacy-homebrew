@@ -130,4 +130,10 @@ class Resource
       raise TypeError, "version '#{val.inspect}' should be a string"
     end
   end
+
+  class Go < Resource
+    def stage target
+      super(target/name)
+    end
+  end
 end
