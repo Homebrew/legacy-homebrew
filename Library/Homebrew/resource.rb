@@ -31,8 +31,15 @@ class Resource
     @downloader ||= download_strategy.new(download_name, self)
   end
 
+  # Removes /s from resource names; this allows go package names
+  # to be used as resource names without confusing software that
+  # interacts with download_name, e.g. github.com/foo/bar
+  def escaped_name
+    name.gsub("/", '-')
+  end
+
   def download_name
-    name.nil? ? owner.name : "#{owner.name}--#{name}"
+    name.nil? ? owner.name : "#{owner.name}--#{escaped_name}"
   end
 
   def cached_download
