@@ -5,11 +5,12 @@ class Python < Formula
   head "http://hg.python.org/cpython", :using => :hg, :branch => "2.7"
   url "http://www.python.org/ftp/python/2.7.7/Python-2.7.7.tgz"
   sha1 "1db01d7f325d8ceaf986976800106018b82ae45a"
+  revision 1
 
   bottle do
-    sha1 "4a9f0e366ec4fd69aa36cd7fa156a26b16ebfaf2" => :mavericks
-    sha1 "542b53cdf6c756d740d8b87b0ca329b35c912755" => :mountain_lion
-    sha1 "7b7d5cc528403151bb6d84042f2b16b1c22e05e2" => :lion
+    sha1 "1e16fa963a72c3a1d4abed0bf54685bae59304de" => :mavericks
+    sha1 "78309800b4290f9b3e0ebc483f8d7d2d381e0679" => :mountain_lion
+    sha1 "4078f81e25fb689ec377233d4ef31fba5c9c6b30" => :lion
   end
 
   option :universal
@@ -30,8 +31,8 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-4.0.tar.gz"
-    sha1 "ff9212d50573ea9983d81d53bd11e834cf863b25"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-4.0.1.tar.gz"
+    sha1 "a43549f4a01f314bf54567628f8de7d1c03d5930"
   end
 
   resource "pip" do
