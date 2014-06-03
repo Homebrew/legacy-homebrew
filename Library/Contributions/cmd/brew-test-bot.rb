@@ -84,7 +84,7 @@ class Step
   end
 
   def has_output?
-    @output and @output.any?
+    @output && !@output.empty?
   end
 
   def run
