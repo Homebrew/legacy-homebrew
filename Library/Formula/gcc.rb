@@ -25,6 +25,7 @@ class Gcc < Formula
   url "http://ftpmirror.gnu.org/gcc/gcc-4.8.3/gcc-4.8.3.tar.bz2"
   mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.8.3/gcc-4.8.3.tar.bz2"
   sha1 "da0a2b9ec074f2bf624a34f3507f812ebb6e4dce"
+  revision 1
 
   head "svn://gcc.gnu.org/svn/gcc/branches/gcc-4_8-branch"
 
@@ -60,6 +61,8 @@ class Gcc < Formula
   end
 
   fails_with :gcc_4_0
+
+  keg_only :provided_by_osx, "OS X provides /usr/bin/gcc (or a wrapper to clang)"
 
   # GCC bootstraps itself, so it is OK to have an incompatible C++ stdlib
   cxxstdlib_check :skip
