@@ -9,7 +9,7 @@ class ObjectiveCaml < Formula
 
   revision 1
 
-  depends_on :x11
+  depends_on :x11 => :recommended
 
   bottle do
     revision 3
