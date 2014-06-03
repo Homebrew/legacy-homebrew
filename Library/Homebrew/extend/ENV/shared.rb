@@ -8,7 +8,6 @@ module SharedEnvExtension
   GNU_GCC_VERSIONS = (3..9)
   GNU_GCC_REGEXP = /gcc-(4\.[3-9])/
 
-  COMPILER_ALIASES = {'gcc' => 'gcc-4.2', 'llvm' => 'llvm-gcc'}
   COMPILER_SYMBOL_MAP = { 'gcc-4.0'  => :gcc_4_0,
                           'gcc-4.2'  => :gcc,
                           'llvm-gcc' => :llvm,
@@ -95,9 +94,7 @@ module SharedEnvExtension
   def fcflags;  self['FCFLAGS'];      end
 
   def compiler
-    @compiler ||= if ARGV.cc != nil || homebrew_cc != nil
-      cc = ARGV.cc
-      cc ||= COMPILER_ALIASES.fetch(homebrew_cc, homebrew_cc)
+    @compiler ||= if (cc = [ARGV.cc, homebrew_cc].compact.first)
       COMPILER_SYMBOL_MAP.fetch(cc) do |other|
         case other
         when GNU_GCC_REGEXP
