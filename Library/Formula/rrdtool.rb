@@ -23,7 +23,7 @@ class Rrdtool < Formula
 
     which_perl = which 'perl'
     which_ruby = which 'ruby'
-    ruby_path  = "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby"
+    ruby_path  = "/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby"
 
     opoo "Using system Ruby. RRD module will be installed to /Library/Ruby/..." if which_ruby.realpath.to_s == ruby_path
     opoo "Using system Perl. RRD module will be installed to /Library/Perl/..." if which_perl.to_s == "/usr/bin/perl"

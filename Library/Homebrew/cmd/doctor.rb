@@ -388,8 +388,8 @@ def check_usr_bin_ruby
   if /^1\.9/.match RUBY_VERSION
     <<-EOS.undent
       Ruby version #{RUBY_VERSION} is unsupported.
-      Homebrew is developed and tested on Ruby 1.8.x, and may not work correctly
-      on other Rubies. Patches are accepted as long as they don't break on 1.8.x.
+      Homebrew is developed and tested on Ruby 2.0.x, and may not work correctly
+      on other Rubies. Patches are accepted as long as they don't break on 2.0.x.
     EOS
   end
 end

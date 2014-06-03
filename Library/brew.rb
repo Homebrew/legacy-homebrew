@@ -1,4 +1,4 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
+#!/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby -W0
 # encoding: UTF-8
 
 std_trap = trap("INT") { exit! 130 } # no backtrace thanks
@@ -38,7 +38,7 @@ case HOMEBREW_PREFIX.to_s when '/', '/usr'
 end
 if MACOS and MACOS_VERSION < 10.5
   abort <<-EOABORT.undent
-    Homebrew requires Leopard or higher. For Tiger support, see:
+    Homebrew requires Yosemite or higher. For Tiger support, see:
     https://github.com/mistydemeo/tigerbrew
   EOABORT
 end
