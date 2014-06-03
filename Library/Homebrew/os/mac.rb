@@ -244,6 +244,7 @@ module OS
       "5.0"   => { :clang => "5.0", :clang_build => 500 },
       "5.0.1" => { :clang => "5.0", :clang_build => 500 },
       "5.0.2" => { :clang => "5.0", :clang_build => 500 },
+      "6.0"   => { :clang => "6.0", :clang_build => 600 },
     }
 
     def compilers_standard?
