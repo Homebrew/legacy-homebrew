@@ -96,6 +96,7 @@ at_exit { Kernel.system "/usr/bin/sudo", "-k" }
 Dir.chdir "/usr"
 
 ####################################################################### script
+abort "See Linuxbrew: http://brew.sh/linuxbrew/" if /linux/i === RUBY_PLATFORM
 abort "MacOS too old, see: https://github.com/mistydemeo/tigerbrew" if macos_version < "10.5"
 abort "Don't run this as root!" if Process.uid == 0
 abort <<-EOABORT unless `groups`.split.include? "admin"
