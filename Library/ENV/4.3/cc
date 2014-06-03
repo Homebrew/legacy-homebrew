@@ -1,6 +1,6 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
+#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
 
-$:.unshift "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8"
+$:.unshift Dir["/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/lib/ruby/{1.8,2.0.0}"].first
 require 'pathname'
 require 'set'
 require 'stringio'
