@@ -2,8 +2,8 @@ require 'formula'
 
 class Juju < Formula
   homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.18/1.18.3/+download/juju-core_1.18.3.tar.gz'
-  sha1 '9290acb390d7bcefd56212de1a8a36c008f5db89'
+  url 'https://launchpad.net/juju-core/1.18/1.18.4/+download/juju-core_1.18.4.tar.gz'
+  sha1 '70ac905e113eedfa08ad8a8acab319b0c7c462cb'
 
   devel do
     url 'https://launchpad.net/juju-core/trunk/1.19.3/+download/juju-core_1.19.3.tar.gz'
