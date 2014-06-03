@@ -94,7 +94,7 @@ module SharedEnvExtension
   def fcflags;  self['FCFLAGS'];      end
 
   def compiler
-    @compiler ||= if (cc = [ARGV.cc, homebrew_cc].compact.first)
+    @compiler ||= if (cc = ARGV.cc || homebrew_cc)
       COMPILER_SYMBOL_MAP.fetch(cc) do |other|
         case other
         when GNU_GCC_REGEXP
