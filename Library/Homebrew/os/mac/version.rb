@@ -29,15 +29,7 @@ module OS
       end
 
       def to_sym
-        case @version
-        when '10.9' then :mavericks
-        when '10.8' then :mountain_lion
-        when '10.7' then :lion
-        when '10.6' then :snow_leopard
-        when '10.5' then :leopard
-        when '10.4' then :tiger
-        else :dunno
-        end
+        SYMBOLS.invert.fetch(@version) { :dunno }
       end
 
       def pretty_name
