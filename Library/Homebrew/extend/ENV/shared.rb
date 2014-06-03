@@ -8,7 +8,6 @@ module SharedEnvExtension
   GNU_GCC_VERSIONS = (3..9)
   GNU_GCC_REGEXP = /gcc-(4\.[3-9])/
 
-  COMPILER_ALIASES = {'gcc' => 'gcc-4.2', 'llvm' => 'llvm-gcc'}
   COMPILER_SYMBOL_MAP = { 'gcc-4.0'  => :gcc_4_0,
                           'gcc-4.2'  => :gcc,
                           'llvm-gcc' => :llvm,
@@ -105,8 +104,7 @@ module SharedEnvExtension
         end
       end
     elsif homebrew_cc
-      cc = COMPILER_ALIASES.fetch(homebrew_cc, homebrew_cc)
-      COMPILER_SYMBOL_MAP.fetch(cc) { MacOS.default_compiler }
+      COMPILER_SYMBOL_MAP.fetch(homebrew_cc) { MacOS.default_compiler }
     else
       MacOS.default_compiler
     end
