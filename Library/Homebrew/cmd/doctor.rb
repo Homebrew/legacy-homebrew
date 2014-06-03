@@ -393,10 +393,12 @@ def check_access_logs
 end
 
 def check_ruby_version
-  if RUBY_VERSION.to_f > 1.8 then <<-EOS.undent
-    Ruby version #{RUBY_VERSION} is unsupported.
-    Homebrew is developed and tested on Ruby 1.8.x, and may not work correctly
-    on other Rubies. Patches are accepted as long as they don't break on 1.8.x.
+  ruby_version = MacOS.version >= "10.9" ? "2.0" : "1.8"
+  if RUBY_VERSION[/\d\.\d/] != ruby_version then <<-EOS.undent
+    Ruby version #{RUBY_VERSION} is unsupported on #{MacOS.version}. Homebrew
+    is developed and tested on Ruby #{ruby_version}, and may not work correctly
+    on other Rubies. Patches are accepted as long as they don't cause breakage
+    on supported Rubies.
     EOS
   end
 end
