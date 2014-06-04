@@ -34,7 +34,9 @@ class Python3 < Formula
   patch :DATA if build.with? 'brewed-tk'
 
   def site_packages_cellar
-    prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/site-packages"
+    prefix/
+      (if OS.mac? then "Frameworks/Python.framework/Versions/#{VER}" end)/
+      "lib/python#{VER}/site-packages"
   end
 
   # The HOMEBREW_PREFIX location of site-packages.
@@ -66,9 +68,9 @@ class Python3 < Formula
       --enable-ipv6
       --datarootdir=#{share}
       --datadir=#{share}
-      --enable-framework=#{frameworks}
     ]
 
+    args << "--enable-framework=#{frameworks}" if OS.mac?
     args << '--without-gcc' if ENV.compiler == :clang
 
     if superenv?
@@ -107,7 +109,7 @@ class Python3 < Formula
     # Tell Python not to install into /Applications (default for framework builds)
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
-    system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python3"
+    system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python3" if OS.mac?
     system "make", "quicktest" if build.include? "quicktest"
 
     # Any .app get a " 3" attached, so it does not conflict with python 2.x.
@@ -118,8 +120,10 @@ class Python3 < Formula
     # A fix, because python and python3 both want to install Python.framework
     # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
     # https://github.com/Homebrew/homebrew/issues/15943
-    ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
-    rm prefix/"Frameworks/Python.framework/Versions/Current"
+    if OS.mac?
+      ["Headers", "Python", "Resources"].each{ |f| rm(prefix/"Frameworks/Python.framework/#{f}") }
+      rm prefix/"Frameworks/Python.framework/Versions/Current"
+    end
 
     # Remove 2to3 because python2 also installs it
     rm bin/"2to3"
