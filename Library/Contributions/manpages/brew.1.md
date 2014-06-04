@@ -332,12 +332,14 @@ Note that these flags should only appear after a command.
     Ensures all tapped formula are symlinked into Library/Formula and prunes dead
     formula from Library/Formula.
 
-  * `test` <formula>:
+  * `test` [--devel|--HEAD] <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
     generally indicate to the user if something is wrong with the installed
-    formula. Options passed to `brew install` such as `--HEAD` also need to
-    be provided to `brew test`.
+    formula.
+
+    To test the development or head version of a formula, `--devel` or
+    `--HEAD` must be passed.,
 
     Example: `brew install jruby && brew test jruby`
 
