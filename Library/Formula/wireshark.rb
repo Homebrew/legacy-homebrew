@@ -13,6 +13,12 @@ class Wireshark < Formula
     patch :DATA
   end
 
+  bottle do
+    sha1 "a369364e5488f2fdd40c66e65017af3de53c39e7" => :mavericks
+    sha1 "bb51c82ed19df08f4543b99d99b19dd8f10477cd" => :mountain_lion
+    sha1 "475e3a49e60acb0b01f94a286f3adfe1dd61f1a7" => :lion
+  end
+
   head do
     url 'https://code.wireshark.org/review/wireshark', :using => :git
 
