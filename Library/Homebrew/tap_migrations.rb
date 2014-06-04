@@ -7,6 +7,7 @@ TAP_MIGRATIONS = {
   "aws-iam-tools" => "homebrew/boneyard",
   "blackbox" => "homebrew/boneyard",
   "boost149" => "homebrew/versions",
+  "cantera" => "homebrew/science",
   "catdoc" => "homebrew/boneyard",
   "clam" => "homebrew/boneyard",
   "cmucl" => "homebrew/binary",
