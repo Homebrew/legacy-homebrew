@@ -31,6 +31,7 @@ class Yaz < Formula
     end
 
     result = `"#{bin}/yaz-iconv" -f marc8 -t utf8 marc8.txt`.chomp
+    result.force_encoding(Encoding::UTF_8) if result.respond_to?(:force_encoding)
     assert_equal "世界こんにちは！", result
   end
 end
