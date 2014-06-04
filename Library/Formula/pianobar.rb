@@ -31,10 +31,6 @@ class Pianobar < Formula
                     "-std=c99 " +
                     # build if we aren't /usr/local'
                     "#{ENV.cppflags} #{ENV.ldflags}"
-
-    if build.head?
-      inreplace "Makefile", "#LIBAV:=ffmpeg2.2", "LIBAV:=ffmpeg2.2"
-    end
     system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
 
