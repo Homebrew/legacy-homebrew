@@ -22,8 +22,6 @@ class Gnupg2 < Formula
   # upstream: http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;h=c3f08dc
   # Adjust package name to fit our scheme of packaging both gnupg 1.x and
   # 2.x, and gpg-agent separately, and adjust tests to fit this scheme
-  # Fix typo that breaks compilation:
-  # http://lists.gnupg.org/pipermail/gnupg-users/2013-May/046652.html
   patch :DATA
 
   def install
