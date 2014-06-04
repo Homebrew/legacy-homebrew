@@ -5,8 +5,8 @@ class Davix < Formula
   head "https://git.cern.ch/pub/davix.git"
 
   stable do
-    url "https://git.cern.ch/pub/davix.git", :tag => "R_0_2_10-1"
-    version "0.2.10-1"
+    url "https://git.cern.ch/pub/davix.git", :tag => "R_0_3_1"
+    version "0.3.1"
   end
 
   depends_on "cmake" => :build
