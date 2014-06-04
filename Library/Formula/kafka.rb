@@ -10,6 +10,7 @@ class Kafka < Formula
   depends_on "zookeeper"
 
   def install
+    ohai "Java 7 is required to compile this software."
     system "./gradlew", "jar"
 
     # Use 1 partition by default so individual consumers receive all topic messages
@@ -41,8 +42,11 @@ class Kafka < Formula
       kafka-server-start.sh #{etc}/kafka/server.properties
 
     Gradle's Scala plugin is not Java 8 compatible, so you may have to
-    use an older version of Java, see:
+    use Java 7, see:
       http://issues.gradle.org/browse/GRADLE-3023
+
+    If you have Java 7 installed along with other versions, try:
+      JAVA_HOME=$(/usr/libexec/java_home -v 1.7) brew install kafka
     EOS
   end
 end
