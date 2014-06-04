@@ -18,12 +18,13 @@ class Snd < Formula
     system "pkg-config", "ruby", "--cflags"
     system "./configure", "--with-gtk",
                           "--with-ruby",
-                          "--with-portaudio"
+                          "--with-portaudio",
+                          "--prefix=#{prefix}"
     system "make", "install"
   end
 
   test do
-    system "/usr/local/bin/snd --help"
+    system "#{bin}/snd --help"
   end
 
 end
