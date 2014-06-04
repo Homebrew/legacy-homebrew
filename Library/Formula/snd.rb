@@ -14,8 +14,6 @@ class Snd < Formula
   def install
     system "ruby tools/make-config-pc.rb > ./ruby.pc"
     ENV["PKG_CONFIG_PATH"] += ":."
-    system "pkg-config", "gtk+-2.0", "--cflags"
-    system "pkg-config", "ruby", "--cflags"
     system "./configure", "--with-gtk",
                           "--with-ruby",
                           "--with-portaudio",
