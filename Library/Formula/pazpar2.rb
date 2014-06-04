@@ -7,9 +7,9 @@ class Pazpar2 < Formula
 
   bottle do
     cellar :any
-    sha1 "491cc42e1f70344396f73270bba9101c487cdfc1" => :mavericks
-    sha1 "45501784c3d44ebdc833047573d8e78c2e495a39" => :mountain_lion
-    sha1 "29aa33b793d41ac2285220a85d252958939a109e" => :lion
+    sha1 "c706b67f07dae521a7abf98c4e65530ad262a22b" => :mavericks
+    sha1 "34e44849472083c6ab3d0c69c8355d4e1776beb1" => :mountain_lion
+    sha1 "943cc0f80a47bfe46db08e3d87648693fc0d9b14" => :lion
   end
 
   depends_on "pkg-config" => :build
