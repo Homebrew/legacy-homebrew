@@ -20,6 +20,7 @@ class Ffmpeg < Formula
   option "with-rtmpdump", "Enable RTMP protocol"
   option "with-libvo-aacenc", "Enable VisualOn AAC encoder"
   option "with-libass", "Enable ASS/SSA subtitle format"
+  option 'with-opencore-amr', 'Enable Opencore AMR NR/WB audio format'
   option "with-openjpeg", 'Enable JPEG 2000 image format'
   option 'with-openssl', 'Enable SSL support'
   option 'with-schroedinger', 'Enable Dirac video format'
