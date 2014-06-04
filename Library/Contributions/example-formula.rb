@@ -271,7 +271,7 @@ class ExampleFormula < Formula
     args << "--universal-binary" if build.universal?
 
     # The `build.with?` and `build.without?` are smart enough to do the
-    # right thing™ with respect to defaults defined via `:optional` and
+    # right thing with respect to defaults defined via `:optional` and
     # `:recommended` dependencies.
 
     # If you need to give the path to lib/include of another brewed formula
