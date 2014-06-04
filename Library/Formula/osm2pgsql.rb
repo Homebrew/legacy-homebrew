@@ -14,7 +14,11 @@ class Osm2pgsql < Formula
   depends_on "protobuf-c" => :optional
 
   def install
-    args = ["--with-proj=#{Formula["proj"].opt_prefix}"]
+    args = [
+      "--with-proj=#{Formula["proj"].opt_prefix}",
+      "--with-zlib=/usr",
+      "--with-bzip2=/usr"
+    ]
     if build.with? "protobuf-c"
       args << "--with-protobuf-c=#{Formula["protobuf-c"].opt_prefix}"
     end
