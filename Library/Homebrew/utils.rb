@@ -190,7 +190,9 @@ def which_editor
   return 'mate' if which "mate"
   # Find BBEdit / TextWrangler
   return 'edit' if which "edit"
-  # Default to vim
+  # Find vim
+  return 'vim' if which "vim"
+  # Default to standard vim
   return '/usr/bin/vim'
 end
 
