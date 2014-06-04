@@ -8,13 +8,13 @@ class X11DependencyTests < Test::Unit::TestCase
     y = X11Dependency.new
     assert x.eql?(y)
     assert y.eql?(x)
-    assert x.hash == y.hash
+    assert_equal x.hash, y.hash
   end
 
   def test_not_eql_when_hashes_differ
     x = X11Dependency.new("foo")
     y = X11Dependency.new
-    assert x.hash != y.hash
+    assert_not_equal x.hash, y.hash
     assert !x.eql?(y)
     assert !y.eql?(x)
   end
