@@ -312,6 +312,20 @@ def check_for_stray_developer_directory
   end
 end
 
+def check_for_bad_install_name_tool
+  return if MacOS.version < 10.9
+
+  libs = `otool -L /usr/bin/install_name_tool`
+  unless libs.include? "/usr/lib/libxcselect.dylib" then <<-EOS.undent
+    You have an outdated version of /usr/bin/install_name_tool installed.
+    This will cause binary package installations to fail.
+    This can happen if you install osx-gcc-installer or RailsInstaller.
+    To restore it, you must reinstall OS X or restore the binary from
+    the OS packages.
+    EOS
+  end
+end
+
 def __check_subdir_access base
   target = HOMEBREW_PREFIX+base
   return unless target.exist?
