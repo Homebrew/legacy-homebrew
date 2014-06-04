@@ -24,7 +24,7 @@ class Snd < Formula
   end
 
   test do
-    system "#{bin}/snd --help"
+    system "#{bin}/snd", "--help"
   end
 
 end
