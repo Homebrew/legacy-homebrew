@@ -5,6 +5,12 @@ class PerconaToolkit < Formula
   url "http://www.percona.com/redir/downloads/percona-toolkit/2.2.8/percona-toolkit-2.2.8.tar.gz"
   sha1 "26c53ab05354af7bf7bda3b9bbcb48349b046246"
 
+  bottle do
+    sha1 "4f7fee1c805430ae44687a9181db218c50f19c18" => :mavericks
+    sha1 "acd9e515966c53d16770c13a1502db2cf2690925" => :mountain_lion
+    sha1 "87a3e90e6131bbea8ced04c361a1d137a61e7ef5" => :lion
+  end
+
   depends_on :mysql
 
   resource "DBD::mysql" do
