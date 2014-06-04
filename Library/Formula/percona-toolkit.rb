@@ -2,8 +2,10 @@ require "formula"
 
 class PerconaToolkit < Formula
   homepage "http://www.percona.com/software/percona-toolkit/"
-  url "http://www.percona.com/redir/downloads/percona-toolkit/2.2.7/percona-toolkit-2.2.7.tar.gz"
-  sha1 "63dca7c6721ea22b2487980be84450b4d8c808a1"
+  url "http://www.percona.com/redir/downloads/percona-toolkit/2.2.8/percona-toolkit-2.2.8.tar.gz"
+  sha1 "26c53ab05354af7bf7bda3b9bbcb48349b046246"
+
+  depends_on :mysql
 
   resource "DBD::mysql" do
     url "http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
