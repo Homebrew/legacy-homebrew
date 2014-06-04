@@ -42,7 +42,7 @@ class Wireshark < Formula
   depends_on 'pcre' => :optional
   depends_on 'portaudio' => :optional
   depends_on 'qt' => :optional
-  depends_on "gtk+3" => :recommended
+  depends_on "gtk+3" => :optional
   depends_on "gtk+" => :optional
 
   def install
