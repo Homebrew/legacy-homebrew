@@ -6,6 +6,13 @@ class Cheat < Formula
   sha1 "cf4a76badd8d0e58c9299037703ba4abbd2217df"
   head "https://github.com/chrisallenlane/cheat.git"
 
+  bottle do
+    cellar :any
+    sha1 "52437406145fdeeb208591fc204c93e2cb9d22ec" => :mavericks
+    sha1 "5e3a0e9992dabcdb57ce1987cd7fde79f791664e" => :mountain_lion
+    sha1 "cc83ffcefc6e909d50522a8a737721e2b36d4c00" => :lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "docopt" do
