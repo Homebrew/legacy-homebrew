@@ -114,10 +114,10 @@ For most use cases it's better to have the dependencies be "provided" because yo
 To create a job that can be submitted through the job server, the job must implement the `SparkJob` trait. 
 Your job will look like:
 
-        object SampleJob  extends SparkJob {
-                override def runJob(sc:SparkContext, jobConfig: Config): Any = ???
-                override def validate(sc:SparkContext, config: Contig): SparkJobValidation = ???
-        }
+    object SampleJob  extends SparkJob {
+        override def runJob(sc:SparkContext, jobConfig: Config): Any = ???
+        override def validate(sc:SparkContext, config: Contig): SparkJobValidation = ???
+    }
 
 - `runJob` contains the implementation of the Job. The SparkContext is managed by the JobServer and will be provided to the job through this method.
   This releaves the developer from the boiler-plate configuration management that comes with the creation of a Spark job and allows the Job Server to
@@ -128,18 +128,18 @@ manage and re-use contexts.
 Named RDDs are a way to easily share RDDs among job. Using this facility, computed RDDs can be cached with a given name and later on retrieved.
 To use this feature, the SparkJob needs to mixin `NamedRddSupport`:
 
-  object SampleNamedRDDJob  extends SparkJob with NamedRddSupport {
-    override def runJob(sc:SparkContext, jobConfig: Config): Any = ???
-    override def validate(sc:SparkContext, config: Contig): SparkJobValidation = ???
-  }
+    object SampleNamedRDDJob  extends SparkJob with NamedRddSupport {
+        override def runJob(sc:SparkContext, jobConfig: Config): Any = ???
+        override def validate(sc:SparkContext, config: Contig): SparkJobValidation = ???
+     }
 
-Then in the implementation of the job, RDDs can be stored:
+Then in the implementation of the job, RDDs can be stored with a given name:
 
-  this.namedRdds.update("french_dictionary", frenchDictionaryRDD)
+    this.namedRdds.update("french_dictionary", frenchDictionaryRDD)
 
-While other job can retrieve this RDD later on:
+Other job running in the same context can retrieve and use this RDD later on:
 
-  val rdd = this.namedRdds.get[(String, String)]("french_dictionary").get 
+    val rdd = this.namedRdds.get[(String, String)]("french_dictionary").get 
 
 (note the explicit type provided to get. This will allow to cast the retrieved RDD that otherwise is of type RDD[_])
 
