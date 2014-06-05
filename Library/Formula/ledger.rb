@@ -2,8 +2,8 @@ require 'formula'
 
 class Ledger < Formula
   homepage 'http://ledger-cli.org'
-  url 'https://github.com/ledger/ledger/archive/v3.0.1.tar.gz'
-  sha1 'cb0891f4770a33ba5cdbd6693b400ec0ff0b81da'
+  url 'https://github.com/ledger/ledger/archive/v3.0.2.tar.gz'
+  sha1 '0a204c3ec95fdaf4a0e45c4fcfd77a0ec6fd4ac4'
   head 'https://github.com/ledger/ledger.git', :branch => 'master'
 
   bottle do
@@ -31,7 +31,11 @@ class Ledger < Formula
     depends_on "boost"
   end
 
+  needs :cxx11
+
   def install
+    ENV.cxx11
+
     (buildpath/'lib/utfcpp').install resource('utfcpp')
 
     flavor = build.include?("debug") ? "debug" : "opt"
