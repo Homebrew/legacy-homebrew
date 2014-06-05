@@ -13,6 +13,7 @@ class Openssl < Formula
   end
 
   option :universal
+  option "without-check", "Skip build-time tests (not recommended)"
 
   depends_on "makedepend" => :build
 
@@ -60,7 +61,7 @@ class Openssl < Formula
       system "perl", "./Configure", *(configure_args + arch_args[arch])
       system "make", "depend"
       system "make"
-      system "make", "test"
+      system "make", "test" if build.with? "check"
 
       if build.universal?
         cp Dir["*.?.?.?.dylib", "*.a", "apps/openssl"], dir

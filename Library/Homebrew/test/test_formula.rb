@@ -126,19 +126,19 @@ class FormulaTests < Test::Unit::TestCase
   def test_equality
     x = TestBall.new
     y = TestBall.new
-    assert x == y
-    assert y == x
+    assert_equal x, y
+    assert_equal y, x
     assert x.eql?(y)
     assert y.eql?(x)
-    assert x.hash == y.hash
+    assert_equal x.hash, y.hash
   end
 
   def test_inequality
     x = TestBall.new("foo")
     y = TestBall.new("bar")
-    assert x != y
-    assert y != x
-    assert x.hash != y.hash
+    assert_not_equal x, y
+    assert_not_equal y, x
+    assert_not_equal x.hash, y.hash
     assert !x.eql?(y)
     assert !y.eql?(x)
   end

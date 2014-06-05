@@ -1,5 +1,9 @@
 module LinuxCPUs
-  OPTIMIZATION_FLAGS = {}.freeze
+  OPTIMIZATION_FLAGS = {
+    :penryn => '-march=core2 -msse4.1',
+    :core2 => '-march=core2',
+    :core => '-march=prescott',
+  }.freeze
   def optimization_flags; OPTIMIZATION_FLAGS; end
 
   # Linux supports x86 only, and universal archs do not apply

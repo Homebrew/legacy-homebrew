@@ -67,7 +67,7 @@ module Homebrew extend self
       end
 
       # Use strings to search through the file for each string
-      IO.popen("strings -t x - '#{file}'") do |io|
+      IO.popen("strings -t x - '#{file}'", "rb") do |io|
         until io.eof?
           str = io.readline.chomp
 
