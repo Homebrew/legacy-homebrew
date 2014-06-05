@@ -36,17 +36,6 @@ class Cheat < Formula
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
-  def caveats;<<-EOS.undent
-    Personal cheatsheets are saved in the ~/.cheat directory by default, but you
-    can specify a different default by exporting a DEFAULT_CHEAT_DIR environment
-    variable:
-      export DEFAULT_CHEAT_DIR=/path/to/my/cheats
-
-    To enable syntax highlighting, add the following line to your profile:
-      export CHEATCOLORS=true
-    EOS
-  end
-
   test do
     system "#{bin}/cheat", "--version"
   end
