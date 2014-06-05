@@ -29,9 +29,14 @@ class Ledger < Formula
   def install
     (buildpath/'lib/utfcpp').install resource('utfcpp')
 
-    # Support homebrew not at /usr/local. Also support Xcode-only setups:
-    inreplace 'acprep', 'search_prefixes = [', "search_prefixes = ['#{HOMEBREW_PREFIX}','#{MacOS.sdk_path}/usr',"
-    args = [((build.include? 'debug') ? 'debug' : 'opt'), "make", "install", "-N", "-j#{ENV.make_jobs}", "--output=build"]
+    flavor = build.include?("debug") ? "debug" : "opt"
+
+    args = %W[
+      --prefix=#{prefix}
+      #{flavor} make install -N -j#{ENV.make_jobs}
+      --output=build
+      --boost=#{Formula["boost"].opt_prefix}
+    ]
 
     if build.with? 'python'
       # Per #25118, CMake does a poor job of detecting a brewed Python.
@@ -45,7 +50,7 @@ class Ledger < Formula
       args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
     end
 
-    system "./acprep", "--prefix=#{prefix}", *args
+    system "./acprep", *args
     (share+'ledger/examples').install Dir['test/input/*.dat']
     (share+'ledger').install 'contrib'
     if build.with? 'python'
