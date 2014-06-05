@@ -71,13 +71,15 @@ HOMEBREW_TEMP = Pathname.new(ENV.fetch('HOMEBREW_TEMP', '/tmp'))
 RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
 RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
 
-if RUBY_PLATFORM =~ /darwin/
+if OS.mac?
   MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
   MACOS_VERSION = MACOS_FULL_VERSION[/10\.\d+/]
   OS_VERSION = "Mac OS X #{MACOS_FULL_VERSION}"
-else
-  MACOS_FULL_VERSION = MACOS_VERSION = "0"
+elsif OS.linux?
+  MACOS_FULL_VERSION = MACOS_VERSION = "linux"
   OS_VERSION = RUBY_PLATFORM
+else
+  raise "Unknown operating system"
 end
 
 HOMEBREW_GITHUB_API_TOKEN = ENV["HOMEBREW_GITHUB_API_TOKEN"]
