@@ -2,7 +2,7 @@ require 'formula'
 
 class Trafshow < Formula
   homepage 'http://soft.risp.ru/trafshow/index_en.shtml'
-  url 'ftp://ftp.FreeBSD.org/pub/FreeBSD/ports/distfiles/trafshow-5.2.3.tgz'
+  url 'http://distcache.freebsd.org/ports-distfiles/trafshow-5.2.3.tgz'
   sha1 '1c68f603f12357e932c83de850366c9b46e53d89'
 
   depends_on "libtool" => :build
