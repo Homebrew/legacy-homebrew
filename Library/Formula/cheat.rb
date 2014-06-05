@@ -37,6 +37,6 @@ class Cheat < Formula
   end
 
   test do
-    system "#{bin}/cheat", "--version"
+    system "#{bin}/cheat", "tar"
   end
 end
