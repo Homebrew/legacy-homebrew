@@ -2,8 +2,8 @@ require "formula"
 
 class Cheat < Formula
   homepage "https://github.com/chrisallenlane/cheat"
-  url "https://github.com/chrisallenlane/cheat/archive/2.0.7.tar.gz"
-  sha1 "f468f94e71df34392e25a76c1ceb12ddf229070e"
+  url "https://github.com/chrisallenlane/cheat/archive/2.0.9.tar.gz"
+  sha1 "cf4a76badd8d0e58c9299037703ba4abbd2217df"
   head "https://github.com/chrisallenlane/cheat.git"
 
   depends_on :python if MacOS.version <= :snow_leopard
