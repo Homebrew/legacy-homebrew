@@ -19,7 +19,6 @@ class Ledger < Formula
 
   option 'debug', 'Build with debugging symbols enabled'
 
-  depends_on 'gettext'
   depends_on 'boost'
   depends_on 'mpfr'
   depends_on 'gmp'
