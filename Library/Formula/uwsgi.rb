@@ -5,6 +5,12 @@ class Uwsgi < Formula
   url "http://projects.unbit.it/downloads/uwsgi-2.0.5.1.tar.gz"
   sha1 "67244683a76a7ce88f244ef8044ecf32bf3b8d41"
 
+  bottle do
+    sha1 "20ecd1cedd295a0230dc6a1ffd0f7ed683b9b220" => :mavericks
+    sha1 "25b1cc77faa6add9ed7e9a58b179fc5091ad5485" => :mountain_lion
+    sha1 "8ae9b2775e1d9fd0f4025e2ffc14e0c7c8b7b3dd" => :lion
+  end
+
   depends_on "libyaml"
   depends_on "pcre"
   depends_on "yajl" if build.without? "jansson"
