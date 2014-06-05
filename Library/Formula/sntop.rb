@@ -12,6 +12,7 @@ class Sntop < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--sysconfdir=#{etc}"
+    etc.mkpath
     bin.mkpath
     system "make install"
   end
