@@ -7,7 +7,7 @@ class Saxon < Formula
   version "9.5.1.5"
 
   def install
-    libexec.install Dir["*.jar"] + ["doc", "notices"]
+    libexec.install Dir["*.jar", "doc", "notices"]
     bin.write_jar_script libexec/"saxon9he.jar", "saxon"
   end
 end

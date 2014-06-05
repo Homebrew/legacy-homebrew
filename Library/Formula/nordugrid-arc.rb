@@ -6,7 +6,6 @@ class NordugridArc < Formula
   sha1 '9836793b91b31d3c24ae5b0200aba2a56530e7e7'
 
   depends_on 'pkg-config' => :build
-  depends_on :libtool
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'glibmm'

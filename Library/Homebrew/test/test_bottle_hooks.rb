@@ -17,14 +17,14 @@ class BottleHookTests < Test::Unit::TestCase
     Homebrew::Hooks::Bottles.setup_formula_has_bottle do |f|
       f.some_random_method
     end
-    assert_equal true, @fi.pour_bottle?
+    assert @fi.pour_bottle?
   end
 
   def test_has_no_bottle
     Homebrew::Hooks::Bottles.setup_formula_has_bottle do |f|
       !f.some_random_method
     end
-    assert_equal false, @fi.pour_bottle?
+    assert !@fi.pour_bottle?
   end
 
   def test_pour_formula_bottle

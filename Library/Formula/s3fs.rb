@@ -5,10 +5,10 @@ class S3fs < Formula
   url 'https://github.com/s3fs-fuse/s3fs-fuse/archive/v1.76.tar.gz'
   sha1 '478aa3230b5d85bfe95d9962ee2f1d8cd35fa070'
 
-  depends_on 'pkg-config' => :build
-  depends_on :autoconf
-  depends_on :automake
-  depends_on 'fuse4x'
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "fuse4x"
 
   def install
     system "./autogen.sh"

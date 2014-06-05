@@ -24,9 +24,9 @@ class Ghostscript < Formula
       url 'git://git.code.sf.net/p/djvu/gsdjvu-git'
     end
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
 
     # Uncomment OS X-specific make vars
     patch do

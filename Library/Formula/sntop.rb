@@ -2,7 +2,7 @@ require 'formula'
 
 class Sntop < Formula
   homepage 'http://sntop.sourceforge.net/'
-  url 'ftp://ftp.freebsd.org/pub/FreeBSD/ports/distfiles/sntop-1.4.3.tar.gz'
+  url 'http://distcache.freebsd.org/ports-distfiles/sntop-1.4.3.tar.gz'
   sha1 '8a96bb453a83262e30215a31be508c16dbd71e27'
 
   depends_on 'fping'
@@ -12,7 +12,9 @@ class Sntop < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--sysconfdir=#{etc}"
+    etc.mkpath
     bin.mkpath
+    man1.mkpath
     system "make install"
   end
 

@@ -22,6 +22,7 @@ TAP_MIGRATIONS = {
   "iulib" => "homebrew/boneyard",
   "jscoverage" => "homebrew/boneyard",
   "jsl" => "homebrew/binary",
+  "jstalk" => "homebrew/boneyard",
   "justniffer" => "homebrew/boneyard",
   "kerl" => "homebrew/headonly",
   "kismet" => "homebrew/boneyard",
@@ -46,6 +47,7 @@ TAP_MIGRATIONS = {
   "storm" => "homebrew/boneyard",
   "syslog-ng" => "homebrew/boneyard",
   "tetgen" => "homebrew/science",
+  "tmap" => "homebrew/boneyard",
   "urweb" => "homebrew/boneyard",
   "wkhtmltopdf" => "homebrew/boneyard",
 }

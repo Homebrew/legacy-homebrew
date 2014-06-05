@@ -24,7 +24,7 @@ class Salt < Formula
     ENV.deparallelize
     # the libgfortran.a path needs to be set explicitly
     libgfortran = `$FC --print-file-name libgfortran.a`.chomp
-    ENV.append 'LDFLAGS', "-L#{File.dirname libgfortran} -lgfortran"
+    ENV.append 'LDFLAGS', "-L#{File.dirname(libgfortran)} -lgfortran"
     system "./configure", "--prefix=#{prefix}", "--disable-static"
     system "make install"
     # install all the model data
@@ -35,7 +35,7 @@ class Salt < Formula
 
   test do
     ENV['SALTPATH'] = "#{prefix}/data"
-    cp_r Dir[prefix + '03d4ag' + '*'], '.'
+    cp_r Dir["#{prefix}/03d4ag/*"], '.'
     system bin/"snfit", testpath/"lc-03D4ag.list"
     assert File.exist?("result_salt2.dat")
   end
