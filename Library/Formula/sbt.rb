@@ -10,7 +10,13 @@ class Sbt < Formula
     (bin/"sbt").write <<-EOS.undent
       #!/bin/sh
       test -f ~/.sbtconfig && . ~/.sbtconfig
-      exec java -Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M ${SBT_OPTS} -jar #{libexec}/sbt-launch.jar "$@"
+
+      java_version=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}')
+      if [[ "$java_version" > "1.8" ]]; then 
+        exec java -Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled ${SBT_OPTS} -jar #{libexec}/sbt-launch.jar "$@"
+      else 
+        exec java -Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M ${SBT_OPTS} -jar #{libexec}/sbt-launch.jar "$@"
+      fi
     EOS
 
     libexec.install Dir['*']
