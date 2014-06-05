@@ -4,6 +4,7 @@ class Sysdig < Formula
   homepage "http://www.sysdig.org/"
   url "https://github.com/draios/sysdig/archive/0.1.83.tar.gz"
   sha1 "c4d64b7f62e43d3300122c2aba65f098ca7fa9f3"
+  revision 1
 
   head "https://github.com/draios/sysdig.git", :branch => "master"
 
@@ -25,7 +26,7 @@ class Sysdig < Formula
     ENV.libcxx if MacOS.version < :mavericks
 
     mkdir "build" do
-      system "cmake", "..", *std_cmake_args
+      system "cmake", "..", "-DSYSDIG_VERSION=#{version}", *std_cmake_args
       system "make", "install"
     end
   end
