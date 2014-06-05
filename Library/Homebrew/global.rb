@@ -72,18 +72,21 @@ RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
 RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
 
 if OS.mac?
-  MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
-  MACOS_VERSION = MACOS_FULL_VERSION[/10\.\d+/]
-  OS_VERSION = "Mac OS X #{MACOS_FULL_VERSION}"
+  OS_NAME = "Mac OS X"
+  OS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
+  OS_VERSION = OS_FULL_VERSION[/10\.\d+/]
 elsif OS.linux?
-  MACOS_FULL_VERSION = MACOS_VERSION = "linux"
-  OS_VERSION = RUBY_PLATFORM
+  OS_NAME = "Linux"
+  OS_FULL_VERSION = OS_VERSION = "linux"
 else
   raise "Unknown operating system"
 end
+# For compatibility
+MACOS_FULL_VERSION = OS_FULL_VERSION
+MACOS_VERSION = OS_VERSION
 
 HOMEBREW_GITHUB_API_TOKEN = ENV["HOMEBREW_GITHUB_API_TOKEN"]
-HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; #{OS_VERSION})"
+HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}; #{OS_NAME} #{OS_VERSION})"
 
 HOMEBREW_CURL_ARGS = '-f#LA'
 

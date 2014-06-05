@@ -490,8 +490,8 @@ class FormulaAuditor
       problem "Use new-style option definitions"
     end
 
-    if line =~ /MACOS_VERSION/
-      problem "Use MacOS.version instead of MACOS_VERSION"
+    if line =~ /OS_VERSION/
+      problem "Use MacOS.version instead of OS_VERSION"
     end
 
     cats = %w{leopard snow_leopard lion mountain_lion}.join("|")
