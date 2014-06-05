@@ -19,12 +19,17 @@ class Ledger < Formula
 
   option 'debug', 'Build with debugging symbols enabled'
 
-  depends_on 'boost'
-  depends_on 'mpfr'
-  depends_on 'gmp'
+  depends_on "cmake" => :build
+  depends_on "ninja" => :build
+  depends_on "mpfr"
+  depends_on "gmp"
   depends_on :python => :optional
-  depends_on 'cmake' => :build
-  depends_on 'ninja' => :build
+
+  if build.with? "python"
+    depends_on "boost" => "with-python"
+  else
+    depends_on "boost"
+  end
 
   def install
     (buildpath/'lib/utfcpp').install resource('utfcpp')
@@ -43,19 +48,16 @@ class Ledger < Formula
       # We need to tell CMake explicitly where our default python lives.
       # Inspired by
       # https://github.com/Homebrew/homebrew/blob/51d054c/Library/Formula/opencv.rb
-      args << '--python' << '--'
-
+      args << "--python" << "--"
       python_prefix = `python-config --prefix`.strip
-      args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
-      args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
+      args << "-DPYTHON_LIBRARY=#{python_prefix}/Python"
+      args << "-DPYTHON_INCLUDE_DIR=#{python_prefix}/Headers"
     end
 
     system "./acprep", *args
     (share+'ledger/examples').install Dir['test/input/*.dat']
     (share+'ledger').install 'contrib'
-    if build.with? 'python'
-      (share+'ledger').install 'python/demo.py'
-    end
+    (share+"ledger").install "python/demo.py" if build.with? "python"
   end
 
   test do
