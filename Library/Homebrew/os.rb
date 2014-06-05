@@ -7,3 +7,9 @@ module OS
     /linux/i === RUBY_PLATFORM
   end
 end
+
+if OS.mac?
+  require "os/mac/bottles"
+elsif OS.linux?
+  require "os/linux/bottles"
+end
