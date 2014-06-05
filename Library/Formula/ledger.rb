@@ -25,11 +25,10 @@ class Ledger < Formula
   depends_on "gmp"
   depends_on :python => :optional
 
-  if build.with? "python"
-    depends_on "boost" => "with-python"
-  else
-    depends_on "boost"
-  end
+  boost_opts = []
+  boost_opts << "with-python" if build.with? "python"
+  boost_opts << "c++11" if MacOS.version < "10.9"
+  depends_on "boost" => boost_opts
 
   needs :cxx11
 
