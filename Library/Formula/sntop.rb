@@ -14,6 +14,7 @@ class Sntop < Formula
                           "--sysconfdir=#{etc}"
     etc.mkpath
     bin.mkpath
+    man1.mkpath
     system "make install"
   end
 
