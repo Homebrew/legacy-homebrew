@@ -17,8 +17,8 @@ class MecabKoDic < Formula
   end
 
   def caveats; <<-EOS.undent
-    To enable dictionary:
-      rewrite #{HOMEBREW_PREFIX}/etc/mecabrc as "dicdir = #{HOMEBREW_PREFIX}/lib/mecab/dic/mecab-ko-dic"
+    To enable the dictionary, add the following to #{HOMEBREW_PREFIX}/etc/mecabrc:
+      dicdir = #{HOMEBREW_PREFIX}/lib/mecab/dic/mecab-ko-dic
     EOS
   end
 end
