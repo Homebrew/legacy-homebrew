@@ -13,9 +13,8 @@ class Zile < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "help2man" => :build
   depends_on "bdw-gc"
-  depends_on "gettext"
-  depends_on "help2man"
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
