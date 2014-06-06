@@ -27,19 +27,6 @@ class Python < Formula
   depends_on "homebrew/dupes/tcl-tk" if build.with? "brewed-tk"
   depends_on :x11 if build.with? "brewed-tk" and Tab.for_name("tcl-tk").used_options.include?("with-x11")
 
-  skip_clean "bin/pip", "bin/pip-2.7"
-  skip_clean "bin/easy_install", "bin/easy_install-2.7"
-
-  resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-4.0.1.tar.gz"
-    sha1 "a43549f4a01f314bf54567628f8de7d1c03d5930"
-  end
-
-  resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz"
-    sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
-  end
-
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
   # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
   patch :DATA if build.with? "brewed-tk"
@@ -137,9 +124,6 @@ class Python < Formula
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
-
-    (libexec/'setuptools').install resource('setuptools')
-    (libexec/'pip').install resource('pip')
   end
 
   def post_install
@@ -163,20 +147,6 @@ class Python < Formula
     # setuptools-0.9.5-py3.3.egg
     rm_rf Dir["#{site_packages}/setuptools*"]
     rm_rf Dir["#{site_packages}/distribute*"]
-
-    setup_args = ["-s", "setup.py", "--no-user-cfg", "install", "--force",
-                  "--verbose",
-                  "--install-scripts=#{bin}",
-                  "--install-lib=#{site_packages}"]
-
-    (libexec/"setuptools").cd { system "#{bin}/python", *setup_args }
-    (libexec/"pip").cd { system "#{bin}/python", *setup_args }
-
-    # When building from source, these symlinks will not exist, since
-    # post_install happens after linking.
-    %w[pip pip2 pip2.7 easy_install easy_install-2.7].each do |e|
-      (HOMEBREW_PREFIX/"bin").install_symlink bin/e
-    end
 
     # And now we write the distutils.cfg
     cfg = lib_cellar/"distutils/distutils.cfg"
@@ -297,11 +267,11 @@ class Python < Formula
   end
 
   def caveats; <<-EOS.undent
-    Setuptools and Pip have been installed. To update them
-      pip install --upgrade setuptools
-      pip install --upgrade pip
+    Setuptools and Pip are not installed. To install them
+      curl -O https://bootstrap.pypa.io/get-pip.py
+      #{bin}/python get-pip.py --upgrade
 
-    You can install Python packages with
+    Then, you can install Python packages with
       pip install <package>
 
     They will install into the site-package directory
