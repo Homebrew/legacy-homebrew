@@ -2,8 +2,8 @@ require 'formula'
 
 class Gearman < Formula
   homepage 'http://gearman.org/'
-  url 'https://launchpad.net/gearmand/1.2/1.1.9/+download/gearmand-1.1.9.tar.gz'
-  sha1 '59ec305a4535451c3b51a21d2525e1c07770419d'
+  url 'https://launchpad.net/gearmand/1.2/1.1.12/+download/gearmand-1.1.12.tar.gz'
+  sha1 '85b5271ea3ac919d96fff9500993b73c9dc80c6c'
 
   option 'with-mysql', 'Compile with MySQL persistent queue enabled'
   option 'with-postgresql', 'Compile with Postgresql persistent queue enabled'
