@@ -8,7 +8,7 @@ class GnuTypist < Formula
 
   depends_on "gettext"
 
-  # Use Apple"s ncurses instead of ncursesw.
+  # Use Apple's ncurses instead of ncursesw.
   # TODO: use an IFDEF for apple and submit upstream
   patch :DATA
 
