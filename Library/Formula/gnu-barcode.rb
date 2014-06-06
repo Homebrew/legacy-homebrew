@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class GnuBarcode < Formula
-  homepage 'http://www.gnu.org/software/barcode/'
-  url 'http://ftpmirror.gnu.org/barcode/barcode-0.98.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/barcode/barcode-0.98.tar.gz'
-  sha1 '15b9598bcaa67bcff1f63309d1a18840b9a12899'
+  homepage "https://www.gnu.org/software/barcode/"
+  url "http://ftpmirror.gnu.org/barcode/barcode-0.99.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/barcode/barcode-0.99.tar.xz"
+  sha1 "a6283a844ebfdccc9458256e5e6db15760348384"
 
   def install
     system "./configure", "--disable-debug",
