@@ -2,8 +2,8 @@ require 'formula'
 
 class Gearman < Formula
   homepage 'http://gearman.org/'
-  url 'https://launchpad.net/gearmand/1.2/1.1.9/+download/gearmand-1.1.9.tar.gz'
-  sha1 '59ec305a4535451c3b51a21d2525e1c07770419d'
+  url 'https://launchpad.net/gearmand/1.2/1.1.12/+download/gearmand-1.1.12.tar.gz'
+  sha1 '85b5271ea3ac919d96fff9500993b73c9dc80c6c'
 
   option 'with-mysql', 'Compile with MySQL persistent queue enabled'
   option 'with-postgresql', 'Compile with Postgresql persistent queue enabled'
@@ -52,19 +52,3 @@ class Gearman < Formula
 end
 
 __END__
-diff --git a/libgearman-1.0/gearman.h b/libgearman-1.0/gearman.h
-index 850a26d..8f7a8f0 100644
---- a/libgearman-1.0/gearman.h
-+++ b/libgearman-1.0/gearman.h
-@@ -50,7 +50,11 @@
- #endif
-
- #ifdef __cplusplus
-+#ifdef _LIBCPP_VERSION
-+#  include <cinttypes>
-+#else
- #  include <tr1/cinttypes>
-+#endif
- #  include <cstddef>
- #  include <cstdlib>
- #  include <ctime>
