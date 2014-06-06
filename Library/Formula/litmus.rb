@@ -9,7 +9,7 @@ class Litmus < Formula
     # Note that initially this formula also had the --disable-debug option
     # passed to ./configure.
     #
-    # This diabled a critical feature. Litmus is a debugging tool, and this
+    # This disabled a critical feature. Litmus is a debugging tool, and this
     # caused all logs to be empty by default.
     #
     # See: https://github.com/Homebrew/homebrew/pull/29608
