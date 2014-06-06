@@ -30,14 +30,9 @@ class Python < Formula
   skip_clean "bin/pip", "bin/pip-2.7"
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
-  resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-4.0.1.tar.gz"
-    sha1 "a43549f4a01f314bf54567628f8de7d1c03d5930"
-  end
-
-  resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz"
-    sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
+  resource "getpip" do
+    url "https://raw.githubusercontent.com/pypa/pip/1.5.6/contrib/get-pip.py"
+    sha1 "0b83b8ff9eb850b0e347eb7dd2f03722d9331076"
   end
 
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
@@ -138,8 +133,7 @@ class Python < Formula
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
 
-    (libexec/'setuptools').install resource('setuptools')
-    (libexec/'pip').install resource('pip')
+    libexec.install resource('getpip')
   end
 
   def post_install
@@ -164,20 +158,6 @@ class Python < Formula
     rm_rf Dir["#{site_packages}/setuptools*"]
     rm_rf Dir["#{site_packages}/distribute*"]
 
-    setup_args = ["-s", "setup.py", "--no-user-cfg", "install", "--force",
-                  "--verbose",
-                  "--install-scripts=#{bin}",
-                  "--install-lib=#{site_packages}"]
-
-    (libexec/"setuptools").cd { system "#{bin}/python", *setup_args }
-    (libexec/"pip").cd { system "#{bin}/python", *setup_args }
-
-    # When building from source, these symlinks will not exist, since
-    # post_install happens after linking.
-    %w[pip pip2 pip2.7 easy_install easy_install-2.7].each do |e|
-      (HOMEBREW_PREFIX/"bin").install_symlink bin/e
-    end
-
     # And now we write the distutils.cfg
     cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.atomic_write <<-EOF.undent
@@ -187,6 +167,9 @@ class Python < Formula
       force=1
       prefix=#{HOMEBREW_PREFIX}
     EOF
+
+    # Install pip using get-pip.py. It is installed under HOMEBREW_PREFIX.
+    libexec.cd { system "#{bin}/python", "get-pip.py", "--upgrade" }
   end
 
   def distutils_fix_superenv(args)
