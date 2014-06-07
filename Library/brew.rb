@@ -1,5 +1,16 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
 # encoding: UTF-8
+if defined?(Encoding)
+  # simulate "ruby -EUTF-8:UTF-8", but safe for 1.8.
+  Encoding.default_internal = Encoding::UTF_8
+  Encoding.default_external = Encoding::UTF_8
+  # encode ARGV
+  utf8_argv = ARGV.map do |arg|
+    arg.dup.force_encoding('UTF-8')
+  end
+  ARGV.clear
+  ARGV.push *utf8_argv
+end
 
 std_trap = trap("INT") { exit! 130 } # no backtrace thanks
 
