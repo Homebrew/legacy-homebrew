@@ -3,13 +3,13 @@ require 'formula'
 class X264 < Formula
   homepage "http://www.videolan.org/developers/x264.html"
   # the latest commit on the stable branch
-  url "http://git.videolan.org/git/x264.git", :revision => "e260ea549226ae29832d8bc0dcfd20cffc8cf248"
+  url "http://git.videolan.org/git/x264.git", :revision => "d7e689680023e327de7e052e01e7faee30135799"
   version "r2412"
   head "http://git.videolan.org/git/x264.git"
 
   devel do
     # the latest commit on the master branch
-    url "http://git.videolan.org/git/x264.git", :revision => "ac7644073ac28d19c9cf048849bbcd515713e426"
+    url "http://git.videolan.org/git/x264.git", :revision => "a5831aa256b3161f898d2577d2eb8daa838d88d2"
     version "r2431"
   end
 
