@@ -6,6 +6,9 @@ class Ddate < Formula
   version '0.1.0'
   sha1 '41eafa66d577082b95e40a8f40ac054aa8ea45dc'
 
+  # ddate uses malloc and exit, but doesn't include stdlib.h
+  # patch includes stdlib, and fixes program name and lack of a newline
+  # in the error statement ('DiscDate' -> 'ddate')
   patch :DATA
 
   def install
