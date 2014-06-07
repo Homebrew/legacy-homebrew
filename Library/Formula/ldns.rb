@@ -6,32 +6,22 @@ class Ldns < Formula
   sha1 '4218897b3c002aadfc7280b3f40cda829e05c9a4'
 
   bottle do
-    revision 1
-    sha1 "e7c38081f1bfef2b0cc38284bc735f7021ea415c" => :mavericks
-    sha1 "6ebe8d12f028f61d06b65435741c948f3b5cdc6e" => :mountain_lion
-    sha1 "99a0c73caa2ef8289e06730b39d56da5fa886cc5" => :lion
+    revision 2
+    sha1 "0730f244c3191ccc105e681d0a046dd0a03f582d" => :mavericks
+    sha1 "d1d014414e72ff7635bea795b2b140d9f33898f3" => :mountain_lion
+    sha1 "1cfa7037a76eac035e4e1089514a044eff2e6b8b" => :lion
   end
 
-  option 'with-gost', 'Compile ldns with support for GOST algorithms in DNSSEC'
-
   depends_on :python => :optional
-  depends_on 'swig' if build.with? 'python'
-
-  # gost requires OpenSSL >= 1.0.0
-  depends_on 'openssl' if build.with? 'gost'
+  depends_on 'openssl'
+  depends_on 'swig' => :build if build.with? 'python'
 
   def install
     args = %W[
       --prefix=#{prefix}
       --with-drill
+      --with-ssl=#{Formula["openssl"].opt_prefix}
     ]
-
-    if build.with? 'gost'
-      args << "--with-ssl=#{HOMEBREW_PREFIX}/opt/openssl"
-    else
-      args << "--disable-gost"
-      args << "--with-ssl=#{MacOS.sdk_path}/usr"
-    end
 
     args << "--with-pyldns" if build.with? 'python'
 

@@ -13,12 +13,18 @@ class Wireshark < Formula
     patch :DATA
   end
 
+  bottle do
+    sha1 "a369364e5488f2fdd40c66e65017af3de53c39e7" => :mavericks
+    sha1 "bb51c82ed19df08f4543b99d99b19dd8f10477cd" => :mountain_lion
+    sha1 "475e3a49e60acb0b01f94a286f3adfe1dd61f1a7" => :lion
+  end
+
   head do
     url 'https://code.wireshark.org/review/wireshark', :using => :git
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   devel do
@@ -26,7 +32,7 @@ class Wireshark < Formula
     sha1 '7e1c6b107c178016d51c9061ef3f40efbc47a040'
   end
 
-  option 'with-qt', 'Use QT for GUI instead of GTK+'
+  option 'with-qt', 'Use QT for GUI instead of GTK+3'
   option 'with-headers', 'Install Wireshark library headers for plug-in developemnt'
 
   depends_on 'pkg-config' => :build
@@ -42,21 +48,25 @@ class Wireshark < Formula
   depends_on 'pcre' => :optional
   depends_on 'portaudio' => :optional
   depends_on 'qt' => :optional
+  depends_on "gtk+3" => :optional
   depends_on "gtk+" => :optional
-  depends_on :x11 if build.with? "gtk+"
 
   def install
-    system "./autogen.sh" if build.head?
-
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--with-gnutls",
             "--with-ssl"]
 
-    args << "--disable-warnings-as-errors" if build.head?
-    args << "--disable-wireshark" if build.without?("gtk+") && build.without?("qt")
-    args << "--disable-gtktest" if build.without? "gtk+"
+    args << "--disable-wireshark" if build.without?("gtk+3") && build.without?("qt") && build.without?("gtk+")
+    args << "--disable-gtktest" if build.without?("gtk+3") && build.without?("gtk+")
     args << "--with-qt" if build.with? "qt"
+    args << "--with-gtk3" if build.with? "gtk+3"
+    args << "--with-gtk2" if build.with? "gtk+"
+
+    if build.head?
+      args << "--disable-warnings-as-errors"
+      system "./autogen.sh"
+    end
 
     system "./configure", *args
     system "make"

@@ -14,7 +14,7 @@ class Asciidoc < Formula
 
   head do
     url 'https://code.google.com/p/asciidoc/', :using => :hg
-    depends_on :autoconf
+    depends_on "autoconf" => :build
   end
 
   depends_on 'docbook'

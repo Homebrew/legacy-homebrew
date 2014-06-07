@@ -271,7 +271,7 @@ class ExampleFormula < Formula
     args << "--universal-binary" if build.universal?
 
     # The `build.with?` and `build.without?` are smart enough to do the
-    # right thing™ with respect to defaults defined via `:optional` and
+    # right thing with respect to defaults defined via `:optional` and
     # `:recommended` dependencies.
 
     # If you need to give the path to lib/include of another brewed formula
@@ -301,10 +301,6 @@ class ExampleFormula < Formula
       # modify CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS in one go:
       ENV.append_to_cflags "-I ./missing/includes"
     end
-
-    # This is in general not necessary, but to show how to find the path to
-    # the Mac OS X SDK:
-    ENV.append "CPPFLAGS", "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
 
     # Overwriting any env var:
     ENV["LDFLAGS"] = "--tag CC"
@@ -400,10 +396,10 @@ class ExampleFormula < Formula
 
     # Need complete control over stdin, stdout?
     require "open3"
-    Open3.popen3("#{bin}/example", "big5:utf-8") do |stdin, stdout, _|
-      stdin.write("\263\134\245\134\273\134")
+    Open3.popen3("#{bin}/example", "argument") do |stdin, stdout, _|
+      stdin.write("some text")
       stdin.close
-      assert_equal "許功蓋", stdout.read
+      assert_equal "result", stdout.read
     end
 
     # If an exception is raised (e.g. by assert), or if we return false, or if

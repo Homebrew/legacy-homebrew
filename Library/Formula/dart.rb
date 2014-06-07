@@ -4,14 +4,14 @@ class Dart < Formula
   homepage 'http://www.dartlang.org/'
 
   if MacOS.prefer_64_bit?
-    url 'http://storage.googleapis.com/dart-archive/channels/stable/release/35121/sdk/dartsdk-macos-x64-release.zip'
-    sha1 '5f4daec23a4ce3f58ecdc8b0c77c6448c3562fc5'
+    url 'http://storage.googleapis.com/dart-archive/channels/stable/release/36647/sdk/dartsdk-macos-x64-release.zip'
+    sha1 '028edb73863e42dcfce39df31728bceffd347510'
   else
-    url 'http://storage.googleapis.com/dart-archive/channels/stable/release/35121/sdk/dartsdk-macos-ia32-release.zip'
-    sha1 '8ec49b7acc2ea959c96b76f5d7522825b1511e19'
+    url 'http://storage.googleapis.com/dart-archive/channels/stable/release/36647/sdk/dartsdk-macos-ia32-release.zip'
+    sha1 '388027b201ce22b66faa9f48e22bfd6ed01c5ff3'
   end
 
-  version '1.3.3'
+  version '1.4.2'
 
   def install
     libexec.install Dir['*']

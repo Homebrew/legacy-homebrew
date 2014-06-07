@@ -11,6 +11,7 @@ class Liblas < Formula
   depends_on 'libgeotiff'
   depends_on 'gdal'
   depends_on 'boost'
+  depends_on 'laszip' => :optional
 
   option 'with-test', 'Verify during install with `make test`'
 
@@ -21,10 +22,16 @@ class Liblas < Formula
       #   http://liblas.org/compilation.html
       ENV['Boost_INCLUDE_DIR'] = "#{HOMEBREW_PREFIX}/include"
       ENV['Boost_LIBRARY_DIRS'] = "#{HOMEBREW_PREFIX}/lib"
-      system "cmake", "..", "-DWITH_GEOTIFF=ON", "-DWITH_GDAL=ON", *std_cmake_args
+      args = ["-DWITH_GEOTIFF=ON", "-DWITH_GDAL=ON"] + std_cmake_args
+      args << "-DWITH_LASZIP=ON" if build.with? 'laszip'
+      system "cmake", "..", *args
       system "make"
       system "make test" if build.with? "test"
       system "make install"
     end
+  end
+
+  test do
+    system bin/"liblas-config", "--version"
   end
 end

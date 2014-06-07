@@ -23,15 +23,14 @@ class Subversion < Formula
     sha1 'eafc8317d7a9c77d4db9ce1e5c71a33822f57c3a'
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on 'sqlite'
   depends_on :python => :optional
-
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
 
   # Bindings require swig
   depends_on 'swig' if build.include? 'perl' or build.with? 'python' or build.include? 'ruby'
@@ -54,10 +53,6 @@ class Subversion < Formula
     build 318
     cause "core.c:1: error: bad value (native) for -march= switch"
   end if build.include? 'perl' or build.include? 'ruby'
-
-  def apr_bin
-    Superenv.bin or "/usr/bin"
-  end
 
   def install
     serf_prefix = libexec+'serf'
@@ -102,7 +97,7 @@ class Subversion < Formula
         puts "  brew install subversion --universal --java"
       end
 
-      ENV.fetch('JAVA_HOME') do
+      if ENV["JAVA_HOME"]
         opoo "JAVA_HOME is set. Try unsetting it if JNI headers cannot be found."
       end
     end
@@ -114,7 +109,7 @@ class Subversion < Formula
     # Don't mess with Apache modules (since we're not sudo)
     args = ["--disable-debug",
             "--prefix=#{prefix}",
-            "--with-apr=#{apr_bin}",
+            "--with-apr=#{which("apr-1-config").dirname}",
             "--with-zlib=/usr",
             "--with-sqlite=#{Formula["sqlite"].opt_prefix}",
             "--with-serf=#{serf_prefix}",

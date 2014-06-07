@@ -1,12 +1,13 @@
-require 'formula'
+require "formula"
 
 class Grepcidr < Formula
-  homepage 'http://www.pc-tools.net/unix/grepcidr/'
-  url 'http://www.pc-tools.net/files/unix/grepcidr-1.4.tar.gz'
-  sha1 'fb8c8f271d22ddedd66626ec9b77da69f2ee447b'
+  homepage "http://www.pc-tools.net/unix/grepcidr/"
+  url "http://www.pc-tools.net/files/unix/grepcidr-2.0.tar.gz"
+  sha1 "5ec8cf18acbf92851b632d297b9fd6ee77c523ba"
 
   def install
     system "make"
-    bin.install 'grepcidr'
+    bin.install "grepcidr"
+    man1.install "grepcidr.1"
   end
 end

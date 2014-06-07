@@ -153,7 +153,7 @@ class Keg < Pathname
   end
 
   def plist_installed?
-    not Dir.glob("#{self}/*.plist").empty?
+    Dir["#{self}/*.plist"].any?
   end
 
   def python_site_packages_installed?
@@ -161,7 +161,7 @@ class Keg < Pathname
   end
 
   def app_installed?
-    not Dir.glob("#{self}/{,libexec/}*.app").empty?
+    Dir["#{self}/{,libexec/}*.app"].any?
   end
 
   def version

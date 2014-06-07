@@ -10,11 +10,7 @@ class Play < Formula
 
   def install
     system "./framework/build", "publish-local" if build.head?
-
-    # remove Windows .bat files
-    rm Dir['*.bat']
-    rm Dir["#{buildpath}/**/*.bat"] if build.head?
-
+    rm_rf Dir["**/*.bat"]
     libexec.install Dir['*']
     bin.install_symlink libexec/'play'
   end

@@ -2,9 +2,8 @@ require 'formula'
 
 class Gpsbabel < Formula
   homepage 'http://www.gpsbabel.org'
-  # revision 4813 is version 1.5.0
-  url "http://gpsbabel.googlecode.com/svn/trunk/gpsbabel", :revision => "4813"
-  version "1.5.0"
+  url "http://gpsbabel.googlecode.com/svn/trunk/gpsbabel", :revision => "4843"
+  version "1.5.1"
 
   head 'http://gpsbabel.googlecode.com/svn/trunk/gpsbabel'
 

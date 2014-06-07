@@ -12,6 +12,6 @@ class Hubflow < Formula
   end
 
   test do
-    system "git-hf", "version"
+    system bin/"git-hf", "version"
   end
 end

@@ -6,10 +6,10 @@ class Wxmac < Formula
   sha1 "756a9c54d1f411e262f03bacb78ccef085a9880a"
 
   bottle do
-    revision 2
-    sha1 "db75f95c554187d884848a63321d64ca684b1ccd" => :mavericks
-    sha1 "34fddbef31c0c16eef1579241d4bb7401497f81e" => :mountain_lion
-    sha1 "747869c11f31508ea20d4602907cded403c0dc0e" => :lion
+    revision 4
+    sha1 "509441d49e87c95cc9f7cef700b4426f3264ae0d" => :mavericks
+    sha1 "70fca93b8c3e80a726ac700e7fcf155d89bc2172" => :mountain_lion
+    sha1 "75f29a1fbbabced2f2fa1d0c83b85dc51bf71583" => :lion
   end
 
   depends_on "jpeg"
@@ -26,6 +26,8 @@ class Wxmac < Formula
   def install
     # need to set with-macosx-version-min to avoid configure defaulting to 10.5
     # need to enable universal binary build in order to build all x86_64
+    # FIXME I don't believe this is the whole story, surely this can be fixed
+    # without building universal for users who don't need it. - Jack
     # headers need to specify x86_64 and i386 or will try to build for ppc arch
     # and fail on newer OSes
     # https://trac.macports.org/browser/trunk/dports/graphics/wxWidgets30/Portfile#L80
@@ -57,7 +59,6 @@ class Wxmac < Formula
       "--enable-dataviewctrl",
       "--with-expat",
       "--with-macosx-version-min=#{MacOS.version}",
-      "--with-macosx-sdk=#{MacOS.sdk_path}",
       "--enable-universal_binary=#{Hardware::CPU.universal_archs.join(',')}",
       "--disable-precomp-headers",
       # This is the default option, but be explicit

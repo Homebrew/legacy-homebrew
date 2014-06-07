@@ -5,10 +5,10 @@ class Blitzwave < Formula
   url 'https://github.com/oschulz/blitzwave/archive/v0.8.0.tar.gz'
   sha1 '16d96f28ba295659301ab6485782715786fd496e'
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
-  depends_on 'blitz'
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "blitz"
 
   # an automake tweak to fix compiling
   # reported upstream: https://github.com/oschulz/blitzwave/issues/2

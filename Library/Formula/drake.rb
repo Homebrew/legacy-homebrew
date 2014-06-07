@@ -2,9 +2,9 @@ require 'formula'
 
 class Drake < Formula
   homepage 'https://github.com/Factual/drake'
-  url 'https://github.com/Factual/drake/releases/download/v0.1.5/drake.jar'
-  version '0.1.5'
-  sha1 '21d0db8e34ed1d8b406ed7c2793f8b6e0f6ce191'
+  url 'https://github.com/Factual/drake/releases/download/v0.1.6/drake.jar'
+  version '0.1.6'
+  sha1 '43870cf657a70fd484093f452ceab22fb4c33d3c'
 
   def install
     libexec.install Dir['*']

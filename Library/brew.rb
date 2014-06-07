@@ -1,4 +1,4 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
+#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
 # encoding: UTF-8
 
 std_trap = trap("INT") { exit! 130 } # no backtrace thanks
@@ -15,11 +15,12 @@ HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Lib
 $:.unshift(HOMEBREW_LIBRARY_PATH.to_s)
 require 'global'
 
-if ARGV.help?
+if ARGV.empty? || ARGV[0] =~ /(-h$|--help$|--usage$|-\?$|help$)/
+  # TODO - `brew help cmd` should display subcommand help
   require 'cmd/help'
   puts ARGV.usage
   exit ARGV.any? ? 0 : 1
-elsif ARGV.version?
+elsif ARGV.first == '--version'
   puts HOMEBREW_VERSION
   exit 0
 elsif ARGV.first == '-v'
