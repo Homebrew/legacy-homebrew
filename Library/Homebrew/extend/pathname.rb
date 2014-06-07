@@ -1,6 +1,7 @@
 require 'pathname'
 require 'mach'
 require 'resource'
+require 'metafiles'
 
 # we enhance pathname to make our code more readable
 class Pathname
@@ -381,7 +382,7 @@ class Pathname
 
     from.children.each do |p|
       next if p.directory?
-      next unless FORMULA_META_FILES.should_copy? p
+      next unless Metafiles.copy?(p)
       # Some software symlinks these files (see help2man.rb)
       filename = p.resolved_path
       # Some software links metafiles together, so by the time we iterate to one of them
