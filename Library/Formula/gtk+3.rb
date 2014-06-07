@@ -23,7 +23,7 @@ class Gtkx3 < Formula
   depends_on 'atk'
   depends_on 'at-spi2-atk'
   depends_on 'gobject-introspection'
-  depends_on 'gsettings-desktop-schemas'
+  depends_on 'gsettings-desktop-schemas' => :recommended
 
   def install
     # gtk-update-icon-cache is used during installation, and
