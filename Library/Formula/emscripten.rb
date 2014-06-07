@@ -40,13 +40,16 @@ class Emscripten < Formula
   depends_on "yuicompressor"
 
   def install
-    # note - OS X doesn't provide a python2 binary. Use the default python instead
-    system "grep --null -rl '^#!/usr/bin/env python2$' . | xargs -0 sed -i '' 's,^#!/usr/bin/env python2$,#!/usr/bin/env python,'"
-    system "grep --null -rl '^#!/usr/bin/python2$' . | xargs -0 sed -i '' 's,^#!/usr/bin/python2$,#!/usr/bin/python,'"
+    # OSX doesn't provide a "python2" binary so use "python" instead.
+    python2_shebangs = `grep --recursive --files-with-matches ^#!/usr/bin/.*python2$ #{buildpath}`
+    python2_shebang_files = python2_shebangs.lines.sort.uniq
+    python2_shebang_files.map! {|f| Pathname(f.chomp)}
+    python2_shebang_files.reject! &:symlink?
+    inreplace python2_shebang_files, %r{^(#!/usr/bin/.*python)2$}, "\\1"
 
-    # Note - as per documentation, _all_ files from the repository are
-    # required, as emscripten is just a collection of scripts that need to
-    # be installed in exactly the same layout as in the git repo
+    # All files from the repository are required as emscripten is a collection
+    # of scripts which need to be installed in the same layout as in the Git
+    # repository.
     libexec.install Dir['*']
 
     (buildpath/"fastcomp").install resource("fastcomp")
@@ -66,21 +69,19 @@ class Emscripten < Formula
       system "make", "install"
     end
 
-    emscripts = %w(em++ em-config emar emcc emconfigure emlink.py emmake emranlib emrun emscons)
-
-    emscripts.each do |emscript|
-        bin.install_symlink libexec/emscript
+    %w(em++ em-config emar emcc emconfigure emlink.py emmake
+       emranlib emrun emscons).each do |emscript|
+      bin.install_symlink libexec/emscript
     end
   end
 
   test do
-    # copied from the vanilla llvm formula
     system "#{libexec}/llvm/bin/llvm-config", "--version"
   end
 
   def caveats; <<-EOS.undent
     Manually set LLVM_ROOT to \"#{opt_prefix}/libexec/llvm/bin\"
-    in ~/.emscripten after running emcc for the first time.
+    in ~/.emscripten after running `emcc` for the first time.
     EOS
   end
 end
