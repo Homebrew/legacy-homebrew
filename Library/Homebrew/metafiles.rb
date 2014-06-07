@@ -5,18 +5,12 @@ class Metafiles
     news notes notice readme todo
   ]
 
-  def should_copy? file
-    include? file
-  end
-
   def should_list? file
     return false if %w[.DS_Store INSTALL_RECEIPT.json].include? file
-    not include? file
+    !copy?(file)
   end
 
-  private
-
-  def include?(path)
+  def should_copy?(path)
     path = path.to_s.downcase
     ext  = File.extname(path)
 
