@@ -102,7 +102,9 @@ begin
   # Add contributed commands to PATH before checking.
   ENV['PATH'] += "#{File::PATH_SEPARATOR}#{HOMEBREW_CONTRIB}/cmd"
 
-  if require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd)
+  if cmd =~ %r{^/.+/brew-[^/]+\.rb$} and require? cmd
+    exit Homebrew.failed? ? 1 : 0
+  elsif require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd)
     Homebrew.send cmd.to_s.gsub('-', '_').downcase
   elsif which "brew-#{cmd}"
     %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
