@@ -47,6 +47,6 @@ class Gtkx3 < Formula
   end
 
   def post_install
-    system "glib-compile-schemas #{HOMEBREW_PREFIX}/share/glib-2.0/schemas/"
+    system "glib-compile-schemas", "#{HOMEBREW_PREFIX}/share/glib-2.0/schemas/"
   end
 end
