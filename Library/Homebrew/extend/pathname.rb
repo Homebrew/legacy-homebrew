@@ -375,12 +375,8 @@ class Pathname
     EOS
   end
 
-  def install_metafiles from=nil
-    # Default to current path, and make sure we have a pathname, not a string
-    from = "." if from.nil?
-    from = Pathname.new(from.to_s)
-
-    from.children.each do |p|
+  def install_metafiles from=Pathname.pwd
+    Pathname(from).children.each do |p|
       next if p.directory?
       next unless Metafiles.copy?(p)
       # Some software symlinks these files (see help2man.rb)
@@ -389,7 +385,7 @@ class Pathname
       # we may have already moved it. libxml2's COPYING and Copyright are affected by this.
       next unless filename.exist?
       filename.chmod 0644
-      self.install filename
+      install(filename)
     end
   end
 
