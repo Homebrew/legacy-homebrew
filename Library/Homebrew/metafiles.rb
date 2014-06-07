@@ -5,10 +5,6 @@ class Metafiles
     news notes notice readme todo
   ]
 
-  def + other
-    @metafiles + other
-  end
-
   def should_copy? file
     include? file
   end
