@@ -7,9 +7,8 @@ class Plotutils < Formula
   sha1 '7921301d9dfe8991e3df2829bd733df6b2a70838'
   revision 1
 
-  option "with-x11", "Enable --with-x config arg"
   depends_on 'libpng'
-  depends_on :x11
+  depends_on :x11 => :optional
 
   def install
     # Fix usage of libpng to be 1.5 compatible
