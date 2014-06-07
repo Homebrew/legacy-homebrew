@@ -1,3 +1,6 @@
+require "formula"
+require "cmd/tap"
+
 module Homebrew extend self
   def list
 
@@ -13,6 +16,8 @@ module Homebrew extend self
       list_pinned
     elsif ARGV.include? '--versions'
       list_versions
+    elsif ARGV.include? '--taps'
+      list_taps
     elsif ARGV.named.empty?
       ENV['CLICOLOR'] = nil
       exec 'ls', *ARGV.options_only << HOMEBREW_CELLAR
@@ -79,6 +84,22 @@ module Homebrew extend self
     end.each do |d|
       puts d.basename
     end
+  end
+
+  def list_taps
+    formulae = Dir["#{HOMEBREW_CELLAR}/*"].map{ |d| File.basename d }
+    core_names = Formula.core_names
+
+    tapped_names = Hash.new
+    each_tap do |user, repo|
+      repo.find_formula do |formula|
+        name = File.basename(formula, ".rb")
+        tapped_names[name] = "#{user.basename}/#{repo.basename.sub("homebrew-", "")}/#{name}"
+      end
+    end
+
+    puts_columns formulae.select{ |f| core_names.include? f }
+    puts_columns formulae.reject{ |f| core_names.include? f }.select{ |f| tapped_names.include? f }.map{ |f| tapped_names[f] }
   end
 end
 
