@@ -1,11 +1,9 @@
 class Metafiles
-
-  def initialize
-    @exts = %w[.md .html .rtf .txt]
-    @metafiles = %w[
-      about authors changelog changes copying copyright history license
-      licence news notes notice readme todo]
-  end
+  EXTENSIONS = %w[.md .html .rtf .txt]
+  BASENAMES = %w[
+    about authors changelog changes copying copyright history license licence
+    news notes notice readme todo
+  ]
 
   def + other
     @metafiles + other
@@ -27,11 +25,11 @@ class Metafiles
     ext  = File.extname(path)
 
     if EXTENSIONS.include?(ext)
-      file = File.basename(path, ext)
+      basename = File.basename(path, ext)
     else
-      file = File.basename(path)
+      basename = File.basename(path)
     end
 
-    return @metafiles.include?(file)
+    return BASENAMES.include?(basename)
   end
 end
