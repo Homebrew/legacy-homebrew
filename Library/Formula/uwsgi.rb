@@ -6,9 +6,10 @@ class Uwsgi < Formula
   sha1 "67244683a76a7ce88f244ef8044ecf32bf3b8d41"
 
   bottle do
-    sha1 "20ecd1cedd295a0230dc6a1ffd0f7ed683b9b220" => :mavericks
-    sha1 "25b1cc77faa6add9ed7e9a58b179fc5091ad5485" => :mountain_lion
-    sha1 "8ae9b2775e1d9fd0f4025e2ffc14e0c7c8b7b3dd" => :lion
+    revision 1
+    sha1 "f29ce8d64c067bffb06c61508ada6fcec4b8ac4b" => :mavericks
+    sha1 "2cbe8ba97f52400dedd48ba14cdeb9e0b7a00f68" => :mountain_lion
+    sha1 "f2d33b294b405840c3b687edec85e10dc56d5b13" => :lion
   end
 
   depends_on "pcre"
