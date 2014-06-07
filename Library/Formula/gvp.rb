@@ -7,9 +7,9 @@ class Gvp < Formula
 
   bottle do
     cellar :any
-    sha1 "0bb06a3261651d7c83fc286c41e5ab8820c3386f" => :mavericks
-    sha1 "904d0191574425f9212f93d1c8c1853ea4644af3" => :mountain_lion
-    sha1 "fe9f9330db468ecac8472053290d1447d3f7c665" => :lion
+    sha1 "90298a9ed2cf413b50ce0c6f6161e07ab599c7b8" => :mavericks
+    sha1 "67d85bfdd6870d5f585ada006932ca84ec3923af" => :mountain_lion
+    sha1 "4cecc33e461869ac88caedc4351ba785022b25d5" => :lion
   end
 
   def install
