@@ -22,17 +22,16 @@ class Metafiles
 
   private
 
-  def include? p
-    p = p.to_s # Might be a pathname
-    p = p.downcase
-    path = Pathname.new(p)
-    if @exts.include? path.extname
-      p = path.basename(path.extname)
-    else
-      p = path.basename
-    end
-    p = p.to_s
-    return @metafiles.include? p
-  end
+  def include?(path)
+    path = path.to_s.downcase
+    ext  = File.extname(path)
 
+    if EXTENSIONS.include?(ext)
+      file = File.basename(path, ext)
+    else
+      file = File.basename(path)
+    end
+
+    return @metafiles.include?(file)
+  end
 end
