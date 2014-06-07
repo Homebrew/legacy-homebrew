@@ -8,7 +8,6 @@ class Plotutils < Formula
   revision 1
   
   option "with-x11", "Enable --with-x config arg"
-  
   depends_on 'libpng'
   depends_on :x11
     
@@ -20,11 +19,9 @@ class Plotutils < Formula
             "--disable-dependency-tracking",
             "--prefix=#{prefix}",
             "--enable-libplotter"]
-    
     args << "--with-x" if build.with? "x11"
     
     system "./configure", *(args)
-    
     system "make"
     system "make install"
   end
