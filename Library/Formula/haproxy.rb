@@ -6,9 +6,16 @@ class Haproxy < Formula
   sha1 'f5c7dcaf0e8190f86e58b8e106dbc53609beaacd'
 
   devel do
-    url 'http://haproxy.1wt.eu/download/1.5/src/devel/haproxy-1.5-dev19.tar.gz'
-    sha1 '5c16686c516dbeaab8ada6c17c25e9629ab4f7d3'
-    version '1.5-dev19'
+    url 'http://haproxy.1wt.eu/download/1.5/src/devel/haproxy-1.5-dev26.tar.gz'
+    sha1 'cab0d9b73dff87d159bf1ee64a127bacf88ac87f'
+    version '1.5-dev26'
+
+    # we can remove it when a new version is released
+    # don't use type "uint" which is not portable
+    patch do
+      url "http://git.1wt.eu/web?p=haproxy.git;a=commitdiff_plain;h=c874653bb45b101f50ea710576c7b47766874d1c"
+      sha1 "ed16bdb9096c09b79135d5d43db9ef8581decb02"
+    end
   end
 
   depends_on 'pcre'
