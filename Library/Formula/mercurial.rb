@@ -4,9 +4,9 @@ require 'formula'
 # of Homebrew.
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-3.0.tar.gz'
-  mirror 'http://fossies.org/linux/misc/mercurial-3.0.tar.gz'
-  sha1 'f9648580dd1a6a093fa16d7c28cf5aeefd20f2f0'
+  url 'http://mercurial.selenic.com/release/mercurial-3.0.1.tar.gz'
+  mirror 'http://fossies.org/linux/misc/mercurial-3.0.1.tar.gz'
+  sha1 '2d257836d28d22e4da3d0ad72b0489f6587b1165'
 
   def install
     ENV.minimal_optimization if MacOS.version <= :snow_leopard
