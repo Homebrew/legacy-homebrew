@@ -6,6 +6,12 @@ class Burp < Formula
   sha1 '0b28b8989ca8ce02cfb2fb029df90be9777e3431'
   head 'https://github.com/grke/burp.git'
 
+  bottle do
+    sha1 "0ac51ee5bc80e91b28cb292e3aed223d15778926" => :mavericks
+    sha1 "8b790e019ff239985a2760bb2a200672578b3b09" => :mountain_lion
+    sha1 "b2efbd022a41e0ebcfe3ef015308617809b0a842" => :lion
+  end
+
   depends_on 'librsync'
 
   # patches to change directories to brew conventions in Makefile and config files
