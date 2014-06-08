@@ -10,16 +10,10 @@ class Metafiles
     !copy?(file)
   end
 
-  def self.copy?(path)
-    path = path.to_s.downcase
-    ext  = File.extname(path)
-
-    if EXTENSIONS.include?(ext)
-      basename = File.basename(path, ext)
-    else
-      basename = File.basename(path)
-    end
-
-    return BASENAMES.include?(basename)
+  def self.copy?(file)
+    file = file.downcase
+    ext  = File.extname(file)
+    file = File.basename(file, ext) if EXTENSIONS.include?(ext)
+    BASENAMES.include?(file)
   end
 end
