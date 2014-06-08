@@ -7,6 +7,7 @@ class Suniq < Formula
 
   depends_on :autoconf
   depends_on :automake
+  depends_on :gcc47
 
   def install
     system "./autogen.sh", "--prefix=#{prefix}"
