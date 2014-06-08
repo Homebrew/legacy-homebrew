@@ -5,6 +5,13 @@ class Haproxy < Formula
   url 'http://haproxy.1wt.eu/download/1.4/src/haproxy-1.4.25.tar.gz'
   sha1 'f5c7dcaf0e8190f86e58b8e106dbc53609beaacd'
 
+  bottle do
+    cellar :any
+    sha1 "4f77107fc9067d3f90ff903c9a9142f79746cd20" => :mavericks
+    sha1 "c5b6f83b827da688de9008dc20ed3074565f3ef4" => :mountain_lion
+    sha1 "8223c6ba3c4eaba367991b17e33efcfc30418d3f" => :lion
+  end
+
   devel do
     url 'http://haproxy.1wt.eu/download/1.5/src/devel/haproxy-1.5-dev26.tar.gz'
     sha1 'cab0d9b73dff87d159bf1ee64a127bacf88ac87f'
