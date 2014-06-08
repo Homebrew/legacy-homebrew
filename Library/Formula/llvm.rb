@@ -24,7 +24,7 @@ class Llvm < Formula
   option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
 
   depends_on :python => :optional
-  depends_on 'cmake' => :optional
+  depends_on 'cmake' => [:build, :optional]
 
   keg_only :provided_by_osx
 
