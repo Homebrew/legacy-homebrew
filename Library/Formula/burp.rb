@@ -12,10 +12,10 @@ class Burp < Formula
   patch :DATA
 
   def install
-   system "./configure", "--prefix=#{prefix}",
-                         "--sysconfdir=#{etc}/burp",
-                         "--sbindir=#{sbin}",
-                         "--localstatedir=#{var}/burp"
+    system "./configure", "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}/burp",
+                          "--sbindir=#{bin}",
+                          "--localstatedir=#{var}/burp"
     system "make", "install"
   end
 
@@ -115,7 +115,7 @@ index 76fcd8d..9cd7edb 100644
  # request and send it to the server.
 -ca_burp_ca = /usr/sbin/burp_ca
 -ca_csr_dir = /etc/burp/CA-client
-+ca_burp_ca = HOMEBREW_PREFIX/sbin/burp_ca
++ca_burp_ca = HOMEBREW_PREFIX/bin/burp_ca
 +ca_csr_dir = HOMEBREW_PREFIX/etc/burp/CA-client
  
  # SSL certificate authority - same file on both server and client
