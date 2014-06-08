@@ -2,9 +2,8 @@ require 'formula'
 
 class Burp < Formula
   homepage 'http://burp.grke.org/'
-  url 'http://burp.grke.org/downloads/burp-1.3.36/burp-1.3.36.tar.bz2'
-  sha1 '471237090e631b3cb91ff864db84c7644c42bf87'
-
+  url 'https://downloads.sourceforge.net/project/burp/burp-1.4.16/burp-1.4.16.tar.bz2'
+  sha1 '0b28b8989ca8ce02cfb2fb029df90be9777e3431'
   head 'https://github.com/grke/burp.git'
 
   depends_on 'librsync'
@@ -13,15 +12,15 @@ class Burp < Formula
   patch :DATA
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}/burp",
-                          "--sbindir=#{bin}",
-                          "--localstatedir=#{var}/burp"
+   system "./configure", "--prefix=#{prefix}",
+                         "--sysconfdir=#{etc}/burp",
+                         "--sbindir=#{sbin}",
+                         "--localstatedir=#{var}/burp"
     system "make", "install"
   end
 
   test do
-    system "#{bin}/burp", "-v"
+    system "#{sbin}/burp", "-v"
   end
 
   plist_options :startup => true
@@ -39,7 +38,7 @@ class Burp < Formula
       <false/>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_bin}/burp</string>
+        <string>#{opt_sbin}/burp</string>
         <string>-a</string>
         <string>t</string>
       </array>
@@ -116,7 +115,7 @@ index 76fcd8d..9cd7edb 100644
  # request and send it to the server.
 -ca_burp_ca = /usr/sbin/burp_ca
 -ca_csr_dir = /etc/burp/CA-client
-+ca_burp_ca = HOMEBREW_PREFIX/bin/burp_ca
++ca_burp_ca = HOMEBREW_PREFIX/sbin/burp_ca
 +ca_csr_dir = HOMEBREW_PREFIX/etc/burp/CA-client
  
  # SSL certificate authority - same file on both server and client
