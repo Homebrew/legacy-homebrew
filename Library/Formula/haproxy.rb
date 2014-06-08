@@ -2,8 +2,8 @@ require 'formula'
 
 class Haproxy < Formula
   homepage 'http://haproxy.1wt.eu'
-  url 'http://haproxy.1wt.eu/download/1.4/src/haproxy-1.4.24.tar.gz'
-  sha1 '0c5104d029d8d58d39b0d94179edd84c661306d1'
+  url 'http://haproxy.1wt.eu/download/1.4/src/haproxy-1.4.25.tar.gz'
+  sha1 'f5c7dcaf0e8190f86e58b8e106dbc53609beaacd'
 
   devel do
     url 'http://haproxy.1wt.eu/download/1.5/src/devel/haproxy-1.5-dev19.tar.gz'
