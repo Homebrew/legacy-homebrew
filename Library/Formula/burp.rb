@@ -20,7 +20,7 @@ class Burp < Formula
   end
 
   test do
-    system "#{sbin}/burp", "-v"
+    system "#{bin}/burp", "-v"
   end
 
   plist_options :startup => true
@@ -38,7 +38,7 @@ class Burp < Formula
       <false/>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_sbin}/burp</string>
+        <string>#{opt_bin}/burp</string>
         <string>-a</string>
         <string>t</string>
       </array>
