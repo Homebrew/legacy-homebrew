@@ -134,6 +134,11 @@ class Zookeeper < Formula
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
       <dict>
+        <key>EnvironmentVariables</key>
+        <dict>
+           <key>SERVER_JVMFLAGS</key>
+           <string>-Dapple.awt.UIElement=true</string>
+        </dict>
         <key>KeepAlive</key>
         <dict>
           <key>SuccessfulExit</key>

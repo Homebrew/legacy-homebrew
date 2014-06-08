@@ -2,7 +2,7 @@ require "formula"
 
 class Libhid < Formula
   homepage "http://libhid.alioth.debian.org/"
-  url "ftp://ftp.freebsd.org/pub/FreeBSD/ports/distfiles/libhid-0.2.16.tar.gz"
+  url "http://distcache.freebsd.org/ports-distfiles/libhid-0.2.16.tar.gz"
   sha1 "9a25fef674e8f20f97fea6700eb91c21ebbbcc02"
 
   depends_on "libusb"

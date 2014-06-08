@@ -55,7 +55,7 @@ class TeXDependency < Requirement
     end
 
     <<-EOS.undent
-    A LaTeX distribution is required to install.
+    A LaTeX distribution is required for Homebrew to install this formula.
 
     You can install MacTeX distribution from:
       http://www.tug.org/mactex/

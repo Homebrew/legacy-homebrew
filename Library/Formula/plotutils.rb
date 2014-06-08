@@ -8,14 +8,19 @@ class Plotutils < Formula
   revision 1
 
   depends_on 'libpng'
+  depends_on :x11 => :optional
 
   def install
     # Fix usage of libpng to be 1.5 compatible
     inreplace 'libplot/z_write.c', 'png_ptr->jmpbuf', 'png_jmpbuf (png_ptr)'
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-libplotter"
+    args = ["--disable-debug",
+            "--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--enable-libplotter"]
+    args << "--with-x" if build.with? "x11"
+
+    system "./configure", *args
     system "make"
     system "make install"
   end

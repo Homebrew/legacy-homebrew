@@ -94,8 +94,6 @@ module Homebrew extend self
   alias_method :failed?, :failed
 end
 
-require 'metafiles'
-FORMULA_META_FILES = Metafiles.new
 ISSUES_URL = "https://github.com/Homebrew/homebrew/wiki/troubleshooting"
 HOMEBREW_PULL_OR_COMMIT_URL_REGEX = 'https:\/\/github.com\/(\w+)\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
 

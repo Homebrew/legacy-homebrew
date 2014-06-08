@@ -4,11 +4,12 @@ class Ruby < Formula
   homepage 'https://www.ruby-lang.org/'
   url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.2.tar.bz2"
   sha256 "6948b02570cdfb89a8313675d4aa665405900e27423db408401473f30fc6e901"
+  revision 1
 
   bottle do
-    sha1 "9c7a61fa34c47d0c48a23bf28a0d4c9a3f31b273" => :mavericks
-    sha1 "e9e8b27b822b331083f268ac78688e6195d5334a" => :mountain_lion
-    sha1 "ccd62b5dd83229a8dfaf57abf8c1ec131b50b17e" => :lion
+    sha1 "9feba2200305e8750c26f83d562b900d31978905" => :mavericks
+    sha1 "47d34386ba62c418a79090bf1b09c73f77cc1756" => :mountain_lion
+    sha1 "1e6dd158182dec70cd1440a5d834396bb8745246" => :lion
   end
 
   head do
@@ -62,16 +63,21 @@ class Ruby < Formula
   end
 
   def post_install
-    # Put gem, site and vendor folders in the HOMEBREW_PREFIX
+    # Preserve gem, site, and vendor folders on upgrade/reinstall
+    # by placing them in HOMEBREW_PREFIX and sym-linking
     ruby_lib = HOMEBREW_PREFIX/"lib/ruby"
-    (ruby_lib/'site_ruby').mkpath
-    (ruby_lib/'vendor_ruby').mkpath
-    (ruby_lib/'gems').mkpath
 
-    rm_rf Dir["#{lib}/ruby/{site_ruby,vendor_ruby,gems}"]
-    (lib/'ruby').install_symlink ruby_lib/'site_ruby',
-                                 ruby_lib/'vendor_ruby',
-                                 ruby_lib/'gems'
+    ["gems", "site_ruby", "vendor_ruby"].each do |name|
+      link = lib/"ruby"/name
+      real = ruby_lib/name
+
+      # only overwrite invalid (mutually dependent) links
+      real.unlink if real.symlink? && real.readlink == link
+      real.mkpath
+
+      link.unlink if link.exist?
+      link.symlink real
+    end
   end
 
   def caveats; <<-EOS.undent

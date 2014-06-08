@@ -19,7 +19,7 @@ class ObjectiveCaml < Formula
   end
 
   # recent versions of clang fail with a hard error if -fno-defer-pop
-  # is specified, and older versions warn.  This patch fixes the OCaml
+  # is specified, and older versions warn. This patch fixes the OCaml
   # configure script to not pass this option on recent MacOS versions.
   # See http://caml.inria.fr/mantis/view.php?id=6346 for upstream bug.
   patch :DATA

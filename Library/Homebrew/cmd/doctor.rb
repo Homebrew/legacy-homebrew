@@ -312,6 +312,20 @@ def check_for_stray_developer_directory
   end
 end
 
+def check_for_bad_install_name_tool
+  return if MacOS.version < 10.9
+
+  libs = `otool -L /usr/bin/install_name_tool`
+  unless libs.include? "/usr/lib/libxcselect.dylib" then <<-EOS.undent
+    You have an outdated version of /usr/bin/install_name_tool installed.
+    This will cause binary package installations to fail.
+    This can happen if you install osx-gcc-installer or RailsInstaller.
+    To restore it, you must reinstall OS X or restore the binary from
+    the OS packages.
+    EOS
+  end
+end
+
 def __check_subdir_access base
   target = HOMEBREW_PREFIX+base
   return unless target.exist?
@@ -393,10 +407,12 @@ def check_access_logs
 end
 
 def check_ruby_version
-  if RUBY_VERSION.to_f > 1.8 then <<-EOS.undent
-    Ruby version #{RUBY_VERSION} is unsupported.
-    Homebrew is developed and tested on Ruby 1.8.x, and may not work correctly
-    on other Rubies. Patches are accepted as long as they don't break on 1.8.x.
+  ruby_version = MacOS.version >= "10.9" ? "2.0" : "1.8"
+  if RUBY_VERSION[/\d\.\d/] != ruby_version then <<-EOS.undent
+    Ruby version #{RUBY_VERSION} is unsupported on #{MacOS.version}. Homebrew
+    is developed and tested on Ruby #{ruby_version}, and may not work correctly
+    on other Rubies. Patches are accepted as long as they don't cause breakage
+    on supported Rubies.
     EOS
   end
 end
