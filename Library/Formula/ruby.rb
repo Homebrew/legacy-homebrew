@@ -4,6 +4,7 @@ class Ruby < Formula
   homepage 'https://www.ruby-lang.org/'
   url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.2.tar.bz2"
   sha256 "6948b02570cdfb89a8313675d4aa665405900e27423db408401473f30fc6e901"
+  revision 1
 
   bottle do
     sha1 "9c7a61fa34c47d0c48a23bf28a0d4c9a3f31b273" => :mavericks
