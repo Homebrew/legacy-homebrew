@@ -2,8 +2,8 @@ require "formula"
 
 class Suniq < Formula
   homepage 'https://github.com/chernjie/suniq'
-  url 'https://github.com/chernjie/suniq/archive/1.2.0.tar.gz'
-  sha1 'bcf91a1254dad5262a9bee93d1d91e211a8a24d0'
+  url 'https://github.com/chernjie/suniq/archive/1.2.1.tar.gz'
+  sha1 '4703c6a0c6b3aa6487c50b74617db8399e39f131'
 
   depends_on :autoconf
   depends_on :automake
