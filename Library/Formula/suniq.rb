@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class Suniq < Formula
   homepage 'https://github.com/chernjie/suniq'
@@ -7,6 +7,7 @@ class Suniq < Formula
 
   depends_on :autoconf
   depends_on :automake
+
   def install
     system "./autogen.sh", "--prefix=#{prefix}"
     system "make"
