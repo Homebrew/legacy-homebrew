@@ -5,6 +5,13 @@ class Libstxxl < Formula
   url 'https://downloads.sourceforge.net/project/stxxl/stxxl/1.4.0/stxxl-1.4.0.tar.gz'
   sha1 'a7001e7f04904be2bad9e80aa360528768a2068a'
 
+  bottle do
+    cellar :any
+    sha1 "9e7afd9ad01aa912c87307ce63210003e7fdf623" => :mavericks
+    sha1 "65a63d585bef89bba5e4c6bd2bb442ab7edc670c" => :mountain_lion
+    sha1 "1495540f15c76bd22fb71a4767f84fc1786aa360" => :lion
+  end
+
   depends_on 'cmake' => :build
 
   # all patches can be removed with a new upstream release
