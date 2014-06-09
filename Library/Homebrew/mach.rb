@@ -149,13 +149,11 @@ module MachO
 
     def initialize(path)
       @path = path
-      @dylib_id, @dylibs =
-        if OS.mac? then parse_otool_L_output
-        elsif OS.linux? then parse_ldd_output
-        else raise end
+      @dylib_id, @dylibs = parse_otool_L_output
     end
 
     def parse_otool_L_output
+      return nil, [] unless OS.mac?
       ENV["HOMEBREW_MACH_O_FILE"] = path.expand_path.to_s
       libs = `#{MacOS.locate("otool")} -L "$HOMEBREW_MACH_O_FILE"`.split("\n")
 
@@ -167,14 +165,6 @@ module MachO
       return id, libs
     ensure
       ENV.delete "HOMEBREW_MACH_O_FILE"
-    end
-
-    def parse_ldd_output
-      libs = `#{MacOS.locate('ldd')} "#{path.expand_path}"`.chomp.split("\n").map do |line|
-        line[/^\t(.+) => /, 1]
-      end.compact
-      id = nil
-      return id, libs
     end
   end
 
