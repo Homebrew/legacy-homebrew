@@ -2,8 +2,8 @@ require 'formula'
 
 class Zmap < Formula
   homepage 'https://zmap.io'
-  url 'https://github.com/zmap/zmap/archive/v1.2.0.tar.gz'
-  sha1 'c3efb59c6433c790570aca5964f5d98f3464d330'
+  url 'https://github.com/zmap/zmap/archive/v1.2.1.tar.gz'
+  sha1 '977d830d0cc60bbc88367744b4a57719b9b902db'
 
   head 'https://github.com/zmap/zmap.git'
 
