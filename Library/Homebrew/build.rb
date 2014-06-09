@@ -117,7 +117,7 @@ class Build
     ENV.activate_extensions!
 
     deps.map(&:to_formula).each do |dep|
-      opt = HOMEBREW_PREFIX/:opt/dep
+      opt = HOMEBREW_PREFIX.join("opt", dep.name)
       fixopt(dep) unless opt.directory?
     end
 

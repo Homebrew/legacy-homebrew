@@ -36,7 +36,7 @@ module Homebrew extend self
   end
 
   def rm_opt_link name
-    optlink = HOMEBREW_PREFIX/:opt/name
+    optlink = HOMEBREW_PREFIX.join("opt", name)
     optlink.unlink if optlink.symlink?
   end
 
