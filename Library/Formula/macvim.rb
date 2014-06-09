@@ -75,6 +75,7 @@ class Macvim < Formula
         # See https://github.com/Homebrew/homebrew/issues/17908
         py_prefix = Pathname.new `python-config --prefix`.chomp
         ENV.prepend "LDFLAGS", "-L#{py_prefix}/lib/python2.7/config -F#{py_prefix.parent.parent.parent}"
+        ENV.prepend "CFLAGS", "-F#{py_prefix.parent.parent.parent}"
 
         args << "--enable-pythoninterp"
       else
