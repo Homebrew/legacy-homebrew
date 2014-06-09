@@ -25,7 +25,6 @@ Docs
 [wiki]:http://wiki.github.com/Homebrew/homebrew
 EOS
 
-# puts ERB.new(template, nil, '>').result(binding)
 puts template if ARGV.verbose?
 path = Pathname.new('./README.md')
 raise "#{path} already exists" if path.exist?

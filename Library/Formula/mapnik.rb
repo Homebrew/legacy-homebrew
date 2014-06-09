@@ -18,7 +18,7 @@ class Mapnik < Formula
   depends_on 'proj'
   depends_on 'icu4c'
   depends_on 'jpeg'
-  depends_on 'boost'
+  depends_on 'boost' => 'with-python'
   depends_on 'gdal' => :optional
   depends_on 'postgresql' => :optional
   depends_on 'cairo' => :optional

@@ -2,8 +2,8 @@ require 'formula'
 
 class John < Formula
   homepage 'http://www.openwall.com/john/'
-  url 'http://www.openwall.com/john/g/john-1.7.9.tar.bz2'
-  sha1 '8f77bdd42b7cf94ec176f55ea69c4da9b2b8fe3b'
+  url 'http://www.openwall.com/john/j/john-1.8.0.tar.xz'
+  sha1 '423901b9b281c26656234ee31b362f1c0c2b680c'
 
   conflicts_with 'john-jumbo', :because => 'both install the same binaries'
 
@@ -19,12 +19,7 @@ class John < Formula
     arch = MacOS.prefer_64_bit? ? '64' : 'sse2'
     target = "macosx-x86-#{arch}"
 
-    cd 'src' do
-      inreplace 'Makefile' do |s|
-        s.change_make_var! "CC", ENV.cc
-      end
-      system "make", "clean", target
-    end
+    system "make", "-C", "src", "clean", "CC=#{ENV.cc}", target
 
     # Remove the README symlink and install the real file
     rm 'README'

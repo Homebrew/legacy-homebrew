@@ -7,5 +7,3 @@ module Homebrew extend self
     end
   end
 end
-
-Homebrew.tests

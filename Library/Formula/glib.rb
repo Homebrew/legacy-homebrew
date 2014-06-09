@@ -114,7 +114,7 @@ class Glib < Formula
       }
       EOS
     flags = ["-I#{include}/glib-2.0", "-I#{lib}/glib-2.0/include", "-lglib-2.0"]
-    system ENV.cc, "-o", "test", "test.c", *(flags + ENV.cflags.split)
+    system ENV.cc, "-o", "test", "test.c", *(flags + ENV.cflags.to_s.split)
     system "./test"
   end
 end

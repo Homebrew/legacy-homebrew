@@ -22,23 +22,24 @@ class Gcc < Formula
   end
 
   homepage "http://gcc.gnu.org"
-  url "http://ftpmirror.gnu.org/gcc/gcc-4.8.2/gcc-4.8.2.tar.bz2"
-  mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.8.2/gcc-4.8.2.tar.bz2"
-  sha1 "810fb70bd721e1d9f446b6503afe0a9088b62986"
+  url "http://ftpmirror.gnu.org/gcc/gcc-4.8.3/gcc-4.8.3.tar.bz2"
+  mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.8.3/gcc-4.8.3.tar.bz2"
+  sha1 "da0a2b9ec074f2bf624a34f3507f812ebb6e4dce"
+  revision 1
 
   head "svn://gcc.gnu.org/svn/gcc/branches/gcc-4_8-branch"
 
   bottle do
-    sha1 "9c206ad0d249665e1edb8c870c442ee836646cbb" => :mavericks
-    sha1 "bc37c90383363baa2121a6b22fa8826c0c63acc5" => :mountain_lion
-    sha1 "da1bc22b6b75464cbf2a8b29f1e79a15e531b1e6" => :lion
+    sha1 "0e4040eb5a667ecacba2b7e7c71a7a868a593386" => :mavericks
+    sha1 "78374c616c427d49e29656579d6a143cbb468b0b" => :mountain_lion
+    sha1 "b3320839c172d7abc4f9889a67822e604e080a75" => :lion
   end
 
-  option "with-fortran", "Build the gfortran compiler"
   option "with-java", "Build the gcj compiler"
   option "with-all-languages", "Enable all compilers and languages, except Ada"
   option "with-nls", "Build with native language support (localization)"
   option "with-profiled-build", "Make use of profile guided optimization when bootstrapping GCC"
+  option "without-fortran", "Build without the gfortran compiler"
   # enabling multilib on a host that can't run 64-bit results in build failures
   option "without-multilib", "Build without multilib support" if MacOS.prefer_64_bit?
 
@@ -49,19 +50,26 @@ class Gcc < Formula
   depends_on "isl"
   depends_on "ecj" if build.with?("java") || build.with?("all-languages")
 
-  # The as that comes with Tiger isn't capable of dealing with the
-  # PPC asm that comes in libitm
-  depends_on "cctools" => :build if MacOS.version < :leopard
+  if MacOS.version < :leopard
+    # The as that comes with Tiger isn't capable of dealing with the
+    # PPC asm that comes in libitm
+    depends_on "cctools" => :build
+    # GCC 4.8.1 incorrectly determines that _Unwind_GetIPInfo is available on
+    # Tiger, resulting in a failed build
+    # Fixed upstream: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=58710
+    patch :DATA
+  end
 
   fails_with :gcc_4_0
 
-  # GCC 4.8.1 incorrectly determines that _Unwind_GetIPInfo is available on
-  # Tiger, resulting in a failed build
-  # Fixed upstream: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=58710
-  def patches; DATA; end if MacOS.version < :leopard
-
   # GCC bootstraps itself, so it is OK to have an incompatible C++ stdlib
   cxxstdlib_check :skip
+
+  # The bottles are built on systems with the CLT installed, and do not work
+  # out of the box on Xcode-only systems due to an incorrect sysroot.
+  def pour_bottle?
+    MacOS::CLT.installed?
+  end
 
   def install
     # GCC will suffer build errors if forced to use a particular linker.
@@ -71,18 +79,14 @@ class Gcc < Formula
       ENV["AS"] = ENV["AS_FOR_TARGET"] = "#{Formula["cctools"].bin}/as"
     end
 
-    if build.with? "all-languages"
-      # Everything but Ada, which requires a pre-existing GCC Ada compiler
-      # (gnat) to bootstrap. GCC 4.6.0 add go as a language option, but it is
-      # currently only compilable on Linux.
-      languages = %w[c c++ fortran java objc obj-c++]
-    else
-      # C, C++, ObjC compilers are always built
-      languages = %w[c c++ objc obj-c++]
+    # C, C++, ObjC compilers are always built
+    languages = %w[c c++ objc obj-c++]
 
-      languages << "fortran" if build.with? "fortran"
-      languages << "java" if build.with? "java"
-    end
+    # Everything but Ada, which requires a pre-existing GCC Ada compiler
+    # (gnat) to bootstrap. GCC 4.6.0 add go as a language option, but it is
+    # currently only compilable on Linux.
+    languages << "fortran" if build.with?("fortran") || build.with?("all-languages")
+    languages << "java" if build.with?("java") || build.with?("all-languages")
 
     version_suffix = version.to_s.slice(/\d\.\d/)
 
@@ -108,7 +112,9 @@ class Gcc < Formula
       "--enable-lto",
       # A no-op unless --HEAD is built because in head warnings will
       # raise errors. But still a good idea to include.
-      "--disable-werror"
+      "--disable-werror",
+      "--with-pkgversion=Homebrew #{name} #{pkg_version} #{build.used_options*" "}".strip,
+      "--with-bugurl=https://github.com/Homebrew/homebrew/issues",
     ]
 
     # "Building GCC with plugin support requires a host that supports
@@ -144,18 +150,23 @@ class Gcc < Formula
       if build.with? "profiled-build"
         # Takes longer to build, may bug out. Provided for those who want to
         # optimise all the way to 11.
-        system "make profiledbootstrap"
+        system "make", "profiledbootstrap"
       else
-        system "make bootstrap"
+        system "make", "bootstrap"
       end
 
       # At this point `make check` could be invoked to run the testsuite. The
       # deja-gnu and autogen formulae must be installed in order to do this.
 
-      system "make install"
+      system "make", "install"
+
+      if build.with?("fortran") || build.with?("all-languages")
+        bin.install_symlink bin/"gfortran-#{version_suffix}" => "gfortran"
+      end
     end
 
-    # Handle conflicts between GCC formulae
+    # Handle conflicts between GCC formulae and avoid interfering
+    # with system compilers.
     # Since GCC 4.8 libffi stuff are no longer shipped.
     # Rename libiberty.a.
     Dir.glob(prefix/"**/libiberty.*") { |file| add_suffix file, version_suffix }
@@ -184,6 +195,26 @@ class Gcc < Formula
     ext = File.extname(file)
     base = File.basename(file, ext)
     File.rename file, "#{dir}/#{base}-#{suffix}#{ext}"
+  end
+
+  test do
+    if build.with?("fortran") || build.with?("all-languages")
+      fixture = <<-EOS.undent
+        integer,parameter::m=10000
+        real::a(m), b(m)
+        real::fact=0.5
+
+        do concurrent (i=1:m)
+          a(i) = a(i) + fact*b(i)
+        end do
+        print *, "done"
+        end
+      EOS
+      (testpath/"in.f90").write(fixture)
+      system "#{bin}/gfortran", "-c", "in.f90"
+      system "#{bin}/gfortran", "-o", "test", "in.o"
+      assert_equal "done", `./test`.strip
+    end
   end
 end
 

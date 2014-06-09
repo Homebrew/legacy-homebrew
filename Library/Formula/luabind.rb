@@ -29,6 +29,7 @@ class Luabind < Formula
   end if MacOS.version >= :mavericks
 
   def install
+    ENV["LUA_PATH"] = Formula["lua"].opt_prefix
     args = [
       "release",
       "install",

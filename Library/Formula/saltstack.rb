@@ -63,6 +63,13 @@ class Saltstack < Formula
     sha1 'e587c9c3519e7d061f3c2fb232af8ace593c8156'
   end
 
+  head do
+    resource 'requests' do
+      url 'https://pypi.python.org/packages/source/r/requests/requests-2.3.0.tar.gz'
+      sha1 'f57bc125d35ec01a81afe89f97dc75913a927e65'
+    end
+  end
+
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
@@ -76,6 +83,10 @@ class Saltstack < Formula
     resource('m2crypto').stage { system "python", *install_args }
     resource('jinja2').stage { system "python", *install_args }
     resource('apache-libcloud').stage { system "python", *install_args }
+
+    if build.head?
+      resource('requests').stage { system "python", *install_args }
+    end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 

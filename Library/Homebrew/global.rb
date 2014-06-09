@@ -85,10 +85,7 @@ HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY
 
 HOMEBREW_CURL_ARGS = '-f#LA'
 
-HOMEBREW_TAP_FORMULA_REGEX = %r{^([\w-]+)/([\w-]+)/([\w-]+)$}
-HOMEBREW_TAP_DIR_REGEX = %r{#{HOMEBREW_LIBRARY}/Taps/([\w-]+)/([\w-]+)}
-HOMEBREW_TAP_PATH_REGEX = Regexp.new(HOMEBREW_TAP_DIR_REGEX.source \
-                                     + %r{/(.*)}.source)
+require 'tap_constants'
 
 module Homebrew extend self
   include FileUtils
@@ -97,8 +94,6 @@ module Homebrew extend self
   alias_method :failed?, :failed
 end
 
-require 'metafiles'
-FORMULA_META_FILES = Metafiles.new
 ISSUES_URL = "https://github.com/Homebrew/homebrew/wiki/troubleshooting"
 HOMEBREW_PULL_OR_COMMIT_URL_REGEX = 'https:\/\/github.com\/(\w+)\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
 

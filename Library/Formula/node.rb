@@ -56,7 +56,8 @@ class Node < Formula
     npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
 
     npm_root.cd { system "make", "install" }
-    system "#{HOMEBREW_PREFIX}/bin/npm", "update", "npm", "-g"
+    system "#{HOMEBREW_PREFIX}/bin/npm", "update", "npm", "-g",
+                                         "--prefix", HOMEBREW_PREFIX
 
     Pathname.glob(npm_root/"man/*") do |man|
       man.children.each do |file|

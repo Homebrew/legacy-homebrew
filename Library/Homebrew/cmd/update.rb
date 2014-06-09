@@ -96,7 +96,7 @@ module Homebrew extend self
 
   def rename_taps_dir_if_necessary
     need_repair_taps = false
-    Dir["#{HOMEBREW_LIBRARY}/Taps/*/"].each do |tapd|
+    Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/") do |tapd|
       begin
         tapd_basename = File.basename(tapd)
 
@@ -218,9 +218,9 @@ class Report < Hash
 
   def tapped_formula_for key
     fetch(key, []).select do |path|
-      case path.relative_path_from(HOMEBREW_REPOSITORY).to_s
-      when %r{^Library/Taps/([\w-]+/[\w-]+/.*)}
-        valid_formula_location?($1)
+      case path.to_s
+      when HOMEBREW_TAP_PATH_REGEX
+        valid_formula_location?("#{$1}/#{$2}/#{$3}")
       else
         false
       end
@@ -247,11 +247,11 @@ class Report < Hash
 
   def select_formula key
     fetch(key, []).map do |path|
-      case path.relative_path_from(HOMEBREW_REPOSITORY).to_s
-      when %r{^Library/Formula}
+      case path.to_s
+      when Regexp.new(HOMEBREW_LIBRARY + "/Formula")
         path.basename(".rb").to_s
-      when %r{^Library/Taps/([\w-]+)/(homebrew-)?([\w-]+)/(.*)\.rb}
-        "#$1/#$3/#{path.basename(".rb")}"
+      when HOMEBREW_TAP_PATH_REGEX
+        "#$1/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
       end
     end.compact.sort
   end

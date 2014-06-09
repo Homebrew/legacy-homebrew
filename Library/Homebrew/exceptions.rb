@@ -154,18 +154,13 @@ class FormulaConflictError < Homebrew::InstallationError
 end
 
 class BuildError < Homebrew::InstallationError
-  attr_reader :exit_status, :command, :env
+  attr_reader :command, :env
 
-  def initialize formula, cmd, args, es
+  def initialize formula, cmd, args
     @command = cmd
     @env = ENV.to_hash
-    @exit_status = es.exitstatus rescue 1
     args = args.map{ |arg| arg.to_s.gsub " ", "\\ " }.join(" ")
     super formula, "Failed executing: #{command} #{args}"
-  end
-
-  def was_running_configure?
-    @command == './configure'
   end
 
   def issues

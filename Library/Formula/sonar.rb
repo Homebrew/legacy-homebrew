@@ -10,9 +10,9 @@ class Sonar < Formula
     rm_rf Dir['bin/{aix,hpux,linux,solaris,windows}-*']
 
     if MacOS.prefer_64_bit?
-      rm_rf Dir['bin/macosx-universal-32']
+      rm_rf "bin/macosx-universal-32"
     else
-      rm_rf Dir['bin/macosx-universal-64']
+      rm_rf "bin/macosx-universal-64"
     end
 
     # Delete Windows files

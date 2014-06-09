@@ -2,8 +2,8 @@ require 'formula'
 
 class Goaccess < Formula
   homepage 'http://goaccess.prosoftcorp.com/'
-  url 'https://downloads.sourceforge.net/project/goaccess/0.7/goaccess-0.7.tar.gz'
-  sha1 '1a887dc7182c91726137aaf6a4627efdd82d988e'
+  url 'https://downloads.sourceforge.net/project/goaccess/0.7.1/goaccess-0.7.1.tar.gz'
+  sha1 '3b546062776df00bd539072c5bdfec2a62cbeb84'
 
   option 'enable-geoip', "Enable IP location information using GeoIP"
 

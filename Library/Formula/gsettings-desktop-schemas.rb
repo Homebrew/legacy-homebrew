@@ -2,8 +2,8 @@ require "formula"
 
 class GsettingsDesktopSchemas < Formula
   homepage "http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/"
-  url "http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/3.12/gsettings-desktop-schemas-3.12.0.tar.xz"
-  sha256 "a623888a47999599abca9728156459b93634e93ac7243a86cf1fc8c2d75f478d"
+  url "http://ftp.gnome.org/pub/GNOME/sources/gsettings-desktop-schemas/3.12/gsettings-desktop-schemas-3.12.2.tar.xz"
+  sha256 "da75021e9c45a60d0a97ea3486f93444275d0ace86dbd1b97e5d09000d8c4ad1"
 
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build

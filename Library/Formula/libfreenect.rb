@@ -1,16 +1,16 @@
-require 'formula'
+require "formula"
 
 class Libfreenect < Formula
-  homepage 'http://openkinect.org'
-  url 'https://github.com/OpenKinect/libfreenect/archive/v0.4.1.tar.gz'
-  sha1 'a72bf3d60a859fb5b54b30d6e5d52c8359c07888'
+  homepage "http://openkinect.org"
+  url "https://github.com/OpenKinect/libfreenect/archive/v0.4.3.tar.gz"
+  sha1 "aa2784b78d2ba402cecd68eaec4a0cc6f72dc5cc"
 
-  head 'https://github.com/OpenKinect/libfreenect.git'
+  head "https://github.com/OpenKinect/libfreenect.git"
 
   option :universal
 
-  depends_on 'cmake' => :build
-  depends_on 'libusb'
+  depends_on "cmake" => :build
+  depends_on "libusb"
 
   def install
     args = std_cmake_args

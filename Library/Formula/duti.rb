@@ -6,7 +6,7 @@ class Duti < Formula
   url 'https://github.com/moretension/duti/archive/duti-1.5.2.tar.gz'
   sha1 '1833c0a56646a132fa09bcb31c557d4393f19a3b'
 
-  depends_on :autoconf
+  depends_on "autoconf" => :build
 
   def install
     system "autoreconf", "-vfi"

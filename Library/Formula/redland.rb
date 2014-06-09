@@ -77,7 +77,7 @@ class Redland < Formula
           args << "--with-python"
         end
 
-        ENV.append 'PKG_CONFIG_LIBDIR', "#{lib}/pkgconfig", ':'
+        ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
 
         system "./configure", *args
 

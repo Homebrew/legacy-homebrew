@@ -19,7 +19,6 @@ class TigerVnc < Formula
     args = std_cmake_args + %W[
       -DJPEG_INCLUDE_DIR=#{turbo.include}
       -DJPEG_LIBRARY=#{turbo.lib}/libjpeg.dylib
-      -DCMAKE_PREFIX_PATH=#{gettext.prefix}
       .
     ]
     system 'cmake', *args

@@ -10,8 +10,9 @@ class Vte < Formula
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'gtk+'
+  depends_on 'pygobject'
   depends_on 'pygtk'
-  depends_on :python => :recommended
+  depends_on :python
 
   def install
     args = [

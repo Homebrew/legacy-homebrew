@@ -8,8 +8,9 @@ class Nanomsg < Formula
   head do
     url 'https://github.com/nanomsg/nanomsg.git'
 
-    depends_on :autoconf
-    depends_on :automake
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option 'with-test', 'Verify the build with make check'
@@ -18,7 +19,6 @@ class Nanomsg < Formula
   option 'with-debug', 'Compile with debug symbols'
 
   depends_on 'pkg-config'=> :build
-  depends_on :libtool
 
   if build.with? 'doc'
     depends_on 'asciidoc' => :build

@@ -16,16 +16,15 @@ class Boost < Formula
   homepage 'http://www.boost.org'
   url 'https://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2'
   sha1 'cef9a0cc7084b1d639e06cd3bc34e4251524c840'
-  revision 1
+  revision 2
 
   head 'https://github.com/boostorg/boost.git'
 
   bottle do
     cellar :any
-    revision 3
-    sha1 "c5b6b0cad1f8ac1ce69aa6c72facfc650b0cc38a" => :mavericks
-    sha1 "682f32c155bc0b17671bf7ff4323bde489ba44b0" => :mountain_lion
-    sha1 "b62fa644ab17bbce8e5bbc20e72ee0af605e7fc8" => :lion
+    sha1 "4e7dcb53d40c1ec06a9591c2d449b4851bbf5c79" => :mavericks
+    sha1 "69b716880d749452cf58a90e3c70f1b748501a29" => :mountain_lion
+    sha1 "8dbb6c64642d43327adbe0642577b6749f4cb5ba" => :lion
   end
 
   env :userpaths
@@ -56,8 +55,6 @@ class Boost < Formula
     end
   end
 
-  odie 'boost: --with-c++11 has been renamed to --c++11' if build.with? 'c++11'
-
   stable do
     # Patches boost::atomic for LLVM 3.4 as it is used on OS X 10.9 with Xcode 5.1
     # https://github.com/Homebrew/homebrew/issues/27396
@@ -70,6 +67,13 @@ class Boost < Formula
     patch :p2 do
       url "https://github.com/boostorg/atomic/commit/e4bde20f.diff"
       sha1 "b68f5536474c9f543879698299bd4975538a89eb"
+    end
+
+    # Patch boost::serialization for Clang
+    # https://svn.boost.org/trac/boost/ticket/8757
+    patch :p1 do
+      url "https://gist.githubusercontent.com/philacs/375303205d5f8918e700/raw/d6ded52c3a927b6558984d22efe0a5cf9e59cd8c/0005-Boost.S11n-include-missing-algorithm.patch"
+      sha1 "a37552d48e5c1c0507ee9d48fb82a3fa5e3bc9fa"
     end
   end
 
@@ -174,7 +178,7 @@ class Boost < Formula
     s = ''
     # ENV.compiler doesn't exist in caveats. Check library availability
     # instead.
-    if Dir.glob("#{lib}/libboost_log*").empty?
+    if Dir["#{lib}/libboost_log*"].empty?
       s += <<-EOS.undent
 
       Building of Boost.Log is disabled because it requires newer GCC or Clang.

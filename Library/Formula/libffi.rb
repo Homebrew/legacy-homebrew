@@ -74,7 +74,7 @@ class Libffi < Formula
     TEST_SCRIPT
 
     flags = ["-L#{lib}", "-lffi", "-I#{lib}/libffi-#{version}/include"]
-    system ENV.cc, "-o", "closure", "closure.c", *(flags + ENV.cflags.split)
+    system ENV.cc, "-o", "closure", "closure.c", *(flags + ENV.cflags.to_s.split)
     system "./closure"
   end
 end

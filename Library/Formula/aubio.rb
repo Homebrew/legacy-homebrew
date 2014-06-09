@@ -8,9 +8,8 @@ class Aubio < Formula
   depends_on :macos => :lion
 
   depends_on 'pkg-config' => :build
-  depends_on :libtool => :build
+  depends_on 'libtool' => :build
   depends_on 'swig' => :build
-
   depends_on 'fftw'
   depends_on 'libsamplerate'
   depends_on 'libsndfile'

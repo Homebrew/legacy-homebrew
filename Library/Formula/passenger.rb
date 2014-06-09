@@ -2,18 +2,17 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.42.tar.gz'
-  sha1 'cdc20111ed0bc01e13c6e56f6a6febf54a55b476'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.44.tar.gz'
+  sha1 '3938209ff342b9871ef06b9bda1f42995382d3b0'
   head 'https://github.com/phusion/passenger.git'
 
   bottle do
-    sha1 "7d5a41e0df41c3e5e9637b251c6870cc097b0f4c" => :mavericks
-    sha1 "fae85438a1297a0ab189c158297fc4d2403bf469" => :mountain_lion
-    sha1 "2ef483097daa6ac6d20e94fed64a942070d90e57" => :lion
+    sha1 "579aecafb14322ec724f4b75c934426a28799e36" => :mavericks
+    sha1 "4d194dca9247ae89217a7f0da3424de30b277206" => :mountain_lion
   end
 
   depends_on 'pcre'
-  depends_on :macos => :lion
+  depends_on :macos => :mountain_lion
 
   def install
     rake "apache2"

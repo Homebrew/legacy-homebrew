@@ -22,14 +22,10 @@ class Libvpx < Formula
 
     ENV.append "CXXFLAGS", "-DGTEST_USE_OWN_TR1_TUPLE=1" # Mavericks uses libc++ which doesn't supply <TR1/tuple>
 
-    # see http://code.google.com/p/webm/issues/detail?id=401
-    # Configure misdetects 32-bit 10.6.
-    # Determine if the computer runs Darwin 9, 10, or 11 using uname -r.
-    osver = %x[uname -r | cut -d. -f1].chomp
-    if MacOS.prefer_64_bit? then
-      args << "--target=x86_64-darwin#{osver}-gcc"
-    else
-      args << "--target=x86-darwin#{osver}-gcc"
+    # configure misdetects 32-bit 10.6
+    # http://code.google.com/p/webm/issues/detail?id=401
+    if MacOS.version == "10.6" && Hardware.is_32_bit?
+      args << "--target=x86-darwin10-gcc"
     end
 
     mkdir 'macbuild' do

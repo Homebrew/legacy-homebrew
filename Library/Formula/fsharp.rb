@@ -10,8 +10,8 @@ class Fsharp < Formula
     sha1 "5ba51de580838a3e365d1d6e16dc7f4804089665" => :lion
   end
 
-  depends_on :automake
-  depends_on :autoconf
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
   depends_on "pkg-config" => :build
   depends_on "mono"
 

@@ -2,14 +2,14 @@ require 'formula'
 require 'bottles'
 require 'tab'
 require 'keg'
-require 'cmd/versions'
+require 'formula_versions'
 require 'utils/inreplace'
 require 'erb'
 require 'extend/pathname'
 
 BOTTLE_ERB = <<-EOS
   bottle do
-    <% if root_url != BottleSpecification.new.root_url %>
+    <% if root_url != BottleSpecification::DEFAULT_ROOT_URL %>
     root_url "<%= root_url %>"
     <% end %>
     <% if prefix.to_s != "/usr/local" %>
@@ -67,7 +67,7 @@ module Homebrew extend self
       end
 
       # Use strings to search through the file for each string
-      IO.popen("strings -t x - '#{file}'") do |io|
+      IO.popen("strings -t x - '#{file}'", "rb") do |io|
         until io.eof?
           str = io.readline.chomp
 
@@ -123,7 +123,9 @@ module Homebrew extend self
     if ARGV.include? '--no-revision'
       bottle_revision = 0
     else
-      max = f.bottle_version_map('origin/master')[f.pkg_version].max
+      ohai "Determining #{f.name} bottle revision..."
+      versions = FormulaVersions.new(f)
+      max = versions.bottle_version_map("origin/master")[f.pkg_version].max
       bottle_revision = max ? max + 1 : 0
     end
 
@@ -241,7 +243,7 @@ module Homebrew extend self
             odie 'Bottle block update failed!' unless string
           else
             update_or_add = 'add'
-            string = s.sub!(/(  (url|sha1|sha256|head|version) ['"][\S ]+['"]\n+)+/m, '\0' + output + "\n")
+            string = s.sub!(/(  (url|sha1|sha256|head|version|mirror) ['"][\S ]+['"]\n+)+/m, '\0' + output + "\n")
             odie 'Bottle block addition failed!' unless string
           end
         end

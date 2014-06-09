@@ -41,13 +41,15 @@ module Homebrew extend self
   end
 
   def print_json
-    formulae = ARGV.include?("--all") ? Formula : ARGV.formulae
-    json = formulae.map {|f| f.to_hash}
-    if json.size == 1
-      puts Utils::JSON.dump(json.pop)
-    else
-      puts Utils::JSON.dump(json)
-    end
+    ff = if ARGV.include? "--all"
+           Formula
+         elsif ARGV.include? "--installed"
+           Formula.installed
+         else
+           ARGV.formulae
+         end
+    json = ff.map {|f| f.to_hash}
+    puts Utils::JSON.dump(json)
   end
 
   def github_fork

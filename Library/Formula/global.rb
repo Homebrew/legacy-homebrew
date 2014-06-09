@@ -15,9 +15,9 @@ class Global < Formula
   head do
     url 'cvs://:pserver:anonymous:@cvs.savannah.gnu.org:/sources/global:global'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option 'with-exuberant-ctags', 'Enable Exuberant Ctags as a plug-in parser'

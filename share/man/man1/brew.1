@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "May 2014" "Homebrew" "brew"
+.TH "BREW" "1" "June 2014" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -139,11 +139,14 @@ Open all of Homebrew for editing\.
 Open \fIformula\fR in the editor\.
 .
 .TP
-\fBfetch [\-\-force] [\-v] [\-\-HEAD] [\-\-deps] [\-\-build\-from\-source|\-\-force\-bottle]\fR \fIformulae\fR
+\fBfetch [\-\-force] [\-v] [\-\-devel|\-\-HEAD] [\-\-deps] [\-\-build\-from\-source|\-\-force\-bottle]\fR \fIformulae\fR
 Download the source packages for the given \fIformulae\fR\. For tarballs, also print SHA1 and SHA\-256 checksums\.
 .
 .IP
-If \fB\-\-HEAD\fR is passed, download the HEAD versions of \fIformulae\fR instead\. \fB\-v\fR may also be passed to make the VCS checkout verbose, useful for seeing if an existing HEAD cache has been updated\.
+If \fB\-\-HEAD\fR or \fB\-\-devel\fR is passed, fetch that version instead of the stable version\.
+.
+.IP
+If \fB\-v\fR is passed, do a verbose VCS checkout, if the url represents a CVS\. This useful for seeing if an existing VCS cache has been updated\.
 .
 .IP
 If \fB\-\-force\fR is passed, remove a previously cached version and re\-fetch\.
@@ -177,8 +180,14 @@ Open a browser to the GitHub History page for formula \fIformula\fR\.
 To view formula history locally: \fBbrew log \-p <formula>\fR\.
 .
 .TP
-\fBinfo \-\-json=<version>\fR \fIformula\fR
-Print a JSON representation of \fIformula\fR\. Currently the only accepted value for \fIversion\fR is \fBv1\fR\.
+\fBinfo \-\-json=<version>\fR (\-\-all|\-\-installed|\fIformulae\fR)
+Print a JSON representation of \fIformulae\fR\. Currently the only accepted value for \fIversion\fR is \fBv1\fR\.
+.
+.IP
+Pass \fB\-\-all\fR to get information on all formulae, or \fB\-\-installed\fR to get information on all installed formulae\.
+.
+.IP
+See the wiki for examples of using the JSON: \fIhttps://github\.com/Homebrew/homebrew/wiki/Querying\-Brew\fR
 .
 .TP
 \fBinstall [\-\-debug] [\-\-env=<std|super>] [\-\-ignore\-dependencies] [\-\-only\-dependencies] [\-\-cc=<compiler>] [\-\-build\-from\-source] [\-\-devel|\-\-HEAD]\fR \fIformula\fR
@@ -319,12 +328,8 @@ If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR i
 Display all locally available formulae for brewing (including tapped ones)\. No online search is performed if called without arguments\.
 .
 .TP
-\fBsearch\fR, \fB\-S\fR \fItap\fR
-Display all formulae in a \fItap\fR, even if not yet tapped\. \fItap\fR is of the form \fIuser\fR/\fIrepo\fR, e\.g\. \fBbrew search homebrew/dupes\fR\.
-.
-.TP
-\fBsearch\fR, \fB\-S\fR [\fItap\fR] \fItext\fR|/\fItext\fR/
-Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. The search for \fItext\fR is extended online to some popular taps\. If a \fItap\fR is specified, the search is restricted to it\.
+\fBsearch\fR, \fB\-S\fR \fItext\fR|/\fItext\fR/
+Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. The search for \fItext\fR is extended online to some popular taps\.
 .
 .TP
 \fBsearch \-\-debian\fR|\fB\-\-fedora\fR|\fB\-\-fink\fR|\fB\-\-macports\fR|\fB\-\-opensuse\fR|\fB\-\-ubuntu\fR \fItext\fR
@@ -348,8 +353,11 @@ Tap a new formula repository from GitHub, or list existing taps\.
 Ensures all tapped formula are symlinked into Library/Formula and prunes dead formula from Library/Formula\.
 .
 .TP
-\fBtest\fR \fIformula\fR
+\fBtest\fR [\-\-devel|\-\-HEAD] \fIformula\fR
 A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test method\. There is no standard output or return code, but it should generally indicate to the user if something is wrong with the installed formula\.
+.
+.IP
+To test the development or head version of a formula, \fB\-\-devel\fR or \fB\-\-HEAD\fR must be passed\.,
 .
 .IP
 Example: \fBbrew install jruby && brew test jruby\fR
@@ -361,6 +369,18 @@ Remove symlinks for \fIformula\fR from the Homebrew prefix\. This can be useful 
 .TP
 \fBunlinkapps [\-\-local]\fR
 Removes links created by \fBbrew linkapps\fR\.
+.
+.TP
+\fBunpack [\-\-git|\-\-patch] [\-\-destdir=<path>]\fR \fIformulae\fR:
+.
+.IP
+Unpack the source files for \fIformulae\fR into subdirectories of the current working directory\. If \fB\-\-destdir=<path>\fR is given, the subdirectories will be created in the directory named by \fB<path>\fR instead\.
+.
+.IP
+If \fB\-\-patch\fR is passed, patches for \fIformulae\fR will be applied to the unpacked source\.
+.
+.IP
+If \fB\-\-git\fR is passed, a Git repository will be initalized in the unpacked source\. This is useful for creating patches for the software\.
 .
 .TP
 \fBunpin\fR \fIformulae\fR

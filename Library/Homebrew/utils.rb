@@ -78,6 +78,10 @@ def pretty_duration s
   return "%.1f minutes" % (s/60)
 end
 
+def plural n, s="s"
+  (n == 1) ? "" : s
+end
+
 def interactive_shell f=nil
   unless f.nil?
     ENV['HOMEBREW_DEBUG_PREFIX'] = f.prefix
@@ -186,7 +190,9 @@ def which_editor
   return 'mate' if which "mate"
   # Find BBEdit / TextWrangler
   return 'edit' if which "edit"
-  # Default to vim
+  # Find vim
+  return 'vim' if which "vim"
+  # Default to standard vim
   return '/usr/bin/vim'
 end
 
