@@ -3,7 +3,7 @@ require 'formula'
 class Zmap < Formula
   homepage 'https://zmap.io'
   url 'https://github.com/zmap/zmap/archive/v1.2.1.tar.gz'
-  sha1 '977d830d0cc60bbc88367744b4a57719b9b902db'
+  sha1 '1ce5529d8685a7b7fbca1f3b04670b1614838fa7'
 
   head 'https://github.com/zmap/zmap.git'
 
