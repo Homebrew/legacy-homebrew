@@ -7,9 +7,8 @@ class Ledger < Formula
   head 'https://github.com/ledger/ledger.git', :branch => 'master'
 
   bottle do
-    sha1 "700ac683623689a4086afaa64340609a8fdd53d1" => :mavericks
-    sha1 "c9dd5c87767ed914f1631c4d3095d97a91a005a6" => :mountain_lion
-    sha1 "4e0ec05ccbf893ea1e1d482253c972e0472267e4" => :lion
+    sha1 "a40e25cd2449c3c44bd9385c895d55f4967ca3bc" => :mavericks
+    sha1 "3383a59b4a242dc537bb3be81f3e8e588622b442" => :mountain_lion
   end
 
   stable do
