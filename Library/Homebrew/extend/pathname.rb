@@ -321,7 +321,7 @@ class Pathname
   end
 
   def find_formula
-    [self/:Formula, self/:HomebrewFormula, self].each do |d|
+    [join("Formula"), join("HomebrewFormula"), self].each do |d|
       if d.exist?
         d.children.each do |pn|
           yield pn if pn.extname == ".rb"
