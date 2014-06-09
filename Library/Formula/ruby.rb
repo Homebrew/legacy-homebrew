@@ -75,8 +75,8 @@ class Ruby < Formula
       real.unlink if real.symlink? && real.readlink == link
       real.mkpath
 
-      link.unlink if link.exist?
-      link.symlink real
+      rm_rf Dir[link] if link.exist?
+      File.symlink(real, link)
     end
   end
 
