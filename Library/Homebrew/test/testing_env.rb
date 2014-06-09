@@ -116,7 +116,7 @@ class Test::Unit::TestCase
   TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
   TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
 
-  def formula(*args, &block)
-    @_f = Class.new(Formula, &block).new(*args)
+  def formula(name="formula_name", path=Formula.path(name), &block)
+    @_f = Class.new(Formula, &block).new(name, path)
   end
 end
