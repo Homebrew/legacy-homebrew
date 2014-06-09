@@ -44,36 +44,4 @@ module LinuxCPUs
   def bits
     is_64_bit? ? 64 : 32
   end
-
-  def aes?
-    true
-  end
-
-  def altivec?
-    false
-  end
-
-  def avx?
-    true
-  end
-
-  def avx2?
-    false
-  end
-
-  def sse3?
-    true
-  end
-
-  def ssse3?
-    true
-  end
-
-  def sse4?
-    true
-  end
-
-  def sse4_2?
-    true
-  end
 end
