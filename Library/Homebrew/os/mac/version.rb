@@ -5,6 +5,7 @@ module OS
     class Version < ::Version
       SYMBOLS = {
         :linux         => 'linux',
+        :yosemite      => '10.10',
         :mavericks     => '10.9',
         :mountain_lion => '10.8',
         :lion          => '10.7',
@@ -24,22 +25,13 @@ module OS
 
       def <=>(other)
         @comparison_cache.fetch(other) do
-          v = SYMBOLS.fetch(other, other.to_s)
+          v = SYMBOLS.fetch(other) { other.to_s }
           @comparison_cache[other] = super(Version.new(v))
         end
       end
 
       def to_sym
-        return :linux if OS.linux?
-        case @version
-        when '10.9' then :mavericks
-        when '10.8' then :mountain_lion
-        when '10.7' then :lion
-        when '10.6' then :snow_leopard
-        when '10.5' then :leopard
-        when '10.4' then :tiger
-        else :dunno
-        end
+        SYMBOLS.invert.fetch(@version) { :dunno }
       end
 
       def pretty_name

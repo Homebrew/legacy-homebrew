@@ -55,6 +55,7 @@ module Homebrew extend self
       check_for_installed_developer_tools
       check_xcode_license_approved
       check_for_osx_gcc_installer
+      check_for_bad_install_name_tool
     ].each do |check|
       out = checks.send(check)
       opoo out unless out.nil?

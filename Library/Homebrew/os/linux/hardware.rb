@@ -11,31 +11,38 @@ module LinuxCPUs
   def arch_64_bit; :x86_64; end
   def universal_archs; [].extend ArchitectureListExtension; end
 
+  def cpuinfo
+    @cpuinfo ||= File.read("/proc/cpuinfo")
+  end
+
   def type
-    @cpu_type ||= case `uname -m`
-      when /i[3-6]86/, /x86_64/
-        :intel
-      else
-        :dunno
-      end
+    @type ||= if cpuinfo =~ /Intel|AMD/
+      :intel
+    else
+      :dunno
+    end
   end
 
   def family
-    :dunno
+    cpuinfo[/^cpu family\s*: ([0-9]+)/, 1].to_i
   end
   alias_method :intel_family, :family
 
   def cores
-    `grep -c ^processor /proc/cpuinfo`.to_i
+    cpuinfo.scan(/^processor/).size
   end
+
+  def flags
+    @flags ||= cpuinfo[/^flags.*/, 0].split
+  end
+
+  %w[aes altivec avx avx2 lm sse3 ssse3 sse4 sse4_2].each { |flag|
+    define_method(flag + "?") { flags.include? flag }
+  }
+  alias_method :is_64_bit?, :lm?
 
   def bits
     is_64_bit? ? 64 : 32
-  end
-
-  def is_64_bit?
-    return @is_64_bit if defined? @is_64_bit
-    @is_64_bit = /64/ === `uname -m`
   end
 
   def aes?

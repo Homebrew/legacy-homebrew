@@ -35,7 +35,7 @@ class Qt5 < Formula
   depends_on "pkg-config" => :build
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
-  depends_on :xcode
+  depends_on :xcode => :build
 
   def install
     ENV.universal_binary if build.universal?

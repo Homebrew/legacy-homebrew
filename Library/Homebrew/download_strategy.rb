@@ -144,7 +144,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   def buffered_write(tool)
     target = File.basename(basename_without_params, tarball_path.extname)
 
-    IO.popen("#{tool} -f '#{tarball_path}' -c") do |pipe|
+    IO.popen("#{tool} -f '#{tarball_path}' -c", "rb") do |pipe|
       File.open(target, "wb") do |f|
         buf = ""
         f.write(buf) while pipe.read(1024, buf)
@@ -653,14 +653,6 @@ class CVSDownloadStrategy < VCSDownloadStrategy
 
   def stage
     FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
-
-    require 'find'
-    Find.find(Dir.pwd) do |path|
-      if FileTest.directory?(path) && File.basename(path) == "CVS"
-        Find.prune
-        FileUtil.rm_r path, :force => true
-      end
-    end
   end
 
   private
@@ -762,7 +754,7 @@ class BazaarDownloadStrategy < VCSDownloadStrategy
     # FIXME: The export command doesn't work on checkouts
     # See https://bugs.launchpad.net/bzr/+bug/897511
     FileUtils.cp_r Dir[@clone+"{.}"], Dir.pwd
-    FileUtils.rm_r Dir[Dir.pwd+"/.bzr"]
+    FileUtils.rm_r ".bzr"
   end
 end
 

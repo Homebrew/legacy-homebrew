@@ -70,7 +70,7 @@ class Emacs < Formula
   def do_not_install_ctags
     unless build.include? "keep-ctags"
       (bin/"ctags").unlink
-      (share/man/man1/"ctags.1.gz").unlink
+      (man1/"ctags.1.gz").unlink
     end
   end
 

@@ -5,9 +5,6 @@ class BulkExtractor < Formula
   url 'http://digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.4.4.tar.gz'
   sha1 'e95ed6db74d9998842089b53eb4322dd0a730a82'
 
-  depends_on :autoconf
-  depends_on :automake
-
   depends_on 'afflib' => :optional
   depends_on 'exiv2' => :optional
   depends_on 'libewf' => :optional

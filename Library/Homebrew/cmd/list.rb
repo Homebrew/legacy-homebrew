@@ -1,3 +1,5 @@
+require "metafiles"
+
 module Homebrew extend self
   def list
 
@@ -100,7 +102,7 @@ class PrettyListing
           else
             print_dir pn
           end
-        elsif FORMULA_META_FILES.should_list? pn.basename.to_s
+        elsif Metafiles.list?(pn.basename.to_s)
           puts pn
         end
       end

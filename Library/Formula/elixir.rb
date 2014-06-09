@@ -36,7 +36,7 @@ class Elixir < Formula
     system "make"
     bin.install Dir['bin/*'] - Dir['bin/*.bat']
 
-    Dir['lib/*/ebin'].each do |path|
+    Dir.glob("lib/*/ebin") do |path|
       app = File.basename(File.dirname(path))
       (lib/app).install path
     end

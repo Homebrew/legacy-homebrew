@@ -24,9 +24,15 @@ class Freerdp < Formula
     end
   end
 
+  bottle do
+    sha1 "361ae059c21eaccfa551b7f4924b2762a6d8d6b1" => :mavericks
+    sha1 "8a82974856fa6346e7ff43b7abb6b12dc5e06634" => :mountain_lion
+    sha1 "49bc6add9fec028879985d288252287ed00c8434" => :lion
+  end
+
   head do
     url "https://github.com/FreeRDP/FreeRDP.git"
-    depends_on :xcode # for "ibtool"
+    depends_on :xcode => :build # for "ibtool"
   end
 
   depends_on :x11

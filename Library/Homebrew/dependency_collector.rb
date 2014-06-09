@@ -143,7 +143,6 @@ class DependencyCollector
 
   def ant_dep(spec, tags)
     if MacOS.version >= :mavericks
-      tags << :build
       Dependency.new(spec.to_s, tags)
     end
   end

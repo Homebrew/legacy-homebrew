@@ -13,11 +13,8 @@ class Iperf3 < Formula
     sha1 "ccee12f33d9d2f786e8d5a1fdf05a6725134e8d9" => :lion
   end
 
-  depends_on :autoconf
-
   def install
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make", "clean"      # there are pre-compiled files in the tarball
     system "make", "install"
   end

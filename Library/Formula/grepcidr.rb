@@ -8,5 +8,6 @@ class Grepcidr < Formula
   def install
     system "make"
     bin.install "grepcidr"
+    man1.install "grepcidr.1"
   end
 end

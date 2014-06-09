@@ -102,7 +102,9 @@ class Requirement
   end
 
   class << self
-    attr_rw :fatal, :build, :default_formula
+    attr_rw :fatal, :default_formula
+    # build is deprecated, use `depends_on <requirement> => :build` instead
+    attr_rw :build
 
     def satisfy(options={}, &block)
       @satisfied ||= Requirement::Satisfier.new(options, &block)

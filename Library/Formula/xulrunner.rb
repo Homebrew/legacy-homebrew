@@ -58,7 +58,7 @@ class Xulrunner < Formula
   end
 
   depends_on :macos => :lion # needs clang++
-  depends_on :xcode
+  depends_on :xcode => :build
   depends_on :python => :build
   depends_on Python273Requirement => :build
   depends_on "gnu-tar" => :build

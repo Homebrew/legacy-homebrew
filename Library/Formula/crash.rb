@@ -6,13 +6,14 @@ class Crash < Formula
   sha1 '7e0f066ea398e76bdabe0ed715a4ac188597c4f4'
 
   devel do
-    url 'http://search.maven.org/remotecontent?filepath=org/crashub/crash.distrib/1.3.0-beta18/crash.distrib-1.3.0-beta18.tar.gz'
-    sha1 '0dfeda2da4b5fc4206f0cb481214ac83bb8696a5'
+    url 'http://search.maven.org/remotecontent?filepath=org/crashub/crash.distrib/1.3.0-cr1/crash.distrib-1.3.0-cr1.tar.gz'
+    version '1.3.0-cr1'
+    sha1 '18786ae6a427b0630541b0cab7ec01c340e50bea'
 
     resource 'docs' do
-      url 'http://search.maven.org/remotecontent?filepath=org/crashub/crash.distrib/1.3.0-beta18/crash.distrib-1.3.0-beta18-docs.tar.gz'
-      version '1.3.0-beta18'
-      sha1 'a7c8cab9a85a8a0f24a318b05e6db175e00df931'
+      url 'http://search.maven.org/remotecontent?filepath=org/crashub/crash.distrib/1.3.0-cr1/crash.distrib-1.3.0-cr1-docs.tar.gz'
+      version '1.3.0-cr1'
+      sha1 '2cb3baeafaeda4a5a4e6d0d8c0a6d28db1ba7636'
     end
   end
 

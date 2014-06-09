@@ -14,7 +14,7 @@ class ChromeCli < Formula
     sha1 "1ed37da928049461e239d848a77e3cc1838ee17a" => :mountain_lion
   end
 
-  depends_on :xcode
+  depends_on :xcode => :build
   depends_on :macos => :mountain_lion
 
   def install

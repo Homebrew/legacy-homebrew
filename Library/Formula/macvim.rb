@@ -12,7 +12,7 @@ class Macvim < Formula
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"
 
-  depends_on :xcode
+  depends_on :xcode => :build
   depends_on 'cscope' => :recommended
   depends_on 'lua' => :optional
   depends_on 'luajit' => :optional

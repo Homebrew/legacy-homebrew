@@ -97,7 +97,7 @@ module Homebrew extend self
 
   def rename_taps_dir_if_necessary
     need_repair_taps = false
-    Dir["#{HOMEBREW_LIBRARY}/Taps/*/"].each do |tapd|
+    Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/") do |tapd|
       begin
         tapd_basename = File.basename(tapd)
 

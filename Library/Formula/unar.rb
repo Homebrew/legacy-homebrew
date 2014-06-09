@@ -8,7 +8,7 @@ class Unar < Formula
 
   head 'https://code.google.com/p/theunarchiver/' , :using => :hg
 
-  depends_on :xcode
+  depends_on :xcode => :build
 
   bottle do
     cellar :any
