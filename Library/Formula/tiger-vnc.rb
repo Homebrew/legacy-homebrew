@@ -14,7 +14,6 @@ class TigerVnc < Formula
   depends_on :x11
 
   def install
-    gettext = Formula['gettext']
     turbo = Formula['jpeg-turbo']
     args = std_cmake_args + %W[
       -DJPEG_INCLUDE_DIR=#{turbo.include}
