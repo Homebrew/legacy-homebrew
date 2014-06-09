@@ -2,8 +2,8 @@ require 'formula'
 
 class Stk < Formula
   homepage 'https://ccrma.stanford.edu/software/stk/'
-  url 'http://ccrma.stanford.edu/software/stk/release/stk-4.4.4.tar.gz'
-  sha1 '2a94f02ed054d3b991352cc68a85a0a8063e3a4b'
+  url 'http://ccrma.stanford.edu/software/stk/release/stk-4.5.0.tar.gz'
+  sha1 '1e7f586526f749dea9bd9cd9744ee25f334df25a'
 
   option "enable-debug", "Compile with debug flags and modified CFLAGS for easier debugging"
 
