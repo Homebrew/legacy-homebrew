@@ -4,7 +4,6 @@ module OS
   module Mac
     class Version < ::Version
       SYMBOLS = {
-        :linux         => 'linux',
         :yosemite      => '10.10',
         :mavericks     => '10.9',
         :mountain_lion => '10.8',
