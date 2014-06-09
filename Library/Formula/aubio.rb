@@ -11,7 +11,7 @@ class Aubio < Formula
 
   depends_on :macos => :lion
 
-  depends_on 'python' => :build
+  depends_on 'python' => :optional
   depends_on 'pkg-config' => :build
   depends_on :libtool => :build
 
