@@ -7,6 +7,8 @@ class Aubio < Formula
 
   option :universal
 
+  option "without-python", "Disable python-aubio"
+
   depends_on :macos => :lion
   depends_on :python
 
@@ -29,10 +31,12 @@ class Aubio < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
-    numpy_args = [ "build", "--fcompiler=gnu95",
-                   "install", "--prefix=#{libexec}" ]
-    resource('numpy').stage { system "python", "setup.py", *numpy_args }
+    if build.with? 'python'
+      ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+      numpy_args = [ "build", "--fcompiler=gnu95",
+                     "install", "--prefix=#{libexec}" ]
+      resource('numpy').stage { system "python", "setup.py", *numpy_args }
+    end
 
     system "./waf", "configure", "--prefix=#{prefix}"
     system "./waf", "build"
