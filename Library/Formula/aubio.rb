@@ -33,6 +33,9 @@ class Aubio < Formula
   def install
     ENV.universal_binary if build.universal?
 
+    # Needed due to issue with recent cland (-fno-fused-madd))
+    ENV.refurbish_args
+
     if build.with? 'python'
       ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
       numpy_args = [ "build", "--fcompiler=gnu95",
