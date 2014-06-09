@@ -424,6 +424,13 @@ class Pathname
       end
     end
     private :prepend_prefix
+  elsif RUBY_VERSION == "2.0.0"
+    # https://bugs.ruby-lang.org/issues/9915
+    prepend Module.new {
+      def inspect
+        super.force_encoding(instance_variable_get(:@path).encoding)
+      end
+    }
   end
 end
 
