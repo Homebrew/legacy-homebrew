@@ -1,7 +1,7 @@
 require 'formula'
 
 class Sqsh < Formula
-  homepage 'http://www.sqsh.org/'
+  homepage 'http://www.cs.washington.edu/~rose/sqsh/sqsh.html'
   url 'https://downloads.sourceforge.net/project/sqsh/sqsh/sqsh-2.5/sqsh-2.5.16.1.tgz'
   sha1 '1bdbab03ab96f53d0a0a279ba2518643225c6460'
 
