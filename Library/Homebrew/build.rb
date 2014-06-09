@@ -135,14 +135,13 @@ class Build
       deps.each(&:modify_build_environment)
 
       keg_only_deps.each do |dep|
-        opt = dep.opt_prefix
-        ENV.prepend_path 'PATH', "#{opt}/bin"
-        ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
-        ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/share/pkgconfig"
-        ENV.prepend_path 'ACLOCAL_PATH', "#{opt}/share/aclocal"
-        ENV.prepend_path 'CMAKE_PREFIX_PATH', opt
-        ENV.prepend 'LDFLAGS', "-L#{opt}/lib" if (opt/:lib).directory?
-        ENV.prepend 'CPPFLAGS', "-I#{opt}/include" if (opt/:include).directory?
+        ENV.prepend_path "PATH", dep.opt_bin.to_s
+        ENV.prepend_path "PKG_CONFIG_PATH", "#{dep.opt_lib}/pkgconfig"
+        ENV.prepend_path "PKG_CONFIG_PATH", "#{dep.opt_share}/pkgconfig"
+        ENV.prepend_path "ACLOCAL_PATH", "#{dep.opt_share}/aclocal"
+        ENV.prepend_path "CMAKE_PREFIX_PATH", dep.opt_prefix.to_s
+        ENV.prepend "LDFLAGS", "-L#{dep.opt_lib}" if dep.opt_lib.directory?
+        ENV.prepend "CPPFLAGS", "-I#{dep.opt_include}" if dep.opt_include.directory?
       end
     end
 
