@@ -178,7 +178,7 @@ with FunSpec with ShouldMatchers with BeforeAndAfter with BeforeAndAfterAll with
       }
     }
 
-    ignore("should properly serialize case classes and other job jar classes") {
+    it("should properly serialize case classes and other job jar classes") {
       manager ! JobManagerActor.Initialize
       expectMsgClass(classOf[JobManagerActor.Initialized])
 
