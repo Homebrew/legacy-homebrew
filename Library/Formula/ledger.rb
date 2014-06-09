@@ -2,21 +2,23 @@ require 'formula'
 
 class Ledger < Formula
   homepage 'http://ledger-cli.org'
-  url 'https://github.com/ledger/ledger/archive/v3.0.3.tar.gz'
-  sha1 'b65c2dc78f366fc3c2db9e2b7900b727b91f4656'
-  head 'https://github.com/ledger/ledger.git', :branch => 'master'
+
+  stable do
+    url "https://github.com/ledger/ledger/archive/v3.0.3.tar.gz"
+    sha1 "b65c2dc78f366fc3c2db9e2b7900b727b91f4656"
+
+    resource "utfcpp" do
+      url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
+      sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
+    end
+  end
 
   bottle do
     sha1 "a40e25cd2449c3c44bd9385c895d55f4967ca3bc" => :mavericks
     sha1 "3383a59b4a242dc537bb3be81f3e8e588622b442" => :mountain_lion
   end
 
-  stable do
-    resource 'utfcpp' do
-      url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
-      sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
-    end
-  end
+  head "https://github.com/ledger/ledger.git", :branch => "master"
 
   option 'debug', 'Build with debugging symbols enabled'
 
@@ -36,9 +38,7 @@ class Ledger < Formula
   def install
     ENV.cxx11
 
-    unless build.head?
-      (buildpath/'lib/utfcpp').install resource('utfcpp')
-    end
+    (buildpath/"lib/utfcpp").install resource("utfcpp") unless build.head?
 
     flavor = build.include?("debug") ? "debug" : "opt"
 
