@@ -428,7 +428,7 @@ class Pathname
     # https://bugs.ruby-lang.org/issues/9915
     prepend Module.new {
       def inspect
-        super.force_encoding(instance_variable_get(:@path).encoding)
+        super.force_encoding(@path.encoding)
       end
     }
   end
