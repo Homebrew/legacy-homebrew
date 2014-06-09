@@ -79,5 +79,9 @@ def blacklisted? name
     GNU Fortran is now provided as part of GCC, and can be installed with:
       brew install gcc
     EOS
+  when 'docker', 'boot2docker' then <<-EOS.undent
+    Docker and Boot2Docker work better when you install their package:
+      https://github.com/boot2docker/osx-installer/releases
+    EOS
   end
 end
