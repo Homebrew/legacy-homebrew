@@ -221,7 +221,15 @@ Contributions via Github Pull Request are welcome.  See the TODO for some ideas.
 - Be sure you are in the master project
 - Run `test` to ensure all tests pass
 - Now just run `publish` and package will be published to bintray
-  
+
+## Contact
+
+For user/dev questions, we are using google group for discussions:
+<https://groups.google.com/forum/#!forum/spark-jobserver>
+
+Please report bugs/problems to:
+<https://github.com/ooyala/spark-jobserver/issues>
+
 ## License
 Apache 2.0, see LICENSE.md
 
