@@ -50,12 +50,13 @@ class Bitlbee < Formula
   end
 
   def caveats; <<-EOS.undent
-    By default bitlbee will run on port 6667 under the current user. Edit the plist to change this.
+    By default bitlbee will run on port 6667 under the current user.
+    Edit the plist to change either when running via launchd.
     (The user you choose will need write access to #{var}/bitlbee/lib)
     EOS
   end
 
-  plist_options :startup => true
+  plist_options :manual => "bitlbee -D"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
