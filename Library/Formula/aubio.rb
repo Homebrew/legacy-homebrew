@@ -11,15 +11,18 @@ class Aubio < Formula
 
   depends_on :macos => :lion
 
+  depends_on 'python' => :build
   depends_on 'pkg-config' => :build
   depends_on :libtool => :build
 
-  # fortran is needed to build numpy
-  depends_on :fortran
+  if build.with? 'python'
+    # fortran is needed to build numpy
+    depends_on :fortran
 
-  resource 'numpy' do
-    url 'http://downloads.sourceforge.net/project/numpy/NumPy/1.8.0/numpy-1.8.0.tar.gz'
-    sha1 'a2c02c5fb2ab8cf630982cddc6821e74f5769974'
+    resource 'numpy' do
+      url 'http://downloads.sourceforge.net/project/numpy/NumPy/1.8.0/numpy-1.8.0.tar.gz'
+      sha1 'a2c02c5fb2ab8cf630982cddc6821e74f5769974'
+    end
   end
 
   def patches
@@ -41,15 +44,20 @@ class Aubio < Formula
     system "./waf", "build"
     system "./waf", "install"
 
-    cd 'python' do
-      system "./setup.py", "build"
-      system "./setup.py", "install", "--prefix", prefix
-      bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+    if build.with? 'python'
+      cd 'python' do
+        system "./setup.py", "build"
+        system "./setup.py", "install", "--prefix", prefix
+        bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+      end
     end
   end
 
   test do
-    system "#{bin}/aubiocut", "--help"
+    if build.with? 'python'
+      system "#{bin}/aubiocut", "--help"
+    end
+    system "#{bin}/aubioonset", "--help"
   end
 end
 
