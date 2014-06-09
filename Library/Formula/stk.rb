@@ -5,6 +5,12 @@ class Stk < Formula
   url 'http://ccrma.stanford.edu/software/stk/release/stk-4.5.0.tar.gz'
   sha1 '1e7f586526f749dea9bd9cd9744ee25f334df25a'
 
+  bottle do
+    sha1 "5b3fd9c00dd5e1737c201587c576dc48b70c423d" => :mavericks
+    sha1 "0e37ae81c6f8418910861abf1bb2b7ca4062881a" => :mountain_lion
+    sha1 "ee7b0faa69eb96fad8636ecd4355729779ee9b84" => :lion
+  end
+
   option "enable-debug", "Compile with debug flags and modified CFLAGS for easier debugging"
 
   fails_with :clang do
