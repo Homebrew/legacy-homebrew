@@ -108,9 +108,8 @@ module Stdenv
   alias_method :gcc_4_0, :gcc_4_0_1
 
   def gcc
-    ccname, cxxname = if OS.mac? then ['gcc-4.2', 'g++-4.2'] else ['gcc', 'g++'] end
-    self.cc  = MacOS.locate(ccname)
-    self.cxx = MacOS.locate(cxxname)
+    self.cc  = MacOS.locate("gcc-4.2")
+    self.cxx = MacOS.locate("g++-4.2")
     set_cpu_cflags
     @compiler = :gcc
   end
