@@ -59,7 +59,9 @@ class Formulary
         raise FormulaUnavailableError.new(name)
       end
 
-      unless have_klass
+      if have_klass
+        Formulary.get_formula_class(class_name)
+      else
         STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
         begin
           require path
@@ -71,13 +73,13 @@ class Formulary
           raise if ARGV.debug?  # let's see the REAL error
           raise FormulaUnavailableError.new(name)
         end
-      end
 
-      klass = Formulary.get_formula_class(class_name)
-      if klass == Formula || !(klass < Formula)
-        raise FormulaUnavailableError.new(name)
+        klass = Formulary.get_formula_class(class_name)
+        if klass == Formula || !(klass < Formula)
+          raise FormulaUnavailableError.new(name)
+        end
+        klass
       end
-      klass
     end
   end
 

@@ -68,8 +68,14 @@ HOMEBREW_LOGS = Pathname.new(ENV['HOMEBREW_LOGS'] || '~/Library/Logs/Homebrew/')
 
 HOMEBREW_TEMP = Pathname.new(ENV.fetch('HOMEBREW_TEMP', '/tmp'))
 
-RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
-RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
+if RbConfig.respond_to?(:ruby)
+  RUBY_PATH = Pathname.new(RbConfig.ruby)
+else
+  RUBY_PATH = Pathname.new(RbConfig::CONFIG["bindir"]).join(
+    RbConfig::CONFIG["ruby_install_name"] + RbConfig::CONFIG["EXEEXT"]
+  )
+end
+RUBY_BIN = RUBY_PATH.dirname
 
 if RUBY_PLATFORM =~ /darwin/
   MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
@@ -94,8 +100,6 @@ module Homebrew extend self
   alias_method :failed?, :failed
 end
 
-require 'metafiles'
-FORMULA_META_FILES = Metafiles.new
 ISSUES_URL = "https://github.com/Homebrew/homebrew/wiki/troubleshooting"
 HOMEBREW_PULL_OR_COMMIT_URL_REGEX = 'https:\/\/github.com\/(\w+)\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
 

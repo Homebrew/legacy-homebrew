@@ -5,6 +5,13 @@ class Tuntap < Formula
   url "git://git.code.sf.net/p/tuntaposx/code", :tag => "release_20111101"
   head "git://git.code.sf.net/p/tuntaposx/code", :branch => "master"
 
+  bottle do
+    cellar :any
+    sha1 "66c5936c679b961089df84668a8c04bce56d992c" => :mavericks
+    sha1 "80bfd6bcec776491065be0450ce2c47dc2d7a567" => :mountain_lion
+    sha1 "a3e380d8080ce9cf75f04cc80dcc869cf93b0276" => :lion
+  end
+
   # Get Kernel.framework headers from the SDK
   patch :DATA
 
