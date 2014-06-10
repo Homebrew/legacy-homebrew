@@ -14,8 +14,6 @@ class Aubio < Formula
   depends_on :libtool => :build
 
   if build.with? 'python'
-    # fortran is needed to build numpy
-    depends_on :fortran
     depends_on 'numpy' => :python
   end
 
