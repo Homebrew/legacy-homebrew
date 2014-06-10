@@ -16,13 +16,11 @@ class Jq < Formula
   end
 
   def install
-    args = %W[
-      --prefix=#{prefix}
-    ]
-
     system "autoreconf", "-iv" if build.head?
-    system './configure', *args
-    system 'make install'
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
+    system "make", "install"
   end
 
   test do
