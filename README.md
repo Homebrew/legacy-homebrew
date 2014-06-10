@@ -128,32 +128,31 @@ manage and re-use contexts.
 
 Let's try running our sample job with an invalid configuration:
 
-```json
-curl -i -d "bad.input=abc" 'localhost:8090/jobs?appName=test&classPath=spark.jobserver.WordCountExample'
+    curl -i -d "bad.input=abc" 'localhost:8090/jobs?appName=test&classPath=spark.jobserver.WordCountExample'
 
-HTTP/1.1 400 Bad Request
-Server: spray-can/1.2.0
-Date: Tue, 10 Jun 2014 22:07:18 GMT
-Content-Type: application/json; charset=UTF-8
-Content-Length: 929
+    HTTP/1.1 400 Bad Request
+    Server: spray-can/1.2.0
+    Date: Tue, 10 Jun 2014 22:07:18 GMT
+    Content-Type: application/json; charset=UTF-8
+    Content-Length: 929
 
-{
-  "status": "VALIDATION FAILED",
-  "result": {
-    "message": "No input.string config param",
-    "errorClass": "java.lang.Throwable",
-    "stack": ["spark.jobserver.JobManagerActor$$anonfun$spark$jobserver$JobManagerActor$$getJobFuture$4.apply(JobManagerActor.scala:212)", 
-    "scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)", 
-    "scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)", 
-    "akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:42)",
-    "akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:386)", 
-    "scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)", 
-    "scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)", 
-    "scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)", 
-    "scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)"]
-  }
-}
-```
+    {
+      "status": "VALIDATION FAILED",
+      "result": {
+        "message": "No input.string config param",
+        "errorClass": "java.lang.Throwable",
+        "stack": ["spark.jobserver.JobManagerActor$$anonfun$spark$jobserver$JobManagerActor$$getJobFuture$4.apply(JobManagerActor.scala:212)", 
+        "scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)", 
+        "scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)", 
+        "akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:42)",
+        "akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:386)", 
+        "scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)", 
+        "scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)", 
+        "scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)", 
+        "scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)"]
+      }
+    }
+
 ### Using Named RDDs
 Named RDDs are a way to easily share RDDs among job. Using this facility, computed RDDs can be cached with a given name and later on retrieved.
 To use this feature, the SparkJob needs to mixin `NamedRddSupport`:
