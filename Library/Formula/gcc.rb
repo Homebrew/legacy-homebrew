@@ -188,7 +188,7 @@ class Gcc < Formula
         "#{lib}/i386/security/classpath.security"
       ]
       config_files.each do |file|
-        add_suffix file, version_suffix if File.exists? file
+        add_suffix file, version_suffix if File.exist? file
       end
     end
   end

@@ -29,8 +29,14 @@ HOMEBREW_VERSION       = '0.9-test'
 
 require 'tap_constants'
 
-RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
-RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
+if RbConfig.respond_to?(:ruby)
+  RUBY_PATH = Pathname.new(RbConfig.ruby)
+else
+  RUBY_PATH = Pathname.new(RbConfig::CONFIG["bindir"]).join(
+    RbConfig::CONFIG["ruby_install_name"] + RbConfig::CONFIG["EXEEXT"]
+  )
+end
+RUBY_BIN = RUBY_PATH.dirname
 
 MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
 MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }
@@ -116,7 +122,7 @@ class Test::Unit::TestCase
   TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
   TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
 
-  def formula(*args, &block)
-    @_f = Class.new(Formula, &block).new(*args)
+  def formula(name="formula_name", path=Formula.path(name), &block)
+    @_f = Class.new(Formula, &block).new(name, path)
   end
 end

@@ -6,6 +6,8 @@ class Aplus < Formula
   mirror 'http://ftp.us.debian.org/debian/pool/main/a/aplus-fsf/aplus-fsf_4.22.1.orig.tar.gz'
   sha1 'e757cc7654cf35dba15a6a5d6cac5320146558fc'
 
+  depends_on :x11
+
   # Fix the missing CoreServices include (via Fink version of aplus)
   # Fix C++ syntax errors for clang
   patch :DATA
