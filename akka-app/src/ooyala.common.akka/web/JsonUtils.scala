@@ -35,8 +35,9 @@ object JsonUtils {
       case a: Array[_] => seqFormat[Any].write(a.toSeq)
       case true        => JsTrue
       case false       => JsFalse
-      case p: Product  =>  seqFormat[Any].write(p.productIterator.toSeq)
-      case x => JsString(x.toString)
+      case p: Product  => seqFormat[Any].write(p.productIterator.toSeq)
+      case null        => JsNull
+      case x           => JsString(x.toString)
     }
     def read(value: JsValue): Any = value match {
       case JsNumber(n) => n.intValue()
