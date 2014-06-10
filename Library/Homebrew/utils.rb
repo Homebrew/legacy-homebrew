@@ -90,9 +90,13 @@ def interactive_shell f=nil
 
   Process.wait fork { exec ENV['SHELL'] }
 
-  unless $?.success?
+  if $?.success?
+    return
+  elsif $?.exited?
     puts "Aborting due to non-zero exit status"
-    exit $?
+    exit $?.exitstatus
+  else
+    raise $?.inspect
   end
 end
 
