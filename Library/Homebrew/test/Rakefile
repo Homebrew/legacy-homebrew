@@ -1,12 +1,9 @@
 require 'rake'
 require 'rake/testtask'
-require 'pathname'
 
-TEST_DIRECTORY = Pathname.new(File.expand_path(__FILE__)).parent.realpath
-TEST_FILES = FileList["#{TEST_DIRECTORY}/test_*.rb"]
+TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
+TEST_FILES = Dir["#{TEST_DIRECTORY}/test_*.rb"]
 GEM_DEPS = ['mocha']
-
-Dir.chdir(TEST_DIRECTORY)
 
 task :default => :test
 
@@ -19,16 +16,16 @@ task :deps do
 end
 
 Rake::TestTask.new(:test) do |t|
-  t.libs << Dir.pwd
+  t.libs << TEST_DIRECTORY
   t.test_files = TEST_FILES
 end
 
 namespace :test do
   TEST_FILES.each do |file|
-    task = /test_(.+)\.rb/.match(file)
-    Rake::TestTask.new(task[1]) do |t|
-      t.libs << Dir.pwd
-      t.pattern = task[0]
+    name = file[/test_(.+)\.rb/, 1]
+    Rake::TestTask.new(name) do |t|
+      t.libs << TEST_DIRECTORY
+      t.test_files = [file]
     end
   end
 end
