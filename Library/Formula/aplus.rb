@@ -17,7 +17,8 @@ class Aplus < Formula
       inreplace path, "/usr/local/aplus-fsf-4.20", prefix
     end
 
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                          "--without-x"
     system "make"
     ENV.j1 # make install breaks with -j option
     system "make", "install"
