@@ -16,11 +16,13 @@ class Jq < Formula
   end
 
   def install
+    args = %W[
+      --prefix=#{prefix}
+    ]
+
     system "autoreconf", "-iv" if build.head?
-    system "./configure"
-    system "make"
-    bin.install 'jq'
-    man1.install 'jq.1'
+    system './configure', *args
+    system 'make install'
   end
 
   test do
