@@ -23,6 +23,7 @@ module FileUtils extend self
     cd prevd if prevd
     ignore_interrupts{ rm_r tempd } if tempd
   end
+  module_function :mktemp
 
   # A version of mkdir that also changes to that folder in a block.
   alias mkdir_old mkdir
