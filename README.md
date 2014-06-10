@@ -107,7 +107,7 @@ In your `build.sbt`, add this to use the job server jar:
 
 	resolvers += "Ooyala Bintray" at "http://dl.bintray.com/ooyala/maven"
 
-	libraryDependencies += "ooyala.cnd" % "job-server" % "0.3.1" % "provided"                                                                                  
+	libraryDependencies += "ooyala.cnd" % "job-server" % "0.3.1" % "provided"                                                          
 
 For most use cases it's better to have the dependencies be "provided" because you don't want SBT assembly to include the whole job server jar.
 
