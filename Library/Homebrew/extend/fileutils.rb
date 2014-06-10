@@ -1,7 +1,7 @@
 require 'fileutils'
 
 # We enhance FileUtils to make our Formula code more readable.
-module FileUtils extend self
+module FileUtils
 
   # Create a temporary directory then yield. When the block returns,
   # recursively delete the temporary directory.
@@ -26,15 +26,16 @@ module FileUtils extend self
   module_function :mktemp
 
   # A version of mkdir that also changes to that folder in a block.
-  alias mkdir_old mkdir
+  alias_method :old_mkdir, :mkdir
   def mkdir name, &block
-    FileUtils.mkdir(name)
+    old_mkdir(name)
     if block_given?
       chdir name do
         yield
       end
     end
   end
+  module_function :mkdir
 
   # The #copy_metadata method in all current versions of Ruby has a
   # bad bug which causes copying symlinks across filesystems to fail;
@@ -82,6 +83,8 @@ module FileUtils extend self
       end
     end
   end
+
+  private
 
   # Run scons using a Homebrew-installed version, instead of whatever
   # is in the user's PATH
