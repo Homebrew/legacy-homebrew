@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Global < Formula
-  homepage 'http://www.gnu.org/software/global/'
-  url 'http://ftpmirror.gnu.org/global/global-6.2.12.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/global/global-6.2.12.tar.gz'
-  sha1 '1fc0948ee76185d38733750567a2bdb6b9b07304'
+  homepage "https://www.gnu.org/software/global/"
+  url "http://ftpmirror.gnu.org/global/global-6.3.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/global/global-6.3.tar.gz"
+  sha1 "01180de13918a29d4af62ed9c86dbe84ed16f550"
 
   bottle do
     sha1 "81160b83cf9bee1e5b97c1c1e40b10f340798f15" => :mavericks
@@ -13,18 +13,18 @@ class Global < Formula
   end
 
   head do
-    url 'cvs://:pserver:anonymous:@cvs.savannah.gnu.org:/sources/global:global'
+    url "cvs://:pserver:anonymous:@cvs.savannah.gnu.org:/sources/global:global"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  option 'with-exuberant-ctags', 'Enable Exuberant Ctags as a plug-in parser'
+  option "with-exuberant-ctags", "Enable Exuberant Ctags as a plug-in parser"
 
-  if build.with? 'exuberant-ctags'
-    depends_on 'ctags'
-    skip_clean 'lib/gtags/exuberant-ctags.la'
+  if build.with? "exuberant-ctags"
+    depends_on "ctags"
+    skip_clean "lib/gtags/exuberant-ctags.la"
   end
 
   def install
@@ -36,17 +36,17 @@ class Global < Formula
       --sysconfdir=#{etc}
     ]
 
-    if build.with? 'exuberant-ctags'
+    if build.with? "exuberant-ctags"
       args << "--with-exuberant-ctags=#{HOMEBREW_PREFIX}/bin/ctags"
     end
 
     system "./configure", *args
     system "make install"
 
-    etc.install 'gtags.conf'
+    etc.install "gtags.conf"
 
     # we copy these in already
-    cd share/'gtags' do
+    cd share/"gtags" do
       rm %w[README COPYING LICENSE INSTALL ChangeLog AUTHORS]
     end
   end
