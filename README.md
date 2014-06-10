@@ -114,11 +114,10 @@ For most use cases it's better to have the dependencies be "provided" because yo
 To create a job that can be submitted through the job server, the job must implement the `SparkJob` trait. 
 Your job will look like:
 
-    ```scala
     object SampleJob  extends SparkJob {
         override def runJob(sc:SparkContext, jobConfig: Config): Any = ???
         override def validate(sc:SparkContext, config: Config): SparkJobValidation = ???
-    }```
+    }
 
 - `runJob` contains the implementation of the Job. The SparkContext is managed by the JobServer and will be provided to the job through this method.
   This releaves the developer from the boiler-plate configuration management that comes with the creation of a Spark job and allows the Job Server to
@@ -126,7 +125,7 @@ manage and re-use contexts.
 - `validate` allows for an initial validation of the context and any provided configuration. If the context and configuration are OK to run the job, returning `spark.jobserver.SparkJobValid` will let the job execute, otherwise returning `spark.jobserver.SparkJobInvalid(reason)` prevents the job from running and provides means to convey the reason of failure. In this case, the call immediatly returns an `HTTP/1.1 400 Bad Request` status code.  
 `validate` helps you preventing running jobs that will eventually fail due to missing or wrong configuration and save both time and resources.  
 
-Let's try running our `wordcount` job with an invalid configuration:
+Let's try running our sample job with an invalid configuration:
 
     curl -i -d "bad.input=abc" 'localhost:8090/jobs?appName=test&classPath=spark.jobserver.WordCountExample'
 
@@ -141,7 +140,15 @@ Let's try running our `wordcount` job with an invalid configuration:
       "result": {
         "message": "No input.string config param",
         "errorClass": "java.lang.Throwable",
-        "stack": ["spark.jobserver.JobManagerActor$$anonfun$spark$jobserver$JobManagerActor$$getJobFuture$4.apply(JobManagerActor.scala:212)", "scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)", "scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)", "akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:42)", "akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:386)", "scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)", "scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)", "scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)", "scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)"]
+        "stack": ["spark.jobserver.JobManagerActor$$anonfun$spark$jobserver$JobManagerActor$$getJobFuture$4.apply(JobManagerActor.scala:212)", 
+        "scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)", 
+        "scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)", 
+        "akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:42)",
+        "akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:386)", 
+        "scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)", 
+        "scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)", 
+        "scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)", 
+        "scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)"]
       }
     }
 
