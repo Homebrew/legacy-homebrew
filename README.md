@@ -13,7 +13,7 @@ We deploy our job server off of this repo at Ooyala and it is tested against CDH
 - Asynchronous and synchronous job API.  Synchronous API is great for low latency jobs!
 - Works with Standalone Spark as well as Mesos
 - Job and jar info is persisted via a pluggable DAO interface
-- Named RDDs to cache and retrieve RDDs by name, improving RRD sharing and reuse among jobs. 
+- Named RDDs to cache and retrieve RDDs by name, improving RDD sharing and reuse among jobs. 
 
 ## Quick start / development mode
 
