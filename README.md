@@ -113,11 +113,11 @@ For most use cases it's better to have the dependencies be "provided" because yo
 
 To create a job that can be submitted through the job server, the job must implement the `SparkJob` trait. 
 Your job will look like:
-
-    object SampleJob  extends SparkJob {
-        override def runJob(sc:SparkContext, jobConfig: Config): Any = ???
-        override def validate(sc:SparkContext, config: Config): SparkJobValidation = ???
-    }
+```scala
+object SampleJob  extends SparkJob {
+    override def runJob(sc:SparkContext, jobConfig: Config): Any = ???
+    override def validate(sc:SparkContext, config: Config): SparkJobValidation = ???
+}```
 
 - `runJob` contains the implementation of the Job. The SparkContext is managed by the JobServer and will be provided to the job through this method.
   This releaves the developer from the boiler-plate configuration management that comes with the creation of a Spark job and allows the Job Server to
