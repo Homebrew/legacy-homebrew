@@ -20,12 +20,6 @@ class Openssl < Formula
   keg_only :provided_by_osx,
     "The OpenSSL provided by OS X is too old for some software."
 
-  patch do
-    # Fix pod2man error. Will be fixed in 1.0.1h
-    url "https://github.com/openssl/openssl/commit/23f5908.patch"
-    sha1 "66bde221b07b273e3a6bee99388a94b2bbe1dd7c"
-  end
-
   def arch_args
     return { :i386  => %w[linux-x86_64], :x86_64 => %w[linux-x86_64] } if OS.linux?
     {
