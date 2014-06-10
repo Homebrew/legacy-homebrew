@@ -6,6 +6,8 @@ class Aplus < Formula
   mirror 'http://ftp.us.debian.org/debian/pool/main/a/aplus-fsf/aplus-fsf_4.22.1.orig.tar.gz'
   sha1 'e757cc7654cf35dba15a6a5d6cac5320146558fc'
 
+  depends_on :x11
+
   # Fix the missing CoreServices include (via Fink version of aplus)
   # Fix C++ syntax errors for clang
   patch :DATA
@@ -17,8 +19,7 @@ class Aplus < Formula
       inreplace path, "/usr/local/aplus-fsf-4.20", prefix
     end
 
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
-                          "--without-x"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
     ENV.j1 # make install breaks with -j option
     system "make", "install"
