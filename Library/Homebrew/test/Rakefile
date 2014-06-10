@@ -32,19 +32,3 @@ namespace :test do
     end
   end
 end
-
-begin
-  require 'rubygems'
-  require 'rcov/rcovtask'
-
-  Rcov::RcovTask.new do |t|
-    t.libs << Dir.pwd
-    t.test_files = TEST_FILES
-    t.rcov_opts = %w{--exclude=Gems
-                     --exclude=test_
-                     --exclude=testball
-                     --exclude=testing}
-    t.output_dir = TEST_DIRECTORY+'coverage'
-  end
-rescue LoadError
-end
