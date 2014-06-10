@@ -2,8 +2,8 @@ require 'formula'
 
 class Q < Formula
   homepage 'https://github.com/harelba/q'
-  url 'https://github.com/harelba/q/archive/1.1.7.tar.gz'
-  sha1 '088a4f267167481ae0c0825ad410c897aeaab9e8'
+  url 'https://github.com/harelba/q/archive/1.3.0.tar.gz'
+  sha1 '5819ad7b8780b87b413b16a189cdfc8e4a2e53ed'
 
   def install
     bin.install 'q'
