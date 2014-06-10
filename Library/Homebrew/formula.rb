@@ -26,8 +26,7 @@ class Formula
 
   attr_accessor :local_bottle_path
 
-  # Homebrew determines the name
-  def initialize name='__UNKNOWN__', path=self.class.path(name)
+  def initialize(name, path)
     @name = name
     @path = path
     @homepage = self.class.homepage

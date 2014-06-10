@@ -4,18 +4,15 @@ require 'test/testball'
 class FormulaTests < Test::Unit::TestCase
   include VersionAssertions
 
-  def test_formula_path_initialization
-    name = "formula_name"
+  def test_formula_instantiation
     klass = Class.new(Formula) { url "http://example.com/foo-1.0.tar.gz" }
+    name = "formula_name"
+    path = Formula.path(name)
 
-    f = klass.new(name)
-    assert_equal Formula.path(name), f.path
-
-    f = klass.new(name, path = Object.new)
+    f = klass.new(name, path)
+    assert_equal name, f.name
     assert_equal path, f.path
-
-    f = klass.new(name, nil)
-    assert_nil f.path
+    assert_raises(ArgumentError) { klass.new }
   end
 
   def test_prefix
