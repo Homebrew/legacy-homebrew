@@ -5,8 +5,16 @@ class MachOPathnameTests < Test::Unit::TestCase
     @archs = [:i386, :x86_64, :ppc7400, :ppc64].extend(ArchitectureListExtension)
   end
 
+  def dylib_path(name)
+    Pathname.new("#{TEST_FOLDER}/mach/#{name}.dylib")
+  end
+
+  def bundle_path(name)
+    Pathname.new("#{TEST_FOLDER}/mach/#{name}.bundle")
+  end
+
   def test_fat_dylib
-    pn = Pathname.new("#{TEST_FOLDER}/mach/fat.dylib")
+    pn = dylib_path("fat")
     assert pn.universal?
     assert !pn.i386?
     assert !pn.x86_64?
@@ -19,7 +27,7 @@ class MachOPathnameTests < Test::Unit::TestCase
   end
 
   def test_i386_dylib
-    pn = Pathname.new("#{TEST_FOLDER}/mach/i386.dylib")
+    pn = dylib_path("i386")
     assert !pn.universal?
     assert pn.i386?
     assert !pn.x86_64?
@@ -32,7 +40,7 @@ class MachOPathnameTests < Test::Unit::TestCase
   end
 
   def test_x86_64_dylib
-    pn = Pathname.new("#{TEST_FOLDER}/mach/x86_64.dylib")
+    pn = dylib_path("x86_64")
     assert !pn.universal?
     assert !pn.i386?
     assert pn.x86_64?
@@ -58,7 +66,7 @@ class MachOPathnameTests < Test::Unit::TestCase
   end
 
   def test_fat_bundle
-    pn = Pathname.new("#{TEST_FOLDER}/mach/fat.bundle")
+    pn = bundle_path("fat")
     assert pn.universal?
     assert !pn.i386?
     assert !pn.x86_64?
@@ -71,7 +79,7 @@ class MachOPathnameTests < Test::Unit::TestCase
   end
 
   def test_i386_bundle
-    pn = Pathname.new("#{TEST_FOLDER}/mach/i386.bundle")
+    pn = bundle_path("i386")
     assert !pn.universal?
     assert pn.i386?
     assert !pn.x86_64?
@@ -84,7 +92,7 @@ class MachOPathnameTests < Test::Unit::TestCase
   end
 
   def test_x86_64_bundle
-    pn = Pathname.new("#{TEST_FOLDER}/mach/x86_64.bundle")
+    pn = bundle_path("x86_64")
     assert !pn.universal?
     assert !pn.i386?
     assert pn.x86_64?
@@ -144,7 +152,7 @@ class MachOPathnameTests < Test::Unit::TestCase
   end
 
   def test_architecture_list_arch_flags_methods
-    pn = Pathname.new("#{TEST_FOLDER}/mach/fat.dylib")
+    pn = dylib_path("fat")
     assert pn.archs.intel_universal?
     assert_equal "-arch x86_64 -arch i386", pn.archs.as_arch_flags
     assert_equal "x86_64;i386", pn.archs.as_cmake_arch_flags
