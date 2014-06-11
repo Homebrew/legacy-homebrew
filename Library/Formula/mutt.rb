@@ -88,7 +88,7 @@ class Mutt < Formula
             # This is just a trick to keep 'make install' from trying to chgrp
             # the mutt_dotlock file (which we can't do if we're running as an
             # unpriviledged user)
-            "--with-homespool=.mbox"]
+            "--with-homespool=mbox"]
     args << "--with-slang" if build.with? "s-lang"
     args << "--enable-gpgme" if build.with? "gpgme"
 
