@@ -38,11 +38,7 @@ class UpdaterTests < Test::Unit::TestCase
   end
 
   def self.fixture_data
-    @fixture_data ||= load_fixture_data
-  end
-
-  def self.load_fixture_data
-    YAML.load_file(Pathname.new(ABS__FILE__).parent.realpath + 'fixtures/updater_fixture.yaml')
+    @fixture_data ||= YAML.load_file("#{TEST_FOLDER}/fixtures/updater_fixture.yaml")
   end
 
   def setup

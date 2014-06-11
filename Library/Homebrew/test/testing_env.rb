@@ -1,6 +1,5 @@
 # Require this file to build a testing environment.
 
-ABS__FILE__ = File.expand_path(__FILE__)
 $:.push(File.expand_path(__FILE__+'/../..'))
 
 require 'extend/module'
@@ -55,7 +54,7 @@ end
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 # Test fixtures and files can be found relative to this path
-TEST_FOLDER = Pathname.new(ABS__FILE__).parent.realpath
+TEST_FOLDER = File.dirname(File.expand_path(__FILE__))
 
 def shutup
   if ARGV.verbose?
