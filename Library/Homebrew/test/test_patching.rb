@@ -16,8 +16,8 @@ class PatchingTests < Homebrew::TestCase
 
   def assert_patched(path)
     s = File.read(path)
-    assert !s.include?("NOOP"), "File was unpatched."
-    assert s.include?("ABCD"), "File was not patched as expected."
+    refute_includes s, "NOOP", "#{path} was not patched as expected"
+    assert_includes s, "ABCD", "#{path} was not patched as expected"
   end
 
   def test_single_patch
