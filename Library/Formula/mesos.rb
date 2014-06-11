@@ -3,12 +3,8 @@ require "formula"
 class Java7Requirement < Requirement
   fatal true
 
-  def java_home_cmd
-    "/usr/libexec/java_home -v 1.7"
-  end
-
   satisfy :build_env => false do
-    system *java_home_cmd.split(" ")
+    system "/usr/libexec/java_home", "-v", "1.7"
   end
 
   def message; <<-EOS.undent
