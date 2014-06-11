@@ -55,10 +55,10 @@ class BuildOptionsTests < Test::Unit::TestCase
   end
 
   def test_opposite_of
-    assert @build.opposite_of(Option.new("with-foo")) == Option.new("without-foo")
-    assert @build.opposite_of("without-foo") == Option.new("with-foo")
-    assert @build.opposite_of(Option.new("enable-spam")) == Option.new("disable-spam")
-    assert @build.opposite_of("disable-beer") == Option.new("enable-beer")
+    assert_equal Option.new("without-foo"), @build.opposite_of(Option.new("with-foo"))
+    assert_equal Option.new("with-foo"), @build.opposite_of("without-foo")
+    assert_equal Option.new("disable-spam"), @build.opposite_of(Option.new("enable-spam"))
+    assert_equal Option.new("enable-beer"), @build.opposite_of("disable-beer")
   end
 
   def test_has_opposite_of?
