@@ -3,11 +3,11 @@ require 'hardware'
 
 class HardwareTests < Homebrew::TestCase
   def test_hardware_cpu_type
-    assert [:intel, :ppc].include?(Hardware::CPU.type)
+    assert_includes [:intel, :ppc], Hardware::CPU.type
   end
 
   def test_hardware_intel_family
     families = [:core, :core2, :penryn, :nehalem, :arrandale, :sandybridge, :ivybridge, :haswell]
-    assert families.include?(Hardware::CPU.family)
+    assert_includes families, Hardware::CPU.family
   end if Hardware::CPU.intel?
 end
