@@ -17,8 +17,8 @@ class CleanerTests < Test::Unit::TestCase
   def test_clean_file
     @f.bin.mkpath
     @f.lib.mkpath
-    cp "#{TEST_FOLDER}/mach/a.out", @f.bin
-    cp Dir["#{TEST_FOLDER}/mach/*.dylib"], @f.lib
+    cp "#{TEST_DIRECTORY}/mach/a.out", @f.bin
+    cp Dir["#{TEST_DIRECTORY}/mach/*.dylib"], @f.lib
 
     Cleaner.new(@f).clean
 
