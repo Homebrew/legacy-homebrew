@@ -32,7 +32,7 @@ class AbstractDownloadStrategyTests < Homebrew::TestCase
   def test_expand_safe_system_args_does_not_mutate_argument
     result = @strategy.expand_safe_system_args(@args)
     assert_equal %w{foo bar baz}, @args
-    assert_not_same @args, result
+    refute_same @args, result
   end
 end
 

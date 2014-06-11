@@ -49,14 +49,14 @@ class LinkTests < Homebrew::TestCase
 
   def test_linking_fails_when_already_linked
     @keg.link
-    assert_raise Keg::AlreadyLinkedError do
+    assert_raises Keg::AlreadyLinkedError do
       shutup { @keg.link }
     end
   end
 
   def test_linking_fails_when_files_exist
     touch HOMEBREW_PREFIX/"bin/helloworld"
-    assert_raise Keg::ConflictError do
+    assert_raises Keg::ConflictError do
       shutup { @keg.link }
     end
   end

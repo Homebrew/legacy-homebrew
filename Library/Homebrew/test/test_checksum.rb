@@ -13,11 +13,11 @@ class ChecksumTests < Homebrew::TestCase
 
     a = Checksum.new(:sha1, 'deadbeef'*5)
     b = Checksum.new(:sha1, 'feedface'*5)
-    assert_not_equal a, b
+    refute_equal a, b
 
     a = Checksum.new(:sha1, 'deadbeef'*5)
     b = Checksum.new(:sha256, 'deadbeef'*5)
-    assert_not_equal a, b
+    refute_equal a, b
   end
 end
 

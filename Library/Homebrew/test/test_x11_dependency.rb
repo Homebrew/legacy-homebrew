@@ -14,7 +14,7 @@ class X11DependencyTests < Homebrew::TestCase
   def test_not_eql_when_hashes_differ
     x = X11Dependency.new("foo")
     y = X11Dependency.new
-    assert_not_equal x.hash, y.hash
+    refute_equal x.hash, y.hash
     assert !x.eql?(y)
     assert !y.eql?(x)
   end

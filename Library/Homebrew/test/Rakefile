@@ -3,7 +3,7 @@ require 'rake/testtask'
 
 TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
 TEST_FILES = Dir["#{TEST_DIRECTORY}/test_*.rb"]
-GEM_DEPS = ['mocha']
+GEM_DEPS = %w[mocha minitest]
 
 task :default => :test
 
