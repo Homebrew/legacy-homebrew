@@ -301,8 +301,12 @@ class Pathname
     File.symlink(src.relative_path_from(dirname), self)
   end
 
-  def / that
-    self + that.to_s
+  def /(other)
+    unless other.respond_to?(:to_str) || other.respond_to?(:to_path)
+      opoo "Pathname#/ called on #{inspect} with #{other.inspect} as an argument"
+      puts "This behavior is deprecated, please pass either a String or a Pathname"
+    end
+    self + other.to_s
   end unless method_defined?(:/)
 
   def ensure_writable
