@@ -46,12 +46,6 @@ class PathnameExtensionTests < Test::Unit::TestCase
     assert_raises(RuntimeError) { @file.write('CONTENT') }
   end
 
-  def test_chmod_R
-    perms = 0777
-    FileUtils.expects(:chmod_R).with(perms, @dir.to_s)
-    @dir.chmod_R(perms)
-  end
-
   def test_atomic_write
     touch @file
     @file.atomic_write('CONTENT')
@@ -69,19 +63,6 @@ class PathnameExtensionTests < Test::Unit::TestCase
     sentinel = @file.parent.join("sentinel")
     touch sentinel
     assert_equal sentinel.stat.mode, @file.stat.mode
-  end
-
-  def test_cp
-    touch @file
-    mkdir_p @dir
-
-    @file.cp(@dir)
-    assert @file.file?
-    assert((@dir+@file.basename).file?)
-
-    @dir.cp(@dst)
-    assert @dir.directory?
-    assert((@dst+@dir.basename).directory?)
   end
 
   def test_ensure_writable
