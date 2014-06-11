@@ -5,6 +5,12 @@ class Rabbitmq < Formula
   url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.3.2/rabbitmq-server-mac-standalone-3.3.2.tar.gz'
   sha1 'b914fddf18de8a7d156b05e6c8764a2ae44a8ff0'
 
+  bottle do
+    sha1 "fb6131e109053091be367473277f18da1e9d27c9" => :mavericks
+    sha1 "f6ff7dcdc31d6b2ad9472be730a4c6e3073d8245" => :mountain_lion
+    sha1 "2f3e9db3e49726702bf1a149c9068768e43ed34b" => :lion
+  end
+
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
 
   def install
