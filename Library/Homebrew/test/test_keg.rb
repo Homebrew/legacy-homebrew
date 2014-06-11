@@ -27,7 +27,7 @@ class LinkTests < Homebrew::TestCase
 
   def test_linking_keg
     assert_equal 3, @keg.link
-    (HOMEBREW_PREFIX/"bin").children.each { |c| assert c.readlink.relative? }
+    (HOMEBREW_PREFIX/"bin").children.each { |c| assert_predicate c.readlink, :relative? }
   end
 
   def test_unlinking_keg
@@ -39,7 +39,7 @@ class LinkTests < Homebrew::TestCase
     @mode.dry_run = true
 
     assert_equal 0, @keg.link(@mode)
-    assert !@keg.linked?
+    refute_predicate @keg, :linked?
 
     ['hiworld', 'helloworld', 'goodbye_cruel_world'].each do |file|
       assert_match "#{HOMEBREW_PREFIX}/bin/#{file}", $stdout.string
@@ -89,7 +89,7 @@ class LinkTests < Homebrew::TestCase
     @mode.dry_run = true
 
     assert_equal 0, @keg.link(@mode)
-    assert !@keg.linked?
+    refute_predicate @keg, :linked?
 
     assert_equal "#{HOMEBREW_PREFIX}/bin/helloworld\n", $stdout.string
   end
@@ -101,7 +101,7 @@ class LinkTests < Homebrew::TestCase
 
     @keg.unlink
 
-    assert !File.directory?(HOMEBREW_PREFIX/"lib/foo")
+    refute_predicate HOMEBREW_PREFIX/"lib/foo", :directory?
   end
 
   def test_unlink_ignores_DS_Store_when_pruning_empty_dirs
@@ -112,8 +112,8 @@ class LinkTests < Homebrew::TestCase
 
     @keg.unlink
 
-    assert !File.directory?(HOMEBREW_PREFIX/"lib/foo")
-    assert !File.exist?(HOMEBREW_PREFIX/"lib/foo/.DS_Store")
+    refute_predicate HOMEBREW_PREFIX/"lib/foo", :directory?
+    refute_predicate HOMEBREW_PREFIX/"lib/foo/.DS_Store", :exist?
   end
 
   def teardown

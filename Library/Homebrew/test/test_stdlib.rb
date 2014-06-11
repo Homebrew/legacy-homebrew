@@ -44,11 +44,11 @@ class CxxStdlibTests < Homebrew::TestCase
   end
 
   def test_apple_compiler_reporting
-    assert @clang.apple_compiler?
-    assert @gcc.apple_compiler?
-    assert @llvm.apple_compiler?
-    assert @gcc4.apple_compiler?
-    assert !@gcc48.apple_compiler?
+    assert_predicate @clang, :apple_compiler?
+    assert_predicate @gcc, :apple_compiler?
+    assert_predicate @llvm, :apple_compiler?
+    assert_predicate @gcc4, :apple_compiler?
+    refute_predicate @gcc48, :apple_compiler?
   end
 
   def test_type_string_formatting

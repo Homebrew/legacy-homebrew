@@ -32,8 +32,8 @@ class DependencyCollectorTests < Homebrew::TestCase
   end
 
   def test_dependency_tags
-    assert Dependency.new('foo', [:build]).build?
-    assert Dependency.new('foo', [:build, :optional]).optional?
+    assert_predicate Dependency.new('foo', [:build]), :build?
+    assert_predicate Dependency.new('foo', [:build, :optional]), :optional?
     assert Dependency.new('foo', [:universal]).options.include? '--universal'
     assert_empty Dependency.new('foo').tags
   end
@@ -59,7 +59,7 @@ class DependencyCollectorTests < Homebrew::TestCase
     @d.add :x11 => '2.5.1'
     @d.add :xcode => :build
     assert_empty find_requirement(X11Dependency).tags
-    assert find_requirement(XcodeDependency).build?
+    assert_predicate find_requirement(XcodeDependency), :build?
   end
 
   def test_x11_no_tag
@@ -74,14 +74,14 @@ class DependencyCollectorTests < Homebrew::TestCase
 
   def test_x11_tag
     @d.add :x11 => :optional
-    assert find_requirement(X11Dependency).optional?
+    assert_predicate find_requirement(X11Dependency), :optional?
   end
 
   def test_x11_min_version_and_tag
     @d.add :x11 => ['2.5.1', :optional]
     dep = find_requirement(X11Dependency)
     assert_equal '2.5.1', dep.min_version
-    assert dep.optional?
+    assert_predicate dep, :optional?
   end
 
   def test_ld64_dep_pre_leopard

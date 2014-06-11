@@ -12,12 +12,12 @@ class BuildEnvironmentTests < Homebrew::TestCase
 
   def test_std?
     @env << :std
-    assert @env.std?
+    assert_predicate @env, :std?
   end
 
   def test_userpaths?
     @env << :userpaths
-    assert @env.userpaths?
+    assert_predicate @env, :userpaths?
   end
 
   def test_modify_build_environment
@@ -31,7 +31,7 @@ class BuildEnvironmentTests < Homebrew::TestCase
     @env << :userpaths
     @env << Proc.new { 1 }
     dump = Marshal.dump(@env)
-    assert Marshal.load(dump).userpaths?
+    assert_predicate Marshal.load(dump), :userpaths?
   end
 
   def test_env_block
@@ -60,12 +60,12 @@ class BuildEnvironmentDSLTests < Homebrew::TestCase
 
   def test_env_single_argument
     obj = make_instance { env :userpaths }
-    assert obj.env.userpaths?
+    assert_predicate obj.env, :userpaths?
   end
 
   def test_env_multiple_arguments
     obj = make_instance { env :userpaths, :std }
-    assert obj.env.userpaths?
-    assert obj.env.std?
+    assert_predicate obj.env, :userpaths?
+    assert_predicate obj.env, :std?
   end
 end
