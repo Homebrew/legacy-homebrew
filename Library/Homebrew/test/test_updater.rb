@@ -2,33 +2,33 @@ require 'testing_env'
 require 'cmd/update'
 require 'yaml'
 
-class UpdaterMock < Updater
-  def in_repo_expect(cmd, output = '')
-    @outputs  ||= Hash.new { |h,k| h[k] = [] }
-    @expected ||= []
-    @expected << cmd
-    @outputs[cmd] << output
-  end
+class UpdaterTests < Test::Unit::TestCase
+  class UpdaterMock < ::Updater
+    def in_repo_expect(cmd, output = '')
+      @outputs  ||= Hash.new { |h,k| h[k] = [] }
+      @expected ||= []
+      @expected << cmd
+      @outputs[cmd] << output
+    end
 
-  def `(cmd, *args)
-    cmd = "#{cmd} #{args*' '}".strip
-    if @expected.include?(cmd) and !@outputs[cmd].empty?
-      @called ||= []
-      @called << cmd
-      @outputs[cmd].shift
-    else
-      raise "#<#{self.class.name} #{object_id}> unexpectedly called backticks: `#{cmd}'"
+    def `(cmd, *args)
+      cmd = "#{cmd} #{args*' '}".strip
+      if @expected.include?(cmd) and !@outputs[cmd].empty?
+        @called ||= []
+        @called << cmd
+        @outputs[cmd].shift
+      else
+        raise "#{inspect} unexpectedly called backticks: `#{cmd}`"
+      end
+    end
+
+    alias safe_system ` #`
+
+    def expectations_met?
+      @expected == @called
     end
   end
 
-  alias safe_system ` #`
-
-  def expectations_met?
-    @expected == @called
-  end
-end
-
-class UpdaterTests < Test::Unit::TestCase
   def fixture(name)
     self.class.fixture_data[name]
   end
