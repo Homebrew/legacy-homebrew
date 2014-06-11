@@ -23,7 +23,7 @@ end
 class Cmake < Formula
   homepage 'http://www.cmake.org/'
   url 'http://www.cmake.org/files/v3.0/cmake-3.0.0.tar.gz'
-  sha1 '590c27894292cfe93848616f383d2f56975a0ffd'
+  sha1 '4dfd9ee9b829c77175d655f22322f14747f11ad2'
 
   head 'http://cmake.org/cmake.git'
 
