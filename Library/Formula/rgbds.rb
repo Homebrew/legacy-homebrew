@@ -5,7 +5,7 @@ class Rgbds < Formula
   url "https://github.com/pbjchang/rgbds/archive/v0.0.3.tar.gz"
   sha1 "856b2d1532e5561d8a17c703f1610eb99e53f005"
 
-  head "https://github.com/bentley/rgbds.git"
+  head "https://github.com/pbjchang/rgbds.git"
 
   def install
     ENV.deparallelize  # asmy.h needs to be built first
