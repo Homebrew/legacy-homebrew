@@ -2,7 +2,7 @@ require 'testing_env'
 require 'formula_installer'
 require 'hooks/bottles'
 
-class BottleHookTests < Test::Unit::TestCase
+class BottleHookTests < Homebrew::TestCase
   class FormulaDouble
     def bottle; end
     def local_bottle_path; end

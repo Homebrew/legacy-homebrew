@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'formula'
 
-class FormulaSpecSelectionTests < Test::Unit::TestCase
+class FormulaSpecSelectionTests < Homebrew::TestCase
   def assert_spec_selected(spec)
     assert_equal @_f.send(spec), @_f.active_spec
   end

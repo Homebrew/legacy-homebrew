@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'options'
 
-class OptionTests < Test::Unit::TestCase
+class OptionTests < Homebrew::TestCase
   def setup
     @option = Option.new("foo")
   end
@@ -42,7 +42,7 @@ class OptionTests < Test::Unit::TestCase
   end
 end
 
-class OptionsTests < Test::Unit::TestCase
+class OptionsTests < Homebrew::TestCase
   def setup
     @options = Options.new
   end

@@ -4,7 +4,7 @@ require 'test/testball'
 require 'keg'
 
 
-class InstallTests < Test::Unit::TestCase
+class InstallTests < Homebrew::TestCase
   def teardown
     HOMEBREW_CACHE.rmtree
   end

@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'hardware'
 
-class HardwareTests < Test::Unit::TestCase
+class HardwareTests < Homebrew::TestCase
   def test_hardware_cpu_type
     assert [:intel, :ppc].include?(Hardware::CPU.type)
   end

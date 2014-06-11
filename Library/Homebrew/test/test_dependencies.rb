@@ -2,7 +2,7 @@ require 'testing_env'
 require 'dependencies'
 require 'dependency'
 
-class DependenciesTests < Test::Unit::TestCase
+class DependenciesTests < Homebrew::TestCase
   def setup
     @deps = Dependencies.new
   end

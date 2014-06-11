@@ -2,7 +2,7 @@ require 'testing_env'
 require 'keg'
 require 'stringio'
 
-class LinkTests < Test::Unit::TestCase
+class LinkTests < Homebrew::TestCase
   include FileUtils
 
   def setup

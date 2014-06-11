@@ -115,11 +115,13 @@ module Test::Unit::Assertions
   end unless method_defined?(:assert_empty)
 end
 
-class Test::Unit::TestCase
-  TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
-  TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
+module Homebrew
+  class TestCase < ::Test::Unit::TestCase
+    TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
+    TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
 
-  def formula(name="formula_name", path=Formula.path(name), &block)
-    @_f = Class.new(Formula, &block).new(name, path)
+    def formula(name="formula_name", path=Formula.path(name), &block)
+      @_f = Class.new(Formula, &block).new(name, path)
+    end
   end
 end

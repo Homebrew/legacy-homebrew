@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'extend/ARGV'
 
-class ArgvExtensionTests < Test::Unit::TestCase
+class ArgvExtensionTests < Homebrew::TestCase
   def setup
     @argv = [].extend(HomebrewArgvExtension)
   end

@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'checksum'
 
-class ChecksumTests < Test::Unit::TestCase
+class ChecksumTests < Homebrew::TestCase
   def test_empty?
     assert_empty Checksum.new(:sha1, '')
   end

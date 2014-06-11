@@ -2,7 +2,7 @@ require 'testing_env'
 require 'test/testball'
 require 'cmd/cleanup'
 
-class CleanupTests < Test::Unit::TestCase
+class CleanupTests < Homebrew::TestCase
   def test_cleanup
     f1 = Class.new(TestBall) { version '0.1' }.new
     f2 = Class.new(TestBall) { version '0.2' }.new

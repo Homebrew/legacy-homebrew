@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'patch'
 
-class PatchTests < Test::Unit::TestCase
+class PatchTests < Homebrew::TestCase
   def test_create_simple
     patch = Patch.create(:p2)
     assert_kind_of ExternalPatch, patch
@@ -51,7 +51,7 @@ class PatchTests < Test::Unit::TestCase
   end
 end
 
-class LegacyPatchTests < Test::Unit::TestCase
+class LegacyPatchTests < Homebrew::TestCase
   def test_patch_single_string
     patches = Patch.normalize_legacy_patches("http://example.com/patch.diff")
     assert_equal 1, patches.length
