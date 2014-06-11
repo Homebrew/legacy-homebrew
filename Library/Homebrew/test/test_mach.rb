@@ -1,14 +1,6 @@
 require 'testing_env'
 
-module FileHelper
-  def file pn
-    `/usr/bin/file -h '#{pn}'`.chomp
-  end
-end
-
 class MachOPathnameTests < Test::Unit::TestCase
-  include FileHelper
-
   def setup
     @archs = [:i386, :x86_64, :ppc7400, :ppc64].extend(ArchitectureListExtension)
   end
@@ -24,7 +16,6 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
     assert_equal :universal, pn.arch
-    assert_match(/Mach-O (64-bit )?dynamically linked shared library/, file(pn))
   end
 
   def test_i386_dylib
@@ -38,7 +29,6 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
     assert !pn.mach_o_bundle?
-    assert_match(/Mach-O dynamically linked shared library/, file(pn))
   end
 
   def test_x86_64_dylib
@@ -52,7 +42,6 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
     assert !pn.mach_o_bundle?
-    assert_match(/Mach-O 64-bit dynamically linked shared library/, file(pn))
   end
 
   def test_mach_o_executable
@@ -66,7 +55,6 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert pn.mach_o_executable?
     assert !pn.text_executable?
     assert !pn.mach_o_bundle?
-    assert_match(/Mach-O (64-bit )?executable/, file(pn))
   end
 
   def test_fat_bundle
@@ -80,7 +68,6 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
     assert pn.mach_o_bundle?
-    assert_match(/Mach-O (64-bit )?bundle/, file(pn))
   end
 
   def test_i386_bundle
@@ -94,7 +81,6 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
     assert pn.mach_o_bundle?
-    assert_match(/Mach-O bundle/, file(pn))
   end
 
   def test_x86_64_bundle
@@ -108,7 +94,6 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
     assert pn.mach_o_bundle?
-    assert_match(/Mach-O 64-bit bundle/, file(pn))
   end
 
   def test_non_mach_o
@@ -123,8 +108,6 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.text_executable?
     assert !pn.mach_o_bundle?
     assert_equal :dunno, pn.arch
-    assert_no_match(/Mach-O (64-bit )?dynamically linked shared library/, file(pn))
-    assert_no_match(/Mach-O [^ ]* ?executable/, file(pn))
   end
 
   def test_architecture_list_extension_universal_checks
@@ -169,8 +152,6 @@ class MachOPathnameTests < Test::Unit::TestCase
 end
 
 class TextExecutableTests < Test::Unit::TestCase
-  include FileHelper
-
   attr_reader :pn
 
   def setup
@@ -193,7 +174,6 @@ class TextExecutableTests < Test::Unit::TestCase
     assert pn.text_executable?
     assert_equal [], pn.archs
     assert_equal :dunno, pn.arch
-    assert_match(/text executable/, file(pn))
   end
 
   def test_shebang_with_options
@@ -208,7 +188,6 @@ class TextExecutableTests < Test::Unit::TestCase
     assert pn.text_executable?
     assert_equal [], pn.archs
     assert_equal :dunno, pn.arch
-    assert_match(/text executable/, file(pn))
   end
 
   def test_malformed_shebang
@@ -223,6 +202,5 @@ class TextExecutableTests < Test::Unit::TestCase
     assert !pn.text_executable?
     assert_equal [], pn.archs
     assert_equal :dunno, pn.arch
-    assert_no_match(/text executable/, file(pn))
   end
 end
