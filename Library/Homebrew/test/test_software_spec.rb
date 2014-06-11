@@ -2,8 +2,6 @@ require 'testing_env'
 require 'software_spec'
 
 class SoftwareSpecTests < Homebrew::TestCase
-  include VersionAssertions
-
   def setup
     @spec = SoftwareSpec.new
   end
@@ -88,8 +86,6 @@ class SoftwareSpecTests < Homebrew::TestCase
 end
 
 class HeadSoftwareSpecTests < Homebrew::TestCase
-  include VersionAssertions
-
   def setup
     @spec = HeadSoftwareSpec.new
   end

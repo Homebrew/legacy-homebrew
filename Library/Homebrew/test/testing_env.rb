@@ -56,23 +56,6 @@ at_exit { HOMEBREW_PREFIX.parent.rmtree }
 # Test fixtures and files can be found relative to this path
 TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
 
-def shutup
-  if ARGV.verbose?
-    yield
-  else
-    begin
-      tmperr = $stderr.clone
-      tmpout = $stdout.clone
-      $stderr.reopen '/dev/null', 'w'
-      $stdout.reopen '/dev/null', 'w'
-      yield
-    ensure
-      $stderr.reopen tmperr
-      $stdout.reopen tmpout
-    end
-  end
-end
-
 require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
 
 require 'test/unit' # must be after at_exit
@@ -86,28 +69,6 @@ rescue LoadError
   warn 'The mocha gem is required to run some tests, expect failures'
 end
 
-module VersionAssertions
-  def version v
-    Version.new(v)
-  end
-
-  def assert_version_equal expected, actual
-    assert_equal Version.new(expected), actual
-  end
-
-  def assert_version_detected expected, url
-    assert_equal expected, Version.parse(url).to_s
-  end
-
-  def assert_version_nil url
-    assert_nil Version.parse(url)
-  end
-
-  def assert_version_tokens tokens, version
-    assert_equal tokens, version.send(:tokens).map(&:to_s)
-  end
-end
-
 module Test::Unit::Assertions
   def assert_empty(obj, msg=nil)
     assert_respond_to(obj, :empty?, msg)
@@ -116,12 +77,50 @@ module Test::Unit::Assertions
 end
 
 module Homebrew
+  module VersionAssertions
+    def version v
+      Version.new(v)
+    end
+
+    def assert_version_equal expected, actual
+      assert_equal Version.new(expected), actual
+    end
+
+    def assert_version_detected expected, url
+      assert_equal expected, Version.parse(url).to_s
+    end
+
+    def assert_version_nil url
+      assert_nil Version.parse(url)
+    end
+
+    def assert_version_tokens tokens, version
+      assert_equal tokens, version.send(:tokens).map(&:to_s)
+    end
+  end
+
   class TestCase < ::Test::Unit::TestCase
+    include VersionAssertions
+
     TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
     TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
 
     def formula(name="formula_name", path=Formula.path(name), &block)
       @_f = Class.new(Formula, &block).new(name, path)
+    end
+
+    def shutup
+      err = $stderr.clone
+      out = $stdout.clone
+
+      begin
+        $stderr.reopen("/dev/null", "w")
+        $stdout.reopen("/dev/null", "w")
+        yield
+      ensure
+        $stderr.reopen(err)
+        $stdout.reopen(out)
+      end
     end
   end
 end

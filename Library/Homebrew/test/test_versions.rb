@@ -2,8 +2,6 @@ require 'testing_env'
 require 'version'
 
 class VersionTests < Homebrew::TestCase
-  include VersionAssertions
-
   def test_accepts_objects_responding_to_to_str
     value = stub(:to_str => '0.1')
     assert_equal '0.1', Version.new(value).to_s
@@ -29,8 +27,6 @@ class VersionTests < Homebrew::TestCase
 end
 
 class VersionComparisonTests < Homebrew::TestCase
-  include VersionAssertions
-
   def test_version_comparisons
     assert_operator version('0.1'), :==, version('0.1.0')
     assert_operator version('0.1'), :<, version('0.2')
@@ -96,8 +92,6 @@ class VersionComparisonTests < Homebrew::TestCase
 end
 
 class VersionParsingTests < Homebrew::TestCase
-  include VersionAssertions
-
   def test_pathname_version
     d = HOMEBREW_CELLAR/'foo-0.1.9'
     d.mkpath
