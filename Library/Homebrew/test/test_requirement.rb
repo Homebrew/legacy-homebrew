@@ -132,7 +132,7 @@ class RequirementTests < Homebrew::TestCase
 
   def test_not_eql
     a, b = Requirement.new([:optional]), Requirement.new
-    assert_not_equal a.hash, b.hash
+    refute_equal a.hash, b.hash
     assert !a.eql?(b)
     assert !b.eql?(a)
   end

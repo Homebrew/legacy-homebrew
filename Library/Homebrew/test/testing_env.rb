@@ -5,6 +5,7 @@ $:.push(File.expand_path(__FILE__+'/../..'))
 require 'extend/module'
 require 'extend/fileutils'
 require 'extend/pathname'
+require 'extend/ARGV'
 require 'extend/string'
 require 'extend/symbol'
 require 'extend/enumerable'
@@ -56,22 +57,14 @@ at_exit { HOMEBREW_PREFIX.parent.rmtree }
 # Test fixtures and files can be found relative to this path
 TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
 
-require 'test/unit' # must be after at_exit
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
 ARGV.extend(HomebrewArgvExtension)
 
 begin
-  require 'rubygems'
-  require 'mocha/setup'
+  require "rubygems"
+  require "minitest/autorun"
+  require "mocha/setup"
 rescue LoadError
-  warn 'The mocha gem is required to run some tests, expect failures'
-end
-
-module Test::Unit::Assertions
-  def assert_empty(obj, msg=nil)
-    assert_respond_to(obj, :empty?, msg)
-    assert(obj.empty?, msg)
-  end unless method_defined?(:assert_empty)
+  abort "Run `rake deps` or install the mocha and minitest gems before running the tests"
 end
 
 module Homebrew
@@ -97,7 +90,7 @@ module Homebrew
     end
   end
 
-  class TestCase < ::Test::Unit::TestCase
+  class TestCase < ::Minitest::Test
     include VersionAssertions
 
     TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
@@ -119,6 +112,10 @@ module Homebrew
         $stderr.reopen(err)
         $stdout.reopen(out)
       end
+    end
+
+    def assert_nothing_raised
+      yield
     end
   end
 end
