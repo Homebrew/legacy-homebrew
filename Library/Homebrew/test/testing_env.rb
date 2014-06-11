@@ -79,7 +79,6 @@ require 'test/unit' # must be after at_exit
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
 require 'extend/ENV'
 ARGV.extend(HomebrewArgvExtension)
-ENV.extend(Stdenv)
 
 begin
   require 'rubygems'
