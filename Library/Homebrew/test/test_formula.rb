@@ -131,15 +131,15 @@ class FormulaTests < Homebrew::TestCase
   def test_inequality
     x = TestBall.new("foo")
     y = TestBall.new("bar")
-    assert_not_equal x, y
-    assert_not_equal y, x
-    assert_not_equal x.hash, y.hash
+    refute_equal x, y
+    refute_equal y, x
+    refute_equal x.hash, y.hash
     assert !x.eql?(y)
     assert !y.eql?(x)
   end
 
   def test_comparison_with_non_formula_objects_does_not_raise
-    assert_not_equal TestBall.new, Object.new
+    refute_equal TestBall.new, Object.new
   end
 
   def test_class_naming

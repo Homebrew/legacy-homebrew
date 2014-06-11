@@ -18,7 +18,7 @@ class OptionTests < Homebrew::TestCase
     foo = Option.new("foo")
     bar = Option.new("bar")
     assert_equal foo, @option
-    assert_not_equal bar, @option
+    refute_equal bar, @option
     assert @option.eql?(foo)
     assert !@option.eql?(bar)
     assert_operator bar, :<, foo
