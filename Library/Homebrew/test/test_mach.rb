@@ -171,12 +171,17 @@ end
 class TextExecutableTests < Test::Unit::TestCase
   include FileHelper
 
+  attr_reader :pn
+
+  def setup
+    @pn = HOMEBREW_PREFIX.join("an_executable")
+  end
+
   def teardown
-    (HOMEBREW_PREFIX/'foo_script').unlink
+    HOMEBREW_PREFIX.join("an_executable").unlink
   end
 
   def test_simple_shebang
-    pn = HOMEBREW_PREFIX/'foo_script'
     pn.write '#!/bin/sh'
     assert !pn.universal?
     assert !pn.i386?
@@ -192,7 +197,6 @@ class TextExecutableTests < Test::Unit::TestCase
   end
 
   def test_shebang_with_options
-    pn = HOMEBREW_PREFIX/'foo_script'
     pn.write '#! /usr/bin/perl -w'
     assert !pn.universal?
     assert !pn.i386?
@@ -208,7 +212,6 @@ class TextExecutableTests < Test::Unit::TestCase
   end
 
   def test_malformed_shebang
-    pn = HOMEBREW_PREFIX/'foo_script'
     pn.write ' #!'
     assert !pn.universal?
     assert !pn.i386?
