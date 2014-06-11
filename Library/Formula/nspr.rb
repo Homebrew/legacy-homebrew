@@ -6,6 +6,10 @@ class Nspr < Formula
   sha1 "9f3f278f7f31574b2cdbb99d9703c58e51cd3e1c"
 
   bottle do
+    cellar :any
+    sha1 "defd1ff9cccc8b64599c22734757648d031dd2ec" => :mavericks
+    sha1 "f72fbe6a2e2d45bc493faf9798060df4cc588a5e" => :mountain_lion
+    sha1 "a09af6bd5def1c714bb68dc95909a2fd9019e861" => :lion
   end
 
   def install
