@@ -38,7 +38,7 @@ class UpdaterTests < Test::Unit::TestCase
   end
 
   def self.fixture_data
-    @fixture_data ||= YAML.load_file("#{TEST_FOLDER}/fixtures/updater_fixture.yaml")
+    @fixture_data ||= YAML.load_file("#{TEST_DIRECTORY}/fixtures/updater_fixture.yaml")
   end
 
   def setup

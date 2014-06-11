@@ -2,11 +2,11 @@ require 'testing_env'
 
 class MachOPathnameTests < Test::Unit::TestCase
   def dylib_path(name)
-    Pathname.new("#{TEST_FOLDER}/mach/#{name}.dylib")
+    Pathname.new("#{TEST_DIRECTORY}/mach/#{name}.dylib")
   end
 
   def bundle_path(name)
-    Pathname.new("#{TEST_FOLDER}/mach/#{name}.bundle")
+    Pathname.new("#{TEST_DIRECTORY}/mach/#{name}.bundle")
   end
 
   def test_fat_dylib
@@ -49,7 +49,7 @@ class MachOPathnameTests < Test::Unit::TestCase
   end
 
   def test_mach_o_executable
-    pn = Pathname.new("#{TEST_FOLDER}/mach/a.out")
+    pn = Pathname.new("#{TEST_DIRECTORY}/mach/a.out")
     assert pn.universal?
     assert !pn.i386?
     assert !pn.x86_64?
@@ -101,7 +101,7 @@ class MachOPathnameTests < Test::Unit::TestCase
   end
 
   def test_non_mach_o
-    pn = Pathname.new("#{TEST_FOLDER}/tarballs/testball-0.1.tbz")
+    pn = Pathname.new("#{TEST_DIRECTORY}/tarballs/testball-0.1.tbz")
     assert !pn.universal?
     assert !pn.i386?
     assert !pn.x86_64?
