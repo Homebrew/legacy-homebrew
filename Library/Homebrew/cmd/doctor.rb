@@ -25,7 +25,7 @@ class Volumes
   def get_mounts path=nil
     vols = []
     # get the volume of path, if path is nil returns all volumes
-    raw_df = `/bin/df -P #{path}`
+    raw_df = IO.popen("/bin/df -P #{path}", "rb", &:read)
     raw_df.split("\n").each do |line|
       case line
       # regex matches: /dev/disk0s2   489562928 440803616  48247312    91%    /
