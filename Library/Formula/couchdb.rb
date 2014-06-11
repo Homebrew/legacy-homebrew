@@ -2,8 +2,8 @@ require 'formula'
 
 class Couchdb < Formula
   homepage "http://couchdb.apache.org/"
-  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.5.1/apache-couchdb-1.5.1.tar.gz'
-  sha1 '5340c79f8f9e11742b723f92e2251d4d59b8247c'
+  url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.6.0/apache-couchdb-1.6.0.tar.gz'
+  sha1 '62f99077c201ad632c1cd144fcaf6f10fa5949ed'
 
   bottle do
     sha1 "98757863115f93f5548103b02f6b9d4bcef9777a" => :mavericks
