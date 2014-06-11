@@ -4,9 +4,14 @@ require 'yaml'
 
 class UpdaterTests < Test::Unit::TestCase
   class UpdaterMock < ::Updater
+    def initialize(*args)
+      super
+      @outputs = Hash.new { |h, k| h[k] = [] }
+      @expected = []
+      @called = []
+    end
+
     def in_repo_expect(cmd, output = '')
-      @outputs  ||= Hash.new { |h,k| h[k] = [] }
-      @expected ||= []
       @expected << cmd
       @outputs[cmd] << output
     end
@@ -14,7 +19,6 @@ class UpdaterTests < Test::Unit::TestCase
     def `(cmd, *args)
       cmd = "#{cmd} #{args*' '}".strip
       if @expected.include?(cmd) and !@outputs[cmd].empty?
-        @called ||= []
         @called << cmd
         @outputs[cmd].shift
       else
