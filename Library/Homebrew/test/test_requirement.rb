@@ -24,28 +24,28 @@ class RequirementTests < Homebrew::TestCase
 
   def test_dsl_fatal
     req = Class.new(Requirement) { fatal true }.new
-    assert req.fatal?
+    assert_predicate req, :fatal?
   end
 
   def test_satisfy_true
     req = Class.new(Requirement) do
       satisfy(:build_env => false) { true }
     end.new
-    assert req.satisfied?
+    assert_predicate req, :satisfied?
   end
 
   def test_satisfy_false
     req = Class.new(Requirement) do
       satisfy(:build_env => false) { false }
     end.new
-    assert !req.satisfied?
+    refute_predicate req, :satisfied?
   end
 
   def test_satisfy_with_boolean
     req = Class.new(Requirement) do
       satisfy true
     end.new
-    assert req.satisfied?
+    assert_predicate req, :satisfied?
   end
 
   def test_satisfy_sets_up_build_env_by_default
@@ -55,7 +55,7 @@ class RequirementTests < Homebrew::TestCase
 
     ENV.expects(:with_build_environment).yields.returns(true)
 
-    assert req.satisfied?
+    assert_predicate req, :satisfied?
   end
 
   def test_satisfy_build_env_can_be_disabled
@@ -65,7 +65,7 @@ class RequirementTests < Homebrew::TestCase
 
     ENV.expects(:with_build_environment).never
 
-    assert req.satisfied?
+    assert_predicate req, :satisfied?
   end
 
   def test_infers_path_from_satisfy_result
@@ -83,7 +83,7 @@ class RequirementTests < Homebrew::TestCase
 
   def test_dsl_build
     req = Class.new(Requirement) { build true }.new
-    assert req.build?
+    assert_predicate req, :build?
   end
 
   def test_infer_name_from_class
@@ -101,7 +101,7 @@ class RequirementTests < Homebrew::TestCase
 
   def test_dsl_default_formula
     req = Class.new(Requirement) { default_formula 'foo' }.new
-    assert req.default_formula?
+    assert_predicate req, :default_formula?
   end
 
   def test_to_dependency

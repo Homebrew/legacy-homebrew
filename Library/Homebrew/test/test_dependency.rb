@@ -12,9 +12,9 @@ class DependableTests < Homebrew::TestCase
   end
 
   def test_interrogation
-    assert @dep.build?
-    assert !@dep.optional?
-    assert !@dep.recommended?
+    assert_predicate @dep, :build?
+    refute_predicate @dep, :optional?
+    refute_predicate @dep, :recommended?
   end
 end
 
