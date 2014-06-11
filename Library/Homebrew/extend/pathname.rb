@@ -244,11 +244,15 @@ class Pathname
     %r[^#!\s*\S+] === open('r') { |f| f.read(1024) }
   end
 
-  def incremental_hash(hasher)
-    incr_hash = hasher.new
-    buf = ""
-    open('rb') { |f| incr_hash << buf while f.read(1024, buf) }
-    incr_hash.hexdigest
+  def incremental_hash(klass)
+    digest = klass.new
+    if digest.respond_to?(:file)
+      digest.file(self)
+    else
+      buf = ""
+      open("rb") { |f| digest << buf while f.read(1024, buf) }
+    end
+    digest.hexdigest
   end
 
   def sha1
