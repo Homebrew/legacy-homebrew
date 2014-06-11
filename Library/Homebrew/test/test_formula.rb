@@ -27,17 +27,17 @@ class FormulaTests < Homebrew::TestCase
   def test_installed?
     f = TestBall.new
     f.stubs(:installed_prefix).returns(stub(:directory? => false))
-    assert !f.installed?
+    refute_predicate f, :installed?
 
     f.stubs(:installed_prefix).returns(
       stub(:directory? => true, :children => [])
     )
-    assert !f.installed?
+    refute_predicate f, :installed?
 
     f.stubs(:installed_prefix).returns(
       stub(:directory? => true, :children => [stub])
     )
-    assert f.installed?
+    assert_predicate f, :installed?
   end
 
   def test_installed_prefix

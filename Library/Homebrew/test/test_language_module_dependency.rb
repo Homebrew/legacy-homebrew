@@ -3,13 +3,11 @@ require 'requirements/language_module_dependency'
 
 class LanguageModuleDependencyTests < Homebrew::TestCase
   def assert_deps_fail(spec)
-    l = LanguageModuleDependency.new(*spec.shift.reverse)
-    assert !l.satisfied?
+    refute_predicate LanguageModuleDependency.new(*spec.shift.reverse), :satisfied?
   end
 
   def assert_deps_pass(spec)
-    l = LanguageModuleDependency.new(*spec.shift.reverse)
-    assert l.satisfied?
+    assert_predicate LanguageModuleDependency.new(*spec.shift.reverse), :satisfied?
   end
 
   def test_unique_deps_are_not_eql

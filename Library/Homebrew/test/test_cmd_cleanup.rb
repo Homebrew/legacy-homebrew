@@ -14,14 +14,14 @@ class CleanupTests < Homebrew::TestCase
       f3.brew { f3.install }
     end
 
-    assert f1.installed?
-    assert f2.installed?
-    assert f3.installed?
+    assert_predicate f1, :installed?
+    assert_predicate f2, :installed?
+    assert_predicate f3, :installed?
 
     shutup { Homebrew.cleanup_formula(f3) }
 
-    assert !f1.installed?
-    assert !f2.installed?
-    assert f3.installed?
+    refute_predicate f1, :installed?
+    refute_predicate f2, :installed?
+    assert_predicate f3, :installed?
   end
 end
