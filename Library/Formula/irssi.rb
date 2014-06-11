@@ -17,11 +17,6 @@ class Irssi < Formula
   depends_on 'glib'
   depends_on 'openssl' => :optional
 
-  devel do
-    url 'http://irssi.org/files/snapshots/irssi-20140530.tar.gz'
-    sha1 '6bf61b3c3a384bacfd55c06aa9d4f7e288a30ac8'
-  end
-
   # Fix Perl build flags and paths in man page
   patch :DATA
 
