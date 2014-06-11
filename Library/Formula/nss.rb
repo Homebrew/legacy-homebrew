@@ -6,6 +6,10 @@ class Nss < Formula
   sha1 "450a88dde8c7e4533507ac8340dbf94be28a759b"
 
   bottle do
+    cellar :any
+    sha1 "1a8dc803b9a5015237f57a1041aa8492600e85ac" => :mavericks
+    sha1 "f1cd3a30fe6539c0802ed3c562b6312bd79028b7" => :mountain_lion
+    sha1 "d23ea919ca2fd9017b236552337f5d59ce0c2b79" => :lion
   end
 
   depends_on "nspr"
