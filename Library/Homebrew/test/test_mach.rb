@@ -1,10 +1,6 @@
 require 'testing_env'
 
 class MachOPathnameTests < Test::Unit::TestCase
-  def setup
-    @archs = [:i386, :x86_64, :ppc7400, :ppc64].extend(ArchitectureListExtension)
-  end
-
   def dylib_path(name)
     Pathname.new("#{TEST_FOLDER}/mach/#{name}.dylib")
   end
@@ -116,6 +112,12 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.text_executable?
     assert !pn.mach_o_bundle?
     assert_equal :dunno, pn.arch
+  end
+end
+
+class ArchitectureListExtensionTests < MachOPathnameTests
+  def setup
+    @archs = [:i386, :x86_64, :ppc7400, :ppc64].extend(ArchitectureListExtension)
   end
 
   def test_architecture_list_extension_universal_checks
