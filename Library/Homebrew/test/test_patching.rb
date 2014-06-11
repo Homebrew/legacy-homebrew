@@ -3,12 +3,12 @@ require 'formula'
 require 'testball'
 
 class PatchingTests < Test::Unit::TestCase
-  PATCH_URL_A = "file:///#{TEST_FOLDER}/patches/noop-a.diff"
-  PATCH_URL_B = "file:///#{TEST_FOLDER}/patches/noop-b.diff"
+  PATCH_URL_A = "file:///#{TEST_DIRECTORY}/patches/noop-a.diff"
+  PATCH_URL_B = "file:///#{TEST_DIRECTORY}/patches/noop-b.diff"
 
   def formula(&block)
     super do
-      url "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+      url "file:///#{TEST_DIRECTORY}/tarballs/testball-0.1.tbz"
       sha1 "482e737739d946b7c8cbaf127d9ee9c148b999f5"
       class_eval(&block)
     end

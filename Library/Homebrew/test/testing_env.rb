@@ -54,7 +54,7 @@ end
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 # Test fixtures and files can be found relative to this path
-TEST_FOLDER = File.dirname(File.expand_path(__FILE__))
+TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
 
 def shutup
   if ARGV.verbose?
