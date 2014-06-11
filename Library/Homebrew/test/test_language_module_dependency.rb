@@ -22,7 +22,7 @@ class LanguageModuleDependencyTests < Homebrew::TestCase
     mod_name = "foo"
     import_name = "bar"
     l = LanguageModuleDependency.new(:python, mod_name, import_name)
-    assert l.message.include?(mod_name)
+    assert_includes l.message, mod_name
     assert l.the_test.one? { |c| c.include?(import_name) }
   end
 

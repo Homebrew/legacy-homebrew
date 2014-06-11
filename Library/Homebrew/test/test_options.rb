@@ -50,7 +50,7 @@ class OptionsTests < Homebrew::TestCase
   def test_no_duplicate_options
     @options << Option.new("foo")
     @options << Option.new("foo")
-    assert @options.include? "--foo"
+    assert_includes @options, "--foo"
     assert_equal 1, @options.count
   end
 
@@ -65,9 +65,9 @@ class OptionsTests < Homebrew::TestCase
 
   def test_include
     @options << Option.new("foo")
-    assert @options.include? "--foo"
-    assert @options.include? "foo"
-    assert @options.include? Option.new("foo")
+    assert_includes @options, "--foo"
+    assert_includes @options, "foo"
+    assert_includes @options, Option.new("foo")
   end
 
   def test_union_returns_options
@@ -102,7 +102,7 @@ class OptionsTests < Homebrew::TestCase
   def test_concat_array
     option = Option.new("foo")
     @options.concat([option])
-    assert @options.include?(option)
+    assert_includes @options, option
     assert_equal [option], @options.to_a
   end
 
@@ -111,7 +111,7 @@ class OptionsTests < Homebrew::TestCase
     opts = Options.new
     opts << option
     @options.concat(opts)
-    assert @options.include?(option)
+    assert_includes @options, option
     assert_equal [option], @options.to_a
   end
 
