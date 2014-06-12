@@ -2,8 +2,17 @@ require 'formula'
 
 class OpenSceneGraph < Formula
   homepage 'http://www.openscenegraph.org/projects/osg'
-  url 'http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.2.0.zip'
-  sha1 'c20891862b5876983d180fc4a3d3cfb2b4a3375c'
+
+  stable do
+    url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.2.0.zip"
+    sha1 "c20891862b5876983d180fc4a3d3cfb2b4a3375c"
+
+    # Build fixes for clang/c++11
+    patch do
+      url "https://github.com/openscenegraph/osg/commit/f71491786ac2d22ef16f9f5ed31de0f6666c6600.diff"
+      sha1 "d96fe3dc1a01c8ad096433ef07f02803c2bf9206"
+    end
+  end
 
   head 'http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/'
 
