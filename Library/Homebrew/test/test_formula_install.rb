@@ -56,10 +56,10 @@ class InstallTests < Test::Unit::TestCase
 
   def test_script_install
     f = Class.new(ScriptFileFormula) do
-      url "file://#{__FILE__}"
+      url "file://#{File.expand_path(__FILE__)}"
       version "1"
       def initialize
-        super "test_script_formula", Pathname.new(__FILE__)
+        super "test_script_formula", Pathname.new(__FILE__).expand_path
       end
     end.new
 
