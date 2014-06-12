@@ -5,7 +5,7 @@ require 'keg'
 
 
 class TestScriptFileFormula < ScriptFileFormula
-  url "file:///#{__FILE__}"
+  url "file://#{__FILE__}"
   version "1"
 
   def initialize(name="test_script_formula", path=nil)
