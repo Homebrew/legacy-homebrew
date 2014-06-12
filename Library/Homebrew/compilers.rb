@@ -94,11 +94,12 @@ class CompilerQueue
 end
 
 class CompilerSelector
-  def initialize(f)
+  def initialize(f, versions=MacOS)
     @f = f
+    @versions = versions
     @compilers = CompilerQueue.new
     %w{clang llvm gcc gcc_4_0}.map(&:to_sym).each do |cc|
-      version = MacOS.send("#{cc}_build_version")
+      version = @versions.send("#{cc}_build_version")
       unless version.nil?
         @compilers << Compiler.new(cc, version, priority_for(cc))
       end
@@ -107,7 +108,7 @@ class CompilerSelector
     # non-Apple GCC 4.x
     SharedEnvExtension::GNU_GCC_VERSIONS.each do |v|
       name = "gcc-4.#{v}"
-      version = MacOS.non_apple_gcc_version(name)
+      version = @versions.non_apple_gcc_version(name)
       unless version.nil?
         # priority is based on version, with newest preferred first
         @compilers << Compiler.new(name, version, 1.0 + v/10.0)
@@ -133,7 +134,7 @@ class CompilerSelector
 
   def priority_for(cc)
     case cc
-    when :clang then MacOS.clang_build_version >= 318 ? 3 : 0.5
+    when :clang then @versions.clang_build_version >= 318 ? 3 : 0.5
     when :gcc   then 2.5
     when :llvm  then 2
     when :gcc_4_0 then 0.25
