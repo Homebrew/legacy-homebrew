@@ -8,12 +8,9 @@ class Lmdb < Formula
   head 'git://git.openldap.org/openldap.git', :branch => 'mdb.master'
 
   def install
-    # .so -> .dylib
-    inreplace 'libraries/liblmdb/Makefile', ".so", ".dylib"
-
-    # fix the /share/man/man path
-    inreplace 'libraries/liblmdb/Makefile' do |s|
-      s.gsub! '$(DESTDIR)$(prefix)/man/man1', '$(DESTDIR)$(prefix)/share/man/man1'
+    inreplace "libraries/liblmdb/Makefile" do |s|
+      s.gsub! ".so", ".dylib"
+      s.gsub! "$(DESTDIR)$(prefix)/man/man1", "$(DESTDIR)$(prefix)/share/man/man1"
     end
 
     man1.mkpath
