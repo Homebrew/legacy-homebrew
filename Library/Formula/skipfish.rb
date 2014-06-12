@@ -19,13 +19,13 @@ class Skipfish < Formula
 
     system 'make'
     bin.install 'skipfish'
-    libexec.install %w(assets dictionaries config signatures)
+    libexec.install %w(assets dictionaries config signatures doc)
   end
 
   def caveats; <<-EOS.undent
     NOTE: Skipfish uses dictionary-based probes and will not run until
     you have specified a dictionary for it to use. Please read:
-      #{libexec}/dictionaries/README-FIRST
+      #{libexec}/doc/dictionaries.txt
     carefully to make the right choice. This step has a profound impact
     on the quality of results later on.
 
