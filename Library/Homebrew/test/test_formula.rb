@@ -170,7 +170,7 @@ class FormulaTests < Test::Unit::TestCase
       bottle { sha1 TEST_SHA1 => bottle_tag }
 
       def initialize
-        super "test", Pathname.new(__FILE__)
+        super "test", Pathname.new(__FILE__).expand_path
       end
     end.new
 
