@@ -65,7 +65,8 @@ class CompilerFailure
       # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
       @version ||= @major_version + '.999'
     else
-      @version = (@version || 9999).to_i
+      @version ||= 9999
+      @version = @version.to_i
     end
   end
 
