@@ -5,6 +5,12 @@ class Skipfish < Formula
   url 'https://skipfish.googlecode.com/files/skipfish-2.10b.tgz'
   sha1 '2564162a13d02f8310eef5edcbaf74ed6043be99'
 
+  bottle do
+    sha1 "509453d1b4e717ab4858b22c6fffe1d5f98744a2" => :mavericks
+    sha1 "d79d26539fac30870ee1699791638f7a38ffd884" => :mountain_lion
+    sha1 "516a27501c45f82c782cbe61867cc958f0063113" => :lion
+  end
+
   depends_on 'libidn'
   depends_on 'pcre'
 
