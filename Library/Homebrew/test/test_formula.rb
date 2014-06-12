@@ -197,9 +197,6 @@ class FormulaTests < Test::Unit::TestCase
         require 'formula'
         class #{Formulary.class_s(name)} < Formula
           url 'foo-1.0'
-          def initialize(*args)
-            super
-          end
         end
       }
     end
