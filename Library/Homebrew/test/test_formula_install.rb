@@ -4,16 +4,6 @@ require 'test/testball'
 require 'keg'
 
 
-class TestScriptFileFormula < ScriptFileFormula
-  url "file://#{__FILE__}"
-  version "1"
-
-  def initialize(name="test_script_formula", path=nil)
-    super
-  end
-end
-
-
 class InstallTests < Test::Unit::TestCase
   def teardown
     HOMEBREW_CACHE.rmtree
@@ -65,7 +55,13 @@ class InstallTests < Test::Unit::TestCase
   end
 
   def test_script_install
-    f=TestScriptFileFormula.new
+    f = Class.new(ScriptFileFormula) do
+      url "file://#{__FILE__}"
+      version "1"
+      def initialize
+        super "test_script_formula", Pathname.new(__FILE__)
+      end
+    end.new
 
     temporary_install f do
       shutup do
@@ -75,5 +71,4 @@ class InstallTests < Test::Unit::TestCase
       assert_equal 1, f.bin.children.length
     end
   end
-
 end
