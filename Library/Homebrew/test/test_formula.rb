@@ -169,8 +169,8 @@ class FormulaTests < Test::Unit::TestCase
 
       bottle { sha1 TEST_SHA1 => bottle_tag }
 
-      def initialize(name="test", path=nil)
-        super
+      def initialize
+        super "test", Pathname.new(__FILE__)
       end
     end.new
 
