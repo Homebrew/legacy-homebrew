@@ -21,7 +21,7 @@ class OptionTests < Test::Unit::TestCase
     assert_not_equal bar, @option
     assert @option.eql?(foo)
     assert !@option.eql?(bar)
-    assert bar < foo
+    assert_operator bar, :<, foo
   end
 
   def test_strips_leading_dashes

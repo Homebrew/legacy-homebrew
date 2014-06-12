@@ -132,6 +132,7 @@ class Pathname
   private :default_stat
 
   def cp dst
+    opoo "Pathname#cp is deprecated, use FileUtils.cp"
     if file?
       FileUtils.cp to_s, dst
     else
@@ -194,6 +195,7 @@ class Pathname
   end
 
   def chmod_R perms
+    opoo "Pathname#chmod_R is deprecated, use FileUtils.chmod_R"
     require 'fileutils'
     FileUtils.chmod_R perms, to_s
   end
@@ -244,11 +246,15 @@ class Pathname
     %r[^#!\s*\S+] === open('r') { |f| f.read(1024) }
   end
 
-  def incremental_hash(hasher)
-    incr_hash = hasher.new
-    buf = ""
-    open('rb') { |f| incr_hash << buf while f.read(1024, buf) }
-    incr_hash.hexdigest
+  def incremental_hash(klass)
+    digest = klass.new
+    if digest.respond_to?(:file)
+      digest.file(self)
+    else
+      buf = ""
+      open("rb") { |f| digest << buf while f.read(1024, buf) }
+    end
+    digest.hexdigest
   end
 
   def sha1
@@ -297,8 +303,12 @@ class Pathname
     File.symlink(src.relative_path_from(dirname), self)
   end
 
-  def / that
-    self + that.to_s
+  def /(other)
+    unless other.respond_to?(:to_str) || other.respond_to?(:to_path)
+      opoo "Pathname#/ called on #{inspect} with #{other.inspect} as an argument"
+      puts "This behavior is deprecated, please pass either a String or a Pathname"
+    end
+    self + other.to_s
   end unless method_defined?(:/)
 
   def ensure_writable

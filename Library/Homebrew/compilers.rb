@@ -1,13 +1,4 @@
-class Compiler < Struct.new(:name, :priority)
-  # The full version of the compiler for comparison purposes.
-  def version
-    if name.is_a? String
-      MacOS.non_apple_gcc_version(name)
-    else
-      MacOS.send("#{name}_build_version")
-    end
-  end
-
+class Compiler < Struct.new(:name, :version, :priority)
   # This is exposed under the `build` name for compatibility, since
   # `fails_with` continues to use `build` in the public API.
   # `build` indicates the build number of an Apple compiler.
@@ -74,7 +65,8 @@ class CompilerFailure
       # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
       @version ||= @major_version + '.999'
     else
-      @version = (@version || 9999).to_i
+      @version ||= 9999
+      @version = @version.to_i
     end
   end
 
@@ -103,20 +95,24 @@ class CompilerQueue
 end
 
 class CompilerSelector
-  def initialize(f)
+  def initialize(f, versions=MacOS)
     @f = f
+    @versions = versions
     @compilers = CompilerQueue.new
     %w{clang llvm gcc gcc_4_0}.map(&:to_sym).each do |cc|
-      unless MacOS.send("#{cc}_build_version").nil?
-        @compilers << Compiler.new(cc, priority_for(cc))
+      version = @versions.send("#{cc}_build_version")
+      unless version.nil?
+        @compilers << Compiler.new(cc, version, priority_for(cc))
       end
     end
 
     # non-Apple GCC 4.x
     SharedEnvExtension::GNU_GCC_VERSIONS.each do |v|
-      unless MacOS.non_apple_gcc_version("gcc-4.#{v}").nil?
+      name = "gcc-4.#{v}"
+      version = @versions.non_apple_gcc_version(name)
+      unless version.nil?
         # priority is based on version, with newest preferred first
-        @compilers << Compiler.new("gcc-4.#{v}", 1.0 + v/10.0)
+        @compilers << Compiler.new(name, version, 1.0 + v/10.0)
       end
     end
   end
@@ -139,7 +135,7 @@ class CompilerSelector
 
   def priority_for(cc)
     case cc
-    when :clang then MacOS.clang_build_version >= 318 ? 3 : 0.5
+    when :clang then @versions.clang_build_version >= 318 ? 3 : 0.5
     when :gcc   then 2.5
     when :llvm  then 2
     when :gcc_4_0 then 0.25
