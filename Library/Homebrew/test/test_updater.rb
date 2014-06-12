@@ -62,15 +62,15 @@ class UpdaterTests < Test::Unit::TestCase
   def test_update_homebrew_without_any_changes
     perform_update
     assert @updater.expectations_met?
-    assert @report.empty?
+    assert_empty @report
   end
 
   def test_update_homebrew_without_formulae_changes
     perform_update(fixture('update_git_diff_output_without_formulae_changes'))
     assert @updater.expectations_met?
-    assert @report.select_formula(:M).empty?
-    assert @report.select_formula(:A).empty?
-    assert @report.select_formula(:R).empty?
+    assert_empty @report.select_formula(:M)
+    assert_empty @report.select_formula(:A)
+    assert_empty @report.select_formula(:R)
   end
 
   def test_update_homebrew_with_formulae_changes
