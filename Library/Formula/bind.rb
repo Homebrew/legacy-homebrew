@@ -6,6 +6,12 @@ class Bind < Formula
   sha1 'c57b5825e36933119e9fd6f43e3f52262e7ff4ed'
   version '9.10.0-P2'
 
+  bottle do
+    sha1 "c8447f8f4a5e1fb7026803494caf156abe7c7f86" => :mavericks
+    sha1 "3abe0648bcf3e565d4b2ca0b0d553a676497575e" => :mountain_lion
+    sha1 "4935e48f4d67c069aba231f8f77f3110fa89f86f" => :lion
+  end
+
   depends_on "openssl"
 
   def install
