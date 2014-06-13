@@ -14,11 +14,21 @@ class Cloog < Formula
     sha1 'fd707268c3e5beafa9b98a768f7064d5b9699178' => :lion
   end
 
+  head do
+    url 'http://repo.or.cz/w/cloog.git'
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'gmp'
   depends_on 'isl'
 
   def install
+    system "./get_submodules.sh" if build.head?
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
