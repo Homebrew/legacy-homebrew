@@ -38,7 +38,11 @@ class Ruby < Formula
   def install
     system "autoconf" if build.head?
 
-    args = %W[--prefix=#{prefix} --enable-shared --disable-silent-rules]
+    args = %W[
+      --prefix=#{prefix} --enable-shared --disable-silent-rules
+      --with-sitedir=#{HOMEBREW_PREFIX}/lib/ruby/site_ruby
+      --with-vendordir=#{HOMEBREW_PREFIX}/lib/ruby/vendor_ruby
+      ]
     args << "--program-suffix=21" if build.with? "suffix"
     args << "--with-arch=#{Hardware::CPU.universal_archs.join(',')}" if build.universal?
     args << "--with-out-ext=tk" if build.without? "tcltk"
@@ -64,25 +68,6 @@ class Ruby < Formula
     # Customize rubygems to look/install in the global gem directory
     # instead of in the Cellar, making gems last across reinstalls
     (lib/"ruby/2.1.0/rubygems/defaults/operating_system.rb").write rubygems_config
-  end
-
-  def post_install
-    # Preserve site and vendor folders on upgrade/reinstall
-    # by placing them in HOMEBREW_PREFIX and symlinking
-    ruby_lib = HOMEBREW_PREFIX/"lib/ruby"
-
-    # These directories are empty on install
-    ["site_ruby", "vendor_ruby"].each do |name|
-      link = lib/"ruby"/name
-      real = ruby_lib/name
-
-      # only overwrite invalid (mutually dependent) links
-      real.unlink if real.symlink? && real.readlink == link
-      real.mkpath
-
-      link.unlink if link.exist?
-      link.make_symlink real
-    end
   end
 
   def rubygems_config; <<-EOS.undent
