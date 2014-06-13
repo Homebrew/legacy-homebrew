@@ -7,9 +7,9 @@ class Ruby < Formula
   revision 2
 
   bottle do
-    sha1 "9feba2200305e8750c26f83d562b900d31978905" => :mavericks
-    sha1 "47d34386ba62c418a79090bf1b09c73f77cc1756" => :mountain_lion
-    sha1 "1e6dd158182dec70cd1440a5d834396bb8745246" => :lion
+    sha1 "42b25fd7471f5e2b536b404ec5928dcb184dc794" => :mavericks
+    sha1 "34f73ba64556c78d757abeb2fac2658ec611af9f" => :mountain_lion
+    sha1 "3530b0cf3c591d2cae1b7c71f322c5ad0a215ec0" => :lion
   end
 
   head do
