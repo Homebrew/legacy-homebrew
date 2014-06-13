@@ -10,6 +10,7 @@ TAP_MIGRATIONS = {
   "cantera" => "homebrew/science",
   "catdoc" => "homebrew/boneyard",
   "clam" => "homebrew/boneyard",
+  "cloudfoundry-cli" => "pivotal/tap",
   "cmucl" => "homebrew/binary",
   "comparepdf" => "homebrew/boneyard",
   "denyhosts" => "homebrew/boneyard",
