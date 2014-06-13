@@ -2,8 +2,8 @@ require "formula"
 
 class Fswatch < Formula
   homepage "https://github.com/alandipert/fswatch"
-  url "https://github.com/alandipert/fswatch/archive/1.3.5.tar.gz"
-  sha1 "e22d0d21c563dab03f1339ad64530c6358780516"
+  url "https://github.com/alandipert/fswatch/archive/1.3.6.tar.gz"
+  sha1 "e3dc16f2b181452f864a7cb4718d1aa0f8a0ee2f"
 
   bottle do
     cellar :any
