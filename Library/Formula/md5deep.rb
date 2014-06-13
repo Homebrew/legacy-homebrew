@@ -1,6 +1,6 @@
 require 'formula'
 
-class MD5deep < Formula
+class Md5deep < Formula
   homepage 'http://md5deep.sourceforge.net/'
   url 'https://github.com/jessek/hashdeep/archive/release-4.4.tar.gz'
   sha1 'cb4e313352974299c32bc55fe56396adb74517ef'
