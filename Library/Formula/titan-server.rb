@@ -14,7 +14,7 @@ class TitanServer < Formula
   end
 
   test do
-    system "false"
+    system "#{bin}/titan", "status"
   end
 end
 
