@@ -10,21 +10,20 @@ class InstallTests < Test::Unit::TestCase
   end
 
   def temporary_install f
-    # Brew and install the given formula
+    f.prefix.mkpath
+    keg = Keg.new(f.prefix)
+
     shutup do
       f.brew { f.install }
     end
 
-    # Allow the test to do some processing
-    yield
+    begin
+      yield
+    ensure
+      keg.unlink
+      keg.uninstall
+    end
 
-    # Remove the brewed formula and double check
-    # that it did get removed. This lets multiple
-    # tests use the same formula name without
-    # stepping on each other.
-    keg=Keg.new f.prefix
-    keg.unlink
-    keg.uninstall
     assert !keg.exist?
     assert !f.installed?
   end
