@@ -9,6 +9,8 @@ module Homebrew extend self
 
   if Object.const_defined?(:Minitest)
     FailedAssertion = Minitest::Assertion
+  elsif Object.const_defined?(:MiniTest)
+    FailedAssertion = MiniTest::Assertion
   else
     FailedAssertion = Test::Unit::AssertionFailedError
   end
