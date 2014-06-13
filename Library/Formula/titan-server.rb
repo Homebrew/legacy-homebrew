@@ -14,7 +14,7 @@ class TitanServer < Formula
   end
 
   test do
-    system "#{bin}/titan", "status"
+    system "#{bin}/titan", "stop"
   end
 end
 
