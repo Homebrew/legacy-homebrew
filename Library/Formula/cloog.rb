@@ -6,17 +6,8 @@ class Cloog < Formula
   mirror 'http://gcc.cybermirror.org/infrastructure/cloog-0.18.1.tar.gz'
   sha1 '2dc70313e8e2c6610b856d627bce9c9c3f848077'
 
-  bottle do
-    cellar :any
-    revision 1
-    sha1 '38afdce382abcd3c46fb94af7eb72e87d87859d4' => :mavericks
-    sha1 'd6984ce335cf7b8eb482cdd4f0301c6583b00073' => :mountain_lion
-    sha1 'fd707268c3e5beafa9b98a768f7064d5b9699178' => :lion
-  end
-
   head do
     url 'http://repo.or.cz/w/cloog.git'
-
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -27,15 +18,20 @@ class Cloog < Formula
   depends_on 'isl'
 
   def install
-    system "./get_submodules.sh" if build.head?
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--with-gmp=system",
-                          "--with-gmp-prefix=#{Formula["gmp"].opt_prefix}",
-                          "--with-isl=system",
-                          "--with-isl-prefix=#{Formula["isl"].opt_prefix}"
+
+    args = [
+      "--disable-dependency-tracking",
+      "--disable-silent-rules",
+      "--prefix=#{prefix}",
+      "--with-gmp=system",
+      "--with-gmp-prefix=#{Formula["gmp"].opt_prefix}",
+      "--with-isl=system",
+      "--with-isl-prefix=#{Formula["isl"].opt_prefix}"
+    ]
+    args << "--with-osl=bundled" if build.head?
+
+    system "./configure", *args
     system "make install"
   end
 

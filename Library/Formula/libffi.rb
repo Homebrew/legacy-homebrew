@@ -6,16 +6,8 @@ class Libffi < Formula
   mirror 'ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz'
   sha1 'f5230890dc0be42fb5c58fbf793da253155de106'
 
-  bottle do
-    cellar :any
-    sha1 "b6a9696c2a58f34f37cf2bca5a652ee6982c3c14" => :mavericks
-    sha1 "421a0108078e79a1e32ccebea8eeadce0d0533db" => :mountain_lion
-    sha1 "c2ad5c7f63e06566494d92baa1e31c0c2190ea05" => :lion
-  end
-
   head do
     url 'https://github.com/atgreen/libffi.git'
-
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
