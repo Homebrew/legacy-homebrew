@@ -1,12 +1,13 @@
 require 'formula'
 
-class Md5deep < Formula
+class MD5deep < Formula
   homepage 'http://md5deep.sourceforge.net/'
   url 'https://github.com/jessek/hashdeep/archive/release-4.4.tar.gz'
   sha1 'cb4e313352974299c32bc55fe56396adb74517ef'
+end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
   
   def install
     system "sh bootstrap.sh"
