@@ -69,7 +69,7 @@ class Emscripten < Formula
       system "make", "install"
     end
 
-    %w(em++ em-config emar emcc emconfigure emlink.py emmake
+    %w(em++ em-config emar emcc emcmake emconfigure emlink.py emmake
        emranlib emrun emscons).each do |emscript|
       bin.install_symlink libexec/emscript
     end
