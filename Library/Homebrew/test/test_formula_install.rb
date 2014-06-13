@@ -63,12 +63,6 @@ class InstallTests < Test::Unit::TestCase
       end
     end.new
 
-    temporary_install f do
-      shutup do
-        f.brew { f.install }
-      end
-
-      assert_equal 1, f.bin.children.length
-    end
+    temporary_install(f) { assert_equal 1, f.bin.children.length }
   end
 end
