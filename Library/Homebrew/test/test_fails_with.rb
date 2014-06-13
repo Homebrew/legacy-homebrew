@@ -15,7 +15,7 @@ class FailsWithTests < Test::Unit::TestCase
   end
 
   def fails_with(*args, &block)
-    @f.send(:fails_with, *args, &block)
+    @f.fails_with(*args, &block)
   end
 
   def build_cc(sym, build, version=nil)
