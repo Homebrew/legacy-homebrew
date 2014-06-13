@@ -155,22 +155,22 @@ class FormulaTests < Test::Unit::TestCase
   def test_formula_spec_integration
     f = Class.new(Formula) do
       homepage 'http://example.com'
-      url 'file:///foo.com/testball-0.1.tbz'
-      mirror 'file:///foo.org/testball-0.1.tbz'
+      url 'http://example.com/test-0.1.tbz'
+      mirror 'http://example.org/test-0.1.tbz'
       sha1 TEST_SHA1
 
-      head 'https://github.com/Homebrew/homebrew.git', :tag => 'foo'
+      head 'http://example.com/test.git', :tag => 'foo'
 
       devel do
-        url 'file:///foo.com/testball-0.2.tbz'
-        mirror 'file:///foo.org/testball-0.2.tbz'
+        url 'http://example.com/test-0.2.tbz'
+        mirror 'http://example.org/test-0.2.tbz'
         sha256 TEST_SHA256
       end
 
       bottle { sha1 TEST_SHA1 => bottle_tag }
 
-      def initialize(name="spec_test_ball", path=nil)
-        super
+      def initialize
+        super "test", Pathname.new(__FILE__).expand_path
       end
     end.new
 
@@ -197,9 +197,6 @@ class FormulaTests < Test::Unit::TestCase
         require 'formula'
         class #{Formulary.class_s(name)} < Formula
           url 'foo-1.0'
-          def initialize(*args)
-            super
-          end
         end
       }
     end

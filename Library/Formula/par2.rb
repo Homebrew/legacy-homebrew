@@ -19,8 +19,8 @@ class Par2 < Formula
 
   # http://parchive.cvs.sourceforge.net/viewvc/parchive/par2-cmdline/par2creatorsourcefile.cpp?r1=1.4&r2=1.5
   patch :p0 do
-    url "http://patch-tracker.debian.org/patch/series/dl/par2cmdline/0.4-11/003_fix_crash_in_quiet_mode.patch"
-    sha1 "cafac7c84bb675ec6b6b2c348811e0e579bcb637"
+    url "http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-arch/par2cmdline/files/par2cmdline-0.4-offset.patch?revision=1.2"
+    sha1 "5a4e0274ef177c09deb237394b1c5c691b10d83a"
   end
 
   def install

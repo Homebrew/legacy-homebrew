@@ -4,37 +4,26 @@ require 'test/testball'
 require 'keg'
 
 
-class TestScriptFileFormula < ScriptFileFormula
-  url "file:///#{__FILE__}"
-  version "1"
-
-  def initialize(name="test_script_formula", path=nil)
-    super
-  end
-end
-
-
 class InstallTests < Test::Unit::TestCase
   def teardown
     HOMEBREW_CACHE.rmtree
   end
 
   def temporary_install f
-    # Brew and install the given formula
+    f.prefix.mkpath
+    keg = Keg.new(f.prefix)
+
     shutup do
       f.brew { f.install }
     end
 
-    # Allow the test to do some processing
-    yield
+    begin
+      yield
+    ensure
+      keg.unlink
+      keg.uninstall
+    end
 
-    # Remove the brewed formula and double check
-    # that it did get removed. This lets multiple
-    # tests use the same formula name without
-    # stepping on each other.
-    keg=Keg.new f.prefix
-    keg.unlink
-    keg.uninstall
     assert !keg.exist?
     assert !f.installed?
   end
@@ -65,15 +54,14 @@ class InstallTests < Test::Unit::TestCase
   end
 
   def test_script_install
-    f=TestScriptFileFormula.new
-
-    temporary_install f do
-      shutup do
-        f.brew { f.install }
+    f = Class.new(ScriptFileFormula) do
+      url "file://#{File.expand_path(__FILE__)}"
+      version "1"
+      def initialize
+        super "test_script_formula", Pathname.new(__FILE__).expand_path
       end
+    end.new
 
-      assert_equal 1, f.bin.children.length
-    end
+    temporary_install(f) { assert_equal 1, f.bin.children.length }
   end
-
 end
