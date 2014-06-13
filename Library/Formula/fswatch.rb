@@ -6,10 +6,9 @@ class Fswatch < Formula
   sha1 "e3dc16f2b181452f864a7cb4718d1aa0f8a0ee2f"
 
   bottle do
-    cellar :any
-    sha1 "f72d8496ac893e2e7314f5a1b405ec4bc8a0d4da" => :mavericks
-    sha1 "7c2ee61eb7346ff3fc0873ed3dc568aaf60cb8dc" => :mountain_lion
-    sha1 "9fb2150adee74b9717b4c3fb5d21e122fb440541" => :lion
+    sha1 "915a9948cf26cbf7f12225de136c25bacc2d030a" => :mavericks
+    sha1 "6900820cc5aac8bce488c743139a6a8bdb41b2ae" => :mountain_lion
+    sha1 "0764779ee5ce0483a3c781c64892c9b02938e14e" => :lion
   end
 
   depends_on "autoconf" => :build
