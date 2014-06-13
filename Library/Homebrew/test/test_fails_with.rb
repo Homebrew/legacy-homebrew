@@ -2,10 +2,6 @@ require 'testing_env'
 require 'test/testball'
 
 class FailsWithTests < Test::Unit::TestCase
-  class Double < Compiler
-    attr_accessor :name, :version
-  end
-
   def assert_fails_with(cc)
     assert @f.new.fails_with?(cc)
   end
@@ -18,11 +14,8 @@ class FailsWithTests < Test::Unit::TestCase
     @f.fails_with(*args, &block)
   end
 
-  def build_cc(sym, build, version=nil)
-    cc = Double.new
-    cc.name = sym
-    cc.version = version || build
-    cc
+  def build_cc(name, version)
+    Compiler.new(name, version)
   end
 
   def setup
