@@ -6,6 +6,12 @@ class Bitlbee < Formula
   sha1 '954471ab87206826c072f31b3def40a1be5a78f5'
   revision 2
 
+  bottle do
+    sha1 "87aaac8542c0e5fcfaa81a5d0464d48043cf0389" => :mavericks
+    sha1 "7aa598b16ce35182e9c061dbc27a1a08e3462c6f" => :mountain_lion
+    sha1 "af0cdf96d4a5e718f191ecdc7cda133e8849bff0" => :lion
+  end
+
   option 'with-finch', "Use finch/libpurple for all communication with instant messaging networks"
   option 'with-libotr', "Build with otr (off the record) support"
 
