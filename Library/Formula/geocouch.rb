@@ -8,6 +8,9 @@ class Geocouch < Formula
 
   head 'https://github.com/couchbase/geocouch.git'
 
+  depends_on "couchdb"
+  depends_on "erlang" => :build
+
   def couchdb_share
     HOMEBREW_PREFIX/'share/couchdb'
   end
@@ -15,19 +18,13 @@ class Geocouch < Formula
     HOMEBREW_PREFIX/'share/geocouch'
   end
 
-  #  Leverage generic couchdb.rb formula for couchdb (and therefore geocouch)
-  #  dependencies.
-  depends_on 'couchdb'
-
   #  GeoCouch currently supports couch_version(s) 1.1.x and 1.2.x (other
   #  versions at your own risk).  This formula supports GeoCouch 1.3.0 on top
   #  of Apache couchdb 1.3.0.
   def install
-    #  Grab couchdb 1.3.x.
-    couchdb_dir = buildpath/'couchdb-src'
-    couchdb = Formula["couchdb"]
-    couchdb.brew { couchdb_dir.install Dir['*'] }
-    ENV['COUCH_SRC'] = couchdb_dir/"src/couchdb"
+    couchdb_dir = buildpath/"couchdb-src"
+    Formula["couchdb"].brew { couchdb_dir.install Dir["*"] }
+    ENV["COUCH_SRC"] = couchdb_dir/"src/couchdb"
 
     #  Build geocouch.
     system "make"
