@@ -6,7 +6,7 @@ What Packages Are Available?
 ----------------------------
 1. You can [browse the Formula directory on GitHub][formula].
 2. Or type `brew search` for a list.
-3. Or visit [braumeister.org][braumeister] to browse packages online.
+3. Or visit [BrewFormulas](http://brewformulas.org/) or [braumeister.org][braumeister] to browse packages online.
 4. Or visit [`brew desc`][brew-desc] to browse and search packages from the
    command line.
 
