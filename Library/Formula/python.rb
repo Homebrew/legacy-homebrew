@@ -5,7 +5,7 @@ class Python < Formula
   head "http://hg.python.org/cpython", :using => :hg, :branch => "2.7"
   url "http://www.python.org/ftp/python/2.7.7/Python-2.7.7.tgz"
   sha1 "1db01d7f325d8ceaf986976800106018b82ae45a"
-  revision 1
+  revision 2
 
   bottle do
     sha1 "1e16fa963a72c3a1d4abed0bf54685bae59304de" => :mavericks
@@ -31,8 +31,8 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-4.0.1.tar.gz"
-    sha1 "a43549f4a01f314bf54567628f8de7d1c03d5930"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.0.1.tar.gz"
+    sha1 "08967022405ee730c7e9605aad5b1354cc76dd67"
   end
 
   resource "pip" do
