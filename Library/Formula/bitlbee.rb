@@ -92,8 +92,6 @@ class Bitlbee < Formula
         <key>Wait</key>
         <false/>
       </dict>
-      <key>UserName</key>
-      <string>#{ENV['USER']}</string>
     </dict>
     </plist>
     EOS
