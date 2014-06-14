@@ -6,6 +6,13 @@ class Dasm < Formula
   sha1 '2ce78b29505b31778b8f796ba4b161b9f890e77e'
   head 'svn://svn.code.sf.net/p/dasm-dillon/code/trunk'
 
+  bottle do
+    cellar :any
+    sha1 "16a36f8d3d57693ea2b2fea55ab264e538ddcfaf" => :mavericks
+    sha1 "5bf2a732a5e3d3b9963ad405c6b526b0a9cb74d0" => :mountain_lion
+    sha1 "14895b0dee0237dec3cc7cedafeba2fdb4b88bad" => :lion
+  end
+
   def install
     system "make"
     prefix.install 'bin', 'doc'
