@@ -13,6 +13,14 @@ class Pidgin < Formula
   depends_on 'gnutls'
   depends_on 'gtk+'
 
+  # for pidgin-otr
+  depends_on 'libotr'
+
+  resource 'pidgin-otr' do
+    url 'http://www.cypherpunks.ca/otr/pidgin-otr-4.0.0.tar.gz'
+    sha1 '23c602c4b306ef4eeb3ff5959cd389569f39044d'
+  end
+
   option 'perl', 'Build pidgin with perl support'
 
   def install
@@ -35,6 +43,12 @@ class Pidgin < Formula
 
     system "./configure", *args
     system "make install"
+
+    resource('pidgin-otr').stage do
+      ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
+      system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+      system "make", "install"
+    end
   end
 
   test do
