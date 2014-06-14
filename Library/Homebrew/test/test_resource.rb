@@ -55,20 +55,20 @@ class ResourceTests < Test::Unit::TestCase
   end
 
   def test_version_from_url
-    @resource.url('http://foo.com/bar-1.0.tar.gz')
+    @resource.url('http://example.com/foo-1.0.tar.gz')
     assert_version_equal '1.0', @resource.version
     assert @resource.version.detected_from_url?
   end
 
   def test_version_with_scheme
-    scheme = Class.new(Version)
-    @resource.version('1.0' => scheme)
+    klass = Class.new(Version)
+    @resource.version klass.new("1.0")
     assert_version_equal '1.0', @resource.version
-    assert_instance_of scheme, @resource.version
+    assert_instance_of klass, @resource.version
   end
 
   def test_version_from_tag
-    @resource.url('http://foo.com/bar-1.0.tar.gz', :tag => 'v1.0.2')
+    @resource.url('http://example.com/foo-1.0.tar.gz', :tag => 'v1.0.2')
     assert_version_equal '1.0.2', @resource.version
     assert @resource.version.detected_from_url?
   end

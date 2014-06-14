@@ -8,7 +8,6 @@ require 'requirements/x11_dependency'
 
 class XcodeDependency < Requirement
   fatal true
-  build true
 
   satisfy(:build_env => false) { MacOS::Xcode.installed? }
 
@@ -56,7 +55,7 @@ class TeXDependency < Requirement
     end
 
     <<-EOS.undent
-    A LaTeX distribution is required to install.
+    A LaTeX distribution is required for Homebrew to install this formula.
 
     You can install MacTeX distribution from:
       http://www.tug.org/mactex/
@@ -64,30 +63,6 @@ class TeXDependency < Requirement
     Make sure that "/usr/texbin", or the location you installed it to, is in
     your PATH before proceeding.
     EOS
-  end
-end
-
-class CLTDependency < Requirement
-  fatal true
-  build true
-
-  satisfy(:build_env => false) { MacOS::CLT.installed? }
-
-  def message
-    message = <<-EOS.undent
-      The Command Line Tools are required to compile this software.
-    EOS
-    if MacOS.version >= :mavericks
-      message += <<-EOS.undent
-        Run `xcode-select --install` to install them.
-      EOS
-    else
-      message += <<-EOS.undent
-        The standalone package can be obtained from
-        https://developer.apple.com/downloads/,
-        or it can be installed via Xcode's preferences.
-      EOS
-    end
   end
 end
 

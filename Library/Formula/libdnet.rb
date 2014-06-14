@@ -16,10 +16,6 @@ class Libdnet < Formula
   depends_on "libtool" => :build
   depends_on :python => :optional
 
-  # Fix use of deprecated macros
-  # http://code.google.com/p/libdnet/issues/detail?id=27
-  patch :DATA
-
   def install
     # autoreconf to get '.dylib' extension on shared lib
     ENV.append_path "ACLOCAL_PATH", "config"
@@ -35,19 +31,3 @@ class Libdnet < Formula
     system "make install"
   end
 end
-
-
-__END__
-diff --git a/configure.in b/configure.in
-index 72ac63c..109dc63 100644
---- a/configure.in
-+++ b/configure.in
-@@ -10,7 +10,7 @@ AC_CONFIG_AUX_DIR(config)
- AC_SUBST(ac_aux_dir)
- 
- AM_INIT_AUTOMAKE(libdnet, 1.12)
--AM_CONFIG_HEADER(include/config.h)
-+AC_CONFIG_HEADERS(include/config.h)
- 
- dnl XXX - stop the insanity!@#$
- AM_MAINTAINER_MODE

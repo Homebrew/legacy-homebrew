@@ -1,11 +1,11 @@
 require 'formula'
 
 class Sl < Formula
-  homepage 'http://www.tkl.iis.u-tokyo.ac.jp/~toyoda/index_e.html'
-  #version 5.00, the author has not tagged the commit
-  url 'https://github.com/mtoyoda/sl/archive/d8f076a7ddb1f6ef9b2033497707867e29569750.tar.gz'
-  sha1 '6314807a299ca9b1666522cba23a3fba6df60fab'
-  version '5.00'
+  homepage 'https://github.com/mtoyoda/sl'
+  url 'https://github.com/mtoyoda/sl/archive/5.01.tar.gz'
+  sha256 'b16fcaa40cb195105e97f86280e3f37a9011d0c01d7e534946386d126408f6da'
+
+  head 'https://github.com/mtoyoda/sl.git'
 
   fails_with :clang do
     build 318

@@ -1,26 +1,26 @@
-require 'formula'
+require "formula"
 
 class Harfbuzz < Formula
-  homepage 'http://www.freedesktop.org/wiki/Software/HarfBuzz'
-  url 'http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.27.tar.bz2'
-  sha256 '08584ae91c98d5b14d5f2c45b01410a12b030c9397bd73135bd2155297b447db'
+  homepage "http://www.freedesktop.org/wiki/Software/HarfBuzz"
+  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.29.tar.bz2"
+  sha256 "601cea38c6fa0cf362dd9042c66cf4db711c5f9390de4ca46d6d2fc3f64de390"
 
   bottle do
     cellar :any
-    sha1 "27623054bf6ca9f54428f0fe63bc2c2caa726325" => :mavericks
-    sha1 "120db14c8928fc948340ff14ecab0bb814048fac" => :mountain_lion
-    sha1 "7c99b0595e9ea6e44eb346779bd06db1aeb6b49a" => :lion
+    sha1 "6e555247637793751a9239c4a89f76a2c4dba592" => :mavericks
+    sha1 "930861e39cfc46a129f841d86adae5d055420188" => :mountain_lion
+    sha1 "81e2eed81f983e81fbab4d19020ebb275bfba727" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'cairo'
-  depends_on 'icu4c' => :recommended
-  depends_on :freetype
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "cairo"
+  depends_on "icu4c" => :recommended
+  depends_on "freetype"
 
   def install
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
-    args << "--with-icu" if build.with? 'icu4c'
+    args << "--with-icu" if build.with? "icu4c"
     system "./configure", *args
     system "make install"
   end

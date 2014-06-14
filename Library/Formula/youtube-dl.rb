@@ -5,20 +5,27 @@ require "formula"
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
   homepage "http://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2014.04.30/youtube-dl-2014.04.30.tar.gz"
-  sha1 "39ef1f38adeefaea3af17957c66a2aca05b4c747"
+  url "https://yt-dl.org/downloads/2014.05.31.4/youtube-dl-2014.05.31.4.tar.gz"
+  sha1 "713dcf9b5916bd35e348ebb509a2661445eb6bb9"
 
   bottle do
     cellar :any
-    sha1 "283d43da7c2cc0d574dba9d9898862f0f8ebd2d1" => :mavericks
-    sha1 "f0a0a24fd014766898cda0bfde2621ba86b56980" => :mountain_lion
-    sha1 "123e323857f033584408dec4f39babaaff273f5e" => :lion
+    sha1 "a4e9878dbd14c7dcd77ac60c1dfb5304904961b5" => :mavericks
+    sha1 "3dda1e23b7173160cbb7d8de57ac615cbb2e5cf1" => :mountain_lion
+    sha1 "36e4fe2792f1ff42c79ce880e3bd6fe5959ec045" => :lion
+  end
+
+  head do
+    url "https://github.com/rg3/youtube-dl.git"
+    depends_on "pandoc" => :build
   end
 
   depends_on "rtmpdump" => :optional
 
   def install
-    system "make", "youtube-dl", "PREFIX=#{prefix}"
+    # Remove the legacy executable from the git repo
+    rm "youtube-dl" if build.head?
+    system "make", "PREFIX=#{prefix}"
     bin.install "youtube-dl"
     man1.install "youtube-dl.1"
     bash_completion.install "youtube-dl.bash-completion"

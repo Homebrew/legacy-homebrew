@@ -7,6 +7,8 @@ What Packages Are Available?
 1. You can [browse the Formula directory on GitHub][formula].
 2. Or type `brew search` for a list.
 3. Or visit [braumeister.org][braumeister] to browse packages online.
+4. Or visit [`brew desc`][brew-desc] to browse and search packages from the
+   command line.
 
 More Documentation
 ------------------
@@ -46,5 +48,6 @@ We accept tips through [Gittip][tip].
 [mxcl]:https://github.com/mxcl
 [formula]:https://github.com/Homebrew/homebrew/tree/master/Library/Formula/
 [braumeister]:http://braumeister.org
+[brew-desc]: https://github.com/telemachus/homebrew-desc
 [license]:https://github.com/Homebrew/homebrew/tree/master/LICENSE.txt
 [tip]:https://www.gittip.com/Homebrew/

@@ -7,6 +7,14 @@ require 'test/unit/assertions'
 module Homebrew extend self
   TEST_TIMEOUT_SECONDS = 5*60
 
+  if Object.const_defined?(:Minitest)
+    FailedAssertion = Minitest::Assertion
+  elsif Object.const_defined?(:MiniTest)
+    FailedAssertion = MiniTest::Assertion
+  else
+    FailedAssertion = Test::Unit::AssertionFailedError
+  end
+
   def test
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
@@ -32,7 +40,7 @@ module Homebrew extend self
         Timeout::timeout TEST_TIMEOUT_SECONDS do
           raise if f.test == false
         end
-      rescue Test::Unit::AssertionFailedError => e
+      rescue FailedAssertion => e
         ofail "#{f.name}: failed"
         puts e.message
       rescue Exception

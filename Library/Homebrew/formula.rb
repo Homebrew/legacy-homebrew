@@ -26,8 +26,7 @@ class Formula
 
   attr_accessor :local_bottle_path
 
-  # Homebrew determines the name
-  def initialize name='__UNKNOWN__', path=self.class.path(name)
+  def initialize(name, path)
     @name = name
     @path = path
     @homepage = self.class.homepage
@@ -369,6 +368,7 @@ class Formula
     include Enumerable
   end
 
+  # An array of all installed formulae
   def self.installed
     return [] unless HOMEBREW_CELLAR.directory?
 
@@ -572,7 +572,7 @@ class Formula
         f.puts
         require 'cmd/config'
         Homebrew.write_build_config(f)
-        raise BuildError.new(self, cmd, args, $?)
+        raise BuildError.new(self, cmd, args)
       end
     end
   ensure
@@ -632,12 +632,8 @@ class Formula
       stable.mirror(val)
     end
 
-    Checksum::TYPES.each do |cksum|
-      class_eval <<-EOS, __FILE__, __LINE__ + 1
-        def #{cksum}(val)
-          stable.#{cksum}(val)
-        end
-      EOS
+    Checksum::TYPES.each do |type|
+      define_method(type) { |val| stable.send(type, val) }
     end
 
     def bottle *, &block

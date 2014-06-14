@@ -86,7 +86,7 @@ class Keg < Pathname
   end
 
   def each_unique_file_matching string
-    IO.popen("/usr/bin/fgrep -lr '#{string}' '#{self}' 2>/dev/null") do |io|
+    IO.popen("/usr/bin/fgrep -lr '#{string}' '#{self}' 2>/dev/null", "rb") do |io|
       hardlinks = Set.new
 
       until io.eof?

@@ -1,26 +1,26 @@
-require 'formula'
+require "formula"
 
 class Bash < Formula
-  homepage 'http://www.gnu.org/software/bash/'
+  homepage "http://www.gnu.org/software/bash/"
 
   stable do
     url "http://ftpmirror.gnu.org/bash/bash-4.3.tar.gz"
     mirror "http://ftp.gnu.org/gnu/bash/bash-4.3.tar.gz"
     sha256 "afc687a28e0e24dc21b988fa159ff9dbcf6b7caa92ade8645cc6d5605cd024d4"
-    version "4.3.11"
+    version "4.3.18"
 
     # Vendor the patches. The mirrors are unreliable for getting the patches,
     # and the more patches there are, the more unreliable they get. Upstream
     # patches can be found in: http://git.savannah.gnu.org/cgit/bash.git
     patch do
-      url "https://gist.githubusercontent.com/jacknagel/10594061/raw/65a32e9329e0d1198b06e21542de6103bcc3549e/bash-4.3-001-011.patch"
-      sha1 "803fd4452aa071bc87b86a1d38d86acba4dc2a62"
+      url "https://gist.githubusercontent.com/jacknagel/c1cf23775c774e2b4b6d/raw/abd9bd4289bb443684ba26d5a2d3fb9449bbfa90/bash-4.3.18.diff"
+      sha1 "bc659558e68ec747da45f5e4201c5b30b7d490eb"
     end
   end
 
-  head 'git://git.savannah.gnu.org/bash.git'
+  head "git://git.savannah.gnu.org/bash.git"
 
-  depends_on 'readline'
+  depends_on "readline"
 
   def install
     # When built with SSH_SOURCE_BASHRC, bash will source ~/.bashrc when

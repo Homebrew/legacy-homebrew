@@ -8,11 +8,11 @@ class Libiscsi < Formula
 
   option 'with-noinst', 'Install the noinst binaries (e.g. iscsi-test-cu)'
 
-  depends_on 'cunit' if build.with? 'noinst'
-  depends_on 'popt'
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "cunit" if build.with? "noinst"
+  depends_on "popt"
 
   def install
     if build.with? 'noinst'

@@ -2,9 +2,9 @@ require 'formula'
 
 class Pypy < Formula
   homepage 'http://pypy.org/'
-  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.3-osx64.tar.bz2'
-  version '2.3.0'
-  sha1 'b40c3c56138725757ef0f97ffb67dce89b7665f0'
+  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.3.1-osx64.tar.bz2'
+  version '2.3.1'
+  sha1 '4d9cdf801e4c8fb432b17be0edf76eb3d9360f40'
 
   depends_on :arch => :x86_64
 
@@ -57,15 +57,9 @@ class Pypy < Formula
     resource('setuptools').stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
     resource('pip').stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
 
-    # Symlink to easy_install_pypy.
-    unless (scripts_folder+'easy_install_pypy').exist?
-      scripts_folder.install_symlink "easy_install" => "easy_install_pypy"
-    end
-
-    # Symlink to pip_pypy.
-    unless (scripts_folder+'pip_pypy').exist?
-      scripts_folder.install_symlink "pip" => "pip_pypy"
-    end
+    # Symlinks to easy_install_pypy and pip_pypy
+    bin.install_symlink scripts_folder/'easy_install' => "easy_install_pypy"
+    bin.install_symlink scripts_folder/'pip' => "pip_pypy"
   end
 
   def caveats; <<-EOS.undent

@@ -17,7 +17,7 @@ class Avian < Formula
   def install
     system 'make', 'JAVA_HOME=/Library/Java/Home'
     bin.install Dir['build/darwin-*/avian*']
-    lib.install Dir['build/darwin-*/*.dylib'] + Dir['build/darwin-*/*.a']
+    lib.install Dir['build/darwin-*/*.dylib', 'build/darwin-*/*.a']
   end
 
   test do

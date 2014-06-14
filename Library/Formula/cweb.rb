@@ -43,7 +43,7 @@ class Cweb < Formula
           printf("Hello world!");
       }
     EOS
-    system "ctangle", "test.w"
+    system bin/"ctangle", "test.w"
     system ENV.cc, "test.c", "-o", "hello"
     assert_equal "Hello world!", `./hello`
   end

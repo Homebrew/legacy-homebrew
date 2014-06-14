@@ -15,9 +15,9 @@ class Libevent < Formula
   head do
     url 'git://levent.git.sourceforge.net/gitroot/levent/levent'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on "doxygen" => :build if build.include? 'enable-manpages'

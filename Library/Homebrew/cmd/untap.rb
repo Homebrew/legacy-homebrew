@@ -22,7 +22,7 @@ module Homebrew extend self
     unlink_tap_formula(files)
     tapd.rmtree
     tapd.dirname.rmdir_if_possible
-    puts "Untapped #{files.length} formula"
+    puts "Untapped #{files.length} formula#{plural(files.length, 'e')}"
   end
 
   def unlink_tap_formula paths

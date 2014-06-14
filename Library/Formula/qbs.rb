@@ -2,8 +2,8 @@ require "formula"
 
 class Qbs < Formula
   homepage "http://qt-project.org/wiki/qbs"
-  url "http://download.qt-project.org/official_releases/qbs/1.1.2/qbs-1.1.2.src.tar.gz"
-  sha1 "0350f2947f461bda33ee7e296d838004036f1e8e"
+  url "http://download.qt-project.org/official_releases/qbs/1.2.0/qbs-1.2.0.src.tar.gz"
+  sha1 "55c50218e03f4b2455e552942eca6293ba7d6cf6"
   depends_on "qt5"
 
   def install

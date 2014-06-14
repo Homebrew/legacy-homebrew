@@ -35,7 +35,7 @@ class Bitchx < Formula
   end
 
   test do
-    system "BitchX -v"
+    system bin/"BitchX", "-v"
   end
 
 end

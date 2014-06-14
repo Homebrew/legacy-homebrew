@@ -7,8 +7,8 @@ class Nginx < Formula
   revision 1
 
   devel do
-    url 'http://nginx.org/download/nginx-1.7.0.tar.gz'
-    sha1 'e406cb9f1c17a0d9ff5df926412fce948bfea7de'
+    url 'http://nginx.org/download/nginx-1.7.1.tar.gz'
+    sha1 'd1860abfc4f4a949361a46b835b69dede5472b02'
   end
 
   head 'http://hg.nginx.org/nginx/', :using => :hg
@@ -110,7 +110,7 @@ class Nginx < Formula
     # and Homebrew used to suggest the user copy the plist for nginx to their
     # ~/Library/LaunchAgents directory. So we need to have a symlink there
     # for such cases
-    if rack.subdirs.any? { |d| (d/:sbin).directory? }
+    if rack.subdirs.any? { |d| d.join("sbin").directory? }
       sbin.install_symlink bin/"nginx"
     end
   end

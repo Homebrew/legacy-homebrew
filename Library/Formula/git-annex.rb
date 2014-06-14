@@ -10,9 +10,10 @@ class GitAnnex < Formula
 
   bottle do
     cellar :any
-    sha1 "e5c3a794a3f7dab64af2cab5f098cf01e945f95b" => :mavericks
-    sha1 "3600a0a622e9d76bd99d4f50a14e41fb8c77df85" => :mountain_lion
-    sha1 "7e73036ef978314ccc28cd25f0e101d728f2e2c1" => :lion
+    revision 1
+    sha1 "b26da4d239a3bb3cb7f09b34f9272f74d7098cce" => :mavericks
+    sha1 "16a56854088be3e0c82463f04d3738dfd24fe458" => :mountain_lion
+    sha1 "444f4575cbfa462c737a260cbad9a4ce57d4d77e" => :lion
   end
 
   depends_on "gcc" => :build
@@ -28,7 +29,7 @@ class GitAnnex < Formula
     cabal_sandbox do
       cabal_install_tools "alex", "happy", "c2hs"
       # gcc required to build gnuidn
-      cabal_install "--with-gcc=#{Formula["gcc"].bin}/gcc-4.8", "--only-dependencies"
+      cabal_install "--with-gcc=#{Formula["gcc"].bin}/gcc", "--only-dependencies"
       cabal_install "--prefix=#{prefix}"
     end
     system "make", "git-annex.1", "git-annex-shell.1"

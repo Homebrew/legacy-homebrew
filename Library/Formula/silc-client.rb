@@ -1,12 +1,12 @@
-require 'formula'
+require "formula"
 
 class SilcClient < Formula
-  homepage 'http://silcnet.org/software/users/client/'
-  url 'https://downloads.sourceforge.net/project/silc/silc/client/sources/silc-client-1.1.10.tar.gz'
-  sha1 '78c5ed2977c2dd4f3d9852e1ab09ba06a433feba'
+  homepage "http://silcnet.org/software/users/client/"
+  url "https://downloads.sourceforge.net/project/silc/silc/client/sources/silc-client-1.1.11.tar.gz"
+  sha1 "e4438c87342edc95efdf67ac1a6dff9f0c70ea38"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
+  depends_on "pkg-config" => :build
+  depends_on "glib"
 
   def install
     system "./configure", "--disable-debug",

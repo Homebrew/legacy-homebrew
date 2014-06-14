@@ -2,12 +2,18 @@ require 'formula'
 
 class Llvm < Formula
   homepage 'http://llvm.org/'
-  url 'http://llvm.org/releases/3.4/llvm-3.4.src.tar.gz'
-  sha1 '10b1fd085b45d8b19adb9a628353ce347bc136b8'
+  url "http://llvm.org/releases/3.4.1/llvm-3.4.1.src.tar.gz"
+  sha1 "3711baa6f5ef9df07418ce76039fc3848a7bde7c"
+
+  bottle do
+    sha1 "92dc1d8793000d05c8321b2791b6b1d7321a83c3" => :mavericks
+    sha1 "a46bd08a60fd7ae17a21476bbb810510b58d492a" => :mountain_lion
+    sha1 "4dfc0268acc552bd62b2954ac3829802b25a5a46" => :lion
+  end
 
   resource 'clang' do
-    url 'http://llvm.org/releases/3.4/clang-3.4.src.tar.gz'
-    sha1 'a6a3c815dd045e9c13c7ae37d2cfefe65607860d'
+    url "http://llvm.org/releases/3.4.1/cfe-3.4.1.src.tar.gz"
+    sha1 "ecd38fa89e837e6cb8305b8d05e88baecb0bda55"
   end
 
   option :universal
@@ -17,9 +23,7 @@ class Llvm < Formula
   option 'rtti', 'Build with C++ RTTI'
   option 'disable-assertions', 'Speeds up LLVM, but provides less debug information'
 
-  depends_on :python => :recommended
-
-  env :std if build.universal?
+  depends_on :python => :optional
 
   keg_only :provided_by_osx
 
@@ -28,11 +32,10 @@ class Llvm < Formula
       raise 'The Python bindings need the shared library.'
     end
 
-    resource('clang').stage do
-      (buildpath/'tools/clang').install Dir['*']
-    end if build.with? 'clang'
+    (buildpath/"tools/clang").install resource("clang") if build.with? "clang"
 
     if build.universal?
+      ENV.permit_arch_flags
       ENV['UNIVERSAL'] = '1'
       ENV['UNIVERSAL_ARCH'] = Hardware::CPU.universal_archs.join(' ')
     end
@@ -75,7 +78,8 @@ class Llvm < Formula
 
   def caveats
     <<-EOS.undent
-      Extra tools are installed in #{share}/llvm and #{share}/clang.
+      LLVM executables are installed in #{bin}.
+      Extra tools are installed in #{share}/llvm.
 
       If you already have LLVM installed, then "brew upgrade llvm" might not work.
       Instead, try:

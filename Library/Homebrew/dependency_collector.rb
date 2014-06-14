@@ -98,14 +98,10 @@ class DependencyCollector
 
   def parse_symbol_spec(spec, tags)
     case spec
-    when :autoconf, :automake, :bsdmake, :libtool, :libltdl
+    when :autoconf, :automake, :bsdmake, :libtool
       # Xcode no longer provides autotools or some other build tools
       autotools_dep(spec, tags)
     when :x11        then X11Dependency.new(spec.to_s, tags)
-    when :cairo, :fontconfig, :freetype, :libpng, :pixman
-      # We no longer use X11 proxy deps, but we support the symbols
-      # for backwards compatibility.
-      Dependency.new(spec.to_s, tags)
     when :xcode      then XcodeDependency.new(tags)
     when :macos      then MinimumMacOSRequirement.new(tags)
     when :mysql      then MysqlDependency.new(tags)
@@ -113,7 +109,6 @@ class DependencyCollector
     when :fortran    then FortranDependency.new(tags)
     when :mpi        then MPIDependency.new(*tags)
     when :tex        then TeXDependency.new(tags)
-    when :clt        then CLTDependency.new(tags)
     when :arch       then ArchRequirement.new(tags)
     when :hg         then MercurialDependency.new(tags)
     # python2 is deprecated
@@ -122,6 +117,12 @@ class DependencyCollector
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     when :ant        then ant_dep(spec, tags)
+    when :clt # deprecated
+    when :cairo, :fontconfig, :freetype, :libpng, :pixman # deprecated
+      Dependency.new(spec.to_s, tags)
+    when :libltdl # deprecated
+      tags << :run
+      Dependency.new("libtool", tags)
     else
       raise ArgumentError, "Unsupported special dependency #{spec.inspect}"
     end
@@ -136,18 +137,12 @@ class DependencyCollector
   end
 
   def autotools_dep(spec, tags)
-    if spec == :libltdl
-      spec = :libtool
-      tags << :run
-    end
-
     tags << :build unless tags.include? :run
     Dependency.new(spec.to_s, tags)
   end
 
   def ant_dep(spec, tags)
     if MacOS.version >= :mavericks
-      tags << :build
       Dependency.new(spec.to_s, tags)
     end
   end

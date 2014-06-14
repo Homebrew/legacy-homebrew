@@ -2,8 +2,8 @@ require 'formula'
 
 class Meld < Formula
   homepage 'http://meldmerge.org'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/meld/1.8/meld-1.8.4.tar.xz'
-  sha256 'b46e5786343f236d203037a7ace8f1b28145a51a3f84fa527efcf62f47b5b8de'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/meld/1.8/meld-1.8.5.tar.xz'
+  sha256 'e0f1d6007117a4be95d7c399359cb2ebfa80f2b9158222d727e9a35ae4d5d44d'
 
   depends_on 'intltool' => :build
   depends_on 'rarian' => :build
@@ -15,7 +15,6 @@ class Meld < Formula
 
   def install
     system "make", "prefix=#{prefix}", "install"
-
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 end

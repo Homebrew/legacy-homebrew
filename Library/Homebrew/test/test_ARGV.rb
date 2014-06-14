@@ -50,7 +50,7 @@ class ArgvExtensionTests < Test::Unit::TestCase
 
   def test_filter_for_dependencies_clears_flags
     @argv << "--HEAD" << "--devel"
-    @argv.filter_for_dependencies { assert @argv.empty? }
+    @argv.filter_for_dependencies { assert_empty @argv }
   end
 
   def test_filter_for_dependencies_ensures_argv_restored

@@ -13,9 +13,9 @@ class Libnet < Formula
   end
 
   # MacPorts does an autoreconf to get raw sockets working
-  depends_on :automake
-  depends_on :autoconf
-  depends_on :libtool
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
+  depends_on "libtool" => :build
 
   # Fix raw sockets support
   patch :p0 do
@@ -24,14 +24,7 @@ class Libnet < Formula
   end
 
   def install
-    # Compatibility with Automake 1.13 and newer.
-    # Reported upstream:
-    # https://github.com/sam-github/libnet/issues/28
-    mv 'configure.in', 'configure.ac'
-    inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
-    (buildpath/'m4').mkpath
-
-    system "autoreconf --force --install"
+    system "autoreconf", "-fvi"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     inreplace "src/libnet_link_bpf.c", "#include <net/bpf.h>", "" # Per MacPorts

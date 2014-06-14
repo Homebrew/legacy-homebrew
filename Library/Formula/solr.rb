@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Solr < Formula
-  homepage 'http://lucene.apache.org/solr/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.7.2/solr-4.7.2.tgz'
-  sha1 '5576cf3931beb05baecaad82a5783afb6dc8d490'
+  homepage "http://lucene.apache.org/solr/"
+  url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.8.1/solr-4.8.1.tgz"
+  sha1 "186885be34f8e0ad7dd6e7d6c572d5e80e2d236d"
 
   def script; <<-EOS.undent
     #!/bin/sh
@@ -16,8 +16,8 @@ class Solr < Formula
   end
 
   def install
-    libexec.install Dir['*']
-    (bin+'solr').write script
+    libexec.install Dir["*"]
+    (bin+"solr").write script
   end
 
   def caveats; <<-EOS.undent

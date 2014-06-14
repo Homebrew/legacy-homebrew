@@ -2,10 +2,16 @@ require 'formula'
 
 class Ansible < Formula
   homepage 'http://www.ansible.com/home'
-  url 'http://releases.ansible.com/ansible/ansible-1.6.1.tar.gz'
-  sha1 '66a3cfc15372bec51ae0d86892efad7ab50a853b'
+  url 'http://releases.ansible.com/ansible/ansible-1.6.3.tar.gz'
+  sha1 '9cac9de1357460a9692c015735c899519c85d0da'
 
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
+
+  bottle do
+    sha1 "55c8739229115a11701bccba801c5a6d42c7bc14" => :mavericks
+    sha1 "46fbdea2eff0749876a1b42f73566b1a2563931a" => :mountain_lion
+    sha1 "3ef7c49039c360bae79b5a97b2d90cc29f39c4e0" => :lion
+  end
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'libyaml'
@@ -52,19 +58,10 @@ class Ansible < Formula
     ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    # pycrypto's C bindings use flags unrecognized by clang,
-    # but since it doesn't use a makefile arg refurbishment
-    # is normally not enabled.
-    # See https://github.com/Homebrew/homebrew/issues/27639
-    ENV.append 'HOMEBREW_CCCFG', 'O'
-
-    resource('pycrypto').stage { system "python", *install_args }
-    resource('pyyaml').stage { system "python", *install_args }
-    resource('paramiko').stage { system "python", *install_args }
-    resource('markupsafe').stage { system "python", *install_args }
-    resource('jinja2').stage { system "python", *install_args }
-    if build.with? 'accelerate'
-      resource('python-keyczar').stage { system "python", *install_args }
+    res = %w[pycrypto pyyaml paramiko markupsafe jinja2]
+    res << "python-keyczar" if build.with? "accelerate"
+    res.each do |r|
+      resource(r).stage { system "python", *install_args }
     end
 
     inreplace 'lib/ansible/constants.py' do |s|

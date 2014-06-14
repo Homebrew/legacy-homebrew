@@ -1,20 +1,16 @@
 require 'testing_env'
 
-module FileHelper
-  def file pn
-    `/usr/bin/file -h '#{pn}'`.chomp
-  end
-end
-
 class MachOPathnameTests < Test::Unit::TestCase
-  include FileHelper
+  def dylib_path(name)
+    Pathname.new("#{TEST_DIRECTORY}/mach/#{name}.dylib")
+  end
 
-  def setup
-    @archs = [:i386, :x86_64, :ppc7400, :ppc64].extend(ArchitectureListExtension)
+  def bundle_path(name)
+    Pathname.new("#{TEST_DIRECTORY}/mach/#{name}.bundle")
   end
 
   def test_fat_dylib
-    pn = Pathname.new("#{TEST_FOLDER}/mach/fat.dylib")
+    pn = dylib_path("fat")
     assert pn.universal?
     assert !pn.i386?
     assert !pn.x86_64?
@@ -23,12 +19,11 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert pn.dylib?
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
-    assert pn.arch == :universal
-    assert_match(/Mach-O (64-bit )?dynamically linked shared library/, file(pn))
+    assert_equal :universal, pn.arch
   end
 
   def test_i386_dylib
-    pn = Pathname.new("#{TEST_FOLDER}/mach/i386.dylib")
+    pn = dylib_path("i386")
     assert !pn.universal?
     assert pn.i386?
     assert !pn.x86_64?
@@ -38,11 +33,10 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
     assert !pn.mach_o_bundle?
-    assert_match(/Mach-O dynamically linked shared library/, file(pn))
   end
 
   def test_x86_64_dylib
-    pn = Pathname.new("#{TEST_FOLDER}/mach/x86_64.dylib")
+    pn = dylib_path("x86_64")
     assert !pn.universal?
     assert !pn.i386?
     assert pn.x86_64?
@@ -52,11 +46,10 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
     assert !pn.mach_o_bundle?
-    assert_match(/Mach-O 64-bit dynamically linked shared library/, file(pn))
   end
 
   def test_mach_o_executable
-    pn = Pathname.new("#{TEST_FOLDER}/mach/a.out")
+    pn = Pathname.new("#{TEST_DIRECTORY}/mach/a.out")
     assert pn.universal?
     assert !pn.i386?
     assert !pn.x86_64?
@@ -66,11 +59,10 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert pn.mach_o_executable?
     assert !pn.text_executable?
     assert !pn.mach_o_bundle?
-    assert_match(/Mach-O (64-bit )?executable/, file(pn))
   end
 
   def test_fat_bundle
-    pn = Pathname.new("#{TEST_FOLDER}/mach/fat.bundle")
+    pn = bundle_path("fat")
     assert pn.universal?
     assert !pn.i386?
     assert !pn.x86_64?
@@ -80,11 +72,10 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
     assert pn.mach_o_bundle?
-    assert_match(/Mach-O (64-bit )?bundle/, file(pn))
   end
 
   def test_i386_bundle
-    pn = Pathname.new("#{TEST_FOLDER}/mach/i386.bundle")
+    pn = bundle_path("i386")
     assert !pn.universal?
     assert pn.i386?
     assert !pn.x86_64?
@@ -94,11 +85,10 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
     assert pn.mach_o_bundle?
-    assert_match(/Mach-O bundle/, file(pn))
   end
 
   def test_x86_64_bundle
-    pn = Pathname.new("#{TEST_FOLDER}/mach/x86_64.bundle")
+    pn = bundle_path("x86_64")
     assert !pn.universal?
     assert !pn.i386?
     assert pn.x86_64?
@@ -108,11 +98,10 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
     assert pn.mach_o_bundle?
-    assert_match(/Mach-O 64-bit bundle/, file(pn))
   end
 
   def test_non_mach_o
-    pn = Pathname.new("#{TEST_FOLDER}/tarballs/testball-0.1.tbz")
+    pn = Pathname.new("#{TEST_DIRECTORY}/tarballs/testball-0.1.tbz")
     assert !pn.universal?
     assert !pn.i386?
     assert !pn.x86_64?
@@ -122,9 +111,13 @@ class MachOPathnameTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
     assert !pn.mach_o_bundle?
-    assert pn.arch == :dunno
-    assert_no_match(/Mach-O (64-bit )?dynamically linked shared library/, file(pn))
-    assert_no_match(/Mach-O [^ ]* ?executable/, file(pn))
+    assert_equal :dunno, pn.arch
+  end
+end
+
+class ArchitectureListExtensionTests < MachOPathnameTests
+  def setup
+    @archs = [:i386, :x86_64, :ppc7400, :ppc64].extend(ArchitectureListExtension)
   end
 
   def test_architecture_list_extension_universal_checks
@@ -161,7 +154,7 @@ class MachOPathnameTests < Test::Unit::TestCase
   end
 
   def test_architecture_list_arch_flags_methods
-    pn = Pathname.new("#{TEST_FOLDER}/mach/fat.dylib")
+    pn = dylib_path("fat")
     assert pn.archs.intel_universal?
     assert_equal "-arch x86_64 -arch i386", pn.archs.as_arch_flags
     assert_equal "x86_64;i386", pn.archs.as_cmake_arch_flags
@@ -169,14 +162,17 @@ class MachOPathnameTests < Test::Unit::TestCase
 end
 
 class TextExecutableTests < Test::Unit::TestCase
-  include FileHelper
+  attr_reader :pn
+
+  def setup
+    @pn = HOMEBREW_PREFIX.join("an_executable")
+  end
 
   def teardown
-    (HOMEBREW_PREFIX/'foo_script').unlink
+    HOMEBREW_PREFIX.join("an_executable").unlink
   end
 
   def test_simple_shebang
-    pn = HOMEBREW_PREFIX/'foo_script'
     pn.write '#!/bin/sh'
     assert !pn.universal?
     assert !pn.i386?
@@ -187,12 +183,10 @@ class TextExecutableTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert pn.text_executable?
     assert_equal [], pn.archs
-    assert pn.arch == :dunno
-    assert_match(/text executable/, file(pn))
+    assert_equal :dunno, pn.arch
   end
 
   def test_shebang_with_options
-    pn = HOMEBREW_PREFIX/'foo_script'
     pn.write '#! /usr/bin/perl -w'
     assert !pn.universal?
     assert !pn.i386?
@@ -203,12 +197,10 @@ class TextExecutableTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert pn.text_executable?
     assert_equal [], pn.archs
-    assert pn.arch == :dunno
-    assert_match(/text executable/, file(pn))
+    assert_equal :dunno, pn.arch
   end
 
   def test_malformed_shebang
-    pn = HOMEBREW_PREFIX/'foo_script'
     pn.write ' #!'
     assert !pn.universal?
     assert !pn.i386?
@@ -219,7 +211,6 @@ class TextExecutableTests < Test::Unit::TestCase
     assert !pn.mach_o_executable?
     assert !pn.text_executable?
     assert_equal [], pn.archs
-    assert pn.arch == :dunno
-    assert_no_match(/text executable/, file(pn))
+    assert_equal :dunno, pn.arch
   end
 end

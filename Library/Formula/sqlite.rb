@@ -19,9 +19,11 @@ class Sqlite < Formula
   option 'with-docs', 'Install HTML documentation'
   option 'without-rtree', 'Disable the R*Tree index module'
   option 'with-fts', 'Enable the FTS module'
+  option 'with-icu4c', 'Enable the ICU module'
   option 'with-functions', 'Enable more math and string functions for SQL queries'
 
   depends_on 'readline' => :recommended
+  depends_on 'icu4c' => :optional
 
   resource 'functions' do
     url 'http://www.sqlite.org/contrib/download/extension-functions.c?get=25', :using  => :nounzip
@@ -40,6 +42,15 @@ class Sqlite < Formula
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if build.with? "fts"
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_COLUMN_METADATA"
 
+    if build.with? "icu4c"
+      icu4c = Formula['icu4c']
+      icu4cldflags = `#{icu4c.opt_bin}/icu-config --ldflags`.tr("\n", " ")
+      icu4ccppflags = `#{icu4c.opt_bin}/icu-config --cppflags`.tr("\n", " ")
+      ENV.append "LDFLAGS", icu4cldflags
+      ENV.append "CPPFLAGS", icu4ccppflags
+      ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_ICU"
+    end
+
     ENV.universal_binary if build.universal?
 
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--enable-dynamic-extensions"
@@ -51,7 +62,7 @@ class Sqlite < Formula
                      "-dynamiclib",
                      "extension-functions.c",
                      "-o", "libsqlitefunctions.dylib",
-                     *ENV.cflags.split
+                     *ENV.cflags.to_s.split
       lib.install "libsqlitefunctions.dylib"
     end
     doc.install resource('docs') if build.with? "docs"

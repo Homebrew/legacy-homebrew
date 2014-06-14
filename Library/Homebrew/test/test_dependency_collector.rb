@@ -2,19 +2,17 @@ require 'testing_env'
 require 'dependency_collector'
 require 'extend/set'
 
-module DependencyCollectorTestExtension
+class DependencyCollectorTests < Test::Unit::TestCase
   def find_dependency(name)
-    deps.find { |dep| dep.name == name }
+    @d.deps.find { |dep| dep.name == name }
   end
 
   def find_requirement(klass)
-    requirements.find { |req| klass === req }
+    @d.requirements.find { |req| klass === req }
   end
-end
 
-class DependencyCollectorTests < Test::Unit::TestCase
   def setup
-    @d = DependencyCollector.new.extend(DependencyCollectorTestExtension)
+    @d = DependencyCollector.new
   end
 
   def teardown
@@ -24,8 +22,8 @@ class DependencyCollectorTests < Test::Unit::TestCase
   def test_dependency_creation
     @d.add 'foo' => :build
     @d.add 'bar' => ['--universal', :optional]
-    assert_instance_of Dependency, @d.find_dependency('foo')
-    assert_equal 2, @d.find_dependency('bar').tags.length
+    assert_instance_of Dependency, find_dependency("foo")
+    assert_equal 2, find_dependency("bar").tags.length
   end
 
   def test_add_returns_created_dep
@@ -44,12 +42,12 @@ class DependencyCollectorTests < Test::Unit::TestCase
     @d.add 'foo'
     @d.add 'foo' => :build
     assert_equal 1, @d.deps.count
-    assert_empty @d.find_dependency('foo').tags
+    assert_empty find_dependency("foo").tags
   end
 
   def test_requirement_creation
     @d.add :x11
-    assert_instance_of X11Dependency, @d.find_requirement(X11Dependency)
+    assert_instance_of X11Dependency, find_requirement(X11Dependency)
   end
 
   def test_no_duplicate_requirements
@@ -60,28 +58,28 @@ class DependencyCollectorTests < Test::Unit::TestCase
   def test_requirement_tags
     @d.add :x11 => '2.5.1'
     @d.add :xcode => :build
-    assert_empty @d.find_requirement(X11Dependency).tags
-    assert @d.find_requirement(XcodeDependency).build?
+    assert_empty find_requirement(X11Dependency).tags
+    assert find_requirement(XcodeDependency).build?
   end
 
   def test_x11_no_tag
     @d.add :x11
-    assert_empty @d.find_requirement(X11Dependency).tags
+    assert_empty find_requirement(X11Dependency).tags
   end
 
   def test_x11_min_version
     @d.add :x11 => '2.5.1'
-    assert_equal '2.5.1', @d.find_requirement(X11Dependency).min_version
+    assert_equal "2.5.1", find_requirement(X11Dependency).min_version
   end
 
   def test_x11_tag
     @d.add :x11 => :optional
-    assert @d.find_requirement(X11Dependency).optional?
+    assert find_requirement(X11Dependency).optional?
   end
 
   def test_x11_min_version_and_tag
     @d.add :x11 => ['2.5.1', :optional]
-    dep = @d.find_requirement(X11Dependency)
+    dep = find_requirement(X11Dependency)
     assert_equal '2.5.1', dep.min_version
     assert dep.optional?
   end
@@ -113,19 +111,19 @@ class DependencyCollectorTests < Test::Unit::TestCase
 
   def test_resource_dep_git_url
     resource = Resource.new
-    resource.url("git://github.com/foo/bar.git")
+    resource.url("git://example.com/foo/bar.git")
     assert_instance_of GitDependency, @d.add(resource)
   end
 
   def test_resource_dep_gzip_url
     resource = Resource.new
-    resource.url("http://foo.com/bar.tar.gz")
+    resource.url("http://example.com/foo.tar.gz")
     assert_nil @d.add(resource)
   end
 
   def test_resource_dep_xz_url
     resource = Resource.new
-    resource.url("http://foo.com/bar.tar.xz")
+    resource.url("http://example.com/foo.tar.xz")
     assert_equal Dependency.new("xz", [:build]), @d.add(resource)
   end
 

@@ -13,7 +13,7 @@ class CompilerQueueTests < Test::Unit::TestCase
   end
 
   def test_empty
-    assert @q.empty?
+    assert_empty @q
   end
 
   def test_queues_items

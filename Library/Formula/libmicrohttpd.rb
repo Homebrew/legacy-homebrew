@@ -1,16 +1,16 @@
-require 'formula'
+require "formula"
 
 class Libmicrohttpd < Formula
-  homepage 'http://www.gnu.org/software/libmicrohttpd/'
-  url 'http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.34.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-0.9.34.tar.gz'
-  sha1 '1122f26fa278556630aaef40a500a9be19bdcfc9'
+  homepage "http://www.gnu.org/software/libmicrohttpd/"
+  url "http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.37.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-0.9.37.tar.gz"
+  sha1 "20af66ef99ecdbf426828df6256cb9742a5bce59"
 
   bottle do
     cellar :any
-    sha1 "9b6bb328687843151b8cd4222dc81db7c487cfd2" => :mavericks
-    sha1 "68832916795813e9ffa00e459c44be76b8bba21a" => :mountain_lion
-    sha1 "1ed41f9ee7101988beec5577c3c91e22d1ccfef8" => :lion
+    sha1 "7c9550a8d1d6cc12a6d1909c917c9ac6756968d7" => :mavericks
+    sha1 "eb78f899cfeebe8e88ac11978b9130e15dd410ad" => :mountain_lion
+    sha1 "33d895cc7b9610b8daf18f800d2c088085fe1d13" => :lion
   end
 
   def install

@@ -12,8 +12,8 @@ end
 
 class Saltstack < Formula
   homepage 'http://www.saltstack.org'
-  url 'https://github.com/saltstack/salt/archive/v2014.1.3.tar.gz'
-  sha256 'cc3e21c6cd333f2058a4f0c78db5103a07a7301f6237644b5eee6a55f9793e24'
+  url 'https://github.com/saltstack/salt/archive/v2014.1.4.tar.gz'
+  sha256 '737686df6d28244af95eea2203badd2104df6421d61c054c1f7dcf942e1f1823'
 
   head 'https://github.com/saltstack/salt.git', :branch => 'develop',
     :using => SaltHeadDownloadStrategy, :shallow => false
@@ -63,6 +63,13 @@ class Saltstack < Formula
     sha1 'e587c9c3519e7d061f3c2fb232af8ace593c8156'
   end
 
+  head do
+    resource 'requests' do
+      url 'https://pypi.python.org/packages/source/r/requests/requests-2.3.0.tar.gz'
+      sha1 'f57bc125d35ec01a81afe89f97dc75913a927e65'
+    end
+  end
+
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
@@ -76,6 +83,10 @@ class Saltstack < Formula
     resource('m2crypto').stage { system "python", *install_args }
     resource('jinja2').stage { system "python", *install_args }
     resource('apache-libcloud').stage { system "python", *install_args }
+
+    if build.head?
+      resource('requests').stage { system "python", *install_args }
+    end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 

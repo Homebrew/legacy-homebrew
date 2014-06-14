@@ -2,14 +2,15 @@ require 'formula'
 
 class Nanomsg < Formula
   homepage 'http://nanomsg.org'
-  url 'http://download.nanomsg.org/nanomsg-0.3-beta.tar.gz'
-  sha1 '3ca5a9655a96bb3194648b0ab7530d15e0afdbae'
+  url 'http://download.nanomsg.org/nanomsg-0.4-beta.tar.gz'
+  sha1 'a511f19f8574875e8e43f7ba27f7951f67fbe161'
 
   head do
     url 'https://github.com/nanomsg/nanomsg.git'
 
-    depends_on :autoconf
-    depends_on :automake
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option 'with-test', 'Verify the build with make check'
@@ -18,7 +19,6 @@ class Nanomsg < Formula
   option 'with-debug', 'Compile with debug symbols'
 
   depends_on 'pkg-config'=> :build
-  depends_on :libtool
 
   if build.with? 'doc'
     depends_on 'asciidoc' => :build

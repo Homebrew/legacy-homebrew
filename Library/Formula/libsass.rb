@@ -5,12 +5,12 @@ class Libsass < Formula
   url 'https://github.com/hcatlin/libsass/archive/v1.0.1.tar.gz'
   sha1 '9524e028bc8ebe84e36895269d07ecc7db496c7c'
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
-    system "autoreconf -i"
+    system "autoreconf", "-fvi"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
