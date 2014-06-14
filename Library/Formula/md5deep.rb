@@ -7,7 +7,7 @@ class Md5deep < Formula
 
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
-  
+
   def install
     system "sh bootstrap.sh"
     system "./configure", "--prefix=#{prefix}"
