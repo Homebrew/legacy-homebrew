@@ -42,6 +42,7 @@ class Mutt < Formula
   option "with-ignore-thread-patch", "Apply ignore-thread patch"
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
+  option "with-compressed-folders-patch", "Apply compressed folders patch"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -73,6 +74,11 @@ class Mutt < Formula
     sha1 "94da52d50508d8951aa78ca4b073023414866be1"
   end if build.with? "confirm-attachment-patch"
 
+  patch do
+    url "http://mutt.org.ua/download/mutt-1.5.23/patch-1.5.23.rr.compressed.gz"
+    sha1 "59cfc764e2878efafb0fa16ae17e6a733efac958"
+  end if build.with? "compressed-folders-patch"
+
   def install
     args = ["--disable-dependency-tracking",
             "--disable-warnings",
@@ -91,6 +97,7 @@ class Mutt < Formula
             "--with-homespool=.mbox"]
     args << "--with-slang" if build.with? "s-lang"
     args << "--enable-gpgme" if build.with? "gpgme"
+    args << "--enable-compressed" if build.with? "compressed-folders-patch"
 
     if build.with? "debug"
       args << "--enable-debug"
