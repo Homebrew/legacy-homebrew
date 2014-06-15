@@ -126,7 +126,12 @@ class Test
     @formulae = []
 
     url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
-    formula = Formula.factory argument rescue FormulaUnavailableError
+
+    begin
+      formula = Formulary.factory(argument)
+    rescue FormulaUnavailableError
+    end
+
     git "rev-parse", "--verify", "-q", argument
     if $?.success?
       @hash = argument
