@@ -127,7 +127,7 @@ class Test
 
     url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
     formula = Formula.factory argument rescue FormulaUnavailableError
-    git "rev-parse --verify #{argument} &>/dev/null"
+    git "rev-parse", "--verify", "-q", argument
     if $?.success?
       @hash = argument
     elsif url_match
@@ -148,15 +148,27 @@ class Test
     @hash == 'HEAD'
   end
 
-  def git arguments
-    Dir.chdir HOMEBREW_REPOSITORY do
-      `git #{arguments}`
+  def git(*args)
+    rd, wr = IO.pipe
+
+    pid = fork do
+      rd.close
+      STDERR.reopen("/dev/null")
+      STDOUT.reopen(wr)
+      Dir.chdir HOMEBREW_REPOSITORY
+      exec("git", *args)
     end
+    wr.close
+    Process.wait(pid)
+
+    rd.read
+  ensure
+    rd.close
   end
 
   def download
     def shorten_revision revision
-      git("rev-parse --short #{revision}").strip
+      git("rev-parse", "--short", revision).strip
     end
 
     def current_sha1
@@ -164,11 +176,11 @@ class Test
     end
 
     def current_branch
-      git('symbolic-ref HEAD').gsub('refs/heads/', '').strip
+      git("symbolic-ref", "HEAD").gsub("refs/heads/", "").strip
     end
 
     def single_commit? start_revision, end_revision
-      git("rev-list --count #{start_revision}..#{end_revision}").to_i == 1
+      git("rev-list", "--count", "#{start_revision}..#{end_revision}").to_i == 1
     end
 
     @category = __method__
@@ -235,7 +247,7 @@ class Test
     return unless diff_start_sha1 != diff_end_sha1
     return if @url and not steps.last.passed?
 
-    diff_stat = git "diff #{diff_start_sha1}..#{diff_end_sha1} --name-status"
+    diff_stat = git "diff", "#{diff_start_sha1}..#{diff_end_sha1}", "--name-status"
     diff_stat.each_line do |line|
       status, filename = line.split
       # Don't try and do anything to removed files.
@@ -357,12 +369,12 @@ class Test
   def cleanup_before
     @category = __method__
     return unless ARGV.include? '--cleanup'
-    git 'stash'
-    git 'am --abort 2>/dev/null'
-    git 'rebase --abort 2>/dev/null'
-    git 'reset --hard'
-    git 'checkout -f master 2>/dev/null'
-    git 'clean --force -dx'
+    git "stash"
+    git "am", "--abort"
+    git "rebase", "--abort"
+    git "reset", "--hard"
+    git "checkout", "-f", "master"
+    git "clean", "--force", "-dx"
   end
 
   def cleanup_after
@@ -381,7 +393,7 @@ class Test
 
     if ARGV.include? '--cleanup'
       test "git", "reset", "--hard"
-      git 'stash pop 2>/dev/null'
+      git "stash", "pop"
       test "brew", "cleanup"
     end
 
