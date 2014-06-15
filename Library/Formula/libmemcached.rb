@@ -21,7 +21,7 @@ class Libmemcached < Formula
     depends_on "memcached"
   end
 
-  # https://bugs.launchpad.net/libmemcached/+bug/1284765
+  # https://bugs.launchpad.net/libmemcached/+bug/1245562
   patch :DATA
 
   def install
