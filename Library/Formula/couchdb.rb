@@ -5,6 +5,12 @@ class Couchdb < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.5.1/apache-couchdb-1.5.1.tar.gz'
   sha1 '5340c79f8f9e11742b723f92e2251d4d59b8247c'
 
+  bottle do
+    sha1 "98757863115f93f5548103b02f6b9d4bcef9777a" => :mavericks
+    sha1 "33b440eb0e1fc0e0c1ba001d7167e61dd0eaa5b9" => :mountain_lion
+    sha1 "b3d27eb54507f2d6cb822f2b18da86c0bf9d860f" => :lion
+  end
+
   head do
     url 'http://git-wip-us.apache.org/repos/asf/couchdb.git'
 
