@@ -5,6 +5,15 @@ class Quvi < Formula
   url 'https://downloads.sourceforge.net/project/quvi/0.4/quvi/quvi-0.4.2.tar.bz2'
   sha1 'ba67a380785212886089d75f8aa1480d6c05936e'
 
+  devel do
+    url 'https://downloads.sourceforge.net/project/quvi/0.9/quvi/quvi-0.9.5.tar.xz'
+    sha1 '8040b8fef103350c462ba51fa614cb35a2bc1873'
+
+    # The development version of libquvi is required, but Homebrew does not
+    # yet support specifying it.
+    # depends_on 'libquvi' => :devel
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'libquvi'
 
