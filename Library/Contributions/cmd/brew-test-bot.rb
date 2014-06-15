@@ -391,19 +391,12 @@ class Test
   end
 
   def check_results
-    message = "All tests passed and raring to brew."
-
     status = :passed
     steps.each do |step|
       case step.status
       when :passed  then next
       when :running then raise
-      when :failed  then
-        if status == :passed
-          status = :failed
-          message = ""
-        end
-        message += "#{step.command}: #{step.status.to_s.upcase}\n"
+      when :failed  then status = :failed
       end
     end
     status == :passed
