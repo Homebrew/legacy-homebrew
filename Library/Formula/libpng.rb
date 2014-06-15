@@ -2,8 +2,8 @@ require "formula"
 
 class Libpng < Formula
   homepage "http://www.libpng.org/pub/png/libpng.html"
-  url "https://downloads.sf.net/project/libpng/libpng16/1.6.10/libpng-1.6.10.tar.gz"
-  sha1 "cf81cf7df631bbfa649600b9a45d966b6bccac25"
+  url "https://downloads.sf.net/project/libpng/libpng16/1.6.12/libpng-1.6.12.tar.gz"
+  sha1 "6bcd6efa7f20ccee51e70453426d7f4aea7cf4bb"
 
   bottle do
     cellar :any
