@@ -2,8 +2,8 @@ require "formula"
 
 class PyenvVirtualenv < Formula
   homepage "https://github.com/yyuu/pyenv-virtualenv"
-  url "https://github.com/yyuu/pyenv-virtualenv/archive/v20140614.tar.gz"
-  sha1 "2ac2202f3a8da4126a94a39dd7ba709e696d4a7d"
+  url "https://github.com/yyuu/pyenv-virtualenv/archive/v20140615.tar.gz"
+  sha1 "ba753592f2dcb4d2ef0d65b1622672d5defc50c0"
 
   head "https://github.com/yyuu/pyenv-virtualenv.git"
 
