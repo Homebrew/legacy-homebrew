@@ -31,5 +31,3 @@ module Homebrew
     end
   end
 end
-
-Homebrew.readall
