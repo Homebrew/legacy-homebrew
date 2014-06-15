@@ -5,12 +5,11 @@ class GitAnnex < Formula
   include Language::Haskell::Cabal
 
   homepage "https://git-annex.branchable.com/"
-  url "http://hackage.haskell.org/package/git-annex-5.20140421/git-annex-5.20140421.tar.gz"
-  sha1 "f818164eaddf2887a15c0c4c745a1cb8174152dc"
+  url "http://hackage.haskell.org/package/git-annex-5.20140613/git-annex-5.20140613.tar.gz"
+  sha1 "45a889114f4687553abffb48b0603c863e1ce816"
 
   bottle do
     cellar :any
-    revision 1
     sha1 "b26da4d239a3bb3cb7f09b34f9272f74d7098cce" => :mavericks
     sha1 "16a56854088be3e0c82463f04d3738dfd24fe458" => :mountain_lion
     sha1 "444f4575cbfa462c737a260cbad9a4ce57d4d77e" => :lion
@@ -29,11 +28,12 @@ class GitAnnex < Formula
     cabal_sandbox do
       cabal_install_tools "alex", "happy", "c2hs"
       # gcc required to build gnuidn
-      cabal_install "--with-gcc=#{Formula["gcc"].bin}/gcc", "--only-dependencies"
+      cabal_install "--with-gcc=#{Formula["gcc"].bin}/gcc-4.8", "--only-dependencies"
       cabal_install "--prefix=#{prefix}"
     end
-    system "make", "git-annex.1", "git-annex-shell.1"
-    man1.install "git-annex.1", "git-annex-shell.1"
+    bin.install_symlink "git-annex" => "git-annex-shell"
+    system "make", "git-annex.1", "git-annex-shell.1", "git-union-merge.1"
+    man1.install "git-annex.1", "git-annex-shell.1", "git-union-merge.1"
   end
 
   test do
