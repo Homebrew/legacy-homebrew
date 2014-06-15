@@ -8,6 +8,13 @@ class Geocouch < Formula
 
   head 'https://github.com/couchbase/geocouch.git'
 
+  bottle do
+    cellar :any
+    sha1 "c1114f8a472fc8fa916ddbe9f73d22b1922a0a3b" => :mavericks
+    sha1 "2aa501910c42d122a05ab066e4dffdf7e0df2242" => :mountain_lion
+    sha1 "d1a81ebdbea1d8598461d194fa47d988bc4d36df" => :lion
+  end
+
   depends_on "couchdb"
   depends_on "erlang" => :build
 
