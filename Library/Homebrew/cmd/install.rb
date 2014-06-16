@@ -1,6 +1,9 @@
-require 'formula_installer'
-require 'hardware'
-require 'blacklist'
+require "blacklist"
+require "cmd/doctor"
+require "cmd/search"
+require "cmd/tap"
+require "formula_installer"
+require "hardware"
 
 module Homebrew extend self
   def install
@@ -17,7 +20,6 @@ module Homebrew extend self
         raise "No available formula for #{name}\n#{msg}" if msg
       end
       if not File.exist? name and name =~ HOMEBREW_TAP_FORMULA_REGEX then
-        require 'cmd/tap'
         install_tap $1, $2
       end
     end unless ARGV.force?
@@ -28,7 +30,6 @@ module Homebrew extend self
       ARGV.formulae.each { |f| install_formula(f) }
     rescue FormulaUnavailableError => e
       ofail e.message
-      require 'cmd/search'
       puts 'Searching taps...'
       puts_columns(search_taps(query_regexp(e.name)))
     end
@@ -49,7 +50,6 @@ module Homebrew extend self
   end
 
   def check_xcode
-    require 'cmd/doctor'
     checks = Checks.new
     %w[
       check_for_installed_developer_tools
