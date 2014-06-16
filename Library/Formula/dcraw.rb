@@ -3,7 +3,7 @@ require "formula"
 class Dcraw < Formula
   homepage "http://www.cybercom.net/~dcoffin/dcraw/"
   url "http://www.cybercom.net/~dcoffin/dcraw/archive/dcraw-9.21.tar.gz"
-  sha1 "76375e59c55358661de519edfcbc179857d4b371"
+  sha1 "9d5819939e5fe5b4e11952622e2ee7e4e51dd749"
 
   depends_on "jpeg"
   depends_on "jasper"
