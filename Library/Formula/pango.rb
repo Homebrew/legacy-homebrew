@@ -11,14 +11,12 @@ class Pango < Formula
     sha1 "122324a9601b4186319e82712875c8ab892fd8a9" => :lion
   end
 
-  option 'without-x', 'Build without X11 support'
-
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'cairo'
   depends_on 'harfbuzz'
   depends_on 'fontconfig'
-  depends_on :x11 if build.with? 'x'
+  depends_on :x11 => :recommended
   depends_on 'gobject-introspection'
 
   fails_with :llvm do
@@ -36,7 +34,7 @@ class Pango < Formula
       --enable-introspection=yes
     ]
 
-    if build.without? "x"
+    if build.without? "x11"
       args << '--without-xft'
     else
       args << '--with-xft'
