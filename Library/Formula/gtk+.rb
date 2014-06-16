@@ -30,15 +30,17 @@ class Gtkx < Formula
   end
 
   def install
-    args = ["--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--prefix=#{prefix}",
-            "--disable-glibtest",
-            "--enable-introspection=yes",
-            "--disable-visibility"]
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --disable-glibtest
+      --enable-introspection=yes
+      --disable-visibility
+    ]
 
     if build.without? "x11"
-        args << "--with-gdktarget=quartz"
+      args << "--with-gdktarget=quartz"
     end
 
     system "./configure", *args
