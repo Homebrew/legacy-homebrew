@@ -11,4 +11,18 @@ class Openalsoft < Formula
     system "cmake", ".", *std_cmake_args
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include "AL/al.h"
+      #include "AL/alc.h"
+      int main() {
+        ALCdevice *device;
+        device = alcOpenDevice(0);
+        alcCloseDevice(device);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lopenal"
+  end
 end
