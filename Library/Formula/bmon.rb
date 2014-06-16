@@ -5,6 +5,7 @@ class Bmon < Formula
   url 'http://www.carisma.slowglass.com/~tgr/bmon/files/bmon-3.1.tar.gz'
   sha1 'f47ab2249f605bcd0bc50d912f3aca35d65819c9'
   depends_on "confuse"
+  depends_on "pkg-config" => :build
   # Patch for Remove the dependence on libnl
   patch :DATA
 
