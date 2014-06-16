@@ -2,8 +2,8 @@ require "formula"
 
 class Tuntap < Formula
   homepage "http://tuntaposx.sourceforge.net/"
-  url "git://git.code.sf.net/p/tuntaposx/code", :tag => "release_20111101"
-  head "git://git.code.sf.net/p/tuntaposx/code", :branch => "master"
+  url "https://git.code.sf.net/p/tuntaposx/code.git", :tag => "release_20111101"
+  head "https://git.code.sf.net/p/tuntaposx/code.git", :branch => "master"
 
   bottle do
     cellar :any
