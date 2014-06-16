@@ -45,21 +45,16 @@ class CompilerFailure
   end
 
   def initialize compiler, &block
+    instance_eval(&block) if block_given?
     # Non-Apple compilers are in the format fails_with compiler => version
     if compiler.is_a? Hash
       # currently the only compiler for this case is GCC
       _, @major_version = compiler.first
       @compiler = 'gcc-' + @major_version
-    else
-      @compiler = compiler
-    end
-
-    instance_eval(&block) if block_given?
-
-    if compiler.is_a? Hash
       # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
       @version ||= @major_version + '.999'
     else
+      @compiler = compiler
       @version ||= 9999
       @version = @version.to_i
     end
