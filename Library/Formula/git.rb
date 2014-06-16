@@ -28,6 +28,7 @@ class Git < Formula
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
   option 'with-brewed-openssl', "Build with Homebrew OpenSSL instead of the system version"
   option 'with-brewed-curl', "Use Homebrew's version of cURL library"
+  option 'with-brewed-svn', "Use Homebrew's version of SVN"
   option 'with-persistent-https', 'Build git-remote-persistent-https from "contrib" directory'
 
   depends_on 'pcre' => :optional
@@ -35,6 +36,7 @@ class Git < Formula
   depends_on 'openssl' if build.with? 'brewed-openssl'
   depends_on 'curl' if build.with? 'brewed-curl'
   depends_on 'go' => :build if build.with? 'persistent-https'
+  depends_on 'subversion' => 'perl' if build.with? 'brewed-svn'
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -45,7 +47,9 @@ class Git < Formula
     ENV['PYTHON_PATH'] = which 'python'
     ENV['PERL_PATH'] = which 'perl'
 
-    if MacOS.version >= :mavericks
+    if build.with? 'brewed-svn'
+      ENV["PERLLIB_EXTRA"] = "#{Formula["subversion"].prefix}/Library/Perl/5.16/darwin-thread-multi-2level"
+    elsif MacOS.version >= :mavericks
       ENV["PERLLIB_EXTRA"] = %W{
         #{MacOS.active_developer_dir}
         /Library/Developer/CommandLineTools
