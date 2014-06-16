@@ -5,6 +5,13 @@ class JujuQuickstart < Formula
   url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-1.3.5.tar.gz"
   sha1 "a570fd3f05d67dfd5ea7735ec8694e78cd22cf57"
 
+  bottle do
+    cellar :any
+    sha1 "d4d23590fb06e7c032e239eb73d37263beeaac31" => :mavericks
+    sha1 "28e85ae87e71411fbccdfd7d07d5403393dffac6" => :mountain_lion
+    sha1 "3fba353eec6245e35b3315ec3140085b839076a8" => :lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "juju"
 
