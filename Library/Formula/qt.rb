@@ -22,6 +22,10 @@ class Qt < Formula
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
 
+  def patches
+    url "https://qt.gitorious.org/qt/qt/commit/11100f.patch"
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
