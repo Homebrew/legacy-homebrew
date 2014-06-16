@@ -10,6 +10,10 @@ class CompilerFailure
   attr_reader :compiler, :major_version
   attr_rw :cause, :version
 
+  # Allows Apple compiler `fails_with` statements to keep using `build`
+  # even though `build` and `version` are the same internally
+  alias_method :build, :version
+
   MESSAGES = {
     :cxx11 => 'This compiler does not support C++11'
   }
@@ -60,10 +64,6 @@ class CompilerFailure
       @version = @version.to_i
     end
   end
-
-  # Allows Apple compiler `fails_with` statements to keep using `build`
-  # even though `build` and `value` are the same internally
-  alias_method :build, :version
 end
 
 class CompilerQueue
