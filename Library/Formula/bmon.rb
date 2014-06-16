@@ -1,7 +1,7 @@
 require 'formula'
 
 class Bmon < Formula
-  homepage 'http://people.suug.ch/~tgr/bmon'
+  homepage 'http://www.carisma.slowglass.com/%7Etgr/bmon/'
   url 'http://www.carisma.slowglass.com/~tgr/bmon/files/bmon-3.1.tar.gz'
   sha1 'f47ab2249f605bcd0bc50d912f3aca35d65819c9'
 
