@@ -73,8 +73,6 @@ def shutup
   end
 end
 
-require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
-
 require 'test/unit' # must be after at_exit
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
 ARGV.extend(HomebrewArgvExtension)
