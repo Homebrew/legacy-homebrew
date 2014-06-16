@@ -29,8 +29,9 @@ class Libwpg < Formula
         return libwpg::WPG_AUTODETECT;
       }
     EOS
-    system ENV.cc, "test.cpp",
+    system ENV.cc, "test.cpp", "-o", "test",
                    "-lrevenge-0.0", "-I#{Formula['librevenge'].include}/librevenge-0.0",
                    "-lwpg-0.3", "-I#{include}/libwpg-0.3"
+    system "./test"
   end
 end
