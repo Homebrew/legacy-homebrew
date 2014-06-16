@@ -92,6 +92,14 @@ class Lilypond < Formula
     end
   end
 
+  def caveats; <<-EOS.undent
+    Lilypond requires a newer version of mpost. Assuming a standard install of
+    MacTeX, you will need to use `tlmgr` update its installed packages:
+
+      sudo tlmgr update --self && sudo tlmgr update --all
+    EOS
+  end
+
   test do
     (testpath/'test.ly').write <<-EOS.undent
       \\header { title = "Do-Re-Mi" }

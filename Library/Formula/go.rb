@@ -14,9 +14,9 @@ class Go < Formula
   end
 
   devel do
-    url 'https://storage.googleapis.com/golang/go1.3rc1.src.tar.gz'
-    version '1.3rc1'
-    sha1 '6a9dac2e65c07627fe51899e0031e298560b0097'
+    url 'https://storage.googleapis.com/golang/go1.3rc2.src.tar.gz'
+    version '1.3rc2'
+    sha1 '53a5b75c8bb2399c36ed8fe14f64bd2df34ca4d9'
   end
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"

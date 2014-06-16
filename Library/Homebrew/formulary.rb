@@ -59,9 +59,7 @@ class Formulary
         raise FormulaUnavailableError.new(name)
       end
 
-      if have_klass
-        Formulary.get_formula_class(class_name)
-      else
+      unless have_klass
         STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
         begin
           require path
@@ -73,13 +71,13 @@ class Formulary
           raise if ARGV.debug?  # let's see the REAL error
           raise FormulaUnavailableError.new(name)
         end
-
-        klass = Formulary.get_formula_class(class_name)
-        if klass == Formula || !(klass < Formula)
-          raise FormulaUnavailableError.new(name)
-        end
-        klass
       end
+
+      klass = Formulary.get_formula_class(class_name)
+      if klass == Formula || !(klass < Formula)
+        raise FormulaUnavailableError.new(name)
+      end
+      klass
     end
   end
 
@@ -143,7 +141,13 @@ class Formulary
 
     # Downloads the formula's .rb file
     def fetch
-      unless Formulary.formula_class_defined? class_name
+      begin
+        have_klass = Formulary.formula_class_defined? class_name
+      rescue NameError
+        raise FormulaUnavailableError.new(name)
+      end
+
+      unless have_klass
         HOMEBREW_CACHE_FORMULA.mkpath
         FileUtils.rm path.to_s, :force => true
         curl url, '-o', path.to_s

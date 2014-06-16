@@ -80,6 +80,8 @@ class Elasticsearch < Formula
     Data:    #{var}/elasticsearch/#{cluster_name}/
     Logs:    #{var}/log/elasticsearch/#{cluster_name}.log
     Plugins: #{var}/lib/elasticsearch/plugins/
+
+    ElasticSearch requires Java 7; you will need to install an appropriate JDK.
     EOS
   end
 

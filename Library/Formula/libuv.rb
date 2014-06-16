@@ -18,6 +18,7 @@ class Libuv < Formula
     url "https://github.com/joyent/libuv/archive/v0.11.25.tar.gz"
     sha1 "04ba0c1de5c26f3d065fcb1a4f18f6528b67294c"
 
+    depends_on "pkg-config" => :build
     depends_on "automake" => :build
     depends_on "autoconf" => :build
     depends_on "libtool" => :build
