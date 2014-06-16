@@ -5,31 +5,9 @@ require 'formula'
 # elixir are compatible.
 class Erlang < Formula
   homepage 'http://www.erlang.org'
-
-  stable do
-    # Download tarball from GitHub; it is served faster than the official tarball.
-    url 'https://github.com/erlang/otp/archive/OTP_R16B03-1.tar.gz'
-    sha1 'b8f6ff90d9eb766984bb63bf553c3be72674d970'
-
-    # Fixes problem with ODBC on Mavericks. Fixed upstream/HEAD:
-    # https://github.com/erlang/otp/pull/142
-    patch :DATA if MacOS.version >= :mavericks
-  end
-
-  devel do
-    url 'https://github.com/erlang/otp/archive/OTP-17.0.tar.gz'
-    sha1 'efa0dd17267ff41d47df94978b7573535c0da775'
-
-    resource 'man' do
-      url 'http://www.erlang.org/download/otp_doc_man_17.0.tar.gz'
-      sha1 '50106b77a527b9369793197c3d07a8abe4e0a62d'
-    end
-
-    resource 'html' do
-      url 'http://www.erlang.org/download/otp_doc_html_17.0.tar.gz'
-      sha1 '9a154d937c548f67f2c4e3691a6f36851a150be9'
-    end
-  end
+  # Download tarball from GitHub; it is served faster than the official tarball.
+  url "https://github.com/erlang/otp/archive/OTP-17.0.tar.gz"
+  sha1 "efa0dd17267ff41d47df94978b7573535c0da775"
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
@@ -40,14 +18,14 @@ class Erlang < Formula
     sha1 "ec77b491b93c06e7b6e252b50db480294ec9d774" => :lion
   end
 
-  resource 'man' do
-    url 'http://erlang.org/download/otp_doc_man_R16B03-1.tar.gz'
-    sha1 'afde5507a389734adadcd4807595f8bc76ebde1b'
+  resource "man" do
+    url "http://www.erlang.org/download/otp_doc_man_17.0.tar.gz"
+    sha1 "50106b77a527b9369793197c3d07a8abe4e0a62d"
   end
 
-  resource 'html' do
-    url 'http://erlang.org/download/otp_doc_html_R16B03-1.tar.gz'
-    sha1 'a2c0d2b7b9abe6214aff4c75ecc6be62042924e6'
+  resource "html" do
+    url "http://www.erlang.org/download/otp_doc_html_17.0.tar.gz"
+    sha1 "9a154d937c548f67f2c4e3691a6f36851a150be9"
   end
 
   option 'disable-hipe', "Disable building hipe; fails on various OS X systems"
@@ -91,13 +69,9 @@ class Erlang < Formula
     ]
 
     args << "--enable-darwin-64bit" if MacOS.prefer_64_bit?
-
-    unless build.stable?
-      args << '--enable-native-libs' if build.with? 'native-libs'
-      args << '--enable-dirty-schedulers' if build.with? 'dirty-schedulers'
-    end
-
-    args << "--enable-wx" if build.with? 'wxmac'
+    args << "--enable-native-libs" if build.with? "native-libs"
+    args << "--enable-dirty-schedulers" if build.with? "dirty-schedulers"
+    args << "--enable-wx" if build.with? "wxmac"
 
     if MacOS.version >= :snow_leopard and MacOS::CLT.installed?
       args << "--with-dynamic-trace=dtrace"
@@ -135,18 +109,3 @@ class Erlang < Formula
     system "#{bin}/erl", "-noshell", "-eval", "crypto:start().", "-s", "init", "stop"
   end
 end
-
-__END__
-diff --git a/lib/odbc/configure.in b/lib/odbc/configure.in
-index 83f7a47..fd711fe 100644
---- a/lib/odbc/configure.in
-+++ b/lib/odbc/configure.in
-@@ -130,7 +130,7 @@ AC_SUBST(THR_LIBS)
- odbc_lib_link_success=no
- AC_SUBST(TARGET_FLAGS)
-     case $host_os in
--        darwin*)
-+        darwin1[[0-2]].*|darwin[[0-9]].*)
-                 TARGET_FLAGS="-DUNIX"
-                if test ! -d "$with_odbc" || test "$with_odbc" = "yes"; then
-                    ODBC_LIB= -L"/usr/lib"
