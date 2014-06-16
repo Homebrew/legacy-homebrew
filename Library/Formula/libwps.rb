@@ -25,15 +25,16 @@ class Libwps < Formula
   end
 
   test do
-  (testpath/'test.cpp').write <<-EOS.undent
-    #include <libwps/libwps.h>
-    int main() {
-      return libwps::WPS_OK;
-    }
-  EOS
-  system ENV.cc, "test.cpp",
-                 "-lrevenge-0.0", "-I#{Formula['librevenge'].include}/librevenge-0.0",
-                 "-lwpd-0.10", "-I#{Formula['libwpd'].include}/libwpd-0.10",
-                 "-lwps-0.3", "-I#{include}/libwps-0.3"
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <libwps/libwps.h>
+      int main() {
+        return libwps::WPS_OK;
+      }
+    EOS
+    system ENV.cc, "test.cpp", "-o", "test",
+                  "-lrevenge-0.0", "-I#{Formula["librevenge"].include}/librevenge-0.0",
+                  "-lwpd-0.10", "-I#{Formula["libwpd"].include}/libwpd-0.10",
+                  "-lwps-0.3", "-I#{include}/libwps-0.3"
+    system "./test"
   end
 end
