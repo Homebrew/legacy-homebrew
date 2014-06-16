@@ -43,9 +43,9 @@ class Aubio < Formula
 
   test do
     if build.with? 'python'
-      system "#{bin}/aubiocut", "--help"
+      system "#{bin}/aubiocut", "--verbose", "/System/Library/Sounds/Glass.aiff"
     end
-    system "#{bin}/aubioonset", "--help"
+    system "#{bin}/aubioonset", "--verbose", "/System/Library/Sounds/Glass.aiff"
   end
 end
 
