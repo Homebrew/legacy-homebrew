@@ -37,7 +37,7 @@ class Gtkx < Formula
             "--enable-introspection=yes",
             "--disable-visibility"]
 
-    if build.without? "x11" do
+    if build.without? "x11"
         args << "--with-gdktarget=quartz"
     end
 
