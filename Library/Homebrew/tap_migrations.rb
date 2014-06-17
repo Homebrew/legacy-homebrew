@@ -14,6 +14,7 @@ TAP_MIGRATIONS = {
   "cloudfoundry-cli" => "pivotal/tap",
   "cmucl" => "homebrew/binary",
   "comparepdf" => "homebrew/boneyard",
+  "connect" => "homebrew/boneyard",
   "denyhosts" => "homebrew/boneyard",
   "dotwrp" => "homebrew/science",
   "drizzle" => "homebrew/boneyard",
