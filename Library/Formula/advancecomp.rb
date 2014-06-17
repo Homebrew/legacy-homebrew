@@ -11,7 +11,7 @@ class Advancecomp < Formula
     system "make install"
   end
 
-  def test
+  test do
     system bin/"advdef", "--version"
     system bin/"advpng", "--version"
   end
