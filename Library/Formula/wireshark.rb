@@ -4,9 +4,9 @@ class Wireshark < Formula
   homepage 'http://www.wireshark.org'
 
   stable do
-    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.7.tar.bz2'
-    mirror 'http://www.wireshark.org/download/src/wireshark-1.10.7.tar.bz2'
-    sha1 '5e5ce4fdc9aa53e545fc0fbd22eea6adcf7dfc0b'
+    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.10.8.tar.bz2'
+    mirror 'http://www.wireshark.org/download/src/all-versions/wireshark-1.10.8.tar.bz2'
+    sha1 'aa6067ce91637506504c8b954caf75ac98742152'
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
@@ -28,8 +28,9 @@ class Wireshark < Formula
   end
 
   devel do
-    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.11.3.tar.bz2'
-    sha1 '7e1c6b107c178016d51c9061ef3f40efbc47a040'
+    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.0-rc2.tar.bz2'
+    sha1 '612856683bfe4f38fb74ef015c249c450d3a9b0d'
+    version '1.12.0-rc2'
   end
 
   option 'with-qt', 'Use QT for GUI instead of GTK+3'
