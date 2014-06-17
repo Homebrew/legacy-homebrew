@@ -51,7 +51,7 @@ class Lilypond < Formula
     depends_on 'imagemagick'
     depends_on 'docbook'
     depends_on "dblatex" => [:python, "dbtexmf.dblatex"]
-    depends_on :python
+    depends_on :python if MacOS.version <= :snow_leopard
     depends_on 'texi2html'
   end
 
