@@ -174,7 +174,7 @@ Dir.chdir HOMEBREW_PREFIX do
     system git, "init", "-q"
     system git, "remote", "add", "origin", "https://github.com/Homebrew/homebrew"
 
-    args = git, "fetch", "origin", "master:refs/remotes/origin/master", "-n"
+    args = git, "fetch", "origin", "-n"
     args << "--depth=1" if ARGV.include? "--fast"
     system(*args)
 
