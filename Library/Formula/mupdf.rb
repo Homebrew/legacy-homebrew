@@ -2,9 +2,8 @@ require 'formula'
 
 class Mupdf < Formula
   homepage 'http://mupdf.com'
-  url 'https://mupdf.googlecode.com/files/mupdf-1.3-source.tar.gz'
-  sha1 '082325aceb5565b07b82c2b6cc52a97533e03cf9'
-  revision 1
+  url 'http://mupdf.com/downloads/mupdf-1.5-source.tar.gz'
+  sha1 '628470ed20f9a03c81e90cd5585a31c0fab386ef'
 
   depends_on :macos => :snow_leopard
   depends_on :x11
