@@ -2,8 +2,8 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.3.2/rabbitmq-server-mac-standalone-3.3.2.tar.gz'
-  sha1 'b914fddf18de8a7d156b05e6c8764a2ae44a8ff0'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.3.3/rabbitmq-server-mac-standalone-3.3.3.tar.gz'
+  sha1 'eea0b82e766face3ce286a2040b8d474b9bc3879'
 
   bottle do
     sha1 "fb6131e109053091be367473277f18da1e9d27c9" => :mavericks
