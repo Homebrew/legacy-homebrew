@@ -13,7 +13,7 @@ class Xplanet < Formula
 
   revision 1
 
-  option "with-x", "Build for X11 instead of Aqua"
+  option "with-x11", "Build for X11 instead of Aqua"
   option "with-all", "Build with default Xplanet configuration dependencies"
   option "with-pango", "Build Xplanet to support Internationalized text library"
   option "with-netpbm", "Build Xplanet with PNM graphic support"
@@ -30,15 +30,16 @@ class Xplanet < Formula
   depends_on "pango" if build.with?("pango") || build.with?("all")
   depends_on "cspice" if build.with?("cspice") || build.with?("all")
 
-  depends_on 'freetype'
-  depends_on :x11
+  depends_on "freetype"
+  depends_on :x11 => :optional
 
   def install
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
-    if build.with? "x"
+
+    if build.with? "x11"
       args << "--with-x"
     else
       args << "--with-aqua" << "--without-x"
