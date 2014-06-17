@@ -6,9 +6,9 @@ class Rabbitmq < Formula
   sha1 'eea0b82e766face3ce286a2040b8d474b9bc3879'
 
   bottle do
-    sha1 "fb6131e109053091be367473277f18da1e9d27c9" => :mavericks
-    sha1 "f6ff7dcdc31d6b2ad9472be730a4c6e3073d8245" => :mountain_lion
-    sha1 "2f3e9db3e49726702bf1a149c9068768e43ed34b" => :lion
+    sha1 "f49ac3a96a934cbabdd2c663ab2b93007c75806b" => :mavericks
+    sha1 "6138c43a63c7639d3613269b640f94a53828ecbc" => :mountain_lion
+    sha1 "e40d2188e21d4a59e42ed4ea4ddfddd9c3f78caf" => :lion
   end
 
   depends_on 'simplejson' => :python if MacOS.version <= :leopard
