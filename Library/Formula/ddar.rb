@@ -7,7 +7,7 @@ class Ddar < Formula
   head "https://github.com/basak/ddar.git"
 
   depends_on "xmltoman" => :build
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "protobuf" => "with-python"
 
   def install
