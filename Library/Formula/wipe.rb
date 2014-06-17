@@ -4,7 +4,7 @@ class Wipe < Formula
   version '0.23'
   homepage 'http://lambda-diode.com/software/wipe/'
   url 'https://github.com/locolupo/wipe/archive/0.23.tar.gz'
-  sha1 'd99a9a448d4911813909c8e0d9fddf448f6b427c'
+  sha1 '3abd8182e37ecf2a4e9fda7a0c88ba98b99ee5ae'
 
   def install
     system "make", "macos"
