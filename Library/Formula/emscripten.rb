@@ -8,9 +8,10 @@ class Emscripten < Formula
   head "https://github.com/kripken/emscripten.git", :branch => "incoming"
 
   bottle do
-    sha1 "de4ec1922382233ae5162ebc722e41b5f70ebafd" => :mavericks
-    sha1 "49600712bee90639efc17eafb4be8d5c454aa073" => :mountain_lion
-    sha1 "ace690ca25a73913df158c5c5d94cb9df8aa9f32" => :lion
+    revision 1
+    sha1 "ff7081cc17ffe142ee9cd2bbf637af6c29133701" => :mavericks
+    sha1 "1b9cfe66b2904489137973be59877e34f181bf1d" => :mountain_lion
+    sha1 "d75b7049de5d15f479491c72519019f460a20f00" => :lion
   end
 
   head do
@@ -69,7 +70,7 @@ class Emscripten < Formula
       system "make", "install"
     end
 
-    %w(em++ em-config emar emcc emconfigure emlink.py emmake
+    %w(em++ em-config emar emcc emcmake emconfigure emlink.py emmake
        emranlib emrun emscons).each do |emscript|
       bin.install_symlink libexec/emscript
     end

@@ -109,19 +109,6 @@ class FormulaInstaller
       raise FormulaAlreadyInstalledError, msg
     end
 
-    # Building head-only without --HEAD is an error
-    if not ARGV.build_head? and f.stable.nil?
-      raise CannotInstallFormulaError, <<-EOS.undent
-        #{f} is a head-only formula
-        Install with `brew install --HEAD #{f.name}
-      EOS
-    end
-
-    # Building stable-only with --HEAD is an error
-    if ARGV.build_head? and f.head.nil?
-      raise CannotInstallFormulaError, "No head is defined for #{f.name}"
-    end
-
     unless ignore_deps?
       unlinked_deps = f.recursive_dependencies.map(&:to_formula).select do |dep|
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?

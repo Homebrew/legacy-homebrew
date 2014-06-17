@@ -1,13 +1,4 @@
 class Compiler < Struct.new(:name, :version, :priority)
-  # This is exposed under the `build` name for compatibility, since
-  # `fails_with` continues to use `build` in the public API.
-  # `build` indicates the build number of an Apple compiler.
-  # This is preferred over version numbers since there are often
-  # significant differences within the same version,
-  # e.g. GCC 4.2 build 5553 vs 5666.
-  # Non-Apple compilers don't have build numbers.
-  alias_method :build, :version
-
   # The major version for non-Apple compilers. Used to indicate a compiler
   # series; for instance, if the version is 4.8.2, it would return "4.8".
   def major_version
@@ -18,6 +9,10 @@ end
 class CompilerFailure
   attr_reader :compiler, :major_version
   attr_rw :cause, :version
+
+  # Allows Apple compiler `fails_with` statements to keep using `build`
+  # even though `build` and `version` are the same internally
+  alias_method :build, :version
 
   MESSAGES = {
     :cxx11 => 'This compiler does not support C++11'
@@ -50,29 +45,20 @@ class CompilerFailure
   end
 
   def initialize compiler, &block
+    instance_eval(&block) if block_given?
     # Non-Apple compilers are in the format fails_with compiler => version
     if compiler.is_a? Hash
       # currently the only compiler for this case is GCC
       _, @major_version = compiler.first
       @compiler = 'gcc-' + @major_version
-    else
-      @compiler = compiler
-    end
-
-    instance_eval(&block) if block_given?
-
-    if compiler.is_a? Hash
       # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
       @version ||= @major_version + '.999'
     else
+      @compiler = compiler
       @version ||= 9999
       @version = @version.to_i
     end
   end
-
-  # Allows Apple compiler `fails_with` statements to keep using `build`
-  # even though `build` and `value` are the same internally
-  alias_method :build, :version
 end
 
 class CompilerQueue

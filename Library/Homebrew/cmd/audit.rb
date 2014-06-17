@@ -416,7 +416,7 @@ class FormulaAuditor
     end
 
     if line =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
-      problem "Use \"if ARGV.build_#{$1.downcase}?\" instead"
+      problem "Use \"if build.#{$1.downcase}?\" instead"
     end
 
     if line =~ /make && make/
