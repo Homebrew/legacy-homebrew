@@ -2,8 +2,8 @@ require 'formula'
 
 class Dar < Formula
   homepage 'http://dar.linux.free.fr/doc/index.html'
-  url 'https://downloads.sourceforge.net/project/dar/dar/2.4.13/dar-2.4.13.tar.gz'
-  sha1 'b20471ada21cd0cbe4687e7bdd3c2e6f70f5c0d1'
+  url 'https://downloads.sourceforge.net/project/dar/dar/2.4.14/dar-2.4.14.tar.gz'
+  sha1 '77f3592cb80a70f663412ca3cb9008a51c9ca4d6'
 
   bottle do
     sha1 "f940432b6ef7ef6698ff91b11ebb3f345ad56dde" => :mavericks
