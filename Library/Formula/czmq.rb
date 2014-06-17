@@ -27,6 +27,8 @@ class Czmq < Formula
   end
 
   test do
-    system "#{bin}/czmq_selftest"
+    cd "#{bin}" do
+      system "#{bin}/czmq_selftest"
+    end
   end
 end
