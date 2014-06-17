@@ -2,13 +2,13 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.11/source/mariadb-10.0.11.tar.gz'
-  sha1 'd596a2af184a125d833d507f411a3f8cf4cd3134'
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.12/source/mariadb-10.0.12.tar.gz"
+  sha1 "226251b2312bbe3e4cdac1ee8a6830c6fe246f1b"
 
   bottle do
-    sha1 "c82fbe012156d56a5accdb9612d2e058b79ef1db" => :mavericks
-    sha1 "358893e24183fab22a6637d68a2e2c8d14b51351" => :mountain_lion
-    sha1 "9297a50dc9e3ffa8cc405312120d12a6d902799a" => :lion
+    sha1 "e36d3c0624e41926691cf51ae59a1387a840f10b" => :mavericks
+    sha1 "f32c7bec695c507e489199971ad247bd73e89cdb" => :mountain_lion
+    sha1 "891474e26db60aa9296cab6626a4c8abb762d112" => :lion
   end
 
   depends_on 'cmake' => :build

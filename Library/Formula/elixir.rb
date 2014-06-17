@@ -3,6 +3,7 @@ require 'formula'
 class ErlangInstalled < Requirement
   fatal true
   env :userpaths
+  default_formula "erlang"
 
   satisfy {
     erl = which('erl') and begin
@@ -15,7 +16,7 @@ class ErlangInstalled < Requirement
     Erlang 17 is required to install.
 
     You can install this with:
-      brew install erlang --devel
+      brew install erlang
 
     Or you can use an official installer from:
       http://www.erlang.org/
