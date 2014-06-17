@@ -2,8 +2,8 @@ require 'formula'
 
 class Wxmac < Formula
   homepage "http://www.wxwidgets.org"
-  url "https://downloads.sourceforge.net/project/wxwindows/3.0.0/wxWidgets-3.0.0.tar.bz2"
-  sha1 "756a9c54d1f411e262f03bacb78ccef085a9880a"
+  url "https://sourceforge.net/projects/wxwindows/files/3.0.1/wxWidgets-3.0.1.tar.bz2"
+  sha1 "73e58521d6871c9f4d1e7974c6e3a81629fddcf8"
 
   bottle do
     revision 4
@@ -15,13 +15,6 @@ class Wxmac < Formula
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libtiff"
-
-  # Upstream patch for starting non-bundled apps like gnuplot, see:
-  # http://trac.wxwidgets.org/ticket/15613
-  patch :p2 do
-    url "http://trac.wxwidgets.org/changeset/75142/wxWidgets/trunk/src/osx/cocoa/utils.mm?format=diff&new=75142"
-    sha1 "de67a8f8da479a5ab553d1c5444fc093975ff818"
-  end
 
   def install
     # need to set with-macosx-version-min to avoid configure defaulting to 10.5
