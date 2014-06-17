@@ -17,10 +17,8 @@ class Aubio < Formula
     depends_on 'numpy' => :python
   end
 
-  def patches
-    # remove -arch flags if not building for universal
-    { :p0 => DATA }
-  end if not build.universal?
+  # remove -arch flags if not building for universal
+  patch :p0, :DATA unless build.universal?
 
   def install
     ENV.universal_binary if build.universal?
