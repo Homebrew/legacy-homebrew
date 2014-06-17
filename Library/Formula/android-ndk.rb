@@ -2,11 +2,16 @@ require 'formula'
 
 class AndroidNdk < Formula
   homepage 'http://developer.android.com/sdk/ndk/index.html'
-  url 'http://dl.google.com/android/ndk/android-ndk-r9d-darwin-x86.tar.bz2'
   version 'r9d'
-  sha1 '91ac410a24ad6d1fc67b5161294a4a5cb78b2975'
-
   depends_on 'android-sdk'
+
+  if MacOS.prefer_64_bit?
+    url "http://dl.google.com/android/ndk/android-ndk-r9d-darwin-x86_64.tar.bz2"
+    sha1 'd0a8471555be57899c67aa6b61db5bca9db2e8ea'
+  else
+    url "http://dl.google.com/android/ndk/android-ndk-r9d-darwin-x86.tar.bz2"
+    sha1 '91ac410a24ad6d1fc67b5161294a4a5cb78b2975'
+  end
 
   def install
     bin.mkpath
