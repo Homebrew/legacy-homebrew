@@ -91,10 +91,15 @@ class FormulaInstaller
   end
 
   def verify_deps_exist
-    f.recursive_dependencies.map(&:to_formula)
-  rescue TapFormulaUnavailableError => e
-    Homebrew.install_tap(e.user, e.repo)
-    retry
+    begin
+      f.recursive_dependencies.map(&:to_formula)
+    rescue TapFormulaUnavailableError => e
+      if Homebrew.install_tap(e.user, e.repo)
+        retry
+      else
+        raise
+      end
+    end
   rescue FormulaUnavailableError => e
     e.dependent = f.name
     raise
