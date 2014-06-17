@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class Wipe < Formula
   version '0.23'
