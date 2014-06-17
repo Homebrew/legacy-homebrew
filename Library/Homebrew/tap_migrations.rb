@@ -1,6 +1,7 @@
 TAP_MIGRATIONS = {
   "agedu" => "homebrew/headonly",
   "aimage" => "homebrew/boneyard",
+  "aplus" => "homebrew/boneyard",
   "apple-gcc42" => "homebrew/versions",
   "appledoc" => "homebrew/boneyard",
   "appswitch" => "homebrew/binary",
