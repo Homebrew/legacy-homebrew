@@ -22,6 +22,7 @@ class Imagemagick < Formula
   option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
   option 'with-perl', 'enable build/install of PerlMagick'
   option 'without-magick-plus-plus', 'disable build/install of Magick++'
+  option 'with-jp2', 'Compile with Jpeg2000 support'
 
   depends_on "libtool" => :run
 
@@ -42,6 +43,7 @@ class Imagemagick < Formula
   depends_on 'openexr' => :optional
   depends_on 'ghostscript' => :optional
   depends_on 'webp' => :optional
+  depends_on 'homebrew/versions/openjpeg21' if build.with? 'jp2'
 
   opoo '--with-ghostscript is not recommended' if build.with? 'ghostscript'
 
@@ -76,6 +78,12 @@ class Imagemagick < Formula
       quantum_depth = 16
     elsif build.with? 'quantum-depth-8'
       quantum_depth = 8
+    end
+
+    if build.with? "jp2"
+      args << "--with-openjp2"
+    else
+      args << "--without-openjp2"
     end
 
     args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth

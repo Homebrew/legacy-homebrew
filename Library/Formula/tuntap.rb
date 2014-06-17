@@ -2,7 +2,8 @@ require "formula"
 
 class Tuntap < Formula
   homepage "http://tuntaposx.sourceforge.net/"
-  url "git://git.code.sf.net/p/tuntaposx/code", :tag => "release_20111101"
+  url "https://downloads.sourceforge.net/project/tuntaposx/tuntap/20111101/tuntap_20111101_src.tar.gz"
+  sha1 "826f79f60dc40cee607ffc2b7e79874b1c686f28"
   head "git://git.code.sf.net/p/tuntaposx/code", :branch => "master"
 
   bottle do
@@ -17,12 +18,9 @@ class Tuntap < Formula
 
   def install
     ENV.j1 # to avoid race conditions (can't open: ../tuntap.o)
-
-    cd "tuntap" do
-      system "make", "CC=#{ENV.cc}", "CCP=#{ENV.cxx}"
-      kext_prefix.install "tun.kext", "tap.kext"
-      prefix.install "startup_item/tap", "startup_item/tun"
-    end
+    system "make", "CC=#{ENV.cc}", "CCP=#{ENV.cxx}"
+    kext_prefix.install "tun.kext", "tap.kext"
+    prefix.install "startup_item/tap", "startup_item/tun"
   end
 
   def caveats; <<-EOS.undent
@@ -55,10 +53,10 @@ class Tuntap < Formula
 end
 
 __END__
-diff --git a/tuntap/src/tap/Makefile b/tuntap/src/tap/Makefile
+diff --git a/src/tap/Makefile b/src/tap/Makefile
 index d4d1158..1dfe294 100644
---- a/tuntap/src/tap/Makefile
-+++ b/tuntap/src/tap/Makefile
+--- a/src/tap/Makefile
++++ b/src/tap/Makefile
 @@ -19,7 +19,8 @@ BUNDLE_SIGNATURE = ????
  BUNDLE_PACKAGETYPE = KEXT
  BUNDLE_VERSION = $(TAP_KEXT_VERSION)
@@ -69,10 +67,10 @@ index d4d1158..1dfe294 100644
  CFLAGS = -Wall -mkernel -force_cpusubtype_ALL \
  	-fno-builtin -fno-stack-protector -arch i386 -arch x86_64 \
  	-DKERNEL -D__APPLE__ -DKERNEL_PRIVATE -DTUNTAP_VERSION=\"$(TUNTAP_VERSION)\" \
-diff --git a/tuntap/src/tun/Makefile b/tuntap/src/tun/Makefile
+diff --git a/src/tun/Makefile b/src/tun/Makefile
 index 9ca6794..c530f10 100644
---- a/tuntap/src/tun/Makefile
-+++ b/tuntap/src/tun/Makefile
+--- a/src/tun/Makefile
++++ b/src/tun/Makefile
 @@ -20,7 +20,8 @@ BUNDLE_SIGNATURE = ????
  BUNDLE_PACKAGETYPE = KEXT
  BUNDLE_VERSION = $(TUN_KEXT_VERSION)
