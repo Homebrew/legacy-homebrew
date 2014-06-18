@@ -4,18 +4,12 @@ require 'formula'
 # https://github.com/Homebrew/homebrew/issues/20339
 class Cfengine < Formula
   homepage 'http://cfengine.com/'
-  url 'http://cfengine.com/source-code/download?file=cfengine-3.5.3.tar.gz'
-  sha1 '95a03e7bc9e31704d6aac4b3023b9c5037fc33f6'
+  url 'http://s3.amazonaws.com/cfengine.package-repos/tarballs/cfengine-3.6.0.tar.gz'
+  sha1 '6358981f836c8e09da154290b1f4285d3dc9562c'
 
   depends_on 'pcre'
   depends_on 'tokyo-cabinet'
   depends_on 'libxml2' if MacOS.version < :mountain_lion
-
-  # Upstream patches for OS X compilation
-  patch do
-    url "https://github.com/cfengine/core/commit/d03fcc2d38a4db0c79386aaef30597102bf45853.diff"
-    sha1 "1050a7f1719b8ad0e04868319324cc38637a3725"
-  end
 
   def install
     system "./configure", "--disable-dependency-tracking",
