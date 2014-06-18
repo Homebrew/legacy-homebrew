@@ -87,11 +87,16 @@ class RequirementTests < Test::Unit::TestCase
   end
 
   def test_infer_name_from_class
-    klass, const = self.class, :FooRequirement
+    const = :FooRequirement
+    klass = self.class
+
     klass.const_set(const, Class.new(Requirement))
-    assert_equal "foo", klass.const_get(const).new.name
-  ensure
-    klass.send(:remove_const, const) if klass.const_defined?(const)
+
+    begin
+      assert_equal "foo", klass.const_get(const).new.name
+    ensure
+      klass.send(:remove_const, const)
+    end
   end
 
   def test_dsl_default_formula

@@ -1,6 +1,5 @@
 # Require this file to build a testing environment.
 
-ABS__FILE__ = File.expand_path(__FILE__)
 $:.push(File.expand_path(__FILE__+'/../..'))
 
 require 'extend/module'
@@ -29,8 +28,14 @@ HOMEBREW_VERSION       = '0.9-test'
 
 require 'tap_constants'
 
-RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
-RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
+if RbConfig.respond_to?(:ruby)
+  RUBY_PATH = Pathname.new(RbConfig.ruby)
+else
+  RUBY_PATH = Pathname.new(RbConfig::CONFIG["bindir"]).join(
+    RbConfig::CONFIG["ruby_install_name"] + RbConfig::CONFIG["EXEEXT"]
+  )
+end
+RUBY_BIN = RUBY_PATH.dirname
 
 MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
 MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }
@@ -49,7 +54,7 @@ end
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 # Test fixtures and files can be found relative to this path
-TEST_FOLDER = Pathname.new(ABS__FILE__).parent.realpath
+TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
 
 def shutup
   if ARGV.verbose?
@@ -68,13 +73,9 @@ def shutup
   end
 end
 
-require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
-
 require 'test/unit' # must be after at_exit
 require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-require 'extend/ENV'
 ARGV.extend(HomebrewArgvExtension)
-ENV.extend(Stdenv)
 
 begin
   require 'rubygems'
@@ -116,7 +117,7 @@ class Test::Unit::TestCase
   TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
   TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
 
-  def formula(*args, &block)
-    @_f = Class.new(Formula, &block).new(*args)
+  def formula(name="formula_name", path=Formula.path(name), &block)
+    @_f = Class.new(Formula, &block).new(name, path)
   end
 end

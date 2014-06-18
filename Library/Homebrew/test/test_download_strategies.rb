@@ -4,7 +4,7 @@ require 'download_strategy'
 class ResourceDouble
   attr_reader :url, :specs
 
-  def initialize(url="http://foo.com/bar.tar.gz", specs={})
+  def initialize(url="http://example.com/foo.tar.gz", specs={})
     @url = url
     @specs = specs
   end
@@ -38,7 +38,7 @@ end
 
 class VCSDownloadStrategyTests < Test::Unit::TestCase
   def setup
-    @resource = ResourceDouble.new("http://foo.com/bar")
+    @resource = ResourceDouble.new("http://example.com/bar")
     @strategy = VCSDownloadStrategy
   end
 
@@ -68,7 +68,7 @@ class DownloadStrategyDetectorTests < Test::Unit::TestCase
   end
 
   def test_detect_git_download_startegy
-    @d = DownloadStrategyDetector.detect("git://foo.com/bar.git")
+    @d = DownloadStrategyDetector.detect("git://example.com/foo.git")
     assert_equal GitDownloadStrategy, @d
   end
 

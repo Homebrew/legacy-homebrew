@@ -141,7 +141,13 @@ class Formulary
 
     # Downloads the formula's .rb file
     def fetch
-      unless Formulary.formula_class_defined? class_name
+      begin
+        have_klass = Formulary.formula_class_defined? class_name
+      rescue NameError
+        raise FormulaUnavailableError.new(name)
+      end
+
+      unless have_klass
         HOMEBREW_CACHE_FORMULA.mkpath
         FileUtils.rm path.to_s, :force => true
         curl url, '-o', path.to_s

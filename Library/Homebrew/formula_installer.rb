@@ -91,10 +91,15 @@ class FormulaInstaller
   end
 
   def verify_deps_exist
-    f.recursive_dependencies.map(&:to_formula)
-  rescue TapFormulaUnavailableError => e
-    Homebrew.install_tap(e.user, e.repo)
-    retry
+    begin
+      f.recursive_dependencies.map(&:to_formula)
+    rescue TapFormulaUnavailableError => e
+      if Homebrew.install_tap(e.user, e.repo)
+        retry
+      else
+        raise
+      end
+    end
   rescue FormulaUnavailableError => e
     e.dependent = f.name
     raise
@@ -107,19 +112,6 @@ class FormulaInstaller
       msg = "#{f}-#{f.installed_version} already installed"
       msg << ", it's just not linked" unless f.linked_keg.symlink? or f.keg_only?
       raise FormulaAlreadyInstalledError, msg
-    end
-
-    # Building head-only without --HEAD is an error
-    if not ARGV.build_head? and f.stable.nil?
-      raise CannotInstallFormulaError, <<-EOS.undent
-        #{f} is a head-only formula
-        Install with `brew install --HEAD #{f.name}
-      EOS
-    end
-
-    # Building stable-only with --HEAD is an error
-    if ARGV.build_head? and f.head.nil?
-      raise CannotInstallFormulaError, "No head is defined for #{f.name}"
     end
 
     unless ignore_deps?
