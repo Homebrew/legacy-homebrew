@@ -13,6 +13,9 @@ module SharedEnvExtension
                           'llvm-gcc' => :llvm,
                           'clang'    => :clang }
 
+  COMPILERS = COMPILER_SYMBOL_MAP.values +
+    GNU_GCC_VERSIONS.map { |n| "gcc-4.#{n}" }
+
   SANITIZED_VARS = %w[
     CDPATH GREP_OPTIONS CLICOLOR_FORCE
     CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH
@@ -105,6 +108,18 @@ module SharedEnvExtension
       end
     else
       MacOS.default_compiler
+    end
+  end
+
+  def determine_cc
+    COMPILER_SYMBOL_MAP.invert.fetch(compiler, compiler)
+  end
+
+  COMPILERS.each do |x|
+    define_method x do
+      @compiler = x
+      self.cc  = determine_cc
+      self.cxx = determine_cxx
     end
   end
 
