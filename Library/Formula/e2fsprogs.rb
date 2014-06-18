@@ -2,8 +2,8 @@ require 'formula'
 
 class E2fsprogs < Formula
   homepage 'http://e2fsprogs.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/e2fsprogs/e2fsprogs-1.42.9.tar.gz'
-  sha1 'fb8e3662302bcab1682d567d6ee0ff051faa1bbd'
+  url 'https://downloads.sourceforge.net/e2fsprogs/e2fsprogs-1.42.10.tar.gz'
+  sha1 '06eba8a78ce1d5032fdcaf34f09025f01ceaca79'
 
   head 'https://git.kernel.org/pub/scm/fs/ext2/e2fsprogs.git'
 
@@ -20,6 +20,7 @@ class E2fsprogs < Formula
   end
 
   def install
+    ENV.deparallelize
     system "./configure", "--prefix=#{prefix}", "--disable-e2initrd-helper"
     system "make"
     system "make install"
