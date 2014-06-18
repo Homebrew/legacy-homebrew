@@ -21,7 +21,7 @@ class E2fsprogs < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-e2initrd-helper"
-    system "make"
+    system "make -j1"
     system "make install"
     system "make install-libs"
   end
