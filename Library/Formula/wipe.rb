@@ -9,4 +9,10 @@ class Wipe < Formula
     system "make", "macos"
     bin.install "wipe"
   end
+
+  test do
+    system "wipe -v"
+    (testpath/'wipe_testfile.txt').write('testdata')
+    system "wipe -f wipe_testfile.txt"
+  end
 end
