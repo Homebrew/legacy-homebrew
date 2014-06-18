@@ -11,8 +11,11 @@ class Wipe < Formula
   end
 
   test do
+    file = "wipe_testfile.txt"
     system "wipe -v"
-    (testpath/'wipe_testfile.txt').write('testdata')
-    system "wipe -f wipe_testfile.txt"
+    (testpath/'file').write('testdata')
+    assert File.exist?("file")
+    system "wipe -f file"
+    assert File.exist?("file") == false
   end
 end
