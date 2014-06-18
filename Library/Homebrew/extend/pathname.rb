@@ -348,6 +348,7 @@ class Pathname
       opoo "tried to write exec scripts to #{self} for an empty list of targets"
       return
     end
+    mkpath
     targets.each do |target|
       target = Pathname.new(target) # allow pathnames or strings
       (self+target.basename()).write <<-EOS.undent
