@@ -9,7 +9,10 @@ class JpegArchive < Formula
 
   def install
     system "make"
-    system "make install"
+    mkdir_p "#{prefix}/bin"
+    %w(jpeg-recompress jpeg-hash jpeg-compare).each do |bin_file|
+      cp bin_file, "#{prefix}/bin/#{bin_file}"
+    end
   end
 
   test do
