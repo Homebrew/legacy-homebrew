@@ -17,7 +17,7 @@ class Emacs < Formula
 
   head do
     if build.include? "use-git-head"
-      url 'http://git.sv.gnu.org/r/emacs.git'
+      url 'https://github.com/mirrors/emacs.git'
     else
       url 'bzr://http://bzr.savannah.gnu.org/r/emacs/trunk'
     end
