@@ -1,4 +1,4 @@
-module Homebrew extend self
+module Homebrew
   def __cellar
     if ARGV.named.empty?
       puts HOMEBREW_CELLAR

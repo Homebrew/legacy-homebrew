@@ -5,7 +5,7 @@ require "cmd/tap"
 require "formula_installer"
 require "hardware"
 
-module Homebrew extend self
+module Homebrew
   def install
     raise FormulaUnspecifiedError if ARGV.named.empty?
 

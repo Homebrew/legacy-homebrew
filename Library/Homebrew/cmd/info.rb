@@ -5,7 +5,7 @@ require 'caveats'
 require 'blacklist'
 require 'utils/json'
 
-module Homebrew extend self
+module Homebrew
   def info
     # eventually we'll solidify an API, but we'll keep old versions
     # awhile around for compatibility

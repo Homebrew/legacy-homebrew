@@ -1122,7 +1122,7 @@ end
   end
 end # end class Checks
 
-module Homebrew extend self
+module Homebrew
   def doctor
     checks = Checks.new
 

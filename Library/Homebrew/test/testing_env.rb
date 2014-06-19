@@ -65,6 +65,7 @@ end
 
 module Homebrew
   include FileUtils
+  extend self
 
   module VersionAssertions
     def version v

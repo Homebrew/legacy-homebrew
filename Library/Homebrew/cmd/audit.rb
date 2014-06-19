@@ -3,7 +3,7 @@ require 'utils'
 require 'extend/ENV'
 require 'formula_cellar_checks'
 
-module Homebrew extend self
+module Homebrew
   def audit
     formula_count = 0
     problem_count = 0
