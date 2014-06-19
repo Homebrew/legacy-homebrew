@@ -2,8 +2,7 @@ require 'formula'
 require 'keg'
 require 'bottles'
 
-module Homebrew extend self
-
+module Homebrew
   def cleanup
     # individual cleanup_ methods should also check for the existence of the
     # appropriate directories before assuming they exist

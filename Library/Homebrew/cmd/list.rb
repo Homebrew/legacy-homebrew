@@ -1,6 +1,6 @@
 require "metafiles"
 
-module Homebrew extend self
+module Homebrew
   def list
 
     # Use of exec means we don't explicitly exit

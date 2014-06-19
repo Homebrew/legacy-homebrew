@@ -1,7 +1,7 @@
 require 'cmd/tap'
 require 'cmd/untap'
 
-module Homebrew extend self
+module Homebrew
   def update
     unless ARGV.named.empty?
       abort <<-EOS.undent

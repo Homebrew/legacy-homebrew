@@ -1,7 +1,6 @@
 require 'extend/pathname'
 
-
-module Homebrew extend self
+module Homebrew
   def which_versions which_brews=nil
     brew_links = Array.new
     version_map = Hash.new

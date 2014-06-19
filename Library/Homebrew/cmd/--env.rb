@@ -1,7 +1,7 @@
 require 'extend/ENV'
 require 'hardware'
 
-module Homebrew extend self
+module Homebrew
   def __env
     ENV.activate_extensions!
 

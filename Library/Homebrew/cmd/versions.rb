@@ -1,7 +1,7 @@
 require "formula"
 require "formula_versions"
 
-module Homebrew extend self
+module Homebrew
   def versions
     raise "Please `brew install git` first" unless which "git"
     raise "Please `brew update` first" unless (HOMEBREW_REPOSITORY/".git").directory?

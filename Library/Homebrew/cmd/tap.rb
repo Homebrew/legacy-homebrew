@@ -1,5 +1,4 @@
-module Homebrew extend self
-
+module Homebrew
   def tap
     if ARGV.empty?
       each_tap do |user, repo|

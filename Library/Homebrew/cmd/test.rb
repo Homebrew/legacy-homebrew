@@ -3,7 +3,7 @@ require 'hardware'
 require 'keg'
 require 'timeout'
 
-module Homebrew extend self
+module Homebrew
   TEST_TIMEOUT_SECONDS = 5*60
 
   if defined?(Gem)
