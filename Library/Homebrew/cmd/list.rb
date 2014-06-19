@@ -11,7 +11,6 @@ module Homebrew
     return unless HOMEBREW_CELLAR.exist?
 
     if ARGV.include? '--pinned'
-      require 'formula'
       list_pinned
     elsif ARGV.include? '--versions'
       list_versions
