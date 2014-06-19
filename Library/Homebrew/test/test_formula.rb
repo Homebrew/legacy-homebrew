@@ -2,8 +2,6 @@ require 'testing_env'
 require 'test/testball'
 
 class FormulaTests < Homebrew::TestCase
-  include VersionAssertions
-
   def test_formula_instantiation
     klass = Class.new(Formula) { url "http://example.com/foo-1.0.tar.gz" }
     name = "formula_name"

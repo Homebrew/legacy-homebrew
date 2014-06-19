@@ -2,8 +2,6 @@ require 'testing_env'
 require 'resource'
 
 class ResourceTests < Homebrew::TestCase
-  include VersionAssertions
-
   def setup
     @resource = Resource.new('test')
   end
