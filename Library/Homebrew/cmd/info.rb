@@ -1,9 +1,10 @@
-require 'formula'
-require 'tab'
-require 'keg'
-require 'caveats'
-require 'blacklist'
-require 'utils/json'
+require "blacklist"
+require "caveats"
+require "cmd/options"
+require "formula"
+require "keg"
+require "tab"
+require "utils/json"
 
 module Homebrew
   def info
@@ -128,7 +129,6 @@ module Homebrew
     end
 
     unless f.build.empty?
-      require 'cmd/options'
       ohai "Options"
       Homebrew.dump_options_for_formula f
     end
