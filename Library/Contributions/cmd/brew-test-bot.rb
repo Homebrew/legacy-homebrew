@@ -326,7 +326,7 @@ class Test
     formula_fetch_options << "--build-bottle" unless ARGV.include? "--no-bottle"
     formula_fetch_options << "--force" if ARGV.include? "--cleanup"
     formula_fetch_options << formula
-    test "brew", "fetch", formula, "--retry", *formula_fetch_options
+    test "brew", "fetch", "--retry", *formula_fetch_options
     test "brew", "uninstall", "--force", formula if formula_object.installed?
     install_args = %w[--verbose]
     install_args << "--build-bottle" unless ARGV.include? "--no-bottle"
