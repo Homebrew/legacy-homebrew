@@ -43,10 +43,6 @@ MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }
 
 ORIGINAL_PATHS = ENV['PATH'].split(File::PATH_SEPARATOR).map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 
-module Homebrew extend self
-  include FileUtils
-end
-
 # Test environment setup
 %w{Library/Formula Library/ENV}.each do |d|
   HOMEBREW_REPOSITORY.join(d).mkpath
@@ -68,6 +64,8 @@ rescue LoadError
 end
 
 module Homebrew
+  include FileUtils
+
   module VersionAssertions
     def version v
       Version.new(v)
