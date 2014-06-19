@@ -2,8 +2,8 @@ require "formula"
 
 class Knot < Formula
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-1.4.5.tar.gz"
-  sha1 "d9a7e9de76ffee6cd640f821f8a6521702083535"
+  url "https://secure.nic.cz/files/knot-dns/knot-1.4.7.tar.gz"
+  sha1 "eed17930b0cd94375f73951fe7582b3f38b4e6f3"
 
   depends_on "userspace-rcu"
   depends_on "openssl"
