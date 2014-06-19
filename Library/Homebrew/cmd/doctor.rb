@@ -1,5 +1,7 @@
-require 'cmd/missing'
-require 'version'
+require "cmd/missing"
+require "formula"
+require "keg"
+require "version"
 
 class Volumes
   def initialize
@@ -181,7 +183,6 @@ def check_for_other_package_managers
 end
 
 def check_for_broken_symlinks
-  require 'keg'
   broken_symlinks = []
 
   Keg::PRUNEABLE_DIRECTORIES.select(&:directory?).each do |d|
@@ -842,8 +843,6 @@ def __check_linked_brew f
 end
 
 def check_for_linked_keg_only_brews
-  require 'formula'
-
   return unless HOMEBREW_CELLAR.exist?
 
   warnings = Hash.new
