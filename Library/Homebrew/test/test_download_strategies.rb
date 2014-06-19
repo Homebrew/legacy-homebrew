@@ -10,7 +10,7 @@ class ResourceDouble
   end
 end
 
-class AbstractDownloadStrategyTests < Test::Unit::TestCase
+class AbstractDownloadStrategyTests < Homebrew::TestCase
   def setup
     @name = "foo"
     @resource = ResourceDouble.new
@@ -36,7 +36,7 @@ class AbstractDownloadStrategyTests < Test::Unit::TestCase
   end
 end
 
-class VCSDownloadStrategyTests < Test::Unit::TestCase
+class VCSDownloadStrategyTests < Homebrew::TestCase
   def setup
     @resource = ResourceDouble.new("http://example.com/bar")
     @strategy = VCSDownloadStrategy
@@ -62,7 +62,7 @@ class VCSDownloadStrategyTests < Test::Unit::TestCase
   end
 end
 
-class DownloadStrategyDetectorTests < Test::Unit::TestCase
+class DownloadStrategyDetectorTests < Homebrew::TestCase
   def setup
     @d = DownloadStrategyDetector.new
   end

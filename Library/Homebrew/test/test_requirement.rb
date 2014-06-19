@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'requirement'
 
-class RequirementTests < Test::Unit::TestCase
+class RequirementTests < Homebrew::TestCase
   def test_accepts_single_tag
     dep = Requirement.new(%w{bar})
     assert_equal %w{bar}, dep.tags

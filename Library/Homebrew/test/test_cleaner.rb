@@ -2,7 +2,7 @@ require 'testing_env'
 require 'cleaner'
 require 'formula'
 
-class CleanerTests < Test::Unit::TestCase
+class CleanerTests < Homebrew::TestCase
   include FileUtils
 
   def setup

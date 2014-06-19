@@ -2,7 +2,7 @@ require 'testing_env'
 require 'cmd/update'
 require 'yaml'
 
-class UpdaterTests < Test::Unit::TestCase
+class UpdaterTests < Homebrew::TestCase
   class UpdaterMock < ::Updater
     def initialize(*args)
       super

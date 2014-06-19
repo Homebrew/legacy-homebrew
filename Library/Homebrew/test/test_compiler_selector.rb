@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'compilers'
 
-class CompilerSelectorTests < Test::Unit::TestCase
+class CompilerSelectorTests < Homebrew::TestCase
   class Double
     attr_reader :name
 

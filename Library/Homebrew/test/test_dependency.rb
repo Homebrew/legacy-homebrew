@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'dependency'
 
-class DependableTests < Test::Unit::TestCase
+class DependableTests < Homebrew::TestCase
   def setup
     @tags = ["foo", "bar", :build]
     @dep = Struct.new(:tags).new(@tags).extend(Dependable)
@@ -18,7 +18,7 @@ class DependableTests < Test::Unit::TestCase
   end
 end
 
-class DependencyTests < Test::Unit::TestCase
+class DependencyTests < Homebrew::TestCase
   def test_accepts_single_tag
     dep = Dependency.new("foo", %w{bar})
     assert_equal %w{bar}, dep.tags
