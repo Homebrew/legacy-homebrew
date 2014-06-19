@@ -3,20 +3,14 @@ require 'formula'
 class Go < Formula
   homepage 'http://golang.org'
   head 'https://go.googlecode.com/hg/'
-  url 'https://storage.googleapis.com/golang/go1.2.2.src.tar.gz'
-  version '1.2.2'
-  sha1 '3ce0ac4db434fc1546fec074841ff40dc48c1167'
+  url 'https://storage.googleapis.com/golang/go1.3.src.tar.gz'
+  version '1.3'
+  sha1 '9f9dfcbcb4fa126b2b66c0830dc733215f2f056e'
 
   bottle do
     sha1 "cc2867d5043bbd5af3b9637b8ac62d564eeee334" => :mavericks
     sha1 "daeab2ff21cd4a5682ea687a4a28f1f1c6f3b38e" => :mountain_lion
     sha1 "73020a28cfddd1c63d3f4efba4e7a81d91b926ff" => :lion
-  end
-
-  devel do
-    url 'https://storage.googleapis.com/golang/go1.3rc2.src.tar.gz'
-    version '1.3rc2'
-    sha1 '53a5b75c8bb2399c36ed8fe14f64bd2df34ca4d9'
   end
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
