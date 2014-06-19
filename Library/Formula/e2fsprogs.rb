@@ -22,7 +22,7 @@ class E2fsprogs < Formula
   def install
     ENV.deparallelize
     system "./configure", "--prefix=#{prefix}", "--disable-e2initrd-helper"
-    system "make"
+    system "make "
     system "make install"
     system "make install-libs"
   end
