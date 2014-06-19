@@ -33,10 +33,6 @@ BOTTLE_ERB = <<-EOS
 EOS
 
 module Homebrew extend self
-  class << self
-    include Utils::Inreplace
-  end
-
   def keg_contains string, keg
     if not ARGV.homebrew_developer?
       return quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg
@@ -236,7 +232,7 @@ module Homebrew extend self
         f = Formula.factory formula_name
         update_or_add = nil
 
-        inreplace f.path do |s|
+        Utils::Inreplace.inreplace(f.path) do |s|
           if s.include? 'bottle do'
             update_or_add = 'update'
             string = s.sub!(/  bottle do.+?end\n/m, output)
