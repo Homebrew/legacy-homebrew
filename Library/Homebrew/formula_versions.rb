@@ -1,3 +1,5 @@
+require "formula"
+
 class FormulaVersions
   IGNORED_EXCEPTIONS = [
     ArgumentError, NameError, SyntaxError, TypeError,
