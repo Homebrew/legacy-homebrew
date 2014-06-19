@@ -79,7 +79,6 @@ def blacklisted? name
     GNU Fortran is now provided as part of GCC, and can be installed with:
       brew install gcc
     EOS
-  end
   when 'play' then <<-EOS.undent
     Since Play 2.3 the play command has become the activator command. Play has been updated to use Activator.
     It can be installed with:
