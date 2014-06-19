@@ -2,7 +2,7 @@ require 'testing_env'
 require 'dependency_collector'
 require 'extend/set'
 
-class DependencyCollectorTests < Test::Unit::TestCase
+class DependencyCollectorTests < Homebrew::TestCase
   def find_dependency(name)
     @d.deps.find { |dep| dep.name == name }
   end

@@ -4,7 +4,7 @@ require 'formula'
 require 'cxxstdlib'
 require 'tab'
 
-class CxxStdlibTests < Test::Unit::TestCase
+class CxxStdlibTests < Homebrew::TestCase
   def setup
     @clang = CxxStdlib.new(:libstdcxx, :clang)
     @gcc   = CxxStdlib.new(:libstdcxx, :gcc)

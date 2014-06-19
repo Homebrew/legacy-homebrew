@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'requirements/language_module_dependency'
 
-class LanguageModuleDependencyTests < Test::Unit::TestCase
+class LanguageModuleDependencyTests < Homebrew::TestCase
   def assert_deps_fail(spec)
     l = LanguageModuleDependency.new(*spec.shift.reverse)
     assert !l.satisfied?

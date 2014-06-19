@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'version'
 
-class VersionTests < Test::Unit::TestCase
+class VersionTests < Homebrew::TestCase
   include VersionAssertions
 
   def test_accepts_objects_responding_to_to_str
@@ -28,7 +28,7 @@ class VersionTests < Test::Unit::TestCase
   end
 end
 
-class VersionComparisonTests < Test::Unit::TestCase
+class VersionComparisonTests < Homebrew::TestCase
   include VersionAssertions
 
   def test_version_comparisons
@@ -95,7 +95,7 @@ class VersionComparisonTests < Test::Unit::TestCase
   end
 end
 
-class VersionParsingTests < Test::Unit::TestCase
+class VersionParsingTests < Homebrew::TestCase
   include VersionAssertions
 
   def test_pathname_version

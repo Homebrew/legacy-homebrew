@@ -1,6 +1,6 @@
 require 'testing_env'
 
-class MachOPathnameTests < Test::Unit::TestCase
+class MachOPathnameTests < Homebrew::TestCase
   def dylib_path(name)
     Pathname.new("#{TEST_DIRECTORY}/mach/#{name}.dylib")
   end
@@ -161,7 +161,7 @@ class ArchitectureListExtensionTests < MachOPathnameTests
   end
 end
 
-class TextExecutableTests < Test::Unit::TestCase
+class TextExecutableTests < Homebrew::TestCase
   attr_reader :pn
 
   def setup

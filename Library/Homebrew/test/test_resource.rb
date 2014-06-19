@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'resource'
 
-class ResourceTests < Test::Unit::TestCase
+class ResourceTests < Homebrew::TestCase
   include VersionAssertions
 
   def setup

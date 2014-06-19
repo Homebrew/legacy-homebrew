@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'build_options'
 
-class BuildOptionsTests < Test::Unit::TestCase
+class BuildOptionsTests < Homebrew::TestCase
   def setup
     args = %w{--with-foo --with-bar --without-qux}
     @build = BuildOptions.new(args)

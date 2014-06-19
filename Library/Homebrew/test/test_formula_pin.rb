@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'formula_pin'
 
-class FormulaPinTests < Test::Unit::TestCase
+class FormulaPinTests < Homebrew::TestCase
   class FormulaDouble
     def name
       "double"

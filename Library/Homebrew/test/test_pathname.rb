@@ -2,7 +2,7 @@ require 'testing_env'
 require 'tmpdir'
 require 'extend/pathname'
 
-class PathnameExtensionTests < Test::Unit::TestCase
+class PathnameExtensionTests < Homebrew::TestCase
   include FileUtils
 
   def setup

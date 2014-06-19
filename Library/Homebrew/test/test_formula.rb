@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'test/testball'
 
-class FormulaTests < Test::Unit::TestCase
+class FormulaTests < Homebrew::TestCase
   include VersionAssertions
 
   def test_formula_instantiation

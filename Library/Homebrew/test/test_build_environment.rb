@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'build_environment'
 
-class BuildEnvironmentTests < Test::Unit::TestCase
+class BuildEnvironmentTests < Homebrew::TestCase
   def setup
     @env = BuildEnvironment.new
   end
@@ -49,7 +49,7 @@ class BuildEnvironmentTests < Test::Unit::TestCase
   end
 end
 
-class BuildEnvironmentDSLTests < Test::Unit::TestCase
+class BuildEnvironmentDSLTests < Homebrew::TestCase
   def make_instance(&block)
     Class.new do
       extend BuildEnvironmentDSL

@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'test/testball'
 
-class FailsWithTests < Test::Unit::TestCase
+class FailsWithTests < Homebrew::TestCase
   def assert_fails_with(cc)
     assert @f.new.fails_with?(cc)
   end
