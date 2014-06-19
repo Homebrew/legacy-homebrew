@@ -7,6 +7,13 @@ class Cuetools < Formula
 
   head "https://github.com/svend/cuetools.git"
 
+  bottle do
+    cellar :any
+    sha1 "9e4a137755218db67958c1dd0d700a0a5f8f05d2" => :mavericks
+    sha1 "4ef7bdce473feaa1fe4d3e5ea1b71b8d2d43f627" => :mountain_lion
+    sha1 "c21d19db598c92f1829c6b92bdafa0215cd33a6f" => :lion
+  end
+
   depends_on :autoconf => :build
   depends_on :automake => :build
   depends_on :libtool => :build
