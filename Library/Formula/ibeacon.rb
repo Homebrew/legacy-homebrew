@@ -6,6 +6,11 @@ class Ibeacon < Formula
   sha1 "2f2b635a1211950772c0ae5269b955c280b8fe73"
   head "https://github.com/RadiusNetworks/ibeacon-cli.git"
 
+  bottle do
+    cellar :any
+    sha1 "5ef4660cbd0fdc96c7a9c0ad7a58f462a1a2a2d4" => :mavericks
+  end
+
   depends_on :macos => :mavericks
   depends_on :xcode => :build
 
