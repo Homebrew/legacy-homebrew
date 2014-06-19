@@ -1,7 +1,5 @@
-require 'extend/ENV'
-require 'hardware'
-require 'keg'
-require 'timeout'
+require "extend/ENV"
+require "timeout"
 
 module Homebrew
   TEST_TIMEOUT_SECONDS = 5*60

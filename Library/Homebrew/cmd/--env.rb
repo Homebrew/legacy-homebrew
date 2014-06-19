@@ -1,5 +1,4 @@
-require 'extend/ENV'
-require 'hardware'
+require "extend/ENV"
 
 module Homebrew
   def __env

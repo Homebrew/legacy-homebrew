@@ -1,4 +1,3 @@
-require "formula"
 require "formula_versions"
 
 module Homebrew
