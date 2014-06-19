@@ -13,6 +13,6 @@ class Blink1Tool < Formula
   end
 
   test do
-    system "blink1-tool"
+    system "#{bin}/blink1-tool", "--version"
   end
 end
