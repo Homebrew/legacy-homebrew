@@ -53,8 +53,9 @@ module Homebrew extend self
       rescue FailedAssertion => e
         ofail "#{f.name}: failed"
         puts e.message
-      rescue Exception
+      rescue Exception => e
         ofail "#{f.name}: failed"
+        puts e, e.backtrace
       end
     end
   end
