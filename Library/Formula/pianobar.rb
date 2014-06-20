@@ -4,11 +4,7 @@ class Pianobar < Formula
   homepage "https://github.com/PromyLOPh/pianobar/"
   url "https://6xq.net/projects/pianobar/pianobar-2014.06.08.tar.bz2"
   sha256 "3348b4bdfa9959bc7aeb03ff6ff66e334f8efc78a84261558f18f5fbd543ed2b"
-
-  head do
-    url "https://github.com/PromyLOPh/pianobar.git"
-    depends_on "ffmpeg"
-  end
+  head "https://github.com/PromyLOPh/pianobar.git"
 
   depends_on "pkg-config" => :build
   depends_on "libao"
