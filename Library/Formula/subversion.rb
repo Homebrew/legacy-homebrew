@@ -26,6 +26,7 @@ class Subversion < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
+  depends_on "heimdal" => :build
 
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on 'sqlite'
