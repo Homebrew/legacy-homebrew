@@ -58,6 +58,14 @@ class FormulaInstaller
     return true if f.local_bottle_path
     return false unless f.bottle && f.pour_bottle?
 
+    f.requirements.each do |req|
+      next if req.optional? || req.pour_bottle?
+      if install_bottle_options[:warn]
+        ohai "Building source; bottle blocked by #{req} requirement"
+      end
+      return false
+    end
+
     unless f.bottle.compatible_cellar?
       if install_bottle_options[:warn]
         opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}"
@@ -257,8 +265,7 @@ class FormulaInstaller
             Requirement.prune
           elsif req.build? && dependent != f && install_bottle_for_dep?(dependent, build)
             Requirement.prune
-          elsif req.satisfied? && !(pour_bottle? || build_bottle?) \
-                && !(!req.optional? && req.default_formula?)
+          elsif req.satisfied?
             Requirement.prune
           elsif req.default_formula?
             dep = req.to_dependency
