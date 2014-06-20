@@ -2,12 +2,15 @@ require 'formula'
 
 class Autopsy < Formula
   homepage 'http://www.sleuthkit.org/autopsy/index.php'
-  url 'http://downloads.sourceforge.net/project/autopsy/autopsy/2.24/autopsy-2.24.tar.gz'
+  url 'https://downloads.sourceforge.net/project/autopsy/autopsy/2.24/autopsy-2.24.tar.gz'
   sha1 '084a6554a1494f5f34df4a5a3635c8d3dc3b8822'
 
   depends_on 'sleuthkit'
   depends_on 'afflib' => :optional
   depends_on 'libewf' => :optional
+
+  # fixes weird configure script that wouldn't work nicely with homebrew
+  patch :DATA
 
   def autcfg; <<-EOS.undent
     # Autopsy configuration settings
@@ -42,11 +45,6 @@ class Autopsy < Formula
     # Evidence locker location
     $LOCKDIR = '#{var}/lib/autopsy';
     EOS
-  end
-
-  def patches
-    # fixes weird configure script that wouldn't work nicely with homebrew
-    DATA
   end
 
   def install

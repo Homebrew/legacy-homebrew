@@ -2,7 +2,7 @@ require 'formula'
 
 class Wimlib < Formula
   homepage 'http://sourceforge.net/projects/wimlib/'
-  url 'http://downloads.sourceforge.net/project/wimlib/wimlib-1.5.3.tar.gz'
+  url 'https://downloads.sourceforge.net/project/wimlib/wimlib-1.5.3.tar.gz'
   sha1 '07cfd75ad452cb29f0061196db3bb38230ece3de'
 
   depends_on 'pkg-config' => :build
@@ -18,6 +18,6 @@ class Wimlib < Formula
   end
 
   test do
-    system "wiminfo", "--help"
+    system bin/"wiminfo", "--help"
   end
 end

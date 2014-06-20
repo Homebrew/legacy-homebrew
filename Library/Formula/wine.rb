@@ -1,39 +1,40 @@
 require 'formula'
 
-# NOTE: When updating Wine, please check Wine-Gecko and Wine-Mono for updates too:
-# http://wiki.winehq.org/Gecko
-# http://wiki.winehq.org/Mono
+# NOTE: When updating Wine, please check Wine-Gecko and Wine-Mono for updates
+# too:
+#  - http://wiki.winehq.org/Gecko
+#  - http://wiki.winehq.org/Mono
 class Wine < Formula
   homepage 'http://winehq.org/'
 
   stable do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.6.1.tar.bz2'
-    sha256 'd5bc2c088b555caa60a7ba1156e6ed74d791ba3c438129c75ab53805215a384c'
-
-    depends_on 'little-cms'
+    url 'https://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2'
+    sha256 'f0ab9eede5a0ccacbf6e50682649f9377b9199e49cf55641f1787cf72405acbe'
 
     resource 'gecko' do
-      url 'http://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
+      url 'https://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi', :using => :nounzip
       version '2.21'
       sha1 'a514fc4d53783a586c7880a676c415695fe934a3'
     end
 
     resource 'mono' do
-      url 'http://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
+      url 'https://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi', :using => :nounzip
       sha256 '3dfc23bbc29015e4e538dab8b83cb825d3248a0e5cf3b3318503ee7331115402'
     end
   end
 
   devel do
-    url 'http://downloads.sourceforge.net/project/wine/Source/wine-1.7.10.tar.bz2'
-    sha256 '44270e4b97ef930e4e4b59088e6e3972e91e85bacf9a9a4d8712a877c9d5cbdb'
-    depends_on 'little-cms2'
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.20.tar.bz2"
+    sha256 "9c431b0b96222d0c27a2c2326ed88298ac0dae50ea783ef764c48c4373bf5f15"
+
+    # http://bugs.winehq.org/show_bug.cgi?id=34166
+    patch do
+      url "http://bugs.winehq.org/attachment.cgi?id=47639"
+      sha1 "c195f4b9c0af450c7dc3f396e8661ea5248f2b01"
+    end
   end
 
-  head do
-    url 'git://source.winehq.org/git/wine.git'
-    depends_on 'little-cms2'
-  end
+  head "git://source.winehq.org/git/wine.git"
 
   env :std
 
@@ -44,22 +45,24 @@ class Wine < Formula
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
   depends_on :x11 => :recommended
-  depends_on 'freetype' if build.without? 'x11'
+  depends_on 'pkg-config' => :build
+  depends_on 'freetype'
   depends_on 'jpeg'
   depends_on 'libgphoto2'
+  depends_on 'little-cms2'
   depends_on 'libicns'
   depends_on 'libtiff'
   depends_on 'sane-backends'
   depends_on 'libgsm' => :optional
 
   resource 'gecko' do
-    url 'http://downloads.sourceforge.net/wine/wine_gecko-2.24-x86.msi', :using => :nounzip
+    url 'https://downloads.sourceforge.net/wine/wine_gecko-2.24-x86.msi', :using => :nounzip
     version '2.24'
     sha1 'b4923c0565e6cbd20075a0d4119ce3b48424f962'
   end
 
   resource 'mono' do
-    url 'http://downloads.sourceforge.net/wine/wine-mono-4.5.2.msi', :using => :nounzip
+    url 'https://downloads.sourceforge.net/wine/wine-mono-4.5.2.msi', :using => :nounzip
     sha256 'd9124edb41ba4418af10eba519dafb25ab4338c567d25ce0eb4ce1e1b4d7eaad'
   end
 
@@ -73,9 +76,6 @@ class Wine < Formula
     cause 'error: invalid operand for instruction lretw'
   end
 
-  # There may be flicker in fullscreen mode, but there is no current patch:
-  # # http://bugs.winehq.org/show_bug.cgi?id=34166
-
   # These libraries are not specified as dependencies, or not built as 32-bit:
   # configure: libv4l, gstreamer-0.10, libcapi20, libgsm
 
@@ -86,7 +86,7 @@ class Wine < Formula
 
   def library_path
     paths = %W[#{HOMEBREW_PREFIX}/lib /usr/lib]
-    paths.unshift(MacOS::X11.lib) unless build.without? 'x11'
+    paths.unshift(MacOS::X11.lib) if build.with? 'x11'
     paths.join(':')
   end
 
@@ -111,17 +111,6 @@ class Wine < Formula
           brew install wine --cc=gcc-4.2 # or 4.7, 4.8, etc.
       EOS
     end
-
-    # Workarounds for XCode not including pkg-config files
-    # FIXME we include pkg-config files for libxml2 and libxslt. Is this really necessary?
-    ENV.libxml2
-    ENV.append "LDFLAGS", "-lxslt"
-
-    # Note: we get freetype from :x11, but if the freetype formula has been installed
-    # separately and not built universal, it's going to get picked up and break the build.
-    # We cannot use FREETYPE_LIBS because it is inserted after LDFLAGS and thus cannot
-    # take precedence over the homebrew freetype.
-    ENV.prepend "LDFLAGS", "-L#{MacOS::X11.lib}" unless build.without? 'x11'
 
     args = ["--prefix=#{prefix}"]
     args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang
@@ -165,7 +154,7 @@ class Wine < Formula
         http://bugs.winehq.org/show_bug.cgi?id=31374
     EOS
 
-    unless build.without? 'x11'
+    if build.with? 'x11'
       s += <<-EOS.undent
 
         By default Wine uses a native Mac driver. To switch to the X11 driver, use

@@ -10,7 +10,9 @@ class Latex2html < Formula
   depends_on :tex => :recommended
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--without-mktexlsr"
+    system "./configure", "--prefix=#{prefix}",
+                          "--without-mktexlsr",
+                          "--with-texpath=#{share}/texmf/tex/latex/html"
     system "make install"
   end
 end

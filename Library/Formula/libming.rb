@@ -2,21 +2,20 @@ require 'formula'
 
 class Libming < Formula
   homepage 'http://www.libming.org'
-  url 'http://downloads.sourceforge.net/project/ming/Releases/ming-0.4.4.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/ming/Releases/ming-0.4.4.tar.bz2'
   sha1 'e803b3b94a00a361e3415105f26112cf6f7bac81'
+  revision 1
 
   option 'perl', 'Build the perl extension'
   option 'php', 'Build the php extension'
 
-  depends_on :libpng
-  depends_on :freetype
+  depends_on 'libpng'
+  depends_on 'freetype'
   depends_on :python => :optional
   depends_on 'giflib' => :optional
 
   # Helps us find libgif.dylib, not libungif.dylib which is retired.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # TODO: Libming also includes scripting front-ends for Perl, Python, TCL

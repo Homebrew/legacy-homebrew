@@ -2,18 +2,13 @@ require "formula"
 
 class Influxdb < Formula
   homepage "http://influxdb.org"
-  url "http://get.influxdb.org/influxdb-0.3.2.src.tar.gz"
-  sha1 "6b730a75e6694abd5e913b4ad08936f7661569bd"
-
-  devel do
-    url "http://get.influxdb.org/influxdb-0.4.0.rc5.src.tar.gz"
-    sha1 "b9f1bd55333060ce10691a2f68fdb35eda944bf7"
-  end
+  url "http://get.influxdb.org/influxdb-0.7.3.src.tar.gz"
+  sha1 "cc774498036a758661965eb01c45c1941bf0ac10"
 
   bottle do
-    sha1 '9cc355279cf466f4ebc5704287c255c1d0312093' => :mavericks
-    sha1 'ffb246bf0923ca28b31db256b259b95a96f81f80' => :mountain_lion
-    sha1 '9f43d93ebfd3b8dd1c9d4d43f600d38504be2d66' => :lion
+    sha1 "eec1070cf8165525e350ce00c07802a16260a44c" => :mavericks
+    sha1 "d50eae0ed37ad639d7a04f06c83b1398bc738386" => :mountain_lion
+    sha1 "d76c3b4aac9d5adc016f4ab7eed37951f68b4c22" => :lion
   end
 
   depends_on "leveldb"
@@ -25,28 +20,26 @@ class Influxdb < Formula
   def install
     ENV["GOPATH"] = buildpath
 
-    flex = Formula.factory('flex').bin/"flex"
-    bison = Formula.factory('bison').bin/"bison"
-
-    build_target = build.devel? ? "daemon" : "server"
-    config_type = build.devel? ? "toml" : "json"
+    flex = Formula["flex"].bin/"flex"
+    bison = Formula["bison"].bin/"bison"
 
     system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
-    system "make dependencies protobuf parser"
-    system "go build #{build_target}"
+    system "make", "dependencies", "protobuf", "parser"
+    system "go", "build", "daemon"
 
-    inreplace "config.#{config_type}.sample" do |s|
+    inreplace "config.sample.toml" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
       s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
-      s.gsub! "./admin", "#{opt_prefix}/share/admin"
+      s.gsub! "/tmp/influxdb/development/wal", "#{var}/influxdb/wal"
+      s.gsub! "./admin", "#{opt_share}/admin"
     end
 
-    bin.install build_target => "influxdb"
-    etc.install "config.#{config_type}.sample" => "influxdb.conf"
+    bin.install "daemon" => "influxdb"
+    etc.install "config.sample.toml" => "influxdb.conf"
     share.install "admin"
 
-    (var/'influxdb/data').mkpath
-    (var/'influxdb/raft').mkpath
+    (var/"influxdb/data").mkpath
+    (var/"influxdb/raft").mkpath
   end
 
   plist_options :manual => "influxdb -config=#{HOMEBREW_PREFIX}/etc/influxdb.conf"
@@ -65,7 +58,7 @@ class Influxdb < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/influxdb</string>
+          <string>#{opt_bin}/influxdb</string>
           <string>-config=#{etc}/influxdb.conf</string>
         </array>
         <key>RunAtLoad</key>
@@ -82,6 +75,6 @@ class Influxdb < Formula
   end
 
   test do
-    system "#{bin}/influxdb -v"
+    system "#{bin}/influxdb", "-v"
   end
 end

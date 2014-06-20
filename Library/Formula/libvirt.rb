@@ -2,8 +2,14 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/libvirt-1.2.0.tar.gz'
-  sha256 'a8e578ae7861db2ac5f454073293d2ef3229fd3f6c4f9029101763244db22ddd'
+  url 'http://libvirt.org/sources/libvirt-1.2.5.tar.gz'
+  sha256 '8ee97de3435b823ad2bc40a0b3c395efe2184ae748a92e2211fbe9393939ed45'
+
+  bottle do
+    sha1 "64137bfc7d3172fb09fba633ac32596a7b894844" => :mavericks
+    sha1 "397ec7e0d423d71e51e3c5f789c35512477e9252" => :mountain_lion
+    sha1 "7d246612aaadb297e8afe46f0d9ae8bf6250a82d" => :lion
+  end
 
   option 'without-libvirtd', 'Build only the virsh client and development libraries'
 
@@ -52,7 +58,7 @@ class Libvirt < Formula
 
     # If the libvirt daemon is built, update its config file to reflect
     # the Homebrew prefix
-    unless build.include? 'without-libvirtd'
+    if build.with? "libvirtd"
       inreplace "#{etc}/libvirt/libvirtd.conf" do |s|
         s.gsub! "/etc/", "#{HOMEBREW_PREFIX}/etc/"
         s.gsub! "/var/", "#{HOMEBREW_PREFIX}/var/"

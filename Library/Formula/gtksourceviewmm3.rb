@@ -6,7 +6,6 @@ class Gtksourceviewmm3 < Formula
   sha1 'cac8d2fdde7b862bdb5eb12c6b8998a29e3fcf95'
 
   depends_on 'gtksourceview3'
-  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'gtkmm3'
   depends_on :x11

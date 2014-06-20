@@ -7,11 +7,18 @@ class Blueutil < Formula
 
   head 'https://github.com/toy/blueutil.git'
 
-  depends_on :xcode
+  bottle do
+    cellar :any
+    sha1 "b28c95c99e71944e7e3027c124715eeda0558759" => :mavericks
+    sha1 "2d0b35b8b9bfab35d0a2c1dc3f7fdece65471b11" => :mountain_lion
+    sha1 "409af2fed8bd34eb070c89ea763039373ace8197" => :lion
+  end
+
+  depends_on :xcode => :build
 
   def install
     # Set to build with SDK=macosx10.6, but it doesn't actually need 10.6
-    system 'xcodebuild', 'SDKROOT=', 'SYMROOT=build'
+    xcodebuild 'SDKROOT=', 'SYMROOT=build'
     bin.install 'build/Release/blueutil'
   end
 end

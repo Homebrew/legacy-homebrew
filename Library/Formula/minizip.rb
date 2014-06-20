@@ -4,9 +4,7 @@ class Minizip < Formula
   homepage 'http://www.winimage.com/zLibDll/minizip.html'
   url 'http://zlib.net/zlib-1.2.8.tar.gz'
   sha1 'a4d316c404ff54ca545ea71a27af7dbc29817088'
-
-  # version for minizip, not zlib
-  version '1.1'
+  version '1.1' # version for minizip, not zlib
 
   option :universal
 
@@ -14,13 +12,11 @@ class Minizip < Formula
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
 
-  def patches
-    # configure script fails to detect the right compiler when "cc" is
-    # clang, not gcc.
-    # see: https://github.com/Homebrew/homebrew-dupes/pull/228
-    #      https://github.com/madler/zlib/pull/54
-    DATA
-  end
+  # configure script fails to detect the right compiler when "cc" is
+  # clang, not gcc.
+  # see: https://github.com/Homebrew/homebrew-dupes/pull/228
+  #      https://github.com/madler/zlib/pull/54
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?

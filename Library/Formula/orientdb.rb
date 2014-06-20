@@ -5,9 +5,10 @@ class Orientdb < Formula
   url 'https://orient.googlecode.com/files/orientdb-graphed-1.3.0.tar.gz'
   sha1 '124e37d2994d2908cc36fd036841b53caeed046c'
 
-  def patches
-    # Fixing OrientDB init scripts
-    "https://gist.github.com/leppert/5468357/raw/f4c926df7c31fe96425f2bf5feb68b52df31ebaf/homebrew.patch"
+  # Fixing OrientDB init scripts
+  patch do
+    url "https://gist.githubusercontent.com/leppert/5468357/raw/f4c926df7c31fe96425f2bf5feb68b52df31ebaf/homebrew.patch"
+    sha1 "1ba6c004d0695fde81053ff010f9d78f757f959b"
   end
 
   def install

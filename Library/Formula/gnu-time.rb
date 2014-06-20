@@ -9,9 +9,7 @@ class GnuTime < Formula
   # Fixes issue with main returning void rather than int
   # http://trac.macports.org/ticket/32860
   # http://trac.macports.org/browser/trunk/dports/sysutils/gtime/files/patch-time.c.diff?rev=88924
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--program-prefix=g",

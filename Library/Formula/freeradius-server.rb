@@ -1,27 +1,38 @@
-require 'formula'
+require "formula"
 
 class FreeradiusServer < Formula
-  homepage 'http://freeradius.org/'
-  url 'ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.2.tar.gz'
-  sha1 '6aaa14169c20f257dcd5dcc61da0d0f985e9b5cc'
+  homepage "http://freeradius.org/"
+  url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.5.tar.gz"
+  sha1 "4d18ed8ff3fde4a29112ecc07f175b774ed5f702"
 
-  # Requires newer autotools on all platforms
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "openssl"
 
   # libtool is glibtool on OS X
-  def patches; DATA end
+  patch :DATA
 
   def install
-    ENV.deparallelize
+    openssl = Formula["openssl"]
 
-    system "autoreconf", "-fvi"
+    ENV.deparallelize
+    inreplace "autogen.sh", "libtool", "glibtool"
+    system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}",
+                          "--sbindir=#{bin}",
+                          "--localstatedir=#{var}",
                           "--with-system-libtool",
-                          "--with-system-libltdl"
+                          "--with-system-libltdl",
+                          "--with-openssl-includes=#{openssl.opt_include}",
+                          "--with-openssl-libraries=#{openssl.opt_lib}"
     system "make"
     system "make install"
+  end
+
+  def post_install
+    (var/"run/radiusd").mkpath
+    (var/"log/radius").mkpath
   end
 end
 

@@ -5,6 +5,7 @@
 # Options:
 # --keep-logs:    Write and keep log files under ./brewbot/
 # --cleanup:      Clean the Homebrew directory. Very dangerous. Use with care.
+# --clean-cache:  Remove all cached downloads. Use with care.
 # --skip-setup:   Don't check the local system is setup correctly.
 # --junit:        Generate a JUnit XML test results file.
 # --email:        Generate an email subject file.
@@ -35,7 +36,7 @@ class Step
     @category = test.category
     @command = command
     @puts_output_on_success = options[:puts_output_on_success]
-    @name = command.split[1].delete '-'
+    @name = command[1].delete("-")
     @status = :running
     @repository = HOMEBREW_REPOSITORY
     @time = 0
@@ -60,7 +61,7 @@ class Step
   end
 
   def command_short
-    @command.gsub(/(brew|--force|--verbose|--build-bottle|--rb) /, '').strip.squeeze ' '
+    (@command - %w[brew --force --retry --verbose --build-bottle --rb]).join(" ")
   end
 
   def passed?
@@ -72,8 +73,9 @@ class Step
   end
 
   def puts_command
-    print "#{Tty.blue}==>#{Tty.white} #{@command}#{Tty.reset}"
-    tabs = (80 - "PASSED".length + 1 - @command.length) / 8
+    cmd = @command.join(" ")
+    print "#{Tty.blue}==>#{Tty.white} #{cmd}#{Tty.reset}"
+    tabs = (80 - "PASSED".length + 1 - cmd.length) / 8
     tabs.times{ print "\t" }
     $stdout.flush
   end
@@ -83,21 +85,22 @@ class Step
   end
 
   def has_output?
-    @output and @output.any?
+    @output && !@output.empty?
   end
 
   def run
     puts_command
 
     start_time = Time.now
-    run_command = "#{@command} &>'#{log_file_path}'"
-    if run_command.start_with? 'git '
-      Dir.chdir @repository do
-        `#{run_command}`
-      end
-    else
-      `#{run_command}`
+
+    pid = fork do
+      STDOUT.reopen(log_file_path, "wb")
+      STDERR.reopen(log_file_path, "wb")
+      Dir.chdir(@repository) if @command.first == "git"
+      exec(*@command)
     end
+    Process.wait(pid)
+
     end_time = Time.now
     @time = end_time - start_time
 
@@ -123,8 +126,13 @@ class Test
     @formulae = []
 
     url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
-    formula = Formula.factory argument rescue FormulaUnavailableError
-    git "rev-parse --verify #{argument} &>/dev/null"
+
+    begin
+      formula = Formulary.factory(argument)
+    rescue FormulaUnavailableError
+    end
+
+    git "rev-parse", "--verify", "-q", argument
     if $?.success?
       @hash = argument
     elsif url_match
@@ -145,15 +153,27 @@ class Test
     @hash == 'HEAD'
   end
 
-  def git arguments
-    Dir.chdir HOMEBREW_REPOSITORY do
-      `git #{arguments}`
+  def git(*args)
+    rd, wr = IO.pipe
+
+    pid = fork do
+      rd.close
+      STDERR.reopen("/dev/null")
+      STDOUT.reopen(wr)
+      Dir.chdir HOMEBREW_REPOSITORY
+      exec("git", *args)
     end
+    wr.close
+    Process.wait(pid)
+
+    rd.read
+  ensure
+    rd.close
   end
 
   def download
     def shorten_revision revision
-      git("rev-parse --short #{revision}").strip
+      git("rev-parse", "--short", revision).strip
     end
 
     def current_sha1
@@ -161,11 +181,11 @@ class Test
     end
 
     def current_branch
-      git('symbolic-ref HEAD').gsub('refs/heads/', '').strip
+      git("symbolic-ref", "HEAD").gsub("refs/heads/", "").strip
     end
 
     def single_commit? start_revision, end_revision
-      git("rev-list --count #{start_revision}..#{end_revision}").to_i == 1
+      git("rev-list", "--count", "#{start_revision}..#{end_revision}").to_i == 1
     end
 
     @category = __method__
@@ -176,10 +196,10 @@ class Test
        and not ENV['ghprbPullId']
       diff_start_sha1 = shorten_revision ENV['GIT_PREVIOUS_COMMIT']
       diff_end_sha1 = shorten_revision ENV['GIT_COMMIT']
-      test "brew update" if current_branch == "master"
+      test "brew", "update" if current_branch == "master"
     elsif @hash or @url
       diff_start_sha1 = current_sha1
-      test "brew update" if current_branch == "master"
+      test "brew", "update" if current_branch == "master"
       diff_end_sha1 = current_sha1
     end
 
@@ -205,13 +225,13 @@ class Test
         @name = "#{diff_start_sha1}-#{diff_end_sha1}"
       end
     elsif @hash
-      test "git checkout #{@hash}"
+      test "git", "checkout", @hash
       diff_start_sha1 = "#{@hash}^"
       diff_end_sha1 = @hash
       @name = @hash
     elsif @url
-      test "git checkout #{current_sha1}"
-      test "brew pull --clean #{@url}"
+      test "git", "checkout", current_sha1
+      test "brew", "pull", "--clean", @url
       diff_end_sha1 = current_sha1
       @short_url = @url.gsub('https://github.com/', '')
       if @short_url.include? '/commit/'
@@ -232,142 +252,174 @@ class Test
     return unless diff_start_sha1 != diff_end_sha1
     return if @url and not steps.last.passed?
 
-    diff_stat = git "diff #{diff_start_sha1}..#{diff_end_sha1} --name-status"
+    diff_stat = git "diff-tree", "-r", "--name-status",
+      diff_start_sha1, diff_end_sha1, "--", "Library/Formula"
+
     diff_stat.each_line do |line|
       status, filename = line.split
       # Don't try and do anything to removed files.
-      if (status == 'A' or status == 'M')
-        if filename.match /Formula\/.+\.rb$/
-          @formulae << File.basename(filename, '.rb')
-        end
+      if status == "A" || status == "M"
+        @formulae << File.basename(filename, ".rb")
       end
+    end
+  end
+
+  def skip formula
+    puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula}#{Tty.reset}"
+  end
+
+  def satisfied_requirements? formula_object, spec=:stable
+    requirements = if spec == :stable
+      formula_object.recursive_requirements
+    else
+      formula_object.send(spec).requirements
+    end
+
+    unsatisfied_requirements = requirements.reject do |requirement|
+      requirement.satisfied? || requirement.default_formula?
+    end
+
+    if unsatisfied_requirements.empty?
+      true
+    else
+      formula = formula_object.name
+      formula += " (#{spec})" unless spec == :stable
+      skip formula
+      unsatisfied_requirements.each {|r| puts r.message}
+      false
     end
   end
 
   def setup
     @category = __method__
     return if ARGV.include? "--skip-setup"
-    test "brew doctor"
-    test "brew --env"
-    test "brew --config"
+    test "brew", "doctor"
+    test "brew", "--env"
+    test "brew", "config"
   end
 
   def formula formula
     @category = __method__.to_s + ".#{formula}"
 
-    test "brew uses #{formula}"
+    test "brew", "uses", formula
     dependencies = `brew deps #{formula}`.split("\n")
     dependencies -= `brew list`.split("\n")
-    dependencies = dependencies.join(' ')
     formula_object = Formula.factory(formula)
-    requirements = formula_object.recursive_requirements
-    unsatisfied_requirements = requirements.reject {|r| r.satisfied? or r.default_formula?}
-    unless unsatisfied_requirements.empty?
-      puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula}#{Tty.reset}"
-      unsatisfied_requirements.each {|r| puts r.message}
+    return unless satisfied_requirements? formula_object
+
+    installed_gcc = false
+    begin
+      CompilerSelector.new(formula_object).compiler
+    rescue CompilerSelectionError => e
+      unless installed_gcc
+        test "brew", "install", "gcc"
+        installed_gcc = true
+        retry
+      end
+      skip formula
+      puts e.message
       return
     end
 
-    test "brew fetch #{dependencies}" unless dependencies.empty?
-    formula_fetch_options = " "
-    formula_fetch_options << " --build-bottle" unless ARGV.include? '--no-bottle'
-    formula_fetch_options << " --force" if ARGV.include? '--cleanup'
-    test "brew fetch#{formula_fetch_options} #{formula}"
-    test "brew uninstall --force #{formula}" if formula_object.installed?
-    install_args = '--verbose'
-    install_args << ' --build-bottle' unless ARGV.include? '--no-bottle'
-    install_args << ' --HEAD' if ARGV.include? '--HEAD'
-    test "brew install --only-dependencies #{formula}" unless dependencies.empty?
-    test "brew install #{install_args} #{formula}"
+    test "brew", "fetch", "--retry", *dependencies unless dependencies.empty?
+    formula_fetch_options = []
+    formula_fetch_options << "--build-bottle" unless ARGV.include? "--no-bottle"
+    formula_fetch_options << "--force" if ARGV.include? "--cleanup"
+    formula_fetch_options << formula
+    test "brew", "fetch", "--retry", *formula_fetch_options
+    test "brew", "uninstall", "--force", formula if formula_object.installed?
+    install_args = %w[--verbose]
+    install_args << "--build-bottle" unless ARGV.include? "--no-bottle"
+    install_args << "--HEAD" if ARGV.include? "--HEAD"
+    install_args << formula
+    test "brew", "install", "--only-dependencies", *install_args unless dependencies.empty?
+    test "brew", "install", *install_args
     install_passed = steps.last.passed?
-    test "brew audit #{formula}"
+    test "brew", "audit", formula
     if install_passed
       unless ARGV.include? '--no-bottle'
-        test "brew bottle --rb #{formula}", :puts_output_on_success => true
+        test "brew", "bottle", "--rb", formula, :puts_output_on_success => true
         bottle_step = steps.last
         if bottle_step.passed? and bottle_step.has_output?
           bottle_filename =
             bottle_step.output.gsub(/.*(\.\/\S+#{bottle_native_regex}).*/m, '\1')
-          test "brew uninstall --force #{formula}"
-          test "brew install #{bottle_filename}"
+          test "brew", "uninstall", "--force", formula
+          test "brew", "install", bottle_filename
         end
       end
-      test "brew test --verbose #{formula}" if formula_object.test_defined?
-      test "brew uninstall --force #{formula}"
+      test "brew", "test", "--verbose", formula if formula_object.test_defined?
+      test "brew", "uninstall", "--force", formula
     end
-    if formula_object.devel and not ARGV.include? '--HEAD'
-      test "brew fetch --devel#{formula_fetch_options} #{formula}"
-      test "brew install --devel --verbose #{formula}"
+
+    if formula_object.devel && !ARGV.include?('--HEAD') \
+       && satisfied_requirements?(formula_object, :devel)
+      test "brew", "fetch", "--retry", "--devel", *formula_fetch_options
+      test "brew", "install", "--devel", "--verbose", formula
       devel_install_passed = steps.last.passed?
-      test "brew audit --devel #{formula}"
+      test "brew", "audit", "--devel", formula
       if devel_install_passed
-        test "brew test --devel --verbose #{formula}" if formula_object.test_defined?
-        test "brew uninstall --devel --force #{formula}"
+        test "brew", "test", "--devel", "--verbose", formula if formula_object.test_defined?
+        test "brew", "uninstall", "--devel", "--force", formula
       end
     end
-    test "brew uninstall --force #{dependencies}" unless dependencies.empty?
+    test "brew", "uninstall", "--force", *dependencies unless dependencies.empty?
   end
 
   def homebrew
     @category = __method__
-    test "brew tests"
-    test "brew readall"
+    test "brew", "tests"
+    test "brew", "readall"
   end
 
   def cleanup_before
     @category = __method__
     return unless ARGV.include? '--cleanup'
-    git 'stash'
-    git 'am --abort 2>/dev/null'
-    git 'rebase --abort 2>/dev/null'
-    git 'reset --hard'
-    git 'checkout -f master'
-    git 'clean --force -dx'
+    git "stash"
+    git "am", "--abort"
+    git "rebase", "--abort"
+    git "reset", "--hard"
+    git "checkout", "-f", "master"
+    git "clean", "--force", "-dx"
   end
 
   def cleanup_after
     @category = __method__
-    force_flag = ''
+    checkout_args = []
     if ARGV.include? '--cleanup'
-      test 'brew cleanup -s'
-      test "rm -vrf #{HOMEBREW_CACHE}/*"
-      test 'git clean --force -dx'
-      force_flag = '-f'
+      test "git", "clean", "--force", "-dx"
+      checkout_args << "-f"
     end
+
+    checkout_args << @start_branch
 
     if ARGV.include? '--cleanup' or @url or @hash
-      test "git checkout #{force_flag} #{@start_branch}"
+      test "git", "checkout", *checkout_args
     end
 
     if ARGV.include? '--cleanup'
-      test 'git reset --hard'
-      git 'stash pop 2>/dev/null'
+      test "git", "reset", "--hard"
+      git "stash", "pop"
+      test "brew", "cleanup"
     end
 
     FileUtils.rm_rf @brewbot_root unless ARGV.include? "--keep-logs"
   end
 
-  def test cmd, options={}
-    step = Step.new self, cmd, options
+  def test(*args)
+    options = Hash === args.last ? args.pop : {}
+    step = Step.new self, args, options
     step.run
     steps << step
     step
   end
 
   def check_results
-    message = "All tests passed and raring to brew."
-
     status = :passed
     steps.each do |step|
       case step.status
       when :passed  then next
       when :running then raise
-      when :failed  then
-        if status == :passed
-          status = :failed
-          message = ""
-        end
-        message += "#{step.command}: #{step.status.to_s.upcase}\n"
+      when :failed  then status = :failed
       end
     end
     status == :passed
@@ -422,18 +474,29 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
   copied = system "cp #{jenkins}/jobs/\"#{job}\"/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
   exit unless copied
 
+  ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
+  ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
+
   pr = ENV['UPSTREAM_PULL_REQUEST']
   number = ENV['UPSTREAM_BUILD_NUMBER']
+
+  system "git am --abort 2>/dev/null"
+  system "git rebase --abort 2>/dev/null"
+  safe_system "git checkout -f master"
+  safe_system "git reset --hard origin/master"
+  safe_system "brew update"
 
   if ARGV.include? '--ci-pr-upload'
     safe_system "brew pull --clean #{pr}"
   end
 
+  ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
+  ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
   safe_system "brew bottle --merge --write *.bottle*.rb"
 
   remote = "git@github.com:BrewTestBot/homebrew.git"
   tag = pr ? "pr-#{pr}" : "testing-#{number}"
-  safe_system "git push --force #{remote} :refs/tags/#{tag}"
+  safe_system "git push --force #{remote} master:master :refs/tags/#{tag}"
 
   path = "/home/frs/project/m/ma/machomebrew/Bottles/"
   url = "BrewTestBot,machomebrew@frs.sourceforge.net:#{path}"
@@ -475,12 +538,16 @@ if ARGV.include? "--junit"
       failure = testcase.add_element 'failure' if step.failed?
       if step.has_output?
         # Remove invalid XML CData characters from step output.
-        output = REXML::CData.new step.output.delete("\000\f\e")
+        output = step.output
+        if output.respond_to?(:force_encoding) && !output.valid_encoding?
+          output.force_encoding(Encoding::UTF_8)
+        end
+        output = REXML::CData.new output.delete("\000\a\b\e\f")
         if step.passed?
           system_out = testcase.add_element 'system-out'
           system_out.text = output
         else
-          failure.attributes['message'] = "#{step.status}: #{step.command}"
+          failure.attributes["message"] = "#{step.status}: #{step.command.join(" ")}"
           failure.text = output
         end
       end
@@ -512,5 +579,8 @@ if ARGV.include? "--email"
     file.write email_subject
   end
 end
+
+
+safe_system "rm -rf #{HOMEBREW_CACHE}/*" if ARGV.include? "--clean-cache"
 
 exit any_errors ? 0 : 1

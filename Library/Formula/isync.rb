@@ -1,24 +1,26 @@
-require 'formula'
+require "formula"
 
 class Isync < Formula
-  homepage 'http://isync.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/isync/isync/1.1.0/isync-1.1.0.tar.gz'
-  sha1 'd99bd9603e17f94ebe4af1691482a6676ea0fb42'
+  homepage "http://isync.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/isync/isync/1.1.1/isync-1.1.1.tar.gz"
+  sha1 "be759ff7e7e141b91fc242284ddeb256d54a5567"
 
   head do
-    url 'git://git.code.sf.net/p/isync/isync'
+    url "git://git.code.sf.net/p/isync/isync"
 
-    depends_on :autoconf
-    depends_on :automake
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
   end
 
-  depends_on 'berkeley-db'
+  depends_on "berkeley-db"
 
   def install
-    system "touch", "ChangeLog" if build.head?
-    system "./autogen.sh" if build.head?
+    if build.head?
+      touch "ChangeLog"
+      system "./autogen.sh"
+    end
 
-    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"
   end
 end

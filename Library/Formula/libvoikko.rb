@@ -8,12 +8,13 @@ class Libvoikko < Formula
   depends_on 'pkg-config' => :build
   depends_on 'suomi-malaga-voikko'
 
-  def patches
-    # Fixes compilation issues on OS X 10.9. Both merged upstream:
-    # https://github.com/voikko/corevoikko/pull/5
-    # https://github.com/voikko/corevoikko/pull/6
-    # Note that the upstream commits don't apply cleanly to stable
-    "https://gist.github.com/osimola/7724611/raw/2dcfddaf4bf7c7e9d940edb1b982d5b5e39bc378/libvoikko-3.7-mavericks.patch"
+  # Fixes compilation issues on OS X 10.9. Both merged upstream:
+  # https://github.com/voikko/corevoikko/pull/5
+  # https://github.com/voikko/corevoikko/pull/6
+  # Note that the upstream commits don't apply cleanly to stable
+  patch do
+    url "https://gist.githubusercontent.com/osimola/7724611/raw/2dcfddaf4bf7c7e9d940edb1b982d5b5e39bc378/libvoikko-3.7-mavericks.patch"
+    sha1 "532d0a3097569c966b2632a5b876d9082b4a2c49"
   end
 
   def install

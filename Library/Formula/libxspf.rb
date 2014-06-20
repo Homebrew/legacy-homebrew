@@ -11,7 +11,7 @@ class Libxspf < Formula
 
   # Fix build against clang and GCC 4.7+
   # http://git.xiph.org/?p=libxspf.git;a=commit;h=7f1f68d433f03484b572657ff5df47bba1b03ba6
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -8,8 +8,6 @@ class Idutils < Formula
 
   conflicts_with 'coreutils', :because => 'both install `gid` and `gid.1`'
 
-  depends_on 'xz' => :build
-
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make install"

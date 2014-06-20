@@ -1,13 +1,19 @@
 require 'formula'
 
 class Ansible < Formula
-  homepage 'http://www.ansibleworks.com/'
-  url 'https://github.com/ansible/ansible/archive/v1.4.4.tar.gz'
-  sha1 '743c365d3639fae99129e04b49865aec0d76462d'
+  homepage 'http://www.ansible.com/home'
+  url 'http://releases.ansible.com/ansible/ansible-1.6.3.tar.gz'
+  sha1 '9cac9de1357460a9692c015735c899519c85d0da'
 
-  head 'https://github.com/ansible/ansible.git', :branch => :devel
+  head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
-  depends_on :python
+  bottle do
+    sha1 "55c8739229115a11701bccba801c5a6d42c7bc14" => :mavericks
+    sha1 "46fbdea2eff0749876a1b42f73566b1a2563931a" => :mountain_lion
+    sha1 "3ef7c49039c360bae79b5a97b2d90cc29f39c4e0" => :lion
+  end
+
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'libyaml'
 
   option 'with-accelerate', "Enable accelerated mode"
@@ -45,16 +51,17 @@ class Ansible < Formula
   end
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    # HEAD additionally requires this to be present in PYTHONPATH, or else
+    # ansible's own setup.py will fail.
+    ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    resource('pycrypto').stage { system "python", *install_args }
-    resource('pyyaml').stage { system "python", *install_args }
-    resource('paramiko').stage { system "python", *install_args }
-    resource('markupsafe').stage { system "python", *install_args }
-    resource('jinja2').stage { system "python", *install_args }
-    if build.with? 'accelerate'
-      resource('python-keyczar').stage { system "python", *install_args }
+    res = %w[pycrypto pyyaml paramiko markupsafe jinja2]
+    res << "python-keyczar" if build.with? "accelerate"
+    res.each do |r|
+      resource(r).stage { system "python", *install_args }
     end
 
     inreplace 'lib/ansible/constants.py' do |s|
@@ -63,6 +70,11 @@ class Ansible < Formula
     end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    # These are now rolled into 1.6 and cause linking conflicts
+    rm Dir["#{bin}/easy_install*"]
+    rm "#{lib}/python2.7/site-packages/site.py"
+    rm Dir["#{lib}/python2.7/site-packages/*.pth"]
 
     man1.install Dir['docs/man/man1/*.1']
 

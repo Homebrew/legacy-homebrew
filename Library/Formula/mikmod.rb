@@ -2,8 +2,8 @@ require 'formula'
 
 class Mikmod < Formula
   homepage 'http://mikmod.raphnet.net/'
-  url 'http://sourceforge.net/projects/mikmod/files/mikmod/3.2.4/mikmod-3.2.4.tar.gz'
-  sha1 '7d37c60d96c83ea38b36845a5fb7e5c757b42233'
+  url 'https://downloads.sourceforge.net/project/mikmod/mikmod/3.2.5/mikmod-3.2.5.tar.gz'
+  sha1 '2c4d2abac01af37c45db2b92b74636dce36eba31'
 
   depends_on 'libmikmod'
 
@@ -14,7 +14,7 @@ class Mikmod < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/mikmod", "-V"
   end
 end

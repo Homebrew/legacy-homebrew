@@ -28,7 +28,7 @@ class Soci < Formula
     args = std_cmake_args + %w{.. -DWITH_SQLITE3:BOOL=ON}
 
     %w{boost mysql oracle odbc pg}.each do |a|
-      bool = build.include?("with-#{a}") ? "ON" : "OFF"
+      bool = build.with?(a) ? "ON" : "OFF"
       args << "-DWITH_#{translate(a).upcase}:BOOL=#{bool}"
     end
 

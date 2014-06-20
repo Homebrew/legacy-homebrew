@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'extend/ARGV'
 
-class ArgvExtensionTests < Test::Unit::TestCase
+class ArgvExtensionTests < Homebrew::TestCase
   def setup
     @argv = [].extend(HomebrewArgvExtension)
   end
@@ -49,8 +49,8 @@ class ArgvExtensionTests < Test::Unit::TestCase
   end
 
   def test_filter_for_dependencies_clears_flags
-    @argv << "--debug"
-    @argv.filter_for_dependencies { assert @argv.empty? }
+    @argv << "--HEAD" << "--devel"
+    @argv.filter_for_dependencies { assert_empty @argv }
   end
 
   def test_filter_for_dependencies_ensures_argv_restored

@@ -8,7 +8,6 @@ require 'requirements/x11_dependency'
 
 class XcodeDependency < Requirement
   fatal true
-  build true
 
   satisfy(:build_env => false) { MacOS::Xcode.installed? }
 
@@ -48,41 +47,22 @@ class TeXDependency < Requirement
 
   satisfy { which('tex') || which('latex') }
 
-  def message; <<-EOS.undent
-    A LaTeX distribution is required to install.
+  def message;
+    if File.exist?("/usr/texbin")
+      texbin_path = "/usr/texbin"
+    else
+      texbin_path = "its bin directory"
+    end
+
+    <<-EOS.undent
+    A LaTeX distribution is required for Homebrew to install this formula.
 
     You can install MacTeX distribution from:
       http://www.tug.org/mactex/
 
-    Make sure that its bin directory is in your PATH before proceeding.
-
-    You may also need to restore the ownership of Homebrew install:
-      sudo chown -R $USER `brew --prefix`
+    Make sure that "/usr/texbin", or the location you installed it to, is in
+    your PATH before proceeding.
     EOS
-  end
-end
-
-class CLTDependency < Requirement
-  fatal true
-  build true
-
-  satisfy(:build_env => false) { MacOS::CLT.installed? }
-
-  def message
-    message = <<-EOS.undent
-      The Command Line Tools are required to compile this software.
-    EOS
-    if MacOS.version >= :mavericks
-      message += <<-EOS.undent
-        Run `xcode-select --install` to install them.
-      EOS
-    else
-      message += <<-EOS.undent
-        The standalone package can be obtained from
-        https://developer.apple.com/downloads/,
-        or it can be installed via Xcode's preferences.
-      EOS
-    end
   end
 end
 
@@ -116,14 +96,5 @@ end
 class GitDependency < Requirement
   fatal true
   default_formula 'git'
-  satisfy { which('git') }
-end
-
-class Python27Dependency < Requirement
-  fatal true
-  default_formula 'python'
-  satisfy do
-    # Note that python -V outputs to stderr
-    `python -V 2>&1` =~ /^Python 2.7/
-  end
+  satisfy { !!which('git') }
 end

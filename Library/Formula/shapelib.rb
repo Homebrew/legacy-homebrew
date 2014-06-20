@@ -8,29 +8,22 @@ class Shapelib < Formula
   def install
     dylib = lib+"libshp.#{version}.dylib"
 
-    inreplace 'Makefile' do |s|
-      s.change_make_var! 'CFLAGS', ENV.cflags
-      s.change_make_var! 'PREFIX', prefix
-      s.gsub!            '#CC = g++', "CC = #{ENV.cc}"
-    end
-    system 'make'
+    system "make", "CC=#{ENV.cc}",
+                   "CFLAGS=#{ENV.cflags}",
+                   "PREFIX=#{prefix}"
 
     lib.mkpath
-    system ENV.cc, *%W(-dynamiclib -all_load
-                       -install_name #{dylib}
-                       -headerpad_max_install_names
-                       -compatibility_version #{version}
+    system ENV.cc, *%W[-dynamiclib -Wl,-all_load
+                       -Wl,-install_name,#{dylib}
+                       -Wl,-headerpad_max_install_names
+                       -Wl,-compatibility_version,#{version}
                        -o #{dylib}
-                       shpopen.o shptree.o dbfopen.o safileio.o)
+                       shpopen.o shptree.o dbfopen.o safileio.o]
 
-    include.install 'shapefil.h'
-    bin.install %w(
-      shpcreate shpadd shpdump shprewind dbfcreate dbfadd dbfdump shptreedump
-    )
+    include.install "shapefil.h"
+    bin.install %w[shpcreate shpadd shpdump shprewind dbfcreate dbfadd dbfdump shptreedump]
 
-    cd lib do
-      ln_s "libshp.#{version}.dylib", "libshp.#{version.to_s.split('.').first}.dylib"
-      ln_s "libshp.#{version}.dylib", "libshp.dylib"
-    end
+    lib.install_symlink dylib.basename => "libshp.#{version.to_s.split(".").first}.dylib"
+    lib.install_symlink dylib.basename => "libshp.dylib"
   end
 end

@@ -2,12 +2,13 @@ require 'formula'
 
 class Postgis < Formula
   homepage 'http://postgis.net'
-  url 'http://download.osgeo.org/postgis/source/postgis-2.1.1.tar.gz'
-  sha1 'eaff009fb22b8824f89e5aa581e8b900c5d8f65b'
+  url 'http://download.osgeo.org/postgis/source/postgis-2.1.3.tar.gz'
+  sha256 'c17812aa4bb86ed561dfc65cb42ab45176b94e0620de183a4bbd773d6d876ec1'
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
   option 'with-gui', 'Build shp2pgsql-gui in addition to command line tools'
+  option 'without-gdal', 'Disable postgis raster support'
 
   depends_on :autoconf
   depends_on :automake
@@ -18,16 +19,19 @@ class Postgis < Formula
   depends_on 'proj'
   depends_on 'geos'
 
-  depends_on 'gtk+' if build.include? 'with-gui'
+  depends_on 'gtk+' if build.with? "gui"
 
   # For GeoJSON and raster handling
   depends_on 'json-c'
-  depends_on 'gdal'
+  depends_on 'gdal' => :recommended
+
+  # For advanced 2D/3D functions
+  depends_on 'sfcgal' => :recommended
 
   def install
     # Follow the PostgreSQL linked keg back to the active Postgres installation
     # as it is common for people to avoid upgrading Postgres.
-    postgres_realpath = Formula.factory('postgresql').opt_prefix.realpath
+    postgres_realpath = Formula["postgresql"].opt_prefix.realpath
 
     ENV.deparallelize
 
@@ -36,7 +40,7 @@ class Postgis < Formula
       # Can't use --prefix, PostGIS disrespects it and flat-out refuses to
       # accept it with 2.0.
       "--with-projdir=#{HOMEBREW_PREFIX}",
-      "--with-jsondir=#{Formula.factory('json-c').opt_prefix}",
+      "--with-jsondir=#{Formula["json-c"].opt_prefix}",
       # This is against Homebrew guidelines, but we have to do it as the
       # PostGIS plugin libraries can only be properly inserted into Homebrew's
       # Postgresql keg.
@@ -47,7 +51,9 @@ class Postgis < Formula
       # gettext installations are.
       "--disable-nls"
     ]
-    args << '--with-gui' if build.include? 'with-gui'
+    args << '--with-gui' if build.with? "gui"
+
+    args << '--without-raster' if build.without? "gdal"
 
     system './autogen.sh'
     system './configure', *args
@@ -93,12 +99,12 @@ class Postgis < Formula
   end
 
   def caveats;
-    pg = Formula.factory('postgresql').opt_prefix
+    pg = Formula["postgresql"].opt_prefix
     <<-EOS.undent
       To create a spatially-enabled database, see the documentation:
         http://postgis.net/docs/manual-2.1/postgis_installation.html#create_new_db_extensions
       If you are currently using PostGIS 2.0+, you can go the soft upgrade path:
-        ALTER EXTENSION postgis UPDATE TO "2.1.0";
+        ALTER EXTENSION postgis UPDATE TO "2.1.3";
       Users of 1.5 and below will need to go the hard-upgrade path, see here:
         http://postgis.net/docs/manual-2.1/postgis_installation.html#upgrading
 

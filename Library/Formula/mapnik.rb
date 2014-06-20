@@ -4,12 +4,11 @@ class Mapnik < Formula
   homepage 'http://www.mapnik.org/'
   url 'http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2'
   sha1 'e493ad87ca83471374a3b080f760df4b25f7060d'
+  revision 1
 
   # can be removed at Mapnik > 2.2.0
   # https://github.com/mapnik/mapnik/issues/1973
-  def patches
-    DATA
-  end
+  patch :DATA
   head 'https://github.com/mapnik/mapnik.git'
 
   depends_on 'pkg-config' => :build
@@ -19,7 +18,7 @@ class Mapnik < Formula
   depends_on 'proj'
   depends_on 'icu4c'
   depends_on 'jpeg'
-  depends_on 'boost'
+  depends_on 'boost' => 'with-python'
   depends_on 'gdal' => :optional
   depends_on 'postgresql' => :optional
   depends_on 'cairo' => :optional
@@ -27,13 +26,13 @@ class Mapnik < Formula
   depends_on 'py2cairo' if build.with? 'cairo'
 
   def install
-    icu = Formula.factory("icu4c").opt_prefix
-    boost = Formula.factory('boost').opt_prefix
-    proj = Formula.factory('proj').opt_prefix
-    jpeg = Formula.factory('jpeg').opt_prefix
-    libpng = Formula.factory('libpng').opt_prefix
-    libtiff = Formula.factory('libtiff').opt_prefix
-    freetype = Formula.factory('freetype').opt_prefix
+    icu = Formula["icu4c"].opt_prefix
+    boost = Formula["boost"].opt_prefix
+    proj = Formula["proj"].opt_prefix
+    jpeg = Formula["jpeg"].opt_prefix
+    libpng = Formula["libpng"].opt_prefix
+    libtiff = Formula["libtiff"].opt_prefix
+    freetype = Formula["freetype"].opt_prefix
 
     # mapnik compiles can take ~1.5 GB per job for some .cpp files
     # so lets be cautious by limiting to CPUS/2
@@ -65,8 +64,8 @@ class Mapnik < Formula
     else
       args << "CAIRO=False"
     end
-    args << "GDAL_CONFIG=#{Formula.factory('gdal').opt_prefix}/bin/gdal-config" if build.with? 'gdal'
-    args << "PG_CONFIG=#{Formula.factory('postgresql').opt_prefix}/bin/pg_config" if build.with? 'postgresql'
+    args << "GDAL_CONFIG=#{Formula["gdal"].opt_bin}/gdal-config" if build.with? 'gdal'
+    args << "PG_CONFIG=#{Formula["postgresql"].opt_bin}/pg_config" if build.with? 'postgresql'
 
     system "python", "scons/scons.py", "configure", *args
     system "python", "scons/scons.py", "install"

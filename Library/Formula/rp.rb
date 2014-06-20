@@ -10,10 +10,8 @@ class Rp < Formula
   depends_on :macos => :lion
   depends_on 'cmake' => :build
 
-  def patches
-    # In order to have the same binary name in 32 and 64 bits.
-    DATA
-  end
+  # In order to have the same binary name in 32 and 64 bits.
+  patch :DATA
 
   def install
     mkdir 'build' do

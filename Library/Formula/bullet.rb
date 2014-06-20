@@ -2,7 +2,7 @@ require 'formula'
 
 class Bullet < Formula
   homepage 'http://bulletphysics.org/wordpress/'
-  url 'http://bullet.googlecode.com/files/bullet-2.82-r2704.tgz'
+  url 'https://bullet.googlecode.com/files/bullet-2.82-r2704.tgz'
   version '2.82'
   sha1 'a0867257b9b18e9829bbeb4c6c5872a5b29d1d33'
   head 'http://bullet.googlecode.com/svn/trunk/'
@@ -28,7 +28,11 @@ class Bullet < Formula
       args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     end
 
-    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}" if build.universal?
+    if build.universal?
+      ENV.universal_binary
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
+
     args << "-DUSE_DOUBLE_PRECISION=ON" if build.include? "double-precision"
 
     args << "-DBUILD_DEMOS=OFF" unless build.include? "build-demo"

@@ -7,8 +7,8 @@ require 'formula'
 
 class V8 < Formula
   homepage 'http://code.google.com/p/v8/'
-  url 'https://github.com/v8/v8/archive/3.21.17.tar.gz'
-  sha1 '762dacc85a896e23a311eaed1e182f535677f4d6'
+  url 'https://github.com/v8/v8/archive/3.25.30.tar.gz'
+  sha1 '207d0bb1dd5954fe691570e799b3c1e318741290'
 
   option 'with-readline', 'Use readline instead of libedit'
 
@@ -16,15 +16,12 @@ class V8 < Formula
   # https://github.com/Homebrew/homebrew/issues/21426
   depends_on :macos => :lion
 
-  # gyp currently depends on a full xcode install
-  # https://code.google.com/p/gyp/issues/detail?id=292
-  depends_on :xcode
-  depends_on Python27Dependency # gyp doesn't run under 2.6 or lower
+  depends_on :python => :build # gyp doesn't run under 2.6 or lower
   depends_on 'readline' => :optional
 
   resource 'gyp' do
-    url 'http://gyp.googlecode.com/svn/trunk', :revision => 1685
-    version '1685'
+    url 'http://gyp.googlecode.com/svn/trunk', :revision => 1831
+    version '1831'
   end
 
   def install
@@ -32,7 +29,6 @@ class V8 < Formula
     (buildpath/'build/gyp').install resource('gyp')
 
     system "make", "native",
-                   "-j#{ENV.make_jobs}",
                    "library=shared",
                    "snapshot=on",
                    "console=readline",
@@ -41,7 +37,7 @@ class V8 < Formula
     prefix.install 'include'
     cd 'out/native' do
       lib.install Dir['lib*']
-      bin.install 'd8', 'lineprocessor', 'preparser', 'process', 'shell' => 'v8'
+      bin.install 'd8', 'lineprocessor', 'process', 'shell' => 'v8'
       bin.install Dir['mksnapshot.*']
     end
   end

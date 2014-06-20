@@ -2,15 +2,22 @@ require 'formula'
 
 class Opam < Formula
   homepage 'https://opam.ocaml.org'
-  url 'https://github.com/ocaml/opam/archive/1.1.0.tar.gz'
-  sha1 'fe66f5cfc9ffe9f621462e52e17cbb5869de419a'
+  url 'https://github.com/ocaml/opam/archive/1.1.1.tar.gz'
+  sha1 'f1a8291eb888bfae4476ee59984c9a30106cd483'
 
   head 'https://github.com/ocaml/opam.git'
 
   depends_on "objective-caml"
+  depends_on "aspcud" => :recommended
+
+  if build.with? "aspcud"
+    needs :cxx11
+  end
 
   def install
     ENV.deparallelize
+    # Set TERM to workaround bug in ocp-build (ocaml/opam#1038)
+    ENV["TERM"] = "dumb"
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make", "install"

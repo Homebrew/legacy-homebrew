@@ -2,9 +2,24 @@ require 'formula'
 
 class Geoip < Formula
   homepage 'https://github.com/maxmind/geoip-api-c'
-  url 'https://github.com/maxmind/geoip-api-c/releases/download/v1.6.0/GeoIP-1.6.0.tar.gz'
-  sha1 '41ed21fb2d40e54648cae2a1f73e8a5210676def'
+
+  stable do
+    url "https://github.com/maxmind/geoip-api-c/releases/download/v1.6.0/GeoIP-1.6.0.tar.gz"
+    sha1 "41ed21fb2d40e54648cae2a1f73e8a5210676def"
+
+    # Download test data so `make check` works. Fixed in HEAD.
+    # See https://github.com/maxmind/geoip-api-c/commit/722707cc3a0adc06aec3e98bc36e7262f67ec0da
+    patch :DATA
+  end
+
   head 'https://github.com/maxmind/geoip-api-c.git'
+
+  bottle do
+    cellar :any
+    sha1 "f342950837e46ac3ba90be79c77c8c770fbc9c2d" => :mavericks
+    sha1 "f3b27eb5aef8815b2c01f03938e5c8f7af8d1371" => :mountain_lion
+    sha1 "a39b59af4ee01c7a1e224e9d98ee83d2230f7993" => :lion
+  end
 
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
@@ -12,12 +27,6 @@ class Geoip < Formula
   depends_on 'geoipupdate' => :optional
 
   option :universal
-
-  def patches
-    # Download test data so `make check` works. Fixed in HEAD.
-    # See https://github.com/maxmind/geoip-api-c/commit/722707cc3a0adc06aec3e98bc36e7262f67ec0da
-    DATA unless build.head?
-  end
 
   def install
     ENV.universal_binary if build.universal?
@@ -43,7 +52,7 @@ class Geoip < Formula
 
     # Since default data directory moved, copy existing DBs
     legacy_data = Pathname.new "#{HOMEBREW_PREFIX}/share/GeoIP"
-    cp Dir.glob("#{legacy_data}/*"), geoip_data if legacy_data.exist?
+    cp Dir["#{legacy_data}/*"], geoip_data if legacy_data.exist?
 
     ["City", "Country"].each do |type|
       full = Pathname.new "#{geoip_data}/GeoIP#{type}.dat"

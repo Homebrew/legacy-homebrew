@@ -1,10 +1,10 @@
 require 'testing_env'
 require 'dependency'
 
-class DependencyExpansionTests < Test::Unit::TestCase
+class DependencyExpansionTests < Homebrew::TestCase
   def build_dep(name, tags=[], deps=[])
     dep = Dependency.new(name.to_s, tags)
-    dep.stubs(:to_formula).returns(stub(:deps => deps))
+    dep.stubs(:to_formula).returns(stub(:deps => deps, :name => name))
     dep
   end
 
@@ -14,7 +14,7 @@ class DependencyExpansionTests < Test::Unit::TestCase
     @baz = build_dep(:baz)
     @qux = build_dep(:qux)
     @deps = [@foo, @bar, @baz, @qux]
-    @f    = stub(:deps => @deps)
+    @f    = stub(:deps => @deps, :name => "f")
   end
 
   def test_expand_yields_dependent_and_dep_pairs
@@ -43,19 +43,19 @@ class DependencyExpansionTests < Test::Unit::TestCase
   end
 
   def test_expand_preserves_dependency_order
-    @foo.stubs(:to_formula).returns(stub(:deps => [@qux, @baz]))
+    @foo.stubs(:to_formula).returns(stub(:name => "f", :deps => [@qux, @baz]))
     assert_equal [@qux, @baz, @foo, @bar], Dependency.expand(@f)
   end
 
   def test_expand_skips_optionals_by_default
     @foo.expects(:optional?).returns(true)
-    @f = stub(:deps => @deps, :build => stub(:with? => false))
+    @f = stub(:deps => @deps, :build => stub(:with? => false), :name => "f")
     assert_equal [@bar, @baz, @qux], Dependency.expand(@f)
   end
 
   def test_expand_keeps_recommendeds_by_default
     @foo.expects(:recommended?).returns(true)
-    @f = stub(:deps => @deps, :build => stub(:with? => true))
+    @f = stub(:deps => @deps, :build => stub(:with? => true), :name => "f")
     assert_equal @deps, Dependency.expand(@f)
   end
 
@@ -71,7 +71,10 @@ class DependencyExpansionTests < Test::Unit::TestCase
   end
 
   def test_merger_preserves_env_proc
-    env_proc = @foo.env_proc = stub
+    env_proc = stub
+    dep = Dependency.new("foo", [], env_proc)
+    dep.stubs(:to_formula).returns(stub(:deps => []))
+    @deps.replace [dep]
     assert_equal env_proc, Dependency.expand(@f).first.env_proc
   end
 
@@ -84,7 +87,7 @@ class DependencyExpansionTests < Test::Unit::TestCase
   end
 
   def test_skip_skips_parent_but_yields_children
-    f = stub(:deps => [
+    f = stub(:name => "f", :deps => [
       build_dep(:foo, [], [@bar, @baz]),
       build_dep(:foo, [], [@baz]),
     ])
@@ -97,7 +100,7 @@ class DependencyExpansionTests < Test::Unit::TestCase
   end
 
   def test_keep_dep_but_prune_recursive_deps
-    f = stub(:deps => [
+    f = stub(:name => "f", :deps => [
       build_dep(:foo, [:build], [@bar]),
       build_dep(:baz, [:build]),
     ])

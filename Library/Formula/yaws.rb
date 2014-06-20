@@ -29,7 +29,7 @@ class Yaws < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 
-    unless build.include? 'without-yapp'
+    if build.with? "yapp"
       cd 'applications/yapp' do
         system "make"
         system "make install"
@@ -44,7 +44,7 @@ class Yaws < Formula
     (var/'yaws/www').mkpath
   end
 
-  def test
+  test do
     system bin/'yaws', '--version'
   end
 

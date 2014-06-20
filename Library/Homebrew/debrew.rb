@@ -1,5 +1,6 @@
 require 'debrew/menu'
 require 'debrew/raise_plus'
+require 'set'
 
 unless ENV['HOMEBREW_NO_READLINE']
   begin
@@ -15,9 +16,31 @@ class Object
   include RaisePlus
 end
 
+module ResourceDebugger
+  def stage(target=nil, &block)
+    return super if target
+
+    super do
+      begin
+        block.call(self)
+      rescue Exception => e
+        if ARGV.debug?
+          debrew e
+        else
+          raise
+        end
+      end
+    end
+  end
+end
+
+$debugged_exceptions = Set.new
+
 def debrew(exception, formula=nil)
+  raise exception unless $debugged_exceptions.add?(exception)
+
   puts "#{exception.backtrace.first}"
-  puts "#{Tty.red}#{exception.class.to_s}#{Tty.reset}: #{exception.to_s}"
+  puts "#{Tty.red}#{exception.class.name}#{Tty.reset}: #{exception}"
 
   begin
     again = false

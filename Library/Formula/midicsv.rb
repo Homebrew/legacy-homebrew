@@ -6,18 +6,13 @@ class Midicsv < Formula
   sha1 '1f34b6b874c26652ec4791701e5bfdccbbb35370'
 
   def install
-    inreplace 'Makefile' do |s|
-        # Change installation location to homebrew location.
-        s.change_make_var! 'INSTALL_DEST', prefix
-    end
-
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install", "INSTALL_DEST=#{prefix}"
     share.install prefix/'man'
   end
 
   test do
     system "#{bin}/midicsv", "-u"
-   end
+  end
 end

@@ -18,8 +18,8 @@ end
 
 class Cvs2svn < Formula
   homepage 'http://cvs2svn.tigris.org/'
-  url 'http://trac.macports.org/export/70472/distfiles/cvs2svn/cvs2svn-2.3.0.tar.gz'
-  sha1 '545237805ddb241054ba40b105b9c29b705539b8'
+  url 'http://cvs2svn.tigris.org/files/documents/1462/49237/cvs2svn-2.4.0.tar.gz'
+  sha1 '1194ac6ec70004409eea1fb2f0fce745318f1767'
 
   depends_on PythonWithGdbm
 

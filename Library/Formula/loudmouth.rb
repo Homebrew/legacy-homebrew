@@ -15,7 +15,7 @@ class Loudmouth < Formula
 
   # Fix compilation on 10.9. Sent upstream:
   # https://github.com/mcabber/loudmouth/pull/9
-  def patches; DATA; end
+  patch :DATA
 
   def install
     args = ["--disable-debug",

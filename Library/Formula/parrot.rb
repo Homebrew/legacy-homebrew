@@ -2,12 +2,12 @@ require 'formula'
 
 class Parrot < Formula
   homepage 'http://www.parrot.org/'
-  url 'ftp://ftp.parrot.org/pub/parrot/releases/supported/5.9.0/parrot-5.9.0.tar.bz2'
-  sha256 'b4704231d90ddec827f45f945b9ad13dd4f9dc7cc9bc0cfc97ab6e30ec1c38ca'
+  url 'ftp://ftp.parrot.org/pub/parrot/releases/supported/6.0.0/parrot-6.0.0.tar.bz2'
+  sha256 '6cb9223ee389a36588acf76ad8ac85e2224544468617412b1d7902e5eb8bd39b'
 
   devel do
-    url 'ftp://ftp.parrot.org/pub/parrot/releases/devel/5.10.0/parrot-5.10.0.tar.bz2'
-    sha256 '6030f72adccdb577a8e781e3d81c52dc60d68c6a9e2be626db3cff69e1f36ce5'
+    url 'ftp://ftp.parrot.org/pub/parrot/releases/devel/6.1.0/parrot-6.1.0.tar.bz2'
+    sha256 'bb1294ad2a7d5b3c4688fc736fb775e94ecfe35fdc072a2631c2080eb5f366f7'
   end
 
   head 'https://github.com/parrot/parrot.git'
@@ -30,5 +30,23 @@ class Parrot < Formula
     system "make install"
     # Don't install this file in HOMEBREW_PREFIX/lib
     rm_rf lib/'VERSION'
+  end
+
+  test do
+    path = testpath/"test.pir"
+    path.write <<-EOS.undent
+      .sub _main
+        .local int i
+        i = 0
+      loop:
+        print i
+        inc i
+        if i < 10 goto loop
+      .end
+    EOS
+
+    out = `#{bin}/parrot #{path}`
+    assert_equal "0123456789", out
+    assert_equal 0, $?.exitstatus
   end
 end

@@ -2,18 +2,19 @@ require 'formula'
 
 class Dpkg < Formula
   homepage 'https://wiki.debian.org/Teams/Dpkg'
-  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.5.tar.xz'
-  sha1 '30656d70795c463d67e3507dfad9351e92fe3354'
+  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.10.tar.xz'
+  sha1 '2d88ef04db662d046fadb005bb31667fc0ba64de'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'gnu-tar'
 
   # Fixes the PERL_LIBDIR.
-  # Uses Homebrew-install gnu-tar instead of bsd tar.
-  def patches; DATA; end
+  patch :DATA
 
   def install
+    # We need to specify a recent gnutar, otherwise various dpkg C programs will
+    # use the system 'tar', which will fail because it lacks certain switches.
+    ENV["TAR"] = Formula["gnu-tar"].opt_bin/"gtar"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-dselect",
@@ -33,10 +34,10 @@ end
 
 __END__
 diff --git a/configure b/configure
-index 5d91530..dd2ca11 100755
+index 668eefd..2f54912 100755
 --- a/configure
 +++ b/configure
-@@ -8388,9 +8388,7 @@ if test "$PERL" = "no" || test ! -x "$PERL"; then
+@@ -8875,9 +8875,7 @@ if test "$PERL" = "no" || test ! -x "$PERL"; then
  fi
  # Let the user override the variable.
  if test -z "$PERL_LIBDIR"; then
@@ -47,51 +48,11 @@ index 5d91530..dd2ca11 100755
  fi
  
  
-diff --git a/lib/dpkg/dpkg.h b/lib/dpkg/dpkg.h
-index c0f633d..b692806 100644
---- a/lib/dpkg/dpkg.h
-+++ b/lib/dpkg/dpkg.h
-@@ -108,7 +108,7 @@ DPKG_BEGIN_DECLS
- #define DPKG		"dpkg"
- #define DEBSIGVERIFY	"/usr/bin/debsig-verify"
- 
--#define TAR		"tar"
-+#define TAR		"gtar"
- #define RM		"rm"
- #define CAT		"cat"
- #define FIND		"find"
-diff --git a/scripts/Makefile.am b/scripts/Makefile.am
-index f83adff..d2b5043 100644
---- a/scripts/Makefile.am
-+++ b/scripts/Makefile.am
-@@ -117,7 +117,7 @@ nobase_dist_perllib_DATA = \
- man3_MANS =
- 
- do_perl_subst = $(AM_V_GEN) \
--		sed -e "s:^\#![[:space:]]*/usr/bin/perl:\#!$(PERL):" \
-+		sed -e "s:^\#![[:space:]]*/usr/bin/perl:\#!$(PERL) -I$(PERL_LIBDIR):" \
- 		    -e "s:\$$CONFDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$CONFDIR='$(pkgconfdir)':" \
- 		    -e "s:\$$ADMINDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$ADMINDIR='$(admindir)':" \
- 		    -e "s:\$$LIBDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$LIBDIR='$(pkglibdir)':" \
-diff --git a/scripts/Makefile.in b/scripts/Makefile.in
-index 754488e..8b233fb 100644
---- a/scripts/Makefile.in
-+++ b/scripts/Makefile.in
-@@ -486,7 +486,7 @@ nobase_dist_perllib_DATA = \
- # Keep it even if empty to have man3dir correctly set
- man3_MANS = 
- do_perl_subst = $(AM_V_GEN) \
--		sed -e "s:^\#![[:space:]]*/usr/bin/perl:\#!$(PERL):" \
-+		sed -e "s:^\#![[:space:]]*/usr/bin/perl:\#!$(PERL) -I$(PERL_LIBDIR):" \
- 		    -e "s:\$$CONFDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$CONFDIR='$(pkgconfdir)':" \
- 		    -e "s:\$$ADMINDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$ADMINDIR='$(admindir)':" \
- 		    -e "s:\$$LIBDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$LIBDIR='$(pkglibdir)':" \
-
 diff --git a/scripts/Dpkg/Checksums.pm b/scripts/Dpkg/Checksums.pm
-index 4a64fd1..bb19f59 100644
+index 07a917c..86d267a 100644
 --- a/scripts/Dpkg/Checksums.pm
 +++ b/scripts/Dpkg/Checksums.pm
-@@ -50,15 +50,15 @@ about supported checksums.
+@@ -51,15 +51,15 @@ about supported checksums.
  
  my $CHECKSUMS = {
      md5 => {
@@ -111,10 +72,10 @@ index 4a64fd1..bb19f59 100644
      },
  };
 diff --git a/scripts/Dpkg/Source/Archive.pm b/scripts/Dpkg/Source/Archive.pm
-index de30bf4..c97d421 100644
+index 6257702..af6101d 100644
 --- a/scripts/Dpkg/Source/Archive.pm
 +++ b/scripts/Dpkg/Source/Archive.pm
-@@ -47,7 +47,7 @@ sub create {
+@@ -48,7 +48,7 @@ sub create {
      $spawn_opts{from_pipe} = \*$self->{tar_input};
      # Call tar creation process
      $spawn_opts{delete_env} = [ 'TAR_OPTIONS' ];
@@ -123,8 +84,8 @@ index de30bf4..c97d421 100644
                              '--owner', '0', '--group', '0',
                              @{$opts{options}}, '-cf', '-' ];
      *$self->{pid} = spawn(%spawn_opts);
-@@ -123,7 +123,7 @@ sub extract {
-
+@@ -125,7 +125,7 @@ sub extract {
+ 
      # Call tar extraction process
      $spawn_opts{delete_env} = [ 'TAR_OPTIONS' ];
 -    $spawn_opts{exec} = [ 'tar', '--no-same-owner', '--no-same-permissions',
@@ -132,3 +93,29 @@ index de30bf4..c97d421 100644
                              @{$opts{options}}, '-xf', '-' ];
      spawn(%spawn_opts);
      $self->close();
+diff --git a/scripts/Makefile.am b/scripts/Makefile.am
+index 45cb3d4..bd55234 100644
+--- a/scripts/Makefile.am
++++ b/scripts/Makefile.am
+@@ -119,7 +119,7 @@ nobase_dist_perllib_DATA = \
+ man3_MANS =
+ 
+ do_perl_subst = $(AM_V_GEN) \
+-		sed -e "s:^\#![[:space:]]*/usr/bin/perl:\#!$(PERL):" \
++		sed -e "s:^\#![[:space:]]*/usr/bin/perl:\#!$(PERL) -I$(PERL_LIBDIR):" \
+ 		    -e "s:\$$CONFDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$CONFDIR='$(pkgconfdir)':" \
+ 		    -e "s:\$$ADMINDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$ADMINDIR='$(admindir)':" \
+ 		    -e "s:\$$LIBDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$LIBDIR='$(pkglibdir)':" \
+diff --git a/scripts/Makefile.in b/scripts/Makefile.in
+index 098c202..4b089d7 100644
+--- a/scripts/Makefile.in
++++ b/scripts/Makefile.in
+@@ -490,7 +490,7 @@ nobase_dist_perllib_DATA = \
+ # Keep it even if empty to have man3dir correctly set
+ man3_MANS = 
+ do_perl_subst = $(AM_V_GEN) \
+-		sed -e "s:^\#![[:space:]]*/usr/bin/perl:\#!$(PERL):" \
++		sed -e "s:^\#![[:space:]]*/usr/bin/perl:\#!$(PERL) -I$(PERL_LIBDIR):" \
+ 		    -e "s:\$$CONFDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$CONFDIR='$(pkgconfdir)':" \
+ 		    -e "s:\$$ADMINDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$ADMINDIR='$(admindir)':" \
+ 		    -e "s:\$$LIBDIR[[:space:]]*=[[:space:]]*['\"][^'\"]*['\"]:\$$LIBDIR='$(pkglibdir)':" \

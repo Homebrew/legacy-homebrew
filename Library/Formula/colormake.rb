@@ -1,27 +1,26 @@
-require 'formula'
+require "formula"
 
 class Colormake < Formula
-  homepage 'http://bre.klaki.net/programs/colormake/'
-  url 'http://bre.klaki.net/programs/colormake/colormake-0.9.tar.gz'
-  sha1 '6c5ab4be23d60ec79ed4c43cbeb142bfd4a4e626'
+  homepage "https://github.com/pagekite/Colormake"
+  head "https://github.com/pagekite/Colormake.git"
+  url "https://github.com/pagekite/Colormake/archive/0.9.20140503.tar.gz"
+  sha1 "2804a550bfee7304015569552ff77a2d9c3eddf8"
 
   def install
-    libexec.install 'colormake.pl'
+    inreplace "colormake", "colormake.pl", "#{libexec}/colormake.pl"
 
-    # The following two scripts are not the ones shipped with colormake,
-    # but heavily based on the ones used by Debian.
-    (bin+'colormake').write <<-EOS.undent
-      #!/bin/sh
-      /usr/bin/make \"$@\" 2>&1 | #{libexec}/colormake.pl
-      exit ${PIPESTATUS[0]}
-    EOS
+    # Prefers symlinks than the original duplicate files
+    File.unlink "colormake-short", "clmake", "clmake-short"
+    File.symlink "colormake", "colormake-short"
+    File.symlink "colormake", "clmake"
+    File.symlink "colormake", "clmake-short"
 
-    (bin+'clmake').write <<-EOS.undent
-      #!/bin/sh
-      SIZE=`/bin/stty size`
-      [ -z "${CLMAKE_OPTS}" ] && CLMAKE_OPTS='-r -pError'
-      /usr/bin/make \"$@\" 2>&1 | #{libexec}/colormake.pl $SIZE | /usr/bin/less ${CLMAKE_OPTS}
-      exit ${PIPESTATUS[0]}
-    EOS
+    # Adds missing clmake.1 referenced in colormake.1 itself
+    File.symlink "colormake.1", "clmake.1"
+
+    # Installs auxiliary script, commands and mans
+    libexec.install "colormake.pl"
+    bin.install "colormake", "clmake", "colormake-short", "clmake-short"
+    man1.install "colormake.1", "clmake.1"
   end
 end

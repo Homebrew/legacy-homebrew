@@ -1,27 +1,29 @@
-require 'formula'
+require "formula"
 
 class Pyenv < Formula
-  homepage 'https://github.com/yyuu/pyenv'
-  url 'https://github.com/yyuu/pyenv/archive/v0.4.0-20131217.tar.gz'
-  sha1 '2d2a89bd89bce88a0e09b1473ef786bbdcb08394'
+  homepage "https://github.com/yyuu/pyenv"
+  head "https://github.com/yyuu/pyenv.git"
+  url "https://github.com/yyuu/pyenv/archive/v20140615.tar.gz"
+  sha1 "e5caf58319a4ccc393ea8f20378e43989d03deae"
 
-  head 'https://github.com/yyuu/pyenv.git'
-
-  skip_clean "plugins", "versions"
+  depends_on "autoconf" => [:recommended, :run]
+  depends_on "pkg-config" => [:recommended, :run]
 
   def install
-    prefix.install "LICENSE", "README.md", "bin", "completions", "libexec"
+    inreplace "libexec/pyenv", "/usr/local", HOMEBREW_PREFIX
+    prefix.install "bin", "completions", "libexec"
     prefix.install "plugins" => "default-plugins"
 
     var_lib = "#{HOMEBREW_PREFIX}/var/lib/pyenv"
-    ['plugins', 'versions'].each do |dir|
+    %w[plugins versions].each do |dir|
       var_dir = "#{var_lib}/#{dir}"
       mkdir_p var_dir
       ln_sf var_dir, "#{prefix}/#{dir}"
     end
 
+    rm_f "#{var_lib}/plugins/python-build"
     ln_sf "#{prefix}/default-plugins/python-build", "#{var_lib}/plugins/python-build"
-    ["pyenv-install", "pyenv-uninstall", "python-build"].each do |cmd|
+    %w[pyenv-install pyenv-uninstall python-build].each do |cmd|
       bin.install_symlink "#{prefix}/default-plugins/python-build/bin/#{cmd}"
     end
   end

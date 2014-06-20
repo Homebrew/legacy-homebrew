@@ -10,12 +10,12 @@ class Ice < Formula
 
   depends_on 'berkeley-db'
   depends_on 'mcpp'
-  depends_on :python
+  depends_on :python => :optional
 
   # 1. TODO: document the first patch
   # 2. Patch to fix build with libc++, reported upstream:
   # http://www.zeroc.com/forums/bug-reports/6152-mavericks-build-failure-because-unexported-symbols.html
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.O2
@@ -44,12 +44,46 @@ class Ice < Formula
       system "make", *args
       system "make", "install", *args
     end
-    args << "install_pythondir=#{lib}/python2.7/site-packages"
-    args << "install_libdir=#{lib}/python2.7/site-packages"
-    cd "py" do
+
+    cd "php" do
       system "make", *args
       system "make", "install", *args
     end
+
+    if build.with? "python"
+      args << "install_pythondir=#{lib}/python2.7/site-packages"
+      args << "install_libdir=#{lib}/python2.7/site-packages"
+      cd "py" do
+        system "make", *args
+        system "make", "install", *args
+      end
+    end
+
+    libexec.install "#{lib}/ImportKey.class"
+  end
+
+  test do
+    system "#{bin}/icebox", "--version"
+  end
+
+  def caveats
+    <<-EOS.undent
+      To enable IcePHP, you will need to change your php.ini
+      to load the IcePHP extension. You can do this by adding
+      IcePHP.dy to your list of extensions:
+
+          extension=#{prefix}/php/IcePHP.dy
+
+      Typical Ice PHP scripts will also expect to be able to 'require Ice.php'.
+
+      You can ensure this is possible by appending the path to
+      Ice's PHP includes to your global include_path in php.ini:
+
+          include_path=<your-original-include-path>:#{prefix}/php
+
+      However, you can also accomplish this on a script-by-script basis
+      or via .htaccess if you so desire...
+      EOS
   end
 end
 

@@ -10,11 +10,11 @@ class Tty
     def blue; bold 34; end
     def white; bold 39; end
     def red; underline 31; end
-    def yellow; underline 33 ; end
+    def yellow; underline 33; end
     def reset; escape 0; end
     def em; underline 39; end
-    def green; color 92 end
-    def gray; bold 30 end
+    def green; bold 32; end
+    def gray; bold 30; end
 
     def width
       `/usr/bin/tput cols`.strip.to_i
@@ -78,30 +78,38 @@ def pretty_duration s
   return "%.1f minutes" % (s/60)
 end
 
+def plural n, s="s"
+  (n == 1) ? "" : s
+end
+
 def interactive_shell f=nil
   unless f.nil?
     ENV['HOMEBREW_DEBUG_PREFIX'] = f.prefix
     ENV['HOMEBREW_DEBUG_INSTALL'] = f.name
   end
 
-  fork {exec ENV['SHELL'] }
-  Process.wait
-  unless $?.success?
+  Process.wait fork { exec ENV['SHELL'] }
+
+  if $?.success?
+    return
+  elsif $?.exited?
     puts "Aborting due to non-zero exit status"
-    exit $?
+    exit $?.exitstatus
+  else
+    raise $?.inspect
   end
 end
 
 module Homebrew
   def self.system cmd, *args
     puts "#{cmd} #{args*' '}" if ARGV.verbose?
-    fork do
+    pid = fork do
       yield if block_given?
       args.collect!{|arg| arg.to_s}
       exec(cmd.to_s, *args) rescue nil
       exit! 1 # never gets here unless exec failed
     end
-    Process.wait
+    Process.wait(pid)
     $?.success?
   end
 end
@@ -136,7 +144,10 @@ def curl *args
   curl = Pathname.new '/usr/bin/curl'
   raise "#{curl} is not executable" unless curl.exist? and curl.executable?
 
-  args = [HOMEBREW_CURL_ARGS, HOMEBREW_USER_AGENT, *args]
+  flags = HOMEBREW_CURL_ARGS
+  flags = flags.delete("#") if ARGV.verbose?
+
+  args = [flags, HOMEBREW_USER_AGENT, *args]
   # See https://github.com/Homebrew/homebrew/issues/6103
   args << "--insecure" if MacOS.version < "10.6"
   args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
@@ -167,8 +178,11 @@ def puts_columns items, star_items=[]
 end
 
 def which cmd, path=ENV['PATH']
-  dir = path.split(File::PATH_SEPARATOR).find {|p| File.executable? File.join(p, cmd)}
-  Pathname.new(File.join(dir, cmd)) unless dir.nil?
+  path.split(File::PATH_SEPARATOR).find do |p|
+    pcmd = File.join(p, cmd)
+    return Pathname.new(pcmd) if File.executable?(pcmd) && !File.directory?(pcmd)
+  end
+  return nil
 end
 
 def which_editor
@@ -180,7 +194,9 @@ def which_editor
   return 'mate' if which "mate"
   # Find BBEdit / TextWrangler
   return 'edit' if which "edit"
-  # Default to vim
+  # Find vim
+  return 'vim' if which "vim"
+  # Default to standard vim
   return '/usr/bin/vim'
 end
 
@@ -190,7 +206,7 @@ def exec_editor *args
 end
 
 def exec_browser *args
-  browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] || "open"
+  browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] || OS::PATH_OPEN
   safe_exec(browser, *args)
 end
 
@@ -249,9 +265,39 @@ def paths
 end
 
 module GitHub extend self
-  ISSUES_URI = URI.parse("https://api.github.com/legacy/issues/search/Homebrew/homebrew/open/")
+  ISSUES_URI = URI.parse("https://api.github.com/search/issues")
 
-  Error = Class.new(StandardError)
+  Error = Class.new(RuntimeError)
+  HTTPNotFoundError = Class.new(Error)
+
+  class RateLimitExceededError < Error
+    def initialize(reset, error)
+      super <<-EOS.undent
+        GitHub #{error}
+        Try again in #{pretty_ratelimit_reset(reset)}, or create an API token:
+          https://github.com/settings/applications
+        and then set HOMEBREW_GITHUB_API_TOKEN.
+        EOS
+    end
+
+    def pretty_ratelimit_reset(reset)
+      if (seconds = Time.at(reset) - Time.now) > 180
+        "%d minutes %d seconds" % [seconds / 60, seconds % 60]
+      else
+        "#{seconds} seconds"
+      end
+    end
+  end
+
+  class AuthenticationFailedError < Error
+    def initialize(error)
+      super <<-EOS.undent
+        GitHub #{error}
+        HOMEBREW_GITHUB_API_TOKEN may be invalid or expired, check:
+          https://github.com/settings/applications
+        EOS
+    end
+  end
 
   def open url, headers={}, &block
     # This is a no-op if the user is opting out of using the GitHub API.
@@ -259,26 +305,59 @@ module GitHub extend self
 
     require 'net/https' # for exception classes below
 
-    default_headers = {'User-Agent' => HOMEBREW_USER_AGENT}
+    default_headers = {
+      "User-Agent" => HOMEBREW_USER_AGENT,
+      "Accept"     => "application/vnd.github.v3+json",
+    }
+
     default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
-    Kernel.open(url, default_headers.merge(headers), &block)
-  rescue OpenURI::HTTPError => e
-    if e.io.meta['x-ratelimit-remaining'].to_i <= 0
-      raise <<-EOS.undent
-        GitHub #{Utils::JSON.load(e.io.read)['message']}
-        You may want to create an API token: https://github.com/settings/applications
-        and then set HOMEBREW_GITHUB_API_TOKEN.
-        EOS
-    else
-      raise e
+    Kernel.open(url, default_headers.merge(headers)) do |f|
+      yield Utils::JSON.load(f.read)
     end
+  rescue OpenURI::HTTPError => e
+    handle_api_error(e)
   rescue SocketError, OpenSSL::SSL::SSLError => e
-    raise Error, "Failed to connect to: #{url}\n#{e.message}"
+    raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
+  rescue Utils::JSON::Error => e
+    raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
   end
 
-  def each_issue_matching(query, &block)
-    uri = ISSUES_URI + uri_escape(query)
-    open(uri) { |f| Utils::JSON.load(f.read)['issues'].each(&block) }
+  def handle_api_error(e)
+    if e.io.meta["x-ratelimit-remaining"].to_i <= 0
+      reset = e.io.meta.fetch("x-ratelimit-reset").to_i
+      error = Utils::JSON.load(e.io.read)["message"]
+      raise RateLimitExceededError.new(reset, error)
+    end
+
+    case e.io.status.first
+    when "401", "403"
+      raise AuthenticationFailedError.new(e.message)
+    when "404"
+      raise HTTPNotFoundError, e.message, e.backtrace
+    else
+      raise Error, e.message, e.backtrace
+    end
+  end
+
+  def issues_matching(query, qualifiers={})
+    uri = ISSUES_URI.dup
+    uri.query = build_query_string(query, qualifiers)
+    open(uri) { |json| json["items"] }
+  end
+
+  def build_query_string(query, qualifiers)
+    s = "q=#{uri_escape(query)}+"
+    s << build_search_qualifier_string(qualifiers)
+    s << "&per_page=100"
+  end
+
+  def build_search_qualifier_string(qualifiers)
+    {
+      :repo => "Homebrew/homebrew",
+      :in => "title",
+    }.update(qualifiers).map { |qualifier, value|
+      "#{qualifier}:#{value}"
+    }.join("+")
   end
 
   def uri_escape(query)
@@ -291,32 +370,31 @@ module GitHub extend self
   end
 
   def issues_for_formula name
-    # bit basic as depends on the issue at github having the exact name of the
-    # formula in it. Which for stuff like objective-caml is unlikely. So we
-    # really should search for aliases too.
-
-    name = f.name if Formula === name
-
-    issues = []
-
-    each_issue_matching(name) do |issue|
-      # don't include issues that just refer to the tool in their body
-      issues << issue['html_url'] if issue['title'].include? name
-    end
-
-    issues
+    issues_matching(name, :state => "open")
   end
 
-  def find_pull_requests rx
-    return if ENV['HOMEBREW_NO_GITHUB_API']
-    puts "Searching open pull requests..."
+  def print_pull_requests_matching(query)
+    return [] if ENV['HOMEBREW_NO_GITHUB_API']
+    puts "Searching pull requests..."
 
-    query = rx.source.delete('.*').gsub('\\', '')
+    open_or_closed_prs = issues_matching(query, :type => "pr")
 
-    each_issue_matching(query) do |issue|
-      if rx === issue['title'] && issue.has_key?('pull_request_url')
-        yield issue['pull_request_url']
-      end
+    open_prs = open_or_closed_prs.select {|i| i["state"] == "open" }
+    if open_prs.any?
+      puts "Open pull requests:"
+      prs = open_prs
+    elsif open_or_closed_prs.any?
+      puts "Closed pull requests:"
+      prs = open_or_closed_prs
+    else
+      return
     end
+
+    prs.each { |i| puts "#{i["title"]} (#{i["html_url"]})" }
+  end
+
+  def private_repo?(user, repo)
+    uri = URI.parse("https://api.github.com/repos/#{user}/#{repo}")
+    open(uri) { |json| json["private"] }
   end
 end

@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class Plantuml < Formula
-  homepage 'http://plantuml.sourceforge.net/'
-  url 'http://sourceforge.net/projects/plantuml/files/plantuml.7987.jar'
-  sha1 '69beeb97a982b71fefd5ec5637de18b498910b13'
+  homepage "http://plantuml.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/plantuml/plantuml.7999.jar"
+  sha1 "c919646b276a99715f2aa76bfa3c347bca89684a"
 
-  depends_on 'graphviz'
+  depends_on "graphviz"
 
   def install
     jar = "plantuml.#{version}.jar"

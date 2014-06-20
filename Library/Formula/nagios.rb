@@ -2,12 +2,12 @@ require 'formula'
 
 class Nagios < Formula
   homepage 'http://www.nagios.org/'
-  url 'http://downloads.sourceforge.net/project/nagios/nagios-3.x/nagios-3.5.1/nagios-3.5.1.tar.gz'
-  sha1 '486fd6c75db47000b96d6eebb1654c30d5e9bc72'
+  url 'https://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.0.6/nagios-4.0.6.tar.gz'
+  sha1 'aacd0ebc1a0a91692702667bd98f8a016b59780f'
 
   depends_on 'gd'
   depends_on 'nagios-plugins'
-  depends_on :libpng
+  depends_on 'libpng'
 
   def nagios_sbin;  prefix+'cgi-bin';       end
   def nagios_etc;   etc+'nagios';           end
@@ -54,7 +54,7 @@ class Nagios < Formula
             <string>#{plist_name}</string>
             <key>ProgramArguments</key>
             <array>
-                    <string>#{opt_prefix}/bin/nagios</string>
+                    <string>#{opt_bin}/nagios</string>
                     <string>#{nagios_etc}/nagios.cfg</string>
             </array>
             <key>RunAtLoad</key>

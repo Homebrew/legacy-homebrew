@@ -37,11 +37,6 @@ function __fish_complete_brew_argument
       return 0
     end
 
-    if contains -- $cmd tap
-      brew ls-taps
-      return 0
-    end
-
     if contains -- $cmd untap
       ls (brew --repository)/Library/Taps 2>/dev/null | sed 's/-/\//g'
       return 0

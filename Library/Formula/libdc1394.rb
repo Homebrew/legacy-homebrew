@@ -1,28 +1,18 @@
-require 'formula'
+require "formula"
 
 class Libdc1394 < Formula
-  homepage 'http://damien.douxchamps.net/ieee1394/libdc1394/'
-  url 'http://downloads.sourceforge.net/project/libdc1394/libdc1394-2/2.2.1/libdc1394-2.2.1.tar.gz'
-  sha1 'b92c9670b68c4e5011148f16c87532bef2e5b808'
+  homepage "http://damien.douxchamps.net/ieee1394/libdc1394/"
+  url "https://downloads.sourceforge.net/project/libdc1394/libdc1394-2/2.2.2/libdc1394-2.2.2.tar.gz"
+  sha1 "13958c3cd0709565b5e4a9012dcf2a9b710264e2"
 
-  depends_on :libtool
-  depends_on :automake
-  depends_on :autoconf
-  depends_on 'sdl'
+  depends_on "sdl"
 
-  def patches
-    p = []
-    # fix issue due to bug in OSX Firewire stack
-    # libdc1394 author comments here:
-    # http://permalink.gmane.org/gmane.comp.multimedia.libdc1394.devel/517
-    p << DATA
-
-    # Backport of upstream fixes for building on OS X
-    p << "https://gist.github.com/jacknagel/7395159/raw/3ba722636fb898d210170f5d8a494977c89626b7/libdc1394.patch"
-  end
+  # fix issue due to bug in OSX Firewire stack
+  # libdc1394 author comments here:
+  # http://permalink.gmane.org/gmane.comp.multimedia.libdc1394.devel/517
+  patch :DATA
 
   def install
-    system "autoreconf", "-fvi"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-examples",
@@ -30,7 +20,6 @@ class Libdc1394 < Formula
     system "make install"
   end
 end
-
 
 __END__
 diff --git a/dc1394/macosx/capture.c b/dc1394/macosx/capture.c

@@ -2,18 +2,18 @@ require 'formula'
 
 class ErlangInstalled < Requirement
   fatal true
-  default_formula 'erlang'
   env :userpaths
+  default_formula "erlang"
 
   satisfy {
     erl = which('erl') and begin
-      `#{erl} -noshell -eval 'io:fwrite("~s~n", [erlang:system_info(otp_release)]).' -s erlang halt | grep -q '^R1[6789]'`
+      `#{erl} -noshell -eval 'io:fwrite("~s~n", [erlang:system_info(otp_release)]).' -s erlang halt | grep -q '^1[789]'`
       $?.exitstatus == 0
     end
   }
 
   def message; <<-EOS.undent
-    Erlang R16 is required to install.
+    Erlang 17 is required to install.
 
     You can install this with:
       brew install erlang
@@ -26,8 +26,8 @@ end
 
 class Elixir < Formula
   homepage 'http://elixir-lang.org/'
-  url  'https://github.com/elixir-lang/elixir/archive/v0.12.1.zip'
-  sha1 'e95c0a13079610810d23d721597b8d3c63f94669'
+  url  'https://github.com/elixir-lang/elixir/archive/v0.14.1.tar.gz'
+  sha1 '272abd87a04c592a83f43041deee986e3aadd0fe'
 
   head 'https://github.com/elixir-lang/elixir.git'
 
@@ -35,9 +35,9 @@ class Elixir < Formula
 
   def install
     system "make"
-    bin.install Dir['bin/*'] - Dir['bin/*.bat']
+    bin.install Dir['bin/*'] - Dir['bin/*.{bat,ps1}']
 
-    Dir['lib/*/ebin'].each do |path|
+    Dir.glob("lib/*/ebin") do |path|
       app = File.basename(File.dirname(path))
       (lib/app).install path
     end

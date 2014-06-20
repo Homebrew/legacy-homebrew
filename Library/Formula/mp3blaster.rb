@@ -2,7 +2,7 @@ require 'formula'
 
 class Mp3blaster < Formula
   homepage 'http://mp3blaster.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/mp3blaster/mp3blaster/mp3blaster-3.2.5/mp3blaster-3.2.5.tar.gz'
+  url 'https://downloads.sourceforge.net/project/mp3blaster/mp3blaster/mp3blaster-3.2.5/mp3blaster-3.2.5.tar.gz'
   sha1 '6a0fc892e0739a409735e85b18089c0e25fcc577'
 
   depends_on 'sdl'

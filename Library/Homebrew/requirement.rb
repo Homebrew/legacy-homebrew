@@ -33,6 +33,10 @@ class Requirement
     !!result
   end
 
+  # Can overridden to optionally prevent a formula with this requirement from
+  # pouring a bottle.
+  def pour_bottle?; true end
+
   # Overriding #fatal? is deprecated.
   # Pass a boolean to the fatal DSL method instead.
   def fatal?
@@ -70,16 +74,13 @@ class Requirement
   def to_dependency
     f = self.class.default_formula
     raise "No default formula defined for #{inspect}" if f.nil?
-    dep = Dependency.new(f, tags)
-    dep.option_name = name
-    dep.env_proc = method(:modify_build_environment)
-    dep
+    Dependency.new(f, tags, method(:modify_build_environment), name)
   end
 
   private
 
   def infer_name
-    klass = self.class.to_s
+    klass = self.class.name || self.class.to_s
     klass.sub!(/(Dependency|Requirement)$/, '')
     klass.sub!(/^(\w+::)*/, '')
     klass.downcase
@@ -101,7 +102,9 @@ class Requirement
   end
 
   class << self
-    attr_rw :fatal, :build, :default_formula
+    attr_rw :fatal, :default_formula
+    # build is deprecated, use `depends_on <requirement> => :build` instead
+    attr_rw :build
 
     def satisfy(options={}, &block)
       @satisfied ||= Requirement::Satisfier.new(options, &block)
@@ -153,21 +156,6 @@ class Requirement
         end
       end
 
-      # We special case handling of X11Dependency and its subclasses to
-      # ensure the correct dependencies are present in the final list.
-      # If an X11Dependency is present after filtering, we eliminate
-      # all X11Dependency::Proxy objects from the list. If there aren't
-      # any X11Dependency objects, then we eliminate all but one of the
-      # proxy objects.
-      proxy = unless reqs.any? { |r| r.instance_of?(X11Dependency) }
-                reqs.find { |r| r.kind_of?(X11Dependency::Proxy) }
-              end
-
-      reqs.reject! do |r|
-        r.kind_of?(X11Dependency::Proxy)
-      end
-
-      reqs << proxy unless proxy.nil?
       reqs
     end
 

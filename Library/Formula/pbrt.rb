@@ -6,11 +6,10 @@ class Pbrt < Formula
   sha1 'c18e4cb5acdd3120573c26be702e452e77273a79'
 
   depends_on "openexr"
+  depends_on "flex"
 
   def install
-    cd "src" do
-      system "make"
-      prefix.install "bin"
-    end
+    system "make", "-C", "src"
+    prefix.install "src/bin"
   end
 end

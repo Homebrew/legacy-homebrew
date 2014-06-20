@@ -14,9 +14,10 @@ class Clisp < Formula
     cause "Configure fails on XCode 4/Snow Leopard."
   end
 
-  def patches
-    { :p0 => "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff",
-      :p1 => DATA }
+  patch :DATA
+  patch :p0 do
+    url "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff"
+    sha1 "8324152a1db755db6c66ce5c059092d55576f37b"
   end
 
   def install
@@ -35,7 +36,7 @@ class Clisp < Formula
       # make Homebrew's the last such option so it's effective.
       inreplace "Makefile" do |s|
         s.change_make_var! 'CFLAGS', "#{s.get_make_var('CFLAGS')} #{ENV['CFLAGS']}"
-      end unless superenv?
+      end
 
       # The ulimit must be set, otherwise `make` will fail and tell you to do so
       system "ulimit -s 16384 && make"
@@ -53,7 +54,7 @@ class Clisp < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/clisp", "--version"
   end
 end

@@ -1,365 +1,58 @@
-require 'requirement'
+require "language/python"
 
-# We support Python 2.x and 3.x, either brewed or external.
-# This requirement locates the correct CPython binary (no PyPy), provides
-# support methods like `site_packages`, and writes our sitecustomize.py file.
-# In `dependency_collector.rb`, special `:python` and `:python3` shortcuts are
-# defined. You can specify a minimum version of the Python that needs to be
-# present, but since not every package is ported to 3.x yet,
-# `PythonDependency("2")` is not satisfied by 3.x.
-# In a formula that shall provide support for 2.x and 3.x, the idiom is:
-# depends_on :python
-# depends_on :python3 => :optional # or :recommended
-#
-# Todo:
-# - Allow further options that choose: universal, framework?, brewed?...
 class PythonDependency < Requirement
-  attr_reader :min_version
-  attr_reader :if3then3
-  attr_reader :imports
-  attr_reader :python
-  attr_accessor :site_packages
-  attr_accessor :private_site_packages
-  attr_writer :binary # The python.rb formula needs to set the binary
+  fatal true
+  default_formula "python"
 
-  fatal true  # you can still make Python optional by `depends_on :python => :optional`
-
-  class PythonVersion < Version
-    def major
-      tokens[0].to_s.to_i  # Python's major.minor are always ints.
-    end
-    def minor
-      tokens[1].to_s.to_i
-    end
-  end
-
-  def initialize(default_version="2.6", tags=[])
-    # Extract the min_version if given. Default to default_version else
-    if /(\d+\.)*\d+/ === tags.first.to_s
-      @min_version = PythonVersion.new(tags.shift)
-    else
-      @min_version = PythonVersion.new(default_version)
-    end
-
-    # often used idiom: e.g. sipdir = "share/sip#{python.if3then3}"
-    if @min_version.major == 3
-      @if3then3 = "3"
-    else
-      @if3then3 = ""
-    end
-
-    @python = "python"+@if3then3
-
-    # Check if any python modules should be importable. We use a hash to store
-    # the corresponding name on PyPi "<import_name>" => "<name_on_PyPi>".
-    # Example: `depends_on :python => ['enchant' => 'pyenchant']
-    @imports = {}
-    tags.each do |tag|
-      if tag.kind_of? String
-        @imports[tag] = tag  # if the module name is the same as the PyPi name
-      elsif tag.kind_of? Hash
-        @imports.merge!(tag)
-      end
-    end
-
-    # Set name according to the major version and optionally python modules:
-    # Used to generate the options like --without-python3, --with-python-numpy
-    @name = "python#{@if3then3}"
-    @name += "-#{@imports.values*'-'}" unless @imports.empty?
-
-    # will be set later by the python_helper, because it needs the
-    # formula prefix to set site_packages
-    @site_packages = nil
-    @private_site_packages = nil
-
-    super tags
-  end
-
-  # Note that during `satisfy` we still have the PATH as the user has set.
-  # We look for a brewed python or an external Python and store the loc of
-  # that binary for later usage. (See Formula#python)
   satisfy :build_env => false do
-    begin
-      # Unset the PYTHONPATH during these tests, but later ensure it is restored.
-      pythonpath = ENV['PYTHONPATH']
-      ENV['PYTHONPATH'] = nil
-      @unsatisfied_because = ''
-      if binary.nil? || !binary.executable?
-        @unsatisfied_because += "No `#{@python}` found in your PATH. To install with Homebrew use `brew install #{@python}`."
-        false
-      elsif pypy?
-        @unsatisfied_because += "Your #{@python} executable appears to be a PyPy, which is not supported."
-        false
-      elsif version.major != @min_version.major
-        @unsatisfied_because += "No Python #{@min_version.major}.x found in your PATH! --> `brew install #{@python}`?"
-        false
-      elsif version < @min_version
-        @unsatisfied_because += "Python version #{version} is too old (need at least #{@min_version})."
-        false
-      elsif @min_version.major == 2 && `python -c "import sys; print(sys.version_info[0])"`.strip == "3"
-        @unsatisfied_because += "Your `python` points to Python 3.x; this is not supported."
-        false
-      else
-        @imports.keys.all? do |module_name|
-          if importable? module_name
-            true
-          else
-            @unsatisfied_because += "Unsatisfied dependency: #{module_name}\n"
-            @unsatisfied_because += "OS X System's " if from_osx?
-            @unsatisfied_because += "Brewed " if brewed?
-            @unsatisfied_because += "External " unless brewed? || from_osx?
-            @unsatisfied_because += "Python cannot `import #{module_name}`. Install with:\n  "
-            @unsatisfied_because += "sudo easy_install pip\n  " unless importable? 'pip'
-            @unsatisfied_because += "pip-#{version.major}.#{version.minor} install #{@imports[module_name]}"
-            false
-          end
-        end
-      end
-    ensure
-      ENV['PYTHONPATH'] = pythonpath
-    end
+    python = which_python
+    next unless python
+    version = python_short_version
+    next unless version
+    # Always use Python 2.7 for consistency on older versions of OSX.
+    version == Version.new("2.7")
   end
 
-  def importable? module_name
-    quiet_system(binary, "-c", "import #{module_name}")
-  end
-
-  # The full path to the python or python3 executable, depending on `version`.
-  def binary
-    @binary ||= begin
-      if brewed?
-        # If the python is brewed we always prefer it!
-        # Note, we don't support homebrew/versions/pythonXX.rb, though.
-        Formula.factory(@python).opt_prefix/"bin/python#{@min_version.major}"
-      else
-        which(@python)
-      end
-    end
-  end
-
-  # The python prefix (special cased for a brewed python to point into the opt_prefix)
-  def prefix
-    if brewed?
-      # Homebrew since a long while only supports frameworked python
-      HOMEBREW_PREFIX/"opt/#{python}/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}"
-    elsif from_osx? and MacOS.version < :mavericks
-      # Python on OS X before Mavericks has been stripped off its includes (unless you install the CLT), therefore we use the MacOS.sdk.
-      Pathname.new("#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}")
-    else
-      # What Python knows about itself
-      Pathname.new(`#{binary} -c 'import sys;print(sys.prefix)'`.strip)
-    end
-  end
-
-  # Get the actual x.y.z version by asking python (or python3 if @min_version>=3)
-  def version
-    @version ||= PythonVersion.new(`#{binary} -c 'import sys;print(sys.version[:5])'`.strip)
-  end
-
-  # python.xy => "python2.7" is often used (and many formulae had this as `which_python`).
-  def xy
-    "python#{version.major}.#{version.minor}"
-  end
-
-  # Homebrew's global site-packages. The local ones (just `site_packages`) are
-  # populated by the python_helperg method when the `prefix` of a formula is known.
-  def global_site_packages
-    HOMEBREW_PREFIX/"lib/#{xy}/site-packages"
-  end
-
-  # Dir containing Python.h and others.
-  def incdir
-    if (from_osx? || brewed?) && framework?
-      prefix/"Headers"
-    else
-      # For all other we use Python's own standard method (works with a non-framework version, too)
-      Pathname.new(`#{binary} -c 'from distutils import sysconfig; print(sysconfig.get_python_inc())'`.strip)
-    end
-  end
-
-  # Dir containing e.g. libpython2.7.dylib
-  def libdir
-    if brewed? || from_osx?
-      if @min_version.major == 3
-        prefix/"lib/#{xy}/config-#{version.major}.#{version.minor}m"
-      else
-        prefix/"lib/#{xy}/config"
-      end
-    else
-      Pathname.new(`#{binary} -c "from distutils import sysconfig; print(sysconfig.get_config_var('LIBPL'))"`.strip)
-    end
-  end
-
-  # Pkgconfig (pc) files of python
-  def pkg_config_path
-    if from_osx?
-      # No matter if CLT-only or Xcode-only, the pc file is always here on OS X:
-      path = Pathname.new("/System/Library/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/lib/pkgconfig")
-      path if path.exist?
-    else
-      prefix/"lib/pkgconfig"
-    end
-  end
-
-  # Is the brewed Python installed?
-  def brewed?
-    @brewed ||= begin
-      require 'formula'
-      Formula.factory(@python).linked_keg.exist?
-    end
-  end
-
-  # Is the python the one from OS X?
-  def from_osx?
-    @from_osx ||= begin
-      p = `#{binary} -c "import sys; print(sys.prefix)"`.strip
-      p.start_with?("/System/Library/Frameworks/Python.framework")
-    end
-  end
-
-  # Is the `python` a PyPy?
-  def pypy?
-    @pypy ||= !(`#{binary} -c "import sys; print(sys.version)"`.downcase =~ /.*pypy.*/).nil?
-  end
-
-  def framework
-    # We return the path to Frameworks and not the 'Python.framework', because
-    # the latter is (sadly) the same for 2.x and 3.x.
-    if prefix.to_s =~ /^(.*\/Frameworks)\/(Python\.framework).*$/
-      @framework = $1
-    end
-  end
-  def framework?; not framework.nil? end
-
-  def universal?
-    @universal ||= archs_for_command(binary).universal?
-  end
-
-  def standard_caveats
-    if brewed?
-      ""  # empty string, so we can concat this
-    else
-      <<-EOS.undent
-        For non-homebrew #{@python} (#{@min_version.major}.x), you need to amend your PYTHONPATH like so:
-          export PYTHONPATH=#{global_site_packages}:$PYTHONPATH
-      EOS
-    end
+  def pour_bottle?
+    tags.include?(:build) || system_python?
   end
 
   def modify_build_environment
-    # Most methods fail if we don't have a binary.
-    return if binary.nil?
-
-    ENV['PYTHONHOME'] = nil  # to avoid fuck-ups.
-    ENV['PYTHONPATH'] = nil  # first unset, because global_site_packages may fail
-    ENV['PYTHONPATH'] = if brewed? then nil; else global_site_packages.to_s; end
-
-    # For non-system python's we add the opt_prefix/bin of python to the path.
-    ENV.prepend_path 'PATH', binary.dirname unless from_osx?
-    ENV.append_path 'CMAKE_INCLUDE_PATH', incdir
-    ENV.append_path 'PKG_CONFIG_PATH', pkg_config_path if pkg_config_path
-    # We don't set the -F#{framework} here, because if Python 2.x and 3.x are
-    # used, `Python.framework` is ambiguous. However, in the `python do` block
-    # we can set LDFLAGS+="-F#{framework}" because only one is temporarily set.
-
-    # Write our sitecustomize.py
-    file = global_site_packages/"sitecustomize.py"
-    ohai "Writing #{file}" if ARGV.verbose? && ARGV.debug?
-
-    %w{.pyc .pyo .py}.each do |ext|
-      f = global_site_packages/"sitecustomize#{ext}"
-      f.unlink if f.exist?
-    end
-
-    file.write(sitecustomize)
-
-    # Udpate distutils.cfg (later we can remove this, but people still have
-    # their old brewed pythons and we have to update it here)
-    # Todo: If Jack's formula revisions arrive, we can get rid of this here!
-    if brewed?
-      require 'formula'
-      file = Formula.factory(@python).opt_prefix/"Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/lib/#{xy}/distutils/distutils.cfg"
-      ohai "Writing #{file}" if ARGV.verbose? && ARGV.debug?
-      file.delete if file.exist?
-      file.write <<-EOF.undent
-        [global]
-        verbose=1
-        [install]
-        force=1
-        prefix=#{HOMEBREW_PREFIX}
-      EOF
+    if system_python?
+      if python_binary == "python"
+        version = python_short_version
+        ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{version}/site-packages"
+      end
+    elsif which_python
+      ENV.prepend_path "PATH", which_python.dirname
     end
   end
 
-  def sitecustomize
-    <<-EOF.undent
-      # This file is created by Homebrew and is executed on each python startup.
-      # Don't print from here, or else python command line scripts may fail!
-      # <https://github.com/Homebrew/homebrew/wiki/Homebrew-and-Python>
-      import os
-      import sys
-
-      if sys.version_info[0] != #{version.major}:
-          # This can only happen if the user has set the PYTHONPATH for 3.x and run Python 2.x or vice versa.
-          # Every Python looks at the PYTHONPATH variable and we can't fix it here in sitecustomize.py,
-          # because the PYTHONPATH is evaluated after the sitecustomize.py. Many modules (e.g. PyQt4) are
-          # built only for a specific version of Python and will fail with cryptic error messages.
-          # In the end this means: Don't set the PYTHONPATH permanently if you use different Python versions.
-          exit('Your PYTHONPATH points to a site-packages dir for Python #{version.major}.x but you are running Python ' +
-               str(sys.version_info[0]) + '.x!\\n     PYTHONPATH is currently: "' + str(os.environ['PYTHONPATH']) + '"\\n' +
-               '     You should `unset PYTHONPATH` to fix this.')
-      else:
-          # Only do this for a brewed python:
-          opt_executable = '#{HOMEBREW_PREFIX}/opt/#{python}/bin/#{xy}'
-          if os.path.realpath(sys.executable) == os.path.realpath(opt_executable):
-              # Remove /System site-packages, and the Cellar site-packages
-              # which we moved to lib/pythonX.Y/site-packages. Further, remove
-              # HOMEBREW_PREFIX/lib/python because we later addsitedir(...).
-              sys.path = [ p for p in sys.path
-                           if (not p.startswith('/System') and
-                               not p.startswith('#{HOMEBREW_PREFIX}/lib/python') and
-                               not (p.startswith('#{HOMEBREW_PREFIX}/Cellar/python') and p.endswith('site-packages'))) ]
-
-              # LINKFORSHARED (and python-config --ldflags) return the
-              # full path to the lib (yes, "Python" is actually the lib, not a
-              # dir) so that third-party software does not need to add the
-              # -F/#{HOMEBREW_PREFIX}/Frameworks switch.
-              # Assume Framework style build (default since months in brew)
-              try:
-                  from _sysconfigdata import build_time_vars
-                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{HOMEBREW_PREFIX}/opt/#{python}/Frameworks/Python.framework/Versions/#{version.major}.#{version.minor}/Python'
-              except:
-                  pass  # remember: don't print here. Better to fail silently.
-
-              # Set the sys.executable to use the opt_prefix
-              sys.executable = opt_executable
-
-          # Tell about homebrew's site-packages location.
-          # This is needed for Python to parse *.pth.
-          import site
-          site.addsitedir('#{HOMEBREW_PREFIX}/lib/#{xy}/site-packages')
-    EOF
+  def python_short_version
+    @short_version ||= Language::Python.major_minor_version which_python
   end
 
-  def message
-    @unsatisfied_because
+  def which_python
+    python = which python_binary
+    return unless python
+    executable = `#{python} -c "import sys; print(sys.executable)"`.strip
+    return unless executable
+    Pathname.new executable
   end
 
-  def <=> other
-    version <=> other.version
-  end
+  def system_python; "/usr/bin/#{python_binary}" end
+  def system_python?; system_python == which_python.to_s end
+  def python_binary; "python" end
 
-  def to_s
-    binary.to_s
-  end
+  # Deprecated
+  alias_method :to_s, :python_binary
+end
 
-  # Objects of this class are used to represent dependencies on Python and
-  # dependencies on Python modules. Both are already included in `name`
-  def eql?(other)
-    instance_of?(other.class) && name == other.name
-  end
+class Python3Dependency < PythonDependency
+  fatal true
+  default_formula "python3"
 
-  def hash
-    name.hash
-  end
+  satisfy(:build_env => false) { which_python }
+
+  def python_binary; "python3" end
 end

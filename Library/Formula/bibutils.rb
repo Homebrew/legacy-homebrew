@@ -2,11 +2,11 @@ require 'formula'
 
 class Bibutils < Formula
   homepage 'http://sourceforge.net/p/bibutils/home/Bibutils/'
-  url 'http://downloads.sourceforge.net/project/bibutils/bibutils_5.2_src.tgz'
-  sha1 '4ae54726100535d0f5e726405de4a35f0a62c578'
+  url 'https://downloads.sourceforge.net/project/bibutils/bibutils_5.4_src.tgz'
+  sha1 'c3fc285bed1145c59a0f32376c0dd3cef00103eb'
 
   #fix uint not being defined clang error
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--install-dir", prefix

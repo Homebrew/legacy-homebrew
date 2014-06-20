@@ -1,17 +1,15 @@
-require 'formula'
+require "formula"
 
 class Hunspell < Formula
-  homepage 'http://hunspell.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/hunspell/hunspell-1.3.2.tar.gz'
-  sha1 '902c76d2b55a22610e2227abc4fd26cbe606a51c'
+  homepage "http://hunspell.sourceforge.net/"
+  url "https://downloads.sourceforge.net/hunspell/hunspell-1.3.3.tar.gz"
+  sha1 "219b20f305d6690f666ff3864a16e4674908a553"
 
-  depends_on 'readline'
+  depends_on "readline"
 
-  def patches
-    # hunspell does not prepend $HOME to all USEROODIRs
-    # http://sourceforge.net/p/hunspell/bugs/236/
-    { :p0 => DATA }
-  end
+  # hunspell does not prepend $HOME to all USEROODIRs
+  # http://sourceforge.net/p/hunspell/bugs/236/
+  patch :p0, :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",
@@ -21,6 +19,15 @@ class Hunspell < Formula
     system "make"
     ENV.deparallelize
     system "make install"
+  end
+
+  def caveats; <<-EOS.undent
+    Dictionary files (*.aff and *.dic) should be placed in
+    ~/Library/Spelling/ or /Library/Spelling/.  Homebrew itself
+    provides no dictionaries for Hunspell, but you can download
+    compatible dictionaries from other sources, such as
+    https://wiki.openoffice.org/wiki/Dictionaries .
+    EOS
   end
 end
 

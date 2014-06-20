@@ -3,11 +3,11 @@ require 'formula'
 class Watchman < Formula
   homepage 'https://github.com/facebook/watchman'
   head 'https://github.com/facebook/watchman.git'
-  url 'https://github.com/facebook/watchman/archive/v2.9.3.tar.gz'
-  sha1 '6647e36105b18b99b03eb009d13d8decc91e1898'
+  url 'https://github.com/facebook/watchman/archive/v2.9.6.tar.gz'
+  sha1 '415e0f2547205c7507e520bc40dc8cca3e06a40a'
 
-  depends_on :autoconf
-  depends_on :automake
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on 'pkg-config' => :build
   depends_on 'pcre'
 

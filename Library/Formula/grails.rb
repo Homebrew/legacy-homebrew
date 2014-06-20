@@ -2,8 +2,8 @@ require 'formula'
 
 class Grails < Formula
   homepage 'http://grails.org'
-  url 'http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-2.3.4.zip'
-  sha1 '13c39936f1b820ebb13e03fd56cc617b0c68eaee'
+  url 'http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-2.4.0.zip'
+  sha1 '8c92b7fc18540c34e266eace5a1e036fd3783efd'
 
   def install
     rm_f Dir["bin/*.bat", "bin/cygrails", "*.bat"]
@@ -14,7 +14,7 @@ class Grails < Formula
 
   def caveats; <<-EOS.undent
     The GRAILS_HOME directory is:
-      #{opt_prefix}/libexec
+      #{opt_libexec}
     EOS
   end
 end

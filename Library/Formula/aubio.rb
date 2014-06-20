@@ -6,23 +6,21 @@ class Aubio < Formula
   sha1 '8ef7ccbf18a4fa6db712a9192acafc9c8d080978'
 
   depends_on :macos => :lion
-  depends_on :python
 
   depends_on 'pkg-config' => :build
-  depends_on :libtool => :build
+  depends_on 'libtool' => :build
   depends_on 'swig' => :build
-
   depends_on 'fftw'
   depends_on 'libsamplerate'
   depends_on 'libsndfile'
 
   # get rid of -Wno-long-double in configure.  otherwise, breaks with modern xcode.
   # updates for py2.6+ compatibility (with is now a keyword)
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
+
     ENV.deparallelize
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
@@ -31,7 +29,7 @@ class Aubio < Formula
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
-  def test
+  test do
     system "#{bin}/aubiocut", "--help"
   end
 end

@@ -9,24 +9,18 @@ class Jless < Formula
   version '382+iso262+ext03'
   sha1 '3c3f1ae0bf18039b047524ff0f573ef514bcc944'
 
-  def patches
-    # These will emerge from the debian patch zip
-    iso_patches = ['less-382-iso258.dpatch',
-                   'less-382-iso258-259.dpatch',
-                   'less-382-iso259-260.dpatch',
-                   'less-382-iso260-261.dpatch',
-                   'less-382-iso261-262.dpatch'].collect {|p| "debian/patches/#{p}"}
-
-    p = [
-      # Debian patches
-      'http://ftp.de.debian.org/debian/pool/main/j/jless/jless_382-iso262-2.diff.gz',
-      *iso_patches
-    ]
-
-    # See: http://bogytech.blogspot.com/2011/07/kterm-jless-screen.html
-    # Must come after the Debian patches
-    p << 'https://docs.google.com/uc?id=0B0E5E7E1sD2nZTI4NmUzZDAtZTY1MC00YmI4LTkyNzQtYmRmYjJkNzJmNzgy'
-    return p
+  [
+    %w{258       961275c26c6f6ec2e04821d9d9d1b10505214b1f},
+    %w{258-259   7256998c59f9743e61e83e9e5ebc5183e8eeb269},
+    %w{259-260   56e5537fae516ee738b1512eed303f43ed0d4575},
+    %w{260-261   3a889e178a32c3a273b89fd396976362a975f627},
+    %w{261-262   d5cc92e5dcbfde26257eec5f126df5bf73779a89},
+    %w{262.ext03 dc35204274ecf02da5f7ffb583da680ea6f4356c},
+  ].each do |name, sha|
+    patch do
+      url "http://ftp.netbsd.org/pub/pkgsrc/distfiles/less-382-iso#{name}.patch.gz"
+      sha1 sha
+    end
   end
 
   def install

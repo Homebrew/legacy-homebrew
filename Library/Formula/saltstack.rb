@@ -1,11 +1,9 @@
 require 'formula'
 
+# We use a custom download strategy to properly configure
+# salt's version information when built against HEAD.
+# This is populated from git information unfortunately.
 class SaltHeadDownloadStrategy < GitDownloadStrategy
-  # We need to make a local clone so we can't use "--depth 1"
-  def support_depth?
-    false
-  end
-
   def stage
     @clone.cd {reset}
     safe_system 'git', 'clone', @clone, '.'
@@ -14,13 +12,13 @@ end
 
 class Saltstack < Formula
   homepage 'http://www.saltstack.org'
-  url 'https://pypi.python.org/packages/source/s/salt/salt-0.17.4.tar.gz'
-  sha1 '4433b8b7c9988d8805788b04d687cf09f78e2325'
+  url 'https://github.com/saltstack/salt/archive/v2014.1.4.tar.gz'
+  sha256 '737686df6d28244af95eea2203badd2104df6421d61c054c1f7dcf942e1f1823'
 
-  head 'https://github.com/saltstack/salt.git', :branch => :develop,
-    :using => SaltHeadDownloadStrategy
+  head 'https://github.com/saltstack/salt.git', :branch => 'develop',
+    :using => SaltHeadDownloadStrategy, :shallow => false
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'swig' => :build
   depends_on 'zeromq'
   depends_on 'libyaml'
@@ -31,8 +29,8 @@ class Saltstack < Formula
   end
 
   resource 'm2crypto' do
-    url 'https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.21.1.tar.gz'
-    sha1 '3c7135b952092e4f2eee7a94c5153319cccba94e'
+    url 'https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.22.3.tar.gz'
+    sha1 'c5e39d928aff7a47e6d82624210a7a31b8220a50'
   end
 
   resource 'pyyaml' do
@@ -46,21 +44,34 @@ class Saltstack < Formula
   end
 
   resource 'jinja2' do
-    url 'https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.1.tar.gz'
-    sha1 'a9b24d887f2be772921b3ee30a0b9d435cffadda'
+    url 'https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.2.tar.gz'
+    sha1 '1ce4c8bc722444ec3e77ef9db76faebbd17a40d8'
   end
 
   resource 'pyzmq' do
-    url 'https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.0.0.tar.gz'
-    sha1 'a57a32f3fdedd7a9d3659926648a93895eb7c3c4'
+    url 'https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.0.1.tar.gz'
+    sha1 'd09c72dc6dcad9449dbcb2f97b3cc1f2443d4b84'
   end
 
   resource 'msgpack-python' do
-    url 'https://pypi.python.org/packages/source/m/msgpack-python/msgpack-python-0.4.0.tar.gz'
-    sha1 '5915f60033168a7b6f1e76ddb8a514f84ebcdf81'
+    url 'https://pypi.python.org/packages/source/m/msgpack-python/msgpack-python-0.4.1.tar.gz'
+    sha1 'ae7b4d1afab10cd78baada026cad1ae92354852b'
+  end
+
+  resource 'apache-libcloud' do
+    url 'https://pypi.python.org/packages/source/a/apache-libcloud/apache-libcloud-0.14.1.tar.gz'
+    sha1 'e587c9c3519e7d061f3c2fb232af8ace593c8156'
+  end
+
+  head do
+    resource 'requests' do
+      url 'https://pypi.python.org/packages/source/r/requests/requests-2.3.0.tar.gz'
+      sha1 'f57bc125d35ec01a81afe89f97dc75913a927e65'
+    end
   end
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
@@ -71,6 +82,11 @@ class Saltstack < Formula
     resource('markupsafe').stage { system "python", *install_args }
     resource('m2crypto').stage { system "python", *install_args }
     resource('jinja2').stage { system "python", *install_args }
+    resource('apache-libcloud').stage { system "python", *install_args }
+
+    if build.head?
+      resource('requests').stage { system "python", *install_args }
+    end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 

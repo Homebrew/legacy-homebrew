@@ -1,15 +1,16 @@
-require 'formula'
+require "formula"
 
 class Fping < Formula
-  homepage 'http://fping.org/'
-  url 'http://fping.org/dist/fping-3.8.tar.gz'
-  sha1 '1aad76c065d4049ca6c5c1b4de82c13f4529a201'
+  homepage "http://fping.org/"
+  url "http://fping.org/dist/fping-3.10.tar.gz"
+  sha1 "d8a1fa3ec13289d67d70102c1ef16c461a7eb505"
 
-  head 'https://github.com/schweikert/fping.git'
+  head "https://github.com/schweikert/fping.git"
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--sbindir=#{bin}",
                           "--enable-ipv6"
     system "make install"
   end

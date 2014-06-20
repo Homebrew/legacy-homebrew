@@ -16,6 +16,7 @@ class Option
   alias_method :to_str, :to_s
 
   def <=>(other)
+    return unless Option === other
     name <=> other.name
   end
 
@@ -81,6 +82,10 @@ class Options
 
   def &(o)
     Options.new(@options & o)
+  end
+
+  def |(o)
+    Options.new(@options | o)
   end
 
   def *(arg)

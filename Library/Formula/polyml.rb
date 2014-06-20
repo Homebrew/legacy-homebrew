@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Polyml < Formula
-  homepage 'http://www.polyml.org'
-  url 'http://downloads.sourceforge.net/project/polyml/polyml/5.5.1/polyml.5.5.1.tar.gz'
-  sha1 'f5a0d289eb0a891af5ac6e897ccc7718ccf32d89'
+  homepage "http://www.polyml.org"
+  url "https://downloads.sourceforge.net/project/polyml/polyml/5.5.2/polyml.5.5.2.tar.gz"
+  sha1 "8926046162c073d01c1b3bcfc744c63adfafc0d2"
 
   def install
     system "./configure", "--disable-dependency-tracking", "--disable-debug",

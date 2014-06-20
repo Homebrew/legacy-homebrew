@@ -10,19 +10,19 @@ class Evas < Formula
   depends_on 'pkg-config' => :build
   depends_on 'eina'
   depends_on 'eet'
-  depends_on :freetype
-  depends_on :fontconfig
+  depends_on 'freetype'
+  depends_on 'fontconfig'
   depends_on 'fribidi'
   depends_on 'harfbuzz'
-  depends_on 'doxygen' if build.include? 'with-docs'
+  depends_on 'doxygen' if build.with? "docs"
 
   def install
     args = ["--prefix=#{prefix}", "--disable-dependency-tracking"]
-    args << "--with-doxygen-file=#{HOMEBREW_PREFIX}/bin/doxygen" if build.include? 'with-docs'
+    args << "--with-doxygen-file=#{HOMEBREW_PREFIX}/bin/doxygen" if build.with? "docs"
 
     system "./configure", *args
 
     system "make install"
-    system "make install-doc" if build.include? 'with-docs'
+    system "make install-doc" if build.with? "docs"
   end
 end

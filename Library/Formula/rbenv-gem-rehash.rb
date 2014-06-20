@@ -7,9 +7,10 @@ class RbenvGemRehash < Formula
 
   depends_on 'rbenv'
 
-  def patches
-    # Fixes issues with Homebrew-managed git-etc alpha.
-    'https://github.com/sstephenson/rbenv-gem-rehash/commit/0756890cfd9c7bbbdde38560fe81626a0c5769bd.patch'
+  # Fixes issues with Homebrew-managed git-etc alpha.
+  patch do
+    url "https://github.com/sstephenson/rbenv-gem-rehash/commit/0756890cfd9c7bbbdde38560fe81626a0c5769bd.diff"
+    sha1 "17877b728eda6eaddc199bcd5935fcea757a1c63"
   end
 
   def install

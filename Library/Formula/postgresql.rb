@@ -2,13 +2,30 @@ require 'formula'
 
 class Postgresql < Formula
   homepage 'http://www.postgresql.org/'
-  url 'http://ftp.postgresql.org/pub/source/v9.3.2/postgresql-9.3.2.tar.bz2'
-  sha256 '700da51a71857e092f6af1c85fcd86b46d7d5cd2f2ba343cafb1f206c20232d7'
+
+  stable do
+    url 'http://ftp.postgresql.org/pub/source/v9.3.4/postgresql-9.3.4.tar.bz2'
+    sha256 '9ee819574dfc8798a448dc23a99510d2d8924c2f8b49f8228cd77e4efc8a6621'
+
+    # ossp-uuid support cannot be compiled on 9.4beta1:
+    # http://thread.gmane.org/gmane.comp.db.postgresql.devel.general/229339
+    # Will keep it stable-only until the usptream issues are resolved.
+    depends_on 'ossp-uuid' => :recommended
+    # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
+    patch :DATA
+  end
 
   bottle do
-    sha1 '106eb209038abdaa2cad8d91d2a422404f8fbe56' => :mavericks
-    sha1 '283c27e518a789d2cd57640375be00e18c829ef4' => :mountain_lion
-    sha1 'f6775c74300b4aee0bf449ac7466310d86701a5f' => :lion
+    revision 2
+    sha1 "a97e4f9364fd4518cc492135ac11832d4f8001c6" => :mavericks
+    sha1 "5c10d677a07a8055bfd21f94633f6d897e4a60f7" => :mountain_lion
+    sha1 "7da81a9d1dd086d6b1403d9a508d5871c85d2892" => :lion
+  end
+
+  devel do
+    url 'http://ftp.postgresql.org/pub/source/v9.4beta1/postgresql-9.4beta1.tar.bz2'
+    version '9.4beta1'
+    sha256 '0e088eff79bb5171b2233222a25d7a2906eaf62aa86266daf6ec5217b1797f47'
   end
 
   option '32-bit'
@@ -16,10 +33,10 @@ class Postgresql < Formula
   option 'no-tcl', 'Build without Tcl support'
   option 'enable-dtrace', 'Build with DTrace support'
 
+  depends_on 'openssl'
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.version <= :leopard # Leopard libxml is too old
-  depends_on 'ossp-uuid' => :recommended
-  depends_on :python => :recommended
+  depends_on :python => :optional
 
   conflicts_with 'postgres-xc',
     :because => 'postgresql and postgres-xc install the same binaries.'
@@ -27,11 +44,6 @@ class Postgresql < Formula
   fails_with :clang do
     build 211
     cause 'Miscompilation resulting in segfault on queries'
-  end
-
-  # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
-  def patches
-    DATA
   end
 
   def install
@@ -45,7 +57,6 @@ class Postgresql < Formula
       --enable-thread-safety
       --with-bonjour
       --with-gssapi
-      --with-krb5
       --with-ldap
       --with-openssl
       --with-pam
@@ -53,13 +64,13 @@ class Postgresql < Formula
       --with-libxslt
     ]
 
-    args << "--with-ossp-uuid" if build.with? 'ossp-uuid'
     args << "--with-python" if build.with? 'python'
     args << "--with-perl" unless build.include? 'no-perl'
     args << "--with-tcl" unless build.include? 'no-tcl'
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
 
-    if build.with? 'ossp-uuid'
+    if build.stable? && build.with?("ossp-uuid")
+      args << "--with-ossp-uuid"
       ENV.append 'CFLAGS', `uuid-config --cflags`.strip
       ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
       ENV.append 'LIBS', `uuid-config --libs`.strip
@@ -76,7 +87,7 @@ class Postgresql < Formula
 
   def post_install
     unless File.exist? "#{var}/postgres"
-      system "#{bin}/initdb", "#{var}/postgres", '-E', 'utf8'
+      system "#{bin}/initdb", "#{var}/postgres"
     end
   end
 
@@ -115,7 +126,7 @@ class Postgresql < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/postgres</string>
+        <string>#{opt_bin}/postgres</string>
         <string>-D</string>
         <string>#{var}/postgres</string>
         <string>-r</string>
@@ -130,6 +141,10 @@ class Postgresql < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/initdb", testpath
   end
 end
 

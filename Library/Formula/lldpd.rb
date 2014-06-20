@@ -2,8 +2,8 @@ require 'formula'
 
 class Lldpd < Formula
   homepage 'http://vincentbernat.github.io/lldpd/'
-  url 'http://media.luffy.cx/files/lldpd/lldpd-0.7.7.tar.gz'
-  sha1 '4471e5fcd66d650b6327842a9e2e779e546f2491'
+  url 'http://media.luffy.cx/files/lldpd/lldpd-0.7.8.tar.gz'
+  sha1 '78cd2848a2d5822ebae5a78a922d69596d3222e0'
 
   option 'with-snmp', "Build SNMP subagent support"
   option 'with-json', "Build JSON support for lldpcli"
@@ -11,22 +11,22 @@ class Lldpd < Formula
   depends_on 'pkg-config' => :build
   depends_on 'readline'
   depends_on 'libevent'
-  depends_on 'net-snmp' if build.include? 'with-snmp'
-  depends_on 'jansson'  if build.include? 'with-json'
+  depends_on 'net-snmp' if build.with? "snmp"
+  depends_on 'jansson'  if build.with? "json"
 
   def install
-    readline = Formula.factory 'readline'
-    args = [ "--prefix=#{prefix}",
-             "--with-xml",
-             "--with-readline",
-             "--with-privsep-chroot=/var/empty",
-             "--with-privsep-user=nobody",
-             "--with-privsep-group=nogroup",
-             "--with-launchddaemonsdir=no",
-             "CPPFLAGS=-I#{readline.include} -DRONLY=1",
-             "LDFLAGS=-L#{readline.lib}" ]
-    args << "--with-snmp" if build.include? 'with-snmp'
-    args << "--with-json" if build.include? 'with-json'
+    readline = Formula["readline"]
+    args = ["--prefix=#{prefix}",
+            "--with-xml",
+            "--with-readline",
+            "--with-privsep-chroot=/var/empty",
+            "--with-privsep-user=nobody",
+            "--with-privsep-group=nogroup",
+            "--with-launchddaemonsdir=no",
+            "CPPFLAGS=-I#{readline.include} -DRONLY=1",
+            "LDFLAGS=-L#{readline.lib}"]
+    args << "--with-snmp" if build.with? "snmp"
+    args << "--with-json" if build.with? "json"
 
     system "./configure", *args
     system "make"
@@ -37,7 +37,7 @@ class Lldpd < Formula
 
   def plist
     additional_args = ""
-    if build.include? 'with-snmp'
+    if build.with? "snmp"
       additional_args += "<string>-x</string>"
     end
     return <<-EOS.undent
@@ -49,7 +49,7 @@ class Lldpd < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/lldpd</string>
+        <string>#{opt_sbin}/lldpd</string>
         #{additional_args}
       </array>
       <key>RunAtLoad</key><true/>

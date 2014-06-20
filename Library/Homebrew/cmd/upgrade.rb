@@ -1,13 +1,7 @@
 require 'cmd/install'
 require 'cmd/outdated'
 
-class Fixnum
-  def plural_s
-    if self != 1 then "s" else "" end
-  end
-end
-
-module Homebrew extend self
+module Homebrew
   def upgrade
     Homebrew.perform_preinstall_checks
 
@@ -34,12 +28,16 @@ module Homebrew extend self
       outdated -= pinned
     end
 
-    oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
-    puts outdated.map{ |f| "#{f.name} #{f.version}" } * ", "
+    unless outdated.empty?
+      oh1 "Upgrading #{outdated.length} outdated package#{plural(outdated.length)}, with result:"
+      puts outdated.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
+    else
+      oh1 "No packages to upgrade"
+    end
 
     unless upgrade_pinned? || pinned.empty?
-      oh1 "Not upgrading #{pinned.length} pinned package#{pinned.length.plural_s}:"
-      puts pinned.map{ |f| "#{f.name} #{f.version}" } * ", "
+      oh1 "Not upgrading #{pinned.length} pinned package#{plural(pinned.length)}:"
+      puts pinned.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
     end
 
     outdated.each { |f| upgrade_formula(f) }
@@ -50,17 +48,15 @@ module Homebrew extend self
   end
 
   def upgrade_formula f
-    tab = Tab.for_formula(f)
+    outdated_keg = Keg.new(f.linked_keg.resolved_path) if f.linked_keg.directory?
 
-    # Inject options from a previous install into the formula's
-    # BuildOptions object. TODO clean this up.
-    f.build.args += tab.used_options
-
-    outdated_keg = Keg.new(f.linked_keg.realpath) rescue nil
-
-    installer = FormulaInstaller.new(f)
-    installer.tab = tab
-    installer.show_header = false
+    fi = FormulaInstaller.new(f)
+    fi.options             = Tab.for_formula(f).used_options
+    fi.build_from_source   = ARGV.build_from_source?
+    fi.verbose             = ARGV.verbose?
+    fi.verbose           &&= :quieter if ARGV.quieter?
+    fi.debug               = ARGV.debug?
+    fi.prelude
 
     oh1 "Upgrading #{f.name}"
 
@@ -69,9 +65,9 @@ module Homebrew extend self
     # do! Seriously, it happens!
     outdated_keg.unlink if outdated_keg
 
-    installer.install
-    installer.caveats
-    installer.finish
+    fi.install
+    fi.caveats
+    fi.finish
 
     # If the formula was pinned, and we were force-upgrading it, unpin and
     # pin it again to get a symlink pointing to the correct keg.
@@ -88,6 +84,8 @@ module Homebrew extend self
     e.dump
     puts
     Homebrew.failed = true
+  rescue DownloadError => e
+    ofail e
   ensure
     # restore previous installation state if build failed
     outdated_keg.link if outdated_keg and not f.installed? rescue nil

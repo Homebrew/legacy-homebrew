@@ -19,7 +19,7 @@ class Log4cxx < Formula
   # Incorporated upstream, remove on next version update
   # https://issues.apache.org/jira/browse/LOGCXX-404
   # https://issues.apache.org/jira/browse/LOGCXX-417
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?

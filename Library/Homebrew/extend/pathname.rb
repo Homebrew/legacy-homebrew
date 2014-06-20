@@ -1,6 +1,7 @@
 require 'pathname'
 require 'mach'
 require 'resource'
+require 'metafiles'
 
 # we enhance pathname to make our code more readable
 class Pathname
@@ -79,34 +80,59 @@ class Pathname
     end
   end
 
-  def install_symlink_p src, new_basename = nil
-    if new_basename.nil?
-      dst = self+File.basename(src)
-    else
-      dst = self+File.basename(new_basename)
-    end
+  def install_symlink_p src, new_basename=src
+    src = Pathname(src).expand_path(self)
+    dst = join File.basename(new_basename)
     mkpath
-    FileUtils.ln_s src.to_s, dst.to_s
+    FileUtils.ln_sf src.relative_path_from(dst.parent), dst
   end
   protected :install_symlink_p
 
   # we assume this pathname object is a file obviously
-  def write content
+  alias_method :old_write, :write if method_defined?(:write)
+  def write(content, *open_args)
     raise "Will not overwrite #{to_s}" if exist?
     dirname.mkpath
-    File.open(self, 'w') {|f| f.write content }
+    open("w", *open_args) { |f| f.write(content) }
   end
 
   # NOTE always overwrites
   def atomic_write content
-    require 'tempfile'
-    tf = Tempfile.new(self.basename.to_s)
+    require "tempfile"
+    tf = Tempfile.new(basename.to_s)
+    tf.binmode
     tf.write(content)
     tf.close
-    FileUtils.mv tf.path, self.to_s
+
+    begin
+      old_stat = stat
+    rescue Errno::ENOENT
+      old_stat = default_stat
+    end
+
+    FileUtils.mv tf.path, self
+
+    uid = Process.uid
+    gid = Process.groups.delete(old_stat.gid) { Process.gid }
+
+    begin
+      chown(uid, gid)
+      chmod(old_stat.mode)
+    rescue Errno::EPERM
+    end
   end
 
+  def default_stat
+    sentinel = parent.join(".brew.#{Process.pid}.#{rand(Time.now.to_i)}")
+    sentinel.open("w") { }
+    sentinel.stat
+  ensure
+    sentinel.unlink
+  end
+  private :default_stat
+
   def cp dst
+    opoo "Pathname#cp is deprecated, use FileUtils.cp"
     if file?
       FileUtils.cp to_s, dst
     else
@@ -169,6 +195,7 @@ class Pathname
   end
 
   def chmod_R perms
+    opoo "Pathname#chmod_R is deprecated, use FileUtils.chmod_R"
     require 'fileutils'
     FileUtils.chmod_R perms, to_s
   end
@@ -179,16 +206,17 @@ class Pathname
   end
 
   def compression_type
-    # Don't treat jars or wars as compressed
-    return nil if self.extname == '.jar'
-    return nil if self.extname == '.war'
-
-    # OS X installer package
-    return :pkg if self.extname == '.pkg'
-
-    # If the filename ends with .gz not preceded by .tar
-    # then we want to gunzip but not tar
-    return :gzip_only if self.extname == '.gz'
+    case extname
+    when ".jar", ".war"
+      # Don't treat jars or wars as compressed
+      return
+    when ".gz"
+      # If the filename ends with .gz not preceded by .tar
+      # then we want to gunzip but not tar
+      return :gzip_only
+    when ".bz2"
+      return :bzip2_only
+    end
 
     # Get enough of the file to detect common file types
     # POSIX tar magic has a 257 byte offset
@@ -203,6 +231,7 @@ class Pathname
     when /^LZIP/n               then :lzip
     when /^Rar!/n               then :rar
     when /^7z\xBC\xAF\x27\x1C/n then :p7zip
+    when /^xar!/n               then :xar
     else
       # This code so that bad-tarballs and zips produce good error messages
       # when they don't unarchive properly.
@@ -217,11 +246,15 @@ class Pathname
     %r[^#!\s*\S+] === open('r') { |f| f.read(1024) }
   end
 
-  def incremental_hash(hasher)
-    incr_hash = hasher.new
-    buf = ""
-    open('rb') { |f| incr_hash << buf while f.read(1024, buf) }
-    incr_hash.hexdigest
+  def incremental_hash(klass)
+    digest = klass.new
+    if digest.respond_to?(:file)
+      digest.file(self)
+    else
+      buf = ""
+      open("rb") { |f| digest << buf while f.read(1024, buf) }
+    end
+    digest.hexdigest
   end
 
   def sha1
@@ -237,7 +270,7 @@ class Pathname
   def verify_checksum expected
     raise ChecksumMissingError if expected.nil? or expected.empty?
     actual = Checksum.new(expected.hash_type, send(expected.hash_type).downcase)
-    raise ChecksumMismatchError.new(expected, actual) unless expected == actual
+    raise ChecksumMismatchError.new(self, expected, actual) unless expected == actual
   end
 
   if '1.9' <= RUBY_VERSION
@@ -265,58 +298,18 @@ class Pathname
     (dirname+link).exist?
   end
 
-  # perhaps confusingly, this Pathname object becomes the symlink pointing to
-  # the src paramter.
-  def make_relative_symlink src
-    src = Pathname.new(src) unless src.kind_of? Pathname
+  def make_relative_symlink(src)
+    dirname.mkpath
+    File.symlink(src.relative_path_from(dirname), self)
+  end
 
-    self.dirname.mkpath
-    Dir.chdir self.dirname do
-      # NOTE only system ln -s will create RELATIVE symlinks
-      quiet_system 'ln', '-s', src.relative_path_from(self.dirname), self.basename
-      if not $?.success?
-        if self.exist?
-          raise <<-EOS.undent
-            Could not symlink file: #{src.expand_path}
-            Target #{self} already exists. You may need to delete it.
-            To force the link and overwrite all other conflicting files, do:
-              brew link --overwrite formula_name
-
-            To list all files that would be deleted:
-              brew link --overwrite --dry-run formula_name
-            EOS
-        # #exist? will return false for symlinks whose target doesn't exist
-        elsif self.symlink?
-          raise <<-EOS.undent
-            Could not symlink file: #{src.expand_path}
-            Target #{self} already exists as a symlink to #{readlink}.
-            If this file is from another formula, you may need to
-            `brew unlink` it. Otherwise, you may want to delete it.
-            To force the link and overwrite all other conflicting files, do:
-              brew link --overwrite formula_name
-
-            To list all files that would be deleted:
-              brew link --overwrite --dry-run formula_name
-            EOS
-        elsif !dirname.writable_real?
-          raise <<-EOS.undent
-            Could not symlink file: #{src.expand_path}
-            #{dirname} is not writable. You should change its permissions.
-            EOS
-        else
-          raise <<-EOS.undent
-            Could not symlink file: #{src.expand_path}
-            #{self} may already exist.
-            #{dirname} may not be writable.
-            EOS
-        end
-      end
+  def /(other)
+    unless other.respond_to?(:to_str) || other.respond_to?(:to_path)
+      opoo "Pathname#/ called on #{inspect} with #{other.inspect} as an argument"
+      puts "This behavior is deprecated, please pass either a String or a Pathname"
     end
-  end
-
-  def / that
-    join that.to_s
-  end
+    self + other.to_s
+  end unless method_defined?(:/)
 
   def ensure_writable
     saved_perms = nil
@@ -330,35 +323,18 @@ class Pathname
   end
 
   def install_info
-    unless self.symlink?
-      raise "Cannot install info entry for unbrewed info file '#{self}'"
-    end
-    system '/usr/bin/install-info', '--quiet', self.to_s, (self.dirname+'dir').to_s
+    quiet_system "/usr/bin/install-info", "--quiet", to_s, "#{dirname}/dir"
   end
 
   def uninstall_info
-    unless self.symlink?
-      raise "Cannot uninstall info entry for unbrewed info file '#{self}'"
-    end
-    system '/usr/bin/install-info', '--delete', '--quiet', self.to_s, (self.dirname+'dir').to_s
-  end
-
-  def all_formula pwd = self
-    children.map{ |child| child.relative_path_from(pwd) }.each do |pn|
-      yield pn if pn.to_s =~ /.rb$/
-    end
-    children.each do |child|
-      child.all_formula(pwd) do |pn|
-        yield pn
-      end if child.directory?
-    end
+    quiet_system "/usr/bin/install-info", "--delete", "--quiet", to_s, "#{dirname}/dir"
   end
 
   def find_formula
-    [self/:Formula, self/:HomebrewFormula, self].each do |d|
+    [join("Formula"), join("HomebrewFormula"), self].each do |d|
       if d.exist?
-        d.children.map{ |child| child.relative_path_from(self) }.each do |pn|
-          yield pn if pn.to_s =~ /.rb$/
+        d.children.each do |pn|
+          yield pn if pn.extname == ".rb"
         end
         break
       end
@@ -372,14 +348,13 @@ class Pathname
       opoo "tried to write exec scripts to #{self} for an empty list of targets"
       return
     end
+    mkpath
     targets.each do |target|
       target = Pathname.new(target) # allow pathnames or strings
       (self+target.basename()).write <<-EOS.undent
         #!/bin/bash
         exec "#{target}" "$@"
       EOS
-      # +x here so this will work during post-install as well
-      (self+target.basename()).chmod 0644
     end
   end
 
@@ -387,6 +362,7 @@ class Pathname
   def write_env_script target, env
     env_export = ''
     env.each {|key, value| env_export += "#{key}=\"#{value}\" "}
+    dirname.mkpath
     self.write <<-EOS.undent
     #!/bin/bash
     #{env_export}exec "#{target}" "$@"
@@ -396,8 +372,7 @@ class Pathname
   # Writes a wrapper env script and moves all files to the dst
   def env_script_all_files dst, env
     dst.mkpath
-    Dir["#{self}/*"].each do |file|
-      file = Pathname.new(file)
+    Pathname.glob("#{self}/*") do |file|
       dst.install_p file
       new_file = dst+file.basename
       file.write_env_script(new_file, env)
@@ -406,29 +381,24 @@ class Pathname
 
   # Writes an exec script that invokes a java jar
   def write_jar_script target_jar, script_name, java_opts=""
+    mkpath
     (self+script_name).write <<-EOS.undent
       #!/bin/bash
       exec java #{java_opts} -jar #{target_jar} "$@"
     EOS
-    # +x here so this will work during post-install as well
-    (self+script_name).chmod 0644
   end
 
-  def install_metafiles from=nil
-    # Default to current path, and make sure we have a pathname, not a string
-    from = "." if from.nil?
-    from = Pathname.new(from.to_s)
-
-    from.children.each do |p|
+  def install_metafiles from=Pathname.pwd
+    Pathname(from).children.each do |p|
       next if p.directory?
-      next unless FORMULA_META_FILES.should_copy? p
+      next unless Metafiles.copy?(p.basename.to_s)
       # Some software symlinks these files (see help2man.rb)
       filename = p.resolved_path
       # Some software links metafiles together, so by the time we iterate to one of them
       # we may have already moved it. libxml2's COPYING and Copyright are affected by this.
       next unless filename.exist?
       filename.chmod 0644
-      self.install filename
+      install(filename)
     end
   end
 
@@ -467,6 +437,13 @@ class Pathname
       end
     end
     private :prepend_prefix
+  elsif RUBY_VERSION == "2.0.0"
+    # https://bugs.ruby-lang.org/issues/9915
+    prepend Module.new {
+      def inspect
+        super.force_encoding(@path.encoding)
+      end
+    }
   end
 end
 
@@ -499,6 +476,7 @@ module ObserverPathnameExtension
   end
   def make_relative_symlink src
     super
+    puts "ln -s #{src.relative_path_from(dirname)} #{basename}" if ARGV.verbose?
     ObserverPathnameExtension.n += 1
   end
   def install_info

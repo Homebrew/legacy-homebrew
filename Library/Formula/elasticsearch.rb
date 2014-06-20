@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class Elasticsearch < Formula
-  homepage 'http://www.elasticsearch.org'
-  url 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.9.tar.gz'
-  sha1 '21ddd2d2666ff7ffec99caa1a210bfc0a3ee6c40'
+  homepage "http://www.elasticsearch.org"
+  url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.1.tar.gz"
+  sha1 "e74d80d79269bb224153ad63b45f1cf7448f3398"
 
   head do
-    url 'https://github.com/elasticsearch/elasticsearch.git'
-    depends_on 'maven'
+    url "https://github.com/elasticsearch/elasticsearch.git"
+    depends_on "maven"
   end
 
   def cluster_name
@@ -40,7 +40,7 @@ class Elasticsearch < Formula
       rm_rf "#{prefix}/target/"
     end
 
-    # Set up ElasticSearch for local development:
+    # Set up Elasticsearch for local development:
     inreplace "#{prefix}/config/elasticsearch.yml" do |s|
       # 1. Give the cluster a unique name
       s.gsub! /#\s*cluster\.name\: elasticsearch/, "cluster.name: #{cluster_name}"
@@ -80,10 +80,12 @@ class Elasticsearch < Formula
     Data:    #{var}/elasticsearch/#{cluster_name}/
     Logs:    #{var}/log/elasticsearch/#{cluster_name}.log
     Plugins: #{var}/lib/elasticsearch/plugins/
+
+    ElasticSearch requires Java 7; you will need to install an appropriate JDK.
     EOS
   end
 
-  plist_options :manual => "elasticsearch -f -D es.config=#{HOMEBREW_PREFIX}/opt/elasticsearch/config/elasticsearch.yml"
+  plist_options :manual => "elasticsearch --config=#{HOMEBREW_PREFIX}/opt/elasticsearch/config/elasticsearch.yml"
 
   def plist; <<-EOS.undent
       <?xml version="1.0" encoding="UTF-8"?>
@@ -97,8 +99,7 @@ class Elasticsearch < Formula
           <key>ProgramArguments</key>
           <array>
             <string>#{HOMEBREW_PREFIX}/bin/elasticsearch</string>
-            <string>-f</string>
-            <string>-D es.config=#{prefix}/config/elasticsearch.yml</string>
+            <string>--config=#{prefix}/config/elasticsearch.yml</string>
           </array>
           <key>EnvironmentVariables</key>
           <dict>

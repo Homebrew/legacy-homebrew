@@ -6,7 +6,7 @@ class Libdrawtext < Formula
   sha1 '0d7166bbb1479553abf82b71a56ec565d861fe81'
 
   depends_on 'pkg-config' => :build
-  depends_on :freetype
+  depends_on 'freetype'
   depends_on 'glew'
 
   def install

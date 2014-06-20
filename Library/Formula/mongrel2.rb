@@ -9,11 +9,10 @@ class Mongrel2 < Formula
 
   depends_on 'zeromq'
 
-  def patches
-    # allow mongrel2 to build against libzmq 4
-    [
-       "https://gist.github.com/minrk/7632116/raw/44d0ed09ecfc68a9f9d6a940c6367f703cd55c46/0001-add-zmq_compat-check-for-libzmq-4.patch"
-    ]
+  # allow mongrel2 to build against libzmq 4
+  patch do
+    url "https://gist.githubusercontent.com/minrk/7632116/raw/44d0ed09ecfc68a9f9d6a940c6367f703cd55c46/0001-add-zmq_compat-check-for-libzmq-4.patch"
+    sha1 "f4279ced05362b916c1abf874c69781a66f55abf"
   end
 
   def install

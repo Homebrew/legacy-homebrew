@@ -1,16 +1,21 @@
-require 'formula'
+require "formula"
 
 class Gifsicle < Formula
-  homepage 'http://www.lcdf.org/gifsicle/'
-  url 'http://www.lcdf.org/gifsicle/gifsicle-1.77.tar.gz'
-  sha1 '29ac22a9aa1a22ed85e4df90668c72d08d89c8b0'
+  homepage "http://www.lcdf.org/gifsicle/"
+  url "http://www.lcdf.org/gifsicle/gifsicle-1.83.tar.gz"
+  sha1 "7498d75f1933156f3930aac417246d34f2cbbf64"
 
-  depends_on :x11
+  depends_on :x11 => :optional
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--enable-all"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+
+    args << "--disable-gifview" if build.without? "x11"
+
+    system "./configure", *args
     system "make install"
   end
 end

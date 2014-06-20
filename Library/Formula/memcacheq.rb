@@ -2,7 +2,7 @@ require 'formula'
 
 class Memcacheq < Formula
   homepage 'http://memcachedb.org/memcacheq'
-  url 'http://memcacheq.googlecode.com/files/memcacheq-0.2.0.tar.gz'
+  url 'https://memcacheq.googlecode.com/files/memcacheq-0.2.0.tar.gz'
   sha1 'fc373e02335301cbfe4c00420bdf8592ca2bf95a'
 
   depends_on 'berkeley-db'

@@ -2,8 +2,8 @@ require 'formula'
 
 class Snort < Formula
   homepage 'http://www.snort.org'
-  url 'http://www.snort.org/dl/snort-current/snort-2.9.3.1.tar.gz'
-  sha1 '25dfea22a988dd1dc09a1716d8ebfcf2b7d61c19'
+  url 'http://www.snort.org/dl/snort-current/snort-2.9.6.1.tar.gz'
+  sha1 '49da9b989fa59114a6e533b26383cb1a7df9b717'
 
   depends_on 'daq'
   depends_on 'libdnet'
@@ -11,14 +11,14 @@ class Snort < Formula
 
   option 'enable-debug', "Compile Snort with --enable-debug and --enable-debug-msgs"
 
+  fails_with :clang
+
   def install
     args = %W[--prefix=#{prefix}
               --disable-dependency-tracking
-              --enable-ipv6
               --enable-gre
               --enable-mpls
               --enable-targetbased
-              --enable-decoder-preprocessor-rules
               --enable-ppm
               --enable-perfprofiling
               --enable-zlib

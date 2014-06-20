@@ -2,9 +2,15 @@ require 'formula'
 
 class PerconaServer < Formula
   homepage 'http://www.percona.com'
-  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/Percona-Server-5.6.14-rel62.0/source/Percona-Server-5.6.14-rel62.0.tar.gz'
-  version '5.6.14-rel62.0'
-  sha1 '6d9ddd92338c70ec13bdeb9a23568a990a5766f9'
+  url 'http://www.percona.com/redir/downloads/Percona-Server-5.6/Percona-Server-5.6.17-65.0/source/tarball/percona-server-5.6.17-65.0.tar.gz'
+  version '5.6.17-65.0'
+  sha1 '48e8a7738c5878951345df378d37712066744028'
+
+  bottle do
+    sha1 "54289ae378b282d66235f2af34ae6b9e4d8bb393" => :mavericks
+    sha1 "13035386e8f3560a4c9fc7893b7fb43bee14a208" => :mountain_lion
+    sha1 "1d2a2c658318a71e1bcdda451c919ba130bc5744" => :lion
+  end
 
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
@@ -23,8 +29,6 @@ class PerconaServer < Formula
   conflicts_with 'mysql-connector-c',
     :because => 'both install MySQL client libraries'
 
-  env :std if build.universal?
-
   fails_with :llvm do
     build 2334
     cause "https://github.com/Homebrew/homebrew/issues/issue/144"
@@ -37,11 +41,8 @@ class PerconaServer < Formula
     @datadir ||= (var/'percona').directory? ? var/'percona' : var/'mysql'
   end
 
-  def patches
-    # Fixes percona server 5.6 compilation on OS X 10.9, based on
-    # https://github.com/Homebrew/homebrew/commit/aad5d93f4fabbf69766deb83780d3a6eeab7061a
-    # for mysql 5.6
-    "https://gist.github.com/israelshirk/7cc640498cf264ebfce3/raw/846839c84647c4190ad683e4cbf0fabcd8931f97/gistfile1.txt"
+  def pour_bottle?
+    datadir == var/"mysql"
   end
 
   def install
@@ -95,16 +96,16 @@ class PerconaServer < Formula
     args << "-DWITH_INNODB_MEMCACHED=ON" if build.with? 'memcached'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
+    if build.universal?
+      ENV.universal_binary
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
 
     system "cmake", *args
     system "make"
-    # Reported upstream:
-    # http://bugs.mysql.com/bug.php?id=69645
-    inreplace "scripts/mysql_config", / +-Wno[\w-]+/, ""
     system "make install"
 
     # Don't create databases inside of the prefix!
@@ -112,7 +113,7 @@ class PerconaServer < Formula
     rm_rf prefix+'data'
 
     # Link the setup script into bin
-    ln_s prefix+'scripts/mysql_install_db', bin+'mysql_install_db'
+    bin.install_symlink prefix/"scripts/mysql_install_db"
 
     # Fix up the control script and link into bin
     inreplace "#{prefix}/support-files/mysql.server" do |s|
@@ -121,17 +122,16 @@ class PerconaServer < Formula
       s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
 
-    ln_s "#{prefix}/support-files/mysql.server", bin
+    bin.install_symlink prefix/"support-files/mysql.server"
 
     # Move mysqlaccess to libexec
     mv "#{bin}/mysqlaccess", libexec
     mv "#{bin}/mysqlaccess.conf", libexec
-
-    # Make sure that data directory exists
-    datadir.mkpath
   end
 
   def post_install
+    # Make sure that data directory exists
+    datadir.mkpath
     unless File.exist? "#{datadir}/mysql/user.frm"
       ENV['TMPDIR'] = nil
       system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
@@ -160,7 +160,7 @@ class PerconaServer < Formula
       <key>Label</key>
       <string>#{plist_name}</string>
       <key>Program</key>
-      <string>#{opt_prefix}/bin/mysqld_safe</string>
+      <string>#{opt_bin}/mysqld_safe</string>
       <key>RunAtLoad</key>
       <true/>
       <key>WorkingDirectory</key>

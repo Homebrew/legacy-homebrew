@@ -2,8 +2,15 @@ require 'formula'
 
 class Yajl < Formula
   homepage 'http://lloyd.github.io/yajl/'
-  url 'https://github.com/lloyd/yajl/archive/2.0.4.tar.gz'
-  sha256 '0e78f516dc53ecce7dc073f9a9bb0343186b58ef29dcd1dad74e5e853b216dd5'
+  url 'https://github.com/lloyd/yajl/archive/2.1.0.tar.gz'
+  sha256 '3fb73364a5a30efe615046d07e6db9d09fd2b41c763c5f7d3bfb121cd5c5ac5a'
+
+  bottle do
+    cellar :any
+    sha1 "418941bfd0684cf14ae0bebc65324e99b76a3aa4" => :mavericks
+    sha1 "f59aa705d9324e1c4a47bbba7ba50b74b3649ca3" => :mountain_lion
+    sha1 "1bea5088df669781cc1835a97ae991773ad7b36b" => :lion
+  end
 
   # Configure uses cmake internally
   depends_on 'cmake' => :build
@@ -11,8 +18,14 @@ class Yajl < Formula
   def install
     ENV.deparallelize
 
-    system "./configure", "--prefix=#{prefix}"
+    system "cmake", ".", *std_cmake_args
     system "make install"
     (include/'yajl').install Dir['src/api/*.h']
+  end
+
+  test do
+    output = `echo "[0,1,2,3]" | '#{bin}/json_verify'`
+    assert $?.success?
+    assert_match /valid/i, output.strip
   end
 end

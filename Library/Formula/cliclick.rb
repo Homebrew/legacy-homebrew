@@ -1,11 +1,9 @@
-require 'formula'
+require "formula"
 
 class Cliclick < Formula
-  homepage 'http://www.bluem.net/jump/cliclick/'
-  url 'https://github.com/BlueM/cliclick/archive/2.3.1.tar.gz'
-  sha1 '84ae09fb8e40ffada80d81713dcfae05a80b4c7e'
-
-  depends_on :xcode
+  homepage "http://www.bluem.net/jump/cliclick/"
+  url "https://github.com/BlueM/cliclick/archive/2.4.tar.gz"
+  sha1 "69dd1bc99d110a18fd4cc087b8180592c798a783"
 
   def install
     system "make"

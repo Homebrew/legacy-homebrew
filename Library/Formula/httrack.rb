@@ -5,8 +5,8 @@ class Httrack < Formula
   # url: Always use mirror.httrack.com when you link to a new version
   # of HTTrack, as link to download.httrack.com will break on next
   # HTTrack update.
-  url 'http://mirror.httrack.com/historical/httrack-3.47.27.tar.gz'
-  sha1 'cae1c6c02d2c59dc62e7abdbc6240414b764d292'
+  url 'http://mirror.httrack.com/historical/httrack-3.48.3.tar.gz'
+  sha1 'c6fa11224d533750829438dfba7bc9f2f36b6068'
 
   def install
     ENV.deparallelize

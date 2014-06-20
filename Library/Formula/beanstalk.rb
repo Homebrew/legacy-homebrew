@@ -22,7 +22,7 @@ class Beanstalk < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/beanstalkd</string>
+          <string>#{opt_bin}/beanstalkd</string>
         </array>
         <key>RunAtLoad</key>
         <true/>

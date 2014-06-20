@@ -16,9 +16,9 @@ class Pdnsrec < Formula
     ENV.O0
 
     # Include Lua if requested
-    if build.include? 'with-lua'
+    if build.with? "lua"
       ENV['LUA'] = "1"
-      ENV['LUA_CPPFLAGS_CONFIG'] = "-I#{Formula.factory('lua').opt_prefix}/include"
+      ENV['LUA_CPPFLAGS_CONFIG'] = "-I#{Formula["lua"].opt_include}"
       ENV['LUA_LIBS_CONFIG'] = "-llua"
     end
 

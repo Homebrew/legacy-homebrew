@@ -2,8 +2,8 @@ require 'formula'
 
 class Fatsort < Formula
   homepage 'http://fatsort.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/fatsort/fatsort-1.2.355.tar.gz'
-  sha1 'e0138bebf4f27c2f15684b79e8009b9a3c515e9b'
+  url 'https://downloads.sourceforge.net/project/fatsort/fatsort-1.3.365.tar.gz'
+  sha1 '9ae5d1ab5e4c91e6725237fab1271f881c3edb59'
 
   depends_on 'help2man'
 

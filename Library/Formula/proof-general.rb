@@ -57,13 +57,13 @@ class ProofGeneral < Formula
       man1.install "doc/proofgeneral.1"
       info.install "doc/ProofGeneral.info", "doc/PG-adapting.info"
 
-      doc.install "doc/ProofGeneral", "doc/PG-adapting" if build.include? 'with-doc'
+      doc.install "doc/ProofGeneral", "doc/PG-adapting" if build.with? "doc"
     end
   end
 
   def caveats
     doc = ""
-    if build.include? 'with-doc'
+    if build.with? "doc"
       doc += <<-EOS.undent
          HTML documentation is available in:
            #{HOMEBREW_PREFIX}/share/doc/proof-general

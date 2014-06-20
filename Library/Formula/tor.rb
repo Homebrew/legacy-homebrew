@@ -1,31 +1,43 @@
-require 'formula'
+require "formula"
 
 class Tor < Formula
-  homepage 'https://www.torproject.org/'
-  url 'https://www.torproject.org/dist/tor-0.2.4.20.tar.gz'
-  sha1 '09ba4eda9a73c46852a277b721ed74c8263e8dba'
+  homepage "https://www.torproject.org/"
+  url "https://www.torproject.org/dist/tor-0.2.4.22.tar.gz"
+  sha1 "42349e02c3f6db4e6f2cc52b8a61ea91761ac4d6"
 
-  devel do
-    url 'https://www.torproject.org/dist/tor-0.2.5.1-alpha.tar.gz'
-    version '0.2.5.1-alpha'
-    sha1 'd10cb78e6a41657d970a1ce42105142bcfc315fb'
+  bottle do
+    revision 1
+    sha1 "f6b42d12fb7dc5a18a6d58b3250923d0a0fcd78f" => :mavericks
+    sha1 "f9225a57b8a494767cf4a5e126a5cbb19af86e7d" => :mountain_lion
+    sha1 "5be6f9dd594330e1864f6a570873d86f3c84506f" => :lion
   end
 
-  option "with-brewed-openssl", "Build with Homebrew's OpenSSL instead of the system version" if MacOS.version > :leopard
+  devel do
+    url "https://www.torproject.org/dist/tor-0.2.5.4-alpha.tar.gz"
+    version "0.2.5.4-alpha"
+    sha1 "6817c103e2e401330823930e1a0dec38e5147ba2"
+  end
 
-  depends_on 'libevent'
-  depends_on 'openssl' if build.with?('brewed-openssl') || MacOS.version < :snow_leopard
+  depends_on "libevent"
+  depends_on "openssl"
 
   def install
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-    ]
+    # Fix the path to the control cookie.
+    inreplace "contrib/tor-ctrl.sh",
+      'TOR_COOKIE="/var/lib/tor/data/control_auth_cookie"',
+      'TOR_COOKIE="$HOME/.tor/control_auth_cookie"'
 
-    args << "-with-ssl=#{Formulary.factory('openssl').opt_prefix}" if build.with?('brewed-openssl') || MacOS.version < :snow_leopard
-
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
+                          "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"
     system "make install"
+
+    bin.install "contrib/tor-ctrl.sh" => "tor-ctrl"
+  end
+
+  test do
+    system bin/"tor", "--version"
   end
 
   def plist; <<-EOS.undent
@@ -41,7 +53,7 @@ class Tor < Formula
         <true/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/tor</string>
+            <string>#{opt_bin}/tor</string>
         </array>
         <key>WorkingDirectory</key>
         <string>#{HOMEBREW_PREFIX}</string>

@@ -2,8 +2,15 @@ require 'formula'
 
 class Inkscape < Formula
   homepage 'http://inkscape.org/'
-  url 'http://downloads.sourceforge.net/project/inkscape/inkscape/0.48.4/inkscape-0.48.4.tar.gz'
+  url 'https://downloads.sourceforge.net/project/inkscape/inkscape/0.48.4/inkscape-0.48.4.tar.gz'
   sha1 'ce453cc9aff56c81d3b716020cd8cc7fa1531da0'
+
+  head do
+    url 'lp:inkscape/0.48.x', :using => :bzr
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'intltool' => :build
@@ -22,19 +29,24 @@ class Inkscape < Formula
   depends_on 'poppler' => :optional
   depends_on 'hicolor-icon-theme'
 
-  fails_with :clang
+  fails_with :clang unless build.head?
 
   def install
+    if build.head?
+      system "./autogen.sh"
+      ENV.cxx11
+    end
+
     args = [ "--disable-dependency-tracking",
              "--prefix=#{prefix}",
              "--enable-lcms" ]
-    args << "--disable-poppler-cairo" unless build.with? "poppler"
+    args << "--disable-poppler-cairo" if build.without? "poppler"
     system "./configure", *args
 
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/inkscape", "-V"
   end
 end

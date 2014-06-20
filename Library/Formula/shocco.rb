@@ -1,39 +1,36 @@
-require 'formula'
+require "formula"
 
 class MarkdownProvider < Requirement
   fatal true
-  default_formula 'markdown'
-  satisfy { which 'markdown' }
+  default_formula "markdown"
+  satisfy { which "markdown" }
 end
 
 class Shocco < Formula
-  homepage 'http://rtomayko.github.io/shocco/'
-  url 'https://github.com/rtomayko/shocco/archive/1.0.tar.gz'
-  sha1 'e29d58fb8109040b4fb4a816f330bb1c67064f6d'
+  homepage "http://rtomayko.github.io/shocco/"
+  url "https://github.com/rtomayko/shocco/archive/1.0.tar.gz"
+  sha1 "e29d58fb8109040b4fb4a816f330bb1c67064f6d"
 
   depends_on MarkdownProvider
 
-  # Include a private copy of this Python library
-  resource 'pygments' do
-    url 'http://pypi.python.org/packages/source/P/Pygments/Pygments-1.5.tar.gz'
-    sha1 '4fbd937fd5cebc79fa4b26d4cce0868c4eec5ec5'
+  resource "pygments" do
+    url "http://pypi.python.org/packages/source/P/Pygments/Pygments-1.5.tar.gz"
+    sha1 "4fbd937fd5cebc79fa4b26d4cce0868c4eec5ec5"
   end
 
-  def patches
-    DATA
-  end
+  # Upstream, but not in a release
+  patch :DATA
 
   def install
-    libexec.install resource('pygments').files('pygmentize', 'pygments')
+    libexec.install resource("pygments").files("pygmentize", "pygments")
 
     system "./configure",
       "PYGMENTIZE=#{libexec}/pygmentize",
       "MARKDOWN=#{HOMEBREW_PREFIX}/bin/markdown",
       "--prefix=#{prefix}"
 
-    # Shocco's Makefile does not combine the make and make install steps.
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats

@@ -1,6 +1,4 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
-
-# This script is called by formula_installer as a separate instance.
+# This script is loaded by formula_installer as a separate instance.
 # Rationale: Formula can use __END__, Formula can change ENV
 # Thrown exceptions are propogated back to the parent process over a pipe
 
@@ -61,8 +59,14 @@ class Build
 
   def initialize(f)
     @f = f
-    @deps = expand_deps
-    @reqs = expand_reqs
+
+    if ARGV.ignore_deps?
+      @deps = []
+      @reqs = []
+    else
+      @deps = expand_deps
+      @reqs = expand_reqs
+    end
   end
 
   def post_superenv_hacks
@@ -75,8 +79,9 @@ class Build
 
   def pre_superenv_hacks
     # Allow a formula to opt-in to the std environment.
-    ARGV.unshift '--env=std' if (f.env.std? or deps.any? { |d| d.name == 'scons' }) and
-      not ARGV.include? '--env=super'
+    if (f.env.std? || deps.any? { |d| d.name == "scons" }) && ARGV.env != "super"
+      ARGV.unshift "--env=std"
+    end
   end
 
   def expand_reqs
@@ -112,13 +117,13 @@ class Build
     ENV.activate_extensions!
 
     deps.map(&:to_formula).each do |dep|
-      opt = HOMEBREW_PREFIX/:opt/dep
-      fixopt(dep) unless opt.directory? or ARGV.ignore_deps?
+      opt = HOMEBREW_PREFIX.join("opt", dep.name)
+      fixopt(dep) unless opt.directory?
     end
 
     if superenv?
-      ENV.keg_only_deps = keg_only_deps.map(&:to_s)
-      ENV.deps = deps.map { |d| d.to_formula.to_s }
+      ENV.keg_only_deps = keg_only_deps.map(&:name)
+      ENV.deps = deps.map { |d| d.to_formula.name }
       ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
       ENV.setup_build_environment(f)
       post_superenv_hacks
@@ -130,14 +135,13 @@ class Build
       deps.each(&:modify_build_environment)
 
       keg_only_deps.each do |dep|
-        opt = dep.opt_prefix
-        ENV.prepend_path 'PATH', "#{opt}/bin"
-        ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
-        ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/share/pkgconfig"
-        ENV.prepend_path 'ACLOCAL_PATH', "#{opt}/share/aclocal"
-        ENV.prepend_path 'CMAKE_PREFIX_PATH', opt
-        ENV.prepend 'LDFLAGS', "-L#{opt}/lib" if (opt/:lib).directory?
-        ENV.prepend 'CPPFLAGS', "-I#{opt}/include" if (opt/:include).directory?
+        ENV.prepend_path "PATH", dep.opt_bin.to_s
+        ENV.prepend_path "PKG_CONFIG_PATH", "#{dep.opt_lib}/pkgconfig"
+        ENV.prepend_path "PKG_CONFIG_PATH", "#{dep.opt_share}/pkgconfig"
+        ENV.prepend_path "ACLOCAL_PATH", "#{dep.opt_share}/aclocal"
+        ENV.prepend_path "CMAKE_PREFIX_PATH", dep.opt_prefix.to_s
+        ENV.prepend "LDFLAGS", "-L#{dep.opt_lib}" if dep.opt_lib.directory?
+        ENV.prepend "CPPFLAGS", "-I#{dep.opt_include}" if dep.opt_include.directory?
       end
     end
 
@@ -161,17 +165,31 @@ class Build
       else
         f.prefix.mkpath
 
+        f.resources.each { |r| r.extend(ResourceDebugger) } if ARGV.debug?
+
         begin
           f.install
 
+          # This first test includes executables because we still
+          # want to record the stdlib for something that installs no
+          # dylibs.
           stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
-          # It's technically possible for the same lib to link to multiple
-          # C++ stdlibs, but very bad news. Right now we don't track this
-          # woeful scenario.
+          # This currently only tracks a single C++ stdlib per dep,
+          # though it's possible for different libs/executables in
+          # a given formula to link to different ones.
           stdlib_in_use = CxxStdlib.new(stdlibs.first, ENV.compiler)
-          # This will raise and fail the build if there's an
-          # incompatibility.
-          stdlib_in_use.check_dependencies(f, deps)
+          begin
+            stdlib_in_use.check_dependencies(f, deps)
+          rescue IncompatibleCxxStdlibs => e
+            opoo e.message
+          end
+
+          # This second check is recorded for checking dependencies,
+          # so executable are irrelevant at this point. If a piece
+          # of software installs an executable that links against libstdc++
+          # and dylibs against libc++, libc++-only dependencies can safely
+          # link against it.
+          stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs :skip_executables => true
 
           Tab.create(f, ENV.compiler, stdlibs.first,
             Options.coerce(ARGV.options_only)).write
@@ -192,7 +210,7 @@ end
 
 def fixopt f
   path = if f.linked_keg.directory? and f.linked_keg.symlink?
-    f.linked_keg.realpath
+    f.linked_keg.resolved_path
   elsif f.prefix.directory?
     f.prefix
   elsif (kids = f.rack.children).size == 1 and kids.first.directory?

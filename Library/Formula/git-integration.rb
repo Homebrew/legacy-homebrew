@@ -15,8 +15,8 @@ end
 
 class GitIntegration < Formula
   homepage 'http://johnkeeping.github.io/git-integration/'
-  url 'https://github.com/johnkeeping/git-integration/archive/v0.2.zip'
-  sha1 'ce86564077a683c8ce270c85530f9100f3f8c950'
+  url 'https://github.com/johnkeeping/git-integration/archive/v0.2.tar.gz'
+  sha1 '6ccfd21236112b546fa01e876a28ecb630b924ac'
 
   depends_on 'asciidoc' => [:build, :optional]
   depends_on SufficientlyRecentGit

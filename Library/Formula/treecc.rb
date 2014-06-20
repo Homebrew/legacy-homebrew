@@ -11,7 +11,7 @@ class Treecc < Formula
     bin.install "treecc"
   end
 
-  def test
+  test do
     system "#{bin}/treecc", "-v"
   end
 end

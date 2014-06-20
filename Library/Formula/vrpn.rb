@@ -15,6 +15,8 @@ class Vrpn < Formula
   depends_on 'doxygen' if build.include? 'docs'
 
   def install
+    ENV.libstdcxx
+
     args = std_cmake_args
 
     if build.include? 'clients'

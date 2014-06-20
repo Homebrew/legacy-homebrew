@@ -2,21 +2,34 @@ require 'formula'
 
 class Fontforge < Formula
   homepage 'http://fontforge.org/'
+  revision 1
 
   stable do
-    url 'http://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
+    url 'https://downloads.sourceforge.net/project/fontforge/fontforge-source/fontforge_full-20120731-b.tar.bz2'
     sha1 'b520f532b48e557c177dffa29120225066cc4e84'
 
     depends_on 'cairo' => :optional
     depends_on 'pango' => :optional
+
+    # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
+    patch do
+      url "https://gist.githubusercontent.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
+      sha1 "baa7d60f4c6e672180e66438ee675b4ee0fda5ce"
+    end
+  end
+
+  bottle do
+    sha1 "62e19f688ec4fbd4a6263c6187980c35521a7b40" => :mavericks
+    sha1 "5edf50ab049d44ff399defe673faa58d136c54d3" => :mountain_lion
+    sha1 "8b38be9b20ce239e63f3f3009482ab8f130c0a33" => :lion
   end
 
   head do
     url 'https://github.com/fontforge/fontforge.git'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
     depends_on 'pkg-config' => :build
     depends_on 'glib'
     depends_on 'pango'
@@ -28,9 +41,9 @@ class Fontforge < Formula
   option 'with-x', 'Build with X11 support, including FontForge.app'
 
   depends_on 'gettext'
-  depends_on :python => :recommended
+  depends_on :python => :optional
 
-  depends_on :libpng    => :recommended
+  depends_on 'libpng'   => :recommended
   depends_on 'jpeg'     => :recommended
   depends_on 'libtiff'  => :recommended
   depends_on :x11 if build.with? 'x'
@@ -44,13 +57,6 @@ class Fontforge < Formula
     cause "Compiling cvexportdlg.c fails with error: initializer element is not constant"
   end
 
-  def patches
-    unless build.head?
-      # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
-      "https://gist.github.com/rubenfonseca/5078149/raw/98a812df4e8c50d5a639877bc2d241e5689f1a14/fontforge"
-    end
-  end
-
   def install
     args = ["--prefix=#{prefix}",
             "--enable-double",
@@ -61,7 +67,7 @@ class Fontforge < Formula
       args << "--without-cairo" if build.without? "cairo"
       args << "--without-pango" if build.without? "pango"
     end
-    args << "--without-x" unless build.with? 'x'
+    args << "--without-x" if build.without? 'x'
 
     # To avoid "dlopen(/opt/local/lib/libpng.2.dylib, 1): image not found"
     args << "--with-static-imagelibs"
@@ -119,19 +125,6 @@ class Fontforge < Formula
 
     system "make"
     system "make install"
-  end
-
-  def caveats
-    if build.with? "x"
-      <<-EOS.undent
-        fontforge is an X11 application.
-
-        To install the Mac OS X wrapper application run:
-          brew linkapps
-        or:
-          ln -s #{opt_prefix}/FontForge.app /Applications
-      EOS
-    end
   end
 
   test do

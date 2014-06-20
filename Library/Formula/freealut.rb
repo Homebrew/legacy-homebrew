@@ -7,7 +7,7 @@ class Freealut < Formula
   sha1 'b2c04d2b5e0896b3164c01deda39f58933c8055f'
 
   # Adds the OpenAL frameworks to the library list so linking succeeds
-  def patches; DATA; end
+  patch :DATA
 
   depends_on :autoconf
   depends_on :automake

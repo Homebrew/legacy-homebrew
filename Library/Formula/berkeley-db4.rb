@@ -8,7 +8,7 @@ class BerkeleyDb4 < Formula
   keg_only "BDB 4.8.30 is provided for software that doesn't compile against newer versions."
 
   # Fix build under Xcode 4.6
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # BerkeleyDB dislikes parallel builds

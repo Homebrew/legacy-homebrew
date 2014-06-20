@@ -4,11 +4,12 @@ class Png2ico < Formula
   homepage 'http://www.winterdrache.de/freeware/png2ico/'
   url 'http://www.winterdrache.de/freeware/png2ico/data/png2ico-src-2002-12-08.tar.gz'
   sha1 '955004bee9a20f12b225aa01895762cbbafaeb28'
+  revision 1
 
-  depends_on :libpng
+  depends_on 'libpng'
 
   # Fix build with recent clang
-  def patches; DATA; end
+  patch :DATA
 
   def install
     inreplace 'Makefile', 'g++', '$(CXX)'

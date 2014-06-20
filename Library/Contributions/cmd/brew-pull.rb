@@ -17,7 +17,7 @@ if ARGV[0] == '--rebase'
   onoe 'You meant `git pull --rebase`.'
 end
 
-ARGV.named.each do|arg|
+ARGV.named.each do |arg|
   if arg.to_i > 0
     url = 'https://github.com/Homebrew/homebrew/pull/' + arg
   else
@@ -30,8 +30,11 @@ ARGV.named.each do|arg|
     url = url_match[0]
   end
 
-  if tap url
-    Dir.chdir HOMEBREW_REPOSITORY/"Library/Taps/#{url_match[1].downcase}-#{tap url}"
+  if tap_name = tap(url)
+    user = url_match[1].downcase
+    tap_dir = HOMEBREW_REPOSITORY/"Library/Taps/#{user}/homebrew-#{tap_name}"
+    safe_system "brew", "tap", "#{user}/#{tap_name}" unless tap_dir.exist?
+    Dir.chdir tap_dir
   else
     Dir.chdir HOMEBREW_REPOSITORY
   end
@@ -56,7 +59,6 @@ ARGV.named.each do|arg|
 
   ohai 'Applying patch'
   patch_args = []
-  patch_args << '--signoff' unless ARGV.include? '--clean'
   # Normally we don't want whitespace errors, but squashing them can break
   # patches so an option is provided to skip this step.
   if ARGV.include? '--ignore-whitespace' or ARGV.include? '--clean'
@@ -73,16 +75,42 @@ ARGV.named.each do|arg|
     odie 'Patch failed to apply: aborted.'
   end
 
-  if issue and not ARGV.include? '--clean'
+  changed_formulae = []
+
+  `git diff #{revision}.. --name-status`.each_line do |line|
+    status, filename = line.split
+    # Don't try and do anything to removed files.
+    if (status =~ /A|M/) && (filename =~ %r{Formula/.+\.rb$}) || tap(url)
+      formula_name = File.basename(filename, '.rb')
+      formula = Formula[formula_name] rescue nil
+      next unless formula
+      changed_formulae << formula
+    end
+  end
+
+  unless ARGV.include?('--bottle')
+    changed_formulae.each do |f|
+      next unless f.bottle
+      opoo "#{f} has a bottle: do you need to update it with --bottle?"
+    end
+  end
+
+  if issue && !ARGV.include?('--clean')
     ohai "Patch closes issue ##{issue}"
     message = `git log HEAD^.. --format=%B`
 
+    if ARGV.include? '--bump'
+      onoe 'Can only bump one changed formula' unless changed_formulae.length == 1
+      f = changed_formulae.first
+      subject = "#{f.name} #{f.version}"
+      ohai "New bump commit subject: #{subject}"
+      message = "#{subject}\n\n#{message}"
+    end
+
     # If this is a pull request, append a close message.
     unless message.include? 'Closes #'
-      issueline = "Closes ##{issue}."
-      signed = 'Signed-off-by:'
-      message = message.gsub signed, issueline + "\n\n" + signed
-      safe_system 'git', 'commit', '--amend', '-q', '-m', message
+      message += "\nCloses ##{issue}."
+      safe_system 'git', 'commit', '--amend', '--signoff', '-q', '-m', message
     end
   end
 
@@ -90,15 +118,10 @@ ARGV.named.each do|arg|
   safe_system 'git', '--no-pager', 'diff', "#{revision}..", '--stat'
 
   if ARGV.include? '--install'
-    `git diff #{revision}.. --name-status`.each_line do |line|
-      status, filename = line.split
-      # Don't try and do anything to removed files.
-      if (status == 'A' or status == 'M') and filename.match /Formula\/.+\.rb$/ or tap url
-        formula = File.basename(filename, '.rb')
-        ohai "Installing #{formula}"
-        install = Formula.factory(formula).installed? ? 'upgrade' : 'install'
-        safe_system 'brew', install, '--debug', '--fresh', formula
-      end
+    changed_formulae.each do |f|
+      ohai "Installing #{formula}"
+      install = f.installed? ? 'upgrade' : 'install'
+      safe_system 'brew', install, '--debug', '--fresh', formula
     end
   end
 end

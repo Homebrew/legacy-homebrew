@@ -2,8 +2,14 @@ require 'formula'
 
 class GambitScheme < Formula
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
-  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_0.tgz'
-  sha256 '2b03ecef89da2a53212dc3e6583ee4175d91a0752779e1758bcab5d09e9d1e63'
+  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_2.tgz'
+  sha256 'c09597fa423602eb9d06b1ab3c1a63cd9c612b89f7f6d718f2c0a96da4d4ac1a'
+
+  bottle do
+    sha1 "e91aa45c23c225c024c0d013ec37150ac57a3777" => :mavericks
+    sha1 "a8d9d58347d1e67317a2276a5c33415c2d4717f6" => :mountain_lion
+    sha1 "da656ff450a9bb435a81b8d317cb3409540a8668" => :lion
+  end
 
   conflicts_with 'ghostscript', :because => 'both install `gsc` binaries'
   conflicts_with 'scheme48', :because => 'both install `scheme-r5rs` binaries'
@@ -39,7 +45,7 @@ class GambitScheme < Formula
     end
 
     system "./configure", *args
-    system "make check" if build.include? 'with-check'
+    system "make check" if build.with? "check"
 
     ENV.j1
     system "make"

@@ -1,17 +1,17 @@
-require 'formula'
+require "formula"
 
 class MediaInfo < Formula
-  homepage 'http://mediainfo.sourceforge.net'
-  url 'http://mediaarea.net/download/binary/mediainfo/0.7.65/MediaInfo_CLI_0.7.65_GNU_FromSource.tar.bz2'
-  version '0.7.65'
-  sha1 '8b24e118d99cbe5066d96bd3e4f9a23d45fb2cf2'
+  homepage "https://mediaarea.net/"
+  url "https://mediaarea.net/download/binary/mediainfo/0.7.69/MediaInfo_CLI_0.7.69_GNU_FromSource.tar.bz2"
+  version "0.7.69"
+  sha1 "79227ec20928cc4fa82722b54a44671b03b833d9"
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   # fails to build against Leopard's older libcurl
-  depends_on 'curl' if MacOS.version < :snow_leopard
+  depends_on "curl" if MacOS.version < :snow_leopard
 
   def install
-    cd 'ZenLib/Project/GNU/Library' do
+    cd "ZenLib/Project/GNU/Library" do
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
                             "--prefix=#{prefix}"
       system "make"

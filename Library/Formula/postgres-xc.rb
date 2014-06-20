@@ -2,11 +2,18 @@ require 'formula'
 
 class PostgresXc < Formula
   homepage 'http://postgres-xc.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/postgres-xc/Version_1.0/pgxc-v1.0.3.tar.gz'
+  url 'https://downloads.sourceforge.net/project/postgres-xc/Version_1.0/pgxc-v1.0.3.tar.gz'
   sha1 '76774cf32810dfa14b2174f2e939d3b28eb211a9'
 
+  bottle do
+    sha1 "9996518f01b622e99d81e373584a79cff534c575" => :mavericks
+    sha1 "11dabc108585cb1468d7c5da64140522d42dd624" => :mountain_lion
+    sha1 "bae67562a1f7135faf534c3209ed887b73221bf5" => :lion
+  end
+
   depends_on :arch => :x86_64
-  depends_on :python => :recommended
+  depends_on :python => :optional
+  depends_on 'openssl'
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' => :recommended
@@ -24,9 +31,7 @@ class PostgresXc < Formula
 
   # Fix PL/Python build: https://github.com/Homebrew/homebrew/issues/11162
   # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.libxml2 if MacOS.version >= :snow_leopard
@@ -46,13 +51,13 @@ class PostgresXc < Formula
             "--with-libxml",
             "--with-libxslt"]
 
-    args << "--with-ossp-uuid" unless build.without? 'ossp-uuid'
+    args << "--with-ossp-uuid" if build.with? 'ossp-uuid'
     args << "--with-python" if build.with? 'python'
     args << "--with-perl" unless build.include? 'no-perl'
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
     args << "ARCHFLAGS='-arch x86_64'"
 
-    unless build.without? 'ossp-uuid'
+    if build.with? 'ossp-uuid'
       ENV.append 'CFLAGS', `uuid-config --cflags`.strip
       ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
       ENV.append 'LIBS', `uuid-config --libs`.strip
@@ -167,7 +172,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/gtm</string>
+        <string>#{opt_bin}/gtm</string>
         <string>-D</string>
         <string>#{var}/postgres-xc/#{name}</string>
         <string>-l</string>
@@ -195,7 +200,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/gtm_proxy</string>
+        <string>#{opt_bin}/gtm_proxy</string>
         <string>-D</string>
         <string>#{var}/postgres-xc/#{name}</string>
         <string>-n</string>
@@ -229,7 +234,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/postgres</string>
+        <string>#{opt_bin}/postgres</string>
         <string>-i</string>
         <string>-C</string>
         <string>-D</string>
@@ -259,7 +264,7 @@ class PostgresXc < Formula
       <string>#{plist_name(name)}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/postgres</string>
+        <string>#{opt_bin}/postgres</string>
         <string>-i</string>
         <string>-X</string>
         <string>-D</string>

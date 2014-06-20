@@ -2,8 +2,16 @@ require 'formula'
 
 class Mtr < Formula
   homepage 'http://www.bitwizard.nl/mtr/'
-  url  'ftp://ftp.bitwizard.nl/mtr/mtr-0.85.tar.gz'
-  sha1 '6e79584265f733bea7f1b2cb13eeb48f10e96bba'
+
+  stable do
+    url "ftp://ftp.bitwizard.nl/mtr/mtr-0.85.tar.gz"
+    sha1 "6e79584265f733bea7f1b2cb13eeb48f10e96bba"
+
+    patch do
+      url "https://github.com/traviscross/mtr/commit/edd425.diff"
+      sha1 "c1ed669cdf65d607f75abc729a333b180ee42343"
+    end
+  end
 
   head do
     url 'https://github.com/traviscross/mtr.git'
@@ -14,10 +22,6 @@ class Mtr < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gtk+' => :optional
   depends_on 'glib' => :optional
-
-  def patches
-    'https://github.com/traviscross/mtr/commit/edd425.patch'
-  end
 
   def install
     # We need to add this because nameserver8_compat.h has been removed in Snow Leopard

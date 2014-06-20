@@ -2,8 +2,8 @@ require 'formula'
 
 class TodoTxt < Formula
   homepage 'http://todotxt.com/'
-  url 'https://github.com/downloads/ginatrapani/todo.txt-cli/todo.txt_cli-2.9.tar.gz'
-  sha1 'b8b351f287c4f5a6510e08e14757db14d0cd1da7'
+  url "https://github.com/ginatrapani/todo.txt-cli/releases/download/v2.10/todo.txt_cli-2.10.tar.gz"
+  sha1 "3967bc42ca23cc984e94939b783cf118fe86b1b0"
 
   head 'https://github.com/ginatrapani/todo.txt-cli.git'
 

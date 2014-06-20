@@ -1,4 +1,4 @@
-class Keg
+class Keg < Pathname
   PREFIX_PLACEHOLDER = "@@HOMEBREW_PREFIX@@".freeze
   CELLAR_PLACEHOLDER = "@@HOMEBREW_CELLAR@@".freeze
 
@@ -38,16 +38,22 @@ class Keg
       end
     end
 
-    (pkgconfig_files | libtool_files).each do |file|
-      file.ensure_writable do
-        file.open('rb') do |f|
-          s = f.read
-          s.gsub!(old_cellar, new_cellar)
-          s.gsub!(old_prefix, new_prefix)
-          f.reopen(file, 'wb')
-          f.write(s)
+    files = pkgconfig_files | libtool_files | script_files
+
+    files.group_by { |f| f.stat.ino }.each_value do |first, *rest|
+      s = first.open("rb", &:read)
+      changed = s.gsub!(old_cellar, new_cellar)
+      changed = s.gsub!(old_prefix, new_prefix) || changed
+
+      begin
+        first.atomic_write(s)
+      rescue Errno::EACCES
+        first.ensure_writable do
+          first.open("wb") { |f| f.write(s) }
         end
-      end
+      else
+        rest.each { |file| FileUtils.ln(first, file, :force => true) }
+      end if changed
     end
   end
 
@@ -66,10 +72,11 @@ class Keg
   # lib/, and ignores binaries and other mach-o objects
   # Note that this doesn't attempt to distinguish between libstdc++ versions,
   # for instance between Apple libstdc++ and GNU libstdc++
-  def detect_cxx_stdlibs
+  def detect_cxx_stdlibs(opts={:skip_executables => false})
     results = Set.new
 
     mach_o_files.each do |file|
+      next if file.mach_o_executable? && opts[:skip_executables]
       dylibs = file.dynamically_linked_libraries
       results << :libcxx unless dylibs.grep(/libc\+\+.+\.dylib/).empty?
       results << :libstdcxx unless dylibs.grep(/libstdc\+\+.+\.dylib/).empty?
@@ -79,7 +86,7 @@ class Keg
   end
 
   def each_unique_file_matching string
-    IO.popen("/usr/bin/fgrep -lr '#{string}' '#{self}' 2>/dev/null") do |io|
+    IO.popen("/usr/bin/fgrep -lr '#{string}' '#{self}' 2>/dev/null", "rb") do |io|
       hardlinks = Set.new
 
       until io.eof?
@@ -89,8 +96,6 @@ class Keg
       end
     end
   end
-
-  private
 
   def install_name_tool(*args)
     system(MacOS.locate("install_name_tool"), *args)
@@ -125,14 +130,16 @@ class Keg
   end
 
   def dylib_id_for file, options={}
-    # the shortpath ensures that library upgrades don’t break installed tools
-    relative_path = file.relative_path_from(self)
-    shortpath = HOMEBREW_PREFIX.join(relative_path)
+    # The new dylib ID should have the same basename as the old dylib ID, not
+    # the basename of the file itself.
+    basename = File.basename(file.dylib_id)
+    relative_dirname = file.dirname.relative_path_from(self)
+    shortpath = HOMEBREW_PREFIX.join(relative_dirname, basename)
 
     if shortpath.exist? and not options[:keg_only]
-      shortpath
+      shortpath.to_s
     else
-      "#{HOMEBREW_PREFIX}/opt/#{fname}/#{relative_path}"
+      "#{HOMEBREW_PREFIX}/opt/#{fname}/#{relative_dirname}/#{basename}"
     end
   end
 
@@ -156,23 +163,30 @@ class Keg
     mach_o_files
   end
 
+  def script_files
+    script_files = []
+
+    # find all files with shebangs
+    find do |pn|
+      next if pn.symlink? or pn.directory?
+      script_files << pn if pn.text_executable?
+    end
+
+    script_files
+  end
+
   def pkgconfig_files
     pkgconfig_files = []
 
-    # find .pc files, which are stored in lib/pkgconfig
-    pc_dir = self/'lib/pkgconfig'
-    if pc_dir.directory?
-      pc_dir.find do |pn|
+    %w[lib share].each do |dir|
+      pcdir = join(dir, "pkgconfig")
+
+      pcdir.find do |pn|
         next if pn.symlink? or pn.directory? or pn.extname != '.pc'
         pkgconfig_files << pn
-      end
+      end if pcdir.directory?
     end
 
-    # find name-config scripts, which can be all over the keg
-    Pathname.new(self).find do |pn|
-      next if pn.symlink? or pn.directory?
-      pkgconfig_files << pn if pn.basename.to_s.end_with? '-config' and pn.text_executable?
-    end
     pkgconfig_files
   end
 
@@ -183,7 +197,7 @@ class Keg
     lib.find do |pn|
       next if pn.symlink? or pn.directory? or pn.extname != '.la'
       libtool_files << pn
-    end
+    end if lib.directory?
     libtool_files
   end
 end

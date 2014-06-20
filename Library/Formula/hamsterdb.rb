@@ -27,8 +27,8 @@ end
 
 class Hamsterdb < Formula
   homepage 'http://hamsterdb.com'
-  url 'http://hamsterdb.com/dl/hamsterdb-2.1.2.tar.gz'
-  sha256 '5d1adbd25aad38646c83b8db013dc02af563c2447bd79b25aeac6cc287d098b0'
+  url "http://files.hamsterdb.com/dl/hamsterdb-2.1.7.tar.gz"
+  sha1 "4ce5a0004e7f1fee28fcec0ee9c5478be5aad25c"
 
   option 'without-java', 'Do not build the Java wrapper'
   option 'without-remote', 'Disable access to remote databases'

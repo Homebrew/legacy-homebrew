@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Check < Formula
-  homepage 'http://check.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/check/check/0.9.11/check-0.9.11.tar.gz'
-  sha1 '84b5af72dd49df4ac837645d117ce9126535d549'
+  homepage "http://check.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/check/check/0.9.13/check-0.9.13.tar.gz"
+  sha1 "09f682d2239b1353818b74d06099a17460450240"
 
   option :universal
 

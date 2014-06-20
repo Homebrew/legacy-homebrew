@@ -8,20 +8,15 @@ class Bbcp < Formula
   head 'http://www.slac.stanford.edu/~abh/bbcp/bbcp.git'
 
   # Adds missing required return type specification on 'main'
-  def patches; DATA; end
+  patch :DATA
 
   def install
-    mkdir "bin"
-    mkdir "obj"
-
-    cd "src" do
-      system "make", "Darwin"
-    end
-
+    mkdir %w{bin obj}
+    system "make", "-C", "src", "Darwin"
     bin.install "bin/bbcp"
   end
 
-  def test
+  test do
     system "#{bin}/bbcp", "--help"
   end
 end

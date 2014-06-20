@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Vifm < Formula
-  homepage 'http://vifm.sourceforge.net/index.html'
-  url 'http://downloads.sourceforge.net/project/vifm/vifm/vifm-0.7.6.tar.bz2'
-  sha1 '2c9a57ec80a0c389c2807b5e86f25c2b8dd1c0cd'
+  homepage "http://vifm.sourceforge.net/index.html"
+  url "https://downloads.sourceforge.net/project/vifm/vifm/vifm-0.7.7.tar.bz2"
+  sha1 "edf5b245ca582e5a7b127a87fa5ab2ad210b76c3"
 
   def install
     system "./configure", "--disable-dependency-tracking",

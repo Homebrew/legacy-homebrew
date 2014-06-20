@@ -2,10 +2,17 @@ require 'formula'
 
 class Slimerjs < Formula
   homepage 'http://www.slimerjs.org'
-  url "http://download.slimerjs.org/v0.9/0.9.0/slimerjs-0.9.0.zip"
-  sha1 "c78cf0961eba2421abfdf5c99d28f6fe8dba7cc8"
+  url "http://download.slimerjs.org/v0.9/0.9.1/slimerjs-0.9.1.zip"
+  sha1 "15eed855c462c5b7ff2502d028702dcebae797cd"
 
   head 'https://github.com/laurentj/slimerjs.git'
+
+  bottle do
+    cellar :any
+    sha1 "f777909179024c69332199893897d30eb7c104d5" => :mavericks
+    sha1 "00ffe91192f50232cde4169d2a80d5e950edeef5" => :mountain_lion
+    sha1 "a05a67c5a7366bf6b1ef6de7dc74fb4f35c4d9cb" => :lion
+  end
 
   if MacOS.version > :snow_leopard
     option "without-xulrunner", "Build without xulrunner (requires a installed Firefox)"
@@ -31,14 +38,14 @@ class Slimerjs < Formula
       export SLIMERJSLAUNCHER=/Applications/Firefox.app/Contents/MacOS/firefox
 
     Note: If you use SlimerJS with an unstable version of Mozilla Firefox/XULRunner
-    (>27.*) you may have to change the [Gecko]MaxVersion in:
+    (>29.*) you may have to change the [Gecko]MaxVersion in:
       #{libexec}/application.ini
     EOS
   end
 
   test do
     system "#{bin}/slimerjs", "-v"
-    curl "-O", "https://raw.github.com/laurentj/slimerjs/ec1e53a/examples/phantomjs/loadspeed.js"
-    system "#{bin}/slimerjs", "loadspeed.js", "www.google.com"
+    curl "-O", "https://raw.githubusercontent.com/laurentj/slimerjs/ec1e53a/examples/phantomjs/loadspeed.js"
+    system "#{bin}/slimerjs", "loadspeed.js", "https://www.google.com"
   end
 end

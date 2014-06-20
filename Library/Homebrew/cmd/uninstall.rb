@@ -1,7 +1,7 @@
 require 'keg'
 require 'formula'
 
-module Homebrew extend self
+module Homebrew
   def uninstall
     raise KegUnspecifiedError if ARGV.named.empty?
 
@@ -18,10 +18,6 @@ module Homebrew extend self
     else
       ARGV.named.each do |name|
         name = Formula.canonical_name(name)
-
-        # FIXME canonical_name is insane
-        raise "Invalid usage" if name.include? '/'
-
         rack = HOMEBREW_CELLAR/name
 
         if rack.directory?
@@ -40,7 +36,7 @@ module Homebrew extend self
   end
 
   def rm_opt_link name
-    optlink = HOMEBREW_PREFIX/:opt/name
+    optlink = HOMEBREW_PREFIX.join("opt", name)
     optlink.unlink if optlink.symlink?
   end
 

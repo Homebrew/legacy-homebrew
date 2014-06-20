@@ -2,18 +2,29 @@ require 'formula'
 
 class Goaccess < Formula
   homepage 'http://goaccess.prosoftcorp.com/'
-  url 'https://downloads.sourceforge.net/project/goaccess/0.7/goaccess-0.7.tar.gz'
-  sha1 '1a887dc7182c91726137aaf6a4627efdd82d988e'
+  url 'http://tar.goaccess.io/goaccess-0.8.tar.gz'
+  sha1 '8c220e7e65a6e45ae5a2221e241e976d07c23def'
 
-  head 'https://github.com/allinurl/goaccess.git'
+  bottle do
+    sha1 "081452df0eca44ca9d59591985956090087654e8" => :mavericks
+    sha1 "a74a803534ae1050fea03429b11bb298909ab218" => :mountain_lion
+    sha1 "3a327d75218841c39c356f7c03c8a03212920314" => :lion
+  end
 
   option 'enable-geoip', "Enable IP location information using GeoIP"
+
+  head do
+    url "https://github.com/allinurl/goaccess.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'geoip' if build.include? "enable-geoip"
 
   def install
+    system "autoreconf", "-vfi" if build.head?
     args = %W[
       --disable-debug
       --disable-dependency-tracking

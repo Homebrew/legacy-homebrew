@@ -6,10 +6,15 @@ class Coreutils < Formula
   mirror 'http://ftp.gnu.org/gnu/coreutils/coreutils-8.22.tar.xz'
   sha256 '5b3e94998152c017e6c75d56b9b994188eb71bf46d4038a642cb9141f6ff1212'
 
+  bottle do
+    cellar :any
+    sha1 "783f81800029deb6dc4929206a5949dab8bd609d" => :mavericks
+    sha1 "811bf983bc23ca91cac614fee341303ca91c3094" => :mountain_lion
+    sha1 "4f65c3f9edb862faddb0599a94fd92849c04f973" => :lion
+  end
+
   conflicts_with 'ganglia', :because => 'both install `gstat` binaries'
   conflicts_with 'idutils', :because => 'both install `gid` and `gid.1`'
-
-  depends_on 'xz' => :build
 
   def install
     system "./configure", "--prefix=#{prefix}",
@@ -33,12 +38,12 @@ class Coreutils < Formula
     If you really need to use these commands with their normal names, you
     can add a "gnubin" directory to your PATH from your bashrc like:
 
-        PATH="#{opt_prefix}/libexec/gnubin:$PATH"
+        PATH="#{opt_libexec}/gnubin:$PATH"
 
     Additionally, you can access their man pages with normal names if you add
     the "gnuman" directory to your MANPATH from your bashrc as well:
 
-        MANPATH="#{opt_prefix}/libexec/gnuman:$MANPATH"
+        MANPATH="#{opt_libexec}/gnuman:$MANPATH"
 
     EOS
   end

@@ -2,33 +2,28 @@ require 'formula'
 
 class Osxfuse < Formula
   homepage 'http://osxfuse.github.io'
-  url 'https://github.com/osxfuse/osxfuse.git', :tag => 'osxfuse-2.6.2'
+  url 'https://github.com/osxfuse/osxfuse.git', :tag => 'osxfuse-2.6.4'
 
   head 'https://github.com/osxfuse/osxfuse.git', :branch => 'osxfuse-2'
 
   bottle do
-    sha1 '2804a40da6381c94ada37e275e34b6ba65110e41' => :mavericks
-    sha1 '5bd2825c7d8ff9a330b8b6a4c47d5ba391c3b31e' => :mountain_lion
-    sha1 '047f17c804bd54b44b0c458f0d4b6ee1afad262e' => :lion
+    sha1 "e661cd54c9dfa9efb383ad283456ae1afe210329" => :mavericks
+    sha1 "c3eb99baa45b45c69f25dc5361d4b16b69ec4eaa" => :mountain_lion
+    sha1 "adab3f073e734c2653a3ed9185e1fe9f689e1a6c" => :lion
   end
 
   depends_on :macos => :snow_leopard
-  depends_on :xcode
-  depends_on :autoconf
-  depends_on :automake
-  depends_on 'gettext' => :build
-  depends_on 'libtool' => :build
+  depends_on :xcode => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "gettext" => :build
 
   conflicts_with 'fuse4x', :because => 'both install `fuse.pc`'
 
   def install
     # Do not override Xcode build settings
     ENV.remove_cc_etc
-
-    if MacOS::Xcode.provides_autotools?
-      # Xcode version of aclocal does not respect ACLOCAL_PATH
-      ENV['ACLOCAL'] = 'aclocal ' + ENV['ACLOCAL_PATH'].split(':').map {|p| '-I' + p}.join(' ')
-    end
 
     system "./build.sh", "-t", "homebrew", "-f", prefix
   end
@@ -46,7 +41,7 @@ class Osxfuse < Formula
 
     The new osxfuse file system bundle needs to be installed by the root user:
 
-      sudo /bin/cp -RfX #{prefix}/Library/Filesystems/osxfusefs.fs /Library/Filesystems
+      sudo /bin/cp -RfX #{opt_prefix}/Library/Filesystems/osxfusefs.fs /Library/Filesystems
       sudo chmod +s /Library/Filesystems/osxfusefs.fs/Support/load_osxfusefs
     EOS
   end

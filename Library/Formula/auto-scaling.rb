@@ -3,8 +3,8 @@ require 'formula'
 class AutoScaling < AmazonWebServicesFormula
   homepage 'http://aws.amazon.com/developertools/2535'
   url 'http://ec2-downloads.s3.amazonaws.com/AutoScaling-2011-01-01.zip'
-  version  '1.0.61.4'
-  sha1 'a01b92d88f70a17ad2ecf6d254d31053eba3cf57'
+  version  '1.0.61.5'
+  sha1 'c820f09f0b95bf2f320896d0dbeacc71d8df9f0e'
 
   def install
     standard_install

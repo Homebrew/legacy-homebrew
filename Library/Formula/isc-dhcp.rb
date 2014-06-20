@@ -2,9 +2,8 @@ require 'formula'
 
 class IscDhcp < Formula
   homepage 'http://www.isc.org/software/dhcp'
-  url 'http://ftp.isc.org/isc/dhcp/4.2.5-P1/dhcp-4.2.5-P1.tar.gz'
-  version '4.2.5-P1'
-  sha1 '120b6e476b2ac0d35e1dc8dee53752c42449b925'
+  url 'http://ftp.isc.org/isc/dhcp/4.3.0/dhcp-4.3.0.tar.gz'
+  sha1 'deed72a4636461042b74de68c2825dc52623e1d1'
 
   def install
     # use one dir under var for all runtime state.
@@ -56,10 +55,10 @@ class IscDhcp < Formula
 
     # rename all the installed sample etc/* files so they don't clobber
     # any existing config files at symlink time.
-    Dir.open(prefix+'etc') do |dir|
+    Dir.open("#{prefix}/etc") do |dir|
       dir.each do |f|
         file = "#{dir.path}/#{f}"
-        File.rename(file, "#{file}.sample") if File.stat(file).file?
+        File.rename(file, "#{file}.sample") if File.file?(file)
       end
     end
 
@@ -105,7 +104,7 @@ class IscDhcp < Formula
     <key>Label</key><string>#{plist_name}</string>
     <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/dhcpd</string>
+        <string>#{opt_sbin}/dhcpd</string>
         <string>-f</string>
       </array>
     <key>Disabled</key><false/>
@@ -127,7 +126,7 @@ class IscDhcp < Formula
     <key>Label</key><string>#{plist_name}</string>
     <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/dhcpd</string>
+        <string>#{opt_sbin}/dhcpd</string>
         <string>-f</string>
         <string>-6</string>
         <string>-cf</string>

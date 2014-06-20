@@ -2,10 +2,11 @@ require 'formula'
 
 class Scale2x < Formula
   homepage 'http://scale2x.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/scale2x/scale2x/2.4/scale2x-2.4.tar.gz'
+  url 'https://downloads.sourceforge.net/project/scale2x/scale2x/2.4/scale2x-2.4.tar.gz'
   sha1 '30bbd674dcdf134a58b34e75f87ed05bd716d484'
+  revision 1
 
-  depends_on :libpng
+  depends_on 'libpng'
 
   def install
     # This function was renamed in current versions of libpng.
