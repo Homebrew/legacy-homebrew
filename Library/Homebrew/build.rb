@@ -40,7 +40,8 @@ def main
   # can be inconvenient for the user. But we need to be safe.
   system "/usr/bin/sudo", "-k"
 
-  Build.new(Formula.factory($0)).install
+  formula = Formulary.factory($0, ARGV.spec)
+  Build.new(formula).install
 rescue Exception => e
   unless error_pipe.nil?
     e.continuation = nil if ARGV.debug?

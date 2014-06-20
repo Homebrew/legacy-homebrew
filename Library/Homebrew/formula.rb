@@ -36,7 +36,7 @@ class Formula
     set_spec :devel
     set_spec :head
 
-    @active_spec = determine_active_spec
+    @active_spec = determine_active_spec(spec)
     validate_attributes :url, :name, :version
     @build = determine_build_options
     @pkg_version = PkgVersion.new(version, revision)
@@ -52,16 +52,9 @@ class Formula
     end
   end
 
-  def determine_active_spec
-    case
-    when head && ARGV.build_head?   then head    # --HEAD
-    when devel && ARGV.build_devel? then devel   # --devel
-    when stable                     then stable
-    when devel                      then devel
-    when head                       then head    # head-only
-    else
-      raise FormulaSpecificationError, "formulae require at least a URL"
-    end
+  def determine_active_spec(requested)
+    spec = send(requested) || stable || devel || head
+    spec or raise FormulaSpecificationError, "formulae require at least a URL"
   end
 
   def validate_attributes(*attrs)

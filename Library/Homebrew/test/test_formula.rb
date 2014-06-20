@@ -92,9 +92,7 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_installed_prefix_head_active_spec
-    ARGV.stubs(:build_head? => true)
-
-    f = formula do
+    f = formula("test", Pathname.new(__FILE__).expand_path, :head) do
       head 'foo'
       devel do
         url 'foo'
@@ -106,9 +104,7 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_installed_prefix_devel_active_spec
-    ARGV.stubs(:build_devel? => true)
-
-    f = formula do
+    f = formula("test", Pathname.new(__FILE__).expand_path, :devel) do
       head 'foo'
       devel do
         url 'foo'
@@ -244,9 +240,7 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_head_ignores_revisions
-    ARGV.stubs(:build_head?).returns(true)
-
-    f = formula do
+    f = formula("test", Pathname.new(__FILE__).expand_path, :head) do
       url 'foo-1.0.bar'
       revision 1
       head 'foo'
