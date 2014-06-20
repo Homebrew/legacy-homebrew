@@ -2,9 +2,8 @@ require "formula"
 
 class Pianobar < Formula
   homepage "https://github.com/PromyLOPh/pianobar/"
-  url "https://github.com/PromyLOPh/pianobar/archive/2013.09.15.tar.gz"
-  sha256 "4b18582eb794def5bf4e7d5de211d1f6c79295edac344928e09072aa9386796c"
-  revision 2
+  url "https://6xq.net/projects/pianobar/pianobar-2014.06.08.tar.bz2"
+  sha256 "3348b4bdfa9959bc7aeb03ff6ff66e334f8efc78a84261558f18f5fbd543ed2b"
 
   head do
     url "https://github.com/PromyLOPh/pianobar.git"
@@ -18,6 +17,7 @@ class Pianobar < Formula
   depends_on "gnutls"
   depends_on "libgcrypt"
   depends_on "json-c"
+  depends_on "ffmpeg"
 
   fails_with :llvm do
     build 2334
