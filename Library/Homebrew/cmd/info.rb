@@ -72,7 +72,7 @@ module Homebrew
       path = "Library/Formula/#{f.path.basename}"
     end
 
-    "https://github.com/#{user}/#{repo}/commits/master/#{path}"
+    "https://github.com/#{user}/#{repo}/blob/master/#{path}"
   end
 
   def info_formula f
