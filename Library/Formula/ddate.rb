@@ -17,4 +17,10 @@ class Ddate < Formula
     bin.install "ddate"
     man1.install "ddate.1"
   end
+
+  test do
+    out = `#{bin}/ddate 20 6 2014`
+    assert_equal "Sweetmorn, Confusion 25, 3180 YOLD\n", out
+    assert_equal 0, $?.exitstatus
+  end
 end
