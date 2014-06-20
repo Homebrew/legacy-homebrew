@@ -2,8 +2,8 @@ require "formula"
 
 class Pianobar < Formula
   homepage "https://github.com/PromyLOPh/pianobar/"
-  url "https://6xq.net/projects/pianobar/pianobar-2014.06.08.tar.bz2"
-  sha256 "3348b4bdfa9959bc7aeb03ff6ff66e334f8efc78a84261558f18f5fbd543ed2b"
+  url "https://github.com/PromyLOPh/pianobar/archive/2014.06.08.tar.gz"
+  sha256 "55f0105b8bf20af0a74f3ef2f928e81d9fdccc50fe86548f7db7992f523c3529"
   head "https://github.com/PromyLOPh/pianobar.git"
 
   depends_on "pkg-config" => :build
