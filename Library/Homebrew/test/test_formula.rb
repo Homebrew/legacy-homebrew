@@ -6,8 +6,9 @@ class FormulaTests < Homebrew::TestCase
     klass = Class.new(Formula) { url "http://example.com/foo-1.0.tar.gz" }
     name = "formula_name"
     path = Formula.path(name)
+    spec = :stable
 
-    f = klass.new(name, path)
+    f = klass.new(name, path, spec)
     assert_equal name, f.name
     assert_equal path, f.path
     assert_raises(ArgumentError) { klass.new }
@@ -168,7 +169,7 @@ class FormulaTests < Homebrew::TestCase
       bottle { sha1 TEST_SHA1 => bottle_tag }
 
       def initialize
-        super "test", Pathname.new(__FILE__).expand_path
+        super "test", Pathname.new(__FILE__).expand_path, :stable
       end
     end.new
 

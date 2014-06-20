@@ -95,8 +95,8 @@ module Homebrew
     TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
     TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
 
-    def formula(name="formula_name", path=Formula.path(name), &block)
-      @_f = Class.new(Formula, &block).new(name, path)
+    def formula(name="formula_name", path=Formula.path(name), spec=:stable, &block)
+      @_f = Class.new(Formula, &block).new(name, path, spec)
     end
 
     def shutup
