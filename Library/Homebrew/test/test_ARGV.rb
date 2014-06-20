@@ -47,21 +47,4 @@ class ArgvExtensionTests < Homebrew::TestCase
     assert !@argv.flag?("--frotz")
     assert !@argv.flag?("--debug")
   end
-
-  def test_filter_for_dependencies_clears_flags
-    @argv << "--HEAD" << "--devel"
-    @argv.filter_for_dependencies { assert_empty @argv }
-  end
-
-  def test_filter_for_dependencies_ensures_argv_restored
-    @argv.expects(:replace).with(@argv.clone)
-    begin
-      @argv.filter_for_dependencies { raise Exception }
-    rescue Exception
-    end
-  end
-
-  def test_filter_for_dependencies_returns_block_value
-    assert_equal 1, @argv.filter_for_dependencies { 1 }
-  end
 end

@@ -161,15 +161,6 @@ module HomebrewArgvExtension
     Homebrew.help_s
   end
 
-  def filter_for_dependencies
-    old_args = clone
-    delete "--devel"
-    delete "--HEAD"
-    yield
-  ensure
-    replace(old_args)
-  end
-
   def cc
     value 'cc'
   end
