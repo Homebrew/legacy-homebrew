@@ -471,8 +471,11 @@ class FormulaInstaller
     args << "--debug" if debug?
     args << "--cc=#{ARGV.cc}" if ARGV.cc
     args << "--env=#{ARGV.env}" if ARGV.env
-    args << "--HEAD" if ARGV.build_head?
-    args << "--devel" if ARGV.build_devel?
+
+    case f.active_spec
+    when f.head  then args << "--HEAD"
+    when f.devel then args << "--devel"
+    end
 
     f.build.each do |opt, _|
       name  = opt.name[/\A(.+)=\z$/, 1]
