@@ -16,7 +16,7 @@ end
 module Homebrew
   def irb
     if ARGV.include? "--help"
-      puts "'v8'.f # => instance of the Ack formula"
+      puts "'v8'.f # => instance of the v8 formula"
       puts ":hub.f.installed?"
       puts ":lua.f.methods - 1.methods"
       puts ":mpd.f.recursive_dependencies.reject(&:installed?)"
