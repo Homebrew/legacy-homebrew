@@ -2,9 +2,8 @@ require 'formula'
 
 class Ddate < Formula
   homepage "https://github.com/bo0ts/ddate"
-  url "https://github.com/woodruffw/ddate/archive/v0.2.1-osx.tar.gz"
-  version "0.2.1"
-  sha1 "38d3d4d2730ae982a57a1000fdb3401e25d61a5d"
+  url "https://github.com/bo0ts/ddate/archive/v0.2.2.tar.gz"
+  sha1 "fafb5867c93d7328a1c5e8a0b9726f98362c0c09"
 
   def install
     system ENV.cc, "ddate.c", "-o", "ddate"
