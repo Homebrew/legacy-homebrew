@@ -18,16 +18,19 @@ class Subversion < Formula
   option 'ruby', 'Build Ruby bindings'
 
   resource 'serf' do
-    url 'http://serf.googlecode.com/svn/src_releases/serf-1.3.4.tar.bz2', :using => :curl
-    sha1 'eafc8317d7a9c77d4db9ce1e5c71a33822f57c3a'
+    url 'https://serf.googlecode.com/svn/src_releases/serf-1.3.6.tar.bz2', :using => :curl
+    sha1 '409a153583b3e370a130e3fb1623ac98f5af9975'
   end
 
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "heimdal" => :build
-
+  
+  #To hopefully solve the issue reported by Apache.
+  brew tap homebrew/dupes
+  depends_on "heimdal"
+  
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on 'sqlite'
   depends_on :python => :optional
