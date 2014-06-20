@@ -1,4 +1,5 @@
 require "formula"
+
 class Osmtools < Formula
   homepage "https://wiki.openstreetmap.org/wiki/Osmconvert"
   url "https://github.com/vgrichina/osmtools/archive/1.0.tar.gz"
@@ -6,10 +7,7 @@ class Osmtools < Formula
 
   def install
     system "make", "all"
-    system "mkdir", "-p", bin
-    system "cp", "osmfilter", bin
-    system "cp", "osmconvert", bin
-    system "cp", "osmupdate", bin
+    bin.install "osmfilter", "osmconvert", "osmupdate"
   end
 
   test do
