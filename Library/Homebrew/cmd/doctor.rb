@@ -377,20 +377,19 @@ def check_access_usr_local
 end
 
 %w{include etc lib lib/pkgconfig share}.each do |d|
-  class_eval <<-EOS, __FILE__, __LINE__ + 1
-    def check_access_#{d.sub("/", "_")}
-      if (dir = HOMEBREW_PREFIX+'#{d}').exist? && !dir.writable_real?
-        <<-EOF.undent
-        \#{dir} isn't writable.
-        This can happen if you "sudo make install" software that isn't managed by
-        by Homebrew. If a brew tries to write a file to this directory, the
-        install will fail during the link step.
+  define_method("check_access_#{d.sub("/", "_")}") do
+    dir = HOMEBREW_PREFIX.join(d)
+    if dir.exist? && !dir.writable_real? then <<-EOS.undent
+      #{dir} isn't writable.
 
-        You should probably `chown` \#{dir}
-        EOF
-      end
+      This can happen if you "sudo make install" software that isn't managed by
+      by Homebrew. If a formula tries to write a file to this directory, the
+      install will fail during the link step.
+
+      You should probably `chown` #{dir}
+      EOS
     end
-    EOS
+  end
 end
 
 def check_access_logs
