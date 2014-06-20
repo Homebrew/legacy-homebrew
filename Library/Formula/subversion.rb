@@ -26,9 +26,9 @@ class Subversion < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  
-  #To hopefully solve the issue reported by Apache.
-  depends_on 'homebrew/dupes/heimdal'
+
+  # To hopefully solve the issue reported by Apache.
+  depends_on 'homebrew/dupes/heimdal' if MacOS.version >= :yosemite
   
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on 'sqlite'
