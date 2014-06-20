@@ -29,7 +29,7 @@ class Subversion < Formula
 
   # To hopefully solve the issue reported by Apache.
   depends_on 'homebrew/dupes/heimdal' if MacOS.version >= :yosemite
-  
+
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on 'sqlite'
   depends_on :python => :optional
