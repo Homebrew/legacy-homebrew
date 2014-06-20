@@ -871,18 +871,6 @@ def check_for_linked_keg_only_brews
   end
 end
 
-def check_for_MACOSX_DEPLOYMENT_TARGET
-  target = ENV.fetch('MACOSX_DEPLOYMENT_TARGET') { return }
-
-  unless target == MacOS.version.to_s then <<-EOS.undent
-    MACOSX_DEPLOYMENT_TARGET was set to #{target.inspect}
-    This is used by Fink, but having it set to a value different from the
-    current system version (#{MacOS.version}) can cause problems, compiling
-    Git for instance, and should probably be removed.
-    EOS
-  end
-end
-
 def check_for_other_frameworks
   # Other frameworks that are known to cause problems when present
   %w{Mono.framework expat.framework libexpat.framework}.
