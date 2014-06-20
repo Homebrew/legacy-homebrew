@@ -10,30 +10,6 @@ class FormulaSpecSelectionTests < Homebrew::TestCase
     assert_nil @_f.send(spec)
   end
 
-  def test_selects_head_when_requested
-    ARGV.stubs(:build_head?).returns(true)
-
-    formula do
-      url 'foo-1.0'
-      devel { url 'foo-1.1a' }
-      head 'foo'
-    end
-
-    assert_spec_selected :head
-  end
-
-  def test_selects_devel_when_requested
-    ARGV.stubs(:build_devel?).returns(true)
-
-    formula do
-      url 'foo-1.0'
-      devel { url 'foo-1.1a' }
-      head 'foo'
-    end
-
-    assert_spec_selected :devel
-  end
-
   def test_selects_stable_by_default
     formula do
       url 'foo-1.0'
@@ -98,6 +74,26 @@ class FormulaSpecSelectionTests < Homebrew::TestCase
     assert_spec_selected :devel
   end
 
+  def test_selects_head_when_requested
+    formula("test", Pathname.new(__FILE__).expand_path, :head) do
+      url 'foo-1.0'
+      devel { url 'foo-1.1a' }
+      head 'foo'
+    end
+
+    assert_spec_selected :head
+  end
+
+  def test_selects_devel_when_requested
+    formula("test", Pathname.new(__FILE__).expand_path, :devel) do
+      url 'foo-1.0'
+      devel { url 'foo-1.1a' }
+      head 'foo'
+    end
+
+    assert_spec_selected :devel
+  end
+
   def test_incomplete_devel_not_set
     formula do
       url 'foo-1.0'
@@ -106,6 +102,15 @@ class FormulaSpecSelectionTests < Homebrew::TestCase
     end
 
     assert_spec_unset :devel
+    assert_spec_selected :stable
+  end
+
+  def test_does_not_raise_for_missing_spec
+    formula("test", Pathname.new(__FILE__).expand_path, :devel) do
+      url 'foo-1.0'
+      head 'foo'
+    end
+
     assert_spec_selected :stable
   end
 end
