@@ -28,8 +28,7 @@ class Subversion < Formula
   depends_on "libtool" => :build
   
   #To hopefully solve the issue reported by Apache.
-  brew tap homebrew/dupes
-  depends_on 'heimdal'
+  depends_on 'homebrew/dupes/heimdal'
   
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on 'sqlite'
