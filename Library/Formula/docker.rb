@@ -2,7 +2,7 @@ require "formula"
 
 class Docker < Formula
   homepage "http://docker.io"
-  url "https://github.com/dotcloud/docker.git", :tag => "v1.0.0"
+  url "https://github.com/dotcloud/docker.git", :tag => "v1.0.1"
 
   bottle do
     sha1 "ff9ca100ffcbf521cc4abad2a6a6a9569dd5a52b" => :mavericks
@@ -18,7 +18,6 @@ class Docker < Formula
     ENV["GIT_DIR"] = cached_download/".git"
     ENV["AUTO_GOPATH"] = "1"
     ENV["DOCKER_CLIENTONLY"] = "1"
-    ENV["CGO_ENABLED"] = "0"
 
     system "hack/make.sh", "dynbinary"
     bin.install "bundles/#{version}/dynbinary/docker-#{version}" => "docker"
