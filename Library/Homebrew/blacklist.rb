@@ -80,8 +80,7 @@ def blacklisted? name
       brew install gcc
     EOS
   when 'play' then <<-EOS.undent
-    Since Play 2.3 the play command has become the activator command.
-    Play has been updated to use Activator. It can be installed with:
+    Play 2.3 replaces the play command with activator:
       brew install typesafe-activator
 
     You can read more about this change at:
