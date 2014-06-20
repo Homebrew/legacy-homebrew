@@ -26,7 +26,7 @@ class Formula
 
   attr_accessor :local_bottle_path
 
-  def initialize(name, path)
+  def initialize(name, path, spec)
     @name = name
     @path = path
     @homepage = self.class.homepage

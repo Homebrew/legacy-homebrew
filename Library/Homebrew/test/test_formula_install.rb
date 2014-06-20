@@ -59,7 +59,7 @@ class InstallTests < Homebrew::TestCase
       url "file://#{File.expand_path(__FILE__)}"
       version "1"
       def initialize
-        super "test_script_formula", Pathname.new(__FILE__).expand_path
+        super "test_script_formula", Pathname.new(__FILE__).expand_path, :stable
       end
     end.new
 
