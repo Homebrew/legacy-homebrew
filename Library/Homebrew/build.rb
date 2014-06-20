@@ -147,8 +147,8 @@ class Build
 
     f.brew do
       if ARGV.flag? '--git'
-        system "git init"
-        system "git add -A"
+        system "git", "init"
+        system "git", "add", "-A"
       end
       if ARGV.interactive?
         ohai "Entering interactive mode"

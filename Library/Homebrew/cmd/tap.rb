@@ -21,7 +21,7 @@ module Homebrew
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}"
     return false if tapd.directory?
-    abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
+    abort unless system "git", "clone", "https://github.com/#{repouser}/homebrew-#{repo}", tapd.to_s
 
     files = []
     tapd.find_formula { |file| files << file }
