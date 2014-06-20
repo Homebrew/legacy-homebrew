@@ -11,7 +11,7 @@ module Homebrew
       Please use the homebrew-versions tap instead:
         https://github.com/Homebrew/homebrew-versions
     EOS
-    ARGV.formulae.all? do |f|
+    ARGV.formulae.each do |f|
       versions = FormulaVersions.new(f)
       path = versions.repository_path
       versions.each do |version, rev|
