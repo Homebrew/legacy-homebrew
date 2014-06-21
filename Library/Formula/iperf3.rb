@@ -2,8 +2,8 @@ require "formula"
 
 class Iperf3 < Formula
   homepage "https://github.com/esnet/iperf"
-  url "https://github.com/esnet/iperf/archive/3.0.3.tar.gz"
-  sha1 "1461028a6827ed1557cd60f15e11f9b817ea590f"
+  url "https://github.com/esnet/iperf/archive/3.0.5.tar.gz"
+  sha1 "4ebc5bf6456527cdf6d902f8cd810169bc00711b"
   head "https://code.google.com/p/iperf/", :using => :hg
 
   bottle do
