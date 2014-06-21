@@ -7,9 +7,10 @@ class Subversion < Formula
   sha1 '424ee12708f39a126efd905886666083dcc4eeaf'
 
   bottle do
-    sha1 "fb4d835b517507dacbb17803fce837f0a019282d" => :mavericks
-    sha1 "f787ef097d124e315723b8a31c80e2e43d13dd77" => :mountain_lion
-    sha1 "229340942fe6b6265519cdc786d351db1e9af845" => :lion
+    revision 2
+    sha1 "860453653114edfcf152bad3a7901719777a5f72" => :mavericks
+    sha1 "f9acba18f2d4547a24cd7e5a18eda47bf9f40925" => :mountain_lion
+    sha1 "1f632c42ec044abaaf373dd955aa100a8f879a81" => :lion
   end
 
   option :universal
