@@ -13,7 +13,7 @@ class Libevent < Formula
   end
 
   head do
-    url 'git://levent.git.sourceforge.net/gitroot/levent/levent'
+    url 'https://github.com/libevent/libevent.git'
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
