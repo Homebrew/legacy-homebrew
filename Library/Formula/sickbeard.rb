@@ -3,8 +3,8 @@ require "formula"
 class Sickbeard < Formula
   homepage "http://www.sickbeard.com/"
   head "https://github.com/midgetspy/Sick-Beard.git"
-  url "https://github.com/midgetspy/Sick-Beard/archive/build-504.tar.gz"
-  sha1 "0785a590a5028f10b3cbbee905e0834c52ac66c9"
+  url "https://github.com/midgetspy/Sick-Beard/archive/build-505.tar.gz"
+  sha1 "ac49ccb36451958e00d842cb89caf55f2fcd45f8"
 
   bottle do
     sha1 "07c3e428953703fac8d2eb259f0e9a83fdc887ab" => :mavericks
