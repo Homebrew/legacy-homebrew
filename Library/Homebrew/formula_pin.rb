@@ -1,3 +1,5 @@
+require "keg"
+
 class FormulaPin
   PINDIR = Pathname.new("#{HOMEBREW_LIBRARY}/PinnedKegs")
 
@@ -16,9 +18,7 @@ class FormulaPin
   end
 
   def pin
-    versions = @f.rack.children.map { |item| item.basename.to_s }
-    version = versions.map { |item| Version.new(item) }.sort[0].to_s
-    pin_at(version)
+    pin_at(@f.rack.subdirs.map { |d| Keg.new(d).version }.first)
   end
 
   def unpin
@@ -30,6 +30,6 @@ class FormulaPin
   end
 
   def pinnable?
-    @f.rack.exist? && @f.rack.children.length > 0
+    @f.rack.exist? && @f.rack.subdirs.length > 0
   end
 end
