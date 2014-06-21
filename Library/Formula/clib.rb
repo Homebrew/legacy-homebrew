@@ -2,8 +2,8 @@ require "formula"
 
 class Clib < Formula
   homepage "https://github.com/clibs/clib"
-  url "https://github.com/clibs/clib/archive/1.1.6.tar.gz"
-  sha1 "6b9711b594f3aff8c4a8a4aefac926c8d0f8555c"
+  url "https://github.com/clibs/clib/archive/1.2.0.tar.gz"
+  sha1 "811120b049362220f4e0c3316b3ec29324e1b7da"
 
   bottle do
     cellar :any
