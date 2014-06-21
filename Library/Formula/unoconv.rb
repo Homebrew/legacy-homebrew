@@ -6,7 +6,7 @@ class Unoconv < Formula
   sha1 "d6c3574639b9ceedcb866b84f18ba7158f25db48"
   head "https://github.com/dagwieers/unoconv.git"
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
 
   def install
     system "make", "install", "prefix=#{prefix}"

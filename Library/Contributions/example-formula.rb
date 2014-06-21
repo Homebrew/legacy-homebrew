@@ -250,7 +250,7 @@ class ExampleFormula < Formula
     # patch you have to resort to `inreplace`, because in the patch
     # you don't have access to any var defined by the formula. Only
     # HOMEBREW_PREFIX is available in the embedded patch.
-    # inreplace supports reg. exes.
+    # inreplace supports regular expressions.
     inreplace "somefile.cfg", /look[for]what?/, "replace by #{bin}/tool"
 
     # To call out to the system, we use the `system` method and we prefer

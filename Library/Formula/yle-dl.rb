@@ -8,7 +8,7 @@ class YleDl < Formula
   head 'https://github.com/aajanki/yle-dl.git'
 
   depends_on 'rtmpdump'
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "pycrypto" => [:python, "Crypto"]
 
   def install

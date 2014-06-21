@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'test/testball'
 
-class ChecksumTests < Test::Unit::TestCase
+class ChecksumTests < Homebrew::TestCase
   def assert_checksum_good
     assert_nothing_raised { shutup { @_f.brew {} } }
   end

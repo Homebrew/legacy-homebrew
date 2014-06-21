@@ -1,6 +1,6 @@
 require 'formula'
 
-module Homebrew extend self
+module Homebrew
   def edit
     unless (HOMEBREW_REPOSITORY/'.git').directory?
       raise <<-EOS.undent

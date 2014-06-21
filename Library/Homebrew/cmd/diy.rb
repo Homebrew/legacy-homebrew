@@ -1,6 +1,6 @@
 require "formula"
 
-module Homebrew extend self
+module Homebrew
   def diy
     %w[name version].each do |opt|
       if ARGV.include? "--set-#{opt}"

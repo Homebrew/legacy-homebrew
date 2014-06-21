@@ -1,9 +1,7 @@
 require 'testing_env'
 require 'resource'
 
-class ResourceTests < Test::Unit::TestCase
-  include VersionAssertions
-
+class ResourceTests < Homebrew::TestCase
   def setup
     @resource = Resource.new('test')
   end
@@ -51,13 +49,13 @@ class ResourceTests < Test::Unit::TestCase
   def test_version
     @resource.version('1.0')
     assert_version_equal '1.0', @resource.version
-    assert !@resource.version.detected_from_url?
+    refute_predicate @resource.version, :detected_from_url?
   end
 
   def test_version_from_url
     @resource.url('http://example.com/foo-1.0.tar.gz')
     assert_version_equal '1.0', @resource.version
-    assert @resource.version.detected_from_url?
+    assert_predicate @resource.version, :detected_from_url?
   end
 
   def test_version_with_scheme
@@ -70,7 +68,7 @@ class ResourceTests < Test::Unit::TestCase
   def test_version_from_tag
     @resource.url('http://example.com/foo-1.0.tar.gz', :tag => 'v1.0.2')
     assert_version_equal '1.0.2', @resource.version
-    assert @resource.version.detected_from_url?
+    assert_predicate @resource.version, :detected_from_url?
   end
 
   def test_rejects_non_string_versions

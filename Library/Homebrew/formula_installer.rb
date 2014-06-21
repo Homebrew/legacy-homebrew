@@ -255,26 +255,24 @@ class FormulaInstaller
 
     while f = formulae.pop
 
-      ARGV.filter_for_dependencies do
-        f.recursive_requirements do |dependent, req|
-          build = effective_build_options_for(dependent)
+      f.recursive_requirements do |dependent, req|
+        build = effective_build_options_for(dependent)
 
-          if (req.optional? || req.recommended?) && build.without?(req)
-            Requirement.prune
-          elsif req.build? && dependent == f && pour_bottle?
-            Requirement.prune
-          elsif req.build? && dependent != f && install_bottle_for_dep?(dependent, build)
-            Requirement.prune
-          elsif req.satisfied?
-            Requirement.prune
-          elsif req.default_formula?
-            dep = req.to_dependency
-            deps.unshift(dep)
-            formulae.unshift(dep.to_formula)
-            Requirement.prune
-          else
-            unsatisfied_reqs[dependent] << req
-          end
+        if (req.optional? || req.recommended?) && build.without?(req)
+          Requirement.prune
+        elsif req.build? && dependent == f && pour_bottle?
+          Requirement.prune
+        elsif req.build? && dependent != f && install_bottle_for_dep?(dependent, build)
+          Requirement.prune
+        elsif req.satisfied?
+          Requirement.prune
+        elsif req.default_formula?
+          dep = req.to_dependency
+          deps.unshift(dep)
+          formulae.unshift(dep.to_formula)
+          Requirement.prune
+        else
+          unsatisfied_reqs[dependent] << req
         end
       end
     end
@@ -285,23 +283,21 @@ class FormulaInstaller
   def expand_dependencies(deps)
     inherited_options = {}
 
-    expanded_deps = ARGV.filter_for_dependencies do
-      Dependency.expand(f, deps) do |dependent, dep|
-        options = inherited_options[dep.name] = inherited_options_for(dep)
-        build = effective_build_options_for(
-          dependent,
-          inherited_options.fetch(dependent.name, [])
-        )
+    expanded_deps = Dependency.expand(f, deps) do |dependent, dep|
+      options = inherited_options[dep.name] = inherited_options_for(dep)
+      build = effective_build_options_for(
+        dependent,
+        inherited_options.fetch(dependent.name, [])
+      )
 
-        if (dep.optional? || dep.recommended?) && build.without?(dep)
-          Dependency.prune
-        elsif dep.build? && dependent == f && pour_bottle?
-          Dependency.prune
-        elsif dep.build? && dependent != f && install_bottle_for_dep?(dependent, build)
-          Dependency.prune
-        elsif dep.satisfied?(options)
-          Dependency.skip
-        end
+      if (dep.optional? || dep.recommended?) && build.without?(dep)
+        Dependency.prune
+      elsif dep.build? && dependent == f && pour_bottle?
+        Dependency.prune
+      elsif dep.build? && dependent != f && install_bottle_for_dep?(dependent, build)
+        Dependency.prune
+      elsif dep.satisfied?(options)
+        Dependency.skip
       end
     end
 
@@ -333,9 +329,7 @@ class FormulaInstaller
       oh1 "Installing dependencies for #{f}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
     end
 
-    ARGV.filter_for_dependencies do
-      deps.each { |dep, options| install_dependency(dep, options) }
-    end
+    deps.each { |dep, options| install_dependency(dep, options) }
 
     @show_header = true unless deps.empty?
   end
@@ -471,8 +465,11 @@ class FormulaInstaller
     args << "--debug" if debug?
     args << "--cc=#{ARGV.cc}" if ARGV.cc
     args << "--env=#{ARGV.env}" if ARGV.env
-    args << "--HEAD" if ARGV.build_head?
-    args << "--devel" if ARGV.build_devel?
+
+    case f.active_spec
+    when f.head  then args << "--HEAD"
+    when f.devel then args << "--devel"
+    end
 
     f.build.each do |opt, _|
       name  = opt.name[/\A(.+)=\z$/, 1]

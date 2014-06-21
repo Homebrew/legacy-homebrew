@@ -1,7 +1,6 @@
 require 'ostruct'
 
-module Homebrew extend self
-
+module Homebrew
   def link
     raise KegUnspecifiedError if ARGV.named.empty?
 

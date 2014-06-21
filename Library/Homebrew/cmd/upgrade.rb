@@ -1,7 +1,7 @@
 require 'cmd/install'
 require 'cmd/outdated'
 
-module Homebrew extend self
+module Homebrew
   def upgrade
     Homebrew.perform_preinstall_checks
 

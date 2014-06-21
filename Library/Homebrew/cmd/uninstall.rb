@@ -1,7 +1,7 @@
 require 'keg'
 require 'formula'
 
-module Homebrew extend self
+module Homebrew
   def uninstall
     raise KegUnspecifiedError if ARGV.named.empty?
 

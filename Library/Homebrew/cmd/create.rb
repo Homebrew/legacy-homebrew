@@ -3,7 +3,7 @@ require 'blacklist'
 require 'digest'
 require 'erb'
 
-module Homebrew extend self
+module Homebrew
 
   # Create a formula from a tarball URL
   def create
