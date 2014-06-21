@@ -1,7 +1,7 @@
 require 'formula'
 
 class Openssl < Formula
-  homepage 'http://openssl.org'
+  homepage 'https://www.openssl.org'
   url 'https://www.openssl.org/source/openssl-1.0.1h.tar.gz'
   mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1h.tar.gz'
   sha256 '9d1c8a9836aa63e2c6adb684186cbd4371c9e9dcc01d6e3bb447abf2d4d3d093'
