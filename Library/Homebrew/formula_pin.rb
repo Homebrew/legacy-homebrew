@@ -1,5 +1,3 @@
-require 'fileutils'
-
 class FormulaPin
   PINDIR = Pathname.new("#{HOMEBREW_LIBRARY}/PinnedKegs")
 
@@ -12,9 +10,9 @@ class FormulaPin
   end
 
   def pin_at(version)
-    PINDIR.mkpath unless PINDIR.exist?
+    PINDIR.mkpath
     version_path = @f.rack.join(version)
-    FileUtils.ln_s(version_path, path) unless pinned? or not version_path.exist?
+    path.make_relative_symlink(version_path) unless pinned? || !version_path.exist?
   end
 
   def pin
@@ -24,7 +22,7 @@ class FormulaPin
   end
 
   def unpin
-    FileUtils.rm(path) if pinned?
+    path.unlink if pinned?
   end
 
   def pinned?
