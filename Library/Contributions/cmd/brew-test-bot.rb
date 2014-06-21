@@ -471,8 +471,8 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
   raise "Missing Jenkins variables!" unless jenkins and job and id
 
   ARGV << '--verbose'
-  copied = system "cp #{jenkins}/jobs/\"#{job}\"/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
-  exit unless copied
+  cp_args = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"] + ["."]
+  exit unless system "cp", *cp_args
 
   ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
   ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
@@ -492,7 +492,7 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
 
   ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
   ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
-  safe_system "brew bottle --merge --write *.bottle*.rb"
+  safe_system "brew", "bottle", "--merge", "--write", *Dir["*.bottle*.rb"]
 
   remote = "git@github.com:BrewTestBot/homebrew.git"
   tag = pr ? "pr-#{pr}" : "testing-#{number}"
@@ -500,8 +500,11 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
 
   path = "/home/frs/project/m/ma/machomebrew/Bottles/"
   url = "BrewTestBot,machomebrew@frs.sourceforge.net:#{path}"
-  options = "--partial --progress --human-readable --compress"
-  safe_system "rsync #{options} *.bottle*.tar.gz #{url}"
+
+  rsync_args = %w[--partial --progress --human-readable --compress]
+  rsync_args += Dir["*.bottle*.tar.gz"] + [url]
+
+  safe_system "rsync", *rsync_args
   safe_system "git", "tag", "--force", tag
   safe_system "git", "push", "--force", remote, "refs/tags/#{tag}"
   exit
