@@ -482,12 +482,12 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
 
   system "git am --abort 2>/dev/null"
   system "git rebase --abort 2>/dev/null"
-  safe_system "git checkout -f master"
-  safe_system "git reset --hard origin/master"
-  safe_system "brew update"
+  safe_system "git", "checkout", "-f", "master"
+  safe_system "git", "reset", "--hard", "origin/master"
+  safe_system "brew", "update"
 
   if ARGV.include? '--ci-pr-upload'
-    safe_system "brew pull --clean #{pr}"
+    safe_system "brew", "pull", "--clean", pr
   end
 
   ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
@@ -496,14 +496,14 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
 
   remote = "git@github.com:BrewTestBot/homebrew.git"
   tag = pr ? "pr-#{pr}" : "testing-#{number}"
-  safe_system "git push --force #{remote} master:master :refs/tags/#{tag}"
+  safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
   path = "/home/frs/project/m/ma/machomebrew/Bottles/"
   url = "BrewTestBot,machomebrew@frs.sourceforge.net:#{path}"
   options = "--partial --progress --human-readable --compress"
   safe_system "rsync #{options} *.bottle*.tar.gz #{url}"
-  safe_system "git tag --force #{tag}"
-  safe_system "git push --force #{remote} refs/tags/#{tag}"
+  safe_system "git", "tag", "--force", tag
+  safe_system "git", "push", "--force", remote, "refs/tags/#{tag}"
   exit
 end
 
