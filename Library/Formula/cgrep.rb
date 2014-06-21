@@ -9,6 +9,13 @@ class Cgrep < Formula
   sha1 "209bc29721bcfdc5652839c54c89ceb2d5a86bf9"
   head "https://github.com/awgn/cgrep.git", :branch => "master"
 
+  bottle do
+    cellar :any
+    sha1 "7c8b5399e4cbed0cf3e51565d7b009c70576c8e8" => :mavericks
+    sha1 "cf0ebb3fb08a172a91645184458c3cf6bebfc981" => :mountain_lion
+    sha1 "33a5fbe772ae2ffa7a5d3374a7304960053ee05d" => :lion
+  end
+
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
 
