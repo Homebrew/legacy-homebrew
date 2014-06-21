@@ -8,10 +8,9 @@ class Emscripten < Formula
   head "https://github.com/kripken/emscripten.git", :branch => "incoming"
 
   bottle do
-    revision 1
-    sha1 "ff7081cc17ffe142ee9cd2bbf637af6c29133701" => :mavericks
-    sha1 "1b9cfe66b2904489137973be59877e34f181bf1d" => :mountain_lion
-    sha1 "d75b7049de5d15f479491c72519019f460a20f00" => :lion
+    sha1 "93d836d075cefe1174a96d707f3702d7d7643f32" => :mavericks
+    sha1 "0ae5c8ff233727b9b49db1aa3b5b7ebc24665b91" => :mountain_lion
+    sha1 "fb534c99cb0e153a6478f6b065dd179c23205675" => :lion
   end
 
   head do
