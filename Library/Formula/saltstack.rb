@@ -12,8 +12,8 @@ end
 
 class Saltstack < Formula
   homepage 'http://www.saltstack.org'
-  url 'https://github.com/saltstack/salt/archive/v2014.1.4.tar.gz'
-  sha256 '737686df6d28244af95eea2203badd2104df6421d61c054c1f7dcf942e1f1823'
+  url 'https://github.com/saltstack/salt/archive/v2014.1.5.tar.gz'
+  sha256 '71fd19e8d7860e19fc57e2197b642fd52c2cf46c351dee65449e540a793532ef'
 
   head 'https://github.com/saltstack/salt.git', :branch => 'develop',
     :using => SaltHeadDownloadStrategy, :shallow => false
@@ -24,8 +24,8 @@ class Saltstack < Formula
   depends_on 'libyaml'
 
   resource 'pycrypto' do
-    url 'https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz'
-    sha1 'c17e41a80b3fbf2ee4e8f2d8bb9e28c5d08bbb84'
+    url 'https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.1.tar.gz'
+    sha1 'aeda3ed41caf1766409d4efc689b9ca30ad6aeb2'
   end
 
   resource 'm2crypto' do
@@ -34,28 +34,28 @@ class Saltstack < Formula
   end
 
   resource 'pyyaml' do
-    url 'https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz'
-    sha1 '476dcfbcc6f4ebf3c06186229e8e2bd7d7b20e73'
+    url 'https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz'
+    sha1 '1a2d5df8b31124573efb9598ec6d54767f3c4cd4'
   end
 
   resource 'markupsafe' do
-    url 'https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.18.tar.gz'
-    sha1 '9fe11891773f922a8b92e83c8f48edeb2f68631e'
+    url 'https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz'
+    sha1 'cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a'
   end
 
   resource 'jinja2' do
-    url 'https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.2.tar.gz'
-    sha1 '1ce4c8bc722444ec3e77ef9db76faebbd17a40d8'
+    url 'https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz'
+    sha1 '25ab3881f0c1adfcf79053b58de829c5ae65d3ac'
   end
 
   resource 'pyzmq' do
-    url 'https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.0.1.tar.gz'
-    sha1 'd09c72dc6dcad9449dbcb2f97b3cc1f2443d4b84'
+    url 'https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.3.1.tar.gz'
+    sha1 'a6cd6b0861fde75bfc85534e446364088ba97243'
   end
 
   resource 'msgpack-python' do
-    url 'https://pypi.python.org/packages/source/m/msgpack-python/msgpack-python-0.4.1.tar.gz'
-    sha1 'ae7b4d1afab10cd78baada026cad1ae92354852b'
+    url 'https://pypi.python.org/packages/source/m/msgpack-python/msgpack-python-0.4.2.tar.gz'
+    sha1 '127ca4c63b182397123d84032ece70d43fa4f869'
   end
 
   resource 'apache-libcloud' do
