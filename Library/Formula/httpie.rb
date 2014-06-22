@@ -7,7 +7,7 @@ class Httpie < Formula
 
   head "https://github.com/jakubroztocil/httpie.git"
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
 
   resource "pygments" do
     url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.6.tar.gz"
@@ -15,8 +15,22 @@ class Httpie < Formula
   end
 
   def install
-    resource("pygments").stage { system "python", "setup.py", "install", "--prefix=#{libexec}", "--single-version-externally-managed", "--record=installed.txt" }
-    system "python", "setup.py", "install", "--prefix=#{prefix}", "--single-version-externally-managed", "--record=installed.txt"
+    ENV["PYTHONPATH"] = lib + "python2.7/site-packages"
+    ENV.prepend_create_path 'PYTHONPATH', libexec + 'lib/python2.7/site-packages'
+    # HEAD additionally requires this to be present in PYTHONPATH, or else
+    # httpie's own setup.py will fail.
+    ENV.prepend_create_path 'PYTHONPATH', prefix + 'lib/python2.7/site-packages'
+
+    resource("pygments").stage { system "python", "setup.py", "install", "--prefix=#{libexec}"}
+
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
+
+    # These are now rolled into 1.6 and cause linking conflicts
+    rm Dir["#{bin}/easy_install*"]
+    rm "#{lib}/python2.7/site-packages/site.py"
+    rm Dir["#{lib}/python2.7/site-packages/*.pth"]
+
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
   test do
