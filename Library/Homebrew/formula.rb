@@ -26,8 +26,7 @@ class Formula
 
   attr_accessor :local_bottle_path
 
-  # Homebrew determines the name
-  def initialize name='__UNKNOWN__', path=self.class.path(name)
+  def initialize(name, path, spec)
     @name = name
     @path = path
     @homepage = self.class.homepage
@@ -37,7 +36,7 @@ class Formula
     set_spec :devel
     set_spec :head
 
-    @active_spec = determine_active_spec
+    @active_spec = determine_active_spec(spec)
     validate_attributes :url, :name, :version
     @build = determine_build_options
     @pkg_version = PkgVersion.new(version, revision)
@@ -53,16 +52,9 @@ class Formula
     end
   end
 
-  def determine_active_spec
-    case
-    when head && ARGV.build_head?   then head    # --HEAD
-    when devel && ARGV.build_devel? then devel   # --devel
-    when stable                     then stable
-    when devel                      then devel
-    when head                       then head    # head-only
-    else
-      raise FormulaSpecificationError, "formulae require at least a URL"
-    end
+  def determine_active_spec(requested)
+    spec = send(requested) || stable || devel || head
+    spec or raise FormulaSpecificationError, "formulae require at least a URL"
   end
 
   def validate_attributes(*attrs)
@@ -300,7 +292,9 @@ class Formula
   end
 
   def == other
-    instance_of?(other.class) && name == other.name
+    instance_of?(other.class) &&
+      name == other.name &&
+      active_spec == other.active_spec
   end
   alias_method :eql?, :==
 
@@ -492,8 +486,6 @@ class Formula
   end
 
   def test
-    require 'test/unit/assertions'
-    extend(Test::Unit::Assertions)
     # Adding the used options allows us to use `build.with?` inside of tests
     tab = Tab.for_name(name)
     tab.used_options.each { |opt| build.args << opt unless build.has_opposite_of? opt }

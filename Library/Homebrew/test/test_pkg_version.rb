@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'pkg_version'
 
-class PkgVersionTests < Test::Unit::TestCase
+class PkgVersionTests < Homebrew::TestCase
   def v(version)
     PkgVersion.parse(version)
   end

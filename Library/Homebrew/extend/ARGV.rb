@@ -8,9 +8,8 @@ module HomebrewArgvExtension
   end
 
   def formulae
-    require 'formula'
-    @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
-    return @formulae
+    require "formula"
+    @formulae ||= downcased_unique_named.map { |name| Formulary.factory(name, spec) }
   end
 
   def kegs
@@ -162,21 +161,22 @@ module HomebrewArgvExtension
     Homebrew.help_s
   end
 
-  def filter_for_dependencies
-    old_args = clone
-    delete "--devel"
-    delete "--HEAD"
-    yield
-  ensure
-    replace(old_args)
-  end
-
   def cc
     value 'cc'
   end
 
   def env
     value 'env'
+  end
+
+  def spec
+    if include?("--HEAD")
+      :head
+    elsif include?("--devel")
+      :devel
+    else
+      :stable
+    end
   end
 
   private

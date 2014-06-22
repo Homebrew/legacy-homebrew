@@ -4,7 +4,7 @@ require 'formula'
 require 'cxxstdlib'
 require 'tab'
 
-class CxxStdlibTests < Test::Unit::TestCase
+class CxxStdlibTests < Homebrew::TestCase
   def setup
     @clang = CxxStdlib.new(:libstdcxx, :clang)
     @gcc   = CxxStdlib.new(:libstdcxx, :gcc)
@@ -44,22 +44,22 @@ class CxxStdlibTests < Test::Unit::TestCase
   end
 
   def test_apple_compiler_reporting
-    assert @clang.apple_compiler?
-    assert @gcc.apple_compiler?
-    assert @llvm.apple_compiler?
-    assert @gcc4.apple_compiler?
-    assert !@gcc48.apple_compiler?
+    assert_predicate @clang, :apple_compiler?
+    assert_predicate @gcc, :apple_compiler?
+    assert_predicate @llvm, :apple_compiler?
+    assert_predicate @gcc4, :apple_compiler?
+    refute_predicate @gcc48, :apple_compiler?
   end
 
   def test_type_string_formatting
-    assert_equal @clang.type_string, 'libstdc++'
-    assert_equal @lcxx.type_string, 'libc++'
+    assert_equal "libstdc++", @clang.type_string
+    assert_equal "libc++", @lcxx.type_string
   end
 
   def test_constructing_from_tab
     stdlib = Tab.dummy_tab.cxxstdlib
-    assert_equal stdlib.compiler, :clang
-    assert_equal stdlib.type, nil
+    assert_equal :clang, stdlib.compiler
+    assert_nil stdlib.type
   end
 
   def test_compatibility_for_non_cxx_software

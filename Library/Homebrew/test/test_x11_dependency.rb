@@ -2,7 +2,7 @@ require 'testing_env'
 require 'extend/set'
 require 'requirements/x11_dependency'
 
-class X11DependencyTests < Test::Unit::TestCase
+class X11DependencyTests < Homebrew::TestCase
   def test_eql_instances_are_eql
     x = X11Dependency.new
     y = X11Dependency.new
@@ -14,7 +14,7 @@ class X11DependencyTests < Test::Unit::TestCase
   def test_not_eql_when_hashes_differ
     x = X11Dependency.new("foo")
     y = X11Dependency.new
-    assert_not_equal x.hash, y.hash
+    refute_equal x.hash, y.hash
     assert !x.eql?(y)
     assert !y.eql?(x)
   end

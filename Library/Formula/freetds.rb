@@ -28,7 +28,7 @@ class Freetds < Formula
 
     args = %W[
       --prefix=#{prefix}
-      --with-openssl=#{Formula["openssl"].opt_prefix}"
+      --with-openssl=#{Formula["openssl"].opt_prefix}
       --with-tdsver=7.1
       --mandir=#{man}
     ]

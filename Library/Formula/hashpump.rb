@@ -2,8 +2,8 @@ require "formula"
 
 class Hashpump < Formula
   homepage "https://github.com/bwall/HashPump"
-  url "https://github.com/bwall/HashPump/archive/v1.0.2.tar.gz"
-  sha1 "5496ee37298c65b4c72139a039e78e4ff3a060b2"
+  url "https://github.com/bwall/HashPump/archive/v1.1.0.tar.gz"
+  sha1 "610582b0e4c86bbcbe5620d4a3ad48e9c3046817"
 
   def install
     bin.mkpath

@@ -8,9 +8,10 @@ class Git < Formula
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha1 "fd9e260685da9033ab3df7d17fbd247ca0735a5f" => :mavericks
-    sha1 "4ca39e18a7e0353d95ac96fad95a8722ada85652" => :mountain_lion
-    sha1 "2daba8156c876d19cf5a766ff6ff2b03b10802f2" => :lion
+    revision 2
+    sha1 "24deae2aeeac4b868b810ee1df6cf360c0ad0c6e" => :mavericks
+    sha1 "b53d25fbf253fa9749971dd496a60b57b7e96a7f" => :mountain_lion
+    sha1 "99c8c6a8aa9d086872a950cb9903ccec4cb43e2b" => :lion
   end
 
   resource "man" do
@@ -27,6 +28,7 @@ class Git < Formula
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
   option 'with-brewed-openssl', "Build with Homebrew OpenSSL instead of the system version"
   option 'with-brewed-curl', "Use Homebrew's version of cURL library"
+  option 'with-brewed-svn', "Use Homebrew's version of SVN"
   option 'with-persistent-https', 'Build git-remote-persistent-https from "contrib" directory'
 
   depends_on 'pcre' => :optional
@@ -34,6 +36,7 @@ class Git < Formula
   depends_on 'openssl' if build.with? 'brewed-openssl'
   depends_on 'curl' if build.with? 'brewed-curl'
   depends_on 'go' => :build if build.with? 'persistent-https'
+  depends_on 'subversion' => 'perl' if build.with? 'brewed-svn'
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -44,7 +47,9 @@ class Git < Formula
     ENV['PYTHON_PATH'] = which 'python'
     ENV['PERL_PATH'] = which 'perl'
 
-    if MacOS.version >= :mavericks
+    if build.with? 'brewed-svn'
+      ENV["PERLLIB_EXTRA"] = "#{Formula["subversion"].prefix}/Library/Perl/5.16/darwin-thread-multi-2level"
+    elsif MacOS.version >= :mavericks
       ENV["PERLLIB_EXTRA"] = %W{
         #{MacOS.active_developer_dir}
         /Library/Developer/CommandLineTools
@@ -120,8 +125,9 @@ class Git < Formula
     man.install resource('man')
     (share+'doc/git-doc').install resource('html')
 
-    # Make html docs world-readable; check if this is still needed at 1.8.6
+    # Make html docs world-readable
     chmod 0644, Dir["#{share}/doc/git-doc/**/*.{html,txt}"]
+    chmod 0755, Dir["#{share}/doc/git-doc/{RelNotes,howto,technical}"]
   end
 
   def caveats; <<-EOS.undent

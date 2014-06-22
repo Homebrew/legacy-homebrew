@@ -248,7 +248,7 @@ class Keg < Pathname
   end
 
   def optlink
-    from = HOMEBREW_PREFIX/:opt/fname
+    from = HOMEBREW_PREFIX.join("opt", fname)
     if from.symlink?
       from.delete
     elsif from.directory?

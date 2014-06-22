@@ -2,10 +2,13 @@ require 'testing_env'
 require 'formula'
 require 'testball'
 
-class PatchingTests < Test::Unit::TestCase
+class PatchingTests < Homebrew::TestCase
+  PATCH_URL_A = "file://#{TEST_DIRECTORY}/patches/noop-a.diff"
+  PATCH_URL_B = "file://#{TEST_DIRECTORY}/patches/noop-b.diff"
+
   def formula(&block)
     super do
-      url "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
+      url "file://#{TEST_DIRECTORY}/tarballs/testball-0.1.tbz"
       sha1 "482e737739d946b7c8cbaf127d9ee9c148b999f5"
       class_eval(&block)
     end
@@ -13,15 +16,15 @@ class PatchingTests < Test::Unit::TestCase
 
   def assert_patched(path)
     s = File.read(path)
-    assert !s.include?("NOOP"), "File was unpatched."
-    assert s.include?("ABCD"), "File was not patched as expected."
+    refute_includes s, "NOOP", "#{path} was not patched as expected"
+    assert_includes s, "ABCD", "#{path} was not patched as expected"
   end
 
   def test_single_patch
     shutup do
       formula do
         def patches
-          "file:///#{TEST_FOLDER}/patches/noop-a.diff"
+          PATCH_URL_A
         end
       end.brew { assert_patched 'libexec/NOOP' }
     end
@@ -31,7 +34,7 @@ class PatchingTests < Test::Unit::TestCase
     shutup do
       formula do
         patch do
-          url "file:///#{TEST_FOLDER}/patches/noop-a.diff"
+          url PATCH_URL_A
           sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
         end
       end.brew { assert_patched 'libexec/NOOP' }
@@ -42,7 +45,7 @@ class PatchingTests < Test::Unit::TestCase
     shutup do
       formula do
         patch :p1 do
-          url "file:///#{TEST_FOLDER}/patches/noop-a.diff"
+          url PATCH_URL_A
           sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
         end
       end.brew { assert_patched 'libexec/NOOP' }
@@ -54,7 +57,7 @@ class PatchingTests < Test::Unit::TestCase
       shutup do
         formula do
           patch :p0 do
-            url "file:///#{TEST_FOLDER}/patches/noop-a.diff"
+            url PATCH_URL_A
             sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
           end
         end.brew { }
@@ -66,7 +69,7 @@ class PatchingTests < Test::Unit::TestCase
     shutup do
       formula do
         patch :p0 do
-          url "file:///#{TEST_FOLDER}/patches/noop-b.diff"
+          url PATCH_URL_B
           sha1 "3b54bd576f998ef6d6623705ee023b55062b9504"
         end
       end.brew { assert_patched 'libexec/NOOP' }
@@ -77,7 +80,7 @@ class PatchingTests < Test::Unit::TestCase
     shutup do
       formula do
         def patches
-          { :p0 => "file:///#{TEST_FOLDER}/patches/noop-b.diff" }
+          { :p0 => PATCH_URL_B }
         end
       end.brew { assert_patched 'libexec/NOOP' }
     end
@@ -87,7 +90,7 @@ class PatchingTests < Test::Unit::TestCase
     shutup do
       formula do
         def patches
-          ["file:///#{TEST_FOLDER}/patches/noop-a.diff"]
+          [PATCH_URL_A]
         end
       end.brew { assert_patched 'libexec/noop' }
     end
@@ -97,7 +100,7 @@ class PatchingTests < Test::Unit::TestCase
     shutup do
       formula do
         def patches
-          { :p1 => "file:///#{TEST_FOLDER}/patches/noop-a.diff" }
+          { :p1 => PATCH_URL_A }
         end
       end.brew { assert_patched 'libexec/noop' }
     end
@@ -107,7 +110,7 @@ class PatchingTests < Test::Unit::TestCase
     shutup do
       formula do
         def patches
-          { :p1 => ["file:///#{TEST_FOLDER}/patches/noop-a.diff"] }
+          { :p1 => [PATCH_URL_A] }
         end
       end.brew { assert_patched 'libexec/noop' }
     end

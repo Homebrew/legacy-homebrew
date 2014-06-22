@@ -1,11 +1,7 @@
 require 'testing_env'
 require 'test/testball'
 
-class FailsWithTests < Test::Unit::TestCase
-  class Double < Compiler
-    attr_accessor :name, :version
-  end
-
+class FailsWithTests < Homebrew::TestCase
   def assert_fails_with(cc)
     assert @f.new.fails_with?(cc)
   end
@@ -15,14 +11,11 @@ class FailsWithTests < Test::Unit::TestCase
   end
 
   def fails_with(*args, &block)
-    @f.send(:fails_with, *args, &block)
+    @f.fails_with(*args, &block)
   end
 
-  def build_cc(sym, build, version=nil)
-    cc = Double.new
-    cc.name = sym
-    cc.version = version || build
-    cc
+  def build_cc(name, version)
+    Compiler.new(name, version)
   end
 
   def setup

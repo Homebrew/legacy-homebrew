@@ -1,6 +1,6 @@
 require 'formula'
 
-module Homebrew extend self
+module Homebrew
   def options
     if ARGV.include? '--all'
       puts_options Formula.to_a

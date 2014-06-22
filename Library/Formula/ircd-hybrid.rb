@@ -1,14 +1,14 @@
-require 'formula'
+require "formula"
 
 class IrcdHybrid < Formula
-  homepage 'http://www.ircd-hybrid.org/'
-  url 'https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.1.15/ircd-hybrid-8.1.15.tgz'
-  sha1 '4870009a26eeb1ca844402e5a15783d3cbfc917e'
+  homepage "http://www.ircd-hybrid.org/"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.1.18/ircd-hybrid-8.1.18.tgz"
+  sha1 "2dbb4a3dfd4b51d9f0cdcb587720c711e2147ff6"
 
   # ircd-hybrid needs the .la files
   skip_clean :la
 
-  depends_on 'openssl'
+  depends_on "openssl"
 
   def install
     ENV.j1 # build system trips over itself

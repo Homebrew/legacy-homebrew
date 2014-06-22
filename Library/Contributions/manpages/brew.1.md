@@ -397,13 +397,6 @@ Note that these flags should only appear after a command.
     cases where `formula` is used by development or HEAD build, pass
     `--devel` or `--HEAD`.
 
-  * `versions [--compact]` <formulae>:
-    List previous versions of <formulae>, along with a command to checkout
-    each version.
-
-    If `--compact` is passed, show all options on a single line separated by
-    spaces.
-
   * `--cache`:
     Display Homebrew's download cache. See also `HOMEBREW_CACHE`.
 

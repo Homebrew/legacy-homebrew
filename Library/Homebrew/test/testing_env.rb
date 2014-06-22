@@ -1,11 +1,11 @@
 # Require this file to build a testing environment.
 
-ABS__FILE__ = File.expand_path(__FILE__)
 $:.push(File.expand_path(__FILE__+'/../..'))
 
 require 'extend/module'
 require 'extend/fileutils'
 require 'extend/pathname'
+require 'extend/ARGV'
 require 'extend/string'
 require 'extend/symbol'
 require 'extend/enumerable'
@@ -29,17 +29,19 @@ HOMEBREW_VERSION       = '0.9-test'
 
 require 'tap_constants'
 
-RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
-RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
+if RbConfig.respond_to?(:ruby)
+  RUBY_PATH = Pathname.new(RbConfig.ruby)
+else
+  RUBY_PATH = Pathname.new(RbConfig::CONFIG["bindir"]).join(
+    RbConfig::CONFIG["ruby_install_name"] + RbConfig::CONFIG["EXEEXT"]
+  )
+end
+RUBY_BIN = RUBY_PATH.dirname
 
 MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
 MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }
 
 ORIGINAL_PATHS = ENV['PATH'].split(File::PATH_SEPARATOR).map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
-
-module Homebrew extend self
-  include FileUtils
-end
 
 # Test environment setup
 %w{Library/Formula Library/ENV}.each do |d|
@@ -49,74 +51,70 @@ end
 at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 # Test fixtures and files can be found relative to this path
-TEST_FOLDER = Pathname.new(ABS__FILE__).parent.realpath
+TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
 
-def shutup
-  if ARGV.verbose?
-    yield
-  else
-    begin
-      tmperr = $stderr.clone
-      tmpout = $stdout.clone
-      $stderr.reopen '/dev/null', 'w'
-      $stdout.reopen '/dev/null', 'w'
-      yield
-    ensure
-      $stderr.reopen tmperr
-      $stdout.reopen tmpout
-    end
-  end
-end
-
-require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
-
-require 'test/unit' # must be after at_exit
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
-require 'extend/ENV'
 ARGV.extend(HomebrewArgvExtension)
-ENV.extend(Stdenv)
 
 begin
-  require 'rubygems'
-  require 'mocha/setup'
+  require "rubygems"
+  require "minitest/autorun"
+  require "mocha/setup"
 rescue LoadError
-  warn 'The mocha gem is required to run some tests, expect failures'
+  abort "Run `rake deps` or install the mocha and minitest gems before running the tests"
 end
 
-module VersionAssertions
-  def version v
-    Version.new(v)
+module Homebrew
+  include FileUtils
+  extend self
+
+  module VersionAssertions
+    def version v
+      Version.new(v)
+    end
+
+    def assert_version_equal expected, actual
+      assert_equal Version.new(expected), actual
+    end
+
+    def assert_version_detected expected, url
+      assert_equal expected, Version.parse(url).to_s
+    end
+
+    def assert_version_nil url
+      assert_nil Version.parse(url)
+    end
+
+    def assert_version_tokens tokens, version
+      assert_equal tokens, version.send(:tokens).map(&:to_s)
+    end
   end
 
-  def assert_version_equal expected, actual
-    assert_equal Version.new(expected), actual
-  end
+  class TestCase < ::Minitest::Test
+    include VersionAssertions
 
-  def assert_version_detected expected, url
-    assert_equal expected, Version.parse(url).to_s
-  end
+    TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
+    TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
 
-  def assert_version_nil url
-    assert_nil Version.parse(url)
-  end
+    def formula(name="formula_name", path=Formula.path(name), spec=:stable, &block)
+      @_f = Class.new(Formula, &block).new(name, path, spec)
+    end
 
-  def assert_version_tokens tokens, version
-    assert_equal tokens, version.send(:tokens).map(&:to_s)
-  end
-end
+    def shutup
+      err = $stderr.clone
+      out = $stdout.clone
 
-module Test::Unit::Assertions
-  def assert_empty(obj, msg=nil)
-    assert_respond_to(obj, :empty?, msg)
-    assert(obj.empty?, msg)
-  end unless method_defined?(:assert_empty)
-end
+      begin
+        $stderr.reopen("/dev/null", "w")
+        $stdout.reopen("/dev/null", "w")
+        yield
+      ensure
+        $stderr.reopen(err)
+        $stdout.reopen(out)
+      end
+    end
 
-class Test::Unit::TestCase
-  TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
-  TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
-
-  def formula(*args, &block)
-    @_f = Class.new(Formula, &block).new(*args)
+    def assert_nothing_raised
+      yield
+    end
   end
 end

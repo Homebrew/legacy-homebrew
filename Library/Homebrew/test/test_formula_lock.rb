@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'formula_lock'
 
-class FormulaLockTests < Test::Unit::TestCase
+class FormulaLockTests < Homebrew::TestCase
   def setup
     @lock = FormulaLock.new("foo")
     @lock.lock

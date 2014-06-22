@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'bottles'
 
-class BottleCollectorTests < Test::Unit::TestCase
+class BottleCollectorTests < Homebrew::TestCase
   def setup
     @collector = BottleCollector.new
   end
