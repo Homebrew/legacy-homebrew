@@ -129,6 +129,10 @@ module HomebrewArgvExtension
     include? '--build-bottle' or !ENV['HOMEBREW_BUILD_BOTTLE'].nil?
   end
 
+  def build_missing_bottle?
+    !ENV["HOMEBREW_BUILD_MISSING_BOTTLE"].nil?
+  end
+
   def bottle_arch
     arch = value 'bottle-arch'
     arch.to_sym if arch

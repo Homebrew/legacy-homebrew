@@ -24,7 +24,7 @@ class FormulaInstaller
   attr_reader :f
   attr_accessor :options
   mode_attr_accessor :show_summary_heading, :show_header
-  mode_attr_accessor :build_from_source, :build_bottle, :force_bottle
+  mode_attr_accessor :build_from_source, :build_bottle, :build_missing_bottle, :force_bottle
   mode_attr_accessor :ignore_deps, :only_deps, :interactive
   mode_attr_accessor :verbose, :debug
 
@@ -35,6 +35,7 @@ class FormulaInstaller
     @only_deps = false
     @build_from_source = false
     @build_bottle = false
+    @build_missing_bottle = false
     @force_bottle = false
     @interactive = false
     @verbose = false
@@ -153,7 +154,7 @@ class FormulaInstaller
 
     return if only_deps?
 
-    if build_bottle? && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
+    if (build_bottle? || build_missing_bottle?) && (arch = ARGV.bottle_arch) && !Hardware::CPU.optimization_flags.include?(arch)
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
 
@@ -186,7 +187,9 @@ class FormulaInstaller
       opoo "Bottle installation failed: building from source."
     end
 
-    build_bottle_preinstall if build_bottle?
+    build_bottle_missing =  build_missing_bottle? && (!@poured_bottle || @pour_failed)
+
+    build_bottle_preinstall if build_bottle? || build_bottle_missing
 
     unless @poured_bottle
       compute_and_install_dependencies if @pour_failed and not ignore_deps?
@@ -194,7 +197,15 @@ class FormulaInstaller
       clean
     end
 
-    build_bottle_postinstall if build_bottle?
+    build_bottle_postinstall if build_bottle? || build_bottle_missing
+
+    if build_bottle_missing
+      # allow grep of output to automate `brew bottle #{f}`
+      ohai "Built missing bottle for #{f}"
+      tab = Tab.for_keg f.prefix
+      tab.built_as_bottle = true
+      tab.write
+    end
 
     opoo "Nothing was installed to #{f.prefix}" unless f.installed?
   end
@@ -453,6 +464,9 @@ class FormulaInstaller
 
     if build_bottle?
       args << "--build-bottle"
+    end
+
+    if build_bottle? || build_missing_bottle?
       args << "--bottle-arch=#{ARGV.bottle_arch}" if ARGV.bottle_arch
     end
 
