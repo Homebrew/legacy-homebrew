@@ -14,7 +14,6 @@ require 'pkg_version'
 class Formula
   include FileUtils
   include Utils::Inreplace
-  extend BuildEnvironmentDSL
 
   attr_reader :name, :path, :homepage, :build
   attr_reader :stable, :devel, :head, :active_spec
@@ -605,6 +604,7 @@ class Formula
 
   # The methods below define the formula DSL.
   class << self
+    include BuildEnvironmentDSL
 
     attr_reader :keg_only_reason, :cc_failures
     attr_rw :homepage, :plist_startup, :plist_manual, :revision
