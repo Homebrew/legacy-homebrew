@@ -31,6 +31,18 @@ class Formula
     opoo "Formula.all is deprecated, use Formula.map instead"
     map
   end
+
+  def self.canonical_name(name)
+    Formulary.canonical_name(name)
+  end
+
+  def self.class_s(name)
+    Formulary.class_s(name)
+  end
+
+  def self.factory(name)
+    Formulary.factory(name)
+  end
 end
 
 class UnidentifiedFormula < Formula

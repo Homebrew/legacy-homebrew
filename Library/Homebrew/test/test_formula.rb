@@ -195,7 +195,7 @@ class FormulaTests < Homebrew::TestCase
         end
       }
     end
-    assert_kind_of Formula, Formula.factory(name)
+    assert_kind_of Formula, Formulary.factory(name)
   ensure
     path.unlink
   end
