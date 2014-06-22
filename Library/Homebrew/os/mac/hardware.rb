@@ -98,6 +98,12 @@ module MacCPUs
     end
   end
 
+  def features
+    @features ||= `/usr/sbin/sysctl -n machdep.cpu.features`.split(" ").map do |s|
+      s.downcase.intern
+    end
+  end
+
   def aes?
     sysctl_bool('hw.optional.aes')
   end
