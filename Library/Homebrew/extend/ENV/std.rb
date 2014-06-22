@@ -101,8 +101,7 @@ module Stdenv
   end
 
   def determine_cxx
-    path = determine_cc
-    dir, base = path.dirname, path.basename
+    dir, base = determine_cc.split
     dir / base.to_s.sub("gcc", "g++").sub("clang", "clang++")
   end
 
