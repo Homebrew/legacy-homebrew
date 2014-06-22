@@ -5,7 +5,7 @@ class Dwm < Formula
   url 'http://dl.suckless.org/dwm/dwm-6.0.tar.gz'
   sha1 '35346f873a27f219ae266594b3690407f95d06ef'
 
-  head 'http://hg.suckless.org/dwm'
+  head 'http://git.suckless.org/dwm', :using => :git
 
   depends_on :x11
 
