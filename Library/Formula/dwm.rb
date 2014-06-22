@@ -8,6 +8,7 @@ class Dwm < Formula
   head 'http://hg.suckless.org/dwm'
 
   depends_on :x11
+  depends_on 'dmenu' => :optional
 
   def install
     # The dwm default quit keybinding Mod1-Shift-q collides with
