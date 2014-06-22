@@ -29,10 +29,9 @@ class Cmake < Formula
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "e1e50cfd9f421b64365a7a2c34e9e6337f9391b7" => :mavericks
-    sha1 "9c60ed323f8752eb257d1505e33d70e4367e4219" => :mountain_lion
-    sha1 "1914f68373cdc8d1c99b4d76e1e1fed85e4303d3" => :lion
+    sha1 "1055d958bee856c8ab919a2f89a167487a82becb" => :mavericks
+    sha1 "dc2ccbc4f63b809d1088cfd91573689cb571e6f9" => :mountain_lion
+    sha1 "4ba0618795f9655aa8a937ec9e02378578b64bc9" => :lion
   end
 
   depends_on NoExpatFramework
