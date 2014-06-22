@@ -12,6 +12,8 @@ class Ii < Formula
     sha1 "9f66c3d6465cb6b2c20a913926398b84ba4d2bb2" => :lion
   end
 
+  head 'http://git.suckless.org/ii', :using => :git
+
   def install
     inreplace 'config.mk' do |s|
       s.gsub! '/usr/local', prefix
