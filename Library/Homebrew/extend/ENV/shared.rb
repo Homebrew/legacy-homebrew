@@ -115,9 +115,9 @@ module SharedEnvExtension
     COMPILER_SYMBOL_MAP.invert.fetch(compiler, compiler)
   end
 
-  COMPILERS.each do |x|
-    define_method x do
-      @compiler = x
+  COMPILERS.each do |compiler|
+    define_method(compiler) do
+      @compiler = compiler
       self.cc  = determine_cc
       self.cxx = determine_cxx
     end
