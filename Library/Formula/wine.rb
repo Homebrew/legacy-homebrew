@@ -72,8 +72,8 @@ class Wine < Formula
   end
 
   fails_with :clang do
-    build 421
-    cause 'error: invalid operand for instruction lretw'
+    build 425
+    cause "Clang prior to Xcode 5 miscompiles some parts of wine"
   end
 
   # These libraries are not specified as dependencies, or not built as 32-bit:
@@ -102,15 +102,6 @@ class Wine < Formula
 
     ENV.append "CFLAGS", build32
     ENV.append "LDFLAGS", build32
-
-    # The clang that comes with Xcode 5 no longer miscompiles wine. Tested with 1.7.3.
-    if ENV.compiler == :clang and MacOS.clang_build_version < 500
-      opoo <<-EOS.undent
-        Clang currently miscompiles some parts of Wine.
-        If you have GCC, you can get a more stable build with:
-          brew install wine --cc=gcc-4.2 # or 4.7, 4.8, etc.
-      EOS
-    end
 
     args = ["--prefix=#{prefix}"]
     args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang
