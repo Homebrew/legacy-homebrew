@@ -37,7 +37,7 @@ module Homebrew
   def detected_name(path, version)
     basename = path.basename.to_s
     detected_name = basename[/(.*?)-?#{Regexp.escape(version)}/, 1] || basename
-    canonical_name = Formula.canonical_name(detected_name)
+    canonical_name = Formulary.canonical_name(detected_name)
 
     odie <<-EOS.undent if detected_name != canonical_name
       The detected name #{detected_name.inspect} exists in Homebrew as an alias

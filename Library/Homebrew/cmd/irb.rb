@@ -4,12 +4,12 @@ require 'irb'
 
 class Symbol
   def f
-    Formula.factory(self.to_s)
+    Formulary.factory(to_s)
   end
 end
 class String
   def f
-    Formula.factory(self)
+    Formulary.factory(self)
   end
 end
 

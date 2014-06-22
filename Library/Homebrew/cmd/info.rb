@@ -28,7 +28,7 @@ module Homebrew
       ARGV.named.each_with_index do |f,i|
         puts unless i == 0
         begin
-          info_formula Formula.factory(f)
+          info_formula Formulary.factory(f)
         rescue FormulaUnavailableError
           # No formula with this name, try a blacklist lookup
           if (blacklist = blacklisted?(f))

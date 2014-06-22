@@ -17,7 +17,7 @@ module Homebrew
       end
     else
       ARGV.named.each do |name|
-        name = Formula.canonical_name(name)
+        name = Formulary.canonical_name(name)
         rack = HOMEBREW_CELLAR/name
 
         if rack.directory?
@@ -41,6 +41,6 @@ module Homebrew
   end
 
   def rm_pin name
-    Formula.factory(name).unpin rescue nil
+    Formulary.factory(name).unpin rescue nil
   end
 end

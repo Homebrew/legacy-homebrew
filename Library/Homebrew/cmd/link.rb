@@ -49,7 +49,7 @@ module Homebrew
   private
 
   def keg_only?(name)
-    Formula.factory(name).keg_only?
+    Formulary.factory(name).keg_only?
   rescue FormulaUnavailableError
     false
   end

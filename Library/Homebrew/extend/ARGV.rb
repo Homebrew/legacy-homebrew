@@ -17,7 +17,7 @@ module HomebrewArgvExtension
     require 'keg'
     require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
-      canonical_name = Formula.canonical_name(name)
+      canonical_name = Formulary.canonical_name(name)
       rack = HOMEBREW_CELLAR/canonical_name
       dirs = rack.directory? ? rack.subdirs : []
 
@@ -32,7 +32,7 @@ module HomebrewArgvExtension
         Keg.new(linked_keg_ref.resolved_path)
       elsif dirs.length == 1
         Keg.new(dirs.first)
-      elsif (prefix = Formula.factory(canonical_name).prefix).directory?
+      elsif (prefix = Formulary.factory(canonical_name).prefix).directory?
         Keg.new(prefix)
       else
         raise MultipleVersionsInstalledError.new(name)

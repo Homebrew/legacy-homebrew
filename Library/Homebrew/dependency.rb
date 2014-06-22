@@ -29,7 +29,7 @@ class Dependency
   end
 
   def to_formula
-    f = Formula.factory(name)
+    f = Formulary.factory(name)
     # Add this dependency's options to the formula's build args
     f.build.args = f.build.args.concat(options)
     f

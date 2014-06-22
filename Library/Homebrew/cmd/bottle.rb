@@ -229,7 +229,7 @@ module Homebrew
       puts output
 
       if ARGV.include? '--write'
-        f = Formula.factory formula_name
+        f = Formulary.factory(formula_name)
         update_or_add = nil
 
         Utils::Inreplace.inreplace(f.path) do |s|
