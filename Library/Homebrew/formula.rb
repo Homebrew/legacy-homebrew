@@ -14,6 +14,7 @@ require 'pkg_version'
 class Formula
   include FileUtils
   include Utils::Inreplace
+  extend Enumerable
 
   attr_reader :name, :path, :homepage, :build
   attr_reader :stable, :devel, :head, :active_spec
@@ -357,9 +358,6 @@ class Formula
         next
       end
     end
-  end
-  class << self
-    include Enumerable
   end
 
   # An array of all installed formulae
