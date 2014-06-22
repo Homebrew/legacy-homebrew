@@ -5,7 +5,7 @@ class Tabbed < Formula
   url 'http://dl.suckless.org/tools/tabbed-0.6.tar.gz'
   sha1 '3c64d79817337f86f0cdd60b5b79af7e77d4a5f9'
 
-  head 'http://git.suckless.org/tabbed'
+  head 'http://git.suckless.org/tabbed', :using => :git
 
   depends_on :x11
 
