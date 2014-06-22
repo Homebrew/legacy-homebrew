@@ -1,12 +1,12 @@
-require 'formula'
+require "formula"
 
 class BdwGc < Formula
-  homepage 'http://www.hboehm.info/gc/'
-  url 'http://www.hboehm.info/gc/gc_source/gc-7.4.0.tar.gz'
-  sha1 '82f031a5a6db004df3cf8f1b1e72dd6b313ab032'
+  homepage "http://www.hboehm.info/gc/"
+  url "http://www.hboehm.info/gc/gc_source/gc-7.4.2.tar.gz"
+  sha1 "cd4a54620c38a2c361b3ee99dd134dbffb57c313"
 
-  depends_on "libatomic_ops"
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
+  depends_on "libatomic_ops" => :build
 
   bottle do
     cellar :any
