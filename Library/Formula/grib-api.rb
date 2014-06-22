@@ -2,8 +2,8 @@ require 'formula'
 
 class GribApi < Formula
   homepage 'https://software.ecmwf.int/wiki/display/GRIB/Home'
-  url 'https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.9.18.tar.gz'
-  sha1 '87616917a6978a56ae4fe173a3e6e3828b0ebfba'
+  url 'https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.12.1.tar.gz'
+  sha1 'b769ac5db70703f0d944d93aafbbeee7513958f1'
 
   depends_on :fortran
   depends_on 'jasper' => :recommended
