@@ -14,7 +14,7 @@ require 'utils'
 require 'rbconfig'
 require 'tmpdir'
 
-tmpdir = Dir.mktmpdir
+tmpdir = Dir.mktmpdir("homebrew_tests")
 at_exit { FileUtils.remove_entry(tmpdir) }
 
 # Constants normally defined in global.rb
