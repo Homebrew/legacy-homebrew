@@ -7,7 +7,8 @@ class Vsftpd < Formula
 
   depends_on 'openssl' => :optional
 
-  # Patch so vsftpd doesn't depend on UTMPX, can find OS X's PAM library, and doesn't use incompatible linker flags.
+  # Patch to remove UTMPX dependency, locate OS X's PAM library, and
+  #   remove incompatible LDFLAGS. (reported to developer via email)
   patch :DATA
 
   def install
