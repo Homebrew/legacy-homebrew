@@ -17,9 +17,6 @@ class Aubio < Formula
     depends_on 'numpy' => :python
   end
 
-  # remove -arch flags if not building for universal
-  patch :p0, :DATA unless build.universal?
-
   def install
     ENV.universal_binary if build.universal?
 
@@ -46,15 +43,3 @@ class Aubio < Formula
     system "#{bin}/aubioonset", "--verbose", "/System/Library/Sounds/Glass.aiff"
   end
 end
-
-__END__
---- wscript
-+++ wscript
-@@ -103,8 +103,6 @@ def configure(ctx):
-         ctx.env['cshlib_PATTERN'] = 'lib%s.dll'
-
-     if target_platform == 'darwin':
--        ctx.env.CFLAGS += ['-arch', 'i386', '-arch', 'x86_64']
--        ctx.env.LINKFLAGS += ['-arch', 'i386', '-arch', 'x86_64']
-         ctx.env.FRAMEWORK = ['CoreFoundation', 'AudioToolbox', 'Accelerate']
-         ctx.define('HAVE_ACCELERATE', 1)
