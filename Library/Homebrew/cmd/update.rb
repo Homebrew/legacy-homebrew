@@ -196,7 +196,7 @@ class Updater
   end
 
   def `(cmd)
-    out = Kernel.`(cmd) #`
+    out = super
     if $? && !$?.success?
       $stderr.puts out
       raise ErrorDuringExecution, "Failure while executing: #{cmd}"
