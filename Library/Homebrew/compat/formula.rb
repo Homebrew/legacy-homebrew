@@ -44,6 +44,3 @@ class Formula
     Formulary.factory(name)
   end
 end
-
-class UnidentifiedFormula < Formula
-end
