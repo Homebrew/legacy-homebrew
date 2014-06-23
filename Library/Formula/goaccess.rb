@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Goaccess < Formula
-  homepage 'http://goaccess.prosoftcorp.com/'
-  url 'http://tar.goaccess.io/goaccess-0.8.tar.gz'
-  sha1 '8c220e7e65a6e45ae5a2221e241e976d07c23def'
+  homepage "http://goaccess.prosoftcorp.com/"
+  url "http://tar.goaccess.io/goaccess-0.8.1.tar.gz"
+  sha1 "f9e7f277e46af3c97d0f133d7a44031db0c3e531"
 
   bottle do
     sha1 "081452df0eca44ca9d59591985956090087654e8" => :mavericks
@@ -11,7 +11,7 @@ class Goaccess < Formula
     sha1 "3a327d75218841c39c356f7c03c8a03212920314" => :lion
   end
 
-  option 'enable-geoip', "Enable IP location information using GeoIP"
+  option "enable-geoip", "Enable IP location information using GeoIP"
 
   head do
     url "https://github.com/allinurl/goaccess.git"
@@ -19,9 +19,9 @@ class Goaccess < Formula
     depends_on "automake" => :build
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'geoip' if build.include? "enable-geoip"
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "geoip" if build.include? "enable-geoip"
 
   def install
     system "autoreconf", "-vfi" if build.head?
