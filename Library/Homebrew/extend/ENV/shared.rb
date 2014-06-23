@@ -9,7 +9,7 @@ module SharedEnvExtension
   GNU_GCC_REGEXP = /gcc-(4\.[3-9])/
 
   COMPILER_SYMBOL_MAP = { 'gcc-4.0'  => :gcc_4_0,
-                          'gcc-4.2'  => :gcc,
+                          (if OS.mac? then 'gcc-4.2' else 'gcc' end) => :gcc,
                           'llvm-gcc' => :llvm,
                           'clang'    => :clang }
 
