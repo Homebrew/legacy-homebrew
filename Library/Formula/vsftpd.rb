@@ -5,6 +5,13 @@ class Vsftpd < Formula
   url 'https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz'
   sha1 'f36976bb1c5df25ac236d8a29e965ba2b825ccd0'
 
+  bottle do
+    cellar :any
+    sha1 "7ad9093e0e863e579cd274fa13a21969d9841534" => :mavericks
+    sha1 "bf00933a7a41662814ccf27cf26b25bd960a8cf3" => :mountain_lion
+    sha1 "f17c1d98cdca0778e93beebe6022a81a1b3b1267" => :lion
+  end
+
   depends_on 'openssl' => :optional
 
   # Patch to remove UTMPX dependency, locate OS X's PAM library, and
