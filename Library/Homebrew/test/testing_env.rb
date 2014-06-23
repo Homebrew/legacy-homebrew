@@ -12,9 +12,13 @@ require 'extend/enumerable'
 require 'exceptions'
 require 'utils'
 require 'rbconfig'
+require 'tmpdir'
+
+tmpdir = Dir.mktmpdir
+at_exit { FileUtils.remove_entry(tmpdir) }
 
 # Constants normally defined in global.rb
-HOMEBREW_PREFIX        = Pathname.new('/private/tmp/testbrew/prefix')
+HOMEBREW_PREFIX        = Pathname.new(tmpdir).join("prefix")
 HOMEBREW_REPOSITORY    = HOMEBREW_PREFIX
 HOMEBREW_LIBRARY       = HOMEBREW_REPOSITORY+'Library'
 HOMEBREW_CACHE         = HOMEBREW_PREFIX.parent+'cache'
@@ -47,8 +51,6 @@ ORIGINAL_PATHS = ENV['PATH'].split(File::PATH_SEPARATOR).map{ |p| Pathname.new(p
 %w{Library/Formula Library/ENV}.each do |d|
   HOMEBREW_REPOSITORY.join(d).mkpath
 end
-
-at_exit { HOMEBREW_PREFIX.parent.rmtree }
 
 # Test fixtures and files can be found relative to this path
 TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
