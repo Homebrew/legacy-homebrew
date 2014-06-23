@@ -42,8 +42,13 @@ if [ -z "$SPARK_HOME" ]; then
   exit 1
 fi
 
+if [ -z "$SPARK_CONF_HOME" ]; then
+  echo "Please set SPARK_CONF_HOME or put it in $appdir/settings.sh first"
+  exit 1
+fi
+
 # Pull in other env vars in spark config, such as MESOS_NATIVE_LIBRARY
-. $SPARK_HOME/conf/spark-env.sh
+. $SPARK_CONF_HOME/spark-env.sh
 
 if [ -z "$LOG_DIR" ]; then
   echo "LOG_DIR empty; logging will go to /tmp/job-server"
