@@ -16,8 +16,8 @@ class UpdaterTests < Homebrew::TestCase
       @outputs[cmd] << output
     end
 
-    def `(cmd, *args)
-      cmd = "#{cmd} #{args*' '}".strip
+    def `(*args)
+      cmd = args.join(" ")
       if @expected.include?(cmd) and !@outputs[cmd].empty?
         @called << cmd
         @outputs[cmd].shift
@@ -25,8 +25,7 @@ class UpdaterTests < Homebrew::TestCase
         raise "#{inspect} unexpectedly called backticks: `#{cmd}`"
       end
     end
-
-    alias safe_system ` #`
+    alias_method :safe_system, :`
 
     def expectations_met?
       @expected == @called
