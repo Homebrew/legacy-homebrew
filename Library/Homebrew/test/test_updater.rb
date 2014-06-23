@@ -4,7 +4,7 @@ require 'yaml'
 
 class UpdaterTests < Homebrew::TestCase
   class UpdaterMock < ::Updater
-    def initialize(*args)
+    def initialize(*)
       super
       @outputs = Hash.new { |h, k| h[k] = [] }
       @expected = []
@@ -42,7 +42,7 @@ class UpdaterTests < Homebrew::TestCase
   end
 
   def setup
-    @updater = UpdaterMock.new
+    @updater = UpdaterMock.new(HOMEBREW_REPOSITORY)
     @report = Report.new
   end
 
