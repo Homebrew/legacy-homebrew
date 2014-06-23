@@ -14,8 +14,10 @@ class Passenger < Formula
   depends_on 'pcre'
   depends_on :macos => :mountain_lion
 
+  option 'without-apache2-module', 'Disable Apache2 module'
+
   def install
-    rake "apache2"
+    rake "apache2" if build.with? "apache2-module"
     rake "nginx"
     rake "webhelper"
 
