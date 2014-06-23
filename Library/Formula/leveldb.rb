@@ -4,6 +4,7 @@ class Leveldb < Formula
   homepage 'https://code.google.com/p/leveldb/'
   url 'https://leveldb.googlecode.com/files/leveldb-1.15.0.tar.gz'
   sha1 '74b70a1156d91807d8d84bfdd026e0bb5acbbf23'
+  revision 1
 
   bottle do
     cellar :any
@@ -24,5 +25,6 @@ class Leveldb < Formula
     lib.install 'libleveldb.dylib.1.15' => 'libleveldb.1.15.dylib'
     lib.install_symlink lib/'libleveldb.1.15.dylib' => 'libleveldb.dylib'
     lib.install_symlink lib/'libleveldb.1.15.dylib' => 'libleveldb.1.dylib'
+    system "install_name_tool", "-id", "#{lib}/libleveldb.1.dylib", "#{lib}/libleveldb.1.15.dylib"
   end
 end
