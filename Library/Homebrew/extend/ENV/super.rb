@@ -103,11 +103,6 @@ module Superenv
     if MacOS::Xcode.without_clt? then MacOS.sdk_path.to_s else "" end
   end
 
-  def determine_cc
-    cc = compiler
-    COMPILER_SYMBOL_MAP.invert.fetch(cc, cc)
-  end
-
   def determine_cxx
     determine_cc.to_s.gsub('gcc', 'g++').gsub('clang', 'clang++')
   end
@@ -249,22 +244,6 @@ module Superenv
     delete('MAKEFLAGS')
   end
   alias_method :j1, :deparallelize
-
-  COMPILER_SYMBOL_MAP.values.each do |compiler|
-    define_method compiler do
-      @compiler = compiler
-      self.cc  = determine_cc
-      self.cxx = determine_cxx
-    end
-  end
-
-  GNU_GCC_VERSIONS.each do |n|
-    define_method(:"gcc-4.#{n}") do
-      @compiler = "gcc-4.#{n}"
-      self.cc  = determine_cc
-      self.cxx = determine_cxx
-    end
-  end
 
   def make_jobs
     self['MAKEFLAGS'] =~ /-\w*j(\d)+/

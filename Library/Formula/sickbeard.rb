@@ -3,13 +3,13 @@ require "formula"
 class Sickbeard < Formula
   homepage "http://www.sickbeard.com/"
   head "https://github.com/midgetspy/Sick-Beard.git"
-  url "https://github.com/midgetspy/Sick-Beard/archive/build-504.tar.gz"
-  sha1 "0785a590a5028f10b3cbbee905e0834c52ac66c9"
+  url "https://github.com/midgetspy/Sick-Beard/archive/build-505.tar.gz"
+  sha1 "ac49ccb36451958e00d842cb89caf55f2fcd45f8"
 
   bottle do
-    sha1 "07c3e428953703fac8d2eb259f0e9a83fdc887ab" => :mavericks
-    sha1 "d9ad02a8db01958162d055c6b0513c50d6ac7c49" => :mountain_lion
-    sha1 "4ab18e78eafaa9add7aaf4711ce5d0ce7607b550" => :lion
+    sha1 "2b0f341d4c6f8b0392b59fe6216d2c35e9975ed0" => :mavericks
+    sha1 "bbaa31a3f83779ff2f8bd0eb84e5005c35ca8f5a" => :mountain_lion
+    sha1 "4dd86fff9ef46a4d58c12eb4ffce0254baedd4f9" => :lion
   end
 
   resource "Markdown" do

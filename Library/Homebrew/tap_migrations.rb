@@ -1,6 +1,7 @@
 TAP_MIGRATIONS = {
   "agedu" => "homebrew/headonly",
   "aimage" => "homebrew/boneyard",
+  "aplus" => "homebrew/boneyard",
   "apple-gcc42" => "homebrew/versions",
   "appledoc" => "homebrew/boneyard",
   "appswitch" => "homebrew/binary",
@@ -13,6 +14,7 @@ TAP_MIGRATIONS = {
   "cloudfoundry-cli" => "pivotal/tap",
   "cmucl" => "homebrew/binary",
   "comparepdf" => "homebrew/boneyard",
+  "connect" => "homebrew/boneyard",
   "denyhosts" => "homebrew/boneyard",
   "dotwrp" => "homebrew/science",
   "drizzle" => "homebrew/boneyard",

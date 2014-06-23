@@ -1,7 +1,7 @@
 require 'cmd/tap'
 require 'cmd/untap'
 
-module Homebrew extend self
+module Homebrew
   def update
     unless ARGV.named.empty?
       abort <<-EOS.undent
@@ -77,18 +77,18 @@ module Homebrew extend self
   private
 
   def git_init_if_necessary
-    if Dir['.git/*'].empty?
+    if Dir[".git/*"].empty?
       repository = if OS.linux? then "linuxbrew" else "homebrew" end
-      safe_system "git init"
-      safe_system "git config core.autocrlf false"
-      safe_system "git remote add origin https://github.com/Homebrew/#{repository}.git"
-      safe_system "git fetch origin"
-      safe_system "git reset --hard origin/master"
+      safe_system "git", "init"
+      safe_system "git", "config", "core.autocrlf", "false"
+      safe_system "git", "remote", "add", "origin", "https://github.com/Homebrew/#{repository}.git"
+      safe_system "git", "fetch", "origin"
+      safe_system "git", "reset", "--hard", "origin/master"
     end
 
     if `git remote show origin -n` =~ /Fetch URL: \S+mxcl\/homebrew/
-      safe_system "git remote set-url origin https://github.com/Homebrew/homebrew.git"
-      safe_system "git remote set-url --delete origin .*mxcl\/homebrew.*"
+      safe_system "git", "remote", "set-url", "origin", "https://github.com/Homebrew/homebrew.git"
+      safe_system "git", "remote", "set-url", "--delete", "origin", ".*mxcl\/homebrew.*"
     end
   rescue Exception
     FileUtils.rm_rf ".git"
@@ -139,12 +139,12 @@ class Updater
   attr_reader :initial_revision, :current_revision
 
   def pull!
-    safe_system "git checkout -q master"
+    safe_system "git", "checkout", "-q", "master"
 
     @initial_revision = read_current_revision
 
     # ensure we don't munge line endings on checkout
-    safe_system "git config core.autocrlf false"
+    safe_system "git", "config", "core.autocrlf", "false"
 
     args = ["pull"]
     args << "--rebase" if ARGV.include? "--rebase"

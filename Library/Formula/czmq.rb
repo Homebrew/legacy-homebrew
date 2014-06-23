@@ -2,15 +2,15 @@ require 'formula'
 
 class Czmq < Formula
   homepage 'http://czmq.zeromq.org/'
-  url 'http://download.zeromq.org/czmq-2.0.3.tar.gz'
-  sha1 'df8e6d547f43545bcd058697a2476474f9e3a0c1'
+  url 'http://download.zeromq.org/czmq-2.2.0.tar.gz'
+  sha1 '8fc5038a8e086a8f0afa6d8f6beea2fe50525ecc'
 
   head do
     url 'https://github.com/zeromq/czmq.git'
 
-    depends_on 'autoconf'
-    depends_on 'automake'
-    depends_on 'libtool'
+    depends_on 'autoconf' => :build
+    depends_on 'automake' => :build
+    depends_on 'libtool' => :build
   end
 
   option :universal
@@ -23,9 +23,12 @@ class Czmq < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+    rm Dir["#{bin}/*.gsl"]
   end
 
   test do
-    system "#{bin}/czmq_selftest"
+    bin.cd do
+      system "#{bin}/czmq_selftest"
+    end
   end
 end

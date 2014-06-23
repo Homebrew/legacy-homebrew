@@ -2,7 +2,7 @@ require 'testing_env'
 require 'extend/set'
 require 'requirements'
 
-class ComparableSetTests < Test::Unit::TestCase
+class ComparableSetTests < Homebrew::TestCase
   def setup
     @set = ComparableSet.new
   end

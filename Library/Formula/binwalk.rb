@@ -14,7 +14,7 @@ class Binwalk < Formula
   depends_on 'libmagic' => 'with-python'
   depends_on 'matplotlib' => :python if build.with? 'matplotlib'
   depends_on 'pyside'
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
 
   resource 'pyqtgraph' do
     url 'http://www.pyqtgraph.org/downloads/pyqtgraph-0.9.8.tar.gz'

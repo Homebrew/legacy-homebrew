@@ -1,7 +1,6 @@
 require 'ostruct'
 
-module Homebrew extend self
-
+module Homebrew
   def link
     raise KegUnspecifiedError if ARGV.named.empty?
 
@@ -50,7 +49,7 @@ module Homebrew extend self
   private
 
   def keg_only?(name)
-    Formula.factory(name).keg_only?
+    Formulary.factory(name).keg_only?
   rescue FormulaUnavailableError
     false
   end

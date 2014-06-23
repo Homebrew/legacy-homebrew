@@ -3,7 +3,7 @@ require 'blacklist'
 require 'utils'
 require 'thread'
 
-module Homebrew extend self
+module Homebrew
 
   SEARCH_ERROR_QUEUE = Queue.new
 

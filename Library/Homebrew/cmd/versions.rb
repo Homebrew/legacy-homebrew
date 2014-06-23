@@ -1,7 +1,6 @@
-require "formula"
 require "formula_versions"
 
-module Homebrew extend self
+module Homebrew
   def versions
     raise "Please `brew install git` first" unless which "git"
     raise "Please `brew update` first" unless (HOMEBREW_REPOSITORY/".git").directory?
@@ -12,7 +11,7 @@ module Homebrew extend self
       Please use the homebrew-versions tap instead:
         https://github.com/Homebrew/homebrew-versions
     EOS
-    ARGV.formulae.all? do |f|
+    ARGV.formulae.each do |f|
       versions = FormulaVersions.new(f)
       path = versions.repository_path
       versions.each do |version, rev|

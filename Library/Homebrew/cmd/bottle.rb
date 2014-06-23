@@ -32,11 +32,7 @@ BOTTLE_ERB = <<-EOS
   end
 EOS
 
-module Homebrew extend self
-  class << self
-    include Utils::Inreplace
-  end
-
+module Homebrew
   def keg_contains string, keg
     if not ARGV.homebrew_developer?
       return quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg
@@ -233,10 +229,10 @@ module Homebrew extend self
       puts output
 
       if ARGV.include? '--write'
-        f = Formula.factory formula_name
+        f = Formulary.factory(formula_name)
         update_or_add = nil
 
-        inreplace f.path do |s|
+        Utils::Inreplace.inreplace(f.path) do |s|
           if s.include? 'bottle do'
             update_or_add = 'update'
             string = s.sub!(/  bottle do.+?end\n/m, output)
@@ -251,9 +247,11 @@ module Homebrew extend self
         version = f.version.to_s
         version += "_#{f.revision}" if f.revision.to_i > 0
 
-        safe_system 'git', 'commit', '--no-edit', '--verbose',
-          "--message=#{f.name}: #{update_or_add} #{version} bottle.",
-          '--', f.path
+        HOMEBREW_REPOSITORY.cd do
+          safe_system "git", "commit", "--no-edit", "--verbose",
+            "--message=#{f.name}: #{update_or_add} #{version} bottle.",
+            "--", f.path
+        end
       end
     end
     exit 0

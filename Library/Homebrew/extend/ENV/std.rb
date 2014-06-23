@@ -99,47 +99,45 @@ module Stdenv
     end
   end
 
-  def gcc_4_0_1
-    self.cc  = MacOS.locate("gcc-4.0")
-    self.cxx = MacOS.locate("g++-4.0")
-    set_cpu_cflags '-march=nocona -mssse3'
-    @compiler = :gcc_4_0
+  def determine_cc
+    s = super
+    MacOS.locate(s) || Pathname.new(s)
   end
-  alias_method :gcc_4_0, :gcc_4_0_1
+
+  def determine_cxx
+    dir, base = determine_cc.split
+    dir / base.to_s.sub("gcc", "g++").sub("clang", "clang++")
+  end
+
+  def gcc_4_0
+    super
+    set_cpu_cflags '-march=nocona -mssse3'
+  end
+  alias_method :gcc_4_0_1, :gcc_4_0
 
   def gcc
-    self.cc  = MacOS.locate("gcc-4.2")
-    self.cxx = MacOS.locate("g++-4.2")
+    super
     set_cpu_cflags
-    @compiler = :gcc
   end
   alias_method :gcc_4_2, :gcc
 
   GNU_GCC_VERSIONS.each do |n|
     define_method(:"gcc-4.#{n}") do
-      gcc = "gcc-4.#{n}"
-      gxx = gcc.gsub('c', '+')
-      self.cc = MacOS.locate(gcc)
-      self.cxx = MacOS.locate(gxx)
+      super()
       set_cpu_cflags
-      @compiler = gcc
     end
   end
 
   def llvm
-    self.cc  = MacOS.locate("llvm-gcc")
-    self.cxx = MacOS.locate("llvm-g++")
+    super
     set_cpu_cflags
-    @compiler = :llvm
   end
 
   def clang
-    self.cc  = MacOS.locate("clang")
-    self.cxx = MacOS.locate("clang++")
+    super
     replace_in_cflags(/-Xarch_#{Hardware::CPU.arch_32_bit} (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
     set_cpu_cflags '-march=native', :nehalem => '-march=native -Xclang -target-feature -Xclang -aes'
-    @compiler = :clang
   end
 
   def remove_macosxsdk version=MacOS.version
