@@ -22,6 +22,11 @@ class Djvulibre < Formula
     system "./configure", "--prefix=#{prefix}", "--disable-desktopfiles"
     system "make"
     system "make install"
+    (share/'doc/djvu').install Dir['doc/*']
+  end
+
+  test do
+    %x[#{bin}/djvused -e n #{share}/doc/djvu/lizard2002.djvu].chomp == "2" #should show count of 2 pages
   end
 end
 
