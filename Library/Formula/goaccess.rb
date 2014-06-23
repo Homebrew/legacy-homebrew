@@ -6,9 +6,9 @@ class Goaccess < Formula
   sha1 "f9e7f277e46af3c97d0f133d7a44031db0c3e531"
 
   bottle do
-    sha1 "081452df0eca44ca9d59591985956090087654e8" => :mavericks
-    sha1 "a74a803534ae1050fea03429b11bb298909ab218" => :mountain_lion
-    sha1 "3a327d75218841c39c356f7c03c8a03212920314" => :lion
+    sha1 "fa8fb53207de715e9b5898b47d8f0ab536ce3b6d" => :mavericks
+    sha1 "54bb6d73d9e97b678ac8aa9efef411189689054b" => :mountain_lion
+    sha1 "53b5930276abb6f3f2d4bf1bf9f79742dad0cd3d" => :lion
   end
 
   option "enable-geoip", "Enable IP location information using GeoIP"
