@@ -25,7 +25,7 @@ module Homebrew
     unlink_tap_formula(tapped_formulae)
 
     report = Report.new
-    master_updater = Updater.new
+    master_updater = Updater.new(HOMEBREW_REPOSITORY)
     begin
       master_updater.pull!
     ensure
@@ -39,7 +39,7 @@ module Homebrew
 
     each_tap do |user, repo|
       repo.cd do
-        updater = Updater.new
+        updater = Updater.new(repo)
 
         begin
           updater.pull!
@@ -135,7 +135,11 @@ module Homebrew
 end
 
 class Updater
-  attr_reader :initial_revision, :current_revision
+  attr_reader :initial_revision, :current_revision, :repository
+
+  def initialize(repository)
+    @repository = repository
+  end
 
   def pull!
     safe_system "git", "checkout", "-q", "master"
@@ -178,7 +182,7 @@ class Updater
           when :R then $3
           else $2
           end
-        map[status] << Pathname.pwd.join(path)
+        map[status] << repository.join(path)
       end
     end
 
