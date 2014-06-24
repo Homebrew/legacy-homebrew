@@ -18,7 +18,7 @@ object SparkJobUtils {
    * @param config the overall Job Server configuration (Typesafe Config)
    * @param contextConfig the Typesafe Config specific to initializing this context
    *                      (typically based on particular context/job)
-   * @param the context name
+   * @param contextName the context name
    * @return a SparkConf with everything properly configured
    */
   def configToSparkConf(config: Config, contextConfig: Config,
