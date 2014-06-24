@@ -120,7 +120,11 @@ class Keg < Pathname
         Find.prune if src.directory?
       end
     end
-    linked_keg_record.unlink if linked_keg_record.symlink?
+
+    if linked_keg_record.symlink?
+      linked_keg_record.unlink
+      linked_keg_record.parent.rmdir_if_possible
+    end
 
     dirs.reverse_each(&:rmdir_if_possible)
 
