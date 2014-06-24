@@ -14,11 +14,18 @@ class Httpie < Formula
     sha1 "53d831b83b1e4d4f16fec604057e70519f9f02fb"
   end
 
+  resource "requests" do
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.3.0.tar.gz"
+    sha1 "f57bc125d35ec01a81afe89f97dc75913a927e65"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec + "lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", prefix + "lib/python2.7/site-packages"
 
-    resource("pygments").stage { system "python", "setup.py", "install", "--prefix=#{libexec}"}
+    install_args = "setup.py", "install", "--prefix=#{libexec}"
+    resource("pygments").stage { system "python", *install_args }
+    resource("requests").stage { system "python", *install_args }
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 
