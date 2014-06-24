@@ -5,10 +5,6 @@ require 'keg'
 
 
 class InstallTests < Homebrew::TestCase
-  def teardown
-    HOMEBREW_CACHE.rmtree
-  end
-
   def temporary_install f
     f.prefix.mkpath
     keg = Keg.new(f.prefix)
@@ -22,6 +18,7 @@ class InstallTests < Homebrew::TestCase
     ensure
       keg.unlink
       keg.uninstall
+      f.clear_cache
     end
 
     refute_predicate keg, :exist?
@@ -29,7 +26,7 @@ class InstallTests < Homebrew::TestCase
   end
 
   def test_a_basic_install
-    f=TestBall.new
+    f = TestBall.new
 
     refute_predicate f, :installed?
 
