@@ -8,8 +8,10 @@ class Isl < Formula
   # and update isl_version() function accordingly.  All other names will
   # result in isl_version() function returning "UNKNOWN" and hence break
   # package detection.
-  url 'http://isl.gforge.inria.fr/isl-0.12.2.tar.bz2'
-  sha1 'ca98a91e35fb3ded10d080342065919764d6f928'
+  # The previously website linked appears to be stone cold dead.
+  # There doesn't seem to be a stable front anymore. Suggesting this instead -
+  url 'http://repo.or.cz/w/isl.git/snapshot/163646566efd07086ed4fbe99ecbf8d5bb8ebca0.tar.gz'
+  sha1 '03b620d4dbb16b72e12373493985077ab259281c'
 
   bottle do
     cellar :any
@@ -24,12 +26,14 @@ class Isl < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+    depends_on "autogen" => :build
   end
 
   depends_on 'gmp'
 
+  # Autogen now mandatory whilst using new link.
   def install
-    system "./autogen.sh" if build.head?
+    system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
