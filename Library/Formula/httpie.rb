@@ -7,6 +7,13 @@ class Httpie < Formula
 
   head "https://github.com/jakubroztocil/httpie.git"
 
+  bottle do
+    cellar :any
+    sha1 "59556815d9feb0f6906d8de7070817d1d2307b1a" => :mavericks
+    sha1 "aea54afe0a658cc5de878e243457488bdd356bd6" => :mountain_lion
+    sha1 "9a4957724c5a773008dda11872ae661031af95de" => :lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "pygments" do
