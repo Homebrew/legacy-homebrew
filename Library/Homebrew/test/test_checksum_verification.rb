@@ -15,6 +15,10 @@ class ChecksumTests < Homebrew::TestCase
     @_f.stable.instance_eval(&block)
   end
 
+  def teardown
+    @_f.clear_cache
+  end
+
   def test_good_sha1
     formula do
       sha1 '482e737739d946b7c8cbaf127d9ee9c148b999f5'
