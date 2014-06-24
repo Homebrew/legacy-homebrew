@@ -21,6 +21,7 @@ class Autogen < Formula
 
   def install
     system "./configure", "--disable-debug",
+                          "--disable-shared",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
 
