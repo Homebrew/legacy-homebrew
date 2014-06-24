@@ -34,14 +34,9 @@ class Httpie < Formula
     resource("pygments").stage { system "python", *install_args }
     resource("requests").stage { system "python", *install_args }
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    system "python", "setup.py", "install", "--prefix=#{libexec}"
 
-    # These are now rolled into 1.6 and cause linking conflicts
-    rm [Dir.glob("#{bin}/easy_install*"),
-        "#{lib}/python2.7/site-packages/site.py",
-        Dir.glob("#{lib}/python2.7/site-packages/*.pth")]
-
-    bin.env_script_all_files(libexec + "bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    (bin/"http").write_env_script libexec/"bin/http", :PYTHONPATH => ENV["PYTHONPATH"]
   end
 
   test do
