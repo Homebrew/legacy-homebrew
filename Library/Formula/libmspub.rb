@@ -6,6 +6,10 @@ class Libmspub < Formula
   sha1 "4dc9b9c85cb1c30dde071a88edf40a629b6de666"
 
   bottle do
+    cellar :any
+    sha1 "a851788338a9fe73b27d69f363e5c5961c077d27" => :mavericks
+    sha1 "7593f6502162d3012b41580554feea65e429c8d2" => :mountain_lion
+    sha1 "3eda7f552d5fa7e097a9ee306ec5b5b8731102a4" => :lion
   end
 
   depends_on "pkg-config" => :build
