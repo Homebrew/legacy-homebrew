@@ -2,8 +2,8 @@ require 'formula'
 
 class Inkscape < Formula
   homepage 'http://inkscape.org/'
-  url 'https://downloads.sourceforge.net/project/inkscape/inkscape/0.48.4/inkscape-0.48.4.tar.gz'
-  sha1 'ce453cc9aff56c81d3b716020cd8cc7fa1531da0'
+  url 'https://downloads.sourceforge.net/project/inkscape/inkscape/0.48.5/inkscape-0.48.5.tar.gz'
+  sha1 'e14789da0f6b5b84ef26f6759e295bc4be7bd34d'
 
   head do
     url 'lp:inkscape/0.48.x', :using => :bzr
@@ -29,13 +29,16 @@ class Inkscape < Formula
   depends_on 'poppler' => :optional
   depends_on 'hicolor-icon-theme'
 
-  fails_with :clang unless build.head?
+  needs :cxx11
+
+  fails_with :clang do
+    cause "inkscape's dependencies will be built with libstdc++ and fail to link."
+  end if MacOS.version < :mavericks
 
   def install
-    if build.head?
-      system "./autogen.sh"
-      ENV.cxx11
-    end
+    ENV.cxx11
+
+    system "./autogen.sh" if build.head?
 
     args = [ "--disable-dependency-tracking",
              "--prefix=#{prefix}",
