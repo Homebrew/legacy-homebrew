@@ -25,6 +25,16 @@ class LinkTests < Homebrew::TestCase
     mkpath HOMEBREW_PREFIX/"lib"
   end
 
+  def teardown
+    @keg.unlink
+    @keg.uninstall
+
+    $stdout = @old_stdout
+
+    rmtree HOMEBREW_PREFIX/"bin"
+    rmtree HOMEBREW_PREFIX/"lib"
+  end
+
   def test_linking_keg
     assert_equal 3, @keg.link
     (HOMEBREW_PREFIX/"bin").children.each { |c| assert_predicate c.readlink, :relative? }
@@ -114,15 +124,5 @@ class LinkTests < Homebrew::TestCase
 
     refute_predicate HOMEBREW_PREFIX/"lib/foo", :directory?
     refute_predicate HOMEBREW_PREFIX/"lib/foo/.DS_Store", :exist?
-  end
-
-  def teardown
-    @keg.unlink
-    @keg.rmtree
-
-    $stdout = @old_stdout
-
-    rmtree HOMEBREW_PREFIX/"bin"
-    rmtree HOMEBREW_PREFIX/"lib"
   end
 end
