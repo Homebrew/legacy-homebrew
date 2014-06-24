@@ -70,7 +70,7 @@ module Homebrew
       puts "Would remove: #{keg}"
     else
       puts "Removing: #{keg}..."
-      keg.rmtree
+      keg.uninstall
     end
   end
 
