@@ -14,11 +14,11 @@ require 'utils'
 require 'rbconfig'
 require 'tmpdir'
 
-tmpdir = Dir.mktmpdir("homebrew_tests")
-at_exit { FileUtils.remove_entry(tmpdir) }
+TEST_TMPDIR = Dir.mktmpdir("homebrew_tests")
+at_exit { FileUtils.remove_entry(TEST_TMPDIR) }
 
 # Constants normally defined in global.rb
-HOMEBREW_PREFIX        = Pathname.new(tmpdir).join("prefix")
+HOMEBREW_PREFIX        = Pathname.new(TEST_TMPDIR).join("prefix")
 HOMEBREW_REPOSITORY    = HOMEBREW_PREFIX
 HOMEBREW_LIBRARY       = HOMEBREW_REPOSITORY+'Library'
 HOMEBREW_CACHE         = HOMEBREW_PREFIX.parent+'cache'
