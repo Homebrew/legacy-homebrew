@@ -2,9 +2,9 @@ require 'formula'
 
 class Gnupg < Formula
   homepage 'http://www.gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.16.tar.bz2'
-  mirror 'http://mirror.switch.ch/ftp/mirror/gnupg/gnupg/gnupg-1.4.16.tar.bz2'
-  sha1 '0bf5e475f3eb6f33d5474d017fe5bf66070e43f4'
+  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.17.tar.bz2'
+  mirror 'http://mirror.switch.ch/ftp/mirror/gnupg/gnupg/gnupg-1.4.17.tar.bz2'
+  sha1 '830c7f749ad92d6577c521addea5e5d920128d42'
 
   bottle do
     sha1 "eb0eb56c77ee61a43ec63393cf63493f0a04c4aa" => :mavericks
