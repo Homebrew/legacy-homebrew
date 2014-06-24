@@ -48,9 +48,8 @@ MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }
 ORIGINAL_PATHS = ENV['PATH'].split(File::PATH_SEPARATOR).map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 
 # Test environment setup
-%w{Library/Formula Library/ENV}.each do |d|
-  HOMEBREW_REPOSITORY.join(d).mkpath
-end
+%w{ENV Formula}.each { |d| HOMEBREW_LIBRARY.join(d).mkpath }
+%w{cache formula_cache cellar logs}.each { |d| HOMEBREW_PREFIX.parent.join(d).mkpath }
 
 # Test fixtures and files can be found relative to this path
 TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
