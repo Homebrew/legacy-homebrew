@@ -130,7 +130,7 @@ class Keg < Pathname
       end
     end
 
-    if linked_keg_record.symlink?
+    if linked?
       linked_keg_record.unlink
       linked_keg_record.parent.rmdir_if_possible
     end
