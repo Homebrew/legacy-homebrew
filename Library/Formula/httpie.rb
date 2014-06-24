@@ -15,7 +15,6 @@ class Httpie < Formula
   end
 
   def install
-    ENV["PYTHONPATH"] = lib + "python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec + "lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", prefix + "lib/python2.7/site-packages"
 
@@ -24,7 +23,11 @@ class Httpie < Formula
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 
     # These are now rolled into 1.6 and cause linking conflicts
-    rm [Dir.glob("#{bin}/easy_install*"), "#{lib}/python2.7/site-packages/site.py", Dir.glob("#{lib}/python2.7/site-packages/*.pth")]
+    rm [
+      Dir.glob("#{bin}/easy_install*"),
+      "#{lib}/python2.7/site-packages/site.py",
+      Dir.glob("#{lib}/python2.7/site-packages/*.pth")
+      ]
 
     bin.env_script_all_files(libexec + "bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
