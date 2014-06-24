@@ -13,7 +13,7 @@ class AdobeAirSdk < Formula
     sha1 "e88f65c5c813f8000cb170cec1a7689695d2e797"
   else
     url "http://airdownload.adobe.com/air/mac/download/14.0/AdobeAIRSDK.tbz2"
-    sha1 "e88f65c5c813f8000cb170cec1a7689695d2e797"
+    sha1 "ffc5f4093feb5a1cf2efcb8854f2328593db828c"
   end
 
   def install
