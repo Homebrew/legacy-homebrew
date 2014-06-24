@@ -6,7 +6,6 @@ class Yarp < Formula
   url "https://github.com/robotology/yarp/archive/v2.3.62.tar.gz"
   sha1 "148fc9d77cc4b68119c31066b452e9607de0f066"
 
-  option "enable-rpath", "Enable building with @rpath. Binaries will be linked with the absolute library path"
   option "without-shared", "Build only static version of YARP libraries"
 
   depends_on "pkg-config" => :build
@@ -42,7 +41,6 @@ class Yarp < Formula
       -DCREATE_GYARPMANAGER=TRUE
       ]
 
-      args << "-DINSTALL_WITH_RPATH:BOOL=TRUE" if build.include? "enable-rpath"
       if build.without? "shared"
         args << "-DCREATE_SHARED_LIBRARY:BOOL=FALSE"
       else
