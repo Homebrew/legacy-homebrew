@@ -56,7 +56,7 @@ class Rabbitmq < Formula
   end
 
   def rabbitmq_env; <<-EOS.undent
-    CONFIG_FILE=#{etc}/rabbitmq/rabbitmq
+    CONFIG_FILE=#{etc}/rabbitmq/rabbitmq.config
     NODE_IP_ADDRESS=127.0.0.1
     NODENAME=rabbit@localhost
     EOS
