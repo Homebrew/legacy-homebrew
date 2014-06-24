@@ -88,10 +88,13 @@ class Keg < Pathname
     raise NotAKegError, "#{path} is not inside a keg"
   end
 
+  attr_reader :linked_keg_record
+
   def initialize path
     super path
     raise "#{to_s} is not a valid keg" unless parent.parent.realpath == HOMEBREW_CELLAR.realpath
     raise "#{to_s} is not a directory" unless directory?
+    @linked_keg_record = HOMEBREW_LIBRARY.join("LinkedKegs", fname)
   end
 
   def uninstall
@@ -143,10 +146,6 @@ class Keg < Pathname
 
   def lock
     FormulaLock.new(fname).with_lock { yield }
-  end
-
-  def linked_keg_record
-    @linked_keg_record ||= HOMEBREW_REPOSITORY/"Library/LinkedKegs"/fname
   end
 
   def linked?
