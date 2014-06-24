@@ -2,8 +2,8 @@ require 'formula'
 
 class Etcd < Formula
   homepage 'https://github.com/coreos/etcd'
-  url 'https://github.com/coreos/etcd/archive/v0.4.3.tar.gz'
-  sha1 '88f44f3a09911fb60fcebcf0ea0f0bbeea2f9bf6'
+  url 'https://github.com/coreos/etcd/archive/v0.4.4.tar.gz'
+  sha1 '49cac150a302200eaa253e1ab0c888c7bad9bc8e'
   head 'https://github.com/coreos/etcd.git'
 
   bottle do
