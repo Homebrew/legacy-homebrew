@@ -23,6 +23,7 @@ class FormulaPin
 
   def unpin
     path.unlink if pinned?
+    PINDIR.rmdir_if_possible
   end
 
   def pinned?
