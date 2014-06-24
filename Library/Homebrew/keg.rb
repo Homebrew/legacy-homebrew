@@ -149,7 +149,9 @@ class Keg < Pathname
   end
 
   def linked?
-    linked_keg_record.directory? && self == linked_keg_record.resolved_path
+    linked_keg_record.symlink? &&
+      linked_keg_record.directory? &&
+      self == linked_keg_record.resolved_path
   end
 
   def completion_installed? shell
