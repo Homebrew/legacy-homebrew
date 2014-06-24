@@ -90,8 +90,32 @@ module Homebrew
     end
   end
 
+  module FSLeakLogger
+    def self.included(klass)
+      require "find"
+      @@log = File.open("fs_leak_log", "w")
+      klass.make_my_diffs_pretty!
+    end
+
+    def before_setup
+      @__files_before_test = []
+      Find.find(TEST_TMPDIR) { |f| @__files_before_test << f.sub(TEST_TMPDIR, "") }
+      super
+    end
+
+    def after_teardown
+      super
+      files_after_test = []
+      Find.find(TEST_TMPDIR) { |f| files_after_test << f.sub(TEST_TMPDIR, "") }
+      if @__files_before_test != files_after_test
+        @@log.puts location, diff(@__files_before_test, files_after_test)
+      end
+    end
+  end
+
   class TestCase < ::Minitest::Test
     include VersionAssertions
+    include FSLeakLogger if ENV["LOG_FS_LEAKS"]
 
     TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
     TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
