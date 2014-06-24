@@ -5,6 +5,12 @@ class Inkscape < Formula
   url 'https://downloads.sourceforge.net/project/inkscape/inkscape/0.48.5/inkscape-0.48.5.tar.gz'
   sha1 'e14789da0f6b5b84ef26f6759e295bc4be7bd34d'
 
+  bottle do
+    sha1 "284ea91d099a9561e0c87001641539c2a4038baf" => :mavericks
+    sha1 "bafdb00a9a3b23243e2ae03d2ae1155c3ffc246c" => :mountain_lion
+    sha1 "56127cf9ebfe7c476e8b8bb2cb334bc5af4f4296" => :lion
+  end
+
   head do
     url 'lp:inkscape/0.48.x', :using => :bzr
 
