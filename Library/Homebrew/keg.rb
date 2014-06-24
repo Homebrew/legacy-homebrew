@@ -97,6 +97,12 @@ class Keg < Pathname
   def uninstall
     rmtree
     parent.rmdir_if_possible
+
+    opt = HOMEBREW_PREFIX.join("opt", fname)
+    if opt.symlink? && self == opt.resolved_path
+      opt.unlink
+      opt.parent.rmdir_if_possible
+    end
   end
 
   def unlink
