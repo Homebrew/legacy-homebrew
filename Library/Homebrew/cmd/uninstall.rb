@@ -22,8 +22,11 @@ module Homebrew
 
         if rack.directory?
           puts "Uninstalling #{name}..."
-          rack.subdirs.each { |d| Keg.new(d).unlink }
-          rack.rmtree
+          rack.subdirs.each do |d|
+            keg = Keg.new(d)
+            keg.unlink
+            keg.uninstall
+          end
         end
 
         rm_opt_link name
