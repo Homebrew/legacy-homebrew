@@ -2,11 +2,11 @@ require 'formula'
 
 class Rabbitmq < Formula
   homepage 'http://www.rabbitmq.com'
-  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.3.3/rabbitmq-server-mac-standalone-3.3.3.tar.gz'
-  sha1 'eea0b82e766face3ce286a2040b8d474b9bc3879'
+  url 'http://www.rabbitmq.com/releases/rabbitmq-server/v3.3.4/rabbitmq-server-mac-standalone-3.3.4.tar.gz'
+  sha1 '4493b05c74f3f6660f7ff1665d5774004c53b453'
 
   bottle do
-    sha1 "f49ac3a96a934cbabdd2c663ab2b93007c75806b" => :mavericks
+    sha1 "f09be69282144a73d557d99dd94ff5b3db55396e" => :mavericks
     sha1 "6138c43a63c7639d3613269b640f94a53828ecbc" => :mountain_lion
     sha1 "e40d2188e21d4a59e42ed4ea4ddfddd9c3f78caf" => :lion
   end
