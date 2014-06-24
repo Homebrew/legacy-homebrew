@@ -16,21 +16,17 @@ class Httpie < Formula
 
   def install
     ENV["PYTHONPATH"] = lib + "python2.7/site-packages"
-    ENV.prepend_create_path 'PYTHONPATH', libexec + 'lib/python2.7/site-packages'
-    # HEAD additionally requires this to be present in PYTHONPATH, or else
-    # httpie's own setup.py will fail.
-    ENV.prepend_create_path 'PYTHONPATH', prefix + 'lib/python2.7/site-packages'
+    ENV.prepend_create_path "PYTHONPATH", libexec + "lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", prefix + "lib/python2.7/site-packages"
 
     resource("pygments").stage { system "python", "setup.py", "install", "--prefix=#{libexec}"}
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 
     # These are now rolled into 1.6 and cause linking conflicts
-    rm Dir["#{bin}/easy_install*"]
-    rm "#{lib}/python2.7/site-packages/site.py"
-    rm Dir["#{lib}/python2.7/site-packages/*.pth"]
+    rm [Dir.glob("#{bin}/easy_install*"), "#{lib}/python2.7/site-packages/site.py", Dir.glob("#{lib}/python2.7/site-packages/*.pth")]
 
-    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+    bin.env_script_all_files(libexec + "bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
