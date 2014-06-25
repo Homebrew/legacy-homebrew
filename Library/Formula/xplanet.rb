@@ -27,9 +27,9 @@ class Xplanet < Formula
   depends_on "libpng" => :recommended
   depends_on "libtiff" => :recommended
 
-  depends_on "netpbm" if build.with?("netpbm") || build.with?("all")
-  depends_on "pango" if build.with?("pango") || build.with?("all")
-  depends_on "cspice" if build.with?("cspice") || build.with?("all")
+  depends_on "netpbm" => :optional
+  depends_on "pango" => :optional
+  depends_on "cspice" => :optional
 
   depends_on "freetype"
   depends_on :x11 => :optional
@@ -38,12 +38,23 @@ class Xplanet < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --without-cygwin
     ]
 
-    if build.with? "x11"
-      args << "--with-x"
+    if build.without?("all")
+      args << "--without-gif" if build.without?("giflib")
+      args << "--without-jpeg" if build.without?("jpeg")
+      args << "--without-libpng" if build.without?("libpng")
+      args << "--without-libtiff" if build.without?("libtiff")
+      args << "--without-pnm" if build.without?("netpbm")
+      args << "--without-pango" if build.without?("pango")
+      args << "--without-cspice" if build.without?("cspice")
+    end
+
+    if build.with?("x11")
+      args << "--with-x" << "--with-xscreensaver" << "--without-aqua"
     else
-      args << "--with-aqua" << "--without-x"
+      args << "--with-aqua" << "--without-x" << "--without-xscreensaver"
     end
 
     if build.with?("netpbm") || build.with?("all")
