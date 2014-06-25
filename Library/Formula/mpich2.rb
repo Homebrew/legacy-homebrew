@@ -4,9 +4,9 @@ require 'formula'
 # formula renames, see homebrew issue #14374.
 class Mpich2 < Formula
   homepage 'http://www.mpich.org/'
-  url 'http://www.mpich.org/static/downloads/3.1/mpich-3.1.tar.gz'
-  mirror 'http://fossies.org/linux/misc/mpich-3.1.tar.gz'
-  sha1 'ac3e79482b7645f9512f687404e9be29855258e9'
+  url 'http://www.mpich.org/static/downloads/3.1.1/mpich-3.1.1.tar.gz'
+  mirror 'http://fossies.org/linux/misc/mpich-3.1.1.tar.gz'
+  sha1 '528d225a67d16843ffd963e4e1ec93d7053cab57'
 
   head do
     url 'git://git.mpich.org/mpich.git'
@@ -14,11 +14,6 @@ class Mpich2 < Formula
     depends_on 'autoconf' => :build
     depends_on 'automake' => :build
     depends_on 'libtool'  => :build
-  end
-
-  devel do
-    url 'http://www.mpich.org/static/downloads/3.1/mpich-3.1.tar.gz'
-    sha1 'ac3e79482b7645f9512f687404e9be29855258e9'
   end
 
   option 'disable-fortran', "Do not attempt to build Fortran bindings"
