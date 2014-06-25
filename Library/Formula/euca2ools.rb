@@ -18,6 +18,11 @@ class Euca2ools < Formula
     sha1 "f57bc125d35ec01a81afe89f97dc75913a927e65"
   end
 
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.2.tar.gz"
+    sha1 "749f1ea153426866d6117d00256cf37c90b1b4f5"
+  end
+
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.7.2.tar.gz"
     sha1 "6ed970106d18e48b361b09c227dac83b4cc72f26"
@@ -35,6 +40,7 @@ class Euca2ools < Formula
 
     resource("requestbuilder").stage { system "python", *install_args }
     resource("requests").stage { system "python", *install_args }
+    resource("setuptools").stage { system "python", *install_args }
     resource("lxml").stage { system "python", *install_args }
     resource("six").stage { system "python", *install_args }
 
