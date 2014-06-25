@@ -7,7 +7,7 @@ class Keg < Pathname
   class AlreadyLinkedError < RuntimeError
     def initialize(keg)
       super <<-EOS.undent
-        Cannot link #{keg.fname}
+        Cannot link #{keg.name}
         Another version is already linked: #{keg.linked_keg_record.resolved_path}
         EOS
     end
@@ -30,8 +30,8 @@ class Keg < Pathname
       "already exists. You may want to remove it:\n  rm #{dst}\n"
     else
       <<-EOS.undent
-      is a symlink belonging to #{conflict.fname}. You can unlink it:
-        brew unlink #{conflict.fname}
+      is a symlink belonging to #{conflict.name}. You can unlink it:
+        brew unlink #{conflict.name}
       EOS
     end
 
@@ -41,10 +41,10 @@ class Keg < Pathname
       s << "Target #{dst}" << suggestion
       s << <<-EOS.undent
         To force the link and overwrite all conflicting files:
-          brew link --overwrite #{keg.fname}
+          brew link --overwrite #{keg.name}
 
         To list all files that would be deleted:
-          brew link --overwrite --dry-run #{keg.fname}
+          brew link --overwrite --dry-run #{keg.name}
         EOS
       s.join("\n")
     end
@@ -88,20 +88,22 @@ class Keg < Pathname
     raise NotAKegError, "#{path} is not inside a keg"
   end
 
-  attr_reader :linked_keg_record
+  attr_reader :name, :linked_keg_record
+  alias_method :fname, :name
 
   def initialize path
     super path
     raise "#{to_s} is not a valid keg" unless parent.parent.realpath == HOMEBREW_CELLAR.realpath
     raise "#{to_s} is not a directory" unless directory?
-    @linked_keg_record = HOMEBREW_LIBRARY.join("LinkedKegs", fname)
+    @name = parent.basename.to_s
+    @linked_keg_record = HOMEBREW_LIBRARY.join("LinkedKegs", name)
   end
 
   def uninstall
     rmtree
     parent.rmdir_if_possible
 
-    opt = HOMEBREW_PREFIX.join("opt", fname)
+    opt = HOMEBREW_PREFIX.join("opt", name)
     if opt.symlink? && self == opt.resolved_path
       opt.unlink
       opt.parent.rmdir_if_possible
@@ -140,12 +142,8 @@ class Keg < Pathname
     ObserverPathnameExtension.total
   end
 
-  def fname
-    parent.basename.to_s
-  end
-
   def lock
-    FormulaLock.new(fname).with_lock { yield }
+    FormulaLock.new(name).with_lock { yield }
   end
 
   def linked?
@@ -259,7 +257,7 @@ class Keg < Pathname
   end
 
   def optlink
-    from = HOMEBREW_PREFIX.join("opt", fname)
+    from = HOMEBREW_PREFIX.join("opt", name)
     if from.symlink?
       from.delete
     elsif from.directory?
