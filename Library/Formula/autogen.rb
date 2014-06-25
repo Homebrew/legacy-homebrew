@@ -7,6 +7,7 @@ class Autogen < Formula
   sha1 'a02b9db78793ec0bfe76835937d4153e90d4c0de'
 
   depends_on 'guile'
+  depends_on 'bdw-gc'
 
   fails_with :clang do
     build 500
@@ -21,7 +22,7 @@ class Autogen < Formula
 
   def install
     system "./configure", "--disable-debug",
-                          "--with-libguile-libs='-L/usr/local/Cellar/guile/2.0.11/lib -L/usr/local/Cellar/bdw-gc/7.4.2/lib -lguile-2.0 -lgc'",
+                          "--with-libguile-libs='-L/usr/local/Cellar/guile/2.0.11/lib -lguile -lm -R/usr/local/Cellar/guile/2.0.11/lib",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
 
