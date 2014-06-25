@@ -57,7 +57,15 @@ module Stdenv
 
     append 'LDFLAGS', '-Wl,-headerpad_max_install_names'
 
-    send(compiler) unless inherit?
+    if inherit?
+      # Inherit CC, CXX and compiler flags from the parent environment.
+    elsif respond_to?(compiler)
+      send(compiler)
+    else
+      self.cc = determine_cc
+      self.cxx = determine_cxx
+      set_cpu_cflags
+    end
     validate_cc!(formula) unless formula.nil?
 
     if !inherit? && cc =~ GNU_GCC_REGEXP
