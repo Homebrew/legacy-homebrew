@@ -7,8 +7,7 @@ class Mdr < Formula
 
   def install
     system "rake"
-    system "rake", "release"
-    libexec.install Dir['release/*']
+    libexec.install Dir["*"]
     bin.install_symlink libexec+'mdr'
   end
 end
