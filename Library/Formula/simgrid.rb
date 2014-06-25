@@ -2,10 +2,11 @@ require 'formula'
 
 class Simgrid < Formula
   homepage 'http://simgrid.gforge.inria.fr'
-  url 'http://gforge.inria.fr/frs/download.php/32047/SimGrid-3.9.tar.gz'
-  sha1 '54e3b718d7b07afdefab6c433e11d1a7bf4cb499'
+  url 'http://gforge.inria.fr/frs/download.php/file/33686/SimGrid-3.11.1.tar.gz'
+  sha1 'b00585e2ed11d016eff6252384205e1e990f5895'
 
   depends_on 'cmake' => :build
+  depends_on 'boost'
   depends_on 'pcre'
   depends_on 'graphviz'
 
