@@ -19,8 +19,8 @@ class Euca2ools < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-4.0.tar.gz"
-    sha1 "ff9212d50573ea9983d81d53bd11e834cf863b25"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.2.tar.gz"
+    sha1 "749f1ea153426866d6117d00256cf37c90b1b4f5"
   end
 
   resource "six" do
