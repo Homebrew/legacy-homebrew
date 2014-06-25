@@ -43,8 +43,7 @@ if [ -z "$SPARK_HOME" ]; then
 fi
 
 if [ -z "$SPARK_CONF_HOME" ]; then
-  echo "Please set SPARK_CONF_HOME or put it in $appdir/settings.sh first"
-  exit 1
+  SPARK_CONF_HOME=$SPARK_HOME/conf
 fi
 
 # Pull in other env vars in spark config, such as MESOS_NATIVE_LIBRARY
