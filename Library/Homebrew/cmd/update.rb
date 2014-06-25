@@ -1,7 +1,7 @@
 require 'cmd/tap'
 require 'cmd/untap'
 
-module Homebrew extend self
+module Homebrew
   def update
     unless ARGV.named.empty?
       abort <<-EOS.undent
@@ -25,7 +25,7 @@ module Homebrew extend self
     unlink_tap_formula(tapped_formulae)
 
     report = Report.new
-    master_updater = Updater.new
+    master_updater = Updater.new(HOMEBREW_REPOSITORY)
     begin
       master_updater.pull!
     ensure
@@ -39,7 +39,7 @@ module Homebrew extend self
 
     each_tap do |user, repo|
       repo.cd do
-        updater = Updater.new
+        updater = Updater.new(repo)
 
         begin
           updater.pull!
@@ -77,17 +77,17 @@ module Homebrew extend self
   private
 
   def git_init_if_necessary
-    if Dir['.git/*'].empty?
-      safe_system "git init"
-      safe_system "git config core.autocrlf false"
-      safe_system "git remote add origin https://github.com/Homebrew/homebrew.git"
-      safe_system "git fetch origin"
-      safe_system "git reset --hard origin/master"
+    if Dir[".git/*"].empty?
+      safe_system "git", "init"
+      safe_system "git", "config", "core.autocrlf", "false"
+      safe_system "git", "remote", "add", "origin", "https://github.com/Homebrew/homebrew.git"
+      safe_system "git", "fetch", "origin"
+      safe_system "git", "reset", "--hard", "origin/master"
     end
 
     if `git remote show origin -n` =~ /Fetch URL: \S+mxcl\/homebrew/
-      safe_system "git remote set-url origin https://github.com/Homebrew/homebrew.git"
-      safe_system "git remote set-url --delete origin .*mxcl\/homebrew.*"
+      safe_system "git", "remote", "set-url", "origin", "https://github.com/Homebrew/homebrew.git"
+      safe_system "git", "remote", "set-url", "--delete", "origin", ".*mxcl\/homebrew.*"
     end
   rescue Exception
     FileUtils.rm_rf ".git"
@@ -135,15 +135,19 @@ module Homebrew extend self
 end
 
 class Updater
-  attr_reader :initial_revision, :current_revision
+  attr_reader :initial_revision, :current_revision, :repository
+
+  def initialize(repository)
+    @repository = repository
+  end
 
   def pull!
-    safe_system "git checkout -q master"
+    safe_system "git", "checkout", "-q", "master"
 
     @initial_revision = read_current_revision
 
     # ensure we don't munge line endings on checkout
-    safe_system "git config core.autocrlf false"
+    safe_system "git", "config", "core.autocrlf", "false"
 
     args = ["pull"]
     args << "--rebase" if ARGV.include? "--rebase"
@@ -178,7 +182,7 @@ class Updater
           when :R then $3
           else $2
           end
-        map[status] << Pathname.pwd.join(path)
+        map[status] << repository.join(path)
       end
     end
 
@@ -192,7 +196,7 @@ class Updater
   end
 
   def `(cmd)
-    out = Kernel.`(cmd) #`
+    out = super
     if $? && !$?.success?
       $stderr.puts out
       raise ErrorDuringExecution, "Failure while executing: #{cmd}"

@@ -2,22 +2,27 @@ require 'testing_env'
 require 'formula'
 require 'testball'
 
-class PatchingTests < Test::Unit::TestCase
-  PATCH_URL_A = "file:///#{TEST_DIRECTORY}/patches/noop-a.diff"
-  PATCH_URL_B = "file:///#{TEST_DIRECTORY}/patches/noop-b.diff"
+class PatchingTests < Homebrew::TestCase
+  PATCH_URL_A = "file://#{TEST_DIRECTORY}/patches/noop-a.diff"
+  PATCH_URL_B = "file://#{TEST_DIRECTORY}/patches/noop-b.diff"
 
   def formula(&block)
     super do
-      url "file:///#{TEST_DIRECTORY}/tarballs/testball-0.1.tbz"
+      url "file://#{TEST_DIRECTORY}/tarballs/testball-0.1.tbz"
       sha1 "482e737739d946b7c8cbaf127d9ee9c148b999f5"
       class_eval(&block)
     end
   end
 
+  def teardown
+    @_f.clear_cache
+    @_f.patchlist.select(&:external?).each(&:clear_cache)
+  end
+
   def assert_patched(path)
     s = File.read(path)
-    assert !s.include?("NOOP"), "File was unpatched."
-    assert s.include?("ABCD"), "File was not patched as expected."
+    refute_includes s, "NOOP", "#{path} was not patched as expected"
+    assert_includes s, "ABCD", "#{path} was not patched as expected"
   end
 
   def test_single_patch

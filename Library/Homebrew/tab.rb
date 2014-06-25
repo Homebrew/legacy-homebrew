@@ -47,7 +47,7 @@ class Tab < OpenStruct
   end
 
   def self.for_name name
-    for_formula(Formula.factory(name))
+    for_formula(Formulary.factory(name))
   end
 
   def self.for_formula f

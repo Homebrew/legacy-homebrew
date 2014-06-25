@@ -1,6 +1,6 @@
 require 'hardware'
 
-module Homebrew extend self
+module Homebrew
   def config
     dump_verbose_config
   end

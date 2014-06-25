@@ -7,8 +7,8 @@ class Nginx < Formula
   revision 1
 
   devel do
-    url 'http://nginx.org/download/nginx-1.7.1.tar.gz'
-    sha1 'd1860abfc4f4a949361a46b835b69dede5472b02'
+    url 'http://nginx.org/download/nginx-1.7.2.tar.gz'
+    sha1 '2537cba3c9c7f70fcfe5732b46ace38bf2a161c1'
   end
 
   head 'http://hg.nginx.org/nginx/', :using => :hg
@@ -121,7 +121,7 @@ class Nginx < Formula
 
   def passenger_caveats; <<-EOS.undent
 
-    To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf:
+    To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf, inside the 'http' context:
       passenger_root #{HOMEBREW_PREFIX}/opt/passenger/libexec/lib/phusion_passenger/locations.ini
       passenger_ruby /usr/bin/ruby
     EOS

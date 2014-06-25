@@ -40,7 +40,7 @@ def debrew(exception, formula=nil)
   raise exception unless $debugged_exceptions.add?(exception)
 
   puts "#{exception.backtrace.first}"
-  puts "#{Tty.red}#{exception.class.to_s}#{Tty.reset}: #{exception.to_s}"
+  puts "#{Tty.red}#{exception.class.name}#{Tty.reset}: #{exception}"
 
   begin
     again = false

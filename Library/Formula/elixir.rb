@@ -3,6 +3,7 @@ require 'formula'
 class ErlangInstalled < Requirement
   fatal true
   env :userpaths
+  default_formula "erlang"
 
   satisfy {
     erl = which('erl') and begin
@@ -15,7 +16,7 @@ class ErlangInstalled < Requirement
     Erlang 17 is required to install.
 
     You can install this with:
-      brew install erlang --devel
+      brew install erlang
 
     Or you can use an official installer from:
       http://www.erlang.org/
@@ -25,8 +26,8 @@ end
 
 class Elixir < Formula
   homepage 'http://elixir-lang.org/'
-  url  'https://github.com/elixir-lang/elixir/archive/v0.13.3.tar.gz'
-  sha1 '973110c12e75d04ee68394a79e207b8c6b220d0b'
+  url  'https://github.com/elixir-lang/elixir/archive/v0.14.1.tar.gz'
+  sha1 '272abd87a04c592a83f43041deee986e3aadd0fe'
 
   head 'https://github.com/elixir-lang/elixir.git'
 
@@ -34,7 +35,7 @@ class Elixir < Formula
 
   def install
     system "make"
-    bin.install Dir['bin/*'] - Dir['bin/*.bat']
+    bin.install Dir['bin/*'] - Dir['bin/*.{bat,ps1}']
 
     Dir.glob("lib/*/ebin") do |path|
       app = File.basename(File.dirname(path))

@@ -88,15 +88,24 @@ class Keg < Pathname
     raise NotAKegError, "#{path} is not inside a keg"
   end
 
+  attr_reader :linked_keg_record
+
   def initialize path
     super path
     raise "#{to_s} is not a valid keg" unless parent.parent.realpath == HOMEBREW_CELLAR.realpath
     raise "#{to_s} is not a directory" unless directory?
+    @linked_keg_record = HOMEBREW_LIBRARY.join("LinkedKegs", fname)
   end
 
   def uninstall
     rmtree
     parent.rmdir_if_possible
+
+    opt = HOMEBREW_PREFIX.join("opt", fname)
+    if opt.symlink? && self == opt.resolved_path
+      opt.unlink
+      opt.parent.rmdir_if_possible
+    end
   end
 
   def unlink
@@ -120,7 +129,11 @@ class Keg < Pathname
         Find.prune if src.directory?
       end
     end
-    linked_keg_record.unlink if linked_keg_record.symlink?
+
+    if linked?
+      linked_keg_record.unlink
+      linked_keg_record.parent.rmdir_if_possible
+    end
 
     dirs.reverse_each(&:rmdir_if_possible)
 
@@ -135,12 +148,10 @@ class Keg < Pathname
     FormulaLock.new(fname).with_lock { yield }
   end
 
-  def linked_keg_record
-    @linked_keg_record ||= HOMEBREW_REPOSITORY/"Library/LinkedKegs"/fname
-  end
-
   def linked?
-    linked_keg_record.directory? && self == linked_keg_record.resolved_path
+    linked_keg_record.symlink? &&
+      linked_keg_record.directory? &&
+      self == linked_keg_record.resolved_path
   end
 
   def completion_installed? shell

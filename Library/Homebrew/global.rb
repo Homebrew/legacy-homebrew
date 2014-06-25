@@ -93,8 +93,9 @@ HOMEBREW_CURL_ARGS = '-f#LA'
 
 require 'tap_constants'
 
-module Homebrew extend self
+module Homebrew
   include FileUtils
+  extend self
 
   attr_accessor :failed
   alias_method :failed?, :failed

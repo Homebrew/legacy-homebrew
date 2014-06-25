@@ -2,7 +2,7 @@ require 'testing_env'
 require 'dependency_collector'
 require 'extend/set'
 
-class DependencyCollectorTests < Test::Unit::TestCase
+class DependencyCollectorTests < Homebrew::TestCase
   def find_dependency(name)
     @d.deps.find { |dep| dep.name == name }
   end
@@ -32,9 +32,9 @@ class DependencyCollectorTests < Test::Unit::TestCase
   end
 
   def test_dependency_tags
-    assert Dependency.new('foo', [:build]).build?
-    assert Dependency.new('foo', [:build, :optional]).optional?
-    assert Dependency.new('foo', [:universal]).options.include? '--universal'
+    assert_predicate Dependency.new('foo', [:build]), :build?
+    assert_predicate Dependency.new('foo', [:build, :optional]), :optional?
+    assert_includes Dependency.new('foo', [:universal]).options, "--universal"
     assert_empty Dependency.new('foo').tags
   end
 
@@ -59,7 +59,7 @@ class DependencyCollectorTests < Test::Unit::TestCase
     @d.add :x11 => '2.5.1'
     @d.add :xcode => :build
     assert_empty find_requirement(X11Dependency).tags
-    assert find_requirement(XcodeDependency).build?
+    assert_predicate find_requirement(XcodeDependency), :build?
   end
 
   def test_x11_no_tag
@@ -74,14 +74,14 @@ class DependencyCollectorTests < Test::Unit::TestCase
 
   def test_x11_tag
     @d.add :x11 => :optional
-    assert find_requirement(X11Dependency).optional?
+    assert_predicate find_requirement(X11Dependency), :optional?
   end
 
   def test_x11_min_version_and_tag
     @d.add :x11 => ['2.5.1', :optional]
     dep = find_requirement(X11Dependency)
     assert_equal '2.5.1', dep.min_version
-    assert dep.optional?
+    assert_predicate dep, :optional?
   end
 
   def test_ld64_dep_pre_leopard
@@ -111,19 +111,19 @@ class DependencyCollectorTests < Test::Unit::TestCase
 
   def test_resource_dep_git_url
     resource = Resource.new
-    resource.url("git://github.com/foo/bar.git")
+    resource.url("git://example.com/foo/bar.git")
     assert_instance_of GitDependency, @d.add(resource)
   end
 
   def test_resource_dep_gzip_url
     resource = Resource.new
-    resource.url("http://foo.com/bar.tar.gz")
+    resource.url("http://example.com/foo.tar.gz")
     assert_nil @d.add(resource)
   end
 
   def test_resource_dep_xz_url
     resource = Resource.new
-    resource.url("http://foo.com/bar.tar.xz")
+    resource.url("http://example.com/foo.tar.xz")
     assert_equal Dependency.new("xz", [:build]), @d.add(resource)
   end
 

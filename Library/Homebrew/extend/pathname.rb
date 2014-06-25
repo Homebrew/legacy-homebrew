@@ -90,10 +90,10 @@ class Pathname
 
   # we assume this pathname object is a file obviously
   alias_method :old_write, :write if method_defined?(:write)
-  def write content
+  def write(content, *open_args)
     raise "Will not overwrite #{to_s}" if exist?
     dirname.mkpath
-    File.open(self, 'w') {|f| f.write content }
+    open("w", *open_args) { |f| f.write(content) }
   end
 
   # NOTE always overwrites
@@ -132,6 +132,7 @@ class Pathname
   private :default_stat
 
   def cp dst
+    opoo "Pathname#cp is deprecated, use FileUtils.cp"
     if file?
       FileUtils.cp to_s, dst
     else
@@ -194,6 +195,7 @@ class Pathname
   end
 
   def chmod_R perms
+    opoo "Pathname#chmod_R is deprecated, use FileUtils.chmod_R"
     require 'fileutils'
     FileUtils.chmod_R perms, to_s
   end
@@ -301,8 +303,12 @@ class Pathname
     File.symlink(src.relative_path_from(dirname), self)
   end
 
-  def / that
-    self + that.to_s
+  def /(other)
+    unless other.respond_to?(:to_str) || other.respond_to?(:to_path)
+      opoo "Pathname#/ called on #{inspect} with #{other.inspect} as an argument"
+      puts "This behavior is deprecated, please pass either a String or a Pathname"
+    end
+    self + other.to_s
   end unless method_defined?(:/)
 
   def ensure_writable
@@ -342,6 +348,7 @@ class Pathname
       opoo "tried to write exec scripts to #{self} for an empty list of targets"
       return
     end
+    mkpath
     targets.each do |target|
       target = Pathname.new(target) # allow pathnames or strings
       (self+target.basename()).write <<-EOS.undent
@@ -355,6 +362,7 @@ class Pathname
   def write_env_script target, env
     env_export = ''
     env.each {|key, value| env_export += "#{key}=\"#{value}\" "}
+    dirname.mkpath
     self.write <<-EOS.undent
     #!/bin/bash
     #{env_export}exec "#{target}" "$@"
@@ -373,6 +381,7 @@ class Pathname
 
   # Writes an exec script that invokes a java jar
   def write_jar_script target_jar, script_name, java_opts=""
+    mkpath
     (self+script_name).write <<-EOS.undent
       #!/bin/bash
       exec java #{java_opts} -jar #{target_jar} "$@"

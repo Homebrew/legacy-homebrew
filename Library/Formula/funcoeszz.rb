@@ -11,7 +11,8 @@ class Funcoeszz < Formula
 
   def caveats; <<-EOS.undent
     To use this software add to your profile:
-      source #{opt_prefix}/funcoeszz.sh
+      export ZZPATH="#{opt_prefix}/funcoeszz.sh"
+      source "$ZZPATH"
     EOS
   end
 end

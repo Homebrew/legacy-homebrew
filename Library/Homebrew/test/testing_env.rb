@@ -5,15 +5,20 @@ $:.push(File.expand_path(__FILE__+'/../..'))
 require 'extend/module'
 require 'extend/fileutils'
 require 'extend/pathname'
+require 'extend/ARGV'
 require 'extend/string'
 require 'extend/symbol'
 require 'extend/enumerable'
 require 'exceptions'
 require 'utils'
 require 'rbconfig'
+require 'tmpdir'
+
+TEST_TMPDIR = Dir.mktmpdir("homebrew_tests")
+at_exit { FileUtils.remove_entry(TEST_TMPDIR) }
 
 # Constants normally defined in global.rb
-HOMEBREW_PREFIX        = Pathname.new('/private/tmp/testbrew/prefix')
+HOMEBREW_PREFIX        = Pathname.new(TEST_TMPDIR).join("prefix")
 HOMEBREW_REPOSITORY    = HOMEBREW_PREFIX
 HOMEBREW_LIBRARY       = HOMEBREW_REPOSITORY+'Library'
 HOMEBREW_CACHE         = HOMEBREW_PREFIX.parent+'cache'
@@ -42,84 +47,99 @@ MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }
 
 ORIGINAL_PATHS = ENV['PATH'].split(File::PATH_SEPARATOR).map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 
-module Homebrew extend self
-  include FileUtils
-end
-
 # Test environment setup
-%w{Library/Formula Library/ENV}.each do |d|
-  HOMEBREW_REPOSITORY.join(d).mkpath
-end
-
-at_exit { HOMEBREW_PREFIX.parent.rmtree }
+%w{ENV Formula}.each { |d| HOMEBREW_LIBRARY.join(d).mkpath }
+%w{cache formula_cache cellar logs}.each { |d| HOMEBREW_PREFIX.parent.join(d).mkpath }
 
 # Test fixtures and files can be found relative to this path
 TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
 
-def shutup
-  if ARGV.verbose?
-    yield
-  else
-    begin
-      tmperr = $stderr.clone
-      tmpout = $stdout.clone
-      $stderr.reopen '/dev/null', 'w'
-      $stdout.reopen '/dev/null', 'w'
-      yield
-    ensure
-      $stderr.reopen tmperr
-      $stdout.reopen tmpout
-    end
-  end
-end
-
-require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
-
-require 'test/unit' # must be after at_exit
-require 'extend/ARGV' # needs to be after test/unit to avoid conflict with OptionsParser
 ARGV.extend(HomebrewArgvExtension)
 
 begin
-  require 'rubygems'
-  require 'mocha/setup'
+  require "rubygems"
+  require "minitest/autorun"
+  require "mocha/setup"
 rescue LoadError
-  warn 'The mocha gem is required to run some tests, expect failures'
+  abort "Run `rake deps` or install the mocha and minitest gems before running the tests"
 end
 
-module VersionAssertions
-  def version v
-    Version.new(v)
+module Homebrew
+  include FileUtils
+  extend self
+
+  module VersionAssertions
+    def version v
+      Version.new(v)
+    end
+
+    def assert_version_equal expected, actual
+      assert_equal Version.new(expected), actual
+    end
+
+    def assert_version_detected expected, url
+      assert_equal expected, Version.parse(url).to_s
+    end
+
+    def assert_version_nil url
+      assert_nil Version.parse(url)
+    end
+
+    def assert_version_tokens tokens, version
+      assert_equal tokens, version.send(:tokens).map(&:to_s)
+    end
   end
 
-  def assert_version_equal expected, actual
-    assert_equal Version.new(expected), actual
+  module FSLeakLogger
+    def self.included(klass)
+      require "find"
+      @@log = File.open("fs_leak_log", "w")
+      klass.make_my_diffs_pretty!
+    end
+
+    def before_setup
+      @__files_before_test = []
+      Find.find(TEST_TMPDIR) { |f| @__files_before_test << f.sub(TEST_TMPDIR, "") }
+      super
+    end
+
+    def after_teardown
+      super
+      files_after_test = []
+      Find.find(TEST_TMPDIR) { |f| files_after_test << f.sub(TEST_TMPDIR, "") }
+      if @__files_before_test != files_after_test
+        @@log.puts location, diff(@__files_before_test, files_after_test)
+      end
+    end
   end
 
-  def assert_version_detected expected, url
-    assert_equal expected, Version.parse(url).to_s
-  end
+  class TestCase < ::Minitest::Test
+    include VersionAssertions
+    include FSLeakLogger if ENV["LOG_FS_LEAKS"]
 
-  def assert_version_nil url
-    assert_nil Version.parse(url)
-  end
+    TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
+    TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
 
-  def assert_version_tokens tokens, version
-    assert_equal tokens, version.send(:tokens).map(&:to_s)
-  end
-end
+    def formula(name="formula_name", path=Formula.path(name), spec=:stable, &block)
+      @_f = Class.new(Formula, &block).new(name, path, spec)
+    end
 
-module Test::Unit::Assertions
-  def assert_empty(obj, msg=nil)
-    assert_respond_to(obj, :empty?, msg)
-    assert(obj.empty?, msg)
-  end unless method_defined?(:assert_empty)
-end
+    def shutup
+      err = $stderr.clone
+      out = $stdout.clone
 
-class Test::Unit::TestCase
-  TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
-  TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
+      begin
+        $stderr.reopen("/dev/null", "w")
+        $stdout.reopen("/dev/null", "w")
+        yield
+      ensure
+        $stderr.reopen(err)
+        $stdout.reopen(out)
+      end
+    end
 
-  def formula(name="formula_name", path=Formula.path(name), &block)
-    @_f = Class.new(Formula, &block).new(name, path)
+    def assert_nothing_raised
+      yield
+    end
   end
 end

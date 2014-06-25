@@ -1,21 +1,19 @@
 require 'testing_env'
 require 'requirements/language_module_dependency'
 
-class LanguageModuleDependencyTests < Test::Unit::TestCase
+class LanguageModuleDependencyTests < Homebrew::TestCase
   def assert_deps_fail(spec)
-    l = LanguageModuleDependency.new(*spec.shift.reverse)
-    assert !l.satisfied?
+    refute_predicate LanguageModuleDependency.new(*spec.shift.reverse), :satisfied?
   end
 
   def assert_deps_pass(spec)
-    l = LanguageModuleDependency.new(*spec.shift.reverse)
-    assert l.satisfied?
+    assert_predicate LanguageModuleDependency.new(*spec.shift.reverse), :satisfied?
   end
 
   def test_unique_deps_are_not_eql
     x = LanguageModuleDependency.new(:node, "less")
     y = LanguageModuleDependency.new(:node, "coffee-script")
-    assert_not_equal x.hash, y.hash
+    refute_equal x.hash, y.hash
     assert !x.eql?(y)
     assert !y.eql?(x)
   end
@@ -24,7 +22,7 @@ class LanguageModuleDependencyTests < Test::Unit::TestCase
     mod_name = "foo"
     import_name = "bar"
     l = LanguageModuleDependency.new(:python, mod_name, import_name)
-    assert l.message.include?(mod_name)
+    assert_includes l.message, mod_name
     assert l.the_test.one? { |c| c.include?(import_name) }
   end
 

@@ -2,7 +2,7 @@ require 'testing_env'
 require 'dependencies'
 require 'dependency'
 
-class DependenciesTests < Test::Unit::TestCase
+class DependenciesTests < Homebrew::TestCase
   def setup
     @deps = Dependencies.new
   end
@@ -74,7 +74,7 @@ class DependenciesTests < Test::Unit::TestCase
 
     b << Dependency.new("bar", [:optional])
 
-    assert_not_equal a, b
+    refute_equal a, b
     assert !a.eql?(b)
   end
 end

@@ -2,15 +2,15 @@ require "formula"
 
 class Xplanetfx < Formula
   homepage "http://mein-neues-blog.de/xplanetFX/"
-  url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.5.27_all.tar.gz"
-  sha1 "df1b7e7b8d3dbe890284b598076da2424c94260e"
-  version "2.5.27"
+  url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.5.29_all.tar.gz"
+  sha1 "13d1ec98567623fce92c3536cb015c4c63ba4b11"
+  version "2.5.29"
 
   bottle do
     cellar :any
-    sha1 "b7c18ca1a1a75ffc7fb5e83590a84461da00af12" => :mavericks
-    sha1 "4156ec5f6738c4954819ca74948ee53c0dc26a57" => :mountain_lion
-    sha1 "6eb46cc2ffd6fc8937d3979d96892b2a85c6b2a2" => :lion
+    sha1 "896bb5909553b0b4bd3429ecfb71e543f72ed1c0" => :mavericks
+    sha1 "f6c65e63627c3ab04978b95dc614d723cb8f7809" => :mountain_lion
+    sha1 "7853a1a73196d16e64bdbaa7751efcb3d114af56" => :lion
   end
 
   option "without-perlmagick", "Build without PerlMagick support - used to check cloud map downloads"

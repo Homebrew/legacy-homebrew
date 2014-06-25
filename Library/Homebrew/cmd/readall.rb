@@ -22,7 +22,7 @@ module Homebrew
 
     formulae.sort.each do |n|
       begin
-        Formula.factory(n)
+        Formulary.factory(n)
       rescue Exception => e
         onoe "problem in #{Formula.path(n)}"
         puts e
@@ -31,5 +31,3 @@ module Homebrew
     end
   end
 end
-
-Homebrew.readall

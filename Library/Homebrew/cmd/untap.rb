@@ -1,6 +1,6 @@
 require 'cmd/tap' # for tap_args
 
-module Homebrew extend self
+module Homebrew
   def untap
     raise "Usage is `brew untap <tap-name>`" if ARGV.empty?
 

@@ -3,8 +3,8 @@ require "formula"
 class Pyenv < Formula
   homepage "https://github.com/yyuu/pyenv"
   head "https://github.com/yyuu/pyenv.git"
-  url "https://github.com/yyuu/pyenv/archive/v0.4.0-20140602.tar.gz"
-  sha1 "615c425a70c1979908c9a6be81f8b68ec57b7ea0"
+  url "https://github.com/yyuu/pyenv/archive/v20140615.tar.gz"
+  sha1 "e5caf58319a4ccc393ea8f20378e43989d03deae"
 
   depends_on "autoconf" => [:recommended, :run]
   depends_on "pkg-config" => [:recommended, :run]

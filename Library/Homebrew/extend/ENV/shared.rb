@@ -13,6 +13,9 @@ module SharedEnvExtension
                           'llvm-gcc' => :llvm,
                           'clang'    => :clang }
 
+  COMPILERS = COMPILER_SYMBOL_MAP.values +
+    GNU_GCC_VERSIONS.map { |n| "gcc-4.#{n}" }
+
   SANITIZED_VARS = %w[
     CDPATH GREP_OPTIONS CLICOLOR_FORCE
     CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH
@@ -108,6 +111,18 @@ module SharedEnvExtension
     end
   end
 
+  def determine_cc
+    COMPILER_SYMBOL_MAP.invert.fetch(compiler, compiler)
+  end
+
+  COMPILERS.each do |compiler|
+    define_method(compiler) do
+      @compiler = compiler
+      self.cc  = determine_cc
+      self.cxx = determine_cxx
+    end
+  end
+
   # If the given compiler isn't compatible, will try to select
   # an alternate compiler, altering the value of environment variables.
   # If no valid compiler is found, raises an exception.
@@ -171,7 +186,7 @@ module SharedEnvExtension
 
   # ld64 is a newer linker provided for Xcode 2.5
   def ld64
-    ld64 = Formula.factory('ld64')
+    ld64 = Formulary.factory('ld64')
     self['LD'] = ld64.bin/'ld'
     append "LDFLAGS", "-B#{ld64.bin}/"
   end

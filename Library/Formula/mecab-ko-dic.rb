@@ -2,8 +2,8 @@ require "formula"
 
 class MecabKoDic < Formula
   homepage "https://bitbucket.org/eunjeon/mecab-ko-dic"
-  url "https://bitbucket.org/eunjeon/mecab-ko-dic/downloads/mecab-ko-dic-1.6.0-20140515.tar.gz"
-  sha1 "c75a5cf38e48b62133423a8a06c12710b7874f9f"
+  url "https://bitbucket.org/eunjeon/mecab-ko-dic/downloads/mecab-ko-dic-1.6.1-20140515.tar.gz"
+  sha1 "d882247937be96e36e2ae3f5a0ec6eeb376242fa"
 
   depends_on :autoconf
   depends_on :automake
