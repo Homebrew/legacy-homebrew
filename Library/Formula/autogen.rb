@@ -21,7 +21,7 @@ class Autogen < Formula
 
   def install
     system "./configure", "--disable-debug",
-                          "--disable-shared",
+                          "--with-libguile-libs='-L/usr/local/Cellar/guile/2.0.11/lib -L/usr/local/Cellar/bdw-gc/7.4.2/lib -lguile-2.0 -lgc'",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
 
