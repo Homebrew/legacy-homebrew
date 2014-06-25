@@ -11,7 +11,7 @@ module Homebrew
           puts "Uninstalling #{keg}..."
           keg.unlink
           keg.uninstall
-          rm_pin keg.fname
+          rm_pin keg.name
         end
       end
     else
