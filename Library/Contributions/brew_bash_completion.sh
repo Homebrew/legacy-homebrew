@@ -257,6 +257,32 @@ _brew_install ()
     __brew_complete_formulae
 }
 
+_brew_stack ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local prv=$(__brewcomp_prev)
+
+    case "$cur" in
+    --*)
+        __brewcomp "
+            --help
+            --dry
+            --all
+            --build-from-source --build-bottle --force-bottle
+            --debug
+            --devel
+            --HEAD
+            --ignore-dependencies
+            --only-dependencies
+            --verbose
+            $(brew options --compact "$prv" 2>/dev/null)
+            "
+        return
+        ;;
+    esac
+    __brew_complete_formulae
+}
+
 _brew_link ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -529,6 +555,7 @@ _brew ()
     outdated)                   _brew_outdated ;;
     pin)                        __brew_complete_formulae ;;
     search|-S)                  _brew_search ;;
+    stack)                      _brew_stack ;;
     switch)                     _brew_switch ;;
     tap)                        _brew_complete_tap ;;
     uninstall|remove|rm)        _brew_uninstall ;;
