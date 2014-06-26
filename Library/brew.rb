@@ -114,12 +114,13 @@ begin
 
   # Usage instructions should be displayed if and only if one of:
   # - a help flag is passed AND an internal command is matched
+  # - a help flag is passed AND there is no command specified
   # - no arguments are passed
   #
   # It should never affect external commands so they can handle usage
   # arguments themselves.
 
-  if empty_argv || (internal_cmd && help_flag)
+  if empty_argv || (help_flag && (cmd.nil? || internal_cmd))
     # TODO - `brew help cmd` should display subcommand help
     require 'cmd/help'
     puts ARGV.usage
