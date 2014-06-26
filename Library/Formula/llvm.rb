@@ -6,9 +6,9 @@ class Llvm < Formula
   sha1 "c5287384d0b95ecb0fd7f024be2cdfb60cd94bc9"
 
   bottle do
-    sha1 "92dc1d8793000d05c8321b2791b6b1d7321a83c3" => :mavericks
-    sha1 "a46bd08a60fd7ae17a21476bbb810510b58d492a" => :mountain_lion
-    sha1 "4dfc0268acc552bd62b2954ac3829802b25a5a46" => :lion
+    sha1 "8136d3ef9c97e3de20ab4962f94a6c15ce5b50b2" => :mavericks
+    sha1 "15d12d15f17c3fa12f2b7e87ac1f70ae3eaa7e35" => :mountain_lion
+    sha1 "50e1d0c4a046ea14fb8c4bbd305bc7c8ccaac5bb" => :lion
   end
 
   resource 'clang' do
