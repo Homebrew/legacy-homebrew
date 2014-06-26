@@ -2,8 +2,6 @@ require "stringio"
 require "formula"
 
 module Homebrew
-  extend self
-
   module DATALoader
     # Original code from http://stackoverflow.com/a/2157556/371237
     def self.load(path)

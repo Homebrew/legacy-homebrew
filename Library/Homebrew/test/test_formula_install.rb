@@ -4,11 +4,7 @@ require 'test/testball'
 require 'keg'
 
 
-class InstallTests < Test::Unit::TestCase
-  def teardown
-    HOMEBREW_CACHE.rmtree
-  end
-
+class InstallTests < Homebrew::TestCase
   def temporary_install f
     f.prefix.mkpath
     keg = Keg.new(f.prefix)
@@ -22,33 +18,35 @@ class InstallTests < Test::Unit::TestCase
     ensure
       keg.unlink
       keg.uninstall
+      f.clear_cache
     end
 
-    assert !keg.exist?
-    assert !f.installed?
+    refute_predicate keg, :exist?
+    refute_predicate f, :installed?
   end
 
   def test_a_basic_install
-    f=TestBall.new
+    f = TestBall.new
 
-    assert !f.installed?
+    refute_predicate f, :installed?
 
     temporary_install f do
-
       # Test that things made it into the Keg
-      assert f.bin.directory?
+      assert_predicate f.bin, :directory?
       assert_equal 3, f.bin.children.length
-      libexec=f.prefix+'libexec'
-      assert libexec.directory?
+
+      libexec = f.prefix+'libexec'
+      assert_predicate libexec, :directory?
       assert_equal 1, libexec.children.length
-      assert !(f.prefix+'main.c').exist?
-      assert f.installed?
+
+      refute_predicate f.prefix+'main.c', :exist?
+      assert_predicate f, :installed?
 
       # Test that things make it into the Cellar
-      keg=Keg.new f.prefix
+      keg = Keg.new f.prefix
       keg.link
       assert_equal 3, HOMEBREW_PREFIX.children.length
-      assert((HOMEBREW_PREFIX+'bin').directory?)
+      assert_predicate HOMEBREW_PREFIX+'bin', :directory?
       assert_equal 3, (HOMEBREW_PREFIX+'bin').children.length
     end
   end
@@ -58,7 +56,7 @@ class InstallTests < Test::Unit::TestCase
       url "file://#{File.expand_path(__FILE__)}"
       version "1"
       def initialize
-        super "test_script_formula", Pathname.new(__FILE__).expand_path
+        super "test_script_formula", Pathname.new(__FILE__).expand_path, :stable
       end
     end.new
 

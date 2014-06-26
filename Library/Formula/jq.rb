@@ -10,6 +10,7 @@ class Jq < Formula
   head do
     url 'https://github.com/stedolan/jq.git'
 
+    depends_on 'oniguruma'
     depends_on 'autoconf' => :build
     depends_on 'automake' => :build
     depends_on 'libtool' => :build

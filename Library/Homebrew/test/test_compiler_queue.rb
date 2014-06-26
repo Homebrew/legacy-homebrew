@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'compilers'
 
-class CompilerQueueTests < Test::Unit::TestCase
+class CompilerQueueTests < Homebrew::TestCase
   FakeCompiler = Struct.new(:name, :priority)
 
   def setup

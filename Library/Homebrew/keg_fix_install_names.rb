@@ -139,7 +139,7 @@ class Keg < Pathname
     if shortpath.exist? and not options[:keg_only]
       shortpath.to_s
     else
-      "#{HOMEBREW_PREFIX}/opt/#{fname}/#{relative_dirname}/#{basename}"
+      HOMEBREW_PREFIX.join("opt", name, relative_dirname, basename).to_s
     end
   end
 

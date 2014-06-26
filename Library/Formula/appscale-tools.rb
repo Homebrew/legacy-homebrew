@@ -4,6 +4,7 @@ class AppscaleTools < Formula
   homepage 'https://github.com/AppScale/appscale-tools'
   url "https://github.com/AppScale/appscale-tools/archive/1.14.0.tar.gz"
   sha1 "ee2363bf6b8f464f0a7847d965e5fce2e143acd2"
+  head "https://github.com/AppScale/appscale-tools.git"
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'libyaml'

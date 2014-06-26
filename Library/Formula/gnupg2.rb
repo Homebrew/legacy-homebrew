@@ -2,8 +2,8 @@ require "formula"
 
 class Gnupg2 < Formula
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.23.tar.bz2"
-  sha1 "c90e47ab95a40dd070fd75faef0a05c7b679553b"
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.24.tar.bz2"
+  sha1 "010e027d5f622778cadc4c124013fe515ed705cf"
 
   option "8192", "Build with support for private keys of up to 8192 bits"
 
@@ -86,8 +86,8 @@ index 5959b37..2bea995 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gnupg2'
 +PACKAGE_TARNAME='gnupg2'
- PACKAGE_VERSION='2.0.23'
- PACKAGE_STRING='gnupg 2.0.23'
+ PACKAGE_VERSION='2.0.24'
+ PACKAGE_STRING='gnupg 2.0.24'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'
 diff --git a/tests/openpgp/Makefile.in b/tests/openpgp/Makefile.in
 index c9ceb2d..7044900 100644
