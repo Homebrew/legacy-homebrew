@@ -332,9 +332,9 @@ class Keg < Pathname
 
   protected
 
-  # symlinks the contents of self+foo recursively into #{HOMEBREW_PREFIX}/foo
-  def link_dir foo, mode
-    root = self+foo
+  # symlinks the contents of self+relative_dir recursively into #{HOMEBREW_PREFIX}/relative_dir
+  def link_dir relative_dir, mode
+    root = self+relative_dir
     return unless root.exist?
     root.find do |src|
       next if src == root
