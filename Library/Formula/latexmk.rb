@@ -14,14 +14,12 @@ class Latexmk < Formula
   end
 
   test do
-    File.open("test.tex", "w") do |f|
-      f.write <<-EOF.undent
-        \\documentclass[]{article}
-        \\begin{document}
-        hello world!
-        \\end{document}
-      EOF
-    end
+    (testpath/"test.tex").write <<-EOF.undent
+      \\documentclass[]{article}
+      \\begin{document}
+      hello world!
+      \\end{document}
+    EOF
 
     system "#{bin}/latexmk", "-pdf", "test.tex"
 
