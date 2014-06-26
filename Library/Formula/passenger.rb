@@ -45,22 +45,20 @@ class Passenger < Formula
   end
 
   def caveats
-    caveats = <<-EOS.undent
+    s = <<-EOS.undent
       To activate Phusion Passenger for Nginx, run:
         brew install nginx --with-passenger
+
       EOS
 
-    caveats.insert(0, apache2_module_caveats) if build.with? "apache2-module"
-  end
-
-  def apache2_module_caveats
-    <<-EOS.undent
+    s += <<-EOS.undent if build.with? "apache2-module"
       To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
         LoadModule passenger_module #{opt_libexec}/buildout/apache2/mod_passenger.so
         PassengerRoot #{opt_libexec}/lib/phusion_passenger/locations.ini
         PassengerDefaultRuby /usr/bin/ruby
 
       EOS
+    s
   end
 
   test do
