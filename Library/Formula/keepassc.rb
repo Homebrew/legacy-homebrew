@@ -4,6 +4,7 @@ class Keepassc < Formula
   homepage "http://raymontag.github.com/keepassc/"
   url "https://github.com/raymontag/keepassc/archive/1.6.2.tar.gz"
   sha1 "3366fc811b312ef2e64eb48a8b84380bc1a962b1"
+  head "https://github.com/raymontag/keepassc.git", :branch => "development"
 
   depends_on :python3
 

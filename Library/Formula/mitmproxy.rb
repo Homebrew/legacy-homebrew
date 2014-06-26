@@ -2,23 +2,24 @@ require 'formula'
 
 class Mitmproxy < Formula
   homepage 'http://mitmproxy.org'
-  url 'http://mitmproxy.org/download/mitmproxy-0.10.tar.gz'
-  sha1 'de30fe4744d66a072b225da05d28f89ab2020391'
+  url 'http://mitmproxy.org/download/mitmproxy-0.10.1.tar.gz'
+  sha1 '8feb1b4d8d7b8e6713d08aa434667275215f14c4'
 
   option 'with-pyamf', 'Enable action message format (AMF) support for python'
   option 'with-cssutils', 'Enable beautification of CSS responses'
 
-  depends_on :python
+  depends_on 'freetype'
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'protobuf' => :optional
 
   resource 'pyopenssl' do
-    url 'https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.13.1.tar.gz'
-    sha1 '60633ebb821d48d7132a436c897288ec0121b892'
+    url 'https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.14.tar.gz'
+    sha1 'eb51f23f29703b647b0f194beaa9b2412c05e0f6'
   end
 
   resource 'pillow' do
-    url 'https://github.com/python-imaging/Pillow/archive/2.3.0.tar.gz'
-    sha1 'f269109be21d27df3210e43fe11a17657bbfc261'
+    url 'https://github.com/python-imaging/Pillow/archive/2.4.0.tar.gz'
+    sha1 '2e07dd7545177019331e8f3916335b69869e82b0'
   end
 
   resource 'flask' do
@@ -27,8 +28,8 @@ class Mitmproxy < Formula
   end
 
   resource 'lxml' do
-    url 'https://pypi.python.org/packages/source/l/lxml/lxml-3.3.0.tar.gz'
-    sha1 '7cff413526c9e797fd0b8ced37144e5e89ffc66e'
+    url 'https://pypi.python.org/packages/source/l/lxml/lxml-3.3.5.tar.gz'
+    sha1 '7a6e92f8ca482aab79835e1c9cd8410400792cd9'
   end
 
   resource 'netlib' do
@@ -42,8 +43,8 @@ class Mitmproxy < Formula
   end
 
   resource 'urwid' do
-    url 'https://pypi.python.org/packages/source/u/urwid/urwid-1.1.2.tar.gz'
-    sha1 '288f61b444b7f21964fdee33e656da4abeb76c53'
+    url 'https://pypi.python.org/packages/source/u/urwid/urwid-1.2.1.tar.gz'
+    sha1 '28bd77014cce92bcb09ccc11f93e558d02265082'
   end
 
   if build.with? 'pyamf'
@@ -61,28 +62,21 @@ class Mitmproxy < Formula
   end
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    resource('pillow').stage do
-      # Disable freetype. Pillow tries really hard to find it, including
-      # querying Homebrew and looking for an X11 installation, but our
-      # compiler wrappers will filter out the paths, breaking the build.
-      (buildpath/"setup.cfg").write "[build_ext]\ndisable-freetype=1\n"
+    resource("pillow").stage do
+      inreplace "setup.py", "'brew', '--prefix'", "'#{HOMEBREW_PREFIX}/bin/brew', '--prefix'"
       system "python", *install_args
     end
 
-    resource('pyopenssl').stage { system "python", *install_args }
-    resource('flask').stage { system "python", *install_args }
-    resource('lxml').stage { system "python", *install_args }
-    resource('netlib').stage { system "python", *install_args }
-    resource('pyasn1').stage { system "python", *install_args }
-    resource('urwid').stage { system "python", *install_args }
-    if build.with? 'pyamf'
-      resource('pyamf').stage { system "python", *install_args }
-    end
-    if build.with? 'cssutils'
-      resource('cssutils').stage { system "python", *install_args }
+    res = %w(pyopenssl flask lxml netlib pyasn1 urwid)
+    res << 'pyamf' if build.with? 'pyamf'
+    res << 'cssutils' if build.with? 'cssutils'
+
+    res.each do |r|
+      resource(r).stage { system "python", *install_args }
     end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"

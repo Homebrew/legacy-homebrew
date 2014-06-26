@@ -40,8 +40,7 @@ class Zpython < Formula
   head 'https://bitbucket.org/ZyX_I/zsh.git', :branch => 'zpython'
 
   depends_on Zsh5Installed
-  depends_on :python
-  depends_on :autoconf => :build
+  depends_on "autoconf" => :build
 
   def install
     args = %W[

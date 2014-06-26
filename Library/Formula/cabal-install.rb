@@ -2,14 +2,14 @@ require 'formula'
 
 class CabalInstall < Formula
   homepage 'http://www.haskell.org/haskellwiki/Cabal-Install'
-  url 'http://hackage.haskell.org/package/cabal-install-1.20.0.0/cabal-install-1.20.0.0.tar.gz'
-  sha1 '87eb4efe541475956a23e712d2aeb1c603f1d418'
+  url "http://hackage.haskell.org/package/cabal-install-1.20.0.2/cabal-install-1.20.0.2.tar.gz"
+  sha1 "e9b3843270b8f5969a4e1205263e59439bc35692"
 
   bottle do
     cellar :any
-    sha1 "ca80a2dd9e033c3c46f3a334fb851e9754e8e294" => :mavericks
-    sha1 "354257f5a6e0c79bd5c30dca7cd929965f1e3f43" => :mountain_lion
-    sha1 "27186c612aa426a3d8077a09a2be5ccab688f355" => :lion
+    sha1 "cb2da5b5994de0bb2bb31db8245092db7e316cbc" => :mavericks
+    sha1 "186eedfdfb31ca7d5eca4f9258820db3b4412aa8" => :mountain_lion
+    sha1 "14c4103eac763e6e7b2ee480b1daf739c61ad308" => :lion
   end
 
   depends_on 'ghc'

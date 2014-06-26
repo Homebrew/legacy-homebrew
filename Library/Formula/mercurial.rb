@@ -4,24 +4,19 @@ require 'formula'
 # of Homebrew.
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-3.0.tar.gz'
-  mirror 'http://fossies.org/linux/misc/mercurial-3.0.tar.gz'
-  sha1 'f9648580dd1a6a093fa16d7c28cf5aeefd20f2f0'
+  url 'http://mercurial.selenic.com/release/mercurial-3.0.1.tar.gz'
+  mirror 'http://fossies.org/linux/misc/mercurial-3.0.1.tar.gz'
+  sha1 '2d257836d28d22e4da3d0ad72b0489f6587b1165'
 
-  depends_on :python
-
-  resource "docutils" do
-    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.11.tar.gz"
-    sha1 "3894ebcbcbf8aa54ce7c3d2c8f05460544912d67"
+  bottle do
+    cellar :any
+    sha1 "9bb19e521a3959bc4c1c60a9a446413657764f38" => :mavericks
+    sha1 "734a6703d880bc7828b53eaf546df9d79ebac785" => :mountain_lion
+    sha1 "87b4ea239964f96a4c7815a22f1422fff218d05b" => :lion
   end
 
   def install
     ENV.minimal_optimization if MacOS.version <= :snow_leopard
-
-    (buildpath/"doc").install resource("docutils").files("docutils")
-
-    system "make", "doc", "PREFIX=#{prefix}"
-    system "make", "install-doc", "PREFIX=#{prefix}"
 
     system "make", "PREFIX=#{prefix}", "install-bin"
     # Install man pages, which come pre-built in source releases
@@ -31,9 +26,13 @@ class Mercurial < Formula
     # install the completion scripts
     bash_completion.install 'contrib/bash_completion' => 'hg-completion.bash'
     zsh_completion.install 'contrib/zsh_completion' => '_hg'
+
+    # install the merge tool default configs
+    # http://mercurial.selenic.com/wiki/Packaging#Things_to_note
+    (etc/"mercurial"/"hgrc.d").install "contrib/mergetools.hgrc" => "mergetools.rc"
   end
 
   test do
-    system "#{bin}/hg", "debuginstall"
+    system "#{bin}/hg", "init"
   end
 end

@@ -6,6 +6,12 @@ class Gstreamer < Formula
   mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.2.4.tar.xz"
   sha256 "1e7ca67a7870a82c9ed51d51d0008cdbc550c41d64cc3ff3f9a1c2fc311b4929"
 
+  bottle do
+    sha1 "5c486386d1b9b08d2a330846839d58d700c4f86d" => :mavericks
+    sha1 "3a2f80ec51ba96425b07d5101cc430aebad65d0f" => :mountain_lion
+    sha1 "d8f626c61d01617d6091a5d466bdda7c94d06bfd" => :lion
+  end
+
   head do
     url "git://anongit.freedesktop.org/gstreamer/gstreamer"
 
@@ -20,8 +26,6 @@ class Gstreamer < Formula
   depends_on "glib"
 
   def install
-    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing -fno-common"
-
     args = %W[
       --prefix=#{prefix}
       --disable-debug
@@ -31,7 +35,7 @@ class Gstreamer < Formula
     ]
 
     if build.head?
-      ENV.append "NOCONFIGURE", "yes"
+      ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
     end
 

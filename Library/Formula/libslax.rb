@@ -22,8 +22,7 @@ class Libslax < Formula
   depends_on 'curl' if MacOS.version <= :lion
 
   def install
-    # If build from read run script to run autoconf
-    system "sh ./bin/setup.sh" if build.head?
+    system "sh", "./bin/setup.sh" if build.head?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

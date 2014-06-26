@@ -2,14 +2,15 @@ require 'formula'
 
 class Libav < Formula
   homepage 'https://libav.org/'
-  url 'http://libav.org/releases/libav-10.tar.xz'
-  sha1 '74effded58ec3c63de6c8c20b5a382dc3a864d5b'
+  url 'https://libav.org/releases/libav-10.1.tar.xz'
+  sha1 'e73596a99c228714d28956668a298a05948da4a7'
+
   head 'git://git.libav.org/libav.git'
 
   bottle do
-    sha1 "f1e817f3e59111eabe18e54a43c4ee0cf38d651f" => :mavericks
-    sha1 "7da7ccfb7a07d8e3b47145183cdd50f6861d91a1" => :mountain_lion
-    sha1 "06c8d73e1afd93f7487ff1da6a82bbbf1e4330a3" => :lion
+    sha1 "7d0726f20807795bea2751d1cf5819574b4216ef" => :mavericks
+    sha1 "6dab153fa7f47bad485084fb1d99ed78474ee41b" => :mountain_lion
+    sha1 "af1e80266ca266455031390bf45ecbc23ef94e0e" => :lion
   end
 
   option "without-faac", "Disable AAC encoder via faac"
@@ -41,7 +42,7 @@ class Libav < Formula
   depends_on 'x264' => :recommended
   depends_on 'xvid' => :recommended
 
-  depends_on :freetype => :optional
+  depends_on 'freetype' => :optional
   depends_on 'fdk-aac' => :optional
   depends_on 'frei0r' => :optional
   depends_on 'gnutls' => :optional

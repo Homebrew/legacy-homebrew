@@ -30,9 +30,6 @@ class Unac < Formula
   end
 
   def install
-    # Compatibility with Automake 1.13 and newer.
-    inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
-
     chmod 0755, "configure"
     touch "config.rpath"
     inreplace "autogen.sh", "libtool", "glibtool"

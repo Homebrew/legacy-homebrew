@@ -1,5 +1,4 @@
-module Homebrew extend self
-
+module Homebrew
   def tap
     if ARGV.empty?
       each_tap do |user, repo|
@@ -22,12 +21,12 @@ module Homebrew extend self
     # we downcase to avoid case-insensitive filesystem issues
     tapd = HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}"
     return false if tapd.directory?
-    abort unless system "git clone https://github.com/#{repouser}/homebrew-#{repo} #{tapd}"
+    abort unless system "git", "clone", "https://github.com/#{repouser}/homebrew-#{repo}", tapd.to_s
 
     files = []
     tapd.find_formula { |file| files << file }
     link_tap_formula(files)
-    puts "Tapped #{files.length} formula"
+    puts "Tapped #{files.length} formula#{plural(files.length, 'e')}"
 
     if private_tap?(repouser, repo) then puts <<-EOS.undent
       It looks like you tapped a private repository. To avoid entering your
@@ -71,13 +70,13 @@ module Homebrew extend self
   def repair_taps
     count = 0
     # prune dead symlinks in Formula
-    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].each do |fn|
+    Dir.glob("#{HOMEBREW_LIBRARY}/Formula/*.rb") do |fn|
       if not File.exist? fn
         File.delete fn
         count += 1
       end
     end
-    puts "Pruned #{count} dead formula"
+    puts "Pruned #{count} dead formula#{plural(count, 'e')}"
 
     return unless HOMEBREW_REPOSITORY.join("Library/Taps").exist?
 
@@ -89,7 +88,7 @@ module Homebrew extend self
       count += link_tap_formula(files)
     end
 
-    puts "Tapped #{count} formula"
+    puts "Tapped #{count} formula#{plural(count, 'e')}"
   end
 
   private
@@ -107,7 +106,7 @@ module Homebrew extend self
   end
 
   def tap_args
-    ARGV.first =~ %r{^([\w-]+)/(homebrew-)?([\w-]+)$}
+    ARGV.first =~ HOMEBREW_TAP_ARGS_REGEX
     raise "Invalid tap name" unless $1 && $3
     [$1, $3]
   end
@@ -122,7 +121,7 @@ module Homebrew extend self
 
   def tap_ref(path)
     case path.to_s
-    when %r{^#{HOMEBREW_LIBRARY}/Taps/([\w-]+)/([\w-]+)/(.+)}
+    when HOMEBREW_TAP_PATH_REGEX
       "#$1/#$2/#{File.basename($3, '.rb')}"
     when %r{^#{HOMEBREW_LIBRARY}/Formula/(.+)}
       "Homebrew/homebrew/#{File.basename($1, '.rb')}"

@@ -14,9 +14,9 @@ class Avrdude < Formula
   head do
     url 'svn://svn.savannah.nongnu.org/avrdude/trunk/avrdude/'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on :macos => :snow_leopard # needs GCD/libdispatch

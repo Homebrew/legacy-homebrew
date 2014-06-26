@@ -10,7 +10,7 @@ class Plan9port < Formula
     system "./INSTALL"
 
     libexec.install Dir["*"]
-    bin.install_symlink Dir["#{libexec}/bin/9"]
+    bin.install_symlink "#{libexec}/bin/9"
     prefix.install Dir["#{libexec}/mac/*.app"]
   end
 

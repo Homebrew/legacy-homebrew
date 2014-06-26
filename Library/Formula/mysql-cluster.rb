@@ -21,8 +21,6 @@ class MysqlCluster < Formula
   conflicts_with 'mysql', 'mariadb', 'percona-server',
     :because => "mysql, mariadb, and percona install the same binaries."
 
-  env :std if build.universal?
-
   fails_with :clang do
     build 500
     cause "http://article.gmane.org/gmane.comp.db.mysql.cluster/2085"
@@ -69,7 +67,10 @@ class MysqlCluster < Formula
     args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? "blackhole-storage-engine"
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
+    if build.universal?
+      ENV.universal_binary
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
@@ -85,8 +86,8 @@ class MysqlCluster < Formula
     (var+"mysql-cluster/ndb_data").mkpath
     (var+"mysql-cluster/mysqld_data").mkpath
     (var+"mysql-cluster/conf").mkpath
-    (var+"mysql-cluster/conf/my.cnf").write my_cnf unless File.exists? var+"mysql-cluster/conf/my.cnf"
-    (var+"mysql-cluster/conf/config.ini").write config_ini unless File.exists? var+"mysql-cluster/conf/config.ini"
+    (var+"mysql-cluster/conf/my.cnf").write my_cnf unless File.exist? var+"mysql-cluster/conf/my.cnf"
+    (var+"mysql-cluster/conf/config.ini").write config_ini unless File.exist? var+"mysql-cluster/conf/config.ini"
 
     plist_path('ndb_mgmd').write ndb_mgmd_startup_plist('ndb_mgmd')
     plist_path('ndb_mgmd').chmod 0644

@@ -1,16 +1,16 @@
 require 'formula'
 
 class Monetdb < Formula
-  homepage 'http://www.monetdb.org/'
-  url 'http://dev.monetdb.org/downloads/sources/Jan2014-SP1/MonetDB-11.17.13.zip'
-  sha1 '51f3fd5a61ffd2bcc85148a3f0bd953a6fc31553'
+  homepage 'https://www.monetdb.org/'
+  url 'https://dev.monetdb.org/downloads/sources/Jan2014-SP2/MonetDB-11.17.17.zip', :using => :ssl3
+  sha1 '1f1f668e96a6c38463f6ae7a3821fd05c86a04b3'
 
   head 'http://dev.monetdb.org/hg/MonetDB', :using => :hg
 
   option 'with-java'
 
   depends_on 'pkg-config' => :build
-  depends_on :ant
+  depends_on :ant => :build
   depends_on 'pcre'
   depends_on 'readline' # Compilation fails with libedit.
 

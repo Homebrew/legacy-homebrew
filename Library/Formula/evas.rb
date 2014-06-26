@@ -10,8 +10,8 @@ class Evas < Formula
   depends_on 'pkg-config' => :build
   depends_on 'eina'
   depends_on 'eet'
-  depends_on :freetype
-  depends_on :fontconfig
+  depends_on 'freetype'
+  depends_on 'fontconfig'
   depends_on 'fribidi'
   depends_on 'harfbuzz'
   depends_on 'doxygen' if build.with? "docs"

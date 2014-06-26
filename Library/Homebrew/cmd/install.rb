@@ -1,23 +1,13 @@
-require 'formula_installer'
-require 'hardware'
-require 'blacklist'
+require "blacklist"
+require "cmd/doctor"
+require "cmd/search"
+require "cmd/tap"
+require "formula_installer"
+require "hardware"
 
-module Homebrew extend self
+module Homebrew
   def install
     raise FormulaUnspecifiedError if ARGV.named.empty?
-
-    {
-      'gcc' => 'gcc-4.2',
-      'llvm' => 'llvm-gcc',
-      'clang' => 'clang'
-    }.each_pair do |old, new|
-      opt = "--use-#{old}"
-      if ARGV.include? opt then opoo <<-EOS.undent
-        #{opt.inspect} is deprecated and will be removed in a future version.
-        Please use "--cc=#{new}" instead.
-        EOS
-      end
-    end
 
     if ARGV.include? '--head'
       raise "Specify `--HEAD` in uppercase to build from trunk."
@@ -30,10 +20,24 @@ module Homebrew extend self
         raise "No available formula for #{name}\n#{msg}" if msg
       end
       if not File.exist? name and name =~ HOMEBREW_TAP_FORMULA_REGEX then
-        require 'cmd/tap'
         install_tap $1, $2
       end
     end unless ARGV.force?
+
+    ARGV.formulae.each do |f|
+      # Building head-only without --HEAD is an error
+      if not ARGV.build_head? and f.stable.nil?
+        raise CannotInstallFormulaError, <<-EOS.undent
+        #{f} is a head-only formula
+        Install with `brew install --HEAD #{f.name}`
+        EOS
+      end
+
+      # Building stable-only with --HEAD is an error
+      if ARGV.build_head? and f.head.nil?
+        raise CannotInstallFormulaError, "No head is defined for #{f.name}"
+      end
+    end
 
     perform_preinstall_checks
 
@@ -41,7 +45,6 @@ module Homebrew extend self
       ARGV.formulae.each { |f| install_formula(f) }
     rescue FormulaUnavailableError => e
       ofail e.message
-      require 'cmd/search'
       puts 'Searching taps...'
       puts_columns(search_taps(query_regexp(e.name)))
     end
@@ -62,11 +65,13 @@ module Homebrew extend self
   end
 
   def check_xcode
-    require 'cmd/doctor'
     checks = Checks.new
-    doctor_methods = ['check_xcode_clt', 'check_xcode_license_approved',
-                      'check_for_osx_gcc_installer']
-    doctor_methods.each do |check|
+    %w[
+      check_for_installed_developer_tools
+      check_xcode_license_approved
+      check_for_osx_gcc_installer
+      check_for_bad_install_name_tool
+    ].each do |check|
       out = checks.send(check)
       opoo out unless out.nil?
     end

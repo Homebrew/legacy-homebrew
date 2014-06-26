@@ -1,11 +1,24 @@
-require 'extend/ENV'
-require 'hardware'
-require 'keg'
-require 'timeout'
-require 'test/unit/assertions'
+require "extend/ENV"
+require "timeout"
 
-module Homebrew extend self
+module Homebrew
   TEST_TIMEOUT_SECONDS = 5*60
+
+  if defined?(Gem)
+    begin
+      gem "minitest", "< 5.0.0"
+    rescue Gem::LoadError
+      require "test/unit/assertions"
+      FailedAssertion = Test::Unit::AssertionFailedError
+    else
+      require "minitest/unit"
+      require "test/unit/assertions"
+      FailedAssertion = MiniTest::Assertion
+    end
+  else
+    require "test/unit/assertions"
+    FailedAssertion = Test::Unit::AssertionFailedError
+  end
 
   def test
     raise FormulaUnspecifiedError if ARGV.named.empty?
@@ -27,16 +40,20 @@ module Homebrew extend self
       end
 
       puts "Testing #{f.name}"
+
+      f.extend(Test::Unit::Assertions)
+
       begin
         # tests can also return false to indicate failure
         Timeout::timeout TEST_TIMEOUT_SECONDS do
           raise if f.test == false
         end
-      rescue Test::Unit::AssertionFailedError => e
+      rescue FailedAssertion => e
         ofail "#{f.name}: failed"
         puts e.message
-      rescue Exception
+      rescue Exception => e
         ofail "#{f.name}: failed"
+        puts e, e.backtrace
       end
     end
   end

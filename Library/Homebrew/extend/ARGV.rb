@@ -8,9 +8,8 @@ module HomebrewArgvExtension
   end
 
   def formulae
-    require 'formula'
-    @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
-    return @formulae
+    require "formula"
+    @formulae ||= downcased_unique_named.map { |name| Formulary.factory(name, spec) }
   end
 
   def kegs
@@ -18,7 +17,7 @@ module HomebrewArgvExtension
     require 'keg'
     require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
-      canonical_name = Formula.canonical_name(name)
+      canonical_name = Formulary.canonical_name(name)
       rack = HOMEBREW_CELLAR/canonical_name
       dirs = rack.directory? ? rack.subdirs : []
 
@@ -33,7 +32,7 @@ module HomebrewArgvExtension
         Keg.new(linked_keg_ref.resolved_path)
       elsif dirs.length == 1
         Keg.new(dirs.first)
-      elsif (prefix = Formula.factory(canonical_name).prefix).directory?
+      elsif (prefix = Formulary.factory(canonical_name).prefix).directory?
         Keg.new(prefix)
       else
         raise MultipleVersionsInstalledError.new(name)
@@ -149,14 +148,6 @@ module HomebrewArgvExtension
     include? '--force-bottle'
   end
 
-  def help?
-    empty? || grep(/(-h$|--help$|--usage$|-\?$|help$)/).any?
-  end
-
-  def version?
-    include? '--version'
-  end
-
   # eg. `foo -ns -i --bar` has three switches, n, s and i
   def switch? switch_character
     return false if switch_character.length > 1
@@ -170,21 +161,22 @@ module HomebrewArgvExtension
     Homebrew.help_s
   end
 
-  def filter_for_dependencies
-    old_args = clone
-    delete "--devel"
-    delete "--HEAD"
-    yield
-  ensure
-    replace(old_args)
-  end
-
   def cc
     value 'cc'
   end
 
   def env
     value 'env'
+  end
+
+  def spec
+    if include?("--HEAD")
+      :head
+    elsif include?("--devel")
+      :devel
+    else
+      :stable
+    end
   end
 
   private

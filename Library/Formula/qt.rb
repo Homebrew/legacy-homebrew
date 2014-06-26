@@ -8,9 +8,10 @@ class Qt < Formula
   head 'git://gitorious.org/qt/qt.git', :branch => '4.8'
 
   bottle do
-    sha1 "114242a849d7ade7d55d46097b1f7790b871df8f" => :mavericks
-    sha1 "5e022a402437b0a1bf5bf2d2d67491280f73a7a8" => :mountain_lion
-    sha1 "212fce47b1f2f2d3bf4397db7d5967fb59223cec" => :lion
+    revision 5
+    sha1 "34d66e17aaed4d2067297d4a64482d56f2382339" => :mavericks
+    sha1 "9ab96caa65e8b707deeb27caaff9ad8b1e906b2c" => :mountain_lion
+    sha1 "18b1d1a4aa89f92c4b9a9f202a95cc0896e03a9d" => :lion
   end
 
   option :universal
@@ -21,10 +22,6 @@ class Qt < Formula
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
 
-  odie 'qt: --with-qtdbus has been renamed to --with-d-bus' if build.with? "qtdbus"
-  odie 'qt: --with-demos-examples is no longer supported' if build.with? "demos-examples"
-  odie 'qt: --with-debug-and-release is no longer supported' if build.with? "debug-and-release"
-
   def install
     ENV.universal_binary if build.universal?
 
@@ -34,12 +31,6 @@ class Qt < Formula
             "-confirm-license", "-opensource",
             "-nomake", "demos", "-nomake", "examples",
             "-cocoa", "-fast", "-release"]
-
-    # we have to disable these to avoid triggering optimization code
-    # that will fail in superenv (in --env=std, Qt seems aware of this)
-    args << "-no-3dnow" << "-no-ssse3" if superenv?
-
-    args << "-L#{MacOS::X11.lib}" << "-I#{MacOS::X11.include}" if MacOS::X11.installed?
 
     if ENV.compiler == :clang
         args << "-platform"

@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class Elasticsearch < Formula
-  homepage 'http://www.elasticsearch.org'
-  url 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.1.1.tar.gz'
-  sha1 '8495b928984945728635f805f6e2e7183902a3ea'
+  homepage "http://www.elasticsearch.org"
+  url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.1.tar.gz"
+  sha1 "e74d80d79269bb224153ad63b45f1cf7448f3398"
 
   head do
-    url 'https://github.com/elasticsearch/elasticsearch.git'
-    depends_on 'maven'
+    url "https://github.com/elasticsearch/elasticsearch.git"
+    depends_on "maven"
   end
 
   def cluster_name
@@ -80,6 +80,8 @@ class Elasticsearch < Formula
     Data:    #{var}/elasticsearch/#{cluster_name}/
     Logs:    #{var}/log/elasticsearch/#{cluster_name}.log
     Plugins: #{var}/lib/elasticsearch/plugins/
+
+    ElasticSearch requires Java 7; you will need to install an appropriate JDK.
     EOS
   end
 

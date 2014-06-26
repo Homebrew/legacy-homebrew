@@ -1,20 +1,22 @@
-require 'formula'
+require "formula"
 
 class Mongodb < Formula
   homepage "http://www.mongodb.org/"
-  url "http://downloads.mongodb.org/src/mongodb-src-r2.6.0.tar.gz"
-  sha1 "35f8efe61d992f4b71c9205a9dbcab50e745c9a3"
-  revision 1
+  url "http://downloads.mongodb.org/src/mongodb-src-r2.6.3.tar.gz"
+  sha1 "226ab45e3a2e4d4a749271f1bce393ea8358d3dd"
 
   bottle do
-    sha1 "1c7b447ae2077b9efeaee2aa2c2474dc6b19ab6f" => :mavericks
-    sha1 "0004e3bfb60db586f6ced02769ccd1cf325e0929" => :mountain_lion
-    sha1 "7667f6cc36859fb9fced1885f382b76ae325583c" => :lion
+    sha1 "d573717ca7c67455680a6823de210c940faf9ac6" => :mavericks
+    sha1 "f7d2a0711e3ac09fd61bcb243360c1a07fb83233" => :mountain_lion
+    sha1 "b646f64abf52bcc594e690ca2c95143685ade864" => :lion
   end
 
-  head do
-    url "https://github.com/mongodb/mongo.git"
+  devel do
+    url "http://downloads.mongodb.org/src/mongodb-src-r2.7.2.tar.gz"
+    sha1 "17cf0970460db72a38b2465936da300fcd5eb917"
   end
+
+  head "https://github.com/mongodb/mongo.git"
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
   depends_on "boost" => :optional
@@ -23,37 +25,31 @@ class Mongodb < Formula
   depends_on "openssl" => :optional
 
   def install
-    args = ["--prefix=#{prefix}", "-j#{ENV.make_jobs}"]
-
-    cxx = ENV.cxx
-    if ENV.compiler == :clang && MacOS.version >= :mavericks
-      # when building on Mavericks with libc++
-      # Use --osx-version-min=10.9 such that the compiler defaults to libc++.
-      # Upstream issue discussing the default flags:
-      # https://jira.mongodb.org/browse/SERVER-12682
-      args << "--osx-version-min=10.9"
-    end
-
-    args << '--64' if MacOS.prefer_64_bit?
-    args << "--cc=#{ENV.cc}"
-    args << "--cxx=#{cxx}"
+    args = %W[
+      --prefix=#{prefix}
+      -j#{ENV.make_jobs}
+      --cc=#{ENV.cc}
+      --cxx=#{ENV.cxx}
+      --osx-version-min=#{MacOS.version}
+    ]
 
     # --full installs development headers and client library, not just binaries
-    args << "--full"
+    # (only supported pre-2.7)
+    args << "--full" if build.stable?
     args << "--use-system-boost" if build.with? "boost"
+    args << "--64" if MacOS.prefer_64_bit?
 
-    if build.with? 'openssl'
-      args << '--ssl'
-      args << "--extrapath=#{Formula["openssl"].opt_prefix}"
+    if build.with? "openssl"
+      args << "--ssl" << "--extrapath=#{Formula["openssl"].opt_prefix}"
     end
 
-    scons 'install', *args
+    scons "install", *args
 
     (buildpath+"mongod.conf").write mongodb_conf
     etc.install "mongod.conf"
 
-    (var+'mongodb').mkpath
-    (var+'log/mongodb').mkpath
+    (var+"mongodb").mkpath
+    (var+"log/mongodb").mkpath
   end
 
   def mongodb_conf; <<-EOS.undent
@@ -110,6 +106,6 @@ class Mongodb < Formula
   end
 
   test do
-    system "#{bin}/mongod", '--sysinfo'
+    system "#{bin}/mongod", "--sysinfo"
   end
 end

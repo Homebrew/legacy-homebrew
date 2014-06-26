@@ -2,8 +2,8 @@ require 'formula'
 
 class Gtksourceview3 < Formula
   homepage 'http://projects.gnome.org/gtksourceview/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtksourceview/3.12/gtksourceview-3.12.0.tar.xz'
-  sha1 'e2c65ba0c49624a22045ac7ada78136e4107e889'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtksourceview/3.12/gtksourceview-3.12.2.tar.xz'
+  sha1 '157ee7291988f89eebdbf6c4bb05e9901572f1ad'
 
   depends_on :x11
   depends_on 'pkg-config' => :build

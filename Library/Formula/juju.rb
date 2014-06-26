@@ -2,18 +2,18 @@ require 'formula'
 
 class Juju < Formula
   homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.18/1.18.2/+download/juju-core_1.18.2.tar.gz'
-  sha1 '80b3be18dc45f76ac3c5270dfb9e1da1f8e2071b'
+  url 'https://launchpad.net/juju-core/1.18/1.18.4/+download/juju-core_1.18.4.tar.gz'
+  sha1 '70ac905e113eedfa08ad8a8acab319b0c7c462cb'
 
   devel do
-    url "https://launchpad.net/juju-core/trunk/1.19.1/+download/juju-core_1.19.1.tar.gz"
-    sha1 "0bf1f8fcf5788907b960c1581007f9fd45126d21"
+    url 'https://launchpad.net/juju-core/trunk/1.19.3/+download/juju-core_1.19.3.tar.gz'
+    sha1 '9ef0ce0d8398e4f0a1ef3888d1204bc54381b16f'
   end
 
   bottle do
-    sha1 "4a61fabc0412aa5df2f7398ff3128f410321f8a4" => :mavericks
-    sha1 "59fb2af4289dbd34b04c8ef4e135ba862803025a" => :mountain_lion
-    sha1 "0033afd48c60c044e74e9ed4a19063d08975d7a8" => :lion
+    sha1 "426a5dadbd72c7d700e35b31103aaa431a226ef7" => :mavericks
+    sha1 "de572c1e63a7d2093761be983571e9f7ded6d761" => :mountain_lion
+    sha1 "e238eb414e934330fb54aa7793c37cfa22ca2c5f" => :lion
   end
 
   depends_on 'go' => :build

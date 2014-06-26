@@ -7,6 +7,11 @@ class Dos2unix < Formula
 
   depends_on 'gettext'
 
+  devel do
+    url 'http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.0.6-beta1.tar.gz'
+    sha1 '2ef5f0021c5a3f7a2e1a09faf33d5d410c18a44d'
+  end
+
   def install
     gettext = Formula["gettext"]
     system "make", "prefix=#{prefix}",

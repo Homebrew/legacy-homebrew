@@ -22,7 +22,7 @@ class Lz4 < Formula
     input_file = testpath/"in"
     input_file.write input
     output_file = testpath/"out"
-    system "sh", "-c", "cat #{input_file} | lz4 | lz4 -d > #{output_file}"
-    output_file.read == input
+    system "sh", "-c", "cat #{input_file} | #{bin}/lz4 | #{bin}/lz4 -d > #{output_file}"
+    assert_equal output_file.read, input
   end
 end

@@ -11,10 +11,14 @@ class Unixodbc < Formula
     sha1 "d3ea697a384347cfbbaa35d3478654813b2d0978" => :lion
   end
 
+  option :universal
+
   conflicts_with 'virtuoso', :because => 'Both install `isql` binaries.'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    ENV.universal_binary if build.universal?
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-gui=no"
     system "make install"

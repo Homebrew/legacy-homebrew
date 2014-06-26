@@ -11,8 +11,8 @@ class Vte3 < Formula
   depends_on "glib"
   depends_on "gtk+3"
   depends_on "pygtk"
-  depends_on :python => :recommended
   depends_on "gobject-introspection"
+  depends_on :python
 
   def install
     args = [

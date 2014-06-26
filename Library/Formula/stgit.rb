@@ -7,8 +7,6 @@ class Stgit < Formula
 
   head 'git://repo.or.cz/stgit.git'
 
-  depends_on :python
-
   def install
     ENV['PYTHON'] = 'python' # overrides 'python2' built into makefile
     system "make", "prefix=#{prefix}", "all"

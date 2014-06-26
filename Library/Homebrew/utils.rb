@@ -78,6 +78,10 @@ def pretty_duration s
   return "%.1f minutes" % (s/60)
 end
 
+def plural n, s="s"
+  (n == 1) ? "" : s
+end
+
 def interactive_shell f=nil
   unless f.nil?
     ENV['HOMEBREW_DEBUG_PREFIX'] = f.prefix
@@ -86,9 +90,13 @@ def interactive_shell f=nil
 
   Process.wait fork { exec ENV['SHELL'] }
 
-  unless $?.success?
+  if $?.success?
+    return
+  elsif $?.exited?
     puts "Aborting due to non-zero exit status"
-    exit $?
+    exit $?.exitstatus
+  else
+    raise $?.inspect
   end
 end
 
@@ -186,7 +194,9 @@ def which_editor
   return 'mate' if which "mate"
   # Find BBEdit / TextWrangler
   return 'edit' if which "edit"
-  # Default to vim
+  # Find vim
+  return 'vim' if which "vim"
+  # Default to standard vim
   return '/usr/bin/vim'
 end
 
@@ -196,7 +206,7 @@ def exec_editor *args
 end
 
 def exec_browser *args
-  browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] || "open"
+  browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] || OS::PATH_OPEN
   safe_exec(browser, *args)
 end
 
@@ -301,15 +311,18 @@ module GitHub extend self
     }
 
     default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
-    Kernel.open(url, default_headers.merge(headers)) do |f|
-      yield Utils::JSON.load(f.read)
+
+    begin
+      Kernel.open(url, default_headers.merge(headers)) do |f|
+        yield Utils::JSON.load(f.read)
+      end
+    rescue OpenURI::HTTPError => e
+      handle_api_error(e)
+    rescue SocketError, OpenSSL::SSL::SSLError => e
+      raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
+    rescue Utils::JSON::Error => e
+      raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
     end
-  rescue OpenURI::HTTPError => e
-    handle_api_error(e)
-  rescue SocketError, OpenSSL::SSL::SSLError => e
-    raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
-  rescue Utils::JSON::Error => e
-    raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
   end
 
   def handle_api_error(e)

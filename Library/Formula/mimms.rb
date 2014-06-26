@@ -5,7 +5,7 @@ class Mimms < Formula
   url 'https://launchpad.net/mimms/trunk/3.2.1/+download/mimms-3.2.1.tar.bz2'
   sha1 '279eee76dd4032cd2c1dddf1d49292a952c57b80'
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'libmms'
 
   # Switch shared library loading to Mach-O naming convention (.dylib)
@@ -14,6 +14,7 @@ class Mimms < Formula
   patch :DATA
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     system "python", "setup.py", "install", "--prefix=#{prefix}"
     bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end

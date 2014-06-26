@@ -3,7 +3,7 @@ require 'formula'
 class Scantailor < Formula
   class Version < ::Version
     def enhanced?
-      to_a[0].to_s == "enhanced"
+      tokens[0].to_s == "enhanced"
     end
 
     def <=>(other)
@@ -20,14 +20,14 @@ class Scantailor < Formula
     end
   end
 
-  homepage 'http://scantailor.sourceforge.net/'
+  homepage 'http://scantailor.org/'
   url 'https://downloads.sourceforge.net/project/scantailor/scantailor/0.9.11.1/scantailor-0.9.11.1.tar.gz'
-  version '0.9.11.1' => Version
+  version Scantailor::Version.new("0.9.11.1")
   sha1 '80970bbcd65fbf8bc62c0ff0cb7bcb78c86961c3'
 
   devel do
     url 'https://downloads.sourceforge.net/project/scantailor/scantailor-devel/enhanced/scantailor-enhanced-20140214.tar.bz2'
-    version 'enhanced-20140214' => Version
+    version Scantailor::Version.new("enhanced-20140214")
     sha1 'e90b861f02a571184b8ab9d5ef59dd57dcf1c212'
   end
 

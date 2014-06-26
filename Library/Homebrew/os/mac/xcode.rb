@@ -12,12 +12,12 @@ module OS
         when "10.5"         then "3.1.4"
         when "10.6"         then "3.2.6"
         when "10.7"         then "4.6.3"
-        when "10.8"         then "5.1"
-        when "10.9"         then "5.1"
+        when "10.8"         then "5.1.1"
+        when "10.9"         then "5.1.1"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
           if MacOS.version > "10.9"
-            "5.1"
+            "5.1.1"
           else
             raise "Mac OS X '#{MacOS.version}' is invalid"
           end
@@ -147,6 +147,8 @@ module OS
       STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
       FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
       MAVERICKS_PKG_ID = "com.apple.pkg.CLTools_Executables"
+      # Used for Yosemite and Mavericks CLT since June 2014.
+      MAVERICKS_NEW_PKG_ID = "com.apple.pkg.CLTools_Base"
       MAVERICKS_PKG_PATH = "/Library/Developer/CommandLineTools"
 
       # Returns true even if outdated tools are installed, e.g.
@@ -157,15 +159,19 @@ module OS
 
       def latest_version
         if MacOS.version >= "10.8"
-          "503.0.38"
+          "503.0.40"
         else
           "425.0.28"
         end
       end
 
       def outdated?
-        version = `/usr/bin/clang --version`[%r{clang-(\d+\.\d+\.\d+)}, 1]
-        return true unless version
+        if MacOS.version >= :mavericks
+          version = `#{MAVERICKS_PKG_PATH}/usr/bin/clang --version`
+        else
+          version = `/usr/bin/clang --version`
+        end
+        version = version[%r{clang-(\d+\.\d+\.\d+)}, 1] || "0"
         version < latest_version
       end
 
@@ -177,7 +183,7 @@ module OS
       end
 
       def detect_version
-        [MAVERICKS_PKG_ID, STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
+        [MAVERICKS_NEW_PKG_ID, MAVERICKS_PKG_ID, STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
           version = MacOS.pkgutil_info(id)[/version: (.+)$/, 1]
           return version if version
         end

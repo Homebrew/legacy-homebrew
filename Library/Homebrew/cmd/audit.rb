@@ -3,7 +3,7 @@ require 'utils'
 require 'extend/ENV'
 require 'formula_cellar_checks'
 
-module Homebrew extend self
+module Homebrew
   def audit
     formula_count = 0
     problem_count = 0
@@ -56,7 +56,7 @@ end
 
 class FormulaText
   def initialize path
-    @text = path.open('r') { |f| f.read }
+    @text = path.open("rb", &:read)
   end
 
   def without_patch
@@ -416,7 +416,7 @@ class FormulaAuditor
     end
 
     if line =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
-      problem "Use \"if ARGV.build_#{$1.downcase}?\" instead"
+      problem "Use \"if build.#{$1.downcase}?\" instead"
     end
 
     if line =~ /make && make/

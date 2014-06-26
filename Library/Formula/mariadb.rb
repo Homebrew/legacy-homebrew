@@ -2,13 +2,14 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.10/kvm-tarbake-jaunty-x86/mariadb-10.0.10.tar.gz'
-  sha1 '59e222bd261128aff89c216dc100d5bcc8c5acc4'
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.12/source/mariadb-10.0.12.tar.gz"
+  sha1 "226251b2312bbe3e4cdac1ee8a6830c6fe246f1b"
 
   bottle do
-    sha1 "8cdd6ee44b7235a1ccccbdcc76a085c9f750463f" => :mavericks
-    sha1 "c4b2a4f8ab597565b23e0cff789db59bb693343c" => :mountain_lion
-    sha1 "2d1d225ed84b1b9096edc83380c178f3cf2e4c42" => :lion
+    revision 1
+    sha1 "c06cd4d780c713bbfac8095453f19973ef177cc3" => :mavericks
+    sha1 "9ce7d7a2550a4d2a00a4650858d9996feace4387" => :mountain_lion
+    sha1 "f8fe22f96b81d606e1a3d52699638fdf5832b235" => :lion
   end
 
   depends_on 'cmake' => :build
@@ -28,14 +29,20 @@ class Mariadb < Formula
   conflicts_with 'mysql-connector-c',
     :because => 'both install MySQL client libraries'
 
-  env :std if build.universal?
-
   def install
     # Don't hard-code the libtool path. See:
     # https://github.com/Homebrew/homebrew/issues/20185
     inreplace "cmake/libutils.cmake",
       "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
       "COMMAND libtool -static -o ${TARGET_LOCATION}"
+
+    # Set basedir and ldata so that mysql_install_db can find the server
+    # without needing an explicit path to be set. This can still
+    # be overridden by calling --basedir= when calling.
+    inreplace "scripts/mysql_install_db.sh" do |s|
+      s.change_make_var! "basedir", "\"#{prefix}\""
+      s.change_make_var! "ldata", "\"#{var}/mysql\""
+    end
 
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.
@@ -79,7 +86,10 @@ class Mariadb < Formula
     args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? 'blackhole-storage-engine'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
+    if build.universal?
+      ENV.universal_binary
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
@@ -150,6 +160,7 @@ class Mariadb < Formula
       <array>
         <string>#{opt_bin}/mysqld_safe</string>
         <string>--bind-address=127.0.0.1</string>
+        <string>--datadir=#{var}/mysql</string>
       </array>
       <key>RunAtLoad</key>
       <true/>

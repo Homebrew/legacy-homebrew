@@ -2,12 +2,18 @@ require 'formula'
 
 class Ansible < Formula
   homepage 'http://www.ansible.com/home'
-  url 'http://releases.ansible.com/ansible/ansible-1.6.tar.gz'
-  sha1 '207404b37cc5c2d74992e6b7165bbc7c93781202'
+  url 'http://releases.ansible.com/ansible/ansible-1.6.3.tar.gz'
+  sha1 '9cac9de1357460a9692c015735c899519c85d0da'
 
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
-  depends_on :python
+  bottle do
+    sha1 "55c8739229115a11701bccba801c5a6d42c7bc14" => :mavericks
+    sha1 "46fbdea2eff0749876a1b42f73566b1a2563931a" => :mountain_lion
+    sha1 "3ef7c49039c360bae79b5a97b2d90cc29f39c4e0" => :lion
+  end
+
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'libyaml'
 
   option 'with-accelerate', "Enable accelerated mode"
@@ -45,25 +51,17 @@ class Ansible < Formula
   end
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     # HEAD additionally requires this to be present in PYTHONPATH, or else
     # ansible's own setup.py will fail.
     ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    # pycrypto's C bindings use flags unrecognized by clang,
-    # but since it doesn't use a makefile arg refurbishment
-    # is normally not enabled.
-    # See https://github.com/Homebrew/homebrew/issues/27639
-    ENV.append 'HOMEBREW_CCCFG', 'O'
-
-    resource('pycrypto').stage { system "python", *install_args }
-    resource('pyyaml').stage { system "python", *install_args }
-    resource('paramiko').stage { system "python", *install_args }
-    resource('markupsafe').stage { system "python", *install_args }
-    resource('jinja2').stage { system "python", *install_args }
-    if build.with? 'accelerate'
-      resource('python-keyczar').stage { system "python", *install_args }
+    res = %w[pycrypto pyyaml paramiko markupsafe jinja2]
+    res << "python-keyczar" if build.with? "accelerate"
+    res.each do |r|
+      resource(r).stage { system "python", *install_args }
     end
 
     inreplace 'lib/ansible/constants.py' do |s|
@@ -73,12 +71,10 @@ class Ansible < Formula
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 
-    # HEAD version installs some conflicting extra cruft
-    if build.head?
-      rm Dir["#{bin}/easy_install*"]
-      rm "#{lib}/python2.7/site-packages/site.py"
-      rm Dir["#{lib}/python2.7/site-packages/*.pth"]
-    end
+    # These are now rolled into 1.6 and cause linking conflicts
+    rm Dir["#{bin}/easy_install*"]
+    rm "#{lib}/python2.7/site-packages/site.py"
+    rm Dir["#{lib}/python2.7/site-packages/*.pth"]
 
     man1.install Dir['docs/man/man1/*.1']
 

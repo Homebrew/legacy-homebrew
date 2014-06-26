@@ -5,6 +5,13 @@ class Zeromq < Formula
   url 'http://download.zeromq.org/zeromq-4.0.4.tar.gz'
   sha1 '2328014e5990efac31390439b75c5528e38e4490'
 
+  bottle do
+    cellar :any
+    sha1 "6760a4e1b2091ae81c5cb909a43bb9829e7540df" => :mavericks
+    sha1 "de92da055c50391f5e96cc48ab69694a906813cc" => :mountain_lion
+    sha1 "c367bd8f3e75637206d2217b19516d6442060057" => :lion
+  end
+
   head do
     url 'https://github.com/zeromq/libzmq.git'
 

@@ -14,14 +14,12 @@ class Jena < Formula
   end
 
   def install
-    # Remove Windows scripts
-    rm_rf Dir['bat']
+    rm_rf "bat" # Remove Windows scripts
 
-    # Install files
     prefix.install %w{ LICENSE ReleaseNotes-Jena.txt NOTICE ReleaseNotes-TDB.txt README ReleaseNotes-ARQ.txt }
     doc.install ['javadoc-arq', 'javadoc-core', 'javadoc-sdb', 'javadoc-tdb', 'src-examples']
     libexec.install Dir['*']
-    Dir["#{libexec}/bin/*"].each do |path|
+    Dir.glob("#{libexec}/bin/*") do |path|
       bin_name = File.basename(path)
       (bin+bin_name).write shim_script(bin_name)
     end

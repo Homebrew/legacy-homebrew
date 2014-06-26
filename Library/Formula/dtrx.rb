@@ -5,7 +5,6 @@ class Dtrx < Formula
   url 'http://brettcsmith.org/2007/dtrx/dtrx-7.1.tar.gz'
   sha1 '05cfe705a04a8b84571b0a5647cd2648720791a4'
 
-  depends_on :python
   depends_on 'cabextract' => :optional
   depends_on 'lha' => :optional
   depends_on 'unshield' => :optional

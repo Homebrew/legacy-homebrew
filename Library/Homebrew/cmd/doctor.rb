@@ -1,5 +1,7 @@
-require 'cmd/missing'
-require 'version'
+require "cmd/missing"
+require "formula"
+require "keg"
+require "version"
 
 class Volumes
   def initialize
@@ -25,7 +27,7 @@ class Volumes
   def get_mounts path=nil
     vols = []
     # get the volume of path, if path is nil returns all volumes
-    raw_df = `/bin/df -P #{path}`
+    raw_df = IO.popen("/bin/df -P #{path}", "rb", &:read)
     raw_df.split("\n").each do |line|
       case line
       # regex matches: /dev/disk0s2   489562928 440803616  48247312    91%    /
@@ -181,7 +183,6 @@ def check_for_other_package_managers
 end
 
 def check_for_broken_symlinks
-  require 'keg'
   broken_symlinks = []
 
   Keg::PRUNEABLE_DIRECTORIES.select(&:directory?).each do |d|
@@ -198,71 +199,79 @@ def check_for_broken_symlinks
   end
 end
 
-def check_xcode_clt
-  if MacOS.version >= :mavericks
-    __check_clt_up_to_date
-  elsif MacOS::Xcode.installed?
-    __check_xcode_up_to_date
-  elsif MacOS.version >= :lion
-    __check_clt_up_to_date
-  else <<-EOS.undent
-      Xcode is not installed
-      Most formulae need Xcode to build.
-      It can be installed from https://developer.apple.com/downloads/
-    EOS
+if MacOS.version >= "10.9"
+  def check_for_installed_developer_tools
+    unless MacOS::Xcode.installed? || MacOS::CLT.installed? then <<-EOS.undent
+      No developer tools installed.
+      Install the Command Line Tools:
+        xcode-select --install
+      EOS
+    end
   end
-end
 
-def __check_xcode_up_to_date
-  if MacOS::Xcode.outdated?
-    message = <<-EOS.undent
+  def check_xcode_up_to_date
+    if MacOS::Xcode.installed? && MacOS::Xcode.outdated? then <<-EOS.undent
       Your Xcode (#{MacOS::Xcode.version}) is outdated
       Please update to Xcode #{MacOS::Xcode.latest_version}.
-    EOS
-    if MacOS.version >= :lion
-      message += <<-EOS.undent
       Xcode can be updated from the App Store.
       EOS
-    else
-      message += <<-EOS.undent
-      Xcode can be updated from https://developer.apple.com/downloads/
+    end
+  end
+
+  def check_clt_up_to_date
+    if MacOS::CLT.installed? && MacOS::CLT.outdated? then <<-EOS.undent
+      A newer Command Line Tools release is available.
+      Update them from Software Update in the App Store.
       EOS
     end
-    message
   end
-end
-
-def __check_clt_up_to_date
-  if not MacOS::CLT.installed?
-    message = <<-EOS.undent
+elsif MacOS.version == "10.8" || MacOS.version == "10.7"
+  def check_for_installed_developer_tools
+    unless MacOS::Xcode.installed? || MacOS::CLT.installed? then <<-EOS.undent
       No developer tools installed.
       You should install the Command Line Tools.
-    EOS
-    if MacOS.version >= :mavericks
-      message += <<-EOS.undent
-        Run `xcode-select --install` to install them.
-      EOS
-    else
-      message += <<-EOS.undent
-        The standalone package can be obtained from
-        https://developer.apple.com/downloads/,
-        or it can be installed via Xcode's preferences.
+      The standalone package can be obtained from
+        https://developer.apple.com/downloads
+      or it can be installed via Xcode's preferences.
       EOS
     end
-    message
-  elsif MacOS::CLT.outdated?
-    message = <<-EOS.undent
-      A newer Command Line Tools release is available
-    EOS
-    if MacOS.version >= :mavericks
-      message += <<-EOS.undent
-        Update them from Software Update in the App Store.
+  end
+
+  def check_xcode_up_to_date
+    if MacOS::Xcode.installed? && MacOS::Xcode.outdated? then <<-EOS.undent
+      Your Xcode (#{MacOS::Xcode.version}) is outdated
+      Please update to Xcode #{MacOS::Xcode.latest_version}.
+      Xcode can be updated from
+        https://developer.apple.com/downloads
       EOS
-    else
-      message += <<-EOS.undent
-        The standalone package can be obtained from
-        https://developer.apple.com/downloads/,
-        or it can be installed via Xcode's preferences.
+    end
+  end
+
+  def check_clt_up_to_date
+    if MacOS::CLT.installed? && MacOS::CLT.outdated? then <<-EOS.undent
+      A newer Command Line Tools release is available.
+      The standalone package can be obtained from
+        https://developer.apple.com/downloads
+      or it can be installed via Xcode's preferences.
+      EOS
+    end
+  end
+else
+  def check_for_installed_developer_tools
+    unless MacOS::Xcode.installed? then <<-EOS.undent
+      Xcode is not installed. Most formulae need Xcode to build.
+      It can be installed from
+        https://developer.apple.com/downloads
+      EOS
+    end
+  end
+
+  def check_xcode_up_to_date
+    if MacOS::Xcode.installed? && MacOS::Xcode.outdated? then <<-EOS.undent
+      Your Xcode (#{MacOS::Xcode.version}) is outdated
+      Please update to Xcode #{MacOS::Xcode.latest_version}.
+      Xcode can be updated from
+        https://developer.apple.com/downloads
       EOS
     end
   end
@@ -304,14 +313,16 @@ def check_for_stray_developer_directory
   end
 end
 
-def check_standard_compilers
-  return if check_xcode_clt # only check if Xcode is up to date
-  compiler_status = MacOS.compilers_standard?
-  if not compiler_status and not compiler_status.nil? then <<-EOS.undent
-    Your compilers are different from the standard versions for your Xcode.
-    If you have Xcode 4.3 or newer, you should install the Command Line Tools for
-    Xcode from within Xcode's Download preferences.
-    Otherwise, you should reinstall Xcode.
+def check_for_bad_install_name_tool
+  return if MacOS.version < 10.9
+
+  libs = `otool -L /usr/bin/install_name_tool`
+  unless libs.include? "/usr/lib/libxcselect.dylib" then <<-EOS.undent
+    You have an outdated version of /usr/bin/install_name_tool installed.
+    This will cause binary package installations to fail.
+    This can happen if you install osx-gcc-installer or RailsInstaller.
+    To restore it, you must reinstall OS X or restore the binary from
+    the OS packages.
     EOS
   end
 end
@@ -366,20 +377,19 @@ def check_access_usr_local
 end
 
 %w{include etc lib lib/pkgconfig share}.each do |d|
-  class_eval <<-EOS, __FILE__, __LINE__ + 1
-    def check_access_#{d.sub("/", "_")}
-      if (dir = HOMEBREW_PREFIX+'#{d}').exist? && !dir.writable_real?
-        <<-EOF.undent
-        \#{dir} isn't writable.
-        This can happen if you "sudo make install" software that isn't managed by
-        by Homebrew. If a brew tries to write a file to this directory, the
-        install will fail during the link step.
+  define_method("check_access_#{d.sub("/", "_")}") do
+    dir = HOMEBREW_PREFIX.join(d)
+    if dir.exist? && !dir.writable_real? then <<-EOS.undent
+      #{dir} isn't writable.
 
-        You should probably `chown` \#{dir}
-        EOF
-      end
+      This can happen if you "sudo make install" software that isn't managed by
+      by Homebrew. If a formula tries to write a file to this directory, the
+      install will fail during the link step.
+
+      You should probably `chown` #{dir}
+      EOS
     end
-    EOS
+  end
 end
 
 def check_access_logs
@@ -397,10 +407,12 @@ def check_access_logs
 end
 
 def check_ruby_version
-  if RUBY_VERSION.to_f > 1.8 then <<-EOS.undent
-    Ruby version #{RUBY_VERSION} is unsupported.
-    Homebrew is developed and tested on Ruby 1.8.x, and may not work correctly
-    on other Rubies. Patches are accepted as long as they don't break on 1.8.x.
+  ruby_version = MacOS.version >= "10.9" ? "2.0" : "1.8"
+  if RUBY_VERSION[/\d\.\d/] != ruby_version then <<-EOS.undent
+    Ruby version #{RUBY_VERSION} is unsupported on #{MacOS.version}. Homebrew
+    is developed and tested on Ruby #{ruby_version}, and may not work correctly
+    on other Rubies. Patches are accepted as long as they don't cause breakage
+    on supported Rubies.
     EOS
   end
 end
@@ -558,7 +570,7 @@ def check_for_gettext
   return if @found.empty?
 
   # Our gettext formula will be caught by check_linked_keg_only_brews
-  f = Formula.factory("gettext") rescue nil
+  f = Formulary.factory("gettext") rescue nil
   return if f and f.linked_keg.directory? and @found.all? do |path|
     Pathname.new(path).realpath.to_s.start_with? "#{HOMEBREW_CELLAR}/gettext"
   end
@@ -573,7 +585,7 @@ end
 
 def check_for_iconv
   unless find_relative_paths("lib/libiconv.dylib", "include/iconv.h").empty?
-    if (f = Formula.factory("libiconv") rescue nil) and f.linked_keg.directory?
+    if (f = Formulary.factory("libiconv") rescue nil) and f.linked_keg.directory?
       if not f.keg_only? then <<-EOS.undent
         A libiconv formula is installed and linked
         This will break stuff. For serious. Unlink it.
@@ -830,8 +842,6 @@ def __check_linked_brew f
 end
 
 def check_for_linked_keg_only_brews
-  require 'formula'
-
   return unless HOMEBREW_CELLAR.exist?
 
   warnings = Hash.new
@@ -858,18 +868,6 @@ def check_for_linked_keg_only_brews
     EOS
     warnings.each_key { |f| s << "    #{f}\n" }
     s
-  end
-end
-
-def check_for_MACOSX_DEPLOYMENT_TARGET
-  target = ENV.fetch('MACOSX_DEPLOYMENT_TARGET') { return }
-
-  unless target == MacOS.version.to_s then <<-EOS.undent
-    MACOSX_DEPLOYMENT_TARGET was set to #{target.inspect}
-    This is used by Fink, but having it set to a value different from the
-    current system version (#{MacOS.version}) can cause problems, compiling
-    Git for instance, and should probably be removed.
-    EOS
   end
 end
 
@@ -984,7 +982,6 @@ end
 
 def check_for_bad_python_symlink
   return unless which "python"
-  # Indeed Python -V outputs to stderr (WTF?)
   `python -V 2>&1` =~ /Python (\d+)\./
   # This won't be the right warning if we matched nothing at all
   return if $1.nil?
@@ -996,7 +993,7 @@ def check_for_bad_python_symlink
 end
 
 def check_for_non_prefixed_coreutils
-  gnubin = "#{Formula.factory('coreutils').prefix}/libexec/gnubin"
+  gnubin = "#{Formulary.factory('coreutils').prefix}/libexec/gnubin"
   if paths.include? gnubin then <<-EOS.undent
     Putting non-prefixed coreutils in your path can cause gmp builds to fail.
     EOS
@@ -1054,7 +1051,7 @@ def check_for_unlinked_but_not_keg_only
       true
     elsif not (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
       begin
-        Formula.factory(rack.basename.to_s).keg_only?
+        Formulary.factory(rack.basename.to_s).keg_only?
       rescue FormulaUnavailableError
         false
       end
@@ -1111,7 +1108,7 @@ end
   end
 end # end class Checks
 
-module Homebrew extend self
+module Homebrew
   def doctor
     checks = Checks.new
 
@@ -1133,8 +1130,16 @@ module Homebrew extend self
     methods.each do |method|
       out = checks.send(method)
       unless out.nil? or out.empty?
+        if first_warning
+          puts <<-EOS.undent
+            #{Tty.white}Please note that these warnings are just used to help the Homebrew maintainers
+            with debugging if you file an issue. If everything you use Homebrew for is
+            working fine: please don't worry and just ignore them. Thanks!#{Tty.reset}
+          EOS
+        end
+
         lines = out.to_s.split('\n')
-        puts unless first_warning
+        puts
         opoo lines.shift
         Homebrew.failed = true
         puts lines
@@ -1146,15 +1151,14 @@ module Homebrew extend self
   end
 
   def inject_dump_stats checks
-    class << checks
-      alias_method :oldsend, :send
-      def send method
+    checks.extend Module.new {
+      def send(method, *)
         time = Time.now
-        oldsend(method)
+        super
       ensure
         $times[method] = Time.now - time
       end
-    end
+    }
     $times = {}
     at_exit {
       puts $times.sort_by{|k, v| v }.map{|k, v| "#{k}: #{v}"}

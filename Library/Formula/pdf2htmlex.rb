@@ -14,6 +14,12 @@ class Pdf2htmlex < Formula
   depends_on 'poppler'
   depends_on 'ttfautohint' => :recommended if MacOS.version > :snow_leopard
 
+  # Fix build with recent poppler
+  patch do
+    url "https://github.com/coolwanglu/pdf2htmlEX/commit/c0371a07a678bebf2e6991c94eb245ec1c3f95cf.diff"
+    sha1 "5bbc19ff74955c2f81f858432f4f97c37a0dbc26"
+  end
+
   def install
     system "cmake", ".", *std_cmake_args
     system "make"

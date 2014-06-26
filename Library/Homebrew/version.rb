@@ -155,14 +155,6 @@ class Version
     StringToken::PATTERN
   )
 
-  def self.new_with_scheme(value, scheme)
-    if Class === scheme && scheme.ancestors.include?(Version)
-      scheme.new(value)
-    else
-      raise TypeError, "Unknown version scheme #{scheme.inspect}"
-    end
-  end
-
   def self.detect(url, specs={})
     if specs.has_key?(:tag)
       new(specs[:tag][/((?:\d+\.)*\d+)/, 1], true)
