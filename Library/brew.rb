@@ -110,7 +110,7 @@ begin
   # Add contributed commands to PATH before checking.
   ENV['PATH'] += "#{File::PATH_SEPARATOR}#{HOMEBREW_CONTRIB}/cmd"
 
-  internal_cmd = require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd)
+  internal_cmd = require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd) if cmd
 
   # Usage instructions should be displayed if and only if one of:
   # - a help flag is passed AND an internal command is matched
