@@ -35,7 +35,7 @@ EOS
 module Homebrew
   def keg_contains string, keg
     if not ARGV.homebrew_developer?
-      return quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg
+      return quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg.to_s
     end
 
     result = false
