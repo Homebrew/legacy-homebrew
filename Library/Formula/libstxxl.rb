@@ -62,8 +62,10 @@ class Libstxxl < Formula
   end
 
   def install
+    args = std_cmake_args - %w{-DCMAKE_BUILD_TYPE=None}
+    args << "-DCMAKE_BUILD_TYPE=Release"
     mkdir "build" do
-      system "cmake", "..", *std_cmake_args
+      system "cmake", "..", *args
       system 'make install'
     end
   end
