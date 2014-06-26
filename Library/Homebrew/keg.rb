@@ -276,7 +276,7 @@ class Keg < Pathname
     find { |pn| pn.delete if pn.extname == ".pyc" }
   end
 
-  protected
+  private
 
   def resolve_any_conflicts dst, mode
     # if it isn't a directory then a severe conflict is about to happen. Let
@@ -329,6 +329,8 @@ class Keg < Pathname
   rescue SystemCallError
     raise LinkError.new(self, src, dst)
   end
+
+  protected
 
   # symlinks the contents of self+foo recursively into #{HOMEBREW_PREFIX}/foo
   def link_dir foo, mode
