@@ -8,7 +8,8 @@ class Autogen < Formula
 
   depends_on 'guile'
   depends_on 'bdw-gc'
-
+  depends_on 'pkg-config' => :build
+  
   fails_with :clang do
     build 500
     cause <<-EOS.undent
@@ -22,7 +23,6 @@ class Autogen < Formula
 
   def install
     system "./configure", "--disable-debug",
-                          "--with-libguile-libs='-L/usr/local/Cellar/guile/2.0.11/lib -lguile -lm -R/usr/local/Cellar/guile/2.0.11/lib",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
 
