@@ -73,10 +73,11 @@ class Macvim < Formula
         # on the Mac. Note configure detects brewed python correctly, but that
         # is ignored.
         # See https://github.com/Homebrew/homebrew/issues/17908
+        py_ldflags = `python-config --ldflags`.chomp
         py_prefix = Pathname.new `python-config --prefix`.chomp
-        ENV.prepend "LDFLAGS", "-L#{py_prefix}/lib/python2.7/config -F#{py_prefix.parent.parent.parent}"
-        ENV.prepend "CFLAGS", "-F#{py_prefix.parent.parent.parent}"
-
+        # We need to have the library folder and flags first and framework Python after, so macvim will not use framework python if the prefix/ldflags are valid
+        # Actually we dont need the first part with the prefix for this to work, but if we are using another python instead of the Homebrewed, this is required and is way more complete.
+        ENV.prepend "LDFLAGS", "-L#{py_prefix}/lib/python2.7/config #{py_ldflags} -framework Python"
         args << "--enable-pythoninterp"
       else
         args << "--enable-pythoninterp=dynamic" << "--enable-python3interp=dynamic"
@@ -92,7 +93,6 @@ class Macvim < Formula
       args << "--with-developer-dir=#{MacOS::Xcode.prefix}/Platforms/MacOSX.platform/Developer"
       args << "--with-macsdk=#{MacOS.version}"
     end
-
     system "./configure", *args
 
     if build.with? "python"
