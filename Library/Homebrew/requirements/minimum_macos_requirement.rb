@@ -1,7 +1,7 @@
 require 'requirement'
 
 class MinimumMacOSRequirement < Requirement
-  fatal true
+  fatal OS.mac?
 
   def initialize(tags)
     @version = MacOS::Version.from_symbol(tags.first)
