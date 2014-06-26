@@ -59,7 +59,7 @@ class Passenger < Formula
         LoadModule passenger_module #{opt_libexec}/buildout/apache2/mod_passenger.so
         PassengerRoot #{opt_libexec}/lib/phusion_passenger/locations.ini
         PassengerDefaultRuby /usr/bin/ruby
-      
+
       EOS
   end
 
