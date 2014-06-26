@@ -89,7 +89,6 @@ class Keg < Pathname
   end
 
   attr_reader :name, :linked_keg_record
-  alias_method :fname, :name
 
   def initialize path
     super path
@@ -97,6 +96,11 @@ class Keg < Pathname
     raise "#{to_s} is not a directory" unless directory?
     @name = parent.basename.to_s
     @linked_keg_record = HOMEBREW_LIBRARY.join("LinkedKegs", name)
+  end
+
+  def fname
+    opoo "Keg#fname is a deprecated alias for Keg#name and will be removed soon"
+    name
   end
 
   def uninstall
