@@ -14,6 +14,11 @@ class Imlib2 < Formula
   depends_on 'pkg-config' => :build
   depends_on 'jpeg' => :recommended
 
+  stable do
+    patch :DATA
+    patch :p0, :DATA
+	end
+
   def install
     args = %W[
       --disable-dependency-tracking
@@ -30,3 +35,18 @@ class Imlib2 < Formula
     system "#{bin}/imlib2_conv", "/usr/share/doc/cups/images/cups.png", "imlib2_test.png"
   end
 end
+
+__END__
+diff --git a/src/bin/imlib2_view.c b/src/bin/imlib2_view.c
+index 7a84211..ded57f8 100644
+--- a/src/bin/imlib2_view.c
++++ b/src/bin/imlib2_view.c
+@@ -5,6 +5,8 @@
+ #include <X11/extensions/shape.h>
+ #include <X11/Xatom.h>
+ #include <X11/Xos.h>
++#define XK_LATIN1 1
++#include <X11/keysymdef.h>
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
