@@ -11,6 +11,12 @@ class Erlang < Formula
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
+  bottle do
+    sha1 "5b36fc7bff7ddb0e4fb3ab220d5a1071e42b71ba" => :mavericks
+    sha1 "9f2620304d3b00110c9836fefb3aef69e5071170" => :mountain_lion
+    sha1 "c511b8f0706de912124258d5e1066850de8a59b3" => :lion
+  end
+
   resource "man" do
     url "http://www.erlang.org/download/otp_doc_man_17.1.tar.gz"
     sha1 "c23cc3c9d4b9ba5d1a61b2156be0edd16ce6144d"
