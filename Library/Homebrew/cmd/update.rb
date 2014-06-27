@@ -1,5 +1,6 @@
 require 'cmd/tap'
 require 'cmd/untap'
+require 'cmd/outdated'
 
 module Homebrew
   def update
@@ -216,6 +217,12 @@ class Report < Hash
     dump_formula_report :M, "Updated Formulae"
     dump_formula_report :D, "Deleted Formulae"
     dump_formula_report :R, "Renamed Formulae"
+
+    upgradables = (Homebrew.outdated_brews & select_formula(:M)).sort.uniq
+    unless upgradables.empty?
+      ohai "Upgradable Formulae"
+      puts_columns upgradables
+    end
 #    dump_new_commands
 #    dump_deleted_commands
   end
