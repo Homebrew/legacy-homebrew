@@ -546,13 +546,12 @@ class FormulaInstaller
   end
 
   def link
-    if f.linked_keg.directory? and f.linked_keg.resolved_path == f.prefix
-      opoo "This keg was marked linked already, continuing anyway"
-      # otherwise Keg.link will bail
-      f.linked_keg.unlink
-    end
-
     keg = Keg.new(f.prefix)
+
+    if keg.linked?
+      opoo "This keg was marked linked already, continuing anyway"
+      keg.remove_linked_keg_record
+    end
 
     begin
       keg.link
