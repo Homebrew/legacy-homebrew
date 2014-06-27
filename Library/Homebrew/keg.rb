@@ -180,14 +180,16 @@ class Keg
       end
     end
 
-    if linked?
-      linked_keg_record.unlink
-      linked_keg_record.parent.rmdir_if_possible
-    end
+    remove_linked_keg_record if linked?
 
     dirs.reverse_each(&:rmdir_if_possible)
 
     ObserverPathnameExtension.total
+  end
+
+  def remove_linked_keg_record
+    linked_keg_record.unlink
+    linked_keg_record.parent.rmdir_if_possible
   end
 
   def lock
