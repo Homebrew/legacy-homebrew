@@ -7,7 +7,6 @@ class Autogen < Formula
   sha1 'a02b9db78793ec0bfe76835937d4153e90d4c0de'
 
   depends_on 'guile'
-  depends_on 'bdw-gc'
   depends_on 'pkg-config' => :build
   
   fails_with :clang do
