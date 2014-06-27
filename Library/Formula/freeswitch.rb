@@ -11,6 +11,7 @@ class Freeswitch < Formula
   depends_on :libtool
   depends_on 'pkg-config' => :build
 
+  depends_on 'libtiff'
   depends_on 'jpeg'
   depends_on 'curl'
   depends_on 'openssl'
