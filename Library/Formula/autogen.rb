@@ -2,11 +2,12 @@ require 'formula'
 
 class Autogen < Formula
   homepage 'http://autogen.sourceforge.net'
-  url 'http://ftpmirror.gnu.org/autogen/rel5.18.1/autogen-5.18.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/autogen/rel5.18.1/autogen-5.18.1.tar.gz'
-  sha1 '53d29cafd187895f795e2ba94b9964f71da93060'
+  url 'http://ftpmirror.gnu.org/autogen/rel5.18.2/autogen-5.18.2.tar.gz'
+  mirror 'http://ftp.gnu.org/pub/gnu/autogen/rel5.18.2/autogen-5.18.2.tar.gz'
+  sha1 'c63a0f567b4ad90c4243efbd2420c51e6b63309a'
 
   depends_on 'guile'
+  depends_on 'pkg-config' => :build
 
   fails_with :clang do
     build 500
