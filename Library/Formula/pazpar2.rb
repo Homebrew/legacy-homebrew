@@ -2,8 +2,8 @@ require "formula"
 
 class Pazpar2 < Formula
   homepage "http://www.indexdata.com/pazpar2"
-  url "http://ftp.indexdata.dk/pub/pazpar2/pazpar2-1.6.43.tar.gz"
-  sha1 "470cddff6670dc24ed144cf503beb3ef054c6392"
+  url "http://ftp.indexdata.dk/pub/pazpar2/pazpar2-1.7.0.tar.gz"
+  sha1 "3ea5faf6b67f092e34a8370a76ccb70b0f2964c6"
 
   bottle do
     cellar :any
