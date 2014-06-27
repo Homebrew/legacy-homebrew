@@ -2,11 +2,17 @@ require 'formula'
 
 class Autogen < Formula
   homepage 'http://autogen.sourceforge.net'
-  url 'http://ftpmirror.gnu.org/autogen/rel5.18.1/autogen-5.18.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/autogen/rel5.18.1/autogen-5.18.1.tar.gz'
-  sha1 '53d29cafd187895f795e2ba94b9964f71da93060'
+  url 'http://ftpmirror.gnu.org/autogen/rel5.18.2/autogen-5.18.2.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/autogen/rel5.18.2/autogen-5.18.2.tar.gz'
+  sha1 'c63a0f567b4ad90c4243efbd2420c51e6b63309a'
+
+  # Please note, 5.18.2 is not the newest Autogen package.
+  # However, 5.18.3 has an unresolved guile issue and should not be updated to.
+  # Please do not submit an update to 5.18.3 until this issue (https://github.com/Homebrew/homebrew/pull/30406) is resolved.
+  # The ongoing 5.18.3 guile issue has been reported upstream to Autogen's devs.
 
   depends_on 'guile'
+  depends_on 'pkg-config' => :build
 
   fails_with :clang do
     build 500
