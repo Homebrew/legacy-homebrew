@@ -2,20 +2,26 @@ require 'formula'
 
 class Freeswitch < Formula
   homepage 'http://freeswitch.org'
-  url 'git://git.freeswitch.org/freeswitch.git', :tag => 'v1.2.0'
-  version '1.2.0'
+  url 'git://git.freeswitch.org/freeswitch.git', :tag => 'v1.4.6'
 
   head 'git://git.freeswitch.org/freeswitch.git'
 
   depends_on :autoconf
   depends_on :automake
   depends_on :libtool
-
   depends_on 'pkg-config' => :build
+
   depends_on 'jpeg'
+  depends_on 'curl'
+  depends_on 'openssl'
+  depends_on 'pcre'
+  depends_on 'speex'
+  depends_on 'sqlite'
 
   def install
     system "./bootstrap.sh -j#{ENV.make_jobs}"
+    # mod_enum requires libldns-dev which doesn't seem to exist in brew
+    system "perl -pi -e 's{applications/mod_enum}{#applications/mod_enum}' ./modules.conf"
     system "./configure", "--disable-dependency-tracking",
                           "--enable-shared",
                           "--enable-static",
