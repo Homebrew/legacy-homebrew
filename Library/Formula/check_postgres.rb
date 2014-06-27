@@ -7,6 +7,13 @@ class CheckPostgres < Formula
 
   head "https://github.com/bucardo/check_postgres.git"
 
+  bottle do
+    cellar :any
+    sha1 "ff1c0bf88f5db93a9c71e583a8d9675e2db9a0dd" => :mavericks
+    sha1 "5de05e3422ee2af8eb25767048a5b5e1fd4b8421" => :mountain_lion
+    sha1 "d2d291e11a3720a3d0d8fce6d3409457055bee3c" => :lion
+  end
+
   depends_on :postgresql
 
   def install
