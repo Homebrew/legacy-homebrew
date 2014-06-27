@@ -2,18 +2,18 @@ require 'formula'
 
 class Llvm < Formula
   homepage 'http://llvm.org/'
-  url "http://llvm.org/releases/3.4.1/llvm-3.4.1.src.tar.gz"
-  sha1 "3711baa6f5ef9df07418ce76039fc3848a7bde7c"
+  url "http://llvm.org/releases/3.4.2/llvm-3.4.2.src.tar.gz"
+  sha1 "c5287384d0b95ecb0fd7f024be2cdfb60cd94bc9"
 
   bottle do
-    sha1 "92dc1d8793000d05c8321b2791b6b1d7321a83c3" => :mavericks
-    sha1 "a46bd08a60fd7ae17a21476bbb810510b58d492a" => :mountain_lion
-    sha1 "4dfc0268acc552bd62b2954ac3829802b25a5a46" => :lion
+    sha1 "8136d3ef9c97e3de20ab4962f94a6c15ce5b50b2" => :mavericks
+    sha1 "15d12d15f17c3fa12f2b7e87ac1f70ae3eaa7e35" => :mountain_lion
+    sha1 "50e1d0c4a046ea14fb8c4bbd305bc7c8ccaac5bb" => :lion
   end
 
   resource 'clang' do
-    url "http://llvm.org/releases/3.4.1/cfe-3.4.1.src.tar.gz"
-    sha1 "ecd38fa89e837e6cb8305b8d05e88baecb0bda55"
+    url "http://llvm.org/releases/3.4.2/cfe-3.4.2.src.tar.gz"
+    sha1 "add5420b10c3c3a38c4dc2322f8b64ba0a5def97"
   end
 
   option :universal

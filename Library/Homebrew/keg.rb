@@ -3,7 +3,7 @@ require "keg_fix_install_names"
 require "formula_lock"
 require "ostruct"
 
-class Keg < Pathname
+class Keg
   class AlreadyLinkedError < RuntimeError
     def initialize(keg)
       super <<-EOS.undent
@@ -88,23 +88,71 @@ class Keg < Pathname
     raise NotAKegError, "#{path} is not inside a keg"
   end
 
-  attr_reader :name, :linked_keg_record
-  alias_method :fname, :name
+  attr_reader :path, :name, :linked_keg_record
+  protected :path
 
   def initialize path
-    super path
-    raise "#{to_s} is not a valid keg" unless parent.parent.realpath == HOMEBREW_CELLAR.realpath
-    raise "#{to_s} is not a directory" unless directory?
-    @name = parent.basename.to_s
+    raise "#{path} is not a valid keg" unless path.parent.parent.realpath == HOMEBREW_CELLAR.realpath
+    raise "#{path} is not a directory" unless path.directory?
+    @path = path
+    @name = path.parent.basename.to_s
     @linked_keg_record = HOMEBREW_LIBRARY.join("LinkedKegs", name)
   end
 
+  def fname
+    opoo "Keg#fname is a deprecated alias for Keg#name and will be removed soon"
+    name
+  end
+
+  def to_s
+    path.to_s
+  end
+
+  if Pathname.method_defined?(:to_path)
+    alias_method :to_path, :to_s
+  else
+    alias_method :to_str, :to_s
+  end
+
+  def inspect
+    "#<#{self.class.name}:#{path}>"
+  end
+
+  def ==(other)
+    instance_of?(other.class) && path == other.path
+  end
+  alias_method :eql?, :==
+
+  def hash
+    path.hash
+  end
+
+  def abv
+    path.abv
+  end
+
+  def exist?
+    path.exist?
+  end
+
+  def /(other)
+    path / other
+  end
+
+  def join(*args)
+    path.join(*args)
+  end
+
+  def rename(*args)
+    path.rename(*args)
+  end
+
   def uninstall
-    rmtree
-    parent.rmdir_if_possible
+    path.rmtree
+    path.parent.rmdir_if_possible
 
     opt = HOMEBREW_PREFIX.join("opt", name)
-    if opt.symlink? && self == opt.resolved_path
+    if opt.symlink? && path == opt.resolved_path
       opt.unlink
       opt.parent.rmdir_if_possible
     end
@@ -115,10 +163,10 @@ class Keg < Pathname
 
     dirs = []
 
-    TOP_LEVEL_DIRECTORIES.map{ |d| self/d }.each do |dir|
+    TOP_LEVEL_DIRECTORIES.map{ |d| path.join(d) }.each do |dir|
       next unless dir.exist?
       dir.find do |src|
-        dst = HOMEBREW_PREFIX + src.relative_path_from(self)
+        dst = HOMEBREW_PREFIX + src.relative_path_from(path)
         dst.extend(ObserverPathnameExtension)
 
         dirs << dst if dst.directory? && !dst.symlink?
@@ -149,41 +197,36 @@ class Keg < Pathname
   def linked?
     linked_keg_record.symlink? &&
       linked_keg_record.directory? &&
-      self == linked_keg_record.resolved_path
+      path == linked_keg_record.resolved_path
   end
 
   def completion_installed? shell
     dir = case shell
-      when :bash then self/'etc/bash_completion.d'
-      when :zsh then self/'share/zsh/site-functions'
-      end
-    return if dir.nil?
-    dir.directory? and not dir.children.length.zero?
+          when :bash then path.join("etc", "bash_completion.d")
+          when :zsh  then path.join("share", "zsh", "site-functions")
+          end
+    dir && dir.directory? && dir.children.any?
   end
 
   def plist_installed?
-    Dir["#{self}/*.plist"].any?
+    Dir["#{path}/*.plist"].any?
   end
 
   def python_site_packages_installed?
-    (self/'lib/python2.7/site-packages').directory?
+    path.join("lib", "python2.7", "site-packages").directory?
   end
 
   def app_installed?
-    Dir["#{self}/{,libexec/}*.app"].any?
+    Dir["#{path}/{,libexec/}*.app"].any?
   end
 
   def version
     require 'pkg_version'
-    PkgVersion.parse(basename.to_s)
-  end
-
-  def basename
-    Pathname.new(self).basename
+    PkgVersion.parse(path.basename.to_s)
   end
 
   def find(*args, &block)
-    Pathname.new(self).find(*args, &block)
+    path.find(*args, &block)
   end
 
   def link mode=OpenStruct.new
@@ -246,7 +289,7 @@ class Keg < Pathname
     end
 
     unless mode.dry_run
-      make_relative_symlink(linked_keg_record, self, mode)
+      make_relative_symlink(linked_keg_record, path, mode)
       optlink
     end
   rescue LinkError
@@ -265,14 +308,14 @@ class Keg < Pathname
     elsif from.exist?
       from.delete
     end
-    make_relative_symlink(from, self)
+    make_relative_symlink(from, path)
   end
 
   def delete_pyc_files!
     find { |pn| pn.delete if pn.extname == ".pyc" }
   end
 
-  protected
+  private
 
   def resolve_any_conflicts dst, mode
     # if it isn't a directory then a severe conflict is about to happen. Let
@@ -326,13 +369,15 @@ class Keg < Pathname
     raise LinkError.new(self, src, dst)
   end
 
-  # symlinks the contents of self+foo recursively into #{HOMEBREW_PREFIX}/foo
-  def link_dir foo, mode
-    root = self+foo
+  protected
+
+  # symlinks the contents of path+relative_dir recursively into #{HOMEBREW_PREFIX}/relative_dir
+  def link_dir relative_dir, mode
+    root = path+relative_dir
     return unless root.exist?
     root.find do |src|
       next if src == root
-      dst = HOMEBREW_PREFIX+src.relative_path_from(self)
+      dst = HOMEBREW_PREFIX + src.relative_path_from(path)
       dst.extend ObserverPathnameExtension
 
       if src.file?

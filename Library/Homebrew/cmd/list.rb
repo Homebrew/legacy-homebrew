@@ -18,7 +18,7 @@ module Homebrew
       ENV['CLICOLOR'] = nil
       exec 'ls', *ARGV.options_only << HOMEBREW_CELLAR
     elsif ARGV.verbose? or not $stdout.tty?
-      exec "find", *ARGV.kegs + %w[-not -type d -print]
+      exec "find", *ARGV.kegs.map(&:to_s) + %w[-not -type d -print]
     else
       ARGV.kegs.each{ |keg| PrettyListing.new keg }
     end
