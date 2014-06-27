@@ -13,7 +13,6 @@ module HomebrewArgvExtension
   end
 
   def kegs
-    rack = nil
     require 'keg'
     require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
