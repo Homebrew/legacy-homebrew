@@ -175,9 +175,9 @@ class Subversion < Formula
       # Some of the libraries get installed into the wrong place, they end up having the
       # prefix in the directory name twice.
       # There's an ongoing issue with Ruby's mv placing files in the wrong directory and erroring out.
-      # The system mv will be used for now until a more complete fix is found. See https://github.com/Homebrew/homebrew/issues/30370
+      # The below addition should resolve the issue for now. See https://github.com/Homebrew/homebrew/issues/30370
 
-      system "mv -v #{prefix}/#{lib}/* #{lib}"
+      lib.install Dir["#{prefix}/#{lib}/*"]
     end
 
     if build.include? 'java'
