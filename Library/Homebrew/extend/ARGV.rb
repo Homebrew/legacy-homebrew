@@ -35,7 +35,7 @@ module HomebrewArgvExtension
         elsif (prefix = Formulary.factory(canonical_name).prefix).directory?
           Keg.new(prefix)
         else
-          raise MultipleVersionsInstalledError.new(name)
+          raise MultipleVersionsInstalledError.new(canonical_name)
         end
       rescue FormulaUnavailableError
         raise <<-EOS.undent
