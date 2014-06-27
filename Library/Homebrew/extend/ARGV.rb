@@ -26,28 +26,26 @@ module HomebrewArgvExtension
       linked_keg_ref = HOMEBREW_REPOSITORY/"Library/LinkedKegs"/name
       opt_prefix = HOMEBREW_PREFIX/"opt"/name
 
-      if opt_prefix.symlink? && opt_prefix.directory?
-        Keg.new(opt_prefix.resolved_path)
-      elsif linked_keg_ref.symlink? && linked_keg_ref.directory?
-        Keg.new(linked_keg_ref.resolved_path)
-      elsif dirs.length == 1
-        Keg.new(dirs.first)
-      elsif (prefix = Formulary.factory(canonical_name).prefix).directory?
-        Keg.new(prefix)
-      else
-        raise MultipleVersionsInstalledError.new(name)
+      begin
+        if opt_prefix.symlink? && opt_prefix.directory?
+          Keg.new(opt_prefix.resolved_path)
+        elsif linked_keg_ref.symlink? && linked_keg_ref.directory?
+          Keg.new(linked_keg_ref.resolved_path)
+        elsif dirs.length == 1
+          Keg.new(dirs.first)
+        elsif (prefix = Formulary.factory(canonical_name).prefix).directory?
+          Keg.new(prefix)
+        else
+          raise MultipleVersionsInstalledError.new(name)
+        end
+      rescue FormulaUnavailableError
+        raise <<-EOS.undent
+          Multiple kegs installed to #{rack}
+          However we don't know which one you refer to.
+          Please delete (with rm -rf!) all but one and then try again.
+          Sorry, we know this is lame.
+        EOS
       end
-    end
-  rescue FormulaUnavailableError
-    if rack
-      raise <<-EOS.undent
-        Multiple kegs installed to #{rack}
-        However we don't know which one you refer to.
-        Please delete (with rm -rf!) all but one and then try again.
-        Sorry, we know this is lame.
-      EOS
-    else
-      raise
     end
   end
 
