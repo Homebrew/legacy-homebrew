@@ -21,7 +21,11 @@ class R3 < Formula
     ENV.universal_binary if build.universal?
 
     system "./autogen.sh"
+
     args = %W{
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
       --prefix=#{prefix}
     }
 
