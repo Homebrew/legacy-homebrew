@@ -37,7 +37,7 @@ class Keg
 
     def to_s
       s = []
-      s << "Could not symlink #{src.relative_path_from(keg)}"
+      s << "Could not symlink #{src.relative_path_from(Pathname(keg))}"
       s << "Target #{dst}" << suggestion
       s << <<-EOS.undent
         To force the link and overwrite all conflicting files:
@@ -52,7 +52,7 @@ class Keg
 
   class DirectoryNotWritableError < LinkError
     def to_s; <<-EOS.undent
-      Could not symlink #{src.relative_path_from(keg)}
+      Could not symlink #{src.relative_path_from(Pathname(keg))}
       #{dst.dirname} is not writable.
       EOS
     end
