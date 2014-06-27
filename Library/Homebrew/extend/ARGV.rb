@@ -21,7 +21,7 @@ module HomebrewArgvExtension
       rack = HOMEBREW_CELLAR/canonical_name
       dirs = rack.directory? ? rack.subdirs : []
 
-      raise NoSuchKegError.new(rack.basename.to_s) if not rack.directory? or dirs.empty?
+      raise NoSuchKegError.new(rack.basename.to_s) if dirs.empty?
 
       linked_keg_ref = HOMEBREW_REPOSITORY/"Library/LinkedKegs"/name
       opt_prefix = HOMEBREW_PREFIX/"opt"/name
