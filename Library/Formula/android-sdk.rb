@@ -16,7 +16,7 @@ class AndroidSdk < Formula
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "19.0.3"
+    "20.0.0"
   end
 
   def install
