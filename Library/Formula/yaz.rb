@@ -3,8 +3,8 @@ require "formula"
 
 class Yaz < Formula
   homepage "http://www.indexdata.com/yaz"
-  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.2.0.tar.gz"
-  sha1 "7289c3ee6d6ecaf382a4bc094c49b6b24ac7b4fe"
+  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.2.1.tar.gz"
+  sha1 "a5cf3e3027019d4a1945b33c89627e12745d31d4"
 
   bottle do
     cellar :any
