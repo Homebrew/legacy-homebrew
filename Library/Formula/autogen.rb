@@ -8,7 +8,7 @@ class Autogen < Formula
 
   depends_on 'guile'
   depends_on 'pkg-config' => :build
-  
+
   fails_with :clang do
     build 500
     cause <<-EOS.undent
