@@ -8,9 +8,9 @@ class Libtasn1 < Formula
 
   bottle do
     cellar :any
-    sha1 "3483f10166453c12db565758595ee5bb39dfe563" => :mavericks
-    sha1 "85c4ec48dad24eca7417d61665579451d7b068ac" => :mountain_lion
-    sha1 "1db5e62f67e941a610b9a42e93662a78989a454d" => :lion
+    sha1 "92e2fbe3e8b958a82567389014198d0eb93319a9" => :mavericks
+    sha1 "0dfa2f426a87db64334d86551a53ce09fa8fe3d3" => :mountain_lion
+    sha1 "1552dc3c56ab8ef245becc398c3a043fb15914ab" => :lion
   end
 
   option :universal
