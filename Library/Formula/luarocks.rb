@@ -8,7 +8,6 @@ class Luarocks < Formula
 
   option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
   option 'with-lua52', 'Use Lua 5.2 instead of the stock Lua'
-  option 'without-patch', 'deactive the formula\'s patch (e.g. for --HEAD)'
 
   if build.with? "luajit"
     depends_on 'luajit'
@@ -30,7 +29,7 @@ class Luarocks < Formula
   # appropriate messaging if not. The check that luarocks does has been
   # seen to have false positives, so remove it.
   # TODO: better document the false positive cases, or remove this patch.
-  if build.with? "patch"
+  stable do
     patch :DATA
   end
 
