@@ -232,13 +232,14 @@ class Report < Hash
   end
 
   def valid_formula_location?(relative_path)
-    ruby_file = /\A.*\.rb\Z/
     parts = relative_path.split('/')[2..-1]
-    [
-      parts.length == 1 && parts.first =~ ruby_file,
-      parts.length == 2 && parts.first == 'Formula' && parts.last =~ ruby_file,
-      parts.length == 2 && parts.first == 'HomebrewFormula' && parts.last =~ ruby_file,
-    ].any?
+    return false unless File.extname(parts.last) == ".rb"
+    case parts.first
+    when "Formula", "HomebrewFormula"
+      parts.length == 2
+    else
+      parts.length == 1
+    end
   end
 
   def new_tapped_formula
