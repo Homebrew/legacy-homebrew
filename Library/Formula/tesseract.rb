@@ -17,7 +17,7 @@ class Tesseract < Formula
 
   option "all-languages", "Install recognition data for all languages"
 
-  depends_on 'libtiff'
+  depends_on 'libtiff' => :optional
   depends_on 'leptonica'
 
   fails_with :llvm do
