@@ -13,6 +13,8 @@ class Libffi < Formula
     sha1 "c2ad5c7f63e06566494d92baa1e31c0c2190ea05" => :lion
   end
 
+  depends_on "pkg-config" => :build
+
   head do
     url 'https://github.com/atgreen/libffi.git'
     depends_on "autoconf" => :build
