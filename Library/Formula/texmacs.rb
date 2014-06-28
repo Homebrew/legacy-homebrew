@@ -1,9 +1,10 @@
-require 'formula'
+require "formula"
 
 class Texmacs < Formula
-  homepage 'http://www.texmacs.org'
-  url 'http://www.texmacs.org/Download/ftp/tmftp/source/TeXmacs-1.0.7.20-src.tar.gz'
-  sha1 '2865020f89c58f8eb34504cf9ecc53c03038e695'
+  homepage "http://www.texmacs.org"
+  head "svn://svn.savannah.gnu.org/texmacs/trunk/src"
+  url "http://www.texmacs.org/Download/ftp/tmftp/source/TeXmacs-1.99.1-src.tar.gz"
+  sha1 "a5c7171644c84866445334b2d0cb39a6d9dd5f54"
 
   depends_on "qt"
   depends_on "guile"
@@ -11,10 +12,14 @@ class Texmacs < Formula
   depends_on "imagemagick"
   depends_on :x11
 
+  # Fails with clang and gcc4.8 due to out-of-spec C++.
+  # Success with --cc=gcc-4.2
+
   def install
     system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--enable-guile2=yes"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
