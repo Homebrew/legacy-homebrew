@@ -1,9 +1,11 @@
 require 'formula'
 
 class Aggregate < Formula
-  homepage 'http://freshmeat.net/projects/aggregate/'
+  homepage 'http://freecode.com/projects/aggregate/'
   url 'ftp://ftp.isc.org/isc/aggregate/aggregate-1.6.tar.gz'
   sha1 '13420baf4f3f93dbed3c380ab6cca175609c5d7d'
+
+  #Note - Freecode is no longer being updated & an alternative homepage should be found if possible.
 
   conflicts_with 'crush-tools', :because => 'both install an `aggregate` binary'
 
