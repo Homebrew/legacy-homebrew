@@ -54,7 +54,7 @@ class UpdaterTests < Homebrew::TestCase
       @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
       @updater.in_repo_expect("git diff-tree -r --raw -M85% 1234abcd 3456cdef", diff_output)
       @updater.pull!
-      @report.merge!(@updater.report)
+      @report.update(@updater.report)
     end
   end
 
