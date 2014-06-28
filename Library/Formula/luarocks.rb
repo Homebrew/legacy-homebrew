@@ -1,24 +1,12 @@
 require 'formula'
 
 class Luarocks < Formula
-  homepage 'http://luarocks.org'
-  head 'https://github.com/keplerproject/luarocks.git'
-  url 'http://luarocks.org/releases/luarocks-2.1.2.tar.gz'
-  sha1 '406253d15c9d50bb0d09efa9807fb2ddd31cba9d'
+  homepage "http://luarocks.org"
+  head "https://github.com/keplerproject/luarocks.git"
+  url "http://luarocks.org/releases/luarocks-2.1.2.tar.gz"
+  sha1 "406253d15c9d50bb0d09efa9807fb2ddd31cba9d"
 
-  option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
-  option 'with-lua52', 'Use Lua 5.2 instead of the stock Lua'
-
-  if build.with? "luajit"
-    depends_on 'luajit'
-    # luajit depends internally on lua being installed
-    # and is only 5.1 compatible, see #25954
-    depends_on 'lua'
-  elsif build.with? "lua52"
-    depends_on 'lua52'
-  else
-    depends_on 'lua'
-  end
+  depends_on 'lua'
 
   fails_with :llvm do
     cause "Lua itself compiles with llvm, but may fail when other software tries to link."
@@ -37,14 +25,6 @@ class Luarocks < Formula
             "--rocks-tree=#{HOMEBREW_PREFIX}",
             "--sysconfdir=#{etc}/luarocks"]
 
-    if build.with? "luajit"
-      luajit_prefix = Formula["luajit"].opt_prefix
-
-      args << "--with-lua-include=#{luajit_prefix}/include/luajit-2.0"
-      args << "--lua-suffix=jit"
-      args << "--with-lua=#{luajit_prefix}"
-    end
-
     system "./configure", *args
     system "make"
     system "make install"
@@ -56,12 +36,6 @@ class Luarocks < Formula
     You may need to run `luarocks install` inside the Homebrew build
     environment for rocks to successfully build. To do this, first run `brew sh`.
     EOS
-  end
-
-  test do
-    opoo "Luarocks test script installs 'lpeg'"
-    system "#{bin}/luarocks", "install", "lpeg"
-    system "lua", "-llpeg", "-e", 'print ("Hello World!")'
   end
 end
 
