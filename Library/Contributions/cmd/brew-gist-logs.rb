@@ -77,7 +77,9 @@ def post path, data
   response = http.request(request)
   raise HTTP_Error, response if response.code != '201'
 
-  if response["Content-Type"].downcase == "application/json; charset=utf-8"
+  if !response.body.respond_to?(:force_encoding)
+    body = response.body
+  elsif response["Content-Type"].downcase == "application/json; charset=utf-8"
     body = response.body.dup.force_encoding(Encoding::UTF_8)
   else
     body = response.body.encode(Encoding::UTF_8, undef: :replace)
