@@ -2,7 +2,7 @@ require 'formula'
 
 class Apachetop < Formula
   homepage 'http://freecode.com/projects/apachetop'
-  url 'http://cdn.debian.net/debian/pool/main/a/apachetop/apachetop_0.12.6.orig.tar.gz'
+  url 'http://ftp.debian.org/debian/pool/main/a/apachetop/apachetop_0.12.6.orig.tar.gz'
   sha1 '005c9479800a418ee7febe5027478ca8cbf3c51b'
 
   # Freecode is officially static from this point forwards. Do not rely on it for up-to-date package information.
