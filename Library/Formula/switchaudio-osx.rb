@@ -21,6 +21,6 @@ class SwitchaudioOsx < Formula
   end
 
   test do
-    system "SwitchAudioSource -c"
+    system "SwitchAudioSource", "-c"
   end
 end
