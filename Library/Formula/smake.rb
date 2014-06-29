@@ -2,7 +2,7 @@ require 'formula'
 
 class Smake < Formula
   homepage 'http://s-make.sourceforge.net/'
-  url 'http://sourceforge.net/projects/s-make/files/smake-1.2.4.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/s-make/smake-1.2.4.tar.bz2'
   sha1 '677af2a1b768d5dfd3bd71dc46f81992e798191b'
 
   # A sed operation silently fails on Lion or older, due
