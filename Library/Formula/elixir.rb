@@ -26,8 +26,8 @@ end
 
 class Elixir < Formula
   homepage 'http://elixir-lang.org/'
-  url  'https://github.com/elixir-lang/elixir/archive/v0.14.1.tar.gz'
-  sha1 '272abd87a04c592a83f43041deee986e3aadd0fe'
+  url  'https://github.com/elixir-lang/elixir/archive/v0.14.2.tar.gz'
+  sha1 '1f857db32fd2975e8af64d96d9583951c3ea5e11'
 
   head 'https://github.com/elixir-lang/elixir.git'
 
