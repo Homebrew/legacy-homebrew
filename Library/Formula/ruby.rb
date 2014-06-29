@@ -72,6 +72,12 @@ class Ruby < Formula
 
   def rubygems_config; <<-EOS.undent
     module Gem
+      class << self
+        alias :old_default_dir :default_dir
+        alias :old_default_path :default_path
+        alias :old_default_bindir :default_bindir
+      end
+
       def self.default_dir
         path = [
           "#{HOMEBREW_PREFIX}",
