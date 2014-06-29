@@ -6,6 +6,13 @@ class SwitchaudioOsx < Formula
   sha1 "4b7bae425f4b9ec71b67dc2c4c6f26fd195d623a"
   head "https://github.com/deweller/switchaudio-osx.git"
 
+  bottle do
+    cellar :any
+    sha1 "5e5809f498765a2402a3082d3f643f7772f7851f" => :mavericks
+    sha1 "419a9487393be1d4b08fae2fc7aa6ab097b7cd75" => :mountain_lion
+    sha1 "94e17d2daaefe1118ce7915d26b4cbd0219b07c8" => :lion
+  end
+
   depends_on :macos => :lion
   depends_on :xcode => :build
 
