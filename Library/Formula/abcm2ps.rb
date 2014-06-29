@@ -5,6 +5,12 @@ class Abcm2ps < Formula
 
   stable do
     url "http://moinejf.free.fr/abcm2ps-7.8.4.tar.gz"
+  bottle do
+    sha1 "ef6a4248ccf543f3394561d056ef8c7941e1cf59" => :mavericks
+    sha1 "3125f3f4c279ff6233330153a166905c22be78b6" => :mountain_lion
+    sha1 "e87ee5016f2b2773b02664fbee362c3a557966a7" => :lion
+  end
+
     sha1 "b910a048fe94500d3da52e9fe250d2835dc5343c"
   end
 
