@@ -16,7 +16,7 @@ class SwitchaudioOsx < Formula
                "-verbose"
     prefix.install Dir["build/Release/*"]
     bin.write_exec_script "#{prefix}/SwitchAudioSource"
-    chmod 0755, bin/"SwitchAudioSource"
+    chmod 0755, "#{bin}/SwitchAudioSource"
   end
 
   test do
