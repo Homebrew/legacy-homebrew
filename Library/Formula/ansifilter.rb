@@ -2,8 +2,8 @@ require 'formula'
 
 class Ansifilter < Formula
   homepage 'http://www.andre-simon.de/doku/ansifilter/ansifilter.html'
-  url 'http://www.andre-simon.de/zip/ansifilter-1.7.tar.bz2'
-  sha1 '5b88db508ea100f327bf6b621c959742694fe2d8'
+  url 'http://www.andre-simon.de/zip/ansifilter-1.8.tar.gz'
+  sha1 '805bc0227c5972a971a82d3db749fb2431c107c1'
 
   def install
     # both steps required and with PREFIX, last checked v1.7
