@@ -2,9 +2,20 @@ require 'formula'
 
 class Luarocks < Formula
   homepage 'http://luarocks.org'
+
+  stable do
+    url 'http://luarocks.org/releases/luarocks-2.1.2.tar.gz'
+    sha1 '406253d15c9d50bb0d09efa9807fb2ddd31cba9d'
+
+    # Remove writability checks in the install script.
+    # Homebrew checks that its install targets are writable, or fails with
+    # appropriate messaging if not. The check that luarocks does has been
+    # seen to have false positives, so remove it.
+    # TODO: better document the false positive cases, or remove this patch.
+    patch :DATA
+  end
+
   head 'https://github.com/keplerproject/luarocks.git'
-  url 'http://luarocks.org/releases/luarocks-2.1.2.tar.gz'
-  sha1 '406253d15c9d50bb0d09efa9807fb2ddd31cba9d'
 
   option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
   option 'with-lua52', 'Use Lua 5.2 instead of the stock Lua'
@@ -22,15 +33,6 @@ class Luarocks < Formula
 
   fails_with :llvm do
     cause "Lua itself compiles with llvm, but may fail when other software tries to link."
-  end
-
-  # Remove writability checks in the install script.
-  # Homebrew checks that its install targets are writable, or fails with
-  # appropriate messaging if not. The check that luarocks does has been
-  # seen to have false positives, so remove it.
-  # TODO: better document the false positive cases, or remove this patch.
-  stable do
-    patch :DATA
   end
 
   def install
