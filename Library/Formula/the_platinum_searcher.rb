@@ -27,6 +27,7 @@ class ThePlatinumSearcher < Formula
     end
 
     test do
-        system "#{bin}/pt", "--version"
+        (testpath/'hello_world.txt').write('Hello World!')
+        assert_equal "hello_world.txt:1:Hello World!", `'#{bin}/pt' 'Hello World!'`.strip
     end
 end
