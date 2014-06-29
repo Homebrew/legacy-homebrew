@@ -6,6 +6,9 @@ class DBus < Formula
   sha1 "316f1196312a88cc858ba810d4e5d16f70ab9d58"
 
   bottle do
+    sha1 "07a7bd9331dcf60f0db9d9efd199c3e3164dbb54" => :mavericks
+    sha1 "03e7c08ff3816150aa1db99a594f0c4c21baf223" => :mountain_lion
+    sha1 "24385436ff2c32efee5cceab5744273d91c800d0" => :lion
   end
 
   def install
