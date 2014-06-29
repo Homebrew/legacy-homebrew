@@ -5,6 +5,12 @@ class Ace < Formula
   url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.2.7.tar.bz2"
   sha1 "b2be560c84d87f3bb8577caf581e519d0c76ceae"
 
+  bottle do
+    sha1 "adadd2939fb8f973aff0e96e97d82cf76ddb490e" => :mavericks
+    sha1 "f1b7a5454d4e1b0b8cc9eb8099b059532507730d" => :mountain_lion
+    sha1 "1b9dbe41211d0a96ee7634c2d05ab5a816029f74" => :lion
+  end
+
   def install
     # ACE has two methods of compilation, "traditional" and ./configure.
     # The "traditional" method has consistently given better results
