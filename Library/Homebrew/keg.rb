@@ -131,6 +131,10 @@ class Keg
     path.abv
   end
 
+  def directory?
+    path.directory?
+  end
+
   def exist?
     path.exist?
   end
