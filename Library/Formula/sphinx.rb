@@ -8,8 +8,8 @@ class Sphinx < Formula
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
   devel do
-    url 'http://sphinxsearch.com/files/sphinx-2.2.2-beta.tar.gz'
-    sha1 '6a63111c5f2fcd93915d114845f2375b031ff9da'
+    url 'http://sphinxsearch.com/files/sphinx-2.2.3-beta.tar.gz'
+    sha1 'ef78cebeae32a0582df504d74d6dd2ded81b73d9'
   end
 
   option 'mysql', 'Force compiling against MySQL'
