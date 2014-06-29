@@ -2,7 +2,7 @@ require 'formula'
 
 class Star < Formula
   homepage 'http://cdrecord.org/private/star.html'
-  url 'http://sourceforge.net/projects/s-tar/files/star-1.5.3.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/s-tar/star-1.5.3.tar.bz2'
   sha1 '9f94130c6cfab48a2b37fcd5a9ab21bb5c9b52a2'
 
   depends_on "smake" => :build
