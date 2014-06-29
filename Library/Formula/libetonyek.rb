@@ -2,8 +2,9 @@ require "formula"
 
 class Libetonyek < Formula
   homepage "http://www.freedesktop.org/wiki/Software/libetonyek/"
-  url "http://dev-www.libreoffice.org/src/libetonyek-0.1.1.tar.xz"
-  sha1 "024fd730b062d1df54de0352323d03d011e59277"
+  url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.1.tar.bz2"
+  sha1 "26abb0524a28e2d5ab371710c81b7aca1cb2f322"
+  revision 1
 
   bottle do
     cellar :any
@@ -18,6 +19,7 @@ class Libetonyek < Formula
   depends_on "librevenge"
 
   def install
+    inreplace "libetonyek.pc.in", /^Requires\.private:.*$/, ""
     system "./configure", "--without-docs",
                           "--disable-dependency-tracking",
                           "--enable-static=no",
@@ -36,7 +38,7 @@ class Libetonyek < Formula
     EOS
     system ENV.cxx, "test.cpp", "-o", "test",
                     "-lrevenge-0.0", "-I#{Formula["librevenge"].include}/librevenge-0.0",
-                    "-letonyek-0.1", "-I#{Formula["libetonyek"].include}/libetonyek-0.1"
+                    "-letonyek-0.1", "-I#{include}/libetonyek-0.1"
     system "./test"
   end
 end
