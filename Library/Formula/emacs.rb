@@ -24,6 +24,7 @@ class Emacs < Formula
 
     depends_on :autoconf
     depends_on :automake
+    depends_on "glib" => :optional
   end
 
   stable do
@@ -58,7 +59,10 @@ class Emacs < Formula
 
   depends_on 'pkg-config' => :build
   depends_on :x11 if build.with? "x"
+  depends_on "d-bus" => :optional
   depends_on 'gnutls' => :optional
+  depends_on "librsvg" => :optional
+  depends_on "imagemagick" => :optional
 
   fails_with :llvm do
     build 2334
@@ -79,14 +83,21 @@ class Emacs < Formula
     ENV.deparallelize if build.head?
 
     args = ["--prefix=#{prefix}",
-            "--without-dbus",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs"]
+    args << "--with-file-notification=gfile" if build.with? "glib"
+    if build.with? "d-bus"
+      args << "--with-dbus"
+    else
+      args << "--without-dbus"
+    end
     if build.with? 'gnutls'
       args << '--with-gnutls'
     else
       args << '--without-gnutls'
     end
+    args << "--with-rsvg" if build.with? "librsvg"
+    args << "--with-imagemagick" if build.with? "imagemagick"
 
     system "./autogen.sh" if build.head?
 
