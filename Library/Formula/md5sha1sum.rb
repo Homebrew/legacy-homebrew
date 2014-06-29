@@ -13,6 +13,7 @@ class Md5sha1sum < Formula
     sha1 "11bae51a115c14688f7f57cf0903a829f8c28dde" => :lion
   end
 
+  depends_on 'openssl'
   conflicts_with 'polarssl', :because => 'both install conflicting binaries'
 
   def install
