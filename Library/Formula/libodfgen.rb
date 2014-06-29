@@ -5,6 +5,13 @@ class Libodfgen < Formula
   url "http://dev-www.libreoffice.org/src/libodfgen-0.1.1.tar.bz2"
   sha1 "13dc7a9fa69b8eb9af903596bbefaf044a3e76cc"
 
+  bottle do
+    cellar :any
+    sha1 "8f8076250cc85c97dd42551cb7047961da2a40e3" => :mavericks
+    sha1 "32cc5c62aef1c8d9e94206c0b43d800d49e0a223" => :mountain_lion
+    sha1 "72b559f91f4df11b2f4a070165c7f9e285114d9a" => :lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "boost" => :build
   depends_on "libwpg" => :build
