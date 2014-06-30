@@ -24,8 +24,8 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.20.tar.bz2"
-    sha256 "9c431b0b96222d0c27a2c2326ed88298ac0dae50ea783ef764c48c4373bf5f15"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.21.tar.bz2"
+    sha256 "a14723104135c21414c61e146144a2c527430057255f8c35a3a7d354e68b9401"
 
     # http://bugs.winehq.org/show_bug.cgi?id=34166
     patch do

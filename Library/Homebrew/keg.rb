@@ -37,7 +37,7 @@ class Keg
 
     def to_s
       s = []
-      s << "Could not symlink #{src.relative_path_from(keg)}"
+      s << "Could not symlink #{src.relative_path_from(Pathname(keg))}"
       s << "Target #{dst}" << suggestion
       s << <<-EOS.undent
         To force the link and overwrite all conflicting files:
@@ -52,7 +52,7 @@ class Keg
 
   class DirectoryNotWritableError < LinkError
     def to_s; <<-EOS.undent
-      Could not symlink #{src.relative_path_from(keg)}
+      Could not symlink #{src.relative_path_from(Pathname(keg))}
       #{dst.dirname} is not writable.
       EOS
     end
@@ -131,6 +131,10 @@ class Keg
     path.abv
   end
 
+  def directory?
+    path.directory?
+  end
+
   def exist?
     path.exist?
   end
@@ -180,14 +184,16 @@ class Keg
       end
     end
 
-    if linked?
-      linked_keg_record.unlink
-      linked_keg_record.parent.rmdir_if_possible
-    end
+    remove_linked_keg_record if linked?
 
     dirs.reverse_each(&:rmdir_if_possible)
 
     ObserverPathnameExtension.total
+  end
+
+  def remove_linked_keg_record
+    linked_keg_record.unlink
+    linked_keg_record.parent.rmdir_if_possible
   end
 
   def lock

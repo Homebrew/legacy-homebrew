@@ -16,18 +16,34 @@ class AndroidSdk < Formula
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "19.0.3"
+    "20.0.0"
   end
 
   def install
     prefix.install 'tools', 'SDK Readme.txt' => 'README'
 
-    %w[android apkbuilder ddms dmtracedump draw9patch etc1tool emulator
-    emulator-arm emulator-x86 hierarchyviewer hprof-conv lint mksdcard
-    monitor monkeyrunner traceview zipalign].each do |tool|
+    %w[android ddms draw9patch emulator
+    emulator-arm emulator-x86 hierarchyviewer lint mksdcard
+    monitor monkeyrunner traceview].each do |tool|
       (bin/tool).write <<-EOS.undent
         #!/bin/bash
         TOOL="#{prefix}/tools/#{tool}"
+        exec "$TOOL" "$@"
+      EOS
+    end
+
+    %w[zipalign].each do |tool|
+      (bin/tool).write <<-EOS.undent
+        #!/bin/bash
+        TOOL="#{prefix}/build-tools/#{build_tools_version}/#{tool}"
+        exec "$TOOL" "$@"
+      EOS
+    end
+
+    %w[dmtracedump etc1tool hprof-conv].each do |tool|
+      (bin/tool).write <<-EOS.undent
+        #!/bin/bash
+        TOOL="#{prefix}/platform-tools/#{tool}"
         exec "$TOOL" "$@"
       EOS
     end
