@@ -93,7 +93,6 @@ class TabLoadingTests < Homebrew::TestCase
     @f.prefix.mkpath
     @path = @f.prefix.join(Tab::FILENAME)
     @path.write Pathname.new(TEST_DIRECTORY).join("fixtures", "receipt.json").read
-    @path = @path.realpath
   end
 
   def teardown
