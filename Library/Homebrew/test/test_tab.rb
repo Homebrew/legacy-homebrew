@@ -9,15 +9,15 @@ class TabTests < Homebrew::TestCase
     @unused << Option.new("with-baz") << Option.new("without-qux")
 
     @tab = Tab.new({
-      :used_options       => @used,
-      :unused_options     => @unused,
+      :used_options       => @used.map(&:to_s),
+      :unused_options     => @unused.map(&:to_s),
       :built_as_bottle    => false,
       :poured_from_bottle => true,
       :tapped_from        => "Homebrew/homebrew",
       :time               => nil,
       :HEAD               => TEST_SHA1,
-      :compiler           => :clang,
-      :stdlib             => :libcxx,
+      :compiler           => "clang",
+      :stdlib             => "libcxx",
     })
   end
 
@@ -50,6 +50,7 @@ class TabTests < Homebrew::TestCase
   def test_universal?
     refute_predicate @tab, :universal?
     @used << "universal"
+    @tab.used_options = @used.map(&:to_s)
     assert_predicate @tab, :universal?
   end
 
@@ -84,6 +85,10 @@ class TabTests < Homebrew::TestCase
     assert_equal TEST_SHA1, tab.HEAD
     assert_equal :clang, tab.cxxstdlib.compiler
     assert_equal :libcxx, tab.cxxstdlib.type
+  end
+
+  def test_to_json
+    assert_equal @tab, Tab.new(Utils::JSON.load(@tab.to_json))
   end
 end
 
