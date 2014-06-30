@@ -1,3 +1,3 @@
 #!/bin/bash
 POD2HTML=$(/usr/bin/which pod2html5.16 || /usr/bin/which pod2html5.12 || echo /usr/bin/pod2html)
-exec $POD2html "$@"
+exec $POD2HTML "$@"
