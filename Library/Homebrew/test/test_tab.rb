@@ -11,7 +11,7 @@ class TabTests < Homebrew::TestCase
     @tab = Tab.new({
       :used_options       => @used,
       :unused_options     => @unused,
-      :build_as_bottle    => false,
+      :built_as_bottle    => false,
       :poured_from_bottle => true,
       :tapped_from        => "Homebrew/homebrew",
       :time               => nil,
