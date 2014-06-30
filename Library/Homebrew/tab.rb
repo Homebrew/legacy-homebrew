@@ -31,9 +31,9 @@ class Tab < OpenStruct
   end
 
   def self.from_file path
-    tab = Tab.new Utils::JSON.load(File.read(path))
-    tab.tabfile = path
-    tab
+    attributes = Utils::JSON.load(File.read(path))
+    attributes[:tabfile] = path
+    new(attributes)
   end
 
   def self.for_keg keg
