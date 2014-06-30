@@ -82,7 +82,7 @@ def post path, data
   elsif response["Content-Type"].downcase == "application/json; charset=utf-8"
     body = response.body.dup.force_encoding(Encoding::UTF_8)
   else
-    body = response.body.encode(Encoding::UTF_8, undef: :replace)
+    body = response.body.encode(Encoding::UTF_8, :undef => :replace)
   end
 
   Utils::JSON.load(body)
