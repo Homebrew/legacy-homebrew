@@ -1,5 +1,6 @@
 require "testing_env"
 require "tab"
+require "formula"
 
 class TabTests < Homebrew::TestCase
   def setup
@@ -83,5 +84,62 @@ class TabTests < Homebrew::TestCase
     assert_equal TEST_SHA1, tab.HEAD
     assert_equal :clang, tab.cxxstdlib.compiler
     assert_equal :libcxx, tab.cxxstdlib.type
+  end
+end
+
+class TabLoadingTests < Homebrew::TestCase
+  def setup
+    @f = formula { url "foo-1.0" }
+    @f.prefix.mkpath
+    @path = @f.prefix.join(Tab::FILENAME)
+    @path.write Pathname.new(TEST_DIRECTORY).join("fixtures", "receipt.json").read
+    @path = @path.realpath
+  end
+
+  def teardown
+    @f.rack.rmtree
+  end
+
+  def test_for_keg
+    tab = Tab.for_keg(@f.prefix)
+    assert_equal @path, tab.tabfile
+  end
+
+  def test_for_keg_nonexistent_path
+    @path.unlink
+    tab = Tab.for_keg(@f.prefix)
+    assert_nil tab.tabfile
+  end
+
+  def test_for_formula
+    tab = Tab.for_formula(@f)
+    assert_equal @path, tab.tabfile
+  end
+
+  def test_for_formula_nonexistent_path
+    @path.unlink
+    tab = Tab.for_formula(@f)
+    assert_nil tab.tabfile
+  end
+
+  def test_for_formula_multiple_kegs
+    f2 = formula { url "foo-2.0" }
+    f2.prefix.mkpath
+
+    assert_equal @f.rack, f2.rack
+    assert_equal 2, @f.rack.subdirs.length
+
+    tab = Tab.for_formula(@f)
+    assert_equal @path, tab.tabfile
+  end
+
+  def test_for_formula_outdated_keg
+    f2 = formula { url "foo-2.0" }
+
+    assert_equal @f.rack, f2.rack
+    assert_equal 1, @f.rack.subdirs.length
+
+    tab = Tab.for_formula(f2)
+    assert_equal @path, tab.tabfile
   end
 end
