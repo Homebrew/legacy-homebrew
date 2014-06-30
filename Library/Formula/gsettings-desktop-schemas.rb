@@ -21,6 +21,12 @@ class GsettingsDesktopSchemas < Formula
     system "make install"
   end
 
+  def caveats; <<-EOS.undent
+    In order to use these compiled schema you must export this variable:
+      export GSETTINGS_SCHEMA_DIR=#{share}/glib-2.0/schemas
+    EOS
+  end
+
   def post_install
     # manual schema compile step
     system Formula["glib"].opt_bin/"glib-compile-schemas", share/"glib-2.0/schemas"
