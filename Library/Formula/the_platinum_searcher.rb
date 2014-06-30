@@ -9,6 +9,12 @@ class ThePlatinumSearcher < Formula
   depends_on "go" => :build
   depends_on :hg => :build
 
+  bottle do
+    sha1 "ea198486a8ae7d8fcb4990981aee01b6867e7311" => :mavericks
+    sha1 "f71a8d2dcb9573d1202b2c2493230d5d0ab383ab" => :mountain_lion
+    sha1 "bfdc5095cfbf3e38ca7900b3fb5dad1ec10f089d" => :lion
+  end
+
   def install
     (buildpath + "src/github.com/monochromegane/the_platinum_searcher").install "search"
 
