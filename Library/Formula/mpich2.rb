@@ -37,9 +37,7 @@ class Mpich2 < Formula
       "--prefix=#{prefix}",
       "--mandir=#{man}"
     ]
-    if build.include? 'disable-fortran'
-      args << "--disable-f77" << "--disable-fc"
-    end
+    args << "--disable-fortran" if build.include? "disable-fortran"
 
     # MPICH configure up to version 3.0.4 defaults to "--disable-shared"
     if build.include? 'disable-shared'
