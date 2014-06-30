@@ -24,9 +24,16 @@ class Riak < Formula
       s.change_make_var! "RUNNER_BASE_DIR", libexec
       s.change_make_var! "RUNNER_LOG_DIR", logdir
     end
-    inreplace "#{libexec}/etc/app.config" do |c|
-      c.gsub! './data', datadir
-      c.gsub! './log', logdir
+    unless build.devel?
+      inreplace "#{libexec}/etc/app.config" do |c|
+        c.gsub! './data', datadir
+        c.gsub! './log', logdir
+      end
+    else
+      inreplace "#{libexec}/etc/riak.conf" do |c|
+        c.gsub! /(platform_data_dir *=).*$/, "\\1 #{datadir}"
+        c.gsub! /(platform_log_dir *=).*$/, "\\1 #{logdir}"
+      end
     end
     bin.write_exec_script libexec/"bin/riak"
     bin.write_exec_script libexec/"bin/riak-admin"
