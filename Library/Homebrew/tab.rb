@@ -40,9 +40,9 @@ class Tab < OpenStruct
     path = keg.join(FILENAME)
 
     if path.exist?
-      self.from_file(path)
+      from_file(path)
     else
-      self.dummy_tab
+      dummy_tab
     end
   end
 
