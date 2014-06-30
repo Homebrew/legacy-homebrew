@@ -32,7 +32,7 @@ class Tab < OpenStruct
 
   def self.from_file path
     tab = Tab.new Utils::JSON.load(File.read(path))
-    tab.tabfile = path.realpath
+    tab.tabfile = path
     tab
   end
 
@@ -51,7 +51,15 @@ class Tab < OpenStruct
   end
 
   def self.for_formula f
-    paths = [f.opt_prefix, f.linked_keg]
+    paths = []
+
+    if f.opt_prefix.symlink? && f.opt_prefix.directory?
+      paths << f.opt_prefix.resolved_path
+    end
+
+    if f.linked_keg.symlink? && f.linked_keg.directory?
+      paths << f.linked_keg.resolved_path
+    end
 
     if f.rack.directory? && (dirs = f.rack.subdirs).length == 1
       paths << dirs.first
