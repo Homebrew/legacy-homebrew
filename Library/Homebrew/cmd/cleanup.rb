@@ -39,7 +39,7 @@ module Homebrew
   def cleanup_cellar
     HOMEBREW_CELLAR.subdirs.each do |rack|
       begin
-        cleanup_formula Formula.factory(rack.basename.to_s)
+        cleanup_formula Formulary.factory(rack.basename.to_s)
       rescue FormulaUnavailableError
         # Don't complain about directories from DIY installs
       end
@@ -70,7 +70,7 @@ module Homebrew
       puts "Would remove: #{keg}"
     else
       puts "Removing: #{keg}..."
-      keg.rmtree
+      keg.uninstall
     end
   end
 
@@ -80,7 +80,7 @@ module Homebrew
       next unless (name = file.basename.to_s[/(.*)-(?:#{Regexp.escape(version)})/, 1])
 
       begin
-        f = Formula.factory(name)
+        f = Formulary.factory(name)
       rescue FormulaUnavailableError
         next
       end

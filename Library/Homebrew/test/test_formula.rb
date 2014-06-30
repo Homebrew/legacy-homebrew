@@ -58,7 +58,7 @@ class FormulaTests < Homebrew::TestCase
     prefix.mkpath
     assert_equal prefix, f.installed_prefix
   ensure
-    prefix.rmtree
+    f.rack.rmtree
   end
 
   def test_installed_prefix_devel_installed
@@ -73,7 +73,7 @@ class FormulaTests < Homebrew::TestCase
     prefix.mkpath
     assert_equal prefix, f.installed_prefix
   ensure
-    prefix.rmtree
+    f.rack.rmtree
   end
 
   def test_installed_prefix_stable_installed
@@ -88,7 +88,7 @@ class FormulaTests < Homebrew::TestCase
     prefix.mkpath
     assert_equal prefix, f.installed_prefix
   ensure
-    prefix.rmtree
+    f.rack.rmtree
   end
 
   def test_installed_prefix_head_active_spec
@@ -195,7 +195,7 @@ class FormulaTests < Homebrew::TestCase
         end
       }
     end
-    assert_kind_of Formula, Formula.factory(name)
+    assert_kind_of Formula, Formulary.factory(name)
   ensure
     path.unlink
   end

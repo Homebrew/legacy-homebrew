@@ -2,13 +2,13 @@ require 'formula'
 
 class Pango < Formula
   homepage "http://www.pango.org/"
-  url "http://ftp.gnome.org/pub/GNOME/sources/pango/1.36/pango-1.36.3.tar.xz"
-  sha256 "ad48e32917f94aa9d507486d44366e59355fcfd46ef86d119ddcba566ada5d22"
+  url "http://ftp.gnome.org/pub/GNOME/sources/pango/1.36/pango-1.36.5.tar.xz"
+  sha256 "be0e94b2e5c7459f0b6db21efab6253556c8f443837200b8736d697071276ac8"
 
   bottle do
-    sha1 "36247b917430643002dee42a674c5f5d9958511b" => :mavericks
-    sha1 "14dd7446da1014ae619eb15863494050df33110c" => :mountain_lion
-    sha1 "122324a9601b4186319e82712875c8ab892fd8a9" => :lion
+    sha1 "cae579ffdc52ad681a23d5af611818c9af873e67" => :mavericks
+    sha1 "473cd6a06a42e4d3e6bc24779b2094e771b16560" => :mountain_lion
+    sha1 "73880906087275dcd394f0567136898bbf2dca94" => :lion
   end
 
   option 'without-x', 'Build without X11 support'

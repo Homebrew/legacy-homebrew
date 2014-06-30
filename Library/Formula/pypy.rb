@@ -9,13 +9,13 @@ class Pypy < Formula
   depends_on :arch => :x86_64
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-3.6.tar.gz'
-    sha1 '745cbb942f8015dbcbfd9df5cb815adb63c7b0e9'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-5.2.tar.gz'
+    sha1 '749f1ea153426866d6117d00256cf37c90b1b4f5'
   end
 
   resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.5.tar.gz'
-    sha1 'ce15871b65e412589044ee8a4029fe65bc26b894'
+    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz'
+    sha1 'e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e'
   end
 
   def install

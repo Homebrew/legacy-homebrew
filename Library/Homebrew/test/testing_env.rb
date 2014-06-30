@@ -12,9 +12,13 @@ require 'extend/enumerable'
 require 'exceptions'
 require 'utils'
 require 'rbconfig'
+require 'tmpdir'
+
+TEST_TMPDIR = Dir.mktmpdir("homebrew_tests")
+at_exit { FileUtils.remove_entry(TEST_TMPDIR) }
 
 # Constants normally defined in global.rb
-HOMEBREW_PREFIX        = Pathname.new('/private/tmp/testbrew/prefix')
+HOMEBREW_PREFIX        = Pathname.new(TEST_TMPDIR).join("prefix")
 HOMEBREW_REPOSITORY    = HOMEBREW_PREFIX
 HOMEBREW_LIBRARY       = HOMEBREW_REPOSITORY+'Library'
 HOMEBREW_CACHE         = HOMEBREW_PREFIX.parent+'cache'
@@ -44,11 +48,8 @@ MACOS_VERSION = ENV.fetch('MACOS_VERSION') { MACOS_FULL_VERSION[/10\.\d+/] }
 ORIGINAL_PATHS = ENV['PATH'].split(File::PATH_SEPARATOR).map{ |p| Pathname.new(p).expand_path rescue nil }.compact.freeze
 
 # Test environment setup
-%w{Library/Formula Library/ENV}.each do |d|
-  HOMEBREW_REPOSITORY.join(d).mkpath
-end
-
-at_exit { HOMEBREW_PREFIX.parent.rmtree }
+%w{ENV Formula}.each { |d| HOMEBREW_LIBRARY.join(d).mkpath }
+%w{cache formula_cache cellar logs}.each { |d| HOMEBREW_PREFIX.parent.join(d).mkpath }
 
 # Test fixtures and files can be found relative to this path
 TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
@@ -89,8 +90,32 @@ module Homebrew
     end
   end
 
+  module FSLeakLogger
+    def self.included(klass)
+      require "find"
+      @@log = File.open("fs_leak_log", "w")
+      klass.make_my_diffs_pretty!
+    end
+
+    def before_setup
+      @__files_before_test = []
+      Find.find(TEST_TMPDIR) { |f| @__files_before_test << f.sub(TEST_TMPDIR, "") }
+      super
+    end
+
+    def after_teardown
+      super
+      files_after_test = []
+      Find.find(TEST_TMPDIR) { |f| files_after_test << f.sub(TEST_TMPDIR, "") }
+      if @__files_before_test != files_after_test
+        @@log.puts location, diff(@__files_before_test, files_after_test)
+      end
+    end
+  end
+
   class TestCase < ::Minitest::Test
     include VersionAssertions
+    include FSLeakLogger if ENV["LOG_FS_LEAKS"]
 
     TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
     TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze

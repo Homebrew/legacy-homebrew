@@ -304,7 +304,7 @@ class Test
     test "brew", "uses", formula
     dependencies = `brew deps #{formula}`.split("\n")
     dependencies -= `brew list`.split("\n")
-    formula_object = Formula.factory(formula)
+    formula_object = Formulary.factory(formula)
     return unless satisfied_requirements? formula_object
 
     installed_gcc = false

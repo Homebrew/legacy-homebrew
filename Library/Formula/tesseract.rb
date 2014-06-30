@@ -4,7 +4,7 @@ class Tesseract < Formula
   homepage 'http://code.google.com/p/tesseract-ocr/'
   url 'https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz'
   sha1 'a950acf7b75cf851de2de787e9abb62c58ca1827'
-  revision 1
+  revision 2
 
   head do
     url 'http://tesseract-ocr.googlecode.com/svn/trunk'
@@ -106,6 +106,13 @@ class Tesseract < Formula
     end
   end
 
+  # Tesseract has not released the 3.02 version of the OSD traineddata, so we must download the 3.01 copy
+  resource "osd" do
+    url "https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.01.osd.tar.gz"
+    version "3.01"
+    sha1 "a559801a42be8a3dc15ae2ec27da99bd8b0b85ac"
+  end
+
   def install
     # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
     # which doesn't work for non-default homebrew location
@@ -118,6 +125,7 @@ class Tesseract < Formula
       resources.each { |r| r.stage { mv Dir["tessdata/*"], share/"tessdata" } }
     else
       resource("eng").stage { mv Dir["tessdata/*"], share/"tessdata" }
+      resource("osd").stage { mv Dir["tessdata/*"], share/"tessdata" }
     end
   end
 end

@@ -570,7 +570,7 @@ def check_for_gettext
   return if @found.empty?
 
   # Our gettext formula will be caught by check_linked_keg_only_brews
-  f = Formula.factory("gettext") rescue nil
+  f = Formulary.factory("gettext") rescue nil
   return if f and f.linked_keg.directory? and @found.all? do |path|
     Pathname.new(path).realpath.to_s.start_with? "#{HOMEBREW_CELLAR}/gettext"
   end
@@ -585,7 +585,7 @@ end
 
 def check_for_iconv
   unless find_relative_paths("lib/libiconv.dylib", "include/iconv.h").empty?
-    if (f = Formula.factory("libiconv") rescue nil) and f.linked_keg.directory?
+    if (f = Formulary.factory("libiconv") rescue nil) and f.linked_keg.directory?
       if not f.keg_only? then <<-EOS.undent
         A libiconv formula is installed and linked
         This will break stuff. For serious. Unlink it.
@@ -993,7 +993,7 @@ def check_for_bad_python_symlink
 end
 
 def check_for_non_prefixed_coreutils
-  gnubin = "#{Formula.factory('coreutils').prefix}/libexec/gnubin"
+  gnubin = "#{Formulary.factory('coreutils').prefix}/libexec/gnubin"
   if paths.include? gnubin then <<-EOS.undent
     Putting non-prefixed coreutils in your path can cause gmp builds to fail.
     EOS
@@ -1051,7 +1051,7 @@ def check_for_unlinked_but_not_keg_only
       true
     elsif not (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
       begin
-        Formula.factory(rack.basename.to_s).keg_only?
+        Formulary.factory(rack.basename.to_s).keg_only?
       rescue FormulaUnavailableError
         false
       end
@@ -1151,15 +1151,14 @@ module Homebrew
   end
 
   def inject_dump_stats checks
-    class << checks
-      alias_method :oldsend, :send
-      def send method
+    checks.extend Module.new {
+      def send(method, *)
         time = Time.now
-        oldsend(method)
+        super
       ensure
         $times[method] = Time.now - time
       end
-    end
+    }
     $times = {}
     at_exit {
       puts $times.sort_by{|k, v| v }.map{|k, v| "#{k}: #{v}"}

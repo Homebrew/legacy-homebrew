@@ -14,7 +14,7 @@ require 'pkg_version'
 class Formula
   include FileUtils
   include Utils::Inreplace
-  extend BuildEnvironmentDSL
+  extend Enumerable
 
   attr_reader :name, :path, :homepage, :build
   attr_reader :stable, :devel, :head, :active_spec
@@ -338,10 +338,6 @@ class Formula
   alias_method :python2, :python
   alias_method :python3, :python
 
-  def self.class_s name
-    Formulary.class_s(name)
-  end
-
   # an array of all Formula names
   def self.names
     Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
@@ -358,9 +354,6 @@ class Formula
         next
       end
     end
-  end
-  class << self
-    include Enumerable
   end
 
   # An array of all installed formulae
@@ -379,17 +372,8 @@ class Formula
     Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
-  def self.canonical_name name
-    Formulary.canonical_name(name)
-  end
-
   def self.[](name)
     Formulary.factory(name)
-  end
-
-  # deprecated
-  def self.factory name
-    Formulary.factory name
   end
 
   def tap?
@@ -605,6 +589,7 @@ class Formula
 
   # The methods below define the formula DSL.
   class << self
+    include BuildEnvironmentDSL
 
     attr_reader :keg_only_reason, :cc_failures
     attr_rw :homepage, :plist_startup, :plist_manual, :revision

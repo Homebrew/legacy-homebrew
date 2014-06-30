@@ -5,13 +5,13 @@ class Pandoc < Formula
   include Language::Haskell::Cabal
 
   homepage "http://johnmacfarlane.net/pandoc/"
-  url "https://pandoc.googlecode.com/files/pandoc-1.12.3.tar.gz"
-  sha1 "f519b5fb8c88ff4374432477dc12f68bbe238510"
+  url "http://hackage.haskell.org/package/pandoc-1.12.4.2/pandoc-1.12.4.2.tar.gz"
+  sha1 "29e035a2707ff5ce534de92cf75a17acf75dea19"
 
   bottle do
-    sha1 "216b78973a1c26c7091839dd7cfa8a50e2cd6fcb" => :mavericks
-    sha1 "58d063c1bb5c02dc454de94dde147003998a4e1d" => :mountain_lion
-    sha1 "17ebadac09f6c65fe450751e7c1bdae2efdeba2d" => :lion
+    sha1 "505dea8ad1b507a3d0fcfde6dc2c80d1238d4625" => :mavericks
+    sha1 "2c2b7bb640f24f5a282f27aaaf00a4ab02d6a572" => :mountain_lion
+    sha1 "8fa2925bfc5f0b526b4726cec1c1f47b2e64cc03" => :lion
   end
 
   resource "completion" do
@@ -21,6 +21,13 @@ class Pandoc < Formula
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "gmp"
+
+  patch do
+    # The following patch has been committed upstream and is expected
+    # to be released with Pandoc 0.13.
+    url "https://github.com/jgm/pandoc/commit/fd11a5a5.diff"
+    sha1 "1676caa8440982af93e1ccdcfd444371dde81f34"
+  end
 
   def install
     resource("completion").stage do
