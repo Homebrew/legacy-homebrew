@@ -3,28 +3,22 @@ require 'formula'
 class X264 < Formula
   homepage "http://www.videolan.org/developers/x264.html"
   # the latest commit on the stable branch
-  url "http://git.videolan.org/git/x264.git", :revision => "aff928d2a2f601072cebecfd1ac5ff768880cf88"
-  version "r2397"
+  url "http://git.videolan.org/git/x264.git", :revision => "d7e689680023e327de7e052e01e7faee30135799"
+  version "r2412"
   head "http://git.videolan.org/git/x264.git"
 
   devel do
     # the latest commit on the master branch
-    url "http://git.videolan.org/git/x264.git", :revision => "d6b4e63d2ed8d444b77c11b36c1d646ee5549276"
-    version "r2409"
-  end
-
-  # Support building with Clang 3.4
-  # The patch will be merged in the official repository soon.
-  patch do
-    url "https://github.com/DarkShikari/x264-devel/commit/bc3b27.diff"
-    sha1 "85145f2123ef4a881749b8524583a56ead8494ef"
+    url "http://git.videolan.org/git/x264.git", :revision => "a5831aa256b3161f898d2577d2eb8daa838d88d2"
+    version "r2431"
   end
 
   bottle do
     cellar :any
-    sha1 "7a35f1da2e78eedb2be6d8f44d4bd1bc2a62339d" => :mavericks
-    sha1 "1b55c37b83f95a589b1832ccab7d8dae3700f5dc" => :mountain_lion
-    sha1 "19c9d9a6df12cbc4a6201c044215d2be609e6844" => :lion
+    revision 1
+    sha1 "6372fb019be6bc04374ff0152e8a5b6b84938176" => :mavericks
+    sha1 "ffcc0096d06f4c129c8b71d4c584cd42af2e8572" => :mountain_lion
+    sha1 "002522775ea0f47987b633528b22eb6e3ea5d43b" => :lion
   end
 
   depends_on 'yasm' => :build
@@ -56,12 +50,5 @@ class X264 < Formula
 
     system "./configure", *args
     system "make", "install"
-  end
-
-  def caveats; <<-EOS.undent
-    Because libx264 has a rapidly-changing API, formulae that link against
-    it should be reinstalled each time you upgrade x264. Examples include:
-       avidemux, ffmbc, ffmpeg, gst-plugins-ugly
-    EOS
   end
 end

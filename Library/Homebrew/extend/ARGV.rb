@@ -8,47 +8,43 @@ module HomebrewArgvExtension
   end
 
   def formulae
-    require 'formula'
-    @formulae ||= downcased_unique_named.map{ |name| Formula.factory name }
-    return @formulae
+    require "formula"
+    @formulae ||= downcased_unique_named.map { |name| Formulary.factory(name, spec) }
   end
 
   def kegs
-    rack = nil
     require 'keg'
     require 'formula'
     @kegs ||= downcased_unique_named.collect do |name|
-      canonical_name = Formula.canonical_name(name)
+      canonical_name = Formulary.canonical_name(name)
       rack = HOMEBREW_CELLAR/canonical_name
       dirs = rack.directory? ? rack.subdirs : []
 
-      raise NoSuchKegError.new(rack.basename.to_s) if not rack.directory? or dirs.empty?
+      raise NoSuchKegError.new(canonical_name) if dirs.empty?
 
-      linked_keg_ref = HOMEBREW_REPOSITORY/"Library/LinkedKegs"/name
-      opt_prefix = HOMEBREW_PREFIX/"opt"/name
+      linked_keg_ref = HOMEBREW_LIBRARY.join("LinkedKegs", canonical_name)
+      opt_prefix = HOMEBREW_PREFIX.join("opt", canonical_name)
 
-      if opt_prefix.symlink? && opt_prefix.directory?
-        Keg.new(opt_prefix.resolved_path)
-      elsif linked_keg_ref.symlink? && linked_keg_ref.directory?
-        Keg.new(linked_keg_ref.resolved_path)
-      elsif dirs.length == 1
-        Keg.new(dirs.first)
-      elsif (prefix = Formula.factory(canonical_name).prefix).directory?
-        Keg.new(prefix)
-      else
-        raise MultipleVersionsInstalledError.new(name)
+      begin
+        if opt_prefix.symlink? && opt_prefix.directory?
+          Keg.new(opt_prefix.resolved_path)
+        elsif linked_keg_ref.symlink? && linked_keg_ref.directory?
+          Keg.new(linked_keg_ref.resolved_path)
+        elsif dirs.length == 1
+          Keg.new(dirs.first)
+        elsif (prefix = Formulary.factory(canonical_name).prefix).directory?
+          Keg.new(prefix)
+        else
+          raise MultipleVersionsInstalledError.new(canonical_name)
+        end
+      rescue FormulaUnavailableError
+        raise <<-EOS.undent
+          Multiple kegs installed to #{rack}
+          However we don't know which one you refer to.
+          Please delete (with rm -rf!) all but one and then try again.
+          Sorry, we know this is lame.
+        EOS
       end
-    end
-  rescue FormulaUnavailableError
-    if rack
-      raise <<-EOS.undent
-        Multiple kegs installed to #{rack}
-        However we don't know which one you refer to.
-        Please delete (with rm -rf!) all but one and then try again.
-        Sorry, we know this is lame.
-      EOS
-    else
-      raise
     end
   end
 
@@ -149,14 +145,6 @@ module HomebrewArgvExtension
     include? '--force-bottle'
   end
 
-  def help?
-    empty? || grep(/(-h$|--help$|--usage$|-\?$|help$)/).any?
-  end
-
-  def version?
-    include? '--version'
-  end
-
   # eg. `foo -ns -i --bar` has three switches, n, s and i
   def switch? switch_character
     return false if switch_character.length > 1
@@ -170,21 +158,22 @@ module HomebrewArgvExtension
     Homebrew.help_s
   end
 
-  def filter_for_dependencies
-    old_args = clone
-    delete "--devel"
-    delete "--HEAD"
-    yield
-  ensure
-    replace(old_args)
-  end
-
   def cc
     value 'cc'
   end
 
   def env
     value 'env'
+  end
+
+  def spec
+    if include?("--HEAD")
+      :head
+    elsif include?("--devel")
+      :devel
+    else
+      :stable
+    end
   end
 
   private

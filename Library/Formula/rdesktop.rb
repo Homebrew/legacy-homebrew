@@ -1,10 +1,11 @@
-require 'formula'
+require "formula"
 
 class Rdesktop < Formula
-  homepage 'http://www.rdesktop.org/'
-  url 'https://downloads.sourceforge.net/project/rdesktop/rdesktop/1.8.1/rdesktop-1.8.1.tar.gz'
-  sha1 '57bb41f98ddf9eeef875c613d790fee37971d0f8'
+  homepage "http://www.rdesktop.org/"
+  url "https://downloads.sourceforge.net/project/rdesktop/rdesktop/1.8.2/rdesktop-1.8.2.tar.gz"
+  sha1 "089e8f2b18688ded8afc659de5ba8d5b14c7b874"
 
+  depends_on "openssl"
   depends_on :x11
 
   patch :DATA
@@ -13,7 +14,7 @@ class Rdesktop < Formula
     args = ["--prefix=#{prefix}",
             "--disable-credssp",
             "--disable-smartcard", # disable temporally before upstream fix
-            "--with-openssl=#{MacOS.sdk_path}/usr",
+            "--with-openssl=#{Formula["openssl"].opt_prefix}",
             "--x-includes=#{MacOS::X11.include}",
             "--x-libraries=#{MacOS::X11.lib}"]
     system "./configure", *args

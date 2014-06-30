@@ -13,6 +13,6 @@ class Kvazaar < Formula
   end
 
   test do
-    system "kvazaar 2>&1 | grep 'HEVC Encoder v. 0.3'"
+    system "#{bin}/kvazaar 2>&1 | grep 'HEVC Encoder v. 0.3'"
   end
 end

@@ -2,26 +2,21 @@ require "formula"
 
 class Snap7 < Formula
   homepage "http://snap7.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/snap7/1.2.0/snap7-full-1.2.0.tar.gz"
-  sha1 "49e64997345dfcbb68cecee3e0bc098d96a96407"
+  url "https://downloads.sourceforge.net/project/snap7/1.2.1/snap7-full-1.2.1.tar.gz"
+  sha1 "1e661fea17c26586599c11a1a840f4ac013060b6"
 
   bottle do
     cellar :any
-    sha1 "530697d2704479af33cbbe51daf5d822206babf4" => :mavericks
-    sha1 "e6d0c563e699f217a9a4a4265fd67c678e51da62" => :mountain_lion
-    sha1 "71df6080c160980de7697395756802765c5cd3bd" => :lion
+    sha1 "89adc1a116219fccee8f6cc8c9bdb1632afa7069" => :mavericks
+    sha1 "6293333e1262e08b0d9ba4eeda2b8cf16d1396d3" => :mountain_lion
+    sha1 "66e715df7e668c98c000b778e4f820eb69637f1f" => :lion
   end
 
   def install
-    archstr = MacOS.prefer_64_bit? ? "x86_64" : "i386"
     lib.mkpath
-    inreplace "build/osx/common.mk", "libsnap7.so", "libsnap7.dylib"
-    inreplace "build/osx/common.mk", "/usr/lib", lib
-
-    Dir.chdir "build/osx" do
-      system "make", "-f", "#{archstr}_osx.mk", "install"
-    end
-
+    system "make", "-C", "build/osx",
+                   "-f", "#{MacOS.preferred_arch}_osx.mk",
+                   "install", "LibInstall=#{lib}"
     include.install "release/Wrappers/c-cpp/snap7.h"
   end
 

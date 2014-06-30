@@ -16,6 +16,7 @@ class Option
   alias_method :to_str, :to_s
 
   def <=>(other)
+    return unless Option === other
     name <=> other.name
   end
 

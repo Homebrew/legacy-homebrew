@@ -17,18 +17,21 @@ class Freetds < Formula
   option "enable-msdblib", "Enable Microsoft behavior in the DB-Library API where it diverges from Sybase's"
   option "enable-sybase-compat", "Enable close compatibility with Sybase's ABI, at the expense of other features"
   option "enable-odbc-wide", "Enable odbc wide, prevent unicode - MemoryError's"
+  option "enable-krb", "Enable Kerberos support"
 
   depends_on "pkg-config" => :build
   depends_on "unixodbc" => :optional
+  depends_on "openssl"
 
   def install
     system "autoreconf -i" if build.head?
 
-    args = %W[--prefix=#{prefix}
-              --with-openssl=#{MacOS.sdk_path}/usr
-              --with-tdsver=7.1
-              --mandir=#{man}
-            ]
+    args = %W[
+      --prefix=#{prefix}
+      --with-openssl=#{Formula["openssl"].opt_prefix}
+      --with-tdsver=7.1
+      --mandir=#{man}
+    ]
 
     if build.with? "unixodbc"
       args << "--with-unixodbc=#{Formula['unixodbc'].prefix}"
@@ -44,6 +47,10 @@ class Freetds < Formula
 
     if build.include? "enable-odbc-wide"
       args << "--enable-odbc-wide"
+    end
+
+    if build.include? "enable-krb"
+      args << "--enable-krb5"
     end
 
     ENV.universal_binary if build.universal?

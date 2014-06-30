@@ -1,40 +1,37 @@
-require 'formula'
+require "formula"
 
 class Gnupg2 < Formula
-  homepage 'http://www.gnupg.org/'
-  url 'ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.22.tar.bz2'
-  sha1 '9ba9ee288e9bf813e0f1e25cbe06b58d3072d8b8'
-  revision 1
+  homepage "https://www.gnupg.org/"
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.24.tar.bz2"
+  sha1 "010e027d5f622778cadc4c124013fe515ed705cf"
 
-  option '8192', 'Build with support for private keys of up to 8192 bits'
+  option "8192", "Build with support for private keys of up to 8192 bits"
 
-  depends_on 'libgpg-error'
-  depends_on 'libgcrypt'
-  depends_on 'libksba'
-  depends_on 'libassuan'
-  depends_on 'pinentry'
-  depends_on 'pth'
-  depends_on 'gpg-agent'
-  depends_on 'dirmngr' => :recommended
-  depends_on 'libusb-compat' => :recommended
-  depends_on 'readline' => :optional
+  depends_on "libgpg-error"
+  depends_on "libgcrypt"
+  depends_on "libksba"
+  depends_on "libassuan"
+  depends_on "pinentry"
+  depends_on "pth"
+  depends_on "gpg-agent"
+  depends_on "dirmngr" => :recommended
+  depends_on "libusb-compat" => :recommended
+  depends_on "readline" => :optional
 
   # Fix hardcoded runtime data location
   # upstream: http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;h=c3f08dc
   # Adjust package name to fit our scheme of packaging both gnupg 1.x and
   # 2.x, and gpg-agent separately, and adjust tests to fit this scheme
-  # Fix typo that breaks compilation:
-  # http://lists.gnupg.org/pipermail/gnupg-users/2013-May/046652.html
   patch :DATA
 
   def install
-    inreplace 'g10/keygen.c', 'max=4096', 'max=8192' if build.include? '8192'
+    inreplace "g10/keygen.c", "max=4096", "max=8192" if build.include? "8192"
 
-    (var/'run').mkpath
+    (var/"run").mkpath
 
-    ENV.append 'LDFLAGS', '-lresolv'
+    ENV.append "LDFLAGS", "-lresolv"
 
-    ENV['gl_cv_absolute_stdint_h'] = "#{MacOS.sdk_path}/usr/include/stdint.h"
+    ENV["gl_cv_absolute_stdint_h"] = "#{MacOS.sdk_path}/usr/include/stdint.h"
 
     agent = Formula["gpg-agent"].opt_prefix
 
@@ -48,7 +45,7 @@ class Gnupg2 < Formula
       --with-protect-tool-pgm=#{agent}/libexec/gpg-protect-tool
     ]
 
-    if build.with? 'readline'
+    if build.with? "readline"
       args << "--with-readline=#{Formula["readline"].opt_prefix}"
     end
 
@@ -59,7 +56,7 @@ class Gnupg2 < Formula
 
     # Conflicts with a manpage from the 1.x formula, and
     # gpg-zip isn't installed by this formula anyway
-    rm man1/'gpg-zip.1'
+    rm man1/"gpg-zip.1"
   end
 end
 
@@ -78,7 +75,7 @@ index 4b03cfe..c84f26f 100644
  }
  
 diff --git a/configure b/configure
-index e5479af..a17a54d 100755
+index 5959b37..2bea995 100755
 --- a/configure
 +++ b/configure
 @@ -578,8 +578,8 @@ MFLAGS=
@@ -89,8 +86,8 @@ index e5479af..a17a54d 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gnupg2'
 +PACKAGE_TARNAME='gnupg2'
- PACKAGE_VERSION='2.0.22'
- PACKAGE_STRING='gnupg 2.0.22'
+ PACKAGE_VERSION='2.0.24'
+ PACKAGE_STRING='gnupg 2.0.24'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'
 diff --git a/tests/openpgp/Makefile.in b/tests/openpgp/Makefile.in
 index c9ceb2d..7044900 100644

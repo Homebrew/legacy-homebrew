@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Clipsafe < Formula
-  homepage 'http://waxandwane.org/clipsafe.html'
-  url 'http://waxandwane.org/download/clipsafe-1.1.tar.gz'
-  sha1 '5e940a3f89821bfb3315ff9b1be4256db27e5f6a'
+  homepage "http://waxandwane.org/clipsafe.html"
+  url "http://waxandwane.org/download/clipsafe-1.1.tar.gz"
+  sha1 "5e940a3f89821bfb3315ff9b1be4256db27e5f6a"
 
   depends_on :macos => :mountain_lion
 
@@ -23,7 +23,7 @@ class Clipsafe < Formula
   end
 
   def install
-    ENV.prepend_create_path 'PERL5LIB', libexec+'lib/perl5'
+    ENV.prepend_create_path "PERL5LIB", libexec+"lib/perl5"
 
     resource("Crypt::Twofish").stage do
       system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
@@ -44,7 +44,7 @@ class Clipsafe < Formula
     end
 
     bin.install "clipsafe"
-    bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV['PERL5LIB'])
+    bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
   end
 
   test do

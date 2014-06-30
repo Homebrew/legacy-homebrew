@@ -6,15 +6,15 @@ class Submarine < Formula
   sha1 '9ecbdfd25c299839a55ec7878b585525b03f2e8b'
   head 'https://github.com/rastersoft/submarine.git'
 
-  depends_on 'glib'
-  depends_on 'libgee'
-  depends_on 'libsoup'
-  depends_on 'libarchive'
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
-  depends_on 'pkg-config' => :build
-  depends_on 'vala' => :build
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "vala" => :build
+  depends_on "glib"
+  depends_on "libgee"
+  depends_on "libsoup"
+  depends_on "libarchive"
 
 
   def install
@@ -24,8 +24,7 @@ class Submarine < Formula
     # See https://github.com/rastersoft/submarine/pull/1
     inreplace 'configure.ac', 'gee-1.0', 'gee-0.8'
     system "./autogen.sh"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"

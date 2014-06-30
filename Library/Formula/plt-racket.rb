@@ -1,17 +1,18 @@
-require 'formula'
+require "formula"
 
 class PltRacket < Formula
-  homepage 'http://racket-lang.org/'
-  url 'https://github.com/plt/racket/archive/v6.0.tar.gz'
-  sha1 'b37c26e292ac28ec5cd07ac2752ceb6698989f34'
+  homepage "http://racket-lang.org/"
+  url "https://github.com/plt/racket/archive/v6.0.1.tar.gz"
+  sha1 "c459860b5bc9c37f6e5d9f3e74ae8fcdd44ef45e"
 
   def install
     cd 'racket/src' do
       args = ["--disable-debug", "--disable-dependency-tracking",
-              "--enable-xonx",
-              "--prefix=#{prefix}" ]
+              "--enable-macprefix",
+              "--prefix=#{prefix}",
+              "--man=#{man}"]
 
-      args << '--disable-mac64' if not MacOS.prefer_64_bit?
+      args << "--disable-mac64" if not MacOS.prefer_64_bit?
 
       system "./configure", *args
       system "make"

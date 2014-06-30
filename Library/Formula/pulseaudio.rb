@@ -2,8 +2,8 @@ require 'formula'
 
 class Pulseaudio < Formula
   homepage "http://pulseaudio.org"
-  url "http://freedesktop.org/software/pulseaudio/releases/pulseaudio-4.0.tar.xz"
-  sha1 "9f0769dcb25318ba3faaa453fd2ed0c509fa9c5c"
+  url "http://freedesktop.org/software/pulseaudio/releases/pulseaudio-5.0.tar.xz"
+  sha1 "e420931a0b9cf37331cd06e30ba415046317ab85"
 
   option "with-nls", "Build with native language support"
   option :universal
@@ -23,6 +23,12 @@ class Pulseaudio < Formula
   depends_on "d-bus" => :optional
   depends_on "gtk+3" => :optional
   depends_on "jack" => :optional
+
+  # i386 patch per MacPorts
+  patch :p0 do
+    url "https://trac.macports.org/export/119615/trunk/dports/audio/pulseaudio/files/i386.patch"
+    sha1 "4193a6112f90d103875d2ca91462c26d811a9386"
+  end
 
   fails_with :clang do
     build 421

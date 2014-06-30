@@ -2,9 +2,9 @@ require 'formula'
 
 class TomeeJaxRs < Formula
   homepage 'http://tomee.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.6.0/apache-tomee-1.6.0-jaxrs.tar.gz'
-  version '1.6.0'
-  sha1 '1db7d705012f891e9ba7d6487be4fe93ea794ffb'
+  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.6.0.2/apache-tomee-1.6.0.2-jaxrs.tar.gz'
+  version '1.6.0.2'
+  sha1 '53e438f72edb455f4d01464d2e00855fa055ad6b'
 
   # Keep log folders
   skip_clean 'libexec'
@@ -16,6 +16,6 @@ class TomeeJaxRs < Formula
     # Install files
     prefix.install %w{ NOTICE LICENSE RELEASE-NOTES RUNNING.txt }
     libexec.install Dir['*']
-    bin.install_symlink "#{libexec}/bin/tomee.sh" => "tomee-jax-rs"
+    bin.install_symlink "#{libexec}/bin/startup.sh" => "tomee-jax-rs-startup"
   end
 end

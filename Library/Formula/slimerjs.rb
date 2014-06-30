@@ -45,7 +45,7 @@ class Slimerjs < Formula
 
   test do
     system "#{bin}/slimerjs", "-v"
-    curl "-O", "https://raw.github.com/laurentj/slimerjs/ec1e53a/examples/phantomjs/loadspeed.js"
+    curl "-O", "https://raw.githubusercontent.com/laurentj/slimerjs/ec1e53a/examples/phantomjs/loadspeed.js"
     system "#{bin}/slimerjs", "loadspeed.js", "https://www.google.com"
   end
 end

@@ -28,7 +28,11 @@ class Bullet < Formula
       args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     end
 
-    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}" if build.universal?
+    if build.universal?
+      ENV.universal_binary
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
+
     args << "-DUSE_DOUBLE_PRECISION=ON" if build.include? "double-precision"
 
     args << "-DBUILD_DEMOS=OFF" unless build.include? "build-demo"

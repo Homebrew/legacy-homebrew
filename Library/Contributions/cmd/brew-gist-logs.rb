@@ -30,14 +30,14 @@ def load_logs name
   logs = {}
   dir = (HOMEBREW_LOGS/name)
   dir.children.sort.each do |file|
-    logs[file.basename.to_s] = {:content => file.read}
+    logs[file.basename.to_s] = {:content => (file.size == 0 ? "empty log" : file.read)}
   end if dir.exist?
   raise 'No logs.' if logs.empty?
   logs
 end
 
 def append_config files
-  files['config.out'] = {:content => `brew --config 2>&1`}
+  files['config.out'] = {:content => `brew config 2>&1`}
 end
 
 def append_doctor files
@@ -76,7 +76,16 @@ def post path, data
   request.body = Utils::JSON.dump(data)
   response = http.request(request)
   raise HTTP_Error, response if response.code != '201'
-  Utils::JSON.load(response.body)
+
+  if !response.body.respond_to?(:force_encoding)
+    body = response.body
+  elsif response["Content-Type"].downcase == "application/json; charset=utf-8"
+    body = response.body.dup.force_encoding(Encoding::UTF_8)
+  else
+    body = response.body.encode(Encoding::UTF_8, :undef => :replace)
+  end
+
+  Utils::JSON.load(body)
 end
 
 class HTTP_Error < RuntimeError
@@ -86,7 +95,7 @@ class HTTP_Error < RuntimeError
 end
 
 def repo_name f
-  dir = (f.path.symlink? ? f.path.realpath.dirname : HOMEBREW_REPOSITORY)
+  dir = f.path.dirname
   url = dir.cd { `git config --get remote.origin.url` }
   unless url =~ %r{github.com(?:/|:)([\w\d]+)/([\-\w\d]+)}
     raise 'Unable to determine formula repository.'

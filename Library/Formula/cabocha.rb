@@ -8,7 +8,14 @@ class Cabocha < Formula
   depends_on 'crf++'
   depends_on 'mecab'
 
-  option 'posset', 'choose default posset: IPA, JUMAN, UNIDIC'
+  # To see which dictionaries are available, run:
+  #     ls `mecab-config --libs-only-L`/mecab/dic/
+  depends_on 'mecab-ipadic' => :recommended
+  depends_on 'mecab-jumandic' => :optional
+  depends_on 'mecab-unidic' => :optional
+
+  option 'charset=', 'choose default charset: EUC-JP, CP932, UTF8'
+  option 'posset=', 'choose default posset: IPA, JUMAN, UNIDIC'
 
   def install
     ENV["LIBS"] = '-liconv'
@@ -18,11 +25,14 @@ class Cabocha < Formula
       s.change_make_var! 'CXXFLAGS', ENV.cflags
     end
 
+    charset = ARGV.value('charset') || 'UTF8'
     posset = ARGV.value('posset') || "IPA"
-    args = ["--with-charset=utf8",
-            "--disable-dependency-tracking",
-            "--prefix=#{prefix}"]
-    args << "--with-posset=#{posset}"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --with-charset=#{charset}
+      --with-posset=#{posset}
+    ]
 
     system "./configure", *args
     system "make install"

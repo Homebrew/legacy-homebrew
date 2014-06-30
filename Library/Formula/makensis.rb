@@ -23,7 +23,8 @@ class Makensis < Formula
     # https://sourceforge.net/p/nsis/bugs/1085/
     ENV.libstdcxx if ENV.compiler == :clang
 
-    scons "makensis"
+    # Don't strip, see https://github.com/Homebrew/homebrew/issues/28718
+    scons "STRIP=0", "makensis"
     bin.install "build/release/makensis/makensis"
     (share/'nsis').install resource('nsis')
   end

@@ -1,10 +1,10 @@
 require "formula"
 
 class MecabKo < Formula
-  homepage "https://bitbucket.org/bibreen/mecab-ko"
-  url "https://bitbucket.org/bibreen/mecab-ko/downloads/mecab-0.996-ko-0.9.0.tar.gz"
-  version "0.996-ko-0.9.0"
-  sha1 "cd70543d2b60d93398d9f26a3c912dde73c83382"
+  homepage "https://bitbucket.org/eunjeon/mecab-ko"
+  url "https://bitbucket.org/eunjeon/mecab-ko/downloads/mecab-0.996-ko-0.9.1.tar.gz"
+  version "0.996-ko-0.9.1"
+  sha1 "68dad4486d7b74fa5fe7aef0b440e00f17a9e59c"
 
   def install
     system "./configure", "--disable-dependency-tracking",

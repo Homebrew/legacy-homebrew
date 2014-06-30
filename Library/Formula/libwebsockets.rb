@@ -13,7 +13,7 @@ class Libwebsockets < Formula
     system "cmake", ".", *std_cmake_args
     system "make"
 
-    # The `make install` target doesn’t work (FFS) so here’s what I think
+    # The `make install` target doesn't work so here's what I think
     # should be installed:
     lib.install 'lib/libwebsockets.dylib'
     (lib+'pkgconfig').install 'libwebsockets.pc'

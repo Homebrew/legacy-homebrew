@@ -1,21 +1,17 @@
-require 'formula'
+require "formula"
 
 class MediaInfo < Formula
-  homepage 'http://mediainfo.sourceforge.net'
-  url 'http://mediaarea.net/download/binary/mediainfo/0.7.67/MediaInfo_CLI_0.7.67_GNU_FromSource.tar.bz2'
-  version '0.7.67'
-  sha1 'e5bfc3af8d3a0995785f1963c78ff9a6505e9626'
+  homepage "https://mediaarea.net/"
+  url "https://mediaarea.net/download/binary/mediainfo/0.7.69/MediaInfo_CLI_0.7.69_GNU_FromSource.tar.bz2"
+  version "0.7.69"
+  sha1 "79227ec20928cc4fa82722b54a44671b03b833d9"
 
-  # Fixed upstream, will be in next release
-  # http://sourceforge.net/p/mediainfo/code/6167/
-  patch :DATA
-
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   # fails to build against Leopard's older libcurl
-  depends_on 'curl' if MacOS.version < :snow_leopard
+  depends_on "curl" if MacOS.version < :snow_leopard
 
   def install
-    cd 'ZenLib/Project/GNU/Library' do
+    cd "ZenLib/Project/GNU/Library" do
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
                             "--prefix=#{prefix}"
       system "make"
@@ -37,23 +33,3 @@ class MediaInfo < Formula
     end
   end
 end
-
-__END__
-diff --git a/MediaInfoLib/Source/MediaInfo/Text/File_Ttml.h b/MediaInfoLib/Source/MediaInfo/Text/File_Ttml.h
-index 554477c..46a4fec 100644
---- a/MediaInfoLib/Source/MediaInfo/Text/File_Ttml.h
-+++ b/MediaInfoLib/Source/MediaInfo/Text/File_Ttml.h
-@@ -19,8 +19,11 @@
- #include "MediaInfo/File__Analyze.h"
- //---------------------------------------------------------------------------
- 
--class tinyxml2::XMLDocument;
--class tinyxml2::XMLElement;
-+namespace tinyxml2
-+{
-+    class XMLDocument;
-+    class XMLElement;
-+}
- 
- namespace MediaInfoLib
- {

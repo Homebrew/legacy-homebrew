@@ -17,6 +17,12 @@ class Par2 < Formula
     sha1 "e91540f729115c5ddc210c93bdda34090e2a2cf1"
   end
 
+  # http://parchive.cvs.sourceforge.net/viewvc/parchive/par2-cmdline/par2creatorsourcefile.cpp?r1=1.4&r2=1.5
+  patch :p0 do
+    url "http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-arch/par2cmdline/files/par2cmdline-0.4-offset.patch?revision=1.2"
+    sha1 "5a4e0274ef177c09deb237394b1c5c691b10d83a"
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

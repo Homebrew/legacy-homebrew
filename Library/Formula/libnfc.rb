@@ -5,6 +5,12 @@ class Libnfc < Formula
   url 'https://libnfc.googlecode.com/files/libnfc-1.7.0.tar.bz2'
   sha1 '5adfb6c6238b1659ad8609837dc8e59eb41a8768'
 
+  bottle do
+    sha1 "6ef108d4cfb9dd7b7de6c8b487e84b013d791b6b" => :mavericks
+    sha1 "90ecfb5007d2536460e09331f9ac0ab3d5e99d4f" => :mountain_lion
+    sha1 "3797f5f195e93da48dea1b09ce2fc9d190df7365" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'libusb-compat'
 

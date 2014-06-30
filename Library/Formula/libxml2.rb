@@ -10,20 +10,21 @@ class Libxml2 < Formula
   end
 
   bottle do
-    sha1 "1971dcb3cfb9a68555ee6eaff7c83d0dd8109442" => :mavericks
-    sha1 "558653754996428880b14123dac08baa639f97c3" => :mountain_lion
-    sha1 "93b5c4b98475f71cbf1915b2293df14d7621b262" => :lion
+    revision 1
+    sha1 "beea5228f6757f6527aa4714f16c76f773a8c8fe" => :mavericks
+    sha1 "74b53656cc103b6c2c397ca0a96d9be1f3afa8c0" => :mountain_lion
+    sha1 "9590f024de3820d9b45de979ea9171b17058f69d" => :lion
   end
 
   head do
     url 'https://git.gnome.org/browse/libxml2', :using => :git
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
-  depends_on :python => :recommended
+  depends_on :python => :optional
 
   keg_only :provided_by_osx
 

@@ -2,8 +2,8 @@ require 'formula'
 
 class Rasqal < Formula
   homepage 'http://librdf.org/rasqal/'
-  url 'http://download.librdf.org/source/rasqal-0.9.30.tar.gz'
-  sha1 '8e104acd68fca9b3b97331746e08d53d07d2e20a'
+  url 'http://download.librdf.org/source/rasqal-0.9.32.tar.gz'
+  sha1 'e16621cdc939cba3e35a9205fa4697de4940961b'
 
   depends_on 'pkg-config' => :build
   depends_on 'raptor'

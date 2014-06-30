@@ -47,7 +47,7 @@ class Povray < Formula
 
   # Replaces references to shared_ptr with boost::shared_ptr
   patch do
-    url "https://gist.github.com/mistydemeo/7633971/raw/ef285191f9da25aa73806d1200611b8c955ab873/boost-sharedptr.diff"
+    url "https://gist.githubusercontent.com/mistydemeo/7633971/raw/ef285191f9da25aa73806d1200611b8c955ab873/boost-sharedptr.diff"
     sha1 "8d38908f41eab4da61d1d892ee030bff0bfefeaa"
   end
 

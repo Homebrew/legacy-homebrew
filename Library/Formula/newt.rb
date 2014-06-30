@@ -16,7 +16,7 @@ class Newt < Formula
   end
 
   patch :p0 do
-    url "https://gist.github.com/co-me/6725961/raw/aa8bb06967ad5360eab89e22c1fe15b36bfa06e3/patch-Makefile.in.diff"
+    url "https://gist.githubusercontent.com/co-me/6725961/raw/aa8bb06967ad5360eab89e22c1fe15b36bfa06e3/patch-Makefile.in.diff"
     sha1 "8cd3b609cd7dffbc2abf00454dcba0a78967bce7"
   end
 

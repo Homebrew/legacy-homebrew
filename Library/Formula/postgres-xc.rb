@@ -5,8 +5,15 @@ class PostgresXc < Formula
   url 'https://downloads.sourceforge.net/project/postgres-xc/Version_1.0/pgxc-v1.0.3.tar.gz'
   sha1 '76774cf32810dfa14b2174f2e939d3b28eb211a9'
 
+  bottle do
+    sha1 "9996518f01b622e99d81e373584a79cff534c575" => :mavericks
+    sha1 "11dabc108585cb1468d7c5da64140522d42dd624" => :mountain_lion
+    sha1 "bae67562a1f7135faf534c3209ed887b73221bf5" => :lion
+  end
+
   depends_on :arch => :x86_64
-  depends_on :python => :recommended
+  depends_on :python => :optional
+  depends_on 'openssl'
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on 'ossp-uuid' => :recommended

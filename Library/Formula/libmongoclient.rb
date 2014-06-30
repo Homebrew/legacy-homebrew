@@ -2,15 +2,24 @@ require 'formula'
 
 class Libmongoclient < Formula
   homepage 'http://www.mongodb.org'
-  url 'https://github.com/mongodb/mongo-cxx-driver/archive/legacy-0.0-26compat-2.6.0.tar.gz'
-  sha1 '16489b9afb506bf30e514152af7b5a49bbdb2486'
+  url 'https://github.com/mongodb/mongo-cxx-driver/archive/legacy-0.0-26compat-2.6.1.tar.gz'
+  sha1 'a45e66d5182ede6b3a0f5bd5e020ebeb48dbddbe'
 
   head 'https://github.com/mongodb/mongo-cxx-driver.git', :branch => "26compat"
 
+  option :cxx11
+
   depends_on 'scons' => :build
-  depends_on 'boost' => :build
+
+  if build.cxx11?
+    depends_on 'boost' => 'c++11'
+  else
+    depends_on 'boost'
+  end
 
   def install
+    ENV.cxx11 if build.cxx11?
+
     boost = Formula["boost"].opt_prefix
 
     args = [
@@ -21,13 +30,14 @@ class Libmongoclient < Formula
       "--extrapath=#{boost}",
       "--full",
       "--use-system-all",
-      "--sharedclient"
+      "--sharedclient",
+      # --osx-version-min is required to override --osx-version-min=10.6 added
+      # by SConstruct which causes "invalid deployment target for -stdlib=libc++"
+      # when using libc++
+      "--osx-version-min=#{MacOS.version}",
     ]
 
-    if MacOS.version >= :mavericks
-      args << "--osx-version-min=10.8"
-      args << "--libc++"
-    end
+    args << "--libc++" if MacOS.version >= :mavericks
 
     scons *args
   end

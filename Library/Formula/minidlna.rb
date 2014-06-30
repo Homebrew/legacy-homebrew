@@ -1,19 +1,19 @@
-require 'formula'
+require "formula"
 
 class Minidlna < Formula
-  homepage 'http://sourceforge.net/projects/minidlna/'
-  url 'https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.2/minidlna-1.1.2.tar.gz'
-  sha1 'ba03d691b9aa95b55ac822905571ab1127492344'
+  homepage "http://sourceforge.net/projects/minidlna/"
+  url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.3/minidlna-1.1.3.tar.gz"
+  sha1 "3e5b907fd35b667eb50af98e1f986c7f461a6042"
 
-  depends_on 'libav'
-  depends_on 'libexif'
-  depends_on 'jpeg'
-  depends_on 'libid3tag'
-  depends_on 'flac'
-  depends_on 'libogg'
-  depends_on 'libvorbis'
-  depends_on 'sqlite'
-  depends_on 'ffmpeg'
+  depends_on "libav"
+  depends_on "libexif"
+  depends_on "jpeg"
+  depends_on "libid3tag"
+  depends_on "flac"
+  depends_on "libogg"
+  depends_on "libvorbis"
+  depends_on "sqlite"
+  depends_on "ffmpeg"
 
   patch do
     url "http://sourceforge.net/p/minidlna/patches/104/attachment/0001-Remove-check-for-getifaddr-returning-IFF_SLAVE-if-IF.patch"
@@ -21,14 +21,13 @@ class Minidlna < Formula
   end
 
   def install
-    ENV.append_to_cflags '-std=gnu89'
+    ENV.append_to_cflags "-std=gnu89"
     system "./configure", "--exec-prefix=#{prefix}"
     system "make", "install"
     sample_config_path.write sample_config
   end
 
-  def caveats
-    s = <<-EOS.undent
+  def caveats; <<-EOS.undent
       Simple single-user configuration:
 
       mkdir -p ~/.config/minidlna

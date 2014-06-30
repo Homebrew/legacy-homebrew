@@ -1,10 +1,10 @@
 require 'formula'
 require 'keg'
 
-module Homebrew extend self
+module Homebrew
   def outdated
     outdated_brews do |f, versions|
-      if $stdout.tty? and not ARGV.flag? '--quiet'
+      if ($stdout.tty? || ARGV.verbose?) and not ARGV.flag? '--quiet'
         puts "#{f.name} (#{versions*', '} < #{f.pkg_version})"
       else
         puts f.name

@@ -1,44 +1,43 @@
 require 'formula'
 
 class Subversion < Formula
-  homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.8.tar.bz2'
-  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.8.tar.bz2'
-  sha1 '8e9f10b7a9704c90e17cfe76fd56e3fe74c01a7a'
+  homepage 'https://subversion.apache.org/'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.9.tar.bz2'
+  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.9.tar.bz2'
+  sha1 '424ee12708f39a126efd905886666083dcc4eeaf'
 
   bottle do
-    sha1 "91bb1e36e6ce4ecdc921a0a9e01de99151b734d2" => :mavericks
-    sha1 "16fa933de8a8ab3eb3f770d8f7cb3966bf385895" => :mountain_lion
-    sha1 "c400c662deb09a2246d4cf2878f1897cbb328ce4" => :lion
+    revision 2
+    sha1 "860453653114edfcf152bad3a7901719777a5f72" => :mavericks
+    sha1 "f9acba18f2d4547a24cd7e5a18eda47bf9f40925" => :mountain_lion
+    sha1 "1f632c42ec044abaaf373dd955aa100a8f879a81" => :lion
   end
 
   option :universal
-  option 'with-brewed-openssl', 'Include OpenSSL support to Serf via Homebrew'
   option 'java', 'Build Java bindings'
   option 'perl', 'Build Perl bindings'
   option 'ruby', 'Build Ruby bindings'
 
   resource 'serf' do
-    url 'http://serf.googlecode.com/svn/src_releases/serf-1.3.4.tar.bz2', :using => :curl
-    sha1 'eafc8317d7a9c77d4db9ce1e5c71a33822f57c3a'
+    url 'https://serf.googlecode.com/svn/src_releases/serf-1.3.6.tar.bz2', :using => :curl
+    sha1 '409a153583b3e370a130e3fb1623ac98f5af9975'
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on 'sqlite'
   depends_on :python => :optional
-
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
 
   # Bindings require swig
   depends_on 'swig' if build.include? 'perl' or build.with? 'python' or build.include? 'ruby'
 
   # For Serf
   depends_on 'scons' => :build
-  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'openssl'
 
   # If building bindings, allow non-system interpreters
   env :userpaths if build.include? 'perl' or build.include? 'ruby'
@@ -55,10 +54,6 @@ class Subversion < Formula
     cause "core.c:1: error: bad value (native) for -march= switch"
   end if build.include? 'perl' or build.include? 'ruby'
 
-  def apr_bin
-    Superenv.bin or "/usr/bin"
-  end
-
   def install
     serf_prefix = libexec+'serf'
 
@@ -72,8 +67,8 @@ class Subversion < Formula
       ENV.universal_binary if build.universal?
       # scons ignores our compiler and flags unless explicitly passed
       args = %W[PREFIX=#{serf_prefix} GSSAPI=/usr CC=#{ENV.cc}
-                CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}]
-      args << "OPENSSL=#{Formula["openssl"].opt_prefix}" if build.with? 'brewed-openssl'
+                CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}
+                OPENSSL=#{Formula["openssl"].opt_prefix}]
       scons *args
       scons "install"
     end
@@ -102,7 +97,7 @@ class Subversion < Formula
         puts "  brew install subversion --universal --java"
       end
 
-      ENV.fetch('JAVA_HOME') do
+      if ENV["JAVA_HOME"]
         opoo "JAVA_HOME is set. Try unsetting it if JNI headers cannot be found."
       end
     end
@@ -114,7 +109,7 @@ class Subversion < Formula
     # Don't mess with Apache modules (since we're not sudo)
     args = ["--disable-debug",
             "--prefix=#{prefix}",
-            "--with-apr=#{apr_bin}",
+            "--with-apr=#{which("apr-1-config").dirname}",
             "--with-zlib=/usr",
             "--with-sqlite=#{Formula["sqlite"].opt_prefix}",
             "--with-serf=#{serf_prefix}",
@@ -176,9 +171,13 @@ class Subversion < Formula
       end
       system "make swig-pl"
       system "make", "install-swig-pl", "DESTDIR=#{prefix}"
+
       # Some of the libraries get installed into the wrong place, they end up having the
       # prefix in the directory name twice.
-      mv Dir["#{prefix}/#{lib}/*"], "#{lib}"
+      # There's an ongoing issue with Ruby's mv placing files in the wrong directory and erroring out.
+      # The below addition should resolve the issue for now. See https://github.com/Homebrew/homebrew/issues/30370
+
+      lib.install Dir["#{prefix}/#{lib}/*"]
     end
 
     if build.include? 'java'

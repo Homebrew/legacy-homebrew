@@ -13,7 +13,7 @@ class Launch < Formula
     sha1 "1166c77e00378087195ad5273685d839dbb9f305" => :lion
   end
 
-  depends_on :xcode
+  depends_on :xcode => :build
 
   def install
     rm_rf "launch" # We'll build it ourself, thanks.

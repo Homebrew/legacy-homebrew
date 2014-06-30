@@ -33,7 +33,7 @@ class CxxStdlib
   end
 
   def check_dependencies(formula, deps)
-    unless formula.cxxstdlib.include? :skip
+    unless formula.class.cxxstdlib.include? :skip
       deps.each do |dep|
         # Software is unlikely to link against anything from its
         # buildtime deps, so it doesn't matter at all if they link

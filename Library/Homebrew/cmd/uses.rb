@@ -4,7 +4,7 @@ require 'formula'
 # If you want the union, run the command twice and concatenate the results.
 # The intersection is harder to achieve with shell tools.
 
-module Homebrew extend self
+module Homebrew
   def uses
     raise FormulaUnspecifiedError if ARGV.named.empty?
 

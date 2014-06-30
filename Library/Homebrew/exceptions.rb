@@ -154,18 +154,13 @@ class FormulaConflictError < Homebrew::InstallationError
 end
 
 class BuildError < Homebrew::InstallationError
-  attr_reader :exit_status, :command, :env
+  attr_reader :command, :env
 
-  def initialize formula, cmd, args, es
+  def initialize formula, cmd, args
     @command = cmd
     @env = ENV.to_hash
-    @exit_status = es.exitstatus rescue 1
     args = args.map{ |arg| arg.to_s.gsub " ", "\\ " }.join(" ")
     super formula, "Failed executing: #{command} #{args}"
-  end
-
-  def was_running_configure?
-    @command == './configure'
   end
 
   def issues
@@ -185,12 +180,12 @@ class BuildError < Homebrew::InstallationError
       puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
       if formula.tap?
         user, repo = formula.tap.split '/'
-        tap_issues_url = "https://github.com/#{user}/homebrew-#{repo}/issues"
+        tap_issues_url = "https://github.com/#{user}/#{repo}/issues"
         puts "If reporting this issue please do so at (not Homebrew/homebrew):"
         puts "  #{tap_issues_url}"
       end
     else
-      require 'cmd/--config'
+      require 'cmd/config'
       require 'cmd/--env'
 
       unless formula.core_formula?
@@ -224,7 +219,7 @@ class CompilerSelectionError < Homebrew::InstallationError
     super f, <<-EOS.undent
     #{f.name} cannot be built with any available compilers.
     To install this formula, you may need to:
-      brew install apple-gcc42
+      brew install gcc
     EOS
   end
 end

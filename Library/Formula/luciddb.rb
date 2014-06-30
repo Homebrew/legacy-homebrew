@@ -14,15 +14,14 @@ class Luciddb < Formula
   end
 
   def install
-    java_home = `/usr/libexec/java_home`.chomp!
     libexec.install Dir['*']
     cd libexec/'install' do
       # install.sh just sets Java classpaths and writes them to bin/classpath.gen.
       # This is why we run it /after/ copying all the files to #{libexec}.
-      ENV['JAVA_HOME'] = java_home
+      ENV['JAVA_HOME'] = `/usr/libexec/java_home`.chomp
       system "./install.sh"
     end
-    Dir["#{libexec}/bin/*"].each do |b|
+    Dir.glob("#{libexec}/bin/*") do |b|
       next if b =~ /classpath.gen/ or b =~ /defineFarragoRuntime/
       n = File.basename(b)
       (bin+n).write shim_script(n)
@@ -43,7 +42,7 @@ class Luciddb < Formula
       <key>EnvironmentVariables</key>
       <dict>
         <key>JAVA_HOME</key>
-        <string>#{`/usr/libexec/java_home`.chomp!}</string>
+        <string>#{`/usr/libexec/java_home`.chomp}</string>
       </dict>
       <key>ProgramArguments</key>
       <array>

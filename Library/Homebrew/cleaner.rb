@@ -64,24 +64,7 @@ class Cleaner
     end
   end
 
-  # Set permissions for executables and non-executables
-  def clean_file_permissions path
-    perms = if path.mach_o_executable? || path.text_executable?
-      0555
-    else
-      0444
-    end
-    if ARGV.debug?
-      old_perms = path.stat.mode & 0777
-      if perms != old_perms
-        puts "Fixing #{path} permissions from #{old_perms.to_s(8)} to #{perms.to_s(8)}"
-      end
-    end
-    path.chmod perms
-  end
-
-  # Removes .la files and fixes file permissions for a directory tree, keeping
-  # existing files and permissions if instructed to by the formula
+  # Clean a single folder (non-recursively)
   def clean_dir d
     d.find do |path|
       path.extend(ObserverPathnameExtension)
@@ -93,7 +76,19 @@ class Cleaner
       elsif path.extname == '.la'
         path.unlink
       else
-        clean_file_permissions(path)
+        # Set permissions for executables and non-executables
+        perms = if path.mach_o_executable? || path.text_executable?
+                  0555
+                else
+                  0444
+                end
+        if ARGV.debug?
+          old_perms = path.stat.mode & 0777
+          if perms != old_perms
+            puts "Fixing #{path} permissions from #{old_perms.to_s(8)} to #{perms.to_s(8)}"
+          end
+        end
+        path.chmod perms
       end
     end
   end

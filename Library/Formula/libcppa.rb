@@ -2,8 +2,15 @@ require 'formula'
 
 class Libcppa < Formula
   homepage 'http://libcppa.blogspot.it'
-  url 'https://github.com/Neverlord/libcppa/archive/V0.8.1.tar.gz'
-  sha1 'd4f096aae2bb72e254ad6df45edf3fb62370acaa'
+  url 'http://github.com/Neverlord/libcppa/archive/V0.9.3.tar.gz'
+  sha1 'b9fce68bc4e5688cc75cfc9add5ec1feb105ab7d'
+
+  bottle do
+    cellar :any
+    sha1 "4527da9b1c0e6a60c13cf7a35540fceaa2caa3b2" => :mavericks
+    sha1 "cee8d1916bcd7eebfc151a6712e1efd58d54c4c1" => :mountain_lion
+    sha1 "d30dbe35371a62ddd9f34ada0210a3770d05191d" => :lion
+  end
 
   depends_on 'cmake' => :build
 
@@ -13,6 +20,8 @@ class Libcppa < Formula
   option 'with-examples', 'Build examples'
 
   def install
+    ENV.cxx11
+
     args = %W[
       --prefix=#{prefix}
       --build-static

@@ -1,6 +1,6 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
+#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
 
-$:.unshift "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8"
+$:.unshift Dir["/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/lib/ruby/{1.8,2.0.0}"].first
 require 'pathname'
 require 'set'
 require 'stringio'
@@ -26,14 +26,14 @@ end
 LOGGER = Logger.new
 
 class Cmd
-  attr_reader :brewfix, :brewtmp, :sdkroot
+  attr_reader :brewfix, :brewtmp, :sysroot
 
   def initialize path, args
     @arg0 = File.basename(path).freeze
     @args = args.freeze
     @brewfix = ENV['HOMEBREW_PREFIX']
     @brewtmp = ENV['HOMEBREW_TEMP']
-    @sdkroot = ENV['HOMEBREW_SDKROOT']
+    @sysroot = ENV['HOMEBREW_SYSROOT']
   end
 
   def mode
@@ -89,11 +89,11 @@ class Cmd
       args = refurbished_args
     end
 
-    if sdkroot
+    if sysroot
       if tool == "ld"
-        args << "-syslibroot" << sdkroot
+        args << "-syslibroot" << sysroot
       else
-        args << "--sysroot=#{sdkroot}"
+        args << "--sysroot=#{sysroot}"
       end
     end
 
@@ -118,54 +118,80 @@ class Cmd
   end
 
   def refurbished_args
-    lset = Set.new(libpath + syslibpath)
-    iset = Set.new(cpath.flatten)
+    @lset = Set.new(library_paths + system_library_paths)
+    @iset = Set.new(isystem_paths + include_paths)
 
     args = []
-    whittler = @args.each
+    enum = @args.each
+
     loop do
-      case arg = whittler.next
-      when '-arch', /^-Xarch_/
-        whittler.next
-      when '-m32'
-        # If ENV.m32 was set, we allow the "-m32" flag, but we don't add anything
-        args << '-m32' if cccfg? '3'
-      when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
-           /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/, '-m64',
-           /^-O[0-9zs]?$/, '-fast', '-no-cpp-precomp',
-           '-pedantic', '-pedantic-errors'
-      when '-fopenmp', '-lgomp', '-mno-fused-madd', '-fforce-addr', '-fno-defer-pop',
-           '-mno-dynamic-no-pic', '-fearly-inlining', '-finline-functions-called-once',
-           /^-finline-limit/, /^-f(?:no-)?check-new/, '-fno-delete-null-pointer-checks',
-           '-fcaller-saves', '-fthread-jumps', '-fno-reorder-blocks'
-        # clang doesn't support these flags
-        args << arg if not tool =~ /^clang/
-      when /^-W.*/
-        args << arg if arg =~ /^-W[alp],/ or arg =~ /^-Wno-/
-      when '-macosx_version_min', '-dylib_install_name'
-        args << "-Wl,#{arg},#{whittler.next}"
-      when '-multiply_definedsuppress'
-        args << "-Wl,-multiply_defined,suppress"
-      when '-undefineddynamic_lookup'
-        args << "-Wl,-undefined,dynamic_lookup"
-      when /^-isysroot/
-        # We set the sysroot
-        whittler.next
-      when '-dylib'
-        args << "-Wl,#{arg}"
-      when /^-I(.+)?/
-        # Support both "-Ifoo" (one argument) and "-I foo" (two arguments)
-        val  = chuzzle($1) || whittler.next
-        path = canonical_path(val)
-        args << "-I#{val}" if keep?(path) and iset.add?(path)
-      when /^-L(.+)?/
-        val  = chuzzle($1) || whittler.next
-        path = canonical_path(val)
-        args << "-L#{val}" if keep?(path) and lset.add?(path)
+      case arg = enum.next
+      when "-arch"
+        if cccfg?("K")
+          args << arg << enum.next
+        else
+          enum.next
+        end
+      when "-m32", "-m64"
+        args << arg if cccfg?("K")
+      when /^-Xarch_/
+        refurbished = refurbish_arg(enum.next, enum)
+        unless refurbished.empty?
+          args << arg
+          args += refurbished
+        end
       else
-        args << arg
+        args += refurbish_arg(arg, enum)
       end
     end
+
+    args
+  end
+
+  def refurbish_arg(arg, enum)
+    args = []
+
+    case arg
+    when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
+      /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/,
+      /^-O[0-9zs]?$/, '-fast', '-no-cpp-precomp',
+      '-pedantic', '-pedantic-errors'
+    when '-fopenmp', '-lgomp', '-mno-fused-madd', '-fforce-addr', '-fno-defer-pop',
+      '-mno-dynamic-no-pic', '-fearly-inlining', '-finline-functions-called-once',
+      /^-finline-limit/, /^-f(?:no-)?check-new/, '-fno-delete-null-pointer-checks',
+      '-fcaller-saves', '-fthread-jumps', '-fno-reorder-blocks', '-fcse-skip-blocks',
+      '-frerun-cse-after-loop', '-frerun-loop-opt', '-fcse-follow-jumps',
+      '-fno-regmove', '-fno-for-scope', '-fno-tree-pre', '-fno-tree-dominator-opts'
+      # clang doesn't support these flags
+      args << arg if not tool =~ /^clang/
+    when /^-W[alp],/, /^-Wno-/
+      args << arg
+    when /^-W.*/
+      # prune warnings
+    when '-macosx_version_min', '-dylib_install_name'
+      args << "-Wl,#{arg},#{enum.next}"
+    when '-multiply_definedsuppress'
+      args << "-Wl,-multiply_defined,suppress"
+    when '-undefineddynamic_lookup'
+      args << "-Wl,-undefined,dynamic_lookup"
+    when /^-isysroot/, /^--sysroot/
+      # We set the sysroot
+      enum.next
+    when '-dylib'
+      args << "-Wl,#{arg}"
+    when /^-I(.+)?/
+      # Support both "-Ifoo" (one argument) and "-I foo" (two arguments)
+      val  = chuzzle($1) || enum.next
+      path = canonical_path(val)
+      args << "-I#{val}" if keep?(path) && @iset.add?(path)
+    when /^-L(.+)?/
+      val  = chuzzle($1) || enum.next
+      path = canonical_path(val)
+      args << "-L#{val}" if keep?(path) && @lset.add?(path)
+    else
+      args << arg
+    end
+
     args
   end
 
@@ -210,62 +236,38 @@ class Cmd
   end
 
   def archflags
-    args = []
-    args.concat ENV['HOMEBREW_ARCHFLAGS'].split(' ') if cccfg? 'u'
-    args
+    ENV["HOMEBREW_ARCHFLAGS"].split(" ")
   end
 
-  def syspath
-    if sdkroot
-      %W{#{sdkroot}/usr #{sdkroot}/usr/local}
-    else
-      %W{/usr /usr/local}
-    end
-  end
-
-  def syslibpath
-    # We reject brew's lib as we explicitly add this as a -L flag, thus it
-    # is given higher priority by cc, so it surpasses the system libpath.
-    # NOTE this only counts if Homebrew is installed at /usr/local
-    syspath.reject { |d| d == brewfix }.map! { |d| File.join(d, "lib") }
-  end
-
-  # Paths added as "-isystem<path>" and "-I<path>" flags
-  def cpath
-    cpath  = path_split("CMAKE_PREFIX_PATH").map! { |d| File.join(d, "include") }
-    cpath += path_split("CMAKE_INCLUDE_PATH")
-    opt = cpath.grep(%r{^#{Regexp.escape(brewfix)}/opt}o)
-    sys = cpath - opt
-    [sys, opt]
-  end
-
-  # Paths added as "-L<path>" flags
-  def libpath
-    libpath  = path_split("CMAKE_PREFIX_PATH").map! { |d| File.join(d, "lib") }
-    libpath += path_split("CMAKE_LIBRARY_PATH")
-    libpath -= syslibpath
-    libpath
+  def cppflags
+    path_flags("-isystem", isystem_paths) + path_flags("-I", include_paths)
   end
 
   def ldflags
-    args = path_flags("-L", libpath)
+    args = path_flags("-L", library_paths)
     case mode
-    when :ld   then args << '-headerpad_max_install_names'
-    when :ccld then args << '-Wl,-headerpad_max_install_names'
-    when :cxxld
-      args << '-Wl,-headerpad_max_install_names'
-      args << '-stdlib=libc++' if cccfg? 'g'
-      args << '-stdlib=libstdc++' if cccfg? 'h'
+    when :ld
+      args << "-headerpad_max_install_names"
+    when :ccld, :cxxld
+      args << "-Wl,-headerpad_max_install_names"
     end
     args
   end
 
-  # Keg-only opt paths get the "-I" treatment since it has higher priority than
-  # "-isystem", and we want them to be searched before system directories as
-  # well as any directories added by the build system.
-  def cppflags
-    sys, opt = cpath
-    path_flags("-isystem", sys) + path_flags("-I", opt)
+  def isystem_paths
+    path_split("HOMEBREW_ISYSTEM_PATHS")
+  end
+
+  def include_paths
+    path_split("HOMEBREW_INCLUDE_PATHS")
+  end
+
+  def library_paths
+    path_split("HOMEBREW_LIBRARY_PATHS")
+  end
+
+  def system_library_paths
+    %W{#{sysroot}/usr/lib /usr/local/lib}
   end
 
   def make_fuss args

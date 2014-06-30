@@ -1,4 +1,6 @@
 # The Formulary is responsible for creating instances of Formula.
+# It is not meant to be used directy from formulae.
+
 class Formulary
 
   def self.unload_formula formula_name
@@ -44,8 +46,8 @@ class Formulary
     end
 
     # Gets the formula instance.
-    def get_formula
-      klass.new(name, path)
+    def get_formula(spec)
+      klass.new(name, path, spec)
     end
 
     # Return the Class for this formula, `require`-ing it if
@@ -58,7 +60,7 @@ class Formulary
       end
 
       unless have_klass
-        puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
+        STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
         begin
           require path
         rescue NoMethodError
@@ -96,7 +98,7 @@ class Formulary
       super name, Formula.path(name)
     end
 
-    def get_formula
+    def get_formula(spec)
       formula = super
       formula.local_bottle_path = @bottle_filename
       formula
@@ -139,14 +141,20 @@ class Formulary
 
     # Downloads the formula's .rb file
     def fetch
-      unless Formulary.formula_class_defined? class_name
+      begin
+        have_klass = Formulary.formula_class_defined? class_name
+      rescue NameError
+        raise FormulaUnavailableError.new(name)
+      end
+
+      unless have_klass
         HOMEBREW_CACHE_FORMULA.mkpath
         FileUtils.rm path.to_s, :force => true
         curl url, '-o', path.to_s
       end
     end
 
-    def get_formula
+    def get_formula(spec)
       fetch
       super
     end
@@ -159,13 +167,13 @@ class Formulary
     def initialize tapped_name
       @tapped_name = tapped_name
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
-      tap = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}-#{repo}")
+      tap = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}/homebrew-#{repo}")
       path = tap.join("#{name}.rb")
 
       if tap.directory?
-        tap.find_formula do |child|
-          if child.basename(".rb").to_s == name
-            path = tap.join(child)
+        tap.find_formula do |file|
+          if file.basename(".rb").to_s == name
+            path = file
           end
         end
       end
@@ -173,7 +181,7 @@ class Formulary
       super name, path
     end
 
-    def get_formula
+    def get_formula(spec)
       super
     rescue FormulaUnavailableError
       raise TapFormulaUnavailableError.new(tapped_name)
@@ -186,8 +194,8 @@ class Formulary
   # * a formula pathname
   # * a formula URL
   # * a local bottle reference
-  def self.factory ref
-    loader_for(ref).get_formula
+  def self.factory(ref, spec=:stable)
+    loader_for(ref).get_formula(spec)
   end
 
   def self.canonical_name(ref)

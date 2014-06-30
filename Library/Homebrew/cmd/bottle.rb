@@ -2,13 +2,16 @@ require 'formula'
 require 'bottles'
 require 'tab'
 require 'keg'
-require 'cmd/versions'
+require 'formula_versions'
 require 'utils/inreplace'
 require 'erb'
 require 'extend/pathname'
 
 BOTTLE_ERB = <<-EOS
   bottle do
+    <% if root_url != BottleSpecification::DEFAULT_ROOT_URL %>
+    root_url "<%= root_url %>"
+    <% end %>
     <% if prefix.to_s != "/usr/local" %>
     prefix "<%= prefix %>"
     <% end %>
@@ -29,14 +32,10 @@ BOTTLE_ERB = <<-EOS
   end
 EOS
 
-module Homebrew extend self
-  class << self
-    include Utils::Inreplace
-  end
-
+module Homebrew
   def keg_contains string, keg
     if not ARGV.homebrew_developer?
-      return quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg
+      return quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg.to_s
     end
 
     result = false
@@ -64,7 +63,7 @@ module Homebrew extend self
       end
 
       # Use strings to search through the file for each string
-      IO.popen("strings -t x - '#{file}'") do |io|
+      IO.popen("strings -t x - '#{file}'", "rb") do |io|
         until io.eof?
           str = io.readline.chomp
 
@@ -120,7 +119,9 @@ module Homebrew extend self
     if ARGV.include? '--no-revision'
       bottle_revision = 0
     else
-      max = f.bottle_version_map('origin/master')[f.pkg_version].max
+      ohai "Determining #{f.name} bottle revision..."
+      versions = FormulaVersions.new(f)
+      max = versions.bottle_version_map("origin/master")[f.pkg_version].max
       bottle_revision = max ? max + 1 : 0
     end
 
@@ -181,7 +182,10 @@ module Homebrew extend self
       end
     end
 
+    root_url = ARGV.value("root_url")
+
     bottle = BottleSpecification.new
+    bottle.root_url(root_url) if root_url
     bottle.prefix HOMEBREW_PREFIX
     bottle.cellar relocatable ? :any : HOMEBREW_CELLAR
     bottle.revision bottle_revision
@@ -225,24 +229,29 @@ module Homebrew extend self
       puts output
 
       if ARGV.include? '--write'
-        f = Formula.factory formula_name
+        f = Formulary.factory(formula_name)
         update_or_add = nil
 
-        inreplace f.path do |s|
+        Utils::Inreplace.inreplace(f.path) do |s|
           if s.include? 'bottle do'
             update_or_add = 'update'
             string = s.sub!(/  bottle do.+?end\n/m, output)
             odie 'Bottle block update failed!' unless string
           else
             update_or_add = 'add'
-            string = s.sub!(/(  (url|sha1|sha256|head|version) ['"][\S ]+['"]\n+)+/m, '\0' + output + "\n")
+            string = s.sub!(/(  (url|sha1|sha256|head|version|mirror) ['"][\S ]+['"]\n+)+/m, '\0' + output + "\n")
             odie 'Bottle block addition failed!' unless string
           end
         end
 
-        safe_system 'git', 'commit', '--no-edit', '--verbose',
-          "--message=#{f.name}: #{update_or_add} #{f.version} bottle.",
-          '--', f.path
+        version = f.version.to_s
+        version += "_#{f.revision}" if f.revision.to_i > 0
+
+        HOMEBREW_REPOSITORY.cd do
+          safe_system "git", "commit", "--no-edit", "--verbose",
+            "--message=#{f.name}: #{update_or_add} #{version} bottle.",
+            "--", f.path
+        end
       end
     end
     exit 0

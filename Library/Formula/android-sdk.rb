@@ -2,32 +2,48 @@ require 'formula'
 
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r22.6.2-macosx.zip'
-  version '22.6.2'
-  sha1 '6abb9cf56529a40ac29fa70a95f5741fa1ae0f86'
+  url 'http://dl.google.com/android/android-sdk_r23-macosx.zip'
+  version '23'
+  sha1 '7119841e5fcadd8ef2b75c1fe419c4cbc9a97336'
 
   conflicts_with 'android-platform-tools',
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
 
   resource 'completion' do
-    url 'https://raw.github.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash'
+    url 'https://raw.githubusercontent.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash'
     sha1 '6dfead9b1350dbe1c16a1c80ed70beedebfa39eb'
   end
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "19.0.3"
+    "20.0.0"
   end
 
   def install
     prefix.install 'tools', 'SDK Readme.txt' => 'README'
 
-    %w[android apkbuilder ddms dmtracedump draw9patch etc1tool emulator
-    emulator-arm emulator-x86 hierarchyviewer hprof-conv lint mksdcard
-    monitor monkeyrunner traceview zipalign].each do |tool|
+    %w[android ddms draw9patch emulator
+    emulator-arm emulator-x86 hierarchyviewer lint mksdcard
+    monitor monkeyrunner traceview].each do |tool|
       (bin/tool).write <<-EOS.undent
         #!/bin/bash
         TOOL="#{prefix}/tools/#{tool}"
+        exec "$TOOL" "$@"
+      EOS
+    end
+
+    %w[zipalign].each do |tool|
+      (bin/tool).write <<-EOS.undent
+        #!/bin/bash
+        TOOL="#{prefix}/build-tools/#{build_tools_version}/#{tool}"
+        exec "$TOOL" "$@"
+      EOS
+    end
+
+    %w[dmtracedump etc1tool hprof-conv].each do |tool|
+      (bin/tool).write <<-EOS.undent
+        #!/bin/bash
+        TOOL="#{prefix}/platform-tools/#{tool}"
         exec "$TOOL" "$@"
       EOS
     end

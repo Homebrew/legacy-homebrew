@@ -14,7 +14,7 @@ require 'pkg_version'
 class Formula
   include FileUtils
   include Utils::Inreplace
-  extend BuildEnvironmentDSL
+  extend Enumerable
 
   attr_reader :name, :path, :homepage, :build
   attr_reader :stable, :devel, :head, :active_spec
@@ -26,8 +26,7 @@ class Formula
 
   attr_accessor :local_bottle_path
 
-  # Homebrew determines the name
-  def initialize name='__UNKNOWN__', path=self.class.path(name)
+  def initialize(name, path, spec)
     @name = name
     @path = path
     @homepage = self.class.homepage
@@ -37,7 +36,7 @@ class Formula
     set_spec :devel
     set_spec :head
 
-    @active_spec = determine_active_spec
+    @active_spec = determine_active_spec(spec)
     validate_attributes :url, :name, :version
     @build = determine_build_options
     @pkg_version = PkgVersion.new(version, revision)
@@ -53,16 +52,9 @@ class Formula
     end
   end
 
-  def determine_active_spec
-    case
-    when head && ARGV.build_head?   then head    # --HEAD
-    when devel && ARGV.build_devel? then devel   # --devel
-    when stable                     then stable
-    when devel                      then devel
-    when head                       then head    # head-only
-    else
-      raise FormulaSpecificationError, "formulae require at least a URL"
-    end
+  def determine_active_spec(requested)
+    spec = send(requested) || stable || devel || head
+    spec or raise FormulaSpecificationError, "formulae require at least a URL"
   end
 
   def validate_attributes(*attrs)
@@ -300,7 +292,9 @@ class Formula
   end
 
   def == other
-    instance_of?(other.class) && name == other.name
+    instance_of?(other.class) &&
+      name == other.name &&
+      active_spec == other.active_spec
   end
   alias_method :eql?, :==
 
@@ -344,10 +338,6 @@ class Formula
   alias_method :python2, :python
   alias_method :python3, :python
 
-  def self.class_s name
-    Formulary.class_s(name)
-  end
-
   # an array of all Formula names
   def self.names
     Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
@@ -365,10 +355,8 @@ class Formula
       end
     end
   end
-  class << self
-    include Enumerable
-  end
 
+  # An array of all installed formulae
   def self.installed
     return [] unless HOMEBREW_CELLAR.directory?
 
@@ -384,17 +372,8 @@ class Formula
     Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
-  def self.canonical_name name
-    Formulary.canonical_name(name)
-  end
-
   def self.[](name)
     Formulary.factory(name)
-  end
-
-  # deprecated
-  def self.factory name
-    Formulary.factory name
   end
 
   def tap?
@@ -437,12 +416,6 @@ class Formula
   # The full set of Requirements for this formula's dependency tree.
   def recursive_requirements(&block)
     Requirement.expand(self, &block)
-  end
-
-  # Flag for marking whether this formula needs C++ standard library
-  # compatibility check
-  def cxxstdlib
-    @cxxstdlib ||= Set.new
   end
 
   def to_hash
@@ -497,8 +470,6 @@ class Formula
   end
 
   def test
-    require 'test/unit/assertions'
-    extend(Test::Unit::Assertions)
     # Adding the used options allows us to use `build.with?` inside of tests
     tab = Tab.for_name(name)
     tab.used_options.each { |opt| build.args << opt unless build.has_opposite_of? opt }
@@ -576,9 +547,9 @@ class Formula
         f.flush
         Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
         f.puts
-        require 'cmd/--config'
+        require 'cmd/config'
         Homebrew.write_build_config(f)
-        raise BuildError.new(self, cmd, args, $?)
+        raise BuildError.new(self, cmd, args)
       end
     end
   ensure
@@ -607,12 +578,6 @@ class Formula
     active_spec.patches.each(&:apply)
   end
 
-  # Explicitly request changing C++ standard library compatibility check
-  # settings. Use with caution!
-  def cxxstdlib_check check_type
-    cxxstdlib << check_type
-  end
-
   def self.method_added method
     case method
     when :brew
@@ -624,6 +589,7 @@ class Formula
 
   # The methods below define the formula DSL.
   class << self
+    include BuildEnvironmentDSL
 
     attr_reader :keg_only_reason, :cc_failures
     attr_rw :homepage, :plist_startup, :plist_manual, :revision
@@ -644,12 +610,8 @@ class Formula
       stable.mirror(val)
     end
 
-    Checksum::TYPES.each do |cksum|
-      class_eval <<-EOS, __FILE__, __LINE__ + 1
-        def #{cksum}(val)
-          stable.#{cksum}(val)
-        end
-      EOS
+    Checksum::TYPES.each do |type|
+      define_method(type) { |val| stable.send(type, val) }
     end
 
     def bottle *, &block
@@ -728,6 +690,18 @@ class Formula
 
     def keg_only reason, explanation=nil
       @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
+    end
+
+    # Flag for marking whether this formula needs C++ standard library
+    # compatibility check
+    def cxxstdlib
+      @cxxstdlib ||= Set.new
+    end
+
+    # Explicitly request changing C++ standard library compatibility check
+    # settings. Use with caution!
+    def cxxstdlib_check check_type
+      cxxstdlib << check_type
     end
 
     # For Apple compilers, this should be in the format:

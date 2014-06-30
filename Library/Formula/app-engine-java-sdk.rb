@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class AppEngineJavaSdk < Formula
-  homepage 'https://developers.google.com/appengine/docs/java/gettingstarted/introduction'
-  url 'https://commondatastorage.googleapis.com/appengine-sdks/featured/appengine-java-sdk-1.9.3.zip'
-  sha1 '4f62f99c7be21637903b312ba4431c6222bfca16'
+  homepage "https://developers.google.com/appengine/docs/java/gettingstarted/introduction"
+  url "https://storage.googleapis.com/appengine-sdks/featured/appengine-java-sdk-1.9.6.zip"
+  sha1 "70bb53e9579500a768ed44c7f95b47f86578118e"
 
   def install
-    rm Dir['bin/*.cmd']
-    libexec.install Dir['*']
+    rm Dir["bin/*.cmd"]
+    libexec.install Dir["*"]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 end

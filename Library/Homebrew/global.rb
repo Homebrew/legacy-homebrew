@@ -68,8 +68,14 @@ HOMEBREW_LOGS = Pathname.new(ENV['HOMEBREW_LOGS'] || '~/Library/Logs/Homebrew/')
 
 HOMEBREW_TEMP = Pathname.new(ENV.fetch('HOMEBREW_TEMP', '/tmp'))
 
-RUBY_BIN = Pathname.new(RbConfig::CONFIG['bindir'])
-RUBY_PATH = RUBY_BIN + RbConfig::CONFIG['ruby_install_name'] + RbConfig::CONFIG['EXEEXT']
+if RbConfig.respond_to?(:ruby)
+  RUBY_PATH = Pathname.new(RbConfig.ruby)
+else
+  RUBY_PATH = Pathname.new(RbConfig::CONFIG["bindir"]).join(
+    RbConfig::CONFIG["ruby_install_name"] + RbConfig::CONFIG["EXEEXT"]
+  )
+end
+RUBY_BIN = RUBY_PATH.dirname
 
 if RUBY_PLATFORM =~ /darwin/
   MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
@@ -85,20 +91,16 @@ HOMEBREW_USER_AGENT = "Homebrew #{HOMEBREW_VERSION} (Ruby #{RUBY_VERSION}-#{RUBY
 
 HOMEBREW_CURL_ARGS = '-f#LA'
 
-HOMEBREW_TAP_FORMULA_REGEX = %r{^(\w+)/(\w+)/([^/]+)$}
-HOMEBREW_TAP_DIR_REGEX = %r{#{HOMEBREW_LIBRARY}/Taps/(\w+)-(\w+)}
-HOMEBREW_TAP_PATH_REGEX = Regexp.new(HOMEBREW_TAP_DIR_REGEX.source \
-                                     + %r{/(.*)}.source)
+require 'tap_constants'
 
-module Homebrew extend self
+module Homebrew
   include FileUtils
+  extend self
 
   attr_accessor :failed
   alias_method :failed?, :failed
 end
 
-require 'metafiles'
-FORMULA_META_FILES = Metafiles.new
 ISSUES_URL = "https://github.com/Homebrew/homebrew/wiki/troubleshooting"
 HOMEBREW_PULL_OR_COMMIT_URL_REGEX = 'https:\/\/github.com\/(\w+)\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
 

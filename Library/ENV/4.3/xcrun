@@ -1,45 +1,57 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
+#!/bin/sh
+# Historically, xcrun has had various bugs, and in some cases it didn't
+# work at all (e.g. CLT-only in the Xcode 4.3 era). This script emulates
+# it and attempts to avoid these issues.
 
-# This wrapper because 4.3 xcrun doesn't work with CLT-only configurations
-# But many build-systems expect it to work. This fixes that.
-# NOTE only works if the build-tool calls xcrun without a path prefixed!
+# Some build tools set DEVELOPER_DIR, so discard it
+unset DEVELOPER_DIR
 
-# Some build tools are stupid and still set DEVELOPER_DIR to old /Developer
-ENV.delete "DEVELOPER_DIR"
+if [ $# -eq 0 ]; then
+  exec /usr/bin/xcrun "$@"
+fi
 
-if ARGV.empty? || ARGV[0][0..0] == "-"
-  exec "/usr/bin/xcrun", *ARGV
-end
+case "$1" in
+  -*) exec /usr/bin/xcrun "$@" ;;
+esac
 
-if File.exist?("/usr/bin/#{ARGV.first}")
-  sdkroot = ENV['HOMEBREW_SDKROOT']
-  exec "/usr/bin/#{ARGV.shift}", *ARGV unless sdkroot and File.directory? sdkroot
-end
+arg0=$1
+shift
 
-$:.unshift "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8"
-require "pathname"
+exe="/usr/bin/${arg0}"
+if [ -x "$exe" ]; then
+  if [ -n "$HOMEBREW_PREFER_CLT_PROXIES" ]; then
+    exec "$exe" "$@"
+  elif [ -z "$HOMEBREW_SDKROOT" -o ! -d "$HOMEBREW_SDKROOT" ]; then
+    exec "$exe" "$@"
+  fi
+fi
 
-def canonical_dirname path
-  Pathname.new(path).dirname.realpath.to_s
-end
+SUPERBIN=$(cd "${0%/*}" && pwd -P)
 
-SUPERBIN = canonical_dirname(__FILE__)
+exe=$(/usr/bin/xcrun --find "$arg0" 2>/dev/null)
+if [ -x "$exe" -a "${exe%/*}" != "$SUPERBIN" ]; then
+  exec "$exe" "$@"
+fi
 
-def try path
-  exec path, *ARGV if File.executable?(path) && canonical_dirname(path) != SUPERBIN
-end
+old_IFS=$IFS
+IFS=:
+for path in $PATH; do
+  if [ "$path" = "$SUPERBIN" ]; then
+    continue
+  fi
 
-arg0 = ARGV.shift
-try `/usr/bin/xcrun --find #{arg0} 2>/dev/null`.chomp
+  exe="${path}/${arg0}"
+  if [ -x "$exe" ]; then
+    exec "$exe" "$@"
+  fi
+done
+IFS=$old_IFS
 
-# xcrun won't always be able to find Homebrew's apple-gcc42,
-# even when it's in the PATH
-ENV["PATH"].split(File::PATH_SEPARATOR).each { |p| try File.join(p, arg0) }
-
-abort <<-EOS
-Failed to execute: #{arg0} #{ARGV.join(" ")}
+echo >&2 "
+Failed to execute $arg0 $@
 
 Xcode and/or the CLT appear to be misconfigured. Try one or both of the following:
   xcodebuild -license
   sudo xcode-select -switch /path/to/Xcode.app
-EOS
+"
+exit 1

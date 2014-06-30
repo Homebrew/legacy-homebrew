@@ -1,6 +1,6 @@
 require 'cmd/install'
 
-module Homebrew extend self
+module Homebrew
   def reinstall
     ARGV.formulae.each { |f| reinstall_formula(f) }
   end

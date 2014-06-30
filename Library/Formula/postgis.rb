@@ -2,8 +2,8 @@ require 'formula'
 
 class Postgis < Formula
   homepage 'http://postgis.net'
-  url 'http://download.osgeo.org/postgis/source/postgis-2.1.2.tar.gz'
-  sha1 '4ab1e344aec70c0a475dadd48a3e8377d22d27ad'
+  url 'http://download.osgeo.org/postgis/source/postgis-2.1.3.tar.gz'
+  sha256 'c17812aa4bb86ed561dfc65cb42ab45176b94e0620de183a4bbd773d6d876ec1'
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
@@ -24,6 +24,9 @@ class Postgis < Formula
   # For GeoJSON and raster handling
   depends_on 'json-c'
   depends_on 'gdal' => :recommended
+
+  # For advanced 2D/3D functions
+  depends_on 'sfcgal' => :recommended
 
   def install
     # Follow the PostgreSQL linked keg back to the active Postgres installation
@@ -101,7 +104,7 @@ class Postgis < Formula
       To create a spatially-enabled database, see the documentation:
         http://postgis.net/docs/manual-2.1/postgis_installation.html#create_new_db_extensions
       If you are currently using PostGIS 2.0+, you can go the soft upgrade path:
-        ALTER EXTENSION postgis UPDATE TO "2.1.2";
+        ALTER EXTENSION postgis UPDATE TO "2.1.3";
       Users of 1.5 and below will need to go the hard-upgrade path, see here:
         http://postgis.net/docs/manual-2.1/postgis_installation.html#upgrading
 

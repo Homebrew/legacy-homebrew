@@ -33,6 +33,7 @@ _1st_arguments=(
   'cat:display formula file for a formula'
   'cleanup:uninstall unused and old versions of packages'
   'commands:show a list of commands'
+  'config:show homebrew and system configuration'
   'create:create a new formula'
   'deps:list dependencies and dependants of a formula'
   'doctor:audits your installation for common issues'
@@ -77,7 +78,6 @@ local -a formulae installed_formulae installed_taps outdated_formulae running_se
 _arguments \
   '(-v)-v[verbose]' \
   '(--cellar)--cellar[brew cellar]' \
-  '(--config)--config[brew configuration]' \
   '(--env)--env[brew environment]' \
   '(--repository)--repository[brew repository]' \
   '(--version)--version[version information]' \
@@ -124,7 +124,7 @@ case "$words[1]" in
     fi ;;
   untap)
     _brew_installed_taps
-    _wanted installed_taps expl 'installed taps' compadd -a installed_taps ;;
+    _wanted installed_taps expl 'installed taps' compadd -a installed_taps ;;
   upgrade)
     _brew_outdated_formulae
     _wanted outdated_formulae expl 'outdated formulae' compadd -a outdated_formulae ;;

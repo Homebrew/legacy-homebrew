@@ -14,6 +14,7 @@ class Ode < Formula
   end
 
   option 'enable-double-precision', 'Compile ODE with double precision'
+  option 'enable-libccd', 'enable all libccd colliders (except box-cylinder)'
 
   depends_on 'pkg-config' => :build
 
@@ -21,6 +22,7 @@ class Ode < Formula
     args = ["--prefix=#{prefix}",
             "--disable-demos"]
     args << "--enable-double-precision" if build.include? 'enable-double-precision'
+    args << "--enable-libccd" if build.include? "enable-libccd"
 
     if build.head?
       ENV['LIBTOOLIZE'] = 'glibtoolize'

@@ -10,7 +10,7 @@ class Portaudio < Formula
     # Fix PyAudio compilation on Lion
     patch :p0 do
       url "https://trac.macports.org/export/94150/trunk/dports/audio/portaudio/files/patch-include__pa_mac_core.h.diff"
-      mirror "https://raw.github.com/sakuro/macports/9ee0b7dd6045a3967348638a228bc1a658bcaa3f/audio/portaudio/files/patch-include__pa_mac_core.h.diff"
+      mirror "https://raw.githubusercontent.com/sakuro/macports/9ee0b7dd6045a3967348638a228bc1a658bcaa3f/audio/portaudio/files/patch-include__pa_mac_core.h.diff"
       sha1 "28188dfb6a5438a050fccb70331751a40e33447d"
     end if MacOS.version >= :lion
   end

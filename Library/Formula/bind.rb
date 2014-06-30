@@ -2,8 +2,15 @@ require 'formula'
 
 class Bind < Formula
   homepage 'http://www.isc.org/software/bind/'
-  url 'http://ftp.isc.org/isc/bind9/9.9.5/bind-9.9.5.tar.gz'
-  sha1 'f3fe8000628ec57f332aec1ad9587b767208a38f'
+  url 'http://ftp.isc.org/isc/bind9/9.10.0-P2/bind-9.10.0-P2.tar.gz'
+  sha1 'c57b5825e36933119e9fd6f43e3f52262e7ff4ed'
+  version '9.10.0-P2'
+
+  bottle do
+    sha1 "c8447f8f4a5e1fb7026803494caf156abe7c7f86" => :mavericks
+    sha1 "3abe0648bcf3e565d4b2ca0b0d553a676497575e" => :mountain_lion
+    sha1 "4935e48f4d67c069aba231f8f77f3110fa89f86f" => :lion
+  end
 
   depends_on "openssl"
 

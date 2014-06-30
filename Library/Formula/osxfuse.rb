@@ -13,7 +13,7 @@ class Osxfuse < Formula
   end
 
   depends_on :macos => :snow_leopard
-  depends_on :xcode
+  depends_on :xcode => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
@@ -41,7 +41,7 @@ class Osxfuse < Formula
 
     The new osxfuse file system bundle needs to be installed by the root user:
 
-      sudo /bin/cp -RfX #{prefix}/Library/Filesystems/osxfusefs.fs /Library/Filesystems
+      sudo /bin/cp -RfX #{opt_prefix}/Library/Filesystems/osxfusefs.fs /Library/Filesystems
       sudo chmod +s /Library/Filesystems/osxfusefs.fs/Support/load_osxfusefs
     EOS
   end

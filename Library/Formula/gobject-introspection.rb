@@ -23,7 +23,7 @@ class GobjectIntrospection < Formula
 
   # Allow tests to execute on OS X (.so => .dylib)
   patch do
-    url "https://gist.github.com/krrk/6958869/raw/de8d83009d58eefa680a590f5839e61a6e76ff76/gobject-introspection-tests.patch"
+    url "https://gist.githubusercontent.com/krrk/6958869/raw/de8d83009d58eefa680a590f5839e61a6e76ff76/gobject-introspection-tests.patch"
     sha1 "1f57849db76cd2ca26ddb35dc36c373606414dfc"
   end if build.with? "tests"
 

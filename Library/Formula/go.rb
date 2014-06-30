@@ -3,15 +3,14 @@ require 'formula'
 class Go < Formula
   homepage 'http://golang.org'
   head 'https://go.googlecode.com/hg/'
-  url 'https://go.googlecode.com/files/go1.2.1.src.tar.gz'
-  version '1.2.1'
-  sha1 '6a4b9991eddd8039438438d6aa25126ab7e07f2f'
+  url 'https://storage.googleapis.com/golang/go1.3.src.tar.gz'
+  version '1.3'
+  sha1 '9f9dfcbcb4fa126b2b66c0830dc733215f2f056e'
 
   bottle do
-    revision 1
-    sha1 "c9d4efb3c0597bcea12a5556c85199bc468cdffb" => :mavericks
-    sha1 "bff65b108ec15cb11c7a41afd2f57ce6a6f6029e" => :mountain_lion
-    sha1 "1c09d8aaac7d78b54405c39e5ede0ee9d927860f" => :lion
+    sha1 "86ad80f44b3114aaf53d5e673777f947d1fac3df" => :mavericks
+    sha1 "54e22253d53cee4b13636e5b673d3e83eeac178a" => :mountain_lion
+    sha1 "f3f9ce904f6d2b136db82683b405265b88fcd0c3" => :lion
   end
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
@@ -78,7 +77,7 @@ class Go < Formula
       go get code.google.com/p/go.tools/cmd/vet
 
     You may wish to add the GOROOT-based install location to your PATH:
-      export PATH=$PATH:#{libexec}/bin
+      export PATH=$PATH:#{opt_libexec}/bin
     EOS
   end
 

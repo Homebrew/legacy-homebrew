@@ -1,21 +1,18 @@
-require 'formula'
+require "formula"
 
 class Nss < Formula
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_16_RTM/src/nss-3.16.tar.gz"
-  sha1 "981dc6ef2f1e69ec7e2b277ce27c7005e9837f95"
+  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_16_1_RTM/src/nss-3.16.1.tar.gz"
+  sha1 "450a88dde8c7e4533507ac8340dbf94be28a759b"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "56f38b3a781b03469802e9aea91190c0b970ffb9" => :mavericks
-    sha1 "36aeb7dbab99b900f4472514d5856057e21b91ac" => :mountain_lion
-    sha1 "44b9a3607a12d7d8e00d1f7d8f478d85b39bc3fa" => :lion
+    sha1 "1a8dc803b9a5015237f57a1041aa8492600e85ac" => :mavericks
+    sha1 "f1cd3a30fe6539c0802ed3c562b6312bd79028b7" => :mountain_lion
+    sha1 "d23ea919ca2fd9017b236552337f5d59ce0c2b79" => :lion
   end
 
   depends_on "nspr"
-
-  keg_only "NSS installs a libssl which conflicts with OpenSSL."
 
   def install
     ENV.deparallelize
@@ -39,26 +36,26 @@ class Nss < Formula
     # hierarchy, and Homebrew's Pathname.install moves the symlink into the keg
     # rather than copying the referenced file.
     cd "../dist"
-    bin.mkdir
-    Dir["Darwin*/bin/*"].each do |file|
+    bin.mkpath
+    Dir.glob("Darwin*/bin/*") do |file|
       cp file, bin unless file.include? ".dylib"
     end
 
-    include.mkdir
     include_target = include + "nss"
-    include_target.mkdir
-    ["dbm", "nss"].each do |dir|
-      Dir["public/#{dir}/*"].each do |file|
-        cp file, include_target
+    include_target.mkpath
+    Dir.glob("public/{dbm,nss}/*") { |file| cp file, include_target }
+
+    lib.mkpath
+    libexec.mkpath
+    Dir.glob("Darwin*/lib/*") do |file|
+      if file.include? ".chk"
+        cp file, libexec
+      else
+        cp file, lib
       end
     end
-
-    lib.mkdir
-    libexec.mkdir
-    Dir["Darwin*/lib/*"].each do |file|
-      cp file, lib unless file.include? ".chk"
-      cp file, libexec if file.include? ".chk"
-    end
+    # resolves conflict with openssl, see #28258
+    rm lib/"libssl.a"
 
     (lib+"pkgconfig/nss.pc").write pc_file
   end

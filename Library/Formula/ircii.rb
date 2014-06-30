@@ -2,8 +2,8 @@ require 'formula'
 
 class Ircii < Formula
   homepage 'http://www.eterna.com.au/ircii/'
-  url 'http://ftp.netbsd.org/pub/pkgsrc/distfiles/ircii-20111115.tar.bz2'
-  sha1 '723f89ca6c0ef0085da858076865e6493fbe9788'
+  url 'http://ircii.warped.com/ircii-20131230.tar.bz2'
+  sha1 'b59f8fcd344c09b8820f6efbcc74ba9af7e587ce'
 
   def install
     system "./configure", "--disable-debug",

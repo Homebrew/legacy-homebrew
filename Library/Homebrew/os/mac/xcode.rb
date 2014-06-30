@@ -5,15 +5,6 @@ module OS
 
       V4_BUNDLE_ID = "com.apple.dt.Xcode"
       V3_BUNDLE_ID = "com.apple.Xcode"
-      V4_BUNDLE_PATH = Pathname.new("/Applications/Xcode.app")
-
-      # Locate the "current Xcode folder" via xcode-select. See:
-      # man xcode-select
-      # TODO Should this be moved to OS::Mac? As of 10.9 this is referred to
-      # as the "developer directory", and be either a CLT or Xcode instance.
-      def folder
-        @folder ||= `xcode-select -print-path 2>/dev/null`.strip
-      end
 
       def latest_version
         case MacOS.version
@@ -21,12 +12,12 @@ module OS
         when "10.5"         then "3.1.4"
         when "10.6"         then "3.2.6"
         when "10.7"         then "4.6.3"
-        when "10.8"         then "5.1"
-        when "10.9"         then "5.1"
+        when "10.8"         then "5.1.1"
+        when "10.9"         then "5.1.1"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
           if MacOS.version > "10.9"
-            "5.1"
+            "5.1.1"
           else
             raise "Mac OS X '#{MacOS.version}' is invalid"
           end
@@ -42,23 +33,21 @@ module OS
       end
 
       def prefix
-        @prefix ||= begin
-          path = Pathname.new(folder)
-          if path != CLT::MAVERICKS_PKG_PATH and path.absolute? \
-             and File.executable? "#{path}/usr/bin/make"
-            path
-          elsif File.executable? "#{V4_BUNDLE_PATH}/Contents/Developer/usr/bin/make"
-            # TODO Remove this branch when 10.10 is released
-            # This is a fallback for broken installations of Xcode 4.3+. Correct
-            # installations will be handled by the first branch. Pretending that
-            # broken installations are OK just leads to hard to diagnose problems
-            # later.
-            Pathname.new("#{V4_BUNDLE_PATH}/Contents/Developer")
-          elsif (path = bundle_path)
-            path += "Contents/Developer"
-            path if File.executable? "#{path}/usr/bin/make"
+        @prefix ||=
+          begin
+            dir = MacOS.active_developer_dir
+
+            if dir.empty? || dir == CLT::MAVERICKS_PKG_PATH || !File.directory?(dir)
+              path = bundle_path
+              path.join("Contents", "Developer") if path
+            else
+              Pathname.new(dir)
+            end
           end
-        end
+      end
+
+      def toolchain_path
+        Pathname.new("#{prefix}/Toolchains/XcodeDefault.xctoolchain") if installed? && version >= "4.3"
       end
 
       # Ask Spotlight where Xcode is. If the user didn't install the
@@ -158,7 +147,9 @@ module OS
       STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
       FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
       MAVERICKS_PKG_ID = "com.apple.pkg.CLTools_Executables"
-      MAVERICKS_PKG_PATH = Pathname.new("/Library/Developer/CommandLineTools")
+      # Used for Yosemite and Mavericks CLT since June 2014.
+      MAVERICKS_NEW_PKG_ID = "com.apple.pkg.CLTools_Base"
+      MAVERICKS_PKG_PATH = "/Library/Developer/CommandLineTools"
 
       # Returns true even if outdated tools are installed, e.g.
       # tools from Xcode 4.x on 10.9
@@ -168,15 +159,19 @@ module OS
 
       def latest_version
         if MacOS.version >= "10.8"
-          "503.0.38"
+          "503.0.40"
         else
           "425.0.28"
         end
       end
 
       def outdated?
-        version = `/usr/bin/clang --version`[%r{clang-(\d+\.\d+\.\d+)}, 1]
-        return true unless version
+        if MacOS.version >= :mavericks
+          version = `#{MAVERICKS_PKG_PATH}/usr/bin/clang --version`
+        else
+          version = `/usr/bin/clang --version`
+        end
+        version = version[%r{clang-(\d+\.\d+\.\d+)}, 1] || "0"
         version < latest_version
       end
 
@@ -188,7 +183,7 @@ module OS
       end
 
       def detect_version
-        [MAVERICKS_PKG_ID, STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
+        [MAVERICKS_NEW_PKG_ID, MAVERICKS_PKG_ID, STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
           version = MacOS.pkgutil_info(id)[/version: (.+)$/, 1]
           return version if version
         end

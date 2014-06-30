@@ -3,8 +3,8 @@ require "formula"
 class Colormake < Formula
   homepage "https://github.com/pagekite/Colormake"
   head "https://github.com/pagekite/Colormake.git"
-  url "http://bre.klaki.net/programs/colormake/colormake-0.9.tar.gz"
-  sha1 "6c5ab4be23d60ec79ed4c43cbeb142bfd4a4e626"
+  url "https://github.com/pagekite/Colormake/archive/0.9.20140503.tar.gz"
+  sha1 "2804a550bfee7304015569552ff77a2d9c3eddf8"
 
   def install
     inreplace "colormake", "colormake.pl", "#{libexec}/colormake.pl"

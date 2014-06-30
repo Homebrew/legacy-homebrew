@@ -2,8 +2,8 @@ require "formula"
 
 class Libscrypt < Formula
   homepage "https://lolware.net/libscrypt.html"
-  url "https://github.com/technion/libscrypt/archive/v1.18.tar.gz"
-  sha1 "ff6b0cda00afcb582ca57699322b94166e5f3ab6"
+  url "https://github.com/technion/libscrypt/archive/v1.19.tar.gz"
+  sha1 "fb457aab4561a929dda2872da52b02710c07b7a5"
 
   def install
     system "make", "install-osx", "PREFIX=#{prefix}", "LDFLAGS=", "CFLAGS_EXTRA="

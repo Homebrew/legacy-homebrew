@@ -5,9 +5,6 @@ class BulkExtractor < Formula
   url 'http://digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.4.4.tar.gz'
   sha1 'e95ed6db74d9998842089b53eb4322dd0a730a82'
 
-  depends_on :autoconf
-  depends_on :automake
-
   depends_on 'afflib' => :optional
   depends_on 'exiv2' => :optional
   depends_on 'libewf' => :optional
@@ -15,7 +12,7 @@ class BulkExtractor < Formula
   # Error in exec install hooks; installing java GUI manually. Reported in
   # https://groups.google.com/group/bulk_extractor-users/browse_thread/thread/ff7cc11e8e6d8e8d
   patch do
-    url "https://gist.github.com/raw/3785687/3a61d57539c2b9ecde44121b370db85ff9d4f86e/makefile.in.patch"
+    url "https://gist.githubusercontent.com/anarchivist/3785687/raw/3a61d57539c2b9ecde44121b370db85ff9d4f86e/makefile.in.patch"
     sha1 "0b597214c15505d84602a28b74fc01ce5aa0c902"
   end
 

@@ -19,12 +19,21 @@ class Freerdp < Formula
 
     # https://github.com/FreeRDP/FreeRDP/pull/1682/files
     patch do
-      url "https://gist.github.com/bmiklautz/8832375/raw/ac77b61185d11aa69e5f6b5e88c0fa597c04d964/freerdp-1.0.2-osxversion-patch.diff"
+      url "https://gist.githubusercontent.com/bmiklautz/8832375/raw/ac77b61185d11aa69e5f6b5e88c0fa597c04d964/freerdp-1.0.2-osxversion-patch.diff"
       sha1 "2793c0251396778b763b627e68dae1e0a5d41eab"
     end
   end
 
-  head "https://github.com/FreeRDP/FreeRDP.git"
+  bottle do
+    sha1 "361ae059c21eaccfa551b7f4924b2762a6d8d6b1" => :mavericks
+    sha1 "8a82974856fa6346e7ff43b7abb6b12dc5e06634" => :mountain_lion
+    sha1 "49bc6add9fec028879985d288252287ed00c8434" => :lion
+  end
+
+  head do
+    url "https://github.com/FreeRDP/FreeRDP.git"
+    depends_on :xcode => :build # for "ibtool"
+  end
 
   depends_on :x11
   depends_on 'cmake' => :build
