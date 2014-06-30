@@ -16,20 +16,21 @@ class Riak < Formula
   depends_on :arch => :x86_64
 
   def install
-    prefix.install Dir["*"]
-
+    libexec.install Dir["*"]
     (logdir = var + "log/riak").mkpath
     (datadir = var + "lib/riak").mkpath
     (datadir + "ring").mkpath
-
-    inreplace "#{prefix}/lib/env.sh" do |s|
-      s.change_make_var! "RUNNER_BASE_DIR", prefix
+    inreplace "#{libexec}/lib/env.sh" do |s|
+      s.change_make_var! "RUNNER_BASE_DIR", libexec
       s.change_make_var! "RUNNER_LOG_DIR", logdir
     end
-
-    inreplace "#{prefix}/etc/app.config" do |c|
+    inreplace "#{libexec}/etc/app.config" do |c|
       c.gsub! './data', datadir
       c.gsub! './log', logdir
     end
+    bin.write_exec_script libexec/"bin/riak"
+    bin.write_exec_script libexec/"bin/riak-admin"
+    bin.write_exec_script libexec/"bin/riak-debug"
+    bin.write_exec_script libexec/"bin/search-cmd"
   end
 end
