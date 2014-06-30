@@ -24,9 +24,6 @@ class IipimageServer < Formula
     
 
   def install
-    inreplace 'src/IIPResponse.cc', '</h2><br/><h3>Project Home Page: <a href=\"http://iipimage.sourceforge.net\">http://iipimage.sourceforge.net</a></h3><br/><h4>by<br/>Ruven Pillay</h4></center></body></html>', '</h2><br/><h3>Project Home Page: <a href=\"http://iipimage.sourceforge.net\">http://iipimage.sourceforge.net</a></h3><br/><h4>by<br/>Ruven Pillay and Denis Pitzalis</h4></center></body></html>'
-
-
     system "./autogen.sh"
     system "./configure", 
       "--disable-dependency-tracking"
