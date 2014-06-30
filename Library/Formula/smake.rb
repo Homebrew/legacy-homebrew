@@ -21,8 +21,4 @@ class Smake < Formula
     man1.install_symlink Dir["#{libexec}/share/man/man1/*.1"]
     man5.install_symlink Dir["#{libexec}/share/man/man5/*.5"]
   end
-  
-  test do
-    system "#{bin}/smake", '-version'
-  end
 end
