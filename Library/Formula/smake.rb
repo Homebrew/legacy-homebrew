@@ -24,6 +24,5 @@ class Smake < Formula
   
   test do
     system "#{bin}/smake", '-version'
-    system "#{bin}/smake", '-help'
   end
 end
