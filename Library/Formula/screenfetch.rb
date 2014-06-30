@@ -15,6 +15,7 @@ class Screenfetch < Formula
 
   def install
     bin.install "screenfetch-dev" => "screenfetch"
+    man1.install "screenfetch.1"
   end
 
   test do
