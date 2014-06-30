@@ -55,7 +55,7 @@ class TabTests < Homebrew::TestCase
   end
 
   def test_options
-    assert_equal (@used + @unused).to_a, @tab.options.to_a
+    assert_equal (@used + @unused).sort, @tab.options.sort
   end
 
   def test_cxxstdlib
@@ -75,9 +75,9 @@ class TabTests < Homebrew::TestCase
     path = Pathname.new(TEST_DIRECTORY).join("fixtures", "receipt.json")
     tab = Tab.from_file(path)
 
-    assert_equal @used.to_a, tab.used_options.to_a
-    assert_equal @unused.to_a, tab.unused_options.to_a
-    assert_equal (@used + @unused).to_a, tab.options.to_a
+    assert_equal @used.sort, tab.used_options.sort
+    assert_equal @unused.sort, tab.unused_options.sort
+    assert_equal (@used + @unused).sort, tab.options.sort
     refute_predicate tab, :built_as_bottle
     assert_predicate tab, :poured_from_bottle
     assert_equal "Homebrew/homebrew", tab.tapped_from
@@ -88,7 +88,16 @@ class TabTests < Homebrew::TestCase
   end
 
   def test_to_json
-    assert_equal @tab, Tab.new(Utils::JSON.load(@tab.to_json))
+    tab = Tab.new(Utils::JSON.load(@tab.to_json))
+    assert_equal @tab.used_options.sort, tab.used_options.sort
+    assert_equal @tab.unused_options.sort, tab.unused_options.sort
+    assert_equal @tab.built_as_bottle, tab.built_as_bottle
+    assert_equal @tab.poured_from_bottle, tab.poured_from_bottle
+    assert_equal @tab.tapped_from, tab.tapped_from
+    assert_equal @tab.time, tab.time
+    assert_equal @tab.HEAD, tab.HEAD
+    assert_equal @tab.compiler, tab.compiler
+    assert_equal @tab.stdlib, tab.stdlib
   end
 end
 
