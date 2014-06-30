@@ -1,7 +1,7 @@
 require "formula"
 
 class Screenfetch < Formula
-  homepage "http://git.silverirc.com/cgit.cgi/screenfetch.git"
+  homepage "https://github.com/KittyKatt/screenFetch"
   url "https://github.com/KittyKatt/screenFetch/archive/v3.5.0.tar.gz"
   sha1 "01d108da5de053b518c1cc49d6e6cc6b9837a59a"
   head 'git://git.silverirc.com/screenfetch.git', :shallow => false
