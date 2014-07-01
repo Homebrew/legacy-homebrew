@@ -82,7 +82,6 @@ class Boost < Formula
       url "https://github.com/boostorg/atomic/commit/e4bde20f.diff"
       sha1 "b68f5536474c9f543879698299bd4975538a89eb"
     end
-
     # Patch fixes upstream issue reported here (https://svn.boost.org/trac/boost/ticket/9698). 
     # Will be fixed in Boost 1.56 and can be removed once that release is available.
     # See this issue (https://github.com/Homebrew/homebrew/issues/30592) for more details.
