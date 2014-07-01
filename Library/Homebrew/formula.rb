@@ -307,8 +307,9 @@ class Formula
   def to_s
     name
   end
+
   def inspect
-    name
+    "#<#{self.class.name}: #{path}>"
   end
 
   # Standard parameters for CMake builds.
