@@ -6,6 +6,10 @@ class GpgAgent < Formula
   sha1 "890d77d89f2d187382f95e83e386f2f7ba789436"
 
   bottle do
+    revision 1
+    sha1 "317d26e0f85fefeb9cccf9a05644aaf70f05c13f" => :mavericks
+    sha1 "16630ed6be44545cf61c631aa0f0a7251499a7c0" => :mountain_lion
+    sha1 "a1dc1f35ba61af4d9fbf0e592f14a274c18c5056" => :lion
   end
 
   depends_on "libgpg-error"
