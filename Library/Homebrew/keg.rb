@@ -163,14 +163,19 @@ class Keg
     linked_keg_record.parent.rmdir_if_possible
   end
 
+  def optlinked?
+    opt_record.symlink? && path == opt_record.resolved_path
+  end
+
+  def remove_opt_record
+    opt_record.unlink
+    opt_record.parent.rmdir_if_possible
+  end
+
   def uninstall
     path.rmtree
     path.parent.rmdir_if_possible
-
-    if opt_record.symlink? && path == opt_record.resolved_path
-      opt_record.unlink
-      opt_record.parent.rmdir_if_possible
-    end
+    remove_opt_record if optlinked?
   end
 
   def unlink
