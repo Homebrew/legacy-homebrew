@@ -107,3 +107,4 @@ index c9ceb2d..f58c96e 100644
  
  TESTS = version.test mds.test \
  	decrypt.test decrypt-dsa.test \
+
