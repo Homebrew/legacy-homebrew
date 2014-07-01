@@ -727,8 +727,8 @@ class Formula
         build variables:
 
         EOS
-      s << "    LDFLAGS:  -L#{HOMEBREW_PREFIX}/opt/#{name}/lib\n" if lib.directory?
-      s << "    CPPFLAGS: -I#{HOMEBREW_PREFIX}/opt/#{name}/include\n" if include.directory?
+      s << "    LDFLAGS:  -L#{opt_lib}\n" if lib.directory?
+      s << "    CPPFLAGS: -I#{opt_include}\n" if include.directory?
     end
     s << "\n"
   end

@@ -88,7 +88,7 @@ class Keg
     raise NotAKegError, "#{path} is not inside a keg"
   end
 
-  attr_reader :path, :name, :linked_keg_record
+  attr_reader :path, :name, :linked_keg_record, :opt_record
   protected :path
 
   def initialize path
@@ -97,6 +97,7 @@ class Keg
     @path = path
     @name = path.parent.basename.to_s
     @linked_keg_record = HOMEBREW_LIBRARY.join("LinkedKegs", name)
+    @opt_record = HOMEBREW_PREFIX.join("opt", name)
   end
 
   def fname
@@ -151,15 +152,30 @@ class Keg
     path.rename(*args)
   end
 
+  def linked?
+    linked_keg_record.symlink? &&
+      linked_keg_record.directory? &&
+      path == linked_keg_record.resolved_path
+  end
+
+  def remove_linked_keg_record
+    linked_keg_record.unlink
+    linked_keg_record.parent.rmdir_if_possible
+  end
+
+  def optlinked?
+    opt_record.symlink? && path == opt_record.resolved_path
+  end
+
+  def remove_opt_record
+    opt_record.unlink
+    opt_record.parent.rmdir_if_possible
+  end
+
   def uninstall
     path.rmtree
     path.parent.rmdir_if_possible
-
-    opt = HOMEBREW_PREFIX.join("opt", name)
-    if opt.symlink? && path == opt.resolved_path
-      opt.unlink
-      opt.parent.rmdir_if_possible
-    end
+    remove_opt_record if optlinked?
   end
 
   def unlink
@@ -191,19 +207,8 @@ class Keg
     ObserverPathnameExtension.total
   end
 
-  def remove_linked_keg_record
-    linked_keg_record.unlink
-    linked_keg_record.parent.rmdir_if_possible
-  end
-
   def lock
     FormulaLock.new(name).with_lock { yield }
-  end
-
-  def linked?
-    linked_keg_record.symlink? &&
-      linked_keg_record.directory? &&
-      path == linked_keg_record.resolved_path
   end
 
   def completion_installed? shell
@@ -296,7 +301,7 @@ class Keg
 
     unless mode.dry_run
       make_relative_symlink(linked_keg_record, path, mode)
-      optlink
+      optlink(mode)
     end
   rescue LinkError
     unlink
@@ -305,16 +310,9 @@ class Keg
     ObserverPathnameExtension.total
   end
 
-  def optlink
-    from = HOMEBREW_PREFIX.join("opt", name)
-    if from.symlink?
-      from.delete
-    elsif from.directory?
-      from.rmdir
-    elsif from.exist?
-      from.delete
-    end
-    make_relative_symlink(from, path)
+  def optlink(mode=OpenStruct.new)
+    opt_record.delete if opt_record.symlink? || opt_record.exist?
+    make_relative_symlink(opt_record, path, mode)
   end
 
   def delete_pyc_files!
@@ -338,7 +336,7 @@ class Keg
     puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
   end
 
-  def make_relative_symlink dst, src, mode=OpenStruct.new
+  def make_relative_symlink dst, src, mode
     if dst.symlink? && dst.exist? && dst.resolved_path == src
       puts "Skipping; link already exists: #{dst}" if ARGV.verbose?
       return
