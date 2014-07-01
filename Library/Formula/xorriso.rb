@@ -2,10 +2,9 @@ require "formula"
 
 class Xorriso < Formula
   homepage "https://www.gnu.org/software/xorriso/"
-  url "http://ftpmirror.gnu.org/xorriso/xorriso-1.3.6.pl01.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/xorriso/xorriso-1.3.6.pl01.tar.gz"
-  sha1 "b9d8f38726993e707c7bb512c73e591644905e9c"
-  version "1.3.6.pl01"
+  url "http://ftpmirror.gnu.org/xorriso/xorriso-1.3.8.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/xorriso/xorriso-1.3.8.tar.gz"
+  sha1 "e16757413ad06f3295b27d30e5a3604bd8c2c606"
 
   bottle do
     cellar :any
