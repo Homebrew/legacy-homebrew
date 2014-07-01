@@ -151,6 +151,17 @@ class Keg
     path.rename(*args)
   end
 
+  def linked?
+    linked_keg_record.symlink? &&
+      linked_keg_record.directory? &&
+      path == linked_keg_record.resolved_path
+  end
+
+  def remove_linked_keg_record
+    linked_keg_record.unlink
+    linked_keg_record.parent.rmdir_if_possible
+  end
+
   def uninstall
     path.rmtree
     path.parent.rmdir_if_possible
@@ -191,19 +202,8 @@ class Keg
     ObserverPathnameExtension.total
   end
 
-  def remove_linked_keg_record
-    linked_keg_record.unlink
-    linked_keg_record.parent.rmdir_if_possible
-  end
-
   def lock
     FormulaLock.new(name).with_lock { yield }
-  end
-
-  def linked?
-    linked_keg_record.symlink? &&
-      linked_keg_record.directory? &&
-      path == linked_keg_record.resolved_path
   end
 
   def completion_installed? shell
