@@ -301,7 +301,7 @@ class Keg
 
     unless mode.dry_run
       make_relative_symlink(linked_keg_record, path, mode)
-      optlink
+      optlink(mode)
     end
   rescue LinkError
     unlink
@@ -310,9 +310,9 @@ class Keg
     ObserverPathnameExtension.total
   end
 
-  def optlink
+  def optlink(mode=OpenStruct.new)
     opt_record.delete if opt_record.symlink? || opt_record.exist?
-    make_relative_symlink(opt_record, path)
+    make_relative_symlink(opt_record, path, mode)
   end
 
   def delete_pyc_files!
