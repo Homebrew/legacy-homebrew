@@ -141,7 +141,7 @@ class Keg
     if shortpath.exist? and not options[:keg_only]
       shortpath.to_s
     else
-      HOMEBREW_PREFIX.join("opt", name, relative_dirname, basename).to_s
+      opt_record.join(relative_dirname, basename).to_s
     end
   end
 

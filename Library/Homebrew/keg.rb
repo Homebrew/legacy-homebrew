@@ -88,7 +88,7 @@ class Keg
     raise NotAKegError, "#{path} is not inside a keg"
   end
 
-  attr_reader :path, :name, :linked_keg_record
+  attr_reader :path, :name, :linked_keg_record, :opt_record
   protected :path
 
   def initialize path
@@ -97,6 +97,7 @@ class Keg
     @path = path
     @name = path.parent.basename.to_s
     @linked_keg_record = HOMEBREW_LIBRARY.join("LinkedKegs", name)
+    @opt_record = HOMEBREW_PREFIX.join("opt", name)
   end
 
   def fname
@@ -166,10 +167,9 @@ class Keg
     path.rmtree
     path.parent.rmdir_if_possible
 
-    opt = HOMEBREW_PREFIX.join("opt", name)
-    if opt.symlink? && path == opt.resolved_path
-      opt.unlink
-      opt.parent.rmdir_if_possible
+    if opt_record.symlink? && path == opt_record.resolved_path
+      opt_record.unlink
+      opt_record.parent.rmdir_if_possible
     end
   end
 
@@ -306,15 +306,14 @@ class Keg
   end
 
   def optlink
-    from = HOMEBREW_PREFIX.join("opt", name)
-    if from.symlink?
-      from.delete
-    elsif from.directory?
-      from.rmdir
-    elsif from.exist?
-      from.delete
+    if opt_record.symlink?
+      opt_record.delete
+    elsif opt_record.directory?
+      opt_record.rmdir
+    elsif opt_record.exist?
+      opt_record.delete
     end
-    make_relative_symlink(from, path)
+    make_relative_symlink(opt_record, path)
   end
 
   def delete_pyc_files!
