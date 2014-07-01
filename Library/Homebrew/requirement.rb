@@ -68,7 +68,7 @@ class Requirement
   end
 
   def inspect
-    "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect}>"
   end
 
   def to_dependency
