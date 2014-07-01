@@ -336,7 +336,7 @@ class Keg
     puts "Won't resolve conflicts for symlink #{dst} as it doesn't resolve into the Cellar" if ARGV.verbose?
   end
 
-  def make_relative_symlink dst, src, mode=OpenStruct.new
+  def make_relative_symlink dst, src, mode
     if dst.symlink? && dst.exist? && dst.resolved_path == src
       puts "Skipping; link already exists: #{dst}" if ARGV.verbose?
       return
