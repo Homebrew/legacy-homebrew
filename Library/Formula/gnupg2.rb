@@ -6,6 +6,10 @@ class Gnupg2 < Formula
   sha1 "890d77d89f2d187382f95e83e386f2f7ba789436"
 
   bottle do
+    revision 1
+    sha1 "72eb0a083cf2f395a7c09d61cd1606af27cf800f" => :mavericks
+    sha1 "e13777dfd387f1de8ffd1160a37167ab3e1d99ed" => :mountain_lion
+    sha1 "0d925112501a584e1a221d6811a23562183a2850" => :lion
   end
 
   option "8192", "Build with support for private keys of up to 8192 bits"
