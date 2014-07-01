@@ -6,9 +6,6 @@ class GpgAgent < Formula
   sha1 "890d77d89f2d187382f95e83e386f2f7ba789436"
 
   bottle do
-    sha1 "a38eece5013ec52bf23879a3b172a810164f95ef" => :mavericks
-    sha1 "b82e687c672920cc512dd20140073749a5532e7d" => :mountain_lion
-    sha1 "91c868bd4379e3270904b1c341aaa69faa25b4d7" => :lion
   end
 
   depends_on "libgpg-error"
