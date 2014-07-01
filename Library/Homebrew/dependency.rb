@@ -55,7 +55,7 @@ class Dependency
   end
 
   def inspect
-    "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect}>"
   end
 
   # Define marshaling semantics because we cannot serialize @env_proc
