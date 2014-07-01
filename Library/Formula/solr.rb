@@ -8,7 +8,7 @@ class Solr < Formula
   def script; <<-EOS.undent
     #!/bin/sh
     if [ -z "$1" ]; then
-      echo "Usage: $ solr path/to/config/dir"
+      echo "Usage: $ solr /absolute/path/to/config/dir"
     else
       cd #{libexec}/example && java -server $JAVA_OPTS -Dsolr.solr.home=$1 -jar start.jar
     fi
@@ -22,7 +22,7 @@ class Solr < Formula
 
   def caveats; <<-EOS.undent
     To start solr:
-      solr path/to/solr/config/dir
+      solr /absolute/path/to/solr/config/dir
 
     See the solr homepage for more setup information:
       brew home solr
