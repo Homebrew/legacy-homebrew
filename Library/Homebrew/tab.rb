@@ -14,10 +14,6 @@ class Tab < OpenStruct
     build = f.build.dup
     build.args = args
 
-    sha = HOMEBREW_REPOSITORY.cd do
-      `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle
-    end
-
     Tab.new :used_options => build.used_options,
             :unused_options => build.unused_options,
             :tabfile => f.prefix.join(FILENAME),
@@ -25,7 +21,7 @@ class Tab < OpenStruct
             :poured_from_bottle => false,
             :tapped_from => f.tap,
             :time => Time.now.to_i,
-            :HEAD => sha,
+            :HEAD => Homebrew.git_head,
             :compiler => compiler,
             :stdlib => stdlib
   end
