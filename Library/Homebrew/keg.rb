@@ -311,13 +311,7 @@ class Keg
   end
 
   def optlink
-    if opt_record.symlink?
-      opt_record.delete
-    elsif opt_record.directory?
-      opt_record.rmdir
-    elsif opt_record.exist?
-      opt_record.delete
-    end
+    opt_record.delete if opt_record.symlink? || opt_record.exist?
     make_relative_symlink(opt_record, path)
   end
 
