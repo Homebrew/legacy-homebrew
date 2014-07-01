@@ -125,4 +125,23 @@ class LinkTests < Homebrew::TestCase
     refute_predicate HOMEBREW_PREFIX/"lib/foo", :directory?
     refute_predicate HOMEBREW_PREFIX/"lib/foo/.DS_Store", :exist?
   end
+
+  def test_existing_opt_link
+    @keg.opt_record.make_relative_symlink Pathname.new(@keg)
+    @keg.optlink
+    assert_predicate @keg.opt_record, :symlink?
+  end
+
+  def test_existing_opt_link_directory
+    @keg.opt_record.mkpath
+    @keg.optlink
+    assert_predicate @keg.opt_record, :symlink?
+  end
+
+  def test_existing_opt_link_file
+    @keg.opt_record.parent.mkpath
+    @keg.opt_record.write("foo")
+    @keg.optlink
+    assert_predicate @keg.opt_record, :symlink?
+  end
 end
