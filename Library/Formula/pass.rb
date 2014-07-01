@@ -1,9 +1,9 @@
 require 'formula'
 
 class Pass < Formula
-  homepage 'http://zx2c4.com/projects/password-store'
-  url 'http://git.zx2c4.com/password-store/snapshot/password-store-1.6.2.tar.xz'
-  sha256 '526c4a362f6b21ffbaa48fe9eed92f7c0af0be210f56160938fb1661a6f162b4'
+  homepage 'http://www.passwordstore.org/'
+  url 'http://git.zx2c4.com/password-store/snapshot/password-store-1.6.3.tar.xz'
+  sha256 'd419d40aa165c1f893e994dd706733374a9db8cf5314124702a061e70e0340f7'
 
   bottle do
     cellar :any
