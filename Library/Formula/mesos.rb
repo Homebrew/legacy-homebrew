@@ -37,6 +37,24 @@ class Mesos < Formula
   end
 
   test do
-    system "#{sbin}/mesos-master", "--version"
+    require "timeout"
+
+    master = fork do
+      exec "#{sbin}/mesos-master", "--ip=127.0.0.1",
+                                   "--registry=in_memory"
+    end
+    slave = fork do
+      exec "#{sbin}/mesos-slave", "--master=127.0.0.1:5050",
+                                  "--work_dir=#{testpath}"
+    end
+    Timeout::timeout(15) do
+      system "#{bin}/mesos", "execute",
+                             "--master=127.0.0.1:5050",
+                             "--name=execute-touch",
+                             "--command=touch\s#{testpath}/executed"
+    end
+    Process.kill("TERM", master)
+    Process.kill("TERM", slave)
+    system "[ -e #{testpath}/executed ]"
   end
 end
