@@ -86,7 +86,6 @@ class Boost < Formula
     # Patch fixes upstream issue reported here (https://svn.boost.org/trac/boost/ticket/9698). 
     # Will be fixed in Boost 1.56 and can be removed once that release is available.
     # See this issue (https://github.com/Homebrew/homebrew/issues/30592) for more details.
-
     patch :p2 do
       url "https://github.com/boostorg/chrono/commit/143260d.diff"
       sha1 "2600214608e7706116831d6ffc302d099ba09950"
