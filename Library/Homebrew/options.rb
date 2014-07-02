@@ -109,9 +109,6 @@ class Options
     self
   end
 
-  def to_a
-    @options.to_a
-  end
   alias_method :to_ary, :to_a
 
   def inspect
