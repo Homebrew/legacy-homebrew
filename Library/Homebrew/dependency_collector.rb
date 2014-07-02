@@ -23,6 +23,10 @@ class DependencyCollector
 
   CACHE = {}
 
+  def self.clear_cache
+    CACHE.clear
+  end
+
   attr_reader :deps, :requirements
 
   def initialize
