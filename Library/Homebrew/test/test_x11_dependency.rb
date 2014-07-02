@@ -32,4 +32,12 @@ class X11DependencyTests < Homebrew::TestCase
     ENV.expects(:x11)
     x.modify_build_environment
   end
+
+  def test_satisfied
+    MacOS::XQuartz.stubs(:installed?).returns(true)
+    assert_predicate X11Dependency.new, :satisfied?
+
+    MacOS::XQuartz.stubs(:installed?).returns(false)
+    refute_predicate X11Dependency.new, :satisfied?
+  end
 end
