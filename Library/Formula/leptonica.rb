@@ -2,8 +2,8 @@ require 'formula'
 
 class Leptonica < Formula
   homepage 'http://www.leptonica.org/'
-  url 'http://www.leptonica.org/source/leptonica-1.70.tar.gz'
-  sha1 '476edd5cc3f627f5ad988fcca6b62721188fce13'
+  url 'http://www.leptonica.org/source/leptonica-1.71.tar.gz'
+  sha1 'aedaf94cc352a638595b74e906f61204154d8431'
 
   depends_on 'libpng' => :recommended
   depends_on 'jpeg' => :recommended
