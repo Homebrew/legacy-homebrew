@@ -22,9 +22,6 @@ class Dependencies
     @deps * arg
   end
 
-  def to_a
-    @deps
-  end
   alias_method :to_ary, :to_a
 
   def optional
