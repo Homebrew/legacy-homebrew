@@ -9,9 +9,7 @@ class JpegArchive < Formula
 
   def install
     system "make"
-    bin.install "./jpeg-recompress"
-    bin.install "./jpeg-hash"
-    bin.install "./jpeg-compare"
+    bin.install "jpeg-recompress", 'jpeg-hash', 'jpeg-compare'
   end
 
   test do
