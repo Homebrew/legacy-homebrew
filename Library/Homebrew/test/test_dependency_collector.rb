@@ -69,7 +69,7 @@ class DependencyCollectorTests < Homebrew::TestCase
 
   def test_x11_min_version
     @d.add :x11 => '2.5.1'
-    assert_equal "2.5.1", find_requirement(X11Dependency).min_version
+    assert_equal "2.5.1", find_requirement(X11Dependency).min_version.to_s
   end
 
   def test_x11_tag
@@ -80,7 +80,7 @@ class DependencyCollectorTests < Homebrew::TestCase
   def test_x11_min_version_and_tag
     @d.add :x11 => ['2.5.1', :optional]
     dep = find_requirement(X11Dependency)
-    assert_equal '2.5.1', dep.min_version
+    assert_equal '2.5.1', dep.min_version.to_s
     assert_predicate dep, :optional?
   end
 
