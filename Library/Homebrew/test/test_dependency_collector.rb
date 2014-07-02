@@ -16,7 +16,7 @@ class DependencyCollectorTests < Homebrew::TestCase
   end
 
   def teardown
-    DependencyCollector::CACHE.clear
+    DependencyCollector.clear_cache
   end
 
   def test_dependency_creation
