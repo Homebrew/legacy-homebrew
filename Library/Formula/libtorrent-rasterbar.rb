@@ -2,19 +2,14 @@ require "formula"
 
 class LibtorrentRasterbar < Formula
   homepage "http://www.rasterbar.com/products/libtorrent/"
-  url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-0.16.17.tar.gz"
-  sha1 "e713b5dfc45194bfc50fa21096ab67c374ae3740"
+  url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.0.tar.gz"
+  sha1 "d7ea9ae8d89c2673c6bd16b3b3d4ef00fc5857e0"
 
   head do
     url "https://libtorrent.googlecode.com/svn/trunk"
     depends_on "automake" => :build
     depends_on "autoconf" => :build
     depends_on "libtool" => :build
-  end
-
-  devel do
-    url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.0-RC3.tar.gz"
-    sha1 "8164b48a22347a33b5a7e4cef39e2395aec4dd12"
   end
 
   bottle do
