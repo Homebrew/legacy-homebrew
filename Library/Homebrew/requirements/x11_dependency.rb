@@ -34,4 +34,8 @@ class X11Dependency < Requirement
     return unless X11Dependency === other
     min_version <=> other.min_version
   end
+
+  def eql?(other)
+    super && min_version == other.min_version
+  end
 end

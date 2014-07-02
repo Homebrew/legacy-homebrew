@@ -19,6 +19,13 @@ class X11DependencyTests < Homebrew::TestCase
     assert !y.eql?(x)
   end
 
+  def test_different_min_version
+    x = X11Dependency.new
+    y = X11Dependency.new("x11", %w[2.5])
+    refute x.eql?(y)
+    refute y.eql?(x)
+  end
+
   def test_x_env
     x = X11Dependency.new
     x.stubs(:satisfied?).returns(true)
