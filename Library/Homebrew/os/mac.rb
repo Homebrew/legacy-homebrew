@@ -167,7 +167,11 @@ module OS
     end
 
     def prefer_64_bit?
-      Hardware::CPU.is_64_bit? and version > :leopard
+      if OS.mac?
+        Hardware::CPU.is_64_bit? and version > :leopard
+      else
+        true
+      end
     end
 
     def preferred_arch
