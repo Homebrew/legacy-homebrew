@@ -248,4 +248,14 @@ class FormulaTests < Homebrew::TestCase
 
     assert_equal PkgVersion.parse('HEAD'), f.pkg_version
   end
+
+  def test_raises_when_non_formula_constant_exists
+    const = :SomeConst
+    Object.const_set(const, Module.new)
+    begin
+      assert_raises(FormulaUnavailableError) { Formulary.factory("some_const") }
+    ensure
+      Object.send(:remove_const, const)
+    end
+  end
 end
