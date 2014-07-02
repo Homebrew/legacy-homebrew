@@ -18,7 +18,7 @@ module Homebrew
       ENV['CLICOLOR'] = nil
       exec 'ls', *ARGV.options_only << HOMEBREW_CELLAR
     elsif ARGV.verbose? or not $stdout.tty?
-      exec "find", *ARGV.kegs + %w[-not -type d -print]
+      exec "find", *ARGV.kegs.map(&:to_s) + %w[-not -type d -print]
     else
       ARGV.kegs.each{ |keg| PrettyListing.new keg }
     end
@@ -85,7 +85,7 @@ end
 
 class PrettyListing
   def initialize path
-    Pathname.new(path).children.sort{ |a,b| a.to_s.downcase <=> b.to_s.downcase }.each do |pn|
+    Pathname.new(path).children.sort_by { |p| p.to_s.downcase }.each do |pn|
       case pn.basename.to_s
       when 'bin', 'sbin'
         pn.find { |pnn| puts pnn unless pnn.directory? }

@@ -92,11 +92,11 @@ class Caveats
         if f.plist_startup
           s << "To have launchd start #{f.name} at startup:"
           s << "    sudo mkdir -p #{destination}" unless destination_path.directory?
-          s << "    sudo cp -fv #{HOMEBREW_PREFIX}/opt/#{f.name}/*.plist #{destination}"
+          s << "    sudo cp -fv #{f.opt_prefix}/*.plist #{destination}"
         else
           s << "To have launchd start #{f.name} at login:"
           s << "    mkdir -p #{destination}" unless destination_path.directory?
-          s << "    ln -sfv #{HOMEBREW_PREFIX}/opt/#{f.name}/*.plist #{destination}"
+          s << "    ln -sfv #{f.opt_prefix}/*.plist #{destination}"
         end
         s << "Then to load #{f.name} now:"
         if f.plist_startup
@@ -112,7 +112,7 @@ class Caveats
         s << "To reload #{f.name} after an upgrade:"
         if f.plist_startup
           s << "    sudo launchctl unload #{plist_link}"
-          s << "    sudo cp -fv #{HOMEBREW_PREFIX}/opt/#{f.name}/*.plist #{destination}"
+          s << "    sudo cp -fv #{f.opt_prefix}/*.plist #{destination}"
           s << "    sudo launchctl load #{plist_link}"
         else
           s << "    launchctl unload #{plist_link}"

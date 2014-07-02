@@ -11,8 +11,7 @@ module Homebrew
           puts "Uninstalling #{keg}..."
           keg.unlink
           keg.uninstall
-          rm_opt_link keg.fname
-          rm_pin keg.fname
+          rm_pin keg.name
         end
       end
     else
@@ -22,22 +21,19 @@ module Homebrew
 
         if rack.directory?
           puts "Uninstalling #{name}..."
-          rack.subdirs.each { |d| Keg.new(d).unlink }
-          rack.rmtree
+          rack.subdirs.each do |d|
+            keg = Keg.new(d)
+            keg.unlink
+            keg.uninstall
+          end
         end
 
-        rm_opt_link name
         rm_pin name
       end
     end
   rescue MultipleVersionsInstalledError => e
     ofail e
     puts "Use `brew remove --force #{e.name}` to remove all versions."
-  end
-
-  def rm_opt_link name
-    optlink = HOMEBREW_PREFIX.join("opt", name)
-    optlink.unlink if optlink.symlink?
   end
 
   def rm_pin name

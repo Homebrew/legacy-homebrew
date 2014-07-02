@@ -17,7 +17,7 @@ class ArgvExtensionTests < Homebrew::TestCase
     @argv << 'mxcl'
     assert_equal 1, @argv.kegs.length
   ensure
-    keg.rmtree
+    keg.parent.rmtree
   end
 
   def test_argv_named

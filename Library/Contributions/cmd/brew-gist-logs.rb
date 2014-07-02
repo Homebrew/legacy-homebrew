@@ -76,7 +76,16 @@ def post path, data
   request.body = Utils::JSON.dump(data)
   response = http.request(request)
   raise HTTP_Error, response if response.code != '201'
-  Utils::JSON.load(response.body)
+
+  if !response.body.respond_to?(:force_encoding)
+    body = response.body
+  elsif response["Content-Type"].downcase == "application/json; charset=utf-8"
+    body = response.body.dup.force_encoding(Encoding::UTF_8)
+  else
+    body = response.body.encode(Encoding::UTF_8, :undef => :replace)
+  end
+
+  Utils::JSON.load(body)
 end
 
 class HTTP_Error < RuntimeError

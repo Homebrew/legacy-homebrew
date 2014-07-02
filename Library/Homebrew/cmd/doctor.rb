@@ -892,16 +892,16 @@ end
 
 def check_missing_deps
   return unless HOMEBREW_CELLAR.exist?
-  s = Set.new
+  missing = Set.new
   Homebrew.missing_deps(Formula.installed).each_value do |deps|
-    s.merge deps
+    missing.merge(deps)
   end
 
-  if s.length > 0 then <<-EOS.undent
+  if missing.any? then <<-EOS.undent
     Some installed formula are missing dependencies.
     You should `brew install` the missing dependencies:
 
-        brew install #{s.to_a.sort * " "}
+        brew install #{missing.sort_by(&:name) * " "}
 
     Run `brew missing` for more details.
     EOS
@@ -1152,15 +1152,14 @@ module Homebrew
   end
 
   def inject_dump_stats checks
-    class << checks
-      alias_method :oldsend, :send
-      def send method
+    checks.extend Module.new {
+      def send(method, *)
         time = Time.now
-        oldsend(method)
+        super
       ensure
         $times[method] = Time.now - time
       end
-    end
+    }
     $times = {}
     at_exit {
       puts $times.sort_by{|k, v| v }.map{|k, v| "#{k}: #{v}"}

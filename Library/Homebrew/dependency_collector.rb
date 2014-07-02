@@ -80,7 +80,7 @@ class DependencyCollector
     when Class
       parse_class_spec(spec, tags)
     else
-      raise TypeError, "Unsupported type #{spec.class} for #{spec.inspect}"
+      raise TypeError, "Unsupported type #{spec.class.name} for #{spec.inspect}"
     end
   end
 

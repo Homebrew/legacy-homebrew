@@ -174,7 +174,6 @@ class FormulaInstaller
           opoo e.message
         end
 
-        stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs :skip_executables => true
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
         tab.write
@@ -547,25 +546,31 @@ class FormulaInstaller
   end
 
   def link
-    if f.linked_keg.directory? and f.linked_keg.resolved_path == f.prefix
-      opoo "This keg was marked linked already, continuing anyway"
-      # otherwise Keg.link will bail
-      f.linked_keg.unlink
-    end
-
     keg = Keg.new(f.prefix)
+
+    if keg.linked?
+      opoo "This keg was marked linked already, continuing anyway"
+      keg.remove_linked_keg_record
+    end
 
     begin
       keg.link
-    rescue Keg::LinkError => e
+    rescue Keg::ConflictError => e
       onoe "The `brew link` step did not complete successfully"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
-      puts "You can try again using:"
-      puts "  brew link #{f.name}"
+      puts e
       puts
       puts "Possible conflicting files are:"
       mode = OpenStruct.new(:dry_run => true, :overwrite => true)
       keg.link(mode)
+      @show_summary_heading = true
+    rescue Keg::LinkError => e
+      onoe "The `brew link` step did not complete successfully"
+      puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
+      puts e
+      puts
+      puts "You can try again using:"
+      puts "  brew link #{f.name}"
       @show_summary_heading = true
     rescue Exception => e
       onoe "An unexpected error occurred during the `brew link` step"
@@ -722,8 +727,8 @@ class Formula
         build variables:
 
         EOS
-      s << "    LDFLAGS:  -L#{HOMEBREW_PREFIX}/opt/#{name}/lib\n" if lib.directory?
-      s << "    CPPFLAGS: -I#{HOMEBREW_PREFIX}/opt/#{name}/include\n" if include.directory?
+      s << "    LDFLAGS:  -L#{opt_lib}\n" if lib.directory?
+      s << "    CPPFLAGS: -I#{opt_include}\n" if include.directory?
     end
     s << "\n"
   end

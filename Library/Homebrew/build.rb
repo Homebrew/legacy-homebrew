@@ -171,10 +171,11 @@ class Build
         begin
           f.install
 
+          keg = Keg.new(f.prefix)
           # This first test includes executables because we still
           # want to record the stdlib for something that installs no
           # dylibs.
-          stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
+          stdlibs = keg.detect_cxx_stdlibs
           # This currently only tracks a single C++ stdlib per dep,
           # though it's possible for different libs/executables in
           # a given formula to link to different ones.
@@ -190,7 +191,7 @@ class Build
           # of software installs an executable that links against libstdc++
           # and dylibs against libc++, libc++-only dependencies can safely
           # link against it.
-          stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs :skip_executables => true
+          stdlibs = keg.detect_cxx_stdlibs :skip_executables => true
 
           Tab.create(f, ENV.compiler, stdlibs.first,
             Options.coerce(ARGV.options_only)).write

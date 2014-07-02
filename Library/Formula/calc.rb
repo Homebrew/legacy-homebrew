@@ -20,10 +20,11 @@ class Calc < Formula
 
     readline = Formula["readline"]
     inreplace "Makefile" do |s|
-      s.change_make_var! "INCDIR", include
+      s.change_make_var! "INCDIR", "#{MacOS.sdk_path}/usr/include"
       s.change_make_var! "BINDIR", bin
       s.change_make_var! "LIBDIR", lib
       s.change_make_var! "MANDIR", man1
+      s.change_make_var! "CALC_INCDIR", "#{include}/calc"
       s.change_make_var! "CALC_SHAREDIR", "#{share}/calc"
       s.change_make_var! "USE_READLINE", "-DUSE_READLINE"
       s.change_make_var! "READLINE_LIB", "-L#{readline.lib} -lreadline"
@@ -34,8 +35,7 @@ class Calc < Formula
         "-single_module -undefined dynamic_lookup -dynamiclib -install_name ${LIBDIR}/libcalc${LIB_EXT_VERSION}"
       s.change_make_var! "LIBCUSTCALC_SHLIB",
         "-single_module -undefined dynamic_lookup -dynamiclib -install_name ${LIBDIR}/libcustcalc${LIB_EXT_VERSION}"
-      s.change_make_var! "CC",
-        "MACOSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET} #{ENV.cc}"
+      s.change_make_var! "LCC", "MACOSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET} #{ENV.cc}"
       s.change_make_var! "MACOSX_DEPLOYMENT_TARGET", MacOS.version
     end if OS.mac?
 

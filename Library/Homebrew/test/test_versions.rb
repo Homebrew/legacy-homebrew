@@ -96,6 +96,8 @@ class VersionParsingTests < Homebrew::TestCase
     d = HOMEBREW_CELLAR/'foo-0.1.9'
     d.mkpath
     assert_equal version('0.1.9'), d.version
+  ensure
+    d.unlink
   end
 
   def test_no_version

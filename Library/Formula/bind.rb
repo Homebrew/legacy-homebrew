@@ -7,9 +7,10 @@ class Bind < Formula
   version '9.10.0-P2'
 
   bottle do
-    sha1 "c8447f8f4a5e1fb7026803494caf156abe7c7f86" => :mavericks
-    sha1 "3abe0648bcf3e565d4b2ca0b0d553a676497575e" => :mountain_lion
-    sha1 "4935e48f4d67c069aba231f8f77f3110fa89f86f" => :lion
+    revision 1
+    sha1 "068156f5b18530fe37e19b9fa17644925e9e4708" => :mavericks
+    sha1 "62e59a79007bed3daa873951fcd3bef5e221596f" => :mountain_lion
+    sha1 "114293393260de545393e4ed66ca252e881aa21f" => :lion
   end
 
   depends_on "openssl"
@@ -18,8 +19,6 @@ class Bind < Formula
     ENV.libxml2
     # libxml2 appends one inc dir to CPPFLAGS but bind ignores CPPFLAGS
     ENV.append 'CFLAGS', ENV.cppflags
-
-    ENV['STD_CDEFINES'] = '-DDIG_SIGCHASE=1'
 
     system "./configure", "--prefix=#{prefix}",
                           "--enable-threads",

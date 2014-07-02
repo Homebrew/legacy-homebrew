@@ -14,10 +14,6 @@ class Tab < OpenStruct
     build = f.build.dup
     build.args = args
 
-    sha = HOMEBREW_REPOSITORY.cd do
-      `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle
-    end
-
     Tab.new :used_options => build.used_options,
             :unused_options => build.unused_options,
             :tabfile => f.prefix.join(FILENAME),
@@ -25,24 +21,24 @@ class Tab < OpenStruct
             :poured_from_bottle => false,
             :tapped_from => f.tap,
             :time => Time.now.to_i,
-            :HEAD => sha,
+            :HEAD => Homebrew.git_head,
             :compiler => compiler,
             :stdlib => stdlib
   end
 
   def self.from_file path
-    tab = Tab.new Utils::JSON.load(File.read(path))
-    tab.tabfile = path.realpath
-    tab
+    attributes = Utils::JSON.load(File.read(path))
+    attributes[:tabfile] = path
+    new(attributes)
   end
 
   def self.for_keg keg
     path = keg.join(FILENAME)
 
     if path.exist?
-      self.from_file(path)
+      from_file(path)
     else
-      self.dummy_tab
+      dummy_tab
     end
   end
 
@@ -51,7 +47,15 @@ class Tab < OpenStruct
   end
 
   def self.for_formula f
-    paths = [f.opt_prefix, f.linked_keg]
+    paths = []
+
+    if f.opt_prefix.symlink? && f.opt_prefix.directory?
+      paths << f.opt_prefix.resolved_path
+    end
+
+    if f.linked_keg.symlink? && f.linked_keg.directory?
+      paths << f.linked_keg.resolved_path
+    end
 
     if f.rack.directory? && (dirs = f.rack.subdirs).length == 1
       paths << dirs.first
@@ -76,6 +80,7 @@ class Tab < OpenStruct
             :tapped_from => "",
             :time => nil,
             :HEAD => nil,
+            :stdlib => nil,
             :compiler => :clang
   end
 

@@ -27,19 +27,17 @@ class FormulaPinTests < Homebrew::TestCase
     assert_predicate @pin, :pinnable?
   end
 
-  def test_pin
-    (@f.rack+'0.1').mkpath
-    @pin.pin
-    assert_predicate @pin, :pinned?
-    assert_equal 1, FormulaPin::PINDIR.children.length
-  end
-
   def test_unpin
     (@f.rack+'0.1').mkpath
     @pin.pin
+
+    assert_predicate @pin, :pinned?
+    assert_equal 1, FormulaPin::PINDIR.children.length
+
     @pin.unpin
+
     refute_predicate @pin, :pinned?
-    assert_equal 0, FormulaPin::PINDIR.children.length
+    refute_predicate FormulaPin::PINDIR, :directory?
   end
 
   def teardown

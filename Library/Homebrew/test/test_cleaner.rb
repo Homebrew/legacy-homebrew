@@ -11,7 +11,7 @@ class CleanerTests < Homebrew::TestCase
   end
 
   def teardown
-    @f.prefix.rmtree if @f.prefix.exist?
+    @f.rack.rmtree if @f.rack.exist?
   end
 
   def test_clean_file
