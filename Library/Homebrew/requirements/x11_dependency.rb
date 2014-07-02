@@ -20,7 +20,7 @@ class X11Dependency < Requirement
   end
 
   satisfy :build_env => false do
-    MacOS::XQuartz.installed? && min_version <= Version.new(MacOS::Quartz.version)
+    MacOS::XQuartz.installed? && min_version <= Version.new(MacOS::XQuartz.version)
   end
 
   def message; <<-EOS.undent
