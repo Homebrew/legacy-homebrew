@@ -5,8 +5,7 @@ class ComparableSet < Set
     # smileys only
     return super new unless new.respond_to? :>
 
-    objs = find_all { |o| o.class == new.class }
-    objs.each do |o|
+    grep(new.class) do |o|
       return self if o > new
       delete o
     end

@@ -79,7 +79,7 @@ class IOPatch < Patch
   end
 
   def inspect
-    "#<#{self.class}: #{strip.inspect}>"
+    "#<#{self.class.name}: #{strip.inspect}>"
   end
 end
 
@@ -127,7 +127,7 @@ class ExternalPatch < Patch
   end
 
   def inspect
-    "#<#{self.class}: #{strip.inspect} #{url.inspect}>"
+    "#<#{self.class.name}: #{strip.inspect} #{url.inspect}>"
   end
 end
 
