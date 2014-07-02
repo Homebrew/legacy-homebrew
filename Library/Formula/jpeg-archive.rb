@@ -13,6 +13,8 @@ class JpegArchive < Formula
   end
 
   test do
-    system "#{bin}/jpeg-recompress", "--help"
+    system "#{bin}/jpeg-recompress",
+           "/System/Library/CoreServices/DefaultDesktop.jpg",
+           "output.jpg"
   end
 end
