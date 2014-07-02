@@ -38,7 +38,7 @@ class CxxStdlib
         # Software is unlikely to link against anything from its
         # buildtime deps, so it doesn't matter at all if they link
         # against different C++ stdlibs
-        next if dep.tags.include? :build
+        next if dep.build?
 
         dep_stdlib = Tab.for_formula(dep.to_formula).cxxstdlib
         if !compatible_with? dep_stdlib
