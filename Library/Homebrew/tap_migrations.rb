@@ -34,6 +34,7 @@ TAP_MIGRATIONS = {
   "kismet" => "homebrew/boneyard",
   "libgtextutils" => "homebrew/science",
   "librets" => "homebrew/boneyard",
+  "libspotify" => "homebrew/binary",
   "lmutil" => "homebrew/binary",
   "mlkit" => "homebrew/boneyard",
   "mlton" => "homebrew/boneyard",
