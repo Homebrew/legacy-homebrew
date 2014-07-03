@@ -34,6 +34,7 @@ class X11DependencyTests < Homebrew::TestCase
   end
 
   def test_satisfied
+    MacOS::XQuartz.stubs(:version).returns("2.7.5")
     MacOS::XQuartz.stubs(:installed?).returns(true)
     assert_predicate X11Dependency.new, :satisfied?
 
