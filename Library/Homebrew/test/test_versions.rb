@@ -83,9 +83,8 @@ class VersionComparisonTests < Homebrew::TestCase
     v2 = version('0.1.0')
     v3 = version('0.1.1')
 
-    assert v1.eql?(v2)
-    assert v2.eql?(v1)
-    assert !v1.eql?(v3)
+    assert_eql v1, v2
+    refute_eql v1, v3
     assert_equal v1.hash, v2.hash
 
     h = { v1 => :foo }

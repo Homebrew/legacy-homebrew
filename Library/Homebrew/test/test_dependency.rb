@@ -44,8 +44,8 @@ class DependencyTests < Homebrew::TestCase
     foo2 = Dependency.new("foo")
     bar = Dependency.new("bar")
     assert_equal foo1, foo2
-    assert foo1.eql?(foo2)
+    assert_eql foo1, foo2
     refute_equal foo1, bar
-    assert !foo1.eql?(bar)
+    refute_eql foo1, bar
   end
 end
