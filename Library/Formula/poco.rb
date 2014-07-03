@@ -26,8 +26,6 @@ class Poco < Formula
     ENV.cxx11 if build.cxx11?
 
     arch = Hardware.is_64_bit? ? 'Darwin64': 'Darwin32'
-    arch << '-clang' if ENV.compiler == :clang
-
     system "./configure", "--prefix=#{prefix}",
                           "--config=#{arch}",
                           "--omit=Data/MySQL,Data/ODBC",
