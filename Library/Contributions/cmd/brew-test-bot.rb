@@ -20,7 +20,6 @@
 # --ci-testing-upload: Homebrew CI testing bottle upload.
 
 require 'formula'
-require 'extend/ENV'
 require 'utils'
 require 'date'
 require 'rexml/document'
