@@ -15,9 +15,9 @@ class Onetime < Formula
 
   def install
     inreplace "Makefile", '$(DESTDIR)/usr/bin/', '$(DESTDIR)/usr/local/Cellar/onetime'
-    mkdir "#{prefix}/bin"
+    mkdir "#{bin}"
     system "make"
     system "make install"
-    mv "/usr/local/Cellar/onetime/onetime", "#{prefix}/bin"
+    mv "/usr/local/Cellar/onetime/onetime", "#{bin}"
   end
 end
