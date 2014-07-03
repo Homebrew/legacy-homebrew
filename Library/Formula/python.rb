@@ -56,6 +56,12 @@ class Python < Formula
     HOMEBREW_PREFIX/"lib/python2.7/site-packages"
   end
 
+  # setuptools remembers the build flags python is built with and uses them to
+  # build packages later. Xcode-only systems need different flags.
+  def pour_bottle?
+    MacOS::CLT.installed?
+  end
+
   def install
     if build.with? "poll"
       opoo "The given option --with-poll enables a somewhat broken poll() on OS X (http://bugs.python.org/issue5154)."
