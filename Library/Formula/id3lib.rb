@@ -7,6 +7,13 @@ class Id3lib < Formula
 
   head "cvs://:pserver:anonymous:@id3lib.cvs.sourceforge.net:/cvsroot/id3lib:id3lib-devel"
 
+  bottle do
+    cellar :any
+    sha1 "3706bca1a75d73ded2efeff8aedeaea25cea3cb7" => :mavericks
+    sha1 "9693062720327e9af5e73870a4dd954b5828c483" => :mountain_lion
+    sha1 "ba892268a2bdd9e713017272b819de2501aad602" => :lion
+  end
+
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
