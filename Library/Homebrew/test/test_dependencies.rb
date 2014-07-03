@@ -71,12 +71,12 @@ class DependenciesTests < Homebrew::TestCase
     b << dep
 
     assert_equal a, b
-    assert a.eql?(b)
+    assert_eql a, b
 
     b << Dependency.new("bar", [:optional])
 
     refute_equal a, b
-    assert !a.eql?(b)
+    refute_eql a, b
   end
 end
 

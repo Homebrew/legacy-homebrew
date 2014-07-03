@@ -119,9 +119,7 @@ class FormulaTests < Homebrew::TestCase
     x = TestBall.new
     y = TestBall.new
     assert_equal x, y
-    assert_equal y, x
-    assert x.eql?(y)
-    assert y.eql?(x)
+    assert_eql x, y
     assert_equal x.hash, y.hash
   end
 
@@ -129,10 +127,8 @@ class FormulaTests < Homebrew::TestCase
     x = TestBall.new("foo")
     y = TestBall.new("bar")
     refute_equal x, y
-    refute_equal y, x
+    refute_eql x, y
     refute_equal x.hash, y.hash
-    assert !x.eql?(y)
-    assert !y.eql?(x)
   end
 
   def test_comparison_with_non_formula_objects_does_not_raise
