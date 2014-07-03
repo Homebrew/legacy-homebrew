@@ -1,3 +1,8 @@
+module CompilerConstants
+  GNU_GCC_VERSIONS = 3..9
+  GNU_GCC_REGEXP = /gcc-(4\.[3-9])/
+end
+
 class Compiler < Struct.new(:name, :version, :priority)
   # The major version for non-Apple compilers. Used to indicate a compiler
   # series; for instance, if the version is 4.8.2, it would return "4.8".
@@ -93,7 +98,7 @@ class CompilerSelector
     end
 
     # non-Apple GCC 4.x
-    SharedEnvExtension::GNU_GCC_VERSIONS.each do |v|
+    CompilerConstants::GNU_GCC_VERSIONS.each do |v|
       name = "gcc-4.#{v}"
       version = @versions.non_apple_gcc_version(name)
       unless version.nil?

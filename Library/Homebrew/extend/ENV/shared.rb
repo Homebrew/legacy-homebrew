@@ -1,17 +1,18 @@
-require 'formula'
+require "formula"
+require "compilers"
 
 module SharedEnvExtension
+  include CompilerConstants
+
   CC_FLAG_VARS = %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
   FC_FLAG_VARS = %w{FCFLAGS FFLAGS}
 
-  # Update these every time a new GNU GCC branch is released
-  GNU_GCC_VERSIONS = (3..9)
-  GNU_GCC_REGEXP = /gcc-(4\.[3-9])/
-
-  COMPILER_SYMBOL_MAP = { 'gcc-4.0'  => :gcc_4_0,
-                          'gcc-4.2'  => :gcc,
-                          'llvm-gcc' => :llvm,
-                          'clang'    => :clang }
+  COMPILER_SYMBOL_MAP = {
+    "gcc-4.0"  => :gcc_4_0,
+    "gcc-4.2"  => :gcc,
+    "llvm-gcc" => :llvm,
+    "clang"    => :clang,
+  }
 
   COMPILERS = COMPILER_SYMBOL_MAP.values +
     GNU_GCC_VERSIONS.map { |n| "gcc-4.#{n}" }

@@ -38,4 +38,8 @@ class X11Dependency < Requirement
   def eql?(other)
     super && min_version == other.min_version
   end
+
+  def inspect
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect} min_version=#{min_version}>"
+  end
 end

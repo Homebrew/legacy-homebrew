@@ -1,7 +1,6 @@
 require 'dependable'
 require 'dependency'
 require 'build_environment'
-require 'extend/ENV'
 
 # A base class for non-formula requirements needed by formulae.
 # A "fatal" requirement is one that will fail the build if it is not present.
@@ -127,6 +126,7 @@ class Requirement
       if instance_variable_defined?(:@satisfied)
         @satisfied
       elsif @options[:build_env]
+        require "extend/ENV"
         ENV.with_build_environment { yield @proc }
       else
         yield @proc
