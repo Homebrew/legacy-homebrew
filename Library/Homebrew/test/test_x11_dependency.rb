@@ -1,5 +1,4 @@
 require 'testing_env'
-require 'extend/set'
 require 'requirements/x11_dependency'
 
 class X11DependencyTests < Homebrew::TestCase

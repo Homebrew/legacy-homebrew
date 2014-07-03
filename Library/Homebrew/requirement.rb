@@ -1,5 +1,6 @@
 require 'dependable'
 require 'dependency'
+require 'dependencies'
 require 'build_environment'
 
 # A base class for non-formula requirements needed by formulae.
@@ -141,7 +142,7 @@ class Requirement
     # The default filter, which is applied when a block is not given, omits
     # optionals and recommendeds based on what the dependent has asked for.
     def expand(dependent, &block)
-      reqs = ComparableSet.new
+      reqs = Requirements.new
 
       formulae = dependent.recursive_dependencies.map(&:to_formula)
       formulae.unshift(dependent)
