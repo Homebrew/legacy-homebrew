@@ -121,7 +121,9 @@ class Ghc < Formula
 
       if build.include? "tests"
         resource("testsuite").stage do
-          cd "testsuite" do
+          # devel testsuite ghc-7.8.2-testsuite.tar.xz is in subdirectory while ghc-7.6.3-release.tar.gz isn't
+          testsuite_path = build.devel? ? "testsuite" : "."
+          cd testsuite_path do
             (buildpath+"Ghcsource/config").install Dir["config/*"]
             (buildpath+"Ghcsource/driver").install Dir["driver/*"]
             (buildpath+"Ghcsource/mk").install Dir["mk/*"]
