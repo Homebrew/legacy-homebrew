@@ -2,20 +2,15 @@ require 'formula'
 
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
-  url 'http://static.rust-lang.org/dist/rust-0.10.tar.gz'
-  sha1 '20460730047ca6694eeb780d990f566572c32c43'
+  url 'http://static.rust-lang.org/dist/rust-0.11.0.tar.gz'
+  sha1 'f849e16e03b474143c575503ae82da7577a2170f'
 
   head 'https://github.com/mozilla/rust.git'
 
   bottle do
-    sha1 "b5b11a57f873c8fd3a794ede207839dcb0bfbe4b" => :mavericks
-    sha1 "ca4d44441ef88c71cd98852c36d15d89e95d9fb7" => :mountain_lion
-    sha1 "507705ef8749dd3cfae781f016e18bfcc09d8947" => :lion
-  end
-
-  fails_with :clang do
-    build 318
-    cause "cannot initialize a parameter of type 'volatile long long *' with an rvalue of type 'int *'"
+    sha1 "80cb5b7ab75da8fdab98f56441a69a2a3e575595" => :mavericks
+    sha1 "476b4a75e28c68fec195535ed2aaf8082af9597f" => :mountain_lion
+    sha1 "e4246f7544502ac83c4485e82660ab5bcce96979" => :lion
   end
 
   def install

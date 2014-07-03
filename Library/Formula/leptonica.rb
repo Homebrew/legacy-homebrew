@@ -5,6 +5,13 @@ class Leptonica < Formula
   url 'http://www.leptonica.org/source/leptonica-1.70.tar.gz'
   sha1 '476edd5cc3f627f5ad988fcca6b62721188fce13'
 
+  bottle do
+    cellar :any
+    sha1 "94400785790bf9457d3e9175b8268f726c76ccdc" => :mavericks
+    sha1 "7e4cd58addeffdd94b77c69f6a01289dc55ac79d" => :mountain_lion
+    sha1 "b6b447e6dea9d163432406941b6a2c96ac68821c" => :lion
+  end
+
   depends_on 'libpng' => :recommended
   depends_on 'jpeg' => :recommended
   depends_on 'libtiff' => :optional

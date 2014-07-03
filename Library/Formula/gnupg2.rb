@@ -2,8 +2,15 @@ require "formula"
 
 class Gnupg2 < Formula
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.23.tar.bz2"
-  sha1 "c90e47ab95a40dd070fd75faef0a05c7b679553b"
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.25.tar.bz2"
+  sha1 "890d77d89f2d187382f95e83e386f2f7ba789436"
+
+  bottle do
+    revision 1
+    sha1 "72eb0a083cf2f395a7c09d61cd1606af27cf800f" => :mavericks
+    sha1 "e13777dfd387f1de8ffd1160a37167ab3e1d99ed" => :mountain_lion
+    sha1 "0d925112501a584e1a221d6811a23562183a2850" => :lion
+  end
 
   option "8192", "Build with support for private keys of up to 8192 bits"
 
@@ -75,7 +82,7 @@ index 4b03cfe..c84f26f 100644
  }
  
 diff --git a/configure b/configure
-index 5959b37..2bea995 100755
+index abacb4e..d61f227 100755
 --- a/configure
 +++ b/configure
 @@ -578,8 +578,8 @@ MFLAGS=
@@ -86,20 +93,20 @@ index 5959b37..2bea995 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gnupg2'
 +PACKAGE_TARNAME='gnupg2'
- PACKAGE_VERSION='2.0.23'
- PACKAGE_STRING='gnupg 2.0.23'
+ PACKAGE_VERSION='2.0.25'
+ PACKAGE_STRING='gnupg 2.0.25'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'
 diff --git a/tests/openpgp/Makefile.in b/tests/openpgp/Makefile.in
-index c9ceb2d..7044900 100644
+index c9ceb2d..f58c96e 100644
 --- a/tests/openpgp/Makefile.in
 +++ b/tests/openpgp/Makefile.in
-@@ -312,11 +312,11 @@ GPG_IMPORT = ../../g10/gpg2 --homedir . \
+@@ -312,11 +312,10 @@ GPG_IMPORT = ../../g10/gpg2 --homedir . \
  
  
  # Programs required before we can run these tests.
 -required_pgms = ../../g10/gpg2 ../../agent/gpg-agent \
-+required_pgms = ../../g10/gpg2 \
-                 ../../tools/gpg-connect-agent
+-                ../../tools/gpg-connect-agent
++required_pgms = ../../g10/gpg2 ../../tools/gpg-connect-agent
  
  TESTS_ENVIRONMENT = GNUPGHOME=$(abs_builddir) GPG_AGENT_INFO= LC_ALL=C \
 -		    ../../agent/gpg-agent --quiet --daemon sh

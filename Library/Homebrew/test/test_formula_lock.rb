@@ -9,6 +9,7 @@ class FormulaLockTests < Homebrew::TestCase
 
   def teardown
     @lock.unlock
+    FormulaLock::LOCKDIR.children.each(&:unlink)
   end
 
   def test_locking_file_with_existing_lock_raises_error

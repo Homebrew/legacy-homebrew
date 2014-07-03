@@ -2,8 +2,8 @@ require 'formula'
 
 class Gcutil < Formula
   homepage 'https://developers.google.com/compute/docs/gcutil/'
-  url 'https://dl.google.com/dl/cloudsdk/release/artifacts/gcutil-1.15.0.zip'
-  sha1 '3ef940bda17469e742f77f5c0918613c5377f058'
+  url 'https://dl.google.com/dl/cloudsdk/release/artifacts/gcutil-1.16.1.zip'
+  sha1 '6399fd44f373a8ddea92526ce2165af05532d36b'
 
   def install
     libexec.install 'gcutil', 'lib'

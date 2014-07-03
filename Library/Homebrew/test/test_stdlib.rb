@@ -2,7 +2,6 @@ require 'testing_env'
 require 'test/testball'
 require 'formula'
 require 'cxxstdlib'
-require 'tab'
 
 class CxxStdlibTests < Homebrew::TestCase
   def setup
@@ -54,12 +53,6 @@ class CxxStdlibTests < Homebrew::TestCase
   def test_type_string_formatting
     assert_equal "libstdc++", @clang.type_string
     assert_equal "libc++", @lcxx.type_string
-  end
-
-  def test_constructing_from_tab
-    stdlib = Tab.dummy_tab.cxxstdlib
-    assert_equal :clang, stdlib.compiler
-    assert_nil stdlib.type
   end
 
   def test_compatibility_for_non_cxx_software

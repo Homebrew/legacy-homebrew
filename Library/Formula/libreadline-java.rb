@@ -5,6 +5,13 @@ class LibreadlineJava < Formula
   url 'https://downloads.sourceforge.net/project/java-readline/java-readline/0.8.0/libreadline-java-0.8.0-src.tar.gz'
   sha1 '1f5574f9345afc039e9c7a09ae4979129891d52a'
 
+  bottle do
+    cellar :any
+    sha1 "f6384cc881f3fcd60aeef481808c006dd0444f26" => :mavericks
+    sha1 "4bb94e4a09c1b34f42fb321e29c70f5689e2d0a5" => :mountain_lion
+    sha1 "fc8c12b579f0f18b71dcacf3ec06230647ecc425" => :lion
+  end
+
   depends_on 'readline'
 
   # Fix "non-void function should return a value"-Error

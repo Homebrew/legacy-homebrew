@@ -6,8 +6,9 @@ class FormulaTests < Homebrew::TestCase
     klass = Class.new(Formula) { url "http://example.com/foo-1.0.tar.gz" }
     name = "formula_name"
     path = Formula.path(name)
+    spec = :stable
 
-    f = klass.new(name, path)
+    f = klass.new(name, path, spec)
     assert_equal name, f.name
     assert_equal path, f.path
     assert_raises(ArgumentError) { klass.new }
@@ -57,7 +58,7 @@ class FormulaTests < Homebrew::TestCase
     prefix.mkpath
     assert_equal prefix, f.installed_prefix
   ensure
-    prefix.rmtree
+    f.rack.rmtree
   end
 
   def test_installed_prefix_devel_installed
@@ -72,7 +73,7 @@ class FormulaTests < Homebrew::TestCase
     prefix.mkpath
     assert_equal prefix, f.installed_prefix
   ensure
-    prefix.rmtree
+    f.rack.rmtree
   end
 
   def test_installed_prefix_stable_installed
@@ -87,13 +88,11 @@ class FormulaTests < Homebrew::TestCase
     prefix.mkpath
     assert_equal prefix, f.installed_prefix
   ensure
-    prefix.rmtree
+    f.rack.rmtree
   end
 
   def test_installed_prefix_head_active_spec
-    ARGV.stubs(:build_head? => true)
-
-    f = formula do
+    f = formula("test", Pathname.new(__FILE__).expand_path, :head) do
       head 'foo'
       devel do
         url 'foo'
@@ -105,9 +104,7 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_installed_prefix_devel_active_spec
-    ARGV.stubs(:build_devel? => true)
-
-    f = formula do
+    f = formula("test", Pathname.new(__FILE__).expand_path, :devel) do
       head 'foo'
       devel do
         url 'foo'
@@ -122,9 +119,7 @@ class FormulaTests < Homebrew::TestCase
     x = TestBall.new
     y = TestBall.new
     assert_equal x, y
-    assert_equal y, x
-    assert x.eql?(y)
-    assert y.eql?(x)
+    assert_eql x, y
     assert_equal x.hash, y.hash
   end
 
@@ -132,14 +127,16 @@ class FormulaTests < Homebrew::TestCase
     x = TestBall.new("foo")
     y = TestBall.new("bar")
     refute_equal x, y
-    refute_equal y, x
+    refute_eql x, y
     refute_equal x.hash, y.hash
-    assert !x.eql?(y)
-    assert !y.eql?(x)
   end
 
   def test_comparison_with_non_formula_objects_does_not_raise
     refute_equal TestBall.new, Object.new
+  end
+
+  def test_sort_operator
+    assert_nil TestBall.new <=> Object.new
   end
 
   def test_class_naming
@@ -168,7 +165,7 @@ class FormulaTests < Homebrew::TestCase
       bottle { sha1 TEST_SHA1 => bottle_tag }
 
       def initialize
-        super "test", Pathname.new(__FILE__).expand_path
+        super "test", Pathname.new(__FILE__).expand_path, :stable
       end
     end.new
 
@@ -198,7 +195,7 @@ class FormulaTests < Homebrew::TestCase
         end
       }
     end
-    assert_kind_of Formula, Formula.factory(name)
+    assert_kind_of Formula, Formulary.factory(name)
   ensure
     path.unlink
   end
@@ -243,14 +240,22 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_head_ignores_revisions
-    ARGV.stubs(:build_head?).returns(true)
-
-    f = formula do
+    f = formula("test", Pathname.new(__FILE__).expand_path, :head) do
       url 'foo-1.0.bar'
       revision 1
       head 'foo'
     end
 
     assert_equal PkgVersion.parse('HEAD'), f.pkg_version
+  end
+
+  def test_raises_when_non_formula_constant_exists
+    const = :SomeConst
+    Object.const_set(const, Module.new)
+    begin
+      assert_raises(FormulaUnavailableError) { Formulary.factory("some_const") }
+    ensure
+      Object.send(:remove_const, const)
+    end
   end
 end

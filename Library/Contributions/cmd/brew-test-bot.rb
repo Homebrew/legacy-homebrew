@@ -304,7 +304,7 @@ class Test
     test "brew", "uses", formula
     dependencies = `brew deps #{formula}`.split("\n")
     dependencies -= `brew list`.split("\n")
-    formula_object = Formula.factory(formula)
+    formula_object = Formulary.factory(formula)
     return unless satisfied_requirements? formula_object
 
     installed_gcc = false
@@ -471,8 +471,8 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
   raise "Missing Jenkins variables!" unless jenkins and job and id
 
   ARGV << '--verbose'
-  copied = system "cp #{jenkins}/jobs/\"#{job}\"/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.* ."
-  exit unless copied
+  cp_args = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"] + ["."]
+  exit unless system "cp", *cp_args
 
   ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
   ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
@@ -482,28 +482,31 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
 
   system "git am --abort 2>/dev/null"
   system "git rebase --abort 2>/dev/null"
-  safe_system "git checkout -f master"
-  safe_system "git reset --hard origin/master"
-  safe_system "brew update"
+  safe_system "git", "checkout", "-f", "master"
+  safe_system "git", "reset", "--hard", "origin/master"
+  safe_system "brew", "update"
 
   if ARGV.include? '--ci-pr-upload'
-    safe_system "brew pull --clean #{pr}"
+    safe_system "brew", "pull", "--clean", pr
   end
 
   ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
   ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
-  safe_system "brew bottle --merge --write *.bottle*.rb"
+  safe_system "brew", "bottle", "--merge", "--write", *Dir["*.bottle*.rb"]
 
   remote = "git@github.com:BrewTestBot/homebrew.git"
   tag = pr ? "pr-#{pr}" : "testing-#{number}"
-  safe_system "git push --force #{remote} master:master :refs/tags/#{tag}"
+  safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
   path = "/home/frs/project/m/ma/machomebrew/Bottles/"
   url = "BrewTestBot,machomebrew@frs.sourceforge.net:#{path}"
-  options = "--partial --progress --human-readable --compress"
-  safe_system "rsync #{options} *.bottle*.tar.gz #{url}"
-  safe_system "git tag --force #{tag}"
-  safe_system "git push --force #{remote} refs/tags/#{tag}"
+
+  rsync_args = %w[--partial --progress --human-readable --compress]
+  rsync_args += Dir["*.bottle*.tar.gz"] + [url]
+
+  safe_system "rsync", *rsync_args
+  safe_system "git", "tag", "--force", tag
+  safe_system "git", "push", "--force", remote, "refs/tags/#{tag}"
   exit
 end
 

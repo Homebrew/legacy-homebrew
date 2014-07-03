@@ -3,14 +3,13 @@ require "formula"
 class Python < Formula
   homepage "http://www.python.org"
   head "http://hg.python.org/cpython", :using => :hg, :branch => "2.7"
-  url "http://www.python.org/ftp/python/2.7.7/Python-2.7.7.tgz"
-  sha1 "1db01d7f325d8ceaf986976800106018b82ae45a"
-  revision 2
+  url "http://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz"
+  sha1 "511960dd78451a06c9df76509635aeec05b2051a"
 
   bottle do
-    sha1 "498c5a8268cb3f07b2a4bb870d6cee372c469e67" => :mavericks
-    sha1 "fadf0c220125a9cbba7d98fb02ba5944f9f7a0eb" => :mountain_lion
-    sha1 "0626b5c963b0abfcbbac30e4cac6949b1b2f61f3" => :lion
+    sha1 "11c4ad33f1a0ec2a9dee025f246e67a0783e8bdb" => :mavericks
+    sha1 "522a99761335205b29f348dd9861dc6630a29a35" => :mountain_lion
+    sha1 "07ba7ee28c2d6a6d8fcc613b27574090f0e2f27e" => :lion
   end
 
   option :universal
@@ -31,8 +30,8 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.0.1.tar.gz"
-    sha1 "08967022405ee730c7e9605aad5b1354cc76dd67"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.3.tar.gz"
+    sha1 "da2da9324a539029ebea602120afcb8cfd24ddf6"
   end
 
   resource "pip" do

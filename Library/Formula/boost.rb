@@ -12,6 +12,18 @@ class UniversalPython < Requirement
   end
 end
 
+class UniversalPython3 < Requirement
+  satisfy(:build_env => false) { archs_for_command("python3").universal? }
+
+  def message; <<-EOS.undent
+    A universal build was requested, but Python 3 is not a universal build
+
+    Boost compiles against the Python 3 it finds in the path; if this Python
+    is not a universal build then linking will likely fail.
+    EOS
+  end
+end
+
 class Boost < Formula
   homepage 'http://www.boost.org'
   url 'https://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2'
@@ -22,9 +34,10 @@ class Boost < Formula
 
   bottle do
     cellar :any
-    sha1 "4e7dcb53d40c1ec06a9591c2d449b4851bbf5c79" => :mavericks
-    sha1 "69b716880d749452cf58a90e3c70f1b748501a29" => :mountain_lion
-    sha1 "8dbb6c64642d43327adbe0642577b6749f4cb5ba" => :lion
+    revision 4
+    sha1 "81b8843487a6f0017fac77b4bf58bdc20f3298fa" => :mavericks
+    sha1 "40089f76eddb25ac418032fa0055b6f0b6d76847" => :mountain_lion
+    sha1 "da4fb2a221fd83f50741f757eefe4bc38b5e910c" => :lion
   end
 
   env :userpaths
@@ -37,7 +50,9 @@ class Boost < Formula
   option :cxx11
 
   depends_on :python => :optional
+  depends_on :python3 => :optional
   depends_on UniversalPython if build.universal? and build.with? "python"
+  depends_on UniversalPython3 if build.universal? and build.with? "python3"
 
   if build.with? 'icu'
     if build.cxx11?
@@ -69,6 +84,15 @@ class Boost < Formula
       sha1 "b68f5536474c9f543879698299bd4975538a89eb"
     end
 
+    # Patch fixes upstream issue reported here (https://svn.boost.org/trac/boost/ticket/9698).
+    # Will be fixed in Boost 1.56 and can be removed once that release is available.
+    # See this issue (https://github.com/Homebrew/homebrew/issues/30592) for more details.
+
+    patch :p2 do
+      url "https://github.com/boostorg/chrono/commit/143260d.diff"
+      sha1 "2600214608e7706116831d6ffc302d099ba09950"
+    end
+
     # Patch boost::serialization for Clang
     # https://svn.boost.org/trac/boost/ticket/8757
     patch :p1 do
@@ -92,7 +116,8 @@ class Boost < Formula
       EOS
     end
 
-    if build.cxx11? and build.with? 'mpi' and build.with? 'python'
+    if build.cxx11? and build.with? 'mpi' and (build.with? 'python' \
+                                               or build.with? 'python3')
       raise <<-EOS.undent
         Building MPI support for Python using C++11 mode results in
         failure and hence disabled.  Please don't use this combination
@@ -106,6 +131,20 @@ class Boost < Formula
     open("user-config.jam", "a") do |file|
       file.write "using darwin : : #{ENV.cxx} ;\n"
       file.write "using mpi ;\n" if build.with? 'mpi'
+
+      # Link against correct version of Python if python3 build was requested
+      if build.with? 'python3'
+        py3executable = `which python3`.strip
+        py3version = `python3 -c "import sys; print(sys.version[:3])"`.strip
+        py3prefix = `python3 -c "import sys; print(sys.prefix)"`.strip
+
+        file.write <<-EOS.undent
+          using python : #{py3version}
+                       : #{py3executable}
+                       : #{py3prefix}/include/python#{py3version}m
+                       : #{py3prefix}/lib ;
+        EOS
+      end
     end
 
     # we specify libdir too because the script is apparently broken
@@ -133,8 +172,8 @@ class Boost < Formula
     # Boost.Log cannot be built using Apple GCC at the moment. Disabled
     # on such systems.
     without_libraries << "log" if ENV.compiler == :gcc || ENV.compiler == :llvm
-
-    without_libraries << "python" if build.without? 'python'
+    without_libraries << "python" if (build.without? 'python' \
+                                      and build.without? 'python3')
     without_libraries << "mpi" if build.without? 'mpi'
 
     bargs << "--without-libraries=#{without_libraries.join(',')}"

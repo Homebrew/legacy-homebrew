@@ -25,6 +25,16 @@ class LinkTests < Homebrew::TestCase
     mkpath HOMEBREW_PREFIX/"lib"
   end
 
+  def teardown
+    @keg.unlink
+    @keg.uninstall
+
+    $stdout = @old_stdout
+
+    rmtree HOMEBREW_PREFIX/"bin"
+    rmtree HOMEBREW_PREFIX/"lib"
+  end
+
   def test_linking_keg
     assert_equal 3, @keg.link
     (HOMEBREW_PREFIX/"bin").children.each { |c| assert_predicate c.readlink, :relative? }
@@ -73,6 +83,7 @@ class LinkTests < Homebrew::TestCase
     touch HOMEBREW_PREFIX/"bin/helloworld"
     @mode.overwrite = true
     assert_equal 3, @keg.link(@mode)
+    assert_predicate @keg, :linked?
   end
 
   def test_link_overwrite_broken_symlinks
@@ -81,6 +92,7 @@ class LinkTests < Homebrew::TestCase
     end
     @mode.overwrite = true
     assert_equal 3, @keg.link(@mode)
+    assert_predicate @keg, :linked?
   end
 
   def test_link_overwrite_dryrun
@@ -116,13 +128,42 @@ class LinkTests < Homebrew::TestCase
     refute_predicate HOMEBREW_PREFIX/"lib/foo/.DS_Store", :exist?
   end
 
-  def teardown
+  def test_linking_creates_opt_link
+    refute_predicate @keg, :optlinked?
+    @keg.link
+    assert_predicate @keg, :optlinked?
+  end
+
+  def test_unlinking_does_not_remove_opt_link
+    @keg.link
     @keg.unlink
-    @keg.rmtree
+    assert_predicate @keg, :optlinked?
+  end
 
-    $stdout = @old_stdout
+  def test_existing_opt_link
+    @keg.opt_record.make_relative_symlink Pathname.new(@keg)
+    @keg.optlink
+    assert_predicate @keg, :optlinked?
+  end
 
-    rmtree HOMEBREW_PREFIX/"bin"
-    rmtree HOMEBREW_PREFIX/"lib"
+  def test_existing_opt_link_directory
+    @keg.opt_record.mkpath
+    @keg.optlink
+    assert_predicate @keg, :optlinked?
+  end
+
+  def test_existing_opt_link_file
+    @keg.opt_record.parent.mkpath
+    @keg.opt_record.write("foo")
+    @keg.optlink
+    assert_predicate @keg, :optlinked?
+  end
+
+  def test_linked_keg
+    refute_predicate @keg, :linked?
+    @keg.link
+    assert_predicate @keg, :linked?
+    @keg.unlink
+    refute_predicate @keg, :linked?
   end
 end

@@ -1,6 +1,5 @@
 require 'testing_env'
 require 'dependency_collector'
-require 'extend/set'
 
 class DependencyCollectorTests < Homebrew::TestCase
   def find_dependency(name)
@@ -16,7 +15,7 @@ class DependencyCollectorTests < Homebrew::TestCase
   end
 
   def teardown
-    DependencyCollector::CACHE.clear
+    DependencyCollector.clear_cache
   end
 
   def test_dependency_creation
@@ -52,7 +51,7 @@ class DependencyCollectorTests < Homebrew::TestCase
 
   def test_no_duplicate_requirements
     2.times { @d.add :x11 }
-    assert_equal 1, @d.requirements.length
+    assert_equal 1, @d.requirements.count
   end
 
   def test_requirement_tags
@@ -69,7 +68,7 @@ class DependencyCollectorTests < Homebrew::TestCase
 
   def test_x11_min_version
     @d.add :x11 => '2.5.1'
-    assert_equal "2.5.1", find_requirement(X11Dependency).min_version
+    assert_equal "2.5.1", find_requirement(X11Dependency).min_version.to_s
   end
 
   def test_x11_tag
@@ -80,7 +79,7 @@ class DependencyCollectorTests < Homebrew::TestCase
   def test_x11_min_version_and_tag
     @d.add :x11 => ['2.5.1', :optional]
     dep = find_requirement(X11Dependency)
-    assert_equal '2.5.1', dep.min_version
+    assert_equal '2.5.1', dep.min_version.to_s
     assert_predicate dep, :optional?
   end
 

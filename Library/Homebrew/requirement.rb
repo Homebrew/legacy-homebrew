@@ -1,7 +1,7 @@
 require 'dependable'
 require 'dependency'
+require 'dependencies'
 require 'build_environment'
-require 'extend/ENV'
 
 # A base class for non-formula requirements needed by formulae.
 # A "fatal" requirement is one that will fail the build if it is not present.
@@ -68,7 +68,7 @@ class Requirement
   end
 
   def inspect
-    "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect}>"
   end
 
   def to_dependency
@@ -127,6 +127,7 @@ class Requirement
       if instance_variable_defined?(:@satisfied)
         @satisfied
       elsif @options[:build_env]
+        require "extend/ENV"
         ENV.with_build_environment { yield @proc }
       else
         yield @proc
@@ -141,7 +142,7 @@ class Requirement
     # The default filter, which is applied when a block is not given, omits
     # optionals and recommendeds based on what the dependent has asked for.
     def expand(dependent, &block)
-      reqs = ComparableSet.new
+      reqs = Requirements.new
 
       formulae = dependent.recursive_dependencies.map(&:to_formula)
       formulae.unshift(dependent)

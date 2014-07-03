@@ -25,13 +25,13 @@ module Homebrew
     unlink_tap_formula(tapped_formulae)
 
     report = Report.new
-    master_updater = Updater.new
+    master_updater = Updater.new(HOMEBREW_REPOSITORY)
     begin
       master_updater.pull!
     ensure
       link_tap_formula(tapped_formulae)
     end
-    report.merge!(master_updater.report)
+    report.update(master_updater.report)
 
     # rename Taps directories
     # this procedure will be removed in the future if it seems unnecessasry
@@ -39,14 +39,14 @@ module Homebrew
 
     each_tap do |user, repo|
       repo.cd do
-        updater = Updater.new
+        updater = Updater.new(repo)
 
         begin
           updater.pull!
         rescue
           onoe "Failed to update tap: #{user.basename}/#{repo.basename.sub("homebrew-", "")}"
         else
-          report.merge!(updater.report) do |key, oldval, newval|
+          report.update(updater.report) do |key, oldval, newval|
             oldval.concat(newval)
           end
         end
@@ -77,17 +77,17 @@ module Homebrew
   private
 
   def git_init_if_necessary
-    if Dir['.git/*'].empty?
-      safe_system "git init"
-      safe_system "git config core.autocrlf false"
-      safe_system "git remote add origin https://github.com/Homebrew/homebrew.git"
-      safe_system "git fetch origin"
-      safe_system "git reset --hard origin/master"
+    if Dir[".git/*"].empty?
+      safe_system "git", "init"
+      safe_system "git", "config", "core.autocrlf", "false"
+      safe_system "git", "remote", "add", "origin", "https://github.com/Homebrew/homebrew.git"
+      safe_system "git", "fetch", "origin"
+      safe_system "git", "reset", "--hard", "origin/master"
     end
 
     if `git remote show origin -n` =~ /Fetch URL: \S+mxcl\/homebrew/
-      safe_system "git remote set-url origin https://github.com/Homebrew/homebrew.git"
-      safe_system "git remote set-url --delete origin .*mxcl\/homebrew.*"
+      safe_system "git", "remote", "set-url", "origin", "https://github.com/Homebrew/homebrew.git"
+      safe_system "git", "remote", "set-url", "--delete", "origin", ".*mxcl\/homebrew.*"
     end
   rescue Exception
     FileUtils.rm_rf ".git"
@@ -135,15 +135,19 @@ module Homebrew
 end
 
 class Updater
-  attr_reader :initial_revision, :current_revision
+  attr_reader :initial_revision, :current_revision, :repository
+
+  def initialize(repository)
+    @repository = repository
+  end
 
   def pull!
-    safe_system "git checkout -q master"
+    safe_system "git", "checkout", "-q", "master"
 
     @initial_revision = read_current_revision
 
     # ensure we don't munge line endings on checkout
-    safe_system "git config core.autocrlf false"
+    safe_system "git", "config", "core.autocrlf", "false"
 
     args = ["pull"]
     args << "--rebase" if ARGV.include? "--rebase"
@@ -178,7 +182,7 @@ class Updater
           when :R then $3
           else $2
           end
-        map[status] << Pathname.pwd.join(path)
+        map[status] << repository.join(path)
       end
     end
 
@@ -192,7 +196,7 @@ class Updater
   end
 
   def `(cmd)
-    out = Kernel.`(cmd) #`
+    out = super
     if $? && !$?.success?
       $stderr.puts out
       raise ErrorDuringExecution, "Failure while executing: #{cmd}"
@@ -203,7 +207,22 @@ class Updater
 end
 
 
-class Report < Hash
+class Report
+  def initialize
+    @hash = {}
+  end
+
+  def fetch(*args, &block)
+    @hash.fetch(*args, &block)
+  end
+
+  def update(*args, &block)
+    @hash.update(*args, &block)
+  end
+
+  def empty?
+    @hash.empty?
+  end
 
   def dump
     # Key Legend: Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R)
@@ -212,8 +231,6 @@ class Report < Hash
     dump_formula_report :M, "Updated Formulae"
     dump_formula_report :D, "Deleted Formulae"
     dump_formula_report :R, "Renamed Formulae"
-#    dump_new_commands
-#    dump_deleted_commands
   end
 
   def tapped_formula_for key
@@ -228,13 +245,14 @@ class Report < Hash
   end
 
   def valid_formula_location?(relative_path)
-    ruby_file = /\A.*\.rb\Z/
     parts = relative_path.split('/')[2..-1]
-    [
-      parts.length == 1 && parts.first =~ ruby_file,
-      parts.length == 2 && parts.first == 'Formula' && parts.last =~ ruby_file,
-      parts.length == 2 && parts.first == 'HomebrewFormula' && parts.last =~ ruby_file,
-    ].any?
+    return false unless File.extname(parts.last) == ".rb"
+    case parts.first
+    when "Formula", "HomebrewFormula"
+      parts.length == 2
+    else
+      parts.length == 1
+    end
   end
 
   def new_tapped_formula
@@ -263,5 +281,4 @@ class Report < Hash
       puts_columns formula.uniq
     end
   end
-
 end

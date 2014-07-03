@@ -29,7 +29,7 @@ class Option
   end
 
   def inspect
-    "#<#{self.class}: #{flag.inspect}>"
+    "#<#{self.class.name}: #{flag.inspect}>"
   end
 
   private
@@ -109,13 +109,10 @@ class Options
     self
   end
 
-  def to_a
-    @options.to_a
-  end
   alias_method :to_ary, :to_a
 
   def inspect
-    "#<#{self.class}: #{to_a.inspect}>"
+    "#<#{self.class.name}: #{to_a.inspect}>"
   end
 
   def self.coerce(arg)

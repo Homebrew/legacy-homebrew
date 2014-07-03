@@ -14,6 +14,11 @@ class PatchingTests < Homebrew::TestCase
     end
   end
 
+  def teardown
+    @_f.clear_cache
+    @_f.patchlist.select(&:external?).each(&:clear_cache)
+  end
+
   def assert_patched(path)
     s = File.read(path)
     refute_includes s, "NOOP", "#{path} was not patched as expected"

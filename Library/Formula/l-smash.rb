@@ -1,7 +1,7 @@
 require "formula"
 
 class LSmash < Formula
-  homepage "http://up-cat.net/L%252DSMASH.html"
+  homepage "http://l-smash.github.io/l-smash/"
   url "https://github.com/l-smash/l-smash.git", :tag => "v1.11.7", :shallow => false
   head "https://github.com/l-smash/l-smash.git"
 

@@ -112,6 +112,10 @@ module Homebrew
     Process.wait(pid)
     $?.success?
   end
+
+  def self.git_head
+    HOMEBREW_REPOSITORY.cd { `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle }
+  end
 end
 
 def with_system_path
@@ -311,15 +315,18 @@ module GitHub extend self
     }
 
     default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
-    Kernel.open(url, default_headers.merge(headers)) do |f|
-      yield Utils::JSON.load(f.read)
+
+    begin
+      Kernel.open(url, default_headers.merge(headers)) do |f|
+        yield Utils::JSON.load(f.read)
+      end
+    rescue OpenURI::HTTPError => e
+      handle_api_error(e)
+    rescue SocketError, OpenSSL::SSL::SSLError => e
+      raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
+    rescue Utils::JSON::Error => e
+      raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
     end
-  rescue OpenURI::HTTPError => e
-    handle_api_error(e)
-  rescue SocketError, OpenSSL::SSL::SSLError => e
-    raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
-  rescue Utils::JSON::Error => e
-    raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
   end
 
   def handle_api_error(e)
