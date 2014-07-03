@@ -104,33 +104,30 @@ class Caveats
         else
           s << "    launchctl load #{plist_link}"
         end
-        if f.plist_manual
-          s << "Or, if you don't want/need launchctl, you can just run:"
-          s << "    #{f.plist_manual}"
-        end
-      elsif Kernel.system "/bin/launchctl list #{plist_domain} &>/dev/null"
-        s << "To reload #{f.name} after an upgrade:"
+      else
         if f.plist_startup
+          s << "To reload #{f.name} after an upgrade:"
           s << "    sudo launchctl unload #{plist_link}"
           s << "    sudo cp -fv #{f.opt_prefix}/*.plist #{destination}"
           s << "    sudo launchctl load #{plist_link}"
         else
-          s << "    launchctl unload #{plist_link}"
-          s << "    launchctl load #{plist_link}"
-        end
-      else
-        s << "To load #{f.name}:"
-        if f.plist_startup
-          s << "    sudo launchctl load #{plist_link}"
-        else
-          s << "    launchctl load #{plist_link}"
-        end
-        if f.plist_manual
-          s << "Or, if you don't want/need launchctl, you can just run:"
-          s << "    #{f.plist_manual}"
+          if Kernel.system "/bin/launchctl list #{plist_domain} &>/dev/null"
+            s << "To reload #{f.name} after an upgrade:"
+            s << "    launchctl unload #{plist_link}"
+            s << "    launchctl load #{plist_link}"
+          else
+            s << "To load #{f.name}:"
+            s << "    launchctl load #{plist_link}"
+          end
         end
       end
-      s << '' << "WARNING: launchctl will fail when run under tmux." if ENV['TMUX']
+
+      if f.plist_manual
+        s << "Or, if you don't want/need launchctl, you can just run:"
+        s << "    #{f.plist_manual}"
+      end
+
+      s << "" << "WARNING: launchctl will fail when run under tmux." if ENV['TMUX']
     end
     s.join("\n") unless s.empty?
   end
