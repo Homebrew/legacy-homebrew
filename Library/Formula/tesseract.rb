@@ -6,6 +6,12 @@ class Tesseract < Formula
   sha1 'a950acf7b75cf851de2de787e9abb62c58ca1827'
   revision 2
 
+  bottle do
+    sha1 "5949807031e5d1a5c4382ed93afa06e684be104f" => :mavericks
+    sha1 "44298a87cc05b956cb9b8feb85559530cac02ad9" => :mountain_lion
+    sha1 "5beafc2400bb170185c7934ed69749c9b8ef8c99" => :lion
+  end
+
   head do
     url "http://tesseract-ocr.googlecode.com/svn/trunk"
 
