@@ -3,6 +3,7 @@ require 'formula'
 class Giblib < Formula
   homepage 'http://freshmeat.net/projects/giblib'
   url 'http://linuxbrit.co.uk/downloads/giblib-1.2.4.tar.gz'
+  mirror 'http://www.mirrorservice.org/sites/distfiles.macports.org/giblib/giblib-1.2.4.tar.gz'
   sha1 '342e6f7882c67d2277e1765299e1be5078329ab0'
 
   depends_on :x11
