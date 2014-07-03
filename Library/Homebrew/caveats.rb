@@ -104,22 +104,20 @@ class Caveats
         else
           s << "    launchctl load #{plist_link}"
         end
-      else
-        if f.plist_startup
+      # For startup plists, we cannot tell whether it's running on launchd,
+      # as it requires for `sudo launchctl list` to get real result.
+      elsif f.plist_startup
           s << "To reload #{f.name} after an upgrade:"
           s << "    sudo launchctl unload #{plist_link}"
           s << "    sudo cp -fv #{f.opt_prefix}/*.plist #{destination}"
           s << "    sudo launchctl load #{plist_link}"
-        else
-          if Kernel.system "/bin/launchctl list #{plist_domain} &>/dev/null"
-            s << "To reload #{f.name} after an upgrade:"
-            s << "    launchctl unload #{plist_link}"
-            s << "    launchctl load #{plist_link}"
-          else
-            s << "To load #{f.name}:"
-            s << "    launchctl load #{plist_link}"
-          end
-        end
+      elsif Kernel.system "/bin/launchctl list #{plist_domain} &>/dev/null"
+          s << "To reload #{f.name} after an upgrade:"
+          s << "    launchctl unload #{plist_link}"
+          s << "    launchctl load #{plist_link}"
+      else
+          s << "To load #{f.name}:"
+          s << "    launchctl load #{plist_link}"
       end
 
       if f.plist_manual
