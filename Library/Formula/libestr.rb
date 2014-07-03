@@ -2,8 +2,8 @@ require 'formula'
 
 class Libestr < Formula
   homepage 'http://libestr.adiscon.com'
-  url 'http://libestr.adiscon.com/files/download/libestr-0.1.8.tar.gz'
-  sha256 'ce18565af57adc219799fe1659baaa70f58f169795882d770a7a2fe8ca8a6615'
+  url "http://libestr.adiscon.com/files/download/libestr-0.1.9.tar.gz"
+  sha1 "55fb6ad347f987c45d98b422b0436d6ae50d86aa"
 
   bottle do
     cellar :any
