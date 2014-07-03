@@ -6,6 +6,13 @@ class Libaacs < Formula
   sha1 '461c0a6f143519cd6b24bf4be5e2672219b44780'
   revision 1
 
+  bottle do
+    cellar :any
+    sha1 "55c20042708796483b4e46af4825fff708bd6bdb" => :mavericks
+    sha1 "538f3413ca66af218def8fec70414de82315a2f2" => :mountain_lion
+    sha1 "ec113ed356983ea28c0f0d656d3964a50c4e7653" => :lion
+  end
+
   head do
     url 'git://git.videolan.org/libaacs.git'
 
