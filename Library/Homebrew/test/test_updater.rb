@@ -30,6 +30,10 @@ class UpdaterTests < Homebrew::TestCase
     def expectations_met?
       @expected == @called
     end
+
+    def inspect
+      "#<#{self.class.name}>"
+    end
   end
 
   def fixture(name)
