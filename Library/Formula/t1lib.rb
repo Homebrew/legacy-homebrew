@@ -11,10 +11,4 @@ class T1lib < Formula
     system 'make', 'install'
     share.install 'Fonts' => 'fonts'
   end
-
-  test do
-    cp "#{share}/fonts/type1/bchri.pfb", 'test.pfb'
-    system "#{bin}/type1afm", 'test.pfb'
-    assert File.exist? 'test.afm'
-  end
 end
