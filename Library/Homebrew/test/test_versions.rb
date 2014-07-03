@@ -63,7 +63,9 @@ class VersionComparisonTests < Homebrew::TestCase
   end
 
   def test_comparison_returns_nil_for_non_version
-    assert_nil version('1.0') <=> 'foo'
+    v = version("1.0")
+    assert_nil v <=> Object.new
+    assert_raises(ArgumentError) { v > Object.new }
   end
 
   def test_compare_patchlevel_to_non_patchlevel
