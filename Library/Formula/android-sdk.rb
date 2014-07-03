@@ -50,7 +50,7 @@ class AndroidSdk < Formula
 
     # this is data that should be preserved across upgrades, but the Android
     # SDK isn't too smart, so we still have to symlink it back into its tree.
-    %w[platforms samples temp add-ons sources system-images extras].each do |d|
+    %w[build-tools platforms samples temp add-ons sources system-images extras].each do |d|
       src = var/"lib/android-sdk"/d
       src.mkpath
       prefix.install_symlink src
