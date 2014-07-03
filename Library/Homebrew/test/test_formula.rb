@@ -139,6 +139,10 @@ class FormulaTests < Homebrew::TestCase
     refute_equal TestBall.new, Object.new
   end
 
+  def test_sort_operator
+    assert_nil TestBall.new <=> Object.new
+  end
+
   def test_class_naming
     assert_equal 'ShellFm', Formulary.class_s('shell.fm')
     assert_equal 'Fooxx', Formulary.class_s('foo++')

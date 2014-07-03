@@ -301,9 +301,12 @@ class Formula
   def hash
     name.hash
   end
-  def <=> b
-    name <=> b.name
+
+  def <=>(other)
+    return unless Formula === other
+    name <=> other.name
   end
+
   def to_s
     name
   end
