@@ -41,7 +41,7 @@ class Leptonica < Formula
     }
     EOS
     system ENV.cxx, "test.cpp", `pkg-config --cflags lept`
-    assert_equal "1.70", `./a.out`
+    assert_equal version.to_s, `./a.out`
   end
 end
 
