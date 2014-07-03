@@ -21,6 +21,7 @@ TAP_MIGRATIONS = {
   "dsniff" => "homebrew/boneyard",
   "grads" => "homebrew/binary",
   "gromacs" => "homebrew/science",
+  "hllib" => "homebrew/boneyard",
   "hugs98" => "homebrew/boneyard",
   "hwloc" => "homebrew/science",
   "ipopt" => "homebrew/science",
