@@ -9,7 +9,7 @@ class Vit < Formula
   depends_on "task"
 
   resource "Curses" do
-    url "http://search.cpan.org/CPAN/authors/id/G/GI/GIRAFFED/Curses-1.31.tgz"
+    url "http://cpan.metacpan.org/authors/id/G/GI/GIRAFFED/Curses-1.31.tgz"
     sha1 "9a70e8cd3d16c48fa8292608b8a5ca9e69976ded"
   end
 
