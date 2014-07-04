@@ -59,23 +59,19 @@ class LinkTests < Homebrew::TestCase
 
   def test_linking_fails_when_already_linked
     @keg.link
-    assert_raises Keg::AlreadyLinkedError do
-      shutup { @keg.link }
-    end
+    assert_raises(Keg::AlreadyLinkedError) { @keg.link }
   end
 
   def test_linking_fails_when_files_exist
     touch HOMEBREW_PREFIX/"bin/helloworld"
-    assert_raises Keg::ConflictError do
-      shutup { @keg.link }
-    end
+    assert_raises(Keg::ConflictError) { @keg.link }
   end
 
   def test_link_ignores_broken_symlinks_at_target
     dst = HOMEBREW_PREFIX/"bin/helloworld"
     src = @keg/"bin/helloworld"
     ln_s "/some/nonexistent/path", dst
-    shutup { @keg.link }
+    @keg.link
     assert_equal src.relative_path_from(dst.dirname), dst.readlink
   end
 
