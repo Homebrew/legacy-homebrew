@@ -82,9 +82,7 @@ class LinkTests < Homebrew::TestCase
   end
 
   def test_link_overwrite_broken_symlinks
-    cd HOMEBREW_PREFIX/"bin" do
-      ln_s "nowhere", "helloworld"
-    end
+    @dst.make_symlink "nowhere"
     @mode.overwrite = true
     assert_equal 3, @keg.link(@mode)
     assert_predicate @keg, :linked?
