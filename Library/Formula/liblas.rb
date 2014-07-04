@@ -7,6 +7,13 @@ class Liblas < Formula
 
   head 'https://github.com/libLAS/libLAS.git'
 
+  bottle do
+    cellar :any
+    sha1 "f0fe4448bda8ac12b105f6888e4219853627a997" => :mavericks
+    sha1 "f5439387f315fd15ed613c4abb883ac01d9fd9b3" => :mountain_lion
+    sha1 "363493669b97fd8d1b5e65126c85ac432d482965" => :lion
+  end
+
   depends_on 'cmake' => :build
   depends_on 'libgeotiff'
   depends_on 'gdal'
