@@ -15,6 +15,7 @@ class LinkTests < Homebrew::TestCase
 
     @keg = Keg.new(keg)
     @dst = HOMEBREW_PREFIX.join("bin", "helloworld")
+    @nonexistent = Pathname.new("/some/nonexistent/path")
 
     @mode = OpenStruct.new
 
@@ -42,7 +43,9 @@ class LinkTests < Homebrew::TestCase
 
   def test_unlinking_keg
     @keg.link
+    assert_predicate @dst, :symlink?
     assert_equal 4, @keg.unlink
+    refute_predicate @dst, :symlink?
   end
 
   def test_link_dry_run
@@ -69,7 +72,7 @@ class LinkTests < Homebrew::TestCase
 
   def test_link_ignores_broken_symlinks_at_target
     src = @keg.join("bin", "helloworld")
-    ln_s "/some/nonexistent/path", @dst
+    @dst.make_symlink(@nonexistent)
     @keg.link
     assert_equal src.relative_path_from(@dst.dirname), @dst.readlink
   end
@@ -158,5 +161,42 @@ class LinkTests < Homebrew::TestCase
     assert_predicate @keg, :linked?
     @keg.unlink
     refute_predicate @keg, :linked?
+  end
+
+  def test_unlink_preserves_broken_symlink_pointing_outside_the_keg
+    @keg.link
+    @dst.delete
+    @dst.make_symlink(@nonexistent)
+    @keg.unlink
+    assert_predicate @dst, :symlink?
+  end
+
+  def test_unlink_preserves_broken_symlink_pointing_into_the_keg
+    @keg.link
+    @dst.resolved_path.delete
+    @keg.unlink
+    assert_predicate @dst, :symlink?
+  end
+
+  def test_unlink_preserves_symlink_pointing_outside_of_keg
+    @keg.link
+    @dst.delete
+    @dst.make_symlink(Pathname.new("/bin/sh"))
+    @keg.unlink
+    assert_predicate @dst, :symlink?
+  end
+
+  def test_unlink_preserves_real_file
+    @keg.link
+    @dst.delete
+    touch @dst
+    @keg.unlink
+    assert_predicate @dst, :file?
+  end
+
+  def test_unlink_ignores_nonexistent_file
+    @keg.link
+    @dst.delete
+    assert_equal 3, @keg.unlink
   end
 end
