@@ -14,6 +14,7 @@ class LinkTests < Homebrew::TestCase
     end
 
     @keg = Keg.new(keg)
+    @dst = HOMEBREW_PREFIX.join("bin", "helloworld")
 
     @mode = OpenStruct.new
 
@@ -62,20 +63,19 @@ class LinkTests < Homebrew::TestCase
   end
 
   def test_linking_fails_when_files_exist
-    touch HOMEBREW_PREFIX/"bin/helloworld"
+    touch @dst
     assert_raises(Keg::ConflictError) { @keg.link }
   end
 
   def test_link_ignores_broken_symlinks_at_target
-    dst = HOMEBREW_PREFIX/"bin/helloworld"
-    src = @keg/"bin/helloworld"
-    ln_s "/some/nonexistent/path", dst
+    src = @keg.join("bin", "helloworld")
+    ln_s "/some/nonexistent/path", @dst
     @keg.link
-    assert_equal src.relative_path_from(dst.dirname), dst.readlink
+    assert_equal src.relative_path_from(@dst.dirname), @dst.readlink
   end
 
   def test_link_overwrite
-    touch HOMEBREW_PREFIX/"bin/helloworld"
+    touch @dst
     @mode.overwrite = true
     assert_equal 3, @keg.link(@mode)
     assert_predicate @keg, :linked?
@@ -91,14 +91,14 @@ class LinkTests < Homebrew::TestCase
   end
 
   def test_link_overwrite_dryrun
-    touch HOMEBREW_PREFIX/"bin/helloworld"
+    touch @dst
     @mode.overwrite = true
     @mode.dry_run = true
 
     assert_equal 0, @keg.link(@mode)
     refute_predicate @keg, :linked?
 
-    assert_equal "#{HOMEBREW_PREFIX}/bin/helloworld\n", $stdout.string
+    assert_equal "#{@dst}\n", $stdout.string
   end
 
   def test_unlink_prunes_empty_toplevel_directories
