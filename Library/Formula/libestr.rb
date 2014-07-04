@@ -7,9 +7,9 @@ class Libestr < Formula
 
   bottle do
     cellar :any
-    sha1 "0c5bb3a440fd72793000777a91b0a778e9fdad84" => :mavericks
-    sha1 "da5421c53fbda80c61766b1d919b8a8fed75f5ae" => :mountain_lion
-    sha1 "cbab735e202fc8e86fee5edb2f27c14e32ecca6f" => :lion
+    sha1 "bc0dc2d4fc17dce269003705c01cda62482b58a3" => :mavericks
+    sha1 "e232f60fdda3548f5f39b48221a018b363554e8c" => :mountain_lion
+    sha1 "e955560fd837eacbc843c631a1e5aaa432802942" => :lion
   end
 
   depends_on 'pkg-config' => :build
