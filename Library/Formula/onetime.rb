@@ -8,7 +8,7 @@ class Onetime < Formula
   devel do
     url "https://github.com/kfogel/OneTime/archive/2.0-beta2.tar.gz"
     version "2.0.02"
-    sha1 "5ae36caf5259b35f2a651b1ab0b162d834a8d339"
+    sha1 "2dbfe3f6479aed6c9e76337dd27b063ff73967fa"
   end
 
 # inreplace required for now due to upstream issue, reported here: https://github.com/kfogel/OneTime/issues/11
