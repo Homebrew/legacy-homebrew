@@ -27,6 +27,10 @@ class Ghc < Formula
       url "https://www.haskell.org/ghc/dist/7.8.2/ghc-7.8.2-testsuite.tar.xz"
       sha1 "3abe4e0ebbed17e825573f0f34be0eca9179f9e4"
     end
+
+    resource "clang_wrapper" do
+      url "https://github.com/AtkinsChang/clang-wrapper.git"
+    end
   end
 
   resource "binary_7.8" do
@@ -83,9 +87,19 @@ class Ghc < Formula
       # Define where the subformula will temporarily install itself
       subprefix = buildpath+"subfo"
 
-      # ensure configure does not use Xcode 5 "gcc" which is actually clang
+      # 7.8.x support clang with wrapper
+      if binary_resource == "binary_7.8"
+        resource("clang_wrapper").stage do
+          (buildpath+"subfo").install "clang-wrapper.rb", "clang-wrapper.hs"
+        end
+        # use script version wraper to get ghc work
+        cc_option = "--with-gcc="+buildpath+"/subfo/clang-wrapper.rb"
+      else
+        # ensure configure does not use Xcode 5 "gcc" which is actually clang
+        cc_option = "--with-gcc=#{ENV.cc}"
+      end
       args = ["--prefix=#{subprefix}"]
-      args << "--with-gcc=#{ENV.cc}"
+      args << cc_option
 
       system "./configure", *args
       if build.devel? and MacOS.version <= :lion
@@ -98,6 +112,11 @@ class Ghc < Formula
       # -j1 fixes an intermittent race condition
       system "make", "-j1", "install"
       ENV.prepend_path "PATH", subprefix/"bin"
+      if binary_resource == "binary_7.8"
+        # compile clang wrapper binary using clang wrapper script
+        system "ghc", buildpath+"subfo/clang-wrapper.hs"
+        bin.install buildpath+"subfo/clang-wrapper"
+      end
     end
 
     cd "Ghcsource" do
@@ -114,7 +133,11 @@ class Ghc < Formula
 
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       args = ["--prefix=#{prefix}", "--build=#{arch}-apple-darwin"]
-      args << "--with-gcc=#{ENV.cc}"
+      if binary_resource == "binary_7.8"
+        args << "--with-gcc="+prefix+"/bin/clang-wrapper"
+      else
+        args << "--with-gcc=#{ENV.cc}"
+      end
 
       system "./configure", *args
       system "make"
@@ -139,11 +162,6 @@ class Ghc < Formula
       system "make"
       # -j1 fixes an intermittent race condition
       system "make", "-j1", "install"
-      if build.devel?
-        # use clang, even when gcc was used to build ghc
-        settings = Dir[lib/"ghc-*/settings"][0]
-        inreplace settings, "\"#{ENV.cc}\"", "\"clang\""
-      end
     end
   end
 
