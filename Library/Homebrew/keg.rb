@@ -192,7 +192,7 @@ class Keg
         dirs << dst if dst.directory? && !dst.symlink?
 
         # check whether the file to be unlinked is from the current keg first
-        next if !dst.symlink? || !dst.exist? || src != dst.resolved_path
+        next unless dst.symlink? && src == dst.resolved_path
 
         dst.uninstall_info if dst.to_s =~ INFOFILE_RX
         dst.unlink
@@ -337,7 +337,7 @@ class Keg
   end
 
   def make_relative_symlink dst, src, mode
-    if dst.symlink? && dst.exist? && dst.resolved_path == src
+    if dst.symlink? && src == dst.resolved_path
       puts "Skipping; link already exists: #{dst}" if ARGV.verbose?
       return
     end
