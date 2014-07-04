@@ -111,7 +111,7 @@ class Ghc < Formula
       ENV.prepend_path "PATH", subprefix/"bin"
 
       # intall binary clang wrapper if target-ghc is greater than 7.8
-      if build.devel?
+      if build.devel? and MacOS.version > :lion
         # compile clang wrapper binary using clang wrapper script
         system "ghc", buildpath+"subfo/clang-wrapper.hs"
         bin.install buildpath+"subfo/clang-wrapper"
@@ -132,7 +132,7 @@ class Ghc < Formula
 
       # target-ghc using gcc if version less than 7.8 while using clang-wrapper if version greater than 7.8
       args = ["--prefix=#{prefix}", "--build=#{arch}-apple-darwin"]
-      args << "--with-gcc=" + ((build.devel?) ? "#{prefix}/bin/clang-wrapper" : ENV.cc)
+      args << "--with-gcc=" + ((build.devel? and MacOS.version > :lion) ? "#{bin}/clang-wrapper" : ENV.cc)
 
       system "./configure", *args
       system "make"
