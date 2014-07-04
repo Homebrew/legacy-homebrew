@@ -87,19 +87,16 @@ class Ghc < Formula
       # Define where the subformula will temporarily install itself
       subprefix = buildpath+"subfo"
 
-      # 7.8.x support clang with wrapper
-      if binary_resource == "binary_7.8"
+      # install clang-wrapper if target-ghc version is greater than 7.8
+      if build.devel?
         resource("clang_wrapper").stage do
-          (buildpath+"subfo").install "clang-wrapper.rb", "clang-wrapper.hs"
+          subprefix.install "clang-wrapper.rb", "clang-wrapper.hs"
         end
-        # use script version wraper to get ghc work
-        cc_option = "--with-gcc="+buildpath+"/subfo/clang-wrapper.rb"
-      else
-        # ensure configure does not use Xcode 5 "gcc" which is actually clang
-        cc_option = "--with-gcc=#{ENV.cc}"
       end
+
+      # bootstrap-ghc using gcc if version less than 7.8 while using clang-wrapper if version greater than 7.8
       args = ["--prefix=#{subprefix}"]
-      args << cc_option
+      args << "--with-gcc=" + ((binary_resource == "binary_7.8") ? "#{subprefix}/clang-wrapper.rb" : ENV.cc)
 
       system "./configure", *args
       if build.devel? and MacOS.version <= :lion
@@ -112,7 +109,9 @@ class Ghc < Formula
       # -j1 fixes an intermittent race condition
       system "make", "-j1", "install"
       ENV.prepend_path "PATH", subprefix/"bin"
-      if binary_resource == "binary_7.8"
+
+      # intall binary clang wrapper if target-ghc is greater than 7.8
+      if build.devel?
         # compile clang wrapper binary using clang wrapper script
         system "ghc", buildpath+"subfo/clang-wrapper.hs"
         bin.install buildpath+"subfo/clang-wrapper"
@@ -131,13 +130,9 @@ class Ghc < Formula
         arch = "x86_64"
       end
 
-      # ensure configure does not use Xcode 5 "gcc" which is actually clang
+      # target-ghc using gcc if version less than 7.8 while using clang-wrapper if version greater than 7.8
       args = ["--prefix=#{prefix}", "--build=#{arch}-apple-darwin"]
-      if binary_resource == "binary_7.8"
-        args << "--with-gcc="+prefix+"/bin/clang-wrapper"
-      else
-        args << "--with-gcc=#{ENV.cc}"
-      end
+      args << "--with-gcc=" + ((build.devel?) ? "#{prefix}/bin/clang-wrapper" : ENV.cc)
 
       system "./configure", *args
       system "make"
