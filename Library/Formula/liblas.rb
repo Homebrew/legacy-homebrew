@@ -15,6 +15,13 @@ class Liblas < Formula
 
   option 'with-test', 'Verify during install with `make test`'
 
+  # Fix for error of conflicting types for '_GTIFcalloc' between gdal 1.11 and libgeotiff
+  # https://github.com/libLAS/libLAS/issues/33 (committed, remove on next stable release)
+  patch do
+    url "https://github.com/libLAS/libLAS/commit/b8799e.diff"
+    sha1 "3d2430327f9bbff9bd1f6d7cba80c7837552204e"
+  end
+
   def install
     mkdir 'macbuild' do
       # CMake finds boost, but variables like this were set in the last
