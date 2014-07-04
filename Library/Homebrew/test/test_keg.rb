@@ -6,15 +6,14 @@ class LinkTests < Homebrew::TestCase
   include FileUtils
 
   def setup
-    @keg = HOMEBREW_CELLAR/"foo/1.0"
-    @keg.mkpath
-    (@keg/"bin").mkpath
+    keg = HOMEBREW_CELLAR.join("foo", "1.0")
+    keg.join("bin").mkpath
 
     %w{hiworld helloworld goodbye_cruel_world}.each do |file|
-      touch @keg/"bin/#{file}"
+      touch keg.join("bin", file)
     end
 
-    @keg = Keg.new(@keg)
+    @keg = Keg.new(keg)
 
     @mode = OpenStruct.new
 
