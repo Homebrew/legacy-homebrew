@@ -7,6 +7,10 @@ class TheSilverSearcher < Formula
   sha1 "e0579751932b4d2fdb28e13fdbc8a70e3c952ffc"
 
   bottle do
+    cellar :any
+    sha1 "478e004e8d061f762828eef74ee6023c4aae6c4d" => :mavericks
+    sha1 "0240a103ea1a123dd9df52aacfba4582dbacc072" => :mountain_lion
+    sha1 "0613b11684a4cd644ded845364ecaa7e7f09f6f8" => :lion
   end
 
   depends_on "autoconf" => :build
