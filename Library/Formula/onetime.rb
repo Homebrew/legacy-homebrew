@@ -20,6 +20,11 @@ class Onetime < Formula
   end
 
   test do
-    system "#{bin}/onetime", "--version"
+    (testpath+'pad_data.txt').write "PAD_DATA"
+    (testpath+'input.txt').write "INPUT"
+    system "#{bin}/onetime", "-e", "--pad=pad_data.txt", "--no-trace",
+                             "--config=.", "input.txt"
+    system "#{bin}/onetime", "-d", "--pad=pad_data.txt", "--no-trace",
+                             "--config=.", "input.txt.onetime"
   end
 end
