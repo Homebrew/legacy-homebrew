@@ -27,7 +27,7 @@ class Onetime < Formula
   end
 
   test do
-    (testpath+'pad_data.txt').write "PAD_DATA"
+    system "dd", "if=/dev/random", "of=pad_data.txt", "bs=1024", "count=1"
     (testpath+'input.txt').write "INPUT"
     system "#{bin}/onetime", "-e", "--pad=pad_data.txt", "--no-trace",
                              "--config=.", "input.txt"
