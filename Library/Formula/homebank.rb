@@ -2,13 +2,13 @@ require 'formula'
 
 class Homebank < Formula
   homepage 'http://homebank.free.fr'
-  url 'http://homebank.free.fr/public/homebank-4.5.6.tar.gz'
-  sha1 '2026b5dba47ff60d893057d270b07931e126af78'
+  url 'http://homebank.free.fr/public/homebank-4.6.1.tar.gz'
+  sha1 '0e37c8421cbf8a681afc2e155262b28f8acaa5f6'
 
   bottle do
-    sha1 "284f95d645b270efd60631cddef64cb6fe5e4a50" => :mavericks
-    sha1 "11047cc6cebe54c5cf79128272cb505701f41776" => :mountain_lion
-    sha1 "f391c15f37190b3c817085eab4ad6a79210da106" => :lion
+    sha1 "b6f8da52acbb1332d36edacf64071ab9afff773d" => :mavericks
+    sha1 "673f740b3db289f3a9e2d48abf2a8c59270a30a1" => :mountain_lion
+    sha1 "315ec100c255836cffaa29bd3b2bbcfc68f6eb64" => :lion
   end
 
   depends_on 'pkg-config' => :build

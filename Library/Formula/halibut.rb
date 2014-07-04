@@ -5,6 +5,13 @@ class Halibut < Formula
   url 'http://www.chiark.greenend.org.uk/~sgtatham/halibut/halibut-1.0.tar.gz'
   sha1 '1e4643faf2bb4e1843740b8c70635d3d33bb7989'
 
+  bottle do
+    cellar :any
+    sha1 "23b5d68b11cf6a8edcfe7d691b0db7a64e7251c9" => :mavericks
+    sha1 "a1c3f434f9a017a6777e04e1f820daf9b2d4b756" => :mountain_lion
+    sha1 "4d7826b3adb0f4da43f2011a4fa2cb049b0ee21d" => :lion
+  end
+
   def install
     bin.mkpath
     man1.mkpath

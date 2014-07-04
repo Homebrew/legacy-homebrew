@@ -1,6 +1,7 @@
 require 'testing_env'
 require 'dependencies'
 require 'dependency'
+require 'requirements'
 
 class DependenciesTests < Homebrew::TestCase
   def setup
@@ -70,11 +71,38 @@ class DependenciesTests < Homebrew::TestCase
     b << dep
 
     assert_equal a, b
-    assert a.eql?(b)
+    assert_eql a, b
 
     b << Dependency.new("bar", [:optional])
 
     refute_equal a, b
-    assert !a.eql?(b)
+    refute_eql a, b
+  end
+end
+
+class RequirementsTests < Homebrew::TestCase
+  def setup
+    @reqs = Requirements.new
+  end
+
+  def test_shovel_returns_self
+    assert_same @reqs, (@reqs << Object.new)
+  end
+
+  def test_merging_multiple_dependencies
+    @reqs << X11Dependency.new << X11Dependency.new
+    assert_equal 1, @reqs.count
+    @reqs << Requirement.new
+    assert_equal 2, @reqs.count
+  end
+
+  def test_comparison_prefers_larger
+    @reqs << X11Dependency.new << X11Dependency.new("x11", %w[2.6])
+    assert_equal [X11Dependency.new("x11", %w[2.6])], @reqs.to_a
+  end
+
+  def test_comparison_does_not_merge_smaller
+    @reqs << X11Dependency.new("x11", %w{2.6}) << X11Dependency.new
+    assert_equal [X11Dependency.new("x11", %w[2.6])], @reqs.to_a
   end
 end

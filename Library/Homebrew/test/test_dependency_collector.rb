@@ -1,6 +1,5 @@
 require 'testing_env'
 require 'dependency_collector'
-require 'extend/set'
 
 class DependencyCollectorTests < Homebrew::TestCase
   def find_dependency(name)
@@ -52,7 +51,7 @@ class DependencyCollectorTests < Homebrew::TestCase
 
   def test_no_duplicate_requirements
     2.times { @d.add :x11 }
-    assert_equal 1, @d.requirements.length
+    assert_equal 1, @d.requirements.count
   end
 
   def test_requirement_tags

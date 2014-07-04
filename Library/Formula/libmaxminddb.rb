@@ -5,6 +5,13 @@ class Libmaxminddb < Formula
   url 'https://github.com/maxmind/libmaxminddb/releases/download/0.5.3/libmaxminddb-0.5.3.tar.gz'
   sha1 'ce6dd4fecb1a4c97cfede70e6fc6af863ffeddab'
 
+  bottle do
+    cellar :any
+    sha1 "eaad5ea370b658f2a2f419b34c66a2422c30ffb9" => :mavericks
+    sha1 "550b8196208842a2a9b23260bee6e2f0af046fb5" => :mountain_lion
+    sha1 "9d90e4c33df2e464d825103da1adf1496715aecc" => :lion
+  end
+
   head do
     url 'https://github.com/maxmind/libmaxminddb.git'
 
