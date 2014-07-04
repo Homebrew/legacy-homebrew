@@ -3,8 +3,8 @@ require "formula"
 class TheSilverSearcher < Formula
   homepage "https://github.com/ggreer/the_silver_searcher"
   head "https://github.com/ggreer/the_silver_searcher.git"
-  url "https://github.com/ggreer/the_silver_searcher/archive/0.22.0.tar.gz"
-  sha1 "6908ef26405270f483476513d3016599507a92e6"
+  url "https://github.com/ggreer/the_silver_searcher/archive/0.23.0.tar.gz"
+  sha1 "e0579751932b4d2fdb28e13fdbc8a70e3c952ffc"
 
   bottle do
     cellar :any
