@@ -1,23 +1,25 @@
-require 'formula'
+require "formula"
 
 class Onetime < Formula
-  homepage 'http://red-bean.com/onetime/'
-  url 'http://red-bean.com/onetime/onetime-1.81.tar.gz'
-  sha256 '36a83a83ac9f4018278bf48e868af00f3326b853229fae7e43b38d167e628348'
+  homepage "http://red-bean.com/onetime/"
+  url "http://red-bean.com/onetime/onetime-1.81.tar.gz"
+  sha1 "db8f84963ed7b5831fdf4c19b4494cf7bfd5b753"
 
   devel do
     url "https://github.com/kfogel/OneTime/archive/2.0-beta2.tar.gz"
     version "2.0.02"
-    sha256 "adf39b670c9066499b8d50c445019f4cca167cdf1fbdbac7e1b779aa75187b44"
+    sha1 "5ae36caf5259b35f2a651b1ab0b162d834a8d339"
   end
 
-  depends_on :python
+# inreplace required for now due to upstream issue, reported here: https://github.com/kfogel/OneTime/issues/11
 
   def install
-    inreplace "Makefile", '$(DESTDIR)/usr/bin/', '$(DESTDIR)/usr/local/Cellar/onetime'
-    mkdir "#{bin}"
-    system "make"
-    system "make install"
-    mv "/usr/local/Cellar/onetime/onetime", "#{bin}"
+    inreplace "Makefile", "$(DESTDIR)/usr/bin/", "$(DESTDIR)#{bin}"
+    mkdir bin
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/onetime", "--version"
   end
 end
