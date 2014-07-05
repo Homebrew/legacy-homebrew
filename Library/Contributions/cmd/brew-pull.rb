@@ -80,7 +80,6 @@ ARGV.named.each do |arg|
 
   changed_formulae = []
 
-
   if tap_dir
     formula_dir = %w[Formula HomebrewFormula].find { |d| tap_dir.join(d).directory? } || ""
   else
@@ -95,9 +94,12 @@ ARGV.named.each do |arg|
     # Don't try and do anything to removed files.
     if status == "A" || status == "M"
       name = File.basename(filename, ".rb")
-      formula = Formula[name] rescue nil
-      next unless formula
-      changed_formulae << formula
+
+      begin
+        changed_formulae << Formula[name]
+      rescue FormulaUnavailableError
+        next
+      end
     end
   end
 
