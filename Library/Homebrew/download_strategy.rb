@@ -144,7 +144,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   def buffered_write(tool)
     target = File.basename(basename_without_params, tarball_path.extname)
 
-    IO.popen("#{tool} -f '#{tarball_path}' -c", "rb") do |pipe|
+    Utils.popen_read(tool, "-f", tarball_path.to_s, "-c") do |pipe|
       File.open(target, "wb") do |f|
         buf = ""
         f.write(buf) while pipe.read(1024, buf)
