@@ -80,12 +80,22 @@ ARGV.named.each do |arg|
 
   changed_formulae = []
 
-  `git diff #{revision}.. --name-status`.each_line do |line|
+
+  if tap_dir
+    formula_dir = %w[Formula HomebrewFormula].find { |d| tap_dir.join(d).directory? } || ""
+  else
+    formula_dir = "Library/Formula"
+  end
+
+  Utils.popen_read(
+    "git", "diff-tree", "-r", "--name-status",
+    revision, "HEAD", "--", formula_dir, &:read
+  ).each_line do |line|
     status, filename = line.split
     # Don't try and do anything to removed files.
-    if (status =~ /A|M/) && (filename =~ %r{Formula/.+\.rb$}) || tap(url)
-      formula_name = File.basename(filename, '.rb')
-      formula = Formula[formula_name] rescue nil
+    if status == "A" || status == "M"
+      name = File.basename(filename, ".rb")
+      formula = Formula[name] rescue nil
       next unless formula
       changed_formulae << formula
     end
@@ -118,7 +128,7 @@ ARGV.named.each do |arg|
   end
 
   ohai 'Patch changed:'
-  safe_system 'git', '--no-pager', 'diff', "#{revision}..", '--stat'
+  safe_system "git", "diff-tree", "-r", "--stat", revision, "HEAD"
 
   if ARGV.include? '--install'
     changed_formulae.each do |f|
