@@ -28,6 +28,7 @@ class Hadoop < Formula
     # Create setting files if there is no old one
     if build.with? "conf"
         ohai "Creating conf files..."
+        opts="\"-Djava.security.krb5.realm= -Djava.security.krb5.kdc= -Djava.security.krb5.conf=/dev/null\""
         (etc+'hadoop/core-site.xml').write core_site_xml
         (etc+'hadoop/hdfs-site.xml').write hdfs_site_xml
         (etc+'hadoop/yarn-site.xml').write yarn_site_xml
@@ -35,11 +36,11 @@ class Hadoop < Formula
         (etc+'hadoop').install conf_files
         (var+'hadoop').mkpath
         inreplace "#{etc}/hadoop/hadoop-env.sh",
-                "export JAVA_HOME=${JAVA_HOME}",
-                "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
+                  "export JAVA_HOME=${JAVA_HOME}",
+                  "export JAVA_HOME=\"$(/usr/libexec/java_home)\"\nexport HADOOP_OPTS=#{opts}"
         inreplace "#{etc}/hadoop/yarn-env.sh",
                 "# export JAVA_HOME=/home/y/libexec/jdk1.6.0/",
-                "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
+                "export JAVA_HOME=\"$(/usr/libexec/java_home)\"\nexport YARN_OPTS=#{opts}"
         inreplace "#{etc}/hadoop/mapred-env.sh",
                 "# export JAVA_HOME=/home/y/libexec/jdk1.6.0/",
                 "export JAVA_HOME=\"$(/usr/libexec/java_home)\""
