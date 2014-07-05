@@ -63,7 +63,7 @@ module Homebrew
       end
 
       # Use strings to search through the file for each string
-      IO.popen("strings -t x - '#{file}'", "rb") do |io|
+      Utils.popen_read("strings", "-t", "x", "-", file.to_s) do |io|
         until io.eof?
           str = io.readline.chomp
 
@@ -168,8 +168,8 @@ module Homebrew
           prefix_check = HOMEBREW_PREFIX
         end
 
-        relocatable = !keg_contains(prefix_check, keg)
-        relocatable = !keg_contains(HOMEBREW_CELLAR, keg) && relocatable
+        relocatable = !keg_contains(prefix_check.to_s, keg)
+        relocatable = !keg_contains(HOMEBREW_CELLAR.to_s, keg) && relocatable
         puts if !relocatable && ARGV.verbose?
       rescue Interrupt
         ignore_interrupts { bottle_path.unlink if bottle_path.exist? }
