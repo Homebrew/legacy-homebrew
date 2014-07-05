@@ -219,6 +219,7 @@ class Hadoop < Formula
     system "#{libexec}/sbin/yarn-daemon.sh", action, "resourcemanager"
     system "#{libexec}/sbin/yarn-daemon.sh", action, "nodemanager"
     system "#{libexec}/sbin/mr-jobhistory-daemon.sh", action, "historyserver"
+    puts "Hadoop started..."
   end
   def wait_for_term()
     while $run
