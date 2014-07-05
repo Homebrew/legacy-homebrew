@@ -192,11 +192,11 @@ class Keg
         dirs << dst if dst.directory? && !dst.symlink?
 
         # check whether the file to be unlinked is from the current keg first
-        next unless dst.symlink? && src == dst.resolved_path
-
-        dst.uninstall_info if dst.to_s =~ INFOFILE_RX
-        dst.unlink
-        Find.prune if src.directory?
+        if dst.symlink? && src == dst.resolved_path
+          dst.uninstall_info if dst.to_s =~ INFOFILE_RX
+          dst.unlink
+          Find.prune if src.directory?
+        end
       end
     end
 
