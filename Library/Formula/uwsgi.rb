@@ -28,6 +28,7 @@ class Uwsgi < Formula
   depends_on "nagios" => :optional
   depends_on "postgresql" => :optional
   depends_on "pypy" => :optional
+  depends_on "python" => :optional
   depends_on "python3" => :optional
   depends_on "rrdtool" => :optional
   depends_on "rsyslog" => :optional
