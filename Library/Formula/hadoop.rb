@@ -219,7 +219,6 @@ class Hadoop < Formula
     system "#{libexec}/sbin/yarn-daemon.sh", action, "resourcemanager"
     system "#{libexec}/sbin/yarn-daemon.sh", action, "nodemanager"
     system "#{libexec}/sbin/mr-jobhistory-daemon.sh", action, "historyserver"
-    puts "Hadoop started..."
   end
   def wait_for_term()
     while $run
@@ -277,17 +276,20 @@ class Hadoop < Formula
   test do
     begin
       system "#{bin}/hadoop_server", "start"
-      ohai "Waiting 30 seconds for Hadoop to start..."
-      sleep 30
+      puts "Waiting 60 seconds for Hadoop to start..."
+      sleep(1.minutes)
+      puts "Hadoop started."
       test_text='Hello Homebrew. This is hadoop installed by Homebrew.'
       result="Hello\t1\nHomebrew.\t2\nThis\t1\nby\t1\nhadoop\t1\ninstalled\t1\nis\t1"
       hello = (testpath/'hello')
       hello.write(test_text)
+      puts "Testing HDFS..."
       system "#{bin}/hdfs", 'dfs', '-copyFromLocal', 'hello', '/'
       assert $?.success?
       output_1 = `#{bin}/hdfs dfs -cat /hello`
       assert $?.success?
       assert_match test_text, output_1
+      puts "Done.\nTesting mapreduce..."
       system "#{bin}/yarn",
              "jar",
              Dir["/usr/local/Cellar/hadoop/2.4.1/libexec/share/hadoop/mapreduce/*examples*.jar"].at(0),
@@ -297,8 +299,10 @@ class Hadoop < Formula
       assert $?.success?
       output_2 = `#{bin}/hdfs dfs -cat /out/part-r-00000`
       assert_match result, output_2
+      puts 'done.\nStopping Hadoop...'
       system "#{bin}/hdfs", "dfs", "-rm", "-r", "-f", "/hello", "/out"
       system "#{bin}/hadoop_server", "stop"
+      puts 'done.'
     rescue
       system "#{bin}/hdfs", "dfs", "-rm", "-r", "-f", "/hello", "/out"
       system "#{bin}/hadoop_server", "stop"
