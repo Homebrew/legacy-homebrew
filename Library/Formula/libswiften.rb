@@ -12,6 +12,12 @@ class Libswiften < Formula
     patch :DATA
   end
 
+  bottle do
+    sha1 "8585e20ca6baafeb2ab4f5bc5c5f50de1fff9073" => :mavericks
+    sha1 "17939bb1820f63ce154baa4d8a4311ba28688d82" => :mountain_lion
+    sha1 "1f959d914263407c4a909d92e3cd6047ca280280" => :lion
+  end
+
   head do
     url 'git://swift.im/swift'
     depends_on 'lua' => :recommended

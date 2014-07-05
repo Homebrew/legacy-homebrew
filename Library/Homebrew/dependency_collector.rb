@@ -31,7 +31,7 @@ class DependencyCollector
 
   def initialize
     @deps = Dependencies.new
-    @requirements = ComparableSet.new
+    @requirements = Requirements.new
   end
 
   def add(spec)

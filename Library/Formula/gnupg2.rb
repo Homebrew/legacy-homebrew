@@ -19,7 +19,7 @@ class Gnupg2 < Formula
   depends_on "libksba"
   depends_on "libassuan"
   depends_on "pinentry"
-  depends_on "npth"
+  depends_on "pth"
   depends_on "gpg-agent"
   depends_on "dirmngr" => :recommended
   depends_on "libusb-compat" => :recommended

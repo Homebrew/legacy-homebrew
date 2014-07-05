@@ -103,6 +103,9 @@ class Wine < Formula
     ENV.append "CFLAGS", build32
     ENV.append "LDFLAGS", build32
 
+    # Help configure find libxml2 in an XCode only (no CLT) installation.
+    ENV.libxml2
+
     args = ["--prefix=#{prefix}"]
     args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang
 
