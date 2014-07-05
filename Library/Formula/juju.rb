@@ -2,13 +2,8 @@ require 'formula'
 
 class Juju < Formula
   homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.18/1.18.4/+download/juju-core_1.18.4.tar.gz'
-  sha1 '70ac905e113eedfa08ad8a8acab319b0c7c462cb'
-
-  devel do
-    url 'https://launchpad.net/juju-core/trunk/1.19.4/+download/juju-core_1.19.4.tar.gz'
-    sha1 'bca2e5d966583797b215afcaf0de0e69d45c48bd'
-  end
+  url 'https://launchpad.net/juju-core/1.20/1.20.0/+download/juju-core_1.20.0.tar.gz'
+  sha1 'f57547a0221fd3b5eb0b545c233a88999ce0dc78'
 
   bottle do
     revision 1
@@ -21,19 +16,11 @@ class Juju < Formula
 
   def install
     ENV['GOPATH'] = buildpath
-    if build.stable?
-      args = %w(install launchpad.net/juju-core/cmd/juju)
-    else
-      args = %w(install github.com/juju/juju/cmd/juju)
-    end
+    args = %w(install github.com/juju/juju/cmd/juju)
     args.insert(1, "-v") if ARGV.verbose?
     system "go", *args
     bin.install 'bin/juju'
-    if build.stable?
-      bash_completion.install "src/launchpad.net/juju-core/etc/bash_completion.d/juju-core"
-    else
-      bash_completion.install "src/github.com/juju/juju/etc/bash_completion.d/juju-core"
-    end
+    bash_completion.install "src/github.com/juju/juju/etc/bash_completion.d/juju-core"
   end
 
   test do
