@@ -73,7 +73,7 @@ ARGV.named.each do |arg|
 
   begin
     safe_system 'git', 'am', *patch_args
-  rescue => e
+  rescue ErrorDuringExecution
     system 'git', 'am', '--abort'
     odie 'Patch failed to apply: aborted.'
   end
