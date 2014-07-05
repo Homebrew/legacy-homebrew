@@ -2,7 +2,7 @@ require "formula"
 
 class Boot2docker < Formula
   homepage "https://github.com/boot2docker/boot2docker-cli"
-  url "https://github.com/boot2docker/boot2docker-cli.git", :tag => "v1.0.1"
+  url "https://github.com/boot2docker/boot2docker-cli.git", :tag => "v1.1.0"
   head "https://github.com/boot2docker/boot2docker-cli.git", :branch => "master"
 
   bottle do
