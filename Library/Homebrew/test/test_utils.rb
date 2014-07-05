@@ -5,4 +5,10 @@ class UtilTests < Homebrew::TestCase
     # Issue #217 put columns with new results fails.
     assert_silent { puts_columns [] }
   end
+
+  def test_popen_read
+    out = Utils.popen_read("/bin/sh", "-c", "echo success", &:read).chomp
+    assert_equal "success", out
+    assert_predicate $?, :success?
+  end
 end
