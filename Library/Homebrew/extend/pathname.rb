@@ -273,9 +273,8 @@ class Pathname
     raise ChecksumMismatchError.new(self, expected, actual) unless expected == actual
   end
 
-  if '1.9' <= RUBY_VERSION
-    alias_method :to_str, :to_s
-  end
+  # FIXME eliminate the places where we rely on this method
+  alias_method :to_str, :to_s unless method_defined?(:to_str)
 
   def cd
     Dir.chdir(self){ yield }
