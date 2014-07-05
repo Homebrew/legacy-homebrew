@@ -66,6 +66,9 @@ ARGV.named.each do |arg|
   else
     patch_args << '--whitespace=fix'
   end
+
+  # Fall back to three-way merge if patch does not apply cleanly
+  patch_args << "-3"
   patch_args << patchpath
 
   begin
