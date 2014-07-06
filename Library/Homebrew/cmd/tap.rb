@@ -12,8 +12,6 @@ module Homebrew
   end
 
   def install_tap user, repo
-    raise "brew install git" unless which 'git'
-
     # we special case homebrew so users don't have to shift in a terminal
     repouser = if user == "homebrew" then "Homebrew" else user end
     user = "homebrew" if user == "Homebrew"
