@@ -7,6 +7,12 @@ class Chicken < Formula
 
   head 'git://code.call-cc.org/chicken-core'
 
+  bottle do
+    sha1 "18413b340d0dc2486f132dbd3997911d00eb3706" => :mavericks
+    sha1 "f29dfe8f310772927022f175d60cb30c7c761b2d" => :mountain_lion
+    sha1 "86d71f277efc7b45ae4a1d1b0bcab326f8aafdb1" => :lion
+  end
+
   def install
     ENV.deparallelize
     # Chicken uses a non-standard var. for this
