@@ -136,7 +136,7 @@ ARGV.named.each do |arg|
     changed_formulae.each do |f|
       ohai "Installing #{formula}"
       install = f.installed? ? 'upgrade' : 'install'
-      safe_system 'brew', install, '--debug', '--fresh', formula
+      safe_system 'brew', install, '--debug', formula
     end
   end
 end
