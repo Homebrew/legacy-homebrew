@@ -249,12 +249,12 @@ def nostdout
     yield
   else
     begin
-      require 'stringio'
-      real_stdout = $stdout
-      $stdout = StringIO.new
+      out = $stdout.dup
+      $stdout.reopen("/dev/null")
       yield
     ensure
-      $stdout = real_stdout
+      $stdout.reopen(out)
+      out.close
     end
   end
 end
