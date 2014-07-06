@@ -2,14 +2,10 @@ require 'formula'
 
 class Uwsgi < Formula
   homepage "http://projects.unbit.it/uwsgi/"
-  url "http://projects.unbit.it/downloads/uwsgi-2.0.5.1.tar.gz"
-  sha1 "67244683a76a7ce88f244ef8044ecf32bf3b8d41"
+  url "http://projects.unbit.it/downloads/uwsgi-2.0.6.tar.gz"
+  sha1 "5e0fc187ea10366153a1f800c0e7e80940188837"
 
   bottle do
-    revision 1
-    sha1 "f29ce8d64c067bffb06c61508ada6fcec4b8ac4b" => :mavericks
-    sha1 "2cbe8ba97f52400dedd48ba14cdeb9e0b7a00f68" => :mountain_lion
-    sha1 "f2d33b294b405840c3b687edec85e10dc56d5b13" => :lion
   end
 
   depends_on "pcre"
