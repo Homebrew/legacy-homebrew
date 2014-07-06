@@ -185,7 +185,7 @@ end
 def which cmd, path=ENV['PATH']
   path.split(File::PATH_SEPARATOR).each do |p|
     pcmd = File.expand_path(File.join(p, cmd))
-    return Pathname.new(pcmd) if File.executable?(pcmd) && !File.directory?(pcmd)
+    return Pathname.new(pcmd) if File.file?(pcmd) && File.executable?(pcmd)
   end
   return nil
 end
