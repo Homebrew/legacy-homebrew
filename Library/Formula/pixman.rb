@@ -6,6 +6,10 @@ class Pixman < Formula
   sha256 "3dfed13b8060eadabf0a4945c7045b7793cc7e3e910e748a8bb0f0dc3e794904"
 
   bottle do
+    cellar :any
+    sha1 "60ef712e79cb90762dfb4d3af361b5b5d9a0caac" => :mavericks
+    sha1 "b71ef451728c982f8a16edf7d93032a6f8ddbbf6" => :mountain_lion
+    sha1 "2c2239c33b62feb61fba0a55cfd19f9d3d7ee443" => :lion
   end
 
   depends_on "pkg-config" => :build
