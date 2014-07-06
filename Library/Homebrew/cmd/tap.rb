@@ -123,7 +123,7 @@ module Homebrew
     case path.to_s
     when HOMEBREW_TAP_PATH_REGEX
       "#$1/#$2/#{File.basename($3, '.rb')}"
-    when %r{^#{HOMEBREW_LIBRARY}/Formula/(.+)}
+    when %r{^#{Regexp.escape(HOMEBREW_LIBRARY.to_s)}/Formula/(.+)}o
       "Homebrew/homebrew/#{File.basename($1, '.rb')}"
     else
       nil
