@@ -395,7 +395,7 @@ _brew_outdated ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--quiet"
+        __brewcomp "--quiet --json=v1"
         return
         ;;
     esac
