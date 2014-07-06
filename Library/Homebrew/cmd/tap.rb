@@ -121,12 +121,10 @@ module Homebrew
 
   def tap_ref(path)
     case path.to_s
+    when %r{^#{Regexp.escape(HOMEBREW_LIBRARY.to_s)}/Formula}o
+      "Homebrew/homebrew/#{path.basename(".rb")}"
     when HOMEBREW_TAP_PATH_REGEX
-      "#$1/#$2/#{File.basename($3, '.rb')}"
-    when %r{^#{Regexp.escape(HOMEBREW_LIBRARY.to_s)}/Formula/(.+)}o
-      "Homebrew/homebrew/#{File.basename($1, '.rb')}"
-    else
-      nil
+      "#{$1}/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
     end
   end
 end
