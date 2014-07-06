@@ -13,8 +13,8 @@ class FormulaVersions
   end
 
   def repository
-    @repository ||= if f.path.to_s =~ HOMEBREW_TAP_DIR_REGEX
-      HOMEBREW_REPOSITORY/"Library/Taps/#$1/#$2"
+    @repository ||= if f.tap?
+      HOMEBREW_LIBRARY.join("Taps", f.tap)
     else
       HOMEBREW_REPOSITORY
     end
