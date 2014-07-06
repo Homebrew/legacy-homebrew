@@ -54,7 +54,7 @@ module Homebrew
   end
 
   def github_fork
-    if which 'git' and (HOMEBREW_REPOSITORY/".git").directory?
+    if (HOMEBREW_REPOSITORY/".git").directory?
       if `git remote -v` =~ %r{origin\s+(https?://|git(?:@|://))github.com[:/](.+)/homebrew}
         $2
       end
