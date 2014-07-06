@@ -20,6 +20,7 @@ end
 ARGV.named.each do |arg|
   if arg.to_i > 0
     url = 'https://github.com/Homebrew/homebrew/pull/' + arg
+    issue = arg
   else
     url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
     unless url_match
@@ -28,6 +29,7 @@ ARGV.named.each do |arg|
     end
 
     url = url_match[0]
+    issue = url_match[4]
   end
 
   if tap_name = tap(url)
@@ -38,8 +40,6 @@ ARGV.named.each do |arg|
   else
     Dir.chdir HOMEBREW_REPOSITORY
   end
-
-  issue = arg.to_i > 0 ? arg.to_i : url_match[4]
 
   if ARGV.include? '--bottle'
     raise 'No pull request detected!' unless issue
