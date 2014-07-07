@@ -29,11 +29,11 @@ class BuildEnvironment
   end
 
   def _dump(*)
-    @settings.to_a.join(":")
+    Marshal.dump(@settings)
   end
 
   def self._load(s)
-    new(*s.split(":").map(&:to_sym))
+    new(Marshal.load(s))
   end
 end
 
