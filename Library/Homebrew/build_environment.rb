@@ -4,7 +4,7 @@ class BuildEnvironment
   attr_accessor :proc
 
   def initialize(*settings)
-    @settings = Set.new(settings)
+    @settings = Set.new(*settings)
   end
 
   def merge(*args)
