@@ -2,8 +2,8 @@ require 'formula'
 
 class Libcouchbase < Formula
   homepage 'http://couchbase.com/communities/c'
-  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.3.1.tar.gz'
-  sha1 '0718239fc53f13315adfe80baffe439abe600296'
+  url 'http://packages.couchbase.com/clients/c/libcouchbase-2.3.2.tar.gz'
+  sha1 'e0c885e90aa37c2fcd3a3b188fd0bd1638b58276'
 
   bottle do
     sha1 "a77b5907f6b69ab96464a99b6249db7eafdf8c22" => :mavericks
