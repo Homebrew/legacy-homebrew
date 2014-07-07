@@ -13,9 +13,16 @@ class Smake < Formula
   def install
     ENV.delete 'MAKEFLAGS' # the bootstrap smake does not like -j
 
-    system "make", "GMAKE_NOWARN=true", "INS_BASE=#{libexec}", "INS_RBASE=#{libexec}", "install"
+    system "make", "GMAKE_NOWARN=true",
+                   "INS_BASE=#{libexec}",
+                   "INS_RBASE=#{libexec}",
+                   "install"
     bin.install_symlink libexec/"bin/smake"
     man1.install_symlink Dir["#{libexec}/share/man/man1/*.1"]
     man5.install_symlink Dir["#{libexec}/share/man/man5/*.5"]
+  end
+  
+  test do
+    system "#{bin}/smake", "-version"
   end
 end
