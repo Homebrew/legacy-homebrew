@@ -9,7 +9,7 @@ class Sqlitebrowser < Formula
 
   depends_on 'qt'
   depends_on 'cmake' => :build
-  depends_on 'sqlite' => '--with-functions'
+  depends_on 'sqlite' => 'with-functions'
 
   def install
     system "cmake", ".", *std_cmake_args
