@@ -42,7 +42,7 @@ def cache
 end
 
 HOMEBREW_CACHE = cache
-undef cache # we use a function to prevent adding home_cache to the global scope
+undef cache
 
 # Where brews installed via URL are cached
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
