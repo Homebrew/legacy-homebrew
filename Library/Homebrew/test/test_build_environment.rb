@@ -35,17 +35,15 @@ class BuildEnvironmentTests < Homebrew::TestCase
   end
 
   def test_env_block
-    foo = mock("foo")
-    @env.proc = Proc.new { foo.some_message }
-    foo.expects(:some_message)
-    @env.modify_build_environment(self)
+    error = Class.new(StandardError)
+    @env.proc = Proc.new { raise error }
+    assert_raises(error) { @env.modify_build_environment(self) }
   end
 
   def test_env_block_with_argument
-    foo = mock("foo")
-    @env.proc = Proc.new { |x| x.some_message }
-    foo.expects(:some_message)
-    @env.modify_build_environment(foo)
+    error = Class.new(StandardError)
+    @env.proc = Proc.new { |x| raise x }
+    assert_raises(error) { @env.modify_build_environment(error) }
   end
 end
 
