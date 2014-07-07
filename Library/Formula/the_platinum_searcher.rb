@@ -2,8 +2,8 @@ require "formula"
 
 class ThePlatinumSearcher < Formula
   homepage "https://github.com/monochromegane/the_platinum_searcher"
-  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.6.5.tar.gz"
-  sha1 "51658e4825b5f719fb37072da1b5035b5fde5734"
+  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.6.4.tar.gz"
+  sha1 "362df20068c9ea19dfb3126c267012356dc7958c"
   head "https://github.com/monochromegane/the_platinum_searcher.git"
 
   depends_on "go" => :build
@@ -34,6 +34,7 @@ class ThePlatinumSearcher < Formula
     data = "Hello World!"
     path.open("wb") { |f| f.write data}
 
-    system "#{bin}/pt", "Hello World!", "#{path}"
+    lines = `#{bin}/pt 'Hello World!' #{path}`.strip.split(":")
+    assert_equal "Hello World!", lines[2]
   end
 end
