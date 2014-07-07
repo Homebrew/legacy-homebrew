@@ -30,7 +30,7 @@ def cache
         def mkpath
           unless exist?
             super
-            chmod 0777
+            chmod 0775
           end
         end
       }
