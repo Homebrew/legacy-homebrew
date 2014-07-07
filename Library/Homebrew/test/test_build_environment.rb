@@ -29,9 +29,8 @@ class BuildEnvironmentTests < Homebrew::TestCase
 
   def test_marshal
     @env << :userpaths
-    @env << Proc.new { 1 }
-    dump = Marshal.dump(@env)
-    assert_predicate Marshal.load(dump), :userpaths?
+    @env.proc = Proc.new {}
+    assert_predicate Marshal.load(Marshal.dump(@env)), :userpaths?
   end
 
   def test_env_block
