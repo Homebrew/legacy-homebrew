@@ -28,8 +28,16 @@ class BuildEnvironment
     receiver.instance_eval(&proc)
   end
 
+  def marshal_dump
+    @settings
+  end
+
+  def marshal_load(data)
+    @settings = data
+  end
+
   def _dump(*)
-    Marshal.dump(@settings)
+    Marshal.dump(marshal_dump)
   end
 
   def self._load(s)
