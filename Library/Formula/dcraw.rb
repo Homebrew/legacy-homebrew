@@ -20,8 +20,8 @@ class DcrawDownloadStrategy < VCSDownloadStrategy
   end
 
   def stage
-    cp @clone.join("dcraw.c.#{@revision}"), Pathname.pwd.join("dcraw.c")
-    cp @clone.join("dcraw.1"), Dir.pwd
+    FileUtils.cp @clone.join("dcraw.c.#{@revision}"), Pathname.pwd.join("dcraw.c")
+    FileUtils.cp @clone.join("dcraw.1"), Dir.pwd
   end
 
   def cache_tag
