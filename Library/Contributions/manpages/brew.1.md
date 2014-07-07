@@ -494,8 +494,7 @@ can take several different forms:
   * HOMEBREW\_CACHE:
     If set, instructs Homebrew to use the given directory as the download cache.
 
-    *Default:* `~/Library/Caches/Homebrew` if it exists; otherwise,
-    `/Library/Caches/Homebrew`.
+    *Default:* `$(brew --repository)/Library/Cache`
 
   * HOMEBREW\_CURL\_VERBOSE:
     If set, Homebrew will pass `--verbose` when invoking `curl`(1).
