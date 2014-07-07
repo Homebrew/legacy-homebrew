@@ -18,7 +18,8 @@ class Chicken < Formula
     # Chicken uses a non-standard var. for this
     args = ["PREFIX=#{prefix}", "PLATFORM=macosx", "C_COMPILER=#{ENV.cc}"]
     args << "ARCH=x86-64" if MacOS.prefer_64_bit?
-    system "make", *args
+    args << "XCODE_DEVELOPER=/Developer" if MacOS.version <= "10.6"
+    args << "XCODE_TOOL_PATH=/Developer/usr/bin" if MacOS.version <= "10.6"
     system "make", "install", *args
   end
 
