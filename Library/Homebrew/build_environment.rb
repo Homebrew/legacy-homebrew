@@ -6,6 +6,10 @@ class BuildEnvironment
     @procs = Set.new
   end
 
+  def merge(*args)
+    @settings.merge(*args)
+  end
+
   def <<(o)
     case o
     when Proc then @procs << o
@@ -41,7 +45,7 @@ module BuildEnvironmentDSL
     if block_given?
       @env << block
     else
-      settings.each { |s| @env << s }
+      @env.merge(settings)
     end
     @env
   end
