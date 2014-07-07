@@ -20,8 +20,8 @@ class DcrawDownloadStrategy < VCSDownloadStrategy
   end
 
   def stage
-    FileUtils.cp @clone.join("dcraw.c.#{@revision}"), Pathname.pwd.join("dcraw.c")
-    FileUtils.cp @clone.join("dcraw.1"), Dir.pwd
+    cp @clone.join("dcraw.c.#{@revision}"), Pathname.pwd.join("dcraw.c")
+    cp @clone.join("dcraw.1"), Dir.pwd
   end
 
   def cache_tag
@@ -42,7 +42,7 @@ class Dcraw < Formula
   # the author changes them from time to time, instead of creating new
   # versions.
   # This is the URL for the RCS history file.
-  url "http://www.cybercom.net/~dcoffin/dcraw/RCS/dcraw.c,v", using: DcrawDownloadStrategy
+  url "http://www.cybercom.net/~dcoffin/dcraw/RCS/dcraw.c,v", :using => DcrawDownloadStrategy
 
   # Hash of the resulting .c file, not the history file above.
   sha1 "ba96983ec8be21f4ede69a4ec4f5c7d5458d394b"
@@ -53,6 +53,7 @@ class Dcraw < Formula
   depends_on "jpeg"
   depends_on "jasper"
   depends_on "little-cms2"
+  depends_on "rcs" => :build
 
   def install
     ENV.append_to_cflags "-I#{HOMEBREW_PREFIX}/include -L#{HOMEBREW_PREFIX}/lib"
