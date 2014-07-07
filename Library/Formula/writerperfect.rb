@@ -27,8 +27,4 @@ class Writerperfect < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
-
-  test do
-    system "echo", "`#{bin}/wpd2odt`"
-  end
 end
