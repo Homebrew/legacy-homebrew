@@ -1,9 +1,10 @@
 require 'set'
 
 class BuildEnvironment
+  attr_accessor :proc
+
   def initialize(*settings)
     @settings = Set.new(settings)
-    @procs = Set.new
   end
 
   def merge(*args)
@@ -11,10 +12,7 @@ class BuildEnvironment
   end
 
   def <<(o)
-    case o
-    when Proc then @procs << o
-    else @settings << o
-    end
+    @settings << o
     self
   end
 
@@ -27,7 +25,7 @@ class BuildEnvironment
   end
 
   def modify_build_environment(receiver)
-    @procs.each { |p| receiver.instance_eval(&p) }
+    receiver.instance_eval(&proc)
   end
 
   def _dump(*)
@@ -43,7 +41,7 @@ module BuildEnvironmentDSL
   def env(*settings, &block)
     @env ||= BuildEnvironment.new
     if block_given?
-      @env << block
+      @env.proc = block
     else
       @env.merge(settings)
     end
