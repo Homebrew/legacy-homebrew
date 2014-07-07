@@ -78,8 +78,8 @@ class Llvm < Formula
 
   def caveats
     <<-EOS.undent
-      LLVM executables are installed in #{bin}.
-      Extra tools are installed in #{share}/llvm.
+      LLVM executables are installed in #{opt_bin}.
+      Extra tools are installed in #{opt_share}/llvm.
 
       If you already have LLVM installed, then "brew upgrade llvm" might not work.
       Instead, try:
