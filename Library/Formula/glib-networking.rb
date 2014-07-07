@@ -1,5 +1,7 @@
 require 'formula'
 
+# This formula installs files directly into the top-level gio modules
+# directory, so it can't be bottled.
 class GlibNetworking < Formula
   homepage 'https://launchpad.net/glib-networking'
   url 'http://ftp.gnome.org/pub/GNOME/sources/glib-networking/2.40/glib-networking-2.40.1.tar.xz'

@@ -17,6 +17,7 @@ class Python < Formula
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
   option "with-poll", "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
   option "with-dtrace", "Experimental DTrace support (http://bugs.python.org/issue13405)"
+  option "with-docs", "Install HTML documentation"
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
@@ -28,6 +29,11 @@ class Python < Formula
 
   skip_clean "bin/pip", "bin/pip-2.7"
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
+
+  resource "docs" do
+    url "https://docs.python.org/2/archives/python-2.7.8-docs-html.tar.bz2"
+    sha1 "125db6f107f47566e46b5c1745fec1e0dfaf95a0"
+  end
 
   resource "setuptools" do
     url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.3.tar.gz"
@@ -55,6 +61,12 @@ class Python < Formula
   # The HOMEBREW_PREFIX location of site-packages.
   def site_packages
     HOMEBREW_PREFIX/"lib/python2.7/site-packages"
+  end
+
+  # setuptools remembers the build flags python is built with and uses them to
+  # build packages later. Xcode-only systems need different flags.
+  def pour_bottle?
+    MacOS::CLT.installed?
   end
 
   def install
@@ -136,6 +148,8 @@ class Python < Formula
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
+
+    doc.install resource('docs') if build.with? "docs"
 
     (libexec/'setuptools').install resource('setuptools')
     (libexec/'pip').install resource('pip')

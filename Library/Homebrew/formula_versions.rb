@@ -13,8 +13,8 @@ class FormulaVersions
   end
 
   def repository
-    @repository ||= if f.path.to_s =~ HOMEBREW_TAP_DIR_REGEX
-      HOMEBREW_REPOSITORY/"Library/Taps/#$1/#$2"
+    @repository ||= if f.tap?
+      HOMEBREW_LIBRARY.join("Taps", f.tap)
     else
       HOMEBREW_REPOSITORY
     end
@@ -39,7 +39,7 @@ class FormulaVersions
 
   def rev_list(branch="HEAD")
     repository.cd do
-      IO.popen("git rev-list --abbrev-commit --remove-empty #{branch} -- #{entry_name}") do |io|
+      Utils.popen_read("git", "rev-list", "--abbrev-commit", "--remove-empty", branch, "--", entry_name) do |io|
         yield io.readline.chomp until io.eof?
       end
     end

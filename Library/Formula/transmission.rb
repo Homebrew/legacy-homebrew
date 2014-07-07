@@ -2,8 +2,8 @@ require "formula"
 
 class Transmission < Formula
   homepage "http://www.transmissionbt.com/"
-  url "http://download.transmissionbt.com/files/transmission-2.83.tar.xz"
-  sha1 "d28bb66b3a1cccc2c4b42d21346be4fe84498ccb"
+  url "http://download.transmissionbt.com/files/transmission-2.84.tar.xz"
+  sha1 "455359bc1fa34aeecc1bac9255ad0c884b94419c"
 
   option "with-nls", "Build with native language support"
 

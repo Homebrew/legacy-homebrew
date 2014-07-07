@@ -6,10 +6,10 @@ class Xplanet < Formula
   sha1 "7c5208b501b441a0184cbb334a5658d0309d7dac"
 
   bottle do
-    revision 1
-    sha1 "003d49a9e2828d654c9b2e890588e9991c1cab8d" => :mavericks
-    sha1 "1952b8a4443ff14f286fabdcb112e144b2f1f707" => :mountain_lion
-    sha1 "34632a0943e30fee6f41c02f022bceb6413c4c54" => :lion
+    revision 2
+    sha1 "f4494377cd80ce1332e9a171b914f9fa316406fb" => :mavericks
+    sha1 "bb5488ef9be45bb605560c0af8d85b5e297984fc" => :mountain_lion
+    sha1 "39f3137787a1f753d4fb083aaa05157368705fbd" => :lion
   end
 
   revision 1
@@ -27,9 +27,9 @@ class Xplanet < Formula
   depends_on "libpng" => :recommended
   depends_on "libtiff" => :recommended
 
-  depends_on "netpbm" if build.with?("netpbm") || build.with?("all")
-  depends_on "pango" if build.with?("pango") || build.with?("all")
-  depends_on "cspice" if build.with?("cspice") || build.with?("all")
+  depends_on "netpbm" => :optional
+  depends_on "pango" => :optional
+  depends_on "cspice" => :optional
 
   depends_on "freetype"
   depends_on :x11 => :optional
@@ -38,12 +38,23 @@ class Xplanet < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --without-cygwin
     ]
 
-    if build.with? "x11"
-      args << "--with-x"
+    if build.without?("all")
+      args << "--without-gif" if build.without?("giflib")
+      args << "--without-jpeg" if build.without?("jpeg")
+      args << "--without-libpng" if build.without?("libpng")
+      args << "--without-libtiff" if build.without?("libtiff")
+      args << "--without-pnm" if build.without?("netpbm")
+      args << "--without-pango" if build.without?("pango")
+      args << "--without-cspice" if build.without?("cspice")
+    end
+
+    if build.with?("x11")
+      args << "--with-x" << "--with-xscreensaver" << "--without-aqua"
     else
-      args << "--with-aqua" << "--without-x"
+      args << "--with-aqua" << "--without-x" << "--without-xscreensaver"
     end
 
     if build.with?("netpbm") || build.with?("all")

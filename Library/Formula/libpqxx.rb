@@ -5,6 +5,13 @@ class Libpqxx < Formula
   url 'http://pqxx.org/download/software/libpqxx/libpqxx-4.0.1.tar.gz'
   sha1 '4748835bd1a90fb34e6e577788006a416c2acb60'
 
+  bottle do
+    cellar :any
+    sha1 "5d81bd92d2249273b5a5eb05d25f24dd4f50c63c" => :mavericks
+    sha1 "b113518319dc1ea6de5b450c55b8faa87daa36cb" => :mountain_lion
+    sha1 "7123ca135b7a02e0618ab36ce982aef00f5fc73d" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on :postgresql
 

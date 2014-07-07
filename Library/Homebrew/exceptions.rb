@@ -179,8 +179,7 @@ class BuildError < Homebrew::InstallationError
       puts
       puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
       if formula.tap?
-        user, repo = formula.tap.split '/'
-        tap_issues_url = "https://github.com/#{user}/#{repo}/issues"
+        tap_issues_url = "https://github.com/#{f.tap}/issues"
         puts "If reporting this issue please do so at (not Homebrew/homebrew):"
         puts "  #{tap_issues_url}"
       end

@@ -1,8 +1,6 @@
 require 'set'
 
 class Option
-  include Comparable
-
   attr_reader :name, :description, :flag
 
   def initialize(name, description=nil)
@@ -20,9 +18,10 @@ class Option
     name <=> other.name
   end
 
-  def eql?(other)
+  def ==(other)
     instance_of?(other.class) && name == other.name
   end
+  alias_method :eql?, :==
 
   def hash
     name.hash
@@ -105,7 +104,7 @@ class Options
   end
 
   def concat(o)
-    o.each { |opt| @options << opt }
+    @options.merge(o)
     self
   end
 

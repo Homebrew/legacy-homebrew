@@ -19,9 +19,8 @@ class OptionTests < Homebrew::TestCase
     bar = Option.new("bar")
     assert_equal foo, @option
     refute_equal bar, @option
-    assert @option.eql?(foo)
-    assert !@option.eql?(bar)
-    assert_operator bar, :<, foo
+    assert_eql @option, foo
+    refute_eql @option, bar
   end
 
   def test_strips_leading_dashes

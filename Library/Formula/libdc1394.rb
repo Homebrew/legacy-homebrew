@@ -5,6 +5,13 @@ class Libdc1394 < Formula
   url "https://downloads.sourceforge.net/project/libdc1394/libdc1394-2/2.2.2/libdc1394-2.2.2.tar.gz"
   sha1 "13958c3cd0709565b5e4a9012dcf2a9b710264e2"
 
+  bottle do
+    cellar :any
+    sha1 "063e3babff63f462de1b7d053690ae3f0e250bcb" => :mavericks
+    sha1 "52d23eb6514dfc5c9aa554bade7dac92deefec70" => :mountain_lion
+    sha1 "9f703002e33433885f3f2cb9e4a4006585282a01" => :lion
+  end
+
   depends_on "sdl"
 
   # fix issue due to bug in OSX Firewire stack
