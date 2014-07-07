@@ -21,8 +21,9 @@ class Chicken < Formula
     # necessary to fix build on older XCodes due to different path
     if MacOS::Xcode.installed?
       args << "XCODE_DEVELOPER=#{MacOS::Xcode.prefix}"
-      args << "XCODE_TOOL_PATH=#{MacOS.sdk_path}/usr/bin"
+      args << "XCODE_TOOL_PATH=#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
+    system "make", *args
     system "make", "install", *args
   end
 
