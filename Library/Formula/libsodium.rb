@@ -13,6 +13,7 @@ class Libsodium < Formula
     sha1 "40fcd281e55c4b0925f99f602a95dfc0b6afb6e0" => :lion
   end
 
+  # Required to generate the .pc file, but can be removed at the next release
   depends_on "pkg-config" => :build
 
   head do
