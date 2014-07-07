@@ -12,8 +12,9 @@ class ApacheForrest < Formula
 
   # Prevent deletion of intentionally-empty subdirs inside of
   # template directories:
-  skip_clean ["libexec/main/template-sites", "libexec/main/fresh-site",
-              "libexec/plugins/pluginTemplate"]
+  skip_clean "libexec/main/template-sites",
+    "libexec/main/fresh-site",
+    "libexec/plugins/pluginTemplate"
 
   def install
     libexec.install Dir['*']
