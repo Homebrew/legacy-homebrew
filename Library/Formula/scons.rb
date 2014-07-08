@@ -2,8 +2,8 @@ require 'formula'
 
 class Scons < Formula
   homepage 'http://www.scons.org'
-  url 'https://downloads.sourceforge.net/scons/scons-2.3.1.tar.gz'
-  sha1 '775e715e49fe5fd8e1d29551a296fdc9267509e7'
+  url 'https://downloads.sourceforge.net/scons/scons-2.3.2.tar.gz'
+  sha1 '2937f20b86d0c5f86cf31e1fa378307ed34fc20a'
 
   bottle do
     cellar :any
