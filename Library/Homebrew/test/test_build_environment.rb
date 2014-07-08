@@ -23,31 +23,6 @@ class BuildEnvironmentTests < Homebrew::TestCase
     @env << :userpaths
     assert_predicate @env, :userpaths?
   end
-
-  def test_modify_build_environment
-    @env.proc = Proc.new { raise StandardError }
-    assert_raises(StandardError) do
-      @env.modify_build_environment(self)
-    end
-  end
-
-  def test_marshal
-    @env << :userpaths
-    @env.proc = Proc.new {}
-    assert_predicate Marshal.load(Marshal.dump(@env)), :userpaths?
-  end
-
-  def test_env_block
-    error = Class.new(StandardError)
-    @env.proc = Proc.new { raise error }
-    assert_raises(error) { @env.modify_build_environment(self) }
-  end
-
-  def test_env_block_with_argument
-    error = Class.new(StandardError)
-    @env.proc = Proc.new { |x| raise x }
-    assert_raises(error) { @env.modify_build_environment(error) }
-  end
 end
 
 class BuildEnvironmentDSLTests < Homebrew::TestCase
