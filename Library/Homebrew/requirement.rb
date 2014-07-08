@@ -55,7 +55,7 @@ class Requirement
   end
 
   def env
-    @env ||= self.class.env
+    self.class.env
   end
 
   def eql?(other)
