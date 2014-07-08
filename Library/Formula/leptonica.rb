@@ -3,7 +3,7 @@ require 'formula'
 class Leptonica < Formula
   homepage 'http://www.leptonica.org/'
   url 'http://www.leptonica.org/source/leptonica-1.71.tar.gz'
-  sha1 'aedaf94cc352a638595b74e906f61204154d8431'
+  sha1 '1ee59b06fd6c6402876f46c26c21b17ffd3c9b6b'
 
   bottle do
     cellar :any
