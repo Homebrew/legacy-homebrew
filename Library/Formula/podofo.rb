@@ -17,7 +17,7 @@ class Podofo < Formula
       # Build shared to simplify linking for other programs.
       system "cmake", "..",
                       "-DPODOFO_BUILD_SHARED:BOOL=TRUE",
-                      "-DFREETYPE_INCLUDE_DIR:#{Formula['freetype'].include}/freetype2;#{Formula['freetype'].include}",
+                      "-DFREETYPE_INCLUDE_DIR=#{Formula['freetype'].include}/freetype2",
                       *std_cmake_args
       system "make install"
     end
