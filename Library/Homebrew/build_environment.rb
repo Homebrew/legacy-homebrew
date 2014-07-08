@@ -1,8 +1,6 @@
 require 'set'
 
 class BuildEnvironment
-  attr_accessor :proc
-
   def initialize(*settings)
     @settings = Set.new(*settings)
   end
@@ -24,36 +22,11 @@ class BuildEnvironment
   def userpaths?
     @settings.include? :userpaths
   end
-
-  def modify_build_environment(receiver)
-    receiver.instance_eval(&proc) if self.proc
-  end
-
-  def marshal_dump
-    @settings
-  end
-
-  def marshal_load(data)
-    @settings = data
-  end
-
-  def _dump(*)
-    Marshal.dump(marshal_dump)
-  end
-
-  def self._load(s)
-    new(Marshal.load(s))
-  end
 end
 
 module BuildEnvironmentDSL
-  def env(*settings, &block)
+  def env(*settings)
     @env ||= BuildEnvironment.new
-    if block_given?
-      @env.proc = block
-    else
-      @env.merge(settings)
-    end
-    @env
+    @env.merge(settings)
   end
 end
