@@ -1,7 +1,7 @@
-require 'formula'
+require "formula"
 
 class Ledger < Formula
-  homepage 'http://ledger-cli.org'
+  homepage "http://ledger-cli.org"
 
   stable do
     url "https://github.com/ledger/ledger/archive/v3.0.3.tar.gz"
@@ -20,7 +20,8 @@ class Ledger < Formula
 
   head "https://github.com/ledger/ledger.git", :branch => "master"
 
-  option 'debug', 'Build with debugging symbols enabled'
+  option "debug", "Build with debugging symbols enabled"
+  option "with-docs", "Build HTML documentation"
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
@@ -42,27 +43,35 @@ class Ledger < Formula
 
     flavor = build.include?("debug") ? "debug" : "opt"
 
+    opts = %W[-- -DBUILD_DOCS=1]
     args = %W[
-      --prefix=#{prefix}
-      #{flavor} make install -N -j#{ENV.make_jobs}
+      --ninja --jobs=#{ENV.make_jobs}
       --output=build
+      --prefix=#{prefix}
       --boost=#{Formula["boost"].opt_prefix}
     ]
 
-    if build.with? 'python'
+    if build.with? "docs"
+      opts << "-DBUILD_WEB_DOCS=1"
+    end
+
+    if build.with? "python"
       # Per #25118, CMake does a poor job of detecting a brewed Python.
       # We need to tell CMake explicitly where our default python lives.
       # Inspired by
       # https://github.com/Homebrew/homebrew/blob/51d054c/Library/Formula/opencv.rb
-      args << "--python" << "--"
+      args << "--python"
       python_prefix = `python-config --prefix`.strip
-      args << "-DPYTHON_LIBRARY=#{python_prefix}/Python"
-      args << "-DPYTHON_INCLUDE_DIR=#{python_prefix}/Headers"
+      opts << "-DPYTHON_LIBRARY=#{python_prefix}/Python"
+      opts << "-DPYTHON_INCLUDE_DIR=#{python_prefix}/Headers"
     end
 
-    system "./acprep", *args
-    (share+'ledger/examples').install Dir['test/input/*.dat']
-    (share+'ledger').install 'contrib'
+    args += opts
+
+    system "./acprep", flavor, "make", "doc", *args
+    system "./acprep", flavor, "make", "install", *args
+    (share+"ledger/examples").install Dir["test/input/*.dat"]
+    (share+"ledger").install "contrib"
     (share+"ledger").install "python/demo.py" if build.with? "python"
   end
 
@@ -76,7 +85,7 @@ class Ledger < Formula
     assert_equal "          $-2,500.00  Equity", balance.read.chomp
     assert_equal 0, $?.exitstatus
 
-    if build.with? 'python'
+    if build.with? "python"
       system "python", "#{share}/ledger/demo.py"
     end
   end
