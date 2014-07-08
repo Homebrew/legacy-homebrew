@@ -7,6 +7,13 @@ class PgpoolIi < Formula
 
   depends_on :postgresql
 
+  # Fix strlcpy conflict. Patch adapted from upstream commit:
+  # http://git.postgresql.org/gitweb/?p=pgpool2.git;a=commit;h=95a874ce94abc2859f53ecbd005d3332db423b48
+  patch do
+    url "https://gist.githubusercontent.com/jacknagel/10cef3c878cda8788b47/raw/e635efc28b63393aaea0aca896b898136849da07/pgpool.diff"
+    sha1 "b653936ba47a0cea88a8bb45cc462d628498a370"
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
