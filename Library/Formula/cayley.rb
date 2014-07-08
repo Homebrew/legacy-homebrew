@@ -6,6 +6,12 @@ class Cayley < Formula
   sha1 "b69b1da6854cf174854034061ab0919fcf0c18b8"
   head "https://github.com/google/cayley.git"
 
+  bottle do
+    sha1 "e213257e0c4b1b5c83c9ae74fb8fe5856d1bd366" => :mavericks
+    sha1 "87fe92bafb4bcd3e2b46421d6576934a40ac1b4e" => :mountain_lion
+    sha1 "de2e7e46e8f9e5d3688e5cce227bcb95b55970d2" => :lion
+  end
+
   depends_on "bazaar" => :build
   depends_on :hg => :build
   depends_on "go" => :build
