@@ -8,7 +8,6 @@ require 'build_environment'
 # By default, Requirements are non-fatal.
 class Requirement
   include Dependable
-  extend BuildEnvironmentDSL
 
   attr_reader :tags, :name, :option_name
 
@@ -102,6 +101,8 @@ class Requirement
   end
 
   class << self
+    include BuildEnvironmentDSL
+
     attr_rw :fatal, :default_formula
     # build is deprecated, use `depends_on <requirement> => :build` instead
     attr_rw :build
