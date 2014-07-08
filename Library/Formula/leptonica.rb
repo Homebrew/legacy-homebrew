@@ -45,7 +45,9 @@ class Leptonica < Formula
         return 0;
     }
     EOS
-    system ENV.cxx, "test.cpp", `pkg-config --cflags lept`
+
+    flags = ["-I#{include}/leptonica"] + ENV.cflags.to_s.split
+    system ENV.cxx, "test.cpp", *flags
     assert_equal version.to_s, `./a.out`
   end
 end
