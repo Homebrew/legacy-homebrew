@@ -2,8 +2,8 @@ require 'formula'
 
 class Haproxy < Formula
   homepage 'http://haproxy.1wt.eu'
-  url 'http://www.haproxy.org/download/1.5/src/haproxy-1.5.0.tar.gz'
-  sha1 'dc957d93871e4543d1850a144543bcaa26df37a0'
+  url 'http://www.haproxy.org/download/1.5/src/haproxy-1.5.1.tar.gz'
+  sha1 'ad51666a79ed8a4550274173d01fe6f6c606a109'
 
   bottle do
     cellar :any
