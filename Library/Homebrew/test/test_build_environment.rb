@@ -52,11 +52,9 @@ end
 
 class BuildEnvironmentDSLTests < Homebrew::TestCase
   def make_instance(&block)
-    Class.new do
-      extend BuildEnvironmentDSL
-      def env; self.class.env end
-      class_eval(&block)
-    end.new
+    obj = Object.new.extend(BuildEnvironmentDSL)
+    obj.instance_eval(&block)
+    obj
   end
 
   def test_env_single_argument
