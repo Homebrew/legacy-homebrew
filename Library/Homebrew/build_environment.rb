@@ -25,7 +25,7 @@ class BuildEnvironment
   end
 
   def modify_build_environment(receiver)
-    receiver.instance_eval(&proc)
+    receiver.instance_eval(&proc) if self.proc
   end
 
   def marshal_dump
