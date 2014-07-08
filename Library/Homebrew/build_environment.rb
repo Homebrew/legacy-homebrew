@@ -9,6 +9,7 @@ class BuildEnvironment
 
   def merge(*args)
     @settings.merge(*args)
+    self
   end
 
   def <<(o)

@@ -10,6 +10,10 @@ class BuildEnvironmentTests < Homebrew::TestCase
     assert_same @env, (@env << :foo)
   end
 
+  def test_merge_returns_self
+    assert_same @env, @env.merge([])
+  end
+
   def test_std?
     @env << :std
     assert_predicate @env, :std?
