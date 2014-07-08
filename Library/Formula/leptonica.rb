@@ -3,7 +3,7 @@ require 'formula'
 class Leptonica < Formula
   homepage 'http://www.leptonica.org/'
   url 'http://www.leptonica.org/source/leptonica-1.71.tar.gz'
-  sha1 'aedaf94cc352a638595b74e906f61204154d8431'
+  sha1 '1ee59b06fd6c6402876f46c26c21b17ffd3c9b6b'
 
   bottle do
     cellar :any
@@ -19,9 +19,6 @@ class Leptonica < Formula
 
   conflicts_with 'osxutils',
     :because => "both leptonica and osxutils ship a `fileinfo` executable."
-
-  ## Patch to fix pkg-config from https://code.google.com/p/leptonica/issues/detail?id=94
-  patch :DATA
 
   def install
     args = %W[
@@ -51,17 +48,3 @@ class Leptonica < Formula
     assert_equal version.to_s, `./a.out`
   end
 end
-
-__END__
-diff --git a/lept.pc.in b/lept.pc.in
-index 8044ba8..c1b9492 100644
---- a/lept.pc.in
-+++ b/lept.pc.in
-@@ -1,3 +1,5 @@
-+prefix=@prefix@
-+exec_prefix=@exec_prefix@
- libdir=@libdir@
- includedir=@includedir@/leptonica
- 
--- 
-1.9.1
