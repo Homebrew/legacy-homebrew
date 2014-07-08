@@ -22,6 +22,12 @@ class Libimobiledevice < Formula
   end
 
   depends_on "pkg-config" => :build
+  head do
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "libxml2"
+  end
   depends_on "libtasn1"
   depends_on "libplist"
   depends_on "usbmuxd"
