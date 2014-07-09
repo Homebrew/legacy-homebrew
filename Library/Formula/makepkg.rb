@@ -21,14 +21,7 @@ class Makepkg < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}"
-    cd "scripts" do
-      system "make", "makepkg"
-      bin.install "makepkg"
-    end
-    cd "etc" do
-      system "make", "makepkg.conf"
-      etc.install "makepkg.conf"
-    end
+    system "make", "install"
   end
 
   test do
