@@ -11,7 +11,6 @@ class Mozjpeg < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "nasm" => :build
-  depends_on "jpeg"
 
   keg_only "mozjpeg is not linked to prevent conflicts with the standard libjpeg."
 
