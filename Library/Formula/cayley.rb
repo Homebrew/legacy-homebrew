@@ -7,9 +7,10 @@ class Cayley < Formula
   head "https://github.com/google/cayley.git"
 
   bottle do
-    sha1 "e213257e0c4b1b5c83c9ae74fb8fe5856d1bd366" => :mavericks
-    sha1 "87fe92bafb4bcd3e2b46421d6576934a40ac1b4e" => :mountain_lion
-    sha1 "de2e7e46e8f9e5d3688e5cce227bcb95b55970d2" => :lion
+    revision 1
+    sha1 "10d398eaaf1d7016f20cb179e6fc5aaddc78d5b5" => :mavericks
+    sha1 "7929ce3816e78fbab798c2fb95aab0352b6a127e" => :mountain_lion
+    sha1 "5bd96b3602df9fd6dac235dfb6545a19e110ed5f" => :lion
   end
 
   depends_on "bazaar" => :build
