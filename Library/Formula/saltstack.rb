@@ -12,8 +12,8 @@ end
 
 class Saltstack < Formula
   homepage 'http://www.saltstack.org'
-  url 'https://github.com/saltstack/salt/archive/v2014.1.5.tar.gz'
-  sha256 '71fd19e8d7860e19fc57e2197b642fd52c2cf46c351dee65449e540a793532ef'
+  url 'https://github.com/saltstack/salt/archive/v2014.1.6.tar.gz'
+  sha256 'd8e579160d929aacc41f1a2f3b9360430f13aae023de8399b2430f1368208848'
 
   bottle do
     sha1 "3519f35b083e5f5c0e8bee2849831d6e4546f80e" => :mavericks
