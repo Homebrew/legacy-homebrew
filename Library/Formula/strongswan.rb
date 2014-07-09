@@ -48,6 +48,7 @@ class Strongswan < Formula
       --enable-socket-default
       --enable-sshkey
       --enable-stroke
+      --enable-swanctl
       --enable-updown
       --enable-unity
       --enable-xauth-generic
