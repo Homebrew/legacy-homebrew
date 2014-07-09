@@ -7,6 +7,13 @@ class Mozjpeg < Formula
 
   head "https://github.com/mozilla/mozjpeg.git"
 
+  bottle do
+    cellar :any
+    sha1 "77a8c981cda61d97804d155484f7ea89a0a729b3" => :mavericks
+    sha1 "bff1e31287c8e23c91d5254b20288f93e0494e2d" => :mountain_lion
+    sha1 "2438fd34c748e6b4ff39ef9f3c66a7864b10b71c" => :lion
+  end
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
