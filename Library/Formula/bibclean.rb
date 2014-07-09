@@ -5,8 +5,6 @@ class Bibclean < Formula
   url "http://ftp.math.utah.edu/pub/bibclean/bibclean-2.16.tar.gz"
   sha1 "f6790cd97e7fe05abce06c991d58e96b4b53ad04"
 
-  env :std
-
   def install
     ENV.deparallelize
 
