@@ -21,4 +21,11 @@ class Mozjpeg < Formula
                           "--with-jpeg8"
     system "make", "install"
   end
+
+  test do
+    system "#{bin}/jpegtran", "-crop", "500x500+200+500",
+                              "-transpose", "-optimize",
+                              "-outfile", "test.jpg",
+                              "/System/Library/CoreServices/DefaultDesktop.jpg"
+  end
 end
