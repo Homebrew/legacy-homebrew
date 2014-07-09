@@ -6,10 +6,10 @@ class Makepkg < Formula
   sha1 "ed9a40a9b532bc43e48680826d57518134132538"
 
   bottle do
-    cellar :any
-    sha1 "e3b89d1ae8609703898902b7a847716418366c01" => :mavericks
-    sha1 "9dd3f631e927bb662671a8d6b40b2bf91d29e72e" => :mountain_lion
-    sha1 "ad5e0e8ecf0565352c9ce8ada1fd686918e04b11" => :lion
+    revision 1
+    sha1 "302edf1a558cd607e1747a7b25e5011678cde67e" => :mavericks
+    sha1 "1044a51bec7287423cad12ad2816c0534a7788f0" => :mountain_lion
+    sha1 "4908957c636158ed40fbdde85f6630df36469699" => :lion
   end
 
   depends_on "pkg-config" => :build
