@@ -27,6 +27,13 @@ def usage
   exit
 end
 
+opoo <<-EOS.undent
+  brew bundle is unsupported and will be replaced with another,
+  incompatible version at some point.
+  Please feel free volunteer to support it in a tap.
+
+EOS
+
 usage if ARGV.include?('--help') || ARGV.include?('-h')
 
 path = 'Brewfile'
