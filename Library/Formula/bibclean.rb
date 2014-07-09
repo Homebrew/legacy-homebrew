@@ -11,6 +11,7 @@ class Bibclean < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--mandir=#{man}"
 
+    # The following inline patches have been reported upstream.
     inreplace "Makefile" do |s|
       s.gsub! /[$][(]CP.*BIBCLEAN.*bindir.*BIBCLEAN[)]/, "mkdir -p $(bindir) && $(CP) $(BIBCLEAN) $(bindir)/$(BIBCLEAN)"
       s.gsub! /[$][(]CP.*bibclean.*mandir.*bibclean.*manext[)]/, "mkdir -p $(mandir) && $(CP) bibclean.man $(mandir)/bibclean.$(manext)"
