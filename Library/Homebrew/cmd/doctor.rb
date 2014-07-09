@@ -735,8 +735,8 @@ def check_filesystem_case_sensitive
   end.map { |case_sensitive_dir| volumes.get_mounts(case_sensitive_dir) }.uniq
   return if case_sensitive_vols.empty?
   <<-EOS.undent
-    Your file-system on #{case_sensitive_vols} appears to be CaSe SeNsItIvE.
-    Homebrew is less tested with that - don't worry but please report issues.
+    The filesystem on #{case_sensitive_vols.join(",")} appears to be case-sensitive.
+    The default OS X filesystem is case-insensitive. Please report any apparent problems.
   EOS
 end
 
