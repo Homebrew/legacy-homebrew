@@ -23,6 +23,13 @@ class Clucene < Formula
     end
   end
 
+  bottle do
+    cellar :any
+    sha1 "841fa0c1c9db0878423f658e59d90a98b290a24c" => :mavericks
+    sha1 "96833aa75e8730eff1b0bb5fe4ca04c77642be4c" => :mountain_lion
+    sha1 "88786dc87fca239143277d634d9c0c979cd10f18" => :lion
+  end
+
   head do
     url "git://clucene.git.sourceforge.net/gitroot/clucene/clucene"
 
