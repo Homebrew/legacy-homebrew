@@ -35,8 +35,8 @@ class Volumes
       io.each_line do |line|
         case line.chomp
           # regex matches: /dev/disk0s2   489562928 440803616  48247312    91%    /
-        when /^(.*)\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)\s+([0-9]{1,3}\%)\s+(.*)/
-          vols << $6
+        when /^.+\s+[0-9]+\s+[0-9]+\s+[0-9]+\s+[0-9]{1,3}%\s+(.+)/
+          vols << $1
         end
       end
     end
