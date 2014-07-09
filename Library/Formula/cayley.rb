@@ -54,25 +54,34 @@ class Cayley < Formula
     system "go", "build", "-o", "cayley"
 
     # Create sample configuration that uses the Homebrew-based directories
-    inreplace "cayley.cfg.example", "/tmp/cayley_test", "#{var}/cayley/data.nt"
+    inreplace "cayley.cfg.example", "/tmp/cayley_test", "#{var}/cayley"
 
     # Install binary and configuration
     bin.install "cayley"
     etc.install "cayley.cfg.example" => "cayley.conf"
 
-    # Create data directory
-    (var/"cayley").mkpath
+    # Copy over the static web assets
+    (share/'cayley/assets').install "docs", "static", "templates"
 
     if build.with? "samples"
       system "gzip", "-d", "30kmoviedata.nt.gz"
 
       # Copy over sample data
-      (share/'cayley/samples').install "testdata.nt"
-      (share/'cayley/samples').install "30kmoviedata.nt"
+      (share/'cayley/samples').install "testdata.nt", "30kmoviedata.nt"
     end
   end
 
-  plist_options :manual => "cayley --config=#{HOMEBREW_PREFIX}/etc/cayley.conf"
+  def post_install
+    unless File.exist? "#{var}/cayley"
+      # Create data directory
+      (var/"cayley").mkpath
+
+      # Initialize the Cayley database
+      system "#{bin}/cayley", "init", "--config=#{etc}/cayley.conf"
+    end
+  end
+
+  plist_options :manual => "cayley http --assets=#{HOMEBREW_PREFIX}/share/cayley/assets --config=#{HOMEBREW_PREFIX}/etc/cayley.conf"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -89,6 +98,8 @@ class Cayley < Formula
         <key>ProgramArguments</key>
         <array>
           <string>#{opt_bin}/cayley</string>
+          <string>http</string>
+          <string>--assets=#{share}/cayley/assets</string>
           <string>--config=#{etc}/cayley.conf</string>
         </array>
         <key>RunAtLoad</key>
