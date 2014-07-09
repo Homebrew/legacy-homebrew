@@ -18,6 +18,7 @@ class Freeswitch < Formula
   depends_on 'pcre'
   depends_on 'speex'
   depends_on 'sqlite'
+  depends_on :x11
 
   def install
     system "./bootstrap.sh -j#{ENV.make_jobs}"
