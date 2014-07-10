@@ -45,22 +45,19 @@ class Pathname
     src = src.to_s
     dst = dst.to_s
 
-    # if it's a symlink, don't resolve it to a file because if we are moving
-    # files one by one, it's likely we will break the symlink by moving what
-    # it points to before we move it
-    # and also broken symlinks are not the end of the world
     raise "#{src} does not exist" unless File.symlink? src or File.exist? src
 
     dst = yield(src, dst) if block_given?
 
     mkpath
+
+    # Use FileUtils.mv over File.rename to handle filesystem boundaries. If src
+    # is a symlink, and its target is moved first, FileUtils.mv will fail:
+    #   https://bugs.ruby-lang.org/issues/7707
+    # In that case, use the system "mv" command.
     if File.symlink? src
-      # we use the BSD mv command because FileUtils copies the target and
-      # not the link! I'm beginning to wish I'd used Python quite honestly!
       raise unless Kernel.system 'mv', src, dst
     else
-      # we mv when possible as it is faster and you should only be using
-      # this function when installing from the temporary build directory
       FileUtils.mv src, dst
     end
   end
