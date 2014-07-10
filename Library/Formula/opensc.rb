@@ -5,6 +5,12 @@ class Opensc < Formula
   url 'https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.14.0/opensc-0.14.0.tar.gz'
   sha1 '4a898e351b0a6d2a5d81576daa7ebed45baf9138'
 
+  bottle do
+    sha1 "58e3ad4248bc4a10258560a6dd186ec1c86467a4" => :mavericks
+    sha1 "d7b65a4e3c7997340dc102ff3196b594731b2977" => :mountain_lion
+    sha1 "cf7e11fe49ca6910d9374211f6421980f7e0f94f" => :lion
+  end
+
   head do
     url 'https://github.com/OpenSC/OpenSC.git'
 
