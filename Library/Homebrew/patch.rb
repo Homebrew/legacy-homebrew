@@ -3,8 +3,8 @@ require 'stringio'
 require 'erb'
 
 class Patch
-  def self.create(strip, io=nil, &block)
-    case strip ||= :p1
+  def self.create(strip, io, &block)
+    case strip
     when :DATA, IO, StringIO
       IOPatch.new(strip, :p1)
     when String
