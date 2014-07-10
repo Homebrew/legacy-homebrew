@@ -14,8 +14,10 @@ class Fftw < Formula
 
   option "with-fortran", "Enable Fortran bindings"
   option :universal
+  option "with-mpi", "Enable MPI parallel transforms"
 
   depends_on :fortran => :optional
+  depends_on :mpi => [:cc, :optional]
 
   def install
     args = ["--enable-shared",
@@ -27,6 +29,7 @@ class Fftw < Formula
     simd_args << "--enable-avx" if ENV.compiler == :clang and Hardware::CPU.avx? and !build.bottle?
 
     args << "--disable-fortran" if build.without? "fortran"
+    args << "--enable-mpi" if build.with? "mpi"
 
     ENV.universal_binary if build.universal?
 

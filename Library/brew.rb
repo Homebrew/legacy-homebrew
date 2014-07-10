@@ -1,4 +1,4 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
+#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
 # encoding: UTF-8
 
 std_trap = trap("INT") { exit! 130 } # no backtrace thanks
@@ -15,12 +15,7 @@ HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.dirname.parent.join("Lib
 $:.unshift(HOMEBREW_LIBRARY_PATH.to_s)
 require 'global'
 
-if ARGV.empty? || ARGV[0] =~ /(-h$|--help$|--usage$|-\?$|help$)/
-  # TODO - `brew help cmd` should display subcommand help
-  require 'cmd/help'
-  puts ARGV.usage
-  exit ARGV.any? ? 0 : 1
-elsif ARGV.first == '--version'
+if ARGV.first == '--version'
   puts HOMEBREW_VERSION
   exit 0
 elsif ARGV.first == '-v'
@@ -60,7 +55,6 @@ end
 # odd exceptions. Reduce our support burden by showing a user-friendly error.
 Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
 
-
 def require? path
   require path
 rescue LoadError => e
@@ -88,7 +82,21 @@ begin
              '--config' => 'config',
              }
 
-  cmd = ARGV.shift
+  empty_argv = ARGV.empty?
+  help_regex = /(-h$|--help$|--usage$|-\?$|help$)/
+  help_flag = false
+  cmd = nil
+
+  ARGV.dup.each_with_index do |arg, i|
+    if help_flag && cmd
+      break
+    elsif arg =~ help_regex
+      help_flag = true
+    elsif !cmd
+      cmd = ARGV.delete_at(i)
+    end
+  end
+
   cmd = aliases[cmd] if aliases[cmd]
 
   sudo_check = Set.new %w[ install link pin unpin upgrade ]
@@ -102,7 +110,24 @@ begin
   # Add contributed commands to PATH before checking.
   ENV['PATH'] += "#{File::PATH_SEPARATOR}#{HOMEBREW_CONTRIB}/cmd"
 
-  if require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd)
+  internal_cmd = require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd) if cmd
+
+  # Usage instructions should be displayed if and only if one of:
+  # - a help flag is passed AND an internal command is matched
+  # - a help flag is passed AND there is no command specified
+  # - no arguments are passed
+  #
+  # It should never affect external commands so they can handle usage
+  # arguments themselves.
+
+  if empty_argv || (help_flag && (cmd.nil? || internal_cmd))
+    # TODO - `brew help cmd` should display subcommand help
+    require 'cmd/help'
+    puts ARGV.usage
+    exit ARGV.any? ? 0 : 1
+  end
+
+  if internal_cmd
     Homebrew.send cmd.to_s.gsub('-', '_').downcase
   elsif which "brew-#{cmd}"
     %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|

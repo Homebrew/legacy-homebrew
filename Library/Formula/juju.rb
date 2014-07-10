@@ -2,29 +2,24 @@ require 'formula'
 
 class Juju < Formula
   homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.18/1.18.3/+download/juju-core_1.18.3.tar.gz'
-  sha1 '9290acb390d7bcefd56212de1a8a36c008f5db89'
-
-  devel do
-    url 'https://launchpad.net/juju-core/trunk/1.19.3/+download/juju-core_1.19.3.tar.gz'
-    sha1 '9ef0ce0d8398e4f0a1ef3888d1204bc54381b16f'
-  end
+  url 'https://launchpad.net/juju-core/1.20/1.20.0/+download/juju-core_1.20.0.tar.gz'
+  sha1 'f57547a0221fd3b5eb0b545c233a88999ce0dc78'
 
   bottle do
-    sha1 "08b825b39bf16375b17cd4b4d73a95093936d41c" => :mavericks
-    sha1 "1f5775826a2414f9741b90ce2c27a1c4e3a1cfe1" => :mountain_lion
-    sha1 "fd95734a178d909409670ca74cb29d06e384f3db" => :lion
+    sha1 "ba09b71468fd53965e2411d1f99c22061b33bc8a" => :mavericks
+    sha1 "900751666032c38f70c58c24da4039333d6a8777" => :mountain_lion
+    sha1 "a95d5de19f5d8676e67fc60c60b296d31049d3c0" => :lion
   end
 
   depends_on 'go' => :build
 
   def install
     ENV['GOPATH'] = buildpath
-    args = %w(install launchpad.net/juju-core/cmd/juju)
+    args = %w(install github.com/juju/juju/cmd/juju)
     args.insert(1, "-v") if ARGV.verbose?
     system "go", *args
     bin.install 'bin/juju'
-    bash_completion.install "src/launchpad.net/juju-core/etc/bash_completion.d/juju-core"
+    bash_completion.install "src/github.com/juju/juju/etc/bash_completion.d/juju-core"
   end
 
   test do

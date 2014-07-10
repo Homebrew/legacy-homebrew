@@ -2,11 +2,11 @@ require "formula"
 
 class Fzf < Formula
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.8.4.tar.gz"
-  sha1 "249d9c722ab08bd52d50a3a3b1bf843051fb94ed"
+  url "https://github.com/junegunn/fzf/archive/0.8.6.tar.gz"
+  sha1 "59d06b0e5c51e912f3d8b1e7bc23c8ae9d7965ac"
 
   def install
-    prefix.install "install", "fzf", "fzf-completion.bash", "fzf-completion.zsh"
+    prefix.install "install", "uninstall", "fzf", "fzf-completion.bash", "fzf-completion.zsh"
     bin.install_symlink prefix/"fzf"
     (prefix/"plugin").install "plugin/fzf.vim"
   end

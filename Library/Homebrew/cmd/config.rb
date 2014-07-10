@@ -1,6 +1,6 @@
 require 'hardware'
 
-module Homebrew extend self
+module Homebrew
   def config
     dump_verbose_config
   end
@@ -44,10 +44,7 @@ module Homebrew extend self
   end
 
   def head
-    head = HOMEBREW_REPOSITORY.cd do
-      `git rev-parse --verify -q HEAD 2>/dev/null`.chomp
-    end
-    if head.empty? then "(none)" else head end
+    Homebrew.git_head || "(none)"
   end
 
   def origin
@@ -103,7 +100,11 @@ module Homebrew extend self
     puts "OS X: #{MACOS_FULL_VERSION}-#{kernel}"
     puts "Xcode: #{xcode}" if xcode
     puts "CLT: #{clt}" if clt
-    puts "#{RUBY_PATH}:\n  #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}" if RUBY_VERSION.to_f != 1.8
+
+    ruby_version = MacOS.version >= "10.9" ? "2.0" : "1.8"
+    if RUBY_VERSION[/\d\.\d/] != ruby_version
+      puts "#{RUBY_PATH}:\n  #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}"
+    end
 
     unless MacOS.compilers_standard?
       puts "GCC-4.0: build #{gcc_40}" if gcc_40

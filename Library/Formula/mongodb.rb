@@ -2,18 +2,18 @@ require "formula"
 
 class Mongodb < Formula
   homepage "http://www.mongodb.org/"
-  url "http://downloads.mongodb.org/src/mongodb-src-r2.6.1.tar.gz"
-  sha1 "3e069329e93a45f14bb86618eceea08d376dbc82"
+  url "http://downloads.mongodb.org/src/mongodb-src-r2.6.3.tar.gz"
+  sha1 "226ab45e3a2e4d4a749271f1bce393ea8358d3dd"
 
   bottle do
-    sha1 "091cafed1db9c96b4487a806f61df8ba0c3523b4" => :mavericks
-    sha1 "3a91d1ed6e1e75f48e6fc241a0cc3fba9d8aa810" => :mountain_lion
-    sha1 "3ffe58f9e71dfd0700e08651f272f7a511dbb8d2" => :lion
+    sha1 "d573717ca7c67455680a6823de210c940faf9ac6" => :mavericks
+    sha1 "f7d2a0711e3ac09fd61bcb243360c1a07fb83233" => :mountain_lion
+    sha1 "b646f64abf52bcc594e690ca2c95143685ade864" => :lion
   end
 
   devel do
-    url "http://downloads.mongodb.org/src/mongodb-src-r2.7.1.tar.gz"
-    sha1 "c38646cdc0452eabe78c088c61e0f3d4cd87e1ec"
+    url "http://downloads.mongodb.org/src/mongodb-src-r2.7.3.tar.gz"
+    sha1 "53f832b31b49063a60100bbe1be65015efcd3ccf"
   end
 
   head "https://github.com/mongodb/mongo.git"

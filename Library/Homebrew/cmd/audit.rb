@@ -3,7 +3,7 @@ require 'utils'
 require 'extend/ENV'
 require 'formula_cellar_checks'
 
-module Homebrew extend self
+module Homebrew
   def audit
     formula_count = 0
     problem_count = 0
@@ -56,7 +56,7 @@ end
 
 class FormulaText
   def initialize path
-    @text = path.open('r') { |f| f.read }
+    @text = path.open("rb", &:read)
   end
 
   def without_patch
@@ -148,9 +148,9 @@ class FormulaAuditor
       dep.options.reject do |opt|
         next true if dep_f.build.has_option?(opt.name)
         dep_f.requirements.detect do |r|
-          if r.tags.include? :recommended
+          if r.recommended?
             opt.name == "with-#{r.name}"
-          elsif r.tags.include? :optional
+          elsif r.optional?
             opt.name == "without-#{r.name}"
           end
         end
@@ -416,7 +416,7 @@ class FormulaAuditor
     end
 
     if line =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
-      problem "Use \"if ARGV.build_#{$1.downcase}?\" instead"
+      problem "Use \"if build.#{$1.downcase}?\" instead"
     end
 
     if line =~ /make && make/

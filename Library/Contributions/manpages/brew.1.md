@@ -128,13 +128,15 @@ Note that these flags should only appear after a command.
   * `edit` <formula>:
     Open <formula> in the editor.
 
-  * `fetch [--force] [-v] [--HEAD] [--deps] [--build-from-source|--force-bottle]` <formulae>:
+  * `fetch [--force] [-v] [--devel|--HEAD] [--deps] [--build-from-source|--force-bottle]` <formulae>:
     Download the source packages for the given <formulae>.
     For tarballs, also print SHA1 and SHA-256 checksums.
 
-    If `--HEAD` is passed, download the HEAD versions of <formulae> instead. `-v`
-    may also be passed to make the VCS checkout verbose, useful for seeing if
-    an existing HEAD cache has been updated.
+    If `--HEAD` or `--devel` is passed, fetch that version instead of the
+    stable version.
+
+    If `-v` is passed, do a verbose VCS checkout, if the url represents a CVS.
+    This useful for seeing if an existing VCS cache has been updated.
 
     If `--force` is passed, remove a previously cached version and re-fetch.
 
@@ -330,11 +332,14 @@ Note that these flags should only appear after a command.
     Ensures all tapped formula are symlinked into Library/Formula and prunes dead
     formula from Library/Formula.
 
-  * `test` <formula>:
+  * `test` [--devel|--HEAD] <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
     generally indicate to the user if something is wrong with the installed
     formula.
+
+    To test the development or head version of a formula, `--devel` or
+    `--HEAD` must be passed.,
 
     Example: `brew install jruby && brew test jruby`
 
@@ -391,13 +396,6 @@ Note that these flags should only appear after a command.
     By default, `uses` shows usages of `formula` by stable builds. To find
     cases where `formula` is used by development or HEAD build, pass
     `--devel` or `--HEAD`.
-
-  * `versions [--compact]` <formulae>:
-    List previous versions of <formulae>, along with a command to checkout
-    each version.
-
-    If `--compact` is passed, show all options on a single line separated by
-    spaces.
 
   * `--cache`:
     Display Homebrew's download cache. See also `HOMEBREW_CACHE`.

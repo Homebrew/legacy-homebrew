@@ -1,16 +1,16 @@
 require 'formula'
 
 class Subversion < Formula
-  homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.8.tar.bz2'
-  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.8.tar.bz2'
-  sha1 '8e9f10b7a9704c90e17cfe76fd56e3fe74c01a7a'
+  homepage 'https://subversion.apache.org/'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.9.tar.bz2'
+  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.9.tar.bz2'
+  sha1 '424ee12708f39a126efd905886666083dcc4eeaf'
 
   bottle do
-    revision 1
-    sha1 "576b275530c1d0f0fa6e38ce93d9e7b9d1fb48ee" => :mavericks
-    sha1 "9d2a0743bf7f52ccb825ba48383f398a981b230d" => :mountain_lion
-    sha1 "a5431204f7282f8b408bfc206c854797fee62982" => :lion
+    revision 2
+    sha1 "860453653114edfcf152bad3a7901719777a5f72" => :mavericks
+    sha1 "f9acba18f2d4547a24cd7e5a18eda47bf9f40925" => :mountain_lion
+    sha1 "1f632c42ec044abaaf373dd955aa100a8f879a81" => :lion
   end
 
   option :universal
@@ -19,19 +19,18 @@ class Subversion < Formula
   option 'ruby', 'Build Ruby bindings'
 
   resource 'serf' do
-    url 'http://serf.googlecode.com/svn/src_releases/serf-1.3.4.tar.bz2', :using => :curl
-    sha1 'eafc8317d7a9c77d4db9ce1e5c71a33822f57c3a'
+    url 'https://serf.googlecode.com/svn/src_releases/serf-1.3.6.tar.bz2', :using => :curl
+    sha1 '409a153583b3e370a130e3fb1623ac98f5af9975'
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on 'sqlite'
   depends_on :python => :optional
-
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
 
   # Bindings require swig
   depends_on 'swig' if build.include? 'perl' or build.with? 'python' or build.include? 'ruby'
@@ -172,9 +171,13 @@ class Subversion < Formula
       end
       system "make swig-pl"
       system "make", "install-swig-pl", "DESTDIR=#{prefix}"
+
       # Some of the libraries get installed into the wrong place, they end up having the
       # prefix in the directory name twice.
-      mv Dir["#{prefix}/#{lib}/*"], "#{lib}"
+      # There's an ongoing issue with Ruby's mv placing files in the wrong directory and erroring out.
+      # The below addition should resolve the issue for now. See https://github.com/Homebrew/homebrew/issues/30370
+
+      lib.install Dir["#{prefix}/#{lib}/*"]
     end
 
     if build.include? 'java'

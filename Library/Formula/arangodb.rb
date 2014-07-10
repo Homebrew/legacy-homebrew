@@ -2,15 +2,15 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://www.arangodb.org/repositories/Source/ArangoDB-2.1.0.tar.gz'
-  sha1 '06378c988139792e3d8b77176177f7761ba6300a'
+  url 'https://github.com/triAGENS/ArangoDB/archive/v2.1.2.tar.gz'
+  sha1 '3f6cc8c7dc757f995c61effcd74523e0f5a60f98'
 
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
   bottle do
-    sha1 "6ca3c04cf9c9ba78250130de6aa6be0ad4326f80" => :mavericks
-    sha1 "97b6304b5b7480deab765bc1094e1c0c3f8f9c88" => :mountain_lion
-    sha1 "098cc831d0a97656bf89e09e28bec19bd8837dd9" => :lion
+    sha1 "2696710c1befec12be71b55ca5f70927fd4716b7" => :mavericks
+    sha1 "52cf255b9115104cb01a133290621da7a161595e" => :mountain_lion
+    sha1 "9dfaba919243e834b5f526de1b061c5e5a241252" => :lion
   end
 
   depends_on 'go' => :build
@@ -42,6 +42,10 @@ class Arangodb < Formula
 
     (var/'arangodb').mkpath
     (var/'log/arangodb').mkpath
+  end
+
+  def post_install
+    system "#{sbin}/arangod", "--upgrade", "--log.file", "-"
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod --log.file -"

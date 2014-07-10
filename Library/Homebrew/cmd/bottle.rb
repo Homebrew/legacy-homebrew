@@ -32,14 +32,10 @@ BOTTLE_ERB = <<-EOS
   end
 EOS
 
-module Homebrew extend self
-  class << self
-    include Utils::Inreplace
-  end
-
+module Homebrew
   def keg_contains string, keg
     if not ARGV.homebrew_developer?
-      return quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg
+      return quiet_system 'fgrep', '--recursive', '--quiet', '--max-count=1', string, keg.to_s
     end
 
     result = false
@@ -67,7 +63,7 @@ module Homebrew extend self
       end
 
       # Use strings to search through the file for each string
-      IO.popen("strings -t x - '#{file}'") do |io|
+      Utils.popen_read("strings", "-t", "x", "-", file.to_s) do |io|
         until io.eof?
           str = io.readline.chomp
 
@@ -172,8 +168,8 @@ module Homebrew extend self
           prefix_check = HOMEBREW_PREFIX
         end
 
-        relocatable = !keg_contains(prefix_check, keg)
-        relocatable = !keg_contains(HOMEBREW_CELLAR, keg) && relocatable
+        relocatable = !keg_contains(prefix_check.to_s, keg)
+        relocatable = !keg_contains(HOMEBREW_CELLAR.to_s, keg) && relocatable
         puts if !relocatable && ARGV.verbose?
       rescue Interrupt
         ignore_interrupts { bottle_path.unlink if bottle_path.exist? }
@@ -233,17 +229,17 @@ module Homebrew extend self
       puts output
 
       if ARGV.include? '--write'
-        f = Formula.factory formula_name
+        f = Formulary.factory(formula_name)
         update_or_add = nil
 
-        inreplace f.path do |s|
+        Utils::Inreplace.inreplace(f.path) do |s|
           if s.include? 'bottle do'
             update_or_add = 'update'
             string = s.sub!(/  bottle do.+?end\n/m, output)
             odie 'Bottle block update failed!' unless string
           else
             update_or_add = 'add'
-            string = s.sub!(/(  (url|sha1|sha256|head|version|mirror) ['"][\S ]+['"]\n+)+/m, '\0' + output + "\n")
+            string = s.sub!(/(  (url|sha1|sha256|head|version|mirror|revision) ['"][\S ]+['"]\n+)+/m, '\0' + output + "\n")
             odie 'Bottle block addition failed!' unless string
           end
         end
@@ -251,9 +247,11 @@ module Homebrew extend self
         version = f.version.to_s
         version += "_#{f.revision}" if f.revision.to_i > 0
 
-        safe_system 'git', 'commit', '--no-edit', '--verbose',
-          "--message=#{f.name}: #{update_or_add} #{version} bottle.",
-          '--', f.path
+        HOMEBREW_REPOSITORY.cd do
+          safe_system "git", "commit", "--no-edit", "--verbose",
+            "--message=#{f.name}: #{update_or_add} #{version} bottle.",
+            "--", f.path
+        end
       end
     end
     exit 0

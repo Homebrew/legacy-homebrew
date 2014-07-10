@@ -19,9 +19,9 @@ class Libxml2 < Formula
   head do
     url 'https://git.gnome.org/browse/libxml2', :using => :git
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on :python => :optional

@@ -1,6 +1,7 @@
 require 'pathname'
 require 'mach'
 require 'resource'
+require 'metafiles'
 
 # we enhance pathname to make our code more readable
 class Pathname
@@ -89,10 +90,10 @@ class Pathname
 
   # we assume this pathname object is a file obviously
   alias_method :old_write, :write if method_defined?(:write)
-  def write content
+  def write(content, *open_args)
     raise "Will not overwrite #{to_s}" if exist?
     dirname.mkpath
-    File.open(self, 'w') {|f| f.write content }
+    open("w", *open_args) { |f| f.write(content) }
   end
 
   # NOTE always overwrites
@@ -131,6 +132,7 @@ class Pathname
   private :default_stat
 
   def cp dst
+    opoo "Pathname#cp is deprecated, use FileUtils.cp"
     if file?
       FileUtils.cp to_s, dst
     else
@@ -193,6 +195,7 @@ class Pathname
   end
 
   def chmod_R perms
+    opoo "Pathname#chmod_R is deprecated, use FileUtils.chmod_R"
     require 'fileutils'
     FileUtils.chmod_R perms, to_s
   end
@@ -243,11 +246,15 @@ class Pathname
     %r[^#!\s*\S+] === open('r') { |f| f.read(1024) }
   end
 
-  def incremental_hash(hasher)
-    incr_hash = hasher.new
-    buf = ""
-    open('rb') { |f| incr_hash << buf while f.read(1024, buf) }
-    incr_hash.hexdigest
+  def incremental_hash(klass)
+    digest = klass.new
+    if digest.respond_to?(:file)
+      digest.file(self)
+    else
+      buf = ""
+      open("rb") { |f| digest << buf while f.read(1024, buf) }
+    end
+    digest.hexdigest
   end
 
   def sha1
@@ -266,9 +273,8 @@ class Pathname
     raise ChecksumMismatchError.new(self, expected, actual) unless expected == actual
   end
 
-  if '1.9' <= RUBY_VERSION
-    alias_method :to_str, :to_s
-  end
+  # FIXME eliminate the places where we rely on this method
+  alias_method :to_str, :to_s unless method_defined?(:to_str)
 
   def cd
     Dir.chdir(self){ yield }
@@ -296,8 +302,12 @@ class Pathname
     File.symlink(src.relative_path_from(dirname), self)
   end
 
-  def / that
-    self + that.to_s
+  def /(other)
+    unless other.respond_to?(:to_str) || other.respond_to?(:to_path)
+      opoo "Pathname#/ called on #{inspect} with #{other.inspect} as an argument"
+      puts "This behavior is deprecated, please pass either a String or a Pathname"
+    end
+    self + other.to_s
   end unless method_defined?(:/)
 
   def ensure_writable
@@ -320,7 +330,7 @@ class Pathname
   end
 
   def find_formula
-    [self/:Formula, self/:HomebrewFormula, self].each do |d|
+    [join("Formula"), join("HomebrewFormula"), self].each do |d|
       if d.exist?
         d.children.each do |pn|
           yield pn if pn.extname == ".rb"
@@ -337,6 +347,7 @@ class Pathname
       opoo "tried to write exec scripts to #{self} for an empty list of targets"
       return
     end
+    mkpath
     targets.each do |target|
       target = Pathname.new(target) # allow pathnames or strings
       (self+target.basename()).write <<-EOS.undent
@@ -350,6 +361,7 @@ class Pathname
   def write_env_script target, env
     env_export = ''
     env.each {|key, value| env_export += "#{key}=\"#{value}\" "}
+    dirname.mkpath
     self.write <<-EOS.undent
     #!/bin/bash
     #{env_export}exec "#{target}" "$@"
@@ -359,8 +371,7 @@ class Pathname
   # Writes a wrapper env script and moves all files to the dst
   def env_script_all_files dst, env
     dst.mkpath
-    Dir["#{self}/*"].each do |file|
-      file = Pathname.new(file)
+    Pathname.glob("#{self}/*") do |file|
       dst.install_p file
       new_file = dst+file.basename
       file.write_env_script(new_file, env)
@@ -369,27 +380,24 @@ class Pathname
 
   # Writes an exec script that invokes a java jar
   def write_jar_script target_jar, script_name, java_opts=""
+    mkpath
     (self+script_name).write <<-EOS.undent
       #!/bin/bash
       exec java #{java_opts} -jar #{target_jar} "$@"
     EOS
   end
 
-  def install_metafiles from=nil
-    # Default to current path, and make sure we have a pathname, not a string
-    from = "." if from.nil?
-    from = Pathname.new(from.to_s)
-
-    from.children.each do |p|
+  def install_metafiles from=Pathname.pwd
+    Pathname(from).children.each do |p|
       next if p.directory?
-      next unless FORMULA_META_FILES.should_copy? p
+      next unless Metafiles.copy?(p.basename.to_s)
       # Some software symlinks these files (see help2man.rb)
       filename = p.resolved_path
       # Some software links metafiles together, so by the time we iterate to one of them
       # we may have already moved it. libxml2's COPYING and Copyright are affected by this.
       next unless filename.exist?
       filename.chmod 0644
-      self.install filename
+      install(filename)
     end
   end
 
@@ -428,6 +436,13 @@ class Pathname
       end
     end
     private :prepend_prefix
+  elsif RUBY_VERSION == "2.0.0"
+    # https://bugs.ruby-lang.org/issues/9915
+    prepend Module.new {
+      def inspect
+        super.force_encoding(@path.encoding)
+      end
+    }
   end
 end
 

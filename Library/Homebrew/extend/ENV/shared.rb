@@ -1,18 +1,21 @@
-require 'formula'
+require "formula"
+require "compilers"
 
 module SharedEnvExtension
+  include CompilerConstants
+
   CC_FLAG_VARS = %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
   FC_FLAG_VARS = %w{FCFLAGS FFLAGS}
 
-  # Update these every time a new GNU GCC branch is released
-  GNU_GCC_VERSIONS = (3..9)
-  GNU_GCC_REGEXP = /gcc-(4\.[3-9])/
+  COMPILER_SYMBOL_MAP = {
+    "gcc-4.0"  => :gcc_4_0,
+    "gcc-4.2"  => :gcc,
+    "llvm-gcc" => :llvm,
+    "clang"    => :clang,
+  }
 
-  COMPILER_ALIASES = {'gcc' => 'gcc-4.2', 'llvm' => 'llvm-gcc'}
-  COMPILER_SYMBOL_MAP = { 'gcc-4.0'  => :gcc_4_0,
-                          'gcc-4.2'  => :gcc,
-                          'llvm-gcc' => :llvm,
-                          'clang'    => :clang }
+  COMPILERS = COMPILER_SYMBOL_MAP.values +
+    GNU_GCC_VERSIONS.map { |n| "gcc-4.#{n}" }
 
   SANITIZED_VARS = %w[
     CDPATH GREP_OPTIONS CLICOLOR_FORCE
@@ -95,7 +98,7 @@ module SharedEnvExtension
   def fcflags;  self['FCFLAGS'];      end
 
   def compiler
-    @compiler ||= if (cc = ARGV.cc)
+    @compiler ||= if (cc = ARGV.cc || homebrew_cc)
       COMPILER_SYMBOL_MAP.fetch(cc) do |other|
         case other
         when GNU_GCC_REGEXP
@@ -104,11 +107,20 @@ module SharedEnvExtension
           raise "Invalid value for --cc: #{other}"
         end
       end
-    elsif homebrew_cc
-      cc = COMPILER_ALIASES.fetch(homebrew_cc, homebrew_cc)
-      COMPILER_SYMBOL_MAP.fetch(cc) { MacOS.default_compiler }
     else
       MacOS.default_compiler
+    end
+  end
+
+  def determine_cc
+    COMPILER_SYMBOL_MAP.invert.fetch(compiler, compiler)
+  end
+
+  COMPILERS.each do |compiler|
+    define_method(compiler) do
+      @compiler = compiler
+      self.cc  = determine_cc
+      self.cxx = determine_cxx
     end
   end
 
@@ -175,7 +187,7 @@ module SharedEnvExtension
 
   # ld64 is a newer linker provided for Xcode 2.5
   def ld64
-    ld64 = Formula.factory('ld64')
+    ld64 = Formulary.factory('ld64')
     self['LD'] = ld64.bin/'ld'
     append "LDFLAGS", "-B#{ld64.bin}/"
   end

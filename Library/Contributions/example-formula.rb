@@ -250,7 +250,7 @@ class ExampleFormula < Formula
     # patch you have to resort to `inreplace`, because in the patch
     # you don't have access to any var defined by the formula. Only
     # HOMEBREW_PREFIX is available in the embedded patch.
-    # inreplace supports reg. exes.
+    # inreplace supports regular expressions.
     inreplace "somefile.cfg", /look[for]what?/, "replace by #{bin}/tool"
 
     # To call out to the system, we use the `system` method and we prefer
@@ -271,7 +271,7 @@ class ExampleFormula < Formula
     args << "--universal-binary" if build.universal?
 
     # The `build.with?` and `build.without?` are smart enough to do the
-    # right thing™ with respect to defaults defined via `:optional` and
+    # right thing with respect to defaults defined via `:optional` and
     # `:recommended` dependencies.
 
     # If you need to give the path to lib/include of another brewed formula
@@ -396,10 +396,10 @@ class ExampleFormula < Formula
 
     # Need complete control over stdin, stdout?
     require "open3"
-    Open3.popen3("#{bin}/example", "big5:utf-8") do |stdin, stdout, _|
-      stdin.write("\263\134\245\134\273\134")
+    Open3.popen3("#{bin}/example", "argument") do |stdin, stdout, _|
+      stdin.write("some text")
       stdin.close
-      assert_equal "許功蓋", stdout.read
+      assert_equal "result", stdout.read
     end
 
     # If an exception is raised (e.g. by assert), or if we return false, or if

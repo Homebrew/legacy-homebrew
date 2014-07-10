@@ -15,9 +15,9 @@ class Sdl < Formula
   head do
     url 'http://hg.libsdl.org/SDL', :branch => 'SDL-1.2', :using => :hg
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option 'with-x11-driver', 'Compile with support for X11 video driver'
@@ -25,9 +25,9 @@ class Sdl < Formula
 
   if build.with? 'x11-driver'
     depends_on :x11
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   # Fix for a bug preventing SDL from building at all on OSX 10.9 Mavericks

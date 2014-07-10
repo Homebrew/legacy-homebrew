@@ -25,13 +25,14 @@ class Gcc < Formula
   url "http://ftpmirror.gnu.org/gcc/gcc-4.8.3/gcc-4.8.3.tar.bz2"
   mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.8.3/gcc-4.8.3.tar.bz2"
   sha1 "da0a2b9ec074f2bf624a34f3507f812ebb6e4dce"
+  revision 1
 
   head "svn://gcc.gnu.org/svn/gcc/branches/gcc-4_8-branch"
 
   bottle do
-    sha1 "628c34336de1f0c20d39b39714d45ff9b9b20314" => :mavericks
-    sha1 "9f8a125ad66239d0fa27da750205feb769d03014" => :mountain_lion
-    sha1 "dd5aba103305a572c5c4707802db1df7b7103959" => :lion
+    sha1 "0e4040eb5a667ecacba2b7e7c71a7a868a593386" => :mavericks
+    sha1 "78374c616c427d49e29656579d6a143cbb468b0b" => :mountain_lion
+    sha1 "b3320839c172d7abc4f9889a67822e604e080a75" => :lion
   end
 
   option "with-java", "Build the gcj compiler"
@@ -87,10 +88,14 @@ class Gcc < Formula
     languages << "fortran" if build.with?("fortran") || build.with?("all-languages")
     languages << "java" if build.with?("java") || build.with?("all-languages")
 
+    version_suffix = version.to_s.slice(/\d\.\d/)
+
     args = [
       "--build=#{arch}-apple-darwin#{osmajor}",
       "--prefix=#{prefix}",
       "--enable-languages=#{languages.join(",")}",
+      # Make most executables versioned to avoid conflicts.
+      "--program-suffix=-#{version_suffix}",
       "--with-gmp=#{Formula["gmp"].opt_prefix}",
       "--with-mpfr=#{Formula["mpfr"].opt_prefix}",
       "--with-mpc=#{Formula["libmpc"].opt_prefix}",
@@ -154,16 +159,46 @@ class Gcc < Formula
       # deja-gnu and autogen formulae must be installed in order to do this.
 
       system "make", "install"
+
+      if build.with?("fortran") || build.with?("all-languages")
+        bin.install_symlink bin/"gfortran-#{version_suffix}" => "gfortran"
+      end
     end
 
-    # Add a version suffix for backwards compatability.
-    version_suffix = version.to_s.slice(/\d\.\d/)
-    bin.install_symlink bin/"gcc" => "gcc-#{version_suffix}"
-    bin.install_symlink bin/"g++" => "g++-#{version_suffix}"
+    # Handle conflicts between GCC formulae and avoid interfering
+    # with system compilers.
+    # Since GCC 4.8 libffi stuff are no longer shipped.
+    # Rename libiberty.a.
+    Dir.glob(prefix/"**/libiberty.*") { |file| add_suffix file, version_suffix }
+    # Rename man7.
+    Dir.glob(man7/"*.7") { |file| add_suffix file, version_suffix }
+    # Even when suffixes are appended, the info pages conflict when
+    # install-info is run. TODO fix this.
+    info.rmtree
+
+    # Rename java properties
+    if build.with?("java") || build.with?("all-languages")
+      config_files = [
+        "#{lib}/logging.properties",
+        "#{lib}/security/classpath.security",
+        "#{lib}/i386/logging.properties",
+        "#{lib}/i386/security/classpath.security"
+      ]
+      config_files.each do |file|
+        add_suffix file, version_suffix if File.exist? file
+      end
+    end
+  end
+
+  def add_suffix file, suffix
+    dir = File.dirname(file)
+    ext = File.extname(file)
+    base = File.basename(file, ext)
+    File.rename file, "#{dir}/#{base}-#{suffix}#{ext}"
   end
 
   test do
-    if build.with?("fortran")
+    if build.with?("fortran") || build.with?("all-languages")
       fixture = <<-EOS.undent
         integer,parameter::m=10000
         real::a(m), b(m)

@@ -8,18 +8,16 @@ class OpenOcd < Formula
   head do
     url 'git://git.code.sf.net/p/openocd/code'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on 'texinfo' => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "texinfo" => :build
   end
-
 
   option 'with-hidapi', 'Enable building support for devices using HIDAPI (CMSIS-DAP)'
   option 'with-libftdi', 'Enable building support for libftdi-based drivers (USB-Blaster, ASIX Presto, OpenJTAG)'
-  option 'with-libusb',  'Enable building support for all other USB adapters'
 
   depends_on 'pkg-config' => :build
-  depends_on :libtool
   depends_on 'libusb' => :recommended
   # some drivers are still not converted to libusb-1.0
   depends_on 'libusb-compat' if build.with? 'libusb'

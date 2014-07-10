@@ -2,13 +2,14 @@ require 'formula'
 
 class Haproxy < Formula
   homepage 'http://haproxy.1wt.eu'
-  url 'http://haproxy.1wt.eu/download/1.4/src/haproxy-1.4.24.tar.gz'
-  sha1 '0c5104d029d8d58d39b0d94179edd84c661306d1'
+  url 'http://www.haproxy.org/download/1.5/src/haproxy-1.5.1.tar.gz'
+  sha1 'ad51666a79ed8a4550274173d01fe6f6c606a109'
 
-  devel do
-    url 'http://haproxy.1wt.eu/download/1.5/src/devel/haproxy-1.5-dev19.tar.gz'
-    sha1 '5c16686c516dbeaab8ada6c17c25e9629ab4f7d3'
-    version '1.5-dev19'
+  bottle do
+    cellar :any
+    sha1 "580ff887d5a02173504db0b3ebe89762c4e7d81f" => :mavericks
+    sha1 "e259ea47ddb5bb782025cc087892053998dc0f2e" => :mountain_lion
+    sha1 "3c6d106a68a731563a9fade671f21bd27d939f33" => :lion
   end
 
   depends_on 'pcre'
@@ -17,13 +18,11 @@ class Haproxy < Formula
     args = ["TARGET=generic",
             "USE_KQUEUE=1",
             "USE_POLL=1",
-            "USE_PCRE=1"]
-
-    if build.devel?
-      args << "USE_OPENSSL=1"
-      args << "USE_ZLIB=1"
-      args << "ADDLIB=-lcrypto"
-    end
+            "USE_PCRE=1",
+            "USE_OPENSSL=1",
+            "USE_ZLIB=1",
+            "ADDLIB=-lcrypto",
+    ]
 
     # We build generic since the Makefile.osx doesn't appear to work
     system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}", "LDFLAGS=#{ENV.ldflags}", *args

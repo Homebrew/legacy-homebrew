@@ -1,5 +1,4 @@
-require 'requirement'
-require 'extend/set'
+require "requirement"
 
 class X11Dependency < Requirement
   include Comparable
@@ -11,12 +10,16 @@ class X11Dependency < Requirement
 
   def initialize(name="x11", tags=[])
     @name = name
-    @min_version = tags.shift if /(\d\.)+\d/ === tags.first
+    if /(\d\.)+\d/ === tags.first
+      @min_version = Version.new(tags.shift)
+    else
+      @min_version = Version.new("0.0.0")
+    end
     super(tags)
   end
 
   satisfy :build_env => false do
-    MacOS::XQuartz.installed? && (@min_version.nil? || @min_version <= MacOS::XQuartz.version)
+    MacOS::XQuartz.installed? && min_version <= Version.new(MacOS::XQuartz.version)
   end
 
   def message; <<-EOS.undent
@@ -27,16 +30,15 @@ class X11Dependency < Requirement
   end
 
   def <=> other
-    return nil unless X11Dependency === other
+    return unless X11Dependency === other
+    min_version <=> other.min_version
+  end
 
-    if min_version.nil? && other.min_version.nil?
-      0
-    elsif other.min_version.nil?
-      1
-    elsif min_version.nil?
-      -1
-    else
-      min_version <=> other.min_version
-    end
+  def eql?(other)
+    super && min_version == other.min_version
+  end
+
+  def inspect
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect} min_version=#{min_version}>"
   end
 end

@@ -46,8 +46,8 @@ class Formulary
     end
 
     # Gets the formula instance.
-    def get_formula
-      klass.new(name, path)
+    def get_formula(spec)
+      klass.new(name, path, spec)
     end
 
     # Return the Class for this formula, `require`-ing it if
@@ -98,7 +98,7 @@ class Formulary
       super name, Formula.path(name)
     end
 
-    def get_formula
+    def get_formula(spec)
       formula = super
       formula.local_bottle_path = @bottle_filename
       formula
@@ -141,14 +141,20 @@ class Formulary
 
     # Downloads the formula's .rb file
     def fetch
-      unless Formulary.formula_class_defined? class_name
+      begin
+        have_klass = Formulary.formula_class_defined? class_name
+      rescue NameError
+        raise FormulaUnavailableError.new(name)
+      end
+
+      unless have_klass
         HOMEBREW_CACHE_FORMULA.mkpath
         FileUtils.rm path.to_s, :force => true
         curl url, '-o', path.to_s
       end
     end
 
-    def get_formula
+    def get_formula(spec)
       fetch
       super
     end
@@ -175,7 +181,7 @@ class Formulary
       super name, path
     end
 
-    def get_formula
+    def get_formula(spec)
       super
     rescue FormulaUnavailableError
       raise TapFormulaUnavailableError.new(tapped_name)
@@ -188,8 +194,8 @@ class Formulary
   # * a formula pathname
   # * a formula URL
   # * a local bottle reference
-  def self.factory ref
-    loader_for(ref).get_formula
+  def self.factory(ref, spec=:stable)
+    loader_for(ref).get_formula(spec)
   end
 
   def self.canonical_name(ref)

@@ -2,13 +2,13 @@ require 'formula'
 
 class DBus < Formula
   homepage 'http://www.freedesktop.org/wiki/Software/dbus'
-  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.8.2.tar.gz'
-  sha256 '5689f7411165adc953f37974e276a3028db94447c76e8dd92efe910c6d3bae08'
+  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.4.tar.gz"
+  sha1 "316f1196312a88cc858ba810d4e5d16f70ab9d58"
 
   bottle do
-    sha1 "170fd9d8771d1a681131dfe34f4f39eeaf105f66" => :mavericks
-    sha1 "80ef90bac8789af790eadff4d0a30649ce266fce" => :mountain_lion
-    sha1 "d85a01aa83aa3d38de212a52ef0db20d645625ea" => :lion
+    sha1 "07a7bd9331dcf60f0db9d9efd199c3e3164dbb54" => :mavericks
+    sha1 "03e7c08ff3816150aa1db99a594f0c4c21baf223" => :mountain_lion
+    sha1 "24385436ff2c32efee5cceab5744273d91c800d0" => :lion
   end
 
   def install

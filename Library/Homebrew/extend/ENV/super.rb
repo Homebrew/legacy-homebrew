@@ -23,7 +23,7 @@ module Superenv
   end
 
   def self.bin
-    @bin ||= (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
+    (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
   end
 
   def reset
@@ -103,17 +103,15 @@ module Superenv
     if MacOS::Xcode.without_clt? then MacOS.sdk_path.to_s else "" end
   end
 
-  def determine_cc
-    cc = compiler
-    COMPILER_SYMBOL_MAP.invert.fetch(cc, cc)
-  end
-
   def determine_cxx
     determine_cc.to_s.gsub('gcc', 'g++').gsub('clang', 'clang++')
   end
 
   def determine_path
     paths = [Superenv.bin]
+
+    # Formula dependencies can override standard tools.
+    paths += deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
 
     # On 10.9, there are shims for all tools in /usr/bin.
     # On 10.7 and 10.8 we need to add these directories ourselves.
@@ -122,7 +120,6 @@ module Superenv
       paths << "#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
 
-    paths += deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << MacOS::X11.bin.to_s if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
 
@@ -249,22 +246,6 @@ module Superenv
     delete('MAKEFLAGS')
   end
   alias_method :j1, :deparallelize
-
-  COMPILER_SYMBOL_MAP.values.each do |compiler|
-    define_method compiler do
-      @compiler = compiler
-      self.cc  = determine_cc
-      self.cxx = determine_cxx
-    end
-  end
-
-  GNU_GCC_VERSIONS.each do |n|
-    define_method(:"gcc-4.#{n}") do
-      @compiler = "gcc-4.#{n}"
-      self.cc  = determine_cc
-      self.cxx = determine_cxx
-    end
-  end
 
   def make_jobs
     self['MAKEFLAGS'] =~ /-\w*j(\d)+/

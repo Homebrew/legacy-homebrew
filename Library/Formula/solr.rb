@@ -2,13 +2,13 @@ require "formula"
 
 class Solr < Formula
   homepage "http://lucene.apache.org/solr/"
-  url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.8.1/solr-4.8.1.tgz"
-  sha1 "186885be34f8e0ad7dd6e7d6c572d5e80e2d236d"
+  url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.9.0/solr-4.9.0.tgz"
+  sha1 "6391e4cda07f2bcbd647bf49070a859baff09154"
 
   def script; <<-EOS.undent
     #!/bin/sh
     if [ -z "$1" ]; then
-      echo "Usage: $ solr path/to/config/dir"
+      echo "Usage: $ solr /absolute/path/to/config/dir"
     else
       cd #{libexec}/example && java -server $JAVA_OPTS -Dsolr.solr.home=$1 -jar start.jar
     fi
@@ -22,7 +22,7 @@ class Solr < Formula
 
   def caveats; <<-EOS.undent
     To start solr:
-      solr path/to/solr/config/dir
+      solr /absolute/path/to/solr/config/dir
 
     See the solr homepage for more setup information:
       brew home solr

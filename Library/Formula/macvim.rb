@@ -34,7 +34,7 @@ class Macvim < Formula
     # If building for 10.7 or up, make sure that CC is set to "clang".
     ENV.clang if MacOS.version >= :lion
 
-    # macvim HEAD only works with the current Ruby.framework because it builds with -framework Ruby
+    # macvim only works with the current Ruby.framework because it builds with -framework Ruby
     system_ruby = "/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby"
 
     args = %W[
@@ -75,6 +75,7 @@ class Macvim < Formula
         # See https://github.com/Homebrew/homebrew/issues/17908
         py_prefix = Pathname.new `python-config --prefix`.chomp
         ENV.prepend "LDFLAGS", "-L#{py_prefix}/lib/python2.7/config -F#{py_prefix.parent.parent.parent}"
+        ENV.prepend "CFLAGS", "-F#{py_prefix.parent.parent.parent}"
 
         args << "--enable-pythoninterp"
       else

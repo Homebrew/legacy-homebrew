@@ -14,9 +14,9 @@ class Zookeeper < Formula
   head do
     url 'http://svn.apache.org/repos/asf/zookeeper/trunk'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option "c", "Build C bindings"
@@ -134,6 +134,11 @@ class Zookeeper < Formula
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
       <dict>
+        <key>EnvironmentVariables</key>
+        <dict>
+           <key>SERVER_JVMFLAGS</key>
+           <string>-Dapple.awt.UIElement=true</string>
+        </dict>
         <key>KeepAlive</key>
         <dict>
           <key>SuccessfulExit</key>
