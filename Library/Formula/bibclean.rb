@@ -5,6 +5,13 @@ class Bibclean < Formula
   url "http://ftp.math.utah.edu/pub/bibclean/bibclean-2.16.tar.gz"
   sha1 "f6790cd97e7fe05abce06c991d58e96b4b53ad04"
 
+  bottle do
+    cellar :any
+    sha1 "f3a198aa80f7868c204101ee3bb4266135acba47" => :mavericks
+    sha1 "41d45fc6810d9bd2fac6e5f8b752273dd46f1ac6" => :mountain_lion
+    sha1 "3a0073569934c6d4cf831619842001e2e394679c" => :lion
+  end
+
   def install
     ENV.deparallelize
 
