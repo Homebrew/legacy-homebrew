@@ -13,14 +13,14 @@ class Bibclean < Formula
 
     # The following inline patches have been reported upstream.
     inreplace "Makefile" do |s|
-      # Insert `mkdir` statements before `scp` statements because `scp` does not
-      # create non-existing directories in OS X.
+      # Insert `mkdir` statements before `scp` statements because `scp` in OS X
+      # requires that the full path to the target already exist.
       s.gsub! /[$][(]CP.*BIBCLEAN.*bindir.*BIBCLEAN[)]/, "mkdir -p $(bindir) && $(CP) $(BIBCLEAN) $(bindir)/$(BIBCLEAN)"
       s.gsub! /[$][(]CP.*bibclean.*mandir.*bibclean.*manext[)]/, "mkdir -p $(mandir) && $(CP) bibclean.man $(mandir)/bibclean.$(manext)"
-      # Correct the man file path as it appears in the Makefile.
+      # Correct `mandir` (man file path) in the Makefile.
       s.gsub! /mandir.*prefix.*man.*man1/, "mandir = $(prefix)/share/man/man1"
       s.gsub! /install-ini.*uninstall-ini/, "install-ini:  uninstall-ini\n\tmkdir -p $(prefix)/share"
-      # Place all initialization files to $(prefix)/share/, not ./bin/ to comply with standard Unix practice.
+      # Place all initialization files in $(prefix)/share/, not ./bin/ to comply with standard Unix practice.
       s.gsub! /[$][(]bindir[)].*bibcleanrc/, "$(prefix)/share/.bibcleanrc"
       s.gsub! /[$][(]bindir[)].*bibclean.key/, "$(prefix)/share/.bibclean.key"
       s.gsub! /[$][(]bindir[)].*bibclean.isbn/, "$(prefix)/share/.bibclean.isbn"
