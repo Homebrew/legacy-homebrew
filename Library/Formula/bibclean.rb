@@ -1,4 +1,4 @@
-require "formula"
+ require "formula"
 
 class Bibclean < Formula
   homepage "http://www.math.utah.edu/~beebe/software/bibtex-bibliography-tools.html"
@@ -58,7 +58,7 @@ class Bibclean < Formula
   end
 
   test do
-    result = system "#{bibclean_test}"
+    result = system bibclean_test
     puts "Test passed"
   end
 
