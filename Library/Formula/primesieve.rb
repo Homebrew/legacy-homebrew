@@ -2,8 +2,8 @@ require "formula"
 
 class Primesieve < Formula
   homepage "http://primesieve.org/"
-  url "http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.2.tar.gz"
-  sha1 "f79aebf1ec19f22f67a61ecc620fc1693f1764e0"
+  url "http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.3.tar.gz"
+  sha1 "dac89a72cc3789035149a7d2cfa48ef7d722fd8a"
 
   def install
     system "./configure", "--prefix=#{prefix}", "CXX=#{ENV.cxx}",
