@@ -1,5 +1,6 @@
 require "formula"
 
+# quick fail, java 7 must be on the machine
 class Java7Requirement < Requirement
   fatal true
 
@@ -17,6 +18,31 @@ class Java7Requirement < Requirement
   end
 end
 
+# maven must use java 7, there are edge cases where java 7 is installed and mvn is not using it.
+class MvnMinJavaRequirement < Requirement
+  fatal true
+
+  satisfy :build_env => false do
+    mvn = `mvn -v`
+    mvn.empty?
+
+    # pull java version out of mvn stdio
+    java_v = mvn.split("Java version:")[1].split(",")[0].strip
+
+    # java 1.0-1.6 is invalid
+    invalid = java_v =~/1.[0-6].*./
+    invalid.nil?
+  end
+
+  def message; <<-EOS.undent
+    Maven is not using Java 7+, here is how to fix it:
+
+      1. Set Java_HOME to Java 7, or read solutions: https://stackoverflow.com/questions/18813828/why-maven-use-jdk-1-6-but-my-java-version-is-1-7
+      2. Re-run `brew install mesos`
+    EOS
+  end
+end
+
 class Mesos < Formula
   homepage "http://mesos.apache.org"
   version "0.19.0"
@@ -25,6 +51,7 @@ class Mesos < Formula
 
   depends_on Java7Requirement
   depends_on "maven" => :build
+  depends_on MvnMinJavaRequirement
 
   def install
     system "./configure", "--disable-debug",
