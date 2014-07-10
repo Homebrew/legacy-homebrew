@@ -2,8 +2,8 @@ require 'formula'
 
 class Opensc < Formula
   homepage 'https://github.com/OpenSC/OpenSC/wiki'
-  url 'https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.13.0/opensc-0.13.0.tar.gz'
-  sha1 '9285ccbed7b49f63e488c8fb1b3e102994a28218'
+  url 'https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.14.0/opensc-0.14.0.tar.gz'
+  sha1 '4a898e351b0a6d2a5d81576daa7ebed45baf9138'
 
   head do
     url 'https://github.com/OpenSC/OpenSC.git'
