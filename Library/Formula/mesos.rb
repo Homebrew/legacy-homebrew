@@ -6,8 +6,7 @@ class MvnMinJavaRequirement < Requirement
 
   satisfy :build_env => false do
     mvn = `mvn -v`
-    mvn.empty?
-
+    
     # pull java version out of mvn stdio
     java_v = mvn.split("Java version:")[1].split(",")[0].strip
 
