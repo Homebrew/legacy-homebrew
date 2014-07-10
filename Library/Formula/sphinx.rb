@@ -15,7 +15,9 @@ class Sphinx < Formula
   option 'mysql', 'Force compiling against MySQL'
   option 'pgsql', 'Force compiling against PostgreSQL'
   option 'id64',  'Force compiling with 64-bit ID support'
+  option 're2',   'Force compiling with regular expressions support'
 
+  depends_on "re2" => :optional
   depends_on :mysql if build.include? 'mysql'
   depends_on :postgresql if build.include? 'pgsql'
 
