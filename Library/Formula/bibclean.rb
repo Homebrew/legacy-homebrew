@@ -1,4 +1,4 @@
- require "formula"
+require "formula"
 
 class Bibclean < Formula
   homepage "http://www.math.utah.edu/~beebe/software/bibtex-bibliography-tools.html"
@@ -60,19 +60,6 @@ class Bibclean < Formula
   test do
     result = system bibclean_test
     puts "Test passed"
-  end
-
-  def caveats; <<-EOS.undent
-    bibclean requires access to several initialization files, with defaults
-    available at #{HOMEBREW_PREFIX}/share/bibclean. The Homebrew build of bibclean
-    is set up to automatically discover any initialization files across
-    $PATH:#{HOMEBREW_PREFIX}/share/bibclean, therefore these defaults are active
-    out of the box without any manual adjustments to $PATH on your part.
-
-    For details and initialization options please consult the bibclean man page:
-
-        $ man bibclean
-    EOS
   end
 
 end
