@@ -14,13 +14,6 @@ class Bibclean < Formula
     EOS
   end
 
-  # Test script. It basically checks that at least three initialization files
-  # are loaded on execution, as should be the case.
-  def bibclean_test; <<-EOS.undent
-    test  `bibclean -author -trace-file-opening 2>&1 | grep "open file" | sed '/^\s*$/d' | wc -l` -ge 3
-    EOS
-  end
-
   def install
     ENV.deparallelize
 
@@ -57,8 +50,10 @@ class Bibclean < Formula
     f.close
   end
 
+  # Test script. It checks that the binary runs and at least three initialization files
+  # are loaded on execution, as should be the case.
   test do
-    result = system bibclean_test
+    result = system %(test  `bibclean -author -trace-file-opening 2>&1 | grep "open file" | sed '/^\s*$/d' | wc -l` -ge 3)
     puts "Test passed"
   end
 
