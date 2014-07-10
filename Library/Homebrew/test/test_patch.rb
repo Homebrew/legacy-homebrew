@@ -3,7 +3,7 @@ require 'patch'
 
 class PatchTests < Homebrew::TestCase
   def test_create_simple
-    patch = Patch.create(:p2)
+    patch = Patch.create(:p2, nil)
     assert_kind_of ExternalPatch, patch
     assert_predicate patch, :external?
     assert_equal :p2, patch.strip
@@ -17,7 +17,7 @@ class PatchTests < Homebrew::TestCase
   end
 
   def test_create_io_without_strip
-    patch = Patch.create(StringIO.new("foo"))
+    patch = Patch.create(StringIO.new("foo"), nil)
     assert_kind_of IOPatch, patch
     assert_equal :p1, patch.strip
   end
@@ -29,7 +29,7 @@ class PatchTests < Homebrew::TestCase
   end
 
   def test_create_string_without_strip
-    patch = Patch.create("foo")
+    patch = Patch.create("foo", nil)
     assert_kind_of IOPatch, patch
     assert_equal :p1, patch.strip
   end
@@ -41,7 +41,7 @@ class PatchTests < Homebrew::TestCase
   end
 
   def test_create_DATA_without_strip
-    patch = Patch.create(:DATA)
+    patch = Patch.create(:DATA, nil)
     assert_kind_of IOPatch, patch
     assert_equal :p1, patch.strip
   end
