@@ -38,16 +38,15 @@ class Bibclean < Formula
     end
 
     # Build the binary.
-    system "make", "all", "check", "install"
+    system "make", "all"
+    system "make", "check"
+    system "make", "install"
 
     # Tuck `bin/bibclean` away and create a `bibclean` wrapper script in its place.
-    # The required $PATH adjustments are effected within the script,
-    # so that successful installation does not rely on the user heeding the caveat.
-    mv "#{bin}/bibclean", "#{share}/bibclean/"
-    f = File.new("#{bin}/bibclean", "w")
-    f.write(bibclean_wrapper)
-    f.chmod(775)
-    f.close
+    # The PATH is adjusted within the script so that the default initialization
+    # files are found.
+    bin.env_script_all_files(share + 'bibclean', :PATH => ENV['PATH'] + ":#{share}/bibclean")
+
   end
 
   # Test script. It checks that the binary runs and at least three initialization files
