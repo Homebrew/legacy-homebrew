@@ -29,7 +29,7 @@ class Patch
     case list
     when Hash
       list
-    when Array, String, IO, StringIO
+    when Array, String, IO
       { :p1 => list }
     else
       {}
@@ -37,7 +37,7 @@ class Patch
       urls = [urls] unless Array === urls
       urls.each do |url|
         case url
-        when IO, StringIO
+        when IO
           patch = IOPatch.new(url, strip)
         else
           patch = LegacyPatch.new(strip, url)
