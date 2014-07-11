@@ -83,9 +83,7 @@ class PathnameExtensionTests < Homebrew::TestCase
   end
 
   def test_install_missing_file
-    assert_raises(RuntimeError) do
-      @dst.install 'non_existent_file'
-    end
+    assert_raises(Errno::ENOENT) { @dst.install "non_existent_file" }
   end
 
   def test_install_removes_original
