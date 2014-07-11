@@ -35,6 +35,8 @@ class Pathname
   end
 
   def install_p src, new_basename = nil
+    raise Errno::ENOENT, src.to_s unless File.symlink?(src) || File.exist?(src)
+
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
       dst = self+new_basename
@@ -44,8 +46,6 @@ class Pathname
 
     src = src.to_s
     dst = dst.to_s
-
-    raise "#{src} does not exist" unless File.symlink? src or File.exist? src
 
     dst = yield(src, dst) if block_given?
 
