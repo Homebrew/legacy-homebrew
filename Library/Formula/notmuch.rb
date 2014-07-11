@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Notmuch < Formula
   homepage "http://notmuchmail.org"
-  url "http://notmuchmail.org/releases/notmuch-0.18.tar.gz"
-  sha1 "bfbcdc340c4b0d544904b3a8ba70be4e819859d9"
+  url "http://notmuchmail.org/releases/notmuch-0.18.1.tar.gz"
+  sha1 "ad82d6d5355594c4cab3c6d28c70ae4993acbec9"
 
   depends_on "pkg-config" => :build
   depends_on "emacs" => :optional
