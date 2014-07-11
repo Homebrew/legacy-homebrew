@@ -252,15 +252,11 @@ class Test
     return unless diff_start_sha1 != diff_end_sha1
     return if @url and not steps.last.passed?
 
-    diff_stat = git "diff-tree", "-r", "--name-status",
+    git(
+      "diff-tree", "-r", "--name-only", "--diff-filter=AM",
       diff_start_sha1, diff_end_sha1, "--", "Library/Formula"
-
-    diff_stat.each_line do |line|
-      status, filename = line.split
-      # Don't try and do anything to removed files.
-      if status == "A" || status == "M"
-        @formulae << File.basename(filename, ".rb")
-      end
+    ).each_line do |line|
+      @formulae << File.basename(line.chomp, ".rb")
     end
   end
 
