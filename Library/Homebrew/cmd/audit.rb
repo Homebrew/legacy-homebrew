@@ -298,8 +298,11 @@ class FormulaAuditor
   end
 
   def audit_patches
-    patches = Patch.normalize_legacy_patches(f.patches)
-    patches.grep(LegacyPatch).each { |p| audit_patch(p) }
+    legacy_patches = Patch.normalize_legacy_patches(f.patches).grep(LegacyPatch)
+    if legacy_patches.any?
+      problem "Use the patch DSL instead of defining a 'patches' method"
+      legacy_patches.each { |p| audit_patch(p) }
+    end
   end
 
   def audit_patch(patch)
