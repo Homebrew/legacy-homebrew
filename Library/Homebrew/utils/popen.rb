@@ -10,7 +10,11 @@ module Utils
   def self.popen(args, mode)
     IO.popen("-", mode) do |pipe|
       if pipe
-        yield pipe
+        if block_given?
+          yield pipe
+        else
+          return pipe.read
+        end
       else
         STDERR.reopen("/dev/null", "w")
         exec(*args)

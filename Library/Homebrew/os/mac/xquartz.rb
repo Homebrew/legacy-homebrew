@@ -57,7 +57,7 @@ module OS
 
       def version_from_mdls(path)
         version = Utils.popen_read(
-          "/usr/bin/mdls", "-raw", "-nullMarker", "", "-name", "kMDItemVersion", path.to_s, &:read
+          "/usr/bin/mdls", "-raw", "-nullMarker", "", "-name", "kMDItemVersion", path.to_s
         ).strip
         version unless version.empty?
       end

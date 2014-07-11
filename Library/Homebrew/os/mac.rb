@@ -231,13 +231,13 @@ module OS
     def mdfind(*ids)
       return [] unless OS.mac?
       (@mdfind ||= {}).fetch(ids) do
-        @mdfind[ids] = Utils.popen_read("/usr/bin/mdfind", mdfind_query(*ids), &:read).split("\n")
+        @mdfind[ids] = Utils.popen_read("/usr/bin/mdfind", mdfind_query(*ids)).split("\n")
       end
     end
 
     def pkgutil_info(id)
       (@pkginfo ||= {}).fetch(id) do |key|
-        @pkginfo[key] = Utils.popen_read("/usr/sbin/pkgutil", "--pkg-info", key, &:read).strip
+        @pkginfo[key] = Utils.popen_read("/usr/sbin/pkgutil", "--pkg-info", key).strip
       end
     end
 
