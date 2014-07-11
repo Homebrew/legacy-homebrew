@@ -7,6 +7,6 @@ class Unpaper < Formula
 
   def install
     system './configure', '--prefix=#{prefix}', '--disable-debug', '--disable-dependency-tracking'
-    system 'make install'
+    system 'make', 'install'
   end
 end
