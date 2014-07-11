@@ -2,10 +2,27 @@ require 'formula'
 
 class Binwalk < Formula
   homepage 'http://binwalk.org/'
-  url 'https://github.com/devttys0/binwalk/archive/v1.3.0.tar.gz'
-  sha1 '6cab158b69e508081302305b354da12f45658272'
+  stable do
+    url 'https://github.com/devttys0/binwalk/archive/v1.3.0.tar.gz'
+    sha1 '6cab158b69e508081302305b354da12f45658272'
 
-  head 'https://github.com/devttys0/binwalk.git'
+    # Fix install locations; submitted upstream as various PRs
+    patch do
+        url "https://gist.github.com/balr0g/e3a5c97151b6c03619b3/raw/2a67afc3613b435ef785b18ff1ed44b676576dbf/binwalk-1.3.0-setup.patch"
+        sha1 "893e6b7d9df93ace304e07ac7897498108870fc6"
+    end
+  end
+
+  head do
+    url 'https://github.com/devttys0/binwalk.git'
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+
+    patch do
+      url "https://gist.github.com/balr0g/96445b5ecf22ddf0a54c/raw/e0e6b5de56d8cb1dbc2a6b93cd724d051f98317a/binwalk-head-201140711-c.patch"
+      sha1 "2ecf8bcc72189a433715adabd825b7933a2b321e"
+    end
+  end
 
   option 'with-matplotlib', 'Check for presence of matplotlib, which is required for entropy graphing support'
 
@@ -15,6 +32,9 @@ class Binwalk < Formula
   depends_on 'matplotlib' => :python if build.with? 'matplotlib'
   depends_on 'pyside'
   depends_on :python if MacOS.version <= :snow_leopard
+  depends_on 'p7zip'
+  depends_on 'ssdeep'
+  depends_on 'xz'
 
   resource 'pyqtgraph' do
     url 'http://www.pyqtgraph.org/downloads/pyqtgraph-0.9.8.tar.gz'
@@ -42,10 +62,16 @@ class Binwalk < Formula
     pyqtgraph_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
     resource('pyqtgraph').stage { system "python", *pyqtgraph_args }
 
-    cd "src" do
-      binwalk_args = [ "install", "--prefix=#{prefix}" ]
-      system "python", "setup.py", *binwalk_args
-      bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+    if build.head?
+      system "autoreconf -f"
+      system "./configure", "--prefix=#{prefix}"
+      system "make install"
+    else
+      cd "src" do
+        binwalk_args = [ "install", "--prefix=#{prefix}", "--yes" ]
+        system "python", "setup.py", *binwalk_args
+        bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+      end
     end
   end
 
