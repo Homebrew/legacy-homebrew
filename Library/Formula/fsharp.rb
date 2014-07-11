@@ -2,7 +2,7 @@ require "formula"
 
 class Fsharp < Formula
   homepage "http://fsharp.org/"
-  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.1.6"
+  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.1.25"
 
   bottle do
     sha1 "df3f509b0d91c6341c4b082fca8a117686ec2fd4" => :mavericks
@@ -17,6 +17,9 @@ class Fsharp < Formula
 
   def install
     system "./autogen.sh", "--prefix=#{prefix}"
+    # make sure to find the fsharp assemblies even if the user has not set
+    # MONO_GAC_PREFIX to HOMEBREW_PREFIX
+    ENV["MONO_GAC_PREFIX"] = "#{HOMEBREW_PREFIX}"
     system "make"
     system "make", "install"
   end
