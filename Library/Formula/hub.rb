@@ -2,8 +2,8 @@ require 'formula'
 
 class Hub < Formula
   homepage 'http://hub.github.com/'
-  url 'https://github.com/github/hub/archive/v1.12.1.tar.gz'
-  sha1 '934033bcd17a710a56f33acf099900baf0fe88f3'
+  url 'https://github.com/github/hub/archive/v1.12.2.tar.gz'
+  sha1 '65359d3dcc8e1a0986aab3726f6047bfb9df3d7c'
   head 'https://github.com/github/hub.git'
 
   option 'without-completions', 'Disable bash/zsh completions'
