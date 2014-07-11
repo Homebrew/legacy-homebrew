@@ -5,8 +5,6 @@ class Libressl < Formula
   url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.0.0.tar.gz"
   sha1 "c078e98f86bb37dca8340ab17bc1efd8620c3286"
 
-  option "without-check", "Skip build-time tests (not recommended)"
-
   keg_only "LibreSSL is not linked to prevent conflicts with OS X's OpenSSL."
 
   def install
@@ -15,7 +13,7 @@ class Libressl < Formula
                           "--prefix=#{prefix}"
 
     system "make"
-    system "make", "check" if build.with? "check"
+    system "make", "check"
     system "make", "install"
   end
 
