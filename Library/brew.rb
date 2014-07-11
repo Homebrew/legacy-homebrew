@@ -63,6 +63,13 @@ rescue LoadError => e
   raise unless e.to_s.include? path
 end
 
+def exec_command cmd
+  %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
+    ENV["HOMEBREW_#{e}"] = Object.const_get("HOMEBREW_#{e}").to_s
+  end
+  exec cmd, *ARGV
+end
+
 begin
   trap("INT", std_trap) # restore default CTRL-C handler
 
@@ -131,11 +138,10 @@ begin
 
   if internal_cmd
     Homebrew.send cmd.to_s.gsub('-', '_').downcase
+  elsif HOMEBREW_LIBRARY_PATH.join("cmd", cmd).exist?
+    exec_command HOMEBREW_LIBRARY_PATH.join("cmd", cmd)
   elsif which "brew-#{cmd}"
-    %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
-      ENV["HOMEBREW_#{e}"] = Object.const_get("HOMEBREW_#{e}").to_s
-    end
-    exec "brew-#{cmd}", *ARGV
+    exec_command "brew-#{cmd}"
   elsif (path = which("brew-#{cmd}.rb")) && require?(path)
     exit Homebrew.failed? ? 1 : 0
   else
