@@ -20,7 +20,7 @@ class Libressl < Formula
     system "make", "check"
     system "make", "install"
 
-    mkdir "#{etc}/libressl"
+    mkdir_p "#{etc}/libressl"
     touch "#{etc}/libressl/openssl.cnf"
   end
 
