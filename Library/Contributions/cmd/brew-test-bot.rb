@@ -42,10 +42,10 @@ class Step
     @time = 0
   end
 
-  def log_file_path full_path=true
+  def log_file_path
     file = "#{@category}.#{@name}.txt"
-    return file unless @test.log_root and full_path
-    @test.log_root + file
+    root = @test.log_root
+    root ? root + file : file
   end
 
   def status_colour
@@ -93,27 +93,28 @@ class Step
 
     start_time = Time.now
 
+    log = log_file_path
+
     pid = fork do
-      STDOUT.reopen(log_file_path, "wb")
-      STDERR.reopen(log_file_path, "wb")
+      STDOUT.reopen(log, "wb")
+      STDERR.reopen(log, "wb")
       Dir.chdir(@repository) if @command.first == "git"
       exec(*@command)
     end
     Process.wait(pid)
 
-    end_time = Time.now
-    @time = end_time - start_time
+    @time = Time.now - start_time
 
     success = $?.success?
     @status = success ? :passed : :failed
     puts_result
 
-    return unless File.exist?(log_file_path)
-    @output = IO.read(log_file_path)
+    return unless File.exist?(log)
+    @output = File.read(log)
     if has_output? and (not success or @puts_output_on_success)
       puts @output
     end
-    FileUtils.rm log_file_path unless ARGV.include? "--keep-logs"
+    FileUtils.rm(log) unless ARGV.include? "--keep-logs"
   end
 end
 
@@ -252,15 +253,11 @@ class Test
     return unless diff_start_sha1 != diff_end_sha1
     return if @url and not steps.last.passed?
 
-    diff_stat = git "diff-tree", "-r", "--name-status",
+    git(
+      "diff-tree", "-r", "--name-only", "--diff-filter=AM",
       diff_start_sha1, diff_end_sha1, "--", "Library/Formula"
-
-    diff_stat.each_line do |line|
-      status, filename = line.split
-      # Don't try and do anything to removed files.
-      if status == "A" || status == "M"
-        @formulae << File.basename(filename, ".rb")
-      end
+    ).each_line do |line|
+      @formulae << File.basename(line.chomp, ".rb")
     end
   end
 

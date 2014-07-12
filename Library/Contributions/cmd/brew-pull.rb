@@ -87,19 +87,15 @@ ARGV.named.each do |arg|
   end
 
   Utils.popen_read(
-    "git", "diff-tree", "-r", "--name-status",
-    revision, "HEAD", "--", formula_dir, &:read
+    "git", "diff-tree", "-r", "--name-only",
+    "--diff-filter=AM", revision, "HEAD", "--", formula_dir
   ).each_line do |line|
-    status, filename = line.split
-    # Don't try and do anything to removed files.
-    if status == "A" || status == "M"
-      name = File.basename(filename, ".rb")
+    name = File.basename(line.chomp, ".rb")
 
-      begin
-        changed_formulae << Formula[name]
-      rescue FormulaUnavailableError
-        next
-      end
+    begin
+      changed_formulae << Formula[name]
+    rescue FormulaUnavailableError
+      next
     end
   end
 

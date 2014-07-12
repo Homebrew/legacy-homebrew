@@ -3,13 +3,14 @@ require 'formula'
 class Leptonica < Formula
   homepage 'http://www.leptonica.org/'
   url 'http://www.leptonica.org/source/leptonica-1.71.tar.gz'
-  sha1 'aedaf94cc352a638595b74e906f61204154d8431'
+  sha1 '1ee59b06fd6c6402876f46c26c21b17ffd3c9b6b'
 
   bottle do
     cellar :any
-    sha1 "6f6326869d561ce0a9e84e74e44b473378b61a93" => :mavericks
-    sha1 "fd06be34e32f2f03a3d52eca57bc303e20a129ba" => :mountain_lion
-    sha1 "e1a096c58bb9f22df80f0484fc22312dc700637a" => :lion
+    revision 1
+    sha1 "ad82e1ecacdee2428e2c7426198969db363a09c5" => :mavericks
+    sha1 "971d13992a410a6d4907cb4c964151ae5cd5ffe2" => :mountain_lion
+    sha1 "9e58252edeb5ef713a24fe89a154cd25ec98b0a9" => :lion
   end
 
   depends_on 'libpng' => :recommended
@@ -19,9 +20,6 @@ class Leptonica < Formula
 
   conflicts_with 'osxutils',
     :because => "both leptonica and osxutils ship a `fileinfo` executable."
-
-  ## Patch to fix pkg-config from https://code.google.com/p/leptonica/issues/detail?id=94
-  patch :DATA
 
   def install
     args = %W[
@@ -47,21 +45,9 @@ class Leptonica < Formula
         return 0;
     }
     EOS
-    system ENV.cxx, "test.cpp", `pkg-config --cflags lept`
+
+    flags = ["-I#{include}/leptonica"] + ENV.cflags.to_s.split
+    system ENV.cxx, "test.cpp", *flags
     assert_equal version.to_s, `./a.out`
   end
 end
-
-__END__
-diff --git a/lept.pc.in b/lept.pc.in
-index 8044ba8..c1b9492 100644
---- a/lept.pc.in
-+++ b/lept.pc.in
-@@ -1,3 +1,5 @@
-+prefix=@prefix@
-+exec_prefix=@exec_prefix@
- libdir=@libdir@
- includedir=@includedir@/leptonica
- 
--- 
-1.9.1

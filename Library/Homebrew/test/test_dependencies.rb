@@ -14,8 +14,8 @@ class DependenciesTests < Homebrew::TestCase
 
   def test_no_duplicate_deps
     @deps << Dependency.new("foo")
-    @deps << Dependency.new("foo", :build)
-    @deps << Dependency.new("foo", :build)
+    @deps << Dependency.new("foo", [:build])
+    @deps << Dependency.new("foo", [:build])
     assert_equal 1, @deps.count
   end
 

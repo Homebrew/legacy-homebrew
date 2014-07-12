@@ -8,7 +8,6 @@ require 'build_environment'
 # By default, Requirements are non-fatal.
 class Requirement
   include Dependable
-  extend BuildEnvironmentDSL
 
   attr_reader :tags, :name, :option_name
 
@@ -25,11 +24,8 @@ class Requirement
   # Overriding #satisfied? is deprecated.
   # Pass a block or boolean to the satisfy DSL method instead.
   def satisfied?
-    result = self.class.satisfy.yielder do |proc|
-      instance_eval(&proc)
-    end
-
-    infer_env_modification(result)
+    result = self.class.satisfy.yielder { |p| instance_eval(&p) }
+    @satisfied_result = result
     !!result
   end
 
@@ -52,11 +48,29 @@ class Requirement
   # Note: #satisfied? should be called before invoking this method
   # as the env modifications may depend on its side effects.
   def modify_build_environment
-    env.modify_build_environment(self)
+    instance_eval(&env_proc) if env_proc
+
+    # XXX If the satisfy block returns a Pathname, then make sure that it
+    # remains available on the PATH. This makes requirements like
+    #   satisfy { which("executable") }
+    # work, even under superenv where "executable" wouldn't normally be on the
+    # PATH.
+    # This is undocumented magic and it should be removed, but we need to add
+    # a way to declare path-based requirements that work with superenv first.
+    if Pathname === @satisfied_result
+      parent = @satisfied_result.parent
+      unless ENV["PATH"].split(File::PATH_SEPARATOR).include?(parent.to_s)
+        ENV.append_path("PATH", parent)
+      end
+    end
   end
 
   def env
-    @env ||= self.class.env
+    self.class.env
+  end
+
+  def env_proc
+    self.class.env_proc
   end
 
   def eql?(other)
@@ -86,28 +100,28 @@ class Requirement
     klass.downcase
   end
 
-  def infer_env_modification(o)
-    case o
-    when Pathname
-      self.class.env do
-        unless ENV["PATH"].split(File::PATH_SEPARATOR).include?(o.parent.to_s)
-          ENV.append_path("PATH", o.parent)
-        end
-      end
-    end
-  end
-
   def which(cmd)
     super(cmd, ORIGINAL_PATHS.join(File::PATH_SEPARATOR))
   end
 
   class << self
+    include BuildEnvironmentDSL
+
+    attr_reader :env_proc
     attr_rw :fatal, :default_formula
     # build is deprecated, use `depends_on <requirement> => :build` instead
     attr_rw :build
 
     def satisfy(options={}, &block)
       @satisfied ||= Requirement::Satisfier.new(options, &block)
+    end
+
+    def env(*settings, &block)
+      if block_given?
+        @env_proc = block
+      else
+        super
+      end
     end
   end
 

@@ -46,9 +46,9 @@ class Elasticsearch < Formula
       s.gsub! /#\s*cluster\.name\: elasticsearch/, "cluster.name: #{cluster_name}"
 
       # 2. Configure paths
-      s.sub! "# path.data: /path/to/data", "path.data: #{var}/elasticsearch/"
-      s.sub! "# path.logs: /path/to/logs", "path.logs: #{var}/log/elasticsearch/"
-      s.sub! "# path.plugins: /path/to/plugins", "path.plugins: #{var}/lib/elasticsearch/plugins"
+      s.sub! /#\s*path\.data: \/path\/to.+$/, "path.data: #{var}/elasticsearch/"
+      s.sub! /#\s*path\.logs: \/path\/to.+$/, "path.logs: #{var}/log/elasticsearch/"
+      s.sub! /#\s*path\.plugins: \/path\/to.+$/, "path.plugins: #{var}/lib/elasticsearch/plugins"
 
       # 3. Bind to loopback IP for laptops roaming different networks
       s.gsub! /#\s*network\.host\: [^\n]+/, "network.host: 127.0.0.1"

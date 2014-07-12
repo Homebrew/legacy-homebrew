@@ -55,6 +55,7 @@ TAP_MIGRATIONS = {
   "sundials" => "homebrew/science",
   "syslog-ng" => "homebrew/boneyard",
   "tetgen" => "homebrew/science",
+  "texmacs" => "homebrew/boneyard",
   "tmap" => "homebrew/boneyard",
   "urweb" => "homebrew/boneyard",
   "wkhtmltopdf" => "homebrew/boneyard",
