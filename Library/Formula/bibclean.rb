@@ -51,8 +51,16 @@ class Bibclean < Formula
   end
 
   test do
-    result = system %(test  `bibclean -author -trace-file-opening 2>&1 | grep "open file" | sed '/^\s*$/d' | wc -l` -ge 3)
-    puts "Test passed"
-  end
+    (testpath+"test.bib").write <<-EOS.undent
+      @article{small,
+      author = {Test, T.},
+      title = {Test},
+      journal = {Test},
+      year = 2014,
+      note = {test},
+      }
+    EOS
 
+    system "#{bin}/bibclean", "test.bib"
+  end
 end
