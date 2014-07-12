@@ -42,10 +42,10 @@ class Step
     @time = 0
   end
 
-  def log_file_path full_path=true
+  def log_file_path
     file = "#{@category}.#{@name}.txt"
-    return file unless @test.log_root and full_path
-    @test.log_root + file
+    root = @test.log_root
+    root ? root + file : file
   end
 
   def status_colour
