@@ -6,7 +6,7 @@ class Httrack < Formula
   # of HTTrack, as link to download.httrack.com will break on next
   # HTTrack update.
   url 'http://mirror.httrack.com/historical/httrack-3.48.14.tar.gz'
-  sha1 'c6fa11224d533750829438dfba7bc9f2f36b6068'
+  sha1 'f764290fa4394bd5035bfebde6b05b2d54c662f9'
 
   def install
     ENV.deparallelize
