@@ -8,6 +8,10 @@ class Libressl < Formula
   keg_only "LibreSSL is not linked to prevent conflicts with OS X's OpenSSL."
 
   def install
+    # fix configuration file directory
+    inreplace "include/openssl/opensslconf.h",
+      "/etc/ssl", "#{etc}/libressl"
+
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
@@ -15,6 +19,9 @@ class Libressl < Formula
     system "make"
     system "make", "check"
     system "make", "install"
+
+    mkdir "#{etc}/libressl"
+    touch "#{etc}/libressl/openssl.cnf"
   end
 
   test do
