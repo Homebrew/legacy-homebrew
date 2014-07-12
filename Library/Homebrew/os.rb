@@ -7,10 +7,11 @@ module OS
     /linux/i === RUBY_PLATFORM
   end
 
-  # Utilities
   if OS.mac?
+    ISSUES_URL = "https://github.com/Homebrew/homebrew/wiki/troubleshooting"
     PATH_OPEN = "/usr/bin/open"
   elsif OS.linux?
+    ISSUES_URL = "https://github.com/Homebrew/linuxbrew/wiki/troubleshooting"
     PATH_OPEN = "xdg-open"
   else
     raise "Unknown operating system"
