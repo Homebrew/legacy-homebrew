@@ -2,8 +2,8 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://github.com/triAGENS/ArangoDB/archive/v2.1.2.tar.gz'
-  sha1 '3f6cc8c7dc757f995c61effcd74523e0f5a60f98'
+  url 'https://www.arangodb.org/repositories/Source/ArangoDB-2.2.0.tar.gz'
+  sha1 '6c1886c606f73f9d3dfbc3d58293cc4f47a07491'
 
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
@@ -14,6 +14,20 @@ class Arangodb < Formula
   end
 
   depends_on 'go' => :build
+
+  if MacOS.version < :mavericks
+    depends_on 'gcc' => :build
+
+    fails_with :clang do
+      cause "ArangoDB needs 'unorded_maps' which are not available in this version of clang"
+    end
+
+    fails_with :llvm do
+      cause "ArangoDB needs 'unorded_maps' which are not available in this version of llvm"
+    end
+  else
+    needs :cxx11
+  end
 
   def suffix
     if build.stable?
