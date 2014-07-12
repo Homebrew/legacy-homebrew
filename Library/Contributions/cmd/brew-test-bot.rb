@@ -93,9 +93,11 @@ class Step
 
     start_time = Time.now
 
+    log = log_file_path
+
     pid = fork do
-      STDOUT.reopen(log_file_path, "wb")
-      STDERR.reopen(log_file_path, "wb")
+      STDOUT.reopen(log, "wb")
+      STDERR.reopen(log, "wb")
       Dir.chdir(@repository) if @command.first == "git"
       exec(*@command)
     end
@@ -107,12 +109,12 @@ class Step
     @status = success ? :passed : :failed
     puts_result
 
-    return unless File.exist?(log_file_path)
-    @output = IO.read(log_file_path)
+    return unless File.exist?(log)
+    @output = File.read(log)
     if has_output? and (not success or @puts_output_on_success)
       puts @output
     end
-    FileUtils.rm log_file_path unless ARGV.include? "--keep-logs"
+    FileUtils.rm(log) unless ARGV.include? "--keep-logs"
   end
 end
 
