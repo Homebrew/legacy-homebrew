@@ -2,8 +2,8 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://github.com/triAGENS/ArangoDB/archive/v2.1.2.tar.gz'
-  sha1 '3f6cc8c7dc757f995c61effcd74523e0f5a60f98'
+  url 'https://www.arangodb.org/repositories/Source/ArangoDB-2.2.0.tar.gz'
+  sha1 '6c1886c606f73f9d3dfbc3d58293cc4f47a07491'
 
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
@@ -15,6 +15,8 @@ class Arangodb < Formula
 
   depends_on 'go' => :build
 
+  needs :cxx11
+
   def suffix
     if build.stable?
       return ""
@@ -24,6 +26,12 @@ class Arangodb < Formula
   end
 
   def install
+    ENV.libcxx
+
+    inreplace "3rdParty/V8/build/standalone.gypi",
+      "'mac_deployment_target%': '10.5',",
+      "'mac_deployment_target%': '#{MacOS.version}',"
+
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
