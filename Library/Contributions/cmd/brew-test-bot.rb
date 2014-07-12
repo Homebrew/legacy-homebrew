@@ -101,8 +101,7 @@ class Step
     end
     Process.wait(pid)
 
-    end_time = Time.now
-    @time = end_time - start_time
+    @time = Time.now - start_time
 
     success = $?.success?
     @status = success ? :passed : :failed
