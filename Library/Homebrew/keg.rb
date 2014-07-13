@@ -325,7 +325,7 @@ class Keg
     src = dst.resolved_path
     # src itself may be a symlink, so check lstat to ensure we are dealing with
     # a directory, and not a symlink pointing at a directory (which needs to be
-    # treated as a file). In other words, we onlly want to resolve one symlink.
+    # treated as a file). In other words, we only want to resolve one symlink.
     # If it isn't a directory, make_relative_symlink will raise an exception.
     if dst.symlink? && src.lstat.directory?
       keg = Keg.for(src)
