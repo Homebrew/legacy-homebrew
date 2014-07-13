@@ -322,11 +322,12 @@ class Keg
   private
 
   def resolve_any_conflicts dst, mode
-    # if it isn't a directory then a severe conflict is about to happen. Let
-    # it, and the exception that is generated will message to the user about
-    # the situation
-    if dst.symlink? and dst.directory?
-      src = dst.resolved_path
+    src = dst.resolved_path
+    # src itself may be a symlink, so check lstat to ensure we are dealing with
+    # a directory, and not a symlink pointing at a directory (which needs to be
+    # treated as a file). In other words, we onlly want to resolve one symlink.
+    # If it isn't a directory, make_relative_symlink will raise an exception.
+    if dst.symlink? && src.lstat.directory?
       keg = Keg.for(src)
       dst.unlink unless mode.dry_run
       keg.link_dir(src, mode) { :mkpath }
