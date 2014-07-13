@@ -12,12 +12,12 @@ BOTTLE_ERB = <<-EOS
     <% if root_url != BottleSpecification::DEFAULT_ROOT_URL %>
     root_url "<%= root_url %>"
     <% end %>
-    <% if prefix.to_s != "/usr/local" %>
+    <% if prefix != BottleSpecification::DEFAULT_PREFIX %>
     prefix "<%= prefix %>"
     <% end %>
     <% if cellar.is_a? Symbol %>
     cellar :<%= cellar %>
-    <% elsif cellar.to_s != "/usr/local/Cellar" %>
+    <% elsif cellar != BottleSpecification::DEFAULT_CELLAR %>
     cellar "<%= cellar %>"
     <% end %>
     <% if revision > 0 %>
@@ -186,8 +186,8 @@ module Homebrew
 
     bottle = BottleSpecification.new
     bottle.root_url(root_url) if root_url
-    bottle.prefix HOMEBREW_PREFIX
-    bottle.cellar relocatable ? :any : HOMEBREW_CELLAR
+    bottle.prefix HOMEBREW_PREFIX.to_s
+    bottle.cellar relocatable ? :any : HOMEBREW_CELLAR.to_s
     bottle.revision bottle_revision
     bottle.sha1 bottle_path.sha1 => bottle_tag
 
