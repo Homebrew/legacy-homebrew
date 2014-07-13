@@ -16,7 +16,7 @@ end
 
 def bottle_file_outdated? f, file
   filename = file.basename.to_s
-  return unless f.bottle && filename.match(bottle_regex)
+  return unless f.bottle && filename.match(Pathname::BOTTLE_EXTNAME_RX)
 
   bottle_ext = filename[bottle_native_regex, 1]
   bottle_url_ext = f.bottle.url[bottle_native_regex, 1]
@@ -36,10 +36,6 @@ end
 
 def bottle_native_regex
   /(\.#{bottle_tag}\.bottle\.(\d+\.)?tar\.gz)$/o
-end
-
-def bottle_regex
-  Pathname::BOTTLE_EXTNAME_RX
 end
 
 def bottle_url(root_url, filename_options={})
