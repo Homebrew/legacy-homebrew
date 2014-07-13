@@ -6,6 +6,9 @@ class Mercury < Formula
   sha1 "619680675c68a0b953024b7ee4d3886a885d94de"
 
   bottle do
+    sha1 "5fd50b21e04dc43853a2b55aa9fbeda7a222e324" => :mavericks
+    sha1 "7f65e0c2a36a09078dbc1cf8091faaaf26b5e192" => :mountain_lion
+    sha1 "07ef0c73fdbb8e928d02a6a78a5ce1f422623e53" => :lion
   end
 
   depends_on "erlang" => :optional
