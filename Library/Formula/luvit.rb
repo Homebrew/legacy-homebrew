@@ -3,7 +3,7 @@ require 'formula'
 class Luvit < Formula
   homepage 'http://luvit.io'
   url 'http://luvit.io/dist/latest/luvit-0.8.2.tar.gz'
-  sha1 '6b6ca9723e90473df15abc92cbcb12cfdf7529ab'
+  sha1 'efb7a0947de1b64cc2b652632701024445f86c12'
 
   head 'https://github.com/luvit/luvit.git'
 
