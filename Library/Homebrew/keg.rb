@@ -384,7 +384,7 @@ class Keg
       dst = HOMEBREW_PREFIX + src.relative_path_from(path)
       dst.extend ObserverPathnameExtension
 
-      if src.file?
+      if src.symlink? || src.file?
         Find.prune if File.basename(src) == '.DS_Store'
         # Don't link pyc files because Python overwrites these cached object
         # files and next time brew wants to link, the pyc file is in the way.
@@ -403,15 +403,6 @@ class Keg
           make_relative_symlink dst, src, mode
         end
       elsif src.directory?
-        # If the `src` in the Cellar is a symlink itself, link it directly.
-        # For example Qt has `Frameworks/QtGui.framework -> lib/QtGui.framework`
-        # Not making a link here, would result in an empty dir because the
-        # `src` is not followed by `find`.
-        if src.symlink? && !dst.exist?
-          make_relative_symlink dst, src, mode
-          Find.prune
-        end
-
         # if the dst dir already exists, then great! walk the rest of the tree tho
         next if dst.directory? and not dst.symlink?
         # no need to put .app bundles in the path, the user can just use
