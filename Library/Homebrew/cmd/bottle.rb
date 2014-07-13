@@ -244,12 +244,9 @@ module Homebrew
           end
         end
 
-        version = f.version.to_s
-        version += "_#{f.revision}" if f.revision.to_i > 0
-
         HOMEBREW_REPOSITORY.cd do
           safe_system "git", "commit", "--no-edit", "--verbose",
-            "--message=#{f.name}: #{update_or_add} #{version} bottle.",
+            "--message=#{f.name}: #{update_or_add} #{f.pkg_version} bottle.",
             "--", f.path
         end
       end
