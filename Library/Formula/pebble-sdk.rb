@@ -6,8 +6,8 @@ class PebbleSdk < Formula
   sha1 'c3e715073e295b8219ebfb7989dd65454a187a63'
 
   bottle do
-    sha1 "a0b31517110e68148ec1bb395533c8d260bd52ae" => :mavericks
-    sha1 "28de175c4ec571a53f522763b1e7f137de5515b0" => :mountain_lion
+    sha1 "671d998390c3243c7982aa01ba2afb758c652c68" => :mavericks
+    sha1 "93e20007413d9e5243a1415fcd7a5dd335a32489" => :mountain_lion
   end
 
   depends_on :macos => :mountain_lion
