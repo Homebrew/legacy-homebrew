@@ -2,9 +2,9 @@ require "formula"
 
 class Gettext < Formula
   homepage "https://www.gnu.org/software/gettext/"
-  url "http://ftpmirror.gnu.org/gettext/gettext-0.19.1.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gettext/gettext-0.19.1.tar.xz"
-  sha256 "091b7a6f61e333f82e56ab638d4ca1b874a812e489ee8a7bf5c651c673f64ee5"
+  url "http://ftpmirror.gnu.org/gettext/gettext-0.19.2.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gettext/gettext-0.19.2.tar.xz"
+  sha256 "b34e1baaf37e56b4f5d7104353a437a735b2e094a70588e7c5ae671eaa0819c3"
 
   bottle do
     sha1 "b051e525a42aa11242dc80afd19aa914d38b1e4b" => :mavericks
