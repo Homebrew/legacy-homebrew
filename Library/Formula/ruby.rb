@@ -4,12 +4,13 @@ class Ruby < Formula
   homepage 'https://www.ruby-lang.org/'
   url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.2.tar.bz2"
   sha256 "6948b02570cdfb89a8313675d4aa665405900e27423db408401473f30fc6e901"
-  revision 1
+  revision 2
 
   bottle do
-    sha1 "9feba2200305e8750c26f83d562b900d31978905" => :mavericks
-    sha1 "47d34386ba62c418a79090bf1b09c73f77cc1756" => :mountain_lion
-    sha1 "1e6dd158182dec70cd1440a5d834396bb8745246" => :lion
+    revision 1
+    sha1 "d7394d40bc1a49f40a41ea7b7564c35907937cad" => :mavericks
+    sha1 "9eb3ed6e198866f4f2330df5cd9708b2e0c72783" => :mountain_lion
+    sha1 "e9ef55620f60145e1145c05972f2724c6568c5cd" => :lion
   end
 
   head do
@@ -38,7 +39,11 @@ class Ruby < Formula
   def install
     system "autoconf" if build.head?
 
-    args = %W[--prefix=#{prefix} --enable-shared --disable-silent-rules]
+    args = %W[
+      --prefix=#{prefix} --enable-shared --disable-silent-rules
+      --with-sitedir=#{HOMEBREW_PREFIX}/lib/ruby/site_ruby
+      --with-vendordir=#{HOMEBREW_PREFIX}/lib/ruby/vendor_ruby
+      ]
     args << "--program-suffix=21" if build.with? "suffix"
     args << "--with-arch=#{Hardware::CPU.universal_archs.join(',')}" if build.universal?
     args << "--with-out-ext=tk" if build.without? "tcltk"
@@ -60,34 +65,69 @@ class Ruby < Formula
     system "./configure", *args
     system "make"
     system "make install"
+
+    # Customize rubygems to look/install in the global gem directory
+    # instead of in the Cellar, making gems last across reinstalls
+    (lib/"ruby/2.1.0/rubygems/defaults/operating_system.rb").write rubygems_config
   end
 
-  def post_install
-    # Preserve gem, site, and vendor folders on upgrade/reinstall
-    # by placing them in HOMEBREW_PREFIX and sym-linking
-    ruby_lib = HOMEBREW_PREFIX/"lib/ruby"
+  def rubygems_config; <<-EOS.undent
+    module Gem
+      class << self
+        alias :old_default_dir :default_dir
+        alias :old_default_path :default_path
+        alias :old_default_bindir :default_bindir
+      end
 
-    ["gems", "site_ruby", "vendor_ruby"].each do |name|
-      link = lib/"ruby"/name
-      real = ruby_lib/name
+      def self.default_dir
+        path = [
+          "#{HOMEBREW_PREFIX}",
+          "lib",
+          "ruby",
+          "gems",
+          "2.1.0"
+        ]
 
-      # only overwrite invalid (mutually dependent) links
-      real.unlink if real.symlink? && real.readlink == link
-      real.mkpath
+        @default_dir ||= File.join(*path)
+      end
 
-      link.unlink if link.exist?
-      link.symlink real
+      def self.private_dir
+        path = if defined? RUBY_FRAMEWORK_VERSION then
+                 [
+                   File.dirname(RbConfig::CONFIG['sitedir']),
+                   'Gems',
+                   RbConfig::CONFIG['ruby_version']
+                 ]
+               elsif RbConfig::CONFIG['rubylibprefix'] then
+                 [
+                  RbConfig::CONFIG['rubylibprefix'],
+                  'gems',
+                  RbConfig::CONFIG['ruby_version']
+                 ]
+               else
+                 [
+                   RbConfig::CONFIG['libdir'],
+                   ruby_engine,
+                   'gems',
+                   RbConfig::CONFIG['ruby_version']
+                 ]
+               end
+
+        @private_dir ||= File.join(*path)
+      end
+
+      def self.default_path
+        if Gem.user_home && File.exist?(Gem.user_home)
+          [user_dir, default_dir, private_dir]
+        else
+          [default_dir, private_dir]
+        end
+      end
+
+      def self.default_bindir
+        "#{HOMEBREW_PREFIX}/bin"
+      end
     end
-  end
-
-  def caveats; <<-EOS.undent
-    By default, gem installed executables will be placed into:
-      #{opt_bin}
-
-    You may want to add this to your PATH. After upgrades, you can run
-      gem pristine --all --only-executables
-
-    to restore binstubs for installed gems.
     EOS
   end
 

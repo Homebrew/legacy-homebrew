@@ -366,4 +366,12 @@ end
 
 # Start the cli dispatch stuff.
 #
+
+opoo <<-EOS.undent
+  brew services is unsupported and will be removed soon.
+  You should use launchctl instead.
+  Please feel free volunteer to support it in a tap.
+
+EOS
+
 ServicesCli.run!

@@ -1,13 +1,25 @@
-require 'extend/ENV'
-require 'hardware'
-require 'keg'
-require 'timeout'
-require 'test/unit/assertions'
+require "extend/ENV"
+require "timeout"
 
-module Homebrew extend self
+module Homebrew
   TEST_TIMEOUT_SECONDS = 5*60
 
-  if Object.const_defined?(:Minitest)
+  if defined?(Gem)
+    begin
+      gem "minitest", "< 5.0.0"
+    rescue Gem::LoadError
+      require "test/unit/assertions"
+    else
+      require "minitest/unit"
+      require "test/unit/assertions"
+    end
+  else
+    require "test/unit/assertions"
+  end
+
+  if defined?(MiniTest::Assertion)
+    FailedAssertion = MiniTest::Assertion
+  elsif defined?(Minitest::Assertion)
     FailedAssertion = Minitest::Assertion
   else
     FailedAssertion = Test::Unit::AssertionFailedError
@@ -33,6 +45,9 @@ module Homebrew extend self
       end
 
       puts "Testing #{f.name}"
+
+      f.extend(Test::Unit::Assertions)
+
       begin
         # tests can also return false to indicate failure
         Timeout::timeout TEST_TIMEOUT_SECONDS do
@@ -41,8 +56,9 @@ module Homebrew extend self
       rescue FailedAssertion => e
         ofail "#{f.name}: failed"
         puts e.message
-      rescue Exception
+      rescue Exception => e
         ofail "#{f.name}: failed"
+        puts e, e.backtrace
       end
     end
   end

@@ -1,5 +1,7 @@
-require 'cmd/missing'
-require 'version'
+require "cmd/missing"
+require "formula"
+require "keg"
+require "version"
 
 class Volumes
   def initialize
@@ -25,12 +27,17 @@ class Volumes
   def get_mounts path=nil
     vols = []
     # get the volume of path, if path is nil returns all volumes
-    raw_df = IO.popen("/bin/df -P #{path}", "rb", &:read)
-    raw_df.split("\n").each do |line|
-      case line
-      # regex matches: /dev/disk0s2   489562928 440803616  48247312    91%    /
-      when /^(.*)\s+([0-9]+)\s+([0-9]+)\s+([0-9]+)\s+([0-9]{1,3}\%)\s+(.*)/
-        vols << $6
+
+    args = %w[/bin/df -P]
+    args << path if path
+
+    Utils.popen_read(*args) do |io|
+      io.each_line do |line|
+        case line.chomp
+          # regex matches: /dev/disk0s2   489562928 440803616  48247312    91%    /
+        when /^.+\s+[0-9]+\s+[0-9]+\s+[0-9]+\s+[0-9]{1,3}%\s+(.+)/
+          vols << $1
+        end
       end
     end
     return vols
@@ -181,7 +188,6 @@ def check_for_other_package_managers
 end
 
 def check_for_broken_symlinks
-  require 'keg'
   broken_symlinks = []
 
   Keg::PRUNEABLE_DIRECTORIES.select(&:directory?).each do |d|
@@ -376,20 +382,19 @@ def check_access_usr_local
 end
 
 %w{include etc lib lib/pkgconfig share}.each do |d|
-  class_eval <<-EOS, __FILE__, __LINE__ + 1
-    def check_access_#{d.sub("/", "_")}
-      if (dir = HOMEBREW_PREFIX+'#{d}').exist? && !dir.writable_real?
-        <<-EOF.undent
-        \#{dir} isn't writable.
-        This can happen if you "sudo make install" software that isn't managed by
-        by Homebrew. If a brew tries to write a file to this directory, the
-        install will fail during the link step.
+  define_method("check_access_#{d.sub("/", "_")}") do
+    dir = HOMEBREW_PREFIX.join(d)
+    if dir.exist? && !dir.writable_real? then <<-EOS.undent
+      #{dir} isn't writable.
 
-        You should probably `chown` \#{dir}
-        EOF
-      end
+      This can happen if you "sudo make install" software that isn't managed by
+      by Homebrew. If a formula tries to write a file to this directory, the
+      install will fail during the link step.
+
+      You should probably `chown` #{dir}
+      EOS
     end
-    EOS
+  end
 end
 
 def check_access_logs
@@ -570,7 +575,7 @@ def check_for_gettext
   return if @found.empty?
 
   # Our gettext formula will be caught by check_linked_keg_only_brews
-  f = Formula.factory("gettext") rescue nil
+  f = Formulary.factory("gettext") rescue nil
   return if f and f.linked_keg.directory? and @found.all? do |path|
     Pathname.new(path).realpath.to_s.start_with? "#{HOMEBREW_CELLAR}/gettext"
   end
@@ -585,7 +590,7 @@ end
 
 def check_for_iconv
   unless find_relative_paths("lib/libiconv.dylib", "include/iconv.h").empty?
-    if (f = Formula.factory("libiconv") rescue nil) and f.linked_keg.directory?
+    if (f = Formulary.factory("libiconv") rescue nil) and f.linked_keg.directory?
       if not f.keg_only? then <<-EOS.undent
         A libiconv formula is installed and linked
         This will break stuff. For serious. Unlink it.
@@ -730,8 +735,8 @@ def check_filesystem_case_sensitive
   end.map { |case_sensitive_dir| volumes.get_mounts(case_sensitive_dir) }.uniq
   return if case_sensitive_vols.empty?
   <<-EOS.undent
-    Your file-system on #{case_sensitive_vols} appears to be CaSe SeNsItIvE.
-    Homebrew is less tested with that - don't worry but please report issues.
+    The filesystem on #{case_sensitive_vols.join(",")} appears to be case-sensitive.
+    The default OS X filesystem is case-insensitive. Please report any apparent problems.
   EOS
 end
 
@@ -842,8 +847,6 @@ def __check_linked_brew f
 end
 
 def check_for_linked_keg_only_brews
-  require 'formula'
-
   return unless HOMEBREW_CELLAR.exist?
 
   warnings = Hash.new
@@ -873,18 +876,6 @@ def check_for_linked_keg_only_brews
   end
 end
 
-def check_for_MACOSX_DEPLOYMENT_TARGET
-  target = ENV.fetch('MACOSX_DEPLOYMENT_TARGET') { return }
-
-  unless target == MacOS.version.to_s then <<-EOS.undent
-    MACOSX_DEPLOYMENT_TARGET was set to #{target.inspect}
-    This is used by Fink, but having it set to a value different from the
-    current system version (#{MacOS.version}) can cause problems, compiling
-    Git for instance, and should probably be removed.
-    EOS
-  end
-end
-
 def check_for_other_frameworks
   # Other frameworks that are known to cause problems when present
   %w{Mono.framework expat.framework libexpat.framework}.
@@ -905,16 +896,16 @@ end
 
 def check_missing_deps
   return unless HOMEBREW_CELLAR.exist?
-  s = Set.new
+  missing = Set.new
   Homebrew.missing_deps(Formula.installed).each_value do |deps|
-    s.merge deps
+    missing.merge(deps)
   end
 
-  if s.length > 0 then <<-EOS.undent
+  if missing.any? then <<-EOS.undent
     Some installed formula are missing dependencies.
     You should `brew install` the missing dependencies:
 
-        brew install #{s.to_a.sort * " "}
+        brew install #{missing.sort_by(&:name) * " "}
 
     Run `brew missing` for more details.
     EOS
@@ -1007,7 +998,7 @@ def check_for_bad_python_symlink
 end
 
 def check_for_non_prefixed_coreutils
-  gnubin = "#{Formula.factory('coreutils').prefix}/libexec/gnubin"
+  gnubin = "#{Formulary.factory('coreutils').prefix}/libexec/gnubin"
   if paths.include? gnubin then <<-EOS.undent
     Putting non-prefixed coreutils in your path can cause gmp builds to fail.
     EOS
@@ -1065,7 +1056,7 @@ def check_for_unlinked_but_not_keg_only
       true
     elsif not (HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
       begin
-        Formula.factory(rack.basename.to_s).keg_only?
+        Formulary.factory(rack.basename.to_s).keg_only?
       rescue FormulaUnavailableError
         false
       end
@@ -1122,7 +1113,7 @@ end
   end
 end # end class Checks
 
-module Homebrew extend self
+module Homebrew
   def doctor
     checks = Checks.new
 
@@ -1144,8 +1135,16 @@ module Homebrew extend self
     methods.each do |method|
       out = checks.send(method)
       unless out.nil? or out.empty?
+        if first_warning
+          puts <<-EOS.undent
+            #{Tty.white}Please note that these warnings are just used to help the Homebrew maintainers
+            with debugging if you file an issue. If everything you use Homebrew for is
+            working fine: please don't worry and just ignore them. Thanks!#{Tty.reset}
+          EOS
+        end
+
         lines = out.to_s.split('\n')
-        puts unless first_warning
+        puts
         opoo lines.shift
         Homebrew.failed = true
         puts lines
@@ -1157,15 +1156,14 @@ module Homebrew extend self
   end
 
   def inject_dump_stats checks
-    class << checks
-      alias_method :oldsend, :send
-      def send method
+    checks.extend Module.new {
+      def send(method, *)
         time = Time.now
-        oldsend(method)
+        super
       ensure
         $times[method] = Time.now - time
       end
-    end
+    }
     $times = {}
     at_exit {
       puts $times.sort_by{|k, v| v }.map{|k, v| "#{k}: #{v}"}

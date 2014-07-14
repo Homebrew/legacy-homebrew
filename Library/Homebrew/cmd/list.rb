@@ -1,6 +1,6 @@
 require "metafiles"
 
-module Homebrew extend self
+module Homebrew
   def list
 
     # Use of exec means we don't explicitly exit
@@ -11,7 +11,6 @@ module Homebrew extend self
     return unless HOMEBREW_CELLAR.exist?
 
     if ARGV.include? '--pinned'
-      require 'formula'
       list_pinned
     elsif ARGV.include? '--versions'
       list_versions
@@ -19,7 +18,7 @@ module Homebrew extend self
       ENV['CLICOLOR'] = nil
       exec 'ls', *ARGV.options_only << HOMEBREW_CELLAR
     elsif ARGV.verbose? or not $stdout.tty?
-      exec "find", *ARGV.kegs + %w[-not -type d -print]
+      exec "find", *ARGV.kegs.map(&:to_s) + %w[-not -type d -print]
     else
       ARGV.kegs.each{ |keg| PrettyListing.new keg }
     end
@@ -60,11 +59,11 @@ module Homebrew extend self
 
   def list_versions
     if ARGV.named.empty?
-      HOMEBREW_CELLAR.children.select{ |pn| pn.directory? }
+      HOMEBREW_CELLAR.subdirs
     else
       ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
     end.each do |d|
-      versions = d.children.select{ |pn| pn.directory? }.map{ |pn| pn.basename.to_s }
+      versions = d.subdirs.map { |pn| pn.basename.to_s }
       next if ARGV.include?('--multiple') && versions.count < 2
       puts "#{d.basename} #{versions*' '}"
     end
@@ -72,7 +71,7 @@ module Homebrew extend self
 
   def list_pinned
     if ARGV.named.empty?
-      HOMEBREW_CELLAR.children.select{ |pn| pn.directory? }
+      HOMEBREW_CELLAR.subdirs
     else
       ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
     end.select do |d|
@@ -86,7 +85,7 @@ end
 
 class PrettyListing
   def initialize path
-    Pathname.new(path).children.sort{ |a,b| a.to_s.downcase <=> b.to_s.downcase }.each do |pn|
+    Pathname.new(path).children.sort_by { |p| p.to_s.downcase }.each do |pn|
       case pn.basename.to_s
       when 'bin', 'sbin'
         pn.find { |pnn| puts pnn unless pnn.directory? }

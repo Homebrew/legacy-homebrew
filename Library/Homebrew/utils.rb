@@ -3,6 +3,7 @@ require 'exceptions'
 require 'os/mac'
 require 'utils/json'
 require 'utils/inreplace'
+require 'utils/popen'
 require 'open-uri'
 
 class Tty
@@ -112,6 +113,10 @@ module Homebrew
     Process.wait(pid)
     $?.success?
   end
+
+  def self.git_head
+    HOMEBREW_REPOSITORY.cd { `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle }
+  end
 end
 
 def with_system_path
@@ -178,9 +183,9 @@ def puts_columns items, star_items=[]
 end
 
 def which cmd, path=ENV['PATH']
-  path.split(File::PATH_SEPARATOR).find do |p|
-    pcmd = File.join(p, cmd)
-    return Pathname.new(pcmd) if File.executable?(pcmd) && !File.directory?(pcmd)
+  path.split(File::PATH_SEPARATOR).each do |p|
+    pcmd = File.expand_path(cmd, p)
+    return Pathname.new(pcmd) if File.file?(pcmd) && File.executable?(pcmd)
   end
   return nil
 end
@@ -206,7 +211,7 @@ def exec_editor *args
 end
 
 def exec_browser *args
-  browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] || "open"
+  browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] || OS::PATH_OPEN
   safe_exec(browser, *args)
 end
 
@@ -244,12 +249,12 @@ def nostdout
     yield
   else
     begin
-      require 'stringio'
-      real_stdout = $stdout
-      $stdout = StringIO.new
+      out = $stdout.dup
+      $stdout.reopen("/dev/null")
       yield
     ensure
-      $stdout = real_stdout
+      $stdout.reopen(out)
+      out.close
     end
   end
 end
@@ -311,15 +316,18 @@ module GitHub extend self
     }
 
     default_headers['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
-    Kernel.open(url, default_headers.merge(headers)) do |f|
-      yield Utils::JSON.load(f.read)
+
+    begin
+      Kernel.open(url, default_headers.merge(headers)) do |f|
+        yield Utils::JSON.load(f.read)
+      end
+    rescue OpenURI::HTTPError => e
+      handle_api_error(e)
+    rescue SocketError, OpenSSL::SSL::SSLError => e
+      raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
+    rescue Utils::JSON::Error => e
+      raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
     end
-  rescue OpenURI::HTTPError => e
-    handle_api_error(e)
-  rescue SocketError, OpenSSL::SSL::SSLError => e
-    raise Error, "Failed to connect to: #{url}\n#{e.message}", e.backtrace
-  rescue Utils::JSON::Error => e
-    raise Error, "Failed to parse JSON response\n#{e.message}", e.backtrace
   end
 
   def handle_api_error(e)

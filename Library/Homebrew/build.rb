@@ -40,7 +40,8 @@ def main
   # can be inconvenient for the user. But we need to be safe.
   system "/usr/bin/sudo", "-k"
 
-  Build.new(Formula.factory($0)).install
+  formula = Formulary.factory($0, ARGV.spec)
+  Build.new(formula).install
 rescue Exception => e
   unless error_pipe.nil?
     e.continuation = nil if ARGV.debug?
@@ -147,8 +148,8 @@ class Build
 
     f.brew do
       if ARGV.flag? '--git'
-        system "git init"
-        system "git add -A"
+        system "git", "init"
+        system "git", "add", "-A"
       end
       if ARGV.interactive?
         ohai "Entering interactive mode"
@@ -170,10 +171,11 @@ class Build
         begin
           f.install
 
+          keg = Keg.new(f.prefix)
           # This first test includes executables because we still
           # want to record the stdlib for something that installs no
           # dylibs.
-          stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
+          stdlibs = keg.detect_cxx_stdlibs
           # This currently only tracks a single C++ stdlib per dep,
           # though it's possible for different libs/executables in
           # a given formula to link to different ones.
@@ -189,7 +191,7 @@ class Build
           # of software installs an executable that links against libstdc++
           # and dylibs against libc++, libc++-only dependencies can safely
           # link against it.
-          stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs :skip_executables => true
+          stdlibs = keg.detect_cxx_stdlibs :skip_executables => true
 
           Tab.create(f, ENV.compiler, stdlibs.first,
             Options.coerce(ARGV.options_only)).write

@@ -17,8 +17,8 @@ class Dub < Formula
   head "https://github.com/rejectedsoftware/dub.git", :using => DubHeadDownloadStrategy
 
   devel do
-    url "https://github.com/rejectedsoftware/dub/archive/v0.9.22-beta.2.tar.gz"
-    sha1 "031b525e6d10515a11c227229a47027281142e6d"
+    url "https://github.com/rejectedsoftware/dub/archive/v0.9.22-beta.4.tar.gz"
+    sha1 "9632af2d308e04feb62b258972bba4e29450819e"
   end
 
   depends_on "pkg-config" => :build

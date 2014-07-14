@@ -2,9 +2,9 @@ require 'testing_env'
 require 'cmd/update'
 require 'yaml'
 
-class UpdaterTests < Test::Unit::TestCase
+class UpdaterTests < Homebrew::TestCase
   class UpdaterMock < ::Updater
-    def initialize(*args)
+    def initialize(*)
       super
       @outputs = Hash.new { |h, k| h[k] = [] }
       @expected = []
@@ -16,8 +16,8 @@ class UpdaterTests < Test::Unit::TestCase
       @outputs[cmd] << output
     end
 
-    def `(cmd, *args)
-      cmd = "#{cmd} #{args*' '}".strip
+    def `(*args)
+      cmd = args.join(" ")
       if @expected.include?(cmd) and !@outputs[cmd].empty?
         @called << cmd
         @outputs[cmd].shift
@@ -25,11 +25,14 @@ class UpdaterTests < Test::Unit::TestCase
         raise "#{inspect} unexpectedly called backticks: `#{cmd}`"
       end
     end
-
-    alias safe_system ` #`
+    alias_method :safe_system, :`
 
     def expectations_met?
       @expected == @called
+    end
+
+    def inspect
+      "#<#{self.class.name}>"
     end
   end
 
@@ -42,7 +45,7 @@ class UpdaterTests < Test::Unit::TestCase
   end
 
   def setup
-    @updater = UpdaterMock.new
+    @updater = UpdaterMock.new(HOMEBREW_REPOSITORY)
     @report = Report.new
   end
 
@@ -55,19 +58,19 @@ class UpdaterTests < Test::Unit::TestCase
       @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
       @updater.in_repo_expect("git diff-tree -r --raw -M85% 1234abcd 3456cdef", diff_output)
       @updater.pull!
-      @report.merge!(@updater.report)
+      @report.update(@updater.report)
     end
   end
 
   def test_update_homebrew_without_any_changes
     perform_update
-    assert @updater.expectations_met?
+    assert_predicate @updater, :expectations_met?
     assert_empty @report
   end
 
   def test_update_homebrew_without_formulae_changes
     perform_update(fixture('update_git_diff_output_without_formulae_changes'))
-    assert @updater.expectations_met?
+    assert_predicate @updater, :expectations_met?
     assert_empty @report.select_formula(:M)
     assert_empty @report.select_formula(:A)
     assert_empty @report.select_formula(:R)
@@ -75,7 +78,7 @@ class UpdaterTests < Test::Unit::TestCase
 
   def test_update_homebrew_with_formulae_changes
     perform_update(fixture('update_git_diff_output_with_formulae_changes'))
-    assert @updater.expectations_met?
+    assert_predicate @updater, :expectations_met?
     assert_equal %w{ xar yajl }, @report.select_formula(:M)
     assert_equal %w{ antiword bash-completion ddrescue dict lua }, @report.select_formula(:A)
     assert_equal %w{ shapelib }, @report.select_formula(:R)
@@ -83,7 +86,7 @@ class UpdaterTests < Test::Unit::TestCase
 
   def test_update_homebrew_with_tapped_formula_changes
     perform_update(fixture('update_git_diff_output_with_tapped_formulae_changes'))
-    assert @updater.expectations_met?
+    assert_predicate @updater, :expectations_met?
     assert_equal [
       HOMEBREW_LIBRARY.join("Taps", "someuser/sometap/Formula/antiword.rb"),
       HOMEBREW_LIBRARY.join("Taps", "someuser/sometap/HomebrewFormula/lua.rb"),
@@ -93,12 +96,12 @@ class UpdaterTests < Test::Unit::TestCase
 
   def test_update_homebrew_with_removed_formulae
     perform_update(fixture('update_git_diff_output_with_removed_formulae'))
-    assert @updater.expectations_met?
+    assert_predicate @updater, :expectations_met?
     assert_equal %w{libgsasl}, @report.select_formula(:D)
   end
 
   def test_update_homebrew_with_changed_filetype
     perform_update(fixture('update_git_diff_output_with_changed_filetype'))
-    assert @updater.expectations_met?
+    assert_predicate @updater, :expectations_met?
   end
 end

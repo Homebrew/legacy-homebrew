@@ -3,7 +3,7 @@ require 'blacklist'
 require 'digest'
 require 'erb'
 
-module Homebrew extend self
+module Homebrew
 
   # Create a formula from a tarball URL
   def create
@@ -51,7 +51,7 @@ module Homebrew extend self
       end
 
       if Formula.aliases.include? fc.name
-        realname = Formula.canonical_name fc.name
+        realname = Formulary.canonical_name(fc.name)
         raise <<-EOS.undent
           The formula #{realname} is already aliased to #{fc.name}
           Please check that you are not creating a duplicate.

@@ -1,17 +1,21 @@
-require 'formula'
+require "formula"
+require "compilers"
 
 module SharedEnvExtension
+  include CompilerConstants
+
   CC_FLAG_VARS = %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
   FC_FLAG_VARS = %w{FCFLAGS FFLAGS}
 
-  # Update these every time a new GNU GCC branch is released
-  GNU_GCC_VERSIONS = (3..9)
-  GNU_GCC_REGEXP = /gcc-(4\.[3-9])/
+  COMPILER_SYMBOL_MAP = {
+    "gcc-4.0"  => :gcc_4_0,
+    "gcc-4.2"  => :gcc,
+    "llvm-gcc" => :llvm,
+    "clang"    => :clang,
+  }
 
-  COMPILER_SYMBOL_MAP = { 'gcc-4.0'  => :gcc_4_0,
-                          'gcc-4.2'  => :gcc,
-                          'llvm-gcc' => :llvm,
-                          'clang'    => :clang }
+  COMPILERS = COMPILER_SYMBOL_MAP.values +
+    GNU_GCC_VERSIONS.map { |n| "gcc-4.#{n}" }
 
   SANITIZED_VARS = %w[
     CDPATH GREP_OPTIONS CLICOLOR_FORCE
@@ -108,6 +112,18 @@ module SharedEnvExtension
     end
   end
 
+  def determine_cc
+    COMPILER_SYMBOL_MAP.invert.fetch(compiler, compiler)
+  end
+
+  COMPILERS.each do |compiler|
+    define_method(compiler) do
+      @compiler = compiler
+      self.cc  = determine_cc
+      self.cxx = determine_cxx
+    end
+  end
+
   # If the given compiler isn't compatible, will try to select
   # an alternate compiler, altering the value of environment variables.
   # If no valid compiler is found, raises an exception.
@@ -171,7 +187,7 @@ module SharedEnvExtension
 
   # ld64 is a newer linker provided for Xcode 2.5
   def ld64
-    ld64 = Formula.factory('ld64')
+    ld64 = Formulary.factory('ld64')
     self['LD'] = ld64.bin/'ld'
     append "LDFLAGS", "-B#{ld64.bin}/"
   end
@@ -180,15 +196,12 @@ module SharedEnvExtension
     gcc_name = "gcc-#{version}"
     gcc_version_name = "gcc#{version.delete('.')}"
 
-    ivar = "@#{gcc_version_name}_version"
-    return instance_variable_get(ivar) if instance_variable_defined?(ivar)
-
     gcc_path = HOMEBREW_PREFIX.join "opt/gcc/bin/#{gcc_name}"
     gcc_formula = Formulary.factory "gcc"
     gcc_versions_path = \
       HOMEBREW_PREFIX.join "opt/#{gcc_version_name}/bin/#{gcc_name}"
 
-    formula = if gcc_path.exist?
+    if gcc_path.exist?
       gcc_formula
     elsif gcc_versions_path.exist?
       Formulary.factory gcc_version_name
@@ -199,8 +212,6 @@ module SharedEnvExtension
     else
       gcc_formula
     end
-
-    instance_variable_set(ivar, formula)
   end
 
   def warn_about_non_apple_gcc(gcc)

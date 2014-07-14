@@ -2,15 +2,15 @@ require "formula"
 
 class Emscripten < Formula
   homepage "http://emscripten.org"
-  url "https://github.com/kripken/emscripten/archive/1.16.0.tar.gz"
-  sha1 "e23bec39c32eb2ccfe889e320cd8da132a4bbf51"
+  url "https://github.com/kripken/emscripten/archive/1.21.0.tar.gz"
+  sha1 "88967d336b50de17a4333e736b4ed3db67b7ea50"
 
   head "https://github.com/kripken/emscripten.git", :branch => "incoming"
 
   bottle do
-    sha1 "de4ec1922382233ae5162ebc722e41b5f70ebafd" => :mavericks
-    sha1 "49600712bee90639efc17eafb4be8d5c454aa073" => :mountain_lion
-    sha1 "ace690ca25a73913df158c5c5d94cb9df8aa9f32" => :lion
+    sha1 "c4632e68a9b31703e094a7e9c525d18f5340d00f" => :mavericks
+    sha1 "a62601a61576a6aa60c4113e0b61bb374e7d3361" => :mountain_lion
+    sha1 "c68aa901aa31c32c7d933fc4882553f1138e1b44" => :lion
   end
 
   head do
@@ -25,13 +25,13 @@ class Emscripten < Formula
 
   stable do
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.16.0.tar.gz"
-      sha1 "ca10c5a8059fdd321143d8f10c0810176be3d467"
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.21.0.tar.gz"
+      sha1 "d468ca3ea4b3ed02b3e20ba86b781f028c2514b0"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.16.0.tar.gz"
-      sha1 "768a15d3a8cd9e92f87521cadf3e5f63f3e24fa1"
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.21.0.tar.gz"
+      sha1 "7974f7cc0646534fd226ae447b962a11d77a7c03"
     end
   end
 
@@ -69,7 +69,7 @@ class Emscripten < Formula
       system "make", "install"
     end
 
-    %w(em++ em-config emar emcc emconfigure emlink.py emmake
+    %w(em++ em-config emar emcc emcmake emconfigure emlink.py emmake
        emranlib emrun emscons).each do |emscript|
       bin.install_symlink libexec/emscript
     end

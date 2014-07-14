@@ -3,8 +3,8 @@ require 'stringio'
 require 'erb'
 
 class Patch
-  def self.create(strip, io=nil, &block)
-    case strip ||= :p1
+  def self.create(strip, io, &block)
+    case strip
     when :DATA, IO, StringIO
       IOPatch.new(strip, :p1)
     when String
@@ -29,7 +29,7 @@ class Patch
     case list
     when Hash
       list
-    when Array, String, IO, StringIO
+    when Array, String, IO
       { :p1 => list }
     else
       {}
@@ -37,7 +37,7 @@ class Patch
       urls = [urls] unless Array === urls
       urls.each do |url|
         case url
-        when IO, StringIO
+        when IO
           patch = IOPatch.new(url, strip)
         else
           patch = LegacyPatch.new(strip, url)
@@ -79,7 +79,7 @@ class IOPatch < Patch
   end
 
   def inspect
-    "#<#{self.class}: #{strip.inspect}>"
+    "#<#{self.class.name}: #{strip.inspect}>"
   end
 end
 
@@ -127,7 +127,7 @@ class ExternalPatch < Patch
   end
 
   def inspect
-    "#<#{self.class}: #{strip.inspect} #{url.inspect}>"
+    "#<#{self.class.name}: #{strip.inspect} #{url.inspect}>"
   end
 end
 

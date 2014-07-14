@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'compilers'
 
-class CompilerSelectorTests < Test::Unit::TestCase
+class CompilerSelectorTests < Homebrew::TestCase
   class Double
     attr_reader :name
 
@@ -50,7 +50,7 @@ class CompilerSelectorTests < Test::Unit::TestCase
 
   def test_all_compiler_failures
     @f << :clang << :llvm << :gcc << 'gcc-4.8'
-    assert_raise(CompilerSelectionError) { actual_cc }
+    assert_raises(CompilerSelectionError) { actual_cc }
   end
 
   def test_no_compiler_failures
@@ -111,7 +111,7 @@ class CompilerSelectorTests < Test::Unit::TestCase
   def test_missing_gcc
     @versions = CompilerVersions.new( :gcc_build_version => nil)
     @f << :clang << :llvm << 'gcc-4.8'
-    assert_raise(CompilerSelectionError) { actual_cc }
+    assert_raises(CompilerSelectionError) { actual_cc }
   end
 
   def test_missing_llvm_and_gcc
@@ -120,6 +120,6 @@ class CompilerSelectorTests < Test::Unit::TestCase
       :llvm_build_version => nil
     )
     @f << :clang << 'gcc-4.8'
-    assert_raise(CompilerSelectionError) { actual_cc }
+    assert_raises(CompilerSelectionError) { actual_cc }
   end
 end

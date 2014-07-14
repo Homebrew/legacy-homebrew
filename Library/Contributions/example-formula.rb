@@ -1,7 +1,7 @@
 require "formula"
 
 # This is a non-functional example formula to showcase all features and
-# therefore, its overly complex and dupes stuff just to comment on it.
+# therefore, it's overly complex and dupes stuff just to comment on it.
 # You may want to use `brew create` to start your own new formula!
 # Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
 
@@ -26,7 +26,7 @@ class ExampleFormula < Formula
   #     `UnsafeSubversionDownloadStrategy` (svn with invalid certs)
   url "https://some.dont.provide.archives.example.com", :using => :git, :tag => "1.2.3"
 
-  # version is seldom needed, because its usually autodetected from the URL/tag.
+  # version is seldom needed, because it's usually autodetected from the URL/tag.
   version "1.2-final"
 
   # For integrity and security, we verify the hash (`openssl dgst -sha1 <FILE>`)
@@ -250,7 +250,7 @@ class ExampleFormula < Formula
     # patch you have to resort to `inreplace`, because in the patch
     # you don't have access to any var defined by the formula. Only
     # HOMEBREW_PREFIX is available in the embedded patch.
-    # inreplace supports reg. exes.
+    # inreplace supports regular expressions.
     inreplace "somefile.cfg", /look[for]what?/, "replace by #{bin}/tool"
 
     # To call out to the system, we use the `system` method and we prefer

@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'pkg_version'
 
-class PkgVersionTests < Test::Unit::TestCase
+class PkgVersionTests < Homebrew::TestCase
   def v(version)
     PkgVersion.parse(version)
   end
@@ -24,6 +24,10 @@ class PkgVersionTests < Test::Unit::TestCase
     assert_operator v("1.0_1"), :<, v("2.0_1")
     assert_operator v("HEAD"), :>, v("1.0")
     assert_operator v("1.0"), :<, v("HEAD")
+
+    v = PkgVersion.new("1.0", 0)
+    assert_nil v <=> Object.new
+    assert_raises(ArgumentError) { v > Object.new }
   end
 
   def test_to_s

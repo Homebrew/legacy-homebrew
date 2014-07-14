@@ -16,6 +16,7 @@ class Md5sha1sum < Formula
   conflicts_with 'polarssl', :because => 'both install conflicting binaries'
 
   def install
+    ENV["SSLINCPATH"] = "#{MacOS.sdk_path}/usr/include"
     system "./configure", "--prefix=#{prefix}"
     system "make"
     bin.install 'md5sum'

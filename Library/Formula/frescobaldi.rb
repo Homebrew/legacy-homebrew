@@ -8,7 +8,7 @@ class Frescobaldi < Formula
   option "without-launcher", "Don't build Mac .app launcher"
   option "without-lilypond", "Don't install Lilypond"
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "portmidi" => :recommended
   depends_on "lilypond" => :recommended
 

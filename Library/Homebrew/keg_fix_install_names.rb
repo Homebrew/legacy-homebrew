@@ -1,4 +1,4 @@
-class Keg < Pathname
+class Keg
   PREFIX_PLACEHOLDER = "@@HOMEBREW_PREFIX@@".freeze
   CELLAR_PLACEHOLDER = "@@HOMEBREW_CELLAR@@".freeze
 
@@ -86,7 +86,7 @@ class Keg < Pathname
   end
 
   def each_unique_file_matching string
-    IO.popen("/usr/bin/fgrep -lr '#{string}' '#{self}' 2>/dev/null", "rb") do |io|
+    Utils.popen_read("/usr/bin/fgrep", "-lr", string, to_s) do |io|
       hardlinks = Set.new
 
       until io.eof?
@@ -121,7 +121,9 @@ class Keg < Pathname
     end
   end
 
-  def lib; join 'lib' end
+  def lib
+    path.join("lib")
+  end
 
   def each_install_name_for file, &block
     dylibs = file.dynamically_linked_libraries
@@ -133,13 +135,13 @@ class Keg < Pathname
     # The new dylib ID should have the same basename as the old dylib ID, not
     # the basename of the file itself.
     basename = File.basename(file.dylib_id)
-    relative_dirname = file.dirname.relative_path_from(self)
+    relative_dirname = file.dirname.relative_path_from(path)
     shortpath = HOMEBREW_PREFIX.join(relative_dirname, basename)
 
     if shortpath.exist? and not options[:keg_only]
       shortpath.to_s
     else
-      "#{HOMEBREW_PREFIX}/opt/#{fname}/#{relative_dirname}/#{basename}"
+      opt_record.join(relative_dirname, basename).to_s
     end
   end
 
@@ -150,7 +152,7 @@ class Keg < Pathname
   def mach_o_files
     mach_o_files = []
     dirs = %w{bin lib Frameworks}
-    dirs.map! { |dir| join(dir) }
+    dirs.map! { |dir| path.join(dir) }
     dirs.reject! { |dir| not dir.directory? }
 
     dirs.each do |dir|
@@ -179,7 +181,7 @@ class Keg < Pathname
     pkgconfig_files = []
 
     %w[lib share].each do |dir|
-      pcdir = join(dir, "pkgconfig")
+      pcdir = path.join(dir, "pkgconfig")
 
       pcdir.find do |pn|
         next if pn.symlink? or pn.directory? or pn.extname != '.pc'

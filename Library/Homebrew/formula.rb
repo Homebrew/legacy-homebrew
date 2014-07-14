@@ -14,7 +14,7 @@ require 'pkg_version'
 class Formula
   include FileUtils
   include Utils::Inreplace
-  extend BuildEnvironmentDSL
+  extend Enumerable
 
   attr_reader :name, :path, :homepage, :build
   attr_reader :stable, :devel, :head, :active_spec
@@ -26,7 +26,7 @@ class Formula
 
   attr_accessor :local_bottle_path
 
-  def initialize(name, path)
+  def initialize(name, path, spec)
     @name = name
     @path = path
     @homepage = self.class.homepage
@@ -36,7 +36,7 @@ class Formula
     set_spec :devel
     set_spec :head
 
-    @active_spec = determine_active_spec
+    @active_spec = determine_active_spec(spec)
     validate_attributes :url, :name, :version
     @build = determine_build_options
     @pkg_version = PkgVersion.new(version, revision)
@@ -52,16 +52,9 @@ class Formula
     end
   end
 
-  def determine_active_spec
-    case
-    when head && ARGV.build_head?   then head    # --HEAD
-    when devel && ARGV.build_devel? then devel   # --devel
-    when stable                     then stable
-    when devel                      then devel
-    when head                       then head    # head-only
-    else
-      raise FormulaSpecificationError, "formulae require at least a URL"
-    end
+  def determine_active_spec(requested)
+    spec = send(requested) || stable || devel || head
+    spec or raise FormulaSpecificationError, "formulae require at least a URL"
   end
 
   def validate_attributes(*attrs)
@@ -254,6 +247,10 @@ class Formula
     self.class.skip_clean_paths.include? to_check
   end
 
+  def skip_cxxstdlib_check?
+    self.class.cxxstdlib.include?(:skip)
+  end
+
   # yields self with current working directory set to the uncompressed tarball
   def brew
     validate_attributes :name, :version
@@ -299,21 +296,27 @@ class Formula
   end
 
   def == other
-    instance_of?(other.class) && name == other.name
+    instance_of?(other.class) &&
+      name == other.name &&
+      active_spec == other.active_spec
   end
   alias_method :eql?, :==
 
   def hash
     name.hash
   end
-  def <=> b
-    name <=> b.name
+
+  def <=>(other)
+    return unless Formula === other
+    name <=> other.name
   end
+
   def to_s
     name
   end
+
   def inspect
-    name
+    "#<#{self.class.name}: #{path}>"
   end
 
   # Standard parameters for CMake builds.
@@ -343,10 +346,6 @@ class Formula
   alias_method :python2, :python
   alias_method :python3, :python
 
-  def self.class_s name
-    Formulary.class_s(name)
-  end
-
   # an array of all Formula names
   def self.names
     Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
@@ -363,9 +362,6 @@ class Formula
         next
       end
     end
-  end
-  class << self
-    include Enumerable
   end
 
   # An array of all installed formulae
@@ -384,17 +380,8 @@ class Formula
     Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map{ |f| File.basename f }.sort
   end
 
-  def self.canonical_name name
-    Formulary.canonical_name(name)
-  end
-
   def self.[](name)
     Formulary.factory(name)
-  end
-
-  # deprecated
-  def self.factory name
-    Formulary.factory name
   end
 
   def tap?
@@ -421,7 +408,7 @@ class Formula
   end
 
   def env
-    @env ||= self.class.env
+    self.class.env
   end
 
   def conflicts
@@ -491,8 +478,6 @@ class Formula
   end
 
   def test
-    require 'test/unit/assertions'
-    extend(Test::Unit::Assertions)
     # Adding the used options allows us to use `build.with?` inside of tests
     tab = Tab.for_name(name)
     tab.used_options.each { |opt| build.args << opt unless build.has_opposite_of? opt }
@@ -612,6 +597,7 @@ class Formula
 
   # The methods below define the formula DSL.
   class << self
+    include BuildEnvironmentDSL
 
     attr_reader :keg_only_reason, :cc_failures
     attr_rw :homepage, :plist_startup, :plist_manual, :revision

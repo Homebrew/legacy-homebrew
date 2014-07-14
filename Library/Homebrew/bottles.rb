@@ -5,7 +5,8 @@ require 'bottle_version'
 
 def bottle_filename options={}
   options = { :tag => bottle_tag }.merge(options)
-  "#{options[:name]}-#{options[:version]}#{bottle_native_suffix(options)}"
+  suffix = ".#{options[:tag]}#{bottle_suffix(options[:revision])}"
+  "#{options[:name]}-#{options[:version]}#{suffix}"
 end
 
 def built_as_bottle? f
@@ -16,8 +17,7 @@ end
 
 def bottle_file_outdated? f, file
   filename = file.basename.to_s
-  return nil unless f and f.bottle and f.bottle.url \
-    and filename.match(bottle_regex)
+  return unless f.bottle && filename.match(Pathname::BOTTLE_EXTNAME_RX)
 
   bottle_ext = filename[bottle_native_regex, 1]
   bottle_url_ext = f.bottle.url[bottle_native_regex, 1]
@@ -25,13 +25,8 @@ def bottle_file_outdated? f, file
   bottle_ext && bottle_url_ext && bottle_ext != bottle_url_ext
 end
 
-def bottle_native_suffix options={}
-  options = { :tag => bottle_tag }.merge(options)
-  ".#{options[:tag]}#{bottle_suffix(options[:revision])}"
-end
-
-def bottle_suffix revision=nil
-  revision = revision.to_i > 0 ? ".#{revision}" : ""
+def bottle_suffix revision
+  revision = revision > 0 ? ".#{revision}" : ""
   ".bottle#{revision}.tar.gz"
 end
 
@@ -39,11 +34,7 @@ def bottle_native_regex
   /(\.#{bottle_tag}\.bottle\.(\d+\.)?tar\.gz)$/o
 end
 
-def bottle_regex
-  Pathname::BOTTLE_EXTNAME_RX
-end
-
-def bottle_url(root_url, filename_options={})
+def bottle_url(root_url, filename_options)
   "#{root_url}/#{bottle_filename(filename_options)}"
 end
 

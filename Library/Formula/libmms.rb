@@ -5,6 +5,13 @@ class Libmms < Formula
   url "https://downloads.sourceforge.net/project/libmms/libmms/0.6.4/libmms-0.6.4.tar.gz"
   sha1 "b03ef84a9eedc68fdf2866265b667b75e1a33bee"
 
+  bottle do
+    cellar :any
+    sha1 "1cd72a029405e29646813c3fe332c65065bb9f3b" => :mavericks
+    sha1 "ce77a403bda4b35b5aa47faf95fe0a88d3dd6799" => :mountain_lion
+    sha1 "0cbec23db83d8c91ac3c146c8e499ee06148c39a" => :lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "glib"
 

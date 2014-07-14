@@ -2,14 +2,14 @@ require "formula"
 
 class Pazpar2 < Formula
   homepage "http://www.indexdata.com/pazpar2"
-  url "http://ftp.indexdata.dk/pub/pazpar2/pazpar2-1.6.42.tar.gz"
-  sha1 "07f9a8e945d739649ceed59e08f7b3b013dfa028"
+  url "http://ftp.indexdata.dk/pub/pazpar2/pazpar2-1.7.0.tar.gz"
+  sha1 "3ea5faf6b67f092e34a8370a76ccb70b0f2964c6"
 
   bottle do
     cellar :any
-    sha1 "c706b67f07dae521a7abf98c4e65530ad262a22b" => :mavericks
-    sha1 "34e44849472083c6ab3d0c69c8355d4e1776beb1" => :mountain_lion
-    sha1 "943cc0f80a47bfe46db08e3d87648693fc0d9b14" => :lion
+    sha1 "d8875f865f73c7ee3cf1da16ecaa0be5753e63cf" => :mavericks
+    sha1 "3acbdbe8ed8dc34d9c32ef3f1ebbde2a5eb9b41b" => :mountain_lion
+    sha1 "c1ce9931a85031a2a30f400e0d88991a309229d7" => :lion
   end
 
   depends_on "pkg-config" => :build

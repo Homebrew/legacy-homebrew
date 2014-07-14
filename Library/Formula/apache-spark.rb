@@ -3,9 +3,9 @@ require "formula"
 class ApacheSpark < Formula
   homepage "http://spark.apache.org/"
   head "https://github.com/apache/spark.git"
-  url "http://d3kbcqa49mib13.cloudfront.net/spark-0.9.1-bin-hadoop2.tgz"
-  version "0.9.1"
-  sha1 "953cd042a8cc44d297af46cc6714e30d20554c4b"
+  url "http://d3kbcqa49mib13.cloudfront.net/spark-1.0.0-bin-hadoop2.tgz"
+  version "1.0.0"
+  sha1 "804fe9a0caff941fb791e15ea1cda45a7c2b7608"
 
   def install
     rm_f Dir["bin/*.cmd"]

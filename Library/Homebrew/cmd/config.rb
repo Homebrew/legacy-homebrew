@@ -1,6 +1,6 @@
 require 'hardware'
 
-module Homebrew extend self
+module Homebrew
   def config
     dump_verbose_config
   end
@@ -44,10 +44,7 @@ module Homebrew extend self
   end
 
   def head
-    head = HOMEBREW_REPOSITORY.cd do
-      `git rev-parse --verify -q HEAD 2>/dev/null`.chomp
-    end
-    if head.empty? then "(none)" else head end
+    Homebrew.git_head || "(none)"
   end
 
   def origin

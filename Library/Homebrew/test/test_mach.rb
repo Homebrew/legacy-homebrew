@@ -1,6 +1,6 @@
 require 'testing_env'
 
-class MachOPathnameTests < Test::Unit::TestCase
+class MachOPathnameTests < Homebrew::TestCase
   def dylib_path(name)
     Pathname.new("#{TEST_DIRECTORY}/mach/#{name}.dylib")
   end
@@ -11,106 +11,106 @@ class MachOPathnameTests < Test::Unit::TestCase
 
   def test_fat_dylib
     pn = dylib_path("fat")
-    assert pn.universal?
-    assert !pn.i386?
-    assert !pn.x86_64?
-    assert !pn.ppc7400?
-    assert !pn.ppc64?
-    assert pn.dylib?
-    assert !pn.mach_o_executable?
-    assert !pn.text_executable?
+    assert_predicate pn, :universal?
+    refute_predicate pn, :i386?
+    refute_predicate pn, :x86_64?
+    refute_predicate pn, :ppc7400?
+    refute_predicate pn, :ppc64?
+    assert_predicate pn, :dylib?
+    refute_predicate pn, :mach_o_executable?
+    refute_predicate pn, :text_executable?
     assert_equal :universal, pn.arch
   end
 
   def test_i386_dylib
     pn = dylib_path("i386")
-    assert !pn.universal?
-    assert pn.i386?
-    assert !pn.x86_64?
-    assert !pn.ppc7400?
-    assert !pn.ppc64?
-    assert pn.dylib?
-    assert !pn.mach_o_executable?
-    assert !pn.text_executable?
-    assert !pn.mach_o_bundle?
+    refute_predicate pn, :universal?
+    assert_predicate pn, :i386?
+    refute_predicate pn, :x86_64?
+    refute_predicate pn, :ppc7400?
+    refute_predicate pn, :ppc64?
+    assert_predicate pn, :dylib?
+    refute_predicate pn, :mach_o_executable?
+    refute_predicate pn, :text_executable?
+    refute_predicate pn, :mach_o_bundle?
   end
 
   def test_x86_64_dylib
     pn = dylib_path("x86_64")
-    assert !pn.universal?
-    assert !pn.i386?
-    assert pn.x86_64?
-    assert !pn.ppc7400?
-    assert !pn.ppc64?
-    assert pn.dylib?
-    assert !pn.mach_o_executable?
-    assert !pn.text_executable?
-    assert !pn.mach_o_bundle?
+    refute_predicate pn, :universal?
+    refute_predicate pn, :i386?
+    assert_predicate pn, :x86_64?
+    refute_predicate pn, :ppc7400?
+    refute_predicate pn, :ppc64?
+    assert_predicate pn, :dylib?
+    refute_predicate pn, :mach_o_executable?
+    refute_predicate pn, :text_executable?
+    refute_predicate pn, :mach_o_bundle?
   end
 
   def test_mach_o_executable
     pn = Pathname.new("#{TEST_DIRECTORY}/mach/a.out")
-    assert pn.universal?
-    assert !pn.i386?
-    assert !pn.x86_64?
-    assert !pn.ppc7400?
-    assert !pn.ppc64?
-    assert !pn.dylib?
-    assert pn.mach_o_executable?
-    assert !pn.text_executable?
-    assert !pn.mach_o_bundle?
+    assert_predicate pn, :universal?
+    refute_predicate pn, :i386?
+    refute_predicate pn, :x86_64?
+    refute_predicate pn, :ppc7400?
+    refute_predicate pn, :ppc64?
+    refute_predicate pn, :dylib?
+    assert_predicate pn, :mach_o_executable?
+    refute_predicate pn, :text_executable?
+    refute_predicate pn, :mach_o_bundle?
   end
 
   def test_fat_bundle
     pn = bundle_path("fat")
-    assert pn.universal?
-    assert !pn.i386?
-    assert !pn.x86_64?
-    assert !pn.ppc7400?
-    assert !pn.ppc64?
-    assert !pn.dylib?
-    assert !pn.mach_o_executable?
-    assert !pn.text_executable?
-    assert pn.mach_o_bundle?
+    assert_predicate pn, :universal?
+    refute_predicate pn, :i386?
+    refute_predicate pn, :x86_64?
+    refute_predicate pn, :ppc7400?
+    refute_predicate pn, :ppc64?
+    refute_predicate pn, :dylib?
+    refute_predicate pn, :mach_o_executable?
+    refute_predicate pn, :text_executable?
+    assert_predicate pn, :mach_o_bundle?
   end
 
   def test_i386_bundle
     pn = bundle_path("i386")
-    assert !pn.universal?
-    assert pn.i386?
-    assert !pn.x86_64?
-    assert !pn.ppc7400?
-    assert !pn.ppc64?
-    assert !pn.dylib?
-    assert !pn.mach_o_executable?
-    assert !pn.text_executable?
-    assert pn.mach_o_bundle?
+    refute_predicate pn, :universal?
+    assert_predicate pn, :i386?
+    refute_predicate pn, :x86_64?
+    refute_predicate pn, :ppc7400?
+    refute_predicate pn, :ppc64?
+    refute_predicate pn, :dylib?
+    refute_predicate pn, :mach_o_executable?
+    refute_predicate pn, :text_executable?
+    assert_predicate pn, :mach_o_bundle?
   end
 
   def test_x86_64_bundle
     pn = bundle_path("x86_64")
-    assert !pn.universal?
-    assert !pn.i386?
-    assert pn.x86_64?
-    assert !pn.ppc7400?
-    assert !pn.ppc64?
-    assert !pn.dylib?
-    assert !pn.mach_o_executable?
-    assert !pn.text_executable?
-    assert pn.mach_o_bundle?
+    refute_predicate pn, :universal?
+    refute_predicate pn, :i386?
+    assert_predicate pn, :x86_64?
+    refute_predicate pn, :ppc7400?
+    refute_predicate pn, :ppc64?
+    refute_predicate pn, :dylib?
+    refute_predicate pn, :mach_o_executable?
+    refute_predicate pn, :text_executable?
+    assert_predicate pn, :mach_o_bundle?
   end
 
   def test_non_mach_o
     pn = Pathname.new("#{TEST_DIRECTORY}/tarballs/testball-0.1.tbz")
-    assert !pn.universal?
-    assert !pn.i386?
-    assert !pn.x86_64?
-    assert !pn.ppc7400?
-    assert !pn.ppc64?
-    assert !pn.dylib?
-    assert !pn.mach_o_executable?
-    assert !pn.text_executable?
-    assert !pn.mach_o_bundle?
+    refute_predicate pn, :universal?
+    refute_predicate pn, :i386?
+    refute_predicate pn, :x86_64?
+    refute_predicate pn, :ppc7400?
+    refute_predicate pn, :ppc64?
+    refute_predicate pn, :dylib?
+    refute_predicate pn, :mach_o_executable?
+    refute_predicate pn, :text_executable?
+    refute_predicate pn, :mach_o_bundle?
     assert_equal :dunno, pn.arch
   end
 end
@@ -121,29 +121,29 @@ class ArchitectureListExtensionTests < MachOPathnameTests
   end
 
   def test_architecture_list_extension_universal_checks
-    assert @archs.universal?
-    assert @archs.intel_universal?
-    assert @archs.ppc_universal?
-    assert @archs.cross_universal?
-    assert @archs.fat?
+    assert_predicate @archs, :universal?
+    assert_predicate @archs, :intel_universal?
+    assert_predicate @archs, :ppc_universal?
+    assert_predicate @archs, :cross_universal?
+    assert_predicate @archs, :fat?
 
     non_universal = [:i386].extend ArchitectureListExtension
-    assert !non_universal.universal?
+    refute_predicate non_universal, :universal?
 
     intel_only = [:i386, :x86_64].extend ArchitectureListExtension
-    assert intel_only.universal?
-    assert !intel_only.ppc_universal?
-    assert !intel_only.cross_universal?
+    assert_predicate intel_only, :universal?
+    refute_predicate intel_only, :ppc_universal?
+    refute_predicate intel_only, :cross_universal?
 
     ppc_only = [:ppc970, :ppc64].extend ArchitectureListExtension
-    assert ppc_only.universal?
-    assert !ppc_only.intel_universal?
-    assert !ppc_only.cross_universal?
+    assert_predicate ppc_only, :universal?
+    refute_predicate ppc_only, :intel_universal?
+    refute_predicate ppc_only, :cross_universal?
 
     cross = [:ppc7400, :i386].extend ArchitectureListExtension
-    assert cross.universal?
-    assert !cross.intel_universal?
-    assert !cross.ppc_universal?
+    assert_predicate cross, :universal?
+    refute_predicate cross, :intel_universal?
+    refute_predicate cross, :ppc_universal?
   end
 
   def test_architecture_list_extension_massaging_flags
@@ -155,13 +155,13 @@ class ArchitectureListExtensionTests < MachOPathnameTests
 
   def test_architecture_list_arch_flags_methods
     pn = dylib_path("fat")
-    assert pn.archs.intel_universal?
+    assert_predicate pn.archs, :intel_universal?
     assert_equal "-arch x86_64 -arch i386", pn.archs.as_arch_flags
     assert_equal "x86_64;i386", pn.archs.as_cmake_arch_flags
   end
 end
 
-class TextExecutableTests < Test::Unit::TestCase
+class TextExecutableTests < Homebrew::TestCase
   attr_reader :pn
 
   def setup
@@ -174,42 +174,42 @@ class TextExecutableTests < Test::Unit::TestCase
 
   def test_simple_shebang
     pn.write '#!/bin/sh'
-    assert !pn.universal?
-    assert !pn.i386?
-    assert !pn.x86_64?
-    assert !pn.ppc7400?
-    assert !pn.ppc64?
-    assert !pn.dylib?
-    assert !pn.mach_o_executable?
-    assert pn.text_executable?
+    refute_predicate pn, :universal?
+    refute_predicate pn, :i386?
+    refute_predicate pn, :x86_64?
+    refute_predicate pn, :ppc7400?
+    refute_predicate pn, :ppc64?
+    refute_predicate pn, :dylib?
+    refute_predicate pn, :mach_o_executable?
+    assert_predicate pn, :text_executable?
     assert_equal [], pn.archs
     assert_equal :dunno, pn.arch
   end
 
   def test_shebang_with_options
     pn.write '#! /usr/bin/perl -w'
-    assert !pn.universal?
-    assert !pn.i386?
-    assert !pn.x86_64?
-    assert !pn.ppc7400?
-    assert !pn.ppc64?
-    assert !pn.dylib?
-    assert !pn.mach_o_executable?
-    assert pn.text_executable?
+    refute_predicate pn, :universal?
+    refute_predicate pn, :i386?
+    refute_predicate pn, :x86_64?
+    refute_predicate pn, :ppc7400?
+    refute_predicate pn, :ppc64?
+    refute_predicate pn, :dylib?
+    refute_predicate pn, :mach_o_executable?
+    assert_predicate pn, :text_executable?
     assert_equal [], pn.archs
     assert_equal :dunno, pn.arch
   end
 
   def test_malformed_shebang
     pn.write ' #!'
-    assert !pn.universal?
-    assert !pn.i386?
-    assert !pn.x86_64?
-    assert !pn.ppc7400?
-    assert !pn.ppc64?
-    assert !pn.dylib?
-    assert !pn.mach_o_executable?
-    assert !pn.text_executable?
+    refute_predicate pn, :universal?
+    refute_predicate pn, :i386?
+    refute_predicate pn, :x86_64?
+    refute_predicate pn, :ppc7400?
+    refute_predicate pn, :ppc64?
+    refute_predicate pn, :dylib?
+    refute_predicate pn, :mach_o_executable?
+    refute_predicate pn, :text_executable?
     assert_equal [], pn.archs
     assert_equal :dunno, pn.arch
   end
