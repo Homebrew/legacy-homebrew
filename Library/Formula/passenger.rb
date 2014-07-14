@@ -2,8 +2,8 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.45.tar.gz'
-  sha1 '51dc7f0b01c16fa61d16db894aa61cce9c1b074e'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.46.tar.gz'
+  sha1 '285ff151267c270ef1c85675186d0caeb61b9133'
   head 'https://github.com/phusion/passenger.git'
 
   bottle do
@@ -19,7 +19,7 @@ class Passenger < Formula
     rake "nginx"
     rake "webhelper"
 
-    necessary_files = Dir["configure", "Rakefile", "README.md", "CONTRIBUTORS",
+    necessary_files = Dir[".editorconfig", "configure", "Rakefile", "README.md", "CONTRIBUTORS",
       "CONTRIBUTING.md", "LICENSE", "CHANGELOG", "INSTALL.md",
       "passenger.gemspec", "build", "lib", "node_lib", "bin", "doc", "man",
       "helper-scripts", "ext", "resources", "buildout"]
