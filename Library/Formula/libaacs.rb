@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Libaacs < Formula
-  homepage 'http://www.videolan.org/developers/libaacs.html'
-  url 'ftp://ftp.videolan.org/pub/videolan/libaacs/0.7.0/libaacs-0.7.0.tar.bz2'
-  sha1 '461c0a6f143519cd6b24bf4be5e2672219b44780'
-  revision 1
+  homepage "https://www.videolan.org/developers/libaacs.html"
+  url "ftp://ftp.videolan.org/pub/videolan/libaacs/0.7.1/libaacs-0.7.1.tar.bz2"
+  mirror "http://videolan-nyc.defaultroute.com/libaacs/0.7.1/libaacs-0.7.1.tar.bz2"
+  sha1 "09eb61bcfceca77cd779c4475093dd22a0cb5510"
 
   bottle do
     cellar :any
@@ -14,18 +14,18 @@ class Libaacs < Formula
   end
 
   head do
-    url 'git://git.videolan.org/libaacs.git'
+    url "git://git.videolan.org/libaacs.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  depends_on 'bison' => :build
-  depends_on 'libgcrypt'
+  depends_on "bison" => :build
+  depends_on "libgcrypt"
 
   def install
-    system './bootstrap' if build.head?
+    system "./bootstrap" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
