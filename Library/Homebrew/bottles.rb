@@ -5,7 +5,8 @@ require 'bottle_version'
 
 def bottle_filename options={}
   options = { :tag => bottle_tag }.merge(options)
-  "#{options[:name]}-#{options[:version]}#{bottle_native_suffix(options)}"
+  suffix = ".#{options[:tag]}#{bottle_suffix(options[:revision])}"
+  "#{options[:name]}-#{options[:version]}#{suffix}"
 end
 
 def built_as_bottle? f
@@ -22,11 +23,6 @@ def bottle_file_outdated? f, file
   bottle_url_ext = f.bottle.url[bottle_native_regex, 1]
 
   bottle_ext && bottle_url_ext && bottle_ext != bottle_url_ext
-end
-
-def bottle_native_suffix options={}
-  options = { :tag => bottle_tag }.merge(options)
-  ".#{options[:tag]}#{bottle_suffix(options[:revision])}"
 end
 
 def bottle_suffix revision=nil
