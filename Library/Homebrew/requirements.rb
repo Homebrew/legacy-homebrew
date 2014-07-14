@@ -98,3 +98,22 @@ class GitDependency < Requirement
   default_formula 'git'
   satisfy { !!which('git') }
 end
+
+class JavaDependency < Requirement
+  fatal true
+
+  satisfy :build_env => false do
+    system "/usr/libexec/java_home", "-v", "1.7+"
+  end
+
+  def message; <<-EOS.undent
+    Couldn't locate JDK, here is how to fix it:
+
+      1. Download and install the latest JDK from http://www.oracle.com/technetwork/java/javase/downloads/index.html
+      2. Verify that it has been installed by running `/usr/libexec/java_home -v 1.7+`
+      3. Re-run `brew install <your formula>`
+
+    EOS
+  end
+end
+
