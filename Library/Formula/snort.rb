@@ -2,7 +2,7 @@ require 'formula'
 
 class Snort < Formula
   homepage 'http://www.snort.org'
-  url 'http://www.snort.org/dl/snort-current/snort-2.9.6.1.tar.gz'
+  url 'http://www.snort.org/downloads/snort/snort-2.9.6.1.tar.gz'
   sha1 '49da9b989fa59114a6e533b26383cb1a7df9b717'
 
   depends_on 'daq'
