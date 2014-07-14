@@ -6,6 +6,12 @@ class Libressl < Formula
   mirror "http://mirrors.nycbug.org/pub/OpenBSD/LibreSSL/libressl-2.0.1.tar.gz"
   sha256 "9596f6cb3e8bafe35d749dfbdb6c984f1bbd86233598eb5fdb4abf854a5792ba"
 
+  bottle do
+    sha1 "e8bcd127c027227d2ea5f1fef2172187d957706e" => :mavericks
+    sha1 "98717ba0aba142be6aaf079d84b6e011dd0424c8" => :mountain_lion
+    sha1 "ab6912d5fb3696797ff6178a286896e1a9a252d2" => :lion
+  end
+
   head do
     url "https://github.com/libressl-portable/portable.git"
     depends_on "automake" => :build
