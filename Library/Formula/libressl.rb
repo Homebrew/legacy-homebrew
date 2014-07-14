@@ -6,9 +6,18 @@ class Libressl < Formula
   mirror "http://mirrors.nycbug.org/pub/OpenBSD/LibreSSL/libressl-2.0.1.tar.gz"
   sha256 "9596f6cb3e8bafe35d749dfbdb6c984f1bbd86233598eb5fdb4abf854a5792ba"
 
+  head do
+    url "https://github.com/libressl-portable/portable.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
+
   keg_only "LibreSSL is not linked to prevent conflicts with the system OpenSSL."
 
   def install
+    system "./autogen.sh" if build.head?
+
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
