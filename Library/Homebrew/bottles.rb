@@ -25,8 +25,8 @@ def bottle_file_outdated? f, file
   bottle_ext && bottle_url_ext && bottle_ext != bottle_url_ext
 end
 
-def bottle_suffix revision=nil
-  revision = revision.to_i > 0 ? ".#{revision}" : ""
+def bottle_suffix revision
+  revision = revision > 0 ? ".#{revision}" : ""
   ".bottle#{revision}.tar.gz"
 end
 
