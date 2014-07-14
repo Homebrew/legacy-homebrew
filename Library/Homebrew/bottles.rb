@@ -34,7 +34,7 @@ def bottle_native_regex
   /(\.#{bottle_tag}\.bottle\.(\d+\.)?tar\.gz)$/o
 end
 
-def bottle_url(root_url, filename_options={})
+def bottle_url(root_url, filename_options)
   "#{root_url}/#{bottle_filename(filename_options)}"
 end
 
