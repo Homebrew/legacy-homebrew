@@ -2,19 +2,18 @@ require "formula"
 
 class Libressl < Formula
   homepage "http://www.libressl.org/"
-  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.0.0.tar.gz"
-  sha1 "c078e98f86bb37dca8340ab17bc1efd8620c3286"
+  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.0.1.tar.gz"
+  mirror "http://mirrors.nycbug.org/pub/OpenBSD/LibreSSL/libressl-2.0.1.tar.gz"
+  sha256 "9596f6cb3e8bafe35d749dfbdb6c984f1bbd86233598eb5fdb4abf854a5792ba"
 
-  keg_only "LibreSSL is not linked to prevent conflicts with OS X's OpenSSL."
+  keg_only "LibreSSL is not linked to prevent conflicts with the system OpenSSL."
 
   def install
-    # fix configuration file directory
-    inreplace "include/openssl/opensslconf.h",
-      "/etc/ssl", "#{etc}/libressl"
-
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-openssldir=#{etc}/libressl",
+                          "--with-enginesdir=#{lib}/engines"
 
     system "make"
     system "make", "check"
