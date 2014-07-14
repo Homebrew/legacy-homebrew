@@ -196,15 +196,12 @@ module SharedEnvExtension
     gcc_name = "gcc-#{version}"
     gcc_version_name = "gcc#{version.delete('.')}"
 
-    ivar = "@#{gcc_version_name}_version"
-    return instance_variable_get(ivar) if instance_variable_defined?(ivar)
-
     gcc_path = HOMEBREW_PREFIX.join "opt/gcc/bin/#{gcc_name}"
     gcc_formula = Formulary.factory "gcc"
     gcc_versions_path = \
       HOMEBREW_PREFIX.join "opt/#{gcc_version_name}/bin/#{gcc_name}"
 
-    formula = if gcc_path.exist?
+    if gcc_path.exist?
       gcc_formula
     elsif gcc_versions_path.exist?
       Formulary.factory gcc_version_name
@@ -215,8 +212,6 @@ module SharedEnvExtension
     else
       gcc_formula
     end
-
-    instance_variable_set(ivar, formula)
   end
 
   def warn_about_non_apple_gcc(gcc)

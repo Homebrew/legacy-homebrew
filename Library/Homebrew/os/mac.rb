@@ -121,16 +121,12 @@ module OS
     end
 
     def non_apple_gcc_version(cc)
-      path = HOMEBREW_PREFIX.join("opt/gcc/bin/#{cc}")
-      path = nil unless path.exist?
-
-      return unless path ||= locate(cc)
-
-      ivar = "@#{cc.gsub(/(-|\.)/, '')}_version"
-      return instance_variable_get(ivar) if instance_variable_defined?(ivar)
-
-      `#{path} --version` =~ /gcc(-\d\.\d \(.+\))? (\d\.\d\.\d)/
-      instance_variable_set(ivar, $2)
+      (@non_apple_gcc_version ||= {}).fetch(cc) do
+        path = HOMEBREW_PREFIX.join("opt", "gcc", "bin", cc)
+        path = locate(cc) unless path.exist?
+        version = %x{#{path} --version}[/gcc(?:-\d\.\d \(.+\))? (\d\.\d\.\d)/, 1] if path
+        @non_apple_gcc_version[cc] = version
+      end
     end
 
     # See these issues for some history:

@@ -199,4 +199,38 @@ class LinkTests < Homebrew::TestCase
     @dst.delete
     assert_equal 3, @keg.unlink
   end
+
+  def test_pkgconfig_is_mkpathed
+    link = HOMEBREW_PREFIX.join("lib", "pkgconfig")
+    @keg.join("lib", "pkgconfig").mkpath
+    @keg.link
+    assert_predicate link.lstat, :directory?
+  end
+
+  def test_symlinks_are_linked_directly
+    link = HOMEBREW_PREFIX.join("lib", "pkgconfig")
+
+    @keg.join("lib", "example").mkpath
+    @keg.join("lib", "pkgconfig").make_symlink "example"
+    @keg.link
+
+    assert_predicate link.resolved_path, :symlink?
+    assert_predicate link.lstat, :symlink?
+  end
+
+  def test_links_to_symlinks_are_not_removed
+    a = HOMEBREW_CELLAR.join("a", "1.0")
+    b = HOMEBREW_CELLAR.join("b", "1.0")
+
+    a.join("lib", "example").mkpath
+    a.join("lib", "example2").make_symlink "example"
+    b.join("lib", "example2").mkpath
+
+    Keg.new(a).link
+
+    lib = HOMEBREW_PREFIX.join("lib")
+    assert_equal 2, lib.children.length
+    assert_raises(Keg::ConflictError) { Keg.new(b).link }
+    assert_equal 2, lib.children.length
+  end
 end

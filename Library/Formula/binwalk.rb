@@ -19,8 +19,8 @@ class Binwalk < Formula
     depends_on "autoconf" => :build
 
     patch do
-      url "https://gist.github.com/balr0g/96445b5ecf22ddf0a54c/raw/e0e6b5de56d8cb1dbc2a6b93cd724d051f98317a/binwalk-head-201140711-c.patch"
-      sha1 "2ecf8bcc72189a433715adabd825b7933a2b321e"
+      url "https://gist.github.com/balr0g/a917b31318016c63a72d/raw/d434c3ceaa57438d39344e760990e9268893ce5f/binwalk-head-201140712.patch"
+      sha1 "2e000654968d2c8ad17b7fc46924300cf01bbfed"
     end
   end
 
