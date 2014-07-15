@@ -4,8 +4,11 @@ require 'extend/ARGV'
 require 'bottle_version'
 
 def bottle_filename options={}
-  suffix = ".#{options[:tag]}#{bottle_suffix(options[:revision])}"
-  "#{options[:name]}-#{options[:version]}#{suffix}"
+  name     = options.fetch(:name)
+  version  = options.fetch(:version)
+  tag      = options.fetch(:tag)
+  revision = options.fetch(:revision)
+  "#{name}-#{version}.#{tag}#{bottle_suffix(revision)}"
 end
 
 def built_as_bottle? f
