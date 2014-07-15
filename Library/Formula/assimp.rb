@@ -9,10 +9,19 @@ class Assimp < Formula
   head 'https://github.com/assimp/assimp.git'
 
   depends_on 'cmake' => :build
-  depends_on 'boost'
+  unless build.without? 'boost'
+    depends_on 'boost'
+    boost_state = "OFF"
+  else
+    boost_state = "ON"
+  end
+  depends_on 'minizip' => :recommended
+  depends_on 'libzzip' => :recommended
+
+  
 
   def install
-    system "cmake", ".", *std_cmake_args
+    system "cmake", ".", "-DASSIMP_ENABLE_BOOST_WORKAROUND="+boost_state, *std_cmake_args
     system "make install"
   end
 end
