@@ -2,8 +2,8 @@ require 'formula'
 
 class Pyqt < Formula
   homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  url 'https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.10.4/PyQt-mac-gpl-4.10.4.tar.gz'
-  sha1 'ef3bb2a05a5c8c3ab7578a0991ef5a4e17c314c0'
+  url 'https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.1/PyQt-mac-gpl-4.11.1.tar.gz'
+  sha1 '9d7478758957c60ac5007144a0dc7f157f4a5836'
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
@@ -19,14 +19,6 @@ class Pyqt < Formula
   else
     depends_on "sip"
   end
-
-  # On Mavericks we want to target libc++, but this requires a user specified
-  # qmake makespec. Unfortunately user specified makespecs are broken in the
-  # configure.py script, so we have to fix the makespec path handling logic.
-  # Also qmake spec macro parsing does not properly handle inline comments,
-  # which can result in ignored build flags when they are concatenated together.
-  # Changes proposed upstream: http://www.riverbankcomputing.com/pipermail/pyqt/2013-December/033537.html
-  patch :DATA
 
   def install
     # On Mavericks we want to target libc++, this requires a non default qt makespec
@@ -94,29 +86,3 @@ class Pyqt < Formula
     end
   end
 end
-__END__
-diff --git a/configure.py b/configure.py
-index a8e5dcd..a5f1474 100644
---- a/configure.py
-+++ b/configure.py
-@@ -1886,7 +1886,7 @@ def get_build_macros(overrides):
-     if "QMAKESPEC" in list(os.environ.keys()):
-         fname = os.environ["QMAKESPEC"]
-
--        if not os.path.dirname(fname):
-+        if not os.path.dirname(fname) or fname.startswith('unsupported'):
-             qt_macx_spec = fname
-             fname = os.path.join(qt_archdatadir, "mkspecs", fname)
-     elif sys.platform == "darwin":
-@@ -1934,6 +1934,11 @@ def get_build_macros(overrides):
-     if macros is None:
-         return None
-
-+    # QMake macros may contain comments on the same line so we need to remove them
-+    for macro, value in macros.iteritems():
-+        if "#" in value:
-+            macros[macro] = value.split("#", 1)[0]
-+
-     # Qt5 doesn't seem to support the specific macros so add them if they are
-     # missing.
-     if macros.get("INCDIR_QT", "") == "":
