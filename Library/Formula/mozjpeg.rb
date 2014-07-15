@@ -2,8 +2,8 @@ require "formula"
 
 class Mozjpeg < Formula
   homepage "https://github.com/mozilla/mozjpeg"
-  url "https://github.com/mozilla/mozjpeg/archive/v1.0.1.tar.gz"
-  sha1 "daa28d6396a66d04b92fad223b763dd306d68bd9"
+  url "https://github.com/mozilla/mozjpeg/archive/v2.0.1.tar.gz"
+  sha1 "466d570f85ae5296eaedf89de26a5dbe6db78407"
 
   head "https://github.com/mozilla/mozjpeg.git"
 
