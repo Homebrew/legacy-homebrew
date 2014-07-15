@@ -489,7 +489,7 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
 
   ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
   ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
-  safe_system "brew", "bottle", "--merge", "--write", *Dir["*.bottle*.rb"]
+  safe_system "brew", "bottle", "--merge", "--write", *Dir["*.bottle.rb"]
 
   remote = "git@github.com:BrewTestBot/homebrew.git"
   tag = pr ? "pr-#{pr}" : "testing-#{number}"
