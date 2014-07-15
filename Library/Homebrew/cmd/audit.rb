@@ -36,6 +36,39 @@ module Homebrew
   end
 end
 
+module HomebrewClone
+  def audit
+    formula_count = 0
+    problem_count = 0
+
+    ENV.activate_extensions!
+    ENV.setup_build_environment
+
+    ff = if ARGV.named.empty?
+      Formula
+    else
+      ARGV.formulae
+    end
+
+    ff.each do |f|
+      fa = FormulaAuditor.new f
+      fa.audit
+
+      unless fa.problems.empty?
+        puts "#{f.name}:"
+        fa.problems.each { |p| puts " * #{p}" }
+        puts
+        formula_count += 1
+        problem_count += fa.problems.size
+      end
+    end
+
+    unless problem_count.zero?
+      ofail "#{problem_count} problems in #{formula_count} formulae"
+    end
+  end
+end
+
 class Module
   def redefine_const(name, value)
     __send__(:remove_const, name) if const_defined?(name)
