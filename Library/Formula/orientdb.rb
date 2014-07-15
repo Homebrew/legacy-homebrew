@@ -11,7 +11,7 @@ class Orientdb < Formula
     url "https://gist.githubusercontent.com/maggiolo00/84835e0b82a94fe9970a/raw/1ed577806db4411fd8b24cd90e516580218b2d53/orientdbsh"
     sha1 "280284f3a8b6e280e46078b746f8250aa5648979"
   end
-  
+
   def install
     rm_rf Dir['{bin,benchmarks}/*.{bat,exe}']
 
