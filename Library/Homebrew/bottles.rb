@@ -4,7 +4,6 @@ require 'extend/ARGV'
 require 'bottle_version'
 
 def bottle_filename options={}
-  options = { :tag => bottle_tag }.merge(options)
   suffix = ".#{options[:tag]}#{bottle_suffix(options[:revision])}"
   "#{options[:name]}-#{options[:version]}#{suffix}"
 end
