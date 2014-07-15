@@ -27,7 +27,18 @@ class Gcc < Formula
   sha1 "da0a2b9ec074f2bf624a34f3507f812ebb6e4dce"
   revision 1
 
-  head "svn://gcc.gnu.org/svn/gcc/branches/gcc-4_8-branch"
+  head do
+    url "git://gcc.gnu.org/git/gcc.git", :branch => "trunk"
+
+  # Patch to fix gcc so it compiles on Yosemite.
+  # See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61407
+    if MacOS.version == :yosemite
+      patch do
+        url "https://gcc.gnu.org/bugzilla/attachment.cgi?id=32949"
+        sha1 "1d567683f67d58b23fc26ceeb33d5153c665dc8a"
+      end
+    end
+  end
 
   bottle do
     sha1 "0e4040eb5a667ecacba2b7e7c71a7a868a593386" => :mavericks
