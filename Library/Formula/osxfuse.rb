@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Osxfuse < Formula
-  homepage 'http://osxfuse.github.io'
-  url 'https://github.com/osxfuse/osxfuse.git', :tag => 'osxfuse-2.6.4'
+  homepage "http://osxfuse.github.io"
+  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.6.4"
 
-  head 'https://github.com/osxfuse/osxfuse.git', :branch => 'osxfuse-2'
+  head "https://github.com/osxfuse/osxfuse.git", :branch => "osxfuse-2"
 
   bottle do
     sha1 "e661cd54c9dfa9efb383ad283456ae1afe210329" => :mavericks
@@ -19,7 +19,7 @@ class Osxfuse < Formula
   depends_on "libtool" => :build
   depends_on "gettext" => :build
 
-  conflicts_with 'fuse4x', :because => 'both install `fuse.pc`'
+  conflicts_with "fuse4x", :because => "both install `fuse.pc`"
 
   def install
     # Do not override Xcode build settings
