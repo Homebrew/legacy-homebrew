@@ -15,8 +15,8 @@ class Assimp < Formula
   else
     boost_state = "ON"
   end
-  depends_on 'minizip' => :optional
-  depends_on 'libzzip' => :optional
+  depends_on 'minizip' => :recommended
+  depends_on 'libzzip' => :recommended
 
   
 
