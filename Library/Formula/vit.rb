@@ -5,6 +5,7 @@ class Vit < Formula
   head "https://git.tasktools.org/scm/ex/vit.git"
   url "http://taskwarrior.org/download/vit-1.2.tar.gz"
   sha1 "46ed3f9ff81112a2e28675720616568098a69cfa"
+  revision 1
 
   depends_on "task"
 
@@ -28,7 +29,9 @@ class Vit < Formula
     bin.install "vit"
     man1.install "vit.1"
     man5.install "vitrc.5"
-    etc.install "commands" => "vit-commands"
+    # vit-commands needs to be installed in the keg because that's where vit
+    # will look for it.
+    (prefix+"etc").install "commands" => "vit-commands"
     bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
   end
 end
