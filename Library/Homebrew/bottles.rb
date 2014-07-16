@@ -68,18 +68,23 @@ class BottleCollector
     @bottles = {}
   end
 
-  def add(checksum, tag)
-    @bottles[tag] = checksum
-  end
-
   def fetch_bottle_for(tag)
     return [@bottles[tag], tag] if @bottles[tag]
 
     find_altivec_tag(tag) || find_or_later_tag(tag)
   end
 
-  def keys; @bottles.keys; end
-  def [](arg); @bottles[arg]; end
+  def keys
+    @bottles.keys
+  end
+
+  def [](key)
+    @bottles[key]
+  end
+
+  def []=(key, value)
+    @bottles[key] = value
+  end
 
   # This allows generic Altivec PPC bottles to be supported in some
   # formulae, while also allowing specific bottles in others; e.g.,
