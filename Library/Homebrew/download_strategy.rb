@@ -1,5 +1,4 @@
 require 'utils/json'
-require 'erb'
 
 class AbstractDownloadStrategy
   attr_reader :name, :resource
@@ -53,11 +52,7 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   end
 
   def cache_filename(tag=cache_tag)
-    if name.empty? || name == '__UNKNOWN__'
-      "#{ERB::Util.url_encode(@url)}--#{tag}"
-    else
-      "#{name}--#{tag}"
-    end
+    "#{name}--#{tag}"
   end
 
   def cache_tag
@@ -79,11 +74,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def tarball_path
-    @tarball_path ||= if name.empty? || name == '__UNKNOWN__'
-      Pathname.new("#{HOMEBREW_CACHE}/#{basename_without_params}")
-    else
-      Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{resource.version}#{ext}")
-    end
+    @tarball_path ||= Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{resource.version}#{ext}")
   end
 
   def temporary_path

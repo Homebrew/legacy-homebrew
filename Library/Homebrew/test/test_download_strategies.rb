@@ -50,16 +50,6 @@ class VCSDownloadStrategyTests < Homebrew::TestCase
     downloader = @strategy.new("baz", @resource)
     assert_equal "baz--foo", downloader.cache_filename("foo")
   end
-
-  def test_empty_name
-    downloader = @strategy.new("", @resource)
-    assert_equal escaped("foo"), downloader.cache_filename("foo")
-  end
-
-  def test_unknown_name
-    downloader = @strategy.new("__UNKNOWN__", @resource)
-    assert_equal escaped("foo"), downloader.cache_filename("foo")
-  end
 end
 
 class DownloadStrategyDetectorTests < Homebrew::TestCase
