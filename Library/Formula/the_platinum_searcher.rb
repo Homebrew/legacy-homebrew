@@ -32,8 +32,7 @@ class ThePlatinumSearcher < Formula
 
   test do
     path = testpath/"hello_world.txt"
-    data = "Hello World!"
-    path.open("wb") { |f| f.write data}
+    path.write "Hello World!"
 
     lines = `#{bin}/pt 'Hello World!' #{path}`.strip.split(":")
     assert_equal "Hello World!", lines[2]
