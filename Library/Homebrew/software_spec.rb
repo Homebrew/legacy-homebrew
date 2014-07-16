@@ -164,7 +164,7 @@ class BottleSpecification
   end
 
   def tag?(tag)
-    !!collector.fetch_bottle_for(tag)
+    !!checksum_for(tag)
   end
 
   # Checksum methods in the DSL's bottle block optionally take
@@ -177,7 +177,7 @@ class BottleSpecification
   end
 
   def checksum_for(tag)
-    collector.fetch_bottle_for(tag)
+    collector.fetch_checksum_for(tag)
   end
 
   def checksums

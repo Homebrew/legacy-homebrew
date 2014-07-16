@@ -68,7 +68,7 @@ class BottleCollector
     @bottles = {}
   end
 
-  def fetch_bottle_for(tag)
+  def fetch_checksum_for(tag)
     return [@bottles[tag], tag] if @bottles[tag]
 
     find_altivec_tag(tag) || find_or_later_tag(tag)
