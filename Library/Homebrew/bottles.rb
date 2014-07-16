@@ -69,8 +69,7 @@ class BottleCollector
   end
 
   def fetch_checksum_for(tag)
-    return [@checksums[tag], tag] if key?(tag)
-
+    return self[tag], tag if key?(tag)
     find_altivec_tag(tag) || find_or_later_tag(tag)
   end
 
@@ -99,7 +98,7 @@ class BottleCollector
   def find_altivec_tag(tag)
     if tag.to_s =~ /(\w+)_(g4|g4e|g5)$/
       altivec_tag = "#{$1}_altivec".to_sym
-      return [@checksums[altivec_tag], altivec_tag] if key?(altivec_tag)
+      return self[altivec_tag], altivec_tag if key?(altivec_tag)
     end
   end
 
