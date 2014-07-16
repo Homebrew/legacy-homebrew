@@ -2,14 +2,14 @@ require 'formula'
 
 class Haproxy < Formula
   homepage 'http://haproxy.1wt.eu'
-  url 'http://www.haproxy.org/download/1.5/src/haproxy-1.5.0.tar.gz'
-  sha1 'dc957d93871e4543d1850a144543bcaa26df37a0'
+  url 'http://www.haproxy.org/download/1.5/src/haproxy-1.5.1.tar.gz'
+  sha1 'ad51666a79ed8a4550274173d01fe6f6c606a109'
 
   bottle do
     cellar :any
-    sha1 "22967377181e7ead7e4a933be2744d7af697823e" => :mavericks
-    sha1 "2092512c8b99f7165cb7207059626bda6d966259" => :mountain_lion
-    sha1 "a99d9d7d867fd97df7b75b338b995d7be69fd8d1" => :lion
+    sha1 "580ff887d5a02173504db0b3ebe89762c4e7d81f" => :mavericks
+    sha1 "e259ea47ddb5bb782025cc087892053998dc0f2e" => :mountain_lion
+    sha1 "3c6d106a68a731563a9fade671f21bd27d939f33" => :lion
   end
 
   depends_on 'pcre'

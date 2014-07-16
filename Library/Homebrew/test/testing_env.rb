@@ -125,16 +125,18 @@ module Homebrew
     end
 
     def shutup
-      err = $stderr.clone
-      out = $stdout.clone
+      err = $stderr.dup
+      out = $stdout.dup
 
       begin
-        $stderr.reopen("/dev/null", "w")
-        $stdout.reopen("/dev/null", "w")
+        $stderr.reopen("/dev/null")
+        $stdout.reopen("/dev/null")
         yield
       ensure
         $stderr.reopen(err)
         $stdout.reopen(out)
+        err.close
+        out.close
       end
     end
 

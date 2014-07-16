@@ -58,14 +58,6 @@ class FormulaInstaller
     return true if f.local_bottle_path
     return false unless f.bottle && f.pour_bottle?
 
-    f.requirements.each do |req|
-      next if req.optional? || req.pour_bottle?
-      if install_bottle_options[:warn]
-        ohai "Building source; bottle blocked by #{req} requirement"
-      end
-      return false
-    end
-
     unless f.bottle.compatible_cellar?
       if install_bottle_options[:warn]
         opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}"
@@ -247,6 +239,13 @@ class FormulaInstaller
     raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
   end
 
+  def install_requirement_default_formula?(req)
+    return false unless req.default_formula?
+    return false if req.optional?
+    return true unless req.satisfied?
+    pour_bottle? || build_bottle?
+  end
+
   def expand_requirements
     unsatisfied_reqs = Hash.new { |h, k| h[k] = [] }
     deps = []
@@ -263,12 +262,12 @@ class FormulaInstaller
           Requirement.prune
         elsif req.build? && dependent != f && install_bottle_for_dep?(dependent, build)
           Requirement.prune
-        elsif req.satisfied?
-          Requirement.prune
-        elsif req.default_formula?
+        elsif install_requirement_default_formula?(req)
           dep = req.to_dependency
           deps.unshift(dep)
           formulae.unshift(dep.to_formula)
+          Requirement.prune
+        elsif req.satisfied?
           Requirement.prune
         else
           unsatisfied_reqs[dependent] << req

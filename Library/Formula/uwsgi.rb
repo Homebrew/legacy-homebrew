@@ -2,14 +2,13 @@ require 'formula'
 
 class Uwsgi < Formula
   homepage "http://projects.unbit.it/uwsgi/"
-  url "http://projects.unbit.it/downloads/uwsgi-2.0.5.1.tar.gz"
-  sha1 "67244683a76a7ce88f244ef8044ecf32bf3b8d41"
+  url "http://projects.unbit.it/downloads/uwsgi-2.0.6.tar.gz"
+  sha1 "5e0fc187ea10366153a1f800c0e7e80940188837"
 
   bottle do
-    revision 1
-    sha1 "f29ce8d64c067bffb06c61508ada6fcec4b8ac4b" => :mavericks
-    sha1 "2cbe8ba97f52400dedd48ba14cdeb9e0b7a00f68" => :mountain_lion
-    sha1 "f2d33b294b405840c3b687edec85e10dc56d5b13" => :lion
+    sha1 "cccf498414d3120ca439ab1ed32c4ed1e04b573b" => :mavericks
+    sha1 "6ce7c6a0434b133d3f6efba72783650b34f13e2b" => :mountain_lion
+    sha1 "33678570960fa45d5e2a7017bfa1ad67f9dedeb3" => :lion
   end
 
   depends_on "pcre"
@@ -29,6 +28,7 @@ class Uwsgi < Formula
   depends_on "nagios" => :optional
   depends_on "postgresql" => :optional
   depends_on "pypy" => :optional
+  depends_on "python" => :optional
   depends_on "python3" => :optional
   depends_on "rrdtool" => :optional
   depends_on "rsyslog" => :optional

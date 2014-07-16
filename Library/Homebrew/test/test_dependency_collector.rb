@@ -128,7 +128,7 @@ class DependencyCollectorTests < Homebrew::TestCase
 
   def test_resource_dep_raises_for_unknown_classes
     resource = Resource.new
-    resource.url "foo", :using => Class.new
+    resource.download_strategy = Class.new
     assert_raises(TypeError) { @d.add(resource) }
   end
 end

@@ -3,6 +3,7 @@ require 'exceptions'
 require 'os/mac'
 require 'utils/json'
 require 'utils/inreplace'
+require 'utils/popen'
 require 'open-uri'
 
 class Tty
@@ -182,9 +183,9 @@ def puts_columns items, star_items=[]
 end
 
 def which cmd, path=ENV['PATH']
-  path.split(File::PATH_SEPARATOR).find do |p|
-    pcmd = File.join(p, cmd)
-    return Pathname.new(pcmd) if File.executable?(pcmd) && !File.directory?(pcmd)
+  path.split(File::PATH_SEPARATOR).each do |p|
+    pcmd = File.expand_path(cmd, p)
+    return Pathname.new(pcmd) if File.file?(pcmd) && File.executable?(pcmd)
   end
   return nil
 end
@@ -248,12 +249,12 @@ def nostdout
     yield
   else
     begin
-      require 'stringio'
-      real_stdout = $stdout
-      $stdout = StringIO.new
+      out = $stdout.dup
+      $stdout.reopen("/dev/null")
       yield
     ensure
-      $stdout = real_stdout
+      $stdout.reopen(out)
+      out.close
     end
   end
 end

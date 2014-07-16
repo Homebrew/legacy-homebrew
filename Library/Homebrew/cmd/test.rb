@@ -9,14 +9,19 @@ module Homebrew
       gem "minitest", "< 5.0.0"
     rescue Gem::LoadError
       require "test/unit/assertions"
-      FailedAssertion = Test::Unit::AssertionFailedError
     else
       require "minitest/unit"
       require "test/unit/assertions"
-      FailedAssertion = MiniTest::Assertion
     end
   else
     require "test/unit/assertions"
+  end
+
+  if defined?(MiniTest::Assertion)
+    FailedAssertion = MiniTest::Assertion
+  elsif defined?(Minitest::Assertion)
+    FailedAssertion = Minitest::Assertion
+  else
     FailedAssertion = Test::Unit::AssertionFailedError
   end
 

@@ -12,8 +12,8 @@ class Mongodb < Formula
   end
 
   devel do
-    url "http://downloads.mongodb.org/src/mongodb-src-r2.7.2.tar.gz"
-    sha1 "17cf0970460db72a38b2465936da300fcd5eb917"
+    url "http://downloads.mongodb.org/src/mongodb-src-r2.7.3.tar.gz"
+    sha1 "53f832b31b49063a60100bbe1be65015efcd3ccf"
   end
 
   head "https://github.com/mongodb/mongo.git"

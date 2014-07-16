@@ -104,7 +104,7 @@ class Options
   end
 
   def concat(o)
-    o.each { |opt| @options << opt }
+    @options.merge(o)
     self
   end
 

@@ -172,7 +172,7 @@ class BottleSpecification
   Checksum::TYPES.each do |cksum|
     define_method(cksum) do |val|
       digest, tag = val.shift
-      collector.add(Checksum.new(cksum, digest), tag)
+      collector[tag] = Checksum.new(cksum, digest)
     end
   end
 

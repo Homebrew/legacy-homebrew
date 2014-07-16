@@ -3,17 +3,14 @@ require 'extend/pathname'
 module Homebrew
   def which_versions which_brews=nil
     opoo <<-EOS.undent
-      brew-which is unsupported and may be removed soon.
+      brew which is unsupported and will be removed soon.
 
-      To see which versions are installed:
-        brew list --versions
-
-      To query formula information see:
+      You should use `brew list --versions` instead.
+      To query other formula information see:
         https://github.com/Homebrew/homebrew/wiki/Querying-Brew
 
-      For other uses please send a message to the mailing list describing
-      your use of this command, so a suggestion can be recommended or
-      implemented.
+      Please feel free volunteer to support it in a tap.
+
     EOS
 
     brew_links = Array.new
