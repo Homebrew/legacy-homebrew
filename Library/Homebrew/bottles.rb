@@ -69,7 +69,7 @@ class BottleCollector
   end
 
   def fetch_checksum_for(tag)
-    return [@bottles[tag], tag] if @bottles[tag]
+    return [@bottles[tag], tag] if key?(tag)
 
     find_altivec_tag(tag) || find_or_later_tag(tag)
   end
@@ -86,14 +86,18 @@ class BottleCollector
     @bottles[key] = value
   end
 
+  def key?(key)
+    @bottles.key?(key)
+  end
+
   # This allows generic Altivec PPC bottles to be supported in some
   # formulae, while also allowing specific bottles in others; e.g.,
   # sometimes a formula has just :tiger_altivec, other times it has
   # :tiger_g4, :tiger_g5, etc.
   def find_altivec_tag(tag)
     if tag.to_s =~ /(\w+)_(g4|g4e|g5)$/
-      altitag = "#{$1}_altivec".to_sym
-      return [@bottles[altitag], altitag] if @bottles[altitag]
+      altivec_tag = "#{$1}_altivec".to_sym
+      return [@bottles[altivec_tag], altivec_tag] if key?(altivec_tag)
     end
   end
 
