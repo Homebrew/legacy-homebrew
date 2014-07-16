@@ -65,29 +65,29 @@ end
 
 class BottleCollector
   def initialize
-    @bottles = {}
+    @checksums = {}
   end
 
   def fetch_checksum_for(tag)
-    return [@bottles[tag], tag] if key?(tag)
+    return [@checksums[tag], tag] if key?(tag)
 
     find_altivec_tag(tag) || find_or_later_tag(tag)
   end
 
   def keys
-    @bottles.keys
+    @checksums.keys
   end
 
   def [](key)
-    @bottles[key]
+    @checksums[key]
   end
 
   def []=(key, value)
-    @bottles[key] = value
+    @checksums[key] = value
   end
 
   def key?(key)
-    @bottles.key?(key)
+    @checksums.key?(key)
   end
 
   private
@@ -99,7 +99,7 @@ class BottleCollector
   def find_altivec_tag(tag)
     if tag.to_s =~ /(\w+)_(g4|g4e|g5)$/
       altivec_tag = "#{$1}_altivec".to_sym
-      return [@bottles[altivec_tag], altivec_tag] if key?(altivec_tag)
+      return [@checksums[altivec_tag], altivec_tag] if key?(altivec_tag)
     end
   end
 
@@ -107,7 +107,7 @@ class BottleCollector
   # so the same bottle can target multiple OSs.
   # Not used in core, used in taps.
   def find_or_later_tag(tag)
-    results = @bottles.find_all {|k,v| k.to_s =~ /_or_later$/}
+    results = @checksums.find_all {|k,v| k.to_s =~ /_or_later$/}
     results.each do |key, hsh|
       later_tag = key.to_s[/(\w+)_or_later$/, 1].to_sym
       bottle_version = MacOS::Version.from_symbol(later_tag)
