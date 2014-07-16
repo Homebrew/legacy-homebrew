@@ -90,6 +90,8 @@ class BottleCollector
     @bottles.key?(key)
   end
 
+  private
+
   # This allows generic Altivec PPC bottles to be supported in some
   # formulae, while also allowing specific bottles in others; e.g.,
   # sometimes a formula has just :tiger_altivec, other times it has
