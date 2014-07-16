@@ -24,8 +24,8 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.21.tar.bz2"
-    sha256 "a14723104135c21414c61e146144a2c527430057255f8c35a3a7d354e68b9401"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.22.tar.bz2"
+    sha256 "60374c94c64110d58939e716c3ef4916059c691a2953d8340a9a140a208a7c63"
 
     # http://bugs.winehq.org/show_bug.cgi?id=34166
     patch do
@@ -102,6 +102,9 @@ class Wine < Formula
 
     ENV.append "CFLAGS", build32
     ENV.append "LDFLAGS", build32
+
+    # Help configure find libxml2 in an XCode only (no CLT) installation.
+    ENV.libxml2
 
     args = ["--prefix=#{prefix}"]
     args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang

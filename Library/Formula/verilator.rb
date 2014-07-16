@@ -2,8 +2,8 @@ require "formula"
 
 class Verilator < Formula
   homepage "http://www.veripool.org/wiki/verilator"
-  url "http://www.veripool.org/ftp/verilator-3.860.tgz"
-  sha1 "ed53584854e7b2f1d0e8b52c0d4ae0018f35000c"
+  url "http://www.veripool.org/ftp/verilator-3.862.tgz"
+  sha1 "dd5d3f13478b51b0bd7d37ed353fcf58a6e774e1"
 
   skip_clean "bin" # Allows perl scripts to keep their executable flag
 

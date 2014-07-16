@@ -6,15 +6,16 @@ class LinkTests < Homebrew::TestCase
   include FileUtils
 
   def setup
-    @keg = HOMEBREW_CELLAR/"foo/1.0"
-    @keg.mkpath
-    (@keg/"bin").mkpath
+    keg = HOMEBREW_CELLAR.join("foo", "1.0")
+    keg.join("bin").mkpath
 
     %w{hiworld helloworld goodbye_cruel_world}.each do |file|
-      touch @keg/"bin/#{file}"
+      touch keg.join("bin", file)
     end
 
-    @keg = Keg.new(@keg)
+    @keg = Keg.new(keg)
+    @dst = HOMEBREW_PREFIX.join("bin", "helloworld")
+    @nonexistent = Pathname.new("/some/nonexistent/path")
 
     @mode = OpenStruct.new
 
@@ -42,7 +43,9 @@ class LinkTests < Homebrew::TestCase
 
   def test_unlinking_keg
     @keg.link
+    assert_predicate @dst, :symlink?
     assert_equal 4, @keg.unlink
+    refute_predicate @dst, :symlink?
   end
 
   def test_link_dry_run
@@ -59,51 +62,44 @@ class LinkTests < Homebrew::TestCase
 
   def test_linking_fails_when_already_linked
     @keg.link
-    assert_raises Keg::AlreadyLinkedError do
-      shutup { @keg.link }
-    end
+    assert_raises(Keg::AlreadyLinkedError) { @keg.link }
   end
 
   def test_linking_fails_when_files_exist
-    touch HOMEBREW_PREFIX/"bin/helloworld"
-    assert_raises Keg::ConflictError do
-      shutup { @keg.link }
-    end
+    touch @dst
+    assert_raises(Keg::ConflictError) { @keg.link }
   end
 
   def test_link_ignores_broken_symlinks_at_target
-    dst = HOMEBREW_PREFIX/"bin/helloworld"
-    src = @keg/"bin/helloworld"
-    ln_s "/some/nonexistent/path", dst
-    shutup { @keg.link }
-    assert_equal src.relative_path_from(dst.dirname), dst.readlink
+    src = @keg.join("bin", "helloworld")
+    @dst.make_symlink(@nonexistent)
+    @keg.link
+    assert_equal src.relative_path_from(@dst.dirname), @dst.readlink
   end
 
   def test_link_overwrite
-    touch HOMEBREW_PREFIX/"bin/helloworld"
+    touch @dst
     @mode.overwrite = true
     assert_equal 3, @keg.link(@mode)
     assert_predicate @keg, :linked?
   end
 
   def test_link_overwrite_broken_symlinks
-    cd HOMEBREW_PREFIX/"bin" do
-      ln_s "nowhere", "helloworld"
-    end
+    @dst.make_symlink "nowhere"
     @mode.overwrite = true
     assert_equal 3, @keg.link(@mode)
     assert_predicate @keg, :linked?
   end
 
   def test_link_overwrite_dryrun
-    touch HOMEBREW_PREFIX/"bin/helloworld"
+    touch @dst
     @mode.overwrite = true
     @mode.dry_run = true
 
     assert_equal 0, @keg.link(@mode)
     refute_predicate @keg, :linked?
 
-    assert_equal "#{HOMEBREW_PREFIX}/bin/helloworld\n", $stdout.string
+    assert_equal "#{@dst}\n", $stdout.string
   end
 
   def test_unlink_prunes_empty_toplevel_directories
@@ -165,5 +161,76 @@ class LinkTests < Homebrew::TestCase
     assert_predicate @keg, :linked?
     @keg.unlink
     refute_predicate @keg, :linked?
+  end
+
+  def test_unlink_preserves_broken_symlink_pointing_outside_the_keg
+    @keg.link
+    @dst.delete
+    @dst.make_symlink(@nonexistent)
+    @keg.unlink
+    assert_predicate @dst, :symlink?
+  end
+
+  def test_unlink_preserves_broken_symlink_pointing_into_the_keg
+    @keg.link
+    @dst.resolved_path.delete
+    @keg.unlink
+    assert_predicate @dst, :symlink?
+  end
+
+  def test_unlink_preserves_symlink_pointing_outside_of_keg
+    @keg.link
+    @dst.delete
+    @dst.make_symlink(Pathname.new("/bin/sh"))
+    @keg.unlink
+    assert_predicate @dst, :symlink?
+  end
+
+  def test_unlink_preserves_real_file
+    @keg.link
+    @dst.delete
+    touch @dst
+    @keg.unlink
+    assert_predicate @dst, :file?
+  end
+
+  def test_unlink_ignores_nonexistent_file
+    @keg.link
+    @dst.delete
+    assert_equal 3, @keg.unlink
+  end
+
+  def test_pkgconfig_is_mkpathed
+    link = HOMEBREW_PREFIX.join("lib", "pkgconfig")
+    @keg.join("lib", "pkgconfig").mkpath
+    @keg.link
+    assert_predicate link.lstat, :directory?
+  end
+
+  def test_symlinks_are_linked_directly
+    link = HOMEBREW_PREFIX.join("lib", "pkgconfig")
+
+    @keg.join("lib", "example").mkpath
+    @keg.join("lib", "pkgconfig").make_symlink "example"
+    @keg.link
+
+    assert_predicate link.resolved_path, :symlink?
+    assert_predicate link.lstat, :symlink?
+  end
+
+  def test_links_to_symlinks_are_not_removed
+    a = HOMEBREW_CELLAR.join("a", "1.0")
+    b = HOMEBREW_CELLAR.join("b", "1.0")
+
+    a.join("lib", "example").mkpath
+    a.join("lib", "example2").make_symlink "example"
+    b.join("lib", "example2").mkpath
+
+    Keg.new(a).link
+
+    lib = HOMEBREW_PREFIX.join("lib")
+    assert_equal 2, lib.children.length
+    assert_raises(Keg::ConflictError) { Keg.new(b).link }
+    assert_equal 2, lib.children.length
   end
 end

@@ -23,11 +23,15 @@ class DependencyCollector
 
   CACHE = {}
 
+  def self.clear_cache
+    CACHE.clear
+  end
+
   attr_reader :deps, :requirements
 
   def initialize
     @deps = Dependencies.new
-    @requirements = ComparableSet.new
+    @requirements = Requirements.new
   end
 
   def add(spec)

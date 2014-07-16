@@ -110,6 +110,9 @@ module Superenv
   def determine_path
     paths = [Superenv.bin]
 
+    # Formula dependencies can override standard tools.
+    paths += deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
+
     # On 10.9, there are shims for all tools in /usr/bin.
     # On 10.7 and 10.8 we need to add these directories ourselves.
     if MacOS::Xcode.without_clt? && MacOS.version <= "10.8"
@@ -117,7 +120,6 @@ module Superenv
       paths << "#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
 
-    paths += deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
     paths << MacOS::X11.bin.to_s if x11?
     paths += %w{/usr/bin /bin /usr/sbin /sbin}
 

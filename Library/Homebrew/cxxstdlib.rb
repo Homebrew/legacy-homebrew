@@ -1,3 +1,5 @@
+require "compilers"
+
 class CxxStdlib
   attr_accessor :type, :compiler
 
@@ -11,7 +13,7 @@ class CxxStdlib
   end
 
   def apple_compiler?
-    not compiler.to_s =~ SharedEnvExtension::GNU_GCC_REGEXP
+    not compiler.to_s =~ CompilerConstants::GNU_GCC_REGEXP
   end
 
   def compatible_with?(other)
@@ -24,8 +26,8 @@ class CxxStdlib
     # libstdc++ is compatible across Apple compilers, but
     # not between Apple and GNU compilers, or between GNU compiler versions
     return false if apple_compiler? && !other.apple_compiler?
-    if compiler.to_s =~ SharedEnvExtension::GNU_GCC_REGEXP
-      return false unless other.compiler.to_s =~ SharedEnvExtension::GNU_GCC_REGEXP
+    if compiler.to_s =~ CompilerConstants::GNU_GCC_REGEXP
+      return false unless other.compiler.to_s =~ CompilerConstants::GNU_GCC_REGEXP
       return false unless compiler.to_s[4..6] == other.compiler.to_s[4..6]
     end
 
@@ -33,7 +35,7 @@ class CxxStdlib
   end
 
   def check_dependencies(formula, deps)
-    unless formula.class.cxxstdlib.include? :skip
+    unless formula.skip_cxxstdlib_check?
       deps.each do |dep|
         # Software is unlikely to link against anything from its
         # buildtime deps, so it doesn't matter at all if they link

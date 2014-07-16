@@ -10,6 +10,10 @@ class BuildEnvironmentTests < Homebrew::TestCase
     assert_same @env, (@env << :foo)
   end
 
+  def test_merge_returns_self
+    assert_same @env, @env.merge([])
+  end
+
   def test_std?
     @env << :std
     assert_predicate @env, :std?
@@ -19,43 +23,13 @@ class BuildEnvironmentTests < Homebrew::TestCase
     @env << :userpaths
     assert_predicate @env, :userpaths?
   end
-
-  def test_modify_build_environment
-    @env << Proc.new { raise StandardError }
-    assert_raises(StandardError) do
-      @env.modify_build_environment(self)
-    end
-  end
-
-  def test_marshal
-    @env << :userpaths
-    @env << Proc.new { 1 }
-    dump = Marshal.dump(@env)
-    assert_predicate Marshal.load(dump), :userpaths?
-  end
-
-  def test_env_block
-    foo = mock("foo")
-    @env << Proc.new { foo.some_message }
-    foo.expects(:some_message)
-    @env.modify_build_environment(self)
-  end
-
-  def test_env_block_with_argument
-    foo = mock("foo")
-    @env << Proc.new { |x| x.some_message }
-    foo.expects(:some_message)
-    @env.modify_build_environment(foo)
-  end
 end
 
 class BuildEnvironmentDSLTests < Homebrew::TestCase
   def make_instance(&block)
-    Class.new do
-      extend BuildEnvironmentDSL
-      def env; self.class.env end
-      class_eval(&block)
-    end.new
+    obj = Object.new.extend(BuildEnvironmentDSL)
+    obj.instance_eval(&block)
+    obj
   end
 
   def test_env_single_argument

@@ -1,6 +1,5 @@
 require 'testing_env'
 require 'dependency_collector'
-require 'extend/set'
 
 class DependencyCollectorTests < Homebrew::TestCase
   def find_dependency(name)
@@ -16,7 +15,7 @@ class DependencyCollectorTests < Homebrew::TestCase
   end
 
   def teardown
-    DependencyCollector::CACHE.clear
+    DependencyCollector.clear_cache
   end
 
   def test_dependency_creation
@@ -52,7 +51,7 @@ class DependencyCollectorTests < Homebrew::TestCase
 
   def test_no_duplicate_requirements
     2.times { @d.add :x11 }
-    assert_equal 1, @d.requirements.length
+    assert_equal 1, @d.requirements.count
   end
 
   def test_requirement_tags
@@ -129,7 +128,8 @@ class DependencyCollectorTests < Homebrew::TestCase
 
   def test_resource_dep_raises_for_unknown_classes
     resource = Resource.new
-    resource.url "foo", :using => Class.new
+    resource.url "foo"
+    resource.download_strategy = Class.new
     assert_raises(TypeError) { @d.add(resource) }
   end
 end

@@ -12,8 +12,6 @@ module Homebrew
   end
 
   def install_tap user, repo
-    raise "brew install git" unless which 'git'
-
     # we special case homebrew so users don't have to shift in a terminal
     repouser = if user == "homebrew" then "Homebrew" else user end
     user = "homebrew" if user == "Homebrew"
@@ -121,12 +119,10 @@ module Homebrew
 
   def tap_ref(path)
     case path.to_s
+    when %r{^#{Regexp.escape(HOMEBREW_LIBRARY.to_s)}/Formula}o
+      "Homebrew/homebrew/#{path.basename(".rb")}"
     when HOMEBREW_TAP_PATH_REGEX
-      "#$1/#$2/#{File.basename($3, '.rb')}"
-    when %r{^#{HOMEBREW_LIBRARY}/Formula/(.+)}
-      "Homebrew/homebrew/#{File.basename($1, '.rb')}"
-    else
-      nil
+      "#{$1}/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
     end
   end
 end
