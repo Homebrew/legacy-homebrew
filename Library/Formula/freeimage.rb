@@ -10,10 +10,10 @@ end
 
 class Freeimage < Formula
   homepage 'http://sf.net/projects/freeimage'
-  url 'https://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.15.4/FreeImage3154.zip',
+  url 'https://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.16.0/FreeImage3160.zip',
         :using => FreeimageHttpDownloadStrategy
-  version '3.15.4'
-  sha1 '1d30057a127b2016cf9b4f0f8f2ba92547670f96'
+  version '3.16.0'
+  sha1 'a70600d288fe5bd11131e85e6f857a93bb100ad8'
 
   option :universal
 
