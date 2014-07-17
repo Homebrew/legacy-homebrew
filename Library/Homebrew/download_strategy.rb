@@ -203,18 +203,12 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def ext
-    # GitHub uses odd URLs for zip files, so check for those
-    rx=%r[https?://(www\.)?github\.com/.*/(zip|tar)ball/]
-    if rx.match @url
-      if $2 == 'zip'
-        '.zip'
-      else
-        '.tgz'
-      end
-    else
-      # Strip any ?thing=wad out of .c?thing=wad style extensions
-      (Pathname.new(@url).extname)[/[^?]+/]
-    end
+    # We need a Pathname because we've monkeypatched extname to support double
+    # extensions (e.g. tar.gz).
+    # We can't use basename_without_params, because given a URL like
+    #   http://example.com/download.php?file=foo-1.0.tar.gz
+    # the extension we want is ".tar.gz", not ".php".
+    Pathname.new(@url).extname[/[^?]+/]
   end
 end
 
