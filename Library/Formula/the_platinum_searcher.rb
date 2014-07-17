@@ -2,17 +2,18 @@ require "formula"
 
 class ThePlatinumSearcher < Formula
   homepage "https://github.com/monochromegane/the_platinum_searcher"
-  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.6.4.tar.gz"
-  sha1 "362df20068c9ea19dfb3126c267012356dc7958c"
+  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.6.5.tar.gz"
+  sha1 "51658e4825b5f719fb37072da1b5035b5fde5734"
   head "https://github.com/monochromegane/the_platinum_searcher.git"
 
   depends_on "go" => :build
   depends_on :hg => :build
 
   bottle do
-    sha1 "ea198486a8ae7d8fcb4990981aee01b6867e7311" => :mavericks
-    sha1 "f71a8d2dcb9573d1202b2c2493230d5d0ab383ab" => :mountain_lion
-    sha1 "bfdc5095cfbf3e38ca7900b3fb5dad1ec10f089d" => :lion
+    revision 1
+    sha1 "9e69bb5e18cacc5f6e4e9fc07ef31bd54a875b08" => :mavericks
+    sha1 "2443a197a960177d7a38930f82b209f8e3ce7c56" => :mountain_lion
+    sha1 "b97b398a0622bb48f31cf6cfd7905354a223912e" => :lion
   end
 
   def install
@@ -31,8 +32,7 @@ class ThePlatinumSearcher < Formula
 
   test do
     path = testpath/"hello_world.txt"
-    data = "Hello World!"
-    path.open("wb") { |f| f.write data}
+    path.write "Hello World!"
 
     lines = `#{bin}/pt 'Hello World!' #{path}`.strip.split(":")
     assert_equal "Hello World!", lines[2]

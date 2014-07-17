@@ -1,5 +1,4 @@
 require 'utils/json'
-require 'erb'
 
 class AbstractDownloadStrategy
   attr_reader :name, :resource
@@ -44,7 +43,7 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   def initialize name, resource
     super
     @ref_type, @ref = extract_ref(resource.specs)
-    @clone = HOMEBREW_CACHE/cache_filename
+    @clone = HOMEBREW_CACHE.join(cache_filename)
   end
 
   def extract_ref(specs)
@@ -52,12 +51,8 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
     return key, specs[key]
   end
 
-  def cache_filename(tag=cache_tag)
-    if name.empty? || name == '__UNKNOWN__'
-      "#{ERB::Util.url_encode(@url)}--#{tag}"
-    else
-      "#{name}--#{tag}"
-    end
+  def cache_filename
+    "#{name}--#{cache_tag}"
   end
 
   def cache_tag
@@ -79,11 +74,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def tarball_path
-    @tarball_path ||= if name.empty? || name == '__UNKNOWN__'
-      Pathname.new("#{HOMEBREW_CACHE}/#{basename_without_params}")
-    else
-      Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{resource.version}#{ext}")
-    end
+    @tarball_path ||= Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{resource.version}#{ext}")
   end
 
   def temporary_path
@@ -643,7 +634,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
     unless @clone.exist?
       HOMEBREW_CACHE.cd do
         safe_system cvspath, '-d', url, 'login'
-        safe_system cvspath, '-d', url, 'checkout', '-d', cache_filename("cvs"), mod
+        safe_system cvspath, '-d', url, 'checkout', '-d', cache_filename, mod
       end
     else
       puts "Updating #{@clone}"
