@@ -152,7 +152,7 @@ module Homebrew
           cellar, Keg::CELLAR_PLACEHOLDER, :keg_only => f.keg_only?
         keg.delete_pyc_files!
 
-        HOMEBREW_CELLAR.cd do
+        cd cellar do
           # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
           # or an uncompressed tarball (and more bandwidth friendly).
           safe_system 'tar', 'czf', bottle_path, "#{f.name}/#{f.pkg_version}"
@@ -163,13 +163,13 @@ module Homebrew
         end
 
         if prefix == '/usr/local'
-          prefix_check = HOMEBREW_PREFIX/'opt'
+          prefix_check = File.join(prefix, "opt")
         else
-          prefix_check = HOMEBREW_PREFIX
+          prefix_check = prefix
         end
 
-        relocatable = !keg_contains(prefix_check.to_s, keg)
-        relocatable = !keg_contains(HOMEBREW_CELLAR.to_s, keg) && relocatable
+        relocatable = !keg_contains(prefix_check, keg)
+        relocatable = !keg_contains(cellar, keg) && relocatable
         puts if !relocatable && ARGV.verbose?
       rescue Interrupt
         ignore_interrupts { bottle_path.unlink if bottle_path.exist? }
@@ -186,8 +186,8 @@ module Homebrew
 
     bottle = BottleSpecification.new
     bottle.root_url(root_url) if root_url
-    bottle.prefix HOMEBREW_PREFIX.to_s
-    bottle.cellar relocatable ? :any : HOMEBREW_CELLAR.to_s
+    bottle.prefix prefix
+    bottle.cellar relocatable ? :any : cellar
     bottle.revision bottle_revision
     bottle.sha1 bottle_path.sha1 => bottle_tag
 
