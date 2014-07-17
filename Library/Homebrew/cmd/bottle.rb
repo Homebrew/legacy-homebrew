@@ -158,7 +158,7 @@ module Homebrew
           safe_system 'tar', 'czf', bottle_path, "#{f.name}/#{f.pkg_version}"
         end
 
-        if File.size?(bottle_path) > 1*1024*1024
+        if bottle_path.size > 1*1024*1024
           ohai "Detecting if #{filename} is relocatable..."
         end
 
