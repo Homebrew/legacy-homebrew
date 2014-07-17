@@ -2,8 +2,8 @@ require "formula"
 
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.3.11.tar.gz"
-  sha1 "18050c58ac8ce9553aed22ac0b8950df21d7c4fe"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.3.23.tar.gz"
+  sha1 "caab7b004bece3613b0f81630a2e1d7ce28183dc"
 
   head do
     url "https://github.com/aws/aws-cli.git", :branch => :develop
