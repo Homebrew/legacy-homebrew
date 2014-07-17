@@ -27,7 +27,7 @@ module Homebrew
 
     if File.file? "CMakeLists.txt"
       puts "-DCMAKE_INSTALL_PREFIX=#{prefix}"
-    elsif File.file? "Makefile.am"
+    elsif File.file? "configure"
       puts "--prefix=#{prefix}"
     else
       raise "Couldn't determine build system"
