@@ -129,6 +129,14 @@ class Boost < Formula
       EOS
     end
 
+    # discussion at https://github.com/Homebrew/homebrew/pull/30590
+    if build.with? "python" and build.with? "python3"
+      opoo <<-EOS.undent
+        Boost.Python is built only for Python 3 if both --with-python
+        and --with-python3 are specified.
+      EOS
+    end
+
     ENV.universal_binary if build.universal?
 
     # Force boost to compile using the appropriate GCC version.
