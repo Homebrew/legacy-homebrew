@@ -9,7 +9,7 @@ require 'formula'
 # Please see https://github.com/Homebrew/homebrew/pull/22043 for more info
 class Jack < Formula
   homepage 'http://jackaudio.org'
-  url "http://jackaudio.org/jack-audio-connection-kit-0.124.1.tar.gz"
+  url "http://jackaudio.org/downloads/jack-audio-connection-kit-0.124.1.tar.gz"
   sha1 "e9ba4a4c754ec95fbe653dcf7344edd6cc47cd60"
 
   bottle do
