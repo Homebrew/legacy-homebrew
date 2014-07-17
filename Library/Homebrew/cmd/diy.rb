@@ -2,26 +2,10 @@ require "formula"
 
 module Homebrew
   def diy
-    %w[name version].each do |opt|
-      if ARGV.include? "--set-#{opt}"
-        opoo "--set-#{opt} is deprecated, please use --#{opt}=<#{opt}> instead"
-      end
-    end
-
     path = Pathname.getwd
 
-    version = ARGV.value "version"
-    version ||= if ARGV.include? "--set-version"
-      ARGV.next
-    elsif path.version.to_s.empty?
-      raise "Couldn't determine version, set it with --version=<version>"
-    else
-      path.version
-    end
-
-    name = ARGV.value "name"
-    name ||= ARGV.next if ARGV.include? "--set-name"
-    name ||= detected_name(path, version)
+    version = ARGV.value("version") || detect_version(path)
+    name = ARGV.value("name") || detect_name(path, version)
 
     prefix = HOMEBREW_CELLAR/name/version
 
@@ -34,7 +18,17 @@ module Homebrew
     end
   end
 
-  def detected_name(path, version)
+  def detect_version(path)
+    version = path.version.to_s
+
+    if version.empty?
+      raise "Couldn't determine version, set it with --version=<version>"
+    else
+      version
+    end
+  end
+
+  def detect_name(path, version)
     basename = path.basename.to_s
     detected_name = basename[/(.*?)-?#{Regexp.escape(version)}/, 1] || basename
     canonical_name = Formulary.canonical_name(detected_name)
