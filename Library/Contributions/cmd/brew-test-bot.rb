@@ -134,10 +134,16 @@ class Test
     @hash = nil
     @url = nil
     @formulae = []
+    @steps = []
     @tap = tap
     @repository = homebrew_git_repo @tap
+    @repository_requires_tapping = !@repository.directory?
 
     url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
+
+    # Tap repository if required, this is done before everything else
+    # because Formula parsing and/or git commit hash lookup depends on it.
+    test "brew", "tap", @tap if @tap && @repository_requires_tapping
 
     begin
       formula = Formulary.factory(argument)
@@ -156,7 +162,6 @@ class Test
     end
 
     @category = __method__
-    @steps = []
     @brewbot_root = Pathname.pwd + "brewbot"
     FileUtils.mkdir_p @brewbot_root
   end
@@ -202,9 +207,6 @@ class Test
 
     @category = __method__
     @start_branch = current_branch
-
-    # Tap repository if required
-    test "brew", "tap", @tap if @tap
 
     # Use Jenkins environment variables if present.
     if no_args? and ENV['GIT_PREVIOUS_COMMIT'] and ENV['GIT_COMMIT'] \
@@ -404,6 +406,9 @@ class Test
 
   def cleanup_after
     @category = __method__
+
+    test "brew", "untap", @tap if @tap && @repository_requires_tapping
+
     checkout_args = []
     if ARGV.include? '--cleanup'
       test "git", "clean", "--force", "-dx"
