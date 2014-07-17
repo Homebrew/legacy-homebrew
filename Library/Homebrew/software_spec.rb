@@ -164,7 +164,7 @@ class BottleSpecification
   end
 
   def tag?(tag)
-    !!collector.fetch_bottle_for(tag)
+    !!checksum_for(tag)
   end
 
   # Checksum methods in the DSL's bottle block optionally take
@@ -172,12 +172,12 @@ class BottleSpecification
   Checksum::TYPES.each do |cksum|
     define_method(cksum) do |val|
       digest, tag = val.shift
-      collector.add(Checksum.new(cksum, digest), tag)
+      collector[tag] = Checksum.new(cksum, digest)
     end
   end
 
   def checksum_for(tag)
-    collector.fetch_bottle_for(tag)
+    collector.fetch_checksum_for(tag)
   end
 
   def checksums
