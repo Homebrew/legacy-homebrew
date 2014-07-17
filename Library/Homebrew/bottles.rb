@@ -114,10 +114,16 @@ class BottleCollector
   # so the same bottle can target multiple OSs.
   # Not used in core, used in taps.
   def find_or_later_tag(tag)
+    begin
+      tag_version = MacOS::Version.from_symbol(tag)
+    rescue ArgumentError
+      return
+    end
+
     keys.find do |key|
       if key.to_s.end_with?("_or_later")
         later_tag = key.to_s[/(\w+)_or_later$/, 1].to_sym
-        MacOS::Version.from_symbol(later_tag) <= MacOS::Version.from_symbol(tag)
+        MacOS::Version.from_symbol(later_tag) <= tag_version
       end
     end
   end
