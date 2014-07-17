@@ -69,8 +69,8 @@ class BottleCollector
   end
 
   def fetch_checksum_for(tag)
-    return self[tag], tag if key?(tag)
-    find_altivec_tag(tag) || find_or_later_tag(tag)
+    tag = find_matching_tag(tag)
+    return self[tag], tag if tag
   end
 
   def keys
@@ -91,6 +91,14 @@ class BottleCollector
 
   private
 
+  def find_matching_tag(tag)
+    if key?(tag)
+      tag
+    else
+      find_altivec_tag(tag) || find_or_later_tag(tag)
+    end
+  end
+
   # This allows generic Altivec PPC bottles to be supported in some
   # formulae, while also allowing specific bottles in others; e.g.,
   # sometimes a formula has just :tiger_altivec, other times it has
@@ -98,7 +106,7 @@ class BottleCollector
   def find_altivec_tag(tag)
     if tag.to_s =~ /(\w+)_(g4|g4e|g5)$/
       altivec_tag = "#{$1}_altivec".to_sym
-      return self[altivec_tag], altivec_tag if key?(altivec_tag)
+      altivec_tag if key?(altivec_tag)
     end
   end
 
@@ -106,13 +114,11 @@ class BottleCollector
   # so the same bottle can target multiple OSs.
   # Not used in core, used in taps.
   def find_or_later_tag(tag)
-    results = @checksums.find_all {|k,v| k.to_s =~ /_or_later$/}
-    results.each do |key, hsh|
-      later_tag = key.to_s[/(\w+)_or_later$/, 1].to_sym
-      bottle_version = MacOS::Version.from_symbol(later_tag)
-      return [hsh, key] if bottle_version <= MacOS::Version.from_symbol(tag)
+    keys.find do |key|
+      if key.to_s.end_with?("_or_later")
+        later_tag = key.to_s[/(\w+)_or_later$/, 1].to_sym
+        MacOS::Version.from_symbol(later_tag) <= MacOS::Version.from_symbol(tag)
+      end
     end
-
-    nil
   end
 end
