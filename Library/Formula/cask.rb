@@ -15,7 +15,7 @@ class NewEnoughEmacs < Requirement
 end
 
 class Cask < Formula
-  homepage "http://cask.github.io/"
+  homepage "http://cask.readthedocs.org/"
   url "https://github.com/cask/cask/archive/v0.7.0.tar.gz"
   sha1 "0f84c4a824bf93c0f1b207b21db820dbb4d41599"
   head "https://github.com/cask/cask.git"
