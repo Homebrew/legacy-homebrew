@@ -2,8 +2,8 @@ require "formula"
 
 class Fig < Formula
   homepage "http://orchardup.github.io/fig/"
-  url "https://github.com/orchardup/fig/archive/0.4.1.tar.gz"
-  sha1 "f791bb82b98595387fbb25c897fb8ecac20ee4ab"
+  url "https://github.com/orchardup/fig/archive/0.5.1.tar.gz"
+  sha1 "38b03a7d823ab3b2662c9c6ada503e28c35e122c"
 
   bottle do
     cellar :any
@@ -38,6 +38,11 @@ class Fig < Formula
   resource "websocket-client" do
     url "https://pypi.python.org/packages/source/w/websocket-client/websocket-client-0.11.0.tar.gz"
     sha1 "a38cb6072a25b18faf11d31dd415750692c36f33"
+  end
+
+  resource "dockerpty" do
+    url "https://pypi.python.org/packages/source/d/dockerpty/dockerpty-0.2.1.tar.gz"
+    sha1 "6edf60955c274ee258ba4fe1ea7233c252fd179b"
   end
 
   def install
