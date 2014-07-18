@@ -113,6 +113,22 @@ class HeadSoftwareSpec < SoftwareSpec
 end
 
 class Bottle
+  class Filename
+    attr_reader :name, :version, :tag, :revision
+
+    def initialize(name, version, tag, revision)
+      @name = name
+      @version = version
+      @tag = tag
+      @revision = revision
+    end
+
+    def to_s
+      "#{name}-#{version}.#{tag}#{bottle_suffix(revision)}"
+    end
+    alias_method :to_str, :to_s
+  end
+
   extend Forwardable
 
   attr_reader :name, :resource, :prefix, :cellar, :revision
@@ -127,13 +143,7 @@ class Bottle
 
     checksum, tag = spec.checksum_for(bottle_tag)
 
-    @resource.url = bottle_url(
-      spec.root_url,
-      :name => formula.name,
-      :version => formula.pkg_version,
-      :revision => spec.revision,
-      :tag => tag
-    )
+    @resource.url = bottle_url(spec.root_url, formula.name, formula.pkg_version, tag, spec.revision)
     @resource.download_strategy = CurlBottleDownloadStrategy
     @resource.version = formula.pkg_version
     @resource.checksum = checksum
