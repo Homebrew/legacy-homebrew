@@ -5,6 +5,13 @@ class Fig < Formula
   url "https://github.com/orchardup/fig/archive/0.4.1.tar.gz"
   sha1 "f791bb82b98595387fbb25c897fb8ecac20ee4ab"
 
+  bottle do
+    cellar :any
+    sha1 "e3d799b85f3a170023d436c13234db7b9ec7f2c6" => :mavericks
+    sha1 "48432463fdf85a409e5123ff2a1571b2193af289" => :mountain_lion
+    sha1 "20e2688476a578f1d05a07504d4c50828e412c12" => :lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
 
