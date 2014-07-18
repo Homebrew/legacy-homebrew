@@ -1,4 +1,5 @@
 require "testing_env"
+require "formula"
 require "software_spec"
 
 class BottleFilenameTests < Homebrew::TestCase
@@ -16,5 +17,15 @@ class BottleFilenameTests < Homebrew::TestCase
     expected = "foo-1.0.tag.bottle.tar.gz"
     assert_equal expected, fn(0).to_s
     assert_equal expected, fn(0).to_str
+  end
+
+  def test_create
+    f = formula {
+      url "https://example.com/foo.tar.gz"
+      version "1.0"
+    }
+
+    expected = "formula_name-1.0.tag.bottle.tar.gz"
+    assert_equal expected, Bottle::Filename.create(f, :tag, 0).to_s
   end
 end
