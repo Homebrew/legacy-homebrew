@@ -47,7 +47,7 @@ class Fig < Formula
 
     install_args = ["setup.py", "install", "--prefix=#{libexec}"]
     resources.each do |r|
-      resource(r).stage { system "python", *install_args }
+      r.stage { system "python", *install_args }
     end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
