@@ -47,20 +47,22 @@ module SharedEnvExtension
   def append keys, value, separator = ' '
     value = value.to_s
     Array(keys).each do |key|
-      unless self[key].to_s.empty?
-        self[key] = self[key] + separator + value
-      else
+      old = self[key]
+      if old.nil? || old.empty?
         self[key] = value
+      else
+        self[key] += separator + value
       end
     end
   end
   def prepend keys, value, separator = ' '
     value = value.to_s
     Array(keys).each do |key|
-      unless self[key].to_s.empty?
-        self[key] = value + separator + self[key]
-      else
+      old = self[key]
+      if old.nil? || old.empty?
         self[key] = value
+      else
+        self[key] = value + separator + old
       end
     end
   end
