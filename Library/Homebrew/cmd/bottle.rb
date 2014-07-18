@@ -125,12 +125,7 @@ module Homebrew
       bottle_revision = max ? max + 1 : 0
     end
 
-    filename = bottle_filename(
-      :name => f.name,
-      :version => f.pkg_version,
-      :revision => bottle_revision,
-      :tag => bottle_tag
-    )
+    filename = Bottle::Filename.new(f.name, f.pkg_version, bottle_tag, bottle_revision)
 
     if bottle_filename_formula_name(filename).empty?
       return ofail "Add a new regex to bottle_version.rb to parse #{f.version} from #{filename}"
@@ -197,7 +192,7 @@ module Homebrew
     puts output
 
     if ARGV.include? '--rb'
-      bottle_base = filename.gsub(bottle_suffix(bottle_revision), '')
+      bottle_base = filename.to_s.gsub(bottle_suffix(bottle_revision), '')
       File.open "#{bottle_base}.bottle.rb", 'w' do |file|
         file.write output
       end

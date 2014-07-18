@@ -3,14 +3,6 @@ require 'os/mac'
 require 'extend/ARGV'
 require 'bottle_version'
 
-def bottle_filename options={}
-  name     = options.fetch(:name)
-  version  = options.fetch(:version)
-  tag      = options.fetch(:tag)
-  revision = options.fetch(:revision)
-  "#{name}-#{version}.#{tag}#{bottle_suffix(revision)}"
-end
-
 def built_as_bottle? f
   return false unless f.installed?
   tab = Tab.for_keg(f.installed_prefix)
@@ -36,8 +28,9 @@ def bottle_native_regex
   /(\.#{bottle_tag}\.bottle\.(\d+\.)?tar\.gz)$/o
 end
 
-def bottle_url(root_url, filename_options)
-  "#{root_url}/#{bottle_filename(filename_options)}"
+def bottle_url(root_url, *filename_args)
+  filename = Bottle::Filename.new(*filename_args)
+  "#{root_url}/#{filename}"
 end
 
 def bottle_tag
