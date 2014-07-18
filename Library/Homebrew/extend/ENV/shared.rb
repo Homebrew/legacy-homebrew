@@ -83,7 +83,7 @@ module SharedEnvExtension
     Array(keys).each do |key|
       next unless self[key]
       self[key] = self[key].sub(value, '')
-      delete(key) if self[key].to_s.empty?
+      delete(key) if self[key].empty?
     end if value
   end
 
