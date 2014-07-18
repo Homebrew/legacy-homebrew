@@ -45,9 +45,8 @@ class Fig < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", prefix+"lib/python2.7/site-packages"
 
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
-    res = %w[docopt pyyaml requests texttable websocket-client]
-    res.each do |r|
+    install_args = ["setup.py", "install", "--prefix=#{libexec}"]
+    resources.each do |r|
       resource(r).stage { system "python", *install_args }
     end
 
