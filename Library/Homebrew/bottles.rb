@@ -19,11 +19,6 @@ def bottle_file_outdated? f, file
   bottle_ext && bottle_url_ext && bottle_ext != bottle_url_ext
 end
 
-def bottle_suffix revision
-  revision = revision > 0 ? ".#{revision}" : ""
-  ".bottle#{revision}.tar.gz"
-end
-
 def bottle_native_regex
   /(\.#{bottle_tag}\.bottle\.(\d+\.)?tar\.gz)$/o
 end
