@@ -2,20 +2,31 @@ require 'formula'
 
 class Git < Formula
   homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-1.9.1.tar.gz"
-  sha1 "804453dba489cae0d0f0402888b77e1aaa40bae8"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.0.2.tar.gz"
+  sha1 "794cba6b2ba2620a08651b9605bac0476804d67e"
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha1 "e9f79d29d1106485c3f0b573098feee60a170155" => :mavericks
-    sha1 "cfecf1d47441f6f32e88afabd8e9bccac527dfe0" => :mountain_lion
-    sha1 "87e66620960a1f5a4575cb3b6b0583cfa99f547a" => :lion
+    sha1 "6796bef3d6692035a5e4daf1b76c3adc9f32c435" => :mavericks
+    sha1 "937cc1c35c6919b8bd2d5d066dbba8ac003b4d81" => :mountain_lion
+    sha1 "f3a47568c580ee6ec21437f66ba3ea748fe12df1" => :lion
+  end
+
+  resource "man" do
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.0.2.tar.gz"
+    sha1 "d4967cbe1940b7d1e131b8f0c2f609a49c569014"
+  end
+
+  resource "html" do
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.0.2.tar.gz"
+    sha1 "156b6ca6b626cbb6f38cbd4810c6ae69c9a4c6d5"
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
   option 'without-completions', 'Disable bash/zsh completions from "contrib" directory'
   option 'with-brewed-openssl', "Build with Homebrew OpenSSL instead of the system version"
   option 'with-brewed-curl', "Use Homebrew's version of cURL library"
+  option 'with-brewed-svn', "Use Homebrew's version of SVN"
   option 'with-persistent-https', 'Build git-remote-persistent-https from "contrib" directory'
 
   depends_on 'pcre' => :optional
@@ -23,16 +34,7 @@ class Git < Formula
   depends_on 'openssl' if build.with? 'brewed-openssl'
   depends_on 'curl' if build.with? 'brewed-curl'
   depends_on 'go' => :build if build.with? 'persistent-https'
-
-  resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-1.9.1.tar.gz"
-    sha1 "d8cef92bc11696009b64fb6d4936eaa8d7759e7a"
-  end
-
-  resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-1.9.1.tar.gz"
-    sha1 "68aa0c7749aa918e5e98eecd84e0538150613acd"
-  end
+  depends_on 'subversion' => 'perl' if build.with? 'brewed-svn'
 
   def install
     # If these things are installed, tell Git build system to not use them
@@ -43,8 +45,16 @@ class Git < Formula
     ENV['PYTHON_PATH'] = which 'python'
     ENV['PERL_PATH'] = which 'perl'
 
-    if MacOS.version >= :mavericks and MacOS.dev_tools_prefix
-      ENV['PERLLIB_EXTRA'] = "#{MacOS.dev_tools_prefix}/Library/Perl/5.16/darwin-thread-multi-2level"
+    if build.with? 'brewed-svn'
+      ENV["PERLLIB_EXTRA"] = "#{Formula["subversion"].prefix}/Library/Perl/5.16/darwin-thread-multi-2level"
+    elsif MacOS.version >= :mavericks
+      ENV["PERLLIB_EXTRA"] = %W{
+        #{MacOS.active_developer_dir}
+        /Library/Developer/CommandLineTools
+        /Applications/Xcode.app/Contents/Developer
+      }.uniq.map { |p|
+        "#{p}/Library/Perl/5.16/darwin-thread-multi-2level"
+      }.join(":")
     end
 
     unless quiet_system ENV['PERL_PATH'], '-e', 'use ExtUtils::MakeMaker'
@@ -113,8 +123,9 @@ class Git < Formula
     man.install resource('man')
     (share+'doc/git-doc').install resource('html')
 
-    # Make html docs world-readable; check if this is still needed at 1.8.6
+    # Make html docs world-readable
     chmod 0644, Dir["#{share}/doc/git-doc/**/*.{html,txt}"]
+    chmod 0755, Dir["#{share}/doc/git-doc/{RelNotes,howto,technical}"]
   end
 
   def caveats; <<-EOS.undent
