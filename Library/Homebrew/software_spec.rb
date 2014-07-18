@@ -116,6 +116,10 @@ class Bottle
   class Filename
     attr_reader :name, :version, :tag, :revision
 
+    def self.create(formula, tag, revision)
+      new(formula.name, formula.pkg_version, tag, revision)
+    end
+
     def initialize(name, version, tag, revision)
       @name = name
       @version = version
@@ -152,7 +156,7 @@ class Bottle
 
     checksum, tag = spec.checksum_for(bottle_tag)
 
-    filename = Filename.new(formula.name, formula.pkg_version, tag, spec.revision)
+    filename = Filename.create(formula, tag, spec.revision)
     @resource.url = build_url(spec.root_url, filename)
     @resource.download_strategy = CurlBottleDownloadStrategy
     @resource.version = formula.pkg_version
