@@ -124,9 +124,18 @@ class Bottle
     end
 
     def to_s
-      "#{name}-#{version}.#{tag}#{bottle_suffix(revision)}"
+      prefix + suffix
     end
     alias_method :to_str, :to_s
+
+    def prefix
+      "#{name}-#{version}.#{tag}"
+    end
+
+    def suffix
+      s = revision > 0 ? ".#{revision}" : ""
+      ".bottle#{s}.tar.gz"
+    end
   end
 
   extend Forwardable

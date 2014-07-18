@@ -192,10 +192,7 @@ module Homebrew
     puts output
 
     if ARGV.include? '--rb'
-      bottle_base = filename.to_s.gsub(bottle_suffix(bottle_revision), '')
-      File.open "#{bottle_base}.bottle.rb", 'w' do |file|
-        file.write output
-      end
+      File.open("#{filename.prefix}.bottle.rb", "w") { |file| file.write(output) }
     end
   end
 
