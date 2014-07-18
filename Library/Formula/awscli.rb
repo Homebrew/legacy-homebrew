@@ -2,8 +2,15 @@ require "formula"
 
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.3.11.tar.gz"
-  sha1 "18050c58ac8ce9553aed22ac0b8950df21d7c4fe"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.3.23.tar.gz"
+  sha1 "caab7b004bece3613b0f81630a2e1d7ce28183dc"
+
+  bottle do
+    cellar :any
+    sha1 "93360cfcc06dbf449c4bc9e22f2f40bba7e1b407" => :mavericks
+    sha1 "d0337a1a943bf040931f9942e793140f1cc92df4" => :mountain_lion
+    sha1 "802106234c2417353429a55f8a700a995215d171" => :lion
+  end
 
   head do
     url "https://github.com/aws/aws-cli.git", :branch => :develop
