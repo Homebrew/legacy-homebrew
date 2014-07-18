@@ -28,11 +28,6 @@ def bottle_native_regex
   /(\.#{bottle_tag}\.bottle\.(\d+\.)?tar\.gz)$/o
 end
 
-def bottle_url(root_url, *filename_args)
-  filename = Bottle::Filename.new(*filename_args)
-  "#{root_url}/#{filename}"
-end
-
 def bottle_tag
   if MacOS.version >= :lion
     MacOS.cat
