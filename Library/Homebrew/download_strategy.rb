@@ -288,10 +288,6 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
     @url = "#{@url}?use_mirror=#{mirror}" if mirror
   end
 
-  def tarball_path
-    @tarball_path ||= HOMEBREW_CACHE/"#{name}-#{resource.version}#{ext}"
-  end
-
   def stage
     ohai "Pouring #{tarball_path.basename}"
     super
