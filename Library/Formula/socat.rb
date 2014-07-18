@@ -6,6 +6,13 @@ class Socat < Formula
   mirror 'http://ftp.de.debian.org/debian/pool/main/s/socat/socat_1.7.2.4.orig.tar.bz2'
   sha1 '55650f3c4c1a5cdc323b2e6eece416b6303d39b5'
 
+  bottle do
+    cellar :any
+    sha1 "2adcb868d02085a1750ae6d2cb737a133f46e758" => :mavericks
+    sha1 "7fbdafbdd205731de188c08f501816cf835ea9c8" => :mountain_lion
+    sha1 "57e25b005e2f3261861400adf34869460daf828d" => :lion
+  end
+
   devel do
     url 'http://www.dest-unreach.org/socat/download/socat-2.0.0-b7.tar.gz'
     mirror 'http://fossies.org/linux/privat/socat-2.0.0-b7.tar.gz'
