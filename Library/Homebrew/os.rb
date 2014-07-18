@@ -17,3 +17,9 @@ module OS
     raise "Unknown operating system"
   end
 end
+
+if OS.mac?
+  require "os/mac/bottles"
+elsif OS.linux?
+  require "os/linux/bottles"
+end
