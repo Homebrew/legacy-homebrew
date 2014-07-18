@@ -5,6 +5,13 @@ class Quazip < Formula
   url "https://downloads.sourceforge.net/project/quazip/quazip/0.6.2/quazip-0.6.2.tar.gz"
   sha1 "2fdcd063df645f94f047374d7d540b102fc683dc"
 
+  bottle do
+    cellar :any
+    sha1 "1e61e9506d6f355b8d696e78866784e89e595e5b" => :mavericks
+    sha1 "6cdaaa01521a0659b580f7e0099472fe0285b7a7" => :mountain_lion
+    sha1 "e180385f38e14945a97472f5b44fffeea9924cdd" => :lion
+  end
+
   depends_on "qt"
 
   def install
