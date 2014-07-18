@@ -7,9 +7,9 @@ class Fig < Formula
 
   bottle do
     cellar :any
-    sha1 "e3d799b85f3a170023d436c13234db7b9ec7f2c6" => :mavericks
-    sha1 "48432463fdf85a409e5123ff2a1571b2193af289" => :mountain_lion
-    sha1 "20e2688476a578f1d05a07504d4c50828e412c12" => :lion
+    sha1 "2f4f64f35b1b51962dd51d1688ce8bd3d43fe936" => :mavericks
+    sha1 "62a8a937bc788f6ca58a61f973f3f6540180eb20" => :mountain_lion
+    sha1 "e75582e827e66be9c90f800e1bf0f19b78558f10" => :lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
