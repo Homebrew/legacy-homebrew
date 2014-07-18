@@ -8,6 +8,7 @@ class Socat < Formula
 
   devel do
     url 'http://www.dest-unreach.org/socat/download/socat-2.0.0-b7.tar.gz'
+    mirror 'http://fossies.org/linux/privat/socat-2.0.0-b7.tar.gz'
     sha1 'b9ce176ab1ad974a0f01810b517d404214f40288'
     patch :DATA
   end
