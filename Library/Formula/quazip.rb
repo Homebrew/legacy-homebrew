@@ -29,12 +29,11 @@ class Quazip < Formula
       args = %W[-config release -spec #{spec}]
       system "qmake", *args
       system "make"
-      libexec.install "qztest"
+      bin.install "qztest"
     end
   end
 
   test do
-    ENV["DYLD_LIBRARY_PATH"] = "#{lib}"
-    system "#{libexec}/qztest"
+    system "#{bin}/qztest"
   end
 end
