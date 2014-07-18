@@ -143,7 +143,8 @@ class Bottle
 
     checksum, tag = spec.checksum_for(bottle_tag)
 
-    @resource.url = bottle_url(spec.root_url, formula.name, formula.pkg_version, tag, spec.revision)
+    filename = Filename.new(formula.name, formula.pkg_version, tag, spec.revision)
+    @resource.url = build_url(spec.root_url, filename)
     @resource.download_strategy = CurlBottleDownloadStrategy
     @resource.version = formula.pkg_version
     @resource.checksum = checksum
@@ -154,6 +155,12 @@ class Bottle
 
   def compatible_cellar?
     cellar == :any || cellar == HOMEBREW_CELLAR.to_s
+  end
+
+  private
+
+  def build_url(root_url, filename)
+    "#{root_url}/#{filename}"
   end
 end
 
