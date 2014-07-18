@@ -36,11 +36,11 @@ module Homebrew
       :autotools
     end
 
-    if fc.name.nil? or fc.name.to_s.strip.empty?
-      path = Pathname.new url
-      print "Formula name [#{path.stem}]: "
-      fc.name = __gets || path.stem
-      fc.path = Formula.path fc.name
+    if fc.name.nil? || fc.name.strip.empty?
+      stem = Pathname.new(url).stem
+      print "Formula name [#{stem}]: "
+      fc.name = __gets || stem
+      fc.path = Formula.path(fc.name)
     end
 
     # Don't allow blacklisted formula, or names that shadow aliases,
