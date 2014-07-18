@@ -29,6 +29,9 @@ class Mariadb < Formula
   conflicts_with 'mysql-connector-c',
     :because => 'both install MySQL client libraries'
 
+  # fixes a redefinition error, issue #30891
+  patch :p1, :DATA
+
   def install
     # Don't hard-code the libtool path. See:
     # https://github.com/Homebrew/homebrew/issues/20185
@@ -171,3 +174,16 @@ class Mariadb < Formula
     EOS
   end
 end
+__END__
+--- a/storage/tokudb/hatoku_hton.cc
++++ b/storage/tokudb/hatoku_hton.cc
+@@ -258,7 +258,7 @@ static char *tokudb_log_dir;
+ // static long tokudb_lock_scan_time = 0;
+ // static ulong tokudb_region_size = 0;
+ // static ulong tokudb_cache_parts = 1;
+-const char *tokudb_hton_name = "TokuDB";
++const char * const tokudb_hton_name = "TokuDB";
+ static uint32_t tokudb_checkpointing_period;
+ static uint32_t tokudb_fsync_log_period;
+ uint32_t tokudb_write_status_frequency;
+
