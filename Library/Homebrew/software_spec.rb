@@ -120,22 +120,22 @@ class Bottle
   def_delegators :resource, :url, :fetch, :verify_download_integrity
   def_delegators :resource, :downloader, :cached_download, :clear_cache
 
-  def initialize(f, spec)
-    @name = f.name
+  def initialize(formula, spec)
+    @name = formula.name
     @resource = Resource.new
-    @resource.owner = f
+    @resource.owner = formula
 
     checksum, tag = spec.checksum_for(bottle_tag)
 
     @resource.url = bottle_url(
       spec.root_url,
-      :name => f.name,
-      :version => f.pkg_version,
+      :name => formula.name,
+      :version => formula.pkg_version,
       :revision => spec.revision,
       :tag => tag
     )
     @resource.download_strategy = CurlBottleDownloadStrategy
-    @resource.version = f.pkg_version
+    @resource.version = formula.pkg_version
     @resource.checksum = checksum
     @prefix = spec.prefix
     @cellar = spec.cellar
