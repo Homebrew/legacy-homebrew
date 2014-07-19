@@ -6,9 +6,9 @@ class ShadowsocksLibev < Formula
   sha1 "b480559d6ad349138c46cfb00c9d1c3a6b2ef137"
 
   bottle do
-    sha1 "d55667d256e996e612c5308c54ed9f54112c7b27" => :mavericks
-    sha1 "f6759d7578e303c06c76f788cb58904635a4c249" => :mountain_lion
-    sha1 "62fc946fbebe8c7e3abea37e05ccf718928845f3" => :lion
+    sha1 "c85772ca098fc62a670fc9bf47994efc74b5dada" => :mavericks
+    sha1 "c34e3d20b2af99a5bd062be3d5f7dc8836ad3c7b" => :mountain_lion
+    sha1 "5cabc840ff1e289aeb48f9fc4e1d0f754c9d9ed8" => :lion
   end
 
   head "https://github.com/madeye/shadowsocks-libev.git"
