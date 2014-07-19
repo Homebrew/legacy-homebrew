@@ -7,9 +7,9 @@ class Libusb < Formula
 
   bottle do
     cellar :any
-    sha1 "a49364f9964a1198159d2ed1645dabb5770013bf" => :mavericks
-    sha1 "6bbf08c8fbd747d00dbe67d03be150b5950cf482" => :mountain_lion
-    sha1 "e8863bdf84a928a79b07f48fabe6b15fddd74296" => :lion
+    sha1 "978dfaba5e7a6b624f33e5e927994e89c9f22509" => :mavericks
+    sha1 "f1e2c2b829556cc5ce5965a709ae0fb6c2e29dc9" => :mountain_lion
+    sha1 "6e15e38d4c0cc8bd162b0dc475099b25ff651636" => :lion
   end
 
   head do
