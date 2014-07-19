@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Libxmp < Formula
-  homepage 'http://xmp.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/xmp/libxmp/4.2.7/libxmp-4.2.7.tar.gz'
-  sha1 'cc7b1340bd8664d933311d23550ae4279abf2ecc'
+  homepage "http://xmp.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.2.8/libxmp-4.2.8.tar.gz"
+  sha1 "7cb28f316c8991493e626dab149719a376c3501d"
 
   bottle do
     cellar :any
@@ -13,7 +13,7 @@ class Libxmp < Formula
   end
 
   head do
-    url 'git://git.code.sf.net/p/xmp/libxmp'
+    url "git://git.code.sf.net/p/xmp/libxmp"
     depends_on :autoconf
   end
 
