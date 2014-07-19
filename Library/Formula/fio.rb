@@ -2,8 +2,8 @@ require 'formula'
 
 class Fio < Formula
   homepage 'http://freecode.com/projects/fio'
-  url 'http://brick.kernel.dk/snaps/fio-2.0.15.tar.bz2'
-  sha1 '3b672f19ef37d0f4d733dc78820a5e4a735b9a7f'
+  url 'http://brick.kernel.dk/snaps/fio-2.1.10.tar.bz2'
+  sha1 '7a528340d6d1f3700fc07f10d3ac42c8a1d5ea7b'
 
   def install
     system "./configure"
