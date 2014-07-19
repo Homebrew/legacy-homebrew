@@ -33,10 +33,4 @@ class Orientdb < Formula
   def caveats
     "Use `orientdb <start | stop | status>`, `orientdb-console` and `orientdb-gremlin`."
   end
-
-  test do
-    system "#{bin}/orientdb", "start"
-    system "#{bin}/orientdb status | grep PID"
-    system "#{bin}/orientdb", "stop"
-  end
 end
