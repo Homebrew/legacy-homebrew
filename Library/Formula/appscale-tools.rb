@@ -56,17 +56,10 @@ class AppscaleTools < Formula
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    resource("termcolor").stage { system "python", *install_args }
-    resource("pyyaml").stage { system "python", *install_args }
-    resource("SOAPpy").stage { system "python", *install_args }
-    resource("boto").stage { system "python", *install_args }
-    resource("argparse").stage { system "python", *install_args }
-    resource("oauth2client").stage { system "python", *install_args }
-    resource("google-api-python-client").stage { system "python", *install_args }
-    resource("httplib2").stage { system "python", *install_args }
-    resource("python-gflags").stage { system "python", *install_args }
+    resources.each do |r|
+      r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
+    end
 
     inreplace Dir["bin/appscale*"] do |s|
       s.gsub! /^lib = os.*/, "lib = '#{libexec}'"
