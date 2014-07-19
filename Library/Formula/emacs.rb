@@ -52,7 +52,7 @@ class Emacs < Formula
     # "--japanese" option:
     # to apply a patch from MacEmacsJP for Japanese input methods
     patch :p0 do
-      url "http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp&pathrev=583"
+      url "http://sourceforge.jp/projects/macemacsjp/scm/svn/blobs/583/inline_patch/trunk/emacs-inline.patch?export=raw"
       sha1 "61a6f41f3ddc9ecc3d7f57379b3dc195d7b9b5e2"
     end if build.include? "cocoa" and build.include? "japanese"
   end

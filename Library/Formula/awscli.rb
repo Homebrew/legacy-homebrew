@@ -63,18 +63,10 @@ class Awscli < Formula
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    if build.head? then
-      resource("jmespath").stage { system "python", *install_args }
+    resources.each do |r|
+      r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
     end
-
-    resource("botocore").stage { system "python", *install_args }
-    resource("bcdoc").stage { system "python", *install_args }
-    resource("six").stage { system "python", *install_args }
-    resource("colorama").stage { system "python", *install_args }
-    resource("docutils").stage { system "python", *install_args }
-    resource("rsa").stage { system "python", *install_args }
 
     system "python", "setup.py", "install", "--prefix=#{prefix}",
       "--single-version-externally-managed", "--record=installed.txt"

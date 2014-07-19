@@ -113,6 +113,35 @@ class HeadSoftwareSpec < SoftwareSpec
 end
 
 class Bottle
+  class Filename
+    attr_reader :name, :version, :tag, :revision
+
+    def self.create(formula, tag, revision)
+      new(formula.name, formula.pkg_version, tag, revision)
+    end
+
+    def initialize(name, version, tag, revision)
+      @name = name
+      @version = version
+      @tag = tag
+      @revision = revision
+    end
+
+    def to_s
+      prefix + suffix
+    end
+    alias_method :to_str, :to_s
+
+    def prefix
+      "#{name}-#{version}.#{tag}"
+    end
+
+    def suffix
+      s = revision > 0 ? ".#{revision}" : ""
+      ".bottle#{s}.tar.gz"
+    end
+  end
+
   extend Forwardable
 
   attr_reader :name, :resource, :prefix, :cellar, :revision
@@ -127,13 +156,8 @@ class Bottle
 
     checksum, tag = spec.checksum_for(bottle_tag)
 
-    @resource.url = bottle_url(
-      spec.root_url,
-      :name => formula.name,
-      :version => formula.pkg_version,
-      :revision => spec.revision,
-      :tag => tag
-    )
+    filename = Filename.create(formula, tag, spec.revision)
+    @resource.url = build_url(spec.root_url, filename)
     @resource.download_strategy = CurlBottleDownloadStrategy
     @resource.version = formula.pkg_version
     @resource.checksum = checksum
@@ -144,6 +168,12 @@ class Bottle
 
   def compatible_cellar?
     cellar == :any || cellar == HOMEBREW_CELLAR.to_s
+  end
+
+  private
+
+  def build_url(root_url, filename)
+    "#{root_url}/#{filename}"
   end
 end
 

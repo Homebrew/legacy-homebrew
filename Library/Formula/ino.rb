@@ -47,11 +47,9 @@ class Ino < Formula
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", prefix+"lib/python2.7/site-packages"
-    install_args = ["setup.py", "install", "--prefix=#{libexec}"]
 
-    res = %w[argparse ordereddict configobj pyserial jinja2 six markupsafe]
-    res.each do |r|
-      resource(r).stage { system "python", *install_args }
+    resources.each do |r|
+      r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
     end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"

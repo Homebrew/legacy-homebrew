@@ -206,7 +206,6 @@ def which_editor
 end
 
 def exec_editor *args
-  return if args.to_s.empty?
   safe_exec(which_editor, *args)
 end
 

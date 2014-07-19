@@ -79,19 +79,9 @@ class Saltstack < Formula
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    resource('pycrypto').stage { system "python", *install_args }
-    resource('pyyaml').stage { system "python", *install_args }
-    resource('pyzmq').stage { system "python", *install_args }
-    resource('msgpack-python').stage { system "python", *install_args }
-    resource('markupsafe').stage { system "python", *install_args }
-    resource('m2crypto').stage { system "python", *install_args }
-    resource('jinja2').stage { system "python", *install_args }
-    resource('apache-libcloud').stage { system "python", *install_args }
-
-    if build.head?
-      resource('requests').stage { system "python", *install_args }
+    resources.each do |r|
+      r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
     end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
