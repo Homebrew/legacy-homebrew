@@ -1,34 +1,10 @@
 require 'formula'
 
-class UniversalPython < Requirement
-  satisfy(:build_env => false) { archs_for_command("python").universal? }
-
-  def message; <<-EOS.undent
-    A universal build was requested, but Python is not a universal build
-
-    Boost compiles against the Python it finds in the path; if this Python
-    is not a universal build then linking will likely fail.
-    EOS
-  end
-end
-
-class UniversalPython3 < Requirement
-  satisfy(:build_env => false) { archs_for_command("python3").universal? }
-
-  def message; <<-EOS.undent
-    A universal build was requested, but Python 3 is not a universal build
-
-    Boost compiles against the Python 3 it finds in the path; if this Python
-    is not a universal build then linking will likely fail.
-    EOS
-  end
-end
-
 class Boost < Formula
   homepage 'http://www.boost.org'
   url 'https://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2'
   sha1 'cef9a0cc7084b1d639e06cd3bc34e4251524c840'
-  revision 2
+  revision 3
 
   head 'https://github.com/boostorg/boost.git'
 
@@ -48,15 +24,6 @@ class Boost < Formula
   option 'without-static', 'Disable building static library variant'
   option 'with-mpi', 'Build with MPI support'
   option :cxx11
-
-  depends_on :python => :optional
-  depends_on :python3 => :optional
-  depends_on UniversalPython if build.universal? and build.with? "python"
-  depends_on UniversalPython3 if build.universal? and build.with? "python3"
-
-  if build.with?("python3") && build.with?("python")
-    odie "boost: --with-python3 cannot be specified when using --with-python"
-  end
 
   if build.with? 'icu'
     if build.cxx11?
@@ -120,49 +87,26 @@ class Boost < Formula
       EOS
     end
 
-    if build.cxx11? and build.with? 'mpi' and (build.with? 'python' \
-                                               or build.with? 'python3')
-      raise <<-EOS.undent
-        Building MPI support for Python using C++11 mode results in
-        failure and hence disabled.  Please don't use this combination
-        of options.
-      EOS
-    end
-
     ENV.universal_binary if build.universal?
 
-    # Force boost to compile using the appropriate GCC version.
+    # Force boost to compile with the desired compiler
     open("user-config.jam", "a") do |file|
       file.write "using darwin : : #{ENV.cxx} ;\n"
       file.write "using mpi ;\n" if build.with? 'mpi'
-
-      # Link against correct version of Python if python3 build was requested
-      if build.with? 'python3'
-        py3executable = `which python3`.strip
-        py3version = `python3 -c "import sys; print(sys.version[:3])"`.strip
-        py3prefix = `python3 -c "import sys; print(sys.prefix)"`.strip
-
-        file.write <<-EOS.undent
-          using python : #{py3version}
-                       : #{py3executable}
-                       : #{py3prefix}/include/python#{py3version}m
-                       : #{py3prefix}/lib ;
-        EOS
-      end
     end
 
-    # we specify libdir too because the script is apparently broken
-    bargs = ["--prefix=#{prefix}", "--libdir=#{lib}"]
+    # libdir should be set by --prefix but isn't
+    bootstrap_args = ["--prefix=#{prefix}", "--libdir=#{lib}"]
 
     if build.with? 'icu'
       icu4c_prefix = Formula['icu4c'].opt_prefix
-      bargs << "--with-icu=#{icu4c_prefix}"
+      bootstrap_args << "--with-icu=#{icu4c_prefix}"
     else
-      bargs << '--without-icu'
+      bootstrap_args << '--without-icu'
     end
 
     # Handle libraries that will not be built.
-    without_libraries = []
+    without_libraries = ["python"]
 
     # The context library is implemented as x86_64 ASM, so it
     # won't build on PPC or 32-bit builds
@@ -176,12 +120,11 @@ class Boost < Formula
     # Boost.Log cannot be built using Apple GCC at the moment. Disabled
     # on such systems.
     without_libraries << "log" if ENV.compiler == :gcc || ENV.compiler == :llvm
-    without_libraries << "python" if (build.without? 'python' \
-                                      and build.without? 'python3')
     without_libraries << "mpi" if build.without? 'mpi'
 
-    bargs << "--without-libraries=#{without_libraries.join(',')}"
+    bootstrap_args << "--without-libraries=#{without_libraries.join(',')}"
 
+    # layout should be synchronized with boost-python
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
             "-d2",
@@ -213,7 +156,7 @@ class Boost < Formula
       end
     end
 
-    system "./bootstrap.sh", *bargs
+    system "./bootstrap.sh", *bootstrap_args
     system "./b2", *args
   end
 
