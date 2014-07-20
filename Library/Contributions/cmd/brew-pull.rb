@@ -29,7 +29,7 @@ ARGV.named.each do |arg|
     end
 
     url = url_match[0]
-    issue = url_match[4]
+    issue = url_match[3]
   end
 
   if tap_name = tap(url)
