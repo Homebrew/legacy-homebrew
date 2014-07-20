@@ -1118,7 +1118,7 @@ module Homebrew
     checks = Checks.new
 
     if ARGV.include? '--list-checks'
-      checks.methods.grep(/^check_/).sort.each { |m| puts m }
+      puts checks.methods.grep(/^check_/).sort
       exit
     end
 
