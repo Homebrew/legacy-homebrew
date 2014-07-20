@@ -91,7 +91,7 @@ module Homebrew
   end
 
   # we try to keep output minimal
-  def dump_build_config(f)
+  def dump_build_config(f=STDOUT)
     f.puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
     f.puts "HEAD: #{head}"
     f.puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}" if HOMEBREW_PREFIX.to_s != "/usr/local"
