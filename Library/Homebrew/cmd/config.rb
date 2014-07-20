@@ -2,7 +2,7 @@ require 'hardware'
 
 module Homebrew
   def config
-    dump_verbose_config
+    dump_verbose_config(STDOUT)
   end
 
   def llvm
@@ -121,25 +121,25 @@ module Homebrew
     Homebrew.dump_build_config(f)
   end
 
-  def dump_verbose_config
-    puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
-    puts "ORIGIN: #{origin}"
-    puts "HEAD: #{head}"
-    puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}"
-    puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
-    puts hardware
-    puts "OS X: #{MACOS_FULL_VERSION}-#{kernel}"
-    puts "Xcode: #{xcode}" if xcode
-    puts "CLT: #{clt}" if clt
-    puts "GCC-4.0: build #{gcc_40}" if gcc_40
-    puts "GCC-4.2: build #{gcc_42}" if gcc_42
-    puts "LLVM-GCC: build #{llvm}"  if llvm
-    puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
-    puts "MacPorts/Fink: #{macports_or_fink}" if macports_or_fink
-    puts "X11: #{describe_x11}"
-    puts "System Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}"
-    puts "Perl: #{describe_perl}"
-    puts "Python: #{describe_python}"
-    puts "Ruby: #{describe_ruby}"
+  def dump_verbose_config(f)
+    f.puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
+    f.puts "ORIGIN: #{origin}"
+    f.puts "HEAD: #{head}"
+    f.puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}"
+    f.puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
+    f.puts hardware
+    f.puts "OS X: #{MACOS_FULL_VERSION}-#{kernel}"
+    f.puts "Xcode: #{xcode}" if xcode
+    f.puts "CLT: #{clt}" if clt
+    f.puts "GCC-4.0: build #{gcc_40}" if gcc_40
+    f.puts "GCC-4.2: build #{gcc_42}" if gcc_42
+    f.puts "LLVM-GCC: build #{llvm}"  if llvm
+    f.puts "Clang: #{clang ? "#{clang} build #{clang_build}" : "N/A"}"
+    f.puts "MacPorts/Fink: #{macports_or_fink}" if macports_or_fink
+    f.puts "X11: #{describe_x11}"
+    f.puts "System Ruby: #{RUBY_VERSION}-#{RUBY_PATCHLEVEL}"
+    f.puts "Perl: #{describe_perl}"
+    f.puts "Python: #{describe_python}"
+    f.puts "Ruby: #{describe_ruby}"
   end
 end
