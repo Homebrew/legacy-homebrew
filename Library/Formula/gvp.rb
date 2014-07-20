@@ -2,8 +2,8 @@ require "formula"
 
 class Gvp < Formula
   homepage "https://github.com/pote/gvp"
-  url "https://github.com/pote/gvp/archive/0.0.4.tar.gz"
-  sha1 "39676c4dd1df4d099cf938122733fb5e2e24c0a0"
+  url "https://github.com/pote/gvp/archive/v0.1.0.tar.gz"
+  sha1 "c48bae47f8589e9bfd8addc94a9073be4c004305"
 
   bottle do
     cellar :any
