@@ -117,10 +117,6 @@ module Homebrew
     f.puts "X11: #{describe_x11}"
   end
 
-  def write_build_config(f)
-    Homebrew.dump_build_config(f)
-  end
-
   def dump_verbose_config(f)
     f.puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
     f.puts "ORIGIN: #{origin}"
