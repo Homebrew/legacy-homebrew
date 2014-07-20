@@ -1143,11 +1143,9 @@ module Homebrew
           EOS
         end
 
-        lines = out.to_s.split('\n')
         puts
-        opoo lines.shift
+        opoo out
         Homebrew.failed = true
-        puts lines
         first_warning = false
       end
     end
