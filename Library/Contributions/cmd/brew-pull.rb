@@ -42,8 +42,11 @@ ARGV.named.each do |arg|
   end
 
   if ARGV.include? '--bottle'
-    raise 'No pull request detected!' unless issue
-    url = "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+    if issue
+      url = "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+    else
+      raise "No pull request detected!"
+    end
   end
 
   # GitHub provides commits'/pull-requests' raw patches using this URL.
