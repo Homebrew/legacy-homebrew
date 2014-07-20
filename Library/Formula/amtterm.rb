@@ -8,6 +8,7 @@ class Amtterm < Formula
 
   resource "SOAP::Lite" do
     url "http://search.cpan.org/CPAN/authors/id/P/PH/PHRED/SOAP-Lite-1.11.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/P/PH/PHRED/SOAP-Lite-1.11.tar.gz"
     sha1 "b9e22c82a240737e87d6c720998feadcfb583768"
   end
 
