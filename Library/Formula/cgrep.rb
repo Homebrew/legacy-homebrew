@@ -5,8 +5,8 @@ class Cgrep < Formula
   include Language::Haskell::Cabal
 
   homepage "https://github.com/awgn/cgrep"
-  url "https://github.com/awgn/cgrep/archive/v6.4.2.tar.gz"
-  sha1 "209bc29721bcfdc5652839c54c89ceb2d5a86bf9"
+  url "https://github.com/awgn/cgrep/archive/v6.4.4.tar.gz"
+  sha1 "d36eef5d93e660df971a9f74d4ffff6ed6fab710"
   head "https://github.com/awgn/cgrep.git", :branch => "master"
 
   bottle do
