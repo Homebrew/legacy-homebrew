@@ -265,12 +265,8 @@ class Test
     puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula}#{Tty.reset}"
   end
 
-  def satisfied_requirements? formula_object, spec=:stable
-    requirements = if spec == :stable
-      formula_object.recursive_requirements
-    else
-      formula_object.send(spec).requirements
-    end
+  def satisfied_requirements? formula_object, spec
+    requirements = formula_object.send(spec).requirements
 
     unsatisfied_requirements = requirements.reject do |requirement|
       requirement.satisfied? || requirement.default_formula?
@@ -302,7 +298,7 @@ class Test
     dependencies = `brew deps #{formula}`.split("\n")
     dependencies -= `brew list`.split("\n")
     formula_object = Formulary.factory(formula)
-    return unless satisfied_requirements? formula_object
+    return unless satisfied_requirements?(formula_object, :stable)
 
     installed_gcc = false
     begin
