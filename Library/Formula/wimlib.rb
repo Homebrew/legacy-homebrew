@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Wimlib < Formula
-  homepage 'http://sourceforge.net/projects/wimlib/'
-  url 'https://downloads.sourceforge.net/project/wimlib/wimlib-1.5.3.tar.gz'
-  sha1 '07cfd75ad452cb29f0061196db3bb38230ece3de'
+  homepage "http://sourceforge.net/projects/wimlib/"
+  url "https://downloads.sourceforge.net/project/wimlib/wimlib-1.7.0.tar.gz"
+  sha1 "7f9bdd44a11f04e1550286b574579f48e2584d5a"
 
   bottle do
     cellar :any
@@ -12,8 +12,8 @@ class Wimlib < Formula
     sha1 "f7ed2dcc8efebe0702f188d3c0846392438b0c70" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'ntfs-3g'
+  depends_on "pkg-config" => :build
+  depends_on "ntfs-3g"
 
   def install
     system "./configure", "--disable-debug",
