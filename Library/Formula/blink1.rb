@@ -2,8 +2,8 @@ require "formula"
 
 class Blink1 < Formula
   homepage "http://thingm.com/products/blink-1.html"
-  url "https://github.com/todbot/blink1/archive/v1.81.tar.gz"
-  sha1 "8fd96bfad3e6781b165848ef59723fd4ceb16bc4"
+  url "https://github.com/todbot/blink1/archive/v1.91.tar.gz"
+  sha1 "255a00e457e7559685060b2aa09b96c5589c2b9d"
   head "https://github.com/todbot/blink1.git"
 
   bottle do
