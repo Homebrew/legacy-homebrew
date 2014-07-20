@@ -17,22 +17,24 @@ class Cleaner
 
     # Many formulae include 'lib/charset.alias', but it is not strictly needed
     # and will conflict if more than one formula provides it
-    alias_path = @f.lib/'charset.alias'
-    alias_path.extend(ObserverPathnameExtension).unlink if alias_path.exist?
+    observe_file_removal @f.lib/'charset.alias'
 
     [@f.bin, @f.sbin, @f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
 
     # Get rid of any info 'dir' files, so they don't conflict at the link stage
     info_dir_file = @f.info + 'dir'
     if info_dir_file.file? and not @f.skip_clean? info_dir_file
-      puts "rm #{info_dir_file}" if ARGV.verbose?
-      info_dir_file.unlink
+      observe_file_removal info_dir_file
     end
 
     prune
   end
 
   private
+
+  def observe_file_removal path
+    path.extend(ObserverPathnameExtension).unlink if path.exist?
+  end
 
   # Removes any empty directories in the formula's prefix subtree
   # Keeps any empty directions projected by skip_clean
