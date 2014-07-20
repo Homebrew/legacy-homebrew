@@ -1,18 +1,18 @@
-require 'formula'
+require "formula"
 
 class Geoip < Formula
-  homepage 'https://github.com/maxmind/geoip-api-c'
+  homepage "https://github.com/maxmind/geoip-api-c"
 
   stable do
-    url "https://github.com/maxmind/geoip-api-c/releases/download/v1.6.0/GeoIP-1.6.0.tar.gz"
-    sha1 "41ed21fb2d40e54648cae2a1f73e8a5210676def"
+    url "https://github.com/maxmind/geoip-api-c/archive/v1.6.2.tar.gz"
+    sha1 "aa9a91b61667b605f62964c613e15400cbca2cae"
 
     # Download test data so `make check` works. Fixed in HEAD.
     # See https://github.com/maxmind/geoip-api-c/commit/722707cc3a0adc06aec3e98bc36e7262f67ec0da
     patch :DATA
   end
 
-  head 'https://github.com/maxmind/geoip-api-c.git'
+  head "https://github.com/maxmind/geoip-api-c.git"
 
   bottle do
     cellar :any
@@ -21,10 +21,10 @@ class Geoip < Formula
     sha1 "a39b59af4ee01c7a1e224e9d98ee83d2230f7993" => :lion
   end
 
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
-  depends_on 'geoipupdate' => :optional
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "geoipupdate" => :optional
 
   option :universal
 
