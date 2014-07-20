@@ -7,9 +7,10 @@ class Arping < Formula
 
   bottle do
     cellar :any
-    sha1 "eabc0dbfda6ff745d722a9f9f7ff84db64381ccd" => :mavericks
-    sha1 "38b7d22becfe47fd17ba3dd856fd17f6c90ffbc8" => :mountain_lion
-    sha1 "877c2e5384864515e5861c8d3784d63440097433" => :lion
+    revision 1
+    sha1 "1db7d1377a337897e878c430495d6dc6c7cd8979" => :mavericks
+    sha1 "283a532a27da9619d90c2912d794a017d6badf11" => :mountain_lion
+    sha1 "6c7f3ef664dc3f119b1d6f0bbabbeeceddcd8941" => :lion
   end
 
   depends_on "autoconf" => :build
