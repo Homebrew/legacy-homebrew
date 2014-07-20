@@ -64,7 +64,9 @@ class Cleaner
     end
   end
 
-  # Clean a single folder (non-recursively)
+  # Clean a top-level (bin, sbin, lib) directory, recursively, by fixing file
+  # permissions and removing .la files, unless the files (or parent
+  # directories) are protected by skip_clean.
   def clean_dir d
     d.find do |path|
       path.extend(ObserverPathnameExtension)
