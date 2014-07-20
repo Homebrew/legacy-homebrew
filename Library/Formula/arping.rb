@@ -2,8 +2,8 @@ require "formula"
 
 class Arping < Formula
   homepage "https://github.com/ThomasHabets/arping"
-  url "https://github.com/ThomasHabets/arping/archive/arping-2.13.tar.gz"
-  sha1 "a253cdfcb83360d4acd5e4fe1d84ed8105a94829"
+  url "https://github.com/ThomasHabets/arping/archive/arping-2.14.tar.gz"
+  sha1 "f691b19e1ad20b853202ee12eaf178232b466bb2"
 
   bottle do
     cellar :any
