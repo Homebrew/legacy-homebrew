@@ -21,7 +21,7 @@ class Luciddb < Formula
       ENV['JAVA_HOME'] = `/usr/libexec/java_home`.chomp
       system "./install.sh"
     end
-    Dir["#{libexec}/bin/*"].each do |b|
+    Dir.glob("#{libexec}/bin/*") do |b|
       next if b =~ /classpath.gen/ or b =~ /defineFarragoRuntime/
       n = File.basename(b)
       (bin+n).write shim_script(n)

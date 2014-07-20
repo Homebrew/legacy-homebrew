@@ -40,7 +40,8 @@ def main
   # can be inconvenient for the user. But we need to be safe.
   system "/usr/bin/sudo", "-k"
 
-  Build.new(Formula.factory($0)).install
+  formula = Formulary.factory($0, ARGV.spec)
+  Build.new(formula).install
 rescue Exception => e
   unless error_pipe.nil?
     e.continuation = nil if ARGV.debug?
@@ -117,7 +118,7 @@ class Build
     ENV.activate_extensions!
 
     deps.map(&:to_formula).each do |dep|
-      opt = HOMEBREW_PREFIX/:opt/dep
+      opt = HOMEBREW_PREFIX.join("opt", dep.name)
       fixopt(dep) unless opt.directory?
     end
 
@@ -135,21 +136,20 @@ class Build
       deps.each(&:modify_build_environment)
 
       keg_only_deps.each do |dep|
-        opt = dep.opt_prefix
-        ENV.prepend_path 'PATH', "#{opt}/bin"
-        ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/lib/pkgconfig"
-        ENV.prepend_path 'PKG_CONFIG_PATH', "#{opt}/share/pkgconfig"
-        ENV.prepend_path 'ACLOCAL_PATH', "#{opt}/share/aclocal"
-        ENV.prepend_path 'CMAKE_PREFIX_PATH', opt
-        ENV.prepend 'LDFLAGS', "-L#{opt}/lib" if (opt/:lib).directory?
-        ENV.prepend 'CPPFLAGS', "-I#{opt}/include" if (opt/:include).directory?
+        ENV.prepend_path "PATH", dep.opt_bin.to_s
+        ENV.prepend_path "PKG_CONFIG_PATH", "#{dep.opt_lib}/pkgconfig"
+        ENV.prepend_path "PKG_CONFIG_PATH", "#{dep.opt_share}/pkgconfig"
+        ENV.prepend_path "ACLOCAL_PATH", "#{dep.opt_share}/aclocal"
+        ENV.prepend_path "CMAKE_PREFIX_PATH", dep.opt_prefix.to_s
+        ENV.prepend "LDFLAGS", "-L#{dep.opt_lib}" if dep.opt_lib.directory?
+        ENV.prepend "CPPFLAGS", "-I#{dep.opt_include}" if dep.opt_include.directory?
       end
     end
 
     f.brew do
       if ARGV.flag? '--git'
-        system "git init"
-        system "git add -A"
+        system "git", "init"
+        system "git", "add", "-A"
       end
       if ARGV.interactive?
         ohai "Entering interactive mode"
@@ -171,10 +171,11 @@ class Build
         begin
           f.install
 
+          keg = Keg.new(f.prefix)
           # This first test includes executables because we still
           # want to record the stdlib for something that installs no
           # dylibs.
-          stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
+          stdlibs = keg.detect_cxx_stdlibs
           # This currently only tracks a single C++ stdlib per dep,
           # though it's possible for different libs/executables in
           # a given formula to link to different ones.
@@ -190,7 +191,7 @@ class Build
           # of software installs an executable that links against libstdc++
           # and dylibs against libc++, libc++-only dependencies can safely
           # link against it.
-          stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs :skip_executables => true
+          stdlibs = keg.detect_cxx_stdlibs :skip_executables => true
 
           Tab.create(f, ENV.compiler, stdlibs.first,
             Options.coerce(ARGV.options_only)).write

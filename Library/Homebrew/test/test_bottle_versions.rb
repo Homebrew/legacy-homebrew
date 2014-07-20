@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'bottle_version'
 
-class BottleVersionParsingTests < Test::Unit::TestCase
+class BottleVersionParsingTests < Homebrew::TestCase
   def assert_version_detected expected, path
     assert_equal expected, BottleVersion.parse(path).to_s
   end
@@ -49,5 +49,10 @@ class BottleVersionParsingTests < Test::Unit::TestCase
   def test_fontforge_style
     assert_version_detected '20120731',
       '/usr/local/fontforge-20120731.mavericks.bottle.tar.gz'
+  end
+
+  def test_erlang_style
+    assert_version_detected 'R16B03-1',
+      'erlang-R16B03-1.mavericks.bottle.2.tar.gz'
   end
 end

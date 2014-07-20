@@ -17,7 +17,7 @@ class Uade < Formula
   depends_on 'libao'
 
   resource "bencode-tools" do
-     url "https://github.com/heikkiorsila/bencode-tools.git"
+    url "https://github.com/heikkiorsila/bencode-tools.git"
   end
 
   def install

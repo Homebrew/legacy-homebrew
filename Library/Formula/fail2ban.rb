@@ -1,29 +1,29 @@
-require 'formula'
+require "formula"
 
 class Fail2ban < Formula
-  homepage 'http://www.fail2ban.org/'
-  url 'https://github.com/fail2ban/fail2ban/archive/0.8.12.tar.gz'
-  sha1 '32a6cab154ccf48f6ae914612118d7ed4695fb26'
+  homepage "http://www.fail2ban.org/"
+  url "https://github.com/fail2ban/fail2ban/archive/0.8.13.tar.gz"
+  sha1 "2a2ddffb6e60e2997dcceb0ac25761aa6931f5f6"
 
   def install
-    rm 'setup.cfg'
-    inreplace 'setup.py' do |s|
+    rm "setup.cfg"
+    inreplace "setup.py" do |s|
       s.gsub! /\/etc/, etc
       s.gsub! /\/var/, var
     end
 
     # Replace hardcoded paths
-    inreplace 'fail2ban-client', '/usr/share/fail2ban', libexec
-    inreplace 'fail2ban-server', '/usr/share/fail2ban', libexec
-    inreplace 'fail2ban-regex', '/usr/share/fail2ban', libexec
+    inreplace "fail2ban-client", "/usr/share/fail2ban", libexec
+    inreplace "fail2ban-server", "/usr/share/fail2ban", libexec
+    inreplace "fail2ban-regex", "/usr/share/fail2ban", libexec
 
-    inreplace 'fail2ban-client', '/etc', etc
-    inreplace 'fail2ban-regex', '/etc', etc
+    inreplace "fail2ban-client", "/etc", etc
+    inreplace "fail2ban-regex", "/etc", etc
 
-    inreplace 'fail2ban-server', '/var', var
-    inreplace 'config/fail2ban.conf', '/var/run', (var/'run')
+    inreplace "fail2ban-server", "/var", var
+    inreplace "config/fail2ban.conf", "/var/run", (var/"run")
 
-    inreplace 'setup.py', '/usr/share/doc/fail2ban', (libexec/'doc')
+    inreplace "setup.py", "/usr/share/doc/fail2ban", (libexec/"doc")
 
     system "python", "setup.py", "install", "--prefix=#{prefix}", "--install-lib=#{libexec}"
   end

@@ -18,8 +18,10 @@ class Alure < Formula
     # fix a broken include flags line, which fixes a build error.
     # Not reported upstream.
     # https://github.com/Homebrew/homebrew/pull/6368
-    inreplace 'CMakeLists.txt', '${VORBISFILE_CFLAGS}',
-                                %x[pkg-config --cflags vorbisfile].chomp
+    if build.with? "libvorbis"
+      inreplace "CMakeLists.txt", "${VORBISFILE_CFLAGS}",
+        %x[pkg-config --cflags vorbisfile].chomp
+    end
 
     cd "build" do
       system "cmake", "..", *std_cmake_args

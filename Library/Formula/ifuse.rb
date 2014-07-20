@@ -7,13 +7,13 @@ class Ifuse < Formula
 
   head 'http://cgit.sukimashita.com/ifuse.git'
 
-  depends_on 'pkg-config' => :build
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
-  depends_on 'glib'
-  depends_on 'libimobiledevice'
-  depends_on 'osxfuse'
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "glib"
+  depends_on "libimobiledevice"
+  depends_on "osxfuse"
 
   def install
     system "./autogen.sh"

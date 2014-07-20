@@ -2,14 +2,14 @@ require 'formula'
 
 class Leiningen < Formula
   homepage 'https://github.com/technomancy/leiningen'
-  url 'https://github.com/technomancy/leiningen/archive/2.3.4.tar.gz'
-  sha1 '0fdccbc441237a1dde5dd16b5d9edb936c4a8c36'
+  url 'https://github.com/technomancy/leiningen/archive/2.4.2.tar.gz'
+  sha1 '1b8ad13023c23128b47972b8d386e83f3c04f3f0'
 
   head 'https://github.com/technomancy/leiningen.git'
 
   resource 'jar' do
-    url 'https://leiningen.s3.amazonaws.com/downloads/leiningen-2.3.4-standalone.jar'
-    sha1 '59718bb8553f25b8ca853f57dd259cd81eb16f91'
+    url 'https://github.com/technomancy/leiningen/releases/download/2.4.2/leiningen-2.4.2-standalone.jar'
+    sha1 'cd1e649178ab625a773a9dfa51456df5c352960c'
   end
 
   def install

@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'formula'
 
-class FormulaValidationTests < Test::Unit::TestCase
+class FormulaValidationTests < Homebrew::TestCase
   def assert_invalid(attr, &block)
     e = assert_raises(FormulaValidationError, &block)
     assert_equal attr, e.attr

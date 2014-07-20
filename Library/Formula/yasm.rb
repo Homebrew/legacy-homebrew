@@ -15,9 +15,9 @@ class Yasm < Formula
   head do
     url 'https://github.com/yasm/yasm.git'
 
-    depends_on 'gettext'
-    depends_on :autoconf
-    depends_on :automake
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "gettext"
   end
 
   depends_on :python => :optional

@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'extend/string'
 
-class InreplaceTest < Test::Unit::TestCase
+class InreplaceTest < Homebrew::TestCase
   def test_change_make_var
     # Replace flag
     s1="OTHER=def\nFLAG = abc\nFLAG2=abc"

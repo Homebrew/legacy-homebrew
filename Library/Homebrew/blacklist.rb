@@ -79,5 +79,13 @@ def blacklisted? name
     GNU Fortran is now provided as part of GCC, and can be installed with:
       brew install gcc
     EOS
+  when 'play' then <<-EOS.undent
+    Play 2.3 replaces the play command with activator:
+      brew install typesafe-activator
+
+    You can read more about this change at:
+      http://www.playframework.com/documentation/2.3.x/Migration23
+      http://www.playframework.com/documentation/2.3.x/Highlights23
+    EOS
   end
 end

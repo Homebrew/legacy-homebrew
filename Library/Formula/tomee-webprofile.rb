@@ -2,9 +2,9 @@ require 'formula'
 
 class TomeeWebprofile < Formula
   homepage 'http://tomee.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.6.0.1/apache-tomee-1.6.0.1-webprofile.tar.gz'
-  version '1.6.0.1'
-  sha1 'e9dc8d814ccee49c48bd2f077474ed312cac226d'
+  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.6.0.2/apache-tomee-1.6.0.2-webprofile.tar.gz'
+  version '1.6.0.2'
+  sha1 'd68cdc7a21c8e2286140fc8e73c4192a3018c018'
 
   # Keep log folders
   skip_clean 'libexec'

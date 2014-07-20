@@ -7,6 +7,13 @@ class Libfreenect < Formula
 
   head "https://github.com/OpenKinect/libfreenect.git"
 
+  bottle do
+    cellar :any
+    sha1 "c3688a5a4ba70b4402ab55b3b7a3edab2b423cd7" => :mavericks
+    sha1 "3a58faa6c9aa9ba21b70cb83f5333a1b2e0a1139" => :mountain_lion
+    sha1 "e191312fdb3a55c4c04cd7ae622d9b1d13558a79" => :lion
+  end
+
   option :universal
 
   depends_on "cmake" => :build

@@ -5,6 +5,7 @@ $ brew graph | dot -Tsvg -ohomebrew.html
 $ open homebrew.html
 """
 from __future__ import with_statement
+from __future__ import print_function
 
 from contextlib import contextmanager
 import re
@@ -14,7 +15,7 @@ import sys
 
 def run(command, print_command=False):
     "Run a command, returning the exit code and output."
-    if print_command: print command
+    if print_command: print(command)
     p = Popen(command, stdout=PIPE)
     output, errput = p.communicate()
     return p.returncode, output
@@ -361,4 +362,8 @@ def main():
 
 
 if __name__ == "__main__":
+    print("""Warning: brew graph is unsupported and will be removed soon.
+You should use `brew deps --tree` instead.
+Please feel free volunteer to support it in a tap.
+    """, file=sys.stderr)
     main()

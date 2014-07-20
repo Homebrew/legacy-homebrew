@@ -1,8 +1,8 @@
 require "formula"
 
 class Cmus < Formula
-  homepage "http://cmus.sourceforge.net/"
-  head "https://git.gitorious.org/cmus/cmus.git"
+  homepage "https://cmus.github.io/"
+  head "https://github.com/cmus/cmus.git"
 
   stable do
     url "https://github.com/cmus/cmus/archive/v2.5.1.tar.gz"

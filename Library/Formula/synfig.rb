@@ -20,7 +20,7 @@ class Synfig < Formula
   depends_on 'pango'
   depends_on 'boost'
   depends_on 'openexr'
-  depends_on :libtool => :run
+  depends_on "libtool" => :run
 
   # Candidate upstream patch for Xcode 5
   # http://www.synfig.org/issues/thebuggenie/synfig/issues/504

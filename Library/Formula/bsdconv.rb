@@ -19,7 +19,9 @@ class Bsdconv < Formula
     Open3.popen3("#{bin}/bsdconv", "big5:utf-8") do |stdin, stdout, _|
       stdin.write("\263\134\245\134\273\134")
       stdin.close
-      assert_equal "許功蓋", stdout.read
+      result = stdout.read
+      result.force_encoding(Encoding::UTF_8) if result.respond_to?(:force_encoding)
+      assert_equal "許功蓋", result
     end
   end
 end

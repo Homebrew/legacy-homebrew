@@ -2,8 +2,8 @@ require 'formula'
 
 class Pygobject3 < Formula
   homepage 'http://live.gnome.org/PyGObject'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.12/pygobject-3.12.0.tar.xz'
-  sha256 '0d4485311fcfb073dc37432e36ad1d45bcf9f8796a1e8ff20a6494e0297dbd1a'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.12/pygobject-3.12.2.tar.xz'
+  sha256 '7e7a3d349acf5bb4b68f8539a42e67958840a67cd4f0341ee9aa49189af2a522'
 
   option 'with-tests', 'run tests'
 

@@ -2,20 +2,20 @@ require 'formula'
 
 class Scala < Formula
   homepage 'http://www.scala-lang.org/'
-  url 'http://www.scala-lang.org/files/archive/scala-2.11.0.tgz'
-  sha1 '65d1ef6231b4f08444dd10a015d2d82ea5444486'
+  url 'http://www.scala-lang.org/files/archive/scala-2.11.1.tgz'
+  sha1 '058281d9ed7738c99a9d5cd4988370448a12d0c1'
 
   option 'with-docs', 'Also install library documentation'
   option 'with-src', 'Also install sources for IDE support'
 
   resource 'docs' do
-    url 'http://www.scala-lang.org/files/archive/scala-docs-2.11.0.zip'
-    sha1 '4194808c15c928e902e9e36dbaaab05ca660213f'
+    url 'http://www.scala-lang.org/files/archive/scala-docs-2.11.1.zip'
+    sha1 'd2dfe19d04f42932aaf6fcb5d3025c16a7c8a0cb'
   end
 
   resource 'src' do
-    url 'https://github.com/scala/scala/archive/v2.11.0.tar.gz'
-    sha1 'bc1e301741854424a2ed8949cc46fa9091bc1b46'
+    url 'https://github.com/scala/scala/archive/v2.11.1.tar.gz'
+    sha1 '934a2a5e158324399d24f81c9014032ffa0e91ff'
   end
 
   resource 'completion' do
@@ -26,8 +26,8 @@ class Scala < Formula
   def install
     rm_f Dir["bin/*.bat"]
     doc.install Dir['doc/*']
-    man1.install Dir['man/man1/*']
-    libexec.install Dir['*']
+    share.install "man"
+    libexec.install "bin", "lib"
     bin.install_symlink Dir["#{libexec}/bin/*"]
     bash_completion.install resource('completion')
     doc.install resource('docs') if build.with? 'docs'

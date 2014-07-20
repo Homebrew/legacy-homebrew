@@ -75,6 +75,7 @@ class DnscryptProxy < Formula
         <array>
           <string>#{opt_sbin}/dnscrypt-proxy</string>
           <string>--user=nobody</string>
+          <string>--resolver-name=opendns</string>
         </array>
         <key>UserName</key>
         <string>root</string>

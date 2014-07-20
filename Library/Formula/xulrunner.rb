@@ -34,20 +34,20 @@ end
 
 class Xulrunner < Formula
   homepage "https://developer.mozilla.org/docs/XULRunner"
-  url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/29.0/source/xulrunner-29.0.source.tar.bz2"
-  sha1 "8ebf863a2bb81f5c9ca5bd70ff77997084c97972"
+  url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/30.0/source/xulrunner-30.0.source.tar.bz2"
+  sha1 "d987efafc67cb0170c6a5dabb9cede3b98e5c24b"
 
   bottle do
     cellar :any
-    sha1 "d3fc3ea698a98ed6e1c1392fbe0a6302e9f9559e" => :mavericks
-    sha1 "b7559789badd44d8c890a64ca4fced4d1d1e6cb9" => :mountain_lion
-    sha1 "cac59a0b84adb0a44369d9ef1513c2ffe35e4f43" => :lion
+    sha1 "b9ce9af762ae4fcbafc3812f81461dc01edca322" => :mavericks
+    sha1 "390f9aee89766814b38f9aba9360c8dec1a2cb07" => :mountain_lion
+    sha1 "7d1245a5c30266fc379ed6d68feb5736741e9019" => :lion
   end
 
   devel do
-    url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/30.0b1/source/xulrunner-30.0b1.source.tar.bz2"
-    sha1 "a3129b91738be992180436750828f6d43e7c5a21"
-    version "30.0b1"
+    url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/31.0b1/source/xulrunner-31.0b1.source.tar.bz2"
+    sha1 "defcf12f71082ddc167ac5c49fd3a307faa5e8f2"
+    version "31.0b1"
   end
 
   head do
@@ -58,13 +58,14 @@ class Xulrunner < Formula
   end
 
   depends_on :macos => :lion # needs clang++
-  depends_on :xcode
+  depends_on :xcode => :build
   depends_on :python => :build
   depends_on Python273Requirement => :build
   depends_on "gnu-tar" => :build
   depends_on "pkg-config" => :build
   depends_on "yasm"
   depends_on "nss"
+  depends_on "nspr"
 
   fails_with :gcc do
     cause "Mozilla XULRunner only supports Clang on OS X"
@@ -98,6 +99,7 @@ class Xulrunner < Formula
       ac_add_options --disable-crashreporter
       ac_add_options --with-macos-sdk=#{MacOS.sdk_path}
       ac_add_options --with-nss-prefix=#{Formula["nss"].opt_prefix}
+      ac_add_options --with-nspr-prefix=#{Formula["nspr"].opt_prefix}
     EOS
     # fixed usage of bsdtar with unsupported parameters (replaced with gnu-tar)
     inreplace "toolkit/mozapps/installer/packager.mk", "$(TAR) -c --owner=0 --group=0 --numeric-owner",
@@ -109,7 +111,7 @@ class Xulrunner < Formula
     frameworks.mkpath
     if build.head?
       # update HEAD version here with every version bump
-      tar_path = "objdir/dist/xulrunner-32.0a1.en-US.mac64.tar.bz2"
+      tar_path = "objdir/dist/xulrunner-33.0a1.en-US.mac64.tar.bz2"
     else
       tar_path = "objdir/dist/xulrunner-#{version.to_s[/\d+\.\d+(\.\d+)?/]}.en-US.mac64.tar.bz2"
     end

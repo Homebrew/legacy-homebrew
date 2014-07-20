@@ -2,8 +2,8 @@ require 'formula'
 
 class Opusfile < Formula
   homepage 'http://www.opus-codec.org/'
-  url 'http://downloads.xiph.org/releases/opus/opusfile-0.5.tar.gz'
-  sha1 '1ba9dabbbaa35034af8167661a918df6c003317e'
+  url 'http://downloads.xiph.org/releases/opus/opusfile-0.6.tar.gz'
+  sha1 '2422e3c7bf6105a832226850b19053ec5ac41293'
 
   head do
     url "https://git.xiph.org/opusfile.git"

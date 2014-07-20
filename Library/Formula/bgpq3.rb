@@ -2,15 +2,13 @@ require 'formula'
 
 class Bgpq3 < Formula
   homepage 'http://snar.spb.ru/prog/bgpq3/'
-  url 'http://snar.spb.ru/prog/bgpq3/bgpq3-0.1.19.tgz'
-  sha1 '41a2afaeffb12e43048ca8771c6cc6e6392e0da5'
+  url 'http://snar.spb.ru/prog/bgpq3/bgpq3-0.1.21.tgz'
+  sha1 '42b2ea29c15e3e57c83c9d5f21c793944e1f2b61'
   head "https://github.com/snar/bgpq3.git"
 
-  # Makefile: upstream has been informed of the patch through email,
-  # but no plans yet to incorporate it
-  # https://github.com/snar/bgpq3/pull/2
-  # strlcpy.c patch: upstream accepted but has not yet created a release
-  # https://github.com/snar/bgpq3/commit/89d864
+  # Makefile: upstream has been informed of the patch through email (multiple
+  # times) but no plans yet to incorporate it https://github.com/snar/bgpq3/pull/2
+  # there was discussion about this patch for 0.1.18 and 0.1.19 as well
   patch :DATA
 
   def install
@@ -41,18 +39,3 @@ index c2d7e96..afec780 100644
 
  depend:
  	makedepend -- $(CFLAGS) -- $(SRCS)
-diff --git a/strlcpy.c b/strlcpy.c
-index 6d4b7b0..f66dc42 100644
---- a/strlcpy.c
-+++ b/strlcpy.c
-@@ -27,6 +27,10 @@
-  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  */
-
-+#if HAVE_CONFIG_H
-+#include "config.h"
-+#endif
-+
- #ifndef HAVE_STRLCPY
-
- #include <sys/types.h>

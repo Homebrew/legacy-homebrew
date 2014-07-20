@@ -2,25 +2,26 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.42.tar.gz'
-  sha1 'cdc20111ed0bc01e13c6e56f6a6febf54a55b476'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.46.tar.gz'
+  sha1 '285ff151267c270ef1c85675186d0caeb61b9133'
   head 'https://github.com/phusion/passenger.git'
 
   bottle do
-    sha1 "7d5a41e0df41c3e5e9637b251c6870cc097b0f4c" => :mavericks
-    sha1 "fae85438a1297a0ab189c158297fc4d2403bf469" => :mountain_lion
-    sha1 "2ef483097daa6ac6d20e94fed64a942070d90e57" => :lion
+    sha1 "145604c85fc5d0a5e24bc31fb33e4c197f181ae4" => :mavericks
+    sha1 "33ac96ecd2120ff131f4db1670c12a04cf87f421" => :mountain_lion
   end
 
   depends_on 'pcre'
-  depends_on :macos => :lion
+  depends_on :macos => :mountain_lion
+
+  option 'without-apache2-module', 'Disable Apache2 module'
 
   def install
-    rake "apache2"
+    rake "apache2" if build.with? "apache2-module"
     rake "nginx"
     rake "webhelper"
 
-    necessary_files = Dir["configure", "Rakefile", "README.md", "CONTRIBUTORS",
+    necessary_files = Dir[".editorconfig", "configure", "Rakefile", "README.md", "CONTRIBUTORS",
       "CONTRIBUTING.md", "LICENSE", "CHANGELOG", "INSTALL.md",
       "passenger.gemspec", "build", "lib", "node_lib", "bin", "doc", "man",
       "helper-scripts", "ext", "resources", "buildout"]
@@ -43,15 +44,21 @@ class Passenger < Formula
     mv libexec/'man', share
   end
 
-  def caveats; <<-EOS.undent
-    To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
-      LoadModule passenger_module #{opt_libexec}/buildout/apache2/mod_passenger.so
-      PassengerRoot #{opt_libexec}/lib/phusion_passenger/locations.ini
-      PassengerDefaultRuby /usr/bin/ruby
+  def caveats
+    s = <<-EOS.undent
+      To activate Phusion Passenger for Nginx, run:
+        brew install nginx --with-passenger
 
-    To activate Phusion Passenger for Nginx, run:
-      brew install nginx --with-passenger
-    EOS
+      EOS
+
+    s += <<-EOS.undent if build.with? "apache2-module"
+      To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
+        LoadModule passenger_module #{opt_libexec}/buildout/apache2/mod_passenger.so
+        PassengerRoot #{opt_libexec}/lib/phusion_passenger/locations.ini
+        PassengerDefaultRuby /usr/bin/ruby
+
+      EOS
+    s
   end
 
   test do

@@ -1,4 +1,4 @@
-module Homebrew extend self
+module Homebrew
   def tests
     (HOMEBREW_LIBRARY/'Homebrew/test').cd do
       ENV['TESTOPTS'] = '-v' if ARGV.verbose?

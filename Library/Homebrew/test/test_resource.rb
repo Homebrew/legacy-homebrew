@@ -1,9 +1,7 @@
 require 'testing_env'
 require 'resource'
 
-class ResourceTests < Test::Unit::TestCase
-  include VersionAssertions
-
+class ResourceTests < Homebrew::TestCase
   def setup
     @resource = Resource.new('test')
   end
@@ -40,6 +38,10 @@ class ResourceTests < Test::Unit::TestCase
     assert_equal GitDownloadStrategy, @resource.download_strategy
   end
 
+  def test_raises_for_unknown_download_strategy_class
+    assert_raises(TypeError) { @resource.url("foo", :using => Class.new) }
+  end
+
   def test_does_not_mutate_specs_hash
     specs = { :using => :git, :branch => 'master' }
     @resource.url('foo', specs)
@@ -51,26 +53,26 @@ class ResourceTests < Test::Unit::TestCase
   def test_version
     @resource.version('1.0')
     assert_version_equal '1.0', @resource.version
-    assert !@resource.version.detected_from_url?
+    refute_predicate @resource.version, :detected_from_url?
   end
 
   def test_version_from_url
-    @resource.url('http://foo.com/bar-1.0.tar.gz')
+    @resource.url('http://example.com/foo-1.0.tar.gz')
     assert_version_equal '1.0', @resource.version
-    assert @resource.version.detected_from_url?
+    assert_predicate @resource.version, :detected_from_url?
   end
 
   def test_version_with_scheme
-    scheme = Class.new(Version)
-    @resource.version('1.0' => scheme)
+    klass = Class.new(Version)
+    @resource.version klass.new("1.0")
     assert_version_equal '1.0', @resource.version
-    assert_instance_of scheme, @resource.version
+    assert_instance_of klass, @resource.version
   end
 
   def test_version_from_tag
-    @resource.url('http://foo.com/bar-1.0.tar.gz', :tag => 'v1.0.2')
+    @resource.url('http://example.com/foo-1.0.tar.gz', :tag => 'v1.0.2')
     assert_version_equal '1.0.2', @resource.version
-    assert @resource.version.detected_from_url?
+    assert_predicate @resource.version, :detected_from_url?
   end
 
   def test_rejects_non_string_versions

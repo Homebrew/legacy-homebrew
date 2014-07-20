@@ -13,7 +13,10 @@ class Sdl2Mixer < Formula
   depends_on 'libmikmod' => :optional
   depends_on 'libvorbis' => :optional
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
     inreplace 'SDL2_mixer.pc.in', '@prefix@', HOMEBREW_PREFIX
 
     system "./configure", "--prefix=#{prefix}",

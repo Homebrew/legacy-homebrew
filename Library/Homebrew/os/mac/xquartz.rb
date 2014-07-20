@@ -47,7 +47,7 @@ module OS
         when "10.5"
           "2.6.3"
         else
-          "2.7.5"
+          "2.7.6"
         end
       end
 
@@ -56,7 +56,9 @@ module OS
       end
 
       def version_from_mdls(path)
-        version = `mdls -raw -nullMarker "" -name kMDItemVersion "#{path}" 2>/dev/null`.strip
+        version = Utils.popen_read(
+          "/usr/bin/mdls", "-raw", "-nullMarker", "", "-name", "kMDItemVersion", path.to_s
+        ).strip
         version unless version.empty?
       end
 

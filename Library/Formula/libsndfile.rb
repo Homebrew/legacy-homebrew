@@ -12,13 +12,13 @@ class Libsndfile < Formula
     sha1 "f3c80b95ef44874272104d8eadc41aa417523766" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
-  depends_on 'flac'
-  depends_on 'libogg'
-  depends_on 'libvorbis'
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "flac"
+  depends_on "libogg"
+  depends_on "libvorbis"
 
   option :universal
 

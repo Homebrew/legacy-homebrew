@@ -2,8 +2,8 @@ require 'formula'
 
 class Dpkg < Formula
   homepage 'https://wiki.debian.org/Teams/Dpkg'
-  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.9.tar.xz'
-  sha1 '9e49682e77929217da9b88f570be192c4276506a'
+  url 'http://ftp.debian.org/debian/pool/main/d/dpkg/dpkg_1.17.10.tar.xz'
+  sha1 '2d88ef04db662d046fadb005bb31667fc0ba64de'
 
   depends_on 'pkg-config' => :build
   depends_on 'gnu-tar'

@@ -2,7 +2,7 @@ require 'testing_env'
 require 'test/testball'
 require 'cmd/cleanup'
 
-class CleanupTests < Test::Unit::TestCase
+class CleanupTests < Homebrew::TestCase
   def test_cleanup
     f1 = Class.new(TestBall) { version '0.1' }.new
     f2 = Class.new(TestBall) { version '0.2' }.new
@@ -14,14 +14,17 @@ class CleanupTests < Test::Unit::TestCase
       f3.brew { f3.install }
     end
 
-    assert f1.installed?
-    assert f2.installed?
-    assert f3.installed?
+    assert_predicate f1, :installed?
+    assert_predicate f2, :installed?
+    assert_predicate f3, :installed?
 
     shutup { Homebrew.cleanup_formula(f3) }
 
-    assert !f1.installed?
-    assert !f2.installed?
-    assert f3.installed?
+    refute_predicate f1, :installed?
+    refute_predicate f2, :installed?
+    assert_predicate f3, :installed?
+  ensure
+    [f1, f2, f3].each(&:clear_cache)
+    f3.rack.rmtree
   end
 end

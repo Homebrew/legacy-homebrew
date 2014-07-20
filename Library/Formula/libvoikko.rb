@@ -5,6 +5,13 @@ class Libvoikko < Formula
   url 'http://www.puimula.org/voikko-sources/libvoikko/libvoikko-3.7.tar.gz'
   sha1 '27ad3f72316d3878a0ed7b94a9e855bff66cb81b'
 
+  bottle do
+    cellar :any
+    sha1 "db25afc7130491bbf3e5097c04a0eca8d7a2915d" => :mavericks
+    sha1 "0663d391a2962d6245a89e17afd2a45b7c4a5460" => :mountain_lion
+    sha1 "2fa799be5ce26948edc2c5c4c7e74c181aee9dc6" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'suomi-malaga-voikko'
 

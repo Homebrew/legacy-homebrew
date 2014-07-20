@@ -18,7 +18,7 @@ class CouchdbLucene < Formula
     rm_rf Dir["bin/*.bat"]
     libexec.install Dir["*"]
 
-    Dir["#{libexec}/bin/*"].each do |path|
+    Dir.glob("#{libexec}/bin/*") do |path|
       bin_name = File.basename(path)
       (bin+bin_name).write shim_script(bin_name)
     end

@@ -52,7 +52,7 @@ class Geoip < Formula
 
     # Since default data directory moved, copy existing DBs
     legacy_data = Pathname.new "#{HOMEBREW_PREFIX}/share/GeoIP"
-    cp Dir.glob("#{legacy_data}/*"), geoip_data if legacy_data.exist?
+    cp Dir["#{legacy_data}/*"], geoip_data if legacy_data.exist?
 
     ["City", "Country"].each do |type|
       full = Pathname.new "#{geoip_data}/GeoIP#{type}.dat"

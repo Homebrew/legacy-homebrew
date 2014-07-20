@@ -7,8 +7,9 @@ class Squirrel < Formula
   sha1 '384d278630040902bc111d8b9fb607d4d4941904'
 
   def install
+    # -s causes the linker to crash
+    inreplace "sq/Makefile", " -s ", " "
     system "make"
-
     prefix.install %w[bin include lib]
     doc.install Dir['doc/*.pdf']
     doc.install %w[etc samples]

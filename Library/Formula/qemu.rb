@@ -9,7 +9,7 @@ class Qemu < Formula
   head 'git://git.qemu-project.org/qemu.git'
 
   depends_on 'pkg-config' => :build
-  depends_on :libtool
+  depends_on 'libtool' => :build
   depends_on 'jpeg'
   depends_on 'gnutls'
   depends_on 'glib'

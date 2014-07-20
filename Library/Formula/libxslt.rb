@@ -6,6 +6,12 @@ class Libxslt < Formula
   mirror 'http://xmlsoft.org/sources/libxslt-1.1.28.tar.gz'
   sha1 '4df177de629b2653db322bfb891afa3c0d1fa221'
 
+  bottle do
+    sha1 "c4d074b187410fd61717eeefb3223dbcea0238e9" => :mavericks
+    sha1 "f48d9e65910f3749ddb31245455233f5195884d0" => :mountain_lion
+    sha1 "7ec19f550aaecb6098c2cdadb19177232b5fc07f" => :lion
+  end
+
   keg_only :provided_by_osx
 
   depends_on 'libxml2'

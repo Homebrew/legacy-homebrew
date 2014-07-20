@@ -1,9 +1,7 @@
 require 'testing_env'
 require 'version'
 
-class VersionTests < Test::Unit::TestCase
-  include VersionAssertions
-
+class VersionTests < Homebrew::TestCase
   def test_accepts_objects_responding_to_to_str
     value = stub(:to_str => '0.1')
     assert_equal '0.1', Version.new(value).to_s
@@ -28,9 +26,7 @@ class VersionTests < Test::Unit::TestCase
   end
 end
 
-class VersionComparisonTests < Test::Unit::TestCase
-  include VersionAssertions
-
+class VersionComparisonTests < Homebrew::TestCase
   def test_version_comparisons
     assert_operator version('0.1'), :==, version('0.1.0')
     assert_operator version('0.1'), :<, version('0.2')
@@ -67,7 +63,9 @@ class VersionComparisonTests < Test::Unit::TestCase
   end
 
   def test_comparison_returns_nil_for_non_version
-    assert_nil version('1.0') <=> 'foo'
+    v = version("1.0")
+    assert_nil v <=> Object.new
+    assert_raises(ArgumentError) { v > Object.new }
   end
 
   def test_compare_patchlevel_to_non_patchlevel
@@ -85,9 +83,8 @@ class VersionComparisonTests < Test::Unit::TestCase
     v2 = version('0.1.0')
     v3 = version('0.1.1')
 
-    assert v1.eql?(v2)
-    assert v2.eql?(v1)
-    assert !v1.eql?(v3)
+    assert_eql v1, v2
+    refute_eql v1, v3
     assert_equal v1.hash, v2.hash
 
     h = { v1 => :foo }
@@ -95,13 +92,13 @@ class VersionComparisonTests < Test::Unit::TestCase
   end
 end
 
-class VersionParsingTests < Test::Unit::TestCase
-  include VersionAssertions
-
+class VersionParsingTests < Homebrew::TestCase
   def test_pathname_version
     d = HOMEBREW_CELLAR/'foo-0.1.9'
     d.mkpath
     assert_equal version('0.1.9'), d.version
+  ensure
+    d.unlink
   end
 
   def test_no_version

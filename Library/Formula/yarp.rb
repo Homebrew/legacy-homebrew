@@ -1,22 +1,23 @@
-require 'formula'
+require "formula"
 
 class Yarp < Formula
-  homepage 'http://yarp.it'
-  url 'https://downloads.sourceforge.net/yarp0/yarp-2.3.62.tar.gz'
-  sha1 '96e35fe64365d6b85d24e11d37f31a974f026df8'
+  homepage "http://yarp.it"
+  head "https://github.com/robotology/yarp.git"
+  url "https://github.com/robotology/yarp/archive/v2.3.62.tar.gz"
+  sha1 "148fc9d77cc4b68119c31066b452e9607de0f066"
 
-  head 'https://yarp0.svn.sourceforge.net/svnroot/yarp0/trunk/yarp2'
+  option "without-shared", "Build only static version of YARP libraries"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'cmake' => :build
-  depends_on 'ace'
-  depends_on 'gsl'
-  depends_on 'gtk+'
-  depends_on 'gtkmm'
-  depends_on 'libglademm'
-  depends_on 'sqlite'
-  depends_on 'readline'
-  depends_on 'jpeg'
+  depends_on "pkg-config" => :build
+  depends_on "cmake" => :build
+  depends_on "ace"
+  depends_on "gsl"
+  depends_on "gtk+"
+  depends_on "gtkmm"
+  depends_on "libglademm"
+  depends_on "sqlite"
+  depends_on "readline"
+  depends_on "jpeg"
   depends_on :x11
 
   def install
@@ -38,10 +39,17 @@ class Yarp < Formula
       -DCREATE_YARPVIEW=TRUE
       -DCREATE_YARPSCOPE=TRUE
       -DCREATE_GYARPMANAGER=TRUE
-      .]
+      ]
+
+      if build.without? "shared"
+        args << "-DCREATE_SHARED_LIBRARY:BOOL=FALSE"
+      else
+        args << "-DCREATE_SHARED_LIBRARY:BOOL=TRUE"
+      end
+      args << "."
 
     system "cmake", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do

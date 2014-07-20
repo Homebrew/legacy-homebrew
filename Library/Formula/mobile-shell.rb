@@ -18,6 +18,10 @@ class MobileShell < Formula
   def install
     system "./autogen.sh" if build.head?
 
+    # teach mosh to locate mosh-client without referring
+    # PATH to support launching outside shell e.g. via launcher
+    inreplace "scripts/mosh", "'mosh-client", "\'#{bin}/mosh-client"
+
     # Upstream prefers O2:
     # https://github.com/keithw/mosh/blob/master/README.md
     ENV.O2

@@ -18,7 +18,11 @@ class Ngrep < Formula
                           "--enable-ipv6",
                           "--prefix=#{prefix}",
                           # this line required to make configure succeed
-                          "--with-pcap-includes=/usr/include"
+                          "--with-pcap-includes=/usr/include",
+                          # this line required to avoid segfaults
+                          # see https://github.com/jpr5/ngrep/commit/e29fc29
+                          # https://github.com/Homebrew/homebrew/issues/27171
+                          "--disable-pcap-restart"
     system "make install"
   end
 end

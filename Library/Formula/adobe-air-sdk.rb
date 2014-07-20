@@ -4,16 +4,16 @@ require "formula"
 # https://helpx.adobe.com/air/kb/archived-air-sdk-version.html
 class AdobeAirSdk < Formula
   homepage "http://adobe.com/products/air/sdk"
-  version "13.0"
+  version "14.0"
 
   option "with-flex-support", "Do not download the new compiler with the SDK."
 
   if build.without? "flex-support"
-    url "http://airdownload.adobe.com/air/mac/download/13.0/AIRSDK_Compiler.tbz2"
-    sha1 "b3f15e01bb4f2ec4d82151257672156aa49f3ba8"
+    url "http://airdownload.adobe.com/air/mac/download/14.0/AIRSDK_Compiler.tbz2"
+    sha1 "0a51e590832e04cc74b6399265b788b4aa074f21"
   else
-    url "http://airdownload.adobe.com/air/mac/download/13.0/AdobeAIRSDK.tbz2"
-    sha1 "dfbdde7e7de31804ad3d74df9f0ba71c5cf5c2ad"
+    url "http://airdownload.adobe.com/air/mac/download/14.0/AdobeAIRSDK.tbz2"
+    sha1 "512a88505c842377be18ec3dae87093eb4a7d69c"
   end
 
   def install

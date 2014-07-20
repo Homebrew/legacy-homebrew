@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'dependency'
 
-class DependencyExpansionTests < Test::Unit::TestCase
+class DependencyExpansionTests < Homebrew::TestCase
   def build_dep(name, tags=[], deps=[])
     dep = Dependency.new(name.to_s, tags)
     dep.stubs(:to_formula).returns(stub(:deps => deps, :name => name))

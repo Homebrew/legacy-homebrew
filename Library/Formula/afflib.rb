@@ -5,18 +5,25 @@ class Afflib < Formula
   url 'https://github.com/simsong/AFFLIBv3/archive/v3.7.4.tar.gz'
   sha1 '589dae6f8439e97ab080026701cd0caa0636ac22'
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
-  depends_on 'expat' => :optional
-  depends_on 'osxfuse' => :optional
+  bottle do
+    cellar :any
+    sha1 "c72b3fd14e5d7d5095c4d46c6c77619315112a20" => :mavericks
+    sha1 "28b07c6caae8ef85348b51ce80561fe10392ad8b" => :mountain_lion
+    sha1 "3af09ce1f21443b5a072979d97f7cc41035c3643" => :lion
+  end
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "expat" => :optional
+  depends_on "osxfuse" => :optional
 
   # This patch fixes a bug reported upstream over there
   # https://github.com/simsong/AFFLIBv3/issues/4
   patch :DATA
 
   def install
-    system "sh bootstrap.sh"
+    system "./bootstrap.sh"
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
 

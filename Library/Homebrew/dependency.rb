@@ -29,7 +29,7 @@ class Dependency
   end
 
   def to_formula
-    f = Formula.factory(name)
+    f = Formulary.factory(name)
     # Add this dependency's options to the formula's build args
     f.build.args = f.build.args.concat(options)
     f
@@ -55,7 +55,7 @@ class Dependency
   end
 
   def inspect
-    "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect}>"
   end
 
   # Define marshaling semantics because we cannot serialize @env_proc

@@ -2,8 +2,8 @@ require 'formula'
 
 class Pike < Formula
   homepage 'http://pike.lysator.liu.se'
-  url 'http://pike.lysator.liu.se/pub/pike/latest-stable/Pike-v7.8.700.tar.gz'
-  sha1 '877bd50d2bb202aa485d1f7c62398922d60696c7'
+  url 'http://pike.lysator.liu.se/pub/pike/all/7.8.866/Pike-v7.8.866.tar.gz'
+  sha1 'f3d6cc21e302576c3ac4bb5a525705dbeee2d060'
   revision 1
 
   depends_on "nettle"
@@ -95,8 +95,8 @@ class Pike < Formula
                     "include_path=#{libexec}/include",
                     "INSTALLARGS=--traditional"
 
-   bin.install_symlink "#{libexec}/bin/pike"
-   share.install_symlink "#{libexec}/share/man"
+    bin.install_symlink "#{libexec}/bin/pike"
+    share.install_symlink "#{libexec}/share/man"
   end
 
   test do

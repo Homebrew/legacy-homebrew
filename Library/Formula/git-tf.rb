@@ -16,7 +16,7 @@ class GitTf < Formula
     else
       system 'mvn', 'assembly:assembly'
       system 'unzip', Dir['target/git-tf-*.zip'], "-dtarget"
-      install_prefix = Dir['target/git-tf-*/'].to_s
+      install_prefix = Dir['target/git-tf-*/'].first.to_s
     end
 
     libexec.install install_prefix + 'git-tf'
@@ -24,7 +24,7 @@ class GitTf < Formula
     (libexec + "native").install install_prefix + 'native/macosx'
 
     bin.write_exec_script libexec/'git-tf'
-    (share/'doc/git-tf').install Dir['Git-TF_*'] + Dir['ThirdPartyNotices*']
+    (share/'doc/git-tf').install Dir['Git-TF_*', 'ThirdPartyNotices*']
   end
 
   def caveats; <<-EOS.undent

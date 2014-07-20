@@ -2,13 +2,14 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.11/source/mariadb-10.0.11.tar.gz'
-  sha1 'd596a2af184a125d833d507f411a3f8cf4cd3134'
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.12/source/mariadb-10.0.12.tar.gz"
+  sha1 "226251b2312bbe3e4cdac1ee8a6830c6fe246f1b"
 
   bottle do
-    sha1 "c82fbe012156d56a5accdb9612d2e058b79ef1db" => :mavericks
-    sha1 "358893e24183fab22a6637d68a2e2c8d14b51351" => :mountain_lion
-    sha1 "9297a50dc9e3ffa8cc405312120d12a6d902799a" => :lion
+    revision 1
+    sha1 "c06cd4d780c713bbfac8095453f19973ef177cc3" => :mavericks
+    sha1 "9ce7d7a2550a4d2a00a4650858d9996feace4387" => :mountain_lion
+    sha1 "f8fe22f96b81d606e1a3d52699638fdf5832b235" => :lion
   end
 
   depends_on 'cmake' => :build
@@ -34,6 +35,14 @@ class Mariadb < Formula
     inreplace "cmake/libutils.cmake",
       "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
       "COMMAND libtool -static -o ${TARGET_LOCATION}"
+
+    # Set basedir and ldata so that mysql_install_db can find the server
+    # without needing an explicit path to be set. This can still
+    # be overridden by calling --basedir= when calling.
+    inreplace "scripts/mysql_install_db.sh" do |s|
+      s.change_make_var! "basedir", "\"#{prefix}\""
+      s.change_make_var! "ldata", "\"#{var}/mysql\""
+    end
 
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.

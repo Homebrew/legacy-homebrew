@@ -13,19 +13,21 @@ class Tor < Formula
   end
 
   devel do
-    url "https://www.torproject.org/dist/tor-0.2.5.4-alpha.tar.gz"
-    version "0.2.5.4-alpha"
-    sha1 "6817c103e2e401330823930e1a0dec38e5147ba2"
+    url "https://www.torproject.org/dist/tor-0.2.5.5-alpha.tar.gz"
+    version "0.2.5.5-alpha"
+    sha1 "fa4a685e6dceb78ddc0ad811d88e0831bf0ade2d"
   end
 
   depends_on "libevent"
   depends_on "openssl"
 
   def install
-    # Fix the path to the control cookie.
-    inreplace "contrib/tor-ctrl.sh",
-      'TOR_COOKIE="/var/lib/tor/data/control_auth_cookie"',
-      'TOR_COOKIE="$HOME/.tor/control_auth_cookie"'
+    if build.stable?
+      # Fix the path to the control cookie. (tor-ctrl removed in v0.2.5.5.)
+      inreplace "contrib/tor-ctrl.sh",
+        'TOR_COOKIE="/var/lib/tor/data/control_auth_cookie"',
+        'TOR_COOKIE="$HOME/.tor/control_auth_cookie"'
+    end
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -33,7 +35,10 @@ class Tor < Formula
                           "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"
     system "make install"
 
-    bin.install "contrib/tor-ctrl.sh" => "tor-ctrl"
+    if build.stable?
+      # (tor-ctrl removed in v0.2.5.5.)
+      bin.install "contrib/tor-ctrl.sh" => "tor-ctrl"
+    end
   end
 
   test do

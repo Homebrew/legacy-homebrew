@@ -5,6 +5,13 @@ class Neon < Formula
   url 'http://www.webdav.org/neon/neon-0.30.0.tar.gz'
   sha1 '9e6297945226f90d66258b7ee05f757ff5cea10a'
 
+  bottle do
+    cellar :any
+    sha1 "9e4015e3e27d14ddd8feb4bdc1dc84a01a930bea" => :mavericks
+    sha1 "cb912fbe59f2c4b1b8139989ff9d7ffc1b2210d4" => :mountain_lion
+    sha1 "4d67105dc74e5f4f6f58c542a741cb532257b393" => :lion
+  end
+
   keg_only :provided_by_osx
 
   option :universal

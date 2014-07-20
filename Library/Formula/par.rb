@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'formula'
 
 class Par < Formula

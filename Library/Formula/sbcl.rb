@@ -1,16 +1,16 @@
-require 'formula'
+require "formula"
 
 class Sbcl < Formula
-  homepage 'http://www.sbcl.org/'
-  url 'https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.18/sbcl-1.1.18-source.tar.bz2'
-  sha1 '2c2e5ba67c1829318bd1c856188d462173bf8da3'
+  homepage "http://www.sbcl.org/"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.1/sbcl-1.2.1-source.tar.bz2"
+  sha1 "08734c7ade2be7b787e9a48b6934e06bd75572a9"
 
-  head 'git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git'
+  head "git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git"
 
   bottle do
-    sha1 "d1f9704cd557681dd21f97bcb6ffc82b9f794141" => :mavericks
-    sha1 "917adb187285e0e89f11a8e3dbbf8b392053dbfa" => :mountain_lion
-    sha1 "cdabbc704ab7de0ed3c9e51dc450823aae43407a" => :lion
+    sha1 "c158de26f78e8b5ee75da417c923cba7449ea4e2" => :mavericks
+    sha1 "6f8ab1557aa5ace71655c14193c11a0dd48ee1ad" => :mountain_lion
+    sha1 "c5e80435fe561b172c975f21da8d662e11bd089e" => :lion
   end
 
   fails_with :llvm do
@@ -26,14 +26,14 @@ class Sbcl < Formula
 
   # Current binary versions are listed at http://sbcl.sourceforge.net/platform-table.html
 
-  resource 'bootstrap64' do
-    url 'https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.8/sbcl-1.1.8-x86-64-darwin-binary.tar.bz2'
-    sha1 'cffd8c568588f48bd0c69295a385b662d27983cf'
+  resource "bootstrap64" do
+    url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.8/sbcl-1.1.8-x86-64-darwin-binary.tar.bz2"
+    sha1 "cffd8c568588f48bd0c69295a385b662d27983cf"
   end
 
-  resource 'bootstrap32' do
-    url 'https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.6/sbcl-1.1.6-x86-darwin-binary.tar.bz2'
-    sha1 '35a76b93f8714bc34ba127df4aaf69aacfc08164'
+  resource "bootstrap32" do
+    url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.6/sbcl-1.1.6-x86-darwin-binary.tar.bz2"
+    sha1 "35a76b93f8714bc34ba127df4aaf69aacfc08164"
   end
 
   patch :p0 do
@@ -81,21 +81,21 @@ class Sbcl < Formula
       value =~ /[\x80-\xff]/n
     end
 
-    bootstrap = (build.build_32_bit? || !MacOS.prefer_64_bit?) ? 'bootstrap32' : 'bootstrap64'
+    bootstrap = (build.build_32_bit? || !MacOS.prefer_64_bit?) ? "bootstrap32" : "bootstrap64"
     resource(bootstrap).stage do
       # We only need the binaries for bootstrapping, so don't install anything:
-      command = Dir.pwd + "/src/runtime/sbcl"
-      core = Dir.pwd + "/output/sbcl.core"
+      command = "#{Dir.pwd}/src/runtime/sbcl"
+      core = "#{Dir.pwd}/output/sbcl.core"
       xc_cmdline = "#{command} --core #{core} --disable-debugger --no-userinit --no-sysinit"
 
       cd buildpath do
-        ENV['SBCL_ARCH'] = 'x86' if build.build_32_bit?
+        ENV["SBCL_ARCH"] = "x86" if build.build_32_bit?
         Pathname.new("version.lisp-expr").write('"1.0.99.999"') if build.head?
         system "./make.sh", "--prefix=#{prefix}", "--xc-host=#{xc_cmdline}"
       end
     end
 
-    ENV['INSTALL_ROOT'] = prefix
+    ENV["INSTALL_ROOT"] = prefix
     system "sh install.sh"
   end
 

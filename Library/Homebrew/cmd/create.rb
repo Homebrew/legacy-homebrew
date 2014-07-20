@@ -3,7 +3,7 @@ require 'blacklist'
 require 'digest'
 require 'erb'
 
-module Homebrew extend self
+module Homebrew
 
   # Create a formula from a tarball URL
   def create
@@ -36,11 +36,11 @@ module Homebrew extend self
       :autotools
     end
 
-    if fc.name.nil? or fc.name.to_s.strip.empty?
-      path = Pathname.new url
-      print "Formula name [#{path.stem}]: "
-      fc.name = __gets || path.stem
-      fc.path = Formula.path fc.name
+    if fc.name.nil? || fc.name.strip.empty?
+      stem = Pathname.new(url).stem
+      print "Formula name [#{stem}]: "
+      fc.name = __gets || stem
+      fc.path = Formula.path(fc.name)
     end
 
     # Don't allow blacklisted formula, or names that shadow aliases,
@@ -51,7 +51,7 @@ module Homebrew extend self
       end
 
       if Formula.aliases.include? fc.name
-        realname = Formula.canonical_name fc.name
+        realname = Formulary.canonical_name(fc.name)
         raise <<-EOS.undent
           The formula #{realname} is already aliased to #{fc.name}
           Please check that you are not creating a duplicate.
@@ -165,7 +165,8 @@ class FormulaCreator
         #
         # This test will fail and we won't accept that! It's enough to just replace
         # "false" with the main program this formula installs, but it'd be nice if you
-        # were more thorough. Run the test with `brew test #{name}`.
+        # were more thorough. Run the test with `brew test #{name}`. Options passed
+        # to `brew install` such as `--HEAD` also need to be provided to `brew test`.
         #
         # The installed folder is not in the path, so use the entire path to any
         # executables being tested: `system "\#{bin}/program", "do", "something"`.

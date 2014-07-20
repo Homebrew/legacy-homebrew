@@ -2,8 +2,8 @@ require 'formula'
 
 class Cpmtools < Formula
   homepage 'http://www.moria.de/~michael/cpmtools/'
-  url 'http://www.moria.de/~michael/cpmtools/cpmtools-2.17.tar.gz'
-  sha1 '71e9d3a7de4b366a52ac24e53c2958c2b8124e5f'
+  url 'http://www.moria.de/~michael/cpmtools/files/cpmtools-2.19.tar.gz'
+  sha1 '7c66bd04ecc05c05e99232a55a427f7b29a2f4cf'
 
   def install
     system "./configure", "--prefix=#{prefix}"

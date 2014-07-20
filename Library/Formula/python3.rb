@@ -18,6 +18,7 @@ class Python3 < Formula
   option :universal
   option 'quicktest', 'Run `make quicktest` after the build'
   option 'with-brewed-tk', "Use Homebrew's Tk (has optional Cocoa and threads support)"
+  option "with-docs", "Install HTML documentation"
 
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
@@ -30,6 +31,11 @@ class Python3 < Formula
 
   skip_clean "bin/pip3", "bin/pip-#{VER}"
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
+
+  resource "docs" do
+    url "https://docs.python.org/3/archives/python-3.4.1-docs-html.tar.bz2"
+    sha1 "7d76e33a98bcd7c24790309780171c75988ad82a"
+  end
 
   patch :DATA if build.with? 'brewed-tk'
 
@@ -53,6 +59,12 @@ class Python3 < Formula
       Could not import runpy module
       make: *** [pybuilddir.txt] Segmentation fault: 11
     EOS
+  end
+
+  # setuptools remembers the build flags python is built with and uses them to
+  # build packages later. Xcode-only systems need different flags.
+  def pour_bottle?
+    MacOS::CLT.installed?
   end
 
   def install
@@ -111,9 +123,7 @@ class Python3 < Formula
     system "make", "quicktest" if build.include? "quicktest"
 
     # Any .app get a " 3" attached, so it does not conflict with python 2.x.
-    Dir.glob(prefix/"*.app").each do |app|
-      mv app, app.gsub(".app", " 3.app")
-    end
+    Dir.glob("#{prefix}/*.app") { |app| mv app, app.sub(".app", " 3.app") }
 
     # A fix, because python and python3 both want to install Python.framework
     # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
@@ -126,6 +136,8 @@ class Python3 < Formula
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
+
+    doc.install resource("docs") if build.with? "docs"
   end
 
   def post_install

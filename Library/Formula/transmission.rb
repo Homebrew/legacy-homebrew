@@ -2,8 +2,8 @@ require "formula"
 
 class Transmission < Formula
   homepage "http://www.transmissionbt.com/"
-  url "http://download.transmissionbt.com/files/transmission-2.83.tar.xz"
-  sha1 "d28bb66b3a1cccc2c4b42d21346be4fe84498ccb"
+  url "http://download.transmissionbt.com/files/transmission-2.84.tar.xz"
+  sha1 "455359bc1fa34aeecc1bac9255ad0c884b94419c"
 
   option "with-nls", "Build with native language support"
 
@@ -35,12 +35,43 @@ class Transmission < Formula
     system "./configure", *args
     system "make" # Make and install in one step fails
     system "make install"
+
+    (var/"transmission").mkpath
   end
 
   def caveats; <<-EOS.undent
     This formula only installs the command line utilities.
     Transmission.app can be downloaded from Transmission's website:
       http://www.transmissionbt.com
+    EOS
+  end
+
+  plist_options :manual => 'transmission-daemon --foreground'
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_bin}/transmission-daemon</string>
+          <string>--foreground</string>
+          <string>--config-dir</string>
+          <string>#{var}/transmission/</string>
+          <string>--log-info</string>
+          <string>--logfile</string>
+          <string>#{var}/transmission/transmission-daemon.log</string>
+        </array>
+        <key>KeepAlive</key>
+        <dict>
+          <key>NetworkState</key>
+          <true/>
+        </dict>
+      </dict>
+    </plist>
     EOS
   end
 end

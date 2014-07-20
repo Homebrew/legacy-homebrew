@@ -3,7 +3,7 @@ require "formula"
 class Plantuml < Formula
   homepage "http://plantuml.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/plantuml/plantuml.7999.jar"
-  sha1 "97215ec19934d15e247ff54e25a77a4483608d04"
+  sha1 "c919646b276a99715f2aa76bfa3c347bca89684a"
 
   depends_on "graphviz"
 

@@ -2,20 +2,27 @@ require 'formula'
 
 class Sphinx < Formula
   homepage 'http://www.sphinxsearch.com'
-  url 'http://sphinxsearch.com/files/sphinx-2.1.7-release.tar.gz'
-  sha1 'b9f2e963cfd0c58b3ab5f39669062a1ba4c7cf8a'
+  url 'http://sphinxsearch.com/files/sphinx-2.1.8-release.tar.gz'
+  sha1 'c69e24ed1fad907b893dc61b0a52db30b6c85ad2'
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
+  bottle do
+    sha1 "304bc474b4c1c80739e7a92fa05a9333520660a5" => :mavericks
+    sha1 "4f66be7ba289da28643f869c69adb892e01ddea8" => :mountain_lion
+    sha1 "988fc7b694ed273801018e332d3d44d3e72ff30d" => :lion
+  end
+
   devel do
-    url 'http://sphinxsearch.com/files/sphinx-2.2.2-beta.tar.gz'
-    sha1 '6a63111c5f2fcd93915d114845f2375b031ff9da'
+    url 'http://sphinxsearch.com/files/sphinx-2.2.3-beta.tar.gz'
+    sha1 'ef78cebeae32a0582df504d74d6dd2ded81b73d9'
   end
 
   option 'mysql', 'Force compiling against MySQL'
   option 'pgsql', 'Force compiling against PostgreSQL'
   option 'id64',  'Force compiling with 64-bit ID support'
 
+  depends_on "re2" => :optional
   depends_on :mysql if build.include? 'mysql'
   depends_on :postgresql if build.include? 'pgsql'
 

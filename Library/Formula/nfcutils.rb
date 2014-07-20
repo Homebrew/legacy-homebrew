@@ -5,8 +5,6 @@ class Nfcutils < Formula
   url 'https://nfc-tools.googlecode.com/files/nfcutils-0.3.2.tar.gz'
   sha1 'e560ba7683175257ef9e72838b9f02cf75ce99b8'
 
-  depends_on :autoconf
-  depends_on :automake
   depends_on 'pkg-config' => :build
   depends_on 'libnfc'
   depends_on 'libusb'

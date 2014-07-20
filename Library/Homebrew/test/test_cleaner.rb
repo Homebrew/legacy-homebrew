@@ -2,7 +2,7 @@ require 'testing_env'
 require 'cleaner'
 require 'formula'
 
-class CleanerTests < Test::Unit::TestCase
+class CleanerTests < Homebrew::TestCase
   include FileUtils
 
   def setup
@@ -11,14 +11,14 @@ class CleanerTests < Test::Unit::TestCase
   end
 
   def teardown
-    @f.prefix.rmtree if @f.prefix.exist?
+    @f.rack.rmtree if @f.rack.exist?
   end
 
   def test_clean_file
     @f.bin.mkpath
     @f.lib.mkpath
-    cp "#{TEST_FOLDER}/mach/a.out", @f.bin
-    cp Dir["#{TEST_FOLDER}/mach/*.dylib"], @f.lib
+    cp "#{TEST_DIRECTORY}/mach/a.out", @f.bin
+    cp Dir["#{TEST_DIRECTORY}/mach/*.dylib"], @f.lib
 
     Cleaner.new(@f).clean
 
@@ -30,7 +30,7 @@ class CleanerTests < Test::Unit::TestCase
 
   def test_prunes_prefix_if_empty
     Cleaner.new(@f).clean
-    assert !@f.prefix.directory?
+    refute_predicate @f.prefix, :directory?
   end
 
   def test_prunes_empty_directories
@@ -39,8 +39,8 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert !@f.bin.directory?
-    assert !subdir.directory?
+    refute_predicate @f.bin, :directory?
+    refute_predicate subdir, :directory?
   end
 
   def test_skip_clean_empty_directory
@@ -49,7 +49,7 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert @f.bin.directory?
+    assert_predicate @f.bin, :directory?
   end
 
   def test_skip_clean_directory_with_empty_subdir
@@ -59,8 +59,8 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert @f.bin.directory?
-    assert subdir.directory?
+    assert_predicate @f.bin, :directory?
+    assert_predicate subdir, :directory?
   end
 
   def test_removes_symlink_when_target_was_pruned_first
@@ -72,9 +72,9 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert !dir.exist?
-    assert !symlink.symlink?
-    assert !symlink.exist?
+    refute_predicate dir, :exist?
+    refute_predicate symlink, :symlink?
+    refute_predicate symlink, :exist?
   end
 
   def test_removes_symlink_pointing_to_empty_directory
@@ -86,9 +86,9 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert !dir.exist?
-    assert !symlink.symlink?
-    assert !symlink.exist?
+    refute_predicate dir, :exist?
+    refute_predicate symlink, :symlink?
+    refute_predicate symlink, :exist?
   end
 
   def test_removes_broken_symlinks
@@ -97,7 +97,7 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert !symlink.symlink?
+    refute_predicate symlink, :symlink?
   end
 
   def test_skip_clean_broken_symlink
@@ -107,7 +107,7 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert symlink.symlink?
+    assert_predicate symlink, :symlink?
   end
 
   def test_skip_clean_symlink_pointing_to_empty_directory
@@ -120,9 +120,9 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert !dir.exist?
-    assert symlink.symlink?
-    assert !symlink.exist?
+    refute_predicate dir, :exist?
+    assert_predicate symlink, :symlink?
+    refute_predicate symlink, :exist?
   end
 
   def test_skip_clean_symlink_when_target_pruned
@@ -135,9 +135,9 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert !dir.exist?
-    assert symlink.symlink?
-    assert !symlink.exist?
+    refute_predicate dir, :exist?
+    assert_predicate symlink, :symlink?
+    refute_predicate symlink, :exist?
   end
 
   def test_removes_la_files
@@ -148,7 +148,7 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert !file.exist?
+    refute_predicate file, :exist?
   end
 
   def test_skip_clean_la
@@ -160,7 +160,7 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert file.exist?
+    assert_predicate file, :exist?
   end
 
   def test_remove_charset_alias
@@ -171,7 +171,7 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert !file.exist?
+    refute_predicate file, :exist?
   end
 
   def test_skip_clean_subdir
@@ -182,7 +182,7 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert dir.directory?
+    assert_predicate dir, :directory?
   end
 
   def test_skip_clean_paths_are_anchored_to_prefix
@@ -195,7 +195,7 @@ class CleanerTests < Test::Unit::TestCase
 
     Cleaner.new(@f).clean
 
-    assert dir1.exist?
-    assert !dir2.exist?
+    assert_predicate dir1, :exist?
+    refute_predicate dir2, :exist?
   end
 end

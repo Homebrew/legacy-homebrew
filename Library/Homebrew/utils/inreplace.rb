@@ -20,5 +20,6 @@ module Utils
         Pathname(path).atomic_write(s)
       end
     end
+    module_function :inreplace
   end
 end

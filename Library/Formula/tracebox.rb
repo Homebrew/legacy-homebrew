@@ -12,10 +12,10 @@ class Tracebox < Formula
     sha1 "9a71c329fad5e6e39108e198506fa0b8b2d40e6c" => :lion
   end
 
-  depends_on 'lua'
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "lua"
 
   def install
     ENV.append "AUTOHEADER", "true"

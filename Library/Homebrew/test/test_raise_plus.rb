@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'debrew/raise_plus'
 
-class RaisePlusTests < Test::Unit::TestCase
+class RaisePlusTests < Homebrew::TestCase
   include RaisePlus
 
   def test_raises_runtime_error_when_no_args

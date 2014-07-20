@@ -11,9 +11,9 @@ class HtopOsx < Formula
     sha1 "ffed10bd7a4a6649120d8db66ac7b0daf686b982" => :lion
   end
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     # Otherwise htop will segfault when resizing the terminal

@@ -2,8 +2,14 @@ require 'formula'
 
 class Irssi < Formula
   homepage 'http://irssi.org/'
-  url 'http://irssi.org/files/irssi-0.8.15.tar.bz2'
-  sha1 'b79ce8c2c98a76b004f63706e7868cd363000d89'
+  url 'http://irssi.org/files/irssi-0.8.16.tar.bz2'
+  sha1 '631dd70b6d3872c5f81c1a46a6872fef5bd65ffb'
+
+  bottle do
+    sha1 "17f3a8f117308e65c5de44e977dbc083858c44f4" => :mavericks
+    sha1 "dfbc2f405189d536264342d72737ef272d0da360" => :mountain_lion
+    sha1 "529bf17edbb6bf5bcd200ed8a84d9190c9a244b3" => :lion
+  end
 
   option "without-perl", "Build without perl support"
 
@@ -12,8 +18,8 @@ class Irssi < Formula
   depends_on 'openssl' => :optional
 
   devel do
-    url 'http://irssi.org/files/irssi-0.8.16-rc1.tar.gz'
-    sha1 '40d560841d92ca3555e5dc5e2be922510cd348d5'
+    url 'http://irssi.org/files/snapshots/irssi-20140530.tar.gz'
+    sha1 '6bf61b3c3a384bacfd55c06aa9d4f7e288a30ac8'
   end
 
   # Fix Perl build flags and paths in man page

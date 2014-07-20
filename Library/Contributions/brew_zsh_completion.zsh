@@ -124,7 +124,7 @@ case "$words[1]" in
     fi ;;
   untap)
     _brew_installed_taps
-    _wanted installed_taps expl 'installed taps' compadd -a installed_taps ;;
+    _wanted installed_taps expl 'installed taps' compadd -a installed_taps ;;
   upgrade)
     _brew_outdated_formulae
     _wanted outdated_formulae expl 'outdated formulae' compadd -a outdated_formulae ;;

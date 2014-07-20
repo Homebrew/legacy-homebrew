@@ -282,25 +282,38 @@ _brew_linkapps ()
 
 _brew_list ()
 {
+    local allopts="--unbrewed --verbose --pinned --versions --multiple"
     local cur="${COMP_WORDS[COMP_CWORD]}"
+
     case "$cur" in
     --*)
-        # options to brew-list are mutually exclusive
+        # most options to brew-list are mutually exclusive
         if __brewcomp_words_include "--unbrewed"; then
             return
         elif __brewcomp_words_include "--verbose"; then
             return
         elif __brewcomp_words_include "--pinned"; then
             return
+        # --multiple only applies with --versions
+        elif __brewcomp_words_include "--multiple"; then
+            __brewcomp "--versions"
+            return
         elif __brewcomp_words_include "--versions"; then
+            __brewcomp "--multiple"
             return
         else
-            __brewcomp "--unbrewed --verbose --pinned --versions"
+            __brewcomp "$allopts"
             return
         fi
         ;;
     esac
-    __brew_complete_installed
+
+    # --multiple excludes formulae and *implies* --versions...
+    if __brewcomp_words_include "--multiple"; then
+        __brewcomp "--versions"
+    else
+        __brew_complete_installed
+    fi
 }
 
 _brew_log ()
@@ -422,18 +435,6 @@ _brew_uses ()
     __brew_complete_formulae
 }
 
-_brew_versions ()
-{
-    local cur="${COMP_WORDS[COMP_CWORD]}"
-    case "$cur" in
-    --*)
-        __brewcomp "--compact"
-        return
-        ;;
-    esac
-    __brew_complete_formulae
-}
-
 _brew ()
 {
     local i=1 cmd
@@ -537,7 +538,7 @@ _brew ()
     update)                     _brew_update ;;
     upgrade)                    _brew_upgrade ;;
     uses)                       _brew_uses ;;
-    versions)                   _brew_versions ;;
+    versions)                   __brew_complete_formulae ;;
     *)                          ;;
     esac
 }

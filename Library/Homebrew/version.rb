@@ -11,7 +11,7 @@ class Version
     end
 
     def inspect
-      "#<#{self.class} #{value.inspect}>"
+      "#<#{self.class.name} #{value.inspect}>"
     end
 
     def to_s
@@ -36,7 +36,7 @@ class Version
     end
 
     def inspect
-      "#<#{self.class}>"
+      "#<#{self.class.name}>"
     end
   end
 
@@ -154,14 +154,6 @@ class Version
     NumericToken::PATTERN,
     StringToken::PATTERN
   )
-
-  def self.new_with_scheme(value, scheme)
-    if Class === scheme && scheme.ancestors.include?(Version)
-      scheme.new(value)
-    else
-      raise TypeError, "Unknown version scheme #{scheme.inspect}"
-    end
-  end
 
   def self.detect(url, specs={})
     if specs.has_key?(:tag)
