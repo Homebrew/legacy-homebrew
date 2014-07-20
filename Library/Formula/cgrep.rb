@@ -11,9 +11,9 @@ class Cgrep < Formula
 
   bottle do
     cellar :any
-    sha1 "7c8b5399e4cbed0cf3e51565d7b009c70576c8e8" => :mavericks
-    sha1 "cf0ebb3fb08a172a91645184458c3cf6bebfc981" => :mountain_lion
-    sha1 "33a5fbe772ae2ffa7a5d3374a7304960053ee05d" => :lion
+    sha1 "422737ceaee66f521d60c163dcf663d25c2b430a" => :mavericks
+    sha1 "e986ec29104895e0554c3599ac8eebcc6914a67d" => :mountain_lion
+    sha1 "660b2e1d0f6d15e6d7294a464d26b866bcd0030b" => :lion
   end
 
   depends_on "ghc" => :build
