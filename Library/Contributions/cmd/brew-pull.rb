@@ -79,6 +79,8 @@ ARGV.named.each do |arg|
   rescue ErrorDuringExecution
     system 'git', 'am', '--abort'
     odie 'Patch failed to apply: aborted.'
+  ensure
+    patchpath.unlink
   end
 
   changed_formulae = []
