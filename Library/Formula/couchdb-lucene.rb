@@ -1,14 +1,14 @@
-require 'formula'
+require "formula"
 
 class CouchdbLucene < Formula
-  homepage 'https://github.com/rnewson/couchdb-lucene'
-  url 'https://github.com/rnewson/couchdb-lucene/archive/v0.9.0.tar.gz'
-  sha1 '99b8f8f1e644e6840896ee6c9b19c402042c1896'
+  homepage "https://github.com/rnewson/couchdb-lucene"
+  url "https://github.com/rnewson/couchdb-lucene/archive/v1.0.1.tar.gz"
+  sha1 "2696cfc1ddd9152b7b16ebcd7086645c1c4b91ff"
 
-  conflicts_with 'clusterit', :because => 'both install a `run` binary'
+  conflicts_with "clusterit", :because => "both install a `run` binary"
 
-  depends_on 'couchdb'
-  depends_on 'maven'
+  depends_on "couchdb"
+  depends_on "maven"
 
   def install
     system "mvn"
