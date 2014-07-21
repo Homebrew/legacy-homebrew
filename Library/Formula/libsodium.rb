@@ -7,9 +7,9 @@ class Libsodium < Formula
 
   bottle do
     cellar :any
-    sha1 "17f16784be8dd6f3892fee1e8b765f248b395526" => :mavericks
-    sha1 "34e1cb906d01591db753b44f913bff23d6f24e8c" => :mountain_lion
-    sha1 "68d36857985a73fef90caf6e734b5107ba192ea8" => :lion
+    sha1 "f59cd52a8ce5489eb989f1cbfc2dd56227edd93c" => :mavericks
+    sha1 "56dbbe1b78ee2dc9f15ed69b04f59bfa572debc0" => :mountain_lion
+    sha1 "e4ac5b9a58b5cb236d907541729bfcfa567f44e1" => :lion
   end
 
   head do
