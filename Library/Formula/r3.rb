@@ -2,8 +2,8 @@ require "formula"
 
 class R3 < Formula
   homepage "https://github.com/c9s/r3"
-  url 'https://github.com/c9s/r3/archive/1.3.2.tar.gz'
-  sha1 '99837a42b637e32cd634a5fbdaeaf519a2df5dc5'
+  url "https://github.com/c9s/r3/archive/1.3.3.tar.gz"
+  sha1 "2626e78e5d5afb64561b6c468e357db14597aef6"
 
   bottle do
     cellar :any
