@@ -19,22 +19,13 @@ class Nzbget < Formula
   end
 
   resource "libpar2" do
-    url "https://downloads.sourceforge.net/project/parchive/libpar2/0.2/libpar2-0.2.tar.gz"
-    sha1 "4b3da928ea6097a8299aadafa703fc6d59bdfb4b"
-  end
-
-  # Bugfixes and ability to cancel par2 repair
-  resource "libpar2_patch" do
-    url "https://gist.githubusercontent.com/Smenus/4576230/raw/e722f2113195ee9b8ee67c1c424aa3f2085b1066/libpar2-0.2-nzbget.patch"
-    sha1 "0dca03f42c0997fd6b537a7dc539d705afb76157"
+    url "https://launchpad.net/libpar2/trunk/0.4/+download/libpar2-0.4.tar.gz"
+    sha1 "c4a5318edac0898dcc8b1d90668cfca2ccfe0375"
   end
 
   def install
     resource("libpar2").stage do
-      buildpath.install resource("libpar2_patch")
-      system "patch -p1 < #{buildpath}/libpar2-0.2-nzbget.patch"
-
-      system "./configure", "--disable-debug", "--disable-dependency-tracking",
+      system "./configure", "--disable-dependency-tracking",
                             "--prefix=#{libexec}/lp2"
       system "make install"
     end
