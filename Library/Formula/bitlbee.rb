@@ -4,7 +4,6 @@ class Bitlbee < Formula
   homepage 'http://www.bitlbee.org/'
   url 'http://get.bitlbee.org/src/bitlbee-3.2.2.tar.gz'
   sha1 '7e3cfe2b6bf4e8e603c74e7587307a6f5d267e9c'
-  revision 1
 
   bottle do
     sha1 "87aaac8542c0e5fcfaa81a5d0464d48043cf0389" => :mavericks
