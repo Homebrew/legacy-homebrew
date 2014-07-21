@@ -2,30 +2,23 @@ require "formula"
 
 class VowpalWabbit < Formula
   homepage "https://github.com/JohnLangford/vowpal_wabbit"
-  url "https://github.com/JohnLangford/vowpal_wabbit/archive/7.6.tar.gz"
-  sha1 "854f6e54568f6c2e849d43b0f6cd1cc286ec965d"
+  head "https://github.com/JohnLangford/vowpal_wabbit.git"
+  url "https://github.com/JohnLangford/vowpal_wabbit/archive/7.7.tar.gz"
+  sha1 "d248bc848ad3919ad0c5002045a83aa29d83e6fd"
 
-  head do
-    url "https://github.com/JohnLangford/vowpal_wabbit.git"
-
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+  bottle do
   end
 
   depends_on "boost" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
-    if build.head?
-      inreplace "autogen.sh" do |s|
-        s.gsub! "/usr/share/aclocal", "#{HOMEBREW_PREFIX}/share/aclocal"
-      end
-      system "./autogen.sh"
-    end
-
-    system "./configure", "--prefix=#{prefix}",
-                          "--with-boost=#{Formula['boost'].opt_prefix}"
+    ENV["AC_PATH"] = "#{HOMEBREW_PREFIX}/share"
+    system "./autogen.sh", "--prefix=#{prefix}",
+                           "--with-boost=#{Formula['boost'].opt_prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
