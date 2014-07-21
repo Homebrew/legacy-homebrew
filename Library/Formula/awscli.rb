@@ -7,9 +7,9 @@ class Awscli < Formula
 
   bottle do
     cellar :any
-    sha1 "93360cfcc06dbf449c4bc9e22f2f40bba7e1b407" => :mavericks
-    sha1 "d0337a1a943bf040931f9942e793140f1cc92df4" => :mountain_lion
-    sha1 "802106234c2417353429a55f8a700a995215d171" => :lion
+    sha1 "4940d7c5e20c2e9291367ced77ed81b960394504" => :mavericks
+    sha1 "" => :mountain_lion
+    sha1 "" => :lion
   end
 
   head do
@@ -31,8 +31,8 @@ class Awscli < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.45.0.tar.gz"
-    sha1 "b3bcf0065458a3fd5c172701cd88614b05ef41eb"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.57.0.tar.gz"
+    sha1 "dffb786437b8bb604a64120834f52391dd712377"
   end
 
   resource "bcdoc" do
@@ -41,8 +41,8 @@ class Awscli < Formula
   end
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.6.1.tar.gz"
-    sha1 "2a7941cc2233d9ad6d7d54dd5265d1eb9726c5a1"
+    url "https://pypi.python.org/packages/source/s/six/six-1.7.3.tar.gz"
+    sha1 "43d173ff19bf2ac41189aa3701c7240fcd1182e3"
   end
 
   resource "colorama" do
@@ -51,8 +51,8 @@ class Awscli < Formula
   end
 
   resource "docutils" do
-    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.11.tar.gz"
-    sha1 "3894ebcbcbf8aa54ce7c3d2c8f05460544912d67"
+    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz"
+    sha1 "002450621b33c5690060345b0aac25bc2426d675"
   end
 
   resource "rsa" do
