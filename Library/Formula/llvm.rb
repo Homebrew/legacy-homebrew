@@ -2,8 +2,6 @@ require 'formula'
 
 class Llvm < Formula
   homepage 'http://llvm.org/'
-  url "http://llvm.org/releases/3.4.2/llvm-3.4.2.src.tar.gz"
-  sha1 "c5287384d0b95ecb0fd7f024be2cdfb60cd94bc9"
 
   bottle do
     sha1 "8136d3ef9c97e3de20ab4962f94a6c15ce5b50b2" => :mavericks
@@ -11,9 +9,20 @@ class Llvm < Formula
     sha1 "50e1d0c4a046ea14fb8c4bbd305bc7c8ccaac5bb" => :lion
   end
 
-  resource 'clang' do
-    url "http://llvm.org/releases/3.4.2/cfe-3.4.2.src.tar.gz"
-    sha1 "add5420b10c3c3a38c4dc2322f8b64ba0a5def97"
+  stable do
+    url "http://llvm.org/releases/3.4.2/llvm-3.4.2.src.tar.gz"
+    sha1 "c5287384d0b95ecb0fd7f024be2cdfb60cd94bc9"
+    resource 'clang' do
+      url "http://llvm.org/releases/3.4.2/cfe-3.4.2.src.tar.gz"
+      sha1 "add5420b10c3c3a38c4dc2322f8b64ba0a5def97"
+    end
+  end
+
+  head do
+    url "http://llvm.org/svn/llvm-project/llvm/trunk", :using => :svn
+    resource 'clang' do
+      url "http://llvm.org/svn/llvm-project/cfe/trunk", :using => :svn
+    end
   end
 
   option :universal

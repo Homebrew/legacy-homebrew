@@ -2,8 +2,8 @@ require "formula"
 
 class Mlt < Formula
   homepage "http://www.mltframework.org/"
-  url "https://downloads.sourceforge.net/mlt/mlt/mlt-0.9.0.tar.gz"
-  sha1 "76bf18f4442801fae963c5a676d6626e383d1617"
+  url "https://downloads.sourceforge.net/mlt/mlt/mlt-0.9.2.tar.gz"
+  sha1 "eb1cdb8a1d9e69512716431054e5da7eb3bedb6d"
 
   depends_on "pkg-config" => :build
 

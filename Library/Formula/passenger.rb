@@ -2,24 +2,26 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.45.tar.gz'
-  sha1 '51dc7f0b01c16fa61d16db894aa61cce9c1b074e'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.46.tar.gz'
+  sha1 '285ff151267c270ef1c85675186d0caeb61b9133'
   head 'https://github.com/phusion/passenger.git'
 
   bottle do
-    sha1 "9086956a22cf6af569f5e61037b5ebd8b9d546ac" => :mavericks
-    sha1 "afd1f04f7b1a52ad6dc5491fd6532eff304978ec" => :mountain_lion
+    sha1 "145604c85fc5d0a5e24bc31fb33e4c197f181ae4" => :mavericks
+    sha1 "33ac96ecd2120ff131f4db1670c12a04cf87f421" => :mountain_lion
   end
 
   depends_on 'pcre'
   depends_on :macos => :mountain_lion
 
+  option 'without-apache2-module', 'Disable Apache2 module'
+
   def install
-    rake "apache2"
+    rake "apache2" if build.with? "apache2-module"
     rake "nginx"
     rake "webhelper"
 
-    necessary_files = Dir["configure", "Rakefile", "README.md", "CONTRIBUTORS",
+    necessary_files = Dir[".editorconfig", "configure", "Rakefile", "README.md", "CONTRIBUTORS",
       "CONTRIBUTING.md", "LICENSE", "CHANGELOG", "INSTALL.md",
       "passenger.gemspec", "build", "lib", "node_lib", "bin", "doc", "man",
       "helper-scripts", "ext", "resources", "buildout"]
@@ -42,15 +44,21 @@ class Passenger < Formula
     mv libexec/'man', share
   end
 
-  def caveats; <<-EOS.undent
-    To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
-      LoadModule passenger_module #{opt_libexec}/buildout/apache2/mod_passenger.so
-      PassengerRoot #{opt_libexec}/lib/phusion_passenger/locations.ini
-      PassengerDefaultRuby /usr/bin/ruby
+  def caveats
+    s = <<-EOS.undent
+      To activate Phusion Passenger for Nginx, run:
+        brew install nginx --with-passenger
 
-    To activate Phusion Passenger for Nginx, run:
-      brew install nginx --with-passenger
-    EOS
+      EOS
+
+    s += <<-EOS.undent if build.with? "apache2-module"
+      To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
+        LoadModule passenger_module #{opt_libexec}/buildout/apache2/mod_passenger.so
+        PassengerRoot #{opt_libexec}/lib/phusion_passenger/locations.ini
+        PassengerDefaultRuby /usr/bin/ruby
+
+      EOS
+    s
   end
 
   test do

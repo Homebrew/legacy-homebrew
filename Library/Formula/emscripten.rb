@@ -2,15 +2,15 @@ require "formula"
 
 class Emscripten < Formula
   homepage "http://emscripten.org"
-  url "https://github.com/kripken/emscripten/archive/1.21.0.tar.gz"
-  sha1 "88967d336b50de17a4333e736b4ed3db67b7ea50"
+  url "https://github.com/kripken/emscripten/archive/1.21.1.tar.gz"
+  sha1 "198c32b7e49ce640ad7a17506ce99cb1b044de06"
 
   head "https://github.com/kripken/emscripten.git", :branch => "incoming"
 
   bottle do
-    sha1 "c4632e68a9b31703e094a7e9c525d18f5340d00f" => :mavericks
-    sha1 "a62601a61576a6aa60c4113e0b61bb374e7d3361" => :mountain_lion
-    sha1 "c68aa901aa31c32c7d933fc4882553f1138e1b44" => :lion
+    sha1 "f7e6beff033508e544e43f2103a81cd2389fa3b8" => :mavericks
+    sha1 "6beed81c6749348339649bb9b30f1bf687b9a4de" => :mountain_lion
+    sha1 "a3127fd2bb4996f022ab1e73f86a15b923ca3a3a" => :lion
   end
 
   head do
@@ -50,7 +50,7 @@ class Emscripten < Formula
     # All files from the repository are required as emscripten is a collection
     # of scripts which need to be installed in the same layout as in the Git
     # repository.
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
 
     (buildpath/"fastcomp").install resource("fastcomp")
     (buildpath/"fastcomp/tools/clang").install resource("fastcomp-clang")

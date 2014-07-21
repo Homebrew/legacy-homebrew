@@ -1,5 +1,4 @@
 require 'utils/json'
-require 'erb'
 
 class AbstractDownloadStrategy
   attr_reader :name, :resource
@@ -44,7 +43,7 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
   def initialize name, resource
     super
     @ref_type, @ref = extract_ref(resource.specs)
-    @clone = HOMEBREW_CACHE/cache_filename
+    @clone = HOMEBREW_CACHE.join(cache_filename)
   end
 
   def extract_ref(specs)
@@ -52,12 +51,8 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
     return key, specs[key]
   end
 
-  def cache_filename(tag=cache_tag)
-    if name.empty? || name == '__UNKNOWN__'
-      "#{ERB::Util.url_encode(@url)}--#{tag}"
-    else
-      "#{name}--#{tag}"
-    end
+  def cache_filename
+    "#{name}--#{cache_tag}"
   end
 
   def cache_tag
@@ -79,11 +74,7 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def tarball_path
-    @tarball_path ||= if name.empty? || name == '__UNKNOWN__'
-      Pathname.new("#{HOMEBREW_CACHE}/#{basename_without_params}")
-    else
-      Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{resource.version}#{ext}")
-    end
+    @tarball_path ||= Pathname.new("#{HOMEBREW_CACHE}/#{name}-#{resource.version}#{ext}")
   end
 
   def temporary_path
@@ -212,18 +203,12 @@ class CurlDownloadStrategy < AbstractDownloadStrategy
   end
 
   def ext
-    # GitHub uses odd URLs for zip files, so check for those
-    rx=%r[https?://(www\.)?github\.com/.*/(zip|tar)ball/]
-    if rx.match @url
-      if $2 == 'zip'
-        '.zip'
-      else
-        '.tgz'
-      end
-    else
-      # Strip any ?thing=wad out of .c?thing=wad style extensions
-      (Pathname.new(@url).extname)[/[^?]+/]
-    end
+    # We need a Pathname because we've monkeypatched extname to support double
+    # extensions (e.g. tar.gz).
+    # We can't use basename_without_params, because given a URL like
+    #   http://example.com/download.php?file=foo-1.0.tar.gz
+    # the extension we want is ".tar.gz", not ".php".
+    Pathname.new(@url).extname[/[^?]+/]
   end
 end
 
@@ -301,10 +286,6 @@ class CurlBottleDownloadStrategy < CurlDownloadStrategy
     super
     mirror = ENV['HOMEBREW_SOURCEFORGE_MIRROR']
     @url = "#{@url}?use_mirror=#{mirror}" if mirror
-  end
-
-  def tarball_path
-    @tarball_path ||= HOMEBREW_CACHE/"#{name}-#{resource.version}#{ext}"
   end
 
   def stage
@@ -610,11 +591,12 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def update_submodules
-    safe_system 'git', 'submodule', 'update', '--init'
+    safe_system 'git', 'submodule', 'update', '--init', '--recursive'
   end
 
   def checkout_submodules(dst)
-    sub_cmd = "git checkout-index -a -f --prefix=#{dst}/$path/"
+    escaped_clone_path = @clone.to_s.gsub(/\//, '\/')
+    sub_cmd = "git checkout-index -a -f --prefix=#{dst}/${toplevel/#{escaped_clone_path}/}/$path/"
     safe_system 'git', 'submodule', '--quiet', 'foreach', '--recursive', sub_cmd
   end
 end
@@ -643,7 +625,7 @@ class CVSDownloadStrategy < VCSDownloadStrategy
     unless @clone.exist?
       HOMEBREW_CACHE.cd do
         safe_system cvspath, '-d', url, 'login'
-        safe_system cvspath, '-d', url, 'checkout', '-d', cache_filename("cvs"), mod
+        safe_system cvspath, '-d', url, 'checkout', '-d', cache_filename, mod
       end
     else
       puts "Updating #{@clone}"

@@ -2,15 +2,15 @@ require "formula"
 
 class Blink1 < Formula
   homepage "http://thingm.com/products/blink-1.html"
-  url "https://github.com/todbot/blink1/archive/v1.81.tar.gz"
-  sha1 "8fd96bfad3e6781b165848ef59723fd4ceb16bc4"
+  url "https://github.com/todbot/blink1/archive/v1.91.tar.gz"
+  sha1 "255a00e457e7559685060b2aa09b96c5589c2b9d"
   head "https://github.com/todbot/blink1.git"
 
   bottle do
     cellar :any
-    sha1 "3d647127449b9f57d660fd75f0b9cba64463da0b" => :mavericks
-    sha1 "3bfa0403de5aba1f4e2b721bd8561c9b3e50d8c3" => :mountain_lion
-    sha1 "44a769f44423129f2885d6212f8ec089aa9519ee" => :lion
+    sha1 "3d9ad539d1e56cc22f17cdba283408674f885a4a" => :mavericks
+    sha1 "f8bb65ba7c626220a961f715c053825e8e6a808b" => :mountain_lion
+    sha1 "4b2d7582e802686b6208fd5b1f00f8bd11d21e99" => :lion
   end
 
   def install
