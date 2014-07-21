@@ -14,8 +14,10 @@ class Passenger < Formula
   depends_on 'pcre'
   depends_on :macos => :mountain_lion
 
+  option 'without-apache2-module', 'Disable Apache2 module'
+
   def install
-    rake "apache2"
+    rake "apache2" if build.with? "apache2-module"
     rake "nginx"
     rake "webhelper"
 
@@ -42,15 +44,21 @@ class Passenger < Formula
     mv libexec/'man', share
   end
 
-  def caveats; <<-EOS.undent
-    To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
-      LoadModule passenger_module #{opt_libexec}/buildout/apache2/mod_passenger.so
-      PassengerRoot #{opt_libexec}/lib/phusion_passenger/locations.ini
-      PassengerDefaultRuby /usr/bin/ruby
+  def caveats
+    s = <<-EOS.undent
+      To activate Phusion Passenger for Nginx, run:
+        brew install nginx --with-passenger
 
-    To activate Phusion Passenger for Nginx, run:
-      brew install nginx --with-passenger
-    EOS
+      EOS
+
+    s += <<-EOS.undent if build.with? "apache2-module"
+      To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
+        LoadModule passenger_module #{opt_libexec}/buildout/apache2/mod_passenger.so
+        PassengerRoot #{opt_libexec}/lib/phusion_passenger/locations.ini
+        PassengerDefaultRuby /usr/bin/ruby
+
+      EOS
+    s
   end
 
   test do

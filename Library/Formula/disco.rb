@@ -1,14 +1,14 @@
-require 'formula'
+require "formula"
 
 class Disco < Formula
-  homepage 'http://discoproject.org/'
-  url 'https://github.com/discoproject/disco/archive/0.5.1.tar.gz'
-  sha1 'c158018409216d5c03368b773e54e1e5ea91ae38'
+  homepage "http://discoproject.org/"
+  url "https://github.com/discoproject/disco/archive/0.5.2.tar.gz"
+  sha1 "35da28ee8a8a7d06bbe36a739984e8cfd150cf93"
 
   depends_on :python if MacOS.version <= :snow_leopard
-  depends_on 'erlang'
-  depends_on 'simplejson' => :python if MacOS.version <= :leopard
-  depends_on 'libcmph'
+  depends_on "erlang"
+  depends_on "simplejson" => :python if MacOS.version <= :leopard
+  depends_on "libcmph"
 
   # Modifies config for single-node operation
   patch :DATA
@@ -37,7 +37,7 @@ class Disco < Formula
       s.gsub!("Cellar/disco/"+version+"/", "")
     end
 
-    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
