@@ -6,9 +6,9 @@ class Bitlbee < Formula
   sha1 '7e3cfe2b6bf4e8e603c74e7587307a6f5d267e9c'
 
   bottle do
-    sha1 "87aaac8542c0e5fcfaa81a5d0464d48043cf0389" => :mavericks
-    sha1 "7aa598b16ce35182e9c061dbc27a1a08e3462c6f" => :mountain_lion
-    sha1 "af0cdf96d4a5e718f191ecdc7cda133e8849bff0" => :lion
+    sha1 "4a639d88aa819d23d6020a36602097474f66357d" => :mavericks
+    sha1 "5312823fead39bba80b712bcedca4f9a7fc9211d" => :mountain_lion
+    sha1 "c21d19af516d959eb2a0b4b5ff534a66678d419d" => :lion
   end
 
   option 'with-finch', "Use finch/libpurple for all communication with instant messaging networks"
