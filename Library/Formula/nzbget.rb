@@ -1,14 +1,14 @@
-require 'formula'
+require "formula"
 
 class Nzbget < Formula
-  homepage 'http://sourceforge.net/projects/nzbget/'
-  url 'https://downloads.sourceforge.net/project/nzbget/nzbget-stable/12.0/nzbget-12.0.tar.gz'
-  sha1 'b7f3037ca664f09c28ab359cf6091d876d63ba5f'
+  homepage "http://nzbget.net/"
+  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/13.0/nzbget-13.0.tar.gz"
+  sha1 "dc321ed59f47755bc910cf859f18dab0bf0cc7ff"
 
-  head 'https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk'
+  head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libsigc++'
+  depends_on "pkg-config" => :build
+  depends_on "libsigc++"
 
   fails_with :clang do
     build 500
