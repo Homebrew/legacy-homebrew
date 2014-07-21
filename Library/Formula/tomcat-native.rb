@@ -7,6 +7,7 @@ class TomcatNative < Formula
 
   depends_on "libtool" => :build
   depends_on "tomcat" => :recommended
+  depends_on :java => "1.7"
   depends_on "openssl"
 
   def install
