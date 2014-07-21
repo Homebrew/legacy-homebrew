@@ -12,7 +12,7 @@ class Clamav < Formula
     sha1 "4d2596ed31086455d7e87bade419589da46a3ef3" => :lion
   end
 
-  skip_clean "share"
+  skip_clean "share/clamav"
 
   def install
     (share/"clamav").mkpath

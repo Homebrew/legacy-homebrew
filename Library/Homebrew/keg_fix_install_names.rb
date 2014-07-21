@@ -151,7 +151,7 @@ class Keg
 
   def mach_o_files
     mach_o_files = []
-    dirs = %w{bin lib Frameworks}
+    dirs = %w{bin sbin lib Frameworks}
     dirs.map! { |dir| path.join(dir) }
     dirs.reject! { |dir| not dir.directory? }
 
