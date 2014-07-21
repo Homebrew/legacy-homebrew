@@ -7,6 +7,12 @@ class Nzbget < Formula
 
   head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
 
+  bottle do
+    sha1 "079c3445547cb316a1e6a9bafa58f024ec83c387" => :mavericks
+    sha1 "f278128b20c75ec532ccc6ccff4b514217384591" => :mountain_lion
+    sha1 "57a8551fed4323e4d9554fcb39d76217b3e3bf33" => :lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libsigc++"
 
