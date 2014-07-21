@@ -8,7 +8,7 @@ class GoogleSqlTool < Formula
 
   def install
     # Patch script to find jar
-    system "chmod +w google_sql.sh" # WTF
+    system "chmod +w google_sql.sh"
     inreplace 'google_sql.sh',
       'SQL_SH_DIR="$(cd $(dirname $0); pwd)"',
       "SQL_SH_DIR=\"#{libexec}\""

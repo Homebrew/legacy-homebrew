@@ -18,7 +18,7 @@ class Ndiff < Formula
     man1.install "man/man1/ndiff.1"
   end
 
-  def test
+  test do
     system "#{bin}/ndiff", "--help"
   end
 end

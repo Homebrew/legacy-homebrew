@@ -6,8 +6,8 @@ class IosWebkitDebugProxy < Formula
   sha1 'bc4c240497148a232054be18269368c92deb2a75'
 
   depends_on :macos => :lion
-  depends_on :autoconf => :build
-  depends_on :automake => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on 'libplist'
   depends_on 'usbmuxd'
   depends_on 'libimobiledevice'

@@ -10,24 +10,33 @@ class Cvs < Formula
   url 'http://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2'
   sha1 '93a8dacc6ff0e723a130835713235863f1f5ada9'
 
-  keg_only "Xcode (< 5.0) provides CVS" if MacOS::Xcode.provides_cvs?
+  bottle do
+    cellar :any
+    sha1 "473cd957aca17950993e24ded8cb4b5f39aa94ac" => :mavericks
+    sha1 "a6685b66caee1dc7230409db6043c984ba8ccbd3" => :mountain_lion
+    sha1 "14effa6cf4ffdbff110ce9134537a0984f3fbb21" => :lion
+  end
 
-  def patches
-    { :p0 =>
-      [ 'http://www.opensource.apple.com/source/cvs/cvs-45/patches/PR5178707.diff?txt',
-        'http://www.opensource.apple.com/source/cvs/cvs-45/patches/ea.diff?txt',
-        'http://www.opensource.apple.com/source/cvs/cvs-45/patches/endian.diff?txt',
-        'http://www.opensource.apple.com/source/cvs/cvs-45/patches/fixtest-client-20.diff?txt',
-        'http://www.opensource.apple.com/source/cvs/cvs-45/patches/fixtest-recase.diff?txt',
-        'http://www.opensource.apple.com/source/cvs/cvs-45/patches/i18n.diff?txt',
-        'http://www.opensource.apple.com/source/cvs/cvs-45/patches/initgroups.diff?txt',
-        'http://www.opensource.apple.com/source/cvs/cvs-45/patches/nopic.diff?txt',
-        'http://www.opensource.apple.com/source/cvs/cvs-45/patches/remove-info.diff?txt',
-        'http://www.opensource.apple.com/source/cvs/cvs-45/patches/remove-libcrypto.diff?txt',
-        'http://www.opensource.apple.com/source/cvs/cvs-45/patches/tag.diff?txt',
-        'http://www.opensource.apple.com/source/cvs/cvs-45/patches/zlib.diff?txt'
-      ]
-    }
+  keg_only :provided_until_xcode5
+
+  {
+    "PR5178707"         => "372385b34a346753249a7808e8d5db0a6cadd3ee",
+    "ea"                => "1ffcbe849e138229473e0cd796416dfbe4ad25bb",
+    "endian"            => "98fa880e0e2f1edddf123cdfdcc305f01c241f9b",
+    "fixtest-client-20" => "b9277695a611750fc4db063e8929a558658ba90f",
+    "fixtest-recase"    => "d546783658257ad1af67cecfd6d5fef66dc63e72",
+    "i18n"              => "ec7b44d5d138fd24ac551b880f59fb0351445b98",
+    "initgroups"        => "2c0a11ae5af7da75e02b256c5d9f6b88c8bfd6db",
+    "nopic"             => "260978aa2318cdc35121b09782f0924661d3cebb",
+    "remove-info"       => "7c0c9c406ae8e3d1c81eec5b4ca9e1abe6a8b660",
+    "remove-libcrypto"  => "6c83063cb625cd124dcac75527dbaaa2d52d55b6",
+    "tag"               => "44374b8601dc7e48cf0f3a558565d28b2d0066ab",
+    "zlib"              => "7781dc997c895df8cfa991ab7a04add245169ea4",
+  }.each do |name, sha|
+    patch :p0 do
+      url "http://www.opensource.apple.com/source/cvs/cvs-45/patches/#{name}.diff?txt"
+      sha1 sha
+    end
   end
 
   def install
@@ -50,15 +59,13 @@ class Cvs < Formula
   end
 
   test do
-    system "mkdir", "cvsroot"
-
-    cvsroot = %x[echo ${PWD}/cvsroot].chomp
-
+    cvsroot = testpath/"cvsroot"
+    cvsroot.mkpath
     system "#{bin}/cvs", "-d", cvsroot, "init"
 
     mkdir "cvsexample" do
-      ENV['CVSROOT'] = "#{cvsroot}"
-      system "#{bin}/cvs", "import", "-m ", "'dir structure'", "cvsexample", "homebrew", "start"
+      ENV["CVSROOT"] = cvsroot
+      system "#{bin}/cvs", "import", "-m", "dir structure", "cvsexample", "homebrew", "start"
     end
   end
 end

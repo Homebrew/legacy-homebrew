@@ -7,9 +7,9 @@ class Irods < Formula
 
   conflicts_with 'sleuthkit', :because => 'both install `ils`'
 
-  option 'with-fuse', 'Install iRODS FUSE client'
+  option 'with-osxfuse', 'Install iRODS FUSE client'
 
-  depends_on 'fuse4x' if build.include? 'with-fuse'
+  depends_on 'osxfuse' => :optional
 
   def install
     chdir 'iRODS'
@@ -23,19 +23,20 @@ class Irods < Formula
 
     bin.install Dir['clients/icommands/bin/*'].select {|f| File.executable? f}
 
-    # patch in order to use fuse4x
-    if build.include? 'with-fuse'
+    # patch in order to use osxfuse
+    if build.with? 'osxfuse'
       inreplace 'config/config.mk', '# IRODS_FS = 1', 'IRODS_FS = 1'
       inreplace 'config/config.mk', 'fuseHomeDir=/home/mwan/adil/fuse-2.7.0', "fuseHomeDir=#{HOMEBREW_PREFIX}"
       chdir 'clients/fuse' do
-        inreplace 'Makefile', 'lfuse', 'lfuse4x'
+        inreplace 'Makefile', 'lfuse', 'losxfuse'
+        inreplace 'Makefile', '-I$(fuseHomeDir)/include', '-I$(fuseHomeDir)/include/osxfuse'
         system 'make'
       end
       bin.install Dir['clients/fuse/bin/*'].select {|f| File.executable? f}
     end
   end
 
-  def test
+  test do
     system "#{bin}/ipwd"
   end
 end

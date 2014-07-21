@@ -1,14 +1,13 @@
 require 'dependable'
 require 'dependency'
+require 'dependencies'
 require 'build_environment'
-require 'extend/ENV'
 
 # A base class for non-formula requirements needed by formulae.
 # A "fatal" requirement is one that will fail the build if it is not present.
 # By default, Requirements are non-fatal.
 class Requirement
   include Dependable
-  extend BuildEnvironmentDSL
 
   attr_reader :tags, :name, :option_name
 
@@ -25,13 +24,14 @@ class Requirement
   # Overriding #satisfied? is deprecated.
   # Pass a block or boolean to the satisfy DSL method instead.
   def satisfied?
-    result = self.class.satisfy.yielder do |proc|
-      instance_eval(&proc)
-    end
-
-    infer_env_modification(result)
+    result = self.class.satisfy.yielder { |p| instance_eval(&p) }
+    @satisfied_result = result
     !!result
   end
+
+  # Can overridden to optionally prevent a formula with this requirement from
+  # pouring a bottle.
+  def pour_bottle?; true end
 
   # Overriding #fatal? is deprecated.
   # Pass a boolean to the fatal DSL method instead.
@@ -48,11 +48,29 @@ class Requirement
   # Note: #satisfied? should be called before invoking this method
   # as the env modifications may depend on its side effects.
   def modify_build_environment
-    env.modify_build_environment(self)
+    instance_eval(&env_proc) if env_proc
+
+    # XXX If the satisfy block returns a Pathname, then make sure that it
+    # remains available on the PATH. This makes requirements like
+    #   satisfy { which("executable") }
+    # work, even under superenv where "executable" wouldn't normally be on the
+    # PATH.
+    # This is undocumented magic and it should be removed, but we need to add
+    # a way to declare path-based requirements that work with superenv first.
+    if Pathname === @satisfied_result
+      parent = @satisfied_result.parent
+      unless ENV["PATH"].split(File::PATH_SEPARATOR).include?(parent.to_s)
+        ENV.append_path("PATH", parent)
+      end
+    end
   end
 
   def env
-    @env ||= self.class.env
+    self.class.env
+  end
+
+  def env_proc
+    self.class.env_proc
   end
 
   def eql?(other)
@@ -64,36 +82,22 @@ class Requirement
   end
 
   def inspect
-    "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect}>"
   end
 
   def to_dependency
     f = self.class.default_formula
     raise "No default formula defined for #{inspect}" if f.nil?
-    dep = Dependency.new(f, tags)
-    dep.option_name = name
-    dep.env_proc = method(:modify_build_environment)
-    dep
+    Dependency.new(f, tags, method(:modify_build_environment), name)
   end
 
   private
 
   def infer_name
-    klass = self.class.to_s
+    klass = self.class.name || self.class.to_s
     klass.sub!(/(Dependency|Requirement)$/, '')
     klass.sub!(/^(\w+::)*/, '')
     klass.downcase
-  end
-
-  def infer_env_modification(o)
-    case o
-    when Pathname
-      self.class.env do
-        unless ENV["PATH"].split(File::PATH_SEPARATOR).include?(o.parent.to_s)
-          ENV.append_path("PATH", o.parent)
-        end
-      end
-    end
   end
 
   def which(cmd)
@@ -101,10 +105,23 @@ class Requirement
   end
 
   class << self
-    attr_rw :fatal, :build, :default_formula
+    include BuildEnvironmentDSL
+
+    attr_reader :env_proc
+    attr_rw :fatal, :default_formula
+    # build is deprecated, use `depends_on <requirement> => :build` instead
+    attr_rw :build
 
     def satisfy(options={}, &block)
       @satisfied ||= Requirement::Satisfier.new(options, &block)
+    end
+
+    def env(*settings, &block)
+      if block_given?
+        @env_proc = block
+      else
+        super
+      end
     end
   end
 
@@ -124,6 +141,7 @@ class Requirement
       if instance_variable_defined?(:@satisfied)
         @satisfied
       elsif @options[:build_env]
+        require "extend/ENV"
         ENV.with_build_environment { yield @proc }
       else
         yield @proc
@@ -138,7 +156,7 @@ class Requirement
     # The default filter, which is applied when a block is not given, omits
     # optionals and recommendeds based on what the dependent has asked for.
     def expand(dependent, &block)
-      reqs = ComparableSet.new
+      reqs = Requirements.new
 
       formulae = dependent.recursive_dependencies.map(&:to_formula)
       formulae.unshift(dependent)
@@ -153,21 +171,6 @@ class Requirement
         end
       end
 
-      # We special case handling of X11Dependency and its subclasses to
-      # ensure the correct dependencies are present in the final list.
-      # If an X11Dependency is present after filtering, we eliminate
-      # all X11Dependency::Proxy objects from the list. If there aren't
-      # any X11Dependency objects, then we eliminate all but one of the
-      # proxy objects.
-      proxy = unless reqs.any? { |r| r.instance_of?(X11Dependency) }
-                reqs.find { |r| r.kind_of?(X11Dependency::Proxy) }
-              end
-
-      reqs.reject! do |r|
-        r.kind_of?(X11Dependency::Proxy)
-      end
-
-      reqs << proxy unless proxy.nil?
       reqs
     end
 

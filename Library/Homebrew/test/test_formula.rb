@@ -1,8 +1,18 @@
 require 'testing_env'
 require 'test/testball'
 
-class FormulaTests < Test::Unit::TestCase
-  include VersionAssertions
+class FormulaTests < Homebrew::TestCase
+  def test_formula_instantiation
+    klass = Class.new(Formula) { url "http://example.com/foo-1.0.tar.gz" }
+    name = "formula_name"
+    path = Formula.path(name)
+    spec = :stable
+
+    f = klass.new(name, path, spec)
+    assert_equal name, f.name
+    assert_equal path, f.path
+    assert_raises(ArgumentError) { klass.new }
+  end
 
   def test_prefix
     f = TestBall.new
@@ -10,20 +20,25 @@ class FormulaTests < Test::Unit::TestCase
     assert_kind_of Pathname, f.prefix
   end
 
+  def test_revised_prefix
+    f = Class.new(TestBall) { revision 1 }.new
+    assert_equal HOMEBREW_CELLAR/f.name/'0.1_1', f.prefix
+  end
+
   def test_installed?
     f = TestBall.new
     f.stubs(:installed_prefix).returns(stub(:directory? => false))
-    assert !f.installed?
+    refute_predicate f, :installed?
 
     f.stubs(:installed_prefix).returns(
       stub(:directory? => true, :children => [])
     )
-    assert !f.installed?
+    refute_predicate f, :installed?
 
     f.stubs(:installed_prefix).returns(
       stub(:directory? => true, :children => [stub])
     )
-    assert f.installed?
+    assert_predicate f, :installed?
   end
 
   def test_installed_prefix
@@ -43,7 +58,7 @@ class FormulaTests < Test::Unit::TestCase
     prefix.mkpath
     assert_equal prefix, f.installed_prefix
   ensure
-    prefix.rmtree
+    f.rack.rmtree
   end
 
   def test_installed_prefix_devel_installed
@@ -58,7 +73,7 @@ class FormulaTests < Test::Unit::TestCase
     prefix.mkpath
     assert_equal prefix, f.installed_prefix
   ensure
-    prefix.rmtree
+    f.rack.rmtree
   end
 
   def test_installed_prefix_stable_installed
@@ -73,13 +88,11 @@ class FormulaTests < Test::Unit::TestCase
     prefix.mkpath
     assert_equal prefix, f.installed_prefix
   ensure
-    prefix.rmtree
+    f.rack.rmtree
   end
 
   def test_installed_prefix_head_active_spec
-    ARGV.stubs(:build_head? => true)
-
-    f = formula do
+    f = formula("test", Pathname.new(__FILE__).expand_path, :head) do
       head 'foo'
       devel do
         url 'foo'
@@ -91,9 +104,7 @@ class FormulaTests < Test::Unit::TestCase
   end
 
   def test_installed_prefix_devel_active_spec
-    ARGV.stubs(:build_devel? => true)
-
-    f = formula do
+    f = formula("test", Pathname.new(__FILE__).expand_path, :devel) do
       head 'foo'
       devel do
         url 'foo'
@@ -107,77 +118,62 @@ class FormulaTests < Test::Unit::TestCase
   def test_equality
     x = TestBall.new
     y = TestBall.new
-    assert x == y
-    assert y == x
-    assert x.eql?(y)
-    assert y.eql?(x)
-    assert x.hash == y.hash
+    assert_equal x, y
+    assert_eql x, y
+    assert_equal x.hash, y.hash
   end
 
   def test_inequality
     x = TestBall.new("foo")
     y = TestBall.new("bar")
-    assert x != y
-    assert y != x
-    assert x.hash != y.hash
-    assert !x.eql?(y)
-    assert !y.eql?(x)
+    refute_equal x, y
+    refute_eql x, y
+    refute_equal x.hash, y.hash
   end
 
   def test_comparison_with_non_formula_objects_does_not_raise
-    assert_not_equal TestBall.new, Object.new
+    refute_equal TestBall.new, Object.new
+  end
+
+  def test_sort_operator
+    assert_nil TestBall.new <=> Object.new
   end
 
   def test_class_naming
-    assert_equal 'ShellFm', Formula.class_s('shell.fm')
-    assert_equal 'Fooxx', Formula.class_s('foo++')
-    assert_equal 'SLang', Formula.class_s('s-lang')
-    assert_equal 'PkgConfig', Formula.class_s('pkg-config')
-    assert_equal 'FooBar', Formula.class_s('foo_bar')
-  end
-
-  def test_mirror_support
-    f = Class.new(Formula) do
-      url "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz"
-      mirror "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz"
-    end.new("test_mirror_support")
-
-    shutup { f.fetch }
-
-    assert_equal "file:///#{TEST_FOLDER}/bad_url/testball-0.1.tbz", f.url
-    assert_equal "file:///#{TEST_FOLDER}/tarballs/testball-0.1.tbz",
-      f.downloader.instance_variable_get(:@url)
+    assert_equal 'ShellFm', Formulary.class_s('shell.fm')
+    assert_equal 'Fooxx', Formulary.class_s('foo++')
+    assert_equal 'SLang', Formulary.class_s('s-lang')
+    assert_equal 'PkgConfig', Formulary.class_s('pkg-config')
+    assert_equal 'FooBar', Formulary.class_s('foo_bar')
   end
 
   def test_formula_spec_integration
     f = Class.new(Formula) do
       homepage 'http://example.com'
-      url 'file:///foo.com/testball-0.1.tbz'
-      mirror 'file:///foo.org/testball-0.1.tbz'
+      url 'http://example.com/test-0.1.tbz'
+      mirror 'http://example.org/test-0.1.tbz'
       sha1 TEST_SHA1
 
-      head 'https://github.com/Homebrew/homebrew.git', :tag => 'foo'
+      head 'http://example.com/test.git', :tag => 'foo'
 
       devel do
-        url 'file:///foo.com/testball-0.2.tbz'
-        mirror 'file:///foo.org/testball-0.2.tbz'
+        url 'http://example.com/test-0.2.tbz'
+        mirror 'http://example.org/test-0.2.tbz'
         sha256 TEST_SHA256
       end
 
       bottle { sha1 TEST_SHA1 => bottle_tag }
 
-      def initialize(name="spec_test_ball", path=nil)
-        super
+      def initialize
+        super "test", Pathname.new(__FILE__).expand_path, :stable
       end
     end.new
 
     assert_equal 'http://example.com', f.homepage
     assert_version_equal '0.1', f.version
     assert_equal f.stable, f.active_spec
-    assert_instance_of CurlDownloadStrategy, f.downloader
 
     assert_instance_of SoftwareSpec, f.stable
-    assert_instance_of Bottle, f.bottle
     assert_instance_of SoftwareSpec, f.devel
     assert_instance_of HeadSoftwareSpec, f.head
   end
@@ -194,16 +190,12 @@ class FormulaTests < Test::Unit::TestCase
     File.open(path, 'w') do |f|
       f << %{
         require 'formula'
-        class #{Formula.class_s(name)} < Formula
+        class #{Formulary.class_s(name)} < Formula
           url 'foo-1.0'
-          def initialize(*args)
-            @homepage = 'http://example.com/'
-            super
-          end
         end
       }
     end
-    assert_kind_of Formula, Formula.factory(name)
+    assert_kind_of Formula, Formulary.factory(name)
   ensure
     path.unlink
   end
@@ -211,7 +203,7 @@ class FormulaTests < Test::Unit::TestCase
   def test_class_specs_are_always_initialized
     f = formula { url 'foo-1.0' }
 
-    %w{stable devel head bottle}.each do |spec|
+    %w{stable devel head}.each do |spec|
       assert_kind_of SoftwareSpec, f.class.send(spec)
     end
   end
@@ -219,7 +211,7 @@ class FormulaTests < Test::Unit::TestCase
   def test_incomplete_instance_specs_are_not_accessible
     f = formula { url 'foo-1.0' }
 
-    %w{devel head bottle}.each { |spec| assert_nil f.send(spec) }
+    %w{devel head}.each { |spec| assert_nil f.send(spec) }
   end
 
   def test_honors_attributes_declared_before_specs
@@ -229,8 +221,41 @@ class FormulaTests < Test::Unit::TestCase
       devel { url 'foo-1.1' }
     end
 
-    %w{stable devel head bottle}.each do |spec|
+    %w{stable devel head}.each do |spec|
       assert_equal 'foo', f.class.send(spec).deps.first.name
+    end
+  end
+
+  def test_simple_version
+    assert_equal PkgVersion.parse('1.0'), formula { url 'foo-1.0.bar' }.pkg_version
+  end
+
+  def test_version_with_revision
+    f = formula do
+      url 'foo-1.0.bar'
+      revision 1
+    end
+
+    assert_equal PkgVersion.parse('1.0_1'), f.pkg_version
+  end
+
+  def test_head_ignores_revisions
+    f = formula("test", Pathname.new(__FILE__).expand_path, :head) do
+      url 'foo-1.0.bar'
+      revision 1
+      head 'foo'
+    end
+
+    assert_equal PkgVersion.parse('HEAD'), f.pkg_version
+  end
+
+  def test_raises_when_non_formula_constant_exists
+    const = :SomeConst
+    Object.const_set(const, Module.new)
+    begin
+      assert_raises(FormulaUnavailableError) { Formulary.factory("some_const") }
+    ensure
+      Object.send(:remove_const, const)
     end
   end
 end

@@ -2,8 +2,8 @@ require 'formula'
 
 class Logentries < Formula
   homepage 'https://logentries.com/doc/agent/'
-  url 'https://github.com/logentries/le/archive/v1.2.14.tar.gz'
-  sha1 'd0b8073c7d5cae990b186bacf1bb2e2d39c544a5'
+  url 'https://github.com/logentries/le/archive/v1.3.0.tar.gz'
+  sha1 '3d32c8c6a8faf9346558974310787c0dd9c3f468'
 
   conflicts_with 'le', :because => 'both install a le binary'
 

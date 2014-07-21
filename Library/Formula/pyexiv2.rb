@@ -7,15 +7,15 @@ class Pyexiv2 < Formula
 
   depends_on 'scons' => :build
   depends_on 'exiv2'
-  depends_on 'boost'
+  depends_on 'boost' => 'with-python'
 
   # Patch to use Framework Python
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # this build script ignores CPPFLAGS, but it honors CXXFLAGS
     ENV.append "CXXFLAGS", ENV.cppflags
-    system "scons BOOSTLIB=boost_python-mt"
+    scons "BOOSTLIB=boost_python-mt"
 
     # let's install manually
     mv 'build/libexiv2python.dylib', 'build/libexiv2python.so'

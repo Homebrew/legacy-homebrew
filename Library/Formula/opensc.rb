@@ -2,8 +2,14 @@ require 'formula'
 
 class Opensc < Formula
   homepage 'https://github.com/OpenSC/OpenSC/wiki'
-  url 'http://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.13.0/opensc-0.13.0.tar.gz'
-  sha1 '9285ccbed7b49f63e488c8fb1b3e102994a28218'
+  url 'https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.14.0/opensc-0.14.0.tar.gz'
+  sha1 '4a898e351b0a6d2a5d81576daa7ebed45baf9138'
+
+  bottle do
+    sha1 "58e3ad4248bc4a10258560a6dd186ec1c86467a4" => :mavericks
+    sha1 "d7b65a4e3c7997340dc102ff3196b594731b2977" => :mountain_lion
+    sha1 "cf7e11fe49ca6910d9374211f6421980f7e0f94f" => :lion
+  end
 
   head do
     url 'https://github.com/OpenSC/OpenSC.git'
@@ -15,25 +21,13 @@ class Opensc < Formula
 
   option 'with-man-pages', 'Build manual pages'
 
-  depends_on 'docbook' if build.include? 'with-man-pages'
+  depends_on 'docbook-xsl' if build.with? "man-pages"
 
   def install
-    extra_args = []
+    args = []
 
-    # If OpenSC's configure script detects docbook it will build manual
-    # pages. This extends the spirit of that logic to support homebrew
-    # installed docbook.
-    docbook = Formula.factory 'docbook'
-    if docbook.installed?
-      # OpenSC looks in a set of common paths for docbook's xsl files,
-      # but not in /usr/local, and certainly not in homebrew's
-      # cellar. This specifies the correct homebrew path.
-
-      # Avoid using information from the docbook formula here, as it
-      # will always refer to the latest version which is not
-      # necessarily the installed version.
-      extra_args << "--with-xsl-stylesheetsdir=" +
-        Dir[docbook.opt_prefix/'docbook/xsl/*'].first
+    if build.with? "man-pages"
+      args << "--with-xsl-stylesheetsdir=#{Formula["docbook-xsl"].opt_prefix}/docbook-xsl"
     end
 
     system "./bootstrap" if build.head?
@@ -42,13 +36,8 @@ class Opensc < Formula
                           "--enable-sm",
                           "--enable-openssl",
                           "--enable-pcsc",
-                          *extra_args
+                          *args
 
     system "make install"
-  end
-
-  def caveats; <<-EOS.undent
-    Manual pages will be installed if docbook is installed.
-    EOS
   end
 end

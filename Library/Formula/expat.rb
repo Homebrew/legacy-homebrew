@@ -2,10 +2,13 @@ require 'formula'
 
 class Expat < Formula
   homepage 'http://expat.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/expat/expat/2.1.0/expat-2.1.0.tar.gz'
+  url 'https://downloads.sourceforge.net/project/expat/expat/2.1.0/expat-2.1.0.tar.gz'
   sha1 'b08197d146930a5543a7b99e871cba3da614f6f0'
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"

@@ -6,7 +6,7 @@ class Aiccu < Formula
   sha1 '7b3c51bfe291c777e74b2688e9339b4fb72e6a39'
 
   # Patches per MacPorts
-  def patches; DATA; end
+  patch :DATA
 
   def install
     inreplace 'doc/aiccu.conf', 'daemonize true', 'daemonize false'
@@ -27,7 +27,7 @@ class Aiccu < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/aiccu</string>
+        <string>#{opt_sbin}/aiccu</string>
         <string>start</string>
         <string>#{etc}/aiccu.conf</string>
       </array>

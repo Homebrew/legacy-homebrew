@@ -1,7 +1,6 @@
-require 'extend/ENV'
-require 'hardware'
+require "extend/ENV"
 
-module Homebrew extend self
+module Homebrew
   def __env
     ENV.activate_extensions!
 
@@ -14,8 +13,7 @@ module Homebrew extend self
     if $stdout.tty?
       dump_build_env ENV
     else
-      keys = build_env_keys(ENV) << 'HOMEBREW_BREW_FILE' << 'HOMEBREW_SDKROOT'
-      keys.each do |key|
+      build_env_keys(ENV).each do |key|
         puts "export #{key}=\"#{ENV[key]}\""
       end
     end
@@ -32,22 +30,22 @@ module Homebrew extend self
       HOMEBREW_SVN HOMEBREW_GIT
       HOMEBREW_SDKROOT HOMEBREW_BUILD_FROM_SOURCE
       MAKE GIT CPP
-      ACLOCAL_PATH PATH CPATH].select{ |key| env.fetch(key) if env.key? key }
+      ACLOCAL_PATH PATH CPATH].select { |key| env.key?(key) }
   end
 
   def dump_build_env env
-    build_env_keys(env).each do |key|
-      next if superenv? and %w{CC CXX OBJC OBJCXX}.include? key
+    keys = build_env_keys(env)
 
+    if env["CC"] == env["HOMEBREW_CC"]
+      %w[CC CXX OBJC OBJCXX].each { |key| keys.delete(key) }
+    end
+
+    keys.each do |key|
       value = env[key]
       print "#{key}: #{value}"
-      case key when 'CC', 'CXX', 'LD'
-        if value =~ %r{/usr/bin/xcrun (.*)}
-          path = `/usr/bin/xcrun -find #{$1}`
-          print " => #{path}"
-        elsif File.symlink? value
-          print " => #{Pathname.new(value).realpath}"
-        end
+      case key
+      when "CC", "CXX", "LD"
+        print " => #{Pathname.new(value).realpath}" if File.symlink?(value)
       end
       puts
     end

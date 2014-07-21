@@ -12,21 +12,24 @@ class Unac < Formula
   depends_on 'libtool' => :build
   depends_on 'gettext' => :build
 
-  def patches
-    {
-      :p0 => [
-        "http://bugs.debian.org/cgi-bin/bugreport.cgi?msg=5;filename=patch-libunac1.txt;att=1;bug=623340",
-        "http://bugs.debian.org/cgi-bin/bugreport.cgi?msg=10;filename=patch-unaccent.c.txt;att=1;bug=623340"],
-      :p1 => [
-        "http://ftp.de.debian.org/debian/pool/main/u/unac/unac_1.8.0-6.diff.gz",
-        DATA]
-    }
+  patch :DATA
+
+  patch :p0 do
+    url "http://bugs.debian.org/cgi-bin/bugreport.cgi?msg=5;filename=patch-libunac1.txt;att=1;bug=623340"
+    sha1 "5b273127609b98092b8f3bb1b4c3e9f137968151"
+  end
+
+  patch :p0 do
+    url "http://bugs.debian.org/cgi-bin/bugreport.cgi?msg=10;filename=patch-unaccent.c.txt;att=1;bug=623340"
+    sha1 "689a1f32cdf08e3dab04bef1605666e4288ae64e"
+  end
+
+  patch do
+    url "http://ftp.de.debian.org/debian/pool/main/u/unac/unac_1.8.0-6.diff.gz"
+    sha1 "ed44c7dd2a093a970be51f19dfd1da396b08797e"
   end
 
   def install
-    # Compatibility with Automake 1.13 and newer.
-    inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
-
     chmod 0755, "configure"
     touch "config.rpath"
     inreplace "autogen.sh", "libtool", "glibtool"

@@ -7,10 +7,8 @@ class Rtpbreak < Formula
 
   depends_on 'libnet'
 
-  def patches
-    # main.c is missing the netinet/udp.h header; reported upstream by email
-    {:p0 => DATA}
-  end
+  # main.c is missing the netinet/udp.h header; reported upstream by email
+  patch :p0, :DATA
 
   def install
     system "make", "CC=#{ENV.cc}"

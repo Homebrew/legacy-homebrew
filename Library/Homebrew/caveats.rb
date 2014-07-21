@@ -13,6 +13,7 @@ class Caveats
     caveats << zsh_completion_caveats
     caveats << plist_caveats
     caveats << python_caveats
+    caveats << app_caveats
     caveats.compact.join("\n")
   end
 
@@ -24,7 +25,7 @@ class Caveats
 
   def keg
     @keg ||= [f.prefix, f.opt_prefix, f.linked_keg].map do |d|
-      Keg.new(d.realpath) rescue nil
+      Keg.new(d.resolved_path) rescue nil
     end.compact.first
   end
 
@@ -45,16 +46,30 @@ class Caveats
   end
 
   def python_caveats
+    return unless keg
+    return unless keg.python_site_packages_installed?
+    return if Formula["python"].installed?
     site_packages = if f.keg_only?
       "#{f.opt_prefix}/lib/python2.7/site-packages"
     else
       "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages"
     end
-    if keg and keg.python_site_packages_installed? \
-      and !ENV['PYTHONPATH'].to_s.include? site_packages
+    dir = "~/Library/Python/2.7/lib/python/site-packages"
+    dir_path = Pathname.new(dir).expand_path
+    file = "#{dir}/homebrew.pth"
+    file_path = Pathname.new(file).expand_path
+    if !file_path.readable? || !file_path.read.include?(site_packages)
+      s = "If you need Python to find the installed site-packages:\n"
+      s += "  mkdir -p #{dir}\n" unless dir_path.exist?
+      s += "  echo '#{site_packages}' > #{file}"
+    end
+  end
+
+  def app_caveats
+    if keg and keg.app_installed?
       <<-EOS.undent
-        Set PYTHONPATH if you want Python to find your site-packages:
-          export PYTHONPATH=#{site_packages}:$PYTHONPATH
+        .app bundles were installed.
+        Run `brew linkapps` to symlink these to /Applications.
       EOS
     end
   end
@@ -77,11 +92,11 @@ class Caveats
         if f.plist_startup
           s << "To have launchd start #{f.name} at startup:"
           s << "    sudo mkdir -p #{destination}" unless destination_path.directory?
-          s << "    sudo cp -fv #{HOMEBREW_PREFIX}/opt/#{f.name}/*.plist #{destination}"
+          s << "    sudo cp -fv #{f.opt_prefix}/*.plist #{destination}"
         else
           s << "To have launchd start #{f.name} at login:"
           s << "    mkdir -p #{destination}" unless destination_path.directory?
-          s << "    ln -sfv #{HOMEBREW_PREFIX}/opt/#{f.name}/*.plist #{destination}"
+          s << "    ln -sfv #{f.opt_prefix}/*.plist #{destination}"
         end
         s << "Then to load #{f.name} now:"
         if f.plist_startup
@@ -97,7 +112,7 @@ class Caveats
         s << "To reload #{f.name} after an upgrade:"
         if f.plist_startup
           s << "    sudo launchctl unload #{plist_link}"
-          s << "    sudo cp -fv #{HOMEBREW_PREFIX}/opt/#{f.name}/*.plist #{destination}"
+          s << "    sudo cp -fv #{f.opt_prefix}/*.plist #{destination}"
           s << "    sudo launchctl load #{plist_link}"
         else
           s << "    launchctl unload #{plist_link}"

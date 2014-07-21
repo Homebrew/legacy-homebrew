@@ -1,12 +1,11 @@
-require 'formula'
+require "formula"
 
 class IsoCodes < Formula
-  homepage 'http://pkg-isocodes.alioth.debian.org/'
-  url 'http://pkg-isocodes.alioth.debian.org/downloads/iso-codes-3.49.tar.xz'
-  sha1 '2a9836429423343ec9631b30fdb177b733bdef7c'
+  homepage "http://pkg-isocodes.alioth.debian.org/"
+  url "http://pkg-isocodes.alioth.debian.org/downloads/iso-codes-3.54.tar.xz"
+  sha1 "8b07323ca36f976433e516709d86f67516628e3b"
 
-  depends_on 'xz' => :build
-  depends_on 'gettext' => :build
+  depends_on "gettext" => :build
 
   def install
     system "./configure", "--prefix=#{prefix}"

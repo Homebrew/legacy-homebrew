@@ -2,7 +2,7 @@ require 'formula'
 
 class Gpsim < Formula
   homepage 'http://gpsim.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/gpsim/gpsim/0.26.0/gpsim-0.26.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/gpsim/gpsim/0.26.0/gpsim-0.26.1.tar.gz'
   sha1 '7e1c3cc5a821b3458717a94a09bc484bf6937b25'
 
   head 'svn://svn.code.sf.net/p/gpsim/code/trunk'
@@ -12,9 +12,7 @@ class Gpsim < Formula
   depends_on 'glib'
 
   # Patch is upstream; test if it is needed in next release
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-gui",

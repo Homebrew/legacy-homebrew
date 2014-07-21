@@ -7,9 +7,7 @@ class Iozone < Formula
 
   # Patch by @nijotz, adds O_DIRECT support when using -I flag.
   # See: https://github.com/Homebrew/homebrew/pull/10585
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     cd 'src/current' do

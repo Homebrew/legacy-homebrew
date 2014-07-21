@@ -2,8 +2,15 @@ require 'formula'
 
 class Zeromq < Formula
   homepage 'http://www.zeromq.org/'
-  url 'http://download.zeromq.org/zeromq-4.0.3.tar.gz'
-  sha1 'a363ddfff75f73976f656b3ba48f32544b214075'
+  url 'http://download.zeromq.org/zeromq-4.0.4.tar.gz'
+  sha1 '2328014e5990efac31390439b75c5528e38e4490'
+
+  bottle do
+    cellar :any
+    sha1 "6760a4e1b2091ae81c5cb909a43bb9829e7540df" => :mavericks
+    sha1 "de92da055c50391f5e96cc48ab69694a906813cc" => :mountain_lion
+    sha1 "c367bd8f3e75637206d2217b19516d6442060057" => :lion
+  end
 
   head do
     url 'https://github.com/zeromq/libzmq.git'
@@ -18,14 +25,14 @@ class Zeromq < Formula
   option 'with-pgm', 'Build with PGM extension'
 
   depends_on 'pkg-config' => :build
-  depends_on 'libpgm' if build.include? 'with-pgm'
+  depends_on 'libpgm' if build.with? "pgm"
   depends_on 'libsodium' => :optional
 
   def install
     ENV.universal_binary if build.universal?
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-    if build.include? 'with-pgm'
+    if build.with? "pgm"
       # Use HB libpgm-5.2 because their internal 5.1 is b0rked.
       ENV['OpenPGM_CFLAGS'] = %x[pkg-config --cflags openpgm-5.2].chomp
       ENV['OpenPGM_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp

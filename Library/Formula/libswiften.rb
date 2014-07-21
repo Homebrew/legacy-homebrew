@@ -2,8 +2,21 @@ require 'formula'
 
 class Libswiften < Formula
   homepage 'http://swift.im/swiften'
-  url 'http://swift.im/downloads/releases/swift-2.0/swift-2.0.tar.gz'
-  sha1 'b04ba098fffb1edc2ef0215957371c249458f0be'
+
+  stable do
+    url "http://swift.im/downloads/releases/swift-2.0/swift-2.0.tar.gz"
+    sha1 "b04ba098fffb1edc2ef0215957371c249458f0be"
+
+    # Patch to include lock from boost. Taken from
+    # http://comments.gmane.org/gmane.linux.redhat.fedora.extras.cvs/957411
+    patch :DATA
+  end
+
+  bottle do
+    sha1 "8585e20ca6baafeb2ab4f5bc5c5f50de1fff9073" => :mavericks
+    sha1 "17939bb1820f63ce154baa4d8a4311ba28688d82" => :mountain_lion
+    sha1 "1f959d914263407c4a909d92e3cd6047ca280280" => :lion
+  end
 
   head do
     url 'git://swift.im/swift'
@@ -14,13 +27,9 @@ class Libswiften < Formula
   depends_on 'libidn'
   depends_on 'boost'
 
-  # Patch to include lock from boost. Taken from
-  # http://comments.gmane.org/gmane.linux.redhat.fedora.extras.cvs/957411
-  def patches; DATA unless build.head?; end
-
   def install
-    boost = Formula.factory("boost")
-    libidn = Formula.factory("libidn")
+    boost = Formula["boost"]
+    libidn = Formula["libidn"]
 
     args = %W[
       -j #{ENV.make_jobs}
@@ -36,7 +45,7 @@ class Libswiften < Formula
     ]
 
     if build.with? "lua"
-      lua = Formula.factory("lua")
+      lua = Formula["lua"]
       args << "SLUIFT_INSTALLDIR=#{prefix}"
       args << "lua_includedir=#{lua.include}"
       args << "lua_libdir=#{lua.lib}"
@@ -44,11 +53,11 @@ class Libswiften < Formula
 
     args << prefix
 
-    system "scons", *args
+    scons *args
     man1.install 'Swift/Packaging/Debian/debian/swiften-config.1' unless build.stable?
   end
 
-  def test
+  test do
     system "#{bin}/swiften-config"
   end
 end

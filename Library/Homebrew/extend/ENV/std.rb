@@ -16,12 +16,7 @@ module Stdenv
   end
 
   def setup_build_environment(formula=nil)
-    # Clear CDPATH to avoid make issues that depend on changing directories
-    delete('CDPATH')
-    delete('GREP_OPTIONS') # can break CMake (lol)
-    delete('CLICOLOR_FORCE') # autotools doesn't like this
-    %w{CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH}.each { |k| delete(k) }
-    remove_cc_etc
+    reset
 
     if MacOS.version >= :mountain_lion
       # Mountain Lion's sed is stricter, and errors out when
@@ -58,34 +53,21 @@ module Stdenv
 
     append 'LDFLAGS', '-Wl,-headerpad_max_install_names'
 
-    # set us up for the user's compiler choice
-    self.send self.compiler
-
-    # we must have a working compiler!
-    unless cc
-      @compiler = MacOS.default_compiler
-      self.send @compiler
-      self.cc  = MacOS.locate("cc")
-      self.cxx = MacOS.locate("c++")
-    end
-
+    send(compiler)
     validate_cc!(formula) unless formula.nil?
 
     if cc =~ GNU_GCC_REGEXP
       warn_about_non_apple_gcc($1)
-      gcc_name = 'gcc' + $1.delete('.')
-      gcc = Formulary.factory(gcc_name)
-      self.append_path('PATH', gcc.opt_prefix/'bin')
+      gcc_formula = gcc_version_formula($1)
+      self.append_path('PATH', gcc_formula.opt_prefix/'bin')
     end
 
     # Add lib and include etc. from the current macosxsdk to compiler flags:
     macosxsdk MacOS.version
 
     if MacOS::Xcode.without_clt?
-      # Some tools (clang, etc.) are in the xctoolchain dir of Xcode
-      append_path 'PATH', "#{MacOS.xctoolchain_path}/usr/bin" if MacOS.xctoolchain_path
-      # Others are now at /Applications/Xcode.app/Contents/Developer/usr/bin
-      append_path 'PATH', MacOS.dev_tools_path
+      append_path "PATH", "#{MacOS::Xcode.prefix}/usr/bin"
+      append_path "PATH", "#{MacOS::Xcode.toolchain_path}/usr/bin"
     end
   end
 
@@ -104,63 +86,54 @@ module Stdenv
   alias_method :j1, :deparallelize
 
   # These methods are no-ops for compatibility.
-  %w{fast Og}.each { |opt| define_method(opt) {} }
+  %w{fast O4 Og}.each { |opt| define_method(opt) {} }
 
-  %w{O4 O3 O2 O1 O0 Os}.each do |opt|
+  %w{O3 O2 O1 O0 Os}.each do |opt|
     define_method opt do
       remove_from_cflags(/-O./)
       append_to_cflags "-#{opt}"
     end
   end
 
-  def gcc_4_0_1
-    # we don't use locate because gcc 4.0 has not been provided since Xcode 4
-    self.cc  = "#{MacOS.dev_tools_path}/gcc-4.0"
-    self.cxx = "#{MacOS.dev_tools_path}/g++-4.0"
-    replace_in_cflags '-O4', '-O3'
-    set_cpu_cflags '-march=nocona -mssse3'
-    @compiler = :gcc_4_0
+  def determine_cc
+    s = super
+    MacOS.locate(s) || Pathname.new(s)
   end
-  alias_method :gcc_4_0, :gcc_4_0_1
+
+  def determine_cxx
+    dir, base = determine_cc.split
+    dir / base.to_s.sub("gcc", "g++").sub("clang", "clang++")
+  end
+
+  def gcc_4_0
+    super
+    set_cpu_cflags '-march=nocona -mssse3'
+  end
+  alias_method :gcc_4_0_1, :gcc_4_0
 
   def gcc
-    # Apple stopped shipping gcc-4.2 with Xcode 4.2
-    # However they still provide a gcc symlink to llvm
-    # But we don't want LLVM of course.
-
-    self.cc  = MacOS.locate("gcc-4.2")
-    self.cxx = MacOS.locate("g++-4.2")
-
-    replace_in_cflags '-O4', '-O3'
+    super
     set_cpu_cflags
-    @compiler = :gcc
   end
   alias_method :gcc_4_2, :gcc
 
   GNU_GCC_VERSIONS.each do |n|
     define_method(:"gcc-4.#{n}") do
-      gcc = "gcc-4.#{n}"
-      self.cc = self['OBJC'] = gcc
-      self.cxx = self['OBJCXX'] = gcc.gsub('c', '+')
+      super()
       set_cpu_cflags
-      @compiler = gcc
     end
   end
 
   def llvm
-    self.cc  = MacOS.locate("llvm-gcc")
-    self.cxx = MacOS.locate("llvm-g++")
+    super
     set_cpu_cflags
-    @compiler = :llvm
   end
 
   def clang
-    self.cc  = MacOS.locate("clang")
-    self.cxx = MacOS.locate("clang++")
+    super
     replace_in_cflags(/-Xarch_#{Hardware::CPU.arch_32_bit} (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
     set_cpu_cflags '-march=native', :nehalem => '-march=native -Xclang -target-feature -Xclang -aes'
-    @compiler = :clang
   end
 
   def remove_macosxsdk version=MacOS.version
@@ -263,7 +236,6 @@ module Stdenv
   # we've seen some packages fail to build when warnings are disabled!
   def enable_warnings
     remove_from_cflags '-w'
-    remove_from_cflags '-Qunused-arguments'
   end
 
   def m64
@@ -277,7 +249,6 @@ module Stdenv
 
   def universal_binary
     append_to_cflags Hardware::CPU.universal_archs.as_arch_flags
-    replace_in_cflags '-O4', '-O3' # O4 seems to cause the build to fail
     append 'LDFLAGS', Hardware::CPU.universal_archs.as_arch_flags
 
     if compiler != :clang && Hardware.is_32_bit?
@@ -342,9 +313,6 @@ module Stdenv
     else
       append flags, map.fetch(Hardware::CPU.family, default)
     end
-
-    # not really a 'CPU' cflag, but is only used with clang
-    remove flags, '-Qunused-arguments'
   end
 
   def set_cpu_cflags default=DEFAULT_FLAGS, map=Hardware::CPU.optimization_flags
@@ -359,4 +327,7 @@ module Stdenv
       Hardware::CPU.cores
     end
   end
+
+  # This method does nothing in stdenv since there's no arg refurbishment
+  def refurbish_args; end
 end

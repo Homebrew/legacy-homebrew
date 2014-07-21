@@ -2,8 +2,8 @@ require 'formula'
 
 class Libslax < Formula
   homepage 'http://www.libslax.org/'
-  url 'https://github.com/Juniper/libslax/releases/download/0.17.2/libslax-0.17.2.tar.gz'
-  sha1 '20dba3ea27fc6dd6d9e2aa7ad6e931b1dfe8d6bc'
+  url 'https://github.com/Juniper/libslax/releases/download/0.17.3/libslax-0.17.3.tar.gz'
+  sha1 '19e72f6ab2dca12e619b9392bdc67a59eef2fbff'
 
   head do
     url 'https://github.com/Juniper/libslax.git'
@@ -22,8 +22,7 @@ class Libslax < Formula
   depends_on 'curl' if MacOS.version <= :lion
 
   def install
-    # If build from read run script to run autoconf
-    system "sh ./bin/setup.sh" if build.head?
+    system "sh", "./bin/setup.sh" if build.head?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

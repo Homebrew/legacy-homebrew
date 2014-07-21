@@ -4,8 +4,8 @@ class Vim < Formula
   homepage 'http://www.vim.org/'
   head 'https://vim.googlecode.com/hg/'
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
-  url 'http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.052.orig.tar.gz'
-  sha1 '216ab69faf7e73e4b86da7f00e4ad3b3cca1fdb8'
+  url 'http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.335.orig.tar.gz'
+  sha1 '0a548b3463b362e2f7fdc493158dd42aa48ab760'
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
@@ -27,20 +27,13 @@ class Vim < Formula
   end
 
   depends_on :python => :recommended
-  depends_on 'python3' => :optional
+  depends_on :python3 => :optional
   depends_on 'lua' => :optional
+  depends_on 'luajit' => :optional
   depends_on 'gtk+' if build.with? 'client-server'
 
   conflicts_with 'ex-vi',
     :because => 'vim and ex-vi both install bin/ex and bin/view'
-
-  # First patch: vim uses the obsolete Apple-only -no-cpp-precomp flag, which
-  # FSF GCC can't understand; reported upstream:
-  # https://groups.google.com/forum/#!topic/vim_dev/X5yG3-IiUp8
-  #
-  # Second patch: includes Mac OS X version macros not included by default on 10.9
-  # Reported upstream: https://groups.google.com/forum/#!topic/vim_mac/5kVAMSPb6uU
-  def patches; DATA; end unless build.head?
 
   def install
     ENV['LUA_PREFIX'] = HOMEBREW_PREFIX if build.with?('lua')
@@ -53,7 +46,7 @@ class Vim < Formula
       "--enable-#{language}interp" if build.with? language
     end
     opts += LANGUAGES_DEFAULT.map do |language|
-      "--enable-#{language}interp" unless build.without? language
+      "--enable-#{language}interp" if build.with? language
     end
     if opts.include? "--enable-pythoninterp" and opts.include? "--enable-python3interp"
       opts = opts - %W[--enable-pythoninterp --enable-python3interp] + %W[--enable-pythoninterp=dynamic --enable-python3interp=dynamic]
@@ -67,6 +60,8 @@ class Vim < Formula
       opts << "--enable-gui=no"
       opts << "--without-x"
     end
+
+    opts << "--with-luajit" if build.with? 'luajit'
 
     # XXX: Please do not submit a pull request that hardcodes the path
     # to ruby: vim can be compiled against 1.8.x or 1.9.3-p385 and up.
@@ -86,75 +81,22 @@ class Vim < Formula
                           "--with-compiledby=Homebrew",
                           *opts
 
+    # Require Python's dynamic library, and needs to be built as a framework.
+    if build.with? "python" and build.with? "python3"
+      py_prefix = `python -c "import sys; print(sys.prefix)"`.chomp
+      py3_prefix = `python3 -c "import sys; print(sys.prefix)"`.chomp
+      # Help vim find Python's dynamic library as absolute path.
+      inreplace "src/auto/config.mk" do |s|
+        s.gsub! /-DDYNAMIC_PYTHON_DLL=\\".*\\"/, %(-DDYNAMIC_PYTHON_DLL=\'\"#{py_prefix}/Python\"\')
+        s.gsub! /-DDYNAMIC_PYTHON3_DLL=\\".*\\"/, %(-DDYNAMIC_PYTHON3_DLL=\'\"#{py3_prefix}/Python\"\')
+      end
+    end
+
     system "make"
     # If stripping the binaries is not enabled, vim will segfault with
     # statically-linked interpreters like ruby
     # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
-    system "make", "install", "prefix=#{prefix}", "STRIP=/usr/bin/true"
-    ln_s 'vim', bin/'vi' if build.include? 'override-system-vi'
-  end
-
-  def caveats
-    s = ''
-    if build.with? "python" and build.with? "python3"
-      s += <<-EOS.undent
-        Vim has been built with dynamic loading of Python 2 and Python 3.
-
-        Note: if Vim dynamically loads both Python 2 and Python 3, it may
-        crash. For more information, see:
-            http://vimdoc.sourceforge.net/htmldoc/if_pyth.html#python3
-      EOS
-    end
+    system "make", "install", "prefix=#{prefix}", "STRIP=true"
+    bin.install_symlink "vim" => "vi" if build.include? "override-system-vi"
   end
 end
-
-__END__
-diff --git a/src/auto/configure b/src/auto/configure
-index 07f794e..5736d80 100755
---- a/src/auto/configure
-+++ b/src/auto/configure
-@@ -4221,7 +4221,7 @@ rm -f core conftest.err conftest.$ac_objext \
-     MACOSX=yes
-     OS_EXTRA_SRC="os_macosx.m os_mac_conv.c";
-     OS_EXTRA_OBJ="objects/os_macosx.o objects/os_mac_conv.o"
--        CPPFLAGS="$CPPFLAGS -DMACOS_X_UNIX -no-cpp-precomp"
-+        CPPFLAGS="$CPPFLAGS -DMACOS_X_UNIX"
- 
-                 # On IRIX 5.3, sys/types and inttypes.h are conflicting.
- for ac_header in sys/types.h sys/stat.h stdlib.h string.h memory.h strings.h \
-@@ -4298,7 +4298,7 @@ fi
- 
-   if test "$GCC" = yes -a "$local_dir" != no; then
-     echo 'void f(){}' > conftest.c
--        have_local_include=`${CC-cc} -no-cpp-precomp -c -v conftest.c 2>&1 | grep "${local_dir}/include"`
-+        have_local_include=`${CC-cc} -c -v conftest.c 2>&1 | grep "${local_dir}/include"`
-     have_local_lib=`${CC-cc} -c -v conftest.c 2>&1 | grep "${local_dir}/lib"`
-     rm -f conftest.c conftest.o
-   fi
-diff --git a/src/osdef.sh b/src/osdef.sh
-index d7d4f2a..7015d7b 100755
---- a/src/osdef.sh
-+++ b/src/osdef.sh
-@@ -49,7 +49,6 @@ EOF
- 
- # Mac uses precompiled headers, but we need real headers here.
- case `uname` in
--    Darwin)	$CC -I. -I$srcdir -E -no-cpp-precomp osdef0.c >osdef0.cc;;
-     *)		$CC -I. -I$srcdir -E osdef0.c >osdef0.cc;;
- esac
- 
-
-diff --git a/src/os_mac.h b/src/os_mac.h
-index 78b79c2..54009ab 100644
---- a/src/os_mac.h
-+++ b/src/os_mac.h
-@@ -16,6 +16,9 @@
- # define OPAQUE_TOOLBOX_STRUCTS 0
- #endif
- 
-+/* Include MAC_OS_X_VERSION_* macros */
-+#include <AvailabilityMacros.h>
-+
- /*
-  * Macintosh machine-dependent things.
-  *

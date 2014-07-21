@@ -1,31 +1,28 @@
 require 'formula'
 
 class Wiggle < Formula
-  homepage 'http://neil.brown.name/blog/20100324064620'
-  url 'http://neil.brown.name/wiggle/wiggle-0.9.tar.gz'
-  sha1 '9091671b939559025d217b8830eaab4b313f6b44'
+  homepage "http://neil.brown.name/blog/20100324064620"
+  url "http://neil.brown.name/wiggle/wiggle-1.0.tar.gz"
+  sha1 "07fa4450c658d3f24d2e529b7fc4d883b5ba2e51"
 
-  # Patches 1,2,4 are fixes for OSX in response to a report for Homebrew.
-  # Patches 3 & 5 are unrelated but were added the day after 0.9 was released.
-  # As all 5 patches are in HEAD, remove them after version 0.9.
-  def patches
-    [
-      'http://neil.brown.name/git?p=wiggle.git;a=patch;h=b5281154078e768c43bf75d70df66c61542c580a',
-      'http://neil.brown.name/git?p=wiggle.git;a=patch;h=9c7b89a7b7bfa33ec24c04dfebceba1a464cbf1b',
-      'http://neil.brown.name/git?p=wiggle.git;a=patch;h=0da9cb2c412ad27802788bdb5e23854f2478dbe6',
-      'http://neil.brown.name/git?p=wiggle.git;a=patch;h=5eb651029aed24bbe4e093ffb11b6a70c02b44e2',
-      'http://neil.brown.name/git?p=wiggle.git;a=patch;h=22612c04075b1bce61922e396cca4641760f226b'
-    ]
+  # All three patches are upstream commits
+  patch do
+    url "https://github.com/neilbrown/wiggle/commit/16bb4be1c93be24917669d63ab68dd7d77597b63.diff"
+    sha1 "9d3b4a0ebdb8e1fbd6f50c906255d72b78f957fd"
+  end
+
+  patch do
+    url "https://github.com/neilbrown/wiggle/commit/e010f2ffa78b0e50eff5a9e664f9de27bb790035.diff"
+    sha1 "c0156c25768b8d9f5ffbfde47b066aecc579c0ec"
+  end
+
+  patch do
+    url "https://github.com/neilbrown/wiggle/commit/351535d3489f4583a49891726616375e249ab1f3.diff"
+    sha1 "cfb18a814285dc6705997846f51bdc1ace02015b"
   end
 
   def install
-    # Adjust debug flags according to INSTALL doc
-    inreplace 'Makefile', 'OptDbg=-ggdb', "OptDbg=-g #{ENV.cflags}"
-
-    # Avoid broken install that uses an unrecognized flag, '-D'.  Let it run
-    # the tests because we are trusting it to patch files correctly (~2sec).
-    system "make wiggle wiggle.man test"
-    # Manual install into Homebrew prefix
+    system "make", "OptDbg=#{ENV.cflags}", "wiggle", "wiggle.man", "test"
     bin.install "wiggle"
     man1.install "wiggle.1"
   end

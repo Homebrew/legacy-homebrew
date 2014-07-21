@@ -5,10 +5,7 @@ class Babeld < Formula
   url 'http://www.pps.univ-paris-diderot.fr/~jch/software/files/babeld-1.4.2.tar.gz'
   sha1 '53c02193e191fa3ab6ac5c4df9cde9795d4fb8b0'
 
-  def patches
-    # fixes man path for homebrew
-    DATA
-  end
+  patch :DATA
 
   def install
     system "make", "LDLIBS=''"

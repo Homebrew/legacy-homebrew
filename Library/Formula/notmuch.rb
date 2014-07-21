@@ -1,41 +1,39 @@
-require 'formula'
-
-class NewEnoughEmacs < Requirement
-  fatal true
-
-  def satisfied?
-    `emacs --version`.split("\n")[0] =~ /GNU Emacs (\d+)\./
-    major_version = ($1 || 0).to_i
-    major_version >= 23
-  end
-
-  def message
-    "Emacs support requires at least Emacs 23."
-  end
-end
+require "formula"
 
 class Notmuch < Formula
-  homepage 'http://notmuchmail.org'
-  url 'http://notmuchmail.org/releases/notmuch-0.17.tar.gz'
-  sha1 '0fe14140126a0da04754f548edf7e7b135eeec86'
+  homepage "http://notmuchmail.org"
+  url "http://notmuchmail.org/releases/notmuch-0.18.1.tar.gz"
+  sha1 "ad82d6d5355594c4cab3c6d28c70ae4993acbec9"
 
-  option "emacs", "Install emacs support."
+  bottle do
+    cellar :any
+    sha1 "c2abec535c387b43719bb5775d2f5c574a0b26a6" => :mavericks
+    sha1 "60839b86690a3b8d095b98a788dedef6163b779e" => :mountain_lion
+    sha1 "74cbad02dae99188baa190c6f3a8175bcea10e14" => :lion
+  end
 
-  depends_on NewEnoughEmacs if build.include? "emacs"
-  depends_on 'pkg-config' => :build
-  depends_on 'xapian'
-  depends_on 'talloc'
-  depends_on 'gmime'
+  depends_on "pkg-config" => :build
+  depends_on "emacs" => :optional
+  depends_on "xapian"
+  depends_on "talloc"
+  depends_on "gmime"
 
-  def patches
-    p = []
-    # Fix for mkdir behavior change in 10.9: http://notmuchmail.org/pipermail/notmuch/2013/016388.html
-    p << DATA
+  # Requires zlib >= 1.2.5.2
+  resource "zlib" do
+    url "http://zlib.net/zlib-1.2.8.tar.gz"
+    sha1 "a4d316c404ff54ca545ea71a27af7dbc29817088"
   end
 
   def install
+    resource("zlib").stage do
+      system "./configure", "--prefix=#{buildpath}/zlib", "--static"
+      system "make", "install"
+      ENV.append_path "PKG_CONFIG_PATH", "#{buildpath}/zlib/lib/pkgconfig"
+    end
+
     args = ["--prefix=#{prefix}"]
-    if build.include? "emacs"
+    if build.with? "emacs"
+      ENV.deparallelize # Emacs and parallel builds aren't friends
       args << "--with-emacs"
     else
       args << "--without-emacs"
@@ -45,25 +43,3 @@ class Notmuch < Formula
     system "make", "V=1", "install"
   end
 end
-
-__END__
-diff --git a/Makefile.local b/Makefile.local
-index 72524eb..c85e09c 100644
---- a/Makefile.local
-+++ b/Makefile.local
-@@ -236,11 +236,11 @@ endif
- quiet ?= $($(shell echo $1 | sed -e s'/ .*//'))
- 
- %.o: %.cc $(global_deps)
--	@mkdir -p .deps/$(@D)
-+	@mkdir -p $(patsubst %/.,%,.deps/$(@D))
- 	$(call quiet,CXX $(CPPFLAGS) $(CXXFLAGS)) -c $(FINAL_CXXFLAGS) $< -o $@ -MD -MP -MF .deps/$*.d
- 
- %.o: %.c $(global_deps)
--	@mkdir -p .deps/$(@D)
-+	@mkdir -p $(patsubst %/.,%,.deps/$(@D))
- 	$(call quiet,CC $(CPPFLAGS) $(CFLAGS)) -c $(FINAL_CFLAGS) $< -o $@ -MD -MP -MF .deps/$*.d
- 
- .PHONY : clean
--- 
-1.8.4.2

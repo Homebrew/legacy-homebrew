@@ -1,32 +1,51 @@
 require 'formula'
 
 class Sshfs < Formula
-  homepage 'http://fuse.sourceforge.net/sshfs.html'
-  url 'https://github.com/fuse4x/sshfs/archive/sshfs_2_4_0.tar.gz'
-  sha1 '30b81ac7f32125088652937568d8886e3bb3f6e2'
+  homepage 'http://osxfuse.github.io/'
+  url 'https://github.com/osxfuse/sshfs/archive/osxfuse-sshfs-2.5.0.tar.gz'
+  sha1 '34d81a2f6b4150bff5ee55978b98df50c0bd3152'
 
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on :libtool
+  bottle do
+    cellar :any
+    sha1 "af9fbf03eff59354c0d4071de23ad44f68d986bd" => :mavericks
+    sha1 "7fa3b69a4f3f4cd06a32c11df13db57f21437c88" => :mountain_lion
+    sha1 "8828686ca5c28061825fe059d7d6b9afae5972e9" => :lion
+  end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'fuse4x'
-  depends_on 'glib'
-  depends_on :xcode
+  option 'without-sshnodelay', "Don't compile NODELAY workaround for ssh"
+
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "osxfuse"
+  depends_on "glib"
+
+  # Fixes issue https://github.com/osxfuse/sshfs/pull/4
+  patch :DATA
 
   def install
-    # Compatibility with Automake 1.13 and newer.
-    inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+    args << "--disable-sshnodelay" if build.without? 'sshnodelay'
 
     system "autoreconf", "--force", "--install"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *args
     system "make install"
   end
-
-  def caveats; <<-EOS.undent
-    Make sure to follow the directions given by `brew info fuse4x-kext`
-    before trying to use a FUSE-based filesystem.
-    EOS
-  end
 end
+
+__END__
+--- a/sshfs.c
++++ b/sshfs.c
+@@ -313,6 +313,8 @@
+	"ConnectTimeout",
+	"ControlMaster",
+	"ControlPath",
++	"ForwardAgent",
++	"ForwardX11",
+	"GlobalKnownHostsFile",
+	"GSSAPIAuthentication",
+	"GSSAPIDelegateCredentials",

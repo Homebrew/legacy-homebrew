@@ -1,15 +1,14 @@
-require 'formula'
+require "formula"
 
 class IrcdHybrid < Formula
-  homepage 'http://www.ircd-hybrid.org/'
-  url 'http://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.1.11/ircd-hybrid-8.1.11.tgz'
-  sha1 'd53cd765d5fc1cb31797dfa9aa64fd9099883bf9'
+  homepage "http://www.ircd-hybrid.org/"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.1.18/ircd-hybrid-8.1.18.tgz"
+  sha1 "2dbb4a3dfd4b51d9f0cdcb587720c711e2147ff6"
 
   # ircd-hybrid needs the .la files
   skip_clean :la
 
-  # system openssl fails with undefined symbols: "_SSL_CTX_clear_options"
-  depends_on 'openssl' if MacOS.version < :lion
+  depends_on "openssl"
 
   def install
     ENV.j1 # build system trips over itself
@@ -18,13 +17,13 @@ class IrcdHybrid < Formula
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
                           "--sysconfdir=#{etc}",
-                          # there's no config setting for this so set it to something generous
-                          "--with-nicklen=30"
+                          "--enable-openssl=#{Formula["openssl"].opt_prefix}"
     system "make install"
+    etc.install "doc/reference.conf" => "ircd.conf"
   end
 
-  def test
-    system "#{sbin}/ircd", "-version"
+  test do
+    system "#{bin}/ircd", "-version"
   end
 
   def caveats; <<-EOS.undent
@@ -46,7 +45,7 @@ class IrcdHybrid < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/ircd</string>
+        <string>#{opt_sbin}/ircd</string>
       </array>
       <key>RunAtLoad</key>
       <true/>

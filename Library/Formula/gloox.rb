@@ -9,7 +9,7 @@ class Gloox < Formula
 
   # signed/unsigned conversion error, reported upstream:
   # http://bugs.camaya.net/ticket/?id=223
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug",

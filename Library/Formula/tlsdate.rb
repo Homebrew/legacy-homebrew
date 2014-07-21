@@ -6,10 +6,10 @@ class Tlsdate < Formula
   url 'https://github.com/ioerror/tlsdate/archive/tlsdate-0.0.7.tar.gz'
   sha1 '572ecdd4aa69f9bbcca47f9b12dcd22260838313'
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
-  depends_on 'pkg-config' => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
 
   def install
     system './autogen.sh'

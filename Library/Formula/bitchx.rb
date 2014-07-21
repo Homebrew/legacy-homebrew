@@ -8,9 +8,7 @@ class Bitchx < Formula
 
   # Reported upstream:
   # https://github.com/BitchX/BitchX/pull/8
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     args = %W{
@@ -37,7 +35,7 @@ class Bitchx < Formula
   end
 
   test do
-    system "BitchX -v"
+    system bin/"BitchX", "-v"
   end
 
 end

@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'options'
 
-class OptionTests < Test::Unit::TestCase
+class OptionTests < Homebrew::TestCase
   def setup
     @option = Option.new("foo")
   end
@@ -18,10 +18,9 @@ class OptionTests < Test::Unit::TestCase
     foo = Option.new("foo")
     bar = Option.new("bar")
     assert_equal foo, @option
-    assert_not_equal bar, @option
-    assert @option.eql?(foo)
-    assert !@option.eql?(bar)
-    assert bar < foo
+    refute_equal bar, @option
+    assert_eql @option, foo
+    refute_eql @option, bar
   end
 
   def test_strips_leading_dashes
@@ -42,7 +41,7 @@ class OptionTests < Test::Unit::TestCase
   end
 end
 
-class OptionsTests < Test::Unit::TestCase
+class OptionsTests < Homebrew::TestCase
   def setup
     @options = Options.new
   end
@@ -50,7 +49,7 @@ class OptionsTests < Test::Unit::TestCase
   def test_no_duplicate_options
     @options << Option.new("foo")
     @options << Option.new("foo")
-    assert @options.include? "--foo"
+    assert_includes @options, "--foo"
     assert_equal 1, @options.count
   end
 
@@ -65,9 +64,9 @@ class OptionsTests < Test::Unit::TestCase
 
   def test_include
     @options << Option.new("foo")
-    assert @options.include? "--foo"
-    assert @options.include? "foo"
-    assert @options.include? Option.new("foo")
+    assert_includes @options, "--foo"
+    assert_includes @options, "foo"
+    assert_includes @options, Option.new("foo")
   end
 
   def test_union_returns_options
@@ -102,7 +101,7 @@ class OptionsTests < Test::Unit::TestCase
   def test_concat_array
     option = Option.new("foo")
     @options.concat([option])
-    assert @options.include?(option)
+    assert_includes @options, option
     assert_equal [option], @options.to_a
   end
 
@@ -111,7 +110,7 @@ class OptionsTests < Test::Unit::TestCase
     opts = Options.new
     opts << option
     @options.concat(opts)
-    assert @options.include?(option)
+    assert_includes @options, option
     assert_equal [option], @options.to_a
   end
 
@@ -124,6 +123,13 @@ class OptionsTests < Test::Unit::TestCase
     options = Options.new << foo << bar
     @options << foo << baz
     assert_equal [foo], (@options & options).to_a
+  end
+
+  def test_set_union
+    foo, bar, baz = %w{foo bar baz}.map { |o| Option.new(o) }
+    options = Options.new << foo << bar
+    @options << foo << baz
+    assert_equal [foo, bar, baz].sort, (@options | options).to_a.sort
   end
 
   def test_coerce_with_options

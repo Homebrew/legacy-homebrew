@@ -16,10 +16,10 @@ class Glassfish < Formula
 
   def caveats; <<-EOS.undent
     The home of GlassFish Application Server 4 is:
-      #{opt_prefix}/libexec
+      #{opt_libexec}
 
     You may want to add the following to your .bash_profile:
-      export GLASSFISH_HOME=#{opt_prefix}/libexec
+      export GLASSFISH_HOME=#{opt_libexec}
       export PATH=${PATH}:${GLASSFISH_HOME}/bin
 
     Note: The support scripts used by GlassFish Application Server 4

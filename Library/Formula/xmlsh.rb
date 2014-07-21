@@ -1,42 +1,24 @@
-require 'formula'
+require "formula"
 
 class Xmlsh < Formula
-  homepage 'http://www.xmlsh.org'
-  url 'http://downloads.sourceforge.net/project/xmlsh/xmlsh/1.2.4/xmlsh_1_2_4.zip'
-  sha1 'ef11e6fa3d72d99b78331a4ab58a22b1ad08b4ef'
+  homepage "http://www.xmlsh.org"
+  url "https://downloads.sourceforge.net/project/xmlsh/xmlsh/1.2.5/xmlsh_1_2_5.zip"
+  sha1 "3bce1c66eab4795f24abec56c025fd184a5321c4"
 
-  def shim_script target
-    <<-EOS.undent
-      #!/usr/bin/env bash
-
-      # Used to set up classpaths
-      #
-      #   Bash default variable values syntax:
-      #   http://wiki.bash-hackers.org/syntax/pe#use_a_default_value
-      XMLSH=${XMLSH:-#{libexec}} && export XMLSH
-
-      # Use XDG_CONFIG_HOME if it exists;
-      # Otherwise HOME
-      CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME}
-
-      # Set up
-      XMLSHRC=${CONFIG_HOME}/.xmlshrc
-
-      # Execute unix script
-      ${XMLSH}/unix/xmlsh -rcfile ${XMLSHRC}
+  def install
+    rm_rf %w[win32 cygwin]
+    libexec.install Dir["*"]
+    chmod 0755, "#{libexec}/unix/xmlsh"
+    (bin/"xmlsh").write <<-EOS.undent
+      #!/bin/bash
+      export XMLSH=#{libexec}
+      exec #{libexec}/unix/xmlsh "$@"
     EOS
   end
 
-  def install
-    libexec.install Dir["*"]
-
-    # remove windows files
-    system "rm", "-rf", "#{libexec}/win32",  "#{libexec}/cygwin"
-
-    # make the unix executable...um, executable.
-    system "chmod", "a+x", "#{libexec}/unix/xmlsh"
-
-    # Write mini-script to run as executable instead of `jar blah blah...`
-    (bin/'xmlsh').write shim_script('xmlsh')
+  test do
+    out = `#{bin}/xmlsh -c 'x=<[<foo bar="baz" />]> && echo <[$x/@bar]>'`
+    assert_equal "baz\n", out
+    assert_equal 0, $?.exitstatus
   end
 end

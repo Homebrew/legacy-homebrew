@@ -2,14 +2,14 @@ require 'formula'
 
 class YleDl < Formula
   homepage 'http://aajanki.github.io/yle-dl/'
-  url 'https://github.com/aajanki/yle-dl/archive/2.1.0.tar.gz'
-  sha1 'c2c05e3693737e864c4b296de022dc016c9f6865'
+  url 'https://github.com/aajanki/yle-dl/archive/2.3.1.tar.gz'
+  sha1 '5ec3516db2a5ecd793223636e27ed0c23657b575'
 
   head 'https://github.com/aajanki/yle-dl.git'
 
   depends_on 'rtmpdump'
-  depends_on :python
-  depends_on 'Crypto' => :python
+  depends_on :python if MacOS.version <= :snow_leopard
+  depends_on "pycrypto" => [:python, "Crypto"]
 
   def install
     system "make", "install", "SYS=darwin", "prefix=#{prefix}", "mandir=#{man}"

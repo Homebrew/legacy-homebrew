@@ -1,6 +1,8 @@
 require 'formula'
+require 'cmd/config'
 require 'net/http'
 require 'net/https'
+require 'stringio'
 
 def gist_logs f
   if ARGV.include? '--new-issue'
@@ -20,22 +22,26 @@ def gist_logs f
   url = create_gist(files)
 
   if ARGV.include? '--new-issue'
-    new_issue(repo, "#{f.name} failed to build on #{MACOS_FULL_VERSION}", url)
+    url = new_issue(repo, "#{f.name} failed to build on #{MACOS_FULL_VERSION}", url)
   end
+
+  ensure puts url if url
 end
 
 def load_logs name
   logs = {}
   dir = (HOMEBREW_LOGS/name)
   dir.children.sort.each do |file|
-    logs[file.basename.to_s] = {:content => file.read}
+    logs[file.basename.to_s] = {:content => (file.size == 0 ? "empty log" : file.read)}
   end if dir.exist?
   raise 'No logs.' if logs.empty?
   logs
 end
 
 def append_config files
-  files['config.out'] = {:content => `brew --config 2>&1`}
+  s = StringIO.new
+  Homebrew.dump_verbose_config(s)
+  files["config.out"] = { :content => s.string }
 end
 
 def append_doctor files
@@ -43,12 +49,11 @@ def append_doctor files
 end
 
 def create_gist files
-  puts (url = post('gists', {'public' => true, 'files' => files})['html_url'])
-  url
+  post('gists', {'public' => true, 'files' => files})['html_url']
 end
 
 def new_issue repo, title, body
-  puts post("repos/#{repo}/issues", {'title' => title, 'body' => body})['html_url']
+  post("repos/#{repo}/issues", {'title' => title, 'body' => body})['html_url']
 end
 
 def http
@@ -75,17 +80,26 @@ def post path, data
   request.body = Utils::JSON.dump(data)
   response = http.request(request)
   raise HTTP_Error, response if response.code != '201'
-  Utils::JSON.load(response.body)
+
+  if !response.body.respond_to?(:force_encoding)
+    body = response.body
+  elsif response["Content-Type"].downcase == "application/json; charset=utf-8"
+    body = response.body.dup.force_encoding(Encoding::UTF_8)
+  else
+    body = response.body.encode(Encoding::UTF_8, :undef => :replace)
+  end
+
+  Utils::JSON.load(body)
 end
 
 class HTTP_Error < RuntimeError
   def initialize response
-    super "Error: HTTP #{response.code} #{response.message}"
+    super "HTTP #{response.code} #{response.message}"
   end
 end
 
 def repo_name f
-  dir = (f.path.symlink? ? f.path.realpath.dirname : HOMEBREW_REPOSITORY)
+  dir = f.path.dirname
   url = dir.cd { `git config --get remote.origin.url` }
   unless url =~ %r{github.com(?:/|:)([\w\d]+)/([\-\w\d]+)}
     raise 'Unable to determine formula repository.'

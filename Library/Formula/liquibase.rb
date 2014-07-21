@@ -1,18 +1,16 @@
-require 'formula'
+require "formula"
 
 class Liquibase < Formula
-  homepage 'http://liquibase.org'
-  url 'http://downloads.sourceforge.net/project/liquibase/Liquibase%20Core/liquibase-3.0.7-bin.tar.gz'
-  sha1 'f9c56e4487aab93f21793740c6d7760c7a1fb4ff'
+  homepage "http://liquibase.org"
+  url "https://downloads.sourceforge.net/project/liquibase/Liquibase%20Core/liquibase-3.2.0-bin.tar.gz"
+  sha1 "155b4c9cf9a434bbe98a7a48b9acd46eb6d77f0a"
 
   def install
-    rm_f Dir['*.bat']
-
-    chmod 0755, Dir['liquibase']
-
+    rm_f Dir["*.bat"]
+    chmod 0755, "liquibase"
     prefix.install_metafiles
-    libexec.install Dir['*']
-    bin.install_symlink libexec+'liquibase'
+    libexec.install Dir["*"]
+    bin.install_symlink libexec+"liquibase"
   end
 
   def caveats

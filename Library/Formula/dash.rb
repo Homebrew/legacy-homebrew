@@ -23,7 +23,7 @@ class Dash < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/dash", "-c", "echo Hello!"
   end
 end

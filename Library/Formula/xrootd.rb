@@ -1,21 +1,21 @@
-require 'formula'
+require "formula"
 
 class Xrootd < Formula
-  homepage 'http://xrootd.org'
-  url 'http://xrootd.org/download/v3.3.5/xrootd-3.3.5.tar.gz'
-  sha1 '103be7641ef0e7a3a4f6686641a8dc207eb4cf7f'
+  homepage "http://xrootd.org"
+  url "http://xrootd.org/download/v4.0.0/xrootd-4.0.0.tar.gz"
+  sha1 "3d2a46756253075ebe05d94b1a547914d39f9b22"
 
-  depends_on 'cmake' => :build
+  depends_on "cmake" => :build
 
   def install
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
       system "make install"
     end
-    share.install prefix/'man'
+    share.install prefix/"man"
   end
 
-  def test
+  test do
     system "#{bin}/xrootd", "-H"
   end
 end

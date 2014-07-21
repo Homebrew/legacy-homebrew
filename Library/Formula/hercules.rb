@@ -1,24 +1,26 @@
-require 'formula'
+require "formula"
 
 class Hercules < Formula
-  homepage 'http://www.hercules-390.eu/'
-  url 'http://downloads.hercules-390.eu/hercules-3.09.tar.gz'
-  sha1 '5cbe89ec214de00b90e3077c27db636a7d2607f5'
+  homepage "http://www.hercules-390.eu/"
+  url "http://downloads.hercules-390.eu/hercules-3.10.tar.gz"
+  sha1 "10599041c7e5607cf2e7ecc76802f785043e2830"
 
   skip_clean :la
 
-  depends_on 'gawk'
+  head do
+    url "https://github.com/hercules-390/hyperion.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   def install
-    # Since Homebrew optimizes for us, tell Hercules not to.
-    # (It gets it wrong anyway.)
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./autogen.sh" if build.head?
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-optimization=no"
-    # Reported upstream:
-    # https://github.com/rbowler/spinhawk/issues/16
-    inreplace "hscutl.c", "SOL_TCP", "IPPROTO_TCP"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -5,6 +5,13 @@ class Libtess2 < Formula
   url 'https://libtess2.googlecode.com/files/libtess2-1.0.zip'
   sha1 '53e968add78711c3eb5cdc0948d85c9bd1db2751'
 
+  bottle do
+    cellar :any
+    sha1 "4a0b66321fba525d5e17b84c4978059cc79e89d7" => :mavericks
+    sha1 "bc707bcd3debc10404477fb912793fc200b232dc" => :mountain_lion
+    sha1 "65aef6feb5da2895198f893f727ecaff6a6af5f2" => :lion
+  end
+
   depends_on 'cmake' => :build
 
   def install

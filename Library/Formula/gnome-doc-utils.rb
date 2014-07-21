@@ -6,7 +6,6 @@ class GnomeDocUtils < Formula
   sha256 'cb0639ffa9550b6ddf3b62f3b1add92fb92ab4690d351f2353cffe668be8c4a6'
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'intltool' => :build
   depends_on :python
   depends_on 'docbook'

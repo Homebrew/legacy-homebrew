@@ -7,8 +7,18 @@ class Libmowgli < Formula
 
   head 'https://github.com/atheme/libmowgli-2.git'
 
+  bottle do
+    cellar :any
+    sha1 "b76fc28dec755183ad47fce6333147a66ddd8ba2" => :mavericks
+    sha1 "eebe9cc5140624abc8a4cf7045b2c851d825a203" => :mountain_lion
+    sha1 "3fbb392283fb93a03803ff4bf76b1149a7a57025" => :lion
+  end
+
+  depends_on "openssl"
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--with-openssl=/usr"
+    system "./configure", "--prefix=#{prefix}",
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
     system "make"
     system "make", "install"
   end

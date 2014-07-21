@@ -40,7 +40,7 @@ class Redland < Formula
     end
 
     if build.with? 'berkeley-db'
-      args << "--with-bdb=#{Formula.factory('berkeley-db').opt_prefix}"
+      args << "--with-bdb=#{Formula["berkeley-db"].opt_prefix}"
     else
       args << "--with-bdb=no"
     end
@@ -77,7 +77,7 @@ class Redland < Formula
           args << "--with-python"
         end
 
-        ENV.append 'PKG_CONFIG_LIBDIR', "#{lib}/pkgconfig", ':'
+        ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
 
         system "./configure", *args
 

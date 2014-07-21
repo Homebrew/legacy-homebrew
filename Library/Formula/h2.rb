@@ -2,9 +2,9 @@ require 'formula'
 
 class H2 < Formula
   homepage 'http://www.h2database.com/'
-  url 'http://www.h2database.com/h2-2013-10-19.zip'
-  version '1.3.174'
-  sha1 '1788a1bfdf9316b5b7de4ae0649863d5a689edd4'
+  url 'http://www.h2database.com/h2-2014-04-05.zip'
+  version '1.3.176'
+  sha1 '9a87bf67741e1b9f9711db160e783898f4242bfe'
 
   def script; <<-EOS.undent
     #!/bin/sh
@@ -17,7 +17,7 @@ class H2 < Formula
     rm_f Dir["bin/*.bat"]
 
     # Fix the permissions on the script
-    chmod 0755, Dir["bin/h2.sh"]
+    chmod 0755, "bin/h2.sh"
 
     libexec.install Dir['*']
     (bin+'h2').write script
@@ -38,7 +38,7 @@ class H2 < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/bin/h2</string>
+            <string>#{opt_bin}/h2</string>
             <string>-tcp</string>
             <string>-web</string>
             <string>-pg</string>

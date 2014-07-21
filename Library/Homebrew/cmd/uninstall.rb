@@ -1,7 +1,7 @@
 require 'keg'
 require 'formula'
 
-module Homebrew extend self
+module Homebrew
   def uninstall
     raise KegUnspecifiedError if ARGV.named.empty?
 
@@ -11,26 +11,23 @@ module Homebrew extend self
           puts "Uninstalling #{keg}..."
           keg.unlink
           keg.uninstall
-          rm_opt_link keg.fname
-          rm_pin keg.fname
+          rm_pin keg.name
         end
       end
     else
       ARGV.named.each do |name|
-        name = Formula.canonical_name(name)
-
-        # FIXME canonical_name is insane
-        raise "Invalid usage" if name.include? '/'
-
+        name = Formulary.canonical_name(name)
         rack = HOMEBREW_CELLAR/name
 
         if rack.directory?
           puts "Uninstalling #{name}..."
-          rack.subdirs.each { |d| Keg.new(d).unlink }
-          rack.rmtree
+          rack.subdirs.each do |d|
+            keg = Keg.new(d)
+            keg.unlink
+            keg.uninstall
+          end
         end
 
-        rm_opt_link name
         rm_pin name
       end
     end
@@ -39,12 +36,7 @@ module Homebrew extend self
     puts "Use `brew remove --force #{e.name}` to remove all versions."
   end
 
-  def rm_opt_link name
-    optlink = HOMEBREW_PREFIX/:opt/name
-    optlink.unlink if optlink.symlink?
-  end
-
   def rm_pin name
-    Formula.factory(name).unpin rescue nil
+    Formulary.factory(name).unpin rescue nil
   end
 end

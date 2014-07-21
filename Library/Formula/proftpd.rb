@@ -6,9 +6,7 @@ class Proftpd < Formula
   sha1 'a5b6c80a8ddeeeccc1c6448d797ccd62a3f63b65'
 
   # fixes unknown group 'nogroup'
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}",
@@ -31,7 +29,7 @@ class Proftpd < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/proftpd</string>
+          <string>#{opt_bin}/proftpd</string>
         </array>
         <key>UserName</key>
         <string>root</string>

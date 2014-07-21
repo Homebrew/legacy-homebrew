@@ -13,7 +13,7 @@ class Lysp < Formula
   end
 
   # Use our CFLAGS
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "make"

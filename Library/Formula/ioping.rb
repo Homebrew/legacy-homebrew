@@ -12,7 +12,7 @@ class Ioping < Formula
     system "make", "install", "PREFIX=#{prefix}"
   end
 
-  def test
+  test do
     system "#{bin}/ioping", "-v"
   end
 end

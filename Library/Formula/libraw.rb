@@ -5,6 +5,13 @@ class Libraw < Formula
   url 'http://www.libraw.org/data/LibRaw-0.15.4.tar.gz'
   sha1 '1561e1ac12df6eed999d5be3146d66176c050b76'
 
+  bottle do
+    cellar :any
+    sha1 "e9f82236c16db31ce392eba28bc8cdcfb7e36dc0" => :mavericks
+    sha1 "6576ac9a95edfd4e13397a043a2ae1059519da97" => :mountain_lion
+    sha1 "addbaf9c45f13e9a2732b81bc2d8ad960908cf2d" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'jasper'
   depends_on 'little-cms2'
@@ -37,7 +44,7 @@ class Libraw < Formula
     prefix.install 'samples'
   end
 
-  def test
+  test do
     resource('librawtestfile').stage do
       filename = 'RAW_NIKON_D1.NEF'
       system "#{bin}/raw-identify", "-u", filename

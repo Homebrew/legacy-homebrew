@@ -7,12 +7,14 @@ class Pygobject < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
+  depends_on :python
 
   option :universal
 
   # https://bugzilla.gnome.org/show_bug.cgi?id=668522
-  def patches
-    "http://git.gnome.org/browse/pygobject/patch/gio/gio-types.defs?id=42d01f060c5d764baa881d13c103d68897163a49"
+  patch do
+    url "http://git.gnome.org/browse/pygobject/patch/gio/gio-types.defs?id=42d01f060c5d764baa881d13c103d68897163a49"
+    sha1 "6976bbad5212ae775e6715405e0e70e592356db2"
   end
 
   def install

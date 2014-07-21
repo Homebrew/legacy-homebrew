@@ -6,7 +6,7 @@ class Enchant < Formula
   sha1 '321f9cf0abfa1937401676ce60976d8779c39536'
 
   depends_on 'pkg-config' => :build
-  depends_on :python => :recommended
+  depends_on :python => :optional
   depends_on 'glib'
   depends_on 'aspell'
 

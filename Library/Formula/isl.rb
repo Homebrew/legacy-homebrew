@@ -8,23 +8,22 @@ class Isl < Formula
   # and update isl_version() function accordingly.  All other names will
   # result in isl_version() function returning "UNKNOWN" and hence break
   # package detection.
-  url 'http://isl.gforge.inria.fr/isl-0.12.1.tar.bz2'
-  sha1 'a54e80a32bc3e06327053d77d6a81516d4f4b21f'
+  url 'http://isl.gforge.inria.fr/isl-0.12.2.tar.bz2'
+  sha1 'ca98a91e35fb3ded10d080342065919764d6f928'
 
   bottle do
     cellar :any
-    revision 1
-    sha1 '21be0afcb4a8e12113895acc3feb918491631492' => :mavericks
-    sha1 'bec8efe48e2df6b2bc208d0b5e12131becc2d6dd' => :mountain_lion
-    sha1 'd83758ab5ea858564f5821c59716e584d3877cfd' => :lion
+    sha1 "2d878327e26853c0f17004787233ddee9060f788" => :mavericks
+    sha1 "42550979c1911f818a4a124b263be08cc094bcdf" => :mountain_lion
+    sha1 "08c5044ae3bbaf9e6cf5d6329addf886430696bb" => :lion
   end
 
   head do
     url 'http://repo.or.cz/r/isl.git'
 
-    depends_on :autoconf => :build
-    depends_on :automake => :build
-    depends_on :libtool => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on 'gmp'
@@ -35,7 +34,7 @@ class Isl < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--with-gmp=system",
-                          "--with-gmp-prefix=#{Formula.factory("gmp").opt_prefix}"
+                          "--with-gmp-prefix=#{Formula["gmp"].opt_prefix}"
     system "make"
     system "make", "install"
     (share/"gdb/auto-load").install Dir["#{lib}/*-gdb.py"]

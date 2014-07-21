@@ -2,14 +2,10 @@ require 'formula'
 
 class Picocom < Formula
   homepage 'http://code.google.com/p/picocom/'
-  url 'http://picocom.googlecode.com/files/picocom-1.7.tar.gz'
+  url 'https://picocom.googlecode.com/files/picocom-1.7.tar.gz'
   sha1 'bde6e36af71db845913f9d61f28dee1b485218fa'
 
-  def patches
-    # HIGH_BAUD is not defined
-    DATA
-  end
-
+  patch :DATA # HIGH_BAUD is not defined
 
   def install
     system "make"

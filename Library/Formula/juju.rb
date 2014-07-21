@@ -2,33 +2,27 @@ require 'formula'
 
 class Juju < Formula
   homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.16/1.16.5/+download/juju-core_1.16.5.tar.gz'
-  sha1 '2202805d09dffe64d1e07988b9d1b16e02c7bd52'
+  url 'https://launchpad.net/juju-core/1.20/1.20.1/+download/juju-core_1.20.1.tar.gz'
+  sha1 'bdf806e0b3390fdb1a2503a663aeaa8b58ead696'
+
+  bottle do
+    sha1 "8c0220660c2bafa5783eeffbbb7e6d2139e8dcb4" => :mavericks
+    sha1 "fc40f33c6ba96ab9a35259bae4bc6618f7792183" => :mountain_lion
+    sha1 "64445f9c4d3019d150065b66245426f87d48540c" => :lion
+  end
 
   depends_on 'go' => :build
 
   def install
     ENV['GOPATH'] = buildpath
-    args = %w(install launchpad.net/juju-core/cmd/juju)
+    args = %w(install github.com/juju/juju/cmd/juju)
     args.insert(1, "-v") if ARGV.verbose?
     system "go", *args
     bin.install 'bin/juju'
-    (bash_completion/'juju-completion.bash').write <<-EOS.undent
-    _juju()
-    {
-        local cur prev options files targets
-        COMPREPLY=()
-        cur="${COMP_WORDS[COMP_CWORD]}"
-        prev="${COMP_WORDS[COMP_CWORD-1]}"
-        actions=$(juju help commands 2>/dev/null | awk '{print $1}')
-        COMPREPLY=( $( compgen -W "${actions}" -- ${cur} ) )
-        return 0
-    }
-    complete -F _juju juju
-    EOS
+    bash_completion.install "src/github.com/juju/juju/etc/bash_completion.d/juju-core"
   end
 
-  def test
+  test do
     system "#{bin}/juju", "version"
   end
 end

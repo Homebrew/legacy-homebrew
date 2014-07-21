@@ -2,15 +2,22 @@ require 'formula'
 
 class Sdl2 < Formula
   homepage 'http://www.libsdl.org/'
-  url 'http://libsdl.org/release/SDL2-2.0.1.tar.gz'
-  sha1 'e40051311b648e4e60ed1683f62a948d93a0a49f'
+  url 'http://libsdl.org/release/SDL2-2.0.3.tar.gz'
+  sha1 '21c45586a4e94d7622e371340edec5da40d06ecc'
+
+  bottle do
+    cellar :any
+    sha1 "33749bf276e522b7a2c14c725d30905e880b3667" => :mavericks
+    sha1 "c03011f60cb6099fdeb5726fb39d7fee3d25b8a4" => :mountain_lion
+    sha1 "e952fdca85139ccab6f9bcffc90630088760029d" => :lion
+  end
 
   head do
     url 'http://hg.libsdl.org/SDL', :using => :hg
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option :universal
@@ -34,7 +41,7 @@ class Sdl2 < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/sdl2-config", "--version"
   end
 end

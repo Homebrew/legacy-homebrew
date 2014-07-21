@@ -13,11 +13,12 @@ class Ggobi < Formula
   depends_on 'fontconfig'
   depends_on 'pango'
   depends_on 'gettext'
+  depends_on 'libtool' => :run
   depends_on :x11
 
   # Several files reference "line 0", which gcc accepts but clang doesn't
   # See https://github.com/Homebrew/homebrew/pull/13423
-  def patches; DATA; end
+  patch :DATA
 
   def install
     # Necessary for ggobi to build - based on patch from MacPorts

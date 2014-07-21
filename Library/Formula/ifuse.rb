@@ -2,34 +2,23 @@ require 'formula'
 
 class Ifuse < Formula
   homepage 'http://www.libimobiledevice.org/'
-  url 'http://www.libimobiledevice.org/downloads/ifuse-1.1.2.tar.bz2'
-  sha1 '885d88b45edb85c38b0ce9863f0d45fd378b5614'
+  url 'https://github.com/libimobiledevice/ifuse/archive/1.1.3.tar.gz'
+  sha1 '447e9309fba1979be98ec83a4627b421dbd83032'
 
-  head do
-    url 'http://cgit.sukimashita.com/ifuse.git'
+  head 'http://cgit.sukimashita.com/ifuse.git'
 
-    depends_on 'autoconf' => :build
-    depends_on 'automake' => :build
-    depends_on 'libtool' => :build
-  end
-
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'libimobiledevice'
-  depends_on 'fuse4x'
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "glib"
+  depends_on "libimobiledevice"
+  depends_on "osxfuse"
 
   def install
-    system "./autogen.sh" if build.head?
-
+    system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
-  end
-
-  def caveats
-    <<-EOS.undent
-      Make sure to follow the directions given by `brew info fuse4x-kext`
-      before trying to use a FUSE-based filesystem.
-    EOS
   end
 end

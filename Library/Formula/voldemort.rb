@@ -5,7 +5,7 @@ class Voldemort < Formula
   url 'https://github.com/voldemort/voldemort/archive/v1.4.0.tar.gz'
   sha1 'f07b552d494b9b68d9c4e3561384bc932e7e7bd8'
 
-  depends_on :ant
+  depends_on :ant => :build
 
   skip_clean 'libexec/config'
 

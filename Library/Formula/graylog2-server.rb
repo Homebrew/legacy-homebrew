@@ -71,7 +71,7 @@ class Graylog2Server < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/graylog2ctl"
   end
 end

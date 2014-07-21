@@ -2,8 +2,17 @@ require 'formula'
 
 class Tig < Formula
   homepage 'http://jonas.nitro.dk/tig/'
-  url 'http://jonas.nitro.dk/tig/releases/tig-1.2.1.tar.gz'
-  sha1 '5755bae7342debf94ef33973e0eaff6207e623dc'
+
+  stable do
+    url "http://jonas.nitro.dk/tig/releases/tig-2.0.2.tar.gz"
+    sha1 "de01c3a52952172e42ae642d97a55505d7e09efd"
+  end
+
+  head do
+    url "https://github.com/jonas/tig.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
 
   option 'with-docs', 'Build man pages using asciidoc and xmlto'
 
@@ -13,6 +22,7 @@ class Tig < Formula
   end
 
   def install
+    system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
     system "make install"
     system "make install-doc-man" if build.with? "docs"

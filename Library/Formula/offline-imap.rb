@@ -1,17 +1,17 @@
-require 'formula'
+require "formula"
 
 class OfflineImap < Formula
-  homepage 'http://offlineimap.org/'
-  url 'https://github.com/OfflineIMAP/offlineimap/archive/v6.5.5.zip'
-  sha1 '90541e4f6d439edf0aa0afbff2b4bfc1c1f10d10'
+  homepage "http://offlineimap.org/"
+  url "https://github.com/OfflineIMAP/offlineimap/archive/v6.5.6.tar.gz"
+  sha1 "cced67060be2922ca3ce056839b2aa1fe6b776a1"
 
-  head 'https://github.com/OfflineIMAP/offlineimap.git'
+  head "https://github.com/OfflineIMAP/offlineimap.git"
 
   def install
-    prefix.install 'offlineimap.conf', 'offlineimap.conf.minimal'
-    libexec.install 'bin/offlineimap' => 'offlineimap.py'
-    libexec.install 'offlineimap'
-    bin.install_symlink libexec+'offlineimap.py' => 'offlineimap'
+    prefix.install "offlineimap.conf", "offlineimap.conf.minimal"
+    libexec.install "bin/offlineimap" => "offlineimap.py"
+    libexec.install "offlineimap"
+    bin.install_symlink libexec+"offlineimap.py" => "offlineimap"
   end
 
   def caveats; <<-EOS.undent
@@ -35,7 +35,7 @@ class OfflineImap < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/offlineimap</string>
+          <string>#{opt_bin}/offlineimap</string>
         </array>
         <key>StartInterval</key>
         <integer>300</integer>

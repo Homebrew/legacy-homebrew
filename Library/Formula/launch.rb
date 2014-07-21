@@ -2,20 +2,25 @@ require 'formula'
 
 class Launch < Formula
   homepage 'http://web.sabi.net/nriley/software/'
-  url 'http://web.sabi.net/nriley/software/launch-1.1.tar.gz'
-  sha1 '000d6f1063f1b9091a8b10de90cfa778ed6a6ed1'
+  head 'https://github.com/nriley/launch.git'
+  url 'http://sabi.net/nriley/software/launch-1.2.2.tar.gz'
+  sha1 'd6fabdb495d3395460148bb99341cbf0f1b9d575'
 
-  head 'http://dev.sabi.net/svn/dev/trunk/launch/launch/', :using => :svn
-
-  # Fix compilation on 10.8 and newer, per MacPorts
-  def patches
-    {:p0 => "https://trac.macports.org/export/114086/trunk/dports/aqua/launch/files/patch-main.c.diff"}
+  bottle do
+    cellar :any
+    sha1 "32c11675ab351420dcb35742f66ae8a7ca987acf" => :mavericks
+    sha1 "702b8164d60d13ef3480c98caee053a242193aaf" => :mountain_lion
+    sha1 "1166c77e00378087195ad5273685d839dbb9f305" => :lion
   end
+
+  depends_on :xcode => :build
 
   def install
     rm_rf "launch" # We'll build it ourself, thanks.
-    system "#{ENV.cc} -o launch -std=c99 #{ENV.cflags} main.c -framework ApplicationServices"
+    xcodebuild "-configuration", "Deployment", "SYMROOT=build", "clean"
+    xcodebuild "-configuration", "Deployment", "SYMROOT=build"
+
     man1.install gzip('launch.1')
-    bin.install 'launch'
+    bin.install 'build/Deployment/launch'
   end
 end

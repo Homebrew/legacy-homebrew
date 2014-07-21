@@ -1,9 +1,18 @@
 require 'formula'
 
 class Afio < Formula
-  homepage 'http://freecode.com/projects/afio/'
+  homepage 'http://members.chello.nl/~k.holtman/afio.html'
   url 'http://members.chello.nl/~k.holtman/afio-2.5.1.tgz'
   sha1 'bff6b9a147dc5b0e6bd7f1a76f0b84e4dd9a7dc9'
+
+  bottle do
+    cellar :any
+    sha1 "1a3bbc0e6d6ff0926a75141af4204a6f167af533" => :mavericks
+    sha1 "ffda2ae983cf6e1212aff8f4933799f124ec136f" => :mountain_lion
+    sha1 "68ecadc2fc7e8dd268ac9e6a63fc12927d60f897" => :lion
+  end
+
+  #Note - The Freecode website is being no longer being updated and alternative links should be found from now on.
 
   option "bzip2", "Use bzip2(1) instead of gzip(1) for compression/decompression"
 
@@ -19,7 +28,7 @@ class Afio < Formula
     bin.install "afio"
     man1.install 'afio.1'
 
-    prefix.install "ANNOUNCE-2.5.1" => "ANNOUNCE"
+    prefix.install "ANNOUNCE-#{version}" => "ANNOUNCE"
     prefix.install %w(HISTORY INSTALLATION README SCRIPTS)
     share.install Dir["script*"]
   end

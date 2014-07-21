@@ -2,15 +2,15 @@ require 'formula'
 
 class Sqlite < Formula
   homepage 'http://sqlite.org/'
-  url 'http://www.sqlite.org/2013/sqlite-autoconf-3080200.tar.gz'
-  version '3.8.2'
-  sha1 '6033ef603ce221d367c665477514d972ef1dc90e'
+  url "http://sqlite.org/2014/sqlite-autoconf-3080500.tar.gz"
+  version "3.8.5"
+  sha1 "7f667e10ccebc26ab2086b8a30cb0a600ca0acae"
 
   bottle do
     cellar :any
-    sha1 '18bd82676513a70b20435a52fcc7c961a3e0ba28' => :mavericks
-    sha1 '5cbafa8610ba6fe19c9bc7b31e419c18b343873b' => :mountain_lion
-    sha1 'acb930e2b8358c219115b97ce3fdbba80d45dff2' => :lion
+    sha1 "13d9a20bffcf45d62a12ee4215259247db25b677" => :mavericks
+    sha1 "4c3bc8ff67ed43b40e3347f910dd85b285906672" => :mountain_lion
+    sha1 "751b317b1cfaaf990e7e74293f2282bc680e6564" => :lion
   end
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
@@ -19,9 +19,11 @@ class Sqlite < Formula
   option 'with-docs', 'Install HTML documentation'
   option 'without-rtree', 'Disable the R*Tree index module'
   option 'with-fts', 'Enable the FTS module'
+  option 'with-icu4c', 'Enable the ICU module'
   option 'with-functions', 'Enable more math and string functions for SQL queries'
 
   depends_on 'readline' => :recommended
+  depends_on 'icu4c' => :optional
 
   resource 'functions' do
     url 'http://www.sqlite.org/contrib/download/extension-functions.c?get=25', :using  => :nounzip
@@ -30,18 +32,24 @@ class Sqlite < Formula
   end
 
   resource 'docs' do
-    url 'http://www.sqlite.org/2013/sqlite-doc-3080200.zip'
-    version '3.8.2'
-    sha1 'b9cbd42d08b8c1ce96656a6b111e918bb515b605'
+    url "http://sqlite.org/2014/sqlite-doc-3080500.zip"
+    version "3.8.5"
+    sha1 "c5655a4004095c50dc8403661e0ed02fd4191d57"
   end
 
   def install
-    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_RTREE" unless build.without? "rtree"
+    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_RTREE" if build.with? "rtree"
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if build.with? "fts"
-
-    # enable these options by default
     ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_COLUMN_METADATA"
-    ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_STAT3"
+
+    if build.with? "icu4c"
+      icu4c = Formula['icu4c']
+      icu4cldflags = `#{icu4c.opt_bin}/icu-config --ldflags`.tr("\n", " ")
+      icu4ccppflags = `#{icu4c.opt_bin}/icu-config --cppflags`.tr("\n", " ")
+      ENV.append "LDFLAGS", icu4cldflags
+      ENV.append "CPPFLAGS", icu4ccppflags
+      ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_ICU"
+    end
 
     ENV.universal_binary if build.universal?
 
@@ -54,7 +62,7 @@ class Sqlite < Formula
                      "-dynamiclib",
                      "extension-functions.c",
                      "-o", "libsqlitefunctions.dylib",
-                     *ENV.cflags.split
+                     *ENV.cflags.to_s.split
       lib.install "libsqlitefunctions.dylib"
     end
     doc.install resource('docs') if build.with? "docs"
@@ -80,5 +88,20 @@ class Sqlite < Formula
          0.707106781186548
       EOS
     end
+  end
+
+  test do
+    path = testpath/"school.sql"
+    path.write <<-EOS.undent
+      create table students (name text, age integer);
+      insert into students (name, age) values ('Bob', 14);
+      insert into students (name, age) values ('Sue', 12);
+      insert into students (name, age) values ('Tim', 13);
+      select name from students order by age asc;
+    EOS
+
+    names = `#{bin}/sqlite3 < #{path}`.strip.split("\n")
+    assert_equal %w[Sue Tim Bob], names
+    assert_equal 0, $?.exitstatus
   end
 end

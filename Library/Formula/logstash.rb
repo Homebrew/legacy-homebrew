@@ -2,11 +2,24 @@ require 'formula'
 
 class Logstash < Formula
   homepage 'http://logstash.net/'
-  url 'https://download.elasticsearch.org/logstash/logstash/logstash-1.3.2-flatjar.jar'
-  sha1 'd49d48e0a9590eccb3b8acaa368c01f18125f33d'
+  url 'https://download.elasticsearch.org/logstash/logstash/logstash-1.4.1.tar.gz'
+  sha1 '834599d28ce50012c221ece7a6783c5943221e36'
 
   def install
-    libexec.install "logstash-#{version}-flatjar.jar"
-    bin.write_jar_script libexec/"logstash-#{version}-flatjar.jar", "logstash"
+    inreplace %w{bin/logstash bin/logstash.lib.sh}, /^basedir=.*$/, "basedir=#{libexec}"
+    libexec.install Dir["*"]
+    bin.install_symlink libexec/"bin/logstash"
+  end
+
+  def caveats; <<-EOS.undent
+    Logstash 1.4 emits an unhelpful error if you try to start it sans config.
+    Please read the getting started guide located at:
+    http://logstash.net/docs/latest/tutorials/getting-started-with-logstash
+    EOS
+  end
+
+  test do
+    system "#{bin}/logstash", "--version"
+    system "/bin/echo 'hello world' | #{bin}/logstash agent -e 'input { stdin { type => stdin } } output { stdout { codec => rubydebug } }'"
   end
 end

@@ -4,6 +4,7 @@ class Pyxplot < Formula
   homepage 'http://pyxplot.org.uk/'
   url 'http://pyxplot.org.uk/src/pyxplot_0.9.2.tar.gz'
   sha1 '5f09399bd00a4ae94a07ac186cf0e8e7761de625'
+  revision 1
 
   depends_on :x11
   depends_on :tex

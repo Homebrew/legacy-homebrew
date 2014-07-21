@@ -1,15 +1,15 @@
-require 'formula'
+require "formula"
 
 class Sxiv < Formula
-  homepage 'https://github.com/muennich/sxiv'
-  url 'https://github.com/muennich/sxiv/archive/v1.1.1.tar.gz'
-  sha1 'a87a6940936cc1d14c54d5ffe7814980b5511f07'
+  homepage "https://github.com/muennich/sxiv"
+  url "https://github.com/muennich/sxiv/archive/v1.2.tar.gz"
+  sha1 "69cacabdd60316edbf3eee076d8057df7f7be0ed"
 
-  head 'https://github.com/muennich/sxiv.git'
+  head "https://github.com/muennich/sxiv.git"
 
   depends_on :x11
-  depends_on 'imlib2'
-  depends_on 'giflib'
+  depends_on "imlib2"
+  depends_on "giflib"
 
   def install
     system "make", "config.h"

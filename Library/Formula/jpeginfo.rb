@@ -15,7 +15,7 @@ class Jpeginfo < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/jpeginfo", "--help"
   end
 end

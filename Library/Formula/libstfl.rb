@@ -5,25 +5,22 @@ class Libstfl < Formula
   url 'http://www.clifford.at/stfl/stfl-0.22.tar.gz'
   sha1 '226488be2b33867dfb233f0fa2dde2d066e494bd'
 
-  depends_on :python => :recommended
+  bottle do
+    cellar :any
+    sha1 "9129d6d9e60372e18d6b52f4e2988d561a55d36f" => :mavericks
+    sha1 "43c92335569f786b8d7055d178d12fbdf13133e9" => :mountain_lion
+    sha1 "c20d248abf27a59b16d51f3383831f56fcd3c5e3" => :lion
+  end
+
+  depends_on :python => :optional
   depends_on 'swig' => :build
 
-  def patches; DATA; end
+  patch :DATA
 
   def install
     args = ["CC=#{ENV.cc} -pthread", "prefix=#{prefix}"]
 
-    args << "FOUND_RUBY = 0" unless MacOS::CLT.installed? # Ruby does not build on Xcode only. Help us fix this!
-
-    # See https://github.com/mistydemeo/tigerbrew/issues/83
-    `ruby --version` =~ /ruby (\d\.\d).\d/
-    if $1.to_f > 1.9
-      opoo <<-EOS.undent
-      libstfl currently cannot be built against Ruby 2.0.
-               Ruby bindings will not be built.
-      EOS
-      args << "FOUND_RUBY=0"
-    end
+    args << "FOUND_RUBY = 0" unless MacOS::CLT.installed? || MacOS.version >= :mavericks
 
     if build.with? 'python'
       # Install into the site-packages in the Cellar (so uninstall works)

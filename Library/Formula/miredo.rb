@@ -5,13 +5,10 @@ class Miredo < Formula
   url 'http://www.remlab.net/files/miredo/miredo-1.2.6.tar.xz'
   sha1 '630c84e9919952f6f4792ceda54a12e0aef43bbf'
 
-  depends_on 'xz' => :build
   depends_on 'tuntap'
   depends_on 'judy'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     args = %W[

@@ -2,7 +2,7 @@ require 'formula'
 
 class Slowhttptest < Formula
   homepage 'http://code.google.com/p/slowhttptest/'
-  url 'http://slowhttptest.googlecode.com/files/slowhttptest-1.6.tar.gz'
+  url 'https://slowhttptest.googlecode.com/files/slowhttptest-1.6.tar.gz'
   sha1 'f5a64365b987083015ac98f6c20746021176292e'
 
   def install

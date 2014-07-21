@@ -1,6 +1,6 @@
 require 'formula'
 
-module Homebrew extend self
+module Homebrew
   def fetch
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
@@ -17,29 +17,61 @@ module Homebrew extend self
 
     puts "Fetching: #{bucket * ', '}" if bucket.size > 1
     bucket.each do |f|
-      fetch_formula(f)
-      f.resources.each do |r|
-        fetch_resource(r)
+      if fetch_bottle?(f)
+        fetch_formula(f.bottle)
+      else
+        fetch_formula(f)
+        f.resources.each { |r| fetch_resource(r) }
+        f.patchlist.select(&:external?).each { |p| fetch_patch(p) }
       end
     end
+  end
+
+  def fetch_bottle? f
+    return true if ARGV.force_bottle? && f.bottle
+    return false unless f.bottle && f.pour_bottle?
+    return false if ARGV.build_from_source? || ARGV.build_bottle?
+    return false unless f.bottle.compatible_cellar?
+    return true
   end
 
   def fetch_resource r
     puts "Resource: #{r.name}"
     fetch_fetchable r
   rescue ChecksumMismatchError => e
-    Homebrew.failed = true
+    retry if retry_fetch? r
     opoo "Resource #{r.name} reports different #{e.hash_type}: #{e.expected}"
   end
 
   def fetch_formula f
     fetch_fetchable f
   rescue ChecksumMismatchError => e
-    Homebrew.failed = true
+    retry if retry_fetch? f
     opoo "Formula reports different #{e.hash_type}: #{e.expected}"
   end
 
+  def fetch_patch p
+    fetch_fetchable p
+  rescue ChecksumMismatchError => e
+    Homebrew.failed = true
+    opoo "Patch reports different #{e.hash_type}: #{e.expected}"
+  end
+
   private
+
+  def retry_fetch? f
+    @fetch_failed ||= {}
+    already_failed = @fetch_failed.fetch(f.name, false)
+
+    if already_failed || !ARGV.include?("--retry")
+      Homebrew.failed = true
+      return false
+    end
+
+    f.clear_cache
+    @fetch_failed[f.name] = true
+    true
+  end
 
   def fetch_fetchable f
     f.clear_cache if ARGV.force?

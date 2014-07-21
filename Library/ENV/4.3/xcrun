@@ -1,39 +1,57 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -W0
+#!/bin/sh
+# Historically, xcrun has had various bugs, and in some cases it didn't
+# work at all (e.g. CLT-only in the Xcode 4.3 era). This script emulates
+# it and attempts to avoid these issues.
 
-# This wrapper because 4.3 xcrun doesn't work with CLT-only configurations
-# But many build-systems expect it to work. This fixes that.
-# NOTE only works if the build-tool calls xcrun without a path prefixed!
+# Some build tools set DEVELOPER_DIR, so discard it
+unset DEVELOPER_DIR
 
-dirname = File.dirname(__FILE__)
-require "#{dirname}/../libsuperenv"
-SUPERBIN = dirname.cleanpath.freeze
+if [ $# -eq 0 ]; then
+  exec /usr/bin/xcrun "$@"
+fi
 
-# Some build tools are stupid and still set DEVELOPER_DIR to old /Developer
-ENV['DEVELOPER_DIR'] = ENV['HOMEBREW_DEVELOPER_DIR']
+case "$1" in
+  -*) exec /usr/bin/xcrun "$@" ;;
+esac
 
-exec "/usr/bin/xcrun", *ARGV if ARGV.empty? or ARGV[0][0..0] == '-'
-if File.exist?("/usr/bin/#{ARGV.first}")
-  sdkroot = ENV['HOMEBREW_SDKROOT']
-  exec "/usr/bin/#{ARGV.shift}", *ARGV unless sdkroot and File.directory? sdkroot
-end
+arg0=$1
+shift
 
-def try path
-  exec path, *ARGV if File.executable?(path) and File.dirname(path.cleanpath) != SUPERBIN
-end
+exe="/usr/bin/${arg0}"
+if [ -x "$exe" ]; then
+  if [ -n "$HOMEBREW_PREFER_CLT_PROXIES" ]; then
+    exec "$exe" "$@"
+  elif [ -z "$HOMEBREW_SDKROOT" -o ! -d "$HOMEBREW_SDKROOT" ]; then
+    exec "$exe" "$@"
+  fi
+fi
 
-arg0 = ARGV.shift
-try `/usr/bin/xcrun --find #{arg0} 2>/dev/null`.chomp
-# Nuts, Xcode is not setup properly or something. Try to find the tools anyway!
-try "#{ENV['HOMEBREW_DEVELOPER_DIR']}/usr/bin/#{arg0}"
-try "#{ENV['HOMEBREW_DEVELOPER_DIR']}/Toolchains/XcodeDefault.xctoolchain/usr/bin/#{arg0}"
-# xcrun won't always be able to find Homebrew's apple-gcc42,
-# even when it's in the PATH
-ENV['PATH'].split(':').each do |p|
-  try "#{p}/#{arg0}"
-end
+SUPERBIN=$(cd "${0%/*}" && pwd -P)
 
-abort <<-EOS
-Your Xcode and or CLT are mis-configured. Try some or all of the following:
-    xcodebuild -license
-    sudo xcode-select -switch /path/to/Xcode.app
-EOS
+exe=$(/usr/bin/xcrun --find "$arg0" 2>/dev/null)
+if [ -x "$exe" -a "${exe%/*}" != "$SUPERBIN" ]; then
+  exec "$exe" "$@"
+fi
+
+old_IFS=$IFS
+IFS=:
+for path in $PATH; do
+  if [ "$path" = "$SUPERBIN" ]; then
+    continue
+  fi
+
+  exe="${path}/${arg0}"
+  if [ -x "$exe" ]; then
+    exec "$exe" "$@"
+  fi
+done
+IFS=$old_IFS
+
+echo >&2 "
+Failed to execute $arg0 $@
+
+Xcode and/or the CLT appear to be misconfigured. Try one or both of the following:
+  xcodebuild -license
+  sudo xcode-select -switch /path/to/Xcode.app
+"
+exit 1

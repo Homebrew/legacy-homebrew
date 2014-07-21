@@ -2,19 +2,12 @@ require 'formula'
 
 class Mongrel2 < Formula
   homepage 'http://mongrel2.org/'
-  url 'https://github.com/zedshaw/mongrel2/archive/v1.8.1.tar.gz'
-  sha1 '11230cb59aa4834e017023c8f9b6519831d91767'
+  url 'https://github.com/zedshaw/mongrel2/releases/download/v1.9.1/mongrel2-v1.9.1.tar.gz'
+  sha1 'c06b71e23da9537b401e2743c9129a8d16ef6911'
 
   head 'https://github.com/zedshaw/mongrel2.git'
 
   depends_on 'zeromq'
-
-  def patches
-    # allow mongrel2 to build against libzmq 4
-    [
-       "https://gist.github.com/minrk/7632116/raw/44d0ed09ecfc68a9f9d6a940c6367f703cd55c46/0001-add-zmq_compat-check-for-libzmq-4.patch"
-    ]
-  end
 
   def install
     # Build in serial. See:
@@ -23,7 +16,7 @@ class Mongrel2 < Formula
 
     # Mongrel2 pulls from these ENV vars instead
     ENV['OPTFLAGS'] = "#{ENV.cflags} #{ENV.cppflags}"
-    ENV['OPTLIBS'] = ENV.ldflags
+    ENV['OPTLIBS'] = "#{ENV.ldflags} -undefined dynamic_lookup"
 
     system "make all"
     system "make", "install", "PREFIX=#{prefix}"

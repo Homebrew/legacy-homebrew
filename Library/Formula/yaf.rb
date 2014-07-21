@@ -6,7 +6,6 @@ class Yaf < Formula
   sha1 '0c5efb5543e61d0acd91b7e2b028d8f6d3497ae8'
 
   depends_on 'pkg-config' => :build
-  depends_on :libtool
   depends_on 'glib'
   depends_on 'libfixbuf'
 

@@ -1,21 +1,10 @@
 require 'testing_env'
 require 'extend/ENV'
 
-class EnvironmentTests < Test::Unit::TestCase
+class EnvironmentTests < Homebrew::TestCase
   def setup
     @env = {}.extend(EnvActivation)
     @env.activate_extensions!
-  end
-
-  def test_ENV_options
-    @env.gcc_4_0
-    @env.O3
-    @env.minimal_optimization
-    @env.no_optimization
-    @env.libxml2
-    @env.enable_warnings
-    assert !@env.cc.empty?
-    assert !@env.cxx.empty?
   end
 
   def test_switching_compilers
@@ -127,7 +116,7 @@ module SharedEnvTests
   end
 end
 
-class StdenvTests < Test::Unit::TestCase
+class StdenvTests < Homebrew::TestCase
   include SharedEnvTests
 
   def setup
@@ -135,7 +124,7 @@ class StdenvTests < Test::Unit::TestCase
   end
 end
 
-class SuperenvTests < Test::Unit::TestCase
+class SuperenvTests < Homebrew::TestCase
   include SharedEnvTests
 
   attr_reader :env, :bin
