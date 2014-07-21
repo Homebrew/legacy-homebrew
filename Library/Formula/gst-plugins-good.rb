@@ -11,6 +11,12 @@ class GstPluginsGood < Formula
     depends_on 'check' => :optional
   end
 
+  bottle do
+    sha1 "e4962534c01fa90443ebc05fcc153b8d1a17e3f9" => :mavericks
+    sha1 "9be1005b6db6ad4877547262b1277c3dbe9dd43e" => :mountain_lion
+    sha1 "13d6763c57af2fc6eb7f515b28d020048761a603" => :lion
+  end
+
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-good'
 
