@@ -2,9 +2,9 @@ require "formula"
 
 class Gstreamer < Formula
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.2.4.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.2.4.tar.xz"
-  sha256 "1e7ca67a7870a82c9ed51d51d0008cdbc550c41d64cc3ff3f9a1c2fc311b4929"
+  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.0.tar.xz"
+  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.0.tar.xz"
+  sha256 "23c39fdc2b24f889b07cab0449825384fef7592a121e180729fd9025ec45c695"
 
   bottle do
     sha1 "5c486386d1b9b08d2a330846839d58d700c4f86d" => :mavericks
@@ -24,6 +24,7 @@ class Gstreamer < Formula
   depends_on "gobject-introspection"
   depends_on "gettext"
   depends_on "glib"
+  depends_on "bison"
 
   def install
     args = %W[
