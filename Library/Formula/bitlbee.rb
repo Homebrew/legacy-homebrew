@@ -2,9 +2,8 @@ require 'formula'
 
 class Bitlbee < Formula
   homepage 'http://www.bitlbee.org/'
-  url 'http://get.bitlbee.org/src/bitlbee-3.2.1.tar.gz'
-  sha1 '954471ab87206826c072f31b3def40a1be5a78f5'
-  revision 2
+  url 'http://get.bitlbee.org/src/bitlbee-3.2.2.tar.gz'
+  sha1 '7e3cfe2b6bf4e8e603c74e7587307a6f5d267e9c'
 
   bottle do
     sha1 "87aaac8542c0e5fcfaa81a5d0464d48043cf0389" => :mavericks
@@ -21,14 +20,6 @@ class Bitlbee < Formula
   depends_on 'libgcrypt'
   depends_on 'finch' => :optional
   depends_on 'libotr' => :optional
-
-  if build.with? "libotr"
-    # Head versions of bitlbee support otr4, but there is no release yet.
-    patch do
-      url "http://ftp.de.debian.org/debian/pool/main/b/bitlbee/bitlbee_3.2.1+otr4-1.diff.gz"
-      sha1 "a05af5ec8912f85b876f90e75a78dc4f98917ead"
-    end
-  end
 
   def install
     args = ["--prefix=#{prefix}",
