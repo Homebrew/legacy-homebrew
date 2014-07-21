@@ -2,8 +2,8 @@ require "formula"
 
 class Ola < Formula
   homepage "http://www.openlighting.org/ola/"
-  url "https://github.com/OpenLightingProject/ola/releases/download/0.9.0/ola-0.9.0.tar.gz"
-  sha1 "aff9bf0802d4e6fcbdc5a2ffcdb7ba25d67fd209"
+  url "https://github.com/OpenLightingProject/ola/releases/download/0.9.1/ola-0.9.1.tar.gz"
+  sha1 "1aeb969d833385603504f9debcbf48d7b27b5200"
 
   bottle do
     sha1 "6e6b052f3c4f7dd4f413be82bc8858265c156e56" => :mavericks
@@ -13,7 +13,7 @@ class Ola < Formula
 
   option :universal
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   depends_on "cppunit"
   depends_on "protobuf-c"
   depends_on "libmicrohttpd"
