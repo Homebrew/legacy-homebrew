@@ -58,9 +58,7 @@ def opoo warning
 end
 
 def onoe error
-  lines = error.to_s.split("\n")
-  STDERR.puts "#{Tty.red}Error#{Tty.reset}: #{lines.shift}"
-  STDERR.puts lines unless lines.empty?
+  STDERR.puts "#{Tty.red}Error#{Tty.reset}: #{error}"
 end
 
 def ofail error
