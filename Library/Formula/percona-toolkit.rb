@@ -15,11 +15,13 @@ class PerconaToolkit < Formula
 
   resource "DBD::mysql" do
     url "http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
     sha1 "3bf1edd6f0b4f6144b2aaa715c80df3fb1cd2119"
   end
 
   resource "JSON" do
     url "http://search.cpan.org/CPAN/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
     sha1 "8f0ffe72cbe9e6287d7ecafcf19b31cc297364c2"
   end
 
