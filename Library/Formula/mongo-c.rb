@@ -7,9 +7,9 @@ class MongoC < Formula
 
   bottle do
     cellar :any
-    sha1 "4f02db86827e0f95979f027c2bb44c3fd19ae463" => :mavericks
-    sha1 "dcba37116e8d490fd616b2ce2ff926158003408e" => :mountain_lion
-    sha1 "4c546a1136fbb4ff3f669c87257bcbc1d34ea14a" => :lion
+    sha1 "2e4bb593b0a568a6d390f5eae5d56457bee739e8" => :mavericks
+    sha1 "e3b7459776bfde3a4d88816cf14ac636f66ab3ff" => :mountain_lion
+    sha1 "289d8fb5e3dbec51072b8903faaf08a92f165420" => :lion
   end
 
   depends_on "pkg-config" => :build
