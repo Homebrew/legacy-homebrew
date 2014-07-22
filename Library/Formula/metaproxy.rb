@@ -7,9 +7,9 @@ class Metaproxy < Formula
 
   bottle do
     cellar :any
-    sha1 "393035349c51e94da7a01029525586feb0cd10d9" => :mavericks
-    sha1 "69bce941d44902235b43aaa927d7ec83be968234" => :mountain_lion
-    sha1 "5fc1faf5c51dbd4131de7d399848acaa1dd6b919" => :lion
+    sha1 "4ef2fa89bb8daa314f3bdc6c53505c16496a1167" => :mavericks
+    sha1 "a2578c348ac2bfcd5fcc8e1bbb56986b1bfb75f1" => :mountain_lion
+    sha1 "54f9f2c65fbde55a8ae9919cdf5e20e2d8d9a0aa" => :lion
   end
 
   depends_on "pkg-config" => :build
