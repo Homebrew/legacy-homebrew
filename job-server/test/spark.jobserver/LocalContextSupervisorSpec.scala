@@ -1,8 +1,9 @@
 package spark.jobserver
 
-import akka.actor.{ActorSystem, Props, ActorRef, PoisonPill}
+import akka.actor._
 import akka.testkit.{TestKit, ImplicitSender}
 import com.typesafe.config.ConfigFactory
+import org.scalatest.time.Second
 import spark.jobserver.io.JobDAO
 import org.scalatest.FunSpec
 import org.scalatest.matchers.ShouldMatchers
@@ -90,6 +91,7 @@ class LocalContextSupervisorSpec extends TestKit(LocalContextSupervisorSpec.syst
     }
 
     it("should be able to stop contexts already running") {
+      import scala.concurrent.duration._
       supervisor ! AddContext("c1", contextConfig)
       expectMsg(ContextInitialized)
       supervisor ! ListContexts
@@ -97,6 +99,8 @@ class LocalContextSupervisorSpec extends TestKit(LocalContextSupervisorSpec.syst
 
       supervisor ! StopContext("c1")
       expectMsg(ContextStopped)
+
+      Thread.sleep(2000) // wait for a while since deleting context is an asyc call
       supervisor ! ListContexts
       expectMsg(Seq.empty[String])
     }
