@@ -2,8 +2,8 @@ require 'formula'
 
 class Lcov < Formula
   homepage 'http://ltp.sourceforge.net/coverage/lcov.php'
-  url 'https://downloads.sourceforge.net/ltp/lcov-1.10.tar.gz'
-  sha1 '70fb361bcfd7dd81ea30731d6fe532ddea56f283'
+  url 'https://downloads.sourceforge.net/ltp/lcov-1.11.tar.gz'
+  sha1 'bf8ed68c06805a71528a2a67dd714830afd3ccb5'
 
   patch :DATA
 
