@@ -1,29 +1,12 @@
 require "formula"
 
-class Java7Requirement < Requirement
-  fatal true
-
-  satisfy :build_env => false do
-    system "/usr/libexec/java_home", "-v", "1.7"
-  end
-
-  def message; <<-EOS.undent
-    Couldn't locate JDK7, here is how to fix it:
-
-      1. Download and install JDK7 from http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html
-      2. Verify that it has been installed by running `/usr/libexec/java_home -v 1.7`
-      3. Re-run `brew install mesos`
-    EOS
-  end
-end
-
 class Mesos < Formula
   homepage "http://mesos.apache.org"
-  version "0.19.0"
-  url "http://mirror.cogentco.com/pub/apache/mesos/0.19.0/mesos-0.19.0.tar.gz"
-  sha1 "68d898e089a6b806fc88e0b1840f2dc4068cb5fe"
+  version "0.19.1"
+  url "http://mirror.cogentco.com/pub/apache/mesos/0.19.1/mesos-0.19.1.tar.gz"
+  sha1 "3f219313324f86e11df25688ccb86c2814ab29c5"
 
-  depends_on Java7Requirement
+  depends_on :java => "1.7"
   depends_on "maven" => :build
 
   def install

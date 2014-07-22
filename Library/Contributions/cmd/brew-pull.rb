@@ -99,7 +99,7 @@ ARGV.named.each do |arg|
 
     begin
       changed_formulae << Formula[name]
-    rescue FormulaUnavailableError
+    rescue
       next
     end
   end
