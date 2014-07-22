@@ -17,7 +17,7 @@ class Gpm < Formula
 
   bottle do
     cellar :any
-    sha1 "623057df59619c9fb9fda82d85a5aed696c49bb2" => :mavericks
+    sha1 "74ee1899da8f9172a045c293a69e90e486b6801c" => :mavericks
     sha1 "ebbfe75b3aae977a55ba3de9df09bb8fa3b161b6" => :mountain_lion
     sha1 "dc68290e961ccfb91cb688262be917dc55f728bc" => :lion
   end
