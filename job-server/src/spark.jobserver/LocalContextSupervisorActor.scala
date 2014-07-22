@@ -1,6 +1,6 @@
 package spark.jobserver
 
-import akka.actor.{ Props, ActorRef, PoisonPill }
+import akka.actor.{Terminated, Props, ActorRef, PoisonPill}
 import akka.pattern.ask
 import akka.util.Timeout
 import com.typesafe.config.Config
@@ -132,13 +132,19 @@ class LocalContextSupervisorActor(dao: JobDAO) extends InstrumentedActor {
     case StopContext(name) =>
       if (contexts contains name) {
         logger.info("Shutting down context {}", name)
+
+        context.watch(contexts(name))
         contexts(name) ! PoisonPill
-        contexts.remove(name)
         resultActors.remove(name)
         sender ! ContextStopped
       } else {
         sender ! NoSuchContext
       }
+
+    case Terminated(actorRef) =>
+      val name :String = actorRef.path.name
+      logger.info("Actor terminated: " + name)
+      contexts.remove(name)
   }
 
   private def startContext(name: String, contextConfig: Config, isAdHoc: Boolean, timeoutSecs: Int = 1)
