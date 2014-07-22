@@ -5,10 +5,13 @@ class Bmon < Formula
 
   url "https://github.com/tgraf/bmon/releases/download/v3.3/bmon-3.3.tar.gz"
   sha1 "f21d7fc70fdc140680f7ef466242d876474ed2aa"
-  head "https://github.com/tgraf/bmon.git"
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
+  head do
+    url "https://github.com/tgraf/bmon.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
+
   depends_on "confuse" => :build
   depends_on "pkg-config" => :build
 
