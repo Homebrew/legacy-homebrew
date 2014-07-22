@@ -8,9 +8,9 @@ class Yaz < Formula
 
   bottle do
     cellar :any
-    sha1 "9741fc93299b5dc0cea0f48d2d59a1305c04a2cf" => :mavericks
-    sha1 "1cbaeb61fcba731b78bd511b04bd0cc541a20470" => :mountain_lion
-    sha1 "5c4d69aa6303cb4fe76176371e229a7d42becacd" => :lion
+    sha1 "0a4f9eddc76963d82e4457ccb698ac1d4ba65261" => :mavericks
+    sha1 "b4602aa7afa9230e45019503a5976f31c9f3dcfb" => :mountain_lion
+    sha1 "b25e669a21b16b9339db851efcdce2f2e853526f" => :lion
   end
 
   depends_on "pkg-config" => :build
