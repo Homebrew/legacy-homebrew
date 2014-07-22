@@ -2,8 +2,8 @@ require 'formula'
 
 class Snort < Formula
   homepage 'http://www.snort.org'
-  url 'http://www.snort.org/downloads/snort/snort-2.9.6.1.tar.gz'
-  sha1 '49da9b989fa59114a6e533b26383cb1a7df9b717'
+  url 'https://www.snort.org/downloads/snort/snort-2.9.6.2.tar.gz'
+  sha1 '09068bc88dbb3fe47b2bff5803a7b3ef0c98395b'
 
   depends_on 'daq'
   depends_on 'libdnet'
