@@ -33,6 +33,8 @@ class Openssl < Formula
       zlib-dynamic
       shared
       enable-cms
+      no-ssl2
+      no-ssl3
     ]
   end
 
