@@ -2,11 +2,12 @@ require "formula"
 
 class PltRacket < Formula
   homepage "http://racket-lang.org/"
-  url "https://github.com/plt/racket/archive/v6.0.1.tar.gz"
-  sha1 "c459860b5bc9c37f6e5d9f3e74ae8fcdd44ef45e"
+  url "http://mirror.racket-lang.org/installers/6.0.1/racket-minimal-6.0.1-src-builtpkgs.tgz"
+  sha1 "41bc76a8e0ffb5d2b108d52faeca1d6ed71a4318"
+  version "6.0.1"
 
   def install
-    cd 'racket/src' do
+    cd 'src' do
       args = ["--disable-debug", "--disable-dependency-tracking",
               "--enable-macprefix",
               "--prefix=#{prefix}",
