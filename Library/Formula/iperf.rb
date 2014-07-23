@@ -1,9 +1,9 @@
 require 'formula'
 
 class Iperf < Formula
-  homepage "http://software.es.net/iperf"
-  url "https://github.com/esnet/iperf/archive/3.0.5.tar.gz"
-  sha1 "4ebc5bf6456527cdf6d902f8cd810169bc00711b"
+  homepage 'http://iperf.sourceforge.net/'
+  url 'https://downloads.sourceforge.net/project/iperf/iperf-2.0.5.tar.gz'
+  sha1 '7302792dcb1bd7aeba032fef6d3dcc310e4d113f'
 
   bottle do
     cellar :any
