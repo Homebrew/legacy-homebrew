@@ -17,7 +17,7 @@ class SoftwareSpec
 
   def_delegators :@resource, :stage, :fetch, :verify_download_integrity
   def_delegators :@resource, :cached_download, :clear_cache
-  def_delegators :@resource, :checksum, :mirrors, :specs, :using, :downloader
+  def_delegators :@resource, :checksum, :mirrors, :specs, :using
   def_delegators :@resource, :version, :mirror, *Checksum::TYPES
 
   def initialize
@@ -147,7 +147,7 @@ class Bottle
   attr_reader :name, :resource, :prefix, :cellar, :revision
 
   def_delegators :resource, :url, :fetch, :verify_download_integrity
-  def_delegators :resource, :downloader, :cached_download, :clear_cache
+  def_delegators :resource, :cached_download, :clear_cache
 
   def initialize(formula, spec)
     @name = formula.name
