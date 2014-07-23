@@ -1,4 +1,4 @@
-Homebrew
+Homebrew (test)
 ========
 Features, usage and installation instructions are [summarized on the homepage][home].
 
