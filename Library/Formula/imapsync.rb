@@ -9,16 +9,19 @@ class Imapsync < Formula
 
   resource "File::Copy::Recursive" do
     url "http://search.cpan.org/CPAN/authors/id/D/DM/DMUEY/File-Copy-Recursive-0.38.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/D/DM/DMUEY/File-Copy-Recursive-0.38.tar.gz"
     sha1 "6c3a48c8ba70ad6b1ea97c4aac6b1f2d310a8e8d"
   end
 
   resource "Mail::IMAPClient" do
     url "http://search.cpan.org/CPAN/authors/id/P/PL/PLOBBES/Mail-IMAPClient-3.35.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/P/PL/PLOBBES/Mail-IMAPClient-3.35.tar.gz"
     sha1 "96cbe63b112cdd7c411566c5ae3ed8dafba4f7bd"
   end
 
   resource "Authen::NTLM" do
     url "http://search.cpan.org/CPAN/authors/id/N/NB/NBEBOUT/NTLM-1.09.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/N/NB/NBEBOUT/NTLM-1.09.tar.gz"
     sha1 "91064a6ce7ccf0eb8ef498a2f3dc3d30e9406dfe"
   end
 

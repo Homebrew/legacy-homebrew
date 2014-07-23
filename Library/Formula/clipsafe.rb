@@ -9,16 +9,19 @@ class Clipsafe < Formula
 
   resource "Crypt::Twofish" do
     url "http://search.cpan.org/CPAN/authors/id/A/AM/AMS/Crypt-Twofish-2.17.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/A/AM/AMS/Crypt-Twofish-2.17.tar.gz"
     sha1 "f2659d7b9e7d7daadb3b2414174bd6ec8ac68eda"
   end
 
   resource "Digest::SHA" do
     url "http://search.cpan.org/CPAN/authors/id/M/MS/MSHELOR/Digest-SHA-5.85.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/M/MS/MSHELOR/Digest-SHA-5.85.tar.gz"
     sha1 "a603cfba95afcd0266c9482c0c93e84241fe0ce0"
   end
 
   resource "DateTime" do
     url "http://search.cpan.org/CPAN/authors/id/D/DR/DROLSKY/DateTime-1.03.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/D/DR/DROLSKY/DateTime-1.03.tar.gz"
     sha1 "23cad043140988ea95ad8dcb3095cc5aded0464e"
   end
 
