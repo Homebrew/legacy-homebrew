@@ -634,9 +634,8 @@ class FormulaInstaller
     if f.local_bottle_path
       downloader = LocalBottleDownloadStrategy.new(f)
     else
-      bottle = f.bottle
-      downloader = bottle.downloader
-      bottle.verify_download_integrity(bottle.fetch)
+      downloader = f.bottle
+      downloader.verify_download_integrity(downloader.fetch)
     end
     HOMEBREW_CELLAR.cd do
       downloader.stage

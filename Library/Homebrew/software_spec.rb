@@ -170,6 +170,10 @@ class Bottle
     cellar == :any || cellar == HOMEBREW_CELLAR.to_s
   end
 
+  def stage
+    resource.downloader.stage
+  end
+
   private
 
   def build_url(root_url, filename)
