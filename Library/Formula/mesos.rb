@@ -2,7 +2,6 @@ require "formula"
 
 class Mesos < Formula
   homepage "http://mesos.apache.org"
-  version "0.19.1"
   url "http://mirror.cogentco.com/pub/apache/mesos/0.19.1/mesos-0.19.1.tar.gz"
   sha1 "3f219313324f86e11df25688ccb86c2814ab29c5"
 
