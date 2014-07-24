@@ -53,7 +53,9 @@ module Homebrew
         to.make_relative_symlink(path)
       rescue SystemCallError
         to = to.resolved_path if to.symlink?
-        opoo "Could not tap #{Tty.white}#{tap_ref(path)}#{Tty.reset} over #{Tty.white}#{tap_ref(to)}#{Tty.reset}"
+        if !ARGV.include? '--quiet'
+          opoo "Could not tap #{Tty.white}#{tap_ref(path)}#{Tty.reset} over #{Tty.white}#{tap_ref(to)}#{Tty.reset}"
+        end
       else
         ignores << path.basename.to_s
         tapped += 1
