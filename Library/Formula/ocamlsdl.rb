@@ -17,4 +17,15 @@ class Ocamlsdl < Formula
     system "make"
     system "make", "install"
   end
+
+  test do
+    (testpath/'test.ml').write <<-EOS.undent
+      let main () =
+        Sdl.init [`VIDEO];
+        Sdl.quit ()
+
+      let _ = main ()
+    EOS
+    system "ocamlopt", "-I", "+sdl", "sdl.cmxa", "-cclib", "-lSDLmain", "-cclib", "-lSDL", "-cclib", "-Wl,-framework,Cocoa", "-o", "test" "test.ml"
+  end
 end
