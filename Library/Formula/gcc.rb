@@ -68,6 +68,10 @@ class Gcc < Formula
     MacOS::CLT.installed?
   end
 
+  def version_suffix
+    version.to_s.slice(/\d\.\d/)
+  end
+
   def install
     # GCC will suffer build errors if forced to use a particular linker.
     ENV.delete "LD"
@@ -84,8 +88,6 @@ class Gcc < Formula
     # currently only compilable on Linux.
     languages << "fortran" if build.with?("fortran") || build.with?("all-languages")
     languages << "java" if build.with?("java") || build.with?("all-languages")
-
-    version_suffix = version.to_s.slice(/\d\.\d/)
 
     args = [
       "--build=#{arch}-apple-darwin#{osmajor}",
