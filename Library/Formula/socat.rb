@@ -21,7 +21,7 @@ class Socat < Formula
   end
 
   depends_on 'readline'
-  depends_on 'openssl'
+  depends_on 'openssl' => :optional
 
   def install
     ENV.enable_warnings # -w causes build to fail
