@@ -2,9 +2,9 @@ require "formula"
 
 class Libressl < Formula
   homepage "http://www.libressl.org/"
-  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.0.2.tar.gz"
-  mirror "http://mirrors.nycbug.org/pub/OpenBSD/LibreSSL/libressl-2.0.2.tar.gz"
-  sha256 "4d16b6852cbd895ed55737819d2c042b37371f1d80fcba4fb24239eba2a5d72b"
+  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.0.3.tar.gz"
+  mirror "http://mirrors.nycbug.org/pub/OpenBSD/LibreSSL/libressl-2.0.3.tar.gz"
+  sha256 "dfd53b78803c25cb50083dd1f8f773a924dc31cdd9de396eeae4120c14aae2d4"
 
   bottle do
     sha1 "ce25b5e2a6a68ae7365992133e93eb082fa798c3" => :mavericks
