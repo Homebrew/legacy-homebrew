@@ -5,6 +5,13 @@ class Scala < Formula
   url 'http://www.scala-lang.org/files/archive/scala-2.11.2.tgz'
   sha1 '904e9ee3bb96e8350b1e0f2502a704f836c0cdf1'
 
+  bottle do
+    cellar :any
+    sha1 "da4919e3f11b1d10923e12c20ba50f738db58380" => :mavericks
+    sha1 "15ecc67ac62795c1ae7a9fae01838bea412df6ec" => :mountain_lion
+    sha1 "10784c54d59746277a6f0535ef9d3ff4974fad56" => :lion
+  end
+
   option 'with-docs', 'Also install library documentation'
   option 'with-src', 'Also install sources for IDE support'
 
