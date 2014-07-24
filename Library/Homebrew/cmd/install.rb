@@ -107,6 +107,7 @@ module Homebrew
     fi.ignore_deps         = ARGV.ignore_deps? || ARGV.interactive?
     fi.only_deps           = ARGV.only_deps?
     fi.build_bottle        = ARGV.build_bottle?
+    fi.build_missing_bottle= ARGV.build_missing_bottle?
     fi.build_from_source   = ARGV.build_from_source?
     fi.force_bottle        = ARGV.force_bottle?
     fi.interactive         = ARGV.interactive?

@@ -302,7 +302,7 @@ module Stdenv
     remove flags, %r{-msse4(\.\d)?}
     append flags, xarch unless xarch.empty?
 
-    if ARGV.build_bottle?
+    if ARGV.build_bottle? || ARGV.build_missing_bottle?
       arch = ARGV.bottle_arch || Hardware.oldest_cpu
       append flags, Hardware::CPU.optimization_flags.fetch(arch)
     elsif Hardware::CPU.intel? && !Hardware::CPU.sse4?
