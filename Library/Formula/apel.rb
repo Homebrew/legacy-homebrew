@@ -9,6 +9,10 @@ class Apel < Formula
   def install
     system "make LISPDIR=\/usr\/local\/share\/emacs\/site-lisp VERSION_SPECIFIC_LISPDIR=\/usr\/local\/share\/emacs\/site-lisp"
     system "make install LISPDIR=\/usr\/local\/share\/emacs\/site-lisp VERSION_SPECIFIC_LISPDIR=\/usr\/local\/share\/emacs\/site-lisp"
+    system "mv /usr/local/share/emacs/site-lisp/apel/* /usr/local/share/emacs/site-lisp/"
+    system "rmdir /usr/local/share/emacs/site-lisp/apel"
+    system "mv /usr/local/share/emacs/site-lisp/emu/* /usr/local/share/emacs/site-lisp/"
+    system "rmdir /usr/local/share/emacs/site-lisp/emu"
   end
 
 end
