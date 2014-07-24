@@ -307,6 +307,7 @@ class Test
       unless installed_gcc
         test "brew", "install", "gcc"
         installed_gcc = true
+        OS::Mac.clear_version_cache
         retry
       end
       skip formula
