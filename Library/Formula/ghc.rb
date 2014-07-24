@@ -7,9 +7,9 @@ class Ghc < Formula
   revision 3
 
   bottle do
-    sha1 "4f06ef60e2b861f990199cd33c09a3441297b891" => :mavericks
-    sha1 "f64a9492c0294dec39110e947dc344a53465c1fd" => :mountain_lion
-    sha1 "9a0055ba5bdc9a78a8131618a9fd02404ad053d3" => :lion
+    sha1 "75efb035488ce9f3119e621748370795d454f9c6" => :mavericks
+    sha1 "f288ec14e98973866babaf6aa63ceb612e39750c" => :mountain_lion
+    sha1 "73e1732a5e09557084bf25c5e1a6fbb17c5d3ee1" => :lion
   end
 
   option "32-bit"
