@@ -2,9 +2,9 @@ require 'formula'
 
 class Freeswitch < Formula
   homepage 'http://freeswitch.org'
-  url 'git://git.freeswitch.org/freeswitch.git', :tag => 'v1.4.6'
+  url 'https://stash.freeswitch.org/scm/fs/freeswitch.git', :tag => 'v1.4.6'
 
-  head 'git://git.freeswitch.org/freeswitch.git'
+  head 'https://stash.freeswitch.org/scm/fs/freeswitch.git'
 
   depends_on :autoconf
   depends_on :automake
