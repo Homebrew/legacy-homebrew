@@ -5,12 +5,13 @@ class Freeswitch < Formula
   url 'https://stash.freeswitch.org/scm/fs/freeswitch.git', :tag => 'v1.4.6'
 
   head 'https://stash.freeswitch.org/scm/fs/freeswitch.git'
+  
+  env :super
 
   depends_on :autoconf
   depends_on :automake
   depends_on :libtool
   depends_on 'pkg-config' => :build
-  depends_on :xcode => :build
 
   depends_on 'libtiff'
   depends_on 'jpeg'
