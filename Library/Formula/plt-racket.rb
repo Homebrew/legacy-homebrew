@@ -4,6 +4,7 @@ class PltRacket < Formula
   homepage "http://racket-lang.org/"
   url "http://mirror.racket-lang.org/installers/6.0.1/racket-minimal-6.0.1-src-builtpkgs.tgz"
   sha1 "41bc76a8e0ffb5d2b108d52faeca1d6ed71a4318"
+  version "6.0.1"
 
   def install
     cd 'src' do
