@@ -2,8 +2,8 @@ require "formula"
 
 class Bindfs < Formula
   homepage "http://bindfs.org/"
-  url "http://bindfs.org/downloads/bindfs-1.12.4.tar.gz"
-  sha1 "c518fdaf4e22472f0b8140c5a338493c444026b6"
+  url "http://bindfs.org/downloads/bindfs-1.12.6.tar.gz"
+  sha1 "2685a2a1a88f5f84d305bd47f058035949bc887a"
 
   bottle do
     cellar :any
