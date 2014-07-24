@@ -7,6 +7,13 @@ class Mess < Formula
 
   head 'svn://dspnet.fr/mame/trunk'
 
+  bottle do
+    cellar :any
+    sha1 "dc6ff1625f345f6f810636bdd98a5a22fd8524eb" => :mavericks
+    sha1 "0546864fa385c152fb93d8ed541b4fd38b96d88b" => :mountain_lion
+    sha1 "e08903763afabce924b4253b165e21ffd24d3942" => :lion
+  end
+
   depends_on 'sdl'
 
   def install
