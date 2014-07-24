@@ -8,9 +8,9 @@ class Orientdb < Formula
 
   bottle do
     cellar :any
-    sha1 "60c38f94d86882b43788c4c1309ca17f7731c474" => :mavericks
-    sha1 "0f06b522b9a4f9d637beb03d5ac100124dc167ea" => :mountain_lion
-    sha1 "8dfdcc1085c0a3b778728ac0e0d6bac541684b73" => :lion
+    sha1 "cff739fde51a38c94e32c466bd2be1aeaa0cb4e2" => :mavericks
+    sha1 "aea80b791596ab762b46020256ac895fba77fe6c" => :mountain_lion
+    sha1 "3571ebeaed6523b92d24d6ceafda7ed803617132" => :lion
   end
 
   # Fixing OrientDB init scripts
