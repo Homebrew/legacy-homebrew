@@ -2,8 +2,8 @@ require "formula"
 
 class Harfbuzz < Formula
   homepage "http://www.freedesktop.org/wiki/Software/HarfBuzz"
-  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.30.tar.bz2"
-  sha256 "fa873f9fe4a5ad4f7beb524475e13a5a8729d7414d2bc64a557c0d5651d58586"
+  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.33.tar.bz2"
+  sha256 "d313c5bf04b8acd01e8f16979d6d2e5fe65184eb28816b70ea0f374be11314c7"
 
   bottle do
     cellar :any
