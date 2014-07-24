@@ -2,7 +2,7 @@ require "formula"
 
 class Ocamlsdl < Formula
   homepage "http://ocamlsdl.sourceforge.net/"
-  url "http://sourceforge.net/projects/ocamlsdl/files/OCamlSDL/ocamlsdl-0.9.1/ocamlsdl-0.9.1.tar.gz"
+  url "https://downloads.sourceforge.net/project/ocamlsdl/OCamlSDL/ocamlsdl-0.9.1/ocamlsdl-0.9.1.tar.gz"
   sha1 "2e54f8984b06cede493c3ad29006dde17077a79a"
 
   depends_on "sdl"
