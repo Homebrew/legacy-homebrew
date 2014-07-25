@@ -168,20 +168,17 @@ class Updater
     end
   end
 
-  # Matches raw git diff format (see `man git-diff-tree`)
-  DIFFTREE_RX = /^:[0-7]{6} [0-7]{6} [0-9a-fA-F]{40} [0-9a-fA-F]{40} ([ACDMRTUX])\d{0,3}\t(.+?)(?:\t(.+))?$/
-
   def report
     map = Hash.new{ |h,k| h[k] = [] }
 
     if initial_revision && initial_revision != current_revision
-      `git diff-tree -r --raw -M85% #{initial_revision} #{current_revision}`.each_line do |line|
-        DIFFTREE_RX.match line
-        path = case status = $1.to_sym
-          when :R then $3
-          else $2
-          end
-        map[status] << repository.join(path)
+      `git diff-tree -r --name-status -M85% #{initial_revision} #{current_revision}`.each_line do |line|
+        status, path, renamed = line.split
+        if renamed
+          status = status[0, 1]
+          path = renamed
+        end
+        map[status.to_sym] << repository.join(path)
       end
     end
 

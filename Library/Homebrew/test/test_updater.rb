@@ -56,7 +56,7 @@ class UpdaterTests < Homebrew::TestCase
       @updater.in_repo_expect("git config core.autocrlf false")
       @updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
       @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
-      @updater.in_repo_expect("git diff-tree -r --raw -M85% 1234abcd 3456cdef", diff_output)
+      @updater.in_repo_expect("git diff-tree -r --name-status -M85% 1234abcd 3456cdef", diff_output)
       @updater.pull!
       @report.update(@updater.report)
     end
