@@ -1118,7 +1118,7 @@ module Homebrew
     checks = Checks.new
 
     if ARGV.include? '--list-checks'
-      checks.methods.grep(/^check_/).sort.each { |m| puts m }
+      puts checks.methods.grep(/^check_/).sort
       exit
     end
 
@@ -1143,11 +1143,9 @@ module Homebrew
           EOS
         end
 
-        lines = out.to_s.split('\n')
         puts
-        opoo lines.shift
+        opoo out
         Homebrew.failed = true
-        puts lines
         first_warning = false
       end
     end

@@ -77,7 +77,6 @@ class Formula
 
   def url;      active_spec.url;     end
   def version;  active_spec.version; end
-  def mirrors;  active_spec.mirrors; end
 
   def resource(name)
     active_spec.resource(name)
@@ -556,7 +555,7 @@ class Formula
         Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
         f.puts
         require 'cmd/config'
-        Homebrew.write_build_config(f)
+        Homebrew.dump_build_config(f)
         raise BuildError.new(self, cmd, args)
       end
     end

@@ -21,4 +21,32 @@ class GlibNetworking < Formula
                           "--with-ca-certificates=#{etc}/openssl/cert.pem"
     system "make install"
   end
+
+  test do
+    (testpath/"gtls-test.c").write <<-EOS.undent
+      #include <gio/gio.h>
+
+      int main (int argc, char *argv[])
+      {
+        if (g_tls_backend_supports_tls (g_tls_backend_get_default()))
+          return 0;
+        else
+          return 1;
+      }
+    EOS
+
+    # From `pkg-config --cflags --libs gio-2.0`
+    flags = [
+      "-D_REENTRANT",
+      "-I#{HOMEBREW_PREFIX}/include/glib-2.0",
+      "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include",
+      "-I#{HOMEBREW_PREFIX}/opt/gettext/include",
+      "-L#{HOMEBREW_PREFIX}/lib",
+      "-L#{HOMEBREW_PREFIX}/opt/gettext/lib",
+      "-lgio-2.0", "-lgobject-2.0", "-lglib-2.0", "-lintl"
+    ]
+
+    system ENV.cc, "gtls-test.c", "-o", "gtls-test", *flags
+    system "./gtls-test"
+  end
 end

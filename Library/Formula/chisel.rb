@@ -12,7 +12,7 @@ class Chisel < Formula
 
   def caveats; <<-EOS.undent
     Add the following line to ~/.lldbinit to load chisel when Xcode launches:
-      command script import #{libexec}/fblldb.py
+      command script import #{opt_libexec}/fblldb.py
     EOS
   end
 

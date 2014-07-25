@@ -98,7 +98,7 @@ module Homebrew
   alias_method :failed?, :failed
 end
 
-HOMEBREW_PULL_OR_COMMIT_URL_REGEX = 'https:\/\/github.com\/(\w+)\/homebrew(-\w+)?\/(pull\/(\d+)|commit\/\w{4,40})'
+HOMEBREW_PULL_OR_COMMIT_URL_REGEX = %r[https://github\.com/([\w-]+)/homebrew(-[\w-]+)?/(?:pull/(\d+)|commit/[0-9a-fA-F]{4,40})]
 
 require 'compat' unless ARGV.include? "--no-compat" or ENV['HOMEBREW_NO_COMPAT']
 

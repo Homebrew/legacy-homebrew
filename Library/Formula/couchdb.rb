@@ -59,6 +59,16 @@ class Couchdb < Formula
     (var+'log/couchdb').mkpath
   end
 
+  def post_install
+    # default.ini is owned by CouchDB and marked not user-editable
+    # and must be overwritten to ensure correct operation.
+    if (etc/"couchdb/default.ini.default").exist?
+      # but take a backup just in case the user didn't read the warning.
+      mv etc/"couchdb/default.ini", etc/"couchdb/default.ini.old"
+      mv etc/"couchdb/default.ini.default", etc/"couchdb/default.ini"
+    end
+  end
+
   plist_options :manual => "couchdb"
 
   def plist; <<-EOS.undent

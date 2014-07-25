@@ -2,13 +2,13 @@ require 'formula'
 
 class Redis < Formula
   homepage 'http://redis.io/'
-  url "http://download.redis.io/releases/redis-2.8.12.tar.gz"
-  sha1 "56c86a4f9eccaf29f934433c7c67a175e404b2f6"
+  url "http://download.redis.io/releases/redis-2.8.13.tar.gz"
+  sha1 "a72925a35849eb2d38a1ea076a3db82072d4ee43"
 
   bottle do
-    sha1 "4b1e2d66d2202498aec7b99bc503458f26bc7432" => :mavericks
-    sha1 "536c1d27ebf94b8331d262b2adc3166a57dfc4b4" => :mountain_lion
-    sha1 "66613e9bd2a314de17bc21562eac954ad0a35355" => :lion
+    sha1 "40c0a0f119515a521825ca59641e6bb150994c90" => :mavericks
+    sha1 "153050a39b5072c047022beccf0d737897c7e1f9" => :mountain_lion
+    sha1 "cf64b6b6baeb0b2dabbf9b5684f008cb1c503056" => :lion
   end
 
   head 'https://github.com/antirez/redis.git', :branch => 'unstable'
