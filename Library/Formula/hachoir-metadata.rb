@@ -40,5 +40,12 @@ class HachoirMetadata < Formula
     output = `#{bin}/hachoir-metadata --version`
     assert output.include?(VERSION)
     assert_equal 0, $?.exitstatus
+
+    # create one pixel size png file
+    (testpath/'hachoir.png').write("\x89PNG\r\n\u001A\n\u0000\u0000\u0000\rIHDR\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0001\b\u0000\u0000\u0000\u0000:~\x9BU\u0000\u0000\u0000\tpHYs\u0000\u0000\v\u0013\u0000\u0000\v\u0013\u0001\u0000\x9A\x9C\u0018\u0000\u0000\u0000\atIME\a\xDE\a\u0019\u000F\u0001\a\xF7\xF2\xF0%\u0000\u0000\u0000\fiTXtComment\u0000\u0000\u0000\u0000\u0000\xBC\xAE\xB2\x99\u0000\u0000\u0000\nIDAT\b\xD7c\xF8\u000F\u0000\u0001\u0001\u0001\u0000\e\xB6\xEEV\u0000\u0000\u0000\u0000IEND\xAEB`\x82")
+    output = `#{bin}/hachoir-metadata --mime hachoir.png`
+    assert output.include?('image/png')
+    assert_equal 0, $?.exitstatus
+    FileUtils.rm('hachoir.png')
   end
 end
