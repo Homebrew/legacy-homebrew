@@ -6,6 +6,13 @@ class SdlImage < Formula
   sha1 '5e3e393d4e366638048bbb10d6a269ea3f4e4cf2'
   revision 1
 
+  bottle do
+    cellar :any
+    sha1 "2633470db61673b7c934e98a5f64c6ac838bd920" => :mavericks
+    sha1 "e430d59dd88e9365afac2b01149ca015a715a683" => :mountain_lion
+    sha1 "119c2a893214ad25fd1ee832165a14b1323ddc02" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
   depends_on 'jpeg'    => :recommended
