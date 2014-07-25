@@ -2,6 +2,8 @@ require "formula"
 
 class Docker < Formula
   homepage "http://docker.io"
+  # Boot2docker and docker are generally updated at the same time.
+  # Please update the version of boot2docker too
   url "https://github.com/dotcloud/docker.git", :tag => "v1.1.2"
 
   bottle do
