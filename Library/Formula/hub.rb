@@ -4,7 +4,7 @@ class Hub < Formula
   homepage 'http://hub.github.com/'
   url 'https://github.com/github/hub/archive/v1.12.2.tar.gz'
   sha1 '65359d3dcc8e1a0986aab3726f6047bfb9df3d7c'
-  head 'https://github.com/github/hub.git'
+  head 'https://github.com/github/hub.git', :branch => '1.12-stable'
 
   option 'without-completions', 'Disable bash/zsh completions'
 
