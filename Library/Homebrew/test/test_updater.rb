@@ -56,7 +56,7 @@ class UpdaterTests < Homebrew::TestCase
       @updater.in_repo_expect("git config core.autocrlf false")
       @updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
       @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
-      @updater.in_repo_expect("git diff-tree -r --name-status -M85% 1234abcd 3456cdef", diff_output)
+      @updater.in_repo_expect("git diff-tree -r --name-status --diff-filter=AMD 1234abcd 3456cdef", diff_output)
       @updater.pull!
       @report.update(@updater.report)
     end
@@ -73,7 +73,7 @@ class UpdaterTests < Homebrew::TestCase
     assert_predicate @updater, :expectations_met?
     assert_empty @report.select_formula(:M)
     assert_empty @report.select_formula(:A)
-    assert_empty @report.select_formula(:R)
+    assert_empty @report.select_formula(:D)
   end
 
   def test_update_homebrew_with_formulae_changes
@@ -81,7 +81,6 @@ class UpdaterTests < Homebrew::TestCase
     assert_predicate @updater, :expectations_met?
     assert_equal %w{ xar yajl }, @report.select_formula(:M)
     assert_equal %w{ antiword bash-completion ddrescue dict lua }, @report.select_formula(:A)
-    assert_equal %w{ shapelib }, @report.select_formula(:R)
   end
 
   def test_update_homebrew_with_tapped_formula_changes
