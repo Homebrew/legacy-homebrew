@@ -2,9 +2,9 @@ require 'formula'
 
 class Stunnel < Formula
   homepage 'http://www.stunnel.org/'
-  url 'ftp://ftp.nluug.nl/pub/networking/stunnel/archive/4.x/stunnel-4.56.tar.gz'
-  mirror 'http://ftp.nluug.nl/pub/networking/stunnel/archive/4.x/stunnel-4.56.tar.gz'
-  sha256 '9cae2cfbe26d87443398ce50d7d5db54e5ea363889d5d2ec8d2778a01c871293'
+  url 'ftp://ftp.nluug.nl/pub/networking/stunnel/stunnel-5.02.tar.gz'
+  mirror 'https://www.stunnel.org/downloads/stunnel-5.02.tar.gz'
+  sha256 'c258b71d7f82bba5b0a4ccc69fbda632f1fefe9108589a92aa1016f33985973e'
 
   depends_on "openssl"
 
