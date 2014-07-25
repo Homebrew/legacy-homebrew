@@ -539,9 +539,10 @@ class FormulaInstaller
     if f.keg_only?
       begin
         keg.optlink
-      rescue Exception
-        onoe "Failed to create: #{f.opt_prefix}"
+      rescue Keg::LinkError => e
+        onoe "Failed to create #{f.opt_prefix}"
         puts "Things that depend on #{f} will probably not build."
+        puts e
       end
       return
     end
