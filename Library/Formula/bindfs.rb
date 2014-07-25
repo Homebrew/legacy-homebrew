@@ -7,9 +7,9 @@ class Bindfs < Formula
 
   bottle do
     cellar :any
-    sha1 "6709966a00d8bb146b5bd4e75dc37dc38db7bb88" => :mavericks
-    sha1 "c04026b339551e371fcd5993a9fb4ce332b45af8" => :mountain_lion
-    sha1 "d19667195246207f7b1eb98bae042e54e8dc26ac" => :lion
+    sha1 "46e3db6e3561d5ba4c199e54e7233aacee361fc8" => :mavericks
+    sha1 "e11546dca95a6fb8fd67fb180418a29984021219" => :mountain_lion
+    sha1 "cf04d4fd33ba8575c74c53c44a9978cc99b7cd4b" => :lion
   end
 
   head do
