@@ -13,9 +13,9 @@ class Imagemagick < Formula
     :using => UnsafeSubversionDownloadStrategy
 
   bottle do
-    sha1 "eccebca50501fc708368d1928643836c91667663" => :mavericks
-    sha1 "2ed358d45f1c9d7796acf7660d672c90ac225fc0" => :mountain_lion
-    sha1 "8f16c7fc477203e9a5c3d83b4c7c4106c81a29d4" => :lion
+    sha1 "e3588e692e7cedd4f2b8301faded51c4424c0aa1" => :mavericks
+    sha1 "aa122e82464e28395ec4db66eb9d3577b7d3443f" => :mountain_lion
+    sha1 "010f16e2c791b8b9f78a9fe67c5e636e17627f10" => :lion
   end
 
   option "with-quantum-depth-8", "Compile with a quantum depth of 8 bit"
