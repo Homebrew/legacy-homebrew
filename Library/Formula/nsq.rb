@@ -15,7 +15,7 @@ class Nsq < Formula
 
   def install
     # build a proper GOPATH tree for local dependencies
-    (buildpath + "src/github.com/bitly/nsq").install "util", "nsqlookupd"
+    (buildpath + "src/github.com/bitly/nsq").install "util", "nsqlookupd", "nsqd"
     (buildpath + "src/github.com/bitly/nsq/nsqadmin").install "nsqadmin/templates" => "templates"
 
     # godep is only needed to *build* so don't install somewhere permanent
