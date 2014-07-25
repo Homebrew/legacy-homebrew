@@ -56,15 +56,14 @@ class Mongodb < Formula
   end
 
   def mongodb_conf; <<-EOS.undent
-    # Store data in #{var}/mongodb instead of the default /data/db
-    dbpath = #{var}/mongodb
-
-    # Append logs to #{var}/log/mongodb/mongo.log
-    logpath = #{var}/log/mongodb/mongo.log
-    logappend = true
-
-    # Only accept local connections
-    bind_ip = 127.0.0.1
+    systemLog:
+      destination: file
+      path: #{var}/log/mongodb/mongo.log
+      logAppend: true
+    storage:
+      dbPath: #{var}/mongodb
+    net:
+      bindIp: 127.0.0.1
     EOS
   end
 
