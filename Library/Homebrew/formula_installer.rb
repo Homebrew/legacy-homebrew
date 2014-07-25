@@ -409,18 +409,7 @@ class FormulaInstaller
     install_plist
 
     keg = Keg.new(f.prefix)
-
-    if f.keg_only?
-      begin
-        keg.optlink
-      rescue Exception
-        onoe "Failed to create: #{f.opt_prefix}"
-        puts "Things that depend on #{f} will probably not build."
-      end
-    else
-      link(keg)
-    end
-
+    link(keg)
     fix_install_names(keg) if OS.mac?
 
     post_install
@@ -547,6 +536,16 @@ class FormulaInstaller
   end
 
   def link(keg)
+    if f.keg_only?
+      begin
+        keg.optlink
+      rescue Exception
+        onoe "Failed to create: #{f.opt_prefix}"
+        puts "Things that depend on #{f} will probably not build."
+      end
+      return
+    end
+
     if keg.linked?
       opoo "This keg was marked linked already, continuing anyway"
       keg.remove_linked_keg_record
