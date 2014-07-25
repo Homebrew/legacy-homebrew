@@ -2,8 +2,8 @@ require "formula"
 
 class Nsq < Formula
   homepage "http://bitly.github.io/nsq"
-  url "https://github.com/bitly/nsq/archive/v0.2.27.tar.gz"
-  sha1 "3d8a1d28d76e3ea8e788192b0e9a39800b112791"
+  url "https://github.com/bitly/nsq/archive/v0.2.29.tar.gz"
+  sha1 "f8574d984e92f60248e7ec13f05390182b4906c5"
 
   depends_on "go" => :build
   depends_on :hg # some package dependencies are mercurial repos
