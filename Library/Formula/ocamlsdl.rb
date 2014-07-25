@@ -13,7 +13,8 @@ class Ocamlsdl < Formula
   depends_on "objective-caml"
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}",
+                          "OCAMLLIB=#{prefix}/lib/ocaml"
     system "make"
     system "make", "install"
   end
