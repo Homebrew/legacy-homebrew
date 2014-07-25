@@ -7,12 +7,10 @@ class Apel < Formula
   version "10.8"
 
   def install
-    system "make LISPDIR=\/usr\/local\/share\/emacs\/site-lisp VERSION_SPECIFIC_LISPDIR=\/usr\/local\/share\/emacs\/site-lisp"
-    system "make install LISPDIR=\/usr\/local\/share\/emacs\/site-lisp VERSION_SPECIFIC_LISPDIR=\/usr\/local\/share\/emacs\/site-lisp"
-    system "mv /usr/local/share/emacs/site-lisp/apel/* /usr/local/share/emacs/site-lisp/"
-    system "rmdir /usr/local/share/emacs/site-lisp/apel"
-    system "mv /usr/local/share/emacs/site-lisp/emu/* /usr/local/share/emacs/site-lisp/"
-    system "rmdir /usr/local/share/emacs/site-lisp/emu"
+    system "make PREFIX=#{prefix} LISPDIR=#{prefix}/share/emacs/site-lisp VERSION_SPECIFIC_LISPDIR=#{prefix}/share/emacs/site-lisp"
+    system "make install PREFIX=#{prefix} LISPDIR=#{prefix}/share/emacs/site-lisp VERSION_SPECIFIC_LISPDIR=#{prefix}/share/emacs/site-lisp"
+    system "mv #{prefix}/share/emacs/site-lisp/apel/* #{prefix}/share/emacs/site-lisp; rmdir #{prefix}/share/emacs/site-lisp/apel"
+    system "mv #{prefix}/share/emacs/site-lisp/emu/* #{prefix}/share/emacs/site-lisp; rmdir #{prefix}/share/emacs/site-lisp/emu"
   end
 
 end
