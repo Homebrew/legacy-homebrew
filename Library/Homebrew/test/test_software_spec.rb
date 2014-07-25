@@ -117,8 +117,8 @@ class BottleSpecificationTests < Homebrew::TestCase
     end
 
     checksums.each_pair do |cat, sha1|
-      hsh, _ = @spec.collector.fetch_bottle_for(cat)
-      assert_equal Checksum.new(:sha1, sha1), hsh
+      checksum, _ = @spec.checksum_for(cat)
+      assert_equal Checksum.new(:sha1, sha1), checksum
     end
   end
 

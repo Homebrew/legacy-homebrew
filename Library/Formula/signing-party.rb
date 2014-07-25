@@ -26,16 +26,19 @@ class SigningParty < Formula
 
   resource "GnuPG::Interface" do
     url "http://search.cpan.org/CPAN/authors/id/A/AL/ALEXMV/GnuPG-Interface-0.50.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/A/AL/ALEXMV/GnuPG-Interface-0.50.tar.gz"
     sha1 "471c61d262552548df5980cbfc5ccbe6a4607aca"
   end
 
   resource "Text::Iconv" do
     url "http://search.cpan.org/CPAN/authors/id/M/MP/MPIOTR/Text-Iconv-1.7.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/M/MP/MPIOTR/Text-Iconv-1.7.tar.gz"
     sha1 "542849325b2d66c72e19ffb48bdc67fdd7e4bbea"
   end
 
   resource "Text::Template" do
     url "http://search.cpan.org/CPAN/authors/id/M/MJ/MJD/Text-Template-1.46.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/M/MJ/MJD/Text-Template-1.46.tar.gz"
     sha1 "008df9cfa6f9ab8d0b4f38c3e59d4e8679280bc1"
   end
 

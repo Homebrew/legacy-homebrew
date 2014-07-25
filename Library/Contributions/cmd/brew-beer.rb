@@ -176,4 +176,11 @@ your friends! Ready to expand your brewing prowess?
 Thanks for brewin'
 EOS
 
+opoo <<-EOS.undent
+  brew beer is deprecated and going to be removed at some point in the
+  future. If you would like to volunteer to maintain it in a tap please get in
+  contact with us. Thanks!
+
+EOS
+
 puts HOMEBREW_BEER

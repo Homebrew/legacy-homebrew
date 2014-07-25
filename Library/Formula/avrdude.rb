@@ -26,7 +26,10 @@ class Avrdude < Formula
   depends_on 'libhid' => :optional
 
   def install
-    system "./bootstrap" if build.head?
+    if build.head?
+      inreplace "bootstrap", /libtoolize/, "glibtoolize"
+      system "./bootstrap"
+    end
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"

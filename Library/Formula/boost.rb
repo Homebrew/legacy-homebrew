@@ -54,6 +54,10 @@ class Boost < Formula
   depends_on UniversalPython if build.universal? and build.with? "python"
   depends_on UniversalPython3 if build.universal? and build.with? "python3"
 
+  if build.with?("python3") && build.with?("python")
+    odie "boost: --with-python3 cannot be specified when using --with-python"
+  end
+
   if build.with? 'icu'
     if build.cxx11?
       depends_on 'icu4c' => 'c++11'

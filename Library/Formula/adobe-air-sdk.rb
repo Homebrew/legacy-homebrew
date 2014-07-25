@@ -10,10 +10,10 @@ class AdobeAirSdk < Formula
 
   if build.without? "flex-support"
     url "http://airdownload.adobe.com/air/mac/download/14.0/AIRSDK_Compiler.tbz2"
-    sha1 "e88f65c5c813f8000cb170cec1a7689695d2e797"
+    sha1 "0a51e590832e04cc74b6399265b788b4aa074f21"
   else
     url "http://airdownload.adobe.com/air/mac/download/14.0/AdobeAIRSDK.tbz2"
-    sha1 "ffc5f4093feb5a1cf2efcb8854f2328593db828c"
+    sha1 "512a88505c842377be18ec3dae87093eb4a7d69c"
   end
 
   def install

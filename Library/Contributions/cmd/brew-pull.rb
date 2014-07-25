@@ -29,7 +29,7 @@ ARGV.named.each do |arg|
     end
 
     url = url_match[0]
-    issue = url_match[4]
+    issue = url_match[3]
   end
 
   if tap_name = tap(url)
@@ -42,8 +42,11 @@ ARGV.named.each do |arg|
   end
 
   if ARGV.include? '--bottle'
-    raise 'No pull request detected!' unless issue
-    url = "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+    if issue
+      url = "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+    else
+      raise "No pull request detected!"
+    end
   end
 
   # GitHub provides commits'/pull-requests' raw patches using this URL.
@@ -76,6 +79,8 @@ ARGV.named.each do |arg|
   rescue ErrorDuringExecution
     system 'git', 'am', '--abort'
     odie 'Patch failed to apply: aborted.'
+  ensure
+    patchpath.unlink
   end
 
   changed_formulae = []
@@ -87,19 +92,15 @@ ARGV.named.each do |arg|
   end
 
   Utils.popen_read(
-    "git", "diff-tree", "-r", "--name-status",
-    revision, "HEAD", "--", formula_dir, &:read
+    "git", "diff-tree", "-r", "--name-only",
+    "--diff-filter=AM", revision, "HEAD", "--", formula_dir
   ).each_line do |line|
-    status, filename = line.split
-    # Don't try and do anything to removed files.
-    if status == "A" || status == "M"
-      name = File.basename(filename, ".rb")
+    name = File.basename(line.chomp, ".rb")
 
-      begin
-        changed_formulae << Formula[name]
-      rescue FormulaUnavailableError
-        next
-      end
+    begin
+      changed_formulae << Formula[name]
+    rescue
+      next
     end
   end
 
