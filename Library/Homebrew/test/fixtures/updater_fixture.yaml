@@ -12,7 +12,6 @@ update_git_diff_output_with_formulae_changes: |
   A	Library/Formula/ddrescue.rb
   A	Library/Formula/dict.rb
   A	Library/Formula/lua.rb
-  R094	Library/Formula/shapefile.rb	Library/Formula/shapelib.rb
   M	Library/Formula/xar.rb
   M	Library/Formula/yajl.rb
   M	Library/Homebrew/ARGV+yeast.rb

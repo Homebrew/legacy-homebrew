@@ -172,12 +172,8 @@ class Updater
     map = Hash.new{ |h,k| h[k] = [] }
 
     if initial_revision && initial_revision != current_revision
-      `git diff-tree -r --name-status -M85% #{initial_revision} #{current_revision}`.each_line do |line|
-        status, path, renamed = line.split
-        if renamed
-          status = status[0, 1]
-          path = renamed
-        end
+      `git diff-tree -r --name-status --diff-filter=AMD #{initial_revision} #{current_revision}`.each_line do |line|
+        status, path = line.split
         map[status.to_sym] << repository.join(path)
       end
     end
@@ -226,7 +222,6 @@ class Report
     dump_formula_report :A, "New Formulae"
     dump_formula_report :M, "Updated Formulae"
     dump_formula_report :D, "Deleted Formulae"
-    dump_formula_report :R, "Renamed Formulae"
   end
 
   def tapped_formula_for key
