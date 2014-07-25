@@ -2,8 +2,8 @@ require 'formula'
 
 class GribApi < Formula
   homepage 'https://software.ecmwf.int/wiki/display/GRIB/Home'
-  url 'https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.12.1.tar.gz'
-  sha1 'b769ac5db70703f0d944d93aafbbeee7513958f1'
+  url 'https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.12.3.tar.gz'
+  sha1 '2764b262c8f081fefb81112f7f7463a3a34b6e66'
 
   bottle do
     sha1 "700f762ea40861f34639f8abbd99807c43048b90" => :mavericks
