@@ -2,8 +2,8 @@ require 'formula'
 
 class TerminalNotifier < Formula
   homepage 'https://github.com/alloy/terminal-notifier'
-  url 'https://github.com/alloy/terminal-notifier/archive/1.6.0.tar.gz'
-  sha1 '15517dfa070c7ad228424c0dcbb71774b699e99e'
+  url 'https://github.com/alloy/terminal-notifier/archive/1.6.1.tar.gz'
+  sha1 '6270a811a9df97e3244ce9b9f33a89f7a87ba21f'
 
   head 'https://github.com/alloy/terminal-notifier.git'
 
