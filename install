@@ -172,7 +172,7 @@ Dir.chdir HOMEBREW_PREFIX do
   if git
     # we do it in four steps to avoid merge errors when reinstalling
     system git, "init", "-q"
-    system git, "remote", "add", "origin", "https://github.com/Homebrew/homebrew"
+    system "#{git} remote add origin https://github.com/Homebrew/homebrew || #{git} remote set-url --add origin git://github.com/Homebrew/homebrew.git"
 
     args = git, "fetch", "origin", "master:refs/remotes/origin/master", "-n"
     args << "--depth=1" if ARGV.include? "--fast"
