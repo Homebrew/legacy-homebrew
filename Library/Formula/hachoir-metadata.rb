@@ -1,8 +1,9 @@
 require "formula"
 
 class HachoirMetadata < Formula
+  VERSION = '1.3.3'
   homepage "https://bitbucket.org/haypo/hachoir/wiki/Home"
-  url "http://cheeseshop.python.org/packages/source/h/hachoir-metadata/hachoir-metadata-1.3.3.tar.gz"
+  url "http://cheeseshop.python.org/packages/source/h/hachoir-metadata/hachoir-metadata-#{VERSION}.tar.gz"
   sha1 "6f44f2f15a5d24866636117901d0b870137d8af7"
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -36,6 +37,8 @@ class HachoirMetadata < Formula
   end
 
   test do
-    system "#{bin}/hachoir-metadata", "--version"
+    output = `#{bin}/hachoir-metadata --version`
+    assert output.include?(VERSION)
+    assert_equal 0, $?.exitstatus
   end
 end
