@@ -14,7 +14,7 @@ class Ocamlsdl < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}",
-                          "OCAMLLIB=#{prefix}/lib/ocaml"
+                          "OCAMLLIB=#{lib}/ocaml"
     system "make"
     system "make", "install"
   end
