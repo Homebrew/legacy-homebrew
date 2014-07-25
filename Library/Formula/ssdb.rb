@@ -66,9 +66,9 @@ class Ssdb < Formula
   end
 
   test do
-    require "open3"
-    Open3.popen3("#{bin}/ssdb-server", "#{HOMEBREW_PREFIX}/etc/ssdb.conf") do |stdin, stdout, _|
-      assert_equal "ssdb #{version}", stdout.read
-    end
+    system "#{bin}/ssdb-server -d #{HOMEBREW_PREFIX}/etc/ssdb.conf"
+    sleep(3)
+    pid = File.readlines("#{var}/run/ssdb.pid")[0]
+    system("kill #{pid.to_i}")
   end
 end
