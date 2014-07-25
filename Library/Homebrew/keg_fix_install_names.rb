@@ -5,6 +5,7 @@ class Keg
   def fix_install_names options={}
     mach_o_files.each do |file|
       file.ensure_writable do
+        change_rpath(file)
         change_dylib_id(dylib_id_for(file, options), file) if file.dylib?
 
         each_install_name_for(file) do |bad_name|
@@ -55,6 +56,18 @@ class Keg
         rest.each { |file| FileUtils.ln(first, file, :force => true) }
       end if changed
     end
+  end
+
+  def change_rpath(file)
+    return unless OS.linux?
+    patchelf = Formula["patchelf"]
+    return unless patchelf.installed?
+    glibc = Formula["glibc"]
+    cmd = "#{patchelf.bin}/patchelf --set-rpath #{HOMEBREW_PREFIX}/lib"
+    cmd << " --set-interpreter #{glibc.opt_lib}/ld-linux-x86-64.so.2" if glibc.installed?
+    cmd << " #{file}"
+    puts "Setting RPATH of #{file}\n#{cmd}" if ARGV.debug?
+    system cmd
   end
 
   def change_dylib_id(id, file)

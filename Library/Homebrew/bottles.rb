@@ -24,7 +24,9 @@ def bottle_native_regex
 end
 
 def bottle_tag
-  if MacOS.version >= :lion
+  if OS.linux?
+    :linux
+  elsif MacOS.version >= :lion
     MacOS.cat
   elsif MacOS.version == :snow_leopard
     Hardware::CPU.is_64_bit? ? :snow_leopard : :snow_leopard_32

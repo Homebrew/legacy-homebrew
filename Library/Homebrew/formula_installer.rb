@@ -419,7 +419,7 @@ class FormulaInstaller
       link
     end
 
-    fix_install_names if OS.mac?
+    fix_install_names
 
     post_install
 
