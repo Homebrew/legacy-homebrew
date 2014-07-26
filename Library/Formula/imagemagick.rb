@@ -24,6 +24,7 @@ class Imagemagick < Formula
   option "with-perl", "enable build/install of PerlMagick"
   option "without-magick-plus-plus", "disable build/install of Magick++"
   option "with-jp2", "Compile with Jpeg2000 support"
+  option "enable-hdri", "Compile with HDRI support"
 
   depends_on "libtool" => :run
 
