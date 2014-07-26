@@ -7,6 +7,7 @@ class Feh < Formula
 
   depends_on :x11
   depends_on "giblib" => :build
+  depends_on "imlib2" => :build
 
   def install
     system "make", "PREFIX=#{prefix}"
