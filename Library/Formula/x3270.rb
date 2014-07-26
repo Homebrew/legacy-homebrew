@@ -6,9 +6,9 @@ class X3270 < Formula
   sha1 "23bf5b29a2c3c10b935b66a95f666de350ae9c2d"
 
   bottle do
-    sha1 "53572df34392b38370ef321337ce2741f8c7ca74" => :mavericks
-    sha1 "d188824a9400f7b551b1100fd9f43a1831d2aeb6" => :mountain_lion
-    sha1 "4d9dcfe825e75c093e0da6e00594d107d92c6086" => :lion
+    sha1 "8e63062663062dbd4412f65a6ef4d8de7a6b793e" => :mavericks
+    sha1 "183083f571154a57dccfef53f8e5d025f6947064" => :mountain_lion
+    sha1 "70241dff845889ef68a58a18aa542c62aee01929" => :lion
   end
 
   depends_on :x11
