@@ -2,8 +2,8 @@ require 'formula'
 
 class Smartmontools < Formula
   homepage 'http://sourceforge.net/apps/trac/smartmontools/'
-  url 'https://downloads.sourceforge.net/project/smartmontools/smartmontools/6.2/smartmontools-6.2.tar.gz'
-  sha1 '37848ff5103d68b672463a30cd99e7d23d6696a5'
+  url 'https://downloads.sourceforge.net/project/smartmontools/smartmontools/6.3/smartmontools-6.3.tar.gz'
+  sha1 '716c5dc339d408d628c55dbe69028b1561df4c7e'
 
   def install
     (var/'run').mkpath
