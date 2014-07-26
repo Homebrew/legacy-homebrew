@@ -35,7 +35,7 @@ class Gnuplot < Formula
   option 'tests',  'Verify the build with make check (1 min)'
   option 'without-emacs', 'Do not build Emacs lisp files'
   option 'latex',  'Build with LaTeX support'
-  option 'without-aquaterm', 'Do not build AquaTerm support'
+  option 'with-aquaterm', 'Build with AquaTerm support'
 
   depends_on 'pkg-config' => :build
   depends_on LuaRequirement unless build.include? 'nolua'
