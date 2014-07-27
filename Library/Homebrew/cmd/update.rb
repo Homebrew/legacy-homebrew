@@ -172,7 +172,7 @@ class Updater
     map = Hash.new{ |h,k| h[k] = [] }
 
     if initial_revision && initial_revision != current_revision
-      `git diff-tree -r --name-status --diff-filter=AMD #{initial_revision} #{current_revision}`.each_line do |line|
+      diff.each_line do |line|
         status, path = line.split
         map[status.to_sym] << repository.join(path)
       end
@@ -185,6 +185,10 @@ class Updater
 
   def read_current_revision
     `git rev-parse -q --verify HEAD`.chomp
+  end
+
+  def diff
+    `git diff-tree -r --name-status --diff-filter=AMD #{initial_revision} #{current_revision}`
   end
 
   def `(cmd)
