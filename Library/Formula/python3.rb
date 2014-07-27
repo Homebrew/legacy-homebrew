@@ -34,7 +34,7 @@ class Python3 < Formula
 
   resource "docs" do
     url "https://docs.python.org/3/archives/python-3.4.1-docs-html.tar.bz2"
-    sha1 "7d76e33a98bcd7c24790309780171c75988ad82a"
+    sha1 "894a9faf7509d65953dad473c5efc9e903b4dfff"
   end
 
   patch :DATA if build.with? 'brewed-tk'
