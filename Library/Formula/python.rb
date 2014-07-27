@@ -32,7 +32,7 @@ class Python < Formula
 
   resource "docs" do
     url "https://docs.python.org/2/archives/python-2.7.8-docs-html.tar.bz2"
-    sha1 "ba0c2ce0ddf0773306ed859262f405de61e486a6"
+    sha1 "659bd40cc136de58d0754fe69b6366f770e1c4c7"
   end
 
   resource "setuptools" do
