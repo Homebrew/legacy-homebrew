@@ -493,6 +493,10 @@ class FormulaAuditor
       problem "Use new-style option definitions"
     end
 
+    if line =~ /def test/
+      problem "Use new-style test definitions (test do)"
+    end
+
     if line =~ /MACOS_VERSION/
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
