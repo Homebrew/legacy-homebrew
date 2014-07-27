@@ -4,6 +4,8 @@ require 'yaml'
 
 class UpdaterTests < Homebrew::TestCase
   class UpdaterMock < ::Updater
+    attr_accessor :diff
+
     def initialize(*)
       super
       @outputs = Hash.new { |h, k| h[k] = [] }
@@ -51,12 +53,12 @@ class UpdaterTests < Homebrew::TestCase
 
   def perform_update(diff_output="")
     HOMEBREW_REPOSITORY.cd do
+      @updater.diff = diff_output
       @updater.in_repo_expect("git checkout -q master")
       @updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
       @updater.in_repo_expect("git config core.autocrlf false")
       @updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
       @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
-      @updater.in_repo_expect("git diff-tree -r --name-status --diff-filter=AMD 1234abcd 3456cdef", diff_output)
       @updater.pull!
       @report.update(@updater.report)
     end
