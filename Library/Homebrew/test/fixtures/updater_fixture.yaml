@@ -24,12 +24,6 @@ update_git_diff_output_with_formulae_changes: |
   M	Library/Homebrew/utils.rb
   M	README
   M	bin/brew
-update_git_diff_output_with_tapped_formulae_changes: |
-  M	Library/Contributions/brew_bash_completion.sh
-  A	Library/Taps/someuser/sometap/Formula/antiword.rb
-  A	Library/Taps/someuser/sometap/HomebrewFormula/lua.rb
-  A	Library/Taps/someuser/sometap/custom-formula.rb
-  A	Library/Taps/someuser/sometap/lib/not-a-formula.rb
 update_git_diff_output_with_removed_formulae: |
   A	Library/Formula/flac123.rb
   M	Library/Formula/gdal.rb
@@ -46,3 +40,6 @@ update_git_diff_output_with_changed_filetype: |
   D	Library/Formula/libgsasl.rb
   M	Library/Homebrew/cmd/update.rb
   M	SUPPORTERS.md
+update_git_diff_output_with_restructured_tap: |
+  R100	git.rb	Formula/git.rb
+  R100	lua.rb	Formula/lua.rb
