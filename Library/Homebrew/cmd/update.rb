@@ -254,25 +254,7 @@ class Report
   end
 
   def tapped_formula_for key
-    fetch(key, []).select do |path|
-      case path.to_s
-      when HOMEBREW_TAP_PATH_REGEX
-        valid_formula_location?("#{$1}/#{$2}/#{$3}")
-      else
-        false
-      end
-    end.compact
-  end
-
-  def valid_formula_location?(relative_path)
-    parts = relative_path.split('/')[2..-1]
-    return false unless File.extname(parts.last) == ".rb"
-    case parts.first
-    when "Formula", "HomebrewFormula"
-      parts.length == 2
-    else
-      parts.length == 1
-    end
+    fetch(key, []).select { |path| HOMEBREW_TAP_PATH_REGEX === path.to_s }
   end
 
   def new_tapped_formula
@@ -286,19 +268,19 @@ class Report
   def select_formula key
     fetch(key, []).map do |path|
       case path.to_s
-      when %r{^#{Regexp.escape(HOMEBREW_LIBRARY.to_s)}/Formula}o
-        path.basename(".rb").to_s
       when HOMEBREW_TAP_PATH_REGEX
         "#{$1}/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
+      else
+        path.basename(".rb").to_s
       end
-    end.compact.sort
+    end.sort
   end
 
   def dump_formula_report key, title
     formula = select_formula(key)
     unless formula.empty?
       ohai title
-      puts_columns formula.uniq
+      puts_columns formula
     end
   end
 end
