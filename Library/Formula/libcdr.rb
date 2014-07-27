@@ -23,7 +23,7 @@ class Libcdr < Formula
  
   def install
     ENV.libcxx
-    cxxflags="-std=c++11"
+    ENV.cxx11
     system "./configure", # "--disable-werror",
                           "--without-docs"
     system "make", "install"
