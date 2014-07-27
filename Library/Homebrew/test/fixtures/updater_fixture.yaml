@@ -43,3 +43,15 @@ update_git_diff_output_with_changed_filetype: |
 update_git_diff_output_with_restructured_tap: |
   R100	git.rb	Formula/git.rb
   R100	lua.rb	Formula/lua.rb
+update_git_diff_output_with_tap_formulae_changes: |
+  M	Rakefile
+  M	README.md
+  M	Requirements/some_requirement.rb
+  D	another_ruby_file.rb
+  A	a_ruby_file.rb
+  A	CONTRIBUTING.md
+  M	Formula/git.rb
+  A	Formula/lua.rb
+  M	lib/not_a_formula.rb
+  A	lib/not_a_formula2.rb
+  D	lib/not_a_formula3.rb
