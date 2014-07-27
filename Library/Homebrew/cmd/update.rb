@@ -173,8 +173,18 @@ class Updater
 
     if initial_revision && initial_revision != current_revision
       diff.each_line do |line|
-        status, path = line.split
-        map[status.to_sym] << repository.join(path)
+        status, *paths = line.split
+
+        next unless File.extname(paths.last) == ".rb"
+        next unless File.dirname(paths.last) == formula_directory
+
+        case status
+        when "A", "M", "D"
+          map[status.to_sym] << repository.join(paths.first)
+        when /^R\d{0,3}/
+          map[:D] << repository.join(paths.first)
+          map[:A] << repository.join(paths.last)
+        end
       end
     end
 
@@ -183,12 +193,27 @@ class Updater
 
   private
 
+  def formula_directory
+    if repository == HOMEBREW_REPOSITORY
+      "Library/Formula"
+    elsif repository.join("Formula").directory?
+      "Formula"
+    elsif repository.join("HomebrewFormula").directory?
+      "HomebrewFormula"
+    else
+      "."
+    end
+  end
+
   def read_current_revision
     `git rev-parse -q --verify HEAD`.chomp
   end
 
   def diff
-    Utils.popen_read("git", "diff-tree", "-r", "--name-status", "--diff-filter=AMD", initial_revision, current_revision)
+    Utils.popen_read(
+      "git", "diff-tree", "-r", "--name-status", "--diff-filter=AMDR",
+      "-M85%", initial_revision, current_revision
+    )
   end
 
   def `(cmd)
