@@ -8,12 +8,25 @@ class Ssdb < Formula
 
   head 'https://github.com/ideawu/ssdb.git', :branch => 'master'
 
-  def install
-    system "make", "prefix=#{prefix} CC=#{ENV.cc} CXX=#{ENV.cxx}"
+  depends_on :python
 
-    bin.install "#{buildpath}/ssdb-server"
-    %w[bench cli cli.cpy dump repair ins.sh].each { |p| bin.install "#{buildpath}/tools/ssdb-#{p}" }
-    bin.install "#{buildpath}/tools/unittest.php"
+  def install
+    inreplace "Makefile" do |s|
+      s.gsub! "PREFIX=/usr/local/ssdb", "PREFIX=#{prefix}"
+    end
+
+    system "make", "prefix=#{prefix} CC=#{ENV.cc} CXX=#{ENV.cxx}"
+    system "make", "install"
+
+    (bin + "_cpy_").mkpath
+    bin.install_symlink bin/"_cpy_"
+    %w[api deps].each do |p|
+      ln_s prefix/p, bin/p
+      bin.install_symlink bin/p
+    end
+
+    %w[bench cli cli.cpy dump ins.sh repair server].each { |p| bin.install "#{prefix}/ssdb-#{p}" }
+    bin.install prefix/"unittest.php"
 
     %w[run db/ssdb log].each { |p| (var+p).mkpath }
 
