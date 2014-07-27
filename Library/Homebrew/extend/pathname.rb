@@ -93,6 +93,12 @@ class Pathname
     open("w", *open_args) { |f| f.write(content) }
   end
 
+  def write_binary binary_content
+    raise "Will not overwrite #{to_s}" if exist?
+    dirname.mkpath
+    File.open(self, 'wb') {|f| f.write binary_content }
+  end
+
   # NOTE always overwrites
   def atomic_write content
     require "tempfile"
