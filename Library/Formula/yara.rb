@@ -39,9 +39,7 @@ class Yara < Formula
     EOS
 
     program = testpath/"zero.prg"
-    File.open(program, "wb") do |f|
-      f.write [0x00, 0xc0, 0xa9, 0x30, 0x4c, 0xd2, 0xff].pack("C*")
-    end
+    program.binwrite [0x00, 0xc0, 0xa9, 0x30, 0x4c, 0xd2, 0xff].pack("C*")
 
     out = `#{bin}/yara #{rules} #{program}`
     assert_equal "chrout #{program}\n", out
