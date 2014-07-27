@@ -7,6 +7,10 @@ class VowpalWabbit < Formula
   sha1 "d248bc848ad3919ad0c5002045a83aa29d83e6fd"
 
   bottle do
+    cellar :any
+    sha1 "835e216e381b1b4f5b4483a3ce0f254023678357" => :mavericks
+    sha1 "621f557a6b9ce62670b285a1fbc3bbe83badb52b" => :mountain_lion
+    sha1 "165eca93fb9e839793c90f11da9336ee8388a01c" => :lion
   end
 
   depends_on "boost" => :build
