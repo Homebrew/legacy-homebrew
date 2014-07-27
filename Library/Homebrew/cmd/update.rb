@@ -188,7 +188,7 @@ class Updater
   end
 
   def diff
-    `git diff-tree -r --name-status --diff-filter=AMD #{initial_revision} #{current_revision}`
+    Utils.popen_read("git", "diff-tree", "-r", "--name-status", "--diff-filter=AMD", initial_revision, current_revision)
   end
 
   def `(cmd)
