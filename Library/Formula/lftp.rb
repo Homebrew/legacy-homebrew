@@ -6,9 +6,9 @@ class Lftp < Formula
   sha1 "7c70d2b428c071fc19dd340bcd5bf04069b5fad0"
 
   bottle do
-    sha1 "7c451feb5c89c7d51b2d4095477a5033d0baf2e7" => :mavericks
-    sha1 "4f9445f0673a5c8a5235fdfaaf266e109a3be050" => :mountain_lion
-    sha1 "240b0b9efbeab3473a9892353e31246bf0fef0dc" => :lion
+    sha1 "e77c6a4db177a1d57d4d64a26c0695f04458ce70" => :mavericks
+    sha1 "fae24a8f755a8a35a41059b78da9c12567659b61" => :mountain_lion
+    sha1 "9d9f72624246af050ef7131697d21874f487a8a7" => :lion
   end
 
   depends_on "pkg-config" => :build
