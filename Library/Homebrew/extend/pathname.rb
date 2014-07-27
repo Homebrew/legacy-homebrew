@@ -93,12 +93,9 @@ class Pathname
     open("w", *open_args) { |f| f.write(content) }
   end
 
-  # Note: Ruby 2.1+ has Pathname#write and Pathname#binwrite
-  def binwrite binary_content
-    raise "Will not overwrite #{to_s}" if exist?
-    dirname.mkpath
-    File.open(self, 'wb') {|f| f.write binary_content }
-  end
+  def binwrite(contents, *open_args)
+    open("wb", *open_args) { |f| f.write(contents) }
+  end unless method_defined?(:binwrite)
 
   # NOTE always overwrites
   def atomic_write content
