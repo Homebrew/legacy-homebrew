@@ -100,4 +100,22 @@ class UpdaterTests < Homebrew::TestCase
     assert_equal %w{foo/bar/git foo/bar/lua}, @report.select_formula(:A)
     assert_equal %w{foo/bar/git foo/bar/lua}, @report.select_formula(:D)
   end
+
+  def test_update_homebrew_with_tap_formulae_changes
+    repo = HOMEBREW_LIBRARY.join("Taps", "foo", "bar")
+    @updater = UpdaterMock.new(repo)
+    repo.join("Formula").mkpath
+
+    perform_update("update_git_diff_output_with_tap_formulae_changes")
+
+    assert_equal %w{foo/bar/lua}, @report.select_formula(:A)
+    assert_equal %w{foo/bar/git}, @report.select_formula(:M)
+    assert_empty @report.select_formula(:D)
+
+    assert_empty @report.removed_tapped_formula
+    assert_equal [repo.join("Formula", "lua.rb")],
+      @report.new_tapped_formula
+    assert_equal [repo.join("Formula", "git.rb")],
+      @report.tapped_formula_for(:M)
+  end
 end
