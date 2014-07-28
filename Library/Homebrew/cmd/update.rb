@@ -168,20 +168,23 @@ class Updater
     end
   end
 
-  # Matches raw git diff format (see `man git-diff-tree`)
-  DIFFTREE_RX = /^:[0-7]{6} [0-7]{6} [0-9a-fA-F]{40} [0-9a-fA-F]{40} ([ACDMRTUX])\d{0,3}\t(.+?)(?:\t(.+))?$/
-
   def report
     map = Hash.new{ |h,k| h[k] = [] }
 
     if initial_revision && initial_revision != current_revision
-      `git diff-tree -r --raw -M85% #{initial_revision} #{current_revision}`.each_line do |line|
-        DIFFTREE_RX.match line
-        path = case status = $1.to_sym
-          when :R then $3
-          else $2
-          end
-        map[status] << repository.join(path)
+      diff.each_line do |line|
+        status, *paths = line.split
+
+        next unless File.extname(paths.last) == ".rb"
+        next unless File.dirname(paths.last) == formula_directory
+
+        case status
+        when "A", "M", "D"
+          map[status.to_sym] << repository.join(paths.first)
+        when /^R\d{0,3}/
+          map[:D] << repository.join(paths.first)
+          map[:A] << repository.join(paths.last)
+        end
       end
     end
 
@@ -190,8 +193,27 @@ class Updater
 
   private
 
+  def formula_directory
+    if repository == HOMEBREW_REPOSITORY
+      "Library/Formula"
+    elsif repository.join("Formula").directory?
+      "Formula"
+    elsif repository.join("HomebrewFormula").directory?
+      "HomebrewFormula"
+    else
+      "."
+    end
+  end
+
   def read_current_revision
     `git rev-parse -q --verify HEAD`.chomp
+  end
+
+  def diff
+    Utils.popen_read(
+      "git", "diff-tree", "-r", "--name-status", "--diff-filter=AMDR",
+      "-M85%", initial_revision, current_revision
+    )
   end
 
   def `(cmd)
@@ -229,29 +251,10 @@ class Report
     dump_formula_report :A, "New Formulae"
     dump_formula_report :M, "Updated Formulae"
     dump_formula_report :D, "Deleted Formulae"
-    dump_formula_report :R, "Renamed Formulae"
   end
 
   def tapped_formula_for key
-    fetch(key, []).select do |path|
-      case path.to_s
-      when HOMEBREW_TAP_PATH_REGEX
-        valid_formula_location?("#{$1}/#{$2}/#{$3}")
-      else
-        false
-      end
-    end.compact
-  end
-
-  def valid_formula_location?(relative_path)
-    parts = relative_path.split('/')[2..-1]
-    return false unless File.extname(parts.last) == ".rb"
-    case parts.first
-    when "Formula", "HomebrewFormula"
-      parts.length == 2
-    else
-      parts.length == 1
-    end
+    fetch(key, []).select { |path| HOMEBREW_TAP_PATH_REGEX === path.to_s }
   end
 
   def new_tapped_formula
@@ -265,19 +268,19 @@ class Report
   def select_formula key
     fetch(key, []).map do |path|
       case path.to_s
-      when %r{^#{Regexp.escape(HOMEBREW_LIBRARY.to_s)}/Formula}o
-        path.basename(".rb").to_s
       when HOMEBREW_TAP_PATH_REGEX
         "#{$1}/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
+      else
+        path.basename(".rb").to_s
       end
-    end.compact.sort
+    end.sort
   end
 
   def dump_formula_report key, title
     formula = select_formula(key)
     unless formula.empty?
       ohai title
-      puts_columns formula.uniq
+      puts_columns formula
     end
   end
 end

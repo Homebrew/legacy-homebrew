@@ -515,7 +515,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
   end
 
   def has_ref?
-    quiet_system 'git', '--git-dir', git_dir, 'rev-parse', '-q', '--verify', @ref
+    quiet_system 'git', '--git-dir', git_dir, 'rev-parse', '-q', '--verify', "#{@ref}^{commit}"
   end
 
   def repo_valid?

@@ -77,7 +77,6 @@ class Formula
 
   def url;      active_spec.url;     end
   def version;  active_spec.version; end
-  def mirrors;  active_spec.mirrors; end
 
   def resource(name)
     active_spec.resource(name)

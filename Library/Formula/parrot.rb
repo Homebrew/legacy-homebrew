@@ -2,13 +2,8 @@ require "formula"
 
 class Parrot < Formula
   homepage "http://www.parrot.org/"
-  url "ftp://ftp.parrot.org/pub/parrot/releases/supported/6.3.0/parrot-6.3.0.tar.bz2"
-  sha256 "8d64df21751770741dac263e621275f04ce7493db6f519e3f4886a085161a80d"
-
-  devel do
-    url "ftp://ftp.parrot.org/pub/parrot/releases/devel/6.5.0/parrot-6.5.0.tar.bz2"
-    sha256 "1f45044f8dcfaafef795e93a91c8f4a55dd8347cc0359ce4dcf6f34f7bfff140"
-  end
+  url "ftp://ftp.parrot.org/pub/parrot/releases/supported/6.6.0/parrot-6.6.0.tar.bz2"
+  sha256 "08e9e02db952828f6ab71755be47f99ebc90894378f04d8e4d7f3bc623f79ff5"
 
   head "https://github.com/parrot/parrot.git"
 

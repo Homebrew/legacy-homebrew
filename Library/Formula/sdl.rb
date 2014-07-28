@@ -37,6 +37,12 @@ class Sdl < Formula
     sha1 "3137feb503a89a8d606405373905b92dcf7e293b"
   end
 
+  # Fix compilation error on 10.6 introduced by the above patch
+  patch do
+    url "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1324"
+    sha1 "08c19f077f56217fd300db390bca4c1a0bee0622"
+  end
+
   # Fix build against recent libX11; requires regenerating configure script
   patch do
     url "http://hg.libsdl.org/SDL/raw-rev/91ad7b43317a"

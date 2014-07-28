@@ -26,12 +26,10 @@ class Ats2Postiats < Formula
   end
 
   test do
-    File.open("hello.dats", "w") do |f|
-      f.write <<-EOF.undent
-        val _ = print ("Hello, world!\n")
-        implement main0 () = ()
-      EOF
-    end
+    (testpath/"hello.dats").write <<-EOS.undent
+      val _ = print ("Hello, world!\n")
+      implement main0 () = ()
+    EOS
     system "#{bin}/patscc hello.dats -o hello"
     IO.popen("./hello", "r") do |pipe|
       assert_match "Hello, world!", pipe.read

@@ -16,6 +16,10 @@ class Llvm < Formula
       url "http://llvm.org/releases/3.4.2/cfe-3.4.2.src.tar.gz"
       sha1 "add5420b10c3c3a38c4dc2322f8b64ba0a5def97"
     end
+    resource 'lld' do
+      url "http://llvm.org/releases/3.4/lld-3.4.src.tar.gz"
+      sha1 "1e8f2fe693d82fd0e3166fb60e017720eb1a5cf5"
+    end
   end
 
   head do
@@ -23,10 +27,14 @@ class Llvm < Formula
     resource 'clang' do
       url "http://llvm.org/svn/llvm-project/cfe/trunk", :using => :svn
     end
+    resource 'lld' do
+      url "http://llvm.org/svn/llvm-project/lld/trunk", :using => :svn
+    end
   end
 
   option :universal
   option 'with-clang', 'Build Clang support library'
+  option 'with-lld', 'Build LLD linker'
   option 'disable-shared', "Don't build LLVM as a shared library"
   option 'all-targets', 'Build all target backends'
   option 'rtti', 'Build with C++ RTTI'
@@ -42,6 +50,8 @@ class Llvm < Formula
     end
 
     (buildpath/"tools/clang").install resource("clang") if build.with? "clang"
+
+    (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
 
     if build.universal?
       ENV.permit_arch_flags
