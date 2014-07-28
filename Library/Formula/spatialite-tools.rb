@@ -7,9 +7,10 @@ class SpatialiteTools < Formula
 
   bottle do
     cellar :any
-    sha1 "37e91a6eb19748f4dc385f442b45b35012deb0f7" => :mavericks
-    sha1 "0390c9073ed99007be27114256b9a412592555ab" => :mountain_lion
-    sha1 "f118f37a57fa181b3295653f67bc084e64270d75" => :lion
+    revision 1
+    sha1 "88327209bbaa7771ab7229776e212e25b6c903d9" => :mavericks
+    sha1 "a5080c103bcc55bb670bbfbd3f0f6a3503f1bc4d" => :mountain_lion
+    sha1 "bd3ea917dfdeee795af8119303baf318a395a411" => :lion
   end
 
   depends_on 'pkg-config' => :build
