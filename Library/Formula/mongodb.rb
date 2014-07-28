@@ -21,6 +21,7 @@ class Mongodb < Formula
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
   depends_on "boost" => :optional
 
+  depends_on :macos => :snow_leopard
   depends_on "scons" => :build
   depends_on "openssl" => :optional
 
