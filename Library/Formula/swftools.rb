@@ -14,8 +14,8 @@ class Swftools < Formula
   depends_on 'fftw' => :optional
 
   resource 'xpdf' do
-    url 'ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.03.tar.gz', :using  => :nounzip
-    sha1 '499423e8a795e0efd76ca798239eb4d0d52fe248'
+    url 'ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.04.tar.gz', :using  => :nounzip
+    sha1 'b9b1dbb0335742a09d0442c60fd02f4f934618bd'
   end
 
   # Fixes a conftest for libfftwf.dylib that mistakenly calls fftw_malloc()
