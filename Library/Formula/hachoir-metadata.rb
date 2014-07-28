@@ -44,13 +44,14 @@ class HachoirMetadata < Formula
     assert_equal 0, $?.exitstatus, 'exitstatus error.'
 
     print "Testing png file mime type ..."
-    (testpath/'hachoir.png').write("\x89PNG\r\n\u001A\n\u0000\u0000\u0000\rIHDR\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0001\b\u0000\u0000\u0000\u0000:~\x9BU\u0000\u0000\u0000\tpHYs\u0000\u0000\v\u0013\u0000\u0000\v\u0013\u0001\u0000\x9A\x9C\u0018\u0000\u0000\u0000\atIME\a\xDE\a\u0019\u000F\u0001\a\xF7\xF2\xF0%\u0000\u0000\u0000\fiTXtComment\u0000\u0000\u0000\u0000\u0000\xBC\xAE\xB2\x99\u0000\u0000\u0000\nIDAT\b\xD7c\xF8\u000F\u0000\u0001\u0001\u0001\u0000\e\xB6\xEEV\u0000\u0000\u0000\u0000IEND\xAEB`\x82")
-    output = `#{bin}/hachoir-metadata --mime hachoir.png`
+    png_file_path = (testpath/'hachoir.png')
+    png_file_path.write("\x89PNG\r\n\u001A\n\u0000\u0000\u0000\rIHDR\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0001\b\u0000\u0000\u0000\u0000:~\x9BU\u0000\u0000\u0000\tpHYs\u0000\u0000\v\u0013\u0000\u0000\v\u0013\u0001\u0000\x9A\x9C\u0018\u0000\u0000\u0000\atIME\a\xDE\a\u0019\u000F\u0001\a\xF7\xF2\xF0%\u0000\u0000\u0000\fiTXtComment\u0000\u0000\u0000\u0000\u0000\xBC\xAE\xB2\x99\u0000\u0000\u0000\nIDAT\b\xD7c\xF8\u000F\u0000\u0001\u0001\u0001\u0000\e\xB6\xEEV\u0000\u0000\u0000\u0000IEND\xAEB`\x82")
+    output = `#{bin}/hachoir-metadata --mime #{png_file_path}`
     puts "#{output.chomp}."
     assert output.include?('image/png'), 'hachoir mime error.'
     assert_equal 0, $?.exitstatus, 'exitstatus error.'
 
     puts "Cleanup ..."
-    rm 'hachoir.png'
+    rm png_file_path
   end
 end
