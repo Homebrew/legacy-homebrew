@@ -6,6 +6,12 @@ class Dcmtk < Formula
   sha1 '469e017cffc56f36e834aa19c8612111f964f757'
   revision 1
 
+  bottle do
+    sha1 "7a5dae3786225a07fc1b615c186a348d762c1a67" => :mavericks
+    sha1 "f2b20d273322b799b4bd79da8dbe21bc293f37ff" => :mountain_lion
+    sha1 "044eeba49ae368d5f8cce753d54dcaa9b8d18fbb" => :lion
+  end
+
   option 'with-docs', 'Install development libraries/headers and HTML docs'
   option 'with-openssl', 'Configure DCMTK with support for OpenSSL'
 
