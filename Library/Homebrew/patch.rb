@@ -2,7 +2,7 @@ require 'resource'
 require 'stringio'
 require 'erb'
 
-class Patch
+module Patch
   def self.create(strip, io, &block)
     case strip
     when :DATA, IO, StringIO
