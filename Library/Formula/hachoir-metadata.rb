@@ -46,6 +46,6 @@ class HachoirMetadata < Formula
     output = `#{bin}/hachoir-metadata --mime hachoir.png`
     assert output.include?('image/png')
     assert_equal 0, $?.exitstatus
-    FileUtils.rm('hachoir.png')
+    rm 'hachoir.png'
   end
 end
