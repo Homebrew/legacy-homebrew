@@ -53,6 +53,7 @@ class Nginx < Formula
     ld_opt = "-L#{pcre.lib} -L#{openssl.lib}"
 
     args = ["--prefix=#{prefix}",
+            "--with-http_random_index_module",
             "--with-http_ssl_module",
             "--with-pcre",
             "--with-ipv6",
