@@ -5,6 +5,13 @@ class HachoirMetadata < Formula
   url "http://cheeseshop.python.org/packages/source/h/hachoir-metadata/hachoir-metadata-1.3.3.tar.gz"
   sha1 "6f44f2f15a5d24866636117901d0b870137d8af7"
 
+  bottle do
+    cellar :any
+    sha1 "ec6cfcfab8086753ad2dbac9712065b47cc6756f" => :mavericks
+    sha1 "5cf33ff05b0dbea792f1e8030a24ee550f4a59fa" => :mountain_lion
+    sha1 "f828b984aa92ccd7d9c99b93a3c64732a02690d6" => :lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "hachoir-core" do
