@@ -3,8 +3,8 @@ require "formula"
 class Cspice < Formula
   homepage "http://naif.jpl.nasa.gov/naif/index.html"
   url "http://naif.jpl.nasa.gov/pub/naif/toolkit/C/MacIntel_OSX_AppleC_64bit/packages/cspice.tar.Z"
-  sha1 "e5546a72a2d0c7e337850a10d208014efb57d78d"
-  version "64"
+  sha1 "1500a926f01a0bb04744ebe8af0149c7ae098a8f"
+  version "65"
 
   bottle do
     cellar :any
@@ -26,6 +26,6 @@ class Cspice < Formula
   end
 
   test do
-    system "#{bin}/tobin", "#{prefix}/data/cook_01.tsp", "DELME"
+    system "#{bin}/tobin", "#{share}/cspice/data/cook_01.tsp", "DELME"
   end
 end
