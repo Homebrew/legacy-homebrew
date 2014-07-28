@@ -7,6 +7,7 @@ class Dcmtk < Formula
   revision 1
 
   option 'with-docs', 'Install development libraries/headers and HTML docs'
+  option 'with-openssl', 'Configure DCMTK with support for OpenSSL'
 
   depends_on 'cmake' => :build
   depends_on "libpng"
@@ -31,6 +32,7 @@ class Dcmtk < Formula
 
     args = std_cmake_args
     args << '-DDCMTK_WITH_DOXYGEN=YES' if build.with? "docs"
+    args << '-DDCMTK_WITH_OPENSSL=YES' if build.with? "openssl"
     args << '..'
 
     mkdir 'build' do
