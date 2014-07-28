@@ -22,7 +22,7 @@ class Openssl < Formula
 
   def arch_args
     {
-      :x86_64 => %w[darwin64-x86_64-cc enable-ec_nistp-64_gcc_128],
+      :x86_64 => %w[darwin64-x86_64-cc enable-ec_nistp_64_gcc_128],
       :i386   => %w[darwin-i386-cc],
     }
   end
