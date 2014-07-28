@@ -2,9 +2,8 @@ require 'formula'
 
 class Ssdb < Formula
   homepage "http://ssdb.io/?lang=en"
-  url "https://github.com/ideawu/ssdb/archive/stable-1.6.8.8.zip"
-  sha1 "c5c4aad9b2c27580d354b8714a74f43d68bf818e"
-  version "1.6.8.8"
+  url "https://github.com/ideawu/ssdb/archive/1.6.8.8.tar.gz"
+  sha1 "2d63cb0ba176bf6c463a70e7a3b39f8cc326d5d7"
 
   head 'https://github.com/ideawu/ssdb.git', :branch => 'master'
 
@@ -18,17 +17,9 @@ class Ssdb < Formula
     system "make", "prefix=#{prefix} CC=#{ENV.cc} CXX=#{ENV.cxx}"
     system "make", "install"
 
-    (bin + "_cpy_").mkpath
-    bin.install_symlink bin/"_cpy_"
-    %w[api deps].each do |p|
-      ln_s prefix/p, bin/p
-      bin.install_symlink bin/p
-    end
+    %w[bench dump ins.sh repair server].each { |p| bin.install "#{prefix}/ssdb-#{p}" }
 
-    %w[bench cli cli.cpy dump ins.sh repair server].each { |p| bin.install "#{prefix}/ssdb-#{p}" }
-    bin.install prefix/"unittest.php"
-
-    %w[run db/ssdb log].each { |p| (var+p).mkpath }
+    %w[run db/ssdb log].each { |p| (var + p).mkpath }
 
     inreplace "ssdb.conf" do |s|
       s.gsub! "work_dir = ./var", "work_dir = #{var}/db/ssdb/"
@@ -79,9 +70,10 @@ class Ssdb < Formula
   end
 
   test do
-    system "#{bin}/ssdb-server -d #{HOMEBREW_PREFIX}/etc/ssdb.conf"
+    pid = fork do
+       Signal.trap("TERM") { system("#{bin}/ssdb-server -d #{HOMEBREW_PREFIX}/etc/ssdb.conf"); exit }
+    end
     sleep(3)
-    pid = File.readlines("#{var}/run/ssdb.pid")[0]
-    system("kill #{pid.to_i}")
+    Process.kill("TERM", pid)
   end
 end
