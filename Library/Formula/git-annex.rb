@@ -40,7 +40,7 @@ class GitAnnex < Formula
 
   test do
     # make sure git can find git-annex
-    ENV.prepend_path 'PATH', bin
+    ENV.prepend_path "PATH", bin
     # create a first git repository with an annex
     mkdir "my_annex" do
       system "git", "init"
