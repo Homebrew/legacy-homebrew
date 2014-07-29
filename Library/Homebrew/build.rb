@@ -208,19 +208,19 @@ class Build
       end
     end
   end
-end
 
-def fixopt f
-  path = if f.linked_keg.directory? and f.linked_keg.symlink?
-    f.linked_keg.resolved_path
-  elsif f.prefix.directory?
-    f.prefix
-  elsif (kids = f.rack.children).size == 1 and kids.first.directory?
-    kids.first
-  else
-    raise
+  def fixopt f
+    path = if f.linked_keg.directory? and f.linked_keg.symlink?
+      f.linked_keg.resolved_path
+    elsif f.prefix.directory?
+      f.prefix
+    elsif (kids = f.rack.children).size == 1 and kids.first.directory?
+      kids.first
+    else
+      raise
+    end
+    Keg.new(path).optlink
+  rescue StandardError
+    raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
   end
-  Keg.new(path).optlink
-rescue StandardError
-  raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
 end
