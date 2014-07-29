@@ -1,24 +1,19 @@
 require 'resource'
-require 'stringio'
 require 'erb'
 
 module Patch
-  def self.create(strip, io, &block)
+  def self.create(strip, src, &block)
     case strip
     when :DATA
       DATAPatch.new(:p1)
-    when IO, StringIO
-      IOPatch.new(strip, :p1)
     when String
-      IOPatch.new(StringIO.new(strip), :p1)
+      StringPatch.new(:p1, strip)
     when Symbol
-      case io
+      case src
       when :DATA
         DATAPatch.new(strip)
-      when IO, StringIO
-        IOPatch.new(io, strip)
       when String
-        IOPatch.new(StringIO.new(io), strip)
+        StringPatch.new(strip, src)
       else
         ExternalPatch.new(strip, &block)
       end
@@ -53,31 +48,26 @@ module Patch
   end
 end
 
-class IOPatch
+class EmbeddedPatch
   attr_writer :owner
   attr_reader :strip
+
+  def initialize(strip)
+    @strip = strip
+  end
 
   def external?
     false
   end
 
-  def initialize(io, strip)
-    @io     = io
-    @strip  = strip
+  def contents
+    raise NotImplementedError
   end
 
   def apply
     data = contents.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
     IO.popen("/usr/bin/patch -g 0 -f -#{strip}", "w") { |p| p.write(data) }
     raise ErrorDuringExecution, "Applying DATA patch failed" unless $?.success?
-  ensure
-    # IO and StringIO cannot be marshaled, so remove the reference
-    # in case we are indirectly referenced by an exception later.
-    @io = nil
-  end
-
-  def contents
-    @io.read
   end
 
   def inspect
@@ -85,11 +75,11 @@ class IOPatch
   end
 end
 
-class DATAPatch < IOPatch
+class DATAPatch < EmbeddedPatch
   attr_accessor :path
 
   def initialize(strip)
-    @strip = strip
+    super
     @path = nil
   end
 
@@ -102,6 +92,17 @@ class DATAPatch < IOPatch
       data << line while line = f.gets
     end
     data
+  end
+end
+
+class StringPatch < EmbeddedPatch
+  def initialize(strip, str)
+    super(strip)
+    @str = str
+  end
+
+  def contents
+    @str
   end
 end
 
