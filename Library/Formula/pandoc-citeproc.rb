@@ -7,6 +7,7 @@ class PandocCiteproc < Formula
   homepage "https://github.com/jgm/pandoc-citeproc"
   url "http://hackage.haskell.org/package/pandoc-citeproc-0.3.1/pandoc-citeproc-0.3.1.tar.gz"
   sha1 "b972020fd6fa8447854b14d786c289062989b722"
+  revision 1
 
   bottle do
     sha1 "c0beedd544aec204c40dcfcba0dec84751d433c8" => :mavericks
