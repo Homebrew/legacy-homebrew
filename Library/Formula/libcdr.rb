@@ -21,7 +21,7 @@ class Libcdr < Formula
                           "--without-docs"
     system "make", "install"
   end
- 
+
     test do
     (testpath/'test.cpp').write <<-EOS.undent
       #include <libcdr/libcdr.h>
