@@ -12,6 +12,7 @@ class Emacs < Formula
   option "use-git-head", "Use Savannah (faster) git mirror for HEAD builds"
   option "keep-ctags", "Don't remove the ctags executable that emacs provides"
   option "japanese", "Patch for Japanese input methods"
+  option "with-brewed-mailutils", "Install Homebrew's movemail"
 
   head do
     if build.include? "use-git-head"
@@ -61,6 +62,7 @@ class Emacs < Formula
   depends_on 'gnutls' => :optional
   depends_on "librsvg" => :optional
   depends_on "imagemagick" => :optional
+  depends_on "mailutils" if build.with? "brewed-mailutils"
 
   fails_with :llvm do
     build 2334
@@ -96,6 +98,7 @@ class Emacs < Formula
     end
     args << "--with-rsvg" if build.with? "librsvg"
     args << "--with-imagemagick" if build.with? "imagemagick"
+    args << "--without-popmail" if build.with? "brewed-mailutils"
 
     system "./autogen.sh" if build.head?
 
