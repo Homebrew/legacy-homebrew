@@ -671,8 +671,8 @@ class Formula
       specs.each { |spec| spec.option(name, description) }
     end
 
-    def patch strip=:p1, io=nil, &block
-      specs.each { |spec| spec.patch(strip, io, &block) }
+    def patch strip=:p1, src=nil, &block
+      specs.each { |spec| spec.patch(strip, src, &block) }
     end
 
     def plist_options options
