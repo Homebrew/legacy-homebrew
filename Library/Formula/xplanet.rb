@@ -27,6 +27,12 @@ class Xplanet < Formula
   depends_on "libpng" => :recommended
   depends_on "libtiff" => :recommended
 
+  if build.with?("all")
+    depends_on "netpbm"
+    depends_on "pango"
+    depends_on "cspice"
+  end
+
   depends_on "netpbm" => :optional
   depends_on "pango" => :optional
   depends_on "cspice" => :optional
