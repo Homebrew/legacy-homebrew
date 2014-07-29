@@ -7,6 +7,7 @@ class Pandoc < Formula
   homepage "http://johnmacfarlane.net/pandoc/"
   url "http://hackage.haskell.org/package/pandoc-1.12.4.2/pandoc-1.12.4.2.tar.gz"
   sha1 "29e035a2707ff5ce534de92cf75a17acf75dea19"
+  revision 1
 
   bottle do
     sha1 "505dea8ad1b507a3d0fcfde6dc2c80d1238d4625" => :mavericks
