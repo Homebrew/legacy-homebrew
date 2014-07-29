@@ -113,14 +113,13 @@ class Build
   def install
     keg_only_deps = deps.map(&:to_formula).select(&:keg_only?)
 
-    pre_superenv_hacks
-
-    ENV.activate_extensions!
-
     deps.map(&:to_formula).each do |dep|
       opt = HOMEBREW_PREFIX.join("opt", dep.name)
       fixopt(dep) unless opt.directory?
     end
+
+    pre_superenv_hacks
+    ENV.activate_extensions!
 
     if superenv?
       ENV.keg_only_deps = keg_only_deps.map(&:name)
