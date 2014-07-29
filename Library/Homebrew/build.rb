@@ -26,7 +26,6 @@ def main
 
   trap("INT", STD_TRAP) # restore default CTRL-C handler
 
-  require 'hardware'
   require 'keg'
   require 'extend/ENV'
 
