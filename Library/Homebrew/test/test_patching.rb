@@ -5,6 +5,8 @@ require 'testball'
 class PatchingTests < Homebrew::TestCase
   PATCH_URL_A = "file://#{TEST_DIRECTORY}/patches/noop-a.diff"
   PATCH_URL_B = "file://#{TEST_DIRECTORY}/patches/noop-b.diff"
+  PATCH_A_CONTENTS = File.read "#{TEST_DIRECTORY}/patches/noop-a.diff"
+  PATCH_B_CONTENTS = File.read "#{TEST_DIRECTORY}/patches/noop-b.diff"
 
   def formula(&block)
     super do
@@ -124,18 +126,7 @@ class PatchingTests < Homebrew::TestCase
   def test_patch_string
     shutup do
       formula do
-        patch %q{
-diff --git a/libexec/NOOP b/libexec/NOOP
-index bfdda4c..e08d8f4 100755
---- a/libexec/NOOP
-+++ b/libexec/NOOP
-@@ -1,2 +1,2 @@
- #!/bin/bash
--echo NOOP
-\ No newline at end of file
-+echo ABCD
-\ No newline at end of file
-}
+        patch PATCH_A_CONTENTS
       end.brew { assert_patched 'libexec/noop' }
     end
   end
@@ -143,18 +134,7 @@ index bfdda4c..e08d8f4 100755
   def test_patch_string_with_strip
     shutup do
       formula do
-        patch :p0, %q{
-diff --git libexec/NOOP libexec/NOOP
-index bfdda4c..e08d8f4 100755
---- libexec/NOOP
-+++ libexec/NOOP
-@@ -1,2 +1,2 @@
- #!/bin/bash
--echo NOOP
-\ No newline at end of file
-+echo ABCD
-\ No newline at end of file
-}
+        patch :p0, PATCH_B_CONTENTS
       end.brew { assert_patched 'libexec/noop' }
     end
   end
