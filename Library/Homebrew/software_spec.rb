@@ -90,8 +90,8 @@ class SoftwareSpec
     dependency_collector.requirements
   end
 
-  def patch strip=:p1, io=nil, &block
-    patches << Patch.create(strip, io, &block)
+  def patch strip=:p1, src=nil, &block
+    patches << Patch.create(strip, src, &block)
   end
 
   def add_legacy_patches(list)
