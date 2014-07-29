@@ -7,6 +7,7 @@ class GitAnnex < Formula
   homepage "https://git-annex.branchable.com/"
   url "http://hackage.haskell.org/package/git-annex-5.20140613/git-annex-5.20140613.tar.gz"
   sha1 "45a889114f4687553abffb48b0603c863e1ce816"
+  revision 1
 
   bottle do
     cellar :any
@@ -40,7 +41,7 @@ class GitAnnex < Formula
 
   test do
     # make sure git can find git-annex
-    ENV.prepend_path 'PATH', bin
+    ENV.prepend_path "PATH", bin
     # create a first git repository with an annex
     mkdir "my_annex" do
       system "git", "init"

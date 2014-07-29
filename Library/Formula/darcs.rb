@@ -7,6 +7,7 @@ class Darcs < Formula
   homepage "http://darcs.net/"
   url "http://darcs.net/releases/darcs-2.8.4.tar.gz"
   sha1 "36dde7548a9d73f4688296cac72bcda672542e53"
+  revision 1
 
   bottle do
     cellar :any
