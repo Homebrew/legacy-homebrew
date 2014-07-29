@@ -37,8 +37,9 @@ class Libmspub < Formula
         return 0;
     }
     EOS
-    system ENV.cxx, "test.cpp",
+    system ENV.cxx, "test.cpp", "-o", "test",
                     "-I#{Formula["librevenge"].include}/librevenge-0.0",
                     "-lmspub-0.1", "-I#{include}/libmspub-0.1"
-  end
+    system "./test"
+    end
 end
