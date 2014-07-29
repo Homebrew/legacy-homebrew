@@ -490,7 +490,7 @@ class FormulaInstaller
     args = %W[
       nice #{RUBY_PATH}
       -W0
-      -I #{File.dirname(__FILE__)}
+      -I #{HOMEBREW_LIBRARY_PATH}
       -rbuild
       --
       #{f.path}
