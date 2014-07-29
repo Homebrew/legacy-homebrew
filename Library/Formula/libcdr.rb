@@ -24,12 +24,11 @@ class Libcdr < Formula
  
     test do
     (testpath/'test.cpp').write <<-EOS.undent
-      #include <librevenge-stream/librevenge-stream.h>
       #include <libcdr/libcdr.h>
       int main() {
         libcdr::CDRDocument::isSupported(0);
       }
     EOS
-    system ENV.cc, "test.cpp", "-lrevenge-stream-0.0", "-I#{Formula["librevenge"].include}/librevenge-0.0", "-I#{HOMEBREW_PREFIX}/include/libcdr-0.1", "-lcdr-0.1"
+    system ENV.cc, "test.cpp", "-I#{Formula["librevenge"].include}/librevenge-0.0", "-I#{HOMEBREW_PREFIX}/include/libcdr-0.1", "-lcdr-0.1"
   end
 end
