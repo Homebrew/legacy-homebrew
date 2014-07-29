@@ -10,9 +10,9 @@ class Pandoc < Formula
   revision 1
 
   bottle do
-    sha1 "505dea8ad1b507a3d0fcfde6dc2c80d1238d4625" => :mavericks
-    sha1 "2c2b7bb640f24f5a282f27aaaf00a4ab02d6a572" => :mountain_lion
-    sha1 "8fa2925bfc5f0b526b4726cec1c1f47b2e64cc03" => :lion
+    sha1 "fb93514850f6bb8dfb1c5d0eab8a911dc741fc07" => :mavericks
+    sha1 "2db6d096a37d2f06909669a5be38d0b8e3eae035" => :mountain_lion
+    sha1 "c1c385ad031503c1540ec515f3a1552e51783569" => :lion
   end
 
   resource "completion" do
