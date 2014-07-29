@@ -8,9 +8,9 @@ class Cspice < Formula
 
   bottle do
     cellar :any
-    sha1 "be5a92d5a4a1e6f19ba6b03a4fe8bca227a64d9d" => :mavericks
-    sha1 "d2b58e8648bcd288a50bf852448a8c0a27c717b3" => :mountain_lion
-    sha1 "1a41bc5c47948c6b7e9288bb2c365573461df460" => :lion
+    sha1 "095c1b894921f82dcfe230dc5519fa5b0d69e586" => :mavericks
+    sha1 "24d4dbac215fa337c642f1b5f962c83fb73ad774" => :mountain_lion
+    sha1 "c9c33e2601e87f6608c4b58ba51b549b6e04a0c9" => :lion
   end
 
   def install
