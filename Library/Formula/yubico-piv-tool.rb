@@ -16,6 +16,6 @@ class YubicoPivTool < Formula
   end
 
   test do
-    system "#{bin}/yubico-piv-tool", "--version"
+    system "#{bin}/yubico-piv-tool", "--action=version"
   end
 end
