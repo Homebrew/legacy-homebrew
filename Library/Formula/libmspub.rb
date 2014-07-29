@@ -29,7 +29,7 @@ class Libmspub < Formula
     system "make", "install"
   end
 
-   test do
+  test do
     (testpath/"test.cpp").write <<-EOS.undent
     #include <libmspub/MSPUBDocument.h>
     int main() {
