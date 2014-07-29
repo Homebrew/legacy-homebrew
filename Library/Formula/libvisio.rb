@@ -27,16 +27,13 @@ class Libvisio < Formula
 
   test do
     (testpath/"test.cpp").write <<-EOS.undent
-      #include <librevenge-stream/librevenge-stream.h>
       #include <libvisio/libvisio.h>
       int main() {
-        librevenge::RVNGStringStream docStream(0, 0);
-        libvisio::VisioDocument::isSupported(&docStream);
-        return 0;
+        libvisio::VisioDocument::isSupported(0);
       }
     EOS
     system ENV.cxx, "test.cpp", "-o", "test",
-                    "-lrevenge-stream-0.0", "-I#{Formula["librevenge"].include}/librevenge-0.0",
+                    "-I#{Formula["librevenge"].include}/librevenge-0.0",
                     "-lvisio-0.1", "-I#{Formula["libvisio"].include}/libvisio-0.1"
     system "./test"
   end
