@@ -11,9 +11,9 @@ class Shellcheck < Formula
 
   bottle do
     cellar :any
-    sha1 "903cdcdf9c39323152d6603bf36a48d470742805" => :mavericks
-    sha1 "78456df525113ef15a979e4a943e39eaa9643e60" => :mountain_lion
-    sha1 "e6f02857491301f0517627b103a7a719ac5521f9" => :lion
+    sha1 "52faa5836a8f4c514c6f4df315397ba6b99ff7e2" => :mavericks
+    sha1 "824a0470678e35a069a32cd81776c2f29a2ad84f" => :mountain_lion
+    sha1 "73eea51f06e8c17e82c0236961db82798919e8f2" => :lion
   end
 
   depends_on "ghc" => :build
