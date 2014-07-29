@@ -2,7 +2,7 @@ require 'resource'
 require 'stringio'
 require 'erb'
 
-class Patch
+module Patch
   def self.create(strip, io, &block)
     case strip
     when :DATA, IO, StringIO
@@ -48,22 +48,19 @@ class Patch
 
     patches
   end
-
-  attr_reader :whence
-
-  def external?
-    whence == :resource
-  end
 end
 
-class IOPatch < Patch
+class IOPatch
   attr_writer :owner
   attr_reader :strip
+
+  def external?
+    false
+  end
 
   def initialize(io, strip)
     @io     = io
     @strip  = strip
-    @whence = :io
   end
 
   def apply
@@ -83,13 +80,16 @@ class IOPatch < Patch
   end
 end
 
-class ExternalPatch < Patch
+class ExternalPatch
   attr_reader :resource, :strip
 
   def initialize(strip, &block)
     @strip    = strip
     @resource = Resource.new("patch", &block)
-    @whence   = :resource
+  end
+
+  def external?
+    true
   end
 
   def owner= owner

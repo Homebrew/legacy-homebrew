@@ -12,8 +12,8 @@ class Mongodb < Formula
   end
 
   devel do
-    url "http://downloads.mongodb.org/src/mongodb-src-r2.7.3.tar.gz"
-    sha1 "53f832b31b49063a60100bbe1be65015efcd3ccf"
+    url "http://downloads.mongodb.org/src/mongodb-src-r2.7.4.tar.gz"
+    sha1 "e2abb0cf6923e9480cc02c2ab943264b4451632e"
   end
 
   head "https://github.com/mongodb/mongo.git"
@@ -21,6 +21,7 @@ class Mongodb < Formula
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
   depends_on "boost" => :optional
 
+  depends_on :macos => :snow_leopard
   depends_on "scons" => :build
   depends_on "openssl" => :optional
 
