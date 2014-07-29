@@ -26,7 +26,9 @@ class Libslax < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--enable-libedit"
+                          "--enable-libedit",
+                          "CFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future",
+                          "CPPFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future"
     system "make install"
   end
 end
