@@ -297,6 +297,8 @@ class Test
     test "brew", "uses", formula
     dependencies = `brew deps #{formula}`.split("\n")
     dependencies -= `brew list`.split("\n")
+    unchanged_dependencies = dependencies - @formulae
+    changed_dependences = dependencies - unchanged_dependencies
     formula_object = Formulary.factory(formula)
     return unless satisfied_requirements?(formula_object, :stable)
 
@@ -315,7 +317,8 @@ class Test
       return
     end
 
-    test "brew", "fetch", "--retry", *dependencies unless dependencies.empty?
+    test "brew", "fetch", "--retry", *unchanged_dependencies unless unchanged_dependencies.empty?
+    test "brew", "fetch", "--retry", "--build-from-source", *changed_dependences unless changed_dependences.empty?
     formula_fetch_options = []
     formula_fetch_options << "--build-bottle" unless ARGV.include? "--no-bottle"
     formula_fetch_options << "--force" if ARGV.include? "--cleanup"
@@ -326,7 +329,10 @@ class Test
     install_args << "--build-bottle" unless ARGV.include? "--no-bottle"
     install_args << "--HEAD" if ARGV.include? "--HEAD"
     install_args << formula
+    # Don't care about e.g. bottle failures for dependencies.
+    ENV["HOMEBREW_DEVELOPER"] = nil
     test "brew", "install", "--only-dependencies", *install_args unless dependencies.empty?
+    ENV["HOMEBREW_DEVELOPER"] = "1"
     test "brew", "install", *install_args
     install_passed = steps.last.passed?
     test "brew", "audit", formula
