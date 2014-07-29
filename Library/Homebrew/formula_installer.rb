@@ -483,8 +483,6 @@ class FormulaInstaller
     # 1. formulae can modify ENV, so we must ensure that each
     #    installation has a pristine ENV when it starts, forking now is
     #    the easiest way to do this
-    # 2. formulae have access to __END__ the only way to allow this is
-    #    to make the formula script the executed script
     read, write = IO.pipe
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s

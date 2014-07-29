@@ -1,14 +1,9 @@
 # This script is loaded by formula_installer as a separate instance.
-# Rationale: Formula can use __END__, Formula can change ENV
 # Thrown exceptions are propogated back to the parent process over a pipe
 
 STD_TRAP = trap("INT") { exit! 130 } # no backtrace thanks
 
-at_exit do
-  # the whole of everything must be run in at_exit because the formula has to
-  # be the run script as __END__ must work for *that* formula.
-  main
-end
+at_exit { main }
 
 require 'global'
 require 'cxxstdlib'

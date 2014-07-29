@@ -8,7 +8,7 @@ class PatchingTests < Homebrew::TestCase
   PATCH_A_CONTENTS = File.read "#{TEST_DIRECTORY}/patches/noop-a.diff"
   PATCH_B_CONTENTS = File.read "#{TEST_DIRECTORY}/patches/noop-b.diff"
 
-  def formula(&block)
+  def formula(*args, &block)
     super do
       url "file://#{TEST_DIRECTORY}/tarballs/testball-0.1.tbz"
       sha1 "482e737739d946b7c8cbaf127d9ee9c148b999f5"
@@ -138,4 +138,26 @@ class PatchingTests < Homebrew::TestCase
       end.brew { assert_patched 'libexec/noop' }
     end
   end
+
+  def test_patch_DATA_constant
+    shutup do
+      formula("test", Pathname.new(__FILE__).expand_path) do
+        def patches
+          Formula::DATA
+        end
+      end.brew { assert_patched "libexec/noop" }
+    end
+  end
 end
+
+__END__
+diff --git a/libexec/NOOP b/libexec/NOOP
+index bfdda4c..e08d8f4 100755
+--- a/libexec/NOOP
++++ b/libexec/NOOP
+@@ -1,2 +1,2 @@
+ #!/bin/bash
+-echo NOOP
+\ No newline at end of file
++echo ABCD
+\ No newline at end of file
