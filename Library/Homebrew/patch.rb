@@ -5,13 +5,17 @@ require 'erb'
 module Patch
   def self.create(strip, io, &block)
     case strip
-    when :DATA, IO, StringIO
+    when :DATA
+      DATAPatch.new(:p1)
+    when IO, StringIO
       IOPatch.new(strip, :p1)
     when String
       IOPatch.new(StringIO.new(strip), :p1)
     when Symbol
       case io
-      when :DATA, IO, StringIO
+      when :DATA
+        DATAPatch.new(strip)
+      when IO, StringIO
         IOPatch.new(io, strip)
       when String
         IOPatch.new(StringIO.new(io), strip)
@@ -29,16 +33,15 @@ module Patch
     case list
     when Hash
       list
-    when Array, String, IO
+    when Array, String, :DATA
       { :p1 => list }
     else
       {}
     end.each_pair do |strip, urls|
-      urls = [urls] unless Array === urls
-      urls.each do |url|
+      Array(urls).each do |url|
         case url
-        when IO
-          patch = IOPatch.new(url, strip)
+        when :DATA
+          patch = DATAPatch.new(strip)
         else
           patch = LegacyPatch.new(strip, url)
         end
@@ -64,9 +67,7 @@ class IOPatch
   end
 
   def apply
-    @io = DATA if @io == :DATA
-    data = @io.read
-    data.gsub!("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
+    data = contents.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
     IO.popen("/usr/bin/patch -g 0 -f -#{strip}", "w") { |p| p.write(data) }
     raise ErrorDuringExecution, "Applying DATA patch failed" unless $?.success?
   ensure
@@ -75,8 +76,32 @@ class IOPatch
     @io = nil
   end
 
+  def contents
+    @io.read
+  end
+
   def inspect
     "#<#{self.class.name}: #{strip.inspect}>"
+  end
+end
+
+class DATAPatch < IOPatch
+  attr_accessor :path
+
+  def initialize(strip)
+    @strip = strip
+    @path = nil
+  end
+
+  def contents
+    data = ""
+    path.open("rb") do |f|
+      begin
+        line = f.gets
+      end until line.nil? || /^__END__$/ === line
+      data << line while line = f.gets
+    end
+    data
   end
 end
 

@@ -36,13 +36,13 @@ class PatchTests < Homebrew::TestCase
 
   def test_create_DATA
     patch = Patch.create(:p0, :DATA)
-    assert_kind_of IOPatch, patch
+    assert_kind_of DATAPatch, patch
     assert_equal :p0, patch.strip
   end
 
   def test_create_DATA_without_strip
     patch = Patch.create(:DATA, nil)
-    assert_kind_of IOPatch, patch
+    assert_kind_of DATAPatch, patch
     assert_equal :p1, patch.strip
   end
 
