@@ -2,25 +2,25 @@ require 'formula'
 
 class Git < Formula
   homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.0.2.tar.gz"
-  sha1 "794cba6b2ba2620a08651b9605bac0476804d67e"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.0.3.tar.gz"
+  sha1 "e580c17045157ccced5c49a6f26aa298a291a89d"
 
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha1 "a61246dedf1cda65d7f46a0510a0002e6150c529" => :mavericks
-    sha1 "07446cff2bb66eb3213ade6effb9828c01ff09b1" => :mountain_lion
-    sha1 "494920224ff82d73155d875e742f39f0c3be3a8f" => :lion
+    sha1 "2f5b00fb91984d59ad02bd47c5bd73467bfeea9b" => :mavericks
+    sha1 "d79154bbbd6181e6eb086c1071a5427cbdf6373b" => :mountain_lion
+    sha1 "6a34da7fcc80d804eef457d75b84c9f222f1dbd2" => :lion
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.0.2.tar.gz"
-    sha1 "d4967cbe1940b7d1e131b8f0c2f609a49c569014"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.0.3.tar.gz"
+    sha1 "e7ab2fbcb98a3a58cb96a900b9283574f968e6c7"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.0.2.tar.gz"
-    sha1 "156b6ca6b626cbb6f38cbd4810c6ae69c9a4c6d5"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.0.3.tar.gz"
+    sha1 "736740e95a72a070ae1edf3644665914ced1495c"
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'

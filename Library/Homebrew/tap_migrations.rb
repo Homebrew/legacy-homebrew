@@ -52,7 +52,6 @@ TAP_MIGRATIONS = {
   "shark" => "homebrew/boneyard",
   "slicot" => "homebrew/science",
   "solfege" => "homebrew/boneyard",
-  "storm" => "homebrew/boneyard",
   "sundials" => "homebrew/science",
   "syslog-ng" => "homebrew/boneyard",
   "tetgen" => "homebrew/science",

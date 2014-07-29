@@ -7,9 +7,10 @@ class Openssl < Formula
   sha256 '9d1c8a9836aa63e2c6adb684186cbd4371c9e9dcc01d6e3bb447abf2d4d3d093'
 
   bottle do
-    sha1 "b9a5aee69f10ecd9df78c5e83372ec89f8a3236a" => :mavericks
-    sha1 "c0f0823d7047c0fc3371d9674a86815b85356b21" => :mountain_lion
-    sha1 "9195012d2ce64a26afdf596c8c7fef83ce74da2a" => :lion
+    revision 1
+    sha1 "0b776dc04ed4fcc5398c073b0de75aea22935229" => :mavericks
+    sha1 "3cdffa0876d8cb93e78d5b397a217b1815ae5abf" => :mountain_lion
+    sha1 "017742db0d6daf60936acebeda63daf99c32160d" => :lion
   end
 
   option :universal
@@ -22,7 +23,7 @@ class Openssl < Formula
 
   def arch_args
     {
-      :x86_64 => %w[darwin64-x86_64-cc enable-ec_nistp-64_gcc_128],
+      :x86_64 => %w[darwin64-x86_64-cc enable-ec_nistp_64_gcc_128],
       :i386   => %w[darwin-i386-cc],
     }
   end

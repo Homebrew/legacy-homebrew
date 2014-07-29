@@ -2,11 +2,16 @@ require 'formula'
 
 class Inspircd < Formula
   homepage 'http://www.inspircd.org'
-  url 'https://github.com/inspircd/inspircd/archive/v2.0.16.tar.gz'
-  sha1 '5ea8e81124dc933ba289a4eb5782a66874e5d7e4'
-  revision 1
+  url 'https://github.com/inspircd/inspircd/archive/v2.0.17.tar.gz'
+  sha1 '79c1a2438b926f5cb945db6dd02c4a1416dc9946'
 
   head 'https://github.com/inspircd/inspircd.git'
+
+  bottle do
+    sha1 "e00f0f3742a4868937bd1d609c37c3ab3fc50fd5" => :mavericks
+    sha1 "cd9bcce5522b4154fe8793fc505769c9e22e8eed" => :mountain_lion
+    sha1 "1fabcc797fe120beefc7f4228d35d7519192c505" => :lion
+  end
 
   skip_clean 'data'
   skip_clean 'logs'
@@ -23,12 +28,6 @@ class Inspircd < Formula
 
   option 'without-ldap', 'Build without ldap support'
   option 'without-openssl', 'Build without openssl support'
-
-  # Fix for runtime linker errors when loading modules compiled with LLVM 3.4
-  patch :p1 do
-    url 'https://github.com/inspircd/inspircd/commit/b65fb065b5a77aeea056f88e1b8d96ec8fbea47c.diff'
-    sha1 '13005aa29dd6ee37a30aca805d99789220884c9c'
-  end
 
   def install
     modules = []

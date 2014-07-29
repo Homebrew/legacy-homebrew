@@ -1,17 +1,17 @@
 require 'formula'
 
 class ProtobufC < Formula
-  homepage 'http://code.google.com/p/protobuf-c/'
-  url 'https://protobuf-c.googlecode.com/files/protobuf-c-0.15.tar.gz'
-  sha1 '4fbd93f492c52154713de1951c0a2133ddd43abb'
+  homepage 'https://github.com/protobuf-c/protobuf-c'
+  url 'https://github.com/protobuf-c/protobuf-c/releases/download/v1.0.0/protobuf-c-1.0.0.tar.gz'
+  sha1 '6d48eb6a193556262c35526e1ccf209a6fc69684'
 
   bottle do
-    cellar :any
-    sha1 "078262944c1f44a05d9702ff6775036ad342ab98" => :mavericks
-    sha1 "35dd522279be5cd04a0e5c33e01d6f0680250963" => :mountain_lion
-    sha1 "26bcfd1a485c615ab40987f80a892d5d2902d17b" => :lion
+    sha1 "46572020e49936035b3f35194c40f98d90fd8dcd" => :mavericks
+    sha1 "5fe4ec31d10b064fc580ae5958873ca038083a80" => :mountain_lion
+    sha1 "64e31c97b2ef834d6406d128892575706b17cbad" => :lion
   end
 
+  depends_on 'pkg-config' => :build
   depends_on 'protobuf'
 
   def install

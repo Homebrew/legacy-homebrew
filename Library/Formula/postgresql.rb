@@ -1,25 +1,24 @@
-require 'formula'
+require "formula"
 
 class Postgresql < Formula
-  homepage 'http://www.postgresql.org/'
+  homepage "http://www.postgresql.org/"
 
   stable do
-    url 'http://ftp.postgresql.org/pub/source/v9.3.4/postgresql-9.3.4.tar.bz2'
-    sha256 '9ee819574dfc8798a448dc23a99510d2d8924c2f8b49f8228cd77e4efc8a6621'
+    url "http://ftp.postgresql.org/pub/source/v9.3.5/postgresql-9.3.5.tar.bz2"
+    sha256 "14176ffb1f90a189e7626214365be08ea2bfc26f26994bafb4235be314b9b4b0"
 
     # ossp-uuid support cannot be compiled on 9.4beta1:
     # http://thread.gmane.org/gmane.comp.db.postgresql.devel.general/229339
     # Will keep it stable-only until the usptream issues are resolved.
-    depends_on 'ossp-uuid' => :recommended
+    depends_on "ossp-uuid" => :recommended
     # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
     patch :DATA
   end
 
   bottle do
-    revision 2
-    sha1 "a97e4f9364fd4518cc492135ac11832d4f8001c6" => :mavericks
-    sha1 "5c10d677a07a8055bfd21f94633f6d897e4a60f7" => :mountain_lion
-    sha1 "7da81a9d1dd086d6b1403d9a508d5871c85d2892" => :lion
+    sha1 "e69fd4371d6a795ffa9bfc90fbe8dd85e5126888" => :mavericks
+    sha1 "bb862d7755be08d27ff64b0818cca457c9ffe602" => :mountain_lion
+    sha1 "f44e67e6ca8ea9b617c55b98a90e26de209dc35a" => :lion
   end
 
   devel do
