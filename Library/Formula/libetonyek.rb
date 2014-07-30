@@ -1,8 +1,8 @@
 require "formula"
 
 class Libetonyek < Formula
-  homepage "http://www.freedesktop.org/wiki/Software/libetonyek/"
-  url "http://dev-www.libreoffice.org/src/libetonyek-0.1.1.tar.xz"
+  homepage "https://wiki.documentfoundation.org/DLP/Libraries/libetonyek"
+  url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.1.tar.xz"
   sha1 "024fd730b062d1df54de0352323d03d011e59277"
 
   bottle do
