@@ -3,7 +3,7 @@ require "formula"
 class Transcrypt < Formula
   homepage "https://github.com/elasticdog/transcrypt#readme"
   url "https://github.com/elasticdog/transcrypt/archive/v0.9.4.tar.gz"
-  sha1 "8467e221b6f8a30eb335b97fb52a4bd555fc958e"
+  sha1 "e791a1a32aabac7d92b01d0448fa2cf22eb965fc"
   head "https://github.com/elasticdog/transcrypt.git"
 
   def install
