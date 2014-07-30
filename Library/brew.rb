@@ -25,7 +25,7 @@ elsif ARGV.first == '-v'
   # If no other arguments, just quit here.
   exit 0 if ARGV.length == 1
 elsif ARGV.first == 'moo'
-  puts "\n         (__)   __  __  __\n         (oo)  (__)(__)(__)\n   /------\\/  (__)(__)(__)|\n  / |    ||   |  ||  ||  ||\n *  /\\---/\\   |  ||  ||  |'\n    ~~   ~~   '--''--''--'\n....\"Have you brewed today?\"..."
+  puts "\n              __  __  __\n             (__)(__)(__)\n            (__)(__)(__)|\n            |  ||  ||  ||\n            |  ||  ||  |'\n            '--''--''--'\n    ....\"Have you brewed today?\"..."
   exit 0
 end
 
