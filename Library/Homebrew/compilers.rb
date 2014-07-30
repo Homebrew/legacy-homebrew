@@ -1,6 +1,6 @@
 module CompilerConstants
   GNU_GCC_VERSIONS = 3..9
-  GNU_GCC_REGEXP = /gcc-(4\.[3-9])/
+  GNU_GCC_REGEXP = /^gcc-(4\.[3-9])$/
 end
 
 class Compiler < Struct.new(:name, :version, :priority)
