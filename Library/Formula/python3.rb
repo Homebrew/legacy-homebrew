@@ -26,7 +26,7 @@ class Python3 < Formula
   depends_on 'openssl'
   depends_on 'xz' => :recommended  # for the lzma module added in 3.3
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
-  depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
+  depends_on :x11 if build.with? "brewed-tk" and Tab.for_name("tcl-tk").with? "x11"
 
   skip_clean "bin/pip3", "bin/pip-#{VER}"
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
