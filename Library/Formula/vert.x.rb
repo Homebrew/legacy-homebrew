@@ -1,4 +1,4 @@
-orequire 'formula'
+require 'formula'
 
 class VertX < Formula
   homepage 'http://vertx.io/'
