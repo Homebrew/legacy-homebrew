@@ -26,10 +26,8 @@ class GnuSed < Formula
     (libexec/'gnuman/man1').install_symlink man1/"gsed.1" => "sed.1"
   end
 
-  def caveats; <<-EOS.undent
-    The command has been installed with the prefix 'g'.
-    If you do not want the prefix, install using the 'default-names' option.
-
+  def caveats
+    s = <<-EOS.undent
     If you need to use these commands with their normal names, you
     can add a "gnubin" directory to your PATH from your bashrc like:
 
@@ -41,6 +39,13 @@ class GnuSed < Formula
         MANPATH="#{opt_libexec}/gnuman:$MANPATH"
 
     EOS
+
+    unless build.include? 'default-names'
+        s += <<-EOS.undent
+        The command has been installed with the prefix 'g'.
+        If you do not want the prefix, install using the 'default-names' option.
+        EOS
+    end
   end
 
 end
