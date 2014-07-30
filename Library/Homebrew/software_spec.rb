@@ -54,13 +54,13 @@ class SoftwareSpec
     bottle_specification.instance_eval(&block)
   end
 
-  def resource? name
+  def resource_defined? name
     resources.has_key?(name)
   end
 
   def resource name, &block
     if block_given?
-      raise DuplicateResourceError.new(name) if resource?(name)
+      raise DuplicateResourceError.new(name) if resource_defined?(name)
       res = Resource.new(name, &block)
       resources[name] = res
       dependency_collector.add(res)
