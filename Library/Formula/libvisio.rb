@@ -2,8 +2,9 @@ require "formula"
 
 class Libvisio < Formula
   homepage "http://www.freedesktop.org/wiki/Software/libvisio/"
-  url "http://dev-www.libreoffice.org/src/libvisio-0.1.0.tar.xz"
-  sha1 "c82e5c7ad25e513c268032cda9febd01b8879504"
+  url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.0.tar.bz2"
+  sha1 "5029b4872c90c779e31d0ddf7dbb8f3eb68acd5e"
+  revision 1
 
   bottle do
     cellar :any
@@ -20,6 +21,7 @@ class Libvisio < Formula
   depends_on "librevenge"
 
   def install
+    inreplace "libvisio.pc.in", /^Requires\.private:.*$/, ""
     system "./configure", "--without-docs",
                           "-disable-dependency-tracking",
                           "--enable-static=no",
@@ -39,7 +41,7 @@ class Libvisio < Formula
     EOS
     system ENV.cxx, "test.cpp", "-o", "test",
                     "-lrevenge-stream-0.0", "-I#{Formula["librevenge"].include}/librevenge-0.0",
-                    "-lvisio-0.1", "-I#{Formula["libvisio"].include}/libvisio-0.1"
+                    "-lvisio-0.1", "-I#{include}/libvisio-0.1"
     system "./test"
   end
 end
