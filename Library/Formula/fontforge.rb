@@ -41,7 +41,11 @@ class Fontforge < Formula
   option 'with-x', 'Build with X11 support, including FontForge.app'
 
   depends_on 'gettext'
-  depends_on :python => :optional
+  if build.head?
+    depends_on 'python'
+  else
+    depends_on :python => :optional
+  end
 
   depends_on 'libpng'   => :recommended
   depends_on 'jpeg'     => :recommended
@@ -96,7 +100,15 @@ class Fontforge < Formula
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/CoreServices.framework/Frameworks"
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/Carbon.framework/Frameworks"
 
-    system "./autogen.sh" if build.head?
+    if build.head?
+       pylibdir = %x( #{HOMEBREW_PREFIX}/bin/python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())" ).chomp;
+       pypkgconfig = %x( echo $( cd "#{pylibdir}/../../pkgconfig" && pwd ) ).chomp;
+       ENV["PKG_CONFIG_PATH"] =  ENV["PKG_CONFIG_PATH"] + ":#{pypkgconfig}"
+       ENV.append "PYTHON", "#{HOMEBREW_PREFIX}/bin/python"
+       puts "adding python to pkgconfigpath: " + ENV["PKG_CONFIG_PATH"]
+    end
+
+    system "./bootstrap" if build.head?
     system "./configure", *args
 
     # Fix hard-coded install locations that don't respect the target bindir
