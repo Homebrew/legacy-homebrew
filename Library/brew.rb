@@ -24,7 +24,7 @@ elsif ARGV.first == '-v'
   ARGV << ARGV.shift
   # If no other arguments, just quit here.
   exit 0 if ARGV.length == 1
-elsif ARGV.first == 'moo'
+elsif ARGV.first == 'beer'
   puts "\n              __  __  __\n             (__)(__)(__)\n            (__)(__)(__)|\n            |  ||  ||  ||\n            |  ||  ||  |'\n            '--''--''--'\n    ....\"Have you brewed today?\"..."
   exit 0
 end
