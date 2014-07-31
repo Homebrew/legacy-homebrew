@@ -91,6 +91,10 @@ class Tab < OpenStruct
     end
   end
 
+  def without? name
+    not with? name
+  end
+
   def include? opt
     used_options.include? opt
   end
