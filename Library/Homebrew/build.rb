@@ -186,8 +186,7 @@ class Build
           # link against it.
           stdlibs = keg.detect_cxx_stdlibs :skip_executables => true
 
-          Tab.create(f, ENV.compiler, stdlibs.first,
-            Options.coerce(ARGV.options_only)).write
+          Tab.create(f, ENV.compiler, stdlibs.first, f.build).write
         rescue Exception => e
           if ARGV.debug?
             debrew e, f
