@@ -29,30 +29,30 @@ class Pyqt < Formula
               "--destdir=#{lib}/python#{version}/site-packages",
               "--sipdir=#{HOMEBREW_PREFIX}/share/sip"]
 
-# NOTE: the following hack to generate a pyqtconfig.py file works to install
-# pyqtconfig.py, but it is commented out for now, because the use of
-# `pyqtconfig.py` seems to have been deprecated for a while and at least PyQWT
-# seems to (now) build and run without it.
-
       # We need to run "configure.py" so that pyqtconfig.py is generated, which
-      # is needed by PyQWT (and many other PyQt interoperable implementations such
-      # as the ROS GUI libs). This file is currently needed for generating build
-      # files appropriate for the qmake spec that was used to build Qt. This method
-      # is deprecated and will be removed with SIP v5, so we do the actual compile
-      # using the newer configure-ng.py as recommended.
+      # is needed by, PyQWT (and many other PyQt interoperable implementations
+      # such as the ROS GUI libs). The alternatives provided by configure-ng.py
+      # seem to not be sufficient to replace pyqtconfig.py yet (see
+      # https://github.com/qgis/QGIS/pull/1508). This file is currently needed
+      # for generating build files appropriate for the qmake spec that was used
+      # to build Qt. This method is deprecated and will be removed with SIP v5,
+      # so we do the actual compile using the newer configure-ng.py as
+      # recommended. In order not to interfere with the build using configure-
+      # ng.py, we run configure.py in a temporary directory and only retain the
+      # pyqtconfig.py from that.
 
-#       require 'tmpdir'
-#       dir = Dir.mktmpdir
-#       begin
-#         system "cp", "-r" , ".", dir
-#         cd dir do
-#           inreplace "configure.py", "iteritems", "items" if python == "python3"
-#           system python, "configure.py", *args
-#           (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
-#         end
-#       ensure
-#         remove_entry_secure dir
-#       end
+      require "tmpdir"
+      dir = Dir.mktmpdir
+      begin
+        system "cp", "-r" , ".", dir
+        cd dir do
+          inreplace "configure.py", "iteritems", "items" if python == "python3"
+          system python, "configure.py", *args
+          (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
+        end
+      ensure
+        remove_entry_secure dir
+      end
 
       system python, "./configure-ng.py", *args
       system "make"
