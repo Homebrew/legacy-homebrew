@@ -479,9 +479,7 @@ class Formula
   end
 
   def test
-    # Adding the used options allows us to use `build.with?` inside of tests
-    tab = Tab.for_name(name)
-    tab.used_options.each { |opt| build.args << opt unless build.has_opposite_of? opt }
+    @build = Tab.for_formula(self)
     ret = nil
     mktemp do
       @testpath = Pathname.pwd
