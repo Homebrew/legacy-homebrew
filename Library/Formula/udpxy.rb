@@ -6,14 +6,16 @@ class Udpxy < Formula
   sha1 "4194fc98d51284da48d07c44bbc5bdfa4813a4b8"
   version "1.0.23-9"
 
+  # Fix gzip path in Makefile for uname Darwin, this is needed to fix the install task
+  # http://sourceforge.net/p/udpxy/patches/4/
   patch :DATA
-
-  plist_options :manual => "udpxy -p 4022"
 
   def install
     system "make"
     system "make", "install", "DESTDIR=#{prefix}", "PREFIX=''"
   end
+
+  plist_options :manual => "udpxy -p 4022"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
