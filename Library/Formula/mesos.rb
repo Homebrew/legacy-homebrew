@@ -18,6 +18,10 @@ class Mesos < Formula
     system "make", "install"
   end
 
+  bottle do
+    sha1 "99ec731cb4a071beabfada4f2b1113f570823f80" => :mavericks
+  end
+
   test do
     require "timeout"
 
