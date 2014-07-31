@@ -15,7 +15,8 @@ class Datamash < Formula
   end
 
   test do
-    # Program correctness tested during install, test installation
-    system "#{bin}/datamash","--version"
+    output = `seq 10 | '#{bin}/datamash' sum 1`
+    assert $?.success?
+    assert_equal "55\n", output
   end
 end
