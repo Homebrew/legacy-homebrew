@@ -19,7 +19,6 @@ class Freetalk < Formula
   def install
     system "./autogen.sh"
     system "./configure", "--disable-debug",
-                          #"--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
