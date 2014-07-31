@@ -41,14 +41,16 @@ class Udpxy < Formula
 end
 
 __END__
---- a/Makefile  2014-07-30 23:15:11.000000000 +0200
-+++ b/Makefile 2014-07-30 23:15:02.000000000 +0200
-@@ -32,7 +32,7 @@
+--- a/Makefile 2014-07-31 18:40:40.000000000 +0200
++++ b/Makefile 2014-07-31 18:41:05.000000000 +0200
+@@ -32,7 +32,9 @@
  ALL_FLAGS = -W -Wall -Werror --pedantic $(CFLAGS)
 
  SYSTEM=$(shell uname 2>/dev/null)
 -ifeq ($(SYSTEM), FreeBSD)
 +ifeq ($(SYSTEM), Darwin)
++GZIP := /usr/bin/gzip
++else ifeq ($(SYSTEM), FreeBSD)
  MAKE := gmake
  GZIP := /usr/bin/gzip
  endif
