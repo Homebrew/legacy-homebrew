@@ -34,11 +34,9 @@ class X265 < Formula
   test do
     yuv_path = testpath/"raw.yuv"
     x265_path = testpath/"x265.265"
-    File.open(yuv_path, 'wb') do |f|
-        (1..3200).each do f.write("\xCO\xFF\xEE") end
-    end
+    yuv_path.binwrite "\xCO\xFF\xEE" * 3200
     system "#{bin}/x265 --input-res 80x80 --fps 1 #{yuv_path} #{x265_path}"
     header = 'AAAAAUABDAH//w=='
     assert_equal header.unpack("m"), [x265_path.read(10)]
-    end
+  end
 end
