@@ -65,6 +65,7 @@ class Mariadb < Formula
       -DDEFAULT_COLLATION=utf8_general_ci
       -DINSTALL_SYSCONFDIR=#{etc}
       -DCOMPILATION_COMMENT=Homebrew
+      -DWITHOUT_TOKUDB=1
     ]
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? 'tests'
