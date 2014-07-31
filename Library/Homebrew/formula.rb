@@ -479,7 +479,8 @@ class Formula
   end
 
   def test
-    @build = Tab.for_formula(self)
+    tab = Tab.for_formula(self)
+    extend Module.new { define_method(:build) { tab } }
     ret = nil
     mktemp do
       @testpath = Pathname.pwd
