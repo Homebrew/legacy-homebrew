@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Pyqt < Formula
-  homepage 'http://www.riverbankcomputing.co.uk/software/pyqt'
-  url 'https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.1/PyQt-mac-gpl-4.11.1.tar.gz'
-  sha1 '9d7478758957c60ac5007144a0dc7f157f4a5836'
+  homepage "http://www.riverbankcomputing.co.uk/software/pyqt"
+  url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.1/PyQt-mac-gpl-4.11.1.tar.gz"
+  sha1 "9d7478758957c60ac5007144a0dc7f157f4a5836"
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
@@ -22,7 +22,7 @@ class Pyqt < Formula
 
   def install
     Language::Python.each_python(build) do |python, version|
-      ENV.append_path 'PYTHONPATH', HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+      ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
 
       args = ["--confirm-license",
               "--bindir=#{bin}",
@@ -65,7 +65,7 @@ class Pyqt < Formula
   end
 
   test do
-    Pathname('test.py').write <<-EOS.undent
+    Pathname("test.py").write <<-EOS.undent
       import sys
       from PyQt4 import QtGui, QtCore
 
@@ -76,7 +76,7 @@ class Pyqt < Formula
               self.setWindowTitle('Homebrew')
               QtGui.QLabel("Python " + "{0}.{1}.{2}".format(*sys.version_info[0:3]) +
                            " working with PyQt4. Quitting now...", self).move(50, 50)
-              QtCore.QTimer.singleShot(1500, QtGui.qApp, QtCore.SLOT('quit()'))
+              QtCore.QTimer.singleShot(1500, QtGui.qApp, QtCore.SLOT("quit()"))
 
       app = QtGui.QApplication([])
       window = Test()
