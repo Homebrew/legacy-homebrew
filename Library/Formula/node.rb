@@ -3,8 +3,8 @@ require "formula"
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "http://nodejs.org/"
-  url "http://nodejs.org/dist/v0.10.29/node-v0.10.29.tar.gz"
-  sha1 "0d5dc62090404f7c903f29779295758935529242"
+  url "http://nodejs.org/dist/v0.10.30/node-v0.10.30.tar.gz"
+  sha1 "bcef88d76c39147c79a28aa9e5d484564eb3ba7e"
 
   bottle do
     sha1 "e90cc43c18f9ff8191d6602e042aa14b33da37a1" => :mavericks
@@ -30,8 +30,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "http://registry.npmjs.org/npm/-/npm-1.4.9.tgz"
-    sha1 "29094f675dad69fc5ea24960a81c7abbfca5ce01"
+    url "http://registry.npmjs.org/npm/-/npm-1.4.21.tgz"
+    sha1 "5081af517ec2c4cbcf82811b0873195b3d1057f9"
   end
 
   def install
