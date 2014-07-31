@@ -7,9 +7,9 @@ class Haproxy < Formula
 
   bottle do
     cellar :any
-    sha1 "580ff887d5a02173504db0b3ebe89762c4e7d81f" => :mavericks
-    sha1 "e259ea47ddb5bb782025cc087892053998dc0f2e" => :mountain_lion
-    sha1 "3c6d106a68a731563a9fade671f21bd27d939f33" => :lion
+    sha1 "41d6a7dfd7b72c7f4a4c63c5c35caf1088268a55" => :mavericks
+    sha1 "1dbc7bf90ba7742e6f586b4777758547870b099e" => :mountain_lion
+    sha1 "5c595b4953060f7a0aa78cc62f8cf1056ec72707" => :lion
   end
 
   depends_on "pcre"
