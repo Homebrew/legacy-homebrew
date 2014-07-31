@@ -14,7 +14,6 @@ class Serve < Formula
   end
 
   test do
-    output = `#{bin}/serve -v`
-    assert_equal 0, $?.exitstatus
+    system "#{bin}/serve", "-v"
   end
 end
