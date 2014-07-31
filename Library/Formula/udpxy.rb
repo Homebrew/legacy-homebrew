@@ -1,16 +1,18 @@
-require 'formula'
+require "formula"
 
 class Udpxy < Formula
-  homepage 'http://www.udpxy.com/'
-  url 'http://www.udpxy.com/download/1_23/udpxy.1.0.23-9-prod.tar.gz'
-  sha1 '4194fc98d51284da48d07c44bbc5bdfa4813a4b8'
-  version '1.0.23-9'
+  homepage "http://www.udpxy.com/"
+  url "http://www.udpxy.com/download/1_23/udpxy.1.0.23-9-prod.tar.gz"
+  sha1 "4194fc98d51284da48d07c44bbc5bdfa4813a4b8"
+  version "1.0.23-9"
 
   patch :DATA
 
+  plist_options :manual => "udpxy -p 4022"
+
   def install
-    system 'make'
-    system 'make', 'install', "DESTDIR=#{prefix}", 'PREFIX=""'
+    system "make"
+    system "make", "install", "DESTDIR=#{prefix}", "PREFIX=''"
   end
 
   def plist; <<-EOS.undent
