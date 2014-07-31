@@ -51,7 +51,7 @@ class Pyqt < Formula
 #           (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
 #         end
 #       ensure
-#         FileUtils.remove_entry_secure dir
+#         remove_entry_secure dir
 #       end
 
       system python, "./configure-ng.py", *args
