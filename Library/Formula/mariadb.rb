@@ -11,6 +11,11 @@ class Mariadb < Formula
     sha1 "cbffb3b121dad1e8602514613ac5f6aaf40a859a" => :mountain_lion
   end
 
+  devel do
+    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.2/source/mariadb-10.1.2.tar.gz"
+    sha1 "56b035f31ec89f36555b7e7972efc5e5c4157f23"
+  end
+
   depends_on 'cmake' => :build
   depends_on 'pidof' unless MacOS.version >= :mountain_lion
   depends_on "openssl"
@@ -77,10 +82,22 @@ class Mariadb < Formula
     args << "-DWITH_READLINE=yes" if build.without? 'libedit'
 
     # Compile with ARCHIVE engine enabled if chosen
-    args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1" if build.with? 'archive-storage-engine'
+    if build.with? 'archive-storage-engine'
+      if build.stable?
+        args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1"
+      else
+        args << "-DPLUGIN_ARCHIVE=YES"
+      end
+    end
 
     # Compile with BLACKHOLE engine enabled if chosen
-    args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? 'blackhole-storage-engine'
+    if build.with? 'blackhole-storage-engine'
+      if build.stable?
+        args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1"
+      else
+        args << "-DPLUGIN_BLACKHOLE=YES"
+      end
+    end
 
     # Make universal for binding to universal applications
     if build.universal?
