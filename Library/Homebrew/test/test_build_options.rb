@@ -75,16 +75,12 @@ class BuildOptionsTests < Homebrew::TestCase
   def test_copies_do_not_share_underlying_options
     orig = BuildOptions.new []
     copy = orig.dup
-    copy.add 'foo'
-    assert_empty orig
-    assert_equal 1, copy.count
+    refute_same orig.args, copy.args
   end
 
   def test_copies_do_not_share_underlying_args
     orig = BuildOptions.new []
     copy = orig.dup
-    copy.args << Option.new('foo')
-    assert_empty orig.args
-    assert_equal 1, copy.args.count
+    refute_same orig.args, copy.args
   end
 end
