@@ -47,6 +47,7 @@ class GstPluginsGood < Formula
   depends_on 'libshout' => :optional
   depends_on 'speex' => :optional
   depends_on 'taglib' => :optional
+  depends_on 'libpng' => :optional
 
   depends_on 'libogg' if build.with? 'flac'
 
