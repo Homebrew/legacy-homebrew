@@ -81,15 +81,15 @@ class BuildOptions
   end
 
   def bottle?
-    args.include? '--build-bottle'
+    include? "build-bottle"
   end
 
   def head?
-    args.include? '--HEAD'
+    include? "HEAD"
   end
 
   def devel?
-    args.include? '--devel'
+    include? "devel"
   end
 
   def stable?
@@ -98,19 +98,19 @@ class BuildOptions
 
   # True if the user requested a universal build.
   def universal?
-    universal || args.include?('--universal') && has_option?('universal')
+    universal || include?("universal") && has_option?("universal")
   end
 
   # True if the user requested to enable C++11 mode.
   def cxx11?
-    args.include?('--c++11') && has_option?('c++11')
+    include?("c++11") && has_option?("c++11")
   end
 
   # Request a 32-bit only build.
   # This is needed for some use-cases though we prefer to build Universal
   # when a 32-bit version is needed.
   def build_32_bit?
-    args.include?('--32-bit') && has_option?('32-bit')
+    include?("32-bit") && has_option?("32-bit")
   end
 
   def used_options
