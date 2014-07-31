@@ -22,7 +22,8 @@ class Libcdr < Formula
   def install
     ENV.cxx11
     system "./configure", "--disable-werror",
-                          "--without-docs"
+                          "--without-docs",
+                          "--prefix=#{prefix}"
     system "make", "install"
   end
 
