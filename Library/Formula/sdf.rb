@@ -5,6 +5,12 @@ class Sdf < Formula
   url "http://www.meta-environment.org/releases/sdf-2.6.3.tar.gz"
   sha1 "98cb63cf9ed9e1b51727f55963dad31615f75b0d"
 
+  bottle do
+    sha1 "86d9132aa6d0b168265486619986905f5e4d934e" => :mavericks
+    sha1 "84b6e3fefe67faad2f0e6e4a407f9323a6eaf9d5" => :mountain_lion
+    sha1 "8ff0e900e359df0e0fca16b686f87a201d10a5d2" => :lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "aterm"
 
