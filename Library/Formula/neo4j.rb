@@ -3,7 +3,7 @@ require "formula"
 class Neo4j < Formula
   homepage "http://neo4j.org"
   url "http://dist.neo4j.org/neo4j-community-2.1.3-unix.tar.gz"
-  sha1 "7a0b703e0722d35ffa501dbe0485fa15d2e805ff"
+  sha1 "ef848076ab588abe691991f9317fc58eb935747f"
   version "2.1.3"
 
   def install
