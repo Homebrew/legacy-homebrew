@@ -2,8 +2,8 @@ require "formula"
 
 class Serve < Formula
   homepage "https://github.com/kidoman/serve"
-  url "https://github.com/kidoman/serve/archive/v0.2.2.tar.gz"
-  sha1 "b2c5c35957c1176f265b31d5f7036b09eab5ee58"
+  url "https://github.com/kidoman/serve/archive/v0.2.3.tar.gz"
+  sha1 "cb4bc4a7cb7a321e104bcc76aa31390205b39752"
 
   head "https://github.com/kidoman/serve.git"
 
