@@ -8,7 +8,7 @@ class SoftwareSpecTests < Homebrew::TestCase
 
   def test_resource
     @spec.resource('foo') { url 'foo-1.0' }
-    assert @spec.resource?('foo')
+    assert @spec.resource_defined?("foo")
   end
 
   def test_raises_when_duplicate_resources_are_defined

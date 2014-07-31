@@ -479,9 +479,8 @@ class Formula
   end
 
   def test
-    # Adding the used options allows us to use `build.with?` inside of tests
-    tab = Tab.for_name(name)
-    tab.used_options.each { |opt| build.args << opt unless build.has_opposite_of? opt }
+    tab = Tab.for_formula(self)
+    extend Module.new { define_method(:build) { tab } }
     ret = nil
     mktemp do
       @testpath = Pathname.pwd
@@ -659,7 +658,7 @@ class Formula
     # Define a named resource using a SoftwareSpec style block
     def resource name, &block
       specs.each do |spec|
-        spec.resource(name, &block) unless spec.resource?(name)
+        spec.resource(name, &block) unless spec.resource_defined?(name)
       end
     end
 

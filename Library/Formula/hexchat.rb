@@ -3,26 +3,17 @@ require 'formula'
 class Hexchat < Formula
   homepage 'http://hexchat.github.io/'
   head 'https://github.com/hexchat/hexchat.git'
+  url 'http://dl.hexchat.net/hexchat/hexchat-2.10.1.tar.xz'
+  sha1 '3ad562ec76323ba9d0f279d36201a333594c755b'
 
-  stable do
-    url 'http://dl.hexchat.net/hexchat/hexchat-2.10.0.tar.xz'
-    sha256 'a0247f1e12379154d0719d9c6861dc22817b588562653bb9d3626863d8eca916'
-
-    patch do
-      # Fixes building --with-plugin on older than Mavericks and --without-plugin on all
-      url 'https://github.com/hexchat/hexchat/commit/8578a9d52d993f4425259462c01854ea7784c57f.diff'
-      sha256 '77575dc70943299422d87c9d5b57061f49aa7bd58c03fbd78973e37a8310c625'
-    end
+  bottle do
+    sha1 "da41ccf19d762513a1e774c078a2f7bf9e46073c" => :mavericks
+    sha1 "f10e3860adee826c03e6269991a5e77d884be028" => :mountain_lion
+    sha1 "728caab194af26da2f6eec798fb162dffa817698" => :lion
   end
 
-  depends_on :macos => :lion
-
   depends_on 'pkg-config' => :build
-  depends_on 'automake' => :build
-  depends_on 'autoconf' => :build
-  depends_on 'libtool' => :build
   depends_on 'intltool' => :build
-  depends_on 'gnome-common' => :build
   depends_on :python => :optional
   depends_on :python3 => :optional
   depends_on 'gettext'
@@ -52,10 +43,8 @@ class Hexchat < Formula
     args << "--disable-perl" if build.without? "perl"
     args << "--disable-plugin" if build.without? "plugins"
 
-    system "./autogen.sh"
     system "./configure", *args
-    system "make"
-    system "make install"
+    system "make", "install"
 
     rm_rf share/"applications"
     rm_rf share/"appdata"
