@@ -21,11 +21,6 @@ class Pyqt < Formula
   end
 
   def install
-    # On Mavericks we want to target libc++, this requires a non default qt makespec
-    if ENV.compiler == :clang and MacOS.version >= :mavericks
-      ENV.append "QMAKESPEC", "unsupported/macx-clang-libc++"
-    end
-
     Language::Python.each_python(build) do |python, version|
       ENV.append_path 'PYTHONPATH', HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
 
@@ -34,6 +29,11 @@ class Pyqt < Formula
               "--destdir=#{lib}/python#{version}/site-packages",
               "--sipdir=#{HOMEBREW_PREFIX}/share/sip"]
 
+# NOTE: the following hack to generate a pyqtconfig.py file works to install
+# pyqtconfig.py, but it is commented out for now, because the use of
+# `pyqtconfig.py` seems to have been deprecated for a while and at least PyQWT
+# seems to (now) build and run without it.
+
       # We need to run "configure.py" so that pyqtconfig.py is generated, which
       # is needed by PyQWT (and many other PyQt interoperable implementations such
       # as the ROS GUI libs). This file is currently needed for generating build
@@ -41,19 +41,22 @@ class Pyqt < Formula
       # is deprecated and will be removed with SIP v5, so we do the actual compile
       # using the newer configure-ng.py as recommended.
 
-      inreplace "configure.py", "iteritems", "items" if python == "python3"
-      system python, "configure.py", *args
-      (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
-
-      # On Mavericks we want to target libc++, this requires a non default qt makespec
-      if ENV.compiler == :clang and MacOS.version >= :mavericks
-        args << "--spec" << "unsupported/macx-clang-libc++"
-      end
+#       require 'tmpdir'
+#       dir = Dir.mktmpdir
+#       begin
+#         system "cp", "-r" , ".", dir
+#         cd dir do
+#           inreplace "configure.py", "iteritems", "items" if python == "python3"
+#           system python, "configure.py", *args
+#           (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
+#         end
+#       ensure
+#         FileUtils.remove_entry_secure dir
+#       end
 
       system python, "./configure-ng.py", *args
       system "make"
       system "make", "install"
-      system "make", "clean"
     end
   end
 
