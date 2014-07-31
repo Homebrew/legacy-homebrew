@@ -26,6 +26,7 @@ class Freetalk < Formula
   end
 
   test do
-    system "false"
+    system "freetalk", "--version"
+    system "freetalk", "--help"
   end
 end
