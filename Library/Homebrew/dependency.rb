@@ -46,7 +46,6 @@ class Dependency
   def missing_options(inherited_options=[])
     missing = options | inherited_options
     missing -= Tab.for_formula(to_formula).used_options
-    missing -= to_formula.build.implicit_options
     missing
   end
 
