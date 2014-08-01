@@ -5,9 +5,7 @@ class Ssdb < Formula
   url "https://github.com/ideawu/ssdb/archive/1.6.8.8.tar.gz"
   sha1 "2d63cb0ba176bf6c463a70e7a3b39f8cc326d5d7"
 
-  head 'https://github.com/ideawu/ssdb.git', :branch => 'master'
-
-  depends_on :python
+  head "https://github.com/ideawu/ssdb.git", :branch => "master"
 
   def install
     inreplace "Makefile" do |s|
@@ -17,9 +15,9 @@ class Ssdb < Formula
     system "make", "prefix=#{prefix} CC=#{ENV.cc} CXX=#{ENV.cxx}"
     system "make", "install"
 
-    %w[bench dump ins.sh repair server].each { |p| bin.install "#{prefix}/ssdb-#{p}" }
+    bin.install %w[bench dump ins.sh repair server].map { |p| "#{prefix}/ssdb-#{p}" }
 
-    %w[run db/ssdb log].each { |p| (var + p).mkpath }
+    %w[run db/ssdb log].map { |p| (var + p).mkpath }
 
     inreplace "ssdb.conf" do |s|
       s.gsub! "work_dir = ./var", "work_dir = #{var}/db/ssdb/"
@@ -33,8 +31,8 @@ class Ssdb < Formula
       s.gsub! "\toutput: log_slave.txt", "\toutput: #{var}/log/ssdb_slave.log"
     end
 
-    etc.install 'ssdb.conf'
-    etc.install 'ssdb_slave.conf'
+    etc.install "ssdb.conf"
+    etc.install "ssdb_slave.conf"
   end
 
   plist_options :manual => "ssdb-server #{HOMEBREW_PREFIX}/etc/ssdb.conf"
