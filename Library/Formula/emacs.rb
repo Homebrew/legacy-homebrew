@@ -61,6 +61,7 @@ class Emacs < Formula
   depends_on 'gnutls' => :optional
   depends_on "librsvg" => :optional
   depends_on "imagemagick" => :optional
+  depends_on "mailutils" => :optional
 
   fails_with :llvm do
     build 2334
@@ -96,6 +97,7 @@ class Emacs < Formula
     end
     args << "--with-rsvg" if build.with? "librsvg"
     args << "--with-imagemagick" if build.with? "imagemagick"
+    args << "--without-popmail" if build.with? "mailutils"
 
     system "./autogen.sh" if build.head?
 

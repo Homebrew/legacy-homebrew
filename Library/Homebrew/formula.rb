@@ -106,6 +106,10 @@ class Formula
     active_spec.patches
   end
 
+  def option_defined?(name)
+    active_spec.option_defined?(name)
+  end
+
   # if the dir is there, but it's empty we consider it not installed
   def installed?
     (dir = installed_prefix).directory? && dir.children.length > 0
