@@ -26,4 +26,3 @@ class Nvm < Formula
     EOS
   end
 end
-test
