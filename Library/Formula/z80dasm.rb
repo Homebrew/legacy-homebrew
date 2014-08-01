@@ -14,8 +14,6 @@ class Z80dasm < Formula
     path = testpath/"a.bin"
     path.binwrite [0xcd, 0x34, 0x12].pack("c*")
 
-    output = `#{bin}/z80dasm #{path}`.strip
-    assert output.include?("call 01234h")
-    assert_equal 0, $?.exitstatus
+    assert shell_output("#{bin}/z80dasm #{path}").include?("call 01234h")
   end
 end

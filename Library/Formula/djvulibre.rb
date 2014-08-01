@@ -34,7 +34,8 @@ class Djvulibre < Formula
   end
 
   test do
-    %x[#{bin}/djvused -e n #{share}/doc/djvu/lizard2002.djvu].chomp == "2" #should show count of 2 pages
+    output = shell_output("#{bin}/djvused -e n #{share}/doc/djvu/lizard2002.djvu")
+    assert_equal "2", output.strip
   end
 end
 

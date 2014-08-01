@@ -5,14 +5,14 @@ require "formula"
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
   homepage "http://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2014.07.25.1/youtube-dl-2014.07.25.1.tar.gz"
-  sha1 "3549e82054512557ebb126df8f92e0af25e1fa3c"
+  url "https://yt-dl.org/downloads/2014.07.30/youtube-dl-2014.07.30.tar.gz"
+  sha1 "d41b1e194794a6ce5e380c023af1131558189e84"
 
   bottle do
     cellar :any
-    sha1 "9eeea615bf871478fb742cf859133235390ae403" => :mavericks
-    sha1 "e67edd755aafebf2e437a5084fa70baa0f952970" => :mountain_lion
-    sha1 "bbe784b1400b28078364a8167929b17e94dd8891" => :lion
+    sha1 "860c65ea577791043d0a5398eb9b8477d48e9298" => :mavericks
+    sha1 "be3894af50e17b15e593281508ae8b3e9523bb1e" => :mountain_lion
+    sha1 "727a22e5cf33ad7955e4f6a14144f97e6e212d32" => :lion
   end
 
   head do

@@ -22,7 +22,6 @@ class Libvbucket < Formula
 
   test do
     require 'utils/json'
-    require 'open3'
     json = Utils::JSON.dump(
       {
         "hashAlgorithm" => "CRC",
@@ -37,10 +36,7 @@ class Libvbucket < Formula
       key: world master: server2:11210 vBucketId: 3 couchApiBase: (null) replicas: server3:11211 server1:11211
       EOS
 
-    Open3.popen3("#{bin}/vbuckettool", "-", "hello", "world") do |stdin, stdout, _|
-      stdin.write(json)
-      stdin.close
-      assert_equal expected, stdout.read
-    end
+    output = pipe_output("#{bin}/vbuckettool - hello world", json)
+    assert_equal expected, output
   end
 end

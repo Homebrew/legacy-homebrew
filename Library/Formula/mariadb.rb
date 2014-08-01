@@ -6,10 +6,10 @@ class Mariadb < Formula
   sha1 "226251b2312bbe3e4cdac1ee8a6830c6fe246f1b"
 
   bottle do
-    revision 1
-    sha1 "c06cd4d780c713bbfac8095453f19973ef177cc3" => :mavericks
-    sha1 "9ce7d7a2550a4d2a00a4650858d9996feace4387" => :mountain_lion
-    sha1 "f8fe22f96b81d606e1a3d52699638fdf5832b235" => :lion
+    revision 2
+    sha1 "b60cbc84375ec160e00ba55591cf548bc64f00d1" => :mavericks
+    sha1 "491d3df42dff381eed15d3503e51440a2e16692f" => :mountain_lion
+    sha1 "61265aabc1074ddafcc35f0694f6f255b6bcb441" => :lion
   end
 
   depends_on 'cmake' => :build
@@ -65,6 +65,7 @@ class Mariadb < Formula
       -DDEFAULT_COLLATION=utf8_general_ci
       -DINSTALL_SYSCONFDIR=#{etc}
       -DCOMPILATION_COMMENT=Homebrew
+      -DWITHOUT_TOKUDB=1
     ]
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? 'tests'

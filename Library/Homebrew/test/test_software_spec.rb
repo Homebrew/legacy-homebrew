@@ -8,7 +8,7 @@ class SoftwareSpecTests < Homebrew::TestCase
 
   def test_resource
     @spec.resource('foo') { url 'foo-1.0' }
-    assert @spec.resource?('foo')
+    assert @spec.resource_defined?("foo")
   end
 
   def test_raises_when_duplicate_resources_are_defined
@@ -44,7 +44,7 @@ class SoftwareSpecTests < Homebrew::TestCase
 
   def test_option
     @spec.option('foo')
-    assert @spec.build.has_option? 'foo'
+    assert @spec.option_defined?("foo")
   end
 
   def test_option_raises_when_begins_with_dashes
@@ -57,7 +57,7 @@ class SoftwareSpecTests < Homebrew::TestCase
 
   def test_option_accepts_symbols
     @spec.option(:foo)
-    assert @spec.build.has_option? 'foo'
+    assert @spec.option_defined?("foo")
   end
 
   def test_depends_on
@@ -68,14 +68,14 @@ class SoftwareSpecTests < Homebrew::TestCase
   def test_dependency_option_integration
     @spec.depends_on 'foo' => :optional
     @spec.depends_on 'bar' => :recommended
-    assert @spec.build.has_option?('with-foo')
-    assert @spec.build.has_option?('without-bar')
+    assert @spec.option_defined?("with-foo")
+    assert @spec.option_defined?("without-bar")
   end
 
   def test_explicit_options_override_default_dep_option_description
     @spec.option('with-foo', 'blah')
     @spec.depends_on('foo' => :optional)
-    assert_equal 'blah', @spec.build.first.description
+    assert_equal "blah", @spec.options.first.description
   end
 
   def test_patch

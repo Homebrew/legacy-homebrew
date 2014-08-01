@@ -2,15 +2,15 @@ require "formula"
 
 class Sysdig < Formula
   homepage "http://www.sysdig.org/"
-  url "https://github.com/draios/sysdig/archive/0.1.85.tar.gz"
-  sha1 "7dd088f11c4fa1d67aca564af29caf6f38fe9cfa"
+  url "https://github.com/draios/sysdig/archive/0.1.86.tar.gz"
+  sha1 "1e54efe7916987337b34029e867bd6c78a763c5b"
 
   head "https://github.com/draios/sysdig.git", :branch => "master"
 
   bottle do
-    sha1 "57addd52be61b28075d62158c633c0355216b9d1" => :mavericks
-    sha1 "0f474630754636eab5ddd9546961667d7ac04d06" => :mountain_lion
-    sha1 "863a60eae39c0a95616d06e91e00201110bc0306" => :lion
+    sha1 "d237be41f81c3a725a0b0eb2d1a49f9e72d46a89" => :mavericks
+    sha1 "fcd68508a7edf0fc00a87cc73d9da93cc40de8f6" => :mountain_lion
+    sha1 "3736f34b85fa9a1ae9937bfb6daab2935c12cca9" => :lion
   end
 
   depends_on "cmake" => :build

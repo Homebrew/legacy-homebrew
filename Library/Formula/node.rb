@@ -3,13 +3,13 @@ require "formula"
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "http://nodejs.org/"
-  url "http://nodejs.org/dist/v0.10.29/node-v0.10.29.tar.gz"
-  sha1 "0d5dc62090404f7c903f29779295758935529242"
+  url "http://nodejs.org/dist/v0.10.30/node-v0.10.30.tar.gz"
+  sha1 "bcef88d76c39147c79a28aa9e5d484564eb3ba7e"
 
   bottle do
-    sha1 "e90cc43c18f9ff8191d6602e042aa14b33da37a1" => :mavericks
-    sha1 "42014487797e67983672e933ed14488ee24d7b1f" => :mountain_lion
-    sha1 "128fa1edbefb09ac634af404e1822996423232f0" => :lion
+    sha1 "87b71dc12f0cb989da38d9e17b7a8ea7297b3cbd" => :mavericks
+    sha1 "44ee2777a5d897ff198cf4ccc637282cf3a6e6f3" => :mountain_lion
+    sha1 "1c67c4c9ca6e87998374e54b616047adb828cbc4" => :lion
   end
 
   devel do
@@ -30,8 +30,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "http://registry.npmjs.org/npm/-/npm-1.4.9.tgz"
-    sha1 "29094f675dad69fc5ea24960a81c7abbfca5ce01"
+    url "http://registry.npmjs.org/npm/-/npm-1.4.21.tgz"
+    sha1 "5081af517ec2c4cbcf82811b0873195b3d1057f9"
   end
 
   def install

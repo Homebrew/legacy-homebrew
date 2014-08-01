@@ -117,18 +117,9 @@ class Cayley < Formula
   end
 
   test do
-    require 'open3'
-
     touch "test.nt"
-
-    Open3.popen3("#{bin}/cayley", "repl", "--dbpath=#{testpath}/test.nt") do |stdin, stdout, _|
-      stdin.write "graph.Vertex().All()"
-      stdin.close
-
-      result = stdout.read.strip
-
-      assert !result.include?("Error:")
-      assert result.include?("Elapsed time:")
-    end
+    result = pipe_output("#{bin}/cayley repl --dbpath=#{testpath}/test.nt", "graph.Vertex().All()")
+    assert !result.include?("Error:")
+    assert result.include?("Elapsed time:")
   end
 end

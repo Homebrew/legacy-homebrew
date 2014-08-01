@@ -2,6 +2,7 @@ require 'forwardable'
 require 'resource'
 require 'checksum'
 require 'version'
+require 'options'
 require 'build_options'
 require 'dependency_collector'
 require 'bottles'
@@ -11,7 +12,7 @@ class SoftwareSpec
   extend Forwardable
 
   attr_reader :name, :owner
-  attr_reader :build, :resources, :patches
+  attr_reader :build, :resources, :patches, :options
   attr_reader :dependency_collector
   attr_reader :bottle_specification
 
@@ -23,10 +24,11 @@ class SoftwareSpec
   def initialize
     @resource = Resource.new
     @resources = {}
-    @build = BuildOptions.new(ARGV.options_only)
     @dependency_collector = DependencyCollector.new
     @bottle_specification = BottleSpecification.new
     @patches = []
+    @options = Options.new
+    @build = BuildOptions.new(ARGV.options_only, options)
   end
 
   def owner= owner
@@ -54,19 +56,23 @@ class SoftwareSpec
     bottle_specification.instance_eval(&block)
   end
 
-  def resource? name
+  def resource_defined? name
     resources.has_key?(name)
   end
 
   def resource name, &block
     if block_given?
-      raise DuplicateResourceError.new(name) if resource?(name)
+      raise DuplicateResourceError.new(name) if resource_defined?(name)
       res = Resource.new(name, &block)
       resources[name] = res
       dependency_collector.add(res)
     else
       resources.fetch(name) { raise ResourceMissingError.new(owner, name) }
     end
+  end
+
+  def option_defined?(name)
+    options.include?(name)
   end
 
   def option name, description=nil
@@ -79,7 +85,7 @@ class SoftwareSpec
 
   def depends_on spec
     dep = dependency_collector.add(spec)
-    build.add_dep_option(dep) if dep
+    add_dep_option(dep) if dep
   end
 
   def deps
@@ -90,14 +96,24 @@ class SoftwareSpec
     dependency_collector.requirements
   end
 
-  def patch strip=:p1, io=nil, &block
-    patches << Patch.create(strip, io, &block)
+  def patch strip=:p1, src=nil, &block
+    patches << Patch.create(strip, src, &block)
   end
 
   def add_legacy_patches(list)
     list = Patch.normalize_legacy_patches(list)
     list.each { |p| p.owner = self }
     patches.concat(list)
+  end
+
+  def add_dep_option(dep)
+    name = dep.option_name
+
+    if dep.optional? && !option_defined?("with-#{name}")
+      options << Option.new("with-#{name}", "Build with #{name} support")
+    elsif dep.recommended? && !option_defined?("without-#{name}")
+      options << Option.new("without-#{name}", "Build without #{name} support")
+    end
   end
 end
 

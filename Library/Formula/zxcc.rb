@@ -25,8 +25,6 @@ class Zxcc < Formula
     path = testpath/"hello.com"
     path.binwrite code
 
-    output = `#{bin}/zxcc #{path}`.strip
-    assert_equal "Hello", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "Hello", shell_output("#{bin}/zxcc #{path}").strip
   end
 end

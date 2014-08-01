@@ -316,8 +316,9 @@ class FormulaInstaller
 
   def inherited_options_for(dep)
     inherited_options = Options.new
-    if (options.include?("universal") || f.build.universal?) && !dep.build? && dep.to_formula.build.has_option?("universal")
-      inherited_options << Option.new("universal")
+    u = Option.new("universal")
+    if (options.include?(u) || f.build.universal?) && !dep.build? && dep.to_formula.option_defined?(u)
+      inherited_options << u
     end
     inherited_options
   end
@@ -483,8 +484,6 @@ class FormulaInstaller
     # 1. formulae can modify ENV, so we must ensure that each
     #    installation has a pristine ENV when it starts, forking now is
     #    the easiest way to do this
-    # 2. formulae have access to __END__ the only way to allow this is
-    #    to make the formula script the executed script
     read, write = IO.pipe
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
@@ -492,7 +491,7 @@ class FormulaInstaller
     args = %W[
       nice #{RUBY_PATH}
       -W0
-      -I #{File.dirname(__FILE__)}
+      -I #{HOMEBREW_LIBRARY_PATH}
       -rbuild
       --
       #{f.path}

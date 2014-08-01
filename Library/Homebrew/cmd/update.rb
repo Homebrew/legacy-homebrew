@@ -174,16 +174,17 @@ class Updater
     if initial_revision && initial_revision != current_revision
       diff.each_line do |line|
         status, *paths = line.split
+        src, dst = paths.first, paths.last
 
-        next unless File.extname(paths.last) == ".rb"
-        next unless File.dirname(paths.last) == formula_directory
+        next unless File.extname(dst) == ".rb"
+        next unless paths.any? { |p| File.dirname(p) == formula_directory }
 
         case status
         when "A", "M", "D"
-          map[status.to_sym] << repository.join(paths.first)
+          map[status.to_sym] << repository.join(src)
         when /^R\d{0,3}/
-          map[:D] << repository.join(paths.first)
-          map[:A] << repository.join(paths.last)
+          map[:D] << repository.join(src) if File.dirname(src) == formula_directory
+          map[:A] << repository.join(dst) if File.dirname(dst) == formula_directory
         end
       end
     end

@@ -31,8 +31,6 @@ class Ats2Postiats < Formula
       implement main0 () = ()
     EOS
     system "#{bin}/patscc hello.dats -o hello"
-    IO.popen("./hello", "r") do |pipe|
-      assert_match "Hello, world!", pipe.read
-    end
+    assert_match "Hello, world!", shell_output(testpath/"hello")
   end
 end
