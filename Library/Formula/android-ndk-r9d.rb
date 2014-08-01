@@ -1,15 +1,15 @@
 require 'formula'
 
-class AndroidNdk < Formula
+class AndroidNdkR9d < Formula
   homepage 'http://developer.android.com/sdk/ndk/index.html'
-  version 'r10'
+  version 'r9d'
 
   if MacOS.prefer_64_bit?
-    url "http://dl.google.com/android/ndk/android-ndk32-r10-darwin-x86_64.tar.bz2"
-    sha1 '4a1d226ee7361b51c02e723b5758e3da536cdf8b'
+    url "http://dl.google.com/android/ndk/android-ndk-r9d-darwin-x86_64.tar.bz2"
+    sha1 'd0a8471555be57899c67aa6b61db5bca9db2e8ea'
   else
-    url "http://dl.google.com/android/ndk/android-ndk32-r10-darwin-x86.tar.bz2"
-    sha1 'd38f5fce29e07d8b4deb538ebc2ba1ba4c067afd'
+    url "http://dl.google.com/android/ndk/android-ndk-r9d-darwin-x86.tar.bz2"
+    sha1 '91ac410a24ad6d1fc67b5161294a4a5cb78b2975'
   end
 
   depends_on 'android-sdk'
@@ -27,7 +27,7 @@ class AndroidNdk < Formula
       test -f "$EXEC" && exec "$EXEC" "$@"
     EOS
     ndk_exec.chmod 0755
-    %w[ndk-build32 ndk-gdb32 ndk-stack32].each { |app| bin.install_symlink ndk_exec => app }
+    %w[ndk-build ndk-gdb ndk-stack].each { |app| bin.install_symlink ndk_exec => app }
   end
 
   def caveats; <<-EOS.undent
