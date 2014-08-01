@@ -71,6 +71,10 @@ class SoftwareSpec
     end
   end
 
+  def option_defined?(name)
+    options.include?(name)
+  end
+
   def option name, description=nil
     name = 'c++11' if name == :cxx11
     name = name.to_s if Symbol === name
@@ -105,9 +109,9 @@ class SoftwareSpec
   def add_dep_option(dep)
     name = dep.option_name
 
-    if dep.optional? && !options.include?("with-#{name}")
+    if dep.optional? && !option_defined?("with-#{name}")
       options << Option.new("with-#{name}", "Build with #{name} support")
-    elsif dep.recommended? && !options.include?("without-#{name}")
+    elsif dep.recommended? && !option_defined?("without-#{name}")
       options << Option.new("without-#{name}", "Build without #{name} support")
     end
   end
