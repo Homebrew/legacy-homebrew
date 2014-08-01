@@ -59,7 +59,7 @@ class Pyqt < Formula
         remove_entry_secure dir
       end
 
-      system python, "./configure-ng.py", *args
+      system python, "configure-ng.py", *args
       system "make"
       system "make", "install"
     end
@@ -94,7 +94,6 @@ class Pyqt < Formula
     end
   end
 end
-
 __END__
 diff --git a/configure.py b/configure.py
 index a8e5dcd..a5f1474 100644
