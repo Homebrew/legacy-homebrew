@@ -20,12 +20,6 @@ class Pyqt < Formula
     depends_on "sip"
   end
 
-  # On Mavericks we want to target libc++, but this requires a user specified
-  # qmake makespec. Qmake spec macro parsing does not properly handle inline comments,
-  # which can result in ignored build flags when they are concatenated together.
-  # Changes proposed upstream: http://www.riverbankcomputing.com/pipermail/pyqt/2013-December/033537.html
-  patch :DATA
-
   def install
     # On Mavericks we want to target libc++, this requires a non default qt makespec
     if ENV.compiler == :clang and MacOS.version >= :mavericks
@@ -41,16 +35,16 @@ class Pyqt < Formula
               "--sipdir=#{HOMEBREW_PREFIX}/share/sip"]
 
       # We need to run "configure.py" so that pyqtconfig.py is generated, which
-      # is needed by, PyQWT (and many other PyQt interoperable implementations
-      # such as the ROS GUI libs). The alternatives provided by configure-ng.py
-      # seem to not be sufficient to replace pyqtconfig.py yet (see
-      # https://github.com/qgis/QGIS/pull/1508). This file is currently needed
+      # is needed by QGIS, PyQWT (and many other PyQt interoperable
+      # implementations such as the ROS GUI libs). This file is currently needed
       # for generating build files appropriate for the qmake spec that was used
-      # to build Qt. This method is deprecated and will be removed with SIP v5,
-      # so we do the actual compile using the newer configure-ng.py as
-      # recommended. In order not to interfere with the build using configure-
-      # ng.py, we run configure.py in a temporary directory and only retain the
-      # pyqtconfig.py from that.
+      # to build Qt.  The alternatives provided by configure-ng.py is not
+      # sufficient to replace pyqtconfig.py yet (see
+      # https://github.com/qgis/QGIS/pull/1508). Using configure.py is
+      # deprecated and will be removed with SIP v5, so we do the actual compile
+      # using the newer configure-ng.py as recommended. In order not to
+      # interfere with the build using configure-ng.py, we run configure.py in a
+      # temporary directory and only retain the pyqtconfig.py from that.
 
       require "tmpdir"
       dir = Dir.mktmpdir
@@ -105,20 +99,3 @@ class Pyqt < Formula
     end
   end
 end
-__END__
-diff --git a/configure.py b/configure.py
-index a8e5dcd..a5f1474 100644
---- a/configure.py
-+++ b/configure.py
-@@ -1934,6 +1934,11 @@ def get_build_macros(overrides):
-     if macros is None:
-         return None
-
-+    # QMake macros may contain comments on the same line so we need to remove them
-+    for macro, value in macros.iteritems():
-+        if "#" in value:
-+            macros[macro] = value.split("#", 1)[0]
-+
-     # Qt5 doesn't seem to support the specific macros so add them if they are
-     # missing.
-     if macros.get("INCDIR_QT", "") == "":
