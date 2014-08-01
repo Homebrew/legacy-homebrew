@@ -15,7 +15,8 @@ class Bitchx < Formula
     args = %W{
       --prefix=#{prefix}
       --with-ssl
-      --with-plugins
+      --with-plugins=xms
+      --with-plugins=amp
       --enable-ipv6
       --mandir=#{man}
     }
