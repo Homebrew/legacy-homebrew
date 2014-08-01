@@ -20,6 +20,11 @@ class Pyqt < Formula
     depends_on "sip"
   end
 
+  # Qmake spec macro parsing does not properly handle inline comments,
+  # which can result in ignored build flags when they are concatenated together.
+  # Changes proposed upstream: http://www.riverbankcomputing.com/pipermail/pyqt/2013-December/033537.html
+  patch :DATA
+
   def install
     Language::Python.each_python(build) do |python, version|
       ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
@@ -89,3 +94,21 @@ class Pyqt < Formula
     end
   end
 end
+
+__END__
+diff --git a/configure.py b/configure.py
+index a8e5dcd..a5f1474 100644
+--- a/configure.py
++++ b/configure.py
+@@ -1934,6 +1934,11 @@ def get_build_macros(overrides):
+     if macros is None:
+         return None
+
++    # QMake macros may contain comments on the same line so we need to remove them
++    for macro, value in macros.iteritems():
++        if "#" in value:
++            macros[macro] = value.split("#", 1)[0]
++
+     # Qt5 doesn't seem to support the specific macros so add them if they are
+     # missing.
+     if macros.get("INCDIR_QT", "") == "":
