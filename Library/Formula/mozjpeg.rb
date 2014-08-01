@@ -30,9 +30,10 @@ class Mozjpeg < Formula
   end
 
   test do
-    system "#{bin}/jpegtran", "-crop", "500x500+200+500",
+    test_jpg = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.jpg"
+    system "#{bin}/jpegtran", "-crop", "1x1",
                               "-transpose", "-optimize",
-                              "-outfile", "test.jpg",
-                              "/System/Library/CoreServices/DefaultDesktop.jpg"
+                              "-outfile", "out.jpg",
+                              test_jpg
   end
 end

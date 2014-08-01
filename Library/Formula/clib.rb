@@ -2,14 +2,14 @@ require "formula"
 
 class Clib < Formula
   homepage "https://github.com/clibs/clib"
-  url "https://github.com/clibs/clib/archive/1.2.0.tar.gz"
-  sha1 "811120b049362220f4e0c3316b3ec29324e1b7da"
+  url "https://github.com/clibs/clib/archive/1.2.2.tar.gz"
+  sha1 "e103638102f33cb38308d6f108feea9f0daff08a"
 
   bottle do
     cellar :any
-    sha1 "c44bb17e2429ee6b3b25dc23c118ea612b3fe51c" => :mavericks
-    sha1 "5966db2ded69b2d28cea1e44fa2b629fd4a8f28f" => :mountain_lion
-    sha1 "a146278fa12562ead2333d4bb76c2ef17ecaa776" => :lion
+    sha1 "078a75c4851fd7baef7dc1b44b2573c873d61ef4" => :mavericks
+    sha1 "3b694a2c43b542317795383df940404edf91ada9" => :mountain_lion
+    sha1 "2551a74714e88fe36b44132ab9b9f55554c12cd8" => :lion
   end
 
   def install

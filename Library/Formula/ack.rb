@@ -13,10 +13,7 @@ class Ack < Formula
   end
 
   test do
-    IO.popen("#{bin}/ack --noenv --nocolor bar -", "w+") do |pipe|
-      pipe.write "foo\nfoo bar\nbaz"
-      pipe.close_write
-      assert_equal "foo bar\n", pipe.read
-    end
+    assert_equal "foo bar\n", pipe_output("#{bin}/ack --noenv --nocolor bar -",
+                                          "foo\nfoo bar\nbaz")
   end
 end

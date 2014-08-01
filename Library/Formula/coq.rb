@@ -3,9 +3,7 @@ require "formula"
 class TransitionalMode < Requirement
   fatal true
 
-  satisfy do
-    Tab.for_name("camlp5").unused_options.include? "strict"
-  end
+  satisfy { !Tab.for_name("camlp5").include?("strict") }
 
   def message; <<-EOS.undent
     camlp5 must be compiled in transitional mode (instead of --strict mode):

@@ -12,12 +12,10 @@ class Bgrep < Formula
 
   test do
     path = testpath/"hi.prg"
-    code = [0x00, 0xc0, 0xa9, 0x48, 0x20, 0xd2, 0xff,
-            0xa9, 0x49, 0x20, 0xd2, 0xff, 0x60].pack("C*")
-    path.open("wb") { |f| f.write code }
+    path.binwrite [0x00, 0xc0, 0xa9, 0x48, 0x20, 0xd2, 0xff,
+                   0xa9, 0x49, 0x20, 0xd2, 0xff, 0x60].pack("C*")
 
-    lines = `#{bin}/bgrep 20d2ff #{path}`.strip.split("\n")
-    assert_equal ["#{path}: 00000004", "#{path}: 00000009"], lines
-    assert_equal 0, $?.exitstatus
+    assert_equal ["#{path}: 00000004", "#{path}: 00000009"],
+                 shell_output("#{bin}/bgrep 20d2ff #{path}").split("\n")
   end
 end

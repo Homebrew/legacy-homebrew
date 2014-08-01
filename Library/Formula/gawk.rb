@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Gawk < Formula
-  homepage 'http://www.gnu.org/software/gawk/'
-  url 'http://ftpmirror.gnu.org/gawk/gawk-4.1.1.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/gawk/gawk-4.1.1.tar.xz'
-  sha1 '547feb48d20e923aff58daccee97c94e047fdc18'
+  homepage "http://www.gnu.org/software/gawk/"
+  url "http://ftpmirror.gnu.org/gawk/gawk-4.1.1.tar.xz"
+  mirror "http://ftp.gnu.org/gnu/gawk/gawk-4.1.1.tar.xz"
+  sha1 "547feb48d20e923aff58daccee97c94e047fdc18"
 
   bottle do
     sha1 "8fa017184dc02cdc122d5681b6824fd12be01def" => :mavericks
@@ -30,8 +30,7 @@ class Gawk < Formula
   end
 
   test do
-    output = `echo "Macrobrew" | '#{bin}/gawk'  '{ gsub(/Macro/, "Home"); print }' -`
+    output = pipe_output("#{bin}/gawk '{ gsub(/Macro/, \"Home\"); print }' -", "Macrobrew")
     assert_equal 'Homebrew', output.strip
-    assert_equal 0, $?.exitstatus
   end
 end

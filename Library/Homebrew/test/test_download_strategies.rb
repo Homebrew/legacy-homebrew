@@ -37,28 +37,11 @@ class AbstractDownloadStrategyTests < Homebrew::TestCase
 end
 
 class VCSDownloadStrategyTests < Homebrew::TestCase
-  def setup
-    @resource = ResourceDouble.new("http://example.com/bar")
-    @strategy = VCSDownloadStrategy
-  end
-
-  def escaped(tag)
-    "#{ERB::Util.url_encode(@resource.url)}--#{tag}"
-  end
-
-  def test_explicit_name
-    downloader = @strategy.new("baz", @resource)
-    assert_equal "baz--foo", downloader.cache_filename("foo")
-  end
-
-  def test_empty_name
-    downloader = @strategy.new("", @resource)
-    assert_equal escaped("foo"), downloader.cache_filename("foo")
-  end
-
-  def test_unknown_name
-    downloader = @strategy.new("__UNKNOWN__", @resource)
-    assert_equal escaped("foo"), downloader.cache_filename("foo")
+  def test_cache_filename
+    resource = ResourceDouble.new("http://example.com/bar")
+    strategy = Class.new(VCSDownloadStrategy) { def cache_tag; "foo"; end }
+    downloader = strategy.new("baz", resource)
+    assert_equal "baz--foo", downloader.cache_filename
   end
 end
 

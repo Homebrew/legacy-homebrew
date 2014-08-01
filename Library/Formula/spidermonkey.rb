@@ -47,9 +47,6 @@ class Spidermonkey < Formula
   test do
     path = testpath/"test.js"
     path.write "print('hello');"
-
-    output = `#{bin}/js #{path}`.strip
-    assert_equal "hello", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "hello", shell_output("#{bin}/js #{path}").strip
   end
 end

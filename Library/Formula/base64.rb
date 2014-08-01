@@ -15,9 +15,6 @@ class Base64 < Formula
   test do
     path = testpath/"a.txt"
     path.write "hello"
-
-    output = `#{bin}/base64 #{path}`.strip
-    assert_equal "aGVsbG8=", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "aGVsbG8=", shell_output("#{bin}/base64 #{path}").strip
   end
 end

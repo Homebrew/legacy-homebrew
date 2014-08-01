@@ -17,6 +17,6 @@ class YleDl < Formula
 
   test do
     assert_match /rtmpdump: This program dumps the media content streamed over RTMP/,
-      `#{bin}/yle-dl --help 2>&1`.strip
+                 shell_output("#{bin}/yle-dl --help 2>&1")
   end
 end

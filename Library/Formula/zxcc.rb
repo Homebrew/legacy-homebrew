@@ -23,10 +23,8 @@ class Zxcc < Formula
     ].pack("c*")
 
     path = testpath/"hello.com"
-    path.open("wb") { |f| f.write code }
+    path.binwrite code
 
-    output = `#{bin}/zxcc #{path}`.strip
-    assert_equal "Hello", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "Hello", shell_output("#{bin}/zxcc #{path}").strip
   end
 end

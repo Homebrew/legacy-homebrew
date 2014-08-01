@@ -1006,7 +1006,7 @@ def check_for_non_prefixed_coreutils
 end
 
 def check_for_non_prefixed_findutils
-  default_names = Tab.for_name('findutils').used_options.include? 'default-names'
+  default_names = Tab.for_name('findutils').include? 'default-names'
   if default_names then <<-EOS.undent
     Putting non-prefixed findutils in your path can cause python builds to fail.
     EOS
@@ -1118,7 +1118,7 @@ module Homebrew
     checks = Checks.new
 
     if ARGV.include? '--list-checks'
-      checks.methods.grep(/^check_/).sort.each { |m| puts m }
+      puts checks.methods.grep(/^check_/).sort
       exit
     end
 
@@ -1143,11 +1143,9 @@ module Homebrew
           EOS
         end
 
-        lines = out.to_s.split('\n')
         puts
-        opoo lines.shift
+        opoo out
         Homebrew.failed = true
-        puts lines
         first_warning = false
       end
     end

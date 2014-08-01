@@ -1,6 +1,8 @@
 require 'formula'
+require 'cmd/config'
 require 'net/http'
 require 'net/https'
+require 'stringio'
 
 def gist_logs f
   if ARGV.include? '--new-issue'
@@ -37,7 +39,9 @@ def load_logs name
 end
 
 def append_config files
-  files['config.out'] = {:content => `brew config 2>&1`}
+  s = StringIO.new
+  Homebrew.dump_verbose_config(s)
+  files["config.out"] = { :content => s.string }
 end
 
 def append_doctor files

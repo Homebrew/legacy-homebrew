@@ -17,8 +17,7 @@ class Xmlsh < Formula
   end
 
   test do
-    out = `#{bin}/xmlsh -c 'x=<[<foo bar="baz" />]> && echo <[$x/@bar]>'`
-    assert_equal "baz\n", out
-    assert_equal 0, $?.exitstatus
+    output = shell_output("#{bin}/xmlsh -c 'x=<[<foo bar=\"baz\" />]> && echo <[$x/@bar]>'")
+    assert_equal "baz\n", output
   end
 end

@@ -77,7 +77,6 @@ class Formula
 
   def url;      active_spec.url;     end
   def version;  active_spec.version; end
-  def mirrors;  active_spec.mirrors; end
 
   def resource(name)
     active_spec.resource(name)
@@ -105,6 +104,10 @@ class Formula
 
   def patchlist
     active_spec.patches
+  end
+
+  def option_defined?(name)
+    active_spec.option_defined?(name)
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -213,6 +216,8 @@ class Formula
   # any e.g. configure options for this package
   def options; [] end
 
+  # Deprecated
+  DATA = :DATA
   def patches; {} end
 
   # rarely, you don't want your library symlinked into the main prefix
@@ -478,9 +483,8 @@ class Formula
   end
 
   def test
-    # Adding the used options allows us to use `build.with?` inside of tests
-    tab = Tab.for_name(name)
-    tab.used_options.each { |opt| build.args << opt unless build.has_opposite_of? opt }
+    tab = Tab.for_formula(self)
+    extend Module.new { define_method(:build) { tab } }
     ret = nil
     mktemp do
       @testpath = Pathname.pwd
@@ -556,7 +560,7 @@ class Formula
         Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
         f.puts
         require 'cmd/config'
-        Homebrew.write_build_config(f)
+        Homebrew.dump_build_config(f)
         raise BuildError.new(self, cmd, args)
       end
     end
@@ -577,6 +581,8 @@ class Formula
   def patch
     active_spec.add_legacy_patches(patches)
     return if patchlist.empty?
+
+    active_spec.patches.grep(DATAPatch).each { |p| p.path = path }
 
     active_spec.patches.select(&:external?).each do |patch|
       patch.verify_download_integrity(patch.fetch)
@@ -656,7 +662,7 @@ class Formula
     # Define a named resource using a SoftwareSpec style block
     def resource name, &block
       specs.each do |spec|
-        spec.resource(name, &block) unless spec.resource?(name)
+        spec.resource(name, &block) unless spec.resource_defined?(name)
       end
     end
 
@@ -668,8 +674,8 @@ class Formula
       specs.each { |spec| spec.option(name, description) }
     end
 
-    def patch strip=:p1, io=nil, &block
-      specs.each { |spec| spec.patch(strip, io, &block) }
+    def patch strip=:p1, src=nil, &block
+      specs.each { |spec| spec.patch(strip, src, &block) }
     end
 
     def plist_options options

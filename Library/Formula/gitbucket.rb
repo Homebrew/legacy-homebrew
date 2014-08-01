@@ -1,12 +1,12 @@
-require 'formula'
+require "formula"
 
 class Gitbucket < Formula
-  homepage 'https://github.com/takezoe/gitbucket'
-  url 'https://github.com/takezoe/gitbucket/releases/download/2.0/gitbucket.war'
-  sha256 '95060786c0ec898593c21995dc95ffbb89d43c2501c83ed4631b8201fa53219e'
+  homepage "https://github.com/takezoe/gitbucket"
+  url "https://github.com/takezoe/gitbucket/releases/download/2.1/gitbucket.war"
+  sha256 "48ad9f399c6a8dabf38647e12f43139b33e8ede7136edc7f06270dc0beafe9f1"
 
   head do
-    url 'https://github.com/takezoe/gitbucket.git'
+    url "https://github.com/takezoe/gitbucket.git"
     depends_on :ant => :build
   end
 
