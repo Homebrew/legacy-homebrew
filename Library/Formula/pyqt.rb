@@ -20,7 +20,8 @@ class Pyqt < Formula
     depends_on "sip"
   end
 
-  # Qmake spec macro parsing does not properly handle inline comments,
+  # On Mavericks we want to target libc++, but this requires a user specified
+  # qmake makespec. Qmake spec macro parsing does not properly handle inline comments,
   # which can result in ignored build flags when they are concatenated together.
   # Changes proposed upstream: http://www.riverbankcomputing.com/pipermail/pyqt/2013-December/033537.html
   patch :DATA
