@@ -30,10 +30,6 @@ class BuildOptions
     @options << Option.new(name, description)
   end
 
-  def has_option? name
-    any? { |opt| opt.name == name }
-  end
-
   def empty?
     @options.empty?
   end
@@ -57,9 +53,9 @@ class BuildOptions
       name = val
     end
 
-    if has_option? "with-#{name}"
+    if option_defined? "with-#{name}"
       include? "with-#{name}"
-    elsif has_option? "without-#{name}"
+    elsif option_defined? "without-#{name}"
       not include? "without-#{name}"
     else
       false
@@ -88,19 +84,19 @@ class BuildOptions
 
   # True if the user requested a universal build.
   def universal?
-    universal || include?("universal") && has_option?("universal")
+    universal || include?("universal") && option_defined?("universal")
   end
 
   # True if the user requested to enable C++11 mode.
   def cxx11?
-    include?("c++11") && has_option?("c++11")
+    include?("c++11") && option_defined?("c++11")
   end
 
   # Request a 32-bit only build.
   # This is needed for some use-cases though we prefer to build Universal
   # when a 32-bit version is needed.
   def build_32_bit?
-    include?("32-bit") && has_option?("32-bit")
+    include?("32-bit") && option_defined?("32-bit")
   end
 
   def used_options
@@ -109,5 +105,11 @@ class BuildOptions
 
   def unused_options
     Options.new(@options - @args)
+  end
+
+  private
+
+  def option_defined? name
+    @options.include? name
   end
 end

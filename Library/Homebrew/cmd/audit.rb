@@ -136,7 +136,7 @@ class FormulaAuditor
       end
 
       dep.options.reject do |opt|
-        next true if dep_f.build.has_option?(opt.name)
+        next true if dep_f.option_defined?(opt)
         dep_f.requirements.detect do |r|
           if r.recommended?
             opt.name == "with-#{r.name}"

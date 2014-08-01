@@ -15,11 +15,6 @@ class BuildOptionsTests < Homebrew::TestCase
       @build.as_flags.sort
   end
 
-  def test_has_option?
-    assert @build.has_option?("with-foo")
-    assert !@build.has_option?("with-qux")
-  end
-
   def test_include
     assert_includes @build, "with-foo"
     refute_includes @build, "with-qux"
