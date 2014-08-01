@@ -6,6 +6,12 @@ class Ssdb < Formula
   sha1 "2d63cb0ba176bf6c463a70e7a3b39f8cc326d5d7"
   head "https://github.com/ideawu/ssdb.git", :branch => "master"
 
+  bottle do
+    sha1 "2838529376cd00f1cecb57fbf2c0391abc4ef724" => :mavericks
+    sha1 "6b2fee94e88f70247ef70b1b514656063cbaee3e" => :mountain_lion
+    sha1 "df1e6924434c5d28c7b0df02f68f411b99292538" => :lion
+  end
+
   def install
     inreplace "Makefile", "PREFIX=/usr/local/ssdb", "PREFIX=#{prefix}"
 
