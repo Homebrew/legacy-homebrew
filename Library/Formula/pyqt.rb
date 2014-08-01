@@ -26,6 +26,11 @@ class Pyqt < Formula
   patch :DATA
 
   def install
+    # On Mavericks we want to target libc++, this requires a non default qt makespec
+    if ENV.compiler == :clang and MacOS.version >= :mavericks
+      ENV.append "QMAKESPEC", "unsupported/macx-clang-libc++"
+    end
+
     Language::Python.each_python(build) do |python, version|
       ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
 
@@ -57,6 +62,11 @@ class Pyqt < Formula
         end
       ensure
         remove_entry_secure dir
+      end
+
+      # On Mavericks we want to target libc++, this requires a non default qt makespec
+      if ENV.compiler == :clang and MacOS.version >= :mavericks
+        args << "--spec" << "unsupported/macx-clang-libc++"
       end
 
       system python, "configure-ng.py", *args
