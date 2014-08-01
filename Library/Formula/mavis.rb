@@ -14,4 +14,25 @@ class Mavis < Formula
     lib.install "libmavis.dylib"
     include.install "mavis/include/mavis"
   end
+
+  test do
+    (testpath / "test.cpp").write <<-EOS.undent
+      #include <mavis/mavis.hpp>
+
+      mavis::test test_test() {
+        return mavis_assert_true(true);
+      }
+
+      int main() {
+        auto test_unit = mavis::create_test_unit("chuck testa");
+
+        test_unit.add_test(test_test);
+
+        test_unit.run_tests();
+
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.cpp", "-std=c++11", "-lmavis"
+  end
 end
