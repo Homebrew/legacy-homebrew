@@ -4,11 +4,10 @@ require 'build_options'
 class BuildOptionsTests < Homebrew::TestCase
   def setup
     args = %w{--with-foo --with-bar --without-qux}
-    @build = BuildOptions.new(args)
-    @build.add("with-foo")
-    @build.add("with-bar")
-    @build.add("without-baz")
-    @build.add("without-qux")
+    opts = Options.new
+    opts << Option.new("with-foo") << Option.new("with-bar")
+    opts << Option.new("without-baz") << Option.new("without-qux")
+    @build = BuildOptions.new(args, opts)
   end
 
   def test_as_flags
@@ -44,13 +43,13 @@ class BuildOptionsTests < Homebrew::TestCase
   end
 
   def test_copies_do_not_share_underlying_options
-    orig = BuildOptions.new []
+    orig = BuildOptions.new [], Options.new
     copy = orig.dup
-    refute_same orig.args, copy.args
+    refute_same orig.options, copy.options
   end
 
   def test_copies_do_not_share_underlying_args
-    orig = BuildOptions.new []
+    orig = BuildOptions.new [], Options.new
     copy = orig.dup
     refute_same orig.args, copy.args
   end
