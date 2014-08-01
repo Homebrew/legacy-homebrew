@@ -75,7 +75,7 @@ class SoftwareSpecTests < Homebrew::TestCase
   def test_explicit_options_override_default_dep_option_description
     @spec.option('with-foo', 'blah')
     @spec.depends_on('foo' => :optional)
-    assert_equal 'blah', @spec.build.first.description
+    assert_equal "blah", @spec.options.first.description
   end
 
   def test_patch

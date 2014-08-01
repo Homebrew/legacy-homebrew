@@ -8,11 +8,10 @@ class BuildOptions
   attr_accessor :args
   attr_accessor :universal
   attr_reader :options
-  protected :options
 
-  def initialize args
+  def initialize(args, options)
     @args = Options.coerce(args)
-    @options = Options.new
+    @options = options
   end
 
   def initialize_copy(other)
@@ -29,15 +28,6 @@ class BuildOptions
       end.to_s
 
     @options << Option.new(name, description)
-  end
-
-  def add_dep_option(dep)
-    name = dep.option_name
-    if dep.optional? && !has_option?("with-#{name}")
-      add("with-#{name}", "Build with #{name} support")
-    elsif dep.recommended? && !has_option?("without-#{name}")
-      add("without-#{name}", "Build without #{name} support")
-    end
   end
 
   def has_option? name
