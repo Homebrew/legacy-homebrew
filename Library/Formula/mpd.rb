@@ -107,7 +107,7 @@ class Mpd < Formula
   def caveats; <<-EOS.undent
       As of mpd-0.17.4, this formula no longer enables support for streaming
       output by default. If you want streaming output, you must now specify
-      the --with-libshout, --with-lame, --with-twolame, and/or --with-flac
+      the --with-libshout, --with-lame, --with-two-lame, and/or --with-flac
       options explicitly. (Use '--with-libshout --with-lame --with-flac' for
       the pre-0.17.4 behavior.)
 
