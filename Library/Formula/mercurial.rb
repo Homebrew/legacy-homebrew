@@ -10,9 +10,9 @@ class Mercurial < Formula
 
   bottle do
     cellar :any
-    sha1 "0d856360e1e42df9fd5b3cd977f8f8bfcbc351cb" => :mavericks
-    sha1 "3099cb2e31d565c7bc0b14b82e4ee57d14d071f7" => :mountain_lion
-    sha1 "84b223ebac837331be700c60777078e707652cec" => :lion
+    sha1 "6d1af4bd6bdaca92ec8fbb8606b551b4366a6078" => :mavericks
+    sha1 "d9e3b83bb5a3b3e9d753ef45a17aed079f3014da" => :mountain_lion
+    sha1 "c494d609e6e60b52de9268ebd765814d2fceaeb0" => :lion
   end
 
   def install
