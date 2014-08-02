@@ -27,6 +27,7 @@ class Mpd < Formula
   option "with-flac", "Build with flac support (for Flac encoding when streaming)"
   option "with-vorbis", "Build with vorbis support (for Ogg encoding)"
   option "with-yajl", "Build with yajl support (for playing from soundcloud)"
+  option "with-opus", "Build with opus support (for Opus encoding and decoding)"
 
   if MacOS.version < :lion
     option "with-libwrap", "Build with libwrap (TCP Wrappers) support"
@@ -57,6 +58,7 @@ class Mpd < Formula
   depends_on "libmms" => :optional      # MMS input
   depends_on "libzzip" => :optional     # Reading from within ZIPs
   depends_on "yajl" => :optional        # JSON library for SoundCloud
+  depends_on "opus" => :optional        # Opus support
 
   depends_on "libvorbis" if build.with? "vorbis" # Vorbis support
 
