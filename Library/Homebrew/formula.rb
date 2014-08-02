@@ -745,9 +745,9 @@ class Formula
     # fails_with :gcc => '4.8' do
     #   version '4.8.1'
     # end
-    def fails_with compiler, &block
+    def fails_with spec, &block
       @cc_failures ||= Set.new
-      @cc_failures << CompilerFailure.new(compiler, &block)
+      @cc_failures << CompilerFailure.create(spec, &block)
     end
 
     def needs *standards

@@ -49,20 +49,27 @@ class CompilerFailure
     end
   end
 
-  def initialize compiler, &block
-    instance_eval(&block) if block_given?
+  def self.create(spec, &block)
     # Non-Apple compilers are in the format fails_with compiler => version
-    if compiler.is_a? Hash
-      # currently the only compiler for this case is GCC
-      _, @major_version = compiler.first
-      @compiler = 'gcc-' + @major_version
+    if spec.is_a?(Hash)
+      _, major_version = spec.first
+      compiler = "gcc-#{major_version}"
       # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
-      @version ||= @major_version + '.999'
+      version = "#{major_version}.999"
     else
-      @compiler = compiler
-      @version ||= 9999
-      @version = @version.to_i
+      compiler = spec
+      version = 9999
+      major_version = nil
     end
+
+    new(compiler, version, major_version, &block)
+  end
+
+  def initialize(compiler, version, major_version, &block)
+    @compiler = compiler
+    @version = version
+    @major_version = major_version
+    instance_eval(&block) if block_given?
   end
 end
 
