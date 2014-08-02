@@ -4,9 +4,9 @@ class Wireshark < Formula
   homepage "http://www.wireshark.org"
 
   stable do
-    url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.10.9.tar.bz2"
-    mirror "http://www.wireshark.org/download/src/all-versions/wireshark-1.10.9.tar.bz2"
-    sha1 "902b0eb6f3e007c9ffcf6f76c02403bd90319f96"
+    url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.0.tar.bz2"
+    mirror "http://www.wireshark.org/download/src/all-versions/wireshark-1.12.0.tar.bz2"
+    sha1 "c7a94a9ec90c1ff9be2a7d7b813276e433509df9"
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
@@ -25,11 +25,6 @@ class Wireshark < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-  end
-
-  devel do
-    url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.0.tar.bz2"
-    sha1 "c7a94a9ec90c1ff9be2a7d7b813276e433509df9"
   end
 
   option "with-qt", "Use QT for GUI instead of GTK+3"
