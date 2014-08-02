@@ -19,33 +19,9 @@ class CompilerFailure
   # even though `build` and `version` are the same internally
   alias_method :build, :version
 
-  MESSAGES = {
-    :cxx11 => 'This compiler does not support C++11'
-  }
-
-  COLLECTIONS = {
-    :cxx11 => [
-      [:gcc_4_0, proc { cause MESSAGES[:cxx11] }],
-      [:gcc, proc { cause MESSAGES[:cxx11] }],
-      [:llvm, proc { cause MESSAGES[:cxx11] }],
-      [:clang, proc { build 425; cause MESSAGES[:cxx11] }],
-      [{:gcc => '4.3'}, proc { cause MESSAGES[:cxx11] }],
-      [{:gcc => '4.4'}, proc { cause MESSAGES[:cxx11] }],
-      [{:gcc => '4.5'}, proc { cause MESSAGES[:cxx11] }],
-      [{:gcc => '4.6'}, proc { cause MESSAGES[:cxx11] }]
-    ],
-    :openmp => [
-      [:clang, proc { cause 'clang does not support OpenMP' }]
-    ]
-  }
-
   def self.for_standard standard
-    failures = COLLECTIONS.fetch(standard) do
+    COLLECTIONS.fetch(standard) do
       raise ArgumentError, "\"#{standard}\" is not a recognized standard"
-    end
-
-    failures.map do |compiler, block|
-      CompilerFailure.new(compiler, &block)
     end
   end
 
@@ -71,6 +47,28 @@ class CompilerFailure
     @major_version = major_version
     instance_eval(&block) if block_given?
   end
+
+  MESSAGES = {
+    :cxx11 => "This compiler does not support C++11"
+  }
+
+  cxx11 = proc { cause MESSAGES[:cxx11] }
+
+  COLLECTIONS = {
+    :cxx11 => [
+      create(:gcc_4_0, &cxx11),
+      create(:gcc, &cxx11),
+      create(:llvm, &cxx11),
+      create(:clang) { build 425; cause MESSAGES[:cxx11] },
+      create(:gcc => "4.3", &cxx11),
+      create(:gcc => "4.4", &cxx11),
+      create(:gcc => "4.5", &cxx11),
+      create(:gcc => "4.6", &cxx11),
+    ],
+    :openmp => [
+      create(:clang) { cause "clang does not support OpenMP" },
+    ]
+  }
 end
 
 class CompilerQueue
