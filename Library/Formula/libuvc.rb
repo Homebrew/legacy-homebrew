@@ -13,9 +13,9 @@ class Libuvc < Formula
     sha1 "82645fb85228750be0aba5d2fd2b10bbc9ed888c" => :lion
   end
 
-  depends_on "cmake" => :build
+  depends_on "cmake"  => :build
   depends_on "libusb"
-  depends_on "jpeg"
+  depends_on "jpeg"   => :optional
 
   def install
     system "cmake", ".", *std_cmake_args
