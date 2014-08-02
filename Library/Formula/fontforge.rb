@@ -35,6 +35,8 @@ class Fontforge < Formula
     depends_on 'pango'
     depends_on 'cairo'
     depends_on 'ossp-uuid'
+    depends_on 'zeromq'
+    depends_on 'czmq'
   end
 
   option 'with-gif', 'Build with GIF support'
@@ -108,7 +110,7 @@ print( os.path.abspath( get_python_lib() + \"/../../pkgconfig\" ))
 EOS
        pypkgconfig = %x( #{HOMEBREW_PREFIX}/bin/python -c "#{cmdstring}" ).chomp;
        ENV["PKG_CONFIG_PATH"] =  ENV["PKG_CONFIG_PATH"] + ":#{pypkgconfig}"
-       ENV.append "PYTHON", "#{HOMEBREW_PREFIX}/bin/python" 
+       ENV.append "PYTHON", "#{HOMEBREW_PREFIX}/bin/python"
     end
 
     system "./bootstrap" if build.head?
