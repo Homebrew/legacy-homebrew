@@ -78,9 +78,16 @@ class Go < Formula
     To get `go vet` and `go doc` run:
       go get code.google.com/p/go.tools/cmd/godoc
       go get code.google.com/p/go.tools/cmd/vet
+      Note to use go get you will need 'Mercurial' installed.
+
+    There are issues with go & non-default shells.
+      If you're using zsh you'll need to modify your .zshrc file to include:
+      export GOPATH=$HOME/go
+      or similar, depending on your setup.
 
     You may wish to add the GOROOT-based install location to your PATH:
       export PATH=$PATH:#{opt_libexec}/bin
+      If you aren't using the default shell you may need to manually modify your shell profile or /etc/paths.
     EOS
   end
 
