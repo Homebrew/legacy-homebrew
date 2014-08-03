@@ -52,6 +52,10 @@ class CompilerFailure
     name == compiler.name && version >= compiler.version
   end
 
+  def inspect
+    "#<#{self.class.name}: #{name} #{version}>"
+  end
+
   MESSAGES = {
     :cxx11 => "This compiler does not support C++11"
   }
