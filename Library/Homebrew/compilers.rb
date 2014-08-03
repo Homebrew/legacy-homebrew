@@ -48,6 +48,12 @@ class CompilerFailure
     instance_eval(&block) if block_given?
   end
 
+  def ===(compiler)
+    name == compiler.name &&
+      major_version == compiler.major_version &&
+      version >= (compiler.version || 0)
+  end
+
   MESSAGES = {
     :cxx11 => "This compiler does not support C++11"
   }
