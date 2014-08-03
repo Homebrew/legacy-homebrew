@@ -27,14 +27,8 @@ class CxxStdlib
 
     return false unless type == other.type
 
-    if apple_compiler?
-      return false unless other.apple_compiler?
-    else
-      return false if other.apple_compiler?
-      return false unless compiler.to_s[4..6] == other.compiler.to_s[4..6]
-    end
-
-    true
+    apple_compiler? && other.apple_compiler? ||
+      !other.apple_compiler? && compiler.to_s[4..6] == other.compiler.to_s[4..6]
   end
 
   def check_dependencies(formula, deps)
