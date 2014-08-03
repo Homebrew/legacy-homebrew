@@ -407,8 +407,6 @@ class Test
   def cleanup_after
     @category = __method__
 
-    test "brew", "untap", @tap if @tap && @repository_requires_tapping
-
     checkout_args = []
     if ARGV.include? '--cleanup'
       test "git", "clean", "--force", "-dx"
@@ -426,6 +424,8 @@ class Test
       git "stash", "pop"
       test "brew", "cleanup"
     end
+
+    test "brew", "untap", @tap if @tap && @repository_requires_tapping
 
     FileUtils.rm_rf @brewbot_root unless ARGV.include? "--keep-logs"
   end
