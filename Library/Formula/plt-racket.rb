@@ -2,9 +2,9 @@ require "formula"
 
 class PltRacket < Formula
   homepage "http://racket-lang.org/"
-  url "http://mirror.racket-lang.org/installers/6.0.1/racket-minimal-6.0.1-src-builtpkgs.tgz"
-  sha1 "41bc76a8e0ffb5d2b108d52faeca1d6ed71a4318"
-  version "6.0.1"
+  url "http://mirror.racket-lang.org/installers/6.1/racket-minimal-6.1-src-builtpkgs.tgz"
+  sha1 "988cc297eb35e26585cceac67ae00ebfd47174e2"
+  version "6.1"
 
   bottle do
     sha1 "8fe12b0e00d00380efb7970ec02b7555d8884224" => :mavericks
@@ -13,7 +13,7 @@ class PltRacket < Formula
   end
 
   def install
-    cd 'src' do
+    cd "src" do
       args = ["--disable-debug", "--disable-dependency-tracking",
               "--enable-macprefix",
               "--prefix=#{prefix}",
