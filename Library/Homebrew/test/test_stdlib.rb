@@ -57,5 +57,9 @@ class CxxStdlibTests < Homebrew::TestCase
 
   def test_compatibility_for_non_cxx_software
     assert @purec.compatible_with?(@clang)
+    assert @clang.compatible_with?(@purec)
+    assert @purec.compatible_with?(@purec)
+    assert @purec.compatible_with?(@gcc48)
+    assert @gcc48.compatible_with?(@purec)
   end
 end
