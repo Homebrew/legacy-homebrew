@@ -7,9 +7,9 @@ class PltRacket < Formula
   version "6.1"
 
   bottle do
-    sha1 "8fe12b0e00d00380efb7970ec02b7555d8884224" => :mavericks
-    sha1 "10a540120f21bcb9f52a65f54a03c43a27ea8232" => :mountain_lion
-    sha1 "1311bbd0ed30ed4025057d4f7639a69fdeaf10ec" => :lion
+    sha1 "91605ef5aca76449ad465669f21b940fa5ffd8fd" => :mavericks
+    sha1 "9de25cf2475b3aba5a58a721325fc9d1a9656f12" => :mountain_lion
+    sha1 "a0862a96129f518d28625bf55fddb89b7fcb06f5" => :lion
   end
 
   def install
