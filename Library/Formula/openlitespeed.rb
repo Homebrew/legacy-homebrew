@@ -8,7 +8,7 @@ class Openlitespeed < Formula
   
   devel do
     url "http://open.litespeedtech.com/packages/openlitespeed-1.4.0.tgz"
-    sha1 "df18e26dfe4a3bc8997579acfc3c00be9e038e01"
+    sha1 "ee756ed6be30b832218510f43395b36267498882"
   end
 
   option "with-debug", 'Compile with support for debug log'
