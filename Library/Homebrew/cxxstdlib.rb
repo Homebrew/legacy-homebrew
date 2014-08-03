@@ -1,7 +1,7 @@
 require "compilers"
 
 class CxxStdlib
-  attr_accessor :type, :compiler
+  attr_reader :type, :compiler
 
   def initialize(type, compiler)
     if type && ![:libstdcxx, :libcxx].include?(type)
