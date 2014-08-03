@@ -2,9 +2,9 @@ require 'formula'
 
 class GnuTar < Formula
   homepage 'http://www.gnu.org/software/tar/'
-  url 'http://ftpmirror.gnu.org/tar/tar-1.27.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/tar/tar-1.27.1.tar.gz'
-  sha1 '192f480cac95b1fbaff11c87a64f7092045b411b'
+  url 'http://ftpmirror.gnu.org/tar/tar-1.28.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/tar/tar-1.28.tar.gz'
+  sha1 'cd30a13bbfefb54b17e039be7c43d2592dd3d5d0'
 
   bottle do
     sha1 "ecc6fc62b93bee896a2bd6e604c934bdb9bdc2dd" => :mavericks
