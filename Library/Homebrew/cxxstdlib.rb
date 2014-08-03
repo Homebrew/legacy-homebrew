@@ -8,7 +8,7 @@ class CxxStdlib
       raise ArgumentError, "Invalid C++ stdlib type: #{type}"
     end
 
-    @type     = type.to_sym if type
+    @type = type
     @compiler = compiler.to_sym
   end
 
