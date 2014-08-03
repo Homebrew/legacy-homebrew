@@ -136,6 +136,8 @@ module SharedEnvExtension
     # selector will be invoked if the formula fails with any version of clang.
     # I think we can safely remove this conditional and always invoke the
     # selector.
+    # The compiler priority logic in compilers.rb and default_compiler logic in
+    # os/mac.rb need to be unified somehow.
     if formula.fails_with? Compiler.new(compiler)
       send CompilerSelector.new(formula).compiler
     end
