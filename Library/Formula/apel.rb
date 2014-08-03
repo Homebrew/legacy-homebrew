@@ -11,5 +11,4 @@ class Apel < Formula
     system "mv #{share}/emacs/site-lisp/apel/* #{share}/emacs/site-lisp; rmdir #{share}/emacs/site-lisp/apel"
     system "mv #{share}/emacs/site-lisp/emu/* #{share}/emacs/site-lisp; rmdir #{share}/emacs/site-lisp/emu"
   end
-
 end
