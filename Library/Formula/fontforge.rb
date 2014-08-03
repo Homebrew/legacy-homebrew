@@ -64,7 +64,6 @@ class Fontforge < Formula
   end
 
   def install
-    system "echo $PKG_CONFIG_PATH"
     args = ["--prefix=#{prefix}",
             "--enable-double",
             "--without-freetype-bytecode"]
