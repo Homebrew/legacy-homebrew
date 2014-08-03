@@ -12,7 +12,7 @@ class Compiler < Struct.new(:name, :version, :priority)
 end
 
 class CompilerFailure
-  attr_reader :compiler, :major_version
+  attr_reader :name, :major_version
   attr_rw :cause, :version
 
   # Allows Apple compiler `fails_with` statements to keep using `build`
@@ -29,20 +29,20 @@ class CompilerFailure
     # Non-Apple compilers are in the format fails_with compiler => version
     if spec.is_a?(Hash)
       _, major_version = spec.first
-      compiler = "gcc-#{major_version}"
+      name = "gcc-#{major_version}"
       # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
       version = "#{major_version}.999"
     else
-      compiler = spec
+      name = spec
       version = 9999
       major_version = nil
     end
 
-    new(compiler, version, major_version, &block)
+    new(name, version, major_version, &block)
   end
 
-  def initialize(compiler, version, major_version, &block)
-    @compiler = compiler
+  def initialize(name, version, major_version, &block)
+    @name = name
     @version = version
     @major_version = major_version
     instance_eval(&block) if block_given?
