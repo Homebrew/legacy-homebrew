@@ -51,6 +51,10 @@ class CxxStdlib
     type.to_s.gsub(/cxx$/, 'c++')
   end
 
+  def inspect
+    "#<#{self.class.name}: #{compiler} #{type}>"
+  end
+
   class AppleStdlib < CxxStdlib
     def apple_compiler?
       true
