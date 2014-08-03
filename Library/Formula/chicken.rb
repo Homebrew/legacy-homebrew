@@ -27,8 +27,6 @@ class Chicken < Formula
   end
 
   test do
-    output = `'#{bin}/csi' -e '(print (* 5 5))'`
-    assert_equal "25", output.strip
-    assert $?.success?
+    assert_equal "25", shell_output("#{bin}/csi -e '(print (* 5 5))'").strip
   end
 end

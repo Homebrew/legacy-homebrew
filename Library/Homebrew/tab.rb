@@ -119,7 +119,7 @@ class Tab < OpenStruct
     # Older tabs won't have these values, so provide sensible defaults
     lib = stdlib.to_sym if stdlib
     cc = compiler || MacOS.default_compiler
-    CxxStdlib.new(lib, cc.to_sym)
+    CxxStdlib.create(lib, cc.to_sym)
   end
 
   def to_json

@@ -61,8 +61,6 @@ class Scala < Formula
         }
       }
     EOS
-    output = `'#{bin}/scala' #{file}`
-    assert_equal "4", output.strip
-    assert $?.success?
+    assert_equal "4", shell_output("#{bin}/scala #{file}").strip
   end
 end

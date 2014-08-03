@@ -11,10 +11,6 @@ class Javarepl < Formula
   end
 
   test do
-    IO.popen(bin/"javarepl", "w+") do |pipe|
-      pipe.write "System.out.println(64*1024)\n:quit\n"
-      pipe.close_write
-      assert pipe.read.include?("65536")
-    end
+    assert pipe_output("#{bin}/javarepl", "System.out.println(64*1024)\n:quit\n").include?("65536")
   end
 end

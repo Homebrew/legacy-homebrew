@@ -172,7 +172,7 @@ class Build
           # This currently only tracks a single C++ stdlib per dep,
           # though it's possible for different libs/executables in
           # a given formula to link to different ones.
-          stdlib_in_use = CxxStdlib.new(stdlibs.first, ENV.compiler)
+          stdlib_in_use = CxxStdlib.create(stdlibs.first, ENV.compiler)
           begin
             stdlib_in_use.check_dependencies(f, deps)
           rescue IncompatibleCxxStdlibs => e

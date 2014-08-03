@@ -19,51 +19,56 @@ class CompilerFailure
   # even though `build` and `version` are the same internally
   alias_method :build, :version
 
+  def self.for_standard standard
+    COLLECTIONS.fetch(standard) do
+      raise ArgumentError, "\"#{standard}\" is not a recognized standard"
+    end
+  end
+
+  def self.create(spec, &block)
+    # Non-Apple compilers are in the format fails_with compiler => version
+    if spec.is_a?(Hash)
+      _, major_version = spec.first
+      compiler = "gcc-#{major_version}"
+      # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
+      version = "#{major_version}.999"
+    else
+      compiler = spec
+      version = 9999
+      major_version = nil
+    end
+
+    new(compiler, version, major_version, &block)
+  end
+
+  def initialize(compiler, version, major_version, &block)
+    @compiler = compiler
+    @version = version
+    @major_version = major_version
+    instance_eval(&block) if block_given?
+  end
+
   MESSAGES = {
-    :cxx11 => 'This compiler does not support C++11'
+    :cxx11 => "This compiler does not support C++11"
   }
+
+  cxx11 = proc { cause MESSAGES[:cxx11] }
 
   COLLECTIONS = {
     :cxx11 => [
-      [:gcc_4_0, proc { cause MESSAGES[:cxx11] }],
-      [:gcc, proc { cause MESSAGES[:cxx11] }],
-      [:llvm, proc { cause MESSAGES[:cxx11] }],
-      [:clang, proc { build 425; cause MESSAGES[:cxx11] }],
-      [{:gcc => '4.3'}, proc { cause MESSAGES[:cxx11] }],
-      [{:gcc => '4.4'}, proc { cause MESSAGES[:cxx11] }],
-      [{:gcc => '4.5'}, proc { cause MESSAGES[:cxx11] }],
-      [{:gcc => '4.6'}, proc { cause MESSAGES[:cxx11] }]
+      create(:gcc_4_0, &cxx11),
+      create(:gcc, &cxx11),
+      create(:llvm, &cxx11),
+      create(:clang) { build 425; cause MESSAGES[:cxx11] },
+      create(:gcc => "4.3", &cxx11),
+      create(:gcc => "4.4", &cxx11),
+      create(:gcc => "4.5", &cxx11),
+      create(:gcc => "4.6", &cxx11),
     ],
     :openmp => [
-      [:clang, proc { cause 'clang does not support OpenMP' }]
+      create(:clang) { cause "clang does not support OpenMP" },
     ]
   }
-
-  def self.for_standard standard
-    failures = COLLECTIONS.fetch(standard) do
-      raise ArgumentError, "\"#{standard}\" is not a recognized standard"
-    end
-
-    failures.map do |compiler, block|
-      CompilerFailure.new(compiler, &block)
-    end
-  end
-
-  def initialize compiler, &block
-    instance_eval(&block) if block_given?
-    # Non-Apple compilers are in the format fails_with compiler => version
-    if compiler.is_a? Hash
-      # currently the only compiler for this case is GCC
-      _, @major_version = compiler.first
-      @compiler = 'gcc-' + @major_version
-      # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
-      @version ||= @major_version + '.999'
-    else
-      @compiler = compiler
-      @version ||= 9999
-      @version = @version.to_i
-    end
-  end
 end
 
 class CompilerQueue
