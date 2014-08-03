@@ -23,7 +23,7 @@ class CxxStdlib
   # libstdc++ is compatible across Apple compilers, but
   # not between Apple and GNU compilers, or between GNU compiler versions
   def compatible_with?(other)
-    (type.nil? || other.type.nil?) || type == other.type
+    type.nil? || other.type.nil? || type == other.type
   end
 
   def check_dependencies(formula, deps)
