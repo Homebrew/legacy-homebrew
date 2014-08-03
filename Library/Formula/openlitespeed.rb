@@ -5,6 +5,11 @@ class Openlitespeed < Formula
   url "http://open.litespeedtech.com/packages/openlitespeed-1.2.9.tgz"
   sha1 "dbdfa1337caeabaca6814e2c12266f5570f14dd7"
   head "https://github.com/litespeedtech/openlitespeed.git"
+  
+  devel do
+    url "http://open.litespeedtech.com/packages/openlitespeed-1.4.0.tgz"
+    sha1 "df18e26dfe4a3bc8997579acfc3c00be9e038e01"
+  end
 
   option "with-debug", 'Compile with support for debug log'
   option "with-spdy", 'Compile with support for SPDY module'
