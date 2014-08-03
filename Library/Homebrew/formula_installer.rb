@@ -159,7 +159,7 @@ class FormulaInstaller
         @poured_bottle = true
 
         stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
-        stdlib_in_use = CxxStdlib.new(stdlibs.first, MacOS.default_compiler)
+        stdlib_in_use = CxxStdlib.create(stdlibs.first, MacOS.default_compiler)
         begin
           stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
         rescue IncompatibleCxxStdlibs => e
