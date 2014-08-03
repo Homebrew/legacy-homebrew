@@ -14,16 +14,8 @@ class AardvarkShellUtils < Formula
   end
 
   test do
-    output = `#{bin}/filebase movcpm.com`
-    assert_equal "movcpm\n", output
-    assert_equal 0, $?.exitstatus
-
-    output = `#{bin}/fileext movcpm.com`
-    assert_equal "com\n", output
-    assert_equal 0, $?.exitstatus
-
-    output = `#{bin}/realpath .`
-    assert_equal "#{testpath}\n", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "movcpm", shell_output("#{bin}/filebase movcpm.com").strip
+    assert_equal "com", shell_output("#{bin}/fileext movcpm.com").strip
+    assert_equal testpath.to_s, shell_output("#{bin}/realpath .").strip
   end
 end

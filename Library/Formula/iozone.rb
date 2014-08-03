@@ -19,10 +19,14 @@ class Iozone < Formula
   end
 
   test do
+<<<<<<< HEAD
     require 'open3'
     Open3.popen3("#{bin}/iozone", "-I", "-s", "16M") do |_, stdout, _|
       assert_match /File size set to 16384 kB/, stdout.read
     end
+=======
+    assert_match /File size set to 16384 kB/, shell_output("#{bin}/iozone -I -s 16M")
+>>>>>>> 6a54db032d8bd03a68dd655e75f3ef2af022b1c5
   end
 end
 

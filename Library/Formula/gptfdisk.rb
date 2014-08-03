@@ -15,9 +15,7 @@ class Gptfdisk < Formula
   end
 
   test do
-    IO.popen("#{sbin}/gdisk", "w+") do |pipe|
-      pipe.write("\n")
-      assert_match /GPT fdisk \(gdisk\) version #{Regexp.escape(version)}/, pipe.read
-    end
+    assert_match /GPT fdisk \(gdisk\) version #{Regexp.escape(version)}/,
+                 pipe_output("#{sbin}/gdisk", "\n")
   end
 end

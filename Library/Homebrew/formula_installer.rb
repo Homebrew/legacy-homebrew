@@ -159,7 +159,7 @@ class FormulaInstaller
         @poured_bottle = true
 
         stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
-        stdlib_in_use = CxxStdlib.new(stdlibs.first, MacOS.default_compiler)
+        stdlib_in_use = CxxStdlib.create(stdlibs.first, MacOS.default_compiler)
         begin
           stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
         rescue IncompatibleCxxStdlibs => e
@@ -316,8 +316,9 @@ class FormulaInstaller
 
   def inherited_options_for(dep)
     inherited_options = Options.new
-    if (options.include?("universal") || f.build.universal?) && !dep.build? && dep.to_formula.build.has_option?("universal")
-      inherited_options << Option.new("universal")
+    u = Option.new("universal")
+    if (options.include?(u) || f.build.universal?) && !dep.build? && dep.to_formula.option_defined?(u)
+      inherited_options << u
     end
     inherited_options
   end

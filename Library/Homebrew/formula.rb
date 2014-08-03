@@ -106,6 +106,10 @@ class Formula
     active_spec.patches
   end
 
+  def option_defined?(name)
+    active_spec.option_defined?(name)
+  end
+
   # if the dir is there, but it's empty we consider it not installed
   def installed?
     (dir = installed_prefix).directory? && dir.children.length > 0
@@ -479,9 +483,8 @@ class Formula
   end
 
   def test
-    # Adding the used options allows us to use `build.with?` inside of tests
-    tab = Tab.for_name(name)
-    tab.used_options.each { |opt| build.args << opt unless build.has_opposite_of? opt }
+    tab = Tab.for_formula(self)
+    extend Module.new { define_method(:build) { tab } }
     ret = nil
     mktemp do
       @testpath = Pathname.pwd
@@ -659,7 +662,7 @@ class Formula
     # Define a named resource using a SoftwareSpec style block
     def resource name, &block
       specs.each do |spec|
-        spec.resource(name, &block) unless spec.resource?(name)
+        spec.resource(name, &block) unless spec.resource_defined?(name)
       end
     end
 
@@ -742,9 +745,9 @@ class Formula
     # fails_with :gcc => '4.8' do
     #   version '4.8.1'
     # end
-    def fails_with compiler, &block
+    def fails_with spec, &block
       @cc_failures ||= Set.new
-      @cc_failures << CompilerFailure.new(compiler, &block)
+      @cc_failures << CompilerFailure.create(spec, &block)
     end
 
     def needs *standards

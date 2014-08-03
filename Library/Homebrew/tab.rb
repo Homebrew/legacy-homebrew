@@ -10,16 +10,13 @@ require 'utils/json'
 class Tab < OpenStruct
   FILENAME = 'INSTALL_RECEIPT.json'
 
-  def self.create f, compiler, stdlib, args
-    build = f.build.dup
-    build.args = args
-
+  def self.create(formula, compiler, stdlib, build)
     Tab.new :used_options => build.used_options,
             :unused_options => build.unused_options,
-            :tabfile => f.prefix.join(FILENAME),
+            :tabfile => formula.prefix.join(FILENAME),
             :built_as_bottle => !!ARGV.build_bottle?,
             :poured_from_bottle => false,
-            :tapped_from => f.tap,
+            :tapped_from => formula.tap,
             :time => Time.now.to_i,
             :HEAD => Homebrew.git_head,
             :compiler => compiler,
@@ -94,6 +91,10 @@ class Tab < OpenStruct
     end
   end
 
+  def without? name
+    not with? name
+  end
+
   def include? opt
     used_options.include? opt
   end
@@ -118,7 +119,7 @@ class Tab < OpenStruct
     # Older tabs won't have these values, so provide sensible defaults
     lib = stdlib.to_sym if stdlib
     cc = compiler || MacOS.default_compiler
-    CxxStdlib.new(lib, cc.to_sym)
+    CxxStdlib.create(lib, cc.to_sym)
   end
 
   def to_json

@@ -1,15 +1,16 @@
 require "formula"
 
 class Libvisio < Formula
-  homepage "http://www.freedesktop.org/wiki/Software/libvisio/"
-  url "http://dev-www.libreoffice.org/src/libvisio-0.1.0.tar.xz"
+  homepage "https://wiki.documentfoundation.org/DLP/Libraries/libvisio"
+  url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.0.tar.xz"
   sha1 "c82e5c7ad25e513c268032cda9febd01b8879504"
 
   bottle do
     cellar :any
-    sha1 "5b7af3a34301558c02ba25bf09087d44479427e9" => :mavericks
-    sha1 "19286ead4b765628712f516e4bb161c4b7caf2ff" => :mountain_lion
-    sha1 "6bac7cd8dce1f27c0acfc41e74348333abcb1f43" => :lion
+    revision 1
+    sha1 "ff0a3bed223e14036633795b616dd56ae2cc6a80" => :mavericks
+    sha1 "67cc8107265473f4165d364103f7c805d7f6f930" => :mountain_lion
+    sha1 "f5c6b08278f5a3d8e3d89b16765ba7b3a0a9b65c" => :lion
   end
 
   depends_on "pkg-config" => :build
