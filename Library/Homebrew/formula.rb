@@ -212,6 +212,8 @@ class Formula
   # any e.g. configure options for this package
   def options; [] end
 
+  # Deprecated
+  DATA = :DATA
   def patches; {} end
 
   # rarely, you don't want your library symlinked into the main prefix
@@ -577,6 +579,8 @@ class Formula
     active_spec.add_legacy_patches(patches)
     return if patchlist.empty?
 
+    active_spec.patches.grep(DATAPatch).each { |p| p.path = path }
+
     active_spec.patches.select(&:external?).each do |patch|
       patch.verify_download_integrity(patch.fetch)
     end
@@ -667,8 +671,8 @@ class Formula
       specs.each { |spec| spec.option(name, description) }
     end
 
-    def patch strip=:p1, io=nil, &block
-      specs.each { |spec| spec.patch(strip, io, &block) }
+    def patch strip=:p1, src=nil, &block
+      specs.each { |spec| spec.patch(strip, src, &block) }
     end
 
     def plist_options options

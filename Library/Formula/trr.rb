@@ -12,13 +12,13 @@ class Trr < Formula
   def install
     system "make", "clean"
     system "sed -i -e \"s,LISPDIR=\\\/usr\\\/local,LISPDIR=\\\/usr\\\/local\\\/Cellar\\\/trr\\\/22,\" Makefile"
-    system "sed -i -e \"s,TRRDIR = \\\/usr\\\/local\\\/trr,TRRDIR = \\\/usr\\\/local\\\/Cellar\\\/trr\\\/22\\\/lib,\" Makefile"
-    system "sed -i -e \"s,INFODIR = \\\/usr\\\/local\\\/info,INFODIR = \\\/usr\\\/local\\\/Cellar\\\/trr\\\/22\\\/lib,\" Makefile"
+    system "sed -i -e \"s,TRRDIR = \\\/usr\\\/local\\\/trr,TRRDIR = \\\/usr\\\/local\\\/Cellar\\\/trr\\\/22,\" Makefile"
+    system "sed -i -e \"s,INFODIR = \\\/usr\\\/local\\\/info,INFODIR = \\\/usr\\\/local\\\/Cellar\\\/trr\\\/22,\" Makefile"
     system "cp /usr/local/Cellar/apel/10.8/share/emacs/site-lisp/* ."
     system "make", "all"
     system "make", "install"
-    system "nkf -w --overwrite #{prefix}/lib/CONTENTS"
-    system "touch #{prefix}/lib/record/SCORES-IC"
+    system "nkf -w --overwrite #{prefix}/CONTENTS"
+    system "touch #{prefix}/record/SCORES-IC"
   end
 
   def caveats
