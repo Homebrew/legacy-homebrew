@@ -3,7 +3,16 @@ module CompilerConstants
   GNU_GCC_REGEXP = /^gcc-(4\.[3-9])$/
 end
 
-Compiler = Struct.new(:name, :version, :priority)
+# TODO make this class private to CompilerSelector
+class Compiler
+  attr_reader :name, :version, :priority
+
+  def initialize(name, version=0, priority=0)
+    @name = name
+    @version = version
+    @priority = priority
+  end
+end
 
 class CompilerFailure
   attr_reader :name
@@ -40,7 +49,7 @@ class CompilerFailure
   end
 
   def ===(compiler)
-    name == compiler.name && version >= (compiler.version || 0)
+    name == compiler.name && version >= compiler.version
   end
 
   MESSAGES = {
