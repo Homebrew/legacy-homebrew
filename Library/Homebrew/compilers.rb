@@ -12,7 +12,7 @@ class Compiler < Struct.new(:name, :version, :priority)
 end
 
 class CompilerFailure
-  attr_reader :name, :major_version
+  attr_reader :name
   attr_rw :cause, :version
 
   # Allows Apple compiler `fails_with` statements to keep using `build`
@@ -32,26 +32,35 @@ class CompilerFailure
       name = "gcc-#{major_version}"
       # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
       version = "#{major_version}.999"
+      GnuCompilerFailure.new(name, major_version, version, &block)
     else
       name = spec
       version = 9999
-      major_version = nil
+      new(name, version, &block)
     end
-
-    new(name, version, major_version, &block)
   end
 
-  def initialize(name, version, major_version, &block)
+  def initialize(name, version, &block)
     @name = name
     @version = version
-    @major_version = major_version
     instance_eval(&block) if block_given?
   end
 
   def ===(compiler)
-    name == compiler.name &&
-      major_version == compiler.major_version &&
-      version >= (compiler.version || 0)
+    name == compiler.name && version >= (compiler.version || 0)
+  end
+
+  class GnuCompilerFailure < CompilerFailure
+    attr_reader :major_version
+
+    def initialize(name, major_version, version, &block)
+      @major_version = major_version
+      super(name, version, &block)
+    end
+
+    def ===(compiler)
+      super && major_version == compiler.major_version
+    end
   end
 
   MESSAGES = {
