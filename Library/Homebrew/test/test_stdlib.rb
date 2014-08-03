@@ -5,14 +5,14 @@ require 'cxxstdlib'
 
 class CxxStdlibTests < Homebrew::TestCase
   def setup
-    @clang = CxxStdlib.new(:libstdcxx, :clang)
-    @gcc   = CxxStdlib.new(:libstdcxx, :gcc)
-    @llvm  = CxxStdlib.new(:libstdcxx, :llvm)
-    @gcc4  = CxxStdlib.new(:libstdcxx, :gcc_4_0)
-    @gcc48 = CxxStdlib.new(:libstdcxx, 'gcc-4.8')
-    @gcc49 = CxxStdlib.new(:libstdcxx, 'gcc-4.9')
-    @lcxx  = CxxStdlib.new(:libcxx, :clang)
-    @purec = CxxStdlib.new(nil, :clang)
+    @clang = CxxStdlib.create(:libstdcxx, :clang)
+    @gcc   = CxxStdlib.create(:libstdcxx, :gcc)
+    @llvm  = CxxStdlib.create(:libstdcxx, :llvm)
+    @gcc4  = CxxStdlib.create(:libstdcxx, :gcc_4_0)
+    @gcc48 = CxxStdlib.create(:libstdcxx, 'gcc-4.8')
+    @gcc49 = CxxStdlib.create(:libstdcxx, 'gcc-4.9')
+    @lcxx  = CxxStdlib.create(:libcxx, :clang)
+    @purec = CxxStdlib.create(nil, :clang)
   end
 
   def test_apple_libstdcxx_intercompatibility

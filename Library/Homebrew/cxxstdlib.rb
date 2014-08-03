@@ -1,37 +1,29 @@
 require "compilers"
 
 class CxxStdlib
-  attr_reader :type, :compiler
+  include CompilerConstants
 
-  def initialize(type, compiler)
+  def self.create(type, compiler)
     if type && ![:libstdcxx, :libcxx].include?(type)
       raise ArgumentError, "Invalid C++ stdlib type: #{type}"
     end
+    klass = GNU_GCC_REGEXP === compiler.to_s ? GnuStdlib : AppleStdlib
+    klass.new(type, compiler)
+  end
 
+  attr_reader :type, :compiler
+
+  def initialize(type, compiler)
     @type = type
     @compiler = compiler.to_sym
   end
 
-  def apple_compiler?
-    not compiler.to_s =~ CompilerConstants::GNU_GCC_REGEXP
-  end
-
+  # If either package doesn't use C++, all is well
+  # libstdc++ and libc++ aren't ever intercompatible
+  # libstdc++ is compatible across Apple compilers, but
+  # not between Apple and GNU compilers, or between GNU compiler versions
   def compatible_with?(other)
-    # If either package doesn't use C++, all is well
-    return true if type.nil? || other.type.nil?
-
-    # libstdc++ and libc++ aren't ever intercompatible
-    return false unless type == other.type
-
-    # libstdc++ is compatible across Apple compilers, but
-    # not between Apple and GNU compilers, or between GNU compiler versions
-    return false if apple_compiler? && !other.apple_compiler?
-    if compiler.to_s =~ CompilerConstants::GNU_GCC_REGEXP
-      return false unless other.compiler.to_s =~ CompilerConstants::GNU_GCC_REGEXP
-      return false unless compiler.to_s[4..6] == other.compiler.to_s[4..6]
-    end
-
-    true
+    (type.nil? || other.type.nil?) || type == other.type
   end
 
   def check_dependencies(formula, deps)
@@ -52,5 +44,27 @@ class CxxStdlib
 
   def type_string
     type.to_s.gsub(/cxx$/, 'c++')
+  end
+
+  class AppleStdlib < CxxStdlib
+    def apple_compiler?
+      true
+    end
+
+    def compatible_with?(other)
+      super && other.apple_compiler?
+    end
+  end
+
+  class GnuStdlib < CxxStdlib
+    def apple_compiler?
+      false
+    end
+
+    def compatible_with?(other)
+      super &&
+        !other.apple_compiler? &&
+        compiler.to_s[4..6] == other.compiler.to_s[4..6]
+    end
   end
 end
