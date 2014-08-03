@@ -121,12 +121,10 @@ class CompilerSelector
 
   def priority_for(cc)
     case cc
-    when :clang then @versions.clang_build_version >= 318 ? 3 : 0.5
-    when :gcc   then 2.5
-    when :llvm  then 2
+    when :clang   then @versions.clang_build_version >= 318 ? 3 : 0.5
+    when :gcc     then 2.5
+    when :llvm    then 2
     when :gcc_4_0 then 0.25
-    # non-Apple gcc compilers
-    else 1.5
     end
   end
 end
