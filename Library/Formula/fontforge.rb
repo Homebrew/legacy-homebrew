@@ -35,8 +35,8 @@ class Fontforge < Formula
     depends_on 'pango'
     depends_on 'cairo'
     depends_on 'ossp-uuid'
-    depends_on 'zeromq'
-    depends_on 'czmq'
+    depends_on 'zeromq'  => :optional
+    depends_on 'czmq'    => :optional
   end
 
   option 'with-gif', 'Build with GIF support'
