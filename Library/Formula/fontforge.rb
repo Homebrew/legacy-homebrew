@@ -44,7 +44,7 @@ class Fontforge < Formula
 
   depends_on 'gettext'
   if build.head?
-    depends_on 'python'
+    depends_on :python
   else
     depends_on :python => :optional
   end
@@ -64,6 +64,7 @@ class Fontforge < Formula
   end
 
   def install
+    system "echo $PKG_CONFIG_PATH"
     args = ["--prefix=#{prefix}",
             "--enable-double",
             "--without-freetype-bytecode"]
@@ -103,14 +104,14 @@ class Fontforge < Formula
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/Carbon.framework/Frameworks"
 
     if build.head?
-       cmdstring = <<'EOS'
-from distutils.sysconfig import get_python_lib
-import os
-print( os.path.abspath( get_python_lib() + \"/../../pkgconfig\" ))
-EOS
+       cmdstring = <<-'EOS'.undent
+           from distutils.sysconfig import get_python_lib
+           import os
+           print( os.path.abspath( get_python_lib() + \"/../../pkgconfig\" ))
+       EOS
        pypkgconfig = %x( #{HOMEBREW_PREFIX}/bin/python -c "#{cmdstring}" ).chomp;
        ENV["PKG_CONFIG_PATH"] =  ENV["PKG_CONFIG_PATH"] + ":#{pypkgconfig}"
-       ENV.append "PYTHON", "#{HOMEBREW_PREFIX}/bin/python"
+       ENV.append "PYTHON", "#{HOMEBREW_PREFIX}/bin/python" 
     end
 
     system "./bootstrap" if build.head?
