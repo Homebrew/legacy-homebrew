@@ -5,7 +5,7 @@ class Openlitespeed < Formula
   url "http://open.litespeedtech.com/packages/openlitespeed-1.2.9.tgz"
   sha1 "dbdfa1337caeabaca6814e2c12266f5570f14dd7"
   head "https://github.com/litespeedtech/openlitespeed.git"
-  
+
   devel do
     url "http://open.litespeedtech.com/packages/openlitespeed-1.4.0.tgz"
     sha1 "ee756ed6be30b832218510f43395b36267498882"
