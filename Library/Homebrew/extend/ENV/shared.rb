@@ -130,7 +130,13 @@ module SharedEnvExtension
   # an alternate compiler, altering the value of environment variables.
   # If no valid compiler is found, raises an exception.
   def validate_cc!(formula)
-    if formula.fails_with? compiler
+    # FIXME
+    # The compiler object we pass to fails_with? has no version information
+    # attached to it. This means that if we pass Compiler.new(:clang), the
+    # selector will be invoked if the formula fails with any version of clang.
+    # I think we can safely remove this conditional and always invoke the
+    # selector.
+    if formula.fails_with? Compiler.new(compiler)
       send CompilerSelector.new(formula).compiler
     end
   end
