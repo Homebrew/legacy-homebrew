@@ -3,13 +3,7 @@ module CompilerConstants
   GNU_GCC_REGEXP = /^gcc-(4\.[3-9])$/
 end
 
-class Compiler < Struct.new(:name, :version, :priority)
-  # The major version for non-Apple compilers. Used to indicate a compiler
-  # series; for instance, if the version is 4.8.2, it would return "4.8".
-  def major_version
-    version.match(/(\d\.\d)/)[0] if name.is_a? String
-  end
-end
+Compiler = Struct.new(:name, :version, :priority)
 
 class CompilerFailure
   attr_reader :name
@@ -32,12 +26,11 @@ class CompilerFailure
       name = "gcc-#{major_version}"
       # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
       version = "#{major_version}.999"
-      GnuCompilerFailure.new(name, major_version, version, &block)
     else
       name = spec
       version = 9999
-      new(name, version, &block)
     end
+    new(name, version, &block)
   end
 
   def initialize(name, version, &block)
@@ -48,19 +41,6 @@ class CompilerFailure
 
   def ===(compiler)
     name == compiler.name && version >= (compiler.version || 0)
-  end
-
-  class GnuCompilerFailure < CompilerFailure
-    attr_reader :major_version
-
-    def initialize(name, major_version, version, &block)
-      @major_version = major_version
-      super(name, version, &block)
-    end
-
-    def ===(compiler)
-      super && major_version == compiler.major_version
-    end
   end
 
   MESSAGES = {
