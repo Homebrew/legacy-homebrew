@@ -505,7 +505,7 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
   ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
   ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
   ENV["GIT_WORK_TREE"] = homebrew_git_repo tap
-  ENV["GIT_DIR"] = ENV["GIT_WORK_TREE"]/".git"
+  ENV["GIT_DIR"] = "#{ENV["GIT_WORK_TREE"]}/.git"
 
   pr = ENV['UPSTREAM_PULL_REQUEST']
   number = ENV['UPSTREAM_BUILD_NUMBER']
