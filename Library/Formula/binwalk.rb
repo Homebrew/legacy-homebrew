@@ -7,6 +7,12 @@ class Binwalk < Formula
     sha1 "b0ec783cbf72db358c5118a3052fc1ccf446d8f3"
   end
 
+  bottle do
+    sha1 "d32f66ae40876307fe6fb1784f4381fc2c6f80cf" => :mavericks
+    sha1 "d8b2dce1f5e57068458a217b9ae5d349cfb6e515" => :mountain_lion
+    sha1 "177c7820cc1289b0055d22174f094c06d1152b4c" => :lion
+  end
+
   head do
     url 'https://github.com/devttys0/binwalk.git'
     depends_on "automake" => :build
