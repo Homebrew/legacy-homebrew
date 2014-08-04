@@ -6,6 +6,12 @@ class Libxmlsec1 < Formula
   sha1 '9f24f84bf6f4a61fc55637f016b56c0f44c048ba'
   revision 1
 
+  bottle do
+    sha1 "dacd6e67c5a65acd187faff789086d1c787925a5" => :mavericks
+    sha1 "e9b9669f1b1364eaea9c320880ef13be944f52db" => :mountain_lion
+    sha1 "63b1cb774d0778366c13815e6971e2e51094a627" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'libxml2' # Version on 10.6/10.7 is too old
   depends_on 'gnutls' => :recommended

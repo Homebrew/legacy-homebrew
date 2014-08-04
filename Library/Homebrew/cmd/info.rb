@@ -54,7 +54,7 @@ module Homebrew
   end
 
   def github_fork
-    if which 'git' and (HOMEBREW_REPOSITORY/".git").directory?
+    if (HOMEBREW_REPOSITORY/".git").directory?
       if `git remote -v` =~ %r{origin\s+(https?://|git(?:@|://))github.com[:/](.+)/homebrew}
         $2
       end
@@ -62,14 +62,13 @@ module Homebrew
   end
 
   def github_info f
-    if f.path.to_s =~ HOMEBREW_TAP_PATH_REGEX
-      user = $1
-      repo = $2
-      path = $3
+    if f.tap?
+      user, repo = f.tap.split("/", 2)
+      path = f.path.relative_path_from(HOMEBREW_LIBRARY.join("Taps", f.tap))
     else
       user = f.path.parent.cd { github_fork }
       repo = "homebrew"
-      path = "Library/Formula/#{f.path.basename}"
+      path = f.path.relative_path_from(HOMEBREW_REPOSITORY)
     end
 
     "https://github.com/#{user}/#{repo}/blob/master/#{path}"

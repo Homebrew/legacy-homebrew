@@ -1,16 +1,16 @@
-require 'formula'
+require "formula"
 
 class Jenkins < Formula
-  homepage 'http://jenkins-ci.org'
-  url 'http://mirrors.jenkins-ci.org/war/1.569/jenkins.war'
-  sha1 'e3d9b40c00fd306a55ab80676888742020929214'
+  homepage "http://jenkins-ci.org"
+  url "http://mirrors.jenkins-ci.org/war/1.574/jenkins.war"
+  sha1 "e304f84dfde4f6d0134d8bffe933e6f224da4606"
 
-  head 'https://github.com/jenkinsci/jenkins.git'
+  head "https://github.com/jenkinsci/jenkins.git"
 
   def install
     if build.head?
       system "mvn clean install -pl war -am -DskipTests"
-      libexec.install 'war/target/jenkins.war', '.'
+      libexec.install "war/target/jenkins.war", "."
     else
       libexec.install "jenkins.war"
     end

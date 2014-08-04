@@ -2,8 +2,15 @@ require "formula"
 
 class GpgAgent < Formula
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.24.tar.bz2"
-  sha1 "010e027d5f622778cadc4c124013fe515ed705cf"
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.25.tar.bz2"
+  sha1 "890d77d89f2d187382f95e83e386f2f7ba789436"
+
+  bottle do
+    revision 1
+    sha1 "317d26e0f85fefeb9cccf9a05644aaf70f05c13f" => :mavericks
+    sha1 "16630ed6be44545cf61c631aa0f0a7251499a7c0" => :mountain_lion
+    sha1 "a1dc1f35ba61af4d9fbf0e592f14a274c18c5056" => :lion
+  end
 
   depends_on "libgpg-error"
   depends_on "libgcrypt"
@@ -31,7 +38,7 @@ end
 
 __END__
 diff --git a/configure b/configure
-index 5959b37..eef29d1 100755
+index abacb4e..3b50500 100755
 --- a/configure
 +++ b/configure
 @@ -578,8 +578,8 @@ MFLAGS=
@@ -42,6 +49,6 @@ index 5959b37..eef29d1 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gpg-agent'
 +PACKAGE_TARNAME='gpg-agent'
- PACKAGE_VERSION='2.0.24'
- PACKAGE_STRING='gnupg 2.0.24'
+ PACKAGE_VERSION='2.0.25'
+ PACKAGE_STRING='gnupg 2.0.25'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'

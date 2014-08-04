@@ -7,6 +7,13 @@ class Libdvdnav < Formula
 
   head 'git://git.videolan.org/libdvdnav.git'
 
+  bottle do
+    cellar :any
+    sha1 "fdd2a4d4e292054b0822723e6577d91fd1744d91" => :mavericks
+    sha1 "ff19d811cabb6338ebeecf1f91dea1a9347349c3" => :mountain_lion
+    sha1 "3e0fa252e8862a0374e5e53ddf6feefa1172d5f7" => :lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build

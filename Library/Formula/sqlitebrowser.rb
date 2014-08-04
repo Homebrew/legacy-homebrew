@@ -2,14 +2,14 @@ require 'formula'
 
 class Sqlitebrowser < Formula
   homepage 'http://sqlitebrowser.org'
-  url 'https://github.com/sqlitebrowser/sqlitebrowser/archive/sqlb-3.1.0.tar.gz'
-  sha256 '06ba56016c1f39935d8e121304e27d4d55b0bc74181e4b20155c11aa8c183aae'
+  url 'https://github.com/sqlitebrowser/sqlitebrowser/archive/sqlb-3.2.0.tar.gz'
+  sha256 '2eabb4c0102cb2fabd6bd556ffc40c247a8b317adf518d0601b5ee885ac86e1b'
 
   head 'https://github.com/sqlitebrowser/sqlitebrowser.git'
 
   depends_on 'qt'
   depends_on 'cmake' => :build
-  depends_on 'sqlite' => '--with-functions'
+  depends_on 'sqlite' => 'with-functions'
 
   def install
     system "cmake", ".", *std_cmake_args

@@ -13,9 +13,8 @@ class LanguageModuleDependencyTests < Homebrew::TestCase
   def test_unique_deps_are_not_eql
     x = LanguageModuleDependency.new(:node, "less")
     y = LanguageModuleDependency.new(:node, "coffee-script")
+    refute_eql x, y
     refute_equal x.hash, y.hash
-    assert !x.eql?(y)
-    assert !y.eql?(x)
   end
 
   def test_differing_module_and_import_name

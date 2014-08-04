@@ -1,5 +1,6 @@
 require 'formula'
 
+# GnuTLS has previous, current, and next stable branches, we use current.
 class Gnutls < Formula
   homepage 'http://gnutls.org'
   url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2/gnutls-3.2.15.tar.xz'

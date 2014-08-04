@@ -1,18 +1,18 @@
-require 'formula'
+require "formula"
 
 class Haproxy < Formula
-  homepage 'http://haproxy.1wt.eu'
-  url 'http://www.haproxy.org/download/1.5/src/haproxy-1.5.0.tar.gz'
-  sha1 'dc957d93871e4543d1850a144543bcaa26df37a0'
+  homepage "http://haproxy.1wt.eu"
+  url "http://www.haproxy.org/download/1.5/src/haproxy-1.5.3.tar.gz"
+  sha1 "b86c9490dea5bade767d43f544ced383764f879d"
 
   bottle do
     cellar :any
-    sha1 "22967377181e7ead7e4a933be2744d7af697823e" => :mavericks
-    sha1 "2092512c8b99f7165cb7207059626bda6d966259" => :mountain_lion
-    sha1 "a99d9d7d867fd97df7b75b338b995d7be69fd8d1" => :lion
+    sha1 "41d6a7dfd7b72c7f4a4c63c5c35caf1088268a55" => :mavericks
+    sha1 "1dbc7bf90ba7742e6f586b4777758547870b099e" => :mountain_lion
+    sha1 "5c595b4953060f7a0aa78cc62f8cf1056ec72707" => :lion
   end
 
-  depends_on 'pcre'
+  depends_on "pcre"
 
   def install
     args = ["TARGET=generic",

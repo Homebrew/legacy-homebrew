@@ -46,7 +46,6 @@ class Dependency
   def missing_options(inherited_options=[])
     missing = options | inherited_options
     missing -= Tab.for_formula(to_formula).used_options
-    missing -= to_formula.build.implicit_options
     missing
   end
 
@@ -55,7 +54,7 @@ class Dependency
   end
 
   def inspect
-    "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect}>"
   end
 
   # Define marshaling semantics because we cannot serialize @env_proc

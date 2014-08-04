@@ -32,8 +32,6 @@ class Phantomjs < Formula
       phantom.exit();
     EOS
 
-    output = `#{bin}/phantomjs #{path}`.strip
-    assert_equal "hello", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "hello", shell_output("#{bin}/phantomjs #{path}").strip
   end
 end

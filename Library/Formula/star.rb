@@ -1,9 +1,9 @@
 require 'formula'
 
 class Star < Formula
-  homepage 'http://cdrecord.berlios.de/old/private/star.html'
-  url 'ftp://ftp.berlios.de/pub/star/star-1.5.2.tar.bz2'
-  sha1 'be23b7c282dd4f8533be51129d980e03fc5f2365'
+  homepage 'http://cdrecord.org/private/star.html'
+  url 'https://downloads.sourceforge.net/project/s-tar/star-1.5.3.tar.bz2'
+  sha1 '9f94130c6cfab48a2b37fcd5a9ab21bb5c9b52a2'
 
   depends_on "smake" => :build
 

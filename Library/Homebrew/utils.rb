@@ -3,6 +3,7 @@ require 'exceptions'
 require 'os/mac'
 require 'utils/json'
 require 'utils/inreplace'
+require 'utils/popen'
 require 'open-uri'
 
 class Tty
@@ -44,7 +45,7 @@ end
 def ohai title, *sput
   title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
-  puts sput unless sput.empty?
+  puts sput
 end
 
 def oh1 title
@@ -53,13 +54,11 @@ def oh1 title
 end
 
 def opoo warning
-  STDERR.puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
+  $stderr.puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
 end
 
 def onoe error
-  lines = error.to_s.split("\n")
-  STDERR.puts "#{Tty.red}Error#{Tty.reset}: #{lines.shift}"
-  STDERR.puts lines unless lines.empty?
+  $stderr.puts "#{Tty.red}Error#{Tty.reset}: #{error}"
 end
 
 def ofail error
@@ -111,6 +110,10 @@ module Homebrew
     end
     Process.wait(pid)
     $?.success?
+  end
+
+  def self.git_head
+    HOMEBREW_REPOSITORY.cd { `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle }
   end
 end
 
@@ -178,9 +181,9 @@ def puts_columns items, star_items=[]
 end
 
 def which cmd, path=ENV['PATH']
-  path.split(File::PATH_SEPARATOR).find do |p|
-    pcmd = File.join(p, cmd)
-    return Pathname.new(pcmd) if File.executable?(pcmd) && !File.directory?(pcmd)
+  path.split(File::PATH_SEPARATOR).each do |p|
+    pcmd = File.expand_path(cmd, p)
+    return Pathname.new(pcmd) if File.file?(pcmd) && File.executable?(pcmd)
   end
   return nil
 end
@@ -201,7 +204,6 @@ def which_editor
 end
 
 def exec_editor *args
-  return if args.to_s.empty?
   safe_exec(which_editor, *args)
 end
 
@@ -244,12 +246,12 @@ def nostdout
     yield
   else
     begin
-      require 'stringio'
-      real_stdout = $stdout
-      $stdout = StringIO.new
+      out = $stdout.dup
+      $stdout.reopen("/dev/null")
       yield
     ensure
-      $stdout = real_stdout
+      $stdout.reopen(out)
+      out.close
     end
   end
 end

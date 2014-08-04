@@ -165,7 +165,7 @@ rescue RuntimeError, SystemCallError => e
 rescue Exception => e
   onoe e
   puts "#{Tty.white}Please report this bug:"
-  puts "    #{Tty.em}#{ISSUES_URL}#{Tty.reset}"
+  puts "    #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
   puts e.backtrace
   exit 1
 else

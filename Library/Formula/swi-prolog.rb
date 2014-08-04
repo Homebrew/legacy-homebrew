@@ -6,8 +6,8 @@ class SwiProlog < Formula
   sha1 "38cc6772a48fd412f50fc06e24e6e4673eb71d3b"
 
   devel do
-    url "http://www.swi-prolog.org/download/devel/src/pl-7.1.16.tar.gz"
-    sha1 "e80fc215f1ba5ab45b4c19e3e81321f6f2048091"
+    url "http://www.swi-prolog.org/download/devel/src/pl-7.1.17.tar.gz"
+    sha1 "48c721e4497e9a2d3724a90385bd8ed3f68ed193"
   end
 
   head do

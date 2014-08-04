@@ -7,8 +7,8 @@ class Poco < Formula
   version '1.4.6p4-all'
 
   devel do
-    url 'http://pocoproject.org/releases/poco-1.5.2/poco-1.5.2-all.tar.bz2'
-    sha1 'e2256795b13c0b77d20283cf64914d59245e3492'
+    url 'http://pocoproject.org/releases/poco-1.5.3/poco-1.5.3-all.tar.gz'
+    sha1 'e2eb6d812c907b6e8c117dea101289559926500c'
   end
 
   option :cxx11

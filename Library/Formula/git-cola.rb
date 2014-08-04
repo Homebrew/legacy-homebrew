@@ -1,20 +1,20 @@
-require 'formula'
+require "formula"
 
 class GitCola < Formula
-  homepage 'http://git-cola.github.io/'
-  url 'https://github.com/git-cola/git-cola/archive/v2.0.2.tar.gz'
-  sha1 'e3357ca8dc6bce1e92f5195bbefc0a82edbff262'
+  homepage "http://git-cola.github.io/"
+  url "https://github.com/git-cola/git-cola/archive/v2.0.4.tar.gz"
+  sha1 "c4d05ec81a41dfb1ee67cb2e658bdb3fe52b82a3"
 
-  head 'https://github.com/git-cola/git-cola.git'
+  head "https://github.com/git-cola/git-cola.git"
 
-  option 'with-docs', "Build man pages using asciidoc and xmlto"
+  option "with-docs", "Build man pages using asciidoc and xmlto"
 
-  depends_on 'pyqt'
+  depends_on "pyqt"
 
   if build.with? "docs"
     # these are needed to build man pages
-    depends_on 'asciidoc'
-    depends_on 'xmlto'
+    depends_on "asciidoc"
+    depends_on "xmlto"
   end
 
   def install

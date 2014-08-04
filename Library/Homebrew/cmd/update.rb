@@ -9,7 +9,6 @@ module Homebrew
         Use `brew upgrade <formula>`.
       EOS
     end
-    abort "Please `brew install git' first." unless which "git"
 
     # ensure GIT_CONFIG is unset as we need to operate on .git/config
     ENV.delete('GIT_CONFIG')
@@ -31,7 +30,7 @@ module Homebrew
     ensure
       link_tap_formula(tapped_formulae)
     end
-    report.merge!(master_updater.report)
+    report.update(master_updater.report)
 
     # rename Taps directories
     # this procedure will be removed in the future if it seems unnecessasry
@@ -46,7 +45,7 @@ module Homebrew
         rescue
           onoe "Failed to update tap: #{user.basename}/#{repo.basename.sub("homebrew-", "")}"
         else
-          report.merge!(updater.report) do |key, oldval, newval|
+          report.update(updater.report) do |key, oldval, newval|
             oldval.concat(newval)
           end
         end
@@ -169,20 +168,24 @@ class Updater
     end
   end
 
-  # Matches raw git diff format (see `man git-diff-tree`)
-  DIFFTREE_RX = /^:[0-7]{6} [0-7]{6} [0-9a-fA-F]{40} [0-9a-fA-F]{40} ([ACDMRTUX])\d{0,3}\t(.+?)(?:\t(.+))?$/
-
   def report
     map = Hash.new{ |h,k| h[k] = [] }
 
     if initial_revision && initial_revision != current_revision
-      `git diff-tree -r --raw -M85% #{initial_revision} #{current_revision}`.each_line do |line|
-        DIFFTREE_RX.match line
-        path = case status = $1.to_sym
-          when :R then $3
-          else $2
-          end
-        map[status] << repository.join(path)
+      diff.each_line do |line|
+        status, *paths = line.split
+        src, dst = paths.first, paths.last
+
+        next unless File.extname(dst) == ".rb"
+        next unless paths.any? { |p| File.dirname(p) == formula_directory }
+
+        case status
+        when "A", "M", "D"
+          map[status.to_sym] << repository.join(src)
+        when /^R\d{0,3}/
+          map[:D] << repository.join(src) if File.dirname(src) == formula_directory
+          map[:A] << repository.join(dst) if File.dirname(dst) == formula_directory
+        end
       end
     end
 
@@ -191,8 +194,27 @@ class Updater
 
   private
 
+  def formula_directory
+    if repository == HOMEBREW_REPOSITORY
+      "Library/Formula"
+    elsif repository.join("Formula").directory?
+      "Formula"
+    elsif repository.join("HomebrewFormula").directory?
+      "HomebrewFormula"
+    else
+      "."
+    end
+  end
+
   def read_current_revision
     `git rev-parse -q --verify HEAD`.chomp
+  end
+
+  def diff
+    Utils.popen_read(
+      "git", "diff-tree", "-r", "--name-status", "--diff-filter=AMDR",
+      "-M85%", initial_revision, current_revision
+    )
   end
 
   def `(cmd)
@@ -207,7 +229,22 @@ class Updater
 end
 
 
-class Report < Hash
+class Report
+  def initialize
+    @hash = {}
+  end
+
+  def fetch(*args, &block)
+    @hash.fetch(*args, &block)
+  end
+
+  def update(*args, &block)
+    @hash.update(*args, &block)
+  end
+
+  def empty?
+    @hash.empty?
+  end
 
   def dump
     # Key Legend: Added (A), Copied (C), Deleted (D), Modified (M), Renamed (R)
@@ -215,30 +252,10 @@ class Report < Hash
     dump_formula_report :A, "New Formulae"
     dump_formula_report :M, "Updated Formulae"
     dump_formula_report :D, "Deleted Formulae"
-    dump_formula_report :R, "Renamed Formulae"
-#    dump_new_commands
-#    dump_deleted_commands
   end
 
   def tapped_formula_for key
-    fetch(key, []).select do |path|
-      case path.to_s
-      when HOMEBREW_TAP_PATH_REGEX
-        valid_formula_location?("#{$1}/#{$2}/#{$3}")
-      else
-        false
-      end
-    end.compact
-  end
-
-  def valid_formula_location?(relative_path)
-    ruby_file = /\A.*\.rb\Z/
-    parts = relative_path.split('/')[2..-1]
-    [
-      parts.length == 1 && parts.first =~ ruby_file,
-      parts.length == 2 && parts.first == 'Formula' && parts.last =~ ruby_file,
-      parts.length == 2 && parts.first == 'HomebrewFormula' && parts.last =~ ruby_file,
-    ].any?
+    fetch(key, []).select { |path| HOMEBREW_TAP_PATH_REGEX === path.to_s }
   end
 
   def new_tapped_formula
@@ -252,20 +269,19 @@ class Report < Hash
   def select_formula key
     fetch(key, []).map do |path|
       case path.to_s
-      when Regexp.new(HOMEBREW_LIBRARY + "/Formula")
-        path.basename(".rb").to_s
       when HOMEBREW_TAP_PATH_REGEX
-        "#$1/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
+        "#{$1}/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
+      else
+        path.basename(".rb").to_s
       end
-    end.compact.sort
+    end.sort
   end
 
   def dump_formula_report key, title
     formula = select_formula(key)
     unless formula.empty?
       ohai title
-      puts_columns formula.uniq
+      puts_columns formula
     end
   end
-
 end

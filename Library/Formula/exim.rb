@@ -2,8 +2,8 @@ require 'formula'
 
 class Exim < Formula
   homepage 'http://exim.org'
-  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.82.tar.gz'
-  sha1 'a473782ea9cd17e27798a2971c243973df999a71'
+  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.82.1.tar.gz'
+  sha1 'ae2a4ba02e73f0db7e49685b439532d74a87db19'
 
   option 'support-maildir', 'Support delivery in Maildir format'
 

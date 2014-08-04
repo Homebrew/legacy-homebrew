@@ -2,30 +2,31 @@ require "formula"
 
 class Tor < Formula
   homepage "https://www.torproject.org/"
-  url "https://www.torproject.org/dist/tor-0.2.4.22.tar.gz"
-  sha1 "42349e02c3f6db4e6f2cc52b8a61ea91761ac4d6"
+  url "https://www.torproject.org/dist/tor-0.2.4.23.tar.gz"
+  sha256 "05a3793cfb66b694cb5b1c8d81226d0f7655031b0d5e6a8f5d9c4c2850331429"
 
   bottle do
-    revision 1
-    sha1 "f6b42d12fb7dc5a18a6d58b3250923d0a0fcd78f" => :mavericks
-    sha1 "f9225a57b8a494767cf4a5e126a5cbb19af86e7d" => :mountain_lion
-    sha1 "5be6f9dd594330e1864f6a570873d86f3c84506f" => :lion
+    sha1 "54d1dd20f37651ecfca986ab63f17b1f6967449a" => :mavericks
+    sha1 "991fb80d6d2734922b92733c4d94fb38b9da0982" => :mountain_lion
+    sha1 "a211d0b3ee6585f744bc04fba5a6cafac9f5ba7d" => :lion
   end
 
   devel do
-    url "https://www.torproject.org/dist/tor-0.2.5.4-alpha.tar.gz"
-    version "0.2.5.4-alpha"
-    sha1 "6817c103e2e401330823930e1a0dec38e5147ba2"
+    url "https://www.torproject.org/dist/tor-0.2.5.6-alpha.tar.gz"
+    version "0.2.5.6-alpha"
+    sha256 "ec8edfd824a65bec19c7b79bacfc73c5df76909477ab6dac0d6e8ede7fa337c1"
   end
 
   depends_on "libevent"
   depends_on "openssl"
 
   def install
-    # Fix the path to the control cookie.
-    inreplace "contrib/tor-ctrl.sh",
-      'TOR_COOKIE="/var/lib/tor/data/control_auth_cookie"',
-      'TOR_COOKIE="$HOME/.tor/control_auth_cookie"'
+    if build.stable?
+      # Fix the path to the control cookie. (tor-ctrl removed in v0.2.5.5.)
+      inreplace "contrib/tor-ctrl.sh",
+        'TOR_COOKIE="/var/lib/tor/data/control_auth_cookie"',
+        'TOR_COOKIE="$HOME/.tor/control_auth_cookie"'
+    end
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -33,7 +34,10 @@ class Tor < Formula
                           "--with-openssl-dir=#{Formula["openssl"].opt_prefix}"
     system "make install"
 
-    bin.install "contrib/tor-ctrl.sh" => "tor-ctrl"
+    if build.stable?
+      # (tor-ctrl removed in v0.2.5.5.)
+      bin.install "contrib/tor-ctrl.sh" => "tor-ctrl"
+    end
   end
 
   test do

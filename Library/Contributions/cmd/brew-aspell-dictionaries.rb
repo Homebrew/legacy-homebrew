@@ -4,8 +4,7 @@ require 'formula'
 
 dict_url    = "http://ftpmirror.gnu.org/aspell/dict"
 dict_mirror = "http://ftp.gnu.org/gnu/aspell/dict"
-
-resources = {}
+languages   = {}
 
 open("#{dict_url}/0index.html") do |content|
   content.each_line do |line|
@@ -15,22 +14,23 @@ open("#{dict_url}/0index.html") do |content|
     fields = line.split('"')
     lang, path = fields[1], fields[3]
     lang.gsub!("-", "_")
-    resources[lang] = path
+    languages[lang] = path
   end
 end
 
-resources.each_pair do |lang, path|
-  r = Resource.new(lang, "#{dict_url}/#{path}")
-  r.owner = Formula.factory('aspell')
-
-  nostdout { r.fetch }
-
+languages.inject([]) do |resources, (lang, path)|
+  r = Resource.new(lang)
+  r.owner = Formulary.factory("aspell")
+  r.url "#{dict_url}/#{path}"
+  r.mirror "#{dict_mirror}/#{path}"
+  resources << r
+end.each(&:fetch).each do |r|
   puts <<-EOS
-  resource '#{lang}' do
-    url '#{dict_url}/#{path}'
-    mirror '#{dict_mirror}/#{path}'
-    sha1 '#{r.cached_download.sha1}'
-  end
+    resource "#{r.name}" do
+      url "#{r.url}"
+      mirror "#{r.mirrors.first}"
+      sha1 "#{r.cached_download.sha1}"
+    end
 
-EOS
+  EOS
 end

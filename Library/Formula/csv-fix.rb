@@ -1,7 +1,7 @@
 require "formula"
 
 class CsvFix < Formula
-  homepage "http://code.google.com/p/csvfix/"
+  homepage "http://neilb.bitbucket.org/csvfix/"
   url "https://bitbucket.org/neilb/csvfix/get/version-1.6.tar.gz"
   sha1 "ca770b47f2e08a09350c4005e6ab3c524798b440"
 
@@ -17,10 +17,7 @@ class CsvFix < Formula
   end
 
   test do
-    IO.popen("#{bin}/csvfix trim", "w+") do |pipe|
-      pipe.write "foo , bar \n"
-      pipe.close_write
-      assert_equal %{"foo","bar"\n}, pipe.read
-    end
+    assert_equal %{"foo","bar"\n},
+                 pipe_output("#{bin}/csvfix trim", "foo , bar \n")
   end
 end

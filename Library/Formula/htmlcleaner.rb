@@ -13,9 +13,6 @@ class Htmlcleaner < Formula
   test do
     path = testpath/"index.html"
     path.write "<html>"
-
-    output = `#{bin}/htmlcleaner src=#{path}`
-    assert output.include?("</html>")
-    assert_equal 0, $?.exitstatus
+    assert shell_output("#{bin}/htmlcleaner src=#{path}").include?("</html>")
   end
 end

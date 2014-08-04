@@ -14,6 +14,13 @@ class Libimobiledevice < Formula
     sha1 "0bcc31e491474f923c145b702dc7870ddf003fff" => :lion
   end
 
+  head do
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "libxml2"
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libtasn1"
   depends_on "libplist"
@@ -21,6 +28,7 @@ class Libimobiledevice < Formula
   depends_on "openssl"
 
   def install
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",

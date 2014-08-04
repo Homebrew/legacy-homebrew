@@ -9,16 +9,23 @@ module Homebrew
       gem "minitest", "< 5.0.0"
     rescue Gem::LoadError
       require "test/unit/assertions"
-      FailedAssertion = Test::Unit::AssertionFailedError
     else
       require "minitest/unit"
       require "test/unit/assertions"
-      FailedAssertion = MiniTest::Assertion
     end
   else
     require "test/unit/assertions"
+  end
+
+  if defined?(MiniTest::Assertion)
+    FailedAssertion = MiniTest::Assertion
+  elsif defined?(Minitest::Assertion)
+    FailedAssertion = Minitest::Assertion
+  else
     FailedAssertion = Test::Unit::AssertionFailedError
   end
+
+  require "formula_assertions"
 
   def test
     raise FormulaUnspecifiedError if ARGV.named.empty?
@@ -42,6 +49,7 @@ module Homebrew
       puts "Testing #{f.name}"
 
       f.extend(Test::Unit::Assertions)
+      f.extend(Homebrew::Assertions)
 
       begin
         # tests can also return false to indicate failure

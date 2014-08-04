@@ -22,10 +22,6 @@ class Multimarkdown < Formula
   end
 
   test do
-    IO.popen(bin/"mmd", "w+") do |pipe|
-      pipe.write "foo *bar*\n"
-      pipe.close_write
-      assert_equal "<p>foo <em>bar</em></p>\n", pipe.read
-    end
+    assert_equal "<p>foo <em>bar</em></p>\n", pipe_output(bin/"mmd", "foo *bar*\n")
   end
 end

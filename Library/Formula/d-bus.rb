@@ -1,14 +1,14 @@
-require 'formula'
+require "formula"
 
 class DBus < Formula
-  homepage 'http://www.freedesktop.org/wiki/Software/dbus'
-  url 'http://dbus.freedesktop.org/releases/dbus/dbus-1.8.2.tar.gz'
-  sha256 '5689f7411165adc953f37974e276a3028db94447c76e8dd92efe910c6d3bae08'
+  homepage "http://www.freedesktop.org/wiki/Software/dbus"
+  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.6.tar.gz"
+  sha1 "ad7cb87cdce66533479a9d7c1c956bdb0243ad87"
 
   bottle do
-    sha1 "170fd9d8771d1a681131dfe34f4f39eeaf105f66" => :mavericks
-    sha1 "80ef90bac8789af790eadff4d0a30649ce266fce" => :mountain_lion
-    sha1 "d85a01aa83aa3d38de212a52ef0db20d645625ea" => :lion
+    sha1 "080efb67d648af00124b263fbdfe1e99a53831c4" => :mavericks
+    sha1 "96220a126a73a3d78db9fc5e213e54e366cef912" => :mountain_lion
+    sha1 "d59965651e893a73e610aa166333c6b77f56482a" => :lion
   end
 
   def install
@@ -29,7 +29,7 @@ class DBus < Formula
     ENV.deparallelize
     system "make install"
 
-    (prefix+'org.freedesktop.dbus-session.plist').chmod 0644
+    (prefix+"org.freedesktop.dbus-session.plist").chmod 0644
   end
 
   def post_install

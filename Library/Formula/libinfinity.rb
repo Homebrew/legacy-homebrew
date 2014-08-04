@@ -6,6 +6,12 @@ class Libinfinity < Formula
   sha1 '75e3349452bdd182a385f62100c09f47b277b145'
   revision 1
 
+  bottle do
+    sha1 "e361f9f9fe5323bddccb4d47966a9920b2d93c39" => :mavericks
+    sha1 "5be4eb2a739c4bbe00f409b81f9721577809d861" => :mountain_lion
+    sha1 "e99f4d2708964047363a20ee31b0acd16272c784" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'gtk+'

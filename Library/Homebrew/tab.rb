@@ -10,39 +10,32 @@ require 'utils/json'
 class Tab < OpenStruct
   FILENAME = 'INSTALL_RECEIPT.json'
 
-  def self.create f, compiler, stdlib, args
-    build = f.build.dup
-    build.args = args
-
-    sha = HOMEBREW_REPOSITORY.cd do
-      `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle
-    end
-
+  def self.create(formula, compiler, stdlib, build)
     Tab.new :used_options => build.used_options,
             :unused_options => build.unused_options,
-            :tabfile => f.prefix.join(FILENAME),
+            :tabfile => formula.prefix.join(FILENAME),
             :built_as_bottle => !!ARGV.build_bottle?,
             :poured_from_bottle => false,
-            :tapped_from => f.tap,
+            :tapped_from => formula.tap,
             :time => Time.now.to_i,
-            :HEAD => sha,
+            :HEAD => Homebrew.git_head,
             :compiler => compiler,
             :stdlib => stdlib
   end
 
   def self.from_file path
-    tab = Tab.new Utils::JSON.load(File.read(path))
-    tab.tabfile = path.realpath
-    tab
+    attributes = Utils::JSON.load(File.read(path))
+    attributes[:tabfile] = path
+    new(attributes)
   end
 
   def self.for_keg keg
     path = keg.join(FILENAME)
 
     if path.exist?
-      self.from_file(path)
+      from_file(path)
     else
-      self.dummy_tab
+      dummy_tab
     end
   end
 
@@ -51,7 +44,15 @@ class Tab < OpenStruct
   end
 
   def self.for_formula f
-    paths = [f.opt_prefix, f.linked_keg]
+    paths = []
+
+    if f.opt_prefix.symlink? && f.opt_prefix.directory?
+      paths << f.opt_prefix.resolved_path
+    end
+
+    if f.linked_keg.symlink? && f.linked_keg.directory?
+      paths << f.linked_keg.resolved_path
+    end
 
     if f.rack.directory? && (dirs = f.rack.subdirs).length == 1
       paths << dirs.first
@@ -76,17 +77,22 @@ class Tab < OpenStruct
             :tapped_from => "",
             :time => nil,
             :HEAD => nil,
+            :stdlib => nil,
             :compiler => :clang
   end
 
   def with? name
     if options.include? "with-#{name}"
-      used_options.include? "with-#{name}"
+      include? "with-#{name}"
     elsif options.include? "without-#{name}"
-      not used_options.include? "without-#{name}"
+      not include? "without-#{name}"
     else
       false
     end
+  end
+
+  def without? name
+    not with? name
   end
 
   def include? opt
@@ -94,7 +100,15 @@ class Tab < OpenStruct
   end
 
   def universal?
-    used_options.include? "universal"
+    include?("universal")
+  end
+
+  def cxx11?
+    include?("c++11")
+  end
+
+  def build_32_bit?
+    include?("32-bit")
   end
 
   def used_options
@@ -113,7 +127,7 @@ class Tab < OpenStruct
     # Older tabs won't have these values, so provide sensible defaults
     lib = stdlib.to_sym if stdlib
     cc = compiler || MacOS.default_compiler
-    CxxStdlib.new(lib, cc.to_sym)
+    CxxStdlib.create(lib, cc.to_sym)
   end
 
   def to_json

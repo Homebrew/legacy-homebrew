@@ -1,13 +1,13 @@
 require "formula_versions"
 
-raise "Please `brew install git` first" unless which "git"
 raise "Please `brew update` first" unless (HOMEBREW_REPOSITORY/".git").directory?
 raise FormulaUnspecifiedError if ARGV.named.empty?
 
 opoo <<-EOS.undent
-  brew-versions is unsupported and may be removed soon.
-  Please use the homebrew-versions tap instead:
+  brew-versions is unsupported and will be removed soon.
+  You should use the homebrew-versions tap instead:
     https://github.com/Homebrew/homebrew-versions
+
 EOS
 ARGV.formulae.each do |f|
   versions = FormulaVersions.new(f)

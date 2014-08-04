@@ -47,7 +47,7 @@ def debrew(exception, formula=nil)
     choose do |menu|
       menu.prompt = "Choose an action: "
       menu.choice(:raise) { original_raise exception }
-      menu.choice(:ignore) { exception.restart }
+      menu.choice(:ignore) { exception.restart } if exception.continuation
       menu.choice(:backtrace) { puts exception.backtrace; again = true }
       menu.choice(:debug) do
         puts "When you exit the debugger, execution will continue."
@@ -64,7 +64,7 @@ def debrew(exception, formula=nil)
             end
           }
         end
-      end if Object.const_defined?(:IRB)
+      end if Object.const_defined?(:IRB) && exception.continuation
       menu.choice(:shell) do
         puts "When you exit this shell, you will return to the menu."
         interactive_shell formula

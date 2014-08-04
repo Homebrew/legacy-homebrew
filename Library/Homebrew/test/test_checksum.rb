@@ -7,16 +7,16 @@ class ChecksumTests < Homebrew::TestCase
   end
 
   def test_equality
-    a = Checksum.new(:sha1, 'deadbeef'*5)
-    b = Checksum.new(:sha1, 'deadbeef'*5)
+    a = Checksum.new(:sha1, TEST_SHA1)
+    b = Checksum.new(:sha1, TEST_SHA1)
     assert_equal a, b
 
-    a = Checksum.new(:sha1, 'deadbeef'*5)
-    b = Checksum.new(:sha1, 'feedface'*5)
+    a = Checksum.new(:sha1, TEST_SHA1)
+    b = Checksum.new(:sha1, TEST_SHA1.reverse)
     refute_equal a, b
 
-    a = Checksum.new(:sha1, 'deadbeef'*5)
-    b = Checksum.new(:sha256, 'deadbeef'*5)
+    a = Checksum.new(:sha1, TEST_SHA1)
+    b = Checksum.new(:sha256, TEST_SHA256)
     refute_equal a, b
   end
 end
