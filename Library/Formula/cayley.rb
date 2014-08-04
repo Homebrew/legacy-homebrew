@@ -2,8 +2,8 @@ require "formula"
 
 class Cayley < Formula
   homepage "https://github.com/google/cayley"
-  url "https://github.com/google/cayley/archive/v0.3.0.tar.gz"
-  sha1 "b69b1da6854cf174854034061ab0919fcf0c18b8"
+  url "https://github.com/google/cayley/archive/v0.3.1.tar.gz"
+  sha1 "6b0e8876e5dc642e3cbecf2ea9eaadb47ea07198"
   head "https://github.com/google/cayley.git"
 
   bottle do
@@ -39,16 +39,13 @@ class Cayley < Formula
     system "go", "get", "github.com/syndtr/goleveldb/leveldb/iterator"
     system "go", "get", "github.com/syndtr/goleveldb/leveldb/opt"
     system "go", "get", "github.com/syndtr/goleveldb/leveldb/util"
-    system "go", "get", "labix.org/v2/mgo"
-    system "go", "get", "labix.org/v2/mgo/bson"
+    system "go", "get", "gopkg.in/mgo.v2"
+    system "go", "get", "gopkg.in/mgo.v2/bson"
 
-    # HEAD does not require the extra work to get 0.3.0 to build properly so avoid it
+    # HEAD does not require the extra work to get 0.3.1 to build properly so avoid it
     unless build.head?
       # Install Go dependencies
       system "go", "get", "github.com/stretchrcom/testify/mock"
-
-      # Fix issue where 0.3.0 builds againsts an old version of syndtr/goleveldb
-      inreplace "graph/leveldb/leveldb_triplestore.go", "GetApproximateSizes", "SizeOf"
     end
 
     # Build
@@ -65,10 +62,10 @@ class Cayley < Formula
     (share/'cayley/assets').install "docs", "static", "templates"
 
     if build.with? "samples"
-      system "gzip", "-d", "30kmoviedata.nt.gz"
+      system "gzip", "-d", "30kmoviedata.nq.gz"
 
       # Copy over sample data
-      (share/'cayley/samples').install "testdata.nt", "30kmoviedata.nt"
+      (share/'cayley/samples').install "testdata.nq", "30kmoviedata.nq"
     end
   end
 
@@ -117,8 +114,8 @@ class Cayley < Formula
   end
 
   test do
-    touch "test.nt"
-    result = pipe_output("#{bin}/cayley repl --dbpath=#{testpath}/test.nt", "graph.Vertex().All()")
+    testdata = "#{HOMEBREW_PREFIX}/share/cayley/samples/testdata.nq"
+    result = pipe_output("#{bin}/cayley repl --db memstore --dbpath=#{testdata}", "graph.Vertex().All()")
     assert !result.include?("Error:")
     assert result.include?("Elapsed time:")
   end
