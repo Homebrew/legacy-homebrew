@@ -7,9 +7,6 @@ class Qiniu < Formula
   sha1 "fe91d20d768b6a91453581ab104c175b21e40ecb"
   version "2.7.20140630"
   def install
-     bin.install "qboxrsctl"=>"qboxrsctl",
-	         "qetag"=>"qetag",
-		 "qrsboxcli"=>"qrsboxcli",
-		 "qrsync"=>"qrsync"
+     bin.install "qboxrsctl", "qetag","qrsboxcli","qrsync"
   end
 end
