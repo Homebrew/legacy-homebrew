@@ -21,6 +21,11 @@ class Duplicity < Formula
     sha1 "54a34873b09c3dd3ea7090caa914908b3e0f1822"
   end
 
+  resource "boto" do
+    url "https://pypi.python.org/packages/source/b/boto/boto-2.32.0.tar.gz"
+    sha1 "3600168823a0c37051daf24c5147e1a9ae73d28d"
+  end
+
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
 
@@ -30,6 +35,7 @@ class Duplicity < Formula
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
     resource("lockfile").stage { system "python", *install_args }
     resource("paramiko").stage { system "python", *install_args }
+    resource("boto").stage { system "python", *install_args }
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
 
