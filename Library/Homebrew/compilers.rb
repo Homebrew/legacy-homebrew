@@ -3,16 +3,19 @@ module CompilerConstants
   GNU_GCC_REGEXP = /^gcc-(4\.[3-9])$/
 end
 
-class Compiler < Struct.new(:name, :version, :priority)
-  # The major version for non-Apple compilers. Used to indicate a compiler
-  # series; for instance, if the version is 4.8.2, it would return "4.8".
-  def major_version
-    version.match(/(\d\.\d)/)[0] if name.is_a? String
+# TODO make this class private to CompilerSelector
+class Compiler
+  attr_reader :name, :version, :priority
+
+  def initialize(name, version=0, priority=0)
+    @name = name
+    @version = version
+    @priority = priority
   end
 end
 
 class CompilerFailure
-  attr_reader :compiler, :major_version
+  attr_reader :name
   attr_rw :cause, :version
 
   # Allows Apple compiler `fails_with` statements to keep using `build`
@@ -29,23 +32,28 @@ class CompilerFailure
     # Non-Apple compilers are in the format fails_with compiler => version
     if spec.is_a?(Hash)
       _, major_version = spec.first
-      compiler = "gcc-#{major_version}"
+      name = "gcc-#{major_version}"
       # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
       version = "#{major_version}.999"
     else
-      compiler = spec
+      name = spec
       version = 9999
-      major_version = nil
     end
-
-    new(compiler, version, major_version, &block)
+    new(name, version, &block)
   end
 
-  def initialize(compiler, version, major_version, &block)
-    @compiler = compiler
+  def initialize(name, version, &block)
+    @name = name
     @version = version
-    @major_version = major_version
     instance_eval(&block) if block_given?
+  end
+
+  def ===(compiler)
+    name == compiler.name && version >= compiler.version
+  end
+
+  def inspect
+    "#<#{self.class.name}: #{name} #{version}>"
   end
 
   MESSAGES = {
@@ -116,27 +124,20 @@ class CompilerSelector
   # Attempts to select an appropriate alternate compiler, but
   # if none can be found raises CompilerError instead
   def compiler
-    begin
-      cc = @compilers.pop
-    end while @f.fails_with?(cc)
-
-    if cc.nil?
-      raise CompilerSelectionError.new(@f)
-    else
-      cc.name
+    while cc = @compilers.pop
+      return cc.name unless @f.fails_with?(cc)
     end
+    raise CompilerSelectionError.new(@f)
   end
 
   private
 
   def priority_for(cc)
     case cc
-    when :clang then @versions.clang_build_version >= 318 ? 3 : 0.5
-    when :gcc   then 2.5
-    when :llvm  then 2
+    when :clang   then @versions.clang_build_version >= 318 ? 3 : 0.5
+    when :gcc     then 2.5
+    when :llvm    then 2
     when :gcc_4_0 then 0.25
-    # non-Apple gcc compilers
-    else 1.5
     end
   end
 end
