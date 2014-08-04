@@ -7,9 +7,10 @@ class Node < Formula
   sha1 "bcef88d76c39147c79a28aa9e5d484564eb3ba7e"
 
   bottle do
-    sha1 "87b71dc12f0cb989da38d9e17b7a8ea7297b3cbd" => :mavericks
-    sha1 "44ee2777a5d897ff198cf4ccc637282cf3a6e6f3" => :mountain_lion
-    sha1 "1c67c4c9ca6e87998374e54b616047adb828cbc4" => :lion
+    revision 2
+    sha1 "13bfa93051be6de7753d7e3988471e84ea56a9bb" => :mavericks
+    sha1 "25b4822c9c76fbb4a76a01b4b8ed9ed9c92123af" => :mountain_lion
+    sha1 "08d9cad79dda3c02a9cbd3616eda34f2b7ad7b20" => :lion
   end
 
   devel do
@@ -30,8 +31,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "http://registry.npmjs.org/npm/-/npm-1.4.21.tgz"
-    sha1 "5081af517ec2c4cbcf82811b0873195b3d1057f9"
+    url "http://registry.npmjs.org/npm/-/npm-1.4.9.tgz"
+    sha1 "29094f675dad69fc5ea24960a81c7abbfca5ce01"
   end
 
   def install

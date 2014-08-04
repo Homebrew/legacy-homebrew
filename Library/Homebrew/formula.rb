@@ -231,14 +231,8 @@ class Formula
     self.class.keg_only_reason
   end
 
-  def fails_with? cc
-    cc = Compiler.new(cc) unless cc.is_a? Compiler
-    (self.class.cc_failures || []).any? do |failure|
-      # Major version check distinguishes between, e.g.,
-      # GCC 4.7.1 and GCC 4.8.2, where a comparison is meaningless
-      failure.compiler == cc.name && failure.major_version == cc.major_version &&
-        failure.version >= (cc.version || 0)
-    end
+  def fails_with? compiler
+    (self.class.cc_failures || []).any? { |failure| failure === compiler }
   end
 
   # sometimes the formula cleaner breaks things
@@ -745,9 +739,9 @@ class Formula
     # fails_with :gcc => '4.8' do
     #   version '4.8.1'
     # end
-    def fails_with compiler, &block
+    def fails_with spec, &block
       @cc_failures ||= Set.new
-      @cc_failures << CompilerFailure.new(compiler, &block)
+      @cc_failures << CompilerFailure.create(spec, &block)
     end
 
     def needs *standards

@@ -83,9 +83,9 @@ class Tab < OpenStruct
 
   def with? name
     if options.include? "with-#{name}"
-      used_options.include? "with-#{name}"
+      include? "with-#{name}"
     elsif options.include? "without-#{name}"
-      not used_options.include? "without-#{name}"
+      not include? "without-#{name}"
     else
       false
     end
@@ -100,7 +100,15 @@ class Tab < OpenStruct
   end
 
   def universal?
-    used_options.include? "universal"
+    include?("universal")
+  end
+
+  def cxx11?
+    include?("c++11")
+  end
+
+  def build_32_bit?
+    include?("32-bit")
   end
 
   def used_options
@@ -119,7 +127,7 @@ class Tab < OpenStruct
     # Older tabs won't have these values, so provide sensible defaults
     lib = stdlib.to_sym if stdlib
     cc = compiler || MacOS.default_compiler
-    CxxStdlib.new(lib, cc.to_sym)
+    CxxStdlib.create(lib, cc.to_sym)
   end
 
   def to_json
