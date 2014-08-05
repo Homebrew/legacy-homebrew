@@ -49,9 +49,8 @@ class Pyqt < Formula
       require "tmpdir"
       dir = Dir.mktmpdir
       begin
-        system "cp", "-r" , ".", dir
+        cp_r(Dir.glob('*'), dir)
         cd dir do
-          inreplace "configure.py", "iteritems", "items" if python == "python3"
           system python, "configure.py", *args
           (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
         end
@@ -67,6 +66,7 @@ class Pyqt < Formula
       system python, "configure-ng.py", *args
       system "make"
       system "make", "install"
+      system "make", "clean"  # for when building against multiple Pythons
     end
   end
 
