@@ -3,12 +3,13 @@ require "formula"
 class ShadowsocksLibev < Formula
   homepage "https://github.com/madeye/shadowsocks-libev"
   url "https://github.com/madeye/shadowsocks-libev/archive/v1.4.6.tar.gz"
-  sha1 "b480559d6ad349138c46cfb00c9d1c3a6b2ef137"
+  sha1 "cccfd9866fa18d128801e66e621f7bd90e8589d3"
 
   bottle do
-    sha1 "c85772ca098fc62a670fc9bf47994efc74b5dada" => :mavericks
-    sha1 "c34e3d20b2af99a5bd062be3d5f7dc8836ad3c7b" => :mountain_lion
-    sha1 "5cabc840ff1e289aeb48f9fc4e1d0f754c9d9ed8" => :lion
+    revision 1
+    sha1 "afe20437aec398c819eede05329982c4060729df" => :mavericks
+    sha1 "e51d6e3409b25c583c9e0baa9039dbc84259a91b" => :mountain_lion
+    sha1 "19b6e328cec37745a55dcc9569fe227bb908b464" => :lion
   end
 
   head "https://github.com/madeye/shadowsocks-libev.git"
