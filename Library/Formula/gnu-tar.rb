@@ -13,7 +13,7 @@ class GnuTar < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}", "--mandir=#{man}"]
+    args = ["--prefix=#{prefix}", "--mandir=#{man}", "--without-xattrs"]
     args << "--program-prefix=g"
 
     system "./configure", *args
