@@ -3,7 +3,7 @@ require "formula"
 class ShadowsocksLibev < Formula
   homepage "https://github.com/madeye/shadowsocks-libev"
   url "https://github.com/madeye/shadowsocks-libev/archive/v1.4.6.tar.gz"
-  sha1 "b480559d6ad349138c46cfb00c9d1c3a6b2ef137"
+  sha1 "cccfd9866fa18d128801e66e621f7bd90e8589d3"
 
   bottle do
     sha1 "c85772ca098fc62a670fc9bf47994efc74b5dada" => :mavericks
