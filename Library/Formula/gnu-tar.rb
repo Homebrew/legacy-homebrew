@@ -12,10 +12,20 @@ class GnuTar < Formula
     sha1 "33c07152ade47e3b3c7bfa2d66346a0acc5ff3ef" => :lion
   end
 
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+
+  # Fix for xattrs bug causing build failures on OS X.
+  patch :p1 do
+    url "https://raw.githubusercontent.com/DomT4/patch-mayhem/master/0001-xattrs-fix-bug-in-configure.patch"
+    sha1 "d8d9f9f5862fa1c1468a914e609daaf57accf3d2"
+  end
+
   def install
-    args = ["--prefix=#{prefix}", "--mandir=#{man}", "--without-xattrs"]
+    args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     args << "--program-prefix=g"
 
+    system "autoreconf"
     system "./configure", *args
     system "make install"
 
