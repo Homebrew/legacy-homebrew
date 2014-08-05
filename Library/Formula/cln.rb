@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Cln < Formula
-  homepage 'http://www.ginac.de/CLN/'
-  url 'http://www.ginac.de/CLN/cln-1.3.3.tar.bz2'
-  sha1 '11c56780eb83ed54f2ad1ecef7f0dc0f609c426d'
+  homepage "http://www.ginac.de/CLN/"
+  url "http://www.ginac.de/CLN/cln-1.3.3.tar.bz2"
+  sha1 "11c56780eb83ed54f2ad1ecef7f0dc0f609c426d"
 
   bottle do
     cellar :any
@@ -12,7 +12,7 @@ class Cln < Formula
     sha1 "3c4a67e6672596a0a9881fb23b7aa3c9eb2c673f" => :lion
   end
 
-  depends_on 'gmp'
+  depends_on "gmp"
 
   # Patch for Clang from MacPorts
   patch do
@@ -22,8 +22,7 @@ class Cln < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
-                          "--with-gmp=#{HOMEBREW_PREFIX}"
+                          "--disable-dependency-tracking"
     system "make install"
   end
 end
