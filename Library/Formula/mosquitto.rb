@@ -2,9 +2,8 @@ require "formula"
 
 class Mosquitto < Formula
   homepage "http://mosquitto.org/"
-  url "http://mosquitto.org/files/source/mosquitto-1.3.1.tar.gz"
-  sha1 "dcba02c12dffa27a0e76e68f88de21fb5f7de29d"
-  revision 1
+  url "http://mosquitto.org/files/source/mosquitto-1.3.4.tar.gz"
+  sha1 "b818672cc0db723995d7c3201ef6962931dd891a"
 
   bottle do
     sha1 "72a9d7a8fe725804d1d1b802e598c7ce54e1871b" => :mavericks
