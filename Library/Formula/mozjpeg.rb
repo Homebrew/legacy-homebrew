@@ -9,9 +9,9 @@ class Mozjpeg < Formula
 
   bottle do
     cellar :any
-    sha1 "c478f25b3a628e0c643de2eb3e3771660c5a4532" => :mavericks
-    sha1 "0187b56d53c4535f47a88ba45d572a8c5472dac3" => :mountain_lion
-    sha1 "c2d7ce459b09f4ebfa1bdc035e4fddffd1d8df8f" => :lion
+    sha1 "70e71c29b055c805f1e1cad0529078d76099e728" => :mavericks
+    sha1 "afc0b5feceb012bfa03dc27528bb04c70d6195d4" => :mountain_lion
+    sha1 "6e289260bb131bb2e4da792dc926ae245e8d7665" => :lion
   end
 
   depends_on "autoconf" => :build
