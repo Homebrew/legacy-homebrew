@@ -20,7 +20,7 @@ class Qemu < Formula
   depends_on "pixman"
   depends_on "vde" => :optional
   depends_on "sdl" => :optional
-  depends_on "gtk" => :optional
+  depends_on "gtk+" => :optional
 
   def install
     args = %W[
@@ -33,7 +33,7 @@ class Qemu < Formula
     ]
     args << (build.with?("sdl") ? "--enable-sdl" : "--disable-sdl")
     args << (build.with?("vde") ? "--enable-vde" : "--disable-vde")
-    args << (build.with?("gtk") ? "--enable-gtk" : "--disable-gtk")
+    args << (build.with?("gtk+") ? "--enable-gtk" : "--disable-gtk")
     ENV["LIBTOOL"] = "glibtool"
     system "./configure", *args
     system "make", "V=1", "install"
