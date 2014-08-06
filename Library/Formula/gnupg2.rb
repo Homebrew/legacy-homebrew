@@ -3,6 +3,7 @@ require "formula"
 class Gnupg2 < Formula
   homepage "https://www.gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.25.tar.bz2"
+  mirror "http://mirrors.kernel.org/debian/pool/main/g/gnupg2/gnupg2_2.0.25.orig.tar.bz2"
   sha1 "890d77d89f2d187382f95e83e386f2f7ba789436"
 
   bottle do
