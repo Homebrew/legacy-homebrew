@@ -27,6 +27,13 @@ class Cmake < Formula
 
   head 'http://cmake.org/cmake.git'
 
+  bottle do
+    cellar :any
+    sha1 "7e4815ddbd283d7754dae04d585995a0ba68e38f" => :mavericks
+    sha1 "5a9299d20fbbdbfe594baeec10fe448d40c2d05f" => :mountain_lion
+    sha1 "dba7684d1d65423df75fd28f459525eb08590232" => :lion
+  end
+
   depends_on NoExpatFramework
 
   def install
