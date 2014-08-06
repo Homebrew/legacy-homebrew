@@ -3,7 +3,7 @@ require 'formula'
 class Lmdb < Formula
   homepage 'http://symas.com/mdb/'
   url 'https://gitorious.org/mdb/mdb/archive/LMDB_0.9.11.tar.gz'
-  sha1 '8015de70514e8b437b4bc43718a7034101efdc67'
+  sha1 '9ecbb74451c20a7603c05e4453d52a6b2cd09ed8'
 
   head 'git://git.openldap.org/openldap.git', :branch => 'mdb.master'
 
