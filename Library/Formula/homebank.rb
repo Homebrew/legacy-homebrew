@@ -2,8 +2,8 @@ require 'formula'
 
 class Homebank < Formula
   homepage 'http://homebank.free.fr'
-  url 'http://homebank.free.fr/public/homebank-4.6.1.tar.gz'
-  sha1 '0e37c8421cbf8a681afc2e155262b28f8acaa5f6'
+  url 'http://homebank.free.fr/public/homebank-4.6.2.tar.gz'
+  sha1 '7aecd3bd7487b8e563e65ee7ae62f189f9575e99'
 
   bottle do
     sha1 "b6f8da52acbb1332d36edacf64071ab9afff773d" => :mavericks
