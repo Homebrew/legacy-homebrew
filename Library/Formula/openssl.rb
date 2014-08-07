@@ -3,7 +3,7 @@ require 'formula'
 class Openssl < Formula
   homepage 'http://openssl.org'
   url 'https://www.openssl.org/source/openssl-1.0.1i.tar.gz'
-  # mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1i.tar.gz'
+  mirror 'http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.1i.tar.gz'
   sha256 '3c179f46ca77069a6a0bac70212a9b3b838b2f66129cb52d568837fc79d8fcc7'
 
   bottle do
