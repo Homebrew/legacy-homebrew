@@ -21,6 +21,11 @@ class Freeling < Formula
     system "./configure", "--prefix=#{prefix}", "--enable-boost-locale"
 
     system "make", "install"
+
+    libexec.install "#{bin}/fl_initialize"
+    inreplace "#{bin}/analyze",
+      ". $(cd $(dirname $0) && echo $PWD)/fl_initialize",
+      ". #{libexec}/fl_initialize"
   end
 
   test do
