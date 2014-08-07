@@ -51,11 +51,6 @@ module OS
     end
     alias_method :mountain_lion_or_newer?, :mountain_lion?
 
-    def mavericks?
-      version >= "10.9"
-    end
-    alias_method :mavericks_or_newer?, :mavericks?
-
     def macports_or_fink_installed?
       !macports_or_fink.empty?
     end
