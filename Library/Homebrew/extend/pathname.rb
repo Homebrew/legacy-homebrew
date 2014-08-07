@@ -93,6 +93,14 @@ class Pathname
     open("w", *open_args) { |f| f.write(content) }
   end
 
+  def binwrite(contents, *open_args)
+    open("wb", *open_args) { |f| f.write(contents) }
+  end unless method_defined?(:binwrite)
+
+  def binread(*open_args)
+    open("rb", *open_args) { |f| f.read }
+  end unless method_defined?(:binread)
+
   # NOTE always overwrites
   def atomic_write content
     require "tempfile"

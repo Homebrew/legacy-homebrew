@@ -22,6 +22,6 @@ class Fzf < Formula
 
   test do
     (testpath/"list").write %w[hello world].join($/)
-    assert_equal "world", `cat #{testpath}/list | #{bin}/fzf -f wld`.chomp
+    assert_equal "world", shell_output("cat #{testpath}/list | #{bin}/fzf -f wld").chomp
   end
 end

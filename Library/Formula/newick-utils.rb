@@ -17,8 +17,6 @@ class NewickUtils < Formula
   end
 
   test do
-    require 'open3'
-
     expected = <<-EOS
  +-------------------------------------+ B
 =| A
@@ -29,11 +27,8 @@ class NewickUtils < Formula
  substitutions/site
 EOS
 
-    Open3.popen3("#{bin}/nw_display", "-") do |stdin, stdout, _|
-      stdin.write("(B:1,C:2)A;\n")
-      stdin.close
-      assert_equal expected, stdout.read.split("\n").map(&:rstrip).join("\n")
-    end
+    output = pipe_output("#{bin}/nw_display -", "(B:1,C:2)A;\n")
+    assert_equal expected, output.split("\n").map(&:rstrip).join("\n")
   end
 end
 

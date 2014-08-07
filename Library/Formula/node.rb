@@ -3,13 +3,14 @@ require "formula"
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "http://nodejs.org/"
-  url "http://nodejs.org/dist/v0.10.29/node-v0.10.29.tar.gz"
-  sha1 "0d5dc62090404f7c903f29779295758935529242"
+  url "http://nodejs.org/dist/v0.10.30/node-v0.10.30.tar.gz"
+  sha1 "bcef88d76c39147c79a28aa9e5d484564eb3ba7e"
 
   bottle do
-    sha1 "e90cc43c18f9ff8191d6602e042aa14b33da37a1" => :mavericks
-    sha1 "42014487797e67983672e933ed14488ee24d7b1f" => :mountain_lion
-    sha1 "128fa1edbefb09ac634af404e1822996423232f0" => :lion
+    revision 2
+    sha1 "13bfa93051be6de7753d7e3988471e84ea56a9bb" => :mavericks
+    sha1 "25b4822c9c76fbb4a76a01b4b8ed9ed9c92123af" => :mountain_lion
+    sha1 "08d9cad79dda3c02a9cbd3616eda34f2b7ad7b20" => :lion
   end
 
   devel do

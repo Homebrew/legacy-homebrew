@@ -11,10 +11,6 @@ class Cbmbasic < Formula
   end
 
   test do
-    IO.popen("#{bin}/cbmbasic", "w+") do |pipe|
-      pipe.write("PRINT 1\n")
-      pipe.close_write
-      assert_match /READY.\r\n 1/, pipe.read
-    end
+    assert_match /READY.\r\n 1/, pipe_output("#{bin}/cbmbasic", "PRINT 1\n")
   end
 end

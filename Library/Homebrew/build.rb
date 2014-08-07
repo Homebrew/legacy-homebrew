@@ -1,14 +1,9 @@
 # This script is loaded by formula_installer as a separate instance.
-# Rationale: Formula can use __END__, Formula can change ENV
 # Thrown exceptions are propogated back to the parent process over a pipe
 
 STD_TRAP = trap("INT") { exit! 130 } # no backtrace thanks
 
-at_exit do
-  # the whole of everything must be run in at_exit because the formula has to
-  # be the run script as __END__ must work for *that* formula.
-  main
-end
+at_exit { main }
 
 require 'global'
 require 'cxxstdlib'
@@ -31,7 +26,6 @@ def main
 
   trap("INT", STD_TRAP) # restore default CTRL-C handler
 
-  require 'hardware'
   require 'keg'
   require 'extend/ENV'
 
@@ -113,14 +107,13 @@ class Build
   def install
     keg_only_deps = deps.map(&:to_formula).select(&:keg_only?)
 
-    pre_superenv_hacks
-
-    ENV.activate_extensions!
-
     deps.map(&:to_formula).each do |dep|
       opt = HOMEBREW_PREFIX.join("opt", dep.name)
       fixopt(dep) unless opt.directory?
     end
+
+    pre_superenv_hacks
+    ENV.activate_extensions!
 
     if superenv?
       ENV.keg_only_deps = keg_only_deps.map(&:name)
@@ -179,7 +172,7 @@ class Build
           # This currently only tracks a single C++ stdlib per dep,
           # though it's possible for different libs/executables in
           # a given formula to link to different ones.
-          stdlib_in_use = CxxStdlib.new(stdlibs.first, ENV.compiler)
+          stdlib_in_use = CxxStdlib.create(stdlibs.first, ENV.compiler)
           begin
             stdlib_in_use.check_dependencies(f, deps)
           rescue IncompatibleCxxStdlibs => e
@@ -193,8 +186,7 @@ class Build
           # link against it.
           stdlibs = keg.detect_cxx_stdlibs :skip_executables => true
 
-          Tab.create(f, ENV.compiler, stdlibs.first,
-            Options.coerce(ARGV.options_only)).write
+          Tab.create(f, ENV.compiler, stdlibs.first, f.build).write
         rescue Exception => e
           if ARGV.debug?
             debrew e, f
@@ -208,19 +200,19 @@ class Build
       end
     end
   end
-end
 
-def fixopt f
-  path = if f.linked_keg.directory? and f.linked_keg.symlink?
-    f.linked_keg.resolved_path
-  elsif f.prefix.directory?
-    f.prefix
-  elsif (kids = f.rack.children).size == 1 and kids.first.directory?
-    kids.first
-  else
-    raise
+  def fixopt f
+    path = if f.linked_keg.directory? and f.linked_keg.symlink?
+      f.linked_keg.resolved_path
+    elsif f.prefix.directory?
+      f.prefix
+    elsif (kids = f.rack.children).size == 1 and kids.first.directory?
+      kids.first
+    else
+      raise
+    end
+    Keg.new(path).optlink
+  rescue StandardError
+    raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
   end
-  Keg.new(path).optlink
-rescue StandardError
-  raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
 end

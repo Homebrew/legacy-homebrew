@@ -12,8 +12,10 @@ class Dnsmasq < Formula
   end
 
   option 'with-idn', 'Compile with IDN support'
+  option 'with-dnssec', 'Compile with DNSSEC support'
 
   depends_on "libidn" if build.with? "idn"
+  depends_on "nettle" if build.with? "dnssec"
   depends_on 'pkg-config' => :build
 
   def install
@@ -25,6 +27,11 @@ class Dnsmasq < Formula
     # Optional IDN support
     if build.with? "idn"
       inreplace "src/config.h", "/* #define HAVE_IDN */", "#define HAVE_IDN"
+    end
+
+    # Optional DNSSEC support
+    if build.with? "dnssec"
+      inreplace "src/config.h", "/* #define HAVE_DNSSEC */", "#define HAVE_DNSSEC"
     end
 
     # Fix compilation on Lion
@@ -60,11 +67,10 @@ class Dnsmasq < Formula
           <string>#{opt_sbin}/dnsmasq</string>
           <string>--keep-in-foreground</string>
         </array>
+        <key>RunAtLoad</key>
+        <true/>
         <key>KeepAlive</key>
-        <dict>
-          <key>NetworkState</key>
-          <true/>
-        </dict>
+        <true/>
       </dict>
     </plist>
     EOS

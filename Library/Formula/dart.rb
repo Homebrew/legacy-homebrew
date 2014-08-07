@@ -1,17 +1,17 @@
 require 'formula'
 
 class Dart < Formula
-  homepage 'http://www.dartlang.org/'
+  homepage 'https://www.dartlang.org/'
 
   if MacOS.prefer_64_bit?
-    url 'http://storage.googleapis.com/dart-archive/channels/stable/release/37972/sdk/dartsdk-macos-x64-release.zip'
-    sha1 'c775e8a2eb2f4e68961d2b96789bc35120515403'
+    url 'https://storage.googleapis.com/dart-archive/channels/stable/release/38663/sdk/dartsdk-macos-x64-release.zip'
+    sha1 'fc214070863861e444b0a9619dd92a93c0932bc9'
   else
-    url 'http://storage.googleapis.com/dart-archive/channels/stable/release/37972/sdk/dartsdk-macos-ia32-release.zip'
-    sha1 'e9e469804139ed0b22b3ba318cb7b4ae1000e20c'
+    url 'https://storage.googleapis.com/dart-archive/channels/stable/release/38663/sdk/dartsdk-macos-ia32-release.zip'
+    sha1 'd6d2ba9950f3625d15c39814c183364dcd46b945'
   end
 
-  version '1.5.3'
+  version '1.5.8'
 
   def install
     libexec.install Dir['*']
@@ -32,6 +32,6 @@ class Dart < Formula
       }
     EOS
 
-    assert_equal "test message\n", `#{bin}/dart sample.dart`
+    assert_equal "test message\n", shell_output("#{bin}/dart sample.dart")
   end
 end

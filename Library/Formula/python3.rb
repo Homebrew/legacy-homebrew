@@ -18,7 +18,6 @@ class Python3 < Formula
   option :universal
   option 'quicktest', 'Run `make quicktest` after the build'
   option 'with-brewed-tk', "Use Homebrew's Tk (has optional Cocoa and threads support)"
-  option "with-docs", "Install HTML documentation"
 
   depends_on 'pkg-config' => :build
   depends_on 'readline' => :recommended
@@ -27,15 +26,10 @@ class Python3 < Formula
   depends_on 'openssl'
   depends_on 'xz' => :recommended  # for the lzma module added in 3.3
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
-  depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
+  depends_on :x11 if build.with? "brewed-tk" and Tab.for_name("tcl-tk").with? "x11"
 
   skip_clean "bin/pip3", "bin/pip-#{VER}"
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
-
-  resource "docs" do
-    url "https://docs.python.org/3/archives/python-3.4.1-docs-html.tar.bz2"
-    sha1 "7d76e33a98bcd7c24790309780171c75988ad82a"
-  end
 
   patch :DATA if build.with? 'brewed-tk'
 
@@ -51,7 +45,7 @@ class Python3 < Formula
   end
 
   fails_with :llvm do
-    build '2336'
+    build 2336
     cause <<-EOS.undent
       Could not find platform dependent libraries <exec_prefix>
       Consider setting $PYTHONHOME to <prefix>[:<exec_prefix>]
@@ -140,8 +134,6 @@ class Python3 < Formula
 
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
-
-    doc.install resource("docs") if build.with? "docs"
   end
 
   def post_install

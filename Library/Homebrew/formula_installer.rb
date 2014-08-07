@@ -159,7 +159,7 @@ class FormulaInstaller
         @poured_bottle = true
 
         stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
-        stdlib_in_use = CxxStdlib.new(stdlibs.first, MacOS.default_compiler)
+        stdlib_in_use = CxxStdlib.create(stdlibs.first, MacOS.default_compiler)
         begin
           stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
         rescue IncompatibleCxxStdlibs => e
@@ -316,8 +316,9 @@ class FormulaInstaller
 
   def inherited_options_for(dep)
     inherited_options = Options.new
-    if (options.include?("universal") || f.build.universal?) && !dep.build? && dep.to_formula.build.has_option?("universal")
-      inherited_options << Option.new("universal")
+    u = Option.new("universal")
+    if (options.include?(u) || f.build.universal?) && !dep.build? && dep.to_formula.option_defined?(u)
+      inherited_options << u
     end
     inherited_options
   end
@@ -408,18 +409,9 @@ class FormulaInstaller
 
     install_plist
 
-    if f.keg_only?
-      begin
-        Keg.new(f.prefix).optlink
-      rescue Exception
-        onoe "Failed to create: #{f.opt_prefix}"
-        puts "Things that depend on #{f} will probably not build."
-      end
-    else
-      link
-    end
-
-    fix_install_names if OS.mac?
+    keg = Keg.new(f.prefix)
+    link(keg)
+    fix_install_names(keg) if OS.mac?
 
     post_install
 
@@ -492,8 +484,6 @@ class FormulaInstaller
     # 1. formulae can modify ENV, so we must ensure that each
     #    installation has a pristine ENV when it starts, forking now is
     #    the easiest way to do this
-    # 2. formulae have access to __END__ the only way to allow this is
-    #    to make the formula script the executed script
     read, write = IO.pipe
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
@@ -501,7 +491,7 @@ class FormulaInstaller
     args = %W[
       nice #{RUBY_PATH}
       -W0
-      -I #{File.dirname(__FILE__)}
+      -I #{HOMEBREW_LIBRARY_PATH}
       -rbuild
       --
       #{f.path}
@@ -544,8 +534,17 @@ class FormulaInstaller
     raise
   end
 
-  def link
-    keg = Keg.new(f.prefix)
+  def link(keg)
+    if f.keg_only?
+      begin
+        keg.optlink
+      rescue Keg::LinkError => e
+        onoe "Failed to create #{f.opt_prefix}"
+        puts "Things that depend on #{f} will probably not build."
+        puts e
+      end
+      return
+    end
 
     if keg.linked?
       opoo "This keg was marked linked already, continuing anyway"
@@ -591,8 +590,7 @@ class FormulaInstaller
     ohai e, e.backtrace if debug?
   end
 
-  def fix_install_names
-    keg = Keg.new(f.prefix)
+  def fix_install_names(keg)
     keg.fix_install_names(:keg_only => f.keg_only?)
 
     if @poured_bottle
@@ -634,9 +632,8 @@ class FormulaInstaller
     if f.local_bottle_path
       downloader = LocalBottleDownloadStrategy.new(f)
     else
-      bottle = f.bottle
-      downloader = bottle.downloader
-      bottle.verify_download_integrity(bottle.fetch)
+      downloader = f.bottle
+      downloader.verify_download_integrity(downloader.fetch)
     end
     HOMEBREW_CELLAR.cd do
       downloader.stage

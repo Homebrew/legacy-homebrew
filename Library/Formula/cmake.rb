@@ -22,16 +22,16 @@ end
 
 class Cmake < Formula
   homepage 'http://www.cmake.org/'
-  url 'http://www.cmake.org/files/v3.0/cmake-3.0.0.tar.gz'
-  sha1 '4dfd9ee9b829c77175d655f22322f14747f11ad2'
+  url 'http://www.cmake.org/files/v3.0/cmake-3.0.1.tar.gz'
+  sha1 'b7e4acaa7fc7adf54c1b465c712e5ea473b8b74f'
 
   head 'http://cmake.org/cmake.git'
 
   bottle do
     cellar :any
-    sha1 "1055d958bee856c8ab919a2f89a167487a82becb" => :mavericks
-    sha1 "dc2ccbc4f63b809d1088cfd91573689cb571e6f9" => :mountain_lion
-    sha1 "4ba0618795f9655aa8a937ec9e02378578b64bc9" => :lion
+    sha1 "7e4815ddbd283d7754dae04d585995a0ba68e38f" => :mavericks
+    sha1 "5a9299d20fbbdbfe594baeec10fe448d40c2d05f" => :mountain_lion
+    sha1 "dba7684d1d65423df75fd28f459525eb08590232" => :lion
   end
 
   depends_on NoExpatFramework

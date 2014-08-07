@@ -129,6 +129,12 @@ module OS
       end
     end
 
+    def clear_version_cache
+      @gcc_40_build_version = @gcc_42_build_version = @llvm_build_version = nil
+      @clang_version = @clang_build_version = nil
+      @non_apple_gcc_version = {}
+    end
+
     # See these issues for some history:
     # http://github.com/Homebrew/homebrew/issues/13
     # http://github.com/Homebrew/homebrew/issues/41

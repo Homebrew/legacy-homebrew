@@ -33,6 +33,7 @@ class Imlib2 < Formula
   end
 
   test do
-    system "#{bin}/imlib2_conv", "/usr/share/doc/cups/images/cups.png", "imlib2_test.png"
+    test_png = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.png"
+    system "#{bin}/imlib2_conv", test_png, "imlib2_test.png"
   end
 end
