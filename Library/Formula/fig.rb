@@ -2,8 +2,8 @@ require "formula"
 
 class Fig < Formula
   homepage "http://orchardup.github.io/fig/"
-  url "https://github.com/orchardup/fig/archive/0.5.1.tar.gz"
-  sha1 "38b03a7d823ab3b2662c9c6ada503e28c35e122c"
+  url "https://github.com/orchardup/fig/archive/0.5.2.tar.gz"
+  sha1 "dea7120368833d3255e138c622572335b36d00fc"
 
   bottle do
     cellar :any
