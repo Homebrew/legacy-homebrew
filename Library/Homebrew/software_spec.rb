@@ -80,7 +80,15 @@ class SoftwareSpec
     name = name.to_s if Symbol === name
     raise ArgumentError, "option name is required" if name.empty?
     raise ArgumentError, "options should not start with dashes" if name.start_with?("-")
-    build.add(name, description)
+
+    description ||= case name
+      when "universal" then "Build a universal binary"
+      when "32-bit" then "Build 32-bit only"
+      when "c++11" then "Build using C++11 mode"
+      else ""
+      end
+
+    options << Option.new(name, description)
   end
 
   def depends_on spec
@@ -114,6 +122,10 @@ class SoftwareSpec
     elsif dep.recommended? && !option_defined?("without-#{name}")
       options << Option.new("without-#{name}", "Build without #{name} support")
     end
+  end
+
+  def add_legacy_options(list)
+    list.each { |opt, desc| options << Option.new(opt[/^--(.+)$/, 1], desc) }
   end
 end
 

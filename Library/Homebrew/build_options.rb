@@ -20,17 +20,6 @@ class BuildOptions
     @args = other.args.dup
   end
 
-  def add(name, description)
-    description ||= case name
-      when "universal" then "Build a universal binary"
-      when "32-bit" then "Build 32-bit only"
-      when "c++11" then "Build using C++11 mode"
-      else ""
-      end
-
-    @options << Option.new(name, description)
-  end
-
   def empty?
     @options.empty?
   end
