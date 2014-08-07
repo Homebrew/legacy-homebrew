@@ -32,13 +32,13 @@ class Libstrophe < Formula
       int main(void) {
         xmpp_ctx_t *ctx;
         xmpp_log_t *log;
-	
+
         xmpp_initialize();
         log = xmpp_get_default_logger(XMPP_LEVEL_DEBUG);
-	assert(log);
+        assert(log);
 
         ctx = xmpp_ctx_new(NULL, log);
-	assert(ctx);
+        assert(ctx);
 
         xmpp_ctx_free(ctx);
         xmpp_shutdown();
