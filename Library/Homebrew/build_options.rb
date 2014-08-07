@@ -20,7 +20,7 @@ class BuildOptions
     @args = other.args.dup
   end
 
-  def add name, description=nil
+  def add(name, description)
     description ||= case name.to_s
       when "universal" then "Build a universal binary"
       when "32-bit" then "Build 32-bit only"
