@@ -4,10 +4,7 @@ class Libstrophe < Formula
   homepage "http://strophe.im/libstrophe/"
   url "https://github.com/strophe/libstrophe/archive/0.8.5.tar.gz"
   sha1 "11f80abb8e578c5bc446ff94603e7e0f560547f7"
-
-  head do
-    url "https://github.com/strophe/libstrophe.git"
-  end
+  head "https://github.com/strophe/libstrophe.git"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -21,8 +18,7 @@ class Libstrophe < Formula
     ENV.deparallelize
 
     system "./bootstrap.sh"
-    system "./configure",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
