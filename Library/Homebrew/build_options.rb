@@ -21,7 +21,7 @@ class BuildOptions
   end
 
   def add(name, description)
-    description ||= case name.to_s
+    description ||= case name
       when "universal" then "Build a universal binary"
       when "32-bit" then "Build 32-bit only"
       when "c++11" then "Build using C++11 mode"
