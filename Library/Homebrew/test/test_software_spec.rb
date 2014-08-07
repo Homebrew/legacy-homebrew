@@ -48,16 +48,32 @@ class SoftwareSpecTests < Homebrew::TestCase
   end
 
   def test_option_raises_when_begins_with_dashes
-    assert_raises(RuntimeError) { @spec.option('--foo') }
+    assert_raises(ArgumentError) { @spec.option("--foo") }
   end
 
   def test_option_raises_when_name_empty
-    assert_raises(RuntimeError) { @spec.option('') }
+    assert_raises(ArgumentError) { @spec.option("") }
   end
 
   def test_option_accepts_symbols
     @spec.option(:foo)
     assert @spec.option_defined?("foo")
+  end
+
+  def test_cxx11_option_special_case
+    @spec.option(:cxx11)
+    assert @spec.option_defined?("c++11")
+    refute @spec.option_defined?("cxx11")
+  end
+
+  def test_option_description
+    @spec.option("bar", "description")
+    assert_equal "description", @spec.options.first.description
+  end
+
+  def test_option_description_defaults_to_empty_string
+    @spec.option("foo")
+    assert_equal "", @spec.options.first.description
   end
 
   def test_depends_on

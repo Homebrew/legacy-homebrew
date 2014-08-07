@@ -2,15 +2,14 @@ require 'formula'
 
 class Openssl < Formula
   homepage 'http://openssl.org'
-  url 'https://www.openssl.org/source/openssl-1.0.1h.tar.gz'
-  mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1h.tar.gz'
-  sha256 '9d1c8a9836aa63e2c6adb684186cbd4371c9e9dcc01d6e3bb447abf2d4d3d093'
+  url 'https://www.openssl.org/source/openssl-1.0.1i.tar.gz'
+  mirror 'http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.1i.tar.gz'
+  sha256 '3c179f46ca77069a6a0bac70212a9b3b838b2f66129cb52d568837fc79d8fcc7'
 
   bottle do
-    revision 1
-    sha1 "0b776dc04ed4fcc5398c073b0de75aea22935229" => :mavericks
-    sha1 "3cdffa0876d8cb93e78d5b397a217b1815ae5abf" => :mountain_lion
-    sha1 "017742db0d6daf60936acebeda63daf99c32160d" => :lion
+    sha1 "601d7e8ec3c031bc74f577be840a31030000999e" => :mavericks
+    sha1 "6d387d9ca1d3ca3a3e1e8ff070b695ef38c9fee6" => :mountain_lion
+    sha1 "250bbc9ec053ca94e7fd83d9e21b6ae9d2b75f68" => :lion
   end
 
   option :universal

@@ -27,16 +27,9 @@ module Homebrew
 
   def dump_options_for_formula f
     f.build.sort_by(&:flag).each do |opt|
-      puts opt.flag
-      puts "\t"+opt.description
+      puts "#{opt.flag}\n\t#{opt.description}"
     end
-    if f.devel
-      puts '--devel'
-      puts "\tinstall development version #{f.devel.version}"
-    end
-    if f.head
-      puts '--HEAD'
-      puts "\tinstall HEAD version"
-    end
+    puts "--devel\n\tinstall development version #{f.devel.version}" if f.devel
+    puts "--HEAD\n\tinstall HEAD version" if f.head
   end
 end
