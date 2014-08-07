@@ -2,10 +2,10 @@ require "formula"
 
 class Parrot < Formula
   homepage "http://www.parrot.org/"
+  head "https://github.com/parrot/parrot.git"
   url "ftp://ftp.parrot.org/pub/parrot/releases/supported/6.6.0/parrot-6.6.0.tar.bz2"
   sha256 "08e9e02db952828f6ab71755be47f99ebc90894378f04d8e4d7f3bc623f79ff5"
-
-  head "https://github.com/parrot/parrot.git"
+  revision 1
 
   conflicts_with "rakudo-star"
 
