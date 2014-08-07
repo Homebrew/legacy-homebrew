@@ -66,6 +66,16 @@ class SoftwareSpecTests < Homebrew::TestCase
     refute @spec.option_defined?("cxx11")
   end
 
+  def test_option_description
+    @spec.option("bar", "description")
+    assert_equal "description", @spec.options.first.description
+  end
+
+  def test_option_description_defaults_to_empty_string
+    @spec.option("foo")
+    assert_equal "", @spec.options.first.description
+  end
+
   def test_depends_on
     @spec.depends_on('foo')
     assert_equal 'foo', @spec.deps.first.name
