@@ -14,10 +14,11 @@ module OS
         when "10.7"         then "4.6.3"
         when "10.8"         then "5.1.1"
         when "10.9"         then "5.1.1"
+        when "10.10"        then "6.0"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
           if MacOS.version > "10.9"
-            "5.1.1"
+            "6.0"
           else
             raise "Mac OS X '#{MacOS.version}' is invalid"
           end
@@ -115,6 +116,7 @@ module OS
           when 42      then "4.6"
           when 50      then "5.0"
           when 51      then "5.1"
+          when 60      then "6.0"
           else "5.1"
           end
         end
