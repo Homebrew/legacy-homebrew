@@ -2,8 +2,8 @@ require "formula"
 
 class Libmspub < Formula
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libmspub"
-  url "http://dev-www.libreoffice.org/src/libmspub-0.1.0.tar.bz2"
-  sha1 "4dc9b9c85cb1c30dde071a88edf40a629b6de666"
+  url "http://dev-www.libreoffice.org/src/libmspub/libmspub-0.1.1.tar.bz2"
+  sha1 "0a6743a07ee3393bd4437a8bbee12fa62c9cd0f4"
 
   bottle do
     cellar :any
