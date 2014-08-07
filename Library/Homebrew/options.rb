@@ -3,9 +3,9 @@ require 'set'
 class Option
   attr_reader :name, :description, :flag
 
-  def initialize(name, description=nil)
+  def initialize(name, description="")
     @name, @flag = split_name(name)
-    @description = description.to_s
+    @description = description
   end
 
   def to_s
