@@ -25,7 +25,8 @@ class BuildOptions
       when "universal" then "Build a universal binary"
       when "32-bit" then "Build 32-bit only"
       when "c++11" then "Build using C++11 mode"
-      end.to_s
+      else ""
+      end
 
     @options << Option.new(name, description)
   end
