@@ -5,6 +5,13 @@ class Yconalyzer < Formula
   url 'https://downloads.sourceforge.net/project/yconalyzer/yconalyzer-1.0.4.tar.bz2'
   sha1 'a8fcbf1ce2a0e8612448cc997e904cc572473bcc'
 
+  bottle do
+    cellar :any
+    sha1 "1e71b1cbd2446ef4e7776424bf989260023282a7" => :mavericks
+    sha1 "da4be93c06dd3fd56425d14a82fb55f848c2f9fc" => :mountain_lion
+    sha1 "a9bb41501a0a6e49247702b3e7546cf3af06e25e" => :lion
+  end
+
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
