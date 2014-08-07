@@ -59,7 +59,7 @@ module Stdenv
     if cc =~ GNU_GCC_REGEXP
       warn_about_non_apple_gcc($1)
       gcc_formula = gcc_version_formula($1)
-      self.append_path('PATH', gcc_formula.opt_prefix/'bin')
+      append_path "PATH", gcc_formula.opt_bin.to_s
     end
 
     # Add lib and include etc. from the current macosxsdk to compiler flags:
