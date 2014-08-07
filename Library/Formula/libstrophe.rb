@@ -15,7 +15,7 @@ class Libstrophe < Formula
   depends_on "check"
 
   def install
-    ENV.deparallelize
+    ENV.deparallelize # see https://github.com/strophe/libstrophe/issues/28
 
     system "./bootstrap.sh"
     system "./configure", "--disable-dependency-tracking",
