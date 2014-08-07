@@ -2,8 +2,8 @@ require "formula"
 
 class Lftp < Formula
   homepage "http://lftp.yar.ru/"
-  url "http://lftp.yar.ru/ftp/lftp-4.5.3.tar.gz"
-  sha1 "7c70d2b428c071fc19dd340bcd5bf04069b5fad0"
+  url "http://lftp.yar.ru/ftp/lftp-4.5.4.tar.gz"
+  sha1 "a2d74b719d0c9a4981e4413e56e3a7a6dda712f7"
 
   bottle do
     sha1 "e77c6a4db177a1d57d4d64a26c0695f04458ce70" => :mavericks
