@@ -60,6 +60,12 @@ class SoftwareSpecTests < Homebrew::TestCase
     assert @spec.option_defined?("foo")
   end
 
+  def test_cxx11_option_special_case
+    @spec.option(:cxx11)
+    assert @spec.option_defined?("c++11")
+    refute @spec.option_defined?("cxx11")
+  end
+
   def test_depends_on
     @spec.depends_on('foo')
     assert_equal 'foo', @spec.deps.first.name
