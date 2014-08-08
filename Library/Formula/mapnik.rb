@@ -7,6 +7,12 @@ class Mapnik < Formula
   sha1 "e493ad87ca83471374a3b080f760df4b25f7060d"
   revision 2
 
+  bottle do
+    sha1 "dc73959a75ce5dd11e7b03e50b5215179650b768" => :mavericks
+    sha1 "4ff3aa06da7b8e6788a5e996732ea4dfbf321085" => :mountain_lion
+    sha1 "882cce36e29cea17f3cdb40805e9c7245a747f98" => :lion
+  end
+
   # can be removed at Mapnik > 2.2.0
   # https://github.com/mapnik/mapnik/issues/1973
   patch :DATA
