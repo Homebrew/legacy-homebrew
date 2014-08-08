@@ -15,7 +15,7 @@ class Libstrophe < Formula
 
   def install
     # see https://github.com/strophe/libstrophe/issues/28
-    ENV.deparallelize 
+    ENV.deparallelize
 
     system "./bootstrap.sh"
     system "./configure", "--disable-dependency-tracking",
