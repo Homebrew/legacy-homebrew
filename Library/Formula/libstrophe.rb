@@ -15,7 +15,8 @@ class Libstrophe < Formula
   depends_on "check"
 
   def install
-    ENV.deparallelize # see https://github.com/strophe/libstrophe/issues/28
+    # see https://github.com/strophe/libstrophe/issues/28
+    ENV.deparallelize 
 
     system "./bootstrap.sh"
     system "./configure", "--disable-dependency-tracking",
@@ -46,7 +47,7 @@ class Libstrophe < Formula
       }
       EOS
     flags = ["-I#{include}/", "-lstrophe"]
-    system ENV.cc, "-o", "test", "test.c", *(flags + ENV.cflags.to_s.split)
+    system ENV.cc, "-o", "test", "test.c", *(flags + ENV.cflags)
     system "./test"
   end
 end
