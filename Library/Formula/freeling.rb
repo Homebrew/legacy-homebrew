@@ -5,6 +5,7 @@ class Freeling < Formula
   url "http://devel.cpl.upc.edu/freeling/downloads/32"
   version "3.1"
   sha1 "42dbf7eec6e5c609e10ccc60768652f220d24771"
+  revision 1
 
   depends_on "icu4c"
   depends_on "boost" => "with-icu"
