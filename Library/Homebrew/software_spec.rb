@@ -11,6 +11,12 @@ require 'patch'
 class SoftwareSpec
   extend Forwardable
 
+  PREDEFINED_OPTIONS = {
+    :universal => Option.new("universal", "Build a universal binary"),
+    :cxx11     => Option.new("c++11", "Build using C++11 mode"),
+    "32-bit"   => Option.new("32-bit", "Build 32-bit only"),
+  }
+
   attr_reader :name, :owner
   attr_reader :build, :resources, :patches, :options
   attr_reader :dependency_collector
@@ -75,12 +81,18 @@ class SoftwareSpec
     options.include?(name)
   end
 
-  def option name, description=nil
-    name = 'c++11' if name == :cxx11
-    name = name.to_s if Symbol === name
-    raise ArgumentError, "option name is required" if name.empty?
-    raise ArgumentError, "options should not start with dashes" if name.start_with?("-")
-    build.add(name, description)
+  def option(name, description="")
+    opt = PREDEFINED_OPTIONS.fetch(name) do
+      if Symbol === name
+        opoo "Passing arbitrary symbols to `option` is deprecated: #{name.inspect}"
+        puts "Symbols are reserved for future use, please pass a string instead"
+        name = name.to_s
+      end
+      raise ArgumentError, "option name is required" if name.empty?
+      raise ArgumentError, "options should not start with dashes" if name.start_with?("-")
+      Option.new(name, description)
+    end
+    options << opt
   end
 
   def depends_on spec
@@ -114,6 +126,10 @@ class SoftwareSpec
     elsif dep.recommended? && !option_defined?("without-#{name}")
       options << Option.new("without-#{name}", "Build without #{name} support")
     end
+  end
+
+  def add_legacy_options(list)
+    list.each { |opt, desc| options << Option.new(opt[/^--(.+)$/, 1], desc) }
   end
 end
 

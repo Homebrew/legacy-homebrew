@@ -48,10 +48,8 @@ class TabTests < Homebrew::TestCase
   end
 
   def test_universal?
-    refute_predicate @tab, :universal?
-    @used << "universal"
-    @tab.used_options = @used.map(&:to_s)
-    assert_predicate @tab, :universal?
+    tab = Tab.new(:used_options => %w[--universal])
+    assert_predicate tab, :universal?
   end
 
   def test_options

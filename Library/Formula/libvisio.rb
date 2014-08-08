@@ -4,13 +4,13 @@ class Libvisio < Formula
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libvisio"
   url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.0.tar.xz"
   sha1 "c82e5c7ad25e513c268032cda9febd01b8879504"
+  revision 2
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "ff0a3bed223e14036633795b616dd56ae2cc6a80" => :mavericks
-    sha1 "67cc8107265473f4165d364103f7c805d7f6f930" => :mountain_lion
-    sha1 "f5c6b08278f5a3d8e3d89b16765ba7b3a0a9b65c" => :lion
+    sha1 "bdfcdedd23af956b9368d2efcdcdd3a3c2ae149e" => :mavericks
+    sha1 "f91823c71abf65d1badc48ea249f21d6f85b9e88" => :mountain_lion
+    sha1 "6aec36a1622a98013865c6d3292eb4999fdccee5" => :lion
   end
 
   depends_on "pkg-config" => :build

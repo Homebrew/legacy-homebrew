@@ -16,7 +16,7 @@ class Formula
   include Utils::Inreplace
   extend Enumerable
 
-  attr_reader :name, :path, :homepage, :build
+  attr_reader :name, :path, :homepage
   attr_reader :stable, :devel, :head, :active_spec
   attr_reader :pkg_version, :revision
 
@@ -38,9 +38,8 @@ class Formula
 
     @active_spec = determine_active_spec(spec)
     validate_attributes :url, :name, :version
-    @build = determine_build_options
+    active_spec.add_legacy_options(options)
     @pkg_version = PkgVersion.new(version, revision)
-
     @pin = FormulaPin.new(self)
   end
 
@@ -63,12 +62,6 @@ class Formula
         raise FormulaValidationError.new(attr, value)
       end
     end
-  end
-
-  def determine_build_options
-    build = active_spec.build
-    options.each { |opt, desc| build.add(opt, desc) }
-    build
   end
 
   def bottle
@@ -108,6 +101,10 @@ class Formula
 
   def option_defined?(name)
     active_spec.option_defined?(name)
+  end
+
+  def build
+    active_spec.build
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -664,7 +661,7 @@ class Formula
       specs.each { |spec| spec.depends_on(dep) }
     end
 
-    def option name, description=nil
+    def option name, description=""
       specs.each { |spec| spec.option(name, description) }
     end
 
@@ -696,8 +693,8 @@ class Formula
       @skip_clean_paths ||= Set.new
     end
 
-    def keg_only reason, explanation=nil
-      @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
+    def keg_only reason, explanation=""
+      @keg_only_reason = KegOnlyReason.new(reason, explanation)
     end
 
     # Flag for marking whether this formula needs C++ standard library

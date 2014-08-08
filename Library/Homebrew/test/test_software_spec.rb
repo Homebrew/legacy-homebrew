@@ -55,11 +55,6 @@ class SoftwareSpecTests < Homebrew::TestCase
     assert_raises(ArgumentError) { @spec.option("") }
   end
 
-  def test_option_accepts_symbols
-    @spec.option(:foo)
-    assert @spec.option_defined?("foo")
-  end
-
   def test_cxx11_option_special_case
     @spec.option(:cxx11)
     assert @spec.option_defined?("c++11")
