@@ -14,10 +14,10 @@ class Flac < Formula
 
   bottle do
     cellar :any
-    revision 3
-    sha1 "a7d96ca264c372d8fcd80b08abdbf753b91811d3" => :mavericks
-    sha1 "e4c63b4639f276bf479673b768788001aa919ffc" => :mountain_lion
-    sha1 "845dbcb2e3b7779528a814472cc7ec011ea58905" => :lion
+    revision 4
+    sha1 "d58829621a3fd3c300f8b44a9da5396260bc825f" => :mavericks
+    sha1 "e69bbea156a3915ada88f9d3169a53821dd3f64b" => :mountain_lion
+    sha1 "75003deaf2c9de68c04af8a2e0f9f08f07680e5a" => :lion
   end
 
   option :universal
