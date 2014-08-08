@@ -50,13 +50,13 @@ class Flac < Formula
 
     system "./configure", *args
 
-    ENV["OBJ_FORMAT"]="macho"
+    ENV["OBJ_FORMAT"] = "macho"
 
     # adds universal flags to the generated libtool script
     inreplace "libtool" do |s|
       s.gsub! ":$verstring\"", ":$verstring -arch #{Hardware::CPU.arch_32_bit} -arch #{Hardware::CPU.arch_64_bit}\""
     end
 
-    system "make install"
+    system "make", "install"
   end
 end
