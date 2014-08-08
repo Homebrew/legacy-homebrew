@@ -515,8 +515,9 @@ class FormulaInstaller
 
     ignore_interrupts(:quietly) do # the child will receive the interrupt and marshal it back
       write.close
+      thr = Thread.new { read.read }
       Process.wait(pid)
-      data = read.read
+      data = thr.value
       read.close
       raise Marshal.load(data) unless data.nil? or data.empty?
       raise Interrupt if $?.exitstatus == 130
