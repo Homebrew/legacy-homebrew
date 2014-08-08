@@ -661,7 +661,7 @@ class Formula
       specs.each { |spec| spec.depends_on(dep) }
     end
 
-    def option name, description=nil
+    def option name, description=""
       specs.each { |spec| spec.option(name, description) }
     end
 
