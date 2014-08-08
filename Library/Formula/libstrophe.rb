@@ -6,6 +6,13 @@ class Libstrophe < Formula
   sha1 "11f80abb8e578c5bc446ff94603e7e0f560547f7"
   head "https://github.com/strophe/libstrophe.git"
 
+  bottle do
+    cellar :any
+    sha1 "541e0c27a82f39b71eb95bb17169b36f9ffed8c0" => :mavericks
+    sha1 "73e49037a4553f90d846a73c6aad1301921f4848" => :mountain_lion
+    sha1 "a74416c594d17598e4acaea5aea74247c57900bd" => :lion
+  end
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
