@@ -1,5 +1,9 @@
 require "formula"
 
+def mysql_installed?
+  `which mysql`.length > 0
+end
+
 class PerconaToolkit < Formula
   homepage "http://www.percona.com/software/percona-toolkit/"
   url "http://www.percona.com/redir/downloads/percona-toolkit/2.2.9/percona-toolkit-2.2.9.tar.gz"
@@ -11,7 +15,7 @@ class PerconaToolkit < Formula
     sha1 "bd1a9e82f25683742be022bed19a611c0b669a54" => :lion
   end
 
-  depends_on :mysql
+  depends_on :mysql => :recommended unless mysql_installed?
 
   resource "DBD::mysql" do
     url "http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
