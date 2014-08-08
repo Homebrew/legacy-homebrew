@@ -13,6 +13,8 @@ class Profanity < Formula
   depends_on "glib"
   depends_on "openssl"
   depends_on "gnutls"
+  depends_on "libotr" => :recommended
+  depends_on "terminal-notifier" => :recommended
 
   def install
     system "./bootstrap.sh"
