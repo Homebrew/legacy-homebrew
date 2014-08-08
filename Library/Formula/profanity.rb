@@ -24,6 +24,6 @@ class Profanity < Formula
   end
 
   test do
-    system "profanity -v"
+    system "profanity", "-v"
   end
 end
