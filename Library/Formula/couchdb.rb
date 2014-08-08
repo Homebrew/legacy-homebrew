@@ -7,9 +7,9 @@ class Couchdb < Formula
   revision 1
 
   bottle do
-    sha1 "74ac917fb5a5029847c37c51d56dd143a2acc51b" => :mavericks
-    sha1 "a6b684e40533720d4e7b6252c57e59b6b84cb133" => :mountain_lion
-    sha1 "b66bdd4343131dee507e5689353f2db186c133e3" => :lion
+    sha1 "814b75a6fd2a30738a34b8693d54a82cb0f64dad" => :mavericks
+    sha1 "f32b063573902ed3727f5611ca1476bb1bcb6818" => :mountain_lion
+    sha1 "aefe7f7ac800f761b335c990fe3e246e3ca9a00d" => :lion
   end
 
   head do
