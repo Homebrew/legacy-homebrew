@@ -17,8 +17,11 @@ class Stoken < Formula
       --disable-silent-rules
       --prefix=#{prefix}
     ]
-    args << "--without-gtk" if build.without? 'gtk+'
-    args << "--with-gtk" if build.with? 'gtk+'
+    if build.without? 'gtk+'
+      args << "--without-gtk"
+    else
+      args << "--with-gtk"
+    end
     system "./configure", *args
     system "make install"
   end
