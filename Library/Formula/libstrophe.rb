@@ -11,7 +11,6 @@ class Libstrophe < Formula
   depends_on "pkg-config" => :build
   depends_on "libtool" => :build
   depends_on "openssl"
-  depends_on "expat" => :recommended
   depends_on "check"
 
   def install
