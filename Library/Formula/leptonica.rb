@@ -46,7 +46,7 @@ class Leptonica < Formula
     }
     EOS
 
-    flags = ["-I#{include}/leptonica"] + ENV.cflags.to_s.split
+    flags = ["-I#{include}/leptonica"] + ENV.cflags.split
     system ENV.cxx, "test.cpp", *flags
     assert_equal version.to_s, `./a.out`
   end
