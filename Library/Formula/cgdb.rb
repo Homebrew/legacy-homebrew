@@ -11,9 +11,19 @@ class Cgdb < Formula
     sha1 "3e2bdb1a3bf2e11741df63c3d13069c844208a2c" => :lion
   end
 
+  head do
+    url "https://github.com/cgdb/cgdb.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "help2man" => :build
+  end
+
   depends_on "readline"
 
   def install
+    system "sh", "autogen.sh" if build.head?
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-readline=#{Formula['readline'].opt_prefix}"
