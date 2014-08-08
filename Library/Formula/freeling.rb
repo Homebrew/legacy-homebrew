@@ -7,6 +7,13 @@ class Freeling < Formula
   sha1 "42dbf7eec6e5c609e10ccc60768652f220d24771"
   revision 1
 
+  bottle do
+    cellar :any
+    sha1 "1e13d29a0680806e3e705d05e372b5acb36ca412" => :mavericks
+    sha1 "5e52ce330befbc1d0d2537504ab4b9ecf059d34e" => :mountain_lion
+    sha1 "ca50a07860f7d5afd4ac2c8b3673f56094ada7b0" => :lion
+  end
+
   depends_on "icu4c"
   depends_on "boost" => "with-icu"
   depends_on "libtool" => :build
