@@ -1,9 +1,10 @@
-require 'formula'
+require "formula"
 
 class Beecrypt < Formula
-  homepage 'http://beecrypt.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/beecrypt/beecrypt/4.2.1/beecrypt-4.2.1.tar.gz'
-  sha256 '286f1f56080d1a6b1d024003a5fa2158f4ff82cae0c6829d3c476a4b5898c55d'
+  homepage "http://beecrypt.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/beecrypt/beecrypt/4.2.1/beecrypt-4.2.1.tar.gz"
+  sha256 "286f1f56080d1a6b1d024003a5fa2158f4ff82cae0c6829d3c476a4b5898c55d"
+  revision 1
 
   depends_on "icu4c"
   depends_on "libtool" => :build
