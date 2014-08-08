@@ -7,7 +7,6 @@ class Stoken < Formula
 
   depends_on 'gtk+' => :optional
   depends_on 'pkg-config' => :build
-  depends_on 'libxml2'
   depends_on 'libtomcrypt'
 
   def install
