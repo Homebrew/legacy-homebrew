@@ -4,9 +4,7 @@ FormulaConflict = Struct.new(:name, :reason)
 # Used to annotate formulae that duplicate OS X provided software
 # or cause conflicts when linked in.
 class KegOnlyReason
-  attr_reader :reason, :explanation
-
-  def initialize reason, explanation=nil
+  def initialize(reason, explanation)
     @reason = reason
     @explanation = explanation
   end
@@ -38,9 +36,9 @@ class KegOnlyReason
       #{@explanation}
       EOS
     when :provided_until_xcode43
-      "Xcode provides this software prior to version 4.3.\n\n#{explanation}"
+      "Xcode provides this software prior to version 4.3.\n\n#{@explanation}"
     when :provided_until_xcode5
-      "Xcode provides this software prior to version 5.\n\n#{explanation}"
+      "Xcode provides this software prior to version 5.\n\n#{@explanation}"
     else
       @reason
     end.strip
