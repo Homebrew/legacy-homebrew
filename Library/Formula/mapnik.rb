@@ -1,29 +1,29 @@
-require 'formula'
+require "formula"
 
 class Mapnik < Formula
-  homepage 'http://www.mapnik.org/'
-  url 'http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2'
-  sha1 'e493ad87ca83471374a3b080f760df4b25f7060d'
-  revision 1
+  homepage "http://www.mapnik.org/"
+  head "https://github.com/mapnik/mapnik.git"
+  url "http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2"
+  sha1 "e493ad87ca83471374a3b080f760df4b25f7060d"
+  revision 2
 
   # can be removed at Mapnik > 2.2.0
   # https://github.com/mapnik/mapnik/issues/1973
   patch :DATA
-  head 'https://github.com/mapnik/mapnik.git'
 
-  depends_on 'pkg-config' => :build
-  depends_on 'freetype'
-  depends_on 'libpng'
-  depends_on 'libtiff'
-  depends_on 'proj'
-  depends_on 'icu4c'
-  depends_on 'jpeg'
-  depends_on 'boost' => 'with-python'
-  depends_on 'gdal' => :optional
-  depends_on 'postgresql' => :optional
-  depends_on 'cairo' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "freetype"
+  depends_on "libpng"
+  depends_on "libtiff"
+  depends_on "proj"
+  depends_on "icu4c"
+  depends_on "jpeg"
+  depends_on "boost" => "with-python"
+  depends_on "gdal" => :optional
+  depends_on "postgresql" => :optional
+  depends_on "cairo" => :optional
 
-  depends_on 'py2cairo' if build.with? 'cairo'
+  depends_on "py2cairo" if build.with? "cairo"
 
   def install
     icu = Formula["icu4c"].opt_prefix
@@ -59,13 +59,13 @@ class Mapnik < Formula
              "FREETYPE_CONFIG=#{freetype}/bin/freetype-config"
            ]
 
-    if build.with? 'cairo'
+    if build.with? "cairo"
       args << "CAIRO=True" # cairo paths will come from pkg-config
     else
       args << "CAIRO=False"
     end
-    args << "GDAL_CONFIG=#{Formula["gdal"].opt_bin}/gdal-config" if build.with? 'gdal'
-    args << "PG_CONFIG=#{Formula["postgresql"].opt_bin}/pg_config" if build.with? 'postgresql'
+    args << "GDAL_CONFIG=#{Formula["gdal"].opt_bin}/gdal-config" if build.with? "gdal"
+    args << "PG_CONFIG=#{Formula["postgresql"].opt_bin}/pg_config" if build.with? "postgresql"
 
     system "python", "scons/scons.py", "configure", *args
     system "python", "scons/scons.py", "install"
