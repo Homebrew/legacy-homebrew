@@ -8,9 +8,9 @@ class Icu4c < Formula
   sha1 "7eca017fdd101e676d425caaf28ef862d3655e0f"
 
   bottle do
-    sha1 "c38fd0be5f63a0dd187ee76a9321d543d02d3638" => :mavericks
-    sha1 "636b03a9cfd3e686b7c89891eddb74ba34cbf456" => :mountain_lion
-    sha1 "f09512efdb8b12edfe080492a5a1c0bafc5a2941" => :lion
+    sha1 "1199e740fbc35f09eaa3774ada8c805c885ca170" => :mavericks
+    sha1 "72a163ec611ab7ee984d823fca4202d254627372" => :mountain_lion
+    sha1 "69037c3eacbf544ab6191e4290c1bc4a6dbdcda0" => :lion
   end
 
   keg_only "Conflicts; see: https://github.com/Homebrew/homebrew/issues/issue/167"
