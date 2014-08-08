@@ -4,6 +4,11 @@ class Mono < Formula
   homepage "http://www.mono-project.com/"
   url "http://download.mono-project.com/sources/mono/mono-3.4.0.tar.bz2"
   sha1 "bae86f50f9a29d68d4e1917358996e7186e7f89e"
+  revision 1
+
+  # xbuild requires the .exe files inside the runtime directories to
+  # be executable
+  skip_clean "lib/mono"
 
   bottle do
     sha1 "dca650732ccb8aac36e56cd7bce03851d69e2d1c" => :mavericks
@@ -55,7 +60,8 @@ class Mono < Formula
 
   test do
     test_str = "Hello Homebrew"
-    hello = (testpath/"hello.cs")
+    test_name = "hello.cs"
+    hello = testpath/test_name
     hello.write <<-EOS.undent
       public class Hello1
       {
@@ -70,6 +76,23 @@ class Mono < Formula
     output = `#{bin}/mono hello.exe`
     assert $?.success?
     assert_equal test_str, output.strip
+
+    # Tests that xbuild is able to execute lib/mono/*/mcs.exe
+    xbuild = testpath/"test.csproj"
+    xbuild.write <<-EOS.undent
+      <?xml version="1.0" encoding="utf-8"?>
+      <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+        <PropertyGroup>
+          <AssemblyName>HomebrewMonoTest</AssemblyName>
+        </PropertyGroup>
+        <ItemGroup>
+          <Compile Include="#{test_name}" />
+        </ItemGroup>
+        <Import Project="$(MSBuildBinPath)\\Microsoft.CSharp.targets" />
+      </Project>
+    EOS
+    system "#{bin}/xbuild", xbuild
+    assert $?.success?
   end
 
   def caveats; <<-EOS.undent
