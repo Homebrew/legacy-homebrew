@@ -16,7 +16,7 @@ class Formula
   include Utils::Inreplace
   extend Enumerable
 
-  attr_reader :name, :path, :homepage
+  attr_reader :name, :path
   attr_reader :stable, :devel, :head, :active_spec
   attr_reader :pkg_version, :revision
 
@@ -29,7 +29,6 @@ class Formula
   def initialize(name, path, spec)
     @name = name
     @path = path
-    @homepage = self.class.homepage
     @revision = self.class.revision || 0
 
     set_spec :stable
@@ -66,6 +65,10 @@ class Formula
 
   def bottle
     Bottle.new(self, active_spec.bottle_specification) if active_spec.bottled?
+  end
+
+  def homepage
+    self.class.homepage
   end
 
   def url;      active_spec.url;     end
