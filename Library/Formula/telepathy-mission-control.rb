@@ -1,7 +1,7 @@
 require "formula"
 
 class TelepathyMissionControl < Formula
-  homepage "http://telepathy.freedesktop.org/wiki/Components/"
+  homepage "http://telepathy.freedesktop.org/wiki/Mission_Control/"
   url "http://telepathy.freedesktop.org/releases/telepathy-mission-control/telepathy-mission-control-5.16.2.tar.gz"
   sha1 "4c15d20b5f06f083a60bcd9b08141e99092863a3"
 
