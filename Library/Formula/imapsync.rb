@@ -34,28 +34,12 @@ class Imapsync < Formula
   def install
     ENV.prepend_create_path 'PERL5LIB', libexec+'lib/perl5'
 
-    resource("File::Copy::Recursive").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Mail::IMAPClient").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Authen::NTLM").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("IO::Tee").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
+    resources.each do |r|
+      r.stage do
+        system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
+        system "make"
+        system "make", "install"
+      end
     end
 
     system "perl", "-c", "imapsync"
