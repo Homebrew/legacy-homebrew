@@ -26,8 +26,8 @@ class TabTests < Homebrew::TestCase
     assert_empty tab.unused_options
     assert_empty tab.used_options
     assert_empty tab.options
-    refute tab.built_as_bottle
-    refute tab.poured_from_bottle
+    refute_predicate tab, :built_as_bottle
+    refute_predicate tab, :poured_from_bottle
     assert_empty tab.tapped_from
     assert_nil tab.time
     assert_nil tab.HEAD
