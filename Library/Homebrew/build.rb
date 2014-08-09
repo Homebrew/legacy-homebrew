@@ -163,8 +163,6 @@ class Build
 
         begin
           f.install
-          stdlibs = detect_stdlibs
-          Tab.create(f, ENV.compiler, stdlibs.first, f.build).write
         rescue Exception => e
           if ARGV.debug?
             debrew e, f
@@ -172,6 +170,9 @@ class Build
             raise e
           end
         end
+
+        stdlibs = detect_stdlibs
+        Tab.create(f, ENV.compiler, stdlibs.first, f.build).write
 
         # Find and link metafiles
         f.prefix.install_metafiles Pathname.pwd
