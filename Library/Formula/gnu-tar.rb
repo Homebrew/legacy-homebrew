@@ -7,9 +7,9 @@ class GnuTar < Formula
   sha1 "cd30a13bbfefb54b17e039be7c43d2592dd3d5d0"
 
   bottle do
-    sha1 "ecc6fc62b93bee896a2bd6e604c934bdb9bdc2dd" => :mavericks
-    sha1 "ac457284fa432dc49d5f8166c050421cb6561102" => :mountain_lion
-    sha1 "33c07152ade47e3b3c7bfa2d66346a0acc5ff3ef" => :lion
+    sha1 "3df9bf4cfa0fc347996ee8877b20b3b6062046a4" => :mavericks
+    sha1 "43a8b742e543f64f42042df26505adaff1860b21" => :mountain_lion
+    sha1 "8f68e3ef6195270056223f15b011d7249684480d" => :lion
   end
 
   # autoconf/automake can be removed when the patch is merged upstream.
