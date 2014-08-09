@@ -269,6 +269,8 @@ class FormulaInstaller
           deps.unshift(dep)
           formulae.unshift(dep.to_formula)
           Requirement.prune
+        elsif deps.include?(req.to_dependency)
+          Requirement.prune
         else
           unsatisfied_reqs[dependent] << req
         end
