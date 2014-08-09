@@ -7,7 +7,6 @@ class BuildOptions
 
   attr_accessor :args
   attr_accessor :universal
-  attr_reader :options
 
   def initialize(args, options)
     @args = Options.coerce(args)
@@ -16,7 +15,6 @@ class BuildOptions
 
   def initialize_copy(other)
     super
-    @options = other.options.dup
     @args = other.args.dup
   end
 

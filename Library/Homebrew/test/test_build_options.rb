@@ -37,12 +37,6 @@ class BuildOptionsTests < Homebrew::TestCase
     assert_includes @build.unused_options, "--without-baz"
   end
 
-  def test_copies_do_not_share_underlying_options
-    orig = BuildOptions.new [], Options.new
-    copy = orig.dup
-    refute_same orig.options, copy.options
-  end
-
   def test_copies_do_not_share_underlying_args
     orig = BuildOptions.new [], Options.new
     copy = orig.dup
