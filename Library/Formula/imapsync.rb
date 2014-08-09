@@ -42,6 +42,12 @@ class Imapsync < Formula
       end
     end
 
+    resource("IO::Tee").stage do
+      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
+      system "make"
+      system "make", "install"
+    end
+
     system "perl", "-c", "imapsync"
     system "pod2man", "imapsync", "imapsync.1"
     bin.install "imapsync"
