@@ -16,6 +16,7 @@ class GnuTar < Formula
   depends_on 'automake' => :build
 
   # Fix for xattrs bug causing build failures on OS X.
+  # For more information see: https://lists.gnu.org/archive/html/bug-tar/2014-08/msg00001.html
   patch :p1 do
     url "https://raw.githubusercontent.com/DomT4/patch-mayhem/master/0001-xattrs-fix-bug-in-configure.patch"
     sha1 "d8d9f9f5862fa1c1468a914e609daaf57accf3d2"
