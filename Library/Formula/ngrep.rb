@@ -19,6 +19,11 @@ class Ngrep < Formula
     sha1 '84ff02f59b4fab8692a3ff2a61b45a4b9d067177'
   end
 
+  patch do
+    url  'https://launchpadlibrarian.net/44952147/ngrep-fix-ipv6-support.patch'
+    sha1 '84ff02f59b4fab8692a3ff2a61b45a4b9d067177'
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
