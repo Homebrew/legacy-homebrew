@@ -201,7 +201,7 @@ class Build
     # of software installs an executable that links against libstdc++
     # and dylibs against libc++, libc++-only dependencies can safely
     # link against it.
-    stdlibs = keg.detect_cxx_stdlibs :skip_executables => true
+    keg.detect_cxx_stdlibs(:skip_executables => true)
   end
 
   def fixopt f
