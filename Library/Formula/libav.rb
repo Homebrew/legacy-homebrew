@@ -2,8 +2,8 @@ require "formula"
 
 class Libav < Formula
   homepage "https://libav.org/"
-  url "https://libav.org/releases/libav-10.2.tar.xz"
-  sha1 "1e0b62d8414e43c1498fa0707e20111ca82fb04e"
+  url "https://libav.org/releases/libav-10.3.tar.xz"
+  sha1 "22e4787dbab68fe2b1ec2d80d32a77b542a002ac"
 
   head "git://git.libav.org/libav.git"
 
