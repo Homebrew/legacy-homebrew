@@ -262,12 +262,14 @@ class FormulaInstaller
           Requirement.prune
         elsif req.build? && dependent != f && install_bottle_for_dep?(dependent, build)
           Requirement.prune
+        elsif req.satisfied? && !(pour_bottle? || build_bottle?)
+          Requirement.prune
         elsif install_requirement_default_formula?(req)
           dep = req.to_dependency
           deps.unshift(dep)
           formulae.unshift(dep.to_formula)
           Requirement.prune
-        elsif req.satisfied?
+        elsif deps.include?(req.to_dependency)
           Requirement.prune
         else
           unsatisfied_reqs[dependent] << req
