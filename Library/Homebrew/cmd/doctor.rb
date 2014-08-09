@@ -878,7 +878,7 @@ end
 
 def check_for_other_frameworks
   # Other frameworks that are known to cause problems when present
-  %w{Mono.framework expat.framework libexpat.framework}.
+  %w{expat.framework libexpat.framework}.
     map{ |frmwrk| "/Library/Frameworks/#{frmwrk}" }.
     select{ |frmwrk| File.exist? frmwrk }.
     map do |frmwrk| <<-EOS.undent
