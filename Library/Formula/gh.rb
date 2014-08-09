@@ -19,6 +19,7 @@ class Gh < Formula
   def install
     system "script/make", "--no-update"
     bin.install "gh"
+    man1.install "man/gh.1"
 
     if build.with? "completions"
       bash_completion.install "etc/gh.bash_completion.sh"
