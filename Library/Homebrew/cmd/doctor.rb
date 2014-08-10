@@ -319,7 +319,7 @@ def check_for_stray_developer_directory
 end
 
 def check_for_bad_install_name_tool
-  return if MacOS.version < 10.9
+  return if MacOS.version < "10.9"
 
   libs = `otool -L /usr/bin/install_name_tool`
   unless libs.include? "/usr/lib/libxcselect.dylib" then <<-EOS.undent
