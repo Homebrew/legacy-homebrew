@@ -66,6 +66,7 @@ class Libav < Formula
       "--enable-gpl",
       "--enable-nonfree",
       "--enable-version3",
+      "--enable-vda",
       "--cc=#{ENV.cc}",
       "--host-cflags=#{ENV.cflags}",
       "--host-ldflags=#{ENV.ldflags}"
