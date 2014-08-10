@@ -2,8 +2,8 @@ require "formula"
 
 class Libstrophe < Formula
   homepage "http://strophe.im/libstrophe/"
-  url "https://github.com/strophe/libstrophe/archive/0.8.5.tar.gz"
-  sha1 "11f80abb8e578c5bc446ff94603e7e0f560547f7"
+  url "https://github.com/strophe/libstrophe/archive/0.8.6.tar.gz"
+  sha1 "fc30c78945cb075a636cff8c76be671c8a364eb0"
   head "https://github.com/strophe/libstrophe.git"
 
   bottle do
