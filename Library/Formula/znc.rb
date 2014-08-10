@@ -5,6 +5,12 @@ class Znc < Formula
   url 'http://znc.in/releases/archive/znc-1.4.tar.gz'
   sha1 '6dafcf12b15fdb95eac5b427c8507c1095e904b4'
 
+  bottle do
+    sha1 "b899a3090ce637a09a12c22d76d130a5108b5b42" => :mavericks
+    sha1 "7b808554d026a795d2555b5c1a66419fab999689" => :mountain_lion
+    sha1 "bc2c4a31596a72d501d70b9e7b21b09580f58da2" => :lion
+  end
+
   head do
     url 'https://github.com/znc/znc.git'
 
