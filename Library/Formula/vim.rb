@@ -19,7 +19,6 @@ class Vim < Formula
   LANGUAGES_OPTIONAL = %w(lua mzscheme python3 tcl)
   LANGUAGES_DEFAULT  = %w(perl python ruby)
 
-  # override definition of python3 support
   option "with-python3", "Build vim with python3 instead of python[2] support"
   LANGUAGES_OPTIONAL.each do |language|
     option "with-#{language}", "Build vim with #{language} support"
