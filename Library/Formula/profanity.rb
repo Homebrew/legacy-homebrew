@@ -7,9 +7,9 @@ class Profanity < Formula
   head "https://github.com/boothj5/profanity.git"
 
   bottle do
-    sha1 "d0f6236615ac6535042e976856837ccf90cdcc3d" => :mavericks
-    sha1 "22c48eb0d161da4ace8adadee5c251a3a3933eb8" => :mountain_lion
-    sha1 "54b24ff622f05b071084ef53a9bf03c8327e58d9" => :lion
+    sha1 "7dcef1770b0ac01814677f714fd7a8d5568cbf34" => :mavericks
+    sha1 "26843e609428afb61e0df4b0d2075d09d4ae0d2e" => :mountain_lion
+    sha1 "8dc3cc76203dab0fbd6a2b7ff47a88b8a3bb64b2" => :lion
   end
 
   depends_on "autoconf" => :build
