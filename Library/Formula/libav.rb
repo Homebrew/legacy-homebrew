@@ -63,11 +63,9 @@ class Libav < Formula
       "--disable-debug",
       "--disable-shared",
       "--prefix=#{prefix}",
-      "--enable-doc",
       "--enable-gpl",
       "--enable-nonfree",
       "--enable-version3",
-      "--enable-zlib",
       "--cc=#{ENV.cc}",
       "--host-cflags=#{ENV.cflags}",
       "--host-ldflags=#{ENV.ldflags}"
