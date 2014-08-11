@@ -15,7 +15,7 @@ class Dart < Formula
 
   devel do
     version '1.6.0-dev.7.0'
-    
+
     if MacOS.prefer_64_bit?
       url 'https://storage.googleapis.com/dart-archive/channels/dev/release/38831/sdk/dartsdk-macos-x64-release.zip'
       sha1 'ed2bc149a6bb5c8b48b8d818269c0be392dc8361'
