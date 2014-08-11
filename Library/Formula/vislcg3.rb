@@ -1,7 +1,6 @@
 require "formula"
 
 class Vislcg3 < Formula
-
   homepage "http://beta.visl.sdu.dk/cg3.html"
 
   stable do
@@ -25,7 +24,7 @@ class Vislcg3 < Formula
   end
 
   test do
+    # TODO integrate the provided text-suite
     system "vislcg3"
   end
-
 end
