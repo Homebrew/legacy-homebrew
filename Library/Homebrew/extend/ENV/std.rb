@@ -55,7 +55,7 @@ module Stdenv
     # Os is the default Apple uses for all its stuff so let's trust them
     set_cflags "-Os #{SAFE_CFLAGS_FLAGS}"
 
-    append 'LDFLAGS', '-Wl,-headerpad_max_install_names'
+    append 'LDFLAGS', '-Wl,-headerpad_max_install_names' if OS.mac?
 
     if inherit?
       # Inherit CC, CXX and compiler flags from the parent environment.
