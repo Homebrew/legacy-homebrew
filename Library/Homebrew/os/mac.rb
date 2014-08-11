@@ -239,6 +239,7 @@ module OS
     end
 
     def pkgutil_info(id)
+      return "" unless OS.mac?
       (@pkginfo ||= {}).fetch(id) do |key|
         @pkginfo[key] = Utils.popen_read("/usr/sbin/pkgutil", "--pkg-info", key).strip
       end
