@@ -110,7 +110,7 @@ class Fontforge < Formula
        EOS
        pypkgconfig = %x( #{HOMEBREW_PREFIX}/bin/python -c "#{cmdstring}" ).chomp;
        ENV["PKG_CONFIG_PATH"] =  ENV["PKG_CONFIG_PATH"] + ":#{pypkgconfig}"
-       ENV.append "PYTHON", "#{HOMEBREW_PREFIX}/bin/python" 
+       ENV.append "PYTHON", "#{HOMEBREW_PREFIX}/bin/python"
     end
 
     system "./bootstrap" if build.head?
