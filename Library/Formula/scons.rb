@@ -20,6 +20,13 @@ class Scons < Formula
     sha1 "022a40b4226d85d82a8145d08443495f31a9ed34"
   end
 
+  # Upstream patch to fix compatibility with Python pre-2.7
+  # https://bitbucket.org/scons/scons/commits/1444ad9af1d3b6148451af3f0596cba0ad352c50
+  patch :p2 do
+    url "https://bitbucket.org/scons/scons/commits/1444ad9af1d3b6148451af3f0596cba0ad352c50/raw/"
+    sha1 "022a40b4226d85d82a8145d08443495f31a9ed34"
+  end
+
   def install
     bin.mkpath # Script won't create this if it doesn't already exist
     man1.install gzip('scons-time.1', 'scons.1', 'sconsign.1')
