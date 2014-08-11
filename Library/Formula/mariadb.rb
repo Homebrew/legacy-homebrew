@@ -13,7 +13,7 @@ class Mariadb < Formula
   end
 
   depends_on 'cmake' => :build
-  depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on 'pidof' unless MacOS.version >= :mountain_lion || OS.linux?
 
   option :universal
   option 'with-tests', 'Keep test when installing'
@@ -120,7 +120,7 @@ class Mariadb < Formula
       inreplace "#{prefix}/support-files/mysql.server" do |s|
         s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
         # pidof can be replaced with pgrep from proctools on Mountain Lion
-        s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
+        s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion || OS.linux?
       end
 
       bin.install_symlink prefix/"support-files/mysql.server"
