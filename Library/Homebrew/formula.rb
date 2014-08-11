@@ -37,7 +37,6 @@ class Formula
 
     @active_spec = determine_active_spec(spec)
     validate_attributes :url, :name, :version
-    active_spec.add_legacy_options(options)
     @pkg_version = PkgVersion.new(version, revision)
     @pin = FormulaPin.new(self)
   end
@@ -212,9 +211,6 @@ class Formula
 
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
-
-  # any e.g. configure options for this package
-  def options; [] end
 
   # Deprecated
   DATA = :DATA
@@ -592,6 +588,14 @@ class Formula
       raise "You cannot override Formula#brew in class #{name}"
     when :test
       @test_defined = true
+    when :options
+      instance = allocate
+
+      specs.each do |spec|
+        instance.options.each do |opt, desc|
+          spec.options << Option.new(opt[/^--(.+)$/, 1], desc)
+        end
+      end
     end
   end
 
