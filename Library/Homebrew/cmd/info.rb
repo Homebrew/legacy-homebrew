@@ -127,7 +127,7 @@ module Homebrew
       end
     end
 
-    unless f.build.empty?
+    unless f.options.empty?
       ohai "Options"
       Homebrew.dump_options_for_formula f
     end

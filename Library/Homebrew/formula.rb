@@ -101,6 +101,10 @@ class Formula
     active_spec.patches
   end
 
+  def options
+    active_spec.options
+  end
+
   def option_defined?(name)
     active_spec.option_defined?(name)
   end
@@ -440,7 +444,7 @@ class Formula
       "caveats" => caveats
     }
 
-    hsh["options"] = build.map { |opt|
+    hsh["options"] = options.map { |opt|
       { "option" => opt.flag, "description" => opt.description }
     }
 

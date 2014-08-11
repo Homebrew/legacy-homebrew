@@ -71,7 +71,7 @@ class Tab < OpenStruct
 
   def self.dummy_tab f=nil
     Tab.new :used_options => [],
-            :unused_options => (f.build.as_flags rescue []),
+            :unused_options => (f.options.as_flags rescue []),
             :built_as_bottle => false,
             :poured_from_bottle => false,
             :tapped_from => "",

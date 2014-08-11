@@ -14,9 +14,9 @@ module Homebrew
 
   def puts_options(formulae)
     formulae.each do |f|
-      next if f.build.empty?
+      next if f.options.empty?
       if ARGV.include? '--compact'
-        puts f.build.as_flags.sort * " "
+        puts f.options.as_flags.sort * " "
       else
         puts f.name if formulae.length > 1
         dump_options_for_formula f
@@ -26,7 +26,7 @@ module Homebrew
   end
 
   def dump_options_for_formula f
-    f.build.sort_by(&:flag).each do |opt|
+    f.options.sort_by(&:flag).each do |opt|
       puts "#{opt.flag}\n\t#{opt.description}"
     end
     puts "--devel\n\tinstall development version #{f.devel.version}" if f.devel

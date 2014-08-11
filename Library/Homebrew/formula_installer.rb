@@ -461,7 +461,7 @@ class FormulaInstaller
     when f.devel then args << "--devel"
     end
 
-    f.build.each do |opt, _|
+    f.options.each do |opt, _|
       name  = opt.name[/\A(.+)=\z$/, 1]
       value = ARGV.value(name)
       args << "--#{name}=#{value}" if name && value
