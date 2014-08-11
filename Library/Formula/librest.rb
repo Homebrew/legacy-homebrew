@@ -1,6 +1,6 @@
 require "formula"
 
-class Rest < Formula
+class librest < Formula
   homepage "https://wiki.gnome.org/Projects/Librest"
   url "http://ftp.acc.umu.se/pub/GNOME/sources/rest/0.7/rest-0.7.91.tar.xz"
   sha256 "838814d935143f2dc99eb79f1ac69c615e7b547339f6cd226dd0ed4d7c16b67a"
