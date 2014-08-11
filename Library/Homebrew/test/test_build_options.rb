@@ -10,11 +10,6 @@ class BuildOptionsTests < Homebrew::TestCase
     @build = BuildOptions.new(args, opts)
   end
 
-  def test_as_flags
-    assert_equal %w{--with-foo --with-bar --without-baz --without-qux}.sort,
-      @build.as_flags.sort
-  end
-
   def test_include
     assert_includes @build, "with-foo"
     refute_includes @build, "with-qux"
