@@ -1,7 +1,5 @@
 require 'options'
 
-# This class holds the build-time options defined for a Formula,
-# and provides named access to those options during install.
 class BuildOptions
   include Enumerable
 
