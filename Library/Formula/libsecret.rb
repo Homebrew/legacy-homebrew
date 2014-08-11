@@ -21,4 +21,41 @@ class Libsecret < Formula
     inreplace "Makefile", '--nonet', ''
     system "make", "install"
   end
+
+  test do
+    (testpath/'test.c').write <<-EOS.undent
+      #include <libsecret/secret.h>
+
+      const SecretSchema * example_get_schema (void) G_GNUC_CONST;
+
+      const SecretSchema *
+      example_get_schema (void)
+      {
+          static const SecretSchema the_schema = {
+              "org.example.Password", SECRET_SCHEMA_NONE,
+              {
+                  {  "number", SECRET_SCHEMA_ATTRIBUTE_INTEGER },
+                  {  "string", SECRET_SCHEMA_ATTRIBUTE_STRING },
+                  {  "even", SECRET_SCHEMA_ATTRIBUTE_BOOLEAN },
+                  {  "NULL", 0 },
+              }
+          };
+          return &the_schema;
+      }
+
+      int main()
+      {
+          example_get_schema();
+      }
+    EOS
+
+    flags = [
+      "-I#{include}/libsecret-1",
+      "-I#{HOMEBREW_PREFIX}/include/glib-2.0",
+      "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include"
+    ]
+
+    system ENV.cc, 'test.c', '-o', 'test', *flags
+    system './test'
+  end
 end
