@@ -71,7 +71,7 @@ class Tab < OpenStruct
 
   def self.dummy_tab f=nil
     Tab.new :used_options => [],
-            :unused_options => (f.build.as_flags rescue []),
+            :unused_options => (f.options.as_flags rescue []),
             :built_as_bottle => false,
             :poured_from_bottle => false,
             :tapped_from => "",
@@ -82,13 +82,7 @@ class Tab < OpenStruct
   end
 
   def with? name
-    if options.include? "with-#{name}"
-      include? "with-#{name}"
-    elsif options.include? "without-#{name}"
-      not include? "without-#{name}"
-    else
-      false
-    end
+    include?("with-#{name}") || unused_options.include?("without-#{name}")
   end
 
   def without? name
@@ -117,10 +111,6 @@ class Tab < OpenStruct
 
   def unused_options
     Options.coerce(super)
-  end
-
-  def options
-    used_options + unused_options
   end
 
   def cxxstdlib

@@ -2,8 +2,14 @@ require 'formula'
 
 class Monetdb < Formula
   homepage 'https://www.monetdb.org/'
-  url 'https://dev.monetdb.org/downloads/sources/Jan2014-SP2/MonetDB-11.17.17.zip', :using => :ssl3
-  sha1 '1f1f668e96a6c38463f6ae7a3821fd05c86a04b3'
+  url 'https://dev.monetdb.org/downloads/sources/Jan2014-SP3/MonetDB-11.17.21.zip', :using => :ssl3
+  sha1 '53ee8de943ec2a247cf8b2bf645bc0a1b8fd5fc8'
+
+  bottle do
+    sha1 "fd10ee968f89f090ed519474aab1b564bc9f54f8" => :mavericks
+    sha1 "248f847114fd7658efb1d316ce1324e793bf21a1" => :mountain_lion
+    sha1 "c04629aeed599972e59cc5e74c166c52be1dde19" => :lion
+  end
 
   head 'http://dev.monetdb.org/hg/MonetDB', :using => :hg
 

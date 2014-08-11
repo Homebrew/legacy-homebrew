@@ -16,7 +16,7 @@ class Formula
   include Utils::Inreplace
   extend Enumerable
 
-  attr_reader :name, :path, :homepage
+  attr_reader :name, :path
   attr_reader :stable, :devel, :head, :active_spec
   attr_reader :pkg_version, :revision
 
@@ -29,7 +29,6 @@ class Formula
   def initialize(name, path, spec)
     @name = name
     @path = path
-    @homepage = self.class.homepage
     @revision = self.class.revision || 0
 
     set_spec :stable
@@ -38,7 +37,6 @@ class Formula
 
     @active_spec = determine_active_spec(spec)
     validate_attributes :url, :name, :version
-    active_spec.add_legacy_options(options)
     @pkg_version = PkgVersion.new(version, revision)
     @pin = FormulaPin.new(self)
   end
@@ -66,6 +64,10 @@ class Formula
 
   def bottle
     Bottle.new(self, active_spec.bottle_specification) if active_spec.bottled?
+  end
+
+  def homepage
+    self.class.homepage
   end
 
   def url;      active_spec.url;     end
@@ -97,6 +99,10 @@ class Formula
 
   def patchlist
     active_spec.patches
+  end
+
+  def options
+    active_spec.options
   end
 
   def option_defined?(name)
@@ -209,9 +215,6 @@ class Formula
 
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
-
-  # any e.g. configure options for this package
-  def options; [] end
 
   # Deprecated
   DATA = :DATA
@@ -441,7 +444,7 @@ class Formula
       "caveats" => caveats
     }
 
-    hsh["options"] = build.map { |opt|
+    hsh["options"] = options.map { |opt|
       { "option" => opt.flag, "description" => opt.description }
     }
 
@@ -589,6 +592,16 @@ class Formula
       raise "You cannot override Formula#brew in class #{name}"
     when :test
       @test_defined = true
+    when :options
+      instance = allocate
+
+      specs.each do |spec|
+        instance.options.each do |opt, desc|
+          spec.option(opt[/^--(.+)$/, 1], desc)
+        end
+      end
+
+      remove_method(:options)
     end
   end
 
