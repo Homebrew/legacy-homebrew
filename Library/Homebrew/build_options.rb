@@ -1,7 +1,6 @@
 require 'options'
 
 class BuildOptions
-  attr_accessor :args
   attr_accessor :universal
 
   def initialize(args, options)
@@ -15,7 +14,7 @@ class BuildOptions
   end
 
   def include? name
-    args.include? '--' + name
+    @args.include?("--#{name}")
   end
 
   def with? val
