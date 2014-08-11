@@ -597,7 +597,7 @@ class Formula
 
       specs.each do |spec|
         instance.options.each do |opt, desc|
-          spec.options << Option.new(opt[/^--(.+)$/, 1], desc)
+          spec.option(opt[/^--(.+)$/, 1], desc)
         end
       end
 
