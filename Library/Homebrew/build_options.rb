@@ -8,11 +8,6 @@ class BuildOptions
     @options = options
   end
 
-  def initialize_copy(other)
-    super
-    @args = other.args.dup
-  end
-
   def include? name
     @args.include?("--#{name}")
   end
