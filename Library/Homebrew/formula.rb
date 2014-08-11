@@ -596,6 +596,8 @@ class Formula
           spec.options << Option.new(opt[/^--(.+)$/, 1], desc)
         end
       end
+
+      remove_method(:options)
     end
   end
 
