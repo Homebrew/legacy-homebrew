@@ -2,17 +2,22 @@ require "formula"
 
 class Rest < Formula
   homepage "https://wiki.gnome.org/Projects/Librest"
-  url "http://ftp.acc.umu.se/pub/GNOME/sources/rest/0.7/rest-0.7.12.tar.bz2"
-  sha1 "64b121cc5f99223641e6d5445f8d3ba7ee566de5"
+  url "http://ftp.acc.umu.se/pub/GNOME/sources/rest/0.7/rest-0.7.91.tar.xz"
+  sha256 "838814d935143f2dc99eb79f1ac69c615e7b547339f6cd226dd0ed4d7c16b67a"
 
   depends_on "pkg-config" => :build
   depends_on "vala" => :build
+  depends_on "libsoup" => :build
   depends_on "gobject-introspection"
-  
+
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
-                          "--enable-introspection=yes"
+    system "./configure", "--disable-debug",
+      "--disable-dependency-tracking",
+      "--disable-silent-rules",
+      "--prefix=#{prefix}",
+      "--without-gnome",
+      "--disable-tls-check",
+      "--without-ca-certificates"
     system "make install" 
   end
 
