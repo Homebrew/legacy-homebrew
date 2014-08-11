@@ -303,15 +303,9 @@ class FormulaInstaller
   end
 
   def effective_build_options_for(dependent, inherited_options=[])
-    if dependent == f
-      build = dependent.build.dup
-      build.args |= options
-      build
-    else
-      build = dependent.build.dup
-      build.args |= inherited_options
-      build
-    end
+    args  = dependent.build.used_options
+    args |= dependent == f ? options : inherited_options
+    BuildOptions.new(args, dependent.options)
   end
 
   def inherited_options_for(dep)
