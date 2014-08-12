@@ -127,10 +127,6 @@ class SoftwareSpec
       options << Option.new("without-#{name}", "Build without #{name} support")
     end
   end
-
-  def add_legacy_options(list)
-    list.each { |opt, desc| options << Option.new(opt[/^--(.+)$/, 1], desc) }
-  end
 end
 
 class HeadSoftwareSpec < SoftwareSpec

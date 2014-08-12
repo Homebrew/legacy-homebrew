@@ -2,15 +2,16 @@ require "formula"
 
 class Libav < Formula
   homepage "https://libav.org/"
-  url "https://libav.org/releases/libav-10.2.tar.xz"
-  sha1 "1e0b62d8414e43c1498fa0707e20111ca82fb04e"
+  url "https://libav.org/releases/libav-10.3.tar.xz"
+  sha1 "22e4787dbab68fe2b1ec2d80d32a77b542a002ac"
 
   head "git://git.libav.org/libav.git"
 
   bottle do
-    sha1 "95038ff0028f5557fc185a39963199e473c8bebc" => :mavericks
-    sha1 "0efc6b925e4581e7a7aedbfd9d57f6acbf0218c3" => :mountain_lion
-    sha1 "005750c5d80aa19231d9ccba4c6e4fb215c0e5b5" => :lion
+    revision 1
+    sha1 "19860b3717ddf896dbd2f1967915e55a373baf5e" => :mavericks
+    sha1 "43027d0bd072c5b83fdd3b1189c1d5eb25da133b" => :mountain_lion
+    sha1 "c96d34089fe7ff91b56789f62797f7216140f7ca" => :lion
   end
 
   option "without-faac", "Disable AAC encoder via faac"
@@ -63,11 +64,10 @@ class Libav < Formula
       "--disable-debug",
       "--disable-shared",
       "--prefix=#{prefix}",
-      "--enable-doc",
       "--enable-gpl",
       "--enable-nonfree",
       "--enable-version3",
-      "--enable-zlib",
+      "--enable-vda",
       "--cc=#{ENV.cc}",
       "--host-cflags=#{ENV.cflags}",
       "--host-ldflags=#{ENV.ldflags}"

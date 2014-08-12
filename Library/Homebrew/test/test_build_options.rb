@@ -10,11 +10,6 @@ class BuildOptionsTests < Homebrew::TestCase
     @build = BuildOptions.new(args, opts)
   end
 
-  def test_as_flags
-    assert_equal %w{--with-foo --with-bar --without-baz --without-qux}.sort,
-      @build.as_flags.sort
-  end
-
   def test_include
     assert_includes @build, "with-foo"
     refute_includes @build, "with-qux"
@@ -35,17 +30,5 @@ class BuildOptionsTests < Homebrew::TestCase
 
   def test_unused_options
     assert_includes @build.unused_options, "--without-baz"
-  end
-
-  def test_copies_do_not_share_underlying_options
-    orig = BuildOptions.new [], Options.new
-    copy = orig.dup
-    refute_same orig.options, copy.options
-  end
-
-  def test_copies_do_not_share_underlying_args
-    orig = BuildOptions.new [], Options.new
-    copy = orig.dup
-    refute_same orig.args, copy.args
   end
 end

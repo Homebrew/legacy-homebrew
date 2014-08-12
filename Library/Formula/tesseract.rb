@@ -12,6 +12,12 @@ class Tesseract < Formula
     sha1 "5beafc2400bb170185c7934ed69749c9b8ef8c99" => :lion
   end
 
+  devel do
+    url 'https://drive.google.com/uc?id=0B7l10Bj_LprhSGN2bTYwemVRREU&export=download'
+    sha1 '5bd12482a69f0a1fdf3c9e0d652de08db763ee93'
+    version '3.03rc1'
+  end
+
   head do
     url "http://tesseract-ocr.googlecode.com/svn/trunk"
 
@@ -25,6 +31,8 @@ class Tesseract < Formula
 
   depends_on "libtiff" => :recommended
   depends_on "leptonica"
+
+  needs :cxx11 if build.devel?
 
   fails_with :llvm do
     build 2206
@@ -123,6 +131,8 @@ class Tesseract < Formula
     # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
     # which doesn't work for non-default homebrew location
     ENV["LIBLEPT_HEADERSDIR"] = HOMEBREW_PREFIX/"include"
+
+    ENV.cxx11 if build.devel?
 
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
