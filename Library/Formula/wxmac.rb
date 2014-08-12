@@ -15,6 +15,10 @@ class Wxmac < Formula
   depends_on "libpng"
   depends_on "libtiff"
 
+  # patch from here: http://trac.wxwidgets.org/ticket/16329
+  # fixed upstream: http://trac.wxwidgets.org/changeset/76743
+  patch :DATA if MacOS.version >= :yosemite
+
   def install
     # need to set with-macosx-version-min to avoid configure defaulting to 10.5
     # need to enable universal binary build in order to build all x86_64
@@ -61,3 +65,21 @@ class Wxmac < Formula
     system "make install"
   end
 end
+
+__END__
+diff --git a/src/osx/webview_webkit.mm b/src/osx/webview_webkit.mm
+index ab75865..09f8320 100644
+--- a/src/osx/webview_webkit.mm
++++ b/src/osx/webview_webkit.mm
+@@ -28,7 +28,11 @@
+ #include "wx/hashmap.h"
+ #include "wx/filesys.h"
+ 
++#if __MAC_OS_X_VERSION_MAX_ALLOWED >= 101000
++#include <WebKit/WebKitLegacy.h>
++#else
+ #include <WebKit/WebKit.h>
++#endif
+ #include <WebKit/HIWebView.h>
+ #include <WebKit/CarbonUtils.h>
+ 
