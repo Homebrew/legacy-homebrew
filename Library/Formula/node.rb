@@ -23,8 +23,11 @@ class Node < Formula
   option "enable-debug", "Build with debugger hooks"
   option "without-npm", "npm will not be installed"
   option "without-completion", "npm bash completion will not be installed"
+  option "with-icu4c", "enable Intl support via ICU"
 
   depends_on :python => :build
+  depends_on "icu4c" => :optional
+  depends_on "pkg-config" => :build if build.with? 'icu4c'
 
   fails_with :llvm do
     build 2326
@@ -38,6 +41,7 @@ class Node < Formula
   def install
     args = %W{--prefix=#{prefix} --without-npm}
     args << "--debug" if build.include? "enable-debug"
+    args << "--with-intl=system-icu" if build.with? "icu4c"
 
     system "./configure", *args
     system "make", "install"
