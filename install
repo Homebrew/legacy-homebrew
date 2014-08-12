@@ -174,10 +174,9 @@ Dir.chdir HOMEBREW_PREFIX do
     # we do it in four steps to avoid merge errors when reinstalling
     system git, "init", "-q"
 
-    # "git remote add origin" may fail if there is an origin remote defined in
-    # the user's global gitconfig
-    Kernel.system(git, "remote", "add", "origin", HOMEBREW_REPO) ||
-      system(git, "remote", "set-url", "--add", "origin", HOMEBREW_REPO)
+    # "git remote add" will fail if the remote is defined in the global config
+    system git, "config", "remote.origin.url", HOMEBREW_REPO
+    system git, "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*"
 
     args = git, "fetch", "origin", "master:refs/remotes/origin/master", "-n"
     args << "--depth=1" if ARGV.include? "--fast"
