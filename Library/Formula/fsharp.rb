@@ -17,9 +17,6 @@ class Fsharp < Formula
 
   def install
     system "./autogen.sh", "--prefix=#{prefix}"
-    # make sure to find the fsharp assemblies even if the user has not set
-    # MONO_GAC_PREFIX to HOMEBREW_PREFIX
-    ENV["MONO_GAC_PREFIX"] = "#{HOMEBREW_PREFIX}"
     system "make"
     system "make", "install"
   end
