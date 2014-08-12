@@ -11,25 +11,25 @@ class Libsecret < Formula
     sha1 "f107bba883485f8ffc18aabd8d6c4e063be0aff0" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gnu-sed' => :build
-  depends_on 'intltool' => :build
-  depends_on 'gettext' => :build
-  depends_on 'glib'
-  depends_on 'libgcrypt'
+  depends_on "pkg-config" => :build
+  depends_on "gnu-sed" => :build
+  depends_on "intltool" => :build
+  depends_on "gettext" => :build
+  depends_on "glib"
+  depends_on "libgcrypt"
 
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
-    inreplace "Makefile", 'sed', 'gsed'
-    inreplace "Makefile", '--nonet', ''
+    inreplace "Makefile", "sed", "gsed"
+    inreplace "Makefile", "--nonet", ""
     system "make", "install"
   end
 
   test do
-    (testpath/'test.c').write <<-EOS.undent
+    (testpath/"test.c").write <<-EOS.undent
       #include <libsecret/secret.h>
 
       const SecretSchema * example_get_schema (void) G_GNUC_CONST;
@@ -61,7 +61,7 @@ class Libsecret < Formula
       "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include"
     ]
 
-    system ENV.cc, 'test.c', '-o', 'test', *flags
-    system './test'
+    system ENV.cc, "test.c", "-o", "test", *flags
+    system "./test"
   end
 end
