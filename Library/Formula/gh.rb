@@ -6,6 +6,8 @@ class Gh < Formula
   sha1 "0673343542fedd6780bdb1d5a773c45f35a9ab28"
   head "https://github.com/jingweno/gh.git"
 
+  conflicts_with "hub", :because => "because gh supercedes hub"
+
   bottle do
     revision 1
     sha1 "bac12bb9f1b776a10eab9d7b3fd859f4fb459a23" => :mavericks
