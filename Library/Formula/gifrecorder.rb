@@ -1,7 +1,7 @@
 require "formula"
 
 class Gifrecorder < Formula
-  homepage "http://github.vom/shrx/gifRecorder"
+  homepage "http://github.com/shrx/gifRecorder"
 
   stable do
     url "https://github.com/shrx/gifRecorder/archive/v1.4.tar.gz"
