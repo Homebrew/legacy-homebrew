@@ -23,7 +23,11 @@ class Libsecret < Formula
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
+
+    # https://bugzilla.gnome.org/show_bug.cgi?id=734630
     inreplace "Makefile", "sed", "gsed"
+
+    # https://bugzilla.gnome.org/show_bug.cgi?id=734631
     inreplace "Makefile", "--nonet", ""
     system "make", "install"
   end
