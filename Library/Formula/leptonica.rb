@@ -30,13 +30,11 @@ class Leptonica < Formula
       --prefix=#{prefix}
     ]
 
-    args << "--with-libwebp" if build.with? "webp"
-    args << "--with-libopenjpeg" if build.with? "openjpeg"
-
     %w[libpng jpeg libtiff giflib].each do |dep|
       args << "--without-#{dep}" if build.without?(dep)
     end
     %w[openjpeg webp].each do |dep|
+      args << "--with-lib#{dep}" if build.with?(dep)
       args << "--without-lib#{dep}" if build.without?(dep)
     end
 
