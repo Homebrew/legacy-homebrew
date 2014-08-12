@@ -4,11 +4,16 @@ class Mono < Formula
   homepage "http://www.mono-project.com/"
   url "http://download.mono-project.com/sources/mono/mono-3.4.0.tar.bz2"
   sha1 "bae86f50f9a29d68d4e1917358996e7186e7f89e"
+  revision 1
+
+  # xbuild requires the .exe files inside the runtime directories to
+  # be executable
+  skip_clean "lib/mono"
 
   bottle do
-    sha1 "dca650732ccb8aac36e56cd7bce03851d69e2d1c" => :mavericks
-    sha1 "498c0c5c8dd7c8b867072cb96aa9f013c51e4d78" => :mountain_lion
-    sha1 "b0a97c07d45fab229594d1742baef9cc97cc8405" => :lion
+    sha1 "669bc7c78fe967ce021be800f7a668a1eecbdc6a" => :mavericks
+    sha1 "77fedf0bd73f950455977b4df7e3e8d0ed8e7f0c" => :mountain_lion
+    sha1 "bcb3c44b31f015b8550a79795382c34efc7eff92" => :lion
   end
 
   resource "monolite" do
@@ -55,7 +60,8 @@ class Mono < Formula
 
   test do
     test_str = "Hello Homebrew"
-    hello = (testpath/"hello.cs")
+    test_name = "hello.cs"
+    hello = testpath/test_name
     hello.write <<-EOS.undent
       public class Hello1
       {
@@ -70,6 +76,23 @@ class Mono < Formula
     output = `#{bin}/mono hello.exe`
     assert $?.success?
     assert_equal test_str, output.strip
+
+    # Tests that xbuild is able to execute lib/mono/*/mcs.exe
+    xbuild = testpath/"test.csproj"
+    xbuild.write <<-EOS.undent
+      <?xml version="1.0" encoding="utf-8"?>
+      <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+        <PropertyGroup>
+          <AssemblyName>HomebrewMonoTest</AssemblyName>
+        </PropertyGroup>
+        <ItemGroup>
+          <Compile Include="#{test_name}" />
+        </ItemGroup>
+        <Import Project="$(MSBuildBinPath)\\Microsoft.CSharp.targets" />
+      </Project>
+    EOS
+    system "#{bin}/xbuild", xbuild
+    assert $?.success?
   end
 
   def caveats; <<-EOS.undent

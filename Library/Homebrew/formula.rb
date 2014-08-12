@@ -25,6 +25,7 @@ class Formula
   attr_reader :buildpath, :testpath
 
   attr_accessor :local_bottle_path
+  attr_accessor :build
 
   def initialize(name, path, spec)
     @name = name
@@ -38,6 +39,7 @@ class Formula
     @active_spec = determine_active_spec(spec)
     validate_attributes :url, :name, :version
     @pkg_version = PkgVersion.new(version, revision)
+    @build = active_spec.build
     @pin = FormulaPin.new(self)
   end
 
@@ -107,10 +109,6 @@ class Formula
 
   def option_defined?(name)
     active_spec.option_defined?(name)
-  end
-
-  def build
-    active_spec.build
   end
 
   # if the dir is there, but it's empty we consider it not installed

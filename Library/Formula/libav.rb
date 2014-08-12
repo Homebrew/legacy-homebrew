@@ -8,9 +8,10 @@ class Libav < Formula
   head "git://git.libav.org/libav.git"
 
   bottle do
-    sha1 "4db0404945320769c4fdb923bbd236a17dbcc0fd" => :mavericks
-    sha1 "c960358cc90e4c3dfeb4c1174cc473a2ad2cf37c" => :mountain_lion
-    sha1 "c7889ab3981a2f5edeecc930d8ace87712cee03f" => :lion
+    revision 1
+    sha1 "19860b3717ddf896dbd2f1967915e55a373baf5e" => :mavericks
+    sha1 "43027d0bd072c5b83fdd3b1189c1d5eb25da133b" => :mountain_lion
+    sha1 "c96d34089fe7ff91b56789f62797f7216140f7ca" => :lion
   end
 
   option "without-faac", "Disable AAC encoder via faac"
@@ -63,11 +64,10 @@ class Libav < Formula
       "--disable-debug",
       "--disable-shared",
       "--prefix=#{prefix}",
-      "--enable-doc",
       "--enable-gpl",
       "--enable-nonfree",
       "--enable-version3",
-      "--enable-zlib",
+      "--enable-vda",
       "--cc=#{ENV.cc}",
       "--host-cflags=#{ENV.cflags}",
       "--host-ldflags=#{ENV.ldflags}"
