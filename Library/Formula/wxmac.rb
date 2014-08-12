@@ -14,17 +14,32 @@ class Wxmac < Formula
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libtiff"
-  
-  # Patches for 3.0.1 source release to reference the correct dispatch types 
+
+
+  # Patches for 3.0.1 source release to reference the correct dispatch types
   # regardless of whether built for OS X 10.10 or 10.9 (and earlier...)
-  # 
+  #
   # Patch derived from ticket comments and final changesets below:
   #
   #  http://trac.wxwidgets.org/ticket/16329
   #  http://trac.wxwidgets.org/changeset/76744
   #  http://trac.wxwidgets.org/changeset/76743
-  # 
+  #
   # NOTE: Revisit with next upstream release; changes already in upstream trunk
+
+  # Patch Changeset 76744
+  # http://trac.wxwidgets.org/changeset/76744
+  patch :p3 do
+    url "http://trac.wxwidgets.org/changeset/76744?format=diff&new=7674"
+    sha1 "5cd1536d2494ef0b4d21f03799b0ac024572ae31"
+  end
+
+  # Patch Changeset 76743
+  #
+  # This is embedded because all but the last file is patchable with the changeset
+  # checked into the upstream trunk (webview_webkit.mm). The version of that file
+  # in trunk had changed enough that the patch cannot match any of the hunks to
+  # their corresponding line numbers in the 3.0.2 release train source distribution.
   def patches
     patches = {
       :p1 => DATA,
@@ -137,27 +152,6 @@ diff -ur a/include/wx/osx/webview_webkit.h b/include/wx/osx/webview_webkit.h
  
      // we may use this later to setup our own mouse events,
      // so leave it in for now.
-diff -ur a/src/osx/cocoa/glcanvas.mm b/src/osx/cocoa/glcanvas.mm
---- a/src/osx/cocoa/glcanvas.mm	
-+++ b/src/osx/cocoa/glcanvas.mm	
-@@ -89,7 +89,7 @@
-         NSOpenGLPFAAlphaSize,(NSOpenGLPixelFormatAttribute)0,
-         NSOpenGLPFADepthSize,(NSOpenGLPixelFormatAttribute)8,
-         NSOpenGLPFAAccelerated, // use hardware accelerated context
--        (NSOpenGLPixelFormatAttribute)nil
-+        0
-     };
- 
-     const NSOpenGLPixelFormatAttribute *attribs;
-@@ -216,7 +216,7 @@
-             }
-         }
- 
--        data[p] = (NSOpenGLPixelFormatAttribute)nil;
-+        data[p] = 0;
- 
-         attribs = data;
-     }
 diff -ur a/src/osx/webview_webkit.mm b/src/osx/webview_webkit.mm
 --- a/src/osx/webview_webkit.mm	
 +++ b/src/osx/webview_webkit.mm	
