@@ -2,7 +2,9 @@ require 'formula'
 
 class Qt < Formula
   homepage 'http://qt-project.org/'
-  url "http://download.qt-project.org/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
+  # Mirror rather than source set as primary because source is very slow.
+  url "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
+  mirror "http://download.qt-project.org/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
   sha1 "ddf9c20ca8309a116e0466c42984238009525da6"
 
   head 'git://gitorious.org/qt/qt.git', :branch => '4.8'
