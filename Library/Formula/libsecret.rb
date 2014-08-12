@@ -15,14 +15,23 @@ class Libsecret < Formula
   depends_on "gnu-sed" => :build
   depends_on "intltool" => :build
   depends_on "gettext" => :build
+  depends_on "vala" => :optional
+  depends_on "gobject-introspection" => :recommended
   depends_on "glib"
   depends_on "libgcrypt"
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    args = %W[
+        --disable-debug
+        --disable-dependency-tracking
+        --disable-silent-rules
+        --prefix=#{prefix}
+    ]
+
+    args << "--enable-gobject-introspection" if build.with? "gobject-introspection"
+    args << "--enable-vala" if build.with? "vala"
+
+    system "./configure", *args
 
     # https://bugzilla.gnome.org/show_bug.cgi?id=734630
     inreplace "Makefile", "sed", "gsed"
