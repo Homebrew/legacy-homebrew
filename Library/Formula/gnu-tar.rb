@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class GnuTar < Formula
-  homepage 'http://www.gnu.org/software/tar/'
-  url 'http://ftpmirror.gnu.org/tar/tar-1.28.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/tar/tar-1.28.tar.gz'
-  sha1 'cd30a13bbfefb54b17e039be7c43d2592dd3d5d0'
+  homepage "http://www.gnu.org/software/tar/"
+  url "http://ftpmirror.gnu.org/tar/tar-1.28.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/tar/tar-1.28.tar.gz"
+  sha1 "cd30a13bbfefb54b17e039be7c43d2592dd3d5d0"
 
   bottle do
     sha1 "ecc6fc62b93bee896a2bd6e604c934bdb9bdc2dd" => :mavericks
@@ -30,16 +30,16 @@ class GnuTar < Formula
     # autoreconf can be removed when the patch is merged upstream.
     system "autoreconf"
     system "./configure", *args
-    system "make install"
+    system "make", "install"
 
     # Symlink the executable into libexec/gnubin as "tar"
-    (libexec/'gnubin').install_symlink bin/"gtar" => "tar"
+    (libexec/"gnubin").install_symlink bin/"gtar" => "tar"
   end
 
   def caveats; <<-EOS.undent
-    gnu-tar has been installed as 'gtar'.
+    gnu-tar has been installed as "gtar".
 
-    If you really need to use it as 'tar', you can add a 'gnubin' directory
+    If you really need to use it as "tar", you can add a "gnubin" directory
     to your PATH from your bashrc like:
 
         PATH="#{opt_libexec}/gnubin:$PATH"
