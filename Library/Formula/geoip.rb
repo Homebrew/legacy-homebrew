@@ -54,11 +54,10 @@ class Geoip < Formula
     legacy_data = Pathname.new "#{HOMEBREW_PREFIX}/share/GeoIP"
     cp Dir["#{legacy_data}/*"], geoip_data if legacy_data.exist?
 
-    ["City", "Country"].each do |type|
-      full = Pathname.new "#{geoip_data}/GeoIP#{type}.dat"
-      next if full.exist? or full.symlink?
-      ln_s "GeoLite#{type}.dat", full
-    end
+    full = Pathname.new "#{geoip_data}/GeoIP.dat"
+    ln_s "GeoLiteCountry.dat", full unless full.exist? or full.symlink?
+    full = Pathname.new "#{geoip_data}/GeoIPCity.dat"
+    ln_s "GeoLiteCity.dat", full unless full.exist? or full.symlink?
   end
 
   test do
