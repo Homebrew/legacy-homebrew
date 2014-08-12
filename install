@@ -4,6 +4,7 @@
 # change the value of HOMEBREW_PREFIX.
 HOMEBREW_PREFIX = '/usr/local'
 HOMEBREW_CACHE = '/Library/Caches/Homebrew'
+HOMEBREW_REPO = 'https://github.com/Homebrew/homebrew'
 
 module Tty extend self
   def blue; bold 34; end
@@ -172,7 +173,11 @@ Dir.chdir HOMEBREW_PREFIX do
   if git
     # we do it in four steps to avoid merge errors when reinstalling
     system git, "init", "-q"
-    system git, "remote", "add", "origin", "https://github.com/Homebrew/homebrew"
+
+    # "git remote add origin" may fail if there is an origin remote defined in
+    # the user's global gitconfig
+    Kernel.system(git, "remote", "add", "origin", HOMEBREW_REPO) ||
+      system(git, "remote", "set-url", "--add", "origin", HOMEBREW_REPO)
 
     args = git, "fetch", "origin", "master:refs/remotes/origin/master", "-n"
     args << "--depth=1" if ARGV.include? "--fast"
@@ -185,7 +190,7 @@ Dir.chdir HOMEBREW_PREFIX do
     # we use -k for curl because Leopard has a bunch of bad SSL certificates
     curl_flags = "fsSL"
     curl_flags << "k" if macos_version <= "10.5"
-    system "/bin/bash -o pipefail -c '/usr/bin/curl -#{curl_flags} https://github.com/Homebrew/homebrew/tarball/master | /usr/bin/tar xz -m --strip 1'"
+    system "/bin/bash -o pipefail -c '/usr/bin/curl -#{curl_flags} #{HOMEBREW_REPO}/tarball/master | /usr/bin/tar xz -m --strip 1'"
   end
 end
 
