@@ -11,6 +11,12 @@ class SigningParty < Formula
   url "http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.8.orig.tar.gz"
   sha1 "58b3c94b60d3637689fd1bc7aaa2f5c1527416fb"
 
+  bottle do
+    sha1 "8cbd4353cbb1715138e4c313bffc35efadb78b86" => :mavericks
+    sha1 "a9c77d648e292d9595efc3fcf93c4ef8db0f3ed7" => :mountain_lion
+    sha1 "7ce2d82e6dad2af55b5122f9751e021d7af821d6" => :lion
+  end
+
   option 'with-rename-pgpring', 'Install pgpring as pgppubring to avoid conflicting with mutt'
 
   if build.without? 'rename-pgpring'
