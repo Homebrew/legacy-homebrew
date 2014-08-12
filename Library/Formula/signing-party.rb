@@ -81,7 +81,7 @@ class SigningParty < Formula
   resource "CPAN::Meta::Requirements" do
     url "http://search.cpan.org/CPAN/authors/id/D/DA/DAGOLDEN/CPAN-Meta-Requirements-2.126.tar.gz"
     mirror "http://search.cpan.org/CPAN/authors/id/D/DA/DAGOLDEN/CPAN-Meta-Requirements-2.126.tar.gz"
-    sha1 "58b3c94b60d3637689fd1bc7aaa2f5c1527416fb"
+    sha1 "b73123f5fcf199e2bdc31aaae72a8f70740d439f"
   end
 
   # gpgparticipants data on OS X behaves differently from linux version
