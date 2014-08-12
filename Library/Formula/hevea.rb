@@ -2,7 +2,7 @@ require 'formula'
 
 class Hevea < Formula
   homepage 'http://hevea.inria.fr/'
-  url "http://hevea.inria.fr/distri/hevea-2.14.tar.gz"
+  url "http://hevea.inria.fr/distri/hevea-2.16.tar.gz"
   sha1 "78152c83802e34881ce3414072d75bff66facb15"
 
   bottle do
