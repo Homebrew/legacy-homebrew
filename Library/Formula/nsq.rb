@@ -2,8 +2,8 @@ require "formula"
 
 class Nsq < Formula
   homepage "http://bitly.github.io/nsq"
-  url "https://github.com/bitly/nsq/archive/v0.2.29.tar.gz"
-  sha1 "f8574d984e92f60248e7ec13f05390182b4906c5"
+  url "https://github.com/bitly/nsq/archive/v0.2.30.tar.gz"
+  sha1 "e8e9df1b472782d912bca6fe451f25ec35b9c3e6"
 
   bottle do
     sha1 "4107d91e72e694e26b9a533983c4e4aa25c549a0" => :mavericks
@@ -27,8 +27,8 @@ class Nsq < Formula
     # godep is only needed to *build* so don't install somewhere permanent
     buildpath.install resource("godep")
 
-    ENV["GOPATH"] = `#{buildpath}/godep path`.strip
-    ENV.append_path "GOPATH", buildpath
+    ENV["GOPATH"] = buildpath
+    system "#{buildpath}/godep restore"
     system "make"
     system "make", "DESTDIR=#{prefix}", "PREFIX=", "install"
   end
