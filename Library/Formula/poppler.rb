@@ -4,6 +4,7 @@ class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
   url 'http://poppler.freedesktop.org/poppler-0.26.3.tar.xz'
   sha1 '544f64ac2801c0625c519213a999e0c86a9a6bd6'
+  revision 1
 
   bottle do
     sha1 "b80f5a0e2de118dbff14ae9542eaf22841976753" => :mavericks
@@ -35,8 +36,8 @@ class Poppler < Formula
     :because => 'poppler, pdf2image, and xpdf install conflicting executables'
 
   resource 'font-data' do
-    url 'http://poppler.freedesktop.org/poppler-data-0.4.6.tar.gz'
-    sha1 'f030563eed9f93912b1a546e6d87936d07d7f27d'
+    url 'http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz'
+    sha1 '556a5bebd0eb743e0d91819ba11fd79947d8c674'
   end
 
   def install
