@@ -106,11 +106,11 @@ class Tab < OpenStruct
   end
 
   def used_options
-    Options.create(super)
+    Options.coerce(super)
   end
 
   def unused_options
-    Options.create(super)
+    Options.coerce(super)
   end
 
   def cxxstdlib

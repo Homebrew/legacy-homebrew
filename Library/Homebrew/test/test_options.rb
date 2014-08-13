@@ -132,18 +132,22 @@ class OptionsTests < Homebrew::TestCase
     assert_equal [foo, bar, baz].sort, (@options | options).to_a.sort
   end
 
-  def test_create_with_array
+  def test_coerce_with_array
     array = %w{--foo --bar}
     option1 = Option.new("foo")
     option2 = Option.new("bar")
-    assert_equal [option1, option2].sort, Options.create(array).to_a.sort
+    assert_equal [option1, option2].sort, Options.coerce(array).to_a.sort
   end
 
-  def test_create_splits_multiple_switches_with_single_dash
+  def test_coerce_raises_for_inappropriate_types
+    assert_raises(TypeError) { Options.coerce(1) }
+  end
+
+  def test_coerce_splits_multiple_switches_with_single_dash
     array = %w{-vd}
     verbose = Option.new("-v")
     debug = Option.new("-d")
-    assert_equal [verbose, debug].sort, Options.create(array).to_a.sort
+    assert_equal [verbose, debug].sort, Options.coerce(array).to_a.sort
   end
 
   def test_copies_do_not_share_underlying_collection
