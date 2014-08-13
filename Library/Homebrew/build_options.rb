@@ -1,3 +1,5 @@
+require 'options'
+
 class BuildOptions
   attr_accessor :universal
 
