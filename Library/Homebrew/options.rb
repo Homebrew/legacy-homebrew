@@ -53,6 +53,19 @@ class Options
   attr_reader :options
   protected :options
 
+  def self.create(array)
+    options = new
+    array.each do |e|
+      case e
+      when /^-[^-]+$/
+        e[1..-1].split(//).each { |o| options << Option.new(o) }
+      else
+        options << Option.new(e)
+      end
+    end
+    options
+  end
+
   def initialize(*args)
     @options = Set.new(*args)
   end
@@ -112,23 +125,5 @@ class Options
 
   def inspect
     "#<#{self.class.name}: #{to_a.inspect}>"
-  end
-
-  def self.coerce(arg)
-    case arg
-    when Array
-      opts = new
-      arg.each do |a|
-        case a
-        when /^-[^-]+$/
-          a[1..-1].split(//).each { |o| opts << Option.new(o) }
-        else
-          opts << Option.new(a)
-        end
-      end
-      opts
-    else
-      raise TypeError, "Cannot convert #{arg.inspect} to Options"
-    end
   end
 end
