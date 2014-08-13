@@ -24,6 +24,6 @@ module Dependable
   end
 
   def options
-    Options.coerce(tags - RESERVED_TAGS)
+    Options.create(tags - RESERVED_TAGS)
   end
 end
