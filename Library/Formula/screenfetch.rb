@@ -2,8 +2,8 @@ require "formula"
 
 class Screenfetch < Formula
   homepage "https://github.com/KittyKatt/screenFetch"
-  url "https://github.com/KittyKatt/screenFetch/archive/v3.5.0.tar.gz"
-  sha1 "01d108da5de053b518c1cc49d6e6cc6b9837a59a"
+  url "https://github.com/KittyKatt/screenFetch/archive/v3.6.0.tar.gz"
+  sha1 "283f811cabe17e7ab78cd3bd1233cfc52d5bd7b5"
   head 'git://git.silverirc.com/screenfetch.git', :shallow => false
 
   bottle do
