@@ -4,7 +4,7 @@ class BuildOptions
   attr_accessor :universal
 
   def initialize(args, options)
-    @args = args
+    @args = Options.coerce(args)
     @options = options
   end
 
