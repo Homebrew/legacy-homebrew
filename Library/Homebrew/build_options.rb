@@ -66,11 +66,11 @@ class BuildOptions
   end
 
   def used_options
-    @options & @args
+    Options.new(@options & @args)
   end
 
   def unused_options
-    @options - @args
+    Options.new(@options - @args)
   end
 
   private
