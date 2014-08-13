@@ -129,21 +129,21 @@ class OptionsTests < Homebrew::TestCase
     foo, bar, baz = %w{foo bar baz}.map { |o| Option.new(o) }
     options = Options.new << foo << bar
     @options << foo << baz
-    assert_equal [foo, bar, baz].sort, (@options | options).sort
+    assert_equal [foo, bar, baz].sort, (@options | options).to_a.sort
   end
 
   def test_create_with_array
     array = %w{--foo --bar}
     option1 = Option.new("foo")
     option2 = Option.new("bar")
-    assert_equal [option1, option2].sort, Options.create(array).sort
+    assert_equal [option1, option2].sort, Options.create(array).to_a.sort
   end
 
   def test_create_splits_multiple_switches_with_single_dash
     array = %w{-vd}
     verbose = Option.new("-v")
     debug = Option.new("-d")
-    assert_equal [verbose, debug].sort, Options.create(array).sort
+    assert_equal [verbose, debug].sort, Options.create(array).to_a.sort
   end
 
   def test_copies_do_not_share_underlying_collection
