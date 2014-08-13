@@ -98,26 +98,6 @@ class OptionsTests < Homebrew::TestCase
     assert_equal [option], @options.to_ary
   end
 
-  def test_concat_array
-    option = Option.new("foo")
-    @options.concat([option])
-    assert_includes @options, option
-    assert_equal [option], @options.to_a
-  end
-
-  def test_concat_options
-    option = Option.new("foo")
-    opts = Options.new
-    opts << option
-    @options.concat(opts)
-    assert_includes @options, option
-    assert_equal [option], @options.to_a
-  end
-
-  def test_concat_returns_self
-    assert_same @options, (@options.concat([]))
-  end
-
   def test_intersection
     foo, bar, baz = %w{foo bar baz}.map { |o| Option.new(o) }
     options = Options.new << foo << bar

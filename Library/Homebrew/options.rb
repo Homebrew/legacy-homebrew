@@ -116,11 +116,6 @@ class Options
     any? { |opt| opt == o || opt.name == o || opt.flag == o }
   end
 
-  def concat(o)
-    @options.merge(o)
-    self
-  end
-
   alias_method :to_ary, :to_a
 
   def inspect
