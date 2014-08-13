@@ -70,15 +70,15 @@ class OptionsTests < Homebrew::TestCase
   end
 
   def test_union_returns_options
-    assert_instance_of Options, (@options + Options.new)
+    assert_instance_of Options, @options + Options.new
   end
 
   def test_difference_returns_options
-    assert_instance_of Options, (@options - Options.new)
+    assert_instance_of Options, @options - Options.new
   end
 
   def test_shovel_returns_self
-    assert_same @options, (@options << Option.new("foo"))
+    assert_same @options, @options << Option.new("foo")
   end
 
   def test_as_flags
