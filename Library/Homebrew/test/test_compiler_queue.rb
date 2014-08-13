@@ -9,7 +9,7 @@ class CompilerQueueTests < Homebrew::TestCase
   end
 
   def test_shovel_returns_self
-    assert_same @q, (@q << Object.new)
+    assert_same @q, @q << Object.new
   end
 
   def test_empty
