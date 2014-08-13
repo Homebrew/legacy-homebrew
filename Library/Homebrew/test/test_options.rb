@@ -132,6 +132,15 @@ class OptionsTests < Homebrew::TestCase
     assert_equal [foo, bar, baz].sort, (@options | options).to_a.sort
   end
 
+  def test_coerce_with_options
+    assert_same @options, Options.coerce(@options)
+  end
+
+  def test_coerce_with_option
+    option = Option.new("foo")
+    assert_equal option, Options.coerce(option).to_a.first
+  end
+
   def test_coerce_with_array
     array = %w{--foo --bar}
     option1 = Option.new("foo")
