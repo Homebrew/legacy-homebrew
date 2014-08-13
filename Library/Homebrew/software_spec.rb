@@ -34,7 +34,7 @@ class SoftwareSpec
     @bottle_specification = BottleSpecification.new
     @patches = []
     @options = Options.new
-    @build = BuildOptions.new(Options.coerce(ARGV.options_only), options)
+    @build = BuildOptions.new(Options.create(ARGV.options_only), options)
   end
 
   def owner= owner
