@@ -116,8 +116,6 @@ class Options
 
   def self.coerce(arg)
     case arg
-    when self then arg
-    when Option then new << arg
     when Array
       opts = new
       arg.each do |a|
