@@ -465,9 +465,7 @@ class FormulaInstaller
   end
 
   def build_argv
-    opts = Options.create(sanitized_ARGV_options)
-    opts.concat(options)
-    opts
+    Options.create(sanitized_ARGV_options) + options
   end
 
   def build
