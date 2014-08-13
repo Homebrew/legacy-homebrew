@@ -1,5 +1,6 @@
-require 'testing_env'
-require 'build_options'
+require "testing_env"
+require "build_options"
+require "options"
 
 class BuildOptionsTests < Homebrew::TestCase
   def setup
