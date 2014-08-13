@@ -4,9 +4,8 @@ require "formula"
 
 class TabTests < Homebrew::TestCase
   def setup
-    @used, @unused = Options.new, Options.new
-    @used << Option.new("with-foo") << Option.new("without-bar")
-    @unused << Option.new("with-baz") << Option.new("without-qux")
+    @used = Options.create(%w(--with-foo --without-bar))
+    @unused = Options.create(%w(--with-baz --without-qux))
 
     @tab = Tab.new({
       :used_options       => @used.map(&:to_s),
