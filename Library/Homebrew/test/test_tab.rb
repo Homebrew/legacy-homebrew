@@ -25,9 +25,8 @@ class TabTests < Homebrew::TestCase
     tab = Tab.dummy_tab
     assert_empty tab.unused_options
     assert_empty tab.used_options
-    assert_empty tab.options
-    refute tab.built_as_bottle
-    refute tab.poured_from_bottle
+    refute_predicate tab, :built_as_bottle
+    refute_predicate tab, :poured_from_bottle
     assert_empty tab.tapped_from
     assert_nil tab.time
     assert_nil tab.HEAD
@@ -48,14 +47,8 @@ class TabTests < Homebrew::TestCase
   end
 
   def test_universal?
-    refute_predicate @tab, :universal?
-    @used << "universal"
-    @tab.used_options = @used.map(&:to_s)
-    assert_predicate @tab, :universal?
-  end
-
-  def test_options
-    assert_equal (@used + @unused).sort, @tab.options.sort
+    tab = Tab.new(:used_options => %w[--universal])
+    assert_predicate tab, :universal?
   end
 
   def test_cxxstdlib
@@ -77,7 +70,6 @@ class TabTests < Homebrew::TestCase
 
     assert_equal @used.sort, tab.used_options.sort
     assert_equal @unused.sort, tab.unused_options.sort
-    assert_equal (@used + @unused).sort, tab.options.sort
     refute_predicate tab, :built_as_bottle
     assert_predicate tab, :poured_from_bottle
     assert_equal "Homebrew/homebrew", tab.tapped_from

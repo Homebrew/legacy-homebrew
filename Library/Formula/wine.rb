@@ -24,12 +24,13 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.22.tar.bz2"
-    sha256 "60374c94c64110d58939e716c3ef4916059c691a2953d8340a9a140a208a7c63"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.24.tar.bz2"
+    sha256 "5e9a9f250b6eb703cdc13c6dcfe025958dadddfdd3f8e683f46c2d642b5ec749"
 
-    # http://bugs.winehq.org/show_bug.cgi?id=34166
+    # Patch to fix screen-flickering issues. Still relevant on 1.7.23.
+    # https://bugs.winehq.org/show_bug.cgi?id=34166
     patch do
-      url "http://bugs.winehq.org/attachment.cgi?id=47639"
+      url "https://bugs.winehq.org/attachment.cgi?id=47639"
       sha1 "c195f4b9c0af450c7dc3f396e8661ea5248f2b01"
     end
   end
@@ -52,6 +53,7 @@ class Wine < Formula
   depends_on 'little-cms2'
   depends_on 'libicns'
   depends_on 'libtiff'
+  depends_on "samba" => :optional if !build.stable?
   depends_on 'sane-backends'
   depends_on 'libgsm' => :optional
 

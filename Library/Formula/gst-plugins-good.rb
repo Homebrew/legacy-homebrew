@@ -4,11 +4,17 @@ class GstPluginsGood < Formula
   homepage 'http://gstreamer.freedesktop.org/'
 
   stable do
-    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.2.4.tar.xz'
-    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.2.4.tar.xz'
-    sha256 'c9c90368393c2e5e78387e95c02ce7b19f48e793bba6d8547f2c4b51c6f420d3'
+    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.4.0.tar.xz'
+    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.4.0.tar.xz'
+    sha256 '48a62e7987fffa289a091dfc8ccc80b401d110632b8fc1adce5b82fc092f2685'
 
     depends_on 'check' => :optional
+  end
+
+  bottle do
+    sha1 "e4962534c01fa90443ebc05fcc153b8d1a17e3f9" => :mavericks
+    sha1 "9be1005b6db6ad4877547262b1277c3dbe9dd43e" => :mountain_lion
+    sha1 "13d6763c57af2fc6eb7f515b28d020048761a603" => :lion
   end
 
   head do
@@ -41,6 +47,7 @@ class GstPluginsGood < Formula
   depends_on 'libshout' => :optional
   depends_on 'speex' => :optional
   depends_on 'taglib' => :optional
+  depends_on 'libpng' => :optional
 
   depends_on 'libogg' if build.with? 'flac'
 

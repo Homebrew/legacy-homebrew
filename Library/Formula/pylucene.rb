@@ -8,6 +8,7 @@ class Pylucene < Formula
   option "with-shared", "build jcc as a shared library"
 
   depends_on :ant => :build
+  depends_on :java => "1.7"
   depends_on :python
 
   def install

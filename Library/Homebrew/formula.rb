@@ -16,7 +16,7 @@ class Formula
   include Utils::Inreplace
   extend Enumerable
 
-  attr_reader :name, :path, :homepage, :build
+  attr_reader :name, :path
   attr_reader :stable, :devel, :head, :active_spec
   attr_reader :pkg_version, :revision
 
@@ -25,11 +25,11 @@ class Formula
   attr_reader :buildpath, :testpath
 
   attr_accessor :local_bottle_path
+  attr_accessor :build
 
   def initialize(name, path, spec)
     @name = name
     @path = path
-    @homepage = self.class.homepage
     @revision = self.class.revision || 0
 
     set_spec :stable
@@ -38,9 +38,8 @@ class Formula
 
     @active_spec = determine_active_spec(spec)
     validate_attributes :url, :name, :version
-    @build = determine_build_options
     @pkg_version = PkgVersion.new(version, revision)
-
+    @build = active_spec.build
     @pin = FormulaPin.new(self)
   end
 
@@ -65,19 +64,16 @@ class Formula
     end
   end
 
-  def determine_build_options
-    build = active_spec.build
-    options.each { |opt, desc| build.add(opt, desc) }
-    build
-  end
-
   def bottle
     Bottle.new(self, active_spec.bottle_specification) if active_spec.bottled?
   end
 
+  def homepage
+    self.class.homepage
+  end
+
   def url;      active_spec.url;     end
   def version;  active_spec.version; end
-  def mirrors;  active_spec.mirrors; end
 
   def resource(name)
     active_spec.resource(name)
@@ -105,6 +101,14 @@ class Formula
 
   def patchlist
     active_spec.patches
+  end
+
+  def options
+    active_spec.options
+  end
+
+  def option_defined?(name)
+    active_spec.option_defined?(name)
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -210,9 +214,8 @@ class Formula
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
 
-  # any e.g. configure options for this package
-  def options; [] end
-
+  # Deprecated
+  DATA = :DATA
   def patches; {} end
 
   # rarely, you don't want your library symlinked into the main prefix
@@ -226,14 +229,8 @@ class Formula
     self.class.keg_only_reason
   end
 
-  def fails_with? cc
-    cc = Compiler.new(cc) unless cc.is_a? Compiler
-    (self.class.cc_failures || []).any? do |failure|
-      # Major version check distinguishes between, e.g.,
-      # GCC 4.7.1 and GCC 4.8.2, where a comparison is meaningless
-      failure.compiler == cc.name && failure.major_version == cc.major_version &&
-        failure.version >= (cc.version || 0)
-    end
+  def fails_with? compiler
+    (self.class.cc_failures || []).any? { |failure| failure === compiler }
   end
 
   # sometimes the formula cleaner breaks things
@@ -445,7 +442,7 @@ class Formula
       "caveats" => caveats
     }
 
-    hsh["options"] = build.map { |opt|
+    hsh["options"] = options.map { |opt|
       { "option" => opt.flag, "description" => opt.description }
     }
 
@@ -478,9 +475,8 @@ class Formula
   end
 
   def test
-    # Adding the used options allows us to use `build.with?` inside of tests
-    tab = Tab.for_name(name)
-    tab.used_options.each { |opt| build.args << opt unless build.has_opposite_of? opt }
+    tab = Tab.for_formula(self)
+    extend Module.new { define_method(:build) { tab } }
     ret = nil
     mktemp do
       @testpath = Pathname.pwd
@@ -578,6 +574,8 @@ class Formula
     active_spec.add_legacy_patches(patches)
     return if patchlist.empty?
 
+    active_spec.patches.grep(DATAPatch).each { |p| p.path = path }
+
     active_spec.patches.select(&:external?).each do |patch|
       patch.verify_download_integrity(patch.fetch)
     end
@@ -592,6 +590,16 @@ class Formula
       raise "You cannot override Formula#brew in class #{name}"
     when :test
       @test_defined = true
+    when :options
+      instance = allocate
+
+      specs.each do |spec|
+        instance.options.each do |opt, desc|
+          spec.option(opt[/^--(.+)$/, 1], desc)
+        end
+      end
+
+      remove_method(:options)
     end
   end
 
@@ -656,7 +664,7 @@ class Formula
     # Define a named resource using a SoftwareSpec style block
     def resource name, &block
       specs.each do |spec|
-        spec.resource(name, &block) unless spec.resource?(name)
+        spec.resource(name, &block) unless spec.resource_defined?(name)
       end
     end
 
@@ -664,12 +672,12 @@ class Formula
       specs.each { |spec| spec.depends_on(dep) }
     end
 
-    def option name, description=nil
+    def option name, description=""
       specs.each { |spec| spec.option(name, description) }
     end
 
-    def patch strip=:p1, io=nil, &block
-      specs.each { |spec| spec.patch(strip, io, &block) }
+    def patch strip=:p1, src=nil, &block
+      specs.each { |spec| spec.patch(strip, src, &block) }
     end
 
     def plist_options options
@@ -696,8 +704,8 @@ class Formula
       @skip_clean_paths ||= Set.new
     end
 
-    def keg_only reason, explanation=nil
-      @keg_only_reason = KegOnlyReason.new(reason, explanation.to_s.chomp)
+    def keg_only reason, explanation=""
+      @keg_only_reason = KegOnlyReason.new(reason, explanation)
     end
 
     # Flag for marking whether this formula needs C++ standard library
@@ -739,9 +747,9 @@ class Formula
     # fails_with :gcc => '4.8' do
     #   version '4.8.1'
     # end
-    def fails_with compiler, &block
+    def fails_with spec, &block
       @cc_failures ||= Set.new
-      @cc_failures << CompilerFailure.new(compiler, &block)
+      @cc_failures << CompilerFailure.create(spec, &block)
     end
 
     def needs *standards

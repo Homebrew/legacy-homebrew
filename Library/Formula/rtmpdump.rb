@@ -13,7 +13,7 @@ class Rtmpdump < Formula
   depends_on 'openssl'
 
   fails_with :llvm do
-    build '2336'
+    build 2336
     cause "Crashes at runtime"
   end
 

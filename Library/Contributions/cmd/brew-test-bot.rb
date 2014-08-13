@@ -12,6 +12,7 @@
 # --no-bottle:    Run brew install without --build-bottle
 # --HEAD:         Run brew install with --HEAD
 # --local:        Ask Homebrew to write verbose logs under ./logs/
+# --tap=<tap>:    Use the git repository of the given tap
 #
 # --ci-master:         Shortcut for Homebrew master branch CI options.
 # --ci-pr:             Shortcut for Homebrew pull request CI options.
@@ -28,6 +29,14 @@ require 'rexml/cdata'
 
 EMAIL_SUBJECT_FILE = "brew-test-bot.#{MacOS.cat}.email.txt"
 
+def homebrew_git_repo tap=nil
+  if tap
+      HOMEBREW_LIBRARY/"Taps/#{tap}"
+    else
+      HOMEBREW_REPOSITORY
+    end
+end
+
 class Step
   attr_reader :command, :name, :status, :output, :time
 
@@ -38,7 +47,7 @@ class Step
     @puts_output_on_success = options[:puts_output_on_success]
     @name = command[1].delete("-")
     @status = :running
-    @repository = HOMEBREW_REPOSITORY
+    @repository = options[:repository] || HOMEBREW_REPOSITORY
     @time = 0
   end
 
@@ -121,12 +130,20 @@ end
 class Test
   attr_reader :log_root, :category, :name, :formulae, :steps
 
-  def initialize argument
+  def initialize argument, tap=nil
     @hash = nil
     @url = nil
     @formulae = []
+    @steps = []
+    @tap = tap
+    @repository = homebrew_git_repo @tap
+    @repository_requires_tapping = !@repository.directory?
 
     url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
+
+    # Tap repository if required, this is done before everything else
+    # because Formula parsing and/or git commit hash lookup depends on it.
+    test "brew", "tap", @tap if @tap && @repository_requires_tapping
 
     begin
       formula = Formulary.factory(argument)
@@ -145,7 +162,6 @@ class Test
     end
 
     @category = __method__
-    @steps = []
     @brewbot_root = Pathname.pwd + "brewbot"
     FileUtils.mkdir_p @brewbot_root
   end
@@ -161,7 +177,7 @@ class Test
       rd.close
       STDERR.reopen("/dev/null")
       STDOUT.reopen(wr)
-      Dir.chdir HOMEBREW_REPOSITORY
+      Dir.chdir @repository
       exec("git", *args)
     end
     wr.close
@@ -253,9 +269,15 @@ class Test
     return unless diff_start_sha1 != diff_end_sha1
     return if @url and not steps.last.passed?
 
+    if @tap
+      formula_path = %w[Formula HomebrewFormula].find { |dir| (@repository/dir).directory? } || ""
+    else
+      formula_path = "Library/Formula"
+    end
+
     git(
       "diff-tree", "-r", "--name-only", "--diff-filter=AM",
-      diff_start_sha1, diff_end_sha1, "--", "Library/Formula"
+      diff_start_sha1, diff_end_sha1, "--", formula_path
     ).each_line do |line|
       @formulae << File.basename(line.chomp, ".rb")
     end
@@ -297,6 +319,8 @@ class Test
     test "brew", "uses", formula
     dependencies = `brew deps #{formula}`.split("\n")
     dependencies -= `brew list`.split("\n")
+    unchanged_dependencies = dependencies - @formulae
+    changed_dependences = dependencies - unchanged_dependencies
     formula_object = Formulary.factory(formula)
     return unless satisfied_requirements?(formula_object, :stable)
 
@@ -307,6 +331,7 @@ class Test
       unless installed_gcc
         test "brew", "install", "gcc"
         installed_gcc = true
+        OS::Mac.clear_version_cache
         retry
       end
       skip formula
@@ -314,7 +339,8 @@ class Test
       return
     end
 
-    test "brew", "fetch", "--retry", *dependencies unless dependencies.empty?
+    test "brew", "fetch", "--retry", *unchanged_dependencies unless unchanged_dependencies.empty?
+    test "brew", "fetch", "--retry", "--build-from-source", *changed_dependences unless changed_dependences.empty?
     formula_fetch_options = []
     formula_fetch_options << "--build-bottle" unless ARGV.include? "--no-bottle"
     formula_fetch_options << "--force" if ARGV.include? "--cleanup"
@@ -325,7 +351,10 @@ class Test
     install_args << "--build-bottle" unless ARGV.include? "--no-bottle"
     install_args << "--HEAD" if ARGV.include? "--HEAD"
     install_args << formula
+    # Don't care about e.g. bottle failures for dependencies.
+    ENV["HOMEBREW_DEVELOPER"] = nil
     test "brew", "install", "--only-dependencies", *install_args unless dependencies.empty?
+    ENV["HOMEBREW_DEVELOPER"] = "1"
     test "brew", "install", *install_args
     install_passed = steps.last.passed?
     test "brew", "audit", formula
@@ -377,6 +406,7 @@ class Test
 
   def cleanup_after
     @category = __method__
+
     checkout_args = []
     if ARGV.include? '--cleanup'
       test "git", "clean", "--force", "-dx"
@@ -395,11 +425,14 @@ class Test
       test "brew", "cleanup"
     end
 
+    test "brew", "untap", @tap if @tap && @repository_requires_tapping
+
     FileUtils.rm_rf @brewbot_root unless ARGV.include? "--keep-logs"
   end
 
   def test(*args)
     options = Hash === args.last ? args.pop : {}
+    options[:repository] = @repository
     step = Step.new self, args, options
     step.run
     steps << step
@@ -430,6 +463,8 @@ class Test
     check_results
   end
 end
+
+tap = ARGV.value('tap')
 
 if Pathname.pwd == HOMEBREW_PREFIX and ARGV.include? "--cleanup"
   odie 'cannot use --cleanup from HOMEBREW_PREFIX as it will delete all output.'
@@ -469,6 +504,8 @@ if ARGV.include? '--ci-pr-upload' or ARGV.include? '--ci-testing-upload'
 
   ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
   ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
+  ENV["GIT_WORK_TREE"] = homebrew_git_repo tap
+  ENV["GIT_DIR"] = "#{ENV["GIT_WORK_TREE"]}/.git"
 
   pr = ENV['UPSTREAM_PULL_REQUEST']
   number = ENV['UPSTREAM_BUILD_NUMBER']
@@ -507,12 +544,12 @@ tests = []
 any_errors = false
 if ARGV.named.empty?
   # With no arguments just build the most recent commit.
-  test = Test.new('HEAD')
+  test = Test.new('HEAD', tap)
   any_errors = test.run
   tests << test
 else
   ARGV.named.each do |argument|
-    test = Test.new(argument)
+    test = Test.new(argument, tap)
     any_errors = test.run or any_errors
     tests << test
   end

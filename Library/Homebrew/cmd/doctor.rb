@@ -320,7 +320,7 @@ def check_for_stray_developer_directory
 end
 
 def check_for_bad_install_name_tool
-  return if MacOS.version < 10.9
+  return if MacOS.version < "10.9"
 
   libs = `otool -L /usr/bin/install_name_tool`
   unless libs.include? "/usr/lib/libxcselect.dylib" then <<-EOS.undent
@@ -879,7 +879,7 @@ end
 
 def check_for_other_frameworks
   # Other frameworks that are known to cause problems when present
-  %w{Mono.framework expat.framework libexpat.framework}.
+  %w{expat.framework libexpat.framework}.
     map{ |frmwrk| "/Library/Frameworks/#{frmwrk}" }.
     select{ |frmwrk| File.exist? frmwrk }.
     map do |frmwrk| <<-EOS.undent
@@ -1007,7 +1007,7 @@ def check_for_non_prefixed_coreutils
 end
 
 def check_for_non_prefixed_findutils
-  default_names = Tab.for_name('findutils').used_options.include? 'default-names'
+  default_names = Tab.for_name('findutils').include? 'default-names'
   if default_names then <<-EOS.undent
     Putting non-prefixed findutils in your path can cause python builds to fail.
     EOS

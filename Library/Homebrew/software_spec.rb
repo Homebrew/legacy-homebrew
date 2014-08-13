@@ -2,6 +2,7 @@ require 'forwardable'
 require 'resource'
 require 'checksum'
 require 'version'
+require 'options'
 require 'build_options'
 require 'dependency_collector'
 require 'bottles'
@@ -10,23 +11,30 @@ require 'patch'
 class SoftwareSpec
   extend Forwardable
 
+  PREDEFINED_OPTIONS = {
+    :universal => Option.new("universal", "Build a universal binary"),
+    :cxx11     => Option.new("c++11", "Build using C++11 mode"),
+    "32-bit"   => Option.new("32-bit", "Build 32-bit only"),
+  }
+
   attr_reader :name, :owner
-  attr_reader :build, :resources, :patches
+  attr_reader :build, :resources, :patches, :options
   attr_reader :dependency_collector
   attr_reader :bottle_specification
 
   def_delegators :@resource, :stage, :fetch, :verify_download_integrity
   def_delegators :@resource, :cached_download, :clear_cache
-  def_delegators :@resource, :checksum, :mirrors, :specs, :using, :downloader
+  def_delegators :@resource, :checksum, :mirrors, :specs, :using
   def_delegators :@resource, :version, :mirror, *Checksum::TYPES
 
   def initialize
     @resource = Resource.new
     @resources = {}
-    @build = BuildOptions.new(ARGV.options_only)
     @dependency_collector = DependencyCollector.new
     @bottle_specification = BottleSpecification.new
     @patches = []
+    @options = Options.new
+    @build = BuildOptions.new(ARGV.options_only, options)
   end
 
   def owner= owner
@@ -54,13 +62,13 @@ class SoftwareSpec
     bottle_specification.instance_eval(&block)
   end
 
-  def resource? name
+  def resource_defined? name
     resources.has_key?(name)
   end
 
   def resource name, &block
     if block_given?
-      raise DuplicateResourceError.new(name) if resource?(name)
+      raise DuplicateResourceError.new(name) if resource_defined?(name)
       res = Resource.new(name, &block)
       resources[name] = res
       dependency_collector.add(res)
@@ -69,17 +77,27 @@ class SoftwareSpec
     end
   end
 
-  def option name, description=nil
-    name = 'c++11' if name == :cxx11
-    name = name.to_s if Symbol === name
-    raise "Option name is required." if name.empty?
-    raise "Options should not start with dashes." if name[0, 1] == "-"
-    build.add(name, description)
+  def option_defined?(name)
+    options.include?(name)
+  end
+
+  def option(name, description="")
+    opt = PREDEFINED_OPTIONS.fetch(name) do
+      if Symbol === name
+        opoo "Passing arbitrary symbols to `option` is deprecated: #{name.inspect}"
+        puts "Symbols are reserved for future use, please pass a string instead"
+        name = name.to_s
+      end
+      raise ArgumentError, "option name is required" if name.empty?
+      raise ArgumentError, "options should not start with dashes" if name.start_with?("-")
+      Option.new(name, description)
+    end
+    options << opt
   end
 
   def depends_on spec
     dep = dependency_collector.add(spec)
-    build.add_dep_option(dep) if dep
+    add_dep_option(dep) if dep
   end
 
   def deps
@@ -90,14 +108,24 @@ class SoftwareSpec
     dependency_collector.requirements
   end
 
-  def patch strip=:p1, io=nil, &block
-    patches << Patch.create(strip, io, &block)
+  def patch strip=:p1, src=nil, &block
+    patches << Patch.create(strip, src, &block)
   end
 
   def add_legacy_patches(list)
     list = Patch.normalize_legacy_patches(list)
     list.each { |p| p.owner = self }
     patches.concat(list)
+  end
+
+  def add_dep_option(dep)
+    name = dep.option_name
+
+    if dep.optional? && !option_defined?("with-#{name}")
+      options << Option.new("with-#{name}", "Build with #{name} support")
+    elsif dep.recommended? && !option_defined?("without-#{name}")
+      options << Option.new("without-#{name}", "Build without #{name} support")
+    end
   end
 end
 
@@ -147,7 +175,7 @@ class Bottle
   attr_reader :name, :resource, :prefix, :cellar, :revision
 
   def_delegators :resource, :url, :fetch, :verify_download_integrity
-  def_delegators :resource, :downloader, :cached_download, :clear_cache
+  def_delegators :resource, :cached_download, :clear_cache
 
   def initialize(formula, spec)
     @name = formula.name
@@ -168,6 +196,10 @@ class Bottle
 
   def compatible_cellar?
     cellar == :any || cellar == HOMEBREW_CELLAR.to_s
+  end
+
+  def stage
+    resource.downloader.stage
   end
 
   private

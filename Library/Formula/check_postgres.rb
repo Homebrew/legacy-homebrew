@@ -28,8 +28,7 @@ class CheckPostgres < Formula
   test do
     # This test verifies that check_postgres fails correctly, assuming
     # that no server is running at that port.
-    output = `#{bin}/check_postgres --action=connection --port=65432`
+    output = shell_output("#{bin}/check_postgres --action=connection --port=65432", 2)
     assert output.include? "POSTGRES_CONNECTION CRITICAL"
-    assert_equal 2, $?.exitstatus
   end
 end

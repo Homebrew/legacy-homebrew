@@ -1,20 +1,19 @@
 require 'resource'
-require 'stringio'
 require 'erb'
 
-class Patch
-  def self.create(strip, io, &block)
+module Patch
+  def self.create(strip, src, &block)
     case strip
-    when :DATA, IO, StringIO
-      IOPatch.new(strip, :p1)
+    when :DATA
+      DATAPatch.new(:p1)
     when String
-      IOPatch.new(StringIO.new(strip), :p1)
+      StringPatch.new(:p1, strip)
     when Symbol
-      case io
-      when :DATA, IO, StringIO
-        IOPatch.new(io, strip)
+      case src
+      when :DATA
+        DATAPatch.new(strip)
       when String
-        IOPatch.new(StringIO.new(io), strip)
+        StringPatch.new(strip, src)
       else
         ExternalPatch.new(strip, &block)
       end
@@ -29,16 +28,15 @@ class Patch
     case list
     when Hash
       list
-    when Array, String, IO
+    when Array, String, :DATA
       { :p1 => list }
     else
       {}
     end.each_pair do |strip, urls|
-      urls = [urls] unless Array === urls
-      urls.each do |url|
+      Array(urls).each do |url|
         case url
-        when IO
-          patch = IOPatch.new(url, strip)
+        when :DATA
+          patch = DATAPatch.new(strip)
         else
           patch = LegacyPatch.new(strip, url)
         end
@@ -48,34 +46,28 @@ class Patch
 
     patches
   end
-
-  attr_reader :whence
-
-  def external?
-    whence == :resource
-  end
 end
 
-class IOPatch < Patch
+class EmbeddedPatch
   attr_writer :owner
   attr_reader :strip
 
-  def initialize(io, strip)
-    @io     = io
-    @strip  = strip
-    @whence = :io
+  def initialize(strip)
+    @strip = strip
+  end
+
+  def external?
+    false
+  end
+
+  def contents
+    raise NotImplementedError
   end
 
   def apply
-    @io = DATA if @io == :DATA
-    data = @io.read
-    data.gsub!("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
+    data = contents.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
     IO.popen("/usr/bin/patch -g 0 -f -#{strip}", "w") { |p| p.write(data) }
     raise ErrorDuringExecution, "Applying DATA patch failed" unless $?.success?
-  ensure
-    # IO and StringIO cannot be marshaled, so remove the reference
-    # in case we are indirectly referenced by an exception later.
-    @io = nil
   end
 
   def inspect
@@ -83,13 +75,47 @@ class IOPatch < Patch
   end
 end
 
-class ExternalPatch < Patch
+class DATAPatch < EmbeddedPatch
+  attr_accessor :path
+
+  def initialize(strip)
+    super
+    @path = nil
+  end
+
+  def contents
+    data = ""
+    path.open("rb") do |f|
+      begin
+        line = f.gets
+      end until line.nil? || /^__END__$/ === line
+      data << line while line = f.gets
+    end
+    data
+  end
+end
+
+class StringPatch < EmbeddedPatch
+  def initialize(strip, str)
+    super(strip)
+    @str = str
+  end
+
+  def contents
+    @str
+  end
+end
+
+class ExternalPatch
   attr_reader :resource, :strip
 
   def initialize(strip, &block)
     @strip    = strip
     @resource = Resource.new("patch", &block)
-    @whence   = :resource
+  end
+
+  def external?
+    true
   end
 
   def owner= owner
