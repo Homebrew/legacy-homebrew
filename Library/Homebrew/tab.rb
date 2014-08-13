@@ -11,8 +11,8 @@ class Tab < OpenStruct
   FILENAME = 'INSTALL_RECEIPT.json'
 
   def self.create(formula, compiler, stdlib, build)
-    Tab.new :used_options => build.used_options,
-            :unused_options => build.unused_options,
+    Tab.new :used_options => build.used_options.map(&:to_s),
+            :unused_options => build.unused_options.map(&:to_s),
             :tabfile => formula.prefix.join(FILENAME),
             :built_as_bottle => !!ARGV.build_bottle?,
             :poured_from_bottle => false,
