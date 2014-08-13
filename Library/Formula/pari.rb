@@ -2,8 +2,8 @@ require "formula"
 
 class Pari < Formula
   homepage "http://pari.math.u-bordeaux.fr/"
-  url "http://pari.math.u-bordeaux.fr/pub/pari/unix/pari-2.5.5.tar.gz"
-  sha1 "77637f935ee4a3b78e7015cef00146bd2f7e96bc"
+  url "http://pari.math.u-bordeaux.fr/pub/pari/unix/pari-2.7.1.tar.gz"
+  sha256 "cc637918f3c0b20dc9bbea99e639e7a288b89ea4d0e4e3f9b7110a115bcb41be"
 
   depends_on "gmp"
   depends_on "readline"
