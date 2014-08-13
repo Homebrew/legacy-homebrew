@@ -3,9 +3,9 @@ require 'formula'
 class Go < Formula
   homepage 'http://golang.org'
   head 'https://go.googlecode.com/hg/'
-  url 'https://storage.googleapis.com/golang/go1.3.src.tar.gz'
-  version '1.3'
-  sha1 '9f9dfcbcb4fa126b2b66c0830dc733215f2f056e'
+  url 'https://storage.googleapis.com/golang/go1.3.1.src.tar.gz'
+  version '1.3.1'
+  sha1 'bc296c9c305bacfbd7bff9e1b54f6f66ae421e6e'
 
   bottle do
     sha1 "86ad80f44b3114aaf53d5e673777f947d1fac3df" => :mavericks
