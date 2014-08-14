@@ -133,7 +133,11 @@ class Boost < Formula
 
     # Force boost to compile using the appropriate GCC version.
     open("user-config.jam", "a") do |file|
-      file.write "using darwin : : #{ENV.cxx} ;\n" if OS.mac?
+      if OS.mac?
+        file.write "using darwin : : #{ENV.cxx} ;\n"
+      else
+        file.write "using gcc : : #{ENV.cxx} ;\n"
+      end
       file.write "using mpi ;\n" if build.with? 'mpi'
 
       # Link against correct version of Python if python3 build was requested
