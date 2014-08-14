@@ -2,8 +2,8 @@ require "formula"
 
 class Ntopng < Formula
   homepage "http://www.ntop.org/products/ntop/"
-  url 'https://downloads.sourceforge.net/project/ntop/ntopng/ntopng-1.2.0_r8114.tgz'
-  sha1 "0d327bc6230cc8fab6350989e883406a195edb7c"
+  url 'https://downloads.sourceforge.net/project/ntop/ntopng/ntopng-1.2.0_r8116.tgz'
+  sha1 "81189e53aa71084caf11b5462fb752363988fa01"
   version "1.2"
 
   depends_on :autoconf => :build
