@@ -8,6 +8,8 @@ class Findbugs < Formula
   conflicts_with 'fb-client',
     :because => "findbugs and fb-client both install a `fb` binary"
 
+  depends_on :java => '1.7'
+
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
