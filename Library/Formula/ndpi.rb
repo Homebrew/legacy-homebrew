@@ -3,6 +3,7 @@ require "formula"
 class Ndpi < Formula
   homepage "http://www.ntop.org/products/ndpi/"
   url 'https://downloads.sourceforge.net/project/ntop/nDPI/libndpi-1.5.0_r8115.tar.gz'
+  sha1 "9fbb97dd3de35670c8f527ac3ccdb1aa50a4da70"
   version "1.5"
 
   depends_on :autoconf => :build
@@ -16,8 +17,7 @@ class Ndpi < Formula
   end
 
   test do
-    `#{bin}/ndpiReader -i en0 -s 5`
-    assert_equal 0, $?.exitstatus
+    system "#{bin}/ndpiReader", "-i", "en0", "-s", "5"
   end
 
 end
