@@ -11,7 +11,7 @@ class EbookTools < Formula
   def install
     libzip_include = Formula["libzip"].lib
     libzip_cmake_arg = "-DLIBZIP_INCLUDE_DIR=#{libzip_include}/libzip/include"
-    system 'cmake', '.', libzip_cmake_arg, *std_cmake_args
+    system "cmake", ".", libzip_cmake_arg, *std_cmake_args
     system "make", "install"
   end
 
