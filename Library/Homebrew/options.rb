@@ -85,19 +85,19 @@ class Options
   end
 
   def +(o)
-    Options.new(@options + o)
+    self.class.new(@options + o)
   end
 
   def -(o)
-    Options.new(@options - o)
+    self.class.new(@options - o)
   end
 
   def &(o)
-    Options.new(@options & o)
+    self.class.new(@options & o)
   end
 
   def |(o)
-    Options.new(@options | o)
+    self.class.new(@options | o)
   end
 
   def *(arg)
