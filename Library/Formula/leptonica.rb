@@ -16,6 +16,9 @@ class Leptonica < Formula
   depends_on 'libpng' => :recommended
   depends_on 'jpeg' => :recommended
   depends_on 'libtiff' => :optional
+  depends_on 'giflib' => :optional
+  depends_on 'openjpeg' => :optional
+  depends_on 'webp' => :optional
   depends_on 'pkg-config' => :build
 
   conflicts_with 'osxutils',
@@ -27,8 +30,12 @@ class Leptonica < Formula
       --prefix=#{prefix}
     ]
 
-    %w[libpng jpeg libtiff].each do |dep|
+    %w[libpng jpeg libtiff giflib].each do |dep|
       args << "--without-#{dep}" if build.without?(dep)
+    end
+    %w[openjpeg webp].each do |dep|
+      args << "--with-lib#{dep}" if build.with?(dep)
+      args << "--without-lib#{dep}" if build.without?(dep)
     end
 
     system "./configure", *args

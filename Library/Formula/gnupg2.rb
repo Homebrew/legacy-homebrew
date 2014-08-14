@@ -2,15 +2,14 @@ require "formula"
 
 class Gnupg2 < Formula
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.25.tar.bz2"
-  mirror "http://mirrors.kernel.org/debian/pool/main/g/gnupg2/gnupg2_2.0.25.orig.tar.bz2"
-  sha1 "890d77d89f2d187382f95e83e386f2f7ba789436"
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
+  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
+  sha1 "3ff5b38152c919724fd09cf2f17df704272ba192"
 
   bottle do
-    revision 1
-    sha1 "72eb0a083cf2f395a7c09d61cd1606af27cf800f" => :mavericks
-    sha1 "e13777dfd387f1de8ffd1160a37167ab3e1d99ed" => :mountain_lion
-    sha1 "0d925112501a584e1a221d6811a23562183a2850" => :lion
+    sha1 "09e5e2acda47c02836d8a1b874f805bec9d9acbf" => :mavericks
+    sha1 "1300333cdd1c047179434370aa710a949f72be1c" => :mountain_lion
+    sha1 "4fecb9820b713e81271fb47499fd88c1568890e7" => :lion
   end
 
   option "8192", "Build with support for private keys of up to 8192 bits"
@@ -26,8 +25,6 @@ class Gnupg2 < Formula
   depends_on "libusb-compat" => :recommended
   depends_on "readline" => :optional
 
-  # Fix hardcoded runtime data location
-  # upstream: http://git.gnupg.org/cgi-bin/gitweb.cgi?p=gnupg.git;h=c3f08dc
   # Adjust package name to fit our scheme of packaging both gnupg 1.x and
   # 2.x, and gpg-agent separately, and adjust tests to fit this scheme
   patch :DATA
@@ -69,21 +66,8 @@ class Gnupg2 < Formula
 end
 
 __END__
-diff --git a/common/homedir.c b/common/homedir.c
-index 4b03cfe..c84f26f 100644
---- a/common/homedir.c
-+++ b/common/homedir.c
-@@ -472,7 +472,7 @@ dirmngr_socket_name (void)
-     }
-   return name;
- #else /*!HAVE_W32_SYSTEM*/
--  return "/var/run/dirmngr/socket";
-+  return "HOMEBREW_PREFIX/var/run/dirmngr/socket";
- #endif /*!HAVE_W32_SYSTEM*/
- }
- 
 diff --git a/configure b/configure
-index abacb4e..d61f227 100755
+index c022805..97b19dc 100755
 --- a/configure
 +++ b/configure
 @@ -578,8 +578,8 @@ MFLAGS=
@@ -94,8 +78,8 @@ index abacb4e..d61f227 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gnupg2'
 +PACKAGE_TARNAME='gnupg2'
- PACKAGE_VERSION='2.0.25'
- PACKAGE_STRING='gnupg 2.0.25'
+ PACKAGE_VERSION='2.0.26'
+ PACKAGE_STRING='gnupg 2.0.26'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'
 diff --git a/tests/openpgp/Makefile.in b/tests/openpgp/Makefile.in
 index c9ceb2d..f58c96e 100644

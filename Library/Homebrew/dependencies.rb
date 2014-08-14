@@ -10,7 +10,7 @@ class Dependencies
   end
 
   def <<(o)
-    @deps << o unless @deps.include? o
+    @deps << o unless include?(o)
     self
   end
 

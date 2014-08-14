@@ -2,14 +2,14 @@ require "formula"
 
 class GpgAgent < Formula
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.25.tar.bz2"
-  sha1 "890d77d89f2d187382f95e83e386f2f7ba789436"
+  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
+  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
+  sha1 "3ff5b38152c919724fd09cf2f17df704272ba192"
 
   bottle do
-    revision 1
-    sha1 "317d26e0f85fefeb9cccf9a05644aaf70f05c13f" => :mavericks
-    sha1 "16630ed6be44545cf61c631aa0f0a7251499a7c0" => :mountain_lion
-    sha1 "a1dc1f35ba61af4d9fbf0e592f14a274c18c5056" => :lion
+    sha1 "e2519e73af7277fbc0946227208ae7f75f7292ed" => :mavericks
+    sha1 "59b3713d207a9e699be2f201f7d3b53fbe77f1d1" => :mountain_lion
+    sha1 "487da82c42d2ceb4bbcd5cde4101f8a86a37886c" => :lion
   end
 
   depends_on "libgpg-error"
@@ -38,7 +38,7 @@ end
 
 __END__
 diff --git a/configure b/configure
-index abacb4e..3b50500 100755
+index c022805..96ea7ed 100755
 --- a/configure
 +++ b/configure
 @@ -578,8 +578,8 @@ MFLAGS=
@@ -49,6 +49,6 @@ index abacb4e..3b50500 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gpg-agent'
 +PACKAGE_TARNAME='gpg-agent'
- PACKAGE_VERSION='2.0.25'
- PACKAGE_STRING='gnupg 2.0.25'
+ PACKAGE_VERSION='2.0.26'
+ PACKAGE_STRING='gnupg 2.0.26'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'

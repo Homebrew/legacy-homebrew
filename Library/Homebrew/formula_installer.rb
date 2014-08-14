@@ -216,8 +216,7 @@ class FormulaInstaller
 
     check_requirements(req_map)
 
-    deps = [].concat(req_deps).concat(f.deps)
-    deps = expand_dependencies(deps)
+    deps = expand_dependencies(req_deps + f.deps)
 
     if deps.empty? and only_deps?
       puts "All dependencies for #{f} are satisfied."
@@ -465,9 +464,7 @@ class FormulaInstaller
   end
 
   def build_argv
-    opts = Options.coerce(sanitized_ARGV_options)
-    opts.concat(options)
-    opts
+    Options.create(sanitized_ARGV_options) + options
   end
 
   def build
@@ -706,7 +703,7 @@ end
 
 class Formula
   def keg_only_text
-    s = "This formula is keg-only, so it was not symlinked into #{HOMEBREW_PREFIX}."
+    s = "This formula is keg-only, which means it was not symlinked into #{HOMEBREW_PREFIX}."
     s << "\n\n#{keg_only_reason.to_s}"
     if lib.directory? or include.directory?
       s <<

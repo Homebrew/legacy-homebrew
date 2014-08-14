@@ -1,12 +1,11 @@
-require 'testing_env'
-require 'build_options'
+require "testing_env"
+require "build_options"
+require "options"
 
 class BuildOptionsTests < Homebrew::TestCase
   def setup
-    args = %w{--with-foo --with-bar --without-qux}
-    opts = Options.new
-    opts << Option.new("with-foo") << Option.new("with-bar")
-    opts << Option.new("without-baz") << Option.new("without-qux")
+    args = Options.create(%w(--with-foo --with-bar --without-qux))
+    opts = Options.create(%w(--with-foo --with-bar --without-baz --without-qux))
     @build = BuildOptions.new(args, opts)
   end
 

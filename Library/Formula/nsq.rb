@@ -2,13 +2,13 @@ require "formula"
 
 class Nsq < Formula
   homepage "http://bitly.github.io/nsq"
-  url "https://github.com/bitly/nsq/archive/v0.2.29.tar.gz"
-  sha1 "f8574d984e92f60248e7ec13f05390182b4906c5"
+  url "https://github.com/bitly/nsq/archive/v0.2.30.tar.gz"
+  sha1 "e8e9df1b472782d912bca6fe451f25ec35b9c3e6"
 
   bottle do
-    sha1 "4107d91e72e694e26b9a533983c4e4aa25c549a0" => :mavericks
-    sha1 "3dd13b928a7cce6419b4afb2d5bb82681de55cb0" => :mountain_lion
-    sha1 "65e97e27186fd5c8f5b5b05a39b5de3b8a27a792" => :lion
+    sha1 "fa6980ba138a8448cbe330cb0f3abb994f39981f" => :mavericks
+    sha1 "b3b73efccdd831f621e71450962af28b25a2e96b" => :mountain_lion
+    sha1 "17b716e4f43f5608a51915ede83f1d83c9771ef2" => :lion
   end
 
   depends_on "go" => :build
@@ -27,8 +27,8 @@ class Nsq < Formula
     # godep is only needed to *build* so don't install somewhere permanent
     buildpath.install resource("godep")
 
-    ENV["GOPATH"] = `#{buildpath}/godep path`.strip
-    ENV.append_path "GOPATH", buildpath
+    ENV["GOPATH"] = buildpath
+    system "#{buildpath}/godep restore"
     system "make"
     system "make", "DESTDIR=#{prefix}", "PREFIX=", "install"
   end

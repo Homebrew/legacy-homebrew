@@ -1,10 +1,8 @@
-require 'options'
-
 class BuildOptions
   attr_accessor :universal
 
   def initialize(args, options)
-    @args = Options.coerce(args)
+    @args = args
     @options = options
   end
 
@@ -66,11 +64,11 @@ class BuildOptions
   end
 
   def used_options
-    Options.new(@options & @args)
+    @options & @args
   end
 
   def unused_options
-    Options.new(@options - @args)
+    @options - @args
   end
 
   private
