@@ -9,7 +9,9 @@ class EbookTools < Formula
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
+    libzip_include = Formula["libzip"].lib
+    libzip_cmake_arg = "-DLIBZIP_INCLUDE_DIR=#{libzip_include}/libzip/include"
+    system 'cmake', '.', libzip_cmake_arg, *std_cmake_args
     system "make", "install"
   end
 
