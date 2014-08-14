@@ -6,6 +6,10 @@ class Yasm < Formula
   sha256 "3dce6601b495f5b3d45b59f7d2492a340ee7e84b5beca17e48f862502bd5603f"
 
   bottle do
+    cellar :any
+    sha1 "d8d6f7e68d2d0ff8897a9b160e49c5cc4ad3f97d" => :mavericks
+    sha1 "94596d8c7b99094001d3313624970070e7d8e920" => :mountain_lion
+    sha1 "07116ee2758d99aed65a3aaf59a7f9cbb9a982a8" => :lion
   end
 
   head do
