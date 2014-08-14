@@ -24,7 +24,7 @@ class Mercury < Formula
 
     args << "--enable-erlang-grade" if build.with? "erlang"
     args << "--with-hwloc" if build.with? "hwloc"
-    args << "--enable-dotnet-grades" << "--enable-csharp-grade" if build.with? "mono"
+    args << "--enable-csharp-grade" if build.with? "mono"
 
     system "./configure", *args
 
