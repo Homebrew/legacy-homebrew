@@ -20,6 +20,10 @@ class Osm2pgsql < Formula
   depends_on "proj"
   depends_on "protobuf-c" => :optional
 
+  def patches
+    DATA
+  end
+
   def install
     args = [
       "--with-proj=#{Formula["proj"].opt_prefix}",
@@ -36,3 +40,51 @@ class Osm2pgsql < Formula
     (share+'osm2pgsql').install 'default.style'
   end
 end
+
+__END__
+--- a/m4/ax_lib_protobuf_c.m4	2012-01-01 00:00:00.000000000 +0000
++++ b/m4/ax_lib_protobuf_c.m4	2012-01-01 00:00:00.000000000 +0000
+@@ -207,7 +207,9 @@
+       CFLAGS="$CFLAGS $PROTOBUF_C_CFLAGS"
+       AX_COMPARE_VERSION([$protobuf_c_wanted_version], [ge], [0.14],
+          [AC_CHECK_MEMBER([ProtobufCFieldDescriptor.packed],,
+-                          [protobuf_c_version_ok="no"],
++                          [AC_CHECK_MEMBER([ProtobufCFieldDescriptor.flags],,
++                                           [protobuf_c_version_ok="no"],
++                                           [[#include <protobuf-c/protobuf-c.h>]])],
+                           [[#include <google/protobuf-c/protobuf-c.h>]
+          ])
+       ])
+
+
+--- a/parse-pbf.c	2012-01-01 00:00:00.000000000 +0000
++++ b/parse-pbf.c	2012-01-01 00:00:00.000000000 +0000
+@@ -258,7 +258,7 @@
+     return 0;
+   }
+   
+-  header_block__free_unpacked (hmsg, &protobuf_c_system_allocator);
++  header_block__free_unpacked (hmsg, NULL);
+ 
+   return 1;
+ }
+@@ -541,7 +541,7 @@
+     if (!processOsmDataRelations(osmdata, group, string_table)) return 0;
+   }
+ 
+-  primitive_block__free_unpacked (pmsg, &protobuf_c_system_allocator);
++  primitive_block__free_unpacked (pmsg, NULL);
+ 
+   return 1;
+ }
+@@ -606,8 +606,8 @@
+       }
+     }
+ 
+-    blob__free_unpacked (blob_msg, &protobuf_c_system_allocator);
+-    block_header__free_unpacked (header_msg, &protobuf_c_system_allocator);
++    blob__free_unpacked (blob_msg, NULL);
++    block_header__free_unpacked (header_msg, NULL);
+   } while (!feof(input));
+ 
+   if (!feof(input)) {
