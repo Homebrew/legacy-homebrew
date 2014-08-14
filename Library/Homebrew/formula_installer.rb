@@ -216,8 +216,7 @@ class FormulaInstaller
 
     check_requirements(req_map)
 
-    deps = [].concat(req_deps).concat(f.deps)
-    deps = expand_dependencies(deps)
+    deps = expand_dependencies(req_deps + f.deps)
 
     if deps.empty? and only_deps?
       puts "All dependencies for #{f} are satisfied."
