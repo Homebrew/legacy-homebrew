@@ -17,7 +17,10 @@ class Gocr < Formula
   depends_on 'netpbm' => :optional
 
   # Edit makefile to install libs per developer documentation
-  patch :DATA if build.with? "lib"
+  patch do
+    url "https://gist.githubusercontent.com/mcs07/6229210/raw/2ba2d697b6b5b25dc4b811854abe4928c4e647d6/gocr-libs.diff"
+    sha1 "a297e5921af0256fbf0025b8a205cc83ed79278e"
+  end if build.with? "lib"
 
   def install
     system "./configure", "--disable-debug",
@@ -37,71 +40,3 @@ class Gocr < Formula
     system "#{bin}/gocr -h"
   end
 end
-
-__END__
-diff --git a/src/Makefile.in b/src/Makefile.in
-index bf4181f..883fec2
---- a/src/Makefile.in
-+++ b/src/Makefile.in
-@@ -10,7 +10,7 @@ PROGRAM = gocr$(EXEEXT)
- PGMASCLIB = Pgm2asc
- #LIBPGMASCLIB = lib$(PGMASCLIB).a
- # ToDo: need a better pgm2asc.h for lib users
--#INCLUDEFILES = gocr.h
-+INCLUDEFILES = pgm2asc.h output.h list.h unicode.h gocr.h pnm.h
- # avoid german compiler messages
- LANG=C
-
-@@ -39,8 +39,8 @@ LIBOBJS=pgm2asc.o \
- #VPATH = @srcdir@
- bindir = @bindir@
- #  lib removed for simplification
--#libdir = @libdir@
--#includedir = @includedir@
-+libdir = @libdir@
-+includedir = /include/gocr
-
- CC=@CC@
- # lib removed for simplification
-@@ -89,7 +89,8 @@ $(PROGRAM): $(LIBOBJS) gocr.o
- 	$(CC) -o $@ $(LDFLAGS) gocr.o $(LIBOBJS) $(LIBS)
- 	# if test -r $(PROGRAM); then cp $@ ../bin; fi
-
--libs: lib$(PGMASCLIB).a lib$(PGMASCLIB).@PACKAGE_VERSION@.so
-+#libs: lib$(PGMASCLIB).a lib$(PGMASCLIB).@PACKAGE_VERSION@.so
-+libs: lib$(PGMASCLIB).a
-
- #lib$(PGMASCLIB).@PACKAGE_VERSION@.so: $(LIBOBJS)
- #	$(CC) -fPIC -shared -Wl,-h$@ -o $@ $(LIBOBJS)
-@@ -109,17 +110,17 @@ $(LIBOBJS): Makefile
- # PHONY = don't look at file clean, -rm = start rm and ignore errors
- .PHONY : clean proper install uninstall
- install: all
--	#$(INSTALL) -d $(DESTDIR)$(bindir) $(DESTDIR)$(libdir) $(DESTDIR)$(includedir)
--	$(INSTALL) -d $(DESTDIR)$(bindir)
-+	$(INSTALL) -d $(DESTDIR)$(bindir) $(DESTDIR)$(libdir) $(DESTDIR)$(includedir)
-+	#$(INSTALL) -d $(DESTDIR)$(bindir)
- 	$(INSTALL) $(PROGRAM) $(DESTDIR)$(bindir)
- 	$(INSTALL) ../bin/gocr.tcl   $(DESTDIR)$(bindir)  # better X11/bin?
- 	if test -f lib$(PGMASCLIB).a; then\
- 	 $(INSTALL) lib$(PGMASCLIB).a $(DESTDIR)$(libdir);\
- 	 $(INSTALL) lib$(PGMASCLIB).@PACKAGE_VERSION@.so $(DESTDIR)$(libdir);\
- 	 $(INSTALL) lib$(PGMASCLIB).so $(DESTDIR)$(libdir);\
-+	 $(INSTALL) $(INCLUDEFILES) $(DESTDIR)$(includedir);\
-+	 $(INSTALL) ../include/config.h $(DESTDIR)$(includedir);\
- 	fi
--	# ToDo: not sure that the link will be installed correctly
--	#$(INSTALL) $(INCLUDEFILES) $(DESTDIR)$(includedir)
-
- # directories are not removed
- uninstall:
-@@ -129,7 +130,8 @@ uninstall:
- 	-rm -f $(DESTDIR)$(libdir)/lib$(PGMASCLIB).@PACKAGE_VERSION@.so
- 	-rm -f $(DESTDIR)$(libdir)/lib$(PGMASCLIB).so
- 	# ToDo: set to old version.so ?
--	#for X in $(INCLUDEFILES); do rm -f $(DESTDIR)$(includedir)/$$X; done
-+	for X in $(INCLUDEFILES); do rm -f $(DESTDIR)$(includedir)/$$X; done
-+	-rm -f $(DESTDIR)$(includedir)/config.h
-
- clean:
- 	-rm -f *.o *~
