@@ -13,7 +13,8 @@ class Ndpi < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make"
+    system "make","install"
   end
 
   test do

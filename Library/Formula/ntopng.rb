@@ -25,7 +25,7 @@ class Ntopng < Formula
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make","install"
   end
 
   test do
