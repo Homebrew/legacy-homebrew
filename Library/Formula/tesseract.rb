@@ -19,7 +19,7 @@ class Tesseract < Formula
   end
 
   head do
-    url "http://tesseract-ocr.googlecode.com/svn/trunk"
+    url 'https://code.google.com/p/tesseract-ocr/', :using => :git
 
     depends_on :autoconf
     depends_on :automake
