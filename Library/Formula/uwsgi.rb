@@ -11,6 +11,8 @@ class Uwsgi < Formula
     sha1 "33678570960fa45d5e2a7017bfa1ad67f9dedeb3" => :lion
   end
 
+  depends_on "pkg-config" => :build
+
   depends_on "pcre"
   depends_on "yajl" if build.without? "jansson"
 
