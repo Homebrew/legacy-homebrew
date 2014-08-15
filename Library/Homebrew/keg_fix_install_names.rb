@@ -133,7 +133,7 @@ class Keg
     dylibs.each(&block)
   end
 
-  def dylib_id_for file, options={}
+  def dylib_id_for(file, options)
     # The new dylib ID should have the same basename as the old dylib ID, not
     # the basename of the file itself.
     basename = File.basename(file.dylib_id)
