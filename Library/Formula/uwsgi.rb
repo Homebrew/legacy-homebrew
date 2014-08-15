@@ -6,10 +6,13 @@ class Uwsgi < Formula
   sha1 "5e0fc187ea10366153a1f800c0e7e80940188837"
 
   bottle do
-    sha1 "cccf498414d3120ca439ab1ed32c4ed1e04b573b" => :mavericks
-    sha1 "6ce7c6a0434b133d3f6efba72783650b34f13e2b" => :mountain_lion
-    sha1 "33678570960fa45d5e2a7017bfa1ad67f9dedeb3" => :lion
+    revision 1
+    sha1 "b7bd8eab827a33c547016c8a6e381517ce9143c2" => :mavericks
+    sha1 "d41c406d8c772c220a77f7c9b03158ccdd898f96" => :mountain_lion
+    sha1 "e64b429906886bffb38884c3a2d57645d83d68a1" => :lion
   end
+
+  depends_on "pkg-config" => :build
 
   depends_on "pcre"
   depends_on "yajl" if build.without? "jansson"
@@ -24,7 +27,6 @@ class Uwsgi < Formula
   depends_on "lua" => :optional
   depends_on "mongodb" => :optional
   depends_on "mongrel2" => :optional
-  depends_on "mono" => :optional
   depends_on "nagios" => :optional
   depends_on "postgresql" => :optional
   depends_on "pypy" => :optional
@@ -95,7 +97,6 @@ class Uwsgi < Formula
     plugins << "mongodb" if build.with? "mongodb"
     plugins << "mongodblog" if build.with? "mongodb"
     plugins << "mongrel2" if build.with? "mongrel2"
-    plugins << "mono" if build.with? "mono"
     plugins << "nagios" if build.with? "nagios"
     plugins << "pypy" if build.with? "pypy"
     plugins << "php" if build.with? "php"
