@@ -2,8 +2,8 @@ require 'formula'
 
 class Lmdb < Formula
   homepage 'http://symas.com/mdb/'
-  url 'https://gitorious.org/mdb/mdb/archive/LMDB_0.9.11.tar.gz'
-  sha1 '8015de70514e8b437b4bc43718a7034101efdc67'
+  url 'https://gitorious.org/mdb/mdb/archive/LMDB_0.9.13.tar.gz'
+  sha1 '8843f07c997841b56ba121d4d3bfb343803c42aa'
 
   head 'git://git.openldap.org/openldap.git', :branch => 'mdb.master'
 
