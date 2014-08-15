@@ -2,9 +2,8 @@ require "formula"
 
 class CabalInstall < Formula
   homepage "http://www.haskell.org/haskellwiki/Cabal-Install"
-  url "http://hackage.haskell.org/package/cabal-install-1.20.0.2/cabal-install-1.20.0.2.tar.gz"
-  sha1 "e9b3843270b8f5969a4e1205263e59439bc35692"
-  revision 1
+  url "http://hackage.haskell.org/package/cabal-install-1.20.0.3/cabal-install-1.20.0.3.tar.gz"
+  sha1 "444448b0f704420e329e8fc1989b6743c1c8546d"
 
   bottle do
     cellar :any
