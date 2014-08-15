@@ -2,8 +2,8 @@ require "formula"
 
 class Metaproxy < Formula
   homepage "http://www.indexdata.com/metaproxy"
-  url "http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.5.7.tar.gz"
-  sha1 "9aeef7d1133a7b74458138266d1cdb5852159fc2"
+  url "http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.5.9.tar.gz"
+  sha1 "283bed2fa4d1ea8b93d9fede38df4de2b60f78ae"
 
   bottle do
     cellar :any
