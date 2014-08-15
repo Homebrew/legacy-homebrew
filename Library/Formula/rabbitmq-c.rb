@@ -25,12 +25,17 @@ class RabbitmqC < Formula
   def install
     ENV.universal_binary if build.universal?
     args = std_cmake_args
-    args << "-DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_API_DOCS=OFF"
+    args << "-DBUILD_EXAMPLES=OFF"
+    args << "-DBUILD_TESTS=OFF"
+    args << "-DBUILD_API_DOCS=OFF"
 
-    args << "-DBUILD_TOOLS=ON" if build.with? "tools"
-    args << "-DBUILD_TOOLS=OFF" if build.without? "tools"
+    args << if build.with? "tools"
+      "-DBUILD_TOOLS=ON"
+    else
+      "-DBUILD_TOOLS=OFF"
+    end
 
     system "cmake", ".", *args
-    system "make install"
+    system "make", "install"
   end
 end
