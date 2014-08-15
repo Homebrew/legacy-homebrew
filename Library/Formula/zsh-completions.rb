@@ -15,7 +15,7 @@ class ZshCompletions < Formula
     <<-EOS.undent
     To activate these completions, add the following to your .zshrc:
 
-      fpath=(#{HOMEBREW_PREFIX}/share/zsh-completions $fpath)
+      fpath=($(brew --prefix)/share/zsh-completions $fpath)
 
     You may also need to force rebuild `zcompdump`:
 
