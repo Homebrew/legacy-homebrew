@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Libidn < Formula
-  homepage 'http://www.gnu.org/software/libidn/'
-  url 'http://ftpmirror.gnu.org/libidn/libidn-1.28.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/libidn/libidn-1.28.tar.gz'
-  sha256 'dd357a968449abc97c7e5fa088a4a384de57cb36564f9d4e0d898ecc6373abfb'
+  homepage "http://www.gnu.org/software/libidn/"
+  url "http://ftpmirror.gnu.org/libidn/libidn-1.29.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/libidn/libidn-1.29.tar.gz"
+  sha256 "fb82747dbbf9b36f703ed27293317d818d7e851d4f5773dedf3efa4db32a7c7c"
 
   bottle do
     cellar :any
@@ -13,7 +13,7 @@ class Libidn < Formula
     sha1 "866251da871fe76c180f5b7247d4458175778313" => :lion
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
 
   option :universal
 
