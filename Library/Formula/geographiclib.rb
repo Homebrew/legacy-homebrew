@@ -7,12 +7,10 @@ class Geographiclib < Formula
   depends_on "cmake" => :build
 
   def install
-    # GeographicLib makes a Release build if CMAKE_BUILD_TYPE isn't set.
-    args = std_cmake_args - %w{-DCMAKE_BUILD_TYPE=None}
-    mkdir 'build'
-    chdir 'build' do
-      system 'cmake', *args, '..'
-      system 'make install'
+    mkdir "build"
+    chdir "build" do
+      system "cmake", "..", *std_cmake_args
+      system "make", "install"
     end
   end
 
