@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Help2man < Formula
-  homepage 'http://www.gnu.org/software/help2man/'
-  url 'http://ftpmirror.gnu.org/help2man/help2man-1.45.1.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/help2man/help2man-1.45.1.tar.xz'
-  sha256 'c70fc791e6d13240327955de355244371b00bb1c9e247d5693ed601b716467c2'
+  homepage "http://www.gnu.org/software/help2man/"
+  url "http://ftpmirror.gnu.org/help2man/help2man-1.46.1.tar.xz"
+  mirror "http://ftp.gnu.org/gnu/help2man/help2man-1.46.1.tar.xz"
+  sha256 "3dfd02a026149aad06887c1cb6062471779c100e00aecb79b8f9d01cf1581c47"
 
   bottle do
     cellar :any
