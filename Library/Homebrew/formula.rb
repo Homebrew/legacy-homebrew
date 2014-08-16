@@ -245,7 +245,7 @@ class Formula
   end
 
   def skip_cxxstdlib_check?
-    self.class.cxxstdlib.include?(:skip)
+    false
   end
 
   def require_universal_deps?
@@ -712,16 +712,9 @@ class Formula
       @keg_only_reason = KegOnlyReason.new(reason, explanation)
     end
 
-    # Flag for marking whether this formula needs C++ standard library
-    # compatibility check
-    def cxxstdlib
-      @cxxstdlib ||= Set.new
-    end
-
-    # Explicitly request changing C++ standard library compatibility check
-    # settings. Use with caution!
+    # Pass :skip to this method to disable post-install stdlib checking
     def cxxstdlib_check check_type
-      cxxstdlib << check_type
+      define_method(:skip_cxxstdlib_check?) { true } if check_type == :skip
     end
 
     # For Apple compilers, this should be in the format:
