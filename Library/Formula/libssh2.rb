@@ -6,7 +6,13 @@ class Libssh2 < Formula
   sha1 "c27ca83e1ffeeac03be98b6eef54448701e044b0"
   revision 1
 
-  head "git://git.libssh2.org/libssh2.git"
+  head do
+    url "git://git.libssh2.org/libssh2.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
@@ -18,6 +24,7 @@ class Libssh2 < Formula
   depends_on "openssl"
 
   def install
+    system "./buildconf" if build.head?
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
