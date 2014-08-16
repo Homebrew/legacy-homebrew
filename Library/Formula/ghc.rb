@@ -20,7 +20,7 @@ class Ghc < Formula
   depends_on "gmp"
 
   # These don't work inside of a `stable do` block
-  if build.stable? || build.build_32_bit? || !MacOS.prefer_64_bit? || MacOS.version < :mavericks
+  if build.build_32_bit? || !MacOS.prefer_64_bit? || MacOS.version < :mavericks
     depends_on "gcc" if MacOS.version >= :mountain_lion
     env :std
 
@@ -42,18 +42,6 @@ class Ghc < Formula
   def install
     # Move the main tarball contents into a subdirectory
     (buildpath+"Ghcsource").install Dir["*"]
-
-    if build.build_32_bit? || !MacOS.prefer_64_bit?
-      binary_resource = "binary32"
-    elsif MacOS.version >= :mavericks && build.devel?
-      binary_resource = "binary_7.8"
-    else
-      binary_resource = "binary"
-    end
-
-    resource(binary_resource).stage do
-      # Define where the subformula will temporarily install itself
-      subprefix = buildpath+"subfo"
 
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       args = ["--prefix=#{subprefix}"]
