@@ -68,6 +68,8 @@ module Homebrew
       return false
     end
 
+    ohai "Retrying download"
+
     f.clear_cache
     @fetch_failed[f.name] = true
     true
@@ -77,7 +79,14 @@ module Homebrew
     f.clear_cache if ARGV.force?
 
     already_fetched = f.cached_download.exist?
-    download = f.fetch
+    download = nil
+
+    begin
+      download = f.fetch
+    rescue => e
+      retry if retry_fetch? f
+      raise e
+    end
 
     return unless download.file?
 
