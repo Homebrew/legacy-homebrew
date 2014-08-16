@@ -32,13 +32,6 @@ class Ghc < Formula
     end
   end
 
-  stable do
-    resource "testsuite" do
-      url "https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz"
-      sha1 "6a1973ae3cccdb2f720606032ae84ffee8680ca1"
-    end
-  end
-
   def install
     # Move the main tarball contents into a subdirectory
     (buildpath+"Ghcsource").install Dir["*"]
@@ -78,22 +71,6 @@ class Ghc < Formula
 
       system "./configure", *args
       system "make"
-
-      if build.include? "tests"
-        resource("testsuite").stage do
-          cd "testsuite" do
-            (buildpath+"Ghcsource/config").install Dir["config/*"]
-            (buildpath+"Ghcsource/driver").install Dir["driver/*"]
-            (buildpath+"Ghcsource/mk").install Dir["mk/*"]
-            (buildpath+"Ghcsource/tests").install Dir["tests/*"]
-            (buildpath+"Ghcsource/timeout").install Dir["timeout/*"]
-          end
-          cd (buildpath+"Ghcsource/tests") do
-            system "make", "CLEANUP=1", "THREADS=#{ENV.make_jobs}", "fast"
-          end
-        end
-      end
-
       system "make"
       # -j1 fixes an intermittent race condition
       system "make", "-j1", "install"
@@ -118,5 +95,4 @@ class Ghc < Formula
     assert $?.success?
     assert_match /Hello Homebrew/i, output
   end
- end
 end
