@@ -13,7 +13,6 @@ class Ghc < Formula
   end
 
   option "32-bit"
-  option "tests", "Verify the build using the testsuite."
 
   # http://hackage.haskell.org/trac/ghc/ticket/6009
   depends_on :macos => :snow_leopard
