@@ -248,6 +248,10 @@ class Formula
     self.class.cxxstdlib.include?(:skip)
   end
 
+  def require_universal_deps?
+    false
+  end
+
   # yields self with current working directory set to the uncompressed tarball
   def brew
     validate_attributes :name, :version
@@ -757,10 +761,6 @@ class Formula
       standards.each do |standard|
         @cc_failures.merge CompilerFailure.for_standard standard
       end
-    end
-
-    def require_universal_deps
-      specs.each { |spec| spec.build.universal = true }
     end
 
     def test &block
