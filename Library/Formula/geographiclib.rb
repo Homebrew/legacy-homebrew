@@ -1,7 +1,5 @@
 require "formula"
-
 class Geographiclib < Formula
-
   homepage "http://geographiclib.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.37.tar.gz"
   sha1 "d18d0c94824fb303ce8942d622bdef78833108cd"
@@ -9,15 +7,13 @@ class Geographiclib < Formula
   depends_on "cmake" => :build
 
   def install
-
-    # GeographicLib makes a Release build if CMAKE_BUILD_TYPE is'nt set.
+    # GeographicLib makes a Release build if CMAKE_BUILD_TYPE isn't set.
     args = std_cmake_args - %w{-DCMAKE_BUILD_TYPE=None}
-    Dir.mkdir 'BUILD'
-    Dir.chdir 'BUILD' do
+    mkdir 'build'
+    chdir 'build' do
       system 'cmake', *args, '..'
       system 'make install'
     end
-
   end
 
   test do
