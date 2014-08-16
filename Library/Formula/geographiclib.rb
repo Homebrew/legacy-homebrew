@@ -4,6 +4,12 @@ class Geographiclib < Formula
   url "https://downloads.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.37.tar.gz"
   sha1 "d18d0c94824fb303ce8942d622bdef78833108cd"
 
+  bottle do
+    sha1 "bfa37887453c33dc76cc1005e3accae3720ea227" => :mavericks
+    sha1 "6daf6c3be855c49c0b2eab5d2c1de502dbeb982c" => :mountain_lion
+    sha1 "7d1d3266f3b3f6398a413a170ee36ca8376a5357" => :lion
+  end
+
   depends_on "cmake" => :build
 
   def install
