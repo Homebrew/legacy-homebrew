@@ -1,10 +1,10 @@
 require 'formula'
 
 class Ghc < Formula
-  homepage "http://haskell.org/ghc/"
-  url "http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-src.tar.bz2"
-  sha1 "8938e1ef08b37a4caa071fa169e79a3001d065ff"
-  revision 3
+  homepage "https://haskell.org/ghc/"
+  url "https://www.haskell.org/ghc/dist/7.8.3/ghc-7.8.3-src.tar.bz2"
+  sha1 "b5b3f9ff9d430fef5147c941b1ff5403cb80554b"
+  revision 4
 
   bottle do
     sha1 "75efb035488ce9f3119e621748370795d454f9c6" => :mavericks
@@ -18,31 +18,6 @@ class Ghc < Formula
   # http://hackage.haskell.org/trac/ghc/ticket/6009
   depends_on :macos => :snow_leopard
   depends_on "gmp"
-
-  devel do
-    url "https://www.haskell.org/ghc/dist/7.8.2/ghc-7.8.2-src.tar.xz"
-    sha1 "fe86ae790b7e8e5b4c78db7a914ee375bc6d9fc3"
-
-    resource "testsuite" do
-      url "https://www.haskell.org/ghc/dist/7.8.2/ghc-7.8.2-testsuite.tar.xz"
-      sha1 "3abe4e0ebbed17e825573f0f34be0eca9179f9e4"
-    end
-  end
-
-  resource "binary_7.8" do
-    url "https://www.haskell.org/ghc/dist/7.8.2/ghc-7.8.2-x86_64-apple-darwin-mavericks.tar.xz"
-    sha1 "5219737fb38f882532712047f6af32fc73a91f0f"
-  end
-
-  resource "binary" do
-    url "http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-apple-darwin.tar.bz2"
-    sha1 "7c655701672f4b223980c3a1068a59b9fbd08825"
-  end
-
-  resource "binary32" do
-    url "http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2"
-    sha1 "60f749893332d7c22bb4905004a67510992d8ef6"
-  end
 
   # These don't work inside of a `stable do` block
   if build.stable? || build.build_32_bit? || !MacOS.prefer_64_bit? || MacOS.version < :mavericks
@@ -62,10 +37,6 @@ class Ghc < Formula
       url "https://github.com/ghc/testsuite/archive/ghc-7.6.3-release.tar.gz"
       sha1 "6a1973ae3cccdb2f720606032ae84ffee8680ca1"
     end
-
-    # Fixes 7.6.3 compilation on 10.9
-    patch :DATA if MacOS.version >= :mavericks
-  end
 
   def install
     # Move the main tarball contents into a subdirectory
@@ -159,44 +130,3 @@ class Ghc < Formula
     assert_match /Hello Homebrew/i, output
   end
 end
-
-__END__
-diff --git a/includes/HsFFI.h b/includes/HsFFI.h
-index 652fbea..a21811e 100644
---- a/includes/HsFFI.h
-+++ b/includes/HsFFI.h
-@@ -21,7 +21,7 @@ extern "C" {
- #include "stg/Types.h"
-
- /* get limits for integral types */
--#ifdef HAVE_STDINT_H
-+#if defined HAVE_STDINT_H && !defined USE_INTTYPES_H_FOR_RTS_PROBES_D
- /* ISO C 99 says:
-  * "C++ implementations should define these macros only when
-  * __STDC_LIMIT_MACROS is defined before <stdint.h> is included."
-diff --git a/rts/RtsProbes.d b/rts/RtsProbes.d
-index 13f40f8..226f881 100644
---- a/rts/RtsProbes.d
-+++ b/rts/RtsProbes.d
-@@ -6,6 +6,12 @@
-  *
-  * ---------------------------------------------------------------------------*/
-
-+#ifdef __APPLE__ && __MACH__
-+# if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_9
-+#  define USE_INTTYPES_H_FOR_RTS_PROBES_D
-+# endif
-+#endif
-+
- #include "HsFFI.h"
- #include "rts/EventLogFormat.h"
-
-diff --git a/utils/mkdirhier/mkdirhier.sh b/utils/mkdirhier/mkdirhier.sh
-index 4c5d5f7..80762f4 100644
---- a/utils/mkdirhier/mkdirhier.sh
-+++ b/utils/mkdirhier/mkdirhier.sh
-@@ -1,4 +1,4 @@
- #!/bin/sh
-
--mkdir -p ${1+"$@"}
-+mkdir -p ${1+"./$@"}
