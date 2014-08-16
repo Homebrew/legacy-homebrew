@@ -129,5 +129,5 @@ class Ghc < Formula
     assert $?.success?
     assert_match /Hello Homebrew/i, output
   end
+ end
 end
- 
