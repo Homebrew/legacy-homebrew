@@ -130,3 +130,4 @@ class Ghc < Formula
     assert_match /Hello Homebrew/i, output
   end
 end
+ 
