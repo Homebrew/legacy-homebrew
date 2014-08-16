@@ -39,14 +39,6 @@ class Ghc < Formula
       args = ["--prefix=#{subprefix}"]
       args << "--with-gcc=#{ENV.cc}"
 
-      system "./configure", *args
-      if build.devel? and MacOS.version <= :lion
-        # __thread is not supported on Lion but configure enables it anyway.
-        File.open("mk/config.h", "a") do |file|
-          file.write("#undef CC_SUPPORTS_TLS")
-        end
-      end
-
       # -j1 fixes an intermittent race condition
       system "make", "-j1", "install"
       ENV.prepend_path "PATH", subprefix/"bin"
@@ -63,6 +55,7 @@ class Ghc < Formula
       else
         arch = "x86_64"
       end
+    end
 
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       args = ["--prefix=#{prefix}", "--build=#{arch}-apple-darwin"]
@@ -79,7 +72,6 @@ class Ghc < Formula
         inreplace settings, "\"#{ENV.cc}\"", "\"clang\""
       end
     end
-  end
 
   def caveats; <<-EOS.undent
     This brew is for GHC only; you might also be interested in cabal-install
