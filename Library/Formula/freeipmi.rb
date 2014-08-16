@@ -2,9 +2,9 @@ require "formula"
 
 class Freeipmi < Formula
   homepage "https://www.gnu.org/software/freeipmi/"
-  url "http://ftpmirror.gnu.org/freeipmi/freeipmi-1.4.4.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/freeipmi/freeipmi-1.4.4.tar.gz"
-  sha1 "343b574ca79038d22827c895ef0ca95ee38137ae"
+  url "http://ftpmirror.gnu.org/freeipmi/freeipmi-1.4.5.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/freeipmi/freeipmi-1.4.5.tar.gz"
+  sha1 "21f567f452de53545a8880eaf572cad567e5ad30"
 
   bottle do
     sha1 "7cf899745d7735a839980d3318e24bccd29b0783" => :mavericks
