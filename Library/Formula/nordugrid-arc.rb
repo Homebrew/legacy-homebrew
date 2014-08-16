@@ -2,8 +2,8 @@ require 'formula'
 
 class NordugridArc < Formula
   homepage 'http://www.nordugrid.org'
-  url 'http://download.nordugrid.org/packages/nordugrid-arc/releases/4.1.0/src/nordugrid-arc-4.1.0.tar.gz'
-  sha1 '9836793b91b31d3c24ae5b0200aba2a56530e7e7'
+  url 'http://download.nordugrid.org/packages/nordugrid-arc/releases/4.2.0/src/nordugrid-arc-4.2.0.tar.gz'
+  sha1 'b372034bd40c41a725ad91512835bd4e267b68aa'
 
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
@@ -17,9 +17,6 @@ class NordugridArc < Formula
     cause "Fails with 'template specialization requires 'template<>''"
   end
 
-  # See http://bugzilla.nordugrid.org/cgi-bin/bugzilla/show_bug.cgi?id=3366
-  patch :DATA
-
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--disable-swig",
@@ -32,17 +29,3 @@ class NordugridArc < Formula
     system "#{bin}/arccp", "foo", "bar"
   end
 end
-
-__END__
-diff --git a/src/services/ldap-infosys/giis/Index.h b/src/services/ldap-infosys/giis/Index.h
-index 7e91cd3..64fb30a 100644
---- a/src/services/ldap-infosys/giis/Index.h
-+++ b/src/services/ldap-infosys/giis/Index.h
-@@ -3,6 +3,7 @@
-
- #include <list>
- #include <string>
-+#include <pthread.h>
-
- #include "Policy.h"
- #include "Entry.h"
