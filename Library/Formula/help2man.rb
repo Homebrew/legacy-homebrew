@@ -8,9 +8,9 @@ class Help2man < Formula
 
   bottle do
     cellar :any
-    sha1 "8ee54313de90e7362ac98f5b93adaad3de1986e6" => :mavericks
-    sha1 "8de37051ce5504b73ebe067cc38ec0063f6f9540" => :mountain_lion
-    sha1 "26c6736453c30840a662fffe55172cfbe300e4ef" => :lion
+    sha1 "13acec14f0cdf3de9c31faae953241f53da2ac0e" => :mavericks
+    sha1 "e859195d7c051c7b7f87b59f77c046029d07773c" => :mountain_lion
+    sha1 "67b0b7d57eba0b132aad6c79d1a4597d09667364" => :lion
   end
 
   def install
