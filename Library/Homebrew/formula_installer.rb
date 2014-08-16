@@ -310,7 +310,7 @@ class FormulaInstaller
   def inherited_options_for(dep)
     inherited_options = Options.new
     u = Option.new("universal")
-    if (options.include?(u) || f.build.universal?) && !dep.build? && dep.to_formula.option_defined?(u)
+    if (options.include?(u) || f.require_universal_deps?) && !dep.build? && dep.to_formula.option_defined?(u)
       inherited_options << u
     end
     inherited_options

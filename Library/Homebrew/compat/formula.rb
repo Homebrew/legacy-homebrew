@@ -43,4 +43,8 @@ class Formula
   def self.factory(name)
     Formulary.factory(name)
   end
+
+  def self.require_universal_deps
+    define_method(:require_universal_deps?) { true }
+  end
 end
