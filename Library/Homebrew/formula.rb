@@ -490,7 +490,7 @@ class Formula
   end
 
   def test_defined?
-    not self.class.instance_variable_get(:@test_defined).nil?
+    false
   end
 
   protected
@@ -592,7 +592,7 @@ class Formula
     when :brew
       raise "You cannot override Formula#brew in class #{name}"
     when :test
-      @test_defined = true
+      define_method(:test_defined?) { true }
     when :options
       instance = allocate
 
@@ -757,7 +757,7 @@ class Formula
 
     def test &block
       return @test unless block_given?
-      @test_defined = true
+      define_method(:test_defined?) { true }
       @test = block
     end
   end
