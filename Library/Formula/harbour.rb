@@ -5,6 +5,13 @@ class Harbour < Formula
   url "https://downloads.sourceforge.net/harbour-project/source/3.0.0/harbour-3.0.0.tar.bz2"
   sha1 "66c21d666ac24c45485179eeaa9f90458b552e92"
 
+  bottle do
+    cellar :any
+    sha1 "ff777eb55a1f944d7dd1bcc4e07506996e60af0e" => :mavericks
+    sha1 "bfc3a646867b5176dad976c4e0f6c40c7a4a7417" => :mountain_lion
+    sha1 "0127b7daaaae6393fd69fff8e7e21a9ebae7c18d" => :lion
+  end
+
   head do
     url "https://github.com/harbour/core/archive/master.tar.gz"
   end
