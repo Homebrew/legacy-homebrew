@@ -55,7 +55,6 @@ class Ghc < Formula
       else
         arch = "x86_64"
       end
-    end
 
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       args = ["--prefix=#{prefix}", "--build=#{arch}-apple-darwin"]
@@ -86,4 +85,5 @@ class Ghc < Formula
     assert $?.success?
     assert_match /Hello Homebrew/i, output
   end
+ end
 end
