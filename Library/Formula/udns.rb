@@ -2,8 +2,8 @@ require 'formula'
 
 class Udns < Formula
   homepage 'http://www.corpit.ru/mjt/udns.html'
-  url 'http://www.corpit.ru/mjt/udns/udns-0.2.tar.gz'
-  sha1 '416da8c95283eae45f6d2e6fb055c4ef765a3f02'
+  url 'http://www.corpit.ru/mjt/udns/udns-0.4.tar.gz'
+  sha1 'ffa0abf9d1654feb64d571b2615d8b70e1dd92ce'
 
   # Build target for dylib. See:
   # http://www.corpit.ru/pipermail/udns/2011q3/000154.html
@@ -24,21 +24,21 @@ class Udns < Formula
 end
 
 __END__
---- udns-0.1.orig/Makefile.in	2010-12-27 09:35:02.000000000 -0800
-+++ udns-0.1/Makefile.in	2011-05-03 15:09:46.000000000 -0700
-@@ -42,7 +42,10 @@
+--- udns-0.4.orig/Makefile.in	2014-01-23 02:45:31.000000000 -0800
++++ udns-0.4/Makefile.in	2014-08-16 20:22:00.000000000 -0700
+@@ -42,6 +42,11 @@
  SOLIBV = lib$(NAME).so.$(SOVER)
  SOLIBFL= -L. -l$(NAME)_s
  
--LIBS   = $(LIB) $(SOLIBV)
-+DYLIB  = lib$(NAME).dylib
++DYLIB   = lib$(NAME).dylib
 +DYLIBV = lib$(NAME).$(SOVER).dylib
 +
 +LIBS   = $(LIB) $(SOLIBV) $(DYLIB)
- 
++
  UTILS   = $(USRCS:.c=)
  UOBJS   = $(USRCS:.c=.o)
-@@ -68,6 +71,14 @@
+ SOUTILS = $(USRCS:.c=_s)
+@@ -71,6 +76,14 @@
  .c.o:
  	$(CC) $(CFLAGS) $(CDEFS) -c $<
  
@@ -47,9 +47,8 @@ __END__
 +$(DYLIBV): $(SOBJS)
 +	$(CC) -dynamiclib $(SOBJS) -o $(DYLIBV)
 +$(DYLIB): $(DYLIBV)
-+	rm -f $@
++	rm -rf $@
 +	ln -s $(DYLIBV) $@
 +
  shared: $(SOLIBV) $(SOUTILS)
  sharedlib: $(SOLIBV)
- 
