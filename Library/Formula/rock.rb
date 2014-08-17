@@ -17,7 +17,7 @@ class Rock < Formula
       man1.install "docs/rock.1"
 
       # install misc authorship files & rock binary in place
-      # copy the sdk, libs and docs
+      # copy the sdk and docs
       prefix.install "rock.use", 'README.md', "sdk", "docs"
   end
 end
