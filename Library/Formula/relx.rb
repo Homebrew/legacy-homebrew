@@ -15,7 +15,7 @@ class Relx < Formula
     bin.install "relx"
   end
 
-#  test do
-#    system "relx", "--version"
-#  end
+  test do
+    system "relx", "--version"
+  end
 end
