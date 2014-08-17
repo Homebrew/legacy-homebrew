@@ -11,9 +11,10 @@ class CenterIm < Formula
 
   # Fix build with clang; 4.22.10 is an outdated release and 5.0 is a rewrite,
   # so this is not reported upstream
-  def patches
-    { :p1 => DATA,
-      :p0 => "https://trac.macports.org/export/113135/trunk/dports/net/centerim/files/patch-libjabber_jconn.c.diff" }
+  patch :DATA
+  patch :p0 do
+    url "https://trac.macports.org/export/113135/trunk/dports/net/centerim/files/patch-libjabber_jconn.c.diff"
+    sha1 "70bf1cb777e086fb773d99aadbcaa8db77b19bec"
   end
 
   def install

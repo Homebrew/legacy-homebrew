@@ -2,19 +2,21 @@ require 'formula'
 
 class CharmTools < Formula
   homepage 'https://launchpad.net/charm-tools'
-  url 'https://launchpad.net/charm-tools/1.0/1.0.1/+download/charmtools-1.0.1.tar.gz'
-  sha1 '08c7a7c4f266c037d1405981adc080cd6c5be9e1'
+  url 'https://launchpad.net/charm-tools/1.2/1.2.9/+download/charm-tools-1.2.9-1.tar.gz'
+  sha1 '9da948b85dc2fc547335d28669f694338b0b77e8'
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'libyaml'
 
   def install
-    python do
-      system python, "setup.py", "install", "--prefix=#{prefix}"
-    end
+    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    system "python", "setup.py", "install", "--prefix=#{libexec}"
+
+    bin.install Dir[libexec/'bin/*charm*']
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
-  def caveats
-    python.standard_caveats if python
+  test do
+    system "#{bin}/charm", "list"
   end
 end

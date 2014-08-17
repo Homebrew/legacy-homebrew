@@ -5,16 +5,16 @@ class Alpine < Formula
   url 'ftp://ftp.cac.washington.edu/alpine/alpine-2.00.tar.gz'
   sha1 '363b3aa5d3eb1319e168639fbbc42b033b16f15b'
 
-  def patches
-    p = []
-    # Upstream builds are broken on Snow Leopard due to a hack put in
-    # for prior versions of OS X. See:
-    # http://trac.macports.org/ticket/20971
-    p <<  "https://trac.macports.org/export/89747/trunk/dports/mail/alpine/files/alpine-osx-10.6.patch" if MacOS.version >= :snow_leopard
-    # Fails to build against Tcl 8.6; reported upstream:
-    # http://mailman2.u.washington.edu/pipermail/alpine-info/2013-September/005291.html
-    p << DATA
+  # Upstream builds are broken on Snow Leopard due to a hack put in for prior
+  # versions of OS X. See: http://trac.macports.org/ticket/20971
+  patch do
+    url "https://trac.macports.org/export/89747/trunk/dports/mail/alpine/files/alpine-osx-10.6.patch"
+    sha1 "8cc6b95b6aba844ceef8454868b8f2c205de9792"
   end
+
+  # Fails to build against Tcl 8.6; reported upstream:
+  # http://mailman2.u.washington.edu/pipermail/alpine-info/2013-September/005291.html
+  patch :DATA
 
   def install
     ENV.j1

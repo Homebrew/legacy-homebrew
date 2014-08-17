@@ -2,8 +2,15 @@ require 'formula'
 
 class Libnids < Formula
   homepage 'http://libnids.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/libnids/libnids/1.24/libnids-1.24.tar.gz'
+  url 'https://downloads.sourceforge.net/project/libnids/libnids/1.24/libnids-1.24.tar.gz'
   sha1 '9a421df05cefdc4f5f7db95efc001b3c2b5249ce'
+
+  bottle do
+    cellar :any
+    sha1 "dab19d9269aad0478c8fdeda6dcd343064c2b6ce" => :mavericks
+    sha1 "90451a9b072c8eeaea11e5254e3cebcb904e3b61" => :mountain_lion
+    sha1 "7c62126f564bc4f86aeaf7337e5d4dc954f6d894" => :lion
+  end
 
   option "disable-libnet", "Don't include code requiring libnet"
   option "disable-libglib", "Don't use glib2 for multiprocessing support"
@@ -16,9 +23,7 @@ class Libnids < Formula
   depends_on 'glib' unless build.include? "disable-libglib"
 
   # Patch fixes -soname and .so shared library issues. Unreported.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # autoreconf the old 2005 era code for sanity.

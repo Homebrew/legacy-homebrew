@@ -2,12 +2,21 @@ require 'formula'
 
 class Orientdb < Formula
   homepage 'http://www.orientdb.org/index.htm'
-  url 'https://orient.googlecode.com/files/orientdb-graphed-1.3.0.tar.gz'
-  sha1 '124e37d2994d2908cc36fd036841b53caeed046c'
+  url 'http://www.orientdb.org/portal/function/portal/download/unknown@unknown.com/-/-/-/-/-/orientdb-community-1.7.7.tar.gz/false/false/mac'
+  version '1.7.7'
+  sha1 'bac8615e58b7acd6bfd298c849d331156130f1ab'
 
-  def patches
-    # Fixing OrientDB init scripts
-    "https://gist.github.com/leppert/5468357/raw/f4c926df7c31fe96425f2bf5feb68b52df31ebaf/homebrew.patch"
+  bottle do
+    cellar :any
+    sha1 "cff739fde51a38c94e32c466bd2be1aeaa0cb4e2" => :mavericks
+    sha1 "aea80b791596ab762b46020256ac895fba77fe6c" => :mountain_lion
+    sha1 "3571ebeaed6523b92d24d6ceafda7ed803617132" => :lion
+  end
+
+  # Fixing OrientDB init scripts
+  patch do
+    url "https://gist.githubusercontent.com/maggiolo00/84835e0b82a94fe9970a/raw/1ed577806db4411fd8b24cd90e516580218b2d53/orientdbsh"
+    sha1 "280284f3a8b6e280e46078b746f8250aa5648979"
   end
 
   def install
@@ -30,11 +39,5 @@ class Orientdb < Formula
 
   def caveats
     "Use `orientdb <start | stop | status>`, `orientdb-console` and `orientdb-gremlin`."
-  end
-
-  test do
-    system "#{bin}/orientdb", "start"
-    system "#{bin}/orientdb status | grep PID"
-    system "#{bin}/orientdb", "stop"
   end
 end

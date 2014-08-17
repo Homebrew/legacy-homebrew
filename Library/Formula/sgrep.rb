@@ -2,8 +2,8 @@ require 'formula'
 
 class Sgrep < Formula
   homepage 'http://www.cs.helsinki.fi/u/jjaakkol/sgrep.html'
-  url 'ftp://ftp.cs.helsinki.fi/pub/Software/Local/Sgrep/sgrep-1.92a.tar.gz'
-  sha1 '0a51843822e9d986f08ad9e4c5d0e7b260508956'
+  url 'ftp://ftp.cs.helsinki.fi/pub/Software/Local/Sgrep/sgrep-1.94a.tar.gz'
+  sha1 '4f6815d212ac6e1ed4eb2720f9b28963d1d0e99d'
 
   def install
     system "./configure", "--prefix=#{prefix}",

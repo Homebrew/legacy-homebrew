@@ -10,11 +10,14 @@ class A2ps < Formula
   # it working on 10.6. See:
   # https://svn.macports.org/ticket/20867
   # http://trac.macports.org/ticket/18255
-  def patches
-    { :p0 => [
-      "https://trac.macports.org/export/56498/trunk/dports/print/a2ps/files/patch-contrib_sample_Makefile.in",
-      "https://trac.macports.org/export/56498/trunk/dports/print/a2ps/files/patch-lib__xstrrpl.c"
-    ]}
+  patch :p0 do
+    url "https://trac.macports.org/export/56498/trunk/dports/print/a2ps/files/patch-contrib_sample_Makefile.in"
+    sha1 "9b385295c2377e5362d62991e84d138d1713aabd"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/56498/trunk/dports/print/a2ps/files/patch-lib__xstrrpl.c"
+    sha1 "106e13409a96d68df0fdea0b89790ddfc0893f8b"
   end
 
   def install

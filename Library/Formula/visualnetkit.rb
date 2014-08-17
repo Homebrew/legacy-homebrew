@@ -2,7 +2,7 @@ require 'formula'
 
 class Visualnetkit < Formula
   homepage 'http://code.google.com/p/visual-netkit/'
-  url 'http://visual-netkit.googlecode.com/files/visualnetkit-1.4.tar.bz'
+  url 'https://visual-netkit.googlecode.com/files/visualnetkit-1.4.tar.bz'
   version '1.4'
   sha1 '17dbc3a6b7e62b1b2183f2a4426b9021781e4ec4'
 
@@ -12,9 +12,7 @@ class Visualnetkit < Formula
   # versions of Qt. Since the upstream project hasn't had activity in a while,
   # if a newer version of Qt breaks this formula we will consider moving it to
   # the boneyard instead.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "/bin/sh", "./build.sh", "-r"

@@ -1,7 +1,7 @@
 require 'formula'
 
 # Upstream project has requested we use a mirror as the main URL
-# https://github.com/mxcl/homebrew/pull/21419
+# https://github.com/Homebrew/homebrew/pull/21419
 class Xz < Formula
   homepage 'http://tukaani.org/xz/'
   url 'http://fossies.org/linux/misc/xz-5.0.5.tar.gz'
@@ -10,10 +10,10 @@ class Xz < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 '38f4e91b7f0ab45aa542de3a558c3077a928f7c5' => :mavericks
-    sha1 'eed9e2dde1cea8dda3915ac0350fdf3fa3753640' => :mountain_lion
-    sha1 '809720f5602d11f0e4507f43563d9061f4cd444e' => :lion
+    revision 3
+    sha1 "d42b938770762ca46351f73f247b4b092d91c2ae" => :mavericks
+    sha1 "16eb170fe01074ed3f49eb14c37f0608f208f555" => :mountain_lion
+    sha1 "3052beb5c60568455182ee28129ca47648fd0659" => :lion
   end
 
   option :universal
@@ -23,5 +23,19 @@ class Xz < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
+  end
+
+  test do
+    path = testpath/"data.txt"
+    original_contents = "." * 1000
+    path.write original_contents
+
+    # compress: data.txt -> data.txt.xz
+    system bin/"xz", path
+    assert !path.exist?
+
+    # decompress: data.txt.xz -> data.txt
+    system bin/"xz", "-d", "#{path}.xz"
+    assert_equal original_contents, path.read
   end
 end

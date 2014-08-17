@@ -2,8 +2,8 @@ require 'formula'
 
 class Gecode < Formula
   homepage 'http://www.gecode.org/'
-  url 'http://www.gecode.org/download/gecode-4.0.0.tar.gz'
-  sha1 'a1137f89fd527d47d183b3d8e38bc5d52a65b954'
+  url 'http://www.gecode.org/download/gecode-4.2.1.tar.gz'
+  sha1 '41464bcb5bbbc62858ec6ae6b28a6d115343a040'
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-examples"

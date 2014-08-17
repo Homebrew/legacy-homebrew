@@ -6,9 +6,9 @@ class Casperjs < Formula
   sha1 '4e1bdbf2ce93506b6c0d193c90a6f9bcd58c6254'
 
   devel do
-    url 'https://github.com/n1k0/casperjs/archive/1.1-beta2.tar.gz'
-    sha1 'bb45f98c0196b1e6d47bd9969436abd2e888cd96'
-    version '1.1-beta2'
+    url 'https://github.com/n1k0/casperjs/archive/1.1-beta3.tar.gz'
+    sha1 'd1c31f6a19c0b636f3e4dc17ffeb8224c8af8aef'
+    version '1.1-beta3'
   end
 
   head 'https://github.com/n1k0/casperjs.git'

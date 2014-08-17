@@ -1,49 +1,46 @@
-require 'formula'
-
-class Libpar2 < Formula
-  homepage 'http://parchive.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/parchive/libpar2/0.2/libpar2-0.2.tar.gz'
-  sha1 '4b3da928ea6097a8299aadafa703fc6d59bdfb4b'
-
-  def patches
-    # Patch libpar2 - bugfixes and ability to cancel par2 repair
-    "https://gist.github.com/raw/4576230/e722f2113195ee9b8ee67c1c424aa3f2085b1066/libpar2-0.2-nzbget.patch"
-  end
-end
+require "formula"
 
 class Nzbget < Formula
-  homepage 'http://sourceforge.net/projects/nzbget/'
-  url 'http://downloads.sourceforge.net/project/nzbget/nzbget-stable/11.0/nzbget-11.0.tar.gz'
-  sha1 '0c0f83de3ef25a6117c1c988d99db9d92c3739eb'
+  homepage "http://nzbget.net/"
+  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/13.0/nzbget-13.0.tar.gz"
+  sha1 "dc321ed59f47755bc910cf859f18dab0bf0cc7ff"
 
-  head 'https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk'
+  head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libsigc++'
+  bottle do
+    sha1 "079c3445547cb316a1e6a9bafa58f024ec83c387" => :mavericks
+    sha1 "f278128b20c75ec532ccc6ccff4b514217384591" => :mountain_lion
+    sha1 "57a8551fed4323e4d9554fcb39d76217b3e3bf33" => :lion
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "libsigc++"
 
   fails_with :clang do
     build 500
     cause <<-EOS.undent
-      Configure errors out when testing the libpar2 headers because
-      Clang does not support flexible arrays of non-POD types.
-      ./par2fileformat.h:87:25: error: flexible array member 'entries' of non-POD element type 'FILEVERIFICATIONENTRY []'
+      Clang older than 5.1 requires flexible array members to be POD types.
+      More recent versions require only that they be trivially destructible.
       EOS
   end
 
+  resource "libpar2" do
+    url "https://launchpad.net/libpar2/trunk/0.4/+download/libpar2-0.4.tar.gz"
+    sha1 "c4a5318edac0898dcc8b1d90668cfca2ccfe0375"
+  end
+
   def install
-    # Install libpar2 privately
-    libpar2_prefix = libexec/'libpar2'
-    Libpar2.new('libpar2').brew do
-      system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                            "--prefix=#{libpar2_prefix}"
+    resource("libpar2").stage do
+      system "./configure", "--disable-dependency-tracking",
+                            "--prefix=#{libexec}/lp2"
       system "make install"
     end
 
     # Tell configure where libpar2 is, and tell it to use OpenSSL
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libpar2-includes=#{libpar2_prefix}/include",
-                          "--with-libpar2-libraries=#{libpar2_prefix}/lib",
+                          "--with-libpar2-includes=#{libexec}/lp2/include",
+                          "--with-libpar2-libraries=#{libexec}/lp2/lib",
                           "--with-tlslib=OpenSSL"
     system "make"
     ENV.j1

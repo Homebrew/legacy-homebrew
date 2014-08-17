@@ -2,14 +2,15 @@ require 'formula'
 
 class Leveldb < Formula
   homepage 'https://code.google.com/p/leveldb/'
-  url 'https://leveldb.googlecode.com/files/leveldb-1.14.0.tar.gz'
-  sha1 '641d54df4aaf7ee569ae003cfbdb888ebdee0d7f'
+  url 'https://leveldb.googlecode.com/files/leveldb-1.15.0.tar.gz'
+  sha1 '74b70a1156d91807d8d84bfdd026e0bb5acbbf23'
+  revision 1
 
   bottle do
     cellar :any
-    sha1 '5cc0089f4f609134b4bfc9c1e24ead21ff819ab9' => :mavericks
-    sha1 '61fa15138563d390443a81e712cffd45ab28b1d1' => :mountain_lion
-    sha1 'e1722018f88c967cf3c65a29cdd03f828e9da595' => :lion
+    sha1 "c376b1ae47db56d9203b79ce2e220a7793c2366f" => :mavericks
+    sha1 "2bba417ededa2d85f266990f8f87f3ada7035354" => :mountain_lion
+    sha1 "48adc08cdfc9c156a045913ce338e9f82262d2d4" => :lion
   end
 
   depends_on 'snappy'
@@ -21,8 +22,9 @@ class Leveldb < Formula
     include.install 'include/leveldb'
     bin.install 'leveldbutil'
     lib.install 'libleveldb.a'
-    lib.install 'libleveldb.dylib.1.14' => 'libleveldb.1.14.dylib'
-    lib.install_symlink lib/'libleveldb.1.14.dylib' => 'libleveldb.dylib'
-    lib.install_symlink lib/'libleveldb.1.14.dylib' => 'libleveldb.1.dylib'
+    lib.install 'libleveldb.dylib.1.15' => 'libleveldb.1.15.dylib'
+    lib.install_symlink lib/'libleveldb.1.15.dylib' => 'libleveldb.dylib'
+    lib.install_symlink lib/'libleveldb.1.15.dylib' => 'libleveldb.1.dylib'
+    system "install_name_tool", "-id", "#{lib}/libleveldb.1.dylib", "#{lib}/libleveldb.1.15.dylib"
   end
 end

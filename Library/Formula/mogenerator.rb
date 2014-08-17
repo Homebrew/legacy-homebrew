@@ -7,10 +7,17 @@ class Mogenerator < Formula
 
   head 'https://github.com/rentzsch/mogenerator.git'
 
-  depends_on :xcode
+  bottle do
+    cellar :any
+    sha1 "5c4f33afe033e7e921ecb9ba0361076eab5c5ea3" => :mavericks
+    sha1 "bf0063bb5ebc46d39f977d3b1e51abe8bd96135b" => :mountain_lion
+    sha1 "ca6653a594d61ecad7cae0955ac8299de88e0a79" => :lion
+  end
+
+  depends_on :xcode => :build
 
   def install
-    system "xcodebuild -target mogenerator -configuration Release SYMROOT=symroot OBJROOT=objroot"
+    xcodebuild "-target", "mogenerator", "-configuration", "Release","SYMROOT=symroot", "OBJROOT=objroot"
     bin.install "symroot/Release/mogenerator"
   end
 end

@@ -16,16 +16,14 @@ class Libtool < Formula
     sha1 '6873a7b72e86f369f43125c0e29ae5cdbc2d67c1' => :lion
   end
 
-  if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/glibtoolize"
-    keg_only "Xcode 4.2 and below provide glibtool."
-  end
+  keg_only :provided_until_xcode43
 
   option :universal
 
   # Allow -stdlib= to pass through to linker
   # http://git.savannah.gnu.org/gitweb/?p=libtool.git;a=commitdiff;h=8f975a1368594126e37d85511f1f96164e466d93
   # https://trac.macports.org/ticket/32982
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?

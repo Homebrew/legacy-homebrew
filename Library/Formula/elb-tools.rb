@@ -3,8 +3,8 @@ require 'formula'
 class ElbTools < AmazonWebServicesFormula
   homepage 'http://aws.amazon.com/developertools/2536'
   url 'http://ec2-downloads.s3.amazonaws.com/ElasticLoadBalancing.zip'
-  version '1.0.23.0'
-  sha1 '525ee0ff595b88ffba2a5aa54d49451d0973c90a'
+  version '1.0.35.0'
+  sha1 '976f885c8a437183b2bb0c8127375e5f6371f498'
 
   depends_on 'ec2-api-tools'
 

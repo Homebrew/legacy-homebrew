@@ -10,4 +10,10 @@ class Rolldice < Formula
     bin.install "rolldice"
     man6.install gzip("rolldice.6")
   end
+
+  test do
+    output = `#{bin}/rolldice -s 1x2d6`
+    assert output.include?("Roll #1")
+    assert_equal 0, $?.exitstatus
+  end
 end

@@ -2,8 +2,15 @@ require 'formula'
 
 class Snort < Formula
   homepage 'http://www.snort.org'
-  url 'http://www.snort.org/dl/snort-current/snort-2.9.3.1.tar.gz'
-  sha1 '25dfea22a988dd1dc09a1716d8ebfcf2b7d61c19'
+  url 'https://www.snort.org/downloads/snort/snort-2.9.6.2.tar.gz'
+  sha1 '09068bc88dbb3fe47b2bff5803a7b3ef0c98395b'
+
+  devel do
+    url 'https://www.snort.org/downloads/snortdev/snort-2.9.7.0_beta.tar.gz'
+    sha1 '723a8cf0f7cb2000145c916fbeacb8cfca92ae77'
+  end
+
+  fails_with :clang unless build.devel?
 
   depends_on 'daq'
   depends_on 'libdnet'
@@ -14,11 +21,9 @@ class Snort < Formula
   def install
     args = %W[--prefix=#{prefix}
               --disable-dependency-tracking
-              --enable-ipv6
               --enable-gre
               --enable-mpls
               --enable-targetbased
-              --enable-decoder-preprocessor-rules
               --enable-ppm
               --enable-perfprofiling
               --enable-zlib

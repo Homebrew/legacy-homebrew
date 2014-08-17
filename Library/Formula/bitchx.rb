@@ -1,16 +1,15 @@
-require 'formula'
+require "formula"
 
 class Bitchx < Formula
 
-  homepage 'https://github.com/BitchX'
-  url 'http://bitchx.ca/BitchX-1.2-final.tar.gz'
-  sha1 'a2162a18d3a96ade7d2410f6a560e43f7d6b8763'
+  homepage "https://github.com/BitchX"
+  url "http://bitchx.ca/BitchX-1.2-final.tar.gz"
+  mirror "http://pkgs.fedoraproject.org/repo/pkgs/BitchX/BitchX-1.2-final.tar.gz/5c4947f5a345574e28d93f78cb191ce4/BitchX-1.2-final.tar.gz"
+  sha1 "a2162a18d3a96ade7d2410f6a560e43f7d6b8763"
 
   # Reported upstream:
   # https://github.com/BitchX/BitchX/pull/8
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     args = %W{
@@ -37,7 +36,7 @@ class Bitchx < Formula
   end
 
   test do
-    system "BitchX -v"
+    system bin/"BitchX", "-v"
   end
 
 end

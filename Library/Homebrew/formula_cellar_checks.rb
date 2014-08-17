@@ -40,8 +40,7 @@ module FormulaCellarChecks
 
   def check_jars
     return unless f.lib.directory?
-
-    jars = f.lib.children.select{|g| g.to_s =~ /\.jar$/}
+    jars = f.lib.children.select { |g| g.extname == ".jar" }
     return if jars.empty?
 
     ["JARs were installed to \"#{f.lib}\".",
@@ -92,7 +91,8 @@ module FormulaCellarChecks
 
   def check_generic_executables bin
     return unless bin.directory?
-    generics = bin.children.select { |g| g.to_s =~ /\/(run|service)$/}
+    generic_names = %w[run service start stop]
+    generics = bin.children.select { |g| generic_names.include? g.basename.to_s }
     return if generics.empty?
 
     ["Generic binaries were installed to \"#{bin}\".",

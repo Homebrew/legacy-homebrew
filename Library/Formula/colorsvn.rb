@@ -2,12 +2,10 @@ require 'formula'
 
 class Colorsvn < Formula
   homepage 'http://colorsvn.tigris.org/'
-  url 'http://www.console-colors.de/downloads/colorsvn/colorsvn-0.3.2.tar.gz'
-  sha1 '8d9452585d474ad10e9e1fd2372f9ad41e548863'
+  url 'http://colorsvn.tigris.org/files/documents/4414/49311/colorsvn-0.3.3.tar.gz'
+  sha1 '963f46df16f60cb3a68d9d9cdb565357247ba0e7'
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--prefix=#{prefix}",

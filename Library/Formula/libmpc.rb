@@ -2,14 +2,15 @@ require 'formula'
 
 class Libmpc < Formula
   homepage 'http://multiprecision.org'
-  url 'http://multiprecision.org/mpc/download/mpc-1.0.1.tar.gz'
-  sha1 '8c7e19ad0dd9b3b5cc652273403423d6cf0c5edf'
+  url 'http://ftpmirror.gnu.org/mpc/mpc-1.0.2.tar.gz'
+  mirror 'http://multiprecision.org/mpc/download/mpc-1.0.2.tar.gz'
+  sha1 '5072d82ab50ec36cc8c0e320b5c377adb48abe70'
 
   bottle do
     cellar :any
-    sha1 'c8bbad14fa8314418e07aa7a5cd824452fa6ea1e' => :mountain_lion
-    sha1 '21363b47cdc6085b1c09aead7f63918c69a57bed' => :lion
-    sha1 '2b2fb525a4e87e7a954e70be13dfde1110329859' => :snow_leopard
+    sha1 "e16e54c7407b4d69c60d984c5c3b5bd535f367e4" => :mavericks
+    sha1 "432b857c0368882c21df2b92399ba2cb0e5c185c" => :mountain_lion
+    sha1 "8b8959c9c098a1c96a4d017058cc792c6f19c00d" => :lion
   end
 
   depends_on 'gmp'
@@ -19,8 +20,8 @@ class Libmpc < Formula
     args = [
       "--prefix=#{prefix}",
       "--disable-dependency-tracking",
-      "--with-gmp=#{Formula.factory('gmp').opt_prefix}",
-      "--with-mpfr=#{Formula.factory('mpfr').opt_prefix}"
+      "--with-gmp=#{Formula["gmp"].opt_prefix}",
+      "--with-mpfr=#{Formula["mpfr"].opt_prefix}"
     ]
 
     system "./configure", *args

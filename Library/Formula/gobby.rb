@@ -18,10 +18,10 @@ class Gobby < Formula
   depends_on 'libinfinity'
   depends_on :x11
 
-  def patches
-    { :p0 => [ # Fix compilation on clang per MacPorts
-      "https://trac.macports.org/export/101720/trunk/dports/x11/gobby/files/patch-code-util-config.hpp.diff"
-    ]}
+  # Fix compilation on clang per MacPorts
+  patch :p0 do
+    url "https://trac.macports.org/export/101720/trunk/dports/x11/gobby/files/patch-code-util-config.hpp.diff"
+    sha1 "af0b07d22aa5f442b06cb94ee3e86bf7c05a356a"
   end
 
   def install

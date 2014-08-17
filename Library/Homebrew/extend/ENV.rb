@@ -4,10 +4,7 @@ require 'extend/ENV/std'
 require 'extend/ENV/super'
 
 def superenv?
-  return false if MacOS::Xcode.without_clt? && MacOS.sdk_path.nil?
-  return false unless Superenv.bin && Superenv.bin.directory?
-  return false if ARGV.include? "--env=std"
-  true
+  Superenv.bin && ARGV.env != "std"
 end
 
 module EnvActivation

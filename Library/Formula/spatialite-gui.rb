@@ -1,39 +1,35 @@
-require 'formula'
+require "formula"
 
 class SpatialiteGui < Formula
-  homepage 'https://www.gaia-gis.it/fossil/spatialite_gui/index'
-  url 'http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.5.0-stable.tar.gz'
-  sha1 'b8cfe3def8c77928f7c9fcc86bae3c99179fa486'
+  homepage "https://www.gaia-gis.it/fossil/spatialite_gui/index"
+  url "http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.7.1.tar.gz"
+  sha1 "3b9d88e84ffa5a4f913cf74b098532c2cd15398f"
 
-  devel do
-    url 'http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.7.1.tar.gz'
-    sha1 '3b9d88e84ffa5a4f913cf74b098532c2cd15398f'
-
-    depends_on 'libxml2'
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "54ee1f62973a5711be12125ff0237c715d925427" => :mavericks
+    sha1 "e9a4a406a5d5cae055316136a28c7f15063fd923" => :mountain_lion
+    sha1 "5cf52fd35bdb73e7a7c18227212e2b4ccbd7f646" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libspatialite'
-  depends_on 'libgaiagraphics'
-  depends_on 'wxmac'
-  depends_on 'geos'
-  depends_on 'proj'
-  depends_on 'freexl'
-  depends_on 'sqlite'
+  depends_on "pkg-config" => :build
+  depends_on "freexl"
+  depends_on "geos"
+  depends_on "libgaiagraphics"
+  depends_on "libspatialite"
+  depends_on "proj"
+  depends_on "sqlite"
+  depends_on "wxmac"
 
-  def patches
-    patch_set = {
-      :p1 => DATA
-    }
-    # Compatibility fix for wxWidgets 2.9.x. Remove on next release.
-    patch_set[:p0] = 'https://www.gaia-gis.it/fossil/spatialite_gui/vpatch?from=d8416d26358a24dc&to=b5b920d8d654dd0e' unless build.devel?
-
-    patch_set
-  end
+  patch :DATA
 
   def install
+    # Add aui library; reported upstream multiple times:
+    # https://groups.google.com/forum/#!searchin/spatialite-users/aui/spatialite-users/wnkjK9pde2E/hVCpcndUP_wJ
+    inreplace "configure", "WX_LIBS=\"$(wx-config --libs)\"", "WX_LIBS=\"$(wx-config --libs std,aui)\""
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
 

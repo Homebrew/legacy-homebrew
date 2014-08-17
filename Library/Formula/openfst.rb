@@ -1,13 +1,18 @@
-require 'formula'
+require "formula"
 
 class Openfst < Formula
   homepage 'http://www.openfst.org/'
-  url 'http://openfst.cs.nyu.edu/twiki/pub/FST/FstDownload/openfst-1.3.3.tar.gz'
-  sha1 'd265fab57dd54c65bf200dd382afb490f2551c7d'
+  url "http://openfst.cs.nyu.edu/twiki/pub/FST/FstDownload/openfst-1.4.1.tar.gz"
+  sha1 "2e5ff58c7c70e681bced49206bd81748eeb7106d"
+
+  needs :cxx11
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    ENV.cxx11
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-dependency-tracking",
+                          "--enable-far",
+                          "--enable-pdt"
     system "make install"
   end
 end

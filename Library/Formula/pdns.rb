@@ -1,9 +1,10 @@
 require 'formula'
 
 class Pdns < Formula
-  homepage 'http://wiki.powerdns.com'
-  url 'http://downloads.powerdns.com/releases/pdns-3.2.tar.gz'
-  sha256 'd1895aba065446dc68e5d7cc792d5303626c71759f61a455531ed65d59c06572'
+  homepage 'http://www.powerdns.com'
+  head 'https://github.com/powerdns/pdns.git'
+  url 'http://downloads.powerdns.com/releases/pdns-3.3.1.tar.gz'
+  sha1 '555862bf9635d1dcab2c4f3b7569bdd8212ef67f'
 
   option 'pgsql', 'Enable the PostgreSQL backend'
 
@@ -17,7 +18,7 @@ class Pdns < Formula
     args = ["--prefix=#{prefix}",
             "--with-lua",
             "--with-sqlite3",
-            "--with-sqlite=#{Formula.factory("sqlite").opt_prefix}"]
+            "--with-sqlite=#{Formula["sqlite"].opt_prefix}"]
 
     # Include the PostgreSQL backend if requested
     if build.include? "pgsql"
@@ -27,6 +28,7 @@ class Pdns < Formula
       args << "--with-modules=gsqlite3"
     end
 
+    system "./bootstrap" if build.head?
     system "./configure", *args
 
     # Compilation fails at polarssl if we skip straight to make install

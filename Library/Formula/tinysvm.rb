@@ -6,10 +6,9 @@ class Tinysvm < Formula
   sha1 '9c3c36454c475180ef6646d059376f35549cad08'
 
   # Use correct compilation flag
-  def patches
-    { :p0 => [
-      "https://trac.macports.org/export/94156/trunk/dports/math/TinySVM/files/patch-configure.diff"
-    ]}
+  patch :p0 do
+    url "https://trac.macports.org/export/94156/trunk/dports/math/TinySVM/files/patch-configure.diff"
+    sha1 "9f59314fa743e98d8fe3e887b58a85f25e4df571"
   end
 
   def install

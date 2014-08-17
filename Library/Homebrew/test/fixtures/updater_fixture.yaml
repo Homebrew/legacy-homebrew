@@ -1,49 +1,60 @@
 update_git_diff_output_without_formulae_changes: |
-  :100644 100644 9dde0708e2db78e1aa697782bd2ab2ddfd8da984 ee0a81cbe3757e9a4b5aab1c41457f65fed9f258 M	Library/Homebrew/ARGV+yeast.rb
-  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Homebrew/beer_events.rb
-  :100644 100644 b4b6d4f7837585bea2608da6eac4864bc410b319 f2f02310189f2114c033fd50e453aabbaa5ec111 A	Library/Homebrew/hardware.rb
-  :100644 100644 69b22663da0e9060c18143d96d37ab2f5d618579 d18b0e7161b73e7e1a0090b6d1d42a2569efb682 D	Library/Homebrew/hw.model.c
-  :100644 100644 0bdadb080de7bfb1dd0d5ef5aafbc65da35791ae 39b3e237b773d7eed584996d7c2541de0f36996c M	README
-  :100644 100644 5bec138e6ce67d3d80446740c309ef40652cebc2 0955e96cb368c95a73f2b01bfd060e575c445152 M	bin/brew
+  M	Library/Homebrew/ARGV+yeast.rb
+  A	Library/Homebrew/beer_events.rb
+  A	Library/Homebrew/hardware.rb
+  D	Library/Homebrew/hw.model.c
+  M	README
+  M	bin/brew
 update_git_diff_output_with_formulae_changes: |
-  :100644 100644 9dde0708e2db78e1aa697782bd2ab2ddfd8da984 ee0a81cbe3757e9a4b5aab1c41457f65fed9f258 M	Library/Contributions/brew_bash_completion.sh
-  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Formula/antiword.rb
-  :100644 100644 b4b6d4f7837585bea2608da6eac4864bc410b319 f2f02310189f2114c033fd50e453aabbaa5ec111 A	Library/Formula/bash-completion.rb
-  :100644 100644 9dde0708e2db78e1aa697782bd2ab2ddfd8da984 ee0a81cbe3757e9a4b5aab1c41457f65fed9f258 A	Library/Formula/ddrescue.rb
-  :100644 100644 a054cd648c85515484aee25ba22611423b603c69 e0b6354360bff68a6c5a612bf6e2918ceeb2ea0a A	Library/Formula/dict.rb
-  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Formula/lua.rb
-  :100644 100644 27740424d7cd046815eb67d253e08641d0c80fc7 d75a4b08302a9d0c741f969aa784878eb45d8366 R094	Library/Formula/shapefile.rb	Library/Formula/shapelib.rb
-  :100644 100644 69b22663da0e9060c18143d96d37ab2f5d618579 d18b0e7161b73e7e1a0090b6d1d42a2569efb682 M	Library/Formula/xar.rb
-  :100644 100644 0bdadb080de7bfb1dd0d5ef5aafbc65da35791ae 39b3e237b773d7eed584996d7c2541de0f36996c M	Library/Formula/yajl.rb
-  :100644 100644 5bec138e6ce67d3d80446740c309ef40652cebc2 0955e96cb368c95a73f2b01bfd060e575c445152 M	Library/Homebrew/ARGV+yeast.rb
-  :100644 100644 b4b6d4f7837585bea2608da6eac4864bc410b319 f2f02310189f2114c033fd50e453aabbaa5ec111 M	Library/Homebrew/beer_events.rb
-  :100644 100644 de9faee9b6859d0f4146b60caff1e7643af01a4c 47976729f566a14290d5efe061bbe4547e2d1b9e M	Library/Homebrew/hardware.rb
-  :100644 100644 69b22663da0e9060c18143d96d37ab2f5d618579 d18b0e7161b73e7e1a0090b6d1d42a2569efb682 M	Library/Homebrew/hw.model.c
-  :100644 100644 0bdadb080de7bfb1dd0d5ef5aafbc65da35791ae 39b3e237b773d7eed584996d7c2541de0f36996c M	Library/Homebrew/hw.model.rb
-  :100644 100644 0811641e6101d39b2d832539de01a104e052a97e dc66b94c51c1c2750d4a31e83c41f100c4d079b7 M	Library/Homebrew/pathname+yeast.rb
-  :100644 100644 440f1c9b10775150999264eb96e93fcfbd7727da 64bb503c712208d00d7cc2d0428d67d482685c22 M	Library/Homebrew/unittest.rb
-  :100644 100644 cc176d388507c7ed9381a36fd42ae0feceaad593 6a7a2385d89a12b5c7369fa0a87980b285ee5fd8 M	Library/Homebrew/utils.rb
-  :100644 100644 d1d9c62e6280bcb06c8b884c188d7bd37f8754e3 4aa0473705264cac864bd09f8a9d419d805e4774 M	README
-  :100644 100644 c0084b02faf7ab04abcffb3d5688e9d7c1ff7ae8 25cae981801e21cde048cd28747241d18093ca71 M	bin/brew
-update_git_diff_output_with_tapped_formulae_changes: |
-  :100644 100644 9dde0708e2db78e1aa697782bd2ab2ddfd8da984 ee0a81cbe3757e9a4b5aab1c41457f65fed9f258 M	Library/Contributions/brew_bash_completion.sh
-  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Taps/someuser-sometap/Formula/antiword.rb
-  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Taps/someuser-sometap/HomebrewFormula/lua.rb
-  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Taps/someuser-sometap/custom-formula.rb
-  :100644 100644 741f11dcd29ec909a94fa54df4bcdd2c1d5bb47b 7535134e865994e8ad66ba02a924a1e6c1271b9e A	Library/Taps/someuser-sometap/lib/not-a-formula.rb
+  M	Library/Contributions/brew_bash_completion.sh
+  A	Library/Formula/antiword.rb
+  A	Library/Formula/bash-completion.rb
+  A	Library/Formula/ddrescue.rb
+  A	Library/Formula/dict.rb
+  A	Library/Formula/lua.rb
+  M	Library/Formula/xar.rb
+  M	Library/Formula/yajl.rb
+  M	Library/Homebrew/ARGV+yeast.rb
+  M	Library/Homebrew/beer_events.rb
+  M	Library/Homebrew/hardware.rb
+  M	Library/Homebrew/hw.model.c
+  M	Library/Homebrew/hw.model.rb
+  M	Library/Homebrew/pathname+yeast.rb
+  M	Library/Homebrew/unittest.rb
+  M	Library/Homebrew/utils.rb
+  M	README
+  M	bin/brew
 update_git_diff_output_with_removed_formulae: |
-  :000000 100644 0000000000000000000000000000000000000000 e62589998ef688f64aab10d85c3822dfa5cfb31c A	Library/Formula/flac123.rb
-  :100644 100644 bd7d76cf2fa9805ff23b9e8f48ecfb0e569aadd3 0cc2863c9be33ae946268407618f74897961873d M	Library/Formula/gdal.rb
-  :100644 100644 de9ac0de9e97b7af740aad11aee3b11a377df953 7f48a6455a892cd3d66ffb6c2003ea5dd6746699 M	Library/Formula/grass.rb
-  :100644 100644 8f05552e1e52370f78f98d07a1e0ea21a27f87c5 8c4d21c1b3ff3222f7870722d57d64988d81040d M	Library/Formula/json_spirit.rb
-  :000000 100644 0000000000000000000000000000000000000000 f7b16a549bd17c9a929454cff713947181769769 A	Library/Formula/libbson.rb
-  :100644 000000 be82458617c7b4208fd5b16772ea502f8cc765c3 0000000000000000000000000000000000000000 D	Library/Formula/libgsasl.rb
+  A	Library/Formula/flac123.rb
+  M	Library/Formula/gdal.rb
+  M	Library/Formula/grass.rb
+  M	Library/Formula/json_spirit.rb
+  A	Library/Formula/libbson.rb
+  D	Library/Formula/libgsasl.rb
 update_git_diff_output_with_changed_filetype: |
-  :000000 100755 0000000000000000000000000000000000000000 f54bc27471cc812686129319db9b7985ca3307af A	Library/ENV/4.3/ant
-  :120000 100755 ac08cdcf9508eac464f78ddfd0cf25dcf3c336cf 72adb09419ccc1c2aca7862d30b6e778dcb41224 T	Library/ENV/4.3/bsdmake
-  :100755 100755 1d717718b3f8a0fb393fe3f2f65c8455b6673b10 f7089de36b87392baa09130ff6a0613a0791bd81 M	Library/ENV/4.3/make
-  :100644 100644 c544295287b6dad3cd8ee5e4579d60fdc7ba6759 6806cd0452b078e354b48c9ec97e93830a516454 M	Library/Formula/elixir.rb
-  :000000 100644 0000000000000000000000000000000000000000 f7b16a549bd17c9a929454cff713947181769769 A	Library/Formula/libbson.rb
-  :100644 000000 be82458617c7b4208fd5b16772ea502f8cc765c3 0000000000000000000000000000000000000000 D	Library/Formula/libgsasl.rb
-  :100644 100644 e6284b8a17d7ae8a6afd0d453c5dbf163b049467 6e340e3c4028eb7dae6e071fd71a83416a849771 M	Library/Homebrew/cmd/update.rb
-  :100644 100644 446ec056c0c2d05b6c337a6f1df95adc61c7e1f9 03b3a7c438a601b9e561766bf7e34d549149efb0 M	SUPPORTERS.md
+  A	Library/ENV/4.3/ant
+  T	Library/ENV/4.3/bsdmake
+  M	Library/ENV/4.3/make
+  M	Library/Formula/elixir.rb
+  A	Library/Formula/libbson.rb
+  D	Library/Formula/libgsasl.rb
+  M	Library/Homebrew/cmd/update.rb
+  M	SUPPORTERS.md
+update_git_diff_output_with_restructured_tap: |
+  R100	git.rb	Formula/git.rb
+  R100	lua.rb	Formula/lua.rb
+update_git_diff_simulate_homebrew_php_restructuring: |
+  R100	Formula/git.rb	Abstract/git.rb
+  R100	Formula/lua.rb	Abstract/lua.rb
+update_git_diff_output_with_tap_formulae_changes: |
+  M	Rakefile
+  M	README.md
+  M	Requirements/some_requirement.rb
+  D	another_ruby_file.rb
+  A	a_ruby_file.rb
+  A	CONTRIBUTING.md
+  M	Formula/git.rb
+  A	Formula/lua.rb
+  M	lib/not_a_formula.rb
+  A	lib/not_a_formula2.rb
+  D	lib/not_a_formula3.rb

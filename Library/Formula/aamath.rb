@@ -1,11 +1,13 @@
-require 'formula'
+require "formula"
 
 class Aamath < Formula
-  homepage 'http://fuse.superglue.se/aamath/'
-  url 'http://fuse.superglue.se/aamath/aamath-0.3.tar.gz'
-  sha1 'dc68abaf2131c73ddb1a520c95d65596e30f1b0a'
+  homepage "http://fuse.superglue.se/aamath/"
+  url "http://fuse.superglue.se/aamath/aamath-0.3.tar.gz"
+  sha1 "dc68abaf2131c73ddb1a520c95d65596e30f1b0a"
 
-  def patches; DATA; end
+  # Fix build on clang; patch by Homebrew team
+  # https://github.com/Homebrew/homebrew/issues/23872
+  patch :DATA
 
   def install
     ENV.j1
@@ -17,11 +19,8 @@ class Aamath < Formula
   end
 
   test do
-    IO.popen("#{bin}/aamath", "w+") do |pipe|
-      pipe.write((prefix/"testcases").read)
-      pipe.close_write
-      assert_match /#{Regexp.escape("f(x + h) = f(x) + h f'(x)")}/, pipe.read
-    end
+    s = pipe_output("#{bin}/aamath", (prefix/"testcases").read)
+    assert_match /#{Regexp.escape("f(x + h) = f(x) + h f'(x)")}/, s
   end
 end
 

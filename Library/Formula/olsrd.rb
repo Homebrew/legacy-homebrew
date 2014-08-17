@@ -6,7 +6,7 @@ class Olsrd < Formula
   sha1 '0d74708dd94ad978af061a44758f8ea31845261f'
 
   #Release is broken and assumes git repository
-  def patches; DATA end
+  patch :DATA
 
   def install
     lib.mkpath

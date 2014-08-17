@@ -6,10 +6,11 @@ class GlobusToolkit < Formula
   version '5.2.5'
   sha1 '2e39065e0c3970b660e081705915d45640d3c350'
 
-  depends_on :libtool
+  depends_on "libtool" => :run
 
   def install
     ENV.deparallelize
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make install"

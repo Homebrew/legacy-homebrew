@@ -2,8 +2,8 @@ require 'formula'
 
 class Gtkwave < Formula
   homepage 'http://gtkwave.sourceforge.net/'
-  url 'http://gtkwave.sourceforge.net/gtkwave-3.3.41.tar.gz'
-  sha1 'e1be0dda6b4f89399269c43ee277d62af84e6d84'
+  url 'http://gtkwave.sourceforge.net/gtkwave-3.3.57.tar.gz'
+  sha1 'ec81f03bac12852f24717159fa202c5077dfbe68'
 
   depends_on 'pkg-config' => :build
   depends_on 'gtk+'
@@ -11,7 +11,8 @@ class Gtkwave < Formula
   depends_on :x11
 
   def install
-    system './configure', "--prefix=#{prefix}", '--disable-dependency-tracking'
-    system 'make install'
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make install"
   end
 end

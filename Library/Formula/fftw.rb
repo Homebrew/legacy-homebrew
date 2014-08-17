@@ -2,12 +2,22 @@ require 'formula'
 
 class Fftw < Formula
   homepage 'http://www.fftw.org'
-  url 'http://www.fftw.org/fftw-3.3.3.tar.gz'
-  sha1 '11487180928d05746d431ebe7a176b52fe205cf9'
+  url 'http://www.fftw.org/fftw-3.3.4.tar.gz'
+  sha1 'fd508bac8ac13b3a46152c54b7ac885b69734262'
+
+  bottle do
+    cellar :any
+    sha1 "61a72898867a9873ccf86e9ee9b1c397ec49a78a" => :mavericks
+    sha1 "90bb389f4f7b560e174cd7c5079dfc07feb30821" => :mountain_lion
+    sha1 "7ebd6f3498b6b32e19f83627d30780efc3c25a88" => :lion
+  end
 
   option "with-fortran", "Enable Fortran bindings"
+  option :universal
+  option "with-mpi", "Enable MPI parallel transforms"
 
   depends_on :fortran => :optional
+  depends_on :mpi => [:cc, :optional]
 
   def install
     args = ["--enable-shared",
@@ -15,22 +25,25 @@ class Fftw < Formula
             "--prefix=#{prefix}",
             "--enable-threads",
             "--disable-dependency-tracking"]
+    simd_args = ["--enable-sse2"]
+    simd_args << "--enable-avx" if ENV.compiler == :clang and Hardware::CPU.avx? and !build.bottle?
 
-    args << "--disable-fortran" unless build.with? "fortran"
+    args << "--disable-fortran" if build.without? "fortran"
+    args << "--enable-mpi" if build.with? "mpi"
+
+    ENV.universal_binary if build.universal?
 
     # single precision
-    # enable-sse only works with single
-    system "./configure", "--enable-single",
-                          "--enable-sse",
-                          *args
+    # enable-sse2 and enable-avx works for both single and double precision
+    system "./configure", "--enable-single", *(args + simd_args)
     system "make install"
 
     # clean up so we can compile the double precision variant
     system "make clean"
 
     # double precision
-    # enable-sse2 only works with double precision (default)
-    system "./configure", "--enable-sse2", *args
+    # enable-sse2 and enable-avx works for both single and double precision
+    system "./configure", *(args + simd_args)
     system "make install"
 
     # clean up so we can compile the long-double precision variant
@@ -63,7 +76,7 @@ class Fftw < Formula
       }
     TEST_SCRIPT
 
-    system ENV.cc, '-o', 'fftw', 'fftw.c', '-lfftw3', *ENV.cflags.split
+    system ENV.cc, '-o', 'fftw', 'fftw.c', '-lfftw3', *ENV.cflags.to_s.split
     system './fftw'
   end
 end

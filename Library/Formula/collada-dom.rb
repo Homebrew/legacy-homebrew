@@ -2,7 +2,7 @@ require 'formula'
 
 class ColladaDom < Formula
   homepage 'http://www.collada.org/mediawiki/index.php/Portal:COLLADA_DOM'
-  url 'http://downloads.sourceforge.net/project/collada-dom/Collada%20DOM/Collada%20DOM%202.4/collada-dom-2.4.0.tgz'
+  url 'https://downloads.sourceforge.net/project/collada-dom/Collada%20DOM/Collada%20DOM%202.4/collada-dom-2.4.0.tgz'
   sha1 '74e28d670497abc897c06a41df7d28eea2bac836'
 
   depends_on 'cmake' => :build
@@ -10,9 +10,7 @@ class ColladaDom < Formula
   depends_on 'boost'
 
   # Fix build of minizip: quoting arguments to cmake's add_definitions doesn't work the way they thought it did.
-  def patches
-    return DATA
-  end
+  patch :DATA
 
   def install
     system "cmake", ".", *std_cmake_args

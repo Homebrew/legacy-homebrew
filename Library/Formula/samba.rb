@@ -2,17 +2,18 @@ require 'formula'
 
 class Samba < Formula
   homepage 'http://samba.org/'
-  url 'http://www.samba.org/samba/ftp/stable/samba-3.6.20.tar.gz'
-  sha1 '445f579112bc69027f560be276744facc1196fe1'
+  url 'http://www.samba.org/samba/ftp/stable/samba-3.6.23.tar.gz'
+  sha1 '5ba2f8323ab17fa6c04bf87c11d20f10a4fcfe17'
 
   conflicts_with 'talloc', :because => 'both install `include/talloc.h`'
+
+  skip_clean 'private'
+  skip_clean 'var/locks'
 
   # Fixes the Grouplimit of 16 users os OS X.
   # Bug has been raised upstream:
   # https://bugzilla.samba.org/show_bug.cgi?id=8773
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     cd 'source3' do
@@ -24,6 +25,8 @@ class Samba < Formula
       system "make install"
       (prefix/'etc').mkpath
       touch prefix/'etc/smb.conf'
+      (prefix/'private').mkpath
+      (var/'locks').mkpath
     end
   end
 end

@@ -2,8 +2,17 @@ require 'formula'
 
 class Cherokee < Formula
   homepage 'http://cherokee-project.com/'
-  url 'http://pkgs.fedoraproject.org/repo/pkgs/cherokee/cherokee-1.2.101.tar.gz/ef47003355a2e368e4d9596cd070ef23/cherokee-1.2.101.tar.gz'
-  sha1 'b27f149c7d7111207ac8c3cd8a4856c05490d136'
+
+  stable do
+    url "http://pkgs.fedoraproject.org/repo/pkgs/cherokee/cherokee-1.2.103.tar.gz/527b3de97ef9727bfd5f6832043cf916/cherokee-1.2.103.tar.gz"
+    sha1 "8af2b93eb08f3719d21c7ae8fd94b9a99fb674c0"
+
+    # OSX 10.9 patch
+    patch do
+      url "https://github.com/cherokee/webserver/commit/d0213768fdc6cf3aee61fe0be398d7825c01198f.diff"
+      sha1 "6f6443e7b1fce20bf36660e6a75c889fd1121c16"
+    end
+  end
 
   head do
     url 'https://github.com/cherokee/webserver.git'

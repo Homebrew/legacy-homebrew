@@ -1,43 +1,53 @@
 require 'formula'
 
 class X264 < Formula
-  homepage 'http://www.videolan.org/developers/x264.html'
-  url 'http://download.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20120812-2245-stable.tar.bz2'
-  sha1 '4be913fb12cd5b3628edc68dedb4b6e664eeda0a'
-  version 'r2197.4' # brew install -v --HEAD x264 will display the version.
+  homepage "http://www.videolan.org/developers/x264.html"
+  # the latest commit on the stable branch
+  url "http://git.videolan.org/git/x264.git", :revision => "af8e768e2bd3b4398bca033998f83b0eb8874914"
+  version "r2438"
+  head "http://git.videolan.org/git/x264.git"
 
-  head 'http://git.videolan.org/git/x264.git', :branch => 'stable'
+  devel do
+    # the latest commit on the master branch
+    url "http://git.videolan.org/git/x264.git", :revision => "ea0ca51e94323318b95bd8b27b7f9438cdcf4d9e"
+    version "r2453"
+  end
+
+  bottle do
+    cellar :any
+    sha1 "0b2fa975debb45329503a2efb19f1c4165c59dc8" => :mavericks
+    sha1 "54254a3266048daf5f7081c5c0531a33cc173a47" => :mountain_lion
+    sha1 "6e5fb8f851796c81a235b18cf88a23d08d743603" => :lion
+  end
 
   depends_on 'yasm' => :build
 
   option '10-bit', 'Build a 10-bit x264 (default: 8-bit)'
+  option "with-mp4=", "Select mp4 output: none (default), l-smash or gpac"
 
-  def install
-    # https://github.com/mxcl/homebrew/pull/19594
-    ENV.deparallelize
-    if build.head?
-      ENV['GIT_DIR'] = cached_download/'.git'
-      system './version.sh'
-    end
-    args = ["--prefix=#{prefix}", "--enable-shared"]
-    args << "--bit-depth=10" if build.include? '10-bit'
-
-    system "./configure", *args
-
-    if MacOS.prefer_64_bit?
-      inreplace 'config.mak' do |s|
-        soflags = s.get_make_var 'SOFLAGS'
-        s.change_make_var! 'SOFLAGS', soflags.gsub(' -Wl,-read_only_relocs,suppress', '')
-      end
-    end
-
-    system "make install"
+  case ARGV.value "with-mp4"
+  when "l-smash" then depends_on "l-smash"
+  when "gpac" then depends_on "gpac"
   end
 
-  def caveats; <<-EOS.undent
-    Because libx264 has a rapidly-changing API, formulae that link against
-    it should be reinstalled each time you upgrade x264. Examples include:
-       avidemux, ffmbc, ffmpeg, gst-plugins-ugly
-    EOS
+  def install
+    args = %W[
+      --prefix=#{prefix}
+      --enable-shared
+      --enable-static
+      --enable-strip
+    ]
+    if Formula["l-smash"].installed?
+      args << "--disable-gpac"
+    elsif Formula["gpac"].installed?
+      args << "--disable-lsmash"
+    end
+    args << "--bit-depth=10" if build.include? '10-bit'
+
+    # For running version.sh correctly
+    buildpath.install_symlink cached_download/".git"
+
+    system "./configure", *args
+    system "make", "install"
   end
 end

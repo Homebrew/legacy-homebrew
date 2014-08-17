@@ -4,12 +4,15 @@ require 'dependable'
 class Dependency
   include Dependable
 
-  attr_reader :name, :tags
-  attr_accessor :env_proc
+  attr_reader :name, :tags, :env_proc, :option_name
 
-  def initialize(name, tags=[])
+  DEFAULT_ENV_PROC = proc {}
+
+  def initialize(name, tags=[], env_proc=DEFAULT_ENV_PROC, option_name=name)
     @name = name
     @tags = tags
+    @env_proc = env_proc
+    @option_name = option_name
   end
 
   def to_s
@@ -26,30 +29,23 @@ class Dependency
   end
 
   def to_formula
-    f = Formula.factory(name)
-    # Add this dependency's options to the formula's build args
-    f.build.args = f.build.args.concat(options)
-    f
+    formula = Formulary.factory(name)
+    formula.build = BuildOptions.new(options, formula.options)
+    formula
   end
 
   def installed?
     to_formula.installed?
   end
 
-  def requested?
-    ARGV.formulae.include?(to_formula) rescue false
+  def satisfied?(inherited_options)
+    installed? && missing_options(inherited_options).empty?
   end
 
-  def satisfied?
-    installed? && missing_options.empty?
-  end
-
-  def missing_options
-    options - Tab.for_formula(to_formula).used_options - to_formula.build.implicit_options
-  end
-
-  def universal!
-    tags << 'universal' if to_formula.build.has_option? 'universal'
+  def missing_options(inherited_options=[])
+    missing = options | inherited_options
+    missing -= Tab.for_formula(to_formula).used_options
+    missing
   end
 
   def modify_build_environment
@@ -57,7 +53,7 @@ class Dependency
   end
 
   def inspect
-    "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect}>"
   end
 
   # Define marshaling semantics because we cannot serialize @env_proc
@@ -75,21 +71,27 @@ class Dependency
     # the list.
     # The default filter, which is applied when a block is not given, omits
     # optionals and recommendeds based on what the dependent has asked for.
-    def expand(dependent, &block)
-      deps = dependent.deps.map do |dep|
+    def expand(dependent, deps=dependent.deps, &block)
+      expanded_deps = []
+
+      deps.each do |dep|
+        # FIXME don't hide cyclic dependencies
+        next if dependent.name == dep.name
+
         case action(dependent, dep, &block)
         when :prune
-          next []
+          next
         when :skip
-          expand(dep.to_formula, &block)
+          expanded_deps.concat(expand(dep.to_formula, &block))
         when :keep_but_prune_recursive_deps
-          [dep]
+          expanded_deps << dep
         else
-          expand(dep.to_formula, &block) << dep
+          expanded_deps.concat(expand(dep.to_formula, &block))
+          expanded_deps << dep
         end
-      end.flatten
+      end
 
-      merge_repeats(deps)
+      merge_repeats(expanded_deps)
     end
 
     def action(dependent, dep, &block)
@@ -97,7 +99,7 @@ class Dependency
         if block_given?
           yield dependent, dep
         elsif dep.optional? || dep.recommended?
-          prune unless dependent.build.with?(dep.name)
+          prune unless dependent.build.with?(dep)
         end
       end
     end
@@ -122,10 +124,20 @@ class Dependency
 
       deps.uniq.map do |dep|
         tags = grouped.fetch(dep.name).map(&:tags).flatten.uniq
-        merged_dep = dep.class.new(dep.name, tags)
-        merged_dep.env_proc = dep.env_proc
-        merged_dep
+        dep.class.new(dep.name, tags, dep.env_proc)
       end
     end
+  end
+end
+
+class TapDependency < Dependency
+  def initialize(name, tags=[], env_proc=DEFAULT_ENV_PROC, option_name=name)
+    super(name, tags, env_proc, name.split("/").last)
+  end
+
+  def installed?
+    super
+  rescue FormulaUnavailableError
+    false
   end
 end

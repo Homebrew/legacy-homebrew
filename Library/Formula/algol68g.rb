@@ -12,7 +12,12 @@ class Algol68g < Formula
     system "make install"
   end
 
-  def test
-    system "#{bin}/a68g", "--help"
+  test do
+    path = testpath/"hello.alg"
+    path.write <<-EOS.undent
+      print("Hello World")
+    EOS
+
+    assert_equal "Hello World", shell_output("#{bin}/a68g #{path}").strip
   end
 end

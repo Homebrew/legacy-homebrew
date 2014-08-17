@@ -1,11 +1,7 @@
 require 'testing_env'
 require 'test/testball'
 
-class FailsWithTests < Test::Unit::TestCase
-  class Double < Compiler
-    attr_accessor :name, :build, :version
-  end
-
+class FailsWithTests < Homebrew::TestCase
   def assert_fails_with(cc)
     assert @f.new.fails_with?(cc)
   end
@@ -15,15 +11,11 @@ class FailsWithTests < Test::Unit::TestCase
   end
 
   def fails_with(*args, &block)
-    @f.send(:fails_with, *args, &block)
+    @f.fails_with(*args, &block)
   end
 
-  def build_cc(sym, build, version=nil)
-    cc = Double.new
-    cc.name = sym
-    cc.build = build
-    cc.version = version
-    cc
+  def build_cc(name, version)
+    Compiler.new(name, version)
   end
 
   def setup
@@ -49,9 +41,9 @@ class FailsWithTests < Test::Unit::TestCase
   end
 
   def test_non_apple_gcc_version
-    fails_with(:gcc => '4.8.2')
-    cc = build_cc("gcc-4.8", nil, "4.8.1")
-    assert_fails_with cc
+    fails_with(:gcc => '4.8')
+    assert_fails_with build_cc("gcc-4.8", "4.8")
+    assert_fails_with build_cc("gcc-4.8", "4.8.1")
   end
 
   def test_multiple_failures
@@ -63,5 +55,12 @@ class FailsWithTests < Test::Unit::TestCase
     assert_fails_with llvm
     assert_fails_with clang
     assert_does_not_fail_with gcc
+  end
+
+  def test_fails_with_version
+    fails_with(:gcc => '4.8') { version '4.8.1' }
+    assert_fails_with build_cc("gcc-4.8", "4.8")
+    assert_fails_with build_cc("gcc-4.8", "4.8.1")
+    assert_does_not_fail_with build_cc("gcc-4.8", "4.8.2")
   end
 end

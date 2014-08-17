@@ -18,7 +18,7 @@ class ProofGeneral < Formula
         :empty? => true)
     end
 
-    raise "#{emacs_binary} not found" if not File.exists? "#{emacs_binary}"
+    raise "#{emacs_binary} not found" if not File.exist? "#{emacs_binary}"
 
     version_info = `#{emacs_binary} --version`
     version_info =~ /GNU Emacs (\d+)\./
@@ -57,13 +57,13 @@ class ProofGeneral < Formula
       man1.install "doc/proofgeneral.1"
       info.install "doc/ProofGeneral.info", "doc/PG-adapting.info"
 
-      doc.install "doc/ProofGeneral", "doc/PG-adapting" if build.include? 'with-doc'
+      doc.install "doc/ProofGeneral", "doc/PG-adapting" if build.with? "doc"
     end
   end
 
   def caveats
     doc = ""
-    if build.include? 'with-doc'
+    if build.with? "doc"
       doc += <<-EOS.undent
          HTML documentation is available in:
            #{HOMEBREW_PREFIX}/share/doc/proof-general

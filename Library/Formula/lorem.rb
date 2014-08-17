@@ -6,10 +6,12 @@ class Lorem < Formula
   version '0.6.1'
   sha1 'aa6ef66e5ee1151397f19b358d772af316cf333b'
 
-  depends_on :python
-
   def install
     inreplace "lorem", "!/usr/bin/python", "!/usr/bin/env python"
     bin.install "lorem"
+  end
+
+  test do
+    assert_equal "lorem ipsum", shell_output("#{bin}/lorem -n 2").strip
   end
 end

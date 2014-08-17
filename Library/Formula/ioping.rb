@@ -2,8 +2,8 @@ require 'formula'
 
 class Ioping < Formula
   homepage 'http://code.google.com/p/ioping/'
-  url 'https://ioping.googlecode.com/files/ioping-0.7.tar.gz'
-  sha1 'f841244149830506daca1b052694965d94fe2408'
+  url 'https://ioping.googlecode.com/files/ioping-0.8.tar.gz'
+  sha1 '7d4fe1414cdd5887c332426a8844e17eca5e5646'
 
   head 'http://ioping.googlecode.com/svn/trunk/'
 
@@ -12,7 +12,7 @@ class Ioping < Formula
     system "make", "install", "PREFIX=#{prefix}"
   end
 
-  def test
+  test do
     system "#{bin}/ioping", "-v"
   end
 end

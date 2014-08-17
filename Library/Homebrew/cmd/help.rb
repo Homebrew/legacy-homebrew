@@ -12,12 +12,12 @@ Example usage:
 Troubleshooting:
   brew doctor
   brew install -vd FORMULA
-  brew [--env | --config]
+  brew [--env | config]
 
 Brewing:
   brew create [URL [--no-fetch]]
   brew edit [FORMULA...]
-  open https://github.com/mxcl/homebrew/wiki/Formula-Cookbook
+  open https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
 
 Further help:
   man brew
@@ -31,7 +31,7 @@ EOS
 # NOTE Keep lines less than 80 characters! Wrapping is just not cricket.
 # NOTE The reason the string is at the top is so 25 lines is easy to measure!
 
-module Homebrew extend self
+module Homebrew
   def help
     puts HOMEBREW_HELP
   end

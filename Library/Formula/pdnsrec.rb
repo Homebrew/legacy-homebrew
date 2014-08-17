@@ -2,8 +2,8 @@ require 'formula'
 
 class Pdnsrec < Formula
   homepage 'http://wiki.powerdns.com'
-  url 'http://downloads.powerdns.com/releases/pdns-recursor-3.5.3.tar.bz2'
-  sha1 '1809003427b2e1b82e5bcaf55dfbaf02d7b1227a'
+  url 'http://downloads.powerdns.com/releases/pdns-recursor-3.6.0.tar.bz2'
+  sha256 '345651705f04eb63ef6ea4573587907bc213879834e37f4b7e4c2e70bc952372'
 
   depends_on :macos => :lion
   depends_on 'boost'
@@ -16,14 +16,17 @@ class Pdnsrec < Formula
     ENV.O0
 
     # Include Lua if requested
-    if build.include? 'with-lua'
+    if build.with? "lua"
       ENV['LUA'] = "1"
-      ENV['LUA_CPPFLAGS_CONFIG'] = "-I#{Formula.factory('lua').opt_prefix}/include"
+      ENV['LUA_CPPFLAGS_CONFIG'] = "-I#{Formula["lua"].opt_include}"
       ENV['LUA_LIBS_CONFIG'] = "-llua"
     end
 
-    # Add Homebrew prefix to config file location
-    inreplace "config.h", "/etc/", "#{etc}/"
+    # Adjust hard coded paths in Makefile
+    inreplace "Makefile", "/usr/sbin/", "#{sbin}/"
+    inreplace "Makefile", "/usr/bin/", "#{bin}/"
+    inreplace "Makefile", "/etc/powerdns/", "#{etc}/powerdns/"
+    inreplace "Makefile", "/var/run/", "#{var}/run/"
 
     # Compile
     system "make basic_checks"

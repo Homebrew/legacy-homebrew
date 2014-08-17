@@ -2,8 +2,15 @@ require 'formula'
 
 class Libmikmod < Formula
   homepage 'http://mikmod.shlomifish.org'
-  url 'http://sourceforge.net/projects/mikmod/files/libmikmod/3.3.3/libmikmod-3.3.3.tar.gz'
-  sha256 '79f02478c5abd8b2af73df4cc5f9d52625aa044327c01563168e270cf79b2437'
+  url 'https://downloads.sourceforge.net/project/mikmod/libmikmod/3.3.6/libmikmod-3.3.6.tar.gz'
+  sha256 '3f363e03f7b1db75b9b6602841bbd440ed275a548e53545f980df8155de4d330'
+
+  bottle do
+    cellar :any
+    sha1 "eb5b851f5ceddf5c5cf95dff87570b3ba17534ec" => :mavericks
+    sha1 "8f93de789fdca344d196458f65f4a444f59b8f0b" => :mountain_lion
+    sha1 "70b74f60052e4bd590e2591c78ac8a123cb2b67f" => :lion
+  end
 
   option 'with-debug', 'Enable debugging symbols'
 
@@ -24,7 +31,7 @@ class Libmikmod < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/libmikmod-config", "--version"
   end
 end

@@ -4,7 +4,7 @@ class Multimarkdown < Formula
   homepage 'http://fletcherpenney.net/multimarkdown/'
   head 'https://github.com/fletcher/MultiMarkdown-4.git', :branch => 'master'
   # Use git tag instead of the tarball to get submodules
-  url 'https://github.com/fletcher/MultiMarkdown-4.git', :tag => '4.3.2'
+  url 'https://github.com/fletcher/MultiMarkdown-4.git', :tag => '4.5'
 
   conflicts_with 'mtools', :because => 'both install `mmd` binaries'
 
@@ -19,5 +19,9 @@ class Multimarkdown < Formula
     Support files have been installed to:
       #{opt_prefix}/Support
     EOS
+  end
+
+  test do
+    assert_equal "<p>foo <em>bar</em></p>\n", pipe_output(bin/"mmd", "foo *bar*\n")
   end
 end

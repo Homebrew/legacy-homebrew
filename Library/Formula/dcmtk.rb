@@ -4,13 +4,21 @@ class Dcmtk < Formula
   homepage 'http://dicom.offis.de/dcmtk.php.en'
   url 'ftp://dicom.offis.de/pub/dicom/offis/software/dcmtk/dcmtk360/dcmtk-3.6.0.tar.gz'
   sha1 '469e017cffc56f36e834aa19c8612111f964f757'
+  revision 1
+
+  bottle do
+    sha1 "7a5dae3786225a07fc1b615c186a348d762c1a67" => :mavericks
+    sha1 "f2b20d273322b799b4bd79da8dbe21bc293f37ff" => :mountain_lion
+    sha1 "044eeba49ae368d5f8cce753d54dcaa9b8d18fbb" => :lion
+  end
 
   option 'with-docs', 'Install development libraries/headers and HTML docs'
+  option 'with-openssl', 'Configure DCMTK with support for OpenSSL'
 
   depends_on 'cmake' => :build
   depends_on "libpng"
   depends_on 'libtiff'
-  depends_on 'doxygen' if build.include? 'with-docs'
+  depends_on 'doxygen' if build.with? "docs"
 
   # This roughly corresponds to thefollowing upstream patch:
   #
@@ -23,20 +31,19 @@ class Dcmtk < Formula
   # since this is a very rare occurrence (the last development preview
   # release is from mid 2012), it seems justifiable to keep the patch
   # ourselves for a while.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.m64 if MacOS.prefer_64_bit?
 
     args = std_cmake_args
-    args << '-DDCMTK_WITH_DOXYGEN=YES' if build.include? 'with-docs'
+    args << '-DDCMTK_WITH_DOXYGEN=YES' if build.with? "docs"
+    args << '-DDCMTK_WITH_OPENSSL=YES' if build.with? "openssl"
     args << '..'
 
     mkdir 'build' do
       system 'cmake', *args
-      system 'make DOXYGEN' if build.include? 'with-docs'
+      system 'make DOXYGEN' if build.with? "docs"
       system 'make install'
     end
   end

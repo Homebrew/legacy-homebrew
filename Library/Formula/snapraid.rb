@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Snapraid < Formula
-  homepage 'http://snapraid.sourceforge.net/'
-  head 'git://snapraid.git.sourceforge.net/gitroot/snapraid/snapraid'
-  url 'http://downloads.sourceforge.net/project/snapraid/snapraid-4.4.tar.gz'
-  sha1 '28c73b431c4fca78194bbfa484bbf0f5f20db17c'
+  homepage "http://snapraid.sourceforge.net/"
+  head "git://snapraid.git.sourceforge.net/gitroot/snapraid/snapraid"
+  url "https://downloads.sourceforge.net/project/snapraid/snapraid-6.3.tar.gz"
+  sha1 "0a2760913ee16facb9bccf729a980260207e339f"
 
   def install
     system "./configure", "--prefix=#{prefix}"

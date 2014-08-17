@@ -10,16 +10,14 @@ end
 
 class Freeimage < Formula
   homepage 'http://sf.net/projects/freeimage'
-  url 'http://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.15.4/FreeImage3154.zip',
+  url 'https://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.16.0/FreeImage3160.zip',
         :using => FreeimageHttpDownloadStrategy
-  version '3.15.4'
-  sha1 '1d30057a127b2016cf9b4f0f8f2ba92547670f96'
+  version '3.16.0'
+  sha1 'a70600d288fe5bd11131e85e6f857a93bb100ad8'
 
   option :universal
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?
@@ -32,11 +30,11 @@ end
 
 __END__
 diff --git a/Makefile.fip b/Makefile.fip
-index f4336d2..15e8c00 100644
+index 6006221..e306d35 100644
 --- a/Makefile.fip
 +++ b/Makefile.fip
 @@ -5,8 +5,9 @@ include fipMakefile.srcs
-
+ 
  # General configuration variables:
  DESTDIR ?= /
 -INCDIR ?= $(DESTDIR)/usr/include
@@ -44,38 +42,40 @@ index f4336d2..15e8c00 100644
 +PREFIX ?= /usr/local
 +INCDIR ?= $(DESTDIR)$(PREFIX)/include
 +INSTALLDIR ?= $(DESTDIR)$(PREFIX)/lib
-
+ 
  # Converts cr/lf to just lf
  DOS2UNIX = dos2unix
-@@ -27,8 +28,8 @@ endif
-
+@@ -35,9 +36,9 @@ endif
+ 
  TARGET  = freeimageplus
  STATICLIB = lib$(TARGET).a
 -SHAREDLIB = lib$(TARGET)-$(VER_MAJOR).$(VER_MINOR).so
 -LIBNAME	= lib$(TARGET).so
-+SHAREDLIB = lib$(TARGET)-$(VER_MAJOR).$(VER_MINOR).dylib
+-VERLIBNAME = $(LIBNAME).$(VER_MAJOR)
++SHAREDLIB = lib$(TARGET).$(VER_MAJOR).$(VER_MINOR).dylib
 +LIBNAME	= lib$(TARGET).dylib
- VERLIBNAME = $(LIBNAME).$(VER_MAJOR)
++VERLIBNAME = lib$(TARGET).$(VER_MAJOR).dylib
  HEADER = Source/FreeImage.h
  HEADERFIP = Wrapper/FreeImagePlus/FreeImagePlus.h
-@@ -40,7 +41,7 @@ all: dist
-
+ 
+@@ -48,7 +49,7 @@ all: dist
+ 
  dist: FreeImage
  	cp *.a Dist
 -	cp *.so Dist
 +	cp *.dylib Dist
  	cp Source/FreeImage.h Dist
-	cp Wrapper/FreeImagePlus/FreeImagePlus.h Dist
-
-@@ -59,14 +60,15 @@ $(STATICLIB): $(MODULES)
-	$(AR) r $@ $(MODULES)
-
+ 	cp Wrapper/FreeImagePlus/FreeImagePlus.h Dist
+ 
+@@ -67,14 +68,15 @@ $(STATICLIB): $(MODULES)
+ 	$(AR) r $@ $(MODULES)
+ 
  $(SHAREDLIB): $(MODULES)
 -	$(CC) -s -shared -Wl,-soname,$(VERLIBNAME) $(LDFLAGS) -o $@ $(MODULES) $(LIBRARIES)
 +	$(CXX) -dynamiclib -install_name $(LIBNAME) -current_version $(VER_MAJOR).$(VER_MINOR) -compatibility_version $(VER_MAJOR) $(LDFLAGS) -o $@ $(MODULES)
-
+ 
  install:
-	install -d $(INCDIR) $(INSTALLDIR)
+ 	install -d $(INCDIR) $(INSTALLDIR)
 -	install -m 644 -o root -g root $(HEADER) $(INCDIR)
 -	install -m 644 -o root -g root $(HEADERFIP) $(INCDIR)
 -	install -m 644 -o root -g root $(STATICLIB) $(INSTALLDIR)
@@ -85,15 +85,15 @@ index f4336d2..15e8c00 100644
 +	install -m 644 $(STATICLIB) $(INSTALLDIR)
 +	install -m 755 $(SHAREDLIB) $(INSTALLDIR)
 +	ln -s $(SHAREDLIB) $(INSTALLDIR)/$(LIBNAME)
-
+ 
  clean:
-	rm -f core Dist/*.* u2dtmp* $(MODULES) $(STATICLIB) $(SHAREDLIB) $(LIBNAME)
+ 	rm -f core Dist/*.* u2dtmp* $(MODULES) $(STATICLIB) $(SHAREDLIB) $(LIBNAME)
 diff --git a/Makefile.gnu b/Makefile.gnu
-index 0c967b8..e50ed7f 100644
+index 5f2c625..c98f44a 100644
 --- a/Makefile.gnu
 +++ b/Makefile.gnu
 @@ -5,8 +5,9 @@ include Makefile.srcs
-
+ 
  # General configuration variables:
  DESTDIR ?= /
 -INCDIR ?= $(DESTDIR)/usr/include
@@ -101,36 +101,38 @@ index 0c967b8..e50ed7f 100644
 +PREFIX ?= /usr/local
 +INCDIR ?= $(DESTDIR)$(PREFIX)/include
 +INSTALLDIR ?= $(DESTDIR)$(PREFIX)/lib
-
+ 
  # Converts cr/lf to just lf
  DOS2UNIX = dos2unix
-@@ -27,8 +28,8 @@ endif
-
+@@ -35,9 +36,9 @@ endif
+ 
  TARGET  = freeimage
  STATICLIB = lib$(TARGET).a
 -SHAREDLIB = lib$(TARGET)-$(VER_MAJOR).$(VER_MINOR).so
 -LIBNAME	= lib$(TARGET).so
-+SHAREDLIB = lib$(TARGET)-$(VER_MAJOR).$(VER_MINOR).dylib
+-VERLIBNAME = $(LIBNAME).$(VER_MAJOR)
++SHAREDLIB = lib$(TARGET).$(VER_MAJOR).$(VER_MINOR).dylib
 +LIBNAME	= lib$(TARGET).dylib
- VERLIBNAME = $(LIBNAME).$(VER_MAJOR)
++VERLIBNAME = lib$(TARGET).$(VER_MAJOR).dylib
  HEADER = Source/FreeImage.h
-
-@@ -40,7 +41,7 @@ all: dist
-
+ 
+ 
+@@ -48,7 +49,7 @@ all: dist
+ 
  dist: FreeImage
-	cp *.a Dist
+ 	cp *.a Dist
 -	cp *.so Dist
 +	cp *.dylib Dist
-	cp Source/FreeImage.h Dist
-
+ 	cp Source/FreeImage.h Dist
+ 
  dos2unix:
-@@ -58,13 +59,13 @@ $(STATICLIB): $(MODULES)
-	$(AR) r $@ $(MODULES)
-
+@@ -66,13 +67,13 @@ $(STATICLIB): $(MODULES)
+ 	$(AR) r $@ $(MODULES)
+ 
  $(SHAREDLIB): $(MODULES)
 -	$(CC) -s -shared -Wl,-soname,$(VERLIBNAME) $(LDFLAGS) -o $@ $(MODULES) $(LIBRARIES)
 +	$(CXX) -dynamiclib -install_name $(LIBNAME) -current_version $(VER_MAJOR).$(VER_MINOR) -compatibility_version $(VER_MAJOR) $(LDFLAGS) -o $@ $(MODULES)
-
+ 
  install:
  	install -d $(INCDIR) $(INSTALLDIR)
 -	install -m 644 -o root -g root $(HEADER) $(INCDIR)
@@ -139,18 +141,18 @@ index 0c967b8..e50ed7f 100644
 +	install -m 644 $(HEADER) $(INCDIR)
 +	install -m 644 $(STATICLIB) $(INSTALLDIR)
 +	install -m 755 $(SHAREDLIB) $(INSTALLDIR)
-	ln -sf $(SHAREDLIB) $(INSTALLDIR)/$(VERLIBNAME)
-	ln -sf $(VERLIBNAME) $(INSTALLDIR)/$(LIBNAME)
+ 	ln -sf $(SHAREDLIB) $(INSTALLDIR)/$(VERLIBNAME)
+ 	ln -sf $(VERLIBNAME) $(INSTALLDIR)/$(LIBNAME)	
  #	ldconfig
 diff --git a/Source/OpenEXR/IlmImf/ImfAutoArray.h b/Source/OpenEXR/IlmImf/ImfAutoArray.h
-index edb8b10..3ecf3e0 100755
+index 7b4533f..98bf458 100644
 --- a/Source/OpenEXR/IlmImf/ImfAutoArray.h
 +++ b/Source/OpenEXR/IlmImf/ImfAutoArray.h
 @@ -44,6 +44,7 @@
  //
  //-----------------------------------------------------------------------------
-
+ 
 +#include <cstring>
  #include "OpenEXRConfig.h"
-
- namespace Imf {
+ #if !defined(_WIN32) || defined(__MINGW32__)
+ // needed for memset

@@ -10,4 +10,11 @@ class Rename < Formula
     bin.install 'rename'
     man1.install 'rename.1'
   end
+
+  test do
+    touch "foo.doc"
+    system "#{bin}/rename -s .doc .txt *.d*"
+    assert !File.exist?("foo.doc")
+    assert File.exist?("foo.txt")
+  end
 end

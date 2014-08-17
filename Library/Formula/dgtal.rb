@@ -2,8 +2,8 @@ require 'formula'
 
 class Dgtal < Formula
   homepage 'http://libdgtal.org'
-  url 'http://liris.cnrs.fr/dgtal/releases/DGtal-0.6.0-Source.tar.gz'
-  sha1 '7eebf636bb356fe7672eed8295647ca9a36c452d'
+  url 'http://liris.cnrs.fr/dgtal/releases/DGtal-0.7.0-Source.tar.gz'
+  sha1 '2a5bec10b376cfde5c52760340aa553907664d9c'
 
   head 'https://github.com/DGtal-team/DGtal.git'
 

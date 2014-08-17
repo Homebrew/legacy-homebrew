@@ -1,22 +1,29 @@
-require 'formula'
+require "formula"
 
 class Mosquitto < Formula
-  homepage 'http://mosquitto.org/'
-  url 'http://mosquitto.org/files/source/mosquitto-1.2.2.tar.gz'
-  sha1 '7e0ccffe4c34506ecf153b48c29d2f09c5c09586'
+  homepage "http://mosquitto.org/"
+  url "http://mosquitto.org/files/source/mosquitto-1.3.4.tar.gz"
+  sha1 "b818672cc0db723995d7c3201ef6962931dd891a"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'cmake' => :build
+  bottle do
+    sha1 "92e579915297c3dcbed3682c5a4f0bb2dd67389a" => :mavericks
+    sha1 "5a92a49a4e09cf73cf9c102600483c8c87a66214" => :mountain_lion
+    sha1 "a0a7141690ed684c08358655d3b3a5802e52ae31" => :lion
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "cmake" => :build
+  depends_on "c-ares"
 
   # mosquitto requires OpenSSL >=1.0 for TLS support
-  depends_on 'openssl'
+  depends_on "openssl"
 
   def install
     system "cmake", ".", *std_cmake_args
     system "make install"
 
     # Create the working directory
-    (var/'mosquitto').mkpath
+    (var/"mosquitto").mkpath
   end
 
   test do
@@ -47,7 +54,7 @@ class Mosquitto < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/mosquitto</string>
+        <string>#{opt_sbin}/mosquitto</string>
         <string>-c</string>
         <string>#{etc}/mosquitto/mosquitto.conf</string>
       </array>

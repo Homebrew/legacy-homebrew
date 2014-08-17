@@ -7,7 +7,7 @@ class JavaRequirement < Requirement
     [
       `/usr/libexec/java_home`.chomp,
       ENV['JAVA_HOME']
-    ].find { |dir| dir && File.exists?("#{dir}/bin/javac") && File.exists?("#{dir}/include") }
+    ].find { |dir| dir && File.exist?("#{dir}/bin/javac") && File.exist?("#{dir}/include") }
   end
 
   satisfy :build_env => false do
@@ -27,8 +27,8 @@ end
 
 class Hamsterdb < Formula
   homepage 'http://hamsterdb.com'
-  url 'http://hamsterdb.com/dl/hamsterdb-2.1.2.tar.gz'
-  sha256 '5d1adbd25aad38646c83b8db013dc02af563c2447bd79b25aeac6cc287d098b0'
+  url "http://files.hamsterdb.com/dl/hamsterdb-2.1.8.tar.gz"
+  sha1 "f91af65d19cdbd75ec52f6d18e331e22e4f198a7"
 
   option 'without-java', 'Do not build the Java wrapper'
   option 'without-remote', 'Disable access to remote databases'
@@ -39,6 +39,13 @@ class Hamsterdb < Formula
     depends_on 'autoconf' => :build
     depends_on 'automake' => :build
     depends_on 'libtool' => :build
+  end
+
+  stable do
+    patch do
+      url "https://github.com/cruppstahl/hamsterdb/commit/6eed38f26a0805fe976ead92b467767e1448b124.diff"
+      sha1 "13928ceca137eb1cf680d3d25d18819c44dc743e"
+    end
   end
 
   depends_on 'boost'

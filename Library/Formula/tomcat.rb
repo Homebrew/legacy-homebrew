@@ -1,27 +1,23 @@
 require 'formula'
 
 class Tomcat < Formula
-  homepage 'http://tomcat.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.47/bin/apache-tomcat-7.0.47.tar.gz'
-  sha1 'ea54881535fccb3dfd7da122358d983297d69196'
+  homepage "http://tomcat.apache.org/"
+  url "http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.9/bin/apache-tomcat-8.0.9.tar.gz"
+  sha1 "7218d06eab70e576de68a4d4d72ec4da34304676"
+
+  bottle do
+    cellar :any
+    sha1 "1c80a7af14a3f387f634bdae5d5b673bbc1f2c9a" => :mavericks
+    sha1 "4045fdbd7963e87035884bd4ecb6c173a74a99f6" => :mountain_lion
+    sha1 "2c77dfcf698b21deae47df1f0b2fe32f43bd31e3" => :lion
+  end
 
   option "with-fulldocs", "Install full documentation locally"
 
-  devel do
-    url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.0-RC5/bin/apache-tomcat-8.0.0-RC5.tar.gz'
-    sha1 '17d310f962f0ce2de3956b122f5c604d97a87565'
-
-    resource 'fulldocs' do
-      url 'http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.0-RC5/bin/apache-tomcat-8.0.0-RC5-fulldocs.tar.gz'
-      version '8.0.0-RC5'
-      sha1 'aac41f5259a987f6f9b787d3c4d2096e30ae529a'
-    end
-  end
-
-  resource 'fulldocs' do
-    url 'http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-7/v7.0.47/bin/apache-tomcat-7.0.47-fulldocs.tar.gz'
-    version '7.0.47'
-    sha1 '31d26adb234c4b58a74ad717aaf83b39f67e8ea3'
+  resource "fulldocs" do
+    url "http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.9/bin/apache-tomcat-8.0.9-fulldocs.tar.gz"
+    version "8.0.9"
+    sha1 "24abb690d63a62f6d914739268057a6f3d29d4df"
   end
 
   # Keep log folders

@@ -2,24 +2,21 @@ require 'formula'
 
 class TomcatNative < Formula
   homepage 'http://tomcat.apache.org/native-doc/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.29/source/tomcat-native-1.1.29-src.tar.gz'
-  sha1 '16ce3eaee7a4c26f4a6fdd89eece83501d12b754'
+  url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.31/source/tomcat-native-1.1.31-src.tar.gz'
+  sha1 '177b1f43f3dbc16eeea39d85147355be29a6089f'
 
-  option 'with-brewed-openssl', 'Build with Homebrew OpenSSL instead of the system version (required for TLSv1.1/TLSv1.2)'
-
-  depends_on :libtool => :build
-  depends_on 'tomcat' => :recommended
-  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on "libtool" => :build
+  depends_on "tomcat" => :recommended
+  depends_on :java => "1.7"
+  depends_on "openssl"
 
   def install
-    cd "jni/native/" do
-      args = %W[
-        --prefix=#{prefix}
-        --with-apr=#{MacOS.sdk_path}/usr
-        --with-java-home=#{`/usr/libexec/java_home`}
-      ]
-      args << ((build.with? 'brewed-openssl') ? "--with-ssl=#{Formula.factory('openssl').prefix}" : "--with-ssl=#{MacOS.sdk_path}/usr")
-      system "./configure", *args
+    cd "jni/native" do
+      system "./configure", "--prefix=#{prefix}",
+                            "--with-apr=#{MacOS.sdk_path}/usr",
+                            "--with-java-home=#{`/usr/libexec/java_home`.chomp}",
+                            "--with-ssl=#{Formula["openssl"].prefix}"
+
       # fixes occasional compiling issue: glibtool: compile: specify a tag with `--tag'
       args = ["LIBTOOL=glibtool --tag=CC"]
       # fixes a broken link in mountain lion's apr-1-config (it should be /XcodeDefault.xctoolchain/):
@@ -31,10 +28,11 @@ class TomcatNative < Formula
   end
 
   def caveats; <<-EOS.undent
-    In order for tomcat's APR lifecycle listener to find this library, you'll need to add it to java.library.path.
-    This can be done by adding the following line to $CATALINA_HOME/bin/setenv.sh
+    In order for tomcat's APR lifecycle listener to find this library, you'll
+    need to add it to java.library.path. This can be done by adding this line
+    to $CATALINA_HOME/bin/setenv.sh
 
-    CATALINA_OPTS=\"$CATALINA_OPTS -Djava.library.path=#{lib}\"
+      CATALINA_OPTS=\"$CATALINA_OPTS -Djava.library.path=#{lib}\"
 
     If $CATALINA_HOME/bin/setenv.sh doesn't exist, create it and make it executable.
     EOS

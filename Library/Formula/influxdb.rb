@@ -2,13 +2,13 @@ require "formula"
 
 class Influxdb < Formula
   homepage "http://influxdb.org"
-  url "http://get.influxdb.org/src/influxdb-0.3.0.tar.gz"
-  sha1 "057e5ac9a53f1c516f920d9f5c158b4998f669c6"
+  url "http://get.influxdb.org/influxdb-0.7.3.src.tar.gz"
+  sha1 "cc774498036a758661965eb01c45c1941bf0ac10"
 
   bottle do
-    sha1 'b9bd4fb3404f11457522db197d47862e354848a5' => :mavericks
-    sha1 '0baf4e253800bf95524ddd5bae79f54e66dcf18e' => :mountain_lion
-    sha1 'b3c0a6b7e668c57e78f92d13a3f89e9dc4c1d1da' => :lion
+    sha1 "eec1070cf8165525e350ce00c07802a16260a44c" => :mavericks
+    sha1 "d50eae0ed37ad639d7a04f06c83b1398bc738386" => :mountain_lion
+    sha1 "d76c3b4aac9d5adc016f4ab7eed37951f68b4c22" => :lion
   end
 
   depends_on "leveldb"
@@ -17,27 +17,29 @@ class Influxdb < Formula
   depends_on "flex" => :build
   depends_on "go" => :build
 
-  fails_with :clang do
-    cause "clang: error: argument unused during compilation: '-fno-eliminate-unused-debug-types'"
-  end
-
   def install
     ENV["GOPATH"] = buildpath
 
-    system "go build src/server/server.go"
+    flex = Formula["flex"].bin/"flex"
+    bison = Formula["bison"].bin/"bison"
 
-    inreplace "config.json.sample" do |s|
+    system "./configure", "--with-flex=#{flex}", "--with-bison=#{bison}"
+    system "make", "dependencies", "protobuf", "parser"
+    system "go", "build", "daemon"
+
+    inreplace "config.sample.toml" do |s|
       s.gsub! "/tmp/influxdb/development/db", "#{var}/influxdb/data"
       s.gsub! "/tmp/influxdb/development/raft", "#{var}/influxdb/raft"
-      s.gsub! "./admin/", "#{share}/admin/"
+      s.gsub! "/tmp/influxdb/development/wal", "#{var}/influxdb/wal"
+      s.gsub! "./admin", "#{opt_share}/admin"
     end
 
-    bin.install "server" => "influxdb"
-    etc.install "config.json.sample" => "influxdb.conf"
+    bin.install "daemon" => "influxdb"
+    etc.install "config.sample.toml" => "influxdb.conf"
     share.install "admin"
 
-    (var/'influxdb/data').mkpath
-    (var/'influxdb/raft').mkpath
+    (var/"influxdb/data").mkpath
+    (var/"influxdb/raft").mkpath
   end
 
   plist_options :manual => "influxdb -config=#{HOMEBREW_PREFIX}/etc/influxdb.conf"
@@ -56,7 +58,7 @@ class Influxdb < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_prefix}/bin/influxdb</string>
+          <string>#{opt_bin}/influxdb</string>
           <string>-config=#{etc}/influxdb.conf</string>
         </array>
         <key>RunAtLoad</key>
@@ -73,6 +75,6 @@ class Influxdb < Formula
   end
 
   test do
-    system "#{bin}/influxdb -v"
+    system "#{bin}/influxdb", "-v"
   end
 end

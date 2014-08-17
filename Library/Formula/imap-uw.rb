@@ -3,15 +3,13 @@ require 'formula'
 class ImapUw < Formula
   homepage 'http://www.washington.edu/imap/'
   url 'ftp://ftp.cac.washington.edu/imap/imap-2007f.tar.gz'
+  mirror 'http://ftp.ntua.gr/pub/net/mail/imap/imap-2007f.tar.gz'
   sha1 '7a82ebd5aae57a5dede96ac4923b63f850ff4fa7'
 
-  def patches
-    if MacOS.version >= :snow_leopard
-      { :p0 =>
-        'https://trac.macports.org/export/63088/trunk/dports/mail/imap-uw/files/patch-snowleopard.diff'
-      }
-    end
-  end
+  patch :p0 do
+    url "https://trac.macports.org/export/63088/trunk/dports/mail/imap-uw/files/patch-snowleopard.diff"
+    sha1 "03dec6527fc6b21be6eddc2a38cb93f11fe65bd6"
+  end if MacOS.version >= :snow_leopard
 
   def install
     ENV.j1

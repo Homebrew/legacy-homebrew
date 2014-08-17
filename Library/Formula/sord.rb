@@ -2,10 +2,11 @@ require 'formula'
 
 class Sord < Formula
   homepage 'http://drobilla.net/software/sord/'
-  url 'http://download.drobilla.net/sord-0.10.4.tar.bz2'
-  sha1 '7ac6b593bf391b5670fec178ed7bf81b081094b5'
+  url 'http://download.drobilla.net/sord-0.12.0.tar.bz2'
+  sha1 '8a1ae8c9f90bd0b3632841898c6500a8293d6ed2'
 
   depends_on 'pkg-config' => :build
+  depends_on 'pcre'
   depends_on 'serd'
 
   def install

@@ -2,7 +2,7 @@ require 'formula'
 
 class Cryptopp < Formula
   homepage 'http://www.cryptopp.com/'
-  url 'http://downloads.sourceforge.net/project/cryptopp/cryptopp/5.6.2/cryptopp562.zip'
+  url 'https://downloads.sourceforge.net/project/cryptopp/cryptopp/5.6.2/cryptopp562.zip'
   sha1 'ddc18ae41c2c940317cd6efe81871686846fa293'
   version '5.6.2'
 

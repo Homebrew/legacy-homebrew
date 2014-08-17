@@ -2,16 +2,12 @@ require 'formula'
 
 class TypesafeActivator < Formula
   homepage 'http://typesafe.com/activator'
-  url 'http://downloads.typesafe.com/typesafe-activator/1.0.8/typesafe-activator-1.0.8.zip'
-  sha1 '4c1bdb0374bf877586de14a5bf15d4d97965bc81'
+  url 'http://downloads.typesafe.com/typesafe-activator/1.2.7/typesafe-activator-1.2.7.zip'
+  sha1 '5ecbed71bba12173ccf885ba717f91505fc8d68a'
 
   def install
-    # remove Windows .bat files
-    rm Dir['*.bat']
-    rm Dir["#{buildpath}/**/*.bat"]
-
+    rm Dir["*.bat"] # Remove Windows .bat files
     prefix.install_metafiles
-
     libexec.install Dir['*']
     bin.write_exec_script libexec/'activator'
   end

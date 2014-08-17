@@ -5,29 +5,15 @@ class Pssh < Formula
   url 'https://parallel-ssh.googlecode.com/files/pssh-2.3.1.tar.gz'
   sha1 '65736354baaa289cffdf374eb2ffd9aa1eda7d85'
 
-  depends_on :python
-
-  # TODO: Move this into Library/Homebrew somewhere (see also mitmproxy.rb and ansible.rb).
-  def wrap bin_file, pythonpath
-    bin_file = Pathname.new bin_file
-    libexec_bin = Pathname.new libexec/'bin'
-    libexec_bin.mkpath
-    mv bin_file, libexec_bin
-    bin_file.write <<-EOS.undent
-    #!/bin/sh
-    PYTHONPATH="#{pythonpath}:$PYTHONPATH" exec "#{libexec_bin}/#{bin_file.basename}" "$@"
-    EOS
-  end
+  depends_on :python if MacOS.version <= :snow_leopard
 
   def install
-    python do
-      system python, "setup.py", "install",
-        "--prefix=#{prefix}", "--install-data=#{share}"
-    end
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
 
-    Dir["#{bin}/*"].each do |bin_file|
-      wrap bin_file, python.global_site_packages
-    end
+    system "python", "setup.py", "install",
+      "--prefix=#{prefix}", "--install-data=#{share}"
+
+    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 
   test do

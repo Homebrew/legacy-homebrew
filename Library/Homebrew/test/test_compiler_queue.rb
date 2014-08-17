@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'compilers'
 
-class CompilerQueueTests < Test::Unit::TestCase
+class CompilerQueueTests < Homebrew::TestCase
   FakeCompiler = Struct.new(:name, :priority)
 
   def setup
@@ -9,11 +9,11 @@ class CompilerQueueTests < Test::Unit::TestCase
   end
 
   def test_shovel_returns_self
-    assert_same @q, (@q << Object.new)
+    assert_same @q, @q << Object.new
   end
 
   def test_empty
-    assert @q.empty?
+    assert_empty @q
   end
 
   def test_queues_items

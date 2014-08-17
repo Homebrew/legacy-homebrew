@@ -1,36 +1,42 @@
-require 'formula'
+require "formula"
 
 class Gstreamer < Formula
-  homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.2.1.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.2.1.tar.xz'
-  sha256 'a4523d2471bca6cd0059a32e3b042f50faa4dadc6439852af8b43ca3f17d1fc9'
+  homepage "http://gstreamer.freedesktop.org/"
+  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.0.tar.xz"
+  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.0.tar.xz"
+  sha256 "23c39fdc2b24f889b07cab0449825384fef7592a121e180729fd9025ec45c695"
+
+  bottle do
+    sha1 "79d453bf6cc25ad5389addd1eba6610f5ce3b43f" => :mavericks
+    sha1 "f6f99cc4d73d97ece0f61e0fb7310e4c4639c449" => :mountain_lion
+    sha1 "7c984213e35e568cd6c9fbb5dc93deeda8e7fa69" => :lion
+  end
 
   head do
-    url 'git://anongit.freedesktop.org/gstreamer/gstreamer'
+    url "git://anongit.freedesktop.org/gstreamer/gstreamer"
 
     depends_on :autoconf
     depends_on :automake
     depends_on :libtool
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gobject-introspection' => :optional
-  depends_on 'gettext'
-  depends_on 'glib'
+  depends_on "pkg-config" => :build
+  depends_on "gobject-introspection"
+  depends_on "gettext"
+  depends_on "glib"
+  depends_on "bison"
 
   def install
-    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing -fno-common"
-
     args = %W[
       --prefix=#{prefix}
       --disable-debug
       --disable-dependency-tracking
       --disable-gtk-doc
+      --enable-introspection=yes
     ]
 
     if build.head?
-      ENV.append "NOCONFIGURE", "yes"
+      ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
     end
 
