@@ -2,8 +2,8 @@ require "formula"
 
 class Wimlib < Formula
   homepage "http://sourceforge.net/projects/wimlib/"
-  url "https://downloads.sourceforge.net/project/wimlib/wimlib-1.7.0.tar.gz"
-  sha1 "7f9bdd44a11f04e1550286b574579f48e2584d5a"
+  url "https://downloads.sourceforge.net/project/wimlib/wimlib-1.7.1.tar.gz"
+  sha1 "ffbd2f138b396b0f1fb684294747d9c8b5421188"
 
   bottle do
     cellar :any
