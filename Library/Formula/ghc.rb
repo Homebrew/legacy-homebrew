@@ -27,6 +27,10 @@ class Ghc < Formula
       url "https://www.haskell.org/ghc/dist/7.8.2/ghc-7.8.2-testsuite.tar.xz"
       sha1 "3abe4e0ebbed17e825573f0f34be0eca9179f9e4"
     end
+
+    resource "clang_wrapper" do
+      url "https://github.com/AtkinsChang/clang-wrapper.git"
+    end
   end
 
   resource "binary_7.8" do
@@ -83,9 +87,16 @@ class Ghc < Formula
       # Define where the subformula will temporarily install itself
       subprefix = buildpath+"subfo"
 
-      # ensure configure does not use Xcode 5 "gcc" which is actually clang
+      # install clang-wrapper if target-ghc version is greater than 7.8
+      if build.devel?
+        resource("clang_wrapper").stage do
+          subprefix.install "clang-wrapper.rb", "clang-wrapper.hs"
+        end
+      end
+
+      # bootstrap-ghc using gcc if version less than 7.8 while using clang-wrapper if version greater than 7.8
       args = ["--prefix=#{subprefix}"]
-      args << "--with-gcc=#{ENV.cc}"
+      args << "--with-gcc=" + ((binary_resource == "binary_7.8") ? "#{subprefix}/clang-wrapper.rb" : ENV.cc)
 
       system "./configure", *args
       if build.devel? and MacOS.version <= :lion
@@ -98,6 +109,13 @@ class Ghc < Formula
       # -j1 fixes an intermittent race condition
       system "make", "-j1", "install"
       ENV.prepend_path "PATH", subprefix/"bin"
+
+      # intall binary clang wrapper if target-ghc is greater than 7.8
+      if build.devel? and MacOS.version > :lion
+        # compile clang wrapper binary using clang wrapper script
+        system "ghc", buildpath+"subfo/clang-wrapper.hs"
+        bin.install buildpath+"subfo/clang-wrapper"
+      end
     end
 
     cd "Ghcsource" do
@@ -112,16 +130,18 @@ class Ghc < Formula
         arch = "x86_64"
       end
 
-      # ensure configure does not use Xcode 5 "gcc" which is actually clang
+      # target-ghc using gcc if version less than 7.8 while using clang-wrapper if version greater than 7.8
       args = ["--prefix=#{prefix}", "--build=#{arch}-apple-darwin"]
-      args << "--with-gcc=#{ENV.cc}"
+      args << "--with-gcc=" + ((build.devel? and MacOS.version > :lion) ? "#{bin}/clang-wrapper" : ENV.cc)
 
       system "./configure", *args
       system "make"
 
       if build.include? "tests"
         resource("testsuite").stage do
-          cd "testsuite" do
+          # devel testsuite ghc-7.8.2-testsuite.tar.xz is in subdirectory while ghc-7.6.3-release.tar.gz isn't
+          testsuite_path = build.devel? ? "testsuite" : "."
+          cd testsuite_path do
             (buildpath+"Ghcsource/config").install Dir["config/*"]
             (buildpath+"Ghcsource/driver").install Dir["driver/*"]
             (buildpath+"Ghcsource/mk").install Dir["mk/*"]
@@ -137,11 +157,6 @@ class Ghc < Formula
       system "make"
       # -j1 fixes an intermittent race condition
       system "make", "-j1", "install"
-      if build.devel?
-        # use clang, even when gcc was used to build ghc
-        settings = Dir[lib/"ghc-*/settings"][0]
-        inreplace settings, "\"#{ENV.cc}\"", "\"clang\""
-      end
     end
   end
 
