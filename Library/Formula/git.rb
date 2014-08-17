@@ -2,8 +2,8 @@ require 'formula'
 
 class Git < Formula
   homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.0.4.tar.gz"
-  sha1 "626f317fa1ceba416a7a83e0d5c177cdbd2a54aa"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.1.0.tar.gz"
+  sha1 "e22564e152e3242bc4fcfcc7eb05fde7a4c83e04"
 
   head "https://github.com/git/git.git", :shallow => false
 
@@ -14,13 +14,13 @@ class Git < Formula
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.0.4.tar.gz"
-    sha1 "a0fc316a08f55216ff5c83cb5b31cb9ed7d5b258"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.1.0.tar.gz"
+    sha1 "044bd50fa51f436a6e93bf7ba2361b60b1f56e45"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.0.4.tar.gz"
-    sha1 "25f5d2614cf4bc6cb031cc627be0e06aeff66f50"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.1.0.tar.gz"
+    sha1 "5eb777145a2f084b601b025eb427c2f079fad0e6"
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -97,7 +97,8 @@ class Git < Formula
     cd 'contrib/subtree' do
       system "make", "CC=#{ENV.cc}",
                      "CFLAGS=#{ENV.cflags}",
-                     "LDFLAGS=#{ENV.ldflags}"
+                     "LDFLAGS=#{ENV.ldflags}",
+                     "install"
       bin.install 'git-subtree'
     end
 
