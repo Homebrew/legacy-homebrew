@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class GnuApl < Formula
-  homepage 'http://www.gnu.org/software/apl/'
-  url 'http://ftpmirror.gnu.org/apl/apl-1.3.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/apl/apl-1.3.tar.gz'
-  sha1 'f4cd44a716dc5c5af1cd88811e10efa03d327fd2'
+  homepage "http://www.gnu.org/software/apl/"
+  url "http://ftpmirror.gnu.org/apl/apl-1.4.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/apl/apl-1.4.tar.gz"
+  sha1 "ee5dab7f7c0f5d79c435a20f3ddcafbda85ac22e"
 
   # GNU Readline is required; libedit won't work.
-  depends_on 'readline'
+  depends_on "readline"
   depends_on :macos => :mavericks
 
   def install
