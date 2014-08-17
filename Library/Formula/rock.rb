@@ -2,8 +2,8 @@ require 'formula'
 
 class Rock < Formula
   homepage 'http://ooc-lang.org'
-  url 'https://github.com/nddrylliog/rock/archive/v0.9.8.tar.gz'
-  sha1 'e9c7f2352d53351b60485b27c70858a0ad5cddb3'
+  url 'https://github.com/nddrylliog/rock/archive/v0.9.9.tar.gz'
+  sha1 '11d4a46320e2b538989354505e0a6ac4311b049f'
 
   head 'https://github.com/nddrylliog/rock.git'
 
@@ -18,6 +18,6 @@ class Rock < Formula
 
       # install misc authorship files & rock binary in place
       # copy the sdk, libs and docs
-      prefix.install "rock.use", 'README.md', "sdk", "libs", "docs"
+      prefix.install "rock.use", 'README.md', "sdk", "docs"
   end
 end
