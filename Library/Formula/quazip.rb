@@ -2,8 +2,8 @@ require "formula"
 
 class Quazip < Formula
   homepage "http://quazip.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/quazip/quazip/0.6.2/quazip-0.6.2.tar.gz"
-  sha1 "2fdcd063df645f94f047374d7d540b102fc683dc"
+  url "https://downloads.sourceforge.net/project/quazip/quazip/0.7/quazip-0.7.tar.gz"
+  sha1 "861ab4efc048fdb272161848bb8829848857ec97"
 
   bottle do
     cellar :any
