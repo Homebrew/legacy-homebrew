@@ -2,8 +2,8 @@ require "formula"
 
 class Check < Formula
   homepage "http://check.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/check/check/0.9.13/check-0.9.13.tar.gz"
-  sha1 "09f682d2239b1353818b74d06099a17460450240"
+  url "https://downloads.sourceforge.net/project/check/check/0.9.14/check-0.9.14.tar.gz"
+  sha1 "4b79e2d485d014ddb438e322b64235347d57b0ff"
 
   bottle do
     cellar :any
