@@ -5,13 +5,13 @@ class Pandoc < Formula
   include Language::Haskell::Cabal
 
   homepage "http://johnmacfarlane.net/pandoc/"
-  url "https://hackage.haskell.org/package/pandoc-1.13/pandoc-1.13.tar.gz"
-  sha1 "de70d27f0357c873da2c59c13f0414736c45791d"
+  url "https://hackage.haskell.org/package/pandoc-1.13.0.1/pandoc-1.13.0.1.tar.gz"
+  sha1 "b038b965d3027ca84939292ec2a94cd7389e1e7d"
 
   bottle do
-    sha1 "6a1935f6111a15573fd660c5a3a899d3611bdcf8" => :mavericks
-    sha1 "d21b6e50b5be4d12bf3507c8285da96fa56d951d" => :mountain_lion
-    sha1 "5689fdf0685fe3bef2fb512de66b38b0d74ad805" => :lion
+    sha1 "14516b086a7728dad03ff9b5a84c336da1947ee8" => :mavericks
+    sha1 "bde68b3e353899706868f82f20907b57e4582576" => :mountain_lion
+    sha1 "ff8d605afbe6eb914986a9fab729f569dcb35b8e" => :lion
   end
 
   depends_on "ghc" => :build

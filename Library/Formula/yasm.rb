@@ -2,14 +2,14 @@ require 'formula'
 
 class Yasm < Formula
   homepage 'http://yasm.tortall.net/'
-  url 'http://tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz'
-  sha256 '768ffab457b90a20a6d895c39749adb547c1b7cb5c108e84b151a838a23ccf31'
+  url "http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz"
+  sha256 "3dce6601b495f5b3d45b59f7d2492a340ee7e84b5beca17e48f862502bd5603f"
 
   bottle do
     cellar :any
-    sha1 "cd4b87a7ab1a80b4461b6b21f4a51e98186a225e" => :mavericks
-    sha1 "adf3e0d26dbb17a37c310d7bdf8821d54a4f5914" => :mountain_lion
-    sha1 "b5f60c20bd5e5b475d982f994f3754f07e63674f" => :lion
+    sha1 "d8d6f7e68d2d0ff8897a9b160e49c5cc4ad3f97d" => :mavericks
+    sha1 "94596d8c7b99094001d3313624970070e7d8e920" => :mountain_lion
+    sha1 "07116ee2758d99aed65a3aaf59a7f9cbb9a982a8" => :lion
   end
 
   head do
@@ -20,21 +20,31 @@ class Yasm < Formula
     depends_on "gettext"
   end
 
+  resource "cython" do
+    url "http://cython.org/release/Cython-0.20.2.tar.gz"
+    sha1 "e3fd4c32bdfa4a388cce9538417237172c656d55"
+  end
+
   depends_on :python => :optional
-  depends_on 'Cython' => :python if build.with? 'python'
 
   def install
-    # https://github.com/Homebrew/homebrew/pull/19593
-    ENV.deparallelize
     args = %W[
       --disable-debug
       --prefix=#{prefix}
     ]
 
-    if build.with? 'python'
+    if build.with? "python"
+      ENV.prepend_create_path "PYTHONPATH", buildpath+"lib/python2.7/site-packages"
+      resource("cython").stage do
+        system "python", "setup.py", "build", "install", "--prefix=#{buildpath}"
+      end
+
       args << '--enable-python'
       args << '--enable-python-bindings'
     end
+
+    # https://github.com/Homebrew/homebrew/pull/19593
+    ENV.deparallelize
 
     system './autogen.sh' if build.head?
     system './configure', *args

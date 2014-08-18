@@ -5,13 +5,13 @@ class PandocCiteproc < Formula
   include Language::Haskell::Cabal
 
   homepage "https://github.com/jgm/pandoc-citeproc"
-  url "https://hackage.haskell.org/package/pandoc-citeproc-0.4/pandoc-citeproc-0.4.tar.gz"
-  sha1 "49257c3aa01144e8b9142c079e9cc1d92f97d7d8"
+  url "https://hackage.haskell.org/package/pandoc-citeproc-0.4.0.1/pandoc-citeproc-0.4.0.1.tar.gz"
+  sha1 "41c71939d78bfe52f4dd06ca3d7a6b4d824cdd47"
 
   bottle do
-    sha1 "2618b1e023b264474fd89b9d6e824bca80397043" => :mavericks
-    sha1 "7785694f8d11478a04f6cc6b02370655ba9a20bc" => :mountain_lion
-    sha1 "f891ee011d1de27eca51e17e9f9e7dc9baf75e0f" => :lion
+    sha1 "e1a339c04e78a4d7fba542336e655f24fa029bbe" => :mavericks
+    sha1 "b00f823667e3a2775388758af7ed309ddc5a761e" => :mountain_lion
+    sha1 "332eb0a1d2754606f74731e30ee3e76320947389" => :lion
   end
 
   depends_on "ghc" => :build
