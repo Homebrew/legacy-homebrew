@@ -2,8 +2,8 @@ require "formula"
 
 class ThePlatinumSearcher < Formula
   homepage "https://github.com/monochromegane/the_platinum_searcher"
-  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.6.5.tar.gz"
-  sha1 "51658e4825b5f719fb37072da1b5035b5fde5734"
+  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.7.1.tar.gz"
+  sha1 "5e2d704e0c0d8380c82e55a30b7d0fc749ab0c55"
   head "https://github.com/monochromegane/the_platinum_searcher.git"
 
   depends_on "go" => :build
@@ -16,17 +16,23 @@ class ThePlatinumSearcher < Formula
     sha1 "b97b398a0622bb48f31cf6cfd7905354a223912e" => :lion
   end
 
+  resource "godep" do
+    url "http://bitly-downloads.s3.amazonaws.com/nsq/godep.tar.gz"
+    sha1 "396a62055bb5b4eb4f58cffc64b2ac8deafbacac"
+  end
+
+
   def install
-    (buildpath + "src/github.com/monochromegane/the_platinum_searcher").install "search"
+    # godep is only required to build, so don't install it permanently
+    buildpath.install resource("godep")
+
+    # configure buildpath for local dependencies
+    mkdir_p buildpath/"src/github.com/monochromegane"
+    ln_s buildpath, buildpath/"src/github.com/monochromegane/the_platinum_searcher"
 
     ENV["GOPATH"] = buildpath
-
-    system "go", "get", "github.com/shiena/ansicolor"
-    system "go", "get", "github.com/monochromegane/terminal"
-    system "go", "get", "github.com/jessevdk/go-flags"
-    system "go", "get", "code.google.com/p/go.text/transform"
-
-    system "go", "build", "-o", "pt"
+    system "#{buildpath}/godep restore"
+    system "go", "build", "-o", "pt", "cmd/pt/main.go"
     bin.install "pt"
   end
 
