@@ -8,11 +8,10 @@ class TranslateToolkit < Formula
   def install
     minor = `python -c 'import sys; print(sys.version_info[1])'`.chomp
 
-    ENV.prepend_create_path "PYTHONPATH", lib/"python2.#{minor}/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.#{minor}/site-packages"
     system "python", "setup.py", "install",
-             "--prefix=#{prefix}",
-             "--install-scripts=#{bin}",
-             "--install-data=#{libexec}"
+             "--prefix=#{libexec}",
+             "--install-scripts=#{bin}"
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 end
