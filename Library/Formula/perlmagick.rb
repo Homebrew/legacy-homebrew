@@ -2,8 +2,8 @@ require "formula"
 
 class Perlmagick < Formula
   homepage "http://www.imagemagick.org/script/perl-magick.php"
-  url "http://www.imagemagick.org/download/perl/PerlMagick-6.88.tar.gz"
-  sha1 "f234b49a5c570f78d693c04924fe74ddb5595292"
+  url "http://www.imagemagick.org/download/perl/PerlMagick-6.89.tar.gz"
+  sha1 "fc9a45a3205f2b0c75891eec1961cb7474b88f3a"
 
   bottle do
     revision 1
