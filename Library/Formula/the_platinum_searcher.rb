@@ -31,7 +31,7 @@ class ThePlatinumSearcher < Formula
     ln_s buildpath, buildpath/"src/github.com/monochromegane/the_platinum_searcher"
 
     ENV["GOPATH"] = buildpath
-    system "#{buildpath}/godep restore"
+    system "#{buildpath}/godep", "restore"
     system "go", "build", "-o", "pt", "cmd/pt/main.go"
     bin.install "pt"
   end
