@@ -221,8 +221,7 @@ class Formula
   # rarely, you don't want your library symlinked into the main prefix
   # see gettext.rb for an example
   def keg_only?
-    kor = self.class.keg_only_reason
-    not kor.nil? and kor.valid?
+    keg_only_reason && keg_only_reason.valid?
   end
 
   def keg_only_reason
@@ -245,7 +244,11 @@ class Formula
   end
 
   def skip_cxxstdlib_check?
-    self.class.cxxstdlib.include?(:skip)
+    false
+  end
+
+  def require_universal_deps?
+    false
   end
 
   # yields self with current working directory set to the uncompressed tarball
@@ -475,8 +478,7 @@ class Formula
   end
 
   def test
-    tab = Tab.for_formula(self)
-    extend Module.new { define_method(:build) { tab } }
+    self.build = Tab.for_formula(self)
     ret = nil
     mktemp do
       @testpath = Pathname.pwd
@@ -487,7 +489,7 @@ class Formula
   end
 
   def test_defined?
-    not self.class.instance_variable_get(:@test_defined).nil?
+    false
   end
 
   protected
@@ -589,7 +591,7 @@ class Formula
     when :brew
       raise "You cannot override Formula#brew in class #{name}"
     when :test
-      @test_defined = true
+      define_method(:test_defined?) { true }
     when :options
       instance = allocate
 
@@ -708,16 +710,9 @@ class Formula
       @keg_only_reason = KegOnlyReason.new(reason, explanation)
     end
 
-    # Flag for marking whether this formula needs C++ standard library
-    # compatibility check
-    def cxxstdlib
-      @cxxstdlib ||= Set.new
-    end
-
-    # Explicitly request changing C++ standard library compatibility check
-    # settings. Use with caution!
+    # Pass :skip to this method to disable post-install stdlib checking
     def cxxstdlib_check check_type
-      cxxstdlib << check_type
+      define_method(:skip_cxxstdlib_check?) { true } if check_type == :skip
     end
 
     # For Apple compilers, this should be in the format:
@@ -759,13 +754,9 @@ class Formula
       end
     end
 
-    def require_universal_deps
-      specs.each { |spec| spec.build.universal = true }
-    end
-
     def test &block
       return @test unless block_given?
-      @test_defined = true
+      define_method(:test_defined?) { true }
       @test = block
     end
   end

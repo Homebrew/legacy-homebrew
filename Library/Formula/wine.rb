@@ -27,6 +27,8 @@ class Wine < Formula
     url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.24.tar.bz2"
     sha256 "5e9a9f250b6eb703cdc13c6dcfe025958dadddfdd3f8e683f46c2d642b5ec749"
 
+    depends_on "samba" => :optional
+
     # Patch to fix screen-flickering issues. Still relevant on 1.7.23.
     # https://bugs.winehq.org/show_bug.cgi?id=34166
     patch do
@@ -35,13 +37,18 @@ class Wine < Formula
     end
   end
 
-  head "git://source.winehq.org/git/wine.git"
+  head do
+    url "git://source.winehq.org/git/wine.git"
+    depends_on "samba" => :optional
+  end
 
   env :std
 
   # note that all wine dependencies should declare a --universal option in their formula,
   # otherwise homebrew will not notice that they are not built universal
-  require_universal_deps
+  def require_universal_deps?
+    true
+  end
 
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
@@ -53,7 +60,6 @@ class Wine < Formula
   depends_on 'little-cms2'
   depends_on 'libicns'
   depends_on 'libtiff'
-  depends_on "samba" => :optional if !build.stable?
   depends_on 'sane-backends'
   depends_on 'libgsm' => :optional
 

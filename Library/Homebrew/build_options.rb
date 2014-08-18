@@ -1,6 +1,4 @@
 class BuildOptions
-  attr_accessor :universal
-
   def initialize(args, options)
     @args = args
     @options = options
@@ -48,7 +46,7 @@ class BuildOptions
 
   # True if the user requested a universal build.
   def universal?
-    universal || include?("universal") && option_defined?("universal")
+    include?("universal") && option_defined?("universal")
   end
 
   # True if the user requested to enable C++11 mode.
