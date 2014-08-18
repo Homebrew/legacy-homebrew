@@ -5,8 +5,8 @@ class Pandoc < Formula
   include Language::Haskell::Cabal
 
   homepage "http://johnmacfarlane.net/pandoc/"
-  url "https://hackage.haskell.org/package/pandoc-1.13/pandoc-1.13.tar.gz"
-  sha1 "de70d27f0357c873da2c59c13f0414736c45791d"
+  url "https://hackage.haskell.org/package/pandoc-1.13.0.1/pandoc-1.13.0.1.tar.gz"
+  sha1 "b038b965d3027ca84939292ec2a94cd7389e1e7d"
 
   bottle do
     sha1 "6a1935f6111a15573fd660c5a3a899d3611bdcf8" => :mavericks
