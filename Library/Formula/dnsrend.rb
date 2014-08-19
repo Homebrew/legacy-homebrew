@@ -1,5 +1,4 @@
 require "formula"
-require "base64"
 
 class Dnsrend < Formula
   homepage "http://romana.now.ie/dnsrend"
