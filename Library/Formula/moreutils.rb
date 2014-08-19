@@ -15,8 +15,12 @@ class Moreutils < Formula
 
   depends_on "docbook-xsl" => :build
 
-  conflicts_with 'parallel',
-    :because => "both install a 'parallel' executable."
+  option "without-parallel", "Omit the 'parallel' tool. Allows installation of GNU parallel from 'parallel' formula."
+
+  if build.with? "parallel"
+    conflicts_with "parallel",
+      :because => "both install a 'parallel' executable. See the '--without-parallel' option"
+  end
 
   conflicts_with 'task-spooler',
     :because => "both install a 'ts' executable."
@@ -49,6 +53,10 @@ class Moreutils < Formula
     inreplace "Makefile",
               "/usr/share/xml/docbook/stylesheet/docbook-xsl",
               "#{Formula["docbook-xsl"].opt_prefix}/docbook-xsl"
+    if build.without? "parallel"
+      inreplace "Makefile", /^BINS=.*\Kparallel/, ""
+      inreplace "Makefile", /^MANS=.*\Kparallel\.1/, ""
+    end
     system "make", "all"
     system "make", "check"
     system "make", "install", "PREFIX=#{prefix}"
