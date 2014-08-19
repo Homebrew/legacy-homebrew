@@ -5,8 +5,8 @@ class Cmus < Formula
   head "https://github.com/cmus/cmus.git"
 
   stable do
-    url "https://github.com/cmus/cmus/archive/v2.5.1.tar.gz"
-    sha1 "fd6c63c7cb405e4b4fea6a737074c454f602c202"
+    url "https://github.com/cmus/cmus/archive/v2.6.0.tar.gz"
+    sha1 "aba00eb75335532c0413f7c819c2e2d12fcd4314"
   end
 
   devel do
