@@ -7,10 +7,9 @@ class Node < Formula
   sha1 "80f2160b0525763b557742aa73d8dacf1a71e53c"
 
   bottle do
-    revision 2
-    sha1 "13bfa93051be6de7753d7e3988471e84ea56a9bb" => :mavericks
-    sha1 "25b4822c9c76fbb4a76a01b4b8ed9ed9c92123af" => :mountain_lion
-    sha1 "08d9cad79dda3c02a9cbd3616eda34f2b7ad7b20" => :lion
+    sha1 "f9a8cb0e7347af1fc02ef416fcb1552c7f632e5d" => :mavericks
+    sha1 "89e000bcc905df7623af481e45720ae0105392f0" => :mountain_lion
+    sha1 "970581c26c145c2e2e2d2453aa69de555213665c" => :lion
   end
 
   devel do
