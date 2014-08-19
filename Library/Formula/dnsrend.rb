@@ -1,4 +1,5 @@
 require "formula"
+require "base64"
 
 class Dnsrend < Formula
   homepage "http://romana.now.ie/dnsrend"
@@ -18,8 +19,6 @@ class Dnsrend < Formula
   end
 
   def install
-    ENV.prepend_create_path "PERL5LIB", libexec + "lib/perl5"
-
     resources.each do |r|
       r.stage do
         system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
@@ -28,16 +27,18 @@ class Dnsrend < Formula
       end
     end
 
-    bin.install "dnsrend"
+    libexec.install "dnsrend"
     doc.install "README"
 
-    perlargs = ["/usr/bin/env", "perl", "-Tw", "-I", "#{libexec}/lib/perl5"]
-    system "sed", "-i", "-e", "s,#!/usr/bin/perl -Tw,#!#{perlargs.join(" ")},", "#{bin}/dnsrend"
-    bin.env_script_all_files(libexec + "bin", :PERL5LIB => ENV["PERL5LIB"])
+    (bin/"dnsrend").write <<-EOS.undent
+    #!/bin/sh
+    /usr/bin/env perl -Tw -I "#{libexec}/lib/perl5" #{libexec}/dnsrend
+    EOS
+#    chmod 0755, HOMEBREW_PREFIX/"bin/dnsrend"
   end
 
   test do
-    system "perl", "-c", "-Tw", "#{libexec}/bin/dnsrend"
-    assert_equal 0, $?.exitstatus
+    pcap_encoded_base64 = "1MOyoQIABAAAAAAAAAAAAP//AAABAAAAgiTuUx2mCwBIAAAASAAAAHyyG0SnG8CwXctSBQgARQAAOmd3AABAETlywKgJEggICAjoBAA1ACaltF12AQAAAQAAAAAAAAlzbGFja3dhcmUCaXQAAAEAAYIk7lMSxgsAWAAAAFgAAADAsF3LUgV8shtEpxsIAEUAAEoA/AAAMxGs3QgICAjAqAkSADXoBAA2u/pddoGAAAEAAQAAAAAJc2xhY2t3YXJlAml0AAABAAHADAABAAEAAAEjAAReF0nL"
+    system "echo #{pcap_encoded_base64} | /usr/bin/base64 -D | #{HOMEBREW_PREFIX}/bin/dnsrend"
   end
 end
