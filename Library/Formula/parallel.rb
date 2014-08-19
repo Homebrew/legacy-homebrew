@@ -7,7 +7,7 @@ class Parallel < Formula
   sha256 "8a146a59bc71218921d561f2c801b85e06fe3a21571083b58e6e0966dd397fd4"
 
   conflicts_with "moreutils",
-    :because => "both install a 'parallel' executable."
+    :because => "both install a 'parallel' executable. See the --without-parallel option for 'moreutils'"
 
   def install
     system "./configure", "--prefix=#{prefix}"
