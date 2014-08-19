@@ -5,6 +5,11 @@ class NetSnmp < Formula
   url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.2.1/net-snmp-5.7.2.1.tar.gz"
   sha1 "815d4e5520a1ed96a27def33e7534b4190599f0f"
 
+  bottle do
+    sha1 "6f1ff81bde5defe92b4a2062fba099c8310f9662" => :mountain_lion
+    sha1 "cfeb129e4130ed17656443efd728ae0812a78720" => :lion
+  end
+
   devel do
     url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.3-pre-releases/net-snmp-5.7.3.pre3.tar.gz"
     version "5.7.3.pre3"
