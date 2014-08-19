@@ -39,6 +39,14 @@ class Python < Formula
     sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
   end
 
+  # Patch for pyport.h macro issue
+  # http://bugs.python.org/issue10910
+  # https://trac.macports.org/ticket/44288
+  patch do
+    url "http://bugs.python.org/file30805/issue10910-workaround.txt"
+    sha1 "9926640cb7c8e273e4b451469a2b13d4b9df5ba3"
+  end
+
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
   # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
   patch :DATA if build.with? "brewed-tk"
