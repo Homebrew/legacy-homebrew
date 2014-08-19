@@ -3,7 +3,6 @@ require 'formula_lock'
 require 'formula_pin'
 require 'hardware'
 require 'bottles'
-require 'compilers'
 require 'build_environment'
 require 'build_options'
 require 'formulary'
@@ -109,6 +108,10 @@ class Formula
 
   def option_defined?(name)
     active_spec.option_defined?(name)
+  end
+
+  def fails_with?(compiler)
+    active_spec.fails_with?(compiler)
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -226,10 +229,6 @@ class Formula
 
   def keg_only_reason
     self.class.keg_only_reason
-  end
-
-  def fails_with? compiler
-    (self.class.cc_failures || []).any? { |failure| failure === compiler }
   end
 
   # sometimes the formula cleaner breaks things
@@ -609,7 +608,7 @@ class Formula
   class << self
     include BuildEnvironmentDSL
 
-    attr_reader :keg_only_reason, :cc_failures
+    attr_reader :keg_only_reason
     attr_rw :homepage, :plist_startup, :plist_manual, :revision
 
     def specs
@@ -742,16 +741,12 @@ class Formula
     # fails_with :gcc => '4.8' do
     #   version '4.8.1'
     # end
-    def fails_with spec, &block
-      @cc_failures ||= Set.new
-      @cc_failures << CompilerFailure.create(spec, &block)
+    def fails_with compiler, &block
+      specs.each { |spec| spec.fails_with(compiler, &block) }
     end
 
     def needs *standards
-      @cc_failures ||= Set.new
-      standards.each do |standard|
-        @cc_failures.merge CompilerFailure.for_standard standard
-      end
+      specs.each { |spec| spec.needs(*standards) }
     end
 
     def test &block
