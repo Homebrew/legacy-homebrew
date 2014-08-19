@@ -3,8 +3,8 @@ require "formula"
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "http://nodejs.org/"
-  url "http://nodejs.org/dist/v0.10.30/node-v0.10.30.tar.gz"
-  sha1 "bcef88d76c39147c79a28aa9e5d484564eb3ba7e"
+  url "http://nodejs.org/dist/v0.10.31/node-v0.10.31.tar.gz"
+  sha1 "80f2160b0525763b557742aa73d8dacf1a71e53c"
 
   bottle do
     revision 2
@@ -31,7 +31,7 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "http://registry.npmjs.org/npm/-/npm-1.4.9.tgz"
+    url "https://registry.npmjs.org/npm/-/npm-1.4.9.tgz"
     sha1 "29094f675dad69fc5ea24960a81c7abbfca5ce01"
   end
 
