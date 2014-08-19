@@ -2,11 +2,18 @@ require 'formula'
 
 class Drush < Formula
   homepage 'https://github.com/drush-ops/drush'
-  head 'https://github.com/drush-ops/drush.git'
   url 'https://github.com/drush-ops/drush/archive/6.3.0.tar.gz'
   sha1 '90fde5acfbd6feefad02453ee9f31a0ac6d2f80e'
 
+  head do
+    url 'https://github.com/drush-ops/drush.git'
+
+    depends_on "Homebrew/php/composer" => :build
+  end
+
   def install
+    system 'composer', 'install' if build.head?
+
     prefix.install_metafiles
     libexec.install Dir['*'] - ['drush.bat']
     (bin+'drush').write <<-EOS.undent
