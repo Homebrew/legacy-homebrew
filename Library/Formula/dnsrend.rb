@@ -31,7 +31,7 @@ class Dnsrend < Formula
 
     (bin/"dnsrend").write <<-EOS.undent
     #!/bin/sh
-    /usr/bin/env perl -Tw -I "#{libexec}/lib/perl5" #{libexec}/dnsrend
+    /usr/bin/env perl -Tw -I "#{libexec}/lib/perl5" #{libexec}/dnsrend $@
     EOS
 #    chmod 0755, HOMEBREW_PREFIX/"bin/dnsrend"
   end
