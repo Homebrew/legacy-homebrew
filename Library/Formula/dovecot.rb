@@ -5,6 +5,7 @@ class Dovecot < Formula
   url "http://dovecot.org/releases/2.2/dovecot-2.2.13.tar.gz"
   mirror "http://fossies.org/linux/misc/dovecot-2.2.13.tar.gz"
   sha1 "ee8efc77cb9d502dc416ae4fba242adc5f01c163"
+  revision 1
 
   depends_on "clucene" => :optional
   depends_on "openssl"

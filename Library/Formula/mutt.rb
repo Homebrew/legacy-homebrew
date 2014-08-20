@@ -11,7 +11,7 @@ class Mutt < Formula
   url "ftp://ftp.mutt.org/mutt/mutt-1.5.23.tar.gz"
   mirror "http://fossies.org/linux/misc/mutt-1.5.23.tar.gz"
   sha1 "8ac821d8b1e25504a31bf5fda9c08d93a4acc862"
-  revision 1
+  revision 2
 
   bottle do
     revision 1
