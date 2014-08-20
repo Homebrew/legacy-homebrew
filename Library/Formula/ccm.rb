@@ -7,9 +7,20 @@ class Ccm < Formula
 
   head 'https://github.com/pcmanus/ccm.git', :branch => :master
 
-  depends_on :python => ['yaml']
+  resource 'pyyaml' do
+    url 'https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz'
+    sha1 '1a2d5df8b31124573efb9598ec6d54767f3c4cd4'
+  end
 
   def install
-    system python, "setup.py", "install", "--prefix=#{prefix}"
+    resource('pyyaml').stage do
+      system 'python', 'setup.py', 'install', "--prefix=#{libexec}"
+    end
+
+    system 'python', 'setup.py', 'install', "--prefix=#{prefix}"
+
+    ENV['PYTHONPATH'] = "#{lib}/python2.7/site-packages"
+    ENV.prepend_create_path 'PYTHONPATH', "#{libexec}/lib/python2.7/site-packages"
+    bin.env_script_all_files(libexec + 'bin', :PYTHONPATH => ENV['PYTHONPATH'])
   end
 end
