@@ -4,6 +4,7 @@ class Mongodb < Formula
   homepage "http://www.mongodb.org/"
   url "http://downloads.mongodb.org/src/mongodb-src-r2.6.4.tar.gz"
   sha1 "16dda6d8b1156194fc09b5ad72e58612d06abada"
+  revision 1
 
   bottle do
     sha1 "3c4dbe78cb9a2f424c3a8097ac58506a44eca310" => :mavericks
@@ -12,8 +13,8 @@ class Mongodb < Formula
   end
 
   devel do
-    url "http://downloads.mongodb.org/src/mongodb-src-r2.7.4.tar.gz"
-    sha1 "e2abb0cf6923e9480cc02c2ab943264b4451632e"
+    url "http://downloads.mongodb.org/src/mongodb-src-r2.7.5.tar.gz"
+    sha1 "e7e38a6fec1fde1bb8ee50674089c909b428a48c"
   end
 
   head "https://github.com/mongodb/mongo.git"

@@ -5,11 +5,13 @@ class Python < Formula
   head "http://hg.python.org/cpython", :using => :hg, :branch => "2.7"
   url "http://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz"
   sha1 "511960dd78451a06c9df76509635aeec05b2051a"
+  revision 1
 
   bottle do
-    sha1 "11c4ad33f1a0ec2a9dee025f246e67a0783e8bdb" => :mavericks
-    sha1 "522a99761335205b29f348dd9861dc6630a29a35" => :mountain_lion
-    sha1 "07ba7ee28c2d6a6d8fcc613b27574090f0e2f27e" => :lion
+    revision 1
+    sha1 "f0b987505344d867ab4bf4c7badf461e280ff916" => :mavericks
+    sha1 "572f2e03b9798ce167ca8ca299595dea8babe2ad" => :mountain_lion
+    sha1 "33290cd9b6ded3b3a168be7cc039f3e7b8c57c63" => :lion
   end
 
   option :universal
@@ -37,6 +39,14 @@ class Python < Formula
   resource "pip" do
     url "https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz"
     sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
+  end
+
+  # Patch for pyport.h macro issue
+  # http://bugs.python.org/issue10910
+  # https://trac.macports.org/ticket/44288
+  patch do
+    url "http://bugs.python.org/file30805/issue10910-workaround.txt"
+    sha1 "9926640cb7c8e273e4b451469a2b13d4b9df5ba3"
   end
 
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
