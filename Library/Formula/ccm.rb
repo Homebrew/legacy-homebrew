@@ -5,6 +5,13 @@ class Ccm < Formula
   url "https://github.com/pcmanus/ccm/archive/ccm-1.1.tar.gz"
   sha1 "cb216c633f04cf1821bfafa7d1c1a2e73444f20e"
 
+  bottle do
+    cellar :any
+    sha1 "ac55457ea11b2c831affdaf892133ce4edea8f8f" => :mavericks
+    sha1 "de6894cdeb6067294f7dc184cd67acbda1727e44" => :mountain_lion
+    sha1 "7f7178f0b6901a756fbcddaa4450902bc5390dae" => :lion
+  end
+
   head "https://github.com/pcmanus/ccm.git", :branch => :master
 
   resource "pyyaml" do
