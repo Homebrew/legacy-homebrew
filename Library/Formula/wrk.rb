@@ -8,9 +8,9 @@ class Wrk < Formula
 
   bottle do
     cellar :any
-    sha1 "49bb12722e5def595b7e5840b299c44729559735" => :mavericks
-    sha1 "fae8eceb0061b9f2ee994d961e11050d46180a52" => :mountain_lion
-    sha1 "f5ef7225b4b441ae8b6ab87c6565d7d432283299" => :lion
+    sha1 "933b2955b11a7ffb676129775fd5499f0d1a55b9" => :mavericks
+    sha1 "0cb7fe074f2b22abd4bae166da6de1a71157bec1" => :mountain_lion
+    sha1 "5b3cfd7ddee6ca35d85cbd03ac0102794c0ccd44" => :lion
   end
 
   depends_on "openssl"
