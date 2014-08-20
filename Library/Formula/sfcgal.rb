@@ -6,10 +6,9 @@ class Sfcgal < Formula
   sha256 "a9cdaf7334bf28dc71c6338d090c1d1402041c5e320b6c2e3669f7758946a01c"
 
   bottle do
-    cellar :any
-    sha1 "524a95c8fa7ab6a3a91fa0a64afcb68741e9e6c2" => :mavericks
-    sha1 "cf4160102e93cfc11d67db0bb64c2d3697cfef1f" => :mountain_lion
-    sha1 "3d957de66ac9262d61f7a0357b67e407b1961ea7" => :lion
+    sha1 "872925e415e5e3acf4aaf3d0ff6fb9dfad0d0397" => :mavericks
+    sha1 "349e86e0f903217ac0e3e457ff46f3b24eea0fd6" => :mountain_lion
+    sha1 "054dd40ae4f4007a886a98ade85441eb3be6710f" => :lion
   end
 
   depends_on "cmake" => :build
