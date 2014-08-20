@@ -8,12 +8,7 @@ class Dashel < Formula
   depends_on "cmake" => :build
 
   def install
-    args = ["-DCMAKE_INSTALL_PREFIX=#{prefix}",
-      "-DCMAKE_BUILD_TYPE=Release",
-      "-DCMAKE_FIND_FRAMEWORK=LAST",
-      "-DCMAKE_VERBOSE_MAKEFILE=ON",
-      "-Wno-dev"]
-    system "cmake", ".", *args
+    system "cmake", ".", "-DCMAKE_BUILD_TYPE=Release", *(std_cmake_args - ["-DCMAKE_BUILD_TYPE=None"])
     system "make", "install"
   end
 
