@@ -4,7 +4,7 @@ class Elinks < Formula
   homepage 'http://elinks.or.cz/'
   url 'http://elinks.or.cz/download/elinks-0.11.7.tar.bz2'
   sha1 'd13edc1477d0ab32cafe7d3c1f3a23ae1c0a5c54'
-  revision 1
+  revision 2
 
   bottle do
     sha1 "583e1341f43122ae82e2f1432c2a836d33450fc5" => :mavericks

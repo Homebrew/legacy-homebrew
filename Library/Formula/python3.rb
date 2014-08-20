@@ -4,6 +4,7 @@ class Python3 < Formula
   homepage 'https://www.python.org/'
   url 'https://python.org/ftp/python/3.4.1/Python-3.4.1.tgz'
   sha1 'e8c1bd575a6ccc2a75f79d9d094a6a29d3802f5d'
+  revision 1
 
   bottle do
     sha1 "e86f7aede6e519a426e326f5020dc780ee39f05e" => :mavericks

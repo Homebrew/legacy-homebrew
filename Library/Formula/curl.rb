@@ -5,6 +5,7 @@ class Curl < Formula
   url 'http://curl.haxx.se/download/curl-7.37.1.tar.gz'
   mirror 'ftp://ftp.sunet.se/pub/www/utilities/curl/curl-7.37.1.tar.gz'
   sha256 'a32492a38c10a097344892f5fd2041e54698cb909696852311b1161e4aa979f3'
+  revision 1
 
   bottle do
     cellar :any

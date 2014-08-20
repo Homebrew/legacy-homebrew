@@ -4,6 +4,7 @@ class Nginx < Formula
   homepage "http://nginx.org/"
   url "http://nginx.org/download/nginx-1.6.1.tar.gz"
   sha1 "e58c865f67b580541ed4eadf69d1676762bf50ab"
+  revision 1
 
   devel do
     url "http://nginx.org/download/nginx-1.7.4.tar.gz"

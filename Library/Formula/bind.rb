@@ -5,6 +5,7 @@ class Bind < Formula
   url 'http://ftp.isc.org/isc/bind9/9.10.0-P2/bind-9.10.0-P2.tar.gz'
   sha1 'c57b5825e36933119e9fd6f43e3f52262e7ff4ed'
   version '9.10.0-P2'
+  revision 1
 
   bottle do
     revision 1

@@ -4,6 +4,7 @@ class Libcouchbase < Formula
   homepage 'http://couchbase.com/communities/c'
   url 'http://packages.couchbase.com/clients/c/libcouchbase-2.4.0.tar.gz'
   sha1 '3ce25fa98255967775b4aa4e5b13b7c4ff0a866e'
+  revision 1
 
   bottle do
     sha1 "deea0e789aa2739016a2d9cfb2d7bf9342782775" => :mavericks

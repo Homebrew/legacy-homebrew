@@ -4,6 +4,7 @@ class Rdesktop < Formula
   homepage "http://www.rdesktop.org/"
   url "https://downloads.sourceforge.net/project/rdesktop/rdesktop/1.8.2/rdesktop-1.8.2.tar.gz"
   sha1 "089e8f2b18688ded8afc659de5ba8d5b14c7b874"
+  revision 1
 
   depends_on "openssl"
   depends_on :x11
