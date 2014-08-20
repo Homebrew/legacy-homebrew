@@ -2,8 +2,8 @@ require "formula"
 
 class Sfcgal < Formula
   homepage "http://sfcgal.org/"
-  url "https://github.com/Oslandia/SFCGAL/archive/v1.0.4.tar.gz"
-  sha256 "f4660631bf42e2ed3f8b06bcd7a083f3f25e8a860a902bbb4687c60fcde1e131"
+  url "https://github.com/Oslandia/SFCGAL/archive/v1.0.5.tar.gz"
+  sha256 "a9cdaf7334bf28dc71c6338d090c1d1402041c5e320b6c2e3669f7758946a01c"
 
   bottle do
     cellar :any
