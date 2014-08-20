@@ -59,7 +59,7 @@ module Stdenv
 
     # Set the dynamic library search path
     if OS.linux?
-      append "LDFLAGS", "-Wl,-rpath #{HOMEBREW_PREFIX}/lib"
+      append "LDFLAGS", "-Wl,-rpath,#{HOMEBREW_PREFIX}/lib"
       self["LD_RUN_PATH"] = "#{HOMEBREW_PREFIX}/lib"
     end
 
