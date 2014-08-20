@@ -2,9 +2,13 @@ require 'formula'
 
 class Aqbanking < Formula
   homepage 'http://www.aqbanking.de/'
-  url 'http://www2.aquamaniac.de/sites/download/download.php?package=03&release=95&file=01&dummy=aqbanking-5.0.25.tar.gz'
-  sha1 '80314a6f6114a0a3f0062161bb38effc0f1f4b62'
   head 'http://devel.aqbanking.de/svn/aqbanking/trunk'
+
+  stable do
+    url 'http://www2.aquamaniac.de/sites/download/download.php?package=03&release=95&file=01&dummy=aqbanking-5.0.25.tar.gz'
+    sha1 '80314a6f6114a0a3f0062161bb38effc0f1f4b62'
+    depends_on 'gwenhywfar' # see caveats
+  end
 
   devel do
     url 'http://www2.aquamaniac.de/sites/download/download.php?package=03&release=115&file=01&dummy=aqbanking-5.4.3beta.tar.gz'
@@ -18,7 +22,6 @@ class Aqbanking < Formula
 
   depends_on 'gettext'
   depends_on 'gmp'
-  depends_on 'gwenhywfar' unless build.devel?
   depends_on 'ktoblzcheck' => :recommended
 
   def install
