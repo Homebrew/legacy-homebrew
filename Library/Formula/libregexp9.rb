@@ -11,6 +11,7 @@ class Libregexp9 < Formula
   def install
     # Make.Darwin-386 is the only Makefile they have
     inreplace 'Makefile' do |f|
+      f.gsub! 'man/man7', 'share/man/man7'
       f.gsub! 'Make.$(SYSNAME)-$(OBJTYPE)', 'Make.Darwin-386'
     end
     system "make", "PREFIX=#{prefix}", "install"
