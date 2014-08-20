@@ -67,6 +67,27 @@ class FormulaInstaller
 
     true
   end
+  
+  def pour_bottle? install_bottle_options={:warn=>false}
+    return true if Homebrew::Hooks::Bottles.formula_has_bottle?(f)
+
+    return false if @pour_failed
+    return true  if force_bottle? && f.bottle
+    return false if build_from_source? || build_bottle? || interactive?
+    return false unless options.empty?
+
+    return true if f.local_bottle_path
+    return false unless f.bottle && f.pour_bottle?
+
+    unless f.bottle.compatible_cellar?
+      if install_bottle_options[:warn]
+        opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}"
+      end
+      return false
+    end
+
+    true
+  end  
 
   def install_bottle_for_dep?(dep, build)
     return false if build_from_source?
