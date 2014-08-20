@@ -119,4 +119,33 @@ class Mpd < Formula
         --enable-soundcloud -> --with-yajl
     EOS
   end
+
+  plist_options :manual => "mpd"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>WorkingDirectory</key>
+        <string>#{HOMEBREW_PREFIX}</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>#{opt_bin}/mpd</string>
+            <string>--no-daemon</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/mpd_err.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/mpd.log</string>
+    </dict>
+    </plist>
+    EOS
+  end
 end
