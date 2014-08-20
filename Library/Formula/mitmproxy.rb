@@ -33,8 +33,8 @@ class Mitmproxy < Formula
   end
 
   resource 'netlib' do
-    url 'https://pypi.python.org/packages/source/n/netlib/netlib-0.10.tar.gz'
-    sha1 'd8bcd71a6670377ef70bb25e0b6a81679e8b651a'
+    url 'https://pypi.python.org/packages/source/n/netlib/netlib-0.10.1.tar.gz'
+    sha1 'f2a51f72f5cb4e1cb0949196d306f9c29e825958'
   end
 
   resource 'pyasn1' do
