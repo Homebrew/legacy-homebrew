@@ -57,6 +57,12 @@ module Stdenv
 
     append 'LDFLAGS', '-Wl,-headerpad_max_install_names' if OS.mac?
 
+    # Set the dynamic library search path
+    if OS.linux?
+      append "LDFLAGS", "-Wl,-rpath #{HOMEBREW_PREFIX}/lib"
+      self["LD_RUN_PATH"] = "#{HOMEBREW_PREFIX}/lib"
+    end
+
     if inherit?
       # Inherit CC, CXX and compiler flags from the parent environment.
     elsif respond_to?(compiler)
