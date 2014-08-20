@@ -23,4 +23,10 @@ class Ccm < Formula
     ENV.prepend_create_path "PYTHONPATH", "#{libexec}/lib/python2.7/site-packages"
     bin.env_script_all_files(libexec + "bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
+
+  test do
+    # We can't test CCM core functionality without a Cassandra node to talk to.
+    # Instead, just make sure it runs.
+    system "#{bin}/ccm -h 2>&1 | grep 'Usage:'"
+  end
 end
