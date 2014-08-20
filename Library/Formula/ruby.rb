@@ -4,7 +4,7 @@ class Ruby < Formula
   homepage 'https://www.ruby-lang.org/'
   url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.2.tar.bz2"
   sha256 "6948b02570cdfb89a8313675d4aa665405900e27423db408401473f30fc6e901"
-  revision 2
+  revision 3
 
   bottle do
     revision 1

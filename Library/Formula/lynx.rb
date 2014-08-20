@@ -5,6 +5,7 @@ class Lynx < Formula
   url 'http://lynx.isc.org/current/lynx2.8.8rel.2.tar.bz2'
   version '2.8.8rel.2'
   sha1 '65bbf95627c88723bbb5880155e5fe01c2753d0c'
+  revision 1
 
   depends_on "openssl"
 

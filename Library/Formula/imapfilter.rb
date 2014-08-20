@@ -4,6 +4,7 @@ class Imapfilter < Formula
   homepage 'https://github.com/lefcha/imapfilter/'
   url 'https://github.com/lefcha/imapfilter/archive/v2.5.6.tar.gz'
   sha1 '49ac7b7fb937b40eb42a162314de4f8866e33c11'
+  revision 1
 
   depends_on 'lua'
   depends_on 'pcre'

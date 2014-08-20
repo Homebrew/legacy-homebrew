@@ -4,6 +4,7 @@ class Mongodb < Formula
   homepage "http://www.mongodb.org/"
   url "http://downloads.mongodb.org/src/mongodb-src-r2.6.4.tar.gz"
   sha1 "16dda6d8b1156194fc09b5ad72e58612d06abada"
+  revision 1
 
   bottle do
     sha1 "3c4dbe78cb9a2f424c3a8097ac58506a44eca310" => :mavericks

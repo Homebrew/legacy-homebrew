@@ -4,6 +4,7 @@ class Knot < Formula
   homepage "https://www.knot-dns.cz/"
   url "https://secure.nic.cz/files/knot-dns/knot-1.4.7.tar.gz"
   sha1 "eed17930b0cd94375f73951fe7582b3f38b4e6f3"
+  revision 1
 
   bottle do
     sha1 "77451299ebdb0fcd6fe72877f00feb4c895a25a1" => :mavericks
