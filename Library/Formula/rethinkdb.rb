@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'formula'
 
 class Rethinkdb < Formula
@@ -32,6 +33,9 @@ class Rethinkdb < Formula
     system "./configure", *args
     system "make"
     system "make install-osx"
+    
+    # create logs directory
+    FileUtils.mkdir_p "#{var}/log/rethinkdb"
   end
 
   def plist; <<-EOS.undent
