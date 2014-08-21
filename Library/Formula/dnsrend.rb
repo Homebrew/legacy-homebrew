@@ -5,6 +5,12 @@ class Dnsrend < Formula
   url "http://romana.now.ie/software/dnsrend-0.08.tar.gz"
   sha1 "67f97d1d00b4f371857e2e844dde4130c95cc05d"
 
+  bottle do
+    sha1 "017b703c7136f3c69c666bfc2b71e13f37c28df2" => :mavericks
+    sha1 "8e973f081e71f4a036545de08ac27161398cc203" => :mountain_lion
+    sha1 "0d2f73fb8de77cee8ef0fa6999aa4990adcb40d1" => :lion
+  end
+
   resource "Net::Pcap" do
     url "http://search.cpan.org/CPAN/authors/id/S/SA/SAPER/Net-Pcap-0.17.tar.gz"
     mirror "http://search.cpan.org/CPAN/authors/id/S/SA/SAPER/Net-Pcap-0.17.tar.gz"
