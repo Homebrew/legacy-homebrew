@@ -2,8 +2,8 @@ require "formula"
 
 class Fail2ban < Formula
   homepage "http://www.fail2ban.org/"
-  url "https://github.com/fail2ban/fail2ban/archive/0.8.13.tar.gz"
-  sha1 "2a2ddffb6e60e2997dcceb0ac25761aa6931f5f6"
+  url "https://github.com/fail2ban/fail2ban/archive/0.8.14.tar.gz"
+  sha1 "fb104335acf9d71552a4a1cec06fac1187846867"
 
   def install
     rm "setup.cfg"
