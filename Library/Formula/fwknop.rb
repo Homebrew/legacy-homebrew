@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Fwknop < Formula
-  homepage 'http://www.cipherdyne.org/fwknop/'
-  head 'https://github.com/mrash/fwknop.git'
-  url 'https://github.com/mrash/fwknop/archive/2.6.2.tar.gz'
-  sha1 '3e518d3db0831061b027475869c77a7ff304219e'
+  homepage "http://www.cipherdyne.org/fwknop/"
+  head "https://github.com/mrash/fwknop.git"
+  url "https://github.com/mrash/fwknop/archive/2.6.3.tar.gz"
+  sha1 "ea83821d082e640bc70438f00578d3c049d4de8a"
 
   depends_on "automake" => :build
   depends_on "autoconf" => :build
