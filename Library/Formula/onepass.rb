@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Onepass < Formula
-  homepage 'https://github.com/georgebrock/1pass'
-  url 'https://github.com/georgebrock/1pass.git', :using => :git, :tag => "0.2.1"
-  sha1 '8dbfa5e062ce08e26c5619dbdb2b27323e5b3dc9'
-  head 'https://github.com/georgebrock/1pass.git'
+  homepage "https://github.com/georgebrock/1pass"
+  url "https://github.com/georgebrock/1pass/archive/0.2.1.tar.gz"
+  sha1 "47adac676208d83e9c9eca089894165868147547"
+  head "https://github.com/georgebrock/1pass.git"
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "swig" => :build
@@ -26,6 +26,7 @@ class Onepass < Formula
     resource("M2Crypto").stage { system "python", *install_args }
     resource("fuzzywuzzy").stage { system "python", *install_args }
 
+    system "python", "setup.py", "test"
     system "python", "setup.py", "install", "--prefix=#{libexec}"
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
