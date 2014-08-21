@@ -32,6 +32,9 @@ class Rethinkdb < Formula
     system "./configure", *args
     system "make"
     system "make install-osx"
+
+    # create logs directory
+    mkdir_p "#{var}/log/rethinkdb"
   end
 
   def plist; <<-EOS.undent
