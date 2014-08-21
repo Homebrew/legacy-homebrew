@@ -7,6 +7,13 @@ class Lmdb < Formula
 
   head 'git://git.openldap.org/openldap.git', :branch => 'mdb.master'
 
+  bottle do
+    cellar :any
+    sha1 "55a9e7543df012aa3e9431805c8e55d00597f6f5" => :mavericks
+    sha1 "fbfc5f6cbe2ec4799cfa153672217a028374bcb2" => :mountain_lion
+    sha1 "61d3a5414a97a5e69b91aea6fbf108c192cde088" => :lion
+  end
+
   def install
     inreplace "libraries/liblmdb/Makefile" do |s|
       s.gsub! ".so", ".dylib"
