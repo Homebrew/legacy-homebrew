@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Ponysay < Formula
-  homepage 'http://erkin.co/ponysay/'
-  url 'https://github.com/erkin/ponysay/archive/3.0.1.tar.gz'
-  sha1 'bb867de2cf20a4bc454143d214c8968a0bdbe715'
+  homepage "http://erkin.co/ponysay/"
+  url "https://github.com/erkin/ponysay/archive/3.0.2.tar.gz"
+  sha1 "e152b4ffea3dff8d2ca18ab597344e9b50ab78e6"
 
   depends_on :python3
   depends_on "coreutils"
