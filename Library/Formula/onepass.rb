@@ -32,7 +32,6 @@ class Onepass < Formula
   end
 
   test do
-    system "python", "setup.py", "test"
     system "#{bin}/1pass", "-h"
   end
 end
