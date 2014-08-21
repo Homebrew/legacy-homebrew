@@ -7,6 +7,13 @@ class Rebar < Formula
 
   head "https://github.com/rebar/rebar.git", :branch => "master"
 
+  bottle do
+    cellar :any
+    sha1 "e2908a79a0819ae121f2ecad281474bae417bfe4" => :mavericks
+    sha1 "fe9177f8b1b5d165de672fb27e4906ae5f9a9f64" => :mountain_lion
+    sha1 "22db3c6c0b933ad003f9495fe2528fe5bb8f73fa" => :lion
+  end
+
   depends_on "erlang"
 
   def install
