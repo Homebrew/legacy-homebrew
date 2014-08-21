@@ -4,6 +4,7 @@ class AlpineChappa < Formula
   homepage "http://patches.freeiz.com/alpine/"
   url "http://patches.freeiz.com/alpine/release/src/alpine-2.11.tar.xz"
   sha1 "656556f5d2e5ec7e3680d1760cd02aa3a0072c46"
+  revision 1
 
   depends_on "openssl"
 

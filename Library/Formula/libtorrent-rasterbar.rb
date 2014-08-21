@@ -4,6 +4,7 @@ class LibtorrentRasterbar < Formula
   homepage "http://www.rasterbar.com/products/libtorrent/"
   url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.1.tar.gz"
   sha1 "98f0117bb716cc6210d5698068aa491bc0ac8ad0"
+  revision 1
 
   head do
     url "https://libtorrent.googlecode.com/svn/trunk"

@@ -4,6 +4,7 @@ class Tor < Formula
   homepage "https://www.torproject.org/"
   url "https://www.torproject.org/dist/tor-0.2.4.23.tar.gz"
   sha256 "05a3793cfb66b694cb5b1c8d81226d0f7655031b0d5e6a8f5d9c4c2850331429"
+  revision 1
 
   bottle do
     sha1 "54d1dd20f37651ecfca986ab63f17b1f6967449a" => :mavericks

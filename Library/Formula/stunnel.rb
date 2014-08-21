@@ -5,6 +5,7 @@ class Stunnel < Formula
   url 'ftp://ftp.nluug.nl/pub/networking/stunnel/stunnel-5.02.tar.gz'
   mirror 'https://www.stunnel.org/downloads/stunnel-5.02.tar.gz'
   sha256 'c258b71d7f82bba5b0a4ccc69fbda632f1fefe9108589a92aa1016f33985973e'
+  revision 1
 
   bottle do
     sha1 "df50d590c271a6f9352c0454cdcbc4a6387d2245" => :mavericks

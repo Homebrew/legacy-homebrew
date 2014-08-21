@@ -4,6 +4,7 @@ class Libssh < Formula
   homepage 'http://www.libssh.org/'
   url 'https://red.libssh.org/attachments/download/87/libssh-0.6.3.tar.xz'
   sha1 '8189255e0f684d36b7ca62739fa0cd5f1030a467'
+  revision 1
 
   bottle do
     sha1 "93da24a19a5f85ea291968e63fee5a138f4cf6c5" => :mavericks
