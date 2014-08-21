@@ -14,6 +14,14 @@ class Librcsc < Formula
   end
 
   test do
-    system "#{bin}/librcsc-config --version | grep '#{version}'"
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <rcsc/rcg.h>
+      int main() {
+        rcsc::rcg::PlayerT p;
+        return 0;
+      }
+    EOS
+    system ENV.cxx, "test.cpp", "-o", "test", "-lrcsc_rcg"
+    system "./test"
   end
 end
