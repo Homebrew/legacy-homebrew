@@ -7,6 +7,13 @@ class Codequery < Formula
   head "https://github.com/ruben2020/codequery.git"
   version "0.15a"
 
+  bottle do
+    cellar :any
+    sha1 "a9bf2cb776cfeb79b4b13f18fcd34f9e2033545e" => :mavericks
+    sha1 "736902fbf7aa648b4d06136cb02c56f968ed7aa9" => :mountain_lion
+    sha1 "4d25e90e1258b94a32273424d95501ba921dc685" => :lion
+  end
+
   depends_on "cmake" => :build
   depends_on "qt"
   depends_on "qscintilla2"
