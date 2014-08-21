@@ -6,6 +6,10 @@ class Lv < Formula
   version '4.51'
   sha1 '1a70299c27aa317a436976a557853858db4dcb5f'
 
+  def patches
+    DATA
+  end
+
   def install
     cd 'build' do
       system "../src/configure", "--prefix=#{prefix}"
@@ -18,3 +22,16 @@ class Lv < Formula
     (lib + 'lv').install 'lv.hlp'
   end
 end
+
+__END__
+--- a/src/stream.c  2012-01-01 00:00:00.000000000 +0000
++++ b/src/stream.c  2012-01-01 00:00:00.000000000 +0000
+@@ -41,7 +41,7 @@
+ #include <begin.h>
+ #include "stream.h"
+
+-private byte *gz_filter = "zcat";
++private byte *gz_filter = "gzcat";
+ private byte *bz2_filter = "bzcat";
+
+ private stream_t *StreamAlloc()
