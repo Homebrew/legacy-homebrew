@@ -18,8 +18,8 @@ class Irssi < Formula
   depends_on 'openssl' => :optional
 
   devel do
-    url 'http://irssi.org/files/snapshots/irssi-20140530.tar.gz'
-    sha1 '6bf61b3c3a384bacfd55c06aa9d4f7e288a30ac8'
+    url 'http://irssi.org/files/irssi-0.8.17-rc1.tar.gz'
+    sha1 '583870b51062503437590ab52186a4c6b38591d4'
   end
 
   # Fix Perl build flags and paths in man page
