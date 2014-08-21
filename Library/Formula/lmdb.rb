@@ -3,9 +3,16 @@ require 'formula'
 class Lmdb < Formula
   homepage 'http://symas.com/mdb/'
   url 'https://gitorious.org/mdb/mdb/archive/LMDB_0.9.13.tar.gz'
-  sha1 '3b509d2044b102442f41d957d7c2ed30d600da23'
+  sha1 'c9aa0facfaa0fa0fd95ec92b47d9825da93addae'
 
   head 'git://git.openldap.org/openldap.git', :branch => 'mdb.master'
+
+  bottle do
+    cellar :any
+    sha1 "55a9e7543df012aa3e9431805c8e55d00597f6f5" => :mavericks
+    sha1 "fbfc5f6cbe2ec4799cfa153672217a028374bcb2" => :mountain_lion
+    sha1 "61d3a5414a97a5e69b91aea6fbf108c192cde088" => :lion
+  end
 
   def install
     inreplace "libraries/liblmdb/Makefile" do |s|

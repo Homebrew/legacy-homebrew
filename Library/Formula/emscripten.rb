@@ -2,15 +2,15 @@ require "formula"
 
 class Emscripten < Formula
   homepage "http://emscripten.org"
-  url "https://github.com/kripken/emscripten/archive/1.21.1.tar.gz"
-  sha1 "198c32b7e49ce640ad7a17506ce99cb1b044de06"
+  url "https://github.com/kripken/emscripten/archive/1.22.1.tar.gz"
+  sha1 "af45e93a6815392f91a26213f69b9d5121136c60"
 
   head "https://github.com/kripken/emscripten.git", :branch => "incoming"
 
   bottle do
-    sha1 "f7e6beff033508e544e43f2103a81cd2389fa3b8" => :mavericks
-    sha1 "6beed81c6749348339649bb9b30f1bf687b9a4de" => :mountain_lion
-    sha1 "a3127fd2bb4996f022ab1e73f86a15b923ca3a3a" => :lion
+    sha1 "64644afd5fe3f6e1c88f28d962f69e13d346cb25" => :mavericks
+    sha1 "e384a5b9b0d90926e64a96f0ebef26ecec76b729" => :mountain_lion
+    sha1 "d30b417e1f013c8c84f925caf0bc4d053e134349" => :lion
   end
 
   head do
@@ -25,13 +25,13 @@ class Emscripten < Formula
 
   stable do
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.21.0.tar.gz"
-      sha1 "d468ca3ea4b3ed02b3e20ba86b781f028c2514b0"
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.22.1.tar.gz"
+      sha1 "7479f53b6123012c779722332ad08eddabbc5a68"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.21.0.tar.gz"
-      sha1 "7974f7cc0646534fd226ae447b962a11d77a7c03"
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.22.1.tar.gz"
+      sha1 "0f3742b12f921822daad3195970dd0d2cabee0f5"
     end
   end
 
