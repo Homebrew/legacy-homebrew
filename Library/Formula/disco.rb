@@ -5,6 +5,13 @@ class Disco < Formula
   url "https://github.com/discoproject/disco/archive/0.5.3.tar.gz"
   sha1 "78e1f38d54460f472d2e862988eb8af3b30afb1f"
 
+  bottle do
+    cellar :any
+    sha1 "851d946ce9d8e0858819c3547ffe60b8a59f2bc8" => :mavericks
+    sha1 "c99a5204936a046a0f3eff9a0c9e48a4ae058817" => :mountain_lion
+    sha1 "66bd8a4206896bf74270275514756a779d20d3b2" => :lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "erlang"
   depends_on "simplejson" => :python if MacOS.version <= :leopard
