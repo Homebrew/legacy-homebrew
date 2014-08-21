@@ -24,8 +24,4 @@ class Grsync < Formula
 
     system "make", "install"
   end
-
-  test do
-    system "#{bin}/grsync"
-  end
 end
