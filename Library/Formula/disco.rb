@@ -2,8 +2,8 @@ require "formula"
 
 class Disco < Formula
   homepage "http://discoproject.org/"
-  url "https://github.com/discoproject/disco/archive/0.5.2.tar.gz"
-  sha1 "35da28ee8a8a7d06bbe36a739984e8cfd150cf93"
+  url "https://github.com/discoproject/disco/archive/0.5.3.tar.gz"
+  sha1 "78e1f38d54460f472d2e862988eb8af3b30afb1f"
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "erlang"
