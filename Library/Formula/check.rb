@@ -2,14 +2,14 @@ require "formula"
 
 class Check < Formula
   homepage "http://check.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/check/check/0.9.13/check-0.9.13.tar.gz"
-  sha1 "09f682d2239b1353818b74d06099a17460450240"
+  url "https://downloads.sourceforge.net/project/check/check/0.9.14/check-0.9.14.tar.gz"
+  sha1 "4b79e2d485d014ddb438e322b64235347d57b0ff"
 
   bottle do
     cellar :any
-    sha1 "b45d891cddd1195e4305b835d13ddd15af2032f5" => :mavericks
-    sha1 "ebb33f4679b75836f0dcd47cb5b75ef25967563d" => :mountain_lion
-    sha1 "b4065b8bd5e2649070d5ca69f205b47d481be634" => :lion
+    sha1 "5f7d4c82f1c2bdb365718e97299efd47ec9c7272" => :mavericks
+    sha1 "2390f4c06a316a18cd4a9164fcd510c1ffb9a276" => :mountain_lion
+    sha1 "99d8dfd79c4498071ac91dcc782b5b27f2182614" => :lion
   end
 
   option :universal

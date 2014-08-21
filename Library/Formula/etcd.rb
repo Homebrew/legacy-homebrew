@@ -2,14 +2,14 @@ require "formula"
 
 class Etcd < Formula
   homepage "https://github.com/coreos/etcd"
-  url "https://github.com/coreos/etcd/archive/v0.4.5.tar.gz"
-  sha1 "ddfc8a6ed4804fdd8f5785b286522bb7ae15a95d"
+  url "https://github.com/coreos/etcd/archive/v0.4.6.tar.gz"
+  sha1 "80b405fd01527eea6668fde0186ca6b119c1185c"
   head "https://github.com/coreos/etcd.git"
 
   bottle do
-    sha1 "2e6b56281c35da746017d604f5c7b3de53e6f739" => :mavericks
-    sha1 "7578c221fd84d8ebc83e4413fd719d2be42bed99" => :mountain_lion
-    sha1 "ccf8dd7b01d62ed1e5a19ce035ef6ada9a0b327d" => :lion
+    sha1 "dd7aff45b8fb94304047015343d03d692f7a991f" => :mavericks
+    sha1 "e548cb1d29e4d0b5a78a6cd9e30034fb669e8c5a" => :mountain_lion
+    sha1 "bc35b7c3315e899f4e6b96c9db7615de03c04dbd" => :lion
   end
 
   depends_on "go" => :build

@@ -2,8 +2,10 @@ require 'formula'
 
 class Wtf < Formula
   homepage 'http://cvsweb.netbsd.org/bsdweb.cgi/src/games/wtf/'
-  url 'http://distcache.freebsd.org/ports-distfiles/wtf-20130810.tar.gz'
-  sha1 '9ca3e9264941273fc21744f861e583e79899a2ee'
+<<<<<<< HEAD
+  url 'http://downloads.sourceforge.net/project/bsdwtf/wtf-20140614.tar.gz'
+  sha1 'b19b055b363acb0c53b539faa81d00c7b5c2c426'
+>>>>>>> 8e8a8542292e6093dc56ac31e59295c71183dd75
 
   def install
     inreplace %w[wtf wtf.6], "/usr/share", share

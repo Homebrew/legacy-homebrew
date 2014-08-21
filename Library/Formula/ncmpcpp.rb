@@ -2,8 +2,15 @@ require 'formula'
 
 class Ncmpcpp < Formula
   homepage 'http://ncmpcpp.rybczak.net/'
-  url 'http://ncmpcpp.rybczak.net/stable/ncmpcpp-0.5.10.tar.bz2'
-  sha1 '5e34733e7fbaf2862f04fdf8af8195ce860a9014'
+
+  stable do
+    url 'http://ncmpcpp.rybczak.net/stable/ncmpcpp-0.5.10.tar.bz2'
+    sha1 '5e34733e7fbaf2862f04fdf8af8195ce860a9014'
+
+    fails_with :clang do
+      cause "'itsTempString' is a private member of 'NCurses::basic_buffer<char>'"
+    end
+  end
 
   head do
     url 'git://repo.or.cz/ncmpcpp.git'
@@ -19,10 +26,6 @@ class Ncmpcpp < Formula
   depends_on 'taglib'
   depends_on 'libmpdclient'
   depends_on 'fftw' if build.include? "visualizer"
-
-  fails_with :clang do
-    cause "'itsTempString' is a private member of 'NCurses::basic_buffer<char>'"
-  end if build.stable?
 
   option 'outputs', 'Compile with mpd outputs control'
   option 'visualizer', 'Compile with built-in visualizer'

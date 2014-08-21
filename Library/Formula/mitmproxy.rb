@@ -5,6 +5,13 @@ class Mitmproxy < Formula
   url 'http://mitmproxy.org/download/mitmproxy-0.10.1.tar.gz'
   sha1 '8feb1b4d8d7b8e6713d08aa434667275215f14c4'
 
+  bottle do
+    cellar :any
+    sha1 "aab837625b57a7a7ab95f9833f7afa498b78d4c1" => :mavericks
+    sha1 "c4c7b63a6f431ea8437758cc4317cf9524fb99fb" => :mountain_lion
+    sha1 "ebf95085b473743e11efb38731317ce7f4b828b0" => :lion
+  end
+
   option 'with-pyamf', 'Enable action message format (AMF) support for python'
   option 'with-cssutils', 'Enable beautification of CSS responses'
 
@@ -33,8 +40,8 @@ class Mitmproxy < Formula
   end
 
   resource 'netlib' do
-    url 'https://pypi.python.org/packages/source/n/netlib/netlib-0.10.tar.gz'
-    sha1 'd8bcd71a6670377ef70bb25e0b6a81679e8b651a'
+    url 'https://pypi.python.org/packages/source/n/netlib/netlib-0.10.1.tar.gz'
+    sha1 'f2a51f72f5cb4e1cb0949196d306f9c29e825958'
   end
 
   resource 'pyasn1' do

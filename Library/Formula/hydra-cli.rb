@@ -1,16 +1,16 @@
 require "formula"
 
 class HydraCli < Formula
-  homepage 'https://github.com/sdegutis/hydra-cli'
-  url 'https://github.com/sdegutis/hydra-cli/archive/1.0.tar.gz'
-  sha1 '15906ca4255839844635f26eab83843f0426b5f9'
-  head 'https://github.com/sdegutis/hydra-cli.git'
+  homepage "https://github.com/sdegutis/hydra-cli"
+  url "https://github.com/sdegutis/hydra-cli/archive/1.0.1.tar.gz"
+  sha1 "c71d8c2f5b63a99a030747eb34db49f774234acc"
+  head "https://github.com/sdegutis/hydra-cli.git"
 
   bottle do
     cellar :any
-    sha1 "5b23c9395fb73f77463922c2021350bbca8dd2e1" => :mavericks
-    sha1 "7f645a2a45f2b9cb578e8c117281708b3cfdf83f" => :mountain_lion
-    sha1 "0153b1fce7c2ea3e1726320d53fe2fccea574ef4" => :lion
+    sha1 "d400ef1b8828aa64545e1f05c79e75de97538f4c" => :mavericks
+    sha1 "faa0090500ce98fef5900d12a0def7bc2db1a040" => :mountain_lion
+    sha1 "61a5f08654f8cbde7246aef2c13d278c7b094a0e" => :lion
   end
 
   def install
