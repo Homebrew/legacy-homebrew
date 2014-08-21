@@ -102,17 +102,6 @@ class Fontforge < Formula
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/CoreServices.framework/Frameworks"
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/Carbon.framework/Frameworks"
 
-    if build.head?
-       cmdstring = <<-'EOS'.undent
-           from distutils.sysconfig import get_python_lib
-           import os
-           print( os.path.abspath( get_python_lib() + \"/../../pkgconfig\" ))
-       EOS
-       pypkgconfig = %x( #{HOMEBREW_PREFIX}/bin/python -c "#{cmdstring}" ).chomp;
-       ENV["PKG_CONFIG_PATH"] =  ENV["PKG_CONFIG_PATH"] + ":#{pypkgconfig}"
-       ENV.append "PYTHON", "#{HOMEBREW_PREFIX}/bin/python"
-    end
-
     system "./bootstrap" if build.head?
     system "./configure", *args
 
