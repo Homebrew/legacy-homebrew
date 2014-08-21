@@ -36,7 +36,7 @@ class Liboil < Formula
       }
     EOS
 
-    flags = ["-I#{include}/liboil-0.3", "-L#{lib}", "-loil-0.3"] + ENV.cflags.to_s.split
+    flags = ["-I#{include}/liboil-0.3", "-L#{lib}", "-loil-0.3"] + ENV.cflags.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
