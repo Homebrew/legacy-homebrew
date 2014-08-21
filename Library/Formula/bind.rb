@@ -14,7 +14,7 @@ class Bind < Formula
   end
 
   head do
-    url "https://source.isc.org/git/bind9.git", :using => :git
+    url "https://source.isc.org/git/bind9.git"
   end
 
   depends_on "openssl"
