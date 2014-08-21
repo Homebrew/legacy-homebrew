@@ -50,9 +50,6 @@ end
 class Options
   include Enumerable
 
-  attr_reader :options
-  protected :options
-
   def self.create(array)
     options = new
     array.each do |e|
@@ -68,11 +65,6 @@ class Options
 
   def initialize(*args)
     @options = Set.new(*args)
-  end
-
-  def initialize_copy(other)
-    super
-    @options = other.options.dup
   end
 
   def each(*args, &block)
