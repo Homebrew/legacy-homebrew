@@ -35,12 +35,11 @@ class NetSnmp < Formula
 
     if build.with? "python"
       args << "--with-python-modules"
-      # the net-snmp configure script finds the wrong python
-      ENV['PYTHONPROG'] = `which python`
+      ENV["PYTHONPROG"] = `which python`
     end
 
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
