@@ -1,9 +1,9 @@
 require 'formula'
 
 class Intercal < Formula
-  homepage 'http://catb.org/esr/intercal/'
-  url 'http://overload.intercal.org.uk/c/intercal-0.29.pax.gz'
-  sha1 'a1109c97ab0a3ccc5ad181cb6d4b7aa470a69e1d'
+  homepage 'http://catb.org/~esr/intercal/'
+  url 'http://catb.org/~esr/intercal/intercal-0.29.tar.gz'
+  sha1 '6f496b158e5f9dbf05a81c5e75f2d61698e65b15'
 
   def install
     system "./configure", "--disable-dependency-tracking",
