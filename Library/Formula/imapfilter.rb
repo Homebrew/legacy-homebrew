@@ -6,6 +6,12 @@ class Imapfilter < Formula
   sha1 '49ac7b7fb937b40eb42a162314de4f8866e33c11'
   revision 1
 
+  bottle do
+    sha1 "555185051c638f0cda5e9073a1b7b75aae4df2d9" => :mavericks
+    sha1 "447e3f4e869be8205e5b271ac72c0b8c6945b3a0" => :mountain_lion
+    sha1 "2032f5261874c61dcd6a217e53d3763727df8d38" => :lion
+  end
+
   depends_on 'lua'
   depends_on 'pcre'
   depends_on 'openssl'
