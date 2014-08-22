@@ -1,9 +1,10 @@
 require "formula"
 
 class Libgcrypt < Formula
-  homepage "http://gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.1.tar.bz2"
-  sha1 "f03d9b63ac3b17a6972fc11150d136925b702f02"
+  homepage "https://gnupg.org/"
+  url "ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.2.tar.bz2"
+  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/libgcrypt/libgcrypt-1.6.2.tar.bz2"
+  sha1 "cc31aca87e4a3769cb86884a3f5982b2cc8eb7ec"
 
   bottle do
     cellar :any
