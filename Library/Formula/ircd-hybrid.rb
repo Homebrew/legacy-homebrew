@@ -6,6 +6,12 @@ class IrcdHybrid < Formula
   sha1 "2dbb4a3dfd4b51d9f0cdcb587720c711e2147ff6"
   revision 1
 
+  bottle do
+    sha1 "67f2b1c0d89f186ac93c1cb79704090727ab51c5" => :mavericks
+    sha1 "578daf6e02e39721fb1cf3db4c3ff17f96360479" => :mountain_lion
+    sha1 "bc00b8dfc221aed2f61b7480733b7dd052db052e" => :lion
+  end
+
   # ircd-hybrid needs the .la files
   skip_clean :la
 
