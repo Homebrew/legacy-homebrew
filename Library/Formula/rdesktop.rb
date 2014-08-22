@@ -6,6 +6,12 @@ class Rdesktop < Formula
   sha1 "089e8f2b18688ded8afc659de5ba8d5b14c7b874"
   revision 1
 
+  bottle do
+    sha1 "ab2c80243535d1d5dadfe660da2f00c834e07f62" => :mavericks
+    sha1 "bc754bfedc56617646c663c49e2c174e54d8c1a8" => :mountain_lion
+    sha1 "7ae49942da08b4ab54aa6a7a072f62cb2def8062" => :lion
+  end
+
   depends_on "openssl"
   depends_on :x11
 
