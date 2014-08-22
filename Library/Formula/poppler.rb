@@ -2,9 +2,8 @@ require 'formula'
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.26.3.tar.xz'
-  sha1 '544f64ac2801c0625c519213a999e0c86a9a6bd6'
-  revision 1
+  url 'http://poppler.freedesktop.org/poppler-0.26.4.tar.xz'
+  sha1 '26ff3310cb4866829030c73070df4ae9aa4f6cac'
 
   bottle do
     sha1 "8086ed27f7a3d9feee13605514d32bb106cbe7c5" => :mavericks
