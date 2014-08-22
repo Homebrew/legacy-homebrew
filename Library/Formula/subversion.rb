@@ -5,6 +5,7 @@ class Subversion < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.10.tar.bz2'
   mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.10.tar.bz2'
   sha1 'd6896d94bb53c1b4c6e9c5bb1a5c466477b19b2b'
+  revision 1
 
   bottle do
     revision 2

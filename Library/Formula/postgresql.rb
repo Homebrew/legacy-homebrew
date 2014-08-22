@@ -2,6 +2,7 @@ require "formula"
 
 class Postgresql < Formula
   homepage "http://www.postgresql.org/"
+  revision 1
 
   stable do
     url "http://ftp.postgresql.org/pub/source/v9.3.5/postgresql-9.3.5.tar.bz2"

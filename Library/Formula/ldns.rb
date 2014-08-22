@@ -4,6 +4,7 @@ class Ldns < Formula
   homepage 'http://nlnetlabs.nl/projects/ldns/'
   url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.17.tar.gz'
   sha1 '4218897b3c002aadfc7280b3f40cda829e05c9a4'
+  revision 1
 
   bottle do
     revision 2

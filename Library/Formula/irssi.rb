@@ -4,6 +4,7 @@ class Irssi < Formula
   homepage 'http://irssi.org/'
   url 'http://irssi.org/files/irssi-0.8.16.tar.bz2'
   sha1 '631dd70b6d3872c5f81c1a46a6872fef5bd65ffb'
+  revision 1
 
   bottle do
     sha1 "17f3a8f117308e65c5de44e977dbc083858c44f4" => :mavericks
