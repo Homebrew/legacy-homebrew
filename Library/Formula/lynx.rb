@@ -7,6 +7,12 @@ class Lynx < Formula
   sha1 '65bbf95627c88723bbb5880155e5fe01c2753d0c'
   revision 1
 
+  bottle do
+    sha1 "445ce7a7d6397e6edf7c5a401ff12ef05c9f88c5" => :mavericks
+    sha1 "d8eb643b68dfea9197e8223b487ee54c5a0d15f0" => :mountain_lion
+    sha1 "02a2c83433f01ae6b8af18a4222a16b590a29a38" => :lion
+  end
+
   depends_on "openssl"
 
   def install
