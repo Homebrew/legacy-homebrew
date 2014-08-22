@@ -2,9 +2,17 @@ require 'formula'
 
 class Pango < Formula
   homepage "http://www.pango.org/"
-  head "git://git.gnome.org/pango"
   url "http://ftp.gnome.org/pub/GNOME/sources/pango/1.36/pango-1.36.5.tar.xz"
   sha256 "be0e94b2e5c7459f0b6db21efab6253556c8f443837200b8736d697071276ac8"
+
+  head do
+    url 'git://git.gnome.org/pango'
+
+    depends_on 'automake' => :build
+    depends_on 'autoconf' => :build
+    depends_on 'libtool' => :build
+    depends_on 'gtk-doc' => :build 
+  end
 
   bottle do
     sha1 "cae579ffdc52ad681a23d5af611818c9af873e67" => :mavericks
@@ -41,6 +49,8 @@ class Pango < Formula
       args << '--with-xft'
     end
 
+    system "./autogen.sh" if build.head?
+    system "autoreconf", "-i" if build.head?
     system "./configure", *args
     system "make"
     system "make install"
