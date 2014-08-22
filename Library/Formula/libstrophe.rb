@@ -5,6 +5,7 @@ class Libstrophe < Formula
   url "https://github.com/strophe/libstrophe/archive/0.8.6.tar.gz"
   sha1 "fc30c78945cb075a636cff8c76be671c8a364eb0"
   head "https://github.com/strophe/libstrophe.git"
+  revision 1
 
   bottle do
     cellar :any

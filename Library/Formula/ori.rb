@@ -4,6 +4,7 @@ class Ori < Formula
   homepage 'http://ori.scs.stanford.edu/'
   url 'https://bitbucket.org/orifs/ori/downloads/ori-0.8.1.tgz'
   sha1 '3ad31ab14bdb9305423f66cb919fdc445215f3c9'
+  revision 1
 
   depends_on 'pkg-config' => :build
   depends_on 'scons' => :build

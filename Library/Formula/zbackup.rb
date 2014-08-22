@@ -4,6 +4,7 @@ class Zbackup < Formula
   homepage 'http://zbackup.org'
   url 'https://github.com/zbackup/zbackup/archive/1.2.tar.gz'
   sha1 'e87dfaeeeea0d59f4af00d3ce248aaabf1a25cb9'
+  revision 1
 
   depends_on 'cmake' => :build
   depends_on 'openssl'

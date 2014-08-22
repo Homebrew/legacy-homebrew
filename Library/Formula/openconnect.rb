@@ -4,6 +4,7 @@ class Openconnect < Formula
   homepage "http://www.infradead.org/openconnect.html"
   url "ftp://ftp.infradead.org/pub/openconnect/openconnect-6.00.tar.gz"
   sha1 "405f0563a82660fa492d8c9ad248198adb8793f9"
+  revision 1
 
   bottle do
     sha1 "abff92f7f22f41eb8b28465819009907a243099b" => :mavericks
