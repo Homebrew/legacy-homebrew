@@ -9,9 +9,9 @@ class Socat < Formula
 
   bottle do
     cellar :any
-    sha1 "2adcb868d02085a1750ae6d2cb737a133f46e758" => :mavericks
-    sha1 "7fbdafbdd205731de188c08f501816cf835ea9c8" => :mountain_lion
-    sha1 "57e25b005e2f3261861400adf34869460daf828d" => :lion
+    sha1 "89d947e50a9400d982b4c41cd6102c351bfe4513" => :mavericks
+    sha1 "62d99ec8128eef0e7ae422a6199e90d889a7dba5" => :mountain_lion
+    sha1 "ac027698a5e2dedace9516adb823b83208ef4231" => :lion
   end
 
   devel do
