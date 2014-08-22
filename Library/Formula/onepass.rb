@@ -28,12 +28,12 @@ class Onepass < Formula
 
     system "python", "setup.py", "install", "--prefix=#{libexec}"
     bin.install Dir[libexec/"bin/*"]
-    prefix.install Dir["tests/data/*"]
+    (share+"tests").install Dir["tests/data/*"]
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
-    assert_equal "123456", `echo "badger" | #{bin}/1pass --no-prompt --path #{prefix}/1Password.Agilekeychain onetosix`.strip
+    assert_equal "123456", `echo "badger" | #{bin}/1pass --no-prompt --path #{share}/tests/1Password.Agilekeychain onetosix`.strip
     assert_equal 0, $?.exitstatus
   end
 end
