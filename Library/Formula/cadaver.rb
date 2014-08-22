@@ -6,6 +6,11 @@ class Cadaver < Formula
   sha1 '4ad8ea2341b77e7dee26b46e4a8a496f1a2962cd'
   revision 1
 
+  bottle do
+    sha1 "1c498d877d44df201f6335847f010a7c8b5833f4" => :mavericks
+    sha1 "b9b21eeaf23ce5dbed36b7d799f233636163216f" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'readline'
