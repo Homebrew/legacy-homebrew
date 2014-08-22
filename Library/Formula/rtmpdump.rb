@@ -9,6 +9,13 @@ class Rtmpdump < Formula
   sha1 '17decff9d16bbcf45f622ca8ee2400c46c277500'
   revision 1
 
+  bottle do
+    cellar :any
+    sha1 "29ea9f093cbed2342eec3486382335ae2908df22" => :mavericks
+    sha1 "02666b18d700e6d469186c26e416316a8bd7560b" => :mountain_lion
+    sha1 "d6803f6c6ab24b45dc4e0626c7c8f5eaef9df034" => :lion
+  end
+
   head 'git://git.ffmpeg.org/rtmpdump'
 
   depends_on 'openssl'
