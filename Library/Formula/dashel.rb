@@ -10,9 +10,10 @@ class Dashel < Formula
   def install
     system "cmake", ".", *std_cmake_args
     system "make", "install"
+    (share+"test").install "portlist"
   end
 
   test do
-    system "#{buildpath}/portlist"
+    system "#{share}/test/portlist"
   end
 end
