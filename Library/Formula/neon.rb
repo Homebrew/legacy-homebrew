@@ -4,6 +4,7 @@ class Neon < Formula
   homepage 'http://www.webdav.org/neon/'
   url 'http://www.webdav.org/neon/neon-0.30.0.tar.gz'
   sha1 '9e6297945226f90d66258b7ee05f757ff5cea10a'
+  revision 1
 
   bottle do
     cellar :any

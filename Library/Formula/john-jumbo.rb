@@ -4,6 +4,7 @@ class JohnJumbo < Formula
   homepage 'http://www.openwall.com/john/'
   url 'http://www.openwall.com/john/g/john-1.7.9.tar.bz2'
   sha1 '8f77bdd42b7cf94ec176f55ea69c4da9b2b8fe3b'
+  revision 1
 
   bottle do
     sha1 "e8e70d8faea2a658e13eedab50e47963ec4eee90" => :mavericks

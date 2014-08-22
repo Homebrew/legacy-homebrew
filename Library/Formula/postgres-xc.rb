@@ -4,6 +4,7 @@ class PostgresXc < Formula
   homepage 'http://postgres-xc.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/postgres-xc/Version_1.0/pgxc-v1.0.3.tar.gz'
   sha1 '76774cf32810dfa14b2174f2e939d3b28eb211a9'
+  revision 1
 
   bottle do
     sha1 "9996518f01b622e99d81e373584a79cff534c575" => :mavericks

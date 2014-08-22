@@ -4,6 +4,7 @@ class Libmowgli < Formula
   homepage 'http://www.atheme.org/project/mowgli'
   url 'https://github.com/atheme/libmowgli-2/archive/libmowgli-2.0.0.tar.gz'
   sha1 'dd3860fb116c4249456f13cd6c30c55e84388262'
+  revision 1
 
   head 'https://github.com/atheme/libmowgli-2.git'
 
