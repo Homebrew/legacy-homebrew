@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Rethinkdb < Formula
-  homepage 'http://www.rethinkdb.com/'
-  url 'http://download.rethinkdb.com/dist/rethinkdb-1.13.4.tgz'
-  sha1 'de41b727482b3662cce3e11e527a464ebf925795'
+  homepage "http://www.rethinkdb.com/"
+  url "http://download.rethinkdb.com/dist/rethinkdb-1.13.4.tgz"
+  sha1 "de41b727482b3662cce3e11e527a464ebf925795"
 
   bottle do
     revision 1
@@ -13,11 +13,11 @@ class Rethinkdb < Formula
   end
 
   depends_on :macos => :lion
-  depends_on 'boost' => :build
+  depends_on "boost" => :build
 
   fails_with :gcc do
     build 5666 # GCC 4.2.1
-    cause 'RethinkDB uses C++0x'
+    cause "RethinkDB uses C++0x"
   end
 
   def install
@@ -32,9 +32,8 @@ class Rethinkdb < Formula
 
     system "./configure", *args
     system "make"
-    system "make install-osx"
+    system "make", "install-osx"
 
-    # create logs directory
     mkdir_p "#{var}/log/rethinkdb"
   end
 
