@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class Libdvdcss < Formula
-  homepage 'http://www.videolan.org/developers/libdvdcss.html'
-  url 'http://download.videolan.org/pub/libdvdcss/1.2.13/libdvdcss-1.2.13.tar.bz2'
-  sha1 '1a4a5e55c7529da46386c1c333340eee2c325a77'
+  homepage "http://www.videolan.org/developers/libdvdcss.html"
+  url "http://download.videolan.org/pub/libdvdcss/1.3.0/libdvdcss-1.3.0.tar.bz2"
+  sha1 "b3ccd70a510aa04d644f32b398489a3122a7e11a"
 
-  head 'svn://svn.videolan.org/libdvdcss/trunk'
+  head "svn://svn.videolan.org/libdvdcss/trunk"
 
   bottle do
     cellar :any
