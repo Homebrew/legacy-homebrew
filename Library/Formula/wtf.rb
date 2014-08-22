@@ -2,7 +2,7 @@ require 'formula'
 
 class Wtf < Formula
   homepage 'http://cvsweb.netbsd.org/bsdweb.cgi/src/games/wtf/'
-  url 'http://downloads.sourceforge.net/project/bsdwtf/wtf-20140614.tar.gz'
+  url 'https://downloads.sourceforge.net/project/bsdwtf/wtf-20140614.tar.gz'
   sha1 'b19b055b363acb0c53b539faa81d00c7b5c2c426'
 
   def install

@@ -20,6 +20,9 @@ class Nginx < Formula
 
   env :userpaths
 
+  # Before submitting more options to this formula please check they aren't
+  # already in Homebrew/homebrew-nginx/nginx-full:
+  # https://github.com/Homebrew/homebrew-nginx/blob/master/nginx-full.rb
   option "with-passenger", "Compile with support for Phusion Passenger module"
   option "with-webdav", "Compile with support for WebDAV module"
   option "with-debug", "Compile with support for debug log"
