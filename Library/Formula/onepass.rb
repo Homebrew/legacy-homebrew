@@ -26,13 +26,14 @@ class Onepass < Formula
     resource("M2Crypto").stage { system "python", *install_args }
     resource("fuzzywuzzy").stage { system "python", *install_args }
 
-    system "python", "setup.py", "test"
     system "python", "setup.py", "install", "--prefix=#{libexec}"
     bin.install Dir[libexec/"bin/*"]
+    prefix.install Dir["tests/data/*"]
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
-    system "#{bin}/1pass", "-h"
+    assert_equal "123456", `echo "badger" | #{bin}/1pass --no-prompt --path #{prefix}/1Password.Agilekeychain onetosix`.strip
+    assert_equal 0, $?.exitstatus
   end
 end
