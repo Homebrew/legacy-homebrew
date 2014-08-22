@@ -8,10 +8,9 @@ class Python < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "f0b987505344d867ab4bf4c7badf461e280ff916" => :mavericks
-    sha1 "572f2e03b9798ce167ca8ca299595dea8babe2ad" => :mountain_lion
-    sha1 "33290cd9b6ded3b3a168be7cc039f3e7b8c57c63" => :lion
+    sha1 "68a2b3065bf0c5dfd6992856984a92f93448d7cf" => :mavericks
+    sha1 "b19e492d3fc8f3483bbe61412d3f9dcb1cf0d0c2" => :mountain_lion
+    sha1 "ece2bcd6389858f8874b27bf78c4ef0cf57a321a" => :lion
   end
 
   option :universal
