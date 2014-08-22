@@ -1,9 +1,9 @@
 require 'formula'
 
 class X265 < Formula
-  homepage 'http://x265.org'
-  url 'https://bitbucket.org/multicoreware/x265/get/1.2.tar.bz2'
-  sha1 '68afb0322dcc5d239efd0070925f597e479d3ff3'
+  homepage "http://x265.org"
+  url "https://bitbucket.org/multicoreware/x265/get/1.3.tar.bz2"
+  sha1 "b24fc768c61bab3dc4442dc65649fa74d16318a2"
 
   bottle do
     cellar :any
