@@ -2,8 +2,8 @@ require "formula"
 
 class Clhep < Formula
   homepage "http://proj-clhep.web.cern.ch/proj-clhep/"
-  url "http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-2.2.0.1.tgz"
-  sha1 "88b9d4f39be3ac317e63c2f7ad694ede6e7b7520"
+  url "http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-2.2.0.3.tgz"
+  sha1 "6e56f80c2db3c4f8828dec27815beae6655c8d9e"
 
   bottle do
     cellar :any
