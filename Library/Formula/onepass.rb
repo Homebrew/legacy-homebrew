@@ -6,6 +6,13 @@ class Onepass < Formula
   sha1 "47adac676208d83e9c9eca089894165868147547"
   head "https://github.com/georgebrock/1pass.git"
 
+  bottle do
+    cellar :any
+    sha1 "0e176102fe921829153966c94fbc04330edd0c99" => :mavericks
+    sha1 "77a3b651bba41e935f90be247f49fb5e86d6e74c" => :mountain_lion
+    sha1 "6157ab9f7546726710df517044e5cabce7c6ad8b" => :lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "swig" => :build
 
