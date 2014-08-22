@@ -6,6 +6,12 @@ class Freetds < Formula
   sha1 '3ab06c8e208e82197dc25d09ae353d9f3be7db52'
   revision 1
 
+  bottle do
+    sha1 "e1452229dc665f3414469df393efa36778178db3" => :mavericks
+    sha1 "7f9052adc88d0e257150ad930c229407919f499c" => :mountain_lion
+    sha1 "9b177e62e98429d49d40b78bae5d20f0635705c4" => :lion
+  end
+
   head do
     url 'https://git.gitorious.org/freetds/freetds.git'
 
