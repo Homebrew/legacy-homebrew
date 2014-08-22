@@ -33,6 +33,54 @@ class Python3 < Formula
 
   patch :DATA if build.with? 'brewed-tk'
 
+  # install to PREFIX/lib/pythonX.X/site-packages
+  # instead of PREFIX/Cellar/...
+  # (1 of 2)
+  patch :p0, <<-EOF
+--- Lib/distutils/sysconfig_orig.py
++++ Lib/distutils/sysconfig.py
+@@ -146,7 +146,10 @@
+         if standard_lib:
+             return libpython
+         else:
+-            return os.path.join(libpython, "site-packages")
++            if sys.platform == "darwin" and prefix.startswith("HOMEBREW_CELLAR_PREFIX"):
++                return "HOMEBREW_SITE_PACKAGES"
++            else:
++                return os.path.join(libpython, "site-packages")
+     elif os.name == "nt":
+         if standard_lib:
+             return os.path.join(prefix, "Lib")
+--- Lib/distutils/command/install_orig.py
++++ Lib/distutils/command/install.py
+@@ -8,7 +8,7 @@
+ from distutils import log
+ from distutils.core import Command
+ from distutils.debug import DEBUG
+-from distutils.sysconfig import get_config_vars
++from distutils.sysconfig import get_config_vars, get_config_var
+ from distutils.errors import DistutilsPlatformError
+ from distutils.file_util import write_file
+ from distutils.util import convert_path, subst_vars, change_root
+@@ -338,6 +338,16 @@
+
+         self.dump_dirs("post-expand_dirs()")
+
++        if sys.platform == "darwin" and sys.prefix.startswith("HOMEBREW_CELLAR_PREFIX"):
++            sitepkg = os.path.join(sys.prefix, 'lib', 'python' + sys.version[:3], 'site-packages')
++            libpy = "HOMEBREW_SITE_PACKAGES"
++            if self.install_platlib == sitepkg:
++                self.install_platlib = libpy
++            if self.install_purelib == sitepkg:
++                self.install_purelib = libpy
++            if self.install_scripts == os.path.join(sys.prefix, 'bin'):
++                self.install_scripts = "HOMEBREW_PREFIX/bin"
++
+         # Create directories in the home dir:
+         if self.user:
+             self.create_home_path()
+EOF
+
   def site_packages_cellar
     prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/site-packages"
   end
@@ -105,6 +153,19 @@ class Python3 < Formula
       ENV.append 'LDFLAGS', "-L#{tcl_tk}/lib"
     end
 
+    # install to PREFIX/lib/pythonX.Y/site-packages
+    # instead of PREFIX/Cellar/...
+    # (2 of 2)
+    inreplace "./Lib/distutils/sysconfig.py" do |f|
+      f.gsub! 'HOMEBREW_SITE_PACKAGES', site_packages
+      f.gsub! 'HOMEBREW_CELLAR_PREFIX', prefix
+    end
+    inreplace "./Lib/distutils/command/install.py" do |f|
+      f.gsub! 'HOMEBREW_SITE_PACKAGES', site_packages
+      f.gsub! 'HOMEBREW_CELLAR_PREFIX', prefix
+      f.gsub! 'HOMEBREW_PREFIX', HOMEBREW_PREFIX
+    end
+
     system "./configure", *args
 
     system "make"
@@ -162,8 +223,6 @@ class Python3 < Formula
     cfg.atomic_write <<-EOF.undent
       [global]
       verbose=1
-      [install]
-      prefix=#{HOMEBREW_PREFIX}
     EOF
   end
 
