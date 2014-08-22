@@ -7,6 +7,12 @@ class ShrewsoftVpnClient < Formula
   head "svn://svn.shrew.net/ike/head"
   revision 1
 
+  bottle do
+    sha1 "881cc1a56768d4cede305ca76c13da5df499936e" => :mavericks
+    sha1 "6869696bab6b116749cbe7444d34c3fc4a406ee5" => :mountain_lion
+    sha1 "68811c1b17444a6d2e8d02b147913e41c9f22ed1" => :lion
+  end
+
   option "without-gui", "Don't build Client GUI"
   option "without-natt", "Disable Nat Traversal Support"
   option "without-ldap", "Disable LDAP Authentication Support"
