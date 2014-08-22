@@ -3,9 +3,9 @@ require "formula"
 class Doxygen < Formula
   homepage "http://www.doxygen.org/"
   head "https://doxygen.svn.sourceforge.net/svnroot/doxygen/trunk"
-  url "http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.7.src.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/doxygen/rel-1.8.7/doxygen-1.8.7.src.tar.gz"
-  sha1 "3728f183f390f96b4ec39d02782a7c2d91f7bfca"
+  url "http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.8.src.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/doxygen/rel-1.8.8/doxygen-1.8.8.src.tar.gz"
+  sha1 "2f2d028254d804c3b04e78ba2183de5a7637143c"
 
   bottle do
     cellar :any
