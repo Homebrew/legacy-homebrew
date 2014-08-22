@@ -30,15 +30,7 @@ class Samba < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
-    To start with launchd:
-      sudo ln -sfv /usr/local/opt/nginx/*.plist /Library/LaunchDaemons
-      sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.samba.plist
-    If launchctl complains, make sure that the plist file is owned and readable by root.
-    EOS
-  end
-
-  plist_options :manual => 'samba'
+  plist_options :manual => 'smbd'
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
