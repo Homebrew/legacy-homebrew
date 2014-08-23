@@ -4,7 +4,7 @@ class Docker < Formula
   homepage "http://docker.io"
   # Boot2docker and docker are generally updated at the same time.
   # Please update the version of boot2docker too
-  url "https://github.com/dotcloud/docker.git", :tag => "v1.1.2"
+  url "https://github.com/dotcloud/docker.git", :tag => "v1.2.0"
 
   bottle do
     sha1 "caaca765d2caf1c59904cbddfa8e62c89f32767d" => :mavericks
