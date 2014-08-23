@@ -3,6 +3,15 @@ require "compilers"
 class CxxStdlib
   include CompilerConstants
 
+  class CompatibilityError < StandardError
+    def initialize(formula, dep, stdlib)
+      super <<-EOS.undent
+        #{formula.name} dependency #{dep.name} was built with a different C++ standard
+        library (#{stdlib.type_string} from #{stdlib.compiler}). This may cause problems at runtime.
+        EOS
+    end
+  end
+
   def self.create(type, compiler)
     if type && ![:libstdcxx, :libcxx].include?(type)
       raise ArgumentError, "Invalid C++ stdlib type: #{type}"
@@ -18,7 +27,7 @@ class CxxStdlib
 
     begin
       stdlib.check_dependencies(formula, deps)
-    rescue IncompatibleCxxStdlibs => e
+    rescue CompatibilityError => e
       opoo e.message
     end
   end
@@ -51,7 +60,7 @@ class CxxStdlib
 
       dep_stdlib = Tab.for_formula(dep.to_formula).cxxstdlib
       if !compatible_with? dep_stdlib
-        raise IncompatibleCxxStdlibs.new(formula, dep, dep_stdlib, self)
+        raise CompatibilityError.new(formula, dep, dep_stdlib)
       end
     end
   end
