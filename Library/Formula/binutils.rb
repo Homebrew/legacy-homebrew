@@ -12,18 +12,22 @@ class Binutils < Formula
     sha1 "2726d3a479491570b01fd707e14fabf97185271e" => :lion
   end
 
+  option "default-names", "Do not prepend 'g' to the binary"
+
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--program-prefix=g",
-                          "--prefix=#{prefix}",
-                          "--infodir=#{info}",
-                          "--mandir=#{man}",
-                          "--disable-werror",
-                          "--enable-interwork",
-                          "--enable-multilib",
-                          "--enable-64-bit-bfd",
-                          "--enable-targets=all"
+    args = [
+      "--disable-debug",
+      "--disable-dependency-tracking",
+      "--prefix=#{prefix}",
+      "--infodir=#{info}",
+      "--mandir=#{man}",
+      "--disable-werror",
+      "--enable-interwork",
+      "--enable-multilib",
+      "--enable-64-bit-bfd",
+      "--enable-targets=all"]
+    args << "--program-prefix=g" unless build.include? "default-names"
+    system "./configure", *args
     system "make"
     system "make install"
   end
