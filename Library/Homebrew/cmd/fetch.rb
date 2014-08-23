@@ -79,13 +79,12 @@ module Homebrew
     f.clear_cache if ARGV.force?
 
     already_fetched = f.cached_download.exist?
-    download = nil
 
     begin
       download = f.fetch
-    rescue => e
+    rescue DownloadError
       retry if retry_fetch? f
-      raise e
+      raise
     end
 
     return unless download.file?
