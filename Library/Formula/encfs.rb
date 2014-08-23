@@ -14,6 +14,12 @@ class Encfs < Formula
 
   head 'https://github.com/vgough/encfs.git'
 
+  bottle do
+    sha1 "4d047345b8638a56c6dbc0b74d37265b6c1d2405" => :mavericks
+    sha1 "1ed3978a5ef1a8dfcf35132142a507df8f709bcf" => :mountain_lion
+    sha1 "dc7f74e52ca54d3716639ee5ef6d701d50ee4def" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
