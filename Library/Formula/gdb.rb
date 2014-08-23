@@ -15,11 +15,14 @@ end
 
 class Gdb < Formula
   homepage "http://www.gnu.org/software/gdb/"
-  url "http://ftpmirror.gnu.org/gdb/gdb-7.7.1.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/gdb/gdb-7.7.1.tar.gz"
-  sha1 "bb49bdb5781ea62ccdc2ec6869872e1b43168572"
+  url "http://ftpmirror.gnu.org/gdb/gdb-7.8.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/gdb/gdb-7.8.tar.gz"
+  sha1 "4810d78a77064fefc05e701fc0a2193562a23afe"
 
+  depends_on "pkg-config" => :build
   depends_on "readline"
+  depends_on "xz"
+  depends_on "guile" => :optional
 
   if build.with? "brewed-python"
     depends_on UniversalBrewedPython
@@ -27,14 +30,19 @@ class Gdb < Formula
 
   option "with-brewed-python", "Use the Homebrew version of Python"
   option "with-version-suffix", "Add a version suffix to program"
+  option "with-all-targets", "Build with support for all targets"
 
   def install
     args = [
       "--prefix=#{prefix}",
       "--disable-debug",
       "--disable-dependency-tracking",
-      "--with-system-readline"
+      "--with-system-readline",
+      "--with-lzma"
     ]
+
+    args << "--with-guile" if build.with? "guile"
+    args << "--enable-targets=all" if build.with? "all-targets"
 
     if build.with? "brewed-python"
       args << "--with-python=#{HOMEBREW_PREFIX}"
