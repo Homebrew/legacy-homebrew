@@ -11,6 +11,18 @@ class CxxStdlib
     klass.new(type, compiler)
   end
 
+  def self.check_compatibility(formula, deps, keg, compiler)
+    return if formula.skip_cxxstdlib_check?
+
+    stdlib = create(keg.detect_cxx_stdlibs.first, compiler)
+
+    begin
+      stdlib.check_dependencies(formula, deps)
+    rescue IncompatibleCxxStdlibs => e
+      opoo e.message
+    end
+  end
+
   attr_reader :type, :compiler
 
   def initialize(type, compiler)
@@ -32,17 +44,14 @@ class CxxStdlib
   end
 
   def check_dependencies(formula, deps)
-    unless formula.skip_cxxstdlib_check?
-      deps.each do |dep|
-        # Software is unlikely to link against anything from its
-        # buildtime deps, so it doesn't matter at all if they link
-        # against different C++ stdlibs
-        next if dep.build?
+    deps.each do |dep|
+      # Software is unlikely to link against libraries from build-time deps, so
+      # it doesn't matter if they link against different C++ stdlibs.
+      next if dep.build?
 
-        dep_stdlib = Tab.for_formula(dep.to_formula).cxxstdlib
-        if !compatible_with? dep_stdlib
-          raise IncompatibleCxxStdlibs.new(formula, dep, dep_stdlib, self)
-        end
+      dep_stdlib = Tab.for_formula(dep.to_formula).cxxstdlib
+      if !compatible_with? dep_stdlib
+        raise IncompatibleCxxStdlibs.new(formula, dep, dep_stdlib, self)
       end
     end
   end
