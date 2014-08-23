@@ -50,7 +50,6 @@ class Pango < Formula
     end
 
     system "./autogen.sh" if build.head?
-    system "autoreconf", "-i" if build.head?
     system "./configure", *args
     system "make"
     system "make install"
