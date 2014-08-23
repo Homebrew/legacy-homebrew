@@ -108,8 +108,7 @@ class Build
     keg_only_deps = deps.map(&:to_formula).select(&:keg_only?)
 
     deps.map(&:to_formula).each do |dep|
-      opt = HOMEBREW_PREFIX.join("opt", dep.name)
-      fixopt(dep) unless opt.directory?
+      fixopt(dep) unless dep.opt_prefix.directory?
     end
 
     pre_superenv_hacks
