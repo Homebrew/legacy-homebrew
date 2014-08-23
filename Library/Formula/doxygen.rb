@@ -46,9 +46,7 @@ class Doxygen < Formula
 
     # Per MacPorts:
     # https://trac.macports.org/browser/trunk/dports/textproc/doxygen/Portfile#L92
-    inreplace %w[ libmd5/Makefile.libmd5
-                  src/Makefile.libdoxycfg
-                  tmake/lib/macosx-c++/tmake.conf
+    inreplace %w[ tmake/lib/macosx-c++/tmake.conf
                   tmake/lib/macosx-intel-c++/tmake.conf
                   tmake/lib/macosx-uni-c++/tmake.conf ] do |s|
       # makefiles hardcode both cc and c++
