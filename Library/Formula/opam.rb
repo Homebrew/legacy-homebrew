@@ -2,8 +2,8 @@ require 'formula'
 
 class Opam < Formula
   homepage 'https://opam.ocaml.org'
-  url 'https://github.com/ocaml/opam/archive/1.1.1.tar.gz'
-  sha1 'f1a8291eb888bfae4476ee59984c9a30106cd483'
+  url 'https://github.com/ocaml/opam/archive/1.1.2.tar.gz'
+  sha1 '15ade90a1965fa712967e807a717f79db8d9032f'
 
   head 'https://github.com/ocaml/opam.git'
 
@@ -46,8 +46,6 @@ class Opam < Formula
 
   def install
     ENV.deparallelize
-    # Set TERM to workaround bug in ocp-build (ocaml/opam#1038)
-    ENV["TERM"] = "dumb"
 
     # We put the compressed external libraries where the build
     # expects to find them, thus tricking it into believing that it
@@ -59,7 +57,9 @@ class Opam < Formula
     end
 
     system "./configure", "--prefix=#{prefix}"
+    system "make", "lib-ext"
     system "make"
+    system "make", "man"
     system "make", "install"
 
     bash_completion.install "shell/opam_completion.sh"
@@ -84,7 +84,7 @@ class Opam < Formula
       * On Bash, add them to `~/.bash_profile`.
       * On Zsh, add them to `~/.zprofile` instead.
 
-    Documentation and tutorials are available at http://opam.ocaml.org, or
+    Documentation and tutorials are available at https://opam.ocaml.org, or
     via 'man opam' and 'opam --help'.
     EOS
   end
