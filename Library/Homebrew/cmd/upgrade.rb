@@ -49,9 +49,12 @@ module Homebrew
 
   def upgrade_formula f
     outdated_keg = Keg.new(f.linked_keg.resolved_path) if f.linked_keg.directory?
+    tab = Tab.for_formula(f)
 
     fi = FormulaInstaller.new(f)
-    fi.options             = Tab.for_formula(f).used_options
+    fi.options             = tab.used_options
+    fi.build_bottle        = ARGV.build_bottle?
+    fi.build_bottle      ||= tab.built_as_bottle && !tab.poured_from_bottle
     fi.build_from_source   = ARGV.build_from_source?
     fi.verbose             = ARGV.verbose?
     fi.verbose           &&= :quieter if ARGV.quieter?

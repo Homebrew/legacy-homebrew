@@ -483,7 +483,7 @@ class FormulaAuditor
       problem "Use new-style option definitions"
     end
 
-    if line =~ /def test/
+    if line =~ /def test$/
       problem "Use new-style test definitions (test do)"
     end
 

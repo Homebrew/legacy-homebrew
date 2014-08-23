@@ -13,6 +13,8 @@ class Bind < Formula
     sha1 "114293393260de545393e4ed66ca252e881aa21f" => :lion
   end
 
+  head "https://source.isc.org/git/bind9.git"
+
   depends_on "openssl"
 
   def install

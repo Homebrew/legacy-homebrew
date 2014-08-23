@@ -125,10 +125,4 @@ class OptionsTests < Homebrew::TestCase
     debug = Option.new("-d")
     assert_equal [verbose, debug].sort, Options.create(array).sort
   end
-
-  def test_copies_do_not_share_underlying_collection
-    copy = @options.dup << Option.new("foo")
-    assert_empty @options
-    assert_equal 1, copy.count
-  end
 end
