@@ -57,10 +57,16 @@ module Stdenv
 
     append 'LDFLAGS', '-Wl,-headerpad_max_install_names' if OS.mac?
 
-    # Set the dynamic library search path
     if OS.linux?
+      # Set the dynamic library search path
       append "LDFLAGS", "-Wl,-rpath,#{HOMEBREW_PREFIX}/lib"
       self["LD_RUN_PATH"] = "#{HOMEBREW_PREFIX}/lib"
+      # Set the dynamic linker
+      glibc = Formula["glibc"]
+      if glibc.installed? &&
+          (ldso = glibc.opt_lib/"ld-linux-x86-64.so.2").readable?
+        append "LDFLAGS", "-Wl,--dynamic-linker=#{ldso}"
+      end
     end
 
     if inherit?
