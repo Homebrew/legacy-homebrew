@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Liblacewing < Formula
-  homepage 'http://lacewing-project.org/'
-  head 'https://github.com/udp/lacewing.git'
-  url 'https://github.com/udp/lacewing/archive/0.5.4.tar.gz'
-  sha1 '078486a4dcd6ce33c2c881954c5dc82843411ac9'
+  homepage "http://lacewing-project.org/"
+  head "https://github.com/udp/lacewing.git"
+  url "https://github.com/udp/lacewing/archive/0.5.4.tar.gz"
+  sha1 "078486a4dcd6ce33c2c881954c5dc82843411ac9"
   revision 1
 
   bottle do
@@ -15,11 +15,11 @@ class Liblacewing < Formula
   end
 
   # Use a newer OpenSSL to get SPDY support
-  depends_on 'openssl'
+  depends_on "openssl"
 
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
