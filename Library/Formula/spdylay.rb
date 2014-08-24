@@ -31,7 +31,7 @@ class Spdylay < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
