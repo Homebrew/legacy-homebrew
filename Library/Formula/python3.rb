@@ -7,9 +7,10 @@ class Python3 < Formula
   revision 1
 
   bottle do
-    sha1 "c5c73be8677f650f901ca0800f0531ec32d017ff" => :mavericks
-    sha1 "6999a1ab90c356846f8c00a418eb50d715337a71" => :mountain_lion
-    sha1 "a77e3d700c22d3b0e9a3071384db458eabf876fb" => :lion
+    revision 1
+    sha1 "c813d417aa9c859fa3743c3fcc5354de8fc2bf7f" => :mavericks
+    sha1 "07b26a28688501be8b7ccd9fdcebab5e554b240b" => :mountain_lion
+    sha1 "ff356ba3edb96acde53fe5ce296ed1bbd856cf62" => :lion
   end
 
   VER='3.4'  # The <major>.<minor> is used so often.
