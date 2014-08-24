@@ -14,12 +14,14 @@ class Liblacewing < Formula
     sha1 "39c2c5dfd392344bba96f177b8afc79ab6fc73b8" => :lion
   end
 
-  # Use a newer OpenSSL to get SPDY support
   depends_on "openssl"
 
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make", "install"
+
+    # https://github.com/udp/lacewing/issues/104
+    mv "#{lib}/liblacewing.dylib.0.5", "#{lib}/liblacewing.0.5.dylib"
   end
 end
