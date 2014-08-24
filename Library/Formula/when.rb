@@ -2,8 +2,8 @@ require 'formula'
 
 class When < Formula
   homepage 'http://www.lightandmatter.com/when/when.html'
-  url 'http://ftp.de.debian.org/debian/pool/main/w/when/when_1.1.31.orig.tar.gz'
-  sha1 '1bd6d8e1cb40ccc30a61ac8b22376d42fe6b2f2b'
+  url 'http://ftp.de.debian.org/debian/pool/main/w/when/when_1.1.33.orig.tar.gz'
+  sha1 'e314a64d74f79be07da1ade6d39a1fc51205f81d'
 
   def install
     bin.install 'when'
