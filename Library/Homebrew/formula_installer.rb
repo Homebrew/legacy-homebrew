@@ -278,7 +278,7 @@ class FormulaInstaller
     inherited_options = {}
 
     expanded_deps = Dependency.expand(f, deps) do |dependent, dep|
-      options = inherited_options[dep.name] = inherited_options_for(dep)
+      options = inherited_options[dep] = inherited_options_for(dep)
       build = effective_build_options_for(
         dependent,
         inherited_options.fetch(dependent.name, [])
@@ -295,7 +295,7 @@ class FormulaInstaller
       end
     end
 
-    expanded_deps.map { |dep| [dep, inherited_options[dep.name]] }
+    expanded_deps.map { |dep| [dep, inherited_options[dep]] }
   end
 
   def effective_build_options_for(dependent, inherited_options=[])
