@@ -1,15 +1,15 @@
-require 'formula'
+require "formula"
 
 class Dos2unix < Formula
-  homepage 'http://waterlan.home.xs4all.nl/dos2unix.html'
-  url 'http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.0.5.tar.gz'
-  sha1 'b43d138e1713791ea5067c32afbcd7a32655d2fa'
+  homepage "http://waterlan.home.xs4all.nl/dos2unix.html"
+  url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.0.6.tar.gz"
+  sha1 "95db60b4483fc66d93f96fb810e3eccd58e22dbb"
 
-  depends_on 'gettext'
+  depends_on "gettext"
 
   devel do
-    url 'http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.0.6-beta1.tar.gz'
-    sha1 '2ef5f0021c5a3f7a2e1a09faf33d5d410c18a44d'
+    url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.1-beta1.tar.gz"
+    sha1 "32c1f34a5b51d46617f875c482c7849db34fe1b9"
   end
 
   def install

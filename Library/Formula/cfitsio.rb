@@ -3,8 +3,8 @@ require "formula"
 class Cfitsio < Formula
   homepage "http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
   url "http://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio3370.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/machomebrew/mirror/cfitsio-3.370.tar.gz"
-  sha1 "dbe3cc6981951d29200f442f4ab318f8899f9cc8"
+  mirror "ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3370.tar.gz"
+  sha1 "48bd6389dcff3228508eec70384f2cae3a88ff32"
   version "3.370"
 
   option "with-examples", "Compile and install example programs"
