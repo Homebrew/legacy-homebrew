@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Msmtp < Formula
-  homepage 'http://msmtp.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/msmtp/msmtp/1.4.32/msmtp-1.4.32.tar.bz2'
-  sha1 '03186a70035dbbf7a31272a20676b96936599704'
+  homepage "http://msmtp.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/msmtp/msmtp/1.4.32/msmtp-1.4.32.tar.bz2"
+  sha1 "03186a70035dbbf7a31272a20676b96936599704"
   revision 1
 
   bottle do
@@ -12,8 +12,8 @@ class Msmtp < Formula
     sha1 "c028b723e3c4a888b05935a3b5a5e65889e53d7e" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'openssl'
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   def install
     args = %W[
