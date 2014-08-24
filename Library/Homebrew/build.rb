@@ -79,9 +79,16 @@ class Build
     end
   end
 
+  def effective_build_options_for(dependent)
+    args  = dependent.build.used_options
+    args |= Tab.for_formula(dependent).used_options
+    BuildOptions.new(args, dependent.options)
+  end
+
   def expand_reqs
     f.recursive_requirements do |dependent, req|
-      if (req.optional? || req.recommended?) && dependent.build.without?(req)
+      build = effective_build_options_for(dependent)
+      if (req.optional? || req.recommended?) && build.without?(req)
         Requirement.prune
       elsif req.build? && dependent != f
         Requirement.prune
@@ -94,7 +101,8 @@ class Build
 
   def expand_deps
     f.recursive_dependencies do |dependent, dep|
-      if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
+      build = effective_build_options_for(dependent)
+      if (dep.optional? || dep.recommended?) && build.without?(dep)
         Dependency.prune
       elsif dep.build? && dependent != f
         Dependency.prune
