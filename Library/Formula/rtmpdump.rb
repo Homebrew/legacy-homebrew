@@ -7,6 +7,7 @@ class Rtmpdump < Formula
   url 'http://ftp.de.debian.org/debian/pool/main/r/rtmpdump/rtmpdump_2.4+20131018.git79459a2.orig.tar.gz'
   version '2.4+20131018'
   sha1 '17decff9d16bbcf45f622ca8ee2400c46c277500'
+  revision 1
 
   head 'git://git.ffmpeg.org/rtmpdump'
 

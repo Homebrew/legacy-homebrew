@@ -4,6 +4,7 @@ class Spdylay < Formula
   homepage "https://github.com/tatsuhiro-t/spdylay"
   url "https://github.com/tatsuhiro-t/spdylay/archive/v1.2.5.tar.gz"
   sha1 "77bf1f28ebbaf388886831bbf409ab8011ab0886"
+  revision 1
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

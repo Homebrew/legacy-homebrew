@@ -5,6 +5,7 @@ class Nmap < Formula
   head "https://guest:@svn.nmap.org/nmap/", :using => :svn
   url "http://nmap.org/dist/nmap-6.46.tar.bz2"
   sha1 "e19dd4d35d76b24b084665b90c423f53bc7fdcfe"
+  revision 1
 
   bottle do
     sha1 "078e882985fe74919fa280067244a5400ad8ad63" => :mavericks

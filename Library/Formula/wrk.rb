@@ -5,6 +5,7 @@ class Wrk < Formula
   url "https://github.com/wg/wrk/archive/3.1.1.tar.gz"
   sha1 "7cea5d12dc5076fed1a1c730bd3e6eba832a8f61"
   head "https://github.com/wg/wrk.git"
+  revision 1
 
   bottle do
     cellar :any

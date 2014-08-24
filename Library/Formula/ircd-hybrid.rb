@@ -4,6 +4,7 @@ class IrcdHybrid < Formula
   homepage "http://www.ircd-hybrid.org/"
   url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.1.18/ircd-hybrid-8.1.18.tgz"
   sha1 "2dbb4a3dfd4b51d9f0cdcb587720c711e2147ff6"
+  revision 1
 
   # ircd-hybrid needs the .la files
   skip_clean :la
