@@ -422,16 +422,6 @@ def check_ruby_version
   end
 end
 
-def check_homebrew_prefix
-  unless HOMEBREW_PREFIX.to_s == '/usr/local'
-    <<-EOS.undent
-      Your Homebrew is not installed to /usr/local
-      You can install Homebrew anywhere you want, but some brews may only build
-      correctly if you install in /usr/local. Sorry!
-    EOS
-  end
-end
-
 def check_xcode_prefix
   prefix = MacOS::Xcode.prefix
   return if prefix.nil?
