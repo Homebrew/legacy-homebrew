@@ -34,7 +34,7 @@ class FreeradiusServer < Formula
                           "--with-openssl-includes=#{openssl.opt_include}",
                           "--with-openssl-libraries=#{openssl.opt_lib}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   def post_install
