@@ -25,7 +25,7 @@ class IrcdHybrid < Formula
                           "--localstatedir=#{var}",
                           "--sysconfdir=#{etc}",
                           "--enable-openssl=#{Formula["openssl"].opt_prefix}"
-    system "make install"
+    system "make", "install"
     etc.install "doc/reference.conf" => "ircd.conf"
   end
 
