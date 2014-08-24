@@ -25,7 +25,7 @@ class Rdesktop < Formula
             "--x-includes=#{MacOS::X11.include}",
             "--x-libraries=#{MacOS::X11.lib}"]
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end
 
