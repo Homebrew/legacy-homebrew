@@ -3,6 +3,7 @@ require "formula"
 class Libassuan < Formula
   homepage "http://www.gnupg.org/related_software/libassuan/index.en.html"
   url "ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.1.2.tar.bz2"
+  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/libassuan/libassuan-2.1.2.tar.bz2"
   sha1 "7aed69734ba64b63004107cada671b5861d332a4"
 
   bottle do
