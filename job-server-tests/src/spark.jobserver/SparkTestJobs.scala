@@ -62,7 +62,7 @@ class CacheRddByNameJob extends SparkTestJob with NamedRddSupport {
     // RDD should already be in cache the second time
     val rdd2 = namedRdds.get[Int](getClass.getSimpleName)
     assert(rdd2 == Some(rdd), "Error: " + rdd2 + " != " + Some(rdd))
-    rdd.map { x => x * x }.toArray().sum
+    rdd.map { x => x * x }.collect().sum
   }
 }
 
@@ -78,6 +78,7 @@ class ZookeeperJob extends SparkTestJob {
 object SimpleObjectJob extends SparkTestJob {
   def runJob(sc: SparkContext, config: Config): Any = {
     val rdd = sc.parallelize(Seq(1, 2, 3))
-    rdd.toArray().sum
+    rdd.collect().sum
+
   }
 }
