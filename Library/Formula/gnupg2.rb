@@ -4,6 +4,7 @@ class Gnupg2 < Formula
   homepage "https://www.gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
   mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
+  mirror "ftp://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/gnupg/gnupg-2.0.26.tar.bz2"
   sha1 "3ff5b38152c919724fd09cf2f17df704272ba192"
 
   bottle do
