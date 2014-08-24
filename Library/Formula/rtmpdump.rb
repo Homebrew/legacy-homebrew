@@ -16,7 +16,7 @@ class Rtmpdump < Formula
     sha1 "d6803f6c6ab24b45dc4e0626c7c8f5eaef9df034" => :lion
   end
 
-  head 'git://git.ffmpeg.org/rtmpdump'
+  head "git://git.ffmpeg.org/rtmpdump"
 
   depends_on 'openssl'
 
