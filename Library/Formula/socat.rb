@@ -24,20 +24,3 @@ class Socat < Formula
     system "make install"
   end
 end
-
-__END__
-diff --git a/sysincludes.h b/sysincludes.h
-index ee25556..8a57422 100644
---- a/sysincludes.h
-+++ b/sysincludes.h
-@@ -5,6 +5,10 @@
- #ifndef __sysincludes_h_included
- #define __sysincludes_h_included 1
- 
-+#if __APPLE__
-+#define __APPLE_USE_RFC_3542 1
-+#endif
-+
- #if HAVE_LIMITS_H
- #include <limits.h>	/* USHRT_MAX */
- #endif
