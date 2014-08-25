@@ -21,11 +21,25 @@ class Cogl < Formula
   depends_on :x11 => "2.5.1" if build.with? "x"
   depends_on "gobject-introspection"
 
+  resource "grep" do
+    url "http://ftpmirror.gnu.org/grep/grep-2.20.tar.xz"
+    mirror "https://ftp.gnu.org/gnu/grep/grep-2.20.tar.xz"
+    sha256 "f0af452bc0d09464b6d089b6d56a0a3c16672e9ed9118fbe37b0b6aeaf069a65"
+  end if MacOS.version == :lion
+
   # Patch from MacPorts, reported upstream at https://bugzilla.gnome.org/show_bug.cgi?id=708825
   # https://trac.macports.org/browser/trunk/dports/graphics/cogl/files/patch-clock_gettime.diff
   patch :DATA
 
   def install
+    resource("grep").stage do
+      system "./configure", "--disable-dependency-tracking",
+                            "--disable-nls",
+                            "--prefix=#{buildpath}/grep"
+      system "make", "install"
+      ENV["GREP"] = "#{buildpath}/grep/bin/grep"
+    end if MacOS.version == :lion
+
     system "./autogen.sh" if build.head?
     args = %W[
       --disable-dependency-tracking
