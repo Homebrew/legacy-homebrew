@@ -7,3 +7,6 @@ test-reports/
 .ensime*
 .idea*
 .vagrant
+
+# ignore config files
+*.conf
