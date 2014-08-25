@@ -5,6 +5,10 @@ class Phash < Formula
   url 'http://phash.org/releases/pHash-0.9.6.tar.gz'
   sha1 '26f4c1e7ca6b77e6de2bdfce490b2736d4b63753'
 
+  option "disable-image-hash", "Disable image hash"
+  option "disable-video-hash", "Disable video hash"
+  option "disable-audio-hash", "Disable audio hash"
+
   depends_on 'cimg' unless build.include? "disable-image-hash" and build.include? "disable-video-hash"
   depends_on 'ffmpeg' unless build.include? "disable-video-hash"
 
@@ -13,10 +17,6 @@ class Phash < Formula
     depends_on 'libsamplerate'
     depends_on 'mpg123'
   end
-
-  option "disable-image-hash", "Disable image hash"
-  option "disable-video-hash", "Disable video hash"
-  option "disable-audio-hash", "Disable audio hash"
 
   fails_with :clang do
     build 318
