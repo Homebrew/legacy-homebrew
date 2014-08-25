@@ -7,9 +7,10 @@ class FreeradiusServer < Formula
   revision 1
 
   bottle do
-    sha1 "1b09524c30ec6cbc8ec20693c4dd2775496005fa" => :mavericks
-    sha1 "ee83b996d5a78b1100438c91e5757d046212191f" => :mountain_lion
-    sha1 "e5d9d29b3beb24254b6570cbb1dc3c6c13496892" => :lion
+    revision 1
+    sha1 "8d4ee7a2f614da03a1cabd3ec5214a70d0170319" => :mavericks
+    sha1 "2d4a5a91820eead568781f256e5c4ad4b9b44afb" => :mountain_lion
+    sha1 "b553c57efec7453296980809c417d090835522d8" => :lion
   end
 
   depends_on "autoconf" => :build
