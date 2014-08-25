@@ -32,6 +32,10 @@ class Bind < Formula
     ENV.deparallelize
     system "make"
     system "make install"
+
+    (buildpath+"named.conf").write named_conf
+    system "#{sbin}/rndc-confgen", "-a", "-c", "#{buildpath}/rndc.key"
+    etc.install "named.conf", "rndc.key"
   end
 
   def post_install
@@ -41,13 +45,8 @@ class Bind < Formula
       (var + 'named/localhost.zone').write localhost_zone
       (var + 'named/named.local').write named_local
     end
-    (etc + 'named.conf').write(named_conf)
-
     # Create initial log directory.
     (var + 'log/named').mkpath
-
-    # Generate rndc key automatically.
-    system "#{sbin}/rndc-confgen -a -c \"#{etc}/rndc.key\"" unless (etc + 'rndc.key').exist?
   end
 
   def named_conf; <<-EOS.undent
