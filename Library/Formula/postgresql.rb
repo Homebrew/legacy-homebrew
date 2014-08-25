@@ -17,9 +17,10 @@ class Postgresql < Formula
   end
 
   bottle do
-    sha1 "1ba9ddc9549d9d4a0f80598ee8fce923d438b57e" => :mavericks
-    sha1 "ff5400b732cffccbefd504e40a327977d22f09af" => :mountain_lion
-    sha1 "36d064f364753bcbd726f7a778ccb7fa9e9cb139" => :lion
+    revision 1
+    sha1 "d298f4cd7fffa6b8b879ccc2c6d32fc191be41ed" => :mavericks
+    sha1 "c5c5d23e95c1950d4b33865b8ebdce28b4e6706f" => :mountain_lion
+    sha1 "860395322283401cfc1d0694984c272546f21fa9" => :lion
   end
 
   devel do

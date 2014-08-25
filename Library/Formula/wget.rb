@@ -11,9 +11,10 @@ class Wget < Formula
   revision 2
 
   bottle do
-    sha1 "5c2a6940df44371e7443b99b04b21ea3822074ab" => :mavericks
-    sha1 "933062e5531cf27e505ae0eb86e305e0188b04ff" => :mountain_lion
-    sha1 "8c566c9aada2746dba7a6cc4bba560dec363ea8f" => :lion
+    revision 1
+    sha1 "5e3dd7a6e79e4de274b1c1dc1baa6d8110a56000" => :mavericks
+    sha1 "f4e4664b78cfc1c515e791f3b2ffedf7207a2a22" => :mountain_lion
+    sha1 "217a42b233f21fcb693723f91ec6df0ae168609e" => :lion
   end
 
   head do

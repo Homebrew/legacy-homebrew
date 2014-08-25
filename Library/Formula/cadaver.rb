@@ -7,8 +7,10 @@ class Cadaver < Formula
   revision 1
 
   bottle do
-    sha1 "1c498d877d44df201f6335847f010a7c8b5833f4" => :mavericks
-    sha1 "b9b21eeaf23ce5dbed36b7d799f233636163216f" => :lion
+    revision 1
+    sha1 "0829bec6edbe68f27cac9698755b16ba0781bb88" => :mavericks
+    sha1 "d65e0588474bd227e077fab167e6bbdf848296b5" => :mountain_lion
+    sha1 "fdef244b44064695da2d0c2107bc4721ee47e613" => :lion
   end
 
   depends_on "pkg-config" => :build

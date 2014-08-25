@@ -2,13 +2,13 @@ require 'formula'
 
 class Libsigcxx < Formula
   homepage 'http://libsigc.sourceforge.net'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.3/libsigc++-2.3.1.tar.xz'
-  sha256 '67d05852b31fdb267c9fdcecd40b046a11aa54d884435e99e3c60dd20cd60393'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.2/libsigc++-2.2.11.tar.xz'
+  sha256 '9834045f74f56752c2c6b3cdc195c30ab8314ad22dc8e626d6f67f940f1e4957'
 
   bottle do
-    sha1 "8e806e2532f2ef1a1a8bb936a1f54e34c20bda69" => :mavericks
-    sha1 "2a522fa21082df0620b515dc4466dcb7eb0c5c6f" => :mountain_lion
-    sha1 "328a7b8efcfd560caae155d3acf25087c2a05462" => :lion
+    sha1 "c3c2dd772631225eba25b4df6ce357a41f88af11" => :mavericks
+    sha1 "f8270257d06a6cc5c178c243b3cfa3d44cb4a4c0" => :mountain_lion
+    sha1 "dc6bebf72b9d3eb3d91117e4ccf503edb0b1293c" => :lion
   end
 
   option :cxx11

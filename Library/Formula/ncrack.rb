@@ -7,9 +7,10 @@ class Ncrack < Formula
   revision 1
 
   bottle do
-    sha1 "b2931a0cd792bde2eb8582f43bb43243e7542978" => :mavericks
-    sha1 "9a743f6cef362833984f5eb9752b413f7f7960d8" => :mountain_lion
-    sha1 "46c7cd34de5c0725fcee58cf90acfc7902b1335c" => :lion
+    revision 1
+    sha1 "c3ab26f5b84bbb038c306b6d29abeef1f57614f7" => :mavericks
+    sha1 "1f5e6e974cfcc4fbfd36783677a63f55d4e51aa8" => :mountain_lion
+    sha1 "d385a3dfa6765075b5bad721cfe99f3eebd64c7f" => :lion
   end
 
   depends_on "openssl"

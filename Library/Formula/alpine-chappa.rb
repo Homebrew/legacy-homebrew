@@ -7,9 +7,10 @@ class AlpineChappa < Formula
   revision 1
 
   bottle do
-    sha1 "0eb62705f4e70e72f003aa9d190035d9bb1f3616" => :mavericks
-    sha1 "a24a0352fa92ab5950caa01e1ddec388b5847660" => :mountain_lion
-    sha1 "a74ca1b11927dfe99aea40e54cc70ed4b6bb8929" => :lion
+    revision 1
+    sha1 "13ca00b366d11374431dbcf964a3c41360f14615" => :mavericks
+    sha1 "1a2169f175e1810dc647c4c48272a697510161ce" => :mountain_lion
+    sha1 "d8915dedd732097b35c485706bd7a33ad5f6d733" => :lion
   end
 
   depends_on "openssl"

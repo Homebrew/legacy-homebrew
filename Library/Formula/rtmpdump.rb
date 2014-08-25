@@ -11,9 +11,10 @@ class Rtmpdump < Formula
 
   bottle do
     cellar :any
-    sha1 "29ea9f093cbed2342eec3486382335ae2908df22" => :mavericks
-    sha1 "02666b18d700e6d469186c26e416316a8bd7560b" => :mountain_lion
-    sha1 "d6803f6c6ab24b45dc4e0626c7c8f5eaef9df034" => :lion
+    revision 1
+    sha1 "1126cbfa5d39d023ccad67fb0cce175da3d2a7cf" => :mavericks
+    sha1 "c2d059576e7569d84efb186efff73abb1284660c" => :mountain_lion
+    sha1 "b13347d9c8733475e46d5e29201c34d388ccab17" => :lion
   end
 
   head "git://git.ffmpeg.org/rtmpdump"
