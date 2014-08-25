@@ -5,12 +5,12 @@ class Bind < Formula
   url 'http://ftp.isc.org/isc/bind9/9.10.0-P2/bind-9.10.0-P2.tar.gz'
   sha1 'c57b5825e36933119e9fd6f43e3f52262e7ff4ed'
   version '9.10.0-P2'
+  revision 1
 
   bottle do
-    revision 1
-    sha1 "068156f5b18530fe37e19b9fa17644925e9e4708" => :mavericks
-    sha1 "62e59a79007bed3daa873951fcd3bef5e221596f" => :mountain_lion
-    sha1 "114293393260de545393e4ed66ca252e881aa21f" => :lion
+    sha1 "5ab681399a67f75e0e84fefb2aa19b329b405d07" => :mavericks
+    sha1 "4433db35e576d83f01b90327cbbf0dc5802754af" => :mountain_lion
+    sha1 "580b50ae65b569f8bb7de7dce9c4317385cac236" => :lion
   end
 
   head "https://source.isc.org/git/bind9.git"

@@ -5,6 +5,13 @@ class ShrewsoftVpnClient < Formula
   url "https://www.shrew.net/download/ike/ike-2.2.1-release.tbz2"
   sha1 "a52a49248fa663dfbd9e208eaa3e706a17bb9c8c"
   head "svn://svn.shrew.net/ike/head"
+  revision 1
+
+  bottle do
+    sha1 "881cc1a56768d4cede305ca76c13da5df499936e" => :mavericks
+    sha1 "6869696bab6b116749cbe7444d34c3fc4a406ee5" => :mountain_lion
+    sha1 "68811c1b17444a6d2e8d02b147913e41c9f22ed1" => :lion
+  end
 
   option "without-gui", "Don't build Client GUI"
   option "without-natt", "Disable Nat Traversal Support"

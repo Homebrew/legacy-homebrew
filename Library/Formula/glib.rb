@@ -29,7 +29,7 @@ class Glib < Formula
     url 'https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/config.h.ed'
     version '111532'
     sha1 '0926f19d62769dfd3ff91a80ade5eff2c668ec54'
-  end if build.universal?
+  end
 
   # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix,
   # but needed to fix an assumption about the location of the d-bus machine

@@ -158,13 +158,10 @@ class FormulaInstaller
         pour
         @poured_bottle = true
 
-        stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
-        stdlib_in_use = CxxStdlib.create(stdlibs.first, MacOS.default_compiler)
-        begin
-          stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
-        rescue IncompatibleCxxStdlibs => e
-          opoo e.message
-        end
+        CxxStdlib.check_compatibility(
+          f, f.recursive_dependencies,
+          Keg.new(f.prefix), MacOS.default_compiler
+        )
 
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
@@ -304,6 +301,7 @@ class FormulaInstaller
   def effective_build_options_for(dependent, inherited_options=[])
     args  = dependent.build.used_options
     args |= dependent == f ? options : inherited_options
+    args |= Tab.for_formula(dependent).used_options
     BuildOptions.new(args, dependent.options)
   end
 

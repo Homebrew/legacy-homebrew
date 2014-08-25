@@ -4,12 +4,12 @@ class Elinks < Formula
   homepage 'http://elinks.or.cz/'
   url 'http://elinks.or.cz/download/elinks-0.11.7.tar.bz2'
   sha1 'd13edc1477d0ab32cafe7d3c1f3a23ae1c0a5c54'
-  revision 1
+  revision 2
 
   bottle do
-    sha1 "583e1341f43122ae82e2f1432c2a836d33450fc5" => :mavericks
-    sha1 "326f4f9c079d42c11463b224d1a33e1b74705505" => :mountain_lion
-    sha1 "069240528115caa0885c2ead5f83515dbab6a3f8" => :lion
+    sha1 "905847ca3f02e524ecab07803c2a80e98c00c746" => :mavericks
+    sha1 "dcb12cb5e2f84a975030fcd3f87e4729d1714213" => :mountain_lion
+    sha1 "7b596a8f0834abc4170404b30f34195a533035c4" => :lion
   end
 
   devel do

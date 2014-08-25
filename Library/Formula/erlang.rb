@@ -8,13 +8,14 @@ class Erlang < Formula
   # Download tarball from GitHub; it is served faster than the official tarball.
   url "https://github.com/erlang/otp/archive/OTP-17.1.tar.gz"
   sha1 "f983a14152948a23418133155b5f9ba070544292"
+  revision 1
 
   head 'https://github.com/erlang/otp.git', :branch => 'master'
 
   bottle do
-    sha1 "5b36fc7bff7ddb0e4fb3ab220d5a1071e42b71ba" => :mavericks
-    sha1 "9f2620304d3b00110c9836fefb3aef69e5071170" => :mountain_lion
-    sha1 "c511b8f0706de912124258d5e1066850de8a59b3" => :lion
+    sha1 "6ae0639834ce4ae07b08c475fa1c5765c12c0f2c" => :mavericks
+    sha1 "4655171fffeb0bc8ec9df0b3e394532340e5cfc7" => :mountain_lion
+    sha1 "80ee02bfc87fa1397d5499f9f672cff2350ef9e3" => :lion
   end
 
   resource "man" do

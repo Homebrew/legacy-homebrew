@@ -79,9 +79,16 @@ class Build
     end
   end
 
+  def effective_build_options_for(dependent)
+    args  = dependent.build.used_options
+    args |= Tab.for_formula(dependent).used_options
+    BuildOptions.new(args, dependent.options)
+  end
+
   def expand_reqs
     f.recursive_requirements do |dependent, req|
-      if (req.optional? || req.recommended?) && dependent.build.without?(req)
+      build = effective_build_options_for(dependent)
+      if (req.optional? || req.recommended?) && build.without?(req)
         Requirement.prune
       elsif req.build? && dependent != f
         Requirement.prune
@@ -94,7 +101,8 @@ class Build
 
   def expand_deps
     f.recursive_dependencies do |dependent, dep|
-      if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
+      build = effective_build_options_for(dependent)
+      if (dep.optional? || dep.recommended?) && build.without?(dep)
         Dependency.prune
       elsif dep.build? && dependent != f
         Dependency.prune
@@ -108,8 +116,7 @@ class Build
     keg_only_deps = deps.map(&:to_formula).select(&:keg_only?)
 
     deps.map(&:to_formula).each do |dep|
-      opt = HOMEBREW_PREFIX.join("opt", dep.name)
-      fixopt(dep) unless opt.directory?
+      fixopt(dep) unless dep.opt_prefix.directory?
     end
 
     pre_superenv_hacks
@@ -182,25 +189,11 @@ class Build
 
   def detect_stdlibs
     keg = Keg.new(f.prefix)
-    # This first test includes executables because we still
-    # want to record the stdlib for something that installs no
-    # dylibs.
-    stdlibs = keg.detect_cxx_stdlibs
-    # This currently only tracks a single C++ stdlib per dep,
-    # though it's possible for different libs/executables in
-    # a given formula to link to different ones.
-    stdlib_in_use = CxxStdlib.create(stdlibs.first, ENV.compiler)
-    begin
-      stdlib_in_use.check_dependencies(f, deps)
-    rescue IncompatibleCxxStdlibs => e
-      opoo e.message
-    end
+    CxxStdlib.check_compatibility(f, deps, keg, ENV.compiler)
 
-    # This second check is recorded for checking dependencies,
-    # so executable are irrelevant at this point. If a piece
-    # of software installs an executable that links against libstdc++
-    # and dylibs against libc++, libc++-only dependencies can safely
-    # link against it.
+    # The stdlib recorded in the install receipt is used during dependency
+    # compatibility checks, so we only care about the stdlib that libraries
+    # link against.
     keg.detect_cxx_stdlibs(:skip_executables => true)
   end
 

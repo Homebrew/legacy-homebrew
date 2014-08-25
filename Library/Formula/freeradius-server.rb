@@ -4,6 +4,13 @@ class FreeradiusServer < Formula
   homepage "http://freeradius.org/"
   url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.5.tar.gz"
   sha1 "4d18ed8ff3fde4a29112ecc07f175b774ed5f702"
+  revision 1
+
+  bottle do
+    sha1 "1b09524c30ec6cbc8ec20693c4dd2775496005fa" => :mavericks
+    sha1 "ee83b996d5a78b1100438c91e5757d046212191f" => :mountain_lion
+    sha1 "e5d9d29b3beb24254b6570cbb1dc3c6c13496892" => :lion
+  end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -27,7 +34,7 @@ class FreeradiusServer < Formula
                           "--with-openssl-includes=#{openssl.opt_include}",
                           "--with-openssl-libraries=#{openssl.opt_lib}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   def post_install

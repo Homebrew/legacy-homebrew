@@ -5,6 +5,13 @@ class Dovecot < Formula
   url "http://dovecot.org/releases/2.2/dovecot-2.2.13.tar.gz"
   mirror "http://fossies.org/linux/misc/dovecot-2.2.13.tar.gz"
   sha1 "ee8efc77cb9d502dc416ae4fba242adc5f01c163"
+  revision 1
+
+  bottle do
+    sha1 "a6415b279563db21494c1864d270fb61c312f18a" => :mavericks
+    sha1 "cc8309d739d204b5ce5c45335be5ebbbff410a9a" => :mountain_lion
+    sha1 "4052ef056229342578eac5e1110092c8f54d68c9" => :lion
+  end
 
   depends_on "clucene" => :optional
   depends_on "openssl"

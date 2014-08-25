@@ -4,12 +4,12 @@ class Ldns < Formula
   homepage 'http://nlnetlabs.nl/projects/ldns/'
   url 'http://nlnetlabs.nl/downloads/ldns/ldns-1.6.17.tar.gz'
   sha1 '4218897b3c002aadfc7280b3f40cda829e05c9a4'
+  revision 1
 
   bottle do
-    revision 2
-    sha1 "0730f244c3191ccc105e681d0a046dd0a03f582d" => :mavericks
-    sha1 "d1d014414e72ff7635bea795b2b140d9f33898f3" => :mountain_lion
-    sha1 "1cfa7037a76eac035e4e1089514a044eff2e6b8b" => :lion
+    sha1 "17ad3b757668a1b6a5ecc9a3e5bed0a7d326b606" => :mavericks
+    sha1 "aa5cec1eba364908b5651be159bc64ffccc4b8ad" => :mountain_lion
+    sha1 "00fa56029996e5dd27eb6eb7168610dc4ce3c2cc" => :lion
   end
 
   depends_on :python => :optional

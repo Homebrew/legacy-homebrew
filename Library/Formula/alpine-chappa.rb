@@ -4,6 +4,13 @@ class AlpineChappa < Formula
   homepage "http://patches.freeiz.com/alpine/"
   url "http://patches.freeiz.com/alpine/release/src/alpine-2.11.tar.xz"
   sha1 "656556f5d2e5ec7e3680d1760cd02aa3a0072c46"
+  revision 1
+
+  bottle do
+    sha1 "0eb62705f4e70e72f003aa9d190035d9bb1f3616" => :mavericks
+    sha1 "a24a0352fa92ab5950caa01e1ddec388b5847660" => :mountain_lion
+    sha1 "a74ca1b11927dfe99aea40e54cc70ed4b6bb8929" => :lion
+  end
 
   depends_on "openssl"
 

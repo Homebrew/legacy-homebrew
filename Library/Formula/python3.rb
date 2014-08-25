@@ -4,11 +4,13 @@ class Python3 < Formula
   homepage 'https://www.python.org/'
   url 'https://python.org/ftp/python/3.4.1/Python-3.4.1.tgz'
   sha1 'e8c1bd575a6ccc2a75f79d9d094a6a29d3802f5d'
+  revision 1
 
   bottle do
-    sha1 "e86f7aede6e519a426e326f5020dc780ee39f05e" => :mavericks
-    sha1 "ad0bdc7fbf3f5079d134405fc83465634e07c40d" => :mountain_lion
-    sha1 "942f16fe68c47b267c958eca67f3754b412bd10d" => :lion
+    revision 1
+    sha1 "c813d417aa9c859fa3743c3fcc5354de8fc2bf7f" => :mavericks
+    sha1 "07b26a28688501be8b7ccd9fdcebab5e554b240b" => :mountain_lion
+    sha1 "ff356ba3edb96acde53fe5ce296ed1bbd856cf62" => :lion
   end
 
   VER='3.4'  # The <major>.<minor> is used so often.

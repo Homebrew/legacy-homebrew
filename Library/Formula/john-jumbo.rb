@@ -4,11 +4,12 @@ class JohnJumbo < Formula
   homepage 'http://www.openwall.com/john/'
   url 'http://www.openwall.com/john/g/john-1.7.9.tar.bz2'
   sha1 '8f77bdd42b7cf94ec176f55ea69c4da9b2b8fe3b'
+  revision 1
 
   bottle do
-    sha1 "e8e70d8faea2a658e13eedab50e47963ec4eee90" => :mavericks
-    sha1 "ab7863263afde93de0e053e69600eabed08f372c" => :mountain_lion
-    sha1 "b5fdd50dfc99f07f8afc1c6fa53f6afdc0c5684c" => :lion
+    sha1 "b0fd107f6406c417b2508b474cdd0c2731e8218f" => :mavericks
+    sha1 "00e8a0a219723db4a5e3e58b43676cefb0af1b12" => :mountain_lion
+    sha1 "00bc789f40f15c9d6e0cac054f8100a8c68e3b6d" => :lion
   end
 
   conflicts_with 'john', :because => 'both install the same binaries'

@@ -4,14 +4,15 @@ class Libimobiledevice < Formula
   homepage "http://www.libimobiledevice.org/"
   url "http://www.libimobiledevice.org/downloads/libimobiledevice-1.1.6.tar.bz2"
   sha1 "3016bf1241bc5a77a621c49d82d71bb8f32905e4"
+  revision 1
 
   head "http://cgit.sukimashita.com/libimobiledevice.git"
 
   bottle do
     cellar :any
-    sha1 "f34c0c45c2be50b1fed8eb40760462a7339fffcd" => :mavericks
-    sha1 "b1abcc6f7bdc142d8f3da012cd94eddef42ef4a1" => :mountain_lion
-    sha1 "0bcc31e491474f923c145b702dc7870ddf003fff" => :lion
+    sha1 "8e2b8852177d64b77a2b0f55a0690a75520ddd52" => :mavericks
+    sha1 "8338602f988b0cfe097c1a68141d70b3f8715527" => :mountain_lion
+    sha1 "79225f9bafe448f7964c50be8c95638b653294eb" => :lion
   end
 
   head do

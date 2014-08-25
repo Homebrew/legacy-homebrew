@@ -4,6 +4,14 @@ class Spdylay < Formula
   homepage "https://github.com/tatsuhiro-t/spdylay"
   url "https://github.com/tatsuhiro-t/spdylay/archive/v1.2.5.tar.gz"
   sha1 "77bf1f28ebbaf388886831bbf409ab8011ab0886"
+  revision 1
+
+  bottle do
+    cellar :any
+    sha1 "cc83129be8229d47e618aed02f20406296c76a86" => :mavericks
+    sha1 "63cbd6dab3b8cf7a1ef9b801853ef46eb67c1bea" => :mountain_lion
+    sha1 "399903427dc0c5e7f7303fd14872020ba633e4ca" => :lion
+  end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -23,7 +31,7 @@ class Spdylay < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do

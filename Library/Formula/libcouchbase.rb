@@ -4,11 +4,12 @@ class Libcouchbase < Formula
   homepage 'http://couchbase.com/communities/c'
   url 'http://packages.couchbase.com/clients/c/libcouchbase-2.4.0.tar.gz'
   sha1 '3ce25fa98255967775b4aa4e5b13b7c4ff0a866e'
+  revision 1
 
   bottle do
-    sha1 "deea0e789aa2739016a2d9cfb2d7bf9342782775" => :mavericks
-    sha1 "912bb53584946c23e80cdcfb8730b8739a70af59" => :mountain_lion
-    sha1 "32c9ea13816908b943be75b6a677754dd26c8270" => :lion
+    sha1 "09afac35658aa9aa455d530e7b29f968c02f0bbf" => :mavericks
+    sha1 "38eb240b28b0d906b489aafdf4d03a882dbea236" => :mountain_lion
+    sha1 "fa295aef72d291ccf0e00553a66d693150919494" => :lion
   end
 
   option :universal

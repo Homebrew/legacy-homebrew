@@ -5,12 +5,13 @@ class Libstrophe < Formula
   url "https://github.com/strophe/libstrophe/archive/0.8.6.tar.gz"
   sha1 "fc30c78945cb075a636cff8c76be671c8a364eb0"
   head "https://github.com/strophe/libstrophe.git"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "556ea839a05d6cde40358ca5a2a54c4efbd198eb" => :mavericks
-    sha1 "ffb4d4ccb4d334c9d032fa602a7c6714c7925ceb" => :mountain_lion
-    sha1 "fa2b24f8b3bdb025c85314ff5ac9b0acb9474eee" => :lion
+    sha1 "77d6711507a185eb546160ed8249f5037cee0419" => :mavericks
+    sha1 "1720a1d673d178ab70eeca0a6516b8a60a77e8c1" => :mountain_lion
+    sha1 "fcc5859e1551887cd4361488208090496539978c" => :lion
   end
 
   depends_on "autoconf" => :build

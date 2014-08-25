@@ -6,8 +6,8 @@ class SwiProlog < Formula
   sha1 "38cc6772a48fd412f50fc06e24e6e4673eb71d3b"
 
   devel do
-    url "http://www.swi-prolog.org/download/devel/src/pl-7.1.17.tar.gz"
-    sha1 "48c721e4497e9a2d3724a90385bd8ed3f68ed193"
+    url "http://www.swi-prolog.org/download/devel/src/pl-7.1.21.tar.gz"
+    sha1 "8babb3a043aaa29f17d15a34cf8b7d3891967d0d"
   end
 
   head do
@@ -20,12 +20,12 @@ class SwiProlog < Formula
   option "with-jpl", "Enable JPL (Java Prolog Bridge)"
   option "with-xpce", "Enable XPCE (Prolog Native GUI Library)"
 
+  depends_on "pkg-config" => :build
   depends_on "readline"
   depends_on "gmp"
   depends_on "libarchive" => :optional
 
   if build.with? "xpce"
-    depends_on "pkg-config" => :build
     depends_on :x11
     depends_on "jpeg"
   end
