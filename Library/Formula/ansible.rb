@@ -43,11 +43,9 @@ class Ansible < Formula
     sha1 'a9b24d887f2be772921b3ee30a0b9d435cffadda'
   end
 
-  if build.with? 'accelerate'
-    resource 'python-keyczar' do
-      url 'https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71b.tar.gz'
-      sha1 '20c7c5d54c0ce79262092b4cc691aa309fb277fa'
-    end
+  resource 'python-keyczar' do
+    url 'https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71b.tar.gz'
+    sha1 '20c7c5d54c0ce79262092b4cc691aa309fb277fa'
   end
 
   def install
