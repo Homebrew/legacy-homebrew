@@ -141,10 +141,6 @@ class Mpd < Formula
         <true/>
         <key>KeepAlive</key>
         <true/>
-        <key>StandardErrorPath</key>
-        <string>#{var}/log/mpd_err.log</string>
-        <key>StandardOutPath</key>
-        <string>#{var}/log/mpd.log</string>
     </dict>
     </plist>
     EOS
