@@ -5,6 +5,12 @@ class Cogl < Formula
   url "http://ftp.gnome.org/pub/gnome/sources/cogl/1.18/cogl-1.18.2.tar.xz"
   sha256 "9278e519d5480eb0379efd48db024e8fdbf93f01dff48a7e756b85b508a863aa"
 
+  bottle do
+    sha1 "6ed57026e1e5f8a7ae7ca4d6191fcdfa496d7b9f" => :mavericks
+    sha1 "a064bf230c3188142a2c8d5d1d6031f164a1507f" => :mountain_lion
+    sha1 "994fa2392d984d6a7a6885d7ed705231c8fd5f71" => :lion
+  end
+
   head do
     url "git://git.gnome.org/cogl"
     depends_on "autoconf" => :build
