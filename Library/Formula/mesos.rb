@@ -6,6 +6,8 @@ class Mesos < Formula
   sha1 "3f219313324f86e11df25688ccb86c2814ab29c5"
 
   depends_on :java => "1.7"
+  depends_on :macos => :mountain_lion
+
   depends_on "maven" => :build
 
   def install
