@@ -8,9 +8,10 @@ class Ori < Formula
 
   bottle do
     cellar :any
-    sha1 "90e973e4f8921e697668121024fe0417148fe385" => :mavericks
-    sha1 "a49ee6a14036e47cfe41c412377e17b6e49e7abd" => :mountain_lion
-    sha1 "2f653f4b5c98850aef526c724b1005520c562189" => :lion
+    revision 1
+    sha1 "d2c83bbfdd11528b16ff74b933181ec32d8f37d2" => :mavericks
+    sha1 "cce9adc1c8c8f59be72ef65b4642fff74cbe8cb3" => :mountain_lion
+    sha1 "7cbe224571134ff554cb323ebc2ab13a8dd0cf4d" => :lion
   end
 
   depends_on "pkg-config" => :build
