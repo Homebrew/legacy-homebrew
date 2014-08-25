@@ -66,8 +66,8 @@ class Gnupg2 < Formula
 
     system "./configure", *args
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
 
     # Conflicts with a manpage from the 1.x formula, and
     # gpg-zip isn't installed by this formula anyway
