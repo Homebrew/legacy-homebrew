@@ -8,9 +8,10 @@ class Osslsigncode < Formula
 
   bottle do
     cellar :any
-    sha1 "0f6af448002b345962fc41199ade20fb16b74891" => :mavericks
-    sha1 "bbf54f6cb1f2be5a82628e6b34af03f9b9311237" => :mountain_lion
-    sha1 "53019dd5187a15410279c583c2445a38bfe219ba" => :lion
+    revision 1
+    sha1 "343585fea99f289ae65a66297cb644fb96ec5c89" => :mavericks
+    sha1 "93a53082b119c7facf8e5b59ede70d0756f72eb9" => :mountain_lion
+    sha1 "aabd093edd467aa6804c4e52ac0f5fb95359c6c3" => :lion
   end
 
   depends_on "pkg-config" => :build
