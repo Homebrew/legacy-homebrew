@@ -19,10 +19,8 @@ class Abcm2ps < Formula
     sha1 "b60626ef21b269fa18ec3dc8ba11354d798ddded"
   end
 
+  depends_on "pkg-config" => :build
   depends_on "pango" => :optional
-  if build.with? "pango"
-    depends_on "pkg-config" => :build
-  end
 
   def install
     system "./configure", "--prefix=#{prefix}"
