@@ -7,9 +7,10 @@ class Rdesktop < Formula
   revision 1
 
   bottle do
-    sha1 "ab2c80243535d1d5dadfe660da2f00c834e07f62" => :mavericks
-    sha1 "bc754bfedc56617646c663c49e2c174e54d8c1a8" => :mountain_lion
-    sha1 "7ae49942da08b4ab54aa6a7a072f62cb2def8062" => :lion
+    revision 1
+    sha1 "4229024b894c4f3eb595abb5b8e70a6c2bd076cb" => :mavericks
+    sha1 "cebd2a21f1d1b160f3b6961d12307846e5db25fc" => :mountain_lion
+    sha1 "cd58bdfc157d7bc2acba103f38f80ff0f48e0c17" => :lion
   end
 
   depends_on "openssl"
