@@ -7,6 +7,7 @@ class Truecrack < Formula
   version "3.5"
 
   # Fix missing return value compilation issue
+  # https://code.google.com/p/truecrack/issues/detail?id=41
   patch do
     url "https://gist.githubusercontent.com/anonymous/b912a1ede06eb1e8eb38/raw/1394a8a6bedb7caae8ee034f512f76a99fe55976/truecrack-return-value-fix.patch"
     sha1 "6a0fa8a58284dec2352e7c090f68bb03d4dc75ab"
