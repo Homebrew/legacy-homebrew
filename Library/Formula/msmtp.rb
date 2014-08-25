@@ -7,9 +7,10 @@ class Msmtp < Formula
   revision 1
 
   bottle do
-    sha1 "17021ef72dbf0c141e352531a2a61923c55a91b7" => :mavericks
-    sha1 "ccc3ff12b2a2bd7299b3fc918eaafa3546a95598" => :mountain_lion
-    sha1 "c028b723e3c4a888b05935a3b5a5e65889e53d7e" => :lion
+    revision 1
+    sha1 "482d3583ebc0964f56c970e0310ed4ba639229e6" => :mavericks
+    sha1 "d2c84e885cbf3e8910ade9c0c6715aac982dabe5" => :mountain_lion
+    sha1 "0f45147dfade4a1a236839e787c33848c51a8143" => :lion
   end
 
   depends_on "pkg-config" => :build
