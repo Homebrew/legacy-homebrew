@@ -8,9 +8,10 @@ class Libre < Formula
 
   bottle do
     cellar :any
-    sha1 "9d4720852f6ae6c65def0a8d4b1746b026fd966f" => :mavericks
-    sha1 "b5118af4f1a2094131355f4d7a030a58f7e2ca5d" => :mountain_lion
-    sha1 "d79a0aaf97c024c65ef17130e9e0d52007f506b9" => :lion
+    revision 1
+    sha1 "88d1c5f7d23fd08a42a3ec48ad95fc7f7fc2a679" => :mavericks
+    sha1 "a480cb5227b0d7c8e25152e93696f8be412c3f40" => :mountain_lion
+    sha1 "f369dceb197128b47afa6a4010ebfe8b934cde12" => :lion
   end
 
   depends_on "openssl"
