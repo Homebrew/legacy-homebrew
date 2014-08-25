@@ -8,9 +8,6 @@ class Postgresql < Formula
     url "http://ftp.postgresql.org/pub/source/v9.3.5/postgresql-9.3.5.tar.bz2"
     sha256 "14176ffb1f90a189e7626214365be08ea2bfc26f26994bafb4235be314b9b4b0"
 
-    # ossp-uuid support cannot be compiled on 9.4beta1:
-    # http://thread.gmane.org/gmane.comp.db.postgresql.devel.general/229339
-    # Will keep it stable-only until the usptream issues are resolved.
     depends_on "ossp-uuid" => :recommended
     # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
     patch :DATA
@@ -27,6 +24,8 @@ class Postgresql < Formula
     url 'http://ftp.postgresql.org/pub/source/v9.4beta2/postgresql-9.4beta2.tar.bz2'
     version '9.4beta2'
     sha256 '567406cf58386917916d8ef7ac892bf79e98742cd16909bb00fc920dd31a388c'
+
+    depends_on "e2fsprogs" => :recommended
   end
 
   option '32-bit'
@@ -75,6 +74,10 @@ class Postgresql < Formula
       ENV.append 'CFLAGS', `uuid-config --cflags`.strip
       ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
       ENV.append 'LIBS', `uuid-config --libs`.strip
+    end
+
+    if build.devel? && build.with?("e2fsprogs")
+      args << "--with-uuid=e2fs"
     end
 
     if build.build_32_bit?
