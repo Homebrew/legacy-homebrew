@@ -6,10 +6,10 @@ class Rcssserver < Formula
   sha1 "43012eb5301716e457e93ec42c0c00727e600c84"
 
   bottle do
-    cellar :any
-    sha1 "72e049b25605887a54b941a388ad16bd50baad69" => :mavericks
-    sha1 "9a398073a7e711b49ba39b2da09c0f7a29ed19af" => :mountain_lion
-    sha1 "ab94f23eae47b48ce2f9ed3d94e727f2d7387289" => :lion
+    revision 1
+    sha1 "56c32d383b277e5fe7ac2eff20901bf0125824a2" => :mavericks
+    sha1 "e6c7d2632a3d85c373046c77a4a77c5cc7979781" => :mountain_lion
+    sha1 "0e3d146890d129fdc82b4aed4b36db9b9ae664b0" => :lion
   end
 
   stable do
