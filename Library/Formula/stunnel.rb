@@ -8,9 +8,10 @@ class Stunnel < Formula
   revision 1
 
   bottle do
-    sha1 "fbc37106d2d523c747d0bea16ccd9cc22f508053" => :mavericks
-    sha1 "8d283ee45457cb79a61a5be6ffb525f6f5f3d9a2" => :mountain_lion
-    sha1 "1cbab48a55938c0328acdc9d18098c8f124adb24" => :lion
+    revision 1
+    sha1 "560fb470ee761838b54ad3c1e6e6cfc6011a6101" => :mavericks
+    sha1 "b4832f43acadd4066ffa34db80564a0986dec770" => :mountain_lion
+    sha1 "354ebe408784c4d104339f4f25a40c38b7f9fc62" => :lion
   end
 
   depends_on "openssl"
