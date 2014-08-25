@@ -7,9 +7,10 @@ class Knot < Formula
   revision 1
 
   bottle do
-    sha1 "6ef343120eb74ec0588a3e2b8f69433e9f336632" => :mavericks
-    sha1 "33f32843df8c1dad2fa0533afa97d9c5613da3fc" => :mountain_lion
-    sha1 "f35b3a72f67d752ba857694403917a0310a17a51" => :lion
+    revision 1
+    sha1 "d686096025a554581258b7507ef44bc3e4d75736" => :mavericks
+    sha1 "05fb7b3f500a9018935489b97aba3ead6123425a" => :mountain_lion
+    sha1 "e6e344e00cf66c1b100ab4d7fd33e182d80a563f" => :lion
   end
 
   depends_on "userspace-rcu"
