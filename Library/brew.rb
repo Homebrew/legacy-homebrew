@@ -1,6 +1,6 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
 # encoding: UTF-8
-# NEW CHANGE
+# NEW CHANGE v2
 std_trap = trap("INT") { exit! 130 } # no backtrace thanks
 
 HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE']
