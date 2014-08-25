@@ -140,7 +140,7 @@ class Mysql < Formula
     server starting up correctly.
 
     To connect:
-        mysql -uroot
+        mysql -u root
     EOS
   end
 
