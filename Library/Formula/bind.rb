@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Bind < Formula
-  homepage 'http://www.isc.org/software/bind/'
-  url 'http://ftp.isc.org/isc/bind9/9.10.0-P2/bind-9.10.0-P2.tar.gz'
-  sha1 'c57b5825e36933119e9fd6f43e3f52262e7ff4ed'
-  version '9.10.0-P2'
+  homepage "http://www.isc.org/software/bind/"
+  url "http://ftp.isc.org/isc/bind9/9.10.0-P2/bind-9.10.0-P2.tar.gz"
+  sha1 "c57b5825e36933119e9fd6f43e3f52262e7ff4ed"
+  version "9.10.0-P2"
   revision 1
 
   bottle do
@@ -21,17 +21,17 @@ class Bind < Formula
   def install
     ENV.libxml2
     # libxml2 appends one inc dir to CPPFLAGS but bind ignores CPPFLAGS
-    ENV.append 'CFLAGS', ENV.cppflags
+    ENV.append "CFLAGS", ENV.cppflags
 
     system "./configure", "--prefix=#{prefix}",
                           "--enable-threads",
                           "--enable-ipv6",
-                          "--with-ssl-dir=#{Formula['openssl'].opt_prefix}"
+                          "--with-ssl-dir=#{Formula["openssl"].opt_prefix}"
 
-    # From the bind9 README: "Do not use a parallel 'make'."
+    # From the bind9 README: "Do not use a parallel "make"."
     ENV.deparallelize
     system "make"
-    system "make install"
+    system "make", "install"
 
     (buildpath+"named.conf").write named_conf
     system "#{sbin}/rndc-confgen", "-a", "-c", "#{buildpath}/rndc.key"
@@ -39,14 +39,15 @@ class Bind < Formula
   end
 
   def post_install
-    # Create initial configuration/zone/ca files. (Mirrors Apple system install from 10.8)
-    unless (var + 'named').exist?
-      (var + 'named').mkpath
-      (var + 'named/localhost.zone').write localhost_zone
-      (var + 'named/named.local').write named_local
+    (var+"log/named").mkpath
+
+    # Create initial configuration/zone/ca files.
+    # (Mirrors Apple system install from 10.8)
+    unless (var+"named").exist?
+      (var+"named").mkpath
+      (var+"named/localhost.zone").write localhost_zone
+      (var+"named/named.local").write named_local
     end
-    # Create initial log directory.
-    (var + 'log/named').mkpath
   end
 
   def named_conf; <<-EOS.undent
