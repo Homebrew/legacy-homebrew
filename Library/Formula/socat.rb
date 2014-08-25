@@ -15,13 +15,6 @@ class Socat < Formula
     sha1 "06edff14216361eebb2a348b0a51954a12dc3f60" => :lion
   end
 
-  devel do
-    url 'http://www.dest-unreach.org/socat/download/socat-2.0.0-b7.tar.gz'
-    mirror 'http://fossies.org/linux/privat/socat-2.0.0-b7.tar.gz'
-    sha1 'b9ce176ab1ad974a0f01810b517d404214f40288'
-    patch :DATA
-  end
-
   depends_on 'readline'
   depends_on 'openssl'
 
