@@ -8,10 +8,10 @@ class Bind < Formula
   revision 1
 
   bottle do
-    revision 2
-    sha1 "86c21b321915766d1d316979ceb1ef885e867917" => :mavericks
-    sha1 "e9536a8c185a6d6a2ccc459d46e61d897c0a205f" => :mountain_lion
-    sha1 "4e37547795704141a701dd35e7864239bde6c327" => :lion
+    revision 3
+    sha1 "778abf075d51d248e50acfb1111234824198fe89" => :mavericks
+    sha1 "883b2f3b4aea443bd268d54e5c298a740e55070d" => :mountain_lion
+    sha1 "1250c63b82ba157ce76f41282b10084d241618b2" => :lion
   end
 
   head "https://source.isc.org/git/bind9.git"
