@@ -9,9 +9,9 @@ class Gnutls < Formula
 
   bottle do
     cellar :any
-    sha1 "4a8c788feb8f69e63e3f8f47775f686d6d1639cb" => :mavericks
-    sha1 "5e5a0456d7e985398b9e3c50f027f049737cc511" => :mountain_lion
-    sha1 "da2aa8a5e307546f774e1d704fb61c2d55fd9ef6" => :lion
+    sha1 "3e4d0c1cd43da26defe0620b1c619be532e5b536" => :mavericks
+    sha1 "3eb9d4d68f26cf9589d417db111da503951799e9" => :mountain_lion
+    sha1 "d5cef16200d281b8ac69957d2f4c0c436b2c766e" => :lion
   end
 
   depends_on 'pkg-config' => :build
