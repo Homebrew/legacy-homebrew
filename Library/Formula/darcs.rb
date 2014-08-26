@@ -5,8 +5,8 @@ class Darcs < Formula
   include Language::Haskell::Cabal
 
   homepage "http://darcs.net/"
-  url "http://darcs.net/releases/darcs-2.8.4.tar.gz"
-  sha1 "36dde7548a9d73f4688296cac72bcda672542e53"
+  url "http://darcs.net/releases/darcs-2.8.5.tar.gz"
+  sha1 "74dd74896d3334696d24fdd783c69459b91d5c7f"
 
   bottle do
     cellar :any
