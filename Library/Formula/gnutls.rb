@@ -3,9 +3,9 @@ require 'formula'
 # GnuTLS has previous, current, and next stable branches, we use current.
 class Gnutls < Formula
   homepage 'http://gnutls.org'
-  url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2/gnutls-3.2.15.tar.xz'
-  mirror 'http://mirrors.dotsrc.org/gcrypt/gnutls/v3.2/gnutls-3.2.15.tar.xz'
-  sha1 '31f289b48b0bf054f5f8c16d3b878615d0ae06fc'
+  url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2/gnutls-3.2.17.tar.xz'
+  mirror 'http://mirrors.dotsrc.org/gcrypt/gnutls/v3.2/gnutls-3.2.17.tar.xz'
+  sha1 'c48b02912c5dc77b627f1f17dcc05c2be1d59b0f'
 
   bottle do
     cellar :any
@@ -25,6 +25,10 @@ class Gnutls < Formula
     build 2326
     cause "Undefined symbols when linking"
   end
+
+  # Fix use of stdnoreturn header on Lion
+  # https://www.gitorious.org/gnutls/gnutls/commit/9d2a2d17c0e483f056f98084955fba82b166bd56
+  patch :DATA
 
   def install
     args = %W[
@@ -52,3 +56,23 @@ class Gnutls < Formula
     Formula["openssl"].post_install
   end
 end
+
+__END__
+--- a/src/libopts/autoopts.h
++++ b/src/libopts/autoopts.h
+@@ -32,7 +32,14 @@
+ 
+ #ifndef AUTOGEN_AUTOOPTS_H
+ #define AUTOGEN_AUTOOPTS_H
+-#include <stdnoreturn.h>
++
++#ifdef HAVE_STDNORETURN_H
++# include <stdnoreturn.h>
++#else
++# ifndef noreturn
++#  define noreturn
++# endif
++#endif
+ 
+ #define AO_NAME_LIMIT           127
+ #define AO_NAME_SIZE            ((size_t)(AO_NAME_LIMIT + 1))
