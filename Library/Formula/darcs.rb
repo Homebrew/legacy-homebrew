@@ -10,9 +10,9 @@ class Darcs < Formula
 
   bottle do
     cellar :any
-    sha1 "c11fb41e7e90e6cb524a09134e6a50acc26695f4" => :mavericks
-    sha1 "ddb7948bddf9dca7875ccfb039d93e4a60f03f81" => :mountain_lion
-    sha1 "40c45ff6023aba8d0b936004c13d1d2fa20078f1" => :lion
+    sha1 "a73d24ee0ea59f94f02535eb4505e3cb35aa090c" => :mavericks
+    sha1 "8c317286607ebbd8217522422e21b4a01c042b79" => :mountain_lion
+    sha1 "a3d88d3493b5f2ea12beb412878a12419ef79327" => :lion
   end
 
   depends_on "ghc" => :build
