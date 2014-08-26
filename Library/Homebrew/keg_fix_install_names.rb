@@ -64,7 +64,9 @@ class Keg
     return unless patchelf.installed?
     glibc = Formula["glibc"]
     cmd = "#{patchelf.opt_bin}/patchelf --set-rpath #{HOMEBREW_PREFIX}/lib"
-    cmd << " --set-interpreter #{glibc.opt_lib}/ld-linux-x86-64.so.2" if glibc.installed?
+    if file.mach_o_executable? && glibc.installed?
+      cmd << " --set-interpreter #{glibc.opt_lib}/ld-linux-x86-64.so.2"
+    end
     cmd << " #{file}"
     puts "Setting RPATH of #{file}" if ARGV.debug?
     safe_system cmd
@@ -113,6 +115,7 @@ class Keg
   end
 
   def install_name_tool(*args)
+    return unless OS.mac?
     system(MacOS.locate("install_name_tool"), *args)
   end
 
@@ -147,6 +150,7 @@ class Keg
   end
 
   def dylib_id_for(file, options)
+    return nil unless OS.mac?
     # The new dylib ID should have the same basename as the old dylib ID, not
     # the basename of the file itself.
     basename = File.basename(file.dylib_id)

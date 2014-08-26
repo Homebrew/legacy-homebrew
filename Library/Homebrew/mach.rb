@@ -71,7 +71,17 @@ module MachO
       when 0xcefaedfe, 0xcffaedfe, 0xfeedface, 0xfeedfacf # Single arch
         offsets << 0
       when 0x7f454c46 # ELF
-        mach_data << { :arch => :x86_64, :type => :executable }
+        arch = case read(2, 18).unpack("v")[0]
+          when 3 then :i386
+          when 62 then :x86_64
+          else :dunno
+          end
+        type = case read(2, 16).unpack("v")[0]
+          when 2 then :executable
+          when 3 then :dylib
+          else :dunno
+          end
+        return [{ :arch => arch, :type => type }]
       else
         raise "Not a Mach-O binary."
       end
