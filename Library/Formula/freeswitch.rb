@@ -6,6 +6,12 @@ class Freeswitch < Formula
 
   head 'https://stash.freeswitch.org/scm/fs/freeswitch.git'
 
+  bottle do
+    sha1 "a1ff029908457b7a992474b8abd4428c88858128" => :mavericks
+    sha1 "05c391e0c3f2f795ec7b87485a5ad54fbdd57259" => :mountain_lion
+    sha1 "dc5a331f94eb51353d01dfe6d2319985e7844a96" => :lion
+  end
+
   depends_on :autoconf
   depends_on :automake
   depends_on :libtool
