@@ -6,8 +6,8 @@ class GedaGaf < Formula
   sha1 'c61edc04997fc12398534a346dac32d8fcdabcc1'
 
   devel do
-    url 'http://ftp.geda-project.org/geda-gaf/unstable/v1.9/1.9.0/geda-gaf-1.9.0.tar.gz'
-    sha1 '2b6732238ca5ed6693695d737e52aef1bdb2a589'
+    url 'http://ftp.geda-project.org/geda-gaf/unstable/v1.9/1.9.1/geda-gaf-1.9.1.tar.gz'
+    sha1 '4b45085a187697e6c36e5f65a2a39b5a3b1a5f89'
   end
 
   depends_on 'pkg-config' => :build
