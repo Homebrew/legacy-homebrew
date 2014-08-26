@@ -39,7 +39,7 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
 
   val contextTimeout = Try(config.getMilliseconds("spark.jobserver.context-creation-timeout").toInt / 1000)
                          .getOrElse(15)
-  val sparkAliveWorkerThreshold = Try(config.getInt("spark.jobserver.sparkAliveWorker")).getOrElse(1)
+  val sparkAliveWorkerThreshold = Try(config.getInt("spark.jobserver.sparkAliveWorkerThreshold")).getOrElse(1)
 
   val logger = LoggerFactory.getLogger(getClass)
 
@@ -152,14 +152,14 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
       logger.info("Receiving healthz check request")
       val future = sparkWebUiActor ? GetWorkerStatus()
       future.map {
-        case sparkWorkersInfo :SparkWorkersInfo => {
-          if ( sparkWorkersInfo.dead > 0 ) {
-            logger.warn( "Spark dead worker non-zero: " + sparkWorkersInfo.dead)
+        case SparkWorkersInfo(dead, alive) => {
+          if ( dead > 0 ) {
+            logger.warn( "Spark dead worker non-zero: " + dead)
           }
-          if ( sparkWorkersInfo.alive >  sparkAliveWorkerThreshold ) {
+          if ( alive >  sparkAliveWorkerThreshold ) {
             ctx.complete("OK")
           } else {
-            logger.error( "Spark alive worker below threshold: " + sparkWorkersInfo.alive)
+            logger.error( "Spark alive worker below threshold: " + alive)
             ctx.complete("ERROR")
           }
         }

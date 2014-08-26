@@ -98,7 +98,7 @@ class SparkWebUiActorSpec extends TestKit(SparkWebUiActorSpec.system) with Impli
     ooyala.common.akka.AkkaTestUtils.shutdownAndWait(SparkWebUiActorSpec.system)
 
     // close the web service
-    implicit val system = ActorSystem("simple-spray-client")
+    implicit val system = ActorSystem("test")
     import system.dispatcher // execution context for futures below
 
     val pipeline: Future[SendReceive] =
@@ -116,7 +116,6 @@ class SparkWebUiActorSpec extends TestKit(SparkWebUiActorSpec.system) with Impli
 
   before {
     actor = SparkWebUiActorSpec.system.actorOf(Props(classOf[SparkWebUiActor]), "spark-web-ui")
-
   }
 
   after {
@@ -125,7 +124,6 @@ class SparkWebUiActorSpec extends TestKit(SparkWebUiActorSpec.system) with Impli
 
   describe("SparkWebUiActor") {
     it("should get worker info") {
-     // implicit val timeout = Timeout(5 seconds)
       val future = actor ? GetWorkerStatus()
       val result = Await.result(future, ShortTimeout.duration).asInstanceOf[SparkWorkersInfo]
       result.alive should equal (1)

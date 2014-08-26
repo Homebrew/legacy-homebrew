@@ -1,23 +1,16 @@
 package spark.jobserver
 
-
 import akka.actor.ActorSystem
 import akka.io.IO
 import akka.pattern.ask
 import akka.util.Timeout
-import spray.http.HttpResponse
-
 import ooyala.common.akka.InstrumentedActor
-
 import scala.util.{Try, Success, Failure}
 import scala.concurrent.Future
-
 import spark.jobserver.SparkWebUiActor.{SparkWorkersErrorInfo, SparkWorkersInfo, GetWorkerStatus}
-
 import spray.can.Http
-import spray.client.pipelining.Get
-import spray.client.pipelining.SendReceive
-import spray.client.pipelining.sendReceive
+import spray.client.pipelining.{Get, sendReceive, SendReceive}
+import spray.http.HttpResponse
 
 object SparkWebUiActor {
   // Requests
@@ -30,14 +23,14 @@ object SparkWebUiActor {
 /**
  * Created by senqiang on 8/13/14.
  */
-class SparkWebUiActor () extends InstrumentedActor {
+class SparkWebUiActor extends InstrumentedActor {
   import actorSystem.dispatcher // execution context for futures
   import scala.concurrent.duration._
 
-  implicit val actorSystem: ActorSystem = ActorSystem("sparkwebui-http-client")
+  implicit val actorSystem: ActorSystem = context.system
 
   // Used in the asks (?) below to request info from contextSupervisor and resultActor
-  implicit val ShortTimeout = Timeout(3 seconds)
+  implicit val shortTimeout = Timeout(3 seconds)
 
   val config = context.system.settings.config
 
@@ -47,12 +40,11 @@ class SparkWebUiActor () extends InstrumentedActor {
   val pipeline: Future[SendReceive] =
     for (
       Http.HostConnectorInfo(connector, _) <-
-      IO(Http) ? Http.HostConnectorSetup(sparkWebHostUrl, port = sparkWebHostPort)
+        IO(Http) ? Http.HostConnectorSetup(sparkWebHostUrl, port = sparkWebHostPort)
     ) yield sendReceive(connector)
 
   override def postStop() {
     logger.info("Shutting down actor system for SparkWebUiActor")
-    actorSystem.shutdown()
   }
 
   override def wrappedReceive: Receive = {
