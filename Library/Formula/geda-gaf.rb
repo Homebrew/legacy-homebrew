@@ -18,27 +18,11 @@ class GedaGaf < Formula
   depends_on :x11
 
   def install
-    gettext = Formula['gettext']
-
-    args = [
-      "--prefix=#{prefix}",
-      "--with-gettext=#{gettext.prefix}",
-      "--disable-update-xdg-database",
-      "--with-pcb-datadir=#{HOMEBREW_PREFIX}/share/pcb"
-    ]
-
-    if build.stable?
-      pcb = Formula['pcb']
-      args << "--with-pcb-confdir=#{pcb.etc}/pcb"
-    end
-
-    system "./configure", *args
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-update-xdg-database",
+                          "--with-pcb-datadir=#{HOMEBREW_PREFIX}/share/pcb"
     system "make"
     system "make install"
-  end
-
-  def caveats
-    "This software runs under X11."
   end
 end
 
