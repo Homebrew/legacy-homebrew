@@ -6,6 +6,7 @@ class LinkGrammar < Formula
   sha1 'dd8d03021e6c68933093cd61317a4d4d0bae6f57'
 
   depends_on 'pkg-config' => :build
+  depends_on :ant => :build
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
