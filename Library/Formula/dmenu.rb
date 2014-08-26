@@ -13,9 +13,15 @@ class Dmenu < Formula
 
   head 'http://git.suckless.org/dmenu/', :using => :git
 
+  option 'with-command-key', 'Use Mac OS X comamnd key as modifier key'
+
   depends_on :x11
 
   def install
+    if build.with? 'command-key'
+      inreplace 'dmenu.c', 'Mod1Mask', 'Mod2Mask'
+    end
+
     system "make", "PREFIX=#{prefix}", "install"
   end
 
