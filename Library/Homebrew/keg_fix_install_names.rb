@@ -63,11 +63,11 @@ class Keg
     patchelf = Formula["patchelf"]
     return unless patchelf.installed?
     glibc = Formula["glibc"]
-    cmd = "#{patchelf.bin}/patchelf --set-rpath #{HOMEBREW_PREFIX}/lib"
+    cmd = "#{patchelf.opt_bin}/patchelf --set-rpath #{HOMEBREW_PREFIX}/lib"
     cmd << " --set-interpreter #{glibc.opt_lib}/ld-linux-x86-64.so.2" if glibc.installed?
     cmd << " #{file}"
-    puts "Setting RPATH of #{file}\n#{cmd}" if ARGV.debug?
-    system cmd
+    puts "Setting RPATH of #{file}" if ARGV.debug?
+    safe_system cmd
   end
 
   def change_dylib_id(id, file)
