@@ -2,8 +2,8 @@ require "formula"
 
 class Fswatch < Formula
   homepage "https://github.com/emcrisostomo/fswatch"
-  url "https://github.com/emcrisostomo/fswatch/releases/download/1.4.0/fswatch-1.4.0.zip"
-  sha1 "12031348b0afcc12105c63271aa57e599fc9ab94"
+  url "https://github.com/emcrisostomo/fswatch/releases/download/1.4.2/fswatch-1.4.2.zip"
+  sha1 "df3a4a8bfca8c06f2e42cb6ee73f3f522b1dc3af"
 
   bottle do
     sha1 "a86d9f5e6e2c5989a204956f6a1329be597d1255" => :mavericks
