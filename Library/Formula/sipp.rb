@@ -8,9 +8,10 @@ class Sipp < Formula
 
   bottle do
     cellar :any
-    sha1 "dc471780c5e177836ccb96db84e1e4fa8b6705c3" => :mavericks
-    sha1 "aa455a648623d4f957bb64212168d54de4b26d64" => :mountain_lion
-    sha1 "2604f0f6244059520d4421c52a1d65f3be6e0ae2" => :lion
+    revision 1
+    sha1 "850972e13e3498f4b02f0d7f8cfcf52a57e9061d" => :mavericks
+    sha1 "7090284509ca0e0c94ccf8ed807bee34a7c03679" => :mountain_lion
+    sha1 "aaf2d525f601b20aab098ca164e4161113996666" => :lion
   end
 
   depends_on "openssl" => :optional

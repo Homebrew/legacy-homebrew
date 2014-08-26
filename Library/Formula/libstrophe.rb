@@ -9,9 +9,10 @@ class Libstrophe < Formula
 
   bottle do
     cellar :any
-    sha1 "77d6711507a185eb546160ed8249f5037cee0419" => :mavericks
-    sha1 "1720a1d673d178ab70eeca0a6516b8a60a77e8c1" => :mountain_lion
-    sha1 "fcc5859e1551887cd4361488208090496539978c" => :lion
+    revision 1
+    sha1 "ec45dcfd06cd95348d5442155ed4ef71f34bd20d" => :mavericks
+    sha1 "d6b2842f061190b981354f4e98d61fa20bd2c18c" => :mountain_lion
+    sha1 "337e6f19415f2b50ba3ed1ad3025cd9b319087ff" => :lion
   end
 
   depends_on "autoconf" => :build

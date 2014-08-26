@@ -10,9 +10,10 @@ class Libmowgli < Formula
 
   bottle do
     cellar :any
-    sha1 "50b626b476c969548a355456abd2b11ea01da6d8" => :mavericks
-    sha1 "358a4c6760f84265da287a91a7f050cd39987e3c" => :mountain_lion
-    sha1 "ff68f6a242882d564997e2692b82775b172d4844" => :lion
+    revision 1
+    sha1 "2c93184500d004922cf66fb2b69615416ee06b29" => :mavericks
+    sha1 "c903206aaef3215943d160bda3ac1c444066d846" => :mountain_lion
+    sha1 "37d72d17a795cdda4cea876a9154557a0b35b4cf" => :lion
   end
 
   depends_on "openssl"

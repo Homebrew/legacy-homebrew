@@ -7,9 +7,10 @@ class Ldns < Formula
   revision 1
 
   bottle do
-    sha1 "17ad3b757668a1b6a5ecc9a3e5bed0a7d326b606" => :mavericks
-    sha1 "aa5cec1eba364908b5651be159bc64ffccc4b8ad" => :mountain_lion
-    sha1 "00fa56029996e5dd27eb6eb7168610dc4ce3c2cc" => :lion
+    revision 3
+    sha1 "29548cdff439f712695fc5ca9f662b958ce98765" => :mavericks
+    sha1 "e55a981bf3a3ce87f914043c36c6c1eb0a0d9b38" => :mountain_lion
+    sha1 "ba53827d4834ae71cb66c437f16e631cde014cff" => :lion
   end
 
   depends_on :python => :optional

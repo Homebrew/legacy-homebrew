@@ -7,9 +7,10 @@ class Mysql < Formula
   revision 1
 
   bottle do
-    sha1 "4eb9342dec2d0513eed3fb50d3bd94b294695f8b" => :mavericks
-    sha1 "a604e40785266ddb087f1ec24ebbaed684cfc7cf" => :mountain_lion
-    sha1 "a8027eaf1420d755ff277fffb5e033be42b07f0b" => :lion
+    revision 1
+    sha1 "c6b5653348bcfa889ed6bc347841cecbc96389af" => :mavericks
+    sha1 "f7562a4366c1732b90388a41b1356c9f0fa1aa19" => :mountain_lion
+    sha1 "e2107ccb1461920bb5cfb7192b37dc91ed50ca94" => :lion
   end
 
   option :universal

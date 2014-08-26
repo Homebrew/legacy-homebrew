@@ -1,9 +1,32 @@
 require "formula"
 
+class MaximumMacOSRequirement < Requirement
+  fatal true
+
+  def initialize(tags)
+    @version = MacOS::Version.from_symbol(tags.first)
+    super
+  end
+
+  satisfy { MacOS.version <= @version }
+
+  def message
+    <<-EOS.undent
+      OS X #{@version.pretty_name} or older is required for stable.
+      Use `brew install --devel` on newer versions.
+    EOS
+  end
+end
+
 class NetSnmp < Formula
   homepage "http://www.net-snmp.org/"
-  url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.2.1/net-snmp-5.7.2.1.tar.gz"
-  sha1 "815d4e5520a1ed96a27def33e7534b4190599f0f"
+
+  stable do
+    url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.2.1/net-snmp-5.7.2.1.tar.gz"
+    sha1 "815d4e5520a1ed96a27def33e7534b4190599f0f"
+
+    depends_on MaximumMacOSRequirement => :mountain_lion
+  end
 
   bottle do
     sha1 "6f1ff81bde5defe92b4a2062fba099c8310f9662" => :mountain_lion

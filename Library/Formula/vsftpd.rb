@@ -8,9 +8,10 @@ class Vsftpd < Formula
 
   bottle do
     cellar :any
-    sha1 "1bc92913ce60592deb5d9ac02a15634a3a67e228" => :mavericks
-    sha1 "ba64c185a61aba3e90288c051efea9638b1eb75a" => :mountain_lion
-    sha1 "82d45e811ac9d31b34efeab7506958123271f235" => :lion
+    revision 1
+    sha1 "1a64152c081dfafa1d02e5736931d7ccdd0f9aa0" => :mavericks
+    sha1 "58c43be3dce1228728894eb1767235a50e63589e" => :mountain_lion
+    sha1 "cfd7597d2a41a4704488c5754a3bb2d03e8cde5e" => :lion
   end
 
   depends_on 'openssl' => :optional

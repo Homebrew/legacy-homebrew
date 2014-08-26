@@ -7,9 +7,10 @@ class Freetds < Formula
   revision 1
 
   bottle do
-    sha1 "e1452229dc665f3414469df393efa36778178db3" => :mavericks
-    sha1 "7f9052adc88d0e257150ad930c229407919f499c" => :mountain_lion
-    sha1 "9b177e62e98429d49d40b78bae5d20f0635705c4" => :lion
+    revision 1
+    sha1 "adce43db374594ab3f5854e78addd50a9b3e995b" => :mavericks
+    sha1 "17e403d9fd915ff7897c5fce5f45d95ed4446dcf" => :mountain_lion
+    sha1 "9f1a45613386ad2b15f2ae713de048045c4a3651" => :lion
   end
 
   head do

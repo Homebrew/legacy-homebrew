@@ -8,9 +8,10 @@ class Dovecot < Formula
   revision 1
 
   bottle do
-    sha1 "a6415b279563db21494c1864d270fb61c312f18a" => :mavericks
-    sha1 "cc8309d739d204b5ce5c45335be5ebbbff410a9a" => :mountain_lion
-    sha1 "4052ef056229342578eac5e1110092c8f54d68c9" => :lion
+    revision 1
+    sha1 "54f958d592b09f6765a5b717ea0746ff9096a526" => :mavericks
+    sha1 "19a2b6d3f75e01dc1f82503a527c4e20d21eb678" => :mountain_lion
+    sha1 "c15272453ce3fd1a1c16d91948d9724ba921d42e" => :lion
   end
 
   depends_on "clucene" => :optional

@@ -7,9 +7,10 @@ class JohnJumbo < Formula
   revision 1
 
   bottle do
-    sha1 "b0fd107f6406c417b2508b474cdd0c2731e8218f" => :mavericks
-    sha1 "00e8a0a219723db4a5e3e58b43676cefb0af1b12" => :mountain_lion
-    sha1 "00bc789f40f15c9d6e0cac054f8100a8c68e3b6d" => :lion
+    revision 1
+    sha1 "a11eb01effa085f1f196353477111f76c39e6349" => :mavericks
+    sha1 "acbdf6c2b4f59b2b4e756d7288f3d727ab630706" => :mountain_lion
+    sha1 "eef8dcc88d9666c7c3c099bee4cc6d14f27a056b" => :lion
   end
 
   conflicts_with 'john', :because => 'both install the same binaries'

@@ -8,9 +8,10 @@ class Lynx < Formula
   revision 1
 
   bottle do
-    sha1 "445ce7a7d6397e6edf7c5a401ff12ef05c9f88c5" => :mavericks
-    sha1 "d8eb643b68dfea9197e8223b487ee54c5a0d15f0" => :mountain_lion
-    sha1 "02a2c83433f01ae6b8af18a4222a16b590a29a38" => :lion
+    revision 1
+    sha1 "5cec5cb413a991777ab1e8ede47059935feae1ca" => :mavericks
+    sha1 "afd1846fe40fc0bac8a4f54d5c06ded1d4eb3725" => :mountain_lion
+    sha1 "1ce39f3889f2b4e9a7f805236097f56fdbcf0fed" => :lion
   end
 
   depends_on "openssl"

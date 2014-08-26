@@ -13,9 +13,10 @@ class Psqlodbc < Formula
   sha1 "e1eb147ef0452e1f7b0f9e102dacb5654a580dba"
   bottle do
     cellar :any
-    sha1 "f68ecb031a5b61df90609327414140eb4b538168" => :mavericks
-    sha1 "d1e1b11b6fa1fa759e596946e581fed6a28d9990" => :mountain_lion
-    sha1 "3adb10edd78ebd52a4786e82e4d19f1045c37834" => :lion
+    revision 1
+    sha1 "14da3adcbbb44feeb9269b817ef83ae96992dc0c" => :mavericks
+    sha1 "59cae2eafaecc1d2f844d43c56591586b31cbfc5" => :mountain_lion
+    sha1 "d9e55bbc56370d92b49de3c18f34948d0ad7bbf7" => :lion
   end
 
   revision 1
