@@ -1,7 +1,7 @@
 spark-jobserver provides a RESTful interface for submitting and managing [Apache Spark](http://spark-project.org) jobs, jars, and job contexts.
 This repo contains the complete Spark job server project, including unit tests and deploy scripts.
 
-We deploy our job server off of this repo at Ooyala and it is tested against CDH5 / Hadoop 2.2,  Spark 0.9.0 final, Scala 2.10.
+We deploy our job server off of this repo at Ooyala and it is tested against CDH5 / Hadoop 2.2,  Spark 1.0.2 final, Scala 2.10.
 
 ## Features
 
