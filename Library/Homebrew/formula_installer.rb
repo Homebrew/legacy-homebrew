@@ -462,7 +462,7 @@ class FormulaInstaller
   end
 
   def build_argv
-    Options.create(sanitized_ARGV_options) + options
+    sanitized_ARGV_options + options.as_flags
   end
 
   def build
