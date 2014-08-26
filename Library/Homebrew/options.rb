@@ -50,16 +50,21 @@ end
 class Options
   include Enumerable
 
-  attr_reader :options
-  protected :options
+  def self.create(array)
+    options = new
+    array.each do |e|
+      case e
+      when /^-[^-]+$/
+        e[1..-1].split(//).each { |o| options << Option.new(o) }
+      else
+        options << Option.new(e)
+      end
+    end
+    options
+  end
 
   def initialize(*args)
     @options = Set.new(*args)
-  end
-
-  def initialize_copy(other)
-    super
-    @options = other.options.dup
   end
 
   def each(*args, &block)
@@ -72,19 +77,19 @@ class Options
   end
 
   def +(o)
-    Options.new(@options + o)
+    self.class.new(@options + o)
   end
 
   def -(o)
-    Options.new(@options - o)
+    self.class.new(@options - o)
   end
 
   def &(o)
-    Options.new(@options & o)
+    self.class.new(@options & o)
   end
 
   def |(o)
-    Options.new(@options | o)
+    self.class.new(@options | o)
   end
 
   def *(arg)
@@ -103,34 +108,9 @@ class Options
     any? { |opt| opt == o || opt.name == o || opt.flag == o }
   end
 
-  def concat(o)
-    @options.merge(o)
-    self
-  end
-
   alias_method :to_ary, :to_a
 
   def inspect
     "#<#{self.class.name}: #{to_a.inspect}>"
-  end
-
-  def self.coerce(arg)
-    case arg
-    when self then arg
-    when Option then new << arg
-    when Array
-      opts = new
-      arg.each do |a|
-        case a
-        when /^-[^-]+$/
-          a[1..-1].split(//).each { |o| opts << Option.new(o) }
-        else
-          opts << Option.new(a)
-        end
-      end
-      opts
-    else
-      raise TypeError, "Cannot convert #{arg.inspect} to Options"
-    end
   end
 end

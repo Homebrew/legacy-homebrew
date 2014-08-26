@@ -16,10 +16,12 @@ class Tesseract < Formula
     url 'https://drive.google.com/uc?id=0B7l10Bj_LprhSGN2bTYwemVRREU&export=download'
     sha1 '5bd12482a69f0a1fdf3c9e0d652de08db763ee93'
     version '3.03rc1'
+
+    needs :cxx11
   end
 
   head do
-    url "http://tesseract-ocr.googlecode.com/svn/trunk"
+    url 'https://code.google.com/p/tesseract-ocr/', :using => :git
 
     depends_on :autoconf
     depends_on :automake
@@ -31,8 +33,6 @@ class Tesseract < Formula
 
   depends_on "libtiff" => :recommended
   depends_on "leptonica"
-
-  needs :cxx11 if build.devel?
 
   fails_with :llvm do
     build 2206

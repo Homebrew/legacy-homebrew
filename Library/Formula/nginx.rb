@@ -4,6 +4,7 @@ class Nginx < Formula
   homepage "http://nginx.org/"
   url "http://nginx.org/download/nginx-1.6.1.tar.gz"
   sha1 "e58c865f67b580541ed4eadf69d1676762bf50ab"
+  revision 1
 
   devel do
     url "http://nginx.org/download/nginx-1.7.4.tar.gz"
@@ -13,13 +14,17 @@ class Nginx < Formula
   head "http://hg.nginx.org/nginx/", :using => :hg
 
   bottle do
-    sha1 "29e8e4840f351ad8c1ee843a2840e214e7adcfab" => :mavericks
-    sha1 "8d07ca4ef27cd43da7ec7a81307ca447ba9d9474" => :mountain_lion
-    sha1 "160444c6304fbcb25bbed225c9e71890f54f2d15" => :lion
+    revision 1
+    sha1 "c7c3ffae58d4ca2c95fcfb2a9dedbd55152fceb9" => :mavericks
+    sha1 "7da4933d23f1cef378387b8abdb7c2981d20ea5a" => :mountain_lion
+    sha1 "d688d641fd345be01efcc98e6aa65224f9ba3167" => :lion
   end
 
   env :userpaths
 
+  # Before submitting more options to this formula please check they aren't
+  # already in Homebrew/homebrew-nginx/nginx-full:
+  # https://github.com/Homebrew/homebrew-nginx/blob/master/nginx-full.rb
   option "with-passenger", "Compile with support for Phusion Passenger module"
   option "with-webdav", "Compile with support for WebDAV module"
   option "with-debug", "Compile with support for debug log"

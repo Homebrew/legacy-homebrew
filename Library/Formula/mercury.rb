@@ -6,9 +6,10 @@ class Mercury < Formula
   sha1 "619680675c68a0b953024b7ee4d3886a885d94de"
 
   bottle do
-    sha1 "5fd50b21e04dc43853a2b55aa9fbeda7a222e324" => :mavericks
-    sha1 "7f65e0c2a36a09078dbc1cf8091faaaf26b5e192" => :mountain_lion
-    sha1 "07ef0c73fdbb8e928d02a6a78a5ce1f422623e53" => :lion
+    revision 1
+    sha1 "b9f481aecf1ecb6032b09c8434b86b87fd1f67c0" => :mavericks
+    sha1 "92798069609393c4d0d558080e93db63d60738ff" => :mountain_lion
+    sha1 "5319c3fa8a318136d9c9ffc4818a22ebe38e9aeb" => :lion
   end
 
   depends_on "erlang" => :optional
@@ -24,7 +25,7 @@ class Mercury < Formula
 
     args << "--enable-erlang-grade" if build.with? "erlang"
     args << "--with-hwloc" if build.with? "hwloc"
-    args << "--enable-dotnet-grades" << "--enable-csharp-grade" if build.with? "mono"
+    args << "--enable-csharp-grade" if build.with? "mono"
 
     system "./configure", *args
 

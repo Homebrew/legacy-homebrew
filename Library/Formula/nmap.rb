@@ -5,11 +5,13 @@ class Nmap < Formula
   head "https://guest:@svn.nmap.org/nmap/", :using => :svn
   url "http://nmap.org/dist/nmap-6.46.tar.bz2"
   sha1 "e19dd4d35d76b24b084665b90c423f53bc7fdcfe"
+  revision 1
 
   bottle do
-    sha1 "078e882985fe74919fa280067244a5400ad8ad63" => :mavericks
-    sha1 "f0a1dbc5e190c5da169bb6ab22f438a0be3ac845" => :mountain_lion
-    sha1 "8617fe3e4e3ddb50902968d8323a4cc9bef92bd1" => :lion
+    revision 1
+    sha1 "08b86ca7e3add3bae810d11d18f45e7eab637b23" => :mavericks
+    sha1 "ce539008404668316faa2f9807313392599afbf6" => :mountain_lion
+    sha1 "363d82b97e2e6efb47811aebb77c01c442d113df" => :lion
   end
 
   depends_on "openssl"

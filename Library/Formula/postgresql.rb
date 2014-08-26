@@ -2,6 +2,7 @@ require "formula"
 
 class Postgresql < Formula
   homepage "http://www.postgresql.org/"
+  revision 1
 
   stable do
     url "http://ftp.postgresql.org/pub/source/v9.3.5/postgresql-9.3.5.tar.bz2"
@@ -16,9 +17,10 @@ class Postgresql < Formula
   end
 
   bottle do
-    sha1 "e69fd4371d6a795ffa9bfc90fbe8dd85e5126888" => :mavericks
-    sha1 "bb862d7755be08d27ff64b0818cca457c9ffe602" => :mountain_lion
-    sha1 "f44e67e6ca8ea9b617c55b98a90e26de209dc35a" => :lion
+    revision 1
+    sha1 "d298f4cd7fffa6b8b879ccc2c6d32fc191be41ed" => :mavericks
+    sha1 "c5c5d23e95c1950d4b33865b8ebdce28b4e6706f" => :mountain_lion
+    sha1 "860395322283401cfc1d0694984c272546f21fa9" => :lion
   end
 
   devel do

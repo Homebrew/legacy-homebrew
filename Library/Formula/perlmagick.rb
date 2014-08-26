@@ -2,14 +2,13 @@ require "formula"
 
 class Perlmagick < Formula
   homepage "http://www.imagemagick.org/script/perl-magick.php"
-  url "http://www.imagemagick.org/download/perl/PerlMagick-6.88.tar.gz"
-  sha1 "f234b49a5c570f78d693c04924fe74ddb5595292"
+  url "http://www.imagemagick.org/download/perl/PerlMagick-6.89.tar.gz"
+  sha1 "fc9a45a3205f2b0c75891eec1961cb7474b88f3a"
 
   bottle do
-    revision 1
-    sha1 "86285696b717954a1a64a94df70f5701523b1403" => :mavericks
-    sha1 "96de2b7c175b6682fb74c0f2353fca9d50f3529d" => :mountain_lion
-    sha1 "a468f8f61603cc0c3daa21c077bf156ef7ae1266" => :lion
+    sha1 "6efa2e6d746ab5d38cc4ca06251fb81a7125a8f8" => :mavericks
+    sha1 "7fdaa41367a66a4ccec92df933f88d5952233f1c" => :mountain_lion
+    sha1 "035a0402685b6c7fb4fcd894e8b4a76ed3f22c75" => :lion
   end
 
   depends_on "freetype"

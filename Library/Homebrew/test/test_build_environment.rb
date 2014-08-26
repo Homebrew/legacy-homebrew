@@ -7,7 +7,7 @@ class BuildEnvironmentTests < Homebrew::TestCase
   end
 
   def test_shovel_returns_self
-    assert_same @env, (@env << :foo)
+    assert_same @env, @env << :foo
   end
 
   def test_merge_returns_self

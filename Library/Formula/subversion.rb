@@ -2,15 +2,16 @@ require 'formula'
 
 class Subversion < Formula
   homepage 'https://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.9.tar.bz2'
-  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.9.tar.bz2'
-  sha1 '424ee12708f39a126efd905886666083dcc4eeaf'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.10.tar.bz2'
+  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.10.tar.bz2'
+  sha1 'd6896d94bb53c1b4c6e9c5bb1a5c466477b19b2b'
+  revision 1
 
   bottle do
-    revision 2
-    sha1 "860453653114edfcf152bad3a7901719777a5f72" => :mavericks
-    sha1 "f9acba18f2d4547a24cd7e5a18eda47bf9f40925" => :mountain_lion
-    sha1 "1f632c42ec044abaaf373dd955aa100a8f879a81" => :lion
+    revision 3
+    sha1 "fcd631849436d7d2857e5361dbe66293feca9501" => :mavericks
+    sha1 "1089939ef5a0de5ca257e5c2ff34cd0c59e4a601" => :mountain_lion
+    sha1 "dcd9bee050a9c21db85a6947359beef4dacdc49c" => :lion
   end
 
   option :universal
@@ -19,8 +20,8 @@ class Subversion < Formula
   option 'ruby', 'Build Ruby bindings'
 
   resource 'serf' do
-    url 'https://serf.googlecode.com/svn/src_releases/serf-1.3.6.tar.bz2', :using => :curl
-    sha1 '409a153583b3e370a130e3fb1623ac98f5af9975'
+    url 'https://serf.googlecode.com/svn/src_releases/serf-1.3.7.tar.bz2', :using => :curl
+    sha1 'db9ae339dba10a2b47f9bdacf30a58fd8e36683a'
   end
 
   depends_on "pkg-config" => :build
@@ -234,12 +235,12 @@ __END__
 
 Patch 1
 
---- subversion/bindings/swig/perl/native/Makefile.PL.in~ 2013-06-20 18:58:55.000000000 +0200
-+++ subversion/bindings/swig/perl/native/Makefile.PL.in	2013-06-20 19:00:49.000000000 +0200
-@@ -69,10 +69,15 @@
-
+--- subversion/bindings/swig/perl/native/Makefile.PL.in~     2014-01-18 05:04:18.000000000 +0100
++++ subversion/bindings/swig/perl/native/Makefile.PL.in      2014-08-15 18:37:33.000000000 +0200
+@@ -76,10 +76,15 @@
+ 
  chomp $apr_shlib_path_var;
-
+ 
 +my $config_ccflags = $Config{ccflags};
 +# remove any -arch arguments, since those
 +# we want will already be in $cflags
@@ -257,10 +258,9 @@ Patch 1
 
 Patch 2
 
-diff -u configure.ac configure.ac
---- configure.ac	(working copy)
-+++ configure.ac	(working copy)
-@@ -1446,6 +1446,10 @@
+--- configure.ac   2014-08-15 19:15:23.000000000 +0200
++++ configure.ac        2014-08-15 19:15:45.000000000 +0200
+@@ -1442,6 +1442,10 @@
  # Need to strip '-no-cpp-precomp' from CPPFLAGS for SWIG as well.
  SWIG_CPPFLAGS="$CPPFLAGS"
  SVN_STRIP_FLAG(SWIG_CPPFLAGS, [-no-cpp-precomp ])
@@ -269,5 +269,5 @@ diff -u configure.ac configure.ac
 +SVN_STRIP_FLAG(SWIG_CPPFLAGS, [-F\/[[^ ]]* ])
 +SVN_STRIP_FLAG(SWIG_CPPFLAGS, [-isystem\/[[^ ]]* ])
  AC_SUBST([SWIG_CPPFLAGS])
-
+ 
  dnl Since this is used only on Unix-y systems, define the path separator as '/'

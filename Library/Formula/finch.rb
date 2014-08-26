@@ -30,6 +30,8 @@ class Finch < Formula
       --disable-meanwhile
       --disable-vv
       --without-x
+      --with-tclconfig=#{MacOS.sdk_path}/usr/lib
+      --with-tkconfig=#{MacOS.sdk_path}/usr/lib
     ]
 
     args << '--disable-perl' unless build.include? 'perl'

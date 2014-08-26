@@ -11,11 +11,7 @@ class Net6 < Formula
   depends_on 'libsigc++'
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
-    cflags = `pkg-config --cflags net6-1.3.pc` # for some reason, won't pick up sigc++ otherwise
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "libnet6_CFLAGS=#{cflags}" # and now we need a second pass to properly set the includes...yuck!
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

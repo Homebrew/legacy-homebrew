@@ -5,7 +5,14 @@ class Mesos < Formula
   url "http://mirror.cogentco.com/pub/apache/mesos/0.19.1/mesos-0.19.1.tar.gz"
   sha1 "3f219313324f86e11df25688ccb86c2814ab29c5"
 
+  bottle do
+    sha1 "2758230a98122a25764c7fc4358f45b16c013464" => :mavericks
+    sha1 "96d0ab4739014e7c51796209a5ce911142f9ac9e" => :mountain_lion
+  end
+
   depends_on :java => "1.7"
+  depends_on :macos => :mountain_lion
+
   depends_on "maven" => :build
 
   def install

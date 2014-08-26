@@ -81,20 +81,6 @@ class Macvim < Formula
 
     system "./configure", *args
 
-    if build.with? "python"
-      unless Formula["python"].installed?
-        inreplace "src/auto/config.h", "/* #undef PY_NO_RTLD_GLOBAL */",
-                                        "#define PY_NO_RTLD_GLOBAL 1"
-      end
-    end
-
-    if build.with? "python3"
-      unless Formula["python3"].installed?
-        inreplace "src/auto/config.h", "/* #undef PY3_NO_RTLD_GLOBAL */",
-                                       "#define PY3_NO_RTLD_GLOBAL 1"
-      end
-    end
-
     if build.include? "custom-icons"
       # Get the custom font used by the icons
       system "make", "-C", "src/MacVim/icons", "getenvy"

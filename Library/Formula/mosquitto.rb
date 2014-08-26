@@ -4,11 +4,13 @@ class Mosquitto < Formula
   homepage "http://mosquitto.org/"
   url "http://mosquitto.org/files/source/mosquitto-1.3.4.tar.gz"
   sha1 "b818672cc0db723995d7c3201ef6962931dd891a"
+  revision 1
 
   bottle do
-    sha1 "92e579915297c3dcbed3682c5a4f0bb2dd67389a" => :mavericks
-    sha1 "5a92a49a4e09cf73cf9c102600483c8c87a66214" => :mountain_lion
-    sha1 "a0a7141690ed684c08358655d3b3a5802e52ae31" => :lion
+    revision 1
+    sha1 "5e8dfe80e2ea2af1af0e8ce3b79f59727b9ca82f" => :mavericks
+    sha1 "1b11a70a2c1fe7d9edabc1e3c7419669afafbd6b" => :mountain_lion
+    sha1 "1a36f985225e210c06d1e8d72ddaa7ab13c20337" => :lion
   end
 
   depends_on "pkg-config" => :build

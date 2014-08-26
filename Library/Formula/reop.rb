@@ -5,6 +5,7 @@ class Reop < Formula
   head "https://github.com/tedu/reop.git"
   url "https://github.com/tedu/reop/archive/1.0.0.tar.gz"
   sha256 "8c2bf9a0b66e9a43cbcf3291858a97ccdc62736a378cd98aa3d3fc47f5db3798"
+  revision 1
 
   depends_on "libsodium"
 

@@ -2,8 +2,8 @@ require 'formula'
 
 class Yara < Formula
   homepage 'https://github.com/plusvic/yara/'
-  url 'https://github.com/plusvic/yara/archive/v2.1.0.tar.gz'
-  sha1 '8289c281a44c933e11de25953f3910fe9f8ee82e'
+  url 'https://github.com/plusvic/yara/archive/v3.0.0.tar.gz'
+  sha1 '43e7e0df03043cab1ab8299ef7ebee4d2c5d39dc'
 
   depends_on 'pcre'
   depends_on 'libtool' => :build

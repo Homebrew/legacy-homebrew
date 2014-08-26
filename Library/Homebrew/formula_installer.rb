@@ -158,13 +158,10 @@ class FormulaInstaller
         pour
         @poured_bottle = true
 
-        stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
-        stdlib_in_use = CxxStdlib.create(stdlibs.first, MacOS.default_compiler)
-        begin
-          stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
-        rescue IncompatibleCxxStdlibs => e
-          opoo e.message
-        end
+        CxxStdlib.check_compatibility(
+          f, f.recursive_dependencies,
+          Keg.new(f.prefix), MacOS.default_compiler
+        )
 
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
@@ -216,8 +213,7 @@ class FormulaInstaller
 
     check_requirements(req_map)
 
-    deps = [].concat(req_deps).concat(f.deps)
-    deps = expand_dependencies(deps)
+    deps = expand_dependencies(req_deps + f.deps)
 
     if deps.empty? and only_deps?
       puts "All dependencies for #{f} are satisfied."
@@ -305,13 +301,14 @@ class FormulaInstaller
   def effective_build_options_for(dependent, inherited_options=[])
     args  = dependent.build.used_options
     args |= dependent == f ? options : inherited_options
+    args |= Tab.for_formula(dependent).used_options
     BuildOptions.new(args, dependent.options)
   end
 
   def inherited_options_for(dep)
     inherited_options = Options.new
     u = Option.new("universal")
-    if (options.include?(u) || f.build.universal?) && !dep.build? && dep.to_formula.option_defined?(u)
+    if (options.include?(u) || f.require_universal_deps?) && !dep.build? && dep.to_formula.option_defined?(u)
       inherited_options << u
     end
     inherited_options
@@ -465,9 +462,7 @@ class FormulaInstaller
   end
 
   def build_argv
-    opts = Options.coerce(sanitized_ARGV_options)
-    opts.concat(options)
-    opts
+    Options.create(sanitized_ARGV_options) + options
   end
 
   def build
@@ -706,7 +701,7 @@ end
 
 class Formula
   def keg_only_text
-    s = "This formula is keg-only, so it was not symlinked into #{HOMEBREW_PREFIX}."
+    s = "This formula is keg-only, which means it was not symlinked into #{HOMEBREW_PREFIX}."
     s << "\n\n#{keg_only_reason.to_s}"
     if lib.directory? or include.directory?
       s <<

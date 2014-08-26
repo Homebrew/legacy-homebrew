@@ -2,14 +2,16 @@ require 'formula'
 
 class Stunnel < Formula
   homepage 'http://www.stunnel.org/'
-  url 'ftp://ftp.nluug.nl/pub/networking/stunnel/stunnel-5.02.tar.gz'
-  mirror 'https://www.stunnel.org/downloads/stunnel-5.02.tar.gz'
-  sha256 'c258b71d7f82bba5b0a4ccc69fbda632f1fefe9108589a92aa1016f33985973e'
+  url 'ftp://ftp.nluug.nl/pub/networking/stunnel/stunnel-5.03.tar.gz'
+  mirror 'https://www.stunnel.org/downloads/stunnel-5.03.tar.gz'
+  sha256 '9a1e369466fa756e6f48b11480a3338c1fa4717e6472871bf4a3a96c483edd03'
+  revision 1
 
   bottle do
-    sha1 "df50d590c271a6f9352c0454cdcbc4a6387d2245" => :mavericks
-    sha1 "57dc002b6a69e423a158fd2887aa4b59ae32faa6" => :mountain_lion
-    sha1 "a611c659ce01c7e4d214645c3d63e3f4aabc9167" => :lion
+    revision 1
+    sha1 "560fb470ee761838b54ad3c1e6e6cfc6011a6101" => :mavericks
+    sha1 "b4832f43acadd4066ffa34db80564a0986dec770" => :mountain_lion
+    sha1 "354ebe408784c4d104339f4f25a40c38b7f9fc62" => :lion
   end
 
   depends_on "openssl"
