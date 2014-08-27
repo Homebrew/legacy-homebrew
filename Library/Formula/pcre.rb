@@ -13,6 +13,7 @@ class Pcre < Formula
     sha1 "6f7043ff5e9ad854dfe98e0399045d0f62209402" => :lion
   end
 
+  option "without-check", "Skip build-time tests (not recommended)"
   option :universal
 
   fails_with :llvm do
@@ -35,7 +36,7 @@ class Pcre < Formula
                           "--enable-jit"
     system "make"
     ENV.deparallelize
-    system "make test"
+    system "make test" if build.with? "check"
     system "make install"
   end
 end
