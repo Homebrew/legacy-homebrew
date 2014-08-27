@@ -30,6 +30,12 @@ class KegOnlyReason
 
       #{@explanation}
       EOS
+    when :shadowed_by_osx then <<-EOS.undent
+      Mac OS X provides similar software, and installing this software in
+      parallel can cause all kinds of trouble.
+
+      #{@explanation}
+      EOS
     when :provided_pre_mountain_lion then <<-EOS.undent
       Mac OS X already provides this software in versions before Mountain Lion.
 
