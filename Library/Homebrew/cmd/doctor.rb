@@ -1126,7 +1126,7 @@ module Homebrew
 
     methods = if ARGV.named.empty?
       # put slowest methods last
-      checks.methods.sort << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
+      checks.methods.map(&:to_s).sort << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
     else
       ARGV.named
     end.grep(/^check_/).reverse.uniq.reverse
