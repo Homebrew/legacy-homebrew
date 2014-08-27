@@ -176,15 +176,15 @@ class Build
   end
 end
 
-error_pipe = IO.new(ENV["HOMEBREW_ERROR_PIPE"].to_i, "w")
-error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
-
-# Invalidate the current sudo timestamp in case a build script calls sudo
-system "/usr/bin/sudo", "-k"
-
-trap("INT", old_trap)
-
 begin
+  error_pipe = IO.new(ENV["HOMEBREW_ERROR_PIPE"].to_i, "w")
+  error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+
+  # Invalidate the current sudo timestamp in case a build script calls sudo
+  system "/usr/bin/sudo", "-k"
+
+  trap("INT", old_trap)
+
   formula = ARGV.formulae.first
   options = Options.create(ARGV.options_only)
   build   = Build.new(formula, options)
