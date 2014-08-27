@@ -32,7 +32,7 @@ class Glibc < Formula
   end
 
   test do
-    system "#{lib}/ld-linux-x86-64.so.2 2>&1 |grep ld.so"
+    system "#{lib}/ld-linux-x86-64.so.2 2>&1 |grep Usage"
     system "#{lib}/libc.so.6 --version"
     system "#{bin}/locale --version"
   end
