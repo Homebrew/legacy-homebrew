@@ -187,7 +187,8 @@ def validate(sc:SparkContext, config: Contig): SparkJobValidation = {
 1. Copy `config/local.sh.template` to `<environment>.sh` and edit as appropriate.
 2. `bin/server_deploy.sh <environment>` -- this packages the job server along with config files and pushes
    it to the remotes you have configured in `<environment>.sh`
-3. On the remote server, start it in the deployed directory with `server_start.sh`.
+3. On the remote server, start it in the deployed directory with `server_start.sh` and stop it with `server_stop.sh`
+
 
 Note: to test out the deploy to a local staging dir, or package the job server for Mesos,
 use `bin/server_package.sh <environment>`.
