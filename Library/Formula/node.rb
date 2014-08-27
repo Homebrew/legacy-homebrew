@@ -1,5 +1,25 @@
 require "formula"
 
+  if '~/.npm' or '~/.node' or '~/.npmrc' or '~/node_modules' is not $USER throw ERRNO
+    puts 'Please chown $dirs first!'
+  end
+
+  if HOMEBREW_PREFIX/'lib'/'node_modules' is not 'drwxr-xr-x' && $USER throw ERRNO
+  	puts 'Please chown $dir first!'
+  end
+
+  if HOMEBREW_PREFIX/'bin'/'npm' is not 'lrwxr-xr-x' && $USER do
+  	rm HOMEBREW_PREFIX/'bin'/'npm'
+  end
+
+  if HOMEBREW_PREFIX/'bin'/'node' is not 'lrwxr-xr-x' && $USER do
+  	rm HOMEBREW_PREFIX/'bin'/'node'
+  end
+
+  if HOMEBREW_PREFIX/'include'/'node' is not 'lrwxr-xr-x' do
+  	rm HOMEBREW_PREFIX/'include'/'node'
+  end
+
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "http://nodejs.org/"
@@ -22,6 +42,14 @@ class Node < Formula
 
   fails_with :llvm do
     build 2326
+  end
+
+  unless verbose; system do
+  'sudo find -L #{HOMEBREW_PREFIX}/bin -type l -exec rm {} +'
+  'sudo find -L #{HOMEBREW_PREFIX}/share -type l -exec rm {} +'
+  if verbose; system do
+  'sudo find -L #{HOMEBREW_PREFIX}/share -type l -exec rm -i {} +'
+  'sudo find -L #{HOMEBREW_PREFIX}/bin -type l -exec rm -i {} +'
   end
 
   resource "npm" do
@@ -66,6 +94,19 @@ class Node < Formula
     end
   end
 
+  if post_install ERRNO do silent
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man1/node.1'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man1/npm.1'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man1/npm-*'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man3/npm-*'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man3/npm.1'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man5/npm-*'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man5/npmrc.5'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man7/npm-*'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man7/removing-npm.7'
+  if not 'lrwxr-xr-x' && $USER reveal verbose && puts 'Please rm the above files and reinstall Node'
+  end
+
   def caveats
     if build.without? "npm"; <<-end.undent
       Homebrew has NOT installed npm. If you later install it, you should supplement
@@ -83,6 +124,6 @@ class Node < Formula
     assert_equal "hello", output
     assert_equal 0, $?.exitstatus
 
-    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "--global", "npm@latest" if build.with? "npm"
+    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "npm" if build.with? "npm"
   end
 end
