@@ -481,8 +481,8 @@ class FormulaInstaller
       nice #{RUBY_PATH}
       -W0
       -I #{HOMEBREW_LIBRARY_PATH}
-      -rbuild
       --
+      #{HOMEBREW_LIBRARY_PATH}/build.rb
       #{f.path}
     ].concat(build_argv)
 
