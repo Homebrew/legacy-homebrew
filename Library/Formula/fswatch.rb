@@ -2,13 +2,13 @@ require "formula"
 
 class Fswatch < Formula
   homepage "https://github.com/emcrisostomo/fswatch"
-  url "https://github.com/emcrisostomo/fswatch/releases/download/1.4.0/fswatch-1.4.0.zip"
-  sha1 "12031348b0afcc12105c63271aa57e599fc9ab94"
+  url "https://github.com/emcrisostomo/fswatch/releases/download/1.4.2/fswatch-1.4.2.zip"
+  sha1 "df3a4a8bfca8c06f2e42cb6ee73f3f522b1dc3af"
 
   bottle do
-    sha1 "a86d9f5e6e2c5989a204956f6a1329be597d1255" => :mavericks
-    sha1 "a969777e2fb984d07c4a9d6ddc99b30072885426" => :mountain_lion
-    sha1 "2016e763b3e217e8dc808485309e68f13c20722d" => :lion
+    sha1 "797eb30eb5acb5599e712d9635e3e106a0d58d6f" => :mavericks
+    sha1 "c560900c86bf37ceeb850e40edd2b3e8350400e9" => :mountain_lion
+    sha1 "ba5181a3bac04e0199124a9eaa97673e84f6b8bf" => :lion
   end
 
   needs :cxx11

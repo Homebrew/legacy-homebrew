@@ -1,53 +1,14 @@
 # This script is loaded by formula_installer as a separate instance.
 # Thrown exceptions are propogated back to the parent process over a pipe
 
-STD_TRAP = trap("INT") { exit! 130 } # no backtrace thanks
+old_trap = trap("INT") { exit! 130 }
 
-at_exit { main }
-
-require 'global'
-require 'cxxstdlib'
-require 'debrew' if ARGV.debug?
-
-def main
-  # The main Homebrew process expects to eventually see EOF on the error
-  # pipe in FormulaInstaller#build. However, if any child process fails to
-  # terminate (i.e, fails to close the descriptor), this won't happen, and
-  # the installer will hang. Set close-on-exec to prevent this.
-  # Whether it is *wise* to launch daemons from formulae is a separate
-  # question altogether.
-  if ENV['HOMEBREW_ERROR_PIPE']
-    require 'fcntl'
-    error_pipe = IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w')
-    error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
-  end
-
-  raise $! if $! # an exception was already thrown when parsing the formula
-
-  trap("INT", STD_TRAP) # restore default CTRL-C handler
-
-  require 'keg'
-  require 'extend/ENV'
-
-  # Force any future invocations of sudo to require the user's password to be
-  # re-entered. This is in-case any build script call sudo. Certainly this is
-  # can be inconvenient for the user. But we need to be safe.
-  system "/usr/bin/sudo", "-k"
-
-  formula = Formulary.factory($0, ARGV.spec)
-  Build.new(formula).install
-rescue Exception => e
-  unless error_pipe.nil?
-    e.continuation = nil if ARGV.debug?
-    Marshal.dump(e, error_pipe)
-    error_pipe.close
-    exit! 1
-  else
-    onoe e
-    puts e.backtrace
-    exit! 2
-  end
-end
+require "global"
+require "cxxstdlib"
+require "keg"
+require "extend/ENV"
+require "debrew" if ARGV.debug?
+require "fcntl"
 
 class Build
   attr_reader :f, :deps, :reqs
@@ -211,4 +172,21 @@ class Build
   rescue StandardError
     raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
   end
+end
+
+error_pipe = IO.new(ENV["HOMEBREW_ERROR_PIPE"].to_i, "w")
+error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+
+# Invalidate the current sudo timestamp in case a build script calls sudo
+system "/usr/bin/sudo", "-k"
+
+trap("INT", old_trap)
+
+begin
+  Build.new(ARGV.formulae.first).install
+rescue Exception => e
+  e.continuation = nil if ARGV.debug?
+  Marshal.dump(e, error_pipe)
+  error_pipe.close
+  exit! 1
 end
