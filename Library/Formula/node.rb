@@ -12,11 +12,6 @@ class Node < Formula
     sha1 "970581c26c145c2e2e2d2453aa69de555213665c" => :lion
   end
 
-  devel do
-    url "http://nodejs.org/dist/v0.11.13/node-v0.11.13.tar.gz"
-    sha1 "da4a9adb73978710566f643241b2c05fb8a97574"
-  end
-
   head "https://github.com/joyent/node.git"
 
   option "enable-debug", "Build with debugger hooks"
@@ -30,8 +25,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-1.4.9.tgz"
-    sha1 "29094f675dad69fc5ea24960a81c7abbfca5ce01"
+    url "https://registry.npmjs.org/npm/-/npm-1.4.24.tgz"
+    sha1 "78125bb55dc592b9cbf4aff44e33d5d81c9471af"
   end
 
   def install
@@ -56,7 +51,7 @@ class Node < Formula
     npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
 
     npm_root.cd { system "make", "install" }
-    system "#{HOMEBREW_PREFIX}/bin/npm", "update", "npm", "-g",
+    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "--global", "npm@latest",
                                          "--prefix", HOMEBREW_PREFIX
 
     Pathname.glob(npm_root/"man/*") do |man|
@@ -88,6 +83,6 @@ class Node < Formula
     assert_equal "hello", output
     assert_equal 0, $?.exitstatus
 
-    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "npm" if build.with? "npm"
+    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "--global", "npm@latest" if build.with? "npm"
   end
 end
