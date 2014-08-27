@@ -5,19 +5,19 @@ require "formula"
   end
 
   if HOMEBREW_PREFIX/'lib'/'node_modules' is not 'drwxr-xr-x' && $USER throw ERRNO
-  	puts 'Please chown $dir first!'
+    puts 'Please chown $dir first!'
   end
 
   if HOMEBREW_PREFIX/'bin'/'npm' is not 'lrwxr-xr-x' && $USER do
-  	rm HOMEBREW_PREFIX/'bin'/'npm'
+    rm HOMEBREW_PREFIX/'bin'/'npm'
   end
 
   if HOMEBREW_PREFIX/'bin'/'node' is not 'lrwxr-xr-x' && $USER do
-  	rm HOMEBREW_PREFIX/'bin'/'node'
+    rm HOMEBREW_PREFIX/'bin'/'node'
   end
 
   if HOMEBREW_PREFIX/'include'/'node' is not 'lrwxr-xr-x' && $USER do
-  	rm HOMEBREW_PREFIX/'include'/'node'
+    rm HOMEBREW_PREFIX/'include'/'node'
   end
 
 # Note that x.even are stable releases, x.odd are devel releases
