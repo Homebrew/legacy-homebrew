@@ -27,4 +27,9 @@ class Binutils < Formula
     system "make"
     system "make install"
   end
+
+  test do
+    system "#{bin}/gar --version"
+    system "#{bin}/gnm #{bin}/gnm |grep main"
+  end
 end
