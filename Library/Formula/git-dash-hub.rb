@@ -7,8 +7,6 @@ class GitDashHub < Formula
 
   def install
     inreplace 'Makefile' do |f|
-      # BSD Make does not support -C and -d combined
-      f.gsub! 'install -C -d', 'install -d'
       # Prevent the makefile from installing outside of the prefix
       f.gsub! '$(shell git --exec-path | sed \'s/.*://\')', '$(PREFIX)/bin'
     end
