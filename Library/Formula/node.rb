@@ -16,7 +16,7 @@ require "formula"
   	rm HOMEBREW_PREFIX/'bin'/'node'
   end
 
-  if HOMEBREW_PREFIX/'include'/'node' is not 'lrwxr-xr-x' do
+  if HOMEBREW_PREFIX/'include'/'node' is not 'lrwxr-xr-x' && $USER do
   	rm HOMEBREW_PREFIX/'include'/'node'
   end
 
