@@ -4,6 +4,7 @@
 old_trap = trap("INT") { exit! 130 }
 
 require "global"
+require "build_options"
 require "cxxstdlib"
 require "keg"
 require "extend/ENV"
@@ -13,8 +14,9 @@ require "fcntl"
 class Build
   attr_reader :formula, :deps, :reqs
 
-  def initialize(formula)
+  def initialize(formula, options)
     @formula = formula
+    @formula.build = BuildOptions.new(options, formula.options)
 
     if ARGV.ignore_deps?
       @deps = []
@@ -183,7 +185,10 @@ system "/usr/bin/sudo", "-k"
 trap("INT", old_trap)
 
 begin
-  Build.new(ARGV.formulae.first).install
+  formula = ARGV.formulae.first
+  options = Options.create(ARGV.options_only)
+  build   = Build.new(formula, options)
+  build.install
 rescue Exception => e
   e.continuation = nil if ARGV.debug?
   Marshal.dump(e, error_pipe)
