@@ -11,10 +11,10 @@ require "debrew" if ARGV.debug?
 require "fcntl"
 
 class Build
-  attr_reader :f, :deps, :reqs
+  attr_reader :formula, :deps, :reqs
 
-  def initialize(f)
-    @f = f
+  def initialize(formula)
+    @formula = formula
 
     if ARGV.ignore_deps?
       @deps = []
@@ -28,14 +28,14 @@ class Build
   def post_superenv_hacks
     # Only allow Homebrew-approved directories into the PATH, unless
     # a formula opts-in to allowing the user's path.
-    if f.env.userpaths? || reqs.any? { |rq| rq.env.userpaths? }
+    if formula.env.userpaths? || reqs.any? { |rq| rq.env.userpaths? }
       ENV.userpaths!
     end
   end
 
   def pre_superenv_hacks
     # Allow a formula to opt-in to the std environment.
-    if (f.env.std? || deps.any? { |d| d.name == "scons" }) && ARGV.env != "super"
+    if (formula.env.std? || deps.any? { |d| d.name == "scons" }) && ARGV.env != "super"
       ARGV.unshift "--env=std"
     end
   end
@@ -47,11 +47,11 @@ class Build
   end
 
   def expand_reqs
-    f.recursive_requirements do |dependent, req|
+    formula.recursive_requirements do |dependent, req|
       build = effective_build_options_for(dependent)
       if (req.optional? || req.recommended?) && build.without?(req)
         Requirement.prune
-      elsif req.build? && dependent != f
+      elsif req.build? && dependent != formula
         Requirement.prune
       elsif req.satisfied? && req.default_formula? && (dep = req.to_dependency).installed?
         deps << dep
@@ -61,11 +61,11 @@ class Build
   end
 
   def expand_deps
-    f.recursive_dependencies do |dependent, dep|
+    formula.recursive_dependencies do |dependent, dep|
       build = effective_build_options_for(dependent)
       if (dep.optional? || dep.recommended?) && build.without?(dep)
         Dependency.prune
-      elsif dep.build? && dependent != f
+      elsif dep.build? && dependent != formula
         Dependency.prune
       elsif dep.build?
         Dependency.keep_but_prune_recursive_deps
@@ -87,12 +87,12 @@ class Build
       ENV.keg_only_deps = keg_only_deps.map(&:name)
       ENV.deps = deps.map { |d| d.to_formula.name }
       ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
-      ENV.setup_build_environment(f)
+      ENV.setup_build_environment(formula)
       post_superenv_hacks
       reqs.each(&:modify_build_environment)
       deps.each(&:modify_build_environment)
     else
-      ENV.setup_build_environment(f)
+      ENV.setup_build_environment(formula)
       reqs.each(&:modify_build_environment)
       deps.each(&:modify_build_environment)
 
@@ -107,7 +107,7 @@ class Build
       end
     end
 
-    f.brew do
+    formula.brew do
       if ARGV.flag? '--git'
         system "git", "init"
         system "git", "add", "-A"
@@ -115,7 +115,7 @@ class Build
       if ARGV.interactive?
         ohai "Entering interactive mode"
         puts "Type `exit' to return and finalize the installation"
-        puts "Install to this prefix: #{f.prefix}"
+        puts "Install to this prefix: #{formula.prefix}"
 
         if ARGV.flag? '--git'
           puts "This directory is now a git repo. Make your changes and then use:"
@@ -123,34 +123,34 @@ class Build
           puts "to copy the diff to the clipboard."
         end
 
-        interactive_shell f
+        interactive_shell(formula)
       else
-        f.prefix.mkpath
+        formula.prefix.mkpath
 
-        f.resources.each { |r| r.extend(ResourceDebugger) } if ARGV.debug?
+        formula.resources.each { |r| r.extend(ResourceDebugger) } if ARGV.debug?
 
         begin
-          f.install
+          formula.install
         rescue Exception => e
           if ARGV.debug?
-            debrew e, f
+            debrew(e, formula)
           else
-            raise e
+            raise
           end
         end
 
         stdlibs = detect_stdlibs
-        Tab.create(f, ENV.compiler, stdlibs.first, f.build).write
+        Tab.create(formula, ENV.compiler, stdlibs.first, formula.build).write
 
         # Find and link metafiles
-        f.prefix.install_metafiles Pathname.pwd
+        formula.prefix.install_metafiles Pathname.pwd
       end
     end
   end
 
   def detect_stdlibs
-    keg = Keg.new(f.prefix)
-    CxxStdlib.check_compatibility(f, deps, keg, ENV.compiler)
+    keg = Keg.new(formula.prefix)
+    CxxStdlib.check_compatibility(formula, deps, keg, ENV.compiler)
 
     # The stdlib recorded in the install receipt is used during dependency
     # compatibility checks, so we only care about the stdlib that libraries
