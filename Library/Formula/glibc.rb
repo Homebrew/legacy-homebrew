@@ -5,6 +5,8 @@ class Glibc < Formula
   url "http://ftpmirror.gnu.org/glibc/glibc-2.19.tar.bz2"
   sha1 "382f4438a7321dc29ea1a3da8e7852d2c2b3208c"
 
+  keg_only "Linking glibc may cause the error: ELF file OS ABI invalid"
+
   # binutils 2.20 or later is required
   depends_on "binutils" => [:build, :optional]
 
