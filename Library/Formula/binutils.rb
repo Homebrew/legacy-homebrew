@@ -7,6 +7,7 @@ class Binutils < Formula
   sha1 '1b2bc33003f4997d38fadaa276c1f0321329ec56'
 
   # No --default-names option as it interferes with Homebrew builds.
+  option "default-names", "Do not prepend 'g' to the binary" if OS.linux?
 
   bottle do
     sha1 "b411f528adb58ccdf068832b84f35da97e510ec9" => :mavericks
@@ -17,7 +18,7 @@ class Binutils < Formula
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--program-prefix=g",
+                          ("--program-prefix=g" unless build.include? 'default-names'),
                           "--prefix=#{prefix}",
                           "--infodir=#{info}",
                           "--mandir=#{man}",
