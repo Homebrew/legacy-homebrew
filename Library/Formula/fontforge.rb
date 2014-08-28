@@ -44,7 +44,7 @@ class Fontforge < Formula
 
   depends_on 'gettext'
   if build.head?
-    depends_on :python
+    depends_on :python if MacOS.version <= :snow_leopard
   else
     depends_on :python => :optional
   end
