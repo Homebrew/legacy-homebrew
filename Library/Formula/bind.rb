@@ -17,8 +17,8 @@ class Bind < Formula
   head "https://source.isc.org/git/bind9.git"
 
   devel do
-      url "https://source.isc.org/git/bind9.git", :tag => "v9_10_1b2"
-      version "9.10.1-b2"
+    url "https://source.isc.org/git/bind9.git", :tag => "v9_10_1b2"
+    version "9.10.1-b2"
   end
 
   depends_on "openssl"
