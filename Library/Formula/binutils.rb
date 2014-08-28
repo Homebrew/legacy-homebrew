@@ -27,7 +27,7 @@ class Binutils < Formula
                           "--enable-64-bit-bfd",
                           "--enable-targets=all"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do
