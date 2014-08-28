@@ -3,8 +3,8 @@ require 'formula'
 class Nmap < Formula
   homepage "http://nmap.org/"
   head "https://guest:@svn.nmap.org/nmap/", :using => :svn
-  url "http://nmap.org/dist/nmap-6.46.tar.bz2"
-  sha1 "e19dd4d35d76b24b084665b90c423f53bc7fdcfe"
+  url "http://nmap.org/dist/nmap-6.47.tar.bz2"
+  sha1 "0c917453a91a5e85c2a217d27c3853b0f3e0e6ac"
   revision 1
 
   bottle do
