@@ -16,9 +16,8 @@ class Cwm < Formula
   depends_on "pkg-config" => :build
 
   patch do
-    # Remove this patch when updating to the next cwm release 5.6,
-    # where it is already contained.
-    url "https://github.com/chneukirchen/cwm/commit/c7f481e6fac2cb693144bff45f6180d146bf13a5.diff"
+    # Fix 10.9 build. Merged upstream.
+    url "https://github.com/chneukirchen/cwm/commit/c7f481.diff"
     sha1 "b91bd1b14fe9d4fef287be19eabc05762e5cf047"
   end
 
