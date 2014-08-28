@@ -8,9 +8,7 @@ class Postgresql < Formula
     url "http://ftp.postgresql.org/pub/source/v9.3.5/postgresql-9.3.5.tar.bz2"
     sha256 "14176ffb1f90a189e7626214365be08ea2bfc26f26994bafb4235be314b9b4b0"
 
-    # ossp-uuid support cannot be compiled on 9.4beta1:
-    # http://thread.gmane.org/gmane.comp.db.postgresql.devel.general/229339
-    # Will keep it stable-only until the usptream issues are resolved.
+    # ossp-uuid is no longer required for uuid support since 9.4beta2:
     depends_on "ossp-uuid" => :recommended
     # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
     patch :DATA
@@ -70,11 +68,14 @@ class Postgresql < Formula
     args << "--with-tcl" unless build.include? 'no-tcl'
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
 
-    if build.stable? && build.with?("ossp-uuid")
+    if build.with?("ossp-uuid")
       args << "--with-ossp-uuid"
       ENV.append 'CFLAGS', `uuid-config --cflags`.strip
       ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
       ENV.append 'LIBS', `uuid-config --libs`.strip
+    elsif build.devel?
+      # Apple's UUID implementation is compatible with e2fs NOT bsd
+      args << "--with-uuid=e2fs"
     end
 
     if build.build_32_bit?
