@@ -5,6 +5,13 @@ class Csfml < Formula
   url "http://www.sfml-dev.org/download/csfml/CSFML-2.0-sources.zip"
   sha1 "6d831634a558593580296209af278322523f1e43"
 
+  bottle do
+    cellar :any
+    sha1 "cd9aa7a1b25776c479b28d590a47faeef3d9c998" => :mavericks
+    sha1 "bbebd99be16cf18fb2d4c298148fd6b4a49d2d99" => :mountain_lion
+    sha1 "5671fb2cd53398283e45761a101099dcbbe81a17" => :lion
+  end
+
   depends_on "cmake" => :build
   depends_on "sfml"
 
