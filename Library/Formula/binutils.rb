@@ -34,4 +34,9 @@ class Binutils < Formula
     assert `#{bin}/gnm #{bin}/gnm`.include? 'main'
     assert_equal 0, $?.exitstatus
   end
+
+  test do
+    system "#{bin}/gar --version"
+    system "#{bin}/gnm #{bin}/gnm |grep main"
+  end
 end
