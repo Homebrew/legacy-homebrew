@@ -29,4 +29,9 @@ class Binutils < Formula
     system "make"
     system "make install"
   end
+
+  test do
+    assert `#{bin}/gnm #{bin}/gnm`.include? 'main'
+    assert_equal 0, $?.exitstatus
+  end
 end
