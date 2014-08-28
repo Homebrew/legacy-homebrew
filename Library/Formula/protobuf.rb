@@ -2,8 +2,8 @@ require 'formula'
 
 class Protobuf < Formula
   homepage 'http://code.google.com/p/protobuf/'
-  url 'https://protobuf.googlecode.com/svn/rc/protobuf-2.6.0.tar.bz2'
-  sha1 'f0a73e2cd4c1da9ab237519808ecb7f488f673ee'
+  url 'https://protobuf.googlecode.com/svn/rc/protobuf-2.6.0.tar.bz2', :using => :curl
+  sha1 '6d9dc4c5899232e2397251f9323cbdf176391d1b'
 
   #bottle do
   #  cellar :any
