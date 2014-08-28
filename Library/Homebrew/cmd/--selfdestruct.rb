@@ -9,6 +9,11 @@ require 'open3'
 module Homebrew
   def __selfdestruct
 
+unless options[:force]
+  print "Completely remove Homebrew from your system? "
+  abort unless gets.rstrip =~ /y|yes/i
+end
+
 $stdout.sync = true
 
 # Default options
@@ -173,7 +178,7 @@ $files.each(&rm)
     puts tapped
   end
 
-puts 'Finished. Homebrew has been removed from your system'
+puts 'Homebrew has been removed from your system. Thanks for brewing with us!'
 puts 'You may also wish to revert your $PATH to its original state' unless options[:quiet]
   end
 end
