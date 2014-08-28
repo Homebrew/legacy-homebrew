@@ -15,7 +15,7 @@ class Autojump < Formula
     man1.install 'docs/autojump.1'
     (prefix/'etc').install 'bin/autojump.sh', 'bin/autojump.bash', 'bin/autojump.zsh'
     zsh_completion.install 'bin/_j'
-    (prefix/'etc').install 'bin/autojump.fish' if build.head?
+    (prefix/'etc').install 'bin/autojump.fish'
 
     bin.write_exec_script libexec+'autojump'
   end

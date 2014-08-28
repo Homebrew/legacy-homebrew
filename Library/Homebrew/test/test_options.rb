@@ -10,10 +10,6 @@ class OptionTests < Homebrew::TestCase
     assert_equal "--foo", @option.to_s
   end
 
-  def test_to_str
-    assert_equal "--foo", @option.to_str
-  end
-
   def test_equality
     foo = Option.new("foo")
     bar = Option.new("bar")

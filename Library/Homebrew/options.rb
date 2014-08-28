@@ -11,7 +11,6 @@ class Option
   def to_s
     flag
   end
-  alias_method :to_str, :to_s
 
   def <=>(other)
     return unless Option === other
