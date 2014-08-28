@@ -7,9 +7,10 @@ class Nmap < Formula
   sha1 "0c917453a91a5e85c2a217d27c3853b0f3e0e6ac"
 
   bottle do
-    sha1 "47162f878c916d62a2fcc1031c848ba1e6dd0925" => :mavericks
-    sha1 "e8883bc7e925f5fd19bb0ec46770be9417166b03" => :mountain_lion
-    sha1 "c7791690ea1f83bfad3b272b5affeda565ef4a4f" => :lion
+    revision 1
+    sha1 "f866508268e57a381a1c2456456c5580f83e5bc4" => :mavericks
+    sha1 "c80f12d6d1a52bca5ff152404a84a5c4436ba7b3" => :mountain_lion
+    sha1 "28da4ac4b94c636b1acd02ca1b17cbb799f86f3f" => :lion
   end
 
   depends_on "openssl"
