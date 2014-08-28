@@ -1,9 +1,10 @@
 require "formula"
 
 class GitDashHub < Formula
+  version "0.1.3"
   homepage "https://github.com/ingydotnet/git-hub"
-  url "https://github.com/ingydotnet/git-hub/archive/0.1.3.tar.gz"
-  sha1 "743517bc205ed4e3ac6c3077247d7b49ff249e87"
+  url "https://github.com/ingydotnet/git-hub/archive/github-issue-141-fix/1.tar.gz"
+  sha1 "d43cf776dc72aa9e1fcd27271f5225e5277ee379"
 
   def install
     inreplace 'Makefile' do |f|
