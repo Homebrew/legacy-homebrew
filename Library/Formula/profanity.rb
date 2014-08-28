@@ -2,10 +2,9 @@ require "formula"
 
 class Profanity < Formula
   homepage "http://www.profanity.im/"
-  url "http://www.profanity.im/profanity-0.4.3.tar.gz"
-  sha1 "ecd99eba84ad149941491c17c7f69a77fc20de5e"
+  url "http://www.profanity.im/profanity-0.4.4.tar.gz"
+  sha1 "c9b8472ccdefc8d3a24c06a4ee9a3f6b0b75794d"
   head "https://github.com/boothj5/profanity.git"
-  revision 1
 
   bottle do
     sha1 "7dcef1770b0ac01814677f714fd7a8d5568cbf34" => :mavericks
