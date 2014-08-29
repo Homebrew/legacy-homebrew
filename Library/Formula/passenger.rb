@@ -7,12 +7,14 @@ class Passenger < Formula
   head 'https://github.com/phusion/passenger.git'
 
   bottle do
-    sha1 "8b3c213ef0acb820c1a0ee64a12cff200b51a591" => :mavericks
-    sha1 "df04cd2c1f91b715bb873514f2995fca93d5cae2" => :mountain_lion
+    revision 1
+    sha1 "a240e698b7d1c90609067c83e4bfccdfb71e5b19" => :mavericks
+    sha1 "71e8e1133342801c65eecdc427446a4794ea7f04" => :mountain_lion
+    sha1 "150e49250a9c026eef71addcdf75ac3c0f0c4b09" => :lion
   end
 
   depends_on 'pcre'
-  depends_on :macos => :mountain_lion
+  depends_on :macos => :lion
 
   option 'without-apache2-module', 'Disable Apache2 module'
 

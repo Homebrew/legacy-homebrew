@@ -27,6 +27,11 @@ class Binutils < Formula
                           "--enable-64-bit-bfd",
                           "--enable-targets=all"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    assert `#{bin}/gnm #{bin}/gnm`.include? 'main'
+    assert_equal 0, $?.exitstatus
   end
 end

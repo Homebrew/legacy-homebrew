@@ -35,13 +35,19 @@ class Fontforge < Formula
     depends_on 'pango'
     depends_on 'cairo'
     depends_on 'ossp-uuid'
+    depends_on 'zeromq'
+    depends_on 'czmq'
   end
 
   option 'with-gif', 'Build with GIF support'
   option 'with-x', 'Build with X11 support, including FontForge.app'
 
   depends_on 'gettext'
-  depends_on :python => :optional
+  if build.head?
+    depends_on :python if MacOS.version <= :snow_leopard
+  else
+    depends_on :python => :optional
+  end
 
   depends_on 'libpng'   => :recommended
   depends_on 'jpeg'     => :recommended
@@ -96,7 +102,7 @@ class Fontforge < Formula
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/CoreServices.framework/Frameworks"
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/Carbon.framework/Frameworks"
 
-    system "./autogen.sh" if build.head?
+    system "./bootstrap" if build.head?
     system "./configure", *args
 
     # Fix hard-coded install locations that don't respect the target bindir
