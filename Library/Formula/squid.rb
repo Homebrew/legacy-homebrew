@@ -1,24 +1,9 @@
 require 'formula'
 
-class NoBdb5 < Requirement
-  satisfy(:build_env => false) { !Formula["berkeley-db"].installed? }
-
-  def message; <<-EOS.undent
-    This software can fail to compile when Berkeley-DB 5.x is installed.
-    You may need to try:
-      brew unlink berkeley-db
-      brew install squid
-      brew link berkeley-db
-    EOS
-  end
-end
-
 class Squid < Formula
   homepage 'http://www.squid-cache.org/'
   url 'http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.6.tar.bz2'
   sha1 '0b8850a0bf73d85797e441e589324da8309cd738'
-
-  depends_on NoBdb5
 
   def install
     # http://stackoverflow.com/questions/20910109/building-squid-cache-on-os-x-mavericks
@@ -35,6 +20,7 @@ class Squid < Formula
       --enable-ssl-crtd
       --disable-eui
       --enable-pf-transparent
+      --with-included-ltdl
     ]
 
     system "./configure", *args
