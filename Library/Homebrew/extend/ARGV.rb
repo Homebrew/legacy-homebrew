@@ -1,10 +1,10 @@
 module HomebrewArgvExtension
   def named
-    @named ||= reject{|arg| arg[0..0] == '-'}
+    @named ||= self - options_only
   end
 
   def options_only
-    select {|arg| arg[0..0] == '-'}
+    select { |arg| arg.start_with?("-") }
   end
 
   def formulae
