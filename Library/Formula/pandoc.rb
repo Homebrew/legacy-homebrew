@@ -5,17 +5,13 @@ class Pandoc < Formula
   include Language::Haskell::Cabal
 
   homepage "http://johnmacfarlane.net/pandoc/"
-  url "https://pandoc.googlecode.com/files/pandoc-1.12.3.tar.gz"
-  sha1 "f519b5fb8c88ff4374432477dc12f68bbe238510"
+  url "https://hackage.haskell.org/package/pandoc-1.13.0.1/pandoc-1.13.0.1.tar.gz"
+  sha1 "b038b965d3027ca84939292ec2a94cd7389e1e7d"
 
   bottle do
-    sha1 "216b78973a1c26c7091839dd7cfa8a50e2cd6fcb" => :mavericks
-    sha1 "58d063c1bb5c02dc454de94dde147003998a4e1d" => :mountain_lion
-    sha1 "17ebadac09f6c65fe450751e7c1bdae2efdeba2d" => :lion
-  end
-
-  resource "completion" do
-    url "https://github.com/dsanson/pandoc-completion.git", :branch => "master"
+    sha1 "14516b086a7728dad03ff9b5a84c336da1947ee8" => :mavericks
+    sha1 "bde68b3e353899706868f82f20907b57e4582576" => :mountain_lion
+    sha1 "ff8d605afbe6eb914986a9fab729f569dcb35b8e" => :lion
   end
 
   depends_on "ghc" => :build
@@ -23,12 +19,8 @@ class Pandoc < Formula
   depends_on "gmp"
 
   def install
-    resource("completion").stage do
-      bash_completion.install "pandoc-completion.bash"
-    end
     cabal_sandbox do
-      cabal_install_tools "alex", "happy"
-      cabal_install "--only-dependencies", "--constraint=temporary==1.2.0.1"
+      cabal_install "--only-dependencies"
       cabal_install "--prefix=#{prefix}"
     end
     cabal_clean_lib

@@ -2,15 +2,16 @@ require 'set'
 
 class BuildEnvironment
   def initialize(*settings)
-    @settings = Set.new(settings)
-    @procs = Set.new
+    @settings = Set.new(*settings)
+  end
+
+  def merge(*args)
+    @settings.merge(*args)
+    self
   end
 
   def <<(o)
-    case o
-    when Proc then @procs << o
-    else @settings << o
-    end
+    @settings << o
     self
   end
 
@@ -21,28 +22,11 @@ class BuildEnvironment
   def userpaths?
     @settings.include? :userpaths
   end
-
-  def modify_build_environment(receiver)
-    @procs.each { |p| receiver.instance_eval(&p) }
-  end
-
-  def _dump(*)
-    @settings.to_a.join(":")
-  end
-
-  def self._load(s)
-    new(*s.split(":").map(&:to_sym))
-  end
 end
 
 module BuildEnvironmentDSL
-  def env(*settings, &block)
+  def env(*settings)
     @env ||= BuildEnvironment.new
-    if block_given?
-      @env << block
-    else
-      settings.each { |s| @env << s }
-    end
-    @env
+    @env.merge(settings)
   end
 end

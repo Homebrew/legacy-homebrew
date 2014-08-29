@@ -1,6 +1,6 @@
 require "cmd/fetch"
 
-module Homebrew extend self
+module Homebrew
   def __cache
     if ARGV.named.empty?
       puts HOMEBREW_CACHE

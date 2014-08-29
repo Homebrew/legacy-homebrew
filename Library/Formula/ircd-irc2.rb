@@ -34,8 +34,17 @@ class IrcdIrc2 < Formula
                           "--mandir=#{man}",
                           "CFLAGS=-DRLIMIT_FDMAX=0"
 
+    build_dir = `./support/config.guess`.chomp
+
+    # Disable netsplit detection. In a netsplit, joins to new channels do not
+    # give chanop status.
+    inreplace "#{build_dir}/config.h", /#define DEFAULT_SPLIT_USERS\s+65000/,
+      "#define DEFAULT_SPLIT_USERS 0"
+    inreplace "#{build_dir}/config.h", /#define DEFAULT_SPLIT_SERVERS\s+80/,
+      "#define DEFAULT_SPLIT_SERVERS 0"
+
     # The directory is something like `i686-apple-darwin13.0.2'
-    system "make", "install", "-C", `./support/config.guess`.chomp
+    system "make", "install", "-C", build_dir
 
     (etc/"ircd.conf").write default_ircd_conf
   end

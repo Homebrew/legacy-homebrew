@@ -1,12 +1,12 @@
-require 'formula'
+require "formula"
 
 class Glm < Formula
-  homepage 'http://glm.g-truc.net/'
-  url 'https://downloads.sourceforge.net/project/ogl-math/glm-0.9.5.3/glm-0.9.5.3.zip'
-  sha1 'e5035b496390b0f05afc823f3930186139c9b2bf'
-  head 'https://github.com/Groovounet/glm.git'
+  homepage "http://glm.g-truc.net/"
+  url "https://downloads.sourceforge.net/project/ogl-math/glm-0.9.5.4/glm-0.9.5.4.zip"
+  sha1 "d9666b5b013d374c7d1a498c9495f7142f6fe9d3"
+  head "https://github.com/Groovounet/glm.git"
 
   def install
-    include.install 'glm'
+    include.install "glm"
   end
 end

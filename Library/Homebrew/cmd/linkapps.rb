@@ -1,8 +1,7 @@
 # Links any Applications (.app) found in installed prefixes to /Applications
 require 'keg'
 
-module Homebrew extend self
-
+module Homebrew
   def linkapps
     target_dir = ARGV.include?("--local") ? File.expand_path("~/Applications") : "/Applications"
 

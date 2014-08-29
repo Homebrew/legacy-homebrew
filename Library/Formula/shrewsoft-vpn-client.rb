@@ -5,6 +5,14 @@ class ShrewsoftVpnClient < Formula
   url "https://www.shrew.net/download/ike/ike-2.2.1-release.tbz2"
   sha1 "a52a49248fa663dfbd9e208eaa3e706a17bb9c8c"
   head "svn://svn.shrew.net/ike/head"
+  revision 1
+
+  bottle do
+    revision 1
+    sha1 "0c66ce2643e19ee8d5188db0cb0218cd1952af2c" => :mavericks
+    sha1 "4ad1e92a897578f2855e475797e603f907a22a4b" => :mountain_lion
+    sha1 "65815ad9210107a12b8c6b5d9dfd92e882d916d1" => :lion
+  end
 
   option "without-gui", "Don't build Client GUI"
   option "without-natt", "Disable Nat Traversal Support"
@@ -20,8 +28,7 @@ class ShrewsoftVpnClient < Formula
     # https://lists.shrew.net/pipermail/vpn-devel/2014-January/000636.html
 
     # there is no suport for an alternate Frameworks folder, must change hard-coded paths
-    ["package/macosx/vpn-client-install.packproj"] +
-    Dir["source/*/CMakeLists.txt"].each do |path|
+    Dir.glob(%w[source/*/CMakeLists.txt package/macosx/vpn-client-install.packproj]) do |path|
       next unless File.read(path).include? "/Library/Frameworks"
       inreplace path, "/Library/Frameworks", frameworks
     end
@@ -51,7 +58,7 @@ class ShrewsoftVpnClient < Formula
     system "cmake", *cmake_args
 
     # change relative framework paths to absolute ones (otherwise /Library/Frameworks is assumed)
-    Dir["source/*/cmake_install.cmake"].each do |path|
+    Dir.glob("source/*/cmake_install.cmake") do |path|
       inreplace path, /"(ShrewSoft.+?\.framework)/, "\"#{frameworks}/\\1"
     end
 

@@ -29,6 +29,10 @@ class BottleVersion < Version
     m = /-(\d+_\d+(_\d+)+)/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. 20120731 from fontforge-20120731.mavericks.bottle.tar.gz
+    m = /-(\d{8})/.match(stem)
+    return m.captures.first unless m.nil?
+
     super
   end
 end

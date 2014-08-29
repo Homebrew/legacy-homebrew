@@ -29,10 +29,9 @@ class Dependency
   end
 
   def to_formula
-    f = Formula.factory(name)
-    # Add this dependency's options to the formula's build args
-    f.build.args = f.build.args.concat(options)
-    f
+    formula = Formulary.factory(name)
+    formula.build = BuildOptions.new(options, formula.options)
+    formula
   end
 
   def installed?
@@ -43,11 +42,9 @@ class Dependency
     installed? && missing_options(inherited_options).empty?
   end
 
-  def missing_options(inherited_options=[])
-    missing = options | inherited_options
-    missing -= Tab.for_formula(to_formula).used_options
-    missing -= to_formula.build.implicit_options
-    missing
+  def missing_options(inherited_options)
+    required = options | inherited_options
+    required - Tab.for_formula(to_formula).used_options
   end
 
   def modify_build_environment
@@ -55,7 +52,7 @@ class Dependency
   end
 
   def inspect
-    "#<#{self.class}: #{name.inspect} #{tags.inspect}>"
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect}>"
   end
 
   # Define marshaling semantics because we cannot serialize @env_proc

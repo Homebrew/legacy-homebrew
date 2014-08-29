@@ -30,6 +30,7 @@ class PkgVersion < Version
   alias_method :to_str, :to_s
 
   def <=>(other)
+    return unless Version === other
     super.nonzero? || revision <=> other.revision
   end
 end

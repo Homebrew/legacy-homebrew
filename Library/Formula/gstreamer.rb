@@ -2,9 +2,15 @@ require "formula"
 
 class Gstreamer < Formula
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.2.4.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.2.4.tar.xz"
-  sha256 "1e7ca67a7870a82c9ed51d51d0008cdbc550c41d64cc3ff3f9a1c2fc311b4929"
+  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.0.tar.xz"
+  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.0.tar.xz"
+  sha256 "23c39fdc2b24f889b07cab0449825384fef7592a121e180729fd9025ec45c695"
+
+  bottle do
+    sha1 "79d453bf6cc25ad5389addd1eba6610f5ce3b43f" => :mavericks
+    sha1 "f6f99cc4d73d97ece0f61e0fb7310e4c4639c449" => :mountain_lion
+    sha1 "7c984213e35e568cd6c9fbb5dc93deeda8e7fa69" => :lion
+  end
 
   head do
     url "git://anongit.freedesktop.org/gstreamer/gstreamer"
@@ -18,10 +24,9 @@ class Gstreamer < Formula
   depends_on "gobject-introspection"
   depends_on "gettext"
   depends_on "glib"
+  depends_on "bison"
 
   def install
-    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing -fno-common"
-
     args = %W[
       --prefix=#{prefix}
       --disable-debug
@@ -31,7 +36,7 @@ class Gstreamer < Formula
     ]
 
     if build.head?
-      ENV.append "NOCONFIGURE", "yes"
+      ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
     end
 

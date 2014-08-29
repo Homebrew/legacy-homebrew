@@ -1,16 +1,16 @@
-# -*- coding: UTF-8 -*-
+# encoding: UTF-8
 require "formula"
 
 class Yaz < Formula
   homepage "http://www.indexdata.com/yaz"
-  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.1.1.tar.gz"
-  sha1 "c2ba83d7488278d214fd31a5cbac188d947a800e"
+  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.4.1.tar.gz"
+  sha1 "4190cc88f95f54ec420e784208c6b4b0eb3af6d2"
 
   bottle do
     cellar :any
-    sha1 "1045b83e175a62d5590d2a4268f17baa69c63c1c" => :mavericks
-    sha1 "378e0566d8193d58fd6a5cec2d4589a9f0f37bfa" => :mountain_lion
-    sha1 "187e9601be7a20cd54b23b4d9c17dff2fdfe82b1" => :lion
+    sha1 "849a16244770beb4c81bc041e6b1a18c98319e03" => :mavericks
+    sha1 "9a59e1db4ece4e96748c5fc33a1428b0ee8d78af" => :mountain_lion
+    sha1 "56bcb0632a14290463789ba1ebe74ac5a6f319e6" => :lion
   end
 
   depends_on "pkg-config" => :build
@@ -31,6 +31,7 @@ class Yaz < Formula
     end
 
     result = `"#{bin}/yaz-iconv" -f marc8 -t utf8 marc8.txt`.chomp
+    result.force_encoding(Encoding::UTF_8) if result.respond_to?(:force_encoding)
     assert_equal "世界こんにちは！", result
   end
 end

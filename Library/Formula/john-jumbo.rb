@@ -4,17 +4,28 @@ class JohnJumbo < Formula
   homepage 'http://www.openwall.com/john/'
   url 'http://www.openwall.com/john/g/john-1.7.9.tar.bz2'
   sha1 '8f77bdd42b7cf94ec176f55ea69c4da9b2b8fe3b'
+  revision 1
+
+  bottle do
+    revision 1
+    sha1 "a11eb01effa085f1f196353477111f76c39e6349" => :mavericks
+    sha1 "acbdf6c2b4f59b2b4e756d7288f3d727ab630706" => :mountain_lion
+    sha1 "eef8dcc88d9666c7c3c099bee4cc6d14f27a056b" => :lion
+  end
 
   conflicts_with 'john', :because => 'both install the same binaries'
+
+  depends_on "openssl"
+
+  patch do
+    url "http://www.openwall.com/john/g/john-1.7.9-jumbo-7.diff.gz"
+    sha1 "22fd8294e997f45a301cfeb65a8aa7083f25a55d"
+  end
 
   # First patch taken from MacPorts, tells john where to find runtime files
   # Second patch protects against a redefinition of _mm_testz_si128 which
   # tanked the build in clang;
   # see https://github.com/Homebrew/homebrew/issues/26531
-  patch do
-    url "http://www.openwall.com/john/g/john-1.7.9-jumbo-7.diff.gz"
-    sha1 "22fd8294e997f45a301cfeb65a8aa7083f25a55d"
-  end
   patch :DATA
 
   fails_with :llvm do
@@ -24,20 +35,23 @@ class JohnJumbo < Formula
 
   def install
     ENV.deparallelize
-    arch = MacOS.prefer_64_bit? ? '64' : 'sse2'
-    arch += '-opencl'
-
+    arch = MacOS.prefer_64_bit? ? "64-opencl" : "sse2-opencl"
     target = "macosx-x86-#{arch}"
 
-    cd 'src' do
-      inreplace 'Makefile' do |s|
-        s.change_make_var! "CC", ENV.cc
-        if MacOS.version > :leopard && ENV.compiler != :clang
-          s.change_make_var! "OMPFLAGS", "-fopenmp -msse2 -D_FORTIFY_SOURCE=0"
-        end
+    args = %W[-C src clean CC=#{ENV.cc} #{target}]
+
+    if MacOS.version >= :snow_leopard
+      case ENV.compiler
+      when :clang
+        # no openmp support
+      when :gcc, :llvm
+        args << "OMPFLAGS=-fopenmp -msse2 -D_FORTIFY_SOURCE=0"
+      else
+        args << "OMPFLAGS=-fopenmp -msse2"
       end
-      system "make", "clean", target
     end
+
+    system "make", *args
 
     # Remove the README symlink and install the real file
     rm 'README'

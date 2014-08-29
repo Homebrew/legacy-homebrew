@@ -24,23 +24,29 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.18.tar.bz2"
-    sha256 "dab6d12e620e2097a6838a3f6928f3b2ca3aab0b70521b53107ee1998303d378"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.25.tar.bz2"
+    sha256 "f5e35e82e57d49e83d3246a9d84684ecd095705628db59ac0516dab2bb8cf540"
 
-    # http://bugs.winehq.org/show_bug.cgi?id=34166
+    depends_on "samba" => :optional
+
+    # Patch to fix screen-flickering issues. Still relevant on 1.7.23.
+    # https://bugs.winehq.org/show_bug.cgi?id=34166
     patch do
-      url "http://bugs.winehq.org/attachment.cgi?id=47639"
+      url "https://bugs.winehq.org/attachment.cgi?id=47639"
       sha1 "c195f4b9c0af450c7dc3f396e8661ea5248f2b01"
     end
   end
 
-  head "git://source.winehq.org/git/wine.git"
-
-  env :std
+  head do
+    url "git://source.winehq.org/git/wine.git"
+    depends_on "samba" => :optional
+  end
 
   # note that all wine dependencies should declare a --universal option in their formula,
   # otherwise homebrew will not notice that they are not built universal
-  require_universal_deps
+  def require_universal_deps?
+    true
+  end
 
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
@@ -72,8 +78,8 @@ class Wine < Formula
   end
 
   fails_with :clang do
-    build 421
-    cause 'error: invalid operand for instruction lretw'
+    build 425
+    cause "Clang prior to Xcode 5 miscompiles some parts of wine"
   end
 
   # These libraries are not specified as dependencies, or not built as 32-bit:
@@ -97,20 +103,10 @@ class Wine < Formula
   end
 
   def install
-    # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
-    build32 = "-arch i386 -m32"
+    ENV.m32 # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
 
-    ENV.append "CFLAGS", build32
-    ENV.append "LDFLAGS", build32
-
-    # The clang that comes with Xcode 5 no longer miscompiles wine. Tested with 1.7.3.
-    if ENV.compiler == :clang and MacOS.clang_build_version < 500
-      opoo <<-EOS.undent
-        Clang currently miscompiles some parts of Wine.
-        If you have GCC, you can get a more stable build with:
-          brew install wine --cc=gcc-4.2 # or 4.7, 4.8, etc.
-      EOS
-    end
+    # Help configure find libxml2 in an XCode only (no CLT) installation.
+    ENV.libxml2
 
     args = ["--prefix=#{prefix}"]
     args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang

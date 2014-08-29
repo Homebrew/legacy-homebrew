@@ -55,10 +55,10 @@ class IscDhcp < Formula
 
     # rename all the installed sample etc/* files so they don't clobber
     # any existing config files at symlink time.
-    Dir.open(prefix+'etc') do |dir|
+    Dir.open("#{prefix}/etc") do |dir|
       dir.each do |f|
         file = "#{dir.path}/#{f}"
-        File.rename(file, "#{file}.sample") if File.stat(file).file?
+        File.rename(file, "#{file}.sample") if File.file?(file)
       end
     end
 

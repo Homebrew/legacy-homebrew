@@ -2,7 +2,7 @@ require "formula"
 
 class GupnpTools < Formula
   homepage "https://wiki.gnome.org/GUPnP/"
-  url "https://download.gnome.org/sources/gupnp-tools/0.8/gupnp-tools-0.8.9.tar.xz", :using => :ssl3
+  url "http://ftp.gnome.org/pub/gnome/sources/gupnp-tools/0.8/gupnp-tools-0.8.9.tar.xz"
   sha1 "afe0855510740bf44bc32b716bd0687edcda0f94"
 
   depends_on :x11

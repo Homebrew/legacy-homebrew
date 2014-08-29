@@ -6,9 +6,10 @@ class Gdal < Formula
   sha1 '25efd2bffdea2e841377ca8c1fd49d89d02ac87e'
 
   bottle do
-    sha1 "e6f7fd48a09a28796d3f721d0c208dd15a1310bb" => :mavericks
-    sha1 "2e9f478b59008df1b96461a55a031522ab0ba7ad" => :mountain_lion
-    sha1 "319300ab6951e4b25feb8475e28ac66deb16811a" => :lion
+    revision 1
+    sha1 "f8c69a9220e08d549e894cc4352b98105995f3cb" => :mavericks
+    sha1 "9c524862c7e63c1808874ad360b3a60ff84c716f" => :mountain_lion
+    sha1 "6a9451e0cd183f39f795f9ff0b95d97ca209f0f5" => :lion
   end
 
   head do
@@ -75,7 +76,7 @@ class Gdal < Formula
   # including prefix lib dir added by Homebrew:
   #    ld: warning: directory not found for option '-L/usr/local/Cellar/gdal/1.11.0/lib'
   patch do
-    url "https://gist.githubusercontent.com/dakcarto/7abad108aa31a1e53fb4/raw/gdal-armadillo.patch"
+    url "https://gist.githubusercontent.com/dakcarto/7abad108aa31a1e53fb4/raw/b56887208fd91d0434d5a901dae3806fb1bd32f8/gdal-armadillo.patch"
     sha1 "3af1cae94a977d55541adba0d86c697d77bd1320"
   end if build.include? "enable-armadillo"
 
@@ -266,6 +267,9 @@ class Gdal < Formula
     # Fix hardcoded mandir: http://trac.osgeo.org/gdal/ticket/5092
     inreplace 'configure', %r[^mandir='\$\{prefix\}/man'$], ''
 
+    # These libs are statically linked in vendored libkml and libkml formula
+    inreplace "configure", " -lminizip -luriparser", "" if build.with? "libkml"
+
     system "./configure", *get_configure_args
     system "make"
     system "make install"
@@ -286,7 +290,7 @@ class Gdal < Formula
     system 'make', 'man' if build.head?
     system 'make', 'install-man'
     # Clean up any stray doxygen files.
-    Dir[bin + '*.dox'].each { |p| rm p }
+    Dir.glob("#{bin}/*.dox") { |p| rm p }
   end
 
   def caveats

@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class Newlisp < Formula
-  homepage 'http://www.newlisp.org/'
-  url 'http://www.newlisp.org/downloads/newlisp-10.6.0.tgz'
-  sha1 '0f5ce581d070ff171cbef504308e578885aa5e72'
+  homepage "http://www.newlisp.org/"
+  url "http://www.newlisp.org/downloads/newlisp-10.6.0.tgz"
+  sha1 "0f5ce581d070ff171cbef504308e578885aa5e72"
 
-  depends_on 'readline'
+  depends_on "readline"
 
   patch :DATA
 
@@ -32,9 +32,7 @@ class Newlisp < Formula
       (exit 0)
     EOS
 
-    output = `#{bin}/newlisp #{path}`
-    assert_equal "hello\n", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "hello\n", shell_output("#{bin}/newlisp #{path}")
   end
 end
 

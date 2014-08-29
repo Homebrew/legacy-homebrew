@@ -2,9 +2,9 @@ require 'formula'
 
 class TomeePlus < Formula
   homepage 'http://tomee.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.6.0.1/apache-tomee-1.6.0.1-plus.tar.gz'
-  version '1.6.0.1'
-  sha1 'a9d47bb3eff81440586ec26613c11a2e164c6d04'
+  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.6.0.2/apache-tomee-1.6.0.2-plus.tar.gz'
+  version '1.6.0.2'
+  sha1 '11b605f2da94fbc2bc571e62578c1599c2a4a789'
 
   # Keep log folders
   skip_clean 'libexec'

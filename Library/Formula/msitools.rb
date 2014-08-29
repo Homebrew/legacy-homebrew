@@ -7,9 +7,6 @@ class Msitools < Formula
 
   depends_on 'intltool' => :build
   depends_on 'pkg-config' => :build
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
   depends_on 'e2fsprogs'
   depends_on 'gcab'
   depends_on 'gettext'
@@ -27,10 +24,7 @@ class Msitools < Formula
 
   test do
     # wixl-heat: make an xml fragment
-    IO.popen("#{bin}/wixl-heat --prefix test", "w+") do |pipe|
-      pipe.close_write
-      assert pipe.read.include?("<Fragment>")
-    end
+    assert pipe_output("#{bin}/wixl-heat --prefix test").include?("<Fragment>")
 
     # wixl: build two installers
     1.upto(2) do |i|

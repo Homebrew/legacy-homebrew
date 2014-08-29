@@ -15,6 +15,8 @@ class Geos < Formula
   option :universal
   option :cxx11
 
+  fails_with :llvm
+
   def install
     ENV.universal_binary if build.universal?
     ENV.cxx11 if build.cxx11?

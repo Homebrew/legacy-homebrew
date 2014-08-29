@@ -2,20 +2,33 @@ require "formula"
 
 class Tuntap < Formula
   homepage "http://tuntaposx.sourceforge.net/"
-  url "git://git.code.sf.net/p/tuntaposx/code", :tag => "release_20111101"
-  head "git://git.code.sf.net/p/tuntaposx/code", :branch => "master"
 
-  # Get Kernel.framework headers from the SDK
-  patch :DATA
+  stable do
+    url "https://downloads.sourceforge.net/project/tuntaposx/tuntap/20111101/tuntap_20111101_src.tar.gz"
+    sha1 "826f79f60dc40cee607ffc2b7e79874b1c686f28"
+    # Get Kernel.framework headers from the SDK
+    patch :p2, :DATA
+  end
+
+  head do
+    url "git://git.code.sf.net/p/tuntaposx/code", :branch => "master"
+    # Get Kernel.framework headers from the SDK
+    patch :p1, :DATA
+  end
+
+  bottle do
+    cellar :any
+    sha1 "66c5936c679b961089df84668a8c04bce56d992c" => :mavericks
+    sha1 "80bfd6bcec776491065be0450ce2c47dc2d7a567" => :mountain_lion
+    sha1 "a3e380d8080ce9cf75f04cc80dcc869cf93b0276" => :lion
+  end
 
   def install
+    cd "tuntap" if build.head?
     ENV.j1 # to avoid race conditions (can't open: ../tuntap.o)
-
-    cd "tuntap" do
-      system "make", "CC=#{ENV.cc}", "CCP=#{ENV.cxx}"
-      kext_prefix.install "tun.kext", "tap.kext"
-      prefix.install "startup_item/tap", "startup_item/tun"
-    end
+    system "make", "CC=#{ENV.cc}", "CCP=#{ENV.cxx}"
+    kext_prefix.install "tun.kext", "tap.kext"
+    prefix.install "startup_item/tap", "startup_item/tun"
   end
 
   def caveats; <<-EOS.undent

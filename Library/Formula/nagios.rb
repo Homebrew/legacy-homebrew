@@ -28,7 +28,7 @@ class Nagios < Formula
                           "--with-cgiurl=/nagios/cgi-bin",
                           "--with-htmurl=/nagios",
                           "--with-nagios-user=#{user}",
-                          "--with-nagios-group=#{group}",
+                          "--with-nagios-group='#{group}'",
                           "--with-command-user=#{user}",
                           "--with-command-group=_www",
                           "--with-httpd-conf=#{share}"

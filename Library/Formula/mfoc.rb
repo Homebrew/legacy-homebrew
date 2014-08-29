@@ -5,8 +5,6 @@ class Mfoc < Formula
   url 'https://mfoc.googlecode.com/files/mfoc-0.10.7.tar.bz2'
   sha1 '162a464baf6498926a72383c6b0040654321012d'
 
-  depends_on :autoconf
-  depends_on :automake
   depends_on 'pkg-config' => :build
   depends_on 'libnfc'
   depends_on 'libusb'

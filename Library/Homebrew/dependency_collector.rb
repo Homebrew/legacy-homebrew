@@ -23,11 +23,15 @@ class DependencyCollector
 
   CACHE = {}
 
+  def self.clear_cache
+    CACHE.clear
+  end
+
   attr_reader :deps, :requirements
 
   def initialize
     @deps = Dependencies.new
-    @requirements = ComparableSet.new
+    @requirements = Requirements.new
   end
 
   def add(spec)
@@ -80,7 +84,7 @@ class DependencyCollector
     when Class
       parse_class_spec(spec, tags)
     else
-      raise TypeError, "Unsupported type #{spec.class} for #{spec.inspect}"
+      raise TypeError, "Unsupported type #{spec.class.name} for #{spec.inspect}"
     end
   end
 
@@ -98,14 +102,10 @@ class DependencyCollector
 
   def parse_symbol_spec(spec, tags)
     case spec
-    when :autoconf, :automake, :bsdmake, :libtool, :libltdl
+    when :autoconf, :automake, :bsdmake, :libtool
       # Xcode no longer provides autotools or some other build tools
       autotools_dep(spec, tags)
     when :x11        then X11Dependency.new(spec.to_s, tags)
-    when :cairo, :fontconfig, :freetype, :libpng, :pixman
-      # We no longer use X11 proxy deps, but we support the symbols
-      # for backwards compatibility.
-      Dependency.new(spec.to_s, tags)
     when :xcode      then XcodeDependency.new(tags)
     when :macos      then MinimumMacOSRequirement.new(tags)
     when :mysql      then MysqlDependency.new(tags)
@@ -113,15 +113,21 @@ class DependencyCollector
     when :fortran    then FortranDependency.new(tags)
     when :mpi        then MPIDependency.new(*tags)
     when :tex        then TeXDependency.new(tags)
-    when :clt        then CLTDependency.new(tags)
     when :arch       then ArchRequirement.new(tags)
     when :hg         then MercurialDependency.new(tags)
     # python2 is deprecated
     when :python, :python2 then PythonDependency.new(tags)
     when :python3    then Python3Dependency.new(tags)
+    when :java       then JavaDependency.new(tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     when :ant        then ant_dep(spec, tags)
+    when :clt # deprecated
+    when :cairo, :fontconfig, :freetype, :libpng, :pixman # deprecated
+      Dependency.new(spec.to_s, tags)
+    when :libltdl # deprecated
+      tags << :run
+      Dependency.new("libtool", tags)
     else
       raise ArgumentError, "Unsupported special dependency #{spec.inspect}"
     end
@@ -136,18 +142,12 @@ class DependencyCollector
   end
 
   def autotools_dep(spec, tags)
-    if spec == :libltdl
-      spec = :libtool
-      tags << :run
-    end
-
     tags << :build unless tags.include? :run
     Dependency.new(spec.to_s, tags)
   end
 
   def ant_dep(spec, tags)
     if MacOS.version >= :mavericks
-      tags << :build
       Dependency.new(spec.to_s, tags)
     end
   end

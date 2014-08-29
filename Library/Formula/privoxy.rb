@@ -5,9 +5,9 @@ class Privoxy < Formula
   url 'https://downloads.sourceforge.net/project/ijbswa/Sources/3.0.21%20%28stable%29/privoxy-3.0.21-stable-src.tar.gz'
   sha1 '2d73a9146e87218b25989096f63ab0772ce24109'
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on :libtool
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on 'pcre'
 
   def install

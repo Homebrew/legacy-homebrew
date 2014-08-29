@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class LcdfTypetools < Formula
-  homepage 'http://www.lcdf.org/type/'
-  url 'http://www.lcdf.org/type/lcdf-typetools-2.100.tar.gz'
-  sha256 '7ae7940df8a33de945c401e81aed414df796db692a30e38ba734c6117b73b2cd'
+  homepage "http://www.lcdf.org/type/"
+  url "http://www.lcdf.org/type/lcdf-typetools-2.104.tar.gz"
+  sha256 "d7985458ead0850cb9549ff1d619ffc18da5d7be892be5e1fce6048d510f0fff"
 
-  conflicts_with 'open-mpi', :because => 'both install same set of binaries.'
+  conflicts_with "open-mpi", :because => "both install same set of binaries."
 
   def install
     system "./configure", "--disable-dependency-tracking",

@@ -13,6 +13,9 @@ class Libunistring < Formula
     sha1 "ed2d278f23e772a0401897a579deff47606b5d03" => :lion
   end
 
+  # http://git.savannah.gnu.org/gitweb/?p=libunistring.git;a=commitdiff;h=c8337fee8bd30207245f67201a9b4559f10ca91c
+  patch :DATA
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
@@ -22,3 +25,17 @@ class Libunistring < Formula
     system "make", "install"
   end
 end
+
+__END__
+diff --git a/lib/stdint.mini.h b/lib/stdint.mini.h
+index d6f2cb0..80a439e 100644
+--- a/lib/stdint.mini.h
++++ b/lib/stdint.mini.h
+@@ -121,7 +121,6 @@ typedef unsigned int unistring_uint32_t;
+ /* Avoid collision with Solaris 2.5.1 <pthread.h> etc.  */
+ #define _UINT8_T
+ #define _UINT32_T
+-#define _UINT64_T
+ 
+ 
+ #endif /* _UNISTRING_STDINT_H */

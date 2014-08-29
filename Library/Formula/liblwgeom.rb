@@ -30,9 +30,9 @@ class Liblwgeom < Formula
 
   keg_only "Conflicts with PostGIS, which also installs liblwgeom.dylib"
 
-  depends_on :autoconf => :build
-  depends_on :automake => :build
-  depends_on :libtool => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on 'gpp' => :build
 
   depends_on 'proj'

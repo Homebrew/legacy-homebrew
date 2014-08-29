@@ -13,7 +13,7 @@ class Fuse4xKext < Formula
     sha1 '6f306f38557d016f5eaa0c999f2092d0767870e6' => :lion
   end
 
-  depends_on :xcode
+  depends_on :xcode => :build
 
   def install
     ENV.delete('CC')

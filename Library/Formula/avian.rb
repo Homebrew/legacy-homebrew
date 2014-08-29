@@ -17,7 +17,7 @@ class Avian < Formula
   def install
     system 'make', 'JAVA_HOME=/Library/Java/Home'
     bin.install Dir['build/darwin-*/avian*']
-    lib.install Dir['build/darwin-*/*.dylib'] + Dir['build/darwin-*/*.a']
+    lib.install Dir['build/darwin-*/*.dylib', 'build/darwin-*/*.a']
   end
 
   test do
@@ -29,6 +29,6 @@ class Avian < Formula
       }
     EOS
     system 'javac', 'Test.java'
-    assert_equal 'OK', `avian Test`.strip
+    assert_equal 'OK', shell_output("#{bin}/avian Test")
   end
 end

@@ -2,13 +2,13 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url 'http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.11/source/mariadb-10.0.11.tar.gz'
-  sha1 'd596a2af184a125d833d507f411a3f8cf4cd3134'
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.13/source/mariadb-10.0.13.tar.gz"
+  sha1 "3ede106603eeb348d5a70274d806760b8f37eaeb"
 
   bottle do
-    sha1 "c82fbe012156d56a5accdb9612d2e058b79ef1db" => :mavericks
-    sha1 "358893e24183fab22a6637d68a2e2c8d14b51351" => :mountain_lion
-    sha1 "9297a50dc9e3ffa8cc405312120d12a6d902799a" => :lion
+    sha1 "88c369ec2a241bd233d43a2b665a89794dcc6f99" => :mavericks
+    sha1 "69bba44ac1a650c0706efdaee9db8aeed29aa142" => :mountain_lion
+    sha1 "fd48710219e5b6a2b0ccc06d137c1b6757e74676" => :lion
   end
 
   depends_on 'cmake' => :build
@@ -35,6 +35,14 @@ class Mariadb < Formula
       "COMMAND /usr/bin/libtool -static -o ${TARGET_LOCATION}",
       "COMMAND libtool -static -o ${TARGET_LOCATION}"
 
+    # Set basedir and ldata so that mysql_install_db can find the server
+    # without needing an explicit path to be set. This can still
+    # be overridden by calling --basedir= when calling.
+    inreplace "scripts/mysql_install_db.sh" do |s|
+      s.change_make_var! "basedir", "\"#{prefix}\""
+      s.change_make_var! "ldata", "\"#{var}/mysql\""
+    end
+
     # Build without compiler or CPU specific optimization flags to facilitate
     # compilation of gems and other software that queries `mysql-config`.
     ENV.minimal_optimization
@@ -56,6 +64,7 @@ class Mariadb < Formula
       -DDEFAULT_COLLATION=utf8_general_ci
       -DINSTALL_SYSCONFDIR=#{etc}
       -DCOMPILATION_COMMENT=Homebrew
+      -DWITHOUT_TOKUDB=1
     ]
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? 'tests'

@@ -2,13 +2,13 @@ require 'formula'
 
 class GdkPixbuf < Formula
   homepage 'http://gtk.org'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.30/gdk-pixbuf-2.30.7.tar.xz'
-  sha256 '0aafc365eab1083a53f15e4828333b968219ffcb1a995ac6289c0147c9ffad06'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.30/gdk-pixbuf-2.30.8.tar.xz'
+  sha256 '4853830616113db4435837992c0aebd94cbb993c44dc55063cee7f72a7bef8be'
 
   bottle do
-    sha1 "722cf4d155826a0bd0b994ae85063c876ff87ab0" => :mavericks
-    sha1 "fb42d6ef6dfd6c4ecbc65e03567229f9041e7ccb" => :mountain_lion
-    sha1 "fe4483a180ab582a8c6bd9e06bda9f3c9b0f9581" => :lion
+    sha1 "c8a9dee31d549da7b398622076b5facea56f8e20" => :mavericks
+    sha1 "0e4a38ab5a7641cd7ba9c203838712e3366f4cab" => :mountain_lion
+    sha1 "c0404c515e96feecde1fa3a9c20a44035d315813" => :lion
   end
 
   option :universal

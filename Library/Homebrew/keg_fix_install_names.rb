@@ -1,4 +1,4 @@
-class Keg < Pathname
+class Keg
   PREFIX_PLACEHOLDER = "@@HOMEBREW_PREFIX@@".freeze
   CELLAR_PLACEHOLDER = "@@HOMEBREW_CELLAR@@".freeze
 
@@ -72,11 +72,13 @@ class Keg < Pathname
   # lib/, and ignores binaries and other mach-o objects
   # Note that this doesn't attempt to distinguish between libstdc++ versions,
   # for instance between Apple libstdc++ and GNU libstdc++
-  def detect_cxx_stdlibs(opts={:skip_executables => false})
+  def detect_cxx_stdlibs(options={})
+    options = { :skip_executables => false }.merge(options)
+    skip_executables = options[:skip_executables]
     results = Set.new
 
     mach_o_files.each do |file|
-      next if file.mach_o_executable? && opts[:skip_executables]
+      next if file.mach_o_executable? && skip_executables
       dylibs = file.dynamically_linked_libraries
       results << :libcxx unless dylibs.grep(/libc\+\+.+\.dylib/).empty?
       results << :libstdcxx unless dylibs.grep(/libstdc\+\+.+\.dylib/).empty?
@@ -86,7 +88,7 @@ class Keg < Pathname
   end
 
   def each_unique_file_matching string
-    IO.popen("/usr/bin/fgrep -lr '#{string}' '#{self}' 2>/dev/null") do |io|
+    Utils.popen_read("/usr/bin/fgrep", "-lr", string, to_s) do |io|
       hardlinks = Set.new
 
       until io.eof?
@@ -121,7 +123,9 @@ class Keg < Pathname
     end
   end
 
-  def lib; join 'lib' end
+  def lib
+    path.join("lib")
+  end
 
   def each_install_name_for file, &block
     dylibs = file.dynamically_linked_libraries
@@ -129,17 +133,17 @@ class Keg < Pathname
     dylibs.each(&block)
   end
 
-  def dylib_id_for file, options={}
+  def dylib_id_for(file, options)
     # The new dylib ID should have the same basename as the old dylib ID, not
     # the basename of the file itself.
     basename = File.basename(file.dylib_id)
-    relative_dirname = file.dirname.relative_path_from(self)
+    relative_dirname = file.dirname.relative_path_from(path)
     shortpath = HOMEBREW_PREFIX.join(relative_dirname, basename)
 
     if shortpath.exist? and not options[:keg_only]
       shortpath.to_s
     else
-      "#{HOMEBREW_PREFIX}/opt/#{fname}/#{relative_dirname}/#{basename}"
+      opt_record.join(relative_dirname, basename).to_s
     end
   end
 
@@ -149,8 +153,8 @@ class Keg < Pathname
 
   def mach_o_files
     mach_o_files = []
-    dirs = %w{bin lib Frameworks}
-    dirs.map! { |dir| join(dir) }
+    dirs = %w{bin sbin lib Frameworks}
+    dirs.map! { |dir| path.join(dir) }
     dirs.reject! { |dir| not dir.directory? }
 
     dirs.each do |dir|
@@ -179,7 +183,7 @@ class Keg < Pathname
     pkgconfig_files = []
 
     %w[lib share].each do |dir|
-      pcdir = join(dir, "pkgconfig")
+      pcdir = path.join(dir, "pkgconfig")
 
       pcdir.find do |pn|
         next if pn.symlink? or pn.directory? or pn.extname != '.pc'

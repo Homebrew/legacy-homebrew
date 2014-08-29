@@ -1,16 +1,16 @@
-require 'formula'
+require "formula"
 
 class Libtasn1 < Formula
-  homepage 'http://www.gnu.org/software/libtasn1/'
-  url 'http://ftpmirror.gnu.org/libtasn1/libtasn1-3.5.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/libtasn1/libtasn1-3.5.tar.gz'
-  sha1 '7e38f027c765eb5434bf050aef0f20aee45e3420'
+  homepage "https://www.gnu.org/software/libtasn1/"
+  url "http://ftpmirror.gnu.org/libtasn1/libtasn1-4.1.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.1.tar.gz"
+  sha1 "a4cdf91b6130d29b5b69dca17a1e85053ac54e7b"
 
   bottle do
     cellar :any
-    sha1 "a869428872e2199e8dd65dbddf1fcfe85623480f" => :mavericks
-    sha1 "7563ceb8d9607476b56e9bc76702dac3ae5a1f53" => :mountain_lion
-    sha1 "ed91e13556c66df19e55846c2f8d6d75f8fb5c44" => :lion
+    sha1 "a5e5bb5c2b44a32cd2ae1b5bd636be81456bd1bb" => :mavericks
+    sha1 "f12f64690e13b94ea02e10f09329a2d1ad0c08e2" => :mountain_lion
+    sha1 "337e0bd70fa5a90f95ff531c9ae53b816ddcad70" => :lion
   end
 
   option :universal

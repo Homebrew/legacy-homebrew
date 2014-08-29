@@ -7,7 +7,7 @@ class Yeti < Formula
 
   head 'https://github.com/mth/yeti.git'
 
-  depends_on :ant
+  depends_on :ant => :build
 
   def install
     system "ant jar"

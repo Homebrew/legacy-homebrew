@@ -7,8 +7,8 @@ class Doxymacs < Formula
 
   head do
     url 'git://git.code.sf.net/p/doxymacs/code'
-    depends_on :autoconf => :build
-    depends_on :automake => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
   end
 
   def install

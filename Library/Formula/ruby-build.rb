@@ -1,18 +1,18 @@
-require 'formula'
+require "formula"
 
 class RubyBuild < Formula
-  homepage 'https://github.com/sstephenson/ruby-build'
-  url 'https://github.com/sstephenson/ruby-build/archive/v20140509.1.tar.gz'
-  sha1 '9e782487fe4ef9153460a75d94590c0ed429ee4f'
+  head "https://github.com/sstephenson/ruby-build.git"
+  homepage "https://github.com/sstephenson/ruby-build"
+  url "https://github.com/sstephenson/ruby-build/archive/v20140702.tar.gz"
+  sha1 "3b609d6375f1ddcc519c5854ffbb947d3f32ea4e"
+  revision 1
 
-  head 'https://github.com/sstephenson/ruby-build.git'
-
-  depends_on 'autoconf' => [:recommended, :run]
-  depends_on 'pkg-config' => [:recommended, :run]
-  depends_on 'openssl' => :recommended
+  depends_on "autoconf" => [:recommended, :run]
+  depends_on "pkg-config" => [:recommended, :run]
+  depends_on "openssl" => :recommended
 
   def install
-    ENV['PREFIX'] = prefix
+    ENV["PREFIX"] = prefix
     system "./install.sh"
   end
 

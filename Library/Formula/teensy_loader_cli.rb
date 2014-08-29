@@ -7,7 +7,7 @@ class TeensyLoaderCli < Formula
 
   def install
     ENV['OS'] = 'MACOSX'
-    ENV['SDK'] = MacOS.sdk_path
+    ENV['SDK'] = MacOS.sdk_path || "/"
     system "make"
     bin.install "teensy_loader_cli"
   end

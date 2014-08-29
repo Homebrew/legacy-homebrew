@@ -22,8 +22,7 @@ class Wdiff < Formula
     b = testpath/"b.txt"
     b.write "The package manager for OS X"
 
-    out = `#{bin}/wdiff #{a} #{b}`
-    assert_equal "The [-missing-] package manager for OS X", out
-    assert_equal 1, $?.exitstatus
+    output = shell_output("#{bin}/wdiff #{a} #{b}", 1)
+    assert_equal "The [-missing-] package manager for OS X", output
   end
 end

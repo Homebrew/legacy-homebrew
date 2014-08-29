@@ -1,12 +1,12 @@
-require 'formula'
+require "formula"
 
 class Cimg < Formula
-  homepage 'http://cimg.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/cimg/CImg-1.5.8.zip'
-  sha1 '0c2c5a4ed8656bb9a1319834a4d9a37129aa5d90'
+  homepage "http://cimg.sourceforge.net/"
+  url "https://downloads.sourceforge.net/cimg/CImg-1.5.9.zip"
+  sha1 "bcad203e1836db4882c73923f810cdd69906c896"
 
   def install
-    include.install 'CImg.h'
+    include.install "CImg.h"
 
     doc.install %w(
       README.txt

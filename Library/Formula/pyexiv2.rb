@@ -7,7 +7,7 @@ class Pyexiv2 < Formula
 
   depends_on 'scons' => :build
   depends_on 'exiv2'
-  depends_on 'boost'
+  depends_on 'boost' => 'with-python'
 
   # Patch to use Framework Python
   patch :DATA

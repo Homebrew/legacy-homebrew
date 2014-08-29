@@ -30,7 +30,7 @@ class Graphviz < Formula
   depends_on "librsvg" => :optional
   depends_on "freetype" => :optional
   depends_on :x11 if build.with? "x"
-  depends_on :xcode if build.with? "app"
+  depends_on :xcode => :build if build.with? "app"
 
   fails_with :clang do
     build 318

@@ -23,7 +23,7 @@ class Avfs < Formula
   end
 
   test do
-    system "avfsd", "--version"
+    system bin/"avfsd", "--version"
   end
 end
 

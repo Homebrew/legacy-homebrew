@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class Elasticsearch < Formula
-  homepage 'http://www.elasticsearch.org'
-  url 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.1.1.tar.gz'
-  sha1 '8495b928984945728635f805f6e2e7183902a3ea'
+  homepage "http://www.elasticsearch.org"
+  url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.3.2.tar.gz"
+  sha1 "a7ea036468473084cd62e846f05a2069a987fb03"
 
   head do
-    url 'https://github.com/elasticsearch/elasticsearch.git'
-    depends_on 'maven'
+    url "https://github.com/elasticsearch/elasticsearch.git"
+    depends_on "maven"
   end
 
   def cluster_name
@@ -46,9 +46,9 @@ class Elasticsearch < Formula
       s.gsub! /#\s*cluster\.name\: elasticsearch/, "cluster.name: #{cluster_name}"
 
       # 2. Configure paths
-      s.sub! "# path.data: /path/to/data", "path.data: #{var}/elasticsearch/"
-      s.sub! "# path.logs: /path/to/logs", "path.logs: #{var}/log/elasticsearch/"
-      s.sub! "# path.plugins: /path/to/plugins", "path.plugins: #{var}/lib/elasticsearch/plugins"
+      s.sub! /#\s*path\.data: \/path\/to.+$/, "path.data: #{var}/elasticsearch/"
+      s.sub! /#\s*path\.logs: \/path\/to.+$/, "path.logs: #{var}/log/elasticsearch/"
+      s.sub! /#\s*path\.plugins: \/path\/to.+$/, "path.plugins: #{var}/lib/elasticsearch/plugins"
 
       # 3. Bind to loopback IP for laptops roaming different networks
       s.gsub! /#\s*network\.host\: [^\n]+/, "network.host: 127.0.0.1"
@@ -80,6 +80,8 @@ class Elasticsearch < Formula
     Data:    #{var}/elasticsearch/#{cluster_name}/
     Logs:    #{var}/log/elasticsearch/#{cluster_name}.log
     Plugins: #{var}/lib/elasticsearch/plugins/
+
+    ElasticSearch requires Java 7; you will need to install an appropriate JDK.
     EOS
   end
 

@@ -3,13 +3,14 @@ require 'formula'
 class Nmap < Formula
   homepage "http://nmap.org/"
   head "https://guest:@svn.nmap.org/nmap/", :using => :svn
-  url "http://nmap.org/dist/nmap-6.46.tar.bz2"
-  sha1 "e19dd4d35d76b24b084665b90c423f53bc7fdcfe"
+  url "http://nmap.org/dist/nmap-6.47.tar.bz2"
+  sha1 "0c917453a91a5e85c2a217d27c3853b0f3e0e6ac"
 
   bottle do
-    sha1 "078e882985fe74919fa280067244a5400ad8ad63" => :mavericks
-    sha1 "f0a1dbc5e190c5da169bb6ab22f438a0be3ac845" => :mountain_lion
-    sha1 "8617fe3e4e3ddb50902968d8323a4cc9bef92bd1" => :lion
+    revision 1
+    sha1 "f866508268e57a381a1c2456456c5580f83e5bc4" => :mavericks
+    sha1 "c80f12d6d1a52bca5ff152404a84a5c4436ba7b3" => :mountain_lion
+    sha1 "28da4ac4b94c636b1acd02ca1b17cbb799f86f3f" => :lion
   end
 
   depends_on "openssl"

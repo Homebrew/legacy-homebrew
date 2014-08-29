@@ -2,8 +2,15 @@ require "formula"
 
 class Metaproxy < Formula
   homepage "http://www.indexdata.com/metaproxy"
-  url "http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.5.0.tar.gz"
-  sha1 "26bd6069142b259e77d53d260d8915aec5c66699"
+  url "http://ftp.indexdata.dk/pub/metaproxy/metaproxy-1.5.9.tar.gz"
+  sha1 "283bed2fa4d1ea8b93d9fede38df4de2b60f78ae"
+
+  bottle do
+    cellar :any
+    sha1 "b6d3a66478dbc5d0305f5791eff49cc26f1429d8" => :mavericks
+    sha1 "6146cf28e33703adc5c305831f68563d55529147" => :mountain_lion
+    sha1 "26f40c817aeac355c0907ddf538ebb565c2ce1e4" => :lion
+  end
 
   depends_on "pkg-config" => :build
   depends_on "yazpp"
@@ -40,5 +47,5 @@ class Metaproxy < Formula
     EOS
 
     system "#{bin}/metaproxy", "-t", "--config", "#{testpath}/test-config.xml"
-   end
+  end
 end

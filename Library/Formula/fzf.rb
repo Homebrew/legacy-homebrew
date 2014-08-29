@@ -2,11 +2,11 @@ require "formula"
 
 class Fzf < Formula
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.8.3.tar.gz"
-  sha1 "9d598e42a3dbbad7df3dfae138a759042e004307"
+  url "https://github.com/junegunn/fzf/archive/0.8.7.tar.gz"
+  sha1 "1b40452c5d9707de269b31ec83bb0ae7e1f00504"
 
   def install
-    prefix.install "install", "fzf", "fzf-completion.bash", "fzf-completion.zsh"
+    prefix.install "install", "uninstall", "fzf", "fzf-completion.bash", "fzf-completion.zsh"
     bin.install_symlink prefix/"fzf"
     (prefix/"plugin").install "plugin/fzf.vim"
   end
@@ -22,6 +22,6 @@ class Fzf < Formula
 
   test do
     (testpath/"list").write %w[hello world].join($/)
-    `cat #{testpath}/list | fzf -f wld`.chomp == "world"
+    assert_equal "world", shell_output("cat #{testpath}/list | #{bin}/fzf -f wld").chomp
   end
 end

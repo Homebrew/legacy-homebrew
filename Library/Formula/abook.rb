@@ -2,12 +2,13 @@ require 'formula'
 
 class Abook < Formula
   homepage 'http://abook.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/abook/abook-0.5.6.tar.gz'
+  url 'https://downloads.sourceforge.net/project/abook/abook/0.5.6/abook-0.5.6.tar.gz'
   sha1 '79f04f2264c8bd81bbc952b6560c86d69b21615d'
 
   devel do
-    url 'https://abook.sourceforge.net/devel/abook-0.6.0pre2.tar.gz'
+    url 'http://abook.sourceforge.net/devel/abook-0.6.0pre2.tar.gz'
     sha1 '42a939fba43e51aa011fa185113c12ec4bc1e1ec'
+    version '0.6.0pre2'
 
     # Remove `inline` from function implementation for clang compatibility
     patch :DATA

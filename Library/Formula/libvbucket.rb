@@ -5,6 +5,13 @@ class Libvbucket < Formula
   url 'http://packages.couchbase.com/clients/c/libvbucket-1.8.0.4.tar.gz'
   sha1 '4f24a85d251c0fca69e7705681a2170dd794492a'
 
+  bottle do
+    cellar :any
+    sha1 "b11b9b98c5ba3399ad4650e165f52f28447944c9" => :mavericks
+    sha1 "5c0987cd64e45d2b4fd95d833a6344d98130df76" => :mountain_lion
+    sha1 "71399bbf3403fc8cddf3a1f379ad234efee34a61" => :lion
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
@@ -15,7 +22,6 @@ class Libvbucket < Formula
 
   test do
     require 'utils/json'
-    require 'open3'
     json = Utils::JSON.dump(
       {
         "hashAlgorithm" => "CRC",
@@ -30,10 +36,7 @@ class Libvbucket < Formula
       key: world master: server2:11210 vBucketId: 3 couchApiBase: (null) replicas: server3:11211 server1:11211
       EOS
 
-    Open3.popen3("#{bin}/vbuckettool", "-", "hello", "world") do |stdin, stdout, _|
-      stdin.write(json)
-      stdin.close
-      assert_equal expected, stdout.read
-    end
+    output = pipe_output("#{bin}/vbuckettool - hello world", json)
+    assert_equal expected, output
   end
 end

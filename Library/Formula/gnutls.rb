@@ -1,16 +1,17 @@
 require 'formula'
 
+# GnuTLS has previous, current, and next stable branches, we use current.
 class Gnutls < Formula
   homepage 'http://gnutls.org'
-  url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2/gnutls-3.2.13.tar.xz'
-  mirror 'http://mirrors.dotsrc.org/gcrypt/gnutls/v3.2/gnutls-3.2.13.tar.xz'
-  sha1 'c4a95902bb67df46e9b2c08d4c10523db94e2736'
+  url 'ftp://ftp.gnutls.org/gcrypt/gnutls/v3.2/gnutls-3.2.17.tar.xz'
+  mirror 'http://mirrors.dotsrc.org/gcrypt/gnutls/v3.2/gnutls-3.2.17.tar.xz'
+  sha1 'c48b02912c5dc77b627f1f17dcc05c2be1d59b0f'
 
   bottle do
     cellar :any
-    sha1 "d47f9d4adc2ed860c351edef7729e206b493012d" => :mavericks
-    sha1 "67dc1e554a4af1b004d1fdb3ae0dad7261cfbbe0" => :mountain_lion
-    sha1 "75ec84c8ae2f519327e2230f18e7508c33da9add" => :lion
+    sha1 "3e4d0c1cd43da26defe0620b1c619be532e5b536" => :mavericks
+    sha1 "3eb9d4d68f26cf9589d417db111da503951799e9" => :mountain_lion
+    sha1 "d5cef16200d281b8ac69957d2f4c0c436b2c766e" => :lion
   end
 
   depends_on 'pkg-config' => :build
@@ -24,6 +25,10 @@ class Gnutls < Formula
     build 2326
     cause "Undefined symbols when linking"
   end
+
+  # Fix use of stdnoreturn header on Lion
+  # https://www.gitorious.org/gnutls/gnutls/commit/9d2a2d17c0e483f056f98084955fba82b166bd56
+  patch :DATA
 
   def install
     args = %W[
@@ -51,3 +56,23 @@ class Gnutls < Formula
     Formula["openssl"].post_install
   end
 end
+
+__END__
+--- a/src/libopts/autoopts.h
++++ b/src/libopts/autoopts.h
+@@ -32,7 +32,14 @@
+ 
+ #ifndef AUTOGEN_AUTOOPTS_H
+ #define AUTOGEN_AUTOOPTS_H
+-#include <stdnoreturn.h>
++
++#ifdef HAVE_STDNORETURN_H
++# include <stdnoreturn.h>
++#else
++# ifndef noreturn
++#  define noreturn
++# endif
++#endif
+ 
+ #define AO_NAME_LIMIT           127
+ #define AO_NAME_SIZE            ((size_t)(AO_NAME_LIMIT + 1))

@@ -1,15 +1,30 @@
-require 'formula'
+require "formula"
 
 class Postgresql < Formula
-  homepage 'http://www.postgresql.org/'
-  url 'http://ftp.postgresql.org/pub/source/v9.3.4/postgresql-9.3.4.tar.bz2'
-  sha256 '9ee819574dfc8798a448dc23a99510d2d8924c2f8b49f8228cd77e4efc8a6621'
+  homepage "http://www.postgresql.org/"
+  revision 1
+
+  stable do
+    url "http://ftp.postgresql.org/pub/source/v9.3.5/postgresql-9.3.5.tar.bz2"
+    sha256 "14176ffb1f90a189e7626214365be08ea2bfc26f26994bafb4235be314b9b4b0"
+
+    # ossp-uuid is no longer required for uuid support since 9.4beta2:
+    depends_on "ossp-uuid" => :recommended
+    # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
+    patch :DATA
+  end
 
   bottle do
     revision 1
-    sha1 "674f7d9b1f093a2cf67cc6c7d248b18cb24f244d" => :mavericks
-    sha1 "899043f968097e5b4ef82bd9eecff4fc56cf3546" => :mountain_lion
-    sha1 "5bded0469e05403d2e0a0ba4d3e344a0a76b6da1" => :lion
+    sha1 "d298f4cd7fffa6b8b879ccc2c6d32fc191be41ed" => :mavericks
+    sha1 "c5c5d23e95c1950d4b33865b8ebdce28b4e6706f" => :mountain_lion
+    sha1 "860395322283401cfc1d0694984c272546f21fa9" => :lion
+  end
+
+  devel do
+    url 'http://ftp.postgresql.org/pub/source/v9.4beta2/postgresql-9.4beta2.tar.bz2'
+    version '9.4beta2'
+    sha256 '567406cf58386917916d8ef7ac892bf79e98742cd16909bb00fc920dd31a388c'
   end
 
   option '32-bit'
@@ -20,8 +35,7 @@ class Postgresql < Formula
   depends_on 'openssl'
   depends_on 'readline'
   depends_on 'libxml2' if MacOS.version <= :leopard # Leopard libxml is too old
-  depends_on 'ossp-uuid' => :recommended
-  depends_on :python => :recommended
+  depends_on :python => :optional
 
   conflicts_with 'postgres-xc',
     :because => 'postgresql and postgres-xc install the same binaries.'
@@ -30,9 +44,6 @@ class Postgresql < Formula
     build 211
     cause 'Miscompilation resulting in segfault on queries'
   end
-
-  # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
-  patch :DATA
 
   def install
     ENV.libxml2 if MacOS.version >= :snow_leopard
@@ -45,7 +56,6 @@ class Postgresql < Formula
       --enable-thread-safety
       --with-bonjour
       --with-gssapi
-      --with-krb5
       --with-ldap
       --with-openssl
       --with-pam
@@ -53,16 +63,19 @@ class Postgresql < Formula
       --with-libxslt
     ]
 
-    args << "--with-ossp-uuid" if build.with? 'ossp-uuid'
     args << "--with-python" if build.with? 'python'
     args << "--with-perl" unless build.include? 'no-perl'
     args << "--with-tcl" unless build.include? 'no-tcl'
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
 
-    if build.with? 'ossp-uuid'
+    if build.with?("ossp-uuid")
+      args << "--with-ossp-uuid"
       ENV.append 'CFLAGS', `uuid-config --cflags`.strip
       ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
       ENV.append 'LIBS', `uuid-config --libs`.strip
+    elsif build.devel?
+      # Apple's UUID implementation is compatible with e2fs NOT bsd
+      args << "--with-uuid=e2fs"
     end
 
     if build.build_32_bit?

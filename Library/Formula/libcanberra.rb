@@ -7,10 +7,7 @@ class Libcanberra < Formula
   sha1 "fd4c16e341ffc456d688ed3462930d17ca6f6c20"
 
   depends_on "pkg-config" => :build
-  depends_on "xz" => :build
-
   depends_on "libvorbis"
-
   depends_on "pulseaudio" => :optional
   depends_on "gstreamer" => :optional
   depends_on "gtk+" => :optional

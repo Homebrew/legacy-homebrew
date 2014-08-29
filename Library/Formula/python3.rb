@@ -2,14 +2,15 @@ require 'formula'
 
 class Python3 < Formula
   homepage 'https://www.python.org/'
-  url 'https://python.org/ftp/python/3.4.0/Python-3.4.0.tgz'
-  sha1 'bb5125d1c437caa5a62e0a3d0fee298e91196d6f'
+  url 'https://python.org/ftp/python/3.4.1/Python-3.4.1.tgz'
+  sha1 'e8c1bd575a6ccc2a75f79d9d094a6a29d3802f5d'
   revision 1
 
   bottle do
-    sha1 "0b1ac4c596a2feeea3869e7d332d5e94fec56074" => :mavericks
-    sha1 "be6e2eb4f99c04ec2533449033faa09dd11d0e51" => :mountain_lion
-    sha1 "70af6aeb01ec8fbeb0e029677b1fa8bb2d1b5a7e" => :lion
+    revision 1
+    sha1 "c813d417aa9c859fa3743c3fcc5354de8fc2bf7f" => :mavericks
+    sha1 "07b26a28688501be8b7ccd9fdcebab5e554b240b" => :mountain_lion
+    sha1 "ff356ba3edb96acde53fe5ce296ed1bbd856cf62" => :lion
   end
 
   VER='3.4'  # The <major>.<minor> is used so often.
@@ -27,7 +28,7 @@ class Python3 < Formula
   depends_on 'openssl'
   depends_on 'xz' => :recommended  # for the lzma module added in 3.3
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
-  depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
+  depends_on :x11 if build.with? "brewed-tk" and Tab.for_name("tcl-tk").with? "x11"
 
   skip_clean "bin/pip3", "bin/pip-#{VER}"
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
@@ -44,7 +45,7 @@ class Python3 < Formula
   end
 
   fails_with :llvm do
-    build '2336'
+    build 2336
     cause <<-EOS.undent
       Could not find platform dependent libraries <exec_prefix>
       Consider setting $PYTHONHOME to <prefix>[:<exec_prefix>]
@@ -54,6 +55,12 @@ class Python3 < Formula
       Could not import runpy module
       make: *** [pybuilddir.txt] Segmentation fault: 11
     EOS
+  end
+
+  # setuptools remembers the build flags python is built with and uses them to
+  # build packages later. Xcode-only systems need different flags.
+  def pour_bottle?
+    MacOS::CLT.installed?
   end
 
   def install
@@ -112,9 +119,7 @@ class Python3 < Formula
     system "make", "quicktest" if build.include? "quicktest"
 
     # Any .app get a " 3" attached, so it does not conflict with python 2.x.
-    Dir.glob(prefix/"*.app").each do |app|
-      mv app, app.gsub(".app", " 3.app")
-    end
+    Dir.glob("#{prefix}/*.app") { |app| mv app, app.sub(".app", " 3.app") }
 
     # A fix, because python and python3 both want to install Python.framework
     # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
@@ -174,8 +179,7 @@ class Python3 < Formula
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
       cflags += " -isysroot #{MacOS.sdk_path}"
       ldflags += " -isysroot #{MacOS.sdk_path}"
-      # Same zlib.h-not-found-bug as in env :std (see below)
-      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include"
+      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include" # find zlib
       if build.without? 'brewed-tk'
         cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
       end

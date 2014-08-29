@@ -50,7 +50,7 @@ class Csync < Formula
   end
 
   test do
-    system "csync", "-V"
+    system bin/"csync", "-V"
   end
 end
 

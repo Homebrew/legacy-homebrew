@@ -14,14 +14,12 @@ class Sshfs < Formula
 
   option 'without-sshnodelay', "Don't compile NODELAY workaround for ssh"
 
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on :libtool
-
-  depends_on 'pkg-config' => :build
-  depends_on 'osxfuse'
-  depends_on 'glib'
-  depends_on :xcode
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "osxfuse"
+  depends_on "glib"
 
   # Fixes issue https://github.com/osxfuse/sshfs/pull/4
   patch :DATA
@@ -32,10 +30,6 @@ class Sshfs < Formula
       --prefix=#{prefix}
     ]
     args << "--disable-sshnodelay" if build.without? 'sshnodelay'
-
-    # Compatibility with Automake 1.13 and newer.
-    inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
-    inreplace 'configure.ac', 'AM_INIT_AUTOMAKE', 'AM_INIT_AUTOMAKE([subdir-objects])'
 
     system "autoreconf", "--force", "--install"
     system "./configure", *args

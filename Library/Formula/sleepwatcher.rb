@@ -48,7 +48,7 @@ class Sleepwatcher < Formula
     but read information regarding setup of the launchd files which
     are installed here:
 
-      #{Dir[(prefix + '*.plist')].join("\n      ")}
+      #{Dir["#{prefix}/*.plist"].join("\n      ")}
 
     These are the examples provided by the author.
     EOS

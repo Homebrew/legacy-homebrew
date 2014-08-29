@@ -10,7 +10,7 @@ class Dependencies
   end
 
   def <<(o)
-    @deps << o unless @deps.include? o
+    @deps << o unless include?(o)
     self
   end
 
@@ -22,9 +22,6 @@ class Dependencies
     @deps * arg
   end
 
-  def to_a
-    @deps
-  end
   alias_method :to_ary, :to_a
 
   def optional
@@ -54,4 +51,29 @@ class Dependencies
     deps == other.deps
   end
   alias_method :eql?, :==
+end
+
+class Requirements
+  include Enumerable
+
+  def initialize(*args)
+    @reqs = Set.new(*args)
+  end
+
+  def each(*args, &block)
+    @reqs.each(*args, &block)
+  end
+
+  def <<(other)
+    if Comparable === other
+      @reqs.grep(other.class) do |req|
+        return self if req > other
+        @reqs.delete(req)
+      end
+    end
+    @reqs << other
+    self
+  end
+
+  alias_method :to_ary, :to_a
 end

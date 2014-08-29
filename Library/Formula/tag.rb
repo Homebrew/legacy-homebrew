@@ -18,6 +18,6 @@ class Tag < Formula
     test_file = Pathname.pwd+'test_file'
     touch test_file
     system "#{bin}/tag", '--add', test_tag, test_file
-    assert `#{bin}/tag --list --no-name #{test_file}`.chomp == test_tag
+    assert_equal test_tag, `#{bin}/tag --list --no-name #{test_file}`.chomp
   end
 end

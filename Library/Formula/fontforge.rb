@@ -18,24 +18,36 @@ class Fontforge < Formula
     end
   end
 
+  bottle do
+    sha1 "62e19f688ec4fbd4a6263c6187980c35521a7b40" => :mavericks
+    sha1 "5edf50ab049d44ff399defe673faa58d136c54d3" => :mountain_lion
+    sha1 "8b38be9b20ce239e63f3f3009482ab8f130c0a33" => :lion
+  end
+
   head do
     url 'https://github.com/fontforge/fontforge.git'
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
     depends_on 'pkg-config' => :build
     depends_on 'glib'
     depends_on 'pango'
     depends_on 'cairo'
     depends_on 'ossp-uuid'
+    depends_on 'zeromq'
+    depends_on 'czmq'
   end
 
   option 'with-gif', 'Build with GIF support'
   option 'with-x', 'Build with X11 support, including FontForge.app'
 
   depends_on 'gettext'
-  depends_on :python => :recommended
+  if build.head?
+    depends_on :python if MacOS.version <= :snow_leopard
+  else
+    depends_on :python => :optional
+  end
 
   depends_on 'libpng'   => :recommended
   depends_on 'jpeg'     => :recommended
@@ -90,7 +102,7 @@ class Fontforge < Formula
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/CoreServices.framework/Frameworks"
     ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/Carbon.framework/Frameworks"
 
-    system "./autogen.sh" if build.head?
+    system "./bootstrap" if build.head?
     system "./configure", *args
 
     # Fix hard-coded install locations that don't respect the target bindir

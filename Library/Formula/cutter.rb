@@ -1,14 +1,14 @@
-require 'formula'
+require "formula"
 
 class Cutter < Formula
-  homepage 'http://cutter.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/cutter/cutter/1.2.3/cutter-1.2.3.tar.gz'
-  sha1 '97446319f0a4892433912ab91633b6e0ffa2d09c'
+  homepage "http://cutter.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/cutter/cutter/1.2.4/cutter-1.2.4.tar.gz"
+  sha1 "cf4bc0dc92fc8ac51441536544acc8a81a195a79"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'intltool' => :build
-  depends_on 'glib'
-  depends_on 'gettext'
+  depends_on "pkg-config" => :build
+  depends_on "intltool" => :build
+  depends_on "glib"
+  depends_on "gettext"
 
   def install
     system "./configure", "--prefix=#{prefix}",

@@ -14,10 +14,22 @@ class Ant < Formula
 
   keg_only :provided_by_osx if MacOS.version < :mavericks
 
+  option "with-ivy", "Install ivy dependency manager"
+
+  resource "ivy" do
+    url "http://www.apache.org/dyn/closer.cgi?path=ant/ivy/2.3.0/apache-ivy-2.3.0-bin.tar.gz"
+    sha1 "878fab43ee9c70486a9ecec1ec44a2f034401687"
+  end
+
   def install
     rm Dir['bin/*.{bat,cmd,dll,exe}']
     libexec.install Dir['*']
     bin.install_symlink Dir["#{libexec}/bin/*"]
+    if build.with? "ivy"
+      resource("ivy").stage do
+        (libexec/"lib").install Dir["ivy-*.jar"]
+      end
+    end
   end
 
   test do

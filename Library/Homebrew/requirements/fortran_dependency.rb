@@ -3,7 +3,7 @@ require 'requirement'
 class FortranDependency < Requirement
   fatal true
 
-  default_formula 'gfortran'
+  default_formula 'gcc'
 
   env { ENV.fortran }
 

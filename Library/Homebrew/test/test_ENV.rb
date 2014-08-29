@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'extend/ENV'
 
-class EnvironmentTests < Test::Unit::TestCase
+class EnvironmentTests < Homebrew::TestCase
   def setup
     @env = {}.extend(EnvActivation)
     @env.activate_extensions!
@@ -116,7 +116,7 @@ module SharedEnvTests
   end
 end
 
-class StdenvTests < Test::Unit::TestCase
+class StdenvTests < Homebrew::TestCase
   include SharedEnvTests
 
   def setup
@@ -124,7 +124,7 @@ class StdenvTests < Test::Unit::TestCase
   end
 end
 
-class SuperenvTests < Test::Unit::TestCase
+class SuperenvTests < Homebrew::TestCase
   include SharedEnvTests
 
   attr_reader :env, :bin

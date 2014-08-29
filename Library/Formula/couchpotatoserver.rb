@@ -1,19 +1,19 @@
-require 'formula'
+require "formula"
 
 class Couchpotatoserver < Formula
-  homepage 'https://couchpota.to'
-  url 'https://github.com/RuudBurger/CouchPotatoServer/archive/build/2.4.0.tar.gz'
-  sha1 '63c0f89a2d49c7bf1e3b7425f48ff3d2b322d800'
+  homepage "https://couchpota.to"
+  url "https://github.com/RuudBurger/CouchPotatoServer/archive/build/2.5.2.tar.gz"
+  sha1 "b19509aa2fefca8c1caa8682a99bbce7e478ba22"
 
-  head 'https://github.com/RuudBurger/CouchPotatoServer.git'
+  head "https://github.com/RuudBurger/CouchPotatoServer.git"
 
   def install
     prefix.install_metafiles
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     (bin+"couchpotatoserver").write(startup_script)
   end
 
-  plist_options :manual => 'couchpotatoserver'
+  plist_options :manual => "couchpotatoserver"
 
   def plist; <<-EOS.undent
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

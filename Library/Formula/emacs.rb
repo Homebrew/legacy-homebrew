@@ -6,8 +6,6 @@ class Emacs < Formula
   mirror 'http://ftp.gnu.org/pub/gnu/emacs/emacs-24.3.tar.gz'
   sha256 '0098ca3204813d69cd8412045ba33e8701fa2062f4bff56bedafc064979eef41'
 
-  skip_clean 'share/info' # Keep the docs
-
   option "cocoa", "Build a Cocoa version of emacs"
   option "srgb", "Enable sRGB colors in the Cocoa version of emacs"
   option "with-x", "Include X11 support"
@@ -24,6 +22,7 @@ class Emacs < Formula
 
     depends_on :autoconf
     depends_on :automake
+    depends_on "glib" => :optional
   end
 
   stable do
@@ -51,14 +50,18 @@ class Emacs < Formula
     # "--japanese" option:
     # to apply a patch from MacEmacsJP for Japanese input methods
     patch :p0 do
-      url "http://sourceforge.jp/projects/macemacsjp/svn/view/inline_patch/trunk/emacs-inline.patch?view=co&revision=583&root=macemacsjp&pathrev=583"
+      url "http://sourceforge.jp/projects/macemacsjp/scm/svn/blobs/583/inline_patch/trunk/emacs-inline.patch?export=raw"
       sha1 "61a6f41f3ddc9ecc3d7f57379b3dc195d7b9b5e2"
     end if build.include? "cocoa" and build.include? "japanese"
   end
 
   depends_on 'pkg-config' => :build
   depends_on :x11 if build.with? "x"
+  depends_on "d-bus" => :optional
   depends_on 'gnutls' => :optional
+  depends_on "librsvg" => :optional
+  depends_on "imagemagick" => :optional
+  depends_on "mailutils" => :optional
 
   fails_with :llvm do
     build 2334
@@ -70,7 +73,7 @@ class Emacs < Formula
   def do_not_install_ctags
     unless build.include? "keep-ctags"
       (bin/"ctags").unlink
-      (share/man/man1/"ctags.1.gz").unlink
+      (man1/"ctags.1.gz").unlink
     end
   end
 
@@ -79,14 +82,22 @@ class Emacs < Formula
     ENV.deparallelize if build.head?
 
     args = ["--prefix=#{prefix}",
-            "--without-dbus",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs"]
+    args << "--with-file-notification=gfile" if build.with? "glib"
+    if build.with? "d-bus"
+      args << "--with-dbus"
+    else
+      args << "--without-dbus"
+    end
     if build.with? 'gnutls'
       args << '--with-gnutls'
     else
       args << '--without-gnutls'
     end
+    args << "--with-rsvg" if build.with? "librsvg"
+    args << "--with-imagemagick" if build.with? "imagemagick"
+    args << "--without-popmail" if build.with? "mailutils"
 
     system "./autogen.sh" if build.head?
 
@@ -150,9 +161,7 @@ class Emacs < Formula
   end
 
   test do
-    output = `'#{bin}/emacs' --batch --eval="(print (+ 2 2))"`
-    assert $?.success?
-    assert_equal "4", output.strip
+    assert_equal "4", shell_output("#{bin}/emacs --batch --eval=\"(print (+ 2 2))\"").strip
   end
 end
 

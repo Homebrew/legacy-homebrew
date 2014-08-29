@@ -15,9 +15,9 @@ class Sdl < Formula
   head do
     url 'http://hg.libsdl.org/SDL', :branch => 'SDL-1.2', :using => :hg
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option 'with-x11-driver', 'Compile with support for X11 video driver'
@@ -25,9 +25,15 @@ class Sdl < Formula
 
   if build.with? 'x11-driver'
     depends_on :x11
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+
+    # Fix build against recent libX11; requires regenerating configure script
+    patch do
+      url "http://hg.libsdl.org/SDL/raw-rev/91ad7b43317a"
+      sha1 "1b35949d9ac360a7e39aac76d1f0a6ad5381b0f4"
+    end
   end
 
   # Fix for a bug preventing SDL from building at all on OSX 10.9 Mavericks
@@ -37,11 +43,11 @@ class Sdl < Formula
     sha1 "3137feb503a89a8d606405373905b92dcf7e293b"
   end
 
-  # Fix build against recent libX11; requires regenerating configure script
+  # Fix compilation error on 10.6 introduced by the above patch
   patch do
-    url "http://hg.libsdl.org/SDL/raw-rev/91ad7b43317a"
-    sha1 "1b35949d9ac360a7e39aac76d1f0a6ad5381b0f4"
-  end if build.with? "x11-driver"
+    url "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1324"
+    sha1 "08c19f077f56217fd300db390bca4c1a0bee0622"
+  end
 
   def install
     # we have to do this because most build scripts assume that all sdl modules

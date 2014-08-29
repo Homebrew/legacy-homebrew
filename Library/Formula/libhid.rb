@@ -1,16 +1,22 @@
-require 'formula'
+require "formula"
 
 class Libhid < Formula
-  homepage 'http://libhid.alioth.debian.org/'
-  url 'http://alioth.debian.org/frs/download.php/file/1958/libhid-0.2.16.tar.gz'
-  mirror 'ftp://ftp.freebsd.org/pub/FreeBSD/ports/distfiles/libhid-0.2.16.tar.gz'
-  sha1 '9a25fef674e8f20f97fea6700eb91c21ebbbcc02'
+  homepage "http://libhid.alioth.debian.org/"
+  url "http://distcache.freebsd.org/ports-distfiles/libhid-0.2.16.tar.gz"
+  sha1 "9a25fef674e8f20f97fea6700eb91c21ebbbcc02"
 
-  depends_on 'libusb'
-  depends_on 'libusb-compat'
+  bottle do
+    cellar :any
+    sha1 "9424e6f77834d9f55ac8d84c25b6395638d8ca45" => :mavericks
+    sha1 "ca68d66b989d1438ca4c80212cc5cf099d3a7b7b" => :mountain_lion
+    sha1 "593119b5c876519fcc9eebe543a4570d1adeabe4" => :lion
+  end
+
+  depends_on "libusb"
+  depends_on "libusb-compat"
 
   # Fix compilation error on 10.9
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

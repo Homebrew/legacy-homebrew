@@ -1,4 +1,4 @@
-module Homebrew extend self
+module Homebrew
   def log
     if ARGV.named.empty?
       cd HOMEBREW_REPOSITORY

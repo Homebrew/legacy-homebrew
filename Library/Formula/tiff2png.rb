@@ -25,8 +25,8 @@ class Tiff2png < Formula
   end
 
   test do
-    system "#{bin}/tiff2png", \
-      "/System/Library/Frameworks/AppKit.framework/Versions/C/Resources/GrammarDot.tiff"
+    test_tiff = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.tiff"
+    system "#{bin}/tiff2png", test_tiff
   end
 end
 

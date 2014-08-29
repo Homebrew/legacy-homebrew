@@ -5,23 +5,23 @@ class PandocCiteproc < Formula
   include Language::Haskell::Cabal
 
   homepage "https://github.com/jgm/pandoc-citeproc"
-  url "http://hackage.haskell.org/package/pandoc-citeproc-0.3.0.1/pandoc-citeproc-0.3.0.1.tar.gz"
-  sha1 "958309f9996d563ffba0bd4870bb7f201aac08e8"
+  url "https://hackage.haskell.org/package/pandoc-citeproc-0.4.0.1/pandoc-citeproc-0.4.0.1.tar.gz"
+  sha1 "41c71939d78bfe52f4dd06ca3d7a6b4d824cdd47"
 
   bottle do
-    sha1 "e94a82ea226531abb6be5da81305f6f71e55a92e" => :mavericks
-    sha1 "123132215cb70fb6b7253d6cf26d43e463385a79" => :mountain_lion
-    sha1 "58092e747a0ce49b2975efcae3ec7b643225863a" => :lion
+    sha1 "e1a339c04e78a4d7fba542336e655f24fa029bbe" => :mavericks
+    sha1 "b00f823667e3a2775388758af7ed309ddc5a761e" => :mountain_lion
+    sha1 "332eb0a1d2754606f74731e30ee3e76320947389" => :lion
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "gmp"
+  depends_on "pandoc" => :recommended
 
   def install
     cabal_sandbox do
-      cabal_install_tools "alex", "happy"
-      cabal_install "--only-dependencies", "--constraint=temporary==1.2.0.1"
+      cabal_install "--only-dependencies"
       cabal_install "--prefix=#{prefix}"
     end
     cabal_clean_lib

@@ -2,20 +2,27 @@ require 'formula'
 
 class Sphinx < Formula
   homepage 'http://www.sphinxsearch.com'
-  url 'http://sphinxsearch.com/files/sphinx-2.1.7-release.tar.gz'
-  sha1 'b9f2e963cfd0c58b3ab5f39669062a1ba4c7cf8a'
+  url 'http://sphinxsearch.com/files/sphinx-2.1.9-release.tar.gz'
+  sha1 '2ddd945eb0a7de532a7aaed2e933ac05b978cff2'
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
+  bottle do
+    sha1 "ec438c2123c33a5cc41bf277ce22408424075261" => :mavericks
+    sha1 "0b99dba174ea363d2d5c2da78e2a5f99b6e57400" => :mountain_lion
+    sha1 "550021173abd3a528619c4da73d580dd54115003" => :lion
+  end
+
   devel do
-    url 'http://sphinxsearch.com/files/sphinx-2.2.2-beta.tar.gz'
-    sha1 '6a63111c5f2fcd93915d114845f2375b031ff9da'
+    url 'http://sphinxsearch.com/files/sphinx-2.2.3-beta.tar.gz'
+    sha1 'ef78cebeae32a0582df504d74d6dd2ded81b73d9'
   end
 
   option 'mysql', 'Force compiling against MySQL'
   option 'pgsql', 'Force compiling against PostgreSQL'
   option 'id64',  'Force compiling with 64-bit ID support'
 
+  depends_on "re2" => :optional
   depends_on :mysql if build.include? 'mysql'
   depends_on :postgresql if build.include? 'pgsql'
 
@@ -44,6 +51,7 @@ class Sphinx < Formula
               --with-libstemmer]
 
     args << "--enable-id64" if build.include? 'id64'
+    args << "--with-re2" if build.with? 're2'
 
     %w{mysql pgsql}.each do |db|
       if build.include? db

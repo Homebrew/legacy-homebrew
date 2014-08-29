@@ -41,6 +41,7 @@ class Cairo < Formula
     if build.without? "x11"
       args.delete "--with-x"
       args << "--enable-xlib=no" << "--enable-xlib-xrender=no"
+      args << "--enable-quartz-image"
     end
 
     args << '--enable-xcb=no' if MacOS.version <= :leopard
