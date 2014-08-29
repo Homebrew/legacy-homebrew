@@ -92,7 +92,8 @@ class SoftwareSpec
         name = name.to_s
       end
       raise ArgumentError, "option name is required" if name.empty?
-      raise ArgumentError, "options should not start with dashes" if name.start_with?("-")
+      raise ArgumentError, "option name must be longer than one character" unless name.length > 1
+      raise ArgumentError, "option name must not start with dashes" if name.start_with?("-")
       Option.new(name, description)
     end
     options << opt
