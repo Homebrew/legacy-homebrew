@@ -18,6 +18,8 @@ class Py2cairo < Formula
   end
 
   def install
+    ENV.refurbish_args
+
     # Python extensions default to universal but cairo may not be universal
     ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}" unless build.universal?
 

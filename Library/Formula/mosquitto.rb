@@ -1,29 +1,31 @@
-require 'formula'
+require "formula"
 
 class Mosquitto < Formula
-  homepage 'http://mosquitto.org/'
-  url 'http://mosquitto.org/files/source/mosquitto-1.3.1.tar.gz'
-  sha1 'dcba02c12dffa27a0e76e68f88de21fb5f7de29d'
+  homepage "http://mosquitto.org/"
+  url "http://mosquitto.org/files/source/mosquitto-1.3.4.tar.gz"
+  sha1 "b818672cc0db723995d7c3201ef6962931dd891a"
+  revision 1
 
   bottle do
-    sha1 "2145cfe117359dddcdef529738790fe7728834ec" => :mavericks
-    sha1 "565228890c2b011b20fbe8f82bc01cef7af9dbf2" => :mountain_lion
-    sha1 "d3a130d012732ca2a3b78720dd235fe19b286bcc" => :lion
+    revision 1
+    sha1 "5e8dfe80e2ea2af1af0e8ce3b79f59727b9ca82f" => :mavericks
+    sha1 "1b11a70a2c1fe7d9edabc1e3c7419669afafbd6b" => :mountain_lion
+    sha1 "1a36f985225e210c06d1e8d72ddaa7ab13c20337" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'cmake' => :build
-  depends_on 'c-ares' => :build
+  depends_on "pkg-config" => :build
+  depends_on "cmake" => :build
+  depends_on "c-ares"
 
   # mosquitto requires OpenSSL >=1.0 for TLS support
-  depends_on 'openssl'
+  depends_on "openssl"
 
   def install
     system "cmake", ".", *std_cmake_args
     system "make install"
 
     # Create the working directory
-    (var/'mosquitto').mkpath
+    (var/"mosquitto").mkpath
   end
 
   test do

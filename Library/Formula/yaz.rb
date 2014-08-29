@@ -1,16 +1,16 @@
-# -*- coding: UTF-8 -*-
+# encoding: UTF-8
 require "formula"
 
 class Yaz < Formula
   homepage "http://www.indexdata.com/yaz"
-  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.0.21.tar.gz"
-  sha1 "cfa3c49060c15f849a04e73227b4e976370bdbd1"
+  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.4.1.tar.gz"
+  sha1 "4190cc88f95f54ec420e784208c6b4b0eb3af6d2"
 
   bottle do
     cellar :any
-    sha1 "92aa501708051edb6d451a4fcd8c2a5cf29f72bc" => :mavericks
-    sha1 "43755b4e06af9c754efe2fe68d271f1d6d23902c" => :mountain_lion
-    sha1 "a477c390a7c6c06c02315bb5acdec78251e4c4f8" => :lion
+    sha1 "849a16244770beb4c81bc041e6b1a18c98319e03" => :mavericks
+    sha1 "9a59e1db4ece4e96748c5fc33a1428b0ee8d78af" => :mountain_lion
+    sha1 "56bcb0632a14290463789ba1ebe74ac5a6f319e6" => :lion
   end
 
   depends_on "pkg-config" => :build
@@ -26,11 +26,12 @@ class Yaz < Formula
   # This test converts between MARC8, an obscure mostly-obsolete library
   # text encoding supported by yaz-iconv, and UTF8.
   test do
-    marc8 = File.open("marc8.txt", "w") do |f|
+    File.open("marc8.txt", "w") do |f|
       f.write "$1!0-!L,i$3i$si$Ki$Ai$O!+=(B"
     end
 
     result = `"#{bin}/yaz-iconv" -f marc8 -t utf8 marc8.txt`.chomp
+    result.force_encoding(Encoding::UTF_8) if result.respond_to?(:force_encoding)
     assert_equal "世界こんにちは！", result
   end
 end

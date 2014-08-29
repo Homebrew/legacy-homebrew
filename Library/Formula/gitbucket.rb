@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class Gitbucket < Formula
-  homepage 'https://github.com/takezoe/gitbucket'
-  url 'https://github.com/takezoe/gitbucket/releases/download/1.10/gitbucket.war'
-  sha1 '85b89b834409ff326d6e7377fa5f2ffa54aa8cb4'
+  homepage "https://github.com/takezoe/gitbucket"
+  url "https://github.com/takezoe/gitbucket/releases/download/2.2.1/gitbucket.war"
+  sha256 "a60b2dacc7351c02a198fdcc121c3e1fd4adf4b9529df06cc5976c58824b381e"
 
   head do
-    url 'https://github.com/takezoe/gitbucket.git'
-    depends_on 'ant' => :build
+    url "https://github.com/takezoe/gitbucket.git"
+    depends_on :ant => :build
   end
 
   def install
@@ -36,7 +36,6 @@ class Gitbucket < Formula
           <string>#{opt_libexec}/gitbucket.war</string>
           <string>--host=127.0.0.1</string>
           <string>--port=8080</string>
-          <string>--https=true</string>
         </array>
         <key>RunAtLoad</key>
        <true/>

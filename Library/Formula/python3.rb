@@ -2,8 +2,16 @@ require 'formula'
 
 class Python3 < Formula
   homepage 'https://www.python.org/'
-  url 'https://python.org/ftp/python/3.4.0/Python-3.4.0.tgz'
-  sha1 'bb5125d1c437caa5a62e0a3d0fee298e91196d6f'
+  url 'https://python.org/ftp/python/3.4.1/Python-3.4.1.tgz'
+  sha1 'e8c1bd575a6ccc2a75f79d9d094a6a29d3802f5d'
+  revision 1
+
+  bottle do
+    revision 1
+    sha1 "c813d417aa9c859fa3743c3fcc5354de8fc2bf7f" => :mavericks
+    sha1 "07b26a28688501be8b7ccd9fdcebab5e554b240b" => :mountain_lion
+    sha1 "ff356ba3edb96acde53fe5ce296ed1bbd856cf62" => :lion
+  end
 
   VER='3.4'  # The <major>.<minor> is used so often.
 
@@ -20,7 +28,7 @@ class Python3 < Formula
   depends_on 'openssl'
   depends_on 'xz' => :recommended  # for the lzma module added in 3.3
   depends_on 'homebrew/dupes/tcl-tk' if build.with? 'brewed-tk'
-  depends_on :x11 if build.with? 'brewed-tk' and Tab.for_name('tcl-tk').used_options.include?('with-x11')
+  depends_on :x11 if build.with? "brewed-tk" and Tab.for_name("tcl-tk").with? "x11"
 
   skip_clean "bin/pip3", "bin/pip-#{VER}"
   skip_clean "bin/easy_install3", "bin/easy_install-#{VER}"
@@ -37,7 +45,7 @@ class Python3 < Formula
   end
 
   fails_with :llvm do
-    build '2336'
+    build 2336
     cause <<-EOS.undent
       Could not find platform dependent libraries <exec_prefix>
       Consider setting $PYTHONHOME to <prefix>[:<exec_prefix>]
@@ -47,6 +55,12 @@ class Python3 < Formula
       Could not import runpy module
       make: *** [pybuilddir.txt] Segmentation fault: 11
     EOS
+  end
+
+  # setuptools remembers the build flags python is built with and uses them to
+  # build packages later. Xcode-only systems need different flags.
+  def pour_bottle?
+    MacOS::CLT.installed?
   end
 
   def install
@@ -101,48 +115,11 @@ class Python3 < Formula
     # Tell Python not to install into /Applications (default for framework builds)
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
-    (HOMEBREW_PREFIX/'share/python3').mkpath
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python3"
     system "make", "quicktest" if build.include? "quicktest"
 
     # Any .app get a " 3" attached, so it does not conflict with python 2.x.
-    Dir.glob(prefix/"*.app").each do |app|
-      mv app, app.gsub(".app", " 3.app")
-    end
-
-    # Post-install, fix up the site-packages so that user-installed Python
-    # software survives minor updates, such as going from 3.3.2 to 3.3.3:
-
-    # Remove the site-packages that Python created in its Cellar.
-    site_packages_cellar.rmtree
-    # Create a site-packages in HOMEBREW_PREFIX/lib/python#{VER}/site-packages
-    site_packages.mkpath
-    # Symlink the prefix site-packages into the cellar.
-    site_packages_cellar.parent.install_symlink site_packages
-
-    # Write our sitecustomize.py
-    Dir["#{site_packages}/*.py{,c,o}"].each {|f| Pathname.new(f).unlink }
-    (site_packages/"sitecustomize.py").write(sitecustomize)
-
-    # Remove old setuptools installations that may still fly around and be
-    # listed in the easy_install.pth. This can break setuptools build with
-    # zipimport.ZipImportError: bad local file header
-    # setuptools-0.9.8-py3.3.egg
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/python#{VER}/site-packages/setuptools*"]
-    rm_rf Dir[HOMEBREW_PREFIX/"lib/python#{VER}/site-packages/distribute*"]
-
-    # Install the bundled pip if it's newer than the installed version
-    system bin/"python3", "-m", "ensurepip", "--upgrade"
-
-    # And now we write the distutils.cfg
-    cfg = prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/distutils/distutils.cfg"
-    cfg.delete if cfg.exist?
-    cfg.write <<-EOF.undent
-      [global]
-      verbose=1
-      [install]
-      prefix=#{HOMEBREW_PREFIX}
-    EOF
+    Dir.glob("#{prefix}/*.app") { |app| mv app, app.sub(".app", " 3.app") }
 
     # A fix, because python and python3 both want to install Python.framework
     # and therefore we can't link both into HOMEBREW_PREFIX/Frameworks
@@ -152,6 +129,44 @@ class Python3 < Formula
 
     # Remove 2to3 because python2 also installs it
     rm bin/"2to3"
+
+    # Remove the site-packages that Python created in its Cellar.
+    site_packages_cellar.rmtree
+  end
+
+  def post_install
+    # Fix up the site-packages so that user-installed Python software survives
+    # minor updates, such as going from 3.3.2 to 3.3.3:
+
+    # Create a site-packages in HOMEBREW_PREFIX/lib/python#{VER}/site-packages
+    site_packages.mkpath
+
+    # Symlink the prefix site-packages into the cellar.
+    site_packages_cellar.unlink if site_packages_cellar.exist?
+    site_packages_cellar.parent.install_symlink site_packages
+
+    # Write our sitecustomize.py
+    rm_rf Dir["#{site_packages}/sitecustomize.py[co]"]
+    (site_packages/"sitecustomize.py").atomic_write(sitecustomize)
+
+    # Remove old setuptools installations that may still fly around and be
+    # listed in the easy_install.pth. This can break setuptools build with
+    # zipimport.ZipImportError: bad local file header
+    # setuptools-0.9.8-py3.3.egg
+    rm_rf Dir["#{site_packages}/setuptools*"]
+    rm_rf Dir["#{site_packages}/distribute*"]
+
+    # Install the bundled pip if it's newer than the installed version
+    system bin/"python3", "-m", "ensurepip", "--upgrade"
+
+    # And now we write the distutils.cfg
+    cfg = prefix/"Frameworks/Python.framework/Versions/#{VER}/lib/python#{VER}/distutils/distutils.cfg"
+    cfg.atomic_write <<-EOF.undent
+      [global]
+      verbose=1
+      [install]
+      prefix=#{HOMEBREW_PREFIX}
+    EOF
   end
 
   def distutils_fix_superenv(args)
@@ -164,8 +179,7 @@ class Python3 < Formula
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
       cflags += " -isysroot #{MacOS.sdk_path}"
       ldflags += " -isysroot #{MacOS.sdk_path}"
-      # Same zlib.h-not-found-bug as in env :std (see below)
-      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include"
+      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include" # find zlib
       if build.without? 'brewed-tk'
         cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
       end
@@ -201,7 +215,6 @@ class Python3 < Formula
       # http://docs.python.org/devguide/setup.html#id8 suggests to disable some Warnings.
       ENV.append_to_cflags '-Wno-unused-value'
       ENV.append_to_cflags '-Wno-empty-body'
-      ENV.append_to_cflags '-Qunused-arguments'
     end
   end
 
@@ -224,7 +237,7 @@ class Python3 < Formula
                '     You should `unset PYTHONPATH` to fix this.')
       else:
           # Only do this for a brewed python:
-          opt_executable = '#{HOMEBREW_PREFIX}/opt/python3/bin/python#{VER}'
+          opt_executable = '#{opt_bin}/python#{VER}'
           if os.path.realpath(sys.executable) == os.path.realpath(opt_executable):
               # Remove /System site-packages, and the Cellar site-packages
               # which we moved to lib/pythonX.Y/site-packages. Further, remove
@@ -232,7 +245,7 @@ class Python3 < Formula
               sys.path = [ p for p in sys.path
                            if (not p.startswith('/System') and
                                not p.startswith('#{HOMEBREW_PREFIX}/lib/python') and
-                               not (p.startswith('#{HOMEBREW_PREFIX}/Cellar/python') and p.endswith('site-packages'))) ]
+                               not (p.startswith('#{rack}') and p.endswith('site-packages'))) ]
 
               # LINKFORSHARED (and python-config --ldflags) return the
               # full path to the lib (yes, "Python" is actually the lib, not a
@@ -241,7 +254,7 @@ class Python3 < Formula
               # Assume Framework style build (default since months in brew)
               try:
                   from _sysconfigdata import build_time_vars
-                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{HOMEBREW_PREFIX}/opt/python3/Frameworks/Python.framework/Versions/#{VER}/Python'
+                  build_time_vars['LINKFORSHARED'] = '-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{VER}/Python'
               except:
                   pass  # remember: don't print here. Better to fail silently.
 
@@ -251,7 +264,7 @@ class Python3 < Formula
           # Tell about homebrew's site-packages location.
           # This is needed for Python to parse *.pth.
           import site
-          site.addsitedir('#{HOMEBREW_PREFIX}/lib/python#{VER}/site-packages')
+          site.addsitedir('#{site_packages}')
     EOF
   end
 
@@ -261,7 +274,7 @@ class Python3 < Formula
         pip3 install --upgrade pip
 
       You can install Python packages with
-        `pip3 install <your_favorite_package>`
+        pip3 install <package>
 
       They will install into the site-package directory
         #{site_packages}

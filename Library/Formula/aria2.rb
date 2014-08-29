@@ -1,19 +1,20 @@
-require 'formula'
+require "formula"
 
 class Aria2 < Formula
-  homepage 'http://aria2.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.4/aria2-1.18.4.tar.bz2'
-  sha1 '389829028d8e95f08d42a3bef00ab3237a4b246f'
+  homepage "http://aria2.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.7/aria2-1.18.7.tar.bz2"
+  sha1 "94a1fa9857c54af1b21b785c3a1375c3a758d517"
 
   bottle do
     cellar :any
-    sha1 "83ea8bf0f0356ad51491dee88c6b8c1747daf8e5" => :mavericks
-    sha1 "cd2ce7a10e30a58c20554399bc7f9a115b1d7ca9" => :mountain_lion
-    sha1 "650cceb7cdf00bfc807a331c79523f941f1cbaec" => :lion
+    sha1 "1836e8382c9f6e9a1893d8700b74b48f8b98385b" => :mavericks
+    sha1 "ab16e0ccfbb1aee0252d77d67b61842503affee7" => :mountain_lion
+    sha1 "178a5ec35b34814fa054d4a2e97ba600c8cb353f" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on :macos => :lion # Needs a c++11 compiler
+  depends_on "pkg-config" => :build
+
+  needs :cxx11
 
   def install
     args = %W[
@@ -28,10 +29,10 @@ class Aria2 < Formula
     ]
 
     # system zlib and sqlite don't include .pc files
-    ENV['ZLIB_CFLAGS'] = '-I/usr/include'
-    ENV['ZLIB_LIBS'] = '-L/usr/lib -lz'
-    ENV['SQLITE3_CFLAGS'] = '-I/usr/include'
-    ENV['SQLITE3_LIBS'] = '-L/usr/lib -lsqlite3'
+    ENV["ZLIB_CFLAGS"] = "-I/usr/include"
+    ENV["ZLIB_LIBS"] = "-L/usr/lib -lz"
+    ENV["SQLITE3_CFLAGS"] = "-I/usr/include"
+    ENV["SQLITE3_LIBS"] = "-L/usr/lib -lsqlite3"
 
     system "./configure", *args
     system "make install"

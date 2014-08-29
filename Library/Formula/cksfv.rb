@@ -14,8 +14,6 @@ class Cksfv < Formula
     path = testpath/"foo"
     path.write "abcd"
 
-    lines = `#{bin}/cksfv #{path}`.split("\n")
-    assert lines.include?("#{path} ED82CD11")
-    assert_equal 0, $?.exitstatus
+    assert shell_output("#{bin}/cksfv #{path}").include?("#{path} ED82CD11")
   end
 end

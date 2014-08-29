@@ -16,9 +16,7 @@ class Libtool < Formula
     sha1 '6873a7b72e86f369f43125c0e29ae5cdbc2d67c1' => :lion
   end
 
-  if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/glibtoolize"
-    keg_only "Xcode 4.2 and below provide glibtool."
-  end
+  keg_only :provided_until_xcode43
 
   option :universal
 

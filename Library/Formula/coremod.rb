@@ -2,14 +2,12 @@ require "formula"
 
 class Coremod < Formula
   homepage "http://xmp.sourceforge.net"
-  url "https://github.com/cmatsuoka/coremod/archive/coremod-4.2.0.tar.gz"
-  sha1 "3dc36af9fef89ad5204554440a7044a5ceaf3f67"
+  url "https://github.com/cmatsuoka/coremod/archive/coremod-4.2.8.tar.gz"
+  sha1 "583cb3bdc6df583739c5b44a4961ba364e0b0ecd"
 
-  head do
-    url "https://github.com/cmatsuoka/coremod.git"
-  end
+  head "https://github.com/cmatsuoka/coremod.git"
 
-  depends_on :autoconf
+  depends_on "autoconf" => :build
 
   def install
     system "autoconf"

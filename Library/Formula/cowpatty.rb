@@ -6,6 +6,7 @@ class Cowpatty < Formula
   sha1 '8b7cb2015d0534031827f2f06135bf5cf5929d35'
 
   def install
+    ENV.j1
     inreplace "Makefile", "/usr/local/", "#{prefix}/"
     system "make install"
   end

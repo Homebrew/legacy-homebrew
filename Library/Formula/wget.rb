@@ -8,11 +8,13 @@ class Wget < Formula
   url 'http://ftpmirror.gnu.org/wget/wget-1.15.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/wget/wget-1.15.tar.gz'
   sha1 'f3c925f19dfe5ed386daae4f339175c108c50574'
+  revision 2
 
   bottle do
-    sha1 "f3dc7cadc6099443213ada31019c603818c46717" => :mavericks
-    sha1 "21f0463fd39bcf363814929d863850608c7b87c1" => :mountain_lion
-    sha1 "934a195951c6df94bebc3e710dd15398bb6cd7b9" => :lion
+    revision 1
+    sha1 "5e3dd7a6e79e4de274b1c1dc1baa6d8110a56000" => :mavericks
+    sha1 "f4e4664b78cfc1c515e791f3b2ffedf7207a2a22" => :mountain_lion
+    sha1 "217a42b233f21fcb693723f91ec6df0ae168609e" => :lion
   end
 
   head do

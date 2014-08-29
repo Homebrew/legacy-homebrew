@@ -11,8 +11,6 @@ class Ophcrack < Formula
                           "--prefix=#{prefix}"
 
     system "make"
-    cd 'src' do
-      system "make install"
-    end
+    system "make", "-C", "src", "install"
   end
 end

@@ -9,8 +9,8 @@ class Calcurse < Formula
 
   # Patch sent upstream: https://github.com/cryptocrack/calcurse/pull/1
   patch do
-    url "https://github.com/jacknagel/calcurse/commit/86dd23f87bcbb32a69f5f0391439238d4e389d77.patch"
-    sha1 "5af66c819acf115e65e4d94ca903df6bbc5274d2"
+    url "https://github.com/jacknagel/calcurse/commit/86dd23f87bcbb32a69f5f0391439238d4e389d77.diff"
+    sha1 "d9a1036c230e6c8a4702c7a05da6277bac9c4a31"
   end
 
   def install

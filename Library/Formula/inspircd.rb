@@ -2,11 +2,16 @@ require 'formula'
 
 class Inspircd < Formula
   homepage 'http://www.inspircd.org'
-  url 'https://github.com/inspircd/inspircd/archive/v2.0.15.tar.gz'
-  sha1 '3591c1a9d2d2866f2f3c63caa8997f3bc0cb656d'
-  revision 1
+  url 'https://github.com/inspircd/inspircd/archive/v2.0.17.tar.gz'
+  sha1 '79c1a2438b926f5cb945db6dd02c4a1416dc9946'
 
   head 'https://github.com/inspircd/inspircd.git'
+
+  bottle do
+    sha1 "e00f0f3742a4868937bd1d609c37c3ab3fc50fd5" => :mavericks
+    sha1 "cd9bcce5522b4154fe8793fc505769c9e22e8eed" => :mountain_lion
+    sha1 "1fabcc797fe120beefc7f4228d35d7519192c505" => :lion
+  end
 
   skip_clean 'data'
   skip_clean 'logs'

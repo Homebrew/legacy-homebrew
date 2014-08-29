@@ -1,19 +1,25 @@
-require 'formula'
+require "formula"
 
 class Groonga < Formula
-  homepage 'http://groonga.org/'
-  url 'http://packages.groonga.org/source/groonga/groonga-4.0.0.tar.gz'
-  sha1 '9a64d4c98eda4db563bcaf9464504d24dfdb3ff4'
+  homepage "http://groonga.org/"
+  url "http://packages.groonga.org/source/groonga/groonga-4.0.5.tar.gz"
+  sha1 "2e6fd8743a71532f5ee29f3508b678f5505802d2"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'pcre'
-  depends_on 'msgpack'
+  bottle do
+    sha1 "9c6ab2a1c81cf907cadfb0a48a66a326737091b9" => :mavericks
+    sha1 "c39d70c9ae83fd3af14079d0102391cf4b7649bb" => :mountain_lion
+    sha1 "d46e6f5df48d56b653b8fe183b1caf83634e128b" => :lion
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "pcre"
+  depends_on "msgpack"
   depends_on "mecab" => :optional
   depends_on "mecab-ipadic" if build.with? "mecab"
 
-  depends_on 'glib' if build.include? 'enable-benchmark'
+  depends_on "glib" if build.include? "enable-benchmark"
 
-  option 'enable-benchmark', "Enable benchmark program for developer use"
+  option "enable-benchmark", "Enable benchmark program for developer use"
 
   def install
     args = %W[

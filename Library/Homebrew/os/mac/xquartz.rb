@@ -47,16 +47,18 @@ module OS
         when "10.5"
           "2.6.3"
         else
-          "2.7.5"
+          "2.7.6"
         end
       end
 
       def bundle_path
-        MacOS.app_with_bundle_id(FORGE_BUNDLE_ID) || MacOS.app_with_bundle_id(APPLE_BUNDLE_ID)
+        MacOS.app_with_bundle_id(FORGE_BUNDLE_ID, APPLE_BUNDLE_ID)
       end
 
       def version_from_mdls(path)
-        version = `mdls -raw -nullMarker "" -name kMDItemVersion "#{path}" 2>/dev/null`.strip
+        version = Utils.popen_read(
+          "/usr/bin/mdls", "-raw", "-nullMarker", "", "-name", "kMDItemVersion", path.to_s
+        ).strip
         version unless version.empty?
       end
 

@@ -3,7 +3,6 @@ require 'formula'
 class LuaRequirement < Requirement
   fatal true
   default_formula 'lua'
-
   satisfy { which 'lua' }
 end
 
@@ -11,6 +10,13 @@ class Gnuplot < Formula
   homepage 'http://www.gnuplot.info'
   url 'https://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.5/gnuplot-4.6.5.tar.gz'
   sha256 'e550f030c7d04570e89c3d4e3f6e82296816508419c86ab46c4dd73156519a2d'
+
+  bottle do
+    revision 1
+    sha1 "22eb078d5191be2c5747d79c5d04858038eca84b" => :mavericks
+    sha1 "5352e2e09c94dcf1812af08f072636532e5ea1ab" => :mountain_lion
+    sha1 "779fc18117f74a6688110febf075e694204ac0bf" => :lion
+  end
 
   head do
     url 'cvs://:pserver:anonymous:@gnuplot.cvs.sourceforge.net:/cvsroot/gnuplot:gnuplot'
@@ -30,13 +36,17 @@ class Gnuplot < Formula
   option 'tests',  'Verify the build with make check (1 min)'
   option 'without-emacs', 'Do not build Emacs lisp files'
   option 'latex',  'Build with LaTeX support'
-  option 'without-aquaterm', 'Do not build AquaTerm support'
+  option 'with-aquaterm', 'Build with AquaTerm support'
 
   depends_on 'pkg-config' => :build
   depends_on LuaRequirement unless build.include? 'nolua'
   depends_on 'readline'
+  depends_on "libpng"
+  depends_on "jpeg"
+  depends_on "libtiff"
+  depends_on "fontconfig"
   depends_on 'pango'       if build.include? 'cairo' or build.include? 'wx'
-  depends_on :x11          if build.with? "x" or MacOS::X11.installed?
+  depends_on :x11          if build.with? "x"
   depends_on 'pdflib-lite' if build.include? 'pdf'
   depends_on 'gd'          unless build.include? 'nogd'
   depends_on 'wxmac'       if build.include? 'wx'
@@ -71,6 +81,7 @@ class Gnuplot < Formula
 
     args = %W[
       --disable-dependency-tracking
+      --disable-silent-rules
       --prefix=#{prefix}
       --with-readline=#{readline}
     ]
@@ -83,6 +94,12 @@ class Gnuplot < Formula
     args << '--without-lua'           if build.include? 'nolua'
     args << '--without-lisp-files'    if build.without? "emacs"
     args << (build.with?('aquaterm') ? '--with-aquaterm' : '--without-aquaterm')
+
+    if build.with? "x"
+      args << "--with-x"
+    else
+      args << "--without-x"
+    end
 
     if build.include? 'latex'
       args << '--with-latex'
@@ -101,7 +118,12 @@ class Gnuplot < Formula
   end
 
   test do
-    system "#{bin}/gnuplot", "--version"
+    system "#{bin}/gnuplot", "-e", <<-EOS.undent
+        set terminal png;
+        set output "#{testpath}/image.png";
+        plot sin(x);
+    EOS
+    assert (testpath/"image.png").exist?
   end
 
   def caveats

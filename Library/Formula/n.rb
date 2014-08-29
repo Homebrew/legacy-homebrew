@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class N < Formula
-  homepage 'https://github.com/visionmedia/n'
-  head 'https://github.com/visionmedia/n.git'
-  url 'https://github.com/visionmedia/n/archive/1.2.1.tar.gz'
-  sha1 'c8a54313ee8ff43f3b6cdb03f140bc200f548f9f'
+  homepage "https://github.com/visionmedia/n"
+  head "https://github.com/visionmedia/n.git"
+  url "https://github.com/visionmedia/n/archive/v1.2.7.tar.gz"
+  sha1 "1852167d79d42b5077f23197133ec717ca1b78a0"
 
   def install
     bin.mkdir

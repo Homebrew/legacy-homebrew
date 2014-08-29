@@ -15,9 +15,9 @@ class NewEnoughEmacs < Requirement
 end
 
 class Cask < Formula
-  homepage "http://cask.github.io/"
-  url "https://github.com/cask/cask/archive/v0.6.0.tar.gz"
-  sha1 "6f836bb41f034d6be9611ee09c78eb8cc52b53ca"
+  homepage "http://cask.readthedocs.org/"
+  url "https://github.com/cask/cask/archive/v0.7.1.tar.gz"
+  sha1 "a690043da29c01b71f08618f7eb469fbcda669c5"
   head "https://github.com/cask/cask.git"
 
   depends_on NewEnoughEmacs
@@ -27,6 +27,8 @@ class Cask < Formula
     bin.install "bin/cask"
     prefix.install Dir["*.el"]
     prefix.install "templates"
+    (share/"emacs/site-lisp").install_symlink "#{prefix}/cask-bootstrap.el"
+    (share/"emacs/site-lisp").install_symlink "#{prefix}/cask.el"
     # Stop cask performing self-upgrades.
     touch prefix/".no-upgrade"
   end

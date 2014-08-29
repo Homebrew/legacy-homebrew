@@ -7,9 +7,10 @@ class Nettle < Formula
 
   bottle do
     cellar :any
-    sha1 "5b60254d47e96bac5d99ee4498f5bfe161eb9367" => :mavericks
-    sha1 "06cbb197cc8b5cd0c67fdcf420aac55f6921e635" => :mountain_lion
-    sha1 "7377e1d2c27d8c7d7bb9b0c77ba21843570e5c8c" => :lion
+    revision 1
+    sha1 "89238f83e4f3f18145553d3c442fe022680cbd7b" => :mavericks
+    sha1 "8f2a4c261926f2f62e9d8f197a8466a2489b37e0" => :mountain_lion
+    sha1 "6c56084887da5b7e99d7c730bf22a68c9af360e9" => :lion
   end
 
   depends_on 'gmp'

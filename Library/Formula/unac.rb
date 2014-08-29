@@ -30,9 +30,6 @@ class Unac < Formula
   end
 
   def install
-    # Compatibility with Automake 1.13 and newer.
-    inreplace 'configure.ac', 'AM_CONFIG_HEADER', 'AC_CONFIG_HEADERS'
-
     chmod 0755, "configure"
     touch "config.rpath"
     inreplace "autogen.sh", "libtool", "glibtool"
@@ -47,10 +44,7 @@ class Unac < Formula
   end
 
   test do
-    require 'open3'
-    Open3.popen3("#{bin}/unaccent", "utf-8", "fóó") do |_, stdout, _|
-      assert_equal "foo", stdout.read.strip
-    end
+    assert_equal "foo", shell_output("#{bin}/unaccent utf-8 fóó").strip
   end
 end
 

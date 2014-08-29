@@ -1,4 +1,4 @@
-module Homebrew extend self
+module Homebrew
   def unlink
     raise KegUnspecifiedError if ARGV.named.empty?
 
@@ -6,7 +6,7 @@ module Homebrew extend self
       keg.lock do
         print "Unlinking #{keg}... "
         puts if ARGV.verbose?
-        puts "#{keg.unlink} links removed"
+        puts "#{keg.unlink} symlinks removed"
       end
     end
   end

@@ -7,9 +7,7 @@ class Acme < Formula
   sha1 '7104ea01a2ca2962294aaac4974e10c6486534a8'
 
   def install
-    cd "src" do
-      system "make", "install", "BINDIR=#{bin}"
-    end
+    system "make", "-C", "src", "install", "BINDIR=#{bin}"
   end
 
   test do

@@ -3,7 +3,7 @@ require 'utils'
 require 'extend/ENV'
 require 'formula_cellar_checks'
 
-module Homebrew extend self
+module Homebrew
   def audit
     formula_count = 0
     problem_count = 0
@@ -36,13 +36,6 @@ module Homebrew extend self
   end
 end
 
-class Module
-  def redefine_const(name, value)
-    __send__(:remove_const, name) if const_defined?(name)
-    const_set(name, value)
-  end
-end
-
 # Formula extensions for auditing
 class Formula
   def head_only?
@@ -56,7 +49,7 @@ end
 
 class FormulaText
   def initialize path
-    @text = path.open('r') { |f| f.read }
+    @text = path.open("rb", &:read)
   end
 
   def without_patch
@@ -101,9 +94,6 @@ class FormulaAuditor
     @problems = []
     @text = f.text.without_patch
     @specs = %w{stable devel head}.map { |s| f.send(s) }.compact
-
-    # We need to do this in case the formula defines a patch that uses DATA.
-    f.class.redefine_const :DATA, ""
   end
 
   def audit_file
@@ -146,11 +136,11 @@ class FormulaAuditor
       end
 
       dep.options.reject do |opt|
-        next true if dep_f.build.has_option?(opt.name)
+        next true if dep_f.option_defined?(opt)
         dep_f.requirements.detect do |r|
-          if r.tags.include? :recommended
+          if r.recommended?
             opt.name == "with-#{r.name}"
-          elsif r.tags.include? :optional
+          elsif r.optional?
             opt.name == "without-#{r.name}"
           end
         end
@@ -162,7 +152,7 @@ class FormulaAuditor
       when *BUILD_TIME_DEPS
         next if dep.build? or dep.run?
         problem %{#{dep} dependency should be "depends_on '#{dep}' => :build"}
-      when "git", "ruby", "emacs", "mercurial"
+      when "git", "ruby", "mercurial"
         problem <<-EOS.undent
           Don't use #{dep} as a dependency. We allow non-Homebrew
           #{dep} installations.
@@ -298,8 +288,11 @@ class FormulaAuditor
   end
 
   def audit_patches
-    patches = Patch.normalize_legacy_patches(f.patches)
-    patches.grep(LegacyPatch).each { |p| audit_patch(p) }
+    legacy_patches = Patch.normalize_legacy_patches(f.patches).grep(LegacyPatch)
+    if legacy_patches.any?
+      problem "Use the patch DSL instead of defining a 'patches' method"
+      legacy_patches.each { |p| audit_patch(p) }
+    end
   end
 
   def audit_patch(patch)
@@ -311,6 +304,8 @@ class FormulaAuditor
       end
     when %r[macports/trunk]
       problem "MacPorts patches should specify a revision instead of trunk:\n#{patch.url}"
+    when %r[^https?://github\.com/.*commit.*\.patch$]
+      problem "GitHub appends a git version to patches; use .diff instead."
     end
   end
 
@@ -332,7 +327,7 @@ class FormulaAuditor
     end
   end
 
-  def audit_line(line)
+  def audit_line(line, lineno)
     if line =~ /<(Formula|AmazonWebServicesFormula|ScriptFileFormula|GithubGistFormula)/
       problem "Use a space in class inheritance: class Foo < #{$1}"
     end
@@ -410,11 +405,11 @@ class FormulaAuditor
 
     # No trailing whitespace, please
     if line =~ /[\t ]+$/
-      problem "Trailing whitespace was found"
+      problem "#{lineno}: Trailing whitespace was found"
     end
 
     if line =~ /if\s+ARGV\.include\?\s+'--(HEAD|devel)'/
-      problem "Use \"if ARGV.build_#{$1.downcase}?\" instead"
+      problem "Use \"if build.#{$1.downcase}?\" instead"
     end
 
     if line =~ /make && make/
@@ -488,6 +483,10 @@ class FormulaAuditor
       problem "Use new-style option definitions"
     end
 
+    if line =~ /def test$/
+      problem "Use new-style test definitions (test do)"
+    end
+
     if line =~ /MACOS_VERSION/
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
@@ -520,6 +519,10 @@ class FormulaAuditor
 
     if line =~ /depends_on ['"](.+)['"] (if.+|unless.+)$/
       audit_conditional_dep($1, $2, $&)
+    end
+
+    if line =~ /(Dir\[("[^\*{},]+")\])/
+      problem "#{$1} is unnecessary; just use #{$2}"
     end
   end
 
@@ -564,7 +567,7 @@ class FormulaAuditor
     audit_conflicts
     audit_patches
     audit_text
-    text.each_line { |line| audit_line(line) }
+    text.split("\n").each_with_index { |line, lineno| audit_line(line, lineno) }
     audit_installed
   end
 

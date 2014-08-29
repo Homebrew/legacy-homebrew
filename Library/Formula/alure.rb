@@ -5,6 +5,7 @@ class Alure < Formula
   url 'http://kcat.strangesoft.net/alure-releases/alure-1.2.tar.bz2'
   sha1 'f033f0820c449ebff7b4b0254a7b1f26c0ba485b'
 
+  depends_on 'pkg-config' => :build
   depends_on 'cmake' => :build
   depends_on 'flac'       => :optional
   depends_on 'fluid-synth' => :optional
@@ -17,8 +18,10 @@ class Alure < Formula
     # fix a broken include flags line, which fixes a build error.
     # Not reported upstream.
     # https://github.com/Homebrew/homebrew/pull/6368
-    inreplace 'CMakeLists.txt', '${VORBISFILE_CFLAGS}',
-                                %x[pkg-config --cflags vorbisfile].chomp
+    if build.with? "libvorbis"
+      inreplace "CMakeLists.txt", "${VORBISFILE_CFLAGS}",
+        %x[pkg-config --cflags vorbisfile].chomp
+    end
 
     cd "build" do
       system "cmake", "..", *std_cmake_args

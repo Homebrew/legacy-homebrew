@@ -7,7 +7,9 @@ class Tcc < Formula
 
   def install
     ENV.j1
-    system "./configure", "--prefix=#{prefix}", "--source-path=#{buildpath}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--source-path=#{buildpath}",
+                          "--sysincludepaths=/usr/local/include:#{MacOS.sdk_path}/usr/include:{B}/include"
     system "make"
     system "make", "install"
     system "make", "test"

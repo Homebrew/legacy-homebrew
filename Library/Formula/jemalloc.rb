@@ -2,13 +2,15 @@ require 'formula'
 
 class Jemalloc < Formula
   homepage 'http://www.canonware.com/jemalloc/download.html'
-  url 'http://www.canonware.com/download/jemalloc/jemalloc-3.5.0.tar.bz2'
-  sha1 '3c6aeed5adbd7267ec7db476f002051143a43ac0'
+  url 'http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2'
+  sha1 '40c0892b172e5dc14a6cea6fe4edda7dea4f3a68'
+  head "https://github.com/jemalloc/jemalloc.git"
 
   bottle do
-    sha1 "3eae83e595a6140685008255b03549f7e5f73c7d" => :mavericks
-    sha1 "00a2f95fe96f2dc85d6d1470e8685ca4c8a822d8" => :mountain_lion
-    sha1 "73958a90f38b8bb5fd83d339106f4ef80d73337d" => :lion
+    cellar :any
+    sha1 "80636f2554f09d03acfff3669c5bb40efaa8b55a" => :mavericks
+    sha1 "70e3f2ed51b17eb561965465a677e7babf2e8ab4" => :mountain_lion
+    sha1 "42ae67660585875628fec3fb12b4b391c8f40b22" => :lion
   end
 
   def install

@@ -21,6 +21,6 @@ class Genstats < Formula
   end
 
   test do
-    system "genstats -h | grep folkert@vanheusden.com"
+    system "#{bin}/genstats -h | grep folkert@vanheusden.com"
   end
 end

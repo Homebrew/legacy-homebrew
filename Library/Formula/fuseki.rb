@@ -2,9 +2,9 @@ require 'formula'
 
 class Fuseki < Formula
   homepage 'http://jena.apache.org/documentation/serving_data/'
-  url 'http://www.apache.org/dist/jena/binaries/jena-fuseki-1.0.1-distribution.tar.gz'
-  version '1.0.1'
-  sha1 '556d3bbe0dbac67ea1335c1933576492ecc9213f'
+  url 'http://www.apache.org/dist/jena/binaries/jena-fuseki-1.1.0-distribution.tar.gz'
+  version '1.1.0'
+  sha1 '41aba227379f288db0b41022e472ca757faf107b'
 
   def install
     # Remove windows files
@@ -42,7 +42,7 @@ class Fuseki < Formula
     prefix.install 'Data'
 
     # Install documentation
-    prefix.install 'DEPENDENCIES', 'LICENSE', 'NOTICE', 'ReleaseNotes.txt'
+    prefix.install 'LICENSE', 'NOTICE', 'ReleaseNotes.txt'
   end
 
   def caveats; <<-EOS.undent

@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class Saxon < Formula
   homepage "http://saxon.sourceforge.net"
-  url 'https://downloads.sourceforge.net/project/saxon/Saxon-HE/9.5/SaxonHE9-5-1-4J.zip'
-  sha1 '10910a1ced9c1a485a6084d4a6f1a6793645a798'
-  version '9.5.1.4'
+  url "https://downloads.sourceforge.net/project/saxon/Saxon-HE/9.5/SaxonHE9-5-1-6J.zip"
+  sha1 "b5f392bc8d2328979e776ad53198d5d7dc1d65a2"
+  version "9.5.1.6"
 
   def install
-    libexec.install Dir["*"]
-    bin.write_jar_script libexec/'saxon9he.jar', 'saxon'
+    libexec.install Dir["*.jar", "doc", "notices"]
+    bin.write_jar_script libexec/"saxon9he.jar", "saxon"
   end
 end

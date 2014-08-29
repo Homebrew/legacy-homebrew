@@ -2,7 +2,7 @@ require 'formula'
 require 'tab'
 require 'set'
 
-module Homebrew extend self
+module Homebrew
   def leaves
     installed = Formula.installed
     deps_of_installed = Set.new

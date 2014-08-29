@@ -16,7 +16,7 @@ class Plplot < Formula
     args = std_cmake_args
     args << '-DPLD_wxwidgets=OFF' << '-DENABLE_wxwidgets=OFF'
     args << '-DENABLE_java=OFF' if build.without? 'java'
-    args << '-DPLD_xcairo=OFF' unless MacOS::X11.installed?
+    args << '-DPLD_xcairo=OFF' if build.without? 'x11'
     mkdir "plplot-build" do
       system "cmake", "..", *args
       system "make"

@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Nasm < Formula
-  homepage 'http://www.nasm.us/'
-  url 'http://www.nasm.us/pub/nasm/releasebuilds/2.11.02/nasm-2.11.02.tar.bz2'
-  sha256 'ece26b5ef565f94d19a72756d05965e424d2e5ca55f88b949852da70dd62f0e0'
+  homepage "http://www.nasm.us/"
+  url "http://www.nasm.us/pub/nasm/releasebuilds/2.11.05/nasm-2.11.05.tar.xz"
+  sha256 "2f4769c2fc88dbd8df4383ce30bc86919b5d488854ab906ebcee5d5a38828a6b"
 
   option :universal
 

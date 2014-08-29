@@ -12,7 +12,6 @@ class Wmctrl < Formula
 
   # Fix for 64-bit arch. See:
   # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=362068
-  # http://patch-tracker.debian.org/package/wmctrl/1.07-6
   patch :DATA
 
   def install

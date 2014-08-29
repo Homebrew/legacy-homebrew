@@ -2,23 +2,31 @@ require 'formula'
 
 class Mitmproxy < Formula
   homepage 'http://mitmproxy.org'
-  url 'http://mitmproxy.org/download/mitmproxy-0.10.tar.gz'
-  sha1 'de30fe4744d66a072b225da05d28f89ab2020391'
+  url 'http://mitmproxy.org/download/mitmproxy-0.10.1.tar.gz'
+  sha1 '8feb1b4d8d7b8e6713d08aa434667275215f14c4'
+
+  bottle do
+    cellar :any
+    sha1 "aab837625b57a7a7ab95f9833f7afa498b78d4c1" => :mavericks
+    sha1 "c4c7b63a6f431ea8437758cc4317cf9524fb99fb" => :mountain_lion
+    sha1 "ebf95085b473743e11efb38731317ce7f4b828b0" => :lion
+  end
 
   option 'with-pyamf', 'Enable action message format (AMF) support for python'
   option 'with-cssutils', 'Enable beautification of CSS responses'
 
-  depends_on :python
+  depends_on 'freetype'
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'protobuf' => :optional
 
   resource 'pyopenssl' do
-    url 'https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.13.1.tar.gz'
-    sha1 '60633ebb821d48d7132a436c897288ec0121b892'
+    url 'https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.14.tar.gz'
+    sha1 'eb51f23f29703b647b0f194beaa9b2412c05e0f6'
   end
 
   resource 'pillow' do
-    url 'https://github.com/python-imaging/Pillow/archive/2.3.0.tar.gz'
-    sha1 'f269109be21d27df3210e43fe11a17657bbfc261'
+    url 'https://github.com/python-imaging/Pillow/archive/2.4.0.tar.gz'
+    sha1 '2e07dd7545177019331e8f3916335b69869e82b0'
   end
 
   resource 'flask' do
@@ -27,13 +35,13 @@ class Mitmproxy < Formula
   end
 
   resource 'lxml' do
-    url 'https://pypi.python.org/packages/source/l/lxml/lxml-3.3.0.tar.gz'
-    sha1 '7cff413526c9e797fd0b8ced37144e5e89ffc66e'
+    url 'https://pypi.python.org/packages/source/l/lxml/lxml-3.3.5.tar.gz'
+    sha1 '7a6e92f8ca482aab79835e1c9cd8410400792cd9'
   end
 
   resource 'netlib' do
-    url 'https://pypi.python.org/packages/source/n/netlib/netlib-0.10.tar.gz'
-    sha1 'd8bcd71a6670377ef70bb25e0b6a81679e8b651a'
+    url 'https://pypi.python.org/packages/source/n/netlib/netlib-0.10.1.tar.gz'
+    sha1 'f2a51f72f5cb4e1cb0949196d306f9c29e825958'
   end
 
   resource 'pyasn1' do
@@ -42,40 +50,36 @@ class Mitmproxy < Formula
   end
 
   resource 'urwid' do
-    url 'https://pypi.python.org/packages/source/u/urwid/urwid-1.1.2.tar.gz'
-    sha1 '288f61b444b7f21964fdee33e656da4abeb76c53'
+    url 'https://pypi.python.org/packages/source/u/urwid/urwid-1.2.1.tar.gz'
+    sha1 '28bd77014cce92bcb09ccc11f93e558d02265082'
   end
 
-  if build.with? 'pyamf'
-    resource 'pyamf' do
-      url 'https://pypi.python.org/packages/source/P/PyAMF/PyAMF-0.6.1.tar.gz'
-      sha1 '825a5ee167c89d3a026347b409ae26cbf6c68530'
-    end
+  resource 'pyamf' do
+    url 'https://pypi.python.org/packages/source/P/PyAMF/PyAMF-0.6.1.tar.gz'
+    sha1 '825a5ee167c89d3a026347b409ae26cbf6c68530'
   end
 
-  if build.with? 'cssutils'
-    resource 'cssutils' do
-      url 'https://pypi.python.org/packages/source/c/cssutils/cssutils-1.0.zip'
-      sha1 '341e57dbb02b699745b13a9a3296634209d26169'
-    end
+  resource 'cssutils' do
+    url 'https://pypi.python.org/packages/source/c/cssutils/cssutils-1.0.zip'
+    sha1 '341e57dbb02b699745b13a9a3296634209d26169'
   end
 
   def install
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    resource('pyopenssl').stage { system "python", *install_args }
-    resource('pillow').stage { system "python", *install_args }
-    resource('flask').stage { system "python", *install_args }
-    resource('lxml').stage { system "python", *install_args }
-    resource('netlib').stage { system "python", *install_args }
-    resource('pyasn1').stage { system "python", *install_args }
-    resource('urwid').stage { system "python", *install_args }
-    if build.with? 'pyamf'
-      resource('pyamf').stage { system "python", *install_args }
+    resource("pillow").stage do
+      inreplace "setup.py", "'brew', '--prefix'", "'#{HOMEBREW_PREFIX}/bin/brew', '--prefix'"
+      system "python", *install_args
     end
-    if build.with? 'cssutils'
-      resource('cssutils').stage { system "python", *install_args }
+
+    res = %w(pyopenssl flask lxml netlib pyasn1 urwid)
+    res << 'pyamf' if build.with? 'pyamf'
+    res << 'cssutils' if build.with? 'cssutils'
+
+    res.each do |r|
+      resource(r).stage { system "python", *install_args }
     end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"

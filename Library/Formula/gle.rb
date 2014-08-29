@@ -10,6 +10,14 @@ class Gle < Formula
   depends_on :x11
   depends_on 'jpeg' => :optional
   depends_on 'libtiff' => :optional
+  depends_on 'cairo'
+
+  # fix namespace issues causing compilation errors
+  # https://trac.macports.org/ticket/41760
+  patch :p0 do
+    url "https://trac.macports.org/raw-attachment/ticket/41760/patch-hash-map.diff"
+    sha1 "fafa7654f69ace53835b8e7953e715384e16da91"
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}",

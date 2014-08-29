@@ -8,13 +8,11 @@ class Kvazaar < Formula
   depends_on 'yasm' => :build
 
   def install
-    cd 'src' do
-      system 'make'
-    end
+    system "make", "-C", "src"
     bin.install 'src/kvazaar'
   end
 
   test do
-    system "kvazaar 2>&1 | grep 'HEVC Encoder v. 0.3'"
+    system "#{bin}/kvazaar 2>&1 | grep 'HEVC Encoder v. 0.3'"
   end
 end

@@ -6,6 +6,13 @@ class Libcapn < Formula
   sha1 'a53f7b382e683249ff55214b1effbae5f82c4ef2'
   head 'https://github.com/adobkin/libcapn.git'
 
+  bottle do
+    cellar :any
+    sha1 "afde01eeff054cb43b1b6f07aac57fd7d64d7ff3" => :mavericks
+    sha1 "36dd5a2dca57ccf642a34b7e5da55425005e2575" => :mountain_lion
+    sha1 "3d4a2895efd4054d73152b7f5b193ef1773d1eaf" => :lion
+  end
+
   depends_on 'cmake' => :build
   depends_on 'pkg-config' => :build
 
@@ -30,7 +37,8 @@ class Libcapn < Formula
         return 0;
     }
     TEST_SCRIPT
-    flags = `#{HOMEBREW_PREFIX}/bin/pkg-config --cflags --libs libcapn`.split + ENV.cflags.split
+
+    flags = ["-I#{include}/capn", "-L#{lib}/capn", "-lcapn"] + ENV.cflags.to_s.split
     system ENV.cc, "-o", "test_install", "test_install.c", *flags
     system "./test_install"
   end

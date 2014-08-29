@@ -2,14 +2,16 @@ require 'formula'
 require 'keg'
 require 'bottles'
 
-module Homebrew extend self
-
+module Homebrew
   def cleanup
+    # individual cleanup_ methods should also check for the existence of the
+    # appropriate directories before assuming they exist
     return unless HOMEBREW_CELLAR.directory?
 
     if ARGV.named.empty?
       cleanup_cellar
       cleanup_cache
+      cleanup_logs
       unless ARGV.dry_run?
         cleanup_lockfiles
         rm_DS_Store
@@ -19,10 +21,25 @@ module Homebrew extend self
     end
   end
 
+  def cleanup_logs
+    return unless HOMEBREW_LOGS.directory?
+    time = Time.now - 2 * 7 * 24 * 60 * 60 # two weeks
+    HOMEBREW_LOGS.subdirs.each do |dir|
+      if dir.mtime < time
+        if ARGV.dry_run?
+          puts "Would remove: #{dir}"
+        else
+          puts "Removing: #{dir}..."
+          dir.rmtree
+        end
+      end
+    end
+  end
+
   def cleanup_cellar
     HOMEBREW_CELLAR.subdirs.each do |rack|
       begin
-        cleanup_formula Formula.factory(rack.basename.to_s)
+        cleanup_formula Formulary.factory(rack.basename.to_s)
       rescue FormulaUnavailableError
         # Don't complain about directories from DIY installs
       end
@@ -53,7 +70,7 @@ module Homebrew extend self
       puts "Would remove: #{keg}"
     else
       puts "Removing: #{keg}..."
-      keg.rmtree
+      keg.uninstall
     end
   end
 
@@ -63,7 +80,7 @@ module Homebrew extend self
       next unless (name = file.basename.to_s[/(.*)-(?:#{Regexp.escape(version)})/, 1])
 
       begin
-        f = Formula.factory(name)
+        f = Formulary.factory(name)
       rescue FormulaUnavailableError
         next
       end

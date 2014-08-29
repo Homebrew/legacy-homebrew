@@ -1,31 +1,27 @@
-require 'formula'
+require "formula"
 
 class Pcb < Formula
-  homepage 'http://pcb.geda-project.org/'
-  url 'https://downloads.sourceforge.net/project/pcb/pcb/pcb-20140316/pcb-20140316.tar.gz'
-  sha1 'ec714ff136d1817e500e1a9e654e786883b9501e'
+  homepage "http://pcb.geda-project.org/"
+  head "git://git.geda-project.org/pcb.git"
+  url "https://downloads.sourceforge.net/project/pcb/pcb/pcb-20140316/pcb-20140316.tar.gz"
+  sha1 "ec714ff136d1817e500e1a9e654e786883b9501e"
 
-  head 'git://git.geda-project.org/pcb.git'
+  option "with-doc", "Build the documentation (requires LaTeX)."
 
-  option 'with-doc', "Build the documentation (requires LaTeX)."
-
-  depends_on :autoconf
-  depends_on :automake
-  depends_on 'pkg-config' => :build
-  depends_on 'intltool' => :build
-  depends_on 'gettext'
-  depends_on 'd-bus'
-  depends_on 'gtk+'
-  depends_on 'gd'
-  depends_on 'glib'
-  depends_on 'gtkglext'
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "pkg-config" => :build
+  depends_on "intltool" => :build
+  depends_on "gettext"
+  depends_on "d-bus"
+  depends_on "gtk+"
+  depends_on "gd"
+  depends_on "glib"
+  depends_on "gtkglext"
   depends_on :x11
-  depends_on :tex if build.with? 'doc'
+  depends_on :tex if build.with? "doc"
 
-  # See comments in intltool formula
-  depends_on 'XML::Parser' => :perl
-
-  conflicts_with 'gts', :because => 'both install `include/gts.h`'
+  conflicts_with "gts", :because => "both install `include/gts.h`"
 
   patch :DATA
 
@@ -35,12 +31,11 @@ class Pcb < Formula
             "--prefix=#{prefix}",
             "--disable-update-desktop-database",
             "--disable-update-mime-database"]
-    args << "--disable-doc" if build.without? 'doc'
+    args << "--disable-doc" if build.without? "doc"
 
     system "./configure", *args
-
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
 

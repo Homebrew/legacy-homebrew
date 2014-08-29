@@ -20,11 +20,7 @@ class Cmigemo < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make osx"
     system "make osx-dict"
-    if build.stable?
-      cd 'dict' do
-        system "make utf-8"
-      end
-    end
+    system "make", "-C", "dict", "utf-8" if build.stable?
     ENV.j1 # Install can fail on multi-core machines unless serialized
     system "make osx-install"
   end

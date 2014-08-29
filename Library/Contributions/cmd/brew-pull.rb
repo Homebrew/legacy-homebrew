@@ -20,6 +20,7 @@ end
 ARGV.named.each do |arg|
   if arg.to_i > 0
     url = 'https://github.com/Homebrew/homebrew/pull/' + arg
+    issue = arg
   else
     url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
     unless url_match
@@ -28,22 +29,24 @@ ARGV.named.each do |arg|
     end
 
     url = url_match[0]
+    issue = url_match[3]
   end
 
   if tap_name = tap(url)
     user = url_match[1].downcase
-    tap_dir = HOMEBREW_REPOSITORY/"Library/Taps/#{user}-#{tap_name}"
+    tap_dir = HOMEBREW_REPOSITORY/"Library/Taps/#{user}/homebrew-#{tap_name}"
     safe_system "brew", "tap", "#{user}/#{tap_name}" unless tap_dir.exist?
     Dir.chdir tap_dir
   else
     Dir.chdir HOMEBREW_REPOSITORY
   end
 
-  issue = arg.to_i > 0 ? arg.to_i : url_match[4]
-
   if ARGV.include? '--bottle'
-    raise 'No pull request detected!' unless issue
-    url = "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+    if issue
+      url = "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+    else
+      raise "No pull request detected!"
+    end
   end
 
   # GitHub provides commits'/pull-requests' raw patches using this URL.
@@ -66,25 +69,39 @@ ARGV.named.each do |arg|
   else
     patch_args << '--whitespace=fix'
   end
+
+  # Fall back to three-way merge if patch does not apply cleanly
+  patch_args << "-3"
   patch_args << patchpath
 
   begin
     safe_system 'git', 'am', *patch_args
-  rescue => e
+  rescue ErrorDuringExecution
     system 'git', 'am', '--abort'
     odie 'Patch failed to apply: aborted.'
+  ensure
+    patchpath.unlink
   end
 
   changed_formulae = []
 
-  `git diff #{revision}.. --name-status`.each_line do |line|
-    status, filename = line.split
-    # Don't try and do anything to removed files.
-    if (status =~ /A|M/) && (filename =~ %r{Formula/.+\.rb$}) || tap(url)
-      formula_name = File.basename(filename, '.rb')
-      formula = Formula[formula_name] rescue nil
-      next unless formula
-      changed_formulae << formula
+  if tap_dir
+    formula_dir = %w[Formula HomebrewFormula].find { |d| tap_dir.join(d).directory? } || ""
+  else
+    formula_dir = "Library/Formula"
+  end
+
+  Utils.popen_read(
+    "git", "diff-tree", "-r", "--name-only",
+    "--diff-filter=AM", revision, "HEAD", "--", formula_dir
+  ).each_line do |line|
+    name = File.basename(line.chomp, ".rb")
+
+    begin
+      changed_formulae << Formula[name]
+    # Make sure we catch syntax errors.
+    rescue Exception => e
+      next
     end
   end
 
@@ -115,13 +132,13 @@ ARGV.named.each do |arg|
   end
 
   ohai 'Patch changed:'
-  safe_system 'git', '--no-pager', 'diff', "#{revision}..", '--stat'
+  safe_system "git", "diff-tree", "-r", "--stat", revision, "HEAD"
 
   if ARGV.include? '--install'
     changed_formulae.each do |f|
-      ohai "Installing #{formula}"
+      ohai "Installing #{f.name}"
       install = f.installed? ? 'upgrade' : 'install'
-      safe_system 'brew', install, '--debug', '--fresh', formula
+      safe_system 'brew', install, '--debug', f.name
     end
   end
 end

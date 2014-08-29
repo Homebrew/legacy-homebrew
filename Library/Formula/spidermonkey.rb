@@ -8,16 +8,18 @@ class Spidermonkey < Formula
 
   head 'https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz'
 
+  bottle do
+    sha1 "c23bfeffb2cdfba00957c13444d123a6de5ac42c" => :mavericks
+    sha1 "cfb242ee6fa552a68036f5a736abb805359453e4" => :mountain_lion
+    sha1 "2a4e8a21f64c3516782e8ab649962e4b215d37a8" => :lion
+  end
+
   conflicts_with 'narwhal', :because => 'both install a js binary'
 
   depends_on 'readline'
   depends_on 'nspr'
 
   def install
-    # aparently this flag causes the build to fail for ivanvc on 10.5 with a
-    # penryn (core 2 duo) CPU. So lets be cautious here and remove it.
-    ENV['CFLAGS'] = ENV['CFLAGS'].gsub(/-msse[^\s]+/, '') if MacOS.version <= :leopard
-
     cd "js/src" do
       # Remove the broken *(for anyone but FF) install_name
       inreplace "config/rules.mk",
@@ -45,9 +47,6 @@ class Spidermonkey < Formula
   test do
     path = testpath/"test.js"
     path.write "print('hello');"
-
-    output = `#{bin}/js #{path}`.strip
-    assert_equal "hello", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "hello", shell_output("#{bin}/js #{path}").strip
   end
 end

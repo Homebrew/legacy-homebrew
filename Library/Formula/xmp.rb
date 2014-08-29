@@ -1,20 +1,20 @@
-require 'formula'
+require "formula"
 
 class Xmp < Formula
-  homepage 'http://xmp.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/xmp/xmp/4.0.7/xmp-4.0.7.tar.gz'
-  sha1 '0817146ff66ba3557963b8857aa80b4f63a56fc8'
+  homepage "http://xmp.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/xmp/xmp/4.0.8/xmp-4.0.8.tar.gz"
+  sha1 "8ea2ba59a9f93ccca904513f374a62f6e450829b"
 
   head do
-    url 'git://git.code.sf.net/p/xmp/xmp-cli'
+    url "git://git.code.sf.net/p/xmp/xmp-cli"
 
-    depends_on 'autoconf' => :build
-    depends_on 'automake' => :build
-    depends_on 'libtool'  => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool"  => :build
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libxmp'
+  depends_on "pkg-config" => :build
+  depends_on "libxmp"
 
   def install
     if build.head?

@@ -5,7 +5,7 @@ class CharmTools < Formula
   url 'https://launchpad.net/charm-tools/1.2/1.2.9/+download/charm-tools-1.2.9-1.tar.gz'
   sha1 '9da948b85dc2fc547335d28669f694338b0b77e8'
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on 'libyaml'
 
   def install

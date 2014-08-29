@@ -13,9 +13,7 @@ class Autoconf < Formula
     sha1 "7d31f63e5ddd1bbbf0397b0b70df1ff9e70f998b" => :lion
   end
 
-  if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/autoconf"
-    keg_only "Xcode (up to and including 4.2) provides (a rather old) Autoconf."
-  end
+  keg_only :provided_until_xcode43
 
   def install
     ENV['PERL'] = '/usr/bin/perl'

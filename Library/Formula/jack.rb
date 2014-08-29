@@ -9,9 +9,16 @@ require 'formula'
 # Please see https://github.com/Homebrew/homebrew/pull/22043 for more info
 class Jack < Formula
   homepage 'http://jackaudio.org'
-  url 'http://jackaudio.org/downloads/jack-audio-connection-kit-0.121.3.tar.gz'
-  sha1 '7d6e2219660222d1512ee704dd88a534b3e3089e'
+  url "http://jackaudio.org/downloads/jack-audio-connection-kit-0.124.1.tar.gz"
+  sha1 "e9ba4a4c754ec95fbe653dcf7344edd6cc47cd60"
 
+  bottle do
+    sha1 "1a6b9ef8bf76ac101b60469ce69c849487395bff" => :mavericks
+    sha1 "fba42da50d726fa86ed02ae7607feac6ad9c1537" => :mountain_lion
+    sha1 "89f26ade3b8e39a3fe8c888d6e67abb13fa508bd" => :lion
+  end
+
+  depends_on 'berkeley-db'
   depends_on 'celt'
   depends_on 'libsndfile'
   depends_on 'libsamplerate'

@@ -9,7 +9,7 @@ end
 
 # See browser for an example
 class GithubGistFormula < ScriptFileFormula
-  def initialize name='__UNKNOWN__', path=nil
+  def initialize(*)
     url = self.class.stable.url
     self.class.stable.version(File.basename(File.dirname(url))[0,6])
     super

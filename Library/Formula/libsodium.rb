@@ -1,16 +1,23 @@
-require 'formula'
+require "formula"
 
 class Libsodium < Formula
-  homepage 'https://github.com/jedisct1/libsodium/'
-  url 'https://github.com/jedisct1/libsodium/releases/download/0.4.5/libsodium-0.4.5.tar.gz'
-  sha256 '7ad5202df53eeac0eb29b064ae5d05b65d82b2fc1c082899c9c6a09b0ee1ac32'
+  homepage "https://github.com/jedisct1/libsodium/"
+  url "https://github.com/jedisct1/libsodium/releases/download/0.7.0/libsodium-0.7.0.tar.gz"
+  sha256 "4ccaffd1a15be67786e28a61b602492a97eb5bcb83455ed53c02fa038b8e9168"
+
+  bottle do
+    cellar :any
+    sha1 "ca839a670db890368991ed87aa5b3d67411ba9d6" => :mavericks
+    sha1 "a79059314bfdee0c91b1899e73e5135a70bde753" => :mountain_lion
+    sha1 "1bb615898bd7751553069c76e9ddd901b568ef9b" => :lion
+  end
 
   head do
-    url 'https://github.com/jedisct1/libsodium.git'
+    url "https://github.com/jedisct1/libsodium.git"
 
-    depends_on 'libtool' => :build
-    depends_on 'autoconf' => :build
-    depends_on 'automake' => :build
+    depends_on "libtool" => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
   end
 
   option :universal

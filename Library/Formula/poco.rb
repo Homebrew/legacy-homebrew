@@ -2,13 +2,13 @@ require 'formula'
 
 class Poco < Formula
   homepage 'http://pocoproject.org/'
-  url 'http://pocoproject.org/releases/poco-1.4.6/poco-1.4.6p2-all.tar.bz2'
-  sha1 'd0d5459039f26a8d4402c8e85484b1b29c75b2b4'
-  version '1.4.6p2-all'
+  url 'http://pocoproject.org/releases/poco-1.4.6/poco-1.4.6p4-all.tar.gz'
+  sha1 'a74f5d4a5a1b9218adcb3e3e9bc81f5377200c3e'
+  version '1.4.6p4-all'
 
   devel do
-    url 'http://pocoproject.org/releases/poco-1.5.2/poco-1.5.2-all.tar.bz2'
-    sha1 'e2256795b13c0b77d20283cf64914d59245e3492'
+    url 'http://pocoproject.org/releases/poco-1.5.3/poco-1.5.3-all.tar.gz'
+    sha1 'e2eb6d812c907b6e8c117dea101289559926500c'
   end
 
   option :cxx11

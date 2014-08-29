@@ -2,23 +2,23 @@ require 'formula'
 
 class Ume < Formula
   homepage 'http://mamedev.org/'
-  url 'svn://dspnet.fr/mame/trunk', :revision => '26743'
-  version '0.152'
+  url 'svn://dspnet.fr/mame/trunk', :revision => '31397'
+  version '0.154'
 
   head 'svn://dspnet.fr/mame/trunk'
 
-  depends_on :x11
+  bottle do
+    cellar :any
+    sha1 "9355c003f65ff30d16dbdd304a340bcb5fb81b61" => :mavericks
+    sha1 "d88f548400574c40e2df081e50ec37c1381edd07" => :mountain_lion
+    sha1 "4a8c91568ef915b0cad541e7b8db71c3545808ef" => :lion
+  end
+
   depends_on 'sdl'
 
   def install
     ENV['MACOSX_USE_LIBSDL'] = '1'
-    ENV['INCPATH'] = "-I#{MacOS::X11.include}"
     ENV['PTR64'] = (MacOS.prefer_64_bit? ? '1' : '0')
-
-    # Avoid memory allocation runtime error:
-    #   Error: attempt to free untracked memory in (null)(0)!
-    #   Ignoring MAME exception: Error: attempt to free untracked memory
-    ENV.O2 if ENV.compiler == :clang
 
     system "make", "CC=#{ENV.cc}", "LD=#{ENV.cxx}", "TARGET=ume"
 

@@ -8,19 +8,28 @@ class Libbtbb < Formula
 
   head "https://github.com/greatscottgadgets/libbtbb.git"
 
+  bottle do
+    cellar :any
+    sha1 "a845a9b2f08b398f965e377710fcefe85732cc7d" => :mavericks
+    sha1 "41deb429b9c4b4fb5b06678db333c47c343fe19f" => :mountain_lion
+    sha1 "e46bb90fd4bf1954857bfef864fd6839114e9b50" => :lion
+  end
+
   option :universal
 
   depends_on "cmake" => :build
   depends_on "python"
 
   def install
+    args = std_cmake_args
+
     if build.universal?
       ENV.universal_binary
-      ENV["CMAKE_OSX_ARCHITECTURES"] = Hardware::CPU.universal_archs.as_cmake_arch_flags
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
     end
 
     mkdir "build" do
-      system "cmake", "..", *std_cmake_args
+      system "cmake", "..", *args
       system "make", "install"
     end
   end

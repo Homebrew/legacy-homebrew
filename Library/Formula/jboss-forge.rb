@@ -2,13 +2,13 @@ require 'formula'
 
 class JbossForge < Formula
   homepage 'http://forge.jboss.org/'
-  url 'https://repository.jboss.org/nexus/service/local/artifact/maven/redirect?r=releases&g=org.jboss.forge&a=forge-distribution&v=1.4.4.Final&e=zip'
-  version '1.4.4.Final'
-  sha1 '7c5218f9ed9c2e4986ee450f3c958d78dc3c09fd'
+  url 'https://repository.jboss.org/nexus/service/local/artifact/maven/redirect?r=releases&g=org.jboss.forge&a=forge-distribution&v=2.8.0.Final&e=zip&c=offline'
+  version '2.8.0.Final'
+  sha1 'c09dfeee882cf01b2b9af8248248caf2ecb910e8'
 
   def install
     rm_f Dir["bin/*.bat"]
-    libexec.install %w{ bin modules jboss-modules.jar }
+    libexec.install %w{ addons bin img lib logging.properties }
     bin.install_symlink libexec/'bin/forge'
   end
 end

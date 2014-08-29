@@ -18,6 +18,6 @@ class Mon < Formula
   end
 
   test do
-    system "mon", "-V"
+    system bin/"mon", "-V"
   end
 end

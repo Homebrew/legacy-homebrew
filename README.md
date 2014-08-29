@@ -7,6 +7,7 @@ What Packages Are Available?
 1. You can [browse the Formula directory on GitHub][formula].
 2. Or type `brew search` for a list.
 3. Or visit [braumeister.org][braumeister] to browse packages online.
+4. Or use [`brew desc`][brew-desc] to browse packages from the command line.
 
 More Documentation
 ------------------
@@ -22,7 +23,7 @@ Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebre
 
 Who Are You?
 ------------
-Homebrew is maintained by the [core contributors][team].
+Homebrew's current maintainers are [Misty De Meo][mistydemeo], [Adam Vandenberg][adamv], [Jack Nagel][jacknagel], [Mike McQuaid][mikemcquaid] and [Brett Koonce][asparagui].
 
 Homebrew was originally created by [Max Howell][mxcl].
 
@@ -34,13 +35,18 @@ Donations
 ---------
 We accept tips through [Gittip][tip].
 
-[![Gittip](http://img.shields.io/gittip/Homebrew.png)](https://www.gittip.com/Homebrew/)
+[![Gittip](https://img.shields.io/gittip/Homebrew.svg?style=flat)](https://www.gittip.com/Homebrew/)
 
 [home]:http://brew.sh
-[wiki]:http://wiki.github.com/Homebrew/homebrew
-[mxcl]:http://twitter.com/mxcl
-[formula]:http://github.com/Homebrew/homebrew/tree/master/Library/Formula/
+[wiki]:https://github.com/Homebrew/homebrew/wiki
+[mistydemeo]:https://github.com/mistydemeo
+[adamv]:https://github.com/adamv
+[jacknagel]:https://github.com/jacknagel
+[mikemcquaid]:https://github.com/mikemcquaid
+[asparagui]:https://github.com/asparagui
+[mxcl]:https://github.com/mxcl
+[formula]:https://github.com/Homebrew/homebrew/tree/master/Library/Formula/
 [braumeister]:http://braumeister.org
-[license]:https://github.com/Homebrew/homebrew/tree/master/Library/Homebrew/LICENSE
-[team]:https://github.com/Homebrew?tab=members
+[brew-desc]: https://github.com/telemachus/homebrew-desc
+[license]:https://github.com/Homebrew/homebrew/tree/master/LICENSE.txt
 [tip]:https://www.gittip.com/Homebrew/

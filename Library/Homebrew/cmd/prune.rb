@@ -1,7 +1,7 @@
 require 'keg'
 require 'cmd/tap'
 
-module Homebrew extend self
+module Homebrew
   def prune
     ObserverPathnameExtension.reset_counts!
 

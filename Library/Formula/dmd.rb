@@ -41,16 +41,10 @@ class Dmd < Formula
     make_args.unshift "DMD=#{bin}/dmd"
 
     (buildpath/'druntime').install resource('druntime')
-
-    cd 'druntime' do
-      system "make", "install", *make_args
-    end
-
     (buildpath/'phobos').install resource('phobos')
 
-    cd 'phobos' do
-      system "make", "install", "VERSION=#{buildpath}/VERSION", *make_args
-    end
+    system "make", "-C", "druntime", "install", *make_args
+    system "make", "-C", "phobos", "install", "VERSION=#{buildpath}/VERSION", *make_args
 
     resource('tools').stage do
       inreplace 'posix.mak', 'install: $(TOOLS) $(CURL_TOOLS)', 'install: $(TOOLS)'
@@ -59,7 +53,7 @@ class Dmd < Formula
   end
 
   test do
-    system "dmd", "#{prefix}/samples/hello.d"
+    system bin/"dmd", prefix/"samples/hello.d"
     system "./hello"
   end
 end

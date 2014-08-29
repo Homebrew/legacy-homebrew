@@ -1,15 +1,15 @@
-require 'formula'
+require "formula"
 
 class Watchman < Formula
-  homepage 'https://github.com/facebook/watchman'
-  head 'https://github.com/facebook/watchman.git'
-  url 'https://github.com/facebook/watchman/archive/v2.9.5.tar.gz'
-  sha1 'e8dd863c6239caf1ef2742c0ecbba2b3b9febaaa'
+  homepage "https://github.com/facebook/watchman"
+  head "https://github.com/facebook/watchman.git"
+  url "https://github.com/facebook/watchman/archive/v2.9.8.tar.gz"
+  sha1 "f2ddfb5d42dce32da71dd789f63b705526fc9758"
 
-  depends_on :autoconf
-  depends_on :automake
-  depends_on 'pkg-config' => :build
-  depends_on 'pcre'
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "pkg-config" => :build
+  depends_on "pcre"
 
   def install
     system "./autogen.sh"

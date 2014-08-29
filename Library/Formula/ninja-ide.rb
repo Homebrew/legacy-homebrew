@@ -16,6 +16,6 @@ class NinjaIde < Formula
   end
 
   test do
-    system "ninja-ide", "-h"
+    system bin/"ninja-ide", "-h"
   end
 end

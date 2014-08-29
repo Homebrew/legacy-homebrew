@@ -2,15 +2,14 @@ require 'formula'
 
 class Libmagic < Formula
   homepage 'http://www.darwinsys.com/file/'
-  url 'ftp://ftp.astron.com/pub/file/file-5.17.tar.gz'
-  mirror 'http://fossies.org/unix/misc/file-5.17.tar.gz'
-  sha1 'f7e837a0d3e4f40a02ffe7da5e146b967448e0d8'
+  url 'ftp://ftp.astron.com/pub/file/file-5.19.tar.gz'
+  mirror 'http://fossies.org/unix/misc/file-5.19.tar.gz'
+  sha1 '0dff09eb44fde1998be79e8d312e9be4456d31ee'
 
   bottle do
-    revision 1
-    sha1 "e39a611cc0351b0f633b96ca7fc8834b8575c4e9" => :mavericks
-    sha1 "049bf4c884b40b53a0e2db2dd3a7c6a4fba2e46d" => :mountain_lion
-    sha1 "6cb0d8979255f0d7b53665e547e4941b79b7dd81" => :lion
+    sha1 "35a401959b3925929ef220a35712a1a5f6f42ad9" => :mavericks
+    sha1 "e4bdd610c71cb05bedfb00ce940ec476dbed4c29" => :mountain_lion
+    sha1 "812930f1bb60fe40ec45e92bc385a8bd63e34813" => :lion
   end
 
   option :universal

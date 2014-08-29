@@ -18,8 +18,6 @@ class Algol68g < Formula
       print("Hello World")
     EOS
 
-    output = `#{bin}/a68g #{path}`.strip
-    assert_equal "Hello World", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "Hello World", shell_output("#{bin}/a68g #{path}").strip
   end
 end

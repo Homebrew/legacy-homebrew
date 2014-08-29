@@ -18,6 +18,6 @@ class Fakeroot < Formula
   end
 
   test do
-    system "#{bin}/fakeroot", "-v"
+    assert_equal "root", shell_output("#{bin}/fakeroot whoami").strip
   end
 end

@@ -2,16 +2,15 @@ require "formula"
 
 class Frescobaldi < Formula
   homepage "http://frescobaldi.org/"
-  url "https://github.com/wbsoft/frescobaldi/releases/download/v2.0.13/frescobaldi-2.0.13.tar.gz"
-  sha1 "8d3f0ceb0d5cc66b6bee6278fc2dad07e3f361f8"
+  url "https://github.com/wbsoft/frescobaldi/releases/download/v2.0.15/frescobaldi-2.0.15.tar.gz"
+  sha1 "e110ca2be338ca4fb9a0369c6f733dbdf731a027"
 
   option "without-launcher", "Don't build Mac .app launcher"
   option "without-lilypond", "Don't install Lilypond"
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "portmidi" => :recommended
   depends_on "lilypond" => :recommended
-  depends_on "platypus" => :build if build.with? "launcher"
 
   # python-poppler-qt4 dependencies
   depends_on "poppler" => "with-qt4"
@@ -19,8 +18,8 @@ class Frescobaldi < Formula
   depends_on "pkg-config" => :build
 
   resource "python-poppler-qt4" do
-    url "https://python-poppler-qt4.googlecode.com/files/python-poppler-qt4-0.16.3.tar.gz"
-    sha1 "fe6aa650a1a917caeedd407ae0c428a5de9eefb8"
+    url "https://github.com/wbsoft/python-poppler-qt4/archive/v0.18.1.tar.gz"
+    sha1 "584345ae2fae2e1d667222cafa404a241cf95a1f"
   end
 
   def install
@@ -30,8 +29,8 @@ class Frescobaldi < Formula
     end
     system "python", "setup.py", "install", "--prefix=#{prefix}"
     if build.with? "launcher"
-      system "platypus", "-aFrescobaldi", "-oNone",
-             bin/"frescobaldi", bin/"Frescobaldi.app"
+      system "python", "macosx/mac-app.py", "--force", "--version",  version, "--script", bin/"frescobaldi"
+      prefix.install "dist/Frescobaldi.app"
     end
   end
 end

@@ -1,8 +1,7 @@
 # Unlinks any Applications (.app) found in installed prefixes from /Applications
 require 'keg'
 
-module Homebrew extend self
-
+module Homebrew
   def unlinkapps
     target_dir = ARGV.include?("--local") ? File.expand_path("~/Applications") : "/Applications"
 

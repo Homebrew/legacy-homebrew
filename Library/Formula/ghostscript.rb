@@ -2,19 +2,19 @@ require 'formula'
 
 class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
-  revision 1
 
   stable do
-    url 'http://downloads.ghostscript.com/public/ghostscript-9.10.tar.gz'
-    sha1 '29d6538ae77565c09f399b06455e94e7bcd83d01'
+    url 'http://downloads.ghostscript.com/public/ghostscript-9.14.tar.gz'
+    sha1 '85001be316ebc11a6060ae7e208fe08dcbfd70ae'
 
     patch :DATA # Uncomment OS X-specific make vars
   end
 
   bottle do
-    sha1 "6c57df23147be016a8790cd4f831e3bfc060107a" => :mavericks
-    sha1 "1b172224cac0093d4264c874a4c5da7c8f13a217" => :mountain_lion
-    sha1 "a12d082b0e86e08cef11f5b59e27b827ed38367e" => :lion
+    revision 2
+    sha1 "d5f438f8fff49ae1e121406431bf3767b6bd91fc" => :mavericks
+    sha1 "6a1d4a67fd83bbc5ceffaf8915dcf713fb1bad9b" => :mountain_lion
+    sha1 "7768370e424623b1577ec5ec79065aebef3bb361" => :lion
   end
 
   head do
@@ -24,9 +24,9 @@ class Ghostscript < Formula
       url 'git://git.code.sf.net/p/djvu/gsdjvu-git'
     end
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
 
     # Uncomment OS X-specific make vars
     patch do
@@ -57,15 +57,15 @@ class Ghostscript < Formula
 
   # http://djvu.sourceforge.net/gsdjvu.html
   resource 'djvu' do
-    url 'https://downloads.sourceforge.net/project/djvu/GSDjVu/1.5/gsdjvu-1.5.tar.gz'
-    sha1 'c7d0677dae5fe644cf3d714c04b3c2c343906342'
+    url 'https://downloads.sourceforge.net/project/djvu/GSDjVu/1.6/gsdjvu-1.6.tar.gz'
+    sha1 'a8c5520d698d8be558a1957b4e5108cba68822ef'
   end
 
   def move_included_source_copies
     # If the install version of any of these doesn't match
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
-    renames = %w{freetype jbig2dec jpeg libpng tiff zlib}
+    renames = %w{freetype jbig2dec jpeg libpng tiff}
     renames.each { |lib| mv lib, "#{lib}_local" }
   end
 
@@ -73,8 +73,8 @@ class Ghostscript < Formula
     src_dir = build.head? ? "gs" : "."
 
     resource('djvu').stage do
-      inreplace 'gdevdjvu.c', /#include "gserror.h"/, ''
-      (buildpath+'base').install 'gdevdjvu.c'
+      inreplace 'gsdjvu.mak', '$(GL', '$(DEV'
+      (buildpath+'devices').install 'gdevdjvu.c'
       (buildpath+'lib').install 'ps2utf8.ps'
       ENV['EXTRA_INIT_FILES'] = 'ps2utf8.ps'
       (buildpath/'devices/contrib.mak').open('a') { |f| f.write(File.read('gsdjvu.mak')) }

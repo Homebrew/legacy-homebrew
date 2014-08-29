@@ -1,18 +1,17 @@
-require 'formula'
+require "formula"
 
 class Mysql < Formula
-  homepage 'http://dev.mysql.com/doc/refman/5.6/en/'
-  url "http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.17.tar.gz"
-  sha1 "53773d619d7f7bc1743f92fd65885a0581c37ff8"
+  homepage "http://dev.mysql.com/doc/refman/5.6/en/"
+  url "http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.20.tar.gz"
+  sha1 "10f9ed2bbf3fbf227b799f1c7af3a0c7f7cf4d95"
+  revision 1
 
   bottle do
-    sha1 "14c5947971c0303348893fceb6c1edb5df5849ed" => :mavericks
-    sha1 "96f2e47df515590a20c14dfc9da15b483181bf07" => :mountain_lion
-    sha1 "f674566a77c3c950110df895f45cbe901b1c9ee2" => :lion
+    revision 1
+    sha1 "c6b5653348bcfa889ed6bc347841cecbc96389af" => :mavericks
+    sha1 "f7562a4366c1732b90388a41b1356c9f0fa1aa19" => :mountain_lion
+    sha1 "e2107ccb1461920bb5cfb7192b37dc91ed50ca94" => :lion
   end
-
-  depends_on 'cmake' => :build
-  depends_on 'pidof' unless MacOS.version >= :mountain_lion
 
   option :universal
   option 'with-tests', 'Build with unit tests'
@@ -23,12 +22,14 @@ class Mysql < Formula
   option 'enable-memcached', 'Enable innodb-memcached support'
   option 'enable-debug', 'Build with debug support'
 
+  depends_on 'cmake' => :build
+  depends_on 'pidof' unless MacOS.version >= :mountain_lion
+  depends_on 'openssl'
+
   conflicts_with 'mysql-cluster', 'mariadb', 'percona-server',
     :because => "mysql, mariadb, and percona install the same binaries."
   conflicts_with 'mysql-connector-c',
     :because => 'both install MySQL client libraries'
-
-  env :std if build.universal?
 
   fails_with :llvm do
     build 2326
@@ -59,6 +60,7 @@ class Mysql < Formula
       -DINSTALL_INFODIR=share/info
       -DINSTALL_MYSQLSHAREDIR=share/mysql
       -DWITH_SSL=yes
+      -DWITH_SSL=system
       -DDEFAULT_CHARSET=utf8
       -DDEFAULT_COLLATION=utf8_general_ci
       -DSYSCONFDIR=#{etc}
@@ -83,7 +85,10 @@ class Mysql < Formula
     args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1" if build.with? 'blackhole-storage-engine'
 
     # Make universal for binding to universal applications
-    args << "-DCMAKE_OSX_ARCHITECTURES='#{Hardware::CPU.universal_archs.as_cmake_arch_flags}'" if build.universal?
+    if build.universal?
+      ENV.universal_binary
+      args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
@@ -154,6 +159,7 @@ class Mysql < Formula
       <array>
         <string>#{opt_bin}/mysqld_safe</string>
         <string>--bind-address=127.0.0.1</string>
+        <string>--datadir=#{var}/mysql</string>
       </array>
       <key>RunAtLoad</key>
       <true/>

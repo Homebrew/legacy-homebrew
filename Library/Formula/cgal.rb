@@ -2,8 +2,8 @@ require 'formula'
 
 class Cgal < Formula
   homepage 'http://www.cgal.org/'
-  url 'https://gforge.inria.fr/frs/download.php/32994/CGAL-4.3.tar.gz'
-  sha1 '035d5fd7657e9eeccfc46ff0ebf84f137e63b03a'
+  url 'https://gforge.inria.fr/frs/download.php/33525/CGAL-4.4.tar.gz'
+  sha1 '5e82193808817ba5144a0c8a57fa5d0c2498cb0d'
 
   option :cxx11
 

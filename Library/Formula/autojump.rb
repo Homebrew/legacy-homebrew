@@ -2,8 +2,8 @@ require 'formula'
 
 class Autojump < Formula
   homepage 'https://github.com/joelthelion/autojump#name'
-  url 'https://github.com/joelthelion/autojump/archive/release-v21.6.9.tar.gz'
-  sha1 '9d13e56ec1abf76e0e955d754e8a62616bb102a7'
+  url 'https://github.com/joelthelion/autojump/archive/release-v21.7.1.tar.gz'
+  sha1 'bc19d40b3ebe29dc44da950f2c6dbd7da26fb6a3'
 
   head 'https://github.com/joelthelion/autojump.git'
 
@@ -15,7 +15,7 @@ class Autojump < Formula
     man1.install 'docs/autojump.1'
     (prefix/'etc').install 'bin/autojump.sh', 'bin/autojump.bash', 'bin/autojump.zsh'
     zsh_completion.install 'bin/_j'
-    (prefix/'etc').install 'bin/autojump.fish' if build.head?
+    (prefix/'etc').install 'bin/autojump.fish'
 
     bin.write_exec_script libexec+'autojump'
   end

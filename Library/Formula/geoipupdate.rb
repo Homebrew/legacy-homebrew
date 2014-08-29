@@ -1,26 +1,22 @@
-require 'formula'
+require "formula"
 
 class Geoipupdate < Formula
-  homepage 'https://github.com/maxmind/geoipupdate'
+  homepage "https://github.com/maxmind/geoipupdate"
+  url "https://github.com/maxmind/geoipupdate/releases/download/v2.0.2/geoipupdate-2.0.2.tar.gz"
+  sha1 "14274698cacb5468475a008b8db61e162ff1ce73"
 
-  stable do
-    url "https://github.com/maxmind/geoipupdate/releases/download/v2.0.0/geoipupdate-2.0.0.tar.gz"
-    sha1 "d3c90ad9c9ad5974e8a5a30c504e7827978ddea7"
-
-    # Fixes use of getline on pre-Lion; will be in next release
-    patch do
-      url "https://github.com/maxmind/geoipupdate/commit/bdf11969f4c7c6b173466092287a2fdbd485b248.patch"
-      sha1 "845aed21e187cd1fe1a60b029ff8ac13284c7cea"
-    end
+  bottle do
+    sha1 "583c8a6af265daf2ff07abeb0e2d77ac028814e8" => :mavericks
+    sha1 "67dee561ce6c78297fe1206e67fe661c8b61a213" => :mountain_lion
+    sha1 "b653b2c88c8a4316de87b66147c00180a4b7a6f4" => :lion
   end
 
-  head 'https://github.com/maxmind/geoipupdate.git'
-
-  # Because the patch requires regenerating the configure script;
-  # move these back to the head spec on next release
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
+  head do
+    url "https://github.com/maxmind/geoipupdate.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   option :universal
 
@@ -29,11 +25,11 @@ class Geoipupdate < Formula
 
     # Download free databases by default
     # See https://github.com/maxmind/geoip-api-c#150
-    inreplace 'conf/GeoIP.conf.default', 'YOUR_USER_ID_HERE', '999999'
-    inreplace 'conf/GeoIP.conf.default', 'YOUR_LICENSE_KEY_HERE', '000000000000'
-    inreplace 'conf/GeoIP.conf.default', /^ProductIds .*$/, 'ProductIds 506 533'
+    inreplace "conf/GeoIP.conf.default", "YOUR_USER_ID_HERE", "999999"
+    inreplace "conf/GeoIP.conf.default", "YOUR_LICENSE_KEY_HERE", "000000000000"
+    inreplace "conf/GeoIP.conf.default", /^ProductIds .*$/, "ProductIds 506 533"
 
-    system "./bootstrap"
+    system "./bootstrap" if build.head?
 
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",

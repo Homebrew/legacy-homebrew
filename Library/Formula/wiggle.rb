@@ -7,18 +7,18 @@ class Wiggle < Formula
 
   # All three patches are upstream commits
   patch do
-    url "https://github.com/neilbrown/wiggle/commit/16bb4be1c93be24917669d63ab68dd7d77597b63.patch"
-    sha1 "05c372272ed4817c92a17f2b46b5888189913259"
+    url "https://github.com/neilbrown/wiggle/commit/16bb4be1c93be24917669d63ab68dd7d77597b63.diff"
+    sha1 "9d3b4a0ebdb8e1fbd6f50c906255d72b78f957fd"
   end
 
   patch do
-    url "https://github.com/neilbrown/wiggle/commit/e010f2ffa78b0e50eff5a9e664f9de27bb790035.patch"
-    sha1 "d156b817582b36d9bc96a718b9e3eee5d82b8eb9"
+    url "https://github.com/neilbrown/wiggle/commit/e010f2ffa78b0e50eff5a9e664f9de27bb790035.diff"
+    sha1 "c0156c25768b8d9f5ffbfde47b066aecc579c0ec"
   end
 
   patch do
-    url "https://github.com/neilbrown/wiggle/commit/351535d3489f4583a49891726616375e249ab1f3.patch"
-    sha1 "32385bdf365440f115d8d830f7e4b5a4710d230f"
+    url "https://github.com/neilbrown/wiggle/commit/351535d3489f4583a49891726616375e249ab1f3.diff"
+    sha1 "cfb18a814285dc6705997846f51bdc1ace02015b"
   end
 
   def install

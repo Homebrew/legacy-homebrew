@@ -7,16 +7,17 @@ class S3cmd < Formula
   head 'https://github.com/s3tools/s3cmd.git'
 
   devel do
-    url 'https://github.com/s3tools/s3cmd/archive/v1.5.0-beta1.tar.gz'
-    sha1 '3b5c299518cdfdd4adb81e843514865742082e82'
-    version "1.5.0-beta1"
+    url 'https://github.com/s3tools/s3cmd/archive/v1.5.0-rc1.tar.gz'
+    sha1 '49ce9e6d81b3697529e6a4b9749b1c6862c1751f'
+    version "1.5.0-rc1"
   end
 
   bottle do
     cellar :any
-    sha1 "6504b103e65ce2dfdde9220a0f2b9033bf90bb5f" => :mavericks
-    sha1 "59fbbbfc85dba185128e69b03f2c73ec96653bf9" => :mountain_lion
-    sha1 "54e4d1c752eb3da312d05ce507d4979e8edb898f" => :lion
+    revision 1
+    sha1 "7493692a3dc0b34a8d3a617bd4e36df9fed16226" => :mavericks
+    sha1 "5161ab336e7f34d8442b4a0c5964a99004ff03d9" => :mountain_lion
+    sha1 "198a88c5490cdc705fee324a131a44360c826f63" => :lion
   end
 
   def install

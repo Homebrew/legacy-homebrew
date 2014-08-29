@@ -2,8 +2,8 @@ require 'formula'
 
 class Predictionio < Formula
   homepage 'http://prediction.io/'
-  url 'http://download.prediction.io/PredictionIO-0.6.7.zip'
-  sha1 '2f196c66e1dd933e591a84935a058025b6412cc9'
+  url 'http://download.prediction.io/PredictionIO-0.7.3.zip'
+  sha1 '5380f7f7d447ec04371753b060822e004c76a5fa'
 
   depends_on 'mongodb'
   depends_on 'hadoop'

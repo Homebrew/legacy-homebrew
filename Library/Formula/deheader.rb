@@ -6,8 +6,6 @@ class Deheader < Formula
   sha1 '4527b4675a7b06d728cfa989a3b7844cdf091b40'
   head 'https://git.gitorious.org/deheader/deheader.git'
 
-  depends_on :python
-
   def install
     bin.install "deheader"
     man1.install "deheader.1"

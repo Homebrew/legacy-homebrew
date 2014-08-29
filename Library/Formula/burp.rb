@@ -1,22 +1,27 @@
-require 'formula'
+require "formula"
 
 class Burp < Formula
-  homepage 'http://burp.grke.org/'
-  url 'http://burp.grke.org/downloads/burp-1.3.36/burp-1.3.36.tar.bz2'
-  sha1 '471237090e631b3cb91ff864db84c7644c42bf87'
+  homepage "http://burp.grke.org/"
+  url "https://downloads.sourceforge.net/project/burp/burp-1.4.20/burp-1.4.20.tar.bz2"
+  sha1 "8c72010210fcfb6a7a18f2c4a181ea377581b8cf"
+  head "https://github.com/grke/burp.git"
 
-  head 'https://github.com/grke/burp.git'
+  bottle do
+    sha1 "939c4d703cf7d872f26dc1548d06c6d50346f9f6" => :mavericks
+    sha1 "d9e93bc2f214ee3c86d2c64bd8e4dd9d8c651455" => :mountain_lion
+    sha1 "0c2be2b9fc6cec00e69dccce60f9ae87ca343929" => :lion
+  end
 
-  depends_on 'librsync'
+  depends_on "librsync"
 
   # patches to change directories to brew conventions in Makefile and config files
   patch :DATA
 
   def install
-   system "./configure", "--prefix=#{prefix}",
-                         "--sysconfdir=#{etc}/burp",
-                         "--sbindir=#{bin}",
-                         "--localstatedir=#{var}/burp"
+    system "./configure", "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}/burp",
+                          "--sbindir=#{bin}",
+                          "--localstatedir=#{var}/burp"
     system "make", "install"
   end
 

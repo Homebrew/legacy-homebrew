@@ -2,13 +2,13 @@ require 'formula'
 
 class Strongswan < Formula
   homepage 'http://www.strongswan.org'
-  url 'http://download.strongswan.org/strongswan-5.1.2.tar.bz2'
-  sha1 '414569a95faeddacd99d23562be6f5a57b63f700'
+  url 'http://download.strongswan.org/strongswan-5.2.0.tar.bz2'
+  sha1 'f907d4ac9e4353db888bbf856e959a05c08a70fc'
 
   bottle do
-    sha1 "2ab86079317c1639a765917d20fb6fa1666f1e2f" => :mavericks
-    sha1 "13d46f9a95708fead99868b7c4cb4379011710ba" => :mountain_lion
-    sha1 "c3cff0ddf082c012a6f77cfde3742a8eaf4994ac" => :lion
+    sha1 "8aada0aa9bf2a5b97282b9d967767d2b23f582e0" => :mavericks
+    sha1 "5ca2e977cb940f2da1df1aff7923104a20ab45ec" => :mountain_lion
+    sha1 "e04c343ff3c7755492dfb131f0552b0b843881a4" => :lion
   end
 
   option 'with-curl', 'Build with libcurl based fetcher'
@@ -41,12 +41,14 @@ class Strongswan < Formula
       --enable-pgp
       --enable-pkcs1
       --enable-pkcs8
+      --enable-pki
       --enable-pubkey
       --enable-revocation
+      --enable-scepclient
       --enable-socket-default
       --enable-sshkey
       --enable-stroke
-      --enable-tools
+      --enable-swanctl
       --enable-updown
       --enable-unity
       --enable-xauth-generic

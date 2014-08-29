@@ -25,7 +25,7 @@ class Ffmbc < Formula
   depends_on 'lame' => :recommended
   depends_on 'xvid' => :recommended
 
-  depends_on :freetype => :optional
+  depends_on 'freetype' => :optional
   depends_on 'theora'  => :optional
   depends_on 'libvorbis' => :optional
   depends_on 'libogg' => :optional
@@ -57,10 +57,6 @@ class Ffmbc < Formula
     # This formula will only install the commandline tools
     mv "ffprobe", "ffprobe-bc"
     bin.install "ffmbc", "ffprobe-bc"
-    cd "doc" do
-      #mv "ffprobe.1", "ffprobe-bc.1"
-      #man1.install "ffmbc.1", "ffprobe-bc.1"
-    end
   end
 
   def caveats

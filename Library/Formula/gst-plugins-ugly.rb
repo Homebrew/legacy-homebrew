@@ -2,10 +2,15 @@ require 'formula'
 
 class GstPluginsUgly < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.2.3.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.2.3.tar.xz'
-  sha256 '537b0a7607eee499026388bb705b5b68985a3fd59fe22ee09accaf8cdf57eb3b'
-  revision 1
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.4.0.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-ugly-1.4.0.tar.xz'
+  sha256 '5314bb60f13d1a7b9c6317df73813af5f3f15a62c7c186b816b0024b5c61744d'
+
+  bottle do
+    sha1 "a82da0b9a9d26d0e5d93c51c02b1855139210a50" => :mavericks
+    sha1 "269dcf70921dc902d887cbaf6165a66eecc4d703" => :mountain_lion
+    sha1 "38d4ff9a96a665496b72e0dcd99a1536b7489d41" => :lion
+  end
 
   head do
     url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly'
@@ -45,8 +50,6 @@ class GstPluginsUgly < Formula
   # Does not work with libcdio 0.9
 
   def install
-    ENV.append "CFLAGS", "-funroll-loops -fstrict-aliasing"
-
     args = %W[
       --prefix=#{prefix}
       --mandir=#{man}
@@ -55,7 +58,7 @@ class GstPluginsUgly < Formula
     ]
 
     if build.head?
-      ENV.append "NOCONFIGURE", "yes"
+      ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
     end
 

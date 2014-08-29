@@ -1,13 +1,7 @@
 require 'cmd/install'
 require 'cmd/outdated'
 
-class Fixnum
-  def plural_s
-    if self != 1 then "s" else "" end
-  end
-end
-
-module Homebrew extend self
+module Homebrew
   def upgrade
     Homebrew.perform_preinstall_checks
 
@@ -35,14 +29,14 @@ module Homebrew extend self
     end
 
     unless outdated.empty?
-      oh1 "Upgrading #{outdated.length} outdated package#{outdated.length.plural_s}, with result:"
+      oh1 "Upgrading #{outdated.length} outdated package#{plural(outdated.length)}, with result:"
       puts outdated.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
     else
       oh1 "No packages to upgrade"
     end
 
     unless upgrade_pinned? || pinned.empty?
-      oh1 "Not upgrading #{pinned.length} pinned package#{pinned.length.plural_s}:"
+      oh1 "Not upgrading #{pinned.length} pinned package#{plural(pinned.length)}:"
       puts pinned.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
     end
 
@@ -54,10 +48,13 @@ module Homebrew extend self
   end
 
   def upgrade_formula f
-    outdated_keg = Keg.new(f.linked_keg.realpath) if f.linked_keg.directory?
+    outdated_keg = Keg.new(f.linked_keg.resolved_path) if f.linked_keg.directory?
+    tab = Tab.for_formula(f)
 
     fi = FormulaInstaller.new(f)
-    fi.options             = Tab.for_formula(f).used_options
+    fi.options             = tab.used_options
+    fi.build_bottle        = ARGV.build_bottle?
+    fi.build_bottle      ||= tab.built_as_bottle && !tab.poured_from_bottle
     fi.build_from_source   = ARGV.build_from_source?
     fi.verbose             = ARGV.verbose?
     fi.verbose           &&= :quieter if ARGV.quieter?

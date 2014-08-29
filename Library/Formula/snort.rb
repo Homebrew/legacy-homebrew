@@ -2,8 +2,17 @@ require 'formula'
 
 class Snort < Formula
   homepage 'http://www.snort.org'
-  url 'http://www.snort.org/dl/snort-current/snort-2.9.6.0.tar.gz'
-  sha1 '0c143f202b2e55b00d87b859fc3fe4ff5d0d9b38'
+
+  stable do
+    url 'https://www.snort.org/downloads/snort/snort-2.9.6.2.tar.gz'
+    sha1 '09068bc88dbb3fe47b2bff5803a7b3ef0c98395b'
+    fails_with :clang
+  end
+
+  devel do
+    url 'https://www.snort.org/downloads/snortdev/snort-2.9.7.0_beta.tar.gz'
+    sha1 '723a8cf0f7cb2000145c916fbeacb8cfca92ae77'
+  end
 
   depends_on 'daq'
   depends_on 'libdnet'

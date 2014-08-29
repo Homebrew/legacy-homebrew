@@ -2,16 +2,26 @@ require 'formula'
 
 class Vsftpd < Formula
   homepage 'https://security.appspot.com/vsftpd.html'
-  url 'https://security.appspot.com/downloads/vsftpd-2.3.4.tar.gz'
-  sha1 'b774cc6b4c50e20f4fe9ca7f6aa74169ce7fe5ea'
+  url 'https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz'
+  sha1 'f36976bb1c5df25ac236d8a29e965ba2b825ccd0'
+  revision 1
 
-  option "openssl", "Build with OpenSSL"
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "1a64152c081dfafa1d02e5736931d7ccdd0f9aa0" => :mavericks
+    sha1 "58c43be3dce1228728894eb1767235a50e63589e" => :mountain_lion
+    sha1 "cfd7597d2a41a4704488c5754a3bb2d03e8cde5e" => :lion
+  end
 
-  # Patch so vsftpd doesn't depend on UTMPX, and can't find OS X's PAM library.
+  depends_on 'openssl' => :optional
+
+  # Patch to remove UTMPX dependency, locate OS X's PAM library, and
+  #   remove incompatible LDFLAGS. (reported to developer via email)
   patch :DATA
 
   def install
-    if build.include? "openssl"
+    if build.with? "openssl"
       inreplace "builddefs.h", "#undef VSF_BUILD_SSL", "#define VSF_BUILD_SSL"
     end
 
@@ -66,3 +76,16 @@ index b988be6..68d4a34 100755
  else
    locate_library /lib/libcrypt.so && echo "-lcrypt";
    locate_library /usr/lib/libcrypt.so && echo "-lcrypt";
+diff --git a/Makefile b/Makefile
+index c63ed1b..556519e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -10,7 +10,7 @@ CFLAGS	=	-O2 -fPIE -fstack-protector --param=ssp-buffer-size=4 \
+
+ LIBS	=	`./vsf_findlibs.sh`
+ LINK	=	-Wl,-s
+-LDFLAGS	=	-fPIE -pie -Wl,-z,relro -Wl,-z,now
++LDFLAGS	=	-fPIE -pie
+
+ OBJS	=	main.o utility.o prelogin.o ftpcmdio.o postlogin.o privsock.o \
+		tunables.o ftpdataio.o secbuf.o ls.o \

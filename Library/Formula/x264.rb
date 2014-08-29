@@ -1,35 +1,28 @@
-require 'formula'
+require "formula"
 
 class X264 < Formula
-  homepage "http://www.videolan.org/developers/x264.html"
+  homepage "https://www.videolan.org/developers/x264.html"
   # the latest commit on the stable branch
-  url "http://git.videolan.org/git/x264.git", :revision => "aff928d2a2f601072cebecfd1ac5ff768880cf88"
-  version "r2397"
-  head "http://git.videolan.org/git/x264.git"
+  url "https://git.videolan.org/git/x264.git", :revision => "021c0dc6c95c1bc239c9db78a80dd85fc856a4dd"
+  version "r2455"
+  head "https://git.videolan.org/git/x264.git"
 
   devel do
     # the latest commit on the master branch
-    url "http://git.videolan.org/git/x264.git", :revision => "d6b4e63d2ed8d444b77c11b36c1d646ee5549276"
-    version "r2409"
-  end
-
-  # Support building with Clang 3.4
-  # The patch will be merged in the official repository soon.
-  patch do
-    url "https://github.com/DarkShikari/x264-devel/commit/bc3b27.patch"
-    sha1 "6c3d1bc241c64d8df64273df403d43e3116bd567"
+    url "https://git.videolan.org/git/x264.git", :revision => "dd79a61e0e354a432907f2d1f7137b27a12dfce7"
+    version "r2479"
   end
 
   bottle do
     cellar :any
-    sha1 "7a35f1da2e78eedb2be6d8f44d4bd1bc2a62339d" => :mavericks
-    sha1 "1b55c37b83f95a589b1832ccab7d8dae3700f5dc" => :mountain_lion
-    sha1 "19c9d9a6df12cbc4a6201c044215d2be609e6844" => :lion
+    sha1 "22085504fe0af795428e8098424534131d025d50" => :mavericks
+    sha1 "d5dab543efc7abb240fff1c194bdae7b82244ee5" => :mountain_lion
+    sha1 "f25f0a7c3ae891c2a229614da345774f93d9e1b7" => :lion
   end
 
-  depends_on 'yasm' => :build
+  depends_on "yasm" => :build
 
-  option '10-bit', 'Build a 10-bit x264 (default: 8-bit)'
+  option "10-bit", "Build a 10-bit x264 (default: 8-bit)"
   option "with-mp4=", "Select mp4 output: none (default), l-smash or gpac"
 
   case ARGV.value "with-mp4"
@@ -49,19 +42,12 @@ class X264 < Formula
     elsif Formula["gpac"].installed?
       args << "--disable-lsmash"
     end
-    args << "--bit-depth=10" if build.include? '10-bit'
+    args << "--bit-depth=10" if build.include? "10-bit"
 
     # For running version.sh correctly
     buildpath.install_symlink cached_download/".git"
 
     system "./configure", *args
     system "make", "install"
-  end
-
-  def caveats; <<-EOS.undent
-    Because libx264 has a rapidly-changing API, formulae that link against
-    it should be reinstalled each time you upgrade x264. Examples include:
-       avidemux, ffmbc, ffmpeg, gst-plugins-ugly
-    EOS
   end
 end

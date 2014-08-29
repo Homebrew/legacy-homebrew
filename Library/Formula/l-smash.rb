@@ -1,15 +1,15 @@
 require "formula"
 
 class LSmash < Formula
-  homepage "http://up-cat.net/L%252DSMASH.html"
-  url "https://github.com/l-smash/l-smash.git", :tag => "v1.5.2", :shallow => false
+  homepage "http://l-smash.github.io/l-smash/"
+  url "https://github.com/l-smash/l-smash.git", :tag => "v1.13.2", :shallow => false
   head "https://github.com/l-smash/l-smash.git"
 
   bottle do
     cellar :any
-    sha1 "7e0fda0145b2eceaa950e9cccf84205c9dcaab47" => :mavericks
-    sha1 "0e9a018a8d3f818c42e98153e003018b3ccb6982" => :mountain_lion
-    sha1 "088add54110cd25086fced2086593a8ec46dafb2" => :lion
+    sha1 "468918e2a5008899f0630ce2a5cfc39e7cef7f77" => :mavericks
+    sha1 "174bb9962f8d81a3d2f5914eeca9dd8a8a5e4557" => :mountain_lion
+    sha1 "d39f42b173264a333e0d90298713e280ec892452" => :lion
   end
 
   def install

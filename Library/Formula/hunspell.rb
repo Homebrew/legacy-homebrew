@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class Hunspell < Formula
-  homepage 'http://hunspell.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/hunspell/hunspell-1.3.2.tar.gz'
-  sha1 '902c76d2b55a22610e2227abc4fd26cbe606a51c'
+  homepage "http://hunspell.sourceforge.net/"
+  url "https://downloads.sourceforge.net/hunspell/hunspell-1.3.3.tar.gz"
+  sha1 "219b20f305d6690f666ff3864a16e4674908a553"
 
-  depends_on 'readline'
+  depends_on "readline"
 
   # hunspell does not prepend $HOME to all USEROODIRs
   # http://sourceforge.net/p/hunspell/bugs/236/

@@ -5,8 +5,6 @@ class Zxcc < Formula
   url 'http://www.seasip.info/Unix/Zxcc/zxcc-0.5.7.tar.gz'
   sha1 'cc088ef24b2a62fc2673a593982dd62c16136f18'
 
-  depends_on :libtool
-
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make"
@@ -25,10 +23,8 @@ class Zxcc < Formula
     ].pack("c*")
 
     path = testpath/"hello.com"
-    path.open("wb") { |f| f.write code }
+    path.binwrite code
 
-    output = `#{bin}/zxcc #{path}`.strip
-    assert_equal "Hello", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "Hello", shell_output("#{bin}/zxcc #{path}").strip
   end
 end

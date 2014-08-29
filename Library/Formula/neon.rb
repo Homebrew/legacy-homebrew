@@ -4,15 +4,22 @@ class Neon < Formula
   homepage 'http://www.webdav.org/neon/'
   url 'http://www.webdav.org/neon/neon-0.30.0.tar.gz'
   sha1 '9e6297945226f90d66258b7ee05f757ff5cea10a'
+  revision 1
 
-  keg_only :provided_by_osx,
-            "Compiling newer versions of Subversion on 10.6 require this newer neon."
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "6370730a5ce654fbc6661fd7e9427a6c5cc45470" => :mavericks
+    sha1 "a39df7b0c029d12ebeb31eeb2771ab31e5882d1e" => :mountain_lion
+    sha1 "8e864f76ea0fc8b2db4acbaf7ba0abca5e4efe3a" => :lion
+  end
+
+  keg_only :provided_by_osx
 
   option :universal
-  option 'with-brewed-openssl', 'Include OpenSSL support via Homebrew'
 
   depends_on 'pkg-config' => :build
-  depends_on 'openssl' if build.with? 'brewed-openssl'
+  depends_on 'openssl'
 
   # Configure switch unconditionally adds the -no-cpp-precomp switch
   # to CPPFLAGS, which is an obsolete Apple-only switch that breaks
@@ -23,19 +30,13 @@ class Neon < Formula
   def install
     ENV.universal_binary if build.universal?
     ENV.enable_warnings
-    args = [
-      "--disable-debug",
-      "--prefix=#{prefix}",
-      "--enable-shared",
-      "--disable-static",
-      "--with-ca-bundle=/usr/share/curl/curl-ca-bundle.crt",
-      "--disable-nls",
-      "--with-ssl",
-    ]
-    if build.with? 'brewed-openssl'
-      args << "--with-libs=#{Formula['openssl'].opt_prefix}"
-    end
-    system "./configure", *args
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--enable-shared",
+                          "--disable-static",
+                          "--disable-nls",
+                          "--with-ssl=openssl",
+                          "--with-libs=#{Formula["openssl"].opt_prefix}"
     system "make install"
   end
 end

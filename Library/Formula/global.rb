@@ -1,24 +1,30 @@
-require 'formula'
+require "formula"
 
 class Global < Formula
-  homepage 'http://www.gnu.org/software/global/'
-  url 'http://ftpmirror.gnu.org/global/global-6.2.11.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/global/global-6.2.11.tar.gz'
-  sha1 'b0f50213680ec3288988354c34e3b3ae1a42719e'
+  homepage "https://www.gnu.org/software/global/"
+  url "http://ftpmirror.gnu.org/global/global-6.3.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/global/global-6.3.tar.gz"
+  sha1 "01180de13918a29d4af62ed9c86dbe84ed16f550"
 
-  head do
-    url 'cvs://:pserver:anonymous:@cvs.savannah.gnu.org:/sources/global:global'
-
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+  bottle do
+    sha1 "e004212ac52962c8d8b5164cbc6c46fcc47f3557" => :mavericks
+    sha1 "d7d3b6896bcbb41dc45046e960352c60d4c63b99" => :mountain_lion
+    sha1 "9838c4345cda516d7de7212322b91eb08e821c45" => :lion
   end
 
-  option 'with-exuberant-ctags', 'Enable Exuberant Ctags as a plug-in parser'
+  head do
+    url "cvs://:pserver:anonymous:@cvs.savannah.gnu.org:/sources/global:global"
 
-  if build.with? 'exuberant-ctags'
-    depends_on 'ctags'
-    skip_clean 'lib/gtags/exuberant-ctags.la'
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  option "with-exuberant-ctags", "Enable Exuberant Ctags as a plug-in parser"
+
+  if build.with? "exuberant-ctags"
+    depends_on "ctags"
+    skip_clean "lib/gtags/exuberant-ctags.la"
   end
 
   def install
@@ -30,17 +36,17 @@ class Global < Formula
       --sysconfdir=#{etc}
     ]
 
-    if build.with? 'exuberant-ctags'
+    if build.with? "exuberant-ctags"
       args << "--with-exuberant-ctags=#{HOMEBREW_PREFIX}/bin/ctags"
     end
 
     system "./configure", *args
     system "make install"
 
-    etc.install 'gtags.conf'
+    etc.install "gtags.conf"
 
     # we copy these in already
-    cd share/'gtags' do
+    cd share/"gtags" do
       rm %w[README COPYING LICENSE INSTALL ChangeLog AUTHORS]
     end
   end

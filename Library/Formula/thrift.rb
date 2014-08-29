@@ -80,7 +80,7 @@ class Thrift < Formula
       gem install thrift
 
     To install PHP extension for e.g. PHP 5.5:
-      brew install josegonzalez/php/php55-thrift
+      brew install homebrew/php/php55-thrift
     EOS
   end
 end

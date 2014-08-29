@@ -8,7 +8,8 @@ class Spiped < Formula
   depends_on :bsdmake
 
   def install
-    system "bsdmake", "BINDIR_DEFAULT=#{bin}", "install"
+    man1.mkpath
+    system "bsdmake", "BINDIR_DEFAULT=#{bin}", "MAN1DIR=#{man1}", "install"
     doc.install 'spiped/README' => 'README.spiped',
                 'spipe/README' => 'README.spipe'
   end

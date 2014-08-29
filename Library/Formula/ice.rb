@@ -10,7 +10,7 @@ class Ice < Formula
 
   depends_on 'berkeley-db'
   depends_on 'mcpp'
-  depends_on :python
+  depends_on :python => :optional
 
   # 1. TODO: document the first patch
   # 2. Patch to fix build with libc++, reported upstream:
@@ -50,12 +50,20 @@ class Ice < Formula
       system "make", "install", *args
     end
 
-    args << "install_pythondir=#{lib}/python2.7/site-packages"
-    args << "install_libdir=#{lib}/python2.7/site-packages"
-    cd "py" do
-      system "make", *args
-      system "make", "install", *args
+    if build.with? "python"
+      args << "install_pythondir=#{lib}/python2.7/site-packages"
+      args << "install_libdir=#{lib}/python2.7/site-packages"
+      cd "py" do
+        system "make", *args
+        system "make", "install", *args
+      end
     end
+
+    libexec.install "#{lib}/ImportKey.class"
+  end
+
+  test do
+    system "#{bin}/icebox", "--version"
   end
 
   def caveats

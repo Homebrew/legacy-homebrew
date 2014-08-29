@@ -5,6 +5,13 @@ class Libgsm < Formula
   url 'http://www.quut.com/gsm/gsm-1.0.13.tar.gz'
   sha1 '668b0a180039a50d379b3d5a22e78da4b1d90afc'
 
+  bottle do
+    cellar :any
+    sha1 "95282a450ccbf397b79045a1ccb0e5a110962e75" => :mavericks
+    sha1 "4eccce20579c4fe49892aebda0a11c46ce598de0" => :mountain_lion
+    sha1 "2c9220ef6c1de5246f1d771a27bfbd8c3129b2f9" => :lion
+  end
+
   option :universal
 
   # Builds a dynamic library for gsm, this package is no longer developed

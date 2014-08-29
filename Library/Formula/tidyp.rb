@@ -6,7 +6,7 @@ class Tidyp < Formula
   sha1 '5d9050512259c3a67a2f48469555932e3a7b8bd0'
 
   resource 'manual' do
-    url "https://github.com/petdance/tidyp/raw/6a6c85bc9cb089e343337377f76127d01dd39a1c/htmldoc/tidyp1.xsl"
+    url "https://raw.githubusercontent.com/petdance/tidyp/6a6c85bc9cb089e343337377f76127d01dd39a1c/htmldoc/tidyp1.xsl"
     sha1 'db6b733bb8e341eb806bc7487faee69eb429a68d'
   end
 

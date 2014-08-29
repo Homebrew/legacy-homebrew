@@ -33,6 +33,7 @@ _1st_arguments=(
   'cat:display formula file for a formula'
   'cleanup:uninstall unused and old versions of packages'
   'commands:show a list of commands'
+  'config:show homebrew and system configuration'
   'create:create a new formula'
   'deps:list dependencies and dependants of a formula'
   'doctor:audits your installation for common issues'
@@ -52,6 +53,7 @@ _1st_arguments=(
   'search:search for a formula (/regex/ or string)'
   'server:start a local web app that lets you browse formulae (requires Sinatra)'
   'services:small wrapper around `launchctl` for supported formulae'
+  'switch:switch between different versions of a formula'
   'tap:tap a new formula repository from GitHub, or list existing taps'
   'unlink:unlink a formula'
   'unpin:unpin specified formulae'
@@ -76,7 +78,6 @@ local -a formulae installed_formulae installed_taps outdated_formulae running_se
 _arguments \
   '(-v)-v[verbose]' \
   '(--cellar)--cellar[brew cellar]' \
-  '(--config)--config[brew configuration]' \
   '(--env)--env[brew environment]' \
   '(--repository)--repository[brew repository]' \
   '(--version)--version[version information]' \
@@ -90,7 +91,7 @@ if (( CURRENT == 1 )); then
 fi
 
 case "$words[1]" in
-  install|reinstall|audit|home|homepage|log|info|abv|uses|cat|deps|edit|options)
+  install|reinstall|audit|home|homepage|log|info|abv|uses|cat|deps|edit|options|switch)
     _brew_all_formulae
     _wanted formulae expl 'all formulae' compadd -a formulae ;;
   list|ls)
@@ -123,7 +124,7 @@ case "$words[1]" in
     fi ;;
   untap)
     _brew_installed_taps
-    _wanted installed_taps expl 'installed taps' compadd -a installed_taps ;;
+    _wanted installed_taps expl 'installed taps' compadd -a installed_taps ;;
   upgrade)
     _brew_outdated_formulae
     _wanted outdated_formulae expl 'outdated formulae' compadd -a outdated_formulae ;;

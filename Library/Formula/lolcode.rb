@@ -16,4 +16,18 @@ class Lolcode < Formula
     # Don't use `make install` for this one file
     bin.install 'lci'
   end
+
+  test do
+    path = testpath/"test.lol"
+    path.write <<-EOS.undent
+      HAI 1.2
+      CAN HAS STDIO?
+      VISIBLE "HAI WORLD"
+      KTHXBYE
+    EOS
+
+    output = `#{bin}/lci #{path}`
+    assert_equal "HAI WORLD\n", output
+    assert_equal 0, $?.exitstatus
+  end
 end

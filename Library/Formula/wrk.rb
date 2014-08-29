@@ -1,14 +1,23 @@
-require 'formula'
+require "formula"
 
 class Wrk < Formula
-  homepage 'https://github.com/wg/wrk'
-  url 'https://github.com/wg/wrk/archive/3.1.0.tar.gz'
-  sha1 '3ddc1e591a846b92899a534abf4bc49d2c6cd98e'
-  head 'https://github.com/wg/wrk.git'
+  homepage "https://github.com/wg/wrk"
+  url "https://github.com/wg/wrk/archive/3.1.1.tar.gz"
+  sha1 "7cea5d12dc5076fed1a1c730bd3e6eba832a8f61"
+  head "https://github.com/wg/wrk.git"
+  revision 1
 
-  depends_on 'openssl'
+  bottle do
+    cellar :any
+    revision 1
+    sha1 "034ed6c6991064d72aabadec117cedc8826a5018" => :mavericks
+    sha1 "beec443377916519ef99e99ac443adf92aa15f59" => :mountain_lion
+    sha1 "9528426378a5d4d75e1ec5f7cd0d3dcbdeb775ac" => :lion
+  end
 
-  conflicts_with 'wrk-trello', :because => 'both install `wrk` binaries'
+  depends_on "openssl"
+
+  conflicts_with "wrk-trello", :because => "both install `wrk` binaries"
 
   def install
     ENV.j1
@@ -17,6 +26,6 @@ class Wrk < Formula
   end
 
   test do
-    system *%W{#{bin}/wrk -c 1 -t 1 https://github.com/}
+    system *%W{#{bin}/wrk -c 1 -t 1 -d 1 http://example.com/}
   end
 end

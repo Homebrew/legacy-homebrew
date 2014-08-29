@@ -5,7 +5,7 @@ class Pyqwt < Formula
   url 'https://downloads.sourceforge.net/project/pyqwt/pyqwt5/PyQwt-5.2.0/PyQwt-5.2.0.tar.gz'
   sha1 '797f37c63dec660272f6a8ccfd16a017df0ad640'
 
-  depends_on :python => :recommended
+  depends_on :python
   depends_on 'qt'
   depends_on 'qwt'
   depends_on 'sip'
@@ -28,6 +28,7 @@ class Pyqwt < Formula
   end
 
   test do
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     system "python", "-c", "from PyQt4 import Qwt5 as Qwt"
   end
 end

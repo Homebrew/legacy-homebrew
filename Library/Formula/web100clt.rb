@@ -8,7 +8,7 @@ class Web100clt < Formula
   # fixes issue with new default secure strlcpy/strlcat functions in 10.9
   # https://code.google.com/p/ndt/issues/detail?id=106
   patch do
-    url "https://gist.github.com/igable/8077668/raw/4475e6e653f080be111fa0a3fd649af42fa14c3d/ndt-3.6.5.2-osx-10.9.patch"
+    url "https://gist.githubusercontent.com/igable/8077668/raw/4475e6e653f080be111fa0a3fd649af42fa14c3d/ndt-3.6.5.2-osx-10.9.patch"
     sha1 "1423d4b863049b21fcee4ecf9dd0660462406a39"
   end if MacOS.version >= :mavericks
 
@@ -20,13 +20,8 @@ class Web100clt < Formula
 
     # we only want to build the web100clt client so we need
     # to change to the src directory before installing.
-    cd 'src' do
-      system "make install"
-    end
-
-    cd 'doc' do
-      man1.install 'web100clt.man' => 'web100clt.1'
-    end
+    system "make", "-C", "src", "install"
+    man1.install 'doc/web100clt.man' => 'web100clt.1'
   end
 
   test do

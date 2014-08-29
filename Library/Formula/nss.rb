@@ -1,21 +1,18 @@
-require 'formula'
+require "formula"
 
 class Nss < Formula
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_16_RTM/src/nss-3.16-with-nspr-4.10.4.tar.gz"
-  sha1 "8ae6ddec43556b4deb949dc889123ff1d09ab737"
-  version "3.16"
+  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_16_2_RTM/src/nss-3.16.2.tar.gz"
+  sha1 "c4e7f007723cfafcf7fe743000e3960cc5086642"
 
   bottle do
     cellar :any
-    sha1 "08ea6d10ebe317330129e03c184a0aaa59b300b0" => :mavericks
-    sha1 "3fd67a639a8fcdb253f8fe982a5ecf6f1ea25c6b" => :mountain_lion
-    sha1 "a4153f7a673f3f4703a9e4142958039e7b24bc51" => :lion
+    sha1 "614b281c05b0544ebf2485f2fdf25497136c6535" => :mavericks
+    sha1 "e3db185142fff3fd11432d3542d59b722d02d06e" => :mountain_lion
+    sha1 "65416dfa06130a4834c7a83e41dfb11a672c88e5" => :lion
   end
 
   depends_on "nspr"
-
-  keg_only "NSS installs a libssl which conflicts with OpenSSL."
 
   def install
     ENV.deparallelize
@@ -33,32 +30,32 @@ class Nss < Formula
     inreplace "coreconf/Darwin.mk", "-install_name @executable_path", "-install_name #{lib}"
     inreplace "lib/freebl/config.mk", "@executable_path", lib
 
-    system "make", "nss_build_all", *args
+    system "make", "all", *args
 
     # We need to use cp here because all files get cross-linked into the dist
     # hierarchy, and Homebrew's Pathname.install moves the symlink into the keg
     # rather than copying the referenced file.
     cd "../dist"
-    bin.mkdir
-    Dir["Darwin*/bin/*"].each do |file|
+    bin.mkpath
+    Dir.glob("Darwin*/bin/*") do |file|
       cp file, bin unless file.include? ".dylib"
     end
 
-    include.mkdir
     include_target = include + "nss"
-    include_target.mkdir
-    ["dbm", "nss"].each do |dir|
-      Dir["public/#{dir}/*"].each do |file|
-        cp file, include_target
+    include_target.mkpath
+    Dir.glob("public/{dbm,nss}/*") { |file| cp file, include_target }
+
+    lib.mkpath
+    libexec.mkpath
+    Dir.glob("Darwin*/lib/*") do |file|
+      if file.include? ".chk"
+        cp file, libexec
+      else
+        cp file, lib
       end
     end
-
-    lib.mkdir
-    libexec.mkdir
-    Dir["Darwin*/lib/*"].each do |file|
-      cp file, lib unless file.include? ".chk"
-      cp file, libexec if file.include? ".chk"
-    end
+    # resolves conflict with openssl, see #28258
+    rm lib/"libssl.a"
 
     (lib+"pkgconfig/nss.pc").write pc_file
   end

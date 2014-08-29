@@ -1,22 +1,22 @@
-require 'formula'
+require "formula"
 
 class Rethinkdb < Formula
-  homepage 'http://www.rethinkdb.com/'
-  url 'http://download.rethinkdb.com/dist/rethinkdb-1.12.0.tgz'
-  sha1 '94826fa0cdee0eb87c8e4f4b98b1d1fb7ae4e391'
+  homepage "http://www.rethinkdb.com/"
+  url "http://download.rethinkdb.com/dist/rethinkdb-1.14.0.tgz"
+  sha1 "508b33661b9804ebd265484ad558abc86ae20815"
 
   bottle do
-    sha1 "3c02d30f6204d88e69ead32a2fc4139510d4d5e2" => :mavericks
-    sha1 "97a37434b2917071ea2548529d68939d790baf9f" => :mountain_lion
-    sha1 "ad505d8c94306031fb839492b9a62bb6ccc6384f" => :lion
+    sha1 "b51a3b7761bfb606ade9ed53b080146e7f858b36" => :mavericks
+    sha1 "94307060be233491da2a6c56881d13211e6d3b9e" => :mountain_lion
+    sha1 "013aac796be889a8073e17651da19e1cae232a42" => :lion
   end
 
   depends_on :macos => :lion
-  depends_on 'boost' => :build
+  depends_on "boost" => :build
 
   fails_with :gcc do
     build 5666 # GCC 4.2.1
-    cause 'RethinkDB uses C++0x'
+    cause "RethinkDB uses C++0x"
   end
 
   def install
@@ -31,7 +31,9 @@ class Rethinkdb < Formula
 
     system "./configure", *args
     system "make"
-    system "make install-osx"
+    system "make", "install-osx"
+
+    mkdir_p "#{var}/log/rethinkdb"
   end
 
   def plist; <<-EOS.undent
