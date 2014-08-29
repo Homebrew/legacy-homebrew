@@ -15,9 +15,6 @@ class Scsh < Formula
 
   conflicts_with 'scheme48', :because => 'both install include/scheme48.h'
 
-  # stable segfaults when built 64-bit; see #21351
-  env :std unless build.head?
-
   def install
     if build.head?
       system "autoreconf"

@@ -10,10 +10,12 @@ module Homebrew
         puts f.name
       end
     end
+    Homebrew.failed = ARGV.formulae.any? && outdated_brews.any?
   end
 
   def outdated_brews
-    Formula.installed.map do |f|
+    brews = ARGV.formulae.any? ? ARGV.formulae : Formula.installed
+    brews.map do |f|
       versions = f.rack.subdirs.map { |d| Keg.new(d).version }.sort!
         if versions.all? { |version| f.pkg_version > version }
         yield f, versions if block_given?

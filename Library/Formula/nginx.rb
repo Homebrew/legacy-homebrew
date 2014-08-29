@@ -1,35 +1,39 @@
-require 'formula'
+require "formula"
 
 class Nginx < Formula
-  homepage 'http://nginx.org/'
-  url 'http://nginx.org/download/nginx-1.6.0.tar.gz'
-  sha1 '00eed38652d2cee36cc91a395f6703584658bb23'
+  homepage "http://nginx.org/"
+  url "http://nginx.org/download/nginx-1.6.1.tar.gz"
+  sha1 "e58c865f67b580541ed4eadf69d1676762bf50ab"
   revision 1
 
   devel do
-    url 'http://nginx.org/download/nginx-1.7.2.tar.gz'
-    sha1 '2537cba3c9c7f70fcfe5732b46ace38bf2a161c1'
+    url "http://nginx.org/download/nginx-1.7.4.tar.gz"
+    sha1 "94f4ac8ddb4a05349e75c43b84f24dbacdbac6e9"
   end
 
-  head 'http://hg.nginx.org/nginx/', :using => :hg
+  head "http://hg.nginx.org/nginx/", :using => :hg
 
   bottle do
-    sha1 "0b2a83221a85da1595e52ba61f0bc39a8905db71" => :mavericks
-    sha1 "51e55866a2810d4544ad4004cdd1e2cf2dd4d6f6" => :mountain_lion
-    sha1 "4bb95425d1bca66163b4d212084ae564c13b49d7" => :lion
+    revision 1
+    sha1 "c7c3ffae58d4ca2c95fcfb2a9dedbd55152fceb9" => :mavericks
+    sha1 "7da4933d23f1cef378387b8abdb7c2981d20ea5a" => :mountain_lion
+    sha1 "d688d641fd345be01efcc98e6aa65224f9ba3167" => :lion
   end
 
   env :userpaths
 
-  option 'with-passenger', 'Compile with support for Phusion Passenger module'
-  option 'with-webdav', 'Compile with support for WebDAV module'
-  option 'with-debug', 'Compile with support for debug log'
-  option 'with-spdy', 'Compile with support for SPDY module'
-  option 'with-gunzip', 'Compile with support for gunzip module'
+  # Before submitting more options to this formula please check they aren't
+  # already in Homebrew/homebrew-nginx/nginx-full:
+  # https://github.com/Homebrew/homebrew-nginx/blob/master/nginx-full.rb
+  option "with-passenger", "Compile with support for Phusion Passenger module"
+  option "with-webdav", "Compile with support for WebDAV module"
+  option "with-debug", "Compile with support for debug log"
+  option "with-spdy", "Compile with support for SPDY module"
+  option "with-gunzip", "Compile with support for gunzip module"
 
-  depends_on 'pcre'
-  depends_on 'passenger' => :optional
-  depends_on 'openssl'
+  depends_on "pcre"
+  depends_on "passenger" => :optional
+  depends_on "openssl"
 
   def passenger_config_args
     passenger_config = "#{HOMEBREW_PREFIX}/opt/passenger/bin/passenger-config"
@@ -45,7 +49,7 @@ class Nginx < Formula
 
   def install
     # Changes default port to 8080
-    inreplace 'conf/nginx.conf', 'listen       80;', 'listen       8080;'
+    inreplace "conf/nginx.conf", "listen       80;", "listen       8080;"
 
     pcre = Formula["pcre"]
     openssl = Formula["openssl"]
@@ -86,7 +90,7 @@ class Nginx < Formula
     system "make"
     system "make install"
     man8.install "objs/nginx.8"
-    (var/'run/nginx').mkpath
+    (var/"run/nginx").mkpath
   end
 
   def post_install
@@ -116,7 +120,7 @@ class Nginx < Formula
   end
 
   test do
-    system "#{bin}/nginx", '-t'
+    system "#{bin}/nginx", "-t"
   end
 
   def passenger_caveats; <<-EOS.undent
@@ -134,11 +138,11 @@ class Nginx < Formula
     The default port has been set in #{HOMEBREW_PREFIX}/etc/nginx/nginx.conf to 8080 so that
     nginx can run without sudo.
     EOS
-    s << passenger_caveats if build.with? 'passenger'
+    s << passenger_caveats if build.with? "passenger"
     s
   end
 
-  plist_options :manual => 'nginx'
+  plist_options :manual => "nginx"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>

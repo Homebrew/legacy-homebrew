@@ -2,8 +2,8 @@ require "formula"
 
 class LcdfTypetools < Formula
   homepage "http://www.lcdf.org/type/"
-  url "http://www.lcdf.org/type/lcdf-typetools-2.101.tar.gz"
-  sha256 "bbbaddb3d9681ba93de400c876b76412a370e1a1c94fe4e71393777759b214a5"
+  url "http://www.lcdf.org/type/lcdf-typetools-2.104.tar.gz"
+  sha256 "d7985458ead0850cb9549ff1d619ffc18da5d7be892be5e1fce6048d510f0fff"
 
   conflicts_with "open-mpi", :because => "both install same set of binaries."
 

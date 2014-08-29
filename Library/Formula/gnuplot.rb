@@ -12,9 +12,10 @@ class Gnuplot < Formula
   sha256 'e550f030c7d04570e89c3d4e3f6e82296816508419c86ab46c4dd73156519a2d'
 
   bottle do
-    sha1 "5a58adfcff11b2cb99e0933c986be07e9be86831" => :mavericks
-    sha1 "15a49edb10b515bfbc2eeec5e01b7fe6cefb41d9" => :mountain_lion
-    sha1 "dabddfe592ecb9acb43de910e46e4919683ecf6c" => :lion
+    revision 1
+    sha1 "22eb078d5191be2c5747d79c5d04858038eca84b" => :mavericks
+    sha1 "5352e2e09c94dcf1812af08f072636532e5ea1ab" => :mountain_lion
+    sha1 "779fc18117f74a6688110febf075e694204ac0bf" => :lion
   end
 
   head do
@@ -35,7 +36,7 @@ class Gnuplot < Formula
   option 'tests',  'Verify the build with make check (1 min)'
   option 'without-emacs', 'Do not build Emacs lisp files'
   option 'latex',  'Build with LaTeX support'
-  option 'without-aquaterm', 'Do not build AquaTerm support'
+  option 'with-aquaterm', 'Build with AquaTerm support'
 
   depends_on 'pkg-config' => :build
   depends_on LuaRequirement unless build.include? 'nolua'

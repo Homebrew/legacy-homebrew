@@ -25,6 +25,7 @@ class Zabbix < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --enable-agent
+      --with-iconv=#{MacOS.sdk_path}/usr
     }
 
     unless build.include? "agent-only"

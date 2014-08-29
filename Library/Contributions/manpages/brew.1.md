@@ -196,8 +196,8 @@ Note that these flags should only appear after a command.
 
     If `--cc=<compiler>` is passed, attempt to compile using <compiler>.
     <compiler> should be the name of the compiler's executable, for instance
-    `gcc-4.2` for Apple's GCC 4.2, or `gcc-4.8` for a Homebrew-provided GCC
-    4.8.
+    `gcc-4.2` for Apple's GCC 4.2, or `gcc-4.9` for a Homebrew-provided GCC
+    4.9.
 
     If `--build-from-source` is passed, compile from source even if a bottle
     is provided for <formula>.

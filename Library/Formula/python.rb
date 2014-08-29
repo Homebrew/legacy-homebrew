@@ -5,11 +5,13 @@ class Python < Formula
   head "http://hg.python.org/cpython", :using => :hg, :branch => "2.7"
   url "http://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz"
   sha1 "511960dd78451a06c9df76509635aeec05b2051a"
+  revision 1
 
   bottle do
-    sha1 "11c4ad33f1a0ec2a9dee025f246e67a0783e8bdb" => :mavericks
-    sha1 "522a99761335205b29f348dd9861dc6630a29a35" => :mountain_lion
-    sha1 "07ba7ee28c2d6a6d8fcc613b27574090f0e2f27e" => :lion
+    revision 2
+    sha1 "f1244c117036a733742f128f8a168dcb0568675d" => :mavericks
+    sha1 "41f27fc515410ff728316e994be6f471520e5c90" => :mountain_lion
+    sha1 "cab018e86b60e5a8a8115581a2aa3390b18b3080" => :lion
   end
 
   option :universal
@@ -17,7 +19,6 @@ class Python < Formula
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
   option "with-poll", "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
   option "with-dtrace", "Experimental DTrace support (http://bugs.python.org/issue13405)"
-  option "with-docs", "Install HTML documentation"
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
@@ -25,24 +26,27 @@ class Python < Formula
   depends_on "gdbm" => :recommended
   depends_on "openssl"
   depends_on "homebrew/dupes/tcl-tk" if build.with? "brewed-tk"
-  depends_on :x11 if build.with? "brewed-tk" and Tab.for_name("tcl-tk").used_options.include?("with-x11")
+  depends_on :x11 if build.with? "brewed-tk" and Tab.for_name("tcl-tk").with? "x11"
 
   skip_clean "bin/pip", "bin/pip-2.7"
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
-  resource "docs" do
-    url "https://docs.python.org/2/archives/python-2.7.8-docs-html.tar.bz2"
-    sha1 "ba0c2ce0ddf0773306ed859262f405de61e486a6"
-  end
-
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.3.tar.gz"
-    sha1 "da2da9324a539029ebea602120afcb8cfd24ddf6"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.4.2.tar.gz"
+    sha1 "a681ba56c30c0eb66528215842d3e3fcb5157614"
   end
 
   resource "pip" do
     url "https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz"
     sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
+  end
+
+  # Patch for pyport.h macro issue
+  # http://bugs.python.org/issue10910
+  # https://trac.macports.org/ticket/44288
+  patch do
+    url "http://bugs.python.org/file30805/issue10910-workaround.txt"
+    sha1 "9926640cb7c8e273e4b451469a2b13d4b9df5ba3"
   end
 
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
@@ -149,8 +153,6 @@ class Python < Formula
     # Remove the site-packages that Python created in its Cellar.
     site_packages_cellar.rmtree
 
-    doc.install resource('docs') if build.with? "docs"
-
     (libexec/'setuptools').install resource('setuptools')
     (libexec/'pip').install resource('pip')
   end
@@ -218,8 +220,7 @@ class Python < Formula
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
       cflags += " -isysroot #{MacOS.sdk_path}"
       ldflags += " -isysroot #{MacOS.sdk_path}"
-      # Same zlib.h-not-found-bug as in env :std (see below)
-      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include"
+      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include" # find zlib
       # For the Xlib.h, Python needs this header dir with the system Tk
       if build.without? "brewed-tk"
         cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"

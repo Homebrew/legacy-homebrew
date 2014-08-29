@@ -129,6 +129,12 @@ module OS
       end
     end
 
+    def clear_version_cache
+      @gcc_40_build_version = @gcc_42_build_version = @llvm_build_version = nil
+      @clang_version = @clang_build_version = nil
+      @non_apple_gcc_version = {}
+    end
+
     # See these issues for some history:
     # http://github.com/Homebrew/homebrew/issues/13
     # http://github.com/Homebrew/homebrew/issues/41
@@ -200,6 +206,7 @@ module OS
       "5.0.2" => { :clang => "5.0", :clang_build => 500 },
       "5.1"   => { :clang => "5.1", :clang_build => 503 },
       "5.1.1" => { :clang => "5.1", :clang_build => 503 },
+      "6.0"   => { :clang => "6.0", :clang_build => 600 },
     }
 
     def compilers_standard?

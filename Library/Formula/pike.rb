@@ -108,8 +108,6 @@ class Pike < Formula
       }
     EOS
 
-    out = `#{bin}/pike #{path}`
-    assert_equal "0123456789", out
-    assert_equal 0, $?.exitstatus
+    assert_equal "0123456789", shell_output("#{bin}/pike #{path}").strip
   end
 end

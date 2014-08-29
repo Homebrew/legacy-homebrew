@@ -9,8 +9,10 @@ class Yaws < Formula
   option "without-yapp", "Omit yaws applications"
   option '32-bit'
 
-  depends_on 'erlang'
-  depends_on 'autoconf' => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "erlang"
 
   # the default config expects these folders to exist
   skip_clean 'var/log/yaws'
@@ -25,7 +27,7 @@ class Yaws < Formula
       end
     end
 
-    system "autoconf"
+    system "autoreconf", "-fvi"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
 

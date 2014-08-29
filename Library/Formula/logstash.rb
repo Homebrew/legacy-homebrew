@@ -2,8 +2,8 @@ require 'formula'
 
 class Logstash < Formula
   homepage 'http://logstash.net/'
-  url 'https://download.elasticsearch.org/logstash/logstash/logstash-1.4.1.tar.gz'
-  sha1 '834599d28ce50012c221ece7a6783c5943221e36'
+  url 'https://download.elasticsearch.org/logstash/logstash/logstash-1.4.2.tar.gz'
+  sha1 'd59ef579c7614c5df9bd69cfdce20ed371f728ff'
 
   def install
     inreplace %w{bin/logstash bin/logstash.lib.sh}, /^basedir=.*$/, "basedir=#{libexec}"

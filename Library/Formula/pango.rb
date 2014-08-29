@@ -2,13 +2,22 @@ require 'formula'
 
 class Pango < Formula
   homepage "http://www.pango.org/"
-  url "http://ftp.gnome.org/pub/GNOME/sources/pango/1.36/pango-1.36.5.tar.xz"
-  sha256 "be0e94b2e5c7459f0b6db21efab6253556c8f443837200b8736d697071276ac8"
+  url "http://ftp.gnome.org/pub/GNOME/sources/pango/1.36/pango-1.36.6.tar.xz"
+  sha256 "4c53c752823723875078b91340f32136aadb99e91c0f6483f024f978a02c8624"
+
+  head do
+    url 'git://git.gnome.org/pango'
+
+    depends_on 'automake' => :build
+    depends_on 'autoconf' => :build
+    depends_on 'libtool' => :build
+    depends_on 'gtk-doc' => :build
+  end
 
   bottle do
-    sha1 "cae579ffdc52ad681a23d5af611818c9af873e67" => :mavericks
-    sha1 "473cd6a06a42e4d3e6bc24779b2094e771b16560" => :mountain_lion
-    sha1 "73880906087275dcd394f0567136898bbf2dca94" => :lion
+    sha1 "1f65fb8dfd16ff03f5c53025799cd7d824438e20" => :mavericks
+    sha1 "e4258678bf9873af0f36468ac3e43bd3d163fe95" => :mountain_lion
+    sha1 "dfd82ea21bf3355bafaa6b3aaa5a7a97115087df" => :lion
   end
 
   depends_on 'pkg-config' => :build
@@ -40,6 +49,7 @@ class Pango < Formula
       args << '--with-xft'
     end
 
+    system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make"
     system "make install"

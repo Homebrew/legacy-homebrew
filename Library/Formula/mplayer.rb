@@ -83,16 +83,14 @@ class Mplayer < Formula
 end
 
 __END__
-diff --git a/configure b/configure
-index a1fba5f..5deaa80 100755
 --- a/configure
 +++ b/configure
-@@ -49,8 +49,6 @@ if test -e ffmpeg/mp_auto_pull ; then
+@@ -1532,8 +1532,6 @@
  fi
-
- if ! test -e ffmpeg ; then
+ 
+ if test "$ffmpeg_a" != "no" && ! test -e ffmpeg ; then
 -    echo "No FFmpeg checkout, press enter to download one with git or CTRL+C to abort"
 -    read tmp
-     if ! git clone --depth 1 git://source.ffmpeg.org/ffmpeg.git ffmpeg ; then
+     if ! git clone -b $FFBRANCH --depth 1 git://source.ffmpeg.org/ffmpeg.git ffmpeg ; then
          rm -rf ffmpeg
          echo "Failed to get a FFmpeg checkout"

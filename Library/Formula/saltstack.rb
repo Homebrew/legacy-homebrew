@@ -12,13 +12,13 @@ end
 
 class Saltstack < Formula
   homepage 'http://www.saltstack.org'
-  url 'https://github.com/saltstack/salt/archive/v2014.1.6.tar.gz'
-  sha256 'd8e579160d929aacc41f1a2f3b9360430f13aae023de8399b2430f1368208848'
+  url 'https://github.com/saltstack/salt/archive/v2014.1.10.tar.gz'
+  sha256 '4f4771e654bad8842bf55dba89b6632a4ea216223a5a321342c20e65506198d1'
 
   bottle do
-    sha1 "5775fb599e134850d6a241622424449d814d6d18" => :mavericks
-    sha1 "100db94f76945c821c1615884ab6274eb384c624" => :mountain_lion
-    sha1 "5b432ac91526495b24d0faf86d39f3a74a565b4e" => :lion
+    sha1 "3ffc76046b54ceadac2224285ee52aa966d987a2" => :mavericks
+    sha1 "f150d25e49b6d309c6794c2b78d55209ede96e40" => :mountain_lion
+    sha1 "1b4d05f5c21e50f2ecc7df0956287aadde14eae5" => :lion
   end
 
   head 'https://github.com/saltstack/salt.git', :branch => 'develop',
@@ -65,8 +65,8 @@ class Saltstack < Formula
   end
 
   resource 'apache-libcloud' do
-    url 'https://pypi.python.org/packages/source/a/apache-libcloud/apache-libcloud-0.14.1.tar.gz'
-    sha1 'e587c9c3519e7d061f3c2fb232af8ace593c8156'
+    url 'https://pypi.python.org/packages/source/a/apache-libcloud/apache-libcloud-0.15.1.tar.gz'
+    sha1 '0631bfa3201a5d4c3fdd3d9c39756051c1c70b0f'
   end
 
   head do

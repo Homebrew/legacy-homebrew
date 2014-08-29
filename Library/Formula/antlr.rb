@@ -2,8 +2,8 @@ require "formula"
 
 class Antlr < Formula
   homepage "http://www.antlr.org/"
-  url "http://www.antlr.org/download/antlr-4.3-complete.jar"
-  sha1 "173cf3165fdc54dcb9d2c6bc30c9d2c178f348bc"
+  url "http://www.antlr.org/download/antlr-4.4-complete.jar"
+  sha1 "735569b1fa92a0d3f14bb5f3a3ffa713f5be4d1e"
 
   def install
     prefix.install "antlr-#{version}-complete.jar"

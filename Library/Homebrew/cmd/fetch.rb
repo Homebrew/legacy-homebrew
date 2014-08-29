@@ -60,24 +60,28 @@ module Homebrew
   private
 
   def retry_fetch? f
-    @fetch_failed ||= {}
-    already_failed = @fetch_failed.fetch(f.name, false)
-
-    if already_failed || !ARGV.include?("--retry")
+    @fetch_failed ||= Set.new
+    if ARGV.include?("--retry") && @fetch_failed.add?(f.name)
+      ohai "Retrying download"
+      f.clear_cache
+      true
+    else
       Homebrew.failed = true
-      return false
+      false
     end
-
-    f.clear_cache
-    @fetch_failed[f.name] = true
-    true
   end
 
   def fetch_fetchable f
     f.clear_cache if ARGV.force?
 
     already_fetched = f.cached_download.exist?
-    download = f.fetch
+
+    begin
+      download = f.fetch
+    rescue DownloadError
+      retry if retry_fetch? f
+      raise
+    end
 
     return unless download.file?
 

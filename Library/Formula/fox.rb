@@ -1,14 +1,14 @@
-require 'formula'
+require "formula"
 
 class Fox < Formula
-  homepage 'http://www.fox-toolkit.org/'
-  url 'ftp://ftp.fox-toolkit.org/pub/fox-1.6.49.tar.gz'
-  sha1 '056a55ba7b4404af61d4256eafdf8fd0503c6fea'
+  homepage "http://www.fox-toolkit.org/"
+  url "ftp://ftp.fox-toolkit.org/pub/fox-1.6.49.tar.gz"
+  sha1 "056a55ba7b4404af61d4256eafdf8fd0503c6fea"
 
   # Development and stable branches are incompatible
   devel do
-    url 'ftp://ftp.fox-toolkit.org/pub/fox-1.7.45.tar.gz'
-    sha1 'bdd50d1bcadb29ebeb634aba2bd6b887d328953b'
+    url "ftp://ftp.fox-toolkit.org/pub/fox-1.7.49.tar.gz"
+    sha1 "a787a1300ddaf0330bb6ba656deda248d6e44f7a"
   end
 
   depends_on :x11
@@ -25,5 +25,6 @@ class Fox < Formula
                           "--with-opengl"
     # Unset LDFLAGS, "-s" causes the linker to crash
     system "make", "install", "LDFLAGS="
+    rm bin/"Adie.stx"
   end
 end

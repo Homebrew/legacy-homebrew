@@ -26,7 +26,7 @@ class Keg
   class ConflictError < LinkError
     def suggestion
       conflict = Keg.for(dst)
-    rescue NotAKegError
+    rescue NotAKegError, Errno::ENOENT
       "already exists. You may want to remove it:\n  rm #{dst}\n"
     else
       <<-EOS.undent

@@ -2,20 +2,21 @@ require "formula"
 
 class Tor < Formula
   homepage "https://www.torproject.org/"
-  url "https://www.torproject.org/dist/tor-0.2.4.22.tar.gz"
-  sha1 "42349e02c3f6db4e6f2cc52b8a61ea91761ac4d6"
+  url "https://www.torproject.org/dist/tor-0.2.4.23.tar.gz"
+  sha256 "05a3793cfb66b694cb5b1c8d81226d0f7655031b0d5e6a8f5d9c4c2850331429"
+  revision 1
 
   bottle do
     revision 1
-    sha1 "f6b42d12fb7dc5a18a6d58b3250923d0a0fcd78f" => :mavericks
-    sha1 "f9225a57b8a494767cf4a5e126a5cbb19af86e7d" => :mountain_lion
-    sha1 "5be6f9dd594330e1864f6a570873d86f3c84506f" => :lion
+    sha1 "b58db7a56a1b8e58ce6a3687d8c91d98de880327" => :mavericks
+    sha1 "2f7888fac6b4811a8ca282477c6d32d91b10ce90" => :mountain_lion
+    sha1 "d1ada402fd751dab3aa912ae51a7452ee55c9d6e" => :lion
   end
 
   devel do
-    url "https://www.torproject.org/dist/tor-0.2.5.5-alpha.tar.gz"
-    version "0.2.5.5-alpha"
-    sha1 "fa4a685e6dceb78ddc0ad811d88e0831bf0ade2d"
+    url "https://www.torproject.org/dist/tor-0.2.5.6-alpha.tar.gz"
+    version "0.2.5.6-alpha"
+    sha256 "ec8edfd824a65bec19c7b79bacfc73c5df76909477ab6dac0d6e8ede7fa337c1"
   end
 
   depends_on "libevent"

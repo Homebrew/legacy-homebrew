@@ -4,13 +4,13 @@ class Ruby < Formula
   homepage 'https://www.ruby-lang.org/'
   url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.2.tar.bz2"
   sha256 "6948b02570cdfb89a8313675d4aa665405900e27423db408401473f30fc6e901"
-  revision 2
+  revision 3
 
   bottle do
-    revision 1
-    sha1 "d7394d40bc1a49f40a41ea7b7564c35907937cad" => :mavericks
-    sha1 "9eb3ed6e198866f4f2330df5cd9708b2e0c72783" => :mountain_lion
-    sha1 "e9ef55620f60145e1145c05972f2724c6568c5cd" => :lion
+    revision 2
+    sha1 "43b7f90a5329fd4a5afb7dce9fceff8d8d8e1ac8" => :mavericks
+    sha1 "ac5dddb26583e72701691e8f89d6d5d9b1f64890" => :mountain_lion
+    sha1 "2c55b4727bcc7ef3b1c5dd3207773ff1d52a5b38" => :lion
   end
 
   head do

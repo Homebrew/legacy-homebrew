@@ -258,4 +258,20 @@ class FormulaTests < Homebrew::TestCase
       Object.send(:remove_const, const)
     end
   end
+
+  def test_legacy_options
+    f = formula do
+      url "foo-1.0"
+
+      def options
+        [["--foo", "desc"], ["--bar", "desc"]]
+      end
+
+      option "baz"
+    end
+
+    assert f.option_defined?("foo")
+    assert f.option_defined?("bar")
+    assert f.option_defined?("baz")
+  end
 end

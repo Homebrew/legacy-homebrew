@@ -2,25 +2,25 @@ require 'formula'
 
 class Git < Formula
   homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.0.2.tar.gz"
-  sha1 "794cba6b2ba2620a08651b9605bac0476804d67e"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.1.0.tar.gz"
+  sha1 "e22564e152e3242bc4fcfcc7eb05fde7a4c83e04"
 
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha1 "a61246dedf1cda65d7f46a0510a0002e6150c529" => :mavericks
-    sha1 "07446cff2bb66eb3213ade6effb9828c01ff09b1" => :mountain_lion
-    sha1 "494920224ff82d73155d875e742f39f0c3be3a8f" => :lion
+    sha1 "b02e4154d8e4fc571ec9c4d7a484c7cf0bb68fb6" => :mavericks
+    sha1 "201e4c7990ee19f52daeacb931971155ebfd31bd" => :mountain_lion
+    sha1 "40311740c67e86ecee19db0d10bfad715d5e3145" => :lion
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.0.2.tar.gz"
-    sha1 "d4967cbe1940b7d1e131b8f0c2f609a49c569014"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.1.0.tar.gz"
+    sha1 "044bd50fa51f436a6e93bf7ba2361b60b1f56e45"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.0.2.tar.gz"
-    sha1 "156b6ca6b626cbb6f38cbd4810c6ae69c9a4c6d5"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.1.0.tar.gz"
+    sha1 "5eb777145a2f084b601b025eb427c2f079fad0e6"
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -37,6 +37,10 @@ class Git < Formula
   depends_on 'go' => :build if build.with? 'persistent-https'
   depends_on 'subversion' => 'perl' if build.with? 'brewed-svn'
 
+  # This patch fixes Makefile bug contrib/subtree
+  # http://thread.gmane.org/gmane.comp.version-control.git/255347
+  patch :DATA
+
   def install
     # If these things are installed, tell Git build system to not use them
     ENV['NO_FINK'] = '1'
@@ -46,15 +50,17 @@ class Git < Formula
     ENV['PYTHON_PATH'] = which 'python'
     ENV['PERL_PATH'] = which 'perl'
 
+    perl_version = /\d\.\d+/.match(`perl --version`)
+
     if build.with? 'brewed-svn'
-      ENV["PERLLIB_EXTRA"] = "#{Formula["subversion"].prefix}/Library/Perl/5.16/darwin-thread-multi-2level"
+      ENV["PERLLIB_EXTRA"] = "#{Formula["subversion"].prefix}/Library/Perl/#{perl_version}/darwin-thread-multi-2level"
     elsif MacOS.version >= :mavericks
       ENV["PERLLIB_EXTRA"] = %W{
         #{MacOS.active_developer_dir}
         /Library/Developer/CommandLineTools
         /Applications/Xcode.app/Contents/Developer
       }.uniq.map { |p|
-        "#{p}/Library/Perl/5.16/darwin-thread-multi-2level"
+        "#{p}/Library/Perl/#{perl_version}/darwin-thread-multi-2level"
       }.join(":")
     end
 
@@ -144,3 +150,22 @@ class Git < Formula
     end
   end
 end
+
+__END__
+--- a/contrib/subtree/Makefile
++++ b/contrib/subtree/Makefile
+@@ -1,3 +1,5 @@
++all::
++
+ -include ../../config.mak.autogen
+ -include ../../config.mak
+ 
+@@ -34,7 +36,7 @@ GIT_SUBTREE_XML := git-subtree.xml
+ GIT_SUBTREE_TXT := git-subtree.txt
+ GIT_SUBTREE_HTML := git-subtree.html
+ 
+-all: $(GIT_SUBTREE)
++all:: $(GIT_SUBTREE)
+ 
+ $(GIT_SUBTREE): $(GIT_SUBTREE_SH)
+ 	sed -e '1s|#!.*/sh|#!$(SHELL_PATH_SQ)|' $< >$@

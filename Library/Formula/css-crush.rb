@@ -20,8 +20,6 @@ class CssCrush < Formula
       p { color: $(foo); }
     EOS
 
-    output = `#{bin}/csscrush #{path}`.strip
-    assert_equal "p{color:#123456}", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "p{color:#123456}", shell_output("#{bin}/csscrush #{path}").strip
   end
 end

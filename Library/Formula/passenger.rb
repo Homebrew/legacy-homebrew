@@ -2,17 +2,19 @@ require 'formula'
 
 class Passenger < Formula
   homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.46.tar.gz'
-  sha1 '285ff151267c270ef1c85675186d0caeb61b9133'
+  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.50.tar.gz'
+  sha1 'f85204d0f21147e8ca2e2313b5bddaebd6ca0b21'
   head 'https://github.com/phusion/passenger.git'
 
   bottle do
-    sha1 "145604c85fc5d0a5e24bc31fb33e4c197f181ae4" => :mavericks
-    sha1 "33ac96ecd2120ff131f4db1670c12a04cf87f421" => :mountain_lion
+    revision 1
+    sha1 "a240e698b7d1c90609067c83e4bfccdfb71e5b19" => :mavericks
+    sha1 "71e8e1133342801c65eecdc427446a4794ea7f04" => :mountain_lion
+    sha1 "150e49250a9c026eef71addcdf75ac3c0f0c4b09" => :lion
   end
 
   depends_on 'pcre'
-  depends_on :macos => :mountain_lion
+  depends_on :macos => :lion
 
   option 'without-apache2-module', 'Disable Apache2 module'
 

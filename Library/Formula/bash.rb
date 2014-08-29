@@ -42,8 +42,6 @@ class Bash < Formula
   end
 
   test do
-    output = `#{bin}/bash -c "echo hello"`.strip
-    assert_equal "hello", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "hello", shell_output("#{bin}/bash -c \"echo hello\"").strip
   end
 end

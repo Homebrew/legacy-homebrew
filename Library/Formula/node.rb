@@ -3,13 +3,13 @@ require "formula"
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "http://nodejs.org/"
-  url "http://nodejs.org/dist/v0.10.29/node-v0.10.29.tar.gz"
-  sha1 "0d5dc62090404f7c903f29779295758935529242"
+  url "http://nodejs.org/dist/v0.10.31/node-v0.10.31.tar.gz"
+  sha1 "80f2160b0525763b557742aa73d8dacf1a71e53c"
 
   bottle do
-    sha1 "e90cc43c18f9ff8191d6602e042aa14b33da37a1" => :mavericks
-    sha1 "42014487797e67983672e933ed14488ee24d7b1f" => :mountain_lion
-    sha1 "128fa1edbefb09ac634af404e1822996423232f0" => :lion
+    sha1 "f9a8cb0e7347af1fc02ef416fcb1552c7f632e5d" => :mavericks
+    sha1 "89e000bcc905df7623af481e45720ae0105392f0" => :mountain_lion
+    sha1 "970581c26c145c2e2e2d2453aa69de555213665c" => :lion
   end
 
   devel do
@@ -30,7 +30,7 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "http://registry.npmjs.org/npm/-/npm-1.4.9.tgz"
+    url "https://registry.npmjs.org/npm/-/npm-1.4.9.tgz"
     sha1 "29094f675dad69fc5ea24960a81c7abbfca5ce01"
   end
 

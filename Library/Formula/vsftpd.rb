@@ -4,12 +4,14 @@ class Vsftpd < Formula
   homepage 'https://security.appspot.com/vsftpd.html'
   url 'https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz'
   sha1 'f36976bb1c5df25ac236d8a29e965ba2b825ccd0'
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "7ad9093e0e863e579cd274fa13a21969d9841534" => :mavericks
-    sha1 "bf00933a7a41662814ccf27cf26b25bd960a8cf3" => :mountain_lion
-    sha1 "f17c1d98cdca0778e93beebe6022a81a1b3b1267" => :lion
+    revision 1
+    sha1 "1a64152c081dfafa1d02e5736931d7ccdd0f9aa0" => :mavericks
+    sha1 "58c43be3dce1228728894eb1767235a50e63589e" => :mountain_lion
+    sha1 "cfd7597d2a41a4704488c5754a3bb2d03e8cde5e" => :lion
   end
 
   depends_on 'openssl' => :optional

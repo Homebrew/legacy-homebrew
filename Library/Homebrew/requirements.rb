@@ -110,7 +110,7 @@ class JavaDependency < Requirement
 
   def java_version
     version_flag = " --version #{@version}+" if @version
-    system "/usr/libexec/java_home --failfast#{version_flag}"
+    quiet_system "/usr/libexec/java_home --failfast#{version_flag}"
   end
 
   def message

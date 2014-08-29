@@ -1,24 +1,20 @@
 require "formula"
 
 class Fswatch < Formula
-  homepage "https://github.com/alandipert/fswatch"
-  url "https://github.com/alandipert/fswatch/archive/1.3.8.tar.gz"
-  sha1 "a34383a4c3340ba9495186124b469762758c8b27"
+  homepage "https://github.com/emcrisostomo/fswatch"
+  url "https://github.com/emcrisostomo/fswatch/releases/download/1.4.2/fswatch-1.4.2.zip"
+  sha1 "df3a4a8bfca8c06f2e42cb6ee73f3f522b1dc3af"
 
   bottle do
-    sha1 "fdb17d25e0a20e3608b381a50462840e9a14bd33" => :mavericks
-    sha1 "e7610c528ddf616f55298c4bb09d3799405e65c5" => :mountain_lion
-    sha1 "3024b77fdf47035560674a9d2bc1405734518e06" => :lion
+    sha1 "797eb30eb5acb5599e712d9635e3e106a0d58d6f" => :mavericks
+    sha1 "c560900c86bf37ceeb850e40edd2b3e8350400e9" => :mountain_lion
+    sha1 "ba5181a3bac04e0199124a9eaa97673e84f6b8bf" => :lion
   end
-
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
 
   needs :cxx11
 
   def install
     ENV.cxx11
-    system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules"

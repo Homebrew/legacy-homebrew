@@ -35,6 +35,6 @@ class Tpp < Formula
 
   test do
     assert_equal "tpp - text presentation program #{version}",
-                 `#{bin}/tpp --version`.chomp
+                 shell_output("#{bin}/tpp --version", 1).chomp
   end
 end

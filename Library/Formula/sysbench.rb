@@ -16,7 +16,11 @@ class Sysbench < Formula
     system "./autogen.sh"
 
     args = ["--prefix=#{prefix}"]
-    args << "--with-mysql" if build.with? "mysql"
+    if build.with? "mysql"
+      args << "--with-mysql"
+    else
+      args << "--without-mysql"
+    end
     args << "--with-psql" if build.with? "postgresql"
 
     system "./configure", *args

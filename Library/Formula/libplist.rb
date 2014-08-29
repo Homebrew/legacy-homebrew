@@ -19,7 +19,11 @@ class Libplist < Formula
   depends_on "pkg-config" => :build
   depends_on "libxml2"
   depends_on :python => :optional
-  depends_on "Cython" => :python if build.with? "python"
+
+  resource "cython" do
+    url "http://cython.org/release/Cython-0.20.2.tar.gz"
+    sha1 "e3fd4c32bdfa4a388cce9538417237172c656d55"
+  end
 
   def install
     ENV.deparallelize
@@ -28,7 +32,17 @@ class Libplist < Formula
       --disable-silent-rules
       --prefix=#{prefix}
     ]
-    args << "--without-cython" if build.without? "python"
+
+    if build.with? "python"
+      resource("cython").stage do
+        ENV.prepend_create_path "PYTHONPATH", buildpath+"lib/python2.7/site-packages"
+        system "python", "setup.py", "build", "install", "--prefix=#{buildpath}"
+      end
+      ENV.prepend_path "PATH", "#{buildpath}/bin"
+    else
+      args << "--without-cython"
+    end
+
     system "./configure", *args
     system "make install"
   end

@@ -1,20 +1,24 @@
-require 'formula'
+require "formula"
 
 class ChibiScheme < Formula
-  homepage 'http://code.google.com/p/chibi-scheme/'
-  url 'http://abrek.synthcode.com/chibi-scheme-0.7.tgz'
-  sha1 'e751a1881138ddba7caf170859e30dcfeba1a177'
-  head 'https://code.google.com/p/chibi-scheme/', :using => :hg
+  homepage "http://code.google.com/p/chibi-scheme/"
+
+  stable do
+    url "http://abrek.synthcode.com/chibi-scheme-0.7.tgz"
+    sha1 "e751a1881138ddba7caf170859e30dcfeba1a177"
+
+    # Remove after upstream fixes this issue
+    # https://code.google.com/p/chibi-scheme/issues/detail?id=227
+    patch :DATA
+  end
+
+  head "https://code.google.com/p/chibi-scheme/", :using => :hg
 
   bottle do
     sha1 "e5f0e061820123d56736261e3f04907bf5c63ce8" => :mavericks
     sha1 "fd04e7f93c4b5bcc416ace19d80f7766c41a3afe" => :mountain_lion
     sha1 "7111751abca30c0a77c8130bd87f082cea255bdd" => :lion
   end
-
-  # Remove after upstream fixes this issue
-  # https://code.google.com/p/chibi-scheme/issues/detail?id=227
-  patch :DATA unless build.head?
 
   def install
     ENV.deparallelize

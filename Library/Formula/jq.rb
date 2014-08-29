@@ -25,10 +25,6 @@ class Jq < Formula
   end
 
   test do
-    IO.popen("#{bin}/jq .bar", "w+") do |pipe|
-      pipe.puts '{"foo":1, "bar":2}'
-      pipe.close_write
-      assert_equal "2\n", pipe.read
-    end
+    assert_equal "2\n", pipe_output("#{bin}/jq .bar", '{"foo":1, "bar":2}')
   end
 end

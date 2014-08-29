@@ -5,12 +5,14 @@ class Curl < Formula
   url 'http://curl.haxx.se/download/curl-7.37.1.tar.gz'
   mirror 'ftp://ftp.sunet.se/pub/www/utilities/curl/curl-7.37.1.tar.gz'
   sha256 'a32492a38c10a097344892f5fd2041e54698cb909696852311b1161e4aa979f3'
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "408bd9396bbfea5a7b42e0851bbb05db896f3009" => :mavericks
-    sha1 "28ac0a32dedf2242eaa2beebc9213b48fb25daf7" => :mountain_lion
-    sha1 "fb321bdc4d584da0891f402b08bf6be9b63bd14f" => :lion
+    revision 1
+    sha1 "2f55044789402b0adbb1ea8c49ba786f83d5b87b" => :mavericks
+    sha1 "e2cbd2b1a4567f746d3513da64067415eda3f3bc" => :mountain_lion
+    sha1 "3e1a0ed6fb7eab1bc15ffd875b906eab3d4c7e54" => :lion
   end
 
   keg_only :provided_by_osx

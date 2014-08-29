@@ -99,7 +99,8 @@ ARGV.named.each do |arg|
 
     begin
       changed_formulae << Formula[name]
-    rescue
+    # Make sure we catch syntax errors.
+    rescue Exception => e
       next
     end
   end

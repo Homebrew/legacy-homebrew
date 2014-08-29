@@ -28,6 +28,6 @@ class Dockutil < Formula
   end
 
   test do
-    assert_equal "2.0.0", `#{bin}/dockutil --version`.strip
+    assert_equal "2.0.0", shell_output("#{bin}/dockutil --version").strip
   end
 end
