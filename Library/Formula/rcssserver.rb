@@ -24,6 +24,18 @@ class Rcssserver < Formula
     end
   end
 
+  stable do
+    resource "rcssmonitor" do
+      url "https://downloads.sourceforge.net/sserver/rcssmonitor/15.1.1/rcssmonitor-15.1.1.tar.gz"
+      sha1 "60483838a81acd8ada6d228a86e54faeb019ab10"
+    end
+
+    resource "rcsslogplayer" do
+      url "https://downloads.sourceforge.net/sserver/rcsslogplayer/15.1.1/rcsslogplayer-15.1.1.tar.gz"
+      sha1 "d0b8f8e8a4328398655140e7c019149ab8d9c1c3"
+    end
+  end
+
   head do
     url "svn://svn.code.sf.net/p/sserver/code/rcss/trunk/rcssserver"
 
