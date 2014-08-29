@@ -16,6 +16,7 @@ class OpenSp < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--disable-doc-build",
+                          "--enable-http",
                           "--enable-default-catalog=#{HOMEBREW_PREFIX}/share/sgml/catalog",
                           "--enable-default-search-path=#{HOMEBREW_PREFIX}/share/sgml"
     system "make", "pkgdatadir=#{share}/sgml/opensp", "install"
