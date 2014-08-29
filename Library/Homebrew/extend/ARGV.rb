@@ -165,6 +165,8 @@ module HomebrewArgvExtension
     value 'env'
   end
 
+  private
+
   def spec
     if include?("--HEAD")
       :head
@@ -174,8 +176,6 @@ module HomebrewArgvExtension
       :stable
     end
   end
-
-  private
 
   def downcased_unique_named
     # Only lowercase names, not paths or URLs
