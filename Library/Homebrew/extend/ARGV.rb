@@ -136,7 +136,7 @@ module HomebrewArgvExtension
 
   def flag? flag
     options_only.any? do |arg|
-      arg == flag || arg[1..1] != '-' && arg.include?(flag[2..2])
+      arg == flag || arg[1, 1] != "-" && arg.include?(flag[2, 1])
     end
   end
 
@@ -148,7 +148,7 @@ module HomebrewArgvExtension
   def switch? switch_character
     return false if switch_character.length > 1
     options_only.any? do |arg|
-      arg[1..1] != '-' && arg.include?(switch_character)
+      arg[1, 1] != "-" && arg.include?(switch_character)
     end
   end
 
