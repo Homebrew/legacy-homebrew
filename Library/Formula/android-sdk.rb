@@ -2,7 +2,7 @@ require 'formula'
 
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r22.2.1-macosx.zip'
+  url 'https://dl.google.com/android/android-sdk_r22.2.1-macosx.zip'
   version '22.2.1'
   sha1 '2ed180127529e9130923977591d65c08529bc315'
 
