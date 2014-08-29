@@ -72,6 +72,7 @@ begin
              'up' => 'update',
              'ln' => 'link',
              'instal' => 'install', # gem does the same
+             'i' => 'install',
              'rm' => 'uninstall',
              'remove' => 'uninstall',
              'configure' => 'diy',
