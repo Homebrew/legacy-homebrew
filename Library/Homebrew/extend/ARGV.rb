@@ -135,9 +135,7 @@ module HomebrewArgvExtension
   end
 
   def flag? flag
-    options_only.any? do |arg|
-      arg == flag || arg[1, 1] != "-" && arg.include?(flag[2, 1])
-    end
+    options_only.include?(flag) || switch?(flag[2, 1])
   end
 
   def force_bottle?
@@ -145,11 +143,9 @@ module HomebrewArgvExtension
   end
 
   # eg. `foo -ns -i --bar` has three switches, n, s and i
-  def switch? switch_character
-    return false if switch_character.length > 1
-    options_only.any? do |arg|
-      arg[1, 1] != "-" && arg.include?(switch_character)
-    end
+  def switch? char
+    return false if char.length > 1
+    options_only.any? { |arg| arg[1, 1] != "-" && arg.include?(char) }
   end
 
   def usage
