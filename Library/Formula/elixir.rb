@@ -29,6 +29,12 @@ class Elixir < Formula
   url  'https://github.com/elixir-lang/elixir/archive/v0.15.1.tar.gz'
   sha1 '687287226c1e3412f33aa21d5c9711f3b5e7e1fb'
 
+  devel do
+    url 'https://github.com/elixir-lang/elixir/archive/v1.0.0-rc1.tar.gz'
+    sha1 'cdf0bbef9b798bd204a363741fb200f7a14c2b01'
+    version '1.0.0-rc1'
+  end
+
   head 'https://github.com/elixir-lang/elixir.git'
 
   bottle do
