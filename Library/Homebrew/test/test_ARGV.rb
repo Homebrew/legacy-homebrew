@@ -30,6 +30,11 @@ class ArgvExtensionTests < Homebrew::TestCase
     assert_equal %w[--foo -vds], @argv.options_only
   end
 
+  def test_flags_only
+    @argv << "--foo" << "-vds" << "a" << "b" << "cdefg"
+    assert_equal %w[--foo], @argv.flags_only
+  end
+
   def test_empty_argv
     assert_empty @argv.named
     assert_empty @argv.kegs
