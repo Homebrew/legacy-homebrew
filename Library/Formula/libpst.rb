@@ -4,6 +4,7 @@ class Libpst < Formula
   homepage 'http://www.five-ten-sg.com/libpst/'
   url 'http://www.five-ten-sg.com/libpst/packages/libpst-0.6.55.tar.gz'
   sha1 'c81df95509494c99222b0b603f7500dd9caceff1'
+  revision 1
 
   bottle do
     cellar :any
@@ -17,12 +18,8 @@ class Libpst < Formula
 
   depends_on :python => :optional
   depends_on 'gd' if build.include? 'pst2dii'
-
-  if build.with? "python"
-    depends_on "boost" => "with-python"
-  else
-    depends_on "boost"
-  end
+  depends_on "boost"
+  depends_on "boost-python" if build.with? "python"
 
   def install
     args = %W[

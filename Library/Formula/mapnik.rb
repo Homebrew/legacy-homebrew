@@ -5,7 +5,7 @@ class Mapnik < Formula
   head "https://github.com/mapnik/mapnik.git"
   url "http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2"
   sha1 "e493ad87ca83471374a3b080f760df4b25f7060d"
-  revision 2
+  revision 3
 
   bottle do
     sha1 "dc73959a75ce5dd11e7b03e50b5215179650b768" => :mavericks
@@ -24,7 +24,8 @@ class Mapnik < Formula
   depends_on "proj"
   depends_on "icu4c"
   depends_on "jpeg"
-  depends_on "boost" => "with-python"
+  depends_on "boost"
+  depends_on "boost-python"
   depends_on "gdal" => :optional
   depends_on "postgresql" => :optional
   depends_on "cairo" => :optional
