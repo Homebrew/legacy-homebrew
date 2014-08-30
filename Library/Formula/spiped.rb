@@ -2,20 +2,18 @@ require "formula"
 
 class Spiped < Formula
   homepage "https://www.tarsnap.com/spiped.html"
-  url "https://www.tarsnap.com/spiped/spiped-1.3.1.tgz"
-  sha256 "8a58a983be460b88ed5a105201a0f0afacb83382208761837a62871dcca42fee"
-
-  bottle do
-    cellar :any
-    sha1 "e4d18a28b907ad3a02199b1c72e9c78fbbcc69ec" => :mavericks
-    sha1 "418827b51bda749149b4c0a9fd376f8aba9171d3" => :mountain_lion
-    sha1 "1f320a1a68f9871e93bc669f53761601d2183882" => :lion
-  end
+  url "https://www.tarsnap.com/spiped/spiped-1.4.0.tgz"
+  sha256 "d8fa13a36905337bec97e507e0689f7bbc9e5426b88d588f3ddd3d6c290dcf5f"
 
   depends_on :bsdmake
   depends_on "openssl"
 
   def install
+    # Apply these minor build fixes until they are committed upstream; see
+    # http://mail.tarsnap.com/spiped/msg00098.html .
+    inreplace "POSIX/posix-cflags.sh", /echo "-D(.*)"/, "printf %s \"-D\\1 \""
+    inreplace "Makefile", " make", " ${MAKE}"
+
     man1.mkpath
     system "bsdmake", "BINDIR_DEFAULT=#{bin}", "MAN1DIR=#{man1}", "install"
     doc.install "spiped/README" => "README.spiped",
