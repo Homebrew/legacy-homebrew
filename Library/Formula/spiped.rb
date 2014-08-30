@@ -9,7 +9,8 @@ class Spiped < Formula
   depends_on "openssl"
 
   def install
-    # Apply these minor build fixes until they are committed upstream.
+    # Apply these minor build fixes until they are committed upstream; see
+    # http://mail.tarsnap.com/spiped/msg00098.html .
     inreplace "POSIX/posix-cflags.sh", /echo "-D(.*)"/, "printf %s \"-D\\1 \""
     inreplace "Makefile", " make", " ${MAKE}"
 
