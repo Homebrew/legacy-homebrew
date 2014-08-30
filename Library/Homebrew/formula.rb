@@ -260,11 +260,8 @@ class Formula
         # we allow formulae to do anything they want to the Ruby process
         # so load any deps before this point! And exit asap afterwards
         yield self
-      rescue RuntimeError, SystemCallError
-        %w(config.log CMakeCache.txt).each do |fn|
-          (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
-        end
-        raise
+      ensure
+        (HOMEBREW_LOGS+name).install Dir["config.log", "CMakeCache.txt"]
       end
     end
   end
