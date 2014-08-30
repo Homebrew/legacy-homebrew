@@ -2,15 +2,16 @@ require "formula"
 
 class Ejabberd < Formula
   homepage "http://www.ejabberd.im"
-  url "https://www.process-one.net/downloads/ejabberd/14.05/ejabberd-14.05.tgz"
-  sha1 "bad6b91ca6b9ac30ffe8b2eb0c5bb759d7742fab"
+  url "https://www.process-one.net/downloads/ejabberd/14.07/ejabberd-14.07.tgz"
+  sha1 "321b28faedbc28f80664d4b301424b118dd0bad0"
+  revision 1
 
   head 'https://github.com/processone/ejabberd.git'
 
   bottle do
-    sha1 "deabd8e0139e5d1d7468a638f81324ad5d9e7800" => :mavericks
-    sha1 "02cf33e5c0d20403fd78c05d71a647041801e48c" => :mountain_lion
-    sha1 "f8cf33f1dea0a9b8edd9bc8015a0dbf4212dd5ae" => :lion
+    sha1 "059ccab62554453458e922aee4ba753287ed2098" => :mavericks
+    sha1 "b739b73fed4312709473a80a637cec8d8c8d37dc" => :mountain_lion
+    sha1 "df284f6d0ce9d5eb86754b59e6ff2a598d847984" => :lion
   end
 
   option "32-bit"

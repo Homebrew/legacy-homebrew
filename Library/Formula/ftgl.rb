@@ -19,9 +19,6 @@ class Ftgl < Formula
                           "--with-glut-inc=/dev/null",
                           "--with-glut-lib=/dev/null"
 
-    # Hack the package info
-    inreplace "ftgl.pc", "Requires.private: freetype2\n", ""
-
     system "make install"
   end
 end

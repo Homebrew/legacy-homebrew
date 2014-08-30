@@ -4,12 +4,12 @@ class Ghc < Formula
   homepage "http://haskell.org/ghc/"
   url "http://www.haskell.org/ghc/dist/7.6.3/ghc-7.6.3-src.tar.bz2"
   sha1 "8938e1ef08b37a4caa071fa169e79a3001d065ff"
-  revision 2
+  revision 3
 
   bottle do
-    sha1 "4f06ef60e2b861f990199cd33c09a3441297b891" => :mavericks
-    sha1 "f64a9492c0294dec39110e947dc344a53465c1fd" => :mountain_lion
-    sha1 "9a0055ba5bdc9a78a8131618a9fd02404ad053d3" => :lion
+    sha1 "75efb035488ce9f3119e621748370795d454f9c6" => :mavericks
+    sha1 "f288ec14e98973866babaf6aa63ceb612e39750c" => :mountain_lion
+    sha1 "73e1732a5e09557084bf25c5e1a6fbb17c5d3ee1" => :lion
   end
 
   option "32-bit"

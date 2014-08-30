@@ -2,18 +2,20 @@ require "formula"
 
 class Mongodb < Formula
   homepage "http://www.mongodb.org/"
-  url "http://downloads.mongodb.org/src/mongodb-src-r2.6.1.tar.gz"
-  sha1 "3e069329e93a45f14bb86618eceea08d376dbc82"
+  url "http://downloads.mongodb.org/src/mongodb-src-r2.6.4.tar.gz"
+  sha1 "16dda6d8b1156194fc09b5ad72e58612d06abada"
+  revision 1
 
   bottle do
-    sha1 "091cafed1db9c96b4487a806f61df8ba0c3523b4" => :mavericks
-    sha1 "3a91d1ed6e1e75f48e6fc241a0cc3fba9d8aa810" => :mountain_lion
-    sha1 "3ffe58f9e71dfd0700e08651f272f7a511dbb8d2" => :lion
+    revision 1
+    sha1 "f0d3195b48bbfa726f7c263a841610f5e96d3527" => :mavericks
+    sha1 "d4cb743f2d8bd7c72846f361199e5e6021724d9f" => :mountain_lion
+    sha1 "d03344c6d6bea73d8480af83b32f0337d35df5d9" => :lion
   end
 
   devel do
-    url "http://downloads.mongodb.org/src/mongodb-src-r2.7.1.tar.gz"
-    sha1 "c38646cdc0452eabe78c088c61e0f3d4cd87e1ec"
+    url "http://downloads.mongodb.org/src/mongodb-src-r2.7.5.tar.gz"
+    sha1 "e7e38a6fec1fde1bb8ee50674089c909b428a48c"
   end
 
   head "https://github.com/mongodb/mongo.git"
@@ -21,6 +23,7 @@ class Mongodb < Formula
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
   depends_on "boost" => :optional
 
+  depends_on :macos => :snow_leopard
   depends_on "scons" => :build
   depends_on "openssl" => :optional
 
@@ -53,15 +56,14 @@ class Mongodb < Formula
   end
 
   def mongodb_conf; <<-EOS.undent
-    # Store data in #{var}/mongodb instead of the default /data/db
-    dbpath = #{var}/mongodb
-
-    # Append logs to #{var}/log/mongodb/mongo.log
-    logpath = #{var}/log/mongodb/mongo.log
-    logappend = true
-
-    # Only accept local connections
-    bind_ip = 127.0.0.1
+    systemLog:
+      destination: file
+      path: #{var}/log/mongodb/mongo.log
+      logAppend: true
+    storage:
+      dbPath: #{var}/mongodb
+    net:
+      bindIp: 127.0.0.1
     EOS
   end
 

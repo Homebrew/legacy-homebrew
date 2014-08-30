@@ -2,15 +2,15 @@ require "formula"
 
 class Iperf3 < Formula
   homepage "https://github.com/esnet/iperf"
-  url "https://github.com/esnet/iperf/archive/3.0.3.tar.gz"
-  sha1 "1461028a6827ed1557cd60f15e11f9b817ea590f"
+  url "https://github.com/esnet/iperf/archive/3.0.6.tar.gz"
+  sha1 "b60f71cc64a0178a31be1188fd6e31622b70e015"
   head "https://code.google.com/p/iperf/", :using => :hg
 
   bottle do
     cellar :any
-    sha1 "fbe17a1cf116ab49f9d1cabd13c44776c9d69b63" => :mavericks
-    sha1 "3adad231ab741175c1b8ef7c9e65177ebe732b8b" => :mountain_lion
-    sha1 "ccee12f33d9d2f786e8d5a1fdf05a6725134e8d9" => :lion
+    sha1 "d221831fa53d4af1769e520547172d9c4fa9001f" => :mavericks
+    sha1 "3c00b2fecdd5e91d3787b0cc93272ab0f2b082d3" => :mountain_lion
+    sha1 "4404c405c492cb18eaa4d7c8f02b3710f80c441c" => :lion
   end
 
   def install

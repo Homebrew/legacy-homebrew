@@ -14,18 +14,33 @@ class Cloog < Formula
     sha1 'fd707268c3e5beafa9b98a768f7064d5b9699178' => :lion
   end
 
+  head do
+    url 'http://repo.or.cz/r/cloog.git'
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'gmp'
   depends_on 'isl'
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--with-gmp=system",
-                          "--with-gmp-prefix=#{Formula["gmp"].opt_prefix}",
-                          "--with-isl=system",
-                          "--with-isl-prefix=#{Formula["isl"].opt_prefix}"
+    system "./autogen.sh" if build.head?
+
+    args = [
+      "--disable-dependency-tracking",
+      "--disable-silent-rules",
+      "--prefix=#{prefix}",
+      "--with-gmp=system",
+      "--with-gmp-prefix=#{Formula["gmp"].opt_prefix}",
+      "--with-isl=system",
+      "--with-isl-prefix=#{Formula["isl"].opt_prefix}"
+    ]
+
+    args << "--with-osl=bundled" if build.head?
+
+    system "./configure", *args
     system "make install"
   end
 
@@ -46,11 +61,7 @@ class Cloog < Formula
       0
     EOS
 
-    require 'open3'
-    Open3.popen3("#{bin}/cloog", "/dev/stdin") do |stdin, stdout, _|
-      stdin.write(cloog_source)
-      stdin.close
-      assert_match /Generated from \/dev\/stdin by CLooG/, stdout.read
-    end
+    output = pipe_output("#{bin}/cloog /dev/stdin", cloog_source)
+    assert_match /Generated from \/dev\/stdin by CLooG/, output
   end
 end

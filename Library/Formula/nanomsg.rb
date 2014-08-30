@@ -2,8 +2,8 @@ require 'formula'
 
 class Nanomsg < Formula
   homepage 'http://nanomsg.org'
-  url 'http://download.nanomsg.org/nanomsg-0.3-beta.tar.gz'
-  sha1 '3ca5a9655a96bb3194648b0ab7530d15e0afdbae'
+  url 'http://download.nanomsg.org/nanomsg-0.4-beta.tar.gz'
+  sha1 'a511f19f8574875e8e43f7ba27f7951f67fbe161'
 
   head do
     url 'https://github.com/nanomsg/nanomsg.git'
@@ -18,7 +18,7 @@ class Nanomsg < Formula
   option 'without-nanocat', 'Do not install nanocat tool'
   option 'with-debug', 'Compile with debug symbols'
 
-  depends_on 'pkg-config'=> :build
+  depends_on 'pkg-config' => :build
 
   if build.with? 'doc'
     depends_on 'asciidoc' => :build

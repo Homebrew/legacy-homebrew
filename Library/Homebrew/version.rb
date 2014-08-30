@@ -11,7 +11,7 @@ class Version
     end
 
     def inspect
-      "#<#{self.class} #{value.inspect}>"
+      "#<#{self.class.name} #{value.inspect}>"
     end
 
     def to_s
@@ -36,7 +36,7 @@ class Version
     end
 
     def inspect
-      "#<#{self.class}>"
+      "#<#{self.class.name}>"
     end
   end
 

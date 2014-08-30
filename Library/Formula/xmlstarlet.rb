@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Xmlstarlet < Formula
-  homepage 'http://xmlstar.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/xmlstar/xmlstarlet/1.5.0/xmlstarlet-1.5.0.tar.gz'
-  sha1 '1490f93fa04ee9636a5879e441a9d29dd63229f1'
+  homepage "http://xmlstar.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/xmlstar/xmlstarlet/1.6.1/xmlstarlet-1.6.1.tar.gz"
+  sha1 "87bb104f546caca71b9540807c5b2738944cb219"
 
   def install
     system "./configure", "--disable-dependency-tracking",

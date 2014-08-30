@@ -2,8 +2,16 @@ require "formula"
 
 class Phantomjs < Formula
   homepage "http://www.phantomjs.org/"
-  url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip"
-  sha1 "124b017d493d5ccabd22afaf078d0650ac048840"
+
+  stable do
+    url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip"
+    sha1 "124b017d493d5ccabd22afaf078d0650ac048840"
+
+    patch do
+      url "https://github.com/ariya/phantomjs/commit/fe6a96.diff"
+      sha1 "d3efd38e0f3f0da08530d0bf603ea72ebdf06b78"
+    end
+  end
 
   bottle do
     cellar :any
@@ -13,13 +21,14 @@ class Phantomjs < Formula
     sha1 "273dbe33d1edbdd034c903d919278d33d7ebe5dd" => :lion
   end
 
-  patch do
-    url "https://github.com/ariya/phantomjs/commit/fe6a96.diff"
-    sha1 "d3efd38e0f3f0da08530d0bf603ea72ebdf06b78"
+  head do
+    url "https://github.com/ariya/phantomjs.git"
   end
 
   def install
-    inreplace "src/qt/preconfig.sh", "-arch x86", "-arch x86_64" if MacOS.prefer_64_bit?
+    if build.stable? && MacOS.prefer_64_bit?
+      inreplace "src/qt/preconfig.sh", "-arch x86", "-arch x86_64"
+    end
     system "./build.sh", "--confirm", "--jobs", ENV.make_jobs
     bin.install "bin/phantomjs"
     (share+"phantomjs").install "examples"
@@ -32,8 +41,6 @@ class Phantomjs < Formula
       phantom.exit();
     EOS
 
-    output = `#{bin}/phantomjs #{path}`.strip
-    assert_equal "hello", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "hello", shell_output("#{bin}/phantomjs #{path}").strip
   end
 end

@@ -12,10 +12,7 @@ class GitTracker < Formula
   end
 
   test do
-    require 'open3'
-    Open3.popen3("#{bin}/git-tracker", "help") do |_, stdout, _|
-      install_message = /\Agit-tracker \d+(\.\d+)* is installed\.\z/
-      assert install_message.match(stdout.readline.strip), "git-tracker is not installed"
-    end
+    output = shell_output("#{bin}/git-tracker help")
+    assert_match /git-tracker \d+(\.\d+)* is installed\./, output
   end
 end

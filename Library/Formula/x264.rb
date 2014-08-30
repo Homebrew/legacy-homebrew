@@ -1,29 +1,28 @@
-require 'formula'
+require "formula"
 
 class X264 < Formula
-  homepage "http://www.videolan.org/developers/x264.html"
+  homepage "https://www.videolan.org/developers/x264.html"
   # the latest commit on the stable branch
-  url "http://git.videolan.org/git/x264.git", :revision => "d7e689680023e327de7e052e01e7faee30135799"
-  version "r2412"
-  head "http://git.videolan.org/git/x264.git"
+  url "https://git.videolan.org/git/x264.git", :revision => "021c0dc6c95c1bc239c9db78a80dd85fc856a4dd"
+  version "r2455"
+  head "https://git.videolan.org/git/x264.git"
 
   devel do
     # the latest commit on the master branch
-    url "http://git.videolan.org/git/x264.git", :revision => "a5831aa256b3161f898d2577d2eb8daa838d88d2"
-    version "r2431"
+    url "https://git.videolan.org/git/x264.git", :revision => "dd79a61e0e354a432907f2d1f7137b27a12dfce7"
+    version "r2479"
   end
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "6372fb019be6bc04374ff0152e8a5b6b84938176" => :mavericks
-    sha1 "ffcc0096d06f4c129c8b71d4c584cd42af2e8572" => :mountain_lion
-    sha1 "002522775ea0f47987b633528b22eb6e3ea5d43b" => :lion
+    sha1 "22085504fe0af795428e8098424534131d025d50" => :mavericks
+    sha1 "d5dab543efc7abb240fff1c194bdae7b82244ee5" => :mountain_lion
+    sha1 "f25f0a7c3ae891c2a229614da345774f93d9e1b7" => :lion
   end
 
-  depends_on 'yasm' => :build
+  depends_on "yasm" => :build
 
-  option '10-bit', 'Build a 10-bit x264 (default: 8-bit)'
+  option "10-bit", "Build a 10-bit x264 (default: 8-bit)"
   option "with-mp4=", "Select mp4 output: none (default), l-smash or gpac"
 
   case ARGV.value "with-mp4"
@@ -43,7 +42,7 @@ class X264 < Formula
     elsif Formula["gpac"].installed?
       args << "--disable-lsmash"
     end
-    args << "--bit-depth=10" if build.include? '10-bit'
+    args << "--bit-depth=10" if build.include? "10-bit"
 
     # For running version.sh correctly
     buildpath.install_symlink cached_download/".git"

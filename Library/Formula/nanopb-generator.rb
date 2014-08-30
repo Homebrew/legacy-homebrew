@@ -5,7 +5,14 @@ class NanopbGenerator < Formula
   url "http://koti.kapsi.fi/~jpa/nanopb/download/nanopb-0.2.7.tar.gz"
   sha1 "7dce0b9e1f9e5d0614697a8ea1678cee76f14858"
 
-  depends_on :python
+  bottle do
+    cellar :any
+    sha1 "17ab08281b2734251b83a6bd771ce9f0c6472d25" => :mavericks
+    sha1 "6f12390b3d7a46d43831b88b6bc5b13effc73eef" => :mountain_lion
+    sha1 "68d97449f3eef3ae25fa9f063457802080bb054d" => :lion
+  end
+
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "protobuf"
 
   resource "protobuf-python" do

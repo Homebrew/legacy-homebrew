@@ -23,9 +23,6 @@ class Nodebrew < Formula
   end
 
   test do
-    IO.popen("nodebrew ls-remote") do |pipe|
-      assert pipe.read.include?("v0.10.0")
-    end
+    assert shell_output("#{bin}/nodebrew ls-remote").include?("v0.10.0")
   end
-
 end

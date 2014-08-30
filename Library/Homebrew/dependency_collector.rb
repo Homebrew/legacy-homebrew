@@ -23,11 +23,15 @@ class DependencyCollector
 
   CACHE = {}
 
+  def self.clear_cache
+    CACHE.clear
+  end
+
   attr_reader :deps, :requirements
 
   def initialize
     @deps = Dependencies.new
-    @requirements = ComparableSet.new
+    @requirements = Requirements.new
   end
 
   def add(spec)
@@ -80,7 +84,7 @@ class DependencyCollector
     when Class
       parse_class_spec(spec, tags)
     else
-      raise TypeError, "Unsupported type #{spec.class} for #{spec.inspect}"
+      raise TypeError, "Unsupported type #{spec.class.name} for #{spec.inspect}"
     end
   end
 
@@ -114,6 +118,7 @@ class DependencyCollector
     # python2 is deprecated
     when :python, :python2 then PythonDependency.new(tags)
     when :python3    then Python3Dependency.new(tags)
+    when :java       then JavaDependency.new(tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
     when :ant        then ant_dep(spec, tags)

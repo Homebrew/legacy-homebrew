@@ -1,31 +1,30 @@
-require 'formula'
+require "formula"
 
 class Postgresql < Formula
-  homepage 'http://www.postgresql.org/'
+  homepage "http://www.postgresql.org/"
+  revision 1
 
   stable do
-    url 'http://ftp.postgresql.org/pub/source/v9.3.4/postgresql-9.3.4.tar.bz2'
-    sha256 '9ee819574dfc8798a448dc23a99510d2d8924c2f8b49f8228cd77e4efc8a6621'
+    url "http://ftp.postgresql.org/pub/source/v9.3.5/postgresql-9.3.5.tar.bz2"
+    sha256 "14176ffb1f90a189e7626214365be08ea2bfc26f26994bafb4235be314b9b4b0"
 
-    # ossp-uuid support cannot be compiled on 9.4beta1:
-    # http://thread.gmane.org/gmane.comp.db.postgresql.devel.general/229339
-    # Will keep it stable-only until the usptream issues are resolved.
-    depends_on 'ossp-uuid' => :recommended
+    # ossp-uuid is no longer required for uuid support since 9.4beta2:
+    depends_on "ossp-uuid" => :recommended
     # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
     patch :DATA
   end
 
   bottle do
-    revision 2
-    sha1 "a97e4f9364fd4518cc492135ac11832d4f8001c6" => :mavericks
-    sha1 "5c10d677a07a8055bfd21f94633f6d897e4a60f7" => :mountain_lion
-    sha1 "7da81a9d1dd086d6b1403d9a508d5871c85d2892" => :lion
+    revision 1
+    sha1 "d298f4cd7fffa6b8b879ccc2c6d32fc191be41ed" => :mavericks
+    sha1 "c5c5d23e95c1950d4b33865b8ebdce28b4e6706f" => :mountain_lion
+    sha1 "860395322283401cfc1d0694984c272546f21fa9" => :lion
   end
 
   devel do
-    url 'http://ftp.postgresql.org/pub/source/v9.4beta1/postgresql-9.4beta1.tar.bz2'
-    version '9.4beta1'
-    sha256 '0e088eff79bb5171b2233222a25d7a2906eaf62aa86266daf6ec5217b1797f47'
+    url 'http://ftp.postgresql.org/pub/source/v9.4beta2/postgresql-9.4beta2.tar.bz2'
+    version '9.4beta2'
+    sha256 '567406cf58386917916d8ef7ac892bf79e98742cd16909bb00fc920dd31a388c'
   end
 
   option '32-bit'
@@ -69,11 +68,14 @@ class Postgresql < Formula
     args << "--with-tcl" unless build.include? 'no-tcl'
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
 
-    if build.stable? && build.with?("ossp-uuid")
+    if build.with?("ossp-uuid")
       args << "--with-ossp-uuid"
       ENV.append 'CFLAGS', `uuid-config --cflags`.strip
       ENV.append 'LDFLAGS', `uuid-config --ldflags`.strip
       ENV.append 'LIBS', `uuid-config --libs`.strip
+    elsif build.devel?
+      # Apple's UUID implementation is compatible with e2fs NOT bsd
+      args << "--with-uuid=e2fs"
     end
 
     if build.build_32_bit?

@@ -12,6 +12,13 @@ require 'cmd/search'
 
 require 'rubygems'
 
+opoo <<-EOS.undent
+  brew server is unsupported and will be removed soon.
+  You should use http://braumeister.org instead.
+  Please feel free volunteer to support it in a tap.
+
+EOS
+
 begin
   require 'sinatra'
 rescue LoadError

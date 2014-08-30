@@ -4,9 +4,15 @@ class Cmus < Formula
   homepage "https://cmus.github.io/"
   head "https://github.com/cmus/cmus.git"
 
+  bottle do
+    sha1 "584b513eda4887a001a6a4613160f1181620ba94" => :mavericks
+    sha1 "b7ff43fa726aff8d9e26f7dbf1d2c136cb416910" => :mountain_lion
+    sha1 "5b455c2550115d65edb2b1ee537b0bdbfd62384e" => :lion
+  end
+
   stable do
-    url "https://github.com/cmus/cmus/archive/v2.5.1.tar.gz"
-    sha1 "fd6c63c7cb405e4b4fea6a737074c454f602c202"
+    url "https://github.com/cmus/cmus/archive/v2.6.0.tar.gz"
+    sha1 "aba00eb75335532c0413f7c819c2e2d12fcd4314"
   end
 
   devel do

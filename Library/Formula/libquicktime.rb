@@ -5,6 +5,12 @@ class Libquicktime < Formula
   url 'https://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.4/libquicktime-1.2.4.tar.gz'
   sha1 '7008b2dc27b9b40965bd2df42d39ff4cb8b6305e'
 
+  bottle do
+    sha1 "7fdbf524e3218f388a4c4c5d09d379e6ec683e80" => :mavericks
+    sha1 "0ae156b34f1f9a66ca5a5ec44da3eb48af82d8cf" => :mountain_lion
+    sha1 "2abb322988a814ae09d6c6f1577fad08ac3a0ca3" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on 'gettext'
   depends_on 'jpeg' => :optional

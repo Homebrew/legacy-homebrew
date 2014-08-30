@@ -98,3 +98,29 @@ class GitDependency < Requirement
   default_formula 'git'
   satisfy { !!which('git') }
 end
+
+class JavaDependency < Requirement
+  fatal true
+  satisfy { java_version }
+
+  def initialize(tags)
+    @version = tags.pop
+    super
+  end
+
+  def java_version
+    version_flag = " --version #{@version}+" if @version
+    quiet_system "/usr/libexec/java_home --failfast#{version_flag}"
+  end
+
+  def message
+    version_string = " #{@version}" if @version
+
+    <<-EOS.undent
+      Java#{version_string} is required for Homebrew to install this formula.
+
+      You can install Java from:
+        http://www.oracle.com/technetwork/java/javase/downloads/index.html
+    EOS
+  end
+end

@@ -1,4 +1,4 @@
-module Homebrew extend self
+module Homebrew
   def unlink
     raise KegUnspecifiedError if ARGV.named.empty?
 

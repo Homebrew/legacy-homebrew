@@ -1,22 +1,22 @@
-require 'formula'
+require "formula"
 
 class Fleetctl < Formula
-  homepage 'https://github.com/coreos/fleet'
-  url 'https://github.com/coreos/fleet/archive/v0.4.0.tar.gz'
-  sha1 '153dd05ae4c317051cab2921cda62784ee0d0521'
-  head 'https://github.com/coreos/fleet.git'
+  homepage "https://github.com/coreos/fleet"
+  url "https://github.com/coreos/fleet/archive/v0.7.1.tar.gz"
+  sha1 "78b072d91845c75613a48c8424c27f1422cceb51"
+  head "https://github.com/coreos/fleet.git"
 
   bottle do
-    sha1 "f27c9d473cb48d1a66fec798df4dfc9f1cad96e9" => :mavericks
-    sha1 "f97e7212091f075757d9f9f7248e09a21601d2bc" => :mountain_lion
-    sha1 "14bbce08085b257a3875cc34ec50a88c11960e45" => :lion
+    sha1 "7fe9d8004545528239bdaa189886ce8dde620368" => :mavericks
+    sha1 "17e53f7304ca738b12a1a76112c1063793a8fb99" => :mountain_lion
+    sha1 "a2c9e731cfb9b4ac3e4b9fa03e0533821a60695f" => :lion
   end
 
-  depends_on 'go' => :build
+  depends_on "go" => :build
 
   def install
-    ENV['GOPATH'] = buildpath
+    ENV["GOPATH"] = buildpath
     system "./build"
-    bin.install 'bin/fleetctl'
+    bin.install "bin/fleetctl"
   end
 end

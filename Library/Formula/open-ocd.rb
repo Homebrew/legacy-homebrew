@@ -14,9 +14,9 @@ class OpenOcd < Formula
     depends_on "texinfo" => :build
   end
 
-  option 'with-hidapi', 'Enable building support for devices using HIDAPI (CMSIS-DAP)'
-  option 'with-libftdi', 'Enable building support for libftdi-based drivers (USB-Blaster, ASIX Presto, OpenJTAG)'
-  option 'with-libusb',  'Enable building support for all other USB adapters'
+  option 'without-hidapi', 'Disable building support for devices using HIDAPI (CMSIS-DAP)'
+  option 'without-libftdi', 'Disable building support for libftdi-based drivers (USB-Blaster, ASIX Presto, OpenJTAG)'
+  option 'without-libusb',  'Disable building support for all other USB adapters'
 
   depends_on 'pkg-config' => :build
   depends_on 'libusb' => :recommended

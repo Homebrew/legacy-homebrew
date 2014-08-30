@@ -1,30 +1,31 @@
-require 'formula'
+require "formula"
 
 class Geoip < Formula
-  homepage 'https://github.com/maxmind/geoip-api-c'
+  homepage "https://github.com/maxmind/geoip-api-c"
 
   stable do
-    url "https://github.com/maxmind/geoip-api-c/releases/download/v1.6.0/GeoIP-1.6.0.tar.gz"
-    sha1 "41ed21fb2d40e54648cae2a1f73e8a5210676def"
+    url "https://github.com/maxmind/geoip-api-c/archive/v1.6.2.tar.gz"
+    sha1 "aa9a91b61667b605f62964c613e15400cbca2cae"
 
     # Download test data so `make check` works. Fixed in HEAD.
     # See https://github.com/maxmind/geoip-api-c/commit/722707cc3a0adc06aec3e98bc36e7262f67ec0da
     patch :DATA
   end
 
-  head 'https://github.com/maxmind/geoip-api-c.git'
+  head "https://github.com/maxmind/geoip-api-c.git"
 
   bottle do
     cellar :any
-    sha1 "f342950837e46ac3ba90be79c77c8c770fbc9c2d" => :mavericks
-    sha1 "f3b27eb5aef8815b2c01f03938e5c8f7af8d1371" => :mountain_lion
-    sha1 "a39b59af4ee01c7a1e224e9d98ee83d2230f7993" => :lion
+    revision 1
+    sha1 "3ebd898cb31012b641b471b4cf5cd537f9226afd" => :mavericks
+    sha1 "d3798825d01b45a40e6015e637f82965dbe49fdc" => :mountain_lion
+    sha1 "ba096b834f4c251c2b6c6d63349574aab3a336fb" => :lion
   end
 
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
-  depends_on 'geoipupdate' => :optional
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "geoipupdate" => :optional
 
   option :universal
 
@@ -54,11 +55,10 @@ class Geoip < Formula
     legacy_data = Pathname.new "#{HOMEBREW_PREFIX}/share/GeoIP"
     cp Dir["#{legacy_data}/*"], geoip_data if legacy_data.exist?
 
-    ["City", "Country"].each do |type|
-      full = Pathname.new "#{geoip_data}/GeoIP#{type}.dat"
-      next if full.exist? or full.symlink?
-      ln_s "GeoLite#{type}.dat", full
-    end
+    full = Pathname.new "#{geoip_data}/GeoIP.dat"
+    ln_s "GeoLiteCountry.dat", full unless full.exist? or full.symlink?
+    full = Pathname.new "#{geoip_data}/GeoIPCity.dat"
+    ln_s "GeoLiteCity.dat", full unless full.exist? or full.symlink?
   end
 
   test do

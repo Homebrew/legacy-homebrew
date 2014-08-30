@@ -2,12 +2,12 @@ require "formula"
 
 class SwiProlog < Formula
   homepage "http://www.swi-prolog.org/"
-  url "http://www.swi-prolog.org/download/stable/src/pl-6.6.5.tar.gz"
-  sha1 "ae86b29f1b78a4c1530990a761fefb0c86ba57f2"
+  url "http://www.swi-prolog.org/download/stable/src/pl-6.6.6.tar.gz"
+  sha1 "38cc6772a48fd412f50fc06e24e6e4673eb71d3b"
 
   devel do
-    url "http://www.swi-prolog.org/download/devel/src/pl-7.1.15.tar.gz"
-    sha1 "3e15af545f3d528b2ad7d9eac0b833fd86880dd8"
+    url "http://www.swi-prolog.org/download/devel/src/pl-7.1.21.tar.gz"
+    sha1 "8babb3a043aaa29f17d15a34cf8b7d3891967d0d"
   end
 
   head do
@@ -20,12 +20,12 @@ class SwiProlog < Formula
   option "with-jpl", "Enable JPL (Java Prolog Bridge)"
   option "with-xpce", "Enable XPCE (Prolog Native GUI Library)"
 
+  depends_on "pkg-config" => :build
   depends_on "readline"
   depends_on "gmp"
   depends_on "libarchive" => :optional
 
   if build.with? "xpce"
-    depends_on "pkg-config" => :build
     depends_on :x11
     depends_on "jpeg"
   end

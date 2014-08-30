@@ -1,7 +1,7 @@
 require 'formula'
 
 class Libevent < Formula
-  homepage 'http://www.monkey.org/~provos/libevent/'
+  homepage 'http://libevent.org'
   url 'https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz'
   sha1 '3e6674772eb77de24908c6267c698146420ab699'
 
@@ -13,7 +13,7 @@ class Libevent < Formula
   end
 
   head do
-    url 'git://levent.git.sourceforge.net/gitroot/levent/levent'
+    url 'https://github.com/libevent/libevent.git'
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

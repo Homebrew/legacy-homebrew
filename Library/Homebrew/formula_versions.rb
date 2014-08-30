@@ -1,3 +1,5 @@
+require "formula"
+
 class FormulaVersions
   IGNORED_EXCEPTIONS = [
     ArgumentError, NameError, SyntaxError, TypeError,
@@ -11,8 +13,8 @@ class FormulaVersions
   end
 
   def repository
-    @repository ||= if f.path.to_s =~ HOMEBREW_TAP_DIR_REGEX
-      HOMEBREW_REPOSITORY/"Library/Taps/#$1/#$2"
+    @repository ||= if f.tap?
+      HOMEBREW_LIBRARY.join("Taps", f.tap)
     else
       HOMEBREW_REPOSITORY
     end
@@ -37,7 +39,7 @@ class FormulaVersions
 
   def rev_list(branch="HEAD")
     repository.cd do
-      IO.popen("git rev-list --abbrev-commit --remove-empty #{branch} -- #{entry_name}") do |io|
+      Utils.popen_read("git", "rev-list", "--abbrev-commit", "--remove-empty", branch, "--", entry_name) do |io|
         yield io.readline.chomp until io.eof?
       end
     end
@@ -52,13 +54,13 @@ class FormulaVersions
   end
 
   def formula_at_revision rev, &block
-    f.mktemp do
+    FileUtils.mktemp(f.name) do
       path = Pathname.pwd.join("#{f.name}.rb")
       path.write file_contents_at_revision(rev)
 
       begin
         old_const = Formulary.unload_formula(f.name)
-        nostdout { yield Formula.factory(path.to_s) }
+        nostdout { yield Formulary.factory(path.to_s) }
       rescue *IGNORED_EXCEPTIONS => e
         # We rescue these so that we can skip bad versions and
         # continue walking the history

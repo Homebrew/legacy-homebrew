@@ -44,6 +44,12 @@ Usage: brew #{NAME}
   USAGE
 end
 
+opoo <<-EOS.undent
+  brew bundle-dir is unsupported and will be removed soon.
+  Please feel free volunteer to support it in a tap.
+
+EOS
+
 # command.
 command = ARGV.first
 

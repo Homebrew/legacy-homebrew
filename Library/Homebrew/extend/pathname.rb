@@ -35,6 +35,8 @@ class Pathname
   end
 
   def install_p src, new_basename = nil
+    raise Errno::ENOENT, src.to_s unless File.symlink?(src) || File.exist?(src)
+
     if new_basename
       new_basename = File.basename(new_basename) # rationale: see Pathname.+
       dst = self+new_basename
@@ -45,22 +47,18 @@ class Pathname
     src = src.to_s
     dst = dst.to_s
 
-    # if it's a symlink, don't resolve it to a file because if we are moving
-    # files one by one, it's likely we will break the symlink by moving what
-    # it points to before we move it
-    # and also broken symlinks are not the end of the world
-    raise "#{src} does not exist" unless File.symlink? src or File.exist? src
-
     dst = yield(src, dst) if block_given?
+    return unless dst
 
     mkpath
+
+    # Use FileUtils.mv over File.rename to handle filesystem boundaries. If src
+    # is a symlink, and its target is moved first, FileUtils.mv will fail:
+    #   https://bugs.ruby-lang.org/issues/7707
+    # In that case, use the system "mv" command.
     if File.symlink? src
-      # we use the BSD mv command because FileUtils copies the target and
-      # not the link! I'm beginning to wish I'd used Python quite honestly!
       raise unless Kernel.system 'mv', src, dst
     else
-      # we mv when possible as it is faster and you should only be using
-      # this function when installing from the temporary build directory
       FileUtils.mv src, dst
     end
   end
@@ -90,11 +88,19 @@ class Pathname
 
   # we assume this pathname object is a file obviously
   alias_method :old_write, :write if method_defined?(:write)
-  def write content
+  def write(content, *open_args)
     raise "Will not overwrite #{to_s}" if exist?
     dirname.mkpath
-    File.open(self, 'w') {|f| f.write content }
+    open("w", *open_args) { |f| f.write(content) }
   end
+
+  def binwrite(contents, *open_args)
+    open("wb", *open_args) { |f| f.write(contents) }
+  end unless method_defined?(:binwrite)
+
+  def binread(*open_args)
+    open("rb", *open_args) { |f| f.read }
+  end unless method_defined?(:binread)
 
   # NOTE always overwrites
   def atomic_write content
@@ -132,6 +138,7 @@ class Pathname
   private :default_stat
 
   def cp dst
+    opoo "Pathname#cp is deprecated, use FileUtils.cp"
     if file?
       FileUtils.cp to_s, dst
     else
@@ -194,6 +201,7 @@ class Pathname
   end
 
   def chmod_R perms
+    opoo "Pathname#chmod_R is deprecated, use FileUtils.chmod_R"
     require 'fileutils'
     FileUtils.chmod_R perms, to_s
   end
@@ -244,11 +252,15 @@ class Pathname
     %r[^#!\s*\S+] === open('r') { |f| f.read(1024) }
   end
 
-  def incremental_hash(hasher)
-    incr_hash = hasher.new
-    buf = ""
-    open('rb') { |f| incr_hash << buf while f.read(1024, buf) }
-    incr_hash.hexdigest
+  def incremental_hash(klass)
+    digest = klass.new
+    if digest.respond_to?(:file)
+      digest.file(self)
+    else
+      buf = ""
+      open("rb") { |f| digest << buf while f.read(1024, buf) }
+    end
+    digest.hexdigest
   end
 
   def sha1
@@ -267,9 +279,8 @@ class Pathname
     raise ChecksumMismatchError.new(self, expected, actual) unless expected == actual
   end
 
-  if '1.9' <= RUBY_VERSION
-    alias_method :to_str, :to_s
-  end
+  # FIXME eliminate the places where we rely on this method
+  alias_method :to_str, :to_s unless method_defined?(:to_str)
 
   def cd
     Dir.chdir(self){ yield }
@@ -297,8 +308,12 @@ class Pathname
     File.symlink(src.relative_path_from(dirname), self)
   end
 
-  def / that
-    self + that.to_s
+  def /(other)
+    unless other.respond_to?(:to_str) || other.respond_to?(:to_path)
+      opoo "Pathname#/ called on #{inspect} with #{other.inspect} as an argument"
+      puts "This behavior is deprecated, please pass either a String or a Pathname"
+    end
+    self + other.to_s
   end unless method_defined?(:/)
 
   def ensure_writable
@@ -321,7 +336,7 @@ class Pathname
   end
 
   def find_formula
-    [self/:Formula, self/:HomebrewFormula, self].each do |d|
+    [join("Formula"), join("HomebrewFormula"), self].each do |d|
       if d.exist?
         d.children.each do |pn|
           yield pn if pn.extname == ".rb"
@@ -338,6 +353,7 @@ class Pathname
       opoo "tried to write exec scripts to #{self} for an empty list of targets"
       return
     end
+    mkpath
     targets.each do |target|
       target = Pathname.new(target) # allow pathnames or strings
       (self+target.basename()).write <<-EOS.undent
@@ -351,6 +367,7 @@ class Pathname
   def write_env_script target, env
     env_export = ''
     env.each {|key, value| env_export += "#{key}=\"#{value}\" "}
+    dirname.mkpath
     self.write <<-EOS.undent
     #!/bin/bash
     #{env_export}exec "#{target}" "$@"
@@ -369,6 +386,7 @@ class Pathname
 
   # Writes an exec script that invokes a java jar
   def write_jar_script target_jar, script_name, java_opts=""
+    mkpath
     (self+script_name).write <<-EOS.undent
       #!/bin/bash
       exec java #{java_opts} -jar #{target_jar} "$@"
@@ -392,8 +410,8 @@ class Pathname
   def abv
     out=''
     n=`find #{to_s} -type f ! -name .DS_Store | wc -l`.to_i
-    out<<"#{n} files, " if n > 1
-    out<<`/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
+    out << "#{n} files, " if n > 1
+    out << `/usr/bin/du -hs #{to_s} | cut -d"\t" -f1`.strip
   end
 
   # We redefine these private methods in order to add the /o modifier to

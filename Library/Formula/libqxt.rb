@@ -5,6 +5,12 @@ class Libqxt < Formula
   url 'http://dev.libqxt.org/libqxt/get/v0.6.2.tar.gz'
   sha1 'e72a115895d6469972d3f1464bebeab72c497244'
 
+  bottle do
+    sha1 "fcd599202e9f735bb09798a4a77666b7adc2a5fc" => :mavericks
+    sha1 "427bf5b836ed35122f700d76c5706eff1aba9f33" => :mountain_lion
+    sha1 "b03a4f46f4a8339dbaf998444ac4feb8007579fa" => :lion
+  end
+
   depends_on 'qt'
   depends_on 'berkeley-db' => :optional
 

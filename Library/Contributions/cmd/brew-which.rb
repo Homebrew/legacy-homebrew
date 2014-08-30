@@ -1,8 +1,18 @@
 require 'extend/pathname'
 
-
-module Homebrew extend self
+module Homebrew
   def which_versions which_brews=nil
+    opoo <<-EOS.undent
+      brew which is unsupported and will be removed soon.
+
+      You should use `brew list --versions` instead.
+      To query other formula information see:
+        https://github.com/Homebrew/homebrew/wiki/Querying-Brew
+
+      Please feel free volunteer to support it in a tap.
+
+    EOS
+
     brew_links = Array.new
     version_map = Hash.new
 

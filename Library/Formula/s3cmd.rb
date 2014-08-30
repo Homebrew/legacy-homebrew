@@ -7,9 +7,9 @@ class S3cmd < Formula
   head 'https://github.com/s3tools/s3cmd.git'
 
   devel do
-    url 'https://github.com/s3tools/s3cmd/archive/v1.5.0-beta1.tar.gz'
-    sha1 '3b5c299518cdfdd4adb81e843514865742082e82'
-    version "1.5.0-beta1"
+    url 'https://github.com/s3tools/s3cmd/archive/v1.5.0-rc1.tar.gz'
+    sha1 '49ce9e6d81b3697529e6a4b9749b1c6862c1751f'
+    version "1.5.0-rc1"
   end
 
   bottle do

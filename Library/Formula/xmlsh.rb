@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Xmlsh < Formula
-  homepage 'http://www.xmlsh.org'
-  url 'https://downloads.sourceforge.net/project/xmlsh/xmlsh/1.2.4/xmlsh_1_2_4.zip'
-  sha1 'ef11e6fa3d72d99b78331a4ab58a22b1ad08b4ef'
+  homepage "http://www.xmlsh.org"
+  url "https://downloads.sourceforge.net/project/xmlsh/xmlsh/1.2.5/xmlsh_1_2_5.zip"
+  sha1 "3bce1c66eab4795f24abec56c025fd184a5321c4"
 
   def install
     rm_rf %w[win32 cygwin]
@@ -17,8 +17,7 @@ class Xmlsh < Formula
   end
 
   test do
-    out = `#{bin}/xmlsh -c 'x=<[<foo bar="baz" />]> && echo <[$x/@bar]>'`
-    assert_equal "baz\n", out
-    assert_equal 0, $?.exitstatus
+    output = shell_output("#{bin}/xmlsh -c 'x=<[<foo bar=\"baz\" />]> && echo <[$x/@bar]>'")
+    assert_equal "baz\n", output
   end
 end

@@ -2,15 +2,15 @@ require "formula"
 
 class Emscripten < Formula
   homepage "http://emscripten.org"
-  url "https://github.com/kripken/emscripten/archive/1.16.0.tar.gz"
-  sha1 "e23bec39c32eb2ccfe889e320cd8da132a4bbf51"
+  url "https://github.com/kripken/emscripten/archive/1.22.1.tar.gz"
+  sha1 "af45e93a6815392f91a26213f69b9d5121136c60"
 
   head "https://github.com/kripken/emscripten.git", :branch => "incoming"
 
   bottle do
-    sha1 "de4ec1922382233ae5162ebc722e41b5f70ebafd" => :mavericks
-    sha1 "49600712bee90639efc17eafb4be8d5c454aa073" => :mountain_lion
-    sha1 "ace690ca25a73913df158c5c5d94cb9df8aa9f32" => :lion
+    sha1 "64644afd5fe3f6e1c88f28d962f69e13d346cb25" => :mavericks
+    sha1 "e384a5b9b0d90926e64a96f0ebef26ecec76b729" => :mountain_lion
+    sha1 "d30b417e1f013c8c84f925caf0bc4d053e134349" => :lion
   end
 
   head do
@@ -25,13 +25,13 @@ class Emscripten < Formula
 
   stable do
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.16.0.tar.gz"
-      sha1 "ca10c5a8059fdd321143d8f10c0810176be3d467"
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.22.1.tar.gz"
+      sha1 "7479f53b6123012c779722332ad08eddabbc5a68"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.16.0.tar.gz"
-      sha1 "768a15d3a8cd9e92f87521cadf3e5f63f3e24fa1"
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.22.1.tar.gz"
+      sha1 "0f3742b12f921822daad3195970dd0d2cabee0f5"
     end
   end
 
@@ -50,7 +50,7 @@ class Emscripten < Formula
     # All files from the repository are required as emscripten is a collection
     # of scripts which need to be installed in the same layout as in the Git
     # repository.
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
 
     (buildpath/"fastcomp").install resource("fastcomp")
     (buildpath/"fastcomp/tools/clang").install resource("fastcomp-clang")
@@ -69,7 +69,7 @@ class Emscripten < Formula
       system "make", "install"
     end
 
-    %w(em++ em-config emar emcc emconfigure emlink.py emmake
+    %w(em++ em-config emar emcc emcmake emconfigure emlink.py emmake
        emranlib emrun emscons).each do |emscript|
       bin.install_symlink libexec/emscript
     end

@@ -14,9 +14,8 @@ class Cowsay < Formula
   end
 
   test do
-    output = `#{bin}/cowsay moo`
+    output = shell_output("#{bin}/cowsay moo")
     assert output.include?("moo")  # bubble
     assert output.include?("^__^") # cow
-    assert_equal 0, $?.exitstatus
   end
 end

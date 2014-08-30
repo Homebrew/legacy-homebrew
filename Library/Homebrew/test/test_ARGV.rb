@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'extend/ARGV'
 
-class ArgvExtensionTests < Test::Unit::TestCase
+class ArgvExtensionTests < Homebrew::TestCase
   def setup
     @argv = [].extend(HomebrewArgvExtension)
   end
@@ -17,12 +17,22 @@ class ArgvExtensionTests < Test::Unit::TestCase
     @argv << 'mxcl'
     assert_equal 1, @argv.kegs.length
   ensure
-    keg.rmtree
+    keg.parent.rmtree
   end
 
   def test_argv_named
-    @argv << 'mxcl' << '--debug' << '-v'
-    assert_equal 1, @argv.named.length
+    @argv << "foo" << "--debug" << "-v"
+    assert_equal %w[foo], @argv.named
+  end
+
+  def test_options_only
+    @argv << "--foo" << "-vds" << "a" << "b" << "cdefg"
+    assert_equal %w[--foo -vds], @argv.options_only
+  end
+
+  def test_flags_only
+    @argv << "--foo" << "-vds" << "a" << "b" << "cdefg"
+    assert_equal %w[--foo], @argv.flags_only
   end
 
   def test_empty_argv
@@ -46,22 +56,5 @@ class ArgvExtensionTests < Test::Unit::TestCase
     assert @argv.flag?("--qux")
     assert !@argv.flag?("--frotz")
     assert !@argv.flag?("--debug")
-  end
-
-  def test_filter_for_dependencies_clears_flags
-    @argv << "--HEAD" << "--devel"
-    @argv.filter_for_dependencies { assert @argv.empty? }
-  end
-
-  def test_filter_for_dependencies_ensures_argv_restored
-    @argv.expects(:replace).with(@argv.clone)
-    begin
-      @argv.filter_for_dependencies { raise Exception }
-    rescue Exception
-    end
-  end
-
-  def test_filter_for_dependencies_returns_block_value
-    assert_equal 1, @argv.filter_for_dependencies { 1 }
   end
 end

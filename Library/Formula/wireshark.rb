@@ -1,12 +1,12 @@
-require 'formula'
+require "formula"
 
 class Wireshark < Formula
-  homepage 'http://www.wireshark.org'
+  homepage "http://www.wireshark.org"
 
   stable do
-    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.10.7.tar.bz2'
-    mirror 'http://www.wireshark.org/download/src/wireshark-1.10.7.tar.bz2'
-    sha1 '5e5ce4fdc9aa53e545fc0fbd22eea6adcf7dfc0b'
+    url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.0.tar.bz2"
+    mirror "http://www.wireshark.org/download/src/all-versions/wireshark-1.12.0.tar.bz2"
+    sha1 "c7a94a9ec90c1ff9be2a7d7b813276e433509df9"
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
@@ -14,40 +14,35 @@ class Wireshark < Formula
   end
 
   bottle do
-    sha1 "a369364e5488f2fdd40c66e65017af3de53c39e7" => :mavericks
-    sha1 "bb51c82ed19df08f4543b99d99b19dd8f10477cd" => :mountain_lion
-    sha1 "475e3a49e60acb0b01f94a286f3adfe1dd61f1a7" => :lion
+    sha1 "4ae3387780d99ecd34b36317e7895c29f9794b27" => :mavericks
+    sha1 "01eea3bfc334f24fb3bcde6338aa4ae2305862c9" => :mountain_lion
+    sha1 "2d34cea77826c50b684b79a5b52e8ff79137de21" => :lion
   end
 
   head do
-    url 'https://code.wireshark.org/review/wireshark', :using => :git
+    url "https://code.wireshark.org/review/wireshark", :using => :git
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  devel do
-    url 'http://wiresharkdownloads.riverbed.com/wireshark/src/wireshark-1.11.3.tar.bz2'
-    sha1 '7e1c6b107c178016d51c9061ef3f40efbc47a040'
-  end
+  option "with-qt", "Use QT for GUI instead of GTK+3"
+  option "with-headers", "Install Wireshark library headers for plug-in developemnt"
 
-  option 'with-qt', 'Use QT for GUI instead of GTK+3'
-  option 'with-headers', 'Install Wireshark library headers for plug-in developemnt'
+  depends_on "pkg-config" => :build
 
-  depends_on 'pkg-config' => :build
+  depends_on "glib"
+  depends_on "gnutls"
+  depends_on "libgcrypt"
 
-  depends_on 'glib'
-  depends_on 'gnutls'
-  depends_on 'libgcrypt'
+  depends_on "geoip" => :recommended
 
-  depends_on 'geoip' => :recommended
-
-  depends_on 'c-ares' => :optional
-  depends_on 'lua' => :optional
-  depends_on 'pcre' => :optional
-  depends_on 'portaudio' => :optional
-  depends_on 'qt' => :optional
+  depends_on "c-ares" => :optional
+  depends_on "lua" => :optional
+  depends_on "pcre" => :optional
+  depends_on "portaudio" => :optional
+  depends_on "qt" => :optional
   depends_on "gtk+3" => :optional
   depends_on "gtk+" => :optional
 
@@ -73,7 +68,7 @@ class Wireshark < Formula
     ENV.deparallelize # parallel install fails
     system "make install"
 
-    if build.with? 'headers'
+    if build.with? "headers"
       (include/"wireshark").install Dir["*.h"]
       (include/"wireshark/epan").install Dir["epan/*.h"]
       (include/"wireshark/epan/crypt").install Dir["epan/crypt/*.h"]
@@ -106,7 +101,7 @@ class Wireshark < Formula
 
   test do
     system "#{bin}/randpkt", "-b", "100", "-c", "2", "capture.pcap"
-    output = `#{bin}/capinfos -Tmc capture.pcap`
+    output = shell_output("#{bin}/capinfos -Tmc capture.pcap")
     assert_equal "File name,Number of packets\ncapture.pcap,2\n", output
   end
 end

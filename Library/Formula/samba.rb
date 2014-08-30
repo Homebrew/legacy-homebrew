@@ -29,6 +29,28 @@ class Samba < Formula
       (var/'locks').mkpath
     end
   end
+
+  plist_options :manual => 'smbd'
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{sbin}/smbd</string>
+          <string>-s</string>
+          <string>#{etc}/smb.conf</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+      </dict>
+    </plist>
+    EOS
+  end
 end
 
 __END__

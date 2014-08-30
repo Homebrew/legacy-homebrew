@@ -196,8 +196,8 @@ Note that these flags should only appear after a command.
 
     If `--cc=<compiler>` is passed, attempt to compile using <compiler>.
     <compiler> should be the name of the compiler's executable, for instance
-    `gcc-4.2` for Apple's GCC 4.2, or `gcc-4.8` for a Homebrew-provided GCC
-    4.8.
+    `gcc-4.2` for Apple's GCC 4.2, or `gcc-4.9` for a Homebrew-provided GCC
+    4.9.
 
     If `--build-from-source` is passed, compile from source even if a bottle
     is provided for <formula>.
@@ -396,13 +396,6 @@ Note that these flags should only appear after a command.
     By default, `uses` shows usages of `formula` by stable builds. To find
     cases where `formula` is used by development or HEAD build, pass
     `--devel` or `--HEAD`.
-
-  * `versions [--compact]` <formulae>:
-    List previous versions of <formulae>, along with a command to checkout
-    each version.
-
-    If `--compact` is passed, show all options on a single line separated by
-    spaces.
 
   * `--cache`:
     Display Homebrew's download cache. See also `HOMEBREW_CACHE`.

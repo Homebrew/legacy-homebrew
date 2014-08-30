@@ -2,15 +2,22 @@ require 'formula'
 
 class Scons < Formula
   homepage 'http://www.scons.org'
-  url 'https://downloads.sourceforge.net/scons/scons-2.3.1.tar.gz'
-  sha1 '775e715e49fe5fd8e1d29551a296fdc9267509e7'
+  url 'https://downloads.sourceforge.net/scons/scons-2.3.2.tar.gz'
+  sha1 '2937f20b86d0c5f86cf31e1fa378307ed34fc20a'
+  revision 1
 
   bottle do
     cellar :any
-    revision 3
-    sha1 "e95727216cded8197acd0cf2d77a078ba1a4ed05" => :mavericks
-    sha1 "b8ffa3da1b9378944a5b97c2783c1a8593331539" => :mountain_lion
-    sha1 "c4d0bd20be297fc6d3eb615abe22b78212a91655" => :lion
+    sha1 "59050aba17abff544a0653a2f12ae41b3ea255a0" => :mavericks
+    sha1 "6702ca156e864375ef01518fee9723d4d1110c66" => :mountain_lion
+    sha1 "08e0c669f54b07f58d10aa160f0dc9fe75e9bf77" => :lion
+  end
+
+  # Upstream patch to fix compatibility with Python pre-2.7
+  # https://bitbucket.org/scons/scons/commits/1444ad9af1d3b6148451af3f0596cba0ad352c50
+  patch :p2 do
+    url "https://bitbucket.org/scons/scons/commits/1444ad9af1d3b6148451af3f0596cba0ad352c50/raw/"
+    sha1 "022a40b4226d85d82a8145d08443495f31a9ed34"
   end
 
   def install

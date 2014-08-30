@@ -14,13 +14,13 @@ end
 
 class Qt5 < Formula
   homepage "http://qt-project.org/"
-  url "http://download.qt-project.org/official_releases/qt/5.3/5.3.0/single/qt-everywhere-opensource-src-5.3.0.tar.gz"
-  sha1 "edb6a71b9c45c39251f59a999a48a5f552ff07d3"
+  url "http://download.qt-project.org/official_releases/qt/5.3/5.3.1/single/qt-everywhere-opensource-src-5.3.1.tar.gz"
+  sha1 "3244dd34f5fb695e903eaa49c6bd0838b9bf7a73"
 
   bottle do
-    sha1 "5d3c6e5d3409d9ea1cc06f1f4a108e533b32adef" => :mavericks
-    sha1 "fc8865525ef5fe797eff4e4b7825885725860941" => :mountain_lion
-    sha1 "13b788c9e3a5a2914d4614f32988a0a9c0061402" => :lion
+    sha1 "18c4f7758a47894591905831b6e740315ff1ce36" => :mavericks
+    sha1 "104b6d656020e9a615084732f2ecbfec8bb74f28" => :mountain_lion
+    sha1 "fc5fee03fa0ad09c5c96b869022590cdc7b3b1fd" => :lion
   end
 
   head "git://gitorious.org/qt/qt5.git", :branch => "stable",

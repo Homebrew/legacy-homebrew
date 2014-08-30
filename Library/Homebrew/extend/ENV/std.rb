@@ -59,7 +59,7 @@ module Stdenv
     if cc =~ GNU_GCC_REGEXP
       warn_about_non_apple_gcc($1)
       gcc_formula = gcc_version_formula($1)
-      self.append_path('PATH', gcc_formula.opt_prefix/'bin')
+      append_path "PATH", gcc_formula.opt_bin.to_s
     end
 
     # Add lib and include etc. from the current macosxsdk to compiler flags:
@@ -95,47 +95,47 @@ module Stdenv
     end
   end
 
-  def gcc_4_0_1
-    self.cc  = MacOS.locate("gcc-4.0")
-    self.cxx = MacOS.locate("g++-4.0")
-    set_cpu_cflags '-march=nocona -mssse3'
-    @compiler = :gcc_4_0
+  def determine_cc
+    s = super
+    MacOS.locate(s) || Pathname.new(s)
   end
-  alias_method :gcc_4_0, :gcc_4_0_1
+
+  def determine_cxx
+    dir, base = determine_cc.split
+    dir / base.to_s.sub("gcc", "g++").sub("clang", "clang++")
+  end
+
+  def gcc_4_0
+    super
+    set_cpu_cflags '-march=nocona -mssse3'
+  end
+  alias_method :gcc_4_0_1, :gcc_4_0
 
   def gcc
-    self.cc  = MacOS.locate("gcc-4.2")
-    self.cxx = MacOS.locate("g++-4.2")
+    super
     set_cpu_cflags
-    @compiler = :gcc
   end
   alias_method :gcc_4_2, :gcc
 
   GNU_GCC_VERSIONS.each do |n|
     define_method(:"gcc-4.#{n}") do
-      gcc = "gcc-4.#{n}"
-      gxx = gcc.gsub('c', '+')
-      self.cc = MacOS.locate(gcc)
-      self.cxx = MacOS.locate(gxx)
+      super()
       set_cpu_cflags
-      @compiler = gcc
     end
   end
 
   def llvm
-    self.cc  = MacOS.locate("llvm-gcc")
-    self.cxx = MacOS.locate("llvm-g++")
+    super
     set_cpu_cflags
-    @compiler = :llvm
   end
 
   def clang
-    self.cc  = MacOS.locate("clang")
-    self.cxx = MacOS.locate("clang++")
+    super
     replace_in_cflags(/-Xarch_#{Hardware::CPU.arch_32_bit} (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
-    set_cpu_cflags '-march=native', :nehalem => '-march=native -Xclang -target-feature -Xclang -aes'
-    @compiler = :clang
+    map = Hardware::CPU.optimization_flags
+    map = map.merge(:nehalem => "-march=native -Xclang -target-feature -Xclang -aes")
+    set_cpu_cflags "-march=native", map
   end
 
   def remove_macosxsdk version=MacOS.version
@@ -303,17 +303,19 @@ module Stdenv
     remove flags, %r{-mssse3}
     remove flags, %r{-msse4(\.\d)?}
     append flags, xarch unless xarch.empty?
+    append flags, map.fetch(effective_arch, default)
+  end
 
+  def effective_arch
     if ARGV.build_bottle?
-      arch = ARGV.bottle_arch || Hardware.oldest_cpu
-      append flags, Hardware::CPU.optimization_flags.fetch(arch)
+      ARGV.bottle_arch || Hardware.oldest_cpu
     elsif Hardware::CPU.intel? && !Hardware::CPU.sse4?
       # If the CPU doesn't support SSE4, we cannot trust -march=native or
       # -march=<cpu family> to do the right thing because we might be running
       # in a VM or on a Hackintosh.
-      append flags, Hardware::CPU.optimization_flags.fetch(Hardware.oldest_cpu)
+      Hardware.oldest_cpu
     else
-      append flags, map.fetch(Hardware::CPU.family, default)
+      Hardware::CPU.family
     end
   end
 

@@ -3,18 +3,18 @@ require "formula"
 class Sickbeard < Formula
   homepage "http://www.sickbeard.com/"
   head "https://github.com/midgetspy/Sick-Beard.git"
-  url "https://github.com/midgetspy/Sick-Beard/archive/build-504.tar.gz"
-  sha1 "0785a590a5028f10b3cbbee905e0834c52ac66c9"
+  url "https://github.com/midgetspy/Sick-Beard/archive/build-506.tar.gz"
+  sha1 "01ca51feb871f07b3fa1b92ad31d4aa4d72c68f9"
 
   bottle do
-    sha1 "07c3e428953703fac8d2eb259f0e9a83fdc887ab" => :mavericks
-    sha1 "d9ad02a8db01958162d055c6b0513c50d6ac7c49" => :mountain_lion
-    sha1 "4ab18e78eafaa9add7aaf4711ce5d0ce7607b550" => :lion
+    sha1 "b372ee9e7ad22a897f215e08155fd0ca0bdd7772" => :mavericks
+    sha1 "dbcd049e266ac2415f40b2a09cec9aeb5bb2fbff" => :mountain_lion
+    sha1 "a11e0e64068c4785249102e53caf601b59c8bec4" => :lion
   end
 
   resource "Markdown" do
-    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.4.tar.gz"
-    sha1 "7a4a96cd79c4e36918484c634055c4cc27bdf7d4"
+    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.4.1.tar.gz"
+    sha1 "2c9cedad000e9ecdf0b220bd1ad46bc4592d067e"
   end
 
   resource "Cheetah" do

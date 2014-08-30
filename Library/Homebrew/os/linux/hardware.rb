@@ -36,6 +36,12 @@ module LinuxCPUs
     @flags ||= cpuinfo[/^flags.*/, 0].split
   end
 
+  # Compatibility with Mac method, which returns lowercase symbols
+  # instead of strings
+  def features
+    @features ||= flags[1..-1].map(&:intern)
+  end
+
   %w[aes altivec avx avx2 lm sse3 ssse3 sse4 sse4_2].each { |flag|
     define_method(flag + "?") { flags.include? flag }
   }

@@ -13,11 +13,19 @@ class Libffi < Formula
     sha1 "c2ad5c7f63e06566494d92baa1e31c0c2190ea05" => :lion
   end
 
+  head do
+    url 'https://github.com/atgreen/libffi.git'
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   keg_only :provided_by_osx, "Some formulae require a newer version of libffi."
 
   def install
     ENV.deparallelize # https://github.com/Homebrew/homebrew/pull/19267
     ENV.universal_binary
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

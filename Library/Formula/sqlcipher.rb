@@ -7,8 +7,6 @@ class Sqlcipher < Formula
 
   head "https://github.com/sqlcipher/sqlcipher.git"
 
-  keg_only "SQLCipher conflicts with the system and Homebrew SQLites."
-
   def install
     system "./configure", "--prefix=#{prefix}", "--enable-tempstore=yes",
                           "CFLAGS=-DSQLITE_HAS_CODEC", "LDFLAGS=-lcrypto",

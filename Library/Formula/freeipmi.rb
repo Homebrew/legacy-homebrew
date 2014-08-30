@@ -1,14 +1,15 @@
 require "formula"
 
 class Freeipmi < Formula
-  homepage "http://www.gnu.org/software/freeipmi/"
-  url "http://ftpmirror.gnu.org/freeipmi/freeipmi-1.4.3.tar.gz"
-  sha1 "83d5f54ba98874e3e26c3b4d9ceaf48894667eef"
+  homepage "https://www.gnu.org/software/freeipmi/"
+  url "http://ftpmirror.gnu.org/freeipmi/freeipmi-1.4.5.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/freeipmi/freeipmi-1.4.5.tar.gz"
+  sha1 "21f567f452de53545a8880eaf572cad567e5ad30"
 
   bottle do
-    sha1 "1ac5427faba16ce4beafbc447c068d37cf9c3493" => :mavericks
-    sha1 "0503402e0b8ed546db82808852396afbbd29e37b" => :mountain_lion
-    sha1 "94f888c548f17d7a3e06397353a4e768f1b20b8a" => :lion
+    sha1 "104f68c5dd708695dcfda6d569705230c3c57437" => :mavericks
+    sha1 "eb04bd6b79908fca5ed724806d7be2a28431eefc" => :mountain_lion
+    sha1 "e0eb9b03feb21fdb6262c6feb35a45acf79fb022" => :lion
   end
 
   depends_on "argp-standalone"

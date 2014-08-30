@@ -1,16 +1,17 @@
 require 'formula'
 
 class Subversion < Formula
-  homepage 'http://subversion.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.8.tar.bz2'
-  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.8.tar.bz2'
-  sha1 '8e9f10b7a9704c90e17cfe76fd56e3fe74c01a7a'
+  homepage 'https://subversion.apache.org/'
+  url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.10.tar.bz2'
+  mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.10.tar.bz2'
+  sha1 'd6896d94bb53c1b4c6e9c5bb1a5c466477b19b2b'
+  revision 1
 
   bottle do
-    revision 1
-    sha1 "576b275530c1d0f0fa6e38ce93d9e7b9d1fb48ee" => :mavericks
-    sha1 "9d2a0743bf7f52ccb825ba48383f398a981b230d" => :mountain_lion
-    sha1 "a5431204f7282f8b408bfc206c854797fee62982" => :lion
+    revision 3
+    sha1 "fcd631849436d7d2857e5361dbe66293feca9501" => :mavericks
+    sha1 "1089939ef5a0de5ca257e5c2ff34cd0c59e4a601" => :mountain_lion
+    sha1 "dcd9bee050a9c21db85a6947359beef4dacdc49c" => :lion
   end
 
   option :universal
@@ -19,8 +20,8 @@ class Subversion < Formula
   option 'ruby', 'Build Ruby bindings'
 
   resource 'serf' do
-    url 'http://serf.googlecode.com/svn/src_releases/serf-1.3.4.tar.bz2', :using => :curl
-    sha1 'eafc8317d7a9c77d4db9ce1e5c71a33822f57c3a'
+    url 'https://serf.googlecode.com/svn/src_releases/serf-1.3.7.tar.bz2', :using => :curl
+    sha1 'db9ae339dba10a2b47f9bdacf30a58fd8e36683a'
   end
 
   depends_on "pkg-config" => :build
@@ -171,9 +172,11 @@ class Subversion < Formula
       end
       system "make swig-pl"
       system "make", "install-swig-pl", "DESTDIR=#{prefix}"
+
       # Some of the libraries get installed into the wrong place, they end up having the
       # prefix in the directory name twice.
-      mv Dir["#{prefix}/#{lib}/*"], "#{lib}"
+
+      lib.install Dir["#{prefix}/#{lib}/*"]
     end
 
     if build.include? 'java'
@@ -232,12 +235,12 @@ __END__
 
 Patch 1
 
---- subversion/bindings/swig/perl/native/Makefile.PL.in~ 2013-06-20 18:58:55.000000000 +0200
-+++ subversion/bindings/swig/perl/native/Makefile.PL.in	2013-06-20 19:00:49.000000000 +0200
-@@ -69,10 +69,15 @@
-
+--- subversion/bindings/swig/perl/native/Makefile.PL.in~     2014-01-18 05:04:18.000000000 +0100
++++ subversion/bindings/swig/perl/native/Makefile.PL.in      2014-08-15 18:37:33.000000000 +0200
+@@ -76,10 +76,15 @@
+ 
  chomp $apr_shlib_path_var;
-
+ 
 +my $config_ccflags = $Config{ccflags};
 +# remove any -arch arguments, since those
 +# we want will already be in $cflags
@@ -255,10 +258,9 @@ Patch 1
 
 Patch 2
 
-diff -u configure.ac configure.ac
---- configure.ac	(working copy)
-+++ configure.ac	(working copy)
-@@ -1446,6 +1446,10 @@
+--- configure.ac   2014-08-15 19:15:23.000000000 +0200
++++ configure.ac        2014-08-15 19:15:45.000000000 +0200
+@@ -1442,6 +1442,10 @@
  # Need to strip '-no-cpp-precomp' from CPPFLAGS for SWIG as well.
  SWIG_CPPFLAGS="$CPPFLAGS"
  SVN_STRIP_FLAG(SWIG_CPPFLAGS, [-no-cpp-precomp ])
@@ -267,5 +269,5 @@ diff -u configure.ac configure.ac
 +SVN_STRIP_FLAG(SWIG_CPPFLAGS, [-F\/[[^ ]]* ])
 +SVN_STRIP_FLAG(SWIG_CPPFLAGS, [-isystem\/[[^ ]]* ])
  AC_SUBST([SWIG_CPPFLAGS])
-
+ 
  dnl Since this is used only on Unix-y systems, define the path separator as '/'

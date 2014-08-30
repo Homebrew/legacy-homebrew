@@ -1,7 +1,7 @@
 require 'testing_env'
 require 'formula_lock'
 
-class FormulaLockTests < Test::Unit::TestCase
+class FormulaLockTests < Homebrew::TestCase
   def setup
     @lock = FormulaLock.new("foo")
     @lock.lock
@@ -9,6 +9,7 @@ class FormulaLockTests < Test::Unit::TestCase
 
   def teardown
     @lock.unlock
+    FormulaLock::LOCKDIR.children.each(&:unlink)
   end
 
   def test_locking_file_with_existing_lock_raises_error

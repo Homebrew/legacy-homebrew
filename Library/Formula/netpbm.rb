@@ -10,11 +10,15 @@ class Netpbm < Formula
 
   head 'http://svn.code.sf.net/p/netpbm/code/trunk'
 
+  option :universal
+
   depends_on "libtiff"
   depends_on "jasper"
   depends_on "libpng"
 
   def install
+    ENV.universal_binary if build.universal?
+
     system "cp", "config.mk.in", "config.mk"
 
     inreplace "config.mk" do |s|

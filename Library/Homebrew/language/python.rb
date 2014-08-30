@@ -13,7 +13,7 @@ module Language
       ["python", "python3"].each do |python|
         next if build.without? python
         version = self.major_minor_version python
-        ENV["PYTHONPATH"] = if Formula.factory(python).installed?
+        ENV["PYTHONPATH"] = if Formulary.factory(python).installed?
           nil
         else
           "#{HOMEBREW_PREFIX}/lib/python#{version}/site-packages"

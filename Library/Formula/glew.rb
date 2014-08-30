@@ -1,19 +1,22 @@
-require 'formula'
+require "formula"
 
 class Glew < Formula
-  homepage 'http://glew.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/glew/glew/1.10.0/glew-1.10.0.tgz'
-  sha1 'f41b45ca4a630ad1d00b8b87c5f493781a380300'
+  homepage "http://glew.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/glew/glew/1.11.0/glew-1.11.0.tgz"
+  sha1 "9bb5c87c055acd122a4956112bbb18ee72c38e5c"
 
   bottle do
     cellar :any
-    sha1 "bf2cd460915846eb8d3cdc5e8d7aa3e30aeffe62" => :mavericks
-    sha1 "f43f1961b8baf46d3e22364dbec3de1e42e43846" => :mountain_lion
-    sha1 "482bc295f55ce52c9397c86b2e8d50940c4c5efc" => :lion
+    sha1 "45a06a30935d2c707f389da25ba45e1169801480" => :mavericks
+    sha1 "01928578947d9c3d98ae2ec78e43aec837854a0a" => :mountain_lion
+    sha1 "d7c6a1a25c3d55230be4c977ebb6774840926d3a" => :lion
   end
 
   def install
-    inreplace "glew.pc.in", "Requires: glu", ""
+    # Makefile directory race condition on lion
+    ENV.deparallelize
+
+    inreplace "glew.pc.in", "Requires: @requireslib@", ""
     system "make", "GLEW_DEST=#{prefix}", "all"
     system "make", "GLEW_DEST=#{prefix}", "install.all"
   end

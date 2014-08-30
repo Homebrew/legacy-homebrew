@@ -14,7 +14,7 @@ class PythonDependency < Requirement
   end
 
   def pour_bottle?
-    tags.include?(:build) || system_python?
+    build? || system_python?
   end
 
   def modify_build_environment

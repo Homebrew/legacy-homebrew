@@ -2,35 +2,9 @@ require "stringio"
 require "formula"
 
 module Homebrew
-  extend self
-
-  module DATALoader
-    # Original code from http://stackoverflow.com/a/2157556/371237
-    def self.load(path)
-      data = StringIO.new
-      path.open("r") do |f|
-        begin
-          line = f.gets
-        end until line.nil? || /^__END__$/ === line
-        data << line while line = f.gets
-      end
-      data.rewind
-      data
-    end
-  end
-
   module UnpackPatch
     def patch
-      return unless ARGV.flag? "--patch"
-
-      begin
-        old_verbose, $VERBOSE = $VERBOSE, nil
-        Object.const_set "DATA", DATALoader.load(path)
-      ensure
-        $VERBOSE = old_verbose
-      end
-
-      super
+      super if ARGV.flag?("--patch")
     end
   end
 

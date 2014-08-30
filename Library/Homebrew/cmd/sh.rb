@@ -1,7 +1,7 @@
 require 'extend/ENV'
 require 'formula'
 
-module Homebrew extend self
+module Homebrew
   def sh
     ENV.activate_extensions!
 

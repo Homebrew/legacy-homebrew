@@ -1,11 +1,12 @@
-require 'formula'
-require 'tab'
-require 'keg'
-require 'caveats'
-require 'blacklist'
-require 'utils/json'
+require "blacklist"
+require "caveats"
+require "cmd/options"
+require "formula"
+require "keg"
+require "tab"
+require "utils/json"
 
-module Homebrew extend self
+module Homebrew
   def info
     # eventually we'll solidify an API, but we'll keep old versions
     # awhile around for compatibility
@@ -27,7 +28,7 @@ module Homebrew extend self
       ARGV.named.each_with_index do |f,i|
         puts unless i == 0
         begin
-          info_formula Formula.factory(f)
+          info_formula Formulary.factory(f)
         rescue FormulaUnavailableError
           # No formula with this name, try a blacklist lookup
           if (blacklist = blacklisted?(f))
@@ -53,7 +54,7 @@ module Homebrew extend self
   end
 
   def github_fork
-    if which 'git' and (HOMEBREW_REPOSITORY/".git").directory?
+    if (HOMEBREW_REPOSITORY/".git").directory?
       if `git remote -v` =~ %r{origin\s+(https?://|git(?:@|://))github.com[:/](.+)/homebrew}
         $2
       end
@@ -61,17 +62,16 @@ module Homebrew extend self
   end
 
   def github_info f
-    if f.path.to_s =~ HOMEBREW_TAP_PATH_REGEX
-      user = $1
-      repo = $2
-      path = $3
+    if f.tap?
+      user, repo = f.tap.split("/", 2)
+      path = f.path.relative_path_from(HOMEBREW_LIBRARY.join("Taps", f.tap))
     else
       user = f.path.parent.cd { github_fork }
       repo = "homebrew"
-      path = "Library/Formula/#{f.path.basename}"
+      path = f.path.relative_path_from(HOMEBREW_REPOSITORY)
     end
 
-    "https://github.com/#{user}/#{repo}/commits/master/#{path}"
+    "https://github.com/#{user}/#{repo}/blob/master/#{path}"
   end
 
   def info_formula f
@@ -127,8 +127,7 @@ module Homebrew extend self
       end
     end
 
-    unless f.build.empty?
-      require 'cmd/options'
+    unless f.options.empty?
       ohai "Options"
       Homebrew.dump_options_for_formula f
     end

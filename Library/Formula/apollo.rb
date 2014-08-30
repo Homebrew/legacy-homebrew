@@ -18,6 +18,7 @@ class Apollo < Formula
   # https://github.com/fusesource/fuse-extra/tree/master/fusemq-apollo/fusemq-apollo-mqtt
   resource 'mqtt' do
     url 'http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.3/fusemq-apollo-mqtt-1.3-uber.jar'
+    mirror 'http://repo1.maven.org/maven2/org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.3/fusemq-apollo-mqtt-1.3-uber.jar'
     sha1 'a802a5675ec0d12bf596fb2d204c581bd6ae2ae1'
   end
 
