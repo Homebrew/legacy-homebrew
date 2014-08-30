@@ -6,6 +6,7 @@ class Tarsnap < Formula
   sha256 '6c9f6756bc43bc225b842f7e3a0ec7204e0cf606e10559d27704e1cc33098c9a'
 
   depends_on 'xz' => :optional
+  depends_on 'openssl'
 
   def install
     system "./configure", "--disable-dependency-tracking",
