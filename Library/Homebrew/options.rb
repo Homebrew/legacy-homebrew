@@ -36,16 +36,7 @@ class Options
   include Enumerable
 
   def self.create(array)
-    options = new
-    array.each do |e|
-      case e
-      when /^--(.+)$/
-        options << Option.new($1)
-      else
-        options << Option.new(e)
-      end
-    end
-    options
+    new array.map { |e| Option.new(e[/^--(.+)$/, 1] || e) }
   end
 
   def initialize(*args)
