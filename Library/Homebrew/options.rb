@@ -38,8 +38,6 @@ class Option
       [name, "-#{name}"]
     when /^-[a-zA-Z]$/
       [name[1..1], name]
-    when /^--(.+)$/
-      [$1, name]
     else
       [name, "--#{name}"]
     end
@@ -55,6 +53,8 @@ class Options
       case e
       when /^-[^-]+$/
         e[1..-1].split(//).each { |o| options << Option.new(o) }
+      when /^--(.+)$/
+        options << Option.new($1)
       else
         options << Option.new(e)
       end

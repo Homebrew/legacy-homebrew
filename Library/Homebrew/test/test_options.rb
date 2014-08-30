@@ -19,12 +19,6 @@ class OptionTests < Homebrew::TestCase
     refute_eql @option, bar
   end
 
-  def test_strips_leading_dashes
-    option = Option.new("--foo")
-    assert_equal "foo", option.name
-    assert_equal "--foo", option.flag
-  end
-
   def test_description
     assert_empty @option.description
     assert_equal "foo", Option.new("foo", "foo").description
