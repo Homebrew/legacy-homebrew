@@ -261,7 +261,7 @@ class Formula
         # so load any deps before this point! And exit asap afterwards
         yield self
       ensure
-        (HOMEBREW_LOGS+name).install Dir["config.log", "CMakeCache.txt"]
+        cp Dir["config.log", "CMakeCache.txt"], HOMEBREW_LOGS+name
       end
     end
   end
