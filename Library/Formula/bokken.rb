@@ -5,6 +5,13 @@ class Bokken < Formula
   url "https://inguma.eu/attachments/download/197/bokken-1.6.tar.gz"
   sha1 "9d7a3f8773f01c26c9db84e00c415dbff063f224"
 
+  bottle do
+    cellar :any
+    sha1 "2f679a4a27efdba952ab9be210343daeb7e35299" => :mavericks
+    sha1 "181adf2ccd9adde0103d6b0757c498b7169d0258" => :mountain_lion
+    sha1 "dd8e4cb621b3cb3c07d2aad5e242391076fcf844" => :lion
+  end
+
   depends_on :python
   depends_on "graphviz"
   depends_on "pygtk"
