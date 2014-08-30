@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Scrypt < Formula
-  homepage 'https://www.tarsnap.com/scrypt.html'
-  url 'https://www.tarsnap.com/scrypt/scrypt-1.1.6.tgz'
-  sha256 'dfd0d1a544439265bbb9b58043ad3c8ce50a3987b44a61b1d39fd7a3ed5b7fb8'
+  homepage "https://www.tarsnap.com/scrypt.html"
+  url "https://www.tarsnap.com/scrypt/scrypt-1.1.6.tgz"
+  sha256 "dfd0d1a544439265bbb9b58043ad3c8ce50a3987b44a61b1d39fd7a3ed5b7fb8"
 
   bottle do
     cellar :any
@@ -12,10 +12,10 @@ class Scrypt < Formula
     sha1 "55a0f5c9af71e15f801c1a94252150a356e73b20" => :lion
   end
 
-  depends_on 'openssl'
+  depends_on "openssl"
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
