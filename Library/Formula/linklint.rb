@@ -20,7 +20,7 @@ class Linklint < Formula
   end
 
   test do
-    system "#{bin}/linklint", "-version"
+    system "#{bin}/linklint" "-http" "-host" "brew.sh" "/"
   end
 end
 
