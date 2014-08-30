@@ -7,9 +7,9 @@ class Vala < Formula
   sha1 "be2d3d2ae54c55583fe6a57a23bb6fe812d8bcdf"
 
   bottle do
-    sha1 "96f56ca5ec48b7e0822a6693818d38ca21499014" => :mavericks
-    sha1 "1562fe59048fe478e05914c4ae7f239c8e29bb4b" => :mountain_lion
-    sha1 "2aa1c2c25eda470464541c6d5d76d4d0cabb92e4" => :lion
+    sha1 "34d6a34f7b98fd8f70b98d0ec22bf52180165c03" => :mavericks
+    sha1 "f7b13157f9188a1c764a52d1e9a8cb9c1bdf3e6e" => :mountain_lion
+    sha1 "8c0ae3a1d2491e44518e61bae6a14c5db63a5c45" => :lion
   end
 
   depends_on "pkg-config" => :build
