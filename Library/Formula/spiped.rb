@@ -9,6 +9,10 @@ class Spiped < Formula
   depends_on "openssl"
 
   def install
+    # Apply these minor build fixes until they are committed upstream.
+    inreplace "POSIX/posix-cflags.sh", /echo "-D(.*)"/, "printf %s \"-D\\1 \""
+    inreplace "Makefile", " make", " ${MAKE}"
+
     man1.mkpath
     system "bsdmake", "BINDIR_DEFAULT=#{bin}", "MAN1DIR=#{man1}", "install"
     doc.install "spiped/README" => "README.spiped",
