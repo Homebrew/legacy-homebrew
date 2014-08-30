@@ -1,12 +1,9 @@
-require 'formula'
+require "formula"
 
 class Tig < Formula
-  homepage 'http://jonas.nitro.dk/tig/'
-
-  stable do
-    url "http://jonas.nitro.dk/tig/releases/tig-2.0.2.tar.gz"
-    sha1 "de01c3a52952172e42ae642d97a55505d7e09efd"
-  end
+  homepage "http://jonas.nitro.dk/tig/"
+  url "http://jonas.nitro.dk/tig/releases/tig-2.0.3.tar.gz"
+  sha1 "762dff87ea8691b7c1b5cfdaf077e367c60ef375"
 
   head do
     url "https://github.com/jonas/tig.git"
@@ -14,7 +11,7 @@ class Tig < Formula
     depends_on "automake" => :build
   end
 
-  option 'with-docs', 'Build man pages using asciidoc and xmlto'
+  option "with-docs", "Build man pages using asciidoc and xmlto"
 
   if build.with? "docs"
     depends_on "asciidoc"
@@ -26,6 +23,6 @@ class Tig < Formula
     system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
     system "make install"
     system "make install-doc-man" if build.with? "docs"
-    bash_completion.install 'contrib/tig-completion.bash'
+    bash_completion.install "contrib/tig-completion.bash"
   end
 end
