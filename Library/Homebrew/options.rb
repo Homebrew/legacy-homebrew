@@ -4,7 +4,8 @@ class Option
   attr_reader :name, :description, :flag
 
   def initialize(name, description="")
-    @name, @flag = split_name(name)
+    @name = name
+    @flag = "--#{name}"
     @description = description
   end
 
@@ -29,19 +30,6 @@ class Option
   def inspect
     "#<#{self.class.name}: #{flag.inspect}>"
   end
-
-  private
-
-  def split_name(name)
-    case name
-    when /^[a-zA-Z]$/
-      [name, "-#{name}"]
-    when /^-[a-zA-Z]$/
-      [name[1..1], name]
-    else
-      [name, "--#{name}"]
-    end
-  end
 end
 
 class Options
@@ -51,8 +39,6 @@ class Options
     options = new
     array.each do |e|
       case e
-      when /^-[^-]+$/
-        e[1..-1].split(//).each { |o| options << Option.new(o) }
       when /^--(.+)$/
         options << Option.new($1)
       else
