@@ -7,16 +7,13 @@ class BashGitPrompt < Formula
   sha1 "3c0bc71302b97260cf8d14a1f01be732039365b9"
 
   def install
-    share.install Dir["./gitprompt.{sh,fish}"]
-    share.install Dir["./git-prompt-{help,colors}.sh"]
-    share.install "gitstatus.sh"
-    share.install "prompt-colors.sh"
+    share.install Dir["./gitprompt.{sh,fish}"], Dir["./git-prompt-{help,colors}.sh"], "gitstatus.sh", "prompt-colors.sh"
     doc.install "README.md"
   end
 
   def caveats; <<-EOS.undent
-    The bash-git-prompt has installed to #{HOMEBREW_PREFIX}/share/gitprompt.sh
-    See also #{doc}/README.md
+    You should add the following to your .bashrc or equivalent:
+    source #{opt_share}/gitprompt.sh
     EOS
   end
 end
