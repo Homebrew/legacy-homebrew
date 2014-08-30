@@ -22,7 +22,7 @@ class Csfml < Formula
   end
 
   test do
-    fixture = <<-EOS.undent
+    (testpath/"test.c").write <<-EOS.undent
       #include <SFML/Window.h>
 
       int main (void)
@@ -31,7 +31,7 @@ class Csfml < Formula
         return 0;
       }
     EOS
-    (testpath/'test.c').write(fixture)
-    system ENV.cc, "-c", "test.c"
+    system ENV.cc, "test.c", "-lcsfml-window", "-o", "test"
+    system "./test"
   end
 end
