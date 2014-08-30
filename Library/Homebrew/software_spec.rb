@@ -36,7 +36,7 @@ class SoftwareSpec
     @bottle_specification = BottleSpecification.new
     @patches = []
     @options = Options.new
-    @build = BuildOptions.new(Options.create(ARGV.options_only), options)
+    @build = BuildOptions.new(Options.create(ARGV.flags_only), options)
     @compiler_failures = []
   end
 
