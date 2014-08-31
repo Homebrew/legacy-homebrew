@@ -14,7 +14,7 @@ class Cardpeek < Formula
   depends_on :x11
   depends_on "openssl"
   depends_on "gtk+3"
-  depends_on "lua52"
+  depends_on "homebrew/versions/lua52"
 
   def install
     # always run autoreconf, neeeded to generate configure for --HEAD,
