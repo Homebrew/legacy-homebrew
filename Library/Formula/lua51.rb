@@ -65,22 +65,23 @@ class Lua51 < Formula
     # below that, thus making luarocks work
     (HOMEBREW_PREFIX/"lib/lua"/version.to_s.split('.')[0..1].join('.')).mkpath
 
-    system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua5.1"
-    system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua5.1"
+    system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
+    system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
 
     (lib+"pkgconfig").install 'etc/lua.pc'
 
     # Renaming from Lua to Lua51.
+    # Note that the naming must be lua-version. Software can't find the libraries without the hyphen.
 
-    mv "#{bin}/lua", "#{bin}/lua5.1"
-    mv "#{bin}/luac", "#{bin}/luac5.1"
-    mv "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua5.1.pc"
-    mv "#{man1}/lua.1", "#{man1}/lua5.1.1"
-    mv "#{man1}/luac.1", "#{man1}/luac5.1.1"
+    mv "#{bin}/lua", "#{bin}/lua-5.1"
+    mv "#{bin}/luac", "#{bin}/luac-5.1"
+    mv "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua-5.1.pc"
+    mv "#{man1}/lua.1", "#{man1}/lua-5.1.1"
+    mv "#{man1}/luac.1", "#{man1}/luac-5.1.1"
   end
 
   test do
-    output = `#{bin}/lua5.1 -e "for i=0,9 do io.write(i) end"`
+    output = `#{bin}/lua-5.1 -e "for i=0,9 do io.write(i) end"`
     assert_equal "0123456789", output
     assert_equal 0, $?.exitstatus
   end
@@ -105,7 +106,7 @@ index 209a132..9387b09 100644
  	cd src && $(INSTALL_DATA) $(TO_LIB) $(INSTALL_LIB)
  	cd doc && $(INSTALL_DATA) $(TO_MAN) $(INSTALL_MAN)
 +	ln -s -f liblua.5.1.5.dylib $(INSTALL_LIB)/liblua.5.1.dylib
-+	ln -s -f liblua.5.1.dylib $(INSTALL_LIB)/liblua.dylib
++	ln -s -f liblua.5.1.dylib $(INSTALL_LIB)/liblua-5.1.dylib
 
  ranlib:
  	cd src && cd $(INSTALL_LIB) && $(RANLIB) $(TO_LIB)

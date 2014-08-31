@@ -4,7 +4,6 @@ class Cardpeek < Formula
   homepage 'https://cardpeek.googlecode.com'
   url 'https://cardpeek.googlecode.com/files/cardpeek-0.7.2.tar.gz'
   sha1 '9f774140bbfea2ebdd25f38146d7ebe3b1c0d871'
-  revision 1
 
   head 'http://cardpeek.googlecode.com/svn/trunk/'
 
@@ -13,7 +12,7 @@ class Cardpeek < Formula
   depends_on :automake
   depends_on :x11
   depends_on 'gtk+'
-  depends_on 'lua51'
+  depends_on 'lua'
 
   def patches
     # Required for 0.7.2, fixed in HEAD. See:
