@@ -1,22 +1,12 @@
 require 'testing_env'
 require 'compilers'
+require 'software_spec'
 
 class CompilerSelectorTests < Homebrew::TestCase
-  class Double
-    attr_reader :name
-
-    def initialize
-      @failures = []
-      @name = "double"
-    end
-
+  class Double < SoftwareSpec
     def <<(cc)
-      @failures << CompilerFailure.create(cc)
+      fails_with(cc)
       self
-    end
-
-    def fails_with?(compiler)
-      @failures.any? { |failure| failure === compiler }
     end
   end
 
