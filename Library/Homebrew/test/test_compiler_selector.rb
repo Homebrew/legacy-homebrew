@@ -11,11 +11,12 @@ class CompilerSelectorTests < Homebrew::TestCase
     end
 
     def <<(cc)
-      @failures << cc
+      @failures << CompilerFailure.create(cc)
+      self
     end
 
-    def fails_with?(cc)
-      @failures.include?(cc.name)
+    def fails_with?(compiler)
+      @failures.any? { |failure| failure === compiler }
     end
   end
 
@@ -48,7 +49,7 @@ class CompilerSelectorTests < Homebrew::TestCase
   end
 
   def test_all_compiler_failures
-    @f << :clang << :llvm << :gcc << 'gcc-4.8'
+    @f << :clang << :llvm << :gcc << { :gcc => "4.8" }
     assert_raises(CompilerSelectionError) { actual_cc }
   end
 
@@ -72,7 +73,7 @@ class CompilerSelectorTests < Homebrew::TestCase
   end
 
   def test_fails_with_non_apple_gcc
-    @f << "gcc-4.8"
+    @f << { :gcc => "4.8" }
     assert_equal :clang, actual_cc
   end
 
@@ -82,7 +83,7 @@ class CompilerSelectorTests < Homebrew::TestCase
   end
 
   def test_mixed_failures_2
-    @f << :gcc << :clang << 'gcc-4.8'
+    @f << :gcc << :clang << { :gcc => "4.8" }
     assert_equal :llvm, actual_cc
   end
 
@@ -92,13 +93,13 @@ class CompilerSelectorTests < Homebrew::TestCase
   end
 
   def test_mixed_failures_4
-    @f << :clang << "gcc-4.8"
+    @f << :clang << { :gcc => "4.8" }
     assert_equal :gcc, actual_cc
   end
 
   def test_older_clang_precedence
     @versions = CompilerVersions.new(:clang_build_version => 211)
-    @f << :gcc << 'gcc-4.8'
+    @f << :gcc << { :gcc => "4.8" }
     assert_equal :llvm, actual_cc
   end
 
@@ -108,8 +109,8 @@ class CompilerSelectorTests < Homebrew::TestCase
   end
 
   def test_missing_gcc
-    @versions = CompilerVersions.new( :gcc_build_version => nil)
-    @f << :clang << :llvm << 'gcc-4.8'
+    @versions = CompilerVersions.new(:gcc_build_version => nil)
+    @f << :clang << :llvm << { :gcc => "4.8" }
     assert_raises(CompilerSelectionError) { actual_cc }
   end
 
@@ -118,7 +119,7 @@ class CompilerSelectorTests < Homebrew::TestCase
       :gcc_build_version => nil,
       :llvm_build_version => nil
     )
-    @f << :clang << 'gcc-4.8'
+    @f << :clang << { :gcc => "4.8" }
     assert_raises(CompilerSelectionError) { actual_cc }
   end
 end
