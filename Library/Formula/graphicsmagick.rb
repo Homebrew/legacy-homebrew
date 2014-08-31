@@ -2,10 +2,9 @@ require 'formula'
 
 class Graphicsmagick < Formula
   homepage 'http://www.graphicsmagick.org/'
-  url 'https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.19/GraphicsMagick-1.3.19.tar.bz2'
-  sha256 'b57cdeb1ab9492b667776bbbc265149eda5601d2c572d65f43b44273e892fff1'
+  url 'https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.20/GraphicsMagick-1.3.20.tar.bz2'
+  sha256 '7caf27691ec21682de1f0259c9243725db7cdeca699c40958c28aece99e4f1dc'
   head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
-  revision 1
 
   option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
   option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
