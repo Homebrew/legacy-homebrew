@@ -20,7 +20,7 @@ class Libtins < Formula
   def install
     ENV.cxx11 if build.cxx11?
     args = []
-    args << "-DLIBTINS_ENABLE_CXX11=1" if build.cxx11? 
+    args << "-DLIBTINS_ENABLE_CXX11=1" if build.cxx11?
 
     system "cmake", ".", *args, *std_cmake_args
     system "make", "install"
