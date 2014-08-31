@@ -75,9 +75,10 @@ class Lua51 < Formula
 
     mv "#{bin}/lua", "#{bin}/lua-5.1"
     mv "#{bin}/luac", "#{bin}/luac-5.1"
-    mv "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua-5.1.pc"
     mv "#{man1}/lua.1", "#{man1}/lua-5.1.1"
     mv "#{man1}/luac.1", "#{man1}/luac-5.1.1"
+    mv "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua5.1.pc"
+    ln_s "#{lib}/pkgconfig/lua5.1.pc", "#{lib}/pkgconfig/lua-5.1.pc"
   end
 
   test do
