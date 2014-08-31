@@ -6,6 +6,12 @@ class Graphicsmagick < Formula
   sha256 '7caf27691ec21682de1f0259c9243725db7cdeca699c40958c28aece99e4f1dc'
   head 'hg://http://graphicsmagick.hg.sourceforge.net:8000/hgroot/graphicsmagick/graphicsmagick'
 
+  bottle do
+    sha1 "3e681ecf2e126ee5322a6c05e4228670de8b7f8e" => :mavericks
+    sha1 "6dbabb0a513590f9e000bdf6a9fc4cf15cc829ec" => :mountain_lion
+    sha1 "dbdef094a39a8052eb7b04bae77724b5c7c524e9" => :lion
+  end
+
   option 'with-quantum-depth-8', 'Compile with a quantum depth of 8 bit'
   option 'with-quantum-depth-16', 'Compile with a quantum depth of 16 bit'
   option 'with-quantum-depth-32', 'Compile with a quantum depth of 32 bit'
