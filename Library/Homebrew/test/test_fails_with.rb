@@ -35,7 +35,7 @@ class FailsWithTests < Homebrew::TestCase
   end
 
   def test_fails_with_block_without_build
-    fails_with(:clang) { }
+    fails_with(:clang)
     cc = build_cc(:clang, 425)
     assert_fails_with cc
   end
