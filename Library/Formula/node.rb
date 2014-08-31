@@ -85,6 +85,6 @@ class Node < Formula
     assert_equal "hello", output
     assert_equal 0, $?.exitstatus
 
-    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "--global", "npm@latest" if build.with? "npm"
+    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "npm@latest" if build.with? "npm"
   end
 end
