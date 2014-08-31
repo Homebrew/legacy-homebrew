@@ -2,8 +2,8 @@ require "formula"
 
 class Libtins < Formula
   homepage "https://libtins.github.io/"
-  url "https://github.com/mfontanini/libtins/archive/v3.0.tar.gz"
-  sha1 "0e8a31dde9ba9ec55cc4c6d3142fe4e3912598e3"
+  url "https://github.com/mfontanini/libtins/archive/v3.1.tar.gz"
+  sha1 "8047e87ba90f784d7022980c7351b616d43d4fba"
   head "https://github.com/mfontanini/libtins.git"
 
   bottle do
@@ -15,12 +15,14 @@ class Libtins < Formula
 
   option :cxx11
 
+  depends_on "cmake" => :build
+
   def install
     ENV.cxx11 if build.cxx11?
-    args = ["--prefix=#{prefix}"]
-    args << "--enable-c++11" if build.cxx11?
+    args = std_cmake_args
+    args << "-DLIBTINS_ENABLE_CXX11=1" if build.cxx11?
 
-    system "./configure", *args
+    system "cmake", ".", *args
     system "make", "install"
     doc.install "examples"
   end
