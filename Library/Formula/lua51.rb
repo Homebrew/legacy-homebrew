@@ -80,6 +80,7 @@ class Lua51 < Formula
     mv "#{man1}/luac.1", "#{man1}/luac-5.1.1"
     mv "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua5.1.pc"
     ln_s "#{lib}/pkgconfig/lua5.1.pc", "#{lib}/pkgconfig/lua-5.1.pc"
+    ln_s "#{lib}/liblua.5.1.5.dylib", "#{lib}/liblua5.1.dylib"
     ln_s "#{include}/lua-5.1", "#{include}/lua5.1"
     ln_s "#{bin}/lua-5.1", "#{bin}/lua5.1"
     ln_s "#{bin}/luac-5.1", "#{bin}/luac5.1"
