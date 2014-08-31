@@ -20,6 +20,12 @@ class Pianobar < Formula
     cause "Reports of this not compiling on Xcode 4"
   end
 
+  # Fixes segfault in JSON response parser; fixed upstream, will be in next release
+  patch do
+    url "https://github.com/PromyLOPh/pianobar/commit/597b2ec46a3708d50ab9620d5bb4fdbd19cf8a6c.diff"
+    sha1 "d1a6215e72aeb95a77892898110d79e3737e3ba1"
+  end
+
   def install
     # Discard Homebrew's CFLAGS as Pianobar reportedly doesn't like them
     ENV['CFLAGS'] = "-O2 -DNDEBUG " +
