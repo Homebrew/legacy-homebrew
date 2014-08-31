@@ -1,17 +1,17 @@
 require 'testing_env'
-require 'test/testball'
+require 'software_spec'
 
 class FailsWithTests < Homebrew::TestCase
   def assert_fails_with(cc)
-    assert @f.new.fails_with?(cc)
+    assert @spec.fails_with?(cc)
   end
 
-  def assert_does_not_fail_with(cc)
-    assert !@f.new.fails_with?(cc)
+  def refute_fails_with(cc)
+    refute @spec.fails_with?(cc)
   end
 
   def fails_with(*args, &block)
-    @f.fails_with(*args, &block)
+    @spec.fails_with(*args, &block)
   end
 
   def build_cc(name, version)
@@ -19,7 +19,7 @@ class FailsWithTests < Homebrew::TestCase
   end
 
   def setup
-    @f = Class.new(TestBall)
+    @spec = SoftwareSpec.new
   end
 
   def test_fails_with_symbol
@@ -31,7 +31,7 @@ class FailsWithTests < Homebrew::TestCase
   def test_fails_with_build
     fails_with(:clang) { build 211 }
     cc = build_cc(:clang, 318)
-    assert_does_not_fail_with cc
+    refute_fails_with cc
   end
 
   def test_fails_with_block_without_build
@@ -54,13 +54,13 @@ class FailsWithTests < Homebrew::TestCase
     clang = build_cc(:clang, 425)
     assert_fails_with llvm
     assert_fails_with clang
-    assert_does_not_fail_with gcc
+    refute_fails_with gcc
   end
 
   def test_fails_with_version
     fails_with(:gcc => '4.8') { version '4.8.1' }
     assert_fails_with build_cc("gcc-4.8", "4.8")
     assert_fails_with build_cc("gcc-4.8", "4.8.1")
-    assert_does_not_fail_with build_cc("gcc-4.8", "4.8.2")
+    refute_fails_with build_cc("gcc-4.8", "4.8.2")
   end
 end
