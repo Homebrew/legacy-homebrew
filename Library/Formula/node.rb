@@ -1,5 +1,25 @@
 require "formula"
 
+  if '~/.npm' or '~/.node' or '~/.npmrc' or '~/node_modules' is not $USER throw ERRNO
+    puts 'Please chown $dirs first!'
+  end
+
+  if HOMEBREW_PREFIX/'lib'/'node_modules' is not 'drwxr-xr-x' && $USER throw ERRNO
+    puts 'Please chown $dir first!'
+  end
+
+  if HOMEBREW_PREFIX/'bin'/'npm' is not 'lrwxr-xr-x' && $USER do
+    rm HOMEBREW_PREFIX/'bin'/'npm'
+  end
+
+  if HOMEBREW_PREFIX/'bin'/'node' is not 'lrwxr-xr-x' && $USER do
+    rm HOMEBREW_PREFIX/'bin'/'node'
+  end
+
+  if HOMEBREW_PREFIX/'include'/'node' is not 'lrwxr-xr-x' && $USER do
+    rm HOMEBREW_PREFIX/'include'/'node'
+  end
+
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "http://nodejs.org/"
@@ -10,11 +30,6 @@ class Node < Formula
     sha1 "f9a8cb0e7347af1fc02ef416fcb1552c7f632e5d" => :mavericks
     sha1 "89e000bcc905df7623af481e45720ae0105392f0" => :mountain_lion
     sha1 "970581c26c145c2e2e2d2453aa69de555213665c" => :lion
-  end
-
-  devel do
-    url "http://nodejs.org/dist/v0.11.13/node-v0.11.13.tar.gz"
-    sha1 "da4a9adb73978710566f643241b2c05fb8a97574"
   end
 
   head "https://github.com/joyent/node.git"
@@ -29,9 +44,17 @@ class Node < Formula
     build 2326
   end
 
+  unless verbose; system do
+  'sudo find -L #{HOMEBREW_PREFIX}/bin -type l -exec rm {} +'
+  'sudo find -L #{HOMEBREW_PREFIX}/share -type l -exec rm {} +'
+  if verbose; system do
+  'sudo find -L #{HOMEBREW_PREFIX}/share -type l -exec rm -i {} +'
+  'sudo find -L #{HOMEBREW_PREFIX}/bin -type l -exec rm -i {} +'
+  end
+
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-1.4.9.tgz"
-    sha1 "29094f675dad69fc5ea24960a81c7abbfca5ce01"
+    url "https://registry.npmjs.org/npm/-/npm-1.4.24.tgz"
+    sha1 "78125bb55dc592b9cbf4aff44e33d5d81c9471af"
   end
 
   def install
@@ -56,7 +79,7 @@ class Node < Formula
     npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
 
     npm_root.cd { system "make", "install" }
-    system "#{HOMEBREW_PREFIX}/bin/npm", "update", "npm", "-g",
+    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "--global", "npm@latest",
                                          "--prefix", HOMEBREW_PREFIX
 
     Pathname.glob(npm_root/"man/*") do |man|
@@ -69,6 +92,19 @@ class Node < Formula
       bash_completion.install_symlink \
         npm_root/"lib/utils/completion.sh" => "npm"
     end
+  end
+
+  if post_install ERRNO do silent
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man1/node.1'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man1/npm.1'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man1/npm-*'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man3/npm-*'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man3/npm.1'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man5/npm-*'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man5/npmrc.5'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man7/npm-*'
+  	'ls -l #{HOMEBREW_PREFIX}/share/man/man7/removing-npm.7'
+  if not 'lrwxr-xr-x' && $USER reveal verbose && puts 'Please rm the above files and reinstall Node'
   end
 
   def caveats
