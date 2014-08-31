@@ -15,7 +15,6 @@ class CompilerSelectorTests < Homebrew::TestCase
     end
 
     def fails_with?(cc)
-      return false if cc.nil?
       @failures.include?(cc.name)
     end
   end
