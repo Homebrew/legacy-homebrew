@@ -71,7 +71,8 @@ class Lua51 < Formula
     (lib+"pkgconfig").install 'etc/lua.pc'
 
     # Renaming from Lua to Lua51.
-    # Note that the naming must be lua-version. Software can't find the libraries without the hyphen.
+    # Note that the naming must be both lua-version & lua.version. 
+    # Software can't find the libraries without supporting both the hyphen or full stop.
 
     mv "#{bin}/lua", "#{bin}/lua-5.1"
     mv "#{bin}/luac", "#{bin}/luac-5.1"
@@ -79,6 +80,9 @@ class Lua51 < Formula
     mv "#{man1}/luac.1", "#{man1}/luac-5.1.1"
     mv "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua5.1.pc"
     ln_s "#{lib}/pkgconfig/lua5.1.pc", "#{lib}/pkgconfig/lua-5.1.pc"
+    ln_s "#{include}/lua-5.1", "#{include}/lua5.1"
+    ln_s "#{bin}/lua-5.1", "#{bin}/lua5.1"
+    ln_s "#{bin}/luac-5.1", "#{bin}/luac5.1"
   end
 
   test do
