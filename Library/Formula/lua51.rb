@@ -65,23 +65,16 @@ class Lua51 < Formula
     # below that, thus making luarocks work
     (HOMEBREW_PREFIX/"lib/lua"/version.to_s.split('.')[0..1].join('.')).mkpath
 
-    system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
-    system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
+    system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua5.1"
+    system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua5.1"
 
     (lib+"pkgconfig").install 'etc/lua.pc'
 
     # Renaming from Lua to Lua51.
-    # This is such an awful implementation. We should fix it before merging.
-    # Perhaps we can patch the Makefile instead. Might be cleaner.
 
     mv "#{bin}/lua", "#{bin}/lua5.1"
     mv "#{bin}/luac", "#{bin}/luac5.1"
     mv "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua5.1.pc"
-    mv "#{include}/lauxlib.h", "#{include}/lauxlib5.1.h"
-    mv "#{include}/lua.h", "#{include}/lua5.1.h"
-    mv "#{include}/lua.hpp", "#{include}/lua5.1.hpp"
-    mv "#{include}/luaconf.h", "#{include}/luaconf5.1.h"
-    mv "#{include}/lualib.h", "#{include}/lualib5.1.h"
     mv "#{man1}/lua.1", "#{man1}/lua5.1.1"
     mv "#{man1}/luac.1", "#{man1}/luac5.1.1"
   end
