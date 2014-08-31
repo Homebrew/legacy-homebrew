@@ -2,8 +2,8 @@ require 'formula'
 
 class Cgvg < Formula
   homepage 'http://www.uzix.org/cgvg.html'
-  url 'http://www.uzix.org/cgvg/cgvg-1.6.2.tar.gz'
-  sha1 '24f460d75de95969e30d8a5187d037119ac79ad2'
+  url 'http://www.uzix.org/cgvg/cgvg-1.6.3.tar.gz'
+  sha1 'd5a108e470b6e7bdf7863c540aaf0efc9ddf1335'
 
   def install
     system "./configure", "--prefix=#{prefix}",
