@@ -6,10 +6,10 @@ class Ntopng < Formula
   sha1 "81189e53aa71084caf11b5462fb752363988fa01"
   version "1.2.0"
 
-  depends_on :autoconf => :build
-  depends_on :automake => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on "pkg-config" => :build
-  depends_on :libtool => :build
+  depends_on "libtool" => :build
   depends_on "json-glib" => :build
   depends_on "json-c" => :build
   depends_on "wget" => :build
@@ -23,13 +23,13 @@ class Ntopng < Formula
 
   def install
     system "./autogen.sh"
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure","--prefix=#{prefix}"
     system "make"
     system "make","install"
   end
 
   test do
-    system "#{bin}/ntopng", "--version"
+    system "#{bin}/ntopng","--version"
   end
 
 end
