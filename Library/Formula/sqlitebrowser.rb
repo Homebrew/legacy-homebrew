@@ -9,9 +9,9 @@ class Sqlitebrowser < Formula
 
   bottle do
     cellar :any
-    sha1 "750444aa3b7f137641c34d9bc69610bb1eca74ed" => :mavericks
-    sha1 "29dfedf65d80f50f2a3586a0a4e9e3e40a261b86" => :mountain_lion
-    sha1 "ea3855b388a381a7cf281b1155841df9aa02c687" => :lion
+    sha1 "b84a47145f9bbf241b280e6ccd4646ba38cb1f7a" => :mavericks
+    sha1 "fc8e7173447061f096248e6e468d423a38fd5074" => :mountain_lion
+    sha1 "4f2814aa785bd36b5da13226d0da7a67863a3aeb" => :lion
   end
 
   depends_on 'qt'
