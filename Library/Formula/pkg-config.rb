@@ -5,6 +5,7 @@ class PkgConfig < Formula
   url 'http://pkgconfig.freedesktop.org/releases/pkg-config-0.28.tar.gz'
   mirror 'http://fossies.org/linux/misc/pkg-config-0.28.tar.gz'
   sha256 '6b6eb31c6ec4421174578652c7e141fdaae2dabad1021f420d8713206ac1f845'
+  revision 1
 
   bottle do
     revision 2
