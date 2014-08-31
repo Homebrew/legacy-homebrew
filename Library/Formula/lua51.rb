@@ -87,7 +87,7 @@ class Lua51 < Formula
   end
 
   test do
-    output = `#{bin}/lua51 -e "for i=0,9 do io.write(i) end"`
+    output = `#{bin}/lua5.1 -e "for i=0,9 do io.write(i) end"`
     assert_equal "0123456789", output
     assert_equal 0, $?.exitstatus
   end
