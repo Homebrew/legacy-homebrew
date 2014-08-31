@@ -5,9 +5,9 @@ class Imagemagick < Formula
 
   # upstream's stable tarballs tend to disappear, so we provide our own mirror
   # Tarball and checksum from: http://www.imagemagick.org/download
-  url "https://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.9-5.tar.xz"
-  mirror "http://www.imagemagick.org/download/ImageMagick-6.8.9-5.tar.xz"
-  sha256 "ea66e0824e6c208c3318c0d02ca12376416b29a634e099a90c2c840edd7de0e1"
+  url "https://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.9-7.tar.xz"
+  mirror "http://www.imagemagick.org/download/ImageMagick-6.8.9-7.tar.xz"
+  sha256 "45670f37ebd3354d64e45df5462b929b5b843dee2b038b0ad524491492bffbf9"
 
   head "https://www.imagemagick.org/subversion/ImageMagick/trunk",
     :using => UnsafeSubversionDownloadStrategy
