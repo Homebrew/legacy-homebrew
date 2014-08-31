@@ -88,7 +88,7 @@ class CompilerSelectorTests < Homebrew::TestCase
   end
 
   def test_older_clang_precedence
-    @versions = CompilerVersions.new(:clang_build_version => 211)
+    @versions.clang_build_version = 211
     @f << :gcc << { :gcc => "4.8" }
     assert_equal :llvm, actual_cc
   end
@@ -99,16 +99,13 @@ class CompilerSelectorTests < Homebrew::TestCase
   end
 
   def test_missing_gcc
-    @versions = CompilerVersions.new(:gcc_build_version => nil)
+    @versions.gcc_build_version = nil
     @f << :clang << :llvm << { :gcc => "4.8" }
     assert_raises(CompilerSelectionError) { actual_cc }
   end
 
   def test_missing_llvm_and_gcc
-    @versions = CompilerVersions.new(
-      :gcc_build_version => nil,
-      :llvm_build_version => nil
-    )
+    @versions.gcc_build_version = @versions.llvm_build_version = nil
     @f << :clang << { :gcc => "4.8" }
     assert_raises(CompilerSelectionError) { actual_cc }
   end
