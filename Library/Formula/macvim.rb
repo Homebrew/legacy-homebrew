@@ -6,6 +6,7 @@ class Macvim < Formula
   url 'https://github.com/b4winckler/macvim/archive/snapshot-73.tar.gz'
   version '7.4-73'
   sha1 'b87e37fecb305a99bc268becca39f8854e3ff9f0'
+  revision 1
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
@@ -14,7 +15,7 @@ class Macvim < Formula
 
   depends_on :xcode => :build
   depends_on 'cscope' => :recommended
-  depends_on 'lua' => :optional
+  depends_on 'lua51' => :optional
   depends_on 'luajit' => :optional
   depends_on :python => :recommended
   depends_on :python3 => :optional

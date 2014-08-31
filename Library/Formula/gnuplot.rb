@@ -2,14 +2,15 @@ require 'formula'
 
 class LuaRequirement < Requirement
   fatal true
-  default_formula 'lua'
-  satisfy { which 'lua' }
+  default_formula 'lua51'
+  satisfy { which 'lua51' }
 end
 
 class Gnuplot < Formula
   homepage 'http://www.gnuplot.info'
   url 'https://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.5/gnuplot-4.6.5.tar.gz'
   sha256 'e550f030c7d04570e89c3d4e3f6e82296816508419c86ab46c4dd73156519a2d'
+  revision 1
 
   bottle do
     revision 1

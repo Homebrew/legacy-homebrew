@@ -4,13 +4,14 @@ class Lsyncd < Formula
   homepage "https://github.com/axkibe/lsyncd"
   url "https://github.com/axkibe/lsyncd/archive/release-2.1.5.tar.gz"
   sha1 "2b8eb169365edc54488a97435bbd39ae4a6731b8"
+  revision 1
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "asciidoc" => :build
   depends_on "docbook" => :build
   depends_on "pkg-config" => :build
-  depends_on "lua"
+  depends_on "lua51"
 
   # This is an artificial requirement, the resource below is incomplete
   depends_on :macos => :lion

@@ -4,6 +4,7 @@ class Weechat < Formula
   homepage 'http://www.weechat.org'
   url 'http://weechat.org/files/src/weechat-1.0.tar.bz2'
   sha1 'd3070ffde05cb706d615144e71f933153871894d'
+  revision 1
 
   head 'https://github.com/weechat/weechat.git'
 
@@ -18,7 +19,7 @@ class Weechat < Formula
   depends_on 'libgcrypt'
   depends_on 'guile' => :optional
   depends_on 'aspell' => :optional
-  depends_on 'lua' => :optional
+  depends_on 'lua51' => :optional
   depends_on :python => :optional
 
   option 'with-perl', 'Build the perl module'

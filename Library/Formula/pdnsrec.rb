@@ -4,10 +4,11 @@ class Pdnsrec < Formula
   homepage 'http://wiki.powerdns.com'
   url 'http://downloads.powerdns.com/releases/pdns-recursor-3.6.0.tar.bz2'
   sha256 '345651705f04eb63ef6ea4573587907bc213879834e37f4b7e4c2e70bc952372'
+  revision 1
 
   depends_on :macos => :lion
   depends_on 'boost'
-  depends_on 'lua' => :optional
+  depends_on 'lua51' => :optional
 
   def install
     # Set overrides using environment variables

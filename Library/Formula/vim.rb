@@ -6,6 +6,7 @@ class Vim < Formula
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
   url 'http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.335.orig.tar.gz'
   sha1 '0a548b3463b362e2f7fdc493158dd42aa48ab760'
+  revision 1
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
@@ -29,7 +30,7 @@ class Vim < Formula
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
-  depends_on 'lua' => :optional
+  depends_on 'lua51' => :optional
   depends_on 'luajit' => :optional
   depends_on 'gtk+' if build.with? 'client-server'
 

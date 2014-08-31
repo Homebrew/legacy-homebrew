@@ -2,6 +2,7 @@ require "formula"
 
 class Wireshark < Formula
   homepage "http://www.wireshark.org"
+  revision 1
 
   stable do
     url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.0.tar.bz2"
@@ -39,7 +40,7 @@ class Wireshark < Formula
   depends_on "geoip" => :recommended
 
   depends_on "c-ares" => :optional
-  depends_on "lua" => :optional
+  depends_on "lua51" => :optional
   depends_on "pcre" => :optional
   depends_on "portaudio" => :optional
   depends_on "qt" => :optional

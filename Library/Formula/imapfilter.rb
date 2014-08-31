@@ -4,7 +4,7 @@ class Imapfilter < Formula
   homepage "https://github.com/lefcha/imapfilter/"
   url "https://github.com/lefcha/imapfilter/archive/v2.5.6.tar.gz"
   sha1 "49ac7b7fb937b40eb42a162314de4f8866e33c11"
-  revision 1
+  revision 2
 
   bottle do
     revision 1
@@ -13,7 +13,7 @@ class Imapfilter < Formula
     sha1 "c29743afc1c8d9d9ddb5646c57a601fefb7313fd" => :lion
   end
 
-  depends_on "lua"
+  depends_on "lua51"
   depends_on "pcre"
   depends_on "openssl"
 

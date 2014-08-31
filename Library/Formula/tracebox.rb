@@ -4,6 +4,7 @@ class Tracebox < Formula
   homepage 'http://www.tracebox.org/'
   head 'https://github.com/tracebox/tracebox.git'
   url 'https://github.com/tracebox/tracebox.git', :tag => 'v0.2'
+  revision 1
 
   bottle do
     cellar :any
@@ -15,7 +16,7 @@ class Tracebox < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "lua"
+  depends_on "lua51"
 
   def install
     ENV.append "AUTOHEADER", "true"

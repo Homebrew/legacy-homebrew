@@ -4,10 +4,11 @@ class Ipe < Formula
   homepage 'http://ipe7.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/ipe7/ipe/7.1/ipe-7.1.3-src.tar.gz'
   sha1 '7999a85d902fbe3952664dea86c2c0a1aaed40d6'
+  revision 1
 
   depends_on 'pkg-config' => :build
   depends_on 'makeicns' => :build
-  depends_on 'lua'
+  depends_on 'lua51'
   depends_on 'qt'
   depends_on :x11
 

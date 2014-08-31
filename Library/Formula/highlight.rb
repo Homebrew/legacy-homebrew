@@ -4,10 +4,11 @@ class Highlight < Formula
   homepage 'http://www.andre-simon.de/doku/highlight/en/highlight.html'
   url 'http://www.andre-simon.de/zip/highlight-3.18.tar.bz2'
   sha1 '985d0a3c707e3251fe50ffff66e11a8563777202'
+  revision 1
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'
-  depends_on 'lua'
+  depends_on 'lua51'
 
   def install
     inreplace "src/makefile" do |s|

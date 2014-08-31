@@ -1,8 +1,8 @@
 require 'formula'
 
-class Lua < Formula
+class Lua51 < Formula
   # 5.2 is not fully backwards compatible, and breaks e.g. luarocks.
-  # It is available in Homebrew-versions for the time being.
+  # The transition has begun. Lua will now become Lua51, and Lua52 will become Lua.
   homepage 'http://www.lua.org/'
   url 'http://www.lua.org/ftp/lua-5.1.5.tar.gz'
   sha1 'b3882111ad02ecc6b972f8c1241647905cb2e3fc'
@@ -69,10 +69,25 @@ class Lua < Formula
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
 
     (lib+"pkgconfig").install 'etc/lua.pc'
+
+    # Renaming from Lua to Lua51.
+    # This is such an awful implementation. We should fix it before merging.
+    # Perhaps we can patch the Makefile instead. Might be cleaner.
+
+    mv "#{bin}/lua", "#{bin}/lua5.1"
+    mv "#{bin}/luac", "#{bin}/luac5.1"
+    mv "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua5.1.pc"
+    mv "#{include}/lauxlib.h", "#{include}/lauxlib5.1.h"
+    mv "#{include}/lua.h", "#{include}/lua5.1.h"
+    mv "#{include}/lua.hpp", "#{include}/lua5.1.hpp"
+    mv "#{include}/luaconf.h", "#{include}/luaconf5.1.h"
+    mv "#{include}/lualib.h", "#{include}/lualib5.1.h"
+    mv "#{man1}/lua.1", "#{man1}/lua5.1.1"
+    mv "#{man1}/luac.1", "#{man1}/luac5.1.1"
   end
 
   test do
-    output = `#{bin}/lua -e "for i=0,9 do io.write(i) end"`
+    output = `#{bin}/lua51 -e "for i=0,9 do io.write(i) end"`
     assert_equal "0123456789", output
     assert_equal 0, $?.exitstatus
   end

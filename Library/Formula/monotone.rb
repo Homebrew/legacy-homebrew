@@ -4,6 +4,7 @@ class Monotone < Formula
   homepage "http://monotone.ca/"
   url "http://www.monotone.ca/downloads/1.1/monotone-1.1.tar.bz2"
   sha1 "2b97559b252decaee3a374b81bf714cf33441ba3"
+  revision 1
 
   bottle do
     revision 1
@@ -15,7 +16,7 @@ class Monotone < Formula
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "libidn"
-  depends_on "lua"
+  depends_on "lua51"
   depends_on "pcre"
   depends_on "botan"
   # Monotone only needs headers, not any built libraries

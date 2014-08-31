@@ -4,6 +4,7 @@ class Radare2 < Formula
   homepage 'http://radare.org'
   url 'http://radare.org/get/radare2-0.9.7.tar.xz'
   sha1 '34af6c6ba53ac08c852b4e110ac6908054616b9d'
+  revision 1
 
   head 'http://radare.org/hg/radare2', :using => :hg
 
@@ -14,7 +15,7 @@ class Radare2 < Formula
   depends_on "libewf"
   depends_on "libmagic"
   depends_on "gmp"
-  depends_on "lua"
+  depends_on "lua51"
 
   # Fixes file name of dynamic libraries so that version goes before .dylib.
   #  * radare2 pull request #693
