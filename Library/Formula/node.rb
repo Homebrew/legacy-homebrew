@@ -51,6 +51,7 @@ class Node < Formula
     npmrc = npm_root/"npmrc"
     npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
 
+    ENV["NPM_CONFIG_USERCONFIG"] = npmrc
     npm_root.cd { system "make", "install" }
     system "#{HOMEBREW_PREFIX}/bin/npm", "install", "--global", "npm@latest",
                                          "--prefix", HOMEBREW_PREFIX
