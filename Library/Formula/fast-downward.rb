@@ -94,13 +94,6 @@ echo
     system "ln -sf #{prefix}/cleanup /usr/local/bin/fast-downward-cleanup"
   end
 
-  def uninstall
-    system "rm -f /usr/local/bin/fast-downward-preprocess"
-    system "rm -f /usr/local/bin/fast-downward-search"
-    system "rm -f /usr/local/bin/fast-downward"
-    system "rm -f /usr/lcoal/bin/fast-downward-cleanup"
-  end
-
   test do
     system "/usr/bin/file /usr/local/bin/fast-downward"
   end
