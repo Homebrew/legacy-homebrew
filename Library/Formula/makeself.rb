@@ -8,13 +8,15 @@ class Makeself < Formula
   head 'https://github.com/megastep/makeself.git', :branch => 'master'
 
   def install
-    bin.install "makeself-header.sh"
+    libexec.install "makeself-header.sh"
+    bin.install_symlink libexec/"makeself-header.sh"
     bin.install "makeself.sh" => "makeself"
     man1.install "makeself.1"
   end
 
   test do
-    system "wget", "https://github.com/megastep/makeself/archive/release-2.2.0.tar.gz"
-    system "makeself", ".", "makeself.run", "\"Makeself by Stephane Peter\"", "echo"
+    system "touch", "testfile"
+    system "tar", "cvzf", "testfile.tar.gz", "testfile"
+    system "makeself", ".", "testfile.run", "\"A test file\"", "echo"
   end
 end
