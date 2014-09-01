@@ -7,6 +7,10 @@ module HomebrewArgvExtension
     select { |arg| arg.start_with?("-") }
   end
 
+  def flags_only
+    select { |arg| arg.start_with?("--") }
+  end
+
   def formulae
     require "formula"
     @formulae ||= downcased_unique_named.map { |name| Formulary.factory(name, spec) }

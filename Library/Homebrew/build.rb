@@ -186,7 +186,7 @@ begin
   trap("INT", old_trap)
 
   formula = ARGV.formulae.first
-  options = Options.create(ARGV.options_only)
+  options = Options.create(ARGV.flags_only)
   build   = Build.new(formula, options)
   build.install
 rescue Exception => e
