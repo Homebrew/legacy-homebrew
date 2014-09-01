@@ -6,7 +6,6 @@ class FastDownward < Formula
   sha1 "b84e5e4914a19338be6b5db031b57f80086fd5df"
   version "1.0.0"
 
-  depends_on "gcc" => :build
   depends_on "cmake" => :build
   depends_on "python"
   depends_on "flex" => :build
@@ -15,13 +14,18 @@ class FastDownward < Formula
   depends_on "gawk"
   depends_on "coreutils"
 
-  def install
-  	#gcc = "/usr/local/bin/g++-4.9"
-    gcc = "/usr/local/bin/g++-#{Formula['gcc'].version_suffix}"
+  fails_with :clang do
+    cause "Clang does no recognize 'tr1' library e.g. '#include <tr1/unordered_set>'"
+  end
 
+  fails_with :llvm do
+    cause "it does no recognize 'tr1' library e.g. '#include <tr1/unordered_set>'"
+  end
+
+  def install
     # compile
-    system "cd preprocess && make CXX=#{gcc} CC=#{gcc}"
-    system "cd search && make CXX=#{gcc} CC=#{gcc}"
+    system "cd preprocess && make"
+    system "cd search && make"
 
     # install
     system "mkdir #{prefix}/{bin,preprocess,search}"
@@ -34,6 +38,6 @@ class FastDownward < Formula
   end
 
   test do
-    system "/usr/bin/file /usr/local/bin/fast-downward"
+    system "/usr/local/bin/fast-downward"
   end
 end
