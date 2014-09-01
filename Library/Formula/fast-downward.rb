@@ -3,7 +3,7 @@ require "formula"
 class FastDownward < Formula
   homepage "http://fast-downward.org"
   url "http://herry13.github.io/fd/fast-downward-1.0.0.tar.gz"
-  sha1 "85f402e76dd398ab96e8fd97351a525f83208e72"
+  sha1 "b84e5e4914a19338be6b5db031b57f80086fd5df"
   version "1.0.0"
 
   depends_on "gcc" => :build
@@ -29,6 +29,8 @@ class FastDownward < Formula
     system "cp -r translate #{prefix}"
     system "cp preprocess/preprocess #{prefix}/preprocess/"
     system "cp search/{downward,downward-release,unitcost} #{prefix}/search/"
+    system "ln -sf #{prefix}/preprocess/preprocess #{prefix}/bin/fast-downward-preprocess"
+    system "ln -sf #{prefix}/search/downward-release #{prefix}/bin/fast-downward-search"
   end
 
   test do
