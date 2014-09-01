@@ -7,8 +7,15 @@ class ProxychainsNg < Formula
 
   head 'https://github.com/rofl0r/proxychains-ng.git'
 
+  option :universal
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{prefix}/etc"
+    args=["--prefix=#{prefix}", "--sysconfdir=#{prefix}/etc"]
+    if build.universal?
+      ENV.universal_binary
+      args=args.unshift "--fat-binary"
+    end
+    system "./configure", *args
     system "make"
     system "make install"
     system "make install-config"
