@@ -47,6 +47,8 @@ class Imagemagick < Formula
   depends_on "webp" => :optional
   depends_on "homebrew/versions/openjpeg21" if build.with? "jp2"
 
+  depends_on "xz"
+
   opoo "--with-ghostscript is not recommended" if build.with? "ghostscript"
 
   def pour_bottle?
