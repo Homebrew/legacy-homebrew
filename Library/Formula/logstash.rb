@@ -9,6 +9,7 @@ class Logstash < Formula
     inreplace %w{bin/logstash bin/logstash.lib.sh}, /^basedir=.*$/, "basedir=#{libexec}"
     libexec.install Dir["*"]
     bin.install_symlink libexec/"bin/logstash"
+    bin.install_symlink libexec/"bin/plugin"
   end
 
   def caveats; <<-EOS.undent
