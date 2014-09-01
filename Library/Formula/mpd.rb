@@ -2,11 +2,8 @@ require 'formula'
 
 class Mpd < Formula
   homepage "http://www.musicpd.org/"
-
-  stable do
-    url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.13.tar.xz"
-    sha1 "0ddf8c55228fcc67522ecdd7710f93dc146c99a7"
-  end
+  url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.13.tar.xz"
+  sha1 "0ddf8c55228fcc67522ecdd7710f93dc146c99a7"
 
   bottle do
     revision 1
