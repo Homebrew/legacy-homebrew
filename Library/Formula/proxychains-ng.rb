@@ -8,7 +8,7 @@ class ProxychainsNg < Formula
   head 'https://github.com/rofl0r/proxychains-ng.git'
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{prefix}/etc"
+    system "./configure", "--fat-binary", "--prefix=#{prefix}", "--sysconfdir=#{prefix}/etc"
     system "make"
     system "make install"
     system "make install-config"
