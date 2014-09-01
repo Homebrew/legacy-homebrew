@@ -6,7 +6,7 @@ class ProxychainsNg < Formula
   sha1 '5e5b10009f785434ebdbd7ede5a79efee4e59c5a'
 
   head 'https://github.com/rofl0r/proxychains-ng.git'
-  
+
   option :universal, "Build proxychains-ng as an Universal Build."
 
   def install
