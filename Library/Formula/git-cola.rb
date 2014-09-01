@@ -9,9 +9,9 @@ class GitCola < Formula
 
   bottle do
     cellar :any
-    sha1 "f2acd531c892f811c317630db8b66c4b398d24e2" => :mavericks
-    sha1 "87825694c73263eba4429a2e3f8792dbd4fd4bad" => :mountain_lion
-    sha1 "69d5577b80e332a6f97aef0394ecf21fb003991b" => :lion
+    sha1 "3d25d2a75de62577e8e9a681657fa2f5403c26c9" => :mavericks
+    sha1 "ee451c446b61864a44347d2f544c62a49bb021f1" => :mountain_lion
+    sha1 "88e4243fb3c9ee15465825c70a388235904c9f06" => :lion
   end
 
   option "with-docs", "Build man pages using asciidoc and xmlto"
