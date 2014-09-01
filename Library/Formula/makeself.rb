@@ -9,13 +9,16 @@ class Makeself < Formula
 
   def install
     libexec.install "makeself-header.sh"
-    bin.install_symlink libexec/"makeself-header.sh"
+    # moved makeself-header.sh to libexec so change its location in makeself.sh
+    inreplace "makeself.sh" do |f|
+      f.gsub! '`dirname "$0"`', "#{libexec}"
+    end
     bin.install "makeself.sh" => "makeself"
     man1.install "makeself.1"
   end
 
   test do
-    system "touch", "testfile"
+    touch "testfile"
     system "tar", "cvzf", "testfile.tar.gz", "testfile"
     system "makeself", ".", "testfile.run", "\"A test file\"", "echo"
   end
