@@ -1,4 +1,5 @@
 require "formula"
+
 class Jbake < Formula
   homepage "http://jbake.org"
   url "http://jbake.org/files/jbake-2.3.1-bin.zip"
@@ -8,16 +9,7 @@ class Jbake < Formula
     rm_f Dir["bin/*.bat"]
     prefix.install_metafiles
     libexec.install Dir['*']
-    File.open("jbake", 'w') { |f|
-      f.write("#!/usr/bin/env bash\njava -jar ${JBAKE_HOME}/jbake-core.jar $@")
-    }
-    bin.install("jbake")
-  end
-
-  def caveats; <<-EOS.undent
-    The JBAKE_HOME environment variable must be set to:
-      #{libexec}
-    EOS
+    bin.write_jar_script "#{libexec}/jbake-core.jar", "jbake"
   end
 
 end
