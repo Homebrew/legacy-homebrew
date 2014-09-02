@@ -3,38 +3,24 @@ require "formula"
 class FastDownward < Formula
   homepage "http://fast-downward.org"
   url "http://herry13.github.io/fd/fast-downward-1.0.0.tar.gz"
-  sha1 "b84e5e4914a19338be6b5db031b57f80086fd5df"
+  sha1 "bb319e768dd9ced9735164caf53ac0c2ec182bdc"
 
   depends_on "cmake" => :build
-  depends_on "python"
   depends_on "flex" => :build
   depends_on "bison" => :build
-  depends_on "gnu-time"
-  depends_on "gawk"
-  depends_on "coreutils"
-
-  fails_with :clang do
-    cause "Clang does no recognize 'tr1' library e.g. '#include <tr1/unordered_set>'"
-  end
-
-  fails_with :llvm do
-    cause "it does no recognize 'tr1' library e.g. '#include <tr1/unordered_set>'"
-  end
 
   def install
     # compile
-    system "cd preprocess && make"
-    system "cd search && make"
+    system 'make'
 
     # install
-    system "mkdir #{prefix}/{bin,preprocess,search}"
-    system "cp bin/* #{bin}"
-    system "cp -r translate #{prefix}"
-    system "cp preprocess/preprocess #{prefix}/preprocess/"
-    system "cp search/{downward,downward-release,unitcost} #{prefix}/search/"
+    bin.mkpath
+    (prefix/'preprocess').mkpath
+    (prefix/'search').mkpath
+    system 'make', "PREFIX=#{prefix}", 'install'
   end
 
   test do
-    system "file", "#{bin}/fast-downward"
+    system 'fast-downward', 'test/airport-01-domain.pddl', 'test/airport-01-problem.pddl', '--search "lazy_greedy(ff())"'
   end
 end
