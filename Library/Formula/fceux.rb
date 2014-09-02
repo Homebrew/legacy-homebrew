@@ -4,6 +4,7 @@ class Fceux < Formula
   homepage 'http://fceux.com'
   url 'https://downloads.sourceforge.net/project/fceultra/Source%20Code/2.2.2%20src/fceux-2.2.2.src.tar.gz'
   sha1 'ec50d8eae04794ba10f441a26cdb410c1cf6832b'
+  revision 1
 
   option 'no-gtk', "Build without Gtk+ support"
 
@@ -12,7 +13,7 @@ class Fceux < Formula
   depends_on 'sdl'
   depends_on 'libzip'
   depends_on 'gtk+' unless build.include? "no-gtk"
-  depends_on 'lua'
+  depends_on 'lua51'
   depends_on :x11
 
   # Make scons honor PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR

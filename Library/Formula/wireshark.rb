@@ -2,6 +2,7 @@ require "formula"
 
 class Wireshark < Formula
   homepage "http://www.wireshark.org"
+  revision 1
 
   stable do
     url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.0.tar.bz2"
