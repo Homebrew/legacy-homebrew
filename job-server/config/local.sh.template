@@ -7,6 +7,7 @@ APP_USER=spark
 APP_GROUP=spark
 INSTALL_DIR=/home/spark/job-server
 LOG_DIR=/var/log/job-server
+PIDFILE=spark-jobserver.pid
 SPARK_HOME=/home/spark/spark-0.8.0
 SPARK_CONF_HOME=$SPARK_HOME/conf
 # Only needed for Mesos deploys
