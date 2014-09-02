@@ -5,7 +5,7 @@ import akka.io.IO
 import akka.pattern.ask
 import akka.util.Timeout
 import ooyala.common.akka.InstrumentedActor
-import scala.util.{Try, Success, Failure}
+import scala.util.{Success, Failure}
 import scala.concurrent.Future
 import spark.jobserver.SparkWebUiActor.{SparkWorkersErrorInfo, SparkWorkersInfo, GetWorkerStatus}
 import spray.can.Http
@@ -17,11 +17,14 @@ object SparkWebUiActor {
   case class GetWorkerStatus()
 
   // Responses
-  case class SparkWorkersInfo(alive :Int, dead :Int)
+  case class SparkWorkersInfo(alive: Int, dead: Int)
   case class SparkWorkersErrorInfo(message :String)
 }
 /**
- * Created by senqiang on 8/13/14.
+ * This actor pulls Spark worker status info (ALIVE, DEAD etc) from Spark admin web ui
+ * Collecting worker info from HTML page is not ideal.
+ * But at this time Spark does not provide public API yet to expose worker status.
+ * Also, the current implementation only works for Spark standalone mode
  */
 class SparkWebUiActor extends InstrumentedActor {
   import actorSystem.dispatcher // execution context for futures
@@ -34,8 +37,8 @@ class SparkWebUiActor extends InstrumentedActor {
 
   val config = context.system.settings.config
 
-  val sparkWebHostUrl = Try(config.getString("spark.webUrl")).getOrElse("localhost")
-  val sparkWebHostPort = Try(config.getInt("spark.webUrlPort")).getOrElse(8080)
+  val sparkWebHostUrl = getSparkHostName()
+  val sparkWebHostPort = config.getInt("spark.webUrlPort")
 
   val pipeline: Future[SendReceive] =
     for (
@@ -67,6 +70,20 @@ class SparkWebUiActor extends InstrumentedActor {
           logger.error( msg )
           theSender ! SparkWorkersErrorInfo(msg)
       }
+  }
+
+  def getSparkHostName(): String = {
+    val master = config.getString("spark.master")
+    // Regular expression used for local[N] and local[*] master formats
+    val LOCAL_N_REGEX = """local\[([0-9\*]+)\]""".r
+    // Regular expression for connecting to Spark deploy clusters
+    val SPARK_REGEX = """spark://(.*):.*""".r
+
+    master match {
+      case "localhost" | "local" | LOCAL_N_REGEX(_) => "localhost"
+      case SPARK_REGEX(sparkUrl) => sparkUrl
+      case _ => throw new RuntimeException("Could not parse Master URL: '" + master + "'")
+    }
   }
 
 

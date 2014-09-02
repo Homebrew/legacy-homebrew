@@ -25,7 +25,7 @@ object SparkWebUiActorSpec {
   val sparkWebPort = 8098
   val config = ConfigFactory.parseString(s"""
     spark {
-      master = "local[4]"
+      master = "spark://localhost:7077"
       webUrl = $sparkWebUrl
       webUrlPort = $sparkWebPort
       temp-contexts {
