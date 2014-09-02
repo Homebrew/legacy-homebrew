@@ -10,4 +10,8 @@ class ApacheKaraf < Formula
 
     bin.env_script_all_files(libexec + 'bin', :KARAF_HOME => libexec)
   end
+
+  test do
+      system bin/admin
+  end
 end
