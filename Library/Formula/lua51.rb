@@ -59,6 +59,8 @@ class Lua51 < Formula
     inreplace 'etc/lua.pc' do |s|
       s.gsub! "prefix= /usr/local", "prefix=#{HOMEBREW_PREFIX}"
       s.gsub! "INSTALL_MAN= ${prefix}/man/man1", "INSTALL_MAN= ${prefix}/share/man/man1"
+      s.gsub! "INSTALL_INC= ${prefix}/include", "INSTALL_INC= ${prefix}/include/lua-5.1"
+      s.gsub! "includedir=${prefix}/include", "includedir=${prefix}/include/lua-5.1"
     end
 
     system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"

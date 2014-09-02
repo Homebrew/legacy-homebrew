@@ -8,14 +8,9 @@ class Highlight < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'
-  depends_on 'lua51'
+  depends_on 'lua'
 
   def install
-    inreplace "src/makefile" do |s|
-      s.change_make_var! "CXX", ENV.cxx
-      s.gsub! /-DUSE_LUA52/, ""
-    end
-
     conf_dir = etc+'highlight/' # highlight needs a final / for conf_dir
     system "make", "PREFIX=#{prefix}", "conf_dir=#{conf_dir}"
     system "make", "PREFIX=#{prefix}", "conf_dir=#{conf_dir}", "install"

@@ -16,7 +16,7 @@ class Tracebox < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "lua51"
+  depends_on "lua"
 
   def install
     ENV.append "AUTOHEADER", "true"

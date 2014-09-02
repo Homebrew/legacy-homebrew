@@ -13,7 +13,7 @@ class Imapfilter < Formula
     sha1 "c29743afc1c8d9d9ddb5646c57a601fefb7313fd" => :lion
   end
 
-  depends_on "lua51"
+  depends_on "lua"
   depends_on "pcre"
   depends_on "openssl"
 

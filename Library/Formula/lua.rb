@@ -1,10 +1,9 @@
 require 'formula'
 
 class Lua < Formula
-  homepage 'http://www.lua.org/'
-  # We repackage the file in the same way Debian does for liblua50-dev, to include a pkg-config file
-  url 'https://raw.githubusercontent.com/DomT4/scripts/master/Homebrew_Resources/Lua/lua-5.2.3.tgz'
-  sha1 '4212601d1539c17bc7a752ea2ccf34eca5728ef2'
+  homepage "http://www.lua.org/"
+  url "http://www.lua.org/ftp/lua-5.2.3.tar.gz"
+  sha1 "926b7907bc8d274e063d42804666b40a3f3c124c"
 
   fails_with :llvm do
     build 2326
@@ -14,7 +13,7 @@ class Lua < Formula
   option 'completion', 'Enables advanced readline support'
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
-  # See: https://github.com/mxcl/homebrew/pull/5043
+  # See: https://github.com/Homebrew/homebrew/pull/5043
   patch :DATA
 
   # completion provided by advanced readline power patch from
@@ -36,19 +35,41 @@ class Lua < Formula
     # Fix path in the config header
     inreplace 'src/luaconf.h', '/usr/local', HOMEBREW_PREFIX
 
-    # Fix paths in the .pc
-    inreplace 'etc/lua.pc' do |s|
-      s.gsub! "prefix= /usr/local", "prefix=#{HOMEBREW_PREFIX}"
-    end
-
+    # We need to make our own pc file as Lua no longer ships them.
     system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}"
-
-    (lib+"pkgconfig").install 'etc/lua.pc'
+    (lib+"pkgconfig/lua.pc").write pc_file
 
     # Fix some software potentially hunting for different pc names.
+    ln_s "#{bin}/lua", "#{bin}/lua5.2"
+    ln_s "#{bin}/lua", "#{bin}/lua-5.2"
+    ln_s "#{bin}/luac", "#{bin}/luac5.2"
+    ln_s "#{bin}/luac", "#{bin}/luac-5.2"
     ln_s "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua5.2.pc"
     ln_s "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua-5.2.pc"
+  end
+
+  def pc_file; <<-EOS.undent
+    V= 5.2
+    R= 5.2.3
+    prefix=#{HOMEBREW_PREFIX}
+    INSTALL_BIN= ${prefix}/bin
+    INSTALL_INC= ${prefix}/include
+    INSTALL_LIB= ${prefix}/lib
+    INSTALL_MAN= ${prefix}/share/man/man1
+    INSTALL_LMOD= ${prefix}/share/lua/${V}
+    INSTALL_CMOD= ${prefix}/lib/lua/${V}
+    exec_prefix=${prefix}
+    libdir=${exec_prefix}/lib
+    includedir=${prefix}/include
+
+    Name: Lua
+    Description: An Extensible Extension Language
+    Version: 5.2.3
+    Requires: 
+    Libs: -L${libdir} -llua -lm
+    Cflags: -I${includedir}
+    EOS
   end
 end
 

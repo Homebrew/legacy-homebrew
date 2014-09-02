@@ -8,7 +8,7 @@ class Pdnsrec < Formula
 
   depends_on :macos => :lion
   depends_on 'boost'
-  depends_on 'lua51' => :optional
+  depends_on 'lua' => :optional
 
   def install
     # Set overrides using environment variables

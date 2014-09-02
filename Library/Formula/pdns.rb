@@ -11,7 +11,7 @@ class Pdns < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'boost'
-  depends_on 'lua51'
+  depends_on 'lua'
   depends_on 'sqlite'
   depends_on :postgresql if build.include? 'pgsql'
 
