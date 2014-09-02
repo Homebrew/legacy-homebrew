@@ -2,8 +2,6 @@ require "formula"
 
 class Boot2docker < Formula
   homepage "https://github.com/boot2docker/boot2docker-cli"
-  # Boot2docker and docker are generally updated at the same time.
-  # Please update the version of docker too
   url "https://github.com/boot2docker/boot2docker-cli.git", :tag => "v1.2.0"
   head "https://github.com/boot2docker/boot2docker-cli.git", :branch => "master"
 
@@ -33,5 +31,11 @@ class Boot2docker < Formula
 
   test do
     system "#{bin}/boot2docker", "version"
+  end
+
+  def caveats; <<-EOS.undent
+    Boot2docker and docker are generally updated at the same time.
+    Please update the version of docker too
+    EOS
   end
 end
