@@ -12,11 +12,11 @@ class Lv < Formula
     sha1 "4bc23132a51ab1fb35ec2af15473d1d928c9475d" => :lion
   end
 
-  def patches
-    DATA
-  end
-
   def install
+    # zcat doesn't handle gzip'd data on OSX.
+    # Reported upstream to nrt@ff.iij4u.or.jp
+    inreplace "src/stream.c", 'gz_filter = "zcat"', 'gz_filter = "gzcat"'
+
     cd "build" do
       system "../src/configure", "--prefix=#{prefix}"
       system "make"
@@ -28,16 +28,3 @@ class Lv < Formula
     (lib+"lv").install "lv.hlp"
   end
 end
-
-__END__
---- a/src/stream.c  2012-01-01 00:00:00.000000000 +0000
-+++ b/src/stream.c  2012-01-01 00:00:00.000000000 +0000
-@@ -41,7 +41,7 @@
- #include <begin.h>
- #include "stream.h"
-
--private byte *gz_filter = "zcat";
-+private byte *gz_filter = "gzcat";
- private byte *bz2_filter = "bzcat";
-
- private stream_t *StreamAlloc()
