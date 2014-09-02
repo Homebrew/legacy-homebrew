@@ -22,6 +22,7 @@ object Dependencies {
     "io.spray" %% "spray-json" % "1.2.5",
     "io.spray" % "spray-can" % "1.2.0",
     "io.spray" % "spray-routing" % "1.2.0",
+    "io.spray" % "spray-client" % "1.2.0",
     yammerDeps
   ) ++ yodaDeps
 
