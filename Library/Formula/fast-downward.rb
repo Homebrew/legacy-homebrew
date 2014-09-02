@@ -38,6 +38,6 @@ class FastDownward < Formula
   end
 
   test do
-    system "/usr/local/bin/fast-downward"
+    system "file /usr/local/bin/fast-downward"
   end
 end
