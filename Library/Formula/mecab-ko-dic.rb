@@ -14,11 +14,11 @@ class MecabKoDic < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--with-dicdir=#{prefix}"
     system "make install"
-    
+
     unless File.readlines("#{etc}/mecabrc").grep(/^dicdir.*=/).any?
-      open("#{etc}/mecabrc", 'a') do |f| 
+      open("#{etc}/mecabrc", 'a') do |f|
         f.puts "dicdir = #{opt_prefix}\n"
-      end 
+      end
     end
 
   end
