@@ -7,11 +7,11 @@ class ProxychainsNg < Formula
 
   head 'https://github.com/rofl0r/proxychains-ng.git'
 
-  option :universal, "Build proxychains-ng as an Universal Build."
+  option :universal
 
   def install
     args=[]
-    if build.universal? then
+    if build.universal?
       ENV.universal_binary
       args << "--fat-binary"
     end
