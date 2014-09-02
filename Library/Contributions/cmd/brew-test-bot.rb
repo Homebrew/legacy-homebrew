@@ -326,6 +326,12 @@ class Test
 
     installed_gcc = false
     begin
+      deps = formula_object.stable.deps.to_a
+      if formula_object.devel && !ARGV.include?('--HEAD')
+        deps |= formula_object.devel.deps.to_a
+      end
+      deps.each {|f| CompilerSelector.new(f.to_formula).compiler }
+
       CompilerSelector.new(formula_object).compiler
     rescue CompilerSelectionError => e
       unless installed_gcc

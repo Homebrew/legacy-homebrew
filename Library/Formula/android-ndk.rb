@@ -2,20 +2,37 @@ require 'formula'
 
 class AndroidNdk < Formula
   homepage 'http://developer.android.com/sdk/ndk/index.html'
-  version 'r9d'
+  version 'r10'
 
   if MacOS.prefer_64_bit?
-    url "http://dl.google.com/android/ndk/android-ndk-r9d-darwin-x86_64.tar.bz2"
-    sha1 'd0a8471555be57899c67aa6b61db5bca9db2e8ea'
+    url "https://dl.google.com/android/ndk/android-ndk64-r10-darwin-x86_64.tar.bz2"
+    sha1 '9ecda655e448d3b249be17f1d66f7e4f9535a3b8'
+
+    resource "32bit_target" do
+      url "https://dl.google.com/android/ndk/android-ndk32-r10-darwin-x86_64.tar.bz2"
+      sha1 '4a1d226ee7361b51c02e723b5758e3da536cdf8b'
+    end
   else
-    url "http://dl.google.com/android/ndk/android-ndk-r9d-darwin-x86.tar.bz2"
-    sha1 '91ac410a24ad6d1fc67b5161294a4a5cb78b2975'
+    url "https://dl.google.com/android/ndk/android-ndk64-r10-darwin-x86.tar.bz2"
+    sha1 '0fbfd9b3af17cdab56ac475e1998f53c31fb9c1d'
+
+    resource "32bit_target" do
+      url "https://dl.google.com/android/ndk/android-ndk32-r10-darwin-x86.tar.bz2"
+      sha1 'd38f5fce29e07d8b4deb538ebc2ba1ba4c067afd'
+    end
   end
 
   depends_on 'android-sdk'
 
   def install
     bin.mkpath
+
+    # Unpack 32-bit target into current directory
+    target = resource("32bit_target")
+    target.verify_download_integrity(target.fetch)
+    system "tar", "xf", target.cached_download
+
+    # Now we can install both 64-bit and 32-bit targeting toolchains
     prefix.install Dir['*']
 
     # Create a dummy script to launch the ndk apps

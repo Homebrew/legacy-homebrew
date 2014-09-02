@@ -36,7 +36,7 @@ class SoftwareSpec
     @bottle_specification = BottleSpecification.new
     @patches = []
     @options = Options.new
-    @build = BuildOptions.new(Options.create(ARGV.options_only), options)
+    @build = BuildOptions.new(Options.create(ARGV.flags_only), options)
     @compiler_failures = []
   end
 
@@ -69,10 +69,10 @@ class SoftwareSpec
     resources.has_key?(name)
   end
 
-  def resource name, &block
+  def resource name, klass=Resource, &block
     if block_given?
       raise DuplicateResourceError.new(name) if resource_defined?(name)
-      res = Resource.new(name, &block)
+      res = klass.new(name, &block)
       resources[name] = res
       dependency_collector.add(res)
     else

@@ -1,22 +1,12 @@
 require 'testing_env'
 require 'compilers'
+require 'software_spec'
 
 class CompilerSelectorTests < Homebrew::TestCase
-  class Double
-    attr_reader :name
-
-    def initialize
-      @failures = []
-      @name = "double"
-    end
-
+  class Double < SoftwareSpec
     def <<(cc)
-      @failures << cc
-    end
-
-    def fails_with?(cc)
-      return false if cc.nil?
-      @failures.include?(cc.name)
+      fails_with(cc)
+      self
     end
   end
 
@@ -49,7 +39,7 @@ class CompilerSelectorTests < Homebrew::TestCase
   end
 
   def test_all_compiler_failures
-    @f << :clang << :llvm << :gcc << 'gcc-4.8'
+    @f << :clang << :llvm << :gcc << { :gcc => "4.8" }
     assert_raises(CompilerSelectionError) { actual_cc }
   end
 
@@ -73,7 +63,7 @@ class CompilerSelectorTests < Homebrew::TestCase
   end
 
   def test_fails_with_non_apple_gcc
-    @f << "gcc-4.8"
+    @f << { :gcc => "4.8" }
     assert_equal :clang, actual_cc
   end
 
@@ -83,7 +73,7 @@ class CompilerSelectorTests < Homebrew::TestCase
   end
 
   def test_mixed_failures_2
-    @f << :gcc << :clang << 'gcc-4.8'
+    @f << :gcc << :clang << { :gcc => "4.8" }
     assert_equal :llvm, actual_cc
   end
 
@@ -93,13 +83,13 @@ class CompilerSelectorTests < Homebrew::TestCase
   end
 
   def test_mixed_failures_4
-    @f << :clang << "gcc-4.8"
+    @f << :clang << { :gcc => "4.8" }
     assert_equal :gcc, actual_cc
   end
 
   def test_older_clang_precedence
-    @versions = CompilerVersions.new(:clang_build_version => 211)
-    @f << :gcc << 'gcc-4.8'
+    @versions.clang_build_version = 211
+    @f << :gcc << { :gcc => "4.8" }
     assert_equal :llvm, actual_cc
   end
 
@@ -109,17 +99,14 @@ class CompilerSelectorTests < Homebrew::TestCase
   end
 
   def test_missing_gcc
-    @versions = CompilerVersions.new( :gcc_build_version => nil)
-    @f << :clang << :llvm << 'gcc-4.8'
+    @versions.gcc_build_version = nil
+    @f << :clang << :llvm << { :gcc => "4.8" }
     assert_raises(CompilerSelectionError) { actual_cc }
   end
 
   def test_missing_llvm_and_gcc
-    @versions = CompilerVersions.new(
-      :gcc_build_version => nil,
-      :llvm_build_version => nil
-    )
-    @f << :clang << 'gcc-4.8'
+    @versions.gcc_build_version = @versions.llvm_build_version = nil
+    @f << :clang << { :gcc => "4.8" }
     assert_raises(CompilerSelectionError) { actual_cc }
   end
 end

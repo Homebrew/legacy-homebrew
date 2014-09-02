@@ -2,14 +2,14 @@ require 'formula'
 
 class Zsh < Formula
   homepage 'http://www.zsh.org/'
-  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.bz2'
-  mirror 'http://www.zsh.org/pub/zsh-5.0.5.tar.bz2'
-  sha1 '75426146bce45ee176d9d50b32f1ced78418ae16'
+  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.6/zsh-5.0.6.tar.bz2'
+  mirror 'http://www.zsh.org/pub/zsh-5.0.6.tar.bz2'
+  sha1 'a626aa1923cc1bd4f8f2463e947a3f3cb340b0ea'
 
   bottle do
-    sha1 "d8d7ba4016377561d5d823a30abff7c81fee1577" => :mavericks
-    sha1 "34fbefd6275edb7ee9fcc8d0ce3da4438ca412b1" => :mountain_lion
-    sha1 "63a53240287c1f11204217176aab8246eab4d43c" => :lion
+    sha1 "32f15592b2516bdfe1d0c660a1556cfa93dee54d" => :mavericks
+    sha1 "23b2dfa6a856f2f0ce41b724a8bbaba459880683" => :mountain_lion
+    sha1 "756101a883b8c90b98f0d5faff8161e6c981f2c2" => :lion
   end
 
   depends_on 'gdbm'

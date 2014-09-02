@@ -260,11 +260,8 @@ class Formula
         # we allow formulae to do anything they want to the Ruby process
         # so load any deps before this point! And exit asap afterwards
         yield self
-      rescue RuntimeError, SystemCallError
-        %w(config.log CMakeCache.txt).each do |fn|
-          (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
-        end
-        raise
+      ensure
+        cp Dir["config.log", "CMakeCache.txt"], HOMEBREW_LOGS+name
       end
     end
   end
@@ -663,10 +660,14 @@ class Formula
     end
 
     # Define a named resource using a SoftwareSpec style block
-    def resource name, &block
+    def resource name, klass=Resource, &block
       specs.each do |spec|
-        spec.resource(name, &block) unless spec.resource_defined?(name)
+        spec.resource(name, klass, &block) unless spec.resource_defined?(name)
       end
+    end
+
+    def go_resource name, &block
+      resource name, Resource::Go, &block
     end
 
     def depends_on dep
