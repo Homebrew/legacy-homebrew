@@ -8,9 +8,9 @@ class Libunistring < Formula
 
   bottle do
     cellar :any
-    sha1 "fd93c4c18b2b526b77d9dfeefd11ff89a6effc02" => :mavericks
-    sha1 "4bbf7ca720de8b13e2ebac7b5bb88ef2057b21a4" => :mountain_lion
-    sha1 "ed2d278f23e772a0401897a579deff47606b5d03" => :lion
+    sha1 "bd04ffb1891146a22737513b3b854080042912eb" => :mavericks
+    sha1 "e131611c0be53ad4e612ecd1ac605d684a3db3a7" => :mountain_lion
+    sha1 "baddc77f72ff77534c7320a3ffef3f2639b2616b" => :lion
   end
 
   def install
