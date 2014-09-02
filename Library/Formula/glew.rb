@@ -17,7 +17,7 @@ class Glew < Formula
     ENV.deparallelize
 
     inreplace "glew.pc.in", "Requires: @requireslib@", ""
-    system "make", "GLEW_DEST=#{prefix}", "all"
-    system "make", "GLEW_DEST=#{prefix}", "install.all"
+    system "make", "GLEW_PREFIX=#{prefix}", "GLEW_DEST=#{prefix}", "all"
+    system "make", "GLEW_PREFIX=#{prefix}", "GLEW_DEST=#{prefix}", "install.all"
   end
 end
