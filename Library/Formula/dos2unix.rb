@@ -3,6 +3,7 @@ require "formula"
 class Dos2unix < Formula
   homepage "http://waterlan.home.xs4all.nl/dos2unix.html"
   url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.0.6.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/6.0.6/dos2unix-6.0.6.tar.gz"
   sha1 "95db60b4483fc66d93f96fb810e3eccd58e22dbb"
 
   depends_on "gettext"
