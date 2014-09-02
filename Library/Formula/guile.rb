@@ -5,6 +5,7 @@ class Guile < Formula
   url 'http://ftpmirror.gnu.org/guile/guile-2.0.11.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/guile/guile-2.0.11.tar.gz'
   sha1 '3cdd1c4956414bffadea13e5a1ca08949016a802'
+  revision 1
 
   bottle do
     sha1 "3a75eeaa7a1637dd9876636963d8f02a6ffb23bf" => :mavericks
