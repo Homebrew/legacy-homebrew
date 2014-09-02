@@ -7,6 +7,12 @@ class ProxychainsNg < Formula
 
   head 'https://github.com/rofl0r/proxychains-ng.git'
 
+  bottle do
+    sha1 "2dec4dda5f1ee8656133141ee50a0a1bcf616c7d" => :mavericks
+    sha1 "ff402165a6ad4edde426615ef64513f0bb3ce92a" => :mountain_lion
+    sha1 "5f26998480a6c040cf016f0c1521299c052c24b3" => :lion
+  end
+
   option :universal
 
   def install
