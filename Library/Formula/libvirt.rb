@@ -2,8 +2,8 @@ require 'formula'
 
 class Libvirt < Formula
   homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/libvirt-1.2.7.tar.gz'
-  sha256 '3dfb462cba1188d2c9ba700e1927fa0dbd71f20afdf81ab0c43b27b7fe77defc'
+  url 'http://libvirt.org/sources/libvirt-1.2.8.tar.gz'
+  sha1 '76dd3376abff73d297e183257eef4a71b9e5d5c8'
 
   bottle do
     sha1 "17a888701564a3a24a150d4211c0b5d0b7ad4347" => :mavericks
