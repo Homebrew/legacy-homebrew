@@ -30,7 +30,7 @@ class Vim < Formula
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
-  depends_on 'lua51' => :optional
+  depends_on 'lua' => :optional
   depends_on 'luajit' => :optional
   depends_on 'gtk+' if build.with? 'client-server'
 

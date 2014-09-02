@@ -2,8 +2,8 @@ require 'formula'
 
 class LuaRequirement < Requirement
   fatal true
-  default_formula 'lua51'
-  satisfy { which 'lua51' }
+  default_formula 'lua'
+  satisfy { which 'lua' }
 end
 
 class Gnuplot < Formula

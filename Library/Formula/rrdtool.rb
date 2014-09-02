@@ -9,7 +9,7 @@ class Rrdtool < Formula
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'pango'
-  depends_on 'lua51' => :optional
+  depends_on 'lua' => :optional
 
   env :userpaths # For perl, ruby
 

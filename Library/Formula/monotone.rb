@@ -16,7 +16,7 @@ class Monotone < Formula
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "libidn"
-  depends_on "lua51"
+  depends_on "lua"
   depends_on "pcre"
   depends_on "botan"
   # Monotone only needs headers, not any built libraries

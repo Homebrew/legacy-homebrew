@@ -15,7 +15,7 @@ class Radare2 < Formula
   depends_on "libewf"
   depends_on "libmagic"
   depends_on "gmp"
-  depends_on "lua51"
+  depends_on "lua"
 
   # Fixes file name of dynamic libraries so that version goes before .dylib.
   #  * radare2 pull request #693

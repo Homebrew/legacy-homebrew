@@ -11,7 +11,7 @@ class Lsyncd < Formula
   depends_on "asciidoc" => :build
   depends_on "docbook" => :build
   depends_on "pkg-config" => :build
-  depends_on "lua51"
+  depends_on "lua"
 
   # This is an artificial requirement, the resource below is incomplete
   depends_on :macos => :lion
