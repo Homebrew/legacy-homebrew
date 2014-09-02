@@ -10,11 +10,7 @@ class Points2grid < Formula
   depends_on 'gdal'
 
   def install
-    args = %W[
-      -DCMAKE_INSTALL_PREFIX=#{prefix}
-      -DCMAKE_VERBOSE_MAKEFILE=TRUE
-      -DWITH_GDAL=ON
-    ]
+    args = std_cmake_args + ["-DWITH_GDAL=ON"]
     libexec.install "example.las"
     system "cmake", ".", *args
     system "make install"
