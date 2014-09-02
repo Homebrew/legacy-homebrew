@@ -32,11 +32,9 @@ class FastDownward < Formula
     system "cp -r translate #{prefix}"
     system "cp preprocess/preprocess #{prefix}/preprocess/"
     system "cp search/{downward,downward-release,unitcost} #{prefix}/search/"
-    system "ln -sf #{prefix}/preprocess/preprocess #{bin}/fast-downward-preprocess"
-    system "ln -sf #{prefix}/search/downward-release #{bin}/fast-downward-search"
   end
 
   test do
-    system "file /usr/local/bin/fast-downward"
+    system "file", "#{bin}/fast-downward"
   end
 end
