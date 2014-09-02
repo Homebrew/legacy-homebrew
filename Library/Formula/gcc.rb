@@ -68,6 +68,12 @@ class Gcc < Formula
     version.to_s.slice(/\d\.\d/)
   end
 
+  # Fix 10.10 issues: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61407
+  patch do
+    url "https://gcc.gnu.org/bugzilla/attachment.cgi?id=33180"
+    sha1 "def0cb036a255175db86f106e2bb9dd66d19b702"
+  end
+
   def install
     # GCC will suffer build errors if forced to use a particular linker.
     ENV.delete "LD"
