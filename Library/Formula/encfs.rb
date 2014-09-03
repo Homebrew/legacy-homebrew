@@ -40,6 +40,7 @@ class Encfs < Formula
     cp "#{MacOS.sdk_path}/usr/include/sys/_endian.h", "encfs/sys/endian.h"
 
     if build.stable?
+
       inreplace "configure.ac", "LIBINTL=-lgettextlib", "LIBINTL=-lgettextlib -lintl"
 
       # Fix runtime "dyld: Symbol not found" errors
@@ -59,6 +60,7 @@ class Encfs < Formula
     end
 
     system "make", "-f", "Makefile.dist"
+    inreplace "configure", "/usr/include/osxfuse /usr/local/include/osxfuse", "/usr/include/osxfuse /usr/local/include/osxfuse #{HOMEBREW_PREFIX}/include/osxfuse"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-boost=#{HOMEBREW_PREFIX}"
