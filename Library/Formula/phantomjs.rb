@@ -2,6 +2,7 @@ require "formula"
 
 class Phantomjs < Formula
   homepage "http://www.phantomjs.org/"
+  revision 1
 
   stable do
     url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip"
@@ -24,6 +25,8 @@ class Phantomjs < Formula
   head do
     url "https://github.com/ariya/phantomjs.git"
   end
+
+  depends_on 'openssl'
 
   def install
     if build.stable? && MacOS.prefer_64_bit?
