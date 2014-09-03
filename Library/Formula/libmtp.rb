@@ -7,9 +7,9 @@ class Libmtp < Formula
 
   bottle do
     cellar :any
-    sha1 "7702b0ce097a9a6a100d0b32f3df153d52ff28fb" => :mavericks
-    sha1 "8ceb62bf1932a223bfc3601309f37886d81c6b1f" => :mountain_lion
-    sha1 "6c629f67821477825bfd8f17ecbc1745a308b08e" => :lion
+    sha1 "e3194ce6f1692562c24ce59b4ba81079e1515817" => :mavericks
+    sha1 "7a8fd87ec676a4d38fb66e038d62c4313a73a71f" => :mountain_lion
+    sha1 "0bd337f0f7d78d65e90c1c385e6d795e847bed96" => :lion
   end
 
   depends_on "pkg-config" => :build
