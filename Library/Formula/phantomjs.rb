@@ -5,7 +5,7 @@ class Phantomjs < Formula
 
   stable do
     url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip"
-    sha1 "124b017d493d5ccabd22afaf078d0650ac048840"
+    sha256 "0f6c50ff24c1c4a8ccd7fedef62feef5e45195c7ba5ef6c84434448544877ff3"
 
     patch do
       url "https://github.com/ariya/phantomjs/commit/fe6a96.diff"
