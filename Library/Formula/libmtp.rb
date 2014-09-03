@@ -2,8 +2,8 @@ require 'formula'
 
 class Libmtp < Formula
   homepage 'http://libmtp.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/libmtp/libmtp/1.1.6/libmtp-1.1.6.tar.gz'
-  sha1 'f9e55c75399fc5f4deabcdfa58e1b01b2e6e3283'
+  url "https://downloads.sourceforge.net/project/libmtp/libmtp/1.1.8/libmtp-1.1.8.tar.gz"
+  sha1 "6528da141b9f8a04fc97c0b01cf4f3a6142ff64f"
 
   bottle do
     cellar :any
