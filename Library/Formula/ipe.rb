@@ -98,8 +98,8 @@ __END__
 +  # The lua package might be called "lua" or "lua5.1"
 +  luatest = $(shell pkg-config --modversion --silence-errors lua)
 +  ifneq "$(luatest)" ""
-+    LUA_CFLAGS  ?= $(shell pkg-config --cflags lua)
-+    LUA_LIBS    ?= $(shell pkg-config --libs lua)
++    LUA_CFLAGS  ?= $(shell pkg-config --cflags lua5.1)
++    LUA_LIBS    ?= $(shell pkg-config --libs lua5.1)
 +  else
 +    LUA_CFLAGS  ?= $(shell pkg-config --cflags lua5.1)
 +    LUA_LIBS    ?= $(shell pkg-config --libs lua5.1)

@@ -11,18 +11,11 @@ class Lua < Formula
     cause "Lua itself compiles with LLVM, but may fail when other software tries to link."
   end
 
-  option 'completion', 'Enables advanced readline support'
+  option :universal
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
   # See: https://github.com/Homebrew/homebrew/pull/5043
   patch :DATA
-
-  # completion provided by advanced readline power patch from
-  # http://lua-users.org/wiki/LuaPowerPatches
-  patch do
-    url "http://luajit.org/patches/lua-5.2.0-advanced_readline.patch"
-    sha1 "ca405dbd126bc018980a26c2c766dfb0f82e919e"
-  end if build.include? "completion"
 
   def install
     # Use our CC/CFLAGS to compile.
