@@ -12,6 +12,6 @@ class ApacheKaraf < Formula
   end
 
   test do
-      system bin/admin
+    system libexec/"bin/admin"
   end
 end
