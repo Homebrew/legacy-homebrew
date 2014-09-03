@@ -15,10 +15,8 @@ class MecabKoDic < Formula
                           "--with-dicdir=#{prefix}"
     system "make install"
 
-    unless File.readlines("#{etc}/mecabrc").grep(/^dicdir.*=/).any?
-      open("#{etc}/mecabrc", 'a') do |f|
-        f.puts "dicdir = #{opt_prefix}\n"
-      end
+    if File.readlines("#{etc}/mecabrc").grep(/^dicdir.*=/).empty?
+      open("#{etc}/mecabrc", "a") { |f| f.puts "dicdir = #{opt_prefix}\n" }
     end
   end
 end
