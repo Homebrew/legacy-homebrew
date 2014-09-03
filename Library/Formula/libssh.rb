@@ -4,7 +4,7 @@ class Libssh < Formula
   homepage 'http://www.libssh.org/'
   url 'https://red.libssh.org/attachments/download/87/libssh-0.6.3.tar.xz'
   sha1 '8189255e0f684d36b7ca62739fa0cd5f1030a467'
-  revision 1
+  revision 2
 
   bottle do
     sha1 "7e6ebf36a816f47341f189fa4e21f5a6b6e48257" => :mavericks
@@ -13,6 +13,7 @@ class Libssh < Formula
   end
 
   depends_on 'cmake' => :build
+  depends_on 'openssl'
 
   def install
     mkdir 'build' do
