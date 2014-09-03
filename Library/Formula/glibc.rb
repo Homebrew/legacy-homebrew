@@ -28,8 +28,6 @@ class Glibc < Formula
 
       system "make" # Fix No rule to make target libdl.so.2 needed by sprof
       system "make", "install"
-      rm include/"libintl.h" # Conflicts with gettext
-      rm_rf include/"scsi" # Conflicts with linux-headers
     end
   end
 
