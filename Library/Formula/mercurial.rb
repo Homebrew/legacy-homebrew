@@ -4,9 +4,8 @@ require 'formula'
 # of Homebrew.
 class Mercurial < Formula
   homepage 'http://mercurial.selenic.com/'
-  url 'http://mercurial.selenic.com/release/mercurial-3.1.tar.gz'
-  mirror 'http://ftp.debian.org/debian/pool/main/m/mercurial/mercurial_3.1.orig.tar.gz'
-  sha1 'aa95cd978c347ce7d5334c3280351ce03f861302'
+  url 'http://mercurial.selenic.com/release/mercurial-3.1.1.tar.gz'
+  sha1 '09cb417f55175262fcbe510af88db76bb893572e'
 
   bottle do
     cellar :any
