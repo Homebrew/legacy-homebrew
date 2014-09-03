@@ -8,9 +8,10 @@ class Sphinx < Formula
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
   bottle do
-    sha1 "ec438c2123c33a5cc41bf277ce22408424075261" => :mavericks
-    sha1 "0b99dba174ea363d2d5c2da78e2a5f99b6e57400" => :mountain_lion
-    sha1 "550021173abd3a528619c4da73d580dd54115003" => :lion
+    revision 1
+    sha1 "bedd71d9e8a0691e2e4bbfef057f6d87a6a7fe28" => :mavericks
+    sha1 "ba05b267136faff945b2370b81907c87c4126341" => :mountain_lion
+    sha1 "8c6351384d69e982527b71ca6162cc8fd680c2ec" => :lion
   end
 
   devel do
