@@ -43,6 +43,13 @@ class Osxfuse < Formula
 
       sudo /bin/cp -RfX #{opt_prefix}/Library/Filesystems/osxfusefs.fs /Library/Filesystems/
       sudo chmod +s /Library/Filesystems/osxfusefs.fs/Support/load_osxfusefs
+
+    From 10.10 Unsigned Kexts, which Osxfuse's source package contains are not permitted to run.
+    If you want to build & run the source package on Yosemite you may need to exercise:
+
+      sudo nvram boot-args="kext-dev-mode=1"
+
+    And then reboot.
     EOS
   end
 end
