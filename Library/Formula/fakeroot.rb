@@ -10,6 +10,7 @@ class Fakeroot < Formula
   depends_on :libtool
 
   def install
+    system "glibtoolize"
     system "./bootstrap"
     system "./configure", "--disable-dependency-tracking",
                           "--disable-static",
