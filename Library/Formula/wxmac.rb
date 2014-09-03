@@ -5,6 +5,15 @@ class Wxmac < Formula
   url "https://downloads.sourceforge.net/project/wxwindows/3.0.1/wxWidgets-3.0.1.tar.bz2"
   sha1 "73e58521d6871c9f4d1e7974c6e3a81629fddcf8"
 
+  # Patch to fix wx so it compiles on Yosemite.
+  # See http://trac.wxwidgets.org/ticket/16329
+    if MacOS.version == :yosemite
+      patch :p0 do
+        url "http://trac.wxwidgets.org/raw-attachment/ticket/16329/wx_webview.patch"
+        sha1 "4621be6cf308d50d22333707b17d243861c74a7d"
+    end
+  end
+
   bottle do
     sha1 "ea0f50918d4f4e1133ede454588a8b9853489c1f" => :mavericks
     sha1 "f667fbad16c6d1970240d823d5aeb2c86c22d609" => :mountain_lion
