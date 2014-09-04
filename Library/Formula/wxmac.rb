@@ -3,6 +3,7 @@ require 'formula'
 class Wxmac < Formula
   homepage "http://www.wxwidgets.org"
   url "https://downloads.sourceforge.net/project/wxwindows/3.0.1/wxWidgets-3.0.1.tar.bz2"
+  mirror "https://mirrors.kernel.org/debian/pool/main/w/wxwidgets3.0/wxwidgets3.0_3.0.1.orig.tar.bz2"
   sha1 "73e58521d6871c9f4d1e7974c6e3a81629fddcf8"
 
   # Patch to fix wx so it compiles on Yosemite.
