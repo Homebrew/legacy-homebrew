@@ -2,10 +2,9 @@ require 'formula'
 
 class Plowshare < Formula
   homepage 'http://code.google.com/p/plowshare/'
-  url 'https://plowshare.googlecode.com/files/plowshare4-snapshot-git20131130.3c63b19.tar.gz'
-  version '4.GIT-3c63b19'
-  sha1 '806076746394d06f118aef98fbc1c8bbd3585269'
-  revision 1
+  url 'https://plowshare.googlecode.com/archive/v1.0.5.tar.gz'
+  version 'v1.0.5'
+  sha1 '686bf47b4c55898129c32af552f4a8b14c9db8a8'
 
   head 'https://code.google.com/p/plowshare/', :using => :git
 
@@ -22,7 +21,7 @@ class Plowshare < Formula
 
   def install
     ENV["PREFIX"] = prefix
-    system "bash setup.sh install"
+    system "make install PREFIX=#{prefix}"
   end
 
   def caveats; <<-EOS.undent
@@ -51,4 +50,3 @@ __END__
  #
  # Common set of functions used by modules
  # Copyright (c) 2010 - 2011 Plowshare team
-
