@@ -2,8 +2,8 @@ require "formula"
 
 class SuomiMalagaVoikko < Formula
   homepage "http://voikko.puimula.org/"
-  url "http://www.puimula.org/voikko-sources/suomi-malaga/suomi-malaga-1.16.tar.gz"
-  sha1 "5d9310f8150b8d2b559d5e7c27829e2fd6125dfb"
+  url "http://www.puimula.org/voikko-sources/suomi-malaga/suomi-malaga-1.17.tar.gz"
+  sha1 "e3d3947b06f3ac2b13eaa2236c328b788c7d6bb8"
 
   bottle do
     cellar :any
