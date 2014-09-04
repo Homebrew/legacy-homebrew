@@ -23,6 +23,11 @@ class Ansible < Formula
     sha1 'c17e41a80b3fbf2ee4e8f2d8bb9e28c5d08bbb84'
   end
 
+  resource 'boto' do
+    url 'https://pypi.python.org/packages/source/b/boto/boto-2.32.1.tar.gz'
+    sha1 '4fdecde66245b7fc0295e22d2c2d3c9b08c2b1fa'
+  end
+
   resource 'pyyaml' do
     url 'https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz'
     sha1 '476dcfbcc6f4ebf3c06186229e8e2bd7d7b20e73'
@@ -56,7 +61,7 @@ class Ansible < Formula
     ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    res = %w[pycrypto pyyaml paramiko markupsafe jinja2]
+    res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
     res << "python-keyczar" if build.with? "accelerate"
     res.each do |r|
       resource(r).stage { system "python", *install_args }
