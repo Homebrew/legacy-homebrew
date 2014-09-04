@@ -24,6 +24,7 @@ class Zsh < Formula
       --enable-scriptdir=#{share}/zsh/scripts
       --enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions
       --enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts
+      --enable-runhelpdir=#{share}/zsh/help
       --enable-cap
       --enable-maildir-support
       --enable-multibyte
@@ -56,7 +57,7 @@ class Zsh < Formula
     Add the following to your zshrc to access the online help:
       unalias run-help
       autoload run-help
-      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/helpfiles
+      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/help
     EOS
   end
 end
