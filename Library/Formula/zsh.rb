@@ -56,7 +56,7 @@ class Zsh < Formula
     Add the following to your zshrc to access the online help:
       unalias run-help
       autoload run-help
-      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/helpfiles
+      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/5.0.6/help
     EOS
   end
 end
