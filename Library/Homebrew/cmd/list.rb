@@ -10,10 +10,10 @@ module Homebrew
     # Things below use the CELLAR, which doesn't until the first formula is installed.
     return unless HOMEBREW_CELLAR.exist?
 
-    if ARGV.include? '--pinned'
-      list_pinned
-    elsif ARGV.include? '--versions'
+    if ARGV.include? '--versions'
       list_versions
+    elsif ARGV.include? '--pinned'
+      list_pinned
     elsif ARGV.named.empty?
       ENV['CLICOLOR'] = nil
       exec 'ls', *ARGV.options_only << HOMEBREW_CELLAR
@@ -58,7 +58,16 @@ module Homebrew
   end
 
   def list_versions
-    if ARGV.named.empty?
+    if ARGV.include? '--pinned'
+      if ARGV.named.empty?
+        HOMEBREW_CELLAR.subdirs
+      else
+        ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
+      end.select do |d|
+        keg_pin = (HOMEBREW_LIBRARY/"PinnedKegs"/d.basename.to_s)
+        keg_pin.exist? or keg_pin.symlink?
+      end
+    elsif ARGV.named.empty?
       HOMEBREW_CELLAR.subdirs
     else
       ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
