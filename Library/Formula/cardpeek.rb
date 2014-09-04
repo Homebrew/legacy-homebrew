@@ -3,6 +3,7 @@ require 'formula'
 class Cardpeek < Formula
   homepage "http://pannetrat.com/Cardpeek/"
   url "http://downloads.pannetrat.com/get/302b8a00996e9f4180ad/cardpeek-0.8.3.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Cardpeek/cardpeek-0.8.3.tar.gz"
   sha1 "8cc9c0652f0214ec06badb5b86974c66ca035a43"
 
   head "http://cardpeek.googlecode.com/svn/trunk/"
