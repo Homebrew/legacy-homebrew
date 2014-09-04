@@ -4,7 +4,7 @@ class Plowshare < Formula
   homepage 'http://code.google.com/p/plowshare/'
   url 'https://plowshare.googlecode.com/archive/v1.0.5.tar.gz'
   version 'v1.0.5'
-  sha1 '686bf47b4c55898129c32af552f4a8b14c9db8a8'
+  sha1 ''
 
   head 'https://code.google.com/p/plowshare/', :using => :git
 
