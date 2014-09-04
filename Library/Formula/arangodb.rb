@@ -2,8 +2,8 @@ require 'formula'
 
 class Arangodb < Formula
   homepage 'http://www.arangodb.org/'
-  url 'https://www.arangodb.org/repositories/Source/ArangoDB-2.2.2.tar.gz'
-  sha1 '4af0d233202ee4fd482564200d645abddb936cda'
+  url 'https://www.arangodb.org/repositories/Source/ArangoDB-2.2.3.tar.gz'
+  sha1 '57b11419c6dcd6675570fcd88f94fe5ed8ef64ff'
 
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
