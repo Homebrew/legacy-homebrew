@@ -60,7 +60,6 @@ module Stdenv
     if OS.linux? && (formula && formula.name) != "glibc"
       # Set the dynamic library search path
       append "LDFLAGS", "-Wl,-rpath,#{HOMEBREW_PREFIX}/lib"
-      self["LD_RUN_PATH"] = "#{HOMEBREW_PREFIX}/lib"
       # Set the dynamic linker
       glibc = Formula["glibc"]
       if glibc.installed? &&
