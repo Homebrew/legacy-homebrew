@@ -31,6 +31,21 @@ class Glibc < Formula
     end
   end
 
+  def post_install
+    # Compile locale definition files
+    mkdir_p lib/"locale"
+    ENV.keys.select { |s|
+      s == "LANG" || s[/^LC_/]
+    }.map { |key| ENV[key] }.uniq.each { |locale|
+      lang, charmap = locale.split(".", 2)
+      if charmap != nil
+        system bin/"localedef", "-i", lang, "-f", charmap, locale
+      else
+        system bin/"localedef", "-i", lang, locale
+      end
+    }
+  end
+
   test do
     system "#{lib}/ld-linux-x86-64.so.2 2>&1 |grep Usage"
     system "#{lib}/libc.so.6 --version"
