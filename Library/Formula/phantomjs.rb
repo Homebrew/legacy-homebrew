@@ -2,6 +2,7 @@ require "formula"
 
 class Phantomjs < Formula
   homepage "http://www.phantomjs.org/"
+  revision 1
 
   stable do
     url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip"
