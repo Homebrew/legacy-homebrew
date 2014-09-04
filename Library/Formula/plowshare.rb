@@ -2,10 +2,9 @@ require 'formula'
 
 class Plowshare < Formula
   homepage 'http://code.google.com/p/plowshare/'
-  url 'https://plowshare.googlecode.com/files/plowshare4-snapshot-git20131130.3c63b19.tar.gz'
-  version '4.GIT-3c63b19'
-  sha1 '806076746394d06f118aef98fbc1c8bbd3585269'
-  revision 1
+# Using a mirror because shasum of 'https://plowshare.googlecode.com/archive/v1.0.5.tar.gz' is changing on every download
+  url 'https://github.com/hiteshsondhi88/plowshare/archive/v1.0.5.tar.gz'
+  sha1 '97e421e186d0b5bfe22c59d7a8c73ef515db7dee'
 
   head 'https://code.google.com/p/plowshare/', :using => :git
 
@@ -21,8 +20,7 @@ class Plowshare < Formula
   patch :DATA
 
   def install
-    ENV["PREFIX"] = prefix
-    system "bash setup.sh install"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   def caveats; <<-EOS.undent
