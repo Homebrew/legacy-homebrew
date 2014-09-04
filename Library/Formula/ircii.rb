@@ -6,10 +6,7 @@ class Ircii < Formula
   sha1 'a4d3b3a74a418f99217fe572f6e4c358f1ff3139'
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}",
+    system "./configure", "--prefix=#{prefix}",
                           "--with-default-server=irc.freenode.net",
                           "--enable-ipv6"
     system "make"
