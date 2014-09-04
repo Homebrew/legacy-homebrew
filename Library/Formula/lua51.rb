@@ -1,7 +1,7 @@
 require 'formula'
 
 class Lua51 < Formula
-  # 5.2 is not fully backwards compatible, so we must retain 2 Luas for now.
+  # 5.2 is not fully backwards compatible so we must retain 2 Luas for now.
   # The transition has begun. Lua will now become Lua51, and Lua52 will become Lua.
   homepage 'http://www.lua.org/'
   url 'http://www.lua.org/ftp/lua-5.1.5.tar.gz'

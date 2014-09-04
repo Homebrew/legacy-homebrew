@@ -115,7 +115,7 @@ __END__
 +    -I/usr/X11/include/freetype2 -I/usr/X11/include \
 +    -I/usr/X11/include/libpng12
 +  CAIRO_LIBS ?= -L/usr/X11/lib -lcairo
-+  LUA_CFLAGS ?= -I/usr/local/include
++  LUA_CFLAGS ?= -I/usr/local/include/lua-5.1
 +  LUA_LIBS   ?= -L/usr/local/lib -llua5.1 -lm
 +  QT_CFLAGS  ?= -I/Library/Frameworks/QtCore.framework/Versions/4/Headers \
 +   -I/Library/Frameworks/QtGui.framework/Versions/4/Headers
