@@ -516,8 +516,9 @@ class Formula
 
     begin
       pid = fork do
+        rd.close
         log.close unless out == log
-        exec_cmd(cmd, args, rd, out, logfn)
+        exec_cmd(cmd, args, out, logfn)
       end
       wr.close
 
@@ -545,7 +546,7 @@ class Formula
 
   private
 
-  def exec_cmd(cmd, args, rd, out, logfn)
+  def exec_cmd(cmd, args, out, logfn)
     ENV['HOMEBREW_CC_LOG_PATH'] = logfn
 
     # TODO system "xcodebuild" is deprecated, this should be removed soon.
@@ -560,7 +561,6 @@ class Formula
       ENV.refurbish_args
     end
 
-    rd.close
     $stdout.reopen(out)
     $stderr.reopen(out)
     args.collect!{|arg| arg.to_s}
