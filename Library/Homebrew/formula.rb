@@ -493,10 +493,11 @@ class Formula
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
+    verbose = ARGV.verbose?
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
-    if cmd == "./configure" and not ARGV.verbose?
+    if cmd == "./configure" and not verbose
       pretty_args.delete "--disable-dependency-tracking"
       pretty_args.delete "--disable-debug"
     end
@@ -511,7 +512,7 @@ class Formula
     log = File.open(logfn, "w")
     log.puts Time.now, "", cmd, args, ""
 
-    if ARGV.verbose?
+    if verbose
       rd, wr = IO.pipe
       begin
         pid = fork do
@@ -538,7 +539,7 @@ class Formula
 
     unless $?.success?
       log.flush
-      Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
+      Kernel.system "/usr/bin/tail", "-n", "5", logfn unless verbose
       log.puts
       require 'cmd/config'
       Homebrew.dump_build_config(log)
