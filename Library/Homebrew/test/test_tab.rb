@@ -4,13 +4,12 @@ require "formula"
 
 class TabTests < Homebrew::TestCase
   def setup
-    @used, @unused = Options.new, Options.new
-    @used << Option.new("with-foo") << Option.new("without-bar")
-    @unused << Option.new("with-baz") << Option.new("without-qux")
+    @used = Options.create(%w(--with-foo --without-bar))
+    @unused = Options.create(%w(--with-baz --without-qux))
 
     @tab = Tab.new({
-      :used_options       => @used.map(&:to_s),
-      :unused_options     => @unused.map(&:to_s),
+      :used_options       => @used.as_flags,
+      :unused_options     => @unused.as_flags,
       :built_as_bottle    => false,
       :poured_from_bottle => true,
       :tapped_from        => "Homebrew/homebrew",
@@ -25,9 +24,8 @@ class TabTests < Homebrew::TestCase
     tab = Tab.dummy_tab
     assert_empty tab.unused_options
     assert_empty tab.used_options
-    assert_empty tab.options
-    refute tab.built_as_bottle
-    refute tab.poured_from_bottle
+    refute_predicate tab, :built_as_bottle
+    refute_predicate tab, :poured_from_bottle
     assert_empty tab.tapped_from
     assert_nil tab.time
     assert_nil tab.HEAD
@@ -48,14 +46,8 @@ class TabTests < Homebrew::TestCase
   end
 
   def test_universal?
-    refute_predicate @tab, :universal?
-    @used << "universal"
-    @tab.used_options = @used.map(&:to_s)
-    assert_predicate @tab, :universal?
-  end
-
-  def test_options
-    assert_equal (@used + @unused).sort, @tab.options.sort
+    tab = Tab.new(:used_options => %w[--universal])
+    assert_predicate tab, :universal?
   end
 
   def test_cxxstdlib
@@ -77,7 +69,6 @@ class TabTests < Homebrew::TestCase
 
     assert_equal @used.sort, tab.used_options.sort
     assert_equal @unused.sort, tab.unused_options.sort
-    assert_equal (@used + @unused).sort, tab.options.sort
     refute_predicate tab, :built_as_bottle
     assert_predicate tab, :poured_from_bottle
     assert_equal "Homebrew/homebrew", tab.tapped_from

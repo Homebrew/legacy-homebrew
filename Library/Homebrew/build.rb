@@ -1,65 +1,22 @@
 # This script is loaded by formula_installer as a separate instance.
-# Rationale: Formula can use __END__, Formula can change ENV
 # Thrown exceptions are propogated back to the parent process over a pipe
 
-STD_TRAP = trap("INT") { exit! 130 } # no backtrace thanks
+old_trap = trap("INT") { exit! 130 }
 
-at_exit do
-  # the whole of everything must be run in at_exit because the formula has to
-  # be the run script as __END__ must work for *that* formula.
-  main
-end
-
-require 'global'
-require 'cxxstdlib'
-require 'debrew' if ARGV.debug?
-
-def main
-  # The main Homebrew process expects to eventually see EOF on the error
-  # pipe in FormulaInstaller#build. However, if any child process fails to
-  # terminate (i.e, fails to close the descriptor), this won't happen, and
-  # the installer will hang. Set close-on-exec to prevent this.
-  # Whether it is *wise* to launch daemons from formulae is a separate
-  # question altogether.
-  if ENV['HOMEBREW_ERROR_PIPE']
-    require 'fcntl'
-    error_pipe = IO.new(ENV['HOMEBREW_ERROR_PIPE'].to_i, 'w')
-    error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
-  end
-
-  raise $! if $! # an exception was already thrown when parsing the formula
-
-  trap("INT", STD_TRAP) # restore default CTRL-C handler
-
-  require 'hardware'
-  require 'keg'
-  require 'extend/ENV'
-
-  # Force any future invocations of sudo to require the user's password to be
-  # re-entered. This is in-case any build script call sudo. Certainly this is
-  # can be inconvenient for the user. But we need to be safe.
-  system "/usr/bin/sudo", "-k"
-
-  formula = Formulary.factory($0, ARGV.spec)
-  Build.new(formula).install
-rescue Exception => e
-  unless error_pipe.nil?
-    e.continuation = nil if ARGV.debug?
-    Marshal.dump(e, error_pipe)
-    error_pipe.close
-    exit! 1
-  else
-    onoe e
-    puts e.backtrace
-    exit! 2
-  end
-end
+require "global"
+require "build_options"
+require "cxxstdlib"
+require "keg"
+require "extend/ENV"
+require "debrew" if ARGV.debug?
+require "fcntl"
 
 class Build
-  attr_reader :f, :deps, :reqs
+  attr_reader :formula, :deps, :reqs
 
-  def initialize(f)
-    @f = f
+  def initialize(formula, options)
+    @formula = formula
+    @formula.build = BuildOptions.new(options, formula.options)
 
     if ARGV.ignore_deps?
       @deps = []
@@ -73,23 +30,30 @@ class Build
   def post_superenv_hacks
     # Only allow Homebrew-approved directories into the PATH, unless
     # a formula opts-in to allowing the user's path.
-    if f.env.userpaths? || reqs.any? { |rq| rq.env.userpaths? }
+    if formula.env.userpaths? || reqs.any? { |rq| rq.env.userpaths? }
       ENV.userpaths!
     end
   end
 
   def pre_superenv_hacks
     # Allow a formula to opt-in to the std environment.
-    if (f.env.std? || deps.any? { |d| d.name == "scons" }) && ARGV.env != "super"
+    if (formula.env.std? || deps.any? { |d| d.name == "scons" }) && ARGV.env != "super"
       ARGV.unshift "--env=std"
     end
   end
 
+  def effective_build_options_for(dependent)
+    args  = dependent.build.used_options
+    args |= Tab.for_formula(dependent).used_options
+    BuildOptions.new(args, dependent.options)
+  end
+
   def expand_reqs
-    f.recursive_requirements do |dependent, req|
-      if (req.optional? || req.recommended?) && dependent.build.without?(req)
+    formula.recursive_requirements do |dependent, req|
+      build = effective_build_options_for(dependent)
+      if (req.optional? || req.recommended?) && build.without?(req)
         Requirement.prune
-      elsif req.build? && dependent != f
+      elsif req.build? && dependent != formula
         Requirement.prune
       elsif req.satisfied? && req.default_formula? && (dep = req.to_dependency).installed?
         deps << dep
@@ -99,10 +63,11 @@ class Build
   end
 
   def expand_deps
-    f.recursive_dependencies do |dependent, dep|
-      if (dep.optional? || dep.recommended?) && dependent.build.without?(dep)
+    formula.recursive_dependencies do |dependent, dep|
+      build = effective_build_options_for(dependent)
+      if (dep.optional? || dep.recommended?) && build.without?(dep)
         Dependency.prune
-      elsif dep.build? && dependent != f
+      elsif dep.build? && dependent != formula
         Dependency.prune
       elsif dep.build?
         Dependency.keep_but_prune_recursive_deps
@@ -113,25 +78,23 @@ class Build
   def install
     keg_only_deps = deps.map(&:to_formula).select(&:keg_only?)
 
-    pre_superenv_hacks
-
-    ENV.activate_extensions!
-
     deps.map(&:to_formula).each do |dep|
-      opt = HOMEBREW_PREFIX.join("opt", dep.name)
-      fixopt(dep) unless opt.directory?
+      fixopt(dep) unless dep.opt_prefix.directory?
     end
+
+    pre_superenv_hacks
+    ENV.activate_extensions!
 
     if superenv?
       ENV.keg_only_deps = keg_only_deps.map(&:name)
       ENV.deps = deps.map { |d| d.to_formula.name }
       ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
-      ENV.setup_build_environment(f)
+      ENV.setup_build_environment(formula)
       post_superenv_hacks
       reqs.each(&:modify_build_environment)
       deps.each(&:modify_build_environment)
     else
-      ENV.setup_build_environment(f)
+      ENV.setup_build_environment(formula)
       reqs.each(&:modify_build_environment)
       deps.each(&:modify_build_environment)
 
@@ -146,7 +109,7 @@ class Build
       end
     end
 
-    f.brew do
+    formula.brew do
       if ARGV.flag? '--git'
         system "git", "init"
         system "git", "add", "-A"
@@ -154,7 +117,7 @@ class Build
       if ARGV.interactive?
         ohai "Entering interactive mode"
         puts "Type `exit' to return and finalize the installation"
-        puts "Install to this prefix: #{f.prefix}"
+        puts "Install to this prefix: #{formula.prefix}"
 
         if ARGV.flag? '--git'
           puts "This directory is now a git repo. Make your changes and then use:"
@@ -162,65 +125,73 @@ class Build
           puts "to copy the diff to the clipboard."
         end
 
-        interactive_shell f
+        interactive_shell(formula)
       else
-        f.prefix.mkpath
+        formula.prefix.mkpath
 
-        f.resources.each { |r| r.extend(ResourceDebugger) } if ARGV.debug?
+        formula.resources.each { |r| r.extend(ResourceDebugger) } if ARGV.debug?
 
         begin
-          f.install
-
-          keg = Keg.new(f.prefix)
-          # This first test includes executables because we still
-          # want to record the stdlib for something that installs no
-          # dylibs.
-          stdlibs = keg.detect_cxx_stdlibs
-          # This currently only tracks a single C++ stdlib per dep,
-          # though it's possible for different libs/executables in
-          # a given formula to link to different ones.
-          stdlib_in_use = CxxStdlib.new(stdlibs.first, ENV.compiler)
-          begin
-            stdlib_in_use.check_dependencies(f, deps)
-          rescue IncompatibleCxxStdlibs => e
-            opoo e.message
-          end
-
-          # This second check is recorded for checking dependencies,
-          # so executable are irrelevant at this point. If a piece
-          # of software installs an executable that links against libstdc++
-          # and dylibs against libc++, libc++-only dependencies can safely
-          # link against it.
-          stdlibs = keg.detect_cxx_stdlibs :skip_executables => true
-
-          Tab.create(f, ENV.compiler, stdlibs.first,
-            Options.coerce(ARGV.options_only)).write
+          formula.install
         rescue Exception => e
           if ARGV.debug?
-            debrew e, f
+            debrew(e, formula)
           else
-            raise e
+            raise
           end
         end
 
+        stdlibs = detect_stdlibs
+        Tab.create(formula, ENV.compiler, stdlibs.first, formula.build).write
+
         # Find and link metafiles
-        f.prefix.install_metafiles Pathname.pwd
+        formula.prefix.install_metafiles Pathname.pwd
       end
     end
   end
+
+  def detect_stdlibs
+    keg = Keg.new(formula.prefix)
+    CxxStdlib.check_compatibility(formula, deps, keg, ENV.compiler)
+
+    # The stdlib recorded in the install receipt is used during dependency
+    # compatibility checks, so we only care about the stdlib that libraries
+    # link against.
+    keg.detect_cxx_stdlibs(:skip_executables => true)
+  end
+
+  def fixopt f
+    path = if f.linked_keg.directory? and f.linked_keg.symlink?
+      f.linked_keg.resolved_path
+    elsif f.prefix.directory?
+      f.prefix
+    elsif (kids = f.rack.children).size == 1 and kids.first.directory?
+      kids.first
+    else
+      raise
+    end
+    Keg.new(path).optlink
+  rescue StandardError
+    raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
+  end
 end
 
-def fixopt f
-  path = if f.linked_keg.directory? and f.linked_keg.symlink?
-    f.linked_keg.resolved_path
-  elsif f.prefix.directory?
-    f.prefix
-  elsif (kids = f.rack.children).size == 1 and kids.first.directory?
-    kids.first
-  else
-    raise
-  end
-  Keg.new(path).optlink
-rescue StandardError
-  raise "#{f.opt_prefix} not present or broken\nPlease reinstall #{f}. Sorry :("
+begin
+  error_pipe = IO.new(ENV["HOMEBREW_ERROR_PIPE"].to_i, "w")
+  error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+
+  # Invalidate the current sudo timestamp in case a build script calls sudo
+  system "/usr/bin/sudo", "-k"
+
+  trap("INT", old_trap)
+
+  formula = ARGV.formulae.first
+  options = Options.create(ARGV.flags_only)
+  build   = Build.new(formula, options)
+  build.install
+rescue Exception => e
+  e.continuation = nil if ARGV.debug?
+  Marshal.dump(e, error_pipe)
+  error_pipe.close
+  exit! 1
 end

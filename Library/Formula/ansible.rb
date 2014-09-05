@@ -2,15 +2,15 @@ require 'formula'
 
 class Ansible < Formula
   homepage 'http://www.ansible.com/home'
-  url 'http://releases.ansible.com/ansible/ansible-1.6.8.tar.gz'
-  sha1 '9956256db37ef0408c898108f5190f5a501dff5c'
+  url 'http://releases.ansible.com/ansible/ansible-1.7.1.tar.gz'
+  sha1 '4f4be4d45f28f52e4ab0c063efb66c7b9f482a51'
 
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
   bottle do
-    sha1 "e791cb658bc61277f5b6ee852c2f8d75d7eb9793" => :mavericks
-    sha1 "72324ec4c9cdb6973e1f94988c731d86308e5a0b" => :mountain_lion
-    sha1 "c2f0505cc67544056d0147e1ab3a24ea4ced062e" => :lion
+    sha1 "12263f6ce1db9f94937d6d72ba6b9c35a0a00daf" => :mavericks
+    sha1 "696bf4d54c6098c9a072133059c7a6bdb6b02aa9" => :mountain_lion
+    sha1 "c0133e0fecff6c98d07e0e69ec39d99b327afc14" => :lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -43,11 +43,9 @@ class Ansible < Formula
     sha1 'a9b24d887f2be772921b3ee30a0b9d435cffadda'
   end
 
-  if build.with? 'accelerate'
-    resource 'python-keyczar' do
-      url 'https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71b.tar.gz'
-      sha1 '20c7c5d54c0ce79262092b4cc691aa309fb277fa'
-    end
+  resource 'python-keyczar' do
+    url 'https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71b.tar.gz'
+    sha1 '20c7c5d54c0ce79262092b4cc691aa309fb277fa'
   end
 
   def install

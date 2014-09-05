@@ -24,24 +24,24 @@ module Homebrew
       end
     end unless ARGV.force?
 
-    ARGV.formulae.each do |f|
-      # Building head-only without --HEAD is an error
-      if not ARGV.build_head? and f.stable.nil?
-        raise CannotInstallFormulaError, <<-EOS.undent
-        #{f} is a head-only formula
-        Install with `brew install --HEAD #{f.name}`
-        EOS
-      end
-
-      # Building stable-only with --HEAD is an error
-      if ARGV.build_head? and f.head.nil?
-        raise CannotInstallFormulaError, "No head is defined for #{f.name}"
-      end
-    end
-
-    perform_preinstall_checks
-
     begin
+      ARGV.formulae.each do |f|
+        # Building head-only without --HEAD is an error
+        if not ARGV.build_head? and f.stable.nil?
+          raise CannotInstallFormulaError, <<-EOS.undent
+          #{f} is a head-only formula
+          Install with `brew install --HEAD #{f.name}`
+          EOS
+        end
+
+        # Building stable-only with --HEAD is an error
+        if ARGV.build_head? and f.head.nil?
+          raise CannotInstallFormulaError, "No head is defined for #{f.name}"
+        end
+      end
+
+      perform_preinstall_checks
+
       ARGV.formulae.each { |f| install_formula(f) }
     rescue FormulaUnavailableError => e
       ofail e.message
@@ -104,7 +104,7 @@ module Homebrew
   def install_formula f
     fi = FormulaInstaller.new(f)
     fi.options             = f.build.used_options
-    fi.ignore_deps         = ARGV.ignore_deps? || ARGV.interactive?
+    fi.ignore_deps         = ARGV.ignore_deps?
     fi.only_deps           = ARGV.only_deps?
     fi.build_bottle        = ARGV.build_bottle?
     fi.build_from_source   = ARGV.build_from_source?

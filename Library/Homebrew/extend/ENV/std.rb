@@ -59,7 +59,7 @@ module Stdenv
     if cc =~ GNU_GCC_REGEXP
       warn_about_non_apple_gcc($1)
       gcc_formula = gcc_version_formula($1)
-      self.append_path('PATH', gcc_formula.opt_prefix/'bin')
+      append_path "PATH", gcc_formula.opt_bin.to_s
     end
 
     # Add lib and include etc. from the current macosxsdk to compiler flags:
@@ -133,7 +133,9 @@ module Stdenv
     super
     replace_in_cflags(/-Xarch_#{Hardware::CPU.arch_32_bit} (-march=\S*)/, '\1')
     # Clang mistakenly enables AES-NI on plain Nehalem
-    set_cpu_cflags '-march=native', :nehalem => '-march=native -Xclang -target-feature -Xclang -aes'
+    map = Hardware::CPU.optimization_flags
+    map = map.merge(:nehalem => "-march=native -Xclang -target-feature -Xclang -aes")
+    set_cpu_cflags "-march=native", map
   end
 
   def remove_macosxsdk version=MacOS.version
@@ -301,17 +303,19 @@ module Stdenv
     remove flags, %r{-mssse3}
     remove flags, %r{-msse4(\.\d)?}
     append flags, xarch unless xarch.empty?
+    append flags, map.fetch(effective_arch, default)
+  end
 
+  def effective_arch
     if ARGV.build_bottle?
-      arch = ARGV.bottle_arch || Hardware.oldest_cpu
-      append flags, Hardware::CPU.optimization_flags.fetch(arch)
+      ARGV.bottle_arch || Hardware.oldest_cpu
     elsif Hardware::CPU.intel? && !Hardware::CPU.sse4?
       # If the CPU doesn't support SSE4, we cannot trust -march=native or
       # -march=<cpu family> to do the right thing because we might be running
       # in a VM or on a Hackintosh.
-      append flags, Hardware::CPU.optimization_flags.fetch(Hardware.oldest_cpu)
+      Hardware.oldest_cpu
     else
-      append flags, map.fetch(Hardware::CPU.family, default)
+      Hardware::CPU.family
     end
   end
 

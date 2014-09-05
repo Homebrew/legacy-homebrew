@@ -11,6 +11,13 @@ class DBus < Formula
     sha1 "d59965651e893a73e610aa166333c6b77f56482a" => :lion
   end
 
+  # Upstream fix for O_CLOEXEC portability
+  # http://cgit.freedesktop.org/dbus/dbus/commit/?id=5d91f615d18629eaac074fbde2ee7e17b82e5472
+  patch do
+    url "http://cgit.freedesktop.org/dbus/dbus/patch/?id=5d91f615d18629eaac074fbde2ee7e17b82e5472"
+    sha1 "ebb383abb86eeafbe048dbb8b77d83bdf0b7c9bb"
+  end
+
   def install
     # Fix the TMPDIR to one D-Bus doesn't reject due to odd symbols
     ENV["TMPDIR"] = "/tmp"

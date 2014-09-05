@@ -4,11 +4,13 @@ class Knot < Formula
   homepage "https://www.knot-dns.cz/"
   url "https://secure.nic.cz/files/knot-dns/knot-1.4.7.tar.gz"
   sha1 "eed17930b0cd94375f73951fe7582b3f38b4e6f3"
+  revision 1
 
   bottle do
-    sha1 "77451299ebdb0fcd6fe72877f00feb4c895a25a1" => :mavericks
-    sha1 "7bdab79c22fd48dcaf778d2fbd6468c71c7970fb" => :mountain_lion
-    sha1 "369af753ce19c92167f4b5fbde7190fd7028cc7a" => :lion
+    revision 1
+    sha1 "d686096025a554581258b7507ef44bc3e4d75736" => :mavericks
+    sha1 "05fb7b3f500a9018935489b97aba3ead6123425a" => :mountain_lion
+    sha1 "e6e344e00cf66c1b100ab4d7fd33e182d80a563f" => :lion
   end
 
   depends_on "userspace-rcu"

@@ -21,7 +21,7 @@ class Hub < Formula
 
   test do
     HOMEBREW_REPOSITORY.cd do
-      assert_equal 'bin/brew', `#{bin}/hub ls-files -- bin`.strip
+      assert_equal "bin/brew", shell_output("#{bin}/hub ls-files -- bin").strip
     end
   end
 end

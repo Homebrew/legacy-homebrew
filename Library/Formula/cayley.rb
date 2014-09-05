@@ -2,15 +2,14 @@ require "formula"
 
 class Cayley < Formula
   homepage "https://github.com/google/cayley"
-  url "https://github.com/google/cayley/archive/v0.3.0.tar.gz"
-  sha1 "b69b1da6854cf174854034061ab0919fcf0c18b8"
+  url "https://github.com/google/cayley/archive/v0.4.0.tar.gz"
+  sha1 "100c1e057fb140b35e1ecdd4824541436e6cb741"
   head "https://github.com/google/cayley.git"
 
   bottle do
-    revision 1
-    sha1 "10d398eaaf1d7016f20cb179e6fc5aaddc78d5b5" => :mavericks
-    sha1 "7929ce3816e78fbab798c2fb95aab0352b6a127e" => :mountain_lion
-    sha1 "5bd96b3602df9fd6dac235dfb6545a19e110ed5f" => :lion
+    sha1 "fb10fc8d9b76f5d922d19ecb3c8cc0378ffdb4af" => :mavericks
+    sha1 "7fa6f1f652c74f5047bcccf260a336ad6f9ff6f0" => :mountain_lion
+    sha1 "2b7346b6b6991188de60eb1e35459357bad24e3f" => :lion
   end
 
   depends_on "bazaar" => :build
@@ -30,8 +29,10 @@ class Cayley < Formula
     # Install Go dependencies
     system "go", "get", "github.com/badgerodon/peg"
     system "go", "get", "github.com/barakmich/glog"
+    system "go", "get", "github.com/cznic/mathutil"
     system "go", "get", "github.com/julienschmidt/httprouter"
     system "go", "get", "github.com/petar/GoLLRB/llrb"
+    system "go", "get", "github.com/peterh/liner"
     system "go", "get", "github.com/robertkrimen/otto"
     system "go", "get", "github.com/russross/blackfriday"
     system "go", "get", "github.com/syndtr/goleveldb/leveldb"
@@ -39,16 +40,14 @@ class Cayley < Formula
     system "go", "get", "github.com/syndtr/goleveldb/leveldb/iterator"
     system "go", "get", "github.com/syndtr/goleveldb/leveldb/opt"
     system "go", "get", "github.com/syndtr/goleveldb/leveldb/util"
-    system "go", "get", "labix.org/v2/mgo"
-    system "go", "get", "labix.org/v2/mgo/bson"
+    system "go", "get", "github.com/boltdb/bolt"
+    system "go", "get", "gopkg.in/mgo.v2"
+    system "go", "get", "gopkg.in/mgo.v2/bson"
 
-    # HEAD does not require the extra work to get 0.3.0 to build properly so avoid it
+    # HEAD does not require the extra work to get 0.3.1 to build properly so avoid it
     unless build.head?
       # Install Go dependencies
       system "go", "get", "github.com/stretchrcom/testify/mock"
-
-      # Fix issue where 0.3.0 builds againsts an old version of syndtr/goleveldb
-      inreplace "graph/leveldb/leveldb_triplestore.go", "GetApproximateSizes", "SizeOf"
     end
 
     # Build
@@ -65,10 +64,10 @@ class Cayley < Formula
     (share/'cayley/assets').install "docs", "static", "templates"
 
     if build.with? "samples"
-      system "gzip", "-d", "30kmoviedata.nt.gz"
+      system "gzip", "-d", "30kmoviedata.nq.gz"
 
       # Copy over sample data
-      (share/'cayley/samples').install "testdata.nt", "30kmoviedata.nt"
+      (share/'cayley/samples').install "testdata.nq", "30kmoviedata.nq"
     end
   end
 
@@ -117,18 +116,7 @@ class Cayley < Formula
   end
 
   test do
-    require 'open3'
-
-    touch "test.nt"
-
-    Open3.popen3("#{bin}/cayley", "repl", "--dbpath=#{testpath}/test.nt") do |stdin, stdout, _|
-      stdin.write "graph.Vertex().All()"
-      stdin.close
-
-      result = stdout.read.strip
-
-      assert !result.include?("Error:")
-      assert result.include?("Elapsed time:")
-    end
+    result = pipe_output("#{bin}/cayley version")
+    assert result.include?("Cayley snapshot")
   end
 end

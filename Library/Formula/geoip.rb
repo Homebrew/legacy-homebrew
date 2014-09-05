@@ -16,9 +16,10 @@ class Geoip < Formula
 
   bottle do
     cellar :any
-    sha1 "2a60e65d979e66b54a12534f8c11f7f4d8c81033" => :mavericks
-    sha1 "0c658d03041b1b3e7eb4c0196fb692020f0615b2" => :mountain_lion
-    sha1 "d35b588961572032297c353fa6e549e4b0086740" => :lion
+    revision 1
+    sha1 "3ebd898cb31012b641b471b4cf5cd537f9226afd" => :mavericks
+    sha1 "d3798825d01b45a40e6015e637f82965dbe49fdc" => :mountain_lion
+    sha1 "ba096b834f4c251c2b6c6d63349574aab3a336fb" => :lion
   end
 
   depends_on "autoconf" => :build
@@ -54,11 +55,10 @@ class Geoip < Formula
     legacy_data = Pathname.new "#{HOMEBREW_PREFIX}/share/GeoIP"
     cp Dir["#{legacy_data}/*"], geoip_data if legacy_data.exist?
 
-    ["City", "Country"].each do |type|
-      full = Pathname.new "#{geoip_data}/GeoIP#{type}.dat"
-      next if full.exist? or full.symlink?
-      ln_s "GeoLite#{type}.dat", full
-    end
+    full = Pathname.new "#{geoip_data}/GeoIP.dat"
+    ln_s "GeoLiteCountry.dat", full unless full.exist? or full.symlink?
+    full = Pathname.new "#{geoip_data}/GeoIPCity.dat"
+    ln_s "GeoLiteCity.dat", full unless full.exist? or full.symlink?
   end
 
   test do

@@ -17,10 +17,6 @@ class Align < Formula
   end
 
   test do
-    IO.popen(bin/"align", "w+") do |pipe|
-      pipe.write "1 1\n12 12\n"
-      pipe.close_write
-      assert_equal " 1  1\n12 12\n", pipe.read
-    end
+    assert_equal " 1  1\n12 12\n", pipe_output(bin/"align", "1 1\n12 12\n")
   end
 end

@@ -2,10 +2,16 @@ require "formula"
 
 class Parrot < Formula
   homepage "http://www.parrot.org/"
+  head "https://github.com/parrot/parrot.git"
   url "ftp://ftp.parrot.org/pub/parrot/releases/supported/6.6.0/parrot-6.6.0.tar.bz2"
   sha256 "08e9e02db952828f6ab71755be47f99ebc90894378f04d8e4d7f3bc623f79ff5"
+  revision 1
 
-  head "https://github.com/parrot/parrot.git"
+  bottle do
+    sha1 "490672e708d62a0c1fc5a38d6326d53f88636c18" => :mavericks
+    sha1 "2ad6a39e1d4f9d655c3b1340b45074aaae49d637" => :mountain_lion
+    sha1 "12a26f049a680a0669a3b43f76b709646b48ce08" => :lion
+  end
 
   conflicts_with "rakudo-star"
 

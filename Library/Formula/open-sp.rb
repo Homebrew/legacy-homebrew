@@ -6,9 +6,10 @@ class OpenSp < Formula
   sha1 'b4e903e980f8a8b3887396a24e067bef126e97d5'
 
   bottle do
-    sha1 "3fd6af344acc206b463afc19780aa777bcb844fd" => :mavericks
-    sha1 "89129198d238d62c738f6aa4c7d0dd78b32ce2b2" => :mountain_lion
-    sha1 "aba980c590c12892d1048b34cf3d8ccc1be17fed" => :lion
+    revision 1
+    sha1 "4da235a77fd987fd1e2ccd0b2f9af43816037463" => :mavericks
+    sha1 "1a271e846c1ec9ed352159a159843224cff233b9" => :mountain_lion
+    sha1 "720dfb2778e1b1f0d0abea8c13c7cc6f182dfa07" => :lion
   end
 
   def install
@@ -16,6 +17,7 @@ class OpenSp < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--disable-doc-build",
+                          "--enable-http",
                           "--enable-default-catalog=#{HOMEBREW_PREFIX}/share/sgml/catalog",
                           "--enable-default-search-path=#{HOMEBREW_PREFIX}/share/sgml"
     system "make", "pkgdatadir=#{share}/sgml/opensp", "install"

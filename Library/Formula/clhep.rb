@@ -2,14 +2,14 @@ require "formula"
 
 class Clhep < Formula
   homepage "http://proj-clhep.web.cern.ch/proj-clhep/"
-  url "http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-2.2.0.1.tgz"
-  sha1 "88b9d4f39be3ac317e63c2f7ad694ede6e7b7520"
+  url "http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-2.2.0.3.tgz"
+  sha1 "6e56f80c2db3c4f8828dec27815beae6655c8d9e"
 
   bottle do
     cellar :any
-    sha1 "f5f803b03710e3acf529eab111428570e536ebb6" => :mavericks
-    sha1 "610b51552b3864eb26c75b2d242d43c81187d770" => :mountain_lion
-    sha1 "36b000d7ecf82b8c528b1bd2a02d58c39beab1bf" => :lion
+    sha1 "af98835b134fefc9532141ad6b9999542de25413" => :mavericks
+    sha1 "6d45d414a3036c932a2e0a3dd5bc0ba22ff53315" => :mountain_lion
+    sha1 "549425101a1b93753d567e5eb6d2f8a202179559" => :lion
   end
 
   depends_on "cmake" => :build

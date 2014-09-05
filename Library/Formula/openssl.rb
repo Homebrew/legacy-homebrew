@@ -2,14 +2,15 @@ require 'formula'
 
 class Openssl < Formula
   homepage 'http://openssl.org'
-  url 'https://www.openssl.org/source/openssl-1.0.1h.tar.gz'
-  mirror 'http://mirrors.ibiblio.org/openssl/source/openssl-1.0.1h.tar.gz'
-  sha256 '9d1c8a9836aa63e2c6adb684186cbd4371c9e9dcc01d6e3bb447abf2d4d3d093'
+  url 'https://www.openssl.org/source/openssl-1.0.1i.tar.gz'
+  mirror 'http://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.1i.tar.gz'
+  sha256 '3c179f46ca77069a6a0bac70212a9b3b838b2f66129cb52d568837fc79d8fcc7'
 
   bottle do
-    sha1 "b9a5aee69f10ecd9df78c5e83372ec89f8a3236a" => :mavericks
-    sha1 "c0f0823d7047c0fc3371d9674a86815b85356b21" => :mountain_lion
-    sha1 "9195012d2ce64a26afdf596c8c7fef83ce74da2a" => :lion
+    revision 3
+    sha1 "0f669ad9b9910e3807f7b7db1be665306d5f3821" => :mavericks
+    sha1 "b9a769ae1b4dc7360b3d0081d921ebae2f2d2fc6" => :mountain_lion
+    sha1 "20de4f43e7ae42c8ba16b3923e6e33d06663ef49" => :lion
   end
 
   option :universal
@@ -22,7 +23,7 @@ class Openssl < Formula
 
   def arch_args
     {
-      :x86_64 => %w[darwin64-x86_64-cc enable-ec_nistp-64_gcc_128],
+      :x86_64 => %w[darwin64-x86_64-cc enable-ec_nistp_64_gcc_128],
       :i386   => %w[darwin-i386-cc],
     }
   end
@@ -30,6 +31,7 @@ class Openssl < Formula
   def configure_args; %W[
       --prefix=#{prefix}
       --openssldir=#{openssldir}
+      no-ssl2
       zlib-dynamic
       shared
       enable-cms

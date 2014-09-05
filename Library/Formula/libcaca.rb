@@ -13,14 +13,9 @@ class Libcaca < Formula
     sha1 "bd28b6f61505fbf474de658c7ae169da3c3a4366" => :lion
   end
 
-  option 'with-imlib2', 'Build with Imlib2 support'
-
+  depends_on 'pkg-config' => :build
+  depends_on 'imlib2' => :optional
   depends_on :x11 if build.with? "imlib2"
-
-  if build.with? "imlib2"
-    depends_on 'pkg-config' => :build
-    depends_on 'imlib2' => :optional
-  end
 
   fails_with :llvm do
     cause "Unsupported inline asm: input constraint with a matching output constraint of incompatible type"

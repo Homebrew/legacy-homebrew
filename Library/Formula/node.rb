@@ -3,18 +3,14 @@ require "formula"
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "http://nodejs.org/"
-  url "http://nodejs.org/dist/v0.10.29/node-v0.10.29.tar.gz"
-  sha1 "0d5dc62090404f7c903f29779295758935529242"
+  url "http://nodejs.org/dist/v0.10.31/node-v0.10.31.tar.gz"
+  sha1 "80f2160b0525763b557742aa73d8dacf1a71e53c"
 
   bottle do
-    sha1 "e90cc43c18f9ff8191d6602e042aa14b33da37a1" => :mavericks
-    sha1 "42014487797e67983672e933ed14488ee24d7b1f" => :mountain_lion
-    sha1 "128fa1edbefb09ac634af404e1822996423232f0" => :lion
-  end
-
-  devel do
-    url "http://nodejs.org/dist/v0.11.13/node-v0.11.13.tar.gz"
-    sha1 "da4a9adb73978710566f643241b2c05fb8a97574"
+    revision 3
+    sha1 "42d3400b26a5c75c9474d82e4a87ad7befdc14c3" => :mavericks
+    sha1 "718aa836d684e2590d58d7a424af5811bd015ee5" => :mountain_lion
+    sha1 "9bef3cd554caa933de28cd22ee743daeffb3df21" => :lion
   end
 
   head "https://github.com/joyent/node.git"
@@ -30,8 +26,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "http://registry.npmjs.org/npm/-/npm-1.4.9.tgz"
-    sha1 "29094f675dad69fc5ea24960a81c7abbfca5ce01"
+    url "https://registry.npmjs.org/npm/-/npm-1.4.24.tgz"
+    sha1 "78125bb55dc592b9cbf4aff44e33d5d81c9471af"
   end
 
   def install
@@ -55,8 +51,9 @@ class Node < Formula
     npmrc = npm_root/"npmrc"
     npmrc.atomic_write("prefix = #{HOMEBREW_PREFIX}\n")
 
+    ENV["NPM_CONFIG_USERCONFIG"] = npmrc
     npm_root.cd { system "make", "install" }
-    system "#{HOMEBREW_PREFIX}/bin/npm", "update", "npm", "-g",
+    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "--global", "npm@latest",
                                          "--prefix", HOMEBREW_PREFIX
 
     Pathname.glob(npm_root/"man/*") do |man|
@@ -88,6 +85,6 @@ class Node < Formula
     assert_equal "hello", output
     assert_equal 0, $?.exitstatus
 
-    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "npm" if build.with? "npm"
+    system "#{HOMEBREW_PREFIX}/bin/npm", "install", "npm@latest" if build.with? "npm"
   end
 end

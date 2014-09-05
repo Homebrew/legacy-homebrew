@@ -48,6 +48,7 @@ class Pathname
     dst = dst.to_s
 
     dst = yield(src, dst) if block_given?
+    return unless dst
 
     mkpath
 
@@ -93,11 +94,13 @@ class Pathname
     open("w", *open_args) { |f| f.write(content) }
   end
 
-  def write_binary binary_content
-    raise "Will not overwrite #{to_s}" if exist?
-    dirname.mkpath
-    File.open(self, 'wb') {|f| f.write binary_content }
-  end
+  def binwrite(contents, *open_args)
+    open("wb", *open_args) { |f| f.write(contents) }
+  end unless method_defined?(:binwrite)
+
+  def binread(*open_args)
+    open("rb", *open_args) { |f| f.read }
+  end unless method_defined?(:binread)
 
   # NOTE always overwrites
   def atomic_write content

@@ -2,10 +2,16 @@ require "formula"
 
 class Cppcheck < Formula
   homepage "http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page"
-  url "https://github.com/danmar/cppcheck/archive/1.65.tar.gz"
-  sha1 "df1ebc45defb24c7f21af64bbf9515cedb5f2d8e"
+  url "https://github.com/danmar/cppcheck/archive/1.66.tar.gz"
+  sha1 "277a214aa8a2bf30180645aca09c1dc9d3069977"
 
   head "https://github.com/danmar/cppcheck.git"
+
+  bottle do
+    sha1 "a3b2341260ab7afbb08dbf44e51b32d2edbd6d7c" => :mavericks
+    sha1 "e7290d70f4aee90d644898785eb4eff25fbbcd8b" => :mountain_lion
+    sha1 "ee30f858617e11e68d465d7406f445cf13d6f791" => :lion
+  end
 
   option "no-rules", "Build without rules (no pcre dependency)"
   option "with-gui", "Build the cppcheck gui (requires Qt)"
@@ -24,7 +30,6 @@ class Cppcheck < Formula
     end
 
     system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=#{prefix}/cfg", "install"
-    prefix.install "cfg"
 
     if build.with? "gui"
       cd "gui" do

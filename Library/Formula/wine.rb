@@ -24,8 +24,10 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.23.tar.bz2"
-    sha256 "db9c7b3b87edde7c63b2c5ae81631771b03650d7435461139fca2b177de05c04"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.25.tar.bz2"
+    sha256 "f5e35e82e57d49e83d3246a9d84684ecd095705628db59ac0516dab2bb8cf540"
+
+    depends_on "samba" => :optional
 
     # Patch to fix screen-flickering issues. Still relevant on 1.7.23.
     # https://bugs.winehq.org/show_bug.cgi?id=34166
@@ -35,13 +37,16 @@ class Wine < Formula
     end
   end
 
-  head "git://source.winehq.org/git/wine.git"
-
-  env :std
+  head do
+    url "git://source.winehq.org/git/wine.git"
+    depends_on "samba" => :optional
+  end
 
   # note that all wine dependencies should declare a --universal option in their formula,
   # otherwise homebrew will not notice that they are not built universal
-  require_universal_deps
+  def require_universal_deps?
+    true
+  end
 
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
@@ -98,11 +103,7 @@ class Wine < Formula
   end
 
   def install
-    # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
-    build32 = "-arch i386 -m32"
-
-    ENV.append "CFLAGS", build32
-    ENV.append "LDFLAGS", build32
+    ENV.m32 # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
 
     # Help configure find libxml2 in an XCode only (no CLT) installation.
     ENV.libxml2

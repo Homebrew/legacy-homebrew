@@ -2,7 +2,7 @@ require 'formula'
 
 class Torsocks < Formula
   homepage 'https://gitweb.torproject.org/torsocks.git/'
-  url 'https://git.torproject.org/torsocks.git', :tag => '1.3'
+  url 'https://git.torproject.org/torsocks.git', :tag => 'v2.0.0'
 
   head 'https://git.torproject.org/torsocks.git', :branch => 'master'
 
@@ -19,6 +19,6 @@ class Torsocks < Formula
   end
 
   test do
-    system "#{bin}/torsocks"
+    system "#{bin}/torsocks", "--help"
   end
 end

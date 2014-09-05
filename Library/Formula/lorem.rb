@@ -12,8 +12,6 @@ class Lorem < Formula
   end
 
   test do
-    output = `#{bin}/lorem -n 2`
-    assert_equal "lorem ipsum\n", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "lorem ipsum", shell_output("#{bin}/lorem -n 2").strip
   end
 end

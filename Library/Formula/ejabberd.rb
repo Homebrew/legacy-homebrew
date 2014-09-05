@@ -4,6 +4,7 @@ class Ejabberd < Formula
   homepage "http://www.ejabberd.im"
   url "https://www.process-one.net/downloads/ejabberd/14.07/ejabberd-14.07.tgz"
   sha1 "321b28faedbc28f80664d4b301424b118dd0bad0"
+  revision 1
 
   head 'https://github.com/processone/ejabberd.git'
 

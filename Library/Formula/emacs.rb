@@ -61,6 +61,7 @@ class Emacs < Formula
   depends_on 'gnutls' => :optional
   depends_on "librsvg" => :optional
   depends_on "imagemagick" => :optional
+  depends_on "mailutils" => :optional
 
   fails_with :llvm do
     build 2334
@@ -96,6 +97,7 @@ class Emacs < Formula
     end
     args << "--with-rsvg" if build.with? "librsvg"
     args << "--with-imagemagick" if build.with? "imagemagick"
+    args << "--without-popmail" if build.with? "mailutils"
 
     system "./autogen.sh" if build.head?
 
@@ -159,9 +161,7 @@ class Emacs < Formula
   end
 
   test do
-    output = `'#{bin}/emacs' --batch --eval="(print (+ 2 2))"`
-    assert $?.success?
-    assert_equal "4", output.strip
+    assert_equal "4", shell_output("#{bin}/emacs --batch --eval=\"(print (+ 2 2))\"").strip
   end
 end
 

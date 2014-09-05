@@ -46,12 +46,12 @@ index bf4181f..883fec2
 @@ -10,7 +10,7 @@ PROGRAM = gocr$(EXEEXT)
  PGMASCLIB = Pgm2asc
  #LIBPGMASCLIB = lib$(PGMASCLIB).a
- # ToDo: need a better pgm2asc.h for lib users
+ # ToDo: need a better pgm2asc.h for lib users 
 -#INCLUDEFILES = gocr.h
 +INCLUDEFILES = pgm2asc.h output.h list.h unicode.h gocr.h pnm.h
  # avoid german compiler messages
  LANG=C
-
+ 
 @@ -39,8 +39,8 @@ LIBOBJS=pgm2asc.o \
  #VPATH = @srcdir@
  bindir = @bindir@
@@ -60,17 +60,17 @@ index bf4181f..883fec2
 -#includedir = @includedir@
 +libdir = @libdir@
 +includedir = /include/gocr
-
+ 
  CC=@CC@
  # lib removed for simplification
 @@ -89,7 +89,8 @@ $(PROGRAM): $(LIBOBJS) gocr.o
  	$(CC) -o $@ $(LDFLAGS) gocr.o $(LIBOBJS) $(LIBS)
  	# if test -r $(PROGRAM); then cp $@ ../bin; fi
-
+ 
 -libs: lib$(PGMASCLIB).a lib$(PGMASCLIB).@PACKAGE_VERSION@.so
 +#libs: lib$(PGMASCLIB).a lib$(PGMASCLIB).@PACKAGE_VERSION@.so
 +libs: lib$(PGMASCLIB).a
-
+ 
  #lib$(PGMASCLIB).@PACKAGE_VERSION@.so: $(LIBOBJS)
  #	$(CC) -fPIC -shared -Wl,-h$@ -o $@ $(LIBOBJS)
 @@ -109,17 +110,17 @@ $(LIBOBJS): Makefile
@@ -92,7 +92,7 @@ index bf4181f..883fec2
  	fi
 -	# ToDo: not sure that the link will be installed correctly
 -	#$(INSTALL) $(INCLUDEFILES) $(DESTDIR)$(includedir)
-
+ 
  # directories are not removed
  uninstall:
 @@ -129,7 +130,8 @@ uninstall:
@@ -102,6 +102,6 @@ index bf4181f..883fec2
 -	#for X in $(INCLUDEFILES); do rm -f $(DESTDIR)$(includedir)/$$X; done
 +	for X in $(INCLUDEFILES); do rm -f $(DESTDIR)$(includedir)/$$X; done
 +	-rm -f $(DESTDIR)$(includedir)/config.h
-
+ 
  clean:
  	-rm -f *.o *~

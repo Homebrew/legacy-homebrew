@@ -2,12 +2,12 @@ require 'formula'
 
 class PebbleSdk < Formula
   homepage 'https://developer.getpebble.com/2/'
-  url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.3.tar.gz'
-  sha1 'c3e715073e295b8219ebfb7989dd65454a187a63'
+  url 'https://s3.amazonaws.com/assets.getpebble.com/sdk2/PebbleSDK-2.4.1.tar.gz'
+  sha1 '405a38b955bab73b5666640be42dca294f36af95'
 
   bottle do
-    sha1 "671d998390c3243c7982aa01ba2afb758c652c68" => :mavericks
-    sha1 "93e20007413d9e5243a1415fcd7a5dd335a32489" => :mountain_lion
+    sha1 "81713e9095c2f1eec9df6ad7cf968a167216d1b8" => :mavericks
+    sha1 "15809f377d8e20f683dabb34c0c207be7669e9eb" => :mountain_lion
   end
 
   depends_on :macos => :mountain_lion

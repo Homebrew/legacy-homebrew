@@ -16,10 +16,6 @@ class Udis86 < Formula
   end
 
   test do
-    IO.popen("#{bin}/udcli -x", "w+") do |pipe|
-      pipe.write "cd 80"
-      pipe.close_write
-      assert pipe.read.include?("int 0x80")
-    end
+    assert pipe_output("#{bin}/udcli -x", "cd 80").include?("int 0x80")
   end
 end

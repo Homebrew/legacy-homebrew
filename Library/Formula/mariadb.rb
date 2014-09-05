@@ -2,14 +2,13 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.12/source/mariadb-10.0.12.tar.gz"
-  sha1 "226251b2312bbe3e4cdac1ee8a6830c6fe246f1b"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.13/source/mariadb-10.0.13.tar.gz"
+  sha1 "3ede106603eeb348d5a70274d806760b8f37eaeb"
 
   bottle do
-    revision 1
-    sha1 "c06cd4d780c713bbfac8095453f19973ef177cc3" => :mavericks
-    sha1 "9ce7d7a2550a4d2a00a4650858d9996feace4387" => :mountain_lion
-    sha1 "f8fe22f96b81d606e1a3d52699638fdf5832b235" => :lion
+    sha1 "88c369ec2a241bd233d43a2b665a89794dcc6f99" => :mavericks
+    sha1 "69bba44ac1a650c0706efdaee9db8aeed29aa142" => :mountain_lion
+    sha1 "fd48710219e5b6a2b0ccc06d137c1b6757e74676" => :lion
   end
 
   depends_on 'cmake' => :build
@@ -65,6 +64,7 @@ class Mariadb < Formula
       -DDEFAULT_COLLATION=utf8_general_ci
       -DINSTALL_SYSCONFDIR=#{etc}
       -DCOMPILATION_COMMENT=Homebrew
+      -DWITHOUT_TOKUDB=1
     ]
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? 'tests'

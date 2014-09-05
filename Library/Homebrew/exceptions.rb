@@ -112,15 +112,6 @@ class UnsatisfiedRequirements < Homebrew::InstallationError
   end
 end
 
-class IncompatibleCxxStdlibs < Homebrew::InstallationError
-  def initialize(f, dep, wrong, right)
-    super f, <<-EOS.undent
-    #{f} dependency #{dep} was built with a different C++ standard
-    library (#{wrong.type_string} from #{wrong.compiler}). This could cause problems at runtime.
-    EOS
-  end
-end
-
 class FormulaConflictError < Homebrew::InstallationError
   attr_reader :f, :conflicts
 
@@ -179,9 +170,8 @@ class BuildError < Homebrew::InstallationError
       puts
       puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
       if formula.tap?
-        tap_issues_url = "https://github.com/#{formula.tap}/issues"
         puts "If reporting this issue please do so at (not Homebrew/homebrew):"
-        puts "  #{tap_issues_url}"
+        puts "  https://github.com/#{formula.tap}/issues"
       end
     else
       require 'cmd/config'

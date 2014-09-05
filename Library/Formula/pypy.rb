@@ -9,8 +9,8 @@ class Pypy < Formula
   depends_on :arch => :x86_64
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-5.2.tar.gz'
-    sha1 '749f1ea153426866d6117d00256cf37c90b1b4f5'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-5.4.2.tar.gz'
+    sha1 'a681ba56c30c0eb66528215842d3e3fcb5157614'
   end
 
   resource 'pip' do

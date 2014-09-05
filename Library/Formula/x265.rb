@@ -1,15 +1,15 @@
 require 'formula'
 
 class X265 < Formula
-  homepage 'http://x265.org'
-  url 'https://bitbucket.org/multicoreware/x265/get/1.2.tar.bz2'
-  sha1 '68afb0322dcc5d239efd0070925f597e479d3ff3'
+  homepage "http://x265.org"
+  url "https://bitbucket.org/multicoreware/x265/get/1.3.tar.bz2"
+  sha1 "b24fc768c61bab3dc4442dc65649fa74d16318a2"
 
   bottle do
     cellar :any
-    sha1 "fc59dbc0ec41212e6385d5a0a6bb441b3b580387" => :mavericks
-    sha1 "9620f7cb983531a3ff5a7cbbb27b96d8ede82b4f" => :mountain_lion
-    sha1 "3930317031d2e7c6825c089ca9d3050e239cba07" => :lion
+    sha1 "916d54e01a0033717e32b6bef0ab1fe5e8dbe1a9" => :mavericks
+    sha1 "c4179415d4281ca5512f2fa532236dc6178929fb" => :mountain_lion
+    sha1 "0b0f9bc016fa0a214097850742cd02891309d3a2" => :lion
   end
 
   head 'https://bitbucket.org/multicoreware/x265', :using => :hg
@@ -34,11 +34,9 @@ class X265 < Formula
   test do
     yuv_path = testpath/"raw.yuv"
     x265_path = testpath/"x265.265"
-    File.open(yuv_path, 'wb') do |f|
-        (1..3200).each do f.write("\xCO\xFF\xEE") end
-    end
+    yuv_path.binwrite "\xCO\xFF\xEE" * 3200
     system "#{bin}/x265 --input-res 80x80 --fps 1 #{yuv_path} #{x265_path}"
     header = 'AAAAAUABDAH//w=='
     assert_equal header.unpack("m"), [x265_path.read(10)]
-    end
+  end
 end

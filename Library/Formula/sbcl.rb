@@ -2,15 +2,15 @@ require "formula"
 
 class Sbcl < Formula
   homepage "http://www.sbcl.org/"
-  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.1/sbcl-1.2.1-source.tar.bz2"
-  sha1 "08734c7ade2be7b787e9a48b6934e06bd75572a9"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.2/sbcl-1.2.2-source.tar.bz2"
+  sha1 "23449d376ac0b6112ad468adc11a5e521667d8fd"
 
   head "git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git"
 
   bottle do
-    sha1 "c158de26f78e8b5ee75da417c923cba7449ea4e2" => :mavericks
-    sha1 "6f8ab1557aa5ace71655c14193c11a0dd48ee1ad" => :mountain_lion
-    sha1 "c5e80435fe561b172c975f21da8d662e11bd089e" => :lion
+    sha1 "aedcdd2e3e4ec477cb140c58ba461102fd548bfb" => :mavericks
+    sha1 "aaeb881100107fb03813cf41dc65de04e2aa50f4" => :mountain_lion
+    sha1 "ca2d16c6e5b7af262d69b63415784fd4c6a9b288" => :lion
   end
 
   fails_with :llvm do

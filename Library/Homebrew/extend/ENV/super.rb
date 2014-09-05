@@ -311,7 +311,7 @@ module Superenv
 
   # These methods are no longer necessary under superenv, but are needed to
   # maintain an interface compatible with stdenv.
-  noops.concat %w{fast O4 Og libxml2 x11 set_cpu_flags macosxsdk remove_macosxsdk}
+  noops.concat %w{fast O4 Og libxml2 set_cpu_flags macosxsdk remove_macosxsdk}
 
   # These methods provide functionality that has not yet been ported to
   # superenv.

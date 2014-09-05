@@ -10,16 +10,13 @@ require 'utils/json'
 class Tab < OpenStruct
   FILENAME = 'INSTALL_RECEIPT.json'
 
-  def self.create f, compiler, stdlib, args
-    build = f.build.dup
-    build.args = args
-
-    Tab.new :used_options => build.used_options,
-            :unused_options => build.unused_options,
-            :tabfile => f.prefix.join(FILENAME),
+  def self.create(formula, compiler, stdlib, build)
+    Tab.new :used_options => build.used_options.as_flags,
+            :unused_options => build.unused_options.as_flags,
+            :tabfile => formula.prefix.join(FILENAME),
             :built_as_bottle => !!ARGV.build_bottle?,
             :poured_from_bottle => false,
-            :tapped_from => f.tap,
+            :tapped_from => formula.tap,
             :time => Time.now.to_i,
             :HEAD => Homebrew.git_head,
             :compiler => compiler,
@@ -74,7 +71,7 @@ class Tab < OpenStruct
 
   def self.dummy_tab f=nil
     Tab.new :used_options => [],
-            :unused_options => (f.build.as_flags rescue []),
+            :unused_options => (f.options.as_flags rescue []),
             :built_as_bottle => false,
             :poured_from_bottle => false,
             :tapped_from => "",
@@ -85,13 +82,11 @@ class Tab < OpenStruct
   end
 
   def with? name
-    if options.include? "with-#{name}"
-      used_options.include? "with-#{name}"
-    elsif options.include? "without-#{name}"
-      not used_options.include? "without-#{name}"
-    else
-      false
-    end
+    include?("with-#{name}") || unused_options.include?("without-#{name}")
+  end
+
+  def without? name
+    not with? name
   end
 
   def include? opt
@@ -99,32 +94,36 @@ class Tab < OpenStruct
   end
 
   def universal?
-    used_options.include? "universal"
+    include?("universal")
+  end
+
+  def cxx11?
+    include?("c++11")
+  end
+
+  def build_32_bit?
+    include?("32-bit")
   end
 
   def used_options
-    Options.coerce(super)
+    Options.create(super)
   end
 
   def unused_options
-    Options.coerce(super)
-  end
-
-  def options
-    used_options + unused_options
+    Options.create(super)
   end
 
   def cxxstdlib
     # Older tabs won't have these values, so provide sensible defaults
     lib = stdlib.to_sym if stdlib
     cc = compiler || MacOS.default_compiler
-    CxxStdlib.new(lib, cc.to_sym)
+    CxxStdlib.create(lib, cc.to_sym)
   end
 
   def to_json
     Utils::JSON.dump({
-      :used_options => used_options.map(&:to_s),
-      :unused_options => unused_options.map(&:to_s),
+      :used_options => used_options.as_flags,
+      :unused_options => unused_options.as_flags,
       :built_as_bottle => built_as_bottle,
       :poured_from_bottle => poured_from_bottle,
       :tapped_from => tapped_from,

@@ -18,7 +18,7 @@ class Nanomsg < Formula
   option 'without-nanocat', 'Do not install nanocat tool'
   option 'with-debug', 'Compile with debug symbols'
 
-  depends_on 'pkg-config'=> :build
+  depends_on 'pkg-config' => :build
 
   if build.with? 'doc'
     depends_on 'asciidoc' => :build
