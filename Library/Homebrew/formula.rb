@@ -509,25 +509,22 @@ class Formula
     mkdir_p(logd)
 
     rd, wr = IO.pipe
+    log = File.open(logfn, "w")
+    log.puts Time.now, "", cmd, args, ""
+
+    out = ARGV.verbose? ? wr : log
 
     begin
-      pid = fork { exec_cmd(cmd, args, rd, wr, logfn) }
+      pid = fork do
+        log.close unless out == log
+        exec_cmd(cmd, args, rd, out, logfn)
+      end
       wr.close
 
-      log = File.open(logfn, "w")
-      log.puts Time.now, "", cmd, args, ""
-
-      if ARGV.verbose?
-        while buf = rd.gets
-          log.puts buf
-          puts buf
-        end
-      elsif IO.respond_to?(:copy_stream)
-        IO.copy_stream(rd, log)
-      else
-        buf = ""
-        log.write(buf) while rd.read(1024, buf)
-      end
+      while buf = rd.gets
+        log.puts buf
+        puts buf
+      end if ARGV.verbose?
 
       Process.wait(pid)
 
@@ -548,7 +545,7 @@ class Formula
 
   private
 
-  def exec_cmd(cmd, args, rd, wr, logfn)
+  def exec_cmd(cmd, args, rd, out, logfn)
     ENV['HOMEBREW_CC_LOG_PATH'] = logfn
 
     # TODO system "xcodebuild" is deprecated, this should be removed soon.
@@ -564,8 +561,8 @@ class Formula
     end
 
     rd.close
-    $stdout.reopen wr
-    $stderr.reopen wr
+    $stdout.reopen(out)
+    $stderr.reopen(out)
     args.collect!{|arg| arg.to_s}
     exec(cmd, *args) rescue nil
     puts "Failed to execute: #{cmd}"
