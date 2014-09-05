@@ -11,6 +11,12 @@ class GnuCobol < Formula
   depends_on "gmp"
 
   def install
+    # both environment variables are needed to be set
+    # the cobol compiler takes these variables for calling cc during its run
+    # if the paths to gmp and bdb are not provided, the run of cobc fails
+    ENV.append "CPPFLAGS", "-I#{HOMEBREW_PREFIX}/opt/gmp/include -I#{HOMEBREW_PREFIX}/opt/berkeley-db4/include"
+    ENV.append "LDFLAGS", "-L#{HOMEBREW_PREFIX}/opt/gmp/lib -L#{HOMEBREW_PREFIX}/opt/berkeley-db4/lib"
+
     args = ["--prefix=#{prefix}", "--infodir=#{prefix}/share/info"]
     args << "--with-libiconv-prefix=/usr"
     args << "--with-libintl-prefix=/usr"
@@ -28,5 +34,12 @@ class GnuCobol < Formula
 
   test do
     system "#{bin}/cob-config", "--version"
+    (testpath/'hello.cob').write('       IDENTIFICATION DIVISION.
+       PROGRAM-ID. hello.
+       PROCEDURE DIVISION.
+       DISPLAY "Hello World!".
+       STOP RUN.')
+    system "#{bin}/cobc", "-x", testpath/'hello.cob'
+    system testpath/'hello'
   end
 end
