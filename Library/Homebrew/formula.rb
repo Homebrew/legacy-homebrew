@@ -514,33 +514,32 @@ class Formula
       pid = fork { exec_cmd(cmd, args, rd, wr, logfn) }
       wr.close
 
-      File.open(logfn, 'w') do |f|
-        f.puts Time.now, "", cmd, args, ""
+      log = File.open(logfn, "w")
+      log.puts Time.now, "", cmd, args, ""
 
-        if ARGV.verbose?
-          while buf = rd.gets
-            f.puts buf
-            puts buf
-          end
-        elsif IO.respond_to?(:copy_stream)
-          IO.copy_stream(rd, f)
-        else
-          buf = ""
-          f.write(buf) while rd.read(1024, buf)
+      if ARGV.verbose?
+        while buf = rd.gets
+          log.puts buf
+          puts buf
         end
+      elsif IO.respond_to?(:copy_stream)
+        IO.copy_stream(rd, log)
+      else
+        buf = ""
+        log.write(buf) while rd.read(1024, buf)
+      end
 
-        Process.wait(pid)
+      Process.wait(pid)
 
-        $stdout.flush
+      $stdout.flush
 
-        unless $?.success?
-          f.flush
-          Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
-          f.puts
-          require 'cmd/config'
-          Homebrew.dump_build_config(f)
-          raise BuildError.new(self, cmd, args)
-        end
+      unless $?.success?
+        log.flush
+        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
+        log.puts
+        require 'cmd/config'
+        Homebrew.dump_build_config(log)
+        raise BuildError.new(self, cmd, args)
       end
     ensure
       rd.close unless rd.closed?
