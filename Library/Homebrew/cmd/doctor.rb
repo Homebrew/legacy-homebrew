@@ -659,9 +659,7 @@ def check_DYLD_vars
     Setting DYLD_* vars can break dynamic linking.
     Set variables:
     EOS
-    found.each do |e|
-      s << "    #{e}\n"
-    end
+    s << found.map { |e| "    #{e}: #{ENV.fetch(e)}\n" }.join
     if found.include? 'DYLD_INSERT_LIBRARIES'
       s += <<-EOS.undent
 

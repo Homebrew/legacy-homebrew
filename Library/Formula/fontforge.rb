@@ -10,6 +10,7 @@ class Fontforge < Formula
 
     depends_on 'cairo' => :optional
     depends_on 'pango' => :optional
+    depends_on :python => :optional
 
     # Fixes double defined AnchorPoint on Mountain Lion 10.8.2
     patch do
@@ -37,18 +38,13 @@ class Fontforge < Formula
     depends_on 'ossp-uuid'
     depends_on 'zeromq'
     depends_on 'czmq'
+    depends_on :python if MacOS.version <= :snow_leopard
   end
 
   option 'with-gif', 'Build with GIF support'
   option 'with-x', 'Build with X11 support, including FontForge.app'
 
   depends_on 'gettext'
-  if build.head?
-    depends_on :python if MacOS.version <= :snow_leopard
-  else
-    depends_on :python => :optional
-  end
-
   depends_on 'libpng'   => :recommended
   depends_on 'jpeg'     => :recommended
   depends_on 'libtiff'  => :recommended

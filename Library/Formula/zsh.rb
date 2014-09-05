@@ -7,9 +7,10 @@ class Zsh < Formula
   sha1 'a626aa1923cc1bd4f8f2463e947a3f3cb340b0ea'
 
   bottle do
-    sha1 "32f15592b2516bdfe1d0c660a1556cfa93dee54d" => :mavericks
-    sha1 "23b2dfa6a856f2f0ce41b724a8bbaba459880683" => :mountain_lion
-    sha1 "756101a883b8c90b98f0d5faff8161e6c981f2c2" => :lion
+    revision 1
+    sha1 "1ba405c49cb617bdc522f603928ae20f216f7ac8" => :mavericks
+    sha1 "f66774643770e198c8806d62181d629357a52f8e" => :mountain_lion
+    sha1 "872c033ec24fa0071e8fd14b688edcc2da3e46e6" => :lion
   end
 
   depends_on 'gdbm'
@@ -24,6 +25,7 @@ class Zsh < Formula
       --enable-scriptdir=#{share}/zsh/scripts
       --enable-site-fndir=#{HOMEBREW_PREFIX}/share/zsh/site-functions
       --enable-site-scriptdir=#{HOMEBREW_PREFIX}/share/zsh/site-scripts
+      --enable-runhelpdir=#{share}/zsh/help
       --enable-cap
       --enable-maildir-support
       --enable-multibyte
@@ -56,7 +58,7 @@ class Zsh < Formula
     Add the following to your zshrc to access the online help:
       unalias run-help
       autoload run-help
-      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/helpfiles
+      HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/help
     EOS
   end
 end

@@ -536,9 +536,18 @@ class Formula
     wr.close
 
     File.open(logfn, 'w') do |f|
-      while buf = rd.gets
-        f.puts buf
-        puts buf if ARGV.verbose?
+      f.puts Time.now, "", cmd, args, ""
+
+      if ARGV.verbose?
+        while buf = rd.gets
+          f.puts buf
+          puts buf
+        end
+      elsif IO.respond_to?(:copy_stream)
+        IO.copy_stream(rd, f)
+      else
+        buf = ""
+        f.write(buf) while rd.read(1024, buf)
       end
 
       Process.wait(pid)
