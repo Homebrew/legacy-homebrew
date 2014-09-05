@@ -9,14 +9,11 @@ class GnuCobol < Formula
   depends_on "automake" => :build
   depends_on "berkeley-db4"
   depends_on "gmp"
-  depends_on "gettext" => :optional
-
-  option "with-libiconv-support", "Enable libiconv support"
 
   def install
     args = ["--prefix=#{prefix}", "--infodir=#{prefix}/share/info"]
-    args << "--with-libiconv-prefix=/usr" if build.with? "libiconv-support"
-    args << "--with-libintl-prefix=#{HOMEBREW_PREFIX}/opt/gettext" if build.with? "gettext"
+    args << "--with-libiconv-prefix=/usr"
+    args << "--with-libintl-prefix=/usr"
 
     system "aclocal"
 
