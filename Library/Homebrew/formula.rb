@@ -510,29 +510,7 @@ class Formula
     logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
-    pid = fork do
-      ENV['HOMEBREW_CC_LOG_PATH'] = logfn
-
-      # TODO system "xcodebuild" is deprecated, this should be removed soon.
-      if cmd.to_s.start_with? "xcodebuild"
-        ENV.remove_cc_etc
-      end
-
-      # Turn on argument filtering in the superenv compiler wrapper.
-      # We should probably have a better mechanism for this than adding
-      # special cases to this method.
-      if cmd == "python" && %w[setup.py build.py].include?(args.first)
-        ENV.refurbish_args
-      end
-
-      rd.close
-      $stdout.reopen wr
-      $stderr.reopen wr
-      args.collect!{|arg| arg.to_s}
-      exec(cmd, *args) rescue nil
-      puts "Failed to execute: #{cmd}"
-      exit! 1 # never gets here unless exec threw or failed
-    end
+    pid = fork { exec_cmd(cmd, args, rd, wr, logfn) }
     wr.close
 
     File.open(logfn, 'w') do |f|
@@ -568,6 +546,30 @@ class Formula
   end
 
   private
+
+  def exec_cmd(cmd, args, rd, wr, logfn)
+    ENV['HOMEBREW_CC_LOG_PATH'] = logfn
+
+    # TODO system "xcodebuild" is deprecated, this should be removed soon.
+    if cmd.to_s.start_with? "xcodebuild"
+      ENV.remove_cc_etc
+    end
+
+    # Turn on argument filtering in the superenv compiler wrapper.
+    # We should probably have a better mechanism for this than adding
+    # special cases to this method.
+    if cmd == "python" && %w[setup.py build.py].include?(args.first)
+      ENV.refurbish_args
+    end
+
+    rd.close
+    $stdout.reopen wr
+    $stderr.reopen wr
+    args.collect!{|arg| arg.to_s}
+    exec(cmd, *args) rescue nil
+    puts "Failed to execute: #{cmd}"
+    exit! 1 # never gets here unless exec threw or failed
+  end
 
   def stage
     active_spec.stage do
