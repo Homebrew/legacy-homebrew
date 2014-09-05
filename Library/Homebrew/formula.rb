@@ -508,24 +508,30 @@ class Formula
     logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
-    rd, wr = IO.pipe
     log = File.open(logfn, "w")
     log.puts Time.now, "", cmd, args, ""
 
-    out = ARGV.verbose? ? wr : log
+    if ARGV.verbose?
+      rd, wr = IO.pipe
+      out = wr
+    else
+      out = log
+    end
 
     begin
       pid = fork do
-        rd.close
-        log.close unless out == log
+        if rd
+          rd.close
+          log.close
+        end
         exec_cmd(cmd, args, out, logfn)
       end
-      wr.close
+      wr.close if wr
 
       while buf = rd.gets
         log.puts buf
         puts buf
-      end if ARGV.verbose?
+      end if rd
 
       Process.wait(pid)
 
@@ -540,7 +546,7 @@ class Formula
         raise BuildError.new(self, cmd, args)
       end
     ensure
-      rd.close unless rd.closed?
+      rd.close if rd && !rd.closed?
     end
   end
 
