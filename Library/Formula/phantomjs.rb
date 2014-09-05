@@ -21,9 +21,7 @@ class Phantomjs < Formula
     sha1 "273dbe33d1edbdd034c903d919278d33d7ebe5dd" => :lion
   end
 
-  head do
-    url "https://github.com/ariya/phantomjs.git"
-  end
+  head "https://github.com/ariya/phantomjs.git"
 
   def install
     if build.stable? && MacOS.prefer_64_bit?
