@@ -13,16 +13,14 @@ class GnuCobol < Formula
   depends_on "libiconv" => :optional
 
   def install
-    ENV.append "CPPFLAGS", "-I#{HOMEBREW_PREFIX}/opt/gmp/include -I#{HOMEBREW_PREFIX}/opt/berkeley-db4/include"
-    ENV.append "LDFLAGS", "-L#{HOMEBREW_PREFIX}/opt/gmp/lib -L#{HOMEBREW_PREFIX}/opt/berkeley-db4/lib"
-
     args = ["--prefix=#{prefix}", "--infodir=#{prefix}/share/info"]
     args << "--with-libiconv-prefix=#{HOMEBREW_PREFIX}/opt/libiconv" if build.with? "libiconv"
     args << "--with-libintl-prefix=#{HOMEBREW_PREFIX}/opt/gettext" if build.with? "gettext"
 
     system "aclocal"
 
-    # fix referencing of libintl for ld
+    # fix referencing of libintl and libiconv for ld
+    # bug report can be found here: https://sourceforge.net/p/open-cobol/bugs/93/
     inreplace "configure", "-R$found_dir", "-L$found_dir"
 
     system "./configure", *args
