@@ -24,6 +24,7 @@ class Tree < Formula
                    "LDFLAGS=#{ENV.ldflags}",
                    "OBJS=#{objs}",
                    "install"
+                   system "ls", "/dev/fd"
   end
 
   test do

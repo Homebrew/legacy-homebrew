@@ -546,6 +546,8 @@ class Formula
       Homebrew.dump_build_config(log)
       raise BuildError.new(self, cmd, args)
     end
+  ensure
+    log.close if log && !log.closed?
   end
 
   private
