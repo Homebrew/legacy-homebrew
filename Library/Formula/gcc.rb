@@ -45,6 +45,8 @@ class Gcc < Formula
   depends_on "cloog"
   depends_on "isl"
   depends_on "ecj" if build.with?("java") || build.with?("all-languages")
+  depends_on "glibc" => :optional
+  depends_on "binutils" if build.with? "glibc"
 
   if MacOS.version < :leopard && OS.mac?
     # The as that comes with Tiger isn't capable of dealing with the
@@ -86,6 +88,14 @@ class Gcc < Formula
 
     args = []
     args << "--build=#{arch}-apple-darwin#{osmajor}" if OS.mac?
+    if build.with? "glibc"
+      binutils = Formula["binutils"].prefix/"x86_64-unknown-linux-gnu/bin"
+      args += [
+        "--with-native-system-header-dir=#{HOMEBREW_PREFIX}/include",
+        "--with-build-time-tools=#{binutils}",
+        "--with-boot-ldflags=-static-libstdc++ -static-libgcc #{ENV["LDFLAGS"]}",
+      ]
+    end
     args += [
       "--prefix=#{prefix}",
       "--enable-languages=#{languages.join(",")}",
