@@ -513,40 +513,36 @@ class Formula
 
     if ARGV.verbose?
       rd, wr = IO.pipe
-      out = wr
-    else
-      out = log
-    end
-
-    begin
-      pid = fork do
-        if rd
+      begin
+        pid = fork do
           rd.close
           log.close
+          exec_cmd(cmd, args, wr, logfn)
         end
-        exec_cmd(cmd, args, out, logfn)
+        wr.close
+
+        while buf = rd.gets
+          log.puts buf
+          puts buf
+        end
+      ensure
+        rd.close unless rd.closed?
       end
-      wr.close if wr
+    else
+      pid = fork { exec_cmd(cmd, args, log, logfn) }
+    end
 
-      while buf = rd.gets
-        log.puts buf
-        puts buf
-      end if rd
+    Process.wait(pid)
 
-      Process.wait(pid)
+    $stdout.flush
 
-      $stdout.flush
-
-      unless $?.success?
-        log.flush
-        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
-        log.puts
-        require 'cmd/config'
-        Homebrew.dump_build_config(log)
-        raise BuildError.new(self, cmd, args)
-      end
-    ensure
-      rd.close if rd && !rd.closed?
+    unless $?.success?
+      log.flush
+      Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
+      log.puts
+      require 'cmd/config'
+      Homebrew.dump_build_config(log)
+      raise BuildError.new(self, cmd, args)
     end
   end
 
