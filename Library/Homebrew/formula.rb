@@ -536,6 +536,8 @@ class Formula
     wr.close
 
     File.open(logfn, 'w') do |f|
+      f.puts Time.now, "", cmd, args, ""
+
       while buf = rd.gets
         f.puts buf
         puts buf if ARGV.verbose?
