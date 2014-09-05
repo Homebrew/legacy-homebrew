@@ -6,8 +6,6 @@ class Libimobiledevice < Formula
   sha1 "3016bf1241bc5a77a621c49d82d71bb8f32905e4"
   revision 1
 
-  head "http://cgit.sukimashita.com/libimobiledevice.git"
-
   bottle do
     cellar :any
     revision 1
@@ -17,6 +15,7 @@ class Libimobiledevice < Formula
   end
 
   head do
+    url "http://cgit.sukimashita.com/libimobiledevice.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
