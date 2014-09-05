@@ -17,7 +17,7 @@ class GnuCobol < Formula
     ENV.append "CPPFLAGS", "-I#{HOMEBREW_PREFIX}/opt/gmp/include -I#{HOMEBREW_PREFIX}/opt/berkeley-db4/include"
     ENV.append "LDFLAGS", "-L#{HOMEBREW_PREFIX}/opt/gmp/lib -L#{HOMEBREW_PREFIX}/opt/berkeley-db4/lib"
 
-    args = ["--prefix=#{prefix}", "--infodir=#{prefix}/share/info"]
+    args = ["--prefix=#{prefix}", "--infodir=#{info}"]
     args << "--with-libiconv-prefix=/usr"
     args << "--with-libintl-prefix=/usr"
 
