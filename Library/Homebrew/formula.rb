@@ -511,6 +511,7 @@ class Formula
 
     log = File.open(logfn, "w")
     log.puts Time.now, "", cmd, args, ""
+    log.flush
 
     if verbose
       rd, wr = IO.pipe
