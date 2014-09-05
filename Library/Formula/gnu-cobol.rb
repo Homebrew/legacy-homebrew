@@ -33,7 +33,6 @@ class GnuCobol < Formula
   end
 
   test do
-    system "#{bin}/cob-config", "--version"
     (testpath/'hello.cob').write('       IDENTIFICATION DIVISION.
        PROGRAM-ID. hello.
        PROCEDURE DIVISION.
