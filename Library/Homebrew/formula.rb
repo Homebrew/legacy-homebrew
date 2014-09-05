@@ -493,8 +493,6 @@ class Formula
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
-    rd, wr = IO.pipe
-
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
@@ -510,39 +508,43 @@ class Formula
     logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
-    pid = fork { exec_cmd(cmd, args, rd, wr, logfn) }
-    wr.close
+    rd, wr = IO.pipe
 
-    File.open(logfn, 'w') do |f|
-      f.puts Time.now, "", cmd, args, ""
+    begin
+      pid = fork { exec_cmd(cmd, args, rd, wr, logfn) }
+      wr.close
 
-      if ARGV.verbose?
-        while buf = rd.gets
-          f.puts buf
-          puts buf
+      File.open(logfn, 'w') do |f|
+        f.puts Time.now, "", cmd, args, ""
+
+        if ARGV.verbose?
+          while buf = rd.gets
+            f.puts buf
+            puts buf
+          end
+        elsif IO.respond_to?(:copy_stream)
+          IO.copy_stream(rd, f)
+        else
+          buf = ""
+          f.write(buf) while rd.read(1024, buf)
         end
-      elsif IO.respond_to?(:copy_stream)
-        IO.copy_stream(rd, f)
-      else
-        buf = ""
-        f.write(buf) while rd.read(1024, buf)
+
+        Process.wait(pid)
+
+        $stdout.flush
+
+        unless $?.success?
+          f.flush
+          Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
+          f.puts
+          require 'cmd/config'
+          Homebrew.dump_build_config(f)
+          raise BuildError.new(self, cmd, args)
+        end
       end
-
-      Process.wait(pid)
-
-      $stdout.flush
-
-      unless $?.success?
-        f.flush
-        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
-        f.puts
-        require 'cmd/config'
-        Homebrew.dump_build_config(f)
-        raise BuildError.new(self, cmd, args)
-      end
+    ensure
+      rd.close unless rd.closed?
     end
-  ensure
-    rd.close unless rd.closed?
   end
 
   private
