@@ -529,7 +529,7 @@ class Formula
             puts buf
           end
         ensure
-          rd.close unless rd.closed?
+          rd.close
         end
       else
         pid = fork { exec_cmd(cmd, args, log, logfn) }
