@@ -510,44 +510,46 @@ class Formula
     mkdir_p(logd)
 
     log = File.open(logfn, "w")
-    log.puts Time.now, "", cmd, args, ""
-    log.flush
-
-    if verbose
-      rd, wr = IO.pipe
-      begin
-        pid = fork do
-          rd.close
-          log.close
-          exec_cmd(cmd, args, wr, logfn)
-        end
-        wr.close
-
-        while buf = rd.gets
-          log.puts buf
-          puts buf
-        end
-      ensure
-        rd.close unless rd.closed?
-      end
-    else
-      pid = fork { exec_cmd(cmd, args, log, logfn) }
-    end
-
-    Process.wait(pid)
-
-    $stdout.flush
-
-    unless $?.success?
+    begin
+      log.puts Time.now, "", cmd, args, ""
       log.flush
-      Kernel.system "/usr/bin/tail", "-n", "5", logfn unless verbose
-      log.puts
-      require 'cmd/config'
-      Homebrew.dump_build_config(log)
-      raise BuildError.new(self, cmd, args)
+
+      if verbose
+        rd, wr = IO.pipe
+        begin
+          pid = fork do
+            rd.close
+            log.close
+            exec_cmd(cmd, args, wr, logfn)
+          end
+          wr.close
+
+          while buf = rd.gets
+            log.puts buf
+            puts buf
+          end
+        ensure
+          rd.close unless rd.closed?
+        end
+      else
+        pid = fork { exec_cmd(cmd, args, log, logfn) }
+      end
+
+      Process.wait(pid)
+
+      $stdout.flush
+
+      unless $?.success?
+        log.flush
+        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless verbose
+        log.puts
+        require 'cmd/config'
+        Homebrew.dump_build_config(log)
+        raise BuildError.new(self, cmd, args)
+      end
+    ensure
+      log.close unless log.closed?
     end
-  ensure
-    log.close if log && !log.closed?
   end
 
   private
