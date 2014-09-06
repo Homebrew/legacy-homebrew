@@ -1,5 +1,19 @@
 require 'formula'
 
+class OSXFUSEExtern < Requirement
+  fatal true
+
+  satisfy { File.file?('/usr/local/lib/pkgconfig/osxfuse.pc') }
+
+  def message; <<-EOS.undent
+    OSXFUSE installation not found.
+
+    To use '--with-osxfuse-extern', you need to manually install OSXFUSE from
+    their website. See http://osxfuse.github.io/ for details.
+    EOS
+  end
+end
+
 class Ntfs3g < Formula
   homepage 'http://www.tuxera.com/community/ntfs-3g-download/'
   url 'http://tuxera.com/opensource/ntfs-3g_ntfsprogs-2014.2.15.tgz'
@@ -11,8 +25,14 @@ class Ntfs3g < Formula
     sha1 "38407af2c691ff1cf6feb64030f9f29ac883e7b0" => :lion
   end
 
+  option 'with-osxfuse-extern', 'Build with osxfuse installed outside of Homebrew'
+
   depends_on 'pkg-config' => :build
-  depends_on 'osxfuse'
+  if build.with? 'osxfuse-extern'
+    depends_on OSXFUSEExtern
+  else
+    depends_on 'osxfuse'
+  end
   depends_on 'gettext'
 
   def install
