@@ -7,6 +7,9 @@ class Global < Formula
   sha1 "46b681a0ccb84c928a67f6901ca60227ad71b5bd"
 
   bottle do
+    sha1 "1bce9bd552e38d9cc12eda4998233c20a33321e4" => :mavericks
+    sha1 "907a3a0180b4b4ea6ecc029b864a7ed4c8e1fa21" => :mountain_lion
+    sha1 "254d7f4444b1890b1195f35a6e1f43ed34dace7d" => :lion
   end
 
   head do
