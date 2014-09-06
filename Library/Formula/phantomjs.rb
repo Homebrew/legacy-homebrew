@@ -2,10 +2,11 @@ require "formula"
 
 class Phantomjs < Formula
   homepage "http://www.phantomjs.org/"
+  revision 1
 
   stable do
     url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip"
-    sha1 "124b017d493d5ccabd22afaf078d0650ac048840"
+    sha256 "0f6c50ff24c1c4a8ccd7fedef62feef5e45195c7ba5ef6c84434448544877ff3"
 
     patch do
       url "https://github.com/ariya/phantomjs/commit/fe6a96.diff"
@@ -23,11 +24,14 @@ class Phantomjs < Formula
 
   head "https://github.com/ariya/phantomjs.git"
 
+  depends_on 'openssl'
+
   def install
     if build.stable? && MacOS.prefer_64_bit?
       inreplace "src/qt/preconfig.sh", "-arch x86", "-arch x86_64"
     end
-    system "./build.sh", "--confirm", "--jobs", ENV.make_jobs
+    system "./build.sh", "--confirm", "--jobs", ENV.make_jobs,
+      "--qt-config", "-openssl-linked"
     bin.install "bin/phantomjs"
     (share+"phantomjs").install "examples"
   end
