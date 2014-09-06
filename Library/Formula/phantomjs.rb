@@ -25,6 +25,8 @@ class Phantomjs < Formula
 
   depends_on 'openssl'
 
+  depends_on 'openssl'
+
   def install
     if build.stable? && MacOS.prefer_64_bit?
       inreplace "src/qt/preconfig.sh", "-arch x86", "-arch x86_64"
