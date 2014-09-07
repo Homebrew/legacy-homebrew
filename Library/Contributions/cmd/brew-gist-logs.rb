@@ -79,7 +79,7 @@ def post path, data
   end
   request.body = Utils::JSON.dump(data)
   response = http.request(request)
-  raise HTTP_Error, response if response.code != '201'
+  raise "HTTP #{response.code} #{response.message}" if response.code != "201"
 
   if !response.body.respond_to?(:force_encoding)
     body = response.body
@@ -90,12 +90,6 @@ def post path, data
   end
 
   Utils::JSON.load(body)
-end
-
-class HTTP_Error < RuntimeError
-  def initialize response
-    super "HTTP #{response.code} #{response.message}"
-  end
 end
 
 def usage
