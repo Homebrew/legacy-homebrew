@@ -13,19 +13,16 @@ class Fceux < Formula
   depends_on 'sdl'
   depends_on 'libzip'
   depends_on 'gtk+' unless build.include? "no-gtk"
-  depends_on 'lua'
   depends_on :x11
 
   # Make scons honor PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR
   # Reported upstream: https://sourceforge.net/p/fceultra/bugs/625
+  # Also temporarily kill Lua support pending further investigation as to build failures.
+  # It is listed as 'Optional' in the build docs, but will be reinstated asap.
   patch :DATA
 
-  patch do
-    url "https://raw.githubusercontent.com/DomT4/scripts/master/Homebrew_Resources/Fceux/fceuxlua52.diff"
-    sha1 "2209a3c52c1f044150fbb6b3524d32eccb16fc35"
-  end
-
   def install
+
     args = []
     args << "GTK=0" if build.include? "no-gtk"
     scons *args
@@ -66,6 +63,19 @@ index 4d5b446..36be2c4 100644
      env.ParseConfig(config_string)
      env.Append(CPPDEFINES=["_GTK3"])
      env.Append(CCFLAGS = ["-D_GTK"])
+diff --git a/SConstruct b/SConstruct
+index dc6698e..a23350a 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -18,7 +18,7 @@ opts.AddVariables(
+   BoolVariable('RELEASE',   'Set to 1 to build for release', 1),
+   BoolVariable('FRAMESKIP', 'Enable frameskipping', 1),
+   BoolVariable('OPENGL',    'Enable OpenGL support', 1),
+-  BoolVariable('LUA',       'Enable Lua support', 1),
++  BoolVariable('LUA',       'Enable Lua support', 0),
+   BoolVariable('GTK', 'Enable GTK2 GUI (SDL only)', 1),
+   BoolVariable('GTK3', 'Enable GTK3 GUI (SDL only)', 0),
+   BoolVariable('NEWPPU',    'Enable new PPU core', 1),
 diff --git a/src/drivers/sdl/SConscript b/src/drivers/sdl/SConscript
 index 7a53b07..23e11b9 100644
 --- a/src/drivers/sdl/SConscript

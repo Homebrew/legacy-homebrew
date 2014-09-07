@@ -60,12 +60,12 @@ class Lua51 < Formula
       s.gsub! "prefix= /usr/local", "prefix=#{HOMEBREW_PREFIX}"
       s.gsub! "INSTALL_MAN= ${prefix}/man/man1", "INSTALL_MAN= ${prefix}/share/man/man1"
       s.gsub! "INSTALL_INC= ${prefix}/include", "INSTALL_INC= ${prefix}/include/lua-5.1"
-      s.gsub! "INSTALL_LIB= ${prefix}/lib", "INSTALL_LIB= ${prefix}/lib/lua-5.1"
       s.gsub! "includedir=${prefix}/include", "includedir=${prefix}/include/lua-5.1"
+      s.gsub! "Libs: -L${libdir} -llua -lm", "Libs: -L${libdir} -llua5.1 -lm"
     end
 
-    system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1", "INSTALL_LIB=#{lib}/lua-5.1"
-    system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1", "INSTALL_LIB=#{lib}/lua-5.1"
+    system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
+    system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
 
     (lib+"pkgconfig").install 'etc/lua.pc'
 
@@ -79,7 +79,6 @@ class Lua51 < Formula
     mv "#{man1}/luac.1", "#{man1}/luac-5.1.1"
     mv "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua5.1.pc"
     ln_s "#{lib}/pkgconfig/lua5.1.pc", "#{lib}/pkgconfig/lua-5.1.pc"
-    ln_s "#{lib}/liblua.5.1.5.dylib", "#{lib}/liblua5.1.dylib"
     ln_s "#{include}/lua-5.1", "#{include}/lua5.1"
     ln_s "#{bin}/lua-5.1", "#{bin}/lua5.1"
     ln_s "#{bin}/luac-5.1", "#{bin}/luac5.1"
@@ -111,7 +110,7 @@ index 209a132..9387b09 100644
  	cd src && $(INSTALL_DATA) $(TO_LIB) $(INSTALL_LIB)
  	cd doc && $(INSTALL_DATA) $(TO_MAN) $(INSTALL_MAN)
 +	ln -s -f liblua.5.1.5.dylib $(INSTALL_LIB)/liblua.5.1.dylib
-+	ln -s -f liblua.5.1.dylib $(INSTALL_LIB)/liblua.dylib
++	ln -s -f liblua.5.1.dylib $(INSTALL_LIB)/liblua5.1.dylib
 
  ranlib:
  	cd src && cd $(INSTALL_LIB) && $(RANLIB) $(TO_LIB)
