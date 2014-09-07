@@ -326,9 +326,12 @@ class Test
 
     installed_gcc = false
     deps = formula_object.stable.deps.to_a
+    reqs = formula_object.stable.requirements.to_a
     if formula_object.devel && !ARGV.include?('--HEAD')
       deps |= formula_object.devel.deps.to_a
+      reqs |= formula_object.devel.requirements.to_a
     end
+
 
     begin
       deps.each {|f| CompilerSelector.new(f.to_formula).compiler }
@@ -345,7 +348,7 @@ class Test
       return
     end
 
-    if deps.any? { |d| d.name == "mercurial" && d.build? }
+    if (deps | reqs).any? { |d| d.name == "mercurial" && d.build? }
       test "brew", "install", "mercurial"
     end
 
