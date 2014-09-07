@@ -63,12 +63,17 @@ def http
 end
 
 def make_request(path, data)
-  request = Net::HTTP::Post.new(path)
-  request['User-Agent'] = HOMEBREW_USER_AGENT
-  request['Content-Type'] = 'application/json'
+  headers = {
+    "User-Agent"   => HOMEBREW_USER_AGENT,
+    "Accept"       => "application/vnd.github.v3+json",
+    "Content-Type" => "application/json",
+  }
+
   if HOMEBREW_GITHUB_API_TOKEN
-    request['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}"
+    headers["Authorization"] = "token #{HOMEBREW_GITHUB_API_TOKEN}"
   end
+
+  request = Net::HTTP::Post.new(path, headers)
   request.body = Utils::JSON.dump(data)
   request
 end
