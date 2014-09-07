@@ -2,8 +2,8 @@ require "formula"
 
 class Spiped < Formula
   homepage "https://www.tarsnap.com/spiped.html"
-  url "https://www.tarsnap.com/spiped/spiped-1.4.0.tgz"
-  sha256 "d8fa13a36905337bec97e507e0689f7bbc9e5426b88d588f3ddd3d6c290dcf5f"
+  url "https://www.tarsnap.com/spiped/spiped-1.4.1.tgz"
+  sha256 "0eeb4b8a94df985cfb60f452ced75f30509105a120ca09f740507c496c15c4f8"
 
   bottle do
     cellar :any
@@ -16,11 +16,6 @@ class Spiped < Formula
   depends_on "openssl"
 
   def install
-    # Apply these minor build fixes until they are committed upstream; see
-    # http://mail.tarsnap.com/spiped/msg00098.html .
-    inreplace "POSIX/posix-cflags.sh", /echo "-D(.*)"/, "printf %s \"-D\\1 \""
-    inreplace "Makefile", " make", " ${MAKE}"
-
     man1.mkpath
     system "bsdmake", "BINDIR_DEFAULT=#{bin}", "MAN1DIR=#{man1}", "install"
     doc.install "spiped/README" => "README.spiped",
