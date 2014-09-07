@@ -28,7 +28,6 @@ class ThePlatinumSearcher < Formula
   end
 
   depends_on "go" => :build
-  depends_on :hg => :build
 
   bottle do
     sha1 "511db4d641eda8dc72afbba8e0310a0a18f55462" => :mavericks
