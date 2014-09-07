@@ -23,7 +23,7 @@ class ThePlatinumSearcher < Formula
   end
 
   go_resource "code.google.com/p/go.text/" do
-    url "https://code.google.com/p/go.text/",
+    url "https://code.google.com/p/go.text/", :using => :hg,
       :revision => "46250cb715a27b42c736a5ff2a4e6fa0b2118952"
   end
 
