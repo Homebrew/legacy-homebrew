@@ -324,7 +324,7 @@ class Test
     formula_object = Formulary.factory(formula)
     return unless satisfied_requirements?(formula_object, :stable)
 
-    installed_gcc = falss
+    installed_gcc = false
     deps = formula_object.stable.deps.to_a
     if formula_object.devel && !ARGV.include?('--HEAD')
       deps |= formula_object.devel.deps.to_a
