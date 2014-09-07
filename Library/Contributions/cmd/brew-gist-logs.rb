@@ -15,8 +15,10 @@ def gist_logs f
 
   files = load_logs(f.name)
 
-  append_config(files) if ARGV.include? '--config'
-  append_doctor(files) if ARGV.include? '--doctor'
+  s = StringIO.new
+  Homebrew.dump_verbose_config(s)
+  files["config.out"] = { :content => s.string }
+  files["doctor.out"] = { :content => `brew doctor 2>&1` }
 
   url = create_gist(files)
 
@@ -36,16 +38,6 @@ def load_logs name
   end if dir.exist?
   raise 'No logs.' if logs.empty?
   logs
-end
-
-def append_config files
-  s = StringIO.new
-  Homebrew.dump_verbose_config(s)
-  files["config.out"] = { :content => s.string }
-end
-
-def append_doctor files
-  files['doctor.out'] = {:content => `brew doctor 2>&1`}
 end
 
 def create_gist files
@@ -92,14 +84,8 @@ def post path, data
   Utils::JSON.load(body)
 end
 
-def usage
-  puts "usage: brew gist-logs [options] <formula>"
-  puts
-  puts "options: --config, --doctor, --new-issue"
-end
-
 if ARGV.formulae.length != 1
-  usage
+  puts "usage: brew gist-logs [--new-issue] <formula>"
   exit 1
 end
 
