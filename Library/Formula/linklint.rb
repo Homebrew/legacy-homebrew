@@ -15,7 +15,7 @@ class Linklint < Formula
 
     # fix version number reported by linklint -version in beta
     # note, upstream is abandoned, so inreplace instead of patch
-    inreplace "linklint-#{version}", "2.3.1", "#{version}" if build.devel?
+    inreplace "linklint-#{version}", "2.3.1", version if build.devel?
 
     (share+'doc/linklint').install "README"
     bin.install "linklint-#{version}" => "linklint"
