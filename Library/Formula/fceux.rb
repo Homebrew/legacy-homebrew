@@ -13,12 +13,17 @@ class Fceux < Formula
   depends_on 'sdl'
   depends_on 'libzip'
   depends_on 'gtk+' unless build.include? "no-gtk"
-  depends_on 'lua51'
+  depends_on 'lua'
   depends_on :x11
 
   # Make scons honor PKG_CONFIG_PATH and PKG_CONFIG_LIBDIR
   # Reported upstream: https://sourceforge.net/p/fceultra/bugs/625
   patch :DATA
+
+  patch do
+    url "https://raw.githubusercontent.com/DomT4/scripts/master/Homebrew_Resources/Fceux/fceuxlua52.diff"
+    sha1 "2209a3c52c1f044150fbb6b3524d32eccb16fc35"
+  end
 
   def install
     args = []

@@ -38,6 +38,7 @@ class Lua < Formula
     ln_s "#{bin}/lua", "#{bin}/lua-5.2"
     ln_s "#{bin}/luac", "#{bin}/luac5.2"
     ln_s "#{bin}/luac", "#{bin}/luac-5.2"
+    ln_s "#{include}", "#{include}/lua5.2"
     ln_s "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua5.2.pc"
     ln_s "#{lib}/pkgconfig/lua.pc", "#{lib}/pkgconfig/lua-5.2.pc"
   end

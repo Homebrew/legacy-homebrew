@@ -60,11 +60,12 @@ class Lua51 < Formula
       s.gsub! "prefix= /usr/local", "prefix=#{HOMEBREW_PREFIX}"
       s.gsub! "INSTALL_MAN= ${prefix}/man/man1", "INSTALL_MAN= ${prefix}/share/man/man1"
       s.gsub! "INSTALL_INC= ${prefix}/include", "INSTALL_INC= ${prefix}/include/lua-5.1"
+      s.gsub! "INSTALL_LIB= ${prefix}/lib", "INSTALL_LIB= ${prefix}/lib/lua-5.1"
       s.gsub! "includedir=${prefix}/include", "includedir=${prefix}/include/lua-5.1"
     end
 
-    system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
-    system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
+    system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1", "INSTALL_LIB=#{lib}/lua-5.1"
+    system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1", "INSTALL_LIB=#{lib}/lua-5.1"
 
     (lib+"pkgconfig").install 'etc/lua.pc'
 
@@ -110,7 +111,7 @@ index 209a132..9387b09 100644
  	cd src && $(INSTALL_DATA) $(TO_LIB) $(INSTALL_LIB)
  	cd doc && $(INSTALL_DATA) $(TO_MAN) $(INSTALL_MAN)
 +	ln -s -f liblua.5.1.5.dylib $(INSTALL_LIB)/liblua.5.1.dylib
-+	ln -s -f liblua.5.1.dylib $(INSTALL_LIB)/liblua-5.1.dylib
++	ln -s -f liblua.5.1.dylib $(INSTALL_LIB)/liblua.dylib
 
  ranlib:
  	cd src && cd $(INSTALL_LIB) && $(RANLIB) $(TO_LIB)
