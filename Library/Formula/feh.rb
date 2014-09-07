@@ -8,9 +8,12 @@ class Feh < Formula
   depends_on :x11
   depends_on "giblib" => :build
   depends_on "imlib2" => :build
+  depends_on "libexif" => :recommended
 
   def install
-    system "make", "PREFIX=#{prefix}"
+    args = []
+    args << "exif=1" if build.with? "libexif"
+    system "make", "PREFIX=#{prefix}", *args
     system "make", "PREFIX=#{prefix}", "install"
   end
 end
