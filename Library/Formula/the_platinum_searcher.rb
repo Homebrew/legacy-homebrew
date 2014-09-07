@@ -31,10 +31,9 @@ class ThePlatinumSearcher < Formula
   depends_on :hg => :build
 
   bottle do
-    revision 1
-    sha1 "9e69bb5e18cacc5f6e4e9fc07ef31bd54a875b08" => :mavericks
-    sha1 "2443a197a960177d7a38930f82b209f8e3ce7c56" => :mountain_lion
-    sha1 "b97b398a0622bb48f31cf6cfd7905354a223912e" => :lion
+    sha1 "511db4d641eda8dc72afbba8e0310a0a18f55462" => :mavericks
+    sha1 "7ee22e93f06a692ba6c3095b892b877d29135c08" => :mountain_lion
+    sha1 "1ae1fadd1e0955c0d913a9bbf0b28e3b04c11040" => :lion
   end
 
   def install
