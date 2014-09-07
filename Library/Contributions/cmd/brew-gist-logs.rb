@@ -29,9 +29,10 @@ end
 
 def load_logs name
   logs = {}
-  dir = (HOMEBREW_LOGS/name)
+  dir = HOMEBREW_LOGS/name
   dir.children.sort.each do |file|
-    logs[file.basename.to_s] = {:content => (file.size == 0 ? "empty log" : file.read)}
+    contents = file.size? ? file.read : "empty log"
+    logs[file.basename.to_s] = { :content => contents }
   end if dir.exist?
   raise 'No logs.' if logs.empty?
   logs
