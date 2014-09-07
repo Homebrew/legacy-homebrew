@@ -62,7 +62,7 @@ def http
   end
 end
 
-def post path, data
+def make_request(path, data)
   request = Net::HTTP::Post.new(path)
   request['User-Agent'] = HOMEBREW_USER_AGENT
   request['Content-Type'] = 'application/json'
@@ -70,18 +70,28 @@ def post path, data
     request['Authorization'] = "token #{HOMEBREW_GITHUB_API_TOKEN}"
   end
   request.body = Utils::JSON.dump(data)
-  response = http.request(request)
-  raise "HTTP #{response.code} #{response.message}" if response.code != "201"
+  request
+end
 
-  if !response.body.respond_to?(:force_encoding)
-    body = response.body
-  elsif response["Content-Type"].downcase == "application/json; charset=utf-8"
-    body = response.body.dup.force_encoding(Encoding::UTF_8)
+def post(path, data)
+  request = make_request(path, data)
+
+  case response = http.request(request)
+  when Net::HTTPCreated
+    Utils::JSON.load get_body(response)
   else
-    body = response.body.encode(Encoding::UTF_8, :undef => :replace)
+    raise "HTTP #{response.code} #{response.message} (expected 201)"
   end
+end
 
-  Utils::JSON.load(body)
+def get_body(response)
+  if !response.body.respond_to?(:force_encoding)
+    response.body
+  elsif response["Content-Type"].downcase == "application/json; charset=utf-8"
+    response.body.dup.force_encoding(Encoding::UTF_8)
+  else
+    response.body.encode(Encoding::UTF_8, :undef => :replace)
+  end
 end
 
 if ARGV.formulae.length != 1
