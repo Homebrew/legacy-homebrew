@@ -345,6 +345,10 @@ class Test
       return
     end
 
+    if deps.any? { |d| d.name == "mercurial" && d.build? }
+      test "brew", "install", "mercurial"
+    end
+
     test "brew", "fetch", "--retry", *unchanged_dependencies unless unchanged_dependencies.empty?
     test "brew", "fetch", "--retry", "--build-from-source", *changed_dependences unless changed_dependences.empty?
     formula_fetch_options = []
