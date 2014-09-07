@@ -48,11 +48,11 @@ def append_doctor files
 end
 
 def create_gist files
-  post('gists', {'public' => true, 'files' => files})['html_url']
+  post("/gists", "public" => true, "files" => files)["html_url"]
 end
 
 def new_issue repo, title, body
-  post("repos/#{repo}/issues", {'title' => title, 'body' => body})['html_url']
+  post("/repos/#{repo}/issues", "title" => title, "body" => body)["html_url"]
 end
 
 def http
@@ -70,7 +70,7 @@ def http
 end
 
 def post path, data
-  request = Net::HTTP::Post.new("/#{path}")
+  request = Net::HTTP::Post.new(path)
   request['User-Agent'] = HOMEBREW_USER_AGENT
   request['Content-Type'] = 'application/json'
   if HOMEBREW_GITHUB_API_TOKEN
