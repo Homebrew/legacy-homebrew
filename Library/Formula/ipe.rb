@@ -13,7 +13,6 @@ class Ipe < Formula
   depends_on 'cairo'
   depends_on 'jpeg-turbo'
   depends_on 'freetype'
-  depends_on :tex
 
 
   # configure library paths using pkg-config
