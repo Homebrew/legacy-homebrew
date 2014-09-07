@@ -16,6 +16,12 @@ class EmacsClangCompleteAsync < Formula
     patch :DATA
   end
 
+  # https://github.com/Golevka/emacs-clang-complete-async/pull/59
+  patch do
+    url "https://github.com/yocchi/emacs-clang-complete-async/commit/5ce197b15d7b8c9abfc862596bf8d902116c9efe.patch"
+    sha1 "4ff1056dc11e1699a65b2cdac5861935570d4db8"
+  end
+
   def install
     system "make"
     bin.install "clang-complete"
