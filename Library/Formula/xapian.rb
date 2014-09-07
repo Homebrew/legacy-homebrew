@@ -2,8 +2,8 @@ require 'formula'
 
 class Xapian < Formula
   homepage 'http://xapian.org'
-  url 'http://oligarchy.co.uk/xapian/1.2.17/xapian-core-1.2.17.tar.xz'
-  sha1 'ee8df16fe2fba1b12badfc91ecdb94ffd0bbc8ef'
+  url 'http://oligarchy.co.uk/xapian/1.2.18/xapian-core-1.2.18.tar.xz'
+  sha1 '0eb07cfec9a213a6d310ae2472ccd3cd142d2d33'
 
   option "java",   "Java bindings"
   option "php",    "PHP bindings"
@@ -12,8 +12,8 @@ class Xapian < Formula
   depends_on :python => :optional
 
   resource 'bindings' do
-    url 'http://oligarchy.co.uk/xapian/1.2.17/xapian-bindings-1.2.17.tar.xz'
-    sha1 '29f8fa08450bb7f7450e956486fb891dc99033af'
+    url 'http://oligarchy.co.uk/xapian/1.2.18/xapian-bindings-1.2.18.tar.xz'
+    sha1 'f185c5b3c34deb43b806f6c6bc0e296977b0f931'
   end
 
   skip_clean :la
