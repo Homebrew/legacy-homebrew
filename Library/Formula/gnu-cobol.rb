@@ -15,6 +15,16 @@ class GnuCobol < Formula
   depends_on "automake" => :build
   depends_on "berkeley-db4"
   depends_on "gmp"
+  depends_on "gcc" if MacOS.version >= :mountain_lion
+
+  env :std
+
+  fails_with :clang do
+    cause <<-EOS.undent
+      Building with Clang configures GNU-COBOL to use Clang as its compiler,
+      which causes subsequent GNU-COBOL-based builds to fail.
+    EOS
+  end
 
   def install
     # both environment variables are needed to be set
@@ -34,6 +44,7 @@ class GnuCobol < Formula
     args = ["--prefix=#{prefix}", "--infodir=#{info}"]
     args << "--with-libiconv-prefix=/usr"
     args << "--with-libintl-prefix=/usr"
+    args << "--with-cc=#{ENV.cc}"
     system "./configure", *args
     system "make", "install"
   end
