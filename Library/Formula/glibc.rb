@@ -34,9 +34,11 @@ class Glibc < Formula
   def post_install
     # Compile locale definition files
     mkdir_p lib/"locale"
-    ENV.keys.select { |s|
+    locales = ENV.keys.select { |s|
       s == "LANG" || s[/^LC_/]
-    }.map { |key| ENV[key] }.uniq.each { |locale|
+    }.map { |key| ENV[key] }
+    locales << "en_US.UTF-8" # Required by gawk make check
+    locales.uniq.each { |locale|
       lang, charmap = locale.split(".", 2)
       if charmap != nil
         system bin/"localedef", "-i", lang, "-f", charmap, locale
