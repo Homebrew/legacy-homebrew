@@ -21,10 +21,17 @@ class Global < Formula
   end
 
   option "with-exuberant-ctags", "Enable Exuberant Ctags as a plug-in parser"
+  option "with-pygments", "Enable Pygments as a plug-in parser"
 
   if build.with? "exuberant-ctags"
     depends_on "ctags"
     skip_clean "lib/gtags/exuberant-ctags.la"
+  end
+
+  if build.with? "pygments"
+    depends_on "pygments" => :python
+    depends_on :python
+    skip_clean "lib/gtags/pygments-parser.la"
   end
 
   def install
