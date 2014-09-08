@@ -2,10 +2,7 @@ require 'formula'
 
 class Plowshare < Formula
   homepage 'http://code.google.com/p/plowshare/'
-# Using a mirror because shasum of 'https://plowshare.googlecode.com/archive/v1.0.5.tar.gz' is changing on every download
-  url 'https://github.com/hiteshsondhi88/plowshare/archive/v1.0.5.tar.gz'
-  sha1 '97e421e186d0b5bfe22c59d7a8c73ef515db7dee'
-
+  url 'https://code.google.com/p/plowshare/', :tag => 'v1.0.5', :using => :git
   head 'https://code.google.com/p/plowshare/', :using => :git
 
   depends_on 'recode'
