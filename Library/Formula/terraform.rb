@@ -6,6 +6,12 @@ class Terraform < Formula
   url "https://github.com/hashicorp/terraform/archive/v0.2.1.tar.gz"
   sha1 "f2772e785bfc2e409a3578c41557ba1988aa3153"
 
+  bottle do
+    sha1 "94ae5dcbc41ad630b9a5ebe85f814a7c107a122b" => :mavericks
+    sha1 "17ba9f29cb8b7808c294dbb019c2056ef834088e" => :mountain_lion
+    sha1 "24a307812d75adbbc764a80972723fc68acaae0a" => :lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/mitchellh/gox" do
