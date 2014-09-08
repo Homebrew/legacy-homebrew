@@ -5,6 +5,8 @@ class Elasticsearch < Formula
   url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.3.2.tar.gz"
   sha1 "a7ea036468473084cd62e846f05a2069a987fb03"
 
+  depends_on :java => "1.7"
+
   head do
     url "https://github.com/elasticsearch/elasticsearch.git"
     depends_on "maven"
@@ -80,8 +82,6 @@ class Elasticsearch < Formula
     Data:    #{var}/elasticsearch/#{cluster_name}/
     Logs:    #{var}/log/elasticsearch/#{cluster_name}.log
     Plugins: #{var}/lib/elasticsearch/plugins/
-
-    ElasticSearch requires Java 7; you will need to install an appropriate JDK.
     EOS
   end
 
