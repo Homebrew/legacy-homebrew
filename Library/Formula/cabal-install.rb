@@ -17,6 +17,8 @@ class CabalInstall < Formula
 
   fails_with :clang if MacOS.version < :mavericks # Same as ghc.rb
 
+  fails_with :clang if MacOS.version < :mavericks # Same as ghc.rb
+
   def install
     # use a temporary package database instead of ~/.cabal or ~/.ghc
     pkg_db = "#{Dir.pwd}/package.conf.d"
