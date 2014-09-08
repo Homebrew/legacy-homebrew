@@ -39,6 +39,11 @@ class Ghc < Formula
     sha256 "91ef5bd19d0bc1cd496de08218f7ac8a73c69de64d903e314c6beac51ad06254"
   end
 
+  resource "Cabal" do
+    url "https://www.haskell.org/cabal/release/cabal-1.18.1.4/Cabal-1.18.1.4.tar.gz"
+    sha1 "3d23d0ad3c5dc0bc4440b50ca2c9a9a47396836a"
+  end
+
   if build.build_32_bit? || !MacOS.prefer_64_bit? || MacOS.version < :mavericks
     fails_with :clang do
       cause <<-EOS.undent
@@ -51,6 +56,20 @@ class Ghc < Formula
   def install
     # Move the main tarball contents into a subdirectory
     (buildpath+"Ghcsource").install Dir["*"]
+
+    # Here we imitate the Haskell Platform's packaging of GHC by including
+    # a later version of Cabal, “which fixes a particularly nasty problem with
+    # haddock, -XCPP, and clang based systems.”
+    # (q.v. https://www.haskell.org/platform/mac.html)
+    cabal_dir = buildpath/"Ghcsource/libraries/Cabal"
+    orig_cabal = cabal_dir/"Cabal.bak"
+    mv cabal_dir/"Cabal", orig_cabal
+    (cabal_dir/"Cabal").install resource("Cabal")
+    # there are some GHC-related files that don't come in Cabal's tarball
+    mv orig_cabal/"GNUmakefile", cabal_dir/"Cabal/GNUmakefile"
+    mv orig_cabal/"ghc.mk", cabal_dir/"Cabal/ghc.mk"
+    mv orig_cabal/"prologue.txt", cabal_dir/"Cabal/prologue.txt"
+    rm_rf orig_cabal
 
     resource("binary").stage do
       # Define where the subformula will temporarily install itself
