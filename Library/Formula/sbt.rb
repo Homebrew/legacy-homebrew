@@ -24,9 +24,7 @@ class Sbt < Formula
   end
 
   def caveats;  <<-EOS.undent
-    You can use $SBT_OPTS to pass additional JVM options to SBT.
-
-    For example:
+    You can use $SBT_OPTS to pass additional JVM options to SBT:
        SBT_OPTS="-XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M"
 
     This formula is now using the standard typesafe sbt launcher script.
