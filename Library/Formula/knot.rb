@@ -5,6 +5,8 @@ class Knot < Formula
   url "https://secure.nic.cz/files/knot-dns/knot-1.5.2.tar.gz"
   sha1 "4605540f944b6dcd8401278a5bd2f85b6c400086"
 
+  head "https://gitlab.labs.nic.cz/labs/knot.git"
+
   bottle do
     revision 1
     sha1 "d686096025a554581258b7507ef44bc3e4d75736" => :mavericks
