@@ -34,6 +34,7 @@ class Gcc < Formula
   end
 
   option "with-java", "Build the gcj compiler"
+  option "with-go", "Build the gccgo compiler"
   option "with-all-languages", "Enable all compilers and languages, except Ada"
   option "with-nls", "Build with native language support (localization)"
   option "without-fortran", "Build without the gfortran compiler"
@@ -83,7 +84,8 @@ class Gcc < Formula
     end
 
     # C, C++, ObjC compilers are always built
-    languages = %w[c c++ objc obj-c++ go]
+    languages = %w[c c++ objc obj-c++]
+    languages << "go" if build.with?("go")
 
     # Everything but Ada, which requires a pre-existing GCC Ada compiler
     # (gnat) to bootstrap. GCC 4.6.0 add go as a language option, but it is
