@@ -2,9 +2,8 @@ require "formula"
 
 class Knot < Formula
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-1.4.7.tar.gz"
-  sha1 "eed17930b0cd94375f73951fe7582b3f38b4e6f3"
-  revision 1
+  url "https://secure.nic.cz/files/knot-dns/knot-1.5.2.tar.gz"
+  sha1 "4605540f944b6dcd8401278a5bd2f85b6c400086"
 
   bottle do
     revision 1
@@ -27,6 +26,8 @@ class Knot < Formula
                           "--prefix=#{prefix}"
 
     inreplace 'samples/Makefile', 'install-data-local:', 'disable-install-data-local:'
+
+    inreplace 'src/knot/zone/zone.h', 'pthread_spinlock_t ddns_lock;', 'pthread_mutex_t ddns_lock;'
 
     system "make"
     system "make", "install"
