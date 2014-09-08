@@ -105,8 +105,10 @@ class Step
     log = log_file_path
 
     pid = fork do
-      STDOUT.reopen(log, "wb")
-      STDERR.reopen(log, "wb")
+      File.open(log, "wb") do |f|
+        STDOUT.reopen(f)
+        STDERR.reopen(f)
+      end
       Dir.chdir(@repository) if @command.first == "git"
       exec(*@command)
     end
