@@ -135,12 +135,6 @@ class Ghc < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
-    This brew is for GHC only; you might also be interested in cabal-install
-    or haskell-platform.
-    EOS
-  end
-
   test do
     hello = (testpath/"hello.hs")
     hello.write('main = putStrLn "Hello Homebrew"')

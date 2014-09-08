@@ -87,5 +87,13 @@ def blacklisted? name
       http://www.playframework.com/documentation/2.3.x/Migration23
       http://www.playframework.com/documentation/2.3.x/Highlights23
     EOS
+  when 'haskell-platform' then <<-EOS.undent
+    We no longer package haskell-platform. Consider installing ghc
+    and cabal-install instead:
+      brew install ghc cabal-install
+
+    A binary installer is available:
+      https://www.haskell.org/platform/mac.html
+    EOS
   end
 end
