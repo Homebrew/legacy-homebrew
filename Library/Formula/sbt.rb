@@ -6,21 +6,24 @@ class Sbt < Formula
   sha1 "9a77a6971478ebf2272735f40ab65443dcb60259"
 
   def install
-    inreplace "bin/sbt", 'etc_sbt_opts_file="${sbt_home}/conf/sbtopts"', "etc_sbt_opts_file=\"#{etc}/sbtopts\""
-    inreplace "bin/sbt", '/etc/sbt/sbtopts', "#{etc}/sbtopts"
-
-    inreplace "bin/sbt-launch-lib.bash" do |s|
-      s.gsub! '${sbt_home}/bin/sbt-launch.jar', "#{libexec}/sbt-launch.jar"
-
-      if File.file?("#{ENV['HOME']}/.sbtconfig")
-        opoo "Use of ~/.sbtconfig is deprecated.  Please migrate global settings to #{etc}/sbtopts"
-        s << "\n\ntest -f \"$HOME/.sbtconfig\" && source \"$HOME/.sbtconfig\""
-      end
+    inreplace "bin/sbt" do |s|
+      s.gsub! 'etc_sbt_opts_file="${sbt_home}/conf/sbtopts"', "etc_sbt_opts_file=\"#{etc}/sbtopts\""
+      s.gsub! "/etc/sbt/sbtopts", "#{etc}/sbtopts"
     end
 
-    bin.install "bin/sbt", "bin/sbt-launch-lib.bash"
-    libexec.install "bin/sbt-launch.jar"
+    inreplace "bin/sbt-launch-lib.bash", "${sbt_home}/bin/sbt-launch.jar", "#{libexec}/sbt-launch.jar"
+
+    libexec.install "bin/sbt", "bin/sbt-launch-lib.bash", "bin/sbt-launch.jar"
     etc.install "conf/sbtopts"
+
+    (bin/"sbt").write <<-EOS.undent
+      #!/bin/sh
+      if [ -f "$HOME/.sbtconfig" ]; then
+        echo "Use of ~/.sbtconfig is deprecated, please migrate global settings to #{etc}/sbtopts" >&2
+        . "$HOME/.sbtconfig"
+      fi
+      exec "#{libexec}/sbt" "$@"
+    EOS
   end
 
   def caveats;  <<-EOS.undent
