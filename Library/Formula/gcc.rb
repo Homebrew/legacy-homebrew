@@ -83,7 +83,7 @@ class Gcc < Formula
     end
 
     # C, C++, ObjC compilers are always built
-    languages = %w[c c++ objc obj-c++]
+    languages = %w[c c++ objc obj-c++ go]
 
     # Everything but Ada, which requires a pre-existing GCC Ada compiler
     # (gnat) to bootstrap. GCC 4.6.0 add go as a language option, but it is
