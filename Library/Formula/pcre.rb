@@ -21,6 +21,13 @@ class Pcre < Formula
     cause "Bus error in ld on SL 10.6.4"
   end
 
+  patch do
+    # make test fails with GCC 4.9. Fixed upstream in HEAD. See
+    # See http://bugs.exim.org/show_bug.cgi?id=1463
+    url "http://bugs.exim.org/attachment.cgi?id=741"
+    sha1 "bad236cf67a7b42f0dc8d4ae05ed0260241320d1"
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
