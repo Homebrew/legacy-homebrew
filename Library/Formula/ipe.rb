@@ -63,7 +63,7 @@ __END__
  DL_LIBS       ?= -ldl
  ZLIB_CFLAGS   ?=
  ZLIB_LIBS     ?= -lz
-+# The jpeg-turbo and lua52 packages doesn't seem to have a pkg-config file
++# The jpeg-turbo package doesn't seem to have a pkg-config file
  JPEG_CFLAGS   ?= 
  JPEG_LIBS     ?= -lturbojpeg
 -FREETYPE_CFLAGS ?= -I/usr/X11/include/freetype2 -I/usr/X11/include

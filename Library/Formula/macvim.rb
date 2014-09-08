@@ -15,7 +15,7 @@ class Macvim < Formula
 
   depends_on :xcode => :build
   depends_on 'cscope' => :recommended
-  depends_on 'lua51' => :optional
+  depends_on 'lua' => :optional
   depends_on 'luajit' => :optional
   depends_on :python => :recommended
   depends_on :python3 => :optional

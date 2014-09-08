@@ -22,7 +22,6 @@ class Fceux < Formula
   patch :DATA
 
   def install
-
     args = []
     args << "GTK=0" if build.include? "no-gtk"
     scons *args
