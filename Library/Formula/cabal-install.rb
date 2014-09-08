@@ -15,8 +15,6 @@ class CabalInstall < Formula
 
   depends_on "ghc"
 
-  conflicts_with "haskell-platform"
-
   fails_with :clang if MacOS.version < :mavericks # Same as ghc.rb
 
   def install
