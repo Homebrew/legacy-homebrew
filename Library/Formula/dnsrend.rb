@@ -42,7 +42,7 @@ class Dnsrend < Formula
   end
 
   test do
-    pcap_encoded_base64 = "1MOyoQIABAAAAAAAAAAAAP//AAABAAAAgiTuUx2mCwBIAAAASAAAAHyyG0SnG8CwXctSBQgARQAAOmd3AABAETlywKgJEggICAjoBAA1ACaltF12AQAAAQAAAAAAAAlzbGFja3dhcmUCaXQAAAEAAYIk7lMSxgsAWAAAAFgAAADAsF3LUgV8shtEpxsIAEUAAEoA/AAAMxGs3QgICAjAqAkSADXoBAA2u/pddoGAAAEAAQAAAAAJc2xhY2t3YXJlAml0AAABAAHADAABAAEAAAEjAAReF0nL"
-    system "echo #{pcap_encoded_base64} | /usr/bin/base64 -D | #{bin}/dnsrend"
+    test_pcap = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.pcap"
+    system "#{bin}/dnsrend", test_pcap
   end
 end
