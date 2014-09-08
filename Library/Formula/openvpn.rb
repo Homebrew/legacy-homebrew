@@ -1,10 +1,10 @@
 require 'formula'
 
 class Openvpn < Formula
-  homepage 'http://openvpn.net/'
-  url 'http://build.openvpn.net/downloads/releases/openvpn-2.3.2.tar.gz'
-  mirror 'http://swupdate.openvpn.org/community/releases/openvpn-2.3.2.tar.gz'
-  sha256 '20bda3f9debb9a52db262aecddfa4e814050a9404a9106136b7e3b6f7ef36ffc'
+  homepage 'http://openvpn.net/index.php/download/community-downloads.html'
+  url 'http://build.openvpn.net/downloads/releases/openvpn-2.3.4.tar.gz'
+  mirror 'http://swupdate.openvpn.org/community/releases/openvpn-2.3.4.tar.gz'
+  sha256 'af506d5f48568fa8d2f2435cb3fad35f9a9a8f263999ea6df3ba296960cec85a'
 
   depends_on 'lzo'
   depends_on 'tuntap'
@@ -27,14 +27,11 @@ class Openvpn < Formula
     system "make install"
 
     # Adjust sample file paths
-    inreplace ["sample/sample-config-files/openvpn-startup.sh"] do |s|
-      s.gsub! "/etc/openvpn", etc+'openvpn'
-    end
+    inreplace "sample/sample-config-files/openvpn-startup.sh",
+      "/etc/openvpn", "#{etc}/openvpn"
 
     # Install sample files
-    Dir['sample/sample-*'].each do |d|
-      (share + 'doc/openvpn' + d).install Dir[d+'/*']
-    end
+    (doc/"sample").install Dir["sample/sample-*"]
 
     # Create etc & var paths
     (etc + 'openvpn').mkpath
@@ -61,7 +58,7 @@ class Openvpn < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/sbin/openvpn</string>
+        <string>#{opt_sbin}/openvpn</string>
         <string>--config</string>
         <string>#{etc}/openvpn/openvpn.conf</string>
       </array>

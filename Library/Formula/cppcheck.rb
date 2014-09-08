@@ -1,33 +1,43 @@
-require 'formula'
+require "formula"
 
 class Cppcheck < Formula
-  homepage 'http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page'
-  url 'https://github.com/danmar/cppcheck/archive/1.61.tar.gz'
-  sha1 'ca08fc6b6f57153930661beb9c88046aed9875da'
+  homepage "http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page"
+  url "https://github.com/danmar/cppcheck/archive/1.66.tar.gz"
+  sha1 "277a214aa8a2bf30180645aca09c1dc9d3069977"
 
-  head 'https://github.com/danmar/cppcheck.git'
+  head "https://github.com/danmar/cppcheck.git"
 
-  option 'no-rules', "Build without rules (no pcre dependency)"
-  option 'with-gui', "Build the cppcheck gui (requires Qt)"
+  bottle do
+    sha1 "a3b2341260ab7afbb08dbf44e51b32d2edbd6d7c" => :mavericks
+    sha1 "e7290d70f4aee90d644898785eb4eff25fbbcd8b" => :mountain_lion
+    sha1 "ee30f858617e11e68d465d7406f445cf13d6f791" => :lion
+  end
 
-  depends_on 'pcre' unless build.include? 'no-rules'
-  depends_on 'qt' if build.include? 'with-gui'
+  option "no-rules", "Build without rules (no pcre dependency)"
+  option "with-gui", "Build the cppcheck gui (requires Qt)"
+
+  depends_on "pcre" unless build.include? "no-rules"
+  depends_on "qt" if build.with? "gui"
 
   def install
     # Man pages aren't installed as they require docbook schemas.
 
     # Pass to make variables.
-    if build.include? 'no-rules'
-      system "make", "HAVE_RULES=no"
+    if build.include? "no-rules"
+      system "make", "HAVE_RULES=no", "CFGDIR=#{prefix}/cfg"
     else
-      system "make", "HAVE_RULES=yes"
+      system "make", "HAVE_RULES=yes", "CFGDIR=#{prefix}/cfg"
     end
 
-    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "install"
+    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=#{prefix}/cfg", "install"
 
-    if build.include? 'with-gui'
+    if build.with? "gui"
       cd "gui" do
-        if build.include? 'no-rules'
+        # fix make not finding cfg directory:
+        # https://github.com/Homebrew/homebrew/issues/27756
+        inreplace "gui.qrc", "../cfg/", "#{prefix}/cfg/"
+
+        if build.include? "no-rules"
           system "qmake", "HAVE_RULES=no"
         else
           system "qmake"
@@ -39,18 +49,7 @@ class Cppcheck < Formula
     end
   end
 
-  def test
+  test do
     system "#{bin}/cppcheck", "--version"
-  end
-
-  def caveats; <<-EOS.undent
-    --with-gui installs cppcheck-gui.app in:
-      #{bin}
-
-    To link the application to a normal Mac OS X location:
-      brew linkapps
-    or:
-      ln -s #{bin}/cppcheck-gui.app /Applications
-    EOS
   end
 end

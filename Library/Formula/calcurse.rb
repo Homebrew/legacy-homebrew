@@ -2,19 +2,18 @@ require 'formula'
 
 class Calcurse < Formula
   homepage 'http://calcurse.org/'
-  url 'http://calcurse.org/files/calcurse-2.9.2.tar.gz'
-  sha1 'ab59b3275a9b7eb9184797f9e998e64783b03ceb'
+  url 'http://calcurse.org/files/calcurse-3.1.4.tar.gz'
+  sha1 '5cf0cc458d6508d38aa57a12170499449f09bfd2'
 
   depends_on 'gettext'
 
-  fails_with :clang do
-    build 425
-    cause "Issue with macro expansion in htable.h"
+  # Patch sent upstream: https://github.com/cryptocrack/calcurse/pull/1
+  patch do
+    url "https://github.com/jacknagel/calcurse/commit/86dd23f87bcbb32a69f5f0391439238d4e389d77.diff"
+    sha1 "d9a1036c230e6c8a4702c7a05da6277bac9c4a31"
   end
 
   def install
-    # need this flag otherwise there is a build error.
-    ENV.append 'CFLAGS', "-fnested-functions"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
     system "make install"

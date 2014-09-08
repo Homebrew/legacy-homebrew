@@ -1,21 +1,20 @@
 require 'testing_env'
 require 'download_strategy'
-require 'bottles' # XXX: hoist these regexps into constants in Pathname?
 
-class SoftwareSpecDouble
+class ResourceDouble
   attr_reader :url, :specs
 
-  def initialize(url="http://foo.com/bar.tar.gz", specs={})
+  def initialize(url="http://example.com/foo.tar.gz", specs={})
     @url = url
     @specs = specs
   end
 end
 
-class AbstractDownloadStrategyTests < Test::Unit::TestCase
+class AbstractDownloadStrategyTests < Homebrew::TestCase
   def setup
     @name = "foo"
-    @package = SoftwareSpecDouble.new
-    @strategy = AbstractDownloadStrategy.new(@name, @package)
+    @resource = ResourceDouble.new
+    @strategy = AbstractDownloadStrategy.new(@name, @resource)
     @args = %w{foo bar baz}
   end
 
@@ -33,22 +32,37 @@ class AbstractDownloadStrategyTests < Test::Unit::TestCase
   def test_expand_safe_system_args_does_not_mutate_argument
     result = @strategy.expand_safe_system_args(@args)
     assert_equal %w{foo bar baz}, @args
-    assert_not_same @args, result
+    refute_same @args, result
   end
 end
 
-class DownloadStrategyDetectorTests < Test::Unit::TestCase
+class VCSDownloadStrategyTests < Homebrew::TestCase
+  def test_cache_filename
+    resource = ResourceDouble.new("http://example.com/bar")
+    strategy = Class.new(VCSDownloadStrategy) { def cache_tag; "foo"; end }
+    downloader = strategy.new("baz", resource)
+    assert_equal "baz--foo", downloader.cache_filename
+  end
+end
+
+class DownloadStrategyDetectorTests < Homebrew::TestCase
   def setup
     @d = DownloadStrategyDetector.new
   end
 
   def test_detect_git_download_startegy
-    @d = DownloadStrategyDetector.detect("git://foo.com/bar.git")
+    @d = DownloadStrategyDetector.detect("git://example.com/foo.git")
     assert_equal GitDownloadStrategy, @d
   end
 
   def test_default_to_curl_strategy
     @d = DownloadStrategyDetector.detect(Object.new)
     assert_equal CurlDownloadStrategy, @d
+  end
+
+  def test_raises_when_passed_unrecognized_strategy
+    assert_raises(TypeError) do
+      DownloadStrategyDetector.detect("foo", Class.new)
+    end
   end
 end

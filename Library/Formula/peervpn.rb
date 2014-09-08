@@ -8,12 +8,12 @@ class Peervpn < Formula
 
   depends_on "tuntap"
 
-  def patches; DATA; end if MacOS.version == :snow_leopard
+  patch :DATA if MacOS.version == :snow_leopard
 
   def install
     system "make"
     bin.install "peervpn"
-    etc.install "peervpn.conf" unless (etc/'peervpn.conf').exist?
+    etc.install "peervpn.conf"
   end
 
   def caveats; <<-EOS.undent
@@ -22,7 +22,7 @@ class Peervpn < Formula
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/peervpn"
   end
 end

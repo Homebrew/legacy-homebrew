@@ -12,7 +12,7 @@ class Xchat < Formula
 
   # Adjust to newer glib include conventions
   # Reported at https://sourceforge.net/tracker/?func=detail&aid=3446968&group_id=239&atid=100239
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.append 'LDFLAGS', '-lgmodule-2.0'

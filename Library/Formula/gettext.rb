@@ -1,29 +1,20 @@
-require 'formula'
+require "formula"
 
 class Gettext < Formula
-  homepage 'http://www.gnu.org/software/gettext/'
-  url 'http://ftpmirror.gnu.org/gettext/gettext-0.18.3.1.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/gettext/gettext-0.18.3.1.tar.gz'
-  sha256 '0d8f9a33531b77776b3dc473e7940019ca19bfca5b4c06db6e96065eeb07245d'
+  homepage "https://www.gnu.org/software/gettext/"
+  url "http://ftpmirror.gnu.org/gettext/gettext-0.19.2.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gettext/gettext-0.19.2.tar.xz"
+  sha256 "b34e1baaf37e56b4f5d7104353a437a735b2e094a70588e7c5ae671eaa0819c3"
 
   bottle do
-    sha1 '2aa3a9363106fff9c7adf87527a60a4351dbc6e1' => :mountain_lion
-    sha1 '59cc5083d0cc6053ecbb857146730ed8953357e8' => :lion
-    sha1 'd1c2af7389a8234954d1093c4beb4c6484e6e250' => :snow_leopard
+    sha1 "d2a84c4dc0bcc7984e8a6232bff11780f21d16d3" => :mavericks
+    sha1 "ca0f41730c2769d906d83e88d0aa4506350691fb" => :mountain_lion
+    sha1 "0cf03a50241ea2383e8140cf974c5b0b5533f7b2" => :lion
   end
 
-  keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
+  keg_only :shadowed_by_osx, "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
 
   option :universal
-  option 'with-examples', 'Keep example files'
-
-  def patches
-    unless build.include? 'with-examples'
-      # Use a MacPorts patch to disable building examples at all,
-      # rather than build them and remove them afterwards.
-      {:p0 => ['https://trac.macports.org/export/102008/trunk/dports/devel/gettext/files/patch-gettext-tools-Makefile.in']}
-    end
-  end
 
   def install
     ENV.libxml2

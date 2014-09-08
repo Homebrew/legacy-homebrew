@@ -7,13 +7,11 @@ class Jsvc < Formula
   sha1 'f99fa9bcbc3faf6660e760af099eb003e2553b39'
 
   # Enable Java 7 JVMs: https://issues.apache.org/jira/browse/DAEMON-281
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
-    ENV.append "CFLAGS", MacOS.preferred_arch
-    ENV.append "LDFLAGS", MacOS.preferred_arch
+    ENV.append "CFLAGS", "-arch #{MacOS.preferred_arch}"
+    ENV.append "LDFLAGS", "-arch #{MacOS.preferred_arch}"
     ENV.append "CPPFLAGS", "-I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers"
 
     prefix.install %w{ NOTICE.txt LICENSE.txt RELEASE-NOTES.txt }

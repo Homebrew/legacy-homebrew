@@ -9,9 +9,7 @@ class Gbdfed < Formula
   depends_on 'gtk+'
 
   # Fixes compilation error with gtk+ per note on the project homepage.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

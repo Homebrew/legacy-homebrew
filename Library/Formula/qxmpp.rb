@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class Qxmpp < Formula
-  homepage 'https://code.google.com/p/qxmpp/'
-  url 'http://qxmpp.googlecode.com/files/qxmpp-0.7.6.tar.gz'
-  sha1 'a87b4b5c94d1f4dc723cbbb7799cf4067c7e5ea2'
+  homepage "https://github.com/qxmpp-project/qxmpp/"
+  url "https://github.com/qxmpp-project/qxmpp/archive/v0.8.0.tar.gz"
+  sha1 "2b44f68e9e5ef127728819f051becbc207ad78e2"
 
-  depends_on 'qt'
+  depends_on "qt"
 
   def install
     system "qmake", "-config", "release", "PREFIX=#{prefix}"

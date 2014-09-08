@@ -4,13 +4,14 @@ class Tiff2png < Formula
   homepage 'http://www.libpng.org/pub/png/apps/tiff2png.html'
   url 'ftp://ftp.simplesystems.org/pub/libpng/png/applications/tiff2png/tiff2png-0.91.tar.gz'
   sha1 '3a23abaaadbed8f3d13b88241257fe2078eb61fd'
+  revision 1
 
   depends_on 'libtiff'
-  depends_on :libpng
+  depends_on 'libpng'
   depends_on 'jpeg'
 
   # libpng 1.5 no longer #includes zlib.h
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "make", "-f", "Makefile.unx", "CC=#{ENV.cc}",
@@ -24,8 +25,8 @@ class Tiff2png < Formula
   end
 
   test do
-    system "#{bin}/tiff2png", \
-      "/System/Library/Frameworks/AppKit.framework/Versions/C/Resources/GrammarDot.tiff"
+    test_tiff = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.tiff"
+    system "#{bin}/tiff2png", test_tiff
   end
 end
 

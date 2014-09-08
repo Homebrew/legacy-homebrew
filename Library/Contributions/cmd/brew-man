@@ -47,5 +47,5 @@ done
 
 if test "$1" = '--verbose' || test "$1" = '-v'
 then
-  man brew
+  man $target_file
 fi

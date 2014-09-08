@@ -2,10 +2,22 @@ require 'formula'
 
 class Libsass < Formula
   homepage 'https://github.com/hcatlin/libsass'
-  url 'https://github.com/hcatlin/libsass/archive/RELEASE-1.0.tar.gz'
-  sha1 '55a8775f2ae430f24b03964b3aa8e2a3565d613a'
+  url 'https://github.com/hcatlin/libsass/archive/v1.0.1.tar.gz'
+  sha1 '9524e028bc8ebe84e36895269d07ecc7db496c7c'
+
+  bottle do
+    cellar :any
+    sha1 "f9692db61866cd9b047bba78438336fbf91d9f12" => :mavericks
+    sha1 "3b5ed220b8247bf9178299f0a1ddd687966d4251" => :mountain_lion
+    sha1 "79a794c000d6adf225cf60d81ce930b01af777d2" => :lion
+  end
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
+    system "autoreconf", "-fvi"
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
@@ -18,8 +30,13 @@ class Libsass < Formula
       int main()
       {
         struct sass_context* sass_ctx = sass_new_context();
+        struct sass_options options;
+        options.output_style = SASS_STYLE_NESTED;
+        options.source_comments = 0;
+        options.image_path = "images";
+        options.include_paths = "";
         sass_ctx->source_string = "a { color:blue; &:hover { color:red; } }";
-        sass_ctx->options.output_style = SASS_STYLE_NESTED;
+        sass_ctx->options = options;
         sass_compile(sass_ctx);
         if(sass_ctx->error_status) {
           return 1;

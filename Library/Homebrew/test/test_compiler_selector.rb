@@ -1,51 +1,46 @@
 require 'testing_env'
 require 'compilers'
+require 'software_spec'
 
-class CompilerSelectorTests < Test::Unit::TestCase
-  class Double
-    def initialize
-      @failures = []
-    end
-
+class CompilerSelectorTests < Homebrew::TestCase
+  class Double < SoftwareSpec
     def <<(cc)
-      @failures << cc
+      fails_with(cc)
+      self
+    end
+  end
+
+  class CompilerVersions
+    attr_accessor :gcc_4_0_build_version, :gcc_build_version,
+      :llvm_build_version, :clang_build_version
+
+    def initialize(versions={})
+      {
+        :gcc_4_0_build_version => nil,
+        :gcc_build_version     => 5666,
+        :llvm_build_version    => 2336,
+        :clang_build_version   => 425,
+      }.merge(versions).each { |k, v| instance_variable_set("@#{k}", v) }
     end
 
-    def fails_with?(cc)
-      return false if cc.nil?
-      @failures.include?(cc.name)
+    def non_apple_gcc_version(name)
+      name == "gcc-4.8" ? "4.8.1" : nil
     end
   end
 
   def setup
-    MacOS.stubs(:gcc_4_0_build_version).returns(nil)
-    MacOS.stubs(:gcc_build_version).returns(5666)
-    MacOS.stubs(:llvm_build_version).returns(2336)
-    MacOS.stubs(:clang_build_version).returns(425)
-    # Yes, this is ugly - we only want one GCC version to be available.
-    MacOS.send(:alias_method, :old_non_apple_gcc_version, :non_apple_gcc_version)
-    MacOS.send(:define_method, :non_apple_gcc_version) do |name|
-      if name == 'gcc-4.8'
-        '4.8.1'
-      else
-        nil
-      end
-    end
     @f  = Double.new
     @cc = :clang
-  end
-
-  def teardown
-    MacOS.send(:alias_method, :non_apple_gcc_version, :old_non_apple_gcc_version)
+    @versions = CompilerVersions.new
   end
 
   def actual_cc
-    CompilerSelector.new(@f).compiler
+    CompilerSelector.new(@f, @versions).compiler
   end
 
   def test_all_compiler_failures
-    @f << :clang << :llvm << :gcc << 'gcc-4.8'
-    assert_raise(CompilerSelectionError) { actual_cc }
+    @f << :clang << :llvm << :gcc << { :gcc => "4.8" }
+    assert_raises(CompilerSelectionError) { actual_cc }
   end
 
   def test_no_compiler_failures
@@ -68,7 +63,7 @@ class CompilerSelectorTests < Test::Unit::TestCase
   end
 
   def test_fails_with_non_apple_gcc
-    @f << "gcc-4.8"
+    @f << { :gcc => "4.8" }
     assert_equal :clang, actual_cc
   end
 
@@ -78,7 +73,7 @@ class CompilerSelectorTests < Test::Unit::TestCase
   end
 
   def test_mixed_failures_2
-    @f << :gcc << :clang << 'gcc-4.8'
+    @f << :gcc << :clang << { :gcc => "4.8" }
     assert_equal :llvm, actual_cc
   end
 
@@ -88,13 +83,13 @@ class CompilerSelectorTests < Test::Unit::TestCase
   end
 
   def test_mixed_failures_4
-    @f << :clang << "gcc-4.8"
+    @f << :clang << { :gcc => "4.8" }
     assert_equal :gcc, actual_cc
   end
 
   def test_older_clang_precedence
-    MacOS.stubs(:clang_build_version).returns(211)
-    @f << :gcc << 'gcc-4.8'
+    @versions.clang_build_version = 211
+    @f << :gcc << { :gcc => "4.8" }
     assert_equal :llvm, actual_cc
   end
 
@@ -104,15 +99,14 @@ class CompilerSelectorTests < Test::Unit::TestCase
   end
 
   def test_missing_gcc
-    MacOS.stubs(:gcc_build_version).returns(nil)
-    @f << :clang << :llvm << 'gcc-4.8'
-    assert_raise(CompilerSelectionError) { actual_cc }
+    @versions.gcc_build_version = nil
+    @f << :clang << :llvm << { :gcc => "4.8" }
+    assert_raises(CompilerSelectionError) { actual_cc }
   end
 
   def test_missing_llvm_and_gcc
-    MacOS.stubs(:gcc_build_version).returns(nil)
-    MacOS.stubs(:llvm_build_version).returns(nil)
-    @f << :clang << 'gcc-4.8'
-    assert_raise(CompilerSelectionError) { actual_cc }
+    @versions.gcc_build_version = @versions.llvm_build_version = nil
+    @f << :clang << { :gcc => "4.8" }
+    assert_raises(CompilerSelectionError) { actual_cc }
   end
 end

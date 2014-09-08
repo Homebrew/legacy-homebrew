@@ -1,9 +1,9 @@
 require 'formula'
 
 class Lout < Formula
-  homepage 'http://sourceforge.net/apps/mediawiki/lout/index.php'
-  url 'ftp://ftp.cs.usyd.edu.au/jeff/lout/lout-3.38.tar.gz'
-  sha1 '2c4aec500dc27a00298f8265b9249d74d97e5466'
+  homepage 'http://savannah.nongnu.org/projects/lout'
+  url 'http://download.savannah.gnu.org/releases/lout/lout-3.40.tar.gz'
+  sha1 'adb7f632202319a370eaada162fa52cf334f40b3'
 
   def install
     inreplace "makefile" do |s|

@@ -2,11 +2,12 @@ require 'formula'
 
 class Pkcs11Helper < Formula
   homepage 'https://github.com/OpenSC/OpenSC/wiki/pkcs11-helper'
-  url 'https://github.com/OpenSC/pkcs11-helper/archive/pkcs11-helper-1.10.tar.gz'
-  sha1 '9737c2f76b277571a8b12cfc3600cf2e076e8623'
+  url 'https://github.com/OpenSC/pkcs11-helper/archive/pkcs11-helper-1.11.tar.gz'
+  sha1 '45c84c58430ec749e98d05c9e10a66412b7db739'
 
   head 'https://github.com/OpenSC/pkcs11-helper.git'
 
+  depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
   depends_on 'pkg-config' => :build

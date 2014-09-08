@@ -1,5 +1,6 @@
 require 'debrew/menu'
 require 'debrew/raise_plus'
+require 'set'
 
 unless ENV['HOMEBREW_NO_READLINE']
   begin
@@ -15,16 +16,38 @@ class Object
   include RaisePlus
 end
 
+module ResourceDebugger
+  def stage(target=nil, &block)
+    return super if target
+
+    super do
+      begin
+        block.call(self)
+      rescue Exception => e
+        if ARGV.debug?
+          debrew e
+        else
+          raise
+        end
+      end
+    end
+  end
+end
+
+$debugged_exceptions = Set.new
+
 def debrew(exception, formula=nil)
+  raise exception unless $debugged_exceptions.add?(exception)
+
   puts "#{exception.backtrace.first}"
-  puts "#{Tty.red}#{exception.class.to_s}#{Tty.reset}: #{exception.to_s}"
+  puts "#{Tty.red}#{exception.class.name}#{Tty.reset}: #{exception}"
 
   begin
     again = false
     choose do |menu|
       menu.prompt = "Choose an action: "
       menu.choice(:raise) { original_raise exception }
-      menu.choice(:ignore) { exception.restart }
+      menu.choice(:ignore) { exception.restart } if exception.continuation
       menu.choice(:backtrace) { puts exception.backtrace; again = true }
       menu.choice(:debug) do
         puts "When you exit the debugger, execution will continue."
@@ -41,7 +64,7 @@ def debrew(exception, formula=nil)
             end
           }
         end
-      end if Object.const_defined?(:IRB)
+      end if Object.const_defined?(:IRB) && exception.continuation
       menu.choice(:shell) do
         puts "When you exit this shell, you will return to the menu."
         interactive_shell formula

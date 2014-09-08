@@ -2,12 +2,21 @@ require 'formula'
 
 class Lighttpd < Formula
   homepage 'http://www.lighttpd.net/'
-  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.32.tar.bz2'
-  sha256 '60691b2dcf3ad2472c06b23d75eb0c164bf48a08a630ed3f308f61319104701f'
+  url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.35.tar.bz2'
+  sha256 '4a71c1f6d8af41ed894b507720c4c17184dc320590013881d5170ca7f15c5bf7'
+
+  bottle do
+    sha1 "39d57cd89e0b885ce706b4a39fe14a25a33929e9" => :mavericks
+    sha1 "466c297940904499c24cf92550a0d7d5cc866994" => :mountain_lion
+    sha1 "13e06e79a8af9406bcd9e9cfc3c6e40e9bfe6045" => :lion
+  end
 
   option 'with-lua', 'Include Lua scripting support for mod_magnet'
 
   depends_on 'pkg-config' => :build
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
   depends_on 'pcre'
   depends_on 'lua' => :optional
   depends_on 'libev' => :optional
@@ -24,6 +33,7 @@ class Lighttpd < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
+      --sbindir=#{bin}
       --with-openssl
       --with-ldap
       --with-zlib
@@ -34,14 +44,17 @@ class Lighttpd < Formula
     args << "--with-lua" if build.with? 'lua'
     args << "--with-libev" if build.with? 'libev'
 
+    # fixed upstream, should be in next release: http://redmine.lighttpd.net/issues/2517
+    inreplace 'src/Makefile.am', '$(LDAP_LIB)', '$(SSL_LIB) $(LDAP_LIB)'
+
+    # autogen must be run, otherwise prebuilt configure may complain
+    # about a version mismatch between included automake and Homebrew's
+    system "./autogen.sh"
     system "./configure", *args
     system "make install"
 
-    mv sbin, bin
-
-    unless File.exists? config_path
-      config_path.install Dir["doc/config/lighttpd.conf"]
-      config_path.install Dir["doc/config/modules.conf"]
+    unless File.exist? config_path
+      config_path.install "doc/config/lighttpd.conf", "doc/config/modules.conf"
       (config_path/"conf.d/").install Dir["doc/config/conf.d/*.conf"]
       inreplace config_path+"lighttpd.conf" do |s|
         s.sub!(/^var\.log_root\s*=\s*".+"$/,"var.log_root    = \"#{log_path}\"")
@@ -67,11 +80,8 @@ class Lighttpd < Formula
         s.sub!(/^server\.max-connections = .+$/,'server.max-connections = ' + (MAX_FDS / 2).to_s())
       end
     end
-  end
 
-  def post_install
     log_path.mkpath
-    www_path.mkpath
     (www_path/'htdocs').mkpath
     run_path.mkpath
   end
@@ -99,7 +109,7 @@ class Lighttpd < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_prefix}/bin/lighttpd</string>
+        <string>#{opt_bin}/lighttpd</string>
         <string>-D</string>
         <string>-f</string>
         <string>#{config_path}lighttpd.conf</string>

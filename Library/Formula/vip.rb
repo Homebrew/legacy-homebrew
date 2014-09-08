@@ -12,7 +12,7 @@ class Vip < Formula
   end
 
   # use awk and /var/tmp as temporary directory
-  def patches; DATA; end
+  patch :DATA
 
   def install
     bin.install 'vip'

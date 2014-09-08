@@ -2,16 +2,19 @@ require 'formula'
 
 class Automake < Formula
   homepage 'http://www.gnu.org/software/automake/'
-  url 'http://ftpmirror.gnu.org/automake/automake-1.14.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/automake/automake-1.14.tar.gz'
-  sha1 '648f7a3cf8473ff6aa433c7721cab1c7fae8d06c'
+  url 'http://ftpmirror.gnu.org/automake/automake-1.14.1.tar.gz'
+  mirror 'http://ftp.gnu.org/gnu/automake/automake-1.14.1.tar.gz'
+  sha1 '0bb1714b78d70cab9907d2013082978a28f48a46'
 
-  # Always needs a newer autoconf, even on Snow Leopard.
-  depends_on 'autoconf'
-
-  if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/automake"
-    keg_only "Xcode (up to and including 4.2) provides (a rather old) Automake."
+  bottle do
+    sha1 '8720e073a828e5b7e29e5cacd01b3ccca88a6d40' => :mavericks
+    sha1 'ed3cba7f2a806a4192e875e809bb73b65a128757' => :mountain_lion
+    sha1 '12d0d7d3b6d31ea4faf9551076225343e9a5af1f' => :lion
   end
+
+  depends_on 'autoconf' => :run
+
+  keg_only :provided_until_xcode43
 
   def install
     ENV['PERL'] = '/usr/bin/perl'
@@ -20,14 +23,14 @@ class Automake < Formula
     system "make install"
 
     # Our aclocal must go first. See:
-    # https://github.com/mxcl/homebrew/issues/10618
+    # https://github.com/Homebrew/homebrew/issues/10618
     (share/"aclocal/dirlist").write <<-EOS.undent
       #{HOMEBREW_PREFIX}/share/aclocal
       /usr/share/aclocal
     EOS
   end
 
-  def test
+  test do
     system "#{bin}/automake", "--version"
   end
 end

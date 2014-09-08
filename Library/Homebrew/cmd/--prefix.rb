@@ -1,4 +1,4 @@
-module Homebrew extend self
+module Homebrew
   def __prefix
     if ARGV.named.empty?
       puts HOMEBREW_PREFIX

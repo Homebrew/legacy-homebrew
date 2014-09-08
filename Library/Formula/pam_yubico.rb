@@ -1,19 +1,27 @@
-require 'formula'
+require "formula"
 
 class PamYubico < Formula
-  homepage 'http://code.google.com/p/yubico-pam/'
-  url 'http://yubico-pam.googlecode.com/files/pam_yubico-2.13.tar.gz'
-  sha1 '63de5cc19aa89122709eede7f4f272a00945535d'
+  homepage "http://opensource.yubico.com/yubico-pam/"
+  url "https://github.com/Yubico/yubico-pam/archive/2.16.tar.gz"
+  sha1 "e0724a433a2c84b303fdb28efdda023349a27193"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libyubikey'
-  depends_on 'ykclient'
-  depends_on 'ykpers'
+  option :universal
+
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "libyubikey"
+  depends_on "ykclient"
+  depends_on "ykpers"
 
   def install
+    ENV.universal_binary if build.universal?
+
+    system "autoreconf", "-fvi"
     system "./configure", "--prefix=#{prefix}",
-                          "--with-libyubikey-prefix=#{HOMEBREW_PREFIX}",
-                          "--with-libykclient-prefix=#{HOMEBREW_PREFIX}"
+                          "--with-libyubikey-prefix=#{Formula["libyubikey"].opt_prefix}",
+                          "--with-libykclient-prefix=#{Formula["ykclient"].opt_prefix}"
     system "make install"
   end
 end

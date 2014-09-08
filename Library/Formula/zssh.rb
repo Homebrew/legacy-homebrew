@@ -2,7 +2,7 @@ require 'formula'
 
 class Zssh < Formula
   homepage 'http://zssh.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/zssh/zssh/1.5/zssh-1.5c.tgz'
+  url 'https://downloads.sourceforge.net/project/zssh/zssh/1.5/zssh-1.5c.tgz'
   sha1 '68dc9b8572646ef63909b3855e7990d75f49926c'
 
   depends_on 'lrzsz'

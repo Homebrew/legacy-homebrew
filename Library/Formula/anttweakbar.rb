@@ -2,20 +2,17 @@ require 'formula'
 
 class Anttweakbar < Formula
   homepage 'http://www.antisphere.com/Wiki/tools:anttweakbar'
-  url 'http://downloads.sourceforge.net/project/anttweakbar/AntTweakBar_116.zip'
+  url 'https://downloads.sourceforge.net/project/anttweakbar/AntTweakBar_116.zip'
   version '1.16'
   sha1 '5743321df3b074f9a82b5ef3e6b54830a715b938'
 
   # See
   # http://sourceforge.net/p/anttweakbar/code/ci/5a076d13f143175a6bda3c668e29a33406479339/tree/src/LoadOGLCore.h?diff=5528b167ed12395a60949d7c643262b6668f15d5&diformat=regular
-  def patches
-    DATA
-  end
+  # https://sourceforge.net/p/anttweakbar/tickets/14/
+  patch :DATA
 
   def install
-    cd 'src' do
-      system 'make -f Makefile.osx'
-    end
+    system "make", "-C", "src", "-f", "Makefile.osx"
     lib.install 'lib/libAntTweakBar.dylib'
     include.install 'include/AntTweakBar.h'
   end
@@ -54,3 +51,16 @@ index 8aaab1e..b606d2b 100644
  ANT_GL_CORE_DECL(void, glUseProgram, (GLuint program))
  ANT_GL_CORE_DECL(void, glUniform1f, (GLint location, GLfloat v0))
  ANT_GL_CORE_DECL(void, glUniform2f, (GLint location, GLfloat v0, GLfloat v1))
+diff --git a/src/LoadOGLCore.cpp b/src/LoadOGLCore.cpp
+index 2daa573..b8b9151 100644
+--- a/src/LoadOGLCore.cpp
++++ b/src/LoadOGLCore.cpp
+@@ -484,7 +484,7 @@ namespace GLCore { PFNGLGetProcAddress _glGetProcAddress = NULL; }
+         void *proc=NULL;
+         if (gl_dyld == NULL)
+         {
+-            gl_dyld = dlopen("OpenGL",RTLD_LAZY);
++            gl_dyld = dlopen("/System/Library/Frameworks/OpenGL.framework/OpenGL",RTLD_LAZY);
+         }
+         if (gl_dyld)
+         {

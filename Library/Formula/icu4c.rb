@@ -1,31 +1,33 @@
-require 'formula'
+require "formula"
 
 class Icu4c < Formula
-  homepage 'http://site.icu-project.org/'
-  url 'http://download.icu-project.org/files/icu4c/51.1/icu4c-51_1-src.tgz'
-  version '51.1'
-  sha1 '7905632335e3dcd6667224da0fa087b49f9095e9'
-  head 'http://source.icu-project.org/repos/icu/icu/trunk/', :using => :svn
+  homepage "http://site.icu-project.org/"
+  head "http://source.icu-project.org/repos/icu/icu/trunk/", :using => :svn
+  url "http://download.icu-project.org/files/icu4c/53.1/icu4c-53_1-src.tgz"
+  version "53.1"
+  sha1 "7eca017fdd101e676d425caaf28ef862d3655e0f"
 
   bottle do
-    sha1 '6b5b4ab5704cc2a8b17070a087c7f9594466cf1d' => :mountain_lion
-    sha1 'a555b051a65717e1ca731eec5743969d8190a9f8' => :lion
-    sha1 'bcb1ab988f67c3d48fb7c5829153c136c16c059b' => :snow_leopard
+    sha1 "1199e740fbc35f09eaa3774ada8c805c885ca170" => :mavericks
+    sha1 "72a163ec611ab7ee984d823fca4202d254627372" => :mountain_lion
+    sha1 "69037c3eacbf544ab6191e4290c1bc4a6dbdcda0" => :lion
   end
 
-  keg_only "Conflicts; see: https://github.com/mxcl/homebrew/issues/issue/167"
+  keg_only "Conflicts; see: https://github.com/Homebrew/homebrew/issues/issue/167"
 
   option :universal
+  option :cxx11
 
   def install
     ENV.universal_binary if build.universal?
+    ENV.cxx11 if build.cxx11?
 
     args = ["--prefix=#{prefix}", "--disable-samples", "--disable-tests", "--enable-static"]
     args << "--with-library-bits=64" if MacOS.prefer_64_bit?
     cd "source" do
       system "./configure", *args
       system "make"
-      system "make install"
+      system "make", "install"
     end
   end
 end

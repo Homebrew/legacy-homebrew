@@ -5,6 +5,8 @@ class Ndiff < Formula
   url 'ftp://ftp.math.utah.edu/pub/misc/ndiff-2.00.tar.gz'
   sha1 'b9ef2eb0de0cd26c3c92e0b3342d0ea4c37e8975'
 
+  conflicts_with 'nmap', :because => 'both install `ndiff` binaries'
+
   def install
     ENV.j1
     # Install manually as the `install` make target is crufty
@@ -16,7 +18,7 @@ class Ndiff < Formula
     man1.install "man/man1/ndiff.1"
   end
 
-  def test
+  test do
     system "#{bin}/ndiff", "--help"
   end
 end

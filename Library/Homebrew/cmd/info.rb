@@ -1,11 +1,12 @@
-require 'formula'
-require 'tab'
-require 'keg'
-require 'caveats'
-require 'blacklist'
-require 'utils/json'
+require "blacklist"
+require "caveats"
+require "cmd/options"
+require "formula"
+require "keg"
+require "tab"
+require "utils/json"
 
-module Homebrew extend self
+module Homebrew
   def info
     # eventually we'll solidify an API, but we'll keep old versions
     # awhile around for compatibility
@@ -20,20 +21,14 @@ module Homebrew extend self
 
   def print_info
     if ARGV.named.empty?
-      if ARGV.include? "--all"
-        Formula.each do |f|
-          info_formula f
-          puts '---'
-        end
-      elsif HOMEBREW_CELLAR.exist?
+      if HOMEBREW_CELLAR.exist?
         puts "#{HOMEBREW_CELLAR.children.length} kegs, #{HOMEBREW_CELLAR.abv}"
       end
-    elsif valid_url ARGV[0]
-      info_formula Formula.factory(ARGV.shift)
     else
-      ARGV.named.each do |f|
+      ARGV.named.each_with_index do |f,i|
+        puts unless i == 0
         begin
-          info_formula Formula.factory(f)
+          info_formula Formulary.factory(f)
         rescue FormulaUnavailableError
           # No formula with this name, try a blacklist lookup
           if (blacklist = blacklisted?(f))
@@ -47,17 +42,19 @@ module Homebrew extend self
   end
 
   def print_json
-    formulae = ARGV.include?("--all") ? Formula : ARGV.formulae
-    json = formulae.map {|f| f.to_hash}
-    if json.size == 1
-      puts Utils::JSON.dump(json.pop)
-    else
-      puts Utils::JSON.dump(json)
-    end
+    ff = if ARGV.include? "--all"
+           Formula
+         elsif ARGV.include? "--installed"
+           Formula.installed
+         else
+           ARGV.formulae
+         end
+    json = ff.map {|f| f.to_hash}
+    puts Utils::JSON.dump(json)
   end
 
   def github_fork
-    if which 'git' and (HOMEBREW_REPOSITORY/".git").directory?
+    if (HOMEBREW_REPOSITORY/".git").directory?
       if `git remote -v` =~ %r{origin\s+(https?://|git(?:@|://))github.com[:/](.+)/homebrew}
         $2
       end
@@ -65,29 +62,33 @@ module Homebrew extend self
   end
 
   def github_info f
-    path = f.path.realpath
-
-    if path.to_s =~ %r{#{HOMEBREW_REPOSITORY}/Library/Taps/(\w+)-(\w+)/(.*)}
-      user = $1
-      repo = "homebrew-#$2"
-      path = $3
+    if f.tap?
+      user, repo = f.tap.split("/", 2)
+      path = f.path.relative_path_from(HOMEBREW_LIBRARY.join("Taps", f.tap))
     else
-      path.parent.cd do
-        user = github_fork
-      end
+      user = f.path.parent.cd { github_fork }
       repo = "homebrew"
-      path = "Library/Formula/#{path.basename}"
+      path = f.path.relative_path_from(HOMEBREW_REPOSITORY)
     end
 
-    "https://github.com/#{user}/#{repo}/commits/master/#{path}"
+    "https://github.com/#{user}/#{repo}/blob/master/#{path}"
   end
 
   def info_formula f
     specs = []
-    stable = "stable #{f.stable.version}" if f.stable
-    stable += " (bottled)" if f.bottle
-    specs << stable if stable
-    specs << "devel #{f.devel.version}" if f.devel
+
+    if stable = f.stable
+      s = "stable #{stable.version}"
+      s += " (bottled)" if stable.bottled?
+      specs << s
+    end
+
+    if devel = f.devel
+      s = "devel #{devel.version}"
+      s += " (bottled)" if devel.bottled?
+      specs << s
+    end
+
     specs << "HEAD" if f.head
 
     puts "#{f.name}: #{specs*', '}#{' (pinned)' if f.pinned?}"
@@ -122,12 +123,11 @@ module Homebrew extend self
       ohai "Dependencies"
       %w{build required recommended optional}.map do |type|
         deps = f.deps.send(type)
-        puts "#{type.capitalize}: #{deps*', '}" unless deps.empty?
+        puts "#{type.capitalize}: #{decorate_dependencies deps}" unless deps.empty?
       end
     end
 
-    unless f.build.empty?
-      require 'cmd/options'
+    unless f.options.empty?
       ohai "Options"
       Homebrew.dump_options_for_formula f
     end
@@ -136,10 +136,26 @@ module Homebrew extend self
     ohai 'Caveats', c.caveats unless c.empty?
   end
 
-  private
+  def decorate_dependencies dependencies
+    # necessary for 1.8.7 unicode handling since many installs are on 1.8.7
+    tick = ["2714".hex].pack("U*")
+    cross = ["2718".hex].pack("U*")
 
-  def valid_url u
-    u[0..6] == 'http://' or u[0..7] == 'https://' or u[0..5] == 'ftp://'
+    deps_status = dependencies.collect do |dep|
+      if dep.installed?
+        color = Tty.green
+        symbol = tick
+      else
+        color = Tty.red
+        symbol = cross
+      end
+      if ENV['HOMEBREW_NO_EMOJI']
+        colored_dep = "#{color}#{dep}"
+      else
+        colored_dep = "#{dep} #{color}#{symbol}"
+      end
+      "#{colored_dep}#{Tty.reset}"
+    end
+    deps_status * ", "
   end
-
 end

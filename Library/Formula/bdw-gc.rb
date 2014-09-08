@@ -1,9 +1,18 @@
-require 'formula'
+require "formula"
 
 class BdwGc < Formula
-  homepage 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/'
-  url 'http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/gc-7.2d.tar.gz'
-  sha1 'b43573800e27361da78f05a2e98394521cfa04fc'
+  homepage "http://www.hboehm.info/gc/"
+  url "http://www.hboehm.info/gc/gc_source/gc-7.4.2.tar.gz"
+  sha1 "cd4a54620c38a2c361b3ee99dd134dbffb57c313"
+
+  depends_on "pkg-config" => :build
+  depends_on "libatomic_ops" => :build
+
+  bottle do
+    sha1 "ec34da6a822836bf96e450def06569a8809410a8" => :mavericks
+    sha1 "84f85673490d30f0de336ddf8f4c3fd5495d1b18" => :mountain_lion
+    sha1 "433a316925295305a006cefd6adb48244768bfe1" => :lion
+  end
 
   option :universal
 

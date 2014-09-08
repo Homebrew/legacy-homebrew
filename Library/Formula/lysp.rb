@@ -2,13 +2,18 @@ require 'formula'
 
 class Lysp < Formula
   homepage 'http://www.piumarta.com/software/lysp/'
-  url 'http://www.piumarta.com/software/lysp/lysp-1.0.tar.gz'
-  sha1 '11fa500d2769c0701de5c5501c73f36331bcee02'
+  url 'http://www.piumarta.com/software/lysp/lysp-1.1.tar.gz'
+  sha1 '4d579895a5ccd947249b8de6c992ab969c144c78'
 
   depends_on 'bdw-gc'
 
+  fails_with :clang do
+    build 500
+    cause "use of unknown builtin '__builtin_return'"
+  end
+
   # Use our CFLAGS
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "make"

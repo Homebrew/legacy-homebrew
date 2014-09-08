@@ -5,12 +5,17 @@ class Libdlna < Formula
   url 'http://libdlna.geexbox.org/releases/libdlna-0.2.4.tar.bz2'
   sha1 '5e86f4443eeb9e7194c808301efeb78611a9e8b3'
 
+  bottle do
+    cellar :any
+    sha1 "349eeaa92071b050cc67926feef8e7f702b803cf" => :mavericks
+    sha1 "39359e65e38a37808f6472554b1fc989c1be75fd" => :mountain_lion
+    sha1 "622e348eff6fdced8617194c0d0f20a05058cf00" => :lion
+  end
+
   depends_on 'ffmpeg'
 
   # Use dylib instead of soname
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug",

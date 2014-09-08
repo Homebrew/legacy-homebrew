@@ -94,7 +94,7 @@ module ServicesCli
     def bin; "brew services" end
 
     # Path to launchctl binary.
-    def launchctl; "/bin/launchctl" end
+    def launchctl; which("launchctl") end
 
     # Wohoo, we are root dude!
     def root?; Process.uid == 0 end
@@ -123,7 +123,7 @@ module ServicesCli
     end
 
     # Access current service
-    def service; @service ||= Service.new(Formula.factory(Formula.canonical_name(@formula))) if @formula end
+    def service; @service ||= Service.new(Formula.factory(@formula)) if @formula end
 
     # Print usage and `exit(...)` with supplied exit code, if code
     # is set to `false`, then exit is ignored.
@@ -246,6 +246,7 @@ module ServicesCli
       temp.flush
 
       rm service.dest if service.dest.exist?
+      service.dest_dir.mkpath unless service.dest_dir.directory?
       cp temp.path, service.dest
 
       # clear tempfile
@@ -302,7 +303,7 @@ class Service
   # Create a new `Service` instance from either a path or label.
   def self.from(path_or_label)
     return nil unless path_or_label =~ /homebrew\.mxcl\.([^\.]+)(\.plist)?\z/
-    new(Formula.factory(Formula.canonical_name($1))) rescue nil
+    new(Formula.factory($1)) rescue nil
   end
 
   # Initialize new `Service` instance with supplied formula.
@@ -317,8 +318,11 @@ class Service
   # Path to a static plist file, this is always `homebrew.mxcl.<formula>.plist`.
   def plist; @plist ||= formula.prefix + "#{label}.plist" end
 
+  # Path to destination plist directory, if run as root it's `boot_path`, else `user_path`.
+  def dest_dir; (ServicesCli.root? ? ServicesCli.boot_path : ServicesCli.user_path) end
+
   # Path to destination plist, if run as root it's in `boot_path`, else `user_path`.
-  def dest; (ServicesCli.root? ? ServicesCli.boot_path : ServicesCli.user_path) + "#{label}.plist" end
+  def dest; dest_dir + "#{label}.plist" end
 
   # Returns `true` if formula implements #startup_plist or file exists.
   def plist?; formula.installed? && (plist.file? || formula.respond_to?(:startup_plist)) end
@@ -366,4 +370,12 @@ end
 
 # Start the cli dispatch stuff.
 #
+
+opoo <<-EOS.undent
+  brew services is unsupported and will be removed soon.
+  You should use launchctl instead.
+  Please feel free volunteer to support it in a tap.
+
+EOS
+
 ServicesCli.run!

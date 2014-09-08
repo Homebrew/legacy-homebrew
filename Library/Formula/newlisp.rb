@@ -1,15 +1,13 @@
-require 'formula'
+require "formula"
 
 class Newlisp < Formula
-  homepage 'http://www.newlisp.org/'
-  url 'http://www.newlisp.org/downloads/newlisp-10.5.3.tgz'
-  sha1 'dc02542ebb5b2ee2685e51f988a742c4294d14c3'
+  homepage "http://www.newlisp.org/"
+  url "http://www.newlisp.org/downloads/newlisp-10.6.0.tgz"
+  sha1 "0f5ce581d070ff171cbef504308e578885aa5e72"
 
-  depends_on 'readline'
+  depends_on "readline"
 
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # Required to use our configuration
@@ -25,6 +23,16 @@ class Newlisp < Formula
     If you have brew in a custom prefix, the included examples
     will need to be be pointed to your newlisp executable.
     EOS
+  end
+
+  test do
+    path = testpath/"test.lsp"
+    path.write <<-EOS
+      (println "hello")
+      (exit 0)
+    EOS
+
+    assert_equal "hello\n", shell_output("#{bin}/newlisp #{path}")
   end
 end
 

@@ -19,4 +19,10 @@ class Metalua < Formula
       system "./make-install.sh"
     end
   end
+
+  test do
+    output = `#{bin}/metalua -e "for i=0,9 do io.write(i) end"`
+    assert_equal "0123456789", output
+    assert_equal 0, $?.exitstatus
+  end
 end

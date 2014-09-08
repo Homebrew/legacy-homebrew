@@ -10,22 +10,14 @@ class Ushare < Formula
   depends_on 'libupnp'
   depends_on 'libdlna'
 
-  # Correct "OPTFLAGS" to "CFLAGS"
-  def patches
-  { :p0 =>
-    "https://trac.macports.org/export/89267/trunk/dports/net/ushare/files/patch-configure.diff",
-    :p1 => DATA,
-  }
-  end
-
-  fails_with :clang do
-    cause "clang removes inline functions, causing a link error:\n" +
-          "\"_display_headers\", referenced from: _parse_command_line in cfgparser.o"
-  end
+  # Fix compilation with newer libupnp
+  patch :DATA
 
   def install
+    ENV.append 'CFLAGS', '-std=gnu89'
+
     # Need to explicitly add intl and gettext here.
-    gettext = Formula.factory("gettext")
+    gettext = Formula["gettext"]
     ENV.append 'CFLAGS', "-I#{gettext.include}"
     ENV.append 'LDFLAGS', "-lintl"
 

@@ -1,41 +1,22 @@
-require 'formula'
+require "formula"
 
 class Tcpreplay < Formula
-  homepage 'http://tcpreplay.synfin.net'
-  url 'http://downloads.sourceforge.net/project/tcpreplay/tcpreplay/3.4.4/tcpreplay-3.4.4.tar.gz'
-  sha1 '9e4cca81cfbfb919f8759e1a27ce1b3b963ff3b8'
+  homepage "http://tcpreplay.appneta.com"
+  url "https://github.com/appneta/tcpreplay/releases/download/v4.0.5/tcpreplay-4.0.5.tar.gz"
+  sha1 "878970d77e1482c9b26ac19eb2d125915a900f9b"
 
-  # Hard-code use of dylib instead of so
-  def patches; DATA; end
+  bottle do
+    cellar :any
+    sha1 "b003d008725719da2af9bd708af9319f2ab43710" => :mavericks
+    sha1 "e62ad60674fe0ceb5bfa65304c00278410bb6881" => :mountain_lion
+    sha1 "9675b87cf528c950d69c8500c78ab059b601f16a" => :lion
+  end
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--disable-debug",
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-debug",
                           "--prefix=#{prefix}",
                           "--enable-dynamic-link"
-    system "make install"
+    system "make", "install"
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index d41d433..9514748 100755
---- a/configure
-+++ b/configure
-@@ -9872,7 +9872,7 @@ darwin* | rhapsody*)
-   soname_spec='${libname}${release}${major}$shared_ext'
-   shlibpath_overrides_runpath=yes
-   shlibpath_var=DYLD_LIBRARY_PATH
--  shrext_cmds='`test .$module = .yes && echo .so || echo .dylib`'
-+  shrext_cmds=".dylib"
- 
-   sys_lib_search_path_spec="$sys_lib_search_path_spec /usr/local/lib"
-   sys_lib_dlsearch_path_spec='/usr/local/lib /lib /usr/lib'
-@@ -14675,7 +14675,7 @@ darwin* | rhapsody*)
-   soname_spec='${libname}${release}${major}$shared_ext'
-   shlibpath_overrides_runpath=yes
-   shlibpath_var=DYLD_LIBRARY_PATH
--  shrext_cmds='`test .$module = .yes && echo .so || echo .dylib`'
-+  shrext_cmds=".dylib"
- 
-   sys_lib_dlsearch_path_spec='/usr/local/lib /lib /usr/lib'
-   ;;

@@ -2,25 +2,27 @@ require 'formula'
 
 class Libgda < Formula
   homepage 'http://www.gnome-db.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libgda/5.0/libgda-5.0.3.tar.xz'
-  sha256 '82d204361b794103c366bb690484d25814bfc653cb97da0dfcf7c0a13409d1cc'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/libgda/5.2/libgda-5.2.0.tar.xz'
+  sha256 '41bd14aaaf50efc7b80d7279c69ed9c90d3a1894cb5123385d86883a1d7d5f30'
+  revision 1
 
   depends_on 'pkg-config' => :build
-  depends_on 'xz' => :build
   depends_on 'intltool' => :build
+  depends_on 'itstool' => :build
   depends_on 'gettext'
   depends_on 'glib'
   depends_on 'readline'
   depends_on 'libgcrypt'
-
-  # brew's sqlite doesn't have necessary options compiled, so skipping as a dep for now
-  # adamv: which options does it need?
+  depends_on 'sqlite'
 
   def install
     ENV.libxml2
-    system "./configure", "--enable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--disable-binreloc",
+                          "--disable-gtk-doc",
                           "--without-java"
     system "make"
     system "make install"

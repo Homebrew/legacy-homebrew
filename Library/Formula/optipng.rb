@@ -3,8 +3,8 @@ require 'formula'
 class Optipng < Formula
   homepage 'http://optipng.sourceforge.net/'
   head 'http://optipng.hg.sourceforge.net/hgweb/optipng/optipng'
-  url 'http://downloads.sourceforge.net/project/optipng/OptiPNG/optipng-0.7.4/optipng-0.7.4.tar.gz'
-  sha1 'dcde17501cfb7a425b6cc23cfed482bbfd4867bb'
+  url 'https://downloads.sourceforge.net/project/optipng/OptiPNG/optipng-0.7.5/optipng-0.7.5.tar.gz'
+  sha1 '30b6c333d74fc0f5dc83004aace252fa3321368b'
 
   def install
     system "./configure", "--with-system-zlib",

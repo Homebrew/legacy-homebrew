@@ -14,7 +14,7 @@ class Renameutils < Formula
   # The fourth patch is new and fixes a Makefile syntax error that causes
   # make install to fail.  Reported upstream via email and fixed in HEAD.
   # Remove patch #4 at version > 0.12.0.  The first three should persist.
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",

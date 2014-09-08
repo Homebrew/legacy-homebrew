@@ -2,8 +2,8 @@ require 'formula'
 
 class SonarRunner < Formula
   homepage 'http://docs.codehaus.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner'
-  url 'http://repo1.maven.org/maven2/org/codehaus/sonar/runner/sonar-runner-dist/2.3/sonar-runner-dist-2.3.zip'
-  sha1 '802312f74f55d671f6ae08f21e965fd66ca1853e'
+  url 'http://repo1.maven.org/maven2/org/codehaus/sonar/runner/sonar-runner-dist/2.4/sonar-runner-dist-2.4.zip'
+  sha1 '172fe923073e939940411847003463a7353465b3'
 
   def install
     # Remove windows files
@@ -21,7 +21,7 @@ class SonarRunner < Formula
       EOS
   end
 
-  def test
+  test do
     system "#{bin}/sonar-runner", "-h"
   end
 end

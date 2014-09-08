@@ -2,7 +2,7 @@ require 'formula'
 
 class SofiaSip < Formula
   homepage 'http://sofia-sip.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/sofia-sip/sofia-sip/1.12.11/sofia-sip-1.12.11.tar.gz'
+  url 'https://downloads.sourceforge.net/project/sofia-sip/sofia-sip/1.12.11/sofia-sip-1.12.11.tar.gz'
   sha1 'fe11c98fae19cbdbd7e55876c5553c1f9a0c561d'
 
   depends_on 'pkg-config' => :build
@@ -15,7 +15,7 @@ class SofiaSip < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/localinfo"
     system "#{bin}/sip-date"
   end

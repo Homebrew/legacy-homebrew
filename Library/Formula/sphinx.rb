@@ -2,27 +2,35 @@ require 'formula'
 
 class Sphinx < Formula
   homepage 'http://www.sphinxsearch.com'
-  url 'http://sphinxsearch.com/files/sphinx-2.0.9-release.tar.gz'
-  sha1 '0fa2806fa47a689d9f55d72ce0b6d4abce52e81c'
+  url 'http://sphinxsearch.com/files/sphinx-2.1.9-release.tar.gz'
+  sha1 '2ddd945eb0a7de532a7aaed2e933ac05b978cff2'
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
+  bottle do
+    revision 1
+    sha1 "bedd71d9e8a0691e2e4bbfef057f6d87a6a7fe28" => :mavericks
+    sha1 "ba05b267136faff945b2370b81907c87c4126341" => :mountain_lion
+    sha1 "8c6351384d69e982527b71ca6162cc8fd680c2ec" => :lion
+  end
+
   devel do
-    url 'http://sphinxsearch.com/files/sphinx-2.1.1-beta.tar.gz'
-    sha1 '2ccbf75146f54338834a6e37250f1af3c73b9746'
+    url 'http://sphinxsearch.com/files/sphinx-2.2.3-beta.tar.gz'
+    sha1 'ef78cebeae32a0582df504d74d6dd2ded81b73d9'
   end
 
   option 'mysql', 'Force compiling against MySQL'
   option 'pgsql', 'Force compiling against PostgreSQL'
   option 'id64',  'Force compiling with 64-bit ID support'
 
+  depends_on "re2" => :optional
   depends_on :mysql if build.include? 'mysql'
   depends_on :postgresql if build.include? 'pgsql'
 
   # http://snowball.tartarus.org/
   resource 'stemmer' do
     url 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
-    sha1 '69056075b9fa1382e07cec6c32c8e82f3f35677b'
+    sha1 '9b0f120a68a3c688b2f5a8d0f681620465c29d38'
   end
 
   fails_with :llvm do
@@ -38,12 +46,18 @@ class Sphinx < Formula
   def install
     (buildpath/'libstemmer_c').install resource('stemmer')
 
+    # libstemmer changed the name of the non-UTF8 Hungarian source files,
+    # but the released version of sphinx still refers to it under the old name.
+    inreplace "libstemmer_c/Makefile.in",
+      "stem_ISO_8859_1_hungarian", "stem_ISO_8859_2_hungarian"
+
     args = %W[--prefix=#{prefix}
               --disable-dependency-tracking
               --localstatedir=#{var}
               --with-libstemmer]
 
     args << "--enable-id64" if build.include? 'id64'
+    args << "--with-re2" if build.with? 're2'
 
     %w{mysql pgsql}.each do |db|
       if build.include? db

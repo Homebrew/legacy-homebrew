@@ -2,18 +2,23 @@ require 'formula'
 
 class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
-  url 'svn+http://svn.code.sf.net/p/netpbm/code/advanced/', :revision => 1809
-  version '10.60.05'
   # Maintainers: Look at http://netpbm.svn.sourceforge.net/viewvc/netpbm/
   # for versions and matching revisions
+  url 'svn+http://svn.code.sf.net/p/netpbm/code/advanced/', :revision => 1809
+  version '10.60.05'
+  revision 1
 
   head 'http://svn.code.sf.net/p/netpbm/code/trunk'
 
+  option :universal
+
   depends_on "libtiff"
   depends_on "jasper"
-  depends_on :libpng
+  depends_on "libpng"
 
   def install
+    ENV.universal_binary if build.universal?
+
     system "cp", "config.mk.in", "config.mk"
 
     inreplace "config.mk" do |s|
@@ -27,7 +32,7 @@ class Netpbm < Formula
       s.change_make_var! "PNGLIB", "-lpng"
       s.change_make_var! "ZLIB", "-lz"
       s.change_make_var! "JASPERLIB", "-ljasper"
-      s.change_make_var! "JASPERHDR_DIR", "#{Formula.factory('jasper').opt_prefix}/include/jasper"
+      s.change_make_var! "JASPERHDR_DIR", "#{Formula["jasper"].opt_include}/jasper"
     end
 
     ENV.deparallelize

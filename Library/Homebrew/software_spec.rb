@@ -2,57 +2,106 @@ require 'forwardable'
 require 'resource'
 require 'checksum'
 require 'version'
+require 'options'
 require 'build_options'
 require 'dependency_collector'
+require 'bottles'
+require 'patch'
+require 'compilers'
 
 class SoftwareSpec
   extend Forwardable
 
-  attr_reader :name
-  attr_reader :build, :resources, :owner
-  attr_reader :dependency_collector
+  PREDEFINED_OPTIONS = {
+    :universal => Option.new("universal", "Build a universal binary"),
+    :cxx11     => Option.new("c++11", "Build using C++11 mode"),
+    "32-bit"   => Option.new("32-bit", "Build 32-bit only"),
+  }
 
-  def_delegators :@resource, :stage, :fetch
-  def_delegators :@resource, :download_strategy, :verify_download_integrity
-  def_delegators :@resource, :checksum, :mirrors, :specs, :using, :downloader
-  def_delegators :@resource, :url, :version, :mirror, *Checksum::TYPES
+  attr_reader :name, :owner
+  attr_reader :build, :resources, :patches, :options
+  attr_reader :dependency_collector
+  attr_reader :bottle_specification
+  attr_reader :compiler_failures
+
+  def_delegators :@resource, :stage, :fetch, :verify_download_integrity
+  def_delegators :@resource, :cached_download, :clear_cache
+  def_delegators :@resource, :checksum, :mirrors, :specs, :using
+  def_delegators :@resource, :version, :mirror, *Checksum::TYPES
 
   def initialize
     @resource = Resource.new
     @resources = {}
-    @build = BuildOptions.new(ARGV.options_only)
     @dependency_collector = DependencyCollector.new
+    @bottle_specification = BottleSpecification.new
+    @patches = []
+    @options = Options.new
+    @build = BuildOptions.new(Options.create(ARGV.flags_only), options)
+    @compiler_failures = []
   end
 
   def owner= owner
     @name = owner.name
+    @owner = owner
     @resource.owner = self
-    resources.each_value { |r| r.owner = self }
+    resources.each_value do |r|
+      r.owner     = self
+      r.version ||= version
+    end
+    patches.each { |p| p.owner = self }
   end
 
-  def resource? name
+  def url val=nil, specs={}
+    return @resource.url if val.nil?
+    @resource.url(val, specs)
+    dependency_collector.add(@resource)
+  end
+
+  def bottled?
+    bottle_specification.tag?(bottle_tag)
+  end
+
+  def bottle &block
+    bottle_specification.instance_eval(&block)
+  end
+
+  def resource_defined? name
     resources.has_key?(name)
   end
 
-  def resource name, &block
+  def resource name, klass=Resource, &block
     if block_given?
-      raise DuplicateResourceError.new(name) if resource?(name)
-      resources[name] = Resource.new(name, &block)
+      raise DuplicateResourceError.new(name) if resource_defined?(name)
+      res = klass.new(name, &block)
+      resources[name] = res
+      dependency_collector.add(res)
     else
       resources.fetch(name) { raise ResourceMissingError.new(owner, name) }
     end
   end
 
-  def option name, description=nil
-    name = name.to_s if Symbol === name
-    raise "Option name is required." if name.empty?
-    raise "Options should not start with dashes." if name[0, 1] == "-"
-    build.add(name, description)
+  def option_defined?(name)
+    options.include?(name)
+  end
+
+  def option(name, description="")
+    opt = PREDEFINED_OPTIONS.fetch(name) do
+      if Symbol === name
+        opoo "Passing arbitrary symbols to `option` is deprecated: #{name.inspect}"
+        puts "Symbols are reserved for future use, please pass a string instead"
+        name = name.to_s
+      end
+      raise ArgumentError, "option name is required" if name.empty?
+      raise ArgumentError, "option name must be longer than one character" unless name.length > 1
+      raise ArgumentError, "option name must not start with dashes" if name.start_with?("-")
+      Option.new(name, description)
+    end
+    options << opt
   end
 
   def depends_on spec
     dep = dependency_collector.add(spec)
-    build.add_dep_option(dep) if dep
+    add_dep_option(dep) if dep
   end
 
   def deps
@@ -62,12 +111,45 @@ class SoftwareSpec
   def requirements
     dependency_collector.requirements
   end
+
+  def patch strip=:p1, src=nil, &block
+    patches << Patch.create(strip, src, &block)
+  end
+
+  def fails_with? compiler
+    compiler_failures.any? { |failure| failure === compiler }
+  end
+
+  def fails_with compiler, &block
+    compiler_failures << CompilerFailure.create(compiler, &block)
+  end
+
+  def needs *standards
+    standards.each do |standard|
+      compiler_failures.concat CompilerFailure.for_standard(standard)
+    end
+  end
+
+  def add_legacy_patches(list)
+    list = Patch.normalize_legacy_patches(list)
+    list.each { |p| p.owner = self }
+    patches.concat(list)
+  end
+
+  def add_dep_option(dep)
+    name = dep.option_name
+
+    if dep.optional? && !option_defined?("with-#{name}")
+      options << Option.new("with-#{name}", "Build with #{name} support")
+    elsif dep.recommended? && !option_defined?("without-#{name}")
+      options << Option.new("without-#{name}", "Build without #{name} support")
+    end
+  end
 end
 
 class HeadSoftwareSpec < SoftwareSpec
   def initialize
     super
-    @resource.url = url
     @resource.version = Version.new('HEAD')
   end
 
@@ -76,51 +158,117 @@ class HeadSoftwareSpec < SoftwareSpec
   end
 end
 
-class Bottle < SoftwareSpec
-  attr_rw :root_url, :prefix, :cellar, :revision
+class Bottle
+  class Filename
+    attr_reader :name, :version, :tag, :revision
 
-  def_delegators :@resource, :url=
+    def self.create(formula, tag, revision)
+      new(formula.name, formula.pkg_version, tag, revision)
+    end
+
+    def initialize(name, version, tag, revision)
+      @name = name
+      @version = version
+      @tag = tag
+      @revision = revision
+    end
+
+    def to_s
+      prefix + suffix
+    end
+    alias_method :to_str, :to_s
+
+    def prefix
+      "#{name}-#{version}.#{tag}"
+    end
+
+    def suffix
+      s = revision > 0 ? ".#{revision}" : ""
+      ".bottle#{s}.tar.gz"
+    end
+  end
+
+  extend Forwardable
+
+  attr_reader :name, :resource, :prefix, :cellar, :revision
+
+  def_delegators :resource, :url, :fetch, :verify_download_integrity
+  def_delegators :resource, :cached_download, :clear_cache
+
+  def initialize(formula, spec)
+    @name = formula.name
+    @resource = Resource.new
+    @resource.owner = formula
+
+    checksum, tag = spec.checksum_for(bottle_tag)
+
+    filename = Filename.create(formula, tag, spec.revision)
+    @resource.url = build_url(spec.root_url, filename)
+    @resource.download_strategy = CurlBottleDownloadStrategy
+    @resource.version = formula.pkg_version
+    @resource.checksum = checksum
+    @prefix = spec.prefix
+    @cellar = spec.cellar
+    @revision = spec.revision
+  end
+
+  def compatible_cellar?
+    cellar == :any || cellar == HOMEBREW_CELLAR.to_s
+  end
+
+  def stage
+    resource.downloader.stage
+  end
+
+  private
+
+  def build_url(root_url, filename)
+    "#{root_url}/#{filename}"
+  end
+end
+
+class BottleSpecification
+  DEFAULT_PREFIX = "/usr/local".freeze
+  DEFAULT_CELLAR = "/usr/local/Cellar".freeze
+  DEFAULT_ROOT_URL = "https://downloads.sf.net/project/machomebrew/Bottles".freeze
+
+  attr_rw :root_url, :prefix, :cellar, :revision
+  attr_reader :checksum, :collector
 
   def initialize
-    super
     @revision = 0
-    @prefix = '/usr/local'
-    @cellar = '/usr/local/Cellar'
+    @prefix = DEFAULT_PREFIX
+    @cellar = DEFAULT_CELLAR
+    @root_url = DEFAULT_ROOT_URL
+    @collector = BottleCollector.new
+  end
+
+  def tag?(tag)
+    !!checksum_for(tag)
   end
 
   # Checksum methods in the DSL's bottle block optionally take
   # a Hash, which indicates the platform the checksum applies on.
   Checksum::TYPES.each do |cksum|
-    class_eval <<-EOS, __FILE__, __LINE__ + 1
-      def #{cksum}(val=nil)
-        return @#{cksum} if val.nil?
-        @#{cksum} ||= Hash.new
-        case val
-        when Hash
-          key, value = val.shift
-          @#{cksum}[value] = Checksum.new(:#{cksum}, key)
-        end
+    define_method(cksum) do |val|
+      digest, tag = val.shift
+      collector[tag] = Checksum.new(cksum, digest)
+    end
+  end
 
-        if @#{cksum}.has_key? bottle_tag
-          @resource.checksum = @#{cksum}[bottle_tag]
-        end
-      end
-    EOS
+  def checksum_for(tag)
+    collector.fetch_checksum_for(tag)
   end
 
   def checksums
     checksums = {}
-    Checksum::TYPES.each do |checksum_type|
-      checksum_os_versions = send checksum_type
-      next unless checksum_os_versions
-      os_versions = checksum_os_versions.keys
-      os_versions.map! {|osx| MacOS::Version.from_symbol osx }
-      os_versions.sort.reverse.each do |os_version|
-        osx = os_version.to_sym
-        checksum = checksum_os_versions[osx]
-        checksums[checksum_type] ||= []
-        checksums[checksum_type] << { checksum => osx }
-      end
+    os_versions = collector.keys
+    os_versions.map! {|osx| MacOS::Version.from_symbol osx rescue nil }.compact!
+    os_versions.sort.reverse_each do |os_version|
+      osx = os_version.to_sym
+      checksum = collector[osx]
+      checksums[checksum.hash_type] ||= []
+      checksums[checksum.hash_type] << { checksum => osx }
     end
     checksums
   end

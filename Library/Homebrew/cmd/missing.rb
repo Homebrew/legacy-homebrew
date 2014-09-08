@@ -1,7 +1,7 @@
 require 'formula'
 require 'tab'
 
-module Homebrew extend self
+module Homebrew
   def missing_deps ff
     missing = {}
     ff.each do |f|

@@ -2,7 +2,7 @@ require 'formula'
 
 class Mergelog < Formula
   homepage 'http://mergelog.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/mergelog/mergelog-4.5.tar.gz'
+  url 'https://downloads.sourceforge.net/mergelog/mergelog-4.5.tar.gz'
   sha1 'bc9bdfddc561301e417a2de949ce3c4203b54c94'
 
   def install

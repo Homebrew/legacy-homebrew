@@ -2,8 +2,8 @@ require 'formula'
 
 class Swaks < Formula
   homepage 'http://www.jetmore.org/john/code/swaks/'
-  url 'http://jetmore.org/john/code/swaks/swaks-20120320.0.tar.gz'
-  sha1 '2a20ba10ac0f97761edc6d1d519773192486d74c'
+  url 'http://www.jetmore.org/john/code/swaks/files/swaks-20130209.0.tar.gz'
+  sha1 '059510eb2e359fa6dde822bec57bd0964ee11e7e'
 
   def install
     bin.install 'swaks'

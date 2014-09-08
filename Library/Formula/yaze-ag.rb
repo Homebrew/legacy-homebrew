@@ -8,10 +8,8 @@ class YazeAg < Formula
   # Fix missing sys header include for caddr_t on Mac OS
   # Fix omission of creating bin directory by custom Makefile
   # Upstream author is aware of this issue:
-  # https://github.com/mxcl/homebrew/pull/16817
-  def patches
-    DATA
-  end
+  # https://github.com/Homebrew/homebrew/pull/16817
+  patch :DATA
 
   def install
     system "make", "-f", "Makefile_solaris_gcc",

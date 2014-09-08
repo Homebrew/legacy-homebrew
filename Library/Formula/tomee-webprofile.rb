@@ -2,9 +2,9 @@ require 'formula'
 
 class TomeeWebprofile < Formula
   homepage 'http://tomee.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.5.2/apache-tomee-1.5.2-webprofile.tar.gz'
-  version '1.5.2'
-  sha1 '04973507937ab01c78263ff0209851c4cc30cea6'
+  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.6.0.2/apache-tomee-1.6.0.2-webprofile.tar.gz'
+  version '1.6.0.2'
+  sha1 'd68cdc7a21c8e2286140fc8e73c4192a3018c018'
 
   # Keep log folders
   skip_clean 'libexec'
@@ -16,6 +16,6 @@ class TomeeWebprofile < Formula
     # Install files
     prefix.install %w{ NOTICE LICENSE RELEASE-NOTES RUNNING.txt }
     libexec.install Dir['*']
-    bin.install_symlink "#{libexec}/bin/tomee.sh" => "tomee-webprofile"
+    bin.install_symlink "#{libexec}/bin/startup.sh" => "tomee-webprofile-startup"
   end
 end

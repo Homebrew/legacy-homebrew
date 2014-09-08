@@ -8,6 +8,7 @@ class Cardpeek < Formula
   head 'http://cardpeek.googlecode.com/svn/trunk/'
 
   depends_on 'pkg-config' => :build
+  depends_on :autoconf
   depends_on :automake
   depends_on :x11
   depends_on 'gtk+'

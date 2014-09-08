@@ -2,7 +2,7 @@ require 'formula'
 
 class Jasmin < Formula
   homepage 'http://jasmin.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/jasmin/jasmin/jasmin-2.4/jasmin-2.4.zip'
+  url 'https://downloads.sourceforge.net/project/jasmin/jasmin/jasmin-2.4/jasmin-2.4.zip'
   sha1 'c66400680144e0da4efdcf4a084e42e2355189fe'
 
   def install

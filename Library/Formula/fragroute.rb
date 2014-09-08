@@ -8,19 +8,27 @@ class Fragroute < Formula
   depends_on 'libdnet'
   depends_on 'libevent'
 
-  def patches
-    { :p0 => [
-      "https://trac.macports.org/export/105753/trunk/dports/net/fragroute/files/configure.patch",
-      "https://trac.macports.org/export/105753/trunk/dports/net/fragroute/files/fragroute.c.patch",
-      "https://trac.macports.org/export/105753/trunk/dports/net/fragroute/files/pcaputil.c.patch"
-    ]}
+  patch :p0 do
+    url "https://trac.macports.org/export/105753/trunk/dports/net/fragroute/files/configure.patch"
+    sha1 "a858f069dffcb539edbb3fe543200596214669f8"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/105753/trunk/dports/net/fragroute/files/fragroute.c.patch"
+    sha1 "a865ee37762c4f31882a2b54a03bf74e5c1b7832"
+  end
+
+  patch :p0 do
+    url "https://trac.macports.org/export/105753/trunk/dports/net/fragroute/files/pcaputil.c.patch"
+    sha1 "e5fac9731901d5a20d202511ab2acd76a3b12da9"
   end
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libevent=#{Formula.factory("libevent").opt_prefix}",
-                          "--with-libdnet=#{Formula.factory("libdnet").opt_prefix}"
+                          "--mandir=#{man}",
+                          "--with-libevent=#{Formula["libevent"].opt_prefix}",
+                          "--with-libdnet=#{Formula["libdnet"].opt_prefix}"
     system "make", "install"
   end
 end

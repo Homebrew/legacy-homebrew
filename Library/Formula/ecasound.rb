@@ -1,10 +1,9 @@
 require 'formula'
 
-# 2.9.0 is out, but uses clock_gettime which is not available on OS X
 class Ecasound < Formula
   homepage 'http://www.eca.cx/ecasound/'
-  url 'http://ecasound.seul.org/download/ecasound-2.8.1.tar.gz'
-  sha1 '55c42a611ce59ea2b92461f49358a0cd54c40fe0'
+  url 'http://ecasound.seul.org/download/ecasound-2.9.1.tar.gz'
+  sha1 '048fc2487deb3c94d92814b54255435b2acee1d8'
 
   option "with-ruby", "Compile with ruby support"
 
@@ -14,8 +13,7 @@ class Ecasound < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
-    # Always explicitly control ruby, since there's some confusion about the default
-    args << ("--enable-rubyecasound=%s" % ((build.include? 'with-ruby') ? 'yes' : 'no'))
+    args << ("--enable-rubyecasound=" + ((build.with? 'ruby') ? 'yes' : 'no'))
     system "./configure", *args
     system "make install"
   end

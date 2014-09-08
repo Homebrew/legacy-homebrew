@@ -1,43 +1,52 @@
 require 'formula'
 
 class Loudmouth < Formula
-  homepage 'http://www.loudmouth-project.org/'
-  url 'http://mcabber.com/files/loudmouth-1.4.3-20111204.tar.bz2'
-  version '1.4.3.111204'
-  sha1 '38010a74d28fa06624b7461e515aec47c0ff140e'
+  homepage 'http://mcabber.com'
+  url 'http://mcabber.com/files/loudmouth-1.5.0-20121201.tar.bz2'
+  version '1.5.0.20121201'
+  sha1 '502963c3068f7033bb21d788918c1e5cd14f386e'
+
+  option 'with-gnutls', "Use GnuTLS instead of the default OpenSSL"
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
-  depends_on 'gnutls'
+  depends_on 'gnutls' => :optional
   depends_on 'libidn'
 
-  # Fix compilation against newer glib. See:
-  # https://github.com/mxcl/homebrew/issues/12240
-  def patches
-    DATA
-  end
+  # Fix compilation on 10.9. Sent upstream:
+  # https://github.com/mcabber/loudmouth/pull/9
+  patch :DATA
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = ["--disable-debug",
+            "--disable-dependency-tracking",
+            "--prefix=#{prefix}"]
+    if build.with? 'gnutls'
+     args << "--with-ssl=gnutls"
+    else
+     args << "--with-ssl=openssl"
+    end
+    system "./configure", *args
     system "make install"
   end
 end
 
-
 __END__
-diff --git a/loudmouth/lm-error.c b/loudmouth/lm-error.c
-index 103aaaf..74d3315 100644
---- a/loudmouth/lm-error.c
-+++ b/loudmouth/lm-error.c
-@@ -25,7 +25,7 @@
-  */
+diff --git a/loudmouth/lm-sock.c b/loudmouth/lm-sock.c
+index f3a2803..6e99eca 100644
+--- a/loudmouth/lm-sock.c
++++ b/loudmouth/lm-sock.c
+@@ -314,6 +314,13 @@ gboolean
+ _lm_sock_set_keepalive (LmOldSocketT sock, int delay)
+ {
+ #ifdef USE_TCP_KEEPALIVES
++
++#ifdef __APPLE__
++#ifndef TCP_KEEPIDLE
++#define TCP_KEEPIDLE TCP_KEEPALIVE
++#endif
++#endif
++
+     int opt;
  
- #include <config.h>
--#include <glib/gerror.h>
-+#include <glib.h>
- #include "lm-error.h"
- 
- GQuark
-
+     opt = 1;

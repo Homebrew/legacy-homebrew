@@ -2,7 +2,7 @@ require 'formula'
 
 class Gflags < Formula
   homepage 'http://code.google.com/p/google-gflags/'
-  url 'http://gflags.googlecode.com/files/gflags-2.0.tar.gz'
+  url 'https://gflags.googlecode.com/files/gflags-2.0.tar.gz'
   sha1 'dfb0add1b59433308749875ac42796c41e824908'
 
   def install

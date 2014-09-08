@@ -2,8 +2,8 @@ require 'formula'
 
 class Sleuthkit < Formula
   homepage 'http://www.sleuthkit.org/'
-  url 'http://downloads.sourceforge.net/project/sleuthkit/sleuthkit/4.1.0/sleuthkit-4.1.0.tar.gz'
-  sha1 '0622173bd4f20bc83cbea4e20e7db4c5b2d6c9c1'
+  url 'https://downloads.sourceforge.net/project/sleuthkit/sleuthkit/4.1.3/sleuthkit-4.1.3.tar.gz'
+  sha1 '9350bb59bb5fbe41d6e29a8d0494460b937749ef'
 
   head do
     url 'https://github.com/sleuthkit/sleuthkit.git'
@@ -13,8 +13,11 @@ class Sleuthkit < Formula
     depends_on :libtool
   end
 
+  conflicts_with 'irods', :because => 'both install `ils`'
+
   option 'with-jni', "Build Sleuthkit with JNI bindings"
 
+  depends_on :ant => :build
   depends_on 'afflib' => :optional
   depends_on 'libewf' => :optional
 

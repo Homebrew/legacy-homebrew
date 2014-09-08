@@ -2,7 +2,7 @@ require 'formula'
 
 class Epubcheck < Formula
   homepage 'http://code.google.com/p/epubcheck/'
-  url 'http://epubcheck.googlecode.com/files/epubcheck-3.0.1.zip'
+  url 'https://epubcheck.googlecode.com/files/epubcheck-3.0.1.zip'
   sha1 '80a61fb2817ec547d292362793da5b91dbef92e3'
 
   def install

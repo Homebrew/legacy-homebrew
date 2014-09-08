@@ -11,7 +11,7 @@ class GnuIndent < Formula
   option 'default-names', "Do not prepend 'g' to the binary"
 
   # Fix broken include and missing build dependency
-  def patches; DATA end
+  patch :DATA
 
   def install
     args = %W[

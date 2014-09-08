@@ -3,14 +3,14 @@ require 'requirement'
 class LanguageModuleDependency < Requirement
   fatal true
 
-  def initialize language, module_name, import_name=module_name
+  def initialize language, module_name, import_name=nil
     @language = language
     @module_name = module_name
-    @import_name = import_name
+    @import_name = import_name || module_name
     super([language, module_name, import_name])
   end
 
-  satisfy { quiet_system(*the_test) }
+  satisfy(:build_env => false) { quiet_system(*the_test) }
 
   def message; <<-EOS.undent
     Unsatisfied dependency: #{@module_name}
@@ -25,7 +25,7 @@ class LanguageModuleDependency < Requirement
       when :jruby then %W{/usr/bin/env jruby -rubygems -e require\ '#{@import_name}'}
       when :lua then %W{/usr/bin/env luarocks show #{@import_name}}
       when :node then %W{/usr/bin/env node -e require('#{@import_name}');}
-      when :ocaml then %W{/usr/bin/env opam list #{@import_name} | grep #{@import_name}}
+      when :ocaml then %W{/usr/bin/env opam list #{@import_name}}
       when :perl then %W{/usr/bin/env perl -e use\ #{@import_name}}
       when :python then %W{/usr/bin/env python -c import\ #{@import_name}}
       when :python3 then %W{/usr/bin/env python3 -c import\ #{@import_name}}

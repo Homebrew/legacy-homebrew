@@ -10,7 +10,8 @@ class XbeeComm < Formula
 
   head 'https://github.com/guyzmo/xbee-comm.git'
 
-  depends_on :automake
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
 
   def install
     system "aclocal"

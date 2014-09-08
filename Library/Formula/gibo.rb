@@ -2,8 +2,8 @@ require 'formula'
 
 class Gibo < Formula
   homepage 'https://github.com/simonwhitaker/gibo'
-  url 'https://github.com/simonwhitaker/gibo/archive/1.0.1.tar.gz'
-  sha1 '06923dcdfd8052e7cfe2d4806b51d1b78b229bfa'
+  url 'https://github.com/simonwhitaker/gibo/archive/1.0.3.tar.gz'
+  sha1 'd0d0e331558912fdfa7b8a8ac1b963bbea1388a6'
 
   def install
     bin.install "gibo"

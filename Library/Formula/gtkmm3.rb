@@ -2,10 +2,9 @@ require 'formula'
 
 class Gtkmm3 < Formula
   homepage 'http://www.gtkmm.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gtkmm/3.8/gtkmm-3.8.0.tar.xz'
-  sha256 'dbddb143fe671ee321d19de2dbae00c0f67e78ce90447227b23062137b1828bd'
+  url 'http://ftp.gnome.org/pub/GNOME/sources/gtkmm/3.12/gtkmm-3.12.0.tar.xz'
+  sha256 '86c526ceec15d889996822128d566748bb36f70cf5a2c270530dfc546a2574e1'
 
-  depends_on 'xz' => :build
   depends_on 'pkg-config' => :build
   depends_on 'glibmm'
   depends_on 'gtk+3'

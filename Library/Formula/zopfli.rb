@@ -8,9 +8,13 @@ class Zopfli < Formula
 
   def install
     # Makefile hardcodes gcc
-    inreplace 'Makefile', 'gcc', ENV.cc
-    system 'make'
+    inreplace 'makefile', 'gcc', ENV.cc
+    system 'make', '-f', 'makefile'
     bin.install 'zopfli'
+    if build.head?
+      system 'make', '-f', 'makefile', 'zopflipng'
+      bin.install 'zopflipng'
+    end
   end
 
   test do

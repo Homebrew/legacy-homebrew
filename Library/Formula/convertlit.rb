@@ -14,13 +14,8 @@ class Convertlit < Formula
       s.gsub! "../libtommath-0.30/libtommath.a", "#{HOMEBREW_PREFIX}/lib/libtommath.a"
     end
 
-    cd "lib" do
-      system "make"
-    end
-
-    cd "clit18" do
-      system "make"
-      bin.install 'clit'
-    end
+    system "make", "-C", "lib"
+    system "make", "-C", "clit18"
+    bin.install "clit18/clit"
   end
 end

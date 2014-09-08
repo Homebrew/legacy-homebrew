@@ -2,27 +2,41 @@ require 'formula'
 
 class Irssi < Formula
   homepage 'http://irssi.org/'
-  url 'http://irssi.org/files/irssi-0.8.15.tar.bz2'
-  sha1 'b79ce8c2c98a76b004f63706e7868cd363000d89'
+  url 'http://irssi.org/files/irssi-0.8.16.tar.bz2'
+  sha1 '631dd70b6d3872c5f81c1a46a6872fef5bd65ffb'
+  revision 1
 
-  option "without-perl", "Build without perl support."
+  bottle do
+    revision 1
+    sha1 "501da22e37c201fcb96f86105855db29c9111de4" => :mavericks
+    sha1 "71dc87d1e4a08bcba6969ee2faa674ea61dd9dcd" => :mountain_lion
+    sha1 "1efa0d2f3ed9dccfa2b01f52eb3c01a3c27d1303" => :lion
+  end
 
-  depends_on :clt # See https://github.com/mxcl/homebrew/issues/20952
+  option "without-perl", "Build without perl support"
+
   depends_on 'pkg-config' => :build
   depends_on 'glib'
+  depends_on 'openssl' => :optional
+
+  devel do
+    url 'http://irssi.org/files/irssi-0.8.17-rc1.tar.gz'
+    sha1 '583870b51062503437590ab52186a4c6b38591d4'
+  end
 
   # Fix Perl build flags and paths in man page
-  def patches; DATA; end
+  patch :DATA
 
   def install
-    args =%W[
+    args = %W[
+      --disable-dependency-tracking
       --prefix=#{prefix}
       --sysconfdir=#{etc}
       --with-bot
       --with-proxy
-      --enable-ssl
       --enable-ipv6
       --with-socks
+      --with-ncurses=#{MacOS.sdk_path}/usr
     ]
 
     if build.with? "perl"
@@ -31,6 +45,8 @@ class Irssi < Formula
     else
       args << "--with-perl=no"
     end
+
+    args << "--enable-ssl" if build.with? "openssl"
 
     system "./configure", *args
 
@@ -50,7 +66,7 @@ __END__
 -		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null`
 +		PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null | $SED -e 's/-arch [^ ]\{1,\}//g'`
  	fi
- 
+
  	if test "x$ac_cv_c_compiler_gnu" = "xyes" -a -z "`echo $host_os|grep 'bsd\|linux'`"; then
 @@ -27437,7 +27437,7 @@
  $as_echo "not found, building without Perl" >&6; }
@@ -58,7 +74,7 @@ __END__
  	else
 -		PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts 2>/dev/null`
 +		PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts 2>/dev/null | $SED -e 's/-arch [^ ]\{1,\}//g'`
- 
+
  		if test "x$DYNLIB_MODULES" = "xno" -a "$want_perl" != "static"; then
  						want_perl=static
 

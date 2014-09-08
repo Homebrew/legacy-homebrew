@@ -7,14 +7,12 @@ class Dash < Formula
 
   head do
     url 'https://git.kernel.org/pub/scm/utils/dash/dash.git'
+    depends_on :autoconf
     depends_on :automake
   end
 
   def install
-    if build.head?
-      system "aclocal"
-      system "autoreconf -f -i -Wall,no-obsolete"
-    end
+    system "./autogen.sh" if build.head?
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-libedit",
@@ -25,7 +23,7 @@ class Dash < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/dash", "-c", "echo Hello!"
   end
 end

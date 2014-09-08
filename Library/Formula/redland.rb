@@ -11,6 +11,7 @@ class Redland < Formula
   depends_on 'pkg-config' => :build
   depends_on 'raptor'
   depends_on 'rasqal'
+  depends_on 'unixodbc'
   depends_on 'sqlite' => :recommended
   depends_on 'berkeley-db' => :optional
   depends_on :python => :optional
@@ -39,7 +40,7 @@ class Redland < Formula
     end
 
     if build.with? 'berkeley-db'
-      args << "--with-bdb=#{Formula.factory('berkeley-db').opt_prefix}"
+      args << "--with-bdb=#{Formula["berkeley-db"].opt_prefix}"
     else
       args << "--with-bdb=no"
     end
@@ -72,11 +73,11 @@ class Redland < Formula
         end
 
         if build.with? 'python'
-          ENV['PYTHON_LIB'] = python.site_packages
+          ENV['PYTHON_LIB'] = lib/'python2.7/site-packages'
           args << "--with-python"
         end
 
-        ENV.append 'PKG_CONFIG_LIBDIR', "#{lib}/pkgconfig", ':'
+        ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
 
         system "./configure", *args
 
@@ -110,8 +111,6 @@ class Redland < Formula
           #{HOMEBREW_PREFIX}/lib/ruby/site_ruby
       EOS
     end
-
-    s += python.standard_caveats if python
 
     return s.empty? ? nil : s
   end

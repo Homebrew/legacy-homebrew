@@ -6,7 +6,6 @@ class Pygtksourceview < Formula
   sha256 'bfdde2ce4f61d461fb34dece9433cf81a73a9c9de6b62d4eb06177b8c9cec9c7'
 
   depends_on 'pkg-config' => :build
-  depends_on :python
   depends_on 'gtksourceview'
   depends_on 'pygtk'
 
@@ -17,13 +16,7 @@ class Pygtksourceview < Formula
     system "make install"
   end
 
-  def caveats
-    python.standard_caveats if python
-  end
-
   test do
-    python do
-      system python, "-c", "import gtksourceview2"
-    end
+    system "python", "-c", "import gtksourceview2"
   end
 end

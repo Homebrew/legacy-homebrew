@@ -2,8 +2,8 @@ require 'formula'
 
 class Zinc < Formula
   homepage 'https://github.com/typesafehub/zinc'
-  url 'http://repo.typesafe.com/typesafe/zinc/com/typesafe/zinc/dist/0.2.5/zinc-0.2.5.tgz'
-  sha1 '2f89bf2b5b77f2353750e1c5fa2a6d0c506c95b3'
+  url 'http://downloads.typesafe.com/zinc/0.3.5/zinc-0.3.5.tgz'
+  sha1 '1ae45236fdf0ad91e739889bffb7829d9308cdea'
 
   def install
     rm_f Dir["bin/ng/{linux,win}*"]

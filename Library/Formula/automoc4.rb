@@ -8,12 +8,10 @@ class Automoc4 < Formula
   depends_on 'cmake' => :build
   depends_on 'qt'
 
-  def patches
-    # Patch needed to find Qt in Homebrew upstreamed but upstream version
-    # does not apply. Won't be needed for next version.
-    # https://projects.kde.org/projects/kdesupport/automoc/repository/revisions/6b9597ff
-    { :p0 => DATA }
-  end
+  # Patch needed to find Qt in Homebrew upstreamed but upstream version
+  # does not apply. Won't be needed for next version.
+  # https://projects.kde.org/projects/kdesupport/automoc/repository/revisions/6b9597ff
+  patch :p0, :DATA
 
   def install
     system "cmake", ".", *std_cmake_args

@@ -2,7 +2,7 @@ require 'formula'
 
 class Luciddb < Formula
   homepage 'http://www.luciddb.org/'
-  url 'http://downloads.sourceforge.net/project/luciddb/luciddb/luciddb-0.9.4/luciddb-bin-macos32-0.9.4.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/luciddb/luciddb/luciddb-0.9.4/luciddb-bin-macos32-0.9.4.tar.bz2'
   sha1 'b0a7b9dbe997a1754d48856c866ffedf4d276eae'
 
   def shim_script target
@@ -14,17 +14,16 @@ class Luciddb < Formula
   end
 
   def install
-    java_home = `/usr/libexec/java_home`.chomp!
     libexec.install Dir['*']
     cd libexec/'install' do
       # install.sh just sets Java classpaths and writes them to bin/classpath.gen.
       # This is why we run it /after/ copying all the files to #{libexec}.
-      ENV['JAVA_HOME'] = java_home
+      ENV['JAVA_HOME'] = `/usr/libexec/java_home`.chomp
       system "./install.sh"
     end
-    Dir["#{libexec}/bin/*"].each do |b|
+    Dir.glob("#{libexec}/bin/*") do |b|
       next if b =~ /classpath.gen/ or b =~ /defineFarragoRuntime/
-      n = Pathname.new(b).basename
+      n = File.basename(b)
       (bin+n).write shim_script(n)
     end
   end
@@ -43,7 +42,7 @@ class Luciddb < Formula
       <key>EnvironmentVariables</key>
       <dict>
         <key>JAVA_HOME</key>
-        <string>#{`/usr/libexec/java_home`.chomp!}</string>
+        <string>#{`/usr/libexec/java_home`.chomp}</string>
       </dict>
       <key>ProgramArguments</key>
       <array>

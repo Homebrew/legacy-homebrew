@@ -1,17 +1,19 @@
-require 'formula'
+require "formula"
 
 class Gabedit < Formula
-  homepage 'http://gabedit.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/gabedit/gabedit/Gabedit240/GabeditSrc240.tar.gz'
-  version '2.4.0'
-  sha1 '9c53590051da363f419a6b746594bf9f9aa92737'
+  homepage "http://gabedit.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/gabedit/gabedit/Gabedit248/GabeditSrc248.tar.gz"
+  version "2.4.8"
+  sha1 "7a48f42c39258471faa0a3942890c16b6290de41"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gtk+'
-  depends_on 'gtkglext'
+  depends_on "pkg-config" => :build
+  depends_on "gtk+"
+  depends_on "gtkglext"
 
   def install
-    system 'make'
-    bin.install 'gabedit' # There is no 'make install'
+    args = []
+    args << "OMPLIB=" << "OMPCFLAGS=" if ENV.compiler == :clang
+    system "make", *args
+    bin.install "gabedit"
   end
 end

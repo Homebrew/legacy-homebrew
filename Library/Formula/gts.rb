@@ -2,7 +2,7 @@ require 'formula'
 
 class Gts < Formula
   homepage 'http://gts.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz'
+  url 'https://downloads.sourceforge.net/project/gts/gts/0.7.6/gts-0.7.6.tar.gz'
   sha1 '000720bebecf0b153eb28260bd30fbd979dcc040'
 
   option :universal
@@ -12,9 +12,11 @@ class Gts < Formula
   depends_on 'glib'
   depends_on 'netpbm'
 
+  conflicts_with 'pcb', :because => 'both install `include/gts.h`'
+
   # Fix for newer netpbm.
   # This software hasn't been updated in seven years
-  def patches; DATA; end
+  patch :DATA
 
   def install
     ENV.universal_binary if build.universal?

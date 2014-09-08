@@ -2,11 +2,17 @@ require 'formula'
 
 class Htmlcleaner < Formula
   homepage 'http://htmlcleaner.sourceforge.net/index.php'
-  url 'http://downloads.sourceforge.net/project/htmlcleaner/htmlcleaner/htmlcleaner%20v2.6.1/htmlcleaner-2.6.1.zip'
-  sha1 '4c5d2049c7048dc6632a17ec15e21ab0fcf510b9'
+  url 'https://downloads.sourceforge.net/project/htmlcleaner/htmlcleaner/htmlcleaner%20v2.8/htmlcleaner-2.8.zip'
+  sha1 'e4cbfebb306fc0baa95205ba91e452c961eebf85'
 
   def install
     libexec.install "htmlcleaner-#{version}.jar"
     bin.write_jar_script libexec/"htmlcleaner-#{version}.jar", "htmlcleaner"
+  end
+
+  test do
+    path = testpath/"index.html"
+    path.write "<html>"
+    assert shell_output("#{bin}/htmlcleaner src=#{path}").include?("</html>")
   end
 end

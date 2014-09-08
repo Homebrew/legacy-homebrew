@@ -2,9 +2,9 @@ require 'formula'
 
 class Kawa < Formula
   homepage 'http://www.gnu.org/software/kawa/'
-  url 'http://ftpmirror.gnu.org/kawa/kawa-1.13.jar'
-  mirror 'http://ftp.gnu.org/gnu/kawa/kawa-1.13.jar'
-  sha1 'c49155de929d932f48c16e77b318018849deaa78'
+  url 'http://ftpmirror.gnu.org/kawa/kawa-1.14.jar'
+  mirror 'http://ftp.gnu.org/gnu/kawa/kawa-1.14.jar'
+  sha1 '87354829bfb28649c771d011769cf79fac5b2621'
 
   def install
     prefix.install "kawa-#{version}.jar"

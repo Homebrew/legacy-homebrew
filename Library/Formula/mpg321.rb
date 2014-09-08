@@ -2,7 +2,7 @@ require 'formula'
 
 class Mpg321 < Formula
   homepage 'http://mpg321.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/mpg321/mpg321/0.3.2/mpg321_0.3.2.orig.tar.gz'
+  url 'https://downloads.sourceforge.net/project/mpg321/mpg321/0.3.2/mpg321_0.3.2.orig.tar.gz'
   sha1 'bf1c22542c86af69267828e45f217fdeb49e5d43'
 
   depends_on 'mad'
@@ -17,7 +17,7 @@ class Mpg321 < Formula
   # Both patches have been reported upstream here:
   # https://sourceforge.net/tracker/?func=detail&aid=3587769&group_id=36274&atid=416544
   # Remove these at: Unknown.  These have not been merged as of 0.3.2.
-  def patches; DATA; end
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",

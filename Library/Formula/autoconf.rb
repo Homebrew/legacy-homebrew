@@ -6,17 +6,25 @@ class Autoconf < Formula
   mirror 'http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz'
   sha1 '562471cbcb0dd0fa42a76665acf0dbb68479b78a'
 
-  if MacOS::Xcode.provides_autotools? or File.file? "/usr/bin/autoconf"
-    keg_only "Xcode (up to and including 4.2) provides (a rather old) Autoconf."
+  bottle do
+    revision 1
+    sha1 "319a4ac05d83b5b3db37dcc629a46a412ec1989b" => :mavericks
+    sha1 "83184a596d69f3a868e6780c1c8fba309ea28fb2" => :mountain_lion
+    sha1 "7d31f63e5ddd1bbbf0397b0b70df1ff9e70f998b" => :lion
   end
+
+  keg_only :provided_until_xcode43
 
   def install
     ENV['PERL'] = '/usr/bin/perl'
 
     # force autoreconf to look for and use our glibtoolize
     inreplace 'bin/autoreconf.in', 'libtoolize', 'glibtoolize'
+    # also touch the man page so that it isn't rebuilt
+    inreplace 'man/autoreconf.1', 'libtoolize', 'glibtoolize'
     system "./configure", "--prefix=#{prefix}"
     system "make install"
+    rm_f info/'standards.info'
   end
 
   test do

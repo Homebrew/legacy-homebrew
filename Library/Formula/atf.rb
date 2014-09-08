@@ -1,16 +1,16 @@
 require 'formula'
 
 class Atf < Formula
-  homepage 'http://code.google.com/p/kyua/wiki/ATF'
-  url 'http://kyua.googlecode.com/files/atf-0.16.tar.gz'
-  sha256 'f33a85f4a0677f40be406baaf6a5a749ca02870af9707f7606a0f3fa613c8339'
+  homepage 'https://github.com/jmmv/atf'
+  url 'https://github.com/jmmv/atf/releases/download/atf-0.20/atf-0.20.tar.gz'
+  sha1 '398baa9733f9136bb78c27d10a8fffd7810e678a'
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}"
     system 'make'
-    ENV.j1  # Fixes an llvm race condition error where a file exists.
+    ENV.j1
     system 'make install'
   end
 end

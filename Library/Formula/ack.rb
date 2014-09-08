@@ -2,17 +2,18 @@ require 'formula'
 
 class Ack < Formula
   homepage 'http://beyondgrep.com/'
-  url 'http://beyondgrep.com/ack-2.08-single-file'
-  sha1 'c0fa19ba31ecc1afe186c5a061c1361ae2a258f3'
-  version '2.08'
+  url 'http://beyondgrep.com/ack-2.12-single-file'
+  sha1 '667b5f2dd83143848a5bfa47f7ba848cbe556e93'
+  version '2.12'
 
   def install
-    bin.install "ack-2.08-single-file" => "ack"
+    bin.install "ack-#{version}-single-file" => "ack"
     system "pod2man", "#{bin}/ack", "ack.1"
     man1.install "ack.1"
   end
 
   test do
-    system "#{bin}/ack", 'brew', '/usr/share/dict/words'
+    assert_equal "foo bar\n", pipe_output("#{bin}/ack --noenv --nocolor bar -",
+                                          "foo\nfoo bar\nbaz")
   end
 end

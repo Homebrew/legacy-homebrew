@@ -8,8 +8,8 @@ class Pce < Formula
   head 'git://git.hampa.ch/pce.git'
 
   devel do
-    url 'http://www.hampa.ch/pub/pce/pre/pce-20130508-37e6b78.tar.gz'
-    sha1 '029c099a1cb57f3e5b1afb087d44680efe94a42e'
+    url 'http://www.hampa.ch/pub/pce/pre/pce-20140222-4b05f0c.tar.gz'
+    sha1 '980bf6cf02c074d3a70b9dbb262358e0518461b8'
   end
 
   depends_on 'sdl'

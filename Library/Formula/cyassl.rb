@@ -1,17 +1,15 @@
-require 'formula'
+require "formula"
 
 class Cyassl < Formula
-  homepage 'http://yassl.com/yaSSL/Products-cyassl.html'
-  url 'https://github.com/cyassl/cyassl/archive/v2.8.0.tar.gz'
-  sha256 '9d8a061e30f6fc6bcdeb0b19eb13dfc1ccf3959837a4a6de5fd982f7332799eb'
+  homepage "http://yassl.com/yaSSL/Products-cyassl.html"
+  url "https://github.com/cyassl/cyassl/archive/v3.1.0.tar.gz"
+  sha256 "8ece90d145255e6be5934829d86497d2425e2220d9a622d3aa08e5d965fa8d9a"
 
-  head 'https://github.com/cyassl/cyassl.git'
+  head "https://github.com/cyassl/cyassl.git"
 
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
-
-  fails_with :clang
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     args = %W[--infodir=#{info}
@@ -46,20 +44,18 @@ class Cyassl < Formula
     ]
 
     if MacOS.prefer_64_bit?
-      args << '--enable-fastmath' << '--enable-fasthugemath'
+      args << "--enable-fastmath" << "--enable-fasthugemath"
     else
-      args << '--disable-fastmath' << '--disable-fasthugemath'
+      args << "--disable-fastmath" << "--disable-fasthugemath"
     end
 
     # Extra flag is stated as a needed for the Mac platform.
     # http://yassl.com/yaSSL/Docs-cyassl-manual-2-building-cyassl.html
     # Also, only applies if fastmath is enabled.
-    ENV.append_to_cflags '-mdynamic-no-pic' if MacOS.prefer_64_bit?
+    ENV.append_to_cflags "-mdynamic-no-pic" if MacOS.prefer_64_bit?
 
-    # No public release available, Git tag is therefore used.
-    system "autoreconf --verbose --install --force"
+    system "./autogen.sh"
     system "./configure", *args
-
     system "make"
     system "make install"
   end

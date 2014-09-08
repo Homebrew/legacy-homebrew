@@ -2,8 +2,8 @@ require 'formula'
 
 class Exodriver < Formula
   homepage 'http://labjack.com/support/linux-and-mac-os-x-drivers'
-  url 'https://github.com/labjack/exodriver/archive/v2.5.2.tar.gz'
-  sha1 '8d53bb3eda8a62c0399e3ea6657fe2b22eeffaac'
+  url 'https://github.com/labjack/exodriver/archive/v2.5.3.tar.gz'
+  sha1 'd21529987962b1e7178ec7331fc14700caed0692'
 
   head 'https://github.com/labjack/exodriver.git'
 

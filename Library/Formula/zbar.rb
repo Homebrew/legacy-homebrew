@@ -2,21 +2,21 @@ require 'formula'
 
 class Zbar < Formula
   homepage 'http://zbar.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/zbar/zbar/0.10/zbar-0.10.tar.bz2'
+  url 'https://downloads.sourceforge.net/project/zbar/zbar/0.10/zbar-0.10.tar.bz2'
   sha1 '273b47c26788faba4325baecc34063e27a012963'
+  revision 1
 
   depends_on :x11 => :optional
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'imagemagick'
   depends_on 'ufraw'
+  depends_on 'xz'
 
-  def patches
-    # fix JPEG handling using patch from
-    #   http://sourceforge.net/p/zbar/discussion/664596/thread/58b8d79b#8f67
-    # already applied upstream but not present in the 0.10 release
-    DATA
-  end
+  # Fix JPEG handling using patch from
+  # http://sourceforge.net/p/zbar/discussion/664596/thread/58b8d79b#8f67
+  # already applied upstream but not present in the 0.10 release
+  patch :DATA
 
   def install
     args = %W[

@@ -2,7 +2,7 @@ require 'formula'
 
 class Ser2net < Formula
   homepage 'http://ser2net.sourceforge.net'
-  url 'http://downloads.sourceforge.net/project/ser2net/ser2net/ser2net-2.9.1.tar.gz'
+  url 'https://downloads.sourceforge.net/project/ser2net/ser2net/ser2net-2.9.1.tar.gz'
   sha1 'dc8662a1c83391a6b437bc9d2443fb7a65548a9a'
 
   def install
@@ -38,7 +38,7 @@ class Ser2net < Formula
         <true/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_prefix}/sbin/ser2net</string>
+            <string>#{opt_sbin}/ser2net</string>
             <string>-p</string>
             <string>12345</string>
         </array>

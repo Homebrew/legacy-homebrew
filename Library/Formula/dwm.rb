@@ -5,9 +5,17 @@ class Dwm < Formula
   url 'http://dl.suckless.org/dwm/dwm-6.0.tar.gz'
   sha1 '35346f873a27f219ae266594b3690407f95d06ef'
 
-  head 'http://hg.suckless.org/dwm'
+  bottle do
+    cellar :any
+    sha1 "3d1f85077637d227005f7c22273441ec7eb4ded1" => :mavericks
+    sha1 "ef7ce38daa07fe707df2454a3ddf4701a4cebfe7" => :mountain_lion
+    sha1 "29c1feef59b6c7da94b096a9452a1e402037fba3" => :lion
+  end
+
+  head 'http://git.suckless.org/dwm', :using => :git
 
   depends_on :x11
+  depends_on 'dmenu' => :optional
 
   def install
     # The dwm default quit keybinding Mod1-Shift-q collides with

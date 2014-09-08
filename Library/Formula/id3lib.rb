@@ -2,16 +2,45 @@ require 'formula'
 
 class Id3lib < Formula
   homepage 'http://id3lib.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/id3lib/id3lib/3.8.3/id3lib-3.8.3.tar.gz'
+  url 'https://downloads.sourceforge.net/project/id3lib/id3lib/3.8.3/id3lib-3.8.3.tar.gz'
   sha1 'c92c880da41d1ec0b242745a901702ae87970838'
 
-  head "cvs://:pserver:anonymous@id3lib.cvs.sourceforge.net:/cvsroot/id3lib:id3lib-devel"
+  head "cvs://:pserver:anonymous:@id3lib.cvs.sourceforge.net:/cvsroot/id3lib:id3lib-devel"
 
-  def patches
-    p = []
-    p << DATA unless build.head?
-    # Fix main defined with unsigned int instead of int
-    p << "https://trac.macports.org/export/90780/trunk/dports/audio/id3lib/files/id3lib-main.patch"
+  bottle do
+    cellar :any
+    sha1 "3706bca1a75d73ded2efeff8aedeaea25cea3cb7" => :mavericks
+    sha1 "9693062720327e9af5e73870a4dd954b5828c483" => :mountain_lion
+    sha1 "ba892268a2bdd9e713017272b819de2501aad602" => :lion
+  end
+
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
+
+  patch do
+    url "https://trac.macports.org/export/112431/trunk/dports/audio/id3lib/files/id3lib-vbr-overflow.patch"
+    sha1 "2fc0d348469980b30d7844dad63cac91ccd421c9"
+  end
+
+  patch do
+    url "https://trac.macports.org/export/90780/trunk/dports/audio/id3lib/files/id3lib-main.patch"
+    sha1 "8e52e21bd37fcd57bfaa8b1a8c11bf897d73a476"
+  end
+
+  patch do
+    url "https://trac.macports.org/export/112430/trunk/dports/audio/id3lib/files/no-iomanip.h.patch"
+    sha1 "d4d782608cf038fbd1adcf5d08324a9d1c49bc38"
+  end
+
+  patch do
+    url "https://trac.macports.org/export/112430/trunk/dports/audio/id3lib/files/automake.patch"
+    sha1 "86a83a2e993ccc2bb23a32837ec996d3a959a9a1"
+  end
+
+  patch do
+    url "https://trac.macports.org/export/112430/trunk/dports/audio/id3lib/files/boolcheck.patch"
+    sha1 "55a4db02c74825157ef5df62f10ed8c4173e7dc7"
   end
 
   fails_with :llvm do
@@ -20,25 +49,9 @@ class Id3lib < Formula
   end
 
   def install
+    system "autoreconf -fi"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
   end
 end
-
-# Wrong header size... I believe this bug is fixed in id3lib HEAD. See:
-# http://sourceforge.net/tracker/index.php?func=detail&amp;aid=697951&amp;group_id=979&amp;atid=100979
-__END__
-diff --git a/src/mp3_parse.cpp b/src/mp3_parse.cpp
-index 41d8560..fc8992b 100755
---- a/src/mp3_parse.cpp
-+++ b/src/mp3_parse.cpp
-@@ -465,7 +465,7 @@ bool Mp3Info::Parse(ID3_Reader& reader, size_t mp3size)
-   // from http://www.xingtech.com/developer/mp3/
- 
-   const size_t VBR_HEADER_MIN_SIZE = 8;     // "xing" + flags are fixed
--  const size_t VBR_HEADER_MAX_SIZE = 116;   // frames, bytes, toc and scale are optional
-+  const size_t VBR_HEADER_MAX_SIZE = 120;   // frames, bytes, toc and scale are optional
- 
-   if (mp3size >= vbr_header_offest + VBR_HEADER_MIN_SIZE) 
-   {

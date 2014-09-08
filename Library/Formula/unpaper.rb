@@ -1,17 +1,19 @@
-require 'formula'
+require "formula"
 
 class Unpaper < Formula
-  homepage 'http://unpaper.berlios.de/'
-  url 'http://download.berlios.de/unpaper/unpaper-0.3.tar.gz'
-  sha1 '120eee7c635eeb8ea75431c2dfba89bd8c132493'
+  homepage "https://www.flameeyes.eu/projects/unpaper"
+  url "https://www.flameeyes.eu/files/unpaper-5.1.tar.xz"
+  sha1 "97068a99d47d1d65030c88d52058c1d5ff7b41d1"
+
+  bottle do
+    cellar :any
+    sha1 "c20298eac668f11a24cb02a61065ad58096623bb" => :mavericks
+    sha1 "dbad33b7762c589639ccf084d33776a55b777593" => :mountain_lion
+    sha1 "1f0bdc89500234a96557d99cd2bcb6cc1372594e" => :lion
+  end
 
   def install
-    # Fix make.sh to take CFLAGS/LDFLAGS from environment
-    inreplace "make.sh" do |s|
-      s.change_make_var! "CFLAGS", ENV.cflags
-      s.change_make_var! "LDFLAGS", ENV.ldflags
-    end
-    system 'bash make.sh'
-    bin.install 'unpaper'
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

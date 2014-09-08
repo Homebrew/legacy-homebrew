@@ -2,8 +2,8 @@ require 'formula'
 
 class Bochs < Formula
   homepage 'http://bochs.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/bochs/bochs/2.6.1/bochs-2.6.1.tar.gz'
-  sha1 'fa272a69477b1d8641c387e9198eaa8ed966d6ee'
+  url 'https://downloads.sourceforge.net/project/bochs/bochs/2.6.2/bochs-2.6.2.tar.gz'
+  sha1 'f82ee01a52367d2a6daffa2774a1297b978f6821'
 
   depends_on 'pkg-config' => :build
   depends_on :x11
@@ -48,7 +48,7 @@ class Bochs < Formula
     system "make install"
   end
 
-  def test
+  test do
     system "#{bin}/bochs"
   end
 end

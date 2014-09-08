@@ -2,18 +2,18 @@ require 'formula'
 
 class TinyFugue < Formula
   homepage 'http://tinyfugue.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/project/tinyfugue/tinyfugue/5.0%20beta%208/tf-50b8.tar.gz'
+  url 'https://downloads.sourceforge.net/project/tinyfugue/tinyfugue/5.0%20beta%208/tf-50b8.tar.gz'
   sha1 '37bb70bfb7b44d36c28606c6bd45e435502fb4b4'
   version '5.0b8'
+
+  conflicts_with 'tee-clc', :because => 'both install a `tf` binary'
 
   depends_on 'libnet'
   depends_on 'pcre'
 
   # pcre deprecated pcre_info. Switch to HB pcre-8.31 and pcre_fullinfo.
   # Not reported upstream; project is in stasis since 2007.
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
