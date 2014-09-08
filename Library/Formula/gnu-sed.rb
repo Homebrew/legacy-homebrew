@@ -17,6 +17,7 @@ class GnuSed < Formula
 
   def install
     args = ["--prefix=#{prefix}", "--disable-dependency-tracking"]
+    args << "--without-selinux" if OS.linux?
     args << "--program-prefix=g" unless build.include? 'default-names'
 
     system "./configure", *args
