@@ -5,6 +5,12 @@ class GnuCobol < Formula
   url 'https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/1.1/gnu-cobol-1.1.tar.gz'
   sha1 "86e928c43cb3372f1f4564f3fd5e1dde668e8c1f"
 
+  bottle do
+    sha1 "322762bbffd52fb562106ea1d30c84bb4b7a5927" => :mavericks
+    sha1 "55dea1ba4f72978138421002797a39dddf7c57db" => :mountain_lion
+    sha1 "266928cdada40595d5b054d57e276d7990943f32" => :lion
+  end
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "berkeley-db4"
