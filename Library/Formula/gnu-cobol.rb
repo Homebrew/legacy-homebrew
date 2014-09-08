@@ -25,11 +25,12 @@ class GnuCobol < Formula
     ENV.append "CPPFLAGS", "-I#{gmp.opt_include} -I#{bdb.opt_include}"
     ENV.append "LDFLAGS", "-L#{gmp.opt_lib} -L#{bdb.opt_lib}"
 
+    system "aclocal"
+
     # fix referencing of libintl and libiconv for ld
     # bug report can be found here: https://sourceforge.net/p/open-cobol/bugs/93/
     inreplace "configure", "-R$found_dir", "-L$found_dir"
 
-    system "aclocal"
     args = ["--prefix=#{prefix}", "--infodir=#{info}"]
     args << "--with-libiconv-prefix=/usr"
     args << "--with-libintl-prefix=/usr"
