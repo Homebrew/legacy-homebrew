@@ -11,11 +11,14 @@ class GnuCobol < Formula
   depends_on "gmp"
 
   def install
+    gmp = Formula["gmp"]
+    bdb = Formula["berkeley-db4"]
+
     # both environment variables are needed to be set
     # the cobol compiler takes these variables for calling cc during its run
     # if the paths to gmp and bdb are not provided, the run of cobc fails
-    ENV.append "CPPFLAGS", "-I#{HOMEBREW_PREFIX}/opt/gmp/include -I#{HOMEBREW_PREFIX}/opt/berkeley-db4/include"
-    ENV.append "LDFLAGS", "-L#{HOMEBREW_PREFIX}/opt/gmp/lib -L#{HOMEBREW_PREFIX}/opt/berkeley-db4/lib"
+    ENV.append "CPPFLAGS", "-I#{gmp.opt_include} -I#{bdb.opt_include}"
+    ENV.append "LDFLAGS", "-L#{gmp.opt_lib} -L#{bdb.opt_lib}"
 
     args = ["--prefix=#{prefix}", "--infodir=#{info}"]
     args << "--with-libiconv-prefix=/usr"
