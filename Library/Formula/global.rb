@@ -2,14 +2,14 @@ require "formula"
 
 class Global < Formula
   homepage "https://www.gnu.org/software/global/"
-  url "http://ftpmirror.gnu.org/global/global-6.3.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/global/global-6.3.tar.gz"
-  sha1 "01180de13918a29d4af62ed9c86dbe84ed16f550"
+  url "http://ftpmirror.gnu.org/global/global-6.3.2.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/global/global-6.3.2.tar.gz"
+  sha1 "46b681a0ccb84c928a67f6901ca60227ad71b5bd"
 
   bottle do
-    sha1 "e004212ac52962c8d8b5164cbc6c46fcc47f3557" => :mavericks
-    sha1 "d7d3b6896bcbb41dc45046e960352c60d4c63b99" => :mountain_lion
-    sha1 "9838c4345cda516d7de7212322b91eb08e821c45" => :lion
+    sha1 "1bce9bd552e38d9cc12eda4998233c20a33321e4" => :mavericks
+    sha1 "907a3a0180b4b4ea6ecc029b864a7ed4c8e1fa21" => :mountain_lion
+    sha1 "254d7f4444b1890b1195f35a6e1f43ed34dace7d" => :lion
   end
 
   head do

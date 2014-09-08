@@ -92,4 +92,20 @@ class Vim < Formula
     system "make", "install", "prefix=#{prefix}", "STRIP=true"
     bin.install_symlink "vim" => "vi" if build.include? "override-system-vi"
   end
+
+  test do
+    # Simple test to check if Vim was linked to Python version in $PATH
+    if build.with? "python"
+      vim_path = bin/"vim"
+
+      # Get linked framework using otool
+      otool_output = `otool -L #{vim_path} | grep -m 1 Python`.gsub(/\(.*\)/, "").strip.chomp
+
+      # Expand the link and get the python exec path
+      vim_framework_path = Pathname.new(otool_output).realpath.dirname.to_s.chomp
+      system_framework_path = `python-config --exec-prefix`.chomp
+
+      assert_equal system_framework_path, vim_framework_path
+    end
+  end
 end
