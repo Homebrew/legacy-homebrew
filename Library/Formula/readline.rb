@@ -5,7 +5,7 @@ class Readline < Formula
   url "http://ftpmirror.gnu.org/readline/readline-6.3.tar.gz"
   mirror "http://ftp.gnu.org/gnu/readline/readline-6.3.tar.gz"
   sha256 "56ba6071b9462f980c5a72ab0023893b65ba6debb4eeb475d7a563dc65cafd43"
-  version "6.3.6"
+  version "6.3.8"
 
   bottle do
     cellar :any
@@ -27,8 +27,8 @@ EOS
   # Upstream patches can be found in:
   # http://git.savannah.gnu.org/cgit/readline.git
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/d886531fb6623b60b2af/raw/d6aec221e7369ea152e64c8af83f6b048433dd82/readline-6.3.6.diff"
-    sha1 "774e4d3fe8c22dc715b430343d68beecf6f4e673"
+    url "https://gist.githubusercontent.com/jacknagel/d886531fb6623b60b2af/raw/746fc543e56bc37a26ccf05d2946a45176b0894e/readline-6.3.8.diff"
+    sha1 "dccc973e4a75ecfe45c25c296e0f7785b06586dc"
   end
 
   def install
