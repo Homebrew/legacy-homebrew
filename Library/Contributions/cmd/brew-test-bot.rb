@@ -179,6 +179,7 @@ class Test
       rd.close
       STDERR.reopen("/dev/null")
       STDOUT.reopen(wr)
+      wr.close
       Dir.chdir @repository
       exec("git", *args)
     end
