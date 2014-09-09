@@ -26,6 +26,7 @@ class Graphviz < Formula
   depends_on 'pkg-config' => :build
   depends_on 'pango' if build.with? "pangocairo"
   depends_on 'swig' if build.with? "bindings"
+  depends_on :python if build.with? "bindings"
   depends_on 'gts' => :optional
   depends_on "librsvg" => :optional
   depends_on "freetype" => :optional
@@ -54,6 +55,12 @@ class Graphviz < Formula
     args << "--without-freetype2" if build.without? "freetype"
     args << "--without-x" if build.without? "x"
     args << "--without-rsvg" if build.without? "librsvg"
+
+    if build.with? "bindings"
+      # http://www.graphviz.org/mantisbt/view.php?id=2486
+      inreplace "configure", 'PYTHON_LIBS="-lpython$PYTHON_VERSION_SHORT"',
+                             'PYTHON_LIBS="-L$PYTHON_PREFIX/lib -lpython$PYTHON_VERSION_SHORT"'
+    end
 
     system "./configure", *args
     system "make install"
