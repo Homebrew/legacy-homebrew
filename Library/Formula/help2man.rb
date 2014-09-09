@@ -2,9 +2,9 @@ require "formula"
 
 class Help2man < Formula
   homepage "http://www.gnu.org/software/help2man/"
-  url "http://ftpmirror.gnu.org/help2man/help2man-1.46.1.tar.xz"
-  mirror "http://ftp.gnu.org/gnu/help2man/help2man-1.46.1.tar.xz"
-  sha256 "3dfd02a026149aad06887c1cb6062471779c100e00aecb79b8f9d01cf1581c47"
+  url "http://ftpmirror.gnu.org/help2man/help2man-1.46.2.tar.xz"
+  mirror "http://ftp.gnu.org/gnu/help2man/help2man-1.46.2.tar.xz"
+  sha256 "92191decc8c324c88bfec5e989d13108f22ed135d794bde2b3b802ffe3650311"
 
   bottle do
     cellar :any
