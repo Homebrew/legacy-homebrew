@@ -17,8 +17,6 @@ class GnuCobol < Formula
   depends_on "gmp"
   depends_on "gcc" if MacOS.version >= :mountain_lion
 
-  env :std
-
   fails_with :clang do
     cause <<-EOS.undent
       Building with Clang configures GNU-COBOL to use Clang as its compiler,
