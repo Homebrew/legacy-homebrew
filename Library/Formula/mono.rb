@@ -2,8 +2,8 @@ require "formula"
 
 class Mono < Formula
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-3.6.0.tar.bz2"
-  sha1 "54150bf88d6ebdaaa40c474c66680b06a875f060"
+  url "http://download.mono-project.com/sources/mono/mono-3.8.0.tar.bz2"
+  sha1 "0e1fcaa0ec228830f9b0a650b6cfd3c098c82afc"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
@@ -18,13 +18,6 @@ class Mono < Formula
   resource "monolite" do
     url "http://storage.bos.xamarin.com/mono-dist-master/latest/monolite-111-latest.tar.gz"
     sha1 "af90068351895082f03fdaf2840b7539e23e3f32"
-  end
-
-  # help mono find its MonoPosixHelper lib when it is not in a system path
-  # see https://bugzilla.xamarin.com/show_bug.cgi?id=18555
-  patch do
-    url "https://bugzilla.xamarin.com/attachment.cgi?id=6399"
-    sha1 "d011dc55f341feea0bdb8aa645688b815910b734"
   end
 
   def install
