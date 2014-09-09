@@ -32,6 +32,9 @@ class Glibc < Formula
   end
 
   def post_install
+    # Fix permissions
+    system "chmod +x #{lib}/ld-linux-x86-64.so.2 #{lib}/libc.so.6"
+
     # Compile locale definition files
     mkdir_p lib/"locale"
     locales = ENV.keys.select { |s|
