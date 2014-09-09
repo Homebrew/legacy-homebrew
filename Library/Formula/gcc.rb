@@ -85,12 +85,12 @@ class Gcc < Formula
 
     # C, C++, ObjC compilers are always built
     languages = %w[c c++ objc obj-c++]
-    languages << "go" if build.with?("go")
 
     # Everything but Ada, which requires a pre-existing GCC Ada compiler
     # (gnat) to bootstrap. GCC 4.6.0 add go as a language option, but it is
     # currently only compilable on Linux.
     languages << "fortran" if build.with?("fortran") || build.with?("all-languages")
+    languages << "go" if build.with?("go") || build.with?("all-languages")
     languages << "java" if build.with?("java") || build.with?("all-languages")
 
     args = [
