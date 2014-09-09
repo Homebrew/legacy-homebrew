@@ -184,6 +184,13 @@ class Gcc < Formula
         add_suffix file, version_suffix if File.exist? file
       end
     end
+
+    # Move lib64/* to lib/ on Linuxbrew
+    lib64 = Pathname.new "#{lib}64"
+    if lib64.directory?
+      system "mv #{lib64}/* #{lib}/"
+      rmdir lib64
+    end
   end
 
   def add_suffix file, suffix
