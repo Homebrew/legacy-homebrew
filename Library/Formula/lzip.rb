@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Lzip < Formula
-  homepage 'http://www.nongnu.org/lzip/lzip.html'
-  url 'http://download.savannah.gnu.org/releases/lzip/lzip-1.16.tar.gz'
-  sha1 '5bcefbb788305db7be9748d3c0478156518f1025'
+  homepage "http://www.nongnu.org/lzip/lzip.html"
+  url "http://download.savannah.gnu.org/releases/lzip/lzip-1.16.tar.gz"
+  sha1 "5bcefbb788305db7be9748d3c0478156518f1025"
 
   bottle do
     cellar :any
@@ -16,9 +16,9 @@ class Lzip < Formula
     system "./configure", "--prefix=#{prefix}",
                           "CXX=#{ENV.cxx}",
                           "CXXFLAGS=#{ENV.cflags}"
-    system "make check"
+    system "make", "check"
     ENV.j1
-    system "make install"
+    system "make", "install"
   end
 
   test do
