@@ -11,7 +11,7 @@ class KegOnlyReason
 
   def valid?
     case @reason
-    when :provided_by_osx
+    when :provided_by_osx, :shadowed_by_osx
       OS.mac?
     when :provided_pre_mountain_lion
       MacOS.version < :mountain_lion
