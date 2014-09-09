@@ -41,7 +41,8 @@ class Libmspub < Formula
     EOS
     system ENV.cxx, "test.cpp", "-o", "test", "-lrevenge-stream-0.0",
                     "-I#{Formula["librevenge"].include}/librevenge-0.0",
-                    "-lmspub-0.1", "-I#{include}/libmspub-0.1"
+                    "-lmspub-0.1", "-I#{include}/libmspub-0.1",
+                    "-L#{lib}", "-L#{Formula["librevenge"].lib}"
     system "./test"
   end
 end
