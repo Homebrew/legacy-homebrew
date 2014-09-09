@@ -6,7 +6,7 @@ class GnuCobol < Formula
   sha1 "86e928c43cb3372f1f4564f3fd5e1dde668e8c1f"
 
   devel do
-    version "2.0"
+    version "2.0_nightly_r411"
     url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/2.0/gnu-cobol-2.0_nightly_r411.tar.gz"
     sha1 "009215c090b9a90fbf02bbc913095ce2a9b31910"
   end
