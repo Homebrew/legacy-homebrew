@@ -2,8 +2,8 @@ require "formula"
 
 class Kakasi < Formula
   homepage "http://www.namazu.org/"
-  url "http://kakasi.namazu.org/stable/kakasi-2.3.5.tar.gz"
-  sha1 "a9deadc8f43ab9719f4efd3abfa877ae28e33269"
+  url "http://kakasi.namazu.org/stable/kakasi-2.3.6.tar.gz"
+  sha1 "5f2e02264dda11940fb7b5387c327d4c4324bdb3"
 
   bottle do
     sha1 "5356d339f9094598cb2ec7946059ef6badc3e804" => :mavericks
