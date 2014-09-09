@@ -8,6 +8,7 @@ class Ircii < Formula
   depends_on "openssl"
 
   def install
+    ENV.append 'LIBS', '-liconv'
     system "./configure", "--prefix=#{prefix}",
                           "--with-default-server=irc.freenode.net",
                           "--enable-ipv6"
