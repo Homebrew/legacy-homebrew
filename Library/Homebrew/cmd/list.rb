@@ -10,7 +10,7 @@ module Homebrew
     # Things below use the CELLAR, which doesn't until the first formula is installed.
     return unless HOMEBREW_CELLAR.exist?
 
-    if ARGV.include? '--pinned' or ARGV.include? '--versions'
+    if ARGV.include? '--pinned' or ARGV.include? '--versions' or ARGV.include? '--multiple'
       filtered_list
     elsif ARGV.named.empty?
       ENV['CLICOLOR'] = nil
@@ -61,22 +61,18 @@ module Homebrew
     else
       ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
     end
-    if ARGV.include? '--pinned'
-      pinned_versions = {}
-      names.each do |d|
-        keg_pin = (HOMEBREW_LIBRARY/"PinnedKegs"/d.basename.to_s)
-        if keg_pin.exist? or keg_pin.symlink?
-          pinned_versions[d] = keg_pin.readlink.basename.to_s
-        end
-      end
-      pinned_versions.each do |d, version|
-        puts "#{d.basename}".concat(ARGV.include?('--versions') ? " #{version}" : '')
-      end
-    else # --versions without --pinned
-      names.each do |d|
-        versions = d.subdirs.map { |pn| pn.basename.to_s }
-        next if ARGV.include?('--multiple') && versions.count < 2
+
+    names.each do |d|
+      keg_pin = (HOMEBREW_LIBRARY/"PinnedKegs"/d.basename.to_s)
+      next if ARGV.include?('--pinned') && !(keg_pin.exist? or keg_pin.symlink?)
+
+      versions = d.subdirs.map { |pn| pn.basename.to_s }
+      next if ARGV.include?('--multiple') && versions.count < 2
+
+      if ARGV.include? '--versions'
         puts "#{d.basename} #{versions*' '}"
+      else
+        puts "#{d.basename}"
       end
     end
   end
