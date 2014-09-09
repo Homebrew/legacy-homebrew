@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Lrzip < Formula
-  homepage 'http://lrzip.kolivas.org'
-  url 'http://ck.kolivas.org/apps/lrzip/lrzip-0.616.tar.bz2'
-  sha1 '374a021ff087ee93b2d5894fd16aa3aef26dfa8f'
+  homepage "http://lrzip.kolivas.org"
+  url "http://ck.kolivas.org/apps/lrzip/lrzip-0.616.tar.bz2"
+  sha1 "374a021ff087ee93b2d5894fd16aa3aef26dfa8f"
 
   bottle do
     cellar :any
@@ -12,14 +12,14 @@ class Lrzip < Formula
     sha1 "c98d079acc3df1f3e2b1eabc51b7ac7e3f592109" => :lion
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   depends_on "lzo"
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do
