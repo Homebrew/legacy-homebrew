@@ -116,16 +116,16 @@ class Step
 
     @time = Time.now - start_time
 
-    success = $?.success?
-    @status = success ? :passed : :failed
+    @status = $?.success? ? :passed : :failed
     puts_result
 
-    return unless File.exist?(log)
-    @output = File.read(log)
-    if has_output? and (not success or @puts_output_on_success)
-      puts @output
+    if File.exist?(log)
+      @output = File.read(log)
+      if has_output? and (failed? or @puts_output_on_success)
+        puts @output
+      end
+      FileUtils.rm(log) unless ARGV.include? "--keep-logs"
     end
-    FileUtils.rm(log) unless ARGV.include? "--keep-logs"
   end
 end
 
@@ -179,6 +179,7 @@ class Test
       rd.close
       STDERR.reopen("/dev/null")
       STDOUT.reopen(wr)
+      wr.close
       Dir.chdir @repository
       exec("git", *args)
     end
