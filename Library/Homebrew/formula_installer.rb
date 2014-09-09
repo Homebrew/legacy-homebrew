@@ -462,7 +462,7 @@ class FormulaInstaller
   end
 
   def build_argv
-    Options.create(sanitized_ARGV_options) + options
+    sanitized_ARGV_options + options.as_flags
   end
 
   def build
@@ -481,8 +481,8 @@ class FormulaInstaller
       nice #{RUBY_PATH}
       -W0
       -I #{HOMEBREW_LIBRARY_PATH}
-      -rbuild
       --
+      #{HOMEBREW_LIBRARY_PATH}/build.rb
       #{f.path}
     ].concat(build_argv)
 

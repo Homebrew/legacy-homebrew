@@ -105,8 +105,10 @@ class Step
     log = log_file_path
 
     pid = fork do
-      STDOUT.reopen(log, "wb")
-      STDERR.reopen(log, "wb")
+      File.open(log, "wb") do |f|
+        STDOUT.reopen(f)
+        STDERR.reopen(f)
+      end
       Dir.chdir(@repository) if @command.first == "git"
       exec(*@command)
     end
@@ -114,16 +116,16 @@ class Step
 
     @time = Time.now - start_time
 
-    success = $?.success?
-    @status = success ? :passed : :failed
+    @status = $?.success? ? :passed : :failed
     puts_result
 
-    return unless File.exist?(log)
-    @output = File.read(log)
-    if has_output? and (not success or @puts_output_on_success)
-      puts @output
+    if File.exist?(log)
+      @output = File.read(log)
+      if has_output? and (failed? or @puts_output_on_success)
+        puts @output
+      end
+      FileUtils.rm(log) unless ARGV.include? "--keep-logs"
     end
-    FileUtils.rm(log) unless ARGV.include? "--keep-logs"
   end
 end
 
@@ -177,6 +179,7 @@ class Test
       rd.close
       STDERR.reopen("/dev/null")
       STDOUT.reopen(wr)
+      wr.close
       Dir.chdir @repository
       exec("git", *args)
     end
@@ -325,7 +328,16 @@ class Test
     return unless satisfied_requirements?(formula_object, :stable)
 
     installed_gcc = false
+    deps = formula_object.stable.deps.to_a
+    reqs = formula_object.stable.requirements.to_a
+    if formula_object.devel && !ARGV.include?('--HEAD')
+      deps |= formula_object.devel.deps.to_a
+      reqs |= formula_object.devel.requirements.to_a
+    end
+
+
     begin
+      deps.each {|f| CompilerSelector.new(f.to_formula).compiler }
       CompilerSelector.new(formula_object).compiler
     rescue CompilerSelectionError => e
       unless installed_gcc
@@ -337,6 +349,10 @@ class Test
       skip formula
       puts e.message
       return
+    end
+
+    if (deps | reqs).any? { |d| d.name == "mercurial" && d.build? }
+      test "brew", "install", "mercurial"
     end
 
     test "brew", "fetch", "--retry", *unchanged_dependencies unless unchanged_dependencies.empty?

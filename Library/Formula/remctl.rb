@@ -2,8 +2,8 @@ require 'formula'
 
 class Remctl < Formula
   homepage 'http://www.eyrie.org/~eagle/software/remctl/'
-  url 'http://archives.eyrie.org/software/kerberos/remctl-3.8.tar.gz'
-  sha1 '81d142cfeb1efa6582626e0c747139c83837b422'
+  url 'http://archives.eyrie.org/software/kerberos/remctl-3.9.tar.gz'
+  sha1 '9fbd9c48e085f521ac68fde8336dce2b839a9054'
 
   depends_on 'pcre'
   depends_on 'libevent'

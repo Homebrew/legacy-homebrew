@@ -246,6 +246,7 @@ module ServicesCli
       temp.flush
 
       rm service.dest if service.dest.exist?
+      service.dest_dir.mkpath unless service.dest_dir.directory?
       cp temp.path, service.dest
 
       # clear tempfile
@@ -317,8 +318,11 @@ class Service
   # Path to a static plist file, this is always `homebrew.mxcl.<formula>.plist`.
   def plist; @plist ||= formula.prefix + "#{label}.plist" end
 
+  # Path to destination plist directory, if run as root it's `boot_path`, else `user_path`.
+  def dest_dir; (ServicesCli.root? ? ServicesCli.boot_path : ServicesCli.user_path) end
+
   # Path to destination plist, if run as root it's in `boot_path`, else `user_path`.
-  def dest; (ServicesCli.root? ? ServicesCli.boot_path : ServicesCli.user_path) + "#{label}.plist" end
+  def dest; dest_dir + "#{label}.plist" end
 
   # Returns `true` if formula implements #startup_plist or file exists.
   def plist?; formula.installed? && (plist.file? || formula.respond_to?(:startup_plist)) end

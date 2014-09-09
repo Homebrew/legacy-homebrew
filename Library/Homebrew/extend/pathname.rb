@@ -48,6 +48,7 @@ class Pathname
     dst = dst.to_s
 
     dst = yield(src, dst) if block_given?
+    return unless dst
 
     mkpath
 

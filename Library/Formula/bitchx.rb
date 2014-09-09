@@ -15,7 +15,7 @@ class Bitchx < Formula
     args = %W{
       --prefix=#{prefix}
       --with-ssl
-      --with-plugins
+      --with-plugins=acro,aim,arcfour,amp,autocycle,blowfish,cavlink,encrypt,fserv,hint,identd,nap,pkga,possum,qbx,qmail
       --enable-ipv6
       --mandir=#{man}
     }

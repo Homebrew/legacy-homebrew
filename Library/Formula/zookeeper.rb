@@ -19,7 +19,7 @@ class Zookeeper < Formula
     depends_on "libtool" => :build
   end
 
-  option "c", "Build C bindings"
+  option "with-c", "Build C bindings"
   option "perl", "Build Perl bindings"
 
   depends_on :ant => :build
@@ -69,7 +69,7 @@ class Zookeeper < Formula
     end
 
     build_perl = build.include? "perl"
-    build_c = build.with?('python') || build_perl || build.include?("c")
+    build_c = build.with?('python') || build_perl || build.with?("c")
 
     # Build & install C libraries.
     cd "src/c" do

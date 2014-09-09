@@ -36,7 +36,7 @@ class SoftwareSpec
     @bottle_specification = BottleSpecification.new
     @patches = []
     @options = Options.new
-    @build = BuildOptions.new(Options.create(ARGV.options_only), options)
+    @build = BuildOptions.new(Options.create(ARGV.flags_only), options)
     @compiler_failures = []
   end
 
@@ -69,10 +69,10 @@ class SoftwareSpec
     resources.has_key?(name)
   end
 
-  def resource name, &block
+  def resource name, klass=Resource, &block
     if block_given?
       raise DuplicateResourceError.new(name) if resource_defined?(name)
-      res = Resource.new(name, &block)
+      res = klass.new(name, &block)
       resources[name] = res
       dependency_collector.add(res)
     else
@@ -92,7 +92,8 @@ class SoftwareSpec
         name = name.to_s
       end
       raise ArgumentError, "option name is required" if name.empty?
-      raise ArgumentError, "options should not start with dashes" if name.start_with?("-")
+      raise ArgumentError, "option name must be longer than one character" unless name.length > 1
+      raise ArgumentError, "option name must not start with dashes" if name.start_with?("-")
       Option.new(name, description)
     end
     options << opt

@@ -3,13 +3,14 @@ require "formula"
 class Dos2unix < Formula
   homepage "http://waterlan.home.xs4all.nl/dos2unix.html"
   url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.0.6.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/6.0.6/dos2unix-6.0.6.tar.gz"
   sha1 "95db60b4483fc66d93f96fb810e3eccd58e22dbb"
 
   depends_on "gettext"
 
   devel do
-    url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.1-beta1.tar.gz"
-    sha1 "32c1f34a5b51d46617f875c482c7849db34fe1b9"
+    url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.1-beta5.tar.gz"
+    sha1 "39c2a344fc5ce7e3192c05cdd82835ca4110e9fa"
   end
 
   def install

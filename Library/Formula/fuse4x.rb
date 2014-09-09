@@ -9,6 +9,7 @@ class Fuse4x < Formula
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
   depends_on 'gettext' => :build
+  depends_on ConflictsWithBinaryOsxfuse
   depends_on 'fuse4x-kext'
 
   conflicts_with 'osxfuse', :because => 'both install `fuse.pc`'

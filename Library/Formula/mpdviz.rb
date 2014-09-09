@@ -1,9 +1,30 @@
 require "formula"
+require "language/go"
 
 class Mpdviz < Formula
-  homepage "https://github.com/neeee/mpdviz"
-  url "http://github.com/neeee/mpdviz/archive/0.4.3.tar.gz"
-  sha1 "7923a818155c9fc413e483dcb1b3964ab00e5ded"
+  homepage "https://github.com/lucy/mpdviz"
+  url "http://github.com/lucy/mpdviz/archive/0.4.6.tar.gz"
+  sha1 "9b819f1e1a54ef86872d9ece167e7d1f0a337899"
+
+  go_resource "github.com/lucy/go-fftw" do
+    url "https://github.com/lucy/go-fftw.git",
+      :revision => "37bfa0d3053b133f7067e9524611a7a963294124"
+  end
+
+  go_resource "github.com/lucy/pflag" do
+    url "https://github.com/lucy/pflag.git",
+      :revision => "20db95b725d76759ba16e25ae6ae2ec67bf45216"
+  end
+
+  go_resource "github.com/lucy/termbox-go" do
+    url "https://github.com/lucy/termbox-go.git",
+      :revision => "a09edf97f26bd0a461d4660b5322236ecf9d4397"
+  end
+
+  go_resource "github.com/mattn/go-runewidth" do
+    url "https://github.com/mattn/go-runewidth.git",
+      :revision => "36f63b8223e701c16f36010094fb6e84ffbaf8e0"
+  end
 
   depends_on "pkg-config" => :build
   depends_on "go" => :build
@@ -11,11 +32,9 @@ class Mpdviz < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    system "go", "get", "github.com/neeee/go-fftw"
-    system "go", "get", "github.com/neeee/pflag"
-    system "go", "get", "github.com/neeee/termbox-go"
+    Language::Go.stage_deps resources, buildpath/"src"
+
     system "go", "build", "-o", "mpdviz"
     bin.install "mpdviz"
   end
-
 end

@@ -19,7 +19,7 @@ class UserspaceRcu < Formula
   end
 
   test do
-    system "cp", "-a", "#{share}/doc/userspace-rcu/examples", "."
+    system "cp", "-a", "#{doc}/examples", "."
     system "make", "-C", "examples"
   end
 end

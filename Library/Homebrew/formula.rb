@@ -260,11 +260,8 @@ class Formula
         # we allow formulae to do anything they want to the Ruby process
         # so load any deps before this point! And exit asap afterwards
         yield self
-      rescue RuntimeError, SystemCallError
-        %w(config.log CMakeCache.txt).each do |fn|
-          (HOMEBREW_LOGS/name).install(fn) if File.file?(fn)
-        end
-        raise
+      ensure
+        cp Dir["config.log", "CMakeCache.txt"], HOMEBREW_LOGS+name
       end
     end
   end
@@ -496,12 +493,11 @@ class Formula
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
-    rd, wr = IO.pipe
-
+    verbose = ARGV.verbose?
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
-    if cmd == "./configure" and not ARGV.verbose?
+    if cmd == "./configure" and not verbose
       pretty_args.delete "--disable-dependency-tracking"
       pretty_args.delete "--disable-debug"
     end
@@ -513,35 +509,30 @@ class Formula
     logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
-    pid = fork do
-      ENV['HOMEBREW_CC_LOG_PATH'] = logfn
+    log = File.open(logfn, "w")
+    begin
+      log.puts Time.now, "", cmd, args, ""
+      log.flush
 
-      # TODO system "xcodebuild" is deprecated, this should be removed soon.
-      if cmd.to_s.start_with? "xcodebuild"
-        ENV.remove_cc_etc
-      end
+      if verbose
+        rd, wr = IO.pipe
+        begin
+          pid = fork do
+            rd.close
+            log.close
+            exec_cmd(cmd, args, wr, logfn)
+          end
+          wr.close
 
-      # Turn on argument filtering in the superenv compiler wrapper.
-      # We should probably have a better mechanism for this than adding
-      # special cases to this method.
-      if cmd == "python" && %w[setup.py build.py].include?(args.first)
-        ENV.refurbish_args
-      end
-
-      rd.close
-      $stdout.reopen wr
-      $stderr.reopen wr
-      args.collect!{|arg| arg.to_s}
-      exec(cmd, *args) rescue nil
-      puts "Failed to execute: #{cmd}"
-      exit! 1 # never gets here unless exec threw or failed
-    end
-    wr.close
-
-    File.open(logfn, 'w') do |f|
-      while buf = rd.gets
-        f.puts buf
-        puts buf if ARGV.verbose?
+          while buf = rd.gets
+            log.puts buf
+            puts buf
+          end
+        ensure
+          rd.close
+        end
+      else
+        pid = fork { exec_cmd(cmd, args, log, logfn) }
       end
 
       Process.wait(pid)
@@ -549,19 +540,43 @@ class Formula
       $stdout.flush
 
       unless $?.success?
-        f.flush
-        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
-        f.puts
+        log.flush
+        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless verbose
+        log.puts
         require 'cmd/config'
-        Homebrew.dump_build_config(f)
+        Homebrew.dump_build_config(log)
         raise BuildError.new(self, cmd, args)
       end
+    ensure
+      log.close unless log.closed?
     end
-  ensure
-    rd.close unless rd.closed?
   end
 
   private
+
+  def exec_cmd(cmd, args, out, logfn)
+    ENV['HOMEBREW_CC_LOG_PATH'] = logfn
+
+    # TODO system "xcodebuild" is deprecated, this should be removed soon.
+    if cmd.to_s.start_with? "xcodebuild"
+      ENV.remove_cc_etc
+    end
+
+    # Turn on argument filtering in the superenv compiler wrapper.
+    # We should probably have a better mechanism for this than adding
+    # special cases to this method.
+    if cmd == "python" && %w[setup.py build.py].include?(args.first)
+      ENV.refurbish_args
+    end
+
+    $stdout.reopen(out)
+    $stderr.reopen(out)
+    out.close
+    args.collect!{|arg| arg.to_s}
+    exec(cmd, *args) rescue nil
+    puts "Failed to execute: #{cmd}"
+    exit! 1 # never gets here unless exec threw or failed
+  end
 
   def stage
     active_spec.stage do
@@ -575,7 +590,7 @@ class Formula
     active_spec.add_legacy_patches(patches)
     return if patchlist.empty?
 
-    active_spec.patches.grep(DATAPatch).each { |p| p.path = path }
+    active_spec.patches.grep(DATAPatch) { |p| p.path = path }
 
     active_spec.patches.select(&:external?).each do |patch|
       patch.verify_download_integrity(patch.fetch)
@@ -663,10 +678,14 @@ class Formula
     end
 
     # Define a named resource using a SoftwareSpec style block
-    def resource name, &block
+    def resource name, klass=Resource, &block
       specs.each do |spec|
-        spec.resource(name, &block) unless spec.resource_defined?(name)
+        spec.resource(name, klass, &block) unless spec.resource_defined?(name)
       end
+    end
+
+    def go_resource name, &block
+      resource name, Resource::Go, &block
     end
 
     def depends_on dep

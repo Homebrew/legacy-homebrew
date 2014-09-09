@@ -1,7 +1,7 @@
 require 'formula'
 
 class Cowpatty < Formula
-  homepage 'http://www.willhackforsushi.com/Cowpatty.html'
+  homepage 'http://www.willhackforsushi.com/?page_id=50'
   url 'http://www.willhackforsushi.com/code/cowpatty/4.3/cowpatty-4.3.tgz'
   sha1 '8b7cb2015d0534031827f2f06135bf5cf5929d35'
 

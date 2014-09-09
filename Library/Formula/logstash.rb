@@ -12,7 +12,7 @@ class Logstash < Formula
   end
 
   def caveats; <<-EOS.undent
-    Logstash 1.4 emits an unhelpful error if you try to start it sans config.
+    Logstash 1.4 emits an unhelpful error if you try to start it without config.
     Please read the getting started guide located at:
     http://logstash.net/docs/latest/tutorials/getting-started-with-logstash
     EOS
