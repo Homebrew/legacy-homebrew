@@ -2,8 +2,8 @@ require 'formula'
 
 class Lzip < Formula
   homepage 'http://www.nongnu.org/lzip/lzip.html'
-  url 'http://download.savannah.gnu.org/releases/lzip/lzip-1.15.tar.gz'
-  sha1 'a79d062d72071b5bb2bb7ef50dda6ac408c24192'
+  url 'http://download.savannah.gnu.org/releases/lzip/lzip-1.16.tar.gz'
+  sha1 '5bcefbb788305db7be9748d3c0478156518f1025'
 
   def install
     system "./configure", "--prefix=#{prefix}",
