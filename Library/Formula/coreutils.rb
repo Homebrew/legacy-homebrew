@@ -12,6 +12,8 @@ class Coreutils < Formula
     sha1 "63a5af5c94f1b0c4f3331f979aca98bbfde27445" => :lion
   end
 
+  option "default-names", "Do not prepend 'g' to the binary" if OS.linux?
+
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
   conflicts_with "idutils", :because => "both install `gid` and `gid.1`"
 
@@ -28,6 +30,17 @@ class Coreutils < Formula
     # Symlink all man(1) pages into libexec/gnuman without the 'g' prefix
     coreutils_filenames(man1).each do |cmd|
       (libexec/"gnuman"/"man1").install_symlink man1/"g#{cmd}" => cmd
+    end
+
+    if build.include? "default-names"
+      # Symlink all commands without the 'g' prefix
+      coreutils_filenames(bin).each do |cmd|
+        bin.install_symlink "g#{cmd}" => cmd
+      end
+      # Symlink all man(1) pages without the 'g' prefix
+      coreutils_filenames(man1).each do |cmd|
+        man1.install_symlink "g#{cmd}" => cmd
+      end
     end
   end
 
