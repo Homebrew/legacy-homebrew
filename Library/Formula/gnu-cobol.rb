@@ -15,7 +15,6 @@ class GnuCobol < Formula
   depends_on "automake" => :build
   depends_on "berkeley-db4"
   depends_on "gmp"
-  depends_on "gcc" if MacOS.version >= :mountain_lion
 
   fails_with :clang do
     cause <<-EOS.undent
