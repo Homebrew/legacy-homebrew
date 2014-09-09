@@ -5,6 +5,13 @@ class Lrzip < Formula
   url 'http://ck.kolivas.org/apps/lrzip/lrzip-0.616.tar.bz2'
   sha1 '374a021ff087ee93b2d5894fd16aa3aef26dfa8f'
 
+  bottle do
+    cellar :any
+    sha1 "c6a098cc34032bf2ad687904894190113506f299" => :mavericks
+    sha1 "fdd1673ca65a01041e4f6d7eba8b0ca26f7cd230" => :mountain_lion
+    sha1 "c98d079acc3df1f3e2b1eabc51b7ac7e3f592109" => :lion
+  end
+
   depends_on 'pkg-config' => :build
   depends_on "lzo"
 
