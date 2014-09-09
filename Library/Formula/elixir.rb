@@ -30,9 +30,9 @@ class Elixir < Formula
   sha1 '687287226c1e3412f33aa21d5c9711f3b5e7e1fb'
 
   devel do
-    url 'https://github.com/elixir-lang/elixir/archive/v1.0.0-rc1.tar.gz'
-    sha1 'cdf0bbef9b798bd204a363741fb200f7a14c2b01'
-    version '1.0.0-rc1'
+    url 'https://github.com/elixir-lang/elixir/archive/v1.0.0-rc2.tar.gz'
+    sha1 'da793715279fe3536ceb71a2db81cc3597b46eb4'
+    version '1.0.0-rc2'
   end
 
   head 'https://github.com/elixir-lang/elixir.git'
