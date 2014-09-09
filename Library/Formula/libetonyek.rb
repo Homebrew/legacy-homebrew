@@ -36,8 +36,12 @@ class Libetonyek < Formula
       }
     EOS
     system ENV.cxx, "test.cpp", "-o", "test",
-                    "-lrevenge-0.0", "-I#{Formula["librevenge"].include}/librevenge-0.0",
-                    "-letonyek-0.1", "-I#{Formula["libetonyek"].include}/libetonyek-0.1"
+                    "-I#{Formula["librevenge"].include}/librevenge-0.0",
+                    "-I#{include}/libetonyek-0.1",
+                    "-L#{Formula["librevenge"].lib}",
+                    "-L#{lib}",
+                    "-lrevenge-0.0",
+                    "-letonyek-0.1"
     system "./test"
   end
 end
