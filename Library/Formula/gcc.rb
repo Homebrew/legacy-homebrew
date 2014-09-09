@@ -34,6 +34,7 @@ class Gcc < Formula
   end
 
   option "with-java", "Build the gcj compiler"
+  option "with-go", "Build the gccgo compiler"
   option "with-all-languages", "Enable all compilers and languages, except Ada"
   option "with-nls", "Build with native language support (localization)"
   option "without-fortran", "Build without the gfortran compiler"
@@ -89,6 +90,7 @@ class Gcc < Formula
     # (gnat) to bootstrap. GCC 4.6.0 add go as a language option, but it is
     # currently only compilable on Linux.
     languages << "fortran" if build.with?("fortran") || build.with?("all-languages")
+    languages << "go" if build.with?("go") || build.with?("all-languages")
     languages << "java" if build.with?("java") || build.with?("all-languages")
 
     args = [
