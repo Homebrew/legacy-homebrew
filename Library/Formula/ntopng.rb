@@ -17,7 +17,6 @@ class Ntopng < Formula
   depends_on "luajit" => :build
   depends_on "gnutls" => :build
   depends_on "geoip"
-  depends_on "sqlite"
   depends_on "redis"
 
   def install
