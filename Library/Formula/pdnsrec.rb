@@ -5,6 +5,13 @@ class Pdnsrec < Formula
   url 'http://downloads.powerdns.com/releases/pdns-recursor-3.6.1.tar.bz2'
   sha1 'b77befa0a20d9822523dec44c2559ffda4ea689d'
 
+  bottle do
+    cellar :any
+    sha1 "e3e642cc9cda280a6e0d798efcd54fcc486c0ac2" => :mavericks
+    sha1 "1e7f0e0eb7fc1cf8af80bb911a3f682fdb095199" => :mountain_lion
+    sha1 "ea6dc4741847785620f6e48cc1f8205a880a85c2" => :lion
+  end
+
   depends_on :macos => :lion
   depends_on 'boost'
   depends_on 'lua' => :optional
