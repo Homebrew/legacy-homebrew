@@ -20,7 +20,7 @@ class Ntopng < Formula
   depends_on "wget" => :build
   depends_on "rrdtool"
   depends_on "zeromq" => :build
-  depends_on "luajit" => :build
+  depends_on "luajit"
   depends_on "gnutls" => :build
   depends_on "geoip"
   depends_on "redis"
