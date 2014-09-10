@@ -6,7 +6,7 @@ class Proverif < Formula
   sha1 "d03d63d9ad30eaec3c6f60ab187a0da6490000ca"
   version "1.88.1"
 
-  depends_on 'ocaml'
+  depends_on 'objective-caml'
 
   def install
     system "./build"
