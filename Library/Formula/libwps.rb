@@ -1,9 +1,9 @@
 require "formula"
 
 class Libwps < Formula
-  homepage 'http://libwps.sourceforge.net'
-  url 'http://dev-www.libreoffice.org/src/libwps-0.3.0.tar.bz2'
-  sha1 '526323bd59b5f59f8533882fb455e5886bf1f6dc'
+  homepage "http://libwps.sourceforge.net"
+  url "http://dev-www.libreoffice.org/src/libwps-0.3.0.tar.bz2"
+  sha1 "526323bd59b5f59f8533882fb455e5886bf1f6dc"
 
   bottle do
     cellar :any
@@ -12,10 +12,10 @@ class Libwps < Formula
     sha1 "2dcfb58aee6a117f78aae21596b683abda9d399d" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'boost' => :build
-  depends_on 'libwpd'
-  depends_on 'librevenge'
+  depends_on "pkg-config" => :build
+  depends_on "boost" => :build
+  depends_on "libwpd"
+  depends_on "librevenge"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
