@@ -197,6 +197,7 @@ class Gcc < Formula
     if lib64.directory?
       system "mv #{lib64}/* #{lib}/"
       rmdir lib64
+      prefix.install_symlink "lib" => "lib64"
     end
   end
 
