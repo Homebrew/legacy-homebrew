@@ -9,7 +9,7 @@ class Qt < Formula
     mirror "http://download.qt-project.org/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
     sha1 "ddf9c20ca8309a116e0466c42984238009525da6"
 
-  # This patch should be able to be removed with the next stable Qt4 release.
+    # This patch should be able to be removed with the next stable Qt4 release.
     patch do
       url "https://raw.githubusercontent.com/DomT4/scripts/master/Homebrew_Resources/Qt/qt4patch.diff"
       sha1 "57246a33460246118a1fab7460c79f2077d3a929"
