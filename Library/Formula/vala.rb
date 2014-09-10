@@ -3,6 +3,8 @@ require "formula"
 class Vala < Formula
   homepage "http://live.gnome.org/Vala"
   head "git://git.gnome.org/vala"
+  # Gnome software uses x.odd releases as development releases and we want to
+  # stick with the stable releases.
   url "http://ftp.acc.umu.se/pub/gnome/sources/vala/0.24/vala-0.24.0.tar.xz"
   sha1 "33a71a21e12e80cf1f4e0aa3b6a6523ff38e92c8"
 
