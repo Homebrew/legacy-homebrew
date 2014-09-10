@@ -7,7 +7,7 @@ class Djmount < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'libupnp'
-  depends_on 'osxfuse'
+  depends_on :osxfuse
 
   patch :p0, :DATA
 
