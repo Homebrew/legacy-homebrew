@@ -208,6 +208,36 @@ class Gcc < Formula
     File.rename file, "#{dir}/#{base}-#{suffix}#{ext}"
   end
 
+  def post_install
+    if OS.linux?
+      # Create the GCC specs file
+      # See https://gcc.gnu.org/onlinedocs/gcc/Spec-Files.html
+
+      # Locate the specs file
+      gcc = "gcc-#{version_suffix}"
+      specs = Pathname.new(`#{bin}/#{gcc} -print-libgcc-file-name`).dirname/"specs"
+      ohai "Creating the GCC specs file: #{specs}"
+      raise "command failed: #{gcc} -print-libgcc-file-name" if $?.exitstatus != 0
+      specs_orig = Pathname.new("#{specs}.orig")
+      rm_f [specs_orig, specs]
+
+      # Save a backup of the default specs file
+      s = `#{bin}/#{gcc} -dumpspecs`
+      raise "command failed: #{gcc} -dumpspecs" if $?.exitstatus != 0
+      specs_orig.write s
+
+      # Set the library search path
+      s += "*link:\n+ -L#{HOMEBREW_PREFIX}/lib -rpath #{HOMEBREW_PREFIX}/lib"
+      # Set the dynamic linker
+      glibc = Formula["glibc"]
+      if glibc.installed?
+        s += " --dynamic-linker #{glibc.opt_lib}/ld-linux-x86-64.so.2"
+      end
+      s += "\n\n"
+      specs.write s
+    end
+  end
+
   def caveats
     if build.with?("multilib") then <<-EOS.undent
       GCC has been built with multilib support. Notably, OpenMP may not work:
