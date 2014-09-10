@@ -16,12 +16,13 @@ class Ntopng < Formula
   depends_on "pkg-config" => :build
   depends_on "libtool" => :build
   depends_on "json-glib" => :build
-  depends_on "json-c"
   depends_on "wget" => :build
-  depends_on "rrdtool"
   depends_on "zeromq" => :build
-  depends_on "luajit" => :build
   depends_on "gnutls" => :build
+
+  depends_on "json-c"
+  depends_on "rrdtool"
+  depends_on "luajit"
   depends_on "geoip"
   depends_on "redis"
 
