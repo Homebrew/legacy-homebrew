@@ -4,7 +4,7 @@ require "formula"
 # https://helpx.adobe.com/air/kb/archived-air-sdk-version.html
 class AdobeAirSdk < Formula
   homepage "http://adobe.com/products/air/sdk"
-  version "15.0"
+  version "15.0.0.249"
 
   option "with-flex-support", "Do not download the new compiler with the SDK."
 
