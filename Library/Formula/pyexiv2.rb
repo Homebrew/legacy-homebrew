@@ -15,6 +15,9 @@ class Pyexiv2 < Formula
   def install
     # this build script ignores CPPFLAGS, but it honors CXXFLAGS
     ENV.append "CXXFLAGS", ENV.cppflags
+    ENV.append "CXXFLAGS", "-I#{Formula["boost"].include}"
+    ENV.append "CXXFLAGS", "-I#{Formula["exiv2"].include}"
+
     scons "BOOSTLIB=boost_python-mt"
 
     # let's install manually
