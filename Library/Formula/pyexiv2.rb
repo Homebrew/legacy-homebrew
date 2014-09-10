@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class Pyexiv2 < Formula
-  homepage 'http://tilloy.net/dev/pyexiv2/'
-  url 'http://launchpad.net/pyexiv2/0.3.x/0.3.2/+download/pyexiv2-0.3.2.tar.bz2'
-  sha1 'ad20ea6925571d58637830569076aba327ff56d9'
+  homepage "http://tilloy.net/dev/pyexiv2/"
+  url "http://launchpad.net/pyexiv2/0.3.x/0.3.2/+download/pyexiv2-0.3.2.tar.bz2"
+  sha1 "ad20ea6925571d58637830569076aba327ff56d9"
 
-  depends_on 'scons' => :build
-  depends_on 'exiv2'
-  depends_on 'boost' => 'with-python'
+  depends_on "scons" => :build
+  depends_on "exiv2"
+  depends_on "boost" => "with-python"
 
   # Patch to use Framework Python
   patch :DATA
@@ -21,8 +21,8 @@ class Pyexiv2 < Formula
     scons "BOOSTLIB=boost_python-mt"
 
     # let's install manually
-    mv 'build/libexiv2python.dylib', 'build/libexiv2python.so'
-    (lib+'python2.7/site-packages').install 'build/libexiv2python.so', 'src/pyexiv2'
+    mv "build/libexiv2python.dylib", "build/libexiv2python.so"
+    (lib+"python2.7/site-packages").install "build/libexiv2python.so", "src/pyexiv2"
   end
 end
 
