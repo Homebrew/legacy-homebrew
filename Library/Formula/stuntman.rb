@@ -9,7 +9,6 @@ class Stuntman < Formula
   depends_on "boost" => :build
 
   def install
-    #inreplace "common.inc", /# BOOST_INCLUDE := .*/, "BOOST_INCLUDE L= #{include}"
     system "make"
     bin.install "stunserver", "stunclient", "stuntestcode"
   end
