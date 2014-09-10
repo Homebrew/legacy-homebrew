@@ -32,9 +32,13 @@ class Libwps < Formula
       }
     EOS
     system ENV.cc, "test.cpp", "-o", "test",
-                  "-lrevenge-0.0", "-I#{Formula["librevenge"].include}/librevenge-0.0",
-                  "-lwpd-0.10", "-I#{Formula["libwpd"].include}/libwpd-0.10",
-                  "-lwps-0.3", "-I#{include}/libwps-0.3"
+                  "-lrevenge-0.0",
+                  "-I#{Formula["librevenge"].include}/librevenge-0.0",
+                  "-L#{Formula["librevenge"].lib}",
+                  "-lwpd-0.10",
+                  "-I#{Formula["libwpd"].include}/libwpd-0.10",
+                  "-L#{Formula["libwpd"].lib}",
+                  "-lwps-0.3", "-I#{include}/libwps-0.3", "-L#{lib}"
     system "./test"
   end
 end
