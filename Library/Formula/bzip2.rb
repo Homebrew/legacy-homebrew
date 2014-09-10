@@ -19,6 +19,6 @@ class Bzip2 < Formula
   end
 
   test do
-    system "#{bin}/bzip2 --version"
+    system "#{bin}/bzip2 --help"
   end
 end
