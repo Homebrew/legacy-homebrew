@@ -16,9 +16,10 @@ class Wxmac < Formula
   end
 
   bottle do
-    sha1 "ea0f50918d4f4e1133ede454588a8b9853489c1f" => :mavericks
-    sha1 "f667fbad16c6d1970240d823d5aeb2c86c22d609" => :mountain_lion
-    sha1 "49eda94f33d296e1a0f90ab26e9caed7b6e857e6" => :lion
+    revision 6
+    sha1 "fa5b9dc8ff899b0856cf806d17b18b4f40e51e29" => :mavericks
+    sha1 "8b23999086a9890c5b9ee0d7af25492f6c9be158" => :mountain_lion
+    sha1 "a12b5cb4322a7b8aae9fde6fdbeff4b9e3ef7cda" => :lion
   end
 
   depends_on "jpeg"
