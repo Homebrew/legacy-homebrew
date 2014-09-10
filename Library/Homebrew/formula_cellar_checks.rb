@@ -62,7 +62,7 @@ module FormulaCellarChecks
                           .jar .prl .pm .sh)
     non_libraries = f.lib.children.select do |g|
       next if g.directory?
-      not valid_extensions.include? g.extname
+      !(valid_extensions.include?(g.extname) || g.basename.to_s.include?(".so."))
     end
     return if non_libraries.empty?
 
