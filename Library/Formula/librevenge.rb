@@ -33,6 +33,7 @@ class Librevenge < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.cpp", "-lrevenge-0.0", "-I#{include}/librevenge-0.0"
+    system ENV.cc, "test.cpp", "-lrevenge-0.0",
+                   "-I#{include}/librevenge-0.0", "-L#{lib}"
   end
 end
