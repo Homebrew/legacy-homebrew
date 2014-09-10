@@ -4,6 +4,7 @@ class Lighttpd < Formula
   homepage 'http://www.lighttpd.net/'
   url 'http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.35.tar.bz2'
   sha256 '4a71c1f6d8af41ed894b507720c4c17184dc320590013881d5170ca7f15c5bf7'
+  revision 1
 
   bottle do
     sha1 "39d57cd89e0b885ce706b4a39fe14a25a33929e9" => :mavericks
@@ -18,7 +19,7 @@ class Lighttpd < Formula
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
   depends_on 'pcre'
-  depends_on 'lua' => :optional
+  depends_on 'lua51' => :optional
   depends_on 'libev' => :optional
 
   # default max. file descriptors; this option will be ignored if the server is not started as root
