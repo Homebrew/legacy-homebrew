@@ -8,6 +8,8 @@ class Pktanon < Formula
   depends_on 'xerces-c'
   depends_on 'boost'
 
+  patch :DATA
+
   def install
     # include the boost system library to resolve compilation errors
     ENV["LIBS"] = "-lboost_system-mt"
@@ -17,3 +19,17 @@ class Pktanon < Formula
     system "make", "install"
   end
 end
+
+__END__
+diff --git a/src/Timer.cpp b/src/Timer.cpp
+index f97be1d..6fb7d53 100644
+--- a/src/Timer.cpp
++++ b/src/Timer.cpp
+@@ -17,6 +17,7 @@
+ //
+ 
+ #include "Timer.h"
++#include <unistd.h> // for ::sleep(unsigned int)
+ 
+ Timer::Timer ()
+ :	userdata	(NULL),
