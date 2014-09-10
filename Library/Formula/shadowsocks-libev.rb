@@ -4,7 +4,6 @@ class ShadowsocksLibev < Formula
   homepage "https://github.com/madeye/shadowsocks-libev"
   url "https://github.com/madeye/shadowsocks-libev/archive/v1.4.7.tar.gz"
   sha1 "f14b0c59e8f290a0e77b231bf0d0967557c1ca88"
-  revision 1
 
   bottle do
     revision 2
