@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Pdnsrec < Formula
-  homepage 'http://wiki.powerdns.com'
-  url 'http://downloads.powerdns.com/releases/pdns-recursor-3.6.1.tar.bz2'
-  sha1 'b77befa0a20d9822523dec44c2559ffda4ea689d'
+  homepage "http://wiki.powerdns.com"
+  url "http://downloads.powerdns.com/releases/pdns-recursor-3.6.1.tar.bz2"
+  sha1 "b77befa0a20d9822523dec44c2559ffda4ea689d"
 
   bottle do
     cellar :any
@@ -13,8 +13,8 @@ class Pdnsrec < Formula
   end
 
   depends_on :macos => :lion
-  depends_on 'boost'
-  depends_on 'lua' => :optional
+  depends_on "boost"
+  depends_on "lua" => :optional
 
   # Temporary workaround for Mavericks
   # https://github.com/PowerDNS/pdns/issues/1707
@@ -22,15 +22,15 @@ class Pdnsrec < Formula
 
   def install
     # Set overrides using environment variables
-    ENV['DESTDIR'] = "#{prefix}"
-    ENV['OPTFLAGS'] = "-O0"
+    ENV["DESTDIR"] = "#{prefix}"
+    ENV["OPTFLAGS"] = "-O0"
     ENV.O0
 
     # Include Lua if requested
     if build.with? "lua"
-      ENV['LUA'] = "1"
-      ENV['LUA_CPPFLAGS_CONFIG'] = "-I#{Formula["lua"].opt_include}"
-      ENV['LUA_LIBS_CONFIG'] = "-llua"
+      ENV["LUA"] = "1"
+      ENV["LUA_CPPFLAGS_CONFIG"] = "-I#{Formula["lua"].opt_include}"
+      ENV["LUA_LIBS_CONFIG"] = "-llua"
     end
 
     # Adjust hard coded paths in Makefile
@@ -40,7 +40,7 @@ class Pdnsrec < Formula
     inreplace "Makefile", "/var/run/", "#{var}/run/"
 
     # Compile
-    system "make basic_checks"
+    system "make", "basic_checks"
     system "make"
 
     # Do the install manually
@@ -49,7 +49,7 @@ class Pdnsrec < Formula
     man1.install "pdns_recursor.1", "rec_control.1"
 
     # Generate a default configuration file
-    (prefix/'etc/powerdns').mkpath
+    (prefix/"etc/powerdns").mkpath
     system "#{sbin}/pdns_recursor --config > #{prefix}/etc/powerdns/recursor.conf"
   end
 end
