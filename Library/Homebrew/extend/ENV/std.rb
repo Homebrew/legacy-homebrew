@@ -39,7 +39,7 @@ module Stdenv
       self['CPPFLAGS'] = "-isystem#{HOMEBREW_PREFIX}/include"
       self['LDFLAGS'] = "-L#{HOMEBREW_PREFIX}/lib"
       # CMake ignores the variables above
-      self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
+      self['CMAKE_PREFIX_PATH'] = HOMEBREW_PREFIX.to_s
     end
 
     frameworks = HOMEBREW_PREFIX.join("Frameworks")
@@ -74,10 +74,10 @@ module Stdenv
 
   def determine_pkg_config_libdir
     paths = []
-    paths << HOMEBREW_PREFIX/'lib/pkgconfig'
-    paths << HOMEBREW_PREFIX/'share/pkgconfig'
-    paths << HOMEBREW_REPOSITORY/"Library/ENV/pkgconfig/#{MacOS.version}"
-    paths << '/usr/lib/pkgconfig'
+    paths << "#{HOMEBREW_PREFIX}/lib/pkgconfig"
+    paths << "#{HOMEBREW_PREFIX}/share/pkgconfig"
+    paths << "#{HOMEBREW_LIBRARY}/ENV/pkgconfig/#{MacOS.version}"
+    paths << "/usr/lib/pkgconfig"
     paths.select { |d| File.directory? d }.join(File::PATH_SEPARATOR)
   end
 
@@ -157,7 +157,7 @@ module Stdenv
         delete('CMAKE_PREFIX_PATH')
       else
         # It was set in setup_build_environment, so we have to restore it here.
-        self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
+        self['CMAKE_PREFIX_PATH'] = HOMEBREW_PREFIX.to_s
       end
       remove 'CMAKE_FRAMEWORK_PATH', "#{sdk}/System/Library/Frameworks"
     end
