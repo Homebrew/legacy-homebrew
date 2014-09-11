@@ -5,7 +5,7 @@ class Elasticsearch < Formula
   url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.3.2.tar.gz"
   sha1 "a7ea036468473084cd62e846f05a2069a987fb03"
 
-  depends_on :java => "1.8"
+  depends_on :java => "1.7"
 
   head do
     url "https://github.com/elasticsearch/elasticsearch.git"
