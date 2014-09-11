@@ -2,15 +2,11 @@ require "formula"
 
 class Tbb < Formula
   homepage "http://www.threadingbuildingblocks.org/"
-  url "https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb42_20140601oss_src.tgz"
-  sha1 "f50c04a27f5e37c920a03be134dc57ccf909515d"
-  version "4.2.5"
+  url "https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb43_20140724oss_src.tgz"
+  sha1 "4cb73cd0ac61b790318358ae4782f80255715278"
+  version "4.3-20140724"
 
   bottle do
-    cellar :any
-    sha1 "1acf91deb5540f1ed153c3ece947146f84e52946" => :mavericks
-    sha1 "0e2799b23f8a7ee446fe49b986d1d8cc308ae755" => :mountain_lion
-    sha1 "626775355972feb9cbcf7a786c109112f36fd746" => :lion
   end
 
   option :cxx11
