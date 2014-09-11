@@ -27,7 +27,10 @@ class Mal4s < Formula
   stable do
     # fix compile failure.
     # https://github.com/secure411dotorg/mal4s/pull/38
-    patch :DATA
+    patch do
+      url "https://github.com/secure411dotorg/mal4s/commit/4d2ab83.diff"
+      sha1 "7d1006dd2b9f565997c16a4fbbfe6def4155afeb"
+    end
   end
 
   def install
@@ -46,17 +49,3 @@ class Mal4s < Formula
     system "#{bin}/mal4s", "--stop-at-end", "#{share}/mal4s/sample--newns.mal4s"
   end
 end
-
-__END__
-diff --git a/src/gource_settings.cpp b/src/gource_settings.cpp
-index 0401d7a..453bad3 100644
---- a/src/gource_settings.cpp
-+++ b/src/gource_settings.cpp
-@@ -25,6 +25,7 @@
- 
- #include "core/utf8/utf8.h"
- #include <time.h>
-+#include <iostream>
- 
- /*
- #include "formats/hg.h"
