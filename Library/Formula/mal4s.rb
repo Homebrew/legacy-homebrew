@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class Mal4s < Formula
-  homepage 'https://github.com/secure411dotorg/mal4s/'
-  url 'https://service.dissectcyber.com/mal4s/mal4s-1.1.2.tar.gz'
-  sha1 'a99b2ffb9d2e1395c8f38a27108611611ca925df'
+  homepage "https://github.com/secure411dotorg/mal4s/"
+  url "https://service.dissectcyber.com/mal4s/mal4s-1.1.2.tar.gz"
+  sha1 "a99b2ffb9d2e1395c8f38a27108611611ca925df"
 
-  head 'https://github.com/secure411dotorg/mal4s.git'
+  head "https://github.com/secure411dotorg/mal4s.git"
 
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
@@ -33,7 +33,7 @@ class Mal4s < Formula
   def install
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}"]
-    args << "--without-x" if build.without? 'x11'
+    args << "--without-x" if build.without? "x11"
     system "autoreconf", "-f", "-i"
     system "./configure", *args
     system "make", "install"
