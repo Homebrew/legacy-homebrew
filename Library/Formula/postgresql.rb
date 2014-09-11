@@ -54,14 +54,16 @@ class Postgresql < Formula
       --datadir=#{share}/#{name}
       --docdir=#{doc}
       --enable-thread-safety
-      --with-bonjour
-      --with-gssapi
-      --with-ldap
       --with-openssl
-      --with-pam
       --with-libxml
       --with-libxslt
     ]
+    args += %W[
+      --with-bonjour
+      --with-gssapi
+      --with-ldap
+      --with-pam
+    ] if OS.mac?
 
     args << "--with-python" if build.with? 'python'
     args << "--with-perl" unless build.include? 'no-perl'
