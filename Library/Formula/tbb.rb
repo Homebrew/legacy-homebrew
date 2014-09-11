@@ -7,6 +7,10 @@ class Tbb < Formula
   version "4.3-20140724"
 
   bottle do
+    cellar :any
+    sha1 "500a19e3b12c7ecd04d09c558403b03dabaef465" => :mavericks
+    sha1 "17194db68fe3dc0a932094f04776bc5c7eee756d" => :mountain_lion
+    sha1 "2bb200abaf9f8182bfb948e4dee513b9afca2198" => :lion
   end
 
   option :cxx11
