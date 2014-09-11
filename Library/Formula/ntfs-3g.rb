@@ -12,7 +12,7 @@ class Ntfs3g < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'osxfuse'
+  depends_on :osxfuse
   depends_on 'gettext'
 
   def install

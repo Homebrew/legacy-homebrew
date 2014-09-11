@@ -16,7 +16,7 @@ class Afflib < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "expat" => :optional
-  depends_on "osxfuse" => :optional
+  depends_on :osxfuse => :optional
 
   # This patch fixes a bug reported upstream over there
   # https://github.com/simsong/AFFLIBv3/issues/4

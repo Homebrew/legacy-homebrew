@@ -29,7 +29,7 @@ class Encfs < Formula
   depends_on 'boost'
   depends_on 'rlog'
   depends_on 'openssl'
-  depends_on 'osxfuse'
+  depends_on :osxfuse
   depends_on 'xz'
 
   def install
