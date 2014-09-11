@@ -2,27 +2,25 @@ require 'formula'
 
 class AndroidNdk < Formula
   homepage 'http://developer.android.com/sdk/ndk/index.html'
-  version 'r10'
+  version 'r10b'
 
   if MacOS.prefer_64_bit?
-    url "https://dl.google.com/android/ndk/android-ndk64-r10-darwin-x86_64.tar.bz2"
-    sha1 '9ecda655e448d3b249be17f1d66f7e4f9535a3b8'
+    url "https://dl.google.com/android/ndk/android-ndk64-r10b-darwin-x86_64.tar.bz2"
+    sha1 'b8354a4547cedb2901acc3dc35fd29104f6cc1bf'
 
     resource "32bit_target" do
-      url "https://dl.google.com/android/ndk/android-ndk32-r10-darwin-x86_64.tar.bz2"
-      sha1 '4a1d226ee7361b51c02e723b5758e3da536cdf8b'
+      url "https://dl.google.com/android/ndk/android-ndk32-r10b-darwin-x86_64.tar.bz2"
+      sha1 '6888a670c9d9007ffba7e314e38c367b6ea67f7c'
     end
   else
-    url "https://dl.google.com/android/ndk/android-ndk64-r10-darwin-x86.tar.bz2"
-    sha1 '0fbfd9b3af17cdab56ac475e1998f53c31fb9c1d'
+    url "https://dl.google.com/android/ndk/android-ndk64-r10b-darwin-x86.tar.bz2"
+    sha1 'e55fecfa0189a0f94725d3208a4a1c1d4235a3ab'
 
     resource "32bit_target" do
-      url "https://dl.google.com/android/ndk/android-ndk32-r10-darwin-x86.tar.bz2"
-      sha1 'd38f5fce29e07d8b4deb538ebc2ba1ba4c067afd'
+      url "https://dl.google.com/android/ndk/android-ndk32-r10b-darwin-x86.tar.bz2"
+      sha1 'ee763b15cded16d313feded1e7244ce094825574'
     end
   end
-
-  depends_on 'android-sdk'
 
   def install
     bin.mkpath
