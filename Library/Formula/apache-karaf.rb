@@ -7,6 +7,13 @@ class ApacheKaraf < Formula
 
   def install
     libexec.install "bin", "data", "demos", "deploy", "etc", "lib", "system"
+
+    bin.install_symlink "#{libexec}/bin/admin" => "karaf-admin"
+    bin.install_symlink "#{libexec}/bin/client" => "karaf-client"
+    bin.install_symlink "#{libexec}/bin/karaf" => "karaf"
+    bin.install_symlink "#{libexec}/bin/start" => "karaf-start"
+    bin.install_symlink "#{libexec}/bin/status" => "karaf-status"
+    bin.install_symlink "#{libexec}/bin/stop" => "karaf-stop"
   end
 
   test do
