@@ -22,6 +22,7 @@ class Osxfuse < Formula
 
   conflicts_with "fuse4x", :because => "both install `fuse.pc`"
 
+  # Fix for Xcode 6.1 beta
   patch :DATA
 
   def install
