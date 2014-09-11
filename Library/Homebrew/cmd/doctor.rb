@@ -413,6 +413,7 @@ def check_access_logs
 end
 
 def check_ruby_version
+  return unless OS.mac?
   ruby_version = MacOS.version >= "10.9" ? "2.0" : "1.8"
   if RUBY_VERSION[/\d\.\d/] != ruby_version then <<-EOS.undent
     Ruby version #{RUBY_VERSION} is unsupported on #{MacOS.version}. Homebrew
@@ -424,6 +425,7 @@ def check_ruby_version
 end
 
 def check_homebrew_prefix
+  return unless OS.mac?
   unless HOMEBREW_PREFIX.to_s == '/usr/local'
     <<-EOS.undent
       Your Homebrew is not installed to /usr/local
@@ -457,6 +459,7 @@ def check_xcode_prefix_exists
 end
 
 def check_xcode_select_path
+  return unless OS.mac?
   if not MacOS::CLT.installed? and not File.file? "#{MacOS.active_developer_dir}/usr/bin/xcodebuild"
     path = MacOS::Xcode.bundle_path
     path = '/Developer' if path.nil? or not path.directory?
@@ -569,6 +572,7 @@ def check_which_pkg_config
 end
 
 def check_for_gettext
+  return unless OS.mac?
   find_relative_paths("lib/libgettextlib.dylib",
                       "lib/libintl.dylib",
                       "include/libintl.h")
@@ -590,6 +594,7 @@ def check_for_gettext
 end
 
 def check_for_iconv
+  return unless OS.mac?
   unless find_relative_paths("lib/libiconv.dylib", "include/iconv.h").empty?
     if (f = Formulary.factory("libiconv") rescue nil) and f.linked_keg.directory?
       if not f.keg_only? then <<-EOS.undent
@@ -693,6 +698,7 @@ def check_for_symlinked_cellar
 end
 
 def check_for_multiple_volumes
+  return unless OS.mac?
   return unless HOMEBREW_CELLAR.exist?
   volumes = Volumes.new
 
@@ -719,6 +725,7 @@ def check_for_multiple_volumes
 end
 
 def check_filesystem_case_sensitive
+  return unless OS.mac?
   volumes = Volumes.new
   case_sensitive_vols = [HOMEBREW_PREFIX, HOMEBREW_REPOSITORY, HOMEBREW_CELLAR, HOMEBREW_TEMP].select do |dir|
     # We select the dir as being case-sensitive if either the UPCASED or the
@@ -927,6 +934,7 @@ def check_git_status
 end
 
 def check_git_ssl_verify
+  return unless OS.mac?
   if MacOS.version <= :leopard && !ENV['GIT_SSL_NO_VERIFY'] then <<-EOS.undent
     The version of libcurl provided with Mac OS X #{MacOS.version} has outdated
     SSL certificates.
@@ -1005,6 +1013,7 @@ def check_for_non_prefixed_coreutils
 end
 
 def check_for_non_prefixed_findutils
+  return unless OS.mac?
   default_names = Tab.for_name('findutils').include? 'default-names'
   if default_names then <<-EOS.undent
     Putting non-prefixed findutils in your path can cause python builds to fail.
