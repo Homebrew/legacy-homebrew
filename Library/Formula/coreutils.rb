@@ -12,13 +12,17 @@ class Coreutils < Formula
     sha1 "63a5af5c94f1b0c4f3331f979aca98bbfde27445" => :lion
   end
 
+  option 'default-names', "Do not prepend 'g' to the binary"
+
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
   conflicts_with "idutils", :because => "both install `gid` and `gid.1`"
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--program-prefix=g",
-                          "--without-gmp"
+    args = ["--prefix=#{prefix}", "--without-gmp"]
+    args << "--program-prefix=g" unless build.include? 'default-names'
+
+    system "./configure", *args
+
     system "make install"
 
     # Symlink all commands into libexec/gnubin without the 'g' prefix
@@ -33,6 +37,7 @@ class Coreutils < Formula
 
   def caveats; <<-EOS.undent
     All commands have been installed with the prefix 'g'.
+    If you do not want the prefix, install using the 'default-names' option.
 
     If you really need to use these commands with their normal names, you
     can add a "gnubin" directory to your PATH from your bashrc like:
