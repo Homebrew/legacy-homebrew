@@ -28,7 +28,7 @@ class OsspUuid < Formula
       ENV.append 'LDFLAGS', '-arch i386'
     end
 
-    system "./configure", "--disable-debug",
+    system "./configure",
                           "--prefix=#{prefix}",
                           "--without-perl",
                           "--without-php",
