@@ -77,10 +77,9 @@ module Homebrew
 
   def git_init_if_necessary
     if Dir[".git/*"].empty?
-      repository = if OS.linux? then "linuxbrew" else "homebrew" end
       safe_system "git", "init"
       safe_system "git", "config", "core.autocrlf", "false"
-      safe_system "git", "config", "remote.origin.url", "https://github.com/Homebrew/#{repository}.git"
+      safe_system "git", "config", "remote.origin.url", "https://github.com/Homebrew/#{OS::GITHUB_REPOSITORY}.git"
       safe_system "git", "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*"
       safe_system "git", "fetch", "origin"
       safe_system "git", "reset", "--hard", "origin/master"
