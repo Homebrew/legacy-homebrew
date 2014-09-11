@@ -13,6 +13,10 @@ class LibtorrentRasterbar < Formula
   end
 
   bottle do
+    cellar :any
+    sha1 "969616cddd409eec6d15d59dcf91cf71d8860d7a" => :mavericks
+    sha1 "8f4d2b6d1cd95bf981afcf9b0f6459149a266cd8" => :mountain_lion
+    sha1 "328c41126de1a7e6dd660ce04bb7c6c154b0cd64" => :lion
   end
 
   depends_on "pkg-config" => :build
