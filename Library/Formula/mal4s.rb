@@ -24,6 +24,12 @@ class Mal4s < Formula
 
   needs :cxx11
 
+  stable do
+    # fix compile failure.
+    # https://github.com/secure411dotorg/mal4s/pull/38
+    patch :DATA
+  end
+
   def install
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}"]
@@ -37,3 +43,17 @@ class Mal4s < Formula
     system "#{bin}/mal4s", "--stop-at-end", "#{share}/mal4s/sample--newns.mal4s"
   end
 end
+
+__END__
+diff --git a/src/gource_settings.cpp b/src/gource_settings.cpp
+index 0401d7a..453bad3 100644
+--- a/src/gource_settings.cpp
++++ b/src/gource_settings.cpp
+@@ -25,6 +25,7 @@
+ 
+ #include "core/utf8/utf8.h"
+ #include <time.h>
++#include <iostream>
+ 
+ /*
+ #include "formats/hg.h"
