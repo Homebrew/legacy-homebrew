@@ -42,10 +42,11 @@ module Stdenv
       self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
     end
 
-    if (HOMEBREW_PREFIX/'Frameworks').exist?
-      append 'CPPFLAGS', "-F#{HOMEBREW_PREFIX}/Frameworks"
-      append 'LDFLAGS', "-F#{HOMEBREW_PREFIX}/Frameworks"
-      self['CMAKE_FRAMEWORK_PATH'] = HOMEBREW_PREFIX/"Frameworks"
+    frameworks = HOMEBREW_PREFIX.join("Frameworks")
+    if frameworks.directory?
+      append "CPPFLAGS", "-F#{frameworks}"
+      append "LDFLAGS", "-F#{frameworks}"
+      self["CMAKE_FRAMEWORK_PATH"] = frameworks.to_s
     end
 
     # Os is the default Apple uses for all its stuff so let's trust them
