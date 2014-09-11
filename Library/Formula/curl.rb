@@ -56,6 +56,7 @@ class Curl < Formula
     args << (build.with?("libmetalink") ? "--with-libmetalink" : "--without-libmetalink")
     args << (build.with?("gssapi") ? "--with-gssapi" : "--without-gssapi")
     args << (build.with?("rtmp") ? "--with-librtmp" : "--without-librtmp")
+    args << "--disable-ldap"
 
     if build.with? "ares"
       args << "--enable-ares=#{Formula["c-ares"].opt_prefix}"
