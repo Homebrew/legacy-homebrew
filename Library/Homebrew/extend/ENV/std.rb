@@ -210,29 +210,29 @@ module Stdenv
 
   def x11
     # There are some config scripts here that should go in the PATH
-    append_path 'PATH', MacOS::X11.bin
+    append_path "PATH", MacOS::X11.bin.to_s
 
     # Append these to PKG_CONFIG_LIBDIR so they are searched
     # *after* our own pkgconfig directories, as we dupe some of the
     # libs in XQuartz.
-    append_path 'PKG_CONFIG_LIBDIR', MacOS::X11.lib/'pkgconfig'
-    append_path 'PKG_CONFIG_LIBDIR', MacOS::X11.share/'pkgconfig'
+    append_path "PKG_CONFIG_LIBDIR", "#{MacOS::X11.lib}/pkgconfig"
+    append_path "PKG_CONFIG_LIBDIR", "#{MacOS::X11.share}/pkgconfig"
 
-    append 'LDFLAGS', "-L#{MacOS::X11.lib}"
-    append_path 'CMAKE_PREFIX_PATH', MacOS::X11.prefix
-    append_path 'CMAKE_INCLUDE_PATH', MacOS::X11.include
-    append_path 'CMAKE_INCLUDE_PATH', MacOS::X11.include/'freetype2'
+    append "LDFLAGS", "-L#{MacOS::X11.lib}"
+    append_path "CMAKE_PREFIX_PATH", MacOS::X11.prefix.to_s
+    append_path "CMAKE_INCLUDE_PATH", MacOS::X11.include.to_s
+    append_path "CMAKE_INCLUDE_PATH", "#{MacOS::X11.include}/freetype2"
 
-    append 'CPPFLAGS', "-I#{MacOS::X11.include}"
-    append 'CPPFLAGS', "-I#{MacOS::X11.include}/freetype2"
+    append "CPPFLAGS", "-I#{MacOS::X11.include}"
+    append "CPPFLAGS", "-I#{MacOS::X11.include}/freetype2"
 
-    append_path 'ACLOCAL_PATH', MacOS::X11.share/'aclocal'
+    append_path "ACLOCAL_PATH", "#{MacOS::X11.share}/aclocal"
 
     if MacOS::XQuartz.provided_by_apple? and not MacOS::CLT.installed?
-      append_path 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11'
+      append_path "CMAKE_PREFIX_PATH", "#{MacOS.sdk_path}/usr/X11"
     end
 
-    append 'CFLAGS', "-I#{MacOS::X11.include}" unless MacOS::CLT.installed?
+    append "CFLAGS", "-I#{MacOS::X11.include}" unless MacOS::CLT.installed?
   end
   alias_method :libpng, :x11
 
