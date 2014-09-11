@@ -31,9 +31,12 @@ class Mal4s < Formula
   end
 
   def install
+    ENV.cxx11
+
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}"]
     args << "--without-x" if build.without? "x11"
+
     system "autoreconf", "-f", "-i"
     system "./configure", *args
     system "make", "install"
