@@ -22,6 +22,8 @@ class Osxfuse < Formula
 
   conflicts_with "fuse4x", :because => "both install `fuse.pc`"
 
+  patch :DATA
+
   def install
     # Do not override Xcode build settings
     ENV.remove_cc_etc
@@ -47,3 +49,18 @@ class Osxfuse < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/build.sh b/build.sh
+index 53724f2..f3275fb 100755
+--- a/build.sh
++++ b/build.sh
+@@ -2387,7 +2387,7 @@ function m_handler()
+                     M_XCODE51_VERSION=$m_xcode_version
+                 fi
+                 ;;
+-            6.0*)
++            6.0*|6.1*)
+                 m_version_compare $M_XCODE60_VERSION $m_xcode_version
+                 if [[ $? != 2 ]]
+                 then
