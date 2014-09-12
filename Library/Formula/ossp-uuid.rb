@@ -24,8 +24,7 @@ class OsspUuid < Formula
     if build.universal?
       ENV.universal_binary
     elsif build.build_32_bit?
-      ENV.append 'CFLAGS', '-arch i386'
-      ENV.append 'LDFLAGS', '-arch i386'
+      ENV.append %w[CFLAGS LDFLAGS], "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
     system "./configure", "--disable-debug",
