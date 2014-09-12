@@ -20,7 +20,7 @@ class Go < Formula
   def install
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
-    zsh_completion.install 'misc/zsh/go' => 'go'
+    zsh_completion.install 'misc/zsh/go' => '_go'
 
     # host platform (darwin) must come last in the targets list
     if build.include? 'cross-compile-all'
