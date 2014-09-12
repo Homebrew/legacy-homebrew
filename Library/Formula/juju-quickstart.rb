@@ -7,9 +7,9 @@ class JujuQuickstart < Formula
 
   bottle do
     cellar :any
-    sha1 "9182059dfd2eaa217519ea219ec31b2803fdafda" => :mavericks
-    sha1 "3e5728d42a4a740b643cff5b16f7bad51b65beb7" => :mountain_lion
-    sha1 "bc834cb2e2761a8be4754fc2e48e9b82d33f5050" => :lion
+    sha1 "84b274cebe23f5c83a998d7471cb71dee584b848" => :mavericks
+    sha1 "eecfe836a3db5a78fce3aed92d9eb4cb4df3481d" => :mountain_lion
+    sha1 "caeb57899d90a605c06560c943d8535d70a8c8c9" => :lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
