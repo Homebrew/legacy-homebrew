@@ -27,8 +27,7 @@ class OsspUuid < Formula
       ENV.append %w[CFLAGS LDFLAGS], "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
+    system "./configure", "--prefix=#{prefix}",
                           "--without-perl",
                           "--without-php",
                           "--without-pgsql"
