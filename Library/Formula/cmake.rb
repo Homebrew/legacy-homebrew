@@ -64,14 +64,15 @@ class Cmake < Formula
   depends_on NoExpatFramework
 
   def install
-      (buildpath/"sphinx").mkpath
-      resource("sphinx").stage do
-        system "python", "setup.py", "install",
-                                     "--prefix=#{buildpath}/sphinx",
-                                     "--record=installed.txt",
-                                     "--single-version-externally-managed"
-      ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
+    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", prefix+"lib/python2.7/site-packages"
+
+    resources.each do |r|
+      r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
     end
+
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
 
     args = %W[
       --prefix=#{prefix}
