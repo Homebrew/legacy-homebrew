@@ -493,7 +493,7 @@ def check_user_path_1
 
             Consider setting your PATH so that #{HOMEBREW_PREFIX}/bin
             occurs before /usr/bin. Here is a one-liner:
-                echo export PATH='#{HOMEBREW_PREFIX}/bin:$PATH' >> ~/.bash_profile
+                echo export PATH="#{HOMEBREW_PREFIX}/bin:$PATH" >> ~/.bash_profile
           EOS
         end
       end
@@ -511,7 +511,7 @@ def check_user_path_2
     <<-EOS.undent
       Homebrew's bin was not found in your PATH.
       Consider setting the PATH for example like so
-          echo export PATH='#{HOMEBREW_PREFIX}/bin:$PATH' >> ~/.bash_profile
+          echo export PATH="#{HOMEBREW_PREFIX}/bin:$PATH" >> ~/.bash_profile
     EOS
   end
 end
@@ -525,7 +525,7 @@ def check_user_path_3
         Homebrew's sbin was not found in your PATH but you have installed
         formulae that put executables in #{HOMEBREW_PREFIX}/sbin.
         Consider setting the PATH for example like so
-            echo export PATH='#{HOMEBREW_PREFIX}/sbin:$PATH' >> ~/.bash_profile
+            echo export PATH="#{HOMEBREW_PREFIX}/sbin:$PATH" >> ~/.bash_profile
       EOS
     end
   end
