@@ -30,6 +30,7 @@ class Qtiplot < Formula
 end
 
 __END__
+
 diff -Naur qtiplot-0.9.8.9/3rdparty/qt-assistant-client/include/QtAssistant qtiplot-0.9.8.9.patch.ok/3rdparty/qt-assistant-client/include/QtAssistant
 --- qtiplot-0.9.8.9/3rdparty/qt-assistant-client/include/QtAssistant	1970-01-01 01:00:00.000000000 +0100
 +++ qtiplot-0.9.8.9.patch.ok/3rdparty/qt-assistant-client/include/QtAssistant	2014-09-11 23:52:45.000000000 +0200
@@ -1138,6 +1139,18 @@ diff -Naur qtiplot-0.9.8.9/qtiplot/src/core/QtiPlotApplication.cpp qtiplot-0.9.8
  	mw->initWindow();
  
  	updateDockMenu();
+diff -Naur qtiplot-0.9.8.9/qtiplot/src/table/Table.cpp qtiplot-0.9.8.9.patch.ok/qtiplot/src/table/Table.cpp
+--- qtiplot-0.9.8.9/qtiplot/src/table/Table.cpp	2011-09-13 13:20:29.000000000 +0200
++++ qtiplot-0.9.8.9.patch.ok/qtiplot/src/table/Table.cpp	2014-09-12 18:41:08.000000000 +0200
+@@ -564,7 +564,7 @@
+ 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+ 
+     muParserScript *mup = new muParserScript(scriptEnv, cmd, this,  QString("<%1>").arg(colName(col)));
+-    double *r = mup->defineVariable("i");
++    double *r = mup->defineVariable("i",startRow + 1.0);
+     mup->defineVariable("j", (double)col);
+     mup->defineVariable("sr", startRow + 1.0);
+     mup->defineVariable("er", endRow + 1.0);
 diff -Naur qtiplot-0.9.8.9/qtiplot.pro qtiplot-0.9.8.9.patch.ok/qtiplot.pro
 --- qtiplot-0.9.8.9/qtiplot.pro	2010-09-20 19:08:10.000000000 +0200
 +++ qtiplot-0.9.8.9.patch.ok/qtiplot.pro	2014-09-12 00:33:15.000000000 +0200
