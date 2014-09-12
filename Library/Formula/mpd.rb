@@ -2,8 +2,8 @@ require 'formula'
 
 class Mpd < Formula
   homepage "http://www.musicpd.org/"
-  url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.13.tar.xz"
-  sha1 "0ddf8c55228fcc67522ecdd7710f93dc146c99a7"
+  url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.14.tar.xz"
+  sha1 "5a4b5f5b0447994f3fc186ffd7c16cabeeed2978"
 
   bottle do
     sha1 "cf904228a9f7bff8314790dd314b8237e2e807f5" => :mavericks
