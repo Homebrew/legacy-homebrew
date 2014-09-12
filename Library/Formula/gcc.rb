@@ -172,6 +172,12 @@ class Gcc < Formula
       if build.with?("fortran") || build.with?("all-languages")
         bin.install_symlink bin/"gfortran-#{version_suffix}" => "gfortran"
       end
+
+      if OS.linux?
+        # Create gcc and g++ symlinks
+        bin.install_symlink "gcc-#{version_suffix}" => "gcc"
+        bin.install_symlink "g++-#{version_suffix}" => "g++"
+      end
     end
 
     # Handle conflicts between GCC formulae and avoid interfering
@@ -216,6 +222,11 @@ class Gcc < Formula
 
   def post_install
     if OS.linux?
+      # Create cc and c++ symlinks, unless they already exist
+      homebrew_bin = Pathname.new "#{HOMEBREW_PREFIX}/bin"
+      homebrew_bin.install_symlink "gcc" => "cc" unless (homebrew_bin/"cc").exist?
+      homebrew_bin.install_symlink "g++" => "c++" unless (homebrew_bin/"c++").exist?
+
       # Create the GCC specs file
       # See https://gcc.gnu.org/onlinedocs/gcc/Spec-Files.html
 
