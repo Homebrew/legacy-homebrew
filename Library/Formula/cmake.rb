@@ -21,11 +21,11 @@ class NoExpatFramework < Requirement
 end
 
 class Cmake < Formula
-  homepage 'http://www.cmake.org/'
-  url 'http://www.cmake.org/files/v3.0/cmake-3.0.1.tar.gz'
-  sha1 'b7e4acaa7fc7adf54c1b465c712e5ea473b8b74f'
+  homepage "http://www.cmake.org/"
+  url "http://www.cmake.org/files/v3.0/cmake-3.0.2.tar.gz"
+  sha1 "379472e3578902a1d6f8b68a9987773151d6f21a"
 
-  head 'http://cmake.org/cmake.git'
+  head "http://cmake.org/cmake.git"
 
   bottle do
     cellar :any
@@ -34,13 +34,27 @@ class Cmake < Formula
     sha1 "dba7684d1d65423df75fd28f459525eb08590232" => :lion
   end
 
+  depends_on :python => :build if MacOS.version <= :snow_leopard
+
+  resource "sphinx" do
+    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
+    sha1 "3a11f130c63b057532ca37fe49c8967d0cbae1d5"
+  end
+
   depends_on NoExpatFramework
 
   def install
+    resource("sphinx").stage do
+      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
+      system "python", "setup.py", "install", "--prefix=#{buildpath}/sphinx"
+    end
+    ENV.prepend_path "PATH", "#{buildpath}/sphinx/bin"
+
     args = %W[
       --prefix=#{prefix}
       --system-libs
       --no-system-libarchive
+      --sphinx-man
       --datadir=/share/cmake
       --docdir=/share/doc/cmake
       --mandir=/share/man
