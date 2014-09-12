@@ -21,7 +21,7 @@ class AndroidNdk < Formula
     end
   end
 
-  depends_on 'android-sdk'
+  depends_on 'android-sdk' => :recommended
 
   def install
     bin.mkpath
