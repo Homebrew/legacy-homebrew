@@ -117,12 +117,14 @@ class Gcc < Formula
       "--with-mpc=#{Formula["libmpc"].opt_prefix}",
       "--with-cloog=#{Formula["cloog"].opt_prefix}",
       "--with-isl=#{Formula["isl"].opt_prefix}",
-      "--with-system-zlib",
     ]
+    args += [
+      "--with-system-zlib",
       # This ensures lib, libexec, include are sandboxed so that they
       # don't wander around telling little children there is no Santa
       # Claus.
-    args << "--enable-version-specific-runtime-libs" if OS.mac?
+      "--enable-version-specific-runtime-libs",
+    ] if OS.mac?
     args += [
       "--enable-libstdcxx-time=yes",
       "--enable-stage1-checking",
