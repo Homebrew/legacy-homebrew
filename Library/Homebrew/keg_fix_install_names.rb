@@ -20,6 +20,7 @@ class Keg
   end
 
   def relocate_install_names old_prefix, new_prefix, old_cellar, new_cellar, options={}
+    return unless OS.mac?
     mach_o_files.each do |file|
       file.ensure_writable do
         if file.dylib?
