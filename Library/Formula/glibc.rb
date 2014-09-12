@@ -6,10 +6,10 @@ class Glibc < Formula
   sha1 "382f4438a7321dc29ea1a3da8e7852d2c2b3208c"
 
   # binutils 2.20 or later is required
-  depends_on "binutils" => [:build, :optional]
+  depends_on "binutils" => [:build, :recommended]
 
   # Linux kernel headers 2.6.19 or later are required
-  depends_on "linux-headers" => [:build, :optional]
+  depends_on "linux-headers" => [:build, :recommended]
 
   def install
     mkdir "build" do
