@@ -2,8 +2,8 @@ require 'formula'
 
 class OsspUuid < Formula
   homepage 'http://www.ossp.org/pkg/lib/uuid/'
-  url 'ftp://ftp.ossp.org/pkg/lib/uuid/uuid-1.6.2.tar.gz'
-  mirror 'https://gnome-build-stage-1.googlecode.com/files/uuid-1.6.2.tar.gz'
+  url 'http://ftp.de.debian.org/debian/pool/main/o/ossp-uuid/ossp-uuid_1.6.2.orig.tar.gz'
+  mirror 'ftp://ftp.ossp.org/pkg/lib/uuid/uuid-1.6.2.tar.gz'
   sha1 '3e22126f0842073f4ea6a50b1f59dcb9d094719f'
 
   bottle do
