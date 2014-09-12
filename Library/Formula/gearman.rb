@@ -11,7 +11,6 @@ class Gearman < Formula
   depends_on 'pkg-config' => :build
   depends_on 'boost'
   depends_on 'libevent'
-  depends_on 'ossp-uuid'
   depends_on :mysql => :optional
   depends_on :postgresql => :optional
 
