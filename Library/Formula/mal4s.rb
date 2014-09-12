@@ -12,7 +12,6 @@ class Mal4s < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "glm" => :build
-  depends_on "boost"
   depends_on "glew"
   depends_on "jpeg"
   depends_on "pcre"
@@ -21,6 +20,12 @@ class Mal4s < Formula
   depends_on "sdl2_mixer"
   depends_on "freetype"
   depends_on :x11 => :optional
+
+  if MacOS.version == :mountain_lion
+    depends_on "boost" => "c++11"
+  else
+    depends_on "boost"
+  end
 
   needs :cxx11
 
@@ -34,7 +39,7 @@ class Mal4s < Formula
   end
 
   def install
-    ENV.cxx11
+    ENV.cxx11 if MacOS.version == :mountain_lion
 
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}"]
