@@ -38,7 +38,11 @@ class Gcc < Formula
   option "with-nls", "Build with native language support (localization)"
   option "without-fortran", "Build without the gfortran compiler"
   # enabling multilib on a host that can't run 64-bit results in build failures
-  option "without-multilib", "Build without multilib support" if MacOS.prefer_64_bit?
+  if OS.mac?
+    option "without-multilib", "Build without multilib support" if MacOS.prefer_64_bit?
+  else
+    option "with-multilib", "Build with multilib support"
+  end
 
   depends_on "gmp"
   depends_on "libmpc"
