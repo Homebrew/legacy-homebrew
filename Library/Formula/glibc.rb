@@ -26,6 +26,7 @@ class Glibc < Formula
 
       system "make" # Fix No rule to make target libdl.so.2 needed by sprof
       system "make", "install"
+      prefix.install_symlink "lib" => "lib64"
     end
   end
 
