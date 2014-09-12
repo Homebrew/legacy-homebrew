@@ -7,7 +7,7 @@ class BashGitPrompt < Formula
   sha1 "3c0bc71302b97260cf8d14a1f01be732039365b9"
 
   def install
-    share.install Dir["./gitprompt.{sh,fish}"], Dir["./git-prompt-{help,colors}.sh"], "gitstatus.sh", "prompt-colors.sh"
+    share.install "./gitprompt.sh", "./gitprompt.fish", "./git-prompt-help.sh", "./git-prompt-colors.sh", "gitstatus.sh", "prompt-colors.sh"
     doc.install "README.md"
   end
 
