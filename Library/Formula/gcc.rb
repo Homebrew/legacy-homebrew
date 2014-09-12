@@ -44,14 +44,14 @@ class Gcc < Formula
     option "with-multilib", "Build with multilib support"
   end
 
+  depends_on "binutils" if build.with? "glibc"
+  depends_on "glibc" => :optional
   depends_on "gmp"
   depends_on "libmpc"
   depends_on "mpfr"
   depends_on "cloog"
   depends_on "isl"
   depends_on "ecj" if build.with?("java") || build.with?("all-languages")
-  depends_on "glibc" => :optional
-  depends_on "binutils" if build.with? "glibc"
 
   if MacOS.version < :leopard && OS.mac?
     # The as that comes with Tiger isn't capable of dealing with the
