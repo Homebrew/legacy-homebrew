@@ -36,6 +36,26 @@ class Cmake < Formula
 
   depends_on :python if MacOS.version <= :snow_leopard
 
+  resource 'jinja' do
+    url 'https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz'
+    sha1 '25ab3881f0c1adfcf79053b58de829c5ae65d3ac'
+  end
+
+  resource 'docutils' do
+    url 'https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz'
+    sha1 '002450621b33c5690060345b0aac25bc2426d675'
+  end
+
+  resource 'pygments' do
+    url 'https://pypi.python.org/packages/source/P/Pygments/Pygments-1.6.tar.gz'
+    sha1 '53d831b83b1e4d4f16fec604057e70519f9f02fb'
+  end
+
+  resource 'markupsafe' do
+    url 'https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz'
+    sha1 'cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a'
+  end
+
   resource 'sphinx' do
     url 'https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz'
     sha1 '3a11f130c63b057532ca37fe49c8967d0cbae1d5'
