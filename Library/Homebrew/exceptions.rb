@@ -83,7 +83,7 @@ module Homebrew
   class InstallationError < RuntimeError
     attr_reader :formula
 
-    def initialize formula, message=""
+    def initialize(formula, message)
       super message
       @formula = formula
     end
