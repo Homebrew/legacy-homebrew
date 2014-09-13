@@ -2,9 +2,9 @@ require 'formula'
 
 class ClozureCl < Formula
   homepage 'http://ccl.clozure.com/'
-  url 'http://ccl.clozure.com/ftp/pub/release/1.9/ccl-1.9-darwinx86.tar.gz'
-  version '1.9'
-  sha1 '589b94093fc356c458ab288aceb5a3d5d9d7b829'
+  url 'http://ccl.clozure.com/ftp/pub/release/1.10/ccl-1.10-darwinx86.tar.gz'
+  version '1.10'
+  sha1 'b624499eff340c1bcfb0bd8fa4638bc4770357fc'
 
   conflicts_with 'cclive', :because => 'both install a ccl binary'
 
