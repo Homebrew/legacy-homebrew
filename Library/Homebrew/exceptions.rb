@@ -113,12 +113,12 @@ class UnsatisfiedRequirements < Homebrew::InstallationError
 end
 
 class FormulaConflictError < Homebrew::InstallationError
-  attr_reader :f, :conflicts
+  attr_reader :conflicts
 
-  def initialize(f, conflicts)
-    @f = f
+  def initialize(formula, conflicts)
     @conflicts = conflicts
-    super f, message
+    @formula = formula
+    super formula, message
   end
 
   def conflict_message(conflict)
@@ -130,7 +130,7 @@ class FormulaConflictError < Homebrew::InstallationError
 
   def message
     message = []
-    message << "Cannot install #{f.name} because conflicting formulae are installed.\n"
+    message << "Cannot install #{formula.name} because conflicting formulae are installed.\n"
     message.concat conflicts.map { |c| conflict_message(c) } << ""
     message << <<-EOS.undent
       Please `brew unlink #{conflicts.map(&:name)*' '}` before continuing.
@@ -204,9 +204,9 @@ end
 # raised by CompilerSelector if the formula fails with all of
 # the compilers available on the user's system
 class CompilerSelectionError < Homebrew::InstallationError
-  def initialize f
-    super f, <<-EOS.undent
-    #{f.name} cannot be built with any available compilers.
+  def initialize formula
+    super formula, <<-EOS.undent
+    #{formula.name} cannot be built with any available compilers.
     To install this formula, you may need to:
       brew install gcc
     EOS
