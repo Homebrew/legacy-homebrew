@@ -83,7 +83,7 @@ module Homebrew
   class InstallationError < RuntimeError
     attr_reader :formula
 
-    def initialize formula, message=""
+    def initialize(formula, message)
       super message
       @formula = formula
     end
@@ -95,8 +95,8 @@ class CannotInstallFormulaError < RuntimeError; end
 class FormulaAlreadyInstalledError < RuntimeError; end
 
 class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
-  def message
-    "Formula installation already attempted: #{formula}"
+  def initialize(formula)
+    super formula, "Formula installation already attempted: #{formula}"
   end
 end
 
@@ -113,12 +113,12 @@ class UnsatisfiedRequirements < Homebrew::InstallationError
 end
 
 class FormulaConflictError < Homebrew::InstallationError
-  attr_reader :f, :conflicts
+  attr_reader :conflicts
 
-  def initialize(f, conflicts)
-    @f = f
+  def initialize(formula, conflicts)
     @conflicts = conflicts
-    super f, message
+    @formula = formula
+    super formula, message
   end
 
   def conflict_message(conflict)
@@ -130,7 +130,7 @@ class FormulaConflictError < Homebrew::InstallationError
 
   def message
     message = []
-    message << "Cannot install #{f.name} because conflicting formulae are installed.\n"
+    message << "Cannot install #{formula.name} because conflicting formulae are installed.\n"
     message.concat conflicts.map { |c| conflict_message(c) } << ""
     message << <<-EOS.undent
       Please `brew unlink #{conflicts.map(&:name)*' '}` before continuing.
@@ -204,9 +204,9 @@ end
 # raised by CompilerSelector if the formula fails with all of
 # the compilers available on the user's system
 class CompilerSelectionError < Homebrew::InstallationError
-  def initialize f
-    super f, <<-EOS.undent
-    #{f.name} cannot be built with any available compilers.
+  def initialize formula
+    super formula, <<-EOS.undent
+    #{formula.name} cannot be built with any available compilers.
     To install this formula, you may need to:
       brew install gcc
     EOS
@@ -251,22 +251,13 @@ class ChecksumMismatchError < RuntimeError
 end
 
 class ResourceMissingError < ArgumentError
-  def initialize formula, resource
-    @formula = formula
-    @resource = resource
-  end
-
-  def to_s
-    "Formula #{@formula} does not define resource \"#{@resource}\"."
+  def initialize(formula, resource)
+    super "#{formula} does not define resource #{resource.inspect}"
   end
 end
 
 class DuplicateResourceError < ArgumentError
-  def initialize resource
-    @resource = resource
-  end
-
-  def to_s
-    "Resource \"#{@resource}\" defined more than once."
+  def initialize(resource)
+    super "Resource #{resource.inspect} is defined more than once"
   end
 end

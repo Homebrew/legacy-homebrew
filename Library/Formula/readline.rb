@@ -5,13 +5,13 @@ class Readline < Formula
   url "http://ftpmirror.gnu.org/readline/readline-6.3.tar.gz"
   mirror "http://ftp.gnu.org/gnu/readline/readline-6.3.tar.gz"
   sha256 "56ba6071b9462f980c5a72ab0023893b65ba6debb4eeb475d7a563dc65cafd43"
-  version "6.3.6"
+  version "6.3.8"
 
   bottle do
     cellar :any
-    sha1 "63bfa23f0b192827b7b021707f391b34346ec4e3" => :mavericks
-    sha1 "968e8b5a125aff9c78b585c0fadefaf6cc5bc7b9" => :mountain_lion
-    sha1 "56a126196db602b61f73cb1152a257bb04148fcf" => :lion
+    sha1 "d530f4e966bb9c654a86f5cc0e65b20b1017aef2" => :mavericks
+    sha1 "7473587d992d8c3eb37afe6c3e0adc3587c977f1" => :mountain_lion
+    sha1 "e84f9cd95503b284651ef24bc8e7da30372687d3" => :lion
   end
 
   keg_only :shadowed_by_osx, <<-EOS
@@ -27,8 +27,8 @@ EOS
   # Upstream patches can be found in:
   # http://git.savannah.gnu.org/cgit/readline.git
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/d886531fb6623b60b2af/raw/d6aec221e7369ea152e64c8af83f6b048433dd82/readline-6.3.6.diff"
-    sha1 "774e4d3fe8c22dc715b430343d68beecf6f4e673"
+    url "https://gist.githubusercontent.com/jacknagel/d886531fb6623b60b2af/raw/746fc543e56bc37a26ccf05d2946a45176b0894e/readline-6.3.8.diff"
+    sha1 "dccc973e4a75ecfe45c25c296e0f7785b06586dc"
   end
 
   def install

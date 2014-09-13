@@ -571,6 +571,7 @@ class Formula
 
     $stdout.reopen(out)
     $stderr.reopen(out)
+    out.close
     args.collect!{|arg| arg.to_s}
     exec(cmd, *args) rescue nil
     puts "Failed to execute: #{cmd}"

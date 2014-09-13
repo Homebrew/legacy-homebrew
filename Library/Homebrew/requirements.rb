@@ -3,6 +3,7 @@ require 'requirements/fortran_dependency'
 require 'requirements/language_module_dependency'
 require 'requirements/minimum_macos_requirement'
 require 'requirements/mpi_dependency'
+require 'requirements/osxfuse_dependency'
 require 'requirements/python_dependency'
 require 'requirements/x11_dependency'
 
@@ -109,8 +110,9 @@ class JavaDependency < Requirement
   end
 
   def java_version
-    version_flag = " --version #{@version}+" if @version
-    quiet_system "/usr/libexec/java_home --failfast#{version_flag}"
+    args = %w[/usr/libexec/java_home --failfast]
+    args << "--version" << "#{@version}+" if @version
+    quiet_system(*args)
   end
 
   def message

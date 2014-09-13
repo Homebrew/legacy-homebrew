@@ -24,7 +24,7 @@ class Ddclient < Formula
     inreplace 'sample-etc_ddclient.conf',
       "/var/run/ddclient.pid", "#{var}/run/ddclient/pid"
 
-    (share+'doc/ddclient').install %w(
+    doc.install %w(
       sample-ddclient-wrapper.sh
       sample-etc_cron.d_ddclient
       sample-etc_ddclient.conf

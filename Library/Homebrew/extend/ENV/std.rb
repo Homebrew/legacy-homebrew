@@ -39,13 +39,14 @@ module Stdenv
       self['CPPFLAGS'] = "-isystem#{HOMEBREW_PREFIX}/include"
       self['LDFLAGS'] = "-L#{HOMEBREW_PREFIX}/lib"
       # CMake ignores the variables above
-      self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
+      self['CMAKE_PREFIX_PATH'] = HOMEBREW_PREFIX.to_s
     end
 
-    if (HOMEBREW_PREFIX/'Frameworks').exist?
-      append 'CPPFLAGS', "-F#{HOMEBREW_PREFIX}/Frameworks"
-      append 'LDFLAGS', "-F#{HOMEBREW_PREFIX}/Frameworks"
-      self['CMAKE_FRAMEWORK_PATH'] = HOMEBREW_PREFIX/"Frameworks"
+    frameworks = HOMEBREW_PREFIX.join("Frameworks")
+    if frameworks.directory?
+      append "CPPFLAGS", "-F#{frameworks}"
+      append "LDFLAGS", "-F#{frameworks}"
+      self["CMAKE_FRAMEWORK_PATH"] = frameworks.to_s
     end
 
     # Os is the default Apple uses for all its stuff so let's trust them
@@ -73,10 +74,10 @@ module Stdenv
 
   def determine_pkg_config_libdir
     paths = []
-    paths << HOMEBREW_PREFIX/'lib/pkgconfig'
-    paths << HOMEBREW_PREFIX/'share/pkgconfig'
-    paths << HOMEBREW_REPOSITORY/"Library/ENV/pkgconfig/#{MacOS.version}"
-    paths << '/usr/lib/pkgconfig'
+    paths << "#{HOMEBREW_PREFIX}/lib/pkgconfig"
+    paths << "#{HOMEBREW_PREFIX}/share/pkgconfig"
+    paths << "#{HOMEBREW_LIBRARY}/ENV/pkgconfig/#{MacOS.version}"
+    paths << "/usr/lib/pkgconfig"
     paths.select { |d| File.directory? d }.join(File::PATH_SEPARATOR)
   end
 
@@ -156,7 +157,7 @@ module Stdenv
         delete('CMAKE_PREFIX_PATH')
       else
         # It was set in setup_build_environment, so we have to restore it here.
-        self['CMAKE_PREFIX_PATH'] = "#{HOMEBREW_PREFIX}"
+        self['CMAKE_PREFIX_PATH'] = HOMEBREW_PREFIX.to_s
       end
       remove 'CMAKE_FRAMEWORK_PATH', "#{sdk}/System/Library/Frameworks"
     end
@@ -209,29 +210,29 @@ module Stdenv
 
   def x11
     # There are some config scripts here that should go in the PATH
-    append_path 'PATH', MacOS::X11.bin
+    append_path "PATH", MacOS::X11.bin.to_s
 
     # Append these to PKG_CONFIG_LIBDIR so they are searched
     # *after* our own pkgconfig directories, as we dupe some of the
     # libs in XQuartz.
-    append_path 'PKG_CONFIG_LIBDIR', MacOS::X11.lib/'pkgconfig'
-    append_path 'PKG_CONFIG_LIBDIR', MacOS::X11.share/'pkgconfig'
+    append_path "PKG_CONFIG_LIBDIR", "#{MacOS::X11.lib}/pkgconfig"
+    append_path "PKG_CONFIG_LIBDIR", "#{MacOS::X11.share}/pkgconfig"
 
-    append 'LDFLAGS', "-L#{MacOS::X11.lib}"
-    append_path 'CMAKE_PREFIX_PATH', MacOS::X11.prefix
-    append_path 'CMAKE_INCLUDE_PATH', MacOS::X11.include
-    append_path 'CMAKE_INCLUDE_PATH', MacOS::X11.include/'freetype2'
+    append "LDFLAGS", "-L#{MacOS::X11.lib}"
+    append_path "CMAKE_PREFIX_PATH", MacOS::X11.prefix.to_s
+    append_path "CMAKE_INCLUDE_PATH", MacOS::X11.include.to_s
+    append_path "CMAKE_INCLUDE_PATH", "#{MacOS::X11.include}/freetype2"
 
-    append 'CPPFLAGS', "-I#{MacOS::X11.include}"
-    append 'CPPFLAGS', "-I#{MacOS::X11.include}/freetype2"
+    append "CPPFLAGS", "-I#{MacOS::X11.include}"
+    append "CPPFLAGS", "-I#{MacOS::X11.include}/freetype2"
 
-    append_path 'ACLOCAL_PATH', MacOS::X11.share/'aclocal'
+    append_path "ACLOCAL_PATH", "#{MacOS::X11.share}/aclocal"
 
     if MacOS::XQuartz.provided_by_apple? and not MacOS::CLT.installed?
-      append_path 'CMAKE_PREFIX_PATH', MacOS.sdk_path/'usr/X11'
+      append_path "CMAKE_PREFIX_PATH", "#{MacOS.sdk_path}/usr/X11"
     end
 
-    append 'CFLAGS', "-I#{MacOS::X11.include}" unless MacOS::CLT.installed?
+    append "CFLAGS", "-I#{MacOS::X11.include}" unless MacOS::CLT.installed?
   end
   alias_method :libpng, :x11
 

@@ -37,8 +37,12 @@ class Libodfgen < Formula
       }
     EOS
     system ENV.cxx, "test.cpp", "-o", "test",
-      "-lrevenge-0.0", "-I#{Formula["librevenge"].include}/librevenge-0.0",
-      "-lodfgen-0.1", "-I#{Formula["libodfgen"].include}/libodfgen-0.1"
+      "-lrevenge-0.0",
+      "-I#{Formula["librevenge"].include}/librevenge-0.0",
+      "-L#{Formula["librevenge"].lib}",
+      "-lodfgen-0.1",
+      "-I#{include}/libodfgen-0.1",
+      "-L#{lib}"
     system "./test"
   end
 end

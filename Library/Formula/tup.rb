@@ -14,7 +14,7 @@ class Tup < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'osxfuse'
+  depends_on :osxfuse
 
   def install
     ENV['TUP_LABEL'] = version
