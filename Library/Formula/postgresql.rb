@@ -31,6 +31,7 @@ class Postgresql < Formula
   option 'no-perl', 'Build without Perl support'
   option 'no-tcl', 'Build without Tcl support'
   option 'enable-dtrace', 'Build with DTrace support'
+  option 'client-only', 'Install postgres client'
 
   depends_on 'openssl'
   depends_on 'readline'
@@ -84,14 +85,22 @@ class Postgresql < Formula
     end
 
     system "./configure", *args
-    system "make install-world"
+    unless build.include? 'client-only'
+      system "make install-world"
+    else
+      system "make"
+      system "make -C src/bin install"
+      system "make -C src/include install"
+      system "make -C src/interfaces install"
+      system "make -C doc install"
+    end
   end
 
   def post_install
     unless File.exist? "#{var}/postgres"
       system "#{bin}/initdb", "#{var}/postgres"
     end
-  end
+  end unless build.include? 'client-only'
 
   def caveats
     s = <<-EOS.undent
@@ -105,7 +114,7 @@ class Postgresql < Formula
 
     s << "\n" << gem_caveats if MacOS.prefer_64_bit?
     return s
-  end
+  end unless build.include? 'client-only'
 
   def gem_caveats; <<-EOS.undent
     When installing the postgres gem, including ARCHFLAGS is recommended:
@@ -143,11 +152,11 @@ class Postgresql < Formula
     </dict>
     </plist>
     EOS
-  end
+  end unless build.include? 'client-only'
 
   test do
     system "#{bin}/initdb", testpath
-  end
+  end unless build.include? 'client-only'
 end
 
 
@@ -163,3 +172,4 @@ __END__
  #include "postgres.h"
  #include "fmgr.h"
  #include "utils/builtins.h"
+    
