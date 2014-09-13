@@ -66,12 +66,13 @@ class Cmake < Formula
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", prefix+"lib/python2.7/site-packages"
 
     resources.each do |r|
       r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
     end
 
+    rm "#{libexec}/lib/python2.7/site-packages/site.py"
+    rm "#{libexec}/lib/python2.7/site-packages/easy-install.pth"
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
 
     args = %W[
