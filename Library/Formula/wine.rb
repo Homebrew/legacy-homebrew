@@ -52,6 +52,7 @@ class Wine < Formula
   # between them. But if you really want to build without X11, you can.
   depends_on :x11 => :recommended
   depends_on 'pkg-config' => :build
+  depends_on 'bison' => :build
   depends_on 'freetype'
   depends_on 'jpeg'
   depends_on 'libgphoto2'
