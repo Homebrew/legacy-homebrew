@@ -1,4 +1,4 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
+#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0 --disable-gems
 # encoding: UTF-8
 
 std_trap = trap("INT") { exit! 130 } # no backtrace thanks
