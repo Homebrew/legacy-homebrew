@@ -29,9 +29,9 @@ class Cmake < Formula
 
   bottle do
     cellar :any
-    sha1 "7e4815ddbd283d7754dae04d585995a0ba68e38f" => :mavericks
-    sha1 "5a9299d20fbbdbfe594baeec10fe448d40c2d05f" => :mountain_lion
-    sha1 "dba7684d1d65423df75fd28f459525eb08590232" => :lion
+    sha1 "4b8b26f60d28c85c0119cb9ab136c5b40f8db570" => :mavericks
+    sha1 "a7bc77aa9b9855e5d4081ec689bb62c89be7c25d" => :mountain_lion
+    sha1 "842240c9febb4123918cf62a3cea5ca4207ad860" => :lion
   end
 
   depends_on :python => :build if MacOS.version <= :snow_leopard
