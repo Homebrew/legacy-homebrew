@@ -8,9 +8,9 @@ class LibgpgError < Formula
 
   bottle do
     cellar :any
-    sha1 "1c975ce141fcc44543967cfd83984fcbb2a4bd7d" => :mavericks
-    sha1 "f80ac1daca1a09be3a13a25ed6d0ce3a3940013e" => :mountain_lion
-    sha1 "0ddec43a1845015a046f8ed4f924272eafc1cca7" => :lion
+    sha1 "827c944f802fc8eb8e237b170afcc931ea724319" => :mavericks
+    sha1 "251c8bf21431497bf1018d707dc1510548cde11b" => :mountain_lion
+    sha1 "7a4bd350a82007b890845b16bf95aaa18d760c10" => :lion
   end
 
   # Version 1.15 broke building on OS X.  This has been reported:
