@@ -60,7 +60,7 @@ class FormulaInstaller
 
     unless f.bottle.compatible_cellar?
       if install_bottle_options[:warn]
-        opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}"
+        opoo "Building source; cellar of #{f.name}'s bottle is #{f.bottle.cellar}"
       end
       return false
     end
@@ -101,7 +101,7 @@ class FormulaInstaller
     raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
 
     if f.installed?
-      msg = "#{f}-#{f.installed_version} already installed"
+      msg = "#{f.name}-#{f.installed_version} already installed"
       msg << ", it's just not linked" unless f.linked_keg.symlink? or f.keg_only?
       raise FormulaAlreadyInstalledError, msg
     end
@@ -111,7 +111,7 @@ class FormulaInstaller
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
       raise CannotInstallFormulaError,
-        "You must `brew link #{unlinked_deps*' '}' before #{f} can be installed" unless unlinked_deps.empty?
+        "You must `brew link #{unlinked_deps*' '}' before #{f.name} can be installed" unless unlinked_deps.empty?
     end
   end
 
@@ -134,8 +134,8 @@ class FormulaInstaller
     if f.linked_keg.directory?
       # some other version is already installed *and* linked
       raise CannotInstallFormulaError, <<-EOS.undent
-        #{f}-#{f.linked_keg.resolved_path.basename} already installed
-        To install this version, first `brew unlink #{f}'
+        #{f.name}-#{f.linked_keg.resolved_path.basename} already installed
+        To install this version, first `brew unlink #{f.name}'
       EOS
     end
 
@@ -149,7 +149,7 @@ class FormulaInstaller
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
 
-    oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header?
+    oh1 "Installing #{Tty.green}#{f.name}#{Tty.reset}" if show_header?
 
     @@attempted << f
 
@@ -216,7 +216,7 @@ class FormulaInstaller
     deps = expand_dependencies(req_deps + f.deps)
 
     if deps.empty? and only_deps?
-      puts "All dependencies for #{f} are satisfied."
+      puts "All dependencies for #{f.name} are satisfied."
     else
       install_dependencies(deps)
     end
@@ -316,7 +316,7 @@ class FormulaInstaller
 
   def install_dependencies(deps)
     if deps.length > 1
-      oh1 "Installing dependencies for #{f}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
+      oh1 "Installing dependencies for #{f.name}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
     end
 
     deps.each { |dep, options| install_dependency(dep, options) }
@@ -360,7 +360,7 @@ class FormulaInstaller
     fi.verbose            = verbose? unless verbose == :quieter
     fi.debug              = debug?
     fi.prelude
-    oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
+    oh1 "Installing #{f.name} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     fi.install
     fi.caveats
     fi.finish
@@ -466,7 +466,7 @@ class FormulaInstaller
   end
 
   def build
-    FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{f}/*"]
+    FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{f.name}/*"]
 
     @start_time = Time.now
 
@@ -530,7 +530,7 @@ class FormulaInstaller
         keg.optlink
       rescue Keg::LinkError => e
         onoe "Failed to create #{f.opt_prefix}"
-        puts "Things that depend on #{f} will probably not build."
+        puts "Things that depend on #{f.name} will probably not build."
         puts e
       end
       return

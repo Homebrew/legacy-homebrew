@@ -85,7 +85,7 @@ class FormulaAlreadyInstalledError < RuntimeError; end
 
 class FormulaInstallationAlreadyAttemptedError < RuntimeError
   def initialize(formula)
-    super "Formula installation already attempted: #{formula}"
+    super "Formula installation already attempted: #{formula.name}"
   end
 end
 
@@ -175,7 +175,7 @@ class BuildError < RuntimeError
       Homebrew.dump_build_env(env)
       puts
       onoe "#{formula.name} #{formula.version} did not build"
-      unless (logs = Dir["#{HOMEBREW_LOGS}/#{formula}/*"]).empty?
+      unless (logs = Dir["#{HOMEBREW_LOGS}/#{formula.name}/*"]).empty?
         puts "Logs:"
         puts logs.map{|fn| "     #{fn}"}.join("\n")
       end
@@ -239,7 +239,7 @@ end
 
 class ResourceMissingError < ArgumentError
   def initialize(formula, resource)
-    super "#{formula} does not define resource #{resource.inspect}"
+    super "#{formula.name} does not define resource #{resource.inspect}"
   end
 end
 
