@@ -145,13 +145,12 @@ class FormulaConflictError < Homebrew::InstallationError
 end
 
 class BuildError < Homebrew::InstallationError
-  attr_reader :command, :env
+  attr_reader :env
 
   def initialize(formula, cmd, args, env)
-    @command = cmd
     @env = env
     args = args.map{ |arg| arg.to_s.gsub " ", "\\ " }.join(" ")
-    super formula, "Failed executing: #{command} #{args}"
+    super formula, "Failed executing: #{cmd} #{args}"
   end
 
   def issues
