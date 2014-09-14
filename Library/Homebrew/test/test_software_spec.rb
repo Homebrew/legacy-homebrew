@@ -19,6 +19,7 @@ class SoftwareSpecTests < Homebrew::TestCase
   end
 
   def test_raises_when_accessing_missing_resources
+    @spec.owner = Class.new { def name; "test"; end }.new
     assert_raises(ResourceMissingError) { @spec.resource('foo') }
   end
 
