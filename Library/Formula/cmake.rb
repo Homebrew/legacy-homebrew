@@ -41,6 +41,13 @@ class Cmake < Formula
     sha1 "3a11f130c63b057532ca37fe49c8967d0cbae1d5"
   end
 
+  depends_on :python => :build if MacOS.version <= :snow_leopard
+
+  resource "sphinx" do
+    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
+    sha1 "3a11f130c63b057532ca37fe49c8967d0cbae1d5"
+  end
+
   depends_on NoExpatFramework
 
   def install
