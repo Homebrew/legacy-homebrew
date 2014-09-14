@@ -2,8 +2,8 @@ require "formula"
 
 class Minidlna < Formula
   homepage "http://sourceforge.net/projects/minidlna/"
-  url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.3/minidlna-1.1.3.tar.gz"
-  sha1 "3e5b907fd35b667eb50af98e1f986c7f461a6042"
+  url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.4/minidlna-1.1.4.tar.gz"
+  sha1 "56f333f8af91105ce5f0861d1f1918ebf5b0a028"
 
   depends_on "libav"
   depends_on "libexif"
@@ -15,10 +15,9 @@ class Minidlna < Formula
   depends_on "sqlite"
   depends_on "ffmpeg"
 
-  patch do
-    url "http://sourceforge.net/p/minidlna/patches/104/attachment/0001-Remove-check-for-getifaddr-returning-IFF_SLAVE-if-IF.patch"
-    sha1 "768b119a59c803af4d074138b70b245aa72e426f"
-  end
+  # Remove check for getifaddr returning IFF_SLAVE if IFF_SLAVE is not defined
+  # (which it is not on OS X)
+  patch :DATA
 
   def install
     ENV.append_to_cflags "-std=gnu89"
@@ -53,3 +52,23 @@ class Minidlna < Formula
     system "#{sbin}/minidlnad", "-V"
   end
 end
+
+__END__
+diff --git a/getifaddr.c b/getifaddr.c
+index 329a96b..0de0afb 100644
+--- a/getifaddr.c
++++ b/getifaddr.c
+@@ -86,8 +86,12 @@ getifaddr(const char *ifname)
+ 		if (ifname && strcmp(p->ifa_name, ifname) != 0)
+ 			continue;
+ 		addr_in = (struct sockaddr_in *)p->ifa_addr;
+-		if (!ifname && (p->ifa_flags & (IFF_LOOPBACK | IFF_SLAVE)))
++		if (!ifname && (p->ifa_flags & IFF_LOOPBACK))
+ 			continue;
++#ifdef IFF_SLAVE
++		if (!ifname && (p->ifa_flags & IFF_SLAVE))
++			continue;
++#endif
+ 		memcpy(&lan_addr[n_lan_addr].addr, &addr_in->sin_addr, sizeof(lan_addr[n_lan_addr].addr));
+ 		if (!inet_ntop(AF_INET, &addr_in->sin_addr, lan_addr[n_lan_addr].str, sizeof(lan_addr[0].str)) )
+ 		{
