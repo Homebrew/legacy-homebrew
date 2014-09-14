@@ -1,8 +1,8 @@
-require 'formula'
+require "formula"
 
 class NoExpatFramework < Requirement
   def expat_framework
-    '/Library/Frameworks/expat.framework'
+    "/Library/Frameworks/expat.framework"
   end
 
   satisfy :build_env => false do
@@ -62,11 +62,11 @@ class Cmake < Formula
 
     system "./bootstrap", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do
-    (testpath/'CMakeLists.txt').write('find_package(Ruby)')
-    system "#{bin}/cmake", '.'
+    (testpath/"CMakeLists.txt").write("find_package(Ruby)")
+    system "#{bin}/cmake", "."
   end
 end
