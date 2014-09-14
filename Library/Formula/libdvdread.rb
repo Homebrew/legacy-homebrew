@@ -14,9 +14,9 @@ class Libdvdread < Formula
 
   bottle do
     cellar :any
-    sha1 "e40c9798dfce20ff381e86aa248c40ad2b4dc54f" => :mavericks
-    sha1 "dfc52def86101b04cca9d0153efc87986944bfbd" => :mountain_lion
-    sha1 "35be8214b84e4556d6cb78513a77333ab04d85e0" => :lion
+    sha1 "5b9d6338e4ea67d2e5a498e85daf6bf1f54c14d0" => :mavericks
+    sha1 "8e739df5e4ba89e20799d9bfe4a6b174a49eecf3" => :mountain_lion
+    sha1 "67ddd413260c5d9d216f5d16ebd21cb5fe9ea4f0" => :lion
   end
 
   depends_on "libdvdcss"
