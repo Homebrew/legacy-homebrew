@@ -5,8 +5,8 @@ require "formula"
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
   homepage "http://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2014.09.12/youtube-dl-2014.09.12.tar.gz"
-  sha1 "9d90712e819bdfe1ca1a8c81582eb216d947b885"
+  url "https://yt-dl.org/downloads/2014.09.14.3/youtube-dl-2014.09.14.3.tar.gz"
+  sha1 "d3e7b6c8c56f014a7f2337d49497fce73afa4692"
 
   bottle do
     cellar :any
