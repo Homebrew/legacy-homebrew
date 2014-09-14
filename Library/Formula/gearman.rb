@@ -5,6 +5,12 @@ class Gearman < Formula
   url "https://launchpad.net/gearmand/1.0/1.0.6/+download/gearmand-1.0.6.tar.gz"
   sha1 "872d5e13c20a29a20e45df3afa8f3981dc52d363"
 
+  bottle do
+    sha1 "b1d76be880294ad7900c18628674c9853b7d6a14" => :mavericks
+    sha1 "43aa44d53ca68b67978beeb94613c8418e4d0eaf" => :mountain_lion
+    sha1 "d09770f6262eed1c7ababa6f06e9659e12694e9a" => :lion
+  end
+
   devel do
     url "https://launchpad.net/gearmand/1.2/1.1.12/+download/gearmand-1.1.12.tar.gz"
     sha1 "85b5271ea3ac919d96fff9500993b73c9dc80c6c"
