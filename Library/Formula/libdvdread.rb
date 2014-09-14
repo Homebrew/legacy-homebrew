@@ -1,11 +1,16 @@
-require 'formula'
+require "formula"
 
 class Libdvdread < Formula
-  homepage 'http://dvdnav.mplayerhq.hu/'
-  url 'http://download.videolan.org/pub/videolan/libdvdread/4.9.9/libdvdread-4.9.9.tar.bz2'
-  sha256 'ffcf51c8596f5b052e95c50f2555d15f645d652b153afde2ab4c0733dde69fbb'
+  homepage "https://dvdnav.mplayerhq.hu/"
+  url "http://download.videolan.org/pub/videolan/libdvdread/5.0.0/libdvdread-5.0.0.tar.bz2"
+  sha256 "66fb1a3a42aa0c56b02547f69c7eb0438c5beeaf21aee2ae2c6aa23ea8305f14"
 
-  head 'git://git.videolan.org/libdvdread.git'
+  head do
+    url "git://git.videolan.org/libdvdread.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
@@ -14,14 +19,15 @@ class Libdvdread < Formula
     sha1 "35be8214b84e4556d6cb78513a77333ab04d85e0" => :lion
   end
 
-  depends_on 'libdvdcss'
+  depends_on "libdvdcss"
 
   def install
     ENV.append "CFLAGS", "-DHAVE_DVDCSS_DVDCSS_H"
     ENV.append "LDFLAGS", "-ldvdcss"
 
+    system "autoreconf", "-if" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
