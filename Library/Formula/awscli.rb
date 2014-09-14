@@ -7,10 +7,9 @@ class Awscli < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "de5d4e6a27fc38851cbdf2652d92ad086e9e186f" => :mavericks
-    sha1 "444f013ff25878744fe6526a0a7ebaabef2936b8" => :mountain_lion
-    sha1 "48bc212e3ead076c969c5b8b26480a944364db71" => :lion
+    sha1 "ef4b22b8f9393a3f24d3c6e1ec8794af65abcc59" => :mavericks
+    sha1 "b5f2317057750fdb098b1e5f2edd72e210818d19" => :mountain_lion
+    sha1 "70dfcb884bfa1436b3ebd8d610d2128666426dba" => :lion
   end
 
   head do
