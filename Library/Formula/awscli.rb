@@ -2,8 +2,8 @@ require "formula"
 
 class Awscli < Formula
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.3.23.tar.gz"
-  sha1 "caab7b004bece3613b0f81630a2e1d7ce28183dc"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.4.3.tar.gz"
+  sha1 "59d5cb117ba1c6071ce4badc61ba48d41263f182"
 
   bottle do
     cellar :any
@@ -32,8 +32,8 @@ class Awscli < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.57.0.tar.gz"
-    sha1 "dffb786437b8bb604a64120834f52391dd712377"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-0.63.0.tar.gz"
+    sha1 "41ea1bf85acdd95d7af6f1b705cbe5cf2b4aea02"
   end
 
   resource "bcdoc" do
@@ -42,8 +42,8 @@ class Awscli < Formula
   end
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.7.3.tar.gz"
-    sha1 "43d173ff19bf2ac41189aa3701c7240fcd1182e3"
+    url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
+    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
   end
 
   resource "colorama" do
