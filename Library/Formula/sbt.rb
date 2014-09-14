@@ -2,8 +2,8 @@ require "formula"
 
 class Sbt < Formula
   homepage "http://www.scala-sbt.org"
-  url "http://dl.bintray.com/sbt/native-packages/sbt/0.13.5/sbt-0.13.5.tgz"
-  sha1 "9a77a6971478ebf2272735f40ab65443dcb60259"
+  url "http://dl.bintray.com/sbt/native-packages/sbt/0.13.6/sbt-0.13.6.tgz"
+  sha1 "3efd29e51751157777c4e001acc106b8737e0720"
 
   def install
     inreplace "bin/sbt" do |s|
