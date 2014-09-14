@@ -147,9 +147,9 @@ end
 class BuildError < Homebrew::InstallationError
   attr_reader :command, :env
 
-  def initialize formula, cmd, args
+  def initialize(formula, cmd, args, env)
     @command = cmd
-    @env = ENV.to_hash
+    @env = env
     args = args.map{ |arg| arg.to_s.gsub " ", "\\ " }.join(" ")
     super formula, "Failed executing: #{command} #{args}"
   end
