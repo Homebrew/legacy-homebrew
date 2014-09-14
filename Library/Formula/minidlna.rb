@@ -5,7 +5,6 @@ class Minidlna < Formula
   url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.4/minidlna-1.1.4.tar.gz"
   sha1 "56f333f8af91105ce5f0861d1f1918ebf5b0a028"
 
-  depends_on "libav"
   depends_on "libexif"
   depends_on "jpeg"
   depends_on "libid3tag"
