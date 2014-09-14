@@ -23,8 +23,6 @@ class YoutubeDl < Formula
   depends_on "rtmpdump" => :optional
 
   def install
-    # Remove the legacy executable from the git repo
-    rm "youtube-dl" if build.head?
     system "make", "PREFIX=#{prefix}"
     bin.install "youtube-dl"
     man1.install "youtube-dl.1"

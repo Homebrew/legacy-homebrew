@@ -545,7 +545,7 @@ class Formula
         log.puts
         require 'cmd/config'
         Homebrew.dump_build_config(log)
-        raise BuildError.new(self, cmd, args)
+        raise BuildError.new(self, cmd, args, ENV.to_hash)
       end
     ensure
       log.close unless log.closed?
