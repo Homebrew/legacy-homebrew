@@ -232,7 +232,7 @@ class FormulaInstaller
       end
     end
 
-    raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
+    raise UnsatisfiedRequirements.new(fatals) unless fatals.empty?
   end
 
   def install_requirement_default_formula?(req, build)
