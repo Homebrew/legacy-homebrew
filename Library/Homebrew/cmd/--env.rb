@@ -35,10 +35,7 @@ module Homebrew
 
   def dump_build_env env
     keys = build_env_keys(env)
-
-    if env["CC"] == env["HOMEBREW_CC"]
-      %w[CC CXX OBJC OBJCXX].each { |key| keys.delete(key) }
-    end
+    keys -= %w[CC CXX OBJC OBJCXX] if env["CC"] == env["HOMEBREW_CC"]
 
     keys.each do |key|
       value = env[key]
