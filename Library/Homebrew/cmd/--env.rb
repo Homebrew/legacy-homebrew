@@ -3,13 +3,10 @@ require "extend/ENV"
 module Homebrew
   def __env
     ENV.activate_extensions!
-
-    if superenv?
-      ENV.deps = ARGV.formulae.map(&:name) unless ARGV.named.empty?
-    end
-
+    ENV.deps = ARGV.formulae.map(&:name) if superenv?
     ENV.setup_build_environment
     ENV.universal_binary if ARGV.build_universal?
+
     if $stdout.tty?
       dump_build_env ENV
     else
