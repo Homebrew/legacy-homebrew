@@ -61,9 +61,8 @@ object JobServerBuild extends Build {
                                         exportJars := true)   // use the jar instead of target/classes
   ) dependsOn(jobServerApi)
 
-  lazy val jobServerApi = Project(id = "job-server-api", base = file("job-server-api"), 
-    settings = commonSettings210 ++ Seq(publish      := {},
-                                        exportJars := true)   
+  lazy val jobServerApi = Project(id = "job-server-api", base = file("job-server-api"),
+    settings = commonSettings210 ++ Seq(exportJars := true)
                                     )
 
   // This meta-project aggregates all of the sub-projects and can be used to compile/test/style check
@@ -95,8 +94,8 @@ object JobServerBuild extends Build {
   lazy val runScalaStyle = taskKey[Unit]("testScalaStyle")
 
   lazy val commonSettings210 = Defaults.defaultSettings ++ dirSettings ++ Seq(
-    organization := "ooyala.cnd",
-    version      := "0.3.1",
+    organization := "spark.jobserver",
+    version      := "0.4.0",
     crossPaths   := false,
     scalaVersion := "2.10.4",
     scalaBinaryVersion := "2.10",
@@ -133,7 +132,7 @@ object JobServerBuild extends Build {
 
   lazy val publishSettings = bintrayPublishSettings ++ Seq(
     licenses += ("Apache-2.0", url("http://choosealicense.com/licenses/apache/")),
-    bintray.Keys.bintrayOrganization in bintray.Keys.bintray := Some("ooyala")
+    bintray.Keys.bintrayOrganization in bintray.Keys.bintray := Some("spark-jobserver")
   )
 
   // change to scalariformSettings for auto format on compile; defaultScalariformSettings to disable
