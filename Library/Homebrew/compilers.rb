@@ -80,9 +80,12 @@ class CompilerSelector
     :gcc_4_0 => [:gcc_4_0, :gcc, :llvm, :gnu, :clang],
   }
 
-  def self.select_for(formula)
-    compilers = COMPILER_PRIORITY.fetch(MacOS.default_compiler)
+  def self.select_for(formula, compilers=self.compilers)
     new(formula, MacOS, compilers).compiler
+  end
+
+  def self.compilers
+    COMPILER_PRIORITY.fetch(MacOS.default_compiler)
   end
 
   attr_reader :formula, :failures, :versions, :compilers
