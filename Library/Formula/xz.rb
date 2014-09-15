@@ -10,6 +10,9 @@ class Xz < Formula
 
   bottle do
     cellar :any
+    sha1 "99f2b64ad7d8e5fa9490d79849c17860f77c9c19" => :mavericks
+    sha1 "6c21e5b9c8ea7c938967f9bb80d08d9a59711507" => :mountain_lion
+    sha1 "dbac71d32fadf27dbd1baf768321c86734c1ddb0" => :lion
   end
 
   option :universal
