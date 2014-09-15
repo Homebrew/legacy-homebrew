@@ -14,10 +14,6 @@ class Minidlna < Formula
   depends_on "sqlite"
   depends_on "ffmpeg"
 
-  # Remove check for getifaddr returning IFF_SLAVE if IFF_SLAVE is not defined
-  # (which it is not on OS X)
-  patch :DATA
-
   def install
     ENV.append_to_cflags "-std=gnu89"
     system "./configure", "--exec-prefix=#{prefix}"
@@ -51,23 +47,3 @@ class Minidlna < Formula
     system "#{sbin}/minidlnad", "-V"
   end
 end
-
-__END__
-diff --git a/getifaddr.c b/getifaddr.c
-index 329a96b..0de0afb 100644
---- a/getifaddr.c
-+++ b/getifaddr.c
-@@ -86,8 +86,12 @@ getifaddr(const char *ifname)
- 		if (ifname && strcmp(p->ifa_name, ifname) != 0)
- 			continue;
- 		addr_in = (struct sockaddr_in *)p->ifa_addr;
--		if (!ifname && (p->ifa_flags & (IFF_LOOPBACK | IFF_SLAVE)))
-+		if (!ifname && (p->ifa_flags & IFF_LOOPBACK))
- 			continue;
-+#ifdef IFF_SLAVE
-+		if (!ifname && (p->ifa_flags & IFF_SLAVE))
-+			continue;
-+#endif
- 		memcpy(&lan_addr[n_lan_addr].addr, &addr_in->sin_addr, sizeof(lan_addr[n_lan_addr].addr));
- 		if (!inet_ntop(AF_INET, &addr_in->sin_addr, lan_addr[n_lan_addr].str, sizeof(lan_addr[0].str)) )
- 		{
