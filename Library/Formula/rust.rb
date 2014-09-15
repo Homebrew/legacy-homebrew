@@ -17,6 +17,8 @@ class Rust < Formula
     args = ["--prefix=#{prefix}"]
     args << "--disable-rpath" if build.head?
     args << "--enable-clang" if ENV.compiler == :clang
+    ENV.append "CFLAGS", "-Qunused-arguments"
+    ENV.append "CPPFLAGS", "-Qunused-arguments"
     system "./configure", *args
     system "make"
     system "make install"
