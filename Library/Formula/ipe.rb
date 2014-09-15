@@ -46,8 +46,8 @@ class Ipe < Formula
 end
 
 __END__
---- a/src/config.mak  2014-05-07 03:28:31.000000000 -0400
-+++ b/src/config.mak  2014-05-14 10:09:51.000000000 -0400
+--- a/src/config.mak	2014-05-07 03:28:31.000000000 -0400
++++ b/src/config.mak	2014-05-14 10:09:51.000000000 -0400
 @@ -61,28 +61,45 @@
  #
  else
@@ -69,17 +69,17 @@ __END__
 -FREETYPE_CFLAGS ?= -I/usr/X11/include/freetype2 -I/usr/X11/include
 -FREETYPE_LIBS ?= -L/usr/X11/lib -lfreetype
 -CAIRO_CFLAGS  ?= -I/usr/X11/include/cairo -I/usr/X11/include/pixman-1 \
--  -I/usr/X11/include/freetype2 -I/usr/X11/include \
--  -I/usr/X11/include/libpng12
+-	 -I/usr/X11/include/freetype2 -I/usr/X11/include \
+-	 -I/usr/X11/include/libpng12
 -CAIRO_LIBS ?= -L/usr/X11/lib -lcairo
 -LUA_CFLAGS ?= -I/usr/local/include
 -LUA_LIBS   ?= -L/usr/local/lib -llua52 -lm
 -QT_CFLAGS  ?= -I/Library/Frameworks/QtCore.framework/Versions/4/Headers \
--       -I/Library/Frameworks/QtGui.framework/Versions/4/Headers
+-	      -I/Library/Frameworks/QtGui.framework/Versions/4/Headers
 -QT_LIBS    ?= -F/Library/Frameworks -L/Library/Frameworks \
--       -framework QtCore -framework ApplicationServices \
--       -framework QtGui -framework AppKit -framework Cocoa -lz -lm
--MOC     ?= moc
+-	      -framework QtCore -framework ApplicationServices \
+-	      -framework QtGui -framework AppKit -framework Cocoa -lz -lm
+-MOC	   ?= moc
 +LUA_CFLAGS ?=
 +LUA_LIBS   ?= -llua -lm
 +ifeq "$(HAVE_PKG_CONFIG)" "1"
@@ -90,19 +90,19 @@ __END__
 +  GTK_CFLAGS ?= $(shell pkg-config --cflags gtk+-2.0)
 +  GTK_LIBS   ?= $(shell pkg-config --libs gtk+-2.0)
 +  QT_CFLAGS ?= $(shell pkg-config --cflags QtGui QtCore)
-+  QT_LIBS  ?= $(shell pkg-config --libs QtGui QtCore)
++  QT_LIBS	?= $(shell pkg-config --libs QtGui QtCore)
 +else
 +  FREETYPE_CFLAGS ?= -I/usr/X11/include/freetype2 -I/usr/X11/include
 +  FREETYPE_LIBS ?= -L/usr/X11/lib -lfreetype
 +  CAIRO_CFLAGS  ?= -I/usr/X11/include/cairo -I/usr/X11/include/pixman-1 \
-+    -I/usr/X11/include/freetype2 -I/usr/X11/include \
-+    -I/usr/X11/include/libpng12
++	   -I/usr/X11/include/freetype2 -I/usr/X11/include \
++	   -I/usr/X11/include/libpng12
 +  CAIRO_LIBS ?= -L/usr/X11/lib -lcairo
 +  QT_CFLAGS  ?= -I/Library/Frameworks/QtCore.framework/Versions/4/Headers \
-+   -I/Library/Frameworks/QtGui.framework/Versions/4/Headers
++		-I/Library/Frameworks/QtGui.framework/Versions/4/Headers
 +  QT_LIBS    ?= -F/Library/Frameworks -L/Library/Frameworks \
-+   -framework QtCore -framework ApplicationServices \
-+   -framework QtGui -framework AppKit -framework Cocoa -lz -lm
++		-framework QtCore -framework ApplicationServices \
++		-framework QtGui -framework AppKit -framework Cocoa -lz -lm
 +endif
 +
 +MOC           ?= moc
