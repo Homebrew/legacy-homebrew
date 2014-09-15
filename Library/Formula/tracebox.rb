@@ -4,6 +4,7 @@ class Tracebox < Formula
   homepage 'http://www.tracebox.org/'
   head 'https://github.com/tracebox/tracebox.git'
   url 'https://github.com/tracebox/tracebox.git', :tag => 'v0.2'
+  revision 1
 
   bottle do
     cellar :any

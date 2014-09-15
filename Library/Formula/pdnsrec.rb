@@ -4,6 +4,7 @@ class Pdnsrec < Formula
   homepage "http://wiki.powerdns.com"
   url "http://downloads.powerdns.com/releases/pdns-recursor-3.6.1.tar.bz2"
   sha1 "b77befa0a20d9822523dec44c2559ffda4ea689d"
+  revision 1
 
   bottle do
     cellar :any
