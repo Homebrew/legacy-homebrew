@@ -13,6 +13,7 @@
 # --HEAD:         Run brew install with --HEAD
 # --local:        Ask Homebrew to write verbose logs under ./logs/
 # --tap=<tap>:    Use the git repository of the given tap
+# --dry-run:      Just print commands, don't run them.
 #
 # --ci-master:         Shortcut for Homebrew master branch CI options.
 # --ci-pr:             Shortcut for Homebrew pull request CI options.
@@ -99,6 +100,11 @@ class Step
 
   def run
     puts_command
+    if ARGV.include? "--dry-run"
+      puts
+      @status = :passed
+      return
+    end
 
     start_time = Time.now
 
