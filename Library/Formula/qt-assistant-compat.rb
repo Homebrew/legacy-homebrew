@@ -6,7 +6,7 @@ class QtAssistantCompat < Formula
   sha1 "7a5e5155136c406e5b7eb880eed752f56625d10b"
 
   depends_on "qt"
-  depends_on "pkg-config"
+  depends_on "pkg-config" => :build
   patch :DATA
 
   def install
