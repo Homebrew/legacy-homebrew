@@ -311,10 +311,6 @@ Copyright(c) 2014, Ooyala, Inc.
 ## TODO
 
 - Add Swagger support.  See the spray-swagger project.
-- Implement a main index.html.  It should display:
-    - All the running contexts
-    - All the current jobs in each running context
-
 - Implement an interactive SQL window.  See: [spark-admin](https://github.com/adatao/spark-admin)
 
 - Use `SparkContext.setJobGroup` with the job ID
