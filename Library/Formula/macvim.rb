@@ -34,9 +34,6 @@ class Macvim < Formula
     # If building for 10.7 or up, make sure that CC is set to "clang".
     ENV.clang if MacOS.version >= :lion
 
-    # macvim only works with the current Ruby.framework because it builds with -framework Ruby
-    system_ruby = "/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby"
-
     args = %W[
       --with-features=huge
       --enable-multibyte
@@ -44,7 +41,6 @@ class Macvim < Formula
       --enable-perlinterp
       --enable-rubyinterp
       --enable-tclinterp
-      --with-ruby-command=#{system_ruby}
       --with-tlib=ncurses
       --with-compiledby=Homebrew
       --with-local-dir=#{HOMEBREW_PREFIX}
