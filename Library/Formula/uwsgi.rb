@@ -4,6 +4,7 @@ class Uwsgi < Formula
   homepage "http://projects.unbit.it/uwsgi/"
   url "http://projects.unbit.it/downloads/uwsgi-2.0.6.tar.gz"
   sha1 "5e0fc187ea10366153a1f800c0e7e80940188837"
+  revision 1
 
   bottle do
     revision 1
@@ -24,7 +25,7 @@ class Uwsgi < Formula
   depends_on "libffi" => :optional
   depends_on "libxslt" => :optional
   depends_on "libyaml" => :optional
-  depends_on "lua" => :optional
+  depends_on "lua51" => :optional
   depends_on "mongodb" => :optional
   depends_on "mongrel2" => :optional
   depends_on "nagios" => :optional
