@@ -14,11 +14,9 @@ class Juju < Formula
   depends_on 'go' => :build
 
   def install
-    ENV['GOPATH'] = buildpath
-    args = %w(install github.com/juju/juju/cmd/juju)
-    args.insert(1, "-v") if ARGV.verbose?
-    system "go", *args
-    bin.install 'bin/juju'
+    ENV["GOPATH"] = buildpath
+    system "go", "build", "github.com/juju/juju/cmd/juju"
+    bin.install "juju"
     bash_completion.install "src/github.com/juju/juju/etc/bash_completion.d/juju-core"
   end
 

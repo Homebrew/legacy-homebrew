@@ -2,13 +2,13 @@ require 'formula'
 
 class Mpd < Formula
   homepage "http://www.musicpd.org/"
-  url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.13.tar.xz"
-  sha1 "0ddf8c55228fcc67522ecdd7710f93dc146c99a7"
+  url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.14.tar.xz"
+  sha1 "5a4b5f5b0447994f3fc186ffd7c16cabeeed2978"
 
   bottle do
-    sha1 "cf904228a9f7bff8314790dd314b8237e2e807f5" => :mavericks
-    sha1 "2aa6b0cc3cd40ad5d449d41153de63f491f423ff" => :mountain_lion
-    sha1 "fe7ea39c8759691c31955422a45d9254cb5ce83a" => :lion
+    sha1 "b611883e7d96de9695bc3405d08776103e34bab7" => :mavericks
+    sha1 "eb9558e40e30a897b342ef47f568d19775983ec7" => :mountain_lion
+    sha1 "7b57946f8fe8ccdd7077cb8c8a263ea817571807" => :lion
   end
 
   head do

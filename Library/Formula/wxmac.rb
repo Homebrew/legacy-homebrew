@@ -3,12 +3,23 @@ require 'formula'
 class Wxmac < Formula
   homepage "http://www.wxwidgets.org"
   url "https://downloads.sourceforge.net/project/wxwindows/3.0.1/wxWidgets-3.0.1.tar.bz2"
+  mirror "https://mirrors.kernel.org/debian/pool/main/w/wxwidgets3.0/wxwidgets3.0_3.0.1.orig.tar.bz2"
   sha1 "73e58521d6871c9f4d1e7974c6e3a81629fddcf8"
 
+  # Patch to fix wx so it compiles on Yosemite.
+  # See http://trac.wxwidgets.org/ticket/16329
+    if MacOS.version == :yosemite
+      patch :p0 do
+        url "http://trac.wxwidgets.org/raw-attachment/ticket/16329/wx_webview.patch"
+        sha1 "4621be6cf308d50d22333707b17d243861c74a7d"
+    end
+  end
+
   bottle do
-    sha1 "ea0f50918d4f4e1133ede454588a8b9853489c1f" => :mavericks
-    sha1 "f667fbad16c6d1970240d823d5aeb2c86c22d609" => :mountain_lion
-    sha1 "49eda94f33d296e1a0f90ab26e9caed7b6e857e6" => :lion
+    revision 6
+    sha1 "fa5b9dc8ff899b0856cf806d17b18b4f40e51e29" => :mavericks
+    sha1 "8b23999086a9890c5b9ee0d7af25492f6c9be158" => :mountain_lion
+    sha1 "a12b5cb4322a7b8aae9fde6fdbeff4b9e3ef7cda" => :lion
   end
 
   depends_on "jpeg"

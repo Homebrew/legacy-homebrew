@@ -117,7 +117,7 @@ class Keg
 
   def install_name_tool(*args)
     return unless OS.mac?
-    system(MacOS.locate("install_name_tool"), *args)
+    safe_system(MacOS.locate("install_name_tool"), *args)
   end
 
   # If file is a dylib or bundle itself, look for the dylib named by

@@ -45,8 +45,6 @@ class Erlang < Formula
   fails_with :llvm
 
   def install
-    ohai "Compilation takes a long time; use `brew install -v erlang` to see progress" unless ARGV.verbose?
-
     # Unset these so that building wx, kernel, compiler and
     # other modules doesn't fail with an unintelligable error.
     %w[LIBS FLAGS AFLAGS ZFLAGS].each { |k| ENV.delete("ERL_#{k}") }

@@ -5,14 +5,14 @@ require "formula"
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
   homepage "http://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2014.09.06/youtube-dl-2014.09.06.tar.gz"
-  sha1 "606967a23023765098c6b1171c4ad5f246cbdbc5"
+  url "https://yt-dl.org/downloads/2014.09.14.3/youtube-dl-2014.09.14.3.tar.gz"
+  sha1 "d3e7b6c8c56f014a7f2337d49497fce73afa4692"
 
   bottle do
     cellar :any
-    sha1 "88733e2c1aefe7842533bc557584995eb0a3f9ac" => :mavericks
-    sha1 "a9f5dff11baed4ed2f8a7162c17330b5c89591a7" => :mountain_lion
-    sha1 "3df5e9fd9806fec37e1fcee68bb637ce98aac65a" => :lion
+    sha1 "f575409a9cfed8fd7b903c2f4d45877d995d02f1" => :mavericks
+    sha1 "7bc722d6582b4cefd5634dfff20dffaf1b86787d" => :mountain_lion
+    sha1 "5eb7d780b148834744059222f9c9551478085e8d" => :lion
   end
 
   head do
@@ -23,8 +23,6 @@ class YoutubeDl < Formula
   depends_on "rtmpdump" => :optional
 
   def install
-    # Remove the legacy executable from the git repo
-    rm "youtube-dl" if build.head?
     system "make", "PREFIX=#{prefix}"
     bin.install "youtube-dl"
     man1.install "youtube-dl.1"
