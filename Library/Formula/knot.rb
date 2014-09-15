@@ -8,9 +8,9 @@ class Knot < Formula
   head "https://gitlab.labs.nic.cz/labs/knot.git"
 
   bottle do
-    sha1 "e755d987f861baa2e02ed2e6ff7168e28cdbf3d0" => :mavericks
-    sha1 "c38aac900368a275fd6e949c853b635548a6fd8a" => :mountain_lion
-    sha1 "a48cd3123e6ce95b8e08bc7407da0803e057e4c8" => :lion
+    sha1 "d28c63873e0ee6b98a01c4da1537d81f45dd468a" => :mavericks
+    sha1 "f81216eda0543ae546215b8739631db65594e7af" => :mountain_lion
+    sha1 "c6647467cfe8a3f84a3bedcfd93e6d2cb71f7436" => :lion
   end
 
   depends_on "userspace-rcu"
