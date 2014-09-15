@@ -11,14 +11,12 @@ class QtAssistantCompat < Formula
 
   def install
     cd 'lib' do
-      inreplace 'lib.pro' do |s|
-        s.gsub! '$$[QT_INSTALL_LIBS]', lib
-      end
+      inreplace "lib.pro", "$$[QT_INSTALL_LIBS]", lib
       system "qmake", "lib.pro"
       system "make"
       system "make", "install"
     end
-    # Create symbolik link to /usr/local/include
+    # Create symbolic link to /usr/local/include
     Pathname.glob("#{lib}/QtAssistant.framework/Headers") do |path|
       include.install_symlink path => path.parent.basename(".framework")
     end
