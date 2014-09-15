@@ -244,8 +244,13 @@ class Gcc < Formula
       specs_orig.write s
 
       # Set the library search path
-      s += "*link_libgcc:\n-nostdlib -L#{lib}/gcc/x86_64-unknown-linux-gnu/#{version} -L#{HOMEBREW_PREFIX}/lib\n\n"
+      if build.with?("glibc")
+        s += "*link_libgcc:\n-nostdlib -L#{lib}/gcc/x86_64-unknown-linux-gnu/#{version} -L#{HOMEBREW_PREFIX}/lib\n\n"
+      else
+        s += "*link_libgcc:\n+ -L#{HOMEBREW_PREFIX}/lib\n\n"
+      end
       s += "*link:\n+ -rpath #{HOMEBREW_PREFIX}/lib"
+
       # Set the dynamic linker
       glibc = Formula["glibc"]
       if glibc.installed?
