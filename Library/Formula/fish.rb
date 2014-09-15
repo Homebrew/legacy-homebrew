@@ -20,7 +20,7 @@ class Fish < Formula
     # using 'which'. In Homebrew's 'superenv' this will be incorrect, so
     # override it. Using 'inreplace' rather than a patch as it has a unique
     # signature in Makefile.in and require less maintenance in future.
-    inreplace "Makefile.in", /\|@sed@\|[^|]*\|/, "|@sed@|/usr/bin/sed|"
+    inreplace "Makefile.in", /\|@sed@\|[^|]*\|/, "|@sed@|/usr/bin/sed|" if build.head?
 
     system "autoconf" if build.head?
     system "./configure", "--prefix=#{prefix}"
