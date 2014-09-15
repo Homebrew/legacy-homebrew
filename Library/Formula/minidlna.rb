@@ -5,6 +5,13 @@ class Minidlna < Formula
   url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.4/minidlna-1.1.4.tar.gz"
   sha1 "56f333f8af91105ce5f0861d1f1918ebf5b0a028"
 
+  bottle do
+    cellar :any
+    sha1 "bd843e38e01a181921457a08eefc9b834e1affe6" => :mavericks
+    sha1 "f1026dd21804ccb34ccd95bf15dba43f0918b1b5" => :mountain_lion
+    sha1 "454dd23d6db2a9eefb03a7d5cdfb2323de7e6d48" => :lion
+  end
+
   head do
     url "git://git.code.sf.net/p/minidlna/git"
     depends_on "autoconf" => :build
