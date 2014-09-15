@@ -79,46 +79,33 @@ class OperationInProgressError < RuntimeError
   end
 end
 
-module Homebrew
-  class InstallationError < RuntimeError
-    attr_reader :formula
-
-    def initialize formula, message=""
-      super message
-      @formula = formula
-    end
-  end
-end
-
 class CannotInstallFormulaError < RuntimeError; end
 
 class FormulaAlreadyInstalledError < RuntimeError; end
 
-class FormulaInstallationAlreadyAttemptedError < Homebrew::InstallationError
-  def message
-    "Formula installation already attempted: #{formula}"
+class FormulaInstallationAlreadyAttemptedError < RuntimeError
+  def initialize(formula)
+    super "Formula installation already attempted: #{formula.name}"
   end
 end
 
-class UnsatisfiedRequirements < Homebrew::InstallationError
-  attr_reader :reqs
-
-  def initialize formula, reqs
-    @reqs = reqs
-    message = (reqs.length == 1) \
-                ? "An unsatisfied requirement failed this build." \
-                : "Unsatisifed requirements failed this build."
-    super formula, message
+class UnsatisfiedRequirements < RuntimeError
+  def initialize(reqs)
+    if reqs.length == 1
+      super "An unsatisfied requirement failed this build."
+    else
+      super "Unsatisified requirements failed this build."
+    end
   end
 end
 
-class FormulaConflictError < Homebrew::InstallationError
-  attr_reader :f, :conflicts
+class FormulaConflictError < RuntimeError
+  attr_reader :formula, :conflicts
 
-  def initialize(f, conflicts)
-    @f = f
+  def initialize(formula, conflicts)
+    @formula = formula
     @conflicts = conflicts
-    super f, message
+    super message
   end
 
   def conflict_message(conflict)
@@ -130,7 +117,7 @@ class FormulaConflictError < Homebrew::InstallationError
 
   def message
     message = []
-    message << "Cannot install #{f.name} because conflicting formulae are installed.\n"
+    message << "Cannot install #{formula.name} because conflicting formulae are installed.\n"
     message.concat conflicts.map { |c| conflict_message(c) } << ""
     message << <<-EOS.undent
       Please `brew unlink #{conflicts.map(&:name)*' '}` before continuing.
@@ -144,14 +131,14 @@ class FormulaConflictError < Homebrew::InstallationError
   end
 end
 
-class BuildError < Homebrew::InstallationError
-  attr_reader :command, :env
+class BuildError < RuntimeError
+  attr_reader :formula, :env
 
-  def initialize formula, cmd, args
-    @command = cmd
-    @env = ENV.to_hash
+  def initialize(formula, cmd, args, env)
+    @formula = formula
+    @env = env
     args = args.map{ |arg| arg.to_s.gsub " ", "\\ " }.join(" ")
-    super formula, "Failed executing: #{command} #{args}"
+    super "Failed executing: #{cmd} #{args}"
   end
 
   def issues
@@ -188,7 +175,7 @@ class BuildError < Homebrew::InstallationError
       Homebrew.dump_build_env(env)
       puts
       onoe "#{formula.name} #{formula.version} did not build"
-      unless (logs = Dir["#{HOMEBREW_LOGS}/#{formula}/*"]).empty?
+      unless (logs = Dir["#{HOMEBREW_LOGS}/#{formula.name}/*"]).empty?
         puts "Logs:"
         puts logs.map{|fn| "     #{fn}"}.join("\n")
       end
@@ -203,13 +190,13 @@ end
 
 # raised by CompilerSelector if the formula fails with all of
 # the compilers available on the user's system
-class CompilerSelectionError < Homebrew::InstallationError
-  def initialize f
-    super f, <<-EOS.undent
-    #{f.name} cannot be built with any available compilers.
-    To install this formula, you may need to:
-      brew install gcc
-    EOS
+class CompilerSelectionError < RuntimeError
+  def initialize(formula)
+    super <<-EOS.undent
+      #{formula.name} cannot be built with any available compilers.
+      To install this formula, you may need to:
+        brew install gcc
+      EOS
   end
 end
 
@@ -251,22 +238,13 @@ class ChecksumMismatchError < RuntimeError
 end
 
 class ResourceMissingError < ArgumentError
-  def initialize formula, resource
-    @formula = formula
-    @resource = resource
-  end
-
-  def to_s
-    "Formula #{@formula} does not define resource \"#{@resource}\"."
+  def initialize(formula, resource)
+    super "#{formula.name} does not define resource #{resource.inspect}"
   end
 end
 
 class DuplicateResourceError < ArgumentError
-  def initialize resource
-    @resource = resource
-  end
-
-  def to_s
-    "Resource \"#{@resource}\" defined more than once."
+  def initialize(resource)
+    super "Resource #{resource.inspect} is defined more than once"
   end
 end

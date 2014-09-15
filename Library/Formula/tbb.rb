@@ -13,6 +13,10 @@ class Tbb < Formula
     sha1 "2bb200abaf9f8182bfb948e4dee513b9afca2198" => :lion
   end
 
+  # requires malloc features first introduced in Lion
+  # https://github.com/Homebrew/homebrew/issues/32274
+  depends_on :macos => :lion
+
   option :cxx11
 
   def install
