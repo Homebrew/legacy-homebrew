@@ -7,9 +7,9 @@ class Orc < Formula
 
   bottle do
     cellar :any
-    sha1 "6de0850741bbf8184666d242a4ce7c927ddcbebe" => :mavericks
-    sha1 "13c06e141b56b09c278682019edcb70f73c606fe" => :mountain_lion
-    sha1 "c089a76d9bfdfe1f5e6e6201a228d45412385e79" => :lion
+    sha1 "bec7e363073a890e5fecf672aff368d16135ba81" => :mavericks
+    sha1 "7666ce536dfdd52724ff0e49109b40dfd58b2d6a" => :mountain_lion
+    sha1 "ef6997d06ae94bd9e097a6ce33e882a3f965f383" => :lion
   end
 
   def install
