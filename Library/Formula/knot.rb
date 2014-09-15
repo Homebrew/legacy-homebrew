@@ -2,8 +2,8 @@ require "formula"
 
 class Knot < Formula
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-1.5.2.tar.gz"
-  sha1 "4605540f944b6dcd8401278a5bd2f85b6c400086"
+  url "https://secure.nic.cz/files/knot-dns/knot-1.5.3.tar.gz"
+  sha1 "4692c5001472443d07ac088592b349793a968706"
 
   head "https://gitlab.labs.nic.cz/labs/knot.git"
 
@@ -16,13 +16,6 @@ class Knot < Formula
   depends_on "userspace-rcu"
   depends_on "openssl"
   depends_on "libidn"
-
-  # pthread_spinlock_t doesn't exist on Mac OS X
-  # https://gitlab.labs.nic.cz/labs/knot/issues/293
-  patch do
-    url "https://gitlab.labs.nic.cz/labs/knot/commit/3d3f31.diff"
-    sha1 "76770789fbe833af966f94fa44b6c55a9df52318"
-  end
 
   def install
     system "./configure", "--disable-debug",
