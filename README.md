@@ -1,8 +1,6 @@
 spark-jobserver provides a RESTful interface for submitting and managing [Apache Spark](http://spark-project.org) jobs, jars, and job contexts.
 This repo contains the complete Spark job server project, including unit tests and deploy scripts.
 
-We deploy our job server off of this repo at Ooyala and it is tested against CDH5 / Hadoop 2.2,  Spark 1.0.2 final, Scala 2.10.
-
 ## Features
 
 - *"Spark as a Service"*: Simple REST interface for all aspects of job, context management
@@ -14,6 +12,13 @@ We deploy our job server off of this repo at Ooyala and it is tested against CDH
 - Works with Standalone Spark as well as Mesos
 - Job and jar info is persisted via a pluggable DAO interface
 - Named RDDs to cache and retrieve RDDs by name, improving RDD sharing and reuse among jobs. 
+
+## Version Information
+
+| Version     | Spark Version |
+|-------------|---------------|
+| 0.3.1       | 0.9.1         |
+| 0.4.0       | 1.0.2         |
 
 ## Quick start / development mode
 
@@ -41,7 +46,7 @@ Then go ahead and start the job server using the instructions above.
 
 Let's upload the jar:
 
-    curl --data-binary @job-server-tests/target/job-server-tests-0.3.1.jar localhost:8090/jars/test
+    curl --data-binary @job-server-tests/target/job-server-tests-0.4.0.jar localhost:8090/jars/test
     OK⏎
 
 The above jar is uploaded as app `test`.  Next, let's start an ad-hoc word count job, meaning that the job
@@ -105,9 +110,9 @@ Note the addition of `context=` and `sync=true`.
 ## Create a Job Server Project
 In your `build.sbt`, add this to use the job server jar:
 
-	resolvers += "Ooyala Bintray" at "http://dl.bintray.com/ooyala/maven"
+	resolvers += "Job Server Bintray" at "http://dl.bintray.com/spark-jobserver/maven"
 
-	libraryDependencies += "ooyala.cnd" % "job-server" % "0.3.1" % "provided"
+	libraryDependencies += "spark.jobserver" % "job-server-api" % "0.4.0" % "provided"
 
 For most use cases it's better to have the dependencies be "provided" because you don't want SBT assembly to include the whole job server jar.
 
