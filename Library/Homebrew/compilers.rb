@@ -99,8 +99,11 @@ class CompilerQueue
 end
 
 class CompilerSelector
-  def initialize(f, versions=MacOS)
-    @f = f
+  attr_reader :formula
+
+  def initialize(formula, versions=MacOS)
+    @formula = formula
+    @failures = formula.compiler_failures
     @versions = versions
     @compilers = CompilerQueue.new
     %w{clang llvm gcc gcc_4_0}.map(&:to_sym).each do |cc|
@@ -125,12 +128,16 @@ class CompilerSelector
   # if none can be found raises CompilerError instead
   def compiler
     while cc = @compilers.pop
-      return cc.name unless @f.fails_with?(cc)
+      return cc.name unless fails_with?(cc)
     end
-    raise CompilerSelectionError.new(@f)
+    raise CompilerSelectionError.new(formula)
   end
 
   private
+
+  def fails_with?(compiler)
+    @failures.any? { |failure| failure === compiler }
+  end
 
   def priority_for(cc)
     case cc
