@@ -24,6 +24,13 @@ class Qt5 < Formula
     sha1 "fc5fee03fa0ad09c5c96b869022590cdc7b3b1fd" => :lion
   end
 
+  # Patch to fix compile errors on Yosemite. Can be removed with 5.4.
+  # https://bugreports.qt-project.org/browse/QTBUG-41136
+  patch do
+    url "https://qt.gitorious.org/qt/qtmultimedia/commit/8d5114.diff"
+    sha1 "212c0540bcb371d1189aaec55ba7fa774b896423"
+  end
+
   head "git://gitorious.org/qt/qt5.git", :branch => "stable",
     :using => Qt5HeadDownloadStrategy, :shallow => false
 
