@@ -7,10 +7,9 @@ class Monotone < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "d8bd7c7c25113e96affe3e8778e1ffd5d5e0ab2c" => :mavericks
-    sha1 "82cb04a2b2d06ed074835ad25f928b43a0d87f70" => :mountain_lion
-    sha1 "0c0ad8de85f7d9c2139f68914b970ceb38a26929" => :lion
+    sha1 "3f8cc11197707cb011089291af5979ef092934f5" => :mavericks
+    sha1 "4e46602d065c8e2b5ed4ad0dbc943b89bd87b1b0" => :mountain_lion
+    sha1 "f7556d0774f7fce3e8465460af011fa8e6d1f332" => :lion
   end
 
   depends_on "pkg-config" => :build
