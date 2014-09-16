@@ -2,8 +2,8 @@ require "formula"
 
 class Cliclick < Formula
   homepage "http://www.bluem.net/jump/cliclick/"
-  url "https://github.com/BlueM/cliclick/archive/2.4.tar.gz"
-  sha1 "69dd1bc99d110a18fd4cc087b8180592c798a783"
+  url "https://github.com/BlueM/cliclick/archive/3.0.tar.gz"
+  sha1 "e4984645f771d1e80c0a2efc6c25cb3590a05d94"
 
   def install
     system "make"
