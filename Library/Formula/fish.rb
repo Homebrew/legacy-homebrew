@@ -16,15 +16,12 @@ class Fish < Formula
   skip_clean 'share/doc'
 
   def install
-    # The Makefile automatically sets the shebang in the lexicon filter
-    # using 'which'. In Homebrew's 'superenv' this will be incorrect, so
-    # override it. Using 'inreplace' rather than a patch as it has a unique
-    # signature in Makefile.in and require less maintenance in future.
-    inreplace "Makefile.in", /\|@sed@\|[^|]*\|/, "|@sed@|/usr/bin/sed|" if build.head?
-
     system "autoconf" if build.head?
     system "./configure", "--prefix=#{prefix}"
-    system "make", "install"
+    # The Makefile automatically sets the shebang in the lexicon filter
+    # using 'which'. In Homebrew's 'superenv' this will be incorrect, so
+    # the correct path is passed into make here.
+    system "make", "install", "LEXICON_SED_PATH=/usr/bin/sed"
   end
 
   test do
