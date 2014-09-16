@@ -64,7 +64,7 @@ __END__
  ZLIB_CFLAGS   ?=
  ZLIB_LIBS     ?= -lz
 +# The jpeg-turbo package doesn't seem to have a pkg-config file
- JPEG_CFLAGS   ?=
+ JPEG_CFLAGS   ?= 
  JPEG_LIBS     ?= -lturbojpeg
 -FREETYPE_CFLAGS ?= -I/usr/X11/include/freetype2 -I/usr/X11/include
 -FREETYPE_LIBS ?= -L/usr/X11/lib -lfreetype
