@@ -13,10 +13,9 @@ class Gnuplot < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "22eb078d5191be2c5747d79c5d04858038eca84b" => :mavericks
-    sha1 "5352e2e09c94dcf1812af08f072636532e5ea1ab" => :mountain_lion
-    sha1 "779fc18117f74a6688110febf075e694204ac0bf" => :lion
+    sha1 "6ab83d98d37a821ee76a7f8f18478f648d6e69df" => :mavericks
+    sha1 "1ee12cdb1f2cf01581340b236b4b1921d3ef22a3" => :mountain_lion
+    sha1 "a993df7a3889f9c828f05c663cd563ab81390b1e" => :lion
   end
 
   head do
