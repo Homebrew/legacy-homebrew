@@ -46,11 +46,6 @@ class Sphinx < Formula
   def install
     (buildpath/'libstemmer_c').install resource('stemmer')
 
-    # libstemmer changed the name of the non-UTF8 Hungarian source files,
-    # but the released version of sphinx still refers to it under the old name.
-    inreplace "libstemmer_c/Makefile.in",
-      "stem_ISO_8859_1_hungarian", "stem_ISO_8859_2_hungarian"
-
     args = %W[--prefix=#{prefix}
               --disable-dependency-tracking
               --localstatedir=#{var}
