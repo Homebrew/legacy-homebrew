@@ -9,9 +9,9 @@ class Weechat < Formula
   head 'https://github.com/weechat/weechat.git'
 
   bottle do
-    sha1 "ffe3cecdb9b796eae6fd6db61aa8b9ea9c5bc6b4" => :mavericks
-    sha1 "a308dce7ebecc1bae28a9a3aafe1ee44161da42b" => :mountain_lion
-    sha1 "3127000fe74e0911ae006d035aa72112cdb84047" => :lion
+    sha1 "19360d0fe50646b592b78bb36353547dd1f43317" => :mavericks
+    sha1 "2d4fb76df048df84fb2ec878a2964573a36f74ee" => :mountain_lion
+    sha1 "add1d9b1eb865db66cae4c534c200a790e133677" => :lion
   end
 
   depends_on 'cmake' => :build
