@@ -136,7 +136,7 @@ class Step
 end
 
 class Test
-  attr_reader :log_root, :category, :name, :formulae, :steps
+  attr_reader :log_root, :category, :name, :steps
 
   def initialize argument, tap=nil
     @hash = nil
@@ -341,7 +341,6 @@ class Test
       reqs |= formula_object.devel.requirements.to_a
     end
 
-
     begin
       deps.each {|f| CompilerSelector.new(f.to_formula).compiler }
       CompilerSelector.new(formula_object).compiler
@@ -362,7 +361,7 @@ class Test
     end
 
     test "brew", "fetch", "--retry", *unchanged_dependencies unless unchanged_dependencies.empty?
-    test "brew", "fetch", "--retry", "--build-from-source", *changed_dependences unless changed_dependences.empty?
+    test "brew", "fetch", "--retry", "--build-bottle", *changed_dependences unless changed_dependences.empty?
     formula_fetch_options = []
     formula_fetch_options << "--build-bottle" unless ARGV.include? "--no-bottle"
     formula_fetch_options << "--force" if ARGV.include? "--cleanup"
@@ -406,7 +405,7 @@ class Test
         test "brew", "uninstall", "--devel", "--force", formula
       end
     end
-    test "brew", "uninstall", "--force", *dependencies unless dependencies.empty?
+    test "brew", "uninstall", "--force", *unchanged_dependencies unless unchanged_dependencies.empty?
   end
 
   def homebrew
@@ -471,6 +470,29 @@ class Test
       end
     end
     status == :passed
+  end
+
+  def formulae
+    changed_formulae_dependents = {}
+    dependencies = []
+    non_dependencies = []
+
+    @formulae.each do |formula|
+      formula_dependencies = `brew deps #{formula}`.split("\n")
+      unchanged_dependencies = formula_dependencies - @formulae
+      changed_dependences = formula_dependencies - unchanged_dependencies
+      changed_dependences.each do |changed_formula|
+        changed_formulae_dependents[changed_formula] ||= 0
+        changed_formulae_dependents[changed_formula] += 1
+      end
+    end
+
+    changed_formulae = changed_formulae_dependents.sort do |a1,a2|
+      a2[1].to_i <=> a1[1].to_i
+    end
+    changed_formulae.map!(&:first)
+    unchanged_formulae = @formulae - changed_formulae
+    changed_formulae + unchanged_formulae
   end
 
   def run
