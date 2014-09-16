@@ -14,8 +14,9 @@ end
 
 class Qt5 < Formula
   homepage "http://qt-project.org/"
-  url "http://download.qt-project.org/official_releases/qt/5.3/5.3.1/single/qt-everywhere-opensource-src-5.3.1.tar.gz"
-  sha1 "3244dd34f5fb695e903eaa49c6bd0838b9bf7a73"
+  url "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.3/5.3.2/single/qt-everywhere-opensource-src-5.3.2.tar.gz"
+  mirror "http://download.qt-project.org/official_releases/qt/5.3/5.3.2/single/qt-everywhere-opensource-src-5.3.2.tar.gz"
+  sha1 "502dd2db1e9ce349bb8ac48b4edf7f768df1cafe"
 
   bottle do
     sha1 "18c4f7758a47894591905831b6e740315ff1ce36" => :mavericks
