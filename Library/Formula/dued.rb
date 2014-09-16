@@ -3,7 +3,7 @@ require "formula"
 class Dued < Formula
   homepage "https://github.com/unforswearing/dued"
   url "https://github.com/unforswearing/dued/blob/master/dued.rb.zip"
-  sha1 "4109335a65cc2deb712c2cf526ff2dd93ef20db6"
+  sha1 "348a0ba1a632bcc9a4ccf10b173cbdde46618ca0"
   version "0.1"
 
  def install
