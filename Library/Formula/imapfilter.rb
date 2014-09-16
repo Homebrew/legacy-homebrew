@@ -7,10 +7,9 @@ class Imapfilter < Formula
   revision 2
 
   bottle do
-    revision 1
-    sha1 "b15ca9de24e2f3226554db6e364dd1c10e552c6c" => :mavericks
-    sha1 "05fb2dee9060d2a791904b94341fa9718fe3af30" => :mountain_lion
-    sha1 "c29743afc1c8d9d9ddb5646c57a601fefb7313fd" => :lion
+    sha1 "77ecd8c0a08e81054f5e4dea3fbe85b51e7f94e0" => :mavericks
+    sha1 "5fc0b042a26f0562b1c0ff1279743af4738742a2" => :mountain_lion
+    sha1 "708f6ef1c2b836162a079d77eaedb27506db7dcc" => :lion
   end
 
   depends_on "lua"
