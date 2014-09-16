@@ -19,7 +19,7 @@ class Lighttpd < Formula
   depends_on 'automake' => :build
   depends_on 'libtool' => :build
   depends_on 'pcre'
-  depends_on 'lua51' => :optional
+  depends_on 'lua51' if build.with? "lua"
   depends_on 'libev' => :optional
 
   # default max. file descriptors; this option will be ignored if the server is not started as root
