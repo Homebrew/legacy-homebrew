@@ -2,27 +2,20 @@ require "formula"
 
 class Knot < Formula
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-1.5.2.tar.gz"
-  sha1 "4605540f944b6dcd8401278a5bd2f85b6c400086"
+  url "https://secure.nic.cz/files/knot-dns/knot-1.5.3.tar.gz"
+  sha1 "4692c5001472443d07ac088592b349793a968706"
 
   head "https://gitlab.labs.nic.cz/labs/knot.git"
 
   bottle do
-    sha1 "e755d987f861baa2e02ed2e6ff7168e28cdbf3d0" => :mavericks
-    sha1 "c38aac900368a275fd6e949c853b635548a6fd8a" => :mountain_lion
-    sha1 "a48cd3123e6ce95b8e08bc7407da0803e057e4c8" => :lion
+    sha1 "d28c63873e0ee6b98a01c4da1537d81f45dd468a" => :mavericks
+    sha1 "f81216eda0543ae546215b8739631db65594e7af" => :mountain_lion
+    sha1 "c6647467cfe8a3f84a3bedcfd93e6d2cb71f7436" => :lion
   end
 
   depends_on "userspace-rcu"
   depends_on "openssl"
   depends_on "libidn"
-
-  # pthread_spinlock_t doesn't exist on Mac OS X
-  # https://gitlab.labs.nic.cz/labs/knot/issues/293
-  patch do
-    url "https://gitlab.labs.nic.cz/labs/knot/commit/3d3f31.diff"
-    sha1 "76770789fbe833af966f94fa44b6c55a9df52318"
-  end
 
   def install
     system "./configure", "--disable-debug",
