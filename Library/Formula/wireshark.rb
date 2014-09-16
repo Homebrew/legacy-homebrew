@@ -15,9 +15,9 @@ class Wireshark < Formula
   end
 
   bottle do
-    sha1 "4ae3387780d99ecd34b36317e7895c29f9794b27" => :mavericks
-    sha1 "01eea3bfc334f24fb3bcde6338aa4ae2305862c9" => :mountain_lion
-    sha1 "2d34cea77826c50b684b79a5b52e8ff79137de21" => :lion
+    sha1 "c358f63d065e79c1bc95d9743686a0ba2ffb56d2" => :mavericks
+    sha1 "3beac5fc1a4ad062a29a105bd2f30fb7761cf698" => :mountain_lion
+    sha1 "e7b9eb2d8fefaf9c88fa23edf232a836794bfb11" => :lion
   end
 
   head do
