@@ -2,8 +2,8 @@ require 'formula'
 
 class Sphinx < Formula
   homepage 'http://www.sphinxsearch.com'
-  url 'http://sphinxsearch.com/files/sphinx-2.1.9-release.tar.gz'
-  sha1 '2ddd945eb0a7de532a7aaed2e933ac05b978cff2'
+  url 'http://sphinxsearch.com/files/sphinx-2.2.4-release.tar.gz'
+  sha1 'd89f2188f7d47cd8468708b15cc55f5d457009e0'
 
   head 'http://sphinxsearch.googlecode.com/svn/trunk/'
 
@@ -12,11 +12,6 @@ class Sphinx < Formula
     sha1 "bedd71d9e8a0691e2e4bbfef057f6d87a6a7fe28" => :mavericks
     sha1 "ba05b267136faff945b2370b81907c87c4126341" => :mountain_lion
     sha1 "8c6351384d69e982527b71ca6162cc8fd680c2ec" => :lion
-  end
-
-  devel do
-    url 'http://sphinxsearch.com/files/sphinx-2.2.3-beta.tar.gz'
-    sha1 'ef78cebeae32a0582df504d74d6dd2ded81b73d9'
   end
 
   option 'mysql', 'Force compiling against MySQL'
@@ -45,11 +40,6 @@ class Sphinx < Formula
 
   def install
     (buildpath/'libstemmer_c').install resource('stemmer')
-
-    # libstemmer changed the name of the non-UTF8 Hungarian source files,
-    # but the released version of sphinx still refers to it under the old name.
-    inreplace "libstemmer_c/Makefile.in",
-      "stem_ISO_8859_1_hungarian", "stem_ISO_8859_2_hungarian"
 
     args = %W[--prefix=#{prefix}
               --disable-dependency-tracking
