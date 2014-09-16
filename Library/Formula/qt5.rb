@@ -23,6 +23,9 @@ class Qt5 < Formula
     sha1 "fc5fee03fa0ad09c5c96b869022590cdc7b3b1fd" => :lion
   end
 
+  # https://bugreports.qt-project.org/browse/QTBUG-41136
+  patch :DATA
+
   head "git://gitorious.org/qt/qt5.git", :branch => "stable",
     :using => Qt5HeadDownloadStrategy, :shallow => false
 
@@ -108,3 +111,17 @@ class Qt5 < Formula
     EOS
   end
 end
+__END__
+diff --git a/qtmultimedia/src/plugins/avfoundation/mediaplayer/avfmediaplayersession.mm b/qtmultimedia/src/plugins/avfoundation/mediaplayer/avfmediaplayersession.mm
+index a73974c..d3f3eae 100644
+--- a/qtmultimedia/src/plugins/avfoundation/mediaplayer/avfmediaplayersession.mm
++++ b/qtmultimedia/src/plugins/avfoundation/mediaplayer/avfmediaplayersession.mm
+@@ -322,7 +322,7 @@ static void *AVFMediaPlayerSessionObserverCurrentItemObservationContext = &AVFMe
+     //AVPlayerItem "status" property value observer.
+     if (context == AVFMediaPlayerSessionObserverStatusObservationContext)
+     {
+-        AVPlayerStatus status = [[change objectForKey:NSKeyValueChangeNewKey] integerValue];
++        AVPlayerStatus status = (AVPlayerStatus)[[change objectForKey:NSKeyValueChangeNewKey] integerValue];
+         switch (status)
+         {
+             //Indicates that the status of the player is not yet known because
