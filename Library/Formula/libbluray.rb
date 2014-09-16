@@ -1,9 +1,9 @@
 require "formula"
 
 class Libbluray < Formula
-  homepage "http://www.videolan.org/developers/libbluray.html"
-  url "ftp://ftp.videolan.org/pub/videolan/libbluray/0.6.0/libbluray-0.6.0.tar.bz2"
-  sha1 "2249e72ea50f43a1864c7f9658e13403ca3270f7"
+  homepage "https://www.videolan.org/developers/libbluray.html"
+  url "ftp://ftp.videolan.org/pub/videolan/libbluray/0.6.2/libbluray-0.6.2.tar.bz2"
+  sha1 "a1ab8c8c9310680fb1fe6a58f9fc5430613600fe"
 
   bottle do
     cellar :any
