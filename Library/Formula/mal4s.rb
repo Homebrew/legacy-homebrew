@@ -12,7 +12,6 @@ class Mal4s < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "glm" => :build
-  depends_on "boost"
   depends_on "glew"
   depends_on "jpeg"
   depends_on "pcre"
@@ -22,9 +21,26 @@ class Mal4s < Formula
   depends_on "freetype"
   depends_on :x11 => :optional
 
+  if MacOS.version < :mavericks
+    depends_on "boost" => "c++11"
+  else
+    depends_on "boost"
+  end
+
   needs :cxx11
 
+  stable do
+    # fix compile failure.
+    # https://github.com/secure411dotorg/mal4s/pull/38
+    patch do
+      url "https://github.com/secure411dotorg/mal4s/commit/4d2ab83.diff"
+      sha1 "7d1006dd2b9f565997c16a4fbbfe6def4155afeb"
+    end
+  end
+
   def install
+    ENV.cxx11
+
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}"]
     args << "--without-x" if build.without? 'x11'
