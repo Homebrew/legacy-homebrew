@@ -12,19 +12,11 @@ class Solr < Formula
     sha1 "82bc81371673e7e9e2cafae5d9914dd46ec64e84" => :lion
   end
 
-  def script; <<-EOS.undent
-    #!/bin/sh
-    if [ -z "$1" ]; then
-      echo "Usage: $ solr /absolute/path/to/config/dir"
-    else
-      cd #{libexec}/example && java -server $JAVA_OPTS -Dsolr.solr.home=$1 -jar start.jar
-    fi
-    EOS
-  end
-
   def install
     libexec.install Dir["*"]
-    (bin+"solr").write script
+    bin.install "#{libexec}/bin/solr"
+    share.install "#{libexec}/bin/solr.in.sh"
+    prefix.install "#{libexec}/example"
   end
 
   def caveats; <<-EOS.undent
