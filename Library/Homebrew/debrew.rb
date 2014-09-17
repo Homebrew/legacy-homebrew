@@ -21,6 +21,10 @@ module Debrew
     def install
       Debrew.debrew { super }
     end
+
+    def test
+      Debrew.debrew { super }
+    end
   end
 
   module Resource
