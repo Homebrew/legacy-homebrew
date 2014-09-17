@@ -8,5 +8,6 @@ test-reports/
 .idea*
 .vagrant
 
-# ignore config files
-*.conf
+# ignore deployment configs
+config/*.conf
+config/*.sh
