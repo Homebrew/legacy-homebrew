@@ -8,7 +8,7 @@ require "build_options"
 require "cxxstdlib"
 require "keg"
 require "extend/ENV"
-require "debrew" if ARGV.debug?
+require "debrew"
 require "fcntl"
 
 class Build
@@ -109,6 +109,11 @@ class Build
       end
     end
 
+    if ARGV.debug?
+      formula.extend(Debrew::Formula)
+      formula.resources.each { |r| r.extend(Debrew::Resource) }
+    end
+
     formula.brew do
       if ARGV.flag? '--git'
         system "git", "init"
@@ -129,17 +134,7 @@ class Build
       else
         formula.prefix.mkpath
 
-        formula.resources.each { |r| r.extend(ResourceDebugger) } if ARGV.debug?
-
-        begin
-          formula.install
-        rescue Exception => e
-          if ARGV.debug?
-            debrew(e, formula)
-          else
-            raise
-          end
-        end
+        formula.install
 
         stdlibs = detect_stdlibs
         Tab.create(formula, ENV.compiler, stdlibs.first, formula.build).write
@@ -190,7 +185,6 @@ begin
   build   = Build.new(formula, options)
   build.install
 rescue Exception => e
-  e.continuation = nil if ARGV.debug?
   Marshal.dump(e, error_pipe)
   error_pipe.close
   exit! 1

@@ -12,6 +12,7 @@ require 'formula_cellar_checks'
 require 'install_renamed'
 require 'cmd/tap'
 require 'hooks/bottles'
+require 'debrew'
 
 class FormulaInstaller
   include FormulaCellarChecks
