@@ -3,8 +3,8 @@ require "formula"
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
   homepage "http://nodejs.org/"
-  url "http://nodejs.org/dist/v0.10.31/node-v0.10.31.tar.gz"
-  sha1 "80f2160b0525763b557742aa73d8dacf1a71e53c"
+  url "http://nodejs.org/dist/v0.10.32/node-v0.10.32.tar.gz"
+  sha1 "1d748171ba2a9568853ccec442c5f62c46fccc20"
 
   bottle do
     revision 3
