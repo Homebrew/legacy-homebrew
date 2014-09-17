@@ -1,12 +1,12 @@
-require 'formula'
+require "formula"
 
 class Cppdom < Formula
-  homepage 'http://sourceforge.net/projects/xml-cppdom/'
-  url 'https://downloads.sourceforge.net/project/xml-cppdom/CppDOM/1.2.0/cppdom-1.2.0.tar.bz2'
-  sha1 'cf3a20689e82b8907825ac9d0602f469f879d934'
+  homepage "http://sourceforge.net/projects/xml-cppdom/"
+  url "https://downloads.sourceforge.net/project/xml-cppdom/CppDOM/1.2.0/cppdom-1.2.0.tar.bz2"
+  sha1 "cf3a20689e82b8907825ac9d0602f469f879d934"
 
-  depends_on 'scons' => :build
-  depends_on 'boost'
+  depends_on "scons" => :build
+  depends_on "boost"
 
   # Don't install to prefix/lib64
   patch :DATA
@@ -30,9 +30,9 @@ class Cppdom < Formula
       "BoostBaseDir=#{HOMEBREW_PREFIX}/"]
 
     if MacOS.prefer_64_bit?
-      args << 'var_arch=x64'
+      args << "var_arch=x64"
     else
-      args << 'var_arch=ia32'
+      args << "var_arch=ia32"
     end
 
     system "#{HOMEBREW_PREFIX}/bin/scons", "install", *args
