@@ -2,8 +2,8 @@ require 'formula'
 
 class Mal4s < Formula
   homepage 'https://github.com/secure411dotorg/mal4s/'
-  url 'https://service.dissectcyber.com/mal4s/mal4s-1.1.2.tar.gz'
-  sha1 'a99b2ffb9d2e1395c8f38a27108611611ca925df'
+  url 'https://service.dissectcyber.com/mal4s/mal4s-1.2.5.tar.gz'
+  sha1 'f1ced8b5101b41f745a50bd583b8a6046c72fa7c'
 
   head 'https://github.com/secure411dotorg/mal4s.git'
 
@@ -28,15 +28,6 @@ class Mal4s < Formula
   end
 
   needs :cxx11
-
-  stable do
-    # fix compile failure.
-    # https://github.com/secure411dotorg/mal4s/pull/38
-    patch do
-      url "https://github.com/secure411dotorg/mal4s/commit/4d2ab83.diff"
-      sha1 "7d1006dd2b9f565997c16a4fbbfe6def4155afeb"
-    end
-  end
 
   def install
     ENV.cxx11
