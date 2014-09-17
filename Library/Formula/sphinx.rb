@@ -14,11 +14,6 @@ class Sphinx < Formula
     sha1 "8c6351384d69e982527b71ca6162cc8fd680c2ec" => :lion
   end
 
-  devel do
-    url 'http://sphinxsearch.com/files/sphinx-2.2.3-beta.tar.gz'
-    sha1 'ef78cebeae32a0582df504d74d6dd2ded81b73d9'
-  end
-
   option 'mysql', 'Force compiling against MySQL'
   option 'pgsql', 'Force compiling against PostgreSQL'
   option 'id64',  'Force compiling with 64-bit ID support'
