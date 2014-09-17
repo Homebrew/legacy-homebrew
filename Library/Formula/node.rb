@@ -7,10 +7,9 @@ class Node < Formula
   sha1 "1d748171ba2a9568853ccec442c5f62c46fccc20"
 
   bottle do
-    revision 3
-    sha1 "42d3400b26a5c75c9474d82e4a87ad7befdc14c3" => :mavericks
-    sha1 "718aa836d684e2590d58d7a424af5811bd015ee5" => :mountain_lion
-    sha1 "9bef3cd554caa933de28cd22ee743daeffb3df21" => :lion
+    sha1 "f9f083a1cf13cf3703c764d639702627968e2234" => :mavericks
+    sha1 "83a01d1079ed1bc02a7c9fc7cefa589027778b15" => :mountain_lion
+    sha1 "a2dbe4a3358e98813fbc6c83cfa79120177e6fc8" => :lion
   end
 
   head "https://github.com/joyent/node.git"
