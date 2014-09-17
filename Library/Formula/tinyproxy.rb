@@ -6,6 +6,7 @@ class Tinyproxy < Formula
   sha1 "2538fbd190d3dc357a2e7c2a07ea0fbefb768a13"
 
   option "reverse", "Enable reverse proxying"
+  option "with-transparent", "Enable transparent proxying"
 
   depends_on "asciidoc" => :build
 
@@ -24,6 +25,7 @@ class Tinyproxy < Formula
     ]
 
     args << "--enable-reverse" if build.include? "reverse"
+    args << "--enable-transparent" if build.with? "transparent"
 
     system "./configure", *args
 
