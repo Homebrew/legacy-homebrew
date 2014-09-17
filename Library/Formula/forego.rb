@@ -8,6 +8,12 @@ class Forego < Formula
 
   head "https://github.com/ddollar/forego.git"
 
+  bottle do
+    sha1 "b4c860b1416c1dc3c2ee6b79b6ddc9120fea7901" => :mavericks
+    sha1 "68cd47f9527540362a811d9ded30980b8e62d698" => :mountain_lion
+    sha1 "0561fb9ae398e632f36a6667f64d1fa449840b09" => :lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/kr/godep" do
