@@ -21,7 +21,7 @@ class Mal4s < Formula
   depends_on "freetype"
   depends_on :x11 => :optional
 
-  if MacOS.version == :mountain_lion
+  if MacOS.version < :mavericks
     depends_on "boost" => "c++11"
   else
     depends_on "boost"
@@ -39,7 +39,7 @@ class Mal4s < Formula
   end
 
   def install
-    ENV.cxx11 if MacOS.version == :mountain_lion
+    ENV.cxx11
 
     args = ["--disable-dependency-tracking",
             "--prefix=#{prefix}"]
