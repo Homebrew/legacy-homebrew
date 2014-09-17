@@ -5,6 +5,7 @@
 spark {
   # spark.master will be passed to each job's JobContext
   master = "local[4]"
+  # master = "mesos://vm28-hulk-pub:5050"
 
   # Default # of CPUs for jobs to use for Spark standalone cluster
   job-number-cpus = 4
@@ -33,6 +34,12 @@ spark {
   context-settings {
     num-cpu-cores = 2           # Number of cores to allocate.  Required.
     memory-per-node = 512m         # Executor memory per node, -Xmx style eg 512m, #1G, etc.
+
+    # in case spark distribution should be accessed from HDFS (as opposed to being installed on every mesos slave)
+    # spark.executor.uri = "hdfs://namenode:8020/apps/spark/spark.tgz"
+
+    # uris of jars to be loaded into the classpath for this context
+    # dependent-jar-uris = ["file:///some/path/present/in/each/mesos/slave/somepackage.jar"]
   }
 
   # This needs to match SPARK_HOME for cluster SparkContexts to be created successfully

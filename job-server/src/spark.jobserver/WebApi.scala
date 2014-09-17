@@ -8,6 +8,7 @@ import java.util.NoSuchElementException
 import ooyala.common.akka.web.{ WebService, CommonRoutes }
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
+import spark.jobserver.SparkWebUiActor.{SparkWorkersErrorInfo, SparkWorkersInfo, GetWorkerStatus}
 import scala.concurrent.{Await, ExecutionContext}
 import scala.util.Try
 import spark.jobserver.io.JobInfo
@@ -19,7 +20,7 @@ import spray.json.DefaultJsonProtocol._
 import spray.routing.{ HttpService, Route, RequestContext }
 
 class WebApi(system: ActorSystem, config: Config, port: Int,
-             jarManager: ActorRef, supervisor: ActorRef, jobInfo: ActorRef)
+             jarManager: ActorRef, supervisor: ActorRef, jobInfo: ActorRef, sparkWebUiActor: ActorRef)
     extends HttpService with CommonRoutes {
   import CommonMessages._
   import ContextSupervisor._
@@ -38,10 +39,11 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
 
   val contextTimeout = Try(config.getMilliseconds("spark.jobserver.context-creation-timeout").toInt / 1000)
                          .getOrElse(15)
+  val sparkAliveWorkerThreshold = Try(config.getInt("spark.jobserver.sparkAliveWorkerThreshold")).getOrElse(1)
 
   val logger = LoggerFactory.getLogger(getClass)
 
-  val myRoutes = jarRoutes ~ contextRoutes ~ jobRoutes ~ otherRoutes
+  val myRoutes = jarRoutes ~ contextRoutes ~ jobRoutes ~ healthzRoutes ~ sparkHealthzRoutes ~ otherRoutes
 
   def start() {
     logger.info("Starting browser web service...")
@@ -141,6 +143,46 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
       }
   }
 
+  /**
+   * Routes for getting health status of Spark cluster
+   *    GET /sparkHealthz              - return OK or error message
+   */
+  def sparkHealthzRoutes: Route = pathPrefix("sparkHealthz") {
+    get { ctx =>
+      logger.info("Receiving sparkHealthz check request")
+      val future = sparkWebUiActor ? GetWorkerStatus()
+      future.map {
+        case SparkWorkersInfo(dead, alive) =>
+          if ( dead > 0 ) {
+            logger.warn( "Spark dead worker non-zero: " + dead)
+          }
+          if ( alive >  sparkAliveWorkerThreshold ) {
+            ctx.complete("OK")
+          } else {
+            logger.error( "Spark alive worker below threshold: " + alive)
+            ctx.complete("ERROR")
+          }
+
+        case SparkWorkersErrorInfo =>
+          ctx.complete("ERROR")
+
+      }.recover {
+        case e: Exception => ctx.complete(500, errMap(e, "ERROR"))
+      }
+    }
+  }
+
+  /**
+   * Routes for getting health status of job server
+   *    GET /healthz              - return OK or error message
+   */
+  def healthzRoutes: Route = pathPrefix("healthz") {
+    get { ctx =>
+      logger.info("Receiving healthz check request")
+      ctx.complete("OK")
+    }
+  }
+
   def otherRoutes: Route = get {
     implicit val ar = actorRefFactory
 
@@ -150,8 +192,6 @@ class WebApi(system: ActorSystem, config: Config, port: Int,
     } ~ pathPrefix("html") {
       // Static files needed by index.html
       getFromResourceDirectory("html")
-    } ~ path("healthz") {
-      complete("OK")
     }
   }
 

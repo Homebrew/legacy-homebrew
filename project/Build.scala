@@ -39,6 +39,8 @@ object JobServerBuild extends Build {
       test in Test <<= (test in Test).dependsOn(packageBin in Compile in jobServerTestJar)
                                      .dependsOn(clean in Compile in jobServerTestJar),
 
+      console in Compile <<= Defaults.consoleTask(fullClasspath in Compile, console in Compile),
+
       // Adds the path of extra jars to the front of the classpath
       fullClasspath in Compile <<= (fullClasspath in Compile).map { classpath =>
         extraJarPaths ++ classpath
@@ -50,14 +52,18 @@ object JobServerBuild extends Build {
       // This lets us add Spark back to the classpath without assembly barfing
       fullClasspath in Revolver.reStart := (fullClasspath in Compile).value
       )
-  ) dependsOn(akkaApp)
+  ) dependsOn(akkaApp, jobServerApi)
 
   lazy val jobServerTestJar = Project(id = "job-server-tests", base = file("job-server-tests"),
-    settings = commonSettings210 ++ Seq(libraryDependencies ++= sparkDeps,
+    settings = commonSettings210 ++ Seq(libraryDependencies ++= sparkDeps ++ apiDeps,
                                         publish      := {},
                                         description := "Test jar for Spark Job Server",
                                         exportJars := true)   // use the jar instead of target/classes
-  )
+  ) dependsOn(jobServerApi)
+
+  lazy val jobServerApi = Project(id = "job-server-api", base = file("job-server-api"),
+    settings = commonSettings210 ++ Seq(exportJars := true)
+                                    )
 
   // This meta-project aggregates all of the sub-projects and can be used to compile/test/style check
   // all of them with a single command.
@@ -66,7 +72,7 @@ object JobServerBuild extends Build {
   // prepend "aaa" to the project name here.
   lazy val aaaMasterProject = Project(
     id = "master", base = file("master")
-  ) aggregate(jobServer, jobServerTestJar, akkaApp
+  ) aggregate(jobServer, jobServerApi, jobServerTestJar, akkaApp
   ) settings(
       parallelExecution in Test := false,
       publish      := {},
@@ -88,8 +94,8 @@ object JobServerBuild extends Build {
   lazy val runScalaStyle = taskKey[Unit]("testScalaStyle")
 
   lazy val commonSettings210 = Defaults.defaultSettings ++ dirSettings ++ Seq(
-    organization := "ooyala.cnd",
-    version      := "0.3.1",
+    organization := "spark.jobserver",
+    version      := "0.4.0",
     crossPaths   := false,
     scalaVersion := "2.10.4",
     scalaBinaryVersion := "2.10",
@@ -105,7 +111,7 @@ object JobServerBuild extends Build {
     scalacOptions := Seq("-deprecation", "-feature",
                          "-language:implicitConversions", "-language:postfixOps"),
     resolvers    ++= Dependencies.repos,
-    libraryDependencies ++= commonDeps,
+    libraryDependencies ++= apiDeps,
     parallelExecution in Test := false,
     // We need to exclude jms/jmxtools/etc because it causes undecipherable SBT errors  :(
     ivyXML :=
@@ -126,7 +132,7 @@ object JobServerBuild extends Build {
 
   lazy val publishSettings = bintrayPublishSettings ++ Seq(
     licenses += ("Apache-2.0", url("http://choosealicense.com/licenses/apache/")),
-    bintray.Keys.bintrayOrganization in bintray.Keys.bintray := Some("ooyala")
+    bintray.Keys.bintrayOrganization in bintray.Keys.bintray := Some("spark-jobserver")
   )
 
   // change to scalariformSettings for auto format on compile; defaultScalariformSettings to disable
