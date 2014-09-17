@@ -15,6 +15,7 @@ class Python < Formula
   end
 
   option :universal
+  option "ucs4", "Build python with support for wide unicode characters (e.g. emoji)."
   option "quicktest", "Run `make quicktest` after the build (for devs; may fail)"
   option "with-brewed-tk", "Use Homebrew's Tk (has optional Cocoa and threads support)"
   option "with-poll", "Enable select.poll, which is not fully implemented on OS X (http://bugs.python.org/issue5154)"
@@ -90,6 +91,7 @@ class Python < Formula
              --enable-framework=#{frameworks}
            ]
 
+    args << "--enable-unicode=ucs4" if build.include? "ucs4"
     args << "--without-gcc" if ENV.compiler == :clang
     args << "--with-dtrace" if build.with? "dtrace"
 
