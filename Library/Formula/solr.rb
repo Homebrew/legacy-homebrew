@@ -7,7 +7,8 @@ class Solr < Formula
 
   def install
     prefix.install Dir["*"]
-    share.install "#{prefix}/bin/solr.in.sh"
+    # bin.install "#{prefix}/bin/solr"
+    share.install "#{bin}/solr.in.sh"
   end
 
   def caveats; <<-EOS.undent
