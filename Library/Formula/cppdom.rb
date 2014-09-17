@@ -11,6 +11,18 @@ class Cppdom < Formula
   # Don't install to prefix/lib64
   patch :DATA
 
+  # Fix build failure by <tr1/unordered_map>
+  patch do
+    url "https://sourceforge.net/p/xml-cppdom/patches/5/attachment/switch_tr1_header.diff"
+    sha1 "a645006efc2e82478b5f7a1f0631f240a378b8a1"
+  end
+
+  # Workaround for multiple boost versions
+  patch do
+    url "https://sourceforge.net/p/xml-cppdom/patches/6/attachment/boost_integration.diff"
+    sha1 "e0c6a0d0cfe07317e343e3334e922213db2ea6b8"
+  end
+
   def install
     args = ["prefix=#{prefix}", "build_test=no", "var_type=optimized",
       "BoostBaseDir=#{HOMEBREW_PREFIX}/"]
