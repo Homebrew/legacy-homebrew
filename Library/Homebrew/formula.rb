@@ -110,8 +110,8 @@ class Formula
     active_spec.option_defined?(name)
   end
 
-  def fails_with?(compiler)
-    active_spec.fails_with?(compiler)
+  def compiler_failures
+    active_spec.compiler_failures
   end
 
   # if the dir is there, but it's empty we consider it not installed
