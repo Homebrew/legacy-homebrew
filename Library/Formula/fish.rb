@@ -17,11 +17,10 @@ class Fish < Formula
 
   def install
     system "autoconf" if build.head?
-    system "./configure", "--prefix=#{prefix}"
-    # The Makefile automatically sets the shebang in the lexicon filter
-    # using 'which'. In Homebrew's 'superenv' this will be incorrect, so
+    # In Homebrew's 'superenv' sed's path will be incompatible, so
     # the correct path is passed into make here.
-    system "make", "install", "LEXICON_SED_PATH=/usr/bin/sed"
+    system "./configure", "--prefix=#{prefix}", "SED=/usr/bin/sed"
+    system "make", "install"
   end
 
   test do
