@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "July 2014" "Homebrew" "brew"
+.TH "BREW" "1" "September 2014" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -197,7 +197,7 @@ Install \fIformula\fR\.
 \fIformula\fR is usually the name of the formula to install, but it can be specified several different ways\. See \fISPECIFYING FORMULAE\fR\.
 .
 .IP
-If \fB\-\-debug\fR is passed and brewing fails, open an interactive debugging session with access to IRB, ruby\-debug, or a shell inside the temporary build directory\.
+If \fB\-\-debug\fR is passed and brewing fails, open an interactive debugging session with access to IRB or a shell inside the temporary build directory\.
 .
 .IP
 If \fB\-\-env=std\fR is passed, use the standard build environment instead of superenv\.
@@ -353,11 +353,14 @@ Tap a new formula repository from GitHub, or list existing taps\.
 Ensures all tapped formula are symlinked into Library/Formula and prunes dead formula from Library/Formula\.
 .
 .TP
-\fBtest\fR [\-\-devel|\-\-HEAD] \fIformula\fR
+\fBtest\fR [\-\-devel|\-\-HEAD] [\-\-debug] \fIformula\fR
 A few formulae provide a test method\. \fBbrew test <formula>\fR runs this test method\. There is no standard output or return code, but it should generally indicate to the user if something is wrong with the installed formula\.
 .
 .IP
-To test the development or head version of a formula, \fB\-\-devel\fR or \fB\-\-HEAD\fR must be passed\.,
+To test the development or head version of a formula, use \fB\-\-devel\fR or \fB\-\-HEAD\fR\.
+.
+.IP
+If \fB\-\-debug\fR is passed and the test fails, an interactive debugger will be launched with access to IRB or a shell inside the temporary test directory\.
 .
 .IP
 Example: \fBbrew install jruby && brew test jruby\fR
