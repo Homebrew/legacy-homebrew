@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Rcs < Formula
-  homepage 'https://www.gnu.org/software/rcs/'
-  url 'http://ftpmirror.gnu.org/rcs/rcs-5.9.2.tar.xz'
-  mirror 'http://ftp.gnu.org/gnu/rcs/rcs-5.9.2.tar.xz'
-  sha1 'cb053f6ba87ab6ea03306d6241e1cde67182100b'
+  homepage "https://www.gnu.org/software/rcs/"
+  url "http://ftpmirror.gnu.org/rcs/rcs-5.9.3.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/rcs/rcs-5.9.3.tar.xz"
+  sha1 "e4a9549678618f5d69968b10c6c9b92b29519813"
 
   def install
     system "./configure", "--disable-dependency-tracking",
