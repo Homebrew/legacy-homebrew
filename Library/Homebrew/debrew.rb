@@ -1,5 +1,4 @@
 require "mutex_m"
-require "debrew/irb" unless ENV["HOMEBREW_NO_READLINE"]
 
 module Debrew
   extend Mutex_m
@@ -130,17 +129,21 @@ module Debrew
           menu.choice(:ignore) { return :ignore } if Ignorable === e
           menu.choice(:backtrace) { puts e.backtrace }
 
-          menu.choice(:irb) do
-            puts "When you exit this IRB session, execution will continue."
-            set_trace_func proc { |event, _, _, id, binding, klass|
-              if klass == Raise && id == :raise && event == "return"
-                set_trace_func(nil)
-                synchronize { IRB.start_within(binding) }
-              end
-            }
+          unless ENV["HOMEBREW_NO_READLINE"]
+            require "debrew/irb"
 
-            return :ignore
-          end if Object.const_defined?(:IRB) && Ignorable === e
+            menu.choice(:irb) do
+              puts "When you exit this IRB session, execution will continue."
+              set_trace_func proc { |event, _, _, id, binding, klass|
+                if klass == Raise && id == :raise && event == "return"
+                  set_trace_func(nil)
+                  synchronize { IRB.start_within(binding) }
+                end
+              }
+
+              return :ignore
+            end if Ignorable === e
+          end
 
           menu.choice(:shell) do
             puts "When you exit this shell, you will return to the menu."
