@@ -6,10 +6,10 @@ class Solr < Formula
   sha1 "ae47a89f35b5e2a6a4e55732cccc64fb10ed9779"
 
   def install
-    libexec.install Dir["*"]
-    bin.install "#{libexec}/bin/solr"
-    share.install "#{libexec}/bin/solr.in.sh"
-    prefix.install "#{libexec}/example"
+    remove [ "bin/solr.cmd", "bin/solr.in.cmd" ]
+
+    prefix.install Dir["*"]
+    share.install "#{bin}/solr.in.sh"
   end
 
   def caveats; <<-EOS.undent
