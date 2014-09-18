@@ -473,19 +473,21 @@ class Formula
     active_spec.verify_download_integrity(fn)
   end
 
-  def test
+  def run_test
     self.build = Tab.for_formula(self)
-    ret = nil
     mktemp do
       @testpath = Pathname.pwd
-      ret = instance_eval(&self.class.test)
-      @testpath = nil
+      test
     end
-    ret
+  ensure
+    @testpath = nil
   end
 
   def test_defined?
     false
+  end
+
+  def test
   end
 
   protected
@@ -769,9 +771,8 @@ class Formula
     end
 
     def test &block
-      return @test unless block_given?
       define_method(:test_defined?) { true }
-      @test = block
+      define_method(:test, &block)
     end
   end
 end
