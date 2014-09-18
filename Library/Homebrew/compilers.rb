@@ -3,17 +3,6 @@ module CompilerConstants
   GNU_GCC_REGEXP = /^gcc-(4\.[3-9])$/
 end
 
-# TODO make this class private to CompilerSelector
-class Compiler
-  attr_reader :name, :version, :priority
-
-  def initialize(name, version=0, priority=0)
-    @name = name
-    @version = version
-    @priority = priority
-  end
-end
-
 class CompilerFailure
   attr_reader :name
   attr_rw :cause, :version
@@ -99,6 +88,8 @@ class CompilerQueue
 end
 
 class CompilerSelector
+  Compiler = Struct.new(:name, :version, :priority)
+
   attr_reader :formula
 
   def initialize(formula, versions=MacOS)
