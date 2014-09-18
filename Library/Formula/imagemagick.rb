@@ -49,8 +49,6 @@ class Imagemagick < Formula
 
   depends_on "xz"
 
-  opoo "--with-ghostscript is not recommended" if build.with? "ghostscript"
-
   def pour_bottle?
     # If libtool is keg-only it currently breaks the bottle.
     # This is a temporary workaround until we have a better fix.
