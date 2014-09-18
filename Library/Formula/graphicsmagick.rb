@@ -35,8 +35,6 @@ class Graphicsmagick < Formula
   depends_on 'libwmf' => :optional
   depends_on 'ghostscript' => :optional
 
-  opoo '--with-ghostscript is not recommended' if build.with? 'ghostscript'
-
   fails_with :llvm do
     build 2335
   end
