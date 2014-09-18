@@ -2,8 +2,8 @@ require "formula"
 
 class DBus < Formula
   homepage "http://www.freedesktop.org/wiki/Software/dbus"
-  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.6.tar.gz"
-  sha1 "ad7cb87cdce66533479a9d7c1c956bdb0243ad87"
+  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.8.tar.gz"
+  sha1 "e0d10e8b4494383c7e366ac80a942ba45a705a96"
 
   bottle do
     sha1 "080efb67d648af00124b263fbdfe1e99a53831c4" => :mavericks
