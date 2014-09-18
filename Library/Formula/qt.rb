@@ -32,6 +32,7 @@ class Qt < Formula
 
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
+  depends_on "postgresql" => :optional
 
   def install
     ENV.universal_binary if build.universal?
@@ -54,6 +55,7 @@ class Qt < Formula
     end
 
     args << "-plugin-sql-mysql" if build.with? 'mysql'
+    args << "-plugin-sql-psql" if build.with? 'postgresql'
 
     if build.with? 'd-bus'
       dbus_opt = Formula["d-bus"].opt_prefix
