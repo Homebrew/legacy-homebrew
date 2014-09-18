@@ -65,7 +65,10 @@ class Postgresql < Formula
 
     args << "--with-python" if build.with? 'python'
     args << "--with-perl" unless build.include? 'no-perl'
-    args << "--with-tcl" unless build.include? 'no-tcl'
+    if !build.include? "no-tcl"
+      args << "--with-tcl"
+      args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
+    end
     args << "--enable-dtrace" if build.include? 'enable-dtrace'
 
     if build.with?("ossp-uuid")

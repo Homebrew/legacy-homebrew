@@ -4,6 +4,7 @@ class Lsyncd < Formula
   homepage "https://github.com/axkibe/lsyncd"
   url "https://github.com/axkibe/lsyncd/archive/release-2.1.5.tar.gz"
   sha1 "2b8eb169365edc54488a97435bbd39ae4a6731b8"
+  revision 1
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
