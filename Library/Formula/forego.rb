@@ -3,8 +3,8 @@ require "language/go"
 
 class Forego < Formula
   homepage "https://github.com/ddollar/forego"
-  url "https://github.com/ddollar/forego/archive/v0.12.0.tar.gz"
-  sha1 "377a77cd522ccf00b274645920fc760f27b16ed4"
+  url "https://github.com/ddollar/forego/archive/v0.13.1.tar.gz"
+  sha1 "63ed315ef06159438e3501512a5b307486d49d5c"
 
   head "https://github.com/ddollar/forego.git"
 
@@ -36,7 +36,8 @@ class Forego < Formula
       system "go", "install"
     end
 
-    system "./bin/godep", "go", "build", "-o", "forego"
+    ldflags = "-X main.Version #{version} -X main.allowUpdate false"
+    system "./bin/godep", "go", "build", "-ldflags", ldflags, "-o", "forego"
     bin.install "forego"
   end
 
