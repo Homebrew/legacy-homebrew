@@ -548,7 +548,7 @@ class Formula
         raise BuildError.new(self, cmd, args, ENV.to_hash)
       end
     ensure
-      log.close unless log.closed?
+      log.close
     end
   end
 
