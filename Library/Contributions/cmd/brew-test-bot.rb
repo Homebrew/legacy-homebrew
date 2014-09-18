@@ -342,8 +342,8 @@ class Test
     end
 
     begin
-      deps.each {|f| CompilerSelector.new(f.to_formula).compiler }
-      CompilerSelector.new(formula_object).compiler
+      deps.each { |d| CompilerSelector.select_for(d.to_formula) }
+      CompilerSelector.select_for(formula_object)
     rescue CompilerSelectionError => e
       unless installed_gcc
         test "brew", "install", "gcc"
