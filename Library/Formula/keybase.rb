@@ -5,7 +5,7 @@ class GPGDependency < Requirement
 
   default_formula "gpg"
 
-  satisfy { which "gpg" or which "gpg2" }
+  satisfy { which("gpg") || which("gpg2") }
 end
 
 class Keybase < Formula
@@ -21,8 +21,8 @@ class Keybase < Formula
     libexec.install Dir["*"]
     (bin/"keybase").write <<-EOS.undent
       #!/bin/sh
-      export KEYBASE_BIN="#{HOMEBREW_PREFIX}/bin/keybase"
-      exec "#{HOMEBREW_PREFIX}/bin/node" "#{libexec}/bin/main.js" "$@"
+      export KEYBASE_BIN="#{bin}/keybase"
+      exec "#{HOMEBREW_PREFIX}/opt/node/bin/node" "#{libexec}/bin/main.js" "$@"
     EOS
   end
 
