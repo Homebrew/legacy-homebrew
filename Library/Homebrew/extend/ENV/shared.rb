@@ -131,7 +131,7 @@ module SharedEnvExtension
   # an alternate compiler, altering the value of environment variables.
   # If no valid compiler is found, raises an exception.
   def validate_cc!(formula)
-    send CompilerSelector.new(formula).compiler
+    send CompilerSelector.select_for(formula)
   end
 
   # Snow Leopard defines an NCURSES value the opposite of most distros
