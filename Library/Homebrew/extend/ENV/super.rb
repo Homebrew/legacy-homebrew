@@ -35,7 +35,6 @@ module Superenv
 
   def setup_build_environment(formula=nil)
     super
-    reset
     send(compiler)
 
     self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"

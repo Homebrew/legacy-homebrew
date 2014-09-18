@@ -29,6 +29,7 @@ module SharedEnvExtension
 
   def setup_build_environment(formula=nil)
     @formula = formula
+    reset
   end
 
   def reset

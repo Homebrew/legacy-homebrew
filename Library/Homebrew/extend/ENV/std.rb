@@ -17,7 +17,6 @@ module Stdenv
 
   def setup_build_environment(formula=nil)
     super
-    reset
 
     if MacOS.version >= :mountain_lion
       # Mountain Lion's sed is stricter, and errors out when
