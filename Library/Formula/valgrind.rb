@@ -15,6 +15,12 @@ class Valgrind < Formula
     end
   end
 
+  bottle do
+    sha1 "9753777bbde53cd9c33eb7e1dba9daed8ee6d960" => :mavericks
+    sha1 "a7209c76aae1bfbdd9af3acf7a5d3aa022299f1e" => :mountain_lion
+    sha1 "93a7501abcd251d1d9f4f6763bbba693ee953909" => :lion
+  end
+
   head do
     url "svn://svn.valgrind.org/valgrind/trunk"
 
