@@ -11,7 +11,11 @@ class OpenalSoft < Formula
 
   depends_on "cmake" => :build
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
+
     system "cmake", ".", *std_cmake_args
     system "make", "install"
   end
