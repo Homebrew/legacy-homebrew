@@ -220,8 +220,8 @@ class Updater
 
   def `(cmd)
     out = super
-    if $? && !$?.success?
-      $stderr.puts out
+    unless $?.success?
+      $stderr.puts(out) unless out.empty?
       raise ErrorDuringExecution.new(cmd)
     end
     ohai(cmd, out) if ARGV.verbose?
