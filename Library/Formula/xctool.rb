@@ -11,6 +11,12 @@ class Xctool < Formula
   sha1 'fb5f5c553ef8ea26a9b68926aa2c59d2d956ee25'
   head 'https://github.com/facebook/xctool.git'
 
+  # Turn off bottles for now as xctool currently needs to be compiled
+  # with the version of Xcode you intend to use
+  def pour_bottle?
+    false
+  end
+
   bottle do
     sha1 "08d8835e3007fccc20559f12bc992f1fe223b74b" => :mavericks
     sha1 "7880ba4ad422d0b93d98db8f336ee83cc08e51a3" => :mountain_lion
