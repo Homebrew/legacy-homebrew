@@ -53,7 +53,12 @@ module Homebrew
         to.make_relative_symlink(path)
       rescue SystemCallError
         to = to.resolved_path if to.symlink?
-        opoo "Could not tap #{Tty.white}#{tap_ref(path)}#{Tty.reset} over #{Tty.white}#{tap_ref(to)}#{Tty.reset}"
+        opoo <<-EOS.undent
+          Could not create link for #{Tty.white}#{tap_ref(path)}#{Tty.reset}, as it
+          conflicts with #{Tty.white}#{tap_ref(to)}#{Tty.reset}. You will need to use the
+          fully-qualified name when referring this formula, e.g.
+            brew install #{tap_ref(path)}
+          EOS
       else
         ignores << path.basename.to_s
         tapped += 1
