@@ -58,12 +58,12 @@ class Keg
   end
 
   def change_dylib_id(id, file)
-    puts "Changing dylib ID in #{file} to #{id}" if ARGV.debug?
+    puts "Changing dylib ID of #{file}\n  from #{file.dylib_id}\n    to #{id}" if ARGV.debug?
     install_name_tool("-id", id, file)
   end
 
   def change_install_name(old, new, file)
-    puts "Changing install name in #{file} from #{old} to #{new}" if ARGV.debug?
+    puts "Changing install name in #{file}\n  from #{old}\n    to #{new}" if ARGV.debug?
     install_name_tool("-change", old, new, file)
   end
 
@@ -100,7 +100,8 @@ class Keg
   end
 
   def install_name_tool(*args)
-    safe_system(MacOS.locate("install_name_tool"), *args)
+    tool = MacOS.locate("install_name_tool")
+    system(tool, *args) or raise ErrorDuringExecution.new(tool, args)
   end
 
   # If file is a dylib or bundle itself, look for the dylib named by
