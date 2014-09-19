@@ -36,7 +36,8 @@ class Pyqt5 < Formula
                # If qt4 is linked it will pickup that version otherwise.
                "--qmake=#{Formula["qt5"].bin}/qmake",
                # Force deployment target to avoid libc++ issues
-               "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}" ]
+               "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}",
+               "--verbose"]
       args << '--debug' if build.include? 'enable-debug'
 
       # addresses https://github.com/Homebrew/homebrew/issues/32370
