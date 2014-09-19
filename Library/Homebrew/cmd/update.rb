@@ -222,7 +222,7 @@ class Updater
     out = super
     if $? && !$?.success?
       $stderr.puts out
-      raise ErrorDuringExecution, "Failure while executing: #{cmd}"
+      raise ErrorDuringExecution.new(cmd)
     end
     ohai(cmd, out) if ARGV.verbose?
     out

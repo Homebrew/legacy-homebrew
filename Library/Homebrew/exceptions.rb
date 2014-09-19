@@ -214,7 +214,12 @@ end
 class CurlDownloadStrategyError < RuntimeError; end
 
 # raised by safe_system in utils.rb
-class ErrorDuringExecution < RuntimeError; end
+class ErrorDuringExecution < RuntimeError
+  def initialize(cmd, args=[])
+    args = args.map { |a| a.to_s.gsub " ", "\\ " }.join(" ")
+    super "Failure while executing: #{cmd} #{args}"
+  end
+end
 
 # raised by Pathname#verify_checksum when "expected" is nil or empty
 class ChecksumMissingError < ArgumentError; end
