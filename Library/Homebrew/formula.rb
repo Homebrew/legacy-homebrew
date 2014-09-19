@@ -110,8 +110,8 @@ class Formula
     active_spec.option_defined?(name)
   end
 
-  def fails_with?(compiler)
-    active_spec.fails_with?(compiler)
+  def compiler_failures
+    active_spec.compiler_failures
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -473,19 +473,21 @@ class Formula
     active_spec.verify_download_integrity(fn)
   end
 
-  def test
+  def run_test
     self.build = Tab.for_formula(self)
-    ret = nil
     mktemp do
       @testpath = Pathname.pwd
-      ret = instance_eval(&self.class.test)
-      @testpath = nil
+      test
     end
-    ret
+  ensure
+    @testpath = nil
   end
 
   def test_defined?
     false
+  end
+
+  def test
   end
 
   protected
@@ -548,7 +550,7 @@ class Formula
         raise BuildError.new(self, cmd, args, ENV.to_hash)
       end
     ensure
-      log.close unless log.closed?
+      log.close
     end
   end
 
@@ -769,9 +771,8 @@ class Formula
     end
 
     def test &block
-      return @test unless block_given?
       define_method(:test_defined?) { true }
-      @test = block
+      define_method(:test, &block)
     end
   end
 end

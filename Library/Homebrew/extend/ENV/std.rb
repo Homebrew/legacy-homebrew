@@ -16,7 +16,7 @@ module Stdenv
   end
 
   def setup_build_environment(formula=nil)
-    reset
+    super
 
     if MacOS.version >= :mountain_lion
       # Mountain Lion's sed is stricter, and errors out when
@@ -55,10 +55,8 @@ module Stdenv
     append 'LDFLAGS', '-Wl,-headerpad_max_install_names'
 
     send(compiler)
-    validate_cc!(formula) unless formula.nil?
 
     if cc =~ GNU_GCC_REGEXP
-      warn_about_non_apple_gcc($1)
       gcc_formula = gcc_version_formula($1)
       append_path "PATH", gcc_formula.opt_bin.to_s
     end

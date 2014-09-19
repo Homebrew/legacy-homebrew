@@ -160,8 +160,10 @@ module OS
       end
 
       def latest_version
-        if MacOS.version >= "10.8"
-          "503.0.40"
+        case MacOS.version
+        when "10.10" then "600.0.54"
+        when "10.9"  then "503.0.40"
+        when "10.8"  then "503.0.40"
         else
           "425.0.28"
         end
