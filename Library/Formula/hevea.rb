@@ -7,9 +7,9 @@ class Hevea < Formula
 
   bottle do
     cellar :any
-    sha1 "e2913f505d600a5a44ea31ee28bd6f80574bbcf0" => :mavericks
-    sha1 "c48beb71f6e9489cdb105dd53f066c09dd26a3ad" => :mountain_lion
-    sha1 "421f60fc322551f1e80a7215475f57c43319165b" => :lion
+    sha1 "714586cc3e98c410ca04a5ce7e74e8f97a6ce81f" => :mavericks
+    sha1 "34bf91a61ab4e2c4121832185cb2b6295277305c" => :mountain_lion
+    sha1 "4451bc3e788a14866faa76eea794f86baf182c4c" => :lion
   end
 
   depends_on "objective-caml"
