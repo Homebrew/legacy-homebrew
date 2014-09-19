@@ -2,8 +2,8 @@ require "formula"
 
 class Hevea < Formula
   homepage "http://hevea.inria.fr/"
-  url "http://hevea.inria.fr/distri/hevea-2.16.tar.gz"
-  sha1 "729438f4c37240df7b20053dec18e9ee17d19d46"
+  url "http://hevea.inria.fr/distri/hevea-2.18.tar.gz"
+  sha1 "1fc764a6fc946069b4ca91b29fa1e71c405265d9"
 
   bottle do
     cellar :any
