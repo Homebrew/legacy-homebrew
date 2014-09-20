@@ -16,15 +16,19 @@ class Openbazaar < Formula
   def install
 
     print "Installation may take a few minutes, depending on your computer specs. So go grab a beer 🍺"
-    print " "
+    print "\n"
+    print "Also you will be asked for the user password, to be able to install some dependencies with sudo."
+
+    print "\n\n"
 
     system "./pow.sh "+version
 
-    print " "
+    print "\n\n"
 
   end
 
   def caveats; <<-EOS.undent
+
       OpenBazaar configuration finished.
 
       Type openbazaar --help yo get started.
