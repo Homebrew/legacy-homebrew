@@ -4,6 +4,7 @@ class SdlSound < Formula
   homepage 'http://icculus.org/SDL_sound/'
   url 'http://icculus.org/SDL_sound/downloads/SDL_sound-1.0.3.tar.gz'
   sha1 '1984bc20b2c756dc71107a5a0a8cebfe07e58cb1'
+  option :universal
 
   head do
     url 'http://hg.icculus.org/icculus/SDL_sound', :using => :hg
@@ -23,6 +24,7 @@ class SdlSound < Formula
   depends_on 'physfs' => :optional
 
   def install
+    ENV.universal_binary if build.universal?
     if build.head?
       inreplace "bootstrap", "/usr/bin/glibtoolize",
         "#{Formula["libtool"].opt_bin}/glibtoolize"
