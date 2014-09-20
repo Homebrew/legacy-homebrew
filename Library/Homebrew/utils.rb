@@ -105,7 +105,7 @@ module Homebrew
     pid = fork do
       yield if block_given?
       args.collect!{|arg| arg.to_s}
-      exec(cmd.to_s, *args) rescue nil
+      exec(cmd, *args) rescue nil
       exit! 1 # never gets here unless exec failed
     end
     Process.wait(pid)
