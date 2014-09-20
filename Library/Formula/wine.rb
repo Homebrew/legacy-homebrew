@@ -24,10 +24,11 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.26.tar.bz2"
-    sha256 "e20c7c26a3bd887afac655a274335923ae7ccf4053383e4edbb0c290aadb5de8"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.27.tar.bz2"
+    sha256 "99d2050c5bd04591a3e5f84d2ad6c021deb4d8b97874050cd3946d5c984d32b2"
 
     depends_on "samba" => :optional
+    depends_on "gnutls"
 
     # Patch to fix screen-flickering issues. Still relevant on 1.7.23.
     # https://bugs.winehq.org/show_bug.cgi?id=34166
