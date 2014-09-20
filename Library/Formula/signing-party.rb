@@ -8,8 +8,8 @@ end
 
 class SigningParty < Formula
   homepage "http://pgp-tools.alioth.debian.org/"
-  url "http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.8.orig.tar.gz"
-  sha1 "58b3c94b60d3637689fd1bc7aaa2f5c1527416fb"
+  url "http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.9.orig.tar.gz"
+  sha1 "e33e26395d6dd2b0eba727087ac4786b451101f2"
 
   bottle do
     sha1 "8cbd4353cbb1715138e4c313bffc35efadb78b86" => :mavericks
@@ -54,6 +54,18 @@ class SigningParty < Formula
     sha1 "f7796a9d0404da8222b2c438668463a013fc1983"
   end
 
+  resource "Type::Tiny" do
+    url "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Type-Tiny-1.000004.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Type-Tiny-1.000004.tar.gz"
+    sha1 "13372048b38be95b9c4d213ce2c29f1cd9eb8043"
+  end
+
+  resource "Moo" do
+    url "http://search.cpan.org/CPAN/authors/id/H/HA/HAARG/Moo-1.006000.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/H/HA/HAARG/Moo-1.006000.tar.gz"
+    sha1 "f8996dc7d22743e8676b5d0661b03d5042115061"
+  end
+
   resource "MooX::late" do
     url "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/MooX-late-0.014.tar.gz"
     mirror "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/MooX-late-0.014.tar.gz"
@@ -64,12 +76,6 @@ class SigningParty < Formula
     url "http://search.cpan.org/CPAN/authors/id/M/MA/MATTP/MooX-HandlesVia-0.001005.tar.gz"
     mirror "http://search.cpan.org/CPAN/authors/id/M/MA/MATTP/MooX-HandlesVia-0.001005.tar.gz"
     sha1 "d9e58fca8b26004878de49390941d01d17a98d7f"
-  end
-
-  resource "Type::Tiny" do
-    url "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Type-Tiny-0.044.tar.gz"
-    mirror "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Type-Tiny-0.044.tar.gz"
-    sha1 "78854cb1ea3c3f57db3b9f10cece97ef11c3ab97"
   end
 
   resource "Exporter::Tiny" do
