@@ -7,6 +7,10 @@ class Zbackup < Formula
   revision 2
 
   bottle do
+    cellar :any
+    sha1 "bdd6068cb3bd4be5fd4d6054b00eb71dd3df04d2" => :mavericks
+    sha1 "05dd7547ce1c1cf01113570f091398bb4a120b1e" => :mountain_lion
+    sha1 "e021c9af2cfeb75a7bd45e6fd6fd2f8a703b9b68" => :lion
   end
 
   depends_on "cmake" => :build
