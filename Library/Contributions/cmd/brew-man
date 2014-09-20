@@ -3,7 +3,7 @@
 set -e
 shopt -s nullglob
 
-SOURCE_PATH="$HOMEBREW_REPOSITORY/Library/Contributions/manpages"
+SOURCE_PATH="$HOMEBREW_REPOSITORY/Library/Homebrew/manpages"
 TARGET_PATH="$HOMEBREW_REPOSITORY/share/man/man1"
 LINKED_PATH="$HOMEBREW_PREFIX/share/man/man1"
 
