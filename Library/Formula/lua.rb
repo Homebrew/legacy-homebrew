@@ -12,12 +12,29 @@ class Lua < Formula
   end
 
   option :universal
+  option 'with-completion', 'Enables advanced readline support'
+  option 'without-sigaction', 'Revert to ANSI signal instead of improved POSIX sigaction'
 
   # Be sure to build a dylib, or else runtime modules will pull in another static copy of liblua = crashy
   # See: https://github.com/Homebrew/homebrew/pull/5043
   patch :DATA
 
+  # completion provided by advanced readline power patch
+  # See http://lua-users.org/wiki/LuaPowerPatches
+  patch do
+    url "http://luajit.org/patches/lua-5.2.0-advanced_readline.patch"
+    sha1 "ca405dbd126bc018980a26c2c766dfb0f82e919e"
+  end if build.with? "completion"
+
+  # sigaction provided by posix signalling power patch
+  patch do
+    url "http://lua-users.org/files/wiki_insecure/power_patches/5.2/lua-5.2.3-sig_catch.patch"
+    sha1 "b9a0044eb3c422f8405798c900ce31587156c7dd"
+  end if build.with? "sigaction"
+
   def install
+    ENV.universal_binary if build.universal?
+
     # Use our CC/CFLAGS to compile.
     inreplace 'src/Makefile' do |s|
       s.remove_make_var! 'CC'
