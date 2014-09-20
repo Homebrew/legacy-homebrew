@@ -212,7 +212,7 @@ end
 def safe_exec cmd, *args
   # This buys us proper argument quoting and evaluation
   # of environment variables in the cmd parameter.
-  exec "/bin/sh", "-i", "-c", cmd + ' "$@"', "--", *args
+  exec "/bin/sh", "-c", "#{cmd} \"$@\"", "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
