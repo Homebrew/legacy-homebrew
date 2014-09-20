@@ -23,6 +23,8 @@ class Openbazaar < Formula
 
     system "./pow.sh "+version
 
+    system "cp openbazaar /usr/local/bin/"
+
     print "\n\n"
 
   end
