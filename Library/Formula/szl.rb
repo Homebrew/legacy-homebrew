@@ -7,6 +7,10 @@ class Szl < Formula
   revision 2
 
   bottle do
+    cellar :any
+    sha1 "5c4d254e7c514467104ea7e9d333e34f30ec8e78" => :mavericks
+    sha1 "20bb21daddcbd1fab05441b3c1226b10ff317209" => :mountain_lion
+    sha1 "f715e34a92a1bf1e6ea93d310af6c5a4790a4436" => :lion
   end
 
   depends_on "binutils" # For objdump
