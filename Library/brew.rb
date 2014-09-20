@@ -111,6 +111,9 @@ begin
   ENV['PATH'] += "#{File::PATH_SEPARATOR}#{HOMEBREW_CONTRIB}/cmd"
 
   internal_cmd = require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd) if cmd
+  if ENV["HOMEBREW_DEVELOPER"] && cmd && !internal_cmd
+    internal_cmd = require? HOMEBREW_LIBRARY_PATH.join("cmd", "dev", cmd)
+  end
 
   # Usage instructions should be displayed if and only if one of:
   # - a help flag is passed AND an internal command is matched
