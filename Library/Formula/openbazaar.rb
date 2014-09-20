@@ -14,7 +14,22 @@ class Openbazaar < Formula
   depends_on "zmq"
 
   def install
+
+    print "Installation may take a few minutes, depending on your computer specs. So go grab a beer 🍺"
+    print " "
+
     system "./pow.sh "+version
+
+    print " "
+
+  end
+
+  def caveats; <<-EOS.undent
+      OpenBazaar configuration finished.
+
+      Type openbazaar --help yo get started.
+
+    EOS
   end
 
 end
