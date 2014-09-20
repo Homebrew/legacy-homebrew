@@ -75,7 +75,7 @@ class Subversion < Formula
     end
 
     if build.include? 'unicode-path'
-      raise Homebrew::InstallationError.new(self, <<-EOS.undent
+      raise <<-EOS.undent
         The --unicode-path patch is not supported on Subversion 1.8.
 
         Upgrading from a 1.7 version built with this patch is not supported.
@@ -84,7 +84,6 @@ class Subversion < Formula
           brew rm subversion && brew install subversion
         to build a new version of 1.8 without this patch.
       EOS
-      )
     end
 
     if build.include? 'java'

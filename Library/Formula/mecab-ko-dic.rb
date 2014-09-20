@@ -2,8 +2,8 @@ require "formula"
 
 class MecabKoDic < Formula
   homepage "https://bitbucket.org/eunjeon/mecab-ko-dic"
-  url "https://bitbucket.org/eunjeon/mecab-ko-dic/downloads/mecab-ko-dic-1.6.1-20140515.tar.gz"
-  sha1 "d882247937be96e36e2ae3f5a0ec6eeb376242fa"
+  url "https://bitbucket.org/eunjeon/mecab-ko-dic/downloads/mecab-ko-dic-1.6.1-20140814.tar.gz"
+  sha1 "f68a6faf9aa86691de5a1abace65e70571972d03"
 
   depends_on :autoconf
   depends_on :automake
@@ -14,11 +14,9 @@ class MecabKoDic < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--with-dicdir=#{prefix}"
     system "make install"
-  end
 
-  def caveats; <<-EOS.undent
-    To enable the dictionary, add the following to #{HOMEBREW_PREFIX}/etc/mecabrc:
-      dicdir = #{HOMEBREW_PREFIX}/lib/mecab/dic/mecab-ko-dic
-    EOS
+    if File.readlines("#{etc}/mecabrc").grep(/^dicdir.*=/).empty?
+      open("#{etc}/mecabrc", "a") { |f| f.puts "dicdir = #{opt_prefix}\n" }
+    end
   end
 end

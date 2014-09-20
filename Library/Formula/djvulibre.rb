@@ -18,9 +18,7 @@ class Djvulibre < Formula
     sha1 "96a3c4bd45ed2c2ca4a6efab0f1334326560b891" => :lion
   end
 
-  head do
-    url 'git://git.code.sf.net/p/djvu/djvulibre-git'
-  end
+  head 'git://git.code.sf.net/p/djvu/djvulibre-git'
 
   depends_on 'jpeg'
   depends_on 'libtiff'

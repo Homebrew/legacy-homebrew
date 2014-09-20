@@ -5,17 +5,17 @@ class Imagemagick < Formula
 
   # upstream's stable tarballs tend to disappear, so we provide our own mirror
   # Tarball and checksum from: http://www.imagemagick.org/download
-  url "https://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.9-5.tar.xz"
-  mirror "http://www.imagemagick.org/download/ImageMagick-6.8.9-5.tar.xz"
-  sha256 "ea66e0824e6c208c3318c0d02ca12376416b29a634e099a90c2c840edd7de0e1"
+  url "https://downloads.sf.net/project/machomebrew/mirror/ImageMagick-6.8.9-7.tar.xz"
+  mirror "http://www.imagemagick.org/download/ImageMagick-6.8.9-7.tar.xz"
+  sha256 "45670f37ebd3354d64e45df5462b929b5b843dee2b038b0ad524491492bffbf9"
 
   head "https://www.imagemagick.org/subversion/ImageMagick/trunk",
     :using => UnsafeSubversionDownloadStrategy
 
   bottle do
-    sha1 "e3588e692e7cedd4f2b8301faded51c4424c0aa1" => :mavericks
-    sha1 "aa122e82464e28395ec4db66eb9d3577b7d3443f" => :mountain_lion
-    sha1 "010f16e2c791b8b9f78a9fe67c5e636e17627f10" => :lion
+    sha1 "a899454c8b4940ca04f991c5ed0b268baea8e960" => :mavericks
+    sha1 "0616e461385b1d0be1428181b6e676f5bcc0e5ae" => :mountain_lion
+    sha1 "a6783e3deea4502b2878ea85cd1a3fde58b22573" => :lion
   end
 
   option "with-quantum-depth-8", "Compile with a quantum depth of 8 bit"
@@ -47,7 +47,7 @@ class Imagemagick < Formula
   depends_on "webp" => :optional
   depends_on "homebrew/versions/openjpeg21" if build.with? "jp2"
 
-  opoo "--with-ghostscript is not recommended" if build.with? "ghostscript"
+  depends_on "xz"
 
   def pour_bottle?
     # If libtool is keg-only it currently breaks the bottle.

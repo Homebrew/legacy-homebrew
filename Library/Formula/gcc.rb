@@ -27,10 +27,10 @@ class Gcc < Formula
   sha1 "3f303f403053f0ce79530dae832811ecef91197e"
 
   bottle do
-    revision 1
-    sha1 "4bc2fdb47f1bc029d7a81d2cb7b151465ec9c3e9" => :mavericks
-    sha1 "98618b90f63a9dc145c31f517267ee1dce4da257" => :mountain_lion
-    sha1 "69d4832fe5814ac3a9f4f1c9cd69db1729139e02" => :lion
+    revision 2
+    sha1 "4a7fc491b6487da16089c218f9dda8d23e8656b5" => :mavericks
+    sha1 "9e826e179f7f679d1423b8d92d9a647860bd27ae" => :mountain_lion
+    sha1 "81d02ad2e353ed804927ee166a1090ebf057c4b3" => :lion
   end
 
   option "with-java", "Build the gcj compiler"
@@ -66,6 +66,12 @@ class Gcc < Formula
 
   def version_suffix
     version.to_s.slice(/\d\.\d/)
+  end
+
+  # Fix 10.10 issues: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61407
+  patch do
+    url "https://gcc.gnu.org/bugzilla/attachment.cgi?id=33180"
+    sha1 "def0cb036a255175db86f106e2bb9dd66d19b702"
   end
 
   def install

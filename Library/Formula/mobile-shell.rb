@@ -4,6 +4,7 @@ class MobileShell < Formula
   homepage 'http://mosh.mit.edu/'
   url 'http://mosh.mit.edu/mosh-1.2.4.tar.gz'
   sha1 'b1dffe8562d7b2f4956699849fbe5d18bfd7749e'
+  revision 1
 
   head do
     url 'https://github.com/keithw/mosh.git'

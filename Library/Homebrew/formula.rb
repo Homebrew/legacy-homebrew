@@ -110,8 +110,8 @@ class Formula
     active_spec.option_defined?(name)
   end
 
-  def fails_with?(compiler)
-    active_spec.fails_with?(compiler)
+  def compiler_failures
+    active_spec.compiler_failures
   end
 
   # if the dir is there, but it's empty we consider it not installed
@@ -473,19 +473,21 @@ class Formula
     active_spec.verify_download_integrity(fn)
   end
 
-  def test
+  def run_test
     self.build = Tab.for_formula(self)
-    ret = nil
     mktemp do
       @testpath = Pathname.pwd
-      ret = instance_eval(&self.class.test)
-      @testpath = nil
+      test
     end
-    ret
+  ensure
+    @testpath = nil
   end
 
   def test_defined?
     false
+  end
+
+  def test
   end
 
   protected
@@ -493,12 +495,11 @@ class Formula
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
   def system cmd, *args
-    rd, wr = IO.pipe
-
+    verbose = ARGV.verbose?
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
-    if cmd == "./configure" and not ARGV.verbose?
+    if cmd == "./configure" and not verbose
       pretty_args.delete "--disable-dependency-tracking"
       pretty_args.delete "--disable-debug"
     end
@@ -510,35 +511,30 @@ class Formula
     logfn = "#{logd}/%02d.%s" % [@exec_count, File.basename(cmd).split(' ').first]
     mkdir_p(logd)
 
-    pid = fork do
-      ENV['HOMEBREW_CC_LOG_PATH'] = logfn
+    log = File.open(logfn, "w")
+    begin
+      log.puts Time.now, "", cmd, args, ""
+      log.flush
 
-      # TODO system "xcodebuild" is deprecated, this should be removed soon.
-      if cmd.to_s.start_with? "xcodebuild"
-        ENV.remove_cc_etc
-      end
+      if verbose
+        rd, wr = IO.pipe
+        begin
+          pid = fork do
+            rd.close
+            log.close
+            exec_cmd(cmd, args, wr, logfn)
+          end
+          wr.close
 
-      # Turn on argument filtering in the superenv compiler wrapper.
-      # We should probably have a better mechanism for this than adding
-      # special cases to this method.
-      if cmd == "python" && %w[setup.py build.py].include?(args.first)
-        ENV.refurbish_args
-      end
-
-      rd.close
-      $stdout.reopen wr
-      $stderr.reopen wr
-      args.collect!{|arg| arg.to_s}
-      exec(cmd, *args) rescue nil
-      puts "Failed to execute: #{cmd}"
-      exit! 1 # never gets here unless exec threw or failed
-    end
-    wr.close
-
-    File.open(logfn, 'w') do |f|
-      while buf = rd.gets
-        f.puts buf
-        puts buf if ARGV.verbose?
+          while buf = rd.gets
+            log.puts buf
+            puts buf
+          end
+        ensure
+          rd.close
+        end
+      else
+        pid = fork { exec_cmd(cmd, args, log, logfn) }
       end
 
       Process.wait(pid)
@@ -546,19 +542,43 @@ class Formula
       $stdout.flush
 
       unless $?.success?
-        f.flush
-        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless ARGV.verbose?
-        f.puts
+        log.flush
+        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless verbose
+        log.puts
         require 'cmd/config'
-        Homebrew.dump_build_config(f)
-        raise BuildError.new(self, cmd, args)
+        Homebrew.dump_build_config(log)
+        raise BuildError.new(self, cmd, args, ENV.to_hash)
       end
+    ensure
+      log.close
     end
-  ensure
-    rd.close unless rd.closed?
   end
 
   private
+
+  def exec_cmd(cmd, args, out, logfn)
+    ENV['HOMEBREW_CC_LOG_PATH'] = logfn
+
+    # TODO system "xcodebuild" is deprecated, this should be removed soon.
+    if cmd.to_s.start_with? "xcodebuild"
+      ENV.remove_cc_etc
+    end
+
+    # Turn on argument filtering in the superenv compiler wrapper.
+    # We should probably have a better mechanism for this than adding
+    # special cases to this method.
+    if cmd == "python" && %w[setup.py build.py].include?(args.first)
+      ENV.refurbish_args
+    end
+
+    $stdout.reopen(out)
+    $stderr.reopen(out)
+    out.close
+    args.collect!{|arg| arg.to_s}
+    exec(cmd, *args) rescue nil
+    puts "Failed to execute: #{cmd}"
+    exit! 1 # never gets here unless exec threw or failed
+  end
 
   def stage
     active_spec.stage do
@@ -572,7 +592,7 @@ class Formula
     active_spec.add_legacy_patches(patches)
     return if patchlist.empty?
 
-    active_spec.patches.grep(DATAPatch).each { |p| p.path = path }
+    active_spec.patches.grep(DATAPatch) { |p| p.path = path }
 
     active_spec.patches.select(&:external?).each do |patch|
       patch.verify_download_integrity(patch.fetch)
@@ -660,10 +680,14 @@ class Formula
     end
 
     # Define a named resource using a SoftwareSpec style block
-    def resource name, &block
+    def resource name, klass=Resource, &block
       specs.each do |spec|
-        spec.resource(name, &block) unless spec.resource_defined?(name)
+        spec.resource(name, klass, &block) unless spec.resource_defined?(name)
       end
+    end
+
+    def go_resource name, &block
+      resource name, Resource::Go, &block
     end
 
     def depends_on dep
@@ -747,9 +771,8 @@ class Formula
     end
 
     def test &block
-      return @test unless block_given?
       define_method(:test_defined?) { true }
-      @test = block
+      define_method(:test, &block)
     end
   end
 end

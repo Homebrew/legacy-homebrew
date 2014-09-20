@@ -20,6 +20,7 @@ TAP_MIGRATIONS = {
   "drizzle" => "homebrew/boneyard",
   "drush" => "homebrew/php",
   "dsniff" => "homebrew/boneyard",
+  "gnunet" => "homebrew/boneyard",
   "grads" => "homebrew/binary",
   "gromacs" => "homebrew/science",
   "hllib" => "homebrew/boneyard",

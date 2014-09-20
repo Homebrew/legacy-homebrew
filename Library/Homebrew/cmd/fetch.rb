@@ -61,7 +61,7 @@ module Homebrew
 
   def retry_fetch? f
     @fetch_failed ||= Set.new
-    if ARGV.include?("--retry") && @fetch_failed.add?(f.name)
+    if ARGV.include?("--retry") && @fetch_failed.add?(f)
       ohai "Retrying download"
       f.clear_cache
       true

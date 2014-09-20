@@ -3,17 +3,6 @@ module CompilerConstants
   GNU_GCC_REGEXP = /^gcc-(4\.[3-9])$/
 end
 
-# TODO make this class private to CompilerSelector
-class Compiler
-  attr_reader :name, :version, :priority
-
-  def initialize(name, version=0, priority=0)
-    @name = name
-    @version = version
-    @priority = priority
-  end
-end
-
 class CompilerFailure
   attr_reader :name
   attr_rw :cause, :version
@@ -79,65 +68,68 @@ class CompilerFailure
   }
 end
 
-class CompilerQueue
-  def initialize
-    @array = []
-  end
-
-  def <<(o)
-    @array << o
-    self
-  end
-
-  def pop
-    @array.delete(@array.max { |a, b| a.priority <=> b.priority })
-  end
-
-  def empty?
-    @array.empty?
-  end
-end
-
 class CompilerSelector
-  def initialize(f, versions=MacOS)
-    @f = f
-    @versions = versions
-    @compilers = CompilerQueue.new
-    %w{clang llvm gcc gcc_4_0}.map(&:to_sym).each do |cc|
-      version = @versions.send("#{cc}_build_version")
-      unless version.nil?
-        @compilers << Compiler.new(cc, version, priority_for(cc))
-      end
-    end
+  include CompilerConstants
 
-    # non-Apple GCC 4.x
-    CompilerConstants::GNU_GCC_VERSIONS.each do |v|
-      name = "gcc-4.#{v}"
-      version = @versions.non_apple_gcc_version(name)
-      unless version.nil?
-        # priority is based on version, with newest preferred first
-        @compilers << Compiler.new(name, version, 1.0 + v/10.0)
-      end
-    end
+  Compiler = Struct.new(:name, :version)
+
+  COMPILER_PRIORITY = {
+    :clang   => [:clang, :gcc, :llvm, :gnu, :gcc_4_0],
+    :gcc     => [:gcc, :llvm, :gnu, :clang, :gcc_4_0],
+    :llvm    => [:llvm, :gcc, :gnu, :clang, :gcc_4_0],
+    :gcc_4_0 => [:gcc_4_0, :gcc, :llvm, :gnu, :clang],
+  }
+
+  def self.select_for(formula, compilers=self.compilers)
+    new(formula, MacOS, compilers).compiler
   end
 
-  # Attempts to select an appropriate alternate compiler, but
-  # if none can be found raises CompilerError instead
+  def self.compilers
+    COMPILER_PRIORITY.fetch(MacOS.default_compiler)
+  end
+
+  attr_reader :formula, :failures, :versions, :compilers
+
+  def initialize(formula, versions, compilers)
+    @formula = formula
+    @failures = formula.compiler_failures
+    @versions = versions
+    @compilers = compilers
+  end
+
   def compiler
-    while cc = @compilers.pop
-      return cc.name unless @f.fails_with?(cc)
-    end
-    raise CompilerSelectionError.new(@f)
+    find_compiler { |c| return c.name unless fails_with?(c) }
+    raise CompilerSelectionError.new(formula)
   end
 
   private
 
-  def priority_for(cc)
-    case cc
-    when :clang   then @versions.clang_build_version >= 318 ? 3 : 0.5
-    when :gcc     then 2.5
-    when :llvm    then 2
-    when :gcc_4_0 then 0.25
+  def find_compiler
+    compilers.each do |compiler|
+      case compiler
+      when :gnu
+        GNU_GCC_VERSIONS.reverse_each do |v|
+          name = "gcc-4.#{v}"
+          version = compiler_version(name)
+          yield Compiler.new(name, version) if version
+        end
+      else
+        version = compiler_version(compiler)
+        yield Compiler.new(compiler, version) if version
+      end
+    end
+  end
+
+  def fails_with?(compiler)
+    failures.any? { |failure| failure === compiler }
+  end
+
+  def compiler_version(name)
+    case name
+    when GNU_GCC_REGEXP
+      versions.non_apple_gcc_version(name)
+    else
+      versions.send("#{name}_build_version")
     end
   end
 end

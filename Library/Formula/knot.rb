@@ -2,15 +2,15 @@ require "formula"
 
 class Knot < Formula
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-1.4.7.tar.gz"
-  sha1 "eed17930b0cd94375f73951fe7582b3f38b4e6f3"
-  revision 1
+  url "https://secure.nic.cz/files/knot-dns/knot-1.5.3.tar.gz"
+  sha1 "4692c5001472443d07ac088592b349793a968706"
+
+  head "https://gitlab.labs.nic.cz/labs/knot.git"
 
   bottle do
-    revision 1
-    sha1 "d686096025a554581258b7507ef44bc3e4d75736" => :mavericks
-    sha1 "05fb7b3f500a9018935489b97aba3ead6123425a" => :mountain_lion
-    sha1 "e6e344e00cf66c1b100ab4d7fd33e182d80a563f" => :lion
+    sha1 "d28c63873e0ee6b98a01c4da1537d81f45dd468a" => :mavericks
+    sha1 "f81216eda0543ae546215b8739631db65594e7af" => :mountain_lion
+    sha1 "c6647467cfe8a3f84a3bedcfd93e6d2cb71f7436" => :lion
   end
 
   depends_on "userspace-rcu"
