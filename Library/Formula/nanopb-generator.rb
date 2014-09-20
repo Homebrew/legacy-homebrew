@@ -7,6 +7,10 @@ class NanopbGenerator < Formula
   revision 1
 
   bottle do
+    cellar :any
+    sha1 "2552d564120cc40eec05204779c4e2725fa0bacd" => :mavericks
+    sha1 "f40866f5be494fcd0ecbacc1eccabedfea449084" => :mountain_lion
+    sha1 "697c2bcc74f4eb368cdbeb2c512a1555ea0ed14f" => :lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
