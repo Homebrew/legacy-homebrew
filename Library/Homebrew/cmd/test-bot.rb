@@ -591,12 +591,12 @@ module Homebrew
     if ARGV.named.empty?
       # With no arguments just build the most recent commit.
       test = Test.new('HEAD', tap)
-      any_errors = test.run
+      any_errors = !test.run
       tests << test
     else
       ARGV.named.each do |argument|
         test = Test.new(argument, tap)
-        any_errors = test.run or any_errors
+        any_errors ||= !test.run
         tests << test
       end
     end
