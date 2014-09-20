@@ -5,6 +5,13 @@ class Admesh < Formula
   url "https://github.com/admesh/admesh/releases/download/v0.98.0/admesh-0.98.0.tar.gz"
   sha1 "aeb5857161c077a85ec0744c1d5c4fa0c99a03a9"
 
+  bottle do
+    cellar :any
+    sha1 "53d9fb0c85b39036cf59c9dc68e2844199dc666b" => :mavericks
+    sha1 "c1ab7ddc220a4ed10117cfa64d714ccef04405f2" => :mountain_lion
+    sha1 "750e1c792a8afe45e2e9a81b48a8e2846ab89fb2" => :lion
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
