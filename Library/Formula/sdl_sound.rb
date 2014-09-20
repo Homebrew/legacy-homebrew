@@ -4,7 +4,6 @@ class SdlSound < Formula
   homepage 'http://icculus.org/SDL_sound/'
   url 'http://icculus.org/SDL_sound/downloads/SDL_sound-1.0.3.tar.gz'
   sha1 '1984bc20b2c756dc71107a5a0a8cebfe07e58cb1'
-  option :universal
 
   head do
     url 'http://hg.icculus.org/icculus/SDL_sound', :using => :hg
@@ -13,6 +12,8 @@ class SdlSound < Formula
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
+
+  option :universal
 
   depends_on 'pkg-config' => :build
   depends_on 'sdl'
