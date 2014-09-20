@@ -4,11 +4,9 @@ class Ola < Formula
   homepage "http://www.openlighting.org/ola/"
   url "https://github.com/OpenLightingProject/ola/releases/download/0.9.1/ola-0.9.1.tar.gz"
   sha1 "1aeb969d833385603504f9debcbf48d7b27b5200"
+  revision 1
 
   bottle do
-    sha1 "415969ef130bc2a386c92fd44689dc41d824bce2" => :mavericks
-    sha1 "7728260e561148e324290c2d0b34320de94028c9" => :mountain_lion
-    sha1 "bae4d5c8d4d3386976a82d65a7a3691adafaa589" => :lion
   end
 
   option :universal
