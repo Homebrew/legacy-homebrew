@@ -54,6 +54,7 @@ class Wine < Formula
   depends_on :x11 => :recommended
   depends_on 'pkg-config' => :build
   depends_on 'freetype'
+  depends_on "gnutls" if build.devel?
   depends_on 'jpeg'
   depends_on 'libgphoto2'
   depends_on 'little-cms2'
