@@ -2,8 +2,8 @@ require 'formula'
 
 class Pinentry < Formula
   homepage 'http://www.gnupg.org/related_software/pinentry/index.en.html'
-  url 'ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.8.3.tar.bz2'
-  sha1 'fc0efe5d375568f90ddbb23ee68e173411a49d4a'
+  url 'ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.8.4.tar.bz2'
+  sha1 '36c94980ceab5c15e188de121f7ab4c7ee6b3521'
 
   bottle do
     cellar :any
