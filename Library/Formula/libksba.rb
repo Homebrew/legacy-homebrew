@@ -3,8 +3,8 @@ require 'formula'
 class Libksba < Formula
   homepage 'http://www.gnupg.org/related_software/libksba/index.en.html'
   url 'ftp://ftp.gnupg.org/gcrypt/libksba/libksba-1.3.0.tar.bz2'
-  mirror 'http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libksba/libksba-1.3.0.tar.bz2'
-  sha1 '241afcb2dfbf3f3fc27891a53a33f12d9084d772'
+  mirror 'http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libksba/libksba-1.3.1.tar.bz2'
+  sha1 '6bfe285dbc3a7b6e295f9389c20ea1cdf4947ee5'
 
   bottle do
     cellar :any
