@@ -5,11 +5,14 @@ end
 
 class CompilerFailure
   attr_reader :name
-  attr_rw :cause, :version
+  attr_rw :version
 
   # Allows Apple compiler `fails_with` statements to keep using `build`
   # even though `build` and `version` are the same internally
   alias_method :build, :version
+
+  # The cause is no longer used so we need not hold a reference to the string
+  def cause(_); end
 
   def self.for_standard standard
     COLLECTIONS.fetch(standard) do
@@ -45,26 +48,18 @@ class CompilerFailure
     "#<#{self.class.name}: #{name} #{version}>"
   end
 
-  MESSAGES = {
-    :cxx11 => "This compiler does not support C++11"
-  }
-
-  cxx11 = proc { cause MESSAGES[:cxx11] }
-
   COLLECTIONS = {
     :cxx11 => [
-      create(:gcc_4_0, &cxx11),
-      create(:gcc, &cxx11),
-      create(:llvm, &cxx11),
-      create(:clang) { build 425; cause MESSAGES[:cxx11] },
-      create(:gcc => "4.3", &cxx11),
-      create(:gcc => "4.4", &cxx11),
-      create(:gcc => "4.5", &cxx11),
-      create(:gcc => "4.6", &cxx11),
+      create(:gcc_4_0),
+      create(:gcc),
+      create(:llvm),
+      create(:clang) { build 425 },
+      create(:gcc => "4.3"),
+      create(:gcc => "4.4"),
+      create(:gcc => "4.5"),
+      create(:gcc => "4.6"),
     ],
-    :openmp => [
-      create(:clang) { cause "clang does not support OpenMP" },
-    ]
+    :openmp => [create(:clang)],
   }
 end
 
