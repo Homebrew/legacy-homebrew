@@ -6,9 +6,9 @@ class IrcdHybrid < Formula
   sha1 "a35a2b760768854e5f11e0edccebd45fed13d4c0"
 
   bottle do
-    sha1 "ff1e017e539d492debb8f2dbe6bfdeb6c6ff52b6" => :mavericks
-    sha1 "4c8d3b8c892ef4a7ed972042bea92cdca1ce96fd" => :mountain_lion
-    sha1 "76aba0f4a90a81fa68b2d0f13f7263cae32e57f1" => :lion
+    sha1 "14c91fa501d530d090935ffecd5fc44338c06c1b" => :mavericks
+    sha1 "b695081a6febde0cf12ea561e1145172b650c4c5" => :mountain_lion
+    sha1 "a7b3ffed03fa5c7899c3e11e2c56d602c1b7f12b" => :lion
   end
 
   # ircd-hybrid needs the .la files
