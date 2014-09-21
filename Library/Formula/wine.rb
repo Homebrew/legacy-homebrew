@@ -126,13 +126,17 @@ class Wine < Formula
       inreplace "dlls/winemac.drv/Makefile" do |s|
         # We need to use the real compiler, not the superenv shim, which will exec the
         # configured compiler no matter what name is used to invoke it.
-        s.change_make_var! "CC", "xcrun clang -m32"
+        cc, cxx = s.get_make_var("CC"), s.get_make_var("CXX")
+        s.change_make_var! "CC", cc.sub(ENV.cc, "xcrun clang") if cc
+        s.change_make_var! "CXX", cc.sub(ENV.cxx, "xcrun clang++") if cxx
 
         # Emulate some things that superenv would normally handle for us
-        s.change_make_var! "EXTRACFLAGS", s.get_make_var("EXTRACFLAGS").sub(
-          "-gstabs+", # We're configured to use GNU GCC, so remote an unsupported flag
-          "--sysroot=#{MacOS.sdk_path}" # Pass the sysroot to support Xcode-only systems
-        )
+        # We're configured to use GNU GCC, so remote an unsupported flag
+        s.gsub! "-gstabs+", ""
+        # Pass the sysroot to support Xcode-only systems
+        cflags  = s.get_make_var("CFLAGS")
+        cflags += " --sysroot=#{MacOS.sdk_path}"
+        s.change_make_var! "CFLAGS", cflags
       end
     end
 
