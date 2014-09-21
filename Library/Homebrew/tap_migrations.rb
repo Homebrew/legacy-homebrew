@@ -38,6 +38,7 @@ TAP_MIGRATIONS = {
   "librets" => "homebrew/boneyard",
   "libspotify" => "homebrew/binary",
   "lmutil" => "homebrew/binary",
+  "metalua" => "homebrew/boneyard",
   "mlkit" => "homebrew/boneyard",
   "mlton" => "homebrew/boneyard",
   "mpio" => "homebrew/boneyard",
