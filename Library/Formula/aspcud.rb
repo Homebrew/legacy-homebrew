@@ -6,9 +6,10 @@ class Aspcud < Formula
   sha1 'ae77772c2424620b3064d0dfe795c26b1c8aa778'
 
   bottle do
-    sha1 "f1471e364b9efae91452e8cc76fae1c388920f2d" => :mavericks
-    sha1 "351b927b946fd88ed0f0ac5c74dcaf605fcc919f" => :mountain_lion
-    sha1 "2ce63783516196205d651e86388a9c7707ba783d" => :lion
+    revision 1
+    sha1 "9d08bb4dfab9afd90b0ca3b3b3f48733869670a6" => :mavericks
+    sha1 "dc6c376297ce949034d67b4f8760b67427e9d60b" => :mountain_lion
+    sha1 "705c19c367ee0740eaa0d8130e0619d0879d7db5" => :lion
   end
 
   depends_on 'boost' => :build
