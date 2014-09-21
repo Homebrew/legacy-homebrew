@@ -3,8 +3,8 @@ require "formula"
 class Hugo < Formula
   homepage "http://hugo.spf13.com/"
   head "https://github.com/spf13/hugo.git"
-  url "https://github.com/spf13/hugo.git", :tag => "v0.11"
-  sha1 "eb036b11d915bf78d0d679ee14ec065458977e2e"
+  url "https://github.com/spf13/hugo/archive/v0.12.tar.gz"
+  sha1 "f0537942cde9645ee2d98aaaf927a80c79070e99"
 
   bottle do
     sha1 "71713846fe6611c6059cbbb811c1bad69fe52a8e" => :mavericks
