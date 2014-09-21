@@ -11,6 +11,12 @@ class Inkscape < Formula
     sha1 "56127cf9ebfe7c476e8b8bb2cb334bc5af4f4296" => :lion
   end
 
+  stable do
+    # boost 1.56 compatibility
+    # https://bugs.launchpad.net/inkscape/+bug/1357411
+    patch :p0, :DATA
+  end
+
   head do
     url 'lp:inkscape/0.48.x', :using => :bzr
 
@@ -59,3 +65,16 @@ class Inkscape < Formula
     system "#{bin}/inkscape", "-V"
   end
 end
+__END__
+=== modified file 'src/object-snapper.cpp'
+--- src/object-snapper.cpp	2010-07-19 06:51:04 +0000
++++ src/object-snapper.cpp	2014-08-15 15:43:28 +0000
+@@ -561,7 +561,7 @@
+                         // When it's within snapping range, then return it
+                         // (within snapping range == between p_min_on_cl and p_max_on_cl == 0 < ta < 1)
+                         Geom::Coord dist = Geom::L2(_snapmanager->getDesktop()->dt2doc(p_proj_on_cl) - p_inters);
+-                        SnappedPoint s(_snapmanager->getDesktop()->doc2dt(p_inters), p.getSourceType(), p.getSourceNum(), k->target_type, dist, getSnapperTolerance(), getSnapperAlwaysSnap(), true, k->target_bbox);
++                        SnappedPoint s(_snapmanager->getDesktop()->doc2dt(p_inters), p.getSourceType(), p.getSourceNum(), k->target_type, dist, getSnapperTolerance(), getSnapperAlwaysSnap(), true, false, k->target_bbox);
+                         sc.points.push_back(s);
+                     }
+                 }
