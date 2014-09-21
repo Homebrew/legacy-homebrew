@@ -8,4 +8,16 @@ class Sshrc < Formula
   def install
     bin.install "sshrc"
   end
+
+  test do
+    ENV["HOME"] = testpath
+    touch testpath/".sshrc"
+    (testpath/"ssh").write <<-EOS.undent
+      #!/bin/sh
+      true
+    EOS
+    chmod 0755, testpath/"ssh"
+    ENV.prepend_path "PATH", testpath
+    system "sshrc"
+  end
 end
