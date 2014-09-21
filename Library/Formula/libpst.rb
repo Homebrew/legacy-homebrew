@@ -35,6 +35,8 @@ class Libpst < Formula
       args << '--disable-python'
     end
     system "./configure", *args
-    system "make install"
+    system "make"
+    ENV.deparallelize
+    system "make", "install"
   end
 end
