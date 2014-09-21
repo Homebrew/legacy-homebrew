@@ -44,7 +44,14 @@ class Llvm < Formula
 
   keg_only :provided_by_osx
 
+  # Apple's libstdc++ is too old to build LLVM
+  fails_with :gcc
+  fails_with :llvm
+
   def install
+    # Apple's libstdc++ is too old to build LLVM
+    ENV.libcxx if ENV.compiler == :clang
+
     if build.with? "python" and build.include? 'disable-shared'
       raise 'The Python bindings need the shared library.'
     end
