@@ -24,6 +24,12 @@ class Keybase < Formula
     EOS
   end
 
+  def caveats;<<-EOS.undent if which("gpg2") && !which("gpg")
+      Run below command if you use gpg2 as keybase's backend
+        keybase config gpg gpg2
+    EOS
+  end
+
   test do
     system "#{bin}/keybase", "id", "maria"
   end
