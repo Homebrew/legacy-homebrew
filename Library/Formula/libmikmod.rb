@@ -7,9 +7,9 @@ class Libmikmod < Formula
 
   bottle do
     cellar :any
-    sha1 "eb5b851f5ceddf5c5cf95dff87570b3ba17534ec" => :mavericks
-    sha1 "8f93de789fdca344d196458f65f4a444f59b8f0b" => :mountain_lion
-    sha1 "70b74f60052e4bd590e2591c78ac8a123cb2b67f" => :lion
+    sha1 "b121b9a927481db6d3e94bd79516c0efb544869f" => :mavericks
+    sha1 "f11f9c4d4bf8c518e137c372520e195e690d38c6" => :mountain_lion
+    sha1 "6adc1665665bc50eac027d60668f5eb06ec89b91" => :lion
   end
 
   option "with-debug", "Enable debugging symbols"
