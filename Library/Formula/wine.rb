@@ -119,11 +119,21 @@ class Wine < Formula
 
     system "./configure", *args
 
+    # The Mac driver uses blocks and must be compiled with an Apple compiler
+    # even if the rest of Wine is built with A GNU compiler.
     unless ENV.compiler == :clang || ENV.compiler == :llvm || ENV.compiler == :gcc
-      # The Mac driver uses blocks and must be compiled with an Apple compiler
-      # even if the rest of Wine is built with A GNU compiler.
-      system 'make', 'dlls/winemac.drv/Makefile'
-      inreplace 'dlls/winemac.drv/Makefile', /^CC\s*=\s*[^\s]+/, "CC = clang"
+      system "make", "dlls/winemac.drv/Makefile"
+      inreplace "dlls/winemac.drv/Makefile" do |s|
+        # We need to use the real compiler, not the superenv shim, which will exec the
+        # configured compiler no matter what name is used to invoke it.
+        s.change_make_var! "CC", "xcrun clang -m32"
+
+        # Emulate some things that superenv would normally handle for us
+        s.change_make_var! "EXTRACFLAGS", s.get_make_var("EXTRACFLAGS").sub(
+          "-gstabs+", # We're configured to use GNU GCC, so remote an unsupported flag
+          "--sysroot=#{MacOS.sdk_path}" # Pass the sysroot to support Xcode-only systems
+        )
+      end
     end
 
     system "make install"
