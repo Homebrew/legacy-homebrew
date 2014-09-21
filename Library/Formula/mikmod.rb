@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class Mikmod < Formula
-  homepage 'http://mikmod.raphnet.net/'
-  url 'https://downloads.sourceforge.net/project/mikmod/mikmod/3.2.5/mikmod-3.2.5.tar.gz'
-  sha1 '2c4d2abac01af37c45db2b92b74636dce36eba31'
+  homepage "http://mikmod.raphnet.net/"
+  url "https://downloads.sourceforge.net/project/mikmod/mikmod/3.2.6/mikmod-3.2.6.tar.gz"
+  sha1 "55677382ab3e6d5ed35c520669e2cedd395a8ebb"
 
-  depends_on 'libmikmod'
+  depends_on "libmikmod"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
