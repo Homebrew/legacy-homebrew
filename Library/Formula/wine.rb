@@ -119,9 +119,9 @@ class Wine < Formula
 
     system "./configure", *args
 
-    unless ENV.compiler == :clang or ENV.compiler == :llvm
-      # The Mac driver uses blocks and must be compiled with clang even if the rest of
-      # Wine is built with gcc. This must be done after configure.
+    unless ENV.compiler == :clang || ENV.compiler == :llvm || ENV.compiler == :gcc
+      # The Mac driver uses blocks and must be compiled with an Apple compiler
+      # even if the rest of Wine is built with A GNU compiler.
       system 'make', 'dlls/winemac.drv/Makefile'
       inreplace 'dlls/winemac.drv/Makefile', /^CC\s*=\s*[^\s]+/, "CC = clang"
     end
