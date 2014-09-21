@@ -162,7 +162,7 @@ module OS
       def latest_version
         case MacOS.version
         when "10.10" then "600.0.54"
-        when "10.9"  then "503.0.40"
+        when "10.9"  then "600.0.51"
         when "10.8"  then "503.0.40"
         else
           "425.0.28"
