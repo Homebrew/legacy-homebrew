@@ -7,9 +7,10 @@ class Libpst < Formula
 
   bottle do
     cellar :any
-    sha1 "a909e2b078fb8d76a1c05441a97b1585597160b8" => :mavericks
-    sha1 "46f92a8ff5ef9e1ef43179692e73f15a42830862" => :mountain_lion
-    sha1 "d63f916829648d4772d2affcf215e570a9a6fd40" => :lion
+    revision 1
+    sha1 "397e70df07349c23ff991842e67cbdbdd5162b7c" => :mavericks
+    sha1 "c5825e6dad6100636889029f79c47c506d78660c" => :mountain_lion
+    sha1 "b15cf26bccfea564461e062bbceabec7bc5dedfe" => :lion
   end
 
   option 'pst2dii', 'Build pst2dii using gd'
