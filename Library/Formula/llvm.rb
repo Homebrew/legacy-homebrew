@@ -45,6 +45,8 @@ class Llvm < Formula
   keg_only :provided_by_osx
 
   def install
+    ENV.libcxx if ENV.compiler == :clang
+
     if build.with? "python" and build.include? 'disable-shared'
       raise 'The Python bindings need the shared library.'
     end
