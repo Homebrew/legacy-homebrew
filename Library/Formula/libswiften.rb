@@ -10,6 +10,15 @@ class Libswiften < Formula
     # Patch to include lock from boost. Taken from
     # http://comments.gmane.org/gmane.linux.redhat.fedora.extras.cvs/957411
     patch :DATA
+
+    # boost 1.56 compatibility
+    # backported from upstream HEAD at
+    # http://swift.im/git/swift/commit/?id=381b22fc365c27b9cd585f4b78f53ebc698d9f54 and
+    # http://swift.im/git/swift/commit/?id=dc48cc3f34e3e229172202717520e77233c37ed7
+    patch do
+      url "https://gist.githubusercontent.com/tdsmith/278e6bdaa5502bc5a5f3/raw/0ca7358786751e1e6b5298f3831c407bdfb4b509/libswiften-boost-156.diff"
+      sha1 "0244938c13fcfa0cfc27f81a4231fe951406e18c"
+    end
   end
 
   bottle do
