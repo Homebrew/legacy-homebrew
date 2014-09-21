@@ -12,6 +12,13 @@ class Keybase < Formula
   sha1 "709d40cc076578081715c243e1ca5d70d310aeea"
   head "https://github.com/keybase/node-client.git"
 
+  bottle do
+    cellar :any
+    sha1 "898048106797a9ed93dff944f04356375265e28b" => :mavericks
+    sha1 "fd511af7c2419f477b2b6ae0f8ce577219b0a594" => :mountain_lion
+    sha1 "0d51d35222e6c233d501552036a329d42255a0c1" => :lion
+  end
+
   depends_on "node"
   depends_on GPGDependency
 
