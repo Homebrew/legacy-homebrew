@@ -6,9 +6,9 @@ class Grsync < Formula
   sha256 "4f1443154f7c85ca7b0e93d5fea438e2709776005e7cfc97da89f4899b1c12e5"
 
   bottle do
-    sha1 "da7610410092af265131c3b698d625a8c5f4b0fd" => :mavericks
-    sha1 "4629045d73186a86cb950b6a528a97649696e3ed" => :mountain_lion
-    sha1 "c957fd774c614e707bc06b1ce2122c3b13f4aa6b" => :lion
+    sha1 "2f246934c2877a3afc7259676f24657f100e825c" => :mavericks
+    sha1 "22adc2e44c27055e71376a3d06e13a70be125a8f" => :mountain_lion
+    sha1 "a2537bc8f5ff3797773d89ff6965d1338fb4074b" => :lion
   end
 
   depends_on "pkg-config" => :build
