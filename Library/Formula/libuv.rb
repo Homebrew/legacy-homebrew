@@ -22,8 +22,8 @@ class Libuv < Formula
   end
 
   devel do
-    url "https://github.com/joyent/libuv/archive/v0.11.29.tar.gz"
-    sha1 '234eb9fe9a1b8de53333674e16e40a72efc991a1'
+    url "https://github.com/joyent/libuv/archive/v1.0.0-rc1.tar.gz"
+    sha1 '5be6817b15980b0453b3da3dafb4beea16e90d8f'
 
     depends_on "pkg-config" => :build
     depends_on "automake" => :build
