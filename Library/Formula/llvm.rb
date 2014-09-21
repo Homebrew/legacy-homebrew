@@ -20,6 +20,7 @@ class Llvm < Formula
       url "http://llvm.org/releases/3.5.0/lld-3.5.0.src.tar.xz"
       sha1 "13c88e1442b482b3ffaff5934f0a2b51cab067e5"
     end
+    fails_with :clang if MacOS.version < :mavericks
   end
 
   head do
