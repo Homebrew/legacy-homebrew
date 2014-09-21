@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Libmikmod < Formula
-  homepage 'http://mikmod.shlomifish.org'
-  url 'https://downloads.sourceforge.net/project/mikmod/libmikmod/3.3.6/libmikmod-3.3.6.tar.gz'
-  sha256 '3f363e03f7b1db75b9b6602841bbd440ed275a548e53545f980df8155de4d330'
+  homepage "http://mikmod.shlomifish.org"
+  url "https://downloads.sourceforge.net/project/mikmod/libmikmod/3.3.7/libmikmod-3.3.7.tar.gz"
+  sha256 "4cf41040a9af99cb960580210ba900c0a519f73ab97b503c780e82428b9bd9a2"
 
   bottle do
     cellar :any
@@ -12,10 +12,10 @@ class Libmikmod < Formula
     sha1 "70b74f60052e4bd590e2591c78ac8a123cb2b67f" => :lion
   end
 
-  option 'with-debug', 'Enable debugging symbols'
+  option "with-debug", "Enable debugging symbols"
 
   def install
-    ENV.O2 if build.with? 'debug'
+    ENV.O2 if build.with? "debug"
 
     # OSX has CoreAudio, but ALSA is not for this OS nor is SAM9407 nor ULTRA.
     args = %W[
@@ -24,8 +24,8 @@ class Libmikmod < Formula
       --disable-sam9407
       --disable-ultra
     ]
-    args << '--with-debug' if build.with? 'debug'
-    mkdir 'macbuild' do
+    args << "--with-debug" if build.with? "debug"
+    mkdir "macbuild" do
       system "../configure", *args
       system "make install"
     end
