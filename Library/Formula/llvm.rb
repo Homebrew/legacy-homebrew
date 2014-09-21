@@ -4,9 +4,9 @@ class Llvm < Formula
   homepage 'http://llvm.org/'
 
   bottle do
-    sha1 "8136d3ef9c97e3de20ab4962f94a6c15ce5b50b2" => :mavericks
-    sha1 "15d12d15f17c3fa12f2b7e87ac1f70ae3eaa7e35" => :mountain_lion
-    sha1 "50e1d0c4a046ea14fb8c4bbd305bc7c8ccaac5bb" => :lion
+    sha1 "1fc5969edc5fcffbb3e958da00ff6a1c70606262" => :mavericks
+    sha1 "c30d6cc49521fb950bd76390878c9469a780b981" => :mountain_lion
+    sha1 "0e4178a7e094b9c77431a6f37f7dc2f72acb8389" => :lion
   end
 
   stable do
