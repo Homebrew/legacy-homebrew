@@ -17,9 +17,13 @@ class Aspcud < Formula
   depends_on 'gringo'
   depends_on 'clasp'
 
+  # boost 1.56 compatibility
+  # https://sourceforge.net/p/potassco/bugs/99/
+  patch :DATA
+
   def install
     mkdir "build" do
-      system "cmake", "..", "-DGRINGO_LOC=#{Formula["gringo"].bin}/gringo", "-DCLASP_LOC=#{Formula["clasp"].bin}/clasp", *std_cmake_args
+      system "cmake", "..", "-DGRINGO_LOC=#{Formula["gringo"].opt_bin}/gringo", "-DCLASP_LOC=#{Formula["clasp"].opt_bin}/clasp", *std_cmake_args
       system "make"
       system "make", "install"
     end
@@ -36,3 +40,17 @@ class Aspcud < Formula
     system "#{bin}/aspcud", "in.cudf", "out.cudf"
   end
 end
+__END__
+diff --git a/libcudf/src/dependency.cpp b/libcudf/src/dependency.cpp
+index 37e7a93..519f2f6 100644
+--- a/libcudf/src/dependency.cpp
++++ b/libcudf/src/dependency.cpp
+@@ -49,7 +49,7 @@ namespace {
+
+     struct CudfPackageRefFilter {
+         CudfPackageRefFilter(const Cudf::PackageRef &ref) : ref(&ref) { }
+-        bool operator()(const Entity *entity) {
++        bool operator()(const Entity *entity) const {
+             switch (ref->op) {
+                 case Cudf::PackageRef::EQ:
+                     return (entity->version == ref->version || entity->allVersions()) && ref->version != 0;
