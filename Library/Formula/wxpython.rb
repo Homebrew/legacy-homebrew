@@ -19,9 +19,9 @@ class Wxpython < Formula
   sha1 "d2c4719015d7c499a9765b1e5107fdf37a32abfb"
 
   bottle do
-    sha1 "43df795e1d7511dbc9464c9f92360535b158cc69" => :mavericks
-    sha1 "d448532551cd9eda9533d4c809a44caf050694ba" => :mountain_lion
-    sha1 "0fe8a028c879b0bfda403734d22f39bb58b2c658" => :lion
+    sha1 "e7fad91e96497ecae7a12f55f092c74e07e41f5b" => :mavericks
+    sha1 "3cbb8428f88ac9363081cb79f18067895fdf35cf" => :mountain_lion
+    sha1 "e6db873562487f0135412f5fff9a367d0a29552b" => :lion
   end
 
   if MacOS.version <= :snow_leopard
