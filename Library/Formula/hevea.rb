@@ -16,7 +16,9 @@ class Hevea < Formula
   depends_on "ghostscript" => :optional
 
   def install
-    inreplace "Makefile", "PREFIX=/usr/local", "PREFIX=#{prefix}"
+    # Emailed Luc.Maranget@inria.fr to ask for this change to be made.
+    inreplace "Makefile", "PREFIX=/usr/local", "PREFIX?=/usr/local"
+    ENV["PREFIX"] = prefix
     system "make"
     system "make", "install"
   end
