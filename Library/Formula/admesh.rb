@@ -21,17 +21,17 @@ class Admesh < Formula
 
   test do
     # Test file is the beginning of block.stl from admesh's source
-    (testpath/"test.stl").write <<-EOF
-    SOLID Untitled1
-    FACET NORMAL  0.00000000E+00  0.00000000E+00  1.00000000E+00
-    OUTER LOOP
-    VERTEX -1.96850394E+00  1.96850394E+00  1.96850394E+00
-    VERTEX -1.96850394E+00 -1.96850394E+00  1.96850394E+00
-    VERTEX  1.96850394E+00 -1.96850394E+00  1.96850394E+00
-    ENDLOOP
-    ENDFACET
-    ENDSOLID Untitled1
-    EOF
-    system "admesh test.stl"
+    (testpath/"test.stl").write <<-EOS.undent
+      SOLID Untitled1
+      FACET NORMAL  0.00000000E+00  0.00000000E+00  1.00000000E+00
+      OUTER LOOP
+      VERTEX -1.96850394E+00  1.96850394E+00  1.96850394E+00
+      VERTEX -1.96850394E+00 -1.96850394E+00  1.96850394E+00
+      VERTEX  1.96850394E+00 -1.96850394E+00  1.96850394E+00
+      ENDLOOP
+      ENDFACET
+      ENDSOLID Untitled1
+    EOS
+    system "admesh", "test.stl"
   end
 end
