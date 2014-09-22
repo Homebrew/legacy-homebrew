@@ -9,4 +9,10 @@ class Cv < Formula
     system "make", "PREFIX=#{prefix}",
                    "install"
   end
+
+  test do
+    output = `/usr/local/bin/cv --version`
+    assert output.include?("cv version 0.5")
+    assert_equal 0, $?.exitstatus
+  end
 end
