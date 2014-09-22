@@ -1,9 +1,10 @@
 require 'formula'
 
 class Tree < Formula
-  homepage 'http://mama.indstate.edu/users/ice/tree/'
-  url 'http://mama.indstate.edu/users/ice/tree/src/tree-1.7.0.tgz'
-  sha1 '35bd212606e6c5d60f4d5062f4a59bb7b7b25949'
+  homepage "http://mama.indstate.edu/users/ice/tree/"
+  url "http://mama.indstate.edu/users/ice/tree/src/tree-1.7.0.tgz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/t/tree/tree_1.7.0.orig.tar.gz"
+  sha1 "35bd212606e6c5d60f4d5062f4a59bb7b7b25949"
 
   bottle do
     cellar :any

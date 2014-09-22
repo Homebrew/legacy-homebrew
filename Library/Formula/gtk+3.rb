@@ -23,6 +23,7 @@ class Gtkx3 < Formula
   depends_on 'atk'
   depends_on 'at-spi2-atk'
   depends_on 'gobject-introspection'
+  depends_on 'gsettings-desktop-schemas' => :recommended
 
   def install
     # gtk-update-icon-cache is used during installation, and
@@ -43,5 +44,9 @@ class Gtkx3 < Formula
     system "make install"
     # Prevent a conflict between this and Gtk+2
     mv bin/'gtk-update-icon-cache', bin/'gtk3-update-icon-cache'
+  end
+
+  def post_install
+    system "#{Formula["glib"].opt_bin}/glib-compile-schemas", "#{HOMEBREW_PREFIX}/share/glib-2.0/schemas"
   end
 end

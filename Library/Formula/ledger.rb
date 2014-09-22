@@ -7,6 +7,13 @@ class Ledger < Formula
     url "https://github.com/ledger/ledger/archive/v3.0.3.tar.gz"
     sha1 "b65c2dc78f366fc3c2db9e2b7900b727b91f4656"
 
+    # boost 1.56 compatibility
+    # https://groups.google.com/forum/#!topic/ledger-cli/9HwEJcD0My4
+    patch do
+      url "https://github.com/ledger/ledger/commit/d5592ea1e325131d4a7abf5e98f67fcb5cf22287.diff"
+      sha1 "1225b4586f74ef71df8a575b1a868dd2a46a4cf7"
+    end
+
     resource "utfcpp" do
       url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
       sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
@@ -14,8 +21,9 @@ class Ledger < Formula
   end
 
   bottle do
-    sha1 "a40e25cd2449c3c44bd9385c895d55f4967ca3bc" => :mavericks
-    sha1 "3383a59b4a242dc537bb3be81f3e8e588622b442" => :mountain_lion
+    revision 1
+    sha1 "a3c72e2038d910c22c87899b8b02072ac5300919" => :mavericks
+    sha1 "102be1e9b363890262e44634a0c26c8d3fd7bd0d" => :mountain_lion
   end
 
   head "https://github.com/ledger/ledger.git", :branch => "master"

@@ -4,14 +4,14 @@ class Option
   attr_reader :name, :description, :flag
 
   def initialize(name, description="")
-    @name, @flag = split_name(name)
+    @name = name
+    @flag = "--#{name}"
     @description = description
   end
 
   def to_s
     flag
   end
-  alias_method :to_str, :to_s
 
   def <=>(other)
     return unless Option === other
@@ -30,37 +30,13 @@ class Option
   def inspect
     "#<#{self.class.name}: #{flag.inspect}>"
   end
-
-  private
-
-  def split_name(name)
-    case name
-    when /^[a-zA-Z]$/
-      [name, "-#{name}"]
-    when /^-[a-zA-Z]$/
-      [name[1..1], name]
-    when /^--(.+)$/
-      [$1, name]
-    else
-      [name, "--#{name}"]
-    end
-  end
 end
 
 class Options
   include Enumerable
 
   def self.create(array)
-    options = new
-    array.each do |e|
-      case e
-      when /^-[^-]+$/
-        e[1..-1].split(//).each { |o| options << Option.new(o) }
-      else
-        options << Option.new(e)
-      end
-    end
-    options
+    new array.map { |e| Option.new(e[/^--(.+)$/, 1] || e) }
   end
 
   def initialize(*args)

@@ -14,7 +14,7 @@ class Gpsd < Formula
   end
 
   def install
-    scons "chrpath=False", "python=False", "strip=False", "shared=False", "prefix=#{prefix}/"
+    scons "chrpath=False", "python=False", "strip=False", "prefix=#{prefix}/"
     scons "install"
   end
 end

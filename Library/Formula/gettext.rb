@@ -12,7 +12,7 @@ class Gettext < Formula
     sha1 "0cf03a50241ea2383e8140cf974c5b0b5533f7b2" => :lion
   end
 
-  keg_only "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
+  keg_only :shadowed_by_osx, "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
 
   option :universal
 

@@ -6,6 +6,7 @@ class Macvim < Formula
   url 'https://github.com/b4winckler/macvim/archive/snapshot-73.tar.gz'
   version '7.4-73'
   sha1 'b87e37fecb305a99bc268becca39f8854e3ff9f0'
+  revision 1
 
   head 'https://github.com/b4winckler/macvim.git', :branch => 'master'
 
@@ -68,6 +69,8 @@ class Macvim < Formula
     if build.with? "python3"
       args << "--enable-python3interp"
     elsif build.with? "python"
+      ENV.prepend "LDFLAGS", `python-config --ldflags`.chomp
+      ENV.prepend "CFLAGS", `python-config --cflags`.chomp
       args << "--enable-pythoninterp"
     end
 
@@ -109,6 +112,22 @@ class Macvim < Formula
         MacVim can no longer be brewed with dynamic support for both Python versions.
         Only Python 3 support has been provided.
       EOS
+    end
+  end
+
+  test do
+    # Simple test to check if MacVim was linked to Python version in $PATH
+    if build.with? "python"
+      vim_path = prefix/"MacVim.app/Contents/MacOS/Vim"
+
+      # Get linked framework using otool
+      otool_output = `otool -L #{vim_path} | grep -m 1 Python`.gsub(/\(.*\)/, "").strip.chomp
+
+      # Expand the link and get the python exec path
+      vim_framework_path = Pathname.new(otool_output).realpath.dirname.to_s.chomp
+      system_framework_path = `python-config --exec-prefix`.chomp
+
+      assert_equal system_framework_path, vim_framework_path
     end
   end
 end

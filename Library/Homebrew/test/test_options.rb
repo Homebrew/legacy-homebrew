@@ -10,10 +10,6 @@ class OptionTests < Homebrew::TestCase
     assert_equal "--foo", @option.to_s
   end
 
-  def test_to_str
-    assert_equal "--foo", @option.to_str
-  end
-
   def test_equality
     foo = Option.new("foo")
     bar = Option.new("bar")
@@ -23,21 +19,9 @@ class OptionTests < Homebrew::TestCase
     refute_eql @option, bar
   end
 
-  def test_strips_leading_dashes
-    option = Option.new("--foo")
-    assert_equal "foo", option.name
-    assert_equal "--foo", option.flag
-  end
-
   def test_description
     assert_empty @option.description
     assert_equal "foo", Option.new("foo", "foo").description
-  end
-
-  def test_preserves_short_options
-    option = Option.new("-d")
-    assert_equal "-d", option.flag
-    assert_equal "d", option.name
   end
 end
 
@@ -117,12 +101,5 @@ class OptionsTests < Homebrew::TestCase
     option1 = Option.new("foo")
     option2 = Option.new("bar")
     assert_equal [option1, option2].sort, Options.create(array).sort
-  end
-
-  def test_create_splits_multiple_switches_with_single_dash
-    array = %w{-vd}
-    verbose = Option.new("-v")
-    debug = Option.new("-d")
-    assert_equal [verbose, debug].sort, Options.create(array).sort
   end
 end

@@ -2,7 +2,7 @@ require 'formula'
 
 class AndroidSdk < Formula
   homepage 'http://developer.android.com/index.html'
-  url 'http://dl.google.com/android/android-sdk_r23.0.2-macosx.zip'
+  url 'https://dl.google.com/android/android-sdk_r23.0.2-macosx.zip'
   version '23.0.2'
   sha1 '1ef502577ca4403ae81f3d68c1813995cb412354'
 

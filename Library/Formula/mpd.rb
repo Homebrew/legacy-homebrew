@@ -2,17 +2,13 @@ require 'formula'
 
 class Mpd < Formula
   homepage "http://www.musicpd.org/"
-
-  stable do
-    url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.12.tar.xz"
-    sha1 "99ba27a541cb18fcd093d93551d34c1c3145ba49"
-  end
+  url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.14.tar.xz"
+  sha1 "5a4b5f5b0447994f3fc186ffd7c16cabeeed2978"
 
   bottle do
-    revision 1
-    sha1 "5f3e1f3a4082f7d8d7ee07d8f40e95b8ffa6ae58" => :mavericks
-    sha1 "3fc8c9459c155b67be7270b6ba015c5d9b6c1e2e" => :mountain_lion
-    sha1 "158ce5f29d7440d97f56b366c96c1c8c53a51e91" => :lion
+    sha1 "b611883e7d96de9695bc3405d08776103e34bab7" => :mavericks
+    sha1 "eb9558e40e30a897b342ef47f568d19775983ec7" => :mountain_lion
+    sha1 "7b57946f8fe8ccdd7077cb8c8a263ea817571807" => :lion
   end
 
   head do
@@ -141,10 +137,6 @@ class Mpd < Formula
         <true/>
         <key>KeepAlive</key>
         <true/>
-        <key>StandardErrorPath</key>
-        <string>#{var}/log/mpd_err.log</string>
-        <key>StandardOutPath</key>
-        <string>#{var}/log/mpd.log</string>
     </dict>
     </plist>
     EOS

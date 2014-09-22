@@ -3,6 +3,7 @@ require 'formula'
 class JpegTurbo < Formula
   homepage 'http://www.libjpeg-turbo.org/'
   url 'https://downloads.sourceforge.net/project/libjpeg-turbo/1.3.1/libjpeg-turbo-1.3.1.tar.gz'
+  mirror 'https://mirrors.kernel.org/debian/pool/main/libj/libjpeg-turbo/libjpeg-turbo_1.3.1.orig.tar.gz'
   sha1 '5fa19252e5ca992cfa40446a0210ceff55fbe468'
 
   depends_on "libtool" => :build

@@ -13,6 +13,7 @@
 # --HEAD:         Run brew install with --HEAD
 # --local:        Ask Homebrew to write verbose logs under ./logs/
 # --tap=<tap>:    Use the git repository of the given tap
+# --dry-run:      Just print commands, don't run them.
 #
 # --ci-master:         Shortcut for Homebrew master branch CI options.
 # --ci-pr:             Shortcut for Homebrew pull request CI options.
@@ -99,14 +100,21 @@ class Step
 
   def run
     puts_command
+    if ARGV.include? "--dry-run"
+      puts
+      @status = :passed
+      return
+    end
 
     start_time = Time.now
 
     log = log_file_path
 
     pid = fork do
-      STDOUT.reopen(log, "wb")
-      STDERR.reopen(log, "wb")
+      File.open(log, "wb") do |f|
+        STDOUT.reopen(f)
+        STDERR.reopen(f)
+      end
       Dir.chdir(@repository) if @command.first == "git"
       exec(*@command)
     end
@@ -114,21 +122,21 @@ class Step
 
     @time = Time.now - start_time
 
-    success = $?.success?
-    @status = success ? :passed : :failed
+    @status = $?.success? ? :passed : :failed
     puts_result
 
-    return unless File.exist?(log)
-    @output = File.read(log)
-    if has_output? and (not success or @puts_output_on_success)
-      puts @output
+    if File.exist?(log)
+      @output = File.read(log)
+      if has_output? and (failed? or @puts_output_on_success)
+        puts @output
+      end
+      FileUtils.rm(log) unless ARGV.include? "--keep-logs"
     end
-    FileUtils.rm(log) unless ARGV.include? "--keep-logs"
   end
 end
 
 class Test
-  attr_reader :log_root, :category, :name, :formulae, :steps
+  attr_reader :log_root, :category, :name, :steps
 
   def initialize argument, tap=nil
     @hash = nil
@@ -177,6 +185,7 @@ class Test
       rd.close
       STDERR.reopen("/dev/null")
       STDOUT.reopen(wr)
+      wr.close
       Dir.chdir @repository
       exec("git", *args)
     end
@@ -325,8 +334,16 @@ class Test
     return unless satisfied_requirements?(formula_object, :stable)
 
     installed_gcc = false
+    deps = formula_object.stable.deps.to_a
+    reqs = formula_object.stable.requirements.to_a
+    if formula_object.devel && !ARGV.include?('--HEAD')
+      deps |= formula_object.devel.deps.to_a
+      reqs |= formula_object.devel.requirements.to_a
+    end
+
     begin
-      CompilerSelector.new(formula_object).compiler
+      deps.each { |d| CompilerSelector.select_for(d.to_formula) }
+      CompilerSelector.select_for(formula_object)
     rescue CompilerSelectionError => e
       unless installed_gcc
         test "brew", "install", "gcc"
@@ -339,8 +356,12 @@ class Test
       return
     end
 
+    if (deps | reqs).any? { |d| d.name == "mercurial" && d.build? }
+      test "brew", "install", "mercurial"
+    end
+
     test "brew", "fetch", "--retry", *unchanged_dependencies unless unchanged_dependencies.empty?
-    test "brew", "fetch", "--retry", "--build-from-source", *changed_dependences unless changed_dependences.empty?
+    test "brew", "fetch", "--retry", "--build-bottle", *changed_dependences unless changed_dependences.empty?
     formula_fetch_options = []
     formula_fetch_options << "--build-bottle" unless ARGV.include? "--no-bottle"
     formula_fetch_options << "--force" if ARGV.include? "--cleanup"
@@ -384,7 +405,7 @@ class Test
         test "brew", "uninstall", "--devel", "--force", formula
       end
     end
-    test "brew", "uninstall", "--force", *dependencies unless dependencies.empty?
+    test "brew", "uninstall", "--force", *unchanged_dependencies unless unchanged_dependencies.empty?
   end
 
   def homebrew
@@ -449,6 +470,29 @@ class Test
       end
     end
     status == :passed
+  end
+
+  def formulae
+    changed_formulae_dependents = {}
+    dependencies = []
+    non_dependencies = []
+
+    @formulae.each do |formula|
+      formula_dependencies = `brew deps #{formula}`.split("\n")
+      unchanged_dependencies = formula_dependencies - @formulae
+      changed_dependences = formula_dependencies - unchanged_dependencies
+      changed_dependences.each do |changed_formula|
+        changed_formulae_dependents[changed_formula] ||= 0
+        changed_formulae_dependents[changed_formula] += 1
+      end
+    end
+
+    changed_formulae = changed_formulae_dependents.sort do |a1,a2|
+      a2[1].to_i <=> a1[1].to_i
+    end
+    changed_formulae.map!(&:first)
+    unchanged_formulae = @formulae - changed_formulae
+    changed_formulae + unchanged_formulae
   end
 
   def run

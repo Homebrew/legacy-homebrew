@@ -8,7 +8,7 @@ class Xmount < Formula
   depends_on "pkg-config" => :build
   depends_on "automake" => :build
   depends_on "autoconf" => :build
-  depends_on "osxfuse"
+  depends_on :osxfuse
   depends_on "libewf"
 
   patch :DATA

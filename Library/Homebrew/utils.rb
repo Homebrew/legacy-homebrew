@@ -105,7 +105,7 @@ module Homebrew
     pid = fork do
       yield if block_given?
       args.collect!{|arg| arg.to_s}
-      exec(cmd.to_s, *args) rescue nil
+      exec(cmd, *args) rescue nil
       exit! 1 # never gets here unless exec failed
     end
     Process.wait(pid)
@@ -127,10 +127,7 @@ end
 
 # Kernel.system but with exceptions
 def safe_system cmd, *args
-  unless Homebrew.system cmd, *args
-    args = args.map{ |arg| arg.to_s.gsub " ", "\\ " } * " "
-    raise ErrorDuringExecution, "Failure while executing: #{cmd} #{args}"
-  end
+  Homebrew.system(cmd, *args) or raise ErrorDuringExecution.new(cmd, args)
 end
 
 # prints no output
@@ -215,7 +212,7 @@ end
 def safe_exec cmd, *args
   # This buys us proper argument quoting and evaluation
   # of environment variables in the cmd parameter.
-  exec "/bin/sh", "-i", "-c", cmd + ' "$@"', "--", *args
+  exec "/bin/sh", "-c", "#{cmd} \"$@\"", "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
@@ -305,7 +302,7 @@ module GitHub extend self
     # This is a no-op if the user is opting out of using the GitHub API.
     return if ENV['HOMEBREW_NO_GITHUB_API']
 
-    require 'net/https' # for exception classes below
+    safely_load_net_https
 
     default_headers = {
       "User-Agent" => HOMEBREW_USER_AGENT,
@@ -401,5 +398,25 @@ module GitHub extend self
   def private_repo?(user, repo)
     uri = URI.parse("https://api.github.com/repos/#{user}/#{repo}")
     open(uri) { |json| json["private"] }
+  end
+
+  private
+
+  # If the zlib formula is loaded, TypeError will be raised when we try to load
+  # net/https. This monkeypatch prevents that and lets Net::HTTP fall back to
+  # the non-gzip codepath.
+  def safely_load_net_https
+    return if defined?(Net::HTTP)
+    if defined?(Zlib) && RUBY_VERSION >= "1.9"
+      require "net/protocol"
+      http = Class.new(Net::Protocol) do
+        def self.require(lib)
+          raise LoadError if lib == "zlib"
+          super
+        end
+      end
+      Net.const_set(:HTTP, http)
+    end
+    require "net/https"
   end
 end

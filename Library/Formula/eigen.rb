@@ -2,13 +2,14 @@ require 'formula'
 
 class Eigen < Formula
   homepage 'http://eigen.tuxfamily.org/'
-  url 'http://bitbucket.org/eigen/eigen/get/3.2.1.tar.bz2'
-  sha1 '17aca570d647b25cb3d9dac54b480cfecf402ed9'
+  url 'http://bitbucket.org/eigen/eigen/get/3.2.2.tar.bz2'
+  sha1 '1e1a85681777314805003db5469d1a00785c58df'
+
   bottle do
     cellar :any
-    sha1 "b9fd5b10af6391e035b2e2953389db24a45fb041" => :mavericks
-    sha1 "0cc89de9fb2fd1bac03f68375cff7fe453400eac" => :mountain_lion
-    sha1 "d0ac8605688ed41f0ae3f7ed9be68000dd222b37" => :lion
+    sha1 "5a64fff74d8c341cfcc36666810531261e0fd7a0" => :mavericks
+    sha1 "28fb90c14195d63016ff9783cb4dd259fab257db" => :mountain_lion
+    sha1 "7d09cae778259591337bf397b061fe7cd516c3a5" => :lion
   end
 
   head 'https://bitbucket.org/eigen/eigen', :using => :hg
