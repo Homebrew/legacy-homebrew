@@ -46,6 +46,9 @@ class Ruby < Formula
     args << "--disable-dtrace" unless MacOS::CLT.installed?
     args << "--without-gmp" if build.without? "gmp"
 
+    # Reported upstream: https://bugs.ruby-lang.org/issues/10272
+    args << "--with-setjmp-type=setjmp" if MacOS.version == :lion
+
     paths = [
       Formula["libyaml"].opt_prefix,
       Formula["openssl"].opt_prefix
