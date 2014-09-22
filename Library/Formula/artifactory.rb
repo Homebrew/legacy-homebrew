@@ -1,14 +1,14 @@
-require "formula"
+require 'formula'
 
 class Artifactory < Formula
-  homepage "http://www.jfrog.com/artifactory/"
-  url "http://dl.bintray.com/jfrog/artifactory/artifactory-3.3.1.zip"
-  sha1 "0829582f6d754f4de06fe8b97f0f14bff29e150b"
+  homepage 'http://www.jfrog.com/artifactory/'
+  url 'http://dl.bintray.com/jfrog/artifactory/artifactory-3.3.1.zip'
+  sha1 '0829582f6d754f4de06fe8b97f0f14bff29e150b'
 
-  depends_on :java => "1.7"
+  depends_on :java => '1.7'
 
-  option "with-low-heap", "Run artifactory with low Java memory options. Useful for development machines. Do not use in production."
-  option "with-java8", "Adjust memory settings for Java 8"
+  option 'with-low-heap', 'Run artifactory with low Java memory options. Useful for development machines. Do not use in production.'
+  option 'with-java8', 'Adjust memory settings for Java 8'
 
   def install
     # Remove Windows binaries
@@ -16,19 +16,19 @@ class Artifactory < Formula
     rm_f Dir['bin/*.exe']
 
     # Set correct working directory
-    inreplace "bin/artifactory.sh",
-          'export ARTIFACTORY_HOME="$(cd "$(dirname "${artBinDir}")" && pwd)"',
-          "export ARTIFACTORY_HOME=#{libexec}"
+    inreplace 'bin/artifactory.sh',
+      'export ARTIFACTORY_HOME="$(cd "$(dirname "${artBinDir}")" && pwd)"',
+      "export ARTIFACTORY_HOME=#{libexec}"
 
     # Remove obsolete parameters for Java 8
-    inreplace "bin/artifactory.default",
+    inreplace 'bin/artifactory.default',
       '-server -Xms512m -Xmx2g -Xss256k -XX:PermSize=128m -XX:MaxPermSize=256m -XX:+UseG1GC',
-      '-server -Xms512m -Xmx2g -Xss256k -XX:+UseG1GC' if build.with? "java8"
+      '-server -Xms512m -Xmx2g -Xss256k -XX:+UseG1GC' if build.with? 'java8'
 
     # Reduce memory consumption for non production use
-    inreplace "bin/artifactory.default",
+    inreplace 'bin/artifactory.default',
       '-server -Xms512m -Xmx2g',
-      '-Xms256m -Xmx768m' if build.with? "low-heap"
+      '-Xms256m -Xmx768m' if build.with? 'low-heap'
 
     libexec.install Dir['*']
 
@@ -40,45 +40,36 @@ class Artifactory < Formula
 
 
   def post_install
-    # Create persistent data directory. Artifactory heavily relies on the data directory being directly under ARTIFACTORY_HOME. Therefore, I symlink the data dir to var.
+    # Create persistent data directory. Artifactory heavily relies on the data
+    # directory being directly under ARTIFACTORY_HOME.
+    # Therefore, I symlink the data dir to var.
     data = (var+'artifactory')
     data.mkpath
 
-    libexec.install_symlink data => "data"
+    libexec.install_symlink data => 'data'
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/artifactory/libexec/bin/artifactory.sh"
 
   def plist; <<-EOS.undent
-  <?xml version="1.0" encoding="UTF-8"?>
-  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-  <plist version="1.0">
-    <dict>
-      <key>Label</key>
-      <string>com.jfrog.artifactory</string>
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>com.jfrog.artifactory</string>
 
-      <key>WorkingDirectory</key>
-      <string>#{libexec}</string>
+        <key>WorkingDirectory</key>
+        <string>#{libexec}</string>
 
-      <key>Program</key>
-      <string>bin/artifactory.sh</string>
+        <key>Program</key>
+        <string>bin/artifactory.sh</string>
 
-      <key>KeepAlive</key>
-      <true/>
-    </dict>
-  </plist>
+        <key>KeepAlive</key>
+        <true/>
+      </dict>
+    </plist>
   EOS
   end
 
-  def caveats
-  s = <<-EOS.undent
-  Artifactory user guide: http://www.jfrog.com/confluence/display/RTF/Artifactory+User+Guide
-
-  Adjust memory settings in '#{opt_bin}/artifactory.default'.
-
-  Default URL: http://localhost:8081/artifactory
-  Default username: admin
-  Default password: password
-  EOS
-  end
 end
