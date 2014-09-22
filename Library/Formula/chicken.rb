@@ -15,13 +15,15 @@ class Chicken < Formula
 
   def install
     ENV.deparallelize
-    # Chicken uses a non-standard var. for this
-    args = ["PREFIX=#{prefix}", "PLATFORM=macosx", "C_COMPILER=#{ENV.cc}"]
-    args << "ARCH=x86-64" if MacOS.prefer_64_bit?
-    # necessary to fix build on older Xcodes due to different path,
-    # and to fix the build on CLT-only systems
-    args << "XCODE_DEVELOPER=#{MacOS::Xcode.prefix}"
-    args << "XCODE_TOOL_PATH=#{MacOS::Xcode.toolchain_path}/usr/bin"
+
+    args = %W[
+      PLATFORM=macosx
+      PREFIX=#{prefix}
+      C_COMPILER=#{ENV.cc}
+      LIBRARIAN=ar
+      POSTINSTALL_PROGRAM=install_name_tool
+    ]
+
     system "make", *args
     system "make", "install", *args
   end
