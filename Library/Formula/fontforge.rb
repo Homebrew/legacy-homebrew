@@ -6,8 +6,6 @@ class Fontforge < Formula
   stable do
     url "https://github.com/fontforge/fontforge/archive/2.0.20140101.tar.gz"
     sha1 "abce297e53e8b6ff6f08871e53d1eb0be5ab82e7"
-
-    depends_on :python => :optional
   end
 
   bottle do
@@ -21,11 +19,11 @@ class Fontforge < Formula
 
     depends_on "zeromq"
     depends_on "czmq"
-    depends_on :python if MacOS.version <= :snow_leopard
   end
 
   option 'with-gif', 'Build with GIF support'
   option 'without-x', 'Build without X11 support, not building the app bundle'
+  option 'without-python', 'Build without Python extensions'
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -42,6 +40,7 @@ class Fontforge < Formula
   depends_on "giflib" if build.with? 'gif'
   depends_on "libspiro" => :optional
   depends_on "fontconfig"
+  depends_on :python if MacOS.version <= :snow_leopard
 
   fails_with :llvm do
     build 2336
@@ -52,12 +51,7 @@ class Fontforge < Formula
     args = ["--prefix=#{prefix}"]
 
     args << "--without-x" if build.without? 'x'
-
-    if build.with? 'python'
-      args << "--enable-pyextension"
-      # Fix linking to correct Python library
-      ENV.prepend "LDFLAGS", "-L#{%x(python-config --prefix).chomp}/lib"
-    end
+    args << "--disable-python-extension" if build.without? 'python'
 
     # Fix linker error; see: http://trac.macports.org/ticket/25012
       ENV.append "LDFLAGS", "-lintl"
@@ -65,6 +59,11 @@ class Fontforge < Formula
     # Add environment variables for system libs
       ENV.append "ZLIB_CFLAGS", "-I/usr/include"
       ENV.append "ZLIB_LIBS", "-L/usr/lib -lz"
+
+    # And Python
+    if build.with? 'python'
+      ENV.prepend "LDFLAGS", "-L#{%x(python-config --prefix).chomp}/lib"
+    end
 
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
