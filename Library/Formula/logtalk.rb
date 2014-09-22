@@ -10,15 +10,13 @@ class Logtalk < Formula
   option "gnu-prolog", "Build using GNU Prolog as backend (Default)"
   option "use-git-head", "Use GitHub mirror"
 
-  case
-  when build.include?("swi-prolog")
+  if build.include?("swi-prolog")
     depends_on 'swi-prolog'
   else
     depends_on 'gnu-prolog'
   end
 
-  case
-  when build.include?("use-git-head")
+  if build.include?("use-git-head")
     head 'https://github.com/pmoura/logtalk.git'
   else
     head 'http://svn.logtalk.org/logtalk/trunk'

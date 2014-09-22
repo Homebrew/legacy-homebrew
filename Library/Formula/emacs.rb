@@ -123,7 +123,7 @@ class Emacs < Formula
       (bin/"emacs").unlink # Kill the existing symlink
       (bin/"emacs").write <<-EOS.undent
         #!/bin/bash
-        #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
+        exec #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
       EOS
     else
       if build.with? "x"

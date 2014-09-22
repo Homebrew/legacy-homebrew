@@ -34,20 +34,18 @@ module Superenv
   end
 
   def setup_build_environment(formula=nil)
-    reset
+    super
+    send(compiler)
 
-    self.cc  = determine_cc
-    self.cxx = determine_cxx
-    validate_cc!(formula) unless formula.nil?
     self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
     self['PATH'] = determine_path
     self['PKG_CONFIG_PATH'] = determine_pkg_config_path
     self['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
     self['HOMEBREW_CCCFG'] = determine_cccfg
     self['HOMEBREW_OPTIMIZATION_LEVEL'] = 'Os'
-    self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE
-    self['HOMEBREW_PREFIX'] = HOMEBREW_PREFIX
-    self['HOMEBREW_TEMP'] = HOMEBREW_TEMP
+    self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE.to_s
+    self['HOMEBREW_PREFIX'] = HOMEBREW_PREFIX.to_s
+    self['HOMEBREW_TEMP'] = HOMEBREW_TEMP.to_s
     self['HOMEBREW_SDKROOT'] = "#{MacOS.sdk_path}" if MacOS::Xcode.without_clt?
     self['HOMEBREW_OPTFLAGS'] = determine_optflags
     self['HOMEBREW_ARCHFLAGS'] = ''
@@ -85,8 +83,6 @@ module Superenv
     # On 10.8 and newer, these flags will also be present:
     # s - apply fix for sed's Unicode support
     # a - apply fix for apr-1-config path
-
-    warn_about_non_apple_gcc($1) if homebrew_cc =~ GNU_GCC_REGEXP
   end
 
   private

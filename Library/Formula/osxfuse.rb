@@ -2,18 +2,19 @@ require "formula"
 
 class Osxfuse < Formula
   homepage "http://osxfuse.github.io"
-  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.0"
+  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.1"
 
   head "https://github.com/osxfuse/osxfuse.git", :branch => "osxfuse-2"
 
   bottle do
-    sha1 "e96e12d2fe72a2a85f80b9c9b640229f269cdb82" => :mavericks
-    sha1 "f3a10fed4401867107fcee6850f03301f1698f49" => :mountain_lion
-    sha1 "a7b6d7d22f08d64efab35917c7ee2338a5487b22" => :lion
+    sha1 "4bd80122d662bf283fb400f3ea6cfe5369f9af7f" => :mavericks
+    sha1 "f9b3687629cdd8fa92e2805e1e4b4b63521bcaf5" => :mountain_lion
+    sha1 "81de3186770d7c93dfa6cd8626016c78bf0b1ee2" => :lion
   end
 
   depends_on :macos => :snow_leopard
   depends_on :xcode => :build
+  depends_on ConflictsWithBinaryOsxfuse
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build

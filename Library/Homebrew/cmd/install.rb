@@ -29,7 +29,7 @@ module Homebrew
         # Building head-only without --HEAD is an error
         if not ARGV.build_head? and f.stable.nil?
           raise CannotInstallFormulaError, <<-EOS.undent
-          #{f} is a head-only formula
+          #{f.name} is a head-only formula
           Install with `brew install --HEAD #{f.name}`
           EOS
         end

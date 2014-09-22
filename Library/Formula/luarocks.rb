@@ -2,6 +2,7 @@ require 'formula'
 
 class Luarocks < Formula
   homepage 'http://luarocks.org'
+  revision 1
 
   stable do
     url 'http://luarocks.org/releases/luarocks-2.1.2.tar.gz'
@@ -18,15 +19,15 @@ class Luarocks < Formula
   head 'https://github.com/keplerproject/luarocks.git'
 
   option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
-  option 'with-lua52', 'Use Lua 5.2 instead of the stock Lua'
+  option 'with-lua51', 'Use Lua 5.1 instead of the stock Lua'
 
   if build.with? "luajit"
     depends_on 'luajit'
     # luajit depends internally on lua being installed
     # and is only 5.1 compatible, see #25954
-    depends_on 'lua'
-  elsif build.with? "lua52"
-    depends_on 'lua52'
+    depends_on 'lua51'
+  elsif build.with? "lua51"
+    depends_on 'lua51'
   else
     depends_on 'lua'
   end

@@ -1,8 +1,8 @@
 require "formula"
 
 class Fig < Formula
-  homepage "http://orchardup.github.io/fig/"
-  url "https://github.com/orchardup/fig/archive/0.5.2.tar.gz"
+  homepage "http://www.fig.sh/"
+  url "https://github.com/docker/fig/archive/0.5.2.tar.gz"
   sha1 "dea7120368833d3255e138c622572335b36d00fc"
 
   bottle do

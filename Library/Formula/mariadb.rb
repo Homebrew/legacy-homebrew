@@ -104,26 +104,24 @@ class Mariadb < Formula
       s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
     end
 
-    unless build.include? 'client-only'
-      # Don't create databases inside of the prefix!
-      # See: https://github.com/Homebrew/homebrew/issues/4975
-      rm_rf prefix+'data'
+    # Don't create databases inside of the prefix!
+    # See: https://github.com/Homebrew/homebrew/issues/4975
+    rm_rf prefix+'data'
 
-      (prefix+'mysql-test').rmtree if build.without? 'tests' # save 121MB!
-      (prefix+'sql-bench').rmtree if build.without? 'bench'
+    (prefix+'mysql-test').rmtree if build.without? 'tests' # save 121MB!
+    (prefix+'sql-bench').rmtree if build.without? 'bench'
 
-      # Link the setup script into bin
-      bin.install_symlink prefix/"scripts/mysql_install_db"
+    # Link the setup script into bin
+    bin.install_symlink prefix/"scripts/mysql_install_db"
 
-      # Fix up the control script and link into bin
-      inreplace "#{prefix}/support-files/mysql.server" do |s|
-        s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
-        # pidof can be replaced with pgrep from proctools on Mountain Lion
-        s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
-      end
-
-      bin.install_symlink prefix/"support-files/mysql.server"
+    # Fix up the control script and link into bin
+    inreplace "#{prefix}/support-files/mysql.server" do |s|
+      s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+      # pidof can be replaced with pgrep from proctools on Mountain Lion
+      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
+
+    bin.install_symlink prefix/"support-files/mysql.server"
   end
 
   def post_install

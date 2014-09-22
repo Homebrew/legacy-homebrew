@@ -16,9 +16,7 @@ class Mu < Formula
   url 'https://github.com/djcb/mu/archive/v0.9.9.6.tar.gz'
   sha1 '45feb511fecf8b306c87a42f3a84858ac442642c'
 
-  head do
-    url 'https://github.com/djcb/mu.git'
-  end
+  head 'https://github.com/djcb/mu.git'
 
   option 'with-emacs', 'Build with emacs support'
 

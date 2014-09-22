@@ -6,6 +6,7 @@ class Vim < Formula
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
   url 'http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.430.orig.tar.gz'
   sha1 '63f558c3cf7461d16f1c587000ad2311500e6372'
+  revision 1
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
@@ -91,5 +92,21 @@ class Vim < Formula
     # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
     system "make", "install", "prefix=#{prefix}", "STRIP=true"
     bin.install_symlink "vim" => "vi" if build.include? "override-system-vi"
+  end
+
+  test do
+    # Simple test to check if Vim was linked to Python version in $PATH
+    if build.with? "python"
+      vim_path = bin/"vim"
+
+      # Get linked framework using otool
+      otool_output = `otool -L #{vim_path} | grep -m 1 Python`.gsub(/\(.*\)/, "").strip.chomp
+
+      # Expand the link and get the python exec path
+      vim_framework_path = Pathname.new(otool_output).realpath.dirname.to_s.chomp
+      system_framework_path = `python-config --exec-prefix`.chomp
+
+      assert_equal system_framework_path, vim_framework_path
+    end
   end
 end

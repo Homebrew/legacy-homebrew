@@ -14,14 +14,19 @@ end
 
 class Qt5 < Formula
   homepage "http://qt-project.org/"
-  url "http://download.qt-project.org/official_releases/qt/5.3/5.3.1/single/qt-everywhere-opensource-src-5.3.1.tar.gz"
-  sha1 "3244dd34f5fb695e903eaa49c6bd0838b9bf7a73"
+  url "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.3/5.3.2/single/qt-everywhere-opensource-src-5.3.2.tar.gz"
+  mirror "http://download.qt-project.org/official_releases/qt/5.3/5.3.2/single/qt-everywhere-opensource-src-5.3.2.tar.gz"
+  sha1 "502dd2db1e9ce349bb8ac48b4edf7f768df1cafe"
 
   bottle do
-    sha1 "18c4f7758a47894591905831b6e740315ff1ce36" => :mavericks
-    sha1 "104b6d656020e9a615084732f2ecbfec8bb74f28" => :mountain_lion
-    sha1 "fc5fee03fa0ad09c5c96b869022590cdc7b3b1fd" => :lion
+    sha1 "b2a204e963405aade40d9a88383beeec7301c7e2" => :mavericks
+    sha1 "2744a6ee18b87ab1ab791ec136c3f95481713d2c" => :mountain_lion
+    sha1 "6d327353447bdc56176f605e51d910fde032ad8d" => :lion
   end
+
+  # Patch to fix compile errors on Yosemite. Can be removed with 5.4.
+  # https://bugreports.qt-project.org/browse/QTBUG-41136
+  patch :DATA
 
   head "git://gitorious.org/qt/qt5.git", :branch => "stable",
     :using => Qt5HeadDownloadStrategy, :shallow => false
@@ -108,3 +113,18 @@ class Qt5 < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/qtmultimedia/src/plugins/avfoundation/mediaplayer/avfmediaplayersession.mm b/qtmultimedia/src/plugins/avfoundation/mediaplayer/avfmediaplayersession.mm
+index a73974c..d3f3eae 100644
+--- a/qtmultimedia/src/plugins/avfoundation/mediaplayer/avfmediaplayersession.mm
++++ b/qtmultimedia/src/plugins/avfoundation/mediaplayer/avfmediaplayersession.mm
+@@ -322,7 +322,7 @@ static void *AVFMediaPlayerSessionObserverCurrentItemObservationContext = &AVFMe
+     //AVPlayerItem "status" property value observer.
+     if (context == AVFMediaPlayerSessionObserverStatusObservationContext)
+     {
+-        AVPlayerStatus status = [[change objectForKey:NSKeyValueChangeNewKey] integerValue];
++        AVPlayerStatus status = (AVPlayerStatus)[[change objectForKey:NSKeyValueChangeNewKey] integerValue];
+         switch (status)
+         {
+             //Indicates that the status of the player is not yet known because

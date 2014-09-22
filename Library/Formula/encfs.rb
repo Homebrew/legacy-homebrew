@@ -29,7 +29,7 @@ class Encfs < Formula
   depends_on 'boost'
   depends_on 'rlog'
   depends_on 'openssl'
-  depends_on 'osxfuse'
+  depends_on :osxfuse
   depends_on 'xz'
 
   def install
@@ -59,6 +59,10 @@ class Encfs < Formula
     end
 
     system "make", "-f", "Makefile.dist"
+    # This provides a workaround for https://github.com/vgough/encfs/issues/18
+    # osxfuse's installation directory cannot be given as a parameter to configure script
+    inreplace "configure", "/usr/include/osxfuse /usr/local/include/osxfuse",
+      "/usr/include/osxfuse /usr/local/include/osxfuse #{HOMEBREW_PREFIX}/include/osxfuse"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-boost=#{HOMEBREW_PREFIX}"

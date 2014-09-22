@@ -116,10 +116,6 @@ class SoftwareSpec
     patches << Patch.create(strip, src, &block)
   end
 
-  def fails_with? compiler
-    compiler_failures.any? { |failure| failure === compiler }
-  end
-
   def fails_with compiler, &block
     compiler_failures << CompilerFailure.create(compiler, &block)
   end

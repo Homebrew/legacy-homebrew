@@ -2,12 +2,12 @@ require "formula"
 
 class Syncthing < Formula
   homepage "http://syncthing.net"
-  url "https://github.com/calmh/syncthing.git", :tag => "v0.9.10"
+  url "https://github.com/calmh/syncthing.git", :tag => "v0.9.17"
 
   bottle do
-    sha1 "82757752a5c13ced8497a14951bed755577635bf" => :mavericks
-    sha1 "ec78a5d9c70a1fcc4b4f43512eaacbb2b74aac8f" => :mountain_lion
-    sha1 "d4df1aaa2f37a73aec10c26f69f5f9d467a86ba3" => :lion
+    sha1 "940efca60fa03ef1a4905cba06cb20c0f128e663" => :mavericks
+    sha1 "bfd1913a54b4c3cc63fec0c13bd03888d5bf2d72" => :mountain_lion
+    sha1 "0d7c3a475c175acb132108341fee751a600cfdd2" => :lion
   end
 
   depends_on "go" => :build
@@ -32,6 +32,11 @@ class Syncthing < Formula
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
       <dict>
+        <key>EnvironmentVariables</key>
+        <dict>
+          <key>STNORESTART</key>
+          <string>yes</string>
+        </dict>
         <key>KeepAlive</key>
         <true/>
         <key>Label</key>
