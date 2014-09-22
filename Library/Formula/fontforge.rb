@@ -62,7 +62,7 @@ class Fontforge < Formula
     # Fix linker error; see: http://trac.macports.org/ticket/25012
       ENV.append "LDFLAGS", "-lintl"
 
-    # Add environment variables for system libs if building head
+    # Add environment variables for system libs
       ENV.append "ZLIB_CFLAGS", "-I/usr/include"
       ENV.append "ZLIB_LIBS", "-L/usr/lib -lz"
 
