@@ -5,11 +5,6 @@ class Bash < Formula
 
   stable do
     url "http://ftpmirror.gnu.org/bash/bash-4.3.tar.gz"
-  bottle do
-    sha1 "98884ac866bbf941edc0c107b85c6dd9d8515f27" => :mavericks
-    sha1 "0dd9bb97389722aae5d5225761ff7488599588fc" => :mountain_lion
-    sha1 "d1adcda8ccda9cba5bb626c0f7bbf8b5882aecdf" => :lion
-  end
 
     mirror "http://ftp.gnu.org/gnu/bash/bash-4.3.tar.gz"
     sha256 "afc687a28e0e24dc21b988fa159ff9dbcf6b7caa92ade8645cc6d5605cd024d4"
@@ -22,6 +17,11 @@ class Bash < Formula
       url "https://gist.githubusercontent.com/jacknagel/c1cf23775c774e2b4b6d/raw/a44d4163ae1de39c06381ce6f5a1c3bdaa0b3b36/bash-4.3.24.diff"
       sha1 "c9e14b284c203c069f6ea94a27bc08963b14c8e0"
     end
+  end
+
+  bottle do
+    sha1 "98884ac866bbf941edc0c107b85c6dd9d8515f27" => :mavericks
+    sha1 "0dd9bb97389722aae5d5225761ff7488599588fc" => :mountain_lion
   end
 
   head "git://git.savannah.gnu.org/bash.git"
