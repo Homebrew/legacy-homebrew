@@ -5,9 +5,14 @@ class DuoUnix < Formula
   url "https://dl.duosecurity.com/duo_unix-1.9.11.tar.gz"
   sha1 "4cb4e585b69fbc6a0a3635bc241fa22653c2f9c4"
 
+  depends_on "openssl"
+
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}"
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}",
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
   end
 
