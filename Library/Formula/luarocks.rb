@@ -1,12 +1,11 @@
 require 'formula'
 
 class Luarocks < Formula
-  homepage 'http://luarocks.org'
-  revision 1
+  homepage "http://luarocks.org"
 
   stable do
-    url 'http://luarocks.org/releases/luarocks-2.1.2.tar.gz'
-    sha1 '406253d15c9d50bb0d09efa9807fb2ddd31cba9d'
+    url "http://luarocks.org/releases/luarocks-2.2.0.tar.gz"
+    sha1 "e2de00f070d66880f3766173019c53a23229193d"
 
     # Remove writability checks in the install script.
     # Homebrew checks that its install targets are writable, or fails with
@@ -16,21 +15,9 @@ class Luarocks < Formula
     patch :DATA
   end
 
-  head 'https://github.com/keplerproject/luarocks.git'
+  head "https://github.com/keplerproject/luarocks.git"
 
-  option 'with-luajit', 'Use LuaJIT instead of the stock Lua'
-  option 'with-lua51', 'Use Lua 5.1 instead of the stock Lua'
-
-  if build.with? "luajit"
-    depends_on 'luajit'
-    # luajit depends internally on lua being installed
-    # and is only 5.1 compatible, see #25954
-    depends_on 'lua51'
-  elsif build.with? "lua51"
-    depends_on 'lua51'
-  else
-    depends_on 'lua'
-  end
+  depends_on 'lua'
 
   fails_with :llvm do
     cause "Lua itself compiles with llvm, but may fail when other software tries to link."
@@ -40,15 +27,8 @@ class Luarocks < Formula
     # Install to the Cellar, but direct modules to HOMEBREW_PREFIX
     args = ["--prefix=#{prefix}",
             "--rocks-tree=#{HOMEBREW_PREFIX}",
+            "--lua-version=5.2",
             "--sysconfdir=#{etc}/luarocks"]
-
-    if build.with? "luajit"
-      luajit_prefix = Formula["luajit"].opt_prefix
-
-      args << "--with-lua-include=#{luajit_prefix}/include/luajit-2.0"
-      args << "--lua-suffix=jit"
-      args << "--with-lua=#{luajit_prefix}"
-    end
 
     system "./configure", *args
     system "make"
@@ -72,13 +52,13 @@ end
 
 __END__
 diff --git a/src/luarocks/fs/lua.lua b/src/luarocks/fs/lua.lua
-index 67c3ce0..2d149c7 100644
+index b261905..f396030 100644
 --- a/src/luarocks/fs/lua.lua
 +++ b/src/luarocks/fs/lua.lua
-@@ -669,29 +669,5 @@ end
+@@ -791,31 +791,7 @@ end
  -- @return boolean or (boolean, string): true on success, false on failure,
  -- plus an error message.
- function check_command_permissions(flags)
+ function fs_lua.check_command_permissions(flags)
 -   local root_dir = path.root_dir(cfg.rocks_dir)
 -   local ok = true
 -   local err = ""
