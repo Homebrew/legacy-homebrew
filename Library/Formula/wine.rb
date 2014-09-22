@@ -24,10 +24,11 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.26.tar.bz2"
-    sha256 "e20c7c26a3bd887afac655a274335923ae7ccf4053383e4edbb0c290aadb5de8"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.27.tar.bz2"
+    sha256 "99d2050c5bd04591a3e5f84d2ad6c021deb4d8b97874050cd3946d5c984d32b2"
 
     depends_on "samba" => :optional
+    depends_on "gnutls"
 
     # Patch to fix screen-flickering issues. Still relevant on 1.7.23.
     # https://bugs.winehq.org/show_bug.cgi?id=34166
@@ -118,11 +119,25 @@ class Wine < Formula
 
     system "./configure", *args
 
-    unless ENV.compiler == :clang or ENV.compiler == :llvm
-      # The Mac driver uses blocks and must be compiled with clang even if the rest of
-      # Wine is built with gcc. This must be done after configure.
-      system 'make', 'dlls/winemac.drv/Makefile'
-      inreplace 'dlls/winemac.drv/Makefile', /^CC\s*=\s*[^\s]+/, "CC = clang"
+    # The Mac driver uses blocks and must be compiled with an Apple compiler
+    # even if the rest of Wine is built with A GNU compiler.
+    unless ENV.compiler == :clang || ENV.compiler == :llvm || ENV.compiler == :gcc
+      system "make", "dlls/winemac.drv/Makefile"
+      inreplace "dlls/winemac.drv/Makefile" do |s|
+        # We need to use the real compiler, not the superenv shim, which will exec the
+        # configured compiler no matter what name is used to invoke it.
+        cc, cxx = s.get_make_var("CC"), s.get_make_var("CXX")
+        s.change_make_var! "CC", cc.sub(ENV.cc, "xcrun clang") if cc
+        s.change_make_var! "CXX", cc.sub(ENV.cxx, "xcrun clang++") if cxx
+
+        # Emulate some things that superenv would normally handle for us
+        # We're configured to use GNU GCC, so remote an unsupported flag
+        s.gsub! "-gstabs+", ""
+        # Pass the sysroot to support Xcode-only systems
+        cflags  = s.get_make_var("CFLAGS")
+        cflags += " --sysroot=#{MacOS.sdk_path}"
+        s.change_make_var! "CFLAGS", cflags
+      end
     end
 
     system "make install"

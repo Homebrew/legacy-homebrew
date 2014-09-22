@@ -2,15 +2,13 @@ require 'formula'
 
 class Ruby < Formula
   homepage 'https://www.ruby-lang.org/'
-  url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.2.tar.bz2"
-  sha256 "6948b02570cdfb89a8313675d4aa665405900e27423db408401473f30fc6e901"
-  revision 3
+  url "http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.3.tar.bz2"
+  sha256 "36ce72f84ae4129f6cc66e33077a79d87b018ea7bf1dbc3d353604bf006f76d6"
 
   bottle do
-    revision 2
-    sha1 "43b7f90a5329fd4a5afb7dce9fceff8d8d8e1ac8" => :mavericks
-    sha1 "ac5dddb26583e72701691e8f89d6d5d9b1f64890" => :mountain_lion
-    sha1 "2c55b4727bcc7ef3b1c5dd3207773ff1d52a5b38" => :lion
+    sha1 "34c2401deda99d4eebce57cb8322b023f3c444da" => :mavericks
+    sha1 "b8a67f6b49092db28af84c0e8f7a26ef4519c3fb" => :mountain_lion
+    sha1 "5c39e19039dc0a6e9230ff3ad4737d53bdd55f32" => :lion
   end
 
   head do
@@ -50,6 +48,9 @@ class Ruby < Formula
     args << "--disable-install-doc" if build.without? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
     args << "--without-gmp" if build.without? "gmp"
+
+    # Reported upstream: https://bugs.ruby-lang.org/issues/10272
+    args << "--with-setjmp-type=setjmp" if MacOS.version == :lion
 
     paths = [
       Formula["libyaml"].opt_prefix,

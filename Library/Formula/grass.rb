@@ -35,6 +35,7 @@ class Grass < Formula
   depends_on :postgresql => :optional
   depends_on :mysql => :optional
   depends_on "cairo"
+  depends_on "freetype"
   depends_on :x11  # needs to find at least X11/include/GL/gl.h
 
   fails_with :clang do
