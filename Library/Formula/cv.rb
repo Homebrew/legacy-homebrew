@@ -6,7 +6,7 @@ class Cv < Formula
   sha1 "8562e4fa4ce47b25567ea027c53d0c01b0bd396d"
 
   def install
-    system "make"
-    system "make", "install"
+    system "make", "PREFIX=#{prefix}",
+                   "install"
   end
 end
