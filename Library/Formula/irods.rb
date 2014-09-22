@@ -9,7 +9,7 @@ class Irods < Formula
 
   option 'with-osxfuse', 'Install iRODS FUSE client'
 
-  depends_on 'osxfuse' => :optional
+  depends_on :osxfuse => :optional
 
   def install
     chdir 'iRODS'

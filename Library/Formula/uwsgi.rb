@@ -4,12 +4,12 @@ class Uwsgi < Formula
   homepage "http://projects.unbit.it/uwsgi/"
   url "http://projects.unbit.it/downloads/uwsgi-2.0.6.tar.gz"
   sha1 "5e0fc187ea10366153a1f800c0e7e80940188837"
+  revision 1
 
   bottle do
-    revision 1
-    sha1 "b7bd8eab827a33c547016c8a6e381517ce9143c2" => :mavericks
-    sha1 "d41c406d8c772c220a77f7c9b03158ccdd898f96" => :mountain_lion
-    sha1 "e64b429906886bffb38884c3a2d57645d83d68a1" => :lion
+    sha1 "d42895c7b7fdbc1be90e7ebd84258f7409a70e4c" => :mavericks
+    sha1 "ff677ccbb7ca824eaf8e8b8ba6fb1eec5a0acecb" => :mountain_lion
+    sha1 "6e6ac75b4f1fc85a3e18c4bd9a27621f480fe41b" => :lion
   end
 
   depends_on "pkg-config" => :build
@@ -24,7 +24,7 @@ class Uwsgi < Formula
   depends_on "libffi" => :optional
   depends_on "libxslt" => :optional
   depends_on "libyaml" => :optional
-  depends_on "lua" => :optional
+  depends_on "lua51" => :optional
   depends_on "mongodb" => :optional
   depends_on "mongrel2" => :optional
   depends_on "nagios" => :optional

@@ -105,7 +105,7 @@ module Homebrew
     pid = fork do
       yield if block_given?
       args.collect!{|arg| arg.to_s}
-      exec(cmd.to_s, *args) rescue nil
+      exec(cmd, *args) rescue nil
       exit! 1 # never gets here unless exec failed
     end
     Process.wait(pid)
@@ -127,10 +127,7 @@ end
 
 # Kernel.system but with exceptions
 def safe_system cmd, *args
-  unless Homebrew.system cmd, *args
-    args = args.map{ |arg| arg.to_s.gsub " ", "\\ " } * " "
-    raise ErrorDuringExecution, "Failure while executing: #{cmd} #{args}"
-  end
+  Homebrew.system(cmd, *args) or raise ErrorDuringExecution.new(cmd, args)
 end
 
 # prints no output
@@ -215,7 +212,7 @@ end
 def safe_exec cmd, *args
   # This buys us proper argument quoting and evaluation
   # of environment variables in the cmd parameter.
-  exec "/bin/sh", "-i", "-c", cmd + ' "$@"', "--", *args
+  exec "/bin/sh", "-c", "#{cmd} \"$@\"", "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths

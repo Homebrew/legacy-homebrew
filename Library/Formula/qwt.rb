@@ -2,8 +2,8 @@ require "formula"
 
 class Qwt < Formula
   homepage "http://qwt.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/qwt/qwt/6.1.0/qwt-6.1.0.tar.bz2"
-  sha1 "48a967038f7aa9a9c87c64bcb2eb07c5df375565"
+  url "https://downloads.sourceforge.net/project/qwt/qwt/6.1.1/qwt-6.1.1.tar.bz2"
+  sha1 "6d142cb9725da7e03fbb507532fc268b5212080a"
 
   option "with-qwtmathml", "Build the qwtmathml library"
   option "without-plugin", "Skip building the Qt Designer plugin"

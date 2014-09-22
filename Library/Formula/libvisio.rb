@@ -39,8 +39,10 @@ class Libvisio < Formula
       }
     EOS
     system ENV.cxx, "test.cpp", "-o", "test",
-                    "-lrevenge-stream-0.0", "-I#{Formula["librevenge"].include}/librevenge-0.0",
-                    "-lvisio-0.1", "-I#{Formula["libvisio"].include}/libvisio-0.1"
+                    "-lrevenge-stream-0.0",
+                    "-I#{Formula["librevenge"].include}/librevenge-0.0",
+                    "-L#{Formula["librevenge"].lib}",
+                    "-lvisio-0.1", "-I#{include}/libvisio-0.1", "-L#{lib}"
     system "./test"
   end
 end
