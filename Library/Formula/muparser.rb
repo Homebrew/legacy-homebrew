@@ -2,9 +2,8 @@ require 'formula'
 
 class Muparser < Formula
   homepage 'http://muparser.beltoforion.de/'
-  url 'https://docs.google.com/uc?export=download&confirm=no_antivirus&id=0BzuB-ydOOoduZjlFOEFRREZrT2s'
+  url 'https://downloads.sourceforge.net/project/muparser/muparser/Version%202.2.3/muparser_v2_2_3.zip'
   sha1 '3974898052dd9ef350df1860f8292755f78f59df'
-  version '2.2.3'
 
   bottle do
     cellar :any
@@ -14,6 +13,11 @@ class Muparser < Formula
   end
 
   def install
+    # patch to correct thousands separator behavior when built against libc++.
+    # https://groups.google.com/d/topic/muparser-dev/l8pbPFnR46s/discussion
+    # https://code.google.com/p/muparser/source/detail?r=18
+    inreplace 'include/muParserBase.h', 'std::string(1, m_nGroup)', 'std::string(1, (char)(m_cThousandsSep > 0 ? m_nGroup : CHAR_MAX))'
+    inreplace 'include/muParserInt.h', 'std::string(1, m_nGroup)', 'std::string(1, (char)(m_cThousandsSep > 0 ? m_nGroup : CHAR_MAX))'
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"
