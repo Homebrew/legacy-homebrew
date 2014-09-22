@@ -2,9 +2,8 @@ require 'formula'
 
 class Glib < Formula
   homepage "http://developer.gnome.org/glib/"
-  url "http://ftp.gnome.org/pub/gnome/sources/glib/2.40/glib-2.40.0.tar.xz"
-  sha256 "0d27f195966ecb1995dcce0754129fd66ebe820c7cd29200d264b02af1aa28b5"
-  revision 1
+  url "http://ftp.gnome.org/pub/gnome/sources/glib/2.42/glib-2.42.0.tar.xz"
+  sha256 "94fbc0a7d10633433ff383e540607de649c1b46baaa59dea446a50977a6c4472"
 
   bottle do
     sha1 "744e1082ceb6840c320e2df02d7aed1c9cd1ae7c" => :mavericks
