@@ -179,8 +179,7 @@ Note that these flags should only appear after a command.
     several different ways. See [SPECIFYING FORMULAE][].
 
     If `--debug` is passed and brewing fails, open an interactive debugging
-    session with access to IRB, ruby-debug, or a shell inside the temporary
-    build directory.
+    session with access to IRB or a shell inside the temporary build directory.
 
     If `--env=std` is passed, use the standard build environment instead of superenv.
 
@@ -332,14 +331,17 @@ Note that these flags should only appear after a command.
     Ensures all tapped formula are symlinked into Library/Formula and prunes dead
     formula from Library/Formula.
 
-  * `test` [--devel|--HEAD] <formula>:
+  * `test` [--devel|--HEAD] [--debug] <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
     generally indicate to the user if something is wrong with the installed
     formula.
 
-    To test the development or head version of a formula, `--devel` or
-    `--HEAD` must be passed.,
+    To test the development or head version of a formula, use `--devel` or
+    `--HEAD`.
+
+    If `--debug` is passed and the test fails, an interactive debugger will be
+    launched with access to IRB or a shell inside the temporary test directory.
 
     Example: `brew install jruby && brew test jruby`
 

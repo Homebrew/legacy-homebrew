@@ -114,7 +114,9 @@ def check_for_stray_dylibs
   # with a short description of the software they come with.
   white_list = {
     "libfuse.2.dylib" => "MacFuse",
-    "libfuse_ino64.2.dylib" => "MacFuse"
+    "libfuse_ino64.2.dylib" => "MacFuse",
+    "libosxfuse_i32.2.dylib" => "OSXFuse",
+    "libosxfuse_i64.2.dylib" => "OSXFuse",
   }
 
   __check_stray_files '/usr/local/lib/*.dylib', white_list, <<-EOS.undent
@@ -146,7 +148,9 @@ end
 def check_for_stray_pcs
   # Package-config files which are generally OK should be added to this list,
   # with a short description of the software they come with.
-  white_list = {}
+  white_list = {
+    "osxfuse.pc" => "OSXFuse",
+  }
 
   __check_stray_files '/usr/local/lib/pkgconfig/*.pc', white_list, <<-EOS.undent
     Unbrewed .pc files were found in /usr/local/lib/pkgconfig.
@@ -161,6 +165,8 @@ def check_for_stray_las
   white_list = {
     "libfuse.la" => "MacFuse",
     "libfuse_ino64.la" => "MacFuse",
+    "libosxfuse_i32.la" => "OSXFuse",
+    "libosxfuse_i64.la" => "OSXFuse",
   }
 
   __check_stray_files '/usr/local/lib/*.la', white_list, <<-EOS.undent

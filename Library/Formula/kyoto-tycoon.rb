@@ -4,6 +4,7 @@ class KyotoTycoon < Formula
   homepage "http://fallabs.com/kyototycoon/"
   url "http://fallabs.com/kyototycoon/pkg/kyototycoon-0.9.56.tar.gz"
   sha1 "e5433833e681f8755ff6b9f7209029ec23914ce6"
+  revision 1
 
   depends_on "lua" => :recommended
   depends_on "kyoto-cabinet"

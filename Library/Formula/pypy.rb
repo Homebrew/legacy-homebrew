@@ -2,15 +2,15 @@ require 'formula'
 
 class Pypy < Formula
   homepage 'http://pypy.org/'
-  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.3.1-osx64.tar.bz2'
-  version '2.3.1'
-  sha1 '4d9cdf801e4c8fb432b17be0edf76eb3d9360f40'
+  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.4.0-osx64.tar.bz2'
+  version '2.4.0'
+  sha1 'b9f87df364617c1a8c43303a467d698e4a3e1935'
 
   depends_on :arch => :x86_64
 
   resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-5.4.2.tar.gz'
-    sha1 'a681ba56c30c0eb66528215842d3e3fcb5157614'
+    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-5.8.tar.gz'
+    sha1 '21e2ee6a61c4f71711956fa99803283f0168041a'
   end
 
   resource 'pip' do
