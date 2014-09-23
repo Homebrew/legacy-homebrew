@@ -12,7 +12,13 @@ class Hatari < Formula
   depends_on "sdl"
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-osx-bundle"
-    system "make install"
+    sdl = Formula["sdl"].opt_prefix
+    system "cmake", "-DENABLE_OSX_BUNDLE:BOOL=0",
+                    "-DSDLMAIN_LIBRARY:FILEPATH=#{sdl}/lib/libSDLmain.a",
+                    "-DSDL_INCLUDE_DIR:PATH=#{sdl}/include/SDL",
+                    "-DSDL_LIBRARY:STRING=#{sdl}/lib/libSDLmain.a;#{sdl}/lib/libSDL.dylib;-framework Cocoa",
+                    *std_cmake_args
+
+    system "make", "install"
   end
 end
