@@ -7,9 +7,9 @@ class Libbson < Formula
 
   bottle do
     cellar :any
-    sha1 "a18922a78071fec3010ded0a8bc8a096510d4e2e" => :mavericks
-    sha1 "102eafc7b582a5868fe8e928d90b55381aca7d90" => :mountain_lion
-    sha1 "45ec75c0a1587f1908f45e022c6e95201b214bc7" => :lion
+    sha1 "6c8c52c2a7067613ad78d325f16f938ea21e2627" => :mavericks
+    sha1 "a0f4632571ed91cf3bba8506c2daf0d9558f0663" => :mountain_lion
+    sha1 "34fe292661f52c29a29e2a9983834c5b4dac1e76" => :lion
   end
 
   def install
