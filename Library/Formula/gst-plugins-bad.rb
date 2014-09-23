@@ -2,9 +2,9 @@ require 'formula'
 
 class GstPluginsBad < Formula
   homepage 'http://gstreamer.freedesktop.org/'
-  url 'http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.4.0.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.4.0.tar.xz'
-  sha256 'ff2cb754f7725b205aec66002b1406e440f3a03194b6cad2d126ef5cd00902f9'
+  url 'http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.4.1.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.4.1.tar.xz'
+  sha256 '0268db2faaf0bb22e5b709a11633abbca4f3d289b1f513bb262d0bf3f53e19ae'
 
   bottle do
     sha1 "f8079f35006fb7cfe3f853425d2f6c49904346ac" => :mavericks
