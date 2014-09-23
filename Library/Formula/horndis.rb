@@ -2,8 +2,8 @@ require "formula"
 
 class Horndis < Formula
   homepage "http://joshuawise.com/horndis"
-  url "https://github.com/jwise/HoRNDIS/archive/rel5.tar.gz"
-  sha1 "5f01c62ae61554252c0fe727e414edcb8e060106"
+  url "https://github.com/jwise/HoRNDIS/archive/rel6.tar.gz"
+  sha1 "e41ed0c5c06ee555a4a418696b112c955a356ce0"
 
   bottle do
     cellar :any
