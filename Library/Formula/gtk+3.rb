@@ -6,6 +6,9 @@ class Gtkx3 < Formula
   sha256 '68d6b57d15c16808d0045e96b303f3dd439cc22a9c06fdffb07025cd713a82bc'
 
   bottle do
+    sha1 "bfe498bdaca8659ef6a980336eebd3b5c2bbf3ab" => :mavericks
+    sha1 "242ee85238ebd48a20509d2352c8c02a07f01f9e" => :mountain_lion
+    sha1 "579061b56ed5f3fb1efe0cb9cea03ef3d2ecc62e" => :lion
   end
 
   depends_on :x11 => '2.5' # needs XInput2, introduced in libXi 1.3
