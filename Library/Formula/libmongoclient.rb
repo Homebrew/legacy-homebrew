@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class Libmongoclient < Formula
-  homepage 'http://www.mongodb.org'
-  url 'https://github.com/mongodb/mongo-cxx-driver/archive/legacy-0.0-26compat-2.6.1.tar.gz'
-  sha1 'a45e66d5182ede6b3a0f5bd5e020ebeb48dbddbe'
+  homepage "http://www.mongodb.org"
+  url "https://github.com/mongodb/mongo-cxx-driver/archive/legacy-0.0-26compat-2.6.4.tar.gz"
+  sha1 "98510e610c7ad05b238149f6440c16c4c4cd21d9"
 
-  head 'https://github.com/mongodb/mongo-cxx-driver.git', :branch => "26compat"
+  head "https://github.com/mongodb/mongo-cxx-driver.git", :branch => "26compat"
 
   bottle do
     sha1 "794336b0ae7cc2b867954e690ac640e299d063fd" => :mavericks
@@ -15,12 +15,12 @@ class Libmongoclient < Formula
 
   option :cxx11
 
-  depends_on 'scons' => :build
+  depends_on "scons" => :build
 
   if build.cxx11?
-    depends_on 'boost' => 'c++11'
+    depends_on "boost" => "c++11"
   else
-    depends_on 'boost'
+    depends_on "boost"
   end
 
   def install
