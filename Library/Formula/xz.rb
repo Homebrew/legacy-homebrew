@@ -9,6 +9,10 @@ class Xz < Formula
   sha256 "e8851dc749df2340dac6c9297cb2653eff684e73c3dedf690930119502edd616"
 
   bottle do
+    cellar :any
+    sha1 "c54becb676547560824fb873d6a04f24aa3e27aa" => :mavericks
+    sha1 "d3ee779d021906abde55b3672135a0cac27c73b0" => :mountain_lion
+    sha1 "99d721024996c74abf542373a03d85e121a0714a" => :lion
   end
 
   option :universal
