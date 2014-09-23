@@ -5,8 +5,8 @@ class Pandoc < Formula
   include Language::Haskell::Cabal
 
   homepage "http://johnmacfarlane.net/pandoc/"
-  url "https://hackage.haskell.org/package/pandoc-1.13.0.1/pandoc-1.13.0.1.tar.gz"
-  sha1 "b038b965d3027ca84939292ec2a94cd7389e1e7d"
+  url "https://hackage.haskell.org/package/pandoc-1.13.1/pandoc-1.13.1.tar.gz"
+  sha1 "8f3df1977cf9daa848640754515b733c13fd934a"
 
   bottle do
     sha1 "14516b086a7728dad03ff9b5a84c336da1947ee8" => :mavericks
@@ -17,6 +17,15 @@ class Pandoc < Formula
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "gmp"
+
+  if build.build_32_bit? || !MacOS.prefer_64_bit? || MacOS.version < :mavericks
+    fails_with :clang do
+      cause <<-EOS.undent
+        Building with Clang configures GHC to use Clang as its preprocessor,
+        which causes subsequent GHC-based builds to fail.
+      EOS
+    end
+  end
 
   def install
     cabal_sandbox do
