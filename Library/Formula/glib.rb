@@ -34,21 +34,21 @@ class Glib < Formula
   # but needed to fix an assumption about the location of the d-bus machine
   # id file.
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/af332f42fae80c570a77/raw/a738786e0f7ea46c4a93a36a3d9d569017cca7f2/glib-hardcoded-paths.diff"
-    sha1 "ce54abdbb4386902a33dbad7cb6c8f1b0cbdab0d"
+    url "https://gist.githubusercontent.com/jacknagel/af332f42fae80c570a77/raw/7b5fd0d2e6554e9b770729fddacaa2d648327644/glib-hardcoded-paths.diff"
+    sha1 "78bbc0c7349d7bfd6ab1bfeabfff27a5dfb1825a"
   end
 
   # Fixes compilation with FSF GCC. Doesn't fix it on every platform, due
   # to unrelated issues in GCC, but improves the situation.
   # Patch submitted upstream: https://bugzilla.gnome.org/show_bug.cgi?id=672777
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/9835034/raw/b0388e86f74286f4271f9b0dca8219fdecafd5e3/gio.patch"
-    sha1 "32158fffbfb305296f7665ede6185a47d6f6b389"
+    url "https://gist.githubusercontent.com/jacknagel/9835034/raw/371fd57f7d3823c67dbd5bc738df7ef5ffc7545f/gio.patch"
+    sha1 "b947912a4f59630c13e53056c8b18bde824860f4"
   end
 
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/9726139/raw/9d5635480d96d6b5c717d2c0d5d24de38b68ffbd/universal.patch"
-    sha1 "7f38cab550571b39989275362995ade214b44490"
+    url "https://gist.githubusercontent.com/jacknagel/9726139/raw/bc60b41fa23ae72f56128e16c9aa5d2d26c75c11/universal.patch"
+    sha1 "ab9b8ba9d7c3fd493a0e24638a95e26f3fe613ac"
   end if build.universal?
 
   def install
