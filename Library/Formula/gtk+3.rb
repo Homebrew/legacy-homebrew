@@ -2,13 +2,10 @@ require 'formula'
 
 class Gtkx3 < Formula
   homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.12/gtk+-3.12.2.tar.xz'
-  sha256 '61d74eea74231b1ea4b53084a9d6fc9917ab0e1d71b69d92cbf60a4b4fb385d0'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.0.tar.xz'
+  sha256 '68d6b57d15c16808d0045e96b303f3dd439cc22a9c06fdffb07025cd713a82bc'
 
   bottle do
-    sha1 "fccd14776278ef85a2e50303d761648f01c7932a" => :mavericks
-    sha1 "227f2d2b607285abd9251519529f895c99776cbb" => :mountain_lion
-    sha1 "a024c7978ddc23887ad740d1302cc94ce1d95f03" => :lion
   end
 
   depends_on :x11 => '2.5' # needs XInput2, introduced in libXi 1.3
@@ -26,14 +23,6 @@ class Gtkx3 < Formula
   depends_on 'gsettings-desktop-schemas' => :recommended
 
   def install
-    # gtk-update-icon-cache is used during installation, and
-    # we don't want to add a dependency on gtk+2 just for this.
-    inreplace %w[ gtk/makefile.msc.in
-                  demos/gtk-demo/Makefile.in
-                  demos/widget-factory/Makefile.in ],
-                  /gtk-update-icon-cache --(force|ignore-theme-index)/,
-                  "#{buildpath}/gtk/\\0"
-
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
