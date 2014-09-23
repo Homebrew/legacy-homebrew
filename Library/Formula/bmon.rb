@@ -2,8 +2,8 @@ require 'formula'
 
 class Bmon < Formula
   homepage 'https://github.com/tgraf/bmon'
-  url "https://github.com/tgraf/bmon/releases/download/v3.3/bmon-3.3.tar.gz"
-  sha1 "f21d7fc70fdc140680f7ef466242d876474ed2aa"
+  url "https://github.com/tgraf/bmon/releases/download/v3.5/bmon-3.5.tar.gz"
+  sha1 "352f774e20f679e89de0f72159475d999cc7bf2f"
 
   bottle do
     sha1 "a5a4f7baad07a9c86ccb0a84b6404cbf9753f204" => :mavericks
