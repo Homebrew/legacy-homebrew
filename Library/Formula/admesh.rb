@@ -2,8 +2,8 @@ require "formula"
 
 class Admesh < Formula
   homepage "https://github.com/admesh/admesh"
-  url "https://github.com/admesh/admesh/releases/download/v0.98.0/admesh-0.98.0.tar.gz"
-  sha1 "aeb5857161c077a85ec0744c1d5c4fa0c99a03a9"
+  url "https://github.com/admesh/admesh/releases/download/v0.98.1/admesh-0.98.1.tar.gz"
+  sha1 "8256f549cb175b6783562a2603ec08f04e26b949"
 
   bottle do
     cellar :any
