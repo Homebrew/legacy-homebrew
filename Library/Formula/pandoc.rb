@@ -18,6 +18,15 @@ class Pandoc < Formula
   depends_on "cabal-install" => :build
   depends_on "gmp"
 
+  if build.build_32_bit? || !MacOS.prefer_64_bit? || MacOS.version < :mavericks
+    fails_with :clang do
+      cause <<-EOS.undent
+        Building with Clang configures GHC to use Clang as its preprocessor,
+        which causes subsequent GHC-based builds to fail.
+      EOS
+    end
+  end
+
   def install
     cabal_sandbox do
       cabal_install "--only-dependencies"
