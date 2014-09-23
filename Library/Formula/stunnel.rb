@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class Stunnel < Formula
   homepage "http://www.stunnel.org/"
@@ -16,39 +16,39 @@ class Stunnel < Formula
 
   def install
     # This causes a bogus .pem to be created in lieu of interactive cert generation.
-    File.open('tools/stunnel.cnf', 'w') do |f|
-      f.write <<-EOS
-# OpenSSL configuration file to create a server certificate
-# by Michal Trojnara 1998-2013
+    stunnel_cnf = Pathname.new("tools/stunnel.cnf")
+    stunnel_cnf.unlink
+    stunnel_cnf.write <<-EOS.undent
+      # OpenSSL configuration file to create a server certificate
+      # by Michal Trojnara 1998-2013
 
-[ req ]
-# the default key length is secure and quite fast - do not change it
-default_bits                    = 2048
-# comment out the next line to protect the private key with a passphrase
-encrypt_key                     = no
-distinguished_name              = req_dn
-x509_extensions                 = cert_type
-prompt                          = no
+      [ req ]
+      # the default key length is secure and quite fast - do not change it
+      default_bits                    = 2048
+      # comment out the next line to protect the private key with a passphrase
+      encrypt_key                     = no
+      distinguished_name              = req_dn
+      x509_extensions                 = cert_type
+      prompt                          = no
 
-[ req_dn ]
-countryName                     = PL
-stateOrProvinceName             = Mazovia Province
-localityName                    = Warsaw
-organizationName                = Stunnel Developers
-organizationalUnitName          = Provisional CA
-0.commonName                    = localhost
+      [ req_dn ]
+      countryName                     = PL
+      stateOrProvinceName             = Mazovia Province
+      localityName                    = Warsaw
+      organizationName                = Stunnel Developers
+      organizationalUnitName          = Provisional CA
+      0.commonName                    = localhost
 
-# To create a certificate for more than one name uncomment:
-# 1.commonName                  = DNS alias of your server
-# 2.commonName                  = DNS alias of your server
-# ...
-# See http://home.netscape.com/eng/security/ssl_2.0_certificate.html
-# to see how Netscape understands commonName.
+      # To create a certificate for more than one name uncomment:
+      # 1.commonName                  = DNS alias of your server
+      # 2.commonName                  = DNS alias of your server
+      # ...
+      # See http://home.netscape.com/eng/security/ssl_2.0_certificate.html
+      # to see how Netscape understands commonName.
 
-[ cert_type ]
-nsCertType                      = server
-      EOS
-    end
+      [ cert_type ]
+      nsCertType                      = server
+    EOS
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -56,7 +56,7 @@ nsCertType                      = server
                           "--mandir=#{man}",
                           "--disable-libwrap",
                           "--with-ssl=#{Formula["openssl"].opt_prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats
