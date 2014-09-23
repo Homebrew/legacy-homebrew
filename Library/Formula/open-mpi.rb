@@ -2,8 +2,8 @@ require 'formula'
 
 class OpenMpi < Formula
   homepage 'http://www.open-mpi.org/'
-  url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.1.tar.bz2'
-  sha1 'e6e85da3e54784ee3d7b0bb0ff4d365ef2899c49'
+  url 'http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.2.tar.bz2'
+  sha1 '55067856b351cbeb5ebe8a430bfe0656115a04ed'
 
   option 'disable-fortran', 'Do not build the Fortran bindings'
   option 'enable-mpi-thread-multiple', 'Enable MPI_THREAD_MULTIPLE'
@@ -38,9 +38,9 @@ class OpenMpi < Formula
     system 'make', 'check'
     system 'make', 'install'
 
-    # If Fortran bindings were built, there will be a stray `.mod` file
-    # (Fortran header) in `lib` that needs to be moved to `include`.
-    include.install lib/'mpi.mod' if File.exist? "#{lib}/mpi.mod"
+    # If Fortran bindings were built, there will be stray `.mod` files
+    # (Fortran header) in `lib` that need to be moved to `include`.
+    include.install Dir["#{lib}/*.mod"]
 
     # Not sure why the wrapped script has a jar extension - adamv
     libexec.install bin/'vtsetup.jar'
