@@ -2,8 +2,8 @@ require 'formula'
 
 class Lynis < Formula
   homepage 'http://www.rootkit.nl/projects/lynis.html'
-  url 'http://cisofy.com/files/lynis-1.5.6.tar.gz'
-  sha1 '95aff8b208e8a1e97ef6d07d011e800cfa989f25'
+  url 'http://cisofy.com/files/lynis-1.6.1.tar.gz'
+  sha1 'ed184e2d4cdd4b157caf3440548d491bdc98707b'
 
   def install
     inreplace 'lynis' do |s|
@@ -20,5 +20,15 @@ class Lynis < Formula
     prefix.install "db", "dev", "include", "plugins", "default.prf"
     bin.install "lynis"
     man8.install "lynis.8"
+  end
+
+  def caveats; <<-EOS.undent
+    lynis requires root privileges to run. Additionally you need to change ownership
+    for its 'include' folder:
+
+      sudo chown -R root:wheel #{include}
+
+    You should be certain that you trust any software you grant root privileges.
+    EOS
   end
 end
