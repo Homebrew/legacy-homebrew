@@ -19,6 +19,8 @@ class PandocCiteproc < Formula
   depends_on "gmp"
   depends_on "pandoc" => :recommended
 
+  fails_with(:clang) { build 425 } # clang segfaults on Lion
+
   def install
     cabal_sandbox do
       cabal_install "--only-dependencies"
