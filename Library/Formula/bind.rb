@@ -2,10 +2,9 @@ require "formula"
 
 class Bind < Formula
   homepage "http://www.isc.org/software/bind/"
-  url "http://ftp.isc.org/isc/bind9/9.10.0-P2/bind-9.10.0-P2.tar.gz"
-  sha1 "c57b5825e36933119e9fd6f43e3f52262e7ff4ed"
-  version "9.10.0-P2"
-  revision 1
+  url "http://ftp.isc.org/isc/bind9/9.10.1/bind-9.10.1.tar.gz"
+  sha1 "96aa28c6112c6a8c33a19efeac98c715f03b35ca"
+  version "9.10.1"
 
   bottle do
     revision 3
@@ -17,8 +16,8 @@ class Bind < Formula
   head "https://source.isc.org/git/bind9.git"
 
   devel do
-    url "https://source.isc.org/git/bind9.git", :tag => "v9_10_1b2"
-    version "9.10.1-b2"
+    url "https://source.isc.org/git/bind9.git", :tag => "v9_10_1"
+    version "9.10.1"
   end
 
   depends_on "openssl"
