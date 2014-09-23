@@ -18,7 +18,7 @@ class Pandoc < Formula
   depends_on "cabal-install" => :build
   depends_on "gmp"
 
-  fails_with :clang if MacOS.version < :mavericks # Same as ghc.rb
+  fails_with(:clang) { build 425 } # clang segfaults on Lion
 
   def install
     cabal_sandbox do
