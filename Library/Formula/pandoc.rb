@@ -18,6 +18,8 @@ class Pandoc < Formula
   depends_on "cabal-install" => :build
   depends_on "gmp"
 
+  fails_with :clang if MacOS.version < :mavericks # Same as ghc.rb
+
   def install
     cabal_sandbox do
       cabal_install "--only-dependencies"
