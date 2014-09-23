@@ -28,7 +28,9 @@ class Wireshark < Formula
     depends_on "libtool" => :build
   end
 
-  option "with-qt", "Use QT for GUI instead of GTK+3"
+  option "with-gtk+3", "Build the wireshark command with gtk+3"
+  option "with-gtk+", "Build the wireshark command with gtk+"
+  option "with-qt", "Build the wireshark-qt command (can be used with or without either GTK option)"
   option "with-headers", "Install Wireshark library headers for plug-in developemnt"
 
   depends_on "pkg-config" => :build
