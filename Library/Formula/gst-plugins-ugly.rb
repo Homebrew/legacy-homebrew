@@ -7,9 +7,9 @@ class GstPluginsUgly < Formula
   sha256 '25440435ac4ed795d213f2420a0e7355e4a2e2e76d1f9d020b2073f815e8b071'
 
   bottle do
-    sha1 "a82da0b9a9d26d0e5d93c51c02b1855139210a50" => :mavericks
-    sha1 "269dcf70921dc902d887cbaf6165a66eecc4d703" => :mountain_lion
-    sha1 "38d4ff9a96a665496b72e0dcd99a1536b7489d41" => :lion
+    sha1 "878435d2787f2f8817b301b598835445cb012aca" => :mavericks
+    sha1 "a4acc394ccfade7af9d593e5b8354dd7f7916f6a" => :mountain_lion
+    sha1 "861e97030f3cd2e26069a2b18f2af7506a6d5af9" => :lion
   end
 
   head do
