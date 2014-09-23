@@ -13,6 +13,8 @@ class Bind < Formula
 
   head "https://source.isc.org/git/bind9.git"
 
+  option 'enable-developer', 'enable developer build settings'
+
   depends_on "openssl"
 
   def install
@@ -20,10 +22,13 @@ class Bind < Formula
     # libxml2 appends one inc dir to CPPFLAGS but bind ignores CPPFLAGS
     ENV.append "CFLAGS", ENV.cppflags
 
+    args = "--enable-developer" if build.include? "enable-developer"
+
     system "./configure", "--prefix=#{prefix}",
                           "--enable-threads",
                           "--enable-ipv6",
-                          "--with-ssl-dir=#{Formula["openssl"].opt_prefix}"
+                          "--with-ssl-dir=#{Formula["openssl"].opt_prefix}",
+                          *args
 
     # From the bind9 README: "Do not use a parallel "make"."
     ENV.deparallelize
