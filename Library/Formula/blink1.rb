@@ -8,9 +8,9 @@ class Blink1 < Formula
 
   bottle do
     cellar :any
-    sha1 "3d9ad539d1e56cc22f17cdba283408674f885a4a" => :mavericks
-    sha1 "f8bb65ba7c626220a961f715c053825e8e6a808b" => :mountain_lion
-    sha1 "4b2d7582e802686b6208fd5b1f00f8bd11d21e99" => :lion
+    sha1 "bc123f11ef3587b3afdf98f656b31283f6bde119" => :mavericks
+    sha1 "612bd29c27860748c99ebeb71bc592ebc35117d4" => :mountain_lion
+    sha1 "80d5675499d01370f54346a4d2b6324ecbe0ca8b" => :lion
   end
 
   def install
