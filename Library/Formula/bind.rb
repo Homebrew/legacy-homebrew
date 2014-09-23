@@ -13,12 +13,16 @@ class Bind < Formula
 
   head "https://source.isc.org/git/bind9.git"
 
+  option 'enable-developer', 'enable developer build settings'
+
   depends_on "openssl"
 
   def install
     ENV.libxml2
     # libxml2 appends one inc dir to CPPFLAGS but bind ignores CPPFLAGS
     ENV.append "CFLAGS", ENV.cppflags
+
+    args << "--enable-developer" if build.include? "enable-developer"
 
     system "./configure", "--prefix=#{prefix}",
                           "--enable-threads",
