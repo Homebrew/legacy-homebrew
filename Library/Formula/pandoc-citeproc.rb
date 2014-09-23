@@ -9,9 +9,9 @@ class PandocCiteproc < Formula
   sha1 "5236b4b4e201f94ab9f1bcd0d7e81c4271b46e8f"
 
   bottle do
-    sha1 "e1a339c04e78a4d7fba542336e655f24fa029bbe" => :mavericks
-    sha1 "b00f823667e3a2775388758af7ed309ddc5a761e" => :mountain_lion
-    sha1 "332eb0a1d2754606f74731e30ee3e76320947389" => :lion
+    sha1 "6babd3e9d6264bcf678c5ea02140512c129528b4" => :mavericks
+    sha1 "41af56ace751f9a5ac85618eb5d718fd1402d416" => :mountain_lion
+    sha1 "b72a998686381016c0646264545c6bd554f3253e" => :lion
   end
 
   depends_on "ghc" => :build
