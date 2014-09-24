@@ -6,15 +6,6 @@ class Wxmac < Formula
   mirror "https://mirrors.kernel.org/debian/pool/main/w/wxwidgets3.0/wxwidgets3.0_3.0.1.orig.tar.bz2"
   sha1 "73e58521d6871c9f4d1e7974c6e3a81629fddcf8"
 
-  # Patch to fix wx so it compiles on Yosemite.
-  # See http://trac.wxwidgets.org/ticket/16329
-    if MacOS.version == :yosemite
-      patch :p0 do
-        url "http://trac.wxwidgets.org/raw-attachment/ticket/16329/wx_webview.patch"
-        sha1 "4621be6cf308d50d22333707b17d243861c74a7d"
-    end
-  end
-
   bottle do
     revision 6
     sha1 "fa5b9dc8ff899b0856cf806d17b18b4f40e51e29" => :mavericks
