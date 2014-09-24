@@ -22,6 +22,7 @@ class Bash < Formula
   bottle do
     sha1 "98884ac866bbf941edc0c107b85c6dd9d8515f27" => :mavericks
     sha1 "0dd9bb97389722aae5d5225761ff7488599588fc" => :mountain_lion
+    sha1 "d1adcda8ccda9cba5bb626c0f7bbf8b5882aecdf" => :lion
   end
 
   head "git://git.savannah.gnu.org/bash.git"
