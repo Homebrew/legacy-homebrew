@@ -87,11 +87,9 @@ class Zookeeper < Formula
     # Install Java stuff
     if build.head?
       system "ant"
-      libexec.install %w(bin src/contrib src/java/lib)
-      libexec.install Dir['build/*.jar']
+      libexec.install Dir["bin", "src/contrib", "src/java/lib", "build/*.jar"]
     else
-      libexec.install %w(bin contrib lib)
-      libexec.install Dir['*.jar']
+      libexec.install Dir["bin", "contrib", "lib", "*.jar"]
     end
 
     # Create necessary directories
