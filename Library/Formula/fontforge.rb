@@ -6,6 +6,9 @@ class Fontforge < Formula
   stable do
     url "https://github.com/fontforge/fontforge/archive/2.0.20140101.tar.gz"
     sha1 "abce297e53e8b6ff6f08871e53d1eb0be5ab82e7"
+
+    depends_on "cairo" => :optional
+    depends_on :python => :optional
   end
 
   bottle do
@@ -19,11 +22,13 @@ class Fontforge < Formula
 
     depends_on "zeromq"
     depends_on "czmq"
+    depends_on "cairo"
+    depends_on :python if MacOS.version <= :snow_leopard
   end
 
   option 'with-gif', 'Build with GIF support'
-  option 'without-x', 'Build without X11 support, not building the app bundle'
-  option 'without-python', 'Build without Python extensions'
+  option 'with-x', 'Build with X11 support, building the app bundle'
+  option 'with-python', 'Build with Python extensions and scripting'
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -32,15 +37,13 @@ class Fontforge < Formula
   depends_on "ossp-uuid"
   depends_on "gettext"
   depends_on "pango"
-  depends_on "cairo"
   depends_on "libpng"   => :recommended
   depends_on "jpeg"     => :recommended
   depends_on "libtiff"  => :recommended
-  depends_on :x11  => :recommended
+  depends_on :x11  => :optional
   depends_on "giflib" if build.with? 'gif'
   depends_on "libspiro" => :optional
   depends_on "fontconfig"
-  depends_on :python if MacOS.version <= :snow_leopard
 
   fails_with :llvm do
     build 2336
@@ -49,9 +52,14 @@ class Fontforge < Formula
 
   def install
     args = ["--prefix=#{prefix}"]
+    args << "--with-x" if build.with? 'x'
 
-    args << "--without-x" if build.without? 'x'
-    args << "--disable-python-extension" if build.without? 'python'
+    unless build.head?
+      # Cairo & Python are still optional in stable, but not in HEAD.
+      args << "--without-cairo" if build.without? "cairo"
+      args << "--disable-python-extension" if build.without? "python"
+      args << "--disable-python-scripting" if build.without? "python"
+    end
 
     # Fix linker error; see: http://trac.macports.org/ticket/25012
       ENV.append "LDFLAGS", "-lintl"
@@ -60,8 +68,9 @@ class Fontforge < Formula
       ENV.append "ZLIB_CFLAGS", "-I/usr/include"
       ENV.append "ZLIB_LIBS", "-L/usr/lib -lz"
 
-    # And Python
-    if build.with? 'python'
+    # And finding Homebrew's Python
+    if build.with? "python"
+      ENV.append_path "PKG_CONFIG_PATH", "#{HOMEBREW_PREFIX}/Frameworks/Python.framework/Versions/2.7/lib/pkgconfig/"
       ENV.prepend "LDFLAGS", "-L#{%x(python-config --prefix).chomp}/lib"
     end
 
@@ -72,16 +81,15 @@ class Fontforge < Formula
     system "./bootstrap" if build.head?
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
 
-    # Fontforge stable is installed to an irregular location, and breaks the package.
-    # To fix it, we move the irregular package name to the expected name.
+    # Fix the broken fontforge_package_name issue
     # This is fixed in the HEAD build.
-    mv "#{share}/fontforge_package_name", "#{share}/fontforge" if build.stable?
-  end
-
-  def caveats
-    "To launch the Fontforge app bundle run 'fontforge' in your shell"
+    if build.stable?
+      mv "#{include}/fontforge_package_name", "#{include}/fontforge"
+      mv "#{share}/fontforge_package_name", "#{share}/fontforge"
+      mv "#{share}/doc/fontforge_package_name", "#{share}/doc/fontforge"
+    end
   end
 
   test do

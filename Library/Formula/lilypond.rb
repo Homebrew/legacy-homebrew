@@ -1,20 +1,20 @@
 require 'formula'
 
 class Lilypond < Formula
-  homepage 'http://lilypond.org/'
-  url 'http://download.linuxaudio.org/lilypond/sources/v2.18/lilypond-2.18.2.tar.gz'
-  sha1 '09d3a1e0e9fadeb8ef6e279227a2b30812c7ee9b'
-  revision 1
+  homepage "http://lilypond.org/"
+  url "http://download.linuxaudio.org/lilypond/sources/v2.18/lilypond-2.18.2.tar.gz"
+  sha1 "09d3a1e0e9fadeb8ef6e279227a2b30812c7ee9b"
+  revision 2
 
   devel do
-    url 'http://download.linuxaudio.org/lilypond/source/v2.19/lilypond-2.19.14.tar.gz'
-    sha1 'da96e4d300efa7b20c3e4e052f98e3db6ca24fd7'
+    url "http://download.linuxaudio.org/lilypond/source/v2.19/lilypond-2.19.14.tar.gz"
+    sha1 "da96e4d300efa7b20c3e4e052f98e3db6ca24fd7"
   end
 
   # LilyPond currently only builds with an older version of Guile (<1.9)
-  resource 'guile18' do
-    url 'http://ftpmirror.gnu.org/guile/guile-1.8.8.tar.gz'
-    sha1 '548d6927aeda332b117f8fc5e4e82c39a05704f9'
+  resource "guile18" do
+    url "http://ftpmirror.gnu.org/guile/guile-1.8.8.tar.gz"
+    sha1 "548d6927aeda332b117f8fc5e4e82c39a05704f9"
   end
 
   env :std
@@ -24,36 +24,36 @@ class Lilypond < Formula
   # Dependencies for LilyPond
   depends_on :tex
   depends_on :x11
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'pango'
-  depends_on 'ghostscript'
-  depends_on 'mftrace'
-  depends_on 'fontforge' => ["with-x", "with-cairo"]
-  depends_on 'fondu'
-  depends_on 'texinfo'
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
+  depends_on "pango"
+  depends_on "ghostscript"
+  depends_on "mftrace"
+  depends_on "fontforge" => ["with-x", "with-cairo"]
+  depends_on "fondu"
+  depends_on "texinfo"
 
   # Additional dependencies for guile1.8.
   depends_on :libtool
-  depends_on 'libffi'
-  depends_on 'libunistring'
-  depends_on 'bdw-gc'
-  depends_on 'gmp'
-  depends_on 'readline'
+  depends_on "libffi"
+  depends_on "libunistring"
+  depends_on "bdw-gc"
+  depends_on "gmp"
+  depends_on "readline"
 
   # Add dependency on keg-only Homebrew 'flex' because Apple bundles an older and incompatible
   # version of the library with 10.7 at least, seems slow keeping up with updates,
   # and the extra brew is tiny anyway.
-  depends_on 'flex' => :build
+  depends_on "flex" => :build
 
   # Assert documentation dependencies if requested.
   if build.with? "doc"
-    depends_on 'netpbm'
-    depends_on 'imagemagick'
-    depends_on 'docbook'
+    depends_on "netpbm"
+    depends_on "imagemagick"
+    depends_on "docbook"
     depends_on "dblatex" => [:python, "dbtexmf.dblatex"]
     depends_on :python if MacOS.version <= :snow_leopard
-    depends_on 'texi2html'
+    depends_on "texi2html"
   end
 
   fails_with :clang do
