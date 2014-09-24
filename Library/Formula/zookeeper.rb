@@ -72,6 +72,11 @@ class Zookeeper < Formula
       system "make install"
     end
 
+    cd "src/contrib/zkpython" do
+      system "python", "src/python/setup.py", "build"
+      system "python", "src/python/setup.py", "install", "--prefix=#{prefix}"
+    end if build.with? "python"
+
     cd "src/contrib/zkperl" do
       system "perl", "Makefile.PL", "PREFIX=#{prefix}",
                                     "--zookeeper-include=#{include}",
