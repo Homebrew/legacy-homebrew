@@ -55,7 +55,8 @@ class Ansible < Formula
   end
 
   def install
-    ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
+    ENV["PYTHONPATH"] = "$PYTHONPATH"
+    ENV.prepend_create_path 'PYTHONPATH', lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
     # HEAD additionally requires this to be present in PYTHONPATH, or else
     # ansible's own setup.py will fail.
