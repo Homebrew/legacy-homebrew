@@ -7,9 +7,9 @@ class Spdylay < Formula
 
   bottle do
     cellar :any
-    sha1 "63f45497fc6e3e79a999547f495398582557e2b2" => :mavericks
-    sha1 "29c05f3b61dcbdb431906fe76e5cbcbd2f974a4b" => :mountain_lion
-    sha1 "371fb03493809b2de2c0778a4ca2c5a319d7d1ef" => :lion
+    sha1 "6a0b34fbd6d032b40e05392254a9427b64afb7d7" => :mavericks
+    sha1 "d0f350a74c629d3e657277bffb7b865dcebd2bbb" => :mountain_lion
+    sha1 "157a4de06a02a54eb8c4851d33c2d1b8f72d9424" => :lion
   end
 
   depends_on "autoconf" => :build
