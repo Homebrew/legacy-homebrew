@@ -188,9 +188,7 @@ def check_for_stray_las
 end
 
 def check_for_stray_headers
-  white_list = {
-    "osxfuse/*" => "OSXFuse",
-  }
+  white_list = {} # TODO whitelist MacFuse/OSXFuse headers
 
   __check_stray_files "/usr/local/include", "**/*.h", white_list, <<-EOS.undent
     Unbrewed header files were found in /usr/local/include.
