@@ -60,13 +60,11 @@ class Zookeeper < Formula
       ENV['ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
     end
 
-    # Prep work for svn compile.
     if build.head?
       system "ant", "compile_jute"
       system "autoreconf", "-fvi", "src/c"
     end
 
-    # Build & install C libraries.
     cd "src/c" do
       system "./configure", "--disable-dependency-tracking",
                             "--prefix=#{prefix}",
@@ -74,7 +72,6 @@ class Zookeeper < Formula
       system "make install"
     end
 
-    # Install Perl bindings
     cd "src/contrib/zkperl" do
       system "perl", "Makefile.PL", "PREFIX=#{prefix}",
                                     "--zookeeper-include=#{include}/c-client-src",
@@ -82,10 +79,8 @@ class Zookeeper < Formula
       system "make install"
     end if build.include? "perl"
 
-    # Remove windows executables
     rm_f Dir["bin/*.cmd"]
 
-    # Install Java stuff
     if build.head?
       system "ant"
       libexec.install Dir["bin", "src/contrib", "src/java/lib", "build/*.jar"]
@@ -93,13 +88,11 @@ class Zookeeper < Formula
       libexec.install Dir["bin", "contrib", "lib", "*.jar"]
     end
 
-    # Create necessary directories
     bin.mkpath
     (etc+'zookeeper').mkpath
     (var+'log/zookeeper').mkpath
     (var+'run/zookeeper/data').mkpath
 
-    # Install shim scripts to bin
     Pathname.glob("#{libexec}/bin/*.sh") do |path|
       next if path == libexec+'bin/zkEnv.sh'
       script_name = path.basename
@@ -107,7 +100,6 @@ class Zookeeper < Formula
       (bin+bin_name).write shim_script(script_name)
     end
 
-    # Install default config files
     defaults = etc/'zookeeper/defaults'
     defaults.write(default_zk_env) unless defaults.exist?
 
