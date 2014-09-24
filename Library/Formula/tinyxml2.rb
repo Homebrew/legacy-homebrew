@@ -2,8 +2,8 @@ require "formula"
 
 class Tinyxml2 < Formula
   homepage "http://grinninglizard.com/tinyxml2"
-  url "https://github.com/leethomason/tinyxml2/archive/2.1.0.tar.gz"
-  sha1 "70ef3221bdc190fd8fc50cdd4a6ef440f44b74dc"
+  url "https://github.com/leethomason/tinyxml2/archive/2.2.0.tar.gz"
+  sha1 "7869aa08241ce16f93ba3732c1cde155b1f2b6a0"
   head "https://github.com/leethomason/tinyxml2.git", :branch => "master"
 
   bottle do
