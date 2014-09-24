@@ -8,6 +8,7 @@ class Binutils < Formula
 
   # No --default-names option as it interferes with Homebrew builds.
   option "default-names", "Do not prepend 'g' to the binary" if OS.linux?
+  option "with-sysroot", "Compile binutils for use with a sysroot GCC"
 
   bottle do
     sha1 "b411f528adb58ccdf068832b84f35da97e510ec9" => :mavericks
@@ -19,6 +20,7 @@ class Binutils < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           ("--program-prefix=g" unless build.include? 'default-names'),
+                          ("--with-sysroot=/" if build.with? "sysroot"),
                           "--prefix=#{prefix}",
                           "--infodir=#{info}",
                           "--mandir=#{man}",
