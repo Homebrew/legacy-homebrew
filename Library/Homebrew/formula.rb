@@ -347,6 +347,11 @@ class Formula
     Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, '.rb' }.sort
   end
 
+  # an array of all core Formula names
+  def self.core_names
+    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].select{ |f| File.ftype(f) != 'link' }.map{ |f| File.basename f, '.rb'}.sort
+  end
+
   def self.each
     names.each do |name|
       begin
