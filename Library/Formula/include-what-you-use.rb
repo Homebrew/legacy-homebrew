@@ -4,8 +4,7 @@ class IncludeWhatYouUse < Formula
   CLANG_VERSION = '3.5'
 
   homepage 'https://code.google.com/p/include-what-you-use/'
-  url "http://include-what-you-use.googlecode.com/svn/branches/clang_#{CLANG_VERSION}",
-      revision: '582'
+  url "http://include-what-you-use.googlecode.com/svn/branches/clang_#{CLANG_VERSION}", :revision => '582'
   version '0.3'
   sha1 'f49dd094300b648543e3510ebd8101dbab23056f'
 
