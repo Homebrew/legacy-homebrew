@@ -14,8 +14,10 @@ class IncludeWhatYouUse < Formula
   def install
     clang_path = "#{HOMEBREW_PREFIX}/Cellar/llvm/#{IncludeWhatYouUse::CLANG_VERSION}.0/"
 
-    system 'cmake', "-DLLVM_PATH=#{clang_path}", buildpath,
-           "-DCMAKE_INSTALL_PREFIX=#{prefix}/", *std_cmake_args
+    system 'cmake', "-DLLVM_PATH=#{clang_path}", "-DCMAKE_CXX_FLAGS='-stdlib=libc++'",
+           "-DCMAKE_EXE_LINKER_FLAGS='-stdlib=libc++'",
+           "-DCMAKE_INSTALL_PREFIX=#{prefix}/",
+           buildpath, *std_cmake_args
     system 'make', 'install'
 
     bin.install 'fix_includes.py'
