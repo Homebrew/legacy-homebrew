@@ -5,18 +5,20 @@ class Pandoc < Formula
   include Language::Haskell::Cabal
 
   homepage "http://johnmacfarlane.net/pandoc/"
-  url "https://hackage.haskell.org/package/pandoc-1.13.0.1/pandoc-1.13.0.1.tar.gz"
-  sha1 "b038b965d3027ca84939292ec2a94cd7389e1e7d"
+  url "https://hackage.haskell.org/package/pandoc-1.13.1/pandoc-1.13.1.tar.gz"
+  sha1 "8f3df1977cf9daa848640754515b733c13fd934a"
 
   bottle do
-    sha1 "14516b086a7728dad03ff9b5a84c336da1947ee8" => :mavericks
-    sha1 "bde68b3e353899706868f82f20907b57e4582576" => :mountain_lion
-    sha1 "ff8d605afbe6eb914986a9fab729f569dcb35b8e" => :lion
+    sha1 "cb797a12020892b2eee7131d448692309b184d99" => :mavericks
+    sha1 "0795ad1fdea3a1d47219753ebce5d34f7311ad5b" => :mountain_lion
+    sha1 "c9c2e4e7e74b4850bcbba148d8efc6af7da47605" => :lion
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "gmp"
+
+  fails_with(:clang) { build 425 } # clang segfaults on Lion
 
   def install
     cabal_sandbox do

@@ -3,14 +3,14 @@ require "formula"
 class Clojurescript < Formula
   homepage "https://github.com/clojure/clojurescript"
   head "https://github.com/clojure/clojurescript.git"
-  url "https://github.com/clojure/clojurescript/archive/r2311.tar.gz"
-  sha1 "dfce06b02f8e89ab60cd87d02d7092c30ec1f362"
+  url "https://github.com/clojure/clojurescript/archive/r2342.tar.gz"
+  sha1 "72868eb15e02fadc0e7cc79252aea5a3777638b5"
 
   bottle do
     cellar :any
-    sha1 "4dc103c7f1e1216affa15c1ccc73eca82731df6c" => :mavericks
-    sha1 "9796fa561d4b13830a7a7384a24599c0a0219bb1" => :mountain_lion
-    sha1 "58c0a3d966e36819c85593b19c338886d71dd3cc" => :lion
+    sha1 "258033dcd57bd7c60e459196dc27f2defce1f5fe" => :mavericks
+    sha1 "cf38e509c0bc9973884cfebb89949bad9201dfa5" => :mountain_lion
+    sha1 "3382ba5e90def2df4b69cca762b5878274bbe38f" => :lion
   end
 
   def install
