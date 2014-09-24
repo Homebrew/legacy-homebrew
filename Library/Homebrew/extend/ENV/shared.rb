@@ -28,7 +28,7 @@ module SharedEnvExtension
   ]
 
   def inherit?
-    ARGV.include? "--env=inherit"
+    ARGV.env == "inherit"
   end
 
   def setup_build_environment(formula=nil)
@@ -123,7 +123,7 @@ module SharedEnvExtension
       end
 
       compiler
-    elsif @formula
+    elsif @formula && !inherit?
       CompilerSelector.select_for(@formula)
     else
       MacOS.default_compiler
