@@ -7,6 +7,9 @@ class Zookeeper < Formula
   revision 1
 
   bottle do
+    sha1 "44d960c61b67308c2e6e510399505582afe2904d" => :mavericks
+    sha1 "df1c9ff667738859b1362541bcd14bcdfcf6804c" => :mountain_lion
+    sha1 "23cdb5e2a183ef2593b4d7c4e2047fb7a774e031" => :lion
   end
 
   head do
