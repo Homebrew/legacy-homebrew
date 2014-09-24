@@ -230,6 +230,7 @@ module SharedEnvExtension
       gcc_formula = gcc_version_formula(gcc)
       if gcc_formula.name == "gcc"
         return if gcc_formula.opt_prefix.exist?
+        return if OS.linux? && which("gcc-#{gcc}")
         raise <<-EOS.undent
         The Homebrew GCC was not installed.
         You must:
