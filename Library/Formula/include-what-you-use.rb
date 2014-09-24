@@ -4,7 +4,7 @@ class IncludeWhatYouUse < Formula
   CLANG_VERSION = '3.5'
 
   homepage 'https://code.google.com/p/include-what-you-use/'
-  url "http://include-what-you-use.googlecode.com/svn/branches/clang_#{IncludeWhatYouUse::CLANG_VERSION}",
+  url "http://include-what-you-use.googlecode.com/svn/branches/clang_#{CLANG_VERSION}",
       revision: '582'
   version '0.3'
   sha1 'f49dd094300b648543e3510ebd8101dbab23056f'
@@ -13,10 +13,14 @@ class IncludeWhatYouUse < Formula
   depends_on 'llvm' => [:build, 'with-clang']
 
   def install
-    system 'cmake', "-DLLVM_PATH=#{HOMEBREW_PREFIX}/llvm/#{IncludeWhatYouUse::CLANG_VERSION}/",
-           buildpath, "-DCMAKE_INSTALL_PREFIX=#{prefix}/", *std_cmake_args
+    clang_path = "#{HOMEBREW_PREFIX}/Cellar/llvm/#{IncludeWhatYouUse::CLANG_VERSION}.0/"
+
+    system 'cmake', "-DLLVM_PATH=#{clang_path}", buildpath,
+           "-DCMAKE_INSTALL_PREFIX=#{prefix}/", *std_cmake_args
     system 'make', 'install'
+
     bin.install 'fix_includes.py'
+    prefix.install_symlink "#{clang_path}/lib"
   end
 
   test do
