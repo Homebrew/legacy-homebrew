@@ -178,6 +178,18 @@ def check_for_stray_las
   EOS
 end
 
+def check_for_stray_headers
+  white_list = {} # TODO whitelist MacFuse/OSXFuse headers
+
+  __check_stray_files "/usr/local/include/**/*.h", white_list, <<-EOS.undent
+    Unbrewed header files were found in /usr/local/include.
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected header files:
+  EOS
+end
+
 def check_for_other_package_managers
   ponk = MacOS.macports_or_fink
   unless ponk.empty?
