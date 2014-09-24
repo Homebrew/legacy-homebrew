@@ -104,6 +104,8 @@ def check_for_macgpg2
 end
 
 def __check_stray_files(dir, pattern, white_list, message)
+  return unless Dir.exist?(dir)
+
   files = Dir.chdir(dir) {
     Dir[pattern].select { |f| File.file?(f) && !File.symlink?(f) }
   }
