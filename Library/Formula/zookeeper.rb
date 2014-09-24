@@ -74,7 +74,7 @@ class Zookeeper < Formula
 
     cd "src/contrib/zkperl" do
       system "perl", "Makefile.PL", "PREFIX=#{prefix}",
-                                    "--zookeeper-include=#{include}/c-client-src",
+                                    "--zookeeper-include=#{include}",
                                     "--zookeeper-lib=#{lib}"
       system "make install"
     end if build.include? "perl"
