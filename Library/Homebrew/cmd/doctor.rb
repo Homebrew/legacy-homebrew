@@ -108,9 +108,8 @@ def __check_stray_files(dir, pattern, white_list, message)
     Dir[pattern].select { |f| File.file?(f) && !File.symlink?(f) }
   }
 
-  keys = white_list.keys
   bad = files.reject { |file|
-    keys.any? { |pat| File.fnmatch?(pat, file) }
+    white_list.any? { |pat| File.fnmatch?(pat, file) }
   }
 
   bad.map! { |file| File.join(dir, file) }
@@ -121,12 +120,12 @@ end
 def check_for_stray_dylibs
   # Dylibs which are generally OK should be added to this list,
   # with a short description of the software they come with.
-  white_list = {
-    "libfuse.2.dylib" => "MacFuse",
-    "libfuse_ino64.2.dylib" => "MacFuse",
-    "libosxfuse_i32.2.dylib" => "OSXFuse",
-    "libosxfuse_i64.2.dylib" => "OSXFuse",
-  }
+  white_list = [
+    "libfuse.2.dylib", # MacFuse
+    "libfuse_ino64.2.dylib", # MacFuse
+    "libosxfuse_i32.2.dylib", # OSXFuse
+    "libosxfuse_i64.2.dylib", # OSXFuse
+  ]
 
   __check_stray_files "/usr/local/lib", "*.dylib", white_list, <<-EOS.undent
     Unbrewed dylibs were found in /usr/local/lib.
@@ -140,10 +139,10 @@ end
 def check_for_stray_static_libs
   # Static libs which are generally OK should be added to this list,
   # with a short description of the software they come with.
-  white_list = {
-    "libsecurity_agent_client.a" => "OS X 10.8.2 Supplemental Update",
-    "libsecurity_agent_server.a" => "OS X 10.8.2 Supplemental Update"
-  }
+  white_list = [
+    "libsecurity_agent_client.a", # OS X 10.8.2 Supplemental Update
+    "libsecurity_agent_server.a", # OS X 10.8.2 Supplemental Update
+  ]
 
   __check_stray_files "/usr/local/lib", "*.a", white_list, <<-EOS.undent
     Unbrewed static libraries were found in /usr/local/lib.
@@ -157,9 +156,9 @@ end
 def check_for_stray_pcs
   # Package-config files which are generally OK should be added to this list,
   # with a short description of the software they come with.
-  white_list = {
-    "osxfuse.pc" => "OSXFuse",
-  }
+  white_list = [
+    "osxfuse.pc", # OSXFuse
+  ]
 
   __check_stray_files "/usr/local/lib/pkgconfig", "*.pc", white_list, <<-EOS.undent
     Unbrewed .pc files were found in /usr/local/lib/pkgconfig.
@@ -171,12 +170,12 @@ def check_for_stray_pcs
 end
 
 def check_for_stray_las
-  white_list = {
-    "libfuse.la" => "MacFuse",
-    "libfuse_ino64.la" => "MacFuse",
-    "libosxfuse_i32.la" => "OSXFuse",
-    "libosxfuse_i64.la" => "OSXFuse",
-  }
+  white_list = [
+    "libfuse.la", # MacFuse
+    "libfuse_ino64.la", # MacFuse
+    "libosxfuse_i32.la", # OSXFuse
+    "libosxfuse_i64.la", # OSXFuse
+  ]
 
   __check_stray_files "/usr/local/lib", "*.la", white_list, <<-EOS.undent
     Unbrewed .la files were found in /usr/local/lib.
@@ -188,9 +187,9 @@ def check_for_stray_las
 end
 
 def check_for_stray_headers
-  white_list = {
-    "osxfuse/*" => "OSXFuse",
-  }
+  white_list = [
+    "osxfuse/*", # OSXFuse
+  ]
 
   __check_stray_files "/usr/local/include", "**/*.h", white_list, <<-EOS.undent
     Unbrewed header files were found in /usr/local/include.
