@@ -4,11 +4,9 @@ class Zookeeper < Formula
   homepage 'http://zookeeper.apache.org/'
   url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz'
   sha1 '2a9e53f5990dfe0965834a525fbcad226bf93474'
+  revision 1
 
   bottle do
-    sha1 "24842151e91e8b89d9b6bc2d706553bbcf31f6c0" => :mavericks
-    sha1 "b53f4f1c7fb10f6e4997c88a886e1f4ec300e52d" => :mountain_lion
-    sha1 "90a342133685c906e613cc949aa2b78818a18a24" => :lion
   end
 
   head do
@@ -19,7 +17,6 @@ class Zookeeper < Formula
     depends_on "libtool" => :build
   end
 
-  option "with-c", "Build C bindings"
   option "perl", "Build Perl bindings"
 
   depends_on :ant => :build
@@ -68,16 +65,13 @@ class Zookeeper < Formula
       end
     end
 
-    build_perl = build.include? "perl"
-    build_c = build.with?('python') || build_perl || build.with?("c")
-
     # Build & install C libraries.
     cd "src/c" do
       system "./configure", "--disable-dependency-tracking",
                             "--prefix=#{prefix}",
                             "--without-cppunit"
       system "make install"
-    end if build_c
+    end
 
     # Install Perl bindings
     cd "src/contrib/zkperl" do
@@ -85,7 +79,7 @@ class Zookeeper < Formula
                                     "--zookeeper-include=#{include}/c-client-src",
                                     "--zookeeper-lib=#{lib}"
       system "make install"
-    end if build_perl
+    end if build.include? "perl"
 
     # Remove windows executables
     rm_f Dir["bin/*.cmd"]
