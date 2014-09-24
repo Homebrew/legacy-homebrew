@@ -2,8 +2,9 @@ require "formula"
 
 class Periodic < Formula
   homepage "https://github.com/Lupino/periodic"
-  url "https://github.com/Lupino/periodic/releases/download/0.1.2/periodic-osx", :tag => "v0.1.2"
-  sha1 "9f155a79fcb8fa4715d303fd40e666a177de60a5"
+  url "https://github.com/Lupino/periodic/releases/download/v0.1.2/periodic-osx"
+  version '0.1.2'
+  sha1 "7a8dd55cfbc52400dde4bf14d891c07a601bddbe"
 
   def install
     bin.install "periodic-osx" => "periodic"
