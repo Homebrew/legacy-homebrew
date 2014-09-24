@@ -15,11 +15,12 @@ class Zookeeper < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+    depends_on "ant" => :build
+    depends_on "cppunit" => :build
   end
 
   option "perl", "Build Perl bindings"
 
-  depends_on :ant => :build
   depends_on :python => :optional
 
   def shim_script target
@@ -59,10 +60,7 @@ class Zookeeper < Formula
     # Prep work for svn compile.
     if build.head?
       system "ant", "compile_jute"
-
-      cd "src/c" do
-        system "autoreconf", "-if"
-      end
+      system "autoreconf", "-fvi", "src/c"
     end
 
     # Build & install C libraries.
