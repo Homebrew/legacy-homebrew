@@ -188,6 +188,7 @@ end
 
 def check_for_stray_headers
   white_list = [
+    "macfuse/*", # MacFuse
     "osxfuse/*", # OSXFuse
   ]
 
