@@ -12,9 +12,8 @@ class Xctool < Formula
   head 'https://github.com/facebook/xctool.git'
 
   bottle do
-    revision 1
-    sha1 "c9939a4a83ab176118117f268df7b539ba63ca94" => :mavericks
-    sha1 "93d5006d307d974136ab4022c6cf4d22d7aa70bc" => :mountain_lion
+    sha1 "fcf07aca0621e0b5e7a97e820e49c6a6e05b6901" => :mavericks
+    sha1 "62a3b9db0ae8a44580d61e6b2da4fb110d580ea7" => :mountain_lion
   end
 
   depends_on :xcode
