@@ -1,9 +1,10 @@
 require 'formula'
 
 class Zeromq < Formula
-  homepage 'http://www.zeromq.org/'
-  url 'http://download.zeromq.org/zeromq-4.0.4.tar.gz'
-  sha1 '2328014e5990efac31390439b75c5528e38e4490'
+  homepage "http://www.zeromq.org/"
+  url "http://download.zeromq.org/zeromq-4.0.4.tar.gz"
+  sha1 "2328014e5990efac31390439b75c5528e38e4490"
+  revision 1
 
   bottle do
     cellar :any
@@ -13,7 +14,7 @@ class Zeromq < Formula
   end
 
   head do
-    url 'https://github.com/zeromq/libzmq.git'
+    url "https://github.com/zeromq/libzmq.git"
 
     depends_on :autoconf
     depends_on :automake
@@ -22,11 +23,11 @@ class Zeromq < Formula
 
 
   option :universal
-  option 'with-pgm', 'Build with PGM extension'
+  option "with-pgm", "Build with PGM extension"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libpgm' if build.with? "pgm"
-  depends_on 'libsodium' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "libpgm" if build.with? "pgm"
+  depends_on "libsodium" => :optional
 
   def install
     ENV.universal_binary if build.universal?
@@ -39,12 +40,12 @@ class Zeromq < Formula
       args << "--with-system-pgm"
     end
 
-    args << "--with-libsodium" if build.with? 'libsodium'
+    args << "--with-libsodium" if build.with? "libsodium"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
