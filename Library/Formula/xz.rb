@@ -4,22 +4,24 @@ require "formula"
 # https://github.com/Homebrew/homebrew/pull/21419
 class Xz < Formula
   homepage "http://tukaani.org/xz/"
-  url "http://fossies.org/linux/misc/xz-5.0.6.tar.gz"
-  mirror "http://tukaani.org/xz/xz-5.0.6.tar.gz"
-  sha256 "b6cf4cdc1313556a00848e722625bce40d2cd552c052b0465791c64c9202c3f1"
+  url "http://fossies.org/linux/misc/xz-5.0.7.tar.bz2"
+  mirror "http://tukaani.org/xz/xz-5.0.7.tar.bz2"
+  sha256 "e8851dc749df2340dac6c9297cb2653eff684e73c3dedf690930119502edd616"
 
   bottle do
     cellar :any
-    sha1 "99f2b64ad7d8e5fa9490d79849c17860f77c9c19" => :mavericks
-    sha1 "6c21e5b9c8ea7c938967f9bb80d08d9a59711507" => :mountain_lion
-    sha1 "dbac71d32fadf27dbd1baf768321c86734c1ddb0" => :lion
+    sha1 "c54becb676547560824fb873d6a04f24aa3e27aa" => :mavericks
+    sha1 "d3ee779d021906abde55b3672135a0cac27c73b0" => :mountain_lion
+    sha1 "99d721024996c74abf542373a03d85e121a0714a" => :lion
   end
 
   option :universal
 
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
   end

@@ -8,9 +8,10 @@ class Ansible < Formula
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
   bottle do
-    sha1 "12263f6ce1db9f94937d6d72ba6b9c35a0a00daf" => :mavericks
-    sha1 "696bf4d54c6098c9a072133059c7a6bdb6b02aa9" => :mountain_lion
-    sha1 "c0133e0fecff6c98d07e0e69ec39d99b327afc14" => :lion
+    revision 2
+    sha1 "d24b092def576f66ef87ad4ac08e82379f857569" => :mavericks
+    sha1 "91272b6bcdd4ccae55ebe1bb0dc318f7adcc5bb5" => :mountain_lion
+    sha1 "1a27c03864b32c8696e9fd203bc1fc5fe8cecdbf" => :lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -21,6 +22,11 @@ class Ansible < Formula
   resource 'pycrypto' do
     url 'https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz'
     sha1 'c17e41a80b3fbf2ee4e8f2d8bb9e28c5d08bbb84'
+  end
+
+  resource 'boto' do
+    url 'https://pypi.python.org/packages/source/b/boto/boto-2.32.1.tar.gz'
+    sha1 '4fdecde66245b7fc0295e22d2c2d3c9b08c2b1fa'
   end
 
   resource 'pyyaml' do
@@ -56,7 +62,7 @@ class Ansible < Formula
     ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    res = %w[pycrypto pyyaml paramiko markupsafe jinja2]
+    res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
     res << "python-keyczar" if build.with? "accelerate"
     res.each do |r|
       resource(r).stage { system "python", *install_args }

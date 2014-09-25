@@ -109,6 +109,9 @@ begin
 
   # Add contributed commands to PATH before checking.
   ENV['PATH'] += "#{File::PATH_SEPARATOR}#{HOMEBREW_CONTRIB}/cmd"
+  Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/cmd"].each do |tap_cmd_dir|
+    ENV["PATH"] += "#{File::PATH_SEPARATOR}#{tap_cmd_dir}"
+  end
 
   internal_cmd = require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd) if cmd
 

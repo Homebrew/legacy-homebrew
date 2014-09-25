@@ -1,13 +1,12 @@
-require 'formula'
+require "formula"
 
 class DnscryptProxy < Formula
-  homepage 'http://dnscrypt.org'
-  url 'http://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.4.0.tar.gz'
-  sha256 '60b57b36aa15706c4cd0c348fc59534c15913c282a2b7d4db0b3787167b33502'
-  revision 1
+  homepage "http://dnscrypt.org"
+  url "http://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.4.1.tar.gz"
+  sha256 "b53822841bd275d81ff9faa4784a42618b7acc3c76a86c75be40379c503d69de"
 
   head do
-    url 'https://github.com/opendns/dnscrypt-proxy.git', :branch => 'master'
+    url "https://github.com/opendns/dnscrypt-proxy.git", :branch => "master"
 
     depends_on :autoconf
     depends_on :automake
@@ -16,7 +15,7 @@ class DnscryptProxy < Formula
 
   option "plugins", "Support plugins and install example plugins."
 
-  depends_on 'libsodium'
+  depends_on "libsodium"
 
   def install
     system "autoreconf", "-if" if build.head?
@@ -28,7 +27,7 @@ class DnscryptProxy < Formula
       args << "--enable-plugins-root"
     end
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent

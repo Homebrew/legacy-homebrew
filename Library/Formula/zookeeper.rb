@@ -4,11 +4,12 @@ class Zookeeper < Formula
   homepage 'http://zookeeper.apache.org/'
   url 'http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz'
   sha1 '2a9e53f5990dfe0965834a525fbcad226bf93474'
+  revision 1
 
   bottle do
-    sha1 "24842151e91e8b89d9b6bc2d706553bbcf31f6c0" => :mavericks
-    sha1 "b53f4f1c7fb10f6e4997c88a886e1f4ec300e52d" => :mountain_lion
-    sha1 "90a342133685c906e613cc949aa2b78818a18a24" => :lion
+    sha1 "44d960c61b67308c2e6e510399505582afe2904d" => :mavericks
+    sha1 "df1c9ff667738859b1362541bcd14bcdfcf6804c" => :mountain_lion
+    sha1 "23cdb5e2a183ef2593b4d7c4e2047fb7a774e031" => :lion
   end
 
   head do
@@ -17,12 +18,12 @@ class Zookeeper < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+    depends_on "ant" => :build
+    depends_on "cppunit" => :build
   end
 
-  option "with-c", "Build C bindings"
   option "perl", "Build Perl bindings"
 
-  depends_on :ant => :build
   depends_on :python => :optional
 
   def shim_script target
@@ -59,54 +60,44 @@ class Zookeeper < Formula
       ENV['ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
     end
 
-    # Prep work for svn compile.
     if build.head?
       system "ant", "compile_jute"
-
-      cd "src/c" do
-        system "autoreconf", "-if"
-      end
+      system "autoreconf", "-fvi", "src/c"
     end
 
-    build_perl = build.include? "perl"
-    build_c = build.with?('python') || build_perl || build.with?("c")
-
-    # Build & install C libraries.
     cd "src/c" do
       system "./configure", "--disable-dependency-tracking",
                             "--prefix=#{prefix}",
                             "--without-cppunit"
       system "make install"
-    end if build_c
-
-    # Install Perl bindings
-    cd "src/contrib/zkperl" do
-      system "perl", "Makefile.PL", "PREFIX=#{prefix}",
-                                    "--zookeeper-include=#{include}/c-client-src",
-                                    "--zookeeper-lib=#{lib}"
-      system "make install"
-    end if build_perl
-
-    # Remove windows executables
-    rm_f Dir["bin/*.cmd"]
-
-    # Install Java stuff
-    if build.head?
-      system "ant"
-      libexec.install %w(bin src/contrib src/java/lib)
-      libexec.install Dir['build/*.jar']
-    else
-      libexec.install %w(bin contrib lib)
-      libexec.install Dir['*.jar']
     end
 
-    # Create necessary directories
+    cd "src/contrib/zkpython" do
+      system "python", "src/python/setup.py", "build"
+      system "python", "src/python/setup.py", "install", "--prefix=#{prefix}"
+    end if build.with? "python"
+
+    cd "src/contrib/zkperl" do
+      system "perl", "Makefile.PL", "PREFIX=#{prefix}",
+                                    "--zookeeper-include=#{include}",
+                                    "--zookeeper-lib=#{lib}"
+      system "make install"
+    end if build.include? "perl"
+
+    rm_f Dir["bin/*.cmd"]
+
+    if build.head?
+      system "ant"
+      libexec.install Dir["bin", "src/contrib", "src/java/lib", "build/*.jar"]
+    else
+      libexec.install Dir["bin", "contrib", "lib", "*.jar"]
+    end
+
     bin.mkpath
     (etc+'zookeeper').mkpath
     (var+'log/zookeeper').mkpath
     (var+'run/zookeeper/data').mkpath
 
-    # Install shim scripts to bin
     Pathname.glob("#{libexec}/bin/*.sh") do |path|
       next if path == libexec+'bin/zkEnv.sh'
       script_name = path.basename
@@ -114,7 +105,6 @@ class Zookeeper < Formula
       (bin+bin_name).write shim_script(script_name)
     end
 
-    # Install default config files
     defaults = etc/'zookeeper/defaults'
     defaults.write(default_zk_env) unless defaults.exist?
 
