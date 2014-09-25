@@ -45,15 +45,8 @@ class Uwsgi < Formula
   def install
     %w{CFLAGS LDFLAGS}.each { |e| ENV.append e, "-arch #{MacOS.preferred_arch}" }
 
-    json = "yajl"
-    if build.with? "jansson"
-      json = "jansson"
-    end
-
-    yaml = "embedded"
-    if build.with? "libyaml"
-      yaml = "libyaml"
-    end
+    json = build.with?("jansson") ? "jansson" : "yajl"
+    yaml = build.with?("libyaml") ? "libyaml" : "embedded"
 
     (buildpath/"buildconf/brew.ini").write <<-EOS.undent
       [uwsgi]
