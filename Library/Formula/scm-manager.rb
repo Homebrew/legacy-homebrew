@@ -6,8 +6,6 @@ class ScmManager < Formula
   version '1.39'
   sha1 'f0b6f6999db62480378b3f6d7ab57170af625b05'
 
-  skip_clean 'libexec/var/log'
-
   resource 'client' do
     url 'http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.39/scm-cli-client-1.39-jar-with-dependencies.jar'
     sha1 '2ee4c1d8275c38281ce1311795ebab50bc493eb4'
