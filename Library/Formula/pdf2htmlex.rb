@@ -63,10 +63,6 @@ class Pdf2htmlex < Formula
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
-    # Set up framework paths so FlatCarbon replacement paths work (see below)
-    ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/CoreServices.framework/Frameworks"
-    ENV.append "CFLAGS", "-F#{MacOS.sdk_path}/System/Library/Frameworks/Carbon.framework/Frameworks"
-
     system "./autogen.sh"
     system "./configure", *args
 
