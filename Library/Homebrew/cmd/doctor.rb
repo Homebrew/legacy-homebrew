@@ -107,16 +107,10 @@ def __check_stray_files(dir, pattern, white_list, message)
   return unless File.directory?(dir)
 
   files = Dir.chdir(dir) {
-    Dir[pattern].select { |f| File.file?(f) && !File.symlink?(f) }
-  }
+    Dir[pattern].select { |f| File.file?(f) && !File.symlink?(f) } - Dir.glob(white_list)
+  }.map { |file| File.join(dir, file) }
 
-  bad = files.reject { |file|
-    white_list.any? { |pat| File.fnmatch?(pat, file) }
-  }
-
-  bad.map! { |file| File.join(dir, file) }
-
-  inject_file_list(bad, message) unless bad.empty?
+  inject_file_list(files, message) unless files.empty?
 end
 
 def check_for_stray_dylibs
