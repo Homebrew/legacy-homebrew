@@ -20,9 +20,6 @@ class Tomcat < Formula
     sha1 "e65aa4e03c91479aecfcaf21a5e4d99449706d3b"
   end
 
-  # Keep log folders
-  skip_clean 'libexec'
-
   def install
     # Remove Windows scripts
     rm_rf Dir['bin/*.bat']
