@@ -36,6 +36,8 @@ class Xulrunner < Formula
   homepage "https://developer.mozilla.org/docs/XULRunner"
   url "https://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/30.0/source/xulrunner-30.0.source.tar.bz2"
   sha1 "d987efafc67cb0170c6a5dabb9cede3b98e5c24b"
+  revision 1
+
 
   bottle do
     cellar :any
