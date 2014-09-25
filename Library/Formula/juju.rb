@@ -2,8 +2,8 @@ require 'formula'
 
 class Juju < Formula
   homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.20/1.20.7/+download/juju-core_1.20.7.tar.gz'
-  sha1 'e0b087f1e8c464e3a0ac50c00493855efc3cf7cd'
+  url 'https://launchpad.net/juju-core/1.20/1.20.8/+download/juju-core_1.20.8.tar.gz'
+  sha1 '9ca2d865e3051f05888c5aefff1d3f269294359e'
 
   bottle do
     sha1 "e31e839d1199ac922616c235fd92ed6391c4ad9b" => :mavericks
@@ -16,7 +16,8 @@ class Juju < Formula
   def install
     ENV["GOPATH"] = buildpath
     system "go", "build", "github.com/juju/juju/cmd/juju"
-    bin.install "juju"
+    system "go", "build", "github.com/juju/juju/cmd/plugins/juju-metadata"
+    bin.install "juju", "juju-metadata"
     bash_completion.install "src/github.com/juju/juju/etc/bash_completion.d/juju-core"
   end
 
