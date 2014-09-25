@@ -11,6 +11,12 @@ class Xctool < Formula
   sha1 'fb5f5c553ef8ea26a9b68926aa2c59d2d956ee25'
   head 'https://github.com/facebook/xctool.git'
 
+  # The bottle system currently builds with Xcode 5. We can't use
+  # the bottle if the user has Xcode 6 so we'll need to rebuild
+  def pour_bottle?
+    MacOS::Xcode.version < "6.0"
+  end
+
   bottle do
     revision 1
     sha1 "c9939a4a83ab176118117f268df7b539ba63ca94" => :mavericks
