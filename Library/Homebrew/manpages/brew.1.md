@@ -609,4 +609,3 @@ Max Howell, a splendid chap.
 ## BUGS
 
 See Issues on GitHub: <http://github.com/Homebrew/homebrew/issues>
-

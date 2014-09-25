@@ -47,7 +47,7 @@ class Keg
 
       begin
         first.atomic_write(s)
-      rescue Errno::EACCES
+      rescue SystemCallError
         first.ensure_writable do
           first.open("wb") { |f| f.write(s) }
         end
@@ -154,15 +154,9 @@ class Keg
 
   def mach_o_files
     mach_o_files = []
-    dirs = %w{bin sbin lib Frameworks}
-    dirs.map! { |dir| path.join(dir) }
-    dirs.reject! { |dir| not dir.directory? }
-
-    dirs.each do |dir|
-      dir.find do |pn|
-        next if pn.symlink? or pn.directory?
-        mach_o_files << pn if pn.dylib? or pn.mach_o_bundle? or pn.mach_o_executable?
-      end
+    path.find do |pn|
+      next if pn.symlink? or pn.directory?
+      mach_o_files << pn if pn.dylib? or pn.mach_o_bundle? or pn.mach_o_executable?
     end
 
     mach_o_files

@@ -17,6 +17,7 @@ class Hevea < Formula
 
   def install
     # Emailed Luc.Maranget@inria.fr to ask for this change to be made.
+    # Confirmed it will be fixed in the next release.
     inreplace "Makefile", "PREFIX=/usr/local", "PREFIX?=/usr/local"
     ENV["PREFIX"] = prefix
     system "make"

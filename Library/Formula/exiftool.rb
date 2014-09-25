@@ -2,14 +2,14 @@ require "formula"
 
 class Exiftool < Formula
   homepage "http://www.sno.phy.queensu.ca/~phil/exiftool/index.html"
-  url "http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-9.69.tar.gz"
-  sha1 "9ff75f95fbfdb3e09baaab0822ec17db696a1458"
+  url "http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-9.72.tar.gz"
+  sha1 "7be03e182a9193ff314b4df5afcfae5db7c9198f"
 
   bottle do
     cellar :any
-    sha1 "8f5960caec6c5596b9dcd779cd546c62a2d07020" => :mavericks
-    sha1 "2412d28c8aa2156c11dbf0bd5219d300aaab0797" => :mountain_lion
-    sha1 "c1b26c0d20d49c261113f3a9353d57a1419d10af" => :lion
+    sha1 "4e911ddd5d1d8b6141e5c8c7dd90ad4bb3532e61" => :mavericks
+    sha1 "f0c4dfebbc8b6798f4e1fa477b0c8c5c904c7173" => :mountain_lion
+    sha1 "727aa2009ec5968d696082ac0f7ad17178a2ab3f" => :lion
   end
 
   def install

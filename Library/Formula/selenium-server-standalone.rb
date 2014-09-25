@@ -2,8 +2,14 @@ require "formula"
 
 class SeleniumServerStandalone < Formula
   homepage "http://seleniumhq.org/"
-  url "http://selenium-release.storage.googleapis.com/2.43/selenium-server-standalone-2.43.0.jar"
-  sha1 "f4574198fe7c4712b1730f91238de46c631e37fe"
+  url "http://selenium-release.storage.googleapis.com/2.43/selenium-server-standalone-2.43.1.jar"
+  sha1 "ef1b5f8ae9c99332f99ba8794988a1d5b974d27b"
+
+  bottle do
+    sha1 "fa420b238130adea8407329e2b459a79eaa939dc" => :mavericks
+    sha1 "b0ac2d1411b63c50639be91da20b898d8c7de53f" => :mountain_lion
+    sha1 "dc9029c9028d18460fdd9c7e0ba296f05e5acd00" => :lion
+  end
 
   def install
     libexec.install "selenium-server-standalone-#{version}.jar"

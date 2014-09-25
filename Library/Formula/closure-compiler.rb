@@ -2,8 +2,8 @@ require "formula"
 
 class ClosureCompiler < Formula
   homepage "https://github.com/google/closure-compiler"
-  url "https://github.com/google/closure-compiler/archive/maven-release-v20140625.tar.gz"
-  sha1 "48b13a84963321a77f68e814e44399f16884b278"
+  url "https://github.com/google/closure-compiler/archive/maven-release-v20140814.tar.gz"
+  sha1 "d783183bd91e2661aa8cd1a8c35c210935e23e15"
 
   head "https://github.com/google/closure-compiler.git"
 

@@ -1,0 +1,17 @@
+--- !ruby/object:RDoc::Options
+encoding: UTF-8
+static_path: []
+rdoc_include:
+- .
+charset: UTF-8
+exclude:
+hyperlink_all: false
+line_numbers: true
+main_page:
+markup: rdoc
+page_dir:
+show_hash: false
+tab_width: 2
+title: Homebrew
+visibility: :protected
+webcvs:

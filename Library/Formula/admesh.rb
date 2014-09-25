@@ -2,14 +2,14 @@ require "formula"
 
 class Admesh < Formula
   homepage "https://github.com/admesh/admesh"
-  url "https://github.com/admesh/admesh/releases/download/v0.98.0/admesh-0.98.0.tar.gz"
-  sha1 "aeb5857161c077a85ec0744c1d5c4fa0c99a03a9"
+  url "https://github.com/admesh/admesh/releases/download/v0.98.1/admesh-0.98.1.tar.gz"
+  sha1 "8256f549cb175b6783562a2603ec08f04e26b949"
 
   bottle do
     cellar :any
-    sha1 "53d9fb0c85b39036cf59c9dc68e2844199dc666b" => :mavericks
-    sha1 "c1ab7ddc220a4ed10117cfa64d714ccef04405f2" => :mountain_lion
-    sha1 "750e1c792a8afe45e2e9a81b48a8e2846ab89fb2" => :lion
+    sha1 "569f54ed689099658ec60a05a34929e93102b774" => :mavericks
+    sha1 "0aaf7d273ee294c203087a5883ccebcdb7e48bff" => :mountain_lion
+    sha1 "03a74ffc4a61131695a6437f47852047b8b5ab30" => :lion
   end
 
   def install

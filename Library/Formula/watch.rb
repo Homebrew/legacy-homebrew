@@ -9,7 +9,7 @@ class Watch < Formula
   conflicts_with 'visionmedia-watch'
 
   def install
-    system "make", "watch", "PKG_LDFLAGS=-Wl"
+    system "make", "watch", "PKG_LDFLAGS="
     bin.install "watch"
     man1.install "watch.1"
   end

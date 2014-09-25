@@ -1,21 +1,30 @@
-require 'formula'
+require "formula"
 
 class TomeeWebprofile < Formula
-  homepage 'http://tomee.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.6.0.2/apache-tomee-1.6.0.2-webprofile.tar.gz'
-  version '1.6.0.2'
-  sha1 'd68cdc7a21c8e2286140fc8e73c4192a3018c018'
-
-  # Keep log folders
-  skip_clean 'libexec'
+  homepage "http://tomee.apache.org/"
+  url "http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.1/apache-tomee-1.7.1-webprofile.tar.gz"
+  version "1.7.1"
+  sha1 "cc86efe41390e61247fd46706f84a9b011f1cd5e"
 
   def install
     # Remove Windows scripts
-    rm_rf Dir['bin/*.bat']
+    rm_rf Dir["bin/*.bat"]
 
     # Install files
     prefix.install %w{ NOTICE LICENSE RELEASE-NOTES RUNNING.txt }
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     bin.install_symlink "#{libexec}/bin/startup.sh" => "tomee-webprofile-startup"
+  end
+
+  def caveats; <<-EOS.undent
+    The home of Apache TomEE Web is:
+      #{opt_libexec}
+    To run Apache TomEE:
+      #{opt_libexec}/bin/tomee-webprofile-startup
+    EOS
+  end
+
+  test do
+    system "#{opt_libexec}/bin/configtest.sh"
   end
 end

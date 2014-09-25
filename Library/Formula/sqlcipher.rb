@@ -7,11 +7,27 @@ class Sqlcipher < Formula
 
   head "https://github.com/sqlcipher/sqlcipher.git"
 
+  option "with-fts", "Build with full-text search enabled"
+
+  depends_on "openssl"
+
   def install
-    system "./configure", "--prefix=#{prefix}", "--enable-tempstore=yes",
-                          "CFLAGS=-DSQLITE_HAS_CODEC", "LDFLAGS=-lcrypto",
-                          "--disable-tcl"
+
+    args = %W[
+      --prefix=#{prefix}
+      --enable-tempstore=yes
+      --with-crypto-lib=#{Formula["openssl"].opt_prefix}
+      --disable-tcl
+    ]
+
+    if build.with?("fts")
+      args << "CFLAGS=-DSQLITE_HAS_CODEC -DSQLITE_ENABLE_FTS3"
+    else
+      args << "CFLAGS=-DSQLITE_HAS_CODEC"
+    end
+
+    system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

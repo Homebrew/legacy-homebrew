@@ -26,10 +26,10 @@ class Weechat < Formula
   option 'with-ruby', 'Build the ruby module'
 
   def install
-    # this will fix error:
-    #    no such file or directory: 'Python.framework/Versions/2.7/Python'
-    inreplace 'src/plugins/python/CMakeLists.txt',
-      '${PYTHON_LFLAGS}', '-u _PyMac_Error'
+    # builds against the python in PATH by asking cmake to use introspected
+    # values instead of ignoring them
+    # https://github.com/weechat/weechat/pull/217
+    inreplace "cmake/FindPython.cmake", "PATHS ${", "HINTS ${"
 
     args = std_cmake_args + %W[
       -DPREFIX=#{prefix}

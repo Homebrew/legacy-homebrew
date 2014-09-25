@@ -421,23 +421,7 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
 end
 
-# Require a newer version of Subversion than 1.4.x (Leopard-provided version)
-class StrictSubversionDownloadStrategy < SubversionDownloadStrategy
-  def find_svn
-    exe = `svn -print-path`
-    `#{exe} --version` =~ /version (\d+\.\d+(\.\d+)*)/
-    svn_version = $1
-    version_tuple=svn_version.split(".").collect {|v|Integer(v)}
-
-    if version_tuple[0] == 1 and version_tuple[1] <= 4
-      onoe "Detected Subversion (#{exe}, version #{svn_version}) is too old."
-      puts "Subversion 1.4.x will not export externals correctly for this formula."
-      puts "You must either `brew install subversion` or set HOMEBREW_SVN to the path"
-      puts "of a newer svn binary."
-    end
-    return exe
-  end
-end
+StrictSubversionDownloadStrategy = SubversionDownloadStrategy
 
 # Download from SVN servers with invalid or self-signed certs
 class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy

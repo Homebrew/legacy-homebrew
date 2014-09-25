@@ -106,4 +106,36 @@ module FormulaCellarChecks
       EOS
     ]
   end
+
+  def check_shadowed_headers
+    return if f.keg_only? || !f.include.directory?
+
+    files  = relative_glob(f.include, "**/*.h")
+    files &= relative_glob("#{MacOS.sdk_path}/usr/include", "**/*.h")
+    files.map! { |p| File.join(f.include, p) }
+
+    return if files.empty?
+
+    ["Header files that shadow system header files were installed to \"#{f.include}\".",
+     "The offending files are:  \n  #{files * "\n  "}"]
+  end
+
+  def check_easy_install_pth lib
+    pth_found = Dir["#{lib}/python{2.7,3.4}/site-packages/easy-install.pth"].map { |f| File.dirname(f) }
+    return if pth_found.empty?
+
+    ["easy-install.pth files were found in #{pth_found.join(", ")}.",
+      <<-EOS.undent
+        These .pth files are likely to cause link conflicts. Please
+        invoke setup.py with options --single-version-externally-managed
+        --record=install.txt.
+      EOS
+    ]
+  end
+
+  private
+
+  def relative_glob(dir, pattern)
+    Dir.chdir(dir) { Dir[pattern] }
+  end
 end

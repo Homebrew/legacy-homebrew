@@ -384,6 +384,7 @@ class FormulaInstaller
       audit_lib
       audit_man
       audit_info
+      audit_include
     end
 
     c = Caveats.new(f)
@@ -505,10 +506,9 @@ class FormulaInstaller
 
     ignore_interrupts(:quietly) do # the child will receive the interrupt and marshal it back
       write.close
-      thr = Thread.new { read.read }
-      Process.wait(pid)
-      data = thr.value
+      data = read.read
       read.close
+      Process.wait(pid)
       raise Marshal.load(data) unless data.nil? or data.empty?
       raise Interrupt if $?.exitstatus == 130
       raise "Suspicious installation failure" unless $?.success?
@@ -670,6 +670,10 @@ class FormulaInstaller
 
   def audit_info
     print_check_output(check_infopages)
+  end
+
+  def audit_include
+    print_check_output(check_shadowed_headers)
   end
 
   private

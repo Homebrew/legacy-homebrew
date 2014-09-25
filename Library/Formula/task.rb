@@ -4,7 +4,7 @@ class Task < Formula
   homepage 'http://www.taskwarrior.org/'
   url 'http://www.taskwarrior.org/download/task-2.3.0.tar.gz'
   sha1 'b5390a1c1232bcb727f5a595ac1141184810d09d'
-  head 'git://tasktools.org/task.git', :branch => '2.4.0', :shallow => false
+  head 'https://git.tasktools.org/scm/tm/task.git', :branch => '2.4.0', :shallow => false
 
   depends_on "cmake" => :build
   depends_on "gnutls" => :optional

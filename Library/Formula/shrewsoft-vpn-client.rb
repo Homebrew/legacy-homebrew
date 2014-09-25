@@ -36,12 +36,13 @@ class ShrewsoftVpnClient < Formula
 
     # there is no suport for an alternate Applications folder, must change hard-coded paths
     if build.with? "gui"
-      %w{
+      files = %w{
         package/macosx/vpn-client-install.packproj
         source/qikea/CMakeLists.txt
         source/qikea/root.cpp
         source/qikec/CMakeLists.txt
-      }.each { |path| inreplace path, "/Applications", prefix }
+      }
+      inreplace files, "/Applications", prefix
     end
 
     cmake_args = std_cmake_args + [

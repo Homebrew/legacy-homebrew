@@ -2,16 +2,16 @@ require 'formula'
 
 class Gtkx3 < Formula
   homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.0.tar.xz'
-  sha256 '68d6b57d15c16808d0045e96b303f3dd439cc22a9c06fdffb07025cd713a82bc'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.1.tar.xz'
+  sha256 '7e86eb7c8acc18524d7758ca2340b723ddeee1d0cd2cadd56de5a13322770a52'
 
   bottle do
-    sha1 "bfe498bdaca8659ef6a980336eebd3b5c2bbf3ab" => :mavericks
-    sha1 "242ee85238ebd48a20509d2352c8c02a07f01f9e" => :mountain_lion
-    sha1 "579061b56ed5f3fb1efe0cb9cea03ef3d2ecc62e" => :lion
+    sha1 "f86088908060d19c73afe2883dea0d7f2b9db7f7" => :mavericks
+    sha1 "8cb0138bbfee3942db106f413c3ed84c7d431e7e" => :mountain_lion
+    sha1 "f14082ff43736ec1b5dfa96fff9c64f493207625" => :lion
   end
 
-  depends_on :x11 => '2.5' # needs XInput2, introduced in libXi 1.3
+  depends_on :x11 => ['2.5', :recommended] # needs XInput2, introduced in libXi 1.3
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'jpeg'
@@ -26,13 +26,23 @@ class Gtkx3 < Formula
   depends_on 'gsettings-desktop-schemas' => :recommended
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-glibtest",
-                          "--enable-introspection=yes",
-                          "--enable-x11-backend",
-                          "--disable-schemas-compile"
+
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-glibtest
+      --enable-introspection=yes
+      --disable-schemas-compile
+    ]
+
+    if build.without? "x11"
+      args << "--enable-quartz-backend" << "--enable-quartz-relocation"
+    else
+      args << "--enable-x11-backend"
+    end
+
+    system "./configure", *args
     system "make install"
     # Prevent a conflict between this and Gtk+2
     mv bin/'gtk-update-icon-cache', bin/'gtk3-update-icon-cache'
