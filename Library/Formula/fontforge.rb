@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class Fontforge < Formula
   homepage "https://fontforge.github.io"
@@ -40,8 +40,8 @@ class Fontforge < Formula
   depends_on "libpng"   => :recommended
   depends_on "jpeg"     => :recommended
   depends_on "libtiff"  => :recommended
-  depends_on :x11  => :optional
-  depends_on "giflib" if build.with? 'gif'
+  depends_on :x11 if build.with? "x"
+  depends_on "giflib" if build.with? "gif"
   depends_on "libspiro" => :optional
   depends_on "fontconfig"
 
