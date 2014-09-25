@@ -21,10 +21,7 @@ class Yaws < Formula
 
   def install
     if build.build_32_bit?
-      %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
-        ENV.remove compiler_flag, "-arch #{Hardware::CPU.arch_64_bit}"
-        ENV.append compiler_flag, "-arch #{Hardware::CPU.arch_32_bit}"
-      end
+      ENV.append %w{CFLAGS LDFLAGS}, "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
     system "autoreconf", "-fvi"
