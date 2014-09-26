@@ -20,6 +20,12 @@ class Pcre < Formula
     cause "Bus error in ld on SL 10.6.4"
   end
 
+  # Upstream patch to fix compilation with GCC 4.9
+  patch do
+    url "http://bugs.exim.org/attachment.cgi?id=741"
+    sha1 "bad236cf67a7b42f0dc8d4ae05ed0260241320d1"
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
