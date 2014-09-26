@@ -79,14 +79,14 @@ module Homebrew
     if Dir[".git/*"].empty?
       safe_system "git", "init"
       safe_system "git", "config", "core.autocrlf", "false"
-      safe_system "git", "config", "remote.origin.url", "https://github.com/Homebrew/homebrew.git"
+      safe_system "git", "config", "remote.origin.url", "https://github.com/Homebrew/#{OS::GITHUB_REPOSITORY}.git"
       safe_system "git", "config", "remote.origin.fetch", "+refs/heads/*:refs/remotes/origin/*"
       safe_system "git", "fetch", "origin"
       safe_system "git", "reset", "--hard", "origin/master"
     end
 
     if `git remote show origin -n` =~ /Fetch URL: \S+mxcl\/homebrew/
-      safe_system "git", "remote", "set-url", "origin", "https://github.com/Homebrew/homebrew.git"
+      safe_system "git", "remote", "set-url", "origin", "https://github.com/Homebrew/#{OS::GITHUB_REPOSITORY}.git"
       safe_system "git", "remote", "set-url", "--delete", "origin", ".*mxcl\/homebrew.*"
     end
   rescue Exception
