@@ -3,15 +3,11 @@ require 'formula'
 class Go < Formula
   homepage 'http://golang.org'
   head 'https://go.googlecode.com/hg/'
-  url 'https://storage.googleapis.com/golang/go1.3.1.src.tar.gz'
-  version '1.3.1'
-  sha1 'bc296c9c305bacfbd7bff9e1b54f6f66ae421e6e'
+  url 'https://storage.googleapis.com/golang/go1.3.2.src.tar.gz'
+  version '1.3.2'
+  sha1 '67d3a692588c259f9fe9dca5b80109e5b99271df'
 
   bottle do
-    revision 1
-    sha1 "9637d93efc0f70b1bdf3412f6684247a46104105" => :mavericks
-    sha1 "fbb03d1111c201253abf12ec8440761b0d6833f7" => :mountain_lion
-    sha1 "398053db3dc27be9797bd4cdd583b57a12033483" => :lion
   end
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
