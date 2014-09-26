@@ -5,6 +5,12 @@ class Fish < Formula
   url "https://github.com/fish-shell/fish-shell/releases/download/2.1.1/fish-2.1.1.tar.gz"
   sha1 "8f97f39b92ea7dfef1f464b18e304045bf37546d"
 
+  bottle do
+    sha1 "61736de475346ff8aba971429d217b827730bc65" => :mavericks
+    sha1 "1d8d3f5656a4a9ec53d22b908581109eecfc9769" => :mountain_lion
+    sha1 "56535dfe5f9a6c4bad0b7d8e9571ab00e5a2f772" => :lion
+  end
+
   head do
     url "https://github.com/fish-shell/fish-shell.git"
 
