@@ -226,7 +226,8 @@ end
 class BottleSpecification
   DEFAULT_PREFIX = "/usr/local".freeze
   DEFAULT_CELLAR = "/usr/local/Cellar".freeze
-  DEFAULT_ROOT_URL = "https://downloads.sf.net/project/machomebrew/Bottles".freeze
+  SOURCEFORGE_PROJECT = OS.mac? ? "machomebrew" : OS.linux? ? "linuxbrew" : :dunno
+  DEFAULT_ROOT_URL = "https://downloads.sf.net/project/#{SOURCEFORGE_PROJECT}/Bottles".freeze
 
   attr_rw :root_url, :prefix, :cellar, :revision
   attr_reader :checksum, :collector
