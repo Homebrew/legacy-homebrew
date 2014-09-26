@@ -13,6 +13,12 @@ class Valgrind < Formula
       url "https://gist.githubusercontent.com/jacknagel/369bedc191e0a0795358/raw/a71e6c0fdcb786fdfde2fc33d71d555b18bcfe8d/valgrind-sdk-paths-Makefile-in.diff"
       sha1 "4210431e2a12c191875391b144b9a45cc76496c1"
     end
+
+    # Getting valgrind to compile and run on OS X Yosemite (10.10): https://bugs.kde.org/show_bug.cgi?id=339045
+    patch :p0 do
+      url "https://bugs.kde.org/attachment.cgi?id=88694"
+      sha1 "17d1015b9a8e5ad6808401df808a1f2ebe147bf8"
+    end if MacOS.version >= :yosemite
   end
 
   bottle do
@@ -34,6 +40,12 @@ class Valgrind < Formula
       url "https://gist.githubusercontent.com/jacknagel/cd26a902d72aabd0b51d/raw/1a61a328a87a728dccbeef0594f6fe335e9bf917/valgrind-sdk-paths-Makefile-am.diff"
       sha1 "d004d6af97f7f74d49d09dc513b4c67488da0a45"
     end
+
+    # Getting valgrind to compile and run on OS X Yosemite (10.10): https://bugs.kde.org/show_bug.cgi?id=339045
+    patch :p0 do
+      url "https://bugs.kde.org/attachment.cgi?id=88694"
+      sha1 "17d1015b9a8e5ad6808401df808a1f2ebe147bf8"
+    end if MacOS.version >= :yosemite
   end
 
   depends_on :macos => :snow_leopard
