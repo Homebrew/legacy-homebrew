@@ -13,9 +13,18 @@ class Mapnik < Formula
     sha1 "882cce36e29cea17f3cdb40805e9c7245a747f98" => :lion
   end
 
-  # can be removed at Mapnik > 2.2.0
-  # https://github.com/mapnik/mapnik/issues/1973
-  patch :DATA
+  stable do
+    # can be removed at Mapnik > 2.2.0
+    # https://github.com/mapnik/mapnik/issues/1973
+    patch :DATA
+
+    # boost 1.56 compatibility
+    # concatenated from https://github.com/mapnik/mapnik/issues/2428
+    patch do
+      url "https://gist.githubusercontent.com/tdsmith/22aeb0bfb9691de91463/raw/3064c193466a041d82e011dc5601312ccadc9e15/mapnik-boost-megadiff.diff"
+      sha1 "63939ad5e197c83f7fe09e321484248dfd96d0f3"
+    end
+  end
 
   depends_on "pkg-config" => :build
   depends_on "freetype"
