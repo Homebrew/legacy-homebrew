@@ -24,7 +24,7 @@ class Fish < Formula
   end
 
   def post_install
-    system "pgrep fishd && pkill fishd"
+    system "pkill fishd || true"
   end
 
   test do
