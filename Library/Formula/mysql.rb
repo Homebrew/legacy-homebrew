@@ -6,6 +6,9 @@ class Mysql < Formula
   sha1 "be068ba90953aecdb3f448b4ba1d35796eb799eb"
 
   bottle do
+    sha1 "487c5c441bc4d4907e65e49816bf460a63e0626f" => :mavericks
+    sha1 "6fcaefaa998e2398893b970200ae33b8baf04794" => :mountain_lion
+    sha1 "770d21fb57e4f4740e076349958ea8698627788c" => :lion
   end
 
   option :universal
