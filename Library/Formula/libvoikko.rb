@@ -7,9 +7,9 @@ class Libvoikko < Formula
 
   bottle do
     cellar :any
-    sha1 "db25afc7130491bbf3e5097c04a0eca8d7a2915d" => :mavericks
-    sha1 "0663d391a2962d6245a89e17afd2a45b7c4a5460" => :mountain_lion
-    sha1 "2fa799be5ce26948edc2c5c4c7e74c181aee9dc6" => :lion
+    sha1 "5030c58d4d0b546238c01e32bbe83a4892be5ee1" => :mavericks
+    sha1 "e1661f5b027fc87c3bef402e1e99104301728522" => :mountain_lion
+    sha1 "903c390191a2b79386171fd36f70578fd75714c9" => :lion
   end
 
   depends_on "pkg-config" => :build
