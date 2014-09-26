@@ -8,9 +8,9 @@ class Sysdig < Formula
   head "https://github.com/draios/sysdig.git", :branch => "master"
 
   bottle do
-    sha1 "8a85ba81628927d1d2ae96fba9d2834a83d8bb32" => :mavericks
-    sha1 "608416247b319c22662894c0311304d295aaf9c4" => :mountain_lion
-    sha1 "b85b3d8fff46766b0967c1b139651ea7fcbe81fd" => :lion
+    sha1 "74650879293e3f57957fa360731d551800cd2d36" => :mavericks
+    sha1 "6b86d6d8b2e71920f5e9da58e10796afa9fb301a" => :mountain_lion
+    sha1 "faed3478a11f38e74d1e3c07e67ac4de259e4fe3" => :lion
   end
 
   depends_on "cmake" => :build
