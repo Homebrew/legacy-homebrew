@@ -10,9 +10,9 @@ class Mono < Formula
   skip_clean "lib/mono"
 
   bottle do
-    sha1 "722d16d7fd1546fab4a3514e726a5f0e0255470c" => :mavericks
-    sha1 "8bbc7ba72f9cd758aced741502db4494d8d350fe" => :mountain_lion
-    sha1 "6e166b2b5f51086750a67a561103c996df18e55b" => :lion
+    sha1 "2184aeba1346c3cbbed0dbf077466bbd826c3559" => :mavericks
+    sha1 "982b56d443b6d0f65e0351f74afcf10175271fea" => :mountain_lion
+    sha1 "df60a0666a1aa750e3e64d12d16a80ca1f7997da" => :lion
   end
 
   resource "monolite" do
