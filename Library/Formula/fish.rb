@@ -1,19 +1,19 @@
-require 'formula'
+require "formula"
 
 class Fish < Formula
-  homepage 'http://fishshell.com'
-  url 'http://fishshell.com/files/2.1.0/fish-2.1.0.tar.gz'
-  sha1 'b1764cba540055cb8e2a96a7ea4c844b04a32522'
+  homepage "http://fishshell.com"
+  url "https://github.com/fish-shell/fish-shell/releases/download/2.1.1/fish-2.1.1.tar.gz"
+  sha1 "8f97f39b92ea7dfef1f464b18e304045bf37546d"
 
   head do
-    url 'https://github.com/fish-shell/fish-shell.git'
+    url "https://github.com/fish-shell/fish-shell.git"
 
     depends_on :autoconf
     # Indeed, the head build always builds documentation
-    depends_on 'doxygen' => :build
+    depends_on "doxygen" => :build
   end
 
-  skip_clean 'share/doc'
+  skip_clean "share/doc"
 
   def install
     system "autoconf" if build.head?
@@ -21,6 +21,10 @@ class Fish < Formula
     # the correct path is passed into configure here.
     system "./configure", "--prefix=#{prefix}", "SED=/usr/bin/sed"
     system "make", "install"
+  end
+
+  def post_install
+    system "pkill fishd || true"
   end
 
   test do
