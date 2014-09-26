@@ -5,6 +5,12 @@ class Xmp < Formula
   url "https://downloads.sourceforge.net/project/xmp/xmp/4.0.9/xmp-4.0.9.tar.gz"
   sha1 "f22871d5e5be1a0b08d11a0b3bd28f6723a69ee3"
 
+  bottle do
+    sha1 "f9b3c62d4952cd0ede1c131dcdf973903316d87d" => :mavericks
+    sha1 "6adf877d9f4cd3c1b96da42f806724a9801ca311" => :mountain_lion
+    sha1 "4ad77815e84f8251d2c06fc72fa5ecfbf0447b19" => :lion
+  end
+
   head do
     url "git://git.code.sf.net/p/xmp/xmp-cli"
 
