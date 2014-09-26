@@ -8,6 +8,9 @@ class Go < Formula
   sha1 '67d3a692588c259f9fe9dca5b80109e5b99271df'
 
   bottle do
+    sha1 "701804ae00ab6691d5abd310a24b6ea360f432ce" => :mavericks
+    sha1 "0bfb53f0f558ff0ce64267923945b5abd5d70405" => :mountain_lion
+    sha1 "57e141d44b8d1805904daca46802515e06293462" => :lion
   end
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
