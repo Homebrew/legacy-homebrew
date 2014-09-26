@@ -2,8 +2,8 @@ require "formula"
 
 class Libxmp < Formula
   homepage "http://xmp.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.2.8/libxmp-4.2.8.tar.gz"
-  sha1 "7cb28f316c8991493e626dab149719a376c3501d"
+  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.0/libxmp-4.3.0.tar.gz"
+  sha1 "7cc6acef4d3b86b9073851649d1b5f6f4a904e43"
 
   bottle do
     cellar :any
