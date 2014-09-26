@@ -17,6 +17,12 @@ class Bash < Formula
       url "https://gist.githubusercontent.com/jacknagel/c1cf23775c774e2b4b6d/raw/a3132f06e6389224f9a27feeb3e143d9d0a3af72/bash-4.3.25.diff"
       sha1 "6c0484e6230c213dcbd0f2beebc1594ad83fa518"
     end
+
+    # CVE-2014-7169: fix incomplete CVE-2014-6271 update
+    patch do
+      url "https://gist.githubusercontent.com/meqif/f565a6d54016542919a2/raw/ee931d0d5bb4ab2cfc43a82f0242d6fa0abe2b33/CVE-2014-7169.diff"
+      sha1 "4274a413d69191a607aa221a9ba6e3c18372a541"
+    end
   end
 
   bottle do
