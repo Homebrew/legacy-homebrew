@@ -47,7 +47,7 @@ class Keg
 
       begin
         first.atomic_write(s)
-      rescue Errno::EACCES
+      rescue SystemCallError
         first.ensure_writable do
           first.open("wb") { |f| f.write(s) }
         end
