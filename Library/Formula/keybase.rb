@@ -8,8 +8,8 @@ end
 
 class Keybase < Formula
   homepage "https://keybase.io/"
-  url "https://github.com/keybase/node-client/archive/v0.6.2.tar.gz"
-  sha1 "709d40cc076578081715c243e1ca5d70d310aeea"
+  url "https://github.com/keybase/node-client/archive/v0.7.2.tar.gz"
+  sha1 "680574530bbe77ecdc1954057e5518240dd099c6"
   head "https://github.com/keybase/node-client.git"
 
   depends_on "node"
