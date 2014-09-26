@@ -2,8 +2,8 @@ require 'formula'
 
 class Fish < Formula
   homepage 'http://fishshell.com'
-  url 'http://fishshell.com/files/2.1.0/fish-2.1.0.tar.gz'
-  sha1 'b1764cba540055cb8e2a96a7ea4c844b04a32522'
+  url 'https://github.com/fish-shell/fish-shell/releases/download/2.1.1/fish-2.1.1.tar.gz'
+  sha1 '8f97f39b92ea7dfef1f464b18e304045bf37546d'
 
   head do
     url 'https://github.com/fish-shell/fish-shell.git'
