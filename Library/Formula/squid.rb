@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Squid < Formula
-  homepage 'http://www.squid-cache.org/'
-  url 'http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.6.tar.bz2'
-  sha1 '0b8850a0bf73d85797e441e589324da8309cd738'
+  homepage "http://www.squid-cache.org/"
+  url "http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.7.tar.bz2"
+  sha1 "724bc2f7aa2b7dab4111305af3f243b84468689f"
 
   def install
     # http://stackoverflow.com/questions/20910109/building-squid-cache-on-os-x-mavericks
