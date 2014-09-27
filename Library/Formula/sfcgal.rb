@@ -4,6 +4,7 @@ class Sfcgal < Formula
   homepage "http://sfcgal.org/"
   url "https://github.com/Oslandia/SFCGAL/archive/v1.0.5.tar.gz"
   sha256 "a9cdaf7334bf28dc71c6338d090c1d1402041c5e320b6c2e3669f7758946a01c"
+  revision 1
 
   bottle do
     sha1 "872925e415e5e3acf4aaf3d0ff6fb9dfad0d0397" => :mavericks
