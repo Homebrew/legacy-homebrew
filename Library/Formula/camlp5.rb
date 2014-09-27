@@ -2,8 +2,8 @@ require "formula"
 
 class Camlp5 < Formula
   homepage "http://camlp5.gforge.inria.fr/"
-  url "http://pauillac.inria.fr/~ddr/camlp5/distrib/src/camlp5-6.11.tgz"
-  sha1 "4649a2850869d624182bfb5a02f60800ae35b935"
+  url "http://pauillac.inria.fr/~ddr/camlp5/distrib/src/camlp5-6.12.tgz"
+  sha1 "d78d89dbd33725d7589181c38cc67180502da2f8"
 
   depends_on "objective-caml"
 
