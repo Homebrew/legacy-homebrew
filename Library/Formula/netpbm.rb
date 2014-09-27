@@ -44,12 +44,20 @@ class Netpbm < Formula
     ENV.deparallelize
     system "make"
     system "make", "package", "pkgdir=#{buildpath}/stage"
+
     cd 'stage' do
+      inreplace "pkgconfig_template" do |s|
+        s.gsub! "@VERSION@", File.read("VERSION").sub("Netpbm ", "").chomp
+        s.gsub! "@LINKDIR@", lib
+        s.gsub! "@INCLUDEDIR@", include
+      end
+
       prefix.install %w{ bin include lib misc }
       # do man pages explicitly; otherwise a junk file is installed in man/web
       man1.install Dir['man/man1/*.1']
       man5.install Dir['man/man5/*.5']
       lib.install Dir['link/*.a']
+      (lib/"pkgconfig").install "pkgconfig_template" => "netpbm.pc"
     end
 
     (bin/'doc.url').unlink
