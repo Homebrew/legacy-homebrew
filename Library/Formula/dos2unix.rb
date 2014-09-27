@@ -6,6 +6,12 @@ class Dos2unix < Formula
   mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.0.0/dos2unix-7.0.tar.gz"
   sha1 "a0c5d20b95f87556ddad226217cc9998c5a0bb70"
 
+  bottle do
+    sha1 "a616d74ea7f23a01f0cdc47a025eb3a258518ca1" => :mavericks
+    sha1 "2f977ec55907fdc5f707a24ad550d5f92853f482" => :mountain_lion
+    sha1 "a71748546f87f402ec70eb252c4c72a6812c4163" => :lion
+  end
+
   depends_on "gettext"
 
   def install
