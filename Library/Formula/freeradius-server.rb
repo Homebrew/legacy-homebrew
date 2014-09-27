@@ -4,7 +4,14 @@ class FreeradiusServer < Formula
   homepage "http://freeradius.org/"
   url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.5.tar.gz"
   sha1 "4d18ed8ff3fde4a29112ecc07f175b774ed5f702"
+  depends_on "openssl"
   revision 1
+
+  devel do
+    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.4.tar.bz2"
+    sha1 "baa58979672f6fc57ab4f16e947b85b9a6eee969"
+    depends_on "talloc" => :build
+  end
 
   bottle do
     revision 1
@@ -13,27 +20,35 @@ class FreeradiusServer < Formula
     sha1 "b553c57efec7453296980809c417d090835522d8" => :lion
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
-  depends_on "openssl"
-
   # libtool is glibtool on OS X
-  patch :DATA
+  stable do
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    patch :DATA
+  end
 
   def install
     openssl = Formula["openssl"]
-
+    args = [ "--prefix=#{prefix}", "--sbindir=#{bin}",
+             "--localstatedir=#{var}" ]
     ENV.deparallelize
-    inreplace "autogen.sh", "libtool", "glibtool"
-    system "./autogen.sh"
-    system "./configure", "--prefix=#{prefix}",
-                          "--sbindir=#{bin}",
-                          "--localstatedir=#{var}",
-                          "--with-system-libtool",
-                          "--with-system-libltdl",
-                          "--with-openssl-includes=#{openssl.opt_include}",
-                          "--with-openssl-libraries=#{openssl.opt_lib}"
+
+    if build.stable?
+      args << "--with-system-libtool"
+      args << "--with-system-libltdl"
+      inreplace "autogen.sh", "libtool", "glibtool"
+      system "./autogen.sh"
+    end
+    if build.devel?
+      talloc = Formula["talloc"]
+      args << "--with-talloc-lib-dir=#{talloc.opt_lib}"
+      args << "--with-talloc-include-dir=#{talloc.opt_include}"
+    end
+    args << "--with-openssl-includes=#{openssl.opt_include}"
+    args << "--with-openssl-libraries=#{openssl.opt_lib}"
+
+    system "./configure", *args
     system "make"
     system "make", "install"
   end
