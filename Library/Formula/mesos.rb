@@ -2,8 +2,8 @@ require "formula"
 
 class Mesos < Formula
   homepage "http://mesos.apache.org"
-  url "http://mirror.cogentco.com/pub/apache/mesos/0.20.0/mesos-0.20.0.tar.gz"
-  sha1 "1e0c2299ad9846f109de4bfc47ae9bbb136e6ffc"
+  url "http://mirror.cogentco.com/pub/apache/mesos/0.20.1/mesos-0.20.1.tar.gz"
+  sha1 "8028366a2538551daaf290f7c62c4c8bfb415f61"
 
   bottle do
     sha1 "d51f509321860fd7322eae16ca33a76dcf7313f7" => :mavericks
