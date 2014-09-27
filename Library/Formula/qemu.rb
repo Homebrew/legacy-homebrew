@@ -7,9 +7,9 @@ class Qemu < Formula
   sha1 "f5f9eefa8fece7dead0487a2cca25f90e3dab3d9"
 
   bottle do
-    sha1 "52345b6ec0fb3a9a4da93b3adc861e247a9d8702" => :mavericks
-    sha1 "2027be04ff3885fe38570e05726949b9b6029abc" => :mountain_lion
-    sha1 "d6603f9b5aa3e72c02f9495d287cc4cbd5a5bf22" => :lion
+    sha1 "6ddb5245e0669258d8514143166f520749080fec" => :mavericks
+    sha1 "db0a11aded67b12bdfd9923b91de3d2fd2115423" => :mountain_lion
+    sha1 "5ca2a1a9937190238ddc7ec416bd7d70f7d62a3f" => :lion
   end
 
   depends_on "pkg-config" => :build
