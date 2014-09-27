@@ -43,7 +43,7 @@ class Cleaner
     dirs = []
     symlinks = []
     @f.prefix.find do |path|
-      if @f.skip_clean? path
+      if path == @f.libexec or @f.skip_clean?(path)
         Find.prune
       elsif path.symlink?
         symlinks << path

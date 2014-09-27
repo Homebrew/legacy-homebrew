@@ -14,9 +14,9 @@ class Tor < Formula
   end
 
   devel do
-    url "https://www.torproject.org/dist/tor-0.2.5.6-alpha.tar.gz"
-    version "0.2.5.6-alpha"
-    sha256 "ec8edfd824a65bec19c7b79bacfc73c5df76909477ab6dac0d6e8ede7fa337c1"
+    url "https://www.torproject.org/dist/tor-0.2.5.8-rc.tar.gz"
+    version "0.2.5.8-rc"
+    sha256 "a4c04e049f8c5798991eb5028fb2831ea2353bf12c7f5afa9c1df1472787b22c"
   end
 
   depends_on "libevent"
