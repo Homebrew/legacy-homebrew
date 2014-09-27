@@ -6,8 +6,8 @@ class Mesos < Formula
   sha1 "8028366a2538551daaf290f7c62c4c8bfb415f61"
 
   bottle do
-    sha1 "d51f509321860fd7322eae16ca33a76dcf7313f7" => :mavericks
-    sha1 "478a96a214091a143c88f9889f212bdacc566912" => :mountain_lion
+    sha1 "ad8e8a6a5f5a0bd2de953d799999a23d11e60a04" => :mavericks
+    sha1 "78dfc152a6fd45aabd606683a88c699ff871ae31" => :mountain_lion
   end
 
   depends_on :java => "1.7"
