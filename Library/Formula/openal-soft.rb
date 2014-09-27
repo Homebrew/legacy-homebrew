@@ -6,6 +6,10 @@ class OpenalSoft < Formula
   sha1 "f70892fc075ae726320478c0179f7011fea0d157"
 
   bottle do
+    cellar :any
+    sha1 "f447363850f71bb2332914cc9915e757cca0556f" => :mavericks
+    sha1 "732aba3be7edf074d9dd619cca10d4108db0b099" => :mountain_lion
+    sha1 "03d64490aaab809fa4095401dbb8508b98c2b99f" => :lion
   end
 
   option :universal
