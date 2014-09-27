@@ -6,9 +6,9 @@ class Ace < Formula
   sha1 "937fb405226a5aee1dd2fad9d67a3218ac830ca2"
 
   bottle do
-    sha1 "adadd2939fb8f973aff0e96e97d82cf76ddb490e" => :mavericks
-    sha1 "f1b7a5454d4e1b0b8cc9eb8099b059532507730d" => :mountain_lion
-    sha1 "1b9dbe41211d0a96ee7634c2d05ab5a816029f74" => :lion
+    sha1 "5a245967287d14d0dbd0ddc35fe971e8509a7792" => :mavericks
+    sha1 "ffa55ce311ac79937f8a427507b9993b45f46430" => :mountain_lion
+    sha1 "45fec92c123f8049e3d8c045b44845444c0ca1d2" => :lion
   end
 
   def install
