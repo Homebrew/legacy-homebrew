@@ -9,9 +9,9 @@ class Boost < Formula
 
   bottle do
     cellar :any
-    sha1 "81b8843487a6f0017fac77b4bf58bdc20f3298fa" => :mavericks
-    sha1 "40089f76eddb25ac418032fa0055b6f0b6d76847" => :mountain_lion
-    sha1 "da4fb2a221fd83f50741f757eefe4bc38b5e910c" => :lion
+    sha1 "68c626ad06f13687ff529174ddfef2ecf91d6e22" => :mavericks
+    sha1 "cb657544a41c58c7422c16e46b96341e8fe9297d" => :mountain_lion
+    sha1 "e23c15575d465efa43ffe7fcfce068e2fe5d4073" => :lion
   end
 
   env :userpaths
