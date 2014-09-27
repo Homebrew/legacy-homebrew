@@ -63,4 +63,17 @@ class InreplaceTest < Homebrew::TestCase
     s.extend(StringInreplaceExtension)
     assert_equal "-Wall -O2", s.get_make_var("CFLAGS")
   end
+
+  def test_change_make_var_with_tabs
+    s = "CFLAGS\t=\t-Wall -O2\nLDFLAGS\t=\t-lcrypto -lssl"
+    s.extend(StringInreplaceExtension)
+
+    assert_equal "-Wall -O2", s.get_make_var("CFLAGS")
+
+    s.change_make_var! "CFLAGS", "-O3"
+    assert_equal "CFLAGS=-O3\nLDFLAGS\t=\t-lcrypto -lssl", s
+
+    s.remove_make_var! "LDFLAGS"
+    assert_equal "CFLAGS=-O3\n", s
+  end
 end
