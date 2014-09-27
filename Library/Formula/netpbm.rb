@@ -10,6 +10,10 @@ class Netpbm < Formula
   head 'http://svn.code.sf.net/p/netpbm/code/trunk'
 
   bottle do
+    cellar :any
+    sha1 "66a50dea597d6073b6d3ff3642b15a1bfa675b9c" => :mavericks
+    sha1 "3299a40b03766b7c75bc5b8496de1ba695ba9542" => :mountain_lion
+    sha1 "0426adf328d43d0a6595b74127235c6e7e038912" => :lion
   end
 
   option :universal
