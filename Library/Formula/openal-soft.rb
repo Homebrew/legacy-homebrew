@@ -12,6 +12,11 @@ class OpenalSoft < Formula
 
   depends_on "cmake" => :build
 
+  # llvm-gcc does not support the alignas macro
+  # clang 4.2's support for alignas is incomplete
+  fails_with :llvm
+  fails_with(:clang) { build 425 }
+
   def install
     ENV.universal_binary if build.universal?
     system "cmake", ".", *std_cmake_args
