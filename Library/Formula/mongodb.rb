@@ -27,6 +27,10 @@ class Mongodb < Formula
   depends_on "scons" => :build
   depends_on "openssl" => :optional
 
+  # Yosemite build fix, until solved upstream
+  # https://jira.mongodb.org/browse/SERVER-14204
+  patch :DATA if MacOS.version == "10.10"
+
   def install
     args = %W[
       --prefix=#{prefix}
@@ -111,3 +115,34 @@ class Mongodb < Formula
     system "#{bin}/mongod", "--sysinfo"
   end
 end
+
+__END__
+--- mongodb-2.6.4/SConstruct.orig	2014-09-23 15:09:49.000000000 +0200
++++ mongodb-2.6.4/SConstruct	2014-09-23 15:10:13.000000000 +0200
+@@ -307,7 +307,7 @@
+            0, False)
+
+ if darwin:
+-    osx_version_choices = ['10.6', '10.7', '10.8', '10.9']
++    osx_version_choices = ['10.6', '10.7', '10.8', '10.9', '10.10']
+     add_option("osx-version-min", "minimum OS X version to support", 1, True,
+                type = 'choice', default = osx_version_choices[0], choices = osx_version_choices)
+
+--- mongodb-2.6.4/src/third_party/s2/util/endian/endian.h.orig	2014-09-28 01:08:51.000000000 +0200
++++ mongodb-2.6.4/src/third_party/s2/util/endian/endian.h	2014-09-28 01:09:06.000000000 +0200
+@@ -177,15 +177,4 @@
+   }
+ };
+
+-
+-// This one is safe to take as it's an extension
+-#define htonll(x) ghtonll(x)
+-
+-// ntoh* and hton* are the same thing for any size and bytesex,
+-// since the function is an involution, i.e., its own inverse.
+-#define gntohl(x) ghtonl(x)
+-#define gntohs(x) ghtons(x)
+-#define gntohll(x) ghtonll(x)
+-#define ntohll(x) htonll(x)
+-
+ #endif  // UTIL_ENDIAN_ENDIAN_H_
