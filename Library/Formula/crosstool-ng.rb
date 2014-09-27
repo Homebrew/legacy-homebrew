@@ -14,6 +14,7 @@ class CrosstoolNg < Formula
   depends_on 'gawk'
   depends_on 'binutils'
   depends_on 'libelf'
+  depends_on 'homebrew/dupes/grep' => :optional
 
   # Avoid superenv to prevent https://github.com/mxcl/homebrew/pull/10552#issuecomment-9736248
   env :std
@@ -22,17 +23,23 @@ class CrosstoolNg < Formula
   patch :DATA
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--exec-prefix=#{prefix}",
-                          "--with-objcopy=gobjcopy",
-                          "--with-objdump=gobjdump",
-                          "--with-readelf=greadelf",
-                          "--with-libtool=glibtool",
-                          "--with-libtoolize=glibtoolize",
-                          "--with-install=ginstall",
-                          "--with-sed=gsed",
-                          "--with-awk=gawk",
-                          "CFLAGS=-std=gnu89"
+    args = ["--prefix=#{prefix}",
+            "--exec-prefix=#{prefix}",
+            "--with-objcopy=gobjcopy",
+            "--with-objdump=gobjdump",
+            "--with-readelf=greadelf",
+            "--with-libtool=glibtool",
+            "--with-libtoolize=glibtoolize",
+            "--with-install=ginstall",
+            "--with-sed=gsed",
+            "--with-awk=gawk"]
+
+    args << "--with-grep=ggrep" if build.with? "grep"
+
+    args << "CFLAGS=-std=gnu89"
+
+    system "./configure", *args
+
     # Must be done in two steps
     system "make"
     system "make install"
