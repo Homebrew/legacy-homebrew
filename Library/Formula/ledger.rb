@@ -2,6 +2,7 @@ require "formula"
 
 class Ledger < Formula
   homepage "http://ledger-cli.org"
+  revision 1
 
   stable do
     url "https://github.com/ledger/ledger/archive/v3.0.3.tar.gz"
@@ -38,9 +39,9 @@ class Ledger < Formula
   depends_on :python => :optional
 
   boost_opts = []
-  boost_opts << "with-python" if build.with? "python"
   boost_opts << "c++11" if MacOS.version < "10.9"
   depends_on "boost" => boost_opts
+  depends_on "boost-python" => boost_opts if build.with? "python"
 
   needs :cxx11
 
