@@ -6,6 +6,7 @@ class YamlCpp < Formula
   sha1 '9c5414b4090491e96d1b808fe8628b31e625fdaa'
 
   option :cxx11
+  option :universal
 
   depends_on 'cmake' => :build
 
@@ -17,6 +18,7 @@ class YamlCpp < Formula
 
   def install
     ENV.cxx11 if build.cxx11?
+    ENV.universal_binary if build.universal?
 
     system "cmake", ".", *std_cmake_args
     system "make install"

@@ -2,27 +2,22 @@ require "formula"
 
 class Abcm2ps < Formula
   homepage "http://moinejf.free.fr"
+  url "http://moinejf.free.fr/abcm2ps-7.8.7.tar.gz"
+  sha1 "2e2380016069461bc45950f472e6b1ea22a94c5b"
 
-  stable do
-    url "http://moinejf.free.fr/abcm2ps-7.8.4.tar.gz"
   bottle do
-    sha1 "ef6a4248ccf543f3394561d056ef8c7941e1cf59" => :mavericks
-    sha1 "3125f3f4c279ff6233330153a166905c22be78b6" => :mountain_lion
-    sha1 "e87ee5016f2b2773b02664fbee362c3a557966a7" => :lion
-  end
-
-    sha1 "b910a048fe94500d3da52e9fe250d2835dc5343c"
+    sha1 "553e4b09045b5693a06faf5e202336ec5a87a9c2" => :mavericks
+    sha1 "829e8538a7766248b37c7e6ad83703eda97289fa" => :mountain_lion
+    sha1 "36219f8fa08cd14e376fc5e8b3a4f1627d8470da" => :lion
   end
 
   devel do
-    url "http://moinejf.free.fr/abcm2ps-8.1.2.tar.gz"
-    sha1 "b60626ef21b269fa18ec3dc8ba11354d798ddded"
+    url "http://moinejf.free.fr/abcm2ps-8.1.5.tar.gz"
+    sha1 "a268290d12fec84429c91e86f4b734e3e155c40c"
   end
 
+  depends_on "pkg-config" => :build
   depends_on "pango" => :optional
-  if build.with? "pango"
-    depends_on "pkg-config" => :build
-  end
 
   def install
     system "./configure", "--prefix=#{prefix}"

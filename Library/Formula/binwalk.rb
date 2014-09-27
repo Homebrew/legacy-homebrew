@@ -3,14 +3,14 @@ require 'formula'
 class Binwalk < Formula
   homepage 'http://binwalk.org/'
   stable do
-    url 'https://github.com/devttys0/binwalk/archive/v1.3.0.tar.gz'
-    sha1 '6cab158b69e508081302305b354da12f45658272'
+    url "https://github.com/devttys0/binwalk/archive/v2.0.1.tar.gz"
+    sha1 "b0ec783cbf72db358c5118a3052fc1ccf446d8f3"
+  end
 
-    # Fix install locations; submitted upstream as various PRs
-    patch do
-        url "https://gist.github.com/balr0g/e3a5c97151b6c03619b3/raw/2a67afc3613b435ef785b18ff1ed44b676576dbf/binwalk-1.3.0-setup.patch"
-        sha1 "893e6b7d9df93ace304e07ac7897498108870fc6"
-    end
+  bottle do
+    sha1 "d32f66ae40876307fe6fb1784f4381fc2c6f80cf" => :mavericks
+    sha1 "d8b2dce1f5e57068458a217b9ae5d349cfb6e515" => :mountain_lion
+    sha1 "177c7820cc1289b0055d22174f094c06d1152b4c" => :lion
   end
 
   head do
@@ -42,13 +42,13 @@ class Binwalk < Formula
   end
 
   resource 'numpy' do
-    url 'http://downloads.sourceforge.net/project/numpy/NumPy/1.8.0/numpy-1.8.0.tar.gz'
-    sha1 'a2c02c5fb2ab8cf630982cddc6821e74f5769974'
+    url "http://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz"
+    sha1 "8fe1d5f36bab3f1669520b4c7d8ab59a21a984da"
   end
 
   resource 'scipy' do
-    url 'http://downloads.sourceforge.net/project/scipy/scipy/0.13.3/scipy-0.13.3.tar.gz'
-    sha1 '2c7d53fc1d7bfe0a3ab5818ef6d84cb5d8cfcca4'
+    url "http://downloads.sourceforge.net/project/scipy/scipy/0.14.0/scipy-0.14.0.tar.gz"
+    sha1 "faf16ddf307eb45ead62a92ffadc5288a710feb8"
   end
 
   def install
@@ -62,17 +62,9 @@ class Binwalk < Formula
     pyqtgraph_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
     resource('pyqtgraph').stage { system "python", *pyqtgraph_args }
 
-    if build.head?
-      system "autoreconf -f"
-      system "./configure", "--prefix=#{prefix}"
-      system "make install"
-    else
-      cd "src" do
-        binwalk_args = [ "install", "--prefix=#{prefix}", "--yes" ]
-        system "python", "setup.py", *binwalk_args
-        bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
-      end
-    end
+    system "autoreconf -f" if build.head?
+    system "./configure", "--prefix=#{prefix}", "--disable-bundles"
+    system "make install"
   end
 
   test do

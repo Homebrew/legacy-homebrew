@@ -1,29 +1,45 @@
-require 'formula'
+require "formula"
 
 class Mapnik < Formula
-  homepage 'http://www.mapnik.org/'
-  url 'http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2'
-  sha1 'e493ad87ca83471374a3b080f760df4b25f7060d'
-  revision 1
+  homepage "http://www.mapnik.org/"
+  head "https://github.com/mapnik/mapnik.git"
+  url "http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2"
+  sha1 "e493ad87ca83471374a3b080f760df4b25f7060d"
+  revision 3
 
-  # can be removed at Mapnik > 2.2.0
-  # https://github.com/mapnik/mapnik/issues/1973
-  patch :DATA
-  head 'https://github.com/mapnik/mapnik.git'
+  bottle do
+    sha1 "7ad87d1b99c5ceb1861b1cbabdb094488886bab4" => :mavericks
+    sha1 "cb2d4ab00ae91ff90602db62b01703f105a21362" => :mountain_lion
+    sha1 "0bcaf11e97ad59e025e38b428e03adc7195b61e2" => :lion
+  end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'freetype'
-  depends_on 'libpng'
-  depends_on 'libtiff'
-  depends_on 'proj'
-  depends_on 'icu4c'
-  depends_on 'jpeg'
-  depends_on 'boost' => 'with-python'
-  depends_on 'gdal' => :optional
-  depends_on 'postgresql' => :optional
-  depends_on 'cairo' => :optional
+  stable do
+    # can be removed at Mapnik > 2.2.0
+    # https://github.com/mapnik/mapnik/issues/1973
+    patch :DATA
 
-  depends_on 'py2cairo' if build.with? 'cairo'
+    # boost 1.56 compatibility
+    # concatenated from https://github.com/mapnik/mapnik/issues/2428
+    patch do
+      url "https://gist.githubusercontent.com/tdsmith/22aeb0bfb9691de91463/raw/3064c193466a041d82e011dc5601312ccadc9e15/mapnik-boost-megadiff.diff"
+      sha1 "63939ad5e197c83f7fe09e321484248dfd96d0f3"
+    end
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "freetype"
+  depends_on "libpng"
+  depends_on "libtiff"
+  depends_on "proj"
+  depends_on "icu4c"
+  depends_on "jpeg"
+  depends_on "boost"
+  depends_on "boost-python"
+  depends_on "gdal" => :optional
+  depends_on "postgresql" => :optional
+  depends_on "cairo" => :optional
+
+  depends_on "py2cairo" if build.with? "cairo"
 
   def install
     icu = Formula["icu4c"].opt_prefix
@@ -59,13 +75,13 @@ class Mapnik < Formula
              "FREETYPE_CONFIG=#{freetype}/bin/freetype-config"
            ]
 
-    if build.with? 'cairo'
+    if build.with? "cairo"
       args << "CAIRO=True" # cairo paths will come from pkg-config
     else
       args << "CAIRO=False"
     end
-    args << "GDAL_CONFIG=#{Formula["gdal"].opt_bin}/gdal-config" if build.with? 'gdal'
-    args << "PG_CONFIG=#{Formula["postgresql"].opt_bin}/pg_config" if build.with? 'postgresql'
+    args << "GDAL_CONFIG=#{Formula["gdal"].opt_bin}/gdal-config" if build.with? "gdal"
+    args << "PG_CONFIG=#{Formula["postgresql"].opt_bin}/pg_config" if build.with? "postgresql"
 
     system "python", "scons/scons.py", "configure", *args
     system "python", "scons/scons.py", "install"

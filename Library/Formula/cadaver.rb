@@ -1,15 +1,23 @@
-require 'formula'
+require "formula"
 
 class Cadaver < Formula
-  homepage 'http://www.webdav.org/cadaver/'
-  url 'http://www.webdav.org/cadaver/cadaver-0.23.3.tar.gz'
-  sha1 '4ad8ea2341b77e7dee26b46e4a8a496f1a2962cd'
+  homepage "http://www.webdav.org/cadaver/"
+  url "http://www.webdav.org/cadaver/cadaver-0.23.3.tar.gz"
+  sha1 "4ad8ea2341b77e7dee26b46e4a8a496f1a2962cd"
+  revision 1
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'readline'
-  depends_on 'neon'
-  depends_on 'openssl'
+  bottle do
+    revision 1
+    sha1 "0829bec6edbe68f27cac9698755b16ba0781bb88" => :mavericks
+    sha1 "d65e0588474bd227e077fab167e6bbdf848296b5" => :mountain_lion
+    sha1 "fdef244b44064695da2d0c2107bc4721ee47e613" => :lion
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
+  depends_on "readline"
+  depends_on "neon"
+  depends_on "openssl"
 
   # enable build with the latest neon
   patch :DATA
@@ -20,7 +28,7 @@ class Cadaver < Formula
                           "--with-libs=#{Formula["openssl"].opt_prefix}",
                           "--with-neon=#{Formula["neon"].opt_prefix}"
     system "make", "-C", "lib/intl"
-    system "make install"
+    system "make", "install"
   end
 end
 

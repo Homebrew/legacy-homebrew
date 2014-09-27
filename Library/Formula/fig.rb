@@ -1,15 +1,15 @@
 require "formula"
 
 class Fig < Formula
-  homepage "http://orchardup.github.io/fig/"
-  url "https://github.com/orchardup/fig/archive/0.5.1.tar.gz"
-  sha1 "38b03a7d823ab3b2662c9c6ada503e28c35e122c"
+  homepage "http://www.fig.sh/"
+  url "https://github.com/docker/fig/archive/0.5.2.tar.gz"
+  sha1 "dea7120368833d3255e138c622572335b36d00fc"
 
   bottle do
     cellar :any
-    sha1 "2f4f64f35b1b51962dd51d1688ce8bd3d43fe936" => :mavericks
-    sha1 "62a8a937bc788f6ca58a61f973f3f6540180eb20" => :mountain_lion
-    sha1 "e75582e827e66be9c90f800e1bf0f19b78558f10" => :lion
+    sha1 "9d5a8ff89b36221658baacced06f324015c76fc1" => :mavericks
+    sha1 "ce5a1a8a8d87b44792d74fc2de09e04b942a6735" => :mountain_lion
+    sha1 "0049d3e346098d2db4a2f063babb33f805da3417" => :lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

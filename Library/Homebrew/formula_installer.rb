@@ -12,6 +12,7 @@ require 'formula_cellar_checks'
 require 'install_renamed'
 require 'cmd/tap'
 require 'hooks/bottles'
+require 'debrew'
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -60,7 +61,7 @@ class FormulaInstaller
 
     unless f.bottle.compatible_cellar?
       if install_bottle_options[:warn]
-        opoo "Building source; cellar of #{f}'s bottle is #{f.bottle.cellar}"
+        opoo "Building source; cellar of #{f.name}'s bottle is #{f.bottle.cellar}"
       end
       return false
     end
@@ -101,7 +102,7 @@ class FormulaInstaller
     raise FormulaInstallationAlreadyAttemptedError, f if @@attempted.include? f
 
     if f.installed?
-      msg = "#{f}-#{f.installed_version} already installed"
+      msg = "#{f.name}-#{f.installed_version} already installed"
       msg << ", it's just not linked" unless f.linked_keg.symlink? or f.keg_only?
       raise FormulaAlreadyInstalledError, msg
     end
@@ -111,7 +112,7 @@ class FormulaInstaller
         dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
       end
       raise CannotInstallFormulaError,
-        "You must `brew link #{unlinked_deps*' '}' before #{f} can be installed" unless unlinked_deps.empty?
+        "You must `brew link #{unlinked_deps*' '}' before #{f.name} can be installed" unless unlinked_deps.empty?
     end
   end
 
@@ -134,8 +135,8 @@ class FormulaInstaller
     if f.linked_keg.directory?
       # some other version is already installed *and* linked
       raise CannotInstallFormulaError, <<-EOS.undent
-        #{f}-#{f.linked_keg.resolved_path.basename} already installed
-        To install this version, first `brew unlink #{f}'
+        #{f.name}-#{f.linked_keg.resolved_path.basename} already installed
+        To install this version, first `brew unlink #{f.name}'
       EOS
     end
 
@@ -149,7 +150,7 @@ class FormulaInstaller
       raise "Unrecognized architecture for --bottle-arch: #{arch}"
     end
 
-    oh1 "Installing #{Tty.green}#{f}#{Tty.reset}" if show_header?
+    oh1 "Installing #{Tty.green}#{f.name}#{Tty.reset}" if show_header?
 
     @@attempted << f
 
@@ -158,13 +159,10 @@ class FormulaInstaller
         pour
         @poured_bottle = true
 
-        stdlibs = Keg.new(f.prefix).detect_cxx_stdlibs
-        stdlib_in_use = CxxStdlib.new(stdlibs.first, MacOS.default_compiler)
-        begin
-          stdlib_in_use.check_dependencies(f, f.recursive_dependencies)
-        rescue IncompatibleCxxStdlibs => e
-          opoo e.message
-        end
+        CxxStdlib.check_compatibility(
+          f, f.recursive_dependencies,
+          Keg.new(f.prefix), MacOS.default_compiler
+        )
 
         tab = Tab.for_keg f.prefix
         tab.poured_from_bottle = true
@@ -216,11 +214,10 @@ class FormulaInstaller
 
     check_requirements(req_map)
 
-    deps = [].concat(req_deps).concat(f.deps)
-    deps = expand_dependencies(deps)
+    deps = expand_dependencies(req_deps + f.deps)
 
     if deps.empty? and only_deps?
-      puts "All dependencies for #{f} are satisfied."
+      puts "All dependencies for #{f.name} are satisfied."
     else
       install_dependencies(deps)
     end
@@ -236,12 +233,12 @@ class FormulaInstaller
       end
     end
 
-    raise UnsatisfiedRequirements.new(f, fatals) unless fatals.empty?
+    raise UnsatisfiedRequirements.new(fatals) unless fatals.empty?
   end
 
-  def install_requirement_default_formula?(req)
+  def install_requirement_default_formula?(req, build)
     return false unless req.default_formula?
-    return false if req.optional?
+    return false if build.without?(req) && (req.recommended? || req.optional?)
     return true unless req.satisfied?
     pour_bottle? || build_bottle?
   end
@@ -258,11 +255,11 @@ class FormulaInstaller
 
         if (req.optional? || req.recommended?) && build.without?(req)
           Requirement.prune
-        elsif req.build? && dependent == f && pour_bottle?
+        elsif req.build? && dependent == self.f && pour_bottle?
           Requirement.prune
-        elsif req.build? && dependent != f && install_bottle_for_dep?(dependent, build)
+        elsif req.build? && dependent != self.f && install_bottle_for_dep?(dependent, build)
           Requirement.prune
-        elsif install_requirement_default_formula?(req)
+        elsif install_requirement_default_formula?(req, build)
           dep = req.to_dependency
           deps.unshift(dep)
           formulae.unshift(dep.to_formula)
@@ -303,28 +300,24 @@ class FormulaInstaller
   end
 
   def effective_build_options_for(dependent, inherited_options=[])
-    if dependent == f
-      build = dependent.build.dup
-      build.args |= options
-      build
-    else
-      build = dependent.build.dup
-      build.args |= inherited_options
-      build
-    end
+    args  = dependent.build.used_options
+    args |= dependent == f ? options : inherited_options
+    args |= Tab.for_formula(dependent).used_options
+    BuildOptions.new(args, dependent.options)
   end
 
   def inherited_options_for(dep)
     inherited_options = Options.new
-    if (options.include?("universal") || f.build.universal?) && !dep.build? && dep.to_formula.build.has_option?("universal")
-      inherited_options << Option.new("universal")
+    u = Option.new("universal")
+    if (options.include?(u) || f.require_universal_deps?) && !dep.build? && dep.to_formula.option_defined?(u)
+      inherited_options << u
     end
     inherited_options
   end
 
   def install_dependencies(deps)
     if deps.length > 1
-      oh1 "Installing dependencies for #{f}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
+      oh1 "Installing dependencies for #{f.name}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
     end
 
     deps.each { |dep, options| install_dependency(dep, options) }
@@ -368,7 +361,7 @@ class FormulaInstaller
     fi.verbose            = verbose? unless verbose == :quieter
     fi.debug              = debug?
     fi.prelude
-    oh1 "Installing #{f} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
+    oh1 "Installing #{f.name} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     fi.install
     fi.caveats
     fi.finish
@@ -460,7 +453,7 @@ class FormulaInstaller
     when f.devel then args << "--devel"
     end
 
-    f.build.each do |opt, _|
+    f.options.each do |opt|
       name  = opt.name[/\A(.+)=\z$/, 1]
       value = ARGV.value(name)
       args << "--#{name}=#{value}" if name && value
@@ -470,21 +463,17 @@ class FormulaInstaller
   end
 
   def build_argv
-    opts = Options.coerce(sanitized_ARGV_options)
-    opts.concat(options)
-    opts
+    sanitized_ARGV_options + options.as_flags
   end
 
   def build
-    FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{f}/*"]
+    FileUtils.rm Dir["#{HOMEBREW_LOGS}/#{f.name}/*"]
 
     @start_time = Time.now
 
     # 1. formulae can modify ENV, so we must ensure that each
     #    installation has a pristine ENV when it starts, forking now is
     #    the easiest way to do this
-    # 2. formulae have access to __END__ the only way to allow this is
-    #    to make the formula script the executed script
     read, write = IO.pipe
     # I'm guessing this is not a good way to do this, but I'm no UNIX guru
     ENV['HOMEBREW_ERROR_PIPE'] = write.to_i.to_s
@@ -492,9 +481,9 @@ class FormulaInstaller
     args = %W[
       nice #{RUBY_PATH}
       -W0
-      -I #{File.dirname(__FILE__)}
-      -rbuild
+      -I #{HOMEBREW_LIBRARY_PATH}
       --
+      #{HOMEBREW_LIBRARY_PATH}/build.rb
       #{f.path}
     ].concat(build_argv)
 
@@ -516,8 +505,9 @@ class FormulaInstaller
 
     ignore_interrupts(:quietly) do # the child will receive the interrupt and marshal it back
       write.close
+      thr = Thread.new { read.read }
       Process.wait(pid)
-      data = read.read
+      data = thr.value
       read.close
       raise Marshal.load(data) unless data.nil? or data.empty?
       raise Interrupt if $?.exitstatus == 130
@@ -541,7 +531,7 @@ class FormulaInstaller
         keg.optlink
       rescue Keg::LinkError => e
         onoe "Failed to create #{f.opt_prefix}"
-        puts "Things that depend on #{f} will probably not build."
+        puts "Things that depend on #{f.name} will probably not build."
         puts e
       end
       return
@@ -712,7 +702,7 @@ end
 
 class Formula
   def keg_only_text
-    s = "This formula is keg-only, so it was not symlinked into #{HOMEBREW_PREFIX}."
+    s = "This formula is keg-only, which means it was not symlinked into #{HOMEBREW_PREFIX}."
     s << "\n\n#{keg_only_reason.to_s}"
     if lib.directory? or include.directory?
       s <<

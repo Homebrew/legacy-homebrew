@@ -2,11 +2,13 @@ require 'formula'
 
 class Findbugs < Formula
   homepage 'http://findbugs.sourceforge.net/index.html'
-  url 'https://downloads.sourceforge.net/project/findbugs/findbugs/2.0.2/findbugs-2.0.2.tar.gz'
-  sha1 '3817d96e5143f513cb2945f14f50cdb6720d1f49'
+  url 'https://downloads.sourceforge.net/project/findbugs/findbugs/3.0.0/findbugs-3.0.0.tar.gz'
+  sha1 '50205ecbe340d78a658d5930fc3e2e0e38b07db7'
 
   conflicts_with 'fb-client',
     :because => "findbugs and fb-client both install a `fb` binary"
+
+  depends_on :java => '1.7'
 
   def install
     # Remove windows files

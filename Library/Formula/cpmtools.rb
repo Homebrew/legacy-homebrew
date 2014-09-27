@@ -26,8 +26,7 @@ class Cpmtools < Formula
     system "#{bin}/cpmcp -f ibm-3740 #{image} #{src} 0:foo"
 
     # check for the file in the cp/m directory
-    assert `#{bin}/cpmls -f ibm-3740 #{image}`.include?("foo")
-    assert_equal 0, $?.exitstatus
+    assert shell_output("#{bin}/cpmls -f ibm-3740 #{image}").include?("foo")
 
     # copy the file back out of the image
     dest = testpath/"bar"

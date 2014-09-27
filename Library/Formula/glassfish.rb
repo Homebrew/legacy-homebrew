@@ -5,9 +5,6 @@ class Glassfish < Formula
   url 'http://download.java.net/glassfish/4.0/release/glassfish-4.0.zip'
   sha1 'daca9808d80df35b26cd9545a84e8324ed34fe7e'
 
-  # To keep empty folders around
-  skip_clean 'libexec'
-
   def install
     rm_rf Dir['bin/*.bat']
     libexec.install Dir["*"]

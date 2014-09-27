@@ -14,9 +14,6 @@ class Picolisp < Formula
   test do
     path = testpath/"hello.lisp"
     path.write '(prinl "Hello world") (bye)'
-
-    out = `#{bin}/picolisp #{path}`
-    assert_equal "Hello world\n", out
-    assert_equal 0, $?.exitstatus
+    assert_equal "Hello world\n", shell_output("#{bin}/picolisp #{path}")
   end
 end

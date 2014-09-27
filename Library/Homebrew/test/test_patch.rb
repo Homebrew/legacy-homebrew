@@ -9,40 +9,27 @@ class PatchTests < Homebrew::TestCase
     assert_equal :p2, patch.strip
   end
 
-  def test_create_io
-    patch = Patch.create(:p0, StringIO.new("foo"))
-    assert_kind_of IOPatch, patch
-    refute_predicate patch, :external?
-    assert_equal :p0, patch.strip
-  end
-
-  def test_create_io_without_strip
-    patch = Patch.create(StringIO.new("foo"), nil)
-    assert_kind_of IOPatch, patch
-    assert_equal :p1, patch.strip
-  end
-
   def test_create_string
     patch = Patch.create(:p0, "foo")
-    assert_kind_of IOPatch, patch
+    assert_kind_of StringPatch, patch
     assert_equal :p0, patch.strip
   end
 
   def test_create_string_without_strip
     patch = Patch.create("foo", nil)
-    assert_kind_of IOPatch, patch
+    assert_kind_of StringPatch, patch
     assert_equal :p1, patch.strip
   end
 
   def test_create_DATA
     patch = Patch.create(:p0, :DATA)
-    assert_kind_of IOPatch, patch
+    assert_kind_of DATAPatch, patch
     assert_equal :p0, patch.strip
   end
 
   def test_create_DATA_without_strip
     patch = Patch.create(:DATA, nil)
-    assert_kind_of IOPatch, patch
+    assert_kind_of DATAPatch, patch
     assert_equal :p1, patch.strip
   end
 

@@ -2,15 +2,16 @@ require 'formula'
 
 class Ansible < Formula
   homepage 'http://www.ansible.com/home'
-  url 'http://releases.ansible.com/ansible/ansible-1.6.8.tar.gz'
-  sha1 '9956256db37ef0408c898108f5190f5a501dff5c'
+  url 'http://releases.ansible.com/ansible/ansible-1.7.1.tar.gz'
+  sha1 '4f4be4d45f28f52e4ab0c063efb66c7b9f482a51'
 
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
   bottle do
-    sha1 "e791cb658bc61277f5b6ee852c2f8d75d7eb9793" => :mavericks
-    sha1 "72324ec4c9cdb6973e1f94988c731d86308e5a0b" => :mountain_lion
-    sha1 "c2f0505cc67544056d0147e1ab3a24ea4ced062e" => :lion
+    revision 2
+    sha1 "d24b092def576f66ef87ad4ac08e82379f857569" => :mavericks
+    sha1 "91272b6bcdd4ccae55ebe1bb0dc318f7adcc5bb5" => :mountain_lion
+    sha1 "1a27c03864b32c8696e9fd203bc1fc5fe8cecdbf" => :lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -21,6 +22,11 @@ class Ansible < Formula
   resource 'pycrypto' do
     url 'https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz'
     sha1 'c17e41a80b3fbf2ee4e8f2d8bb9e28c5d08bbb84'
+  end
+
+  resource 'boto' do
+    url 'https://pypi.python.org/packages/source/b/boto/boto-2.32.1.tar.gz'
+    sha1 '4fdecde66245b7fc0295e22d2c2d3c9b08c2b1fa'
   end
 
   resource 'pyyaml' do
@@ -43,11 +49,9 @@ class Ansible < Formula
     sha1 'a9b24d887f2be772921b3ee30a0b9d435cffadda'
   end
 
-  if build.with? 'accelerate'
-    resource 'python-keyczar' do
-      url 'https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71b.tar.gz'
-      sha1 '20c7c5d54c0ce79262092b4cc691aa309fb277fa'
-    end
+  resource 'python-keyczar' do
+    url 'https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.71b.tar.gz'
+    sha1 '20c7c5d54c0ce79262092b4cc691aa309fb277fa'
   end
 
   def install
@@ -58,7 +62,7 @@ class Ansible < Formula
     ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    res = %w[pycrypto pyyaml paramiko markupsafe jinja2]
+    res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
     res << "python-keyczar" if build.with? "accelerate"
     res.each do |r|
       resource(r).stage { system "python", *install_args }

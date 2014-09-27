@@ -1,20 +1,20 @@
-require 'formula'
+require "formula"
 
 class Scons < Formula
-  homepage 'http://www.scons.org'
-  url 'https://downloads.sourceforge.net/scons/scons-2.3.2.tar.gz'
-  sha1 '2937f20b86d0c5f86cf31e1fa378307ed34fc20a'
+  homepage "http://www.scons.org"
+  url "https://downloads.sourceforge.net/scons/scons-2.3.3.tar.gz"
+  sha1 "7bb1c755610613d9dab71bd56267fd1f531a2f97"
 
   bottle do
     cellar :any
-    sha1 "65c501c87d7e206741771557a15acf70f46ce1d9" => :mavericks
-    sha1 "f3b905adce064f5d11b3cca45e613eb20cbce4f6" => :mountain_lion
-    sha1 "50344e59e5f99675239891ba92aaed4a70323b5e" => :lion
+    sha1 "323530df6b6e23d170463632987ae590cefdc3d4" => :mavericks
+    sha1 "400392e896baa82a5f5971ecc1840847db0b86cb" => :mountain_lion
+    sha1 "10ab4cd7d39a16e44fb2575c174d8a4139077ec5" => :lion
   end
 
   def install
     bin.mkpath # Script won't create this if it doesn't already exist
-    man1.install gzip('scons-time.1', 'scons.1', 'sconsign.1')
+    man1.install gzip("scons-time.1", "scons.1", "sconsign.1")
     system "/usr/bin/python", "setup.py", "install",
              "--prefix=#{prefix}",
              "--standalone-lib",

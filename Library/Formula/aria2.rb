@@ -2,13 +2,14 @@ require "formula"
 
 class Aria2 < Formula
   homepage "http://aria2.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.6/aria2-1.18.6.tar.bz2"
-  sha1 "348c0e6150218768901b0cbf94300a52c4e86864"
+  url "https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.8/aria2-1.18.8.tar.bz2"
+  sha1 "b6ad7064b1ea769e78f6a7dc9787a12cfc1e153f"
 
   bottle do
     cellar :any
-    sha1 "935615bcfa8c92272b5ef4481e3313d2474d5c05" => :mavericks
-    sha1 "76a2a01d4b0dbce3410d29bb9c3c3caaf3110e78" => :mountain_lion
+    sha1 "0d9ea391b7e7651df5abd4fb4e7eabd45e6e3d48" => :mavericks
+    sha1 "6be677ac2eefae9f5e658f3e340864d53ffb5f8b" => :mountain_lion
+    sha1 "b2aff43e5bffe9fe203b23e05060cc84944c20c0" => :lion
   end
 
   depends_on "pkg-config" => :build

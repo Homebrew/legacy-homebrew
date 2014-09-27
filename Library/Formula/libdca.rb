@@ -6,6 +6,10 @@ class Libdca < Formula
   sha1 '3fa5188eaaa2fc83fb9c4196f6695a23cb17f3bc'
 
   def install
+    # Fixes "duplicate symbol ___sputc" error when building with clang
+    # https://github.com/Homebrew/homebrew/issues/31456
+    ENV.append_to_cflags "-std=gnu89"
+
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"

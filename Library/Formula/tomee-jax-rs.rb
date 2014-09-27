@@ -6,9 +6,6 @@ class TomeeJaxRs < Formula
   version '1.6.0.2'
   sha1 '53e438f72edb455f4d01464d2e00855fa055ad6b'
 
-  # Keep log folders
-  skip_clean 'libexec'
-
   def install
     # Remove Windows scripts
     rm_rf Dir['bin/*.bat']

@@ -11,10 +11,7 @@ class Aha < Formula
   end
 
   test do
-    IO.popen("#{bin}/aha", "w+") do |pipe|
-      pipe.write("[35mrain[34mpill[00m")
-      pipe.close_write
-      assert_match /color:purple;">rain.*color:blue;">pill/, pipe.read
-    end
+    out = pipe_output(bin/"aha", "[35mrain[34mpill[00m")
+    assert_match /color:purple;">rain.*color:blue;">pill/, out
   end
 end

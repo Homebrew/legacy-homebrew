@@ -3,7 +3,7 @@ require "formula"
 class Libfreenect < Formula
   homepage "http://openkinect.org"
   url "https://github.com/OpenKinect/libfreenect/archive/v0.5.0.tar.gz"
-  sha1 "2f74c27e8760b4d5d4973370aee9ca71301a6176"
+  sha1 "3a0c6ca9b2515132a59232ed5719ee2731f6e580"
 
   head "https://github.com/OpenKinect/libfreenect.git"
 

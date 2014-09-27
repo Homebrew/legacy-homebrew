@@ -16,17 +16,20 @@ class Keg
   class LinkError < RuntimeError
     attr_reader :keg, :src, :dst
 
-    def initialize(keg, src, dst)
+    def initialize(keg, src, dst, cause)
       @src = src
       @dst = dst
       @keg = keg
+      @cause = cause
+      super(cause.message)
+      set_backtrace(cause.backtrace)
     end
   end
 
   class ConflictError < LinkError
     def suggestion
       conflict = Keg.for(dst)
-    rescue NotAKegError
+    rescue NotAKegError, Errno::ENOENT
       "already exists. You may want to remove it:\n  rm #{dst}\n"
     else
       <<-EOS.undent
@@ -361,17 +364,17 @@ class Keg
 
     dst.delete if mode.overwrite && (dst.exist? || dst.symlink?)
     dst.make_relative_symlink(src)
-  rescue Errno::EEXIST
+  rescue Errno::EEXIST => e
     if dst.exist?
-      raise ConflictError.new(self, src.relative_path_from(path), dst)
+      raise ConflictError.new(self, src.relative_path_from(path), dst, e)
     elsif dst.symlink?
       dst.unlink
       retry
     end
-  rescue Errno::EACCES
-    raise DirectoryNotWritableError.new(self, src.relative_path_from(path), dst)
-  rescue SystemCallError
-    raise LinkError.new(self, src.relative_path_from(path), dst)
+  rescue Errno::EACCES => e
+    raise DirectoryNotWritableError.new(self, src.relative_path_from(path), dst, e)
+  rescue SystemCallError => e
+    raise LinkError.new(self, src.relative_path_from(path), dst, e)
   end
 
   protected

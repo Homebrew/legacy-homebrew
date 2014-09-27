@@ -2,8 +2,28 @@ require 'formula'
 
 class Gearman < Formula
   homepage 'http://gearman.org/'
-  url 'https://launchpad.net/gearmand/1.2/1.1.9/+download/gearmand-1.1.9.tar.gz'
-  sha1 '59ec305a4535451c3b51a21d2525e1c07770419d'
+  url "https://launchpad.net/gearmand/1.0/1.0.6/+download/gearmand-1.0.6.tar.gz"
+  sha1 "872d5e13c20a29a20e45df3afa8f3981dc52d363"
+
+  bottle do
+    sha1 "b1d76be880294ad7900c18628674c9853b7d6a14" => :mavericks
+    sha1 "43aa44d53ca68b67978beeb94613c8418e4d0eaf" => :mountain_lion
+    sha1 "d09770f6262eed1c7ababa6f06e9659e12694e9a" => :lion
+  end
+
+  devel do
+    url "https://launchpad.net/gearmand/1.2/1.1.12/+download/gearmand-1.1.12.tar.gz"
+    sha1 "85b5271ea3ac919d96fff9500993b73c9dc80c6c"
+
+    depends_on "cyassl" => :optional
+    depends_on "openssl" => :optional
+
+    patch :p0 do
+      # https://bugs.launchpad.net/gearmand/+bug/1318151
+      url "https://launchpadlibrarian.net/179708850/gearman-1.1.12-client.cc.patch"
+      sha1 "1217ca4da09fd0a0e6a7333e89545a3707c550e4"
+    end
+  end
 
   option 'with-mysql', 'Compile with MySQL persistent queue enabled'
   option 'with-postgresql', 'Compile with Postgresql persistent queue enabled'
@@ -11,22 +31,62 @@ class Gearman < Formula
   depends_on 'pkg-config' => :build
   depends_on 'boost'
   depends_on 'libevent'
-  depends_on 'ossp-uuid'
   depends_on :mysql => :optional
   depends_on :postgresql => :optional
-
-  # build fix for tr1 -> std
-  # Fixes have also been applied upstream
-  patch :DATA if MacOS.version >= :mavericks
-
+  depends_on "libpqxx" if build.with? "postgresql"
+  depends_on "hiredis" => :optional
+  depends_on "libmemcached" => :optional
 
   def install
-    args = ["--prefix=#{prefix}"]
-    args << "--without-mysql" if build.without? 'mysql'
-    if build.with? 'postgresql'
-      pg_config = "#{Formula["postgresql"].opt_bin}/pg_config"
-      args << "--with-postgresql=#{pg_config}"
+
+    if build.stable? && MacOS.version >= :mavericks
+      # https://bugs.launchpad.net/gearmand/+bug/1236815
+      inreplace "configure", "<tr1/", "<"
+      inreplace "libgearman-1.0/gearman.h", "<tr1/", "<"
     end
+
+    if build.devel?
+      # https://bugs.launchpad.net/gearmand/+bug/1236815
+      inreplace "libgearman-1.0/gearman.h", "#  include <cinttypes>", "#  include \"gear_config.h\""
+
+      # https://bugs.launchpad.net/gearmand/+bug/1368926
+      Dir["tests/**/*.cc", "libtest/main.cc"].each do |test_file|
+        next unless /std::unique_ptr/ === File.read(test_file)
+        inreplace test_file, "std::unique_ptr", "std::auto_ptr"
+      end
+    end
+
+    args = [
+      "--prefix=#{prefix}",
+      "--with-boost=#{Formula['boost'].prefix}",
+      "--with-sqlite3"
+    ]
+
+    if build.devel?
+      if build.with? "cyassl"
+        args << "--enable-ssl" << "--enable-cyassl"
+      elsif build.with? "openssl"
+        args << "--enable-ssl" << "--with-openssl=#{Formula['openssl'].prefix}" << "--disable-cyassl"
+      else
+        args << "--disable-ssl" << "--disable-cyassl"
+      end
+    end
+
+    if build.with? "postgresql"
+      args << "--enable-libpq" << "--with-postgresql=#{Formula['postgresql'].opt_bin}/pg_config"
+    else
+      args << "--disable-libpq" << "--without-postgresql"
+    end
+
+    if build.with? "libmemcached"
+      args << "--enable-libmemcached" << "--with-memcached=#{Formula['memcached'].opt_bin}/memcached"
+    else
+      args << "--disable-libmemcached" << "--without-memcached"
+    end
+
+    args << (build.with?("mysql") ? "--with-mysql=#{Formula['mysql'].opt_bin}/mysql_config" : "--without-mysql")
+    args << (build.with?("hiredis") ? "--enable-hiredis" : "--disable-hiredis")
+
     system "./configure", *args
     system "make install"
   end
@@ -50,21 +110,3 @@ class Gearman < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/libgearman-1.0/gearman.h b/libgearman-1.0/gearman.h
-index 850a26d..8f7a8f0 100644
---- a/libgearman-1.0/gearman.h
-+++ b/libgearman-1.0/gearman.h
-@@ -50,7 +50,11 @@
- #endif
-
- #ifdef __cplusplus
-+#ifdef _LIBCPP_VERSION
-+#  include <cinttypes>
-+#else
- #  include <tr1/cinttypes>
-+#endif
- #  include <cstddef>
- #  include <cstdlib>
- #  include <ctime>

@@ -6,9 +6,6 @@ class TomeePlus < Formula
   version '1.6.0.2'
   sha1 '11b605f2da94fbc2bc571e62578c1599c2a4a789'
 
-  # Keep log folders
-  skip_clean 'libexec'
-
   def install
     # Remove Windows scripts
     rm_rf Dir['bin/*.bat']

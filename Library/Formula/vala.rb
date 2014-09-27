@@ -42,8 +42,6 @@ class Vala < Formula
     system "#{bin}/valac", *valac_args
     assert File.exist?(testpath/"hello.c")
 
-    output = `#{testpath}/hello`
-    assert_equal test_string, output
-    assert_equal 0, $?.exitstatus
+    assert_equal test_string, shell_output("#{testpath}/hello")
   end
 end

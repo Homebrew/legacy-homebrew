@@ -2,25 +2,27 @@ require "formula"
 
 class Nginx < Formula
   homepage "http://nginx.org/"
-  url "http://nginx.org/download/nginx-1.6.0.tar.gz"
-  sha1 "00eed38652d2cee36cc91a395f6703584658bb23"
-  revision 1
+  url "http://nginx.org/download/nginx-1.6.2.tar.gz"
+  sha1 "1a5458bc15acf90eea16353a1dd17285cf97ec35"
 
   devel do
-    url "http://nginx.org/download/nginx-1.7.3.tar.gz"
-    sha1 "56cd029f1fba6965433327578ad195f36d27114d"
+    url "http://nginx.org/download/nginx-1.7.5.tar.gz"
+    sha1 "432303cf9694eedb56a5a91d86536beb604d766b"
   end
 
   head "http://hg.nginx.org/nginx/", :using => :hg
 
   bottle do
-    sha1 "0b2a83221a85da1595e52ba61f0bc39a8905db71" => :mavericks
-    sha1 "51e55866a2810d4544ad4004cdd1e2cf2dd4d6f6" => :mountain_lion
-    sha1 "4bb95425d1bca66163b4d212084ae564c13b49d7" => :lion
+    sha1 "7aa0fc40ada6fa9623817f3f5bac0310b7fb1b45" => :mavericks
+    sha1 "c1660c583f74b0829f752804f566769e607998a7" => :mountain_lion
+    sha1 "2f4810ccc3cb5687685028591668ecae50b3cb30" => :lion
   end
 
   env :userpaths
 
+  # Before submitting more options to this formula please check they aren't
+  # already in Homebrew/homebrew-nginx/nginx-full:
+  # https://github.com/Homebrew/homebrew-nginx/blob/master/nginx-full.rb
   option "with-passenger", "Compile with support for Phusion Passenger module"
   option "with-webdav", "Compile with support for WebDAV module"
   option "with-debug", "Compile with support for debug log"
@@ -122,8 +124,8 @@ class Nginx < Formula
   def passenger_caveats; <<-EOS.undent
 
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf, inside the 'http' context:
-      passenger_root #{HOMEBREW_PREFIX}/opt/passenger/libexec/lib/phusion_passenger/locations.ini
-      passenger_ruby /usr/bin/ruby
+      passenger_root #{HOMEBREW_PREFIX}/opt/passenger/libexec/lib/phusion_passenger/locations.ini;
+      passenger_ruby /usr/bin/ruby;
     EOS
   end
 

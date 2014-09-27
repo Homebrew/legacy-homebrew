@@ -4,12 +4,15 @@ class Uwsgi < Formula
   homepage "http://projects.unbit.it/uwsgi/"
   url "http://projects.unbit.it/downloads/uwsgi-2.0.6.tar.gz"
   sha1 "5e0fc187ea10366153a1f800c0e7e80940188837"
+  revision 1
 
   bottle do
-    sha1 "cccf498414d3120ca439ab1ed32c4ed1e04b573b" => :mavericks
-    sha1 "6ce7c6a0434b133d3f6efba72783650b34f13e2b" => :mountain_lion
-    sha1 "33678570960fa45d5e2a7017bfa1ad67f9dedeb3" => :lion
+    sha1 "d42895c7b7fdbc1be90e7ebd84258f7409a70e4c" => :mavericks
+    sha1 "ff677ccbb7ca824eaf8e8b8ba6fb1eec5a0acecb" => :mountain_lion
+    sha1 "6e6ac75b4f1fc85a3e18c4bd9a27621f480fe41b" => :lion
   end
+
+  depends_on "pkg-config" => :build
 
   depends_on "pcre"
   depends_on "yajl" if build.without? "jansson"
@@ -21,10 +24,9 @@ class Uwsgi < Formula
   depends_on "libffi" => :optional
   depends_on "libxslt" => :optional
   depends_on "libyaml" => :optional
-  depends_on "lua" => :optional
+  depends_on "lua51" => :optional
   depends_on "mongodb" => :optional
   depends_on "mongrel2" => :optional
-  depends_on "mono" => :optional
   depends_on "nagios" => :optional
   depends_on "postgresql" => :optional
   depends_on "pypy" => :optional
@@ -41,17 +43,10 @@ class Uwsgi < Formula
   option "with-ruby", "Compile with Ruby support"
 
   def install
-    %w{CFLAGS LDFLAGS}.each { |e| ENV.append e, "-arch #{MacOS.preferred_arch}" }
+    ENV.append %w{CFLAGS LDFLAGS}, "-arch #{MacOS.preferred_arch}"
 
-    json = "yajl"
-    if build.with? "jansson"
-      json = "jansson"
-    end
-
-    yaml = "embedded"
-    if build.with? "libyaml"
-      yaml = "libyaml"
-    end
+    json = build.with?("jansson") ? "jansson" : "yajl"
+    yaml = build.with?("libyaml") ? "libyaml" : "embedded"
 
     (buildpath/"buildconf/brew.ini").write <<-EOS.undent
       [uwsgi]
@@ -95,7 +90,6 @@ class Uwsgi < Formula
     plugins << "mongodb" if build.with? "mongodb"
     plugins << "mongodblog" if build.with? "mongodb"
     plugins << "mongrel2" if build.with? "mongrel2"
-    plugins << "mono" if build.with? "mono"
     plugins << "nagios" if build.with? "nagios"
     plugins << "pypy" if build.with? "pypy"
     plugins << "php" if build.with? "php"

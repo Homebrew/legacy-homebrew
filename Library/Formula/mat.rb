@@ -56,11 +56,9 @@ class Mat < Formula
     sha1 'db9ac81daf3e069b8838ae6d379abac2f0094663'
   end
 
-  if build.with? 'massive-audio'
-    resource 'mutagen' do
-      url 'https://pypi.python.org/packages/source/m/mutagen/mutagen-1.22.tar.gz'
-      sha1 '9bdd4a7a491008e62d140d83fc31d355577f94e7'
-    end
+  resource 'mutagen' do
+    url 'https://pypi.python.org/packages/source/m/mutagen/mutagen-1.22.tar.gz'
+    sha1 '9bdd4a7a491008e62d140d83fc31d355577f94e7'
   end
 
   def install

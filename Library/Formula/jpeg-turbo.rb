@@ -3,6 +3,7 @@ require 'formula'
 class JpegTurbo < Formula
   homepage 'http://www.libjpeg-turbo.org/'
   url 'https://downloads.sourceforge.net/project/libjpeg-turbo/1.3.1/libjpeg-turbo-1.3.1.tar.gz'
+  mirror 'https://mirrors.kernel.org/debian/pool/main/libj/libjpeg-turbo/libjpeg-turbo_1.3.1.orig.tar.gz'
   sha1 '5fa19252e5ca992cfa40446a0210ceff55fbe468'
 
   depends_on "libtool" => :build
@@ -25,9 +26,10 @@ class JpegTurbo < Formula
   end
 
   test do
-    system "#{bin}/jpegtran", "-crop", "500x500+200+500",
+    test_jpg = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.jpg"
+    system "#{bin}/jpegtran", "-crop", "1x1",
                               "-transpose", "-perfect",
-                              "-outfile", "test.jpg",
-                              "/System/Library/CoreServices/DefaultDesktop.jpg"
+                              "-outfile", "out.jpg",
+                              test_jpg
   end
 end

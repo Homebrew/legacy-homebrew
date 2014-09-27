@@ -11,13 +11,13 @@ class Mutt < Formula
   url "ftp://ftp.mutt.org/mutt/mutt-1.5.23.tar.gz"
   mirror "http://fossies.org/linux/misc/mutt-1.5.23.tar.gz"
   sha1 "8ac821d8b1e25504a31bf5fda9c08d93a4acc862"
-  revision 1
+  revision 2
 
   bottle do
-    revision 1
-    sha1 "5aa656ffd793e57b26642b82c514e0195e32dd1e" => :mavericks
-    sha1 "56302c5553e7bf5b31db3720ab22c6343c11c428" => :mountain_lion
-    sha1 "8b7dad42c73723e25cb874e2654c8754218f580a" => :lion
+    revision 2
+    sha1 "1306f6eb8d79e64ab369831b0023b1e3d639e5ee" => :mavericks
+    sha1 "96f9ac81c213f4dfc6316423538dfd449bd65fbf" => :mountain_lion
+    sha1 "32d9a238d78473af52188dcfa07e33a0da018911" => :lion
   end
 
   head do
@@ -28,7 +28,7 @@ class Mutt < Formula
     end
   end
 
-  unless Tab.for_name("signing-party").used_options.include? "with-rename-pgpring"
+  unless Tab.for_name("signing-party").with? "rename-pgpring"
     conflicts_with "signing-party",
       :because => "mutt installs a private copy of pgpring"
   end
@@ -102,6 +102,6 @@ class Mutt < Formula
     system "make"
     system "make", "install"
 
-    (share/"doc/mutt").install resource("html") if build.head?
+    doc.install resource("html") if build.head?
   end
 end

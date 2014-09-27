@@ -1,15 +1,16 @@
 require "formula"
 
 class Libetonyek < Formula
-  homepage "http://www.freedesktop.org/wiki/Software/libetonyek/"
-  url "http://dev-www.libreoffice.org/src/libetonyek-0.1.1.tar.xz"
+  homepage "https://wiki.documentfoundation.org/DLP/Libraries/libetonyek"
+  url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.1.tar.xz"
   sha1 "024fd730b062d1df54de0352323d03d011e59277"
 
   bottle do
     cellar :any
-    sha1 "aed0a80bfcfc83748e4e03cf640fe176c0f211d5" => :mavericks
-    sha1 "9ccf399948d3423af1134d541033988dfc3270a0" => :mountain_lion
-    sha1 "a3a53a426861f26ee026676dd0232427bda8f376" => :lion
+    revision 1
+    sha1 "bc49ceed23c6bbb529231c2b235f3b4eab942d3b" => :mavericks
+    sha1 "2e9fb0728d15de615a4f7c0749275f921c4601ba" => :mountain_lion
+    sha1 "12e753556b226cce7a8f8bd80ae95f76037984a5" => :lion
   end
 
   depends_on "pkg-config" => :build
@@ -35,8 +36,12 @@ class Libetonyek < Formula
       }
     EOS
     system ENV.cxx, "test.cpp", "-o", "test",
-                    "-lrevenge-0.0", "-I#{Formula["librevenge"].include}/librevenge-0.0",
-                    "-letonyek-0.1", "-I#{Formula["libetonyek"].include}/libetonyek-0.1"
+                    "-I#{Formula["librevenge"].include}/librevenge-0.0",
+                    "-I#{include}/libetonyek-0.1",
+                    "-L#{Formula["librevenge"].lib}",
+                    "-L#{lib}",
+                    "-lrevenge-0.0",
+                    "-letonyek-0.1"
     system "./test"
   end
 end

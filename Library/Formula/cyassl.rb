@@ -2,10 +2,17 @@ require "formula"
 
 class Cyassl < Formula
   homepage "http://yassl.com/yaSSL/Products-cyassl.html"
-  url "https://github.com/cyassl/cyassl/archive/v3.1.0.tar.gz"
-  sha256 "8ece90d145255e6be5934829d86497d2425e2220d9a622d3aa08e5d965fa8d9a"
+  url "https://github.com/cyassl/cyassl/archive/v3.2.0.tar.gz"
+  sha256 "4b82b6cd54aec42abc557e7dc3ec8239867c5373166b9346998fbe1232b3177c"
 
   head "https://github.com/cyassl/cyassl.git"
+
+  bottle do
+    cellar :any
+    sha1 "af3935e69de8e276da44489ee06d7bd02f12d611" => :mavericks
+    sha1 "3d46f2e384ded4b9d1fd6854ea9f5b45a2582e6b" => :mountain_lion
+    sha1 "3d3bae7a0f09f77cad6219b75ca9193fe5931bda" => :lion
+  end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -17,7 +24,6 @@ class Cyassl < Formula
               --prefix=#{prefix}
               --disable-bump
               --disable-fortress
-              --disable-ntru
               --disable-sniffer
               --disable-webserver
               --enable-aesccm

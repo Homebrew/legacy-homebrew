@@ -24,7 +24,13 @@ module SharedEnvExtension
     CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
     MACOSX_DEPLOYMENT_TARGET SDKROOT DEVELOPER_DIR
     CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH
+    GOBIN
   ]
+
+  def setup_build_environment(formula=nil)
+    @formula = formula
+    reset
+  end
 
   def reset
     SANITIZED_VARS.each { |k| delete(k) }
@@ -100,15 +106,21 @@ module SharedEnvExtension
   def fcflags;  self['FCFLAGS'];      end
 
   def compiler
-    @compiler ||= if (cc = ARGV.cc || homebrew_cc)
-      COMPILER_SYMBOL_MAP.fetch(cc) do |other|
-        case other
-        when GNU_GCC_REGEXP
-          other
-        else
-          raise "Invalid value for --cc: #{other}"
-        end
+    @compiler ||= if (cc = ARGV.cc)
+      warn_about_non_apple_gcc($1) if cc =~ GNU_GCC_REGEXP
+      fetch_compiler(cc, "--cc")
+    elsif (cc = homebrew_cc)
+      warn_about_non_apple_gcc($1) if cc =~ GNU_GCC_REGEXP
+      compiler = fetch_compiler(cc, "HOMEBREW_CC")
+
+      if @formula
+        compilers = [compiler] + CompilerSelector.compilers
+        compiler = CompilerSelector.select_for(@formula, compilers)
       end
+
+      compiler
+    elsif @formula
+      CompilerSelector.select_for(@formula)
     else
       MacOS.default_compiler
     end
@@ -123,15 +135,6 @@ module SharedEnvExtension
       @compiler = compiler
       self.cc  = determine_cc
       self.cxx = determine_cxx
-    end
-  end
-
-  # If the given compiler isn't compatible, will try to select
-  # an alternate compiler, altering the value of environment variables.
-  # If no valid compiler is found, raises an exception.
-  def validate_cc!(formula)
-    if formula.fails_with? compiler
-      send CompilerSelector.new(formula).compiler
     end
   end
 
@@ -260,5 +263,16 @@ module SharedEnvExtension
 
   def homebrew_cc
     self["HOMEBREW_CC"]
+  end
+
+  def fetch_compiler(value, source)
+    COMPILER_SYMBOL_MAP.fetch(value) do |other|
+      case other
+      when GNU_GCC_REGEXP
+        other
+      else
+        raise "Invalid value for #{source}: #{other}"
+      end
+    end
   end
 end

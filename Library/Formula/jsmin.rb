@@ -12,10 +12,6 @@ class Jsmin < Formula
   end
 
   test do
-    IO.popen("#{bin}/jsmin", "w+") do |pipe|
-      pipe.puts "var i = 0; // comment"
-      pipe.close_write
-      assert_equal "\nvar i=0;", pipe.read
-    end
+    assert_equal "\nvar i=0;", pipe_output(bin/"jsmin", "var i = 0; // comment")
   end
 end

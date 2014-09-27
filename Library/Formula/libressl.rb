@@ -2,14 +2,14 @@ require "formula"
 
 class Libressl < Formula
   homepage "http://www.libressl.org/"
-  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.0.3.tar.gz"
-  mirror "http://mirrors.nycbug.org/pub/OpenBSD/LibreSSL/libressl-2.0.3.tar.gz"
-  sha256 "dfd53b78803c25cb50083dd1f8f773a924dc31cdd9de396eeae4120c14aae2d4"
+  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.0.5.tar.gz"
+  mirror "http://mirrors.nycbug.org/pub/OpenBSD/LibreSSL/libressl-2.0.5.tar.gz"
+  sha256 "3f5463b5deb93efd2ac4e23a20612a1ccf3299a569d03880bb204c90647dfc9a"
 
   bottle do
-    sha1 "c24b27d8d48eaab61681e7fdf85f3e63ba7ed263" => :mavericks
-    sha1 "281e490788a7310d4ca62170ad185e3206ffcfd2" => :mountain_lion
-    sha1 "40795697ae67eb206b5e36e7864534e246eb0f47" => :lion
+    sha1 "9b3d8724069c68abd7b287e6bb98038643f4e258" => :mavericks
+    sha1 "b4ce593f44fd15ad5e8b98ca3c0ed6b424dc99f0" => :mountain_lion
+    sha1 "5fc127e5b5a9bcef3f2a89d532be2f13501ca596" => :lion
   end
 
   head do

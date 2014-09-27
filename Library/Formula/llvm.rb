@@ -4,21 +4,21 @@ class Llvm < Formula
   homepage 'http://llvm.org/'
 
   bottle do
-    sha1 "8136d3ef9c97e3de20ab4962f94a6c15ce5b50b2" => :mavericks
-    sha1 "15d12d15f17c3fa12f2b7e87ac1f70ae3eaa7e35" => :mountain_lion
-    sha1 "50e1d0c4a046ea14fb8c4bbd305bc7c8ccaac5bb" => :lion
+    sha1 "1fc5969edc5fcffbb3e958da00ff6a1c70606262" => :mavericks
+    sha1 "c30d6cc49521fb950bd76390878c9469a780b981" => :mountain_lion
+    sha1 "0e4178a7e094b9c77431a6f37f7dc2f72acb8389" => :lion
   end
 
   stable do
-    url "http://llvm.org/releases/3.4.2/llvm-3.4.2.src.tar.gz"
-    sha1 "c5287384d0b95ecb0fd7f024be2cdfb60cd94bc9"
+    url "http://llvm.org/releases/3.5.0/llvm-3.5.0.src.tar.xz"
+    sha1 "58d817ac2ff573386941e7735d30702fe71267d5"
     resource 'clang' do
-      url "http://llvm.org/releases/3.4.2/cfe-3.4.2.src.tar.gz"
-      sha1 "add5420b10c3c3a38c4dc2322f8b64ba0a5def97"
+      url "http://llvm.org/releases/3.5.0/cfe-3.5.0.src.tar.xz"
+      sha1 "834cee2ed8dc6638a486d8d886b6dce3db675ffa"
     end
     resource 'lld' do
-      url "http://llvm.org/releases/3.4/lld-3.4.src.tar.gz"
-      sha1 "1e8f2fe693d82fd0e3166fb60e017720eb1a5cf5"
+      url "http://llvm.org/releases/3.5.0/lld-3.5.0.src.tar.xz"
+      sha1 "13c88e1442b482b3ffaff5934f0a2b51cab067e5"
     end
   end
 
@@ -44,7 +44,14 @@ class Llvm < Formula
 
   keg_only :provided_by_osx
 
+  # Apple's libstdc++ is too old to build LLVM
+  fails_with :gcc
+  fails_with :llvm
+
   def install
+    # Apple's libstdc++ is too old to build LLVM
+    ENV.libcxx if ENV.compiler == :clang
+
     if build.with? "python" and build.include? 'disable-shared'
       raise 'The Python bindings need the shared library.'
     end

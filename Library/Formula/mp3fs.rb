@@ -7,7 +7,7 @@ class Mp3fs < Formula
 
   depends_on "pkg-config" => :build
   depends_on "lame"
-  depends_on "osxfuse"
+  depends_on :osxfuse
   depends_on "libid3tag"
   depends_on "flac"
 
@@ -17,9 +17,7 @@ class Mp3fs < Formula
   end
 
   test do
-    require "open3"
-    Open3.popen3("#{bin}/mp3fs", "-V") do |_, stdout, _|
-      assert_match /MP3FS version #{Regexp.escape(version)}/, stdout.read
-    end
+    assert_match /mp3fs version: #{Regexp.escape(version)}/,
+                 shell_output("#{bin}/mp3fs -V")
   end
 end

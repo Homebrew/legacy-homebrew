@@ -3,8 +3,15 @@ require "formula"
 class Clojurescript < Formula
   homepage "https://github.com/clojure/clojurescript"
   head "https://github.com/clojure/clojurescript.git"
-  url "https://github.com/clojure/clojurescript/archive/r2268.tar.gz"
-  sha1 "ce3d52d9e374164cc8ac4a8d0ed2e6cf389c8da5"
+  url "https://github.com/clojure/clojurescript/archive/r2342.tar.gz"
+  sha1 "72868eb15e02fadc0e7cc79252aea5a3777638b5"
+
+  bottle do
+    cellar :any
+    sha1 "258033dcd57bd7c60e459196dc27f2defce1f5fe" => :mavericks
+    sha1 "cf38e509c0bc9973884cfebb89949bad9201dfa5" => :mountain_lion
+    sha1 "3382ba5e90def2df4b69cca762b5878274bbe38f" => :lion
+  end
 
   def install
     system "./script/bootstrap"

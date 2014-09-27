@@ -24,7 +24,7 @@ class GitTf < Formula
     (libexec + "native").install install_prefix + 'native/macosx'
 
     bin.write_exec_script libexec/'git-tf'
-    (share/'doc/git-tf').install Dir['Git-TF_*', 'ThirdPartyNotices*']
+    doc.install Dir['Git-TF_*', 'ThirdPartyNotices*']
   end
 
   def caveats; <<-EOS.undent

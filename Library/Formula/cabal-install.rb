@@ -1,36 +1,41 @@
-require 'formula'
+require "formula"
 
 class CabalInstall < Formula
-  homepage 'http://www.haskell.org/haskellwiki/Cabal-Install'
-  url "http://hackage.haskell.org/package/cabal-install-1.20.0.2/cabal-install-1.20.0.2.tar.gz"
-  sha1 "e9b3843270b8f5969a4e1205263e59439bc35692"
+  homepage "http://www.haskell.org/haskellwiki/Cabal-Install"
+  url "http://hackage.haskell.org/package/cabal-install-1.20.0.3/cabal-install-1.20.0.3.tar.gz"
+  sha1 "444448b0f704420e329e8fc1989b6743c1c8546d"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "cb2da5b5994de0bb2bb31db8245092db7e316cbc" => :mavericks
-    sha1 "186eedfdfb31ca7d5eca4f9258820db3b4412aa8" => :mountain_lion
-    sha1 "14c4103eac763e6e7b2ee480b1daf739c61ad308" => :lion
+    sha1 "12a7a0ed49eef251fb8454bf882187aa9f495e75" => :mavericks
+    sha1 "c1c4d78116c9fb9cec8e021f074a7b2d78f13fd8" => :mountain_lion
+    sha1 "1e201a29a5535edc30654402e407f985017ef518" => :lion
   end
 
-  depends_on 'ghc'
+  depends_on "ghc"
 
-  conflicts_with 'haskell-platform'
+  fails_with :clang if MacOS.version < :mavericks # Same as ghc.rb
 
   def install
     # use a temporary package database instead of ~/.cabal or ~/.ghc
     pkg_db = "#{Dir.pwd}/package.conf.d"
-    system 'ghc-pkg', 'init', pkg_db
-    ENV['EXTRA_CONFIGURE_OPTS'] = "--package-db=#{pkg_db}"
-    ENV['PREFIX'] = Dir.pwd
-    inreplace 'bootstrap.sh', 'list --global',
-      'list --global --no-user-package-db'
+    system "ghc-pkg", "init", pkg_db
+    ENV["EXTRA_CONFIGURE_OPTS"] = "--package-db=#{pkg_db}"
+    ENV["PREFIX"] = Dir.pwd
+    inreplace "bootstrap.sh", "list --global",
+      "list --global --no-user-package-db"
 
-    system 'sh', 'bootstrap.sh'
+    # Avoid a nasty bug in Cabal by forcing the bootstrap script to pull a later version.
+    # (q.v. https://github.com/haskell/cabal/issues/1740)
+    inreplace "bootstrap.sh", 'CABAL_VER="1.20.0.0";', 'CABAL_VER="1.20.0.2";'
+
+    system "sh", "bootstrap.sh"
     bin.install "bin/cabal"
-    bash_completion.install 'bash-completion/cabal'
+    bash_completion.install "bash-completion/cabal"
   end
 
   test do
-    system "#{bin}/cabal", "--config-file=#{testpath}/config", 'info', 'cabal'
+    system "#{bin}/cabal", "--config-file=#{testpath}/config", "info", "cabal"
   end
 end
