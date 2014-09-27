@@ -4,16 +4,12 @@ class Netpbm < Formula
   homepage 'http://netpbm.sourceforge.net'
   # Maintainers: Look at http://netpbm.svn.sourceforge.net/viewvc/netpbm/
   # for versions and matching revisions
-  url 'svn+http://svn.code.sf.net/p/netpbm/code/advanced/', :revision => 2277
-  version '10.67.05'
+  url 'svn+http://svn.code.sf.net/p/netpbm/code/advanced/', :revision => 2294
+  version '10.68'
 
   head 'http://svn.code.sf.net/p/netpbm/code/trunk'
 
   bottle do
-    cellar :any
-    sha1 "6b5d4ba6089ab5a4665c46ade6fba04fb8f99f42" => :mavericks
-    sha1 "3b4f7ba452a93956aa2fb8655d2b0066195c47d3" => :mountain_lion
-    sha1 "656e30aee6d73d7c8910d801d6c24cdaf7afe2ed" => :lion
   end
 
   option :universal
