@@ -5,6 +5,12 @@ class Squid < Formula
   url "http://www.squid-cache.org/Versions/v3/3.4/squid-3.4.7.tar.bz2"
   sha1 "724bc2f7aa2b7dab4111305af3f243b84468689f"
 
+  bottle do
+    sha1 "f505e4b18fae3fc4423bce935e9e859e003f34ab" => :mavericks
+    sha1 "7454588e02bcf4ffaadb8d3b17e20db5ede2a4cf" => :mountain_lion
+    sha1 "489cd4206f99ec11bd6c6a48bfa8557e2348bed1" => :lion
+  end
+
   def install
     # http://stackoverflow.com/questions/20910109/building-squid-cache-on-os-x-mavericks
     ENV.append "LDFLAGS",  "-lresolv"
