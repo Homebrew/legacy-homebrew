@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Libtrace < Formula
-  homepage 'http://research.wand.net.nz/software/libtrace.php'
-  url 'http://research.wand.net.nz/software/libtrace/libtrace-3.0.19.tar.bz2'
-  sha1 'feadbd3ca4f1363055f305e445fdd02995c07f3f'
+  homepage "http://research.wand.net.nz/software/libtrace.php"
+  url "http://research.wand.net.nz/software/libtrace/libtrace-3.0.21.tar.bz2"
+  sha1 "208908ceee0dde9a556dc4cf1d5dac7320f6bae3"
 
   bottle do
     sha1 "8a81dce47f39b1f226cde176f818dfadd93baf6d" => :mavericks
