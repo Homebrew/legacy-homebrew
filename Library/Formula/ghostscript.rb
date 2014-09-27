@@ -4,8 +4,8 @@ class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
 
   stable do
-    url 'http://downloads.ghostscript.com/public/ghostscript-9.14.tar.gz'
-    sha1 '85001be316ebc11a6060ae7e208fe08dcbfd70ae'
+    url 'http://downloads.ghostscript.com/public/ghostscript-9.15.tar.gz'
+    sha1 'f53bcc47e912c7bffc2ced62ed9311376fb18bab'
 
     patch :DATA # Uncomment OS X-specific make vars
   end
