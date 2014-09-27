@@ -4,6 +4,7 @@ class Postgis < Formula
   homepage 'http://postgis.net'
   url 'http://download.osgeo.org/postgis/source/postgis-2.1.4.tar.gz'
   sha256 'cd73c2a38428c8736f6cae73b955aee0bd42f9ca4fd8d93c1af464524cb100fc'
+  revision 1
 
   head 'http://svn.osgeo.org/postgis/trunk/'
 
