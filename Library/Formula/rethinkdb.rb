@@ -7,10 +7,9 @@ class Rethinkdb < Formula
   sha1 "eb68b3a2f9e6c1eb917bec1e46c3cef86fe3c25b"
 
   bottle do
-    revision 1
-    sha1 "2f7a19030733af47f51268050ee0924a93596edb" => :mavericks
-    sha1 "29ee2faced25c53ebc6b2091d8a35283fb0d5866" => :mountain_lion
-    sha1 "9b4f1a04d9694115f02216cd73ec89ef072430e8" => :lion
+    sha1 "4b5f1269335697008c507f528c68d3a59dd2cc02" => :mavericks
+    sha1 "925bad3bb759089349aca73b112c036347101342" => :mountain_lion
+    sha1 "1c1ab85203934327dffed316d55a63cc34430582" => :lion
   end
 
   depends_on :macos => :lion
