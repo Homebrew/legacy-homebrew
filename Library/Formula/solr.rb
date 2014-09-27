@@ -2,27 +2,31 @@ require "formula"
 
 class Solr < Formula
   homepage "http://lucene.apache.org/solr/"
-  url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.9.0/solr-4.9.0.tgz"
-  sha1 "6391e4cda07f2bcbd647bf49070a859baff09154"
-
-  def script; <<-EOS.undent
-    #!/bin/sh
-    if [ -z "$1" ]; then
-      echo "Usage: $ solr /absolute/path/to/config/dir"
-    else
-      cd #{libexec}/example && java -server $JAVA_OPTS -Dsolr.solr.home=$1 -jar start.jar
-    fi
-    EOS
-  end
+  url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.10.0/solr-4.10.0.tgz"
+  sha1 "ae47a89f35b5e2a6a4e55732cccc64fb10ed9779"
 
   def install
     libexec.install Dir["*"]
-    (bin+"solr").write script
+    bin.install "#{libexec}/bin/solr"
+    share.install "#{libexec}/bin/solr.in.sh"
+    prefix.install "#{libexec}/example"
   end
 
   def caveats; <<-EOS.undent
-    To start solr:
-      solr /absolute/path/to/solr/config/dir
+    This supports the new solr script for quickly getting started with Apache Solr by easily loading any of the examples.
+
+    To start Solr with default example:
+      solr start
+
+    To stop Solr:
+      solr stop
+
+    Custom Solr configurations:
+      SOLR_HOME=/path/to/conf solr start
+
+    See all the options provided with:
+      solr -help
+      solr start -help
 
     See the solr homepage for more setup information:
       brew home solr
