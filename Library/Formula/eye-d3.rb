@@ -6,11 +6,10 @@ class EyeD3 < Formula
   sha1 'bcfd0fe14f5fa40f29ca7e7133138a5112f3c270'
   def install
     # Manually process this file
-    inreplace "src/eyeD3/__init__.py.in" do |s|
+    inreplace "src/eyeD3/__init__.py" do |s|
       s.change_make_var! "eyeD3Version", "\"#{version}\""
       s.change_make_var! "eyeD3Maintainer", "\"Packaged by Homebrew\""
     end
-    mv "src/eyeD3/__init__.py.in", "src/eyeD3/__init__.py"
 
     libexec.install "src/eyeD3"
     libexec.install "bin/eyeD3" => "eyeD3_script"
