@@ -27,11 +27,7 @@ class Pdf2htmlex < Formula
   depends_on "glib"
   depends_on "pango"
   depends_on "cairo"
-  depends_on "ossp-uuid"
-  depends_on "zeromq"
   depends_on "gettext"
-  depends_on "czmq" => :optional
-  depends_on "libspiro" => :optional
   depends_on "libpng"   => :recommended
   depends_on "jpeg"     => :recommended
   depends_on "libtiff"  => :recommended
@@ -56,7 +52,7 @@ class Pdf2htmlex < Formula
     # Fix linker error; see: http://trac.macports.org/ticket/25012
     ENV.append "LDFLAGS", "-lintl"
 
-    # And fix the Zlib hunting.
+    # And fix the zlib hunting.
     ENV.append "ZLIB_CFLAGS", "-I/usr/include"
     ENV.append "ZLIB_LIBS", "-L/usr/lib -lz"
 
@@ -67,25 +63,19 @@ class Pdf2htmlex < Formula
     system "./configure", *args
 
     # Fix hard-coded install locations that don't respect the target bindir
-    inreplace "Makefile" do |s|
-      s.gsub! "/Applications", "$(prefix)"
-    end
+    inreplace "Makefile", "/Applications", "$(prefix)"
 
     system "make"
     system "make", "install"
 
     # Fix breaking zlib pkg-config file issue.
-    inreplace "#{prefix}/fontforge/lib/pkgconfig/libfontforge.pc" do |s|
-      s.gsub! "zlib", " "
-    end
+    inreplace "#{prefix}/fontforge/lib/pkgconfig/libfontforge.pc", "zlib", " "
 
-    # Fix breaking zlib pkg-config file issue.
-    inreplace "#{prefix}/fontforge/lib/pkgconfig/libfontforgeexe.pc" do |s|
-      s.gsub! "zlib", " "
-    end
+    # Fix breaking zlib pkg-config file issue number 2.
+    inreplace "#{prefix}/fontforge/lib/pkgconfig/libfontforgeexe.pc", "zlib", " "
   end
 
-  # Prepend the paths to find this dep fontforge instead of another.
+  # Prepend the paths to always find this dep fontforge instead of another.
   ENV.prepend_path "PKG_CONFIG_PATH", "#{prefix}/fontforge/lib/pkgconfig"
   ENV.prepend_path "PATH", "#{prefix}/fontforge/bin"
   system "cmake", ".", *std_cmake_args
