@@ -10,11 +10,12 @@ class Polarssl < Formula
   depends_on "cmake" => :build
 
   conflicts_with "md5sha1sum", :because => "both install conflicting binaries"
-  conflicts_with "hello", :because => "both install GNU hello binaries"
 
   def install
     system "cmake", ".",  *std_cmake_args
     system "make"
     system "make", "install"
+    # Why does PolarSSL ship with GNU's Hello included? Let's remove that.
+    rm "#{bin}/hello"
   end
 end
