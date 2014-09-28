@@ -8,21 +8,18 @@ class Bash < Formula
 
     mirror "http://ftp.gnu.org/gnu/bash/bash-4.3.tar.gz"
     sha256 "afc687a28e0e24dc21b988fa159ff9dbcf6b7caa92ade8645cc6d5605cd024d4"
-    version "4.3.26"
+    version "4.3.27"
 
     # Vendor the patches. The mirrors are unreliable for getting the patches,
     # and the more patches there are, the more unreliable they get. Upstream
     # patches can be found in: http://git.savannah.gnu.org/cgit/bash.git
     patch do
-      url "https://gist.githubusercontent.com/jacknagel/c1cf23775c774e2b4b6d/raw/2007f21e5c33fbc361afde8ab9d083498fcdc200/bash-4.3.26.diff"
-      sha1 "969270bdc2b57062cde3d0546dbc950bcaffe19a"
+      url "https://gist.githubusercontent.com/jacknagel/c1cf23775c774e2b4b6d/raw/c034a6a63bd5b8112d1ed390e606bc96de3f52d5/bash-4.3.27.diff"
+      sha1 "ad64ab32da31506d0ef662cfa37523a7f82d1d2e"
     end
   end
 
   bottle do
-    sha1 "5e04c0c9669ee5a8a32e2569717d646ea05e711a" => :mavericks
-    sha1 "871f0d7a85bf8306d20202951727cce761b9d817" => :mountain_lion
-    sha1 "bd8cdb59b97a34c90a0856c33f6db3ad3b47a738" => :lion
   end
 
   head "git://git.savannah.gnu.org/bash.git"
