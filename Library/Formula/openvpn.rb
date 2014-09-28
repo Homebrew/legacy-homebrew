@@ -22,9 +22,6 @@ class Openvpn < Formula
     end
 
     # Build and install binary
-    # So configure finds our OpenSSL & not the system:
-    ENV.prepend_path "PATH", "#{HOMEBREW_PREFIX}/opt/openssl"
-
     args = [
               "--disable-debug",
               "--disable-dependency-tracking",
