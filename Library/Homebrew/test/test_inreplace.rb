@@ -76,4 +76,15 @@ class InreplaceTest < Homebrew::TestCase
     s.remove_make_var! "LDFLAGS"
     assert_equal "CFLAGS=-O3\n", s
   end
+
+  def test_sub_gsub
+    s = "foo"
+    s.extend(StringInreplaceExtension)
+
+    s.sub!("f", "b")
+    assert_equal "boo", s
+
+    s.gsub!("o", "e")
+    assert_equal "bee", s
+  end
 end
