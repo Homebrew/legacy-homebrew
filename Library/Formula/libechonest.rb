@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Libechonest < Formula
-  homepage 'https://projects.kde.org/projects/playground/libs/libechonest'
-  url 'http://files.lfranchi.com/libechonest-2.2.0.tar.bz2'
-  sha1 'fec281d9288c2a4fabd2dd275f1a508dd6d1bc5c'
+  homepage "https://projects.kde.org/projects/playground/libs/libechonest"
+  url "http://files.lfranchi.com/libechonest-2.3.0.tar.bz2"
+  sha1 "cf1b279c96f15c87c36fdeb23b569a60cdfb01db"
 
   bottle do
     cellar :any
@@ -12,11 +12,11 @@ class Libechonest < Formula
     sha1 "d983fbabb1c3e5a68111dd325c41dc9eb3999c42" => :lion
   end
 
-  depends_on 'cmake' => :build
-  depends_on 'qt'
-  depends_on 'qjson'
+  depends_on "cmake" => :build
+  depends_on "qt"
+  depends_on "qjson"
 
-  conflicts_with 'doxygen', :because => "cmake fails to configure build."
+  conflicts_with "doxygen", :because => "cmake fails to configure build."
 
   def install
     system "cmake", ".", *std_cmake_args
