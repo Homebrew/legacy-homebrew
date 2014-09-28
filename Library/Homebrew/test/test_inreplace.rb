@@ -1,5 +1,6 @@
-require 'testing_env'
-require 'extend/string'
+require "testing_env"
+require "extend/string"
+require "utils/inreplace"
 
 class InreplaceTest < Homebrew::TestCase
   def test_change_make_var
@@ -86,5 +87,28 @@ class InreplaceTest < Homebrew::TestCase
 
     s.gsub!("o", "e")
     assert_equal "bee", s
+  end
+
+  def test_inreplace_errors
+    extend(Utils::Inreplace)
+
+    open("test", "w") { |f| f.write "a\nb\nc\n" }
+
+    assert_raises(Utils::InreplaceError) {
+      inreplace "test", "d", "f"
+    }
+
+    assert_raises(Utils::InreplaceError) {
+      inreplace("test") { |s| s.gsub! "d", "f" }
+    }
+
+    assert_raises(Utils::InreplaceError) {
+      inreplace("test") { |s|
+        s.change_make_var! "VAR", "value"
+        s.remove_make_var! "VAR2"
+      }
+    }
+  ensure
+    File.unlink("test")
   end
 end
