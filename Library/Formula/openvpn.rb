@@ -5,6 +5,7 @@ class Openvpn < Formula
   url "http://build.openvpn.net/downloads/releases/openvpn-2.3.4.tar.gz"
   mirror "http://swupdate.openvpn.org/community/releases/openvpn-2.3.4.tar.gz"
   sha256 "af506d5f48568fa8d2f2435cb3fad35f9a9a8f263999ea6df3ba296960cec85a"
+  revision 1
 
   depends_on "lzo"
   depends_on "tuntap"
