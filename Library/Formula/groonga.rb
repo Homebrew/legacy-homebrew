@@ -26,6 +26,7 @@ class Groonga < Formula
       --prefix=#{prefix}
       --with-zlib
       --disable-zeromq
+      --with-mruby
     ]
 
     args << "--enable-benchmark" if build.include? "enable-benchmark"
