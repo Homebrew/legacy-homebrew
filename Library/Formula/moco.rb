@@ -9,4 +9,8 @@ class Moco < Formula
     libexec.install "moco-runner-0.9.2-standalone.jar"
     bin.write_jar_script libexec/"moco-runner-0.9.2-standalone.jar", "moco"
   end
+
+  test do
+    system bin/"moco", "--help"
+  end
 end
