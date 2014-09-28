@@ -87,16 +87,4 @@ class InreplaceTest < Homebrew::TestCase
     s.gsub!("o", "e")
     assert_equal "bee", s
   end
-
-  def test_sub_gsub_with_hash
-    s = "foo"
-    s.extend(StringInreplaceExtension)
-
-    repl = { "f" => "b", "o" => "e" }
-    s.sub!(/[fo]/, repl)
-    assert_equal "boo", s
-
-    s.gsub!(/[fo]/, repl)
-    assert_equal "bee", s
-  end
 end
