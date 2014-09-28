@@ -10,6 +10,12 @@ class RbenvDefaultGems < Formula
   depends_on 'rbenv'
   depends_on 'ruby-build'
 
+  # Upstream patch: https://github.com/sstephenson/rbenv-default-gems/pull/3
+  patch do
+    url "https://github.com/sstephenson/rbenv-default-gems/commit/ead67889c91c53ad967f85f5a89d986fdb98f6fb.diff"
+    sha1 "9d1c5e635752caa7dcee8fb43e2d0e20c1d494ed"
+  end
+
   def install
     prefix.install Dir['*']
   end
