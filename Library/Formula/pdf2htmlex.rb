@@ -7,6 +7,10 @@ class Pdf2htmlex < Formula
 
   head "https://github.com/coolwanglu/pdf2htmlEX.git"
 
+  bottle do
+    sha1 "180d74f4c3c43d2809b43c3e111129ceced47d53" => :mavericks
+  end
+
   # Pdf2htmlex use an outdated, customised Fontforge installation.
   # See https://github.com/coolwanglu/pdf2htmlEX/wiki/Building
   resource "fontforge" do
