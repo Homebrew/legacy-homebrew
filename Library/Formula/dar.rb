@@ -6,9 +6,9 @@ class Dar < Formula
   sha1 "6c175b735410a905fcb07a4549f8b6cbf86b08d8"
 
   bottle do
-    sha1 "c3602f446508944f94682e4c02236e8a7ef0801c" => :mavericks
-    sha1 "2bd3dd6c9972a001d27c26499c4871d2c3489d3f" => :mountain_lion
-    sha1 "dc52dcf3187c93bcf7fbabda25987499e32a116d" => :lion
+    sha1 "e7320da542a160fbad03ccec820e671d3db2312e" => :mavericks
+    sha1 "e1ecd4f0f946d0672c3d7733911455daf474a621" => :mountain_lion
+    sha1 "072c3583b7e85feb5685a28ebcecf37428158fe1" => :lion
   end
 
   option "with-docs", "build programming documentation (in particular libdar API documentation) and html man page"
