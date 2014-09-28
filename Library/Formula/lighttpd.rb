@@ -64,7 +64,7 @@ class Lighttpd < Formula
         s.sub!(/^var\.home_dir\s*=\s*".+"$/,"var.home_dir    = \"#{run_path}\"")
         s.sub!(/^var\.conf_dir\s*=\s*".+"$/,"var.conf_dir    = \"#{config_path}\"")
         s.sub!(/^server\.port\s*=\s*80$/,'server.port = 8080')
-        s.sub!(/^server\.document-root\s*=\s*server_root + "\/htdocs"$/,'server.document-root = server_root')
+        s.sub!(/^server\.document-root\s*=\s*server_root \+ "\/htdocs"$/,'server.document-root = server_root')
 
         # get rid of "warning: please use server.use-ipv6 only for hostnames, not
         # without server.bind / empty address; your config will break if the kernel
