@@ -27,15 +27,15 @@ class Mariadb < Formula
     :because => "mariadb, mysql, and percona install the same binaries."
   conflicts_with 'mysql-connector-c',
     :because => 'both install MySQL client libraries'
-  if MacOS.version >= :yosemite
-      patch :p0 do
-          url "https://gist.githubusercontent.com/droid-Q/b5ca7836385fa75d1f19/raw/6f858ccfc7cb46f99cc5c283a8531d114805073b/filamap.diff"
-          sha1 "befd126e011e2ec60d1fcbf2dd14f1f0fcf4fc75"
-      end
-      patch :p0 do
-          url "https://gist.githubusercontent.com/droid-Q/55e4008f58921741c10b/raw/332c06b4142e72aba882089ff910debaebdc9ee8/array.diff"
-          sha1 "f18352bbae8ecf931993d37cd20b08b9e535938d"
-      end
+  #
+  #fix https://mariadb.atlassian.net/browse/MDEV-6802?jql=project%20%3D%20MDEV
+  patch :p0 do
+      url "https://gist.githubusercontent.com/droid-Q/b5ca7836385fa75d1f19/raw/6f858ccfc7cb46f99cc5c283a8531d114805073b/filamap.diff"
+      sha1 "befd126e011e2ec60d1fcbf2dd14f1f0fcf4fc75"
+  end
+  patch :p0 do
+      url "https://gist.githubusercontent.com/droid-Q/55e4008f58921741c10b/raw/332c06b4142e72aba882089ff910debaebdc9ee8/array.diff"
+      sha1 "f18352bbae8ecf931993d37cd20b08b9e535938d"
   end
   def install
     # end
