@@ -9,7 +9,7 @@ class Sqlcipher < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--enable-tempstore=yes",
-                          "CFLAGS=-DSQLITE_HAS_CODEC", "LDFLAGS=-lcrypto",
+                          "CFLAGS=-DSQLITE_HAS_CODEC -DSQLITE_ENABLE_FTS3", "LDFLAGS=-lcrypto",
                           "--disable-tcl"
     system "make"
     system "make install"
