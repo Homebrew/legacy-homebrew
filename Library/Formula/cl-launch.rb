@@ -7,8 +7,8 @@ class ClLaunch < Formula
 
   def install
     system "make"
-    system "mkdir #{prefix}/bin"
-    system "cp cl-launch #{prefix}/bin/cl-launch"
-    system "ln -s #{prefix}/bin/cl-launch #{prefix}/bin/cl"
+    system "mkdir #{bin}"
+    system "cp cl-launch #{bin}/cl-launch"
+    system "ln -s #{bin}/cl-launch #{bin}/cl"
   end
 end
