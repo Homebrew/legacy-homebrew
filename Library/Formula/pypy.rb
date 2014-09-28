@@ -1,37 +1,37 @@
-require 'formula'
+require "formula"
 
 class Pypy < Formula
-  homepage 'http://pypy.org/'
-  url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.4.0-osx64.tar.bz2'
-  sha1 'aa7f9b41d8bfda16239b629cd1b8dc884c2ad808'
-  version '2.4.0'
+  homepage "http://pypy.org/"
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.4.0-osx64.tar.bz2"
+  sha1 "aa7f9b41d8bfda16239b629cd1b8dc884c2ad808"
+  version "2.4.0"
   revision 1
 
   depends_on :arch => :x86_64
 
-  resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-5.8.tar.gz'
-    sha1 '21e2ee6a61c4f71711956fa99803283f0168041a'
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.8.tar.gz"
+    sha1 "21e2ee6a61c4f71711956fa99803283f0168041a"
   end
 
-  resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz'
-    sha1 'e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e'
+  resource "pip" do
+    url "https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz"
+    sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
   end
 
   def install
     # Having PYTHONPATH set can cause the build to fail if another
     # Python is present, e.g. a Homebrew-provided Python 2.x
     # See https://github.com/Homebrew/homebrew/issues/24364
-    ENV['PYTHONPATH'] = ''
+    ENV["PYTHONPATH"] = ""
 
-    rmtree 'site-packages'
+    rmtree "site-packages"
 
     # The PyPy binary install instructions suggest installing somewhere
     # (like /opt) and symlinking in binaries as needed. Specifically,
     # we want to avoid putting PyPy's Python.h somewhere that configure
     # scripts will find it.
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     bin.install_symlink libexec/"bin/pypy"
 
     # Post-install, fix up the site-packages and install-scripts folders
@@ -55,12 +55,12 @@ class Pypy < Formula
     # $ easy_install pip
     # $ pip install --upgrade setuptools
     # to get newer versions of setuptools outside of Homebrew.
-    resource('setuptools').stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
-    resource('pip').stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
+    resource("setuptools").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
+    resource("pip").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
 
     # Symlinks to easy_install_pypy and pip_pypy
-    bin.install_symlink scripts_folder/'easy_install' => "easy_install_pypy"
-    bin.install_symlink scripts_folder/'pip' => "pip_pypy"
+    bin.install_symlink scripts_folder/"easy_install" => "easy_install_pypy"
+    bin.install_symlink scripts_folder/"pip" => "pip_pypy"
   end
 
   def caveats; <<-EOS.undent
