@@ -15,5 +15,4 @@ class EyeD3 < Formula
     libexec.install "src/eyeD3"
     libexec.install "bin/eyeD3" => "eyeD3_script"
     bin.install_symlink libexec+"eyeD3_script" => "eyeD3"
-  end
 end
