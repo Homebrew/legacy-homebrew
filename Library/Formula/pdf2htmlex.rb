@@ -26,7 +26,6 @@ class Pdf2htmlex < Formula
   depends_on "libtool" => :build
   depends_on "glib"
   depends_on "pango"
-  depends_on "cairo"
   depends_on "gettext"
   depends_on "libpng"   => :recommended
   depends_on "jpeg"     => :recommended
