@@ -2,7 +2,7 @@ require 'formula'
 
 class EyeD3 < Formula
   homepage 'http://eyed3.nicfit.net/'
-  url 'http://eyed3.nicfit.net/releases/eyeD3-0.6.18.tar.gz'
+  url 'http://eyed3.nicfit.net/releases/eyeD3-0.7.5.tgz'
   sha1 'd8887f7b75306bd293e0b0d46a977e73225ae7b5'
 
   def install
