@@ -7,9 +7,9 @@ class Tinc < Formula
   revision 1
 
   bottle do
-    sha1 "a03cb29d4ab3a2d50ded6eda6be9d0da12d0e9d2" => :mavericks
-    sha1 "d86df6150577c443038ac8bef39596980b454158" => :mountain_lion
-    sha1 "5f2a5edf56d757ad53f9ca02ee7bf51051da3805" => :lion
+    sha1 "b41c2f938dc74d722fc671dba917162c593903ce" => :mavericks
+    sha1 "c6817e85d4a8c81a070f4cd30f0cd1d116b514bf" => :mountain_lion
+    sha1 "847939fa901a60bd465f94d4d850a1f1d3abf2d9" => :lion
   end
 
   devel do
