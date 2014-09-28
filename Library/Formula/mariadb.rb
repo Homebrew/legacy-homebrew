@@ -2,8 +2,8 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.13/source/mariadb-10.0.13.tar.gz"
-  sha1 "3ede106603eeb348d5a70274d806760b8f37eaeb"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.14/source/mariadb-10.0.14.tar.gz"
+  sha1 "46dc0b66567ff9d4e3a32d9d4b3c9ef250a6fc9e"
 
   bottle do
     sha1 "88c369ec2a241bd233d43a2b665a89794dcc6f99" => :mavericks
@@ -27,8 +27,18 @@ class Mariadb < Formula
     :because => "mariadb, mysql, and percona install the same binaries."
   conflicts_with 'mysql-connector-c',
     :because => 'both install MySQL client libraries'
-
+  if MacOS.version >= :yosemite
+      patch :p0 do
+          url "https://gist.githubusercontent.com/droid-Q/b5ca7836385fa75d1f19/raw/6f858ccfc7cb46f99cc5c283a8531d114805073b/filamap.diff"
+          sha1 "befd126e011e2ec60d1fcbf2dd14f1f0fcf4fc75"
+      end
+      patch :p0 do
+          url "https://gist.githubusercontent.com/droid-Q/55e4008f58921741c10b/raw/332c06b4142e72aba882089ff910debaebdc9ee8/array.diff"
+          sha1 "f18352bbae8ecf931993d37cd20b08b9e535938d"
+      end
+  end
   def install
+    # end
     # Don't hard-code the libtool path. See:
     # https://github.com/Homebrew/homebrew/issues/20185
     inreplace "cmake/libutils.cmake",
