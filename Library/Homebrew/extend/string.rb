@@ -56,13 +56,21 @@ end
 
 # used by the inreplace function (in utils.rb)
 module StringInreplaceExtension
-  # Warn if nothing was replaced
-  def gsub! before, after, audit_result=true
-    sub = super(before, after)
-    if audit_result and sub.nil?
+  def sub! before, after
+    result = super
+    unless result
       opoo "inreplace: replacement of '#{before}' with '#{after}' failed"
     end
-    return sub
+    result
+  end
+
+  # Warn if nothing was replaced
+  def gsub! before, after, audit_result=true
+    result = super(before, after)
+    if audit_result && result.nil?
+      opoo "inreplace: replacement of '#{before}' with '#{after}' failed"
+    end
+    result
   end
 
   # Looks for Makefile style variable defintions and replaces the
