@@ -1,13 +1,15 @@
-require 'formula'
+require "formula"
 
 class Openvpn < Formula
-  homepage 'http://openvpn.net/index.php/download/community-downloads.html'
-  url 'http://build.openvpn.net/downloads/releases/openvpn-2.3.4.tar.gz'
-  mirror 'http://swupdate.openvpn.org/community/releases/openvpn-2.3.4.tar.gz'
-  sha256 'af506d5f48568fa8d2f2435cb3fad35f9a9a8f263999ea6df3ba296960cec85a'
+  homepage "https://openvpn.net/index.php/download/community-downloads.html"
+  url "http://build.openvpn.net/downloads/releases/openvpn-2.3.4.tar.gz"
+  mirror "http://swupdate.openvpn.org/community/releases/openvpn-2.3.4.tar.gz"
+  sha256 "af506d5f48568fa8d2f2435cb3fad35f9a9a8f263999ea6df3ba296960cec85a"
+  revision 1
 
-  depends_on 'lzo'
-  depends_on 'tuntap'
+  depends_on "lzo"
+  depends_on "tuntap"
+  depends_on "openssl"
 
   def install
     # pam_appl header is installed in a different location on Leopard
@@ -24,7 +26,7 @@ class Openvpn < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-password-save"
-    system "make install"
+    system "make", "install"
 
     # Adjust sample file paths
     inreplace "sample/sample-config-files/openvpn-startup.sh",
