@@ -2,8 +2,8 @@ require "formula"
 
 class Elasticsearch < Formula
   homepage "http://www.elasticsearch.org"
-  url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.3.2.tar.gz"
-  sha1 "a7ea036468473084cd62e846f05a2069a987fb03"
+  url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.3.3.tar.gz"
+  sha1 "559ebbd111c1eed9fdbb69f33815911723db52c5"
 
   depends_on :java => "1.7"
 
