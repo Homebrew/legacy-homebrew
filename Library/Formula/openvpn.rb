@@ -21,10 +21,8 @@ class Openvpn < Formula
     # pam_appl header is installed in a different location on Leopard
     # and older; reported upstream https://community.openvpn.net/openvpn/ticket/326
     if MacOS.version < :snow_leopard
-      %w[auth-pam.c pamdl.c].each do |file|
-        inreplace "src/plugins/auth-pam/#{file}",
-          "security/pam_appl.h", "pam/pam_appl.h"
-      end
+      inreplace Dir["src/plugins/auth-pam/{auth-pam,pamdl}.c"],
+        "security/pam_appl.h", "pam/pam_appl.h"
     end
 
     # Build and install binary
