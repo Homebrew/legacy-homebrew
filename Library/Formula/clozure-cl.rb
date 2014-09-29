@@ -15,10 +15,7 @@ class ClozureCl < Formula
     libexec.install Dir["*"]
     scripts = Dir["#{libexec}/scripts/ccl{,64}"]
 
-    inreplace scripts do |s|
-      s.gsub! /CCL_DEFAULT_DIRECTORY=.+$/, %Q{CCL_DEFAULT_DIRECTORY="#{libexec}"}
-    end
-
+    inreplace scripts, /CCL_DEFAULT_DIRECTORY=.+$/, %Q{CCL_DEFAULT_DIRECTORY="#{libexec}"}
     bin.install_symlink scripts
   end
 
