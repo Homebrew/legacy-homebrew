@@ -25,21 +25,17 @@ class Openvpn < Formula
         "security/pam_appl.h", "pam/pam_appl.h"
     end
 
-    # Build and install binary
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-password-save"
     system "make", "install"
 
-    # Adjust sample file paths
     inreplace "sample/sample-config-files/openvpn-startup.sh",
       "/etc/openvpn", "#{etc}/openvpn"
 
-    # Install sample files
     (doc/"sample").install Dir["sample/sample-*"]
 
-    # Create etc & var paths
     (etc + 'openvpn').mkpath
     (var + 'run/openvpn').mkpath
   end
