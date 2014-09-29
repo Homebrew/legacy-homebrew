@@ -6,6 +6,13 @@ class Rocksdb < Formula
   sha1 "f8bd52914835a0839548eaca7f755128ed759991"
   version "3.5"
 
+  bottle do
+    cellar :any
+    sha1 "12a0ee9a9df0395e7238ef521d394e9e9a00bd8c" => :mavericks
+    sha1 "2f1b4f55088ec76beb5956a2d4e69509c99ec3f8" => :mountain_lion
+    sha1 "617a97e1b14b1e0bb395ed74c55bacc1507e1f4d" => :lion
+  end
+
   needs :cxx11
   depends_on "snappy"
   depends_on "lz4"
