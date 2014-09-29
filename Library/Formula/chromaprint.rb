@@ -4,6 +4,7 @@ class Chromaprint < Formula
   homepage 'http://acoustid.org/chromaprint'
   url 'https://bitbucket.org/acoustid/chromaprint/downloads/chromaprint-1.0.tar.gz'
   sha1 '919e012af588a7e6fea862b29a30e3a5da67526a'
+  revision 1
 
   option 'without-examples', "Don't build examples (including fpcalc)"
 

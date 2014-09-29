@@ -4,6 +4,7 @@ class Mpd < Formula
   homepage "http://www.musicpd.org/"
   url "http://www.musicpd.org/download/mpd/0.18/mpd-0.18.16.tar.xz"
   sha1 "ef510446e858fadf20d36fa2c1bed6f35a51e613"
+  revision 1
 
   bottle do
     sha1 "bb1bfadd7c3b4c4e4d5cea14acc80d0c87e4aa61" => :mavericks
