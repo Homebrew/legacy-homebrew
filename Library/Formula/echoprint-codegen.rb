@@ -5,6 +5,7 @@ class EchoprintCodegen < Formula
   url 'https://github.com/echonest/echoprint-codegen/archive/v4.12.tar.gz'
   sha256 'c40eb79af3abdb1e785b6a48a874ccfb0e9721d7d180626fe29c72a29acd3845'
   head 'https://github.com/echonest/echoprint-codegen.git'
+  revision 1
 
   depends_on 'ffmpeg'
   depends_on 'taglib'

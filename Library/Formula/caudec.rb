@@ -4,6 +4,7 @@ class Caudec < Formula
   homepage 'http://caudec.outpost.fr/'
   url 'http://caudec.outpost.fr/downloads/caudec-1.6.4.tar.gz'
   sha1 '4c4ad207e86c8f8bf15545bab1c434525cd79f7d'
+  revision 1
 
   depends_on 'gnu-sed'
   depends_on 'shntool'
