@@ -14,8 +14,4 @@ class Odb < Formula
       etc.install Dir["etc/*"]
       prefix.install "README"
   end
-
-  test do
-    system "#{bin}/odb", "--version"
-  end
 end
