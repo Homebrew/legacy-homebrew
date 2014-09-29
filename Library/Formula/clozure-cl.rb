@@ -10,12 +10,7 @@ class ClozureCl < Formula
 
   def install
     # Get rid of all the .svn directories
-    buildpath.find do |path|
-      if path.directory? and path.basename.to_s == '.svn'
-        rm_rf path
-        Find.prune
-      end
-    end
+    rm_rf Dir["**/.svn"]
 
     libexec.install Dir["*"]
     scripts = Dir["#{libexec}/scripts/ccl{,64}"]
