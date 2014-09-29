@@ -3,8 +3,8 @@ require "formula"
 class Vala < Formula
   homepage "http://live.gnome.org/Vala"
   head "git://git.gnome.org/vala"
-  url "http://ftp.acc.umu.se/pub/gnome/sources/vala/0.24/vala-0.24.0.tar.xz"
-  sha1 "33a71a21e12e80cf1f4e0aa3b6a6523ff38e92c8"
+  url "http://ftp.acc.umu.se/pub/gnome/sources/vala/0.26/vala-0.26.0.tar.xz"
+  sha1 "ca8f84c7c271d6f47cad6526c176c5757655f63f"
 
   bottle do
     sha1 "96f56ca5ec48b7e0822a6693818d38ca21499014" => :mavericks
