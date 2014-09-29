@@ -7,9 +7,10 @@ class Solr < Formula
 
   bottle do
     cellar :any
-    sha1 "9c3fe919fd112549b5fbac7b4715a6bcf209b88d" => :mavericks
-    sha1 "ad64b5fe509d2f9da244a52f13d9525259604e2f" => :mountain_lion
-    sha1 "82bc81371673e7e9e2cafae5d9914dd46ec64e84" => :lion
+    revision 1
+    sha1 "46526c38f55b53fe84b7693db1a4527c06377c41" => :mavericks
+    sha1 "55d249ab831038a38b17908aba0d5193b4c2b7cb" => :mountain_lion
+    sha1 "174a83e20f7462f6de0ba7382402f544d01268b6" => :lion
   end
 
   def install
