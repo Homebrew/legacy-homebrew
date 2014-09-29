@@ -70,6 +70,15 @@ class Encfs < Formula
     system "make"
     system "make install"
   end
+
+  test do
+    if Pathname.new("/Library/Filesystems/osxfusefs.fs/Support/load_osxfusefs").exist?
+      (testpath/"print-password").write("#!/bin/sh\necho password")
+      chmod 0755, testpath/"print-password"
+      system "yes | #{bin}/encfs --standard --extpass=#{testpath}/print-password #{testpath}/a #{testpath}/b"
+      system "umount", testpath/"b"
+    end
+  end
 end
 
 __END__
