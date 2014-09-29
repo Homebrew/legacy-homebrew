@@ -12,6 +12,8 @@ class Clamav < Formula
     sha1 "4d2596ed31086455d7e87bade419589da46a3ef3" => :lion
   end
 
+  depends_on "openssl"
+
   skip_clean "share/clamav"
 
   def install
@@ -21,7 +23,8 @@ class Clamav < Formula
                           "--libdir=#{lib}",
                           "--sysconfdir=#{etc}",
                           "--disable-zlib-vcheck",
-                          "--with-zlib=#{MacOS.sdk_path}/usr"
+                          "--with-zlib=#{MacOS.sdk_path}/usr",
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
   end
 end
