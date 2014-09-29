@@ -11,6 +11,8 @@ class Odb < Formula
       doc.install Dir["doc/*"]
       man.install Dir["man/*"]
       lib.install Dir["lib/*"]
+      #p = Pathname.new("#{prefix}/etc")
+      #p.install Dir["etc/*"]
       etc.install Dir["etc/*"]
       prefix.install "README"
   end
