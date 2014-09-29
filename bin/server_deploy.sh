@@ -35,9 +35,14 @@ FILES="job-server/target/spark-job-server.jar
        $CONFIG_DIR/$ENV.conf
        config/log4j-server.properties"
 
+ssh_key_to_use=""
+if [ -n "$SSH_KEY" ]  ; then
+  ssh_key_to_use="-i $SSH_KEY"
+fi
+
 for host in $DEPLOY_HOSTS; do
   # We assume that the deploy user is APP_USER and has permissions
-  ssh ${APP_USER}@$host mkdir -p $INSTALL_DIR
-  scp $FILES ${APP_USER}@$host:$INSTALL_DIR/
-  scp $configFile ${APP_USER}@$host:$INSTALL_DIR/settings.sh
+  ssh $ssh_key_to_use  ${APP_USER}@$host mkdir -p $INSTALL_DIR
+  scp $ssh_key_to_use  $FILES ${APP_USER}@$host:$INSTALL_DIR/
+  scp $ssh_key_to_use  $configFile ${APP_USER}@$host:$INSTALL_DIR/settings.sh
 done
