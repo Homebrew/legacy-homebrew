@@ -5,6 +5,13 @@ class Libmodplug < Formula
   url "https://downloads.sourceforge.net/modplug-xmms/libmodplug/0.8.8.5/libmodplug-0.8.8.5.tar.gz"
   sha1 "771ee75bb8bfcfe95eae434ed1f3b2c5b63b2cb3"
 
+  bottle do
+    cellar :any
+    sha1 "3a2b647f1cc24e83c626898087a20a3ec0978963" => :mavericks
+    sha1 "0e409711ad515e7f739dcec3792d0bd3ab9652bc" => :mountain_lion
+    sha1 "280ba8ba18963cd71616f7e6a5a1cc6d9e510203" => :lion
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
