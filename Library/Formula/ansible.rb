@@ -2,8 +2,8 @@ require 'formula'
 
 class Ansible < Formula
   homepage 'http://www.ansible.com/home'
-  url 'http://releases.ansible.com/ansible/ansible-1.7.1.tar.gz'
-  sha1 '4f4be4d45f28f52e4ab0c063efb66c7b9f482a51'
+  url 'http://releases.ansible.com/ansible/ansible-1.7.2.tar.gz'
+  sha1 '21532ce402e08c91cc64c5e655758574af9fc8f3'
 
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
