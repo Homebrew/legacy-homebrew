@@ -14,7 +14,16 @@ class Libmodplug < Formula
     system "make", "install"
   end
 
+  resource "testmod" do
+    # Most favourited song on modarchive:
+    # http://modarchive.org/index.php?request=view_by_moduleid&query=60395
+    url "http://api.modarchive.org/downloads.php?moduleid=60395#2ND_PM.S3M"
+    sha1 "db0d80984abca47d5442bc4de467f9ccd300f186"
+  end
+
   test do
+    # First a basic test just that we can link on the library
+    # and call an initialization method.
     (testpath/'test_null.cpp').write <<-EOS.undent
       #include "libmodplug/modplug.h"
       int main() {
@@ -29,18 +38,10 @@ class Libmodplug < Formula
     EOS
     system ENV.cc, "test_null.cpp", "-lmodplug", "-o", "test_null"
     system "./test_null"
-  end
 
-  resource "testmod" do
-    # Most favourited song on modarchive:
-    # http://modarchive.org/index.php?request=view_by_moduleid&query=60395
-    url "http://api.modarchive.org/downloads.php?moduleid=60395#2ND_PM.S3M"
-    sha1 "db0d80984abca47d5442bc4de467f9ccd300f186"
-  end
-
-  test do
+    # Second, acquire an actual music file from a popular internet
+    # source and attempt to parse it.
     resource("testmod").stage testpath
-
     (testpath/'test_mod.cpp').write <<-EOS.undent
       #include "libmodplug/modplug.h"
       #include <fstream>
