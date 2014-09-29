@@ -19,6 +19,7 @@ class OpenSceneGraph < Formula
       sha1 "8a2a0e8384a30e3adb2820786f91adb52ba69cd9"
     end
   end
+  revision 1
 
   head 'http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/'
 

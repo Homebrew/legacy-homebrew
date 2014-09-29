@@ -4,6 +4,7 @@ class Ffmpeg2theora < Formula
   homepage 'http://v2v.cc/~j/ffmpeg2theora/'
   url 'http://v2v.cc/~j/ffmpeg2theora/downloads/ffmpeg2theora-0.29.tar.bz2'
   sha1 '7e78c5ddb8740b33a6ae4c9da76047bd8e662791'
+  revision 1
 
   head 'http://svn.xiph.org/trunk/ffmpeg2theora'
 
