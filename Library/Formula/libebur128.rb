@@ -6,7 +6,7 @@ class Libebur128 < Formula
   sha1 "b1e2949e6598053edb8aeaf71614a26efcb38bd0"
 
   depends_on "cmake" => :build
-  depends_on "speex" => [:optional, "with-libogg"]
+  depends_on "speex" => [:recommended, "with-libogg"]
 
   def install
     system "cmake", ".", *std_cmake_args
