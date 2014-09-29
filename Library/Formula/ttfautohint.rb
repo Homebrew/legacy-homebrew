@@ -2,7 +2,7 @@ require "formula"
 
 class Ttfautohint < Formula
   homepage "http://www.freetype.org/ttfautohint"
-  url "http://downloads.sourceforge.net/project/freetype/ttfautohint/1.1/ttfautohint-1.1.tar.gz"
+  url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.1/ttfautohint-1.1.tar.gz"
   sha1 "db011a93ba15b2ac56ae27e3d8de0696b305ee7b"
 
   depends_on "pkg-config" => :build
