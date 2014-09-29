@@ -12,10 +12,7 @@ class LibodbSqlite < Formula
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
-    system "make", "install" 
+    system "make", "install"
   end
 
-  test do
-    system "false"
-  end
 end

@@ -16,6 +16,6 @@ class Odb < Formula
   end
 
   test do
-    system "false"
+    system "#{bin}/odb", "--version"
   end
 end

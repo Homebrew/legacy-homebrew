@@ -12,8 +12,4 @@ class Libodb < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
-
-  test do
-    system "false"
-  end
 end
