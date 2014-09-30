@@ -11,4 +11,8 @@ class SignifyOsx < Formula
     system "make", "test"
     system "make", "install", "PREFIX=#{prefix}"
   end
+
+  test do
+    system "#{bin}/signify", "-G", "-n", "-p", "pubkey", "-s", "seckey"
+  end
 end
