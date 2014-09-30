@@ -11,7 +11,7 @@ class EyeD3 < Formula
   # See https://github.com/Homebrew/homebrew/issues/32770 for previous attempt.
 
   def install
-  	system "python", "setup.py", "install", "--prefix=#{prefix}"
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
     share.install "docs/plugins", "docs/api", "docs/cli.rst"
   end
 end
