@@ -7,9 +7,10 @@ class Speex < Formula
 
   bottle do
     cellar :any
-    sha1 "231116d30e70bf1256773247ae3fec510ed5730e" => :mavericks
-    sha1 "a225f5ca56787ae1172438012d7f2738dbb27430" => :mountain_lion
-    sha1 "1660d549305cc565e903ecf0429a82418981de00" => :lion
+    revision 1
+    sha1 "fa844de615cebcbc56ce840dd445d1c20b2c25fa" => :mavericks
+    sha1 "3de84ed43a3945ee00195decddba1beaeacfec4b" => :mountain_lion
+    sha1 "6f9ccd4aede4209d2b6ffe78b27fe341d0f36f31" => :lion
   end
 
   depends_on 'pkg-config' => :build
