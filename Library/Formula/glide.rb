@@ -30,8 +30,7 @@ class Glide < Formula
     Language::Go.stage_deps resources, buildpath/"src"
 
     system "go build -o glide -ldflags \"-X main.version 0.1.0\" #{buildpath}/src/github.com/Masterminds/glide/glide.go"
-    system "mkdir -p #{bin}/"
-    system "cp glide #{bin}/"
+    bin.install "glide"
   end
 
   test do
