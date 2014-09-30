@@ -68,10 +68,10 @@ class Gcc < Formula
     version.to_s.slice(/\d\.\d/)
   end
 
-  # Fix 10.10 issues: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61407
-  patch do
-    url "https://gcc.gnu.org/bugzilla/attachment.cgi?id=33180"
-    sha1 "def0cb036a255175db86f106e2bb9dd66d19b702"
+  # Fix 10.10 issues: https://gcc.gnu.org/viewcvs/gcc?view=revision&revision=215251
+  patch :p1 do
+    url "https://raw.githubusercontent.com/DomT4/scripts/6c0e48921/Homebrew_Resources/Gcc/gcc1010.diff"
+    sha1 "083ec884399218584aec76ab8f2a0db97c12a3ba"
   end
 
   def install
