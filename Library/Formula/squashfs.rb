@@ -10,6 +10,7 @@ class Squashfs < Formula
 
   # Patch necessary to emulate the sigtimedwait process otherwise we get build failures
   # Also clang fixes, extra endianness knowledge and a bundle of other OS X fixes.
+  # Originally from https://github.com/plougher/squashfs-tools/pull/3
   patch do
     url "https://raw.githubusercontent.com/DomT4/scripts/master/Homebrew_Resources/Squashfs/squashfs.diff"
     sha1 "bf8aad479180a0614b74d4aa2fb5b8a0c1dc567b"
