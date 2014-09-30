@@ -38,7 +38,7 @@ class Glibc < Formula
     mkdir_p lib/"locale"
     locales = ENV.keys.select { |s|
       s == "LANG" || s[/^LC_/]
-    }.map { |key| ENV[key] }
+    }.map { |key| ENV[key] } - ['C']
     locales << "en_US.UTF-8" # Required by gawk make check
     locales.uniq.each { |locale|
       lang, charmap = locale.split(".", 2)
