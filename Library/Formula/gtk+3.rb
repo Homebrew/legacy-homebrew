@@ -12,7 +12,7 @@ class Gtkx3 < Formula
     sha1 "c0dde5f4a0da96b2f025832c53706514529575ef" => :lion
   end
 
-  depends_on :x11 => :recommended # (2.5) needs XInput2, introduced in libXi 1.3
+  depends_on :x11 => ['2.5', :recommended] # needs XInput2, introduced in libXi 1.3
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'jpeg'
