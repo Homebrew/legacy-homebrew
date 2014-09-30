@@ -9,6 +9,10 @@ class OsxfuseDependency < Requirement
     File.exist?("/usr/local/include/osxfuse/fuse.h") && !File.symlink?("/usr/local/include/osxfuse")
   end
 
+  def pour_bottle?
+    !self.class.binary_osxfuse_installed?
+  end
+
   env do
     ENV.append_path "PKG_CONFIG_PATH", HOMEBREW_PREFIX/"Library/ENV/pkgconfig/fuse"
   end
