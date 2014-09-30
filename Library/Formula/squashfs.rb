@@ -15,7 +15,7 @@ class Squashfs < Formula
   # Still required as of 4.3
   patch do
     url "https://raw.githubusercontent.com/DomT4/scripts/master/Homebrew_Resources/Squashfs/squashfs.diff"
-    sha1 "8a350de6ee9e898dfbe858510b73ce3bc9b38a3d"
+    sha1 "bf8aad479180a0614b74d4aa2fb5b8a0c1dc567b"
   end
 
   def install
@@ -23,6 +23,6 @@ class Squashfs < Formula
       system "make XATTR_SUPPORT=0 EXTRA_CFLAGS=-std=gnu89 LZO_SUPPORT=1 LZO_DIR='#{HOMEBREW_PREFIX}' XZ_SUPPORT=1 XZ_DIR='#{HOMEBREW_PREFIX}' LZMA_XZ_SUPPORT=1"
       bin.install %w{mksquashfs unsquashfs}
     end
-    doc.install %w{ACKNOWLEDGEMENTS CHANGES COPYING INSTALL OLD-READMEs PERFORMANCE.README README README-4.2}
+    doc.install %w{ACKNOWLEDGEMENTS CHANGES COPYING INSTALL OLD-READMEs PERFORMANCE.README README README-4.3}
   end
 end
