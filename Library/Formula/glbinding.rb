@@ -16,4 +16,17 @@ class Glbinding < Formula
     system "make", "install"
   end
 
+  test do
+    (testpath/'test.cpp').write <<-EOS.undent
+      #include <glbinding/gl/gl.h>
+      #include <glbinding/Binding.h>
+      int main(void)
+      {
+        glbinding::Binding::initialize();
+      }
+      EOS
+    flags = ["-std=c++11","-I#{include}/glbinding", "-I#{lib}/glbinding", "-lglbinding"]
+    system ENV.cc, "-o", "test", "test.cpp", *(flags + ENV.cflags.to_s.split)
+    system "./test"
+  end
 end
