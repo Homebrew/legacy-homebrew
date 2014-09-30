@@ -54,7 +54,7 @@ module Stdenv
 
     append 'LDFLAGS', '-Wl,-headerpad_max_install_names' if OS.mac?
 
-    if OS.linux? && (formula && formula.name) != "glibc"
+    if OS.linux? && !["glibc", "glibc25"].include?(formula && formula.name)
       # Set the dynamic library search path
       append "LDFLAGS", "-Wl,-rpath,#{HOMEBREW_PREFIX}/lib"
       # Set the dynamic linker
