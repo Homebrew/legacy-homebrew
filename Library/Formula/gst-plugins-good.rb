@@ -4,9 +4,9 @@ class GstPluginsGood < Formula
   homepage 'http://gstreamer.freedesktop.org/'
 
   stable do
-    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.4.1.tar.xz'
-    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.4.1.tar.xz'
-    sha256 '8559d4270065b30ed5c49b826e1b7a3a2bd5ee9a340ae745a2ae3f9718e4c637'
+    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.4.3.tar.xz'
+    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.4.3.tar.xz'
+    sha256 '5876a74402f2a24d1d3ae9163c32466bdc7a565696dddeef65e6a9a93efc5537'
 
     depends_on 'check' => :optional
   end
