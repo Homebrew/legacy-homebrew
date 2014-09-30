@@ -28,7 +28,7 @@ class Artifactory < Formula
     # Reduce memory consumption for non production use
     inreplace 'bin/artifactory.default',
       '-server -Xms512m -Xmx2g',
-      '-Xms256m -Xmx768m' if build.with? 'low-heap'
+      '-Xms128m -Xmx768m' if build.with? 'low-heap'
 
     libexec.install Dir['*']
 
@@ -72,4 +72,9 @@ class Artifactory < Formula
   EOS
   end
 
+  test do
+	output = `#{bin}/artifactory.sh check 2>&1`
+	assert output.include?("Checking arguments to Artifactory")
+	assert_equal 1, $?.exitstatus
+  end
 end
