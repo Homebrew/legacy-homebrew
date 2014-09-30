@@ -69,7 +69,11 @@ class Ruby < Formula
 
     # Customize rubygems to look/install in the global gem directory
     # instead of in the Cellar, making gems last across reinstalls
-    (lib/"ruby/2.1.0/rubygems/defaults/operating_system.rb").write rubygems_config
+    (lib/"ruby/#{abi_version}/rubygems/defaults/operating_system.rb").write rubygems_config
+  end
+
+  def abi_version
+    "2.1.0"
   end
 
   def rubygems_config; <<-EOS.undent
@@ -86,7 +90,7 @@ class Ruby < Formula
           "lib",
           "ruby",
           "gems",
-          "2.1.0"
+          "#{abi_version}"
         ]
 
         @default_dir ||= File.join(*path)
