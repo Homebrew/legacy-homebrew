@@ -6,12 +6,13 @@ class Gtkx3 < Formula
   sha256 '68d6b57d15c16808d0045e96b303f3dd439cc22a9c06fdffb07025cd713a82bc'
 
   bottle do
-    sha1 "bfe498bdaca8659ef6a980336eebd3b5c2bbf3ab" => :mavericks
-    sha1 "242ee85238ebd48a20509d2352c8c02a07f01f9e" => :mountain_lion
-    sha1 "579061b56ed5f3fb1efe0cb9cea03ef3d2ecc62e" => :lion
+    revision 1
+    sha1 "ed0ce70bdb9b8f70f3a7f292fa5a6218bb8393a3" => :mavericks
+    sha1 "d4b3cb9c83fa76d5a2e62c8f1705e27aafd4928e" => :mountain_lion
+    sha1 "c0dde5f4a0da96b2f025832c53706514529575ef" => :lion
   end
 
-  depends_on :x11 => '2.5' # needs XInput2, introduced in libXi 1.3
+  depends_on :x11 => ['2.5', :recommended] # needs XInput2, introduced in libXi 1.3
   depends_on 'pkg-config' => :build
   depends_on 'glib'
   depends_on 'jpeg'
@@ -26,13 +27,23 @@ class Gtkx3 < Formula
   depends_on 'gsettings-desktop-schemas' => :recommended
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-glibtest",
-                          "--enable-introspection=yes",
-                          "--enable-x11-backend",
-                          "--disable-schemas-compile"
+
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --disable-glibtest
+      --enable-introspection=yes
+      --disable-schemas-compile
+    ]
+
+    if build.without? "x11"
+      args << "--enable-quartz-backend" << "--enable-quartz-relocation"
+    else
+      args << "--enable-x11-backend"
+    end
+
+    system "./configure", *args
     system "make install"
     # Prevent a conflict between this and Gtk+2
     mv bin/'gtk-update-icon-cache', bin/'gtk3-update-icon-cache'

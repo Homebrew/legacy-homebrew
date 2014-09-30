@@ -50,6 +50,10 @@ class Cmake < Formula
     end
     ENV.prepend_path "PATH", "#{buildpath}/sphinx/bin"
 
+    # There is an existing issue around OS X & Python locale setting
+    # See http://bugs.python.org/issue18378#msg215215 for explanation
+    ENV["LC_ALL"] = "en_US.UTF-8"
+
     args = %W[
       --prefix=#{prefix}
       --system-libs

@@ -62,6 +62,9 @@ class Opam < Formula
     system "make", "man"
     system "make", "install"
 
+    # mandir is not honored: https://github.com/ocaml/opam/issues/1753
+    share.install "#{prefix}/man"
+
     bash_completion.install "shell/opam_completion.sh"
     zsh_completion.install "shell/opam_completion_zsh.sh" => "_opam"
   end
