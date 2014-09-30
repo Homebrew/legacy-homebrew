@@ -73,8 +73,8 @@ class Artifactory < Formula
   end
 
   test do
-	output = `#{bin}/artifactory.sh check 2>&1`
-	assert output.include?("Checking arguments to Artifactory")
-	assert_equal 1, $?.exitstatus
+    output = `#{bin}/artifactory.sh check 2>&1`
+    assert output.include?("Checking arguments to Artifactory")
+    assert_equal 1, $?.exitstatus
   end
 end
