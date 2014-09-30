@@ -6,7 +6,8 @@ class Glbinding < Formula
   sha1 "19d6d143bd4106582af4c197e882222e86323820"
 
   depends_on "cmake" => :build
-
+  :cxx11
+  
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
