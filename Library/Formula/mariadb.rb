@@ -29,7 +29,7 @@ class Mariadb < Formula
     :because => 'both install MySQL client libraries'
 
   # Fixed Clang build on x86_64. See:
-  # https://mariadb.atlassian.net/browse/MDEV-6802?jql=project%20%3D%20MDEV)
+  # https://mariadb.atlassian.net/browse/MDEV-6802?jql=project%20%3D%20MDEV
   patch :p0 do
     url "https://gist.githubusercontent.com/droid-Q/b5ca7836385fa75d1f19/raw/6f858ccfc7cb46f99cc5c283a8531d114805073b/filamap.diff"
     sha1 "befd126e011e2ec60d1fcbf2dd14f1f0fcf4fc75"
