@@ -5,6 +5,13 @@ class Squashfs < Formula
   url "https://downloads.sourceforge.net/project/squashfs/squashfs/squashfs4.3/squashfs4.3.tar.gz"
   sha256 "0d605512437b1eb800b4736791559295ee5f60177e102e4d4ccd0ee241a5f3f6"
 
+  bottle do
+    cellar :any
+    sha1 "ea27e099828f9809190115e4eb874894d5234c9f" => :mavericks
+    sha1 "3947dd7376c576b743ec2c9508d2ec9f2f8dcde5" => :mountain_lion
+    sha1 "36eff8c566e09e78d5faae4558256317178f637d" => :lion
+  end
+
   depends_on "lzo"
   depends_on "xz"
 
