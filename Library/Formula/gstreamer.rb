@@ -2,9 +2,9 @@ require "formula"
 
 class Gstreamer < Formula
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.1.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.1.tar.xz"
-  sha256 "5638f75003282135815c0077d491da11e9a884ad91d4ba6ab3cc78bae0fb452e"
+  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.3.tar.xz"
+  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.3.tar.xz"
+  sha256 "11f155784d28b85a12b50d2fc8f91c6b75d9ca325cc76aaffba1a58d4c9549c9"
 
   bottle do
     sha1 "f961f4aa1092ac485dea482920b90b01c5531b58" => :mavericks
