@@ -6,9 +6,8 @@ class Glassfish < Formula
   sha1 '704a90899ec5e3b5007d310b13a6001575827293'
 
   def install
-    rm_rf Dir['bin/*.bat']
-    libexec.install Dir["*"]
-    libexec.install Dir[".org.opensolaris,pkg"]
+    rm_rf Dir["bin/*.bat"]
+    libexec.install Dir["*", ".org.opensolaris,pkg"]
   end
 
   def caveats; <<-EOS.undent
