@@ -1,6 +1,6 @@
 require "formula"
 
-class GitDashHub < Formula
+class GitCmdHub < Formula
   homepage "https://github.com/ingydotnet/git-hub"
   url "https://github.com/ingydotnet/git-hub/archive/0.1.4.tar.gz"
   sha1 "e902e3dc9a3ad1aacda61eabf22011f61bd139c3"

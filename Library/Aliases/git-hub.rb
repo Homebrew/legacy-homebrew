@@ -1,1 +1,1 @@
-../Formula/git-dash-hub.rb
+Library/Formula/git-cmd-hub.rb
