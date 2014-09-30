@@ -13,7 +13,7 @@ class Speex < Formula
   end
 
   depends_on 'pkg-config' => :build
-  depends_on 'libogg' => :optional
+  depends_on 'libogg' => :recommended
 
   def install
     ENV.j1
