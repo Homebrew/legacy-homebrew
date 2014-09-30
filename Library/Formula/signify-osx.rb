@@ -1,6 +1,6 @@
 require "formula"
 
-class SignifyOSX < Formula
+class SignifyOsx < Formula
   homepage "http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/signify.1"
   head "https://github.com/jpouellet/signify-osx.git"
   url "https://github.com/jpouellet/signify-osx/archive/1.1.tar.gz"
