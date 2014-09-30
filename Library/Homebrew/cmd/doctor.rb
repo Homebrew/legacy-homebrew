@@ -184,8 +184,8 @@ end
 
 def check_for_stray_headers
   white_list = [
-    "macfuse/*", # MacFuse
-    "osxfuse/*", # OSXFuse
+    "macfuse/**/*.h", # MacFuse
+    "osxfuse/**/*.h", # OSXFuse
   ]
 
   __check_stray_files "/usr/local/include", "**/*.h", white_list, <<-EOS.undent

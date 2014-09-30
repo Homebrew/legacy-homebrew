@@ -86,8 +86,6 @@ class Git < Formula
                    "LDFLAGS=#{ENV.ldflags}",
                    "install"
 
-    bin.install Dir["contrib/remote-helpers/git-remote-{hg,bzr}"]
-
     # Install the OS X keychain credential helper
     cd 'contrib/credential/osxkeychain' do
       system "make", "CC=#{ENV.cc}",

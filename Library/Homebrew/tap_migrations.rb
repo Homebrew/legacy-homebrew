@@ -35,6 +35,7 @@ TAP_MIGRATIONS = {
   "justniffer" => "homebrew/boneyard",
   "kerl" => "homebrew/headonly",
   "kismet" => "homebrew/boneyard",
+  "libdlna" => "homebrew/boneyard",
   "libgtextutils" => "homebrew/science",
   "librets" => "homebrew/boneyard",
   "libspotify" => "homebrew/binary",
@@ -64,5 +65,6 @@ TAP_MIGRATIONS = {
   "texmacs" => "homebrew/boneyard",
   "tmap" => "homebrew/boneyard",
   "urweb" => "homebrew/boneyard",
+  "ushare" => "homebrew/boneyard",
   "wkhtmltopdf" => "homebrew/boneyard",
 }

@@ -3,13 +3,13 @@ require "formula"
 class Vala < Formula
   homepage "http://live.gnome.org/Vala"
   head "git://git.gnome.org/vala"
-  url "http://ftp.acc.umu.se/pub/gnome/sources/vala/0.24/vala-0.24.0.tar.xz"
-  sha1 "33a71a21e12e80cf1f4e0aa3b6a6523ff38e92c8"
+  url "http://ftp.acc.umu.se/pub/gnome/sources/vala/0.26/vala-0.26.0.tar.xz"
+  sha1 "ca8f84c7c271d6f47cad6526c176c5757655f63f"
 
   bottle do
-    sha1 "96f56ca5ec48b7e0822a6693818d38ca21499014" => :mavericks
-    sha1 "1562fe59048fe478e05914c4ae7f239c8e29bb4b" => :mountain_lion
-    sha1 "2aa1c2c25eda470464541c6d5d76d4d0cabb92e4" => :lion
+    sha1 "2c6655e048f9823656254a41e5da4122bd5db304" => :mavericks
+    sha1 "e839bc5c5dc90f0c4a4467a994bafc79e69680bd" => :mountain_lion
+    sha1 "a5da67a71e4388ab171445c10ca9ab817b77d236" => :lion
   end
 
   depends_on "pkg-config" => :build
