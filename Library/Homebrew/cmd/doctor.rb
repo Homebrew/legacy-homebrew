@@ -184,7 +184,8 @@ end
 
 def check_for_stray_headers
   white_list = [
-    "macfuse/**/*.h", # MacFuse
+    "fuse/**/*.h", # MacFuse
+    "macfuse/**/*.h", # OSXFuse MacFuse compatibility layer
     "osxfuse/**/*.h", # OSXFuse
   ]
 
