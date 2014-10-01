@@ -11,8 +11,14 @@ class EyeD3 < Formula
   # See https://github.com/Homebrew/homebrew/issues/32770 for previous attempt.
 
   def install
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    # Install in our prefix, not the first-in-the-path python site-packages dir.
+    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
+
+    system "python", "setup.py", "install", "--prefix=#{libexec}"
     share.install "docs/plugins", "docs/api", "docs/cli.rst"
+
+    bin.install Dir[libexec/"bin/*"]
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
