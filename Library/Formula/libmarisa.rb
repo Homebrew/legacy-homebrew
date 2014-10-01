@@ -10,4 +10,25 @@ class Libmarisa < Formula
     system "make", "check"
     system "make", "install"
   end
+
+  test do
+    (testpath/'test.cpp').write <<-EOS.undent
+      #include <marisa.h>
+      int main() {
+        marisa::Keyset keyset;
+        keyset.push_back("a");
+        keyset.push_back("app");
+        keyset.push_back("apple");
+
+        marisa::Trie trie;
+        trie.build(keyset);
+
+        marisa::Agent agent;
+        agent.set_query("apple");
+        return 0;
+      }
+    EOS
+    system ENV.cxx, "test.cpp", "-lmarisa", "-o", "test"
+    system "./test"
+  end
 end
