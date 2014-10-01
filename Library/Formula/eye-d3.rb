@@ -14,4 +14,9 @@ class EyeD3 < Formula
     system "python", "setup.py", "install", "--prefix=#{prefix}"
     share.install "docs/plugins", "docs/api", "docs/cli.rst"
   end
+
+  test do
+    touch "temp.mp3"
+    system "#{bin}/eyed3", "-a", "HomebrewYo", "-n", "37", "temp.mp3"
+  end
 end
