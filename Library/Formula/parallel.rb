@@ -7,6 +7,10 @@ class Parallel < Formula
   sha256 "4589e2c82b1ccb5be9060e010993214bb4d8ec87220be077f0c21bb5040cbd43"
 
   bottle do
+    cellar :any
+    sha1 "f0db31d409f45e4fff5f44b7599bf21364a75c1e" => :mavericks
+    sha1 "191a9d0b9d6004bb4e5c0ed7a4fefd2a85c774d5" => :mountain_lion
+    sha1 "70753d782bcadde6ea1b7870c06184427bd80f5e" => :lion
   end
 
   conflicts_with "moreutils",
