@@ -153,6 +153,8 @@ def check_for_stray_pcs
   # Package-config files which are generally OK should be added to this list,
   # with a short description of the software they come with.
   white_list = [
+    "fuse.pc", # OSXFuse/MacFuse
+    "macfuse.pc", # OSXFuse MacFuse compatibility layer
     "osxfuse.pc", # OSXFuse
   ]
 
@@ -184,7 +186,8 @@ end
 
 def check_for_stray_headers
   white_list = [
-    "macfuse/**/*.h", # MacFuse
+    "fuse/**/*.h", # MacFuse
+    "macfuse/**/*.h", # OSXFuse MacFuse compatibility layer
     "osxfuse/**/*.h", # OSXFuse
   ]
 
@@ -653,7 +656,6 @@ def check_for_config_scripts
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
-    # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
     config_scripts << [p, configs.map { |c| File.basename(c) }] unless configs.empty?
   end
 

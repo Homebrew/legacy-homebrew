@@ -21,6 +21,7 @@ class Postgis < Formula
   depends_on 'geos'
 
   depends_on 'gtk+' if build.with? "gui"
+  depends_on 'pkg-config' if build.with? "gui"
 
   # For GeoJSON and raster handling
   depends_on 'json-c'
