@@ -17,6 +17,6 @@ class EyeD3 < Formula
 
   test do
     touch "temp.mp3"
-    system "#{bin}/eyed3", "-a", "HomebrewYo", "-n", "37", "temp.mp3"
+    system "#{bin}/eyeD3", "-a", "HomebrewYo", "-n", "37", "temp.mp3"
   end
 end
