@@ -19,6 +19,6 @@ class P0f < Formula
            'RAAAAAIAAABFAABAbvpAAEAGAAB/AAABfwAAAcv8Iyjt2/Pg' \
            'AAAAALAC///+NAAAAgQ/2AEDAwQBAQgKCyrc9wAAAAAEAgAA'
     (testpath / 'test.pcap').write(Base64.decode64(pcap))
-    system "#{sbin}/p0f", '-r', "#{testpath}/test.pcap"
+    system "#{sbin}/p0f", '-r', 'test.pcap'
   end
 end
