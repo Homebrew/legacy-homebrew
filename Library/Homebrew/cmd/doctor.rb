@@ -153,6 +153,8 @@ def check_for_stray_pcs
   # Package-config files which are generally OK should be added to this list,
   # with a short description of the software they come with.
   white_list = [
+    "fuse.pc", # OSXFuse/MacFuse
+    "macfuse.pc", # OSXFuse MacFuse compatibility layer
     "osxfuse.pc", # OSXFuse
   ]
 
