@@ -5,6 +5,13 @@ class EyeD3 < Formula
   url "http://eyed3.nicfit.net/releases/eyeD3-0.7.5.tgz"
   sha1 "bcfd0fe14f5fa40f29ca7e7133138a5112f3c270"
 
+  bottle do
+    cellar :any
+    sha1 "fddbdc445f3d6f89f1c57dd656cef69263b9335d" => :mavericks
+    sha1 "fe13d924e6d1f85922930784f3b3490a730de708" => :mountain_lion
+    sha1 "6609a6784c0087a9d5d5a93d0e25298e5d233365" => :lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   # Looking for documentation? Please submit a PR to build some!
