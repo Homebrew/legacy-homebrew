@@ -656,7 +656,6 @@ def check_for_config_scripts
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
-    # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
     config_scripts << [p, configs.map { |c| File.basename(c) }] unless configs.empty?
   end
 
