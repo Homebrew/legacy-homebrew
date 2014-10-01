@@ -7,18 +7,41 @@ class Snappystream < Formula
 
   head "https://github.com/hoxnox/snappystream.git"
 
-  option "without-check", "Skip build-time tests (not recommended)"
-
   depends_on "cmake" => :build
   depends_on "snappy"
 
   def install
-    args = std_cmake_args
-    args << "-DBUILD_TESTS=ON" if build.with? "check"
+    args = std_cmake_args + %W[ -DBUILD_TESTS=ON ]
 
     system "cmake", ".", *args
-    system "make"
-    system "make", "test" if build.with? "check"
-    system "make", "install"
+    system "make", "all", "test", "install"
+  end
+
+  test do
+    (testpath/"testsnappystream.cxx").write <<-EOF
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <algorithm>
+#include <snappystream.hpp>
+
+int main()
+{
+  { std::ofstream ofile("snappy-file.dat");
+    snappy::oSnappyStream osnstrm(ofile);
+    std::cin >> std::noskipws;
+    std::copy(std::istream_iterator<char>(std::cin), std::istream_iterator<char>(), std::ostream_iterator<char>(osnstrm));
+  }
+  { std::ifstream ifile("snappy-file.dat");
+    snappy::iSnappyStream isnstrm(ifile);
+    isnstrm >> std::noskipws;
+    std::copy(std::istream_iterator<char>(isnstrm), std::istream_iterator<char>(), std::ostream_iterator<char>(std::cout));
+  }
+}
+EOF
+    system ENV.cxx, "testsnappystream.cxx", "-lsnappy", "-lsnappystream", "-o", "testsnappystream"
+    assert $?.success?
+    system "./testsnappystream < #{__FILE__} > out.dat && diff #{__FILE__} out.dat"
+    assert $?.success?
   end
 end
