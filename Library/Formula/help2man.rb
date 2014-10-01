@@ -7,6 +7,10 @@ class Help2man < Formula
   sha256 "a669dc3baf2f9fcfcf9d55d8555d1c234bc3cabd5fbe8e36e0dea4a88c222942"
 
   bottle do
+    cellar :any
+    sha1 "e9d97ada8b008f774ef1ba613bcfaf0e5366cbeb" => :mavericks
+    sha1 "271ee35610e547c5d111fd422abac34ba5514303" => :mountain_lion
+    sha1 "6bd18f5f15869e50452afdc9b97bd6e99c236fec" => :lion
   end
 
   def install
