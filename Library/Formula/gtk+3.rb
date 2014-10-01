@@ -2,14 +2,10 @@ require 'formula'
 
 class Gtkx3 < Formula
   homepage 'http://gtk.org/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.0.tar.xz'
-  sha256 '68d6b57d15c16808d0045e96b303f3dd439cc22a9c06fdffb07025cd713a82bc'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/3.14/gtk+-3.14.1.tar.xz'
+  sha256 '7e86eb7c8acc18524d7758ca2340b723ddeee1d0cd2cadd56de5a13322770a52'
 
   bottle do
-    revision 1
-    sha1 "ed0ce70bdb9b8f70f3a7f292fa5a6218bb8393a3" => :mavericks
-    sha1 "d4b3cb9c83fa76d5a2e62c8f1705e27aafd4928e" => :mountain_lion
-    sha1 "c0dde5f4a0da96b2f025832c53706514529575ef" => :lion
   end
 
   depends_on :x11 => ['2.5', :recommended] # needs XInput2, introduced in libXi 1.3
