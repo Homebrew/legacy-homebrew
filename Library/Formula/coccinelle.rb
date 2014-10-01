@@ -2,8 +2,8 @@ require 'formula'
 
 class Coccinelle < Formula
   homepage 'http://coccinelle.lip6.fr/'
-  url 'http://coccinelle.lip6.fr/distrib/coccinelle-1.0.0-rc17.tgz'
-  sha1 '5c13e521578e20d3805f571dc86931cbd8d63ccd'
+  url 'http://coccinelle.lip6.fr/distrib/coccinelle-1.0.0-rc21.tgz'
+  sha1 'edc008da552eb8f4ef7712fc99b4dc630ab6fb35'
 
   depends_on "objective-caml"
 

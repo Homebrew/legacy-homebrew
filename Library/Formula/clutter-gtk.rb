@@ -2,8 +2,8 @@ require "formula"
 
 class ClutterGtk < Formula
   homepage "https://wiki.gnome.org/Projects/Clutter"
-  url "http://ftp.gnome.org/pub/gnome/sources/clutter-gtk/1.2/clutter-gtk-1.2.2.tar.xz"
-  sha256 "743702bb230519553ca597b585b25af0b8783575fcd09c7fe5bed7dde292893c"
+  url "http://ftp.gnome.org/pub/gnome/sources/clutter-gtk/1.6/clutter-gtk-1.6.0.tar.xz"
+  sha256 "883550b574a036363239442edceb61cf3f6bedc8adc97d3404278556dc82234d"
 
   option "without-x", "Build without X11 support"
 

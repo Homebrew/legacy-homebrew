@@ -2,14 +2,14 @@ require "formula"
 
 class Gstreamer < Formula
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.0.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.0.tar.xz"
-  sha256 "23c39fdc2b24f889b07cab0449825384fef7592a121e180729fd9025ec45c695"
+  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.3.tar.xz"
+  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.3.tar.xz"
+  sha256 "11f155784d28b85a12b50d2fc8f91c6b75d9ca325cc76aaffba1a58d4c9549c9"
 
   bottle do
-    sha1 "79d453bf6cc25ad5389addd1eba6610f5ce3b43f" => :mavericks
-    sha1 "f6f99cc4d73d97ece0f61e0fb7310e4c4639c449" => :mountain_lion
-    sha1 "7c984213e35e568cd6c9fbb5dc93deeda8e7fa69" => :lion
+    sha1 "2d81c875848444a8fa1f9591a06064125244525d" => :mavericks
+    sha1 "117adca1dfeb12778ae9044a7e5e7562bc7c825f" => :mountain_lion
+    sha1 "1b461fc73804d7df6517bbea3edcc07fd929652d" => :lion
   end
 
   head do

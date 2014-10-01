@@ -3,8 +3,9 @@ require 'formula'
 class Pypy < Formula
   homepage 'http://pypy.org/'
   url 'https://bitbucket.org/pypy/pypy/downloads/pypy-2.4.0-osx64.tar.bz2'
+  sha1 'aa7f9b41d8bfda16239b629cd1b8dc884c2ad808'
   version '2.4.0'
-  sha1 'b9f87df364617c1a8c43303a467d698e4a3e1935'
+  revision 1
 
   depends_on :arch => :x86_64
 

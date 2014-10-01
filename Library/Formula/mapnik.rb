@@ -5,17 +5,26 @@ class Mapnik < Formula
   head "https://github.com/mapnik/mapnik.git"
   url "http://mapnik.s3.amazonaws.com/dist/v2.2.0/mapnik-v2.2.0.tar.bz2"
   sha1 "e493ad87ca83471374a3b080f760df4b25f7060d"
-  revision 2
+  revision 3
 
   bottle do
-    sha1 "dc73959a75ce5dd11e7b03e50b5215179650b768" => :mavericks
-    sha1 "4ff3aa06da7b8e6788a5e996732ea4dfbf321085" => :mountain_lion
-    sha1 "882cce36e29cea17f3cdb40805e9c7245a747f98" => :lion
+    sha1 "7ad87d1b99c5ceb1861b1cbabdb094488886bab4" => :mavericks
+    sha1 "cb2d4ab00ae91ff90602db62b01703f105a21362" => :mountain_lion
+    sha1 "0bcaf11e97ad59e025e38b428e03adc7195b61e2" => :lion
   end
 
-  # can be removed at Mapnik > 2.2.0
-  # https://github.com/mapnik/mapnik/issues/1973
-  patch :DATA
+  stable do
+    # can be removed at Mapnik > 2.2.0
+    # https://github.com/mapnik/mapnik/issues/1973
+    patch :DATA
+
+    # boost 1.56 compatibility
+    # concatenated from https://github.com/mapnik/mapnik/issues/2428
+    patch do
+      url "https://gist.githubusercontent.com/tdsmith/22aeb0bfb9691de91463/raw/3064c193466a041d82e011dc5601312ccadc9e15/mapnik-boost-megadiff.diff"
+      sha1 "63939ad5e197c83f7fe09e321484248dfd96d0f3"
+    end
+  end
 
   depends_on "pkg-config" => :build
   depends_on "freetype"
@@ -24,7 +33,8 @@ class Mapnik < Formula
   depends_on "proj"
   depends_on "icu4c"
   depends_on "jpeg"
-  depends_on "boost" => "with-python"
+  depends_on "boost"
+  depends_on "boost-python"
   depends_on "gdal" => :optional
   depends_on "postgresql" => :optional
   depends_on "cairo" => :optional

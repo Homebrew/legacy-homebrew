@@ -2,15 +2,15 @@ require 'formula'
 
 class Ansible < Formula
   homepage 'http://www.ansible.com/home'
-  url 'http://releases.ansible.com/ansible/ansible-1.7.1.tar.gz'
-  sha1 '4f4be4d45f28f52e4ab0c063efb66c7b9f482a51'
+  url 'http://releases.ansible.com/ansible/ansible-1.7.2.tar.gz'
+  sha1 '21532ce402e08c91cc64c5e655758574af9fc8f3'
 
   head 'https://github.com/ansible/ansible.git', :branch => 'devel'
 
   bottle do
-    sha1 "12263f6ce1db9f94937d6d72ba6b9c35a0a00daf" => :mavericks
-    sha1 "696bf4d54c6098c9a072133059c7a6bdb6b02aa9" => :mountain_lion
-    sha1 "c0133e0fecff6c98d07e0e69ec39d99b327afc14" => :lion
+    sha1 "97822f76a9c9650473fff0cd725bfa546bb84442" => :mavericks
+    sha1 "dcc7cf4b6272707d95505a2c2c2f1b9b051f1b76" => :mountain_lion
+    sha1 "5f9f3b109a31ccf5d7d64a16338d635d974b1648" => :lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -21,6 +21,11 @@ class Ansible < Formula
   resource 'pycrypto' do
     url 'https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz'
     sha1 'c17e41a80b3fbf2ee4e8f2d8bb9e28c5d08bbb84'
+  end
+
+  resource 'boto' do
+    url 'https://pypi.python.org/packages/source/b/boto/boto-2.32.1.tar.gz'
+    sha1 '4fdecde66245b7fc0295e22d2c2d3c9b08c2b1fa'
   end
 
   resource 'pyyaml' do
@@ -56,7 +61,7 @@ class Ansible < Formula
     ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    res = %w[pycrypto pyyaml paramiko markupsafe jinja2]
+    res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
     res << "python-keyczar" if build.with? "accelerate"
     res.each do |r|
       resource(r).stage { system "python", *install_args }

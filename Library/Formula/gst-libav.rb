@@ -2,14 +2,14 @@ require 'formula'
 
 class GstLibav < Formula
   homepage 'http://gstreamer.freedesktop.org'
-  url 'http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.4.0.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-libav-1.4.0.tar.xz'
-  sha256 'c82c7a657863f2e27ac5cba539b0bd0a8114ad6bd4ba33bae777e4dbfab9e380'
+  url 'http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.4.3.tar.xz'
+  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-libav-1.4.3.tar.xz'
+  sha256 '833229d2b1aad6549ad0297435516508cc3ac47b166d6393ecdffc34c31a01d3'
 
   bottle do
-    sha1 "c2010c686bb30bee5e1e44083b451bcfbd1d3f07" => :mavericks
-    sha1 "c2f7536137da1c4cba8ffdfab308bad45a2a1bee" => :mountain_lion
-    sha1 "f77dea47e02c8a4200b7081b0db95c41ab437b89" => :lion
+    sha1 "4bf3aa83e16ad56c83e4b28df65a26ccb5a0a5ed" => :mavericks
+    sha1 "0b7a157660fd9ab7ab9fe2b3026e128d7d30dd10" => :mountain_lion
+    sha1 "b45a6dc041af9900132908655f5196803722133b" => :lion
   end
 
   head do

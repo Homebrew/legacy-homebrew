@@ -57,7 +57,7 @@ class FormulaText
   end
 
   def has_DATA?
-    /\bDATA\b/ =~ @text
+    /^[^#]*\bDATA\b/ =~ @text
   end
 
   def has_END?
@@ -286,6 +286,14 @@ class FormulaAuditor
       end
 
       spec.patches.select(&:external?).each { |p| audit_patch(p) }
+    end
+
+    if f.stable && f.devel
+      if f.devel.version < f.stable.version
+        problem "devel version #{f.devel.version} is older than stable version #{f.stable.version}"
+      elsif f.devel.version == f.stable.version
+        problem "stable and devel versions are identical"
+      end
     end
   end
 

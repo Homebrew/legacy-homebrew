@@ -4,17 +4,17 @@ class GstPluginsGood < Formula
   homepage 'http://gstreamer.freedesktop.org/'
 
   stable do
-    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.4.0.tar.xz'
-    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.4.0.tar.xz'
-    sha256 '48a62e7987fffa289a091dfc8ccc80b401d110632b8fc1adce5b82fc092f2685'
+    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.4.3.tar.xz'
+    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.4.3.tar.xz'
+    sha256 '5876a74402f2a24d1d3ae9163c32466bdc7a565696dddeef65e6a9a93efc5537'
 
     depends_on 'check' => :optional
   end
 
   bottle do
-    sha1 "e4962534c01fa90443ebc05fcc153b8d1a17e3f9" => :mavericks
-    sha1 "9be1005b6db6ad4877547262b1277c3dbe9dd43e" => :mountain_lion
-    sha1 "13d6763c57af2fc6eb7f515b28d020048761a603" => :lion
+    sha1 "737fce473c770dad629f84f11b10fbe84554ead8" => :mavericks
+    sha1 "56761f7f6a803714da6c5d676738382c788b0fee" => :mountain_lion
+    sha1 "a6986b418e1e76bcaab34a7055ccdcd9233d38fd" => :lion
   end
 
   head do

@@ -110,7 +110,7 @@ class Wine < Formula
     ENV.libxml2
 
     args = ["--prefix=#{prefix}"]
-    args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang
+    args << "--disable-win16" if MacOS.version <= :leopard
 
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
