@@ -5,6 +5,13 @@ class Jrnl < Formula
   url "https://github.com/maebert/jrnl/archive/1.9.6.tar.gz"
   sha1 "925571cd9ba85803a291d0a0816dbf79882e45dd"
 
+  bottle do
+    cellar :any
+    sha1 "08237abb884278ff3efebb0bdbfec4f74bc6dfbe" => :mavericks
+    sha1 "bd476abdaf2a05108e83cac0a62899277ab495a7" => :mountain_lion
+    sha1 "14c765b98d65dd3d6fa9fd41a63adea38b589ef1" => :lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "pycrypto" do
