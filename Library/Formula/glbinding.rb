@@ -7,7 +7,19 @@ class Glbinding < Formula
 
   depends_on "cmake" => :build
   needs :cxx11
-  
+
+  def caveats
+      "glbinding requires a C++11 compliant compiler"
+  end
+
+  fails_with :gcc do
+    cause 'glbinding requires a C++11 compliant compiler.'
+  end
+
+  fails_with :llvm do
+    cause 'glbinding requires a C++11 compliant compiler.'
+  end
+
   def install
     ENV.cxx11
     system "./configure", "--disable-debug",
@@ -27,8 +39,10 @@ class Glbinding < Formula
         glbinding::Binding::initialize();
       }
       EOS
-    flags = ["-std=c++11","-I#{include}/glbinding", "-I#{lib}/glbinding", "-lglbinding"]
-    system ENV.cc, "-o", "test", "test.cpp", *(flags + ENV.cflags.to_s.split)
+    flags = ["-std=c++11", "-stdlib=libc++", "-I#{include}/glbinding", "-I#{lib}/glbinding", "-lglbinding"]
+    system ENV.cxx, "-o", "test", "test.cpp", *(flags + ENV.cflags.to_s.split)
     system "./test"
   end
+
 end
+
