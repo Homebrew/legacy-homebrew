@@ -19,7 +19,12 @@ class Ghc < Formula
   depends_on "gmp"
   depends_on "gcc" if MacOS.version == :mountain_lion
 
-  if build.build_32_bit? || !MacOS.prefer_64_bit?
+  if OS.linux?
+    resource "binary" do
+      url "http://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-x86_64-unknown-linux.tar.bz2"
+      sha256 "da962575e2503dec250252d72a94b6bf69baef7a567b88e90fd6400ada527210"
+    end
+  elsif build.build_32_bit? || !MacOS.prefer_64_bit?
     resource "binary" do
       url "https://www.haskell.org/ghc/dist/7.4.2/ghc-7.4.2-i386-apple-darwin.tar.bz2"
       sha256 "80c946e6d66e46ca5d40755f3fbe3100e24c0f8036b850fd8767c4f9efd02bef"
@@ -107,7 +112,7 @@ class Ghc < Formula
 
       # ensure configure does not use Xcode 5 "gcc" which is actually clang
       system "./configure", "--prefix=#{prefix}",
-                            "--build=#{arch}-apple-darwin",
+                            ("--build=#{arch}-apple-darwin" if OS.mac?),
                             "--with-gcc=#{ENV.cc}"
       system "make"
 
@@ -131,7 +136,7 @@ class Ghc < Formula
       system "make", "-j1", "install"
       # use clang, even when gcc was used to build ghc
       settings = Dir[lib/"ghc-*/settings"][0]
-      inreplace settings, "\"#{ENV.cc}\"", "\"clang\""
+      inreplace settings, "\"#{ENV.cc}\"", "\"clang\"" if OS.mac?
     end
   end
 
