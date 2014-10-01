@@ -7,6 +7,8 @@ class Mackup < Formula
 
   head "https://github.com/lra/mackup.git"
 
+  depends_on :python
+
   def install
     system "python", "setup.py", "install", "--prefix=#{prefix}",
                      "--single-version-externally-managed",
