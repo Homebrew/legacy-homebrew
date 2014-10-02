@@ -2,8 +2,8 @@ require 'formula'
 
 class Ntl < Formula
   homepage 'http://www.shoup.net/ntl'
-  url 'http://www.shoup.net/ntl/ntl-6.1.0.tar.gz'
-  sha1 '91fa69e71ee964dc94c107eb762a97425776ac2c'
+  url 'http://www.shoup.net/ntl/ntl-6.2.1.tar.gz'
+  sha1 '3b9ab3bedb0b2e9b5ee322d60745be5caf1c743f'
 
   def install
     cd "src" do
