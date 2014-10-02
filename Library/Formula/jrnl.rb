@@ -8,9 +8,9 @@ class Jrnl < Formula
 
   bottle do
     cellar :any
-    sha1 "68111b2f2070623dfa91869989843018faa5244c" => :mavericks
-    sha1 "98e6b91c9f935129ba55f6a912eb7bf1fec9fcb6" => :mountain_lion
-    sha1 "33ed611db67d3be6f827a4a707db7697a0597cd4" => :lion
+    sha1 "4065ac663f692810f854256bbee38e9611bb193f" => :mavericks
+    sha1 "da02ddf49d31cbfe264b51162328db5c6c38f68e" => :mountain_lion
+    sha1 "b518ad8634355a28662b7ddd0bad390615cf091d" => :lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
