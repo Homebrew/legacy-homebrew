@@ -9,7 +9,7 @@ class P0f < Formula
     inreplace "config.h", "p0f.fp", "#{etc}/p0f/p0f.fp"
     system "./build.sh"
     sbin.install "p0f"
-    (etc + "p0f").install "p0f.fp"
+    (etc+"p0f").install "p0f.fp"
   end
 
   test do
