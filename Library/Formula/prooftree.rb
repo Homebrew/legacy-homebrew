@@ -9,7 +9,7 @@ class Prooftree < Formula
   depends_on 'lablgtk'
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix", prefix
     system "make"
     system "make install"
   end
