@@ -2,9 +2,9 @@ require "formula"
 
 class BashGitPrompt < Formula
   homepage "https://github.com/magicmonty/bash-git-prompt"
-  url "https://github.com/magicmonty/bash-git-prompt/archive/2.0.tar.gz"
-  sha1 "3c0bc71302b97260cf8d14a1f01be732039365b9"
-  head "https://github.com/magicmonty/bash-git-prompt.git"
+  url "https://github.com/magicmonty/bash-git-prompt/archive/2.1.tar.gz"
+  head "https://github.com/magicmonty/bash-git-prompt", :using => :git
+  sha1 "9bd29dc2aa4859d2f4c0736cb26cc177de9c1274"
 
   def install
     share.install "./gitprompt.sh", "./gitprompt.fish", "./git-prompt-help.sh",
