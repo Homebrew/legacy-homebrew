@@ -6,6 +6,10 @@ class Clucene < Formula
   sha1 "76d6788e747e78abb5abf8eaad78d3342da5f2a4"
 
   bottle do
+    cellar :any
+    sha1 "80b58c05e8acc9b2848a57da7e052bf1a15812d9" => :mavericks
+    sha1 "ba66e4b9422e8ad12b16c19589fde50198c5c700" => :mountain_lion
+    sha1 "0564c414eca5a3d65eb8a217c03c114ffba1641e" => :lion
   end
 
   head "git://clucene.git.sourceforge.net/gitroot/clucene/clucene"
