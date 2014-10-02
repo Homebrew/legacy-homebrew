@@ -1,10 +1,10 @@
 require "formula"
 
-class TomeePlus < Formula
+class TomeePlume < Formula
   homepage "http://tomee.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.1/apache-tomee-1.7.1-plus.tar.gz"
+  url "http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.1/apache-tomee-1.7.1-plume.tar.gz"
   version "1.7.1"
-  sha1 "c957652b205ec2395dfc30004e88088d4fb41aa5"
+  sha1 "b27386dd16df4cc936283dd3739012a5eed3224a"
 
   def install
     # Remove Windows scripts
@@ -13,14 +13,14 @@ class TomeePlus < Formula
     # Install files
     prefix.install %w{ NOTICE LICENSE RELEASE-NOTES RUNNING.txt }
     libexec.install Dir["*"]
-    bin.install_symlink "#{libexec}/bin/startup.sh" => "tomee-plus-startup"
+    bin.install_symlink "#{libexec}/bin/startup.sh" => "tomee-plume-startup"
   end
 
   def caveats; <<-EOS.undent
-    The home of Apache TomEE Plus is:
+    The home of Apache TomEE Plume is:
       #{opt_libexec}
     To run Apache TomEE:
-      #{opt_libexec}/bin/tomee-plus-startup
+      #{opt_libexec}/bin/tomee-plume-startup
     EOS
   end
 
