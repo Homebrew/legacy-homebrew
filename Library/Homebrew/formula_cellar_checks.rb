@@ -106,4 +106,23 @@ module FormulaCellarChecks
       EOS
     ]
   end
+
+  def check_shadowed_headers
+    return if f.keg_only? || !f.include.directory?
+
+    files  = relative_glob(f.include, "**/*.h")
+    files &= relative_glob("#{MacOS.sdk_path}/usr/include", "**/*.h")
+    files.map! { |p| File.join(f.include, p) }
+
+    return if files.empty?
+
+    ["Header files that shadow system header files were installed to \"#{f.include}\".",
+     "The offending files are:  \n  #{files * "\n  "}"]
+  end
+
+  private
+
+  def relative_glob(dir, pattern)
+    Dir.chdir(dir) { Dir[pattern] }
+  end
 end
