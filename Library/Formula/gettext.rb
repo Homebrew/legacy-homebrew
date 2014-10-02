@@ -23,7 +23,7 @@ class Gettext < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--disable-debug",
                           "--prefix=#{prefix}",
-                          "--with-included-gettext",
+                          ("--with-included-gettext" if OS.mac?),
                           "--with-included-glib",
                           "--with-included-libcroco",
                           "--with-included-libunistring",
