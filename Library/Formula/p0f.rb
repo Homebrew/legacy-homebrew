@@ -20,12 +20,7 @@ class P0f < Formula
   end
 
   test do
-    require "base64"
-
-    pcap = "1MOyoQIABAAAAAAAAAAAAP//AAAAAAAA92EsVI67DgBEAAAA" \
-           "RAAAAAIAAABFAABAbvpAAEAGAAB/AAABfwAAAcv8Iyjt2/Pg" \
-           "AAAAALAC///+NAAAAgQ/2AEDAwQBAQgKCyrc9wAAAAAEAgAA"
-    (testpath / "test.pcap").write(Base64.decode64(pcap))
-    system "#{sbin}/p0f", "-r", "test.pcap"
+    test_pcap = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.pcap"
+    system "#{sbin}/p0f", "-r", test_pcap
   end
 end
