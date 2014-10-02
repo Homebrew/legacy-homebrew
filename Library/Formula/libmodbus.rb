@@ -12,7 +12,18 @@ class Libmodbus < Formula
     sha1 "efc4d4d0873b838f6124440262afd44675e44f4d" => :lion
   end
 
+  head do
+    url 'https://github.com/stephane/libmodbus.git'
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
+    if build.head?
+      system "./autogen.sh"
+    end
     system "./configure", "--prefix=#{prefix}"
     system "make install"
   end
