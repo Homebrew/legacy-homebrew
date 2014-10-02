@@ -14,7 +14,10 @@ class CrosstoolNg < Formula
   depends_on 'gawk'
   depends_on 'binutils'
   depends_on 'libelf'
+  option "with-grep", "Compile with GNU grep from dupes"
   depends_on 'homebrew/dupes/grep' => :optional
+  option "with-make", "Compile with GNU make from dupes"
+  depends_on 'homebrew/dupes/make' => :optional
 
   # Avoid superenv to prevent https://github.com/mxcl/homebrew/pull/10552#issuecomment-9736248
   env :std
@@ -35,6 +38,8 @@ class CrosstoolNg < Formula
             "--with-awk=gawk"]
 
     args << "--with-grep=ggrep" if build.with? "grep"
+
+    args << "--with-make=gmake" if build.with? "make"
 
     args << "CFLAGS=-std=gnu89"
 
