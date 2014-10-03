@@ -7,9 +7,9 @@ class Mksh < Formula
 
   bottle do
     cellar :any
-    sha1 "b643e1c9418f9bb4f46487d4351c43aa9195f094" => :mavericks
-    sha1 "f274f48e9e8d7fc29cb4f018d733ffe43e696fb0" => :mountain_lion
-    sha1 "35c935b1912d577e04e4090b59080ba7f4cb204d" => :lion
+    sha1 "372be194ac428fa9e0b9a8d0da0a61749d2d7371" => :mavericks
+    sha1 "ca9e90bb5732b0f03ec46c58034face9ac598253" => :mountain_lion
+    sha1 "07c5936d6df6d8808d7d99c1aa81d69a07eb9fd4" => :lion
   end
 
   def install
