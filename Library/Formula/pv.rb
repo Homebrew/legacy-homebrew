@@ -2,8 +2,8 @@ require 'formula'
 
 class Pv < Formula
   homepage 'http://www.ivarch.com/programs/pv.shtml'
-  url 'http://www.ivarch.com/programs/sources/pv-1.5.3.tar.bz2'
-  sha1 '8cb04ca5c2318e4da0dc88f87f16cea6e1901bef'
+  url 'http://www.ivarch.com/programs/sources/pv-1.5.7.tar.bz2'
+  sha1 '173d87d11d02a524037228f6495c46cad3214b7d'
 
   bottle do
     sha1 "e990208b2865d65af9036ba5733f4e6be9ce040a" => :mavericks
