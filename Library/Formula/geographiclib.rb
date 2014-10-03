@@ -1,8 +1,8 @@
 require "formula"
 class Geographiclib < Formula
   homepage "http://geographiclib.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.37.tar.gz"
-  sha1 "d18d0c94824fb303ce8942d622bdef78833108cd"
+  url "https://downloads.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.38.tar.gz"
+  sha1 "e854d6d85cc5b1273fa4044828fadd9e1b151fcd"
 
   bottle do
     sha1 "bfa37887453c33dc76cc1005e3accae3720ea227" => :mavericks
