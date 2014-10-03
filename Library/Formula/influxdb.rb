@@ -12,6 +12,7 @@ class Influxdb < Formula
   end
 
   depends_on "leveldb"
+  depends_on "rocksdb"
   depends_on "autoconf" => :build
   depends_on "protobuf" => :build
   depends_on "bison" => :build
