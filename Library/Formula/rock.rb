@@ -25,6 +25,15 @@ class Rock < Formula
 
       # install misc authorship files & rock binary in place
       # copy the sdk, libs and docs
-      prefix.install "rock.use", 'README.md', "sdk", "docs"
+      prefix.install "rock.use", "sdk.use", "sdk-net.use", "sdk-dynlib.use", "pcre.use", "sdk", "README.md"
+      doc.install Dir["docs/*"]
+  end
+
+  test do
+    (testpath/"hello.ooc").write <<-EOS.undent
+      import os/Time
+      Time dateTime() println()
+    EOS
+    system "#{bin}/rock", "--run", "hello.ooc"
   end
 end
