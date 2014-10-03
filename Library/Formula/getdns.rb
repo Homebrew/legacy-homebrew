@@ -6,10 +6,9 @@ class Getdns < Formula
   sha1 "9833f96cf23c845008405cec411c1f2005e40dc3"
 
   bottle do
-    revision 1
-    sha1 "97d4143202cdcb3990f2eeac041c582db7d91a59" => :mavericks
-    sha1 "73e1978b90fcd971d6e49c55d2ed0c0e4638fee6" => :mountain_lion
-    sha1 "348ae9bb86398f484d2178104fc98b42963506eb" => :lion
+    sha1 "efad47ff71c7205beb6ab03c133853909031c538" => :mavericks
+    sha1 "860489f9eab66b247e32e8a960e0960a1d0109f0" => :mountain_lion
+    sha1 "7bdfa25a8aa1c9729dda8cfb1f106aea1a9e1aba" => :lion
   end
 
   depends_on "ldns"
