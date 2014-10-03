@@ -2,8 +2,8 @@ require 'formula'
 
 class Mksh < Formula
   homepage 'https://mirbsd.org/mksh.htm'
-  url 'http://mirbsd.org/MirOS/dist/mir/mksh/mksh-R50b.tgz'
-  sha1 '5554d18126eb861caa71891d6a135014b9aabb99'
+  url 'http://mirbsd.org/MirOS/dist/mir/mksh/mksh-R50c.tgz'
+  sha1 '64af48cca823962b96720ed8a49621aad398dd0a'
 
   bottle do
     cellar :any
