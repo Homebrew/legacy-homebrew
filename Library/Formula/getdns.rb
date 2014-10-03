@@ -2,8 +2,8 @@ require "formula"
 
 class Getdns < Formula
   homepage "http://getdnsapi.net"
-  url "http://getdnsapi.net/dist/getdns-0.1.1.tar.gz"
-  sha1 "63abbf10f514c6125c4bee0d249b9c68a9e4f560"
+  url "http://getdnsapi.net/dist/getdns-0.1.4.tar.gz"
+  sha1 "9833f96cf23c845008405cec411c1f2005e40dc3"
 
   bottle do
     revision 1
