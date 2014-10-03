@@ -13,7 +13,7 @@ class Cfitsio < Formula
     url "http://heasarc.gsfc.nasa.gov/docs/software/fitsio/cexamples/cexamples.zip"
     version "2014.01.23"
     sha1 "39a66bb611bf611e7c88f0a410234c0d4955529c"
-  end if build.with? "examples"
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}"

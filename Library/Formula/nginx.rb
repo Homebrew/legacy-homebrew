@@ -2,20 +2,20 @@ require "formula"
 
 class Nginx < Formula
   homepage "http://nginx.org/"
-  url "http://nginx.org/download/nginx-1.6.1.tar.gz"
-  sha1 "e58c865f67b580541ed4eadf69d1676762bf50ab"
+  url "http://nginx.org/download/nginx-1.6.2.tar.gz"
+  sha1 "1a5458bc15acf90eea16353a1dd17285cf97ec35"
 
   devel do
-    url "http://nginx.org/download/nginx-1.7.4.tar.gz"
-    sha1 "94f4ac8ddb4a05349e75c43b84f24dbacdbac6e9"
+    url "http://nginx.org/download/nginx-1.7.5.tar.gz"
+    sha1 "432303cf9694eedb56a5a91d86536beb604d766b"
   end
 
   head "http://hg.nginx.org/nginx/", :using => :hg
 
   bottle do
-    sha1 "29e8e4840f351ad8c1ee843a2840e214e7adcfab" => :mavericks
-    sha1 "8d07ca4ef27cd43da7ec7a81307ca447ba9d9474" => :mountain_lion
-    sha1 "160444c6304fbcb25bbed225c9e71890f54f2d15" => :lion
+    sha1 "7aa0fc40ada6fa9623817f3f5bac0310b7fb1b45" => :mavericks
+    sha1 "c1660c583f74b0829f752804f566769e607998a7" => :mountain_lion
+    sha1 "2f4810ccc3cb5687685028591668ecae50b3cb30" => :lion
   end
 
   env :userpaths
@@ -124,8 +124,8 @@ class Nginx < Formula
   def passenger_caveats; <<-EOS.undent
 
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf, inside the 'http' context:
-      passenger_root #{HOMEBREW_PREFIX}/opt/passenger/libexec/lib/phusion_passenger/locations.ini
-      passenger_ruby /usr/bin/ruby
+      passenger_root #{HOMEBREW_PREFIX}/opt/passenger/libexec/lib/phusion_passenger/locations.ini;
+      passenger_ruby /usr/bin/ruby;
     EOS
   end
 

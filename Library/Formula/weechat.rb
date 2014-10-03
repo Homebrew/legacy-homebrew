@@ -4,13 +4,14 @@ class Weechat < Formula
   homepage 'http://www.weechat.org'
   url 'http://weechat.org/files/src/weechat-1.0.tar.bz2'
   sha1 'd3070ffde05cb706d615144e71f933153871894d'
+  revision 1
 
   head 'https://github.com/weechat/weechat.git'
 
   bottle do
-    sha1 "ffe3cecdb9b796eae6fd6db61aa8b9ea9c5bc6b4" => :mavericks
-    sha1 "a308dce7ebecc1bae28a9a3aafe1ee44161da42b" => :mountain_lion
-    sha1 "3127000fe74e0911ae006d035aa72112cdb84047" => :lion
+    sha1 "19360d0fe50646b592b78bb36353547dd1f43317" => :mavericks
+    sha1 "2d4fb76df048df84fb2ec878a2964573a36f74ee" => :mountain_lion
+    sha1 "add1d9b1eb865db66cae4c534c200a790e133677" => :lion
   end
 
   depends_on 'cmake' => :build
@@ -25,10 +26,10 @@ class Weechat < Formula
   option 'with-ruby', 'Build the ruby module'
 
   def install
-    # this will fix error:
-    #    no such file or directory: 'Python.framework/Versions/2.7/Python'
-    inreplace 'src/plugins/python/CMakeLists.txt',
-      '${PYTHON_LFLAGS}', '-u _PyMac_Error'
+    # builds against the python in PATH by asking cmake to use introspected
+    # values instead of ignoring them
+    # https://github.com/weechat/weechat/pull/217
+    inreplace "cmake/FindPython.cmake", "PATHS ${", "HINTS ${"
 
     args = std_cmake_args + %W[
       -DPREFIX=#{prefix}

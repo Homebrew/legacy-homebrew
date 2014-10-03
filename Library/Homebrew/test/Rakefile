@@ -3,21 +3,8 @@ require 'rake/testtask'
 
 TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
 TEST_FILES = Dir["#{TEST_DIRECTORY}/test_*.rb"]
-GEM_DEPS = {
-  "mocha" => "~> 1.1",
-  "minitest" => "~> 5.3",
-  "rake" => "~> 10.3",
-}
 
 task :default => :test
-
-task :deps do
-  GEM_DEPS.each do |dep, version|
-    `gem list --installed #{dep} -v '#{version}'`
-    next if $?.success?
-    sh "gem", "install", "--no-ri", "--no-rdoc", "--user-install", dep, "-v", version
-  end
-end
 
 Rake::TestTask.new(:test) do |t|
   t.libs << TEST_DIRECTORY

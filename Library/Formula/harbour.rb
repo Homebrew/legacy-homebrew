@@ -12,9 +12,7 @@ class Harbour < Formula
     sha1 "0127b7daaaae6393fd69fff8e7e21a9ebae7c18d" => :lion
   end
 
-  head do
-    url "https://github.com/harbour/core/archive/master.tar.gz"
-  end
+  head "https://github.com/harbour/core.git"
 
   depends_on "pcre"
   depends_on :x11 => :recommended

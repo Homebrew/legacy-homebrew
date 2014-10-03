@@ -2,14 +2,14 @@ require "formula"
 
 class Rethinkdb < Formula
   homepage "http://www.rethinkdb.com/"
-  url "http://download.rethinkdb.com/dist/rethinkdb-1.13.4.tgz"
-  sha1 "de41b727482b3662cce3e11e527a464ebf925795"
+  url "http://download.rethinkdb.com/dist/rethinkdb-1.15.0-1.tgz"
+  version "1.15.0"
+  sha1 "eb68b3a2f9e6c1eb917bec1e46c3cef86fe3c25b"
 
   bottle do
-    revision 1
-    sha1 "596f771d45a1dfddc929e5def9d4d8361aac73f4" => :mavericks
-    sha1 "6eebbd619c542582d63e922701e4e6c705f4dbdc" => :mountain_lion
-    sha1 "4038e3599d6a44d993429bef671e8e2b9625ddf6" => :lion
+    sha1 "4b5f1269335697008c507f528c68d3a59dd2cc02" => :mavericks
+    sha1 "925bad3bb759089349aca73b112c036347101342" => :mountain_lion
+    sha1 "1c1ab85203934327dffed316d55a63cc34430582" => :lion
   end
 
   depends_on :macos => :lion
@@ -20,6 +20,10 @@ class Rethinkdb < Formula
     cause "RethinkDB uses C++0x"
   end
 
+  # boost 1.56 compatibility
+  # https://github.com/rethinkdb/rethinkdb/issues/3044#issuecomment-55478774
+  patch :DATA
+
   def install
     args = ["--prefix=#{prefix}"]
 
@@ -29,6 +33,10 @@ class Rethinkdb < Formula
     # rethinkdb requires that protobuf be linked against libc++
     # but brew's protobuf is sometimes linked against libstdc++
     args += ["--fetch", "protobuf"]
+
+    # support gcc with boost 1.56
+    # https://github.com/rethinkdb/rethinkdb/issues/3044#issuecomment-55471981
+    args << "CXXFLAGS=-DBOOST_VARIANT_DO_NOT_USE_VARIADIC_TEMPLATES"
 
     system "./configure", *args
     system "make"
@@ -65,3 +73,17 @@ class Rethinkdb < Formula
     EOS
   end
 end
+__END__
+diff --git a/src/clustering/reactor/reactor_be_primary.cc b/src/clustering/reactor/reactor_be_primary.cc
+index 3f583fc..945f78b 100644
+--- a/src/clustering/reactor/reactor_be_primary.cc
++++ b/src/clustering/reactor/reactor_be_primary.cc
+@@ -290,7 +290,7 @@ void do_backfill(
+
+ bool check_that_we_see_our_broadcaster(const boost::optional<boost::optional<broadcaster_business_card_t> > &maybe_a_
+     guarantee(maybe_a_business_card, "Not connected to ourselves\n");
+-    return maybe_a_business_card.get();
++    return static_cast<bool>(maybe_a_business_card.get());
+ }
+
+ bool reactor_t::attempt_backfill_from_peers(directory_entry_t *directory_entry,

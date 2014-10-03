@@ -2,13 +2,13 @@ require "formula"
 
 class Ola < Formula
   homepage "http://www.openlighting.org/ola/"
-  url "https://github.com/OpenLightingProject/ola/releases/download/0.9.1/ola-0.9.1.tar.gz"
-  sha1 "1aeb969d833385603504f9debcbf48d7b27b5200"
+  url "https://github.com/OpenLightingProject/ola/releases/download/0.9.2/ola-0.9.2.tar.gz"
+  sha1 "f9cedbb9bf8e568803f296b7ec8bdfcf74ae5bab"
 
   bottle do
-    sha1 "415969ef130bc2a386c92fd44689dc41d824bce2" => :mavericks
-    sha1 "7728260e561148e324290c2d0b34320de94028c9" => :mountain_lion
-    sha1 "bae4d5c8d4d3386976a82d65a7a3691adafaa589" => :lion
+    sha1 "d9f67796fc3228e94d07cead6a91dfccbe3a2f2b" => :mavericks
+    sha1 "1b2577335ce33aa83e4bceb27260a585bce06b91" => :mountain_lion
+    sha1 "de23fe04b9a29273c61d58287d540f90db9ab662" => :lion
   end
 
   option :universal

@@ -4,12 +4,13 @@ class Tracebox < Formula
   homepage 'http://www.tracebox.org/'
   head 'https://github.com/tracebox/tracebox.git'
   url 'https://github.com/tracebox/tracebox.git', :tag => 'v0.2'
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "ec8033c2cd6db48f747cb0d3a1881ae90bccfd81" => :mavericks
-    sha1 "08425c77bfbae29a31f4b60acbc614235023a6e7" => :mountain_lion
-    sha1 "9a71c329fad5e6e39108e198506fa0b8b2d40e6c" => :lion
+    sha1 "96873e5b6be4076c3f66a06e62635fcba085704a" => :mavericks
+    sha1 "3958426b9f4034a0dd278610981105124bc4ed26" => :mountain_lion
+    sha1 "efd205cf4ccee2bff4ed6ef619d308e349663f1b" => :lion
   end
 
   depends_on "autoconf" => :build

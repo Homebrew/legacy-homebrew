@@ -5,12 +5,14 @@ class Wrk < Formula
   url "https://github.com/wg/wrk/archive/3.1.1.tar.gz"
   sha1 "7cea5d12dc5076fed1a1c730bd3e6eba832a8f61"
   head "https://github.com/wg/wrk.git"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "933b2955b11a7ffb676129775fd5499f0d1a55b9" => :mavericks
-    sha1 "0cb7fe074f2b22abd4bae166da6de1a71157bec1" => :mountain_lion
-    sha1 "5b3cfd7ddee6ca35d85cbd03ac0102794c0ccd44" => :lion
+    revision 1
+    sha1 "034ed6c6991064d72aabadec117cedc8826a5018" => :mavericks
+    sha1 "beec443377916519ef99e99ac443adf92aa15f59" => :mountain_lion
+    sha1 "9528426378a5d4d75e1ec5f7cd0d3dcbdeb775ac" => :lion
   end
 
   depends_on "openssl"

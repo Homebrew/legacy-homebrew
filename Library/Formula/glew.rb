@@ -7,9 +7,10 @@ class Glew < Formula
 
   bottle do
     cellar :any
-    sha1 "45a06a30935d2c707f389da25ba45e1169801480" => :mavericks
-    sha1 "01928578947d9c3d98ae2ec78e43aec837854a0a" => :mountain_lion
-    sha1 "d7c6a1a25c3d55230be4c977ebb6774840926d3a" => :lion
+    revision 1
+    sha1 "bd5a2a92acf5443149d5a7b86599b6092192f7f7" => :mavericks
+    sha1 "46c52b5ee309f0b753eed917dc506c677fc11492" => :mountain_lion
+    sha1 "82232dfa4c363b10f4a3f45248e9fa024851f9dd" => :lion
   end
 
   def install
@@ -17,7 +18,7 @@ class Glew < Formula
     ENV.deparallelize
 
     inreplace "glew.pc.in", "Requires: @requireslib@", ""
-    system "make", "GLEW_DEST=#{prefix}", "all"
-    system "make", "GLEW_DEST=#{prefix}", "install.all"
+    system "make", "GLEW_PREFIX=#{prefix}", "GLEW_DEST=#{prefix}", "all"
+    system "make", "GLEW_PREFIX=#{prefix}", "GLEW_DEST=#{prefix}", "install.all"
   end
 end

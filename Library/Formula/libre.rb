@@ -4,12 +4,14 @@ class Libre < Formula
   homepage "http://www.creytiv.com"
   url "http://www.creytiv.com/pub/re-0.4.8.tar.gz"
   sha1 "92bdf13a5e5ba445e1457d3fd6a20bb779c4b4b0"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "e1df554427260628e0caece4af46ada788d01b71" => :mavericks
-    sha1 "4d2f74988be3fec1114f58cfb68ddf2eaac4d345" => :mountain_lion
-    sha1 "87b68ce7e914643a1326cb55a18f75a02a711fc4" => :lion
+    revision 1
+    sha1 "88d1c5f7d23fd08a42a3ec48ad95fc7f7fc2a679" => :mavericks
+    sha1 "a480cb5227b0d7c8e25152e93696f8be412c3f40" => :mountain_lion
+    sha1 "f369dceb197128b47afa6a4010ebfe8b934cde12" => :lion
   end
 
   depends_on "openssl"

@@ -2,14 +2,14 @@ require "formula"
 
 class Cayley < Formula
   homepage "https://github.com/google/cayley"
-  url "https://github.com/google/cayley/archive/v0.3.1.tar.gz"
-  sha1 "6b0e8876e5dc642e3cbecf2ea9eaadb47ea07198"
+  url "https://github.com/google/cayley/archive/v0.4.0.tar.gz"
+  sha1 "100c1e057fb140b35e1ecdd4824541436e6cb741"
   head "https://github.com/google/cayley.git"
 
   bottle do
-    sha1 "a84f30dd36528429562a132375fcf778bde18329" => :mavericks
-    sha1 "1056e0a68317c7890941848a12740d90dcc04366" => :mountain_lion
-    sha1 "74d9a3922d9f14c3c85b6b3d5f307be358b91ff5" => :lion
+    sha1 "fb10fc8d9b76f5d922d19ecb3c8cc0378ffdb4af" => :mavericks
+    sha1 "7fa6f1f652c74f5047bcccf260a336ad6f9ff6f0" => :mountain_lion
+    sha1 "2b7346b6b6991188de60eb1e35459357bad24e3f" => :lion
   end
 
   depends_on "bazaar" => :build
@@ -29,8 +29,10 @@ class Cayley < Formula
     # Install Go dependencies
     system "go", "get", "github.com/badgerodon/peg"
     system "go", "get", "github.com/barakmich/glog"
+    system "go", "get", "github.com/cznic/mathutil"
     system "go", "get", "github.com/julienschmidt/httprouter"
     system "go", "get", "github.com/petar/GoLLRB/llrb"
+    system "go", "get", "github.com/peterh/liner"
     system "go", "get", "github.com/robertkrimen/otto"
     system "go", "get", "github.com/russross/blackfriday"
     system "go", "get", "github.com/syndtr/goleveldb/leveldb"
@@ -38,6 +40,7 @@ class Cayley < Formula
     system "go", "get", "github.com/syndtr/goleveldb/leveldb/iterator"
     system "go", "get", "github.com/syndtr/goleveldb/leveldb/opt"
     system "go", "get", "github.com/syndtr/goleveldb/leveldb/util"
+    system "go", "get", "github.com/boltdb/bolt"
     system "go", "get", "gopkg.in/mgo.v2"
     system "go", "get", "gopkg.in/mgo.v2/bson"
 
@@ -113,9 +116,7 @@ class Cayley < Formula
   end
 
   test do
-    testdata = "#{HOMEBREW_PREFIX}/share/cayley/samples/testdata.nq"
-    result = pipe_output("#{bin}/cayley repl --db memstore --dbpath=#{testdata}", "graph.Vertex().All()")
-    assert !result.include?("Error:")
-    assert result.include?("Elapsed time:")
+    result = pipe_output("#{bin}/cayley version")
+    assert result.include?("Cayley snapshot")
   end
 end

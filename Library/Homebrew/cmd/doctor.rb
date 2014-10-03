@@ -103,21 +103,27 @@ def check_for_macgpg2
   end
 end
 
-def __check_stray_files(pattern, white_list, message)
-  files = Dir[pattern].select { |f| File.file? f and not File.symlink? f }
-  bad = files.reject {|d| white_list.key? File.basename(d) }
-  inject_file_list(bad, message) unless bad.empty?
+def __check_stray_files(dir, pattern, white_list, message)
+  return unless File.directory?(dir)
+
+  files = Dir.chdir(dir) {
+    Dir[pattern].select { |f| File.file?(f) && !File.symlink?(f) } - Dir.glob(white_list)
+  }.map { |file| File.join(dir, file) }
+
+  inject_file_list(files, message) unless files.empty?
 end
 
 def check_for_stray_dylibs
   # Dylibs which are generally OK should be added to this list,
   # with a short description of the software they come with.
-  white_list = {
-    "libfuse.2.dylib" => "MacFuse",
-    "libfuse_ino64.2.dylib" => "MacFuse"
-  }
+  white_list = [
+    "libfuse.2.dylib", # MacFuse
+    "libfuse_ino64.2.dylib", # MacFuse
+    "libosxfuse_i32.2.dylib", # OSXFuse
+    "libosxfuse_i64.2.dylib", # OSXFuse
+  ]
 
-  __check_stray_files '/usr/local/lib/*.dylib', white_list, <<-EOS.undent
+  __check_stray_files "/usr/local/lib", "*.dylib", white_list, <<-EOS.undent
     Unbrewed dylibs were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
@@ -129,12 +135,12 @@ end
 def check_for_stray_static_libs
   # Static libs which are generally OK should be added to this list,
   # with a short description of the software they come with.
-  white_list = {
-    "libsecurity_agent_client.a" => "OS X 10.8.2 Supplemental Update",
-    "libsecurity_agent_server.a" => "OS X 10.8.2 Supplemental Update"
-  }
+  white_list = [
+    "libsecurity_agent_client.a", # OS X 10.8.2 Supplemental Update
+    "libsecurity_agent_server.a", # OS X 10.8.2 Supplemental Update
+  ]
 
-  __check_stray_files '/usr/local/lib/*.a', white_list, <<-EOS.undent
+  __check_stray_files "/usr/local/lib", "*.a", white_list, <<-EOS.undent
     Unbrewed static libraries were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
@@ -146,9 +152,13 @@ end
 def check_for_stray_pcs
   # Package-config files which are generally OK should be added to this list,
   # with a short description of the software they come with.
-  white_list = {}
+  white_list = [
+    "fuse.pc", # OSXFuse/MacFuse
+    "macfuse.pc", # OSXFuse MacFuse compatibility layer
+    "osxfuse.pc", # OSXFuse
+  ]
 
-  __check_stray_files '/usr/local/lib/pkgconfig/*.pc', white_list, <<-EOS.undent
+  __check_stray_files "/usr/local/lib/pkgconfig", "*.pc", white_list, <<-EOS.undent
     Unbrewed .pc files were found in /usr/local/lib/pkgconfig.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
@@ -158,17 +168,35 @@ def check_for_stray_pcs
 end
 
 def check_for_stray_las
-  white_list = {
-    "libfuse.la" => "MacFuse",
-    "libfuse_ino64.la" => "MacFuse",
-  }
+  white_list = [
+    "libfuse.la", # MacFuse
+    "libfuse_ino64.la", # MacFuse
+    "libosxfuse_i32.la", # OSXFuse
+    "libosxfuse_i64.la", # OSXFuse
+  ]
 
-  __check_stray_files '/usr/local/lib/*.la', white_list, <<-EOS.undent
+  __check_stray_files "/usr/local/lib", "*.la", white_list, <<-EOS.undent
     Unbrewed .la files were found in /usr/local/lib.
     If you didn't put them there on purpose they could cause problems when
     building Homebrew formulae, and may need to be deleted.
 
     Unexpected .la files:
+  EOS
+end
+
+def check_for_stray_headers
+  white_list = [
+    "fuse/**/*.h", # MacFuse
+    "macfuse/**/*.h", # OSXFuse MacFuse compatibility layer
+    "osxfuse/**/*.h", # OSXFuse
+  ]
+
+  __check_stray_files "/usr/local/include", "**/*.h", white_list, <<-EOS.undent
+    Unbrewed header files were found in /usr/local/include.
+    If you didn't put them there on purpose they could cause problems when
+    building Homebrew formulae, and may need to be deleted.
+
+    Unexpected header files:
   EOS
 end
 
@@ -628,7 +656,6 @@ def check_for_config_scripts
     next if p =~ %r[^(#{real_cellar.to_s}|#{HOMEBREW_CELLAR.to_s})] if real_cellar
 
     configs = Dir["#{p}/*-config"]
-    # puts "#{p}\n    #{configs * ' '}" unless configs.empty?
     config_scripts << [p, configs.map { |c| File.basename(c) }] unless configs.empty?
   end
 
@@ -659,9 +686,7 @@ def check_DYLD_vars
     Setting DYLD_* vars can break dynamic linking.
     Set variables:
     EOS
-    found.each do |e|
-      s << "    #{e}\n"
-    end
+    s << found.map { |e| "    #{e}: #{ENV.fetch(e)}\n" }.join
     if found.include? 'DYLD_INSERT_LIBRARIES'
       s += <<-EOS.undent
 
@@ -1042,7 +1067,7 @@ def check_for_outdated_homebrew
 
     if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent
       Your Homebrew is outdated.
-      You haven't updated for at least 24 hours, this is a long time in brewland!
+      You haven't updated for at least 24 hours. This is a long time in brewland!
       To update Homebrew, run `brew update`.
       EOS
     end
@@ -1111,6 +1136,10 @@ end
       EOS
     end
   end
+
+  def all
+    methods.map(&:to_s).grep(/^check_/)
+  end
 end # end class Checks
 
 module Homebrew
@@ -1118,18 +1147,19 @@ module Homebrew
     checks = Checks.new
 
     if ARGV.include? '--list-checks'
-      puts checks.methods.grep(/^check_/).sort
+      puts checks.all.sort
       exit
     end
 
     inject_dump_stats(checks) if ARGV.switch? 'D'
 
-    methods = if ARGV.named.empty?
-      # put slowest methods last
-      checks.methods.sort << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
+    if ARGV.named.empty?
+      methods = checks.all.sort
+      methods << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
+      methods = methods.reverse.uniq.reverse
     else
-      ARGV.named
-    end.grep(/^check_/).reverse.uniq.reverse
+      methods = ARGV.named
+    end
 
     first_warning = true
     methods.each do |method|

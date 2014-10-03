@@ -2,21 +2,24 @@ require 'formula'
 
 class Moreutils < Formula
   homepage 'http://packages.debian.org/unstable/utils/moreutils'
-  url 'http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.51.tar.gz'
-  mirror 'http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.51.tar.gz'
-  sha1 '374b8c3bea962bbcde4a8158051c570a1fec6811'
+  url 'http://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz'
+  mirror 'http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.52.tar.gz'
+  sha1 '32047f935178b490a12c370d8f695f1273dc5895'
 
   bottle do
-    cellar :any
-    sha1 "21fa332179c54179b9581ec1fd5eae00eefbf9da" => :mavericks
-    sha1 "b7b88be54b3cd5659a720dd899ceacd790414e20" => :mountain_lion
-    sha1 "f873a5e0b83b859899c98126871d0fa4bb04b8b9" => :lion
+    sha1 "c5fa8d952872b74c08d12f32ed8b7c2da0ecd8a2" => :mavericks
+    sha1 "a113dcbd9fc354428d4db301c40fc4b00eea6027" => :mountain_lion
+    sha1 "1bcce8d9fd1eec85087c09fb51d772d1edc19f31" => :lion
   end
 
   depends_on "docbook-xsl" => :build
 
-  conflicts_with 'parallel',
-    :because => "both install a 'parallel' executable."
+  option "without-parallel", "Omit the 'parallel' tool. Allows installation of GNU parallel from 'parallel' formula."
+
+  if build.with? "parallel"
+    conflicts_with "parallel",
+      :because => "both install a 'parallel' executable. See the '--without-parallel' option"
+  end
 
   conflicts_with 'task-spooler',
     :because => "both install a 'ts' executable."
@@ -49,6 +52,10 @@ class Moreutils < Formula
     inreplace "Makefile",
               "/usr/share/xml/docbook/stylesheet/docbook-xsl",
               "#{Formula["docbook-xsl"].opt_prefix}/docbook-xsl"
+    if build.without? "parallel"
+      inreplace "Makefile", /^BINS=.*\Kparallel/, ""
+      inreplace "Makefile", /^MANS=.*\Kparallel\.1/, ""
+    end
     system "make", "all"
     system "make", "check"
     system "make", "install", "PREFIX=#{prefix}"

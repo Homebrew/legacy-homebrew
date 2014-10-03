@@ -2,13 +2,13 @@ require "formula"
 
 class Groonga < Formula
   homepage "http://groonga.org/"
-  url "http://packages.groonga.org/source/groonga/groonga-4.0.4.tar.gz"
-  sha1 "47c874beb84fcb1c5420a5cb1d1da1441464dcbb"
+  url "http://packages.groonga.org/source/groonga/groonga-4.0.6.tar.gz"
+  sha1 "1ba7431cfca58dba7f5484d2c8013f24f6d8a322"
 
   bottle do
-    sha1 "457bd21e361f3f60442f924cb0053e960baa83ce" => :mavericks
-    sha1 "0c3a36b9bad2f5708abbd85542245d113ec68b17" => :mountain_lion
-    sha1 "849a0030a19683cdb881d84de39f4510ae63354f" => :lion
+    sha1 "93dd670108b2ef9f219827eed3e158c4a8f6a4f6" => :mavericks
+    sha1 "1986c599bf78578a148e19cb293079702ab0ee5d" => :mountain_lion
+    sha1 "3fa6aa3b485d1395e3e54136868f4ae662b3114f" => :lion
   end
 
   depends_on "pkg-config" => :build
@@ -26,6 +26,7 @@ class Groonga < Formula
       --prefix=#{prefix}
       --with-zlib
       --disable-zeromq
+      --with-mruby
     ]
 
     args << "--enable-benchmark" if build.include? "enable-benchmark"

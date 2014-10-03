@@ -45,10 +45,6 @@ class Mpdscribble < Formula
         <true/>
         <key>KeepAlive</key>
         <true/>
-        <key>StandardErrorPath</key>
-        <string>#{var}/log/mpdscribble_err.log</string>
-        <key>StandardOutPath</key>
-        <string>#{var}/log/mpdscribble.log</string>
     </dict>
     </plist>
     EOS

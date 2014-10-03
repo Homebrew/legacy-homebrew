@@ -2,25 +2,25 @@ require 'formula'
 
 class Git < Formula
   homepage "http://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.1.0.tar.gz"
-  sha1 "e22564e152e3242bc4fcfcc7eb05fde7a4c83e04"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.1.2.tar.gz"
+  sha1 "1385edbc9aa77b6e0971f52f75ba4f2ff35c1aa2"
 
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha1 "b02e4154d8e4fc571ec9c4d7a484c7cf0bb68fb6" => :mavericks
-    sha1 "201e4c7990ee19f52daeacb931971155ebfd31bd" => :mountain_lion
-    sha1 "40311740c67e86ecee19db0d10bfad715d5e3145" => :lion
+    sha1 "022c2ffe1972adda94e16b58622f699fae76913f" => :mavericks
+    sha1 "a39c00a4c6a95a63ed173d88b0b0ba0fe5ef151a" => :mountain_lion
+    sha1 "f222f24dd08aaa4a3a678c8660930525d3cd861b" => :lion
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.1.0.tar.gz"
-    sha1 "044bd50fa51f436a6e93bf7ba2361b60b1f56e45"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.1.2.tar.gz"
+    sha1 "912ff9865d6c6ab3d411566a6805431c7d653efd"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.1.0.tar.gz"
-    sha1 "5eb777145a2f084b601b025eb427c2f079fad0e6"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.1.2.tar.gz"
+    sha1 "229b697db2c6f7ba0831842849f9dc0651f0fc63"
   end
 
   option 'with-blk-sha1', 'Compile with the block-optimized SHA1 implementation'
@@ -85,8 +85,6 @@ class Git < Formula
                    "CFLAGS=#{ENV.cflags}",
                    "LDFLAGS=#{ENV.ldflags}",
                    "install"
-
-    bin.install Dir["contrib/remote-helpers/git-remote-{hg,bzr}"]
 
     # Install the OS X keychain credential helper
     cd 'contrib/credential/osxkeychain' do

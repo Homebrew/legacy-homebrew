@@ -39,7 +39,7 @@ module Homebrew
     true
   end
 
-  def link_tap_formula paths
+  def link_tap_formula(paths, warn_about_conflicts=true)
     ignores = (HOMEBREW_LIBRARY/"Formula/.gitignore").read.split rescue []
     tapped = 0
 
@@ -53,7 +53,12 @@ module Homebrew
         to.make_relative_symlink(path)
       rescue SystemCallError
         to = to.resolved_path if to.symlink?
-        opoo "Could not tap #{Tty.white}#{tap_ref(path)}#{Tty.reset} over #{Tty.white}#{tap_ref(to)}#{Tty.reset}"
+        opoo <<-EOS.undent if warn_about_conflicts
+          Could not create link for #{Tty.white}#{tap_ref(path)}#{Tty.reset}, as it
+          conflicts with #{Tty.white}#{tap_ref(to)}#{Tty.reset}. You will need to use the
+          fully-qualified name when referring this formula, e.g.
+            brew install #{tap_ref(path)}
+          EOS
       else
         ignores << path.basename.to_s
         tapped += 1
@@ -65,7 +70,7 @@ module Homebrew
     tapped
   end
 
-  def repair_taps
+  def repair_taps(warn_about_conflicts=true)
     count = 0
     # prune dead symlinks in Formula
     Dir.glob("#{HOMEBREW_LIBRARY}/Formula/*.rb") do |fn|
@@ -83,7 +88,7 @@ module Homebrew
     each_tap do |user, repo|
       files = []
       repo.find_formula { |file| files << file }
-      count += link_tap_formula(files)
+      count += link_tap_formula(files, warn_about_conflicts)
     end
 
     puts "Tapped #{count} formula#{plural(count, 'e')}"

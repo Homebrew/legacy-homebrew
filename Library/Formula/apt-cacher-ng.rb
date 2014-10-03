@@ -2,17 +2,17 @@ require 'formula'
 
 class AptCacherNg < Formula
   homepage 'http://www.unix-ag.uni-kl.de/~bloch/acng/'
-  url 'http://ftp.debian.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.7.26.orig.tar.xz'
-  sha1 'ae8443c2ec277e81051d72d347e4e509a9253c34'
+  url "http://ftp.debian.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.7.27.orig.tar.xz"
+  sha1 "ae1324bf3c42909546f2b9d2a25cd9d837977a42"
 
   bottle do
-    sha1 "d39ad61b3354c2fc79ca95ff0568c7e9b0f16b31" => :mavericks
-    sha1 "887012993dfa5feffbaf2459c01e8d64683363b9" => :mountain_lion
-    sha1 "ce039104b43fa9c3b24b071479546184f4c2bc5e" => :lion
+    sha1 "10658beb0ba8bb53e2c99a40a79833d04c8215df" => :mavericks
+    sha1 "88b90f06af2229837cf3086f035e02316719e679" => :mountain_lion
+    sha1 "351cd708e659a1ec9959044568e71c2278a9debd" => :lion
   end
 
   depends_on 'cmake' => :build
-  depends_on 'osxfuse' => :build
+  depends_on :osxfuse => :build
   depends_on 'boost' => :build
 
   def install

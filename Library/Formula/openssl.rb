@@ -7,9 +7,10 @@ class Openssl < Formula
   sha256 '3c179f46ca77069a6a0bac70212a9b3b838b2f66129cb52d568837fc79d8fcc7'
 
   bottle do
-    sha1 "601d7e8ec3c031bc74f577be840a31030000999e" => :mavericks
-    sha1 "6d387d9ca1d3ca3a3e1e8ff070b695ef38c9fee6" => :mountain_lion
-    sha1 "250bbc9ec053ca94e7fd83d9e21b6ae9d2b75f68" => :lion
+    revision 3
+    sha1 "0f669ad9b9910e3807f7b7db1be665306d5f3821" => :mavericks
+    sha1 "b9a769ae1b4dc7360b3d0081d921ebae2f2d2fc6" => :mountain_lion
+    sha1 "20de4f43e7ae42c8ba16b3923e6e33d06663ef49" => :lion
   end
 
   option :universal
@@ -30,6 +31,7 @@ class Openssl < Formula
   def configure_args; %W[
       --prefix=#{prefix}
       --openssldir=#{openssldir}
+      no-ssl2
       zlib-dynamic
       shared
       enable-cms

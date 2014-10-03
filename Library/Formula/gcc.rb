@@ -27,9 +27,10 @@ class Gcc < Formula
   sha1 "3f303f403053f0ce79530dae832811ecef91197e"
 
   bottle do
-    sha1 "89de135be44e3877374f184b3bd15c0ba40a1d18" => :mavericks
-    sha1 "d3694bd528baca3b8329a826058af22049135dee" => :mountain_lion
-    sha1 "fde241e4f212ef1c8a282ab695b726774792e04b" => :lion
+    revision 2
+    sha1 "4a7fc491b6487da16089c218f9dda8d23e8656b5" => :mavericks
+    sha1 "9e826e179f7f679d1423b8d92d9a647860bd27ae" => :mountain_lion
+    sha1 "81d02ad2e353ed804927ee166a1090ebf057c4b3" => :lion
   end
 
   option "with-java", "Build the gcj compiler"
@@ -65,6 +66,12 @@ class Gcc < Formula
 
   def version_suffix
     version.to_s.slice(/\d\.\d/)
+  end
+
+  # Fix 10.10 issues: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61407
+  patch do
+    url "https://gcc.gnu.org/bugzilla/attachment.cgi?id=33180"
+    sha1 "def0cb036a255175db86f106e2bb9dd66d19b702"
   end
 
   def install
@@ -178,6 +185,16 @@ class Gcc < Formula
     ext = File.extname(file)
     base = File.basename(file, ext)
     File.rename file, "#{dir}/#{base}-#{suffix}#{ext}"
+  end
+
+  def caveats
+    if build.with?("multilib") then <<-EOS.undent
+      GCC has been built with multilib support. Notably, OpenMP may not work:
+        https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60670
+      If you need OpenMP support you may want to
+        brew reinstall gcc --without-multilib
+      EOS
+    end
   end
 
   test do

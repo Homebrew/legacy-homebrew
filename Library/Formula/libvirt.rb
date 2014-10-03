@@ -1,22 +1,22 @@
-require 'formula'
+require "formula"
 
 class Libvirt < Formula
-  homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/libvirt-1.2.7.tar.gz'
-  sha256 '3dfb462cba1188d2c9ba700e1927fa0dbd71f20afdf81ab0c43b27b7fe77defc'
+  homepage "http://www.libvirt.org"
+  url "http://libvirt.org/sources/libvirt-1.2.9.tar.gz"
+  sha1 "f2de4cda8640b3abb13e6b30dd4882cc7e7b39e3"
 
   bottle do
-    sha1 "17a888701564a3a24a150d4211c0b5d0b7ad4347" => :mavericks
-    sha1 "d6162583eddab3ed31d9fae315d08063a0002000" => :mountain_lion
-    sha1 "f0e1c538178be839fa5949304d50accfe4368d32" => :lion
+    sha1 "1a655006a7d6245ef9242ad088d57f4a5e2d85f6" => :mavericks
+    sha1 "51294d1d1a7c309916dfebd33733171781713afb" => :mountain_lion
+    sha1 "5c577fc70097bdb0a7bc6032ffd004944f148df8" => :lion
   end
 
-  option 'without-libvirtd', 'Build only the virsh client and development libraries'
+  option "without-libvirtd", "Build only the virsh client and development libraries"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gnutls'
-  depends_on 'libgcrypt'
-  depends_on 'yajl'
+  depends_on "pkg-config" => :build
+  depends_on "gnutls"
+  depends_on "libgcrypt"
+  depends_on "yajl"
 
   if MacOS.version <= :leopard
     # Definitely needed on Leopard, but not on Snow Leopard.
@@ -43,11 +43,11 @@ class Libvirt < Formula
             "--with-yajl",
             "--without-qemu"]
 
-    args << "--without-libvirtd" if build.without? 'libvirtd'
+    args << "--without-libvirtd" if build.without? "libvirtd"
 
     system "./configure", *args
 
-    # Compilation of docs doesn't get done if we jump straight to "make install"
+    # Compilation of docs doesn"t get done if we jump straight to "make install"
     system "make"
     system "make install"
 

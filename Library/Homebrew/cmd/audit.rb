@@ -57,7 +57,7 @@ class FormulaText
   end
 
   def has_DATA?
-    /\bDATA\b/ =~ @text
+    /^[^#]*\bDATA\b/ =~ @text
   end
 
   def has_END?
@@ -181,19 +181,21 @@ class FormulaAuditor
   end
 
   def audit_urls
-    unless f.homepage =~ %r[^https?://]
-      problem "The homepage should start with http or https (url is #{f.homepage})."
+    homepage = f.homepage
+
+    unless homepage =~ %r[^https?://]
+      problem "The homepage should start with http or https (URL is #{homepage})."
     end
 
     # Check for http:// GitHub homepage urls, https:// is preferred.
     # Note: only check homepages that are repo pages, not *.github.com hosts
-    if f.homepage =~ %r[^http://github\.com/]
-      problem "Use https:// URLs for homepages on GitHub (url is #{f.homepage})."
+    if homepage =~ %r[^http://github\.com/]
+      problem "Use https:// URLs for homepages on GitHub (URL is #{homepage})."
     end
 
     # Google Code homepages should end in a slash
-    if f.homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
-      problem "Google Code homepage should end with a slash (url is #{f.homepage})."
+    if homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
+      problem "Google Code homepage should end with a slash (URL is #{homepage})."
     end
 
     urls = @specs.map(&:url)
@@ -284,6 +286,14 @@ class FormulaAuditor
       end
 
       spec.patches.select(&:external?).each { |p| audit_patch(p) }
+    end
+
+    if f.stable && f.devel
+      if f.devel.version < f.stable.version
+        problem "devel version #{f.devel.version} is older than stable version #{f.stable.version}"
+      elsif f.devel.version == f.stable.version
+        problem "stable and devel versions are identical"
+      end
     end
   end
 
@@ -557,6 +567,8 @@ class FormulaAuditor
     audit_check_output(check_generic_executables(f.bin))
     audit_check_output(check_non_executables(f.sbin))
     audit_check_output(check_generic_executables(f.sbin))
+    audit_check_output(check_shadowed_headers)
+    audit_check_output(check_easy_install_pth(f.lib))
   end
 
   def audit
@@ -567,7 +579,7 @@ class FormulaAuditor
     audit_conflicts
     audit_patches
     audit_text
-    text.split("\n").each_with_index { |line, lineno| audit_line(line, lineno) }
+    text.split("\n").each_with_index {|line, lineno| audit_line(line, lineno+1) }
     audit_installed
   end
 

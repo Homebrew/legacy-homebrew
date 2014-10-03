@@ -11,8 +11,16 @@ class EmacsClangCompleteAsync < Formula
 
   depends_on 'llvm' => 'with-clang'
 
-  # https://github.com/Golevka/emacs-clang-complete-async/issues/65
-  patch :DATA
+  stable do
+    # https://github.com/Golevka/emacs-clang-complete-async/issues/65
+    patch :DATA
+  end
+
+  # https://github.com/Golevka/emacs-clang-complete-async/pull/59
+  patch do
+    url "https://github.com/yocchi/emacs-clang-complete-async/commit/5ce197b15d7b8c9abfc862596bf8d902116c9efe.diff"
+    sha1 "a933be38f09627cc6b841a49b849d68219a3bc96"
+  end
 
   def install
     system "make"

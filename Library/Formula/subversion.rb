@@ -5,12 +5,13 @@ class Subversion < Formula
   url 'http://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.10.tar.bz2'
   mirror 'http://archive.apache.org/dist/subversion/subversion-1.8.10.tar.bz2'
   sha1 'd6896d94bb53c1b4c6e9c5bb1a5c466477b19b2b'
+  revision 1
 
   bottle do
-    revision 2
-    sha1 "bfb1fe59765a9ab841b50b73a8081f23b787165d" => :mavericks
-    sha1 "8f3fcbedaa9d1f9b49526ef57390954b5557f975" => :mountain_lion
-    sha1 "4dc7358afb77a4c012626abd46f3ed3b234dc4c0" => :lion
+    revision 3
+    sha1 "fcd631849436d7d2857e5361dbe66293feca9501" => :mavericks
+    sha1 "1089939ef5a0de5ca257e5c2ff34cd0c59e4a601" => :mountain_lion
+    sha1 "dcd9bee050a9c21db85a6947359beef4dacdc49c" => :lion
   end
 
   option :universal
@@ -74,7 +75,7 @@ class Subversion < Formula
     end
 
     if build.include? 'unicode-path'
-      raise Homebrew::InstallationError.new(self, <<-EOS.undent
+      raise <<-EOS.undent
         The --unicode-path patch is not supported on Subversion 1.8.
 
         Upgrading from a 1.7 version built with this patch is not supported.
@@ -83,7 +84,6 @@ class Subversion < Formula
           brew rm subversion && brew install subversion
         to build a new version of 1.8 without this patch.
       EOS
-      )
     end
 
     if build.include? 'java'
