@@ -10,7 +10,7 @@ class Perl < Formula
 
   keg_only "OS X ships Perl and overriding that can cause unintended issues"
 
-  option "use-dtrace", "Build with DTrace probes"
+  option "with-dtrace", "Build with DTrace probes"
 
   def install
     args = [
@@ -23,7 +23,7 @@ class Perl < Formula
       "-Dusethreads"
     ]
 
-    args << "-Dusedtrace" if build.include? "use-dtrace"
+    args << "-Dusedtrace" if build.include? "with-dtrace"
     args << "-Dusedevel" if build.head?
 
     system "./Configure", *args
