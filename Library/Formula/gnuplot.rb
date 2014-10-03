@@ -8,9 +8,8 @@ end
 
 class Gnuplot < Formula
   homepage 'http://www.gnuplot.info'
-  url 'https://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.5/gnuplot-4.6.5.tar.gz'
-  sha256 'e550f030c7d04570e89c3d4e3f6e82296816508419c86ab46c4dd73156519a2d'
-  revision 1
+  url 'https://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.6/gnuplot-4.6.6.tar.gz'
+  sha256 '1f19596fd09045f22225afbfec11fa91b9ad1d95b9f48406362f517d4f130274'
 
   bottle do
     sha1 "6ab83d98d37a821ee76a7f8f18478f648d6e69df" => :mavericks
