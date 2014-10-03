@@ -5,6 +5,13 @@ class Mvptree < Formula
   url "http://www.phash.org/releases/mvptree-1.0.tar.gz"
   sha1 "586bdc458116bed61caf7310804a70d55af9ce6e"
 
+  bottle do
+    cellar :any
+    sha1 "3dce2cad2eacd0ce04dbb4707734d665e64d2fd9" => :mavericks
+    sha1 "eded94da7a783b5d0f0d59459c76f6ad639f08e5" => :mountain_lion
+    sha1 "4cfffe6141a3f2f7e3a2a01fb966580ecaa5b6d1" => :lion
+  end
+
   # Patch submitted to upstream by mail
   # Fixes a "permission denied" problem in the Makefile
   patch :DATA
