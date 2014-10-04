@@ -2,8 +2,8 @@ require 'formula'
 
 class GambitScheme < Formula
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
-  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_2.tgz'
-  sha256 'c09597fa423602eb9d06b1ab3c1a63cd9c612b89f7f6d718f2c0a96da4d4ac1a'
+  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_3.tgz'
+  sha256 '59c4c62f2cfaf698b54a862e7af9c1b3e4cc27e46d386f31c66e00fed4701777'
 
   bottle do
     sha1 "e91aa45c23c225c024c0d013ec37150ac57a3777" => :mavericks
@@ -50,5 +50,9 @@ class GambitScheme < Formula
     ENV.j1
     system "make"
     system "make install"
+  end
+
+  test do
+    system "#{bin}/gsi", "-e", '(print "hello world")'
   end
 end
