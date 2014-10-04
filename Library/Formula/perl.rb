@@ -23,7 +23,7 @@ class Perl < Formula
       "-Dusethreads"
     ]
 
-    args << "-Dusedtrace" if build.include? "with-dtrace"
+    args << "-Dusedtrace" if build.with? "dtrace"
     args << "-Dusedevel" if build.head?
 
     system "./Configure", *args
