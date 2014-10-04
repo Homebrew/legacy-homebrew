@@ -4,6 +4,13 @@ class Pypy < Formula
   homepage "http://pypy.org/"
   url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.4.0-src.tar.bz2"
   sha1 "e2e0bcf8457c0ae5a24f126a60aa921dabfe60fb"
+  bottle do
+    cellar :any
+    sha1 "533b3d5b9e566b7162d529c0f0bfaaea06cb19e8" => :mavericks
+    sha1 "bc30d65847cb9b1e1eb85eb3ff36fd003f1f23b5" => :mountain_lion
+    sha1 "3f91bcf68fc5d6954f7032be18f14eb17dfb8d55" => :lion
+  end
+
   revision 2
 
   depends_on :arch => :x86_64
