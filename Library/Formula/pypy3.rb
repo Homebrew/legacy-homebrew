@@ -1,36 +1,36 @@
-require 'formula'
+require "formula"
 
 class Pypy3 < Formula
-  homepage 'http://pypy.org/'
-  url 'https://bitbucket.org/pypy/pypy/downloads/pypy3-2.3.1-osx64.tar.bz2'
-  version '2.3.1'
-  sha1 '263be31beb243aa56e9878b421079e3282617e87'
+  homepage "http://pypy.org/"
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy3-2.3.1-osx64.tar.bz2"
+  version "2.3.1"
+  sha1 "263be31beb243aa56e9878b421079e3282617e87"
 
   depends_on :arch => :x86_64
 
-  resource 'setuptools' do
-    url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-5.4.2.tar.gz'
-    sha1 'a681ba56c30c0eb66528215842d3e3fcb5157614'
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-5.4.2.tar.gz"
+    sha1 "a681ba56c30c0eb66528215842d3e3fcb5157614"
   end
 
-  resource 'pip' do
-    url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz'
-    sha1 'e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e'
+  resource "pip" do
+    url "https://pypi.python.org/packages/source/p/pip/pip-1.5.6.tar.gz"
+    sha1 "e6cd9e6f2fd8d28c9976313632ef8aa8ac31249e"
   end
 
   def install
     # Having PYTHONPATH set can cause the build to fail if another
     # Python is present, e.g. a Homebrew-provided Python 2.x
     # See https://github.com/Homebrew/homebrew/issues/24364
-    ENV['PYTHONPATH'] = ''
+    ENV["PYTHONPATH"] = ""
 
-    rmtree 'site-packages'
+    rmtree "site-packages"
 
     # The PyPy binary install instructions suggest installing somewhere
     # (like /opt) and symlinking in binaries as needed. Specifically,
     # we want to avoid putting PyPy's Python.h somewhere that configure
     # scripts will find it.
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     bin.install_symlink libexec/"bin/pypy" => "pypy3"
 
     # Post-install, fix up the site-packages and install-scripts folders
@@ -54,12 +54,12 @@ class Pypy3 < Formula
     # $ easy_install pip
     # $ pip install --upgrade setuptools
     # to get newer versions of setuptools outside of Homebrew.
-    resource('setuptools').stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
-    resource('pip').stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
+    resource("setuptools").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
+    resource("pip").stage { system "#{libexec}/bin/pypy", "setup.py", "install" }
 
     # Symlinks to easy_install_pypy3 and pip_pypy3
-    bin.install_symlink scripts_folder/'easy_install' => "easy_install_pypy3"
-    bin.install_symlink scripts_folder/'pip' => "pip_pypy3"
+    bin.install_symlink scripts_folder/"easy_install" => "easy_install_pypy3"
+    bin.install_symlink scripts_folder/"pip" => "pip_pypy3"
   end
 
   def caveats; <<-EOS.undent
