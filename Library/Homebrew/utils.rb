@@ -119,6 +119,10 @@ module Homebrew
   def self.git_head
     HOMEBREW_REPOSITORY.cd { `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle }
   end
+
+  def self.git_last_commit
+    HOMEBREW_REPOSITORY.cd { `git show -s --format="%cr" HEAD 2>/dev/null`.chuzzle }
+  end
 end
 
 def with_system_path
