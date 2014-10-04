@@ -46,10 +46,10 @@ class Bochs < Formula
     args << ( build.with?( 'sdl' ) ? '--with-sdl'   : '--without-sdl' )
     args << ( build.with?( 'smp' ) ? '--enable-smp' : '--disable-smp' )
 
-    unless build.with?( 'x11' ) or build.with?( 'sdl' )
+    if build.without?( 'x11' ) and build.without?( 'sdl' )
       args << '--with-nogui'
     end
-    
+
     system "./configure", *args
 
     # See: http://sourceforge.net/p/bochs/discussion/39592/thread/9c22887c
