@@ -2,14 +2,14 @@ require "formula"
 
 class Primesieve < Formula
   homepage "http://primesieve.org/"
-  url "http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.3.tar.gz"
-  sha1 "dac89a72cc3789035149a7d2cfa48ef7d722fd8a"
+  url "http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.tar.gz"
+  sha1 "1309e444bde3822cdc3e953757b46750d384cc00"
 
   bottle do
     cellar :any
-    sha1 "e9ba88bedc4053233fcf3bcea27b2f3123f342c0" => :mavericks
-    sha1 "c12381510dc4b21313848501cfa0099c9a29226e" => :mountain_lion
-    sha1 "955e313a69018bb0ebd4fa2b097f322aa9662cb0" => :lion
+    sha1 "1cbc4ac0815279c64fa9028d25bdb22eaa8225ab" => :mavericks
+    sha1 "92bdf25f8205ec5c7b192eef4c5206690ace20c8" => :mountain_lion
+    sha1 "fca6af102d5594e03cc2cfd8472a2955e6778f99" => :lion
   end
 
   def install
