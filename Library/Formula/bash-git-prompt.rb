@@ -7,10 +7,10 @@ class BashGitPrompt < Formula
   head "https://github.com/magicmonty/bash-git-prompt.git"
 
   def install
-    share.install "./gitprompt.sh", "./gitprompt.fish", "./git-prompt-help.sh",
+    share.install "gitprompt.sh", "gitprompt.fish", "git-prompt-help.sh",
                   "gitstatus.sh", "prompt-colors.sh"
 
-    (share/'themes').install Dir["themes/*.bgptheme"]
+    (share/"themes").install Dir["themes/*.bgptheme"]
     doc.install "README.md"
   end
 
