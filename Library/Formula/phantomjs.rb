@@ -4,6 +4,11 @@ class Phantomjs < Formula
   homepage "http://www.phantomjs.org/"
   revision 1
 
+  # Upstream have said won't fix 1.9.x for Yosemite
+  # https://github.com/ariya/phantomjs/issues/10648
+  # Please remove this hideous workaround with the next stable 2.0 release.
+  raise "Phantomjs 1.9.7 will not support Yosemite, install HEAD instead" if MacOS.version == :yosemite and not build.head?
+
   stable do
     url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip"
     sha256 "0f6c50ff24c1c4a8ccd7fedef62feef5e45195c7ba5ef6c84434448544877ff3"
@@ -21,9 +26,13 @@ class Phantomjs < Formula
     sha1 "24b6dbefe4186a2ebbaeef0d6cd217aecda1ff59" => :lion
   end
 
-  head "https://github.com/ariya/phantomjs.git"
+  head do
+    url "https://github.com/ariya/phantomjs.git"
 
-  depends_on 'openssl'
+    depends_on "icu4c"
+  end
+
+  depends_on "openssl"
 
   def install
     if build.stable? && MacOS.prefer_64_bit?
