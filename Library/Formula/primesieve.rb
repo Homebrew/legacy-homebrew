@@ -2,8 +2,8 @@ require "formula"
 
 class Primesieve < Formula
   homepage "http://primesieve.org/"
-  url "http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.3.tar.gz"
-  sha1 "dac89a72cc3789035149a7d2cfa48ef7d722fd8a"
+  url "http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.tar.gz"
+  sha1 "1309e444bde3822cdc3e953757b46750d384cc00"
 
   bottle do
     cellar :any
