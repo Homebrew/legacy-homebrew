@@ -6,9 +6,9 @@ class Libslax < Formula
   sha1 '0e55e62065012a9bd51d775a949b3d5c71957374'
 
   bottle do
-    sha1 "2f9c5d81cf559ae7967bc664454ceec96a590659" => :mavericks
-    sha1 "812a6df66e465794d817a8942dfb5bf107be19d7" => :mountain_lion
-    sha1 "db00bdf5d998d64ba0a5805208866804814ccc87" => :lion
+    sha1 "975c0b0eefe8851c6f112325418ad27b95c67685" => :mavericks
+    sha1 "f1c9382ca4ade67db1754c8cc956e66d6717294c" => :mountain_lion
+    sha1 "b4f58c0cbedd28e51a942edad0e7ee6d01f9e640" => :lion
   end
 
   head do
