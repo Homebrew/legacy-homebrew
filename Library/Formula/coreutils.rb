@@ -8,6 +8,9 @@ class Coreutils < Formula
   revision 1
 
   bottle do
+    sha1 "2e0bcc5019f66bfbe1d037883c21d8df807d3155" => :mavericks
+    sha1 "5241674b7ccd1aa0849f2bc4461137020473769f" => :mountain_lion
+    sha1 "599c8ceab94b433ee909b62aa6e20249c660f424" => :lion
   end
 
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
