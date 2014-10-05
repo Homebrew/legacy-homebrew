@@ -2,8 +2,8 @@ require 'formula'
 
 class Artifactory < Formula
   homepage 'http://www.jfrog.com/artifactory/'
-  url 'http://dl.bintray.com/jfrog/artifactory/artifactory-3.3.1.zip'
-  sha1 '0829582f6d754f4de06fe8b97f0f14bff29e150b'
+  url 'http://dl.bintray.com/jfrog/artifactory/artifactory-3.4.0.zip'
+  sha1 'fb53abccd7d547b8deaa6112b83d512f8a1c593b'
 
   depends_on :java => '1.7'
 
