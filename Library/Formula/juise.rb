@@ -2,8 +2,8 @@ require 'formula'
 
 class Juise < Formula
   homepage 'https://github.com/Juniper/juise/wiki'
-  url 'https://github.com/Juniper/juise/releases/download/0.6.0/juise-0.6.0.tar.gz'
-  sha1 'ff2f1914619c9b216b28fdd7a82a5554ae9e1ec4'
+  url 'https://github.com/Juniper/juise/releases/download/0.6.1/juise-0.6.1.tar.gz'
+  sha1 '9180619ffc67c7b3ebbdd003d9010328e7513527'
 
   bottle do
     sha1 "18a4e440aed3d01fc859072e15e99782e7480395" => :mavericks
