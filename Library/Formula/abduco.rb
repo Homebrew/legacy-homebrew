@@ -16,4 +16,11 @@ class Abduco < Formula
   def install
     system "make", "PREFIX=#{prefix}", "install"
   end
+
+  test do
+    session = "0.1-homebrew-test-session"
+    expected = "[?25h[999Habduco: #{session}: session terminated with exit status 0\n"
+    output = `printf "" | #{bin}/abduco -e "" -c #{session} true &> /dev/null && printf "\n" | #{bin}/abduco -a #{session} 2>&1 | sed '$d' | tail -1 | sed 's/.$//'`
+    assert_equal expected, output
+  end
 end
