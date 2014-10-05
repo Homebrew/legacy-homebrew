@@ -10,10 +10,21 @@ class Zookeeper < Formula
 
     # To resolve Yosemite build errors.
     # https://issues.apache.org/jira/browse/ZOOKEEPER-2049
-    patch :p0 do
-      url "https://issues.apache.org/jira/secure/attachment/12672517/ZOOKEEPER-2049.noprefix.branch-3.4.patch"
-      sha1 "001424dacb82209c12653b3fbcdc0847a41f4294"
-    end if MacOS.version == :yosemite
+    if MacOS.version == :yosemite
+      patch :p0 do
+        url "https://issues.apache.org/jira/secure/attachment/12672517/ZOOKEEPER-2049.noprefix.branch-3.4.patch"
+        sha1 "001424dacb82209c12653b3fbcdc0847a41f4294"
+      end
+    end
+
+  # Everything in this block can go back to being head-only after next stable release;
+  # They are needed in stable presently because the Yosemite patch modifies configure.
+    if MacOS.version == :yosemite
+      depends_on "cppunit" => :build
+      depends_on "libtool" => :build
+      depends_on "autoconf" => :build
+      depends_on "automake" => :build
+    end
   end
 
   bottle do
@@ -27,22 +38,22 @@ class Zookeeper < Formula
 
     # To resolve Yosemite build errors.
     # https://issues.apache.org/jira/browse/ZOOKEEPER-2049
-    patch :p0 do
-      url "https://issues.apache.org/jira/secure/attachment/12672519/ZOOKEEPER-2049.noprefix.trunk.patch"
-      sha1 "009e7703431a3b81043b57a6ef19885fbc15221f"
-    end if MacOS.version == :yosemite
+    if MacOS.version == :yosemite
+      patch :p0 do
+        url "https://issues.apache.org/jira/secure/attachment/12672519/ZOOKEEPER-2049.noprefix.trunk.patch"
+        sha1 "009e7703431a3b81043b57a6ef19885fbc15221f"
+      end
+    end
 
     depends_on "ant" => :build
+    depends_on "cppunit" => :build
+    depends_on "libtool" => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
   end
 
-  option "with-perl", "Build Perl bindings"
+  option "perl", "Build Perl bindings"
 
-  # Everything aside python can go back to being head-only after next stable release;
-  # They are needed in stable presently because the Yosemite patch modifies configure.
-  depends_on "cppunit" => :build
-  depends_on "libtool" => :build
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
   depends_on :python => :optional
 
   def shim_script target
@@ -86,8 +97,8 @@ class Zookeeper < Formula
 
     cd "src/c" do
       # Remove the autotools from this block after next stable release.
-      system "aclocal"
-      system "autoreconf", "-fvi"
+      system "aclocal" if MacOS.version == :yosemite
+      system "autoreconf", "-fvi" if MacOS.version == :yosemite
       system "./configure", "--disable-dependency-tracking",
                             "--prefix=#{prefix}",
                             "--without-cppunit"
@@ -104,7 +115,7 @@ class Zookeeper < Formula
                                     "--zookeeper-include=#{include}",
                                     "--zookeeper-lib=#{lib}"
       system "make", "install"
-    end if build.with? "perl"
+    end if build.include? "perl"
 
     rm_f Dir["bin/*.cmd"]
 
