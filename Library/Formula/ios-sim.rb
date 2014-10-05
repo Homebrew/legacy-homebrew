@@ -8,8 +8,8 @@ class IosSim < Formula
 
   bottle do
     cellar :any
-    sha1 "3f28d1596a8d019ecb4fc70f758190a21e56ebcc" => :mavericks
-    sha1 "9ed5958db90bb227a0f0afc878f4cfb4a835fcca" => :mountain_lion
+    sha1 "a3d4fca43c68809b156490b018190df8059a0ebf" => :mavericks
+    sha1 "747cd81a2dfae3c14a4d41ff286d60dc9c939d5b" => :mountain_lion
   end
 
   depends_on :macos => :mountain_lion
