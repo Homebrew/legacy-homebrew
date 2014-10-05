@@ -9,6 +9,10 @@ class Mpfr < Formula
   version "3.1.2-p10"
 
   bottle do
+    cellar :any
+    sha1 "4612c09b4f5cb156d86f2e404a8b50821729dd34" => :mavericks
+    sha1 "f4cdf0f09d9fe0f29742720895f4f4cc84960bb7" => :mountain_lion
+    sha1 "606d4d79126cd3eb22e1cfa8cc6479186b07de39" => :lion
   end
 
   # http://www.mpfr.org/mpfr-current/allpatches
