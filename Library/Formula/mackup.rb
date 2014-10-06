@@ -7,6 +7,8 @@ class Mackup < Formula
 
   head "https://github.com/lra/mackup.git"
 
+  depends_on :python
+
   def install
     ENV.prepend_create_path "PYTHONPATH", lib/"python2.7/site-packages"
     system "python", "setup.py", "install", "--prefix=#{prefix}",
