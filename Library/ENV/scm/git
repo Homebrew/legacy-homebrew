@@ -15,12 +15,7 @@ def exec *args
   return if arg0 =~ /^#{F}/i
   return if File.expand_path(arg0) == File.expand_path(__FILE__)
 
-  if args[1] == '-print-path' and File.executable? args[0]
-    puts args[0]
-    exit 0
-  else
-    Kernel.exec *args
-  end
+  Kernel.exec(*args)
 end
 
 case F.downcase
