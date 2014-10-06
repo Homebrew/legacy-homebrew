@@ -8,6 +8,7 @@ class Go < Formula
   sha1 'b54b7deb7b7afe9f5d9a3f5dd830c7dede35393a'
 
   bottle do
+    sha1 "07bde6154b7966acda1b6f147393f2deadc1af3f" => :yosemite
     sha1 "87aa4f7f76278ee21004d0f12f63e38a0b3ff3f2" => :mavericks
     sha1 "1e5fe0df8f805c96f143568bad1de5e2bc6af82f" => :mountain_lion
     sha1 "2aa465d9fb98833b80d8f2801153592c1d52bd1a" => :lion
