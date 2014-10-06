@@ -65,4 +65,32 @@ class Ntfs3g < Formula
       EOS
     end
   end
+
+  def caveats; s = <<-EOS.undent
+    This formula installs with the /usr/local/ prefix.
+
+    To mount partitions manually you will need to make sure you use
+    the prefix.
+
+      /usr/local/sbin/mount_ntfs -o rw /dev/disk2s2 /Volumes/ntfs
+
+    If you want to OSX to use ntfs-3g by default when mounting drives
+    you need to install the ntfs-3g mount script as the root user by
+    doing the following:
+
+    Make a backup of the default mount script:
+
+      sudo mv /sbin/mount_ntfs /sbin/mount_ntfs.orig
+
+    Link the prefixed mount script to /sbin/:
+
+      sudo ln -s #{opt_prefix}/sbin/mount_ntfs /sbin/mount_ntfs
+
+    To uninstall and restore the backup reverse the operation:
+
+      sudo rm /sbin/mount_ntfs
+      sudo mv /sbin/mount_ntfs.orig /sbin/mount_ntfs
+
+    EOS
+  end
 end
