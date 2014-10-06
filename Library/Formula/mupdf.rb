@@ -7,9 +7,9 @@ class Mupdf < Formula
 
   bottle do
     cellar :any
-    sha1 "c4e3b26fc0969b29930ee2eb8a76a9eac183f4cc" => :mavericks
-    sha1 "69c2fabdf1c244a978db82927c5f0f68d71783c0" => :mountain_lion
-    sha1 "283487c7f77029e1b6801142a091a19e933964d6" => :lion
+    sha1 "30f8a874a36fa64447c1c2acd691df68ef070061" => :mavericks
+    sha1 "aabd22a66449e271c00078f097fd7ae212019fa3" => :mountain_lion
+    sha1 "98fbed77b4bf143d13b091b8a4c4349438f7ecd4" => :lion
   end
 
   depends_on :macos => :snow_leopard
