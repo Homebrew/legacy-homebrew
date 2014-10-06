@@ -8,6 +8,7 @@ class Cardpeek < Formula
     mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Cardpeek/cardpeek-0.8.3.tar.gz"
     sha1 "8cc9c0652f0214ec06badb5b86974c66ca035a43"
 
+    # Patch required to fix GTK3.14 fatal build issues. Already merged into HEAD.
     patch :p0 do
       url "https://cardpeek.googlecode.com/issues/attachment?aid=500005000&name=patch-for-gtk-3.14.patch&token=ABZ6GAe27u5TeVC93yVqB58IQsyy6FjQQw%3A1412564556195"
       sha1 "33b27af98546f605e5ab1c4a894c7db8fc2045f8"
@@ -15,7 +16,7 @@ class Cardpeek < Formula
   end
 
   head do
-    url "http://cardpeek.googlecode.com/svn/trunk/"
+    url "https://cardpeek.googlecode.com/svn/trunk/"
   end
 
   depends_on "pkg-config" => :build
