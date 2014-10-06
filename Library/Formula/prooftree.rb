@@ -20,8 +20,4 @@ class Prooftree < Formula
     system "make"
     system "make install"
   end
-
-  test do
-    system "#{bin}/prooftree", "-help"
-  end
 end
