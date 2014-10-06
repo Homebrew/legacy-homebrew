@@ -8,9 +8,9 @@ class Minidlna < Formula
 
   bottle do
     cellar :any
-    sha1 "bd843e38e01a181921457a08eefc9b834e1affe6" => :mavericks
-    sha1 "f1026dd21804ccb34ccd95bf15dba43f0918b1b5" => :mountain_lion
-    sha1 "454dd23d6db2a9eefb03a7d5cdfb2323de7e6d48" => :lion
+    sha1 "f49443165618a73072821cdc481902d676791502" => :mavericks
+    sha1 "88bf53f515ddcd48ce3cbee067717ef1f0b4d5f6" => :mountain_lion
+    sha1 "00a4fbe01ab17fb3c09c68cccf4fc902a1d9a859" => :lion
   end
 
   head do
