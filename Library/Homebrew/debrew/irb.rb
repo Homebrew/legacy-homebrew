@@ -3,15 +3,12 @@ require 'irb'
 module IRB
   @setup_done = false
 
+  def IRB.parse_opts
+  end
+
   def IRB.start_within(binding)
     unless @setup_done
-      # make IRB ignore our command line arguments
-      begin
-        saved_args = ARGV.shift(ARGV.size)
-        IRB.setup(nil)
-      ensure
-        ARGV.replace(saved_args)
-      end
+      IRB.setup(nil)
       @setup_done = true
     end
 
