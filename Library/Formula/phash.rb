@@ -4,6 +4,13 @@ class Phash < Formula
   homepage 'http://www.phash.org/'
   url 'http://phash.org/releases/pHash-0.9.6.tar.gz'
   sha1 '26f4c1e7ca6b77e6de2bdfce490b2736d4b63753'
+  bottle do
+    cellar :any
+    sha1 "d5cd584f04669d06d1876704546bc56bc71aa754" => :mavericks
+    sha1 "7a5320740e97de701e924c6c2dbeecb179438f1c" => :mountain_lion
+    sha1 "9c8ecf5f7b7774cec34059f8a2e02d3d6644368e" => :lion
+  end
+
   revision 1
 
   option "disable-image-hash", "Disable image hash"
