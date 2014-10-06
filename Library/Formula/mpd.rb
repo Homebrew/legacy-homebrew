@@ -7,9 +7,9 @@ class Mpd < Formula
   revision 1
 
   bottle do
-    sha1 "bb1bfadd7c3b4c4e4d5cea14acc80d0c87e4aa61" => :mavericks
-    sha1 "2afd32a8d9e04f0f930aef40e7012e496ac790ee" => :mountain_lion
-    sha1 "dce3da5bd0af773861c694ac4b33faa6797341b3" => :lion
+    sha1 "4190b0d49b5590835e956f101e17861e468b7fbe" => :mavericks
+    sha1 "1a7620942795359541772b42c1681f854606677e" => :mountain_lion
+    sha1 "e19dc0265a30fb57c676a5a08a56be91c2b1d6fb" => :lion
   end
 
   head do
