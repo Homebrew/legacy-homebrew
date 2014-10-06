@@ -1,5 +1,4 @@
 require "formula"
-require 'net/http'
 
 class Moco < Formula
   homepage "https://github.com/dreamhead/moco"
@@ -12,8 +11,9 @@ class Moco < Formula
   end
 
   test do
-    port=12306
-    (testpath/'config.json').write <<-TEST_SCRIPT.undent
+    require "net/http"
+
+    (testpath/"config.json").write <<-EOS.undent
       [
         {
           "response" :
@@ -22,15 +22,18 @@ class Moco < Formula
           }
         }
     ]
-    TEST_SCRIPT
-    startMoco=Thread.new do
-      system(bin/"moco","start","-p", port,"-c",(testpath/'config.json'))
+    EOS
+
+    port = 12306
+    thread = Thread.new do
+      system bin/"moco", "start", "-p", port, "-c", testpath/"config.json"
     end
-    sleep 5 #wait moco start
-    actualResponse=Net::HTTP.get(URI('http://localhost:'+port.to_s))
-    if(actualResponse!='Hello, Moco')
-      onoe "Error! The response is not right."
-    end
-    startMoco.exit
+
+    # Wait for Moco to start.
+    sleep 5
+
+    response = Net::HTTP.get URI "http://localhost:#{port}"
+    assert_equal "Hello, Moco", response
+    thread.exit
   end
 end
