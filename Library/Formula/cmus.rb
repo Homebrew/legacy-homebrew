@@ -5,6 +5,7 @@ class Cmus < Formula
   head "https://github.com/cmus/cmus.git"
   url "https://github.com/cmus/cmus/archive/v2.6.0.tar.gz"
   sha1 "aba00eb75335532c0413f7c819c2e2d12fcd4314"
+  revision 1
 
   bottle do
     sha1 "584b513eda4887a001a6a4613160f1181620ba94" => :mavericks

@@ -13,6 +13,7 @@ class Moc < Formula
       sha1 "55d64d17b320b391a5c11f502417fa8353498b37"
     end
   end
+  revision 1
 
   head 'svn://daper.net/moc/trunk'
 

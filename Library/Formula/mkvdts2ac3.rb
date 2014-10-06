@@ -11,7 +11,7 @@ class Mkvdts2ac3 < Formula
     # https://github.com/JakeWharton/mkvdts2ac3/commit/f5008860e7ec2cbd950a0628c979f06387bf76d0
     patch :DATA
   end
-  revision 1
+  revision 2
 
   head "https://github.com/JakeWharton/mkvdts2ac3.git"
 

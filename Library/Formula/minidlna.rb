@@ -4,6 +4,7 @@ class Minidlna < Formula
   homepage "http://sourceforge.net/projects/minidlna/"
   url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.4/minidlna-1.1.4.tar.gz"
   sha1 "56f333f8af91105ce5f0861d1f1918ebf5b0a028"
+  revision 1
 
   bottle do
     cellar :any

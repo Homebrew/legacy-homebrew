@@ -4,6 +4,7 @@ class Libquicktime < Formula
   homepage 'http://libquicktime.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.4/libquicktime-1.2.4.tar.gz'
   sha1 '7008b2dc27b9b40965bd2df42d39ff4cb8b6305e'
+  revision 1
 
   bottle do
     sha1 "7fdbf524e3218f388a4c4c5d09d379e6ec683e80" => :mavericks
