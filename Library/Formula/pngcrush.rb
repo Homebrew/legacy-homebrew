@@ -4,8 +4,15 @@ require "formula"
 # tarballs are routinely removed and upstream won't change this practice.
 class Pngcrush < Formula
   homepage "http://pmt.sourceforge.net/pngcrush/"
-  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.76/pngcrush-1.7.76.tar.gz"
-  sha1 "bfe29dc46196cef792ffaebf7349256dcc6e7017"
+  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.77/pngcrush-1.7.77.tar.gz"
+  sha1 "70e15781220a0095453d04b040c6f42d77487d7b"
+
+  bottle do
+    cellar :any
+    sha1 "4fbc1d4dd08adb4f3278cb6422140207c96e01f7" => :mavericks
+    sha1 "bca5fc1cf30f862aed221275ffb7eb3596409789" => :mountain_lion
+    sha1 "4dc287b68464aefd6ac9fc47ddb6d2942c75d3e7" => :lion
+  end
 
   def install
     # Required to successfully build the bundled zlib 1.2.6

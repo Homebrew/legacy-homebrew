@@ -25,7 +25,9 @@ class Yaws < Formula
     end
 
     system "autoreconf", "-fvi"
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}",
+                          # Ensure pam headers are found on Xcode-only installs
+                          "--with-extrainclude=#{MacOS.sdk_path}/usr/include/security"
     system "make install"
 
     if build.with? "yapp"

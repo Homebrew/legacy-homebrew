@@ -41,14 +41,35 @@ class Cmake < Formula
     sha1 "3a11f130c63b057532ca37fe49c8967d0cbae1d5"
   end
 
+  resource "docutils" do
+    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz"
+    sha1 "002450621b33c5690060345b0aac25bc2426d675"
+  end
+
+  resource "pygments" do
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.6.tar.gz"
+    sha1 "53d831b83b1e4d4f16fec604057e70519f9f02fb"
+  end
+
+  resource "jinja2" do
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
+    sha1 "25ab3881f0c1adfcf79053b58de829c5ae65d3ac"
+  end
+
+  resource "markupsafe" do
+    url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
+    sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
+  end
+
   depends_on NoExpatFramework
 
   def install
-    resource("sphinx").stage do
-      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
-      system "python", "setup.py", "install", "--prefix=#{buildpath}/sphinx"
+    ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
+    %w[markupsafe docutils pygments jinja2 sphinx].each do |r|
+      resource(r).stage do
+        system "python", "setup.py", "install", "--prefix=#{buildpath}/sphinx"
+      end
     end
-    ENV.prepend_path "PATH", "#{buildpath}/sphinx/bin"
 
     # There is an existing issue around OS X & Python locale setting
     # See http://bugs.python.org/issue18378#msg215215 for explanation
@@ -58,10 +79,11 @@ class Cmake < Formula
       --prefix=#{prefix}
       --system-libs
       --no-system-libarchive
-      --sphinx-man
       --datadir=/share/cmake
       --docdir=/share/doc/cmake
       --mandir=/share/man
+      --sphinx-man
+      --sphinx-build=#{buildpath}/sphinx/bin/sphinx-build
     ]
 
     system "./bootstrap", *args

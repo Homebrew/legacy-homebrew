@@ -2,13 +2,13 @@ require "formula"
 
 class Goaccess < Formula
   homepage "http://goaccess.prosoftcorp.com/"
-  url "http://tar.goaccess.io/goaccess-0.8.3.tar.gz"
-  sha1 "e5ed8a3d6ba2c5b338b5e3e22da8024e7c58ded3"
+  url "http://tar.goaccess.io/goaccess-0.8.5.tar.gz"
+  sha1 "a69e629682b11b5413af9112f386ef8bf9182346"
 
   bottle do
-    sha1 "9c5adcd9d96d92881c2aedecf13e1d42a4d829af" => :mavericks
-    sha1 "380c3c8298fb6c9e77297c708360d0abfc097650" => :mountain_lion
-    sha1 "0e9a7dfd63e7565fddd54a6b7fff13f1e8a81c46" => :lion
+    sha1 "97e5b8257e79910a253ec972cb9535f02caec511" => :mavericks
+    sha1 "0a17b2ba03ec8575eb3deba610fa200aeb052b92" => :mountain_lion
+    sha1 "98e9188ea8aa24f8e51dd046d6003b81c894f53e" => :lion
   end
 
   option "enable-geoip", "Enable IP location information using GeoIP"

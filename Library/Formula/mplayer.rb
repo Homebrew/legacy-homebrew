@@ -22,7 +22,8 @@ class Mplayer < Formula
   end
 
   head do
-    url "svn://svn.mplayerhq.hu/mplayer/trunk", :using => StrictSubversionDownloadStrategy
+    url "svn://svn.mplayerhq.hu/mplayer/trunk"
+    depends_on "subversion" => :build if MacOS.version <= :leopard
 
     # When building SVN, configure prompts the user to pull FFmpeg from git.
     # Don't do that.

@@ -47,6 +47,10 @@ module Homebrew
     Homebrew.git_head || "(none)"
   end
 
+  def last_commit
+    Homebrew.git_last_commit || "never"
+  end
+
   def origin
     origin = HOMEBREW_REPOSITORY.cd do
       `git config --get remote.origin.url 2>/dev/null`.chomp
@@ -121,6 +125,7 @@ module Homebrew
     f.puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
     f.puts "ORIGIN: #{origin}"
     f.puts "HEAD: #{head}"
+    f.puts "Last commit: #{last_commit}"
     f.puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}"
     f.puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
     f.puts hardware

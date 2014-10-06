@@ -2,15 +2,13 @@ require "formula"
 
 class Lftp < Formula
   homepage "http://lftp.yar.ru/"
-  url "http://lftp.yar.ru/ftp/lftp-4.5.4.tar.gz"
-  sha1 "a2d74b719d0c9a4981e4413e56e3a7a6dda712f7"
-  revision 1
+  url "http://lftp.yar.ru/ftp/lftp-4.5.5.tar.gz"
+  sha1 "4dbef2d6a5bd9c44b5571a71a211b639450e09db"
 
   bottle do
-    revision 1
-    sha1 "7d82631bdda9733394703049b6a173fa5f4c9cf0" => :mavericks
-    sha1 "1056f4a50b53aa43d5d8c4146b306e83936b6400" => :mountain_lion
-    sha1 "ccc55f9e4af7325cfbed7ccdbaa78fc3737b34f0" => :lion
+    sha1 "57279f43658740d7e87023047e475892ea0516a2" => :mavericks
+    sha1 "252a3be94362178b6de0eb8dae476b412db8c7e1" => :mountain_lion
+    sha1 "e791cfe2173d7ba26392e313d423b98212a7b2d3" => :lion
   end
 
   depends_on "pkg-config" => :build
