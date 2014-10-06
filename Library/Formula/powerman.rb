@@ -5,6 +5,12 @@ class Powerman < Formula
   url "https://github.com/chaos/powerman/releases/download/2.3.20/powerman-2.3.20.tar.gz"
   sha256 "a4b0858d1214aab18e2673596b00ac9bad976cb7b777209e10732467c3551b88"
 
+  bottle do
+    sha1 "13cb32e10f668dbb4aa5c45f875b1f6eefe51add" => :mavericks
+    sha1 "01782db5105f648477202f5d6864a16f84024401" => :mountain_lion
+    sha1 "750e16ba1c0f6bed9d63b8c89c7e4a5484276723" => :lion
+  end
+
   head do
     url "https://github.com/chaos/powerman.git"
 
