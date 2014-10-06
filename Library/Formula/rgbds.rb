@@ -7,6 +7,13 @@ class Rgbds < Formula
 
   head "https://github.com/bentley/rgbds.git", :branch => "master"
 
+  bottle do
+    cellar :any
+    sha1 "4dcd554e8ff8c6dba47778461a27c04b798bcee1" => :mavericks
+    sha1 "5479338e6423a60a83abb72667a410db69f97724" => :mountain_lion
+    sha1 "b87f08e1ce5e1ccb4760cf722938184c3143fdcc" => :lion
+  end
+
   def install
     system "make"
     system "make", "install", "PREFIX=#{prefix}", "MANPREFIX=#{man}"
