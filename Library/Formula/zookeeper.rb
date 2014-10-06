@@ -12,8 +12,8 @@ class Zookeeper < Formula
     # https://issues.apache.org/jira/browse/ZOOKEEPER-2049
     if MacOS.version == :yosemite
       patch :p0 do
-        url "https://issues.apache.org/jira/secure/attachment/12672517/ZOOKEEPER-2049.noprefix.branch-3.4.patch"
-        sha1 "001424dacb82209c12653b3fbcdc0847a41f4294"
+        url "https://issues.apache.org/jira/secure/attachment/12673210/ZOOKEEPER-2049.noprefix.branch-3.4.patch"
+        sha1 "ff0e971c028050ccebd8cc7caa348ab14716d664"
       end
     end
 
@@ -40,8 +40,8 @@ class Zookeeper < Formula
     # https://issues.apache.org/jira/browse/ZOOKEEPER-2049
     if MacOS.version == :yosemite
       patch :p0 do
-        url "https://issues.apache.org/jira/secure/attachment/12672519/ZOOKEEPER-2049.noprefix.trunk.patch"
-        sha1 "009e7703431a3b81043b57a6ef19885fbc15221f"
+        url "https://issues.apache.org/jira/secure/attachment/12673212/ZOOKEEPER-2049.noprefix.trunk.patch"
+        sha1 "79ed0793e4693c9bbb83aad70582b55012f19eac"
       end
     end
 
