@@ -300,6 +300,13 @@ Contributions via Github Pull Request are welcome.  See the TODO for some ideas.
 - Run `test` to ensure all tests pass
 - Now just run `publish` and package will be published to bintray
 
+To announce the release on [ls.implicit.ly](http://ls.implicit.ly/), use
+[Herald](https://github.com/n8han/herald#install) after adding release notes in
+the `notes/` dir.  Also regenerate the catalog with `lsWriteVersion` SBT task
+and `lsync`, in project job-server.
+
+TODO: Automate the above steps with `sbt-release`.
+
 ## Contact
 
 For user/dev questions, we are using google group for discussions:

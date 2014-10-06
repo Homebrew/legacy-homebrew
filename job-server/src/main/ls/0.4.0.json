@@ -1,12 +1,12 @@
 {
   "organization" : "spark.jobserver",
-  "name" : "master",
+  "name" : "job-server",
   "version" : "0.4.0",
-  "description" : "REST job server for Spark",
+  "description" : "REST job server for Apache Spark",
   "site" : "https://github.com/spark-jobserver/spark-jobserver",
-  "tags" : [ "spark", "rest" ],
+  "tags" : [ "spark", "akka", "rest" ],
   "docs" : "",
-  "resolvers" : [ "https://oss.sonatype.org/content/repositories/releases" ],
+  "resolvers" : [ "http://dl.bintray.com/spark-jobserver/maven" ],
   "dependencies" : [ {
     "organization" : "org.apache.spark",
     "name" : "spark-core",
@@ -23,6 +23,22 @@
     "organization" : "org.scoverage",
     "name" : "scalac-scoverage-plugin",
     "version" : "0.98.0"
+  }, {
+    "organization" : "org.apache.spark",
+    "name" : "spark-core",
+    "version" : "1.0.2"
+  }, {
+    "organization" : "io.netty",
+    "name" : "netty",
+    "version" : "3.6.6.Final"
+  }, {
+    "organization" : "com.typesafe.slick",
+    "name" : "slick",
+    "version" : "2.0.2-RC1"
+  }, {
+    "organization" : "com.h2database",
+    "name" : "h2",
+    "version" : "1.3.170"
   } ],
   "scalas" : [ "2.10.4" ],
   "licenses" : [ {
