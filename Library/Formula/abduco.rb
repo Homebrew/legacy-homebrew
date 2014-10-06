@@ -6,6 +6,13 @@ class Abduco < Formula
   sha1 "063b66d8a9a83ecd5b9501afc86812a06ad79076"
   head "git://repo.or.cz/abduco.git"
 
+  bottle do
+    cellar :any
+    sha1 "dc3f05e32b87e67d3b9da26e199fb92de369794a" => :mavericks
+    sha1 "1fe57b58b3cdac26a667f19ad25bf0c06dcbf1f0" => :mountain_lion
+    sha1 "d7c559b7d1a696d8ca34934276f715461ee0ed33" => :lion
+  end
+
   # upstream fix for BSD strip -s behavior compared to GNU
   # safe to remove in abduco versions after 0.1
   patch do
