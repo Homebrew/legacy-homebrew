@@ -51,7 +51,7 @@ object JobServerBuild extends Build {
       javaOptions in Revolver.reStart += "-Djava.security.krb5.realm= -Djava.security.krb5.kdc=",
       // This lets us add Spark back to the classpath without assembly barfing
       fullClasspath in Revolver.reStart := (fullClasspath in Compile).value
-      )
+      ) ++ implicitlySettings
   ) dependsOn(akkaApp, jobServerApi)
 
   lazy val jobServerTestJar = Project(id = "job-server-tests", base = file("job-server-tests"),
@@ -72,8 +72,7 @@ object JobServerBuild extends Build {
   // prepend "aaa" to the project name here.
   lazy val aaaMasterProject = Project(
     id = "master", base = file("master"),
-    settings = 
-      implicitlySettings ++
+    settings =
       commonSettings210  ++ Seq(
       parallelExecution in Test := false,
       publish      := {},
@@ -83,7 +82,7 @@ object JobServerBuild extends Build {
         // Note: some components of tests seem to have the "Untagged" tag rather than "Test" tag.
         // So, we limit the sum of "Test", "Untagged" tags to 1 concurrent
         Tags.limitSum(1, Tags.Test, Tags.Untagged))
-  )) aggregate(jobServer, jobServerApi, jobServerTestJar, akkaApp) 
+  )) aggregate(jobServer, jobServerApi, jobServerTestJar, akkaApp)
 
   // To add an extra jar to the classpath when doing "re-start" for quick development, set the
   // env var EXTRA_JAR to the absolute full path to the jar
@@ -135,15 +134,16 @@ object JobServerBuild extends Build {
     licenses += ("Apache-2.0", url("http://choosealicense.com/licenses/apache/")),
     bintray.Keys.bintrayOrganization in bintray.Keys.bintray := Some("spark-jobserver")
   )
-  
-  lazy val implicitlySettings = { 
+
+  lazy val implicitlySettings = {
     import ls.Plugin._
     import LsKeys._
-    
+
     lsSettings ++ Seq(
       homepage := Some(url("https://github.com/spark-jobserver/spark-jobserver")),
-      (tags in lsync) := Seq("spark", "rest"),
-      (description in lsync) := "REST job server for Spark",
+      (tags in lsync) := Seq("spark", "akka", "rest"),
+      (description in lsync) := "REST job server for Apache Spark",
+      (externalResolvers in lsync) := Seq("Job Server Bintray" at "http://dl.bintray.com/spark-jobserver/maven"),
       (ghUser in lsync) := Some("spark-jobserver"),
       (ghRepo in lsync) := Some("spark-jobserver"),
       (ghBranch in lsync) := Some("master")
