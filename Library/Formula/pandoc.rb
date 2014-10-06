@@ -9,6 +9,7 @@ class Pandoc < Formula
   sha1 "8f3df1977cf9daa848640754515b733c13fd934a"
 
   bottle do
+    sha1 "a2caf52195e88b36d0fb16f1b931c5630cc6ea57" => :yosemite
     sha1 "cb797a12020892b2eee7131d448692309b184d99" => :mavericks
     sha1 "0795ad1fdea3a1d47219753ebce5d34f7311ad5b" => :mountain_lion
     sha1 "c9c2e4e7e74b4850bcbba148d8efc6af7da47605" => :lion
