@@ -2,8 +2,8 @@ require 'formula'
 
 class Mupdf < Formula
   homepage 'http://mupdf.com'
-  url 'http://mupdf.com/downloads/mupdf-1.5-source.tar.gz'
-  sha1 '628470ed20f9a03c81e90cd5585a31c0fab386ef'
+  url 'http://mupdf.com/downloads/mupdf-1.6-source.tar.gz'
+  sha1 '491d7a3b131589791c7df6dd8161c6bfe41ce74a'
 
   bottle do
     cellar :any
