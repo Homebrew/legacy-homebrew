@@ -39,7 +39,7 @@ class Mediatomb < Formula
   end
 
   patch do
-    url "http://sourceforge.net/tracker/download.php?group_id=129766&atid=715782&file_id=445437&aid=3532724"
+    url "http://sourceforge.net/p/mediatomb/patches/_discuss/thread/57c47fb9/8ad8/attachment/mediatomb-urifix.patch"
     sha1 "7f4f9ef10fcbb05de95780f43bf4df9bd6563918"
   end
 
