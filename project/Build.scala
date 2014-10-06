@@ -71,9 +71,10 @@ object JobServerBuild extends Build {
   // Note: SBT's default project is the one with the first lexicographical variable name, so we
   // prepend "aaa" to the project name here.
   lazy val aaaMasterProject = Project(
-    id = "master", base = file("master")
-  ) aggregate(jobServer, jobServerApi, jobServerTestJar, akkaApp
-  ) settings(
+    id = "master", base = file("master"),
+    settings = 
+      implicitlySettings ++
+      commonSettings210  ++ Seq(
       parallelExecution in Test := false,
       publish      := {},
       concurrentRestrictions := Seq(
@@ -82,7 +83,7 @@ object JobServerBuild extends Build {
         // Note: some components of tests seem to have the "Untagged" tag rather than "Test" tag.
         // So, we limit the sum of "Test", "Untagged" tags to 1 concurrent
         Tags.limitSum(1, Tags.Test, Tags.Untagged))
-  )
+  )) aggregate(jobServer, jobServerApi, jobServerTestJar, akkaApp) 
 
   // To add an extra jar to the classpath when doing "re-start" for quick development, set the
   // env var EXTRA_JAR to the absolute full path to the jar
@@ -134,6 +135,20 @@ object JobServerBuild extends Build {
     licenses += ("Apache-2.0", url("http://choosealicense.com/licenses/apache/")),
     bintray.Keys.bintrayOrganization in bintray.Keys.bintray := Some("spark-jobserver")
   )
+  
+  lazy val implicitlySettings = { 
+    import ls.Plugin._
+    import LsKeys._
+    
+    lsSettings ++ Seq(
+      homepage := Some(url("https://github.com/spark-jobserver/spark-jobserver")),
+      (tags in lsync) := Seq("spark", "rest"),
+      (description in lsync) := "REST job server for Spark",
+      (ghUser in lsync) := Some("spark-jobserver"),
+      (ghRepo in lsync) := Some("spark-jobserver"),
+      (ghBranch in lsync) := Some("master")
+    )
+  }
 
   // change to scalariformSettings for auto format on compile; defaultScalariformSettings to disable
   // See https://github.com/mdr/scalariform for formatting options
