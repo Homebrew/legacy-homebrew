@@ -45,11 +45,7 @@ class Phantomjs < Formula
     sha1 "24b6dbefe4186a2ebbaeef0d6cd217aecda1ff59" => :lion
   end
 
-  head do
-    url "https://github.com/ariya/phantomjs.git"
-
-    depends_on "icu4c"
-  end
+  head "https://github.com/ariya/phantomjs.git"
 
   depends_on "openssl"
 
