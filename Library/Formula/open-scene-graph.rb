@@ -5,6 +5,12 @@ class OpenSceneGraph < Formula
 
   stable do
     url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.2.0.zip"
+  bottle do
+    sha1 "39ebd1c9cb19056e150b7087586e1e63a9546288" => :mavericks
+    sha1 "166b932d7d317cd32b1da89353bb3e03b4b13880" => :mountain_lion
+    sha1 "16055dc346e3a892c1083e08c40d32d37c2e10f0" => :lion
+  end
+
     sha1 "c20891862b5876983d180fc4a3d3cfb2b4a3375c"
 
     # Build fixes for clang/c++11
