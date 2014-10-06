@@ -16,15 +16,6 @@ class Zookeeper < Formula
         sha1 "ff0e971c028050ccebd8cc7caa348ab14716d664"
       end
     end
-
-  # Everything in this block can go back to being head-only after next stable release;
-  # They are needed in stable presently because the Yosemite patch modifies configure.
-    if MacOS.version == :yosemite
-      depends_on "cppunit" => :build
-      depends_on "libtool" => :build
-      depends_on "autoconf" => :build
-      depends_on "automake" => :build
-    end
   end
 
   bottle do
@@ -96,9 +87,6 @@ class Zookeeper < Formula
     end
 
     cd "src/c" do
-      # Remove the autotools from this block after next stable release.
-      system "aclocal" if MacOS.version == :yosemite
-      system "autoreconf", "-fvi" if MacOS.version == :yosemite
       system "./configure", "--disable-dependency-tracking",
                             "--prefix=#{prefix}",
                             "--without-cppunit"
