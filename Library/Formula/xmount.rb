@@ -2,13 +2,13 @@ require "formula"
 
 class Xmount < Formula
   homepage "https://www.pinguin.lu/index.php"
-  url "http://files.pinguin.lu/projects/xmount-0.5.0.tar.gz"
+  url "http://files.pinguin.lu/xmount-0.5.0.tar.gz"
   sha1 "3a0b208db38f987ce97458bbae8db20e1f3cdba9"
 
   depends_on "pkg-config" => :build
   depends_on "automake" => :build
   depends_on "autoconf" => :build
-  depends_on "osxfuse"
+  depends_on :osxfuse
   depends_on "libewf"
 
   patch :DATA

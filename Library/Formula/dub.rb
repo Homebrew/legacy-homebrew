@@ -11,14 +11,15 @@ end
 
 class Dub < Formula
   homepage "http://code.dlang.org/about"
-  url  "https://github.com/rejectedsoftware/dub/archive/v0.9.21.tar.gz"
-  sha1 "7752e14f3f5add50b1c7d9138739d72b276e6abe"
+  url  "https://github.com/D-Programming-Language/dub/archive/v0.9.22.tar.gz"
+  sha1 "9a7b7c838f1241de209473c09a194d355279457b"
 
-  head "https://github.com/rejectedsoftware/dub.git", :using => DubHeadDownloadStrategy
+  head "https://github.com/D-Programming-Language/dub.git", :using => DubHeadDownloadStrategy, :shallow => false
 
   devel do
-    url "https://github.com/rejectedsoftware/dub/archive/v0.9.22-beta.2.tar.gz"
-    sha1 "031b525e6d10515a11c227229a47027281142e6d"
+    url "https://github.com/D-Programming-Language/dub/archive/v0.9.22-rc.1.tar.gz"
+    sha1 "8ca2ac66675ce869cbf4930e989bb6fa41dc61b8"
+    version "0.9.22-rc.1"
   end
 
   depends_on "pkg-config" => :build

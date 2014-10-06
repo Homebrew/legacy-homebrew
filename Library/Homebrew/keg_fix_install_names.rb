@@ -47,7 +47,7 @@ class Keg
 
       begin
         first.atomic_write(s)
-      rescue Errno::EACCES
+      rescue SystemCallError
         first.ensure_writable do
           first.open("wb") { |f| f.write(s) }
         end
@@ -58,12 +58,12 @@ class Keg
   end
 
   def change_dylib_id(id, file)
-    puts "Changing dylib ID in #{file} to #{id}" if ARGV.debug?
+    puts "Changing dylib ID of #{file}\n  from #{file.dylib_id}\n    to #{id}" if ARGV.debug?
     install_name_tool("-id", id, file)
   end
 
   def change_install_name(old, new, file)
-    puts "Changing install name in #{file} from #{old} to #{new}" if ARGV.debug?
+    puts "Changing install name in #{file}\n  from #{old}\n    to #{new}" if ARGV.debug?
     install_name_tool("-change", old, new, file)
   end
 
@@ -72,11 +72,13 @@ class Keg
   # lib/, and ignores binaries and other mach-o objects
   # Note that this doesn't attempt to distinguish between libstdc++ versions,
   # for instance between Apple libstdc++ and GNU libstdc++
-  def detect_cxx_stdlibs(opts={:skip_executables => false})
+  def detect_cxx_stdlibs(options={})
+    options = { :skip_executables => false }.merge(options)
+    skip_executables = options[:skip_executables]
     results = Set.new
 
     mach_o_files.each do |file|
-      next if file.mach_o_executable? && opts[:skip_executables]
+      next if file.mach_o_executable? && skip_executables
       dylibs = file.dynamically_linked_libraries
       results << :libcxx unless dylibs.grep(/libc\+\+.+\.dylib/).empty?
       results << :libstdcxx unless dylibs.grep(/libstdc\+\+.+\.dylib/).empty?
@@ -86,7 +88,7 @@ class Keg
   end
 
   def each_unique_file_matching string
-    IO.popen("/usr/bin/fgrep -lr '#{string}' '#{self}' 2>/dev/null", "rb") do |io|
+    Utils.popen_read("/usr/bin/fgrep", "-lr", string, to_s) do |io|
       hardlinks = Set.new
 
       until io.eof?
@@ -98,7 +100,8 @@ class Keg
   end
 
   def install_name_tool(*args)
-    system(MacOS.locate("install_name_tool"), *args)
+    tool = MacOS.locate("install_name_tool")
+    system(tool, *args) or raise ErrorDuringExecution.new(tool, args)
   end
 
   # If file is a dylib or bundle itself, look for the dylib named by
@@ -131,7 +134,7 @@ class Keg
     dylibs.each(&block)
   end
 
-  def dylib_id_for file, options={}
+  def dylib_id_for(file, options)
     # The new dylib ID should have the same basename as the old dylib ID, not
     # the basename of the file itself.
     basename = File.basename(file.dylib_id)
@@ -151,15 +154,9 @@ class Keg
 
   def mach_o_files
     mach_o_files = []
-    dirs = %w{bin lib Frameworks}
-    dirs.map! { |dir| path.join(dir) }
-    dirs.reject! { |dir| not dir.directory? }
-
-    dirs.each do |dir|
-      dir.find do |pn|
-        next if pn.symlink? or pn.directory?
-        mach_o_files << pn if pn.dylib? or pn.mach_o_bundle? or pn.mach_o_executable?
-      end
+    path.find do |pn|
+      next if pn.symlink? or pn.directory?
+      mach_o_files << pn if pn.dylib? or pn.mach_o_bundle? or pn.mach_o_executable?
     end
 
     mach_o_files

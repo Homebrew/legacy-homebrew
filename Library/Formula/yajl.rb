@@ -24,8 +24,7 @@ class Yajl < Formula
   end
 
   test do
-    output = `echo "[0,1,2,3]" | '#{bin}/json_verify'`
-    assert $?.success?
-    assert_match /valid/i, output.strip
+    output = pipe_output("#{bin}/json_verify", "[0,1,2,3]").strip
+    assert_equal "JSON is valid", output
   end
 end

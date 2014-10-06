@@ -7,9 +7,11 @@ class Gh < Formula
   head "https://github.com/jingweno/gh.git"
 
   bottle do
-    sha1 "8f4434cfa3a015ac92f22dd5b043d7c7ed5bd094" => :mavericks
-    sha1 "c6fdfd0562cd00fd2c30aaeb9926e0372a5c31cf" => :mountain_lion
-    sha1 "c910b882aec49ae1057c1510d79bf84acab8d447" => :lion
+    revision 1
+    sha1 "2f7d94e9d932fa8a275b097c1756c8827511de17" => :yosemite
+    sha1 "bac12bb9f1b776a10eab9d7b3fd859f4fb459a23" => :mavericks
+    sha1 "9706eaf67eed09dc7e1267afed043c32c67c4ca1" => :mountain_lion
+    sha1 "3f46e4ee7a3e2d63e514f057e9dd8e116b3c18e2" => :lion
   end
 
   depends_on "go" => :build
@@ -19,6 +21,7 @@ class Gh < Formula
   def install
     system "script/make", "--no-update"
     bin.install "gh"
+    man1.install "man/gh.1"
 
     if build.with? "completions"
       bash_completion.install "etc/gh.bash_completion.sh"

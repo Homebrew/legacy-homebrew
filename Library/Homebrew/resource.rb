@@ -9,7 +9,8 @@ class Resource
   include FileUtils
 
   attr_reader :checksum, :mirrors, :specs, :using
-  attr_writer :url, :checksum, :version, :download_strategy
+  attr_writer :url, :checksum, :version
+  attr_accessor :download_strategy
 
   # Formula name must be set after the DSL, as we have no access to the
   # formula name before initialization of the formula
@@ -30,12 +31,15 @@ class Resource
     @downloader ||= download_strategy.new(download_name, self)
   end
 
-  def download_name
-    name.nil? ? owner.name : "#{owner.name}--#{name}"
+  # Removes /s from resource names; this allows go package names
+  # to be used as resource names without confusing software that
+  # interacts with download_name, e.g. github.com/foo/bar
+  def escaped_name
+    name.gsub("/", '-')
   end
 
-  def download_strategy
-    @download_strategy ||= DownloadStrategyDetector.detect(url, using)
+  def download_name
+    name.nil? ? owner.name : "#{owner.name}--#{escaped_name}"
   end
 
   def cached_download
@@ -104,6 +108,7 @@ class Resource
     @url = val
     @specs.merge!(specs)
     @using = @specs.delete(:using)
+    @download_strategy = DownloadStrategyDetector.detect(url, using)
   end
 
   def version val=nil
@@ -123,6 +128,12 @@ class Resource
     when Version then val
     else
       raise TypeError, "version '#{val.inspect}' should be a string"
+    end
+  end
+
+  class Go < Resource
+    def stage target
+      super(target/name)
     end
   end
 end

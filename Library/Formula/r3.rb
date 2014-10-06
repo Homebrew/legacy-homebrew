@@ -2,14 +2,14 @@ require "formula"
 
 class R3 < Formula
   homepage "https://github.com/c9s/r3"
-  url 'https://github.com/c9s/r3/archive/1.3.2.tar.gz'
-  sha1 '99837a42b637e32cd634a5fbdaeaf519a2df5dc5'
+  url "https://github.com/c9s/r3/archive/1.3.3.tar.gz"
+  sha1 "2626e78e5d5afb64561b6c468e357db14597aef6"
 
   bottle do
     cellar :any
-    sha1 "16475109c374517ee2e2883a46015622a758ef44" => :mavericks
-    sha1 "75b212352a81faa87c59f6400a98b3946e896ee9" => :mountain_lion
-    sha1 "786d3cfeb350f7b5bc8b17a3d411ac5ef6b8c85f" => :lion
+    sha1 "bf1eec1e94c0ef4f7862621277bda3d9456cf70f" => :mavericks
+    sha1 "690d863995532a33917a867bbc616887c542ba57" => :mountain_lion
+    sha1 "5d9e530068824ce31352258bbd826dfbb520e40a" => :lion
   end
 
   option :universal

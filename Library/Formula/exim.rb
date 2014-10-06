@@ -2,8 +2,9 @@ require 'formula'
 
 class Exim < Formula
   homepage 'http://exim.org'
-  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.82.1.tar.gz'
-  sha1 'ae2a4ba02e73f0db7e49685b439532d74a87db19'
+  url 'http://ftp.exim.org/pub/exim/exim4/exim-4.84.tar.bz2'
+  mirror 'http://www.mirrorservice.org/sites/ftp.exim.org/pub/exim/exim4/exim-4.84.tar.bz2'
+  sha1 'ffd59975821edc14abfe06c7b9715aedccfc998c'
 
   option 'support-maildir', 'Support delivery in Maildir format'
 
@@ -36,7 +37,7 @@ class Exim < Formula
     inreplace 'OS/Makefile-Darwin' do |s|
       s.remove_make_var! %w{CC CFLAGS}
       # Add include and lib paths for BDB 4
-      s.gsub! "# Exim: OS-specific make file for Darwin (Mac OS X).", "INCLUDE=-I${bdb4.include}"
+      s.gsub! "# Exim: OS-specific make file for Darwin (Mac OS X).", "INCLUDE=-I#{bdb4.include}"
       s.gsub! "DBMLIB =", "DBMLIB=#{bdb4.lib}/libdb-4.dylib"
     end
 

@@ -2,14 +2,13 @@ require 'formula'
 
 class Mariadb < Formula
   homepage 'http://mariadb.org/'
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.12/source/mariadb-10.0.12.tar.gz"
-  sha1 "226251b2312bbe3e4cdac1ee8a6830c6fe246f1b"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.13/source/mariadb-10.0.13.tar.gz"
+  sha1 "3ede106603eeb348d5a70274d806760b8f37eaeb"
 
   bottle do
-    revision 1
-    sha1 "c06cd4d780c713bbfac8095453f19973ef177cc3" => :mavericks
-    sha1 "9ce7d7a2550a4d2a00a4650858d9996feace4387" => :mountain_lion
-    sha1 "f8fe22f96b81d606e1a3d52699638fdf5832b235" => :lion
+    sha1 "88c369ec2a241bd233d43a2b665a89794dcc6f99" => :mavericks
+    sha1 "69bba44ac1a650c0706efdaee9db8aeed29aa142" => :mountain_lion
+    sha1 "fd48710219e5b6a2b0ccc06d137c1b6757e74676" => :lion
   end
 
   depends_on 'cmake' => :build
@@ -65,6 +64,7 @@ class Mariadb < Formula
       -DDEFAULT_COLLATION=utf8_general_ci
       -DINSTALL_SYSCONFDIR=#{etc}
       -DCOMPILATION_COMMENT=Homebrew
+      -DWITHOUT_TOKUDB=1
     ]
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? 'tests'
@@ -104,26 +104,24 @@ class Mariadb < Formula
       s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
     end
 
-    unless build.include? 'client-only'
-      # Don't create databases inside of the prefix!
-      # See: https://github.com/Homebrew/homebrew/issues/4975
-      rm_rf prefix+'data'
+    # Don't create databases inside of the prefix!
+    # See: https://github.com/Homebrew/homebrew/issues/4975
+    rm_rf prefix+'data'
 
-      (prefix+'mysql-test').rmtree if build.without? 'tests' # save 121MB!
-      (prefix+'sql-bench').rmtree if build.without? 'bench'
+    (prefix+'mysql-test').rmtree if build.without? 'tests' # save 121MB!
+    (prefix+'sql-bench').rmtree if build.without? 'bench'
 
-      # Link the setup script into bin
-      bin.install_symlink prefix/"scripts/mysql_install_db"
+    # Link the setup script into bin
+    bin.install_symlink prefix/"scripts/mysql_install_db"
 
-      # Fix up the control script and link into bin
-      inreplace "#{prefix}/support-files/mysql.server" do |s|
-        s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
-        # pidof can be replaced with pgrep from proctools on Mountain Lion
-        s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
-      end
-
-      bin.install_symlink prefix/"support-files/mysql.server"
+    # Fix up the control script and link into bin
+    inreplace "#{prefix}/support-files/mysql.server" do |s|
+      s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+      # pidof can be replaced with pgrep from proctools on Mountain Lion
+      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
     end
+
+    bin.install_symlink prefix/"support-files/mysql.server"
   end
 
   def post_install

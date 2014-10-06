@@ -3,11 +3,6 @@ require 'os/mac'
 require 'extend/ARGV'
 require 'bottle_version'
 
-def bottle_filename options={}
-  options = { :tag => bottle_tag }.merge(options)
-  "#{options[:name]}-#{options[:version]}#{bottle_native_suffix(options)}"
-end
-
 def built_as_bottle? f
   return false unless f.installed?
   tab = Tab.for_keg(f.installed_prefix)
@@ -16,8 +11,7 @@ end
 
 def bottle_file_outdated? f, file
   filename = file.basename.to_s
-  return nil unless f and f.bottle and f.bottle.url \
-    and filename.match(bottle_regex)
+  return unless f.bottle && filename.match(Pathname::BOTTLE_EXTNAME_RX)
 
   bottle_ext = filename[bottle_native_regex, 1]
   bottle_url_ext = f.bottle.url[bottle_native_regex, 1]
@@ -25,26 +19,8 @@ def bottle_file_outdated? f, file
   bottle_ext && bottle_url_ext && bottle_ext != bottle_url_ext
 end
 
-def bottle_native_suffix options={}
-  options = { :tag => bottle_tag }.merge(options)
-  ".#{options[:tag]}#{bottle_suffix(options[:revision])}"
-end
-
-def bottle_suffix revision=nil
-  revision = revision.to_i > 0 ? ".#{revision}" : ""
-  ".bottle#{revision}.tar.gz"
-end
-
 def bottle_native_regex
   /(\.#{bottle_tag}\.bottle\.(\d+\.)?tar\.gz)$/o
-end
-
-def bottle_regex
-  Pathname::BOTTLE_EXTNAME_RX
-end
-
-def bottle_url(root_url, filename_options={})
-  "#{root_url}/#{bottle_filename(filename_options)}"
 end
 
 def bottle_tag
@@ -72,21 +48,39 @@ end
 
 class BottleCollector
   def initialize
-    @bottles = {}
+    @checksums = {}
   end
 
-  def add(checksum, tag)
-    @bottles[tag] = checksum
+  def fetch_checksum_for(tag)
+    tag = find_matching_tag(tag)
+    return self[tag], tag if tag
   end
 
-  def fetch_bottle_for(tag)
-    return [@bottles[tag], tag] if @bottles[tag]
-
-    find_altivec_tag(tag) || find_or_later_tag(tag)
+  def keys
+    @checksums.keys
   end
 
-  def keys; @bottles.keys; end
-  def [](arg); @bottles[arg]; end
+  def [](key)
+    @checksums[key]
+  end
+
+  def []=(key, value)
+    @checksums[key] = value
+  end
+
+  def key?(key)
+    @checksums.key?(key)
+  end
+
+  private
+
+  def find_matching_tag(tag)
+    if key?(tag)
+      tag
+    else
+      find_altivec_tag(tag) || find_or_later_tag(tag)
+    end
+  end
 
   # This allows generic Altivec PPC bottles to be supported in some
   # formulae, while also allowing specific bottles in others; e.g.,
@@ -94,8 +88,8 @@ class BottleCollector
   # :tiger_g4, :tiger_g5, etc.
   def find_altivec_tag(tag)
     if tag.to_s =~ /(\w+)_(g4|g4e|g5)$/
-      altitag = "#{$1}_altivec".to_sym
-      return [@bottles[altitag], altitag] if @bottles[altitag]
+      altivec_tag = "#{$1}_altivec".to_sym
+      altivec_tag if key?(altivec_tag)
     end
   end
 
@@ -103,13 +97,17 @@ class BottleCollector
   # so the same bottle can target multiple OSs.
   # Not used in core, used in taps.
   def find_or_later_tag(tag)
-    results = @bottles.find_all {|k,v| k.to_s =~ /_or_later$/}
-    results.each do |key, hsh|
-      later_tag = key.to_s[/(\w+)_or_later$/, 1].to_sym
-      bottle_version = MacOS::Version.from_symbol(later_tag)
-      return [hsh, key] if bottle_version <= MacOS::Version.from_symbol(tag)
+    begin
+      tag_version = MacOS::Version.from_symbol(tag)
+    rescue ArgumentError
+      return
     end
 
-    nil
+    keys.find do |key|
+      if key.to_s.end_with?("_or_later")
+        later_tag = key.to_s[/(\w+)_or_later$/, 1].to_sym
+        MacOS::Version.from_symbol(later_tag) <= tag_version
+      end
+    end
   end
 end

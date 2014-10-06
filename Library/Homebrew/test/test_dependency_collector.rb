@@ -33,7 +33,7 @@ class DependencyCollectorTests < Homebrew::TestCase
   def test_dependency_tags
     assert_predicate Dependency.new('foo', [:build]), :build?
     assert_predicate Dependency.new('foo', [:build, :optional]), :optional?
-    assert_includes Dependency.new('foo', [:universal]).options, "--universal"
+    assert_includes Dependency.new('foo', ["universal"]).options, "--universal"
     assert_empty Dependency.new('foo').tags
   end
 
@@ -128,7 +128,7 @@ class DependencyCollectorTests < Homebrew::TestCase
 
   def test_resource_dep_raises_for_unknown_classes
     resource = Resource.new
-    resource.url "foo", :using => Class.new
+    resource.download_strategy = Class.new
     assert_raises(TypeError) { @d.add(resource) }
   end
 end

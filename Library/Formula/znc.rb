@@ -1,25 +1,32 @@
-require 'formula'
+require "formula"
 
 class Znc < Formula
-  homepage 'http://wiki.znc.in/ZNC'
-  url 'http://znc.in/releases/archive/znc-1.2.tar.gz'
-  sha1 '69a05702d2db8329ed323e9f74408260ea82c0eb'
+  homepage "http://wiki.znc.in/ZNC"
+  url "http://znc.in/releases/archive/znc-1.4.tar.gz"
+  sha1 "6dafcf12b15fdb95eac5b427c8507c1095e904b4"
 
   head do
-    url 'https://github.com/znc/znc.git'
+    url "https://github.com/znc/znc.git"
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "openssl"
   end
 
-  option 'enable-debug', "Compile ZNC with --enable-debug"
+  bottle do
+    sha1 "b899a3090ce637a09a12c22d76d130a5108b5b42" => :mavericks
+    sha1 "7b808554d026a795d2555b5c1a66419fab999689" => :mountain_lion
+    sha1 "bc2c4a31596a72d501d70b9e7b21b09580f58da2" => :lion
+  end
 
-  depends_on 'pkg-config' => :build
+  option "enable-debug", "Compile ZNC with --enable-debug"
+
+  depends_on "pkg-config" => :build
 
   def install
     args = ["--prefix=#{prefix}"]
-    args << "--enable-debug" if build.include? 'enable-debug'
+    args << "--enable-debug" if build.include? "enable-debug"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args

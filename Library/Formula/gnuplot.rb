@@ -8,13 +8,13 @@ end
 
 class Gnuplot < Formula
   homepage 'http://www.gnuplot.info'
-  url 'https://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.5/gnuplot-4.6.5.tar.gz'
-  sha256 'e550f030c7d04570e89c3d4e3f6e82296816508419c86ab46c4dd73156519a2d'
+  url 'https://downloads.sourceforge.net/project/gnuplot/gnuplot/4.6.6/gnuplot-4.6.6.tar.gz'
+  sha256 '1f19596fd09045f22225afbfec11fa91b9ad1d95b9f48406362f517d4f130274'
 
   bottle do
-    sha1 "5a58adfcff11b2cb99e0933c986be07e9be86831" => :mavericks
-    sha1 "15a49edb10b515bfbc2eeec5e01b7fe6cefb41d9" => :mountain_lion
-    sha1 "dabddfe592ecb9acb43de910e46e4919683ecf6c" => :lion
+    sha1 "57088a95a146104b121d7048b4db854e2b056f26" => :mavericks
+    sha1 "f189e3c8fb8da9a10434f6cf1356f5c76b7305d8" => :mountain_lion
+    sha1 "b9dd1659fa55d27da9f657e9dd60102a589b4881" => :lion
   end
 
   head do
@@ -35,7 +35,7 @@ class Gnuplot < Formula
   option 'tests',  'Verify the build with make check (1 min)'
   option 'without-emacs', 'Do not build Emacs lisp files'
   option 'latex',  'Build with LaTeX support'
-  option 'without-aquaterm', 'Do not build AquaTerm support'
+  option 'with-aquaterm', 'Build with AquaTerm support'
 
   depends_on 'pkg-config' => :build
   depends_on LuaRequirement unless build.include? 'nolua'

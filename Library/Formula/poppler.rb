@@ -2,13 +2,13 @@ require 'formula'
 
 class Poppler < Formula
   homepage 'http://poppler.freedesktop.org'
-  url 'http://poppler.freedesktop.org/poppler-0.26.2.tar.xz'
-  sha1 'd4a3a5c2f97217a5de250d53ef810f26ab581673'
+  url 'http://poppler.freedesktop.org/poppler-0.26.4.tar.xz'
+  sha1 '26ff3310cb4866829030c73070df4ae9aa4f6cac'
 
   bottle do
-    sha1 "ddf1dc522eab6f213186436464e1008ddf53db45" => :mavericks
-    sha1 "a2b9fcb92cab46e5910869283b0e8fcb10734e7f" => :mountain_lion
-    sha1 "521710681ffad0770dcc2394088cd38ea513cd82" => :lion
+    sha1 "6634b3885414fddfec33f2070e6b27a63ef63372" => :mavericks
+    sha1 "89893811796e5b7d949364859ac98d98ba436406" => :mountain_lion
+    sha1 "669ae1aeece7b6a643b52a3bfa4e0cc4114b2211" => :lion
   end
 
   option 'with-qt4', 'Build Qt backend'
@@ -35,8 +35,8 @@ class Poppler < Formula
     :because => 'poppler, pdf2image, and xpdf install conflicting executables'
 
   resource 'font-data' do
-    url 'http://poppler.freedesktop.org/poppler-data-0.4.6.tar.gz'
-    sha1 'f030563eed9f93912b1a546e6d87936d07d7f27d'
+    url 'http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz'
+    sha1 '556a5bebd0eb743e0d91819ba11fd79947d8c674'
   end
 
   def install

@@ -22,8 +22,6 @@ class Ansifilter < Formula
     path = testpath/"ansi.txt"
     path.write "f\x1b[31moo"
 
-    output = `#{bin}/ansifilter #{path}`.strip
-    assert_equal "foo", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "foo", shell_output("#{bin}/ansifilter #{path}").strip
   end
 end

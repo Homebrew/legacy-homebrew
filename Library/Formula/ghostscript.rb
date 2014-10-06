@@ -4,17 +4,16 @@ class Ghostscript < Formula
   homepage 'http://www.ghostscript.com/'
 
   stable do
-    url 'http://downloads.ghostscript.com/public/ghostscript-9.14.tar.gz'
-    sha1 '85001be316ebc11a6060ae7e208fe08dcbfd70ae'
+    url 'http://downloads.ghostscript.com/public/ghostscript-9.15.tar.gz'
+    sha1 'f53bcc47e912c7bffc2ced62ed9311376fb18bab'
 
     patch :DATA # Uncomment OS X-specific make vars
   end
 
   bottle do
-    revision 2
-    sha1 "d5f438f8fff49ae1e121406431bf3767b6bd91fc" => :mavericks
-    sha1 "6a1d4a67fd83bbc5ceffaf8915dcf713fb1bad9b" => :mountain_lion
-    sha1 "7768370e424623b1577ec5ec79065aebef3bb361" => :lion
+    sha1 "4f9257d42748d6e44faa214f50de3293e1781f59" => :mavericks
+    sha1 "680a1e84acbc8166b705df5282f17fded1de4aea" => :mountain_lion
+    sha1 "5eb84dd70c54b0418905b395d3fead568b48f8b6" => :lion
   end
 
   head do

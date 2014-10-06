@@ -27,8 +27,9 @@ end
 
 class Hamsterdb < Formula
   homepage 'http://hamsterdb.com'
-  url "http://files.hamsterdb.com/dl/hamsterdb-2.1.7.tar.gz"
-  sha1 "4ce5a0004e7f1fee28fcec0ee9c5478be5aad25c"
+  url "http://files.hamsterdb.com/dl/hamsterdb-2.1.8.tar.gz"
+  sha1 "f91af65d19cdbd75ec52f6d18e331e22e4f198a7"
+  revision 1
 
   option 'without-java', 'Do not build the Java wrapper'
   option 'without-remote', 'Disable access to remote databases'
@@ -39,6 +40,13 @@ class Hamsterdb < Formula
     depends_on 'autoconf' => :build
     depends_on 'automake' => :build
     depends_on 'libtool' => :build
+  end
+
+  stable do
+    patch do
+      url "https://github.com/cruppstahl/hamsterdb/commit/6eed38f26a0805fe976ead92b467767e1448b124.diff"
+      sha1 "13928ceca137eb1cf680d3d25d18819c44dc743e"
+    end
   end
 
   depends_on 'boost'

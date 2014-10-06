@@ -10,11 +10,6 @@ class ApacheForrest < Formula
     sha1 '10a4442d46baeadd3ba3377ed29ed694c86ece25'
   end
 
-  # Prevent deletion of intentionally-empty subdirs inside of
-  # template directories:
-  skip_clean ["libexec/main/template-sites", "libexec/main/fresh-site",
-              "libexec/plugins/pluginTemplate"]
-
   def install
     libexec.install Dir['*']
     bin.install_symlink "#{libexec}/bin/forrest"

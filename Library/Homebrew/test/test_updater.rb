@@ -4,6 +4,8 @@ require 'yaml'
 
 class UpdaterTests < Homebrew::TestCase
   class UpdaterMock < ::Updater
+    attr_accessor :diff
+
     def initialize(*)
       super
       @outputs = Hash.new { |h, k| h[k] = [] }
@@ -37,7 +39,7 @@ class UpdaterTests < Homebrew::TestCase
   end
 
   def fixture(name)
-    self.class.fixture_data[name]
+    self.class.fixture_data[name] || ""
   end
 
   def self.fixture_data
@@ -49,59 +51,82 @@ class UpdaterTests < Homebrew::TestCase
     @report = Report.new
   end
 
-  def perform_update(diff_output="")
-    HOMEBREW_REPOSITORY.cd do
-      @updater.in_repo_expect("git checkout -q master")
-      @updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
-      @updater.in_repo_expect("git config core.autocrlf false")
-      @updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
-      @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
-      @updater.in_repo_expect("git diff-tree -r --raw -M85% 1234abcd 3456cdef", diff_output)
-      @updater.pull!
-      @report.update(@updater.report)
-    end
+  def perform_update(fixture_name="")
+    @updater.diff = fixture(fixture_name)
+    @updater.in_repo_expect("git checkout -q master")
+    @updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
+    @updater.in_repo_expect("git config core.autocrlf false")
+    @updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
+    @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
+    @updater.pull!
+    @report.update(@updater.report)
+    assert_predicate @updater, :expectations_met?
   end
 
   def test_update_homebrew_without_any_changes
     perform_update
-    assert_predicate @updater, :expectations_met?
     assert_empty @report
   end
 
   def test_update_homebrew_without_formulae_changes
-    perform_update(fixture('update_git_diff_output_without_formulae_changes'))
-    assert_predicate @updater, :expectations_met?
+    perform_update("update_git_diff_output_without_formulae_changes")
     assert_empty @report.select_formula(:M)
     assert_empty @report.select_formula(:A)
-    assert_empty @report.select_formula(:R)
+    assert_empty @report.select_formula(:D)
   end
 
   def test_update_homebrew_with_formulae_changes
-    perform_update(fixture('update_git_diff_output_with_formulae_changes'))
-    assert_predicate @updater, :expectations_met?
+    perform_update("update_git_diff_output_with_formulae_changes")
     assert_equal %w{ xar yajl }, @report.select_formula(:M)
     assert_equal %w{ antiword bash-completion ddrescue dict lua }, @report.select_formula(:A)
-    assert_equal %w{ shapelib }, @report.select_formula(:R)
-  end
-
-  def test_update_homebrew_with_tapped_formula_changes
-    perform_update(fixture('update_git_diff_output_with_tapped_formulae_changes'))
-    assert_predicate @updater, :expectations_met?
-    assert_equal [
-      HOMEBREW_LIBRARY.join("Taps", "someuser/sometap/Formula/antiword.rb"),
-      HOMEBREW_LIBRARY.join("Taps", "someuser/sometap/HomebrewFormula/lua.rb"),
-      HOMEBREW_LIBRARY.join("Taps", "someuser/sometap/custom-formula.rb"),
-    ], @report.tapped_formula_for(:A)
   end
 
   def test_update_homebrew_with_removed_formulae
-    perform_update(fixture('update_git_diff_output_with_removed_formulae'))
-    assert_predicate @updater, :expectations_met?
+    perform_update("update_git_diff_output_with_removed_formulae")
     assert_equal %w{libgsasl}, @report.select_formula(:D)
   end
 
   def test_update_homebrew_with_changed_filetype
-    perform_update(fixture('update_git_diff_output_with_changed_filetype'))
-    assert_predicate @updater, :expectations_met?
+    perform_update("update_git_diff_output_with_changed_filetype")
+  end
+
+  def test_update_homebrew_with_restructured_tap
+    repo = HOMEBREW_LIBRARY.join("Taps", "foo", "bar")
+    @updater = UpdaterMock.new(repo)
+    repo.join("Formula").mkpath
+
+    perform_update("update_git_diff_output_with_restructured_tap")
+
+    assert_equal %w{foo/bar/git foo/bar/lua}, @report.select_formula(:A)
+    assert_empty @report.select_formula(:D)
+  end
+
+  def test_update_homebrew_simulate_homebrew_php_restructuring
+    repo = HOMEBREW_LIBRARY.join("Taps", "foo", "bar")
+    @updater = UpdaterMock.new(repo)
+    repo.join("Formula").mkpath
+
+    perform_update("update_git_diff_simulate_homebrew_php_restructuring")
+
+    assert_empty @report.select_formula(:A)
+    assert_equal %w{foo/bar/git foo/bar/lua}, @report.select_formula(:D)
+  end
+
+  def test_update_homebrew_with_tap_formulae_changes
+    repo = HOMEBREW_LIBRARY.join("Taps", "foo", "bar")
+    @updater = UpdaterMock.new(repo)
+    repo.join("Formula").mkpath
+
+    perform_update("update_git_diff_output_with_tap_formulae_changes")
+
+    assert_equal %w{foo/bar/lua}, @report.select_formula(:A)
+    assert_equal %w{foo/bar/git}, @report.select_formula(:M)
+    assert_empty @report.select_formula(:D)
+
+    assert_empty @report.removed_tapped_formula
+    assert_equal [repo.join("Formula", "lua.rb")],
+      @report.new_tapped_formula
+    assert_equal [repo.join("Formula", "git.rb")],
+      @report.tapped_formula_for(:M)
   end
 end

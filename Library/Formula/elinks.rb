@@ -4,12 +4,13 @@ class Elinks < Formula
   homepage 'http://elinks.or.cz/'
   url 'http://elinks.or.cz/download/elinks-0.11.7.tar.bz2'
   sha1 'd13edc1477d0ab32cafe7d3c1f3a23ae1c0a5c54'
-  revision 1
+  revision 2
 
   bottle do
-    sha1 "583e1341f43122ae82e2f1432c2a836d33450fc5" => :mavericks
-    sha1 "326f4f9c079d42c11463b224d1a33e1b74705505" => :mountain_lion
-    sha1 "069240528115caa0885c2ead5f83515dbab6a3f8" => :lion
+    revision 1
+    sha1 "97954464d63684d343152aa3dbb7bd5384d8e56d" => :mavericks
+    sha1 "882e21d742e1f373b9403ef932bddc855430948e" => :mountain_lion
+    sha1 "ce8f6c3521d89ed3c0e3f09813934154ec6b4bcb" => :lion
   end
 
   devel do
@@ -44,6 +45,7 @@ class Elinks < Formula
       Hello world!
       <ol><li>one</li><li>two</li></ol>
     EOS
-    assert_match /^\s*Hello world!\n+ *1. one\n *2. two\s*$/, `elinks test.html`
+    assert_match /^\s*Hello world!\n+ *1. one\n *2. two\s*$/,
+                 shell_output("elinks test.html")
   end
 end

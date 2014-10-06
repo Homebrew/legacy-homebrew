@@ -5,19 +5,20 @@ class Cgrep < Formula
   include Language::Haskell::Cabal
 
   homepage "https://github.com/awgn/cgrep"
-  url "https://github.com/awgn/cgrep/archive/v6.4.2.tar.gz"
-  sha1 "209bc29721bcfdc5652839c54c89ceb2d5a86bf9"
+  url "https://github.com/awgn/cgrep/archive/v6.4.6.tar.gz"
+  sha1 "e177e200b2f94d18bf9de614695dfe2c8d37638f"
   head "https://github.com/awgn/cgrep.git", :branch => "master"
 
   bottle do
     cellar :any
-    sha1 "7c8b5399e4cbed0cf3e51565d7b009c70576c8e8" => :mavericks
-    sha1 "cf0ebb3fb08a172a91645184458c3cf6bebfc981" => :mountain_lion
-    sha1 "33a5fbe772ae2ffa7a5d3374a7304960053ee05d" => :lion
+    sha1 "919ba2c2b997dfff0495e5f57a7005b52b22c10f" => :mavericks
+    sha1 "dc0620015683c5cc15eb0f960a7d757097615d6d" => :mountain_lion
+    sha1 "21db5a8f58aa73d5a85ecc04c7b6da680975fde5" => :lion
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
+  depends_on "gmp"
 
   def install
     install_cabal_package

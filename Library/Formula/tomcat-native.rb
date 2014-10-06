@@ -2,11 +2,13 @@ require 'formula'
 
 class TomcatNative < Formula
   homepage 'http://tomcat.apache.org/native-doc/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.30/source/tomcat-native-1.1.30-src.tar.gz'
-  sha1 '07fca7c3e7b8301fc80b0e3c317e642a3616142a'
+  url 'http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.31/source/tomcat-native-1.1.31-src.tar.gz'
+  sha1 '177b1f43f3dbc16eeea39d85147355be29a6089f'
+  revision 1
 
   depends_on "libtool" => :build
   depends_on "tomcat" => :recommended
+  depends_on :java => "1.7"
   depends_on "openssl"
 
   def install

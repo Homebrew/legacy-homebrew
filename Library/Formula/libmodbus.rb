@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Libmodbus < Formula
-  homepage 'http://libmodbus.org'
-  url 'http://libmodbus.org/site_media/build/libmodbus-3.1.1.tar.gz'
-  sha1 '3878af4a93a01001dd3bb8db90d24d5180545b91'
+  homepage "http://libmodbus.org"
+  url "http://libmodbus.org/site_media/build/libmodbus-3.1.1.tar.gz"
+  sha1 "3878af4a93a01001dd3bb8db90d24d5180545b91"
 
   bottle do
     cellar :any
@@ -12,8 +12,17 @@ class Libmodbus < Formula
     sha1 "efc4d4d0873b838f6124440262afd44675e44f4d" => :lion
   end
 
+  head do
+    url "https://github.com/stephane/libmodbus.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
+    system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

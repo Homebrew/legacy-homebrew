@@ -37,7 +37,8 @@ class Libcapn < Formula
         return 0;
     }
     TEST_SCRIPT
-    flags = `#{HOMEBREW_PREFIX}/bin/pkg-config --cflags --libs libcapn`.split + ENV.cflags.to_s.split
+
+    flags = ["-I#{include}/capn", "-L#{lib}/capn", "-lcapn"] + ENV.cflags.to_s.split
     system ENV.cc, "-o", "test_install", "test_install.c", *flags
     system "./test_install"
   end

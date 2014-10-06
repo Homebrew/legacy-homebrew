@@ -5,37 +5,25 @@ class Pandoc < Formula
   include Language::Haskell::Cabal
 
   homepage "http://johnmacfarlane.net/pandoc/"
-  url "http://hackage.haskell.org/package/pandoc-1.12.4.2/pandoc-1.12.4.2.tar.gz"
-  sha1 "29e035a2707ff5ce534de92cf75a17acf75dea19"
+  url "https://hackage.haskell.org/package/pandoc-1.13.1/pandoc-1.13.1.tar.gz"
+  sha1 "8f3df1977cf9daa848640754515b733c13fd934a"
 
   bottle do
-    sha1 "505dea8ad1b507a3d0fcfde6dc2c80d1238d4625" => :mavericks
-    sha1 "2c2b7bb640f24f5a282f27aaaf00a4ab02d6a572" => :mountain_lion
-    sha1 "8fa2925bfc5f0b526b4726cec1c1f47b2e64cc03" => :lion
-  end
-
-  resource "completion" do
-    url "https://github.com/dsanson/pandoc-completion.git", :branch => "master"
+    sha1 "a2caf52195e88b36d0fb16f1b931c5630cc6ea57" => :yosemite
+    sha1 "cb797a12020892b2eee7131d448692309b184d99" => :mavericks
+    sha1 "0795ad1fdea3a1d47219753ebce5d34f7311ad5b" => :mountain_lion
+    sha1 "c9c2e4e7e74b4850bcbba148d8efc6af7da47605" => :lion
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "gmp"
 
-  patch do
-    # The following patch has been committed upstream and is expected
-    # to be released with Pandoc 0.13.
-    url "https://github.com/jgm/pandoc/commit/fd11a5a5.diff"
-    sha1 "1676caa8440982af93e1ccdcfd444371dde81f34"
-  end
+  fails_with(:clang) { build 425 } # clang segfaults on Lion
 
   def install
-    resource("completion").stage do
-      bash_completion.install "pandoc-completion.bash"
-    end
     cabal_sandbox do
-      cabal_install_tools "alex", "happy"
-      cabal_install "--only-dependencies", "--constraint=temporary==1.2.0.1"
+      cabal_install "--only-dependencies"
       cabal_install "--prefix=#{prefix}"
     end
     cabal_clean_lib

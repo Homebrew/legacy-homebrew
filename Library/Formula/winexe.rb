@@ -18,6 +18,7 @@ class Winexe < Formula
   # versions of Perl
   resource "Perl4::CoreLibs" do
     url "http://search.cpan.org/CPAN/authors/id/Z/ZE/ZEFRAM/Perl4-CoreLibs-0.003.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/Z/ZE/ZEFRAM/Perl4-CoreLibs-0.003.tar.gz"
     sha1 "ad4c5a9fa8da4f461dc774e5c53136a55413ef2f"
   end
 

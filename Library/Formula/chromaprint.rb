@@ -4,6 +4,14 @@ class Chromaprint < Formula
   homepage 'http://acoustid.org/chromaprint'
   url 'https://bitbucket.org/acoustid/chromaprint/downloads/chromaprint-1.0.tar.gz'
   sha1 '919e012af588a7e6fea862b29a30e3a5da67526a'
+  bottle do
+    cellar :any
+    sha1 "4cc5cb817710059239610681dfffa91e687e14b0" => :mavericks
+    sha1 "3681f1500bae864b7bbbac8d01abe9f1cd0bea50" => :mountain_lion
+    sha1 "93e7e29179d55c4d35c7993fd091c46d7aec622a" => :lion
+  end
+
+  revision 1
 
   option 'without-examples', "Don't build examples (including fpcalc)"
 

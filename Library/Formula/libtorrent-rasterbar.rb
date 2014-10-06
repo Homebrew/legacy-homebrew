@@ -2,8 +2,9 @@ require "formula"
 
 class LibtorrentRasterbar < Formula
   homepage "http://www.rasterbar.com/products/libtorrent/"
-  url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.0.tar.gz"
-  sha1 "d7ea9ae8d89c2673c6bd16b3b3d4ef00fc5857e0"
+  url "https://downloads.sourceforge.net/project/libtorrent/libtorrent/libtorrent-rasterbar-1.0.2.tar.gz"
+  sha1 "bfb161825306abbd5c03775e75f5e094ee757a9a"
+  revision 1
 
   head do
     url "https://libtorrent.googlecode.com/svn/trunk"
@@ -14,21 +15,17 @@ class LibtorrentRasterbar < Formula
 
   bottle do
     cellar :any
-    sha1 "ac32f39a68301210bba62d82d338fde7598e8971" => :mavericks
-    sha1 "fbb060658692c31a38310b79c0ce5f53a44e1b42" => :mountain_lion
-    sha1 "2537926b885123d134d98b4b4866f695fe276208" => :lion
+    sha1 "ab6d57a760ab449140fe1343089884e5f7a77c9f" => :mavericks
+    sha1 "6561ef265172991b558e0e13c34b1f3e7fddb253" => :mountain_lion
+    sha1 "72e50533cf48186ca1442c0bbbb5a7d2e6049aee" => :lion
   end
 
   depends_on "pkg-config" => :build
   depends_on "openssl"
   depends_on :python => :optional
   depends_on "geoip" => :optional
-
-  if build.with? "python"
-    depends_on "boost" => "with-python"
-  else
-    depends_on "boost"
-  end
+  depends_on "boost"
+  depends_on "boost-python" if build.with? "python"
 
   def install
     boost = Formula["boost"]

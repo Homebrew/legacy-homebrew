@@ -36,13 +36,6 @@ module Homebrew
   end
 end
 
-class Module
-  def redefine_const(name, value)
-    __send__(:remove_const, name) if const_defined?(name)
-    const_set(name, value)
-  end
-end
-
 # Formula extensions for auditing
 class Formula
   def head_only?
@@ -64,7 +57,7 @@ class FormulaText
   end
 
   def has_DATA?
-    /\bDATA\b/ =~ @text
+    /^[^#]*\bDATA\b/ =~ @text
   end
 
   def has_END?
@@ -101,9 +94,6 @@ class FormulaAuditor
     @problems = []
     @text = f.text.without_patch
     @specs = %w{stable devel head}.map { |s| f.send(s) }.compact
-
-    # We need to do this in case the formula defines a patch that uses DATA.
-    f.class.redefine_const :DATA, ""
   end
 
   def audit_file
@@ -146,7 +136,7 @@ class FormulaAuditor
       end
 
       dep.options.reject do |opt|
-        next true if dep_f.build.has_option?(opt.name)
+        next true if dep_f.option_defined?(opt)
         dep_f.requirements.detect do |r|
           if r.recommended?
             opt.name == "with-#{r.name}"
@@ -191,19 +181,21 @@ class FormulaAuditor
   end
 
   def audit_urls
-    unless f.homepage =~ %r[^https?://]
-      problem "The homepage should start with http or https (url is #{f.homepage})."
+    homepage = f.homepage
+
+    unless homepage =~ %r[^https?://]
+      problem "The homepage should start with http or https (URL is #{homepage})."
     end
 
     # Check for http:// GitHub homepage urls, https:// is preferred.
     # Note: only check homepages that are repo pages, not *.github.com hosts
-    if f.homepage =~ %r[^http://github\.com/]
-      problem "Use https:// URLs for homepages on GitHub (url is #{f.homepage})."
+    if homepage =~ %r[^http://github\.com/]
+      problem "Use https:// URLs for homepages on GitHub (URL is #{homepage})."
     end
 
     # Google Code homepages should end in a slash
-    if f.homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
-      problem "Google Code homepage should end with a slash (url is #{f.homepage})."
+    if homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
+      problem "Google Code homepage should end with a slash (URL is #{homepage})."
     end
 
     urls = @specs.map(&:url)
@@ -295,11 +287,22 @@ class FormulaAuditor
 
       spec.patches.select(&:external?).each { |p| audit_patch(p) }
     end
+
+    if f.stable && f.devel
+      if f.devel.version < f.stable.version
+        problem "devel version #{f.devel.version} is older than stable version #{f.stable.version}"
+      elsif f.devel.version == f.stable.version
+        problem "stable and devel versions are identical"
+      end
+    end
   end
 
   def audit_patches
-    patches = Patch.normalize_legacy_patches(f.patches)
-    patches.grep(LegacyPatch).each { |p| audit_patch(p) }
+    legacy_patches = Patch.normalize_legacy_patches(f.patches).grep(LegacyPatch)
+    if legacy_patches.any?
+      problem "Use the patch DSL instead of defining a 'patches' method"
+      legacy_patches.each { |p| audit_patch(p) }
+    end
   end
 
   def audit_patch(patch)
@@ -490,6 +493,10 @@ class FormulaAuditor
       problem "Use new-style option definitions"
     end
 
+    if line =~ /def test$/
+      problem "Use new-style test definitions (test do)"
+    end
+
     if line =~ /MACOS_VERSION/
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
@@ -560,6 +567,8 @@ class FormulaAuditor
     audit_check_output(check_generic_executables(f.bin))
     audit_check_output(check_non_executables(f.sbin))
     audit_check_output(check_generic_executables(f.sbin))
+    audit_check_output(check_shadowed_headers)
+    audit_check_output(check_easy_install_pth(f.lib))
   end
 
   def audit
@@ -570,7 +579,7 @@ class FormulaAuditor
     audit_conflicts
     audit_patches
     audit_text
-    text.split("\n").each_with_index { |line, lineno| audit_line(line, lineno) }
+    text.split("\n").each_with_index {|line, lineno| audit_line(line, lineno+1) }
     audit_installed
   end
 

@@ -2,8 +2,17 @@ require 'formula'
 
 class Lcov < Formula
   homepage 'http://ltp.sourceforge.net/coverage/lcov.php'
-  url 'https://downloads.sourceforge.net/ltp/lcov-1.10.tar.gz'
-  sha1 '70fb361bcfd7dd81ea30731d6fe532ddea56f283'
+  url 'https://downloads.sourceforge.net/ltp/lcov-1.11.tar.gz'
+  sha1 'bf8ed68c06805a71528a2a67dd714830afd3ccb5'
+
+  head 'https://github.com/linux-test-project/lcov.git'
+
+  bottle do
+    cellar :any
+    sha1 "edad7ab819deb6032734442ea88c343e6779f60c" => :mavericks
+    sha1 "61cb990e2928ad0a1b29e131790790994b5a95d6" => :mountain_lion
+    sha1 "b417a6801535d439dc26200213e63a4536989d11" => :lion
+  end
 
   patch :DATA
 

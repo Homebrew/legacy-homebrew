@@ -24,23 +24,30 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.21.tar.bz2"
-    sha256 "a14723104135c21414c61e146144a2c527430057255f8c35a3a7d354e68b9401"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.28.tar.bz2"
+    sha256 "67c3f157b9e720971d1f7dc582e9f0b16879ef660b5ba284a77f8bdfc6fc2313"
 
-    # http://bugs.winehq.org/show_bug.cgi?id=34166
+    depends_on "samba" => :optional
+    depends_on "gnutls"
+
+    # Patch to fix screen-flickering issues. Still relevant on 1.7.23.
+    # https://bugs.winehq.org/show_bug.cgi?id=34166
     patch do
-      url "http://bugs.winehq.org/attachment.cgi?id=47639"
+      url "https://bugs.winehq.org/attachment.cgi?id=47639"
       sha1 "c195f4b9c0af450c7dc3f396e8661ea5248f2b01"
     end
   end
 
-  head "git://source.winehq.org/git/wine.git"
-
-  env :std
+  head do
+    url "git://source.winehq.org/git/wine.git"
+    depends_on "samba" => :optional
+  end
 
   # note that all wine dependencies should declare a --universal option in their formula,
   # otherwise homebrew will not notice that they are not built universal
-  require_universal_deps
+  def require_universal_deps?
+    true
+  end
 
   # Wine will build both the Mac and the X11 driver by default, and you can switch
   # between them. But if you really want to build without X11, you can.
@@ -97,14 +104,13 @@ class Wine < Formula
   end
 
   def install
-    # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
-    build32 = "-arch i386 -m32"
+    ENV.m32 # Build 32-bit; Wine doesn't support 64-bit host builds on OS X.
 
-    ENV.append "CFLAGS", build32
-    ENV.append "LDFLAGS", build32
+    # Help configure find libxml2 in an XCode only (no CLT) installation.
+    ENV.libxml2
 
     args = ["--prefix=#{prefix}"]
-    args << "--disable-win16" if MacOS.version <= :leopard or ENV.compiler == :clang
+    args << "--disable-win16" if MacOS.version <= :leopard
 
     # 64-bit builds of mpg123 are incompatible with 32-bit builds of Wine
     args << "--without-mpg123" if Hardware.is_64_bit?
@@ -113,11 +119,25 @@ class Wine < Formula
 
     system "./configure", *args
 
-    unless ENV.compiler == :clang or ENV.compiler == :llvm
-      # The Mac driver uses blocks and must be compiled with clang even if the rest of
-      # Wine is built with gcc. This must be done after configure.
-      system 'make', 'dlls/winemac.drv/Makefile'
-      inreplace 'dlls/winemac.drv/Makefile', /^CC\s*=\s*[^\s]+/, "CC = clang"
+    # The Mac driver uses blocks and must be compiled with an Apple compiler
+    # even if the rest of Wine is built with A GNU compiler.
+    unless ENV.compiler == :clang || ENV.compiler == :llvm || ENV.compiler == :gcc
+      system "make", "dlls/winemac.drv/Makefile"
+      inreplace "dlls/winemac.drv/Makefile" do |s|
+        # We need to use the real compiler, not the superenv shim, which will exec the
+        # configured compiler no matter what name is used to invoke it.
+        cc, cxx = s.get_make_var("CC"), s.get_make_var("CXX")
+        s.change_make_var! "CC", cc.sub(ENV.cc, "xcrun clang") if cc
+        s.change_make_var! "CXX", cc.sub(ENV.cxx, "xcrun clang++") if cxx
+
+        # Emulate some things that superenv would normally handle for us
+        # We're configured to use GNU GCC, so remote an unsupported flag
+        s.gsub! "-gstabs+", ""
+        # Pass the sysroot to support Xcode-only systems
+        cflags  = s.get_make_var("CFLAGS")
+        cflags += " --sysroot=#{MacOS.sdk_path}"
+        s.change_make_var! "CFLAGS", cflags
+      end
     end
 
     system "make install"

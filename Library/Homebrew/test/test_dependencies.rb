@@ -9,13 +9,13 @@ class DependenciesTests < Homebrew::TestCase
   end
 
   def test_shovel_returns_self
-    assert_same @deps, (@deps << Dependency.new("foo"))
+    assert_same @deps, @deps << Dependency.new("foo")
   end
 
   def test_no_duplicate_deps
     @deps << Dependency.new("foo")
-    @deps << Dependency.new("foo", :build)
-    @deps << Dependency.new("foo", :build)
+    @deps << Dependency.new("foo", [:build])
+    @deps << Dependency.new("foo", [:build])
     assert_equal 1, @deps.count
   end
 
@@ -86,7 +86,7 @@ class RequirementsTests < Homebrew::TestCase
   end
 
   def test_shovel_returns_self
-    assert_same @reqs, (@reqs << Object.new)
+    assert_same @reqs, @reqs << Object.new
   end
 
   def test_merging_multiple_dependencies

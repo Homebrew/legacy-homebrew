@@ -3,8 +3,8 @@ require "formula"
 class Yarp < Formula
   homepage "http://yarp.it"
   head "https://github.com/robotology/yarp.git"
-  url "https://github.com/robotology/yarp/archive/v2.3.62.tar.gz"
-  sha1 "148fc9d77cc4b68119c31066b452e9607de0f066"
+  url "https://github.com/robotology/yarp/archive/v2.3.63.tar.gz"
+  sha1 "bef87cf5e53c1dc5b9fe4de90022cb8285405fa2"
 
   option "without-shared", "Build only static version of YARP libraries"
 

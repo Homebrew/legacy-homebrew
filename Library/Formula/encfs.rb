@@ -1,51 +1,51 @@
 require 'formula'
 
 class Encfs < Formula
-  homepage 'http://www.arg0.net/encfs'
-
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'boost'
-  depends_on 'rlog'
-  depends_on 'osxfuse'
+  homepage 'https://vgough.github.io/encfs/'
+  revision 1
 
   stable do
-    url 'https://encfs.googlecode.com/files/encfs-1.7.4.tgz'
-    sha1 '3d824ba188dbaabdc9e36621afb72c651e6e2945'
+    url 'https://github.com/vgough/encfs/archive/v1.7.5.tar.gz'
+    sha1 'f8bb2332b7a88f510cd9a18adb0f4fb903283edd'
 
-    # Following patch and changes in install section,
-    # required for better compatibility with OSX, especially OSX 10.9.
-    # Changes are already in usptream and planned to be included in next stable release 1.75.
-    # For more details refer to:
-    # https://code.google.com/p/encfs/issues/detail?id=185#c10
-    # Fixes link times and xattr on links for OSX
+    # Fix link times and xattr on links for OSX
+    # Proper fix is already in upstream/dev
     patch :DATA
   end
 
-  head do
-    url 'https://encfs.googlecode.com/svn/branches/1.x'
+  head 'https://github.com/vgough/encfs.git'
 
-    depends_on 'autoconf' => :build
-    depends_on 'automake' => :build
-    depends_on 'libtool' => :build
+  bottle do
+    sha1 "4e09e41ac19b52a14ea58644d6a3fcb61fdaea64" => :mavericks
+    sha1 "ef7ea8cb89515be5e19b45a0af8704e65acbb150" => :mountain_lion
+    sha1 "559bbec86eb4176fad7cb28368cc462f6470157f" => :lion
   end
 
-  def install
-    # Add correct flags for linkage with {osx,}fuse and gettext libs
-    gettext = Formula['gettext']
-    ENV.append 'CPPFLAGS', %x[pkg-config fuse --cflags].chomp + "-I#{gettext.include}"
-    ENV.append 'LDFLAGS', %x[pkg-config fuse --libs].chomp + "-L#{gettext.lib}"
-    if build.stable?
-      inreplace "configure", "-lfuse", "-losxfuse"
-    end
+  depends_on 'pkg-config' => :build
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'libtool' => :build
+  depends_on 'intltool' => :build
+  depends_on 'gettext' => :build
+  depends_on 'boost'
+  depends_on 'rlog'
+  depends_on 'openssl'
+  depends_on :osxfuse
+  depends_on 'xz'
 
+  def install
+    # Fix linkage with gettext libs
+    # Proper fix is already in upstream/master
     # Adapt to changes in recent Xcode by making local copy of endian-ness definitions
     mkdir "encfs/sys"
     cp "#{MacOS.sdk_path}/usr/include/sys/_endian.h", "encfs/sys/endian.h"
 
     if build.stable?
+      inreplace "configure.ac", "LIBINTL=-lgettextlib", "LIBINTL=-lgettextlib -lintl"
+
       # Fix runtime "dyld: Symbol not found" errors
-      # Following 3 ugly inreplaces come instead of big patch
+      # Following 3 ugly inreplaces are temporary solution
+      # Proper fix is already in upstream
       inreplace ["encfs/Cipher.cpp", "encfs/CipherFileIO.cpp", "encfs/NullCipher.cpp",
                  "encfs/NullNameIO.cpp", "encfs/SSL_Cipher.cpp"], "using boost::shared_ptr;", ""
 
@@ -57,14 +57,27 @@ class Encfs < Formula
                  "encfs/SSL_Cipher.cpp", "encfs/StreamNameIO.cpp", "encfs/test.cpp"], "shared_ptr<", "boost::shared_ptr<"
 
       inreplace ["encfs/Context.cpp", "encfs/encfsctl.cpp", "encfs/FileUtils.cpp"], "boost::boost::shared_ptr<", "boost::shared_ptr<"
-    else
-      system "make", "-f", "Makefile.dist"
     end
+
+    system "make", "-f", "Makefile.dist"
+    # This provides a workaround for https://github.com/vgough/encfs/issues/18
+    # osxfuse's installation directory cannot be given as a parameter to configure script
+    inreplace "configure", "/usr/include/osxfuse /usr/local/include/osxfuse",
+      "/usr/include/osxfuse /usr/local/include/osxfuse #{HOMEBREW_PREFIX}/include/osxfuse"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-boost=#{HOMEBREW_PREFIX}"
     system "make"
     system "make install"
+  end
+
+  test do
+    if Pathname.new("/Library/Filesystems/osxfusefs.fs/Support/load_osxfusefs").exist?
+      (testpath/"print-password").write("#!/bin/sh\necho password")
+      chmod 0755, testpath/"print-password"
+      system "yes | #{bin}/encfs --standard --extpass=#{testpath}/print-password #{testpath}/a #{testpath}/b"
+      system "umount", testpath/"b"
+    end
   end
 end
 

@@ -27,7 +27,7 @@ class Dasm < Formula
     EOS
 
     system bin/"dasm", path
-    code = File.open(testpath/"a.out", "rb") { |f| f.read.unpack("C*") }
+    code = (testpath/"a.out").binread.unpack("C*")
     assert_equal [0x00, 0xc0, 0x4c, 0xe2, 0xfc], code
   end
 end

@@ -3,7 +3,7 @@ require 'formula'
 class Czmq < Formula
   homepage 'http://czmq.zeromq.org/'
   url 'http://download.zeromq.org/czmq-2.2.0.tar.gz'
-  sha1 '8fc5038a8e086a8f0afa6d8f6beea2fe50525ecc'
+  sha1 '2f4fd8de4cf04a68a8f6e88ea7657d8068f472d2'
 
   head do
     url 'https://github.com/zeromq/czmq.git'

@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class Kdiff3 < Formula
-  homepage 'http://kdiff3.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/kdiff3/kdiff3/0.9.97/kdiff3-0.9.97.tar.gz'
-  sha1 '1f2828c4b287b905bac64992b46a3e9231319547'
+  homepage "http://kdiff3.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/kdiff3/kdiff3/0.9.98/kdiff3-0.9.98.tar.gz"
+  sha1 "1390b4ca9c58316de49cb0aabb433f14ebf2dc3f"
 
-  depends_on 'qt'
+  depends_on "qt"
 
   def install
     # configure builds the binary

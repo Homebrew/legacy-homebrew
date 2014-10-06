@@ -2,18 +2,18 @@ require "formula"
 
 class Emscripten < Formula
   homepage "http://emscripten.org"
-  url "https://github.com/kripken/emscripten/archive/1.20.0.tar.gz"
-  sha1 "9a739dc963219f7c4ab70395ac21854e472457a6"
-
-  head "https://github.com/kripken/emscripten.git", :branch => "incoming"
+  url "https://github.com/kripken/emscripten/archive/1.24.0.tar.gz"
+  sha1 "19f45d0d33078959aa84b48c4cbe8a9cf8a7a12b"
 
   bottle do
-    sha1 "93d836d075cefe1174a96d707f3702d7d7643f32" => :mavericks
-    sha1 "0ae5c8ff233727b9b49db1aa3b5b7ebc24665b91" => :mountain_lion
-    sha1 "fb534c99cb0e153a6478f6b065dd179c23205675" => :lion
+    sha1 "b5093ee8311a3cfc22526c26eab67b92c4554ffc" => :mavericks
+    sha1 "b52376a4b6e2f7e830cb9679963210875e2c0e4f" => :mountain_lion
+    sha1 "eb5f07a073f38e19df12aa3005057fed71742827" => :lion
   end
 
   head do
+    url "https://github.com/kripken/emscripten.git", :branch => "incoming"
+
     resource "fastcomp" do
       url "https://github.com/kripken/emscripten-fastcomp.git", :branch => "incoming"
     end
@@ -25,13 +25,13 @@ class Emscripten < Formula
 
   stable do
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.16.0.tar.gz"
-      sha1 "ca10c5a8059fdd321143d8f10c0810176be3d467"
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.24.0.tar.gz"
+      sha1 "39d28dbed54edb267c30f480ef579738fac42d24"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.16.0.tar.gz"
-      sha1 "768a15d3a8cd9e92f87521cadf3e5f63f3e24fa1"
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.24.0.tar.gz"
+      sha1 "4b89e978b8ad9227daca7460e43da4cb78bc7c30"
     end
   end
 
@@ -50,7 +50,7 @@ class Emscripten < Formula
     # All files from the repository are required as emscripten is a collection
     # of scripts which need to be installed in the same layout as in the Git
     # repository.
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
 
     (buildpath/"fastcomp").install resource("fastcomp")
     (buildpath/"fastcomp/tools/clang").install resource("fastcomp-clang")

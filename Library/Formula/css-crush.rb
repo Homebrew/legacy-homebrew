@@ -1,13 +1,13 @@
-require 'formula'
+require "formula"
 
 class CssCrush < Formula
-  homepage 'http://the-echoplex.net/csscrush'
-  url 'https://github.com/peteboere/css-crush/archive/v2.1.0.tar.gz'
-  sha1 '3285917dce69420e2822c59e5c25401aaaa5ea64'
+  homepage "http://the-echoplex.net/csscrush"
+  url "https://github.com/peteboere/css-crush/archive/v2.2.1.tar.gz"
+  sha1 "39c721af2765f36d4a2990fe365fb18c3ee41485"
 
   def install
-    libexec.install Dir['*']
-    (bin+'csscrush').write <<-EOS.undent
+    libexec.install Dir["*"]
+    (bin+"csscrush").write <<-EOS.undent
       #!/bin/sh
       php "#{libexec}/cli.php" "$@"
     EOS
@@ -20,8 +20,6 @@ class CssCrush < Formula
       p { color: $(foo); }
     EOS
 
-    output = `#{bin}/csscrush #{path}`.strip
-    assert_equal "p{color:#123456}", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "p{color:#123456}", shell_output("#{bin}/csscrush #{path}").strip
   end
 end

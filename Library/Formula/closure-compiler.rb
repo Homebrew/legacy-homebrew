@@ -1,11 +1,11 @@
-require 'formula'
+require "formula"
 
 class ClosureCompiler < Formula
-  homepage 'https://github.com/google/closure-compiler'
-  url 'https://github.com/google/closure-compiler/archive/closure-compiler-maven-v20140407.tar.gz'
-  sha1 '80eba20da24f2d7b9f9f45d97ca49deb2668ef03'
+  homepage "https://github.com/google/closure-compiler"
+  url "https://github.com/google/closure-compiler/archive/maven-release-v20140814.tar.gz"
+  sha1 "d783183bd91e2661aa8cd1a8c35c210935e23e15"
 
-  head 'https://github.com/google/closure-compiler.git'
+  head "https://github.com/google/closure-compiler.git"
 
   depends_on :ant => :build
 
@@ -13,7 +13,7 @@ class ClosureCompiler < Formula
     system "ant", "clean"
     system "ant"
 
-    libexec.install Dir['*']
-    bin.write_jar_script libexec/'build/compiler.jar', 'closure-compiler'
+    libexec.install Dir["*"]
+    bin.write_jar_script libexec/"build/compiler.jar", "closure-compiler"
   end
 end

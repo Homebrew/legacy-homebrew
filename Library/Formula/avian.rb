@@ -29,6 +29,6 @@ class Avian < Formula
       }
     EOS
     system 'javac', 'Test.java'
-    assert_equal 'OK', `avian Test`.strip
+    assert_equal 'OK', shell_output("#{bin}/avian Test")
   end
 end

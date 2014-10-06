@@ -1,7 +1,7 @@
 require "formula"
 
 # This is a non-functional example formula to showcase all features and
-# therefore, its overly complex and dupes stuff just to comment on it.
+# therefore, it's overly complex and dupes stuff just to comment on it.
 # You may want to use `brew create` to start your own new formula!
 # Documentation: https://github.com/Homebrew/homebrew/wiki/Formula-Cookbook
 
@@ -26,7 +26,7 @@ class ExampleFormula < Formula
   #     `UnsafeSubversionDownloadStrategy` (svn with invalid certs)
   url "https://some.dont.provide.archives.example.com", :using => :git, :tag => "1.2.3"
 
-  # version is seldom needed, because its usually autodetected from the URL/tag.
+  # version is seldom needed, because it's usually autodetected from the URL/tag.
   version "1.2-final"
 
   # For integrity and security, we verify the hash (`openssl dgst -sha1 <FILE>`)
@@ -345,9 +345,6 @@ class ExampleFormula < Formula
     # Further possibilities with the pathnames:
     # http://www.ruby-doc.org/stdlib-1.8.7/libdoc/pathname/rdoc/Pathname.html
 
-    # Sometime you will see that instead of `+` we build up a path with `/`
-    # because it looks nicer (but you can't nest more than two `/`):
-    (var/"foo").mkpath
     # Copy `./example_code/simple/ones` to share/demos
     (share/"demos").install "example_code/simple/ones"
     # Copy `./example_code/simple/ones` to share/demos/examples

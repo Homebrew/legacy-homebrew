@@ -2,14 +2,14 @@ require "formula"
 
 class Arping < Formula
   homepage "https://github.com/ThomasHabets/arping"
-  url "https://github.com/ThomasHabets/arping/archive/arping-2.13.tar.gz"
-  sha1 "a253cdfcb83360d4acd5e4fe1d84ed8105a94829"
+  url "https://github.com/ThomasHabets/arping/archive/arping-2.14.tar.gz"
+  sha1 "f691b19e1ad20b853202ee12eaf178232b466bb2"
 
   bottle do
     cellar :any
-    sha1 "eabc0dbfda6ff745d722a9f9f7ff84db64381ccd" => :mavericks
-    sha1 "38b7d22becfe47fd17ba3dd856fd17f6c90ffbc8" => :mountain_lion
-    sha1 "877c2e5384864515e5861c8d3784d63440097433" => :lion
+    sha1 "bea3fb0806849cf6d60c858b8618a62fd1f84d7d" => :mavericks
+    sha1 "ff1e5818b770a36bf45f1ed1eb2b9650f55585b6" => :mountain_lion
+    sha1 "6f84c046e41c2727f7326059aeab928c44cc7d18" => :lion
   end
 
   depends_on "autoconf" => :build

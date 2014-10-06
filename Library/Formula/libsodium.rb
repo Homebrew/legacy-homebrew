@@ -2,14 +2,14 @@ require "formula"
 
 class Libsodium < Formula
   homepage "https://github.com/jedisct1/libsodium/"
-  url "https://github.com/jedisct1/libsodium/releases/download/0.6.0/libsodium-0.6.0.tar.gz"
-  sha256 "84cdb6bf8ae3384f3ef78636f93bc689df748c1d36f87d4b6ab1e31c2d4dd145"
+  url "https://github.com/jedisct1/libsodium/releases/download/1.0.0/libsodium-1.0.0.tar.gz"
+  sha256 "ced1fe3d2066953fea94f307a92f8ae41bf0643739a44309cbe43aa881dbc9a5"
 
   bottle do
     cellar :any
-    sha1 "080e59842caf764b7ecea97c9d833a86bb1151de" => :mavericks
-    sha1 "22fba7782863fe55c1b64c6704757ef7f32c2a07" => :mountain_lion
-    sha1 "40fcd281e55c4b0925f99f602a95dfc0b6afb6e0" => :lion
+    sha1 "212b7e48a175332fc1d79ecc4b64d1e1d23c03e3" => :mavericks
+    sha1 "ab999ec2d752494ea99ef94f224a69c83257aa4a" => :mountain_lion
+    sha1 "ae9a37f6b0e3bbb482cfdccafc8c66a91e5db330" => :lion
   end
 
   head do

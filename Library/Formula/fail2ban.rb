@@ -2,8 +2,14 @@ require "formula"
 
 class Fail2ban < Formula
   homepage "http://www.fail2ban.org/"
-  url "https://github.com/fail2ban/fail2ban/archive/0.8.13.tar.gz"
-  sha1 "2a2ddffb6e60e2997dcceb0ac25761aa6931f5f6"
+  url "https://github.com/fail2ban/fail2ban/archive/0.8.14.tar.gz"
+  sha1 "fb104335acf9d71552a4a1cec06fac1187846867"
+
+  bottle do
+    sha1 "ab90e39f9669b929dd4ec43b9f736a1ab1cac652" => :mavericks
+    sha1 "3b2c563f7316ed9c485744e24ec6abc3bb242040" => :mountain_lion
+    sha1 "0c91986b55c0d35497ef0d4c42d992c9958c577e" => :lion
+  end
 
   def install
     rm "setup.cfg"

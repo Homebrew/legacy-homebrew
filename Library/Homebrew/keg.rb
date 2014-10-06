@@ -16,17 +16,20 @@ class Keg
   class LinkError < RuntimeError
     attr_reader :keg, :src, :dst
 
-    def initialize(keg, src, dst)
+    def initialize(keg, src, dst, cause)
       @src = src
       @dst = dst
       @keg = keg
+      @cause = cause
+      super(cause.message)
+      set_backtrace(cause.backtrace)
     end
   end
 
   class ConflictError < LinkError
     def suggestion
       conflict = Keg.for(dst)
-    rescue NotAKegError
+    rescue NotAKegError, Errno::ENOENT
       "already exists. You may want to remove it:\n  rm #{dst}\n"
     else
       <<-EOS.undent
@@ -192,11 +195,11 @@ class Keg
         dirs << dst if dst.directory? && !dst.symlink?
 
         # check whether the file to be unlinked is from the current keg first
-        next if !dst.symlink? || !dst.exist? || src != dst.resolved_path
-
-        dst.uninstall_info if dst.to_s =~ INFOFILE_RX
-        dst.unlink
-        Find.prune if src.directory?
+        if dst.symlink? && src == dst.resolved_path
+          dst.uninstall_info if dst.to_s =~ INFOFILE_RX
+          dst.unlink
+          Find.prune if src.directory?
+        end
       end
     end
 
@@ -322,11 +325,12 @@ class Keg
   private
 
   def resolve_any_conflicts dst, mode
-    # if it isn't a directory then a severe conflict is about to happen. Let
-    # it, and the exception that is generated will message to the user about
-    # the situation
-    if dst.symlink? and dst.directory?
-      src = dst.resolved_path
+    src = dst.resolved_path
+    # src itself may be a symlink, so check lstat to ensure we are dealing with
+    # a directory, and not a symlink pointing at a directory (which needs to be
+    # treated as a file). In other words, we only want to resolve one symlink.
+    # If it isn't a directory, make_relative_symlink will raise an exception.
+    if dst.symlink? && src.lstat.directory?
       keg = Keg.for(src)
       dst.unlink unless mode.dry_run
       keg.link_dir(src, mode) { :mkpath }
@@ -337,7 +341,7 @@ class Keg
   end
 
   def make_relative_symlink dst, src, mode
-    if dst.symlink? && dst.exist? && dst.resolved_path == src
+    if dst.symlink? && src == dst.resolved_path
       puts "Skipping; link already exists: #{dst}" if ARGV.verbose?
       return
     end
@@ -360,17 +364,17 @@ class Keg
 
     dst.delete if mode.overwrite && (dst.exist? || dst.symlink?)
     dst.make_relative_symlink(src)
-  rescue Errno::EEXIST
+  rescue Errno::EEXIST => e
     if dst.exist?
-      raise ConflictError.new(self, src.relative_path_from(path), dst)
+      raise ConflictError.new(self, src.relative_path_from(path), dst, e)
     elsif dst.symlink?
       dst.unlink
       retry
     end
-  rescue Errno::EACCES
-    raise DirectoryNotWritableError.new(self, src.relative_path_from(path), dst)
-  rescue SystemCallError
-    raise LinkError.new(self, src.relative_path_from(path), dst)
+  rescue Errno::EACCES => e
+    raise DirectoryNotWritableError.new(self, src.relative_path_from(path), dst, e)
+  rescue SystemCallError => e
+    raise LinkError.new(self, src.relative_path_from(path), dst, e)
   end
 
   protected
@@ -384,7 +388,7 @@ class Keg
       dst = HOMEBREW_PREFIX + src.relative_path_from(path)
       dst.extend ObserverPathnameExtension
 
-      if src.file?
+      if src.symlink? || src.file?
         Find.prune if File.basename(src) == '.DS_Store'
         # Don't link pyc files because Python overwrites these cached object
         # files and next time brew wants to link, the pyc file is in the way.
@@ -403,15 +407,6 @@ class Keg
           make_relative_symlink dst, src, mode
         end
       elsif src.directory?
-        # If the `src` in the Cellar is a symlink itself, link it directly.
-        # For example Qt has `Frameworks/QtGui.framework -> lib/QtGui.framework`
-        # Not making a link here, would result in an empty dir because the
-        # `src` is not followed by `find`.
-        if src.symlink? && !dst.exist?
-          make_relative_symlink dst, src, mode
-          Find.prune
-        end
-
         # if the dst dir already exists, then great! walk the rest of the tree tho
         next if dst.directory? and not dst.symlink?
         # no need to put .app bundles in the path, the user can just use

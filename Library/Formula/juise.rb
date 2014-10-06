@@ -2,8 +2,14 @@ require 'formula'
 
 class Juise < Formula
   homepage 'https://github.com/Juniper/juise/wiki'
-  url 'https://github.com/Juniper/juise/releases/download/0.5.10/juise-0.5.10.tar.gz'
-  sha1 'c4427d3ddc566afd5e90895b22dd366566d7251a'
+  url 'https://github.com/Juniper/juise/releases/download/0.6.1/juise-0.6.1.tar.gz'
+  sha1 '9180619ffc67c7b3ebbdd003d9010328e7513527'
+
+  bottle do
+    sha1 "a8acedc9b48bc87a2daa4da9e81f17693d08fc32" => :mavericks
+    sha1 "eaf3ecb17214b7319a96409fe1180de8ca2134ac" => :mountain_lion
+    sha1 "e99ad8fe4f05ecd24773633cef6cd25109df936e" => :lion
+  end
 
   head do
     url 'https://github.com/Juniper/juise.git'

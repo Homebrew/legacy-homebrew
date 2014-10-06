@@ -4,14 +4,16 @@ class Libssh < Formula
   homepage 'http://www.libssh.org/'
   url 'https://red.libssh.org/attachments/download/87/libssh-0.6.3.tar.xz'
   sha1 '8189255e0f684d36b7ca62739fa0cd5f1030a467'
+  revision 2
 
   bottle do
-    sha1 "93da24a19a5f85ea291968e63fee5a138f4cf6c5" => :mavericks
-    sha1 "340b484d2f8dd4958155aee6241efd2182776927" => :mountain_lion
-    sha1 "8da4783403ab7b48b4c714ade666cd7d3bce0610" => :lion
+    sha1 "84717d23f7d4e59d847bbc2b3b91a2edb9e05709" => :mavericks
+    sha1 "92158c3da484ae5073004c9e471bb458c61e08e3" => :mountain_lion
+    sha1 "bd75561291499decf22001b0ba09ae41a3089dbb" => :lion
   end
 
   depends_on 'cmake' => :build
+  depends_on 'openssl'
 
   def install
     mkdir 'build' do

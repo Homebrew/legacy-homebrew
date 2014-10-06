@@ -1,18 +1,18 @@
-require 'formula'
+require "formula"
 
 class ProtobufC < Formula
-  homepage 'http://code.google.com/p/protobuf-c/'
-  url 'https://protobuf-c.googlecode.com/files/protobuf-c-0.15.tar.gz'
-  sha1 '4fbd93f492c52154713de1951c0a2133ddd43abb'
+  homepage "https://github.com/protobuf-c/protobuf-c"
+  url "https://github.com/protobuf-c/protobuf-c/releases/download/v1.0.2/protobuf-c-1.0.2.tar.gz"
+  sha1 "f831f98a1142fdd3072b329fdc3b30533be67f48"
 
   bottle do
-    cellar :any
-    sha1 "078262944c1f44a05d9702ff6775036ad342ab98" => :mavericks
-    sha1 "35dd522279be5cd04a0e5c33e01d6f0680250963" => :mountain_lion
-    sha1 "26bcfd1a485c615ab40987f80a892d5d2902d17b" => :lion
+    sha1 "e850a4947ec7189154845bfb60ff8b69197c45e4" => :mavericks
+    sha1 "fd96052b5ac98180f0679fdb6d62fce8d2c576ac" => :mountain_lion
+    sha1 "b3990ecc09a996fef5a976f59a16ffb7e8d87ecb" => :lion
   end
 
-  depends_on 'protobuf'
+  depends_on "pkg-config" => :build
+  depends_on "protobuf"
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

@@ -7,8 +7,7 @@ What Packages Are Available?
 1. You can [browse the Formula directory on GitHub][formula].
 2. Or type `brew search` for a list.
 3. Or visit [braumeister.org][braumeister] to browse packages online.
-4. Or visit [`brew desc`][brew-desc] to browse and search packages from the
-   command line.
+4. Or use [`brew desc`][brew-desc] to browse packages from the command line.
 
 More Documentation
 ------------------
@@ -36,7 +35,7 @@ Donations
 ---------
 We accept tips through [Gittip][tip].
 
-[![Gittip](http://img.shields.io/gittip/Homebrew.svg)](https://www.gittip.com/Homebrew/)
+[![Gittip](https://img.shields.io/gittip/Homebrew.svg?style=flat)](https://www.gittip.com/Homebrew/)
 
 [home]:http://brew.sh
 [wiki]:https://github.com/Homebrew/homebrew/wiki

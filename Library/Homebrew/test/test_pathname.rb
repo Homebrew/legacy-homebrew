@@ -1,6 +1,7 @@
 require 'testing_env'
 require 'tmpdir'
 require 'extend/pathname'
+require 'install_renamed'
 
 class PathnameExtensionTests < Homebrew::TestCase
   include FileUtils
@@ -83,9 +84,7 @@ class PathnameExtensionTests < Homebrew::TestCase
   end
 
   def test_install_missing_file
-    assert_raises(RuntimeError) do
-      @dst.install 'non_existent_file'
-    end
+    assert_raises(Errno::ENOENT) { @dst.install "non_existent_file" }
   end
 
   def test_install_removes_original
@@ -198,5 +197,17 @@ class PathnameExtensionTests < Homebrew::TestCase
     refute_predicate @dir, :directory?
     @dir.install(@file)
     assert_predicate @dir, :directory?
+  end
+
+  def test_install_renamed
+    @dir.extend(InstallRenamed)
+
+    @file.write "a"
+    @dir.install @file
+    @file.write "b"
+    @dir.install @file
+
+    assert_equal "a", File.read(@dir+@file.basename)
+    assert_equal "b", File.read(@dir+"#{@file.basename}.default")
   end
 end

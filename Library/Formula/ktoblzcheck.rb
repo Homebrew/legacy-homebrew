@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Ktoblzcheck < Formula
-  homepage 'http://ktoblzcheck.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.45.tar.gz'
-  sha1 'a552012bb219ac24dcdbac977cf94c951bfe31bc'
+  homepage "http://ktoblzcheck.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.46.tar.gz"
+  sha1 "a97b7365cc9c103cc83115604d7c0dcf74b6ea71"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

@@ -22,23 +22,20 @@ class Gcc < Formula
   end
 
   homepage "http://gcc.gnu.org"
-  url "http://ftpmirror.gnu.org/gcc/gcc-4.8.3/gcc-4.8.3.tar.bz2"
-  mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.8.3/gcc-4.8.3.tar.bz2"
-  sha1 "da0a2b9ec074f2bf624a34f3507f812ebb6e4dce"
-  revision 1
-
-  head "svn://gcc.gnu.org/svn/gcc/branches/gcc-4_8-branch"
+  url "http://ftpmirror.gnu.org/gcc/gcc-4.9.1/gcc-4.9.1.tar.bz2"
+  mirror "ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.9.1/gcc-4.9.1.tar.bz2"
+  sha1 "3f303f403053f0ce79530dae832811ecef91197e"
 
   bottle do
-    sha1 "0e4040eb5a667ecacba2b7e7c71a7a868a593386" => :mavericks
-    sha1 "78374c616c427d49e29656579d6a143cbb468b0b" => :mountain_lion
-    sha1 "b3320839c172d7abc4f9889a67822e604e080a75" => :lion
+    revision 2
+    sha1 "4a7fc491b6487da16089c218f9dda8d23e8656b5" => :mavericks
+    sha1 "9e826e179f7f679d1423b8d92d9a647860bd27ae" => :mountain_lion
+    sha1 "81d02ad2e353ed804927ee166a1090ebf057c4b3" => :lion
   end
 
   option "with-java", "Build the gcj compiler"
   option "with-all-languages", "Enable all compilers and languages, except Ada"
   option "with-nls", "Build with native language support (localization)"
-  option "with-profiled-build", "Make use of profile guided optimization when bootstrapping GCC"
   option "without-fortran", "Build without the gfortran compiler"
   # enabling multilib on a host that can't run 64-bit results in build failures
   option "without-multilib", "Build without multilib support" if MacOS.prefer_64_bit?
@@ -54,10 +51,6 @@ class Gcc < Formula
     # The as that comes with Tiger isn't capable of dealing with the
     # PPC asm that comes in libitm
     depends_on "cctools" => :build
-    # GCC 4.8.1 incorrectly determines that _Unwind_GetIPInfo is available on
-    # Tiger, resulting in a failed build
-    # Fixed upstream: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=58710
-    patch :DATA
   end
 
   fails_with :gcc_4_0
@@ -69,6 +62,16 @@ class Gcc < Formula
   # out of the box on Xcode-only systems due to an incorrect sysroot.
   def pour_bottle?
     MacOS::CLT.installed?
+  end
+
+  def version_suffix
+    version.to_s.slice(/\d\.\d/)
+  end
+
+  # Fix 10.10 issues: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61407
+  patch do
+    url "https://gcc.gnu.org/bugzilla/attachment.cgi?id=33180"
+    sha1 "def0cb036a255175db86f106e2bb9dd66d19b702"
   end
 
   def install
@@ -87,8 +90,6 @@ class Gcc < Formula
     # currently only compilable on Linux.
     languages << "fortran" if build.with?("fortran") || build.with?("all-languages")
     languages << "java" if build.with?("java") || build.with?("all-languages")
-
-    version_suffix = version.to_s.slice(/\d\.\d/)
 
     args = [
       "--build=#{arch}-apple-darwin#{osmajor}",
@@ -146,18 +147,7 @@ class Gcc < Formula
       end
 
       system "../configure", *args
-
-      if build.with? "profiled-build"
-        # Takes longer to build, may bug out. Provided for those who want to
-        # optimise all the way to 11.
-        system "make", "profiledbootstrap"
-      else
-        system "make", "bootstrap"
-      end
-
-      # At this point `make check` could be invoked to run the testsuite. The
-      # deja-gnu and autogen formulae must be installed in order to do this.
-
+      system "make", "bootstrap"
       system "make", "install"
 
       if build.with?("fortran") || build.with?("all-languages")
@@ -197,6 +187,16 @@ class Gcc < Formula
     File.rename file, "#{dir}/#{base}-#{suffix}#{ext}"
   end
 
+  def caveats
+    if build.with?("multilib") then <<-EOS.undent
+      GCC has been built with multilib support. Notably, OpenMP may not work:
+        https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60670
+      If you need OpenMP support you may want to
+        brew reinstall gcc --without-multilib
+      EOS
+    end
+  end
+
   test do
     if build.with?("fortran") || build.with?("all-languages")
       fixture = <<-EOS.undent
@@ -217,119 +217,3 @@ class Gcc < Formula
     end
   end
 end
-
-__END__
-diff --git a/libbacktrace/backtrace.c b/libbacktrace/backtrace.c
-index 428f53a..a165197 100644
---- a/libbacktrace/backtrace.c
-+++ b/libbacktrace/backtrace.c
-@@ -35,6 +35,14 @@ POSSIBILITY OF SUCH DAMAGE.  */
- #include "unwind.h"
- #include "backtrace.h"
-
-+#ifdef __APPLE__
-+/* On MacOS X, versions older than 10.5 don't export _Unwind_GetIPInfo.  */
-+#undef HAVE_GETIPINFO
-+#if __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 1050
-+#define HAVE_GETIPINFO 1
-+#endif
-+#endif
-+
- /* The main backtrace_full routine.  */
-
- /* Data passed through _Unwind_Backtrace.  */
-diff --git a/libbacktrace/simple.c b/libbacktrace/simple.c
-index b03f039..9f3a945 100644
---- a/libbacktrace/simple.c
-+++ b/libbacktrace/simple.c
-@@ -35,6 +35,14 @@ POSSIBILITY OF SUCH DAMAGE.  */
- #include "unwind.h"
- #include "backtrace.h"
-
-+#ifdef __APPLE__
-+/* On MacOS X, versions older than 10.5 don't export _Unwind_GetIPInfo.  */
-+#undef HAVE_GETIPINFO
-+#if __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 1050
-+#define HAVE_GETIPINFO 1
-+#endif
-+#endif
-+
- /* The simple_backtrace routine.  */
-
- /* Data passed through _Unwind_Backtrace.  */
-diff --git a/libgcc/unwind-c.c b/libgcc/unwind-c.c
-index b937d9d..1121dce 100644
---- a/libgcc/unwind-c.c
-+++ b/libgcc/unwind-c.c
-@@ -30,6 +30,14 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
- #define NO_SIZE_OF_ENCODED_VALUE
- #include "unwind-pe.h"
-
-+#ifdef __APPLE__
-+/* On MacOS X, versions older than 10.5 don't export _Unwind_GetIPInfo.  */
-+#undef HAVE_GETIPINFO
-+#if __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 1050
-+#define HAVE_GETIPINFO 1
-+#endif
-+#endif
-+
- typedef struct
- {
-   _Unwind_Ptr Start;
-diff --git a/libgfortran/runtime/backtrace.c b/libgfortran/runtime/backtrace.c
-index 3b58118..9a00066 100644
---- a/libgfortran/runtime/backtrace.c
-+++ b/libgfortran/runtime/backtrace.c
-@@ -40,6 +40,14 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
- #include "unwind.h"
-
-
-+#ifdef __APPLE__
-+/* On MacOS X, versions older than 10.5 don't export _Unwind_GetIPInfo.  */
-+#undef HAVE_GETIPINFO
-+#if __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 1050
-+#define HAVE_GETIPINFO 1
-+#endif
-+#endif
-+
- /* Macros for common sets of capabilities: can we fork and exec, and
-    can we use pipes to communicate with the subprocess.  */
- #define CAN_FORK (defined(HAVE_FORK) && defined(HAVE_EXECVE) \
-diff --git a/libgo/runtime/go-unwind.c b/libgo/runtime/go-unwind.c
-index c669a3c..9e848db 100644
---- a/libgo/runtime/go-unwind.c
-+++ b/libgo/runtime/go-unwind.c
-@@ -18,6 +18,14 @@
- #include "go-defer.h"
- #include "go-panic.h"
-
-+#ifdef __APPLE__
-+/* On MacOS X, versions older than 10.5 don't export _Unwind_GetIPInfo.  */
-+#undef HAVE_GETIPINFO
-+#if __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 1050
-+#define HAVE_GETIPINFO 1
-+#endif
-+#endif
-+
- /* The code for a Go exception.  */
-
- #ifdef __ARM_EABI_UNWINDER__
-diff --git a/libobjc/exception.c b/libobjc/exception.c
-index 4b05611..8ff70f9 100644
---- a/libobjc/exception.c
-+++ b/libobjc/exception.c
-@@ -31,6 +31,14 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
- #include "unwind-pe.h"
- #include <string.h> /* For memcpy */
-
-+#ifdef __APPLE__
-+/* On MacOS X, versions older than 10.5 don't export _Unwind_GetIPInfo.  */
-+#undef HAVE_GETIPINFO
-+#if __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ >= 1050
-+#define HAVE_GETIPINFO 1
-+#endif
-+#endif
-+
- /* 'is_kind_of_exception_matcher' is our default exception matcher -
-    it determines if the object 'exception' is of class 'catch_class',
-    or of a subclass.  */

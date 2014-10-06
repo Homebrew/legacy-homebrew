@@ -1,25 +1,27 @@
-require 'formula'
+require "formula"
 
 class Irssi < Formula
-  homepage 'http://irssi.org/'
-  url 'http://irssi.org/files/irssi-0.8.16.tar.bz2'
-  sha1 '631dd70b6d3872c5f81c1a46a6872fef5bd65ffb'
+  homepage "http://irssi.org/"
+  url "http://irssi.org/files/irssi-0.8.16.tar.bz2"
+  sha1 "631dd70b6d3872c5f81c1a46a6872fef5bd65ffb"
+  revision 1
 
   bottle do
-    sha1 "17f3a8f117308e65c5de44e977dbc083858c44f4" => :mavericks
-    sha1 "dfbc2f405189d536264342d72737ef272d0da360" => :mountain_lion
-    sha1 "529bf17edbb6bf5bcd200ed8a84d9190c9a244b3" => :lion
+    revision 1
+    sha1 "501da22e37c201fcb96f86105855db29c9111de4" => :mavericks
+    sha1 "71dc87d1e4a08bcba6969ee2faa674ea61dd9dcd" => :mountain_lion
+    sha1 "1efa0d2f3ed9dccfa2b01f52eb3c01a3c27d1303" => :lion
   end
 
   option "without-perl", "Build without perl support"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'openssl' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "openssl" => :optional
 
   devel do
-    url 'http://irssi.org/files/snapshots/irssi-20140530.tar.gz'
-    sha1 '6bf61b3c3a384bacfd55c06aa9d4f7e288a30ac8'
+    url "http://irssi.org/files/irssi-0.8.17-rc1.tar.gz"
+    sha1 "583870b51062503437590ab52186a4c6b38591d4"
   end
 
   # Fix Perl build flags and paths in man page
@@ -48,9 +50,9 @@ class Irssi < Formula
 
     system "./configure", *args
 
-    # 'make' and 'make install' must be done separately on some systems
+    # "make" and "make install" must be done separately on some systems
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
 

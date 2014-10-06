@@ -2,15 +2,17 @@ require "formula"
 
 class Ejabberd < Formula
   homepage "http://www.ejabberd.im"
-  url "https://www.process-one.net/downloads/ejabberd/14.05/ejabberd-14.05.tgz"
-  sha1 "bad6b91ca6b9ac30ffe8b2eb0c5bb759d7742fab"
+  url "https://www.process-one.net/downloads/ejabberd/14.07/ejabberd-14.07.tgz"
+  sha1 "321b28faedbc28f80664d4b301424b118dd0bad0"
+  revision 1
 
   head 'https://github.com/processone/ejabberd.git'
 
   bottle do
-    sha1 "deabd8e0139e5d1d7468a638f81324ad5d9e7800" => :mavericks
-    sha1 "02cf33e5c0d20403fd78c05d71a647041801e48c" => :mountain_lion
-    sha1 "f8cf33f1dea0a9b8edd9bc8015a0dbf4212dd5ae" => :lion
+    revision 1
+    sha1 "bb51d214082e9e72f7f10f41d34dd0a3b5f81edf" => :mavericks
+    sha1 "3850af04f591854230ec4158b62520f121e32232" => :mountain_lion
+    sha1 "22871728227cb497381181794b8a7401d1c1beb8" => :lion
   end
 
   option "32-bit"
@@ -29,10 +31,7 @@ class Ejabberd < Formula
     ENV["HOMEBREW_ARCHFLAGS"] = " "
 
     if build.build_32_bit?
-      %w{ CFLAGS LDFLAGS }.each do |compiler_flag|
-        ENV.remove compiler_flag, "-arch #{Hardware::CPU.arch_64_bit}"
-        ENV.append compiler_flag, "-arch #{Hardware::CPU.arch_32_bit}"
-      end
+      ENV.append %w{CFLAGS LDFLAGS}, "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
     args = ["--prefix=#{prefix}",

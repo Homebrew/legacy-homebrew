@@ -38,6 +38,10 @@ class ResourceTests < Homebrew::TestCase
     assert_equal GitDownloadStrategy, @resource.download_strategy
   end
 
+  def test_raises_for_unknown_download_strategy_class
+    assert_raises(TypeError) { @resource.url("foo", :using => Class.new) }
+  end
+
   def test_does_not_mutate_specs_hash
     specs = { :using => :git, :branch => 'master' }
     @resource.url('foo', specs)

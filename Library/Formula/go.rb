@@ -3,14 +3,15 @@ require 'formula'
 class Go < Formula
   homepage 'http://golang.org'
   head 'https://go.googlecode.com/hg/'
-  url 'https://storage.googleapis.com/golang/go1.3.src.tar.gz'
-  version '1.3'
-  sha1 '9f9dfcbcb4fa126b2b66c0830dc733215f2f056e'
+  url 'https://storage.googleapis.com/golang/go1.3.3.src.tar.gz'
+  version '1.3.3'
+  sha1 'b54b7deb7b7afe9f5d9a3f5dd830c7dede35393a'
 
   bottle do
-    sha1 "86ad80f44b3114aaf53d5e673777f947d1fac3df" => :mavericks
-    sha1 "54e22253d53cee4b13636e5b673d3e83eeac178a" => :mountain_lion
-    sha1 "f3f9ce904f6d2b136db82683b405265b88fcd0c3" => :lion
+    sha1 "07bde6154b7966acda1b6f147393f2deadc1af3f" => :yosemite
+    sha1 "87aa4f7f76278ee21004d0f12f63e38a0b3ff3f2" => :mavericks
+    sha1 "1e5fe0df8f805c96f143568bad1de5e2bc6af82f" => :mountain_lion
+    sha1 "2aa465d9fb98833b80d8f2801153592c1d52bd1a" => :lion
   end
 
   option 'cross-compile-all', "Build the cross-compilers and runtime support for all supported platforms"
@@ -20,16 +21,19 @@ class Go < Formula
   def install
     # install the completion scripts
     bash_completion.install 'misc/bash/go' => 'go-completion.bash'
-    zsh_completion.install 'misc/zsh/go' => 'go'
+    zsh_completion.install 'misc/zsh/go' => '_go'
 
     # host platform (darwin) must come last in the targets list
     if build.include? 'cross-compile-all'
       targets = [
         ['linux',   ['386', 'amd64', 'arm']],
-        ['freebsd', ['386', 'amd64']],
-        ['netbsd',  ['386', 'amd64']],
+        ['freebsd', ['386', 'amd64', 'arm']],
+        ['netbsd',  ['386', 'amd64', 'arm']],
         ['openbsd', ['386', 'amd64']],
         ['windows', ['386', 'amd64']],
+        ['dragonfly', ['386', 'amd64']],
+        ['plan9',   ['386', 'amd64']],
+        ['solaris', ['amd64']],
         ['darwin',  ['386', 'amd64']],
       ]
     elsif build.include? 'cross-compile-common'

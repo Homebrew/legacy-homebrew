@@ -2,9 +2,15 @@ require "formula"
 
 class Trafficserver < Formula
   homepage "http://trafficserver.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-4.2.1.tar.bz2"
-  mirror "http://archive.apache.org/dist/trafficserver/trafficserver-4.2.1.tar.bz2"
-  sha1 "0d963dd9e65a7aa0415e06dd0f8a987c3430a6b3"
+  url "http://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-4.2.2.tar.bz2"
+  mirror "http://archive.apache.org/dist/trafficserver/trafficserver-4.2.2.tar.bz2"
+  sha1 "8c862f0402f278eb8bca1678b0db0c4fcb0dd565"
+
+  bottle do
+    sha1 "e073851a656cec3a052c9dab8ce7b7658b11dccc" => :mavericks
+    sha1 "9f76a7d1b206220a47a60144f9844f6f30f2921b" => :mountain_lion
+    sha1 "73736e9882f28d2265e923fbb1f5830f3d462bd6" => :lion
+  end
 
   depends_on "pcre"
 

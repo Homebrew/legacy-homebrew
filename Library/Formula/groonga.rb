@@ -1,31 +1,32 @@
-require 'formula'
+require "formula"
 
 class Groonga < Formula
-  homepage 'http://groonga.org/'
-  url 'http://packages.groonga.org/source/groonga/groonga-4.0.2.tar.gz'
-  sha1 'daa89ac16f00e8cb7f11ebf28cc15dc36a84f4ce'
+  homepage "http://groonga.org/"
+  url "http://packages.groonga.org/source/groonga/groonga-4.0.6.tar.gz"
+  sha1 "1ba7431cfca58dba7f5484d2c8013f24f6d8a322"
 
   bottle do
-    sha1 "98657e13f9e3c1f5f4c07b33fce4e177a509f021" => :mavericks
-    sha1 "68a0527f07618bae86bf5f57197046bc63f02cba" => :mountain_lion
-    sha1 "2908fc043a05ec6928b718ba2a8e35ff8761b0b8" => :lion
+    sha1 "93dd670108b2ef9f219827eed3e158c4a8f6a4f6" => :mavericks
+    sha1 "1986c599bf78578a148e19cb293079702ab0ee5d" => :mountain_lion
+    sha1 "3fa6aa3b485d1395e3e54136868f4ae662b3114f" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'pcre'
-  depends_on 'msgpack'
+  depends_on "pkg-config" => :build
+  depends_on "pcre"
+  depends_on "msgpack"
   depends_on "mecab" => :optional
   depends_on "mecab-ipadic" if build.with? "mecab"
 
-  depends_on 'glib' if build.include? 'enable-benchmark'
+  depends_on "glib" if build.include? "enable-benchmark"
 
-  option 'enable-benchmark', "Enable benchmark program for developer use"
+  option "enable-benchmark", "Enable benchmark program for developer use"
 
   def install
     args = %W[
       --prefix=#{prefix}
       --with-zlib
       --disable-zeromq
+      --with-mruby
     ]
 
     args << "--enable-benchmark" if build.include? "enable-benchmark"

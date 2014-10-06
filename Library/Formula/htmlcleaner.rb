@@ -1,9 +1,9 @@
-require 'formula'
+require "formula"
 
 class Htmlcleaner < Formula
-  homepage 'http://htmlcleaner.sourceforge.net/index.php'
-  url 'https://downloads.sourceforge.net/project/htmlcleaner/htmlcleaner/htmlcleaner%20v2.8/htmlcleaner-2.8.zip'
-  sha1 'e4cbfebb306fc0baa95205ba91e452c961eebf85'
+  homepage "http://htmlcleaner.sourceforge.net/index.php"
+  url "https://downloads.sourceforge.net/project/htmlcleaner/htmlcleaner/htmlcleaner%20v2.9/htmlcleaner-2.9.zip"
+  sha1 "62444799192574d47d3264a48518237685e05667"
 
   def install
     libexec.install "htmlcleaner-#{version}.jar"
@@ -13,9 +13,6 @@ class Htmlcleaner < Formula
   test do
     path = testpath/"index.html"
     path.write "<html>"
-
-    output = `#{bin}/htmlcleaner src=#{path}`
-    assert output.include?("</html>")
-    assert_equal 0, $?.exitstatus
+    assert shell_output("#{bin}/htmlcleaner src=#{path}").include?("</html>")
   end
 end

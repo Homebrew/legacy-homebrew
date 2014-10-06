@@ -4,6 +4,7 @@ class Lsyncd < Formula
   homepage "https://github.com/axkibe/lsyncd"
   url "https://github.com/axkibe/lsyncd/archive/release-2.1.5.tar.gz"
   sha1 "2b8eb169365edc54488a97435bbd39ae4a6731b8"
+  revision 1
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -26,7 +27,10 @@ class Lsyncd < Formula
     "10.9"   => ["xnu-2422.1.72.tar.gz",  "c7bdc40396df3c51ece934c0e3b4a19b063ea34c"],
     "10.9.1" => ["xnu-2422.1.72.tar.gz",  "c7bdc40396df3c51ece934c0e3b4a19b063ea34c"],
     "10.9.2" => ["xnu-2422.90.20.tar.gz",  "4aa6b80cc0ff6f9b27825317922b51c5f33d5bae"],
-    "10.9.3" => ["xnu-2422.90.20.tar.gz",  "4aa6b80cc0ff6f9b27825317922b51c5f33d5bae"],
+    "10.9.3" => ["xnu-2422.100.13.tar.gz", "3c02b0b43947d4af3363ada0c77310d4c1e501b5"],
+    "10.9.4" => ["xnu-2422.110.17.tar.gz", "64eff89852eaa10b298ee58c0a1c92da8283f459"],
+    "10.9.5" => ["xnu-2422.115.4.tar.gz", "48207e250422be7e78d238cd8b4d741ac98856df"],
+    "10.10"  => ["xnu-2422.115.4.tar.gz", "48207e250422be7e78d238cd8b4d741ac98856df"],
   }
 
   # TODO wrap MACOS_FULL_VERSION in a MacOS module method

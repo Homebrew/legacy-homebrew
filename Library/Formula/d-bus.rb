@@ -1,14 +1,21 @@
-require 'formula'
+require "formula"
 
 class DBus < Formula
-  homepage 'http://www.freedesktop.org/wiki/Software/dbus'
-  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.4.tar.gz"
-  sha1 "316f1196312a88cc858ba810d4e5d16f70ab9d58"
+  homepage "http://www.freedesktop.org/wiki/Software/dbus"
+  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.8.tar.gz"
+  sha1 "e0d10e8b4494383c7e366ac80a942ba45a705a96"
 
   bottle do
-    sha1 "07a7bd9331dcf60f0db9d9efd199c3e3164dbb54" => :mavericks
-    sha1 "03e7c08ff3816150aa1db99a594f0c4c21baf223" => :mountain_lion
-    sha1 "24385436ff2c32efee5cceab5744273d91c800d0" => :lion
+    sha1 "52ccc0020b2509ceb76f091d9d9b218da69bef9c" => :mavericks
+    sha1 "3c9477e550084961fa7f5112b791ff4a2d012e2e" => :mountain_lion
+    sha1 "a14cb84cdb5e6ea7da0b808c336bed7fe2068038" => :lion
+  end
+
+  # Upstream fix for O_CLOEXEC portability
+  # http://cgit.freedesktop.org/dbus/dbus/commit/?id=5d91f615d18629eaac074fbde2ee7e17b82e5472
+  patch do
+    url "http://cgit.freedesktop.org/dbus/dbus/patch/?id=5d91f615d18629eaac074fbde2ee7e17b82e5472"
+    sha1 "ebb383abb86eeafbe048dbb8b77d83bdf0b7c9bb"
   end
 
   def install
@@ -29,7 +36,7 @@ class DBus < Formula
     ENV.deparallelize
     system "make install"
 
-    (prefix+'org.freedesktop.dbus-session.plist').chmod 0644
+    (prefix+"org.freedesktop.dbus-session.plist").chmod 0644
   end
 
   def post_install

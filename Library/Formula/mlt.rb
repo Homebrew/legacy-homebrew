@@ -2,8 +2,15 @@ require "formula"
 
 class Mlt < Formula
   homepage "http://www.mltframework.org/"
-  url "https://downloads.sourceforge.net/mlt/mlt/mlt-0.9.0.tar.gz"
-  sha1 "76bf18f4442801fae963c5a676d6626e383d1617"
+  url "https://downloads.sourceforge.net/mlt/mlt/mlt-0.9.2.tar.gz"
+  sha1 "eb1cdb8a1d9e69512716431054e5da7eb3bedb6d"
+  bottle do
+    sha1 "8a672be9b09bf79c099755f822afd7837ee715a9" => :mavericks
+    sha1 "6fbdbc9c2422836ce659989f096d1670570d1c57" => :mountain_lion
+    sha1 "b5804ee50a521ee7f09c82fb3d58947ad4413990" => :lion
+  end
+
+  revision 1
 
   depends_on "pkg-config" => :build
 

@@ -2,9 +2,19 @@ require "formula"
 
 class Tuntap < Formula
   homepage "http://tuntaposx.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/tuntaposx/tuntap/20111101/tuntap_20111101_src.tar.gz"
-  sha1 "826f79f60dc40cee607ffc2b7e79874b1c686f28"
-  head "git://git.code.sf.net/p/tuntaposx/code", :branch => "master"
+
+  stable do
+    url "https://downloads.sourceforge.net/project/tuntaposx/tuntap/20111101/tuntap_20111101_src.tar.gz"
+    sha1 "826f79f60dc40cee607ffc2b7e79874b1c686f28"
+    # Get Kernel.framework headers from the SDK
+    patch :p2, :DATA
+  end
+
+  head do
+    url "git://git.code.sf.net/p/tuntaposx/code", :branch => "master"
+    # Get Kernel.framework headers from the SDK
+    patch :p1, :DATA
+  end
 
   bottle do
     cellar :any
@@ -13,10 +23,8 @@ class Tuntap < Formula
     sha1 "a3e380d8080ce9cf75f04cc80dcc869cf93b0276" => :lion
   end
 
-  # Get Kernel.framework headers from the SDK
-  patch :DATA
-
   def install
+    cd "tuntap" if build.head?
     ENV.j1 # to avoid race conditions (can't open: ../tuntap.o)
     system "make", "CC=#{ENV.cc}", "CCP=#{ENV.cxx}"
     kext_prefix.install "tun.kext", "tap.kext"
@@ -53,10 +61,10 @@ class Tuntap < Formula
 end
 
 __END__
-diff --git a/src/tap/Makefile b/src/tap/Makefile
+diff --git a/tuntap/src/tap/Makefile b/tuntap/src/tap/Makefile
 index d4d1158..1dfe294 100644
---- a/src/tap/Makefile
-+++ b/src/tap/Makefile
+--- a/tuntap/src/tap/Makefile
++++ b/tuntap/src/tap/Makefile
 @@ -19,7 +19,8 @@ BUNDLE_SIGNATURE = ????
  BUNDLE_PACKAGETYPE = KEXT
  BUNDLE_VERSION = $(TAP_KEXT_VERSION)
@@ -67,10 +75,10 @@ index d4d1158..1dfe294 100644
  CFLAGS = -Wall -mkernel -force_cpusubtype_ALL \
  	-fno-builtin -fno-stack-protector -arch i386 -arch x86_64 \
  	-DKERNEL -D__APPLE__ -DKERNEL_PRIVATE -DTUNTAP_VERSION=\"$(TUNTAP_VERSION)\" \
-diff --git a/src/tun/Makefile b/src/tun/Makefile
+diff --git a/tuntap/src/tun/Makefile b/tuntap/src/tun/Makefile
 index 9ca6794..c530f10 100644
---- a/src/tun/Makefile
-+++ b/src/tun/Makefile
+--- a/tuntap/src/tun/Makefile
++++ b/tuntap/src/tun/Makefile
 @@ -20,7 +20,8 @@ BUNDLE_SIGNATURE = ????
  BUNDLE_PACKAGETYPE = KEXT
  BUNDLE_VERSION = $(TUN_KEXT_VERSION)

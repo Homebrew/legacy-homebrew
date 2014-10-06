@@ -26,15 +26,15 @@ end
 
 class Elixir < Formula
   homepage 'http://elixir-lang.org/'
-  url  'https://github.com/elixir-lang/elixir/archive/v0.14.2.tar.gz'
-  sha1 '1f857db32fd2975e8af64d96d9583951c3ea5e11'
+  url  'https://github.com/elixir-lang/elixir/archive/v1.0.0.tar.gz'
+  sha1 'cf55a35ecf7370307aba3f4e612d944716e2eb91'
 
   head 'https://github.com/elixir-lang/elixir.git'
 
   bottle do
-    sha1 "3335c07c7e2bcae97ab7abada7198e17f59b9518" => :mavericks
-    sha1 "458d66376eb346df44908271ca4098691ec6c61a" => :mountain_lion
-    sha1 "d22e5c07b894cc6e5e5897cc12a281e1bd323bae" => :lion
+    sha1 "e26cca98fb7c128676db9476c5cf56128a9b68af" => :mavericks
+    sha1 "fccdd9038d9bd46e0658f2b5d063253970b43c22" => :mountain_lion
+    sha1 "d35ab17c2a501b54a861954242a1ab1f80019e94" => :lion
   end
 
   depends_on ErlangInstalled

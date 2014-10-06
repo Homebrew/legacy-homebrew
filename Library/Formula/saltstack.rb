@@ -12,13 +12,13 @@ end
 
 class Saltstack < Formula
   homepage 'http://www.saltstack.org'
-  url 'https://github.com/saltstack/salt/archive/v2014.1.5.tar.gz'
-  sha256 '71fd19e8d7860e19fc57e2197b642fd52c2cf46c351dee65449e540a793532ef'
+  url 'https://github.com/saltstack/salt/archive/v2014.1.10.tar.gz'
+  sha256 '4f4771e654bad8842bf55dba89b6632a4ea216223a5a321342c20e65506198d1'
 
   bottle do
-    sha1 "3519f35b083e5f5c0e8bee2849831d6e4546f80e" => :mavericks
-    sha1 "b0468efca7bab9443195231cfddadf338528989a" => :mountain_lion
-    sha1 "ce2ed0e4b9c7ddc16045b88ffb7a0a3e7d6a7ea4" => :lion
+    sha1 "3ffc76046b54ceadac2224285ee52aa966d987a2" => :mavericks
+    sha1 "f150d25e49b6d309c6794c2b78d55209ede96e40" => :mountain_lion
+    sha1 "1b4d05f5c21e50f2ecc7df0956287aadde14eae5" => :lion
   end
 
   head 'https://github.com/saltstack/salt.git', :branch => 'develop',
@@ -65,8 +65,8 @@ class Saltstack < Formula
   end
 
   resource 'apache-libcloud' do
-    url 'https://pypi.python.org/packages/source/a/apache-libcloud/apache-libcloud-0.14.1.tar.gz'
-    sha1 'e587c9c3519e7d061f3c2fb232af8ace593c8156'
+    url 'https://pypi.python.org/packages/source/a/apache-libcloud/apache-libcloud-0.15.1.tar.gz'
+    sha1 '0631bfa3201a5d4c3fdd3d9c39756051c1c70b0f'
   end
 
   head do
@@ -79,19 +79,9 @@ class Saltstack < Formula
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    resource('pycrypto').stage { system "python", *install_args }
-    resource('pyyaml').stage { system "python", *install_args }
-    resource('pyzmq').stage { system "python", *install_args }
-    resource('msgpack-python').stage { system "python", *install_args }
-    resource('markupsafe').stage { system "python", *install_args }
-    resource('m2crypto').stage { system "python", *install_args }
-    resource('jinja2').stage { system "python", *install_args }
-    resource('apache-libcloud').stage { system "python", *install_args }
-
-    if build.head?
-      resource('requests').stage { system "python", *install_args }
+    resources.each do |r|
+      r.stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
     end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"

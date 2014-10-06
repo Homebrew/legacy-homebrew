@@ -3,8 +3,10 @@ require 'requirements/fortran_dependency'
 require 'requirements/language_module_dependency'
 require 'requirements/minimum_macos_requirement'
 require 'requirements/mpi_dependency'
+require 'requirements/osxfuse_dependency'
 require 'requirements/python_dependency'
 require 'requirements/x11_dependency'
+require 'requirements/maximum_macos_requirement'
 
 class XcodeDependency < Requirement
   fatal true
@@ -97,4 +99,33 @@ class GitDependency < Requirement
   fatal true
   default_formula 'git'
   satisfy { !!which('git') }
+end
+
+class JavaDependency < Requirement
+  fatal true
+  satisfy { java_version }
+
+  def initialize(tags)
+    @version = tags.pop
+    super
+  end
+
+  def java_version
+    args = %w[/usr/libexec/java_home --failfast]
+    args << "--version" << "#{@version}+" if @version
+    quiet_system(*args)
+  end
+
+  def message
+    version_string = " #{@version}" if @version
+
+    <<-EOS.undent
+      Java#{version_string} is required to install this formula.
+
+      You can install Java from:
+        http://www.oracle.com/technetwork/java/javase/downloads/index.html
+
+      Make sure you install both the JRE and JDK.
+    EOS
+  end
 end

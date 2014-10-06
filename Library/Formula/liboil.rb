@@ -35,7 +35,8 @@ class Liboil < Formula
         return 0;
       }
     EOS
-    flags = `#{HOMEBREW_PREFIX}/bin/pkg-config --cflags --libs liboil-0.3`.split + ENV.cflags.to_s.split
+
+    flags = ["-I#{include}/liboil-0.3", "-L#{lib}", "-loil-0.3"] + ENV.cflags.to_s.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

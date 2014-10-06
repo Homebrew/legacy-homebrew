@@ -2,14 +2,15 @@ require "formula"
 
 class Openconnect < Formula
   homepage "http://www.infradead.org/openconnect.html"
-  url "ftp://ftp.infradead.org/pub/openconnect/openconnect-5.99.tar.gz"
-  sha1 "3ac20e50f2700ff58d1635f210fc263d29cf7768"
+  url "ftp://ftp.infradead.org/pub/openconnect/openconnect-6.00.tar.gz"
+  sha1 "405f0563a82660fa492d8c9ad248198adb8793f9"
   revision 1
 
   bottle do
-    sha1 "71ff1c7e9f70a0a797d8774cc76261fb231c9e4b" => :mavericks
-    sha1 "a9a1b80896f27a630484ac82174e7c5a8fecf173" => :mountain_lion
-    sha1 "59e10238371deab8efa073bcfefa5dd0381e11f2" => :lion
+    revision 1
+    sha1 "8f824c3d71fe5879335275225922158b5da4076f" => :mavericks
+    sha1 "60947b9e8cada4dc82135499afa92c68ef65f849" => :mountain_lion
+    sha1 "4afb9be94d8288c1c1ac729a2abc421ccfb7dc7a" => :lion
   end
 
   head do
@@ -28,8 +29,8 @@ class Openconnect < Formula
   depends_on "oath-toolkit" => :optional
 
   resource "vpnc-script" do
-    url "http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/d2c5a77f3f0ea6ad80fc59158127d63ede81a6cb:/vpnc-script"
-    sha1 "9915539c34393c1f8d7de9c3fc2c7396476bd998"
+    url "http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/a78b3ddfc56ab457104c88e94dca72d8738f4fad:/vpnc-script"
+    sha1 "9516b6e303392cfb5518de3f44767f226c690a1c"
   end
 
   def install

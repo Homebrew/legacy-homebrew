@@ -12,7 +12,7 @@ class SharedMimeInfo < Formula
 
   def install
     # Disable the post-install update-mimedb due to crash
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-update-mimedb"
     system "make install"

@@ -2,14 +2,14 @@ require "formula"
 
 class Horndis < Formula
   homepage "http://joshuawise.com/horndis"
-  url "https://github.com/jwise/HoRNDIS/archive/rel5.tar.gz"
-  sha1 "5f01c62ae61554252c0fe727e414edcb8e060106"
+  url "https://github.com/jwise/HoRNDIS/archive/rel6.tar.gz"
+  sha1 "e41ed0c5c06ee555a4a418696b112c955a356ce0"
 
   bottle do
     cellar :any
-    sha1 "a62c0ae0ac89d307437735c910db3ad5a2118683" => :mavericks
-    sha1 "c8109415f6ab8ecede83c9614ed561b3072343aa" => :mountain_lion
-    sha1 "e5537e2ba72e129c846d962ab8b45c44878bab5a" => :lion
+    sha1 "e37bc2997a594e67eaeac3c0f8d1ff5f51da7d99" => :mavericks
+    sha1 "1fb6c9910e96a67f34d48260d3d41ebeefb1749a" => :mountain_lion
+    sha1 "af083937c77de9d628d9cf6858296be61846ad63" => :lion
   end
 
   depends_on :xcode => :build

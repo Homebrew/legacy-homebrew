@@ -123,6 +123,10 @@ class RequirementTests < Homebrew::TestCase
     end
   end
 
+  def test_modify_build_environment_without_env_proc
+    assert_nil Class.new(Requirement).new.modify_build_environment
+  end
+
   def test_eql
     a, b = Requirement.new, Requirement.new
     assert_eql a, b

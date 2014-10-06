@@ -1,25 +1,26 @@
-require 'formula'
+require "formula"
 
 class Osxfuse < Formula
-  homepage 'http://osxfuse.github.io'
-  url 'https://github.com/osxfuse/osxfuse.git', :tag => 'osxfuse-2.6.4'
+  homepage "http://osxfuse.github.io"
+  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.1"
 
-  head 'https://github.com/osxfuse/osxfuse.git', :branch => 'osxfuse-2'
+  head "https://github.com/osxfuse/osxfuse.git", :branch => "osxfuse-2"
 
   bottle do
-    sha1 "e661cd54c9dfa9efb383ad283456ae1afe210329" => :mavericks
-    sha1 "c3eb99baa45b45c69f25dc5361d4b16b69ec4eaa" => :mountain_lion
-    sha1 "adab3f073e734c2653a3ed9185e1fe9f689e1a6c" => :lion
+    sha1 "4bd80122d662bf283fb400f3ea6cfe5369f9af7f" => :mavericks
+    sha1 "f9b3687629cdd8fa92e2805e1e4b4b63521bcaf5" => :mountain_lion
+    sha1 "81de3186770d7c93dfa6cd8626016c78bf0b1ee2" => :lion
   end
 
   depends_on :macos => :snow_leopard
   depends_on :xcode => :build
+  depends_on ConflictsWithBinaryOsxfuse
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "gettext" => :build
 
-  conflicts_with 'fuse4x', :because => 'both install `fuse.pc`'
+  conflicts_with "fuse4x", :because => "both install `fuse.pc`"
 
   def install
     # Do not override Xcode build settings
@@ -41,7 +42,7 @@ class Osxfuse < Formula
 
     The new osxfuse file system bundle needs to be installed by the root user:
 
-      sudo /bin/cp -RfX #{opt_prefix}/Library/Filesystems/osxfusefs.fs /Library/Filesystems
+      sudo /bin/cp -RfX #{opt_prefix}/Library/Filesystems/osxfusefs.fs /Library/Filesystems/
       sudo chmod +s /Library/Filesystems/osxfusefs.fs/Support/load_osxfusefs
     EOS
   end

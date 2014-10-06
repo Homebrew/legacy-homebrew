@@ -2,14 +2,14 @@ require "formula"
 
 class Libgee < Formula
   homepage "https://wiki.gnome.org/Projects/Libgee"
-  url "http://ftp.gnome.org/pub/GNOME/sources/libgee/0.14/libgee-0.14.0.tar.xz"
-  sha1 "ca6531c8ba45cc865f2ce7b93a8b3f96e1c1505e"
+  url "http://ftp.gnome.org/pub/GNOME/sources/libgee/0.16/libgee-0.16.0.tar.xz"
+  sha1 "d67e718138fb5788d6a1aea7f344e670adb77375"
 
   bottle do
     cellar :any
-    sha1 "b5f37cdf80ea636daea2b2652d8add8dcbe37202" => :mavericks
-    sha1 "d253f53b456e0e80c11395516340d8a3366f58d6" => :mountain_lion
-    sha1 "610ff718b5d418a28b90c779ff205a1bfd51bf26" => :lion
+    sha1 "b2aa5f6b7389323b9f040f3260732a93f2a41dbe" => :mavericks
+    sha1 "5e6fe305c3e56532c3c7e32cc6f41c9612263672" => :mountain_lion
+    sha1 "f5254c7996bd9546b209d8e73acd8e8de069104f" => :lion
   end
 
   depends_on "pkg-config" => :build

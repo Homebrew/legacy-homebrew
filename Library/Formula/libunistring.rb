@@ -1,16 +1,16 @@
-require 'formula'
+require "formula"
 
 class Libunistring < Formula
-  homepage 'http://www.gnu.org/software/libunistring/'
-  url 'http://ftpmirror.gnu.org/libunistring/libunistring-0.9.3.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/libunistring/libunistring-0.9.3.tar.gz'
-  sha1 'e1ea13c24a30bc93932d19eb5ad0704a618506dd'
+  homepage "https://www.gnu.org/software/libunistring/"
+  url "http://ftpmirror.gnu.org/libunistring/libunistring-0.9.4.tar.xz"
+  mirror "ftp://ftp.gnu.org/gnu/libunistring/libunistring-0.9.4.tar.xz"
+  sha1 "d77548d7a991452837decf3fa40cc985c7451735"
 
   bottle do
     cellar :any
-    sha1 "fd93c4c18b2b526b77d9dfeefd11ff89a6effc02" => :mavericks
-    sha1 "4bbf7ca720de8b13e2ebac7b5bb88ef2057b21a4" => :mountain_lion
-    sha1 "ed2d278f23e772a0401897a579deff47606b5d03" => :lion
+    sha1 "bd04ffb1891146a22737513b3b854080042912eb" => :mavericks
+    sha1 "e131611c0be53ad4e612ecd1ac605d684a3db3a7" => :mountain_lion
+    sha1 "baddc77f72ff77534c7320a3ffef3f2639b2616b" => :lion
   end
 
   def install

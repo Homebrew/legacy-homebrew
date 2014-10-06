@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class FrameworkPython < Requirement
   fatal true
@@ -15,8 +15,14 @@ end
 
 class Wxpython < Formula
   homepage "http://www.wxwidgets.org"
-  url "https://downloads.sourceforge.net/project/wxpython/wxPython/3.0.0.0/wxPython-src-3.0.0.0.tar.bz2"
-  sha1 "48451763275cfe4e5bbec49ccd75bc9652cba719"
+  url "https://downloads.sourceforge.net/project/wxpython/wxPython/3.0.1.1/wxPython-src-3.0.1.1.tar.bz2"
+  sha1 "d2c4719015d7c499a9765b1e5107fdf37a32abfb"
+
+  bottle do
+    sha1 "e7fad91e96497ecae7a12f55f092c74e07e41f5b" => :mavericks
+    sha1 "3cbb8428f88ac9363081cb79f18067895fdf35cf" => :mountain_lion
+    sha1 "e6db873562487f0135412f5fff9a367d0a29552b" => :lion
+  end
 
   if MacOS.version <= :snow_leopard
     depends_on :python

@@ -8,8 +8,14 @@ end
 
 class SigningParty < Formula
   homepage "http://pgp-tools.alioth.debian.org/"
-  url "http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.7.orig.tar.gz"
-  sha1 "8bb854eab064b67740a23c44c1bb2eb497d9fdeb"
+  url "http://ftp.debian.org/debian/pool/main/s/signing-party/signing-party_1.1.8.orig.tar.gz"
+  sha1 "58b3c94b60d3637689fd1bc7aaa2f5c1527416fb"
+
+  bottle do
+    sha1 "8cbd4353cbb1715138e4c313bffc35efadb78b86" => :mavericks
+    sha1 "a9c77d648e292d9595efc3fcf93c4ef8db0f3ed7" => :mountain_lion
+    sha1 "7ce2d82e6dad2af55b5122f9751e021d7af821d6" => :lion
+  end
 
   option 'with-rename-pgpring', 'Install pgpring as pgppubring to avoid conflicting with mutt'
 
@@ -26,17 +32,62 @@ class SigningParty < Formula
 
   resource "GnuPG::Interface" do
     url "http://search.cpan.org/CPAN/authors/id/A/AL/ALEXMV/GnuPG-Interface-0.50.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/A/AL/ALEXMV/GnuPG-Interface-0.50.tar.gz"
     sha1 "471c61d262552548df5980cbfc5ccbe6a4607aca"
   end
 
   resource "Text::Iconv" do
     url "http://search.cpan.org/CPAN/authors/id/M/MP/MPIOTR/Text-Iconv-1.7.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/M/MP/MPIOTR/Text-Iconv-1.7.tar.gz"
     sha1 "542849325b2d66c72e19ffb48bdc67fdd7e4bbea"
   end
 
   resource "Text::Template" do
     url "http://search.cpan.org/CPAN/authors/id/M/MJ/MJD/Text-Template-1.46.tar.gz"
+    mirror "http://search.mcpan.org/CPAN/authors/id/M/MJ/MJD/Text-Template-1.46.tar.gz"
     sha1 "008df9cfa6f9ab8d0b4f38c3e59d4e8679280bc1"
+  end
+
+  resource "Net::IDN::Encode" do
+    url "http://search.cpan.org/CPAN/authors/id/C/CF/CFAERBER/Net-IDN-Encode-2.200.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/C/CF/CFAERBER/Net-IDN-Encode-2.200.tar.gz"
+    sha1 "f7796a9d0404da8222b2c438668463a013fc1983"
+  end
+
+  resource "MooX::late" do
+    url "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/MooX-late-0.014.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/MooX-late-0.014.tar.gz"
+    sha1 "d7bbb34c1e2f6ff06a97b404bed7fa2c58bac004"
+  end
+
+  resource "MooX::HandlesVia" do
+    url "http://search.cpan.org/CPAN/authors/id/M/MA/MATTP/MooX-HandlesVia-0.001005.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/M/MA/MATTP/MooX-HandlesVia-0.001005.tar.gz"
+    sha1 "d9e58fca8b26004878de49390941d01d17a98d7f"
+  end
+
+  resource "Type::Tiny" do
+    url "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Type-Tiny-0.044.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Type-Tiny-0.044.tar.gz"
+    sha1 "78854cb1ea3c3f57db3b9f10cece97ef11c3ab97"
+  end
+
+  resource "Exporter::Tiny" do
+    url "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Exporter-Tiny-0.036.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/T/TO/TOBYINK/Exporter-Tiny-0.036.tar.gz"
+    sha1 "6a2f60e6ec245bb6369c2ba4cfab9c74d3bd463f"
+  end
+
+  resource "Data::Perl" do
+    url "http://search.cpan.org/CPAN/authors/id/M/MA/MATTP/Data-Perl-0.002009.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/M/MA/MATTP/Data-Perl-0.002009.tar.gz"
+    sha1 "e62244f9e09c1db528992bbf55954a1e4dc54067"
+  end
+
+  resource "CPAN::Meta::Requirements" do
+    url "http://search.cpan.org/CPAN/authors/id/D/DA/DAGOLDEN/CPAN-Meta-Requirements-2.126.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/D/DA/DAGOLDEN/CPAN-Meta-Requirements-2.126.tar.gz"
+    sha1 "b73123f5fcf199e2bdc31aaae72a8f70740d439f"
   end
 
   # gpgparticipants data on OS X behaves differently from linux version

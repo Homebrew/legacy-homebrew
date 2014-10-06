@@ -2,30 +2,40 @@ require "formula"
 
 class RabbitmqC < Formula
   homepage "https://github.com/alanxz/rabbitmq-c"
-  url "https://github.com/alanxz/rabbitmq-c/archive/v0.5.0.tar.gz"
-  sha1 "826286c3f04695bdc231d8e7b0541f871975cdcc"
+  url "https://github.com/alanxz/rabbitmq-c/archive/v0.5.2.tar.gz"
+  sha1 "6c442aefbc4477ac0598c05361c767a75d6e1541"
 
   head "https://github.com/alanxz/rabbitmq-c.git"
 
+  bottle do
+    cellar :any
+    sha1 "496b4ca88678eb149a7ab595d8910f108e02cedd" => :mavericks
+    sha1 "3e571b8134ad11c1bf00fc809f6ddb75bfe7ca27" => :mountain_lion
+    sha1 "13949d69b20f76376819bb811bb6fe9972ed4a39" => :lion
+  end
+
   option :universal
+  option "without-tools", "Build without command-line tools"
 
   depends_on "pkg-config" => :build
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
-  depends_on "rabbitmq"
-  depends_on "simplejson" => :python if MacOS.version <= :leopard
-
-  resource "codegen" do
-    url "https://github.com/rabbitmq/rabbitmq-codegen/archive/rabbitmq_v3_3_1.tar.gz"
-    sha1 "62cfff4d3d3707b263a4e1b0d5d3b094e39d24f1"
-  end
+  depends_on "cmake" => :build
+  depends_on "rabbitmq" => :recommended
+  depends_on "popt" if build.with? "tools"
 
   def install
     ENV.universal_binary if build.universal?
-    (buildpath/"codegen").install resource("codegen")
-    system "autoreconf", "-i"
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
-    system "make install"
+    args = std_cmake_args
+    args << "-DBUILD_EXAMPLES=OFF"
+    args << "-DBUILD_TESTS=OFF"
+    args << "-DBUILD_API_DOCS=OFF"
+
+    args << if build.with? "tools"
+      "-DBUILD_TOOLS=ON"
+    else
+      "-DBUILD_TOOLS=OFF"
+    end
+
+    system "cmake", ".", *args
+    system "make", "install"
   end
 end
