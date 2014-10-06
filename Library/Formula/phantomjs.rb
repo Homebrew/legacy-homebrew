@@ -1,13 +1,30 @@
 require "formula"
 
+# Upstream have said won't fix 1.9.x for Yosemite
+# https://github.com/ariya/phantomjs/issues/10648
+# Please remove this workaround with the next stable 2.0 release.
+
+class MaximumMacOSRequirement < Requirement
+  fatal true
+
+  def initialize(tags)
+    @version = MacOS::Version.from_symbol(tags.first)
+    super
+  end
+
+  satisfy { MacOS.version <= @version }
+
+  def message
+    <<-EOS.undent
+      OS X #{@version.pretty_name} or older is required for stable.
+      Use `brew install --HEAD` for Yosemite.
+    EOS
+  end
+end
+
 class Phantomjs < Formula
   homepage "http://www.phantomjs.org/"
   revision 1
-
-  # Upstream have said won't fix 1.9.x for Yosemite
-  # https://github.com/ariya/phantomjs/issues/10648
-  # Please remove this hideous workaround with the next stable 2.0 release.
-  raise "Phantomjs 1.9.7 will not support Yosemite, install HEAD instead" if MacOS.version == :yosemite and not build.head?
 
   stable do
     url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip"
@@ -17,6 +34,8 @@ class Phantomjs < Formula
       url "https://github.com/ariya/phantomjs/commit/fe6a96.diff"
       sha1 "d3efd38e0f3f0da08530d0bf603ea72ebdf06b78"
     end
+
+    depends_on MaximumMacOSRequirement => :mavericks
   end
 
   bottle do
