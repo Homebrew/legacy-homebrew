@@ -5,6 +5,12 @@ class Mkvdts2ac3 < Formula
 
   stable do
     url "https://github.com/JakeWharton/mkvdts2ac3/archive/1.6.0.tar.gz"
+  bottle do
+    cellar :any
+    sha1 "375129c89ce29fe5135b45d5f9a046b2372f39a4" => :mavericks
+    sha1 "dc7850a65fd6d181396a69deb0713b9ae7dad7a6" => :mountain_lion
+  end
+
     sha1 "e427eb6875d935dc228c42e99c3cd19c7ceaa322"
 
     # patch with upstream fix for newer mkvtoolnix compatibility
