@@ -9,6 +9,6 @@ class Ddrescue < Formula
   def install
     system "./configure", "--prefix=#{prefix}",
                           "CXX=#{ENV.cxx}"
-    system "make install"
+    system "make", "install"
   end
 end
