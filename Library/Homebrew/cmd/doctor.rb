@@ -119,6 +119,8 @@ def check_for_stray_dylibs
   white_list = [
     "libfuse.2.dylib", # MacFuse
     "libfuse_ino64.2.dylib", # MacFuse
+    "libmacfuse_i32.2.dylib", # OSXFuse MacFuse compatibility layer
+    "libmacfuse_i64.2.dylib", # OSXFuse MacFuse compatibility layer
     "libosxfuse_i32.2.dylib", # OSXFuse
     "libosxfuse_i64.2.dylib", # OSXFuse
   ]
@@ -186,6 +188,7 @@ end
 
 def check_for_stray_headers
   white_list = [
+    "fuse.h", # MacFuse
     "fuse/**/*.h", # MacFuse
     "macfuse/**/*.h", # OSXFuse MacFuse compatibility layer
     "osxfuse/**/*.h", # OSXFuse
