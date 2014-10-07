@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Ocrad < Formula
-  homepage 'http://www.gnu.org/software/ocrad/'
-  url 'http://ftpmirror.gnu.org/ocrad/ocrad-0.23.tar.lz'
-  mirror 'http://ftp.gnu.org/gnu/ocrad/ocrad-0.23.tar.lz'
-  sha1 '8f539613ce6eb816c691f37ef0977adfcdab5e92'
+  homepage "https://www.gnu.org/software/ocrad/"
+  url "http://ftpmirror.gnu.org/ocrad/ocrad-0.24.tar.lz"
+  mirror "https://ftp.gnu.org/gnu/ocrad/ocrad-0.24.tar.lz"
+  sha1 "b46bbb4b57a3bf2d544cedca47b40f24d8aa811a"
 
   bottle do
     cellar :any
