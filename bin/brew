@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 BREW_FILE_DIRECTORY=$(cd "${0%/*}" && pwd -P)
 export HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/${0##*/}"
 
