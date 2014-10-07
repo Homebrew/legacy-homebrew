@@ -61,7 +61,6 @@ Add to your `.bashrc` or `.zshrc`:
 
 ```sh
 export PATH="$HOME/.linuxbrew/bin:$PATH"
-export LD_LIBRARY_PATH="$HOME/.linuxbrew/lib:$LD_LIBRARY_PATH"
 ```
 
 You're done!
