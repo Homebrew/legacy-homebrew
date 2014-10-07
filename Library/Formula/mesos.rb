@@ -20,12 +20,11 @@ class Mesos < Formula
 
 
   def install
-    args = %W[
+    args = ["--prefix=#{prefix}",
             "--disable-debug",
             "--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--prefix=#{prefix}"
-    ]
+            "--disable-silent-rules"
+           ]
 
     args << "--with-zookeeper=#{Formula["zookeeper"].opt_prefix}" if MacOS.version == :yosemite
 
