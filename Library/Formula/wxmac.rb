@@ -24,11 +24,11 @@ class Wxmac < Formula
   def install
     # need to set with-macosx-version-min to avoid configure defaulting to 10.5
     # need to enable universal binary build in order to build all x86_64
-    # @JackNagel - I don't believe this is the whole story, surely this can be fixed
+    # Jack - I don't believe this is the whole story, surely this can be fixed
     # without building universal for users who don't need it.
     # headers need to specify x86_64 and i386 or will try to build for ppc arch
     # and fail on newer OSes
-    # @DomT4 - MacPorts seems to have stopped building universal by default? Can we do the same?
+    # DomT4 - MacPorts seems to have stopped building universal by default? Can we do the same?
     # https://trac.macports.org/browser/trunk/dports/graphics/wxWidgets-3.0/Portfile#L210
     ENV.universal_binary
     args = [
