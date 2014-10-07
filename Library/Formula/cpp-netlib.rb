@@ -7,6 +7,7 @@ class CppNetlib < Formula
 
   depends_on "cmake" => :build
   depends_on "boost" => "c++11"
+  needs :cxx11
 
   def install
     ENV.cxx11
