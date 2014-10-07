@@ -349,7 +349,11 @@ end
 def check_for_bad_install_name_tool
   return if MacOS.version < "10.9"
 
-  libs = `otool -L /usr/bin/install_name_tool`
+  libs = Pathname.new("/usr/bin/install_name_tool").dynamically_linked_libraries
+
+  # otool may not work, for example if the Xcode license hasn't been accepted yet
+  return if libs.empty?
+
   unless libs.include? "/usr/lib/libxcselect.dylib" then <<-EOS.undent
     You have an outdated version of /usr/bin/install_name_tool installed.
     This will cause binary package installations to fail.
