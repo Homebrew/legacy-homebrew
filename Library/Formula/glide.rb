@@ -3,13 +3,13 @@ require "language/go"
 
 class Glide < Formula
   homepage "https://github.com/Masterminds/glide"
-  url "https://github.com/Masterminds/glide/archive/0.1.0.tar.gz"
-  sha1 "8323f0a9620d28fa1bc1b8514e2159ed0d27c135"
+  url "https://github.com/Masterminds/glide/archive/0.2.0.tar.gz"
+  sha1 "a01fc0a56cfcb9070af2e8bbca35da81310b0b21"
 
   bottle do
-    sha1 "6f293dd28cd8648a468df50c47425ab9b44abd57" => :mavericks
-    sha1 "d005e3f36eea13d35e727fc2d89f7a6ef1f6af7d" => :mountain_lion
-    sha1 "f829adcff437950744190b5de6904db7548e81f4" => :lion
+    sha1 "dea3d205ecbfa38f7cfe5e2b79c5ab12af462df9" => :mavericks
+    sha1 "d622cfb237b2e26a63a923f00c7d0af639974219" => :mountain_lion
+    sha1 "7afcc2e6b089b38d8ed38979621fceb457df0cfa" => :lion
   end
 
   depends_on "go" => :build
@@ -21,7 +21,7 @@ class Glide < Formula
 
   go_resource "github.com/Masterminds/cookoo" do
     url "https://github.com/Masterminds/cookoo.git",
-      :revision => "7020bd3519807e5e891fc73366551473dab38487"
+      :revision => "b85ae3d2668c9a4e99419bd98ea9803926a1e306"
   end
 
   go_resource "github.com/codegangsta/cli" do
@@ -35,12 +35,12 @@ class Glide < Formula
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "glide", "-ldflags", "-X main.version 0.1.0", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
+    system "go", "build", "-o", "glide", "-ldflags", "-X main.version 0.2.0", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
     bin.install "glide"
   end
 
   test do
-    version = pipe_output("#{bin}/glide version")
-    assert_match /0.1.0/, version
+    version = pipe_output("#{bin}/glide --version")
+    assert_match /0.2.0/, version
   end
 end

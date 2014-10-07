@@ -5,6 +5,8 @@ class Gifsicle < Formula
   url "http://www.lcdf.org/gifsicle/gifsicle-1.84.tar.gz"
   sha1 "131a3e53a1d49318b54f9c6f81a62726384e95d7"
 
+  option "with-x11", "Install gifview"
+
   depends_on :x11 => :optional
 
   def install

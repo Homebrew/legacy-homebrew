@@ -6,6 +6,7 @@ require 'requirements/mpi_dependency'
 require 'requirements/osxfuse_dependency'
 require 'requirements/python_dependency'
 require 'requirements/x11_dependency'
+require 'requirements/maximum_macos_requirement'
 
 class XcodeDependency < Requirement
   fatal true
