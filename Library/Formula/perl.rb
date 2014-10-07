@@ -8,6 +8,12 @@ class Perl < Formula
 
   head "git://perl5.git.perl.org/perl.git", :branch => "blead"
 
+  bottle do
+    sha1 "32ebb39f0504b9454e15a59db5fd4f7503748b58" => :mavericks
+    sha1 "423764b0a176cda78ccae5b7b6cb473822bd8bd9" => :mountain_lion
+    sha1 "3b76970b4fef0112a441473aaaceb817c05ed333" => :lion
+  end
+
   keg_only "OS X ships Perl and overriding that can cause unintended issues"
 
   option "with-dtrace", "Build with DTrace probes"
