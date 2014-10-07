@@ -8,9 +8,9 @@ class Ffmpeg < Formula
   head "git://git.videolan.org/ffmpeg.git"
 
   bottle do
-    sha1 "5b84336642ac553973b684f07a0079d1b31f6e37" => :mavericks
-    sha1 "41730850dbf466a075cb97548e693a3ab494a530" => :mountain_lion
-    sha1 "cc04d45926d8595547f7f5501aae500693f230ce" => :lion
+    sha1 "b476891765fc940292fa78c4da061895751e729c" => :mavericks
+    sha1 "544f1cde3092c93fc48cde7819734d569e4e2b50" => :mountain_lion
+    sha1 "7d90c8cfe90b524706f78a936f74824b6036f824" => :lion
   end
 
   option "without-x264", "Disable H.264 encoder"
