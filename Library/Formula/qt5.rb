@@ -36,10 +36,12 @@ class Qt5 < Formula
   option :universal
   option "with-docs", "Build documentation"
   option "developer", "Build and link with developer options"
+  option "with-oci", "Build with Oracle OCI plugin (ORACLE_HOME variable is needed)"
 
   depends_on "pkg-config" => :build
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
+  depends_on "mariadb" => :optional
   depends_on :xcode => :build
 
   def install
@@ -55,7 +57,7 @@ class Qt5 < Formula
     # https://bugreports.qt-project.org/browse/QTBUG-34382
     args << "-no-xcb"
 
-    args << "-plugin-sql-mysql" if build.with? "mysql"
+    args << "-plugin-sql-mysql" if build.with? "mysql" or build.with? "mariadb"
 
     if build.with? "d-bus"
       dbus_opt = Formula["d-bus"].opt_prefix
@@ -72,6 +74,12 @@ class Qt5 < Formula
 
     if !MacOS.prefer_64_bit? or build.universal?
       args << "-arch" << "x86"
+    end
+
+    if build.with? "oci"
+        args << "-I"+ ENV['ORACLE_HOME'] + "/sdk/include"
+        args << "-L"+ ENV['ORACLE_HOME']
+        args << "-plugin-sql-oci"
     end
 
     args << "-developer-build" if build.include? "developer"
