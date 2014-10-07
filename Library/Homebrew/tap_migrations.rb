@@ -15,6 +15,7 @@ TAP_MIGRATIONS = {
   "cmucl" => "homebrew/binary",
   "comparepdf" => "homebrew/boneyard",
   "connect" => "homebrew/boneyard",
+  "dart" => "dart-lang/dart",
   "denyhosts" => "homebrew/boneyard",
   "dotwrp" => "homebrew/science",
   "drizzle" => "homebrew/boneyard",
