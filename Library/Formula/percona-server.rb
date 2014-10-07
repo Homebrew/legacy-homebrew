@@ -20,6 +20,7 @@ class PerconaServer < Formula
   option 'with-embedded', 'Build the embedded server'
   option 'with-memcached', 'Build with InnoDB Memcached plugin'
   option 'enable-local-infile', 'Build with local infile loading support'
+  option 'without-server', 'Build only the mysql client'
 
   conflicts_with 'mysql-connector-c',
     :because => 'both install `mysql_config`'
@@ -103,26 +104,31 @@ class PerconaServer < Formula
 
     # Build with local infile loading support
     args << "-DENABLED_LOCAL_INFILE=1" if build.include? 'enable-local-infile'
+    
+    # Only build the client
+    args << "-DWITHOUT_SERVER=1" if build.include? 'without-server'
 
     system "cmake", *args
     system "make"
     system "make install"
 
-    # Don't create databases inside of the prefix!
-    # See: https://github.com/Homebrew/homebrew/issues/4975
-    rm_rf prefix+'data'
+    unless build.include? 'without-server'
+      # Don't create databases inside of the prefix!
+      # See: https://github.com/Homebrew/homebrew/issues/4975
+      rm_rf prefix+'data'
 
-    # Link the setup script into bin
-    bin.install_symlink prefix/"scripts/mysql_install_db"
+      # Link the setup script into bin
+      bin.install_symlink prefix/"scripts/mysql_install_db"
 
-    # Fix up the control script and link into bin
-    inreplace "#{prefix}/support-files/mysql.server" do |s|
-      s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
-      # pidof can be replaced with pgrep from proctools on Mountain Lion
-      s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
+      # Fix up the control script and link into bin
+      inreplace "#{prefix}/support-files/mysql.server" do |s|
+        s.gsub!(/^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2")
+        # pidof can be replaced with pgrep from proctools on Mountain Lion
+        s.gsub!(/pidof/, 'pgrep') if MacOS.version >= :mountain_lion
+      end
+
+      bin.install_symlink prefix/"support-files/mysql.server"
     end
-
-    bin.install_symlink prefix/"support-files/mysql.server"
 
     # Move mysqlaccess to libexec
     mv "#{bin}/mysqlaccess", libexec
@@ -130,12 +136,14 @@ class PerconaServer < Formula
   end
 
   def post_install
-    # Make sure that data directory exists
-    datadir.mkpath
-    unless File.exist? "#{datadir}/mysql/user.frm"
-      ENV['TMPDIR'] = nil
-      system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
-        "--basedir=#{prefix}", "--datadir=#{datadir}", "--tmpdir=/tmp"
+    unless build.include? 'without-server'
+      # Make sure that data directory exists
+      datadir.mkpath
+      unless File.exist? "#{datadir}/mysql/user.frm"
+        ENV['TMPDIR'] = nil
+        system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
+          "--basedir=#{prefix}", "--datadir=#{datadir}", "--tmpdir=/tmp"
+      end
     end
   end
 
@@ -146,7 +154,7 @@ class PerconaServer < Formula
     To connect:
         mysql -uroot
     EOS
-  end
+  end unless build.include? 'without-server'
 
   plist_options :manual => 'mysql.server start'
 
@@ -168,5 +176,5 @@ class PerconaServer < Formula
     </dict>
     </plist>
     EOS
-  end
+  end unless build.include? 'without-server'
 end
