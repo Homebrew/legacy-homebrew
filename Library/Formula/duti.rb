@@ -8,8 +8,12 @@ class Duti < Formula
 
   depends_on "autoconf" => :build
 
+  # Fix for hardcoded SDK paths. See https://github.com/moretension/duti/pull/7
   if MacOS.version == :yosemite
-    patch :DATA
+    patch do
+        url "https://github.com/moretension/duti/pull/7.patch"
+        sha1 "6bbdba1cb3cbfe5aad9c0560046216c68112f6e8"
+    end
   end
 
   def install
@@ -22,33 +26,3 @@ class Duti < Formula
     system "#{bin}/duti", "-x", "txt"
   end
 end
-
-__END__
-
-diff --git a/aclocal.m4 b/aclocal.m4
-index ed5d43a..ee08977 100644
---- a/aclocal.m4
-+++ b/aclocal.m4
-@@ -34,6 +34,11 @@ AC_DEFUN([DUTI_CHECK_SDK],
- 	    sdk_path="${sdk_path}/MacOSX10.9.sdk"
- 	    macosx_arches=""
- 	    ;;
-+
-+	darwin14*)
-+	    sdk_path="${sdk_path}/MacOSX10.10.sdk"
-+	    macosx_arches=""
-+	    ;;
- 	*)
- 	    AC_MSG_ERROR([${host_os} is not a supported system])
-     esac
-@@ -79,6 +84,10 @@ AC_DEFUN([DUTI_CHECK_DEPLOYMENT_TARGET],
- 	darwin13*)
- 	    dep_target="10.9"
- 	    ;;
-+
-+	darwin14*)
-+	    dep_target="10.10"
-+	    ;;
-     esac
- 
-     if test -z "$macosx_dep_target"; then
