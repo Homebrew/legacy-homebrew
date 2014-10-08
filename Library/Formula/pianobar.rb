@@ -2,10 +2,9 @@ require "formula"
 
 class Pianobar < Formula
   homepage "https://github.com/PromyLOPh/pianobar/"
-  url "https://github.com/PromyLOPh/pianobar/archive/2014.06.08.tar.gz"
-  sha256 "55f0105b8bf20af0a74f3ef2f928e81d9fdccc50fe86548f7db7992f523c3529"
+  url "http://6xq.net/projects/pianobar/pianobar-2014.09.28.tar.bz2"
+  sha256 "6bd10218ad5d68c4c761e02c729627d2581b4a6db559190e7e52dc5df177e68f"
   head "https://github.com/PromyLOPh/pianobar.git"
-  revision 1
 
   depends_on "pkg-config" => :build
   depends_on "libao"
@@ -19,12 +18,6 @@ class Pianobar < Formula
   fails_with :llvm do
     build 2334
     cause "Reports of this not compiling on Xcode 4"
-  end
-
-  # Fixes segfault in JSON response parser; fixed upstream, will be in next release
-  patch do
-    url "https://github.com/PromyLOPh/pianobar/commit/597b2ec46a3708d50ab9620d5bb4fdbd19cf8a6c.diff"
-    sha1 "d1a6215e72aeb95a77892898110d79e3737e3ba1"
   end
 
   def install
