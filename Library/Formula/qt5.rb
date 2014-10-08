@@ -35,6 +35,7 @@ class Qt5 < Formula
 
   option :universal
   option "with-docs", "Build documentation"
+  option "with-examples", "Build examples"
   option "developer", "Build and link with developer options"
 
   depends_on "pkg-config" => :build
@@ -48,9 +49,12 @@ class Qt5 < Formula
             "-system-zlib",
             "-qt-libpng", "-qt-libjpeg",
             "-confirm-license", "-opensource",
-            "-nomake", "examples",
             "-nomake", "tests",
             "-release"]
+
+    if not build.with? "examples"
+        args += ["-nomake", "examples"]
+    end
 
     # https://bugreports.qt-project.org/browse/QTBUG-34382
     args << "-no-xcb"
