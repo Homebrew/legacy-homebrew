@@ -5,6 +5,7 @@ class Pianobar < Formula
   url "https://github.com/PromyLOPh/pianobar/archive/2014.06.08.tar.gz"
   sha256 "55f0105b8bf20af0a74f3ef2f928e81d9fdccc50fe86548f7db7992f523c3529"
   head "https://github.com/PromyLOPh/pianobar.git"
+  revision 1
 
   depends_on "pkg-config" => :build
   depends_on "libao"
