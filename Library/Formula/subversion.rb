@@ -29,6 +29,8 @@ class Subversion < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
 
+  depends_on "homebrew/dupes/heimdal" if MacOS.version >= :yosemite
+
   # Always build against Homebrew versions instead of system versions for consistency.
   depends_on 'sqlite'
   depends_on :python => :optional
@@ -65,9 +67,15 @@ class Subversion < Formula
       # Passing 0 as the `unique` kwarg turns this behaviour off.
       inreplace 'SConstruct', 'unique=1', 'unique=0'
 
+      if MacOS.version >= :yosemite
+        gss_api = Formula["heimdal"].opt_prefix
+      else
+        gss_api = "/usr"
+      end
+
       ENV.universal_binary if build.universal?
       # scons ignores our compiler and flags unless explicitly passed
-      args = %W[PREFIX=#{serf_prefix} GSSAPI=/usr CC=#{ENV.cc}
+      args = %W[PREFIX=#{serf_prefix} GSSAPI=#{gss_api} CC=#{ENV.cc}
                 CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}
                 OPENSSL=#{Formula["openssl"].opt_prefix}]
       scons *args
