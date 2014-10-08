@@ -17,15 +17,6 @@ class CppNetlib < Formula
   end
 
   test do
-    (testpath/'CMakeLists.txt').write <<-EOM.undent
-        find_package(Boost COMPONENTS thread system)
-        include_directories(${Boost_INCLUDE_DIRS})
-        find_package(cppnetlib)
-        include_directories(${CPPNETLIB_INCLUDE_DIRS})
-        add_executable(test test.cpp)
-        target_link_libraries(test ${Boost_LIBRARIES})
-        target_link_libraries(test ${CPPNETLIB_LIBRARIES})
-    EOM
     (testpath/'test.cpp').write <<-EOS.undent
         #include <boost/network/protocol/http/client.hpp>
         int main(int argc, char *argv[]) {
@@ -35,9 +26,8 @@ class CppNetlib < Formula
             return 0;
         }
     EOS
-    ENV.cxx11
-    system "cmake", ".", *std_cmake_args
-    system "make", "test"
+    flags = ["-I#{include}", "-I#{Formula["boost"].include}", "-L#{lib}", "-L#{Formula["boost"].lib}", "-lboost_thread-mt", "-lboost_system-mt", "-lssl", "-lcrypto", "-lcppnetlib-client-connections", "-lcppnetlib-server-parsers", "-lcppnetlib-uri"] + ENV.cflags.to_s.split
+    system ENV.cxx, "-o", "test", "test.cpp", *flags
     system "./test"
   end
 end
