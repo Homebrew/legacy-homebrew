@@ -49,6 +49,34 @@ class Python < Formula
     sha1 "9926640cb7c8e273e4b451469a2b13d4b9df5ba3"
   end
 
+  # Patch to avoid conflicts with install.prefix set in distutils.cfg
+  # allows --user installs with homebrew Python
+  patch :p0, <<-EOF
+--- ./Lib/distutils/dist_orig.py
++++ ./Lib/distutils/dist.py
+@@ -588,6 +588,20 @@
+         opt_dict = self.get_option_dict(command)
+         for (name, value) in vars(opts).items():
+             opt_dict[name] = ("command line", value)
++
++        # HOMEBREW PATCH: Avoid conflict with prefix set in distutils.cfg
++        # override, rather than fail
++        sys_dir = os.path.dirname(sys.modules['distutils'].__file__)
++        # Look for the system config file
++        sys_file = os.path.join(sys_dir, "distutils.cfg")
++
++        if command == 'install' and 'prefix' in opt_dict and opt_dict['prefix'][0] == sys_file:
++            for conflict in ('user', 'home', 'install_base', 'install_platbase'):
++                if conflict in opt_dict and opt_dict[conflict][0] != sys_file:
++                    # consider prefix unset if it's being overridden
++                    opt_dict.pop('prefix')
++                    continue
++        # END HOMEBREW PATCH
+
+         return args
+
+EOF
+
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
   # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
   patch :DATA if build.with? "brewed-tk"
