@@ -52,9 +52,7 @@ class Qt5 < Formula
             "-nomake", "tests",
             "-release"]
 
-    if not build.with? "examples"
-        args += ["-nomake", "examples"]
-    end
+    args << "-nomake" << "examples" if build.without? "examples"
 
     # https://bugreports.qt-project.org/browse/QTBUG-34382
     args << "-no-xcb"
