@@ -5,6 +5,8 @@ DEPLOY_HOSTS="hostname1.net
 
 APP_USER=spark
 APP_GROUP=spark
+# optional SSH Key to login to deploy server
+#SSH_KEY=/path/to/keyfile.pem
 INSTALL_DIR=/home/spark/job-server
 LOG_DIR=/var/log/job-server
 PIDFILE=spark-jobserver.pid
