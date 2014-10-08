@@ -12,6 +12,17 @@ class Qt5HeadDownloadStrategy < GitDownloadStrategy
   end
 end
 
+class OracleHomeVar < Requirement
+    fatal true
+    satisfy ENV['ORACLE_HOME']
+
+    def message; <<-EOS.undent
+        In order to use --with-oci you have to set ORACLE_HOME shell variable
+        Check Oracle Instant Client docs for more
+        EOS
+    end
+end
+
 class Qt5 < Formula
   homepage "http://qt-project.org/"
   url "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.3/5.3.2/single/qt-everywhere-opensource-src-5.3.2.tar.gz"
@@ -40,9 +51,12 @@ class Qt5 < Formula
 
   depends_on "pkg-config" => :build
   depends_on "d-bus" => :optional
-  depends_on "mysql" => :optional
-  depends_on "mariadb" => :optional
+  depends_on :mysql => :optional
   depends_on :xcode => :build
+
+  if build.with? "oci"
+    depends_on OracleHomeVar
+  end
 
   def install
     ENV.universal_binary if build.universal?
@@ -57,7 +71,7 @@ class Qt5 < Formula
     # https://bugreports.qt-project.org/browse/QTBUG-34382
     args << "-no-xcb"
 
-    args << "-plugin-sql-mysql" if build.with? "mysql" or build.with? "mariadb"
+    args << "-plugin-sql-mysql" if build.with? "mysql"
 
     if build.with? "d-bus"
       dbus_opt = Formula["d-bus"].opt_prefix
