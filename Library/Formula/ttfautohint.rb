@@ -2,8 +2,8 @@ require "formula"
 
 class Ttfautohint < Formula
   homepage "http://www.freetype.org/ttfautohint"
-  url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.1/ttfautohint-1.1.tar.gz"
-  sha1 "db011a93ba15b2ac56ae27e3d8de0696b305ee7b"
+  url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.2/ttfautohint-1.2.tar.gz"
+  sha1 "d4c4c570139da9667744e086da57ee5a21872630"
 
   bottle do
     cellar :any
