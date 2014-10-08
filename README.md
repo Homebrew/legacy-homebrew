@@ -22,6 +22,8 @@ This repo contains the complete Spark job server project, including unit tests a
 | 0.3.1       | 0.9.1         |
 | 0.4.0       | 1.0.2         |
 
+For release notes, look in the `notes/` directory.  They should also be up on [ls.implicit.ly](http://ls.implicit.ly/spark-jobserver/spark-jobserver).
+
 ## Quick start / development mode
 
 You need to have [SBT](http://www.scala-sbt.org/release/docs/Getting-Started/Setup.html) installed.
