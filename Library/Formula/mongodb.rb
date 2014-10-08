@@ -1,10 +1,23 @@
 require "formula"
 
 class Mongodb < Formula
-  homepage "http://www.mongodb.org/"
-  url "http://downloads.mongodb.org/src/mongodb-src-r2.6.4.tar.gz"
-  sha1 "16dda6d8b1156194fc09b5ad72e58612d06abada"
+  homepage "https://www.mongodb.org/"
   revision 1
+
+  stable do
+    url "https://fastdl.mongodb.org/src/mongodb-src-r2.6.4.tar.gz"
+    sha1 "16dda6d8b1156194fc09b5ad72e58612d06abada"
+
+    # Review this patch with the next stable release.
+    # Note it is a different patch to the one applied to all builds further below.
+    # This is already fixed in the devel & HEAD builds.
+    if MacOS.version == :yosemite
+      patch do
+        url "https://github.com/mongodb/mongo/commit/759b6e8cabfb745b712b5ffd0748561129c3b421.diff"
+        sha1 "63d901ac81681fbe8b92dc918954b247990ab2fb"
+      end
+    end
+  end
 
   bottle do
     revision 1
@@ -14,22 +27,35 @@ class Mongodb < Formula
   end
 
   devel do
-    url "http://downloads.mongodb.org/src/mongodb-src-r2.7.6.tar.gz"
-    sha1 "862e3483a91f839352d2a5f2e0ad3aa7baa7314d"
+    url "https://fastdl.mongodb.org/src/mongodb-src-r2.7.7.tar.gz"
+    sha1 "ce223f5793bdf5b3e1420b0ede2f2403e9f94e5a"
+
+    # Remove this with the next devel release. Already merged in HEAD.
+    # https://github.com/mongodb/mongo/commit/8b8e90fbe6bf97990f6997a576acfa2828867bec
+    patch do
+      url "https://github.com/mongodb/mongo/commit/8b8e90fbe6bf97990f6997a576acfa2828867bec.diff"
+      sha1 "9f9ce609c7692930976690cae68aa4fce1f8bca3"
+    end
   end
 
+  # HEAD is currently failing. See https://jira.mongodb.org/browse/SERVER-15555
   head "https://github.com/mongodb/mongo.git"
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
-  depends_on "boost" => :optional
 
+  depends_on "boost" => :optional
   depends_on :macos => :snow_leopard
   depends_on "scons" => :build
   depends_on "openssl" => :optional
 
-  # Yosemite build fix, until solved upstream
-  # https://jira.mongodb.org/browse/SERVER-14204
-  patch :DATA if MacOS.version == "10.10"
+  # Review this patch with each release.
+  # This modifies the SConstruct file to include 10.10 as an accepted build option.
+  if MacOS.version == :yosemite
+    patch do
+      url "https://raw.githubusercontent.com/DomT4/scripts/fbc0cdaea9e62cebc7e8e6948fe23d7873104523/Homebrew_Resources/Mongodb/mongoyosemite.diff"
+      sha1 "f4824e93962154aad375eb29527b3137d07f358c"
+    end
+  end
 
   def install
     args = %W[
@@ -115,34 +141,3 @@ class Mongodb < Formula
     system "#{bin}/mongod", "--sysinfo"
   end
 end
-
-__END__
---- mongodb-2.6.4/SConstruct.orig	2014-09-23 15:09:49.000000000 +0200
-+++ mongodb-2.6.4/SConstruct	2014-09-23 15:10:13.000000000 +0200
-@@ -307,7 +307,7 @@
-            0, False)
-
- if darwin:
--    osx_version_choices = ['10.6', '10.7', '10.8', '10.9']
-+    osx_version_choices = ['10.6', '10.7', '10.8', '10.9', '10.10']
-     add_option("osx-version-min", "minimum OS X version to support", 1, True,
-                type = 'choice', default = osx_version_choices[0], choices = osx_version_choices)
-
---- mongodb-2.6.4/src/third_party/s2/util/endian/endian.h.orig	2014-09-28 01:08:51.000000000 +0200
-+++ mongodb-2.6.4/src/third_party/s2/util/endian/endian.h	2014-09-28 01:09:06.000000000 +0200
-@@ -177,15 +177,4 @@
-   }
- };
-
--
--// This one is safe to take as it's an extension
--#define htonll(x) ghtonll(x)
--
--// ntoh* and hton* are the same thing for any size and bytesex,
--// since the function is an involution, i.e., its own inverse.
--#define gntohl(x) ghtonl(x)
--#define gntohs(x) ghtons(x)
--#define gntohll(x) ghtonll(x)
--#define ntohll(x) htonll(x)
--
- #endif  // UTIL_ENDIAN_ENDIAN_H_
