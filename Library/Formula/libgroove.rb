@@ -2,8 +2,8 @@ require "formula"
 
 class Libgroove < Formula
   homepage "https://github.com/andrewrk/libgroove"
-  url "https://github.com/andrewrk/libgroove/archive/4.2.0.tar.gz"
-  sha1 "1d60506bf9c99cefbbe5c2eea24fd0c1c39c39f5"
+  url "https://github.com/andrewrk/libgroove/archive/4.2.1.tar.gz"
+  sha1 "cdcf4109266bb5eb38d62945891d37d907c3ccd3"
   revision 1
 
   bottle do
