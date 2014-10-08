@@ -405,12 +405,16 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     end
   end
 
+  def fetch_args
+    []
+  end
+
   def fetch_repo target, url, revision=nil, ignore_externals=false
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.directory? ? 'up' : 'checkout'
-    args = ['svn', svncommand]
+    args = ['svn', svncommand] + fetch_args
     # SVN shipped with XCode 3.1.4 can't force a checkout.
     args << '--force' unless MacOS.version == :leopard
     args << url unless target.directory?
@@ -425,17 +429,8 @@ StrictSubversionDownloadStrategy = SubversionDownloadStrategy
 
 # Download from SVN servers with invalid or self-signed certs
 class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
-  def fetch_repo target, url, revision=nil, ignore_externals=false
-    # Use "svn up" when the repository already exists locally.
-    # This saves on bandwidth and will have a similar effect to verifying the
-    # cache as it will make any changes to get the right revision.
-    svncommand = target.directory? ? 'up' : 'checkout'
-    args = ['svn', svncommand, '--non-interactive', '--trust-server-cert', '--force']
-    args << url unless target.directory?
-    args << target
-    args << '-r' << revision if revision
-    args << '--ignore-externals' if ignore_externals
-    quiet_safe_system(*args)
+  def fetch_args
+    %w[--non-interactive --trust-server-cert]
   end
 end
 
