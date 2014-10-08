@@ -8,9 +8,9 @@ class Arangodb < Formula
   head "https://github.com/triAGENS/ArangoDB.git", :branch => 'unstable'
 
   bottle do
-    sha1 "ece51b3ac2ba6ec5db359a2961a07e41858f255f" => :mavericks
-    sha1 "fb3a3c9c370bf33f5c339e29aa945ab5ab4590cd" => :mountain_lion
-    sha1 "c041fb81737c038051531d63e9fa419b4997da99" => :lion
+    sha1 "2e4806611b519f0063906675b6e846dccb951648" => :mavericks
+    sha1 "236fa46ecc3f46f148d7ca740b8becc35b5216be" => :mountain_lion
+    sha1 "9d707c9dfb6bf63f156b2d72820232e4fb2ad104" => :lion
   end
 
   depends_on 'go' => :build
