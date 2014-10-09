@@ -2,12 +2,11 @@ require "formula"
 
 class Wireshark < Formula
   homepage "http://www.wireshark.org"
-  revision 1
 
   stable do
-    url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.0.tar.bz2"
-    mirror "http://www.wireshark.org/download/src/all-versions/wireshark-1.12.0.tar.bz2"
-    sha1 "c7a94a9ec90c1ff9be2a7d7b813276e433509df9"
+    url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.1.tar.bz2"
+    mirror "http://www.wireshark.org/download/src/all-versions/wireshark-1.12.1.tar.bz2"
+    sha1 "e1508ea25ccf077c5a7fa2af3b88f3ae199f77fb"
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
