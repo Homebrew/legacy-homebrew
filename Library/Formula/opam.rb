@@ -56,14 +56,15 @@ class Opam < Formula
       cp r.cached_download, buildpath/"src_ext/#{original_name}"
     end
 
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make", "lib-ext"
     system "make"
     system "make", "man"
     system "make", "install"
 
     # mandir is not honored: https://github.com/ocaml/opam/issues/1753
-    share.install "#{prefix}/man"
+    # Fixed in head: https://github.com/OCamlPro/opam/commit/24916e8cb
+    share.install "#{prefix}/man" unless build.head?
 
     bash_completion.install "shell/opam_completion.sh"
     zsh_completion.install "shell/opam_completion_zsh.sh" => "_opam"
