@@ -19,5 +19,11 @@ class Panamax < Formula
     installed = File.exist?("#{prefix}/.panamax")
     assert installed
     assert_equal 0, $?.exitstatus
+
+    installed = File.exist?("#{var}/panamax")
+    assert installed
+    assert_equal 0, $?.exitstatus
+
+    system "#{prefix}/.panamax/panamax", "--version"
   end
 end
