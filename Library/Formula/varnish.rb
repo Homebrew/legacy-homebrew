@@ -2,8 +2,8 @@ require 'formula'
 
 class Varnish < Formula
   homepage 'http://www.varnish-cache.org/'
-  url 'https://repo.varnish-cache.org/source/varnish-4.0.0.tar.gz'
-  sha1 '6ad4fcf42a505a748ae993cb6ed579159e023633'
+  url 'https://repo.varnish-cache.org/source/varnish-4.0.2.tar.gz'
+  sha1 'af9a87a1e8536e895c1ebf0e09921a583dafe29a'
 
   bottle do
     sha1 "190bba2cf0e521b489cbd64cc698ba769b18cccd" => :mavericks
