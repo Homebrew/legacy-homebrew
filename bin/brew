@@ -1,5 +1,5 @@
 #!/bin/sh
-BREW_FILE_DIRECTORY=$(cd "${0%/*}" && pwd -P)
+BREW_FILE_DIRECTORY=$(cd "$(dirname "$0")" && pwd -P)
 export HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/${0##*/}"
 
 BREW_SYMLINK=$(readlink "$0")
