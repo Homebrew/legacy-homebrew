@@ -7,9 +7,9 @@ class PerconaServer < Formula
   sha1 '0071f263774d6acb9e8991a7574a79cc2b83bc0a'
 
   bottle do
-    sha1 "b8e9a7397a2aafceeb8743ff80902f860d7e4e3a" => :mavericks
-    sha1 "098cd5e0030eda037c3d186ad56bf1ab4ffa507e" => :mountain_lion
-    sha1 "81bb3111f982ecd7340d55abfafbcd2b50891637" => :lion
+    sha1 "0bc089f58e454b66a27a87f462c68f4a77b507ea" => :mavericks
+    sha1 "d925b7eda20b620a41f00776a186745f20672c44" => :mountain_lion
+    sha1 "170f8cc74dc8995e2c863a59ee89dce444b9e42c" => :lion
   end
 
   depends_on 'cmake' => :build
