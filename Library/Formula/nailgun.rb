@@ -19,7 +19,6 @@ class Nailgun < Formula
       PREFIX=#{prefix}
     ]
     system "make", "install", *args
-    bin.install "ng"
     resource("nailgun-jar").stage { libexec.install "nailgun-server-#{version}.jar" }
     bin.write_jar_script libexec/"nailgun-server-#{version}.jar", "ng-server", "-server"
   end
