@@ -1,12 +1,5 @@
 require "formula"
 
-class PostgresqlInstalled < Requirement
-  fatal true
-  default_formula "postgresql"
-
-  satisfy { which "pg_config" }
-end
-
 class Psqlodbc < Formula
   homepage "http://www.postgresql.org/"
   url "http://ftp.postgresql.org/pub/odbc/versions/src/psqlodbc-09.03.0210.tar.gz"
@@ -23,7 +16,7 @@ class Psqlodbc < Formula
 
   depends_on "openssl"
   depends_on "unixodbc"
-  depends_on PostgresqlInstalled
+  depends_on :postgresql
 
   def install
     args = ["--prefix=#{prefix}",
