@@ -9,7 +9,7 @@ class Luajit < Formula
 
   skip_clean 'lib/lua/5.1', 'share/lua/5.1'
 
-  option 'enable-debug', 'Build with debugging symbols'
+  option "enable-debug", "Build with debugging symbols"
 
   def install
     # 1 - Override the hardcoded gcc.
@@ -35,10 +35,10 @@ class Luajit < Formula
   end
 
   test do
-    system '#{bin}/luajit', '-e', <<-EOS.strip
-      local ffi = require('ffi')
-      ffi.cdef('int printf(const char *fmt, ...);')
-      ffi.C.printf('Hello %s!\\n', '#{ENV['USER']}')
+    system "#{bin}/luajit", "-e", <<-EOS.strip
+      local ffi = require("ffi")
+      ffi.cdef("int printf(const char *fmt, ...);")
+      ffi.C.printf("Hello %s!\\n", "#{ENV['USER']}")
       EOS
   end
 end
