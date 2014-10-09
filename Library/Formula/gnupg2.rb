@@ -39,6 +39,7 @@ class Gnupg2 < Formula
       s.gsub! "../../agent/gpg-agent --quiet --daemon sh",
               "gpg-agent --quiet --daemon sh"
     end
+    inreplace "tools/gpgkey2ssh.c", "gpg --list-keys", "gpg2 --list-keys"
 
     inreplace "g10/keygen.c", "max=4096", "max=8192" if build.include? "8192"
 
