@@ -2,8 +2,8 @@ require 'formula'
 
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
-  url 'https://static.rust-lang.org/dist/rust-0.11.0.tar.gz'
-  sha1 'f849e16e03b474143c575503ae82da7577a2170f'
+  url 'https://static.rust-lang.org/dist/rust-0.12.0.tar.gz'
+  sha1 'a9d8a5265f66cef9b200d6e6758985a5900f5a28'
 
   head 'https://github.com/rust-lang/rust.git'
 
