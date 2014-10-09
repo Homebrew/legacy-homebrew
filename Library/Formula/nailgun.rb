@@ -19,10 +19,10 @@ class Nailgun < Formula
 
   test do
     t = Thread.new { system "ng-server 8765" }
-    sleep(0.2) # the server does not begin listening as fast as we can start a background process
-    system "ng --nailgun-port 8765 ng-version"
+    sleep 0.2 # the server does not begin listening as fast as we can start a background process
+    system "ng", "--nailgun-port", "8765", "ng-version"
     # ng-stop always returns a non-zero exit code even on successful exit
-    system "ng --nailgun-port 8765 ng-stop || true"
+    `ng --nailgun-port 8765 ng-stop || true`
     t.join
   end
 end
