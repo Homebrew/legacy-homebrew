@@ -2,8 +2,8 @@ require 'formula'
 
 class Ceylon < Formula
   homepage 'http://ceylon-lang.org/'
-  url 'http://ceylon-lang.org/download/dist/1_0_0'
-  sha1 '24737e1816c16497cb4b504d857530e1a171c2bf'
+  url 'http://ceylon-lang.org/download/dist/1_1_0'
+  sha1 '91d84e96f3a4468cc2e7de5a4003d5e945bd7c20'
 
   def install
     rm_f Dir["bin/*.bat"]
@@ -22,9 +22,9 @@ class Ceylon < Formula
 
   test do
     cd "#{libexec}/samples/helloworld" do
-      system "#{bin}/ceylon", "compile", "com.acme.helloworld"
-      system "#{bin}/ceylon", "doc", "--non-shared", "com.acme.helloworld"
-      system "#{bin}/ceylon", "run", "com.acme.helloworld/1.0.0", "John"
+      system "#{bin}/ceylon", "compile", "--encoding", "UTF-8", "com.example.helloworld"
+      system "#{bin}/ceylon", "doc", "--encoding", "UTF-8", "--non-shared", "com.example.helloworld"
+      system "#{bin}/ceylon", "run", "com.example.helloworld/1.1.0", "John"
     end
   end
 end
