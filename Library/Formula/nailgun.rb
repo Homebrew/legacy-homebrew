@@ -19,7 +19,7 @@ class Nailgun < Formula
 
   test do
     system "ng-server 8765 &"
-    sleep(0.1) # the server does not begin listening as fast as
+    sleep(0.1) # the server does not begin listening as fast as we can start a background process
     system "ng --nailgun-port 8765 ng-version"
     # ng-stop always returns a non-zero exit code even on successful exit
     system "ng --nailgun-port 8765 ng-stop || true"
