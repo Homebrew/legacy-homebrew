@@ -19,10 +19,9 @@ class Mongodb < Formula
   end
 
   bottle do
-    revision 1
-    sha1 "f0d3195b48bbfa726f7c263a841610f5e96d3527" => :mavericks
-    sha1 "d4cb743f2d8bd7c72846f361199e5e6021724d9f" => :mountain_lion
-    sha1 "d03344c6d6bea73d8480af83b32f0337d35df5d9" => :lion
+    sha1 "311c0ab255cff7c8a47351374f609cff6fa7cd7c" => :mavericks
+    sha1 "9330df7505b9fc93c3cabf8cb68b7cefee91bf5f" => :mountain_lion
+    sha1 "4700ba1d8c5ac9cca8acde03d161a1526ae6f6eb" => :lion
   end
 
   devel do
