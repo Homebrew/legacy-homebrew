@@ -2,18 +2,17 @@ require "formula"
 
 class Mongodb < Formula
   homepage "https://www.mongodb.org/"
-  revision 1
 
   stable do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r2.6.4.tar.gz"
-    sha1 "16dda6d8b1156194fc09b5ad72e58612d06abada"
+    url "https://fastdl.mongodb.org/src/mongodb-src-r2.6.5.tar.gz"
+    sha1 "f5a68505a0de1152b534d62a8f0147d258d503a0"
 
     # Review this patch with the next stable release.
     # Note it is a different patch to the one applied to all builds further below.
     # This is already fixed in the devel & HEAD builds.
     if MacOS.version == :yosemite
       patch do
-        url "https://github.com/mongodb/mongo/commit/759b6e8cabfb745b712b5ffd0748561129c3b421.diff"
+        url "https://github.com/mongodb/mongo/commit/759b6e8.diff"
         sha1 "63d901ac81681fbe8b92dc918954b247990ab2fb"
       end
     end
@@ -31,9 +30,9 @@ class Mongodb < Formula
     sha1 "ce223f5793bdf5b3e1420b0ede2f2403e9f94e5a"
 
     # Remove this with the next devel release. Already merged in HEAD.
-    # https://github.com/mongodb/mongo/commit/8b8e90fbe6bf97990f6997a576acfa2828867bec
+    # https://github.com/mongodb/mongo/commit/8b8e90fb
     patch do
-      url "https://github.com/mongodb/mongo/commit/8b8e90fbe6bf97990f6997a576acfa2828867bec.diff"
+      url "https://github.com/mongodb/mongo/commit/8b8e90fb.diff"
       sha1 "9f9ce609c7692930976690cae68aa4fce1f8bca3"
     end
   end
@@ -52,7 +51,7 @@ class Mongodb < Formula
   # This modifies the SConstruct file to include 10.10 as an accepted build option.
   if MacOS.version == :yosemite
     patch do
-      url "https://raw.githubusercontent.com/DomT4/scripts/fbc0cdaea9e62cebc7e8e6948fe23d7873104523/Homebrew_Resources/Mongodb/mongoyosemite.diff"
+      url "https://raw.githubusercontent.com/DomT4/scripts/fbc0cda/Homebrew_Resources/Mongodb/mongoyosemite.diff"
       sha1 "f4824e93962154aad375eb29527b3137d07f358c"
     end
   end
