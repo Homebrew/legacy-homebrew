@@ -13,7 +13,7 @@ module Homebrew
 
       f.deps.each do |dep|
         if dep.optional? || dep.recommended?
-          deps << dep.to_formula.name if tab.with?(dep.to_formula.name)
+          deps << dep.to_formula.name if tab.with?(dep)
         else
           deps << dep.to_formula.name
         end
