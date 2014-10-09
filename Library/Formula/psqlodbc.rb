@@ -4,15 +4,10 @@ class Psqlodbc < Formula
   homepage "http://www.postgresql.org/"
   url "http://ftp.postgresql.org/pub/odbc/versions/src/psqlodbc-09.03.0210.tar.gz"
   sha1 "e1eb147ef0452e1f7b0f9e102dacb5654a580dba"
-  bottle do
-    cellar :any
-    revision 1
-    sha1 "14da3adcbbb44feeb9269b817ef83ae96992dc0c" => :mavericks
-    sha1 "59cae2eafaecc1d2f844d43c56591586b31cbfc5" => :mountain_lion
-    sha1 "d9e55bbc56370d92b49de3c18f34948d0ad7bbf7" => :lion
-  end
+  revision 2
 
-  revision 1
+  bottle do
+  end
 
   depends_on "openssl"
   depends_on "unixodbc"
