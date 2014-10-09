@@ -8,9 +8,9 @@ class Rust < Formula
   head 'https://github.com/rust-lang/rust.git'
 
   bottle do
-    sha1 "80cb5b7ab75da8fdab98f56441a69a2a3e575595" => :mavericks
-    sha1 "476b4a75e28c68fec195535ed2aaf8082af9597f" => :mountain_lion
-    sha1 "e4246f7544502ac83c4485e82660ab5bcce96979" => :lion
+    sha1 "8cc3fabfd93f5554e022d9f41f6950c27d427b44" => :mavericks
+    sha1 "0940a33152968c39b9f6d5f91b5405b92e16ebe7" => :mountain_lion
+    sha1 "c626fbcafc7b21533dd9df9a46cc124fa34a3321" => :lion
   end
 
   def install
