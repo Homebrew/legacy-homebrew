@@ -2,14 +2,14 @@ require "formula"
 
 class Ttfautohint < Formula
   homepage "http://www.freetype.org/ttfautohint"
-  url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.1/ttfautohint-1.1.tar.gz"
-  sha1 "db011a93ba15b2ac56ae27e3d8de0696b305ee7b"
+  url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.2/ttfautohint-1.2.tar.gz"
+  sha1 "d4c4c570139da9667744e086da57ee5a21872630"
 
   bottle do
     cellar :any
-    sha1 "35dab86922a01bdb464f3f8e224896a2af96d852" => :mavericks
-    sha1 "0d24c11620451a6e79f50e97ebae1671ef84e283" => :mountain_lion
-    sha1 "f498b23d089d1d59a72e4c9626f8b7d7cdad78f0" => :lion
+    sha1 "560b377ed563e03032b8ca14a6e23cf051c9e855" => :mavericks
+    sha1 "c2958652ba83dc5d2a34baebd2041b9b6832eb98" => :mountain_lion
+    sha1 "747d9dec24fffae7b4c2d5a76fe69527cc5b837d" => :lion
   end
 
   depends_on "pkg-config" => :build

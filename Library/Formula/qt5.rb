@@ -12,6 +12,17 @@ class Qt5HeadDownloadStrategy < GitDownloadStrategy
   end
 end
 
+class OracleHomeVar < Requirement
+  fatal true
+  satisfy ENV["ORACLE_HOME"]
+
+  def message; <<-EOS.undent
+      To use --with-oci you have to set the ORACLE_HOME environment variable.
+      Check Oracle Instant Client documentation for more information.
+    EOS
+  end
+end
+
 class Qt5 < Formula
   homepage "http://qt-project.org/"
   url "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.3/5.3.2/single/qt-everywhere-opensource-src-5.3.2.tar.gz"
@@ -35,12 +46,16 @@ class Qt5 < Formula
 
   option :universal
   option "with-docs", "Build documentation"
+  option "with-examples", "Build examples"
   option "developer", "Build and link with developer options"
+  option "with-oci", "Build with Oracle OCI plugin"
 
   depends_on "pkg-config" => :build
   depends_on "d-bus" => :optional
-  depends_on "mysql" => :optional
+  depends_on :mysql => :optional
   depends_on :xcode => :build
+
+  depends_on OracleHomeVar if build.with? "oci"
 
   def install
     ENV.universal_binary if build.universal?
@@ -48,9 +63,10 @@ class Qt5 < Formula
             "-system-zlib",
             "-qt-libpng", "-qt-libjpeg",
             "-confirm-license", "-opensource",
-            "-nomake", "examples",
             "-nomake", "tests",
             "-release"]
+
+    args << "-nomake" << "examples" if build.without? "examples"
 
     # https://bugreports.qt-project.org/browse/QTBUG-34382
     args << "-no-xcb"
@@ -72,6 +88,12 @@ class Qt5 < Formula
 
     if !MacOS.prefer_64_bit? or build.universal?
       args << "-arch" << "x86"
+    end
+
+    if build.with? "oci"
+      args << "-I#{ENV['ORACLE_HOME']}/sdk/include"
+      args << "-L{ENV['ORACLE_HOME']}"
+      args << "-plugin-sql-oci"
     end
 
     args << "-developer-build" if build.include? "developer"

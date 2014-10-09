@@ -119,6 +119,8 @@ def check_for_stray_dylibs
   white_list = [
     "libfuse.2.dylib", # MacFuse
     "libfuse_ino64.2.dylib", # MacFuse
+    "libmacfuse_i32.2.dylib", # OSXFuse MacFuse compatibility layer
+    "libmacfuse_i64.2.dylib", # OSXFuse MacFuse compatibility layer
     "libosxfuse_i32.2.dylib", # OSXFuse
     "libosxfuse_i64.2.dylib", # OSXFuse
   ]
@@ -186,6 +188,7 @@ end
 
 def check_for_stray_headers
   white_list = [
+    "fuse.h", # MacFuse
     "fuse/**/*.h", # MacFuse
     "macfuse/**/*.h", # OSXFuse MacFuse compatibility layer
     "osxfuse/**/*.h", # OSXFuse
@@ -350,7 +353,11 @@ end
 def check_for_bad_install_name_tool
   return if MacOS.version < "10.9"
 
-  libs = `otool -L /usr/bin/install_name_tool`
+  libs = Pathname.new("/usr/bin/install_name_tool").dynamically_linked_libraries
+
+  # otool may not work, for example if the Xcode license hasn't been accepted yet
+  return if libs.empty?
+
   unless libs.include? "/usr/lib/libxcselect.dylib" then <<-EOS.undent
     You have an outdated version of /usr/bin/install_name_tool installed.
     This will cause binary package installations to fail.

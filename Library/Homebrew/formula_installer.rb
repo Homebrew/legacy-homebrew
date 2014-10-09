@@ -384,6 +384,7 @@ class FormulaInstaller
       audit_lib
       audit_man
       audit_info
+      audit_include
     end
 
     c = Caveats.new(f)
@@ -669,6 +670,10 @@ class FormulaInstaller
 
   def audit_info
     print_check_output(check_infopages)
+  end
+
+  def audit_include
+    print_check_output(check_shadowed_headers)
   end
 
   private
