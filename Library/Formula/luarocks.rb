@@ -7,9 +7,9 @@ class Luarocks < Formula
   revision 1
 
   bottle do
-    sha1 "eabd3d0f2bb7979ac831ce948e8d288569d2a0c8" => :mavericks
-    sha1 "fb6956c0ee42f3bfdde280693cf28d32b3587e55" => :mountain_lion
-    sha1 "140ee3fd55954d1fd30984620d8f109056ef56f9" => :lion
+    sha1 "0cebc71f659d0c4ad071ca92d58af25e2282440d" => :mavericks
+    sha1 "a7194e000987a02bb3b990dffdb59b6edaa4a53b" => :mountain_lion
+    sha1 "105125da47afe836fd0aac346be43c6c4a927abc" => :lion
   end
 
   head "https://github.com/keplerproject/luarocks.git"
