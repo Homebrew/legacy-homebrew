@@ -1,19 +1,16 @@
-require 'formula'
+require "formula"
 
 class Luarocks < Formula
   homepage "http://luarocks.org"
+  url "http://luarocks.org/releases/luarocks-2.2.0.tar.gz"
+  sha1 "e2de00f070d66880f3766173019c53a23229193d"
 
-  stable do
-    url "http://luarocks.org/releases/luarocks-2.2.0.tar.gz"
-    sha1 "e2de00f070d66880f3766173019c53a23229193d"
-
-    # Remove writability checks in the install script.
-    # Homebrew checks that its install targets are writable, or fails with
-    # appropriate messaging if not. The check that luarocks does has been
-    # seen to have false positives, so remove it.
-    # TODO: better document the false positive cases, or remove this patch.
-    patch :DATA
-  end
+  # Remove writability checks in the install script.
+  # Homebrew checks that its install targets are writable, or fails with
+  # appropriate messaging if not. The check that luarocks does has been
+  # seen to have false positives, so remove it.
+  # FIXTHIS: better document the false positive cases, or remove this patch.
+  patch :DATA
 
   bottle do
     sha1 "eabd3d0f2bb7979ac831ce948e8d288569d2a0c8" => :mavericks
@@ -23,7 +20,7 @@ class Luarocks < Formula
 
   head "https://github.com/keplerproject/luarocks.git"
 
-  depends_on 'lua'
+  depends_on "lua"
 
   fails_with :llvm do
     cause "Lua itself compiles with llvm, but may fail when other software tries to link."
@@ -38,7 +35,7 @@ class Luarocks < Formula
 
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
@@ -52,7 +49,7 @@ class Luarocks < Formula
   test do
     opoo "Luarocks test script installs 'lpeg'"
     system "#{bin}/luarocks", "install", "lpeg"
-    system "lua", "-llpeg", "-e", 'print ("Hello World!")'
+    system "lua", "-llpeg", "-e", "print ('Hello World!')"
   end
 end
 
