@@ -4,15 +4,8 @@ class Ledger < Formula
   homepage "http://ledger-cli.org"
 
   stable do
-    url "https://github.com/ledger/ledger/archive/v3.0.3.tar.gz"
-    sha1 "b65c2dc78f366fc3c2db9e2b7900b727b91f4656"
-
-    # boost 1.56 compatibility
-    # https://groups.google.com/forum/#!topic/ledger-cli/9HwEJcD0My4
-    patch do
-      url "https://github.com/ledger/ledger/commit/d5592ea1e325131d4a7abf5e98f67fcb5cf22287.diff"
-      sha1 "1225b4586f74ef71df8a575b1a868dd2a46a4cf7"
-    end
+    url "https://github.com/ledger/ledger/archive/v3.1.tar.gz"
+    sha1 "549aa375d4802e9dd4fd153c45ab64d8ede94afc"
 
     resource "utfcpp" do
       url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
@@ -21,9 +14,8 @@ class Ledger < Formula
   end
 
   bottle do
-    revision 1
-    sha1 "a3c72e2038d910c22c87899b8b02072ac5300919" => :mavericks
-    sha1 "102be1e9b363890262e44634a0c26c8d3fd7bd0d" => :mountain_lion
+    sha1 "71811722531f13093e8664e5178af7f07180e5a1" => :mavericks
+    sha1 "4f05d2f03df1d7f1709ca4a5ecb832d34cb2fbfe" => :mountain_lion
   end
 
   head "https://github.com/ledger/ledger.git", :branch => "master"
@@ -38,9 +30,9 @@ class Ledger < Formula
   depends_on :python => :optional
 
   boost_opts = []
-  boost_opts << "with-python" if build.with? "python"
   boost_opts << "c++11" if MacOS.version < "10.9"
   depends_on "boost" => boost_opts
+  depends_on "boost-python" => boost_opts if build.with? "python"
 
   needs :cxx11
 

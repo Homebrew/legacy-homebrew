@@ -22,10 +22,8 @@ class LibunwindHeaders < Formula
       inreplace "include/libunwind.h", /__OSX_AVAILABLE_STARTING\(__MAC_NA,.*\)/,
         "__attribute__((unavailable))"
 
-      %w[include/libunwind.h include/unwind.h src/AddressSpace.hpp
-        src/InternalMacros.h].each do |header|
-        inreplace header, "Availability.h", "AvailabilityMacros.h"
-      end
+      inreplace %w[include/libunwind.h include/unwind.h src/AddressSpace.hpp src/InternalMacros.h],
+        "Availability.h", "AvailabilityMacros.h"
     end
 
     include.install Dir['include/*']

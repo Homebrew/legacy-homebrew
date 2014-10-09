@@ -4,12 +4,17 @@ require "formula"
 class Node < Formula
   homepage "http://nodejs.org/"
   url "http://nodejs.org/dist/v0.10.32/node-v0.10.32.tar.gz"
-  sha1 "1d748171ba2a9568853ccec442c5f62c46fccc20"
+  sha256 "c2120d0e3d2d191654cb11dbc0a33a7216d53732173317681da9502be0030f10"
 
   bottle do
     sha1 "f9f083a1cf13cf3703c764d639702627968e2234" => :mavericks
     sha1 "83a01d1079ed1bc02a7c9fc7cefa589027778b15" => :mountain_lion
     sha1 "a2dbe4a3358e98813fbc6c83cfa79120177e6fc8" => :lion
+  end
+
+  devel do
+    url "http://nodejs.org/dist/v0.11.14/node-v0.11.14.tar.gz"
+    sha256 "ce08b0a2769bcc135ca25639c9d411a038e93e0f5f5a83000ecde9b763c4dd83"
   end
 
   head "https://github.com/joyent/node.git"

@@ -3,8 +3,8 @@ require "formula"
 class ElixirBuild < Formula
   homepage "https://github.com/mururu/elixir-build"
   head "https://github.com/mururu/elixir-build.git"
-  url "https://github.com/mururu/elixir-build/archive/v20140421.tar.gz"
-  sha1 "844b8e3e05c5606d272e2dca0f92dfac56bb58d5"
+  url "https://github.com/mururu/elixir-build/archive/v20141001.tar.gz"
+  sha1 "12412f1c75924fe1ef3f5bca222616a7db614146"
 
   def install
     ENV["PREFIX"] = prefix

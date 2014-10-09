@@ -41,9 +41,14 @@ class Ruby < Formula
       --prefix=#{prefix} --enable-shared --disable-silent-rules
       --with-sitedir=#{HOMEBREW_PREFIX}/lib/ruby/site_ruby
       --with-vendordir=#{HOMEBREW_PREFIX}/lib/ruby/vendor_ruby
-      ]
+    ]
+
+    if build.universal?
+      ENV.universal_binary
+      args << "--with-arch=#{Hardware::CPU.universal_archs.join(",")}"
+    end
+
     args << "--program-suffix=21" if build.with? "suffix"
-    args << "--with-arch=#{Hardware::CPU.universal_archs.join(',')}" if build.universal?
     args << "--with-out-ext=tk" if build.without? "tcltk"
     args << "--disable-install-doc" if build.without? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
@@ -69,7 +74,11 @@ class Ruby < Formula
 
     # Customize rubygems to look/install in the global gem directory
     # instead of in the Cellar, making gems last across reinstalls
-    (lib/"ruby/2.1.0/rubygems/defaults/operating_system.rb").write rubygems_config
+    (lib/"ruby/#{abi_version}/rubygems/defaults/operating_system.rb").write rubygems_config
+  end
+
+  def abi_version
+    "2.1.0"
   end
 
   def rubygems_config; <<-EOS.undent
@@ -86,7 +95,7 @@ class Ruby < Formula
           "lib",
           "ruby",
           "gems",
-          "2.1.0"
+          "#{abi_version}"
         ]
 
         @default_dir ||= File.join(*path)

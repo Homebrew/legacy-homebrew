@@ -7,20 +7,9 @@ D = File.expand_path(File.dirname(__FILE__)).freeze
 
 def exec *args
   # prevent fork-bombs
-  arg0 = if args.size == 1
-    args.first.split(' ')
-  else
-    args
-  end.first
-  return if arg0 =~ /^#{F}/i
-  return if File.expand_path(arg0) == File.expand_path(__FILE__)
-
-  if args[1] == '-print-path' and File.executable? args[0]
-    puts args[0]
-    exit 0
-  else
-    Kernel.exec *args
-  end
+  arg0 = args.first
+  return if arg0 =~ /^#{F}/i || File.expand_path(arg0) == File.expand_path(__FILE__)
+  super
 end
 
 case F.downcase

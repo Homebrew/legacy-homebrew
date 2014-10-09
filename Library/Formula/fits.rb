@@ -24,10 +24,8 @@ class Fits < Formula
     # fits-env.sh is a helper script that sets up environment
     # variables, so we want to tuck this away in libexec
     libexec.install 'fits-env.sh'
-    %w[fits.sh fits-ngserver.sh].each do |file|
-      inreplace file, '"$(dirname $BASH_SOURCE)/fits-env.sh"',
-        "'#{libexec}/fits-env.sh'"
-    end
+    inreplace %w[fits.sh fits-ngserver.sh],
+      '"$(dirname $BASH_SOURCE)/fits-env.sh"', "'#{libexec}/fits-env.sh'"
 
     bin.install 'fits.sh' => 'fits'
     bin.install 'fits-ngserver.sh' => 'fits-ngserver'

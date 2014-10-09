@@ -3,6 +3,7 @@ require 'formula'
 class Unixodbc < Formula
   homepage 'http://www.unixodbc.org/'
   url 'http://www.unixodbc.org/unixODBC-2.3.2.tar.gz'
+  mirror 'ftp://mirror.ovh.net/gentoo-distfiles/distfiles/unixODBC-2.3.2.tar.gz'
   sha1 'f84520fd58143625b614fde551435178a558ee2e'
 
   bottle do

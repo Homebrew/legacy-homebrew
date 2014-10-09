@@ -567,6 +567,8 @@ class FormulaAuditor
     audit_check_output(check_generic_executables(f.bin))
     audit_check_output(check_non_executables(f.sbin))
     audit_check_output(check_generic_executables(f.sbin))
+    audit_check_output(check_shadowed_headers)
+    audit_check_output(check_easy_install_pth(f.lib))
   end
 
   def audit

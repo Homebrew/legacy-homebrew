@@ -10,6 +10,10 @@ class Bochs < Formula
   depends_on 'gtk+'
 
   def install
+    # upstream Makefile bug
+    # https://github.com/Homebrew/homebrew/pull/32832#issuecomment-57586763
+    inreplace "configure", 'if test "$have_ltdl" = 1', 'if 0'
+
     system "./configure", "--prefix=#{prefix}",
                           "--with-x11",
                           "--enable-debugger",
@@ -37,12 +41,6 @@ class Bochs < Formula
                           "--enable-clgd54xx",
                           "--with-term",
                           "--enable-ne2000"
-
-    # See: http://sourceforge.net/p/bochs/discussion/39592/thread/9c22887c
-    inreplace 'config.h', 'define BX_HAVE_LTDL 1', 'define BX_HAVE_LTDL 0'
-    inreplace 'Makefile' do |s|
-      s.gsub! /\-lltdl/, 'ltdl.o'
-    end
 
     system "make"
     system "make install"

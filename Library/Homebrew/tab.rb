@@ -81,7 +81,8 @@ class Tab < OpenStruct
             :compiler => :clang
   end
 
-  def with? name
+  def with? val
+    name = val.respond_to?(:option_name) ? val.option_name : val
     include?("with-#{name}") || unused_options.include?("without-#{name}")
   end
 

@@ -1,9 +1,10 @@
-require 'formula'
+require "formula"
 
 class Libyaml < Formula
-  homepage 'http://pyyaml.org/wiki/LibYAML'
-  url 'http://pyyaml.org/download/libyaml/yaml-0.1.6.tar.gz'
-  sha1 'f3d404e11bec3c4efcddfd14c42d46f1aabe0b5d'
+  homepage "http://pyyaml.org/wiki/LibYAML"
+  url "http://pyyaml.org/download/libyaml/yaml-0.1.6.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/liby/libyaml/libyaml_0.1.6.orig.tar.gz"
+  sha1 "f3d404e11bec3c4efcddfd14c42d46f1aabe0b5d"
 
   bottle do
     cellar :any
@@ -18,6 +19,6 @@ class Libyaml < Formula
     ENV.universal_binary if build.universal?
 
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

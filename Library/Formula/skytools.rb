@@ -2,8 +2,8 @@ require 'formula'
 
 class Skytools < Formula
   homepage 'http://pgfoundry.org/projects/skytools/'
-  url 'http://pgfoundry.org/frs/download.php/3397/skytools-3.1.5.tar.gz'
-  sha1 'c94eb1d86f9b33e49b929e02cefda95150e2fdcf'
+  url 'http://pgfoundry.org/frs/download.php/3622/skytools-3.2.tar.gz'
+  sha1 '8e6e0f594c1c97e138ca6a3c1e621f5433de2559'
 
   # Works only with homebrew postgres:
   # https://github.com/Homebrew/homebrew/issues/16024

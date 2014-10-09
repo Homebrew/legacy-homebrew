@@ -2,16 +2,17 @@ require "formula"
 
 class Dos2unix < Formula
   homepage "http://waterlan.home.xs4all.nl/dos2unix.html"
-  url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.0.6.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/6.0.6/dos2unix-6.0.6.tar.gz"
-  sha1 "95db60b4483fc66d93f96fb810e3eccd58e22dbb"
+  url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.0.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.0.0/dos2unix-7.0.tar.gz"
+  sha1 "a0c5d20b95f87556ddad226217cc9998c5a0bb70"
+
+  bottle do
+    sha1 "a616d74ea7f23a01f0cdc47a025eb3a258518ca1" => :mavericks
+    sha1 "2f977ec55907fdc5f707a24ad550d5f92853f482" => :mountain_lion
+    sha1 "a71748546f87f402ec70eb252c4c72a6812c4163" => :lion
+  end
 
   depends_on "gettext"
-
-  devel do
-    url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-6.1-beta5.tar.gz"
-    sha1 "39c2a344fc5ce7e3192c05cdd82835ca4110e9fa"
-  end
 
   def install
     gettext = Formula["gettext"]
