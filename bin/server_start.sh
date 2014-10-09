@@ -55,8 +55,8 @@ if [ -f "$PIDFILE" ] && kill -0 $(cat "$PIDFILE"); then
 fi
 
 if [ -z "$LOG_DIR" ]; then
-  echo "LOG_DIR empty; logging will go to /tmp/job-server"
   LOG_DIR=/tmp/job-server
+  echo "LOG_DIR empty; logging will go to $LOG_DIR"
 fi
 mkdir -p $LOG_DIR
 
