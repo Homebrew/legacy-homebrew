@@ -3,7 +3,7 @@ require 'formula'
 class Rust < Formula
   homepage 'http://www.rust-lang.org/'
   url 'https://static.rust-lang.org/dist/rust-0.12.0.tar.gz'
-  sha1 'a9d8a5265f66cef9b200d6e6758985a5900f5a28'
+  sha256 '883e66b24d90d9957c5c538469fcde6f0668e5fb6448beecfc60884060e769b7'
 
   head 'https://github.com/rust-lang/rust.git'
 
