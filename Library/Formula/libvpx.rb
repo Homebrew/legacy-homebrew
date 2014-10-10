@@ -20,8 +20,7 @@ class Libvpx < Formula
   def install
     args = ["--prefix=#{prefix}",
             "--enable-pic",
-            "--disable-examples",
-            "--disable-runtime-cpu-detect"]
+            "--disable-examples"]
     args << "--enable-gcov" if build.include? "gcov" and not ENV.compiler == :clang
     args << "--enable-mem-tracker" if build.include? "mem-tracker"
     args << "--enable-postproc-visualizer" if build.include? "visualizer"
