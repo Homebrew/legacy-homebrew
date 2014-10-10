@@ -6,6 +6,10 @@ class Psqlodbc < Formula
   sha1 "0f41b4678b513aa70f14b03803af92a7abf1e179"
 
   bottle do
+    cellar :any
+    sha1 "f24bdc4d51cd85e391be2e483e9c48858ee71d83" => :mavericks
+    sha1 "9b3f60310f063bb416ecaf32343b31b7f09b1445" => :mountain_lion
+    sha1 "6f463b33df349d2fe20bcb71ec340dc6f425dc36" => :lion
   end
 
   depends_on "openssl"
