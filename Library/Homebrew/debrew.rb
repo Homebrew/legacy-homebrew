@@ -17,7 +17,7 @@ module Debrew
   end
 
   module Formula
-    def install
+    def brew
       Debrew.debrew { super }
     end
 
