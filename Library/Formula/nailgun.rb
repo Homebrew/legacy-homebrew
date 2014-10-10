@@ -14,22 +14,18 @@ class Nailgun < Formula
   patch :DATA
 
   def install
-    args = %W[
-      CC=#{ENV.cc}
-      PREFIX=#{prefix}
-    ]
-    system "make", "install", *args
-    resource("nailgun-jar").stage { libexec.install "nailgun-server-#{version}.jar" }
+    system "make", "install", "CC=#{ENV.cc}", "PREFIX=#{prefix}"
+    libexec.install resource("nailgun-jar").files("nailgun-server-#{version}.jar")
     bin.write_jar_script libexec/"nailgun-server-#{version}.jar", "ng-server", "-server"
   end
 
   test do
-    t = Thread.new { system "ng-server 8765" }
+    fork { exec "ng-server", "8765" }
     sleep 1 # the server does not begin listening as fast as we can start a background process
     system "ng", "--nailgun-port", "8765", "ng-version"
+    Kernel.system "ng", "--nailgun-port", "8765", "ng-stop"
     # ng-stop always returns a non-zero exit code even on successful exit
-    `ng --nailgun-port 8765 ng-stop || true`
-    t.join
+    true
   end
 end
 
