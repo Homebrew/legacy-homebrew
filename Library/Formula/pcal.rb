@@ -8,10 +8,8 @@ class Pcal < Formula
   def install
     ENV.deparallelize
     system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}"
-
-    # Install manually; easier than fixing paths in makefile
-    bin.install 'exec/pcal'
-    man1.install gzip('doc/pcal.man') => 'pcal.1.gz'
+    system "make", "install", "BINDIR=#{bin}", "MANDIR=#{man1}",
+                              "CATDIR=#{man}/cat1"
   end
 
   test do
