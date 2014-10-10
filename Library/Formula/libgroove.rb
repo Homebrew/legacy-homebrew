@@ -7,8 +7,8 @@ class Libgroove < Formula
 
   depends_on :macos => :mavericks
   depends_on "cmake" => :build
-  depends_on "chromaprint"
   depends_on "ffmpeg" => "with-libvorbis"
+  depends_on "chromaprint"
   depends_on "libebur128"
   depends_on "sdl2"
 
