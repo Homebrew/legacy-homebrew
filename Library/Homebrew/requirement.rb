@@ -11,13 +11,13 @@ require 'build_environment'
 class Requirement
   include Dependable
 
-  attr_reader :tags, :name, :option_name
+  attr_reader :tags, :name
+  alias_method :option_name, :name
 
   def initialize(tags=[])
     @tags = tags
     @tags << :build if self.class.build
     @name ||= infer_name
-    @option_name = @name
   end
 
   # The message to show when the requirement is not met.
