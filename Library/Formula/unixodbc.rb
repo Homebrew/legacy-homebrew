@@ -5,6 +5,7 @@ class Unixodbc < Formula
   url 'http://www.unixodbc.org/unixODBC-2.3.2.tar.gz'
   mirror 'ftp://mirror.ovh.net/gentoo-distfiles/distfiles/unixODBC-2.3.2.tar.gz'
   sha1 'f84520fd58143625b614fde551435178a558ee2e'
+  revision 1
 
   bottle do
     sha1 "b57d4162ab0aae7a2b9b590c340156c2a211608a" => :mavericks
@@ -15,6 +16,8 @@ class Unixodbc < Formula
   option :universal
 
   conflicts_with 'virtuoso', :because => 'Both install `isql` binaries.'
+
+  keg_only "Shadows system iODBC header files" if MacOS.version < :mavericks
 
   def install
     ENV.universal_binary if build.universal?
