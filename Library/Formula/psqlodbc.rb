@@ -7,6 +7,10 @@ class Psqlodbc < Formula
   revision 2
 
   bottle do
+    cellar :any
+    sha1 "12578b9af31ef6acdcbd3afd4f30d4f6ff3d66c3" => :mavericks
+    sha1 "34051761751ad9e60217f7c13d5988146f734f06" => :mountain_lion
+    sha1 "caef85b8bc14586dfaf482943fbd20b53a9e70ec" => :lion
   end
 
   depends_on "openssl"
