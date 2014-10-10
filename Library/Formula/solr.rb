@@ -2,15 +2,14 @@ require "formula"
 
 class Solr < Formula
   homepage "http://lucene.apache.org/solr/"
-  url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.10.0/solr-4.10.0.tgz"
-  sha1 "ae47a89f35b5e2a6a4e55732cccc64fb10ed9779"
+  url "http://www.apache.org/dyn/closer.cgi?path=lucene/solr/4.10.1/solr-4.10.1.tgz"
+  sha1 "6033a9887bbfdd1d8ce1bdafce0d65975cf910d8"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "46526c38f55b53fe84b7693db1a4527c06377c41" => :mavericks
-    sha1 "55d249ab831038a38b17908aba0d5193b4c2b7cb" => :mountain_lion
-    sha1 "174a83e20f7462f6de0ba7382402f544d01268b6" => :lion
+    sha1 "813b592ac2f8608e4495c6b79e1ecafd63e96421" => :mavericks
+    sha1 "5059173bedf5a8a70102ac414c9a43e79ce3c265" => :mountain_lion
+    sha1 "6c17714dd9ee85c8bebe8c00adf21219d9f3a804" => :lion
   end
 
   def install
