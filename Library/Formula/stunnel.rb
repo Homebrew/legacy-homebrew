@@ -1,10 +1,10 @@
 require "formula"
 
 class Stunnel < Formula
-  homepage "http://www.stunnel.org/"
-  url "ftp://ftp.nluug.nl/pub/networking/stunnel/stunnel-5.04.tar.gz"
-  mirror "https://www.stunnel.org/downloads/stunnel-5.04.tar.gz"
-  sha256 "ee9702e073cb8d5940a1310ae171a38d3264f1ce3b087160728bbbcf5710cec1"
+  homepage "https://www.stunnel.org/"
+  url "ftp://ftp.nluug.nl/pub/networking/stunnel/stunnel-5.05.tar.gz"
+  mirror "https://www.stunnel.org/downloads/stunnel-5.05.tar.gz"
+  sha256 "c7e1653345150db7e48d00e1129cf571c7c85de8e7e1aa70b21cf1d76b1e31ef"
 
   bottle do
     sha1 "4468beac294b359096183e8653eb2e662acf7748" => :mavericks
