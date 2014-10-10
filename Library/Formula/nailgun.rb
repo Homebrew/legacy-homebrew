@@ -10,11 +10,11 @@ class Nailgun < Formula
     sha1 "d57ea0a6f6c1bb1b616c5b3b311b3726c6ff35ad"
   end
 
-  # The makefile is not prefix aware
+  # The makefile is not prefix aware: https://github.com/martylamb/nailgun/pull/45
   patch :DATA
 
   def install
-    system "make", "install", "CC=#{ENV.cc}", "PREFIX=#{prefix}"
+    system "make", "install", "CC=#{ENV.cc}", "PREFIX=#{prefix}", "CFLAGS=#{ENV.cflags}"
     libexec.install resource("nailgun-jar").files("nailgun-server-#{version}.jar")
     bin.write_jar_script libexec/"nailgun-server-#{version}.jar", "ng-server", "-server"
   end
