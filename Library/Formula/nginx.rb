@@ -6,8 +6,8 @@ class Nginx < Formula
   sha1 "1a5458bc15acf90eea16353a1dd17285cf97ec35"
 
   devel do
-    url "http://nginx.org/download/nginx-1.7.5.tar.gz"
-    sha1 "432303cf9694eedb56a5a91d86536beb604d766b"
+    url "http://nginx.org/download/nginx-1.7.6.tar.gz"
+    sha1 "a83560142c19f7624bf1e089dcde3c1a223f4c46"
   end
 
   head "http://hg.nginx.org/nginx/", :using => :hg
