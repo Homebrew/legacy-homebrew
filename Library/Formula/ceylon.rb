@@ -22,8 +22,8 @@ class Ceylon < Formula
 
   test do
     cd "#{libexec}/samples/helloworld" do
-      system "#{bin}/ceylon", "compile", "com.example.helloworld"
-      system "#{bin}/ceylon", "doc", "--non-shared", "com.example.helloworld"
+      system "#{bin}/ceylon", "compile", "--encoding", "UTF-8", "com.example.helloworld"
+      system "#{bin}/ceylon", "doc", "--encoding", "UTF-8", "--non-shared", "com.example.helloworld"
       system "#{bin}/ceylon", "run", "com.example.helloworld/1.1.0", "John"
     end
   end
