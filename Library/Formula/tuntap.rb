@@ -13,7 +13,7 @@ class Tuntap < Formula
   head do
     url "git://git.code.sf.net/p/tuntaposx/code", :branch => "master"
     # Get Kernel.framework headers from the SDK
-    patch :p1, :DATA
+    patch :DATA
   end
 
   bottle do
