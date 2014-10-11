@@ -2,8 +2,8 @@ require "formula"
 
 class Spiped < Formula
   homepage "https://www.tarsnap.com/spiped.html"
-  url "https://www.tarsnap.com/spiped/spiped-1.4.1.tgz"
-  sha256 "0eeb4b8a94df985cfb60f452ced75f30509105a120ca09f740507c496c15c4f8"
+  url "https://www.tarsnap.com/spiped/spiped-1.4.2.tgz"
+  sha256 "dcb668f98a6bd761ff542f7079034f828f792259300eeb16aab53b687a805bde"
 
   bottle do
     cellar :any
