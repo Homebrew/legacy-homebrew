@@ -2,9 +2,9 @@ require 'formula'
 
 class Ngircd < Formula
   homepage 'http://ngircd.barton.de'
-  url 'http://ngircd.barton.de/pub/ngircd/ngircd-21.1.tar.gz'
-  mirror 'http://ngircd.mirror.3rz.org/pub/ngircd/ngircd-21.1.tar.gz'
-  sha256 '96083ae7dbc5df852efc904fff4800959f103554de2c6d096deaa5408135f59e'
+  url 'http://ngircd.barton.de/pub/ngircd/ngircd-22.tar.gz'
+  mirror 'http://ngircd.mirror.3rz.org/pub/ngircd/ngircd-22.tar.gz'
+  sha256 'a08e18de52bcf09d35ce75a802204ecf000f32663c1c57ad930ebcd139bf4cc8'
 
   bottle do
     revision 1
