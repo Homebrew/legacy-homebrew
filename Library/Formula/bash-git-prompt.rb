@@ -17,7 +17,7 @@ class BashGitPrompt < Formula
   def caveats; <<-EOS.undent
     You should add the following to your .bashrc (or equivalent):
       if [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
-      	GIT_PROMPT_THEME=Default
+        GIT_PROMPT_THEME=Default
         source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
       fi
     EOS
