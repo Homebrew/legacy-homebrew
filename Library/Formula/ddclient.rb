@@ -5,6 +5,8 @@ class Ddclient < Formula
   url 'https://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.2/ddclient-3.8.2.tar.bz2'
   sha1 '8c887c06a580773c48a1eaced82a08c3077e1325'
 
+  head 'https://github.com/wimpunk/ddclient.git'
+
   def install
     # Adjust default paths in script
     inreplace 'ddclient' do |s|
