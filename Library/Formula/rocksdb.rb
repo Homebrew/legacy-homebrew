@@ -2,9 +2,8 @@ require "formula"
 
 class Rocksdb < Formula
   homepage "http://rocksdb.org"
-  url "https://github.com/facebook/rocksdb/archive/3.5.fb.tar.gz"
-  sha1 "f8bd52914835a0839548eaca7f755128ed759991"
-  version "3.5"
+  url "https://github.com/facebook/rocksdb/archive/rocksdb-3.5.1.tar.gz"
+  sha1 "20e90bf82a74677f337fd5295e126651f3333e79"
 
   bottle do
     cellar :any
