@@ -77,7 +77,6 @@ class Resource
     Partial.new(self, files)
   end
 
-  # For brew-fetch and others.
   def fetch
     # Ensure the cache exists
     HOMEBREW_CACHE.mkpath

@@ -473,12 +473,10 @@ class Formula
 
   end
 
-  # For brew-fetch and others.
   def fetch
     active_spec.fetch
   end
 
-  # For FormulaInstaller.
   def verify_download_integrity fn
     active_spec.verify_download_integrity(fn)
   end
