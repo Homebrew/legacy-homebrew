@@ -21,6 +21,10 @@ module Debrew
       Debrew.debrew { super }
     end
 
+    def install
+      Debrew.debrew { super }
+    end
+
     def test
       Debrew.debrew { super }
     end
