@@ -1,10 +1,10 @@
 require "formula"
 
 class Nodenv < Formula
-  homepage "https://github.com/wfarr/nodenv"
-  head "https://github.com/wfarr/nodenv.git"
-  url "https://github.com/wfarr/nodenv/archive/v0.3.3.tar.gz"
-  sha1 "20f0cf2b698925c950de4be1899c615fc509d4b3"
+  homepage "https://github.com/OiNutter/nodenv"
+  head "https://github.com/OiNutter/nodenv.git"
+  url "https://github.com/OiNutter/nodenv/archive/v0.2.0.tar.gz"
+  sha1 "ce66e6a546ad92b166c4133796df11cd9fbbbd5f"
 
   def install
     prefix.install "bin", "libexec"
