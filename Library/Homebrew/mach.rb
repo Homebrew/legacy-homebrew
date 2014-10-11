@@ -60,7 +60,7 @@ module MachO
     offsets = []
     mach_data = []
 
-    header = read(8).unpack("N2")
+    header = (read(8) || "").unpack("N2")
     case header[0]
     when 0xcafebabe # universal
       header[1].times do |i|
