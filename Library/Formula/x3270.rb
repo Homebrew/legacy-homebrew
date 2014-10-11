@@ -2,8 +2,8 @@ require "formula"
 
 class X3270 < Formula
   homepage "http://x3270.bgp.nu/"
-  url "https://downloads.sourceforge.net/project/x3270/x3270/3.3.14ga11/suite3270-3.3.14ga11-src.tgz"
-  sha1 "23bf5b29a2c3c10b935b66a95f666de350ae9c2d"
+  url "https://downloads.sourceforge.net/project/x3270/x3270/3.3.15ga4/suite3270-3.3.15ga4-src.tgz"
+  sha1 "f702f1c79a5f0e9aec2187e306b4a25cefeaa5d0"
 
   bottle do
     sha1 "8e63062663062dbd4412f65a6ef4d8de7a6b793e" => :mavericks
