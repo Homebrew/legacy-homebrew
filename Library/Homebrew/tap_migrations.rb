@@ -1,4 +1,5 @@
 TAP_MIGRATIONS = {
+  "aescrypt" => "homebrew/boneyard",
   "agedu" => "homebrew/headonly",
   "aimage" => "homebrew/boneyard",
   "aplus" => "homebrew/boneyard",
