@@ -69,7 +69,7 @@ class Gcc < Formula
   end
 
   # Fix 10.10 issues: https://gcc.gnu.org/viewcvs/gcc?view=revision&revision=215251
-  patch :p1 do
+  patch do
     url "https://raw.githubusercontent.com/DomT4/scripts/6c0e48921/Homebrew_Resources/Gcc/gcc1010.diff"
     sha1 "083ec884399218584aec76ab8f2a0db97c12a3ba"
   end
