@@ -2,9 +2,8 @@ require 'formula'
 
 class Weechat < Formula
   homepage 'http://www.weechat.org'
-  url 'http://weechat.org/files/src/weechat-1.0.tar.bz2'
-  sha1 'd3070ffde05cb706d615144e71f933153871894d'
-  revision 1
+  url 'http://weechat.org/files/src/weechat-1.0.1.tar.gz'
+  sha1 '1d33591b6c0adc2c30b36a7b349603cbdbcb40b2'
 
   head 'https://github.com/weechat/weechat.git'
 
