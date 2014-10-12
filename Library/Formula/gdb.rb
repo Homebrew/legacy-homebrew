@@ -32,6 +32,11 @@ class Gdb < Formula
   option "with-version-suffix", "Add a version suffix to program"
   option "with-all-targets", "Build with support for all targets"
 
+  # Fix compilation on 10.10
+  # https://sourceware.org/bugzilla/show_bug.cgi?id=17046
+  # https://sourceware.org/ml/gdb-patches/2014-09/msg00510.html
+  patch :DATA
+
   def install
     args = [
       "--prefix=#{prefix}",
@@ -75,3 +80,18 @@ class Gdb < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/gdb/darwin-nat.c b/gdb/darwin-nat.c
+index 5714288..38f768f 100644
+--- a/gdb/darwin-nat.c
++++ b/gdb/darwin-nat.c
+@@ -42,7 +42,7 @@
+ 
+ #include <sys/ptrace.h>
+ #include <sys/signal.h>
+-#include <machine/setjmp.h>
++#include <setjmp.h>
+ #include <sys/types.h>
+ #include <unistd.h>
+ #include <signal.h>
