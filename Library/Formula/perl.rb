@@ -35,7 +35,7 @@ class Perl < Formula
 
     system "./Configure", *args
     system "make"
-    system "make", "test" unless build.include? "without-check"
+    system "make", "test" unless build.without? "check"
     system "make", "install"
   end
 
