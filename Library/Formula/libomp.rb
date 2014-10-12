@@ -5,14 +5,14 @@ class Libomp < Formula
   url "https://www.openmprtl.org/sites/default/files/libomp_20140926_oss.tgz"
   sha1 "488ff3874eb5c971523534cb3c987bfb5ce3addb"
 
-  depends_on :arch => [:x86_64, :intel]
+  depends_on :arch => :intel
 
   def intel_arch
-	if MacOS.prefer_64_bit?
-		"mac_32e"
-	else
-		"mac_32"
-	end
+    if MacOS.prefer_64_bit?
+      "mac_32e"
+    else
+      "mac_32"
+    end
   end
 
   def install
