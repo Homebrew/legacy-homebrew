@@ -1,21 +1,21 @@
-require 'formula'
+require "formula"
 
 class MobileShell < Formula
-  homepage 'http://mosh.mit.edu/'
-  url 'http://mosh.mit.edu/mosh-1.2.4.tar.gz'
-  sha1 'b1dffe8562d7b2f4956699849fbe5d18bfd7749e'
+  homepage "http://mosh.mit.edu/"
+  url "http://mosh.mit.edu/mosh-1.2.4.tar.gz"
+  sha1 "b1dffe8562d7b2f4956699849fbe5d18bfd7749e"
   revision 2
 
   head do
-    url 'https://github.com/keithw/mosh.git'
+    url "https://github.com/keithw/mosh.git"
 
-    depends_on 'autoconf' => :build
-    depends_on 'automake' => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
   end
 
-  depends_on 'openssl'
-  depends_on 'pkg-config' => :build
-  depends_on 'protobuf'
+  depends_on "openssl"
+  depends_on "pkg-config" => :build
+  depends_on "protobuf"
 
   def install
     system "./autogen.sh" if build.head?
@@ -28,6 +28,6 @@ class MobileShell < Formula
     # https://github.com/keithw/mosh/blob/master/README.md
     ENV.O2
     system "./configure", "--prefix=#{prefix}", "--enable-completion"
-    system "make install"
+    system "make", "install"
   end
 end
