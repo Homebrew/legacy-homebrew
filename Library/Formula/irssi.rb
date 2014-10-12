@@ -7,10 +7,9 @@ class Irssi < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "501da22e37c201fcb96f86105855db29c9111de4" => :mavericks
-    sha1 "71dc87d1e4a08bcba6969ee2faa674ea61dd9dcd" => :mountain_lion
-    sha1 "1efa0d2f3ed9dccfa2b01f52eb3c01a3c27d1303" => :lion
+    sha1 "cf15f3d0cadb37218e164250c44d78b4c892d177" => :mavericks
+    sha1 "c57f169abb6818eec4fce7581bb0f85a79ce55b2" => :mountain_lion
+    sha1 "7bd34bbdc9f67dd9bdaed0b7e84e29c1518b07f1" => :lion
   end
 
   option "without-perl", "Build without perl support"
