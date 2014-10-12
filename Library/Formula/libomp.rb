@@ -9,10 +9,7 @@ class Libomp < Formula
 
   def install
     system "make", "compiler=clang"
-    include.install "exports/common/include/omp.h"
-    include.install "exports/common/include/omp_lib.h"
-    include.install "exports/common/include_compat/iomp.h"
-    include.install "exports/mac_32e/include_compat/iomp_lib.h"
+    include.install Dir["exports/common/include/*"]
     lib.install "exports/mac_32e/lib.thin/libiomp5.dylib"
   end
 end
