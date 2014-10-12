@@ -29,6 +29,7 @@ class Qt < Formula
   option 'with-qt3support', 'Build with deprecated Qt3Support module support'
   option 'with-docs', 'Build documentation'
   option 'developer', 'Build and link with developer options'
+  option 'phonon', 'Build with Qt phonon (default=true)'
 
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
@@ -70,6 +71,11 @@ class Qt < Formula
       args << "-qt3support"
     else
       args << "-no-qt3support"
+    end
+
+    if build.without? "phonon"
+      args << "-no-phonon"
+      args << "-no-phonon-backend"
     end
 
     args << "-nomake" << "docs" if build.without? 'docs'
