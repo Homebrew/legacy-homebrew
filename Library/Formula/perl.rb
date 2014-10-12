@@ -17,6 +17,7 @@ class Perl < Formula
   keg_only "OS X ships Perl and overriding that can cause unintended issues"
 
   option "with-dtrace", "Build with DTrace probes"
+  option "with-tests", "Build and run the test suite"
 
   def install
     args = [
@@ -34,7 +35,7 @@ class Perl < Formula
 
     system "./Configure", *args
     system "make"
-    system "make", "test"
+    system "make", "test" if build.with? "tests"
     system "make", "install"
   end
 
