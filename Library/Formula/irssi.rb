@@ -2,9 +2,8 @@ require "formula"
 
 class Irssi < Formula
   homepage "http://irssi.org/"
-  url "http://irssi.org/files/irssi-0.8.16.tar.bz2"
-  sha1 "631dd70b6d3872c5f81c1a46a6872fef5bd65ffb"
-  revision 1
+  url "http://irssi.org/files/irssi-0.8.17.tar.bz2"
+  sha1 "3bdee9a1c1f3e99673143c275d2c40275136664a"
 
   bottle do
     sha1 "cf15f3d0cadb37218e164250c44d78b4c892d177" => :mavericks
@@ -18,11 +17,6 @@ class Irssi < Formula
   depends_on "glib"
   depends_on "openssl" => :optional
 
-  devel do
-    url "http://irssi.org/files/irssi-0.8.17-rc1.tar.gz"
-    sha1 "583870b51062503437590ab52186a4c6b38591d4"
-  end
-
   # Fix Perl build flags and paths in man page
   patch :DATA
 
@@ -34,6 +28,7 @@ class Irssi < Formula
       --with-bot
       --with-proxy
       --enable-ipv6
+      --enable-true-color
       --with-socks
       --with-ncurses=#{MacOS.sdk_path}/usr
     ]
