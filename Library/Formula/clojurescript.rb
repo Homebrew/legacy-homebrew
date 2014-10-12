@@ -3,8 +3,8 @@ require "formula"
 class Clojurescript < Formula
   homepage "https://github.com/clojure/clojurescript"
   head "https://github.com/clojure/clojurescript.git"
-  url "https://github.com/clojure/clojurescript/archive/r2356.tar.gz"
-  sha1 "a35ee217bb9d32aaf084fbe853826ce4df198056"
+  url "https://github.com/clojure/clojurescript/archive/r2371.tar.gz"
+  sha1 "63284f043f2f61adcc78de60998520b382b5f135"
 
   bottle do
     cellar :any
