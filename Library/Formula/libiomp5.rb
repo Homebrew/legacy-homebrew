@@ -31,7 +31,7 @@ class Libiomp5 < Formula
 
   def install
     system "make", "compiler=clang"
-    include.install Dir["exports/common/include/*"]
+    (include/"libomp5").install Dir["exports/common/include/*"]
     lib.install "exports/#{intel_arch}/lib.thin/libiomp5.dylib"
   end
 
