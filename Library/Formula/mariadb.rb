@@ -6,9 +6,9 @@ class Mariadb < Formula
   sha1 "46dc0b66567ff9d4e3a32d9d4b3c9ef250a6fc9e"
 
   bottle do
-    sha1 "88c369ec2a241bd233d43a2b665a89794dcc6f99" => :mavericks
-    sha1 "69bba44ac1a650c0706efdaee9db8aeed29aa142" => :mountain_lion
-    sha1 "fd48710219e5b6a2b0ccc06d137c1b6757e74676" => :lion
+    sha1 "afcd264148f8ab83ff44db884511f26f8cc3249d" => :mavericks
+    sha1 "f93ebfd2619060aaa9f92bb63236d3065efbfcce" => :mountain_lion
+    sha1 "b7e51a046b0c27770aa93c90d0216827742b52c5" => :lion
   end
 
   depends_on 'cmake' => :build
