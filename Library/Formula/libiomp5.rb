@@ -8,16 +8,16 @@ class Libiomp5 < Formula
   depends_on :arch => :intel
 
   fails_with :gcc  do
-    cause "libomp can only be built with clang."
+    cause "libiomp5 can only be built with clang."
   end
 
   fails_with :gcc_4_0 do
-    cause "libomp can only be built with clang."
+    cause "libiomp5 can only be built with clang."
   end
 
   ("4.3".."4.9").each do |n|
     fails_with :gcc => n do
-      cause "libomp can only be built with clang."
+      cause "libiomp5 can only be built with clang."
     end
   end
 
