@@ -13,6 +13,8 @@ class MobileShell < Formula
     depends_on "automake" => :build
   end
 
+  option "with-check", "Run build-time tests"
+
   depends_on "openssl"
   depends_on "pkg-config" => :build
   depends_on "protobuf"
@@ -28,6 +30,7 @@ class MobileShell < Formula
     # https://github.com/keithw/mosh/blob/master/README.md
     ENV.O2
     system "./configure", "--prefix=#{prefix}", "--enable-completion"
+    system "make", "check" if build.with? "check"
     system "make", "install"
   end
 end
