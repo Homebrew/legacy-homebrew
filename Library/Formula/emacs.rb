@@ -162,7 +162,7 @@ class Emacs < Formula
         A command line wrapper for the cocoa app was installed to:
          #{bin}/emacs
       EOS
-      if build.include? "srgb" and build.stable?
+      if build.include? "srgb" and not build.stable?
         s << "\nTo enable sRGB, use (setq ns-use-srgb-colorspace t)"
       end
     end
@@ -188,8 +188,8 @@ __END__
 +        chdir (getenv ("HOME"));
        if (skip_args < argc)
          {
--     /* FIXME: Do the right thing if getenv returns NULL, or if
--        chdir fails.  */
+-	  /* FIXME: Do the right thing if getenv returns NULL, or if
+-	     chdir fails.  */
            if (!strncmp (argv[skip_args], "-psn", 4))
              {
                skip_args += 1;
