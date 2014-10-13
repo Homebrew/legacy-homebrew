@@ -5,6 +5,12 @@ class Siege < Formula
   url 'http://download.joedog.org/siege/siege-3.0.7.tar.gz'
   sha256 'c651e2ae871cc680eb375f128b4809e97ceecf367f6bd65c3df00603fbceed4e'
 
+  bottle do
+    sha1 "b20c74de2adcdae43e88fbca22fc01fcf58b5285" => :mavericks
+    sha1 "1763b8658f43dbe0bc29fd22278582372db67937" => :mountain_lion
+    sha1 "341a530677f23ae7a871c7278e3ded0d2382bc77" => :lion
+  end
+
   def install
     # To avoid unnecessary warning due to hardcoded path, create the folder first
     (prefix+'etc').mkdir
