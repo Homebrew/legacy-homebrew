@@ -11,8 +11,8 @@ class Kyua < Formula
     sha1 "e29ab8d8fb98c383b0097e2b9e6fc32b8d2e9876" => :lion
   end
 
-  depends_on "atf" => :build
-  depends_on "lutok" => :build
+  depends_on "atf"
+  depends_on "lutok"
   depends_on "pkg-config" => :build
   depends_on "lua"
   depends_on "sqlite"
