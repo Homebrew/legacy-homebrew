@@ -9,14 +9,13 @@ class Pup < Formula
   head "https://github.com/EricChiang/pup.git"
 
   depends_on "go" => :build
-  depends_on :hg => :build
 
   # required by gox
   go_resource "github.com/mitchellh/iochan" do
     url "https://github.com/mitchellh/iochan.git",
         :revision => "b584a329b193e206025682ae6c10cdbe03b0cd77"
   end
-  
+
   go_resource "github.com/mitchellh/gox" do
     url "https://github.com/mitchellh/gox.git", :tag => "v0.3.0"
   end
@@ -57,14 +56,14 @@ class Pup < Formula
     my_pkg.install Dir["*"]
 
     Language::Go.stage_deps resources, buildpath / 'src'
-      
+
     ENV["GOPATH"] = buildpath
     cd "src/github.com/mitchellh/gox" do
       system "go", "build"
       buildpath.install "gox"
     end
 
-    cd my_pkg do 
+    cd my_pkg do
       mkdir "bin"
       arch = MacOS.prefer_64_bit? ? "amd64" : "386"
       system "gox", "-arch", arch,
