@@ -13,18 +13,18 @@ class Awscli < Formula
   end
 
   head do
-    url "https://github.com/aws/aws-cli.git", :branch => :develop
+    url "https://github.com/aws/aws-cli.git", :branch => "develop"
 
     resource "botocore" do
-      url "https://github.com/boto/botocore.git", :branch => :develop
+      url "https://github.com/boto/botocore.git", :branch => "develop"
     end
 
     resource "bcdoc" do
-      url "https://github.com/boto/bcdoc.git", :branch => :develop
+      url "https://github.com/boto/bcdoc.git", :branch => "develop"
     end
 
     resource "jmespath" do
-      url "https://github.com/boto/jmespath.git", :branch => :develop
+      url "https://github.com/boto/jmespath.git", :branch => "develop"
     end
   end
 
