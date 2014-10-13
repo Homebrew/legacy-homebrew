@@ -72,21 +72,23 @@ class Node < Formula
   end
 
   def caveats
-    s = return
+    s = ""
+
+   if build.with? "npm"
     s = <<-EOS.undent
       If you update npm do NOT use the npm upgrade command
       Instead execute:
         npm install -g npm@latest
     EOS
-
-    if build.without? "npm"
+   else
       s += <<-EOS.undent
-
         Homebrew has NOT installed npm. If you later install it, you should supplement
         your NODE_PATH with the npm module folder:
           #{HOMEBREW_PREFIX}/lib/node_modules
       EOS
-    end
+   end
+
+    s
   end
 
   test do
