@@ -2,16 +2,13 @@ require "formula"
 
 class Ragel < Formula
   homepage "http://www.colm.net/ragel/"
-  url "http://www.colm.net/wp-content/uploads/2014/10/ragel-6.8.tar.gz"
-  sha1 "95cabbcd52bd25d76c588ddf11e1fd242d7cbcc7"
+  url "http://www.colm.net/wp-content/uploads/2014/10/ragel-6.9.tar.gz"
+  sha1 "70a7fe77aee8423be610fa14c3fa1f96b3119e1d"
 
   resource "pdf" do
-    url "http://www.colm.net/wp-content/uploads/2014/10/ragel-guide-6.8.pdf"
-    sha1 "e57ee7f740dd395d4d5330949594a02c91ad0308"
+    url "http://www.colm.net/wp-content/uploads/2014/10/ragel-guide-6.9.pdf"
+    sha1 "a8a83fe879d72acc2376f72fad172ac6b098e794"
   end
-
-  # Fix compilation with recent clang, patch from upstream git repo
-  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
@@ -19,17 +16,3 @@ class Ragel < Formula
     doc.install resource("pdf")
   end
 end
-
-__END__
-diff --git a/ragel/javacodegen.cpp b/ragel/javacodegen.cpp
-index adff67e..ff2193c 100644
---- a/ragel/javacodegen.cpp
-+++ b/ragel/javacodegen.cpp
-@@ -54,6 +54,7 @@ using std::cin;
- using std::cout;
- using std::cerr;
- using std::endl;
-+using std::setiosflags;
- 
- void javaLineDirective( ostream &out, const char *fileName, int line )
- {
