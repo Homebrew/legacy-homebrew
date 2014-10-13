@@ -11,7 +11,7 @@ class PerconaToolkit < Formula
     sha1 "2587f2fbc846610a6f16b665a20d39155413ccc2" => :lion
   end
 
-  depends_on :mysql
+  depends_on "mysql" => :optional
 
   resource "DBD::mysql" do
     url "http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
