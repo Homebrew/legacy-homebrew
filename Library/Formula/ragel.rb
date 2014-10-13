@@ -15,4 +15,21 @@ class Ragel < Formula
     system "make", "install"
     doc.install resource("pdf")
   end
+
+  test do
+    testfile = testpath/"rubytest.rl"
+    testfile.write <<-EOS.undent
+    %%{
+      machine homebrew_test;
+      main := ( 'h' @ { puts "homebrew" }
+              | 't' @ { puts "test" }
+              )*;
+    }%%
+      data = 'ht'
+      %% write data;
+      %% write init;
+      %% write exec;
+    EOS
+    system "ragel", "-Rs", testfile
+  end
 end
