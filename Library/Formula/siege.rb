@@ -2,10 +2,8 @@ require 'formula'
 
 class Siege < Formula
   homepage 'http://www.joedog.org/index/siege-home'
-  # The primary download site is (incorrectly) serving the content decompressed
-  # url 'http://www.joedog.org/pub/siege/siege-3.0.5.tar.gz'
-  url 'http://ftp.de.debian.org/debian/pool/main/s/siege/siege_3.0.5.orig.tar.gz'
-  sha256 '283e624fd802775bf6eb8832c4f76dad6692aa1f3efa98db1ae2ddaba651ca99'
+  url 'http://download.joedog.org/siege/siege-3.0.7.tar.gz'
+  sha256 'c651e2ae871cc680eb375f128b4809e97ceecf367f6bd65c3df00603fbceed4e'
 
   def install
     # To avoid unnecessary warning due to hardcoded path, create the folder first
@@ -33,5 +31,9 @@ class Siege < Formula
 
     Run siege.config to create the ~/.siegerc config file.
     EOS
+  end
+
+  test do
+    system "#{bin}/siege", "--concurrent=1", "--reps=1", "http://google.com/"
   end
 end
