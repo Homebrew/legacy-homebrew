@@ -1,6 +1,6 @@
 require "formula"
 
-class Libomp < Formula
+class Libiomp5 < Formula
   homepage "https://www.openmprtl.org/download"
   url "https://www.openmprtl.org/sites/default/files/libomp_20140926_oss.tgz"
   sha1 "488ff3874eb5c971523534cb3c987bfb5ce3addb"
@@ -47,7 +47,7 @@ class Libomp < Formula
       }
     EOS
     (testpath/"test.c").write(testfile)
-    system "#{ENV.cc}", "-L#{lib}", "-liomp5", "-I#{include}", "test.c", "-o", "test"
+    system ENV.cc, "-L#{lib}", "-liomp5", "-I#{include}", "test.c", "-o", "test"
     system "./test"
   end
 end
