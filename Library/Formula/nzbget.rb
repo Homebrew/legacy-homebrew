@@ -5,6 +5,12 @@ class Nzbget < Formula
   url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/13.0/nzbget-13.0.tar.gz"
   sha1 "dc321ed59f47755bc910cf859f18dab0bf0cc7ff"
 
+  devel do
+    url "https://downloads.sourceforge.net/project/nzbget/nzbget-testing/14.0-r1137/nzbget-14.0-testing-r1137.tar.gz"
+    sha1 "b416a25c4744ca29be24c08ea240ac59bd19f2f4"
+    version "14.0-r1137"
+  end
+
   head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
 
   bottle do
@@ -33,7 +39,7 @@ class Nzbget < Formula
     resource("libpar2").stage do
       system "./configure", "--disable-dependency-tracking",
                             "--prefix=#{libexec}/lp2"
-      system "make install"
+      system "make", "install"
     end
 
     # Tell configure where libpar2 is, and tell it to use OpenSSL
@@ -44,7 +50,16 @@ class Nzbget < Formula
                           "--with-tlslib=OpenSSL"
     system "make"
     ENV.j1
-    system "make install"
-    system "make install-conf"
+    system "make", "install"
+    etc.install "nzbget.conf"
+  end
+
+  test do
+    # Start nzbget as a server in daemon-mode
+    system "#{bin}/nzbget", "-D"
+    # Query server for version information
+    system "#{bin}/nzbget", "-V"
+    # Shutdown server daemon
+    system "#{bin}/nzbget", "-Q"
   end
 end
