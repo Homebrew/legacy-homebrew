@@ -5,6 +5,13 @@ class Subliminal < Formula
   url "https://github.com/Diaoul/subliminal/archive/0.7.4.tar.gz"
   sha1 "1aa91ed944bbf14793f0c7f689a336df75f467f7"
 
+  bottle do
+    cellar :any
+    sha1 "f19b5e7d47179e6b583c293ec722d102bbe73ac0" => :mavericks
+    sha1 "2e2b536ce2a2fc7883f55f68647a44ac86d8c07a" => :mountain_lion
+    sha1 "ff68aa0d2d056c61b4bacaabf0d82d354427c10b" => :lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "charade" do
