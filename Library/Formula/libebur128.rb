@@ -13,7 +13,7 @@ class Libebur128 < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "speex" => [:recommended, "with-libogg"]
+  depends_on "speex" => :recommended
 
   def install
     system "cmake", ".", *std_cmake_args
