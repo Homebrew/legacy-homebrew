@@ -8,6 +8,12 @@ class Pup < Formula
 
   head "https://github.com/EricChiang/pup.git"
 
+  bottle do
+    sha1 "de519f7a2b79fb88c1334a6058baa66d7ddfa99a" => :mavericks
+    sha1 "24095aefef241c57a211b5a01c486ebb561d47d7" => :mountain_lion
+    sha1 "b76dfd0b50a0f2b96dbe912d73c70b07eb62e0a3" => :lion
+  end
+
   depends_on "go" => :build
 
   # required by gox
