@@ -80,6 +80,13 @@ class Gcc < Formula
     sha1 "def0cb036a255175db86f106e2bb9dd66d19b702"
   end
 
+  # Fix config-ml.in: eval: line 160: unexpected EOF while looking for matching `''
+  # Fixed upstream.
+  patch do
+    url "https://gist.githubusercontent.com/sjackman/34fa1081982bda781862/raw/738349d49f4f094cced7cfe287cdcdfcd7207265/52fd2e1.diff"
+    sha1 "c1dc9a0669eb48a427fbd0cb6a2c209ca9cbf765"
+  end
+
   def install
     # GCC will suffer build errors if forced to use a particular linker.
     ENV.delete "LD"
