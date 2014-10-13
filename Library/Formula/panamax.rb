@@ -17,6 +17,6 @@ class Panamax < Formula
   test do
     assert File.exist?("#{prefix}/.panamax")
     assert File.exist?("#{var}/panamax")
-    assert_match "#{version}", shell_output("#{prefix}/.panamax/panamax -v").strip
+    assert_match "#{version}", shell_output("#{prefix}/.panamax/panamax -sv").strip
   end
 end
