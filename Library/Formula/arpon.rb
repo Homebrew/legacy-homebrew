@@ -15,8 +15,4 @@ class Arpon < Formula
     system "cmake", ".", *std_cmake_args
     system "make", "install"
   end
-
-  test do
-    system "#{sbin}/arpon --version"
-  end
 end
