@@ -2,19 +2,17 @@ require "formula"
 
 class ClangOmp < Formula
   homepage "http://clang-omp.github.io/"
-  url "https://github.com/clang-omp/llvm", :using => :git
-  version "20141012"
-  sha1 ""
+  url "https://github.com/clang-omp/llvm", :using => :git, :tag => "1013141148"
 
   depends_on "cmake" => :build
 
   resource "compiler-rt" do
-    url "https://github.com/clang-omp/compiler-rt", :using => :git
+    url "https://github.com/clang-omp/compiler-rt", :using => :git, :tag => "1013141148"
     sha1 ""
   end
 
   resource "clang" do
-    url "https://github.com/clang-omp/clang", :using => :git, :branch => "clang-omp"
+    url "https://github.com/clang-omp/clang", :using => :git, :branch => "clang-omp", :tag => "1013141148"
     sha1 ""
   end
 
@@ -25,7 +23,14 @@ class ClangOmp < Formula
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
 
-    # Todo rename clang to clang-omp
+    # TODO
+    #(bin/'clang').mv 'clang-omp'
+    #(bin/'clang++').mv 'clang++-omp'
+  end
+
+  test do
+    system "#{bin}/clang", "-v"
+    system "#{bin}/clang++", "-v"
   end
 
 end
