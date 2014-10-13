@@ -3,8 +3,8 @@ require "formula"
 
 class Panamax < Formula
   homepage "http://www.panamax.io"
-  url "http://download.panamax.io/installer/panamax-0.3.0.tar.gz"
-  sha1 "d4079e9b5326eb7a5adee581fa246f453bb4ada8"
+  url "http://download.panamax.io/installer/panamax-0.3.1.tar.gz"
+  sha1 "b86a46081eecf1c60c98c9775c785489449be479"
   def install
     system "./configure", "--prefix=#{prefix}", "--var=#{var}/panamax"
     system "make", "install"
@@ -17,8 +17,6 @@ class Panamax < Formula
   test do
     assert File.exist?("#{prefix}/.panamax")
     assert File.exist?("#{var}/panamax")
-
-    system 'which', 'panamax'
-    assert_equal 0, $?.exitstatus
+    assert_match "#{version}", shell_output("#{prefix}/.panamax/panamax -v").strip
   end
 end
