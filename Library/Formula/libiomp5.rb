@@ -47,7 +47,7 @@ class Libiomp5 < Formula
       }
     EOS
     (testpath/"test.c").write(testfile)
-    system ENV.cc, "-L#{lib}", "-liomp5", "-I#{include}", "test.c", "-o", "test"
+    system ENV.cc, "-L#{lib}", "-liomp5", "-I#{include}/libiomp5", "test.c", "-o", "test"
     system "./test"
   end
 end
