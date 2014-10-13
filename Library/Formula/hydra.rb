@@ -13,7 +13,7 @@ class Hydra < Formula
     sha1 "a9682892cb112e109cac81dae9ae123aa2dd38e7" => :lion
   end
 
-  depends_on 'libssh' => :recommended
+  depends_on 'libssh' => :optional
 
   def install
     system "./configure", "--prefix=#{prefix}"
