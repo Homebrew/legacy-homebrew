@@ -72,6 +72,7 @@ class Node < Formula
   end
 
   def caveats
+    s = return
     s = <<-EOS.undent
       If you update npm do NOT use the npm upgrade command
       Instead execute:
@@ -86,8 +87,6 @@ class Node < Formula
           #{HOMEBREW_PREFIX}/lib/node_modules
       EOS
     end
-
-    return s.empty? ? nil : s
   end
 
   test do
