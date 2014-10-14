@@ -484,9 +484,7 @@ class FormulaAuditor
     end
 
     if line =~ /ARGV\.(?!(debug\?|verbose\?|value[\(\s]))/
-      # Python formulae need ARGV for Requirements
-      problem "Use build instead of ARGV to check options",
-              :whitelist => %w{pygobject3 qscintilla2}
+      problem "Use build instead of ARGV to check options"
     end
 
     if line =~ /def options/
@@ -585,8 +583,7 @@ class FormulaAuditor
 
   private
 
-  def problem p, options={}
-    return if options[:whitelist].to_a.include? f.name
+  def problem p
     @problems << p
   end
 end
