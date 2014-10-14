@@ -34,6 +34,15 @@ class Emacs < Formula
     depends_on "glib" => :optional
   end
 
+  devel do
+    url 'http://alpha.gnu.org/gnu/emacs/pretest/emacs-24.3.94.tar.xz'
+    sha256 '5751cac3e1604ad100f9847ff8a429c1b0907b26032152c040e89f294e515bc2'
+
+    depends_on :autoconf
+    depends_on :automake
+    depends_on "glib" => :optional
+  end
+
   stable do
     if build.include? "cocoa"
       depends_on "autoconf" => :build
