@@ -550,10 +550,8 @@ class FormulaAuditor
     Symbol === dep ? dep.inspect : "'#{dep}'"
   end
 
-  def audit_check_output warning_and_description
-    return unless warning_and_description
-    warning, description = *warning_and_description
-    problem "#{warning}\n#{description}"
+  def audit_check_output(output)
+    problem(output) if output
   end
 
   def audit_installed

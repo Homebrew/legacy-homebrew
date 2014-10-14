@@ -639,12 +639,11 @@ class FormulaInstaller
 
   ## checks
 
-  def print_check_output warning_and_description
-    return unless warning_and_description
-    warning, description = *warning_and_description
-    opoo warning
-    puts description
-    @show_summary_heading = true
+  def print_check_output(output)
+    if output
+      opoo output
+      @show_summary_heading = true
+    end
   end
 
   def audit_bin
