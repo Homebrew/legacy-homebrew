@@ -42,8 +42,8 @@ class OpenMpi < Formula
     # (Fortran header) in `lib` that need to be moved to `include`.
     include.install Dir["#{lib}/*.mod"]
 
-    # Not sure why the wrapped script has a jar extension - adamv
+    # Move vtsetup.jar from bin to libexec.
     libexec.install bin/'vtsetup.jar'
-    bin.write_jar_script libexec/'vtsetup.jar', 'vtsetup.jar'
+    inreplace bin/'vtsetup', '$bindir/vtsetup.jar', '$prefix/libexec/vtsetup.jar'
   end
 end
