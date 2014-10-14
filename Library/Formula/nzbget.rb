@@ -20,6 +20,7 @@ class Nzbget < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "openssl"
   depends_on "libsigc++"
 
   fails_with :clang do
