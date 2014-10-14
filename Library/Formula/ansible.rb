@@ -53,6 +53,21 @@ class Ansible < Formula
     sha1 '20c7c5d54c0ce79262092b4cc691aa309fb277fa'
   end
 
+  resource 'pywinrm' do
+    url 'https://pypi.python.org/packages/source/p/pywinrm/pywinrm-0.0.3.tar.gz'
+    sha1 '9b4f50e838b9222a101094328b0f6e8669ac17b7'
+  end
+
+  resource 'isodate' do
+    url 'https://pypi.python.org/packages/source/i/isodate/isodate-0.5.0.tar.gz'
+    sha1 '1174aeb482567df02933bdc6f6e7c2a9a72eb31e'
+  end
+
+  resource 'xmltodict' do
+    url 'https://pypi.python.org/packages/source/x/xmltodict/xmltodict-0.9.0.tar.gz'
+    sha1 '06e4396e886133fdc0b10147c388ed82b0586c83'
+  end
+
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
@@ -61,7 +76,7 @@ class Ansible < Formula
     ENV.prepend_create_path 'PYTHONPATH', prefix+'lib/python2.7/site-packages'
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
 
-    res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2]
+    res = %w[pycrypto boto pyyaml paramiko markupsafe jinja2 pywinrm isodate xmltodict]
     res << "python-keyczar" if build.with? "accelerate"
     res.each do |r|
       resource(r).stage { system "python", *install_args }
